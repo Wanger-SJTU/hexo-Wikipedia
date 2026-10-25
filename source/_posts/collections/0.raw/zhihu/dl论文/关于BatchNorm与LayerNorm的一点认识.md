@@ -1,9 +1,19 @@
 ---
-title: "关于BatchNorm与LayerNorm的一点认识"
-date: 2022-08-23
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/556630201
+title: 关于BatchNorm与LayerNorm的一点认识
+date: "2022-08-23 00:00:00"
+updated: "2022-08-23 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/dl论文/关于BatchNorm与LayerNorm的一点认识/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/556630201
 ---
+
 
 ### 今天讨论到LayerNorm的问题，突然就想到为什么要对一个句子（一条样本）进行LayerNorm，感觉自己对BERT中的LayerNorm还是没完全想明白，就查了查资料又看了下源码，分享一下我的想法。
 
@@ -51,7 +61,7 @@ source: https://zhuanlan.zhihu.com/p/556630201
 
 具体操作就是通过均值与标准差将特征归一化后再通过可学习的参数\gamma 与 \beta映射到一个新的分布上（注意这里的 \gamma与 \beta是针对每个特征值的，假如一个向量100维，进行标准化后就会有100个\gamma与 \beta）。根据要归一化的特征所在的不同位置，Normalization分为BatchNorm, LayerNorm等等，这里主要讨论这两种。还是看这张经典的图。(补充一下：这张图是面向CV的，像上面讨论的由于NLP数据的组织形式不同，这张图好像并不适用于NLP)
 
-![](asset/img_ce2d310fc03b.jpg)
+![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_ce2d310fc03b.jpg)
 
 #### BatchNorm
 
@@ -61,7 +71,7 @@ nlp：根据之前的讨论，`[B, S, D]`看作S组的`[B,D]`，BN就可以看�
 
 注意，**下面这张图是错的**，不是对同一batch中同一位置的整体嵌入进行标准化，而是对嵌入的不同维度进行标准化。
 
-![](asset/img_cc6150190f74.jpg)
+![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_cc6150190f74.jpg)
 
 这张图中举例的BN是错误参照Pytorch的`torch.nn.BatchNorm2d`，cv的BatchNorm的实现如下：（NLP我的理解可能有问题这里就不放实现了）
 

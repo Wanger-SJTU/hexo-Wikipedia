@@ -1,9 +1,19 @@
 ---
-title: "(1 封私信) 工程实现 ｜加速神经网络推理之 8bit Quantization （模型量化压缩）"
-date: 2022-08-22
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/38328685
+title: (1 封私信) 工程实现 ｜加速神经网络推理之 8bit Quantization （模型量化压缩）
+date: "2022-08-22 00:00:00"
+updated: "2022-08-22 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/模型部署那些事/工程实现-加速神经网络推理之-8bit-Quantization-(模型量化压缩)/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/38328685
 ---
+
 
 ### 前言
 
@@ -15,7 +25,7 @@ source: https://zhuanlan.zhihu.com/p/38328685
 
 谈到耗时，我们不得不分析下耗时的原因到底在哪里？深度学习作为一个新的『厂牌』，前身是神经网络，神经网络的框架最常见的几种分别为深度神经网络（DNN）、卷积神经网络（CNN）、递归神经网络（RNN）等。以 DNN 为例，DNN-Wiki 上的解释是这样的：由多重非线性变换构成的多个处理层，对数据进行高层抽象的算法。这里就不详细阐述了，来一张图看看它长是什么样子。
 
-![](asset/img_8d00cdf3d903.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%25A8%25A1%25E5%259E%258B%25E9%2583%25A8%25E7%25BD%25B2%25E9%2582%25A3%25E4%25BA%259B%25E4%25BA%258B/asset/img_8d00cdf3d903.jpg)
 
 DNN 拓扑结构其中多层的非线性转换就是上一层的输出与当前层神经元对应的权重点积（`x*W`），加之偏置（`x*W+b`）和激活处理(`f(x*W+b)`)。其中每个神经元都接收一些输入并做一些**点积**的计算，这是非常耗时的，尤其是在一些不支持硬浮点运算的设备上，DNN 的计算就显得更加疲软。
 
@@ -99,17 +109,17 @@ def ListQuantRevert(quant_data_list, Q, RQM):
 
 下面两幅图，将原本在浮点分布的正弦曲线**，经过量化和还原得到了另外两条曲线。类似图像上的降采样结果，4 位量化方式还原后的曲线出现了明显的锯齿形状，如下图：
 
-![](asset/img_bf75648580eb.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%25A8%25A1%25E5%259E%258B%25E9%2583%25A8%25E7%25BD%25B2%25E9%2582%25A3%25E4%25BA%259B%25E4%25BA%258B/asset/img_bf75648580eb.jpg)
 
 4位量化曲线然而，8 位量化方式在还原后，其连接曲线与原始曲线几乎重合，如下图：
 
-![](asset/img_76b2ef43a93b.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%25A8%25A1%25E5%259E%258B%25E9%2583%25A8%25E7%25BD%25B2%25E9%2582%25A3%25E4%25BA%259B%25E4%25BA%258B/asset/img_76b2ef43a93b.jpg)
 
 8位量化曲线**
 
 另外，我们看看随机产生的数组，量化数组分布形式与原始分布形式几乎一致，只是取值范围发生了变化，而还原后的点几乎都落在了原始数据的连接线上。
 
-![](asset/img_fe435d729620.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%25A8%25A1%25E5%259E%258B%25E9%2583%25A8%25E7%25BD%25B2%25E9%2582%25A3%25E4%25BA%259B%25E4%25BA%258B/asset/img_fe435d729620.jpg)
 
 随机数的量化实际使用中我发现，ARM CMSIS – Arm Developer 使用的是 `int8_t` 的 SIMD 优化，所以我这里在补充下关于 `uint8_t` 转成 `int8_t` 的量化和反量化代码：
 
@@ -237,7 +247,7 @@ if __name__ == '__main__':
 
 通过绘图，我们可以观察量化后的误差情况，如下图：
 
-![](asset/img_84b14003f251.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%25A8%25A1%25E5%259E%258B%25E9%2583%25A8%25E7%25BD%25B2%25E9%2582%25A3%25E4%25BA%259B%25E4%25BA%258B/asset/img_84b14003f251.jpg)
 
 点积误差可以看出，在不同的取值范围下，随着量化位数的增加，浮点模型和量化模型点积结果之间的误差也越来越小，在量化位数为 12 bits 时，误差几乎为零。
 
@@ -313,7 +323,7 @@ def DequantizeV2(x, scale, nudged_zero_point):
 
 关于 int8t 的推理过程，还有一个官方博客把推理过程也写出来了 TensorFlow Lite 8-bit quantization specification，细节之处让人不得不佩服谷歌的匠心，除了因式分解后的提前计算，还有将权重的最大最小值强制设计成对称，这样 zero_point 等于零，减少了两次计算，如下图所示。
 
-![](asset/img_cb9e4bac346a.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%25A8%25A1%25E5%259E%258B%25E9%2583%25A8%25E7%25BD%25B2%25E9%2582%25A3%25E4%25BA%259B%25E4%25BA%258B/asset/img_cb9e4bac346a.jpg)
 
 8位量化在采用对称的取值范围可以直接省去一个int8的scale计算关于定点/浮点的点积优化方法，可以看看下面几个开源项目：
 
@@ -329,17 +339,17 @@ FrameworkOrganizerLinkMACEXiaomi[https://github.com/XiaoMi/mace](https://link.zh
 
 下面两组实验的硬件设备和测试数据均为公司内部资源，详细内容和配置不方便透露。第一组对比数据是在 600Mhz 主频、不支持硬浮点运算的设备中得到的，分别使用了浮点和 12 位量化的多层神经网络模型对相同的音频数据进行识别处理。最终识别结果一致，得分有些许差异。耗时和模型占用情况如下表所示：
 
-![](asset/img_8f083a33e031.png)
+![](/images/collections/0.raw/zhihu/%25E6%25A8%25A1%25E5%259E%258B%25E9%2583%25A8%25E7%25BD%25B2%25E9%2582%25A3%25E4%25BA%259B%25E4%25BA%258B/asset/img_8f083a33e031.png)
 
 耗时和模型占用情况可以看出：在这样的嵌入式设备上，动态量化方法无论是在空间占用还是在运行速率上，优势都比较明显。
 
 另外一方面，量化方法会引入精度损失，这个损失会不会给识别造成不良的后果呢？下面取了一组公司的测试数据集，进行了三组 *Benchmark* 测试，结果如下：
 
-![](asset/img_a68ac4e31759.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%25A8%25A1%25E5%259E%258B%25E9%2583%25A8%25E7%25BD%25B2%25E9%2582%25A3%25E4%25BA%259B%25E4%25BA%258B/asset/img_a68ac4e31759.jpg)
 
 Benchmark 测试另外，我在 WeNet 上提交了一份基于量化感知训练的 Conformer 模型  [[Not for merge] code for static quantization by TeaPoly · Pull Request #874 · wenet-e2e/wenet](https://link.zhihu.com/?target=https%3A//github.com/wenet-e2e/wenet/pull/874)，可供参考，基于 X86 优化的 RTF 和识别如下：
 
-![](asset/img_89c8184be9a7.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%25A8%25A1%25E5%259E%258B%25E9%2583%25A8%25E7%25BD%25B2%25E9%2582%25A3%25E4%25BA%259B%25E4%25BA%258B/asset/img_89c8184be9a7.jpg)
 
 WeNet 下的 AISHELL X86 的量化结果
 ### 致谢

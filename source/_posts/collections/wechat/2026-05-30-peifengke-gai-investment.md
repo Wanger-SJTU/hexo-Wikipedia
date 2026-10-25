@@ -1,10 +1,23 @@
 ---
 title: 培风客 - 生成式AI投资与技术周期
-date: 2026-05-30
-source: https://mp.weixin.qq.com/s/ZKnGAGqQPe_QOnRWiIJsAQ
-author: 培风客
-tags: [投资, AI, 周期, 地缘政治, 商品]
+date: "2026-05-30 00:00:00"
+updated: "2026-05-30 00:00:00"
+layout: post
+permalink: /collections/wechat/2026-05-30-peifengke-gai-investment/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 投资
+  - AI
+  - 周期
+  - 地缘政治
+  - 商品
+source_url: https://mp.weixin.qq.com/s/ZKnGAGqQPe_QOnRWiIJsAQ
 ---
+
 
 > 人往往高估了短期的变化，而低估了长期的改变。
 
@@ -12,11 +25,11 @@ tags: [投资, AI, 周期, 地缘政治, 商品]
 
 在几天前的一个会议上，我用了一个没有更新的PPT图片，原因是换了个电脑之后找不到源文件里面的Excel，我相信很多人都会有这样的经历。但好在不影响结论。
 
-![配图1](img_1.png)
+![配图1](/images/collections/wechat/img_1.png)
 
 这是去年的数据，今年的数据应该已经是2%左右
 
-![配图2](img_2.png)
+![配图2](/images/collections/wechat/img_2.png)
 
 ## 技术的长周期
 

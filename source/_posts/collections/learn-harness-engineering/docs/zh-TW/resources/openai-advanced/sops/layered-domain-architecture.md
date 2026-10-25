@@ -1,3 +1,16 @@
+---
+title: SOP：分層領域架構
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/zh-TW/resources/openai-advanced/sops/layered-domain-architecture/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # SOP：分層領域架構
 
 當代理持續破壞邊界、在不同層重複邏輯，或幾輪工作階段後產出的程式碼變得難以審查時，就使用這份 SOP。

@@ -1,3 +1,16 @@
+---
+title: 프로젝트 02. 프로젝트를 읽기 쉽게 만들고 중단된 곳에서 재개하기
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/ko/projects/project-02-agent-readable-workspace/index/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 [English Version →](../../../en/projects/project-02-agent-readable-workspace/)
 
 > 관련 강의: [강의 03. 저장소를 단일 진실 원천으로 만들기](./../../lectures/lecture-03-why-the-repository-must-become-the-system-of-record/index.md) · [강의 04. 지침을 여러 파일로 분리하기](./../../lectures/lecture-04-why-one-giant-instruction-file-fails/index.md)

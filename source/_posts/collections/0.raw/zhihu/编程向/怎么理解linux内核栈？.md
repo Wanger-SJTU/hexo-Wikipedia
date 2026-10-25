@@ -1,9 +1,19 @@
 ---
-title: "怎么理解linux内核栈？"
-date: 2026-04-15
-tags: [知乎]
-source: https://www.zhihu.com/question/57013926/answer/3003437934
+title: 怎么理解linux内核栈？
+date: "2026-04-15 00:00:00"
+updated: "2026-04-15 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/编程向/怎么理解linux内核栈/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://www.zhihu.com/question/57013926/answer/3003437934
 ---
+
 
 ### **前文列表**
 
@@ -21,21 +31,21 @@ source: https://www.zhihu.com/question/57013926/answer/3003437934
 - **设备接口层（Device agnostic interface）**：提供驱动程序的各种抽象接口。作为驱动层和协议层之间的中间层，提供无关具体设备的统一接口定义。
 - **网络协议层（Network protocols）**：提供 L3-4 TCP/IP 网络协议的具体实现。例如：ARP、IP、ICMP、TCP 等。
 - **协议接口层（Protocol agnostic interface）**：也称为 BSD Socket API 层，本质是 SCI（系统调用接口）的一部分，向上层应用程序提供各种网络编程接口。作为协议层和应用层之间的中间层，提供无关具体协议的统一 Socket 接口定义。
-![](asset/img_1a26c8156870.jpg)![](asset/img_18032caa0e5f.webp)
+![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_1a26c8156870.jpg)![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_18032caa0e5f.webp)
 
 ### **报文处理流程概览**
 
 ### **跨主机收发报文概览**
 
-![](asset/img_eab0d510ea7e.jpg)
+![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_eab0d510ea7e.jpg)
 
 ### **本地收发报文概览**
 
-![](asset/img_7f43f404658b.jpg)
+![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_7f43f404658b.jpg)
 
 ### **协议栈实现概览**
 
-![](asset/img_13542e0712e2.jpg)
+![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_13542e0712e2.jpg)
 
 ### **内核协议栈关键技术**
 
@@ -51,7 +61,7 @@ DMA 技术在单向的外设 I/O 的流程中，减少了一次 CPU Copy 的工�
 
 在 32bit Linux 中，ZONE_DMA 默认只有 16MB；而在 64bit Linux 中，ZONE_DMA 默认可以有 4GB，得到了非常大的提升。
 
-![](asset/img_7ce319e53dfe.jpg)
+![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_7ce319e53dfe.jpg)
 
 **DMA Controller 的功能**：
 
@@ -65,7 +75,7 @@ DMA 技术在单向的外设 I/O 的流程中，减少了一次 CPU Copy 的工�
 - DACK（DMA 响应信号）：DMA Controller 向 I/O 外设的响应信号
 - HRQ/HOLD（DMA 请求信号）：DMA Controller 向 CPU 发出，要求接管 Bus。
 - HLDA（CPU 响应信号）：CPU 响应允许 DMA Controller 接管 Bus。
-![](asset/img_86474e53d24a.jpg)
+![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_86474e53d24a.jpg)
 
 ### **sk_buff 结构体**
 
@@ -91,7 +101,7 @@ Net driver 的初始化流程中包括对 DMA 空间进行初始化，主要的�
 
 sk_buff 的结构体定义如下图所示，它包含了一个 Frame 的 Interface（网络接口）、Protocol（协议类型）、Headers（协议头）指针、Data（业务数据）指针等信息。
 
-![](asset/img_9df0b0ebead0.jpg)
+![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_9df0b0ebead0.jpg)
 
 值得留意的是，在 Kernel 中，一个 Frame 的 Headers 和 Payload 可能是分开存放到不同内存块种的。有以下几点原因：
 
@@ -102,7 +112,7 @@ sk_buff 的结构体定义如下图所示，它包含了一个 Frame 的 Interfa
 
 同时，sk_buff 是一个双向链表数据结构，支持链表操作。
 
-![](asset/img_36221c6b47dc.jpg)
+![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_36221c6b47dc.jpg)
 
 ### **Net driver Rx/Tx Ring Buffer**
 
@@ -112,13 +122,13 @@ Ring queue 是高性能数据包处理场景中常见的数据结构，它将 Bu
 
 值得注意的是，Rx/Tx Ring Buffer 中存储的是 sk_buff 的 Descriptor，而不是 sk_buff 本身，本质是一个指针，也称为 Packet Descriptor。
 
-![](asset/img_a267be3ca0ea.jpg)
+![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_a267be3ca0ea.jpg)
 
 Packet Descriptor 有 Ready 和 Used 这 2 种状态。初始时 Descriptor 指向一个预先分配好且是空的 sk_buff 空间，处在 Ready 状态。当有 Frame 到达时，DMA Controller 从 Rx Ring Buffer 中按顺序找到下一个 Ready 的 Descriptor，将 Frame 的数据 Copy 到该 Descriptor 指向的 sk_buff 空间中，最后标记为 Used 状态。
 
 这样设计的原因是 Rx/Tx Ring Buffer 作为 I/O 控制单元，不应该持有太多数据量。数据传输由 DMA 实现会非常快，而 Ring Buffer 也只需要记录相应的指针即可。
 
-![](asset/img_702abe05ba0c.jpg)
+![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_702abe05ba0c.jpg)
 
 ### **Buffer Descriptor Table**
 
@@ -126,17 +136,17 @@ Rx/Tx Ring Buffer 的具体实现为一张 Buffer Descriptor Table（BDT）。
 
 BDT 是一个 Table 数据结构，拥有多个 Entries，每条 Entry 都对应了 Ring Buffer 中的一个 Rx/Tx Desc，它们记录了存放 sk_buff 的入口地址、长度以及状态标志位。
 
-![](asset/img_2b90e36750a2.jpg)
+![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_2b90e36750a2.jpg)
 
 - **收包时**：DMA Controller 搜索 Rx BDT，取出空闲的 DB Entry，将 Frame 存放到 Entry 指向的 sk_buff，修改 Entry 为 Ready。然后 DBT 指针下移一项。
 - **发包时**：DMA Controller 搜索 Tx BDT，取出状态为 Ready 的 DB Entry 所指向的 sk_buff 并转化为 Frame 发送出去。然后 DBT 指针下移一项。
-![](asset/img_af179510dbe1.jpg)
+![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_af179510dbe1.jpg)
 
 ### **NAPI 收包机制**
 
 NAPI（New API）是一种 “中断 + 轮训” 收包机制，相较于传统的单一中断（硬中断 + 软中断）收包的方式效率更高。
 
-![](asset/img_4b3624eb05f5.jpg)
+![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_4b3624eb05f5.jpg)
 
 NAPI 的工作流程如下：
 
@@ -152,7 +162,7 @@ NAPI 的工作流程如下：
 
 可见，和传统方式相比，NAPI 一次中断就可以接收多个包，因此可以减少硬件中断的数量。
 
-![](asset/img_f9dcc0b02a47.jpg)
+![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_f9dcc0b02a47.jpg)
 
 ### **网卡多队列**
 
@@ -161,28 +171,28 @@ NAPI 的工作流程如下：
 以 Intel 82575 为例。
 
 - **在硬件层面**：它拥有 4 组硬件队列，它们的硬中断分别绑定到 4 个 Core 上，并通过 RSS（Receive Side Scaling）技术实现负载均衡。RSS 技术通过 HASH Packet Header IP 4-tuple（srcIP、srcPort、dstIP、dstPort），将同一条 Flow 总是送到相同的队列，从而避免了报文乱序问题。
-![](asset/img_4796c79487d4.jpg)
+![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_4796c79487d4.jpg)
 
 **
 
 - 在软件层面**：Linux Kernel v2.6.21 开始支持网卡多队列特性。在 Net driver 初始化流程中，Kernel 获悉 Net device 所支持的硬件队列数量。然后结合 CPU Cores 的数量，通过 Sum=Min(NIC queue, CPU core) 公式计算得出应该被激活 Sum 个硬件队列，并申请 Sum 个中断号，分配给激活的每个队列。
-![](asset/img_56c28da90876.jpg)
+![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_56c28da90876.jpg)
 
 如上图所示，当某个硬件队列收到 Frames 时，就触发相应的硬中断，收到中断的 CPU Core 就中断处理任务下发给该 Core 的 NET_RX_SOFTIRQ 实例处理（每个 Core 都有一个 NET_RX_SOFTIRQ 实例）。
 
 在 NET_RX_SOFTIRQ 中调用 NAPI 的收包接口，将 Frames 收到具有多个 netdev_queue 的 net_device 结构体中。
 
-![](asset/img_4c240edc9241.jpg)
+![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_4c240edc9241.jpg)
 
 ### **内核协议栈收包/发包流程概览**
 
 - **收包流程**：
-![](asset/img_2b229dac2c4d.jpg)
+![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_2b229dac2c4d.jpg)
 
 **
 
 - 发包流程**：
-![](asset/img_9f08b7abd5d7.jpg)
+![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_9f08b7abd5d7.jpg)
 
 **
 
@@ -190,7 +200,7 @@ NAPI 的工作流程如下：
 
 ### **驱动程序层（数据链路层）**
 
-![](asset/img_4d33fe956a96.jpg)
+![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_4d33fe956a96.jpg)
 
 - NIC Controller 接收到高低电信号，表示 Frame 到达。PHY 芯片首先将电信号转换为比特流，然后 MAC 芯片再将比特流转换为 Frame 格式。
 - DMA Controller 将 Frame Copy 到 Rx Ring Buffer 中的一个 Rx Desc 指向的 sk_buff 空间。
@@ -235,36 +245,36 @@ int netif_receive_skb(struct sk_buff *skb)
 `
 
 - 直到一段时间内没有 Frame 到达为止，关闭 ksoftirqd 内核线程，NIC Controller 重新切换到硬中断收包工作模式。
-![](asset/img_9d03b40c0b62.jpg)
+![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_9d03b40c0b62.jpg)
 
 #### **VLAN 协议族**
 
-![](asset/img_29d62f03db8b.jpg)
+![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_29d62f03db8b.jpg)
 
 #### **Linux Bridge 子系统**
 
-![](asset/img_831f94feccbf.jpg)
+![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_831f94feccbf.jpg)
 
 ### **网络协议层（L3 子系统）**
 
-![](asset/img_aa8f14443d51.jpg)
+![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_aa8f14443d51.jpg)
 
 - Net driver 调用 netif_receive_skb() 将 sk_buff 从 ZONE_DMA Ring Buffer 中取出并交给 TCP/IP 协议栈处理的过程中，首先会根据 sk_buff 内层 Header 的 Protocol Type 选择相应的处理函数，如果是 IP 协议，则调用 ip_rcv() 进行处理。
-![](asset/img_362289a132dd.jpg)
+![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_362289a132dd.jpg)
 
 - ip_rcv() 首先会解析 IP Header，根据 srcIP 和 dstIP 进入路由子系统处理流程。如果 dstIP 是本机地址，则根据内层 Header 的 Protocol Type 选择相应的传输层处理函数。UDP 对应 udp_rcv()、TCP 对应 tcp_rcv()、ICMP 对应 icmp_rcv()、IGMP 对应 igmp_rcv()。
 
 #### **ARP 子系统**
 
-![](asset/img_c564b49ba279.jpg)
+![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_c564b49ba279.jpg)
 
 #### **IP 子系统**
 
-![](asset/img_4085aa8d4795.jpg)
+![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_4085aa8d4795.jpg)
 
 ### **网络协议层（L4 子系统）**
 
-![](asset/img_3f2d74e46a2a.jpg)
+![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_3f2d74e46a2a.jpg)
 
 - 在使用 socket() 创建一个 TCP Socket 之后，Socket 对应的 Sock 结构体会被注册到一个 tcp_prot 全局变量中，并以 tcp_port 作为 Index。
 - 当 tcp_rcv() 收到 sk_buff 之后，根据 TCP Header 中的 dstPort 字段索引到相应的 Sock。
@@ -272,7 +282,7 @@ int netif_receive_skb(struct sk_buff *skb)
 
 #### **TCP 子系统**
 
-![](asset/img_aa61f7bb41c7.jpg)
+![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_aa61f7bb41c7.jpg)
 
 ### **协议接口层（BSD Socket 层）**
 
@@ -284,7 +294,7 @@ int netif_receive_skb(struct sk_buff *skb)
 
 ### **内核协议栈发包流程详解**
 
-![](asset/img_b1a6c1e64b5b.jpg)
+![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_b1a6c1e64b5b.jpg)
 
 以 UDP 数据报为例：
 

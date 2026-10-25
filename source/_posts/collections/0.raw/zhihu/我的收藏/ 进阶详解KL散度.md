@@ -1,9 +1,19 @@
 ---
-title: "(1 条消息) 进阶详解KL散度"
-date: 2022-07-26
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/372835186
+title: (1 条消息) 进阶详解KL散度
+date: "2022-07-26 00:00:00"
+updated: "2022-07-26 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/进阶详解KL散度/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/372835186
 ---
+
 
 #### 　　1、KL散度的概念
 
@@ -17,7 +27,7 @@ $$KL[P(X)||Q(X)]=&#x2211;x&#x2208;X[P(x)logP(x)Q(x)]=Ex&#x223C;P(x)[logP(x)Q(x)]
 
 　　KL散度的典型应用场景如下：假设某优化问题中, P(X)" role="presentation">P(X)P\left( X \right) 是真实分布（true distribution）， Q(X)" role="presentation">Q(X)Q\left( X \right) 是一个用于拟合 P(X)" role="presentation">P(X)P\left( X \right) 的近似分布（approximate distribution），我们尝试通过修改 Q(X)" role="presentation">Q(X)Q\left( X \right) 使得二者间的KL[P(X)||Q(X)]" role="presentation">KL[P(X)||Q(X)]KL\left[ P\left( X \right)  || Q \left( X \right) \right] 尽可能小来实现用 Q(X)" role="presentation">Q(X)Q\left( X \right) 拟合 P(X)" role="presentation">P(X)P\left( X \right) ，如下图所示（参考文献[4]）。
 
-![](asset/img_c871b04d7f50.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_c871b04d7f50.jpg)
 
 　　在上面的概率拟合应用场景下， KL\left[ P\left( X \right)  || Q \left( X \right) \right] 也被称为**前向KL散度**（forward Kullback-Leibler Divergence），将 KL\left[ Q \left( X \right)  || P \left( X \right) \right] 称为**反向KL散度**（reverse Kullback-Leibler Divergence）。
 
@@ -33,7 +43,7 @@ $$KL[P(X)||Q(X)]=&#x2211;x&#x2208;X[P(x)logP(x)Q(x)]=Ex&#x223C;P(x)[logP(x)Q(x)]
 
 ***Wherever *P\left( \cdot \right) *has high probability, *Q\left( \cdot \right) *must also have high probability.*　　下图展示了使用前向KL散度代价拟合一个多峰（实际上是双峰）分布的效果示意图（参考文献[4]）。
 
-![](asset/img_5e7e22960f58.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_5e7e22960f58.jpg)
 
 图中绿色曲线代表拟合分布Q，蓝色曲线是目标分布P　　前向KL散度的这种特性一般也被称为 *zero avoiding***，原因是它倾向于避免在任何 0">P\left( x \right)>0 的位置 x 使得 Q\left( x \right)=0 （参考文献[4]）。
 
@@ -43,7 +53,7 @@ $$KL[P(X)||Q(X)]=&#x2211;x&#x2208;X[P(x)logP(x)Q(x)]=Ex&#x223C;P(x)[logP(x)Q(x)]
 
 ***Wherever *Q\left( \cdot \right)* has high probability, *P\left( \cdot \right)* must also have high probability.*　　下图展示了使用前向反向KL散度代价拟合一个多峰（实际是双峰）分布的效果示意图（参考文献[4]）。
 
-![](asset/img_693c42ca1db8.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_693c42ca1db8.jpg)
 
 图中绿色曲线代表拟合分布Q，蓝色曲线是目标分布P　　关于在前向KL拟合特性分析中，为什么说当 P\left( x \right) 近似为0时，无论 Q\left( x \right) 的取值如何（即使绝对值非常大）,一般都不会对前向KL散度计算产生影响的原因定性的论述如下。
 
@@ -63,7 +73,7 @@ $$\lim_{x \rightarrow 0}{xlnx}=\lim_{n \rightarrow \infty}{\frac{1}{n}ln\frac{1}
 
 　　前向KL和反向KL拟合效果的二维多峰（实际上是双峰 P ）分布情况示例（参考文献[1]）：
 
-![](asset/img_51f9646c9125.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_51f9646c9125.jpg)
 
 图中蓝色等值线表示目标分布P，红色等值线代表拟合结果Q　　上面图中蓝色的轮廓线代表一个有两个高斯分布组成双峰分布 P\left(X \right) ，红色的轮廓线是使用单一高斯分布在最小化KL散度意义下对 P\left( X \right) 进行拟合得到的最佳结果。其中图(a)是拟合代价选择前向KL散度 KL\left( P||Q \right) 时的拟合效果，图(b)时拟合代价选择反向KL散度 KL\left( Q||P \right) 时的拟合效果，图(c)和图(b)使用相同的代价但展示的是到达反向KL散度代价的另外一个局部极小值点的效果。
 
@@ -125,7 +135,7 @@ $E_{X\sim Q_{\theta}} \left[ -log \ P \left( X \right) \right] + H\left( Q_{\the
 
 　　考虑有两个样本分布 P 和 Q 如下：
 
-![](asset/img_9a409bccf97c.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_9a409bccf97c.jpg)
 
 　　由于 P 和 Q 中都在某个取值上概率为0，因此直接计算前向KL散度和反向KL散度
 
@@ -137,7 +147,7 @@ $$KL_{backward} \left( Q||P \right)=\sum_{i=1}^{4}{\left[ Q\left( x_i \right)log
 
 　　引入一个微小常量 \varepsilon ，例如： \varepsilon=10^{-3} ，然后定义平滑的分布 P^{'} 和 Q^{'} 如下：
 
-![](asset/img_7630a8985619.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_7630a8985619.jpg)
 
 　　分别用 KL_{forward}\left( P^{'}||Q^{'} \right) 和 KL_{backward}\left( P^{'}||Q^{'} \right) 作为 KL_{forward}\left( P||Q \right) 和 KL_{backward}\left( Q||P \right) 的替代，这样正向KL和反向KL就都变得可以计算了。
 

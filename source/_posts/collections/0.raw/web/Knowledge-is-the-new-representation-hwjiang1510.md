@@ -1,9 +1,17 @@
 ---
-title: "Knowledge is the new representation / 知识即新的表征"
-source: "https://hwjiang1510.github.io/blogs/knowledge-is-the-new-representation/index.html"
-date: 2026-04-29
-author: "Hanwen Jiang (hwjiang1510)"
+title: Knowledge is the new representation / 知识即新的表征
+date: "2026-04-29 00:00:00"
+updated: "2026-04-29 00:00:00"
+layout: post
+permalink: /collections/0.raw/web/Knowledge-is-the-new-representation-hwjiang1510/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+source_url: https://hwjiang1510.github.io/blogs/knowledge-is-the-new-representation/index.html
 ---
+
 
 # Knowledge is the new representation.
 

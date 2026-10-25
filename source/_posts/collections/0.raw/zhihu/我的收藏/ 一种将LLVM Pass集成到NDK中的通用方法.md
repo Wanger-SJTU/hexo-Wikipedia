@@ -1,9 +1,19 @@
 ---
-title: "(1 条消息) 一种将LLVM Pass集成到NDK中的通用方法"
-date: 2022-02-17
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/468774258
+title: (1 条消息) 一种将LLVM Pass集成到NDK中的通用方法
+date: "2022-02-17 00:00:00"
+updated: "2022-02-17 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/一种将LLVM-Pass集成到NDK中的通用方法/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/468774258
 ---
+
 
 本文为看雪论坛优秀文章**看雪论坛作者ID：34r7hm4n
 
@@ -55,7 +65,7 @@ based on r416183c1`
 
 在https://android.googlesource.com/toolchain/llvm_android/中找到对应版本的 llvm-android 源码：
 
-![](asset/img_8cecb54c47ae.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_8cecb54c47ae.jpg)
 
 Google的文档中给出了下载 llvm-android 源代码的方法，但这里默认下载的是最新版本：
 
@@ -70,7 +80,7 @@ repo init -u`
 
 将 manifest_7714059.xml 复制到.repo/mainifests文件夹中（注意.repo是隐藏文件夹，并且从Windows复制到Linux会有格式转换的问题，这里建议使用VSCode的SSH-Remote插件避免上述问题）：
 
-![](asset/img_3b3d30203d95.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_3b3d30203d95.jpg)
 
 继续执行：
 
@@ -87,7 +97,7 @@ repo sync -c`
 
 并且 manifest_7714059.xml 中的包含地址也要替换，否则即使科学上网，在下载的时候也非常慢：
 
-![](asset/img_39ee90770859.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_39ee90770859.jpg)
 
 repo sync -c指令会下载一大堆的源代码和预编译文件，需要耗费十来分钟的样子，喝杯茶慢慢等吧。
 
@@ -99,7 +109,7 @@ repo sync -c指令会下载一大堆的源代码和预编译文件，需要耗�
 
 如果是在Ubuntu 20.04.3下还需要做一个软链接，否则会报错ImportError: libffi.so.6: cannot open shared object file: No such file or directory。具体操作如下：
 
-![](asset/img_15ab2a4b615c.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_15ab2a4b615c.jpg)
 
 然后就可以开始愉快且漫长的编译了（大概需要一两个小时，取决于机器性能）：
 
@@ -111,7 +121,7 @@ repo sync -c指令会下载一大堆的源代码和预编译文件，需要耗�
 
 编译结束后可以在out文件夹中找到编译好的内容：
 
-![](asset/img_3f1659a7eb2a.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_3f1659a7eb2a.jpg)
 
 #### 4、加入自己的 Pass 并重新编译
 
@@ -119,17 +129,17 @@ repo sync -c指令会下载一大堆的源代码和预编译文件，需要耗�
 
 此时我们需要向toolchain/llvm-project/llvm/lib/Transforms/Obfuscation/中加入自己的代码：
 
-![](asset/img_7048897aadec.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_7048897aadec.jpg)
 
 向toolchain/llvm-project/llvm/lib/Transforms/IPO/PassManagerBuilder.cpp中加入几段代码：
 
-![](asset/img_47175375acfb.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_47175375acfb.jpg)
 
-![](asset/img_97493145d4ac.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_97493145d4ac.jpg)
 
 修改toolchain/llvm-project/llvm/lib/Transforms/IPO/CMakeLists.txt：
 
-![](asset/img_a4fe468f6ad5.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_a4fe468f6ad5.jpg)
 
 改好之后重新编译，重新编译的速度会快很多，一分钟左右就能搞定：
 
@@ -137,9 +147,9 @@ repo sync -c指令会下载一大堆的源代码和预编译文件，需要耗�
 
 编译好后out/install/windows-x86/clang-dev中对应的就是NDK中的toolchains\llvm\prebuilt\windows-x86_64部分：
 
-![](asset/img_5e74fa9cd1f2.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_5e74fa9cd1f2.jpg)
 
-![](asset/img_91d96de8758a.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_91d96de8758a.jpg)
 
 少了一些东西，但是无关紧要，我们直接替换就好。
 
@@ -147,29 +157,29 @@ repo sync -c指令会下载一大堆的源代码和预编译文件，需要耗�
 
 我复制了一份NDK，命名为pluto-r23，并将其中toolchains\llvm\prebuilt\windows-x86_64文件夹里的内容替换成我们刚刚编译的内容：
 
-![](asset/img_5897d59706ef.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_5897d59706ef.jpg)
 
 随便写一个Native项目测试：
 
-![](asset/img_7297833c99be.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_7297833c99be.jpg)
 
 设置NDK地址：
 
-![](asset/img_3aa6a72177d2.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_3aa6a72177d2.jpg)
 
 加上混淆参数：
 
-![](asset/img_75de20195712.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_75de20195712.jpg)
 
 编译然后查看混淆效果：
 
-![](asset/img_4a37788394d1.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_4a37788394d1.jpg)
 
 X86架构和ARM架构均混淆成功：
 
-![](asset/img_ea05a4d1aa9d.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_ea05a4d1aa9d.jpg)
 
-![](asset/img_0c34f87ade49.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_0c34f87ade49.jpg)
 
 ​
 

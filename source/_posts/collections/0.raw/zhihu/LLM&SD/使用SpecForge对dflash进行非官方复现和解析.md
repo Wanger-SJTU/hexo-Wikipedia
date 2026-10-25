@@ -1,9 +1,19 @@
 ---
-title: "使用SpecForge对dflash进行非官方复现和解析"
-date: 2026-02-25
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/2009941050500880179
+title: 使用SpecForge对dflash进行非官方复现和解析
+date: "2026-02-25 00:00:00"
+updated: "2026-02-25 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/LLM-SD/使用SpecForge对dflash进行非官方复现和解析/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/2009941050500880179
 ---
+
 
 ### 动机
 
@@ -11,7 +21,7 @@ source: https://zhuanlan.zhihu.com/p/2009941050500880179
 
 目前，在第三方投机推理算法中，EAGLE-3 备受关注。我曾在此前的文章中对其进行过复现（详见链接）。
 
-[![](asset/img_5eac9d797c4a.jpg)投机采样Eagle3的复现及开源报告147 赞同 · 223 评论 文章](https://zhuanlan.zhihu.com/p/1923763301432662012)
+[![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_5eac9d797c4a.jpg)投机采样Eagle3的复现及开源报告147 赞同 · 223 评论 文章](https://zhuanlan.zhihu.com/p/1923763301432662012)
 
 EAGLE-3 这类方案的核心逻辑在于：通过训练一个轻量级的 Draft 模型（草稿模型）预测候选 Token，再交由目标大模型进行并行验证，从而在保证输出质量的前提下大幅提升推理效率。
 
@@ -34,7 +44,7 @@ EAGLE-3 这类方案的核心逻辑在于：通过训练一个轻量级的 Draft
 
 #### dflash的优化
 
-![](asset/img_897b4425ddde.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_897b4425ddde.jpg)
 
 dflash的架构图上图为dflash的架构图，从图中可以看到dflash的推理的实现流程。
 
@@ -42,7 +52,7 @@ dFlash 首先通过target模型完成 Prefill 并生成首个起始 Token。随�
 
 **
 
-![](asset/img_9a1c868bae30.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_9a1c868bae30.jpg)
 
 dflash训练的注意力mask图既然我们现在有了dflash的推理过程了，那么训练过程怎么搞。
 
@@ -52,9 +62,9 @@ dflash训练的注意力mask图既然我们现在有了dflash的推理过程了�
 
 #### Dflash的官方效果
 
-![](asset/img_4e69432e1657.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_4e69432e1657.jpg)
 
-![](asset/img_3ea1ed224b6d.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_3ea1ed224b6d.jpg)
 
 从上面的图表可以看到，Dflash的效果还是非常地炸裂的。比baseline提升了4到6倍，然后比eagle3也提升1到2倍。（不过这个效果eagle3的作者也有在跟dflash的作者在argue中，详情可以看dflash的github仓库的issue）
 
@@ -114,7 +124,7 @@ python scripts/regenerate_train_data.py \
 
 #### 训练效果
 
-![](asset/img_6ac72a9e2a80.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_6ac72a9e2a80.jpg)
 
 训练的log(借用别人的)
 #### 部署dflash
@@ -131,11 +141,11 @@ pip install git+https://github.com/sgl-project/sglang.git@refs/pull/16818/head#s
 python -m sglang.launch_server     --model-path Qwen/Qwen3-8B     --speculative-algorithm DFLASH     --speculative-draft-model-path Tengyunw/Qwen3-8B-DFlash     --tp-size 1     --dtype bfloat16     --attention-backend fa3     --mem-fraction-static 0.75     --trust-remote-code
 `
 
-![](asset/img_65c1fc46c783.jpg)00:16
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_65c1fc46c783.jpg)00:16
 
 dflash效果演示
 
-![](asset/img_dfc62fbebd94.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_dfc62fbebd94.jpg)
 
 sglang 后台
 #### 压测效果

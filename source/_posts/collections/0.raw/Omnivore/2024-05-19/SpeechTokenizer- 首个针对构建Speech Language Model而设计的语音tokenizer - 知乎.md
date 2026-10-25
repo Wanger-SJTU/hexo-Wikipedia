@@ -1,4 +1,17 @@
 ---
+title: "SpeechTokenizer: 首个针对构建Speech Language Model而设计的语音tokenizer - 知乎"
+date: "2026-04-11 21:40:28"
+updated: "2026-04-11 21:40:28"
+layout: post
+permalink: /collections/0.raw/Omnivore/2024-05-19/SpeechTokenizer-首个针对构建Speech-Language-Model而设计的语音tokenizer-知乎/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
+---
 id: dded644a-5084-4a1a-a783-e22ec90d7c77
 ---
 

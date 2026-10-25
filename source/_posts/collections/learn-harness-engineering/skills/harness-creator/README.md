@@ -1,3 +1,16 @@
+---
+title: harness-creator
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/skills/harness-creator/README/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # harness-creator
 
 A compact skill for building and auditing harnesses around AI coding agents.

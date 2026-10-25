@@ -1,3 +1,16 @@
+---
+title: Learn Harness Engineering
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs-readme/tr-TR/README/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 <p align="center">
   <a href="../../README.md"><img alt="English" src="https://img.shields.io/badge/EN-English-blue?style=flat-square"></a>
   <a href="../zh-CN/README.md"><img alt="简体中文" src="https://img.shields.io/badge/ZH-简体中文-red?style=flat-square"></a>
@@ -47,17 +60,17 @@ Learn Harness Engineering, yapay zeka kod yazma ajanlarının mühendisliğine a
 ### Kurs ana sayfası
 > Başlamak için net bir yol sunan kapsamlı bir kurs özeti ve temel felsefelere giriş.
 
-![Kurs ana sayfası önizlemesi](../../docs/public/screenshots/readme/en-home.png)
+![Kurs ana sayfası önizlemesi](/images/collections/learn-harness-engineering/docs/public/screenshots/readme/en-home.png)
 
 ### Sürükleyici dersler
 > Sürükleyici bir öğrenme deneyimi için gerçek dünya sorunlarına ve uygulamalı projelere (Proje 01 gibi) derinlemesine inişler.
 
-![Kurs dersi önizlemesi](../../docs/public/screenshots/readme/en-lecture-01.png)
+![Kurs dersi önizlemesi](/images/collections/learn-harness-engineering/docs/public/screenshots/readme/en-lecture-01.png)
 
 ### Kullanıma hazır Kaynak Kütüphanesi
 > Çok adımlı yapay zeka ajanı geliştirmedeki bağlam kaybı ve görevin erken tamamlandığının ilan edilmesi gibi yaygın tuzakları çözmek için tasarlanmış şablonlar ve referans yapılandırmalar.
 
-![Kaynak kütüphanesi önizlemesi](../../docs/public/screenshots/readme/en-resources.png)
+![Kaynak kütüphanesi önizlemesi](/images/collections/learn-harness-engineering/docs/public/screenshots/readme/en-resources.png)
 
 ## PDF Ders Kitapları
 

@@ -1,3 +1,16 @@
+---
+title: 大模型轻量化finetune技术详解
+date: "2026-04-11 21:40:28"
+updated: "2026-04-11 21:40:28"
+layout: post
+permalink: /collections/0.raw/随笔/LLM/大模型轻量化finetune技术详解/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 https://zhuanlan.zhihu.com/p/624275968
 
 大模型太大，占用的资源非常多。而且GPT系列也不开源。所以从算法和算力角度来说，想搭建chatGPT的能力，除了土豪大公司，对很多组织都是很困难的。为了低成本完成本地调优，完成了很多替代方案。
@@ -12,7 +25,7 @@ Alpaca就是对于llama的finetune，它在一个7B的llama模型上，用52K的
 本文的重点不是介绍self-instruct的paper，所以这部分细节不展开了。
 
 ## Lora技术
-此处参考[[归档/LLM/LORA|LORA]]
+此处参考<span class="wikilink wikilink--missing" title="未导入的页面">LORA</span>
 
 ## 工程代码实现
 

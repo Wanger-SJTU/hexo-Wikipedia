@@ -1,9 +1,19 @@
 ---
-title: "(2 条消息) 超酷的PDF转换工具！直接支持DeepSeek V3，本地AI精准解析PDF扫描件！"
-date: 2025-03-27
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/1888535695993308115
+title: (2 条消息) 超酷的PDF转换工具！直接支持DeepSeek V3，本地AI精准解析PDF扫描件！
+date: "2025-03-27 00:00:00"
+updated: "2025-03-27 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/超酷的PDF转换工具-直接支持DeepSeek-V3,本地AI精准解析PDF扫描件/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/1888535695993308115
 ---
+
 
 对于习惯数字阅读的人来说，扫描版 PDF 的最大痛点，就是它仅仅是纸质书的静态复制，而非真正的电子书。
 
@@ -13,7 +23,7 @@ source: https://zhuanlan.zhihu.com/p/1888535695993308115
 
 今天介绍一款开源的 PDF 处理工具：**PDF Craft**，专注于将扫描书籍的 PDF 文件转化为 Markdown 或 EPUB 格式。
 
-![](asset/img_9c62f74cb90f.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_9c62f74cb90f.jpg)
 
 它基于本地 AI 模型运行核心功能，同时支持远程调用 LLM（如 DeepSeek V3）处理复杂任务。PDF Craft 的设计目标是“高效、精准、隐私友好”，通过智能算法和 LLM 技术，不仅提取文本，还能重构书籍结构，保留图表和公式。
 
@@ -21,7 +31,7 @@ source: https://zhuanlan.zhihu.com/p/1888535695993308115
 
 本地模式利用 DocLayout-YOLO 和 OnnxOCR 等技术实现完全离线转换，而远程模式通过 LLM 增强了对大部头书籍的处理能力，为用户提供更优质的电子书转换体验。
 
-![](asset/img_22ba6636da73.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_22ba6636da73.jpg)
 
 #### 核心功能
 
@@ -63,7 +73,7 @@ with MarkDownWriter(markdown_path, "images", "utf-8") as md:
 
 转化效果如下：
 
-![](asset/img_cedc78803bb3.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_cedc78803bb3.jpg)
 
 ② PDF 转化为 EPUB
 
@@ -110,7 +120,7 @@ generate_epub_file(
 
 转化效果如下：
 
-![](asset/img_dd3abdbe771b.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_dd3abdbe771b.jpg)
 
 #### 写在最后
 

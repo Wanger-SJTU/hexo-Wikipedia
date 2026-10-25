@@ -1,9 +1,19 @@
 ---
-title: "(2 条消息) csapp 缓冲区溢出攻击(stackoverflow)"
-date: 2024-12-27
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/14909748283
+title: (2 条消息) csapp 缓冲区溢出攻击(stackoverflow)
+date: "2024-12-27 00:00:00"
+updated: "2024-12-27 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/csapp-缓冲区溢出攻击(stackoverflow)/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/14909748283
 ---
+
 
 #### 介绍
 
@@ -15,38 +25,38 @@ source: https://zhuanlan.zhihu.com/p/14909748283
 
 第一题首先介绍了ctarget程序的特点，它内部存在一个test函数，其调用getbuf函数来接收一个buf输入，我们需要让getbuf调用返回之后，不进行后续操作，直接调用程序内部的touch1函数。 
 
-![](asset/img_05537e1c724e.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_05537e1c724e.jpg)
 
 intro gdb运行目标程序(ctarget),反汇编看下test和getbuf的实现。 
 
-![](asset/img_6b359237894a.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_6b359237894a.jpg)
 
 disassembly for test/getbuf 从getbuf开始的反汇编中，看到rsp寄存器减去了0x28（40个字节），一般来说，应该是从栈上分配了40个字节的内存给局部变量，对应代码中的BUFFERSIZE，之后将rsp赋值给rdi，作为Gets的参数来接收数据。 之后我还看了下Gets的反汇编，但是想了想，Gets本身的作用是读取数据存储到buf，要想实现getbuf返回之后不继续执行原有逻辑，则需要在Gets读取的时候，让溢出数据覆盖栈上get_buf的返回地址，通过改变返回地址，改变ip寄存器的行为。和Gets本身的逻辑应该关系不大. 观察调用getbuf时的栈数据，发现进入函数入口时rsp指针为 0x5561dca0， 
 
-![](asset/img_0a0b81e7a31d.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_0a0b81e7a31d.jpg)
 
  此时它对应栈上的数据是0x00401976,正是getbuf返回后的下一行地址。此处如果能让getbuf里缓存溢出修改当前这里的数据，就可以使得getbuf返回后跳转到touch1. 测试输入12345,发现0x5561dca0-0x28的位置，确实被修改成了12345（对应下图中的0x31 0x32 0x33 0x34 0x35）；现在问题转化为，要把touch1的函数地址，作为给getbuf的输入中的第41-44个byte的数据;
 
-![](asset/img_5c902aef50f8.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_5c902aef50f8.jpg)
 
  disas touch1获取到函数开始地址后(具体小端序表示为c0 17 40 00)，使用hex2raw 进行验证，发现确实通过了level1测试,验证成功。
 
-![](asset/img_313e08e2d9e6.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_313e08e2d9e6.jpg)
 
 test
 #### phase 2
 
 第二题增加了难度，具体如下, 
 
-![](asset/img_a3bbb13813f5.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_a3bbb13813f5.jpg)
 
 现在要求getbuf返回后跳转到touch2，且这个touch2存在一个unsigned的参数，一开始我想着很简单，以为把这里要求的cookie（一个unsigned数）作为rsp+4地址的数据写入(即追加到ret地址之后)，就可以作为调用touch2时的第一个外部参数被读取，然而验证失败了. 
 
-![](asset/img_fac7040afb27.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_fac7040afb27.jpg)
 
  阅读手册中的建议，发现这里实际touch2的第一个参数是通过rdi寄存器传递的，而不是通过rsp+4的栈数据传递；需要在getbuf返回的时候，将rdi寄存器设置为对应的cookie；问题来了，怎么通过栈溢出来修改rdi寄存器的值呢？让程序能完全按照这种极具自定义属性的逻辑运行，感觉可以通过缓冲区溢出，在栈的内存区域传递一段代码（包含给rdi赋值的逻辑）,然后在getbuf返回的时候，直接跳转到栈上我们代码的位置。不过对于这个办法来说，可能存在一个问题，就是栈区上传递A的数据可能不可执行,尝试验证试试。
 
-![](asset/img_3750f68acda9.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_3750f68acda9.jpg)
 
  直接把栈的数据地址作为ret返回的地址，ret执行时直接触发了段错误，程序异常中断了。
 
@@ -59,15 +69,15 @@ execstack -s ./ctarget`
 
 之后我又尝试直接把注入代码放到40个byte buffer的位置上，把ret地址改成buffer的栈位置,此时，发现通过了测试。
 
-![](asset/img_d4081944e0b3.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_d4081944e0b3.jpg)
 
 注入代码放在buffer中通过测试很纳闷为啥必须放在这个buffer里，追加到ret地址之后到底有什么问题呢？ 于是继续删减调试ret地址之后的汇编部分，然后让我发现一个很奇怪的崩溃堆栈，堆栈里执行的函数地址是我修改后的，但是发现它有8个字节；由于调试时显示的地址都是4个字节就存储完了，让我遗漏了这一点(ret的时候pop到rip寄存器，会pop出来8个字节的地址数据)。
 
-![](asset/img_3d34086d7b79.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_3d34086d7b79.jpg)
 
 我把ret地址后面加4个00 补齐，之后再追加注入代码，确实也可以通过测试了！
 
-![](asset/img_800348576c56.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_800348576c56.jpg)
 
 调整后通过测试然后，放在40byte的buffer里就正常，是因为这个时候传入的缓冲区数据，最后就是ret地址，它之后的数据碰巧是4个0(如果手动改成非0也一样会出现崩溃问题).简单来说，之前遇到的崩溃，是由于ret返回的地址，是个被认为不可正常访问的地址（没有补0引起）。
 
@@ -86,7 +96,7 @@ execstack -s ./ctarget`
   10:   68 fa 18 40 00          push   $0x4018fa   # push touch3函数的起始地址
   15:   c3                      ret                # 跳转到touch3`
 
-![](asset/img_e8c1e279581f.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_e8c1e279581f.jpg)
 
 通过
 #### part 2: rtarget
@@ -97,19 +107,19 @@ execstack -s ./ctarget`
 
 栈上不能存储代码来运行，怎么搞呢？手册里介绍了一种新的思路:面向return编程. 它基于两点： - 缓冲区溢出，栈上的地址可以被我们覆盖，我们可以控制其往任意的地址上跳转 - 程序指令的机械码，如果从不同的位置开始解释,可以解释成不同含义的汇编指令,这些特定指令如果是以ret结束，则可以继续借助栈上的ret地址，跳转到下一个机械码片段上。 
 
-![](asset/img_32b017180429.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_32b017180429.jpg)
 
 藏在程序里的指令逻辑当跳转到特定代码位置时，即可执行我们期望的指令操作，之后再ret到下一个位置，如此连续结合多条指令，即可执行一段复杂的逻辑。非常有趣，只能说攻击者的脑子真好使~
 
-![](asset/img_b7dfe8d0f208.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_b7dfe8d0f208.jpg)
 
 对照表之后手册提示了可以在特定区域内(start_farm函数和mid_farm函数之间)找到我们需要的跳转位置，我们需要进行的操作其实和phase2中是类似的，需要把cookie值赋值给rdi，然后ret到touch2函数的位置上就可以；对照提供的汇编指令表，一番查找后发现了端倪:
 
-![](asset/img_909eff182bda.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_909eff182bda.jpg)
 
 pop修改rax，再mov rax给rdi找到需要跳转的位置后，直接修改栈上数据即可，一番调整后通过了，具体如下： 
 
-![](asset/img_7b7c652727af.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_7b7c652727af.jpg)
 
 #### phase 5
 
@@ -119,17 +129,17 @@ pop修改rax，再mov rax给rdi找到需要跳转的位置后，直接修改栈�
 - 需要把rsp地址赋值给rdi，作为touch3函数的参数
 对照指令表和farm区域中的代码片段，发现了一个可以用的片段，这里没有找到mov rsp，rdi的，只有mov rsp，rax；但是借助phase4中已知的mov rax，rdi，即可实现对rdi的赋值。 
 
-![](asset/img_2d9da3e1e891.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_2d9da3e1e891.jpg)
 
 mov rsp,rax 但实际操作的时候发现，存储的字符串地址，相对于rsp取值时会有一个偏移，mov rsp rdi时赋值的rdi，需要加上一个偏移才能指向实际的字符串,不然如果只是当前的rsp指向字符串，则这段代码ret的时候，会把字符串的内容作为地址ret，就会造成逻辑错误;继续观察指令对照表，发现仅靠mov和pop操作，应该根本构造不出来这个偏移.
 
 重新看start_farm和end_farm之间的反汇编逻辑，不看不知道，一看发现了华点。 
 
-![](asset/img_d8f0cb4f714c.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_d8f0cb4f714c.jpg)
 
 构造偏移 有这个lea的助力，我们就只需看现有的汇编机械码中能否找出来指令，通过mov和pop让rdi和rsi变成我们期望的值。一番检索对照，发现确实可以满足条件，对应的汇编和指令如下
 
-![](asset/img_05261c419f65.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_05261c419f65.jpg)
 
 原有逻辑中找到了6个可用片段`# 将rsp赋值给rdi
 mov %rsp,%rax (48 89 e0)
@@ -147,6 +157,6 @@ mov %rax,%rdi (48 89 c7)`
 
 上面的汇编省略了ret指令，把对应的代码片段地址放入栈上，整体放上之后，可知如果把字符串放在最后，pop rax时需要赋值的偏移为0x48,验证通过了测试。
 
-![](asset/img_7daf67ad0fc9.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_7daf67ad0fc9.jpg)
 
 通过

@@ -1,3 +1,16 @@
+---
+title: "SOP: Chrome DevTools 검증 루프(Validation Loop)"
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/ko/resources/openai-advanced/sops/chrome-devtools-validation-loop/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # SOP: Chrome DevTools 검증 루프(Validation Loop)
 
 UI 작업이 실제 런타임 상호작용에 의존하고, 코드 검사만으로는 부족하며 스크린샷·DOM 상태·콘솔 출력이 더 중요할 때 이 표준 작업 절차(SOP)를 사용하십시오.

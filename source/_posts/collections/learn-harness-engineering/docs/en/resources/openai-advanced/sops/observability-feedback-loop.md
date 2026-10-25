@@ -1,3 +1,16 @@
+---
+title: "SOP: Observability Feedback Loop"
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/en/resources/openai-advanced/sops/observability-feedback-loop/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # SOP: Observability Feedback Loop
 
 Use this SOP when debugging is slow, agents keep claiming success without

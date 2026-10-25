@@ -1,9 +1,19 @@
 ---
-title: "(1 条消息) 还是那头痛的Resize"
-date: 2023-11-17
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/666296180
+title: (1 条消息) 还是那头痛的Resize
+date: "2023-11-17 00:00:00"
+updated: "2023-11-17 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/还是那头痛的Resize/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/666296180
 ---
+
 
 ### 一、起因
 
@@ -19,7 +29,7 @@ A == B and B == C
 
 那　Ａ≠Ｃ　吗？你以为是JavaScript吗。。。
 
-![](asset/img_6c2303542104.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_6c2303542104.jpg)
 
 那直接找A和C的不同呢？分别喂相同的数据给pytorch和自己的推理代码，发现存在一些细微差别。通过逐步排查发现在前处理的地方得到的数据就不一致了，那么就先重点排查前处理部分。
 
@@ -64,7 +74,7 @@ A == B and B == C
 
 当然是pillow从之前的pil继承了resize的逻辑，认为他们不需要去模仿opencv的行为，并且选择了和大多数人理解不一样的实现方式。
 
-![](asset/img_5f30c0094f89.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_5f30c0094f89.jpg)
 
 大多数人学的都应该是维基百科提到的，双线性插值是在某个点的周围取相邻4个坐标点的值来计算，只是具体的计算方式有不同次数乘法的实现。
 
@@ -124,7 +134,7 @@ You suggest that Pillow should only consider 0, 1, 10 and 11 to get the first pi
 
 实际上pillow的操作是为了**抗锯齿**，下面的示例能比较清楚的看出pillow和opencv的差距。
 
-![](asset/img_ee183340a459.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_ee183340a459.jpg)
 
 ### 四、如何解决
 

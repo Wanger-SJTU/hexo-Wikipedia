@@ -1,9 +1,19 @@
 ---
-title: "(2 条消息) 投机采样在MoE模型推理上的问题"
-date: 2025-09-30
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/1956326731205026560
+title: (2 条消息) 投机采样在MoE模型推理上的问题
+date: "2025-09-30 00:00:00"
+updated: "2025-09-30 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/投机采样在MoE模型推理上的问题/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/1956326731205026560
 ---
+
 
 大语言模型是Auto Regressive Decoding的，也就是每次模型forward，只能生成一个Token，我认为这个问题是大语言模型推理低效的本质。所以从23年开始，我就比较看好parallel decoding这个方向，相关方向的经典工作有[speculative decoding](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2211.17192)，还有不需要独立部署draft model的self speculative decoding（medusa、eagle系列）。从部署的简易性出发，我们更倾向于self speculative decoding。speculative decoding本质上是增加了decoding的Q dimension，让一次forward可以输出多个token，从而增加了推理效率。引入的overhead是draft model，相对较小。
 
@@ -19,7 +29,7 @@ $benifit=acceptlen&#x2217;T(fwd1token)&#x2212;T(fwddraftlentokens)&#x2212;DraftM
 
 [MoESD](https://link.zhihu.com/?target=https%3A//arxiv.org/pdf/2505.19645) 对上述问题进行了更细致的建模
 
-![](asset/img_aa021f5822fe.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_aa021f5822fe.jpg)
 
 证明在中等 batch 下 MoE 比 dense 更能从 speculative decoding 中受益，并给出建模（target-efficiency）来衡量“acceptance rate + 验证成本”对加速的影响，从而帮助选择什么时候/在哪些层做 speculation。讨论了为何高 acceptance rate 仍可能因为验证成本而失速
 

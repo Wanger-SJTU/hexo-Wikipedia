@@ -1,3 +1,16 @@
+---
+title: Luồng Khởi động Coding Agent
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/vi/resources/reference/coding-agent-startup-flow/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # Luồng Khởi động Coding Agent
 
 Sử dụng cái này ở đầu mỗi phiên sau khi khởi tạo hoàn thành.

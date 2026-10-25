@@ -1,9 +1,19 @@
 ---
-title: "(2 条消息) 推荐一款纳秒级的C++日志Nanolog"
-date: 2020-05-06
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/136208506
+title: (2 条消息) 推荐一款纳秒级的C++日志Nanolog
+date: "2020-05-06 00:00:00"
+updated: "2020-05-06 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/推荐一款纳秒级的C-日志Nanolog/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/136208506
 ---
+
 
 本文将介绍一款**延迟很低吞吐量很高的日志工具Nanolog，该日志系统较其他常用日志系统延迟低一到两个数量级，吞吐量高一到两个数量级**。
 
@@ -15,15 +25,15 @@ Nanolog在低延迟和高吞吐两方面做了几点精妙的改进。**非常�
 
 C++日志系统有很多开源的项目，如log4clpus、glog、spdlog、boostlog等。相对这些常见的Log库，Nanalog快一到两个数量级。
 
-![](asset/img_cd40e66935f2.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_cd40e66935f2.jpg)
 
 如上图所示，Nanolog的调用开销中位数为个位数纳秒。其他几款知名开源log的调用则需要耗时几百甚至上千纳秒。**Nanolog的中位数和99.9分位的延迟要比其他的小一到两个数量级。**
 
-![](asset/img_fea8c92f1c3e.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_fea8c92f1c3e.jpg)
 
 上图为不同日志库打印吞吐率对比，紫色的为Nanolog，比其它日志系统**每秒吞吐量高几倍到几十倍。**
 
-![](asset/img_622989d72953.png)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_622989d72953.png)
 
 上图为本人跑的**Benchmark测试结果**，输出1亿条日志仅耗时0.52秒，吞吐率到达了1.9亿条日志每秒，平均5.15ns输出一条。另外，本人测试了**输出字串加整形加浮点这样一条日志，发现延迟也仅为5ns每条**。
 
@@ -33,7 +43,7 @@ C++日志系统有很多开源的项目，如log4clpus、glog、spdlog、boostlo
 
 **
 
-![](asset/img_7ed9f637372c.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_7ed9f637372c.jpg)
 
 通过基于GCC内置的线程局部存储设施 __thread 关键字**，Nanolog为每一个线程创建了一个独立的无锁环形队列，该关键字作用应该是和C++11标准引入的thread_local一致，__thread变量每一个线程有一份独立实体，各个线程的值互不干扰。内存屏蔽是多线程能同步的基础，基于内存屏蔽可以实现无锁队列，**单生产者单消费者可以用一个无锁队列来实现无锁编程**，这个是无锁编程的一个基础，再**通过多个无锁队列就可以做到多生产者单消费者的无锁编程**。这也是低延迟编程必用的技能。
 

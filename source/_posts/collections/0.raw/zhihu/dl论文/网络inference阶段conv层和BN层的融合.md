@@ -1,10 +1,19 @@
 ---
-title: "网络inference阶段conv层和BN层的融合"
-date: 2018-10-30
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/48005099
-
+title: 网络inference阶段conv层和BN层的融合
+date: "2018-10-30 00:00:00"
+updated: "2018-10-30 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/dl论文/网络inference阶段conv层和BN层的融合/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/48005099
 ---
+
 
 现在很多的网络结构都将BN层直接放在卷积层和激活层之间，这种做法可以在网络的inference阶段，将BN层的运算直接嵌入到卷积层中，减少运算量，提升网络的运行速度。
 

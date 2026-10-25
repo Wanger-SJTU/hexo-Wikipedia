@@ -1,3 +1,16 @@
+---
+title: "Project 04: Runtime Feedback and Structural Control"
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/projects/project-04/README-CN/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # Project 04: Runtime Feedback and Structural Control
 
 引入运行时可观测性和结构化边界检查，同时调试一个植入的运行时缺陷。

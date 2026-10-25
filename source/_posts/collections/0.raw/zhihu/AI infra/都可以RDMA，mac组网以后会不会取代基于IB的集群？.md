@@ -1,9 +1,19 @@
 ---
-title: "都可以RDMA，mac组网以后会不会取代基于IB的集群？"
-date: 2026-07-14
-tags: [知乎]
-source: https://www.zhihu.com/question/2005348116719744112/answer/2060501186130743304
+title: 都可以RDMA，mac组网以后会不会取代基于IB的集群？
+date: "2026-07-14 00:00:00"
+updated: "2026-07-14 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/AI-infra/都可以RDMA,mac组网以后会不会取代基于IB的集群/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://www.zhihu.com/question/2005348116719744112/answer/2060501186130743304
 ---
+
 
 你的理解其实抓住了一部分趋势，但有几个关键概念混在一起了。如果从现在（2026 年）的 HPC 和 AI 集群发展来看，可以这样理解：
 

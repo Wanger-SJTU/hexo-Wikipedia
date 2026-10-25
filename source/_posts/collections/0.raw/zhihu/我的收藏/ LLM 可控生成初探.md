@@ -1,10 +1,19 @@
 ---
-title: "(1 条消息) LLM 可控生成初探"
-date: 2023-07-10
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/642690763
+title: (1 条消息) LLM 可控生成初探
+date: "2023-07-10 00:00:00"
+updated: "2023-07-10 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/LLM-可控生成初探/
 disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/642690763
 ---
+
 
 在做基于 LLM 的应用开发过程中，有几个常见的挑战，包括：如何避免“胡说八道”，提升模型输出的可靠性/稳定性，控制模型的计算开销和响应速度等等。目前主流的解决手段包括：
 
@@ -14,7 +23,7 @@ disableNunjucks: true
 - 流程编排与产品设计
 - 考虑使用 fine tune 模型或混合模型应用
 
-![](asset/img_a8bc5d01c517.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_a8bc5d01c517.jpg)
 
 通过 prompt 来优化
 
@@ -173,7 +182,7 @@ define bot inform capabilities
 - 根据意图，判断下一步操作动作。这一步有两种做法，一是当前的状态能够匹配上预定义的 flow。例如用户就是提了一个 bot 能力的问题，那么就会匹配上面定义的`user ask capabilities`，下一步动作自然就是`bot inform capabilities`。如果没有匹配上，就要由 LLM 自己来决定下一步动作，这时候也会跟生成用户意图一样，对于 flow 定义做一个相似性查找，将相关信息发给 LLM 来做生成。
 - 生成 bot 回复。如果上一步生成的 bot 回复意图已经有明确定义了（例如上面的 bot 能力的回复），那么就直接用预定义的回复内容来回复用户。如果没有，就跟生成用户意图一样，做意图的相似性查找，将相关信息给 LLM 来生成回复。注意到很多动态的问题例如 QA 场景，是很难预先定义好回复内容的，这里也支持对接知识库，同样是做 vector search 之后，将相关 context 信息发给 LLM 来生成具体回复。
 
-![](asset/img_2070986cd5c4.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_2070986cd5c4.jpg)
 
 流程示意图
 
@@ -268,25 +277,25 @@ program(description="A quick and nimble fighter.", valid_weapons=valid_weapons)`
 
 将 LLM 的生成填入后，再继续执行整个模板的解析处理，以此类推。当然不同的操作指令会有各自的处理方式，例如碰到`{{select}}`命令时，会指定生成一个 token，并返回相应的 logprobs，然后通过 trie 树去匹配候选项，确定各自的概率，最后选择概率最高的那个。这就导致一些私有模型例如 GPT-3.5，GPT-4 等 API 中不支持返回 logprobs 的，就无法支持这类指令。包括像上面的 regex pattern guide 的实现，也需要动态获取与修改 inference 过程中的 logits，开源模型的优势在这里就体现出来了。
 
-![](asset/img_0e8df4ad3a58.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_0e8df4ad3a58.jpg)
 
 Regex pattern guide 实现
 
 另外还有一个非常类似的 POC 项目 [JsonFormer](https://link.zhihu.com/?target=https%3A//github.com/1rgs/jsonformer)，也是针对 HuggingFace 的模型做了类似的 wrapper，功能和代码都要更加简单易懂。
 
-![](asset/img_31b8a5f55a2f.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_31b8a5f55a2f.jpg)
 
 JsonFormer
 
 此外像 guidance acceleration 也是一个针对开源模型的功能，通过两个装饰器动替换了 transformers 模型中的`prepare_inputs_for_generation`和`_update_model_kwargs_for_generation`两个方法，实现了模型 inference 过程中的 kv 信息缓存，提升了生成速度。至于像 OpenAI 的模型嘛，只能做个简单的整体生成结果的缓存了……
 
-![](asset/img_9eeeabeba4a1.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_9eeeabeba4a1.jpg)
 
 guidance acceleration
 
 从项目代码来看，还是有比较浓的“research 味道”的，可读性并不好。我也实际拿 OpenAI 的 text-davinci-003 测试了下上面的 json 生成示例，结果有点翻车：
 
-![](asset/img_62bfebaaa780.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_62bfebaaa780.jpg)
 
 实测效果
 
@@ -300,19 +309,19 @@ guidance acceleration
 
 从官网能看到给出的一系列示例，也可以直接在 playground 里尝试。语法结构看起来有点像 SQL，但函数与缩进都是 Python 的风格。例如我们之前的很多案例中都有从 LLM 从指定元素集合中来选择生成：
 
-![](asset/img_df2734f4a16c.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_df2734f4a16c.jpg)
 
 从指定集合中生成
 
 从支持的功能来看，相比 guidance 毫不逊色。例如各种限制条件，代码调用，各种 caching 加速，工具集成等基本都具备。个人感觉这个项目倒并不是主打“可控性”，而是其设计的语言的灵活性，可以有各种高级的玩法，例如：
 
-![](asset/img_d75e7bd253df.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_d75e7bd253df.jpg)
 
 通过程序维护了一个 working memory
 
 可以在 reasoning 的过程中灵活调用代码来获取当前的状态。又比如：
 
-![](asset/img_22afeb6d06af.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_22afeb6d06af.jpg)
 
 通过 LLM 来进行排序
 
@@ -322,13 +331,13 @@ guidance acceleration
 
 因为主要关注可控性，所以我们主要来看下`where`条件中的那些限制是如何生效的。以上面从指定集合中生成为例，生成`[THING]`的逻辑与其它项目一样，都是使用前面的文本来生成当前位置的 token：
 
-![](asset/img_5738015a5f4d.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_5738015a5f4d.jpg)
 
 使用 LLM 生成“空缺”词
 
 但是如何保证生成的词是在可选范围内的呢？这就涉及到了其 decode 算法，简单来说就是针对所有的候选词生成一个 mask 偏移量，使得 LLM 在生成时会偏向这些词。
 
-![](asset/img_ac9081e79b23.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_ac9081e79b23.jpg)
 
 通过 mask 来保证生成限定 token
 

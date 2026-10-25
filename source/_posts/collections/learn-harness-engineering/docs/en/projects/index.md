@@ -1,3 +1,16 @@
+---
+title: Welcome to Projects
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/en/projects/index/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # Welcome to Projects
 
 This is the hands-on section of Learn Harness Engineering. Reading the lectures isn't enough—you need to build the environments yourself and observe how Codex, Claude Code, or other AI agents behave under different rules.

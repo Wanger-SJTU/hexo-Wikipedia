@@ -1,9 +1,19 @@
 ---
-title: "GLM-5.2 推理性能一点点榨出来的：从 TP8、长上下文到 PP + Speculative Decoding"
-date: 2026-08-14
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/2071678642959258406
+title: GLM-5.2 推理性能一点点榨出来的：从 TP8、长上下文到 PP + Speculative Decoding
+date: "2026-08-14 00:00:00"
+updated: "2026-08-14 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/AI-infra/GLM-5.2-推理性能一点点榨出来的-从-TP8、长上下文到-PP-Speculative-Decoding/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/2071678642959258406
 ---
+
 
 我最近是怎么把 GLM-5.2 推理性能一点点榨出来的：从 TP8、长上下文到 PP + Speculative Decoding
 最近一段时间，我主要在折腾 GLM-5.2 的推理优化。

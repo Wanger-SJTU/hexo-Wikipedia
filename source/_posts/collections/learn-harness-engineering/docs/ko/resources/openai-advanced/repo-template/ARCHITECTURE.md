@@ -1,3 +1,16 @@
+---
+title: ARCHITECTURE.md
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/ko/resources/openai-advanced/repo-template/ARCHITECTURE/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # ARCHITECTURE.md
 
 이 파일은 시스템의 최상위 지도입니다. 간결하게 유지하고 필요할 때 더 깊은 문서를 가리키도록 합니다.

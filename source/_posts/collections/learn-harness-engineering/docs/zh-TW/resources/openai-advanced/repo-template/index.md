@@ -1,3 +1,16 @@
+---
+title: 高階儲存庫範本
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/zh-TW/resources/openai-advanced/repo-template/index/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # 高階儲存庫範本
 
 當你想在真實儲存庫裡採用 OpenAI 風格、以代理為優先的文件面，而不再只靠最小執行環境時，就複製這套起步範本。

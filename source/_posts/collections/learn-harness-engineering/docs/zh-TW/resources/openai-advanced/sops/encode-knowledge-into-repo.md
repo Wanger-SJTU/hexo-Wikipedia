@@ -1,3 +1,16 @@
+---
+title: SOP：把不可見知識編碼進儲存庫
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/zh-TW/resources/openai-advanced/sops/encode-knowledge-into-repo/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # SOP：把不可見知識編碼進儲存庫
 
 當重要脈絡仍散落在 Google Docs、聊天記錄、ticket 或人的記憶中時，就使用這份 SOP。

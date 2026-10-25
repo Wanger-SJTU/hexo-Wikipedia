@@ -1,3 +1,16 @@
+---
+title: "Dự án 01. Chỉ Prompt vs. Ưu tiên Quy tắc: Sự Khác biệt Lớn thế Nào"
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/vi/projects/project-01-baseline-vs-minimal-harness/index/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 [English Version →](../../../en/projects/project-01-baseline-vs-minimal-harness/) | [中文版本 →](../../../zh/projects/project-01-baseline-vs-minimal-harness/)
 
 > Bài giảng liên quan: [Bài 01. Mô hình mạnh không có nghĩa là thực thi đáng tin cậy](./../../lectures/lecture-01-why-capable-agents-still-fail/index.md) · [Bài 02. Harness thực sự có nghĩa là gì](./../../lectures/lecture-02-what-a-harness-actually-is/index.md)

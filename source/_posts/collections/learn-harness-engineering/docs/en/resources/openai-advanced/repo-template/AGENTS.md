@@ -1,3 +1,16 @@
+---
+title: AGENTS.md
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/en/resources/openai-advanced/repo-template/AGENTS/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # AGENTS.md
 
 This repository is optimized for long-running coding-agent work. Keep this file

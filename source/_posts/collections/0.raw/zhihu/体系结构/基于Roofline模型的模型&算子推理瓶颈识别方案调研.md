@@ -1,9 +1,19 @@
 ---
-title: "基于Roofline模型的模型&算子推理瓶颈识别方案调研"
-date: 2023-11-16
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/665990267
+title: 基于Roofline模型的模型&算子推理瓶颈识别方案调研
+date: "2023-11-16 00:00:00"
+updated: "2023-11-16 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/体系结构/基于Roofline模型的模型-算子推理瓶颈识别方案调研/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/665990267
 ---
+
 
 **以下内容来自腾讯工程师 guoqing导语 | 调研目的 为开发紫霄平台的模型&算子推理性能预测&分析工具，调研了华为、寒武纪、谷歌TPU、百度昆仑以及燧源的模型推理分析工具的实现。其中，华为CANN的模型推理分析工具值得参考，这套方案的底层理论为Roofline模型。更进一步，结合紫霄的硬件架构，我们可以设计紫霄端模型&算子推理分析工具的实现方案。
 
@@ -126,7 +136,7 @@ ub_write_bw_scalar：代表scalar向ub写带宽速率，单位GB/s。
 - 所谓“Roof-line”，指的就是由计算平台的算力和带宽上限这两个参数所决定的“屋顶”形态，如下图所示。
 - 算力决定“屋顶”的高度（绿色线段）
 - 带宽决定“房檐”的斜率（红色线段）
-![](asset/img_cf28a59c689a.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_cf28a59c689a.jpg)
 
 #### **2.1.3.2 Roof-line 划分出的两个瓶颈区域**
 
@@ -157,7 +167,7 @@ ub_write_bw_scalar：代表scalar向ub写带宽速率，单位GB/s。
 - 因此 1080Ti 计算平台的最大计算强度 Imax≈24
 - VGG16 的计算强度 IV≈25
 - MobileNet 的计算强度 IM≈7
-![](asset/img_a4ca2facbe19.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_a4ca2facbe19.jpg)
 
 由上图可以非常清晰的看到：
 
@@ -169,7 +179,7 @@ ub_write_bw_scalar：代表scalar向ub写带宽速率，单位GB/s。
 
 ### **2.2 考虑缓存机制的roofline模型原理**
 
-![](asset/img_bc5a87e96a5a.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_bc5a87e96a5a.jpg)
 
 如上图所示，计算生成roofline模型模型图流程如下：
 
@@ -227,7 +237,7 @@ ub_write_bw_scalar：代表scalar向ub写带宽速率，单位GB/s。
 
        Profiling系统调优的目的是通过分析AI任务运行时采集的性能数据，判断AI任务运行时的软硬件性能瓶颈。可以根据来对数据进行分析。
 
-![](asset/img_efa454822177.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_efa454822177.jpg)
 
 ### 5.  **调研结论**
 

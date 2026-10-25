@@ -1,16 +1,26 @@
 ---
-title: "(2 条消息) ASearcher：大规模异步RL解锁Agent长程工具使用能力"
-date: 2025-08-24
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/1938984840797087554
+title: (2 条消息) ASearcher：大规模异步RL解锁Agent长程工具使用能力
+date: "2025-08-24 00:00:00"
+updated: "2025-08-24 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/ASearcher-大规模异步RL解锁Agent长程工具使用能力/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/1938984840797087554
 ---
+
 
 来知乎介绍下AReaL团队七月份最新的Agentic RL方面的开源项目：ASearcher —— Unlocking Long-Horizon Agentic Search via Asynchronous RL
 
 - **项目地址（数据/模型/论文）**：[GitHub - inclusionAI/ASearcher](https://link.zhihu.com/?target=https%3A//github.com/inclusionAI/ASearcher)
 - **论文**：[https://arxiv.org/abs/2508.07976](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2508.07976)
 - **X Post**: [https://x.com/jxwuyi/status/1955487396344238486?s=46&t=BCnM3-LHt73HrvN1m7RFKw](https://link.zhihu.com/?target=https%3A//x.com/jxwuyi/status/1955487396344238486%3Fs%3D46%26t%3DBCnM3-LHt73HrvN1m7RFKw)
-![](asset/img_5f42d2bc4f3e.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_5f42d2bc4f3e.jpg)
 
 在大模型智能体（LLM Agent）的发展中，工具使用正成为解决复杂问题的关键能力。其中，搜索引擎作为连接外部世界的核心工具，其使用效果直接影响agent的问题解决深度。要真正驾驭搜索工具，agent需要学会精准查询，深度探索，动态验证，以及长程策略规划。然而，当前的开源强化学习方案却面临两个根本性挑战：
 
@@ -24,7 +34,7 @@ ASearcher主要有两项核心贡献：
 
 在使用了单agent并且不借助任何外部LLM的情况下，ASearcher-Web-QwQ实现了非常不错的效果，**超越了一系列纯开源模型方案**。
 
-![](asset/img_ef95cd96dd8b.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_ef95cd96dd8b.jpg)
 
 ### ASearcher
 
@@ -32,7 +42,7 @@ ASearcher主要有两项核心贡献：
 
 ASearcher采用single agent design，其中agent可以使用基本的search & browsing两种工具，并且不借助任何外部LLM。值得注意的是，我们不仅仅是让agent进行分析，也让agent对网页内容进行总结。在RL训练中，reasoning和summarization两种能力都是使用端到端训练进行优化的。
 
-![](asset/img_1dddd483c7ab.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_1dddd483c7ab.jpg)
 
 ### 长程工具使用（Long-Horizon Tool Use）
 
@@ -44,7 +54,7 @@ ASearcher采用single agent design，其中agent可以使用基本的search & br
 
 下面我们举了一个更复杂的例子，其中包括4个不同的未知信息，只有找全这些未知信息才能确定最后的答案。
 
-![](asset/img_c02ca5aa3f3e.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_c02ca5aa3f3e.jpg)
 
 首先，我们分析了轮数限制比较小的online RL+开源数据训练出的agent（Search-R1-32B）：
 
@@ -61,11 +71,11 @@ ASearcher采用single agent design，其中agent可以使用基本的search & br
 - **Uncertainty-Aware Analysis**: agent在浏览网页时会记录下所有可能的答案并且进行详细的分析
 - **Cross-Document Inference**：在没有找到直接指向答案的信息时，会对比不同文档中的相关信息进行合理推断
 - **Grounded Verification**: 在找到正确答案后，agent没有立刻返回结果，而是进行了多轮的工具调用来确认题目中的所有信息，保证答案正确性。
-![](asset/img_aae5d08ce36e.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_aae5d08ce36e.jpg)
 
 ### 数据构造Agent （Data Synthesis Agent）
 
-![](asset/img_4f9055612093.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_4f9055612093.jpg)
 
 为了能够自动化的构造大规模的有难度的数据，我们开发了一个数据构造agent。从一个基本的QA pair出发，agent每次会从两个action中选择一个来进行问题增强：
 
@@ -75,7 +85,7 @@ ASearcher采用single agent design，其中agent可以使用基本的search & br
 
 我们在Wikipedia 2018 corpus上面进行了数据合成，并且挑选了模型在不使用工具的情况下无法做对的题目用来训练。最后，我们得到了25.6k高质量的构造数据作为RL训练数据。
 
-![](asset/img_1d24624df81d.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_1d24624df81d.jpg)
 
 ### 完全异步RL（Fully Async RL）
 
@@ -83,11 +93,11 @@ ASearcher采用single agent design，其中agent可以使用基本的search & br
 
 **
 
-![](asset/img_2195d51f9550.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_2195d51f9550.jpg)
 
 上图中我们可以看到，在实际训练过程中，随着训练过程进行，agent学会进行更多轮次的工具使用，每个trajectory的总输出token数也会上升，但同时，工具调用次数和输出token数量的方差也在逐渐增大，这意味着，实际生成的轨迹耗时方差巨大，**有的很快有的很慢。
 
-![](asset/img_10e7adbac7ce.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_10e7adbac7ce.jpg)
 
 此前工作如Search-R1采用的是batch generation RL系统，在这类系统中，一个批次的轨迹会同时被采集，等该批次数据采集完之后才会进行RL训练。下图中One-Step-Off RL也是一种目前最先进的batch generation RL系统之一，采用了相邻训练推理步重叠的方式，提高GPU利用率。然而，即使在One-Step-Off RL系统中，**过长的轨迹仍会使整个批次陷入长时间的等待，造成大量的idle time以及GPU低利用率。**
 
@@ -104,11 +114,11 @@ ASearcher采用single agent design，其中agent可以使用基本的search & br
 
 - **从Qwen2.5-7B/14B base直接开始训练**：我们分别进行了两类工具的实验，包括使用本地知识库的RAG作为搜索工具，以及使用在线搜索工具
 - **对一个基于QwQ-32B的prompt-based LLM agent进行微调**：在该训练设定下，我们只使用在线搜索工具
-![](asset/img_9ace3506bb1b.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_9ace3506bb1b.jpg)
 
-![](asset/img_c07ec556903b.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_c07ec556903b.jpg)
 
-![](asset/img_f0fe873fe122.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_f0fe873fe122.jpg)
 
 实验结果显示：
 

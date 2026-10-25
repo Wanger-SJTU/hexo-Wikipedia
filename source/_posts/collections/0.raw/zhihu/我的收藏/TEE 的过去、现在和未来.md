@@ -1,9 +1,19 @@
 ---
-title: "(2 条消息) TEE 的过去、现在和未来"
-date: 2025-06-06
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/941327382
+title: (2 条消息) TEE 的过去、现在和未来
+date: "2025-06-06 00:00:00"
+updated: "2025-06-06 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/TEE-的过去、现在和未来/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/941327382
 ---
+
 
 随着 SGX 这 CPU 可信执行环境（TEE）开拓者逐渐退出桌面端还有其他基于虚拟化和异构架构的 TEE 的相继问世，我们可以看到可信计算领域正从难以应用逐渐走向实用。在这个市场上，几家 CPU 厂商经过十多年的探索和实践，取得了显著的成果，并建立了一些行业标准。
 
@@ -24,7 +34,7 @@ SGX 难用的根本原因在于，许多必要的组件并没有被包含在 TCB
 - **虚拟机状态保护**：通常情况下，中断处理会导致 VM 暂停，并由 Hypervisor 负责处理。这时 VM 的上下文状态必须保存起来交给 Hypervisor，而这些中间状态也需要被加密，否则 Hypervisor 可能会窃取或修改数据，造成严重后果。比如，在 SSH 认证时直接注入一个 `rax = 0` 就可能绕过密码验证，这显然是不可接受的。
 - **远程认证（Remote Attestation）**：这是所有 TEE 必须具备的重要特性。云端的 TEE 必须向用户证明自身的可信性，否则用户无法放心地将数据托付给它。
 - **权限分离**：就像内核（kernel）运行在 ring 0 一样，普通 VM 的权限需要被降低。Intel 和 AMD 都有类似的权限管理机制，以确保虚拟机运行环境的安全性。
-![](asset/img_5ca077af4e1d.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_5ca077af4e1d.jpg)
 
 这样一来，一些敏感操作可以被转交给一个“更安全”的模块来处理。由于这个模块体积更小，因此更容易实现高安全性。在这方面，TDX 表现得更为出色。它引入了一个 TDX 模块，直接将 Hypervisor 屏蔽，使得虚拟机可以直接调用 TDX 模块来完成某些操作，只有在真正需要时才会请求 Hypervisor 的协助。这种设计不仅减少了对 Hypervisor 的依赖，还显著提高了整体的安全性。
 
@@ -34,7 +44,7 @@ SGX 难用的根本原因在于，许多必要的组件并没有被包含在 TCB
 
 **swiotlb is a memory buffer allocator used by the Linux kernel DMA layer. It is typically used when a device doing DMA can’t directly access the target memory buffer because of hardware limitations or other requirements.在 Linux 系统上，有一个名为 SWIOTLB 的机制：它是一个内存缓冲区分配器，用于 Linux 内核的 DMA 层，通常在硬件限制或其他需求导致设备无法直接访问目标内存缓冲区时使用。基于此，出现了一个巧妙的“hack”：将这块内存设为共享，从而解决设备访问问题。实际上，TDX 就是这样实现的。具体来说，当虚拟机内的内核启动时，它会尝试启用 TDX 功能。如果检测到 TDX 支持，就会使用 TDCALL 将共享内存区域映射给 SWIOTLB，供 DMA 使用。这样一来，GPU 和 CPU 就可以在这块共享内存上进行 DMA 操作。当然，为了防止数据泄露，GPU 和 CPU 之间的数据传输会使用协商后的密钥进行加密，从而确保数据在共享内存中的安全性。
 
-![](asset/img_fa250e2c2c49.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_fa250e2c2c49.jpg)
 
 当然这个就是一个非常 high level 的示意图，实际上里面还牵扯到 IOMMU pass through、qemu vfio、Enc/Dec等复杂过程。AMD 的做法有所不同，它允许直接使用 SNP 指令将一段内存设置为共享。这样一来，Linux 内核中就可以直接通过调用这些指令来实现内存的共享管理。
 
@@ -60,7 +70,7 @@ int rmp_make_shared(u64 pfn, enum pg_level level)
 
 简而言之，**Trusted IO** 允许各个设备之间相互认证对方的身份，这通常是通过 **SPDM 协议**（安全设备通信和管理协议）来实现的。尽管它最初的设计目的不一定是为了解决 TEE 的 IO 问题，但这个机制确实可以用于增强 TEE 环境中的设备交互安全性。通过在设备间进行身份认证，Trusted IO 能确保只有经过认证的设备才能参与数据传输。这种机制可以用来优化 TEE 的 IO 操作，使得在可信环境下的数据交换更加高效、安全，并减少冗余的加密、解密过程。
 
-![](asset/img_d7eba511f4d2.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_d7eba511f4d2.jpg)
 
 一个大大大饼，啥时候落地咱暂且蒙在鼓里（
 ### 还有一些能做的东西

@@ -1,9 +1,19 @@
 ---
-title: "(2 条消息) 8张图讲清楚mmap实现原理"
-date: 2024-01-05
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/676167319
+title: (2 条消息) 8张图讲清楚mmap实现原理
+date: "2024-01-05 00:00:00"
+updated: "2024-01-05 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/8张图讲清楚mmap实现原理/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/676167319
 ---
+
 
 大家好，最近在研究Linux内核以及Linux系统编程的时候，经常会碰到mmap内存映射，mmap函数是实现高性能编程的一个关键点，下面我通过几张图详细介绍一下mmap实现原理。
 
@@ -15,11 +25,11 @@ source: https://zhuanlan.zhihu.com/p/676167319
 
 虚拟地址映射物理地址采用的是页表机制，64位CPU采用的是4级页表。
 
-![](asset/img_d7db74e45f5d.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_d7db74e45f5d.jpg)
 
 64位CPU虚拟地址长度为64位，但实际只用48位就已满足虚拟地址映射物理内存的要求，如下图：
 
-![](asset/img_36c3b5a57515.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_36c3b5a57515.jpg)
 
 64位CPU地址空间可分为三个部分：
 
@@ -43,7 +53,7 @@ pgd，pud，pmd，ptl表实现原理都相同，我们以pgd来讲解。
 
 2的9次方等于512，所以采用9位的表偏移就能索引整张表的表项。
 
-![](asset/img_fc1b5c25689a.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_fc1b5c25689a.jpg)
 
 **问题2：为什么物理页偏移为12位？**
 
@@ -79,7 +89,7 @@ pte表项存储的是物理页首地址，pte+虚拟地址物理页偏移就能�
 
 **思考：64位CPU页表机制需要多少张表？ **
 
-![](asset/img_4c3df561349a.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_4c3df561349a.jpg)
 
 表的数量如下：
 
@@ -123,7 +133,7 @@ VMA对应Linux内核struct vm_area_struct对象。
 
 **注意：VMA用于指导虚拟内存映射物理内存，没有VMA指导无法完成虚拟地址和物理地址映射。**
 
-![](asset/img_523d1801f02e.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_523d1801f02e.jpg)
 
 struct vm_area_struct结构体主要成员如下：
 
@@ -153,7 +163,7 @@ Linux缺页中断是指当进程访问尚未建立映射关系的虚拟内存时
 
 通过mmap创建VMA后，我们使用VMA内存映射区虚拟地址，但此时虚拟地址不能映射物理地址，原因是映射表还没有动态创建出来。
 
-![](asset/img_927a7830c7a5.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_927a7830c7a5.jpg)
 
 当缺页中断发生后，中断处理函数会完成虚拟地址至物理地址各映射表创建。
 
@@ -171,7 +181,7 @@ pte该如何创建呢？
 
 文件映射pte指向文件的物理内存页，文件映射需要VMA指向对应的文件，由文件来生成物理页。
 
-![](asset/img_9f44539728ea.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_9f44539728ea.jpg)
 
 mmap函数实现文件映射时需指定文件fd，文件偏移量，文件映射长度。
 
@@ -183,7 +193,7 @@ mmap函数实现文件映射时需指定文件fd，文件偏移量，文件映�
 
 ### 5.匿名映射
 
-![](asset/img_b93b8389f2eb.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_b93b8389f2eb.jpg)
 
 匿名映射相对来说比较简单，只要在创建pte的时候，从物理内存中申请一个物理内存页，将物理内存页转换成pte设置进ptl表，就完成匿名映射。
 
@@ -193,4 +203,4 @@ C/C++，Linux Bug修复秘籍，Linux基础，Linux环境编程，Linux网络编
 
 原文地址：[8张图讲清楚mmap实现原理](https://link.zhihu.com/?target=https%3A//mp.weixin.qq.com/s%3F__biz%3DMzkyNDIyNzU4Mg%3D%3D%26mid%3D2247484690%26idx%3D1%26sn%3D32d89f3f42f643b20a1328967bc6d5cc%26chksm%3Dc1d84783f6afce95374224e8bd7e3e6c22bd4ee7e0e09ce0216008e9c2b4a8ece87a1ff5b3c6%23rd)
 
-![](asset/img_481277797e89.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_481277797e89.jpg)

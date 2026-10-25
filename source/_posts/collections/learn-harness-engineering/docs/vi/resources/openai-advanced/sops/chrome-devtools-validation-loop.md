@@ -1,3 +1,16 @@
+---
+title: "SOP: Vòng lặp Xác minh Chrome DevTools"
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/vi/resources/openai-advanced/sops/chrome-devtools-validation-loop/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # SOP: Vòng lặp Xác minh Chrome DevTools
 
 Sử dụng SOP này khi công việc UI phụ thuộc vào tương tác runtime thực tế và screenshot, trạng thái DOM và đầu ra console quan trọng hơn chỉ kiểm tra mã.

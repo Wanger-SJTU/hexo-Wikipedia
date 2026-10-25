@@ -1,9 +1,19 @@
 ---
-title: "DPO算法的理解"
-date: 2023-12-01
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/669825918
+title: DPO算法的理解
+date: "2023-12-01 00:00:00"
+updated: "2023-12-01 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/LLM-SD/DPO算法的理解/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/669825918
 ---
+
 
 **原理：**
 
@@ -13,13 +23,13 @@ source: https://zhuanlan.zhihu.com/p/669825918
 
           然后经过下面的loss函数去更新policy模型：
 
-![](asset/img_ea95a1e74e8f.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_ea95a1e74e8f.jpg)
 
 DPO损失函数**loss函数理解：**
 
 DPO算法的目的就是最大化奖励模型，使得奖励模型对chosen和rejected的差值最大，这样模型就可以学到人类偏好。反映到模型中就是：模型更新是最小化loss，根据以上公式，最小化loss等价于最大化以下部分。
 
-![](asset/img_b5779e265977.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_b5779e265977.jpg)
 
 最大化部分根据对数函数运算，以上公式可以转化为a-b，a和b公式如下：
 

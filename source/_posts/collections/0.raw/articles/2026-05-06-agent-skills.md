@@ -1,9 +1,22 @@
 ---
-title: "Agent Skills"
-date: 2026-05-06
-tags: [AI, Agent, Engineering, Claude]
-source: https://addyosmani.com/blog/agent-skills/
+title: Agent Skills
+date: "2026-05-06 00:00:00"
+updated: "2026-05-06 00:00:00"
+layout: post
+permalink: /collections/0.raw/articles/2026-05-06-agent-skills/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - AI
+  - Agent
+  - Engineering
+  - Claude
+source_url: https://addyosmani.com/blog/agent-skills/
 ---
+
 
 A senior engineer's job is mostly the parts that don't show up in the diff. Specs. Tests. Reviews. Scope discipline. Refusing to ship what can't be verified. AI coding agents skip those parts by default. Agent Skills is my attempt to make them not optional.
 

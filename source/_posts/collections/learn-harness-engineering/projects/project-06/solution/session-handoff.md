@@ -1,3 +1,16 @@
+---
+title: Session Handoff -- Project 06 Capstone
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/projects/project-06/solution/session-handoff/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # Session Handoff -- Project 06 Capstone
 
 ## Last Session: 2026-03-30

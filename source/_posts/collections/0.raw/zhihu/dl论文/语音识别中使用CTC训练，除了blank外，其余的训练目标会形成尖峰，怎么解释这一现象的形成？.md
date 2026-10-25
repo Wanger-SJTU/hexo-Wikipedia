@@ -1,9 +1,19 @@
 ---
-title: "语音识别中使用CTC训练，除了blank外，其余的训练目标会形成尖峰，怎么解释这一现象的形成？"
-date: 2018-11-24
-tags: [知乎]
-source: https://www.zhihu.com/question/302589692/answer/533950472
+title: 语音识别中使用CTC训练，除了blank外，其余的训练目标会形成尖峰，怎么解释这一现象的形成？
+date: "2018-11-24 00:00:00"
+updated: "2018-11-24 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/dl论文/语音识别中使用CTC训练,除了blank外,其余的训练目标会形成尖峰,怎么解释这一现象的形成/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://www.zhihu.com/question/302589692/answer/533950472
 ---
+
 
 王赟 Maigo
 ​

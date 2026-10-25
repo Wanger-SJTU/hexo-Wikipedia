@@ -1,10 +1,19 @@
 ---
-title: "Label Assign：提升目标检测上限"
-date: 2020-07-21
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/160991530
-
+title: Label Assign：提升目标检测上限
+date: "2020-07-21 00:00:00"
+updated: "2020-07-21 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/dl论文/Label-Assign-提升目标检测上限/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/160991530
 ---
+
 
 **欢迎关注**[Smarter](https://link.zhihu.com/?target=https%3A//mp.weixin.qq.com/s%3F__biz%3DMzg4MjQ1NzI0NA%3D%3D%26mid%3D2247484676%26idx%3D1%26sn%3Db3e1d55fe9b0bba767ede2b5eaf65e05%26chksm%3Dcf572af7f820a3e1d287ce8e6d90e1a711a7a431fad577fbcbce82342af06f79a7d77e6cc6ae%26mpshare%3D1%26scene%3D1%26srcid%3D1016B6547fKNGgPPgruP5SoL%26sharer_sharetime%3D1602781937254%26sharer_shareid%3D82cee3a8f0a8ff7eecd2ceefe336efb7%26key%3Df574234d23a61558200582ee93330fd874a26c01c3135b6fa7da5a8ee9293860e990e5df26a6a12b60add19c1e435e9c5c5a790bbf259b995606c51cf98b120940101c054a829d9c6ed48bed205ce22c008e14d5982c7e5d894b3521a72a3df3d1bb721546cce756b41f51a0eedc0c3d251fd696250ed11ef302defd6ac32aa3%26ascene%3D1%26uin%3DMjg2NzcxMTYxMA%253D%253D%26devicetype%3DWindows%2B10%2Bx64%26version%3D62090070%26lang%3Dzh_CN%26exportkey%3DA3I5K5BT6jZRREZDCEHhodo%253D%26pass_ticket%3DGaUOlhvnIhLjiMbxtLcTZyWL7ksGkja0M6SXxgiJcurYxGHGyJOdo7KmfnjlcSR3%26wx_header%3D0)**公众号**
 

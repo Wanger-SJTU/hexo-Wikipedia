@@ -1,3 +1,16 @@
+---
+title: Andozalar boʻyicha qoʻllanma (Template Guide)
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/uz/resources/templates/index/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # Andozalar boʻyicha qoʻllanma (Template Guide)
 
 Ushbu andozalar oʻzingizning loyihangizga nusxalash uchun tayyor. Ularning har biri agentning ishlash jarayonida aniq maqsadga xizmat qiladi. Ulardagi maʼlumotlarni oʻz loyihangizning buyruqlari, fayl yoʻllari, funksiyalar (features) nomlari va tekshiruv qadamlariga moslab tahrirlang.

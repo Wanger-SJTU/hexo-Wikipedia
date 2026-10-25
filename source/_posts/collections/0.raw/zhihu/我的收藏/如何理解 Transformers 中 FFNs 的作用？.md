@@ -1,9 +1,19 @@
 ---
-title: "(2 条消息) 如何理解 Transformers 中 FFNs 的作用？"
-date: 2026-04-17
-tags: [知乎]
-source: https://www.zhihu.com/question/622085869/answer/3518358912
+title: (2 条消息) 如何理解 Transformers 中 FFNs 的作用？
+date: "2026-04-17 00:00:00"
+updated: "2026-04-17 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/如何理解-Transformers-中-FFNs-的作用/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://www.zhihu.com/question/622085869/answer/3518358912
 ---
+
 
 ### 题目
 
@@ -69,7 +79,7 @@ Attention, FFN, ResNet 缺一不可但却可能是各司其职，我个人的观
 
 看下图大概就知道了，我们期望表示 token 的向量，相似的要相近，不相似的要远，而且最好是均匀的分布在整个空间中，比如下图所示。但是 Transformers 会存在 各向异性的问题，也就是所有的 token 都挤到一个很窄的锥形区域了。
 
-![](asset/img_9348316e8736.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_9348316e8736.jpg)
 
 回到论文，论文将 FFN 和 ResNet 去掉之后做了一些消融实验，证明了 FFN 和 ResNet 是 Transformers 中的必备组件，这两个可以大大的缓解 token uniformity 或者 各向异性的问题。
 
@@ -97,7 +107,7 @@ FFN 的公式为，
 
 这里 f 是 ReLU 激活函数，可以看出两个结构的唯一区别就是一个是才用 softmax 进行归一化，另一个则采用 ReLU 进行筛选。本质上都差不多。
 
-![](asset/img_35e697bb9fd0.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_35e697bb9fd0.jpg)
 
 通过一些实验也确实证明了上面结论，也就是 FFN 确实将一些 pattern 或者知识记忆和存储起来了。
 

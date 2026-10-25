@@ -1,9 +1,19 @@
 ---
-title: "投机解码之EAGLE：轻量级草稿模型实现3-4倍推理加速"
-date: 2025-07-04
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/1924418553764901931
+title: 投机解码之EAGLE：轻量级草稿模型实现3-4倍推理加速
+date: "2025-07-04 00:00:00"
+updated: "2025-07-04 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/投机解码之EAGLE-轻量级草稿模型实现3-4倍推理加速/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/1924418553764901931
 ---
+
 
 相关历史文章（有非常全面的理论推导，帮助大家更好地理解投机解码）：
 
@@ -61,7 +71,7 @@ $c 是调用一次 M_q、M_p 的耗时比，一定程度上衡量了 M_q 的规�
 
 但是，这种策略并不适用于小模型，比如 M_p 是7B左右的模型时无法找到一个合适的 M_q。完全重新训练一个代价又太大（语料需求大，训练耗时）。
 
-![](asset/img_67cf2c5ec863.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_67cf2c5ec863.jpg)
 
 不同方法加速比对比针对这个问题，Eagle提出了一种构建 M_q 的方法，个人认为可以把Eagle分类到**Self-Drafting**，即**利用自己进行“高效推测”**。这类方法思想就是：既然M_p 够准确，那么就把它利用起来。比如在M_p 最后一层decoder layer之上引入多个额外的FFN Heads来推理multi next token；比如把最后一层decoder layer的输出作为M_q的输入，并在这上进行featuer层面的自回归(Eagle)...
 
@@ -100,7 +110,7 @@ $- 若拒绝，则调整分布重新采样并丢弃被拒绝token后的所有tok
 
 #### 3.1 Eagle核心思想
 
-![](asset/img_a4f74a51e1c0.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_a4f74a51e1c0.jpg)
 
 Eagle的自回归上图展示了Eagle和其他方法最主要的区别，其实也就是Eagle的核心思想。lookahead、Medusa不熟悉没关系，我们直接看Speculative Decoding和Eagle：
 
@@ -110,13 +120,13 @@ Eagle的自回归上图展示了Eagle和其他方法最主要的区别，其实�
  
 如果说，Speculative Sampling的自回归是在token层面的，那么Eagle的自回归就是既在feature又在token层面**。或者说是**在feature层面添加了token信息的自回归**，此时token起到**辅助**作用。
 
-![](asset/img_886e6ff1757c.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_886e6ff1757c.jpg)
 
 其实加入token的信息是很自然的，因为feature层面进行自回归推 f_i 的最终目的是基于 f_i 推 p_{i+1}，从而采样出 t_{i+1}，而 t_i 在推 t_{i+1} 前是已知信息。在分享MTP时已经提过了，我们人说话是一个字一个字往外蹦的，有了前一个字的信息，推下一个字会更准确。
 
 也就是说，不同的token带着当前的feature往不同的方向去推理下一个feature。比如上图中，我们基于 f_I 去推下一个feature时，am和always这两个可能的token对feature的引导是不一样的，一个引向了 f_{always}，另一个引向了 f_{am}，再经过 LM\_Head 后得到的是两个非常不同的分布：如果I后面的token是am，那么下一个token更可能是ready、excited；如果I后面是always，那么下一个token更可能是begin、look。
 
-![](asset/img_16dd24cff16a.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_16dd24cff16a.jpg)
 
 不同输入加速比也许这个地方会产生一定的疑问，为啥这么麻烦，feature层面自回归也脱离不了token的信息，那为什么不直接token层面自回归？
 
@@ -128,7 +138,7 @@ Eagle的自回归上图展示了Eagle和其他方法最主要的区别，其实�
 
 #### 3.2 Eagle模型结构及算法流程
 
-![](asset/img_672eab9b6672.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_672eab9b6672.jpg)
 
 Eagle模型结构Eagle的模型结构非常简单，就三个模块：Embedding layer、Autoregression Head、LM Head。其中 Embedding layer、LM Head和target model共用，不用训练。下面看一看Eagle的输入和数据流。
 
@@ -175,7 +185,7 @@ $$L_{cls} = Cross\_Entropy(p_{i+2},\hat{p}_{i+2}) \\ p_{i+2}=LM\_Head(f_{i+1}) \
 
 - 传统的Speculative Decoding在每个位置上只采样一个token，从而构成了一个**链式结构的草稿序列**，即**chain-structured draft**。** 
 - Eagle则在每个位置上采样多个token，从而构成了多个草稿序列。通过共享前缀的方式可以将这多个候选token序列变成一个树形结构的草稿**，即**tree-structured draft**，或者简称**Token Tree**。Token Tree的每一个分支就是一个草稿序列。** 
-![](asset/img_154eda278c63.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_154eda278c63.jpg)
 
 Chain-structured draft vs Tree-structured draft如何采样多个token则是与采样策略有关。比如每一步采样 k 个可能的token，比如greedy采样策略下，就是top k个token，非greedy采样策略，就是随机采样 k 个token。
 
@@ -187,7 +197,7 @@ Token Tree很早之前就有文章提出了，不算新的东西，具体与Toke
 
 Eagle其实和Deepseek-V3中的MTP非常像，都用到了 M_p 的最后一个隐藏层状态的信息，即**都用了 M_p 出来的feature与错开一位的token的embedding拼接**，然后再经过FC层降维，再经过一个模块（一层Transformer block），最后再经过LM_Head。
 
-![](asset/img_029e0c39a474.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_029e0c39a474.jpg)
 
 Eagle vs MTP in Deepseek-v3重点来看看二者的区别。如上图所示，除了在在拼接前加了Norm这种细节之外，最主要的不同点在于：
 

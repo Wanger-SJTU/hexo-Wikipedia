@@ -1,3 +1,16 @@
+---
+title: "Q&C: 当量化遇见缓存——高效生成中的技术融合"
+date: "2026-04-20 14:39:18"
+updated: "2026-04-20 14:39:18"
+layout: post
+permalink: /collections/0.raw/papers/Q-C-量化与缓存融合的高效生成/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # Q&C: 当量化遇见缓存——高效生成中的技术融合
 
 **标题**: Q&C: When Quantization Meets Cache in Efficient Generation

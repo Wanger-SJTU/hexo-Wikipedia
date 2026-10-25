@@ -1,9 +1,19 @@
 ---
-title: "【手撕LLM- GRPO 】你只管给Reward, 剩下的交给RL（附代码）"
-date: 2025-10-26
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/20812786520
+title: 【手撕LLM- GRPO 】你只管给Reward, 剩下的交给RL（附代码）
+date: "2025-10-26 00:00:00"
+updated: "2025-10-26 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/LLM-SD/【手撕LLM-GRPO-】你只管给Reward,-剩下的交给RL(附代码)/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/20812786520
 ---
+
 
 **我是小冬瓜AIGC，原创超长文知识分享，原创课程已帮助多名同学速成上岸LLM赛道。  
  研究方向：LLM、RL、RLHF
@@ -82,7 +92,7 @@ source: https://zhuanlan.zhihu.com/p/20812786520
 
 GRPO优化算法概述如下，GRPO优化过程仅需要加载两个模型，一个是目标优化模型，一个是ref模型。由于有规则reward的判别，并不需要reward model。（如果判别是由奖励模型，那么仍需要，比如用GRPO做RLHF需要peference reward model）
 
-![](asset/img_b9899a93a06a.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_b9899a93a06a.jpg)
 
 $$\mathcal{L}_{\text{GRPO}}(\theta) = - \frac{1}{G} \sum_{i=1}^G \frac{1}{|o_i|} \sum_{t=1}^{|o_i|} \left[ \min \left( \frac{\pi_\theta(o_{i,t} \mid q, o_{i,\text{\mathbb{D}_{\text{KL}}\left[\pi_\theta \|\pi_{\text{ref}}\right] = \frac{\pi_{\text{ref}}(o_{i,t} \mid q, o_{i,\text{\hat{A}_{i,t} = \frac{r_i - \text{mean}(\mathbf{r})}{\text{std}(\mathbf{r})}  \\$$
 
@@ -421,7 +431,7 @@ bias/truestdev/trueK102K20.251.73K301.7
 
 我在[X-R1](https://link.zhihu.com/?target=https%3A//github.com/dhcode-cpp/X-R1)上测试是可行的，对比有KL和无KL的版本，无KL竟然高了10个点左右
 
-![](asset/img_0f59fb58796c.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_0f59fb58796c.jpg)
 
 #### 4.6 KL项分析
 

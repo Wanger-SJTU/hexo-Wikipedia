@@ -1,10 +1,19 @@
 ---
-title: "vllm并行策略之DCP(Decode Context Parallel)"
-date: 2026-03-25
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/2020086868914499979
-
+title: vllm并行策略之DCP(Decode Context Parallel)
+date: "2026-03-25 00:00:00"
+updated: "2026-03-25 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/AI-infra/vllm并行策略之DCP(Decode-Context-Parallel)/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/2020086868914499979
 ---
+
 
 接上篇对[vllm CP并行的总体概述](https://zhuanlan.zhihu.com/p/2019809858040378281)，这篇来具体说说DCP。首先，CP并行顾名思义是为了长上下文并行做的优化。由于推理过程中prefill阶段和decode阶段的bottleneck不同，vllm为这俩阶段分别做了优化（PCP和DCP），其中PCP还在开发中，DCP在CUDA上已经实现，但其他backend可能还没有跟进。在CUDA上直接添加参数--decode-context-parallel-size x就可以使用DCP并行了。
 

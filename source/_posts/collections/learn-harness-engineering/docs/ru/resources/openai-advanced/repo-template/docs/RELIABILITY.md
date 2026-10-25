@@ -1,3 +1,16 @@
+---
+title: RELIABILITY.md
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/ru/resources/openai-advanced/repo-template/docs/RELIABILITY/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # RELIABILITY.md
 
 Этот файл задаёт, как система доказывает, что она здорова и перезапускаема.

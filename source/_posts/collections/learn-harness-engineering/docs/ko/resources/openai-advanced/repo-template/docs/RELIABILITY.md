@@ -1,3 +1,16 @@
+---
+title: RELIABILITY.md
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/ko/resources/openai-advanced/repo-template/docs/RELIABILITY/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # RELIABILITY.md
 
 이 파일은 시스템이 어떻게 건강하고 재시작 가능함을 증명하는지를 정의합니다.

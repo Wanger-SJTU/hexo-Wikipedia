@@ -1,4 +1,17 @@
 ---
+title: 如何让大语言模型返回完美的JSON格式 - 知乎
+date: "2026-04-11 21:40:28"
+updated: "2026-04-11 21:40:28"
+layout: post
+permalink: /collections/0.raw/Omnivore/2024-05-19/如何让大语言模型返回完美的JSON格式-知乎/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
+---
 id: 0b967466-4751-4669-a3f8-665c73e41212
 ---
 

@@ -97,7 +97,13 @@ if (graph && stats && search) {
 
 /* ---------- 3. 单页 HTML 检查 ---------- */
 const postDirs = fs.existsSync(path.join(PUB, 'wiki'))
-  ? fs.readdirSync(path.join(PUB, 'wiki')).filter((name) => name !== 'all' && fs.existsSync(path.join(PUB, 'wiki', name, 'index.html')))
+  ? fs.readdirSync(path.join(PUB, 'wiki')).filter((name) => {
+      if (name === 'all') return false;
+      const rel = path.join(PUB, 'wiki', name, 'index.html');
+      if (!fs.existsSync(rel)) return false;
+      // 跳过重定向页等非文章页面
+      return /article__title/.test(read(path.relative(PUB, rel)));
+    })
   : [];
 ok('条目页数量', String(postDirs.length));
 if (postDirs.length !== 20) bad('条目页数量不是 20', String(postDirs.length));

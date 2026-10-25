@@ -1,3 +1,16 @@
+---
+title: SOP：分层领域架构
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/zh/resources/openai-advanced/sops/layered-domain-architecture/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # SOP：分层领域架构
 
 当 agent 反复跨层乱连、在不同层重复逻辑、或者几轮会话后代码越来越难审时，就用这份 SOP。

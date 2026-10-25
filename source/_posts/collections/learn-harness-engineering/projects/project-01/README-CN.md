@@ -1,3 +1,16 @@
+---
+title: "Project 01: Baseline vs Minimal Harness"
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/projects/project-01/README-CN/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # Project 01: Baseline vs Minimal Harness
 
 比较弱 harness（仅靠 prompt）和显式 harness（规则文件 + 验证机制）对 AI 编码代理任务完成率的影响。

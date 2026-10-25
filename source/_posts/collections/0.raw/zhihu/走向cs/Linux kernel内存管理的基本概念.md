@@ -1,9 +1,19 @@
 ---
-title: "Linux kernel内存管理的基本概念"
-date: 2022-04-22
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/503379456
+title: Linux kernel内存管理的基本概念
+date: "2022-04-22 00:00:00"
+updated: "2022-04-22 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/走向cs/Linux-kernel内存管理的基本概念/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/503379456
 ---
+
 
 ### **1. 前言**
 
@@ -15,7 +25,7 @@ source: https://zhuanlan.zhihu.com/p/503379456
 
 **
 
-![](asset/img_13b82accbf05.jpg)
+![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_13b82accbf05.jpg)
 
 图片1 CPU, Device and Memory
 
@@ -89,7 +99,7 @@ DeviceIOMMU(Optional)--------->Memory
 
 基于上面章节的需求，Linux kernel从虚拟内存（VM）、DMA mapping以及DMA buffer sharing三个角度，对内存进行管理，如下图所示：
 
-![](asset/img_9cd2c612c850.jpg)
+![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_9cd2c612c850.jpg)
 
 图片2 VM、DMA mapping和DMA buffer sharing
 

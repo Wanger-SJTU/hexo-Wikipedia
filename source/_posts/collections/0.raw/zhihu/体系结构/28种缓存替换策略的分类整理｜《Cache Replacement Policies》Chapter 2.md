@@ -1,9 +1,19 @@
 ---
-title: "28种缓存替换策略的分类整理｜《Cache Replacement Policies》Chapter 2"
-date: 2021-07-15
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/387985644
+title: 28种缓存替换策略的分类整理｜《Cache Replacement Policies》Chapter 2
+date: "2021-07-15 00:00:00"
+updated: "2021-07-15 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/体系结构/28种缓存替换策略的分类整理-《Cache-Replacement-Policies》Chapter-2/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/387985644
 ---
+
 
 本文译自《Cache Replacement Policies》（2019年）的第2章：“A Taxonomy of Cache Replacement Policies”。我也翻译了这本书的目录、摘要序言和第1章：
 
@@ -13,7 +23,7 @@ source: https://zhuanlan.zhihu.com/p/387985644
 
 本文总结了这本书中介绍的各种缓存替换策略（cache replacement policy），首先将所有策略划分为了粗粒度和细粒度两类，然后再根据它们依据的不同局域性（locality）进一步的划分为了多个类，如下图所示：
 
-![](asset/img_0b7bb6cd157e.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_0b7bb6cd157e.jpg)
 
 图2.2：缓存替换策略的一种分类法。本文主要介绍该分类法的概念以及思路，对于上图中这些策略的进一步概述，以及相关论文的引用链接，可以在原书后续章节的正文中找到。
 
@@ -21,9 +31,9 @@ source: https://zhuanlan.zhihu.com/p/387985644
 
 为了组织好这本书的结构，以及几十年间研究过的许多想法（idea），我们在这里提出了一个关于 缓存替换问题解决方案 的分类法（taxonomy）。这个分类法是建立在这样一个观察上的：
 
-“缓存替换策略解决的是一个这样的预测问题，其目标是预测任何给定的缓存行（line）是否应当继续保留在缓存中。预测可能会随着时间的推移而失效，因此需要在缓存行的整个生命周期（lifetime）[[1]](#ref_1)上的多个不同时间点上进行重新评估（re-evaluate）。”
+“缓存替换策略解决的是一个这样的预测问题，其目标是预测任何给定的缓存行（line）是否应当继续保留在缓存中。预测可能会随着时间的推移而失效，因此需要在缓存行的整个生命周期（lifetime）<span class="wikilink wikilink--missing" title="未导入的页面">1</span>(#ref_1)上的多个不同时间点上进行重新评估（re-evaluate）。”
 
-因此在我们的分类法中，我们会首先根据插入策略（insertion decision）[[2]](#ref_2)的粒度将缓存替换策略分为两大类：
+因此在我们的分类法中，我们会首先根据插入策略（insertion decision）<span class="wikilink wikilink--missing" title="未导入的页面">2</span>(#ref_2)的粒度将缓存替换策略分为两大类：
 
 对于第一类中的策略（我们称之为“粗粒度”策略），将任何行插入缓存中的时候，都会对它们进行相同的处理，并且仅依据它们驻留在缓存中时的表现来进行区别对待。例如一个行在缓存中驻留时，它的优先级可能会在它被重复使用（reused）的时候提高。
 
@@ -31,14 +41,14 @@ source: https://zhuanlan.zhihu.com/p/387985644
 
 为更好地理解我们的分类法，大家可以注意到，缓存策略通常是通过将少量替换状态（replacement state）与每个缓存行相关联来实现的（图2.1）：
 
-![](asset/img_ee9daa5f507a.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_ee9daa5f507a.jpg)
 
 图2.1：在整个缓存行生命周期间，所执行的不同替换策略操作。
 
-- 插入策略（Insertion Policy）：当新行被插入缓存后，缓存替换策略该如何初始化该行的替换状态（replacement state）？[[3]](#ref_3)
-- 晋升策略（Promotion Policy）：当缓存行被命中后，缓存替换策略该如何更新它的替换状态？[[4]](#ref_4)
-- 衰老策略（Aging Policy）：当一个与其相竞争的行（competing line）被插入或者晋升时，缓存替换策略该如何更新该行的替换状态？[[5]](#ref_5)
-- 驱逐策略（Eviction Policy）：在给定固定数量的选项间，替换策略应该选择驱逐哪个缓存行？[[6]](#ref_6)
+- 插入策略（Insertion Policy）：当新行被插入缓存后，缓存替换策略该如何初始化该行的替换状态（replacement state）？<span class="wikilink wikilink--missing" title="未导入的页面">3</span>(#ref_3)
+- 晋升策略（Promotion Policy）：当缓存行被命中后，缓存替换策略该如何更新它的替换状态？<span class="wikilink wikilink--missing" title="未导入的页面">4</span>(#ref_4)
+- 衰老策略（Aging Policy）：当一个与其相竞争的行（competing line）被插入或者晋升时，缓存替换策略该如何更新该行的替换状态？<span class="wikilink wikilink--missing" title="未导入的页面">5</span>(#ref_5)
+- 驱逐策略（Eviction Policy）：在给定固定数量的选项间，替换策略应该选择驱逐哪个缓存行？<span class="wikilink wikilink--missing" title="未导入的页面">6</span>(#ref_6)
 从缓存行生命周期（lifetime）的角度上，我们可以看到粗粒度策略在插入时对所有缓存行的处理都是相同的，因此它们主要依赖的是巧妙的衰老和晋升策略，来操纵替换优先级。
 
 与之相对的，细粒度策略则采用了更智能的插入策略。当然，细粒度策略也仍需要合适的衰老和晋升策略，因为并非所有行为都是能在插入时就预测到的。
@@ -84,7 +94,7 @@ source: https://zhuanlan.zhihu.com/p/387985644
 
 - 基于分类的策略（Classification-Based Policies）会将每个团关联到2种可能的预测中的一种，即缓存友好（cache-friend）和缓存厌恶（cache-averse）。
 - 基于重用距离的策略（Reuse Distance-Based Policies）则会试图预测每团缓存行的具体重用距离信息。
-这两个类别可以分别作为谱系（spectrum）[[7]](#ref_7)的两个末端的定义。其中处在谱系一端的策略仅有2个可能的预测值，而另一端的则有许多可能的预测值。很多策略都位于中间，例如具有4或8个可能的值。最后，我们还会在第三个类别下讨论Beckmann和Sanchez所提出的新指标 [Beckmann and Sanchez, 2017]。
+这两个类别可以分别作为谱系（spectrum）<span class="wikilink wikilink--missing" title="未导入的页面">7</span>(#ref_7)的两个末端的定义。其中处在谱系一端的策略仅有2个可能的预测值，而另一端的则有许多可能的预测值。很多策略都位于中间，例如具有4或8个可能的值。最后，我们还会在第三个类别下讨论Beckmann和Sanchez所提出的新指标 [Beckmann and Sanchez, 2017]。
 
 **基于分类的策略（Classification-Based Policies）**
 
@@ -105,11 +115,11 @@ source: https://zhuanlan.zhihu.com/p/387985644
 - 粒度（Granularity）：在插入的时，缓存行时以什么粒度进行区分的？是所有缓存行都一视同仁，还是根据历史信息给它们分配不同的优先级？
 - 历史（History）：替换策略在决策时利用了哪些，多少历史信息？
 - 访问模式（Access Patterns）：替换策略对某些访问模式的针对性如何？它对访问模式的变化，或不同访问模式的混合是否、有多敏感？
-![](asset/img_0b7bb6cd157e.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_0b7bb6cd157e.jpg)
 
 图2.2：缓存替换策略的一种分类法。图2.2完整地总结了我们的分类法，并显示了不同类别的替换策略是如何处理这些设计因素的。总的来说，图中越靠右的策略，所对应的粒度就越细，所使用的历史记录也更长，能够适应的访问模式也更广泛。
 
-在细粒度预测缓存行为有多重要？我们可以通过观察最近的缓存替换锦标赛（2017）[[8]](#ref_8)看出这点，在这场比赛中，前4名的解决方案都是细粒度的。细粒度的预测为最新的细粒度策略带来了两个优势：
+在细粒度预测缓存行为有多重要？我们可以通过观察最近的缓存替换锦标赛（2017）<span class="wikilink wikilink--missing" title="未导入的页面">8</span>(#ref_8)看出这点，在这场比赛中，前4名的解决方案都是细粒度的。细粒度的预测为最新的细粒度策略带来了两个优势：
 
 首先，它们允许细粒度策略只将缓存空间专门提供给那些，最有可能通过缓存受益的缓存行；与之相比，粗粒度策略则更倾向于，重复地将缓存资源提供给那些不产生任何命中的行。
 

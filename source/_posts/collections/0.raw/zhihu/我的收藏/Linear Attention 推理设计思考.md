@@ -1,9 +1,19 @@
 ---
-title: "Linear Attention 推理设计思考"
-date: 2025-11-08
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/1970421781090268661
+title: Linear Attention 推理设计思考
+date: "2025-11-08 00:00:00"
+updated: "2025-11-08 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/Linear-Attention-推理设计思考/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/1970421781090268661
 ---
+
 
 ### 背景
 
@@ -31,7 +41,7 @@ MLA KV Cache 采取典型值kv_lora_rank=512, qk_rope_head_dim=64，每层缓存
 
 ### KDA Prologue Kernel 并行
 
-![](asset/img_647b7a3c91d4.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_647b7a3c91d4.jpg)
 
 观察KDA的核心计算路径[1]，我们会发现q、k、v、g、beta五个矩阵乘在prologue阶段完全独立，没有数据依赖。但并不能直接fuse为一次矩阵乘，因为乘法中间结果存在sigmoid、gate、conv等操作。因此更好的方案是**选择性地fuse一些矩阵乘，然后考虑用多个CUDA Stream并行发射算子，通过green ctx调节显卡资源可以让访存利用率低的算子计算延迟隐藏在利用率高的矩阵乘里。**
 

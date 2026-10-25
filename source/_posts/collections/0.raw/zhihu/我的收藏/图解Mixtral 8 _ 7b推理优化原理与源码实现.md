@@ -1,9 +1,19 @@
 ---
-title: "(2 条消息) 图解Mixtral 8 * 7b推理优化原理与源码实现"
-date: 2024-07-22
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/691066049
+title: (2 条消息) 图解Mixtral 8 * 7b推理优化原理与源码实现
+date: "2024-07-22 00:00:00"
+updated: "2024-07-22 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/图解Mixtral-8-_-7b推理优化原理与源码实现/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/691066049
 ---
+
 
 大家好，在写这篇文章时，本来是想打算介绍Mixtral 8 * 7b具体模型架构的。但是代码读着读着就发现：
 
@@ -61,7 +71,7 @@ source: https://zhuanlan.zhihu.com/p/691066049
 
 一个常规的LLM推理过程通常分为两个阶段：prefill和decode**。**
 
-![](asset/img_91b76c3b604b.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_91b76c3b604b.jpg)
 
 #### 
 1.1 Prefill
@@ -87,7 +97,7 @@ source: https://zhuanlan.zhihu.com/p/691066049
 注意到，cache的存储压力之所以变大，是因为我们的Attention是causal decoder形式的，即每一个token，都要和它之前所有的token做Attention**，所以cache中存储的数据量才和seq_len正相关。如果现在我们转换一下思路，**假设每一个token只和包含其本身在内的前W个token做Attention，这样不就能把cache的容量维持在W吗？**而从直觉上来说，这样的做法也有一定的道理：**对当前token来说，距离越远的token，能提供的信息量往往越低，**所以似乎没有必要浪费资源和这些远距离的token做Attention。**
 这种Attention思路的改进，就被称为"Sliding Window Attention"**，其中W表示窗口长度。这也是Mixtral 7b 和Mixtral 8 * 7b采用的方法，我们通过作者论文中的一张图，更清晰地来看下它和传统Attention的区别，这里W=3**
 
-![](asset/img_e3ffe53bd922.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_e3ffe53bd922.jpg)
 
 #### 
 
@@ -96,7 +106,7 @@ source: https://zhuanlan.zhihu.com/p/691066049
 虽然滑动窗口的策略看起来很不错，不过你一定有这样的疑惑**：**虽然距离越远的token涵盖的信息量可能越少，但不意味着它们对当前token一点用处都没有。**在传统的Attention中，我们通过Attention score，或多或少给这些远距离的token一定的参与度；但是在Sliding Window Attention中，却直接杜绝了它们的参与，这真的合理吗？**
 为了回答这个问题，我们来看一个例子，在本例中W=4，num_layers = 4，num_tokens = 10。
 
-![](asset/img_8c63f41facbb.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_8c63f41facbb.jpg)
 
 我们从layer3最后一个位置的token（t9）看起：
 
@@ -117,7 +127,7 @@ source: https://zhuanlan.zhihu.com/p/691066049
 当我们使用滑动窗口后，KV Cache就不需要保存所有tokens的KV信息了，你可以将其视为一个固定容量（W）的cache，随着token index增加，我们来“滚动更新” KV Cache。****
 下图给出了Rolling Buffer Cache的运作流程: 
 
-![](asset/img_5a7235019edf.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_5a7235019edf.jpg)
 
 在图例中，我们做推理时喂给模型一个batch_size = 3的batch，同时设W = 3。此时KV Cache的容量为`(batch_size, W)`。我们以第1条prompt `This is an example of ...`为例：
 
@@ -133,7 +143,7 @@ source: https://zhuanlan.zhihu.com/p/691066049
 
 我们再回到3.1的图例中：
 
-![](asset/img_9de416dab06c.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_9de416dab06c.jpg)
 
 还是对于第一条数据，我们往上添两个单词，假设其为`This is an example of my last**...`。现在来到了单词`last`上，我们需要对它计算Sliding Window Attention。**
 
@@ -158,7 +168,7 @@ source: https://zhuanlan.zhihu.com/p/691066049
 
 好，现在我们来看一个chunking的图例（来自Mixtral论文），假设输入的prompt为`The cat sat on the mat and saw the dog go to`，同时`chunk_size = cache_window = sliding_window = 4`
 
-![](asset/img_4060546c518c.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_4060546c518c.jpg)
 
 假设我们现在来到第三块chunk**，它包含的词为`the dog go to`。我们要对这个chunk中的每一个token计算滑动窗口Attention，同时把每个token的Xk, Xv值更新进KV Cache。
 
@@ -180,14 +190,14 @@ source: https://zhuanlan.zhihu.com/p/691066049
 
 假设推理时`batch_size = 3`，且有`chunk_size = cache_size = sliding_window = 4`，则这个batch的prompts可表示成下图（每个方块表示1个token，同色方块属于同个prompt）：
 
-![](asset/img_267da4be75fd.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_267da4be75fd.jpg)
 
 #### 
 5.2 整体流程
 
 （1）chunk0****
 
-![](asset/img_220927dee06b.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_220927dee06b.jpg)
 
 - 我们首先将chunk0送入模型，此时KV cache为空
 - 对chunk中的每个token计算Xq，Xk，Xv，用于计算SWA（Sliding Window Attention）。图中刻画了计算时用到的mask矩阵**。在Mixtral源码中使用**Xformers库**的相关API来完成Attention相关的计算（这个库的好处是加速Attention计算）。**BlockDiagonalCausalMask**（全称是BlockDiagonalCausalLocalAttentionMask）是这个库下提供的一种mask方法，它可以这样理解：**
@@ -205,7 +215,7 @@ source: https://zhuanlan.zhihu.com/p/691066049
 
 **（2）chunk1****
 
-![](asset/img_06637bccdb3c.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_06637bccdb3c.jpg)
 
 - 对于chunk1中维护的tokens，我们正常计算他们的xq，xk，xv。
 - 取出当前KV Cache中存储的KV值，和chunk计算出来的KV值进行拼组，计算SWA**（如图所示，mask矩阵的row行，每个色块由两部分组成：当前cache + 当前chunk）
@@ -214,7 +224,7 @@ source: https://zhuanlan.zhihu.com/p/691066049
 **
 （3）chunk2****
 
-![](asset/img_3a8724771c6c.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_3a8724771c6c.jpg)
 
 最后我们来看chunk2，这个chunk比较特殊，因为在这个chunk内，每一个prompt维护的序列长度是不一样的，3个prompt维护的tokens分别为`[[8, 9, 10, 11], [8, 9], [8]]`。
 
@@ -232,13 +242,13 @@ source: https://zhuanlan.zhihu.com/p/691066049
 所以我们来看一个chunk_size和其余两者不等的例子。在这个例子中，`chunk_size = 5, cache_window = sliding_window = 3`****
 prompt的划分如下图：
 
-![](asset/img_f814a4027a40.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_f814a4027a40.jpg)
 
 和5.2中的示例一样，对于每个chunk都主要分成三个阶段：更新前的KV Cache，SWA，更新后的KV cache**。其中前两个阶段和5.2的示例差别不大，**我们主要来关注下第三个阶段：更新KV Cache**。**
 
 不难理解，对于每个chunk来说，只有倒数W个token的KV值才应该进KV cache。例如对prompt0的chunk0，我们自然而然会认为用它更新KV cache后，KV cache中token的排布应该是`[2, 3, 4]`，但真的是这样吗？****
 
-![](asset/img_8fecf23fce65.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_8fecf23fce65.jpg)
 
 上图显示了prompt0的不同chunk更新KV cache后的结果，可以发现，chunk0更新KV cache后，元素的排布方式是`[3,4,2]`（而不是我们认为的`[2,3,4]`）；chunk1更新KV cache后，元素的排布方式是`[9, 7, 8]`（而不是我们认为的`[7, 8, 9]`）**。**这是因为整个更新过程严格遵循第三部分的Rolling Buffer Cache的更新原则**（这样我们才能使用一套unrotate准则应对chunk_size等于和不等于cache_window/sliding_window的情况）。详细的更新过程已经在图例中画出。**
 

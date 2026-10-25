@@ -1,3 +1,16 @@
+---
+title: 제품 명세(Product Specs) 색인
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/ko/resources/openai-advanced/repo-template/docs/product-specs/index/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # 제품 명세(Product Specs) 색인
 
 현재 사용자 대면 동작 명세에 이 폴더를 사용하십시오.

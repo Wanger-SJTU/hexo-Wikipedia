@@ -1,9 +1,19 @@
 ---
-title: "(1 封私信) 【编译器】传统编译器和AI/ML编译器总结"
-date: 2023-12-22
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/673452222
+title: (1 封私信) 【编译器】传统编译器和AI/ML编译器总结
+date: "2023-12-22 00:00:00"
+updated: "2023-12-22 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/tvm/【编译器】传统编译器和AI_ML编译器总结/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/673452222
 ---
+
 
 ### 前言
 
@@ -15,7 +25,7 @@ source: https://zhuanlan.zhihu.com/p/673452222
 
 Clang是一个C、C++、Objective-C和Objective-C++编程语言的编译器前端。它采用了LLVM作为其后端，由LLVM2.6开始，一起发布新版本。它的目标是提供一个GNU编译器套装（GCC）的替代品，支持了GNU编译器大多数的编译设置以及非官方语言的扩展。作者是克里斯·拉特纳（Chris Lattner），在苹果公司的赞助支持下进行开发，而源代码许可是使用类BSD的伊利诺伊大学厄巴纳-香槟分校开源码许可。 Clang项目包括Clang前端和Clang静态分析器等。
 
-![](asset/img_4d9f97ea2065.jpg)
+![](/images/collections/0.raw/zhihu/tvm/asset/img_4d9f97ea2065.jpg)
 
 CLang 官网：http://clang.org/ 
 
@@ -35,7 +45,7 @@ LLVM是一组编译器和工具链技术，可用于开发任何编程语言的�
 
 带有使用 LLVM 编译器的语言（或者不直接使用 LLVM 但可以生成编译后的程序作为 LLVM IR），包括：ActionScript, Ada, C# for .NET,[6][7][8] Common Lisp, PicoLisp, Crystal, CUDA, D, Delphi, Dylan, Forth,[9] Fortran, FreeBASIC, Free Pascal, Halide, Haskell, Java bytecode, Julia, Kotlin, LabVIEW's G language,[10][11] Lua, Objective-C, OpenCL,[12] PostgreSQL's SQL and PLpgSQL,[13] Ruby,[14] Rust,[15] Scala,[16][17] Swift, Xojo, and Zig。
 
-![](asset/img_d04f9d125ea3.jpg)
+![](/images/collections/0.raw/zhihu/tvm/asset/img_d04f9d125ea3.jpg)
 
 LLVM 官网：https://llvm.org/ 
 
@@ -65,7 +75,7 @@ ArmCC 编译选项：https://developer.arm.com/documentation/dui0472/k/Compiler-
 
 GNU 编译器集合( GCC )是GNU 项目产生的优化编译器，支持各种编程语言、硬件体系结构和操作系统。自由软件基金会(FSF)根据GNU 通用公共许可证(GNU GPL)将 GCC 作为自由软件分发。GCC 是GNU 工具链的关键组件，也是大多数与GNU和Linux 内核相关的项目的标准编译器。GCC 2019 年约有 1500 万行代码，是现有最大的免费程序之一。它作为工具和范例， 在自由软件的发展中发挥了重要作用。
 
-![](asset/img_f57dbc267981.jpg)
+![](/images/collections/0.raw/zhihu/tvm/asset/img_f57dbc267981.jpg)
 
 GCC：https://gcc.gnu.org/ 
 
@@ -117,7 +127,7 @@ Intel oneAPI DPC++/C++ 编译器适用于 Windows 和 Linux，支持编译 C、C
 
 DPC++基于Khronos Group 的SYCL规范构建。它旨在允许开发人员跨硬件目标（CPU 和 GPU 和 FPGA 等加速器）重用代码，并针对特定加速器执行自定义调整。DPC++ 包含C++17和 SYCL 语言功能，并包含开源社区扩展，使 SYCL 更易于使用。其中许多扩展被 SYCL 2020 临时规范[8]采用，包括统一共享内存、组算法和子组。 英特尔于 2021 年 8 月宣布全面采用LLVM，以缩短构建时间并受益于支持最新的 C++ 标准。
 
-![](asset/img_30c1b16d75c4.jpg)
+![](/images/collections/0.raw/zhihu/tvm/asset/img_30c1b16d75c4.jpg)
 
 Intel DPCC Compiler：https://www.intel.com/content/www/us/en/developer/tools/oneapi/dpc-compiler.html 
 
@@ -179,7 +189,7 @@ Jikes：https://en.wikipedia.org/wiki/Jikes
 
 Nvidia CUDA 编译器( NVCC ) 是Nvidia的专有 编译器，旨在与CUDA一起使用。CUDA 代码在CPU和GPU上运行。NVCC 将这两部分分开，并将主机代码（将在CPU上运行的代码部分）发送到C编译器，如GCC或Intel C++ 编译器（ICC）或Microsoft Visual C++编译器，并发送设备代码（将在 CPU 上运行的部分代码）。将在 GPU 上运行）到 GPU。设备代码由NVCC进一步编译。NVCC是基于LLVM的。根据 Nvidia 提供的文档，7.0 版本中的 nvcc 支持许多由C++11标准定义的语言结构以及一些C99功能。在版本 9.0 中，支持更多来自C++14标准的构造。
 
-![](asset/img_2be97b1fa8a0.jpg)
+![](/images/collections/0.raw/zhihu/tvm/asset/img_2be97b1fa8a0.jpg)
 
 NVCC：https://docs.nvidia.com/cuda/cuda-compiler-driver-nvcc/index.html 
 
@@ -201,7 +211,7 @@ NVIDIA HPC Compilers User's Guide：https://docs.nvidia.com/hpc-sdk/compilers/hp
 
 Apache TVM 是一个用于深度学习系统的编译器堆栈。它旨在缩小以生产力为中心的深度学习框架与以性能和效率为中心的硬件后端之间的差距。TVM 与深度学习框架配合使用，为不同后端提供端到端编译。
 
-![](asset/img_7349d11a786b.jpg)
+![](/images/collections/0.raw/zhihu/tvm/asset/img_7349d11a786b.jpg)
 
 TVM 官网：https://tvm.apache.org/ 
 
@@ -217,7 +227,7 @@ TVM Wiki：https://en.wikipedia.org/wiki/TVM
 
 MLIR是用于编译器开发的统一软件框架。MLIR 可以充分利用各种计算平台，例如GPU、DPU、TPU、FPGA、AI ASICS和量子计算系统(QPU)。MLIR 是LLVM编译器基础设施项目的子项目，旨在构建“可重用且可扩展的编译器基础设施 (..) 并帮助将现有编译器连接在一起。
 
-![](asset/img_4ded95e0510d.jpg)
+![](/images/collections/0.raw/zhihu/tvm/asset/img_4ded95e0510d.jpg)
 
 MLIR：https://mlir.llvm.org/ 
 
@@ -231,7 +241,7 @@ MLIR TensorFlow：https://blog.tensorflow.org/201/mlir-new-intermediate-represen
 
 XLA（加速线性代数）是一种针对特定领域的线性代数编译器，能够加快 TensorFlow 模型的运行速度，而且可能完全不需要更改源代码。 它可以提高运行速度并改进内存用量。例如在 BERT 中，如果 MLPerf 提交内容使用 8 伏打 V100 GPU 和 XLA，则性能可提升约 7 倍，并且批次大小可改进约 5 倍。
 
-![](asset/img_df9db15cd5c4.jpg)
+![](/images/collections/0.raw/zhihu/tvm/asset/img_df9db15cd5c4.jpg)
 
 XLA：优化机器学习编译器：https://www.tensorflow.org/xla?hl=zh-cn 
 
@@ -251,7 +261,7 @@ AutoKernel 代码：[https://github.com/OAID/AutoKernel](https://link.zhihu.com/
 
 MegCC是旷视开发的一款深度学习模型编译器，具有以下特点： 极轻量级运行时：仅将所需的计算内核保留在二进制文件中。例如，MobileNet v1 的运行时间为81KB；高性能：每项操作都经过专家精心优化；便携：只生成计算代码，易于在 Linux、Android、TEE、BareMetal 上编译和使用；即时启动时内存使用率低：模型优化和内存规划在编译时生成。获得最先进的内存使用率，并且在推理过程中不花费额外的 CPU。
 
-![](asset/img_7b6b86523356.jpg)
+![](/images/collections/0.raw/zhihu/tvm/asset/img_7b6b86523356.jpg)
 
 MegCC：https://www.megengine.org.cn/blog/megcc 
 
@@ -283,7 +293,7 @@ CEVA 编译器：https://sig-product-docs.synopsys.com/zh-CN/bundle/coverity-doc
 
 AIACC-AGSpeed（AIACC 2.0-AIACC Graph Speeding）是阿里云推出的一个基于PyTorch深度学习框架研发的计算优化编译器，用于优化PyTorch深度学习模型在阿里云GPU异构计算实例上的计算性能，相比原始的神龙AI加速引擎AIACC，AIACC-AGSpeed是AIACC 2.0产品的实现，是完全独立的产品形态，可以实现无感的计算优化功能。
 
-![](asset/img_ef5f07847e39.jpg)
+![](/images/collections/0.raw/zhihu/tvm/asset/img_ef5f07847e39.jpg)
 
 AGSpeed：https://help.aliyun.com/zh/egs/what-is-agspeed?spm=a2c4g.11186623.0.0.46b12b5cH6BrOm
 
@@ -351,13 +361,13 @@ Arm Ethos-U NPU Vela 编译器：https://developer.arm.com/documentation//NPU-so
 
 论文：[https://arxiv.org/abs/2006.01331](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2006.01331) 
 
-![](asset/img_ac889b929270.jpg)
+![](/images/collections/0.raw/zhihu/tvm/asset/img_ac889b929270.jpg)
 
 #### VitisAI
 
 AMD Vitis AI编译器 (VAI_C) 充当一系列编译器的统一接口，用于优化各种深度学习处理单元 (DPU) 的神经网络计算。每个编译器都将网络模型映射到高度优化的 DPU 指令序列。 VAI_C框架的简化描述如下图所示。在解析优化和量化的输入模型的拓扑之后，VAI_C构建一个内部计算图作为中间表示（IR），因此，相应的控制流和数据流表示。然后，它执行多种优化，例如计算节点融合，例如，当批量范数融合到主导卷积中时，通过利用固有的并行性或利用数据重用来实现高效的指令调度。
 
-![](asset/img_2bdb83a3c5a9.jpg)
+![](/images/collections/0.raw/zhihu/tvm/asset/img_2bdb83a3c5a9.jpg)
 
 Vitis AI Compiler：https://docs.xilinx.com/r/en-US/ug1414-vitis-ai/Vitis-AI-Compiler?tocId=TmELDzcWveWSZETK~7_n6A
 
@@ -373,7 +383,7 @@ HLS编译器：[https://github.com/nlsynth/karuta](https://link.zhihu.com/?targe
 
 Xilinx LogiCORE IP FIR 编译器 内核提供了一个通用接口来生成高度参数化、面积高效的高性能 FIR 滤波器。
 
-![](asset/img_b5ec36ebca13.jpg)
+![](/images/collections/0.raw/zhihu/tvm/asset/img_b5ec36ebca13.jpg)
 
 FIR Compiler AMD ：https://www.intel.com/programmable/technical-pdfs/655583.pdf 
 
@@ -403,7 +413,7 @@ RISC-V Cross Compiler Toolchain：https://www.cl.cam.ac.uk/~jrrk2/docs/untether-
 
 代码：[https://github.com/sophgo/tpu-mlir](https://link.zhihu.com/?target=https%3A//github.com/sophgo/tpu-mlir) 
 
-![](asset/img_d515474ad009.jpg)
+![](/images/collections/0.raw/zhihu/tvm/asset/img_d515474ad009.jpg)
 
 #### EdgeTPUCompiler
 

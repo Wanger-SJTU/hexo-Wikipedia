@@ -1,13 +1,23 @@
 ---
-title: "(2 条消息) Arm64 SMMU介绍"
-date: 2025-03-19
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/31339405896
+title: (2 条消息) Arm64 SMMU介绍
+date: "2025-03-19 00:00:00"
+updated: "2025-03-19 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/Arm64-SMMU介绍/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/31339405896
 ---
+
 
 SMMU是IOMMU在arm64体系结构中的叫法，IOMMU的作用是将系统中DMA的访存和物理内存单元相连，完成DMA访存的虚拟地址对物理地址的映射.
 
-![](asset/img_324f7a4cfb46.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_324f7a4cfb46.jpg)
 
 这样的话，其实好处就是：
 
@@ -31,7 +41,7 @@ SMMU是IOMMU在arm64体系结构中的叫法，IOMMU的作用是将系统中DMA�
 
 首先如下图所示，SMMU是有选择2 stage translation的控制能力的，这个控制能力由STE.config来完成设置。
 
-![](asset/img_73d6c3a42238.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_73d6c3a42238.jpg)
 
 ### 1.2 security&non-security
 
@@ -69,23 +79,23 @@ STEs：
 
 STRTAB_BASE配置到SMMU的寄存器中，如下是简单的LinearStreamTabel模式（模式通过一个寄存器里的FMT属性配置），这个模式有个缺点，就是需要连续内存存放STRTAB_BASE
 
-![](asset/img_3d533a9341f7.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_3d533a9341f7.jpg)
 
 另外一种省连续内存的方式，使用streamID部分bit索引第一级STRTABLE，剩余bit索引第2级STRTABLE,如下是配置SPLIT=8的模式
 
-![](asset/img_2a3c26940b12.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_2a3c26940b12.jpg)
 
 CDs：
 
 对于CD，我们有如下3种层次配置，在STE entry可以做相应配置
 
-![](asset/img_01e25e3ebb1b.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_01e25e3ebb1b.jpg)
 
 TranslateBase
 
 如上CD中的TTB0指向translate table的基地址，之后是配置level的翻译工作,但TTB1指向的是什么我还不清楚。
 
-![](asset/img_491c38bcf732.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_491c38bcf732.jpg)
 
 ### 软件层
 

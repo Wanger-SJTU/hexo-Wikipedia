@@ -1,4 +1,17 @@
 ---
+title: 再谈RAG范式的2个问题：文档解析流程的具象化理解及语义分割方案
+date: "2026-04-11 21:40:28"
+updated: "2026-04-11 21:40:28"
+layout: post
+permalink: /collections/0.raw/Omnivore/2024-05-19/再谈RAG范式的2个问题-文档解析流程的具象化理解及语义分割方案/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
+---
 id: ae58d270-a08f-40fa-9265-1cca07f744bc
 ---
 

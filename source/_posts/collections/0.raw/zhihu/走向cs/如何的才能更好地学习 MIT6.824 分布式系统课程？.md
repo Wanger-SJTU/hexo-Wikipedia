@@ -1,10 +1,19 @@
 ---
-title: "如何的才能更好地学习 MIT6.824 分布式系统课程？"
-date: 2019-11-03
-tags: [知乎]
-source: https://www.zhihu.com/question/29597104/answer/880513931
-
+title: 如何的才能更好地学习 MIT6.824 分布式系统课程？
+date: "2019-11-03 00:00:00"
+updated: "2019-11-03 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/走向cs/如何的才能更好地学习-MIT6.824-分布式系统课程/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://www.zhihu.com/question/29597104/answer/880513931
 ---
+
 
 这是一门非常好的课程，真羡慕MIT的学生，在大学能有这么好的学习方式和实践。
 

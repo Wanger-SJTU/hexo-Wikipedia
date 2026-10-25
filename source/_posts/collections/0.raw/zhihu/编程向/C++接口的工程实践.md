@@ -1,9 +1,19 @@
 ---
-title: "C++接口的工程实践"
-date: 2021-10-22
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/212862996
+title: C++接口的工程实践
+date: "2021-10-22 00:00:00"
+updated: "2021-10-22 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/编程向/C-接口的工程实践/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/212862996
 ---
+
 
 ### 一、引言
 

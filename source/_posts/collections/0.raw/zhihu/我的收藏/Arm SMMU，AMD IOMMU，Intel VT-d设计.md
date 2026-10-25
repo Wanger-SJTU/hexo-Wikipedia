@@ -1,9 +1,19 @@
 ---
-title: "(2 条消息) Arm SMMU，AMD IOMMU，Intel VT-d设计"
-date: 2025-02-12
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/22616569807
+title: (2 条消息) Arm SMMU，AMD IOMMU，Intel VT-d设计
+date: "2025-02-12 00:00:00"
+updated: "2025-02-12 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/Arm-SMMU,AMD-IOMMU,Intel-VT-d设计/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/22616569807
 ---
+
 
 Arm SMMU，AMD IOMMU，Intel VT-d相对于MMU都是给外设用的，且区别与在处理器内部的MMU，都是在外设外部。
 
@@ -19,17 +29,17 @@ Arm SMMU，AMD IOMMU，Intel VT-d相对于MMU都是给外设用的，且区别�
 
  5. 内存属性管理：SMMU还可以控制内存访问属性，如是否缓存、共享与否、访问权限等，进一步细化内存管理，提升系统整体性能和安全性。组件与实现：·Stream Table：根表基地址寄存于寄存器中，是SMMU查找中断或DMA请求映射的起点。·Context Descriptor：描述符定义了第一阶段映射表的基地址，与第二阶段配置相关联。·Translation Tables：用于实际的地址转换，依据不同阶段的映射表结构，完成从虚拟到物理地址的映射。
 
-![](asset/img_01d6c1bf839c.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_01d6c1bf839c.jpg)
 
 ### Arm SMMU
 
-![](asset/img_3e6f98a8d03a.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_3e6f98a8d03a.jpg)
 
-![](asset/img_3b65c47bc1f8.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_3b65c47bc1f8.jpg)
 
-![](asset/img_0cb3d3517309.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_0cb3d3517309.jpg)
 
-![](asset/img_62544edaaad4.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_62544edaaad4.jpg)
 
 兼容SMMUv3.2架构：
 
@@ -63,9 +73,9 @@ feature：
 
 #### TBU
 
-![](asset/img_f0d7871ee2c7.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_f0d7871ee2c7.jpg)
 
-![](asset/img_483c10e78df1.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_483c10e78df1.jpg)
 
 **
 
@@ -88,7 +98,7 @@ TBS和TBM：
 - 支持52-bit地址位宽，
 - 数据位宽64bit-512bit
 - Outstanding支持读写最大512
-![](asset/img_66e541e16a7c.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_66e541e16a7c.jpg)
 
  由 VA、ASID、PA、Attributes 组成，即：
 
@@ -96,17 +106,17 @@ TBS和TBM：
 - ASID：Address Space ID
 - PA：物理地址 
 - Attributes：属性；
-![](asset/img_5360fc5397f1.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_5360fc5397f1.jpg)
 
-![](asset/img_f29d15f8c466.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_f29d15f8c466.jpg)
 
 #### TCU
 
-![](asset/img_eb926bda8959.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_eb926bda8959.jpg)
 
-![](asset/img_476e51ac7a03.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_476e51ac7a03.jpg)
 
-![](asset/img_91f6d53686fc.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_91f6d53686fc.jpg)
 
 TCU（Translation Control Unit）功能
 
@@ -127,19 +137,19 @@ TCU模块介绍
 - QTW/DVM interface：Queue and Table Walk (QTW)/Distributed Virtual Memory (DVM) interface是ACE-Lite+DVM主接口
 - Register file：implements the SMMUv3 programmers model
 - DTI interface
-![](asset/img_f7a254c1b4d2.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_f7a254c1b4d2.jpg)
 
 #### DTI
 
-![](asset/img_64e32754a3d9.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_64e32754a3d9.jpg)
 
 The DTI interconnect includes switch, sizer, and register slice components
 
-![](asset/img_09d31e4faf09.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_09d31e4faf09.jpg)
 
-![](asset/img_23c42bc2f4b1.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_23c42bc2f4b1.jpg)
 
-![](asset/img_26c1122b840e.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_26c1122b840e.jpg)
 
 #### 软件与SMMU的交互
 
@@ -149,7 +159,7 @@ SMMU 提供了三个接口给软件使用
 
 二是基于内存的循环缓冲区队列，如下所示，其中，Command 队列用于发送给 SMMU 的命令，Event 队列用于来自 SMMU 的事件/故障报告，PRI 队列用于 接收 PCIe 页面请求。
 
-![](asset/img_696dae1e3c22.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_696dae1e3c22.jpg)
 
 Command queue用于软件与SMMU的硬件交互，软件写命令到command queue, SMMU从command queue中 地区命令处理。 
 
@@ -181,24 +191,24 @@ Page Request Interface queue 是ATS的一个扩展项，是其允许Endpoint请�
 
 虚拟地址在TLB和Page Table都没有找到对应的物理页帧或者权限不对，这就是缺页异常Page Fault，它是一个由硬件中断触发的可以由软件逻辑纠正的错误。
 
-![](asset/img_1798f63fc6a8.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_1798f63fc6a8.jpg)
 
 缺页中断会交给PageFaultHandler处理，其根据缺页中断的不同类型会进行不同的处理：
 
 - Hard Page Fault 也被称为Major Page Fault，翻译为硬缺页错误/主要缺页错误，这时物理内存中没有对应的页帧，需要CPU打开磁盘设备读取到物理内存中，再让MMU建立VA和PA的映射。  
 - Soft Page Fault 也被称为Minor Page Fault，翻译为软缺页错误/次要缺页错误，这时物理内存中是存在对应页帧的，只不过可能是其他进程调入的，发出缺页异常的进程不知道而已，此时MMU只需要建立映射即可，无需从磁盘读取写入内存，一般出现在多进程共享内存区域。  
 - Invalid Page Fault 翻译为无效缺页错误，比如进程访问的内存地址越界访问，又比如对空指针解引用内核就会报segment fault错误中断进程直接挂掉。
-![](asset/img_263853bfebe3.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_263853bfebe3.jpg)
 
 触发Page Fault的原因可能有很多，归根到底也只有几种大类： 1. 如使用共享内存区域，没有存储VA->PA的映射但是存在物理页帧的软缺页错误，在Page Table/TLB中建立映射关系即可。 2. 访问的地址在物理内存中确实不存在，需要从磁盘/swap分区读入才能使用，这种性能影响会比较大，因为磁盘太慢了，尽量使用高性能的SSD来降低延时。 3. 访问的地址内存非法，缺页错误会升级触发SIGSEGV信号结束进程，这种属于可以导致进程挂掉的一种缺页错误。
 
-![](asset/img_05d38c55de95.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_05d38c55de95.jpg)
 
 **
 
 ### AMD IOMMU
 
-![](asset/img_83e530977813.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_83e530977813.jpg)
 
 #### 功能
 
@@ -227,11 +237,11 @@ Page Request Interface queue 是ATS的一个扩展项，是其允许Endpoint请�
 
 #### 数据结构
 
-![](asset/img_1c073066e4f0.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_1c073066e4f0.jpg)
 
 #### page size有效字段定义
 
-![](asset/img_57b326b23ece.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_57b326b23ece.jpg)
 
 支持的physical-page sizes：4 Kbytes, 2 Mbytes, 4 Mbytes, and 1 Gbytes
 
@@ -249,128 +259,128 @@ addresses of up to 64 bits long to be translated into physical addresses of up t
 
 #### 5级page table walk
 
-![](asset/img_a1fdf0ff6722.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_a1fdf0ff6722.jpg)
 
-![](asset/img_382ea4f74846.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_382ea4f74846.jpg)
 
-![](asset/img_b3417e8fccf7.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_b3417e8fccf7.jpg)
 
 #### 5级PTE/PDE定义
 
-![](asset/img_90e66b51a137.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_90e66b51a137.jpg)
 
-![](asset/img_b7cc08e92f0e.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_b7cc08e92f0e.jpg)
 
-![](asset/img_92d7c0ef6729.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_92d7c0ef6729.jpg)
 
-![](asset/img_e245f30f0004.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_e245f30f0004.jpg)
 
-![](asset/img_1ebea8ca5e11.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_1ebea8ca5e11.jpg)
 
-![](asset/img_27b5544255b3.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_27b5544255b3.jpg)
 
-![](asset/img_ed0252a82e78.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_ed0252a82e78.jpg)
 
-![](asset/img_adc42b0bf55b.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_adc42b0bf55b.jpg)
 
 #### command queue
 
-![](asset/img_3abe9b4ac700.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_3abe9b4ac700.jpg)
 
 command是以链表的形式按照FIFO的形式保存和获取
 
 主要有以下命令
 
-![](asset/img_28f8528f5991.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_28f8528f5991.jpg)
 
-![](asset/img_7cd94e37fc25.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_7cd94e37fc25.jpg)
 
-![](asset/img_34218e645dbd.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_34218e645dbd.jpg)
 
-![](asset/img_5f7169dc525c.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_5f7169dc525c.jpg)
 
-![](asset/img_b17cd9f80d3f.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_b17cd9f80d3f.jpg)
 
-![](asset/img_106c30753950.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_106c30753950.jpg)
 
-![](asset/img_1bdbdd4bdd21.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_1bdbdd4bdd21.jpg)
 
-![](asset/img_888deeabf1b4.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_888deeabf1b4.jpg)
 
-![](asset/img_417ae924abcf.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_417ae924abcf.jpg)
 
-![](asset/img_be3d2131d808.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_be3d2131d808.jpg)
 
-![](asset/img_6a5e7e053784.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_6a5e7e053784.jpg)
 
 RESET_VMMIO Command
 #### Event Log 
 
-![](asset/img_1a79c7d53728.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_1a79c7d53728.jpg)
 
-![](asset/img_4bcb46b67bd1.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_4bcb46b67bd1.jpg)
 
-![](asset/img_9910905fd179.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_9910905fd179.jpg)
 
 #### Peripheral Page Request Log
 
-![](asset/img_56da55a73c70.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_56da55a73c70.jpg)
 
-![](asset/img_bab1ab287cfe.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_bab1ab287cfe.jpg)
 
-![](asset/img_8f50dd465745.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_8f50dd465745.jpg)
 
 #### Guest vAPIC Log 
 
-![](asset/img_6105b18d0a60.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_6105b18d0a60.jpg)
 
-![](asset/img_90c909c66d32.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_90c909c66d32.jpg)
 
 #### vIOMMU Private Address Space
 
-![](asset/img_9b3cc3a96857.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_9b3cc3a96857.jpg)
 
-![](asset/img_2d9066b11113.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_2d9066b11113.jpg)
 
-![](asset/img_c61e7aa8c3f1.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_c61e7aa8c3f1.jpg)
 
 #### I/O Virtualization Memory Definition (IVMD)
 
-![](asset/img_560a5678026d.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_560a5678026d.jpg)
 
 ### Intel VT-d
 
-![](asset/img_8910de13ad48.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_8910de13ad48.jpg)
 
-![](asset/img_4f6370c5f5a6.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_4f6370c5f5a6.jpg)
 
-![](asset/img_291fac257a34.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_291fac257a34.jpg)
 
-![](asset/img_7869fd00ec97.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_7869fd00ec97.jpg)
 
 #### Legacy Mode Address Translation
 
-![](asset/img_1265911de31d.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_1265911de31d.jpg)
 
 #### paging
 
 支持pagesize：4KB，4MB，1GB，
 
-![](asset/img_be0e8cfccd76.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_be0e8cfccd76.jpg)
 
-![](asset/img_89a9d620296d.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_89a9d620296d.jpg)
 
-![](asset/img_b7610db36834.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_b7610db36834.jpg)
 
-![](asset/img_a2e152dbdbe8.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_a2e152dbdbe8.jpg)
 
-![](asset/img_bf5dc5ea382c.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_bf5dc5ea382c.jpg)
 
-![](asset/img_c3c850ed23ef.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_c3c850ed23ef.jpg)
 
 #### 页表描述符（page table descriptor）
 
-![](asset/img_763dd06425ea.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_763dd06425ea.jpg)
 
 包括
 
@@ -380,7 +390,7 @@ RESET_VMMIO Command
 
 存储page首地址的PTE（page table entry）
 
-![](asset/img_fb4d207292d1.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_fb4d207292d1.jpg)
 
 P**（Present） - 为1表明该page存在于当前物理内存中，为0则PTE的其他部分都失去意义了，直接触发page fault。P位为0的PTE也不会有对应的TLB entry，因为早在P位由1变为0的时候，对应的TLB就已经被flush掉了。
 
@@ -406,7 +416,7 @@ PCD和PWT和cache属性相关：
 
 #### paging structure caches
 
-![](asset/img_be0e8cfccd76.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_be0e8cfccd76.jpg)
 
 在多级页表系统中，TLB只缓存最后一级PTE（（对于large pages的TLB则最后一级是PDE或者PDPTE），若是TLB miss，则需要进行多级页表的查找，这是一个串行的，链式的过程。在通过n次内存访问（n等于页表级数）查找到第一个page的物理页面号，为了加速，像TLB缓存PTE一样，中间的PMD, PUD, PGD也可以被缓存。
 
@@ -422,7 +432,7 @@ PCD和PWT和cache属性相关：
 - PML4 cache中也没有的话，那只能去DRAM里按照PML4->PDPT->PD->PT找了，需要4次内存访问。
 从TLB到DRAM，越往后，所需要的内存访问次数越多。
 
-![](asset/img_62c5dbbbe079.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_62c5dbbbe079.jpg)
 
 同TLB一样，paging structure caches需要使用专用的cache来实现，对这些cache的支持与否取决于不同处理器的具体设计。以Intel的Haswell为例（i7-4770）为例，其PDE cache含有32个entries。
 
@@ -436,11 +446,11 @@ TLB中可能含有PCID/ASID来分别不同的进程，同样的，paging structu
 
 #### Device-TLB Operation
 
-![](asset/img_4809278baa17.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_4809278baa17.jpg)
 
-![](asset/img_41cf7bdf279d.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_41cf7bdf279d.jpg)
 
-![](asset/img_6e64281fa199.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_6e64281fa199.jpg)
 
 ### 参考资料
 

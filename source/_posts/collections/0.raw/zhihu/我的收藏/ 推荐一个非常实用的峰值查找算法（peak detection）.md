@@ -1,9 +1,19 @@
 ---
-title: "(1 条消息) 推荐一个非常实用的峰值查找算法（peak detection）"
-date: 2022-08-04
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/549588865
+title: (1 条消息) 推荐一个非常实用的峰值查找算法（peak detection）
+date: "2022-08-04 00:00:00"
+updated: "2022-08-04 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/推荐一个非常实用的峰值查找算法(peak-detection)/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/549588865
 ---
+
 
 本文算法的原始论文出处：Algorithms | Free Full-Text | An Efficient Algorithm for Automatic Peak Detection in Noisy Periodic and Quasi-Periodic Signals | HTML (mdpi.com)
 
@@ -66,21 +76,21 @@ def vis():
 
 vis()`
 
-![](asset/img_9996097782c3.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_9996097782c3.jpg)
 
 AMPD峰值检测数据的噪声还是比较大的，但是AMPD的效果很好。
 
 原始文献中还给出了很多检测例子，比如：
 
-![](asset/img_9df4f51a85b9.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_9df4f51a85b9.jpg)
 
-![](asset/img_67ce69aa1bf6.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_67ce69aa1bf6.jpg)
 
-![](asset/img_b7fc888384c0.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_b7fc888384c0.jpg)
 
-![](asset/img_765aeb46054f.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_765aeb46054f.jpg)
 
-![](asset/img_900bc091d865.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_900bc091d865.jpg)
 
 怎么样，效果还不错吧?
 

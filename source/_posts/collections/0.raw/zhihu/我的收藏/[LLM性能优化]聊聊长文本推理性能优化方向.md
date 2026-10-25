@@ -1,9 +1,19 @@
 ---
-title: "(2 条消息) [LLM性能优化]聊聊长文本推理性能优化方向"
-date: 2024-08-16
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/698308542
+title: (2 条消息) [LLM性能优化]聊聊长文本推理性能优化方向
+date: "2024-08-16 00:00:00"
+updated: "2024-08-16 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/[LLM性能优化]聊聊长文本推理性能优化方向/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/698308542
 ---
+
 
 近期，LLM 的长文本能力越来越受到关注。LLM 处理长文本的能力可以应用在多个应用场景中，例如 LLM Agent 场景：假设 Agent 会调用不同的工具解决用户给出的任务，当用户对 Agent 提出一个任务时，Agent 会先调用一次 LLM，对给定的任务生成一系列的 Function Call，然后依次调用不同的 Function，Agent 将 Function  的所有输出结果作为输入，再调用一次 LLM，生成最终呈现给用户的自然语言。其中，通过 Function 返回的结果可能很长，多个Function结果拼起来可能是一个很长的输入，这样 Agent 模型就需要具备长文本处理能力。除了 Agent 以外，RAG、文本摘要、多模态都需要 LLM 模型具备长文本处理能力，这些应用在落地时需要 LLM 推理服务具备很高的长文本推理效率。笔者之前在介绍 [vLLM 的文章中](https://zhuanlan.zhihu.com/p/656939628) 介绍过与 LLM 推理服务性能最关键的因素：KVCache 显存大小。KVCache 显存占用的计算公式为：
 
@@ -28,7 +38,7 @@ LLM 最核心的模块是 Attention：通过 Q 、 K 两个矩阵进行矩阵乘
 
 ####  1.1 静态 Token 稀疏化
 
-![](asset/img_bf8628eb0c40.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_bf8628eb0c40.jpg)
 
  去年底 MIT 提出一种叫 StreamingLLM 的压缩 KVCache 长度的方法，并分析了四种 Attention 实现：
 
@@ -51,22 +61,22 @@ LLM 最核心的模块是 Attention：通过 Q 、 K 两个矩阵进行矩阵乘
 - 当历史 Token 集合大小等于最大容量  k 时，将当前 Token 加入历史 Token 集合中；
 - 当历史 Token 集合大小大于等于最大容量时，计算当前 Token 和历史 Token 集合中所有 Token 的相关性得分，分数越高相关性越低，将最低分的 Token 从集合中剔除，将当前 Token 加入到集合中。
 
-![](asset/img_089cf7fa7410.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_089cf7fa7410.jpg)
 
 相关性得分的计算开销很小，所以该方法的计算复杂度为 O(TL) ，KVCache 存储复杂度为 O(L)。作者也和StreamingLLM 对比了模型效果，在 QA 任务以及文档摘要任务均优于 StreamingLLM。
 
-![](asset/img_7c28b6998089.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_7c28b6998089.jpg)
 
 - **Quest**
-![](asset/img_439552298dba.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_439552298dba.jpg)
 
  H2O 的方法是一种贪心算法，每生成一步会将当前 Token 相关性最低的历史 Token **永久剔除**，被剔除的历史 Token 将不会参与后续任何一个 Token 的 Attention 计算。但是存在一种情况，在前面生成过程中被剔除的 Token 可能与当前的 Token 有着较高的相关性，但因为 Token 在前面的生成过程中已经被剔除导致无法把 Token 召回和当前 Token 完成 Attention 计算。例如在 LLaMA-7B 模型中，当输入的 Prompt 为 “A is B. C is D. A is”，第16层 TransformerLayer 的某个头的 Attention 相关性表如上图所示。纵轴为 Query 的 Token，也可以理解为每一步的当前 Token，横轴为 Key 的 Token，表示历史 Token。当当前 Token 是 “D” 时，历史 Token “B” 相关性很低，不是关键 Token，所以按照 H2O的算法将会被剔除掉；当当前 Token 为 “is” 时，历史 Token “B” 相关性很高，是关键 Token，但由于前面当前 Token 为 "D" 时把 “B” 剔除掉，所以 “B” 不会与 “is” 进行 Attention 计算，潜在影响模型效果。
 
-![](asset/img_66e997ecc9cf.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_66e997ecc9cf.jpg)
 
 为了量化不同的 Attention 算法对相关性 Token 利用率，作者采用 Top-10 召回率衡量，统计每一种 Attention 算法对前十个 Token 的召回情况，如上图所示。标准的 Full Attention 算法的召回率是 1，因为标准算法不会丢弃任何 Token；而作者提出 Quest 算法召回率随着 Token Budget （表示参与 Attention 计算的历史 Token 数最大值）的增加也无限接近 Full Attention，一直保持 90%以上；而  H2O 算法的  Top-10 召回率在 50% 徘徊。**Top-10召回率越低，丢失的信息量越高，模型效果越差。**所以解决上述模型效果问题最重要是提高历史相关性高的 Token 召回率。为了提高召回率，Quest 提出动态构建 Token 候选集。 与 H2O 不同的是，Quest 不会在每轮迭代的时候剔除一个历史 Token，而是保留全量的历史 Token， 每轮计算当前 Token 和历史所有 Token 的相关性，并用 TopK 算法选取相关性最高的 K 个 Token 参与 Attention 计算。但是如果以 Token 粒度计算相关性，那么在进行Attention 前就需要加载全量的 KVCache，与降低计算量以及 KVCache 的访存量的初衷背道而驰。所以 Quest 提出了一种 Page 粒度的高效 Token 相关性估算算法，如下图所示。
 
-![](asset/img_24db8699be6d.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_24db8699be6d.jpg)
 
 Quest 使用 KVCache 页中最大和最小 Key 向量的信息估算一页 KVCache 和当前输入 Query 向量的相关性。该  Attention 算法流程如下：
 
@@ -92,7 +102,7 @@ Prefix Caching 是最近比较火的工程优化，其原理是复用 Tokens 的
 - 能否针对 Prefix Caching 实现高效的 CUDA 算子？
 **Radix Attention**
 
-![](asset/img_2ee226e91079.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_2ee226e91079.jpg)
 
 针对第一个问题，lmsys 提出了 Radix Attention，设计了一种基于 LRU 的 Radix Tree 去管理前缀 Tokens。如上图所示，新到达的请求会先从 Radix Tree 中匹配最长前缀，寻找最远的一个节点。当请求仍有 Tokens 没匹配到已有的前缀，则会新增 Token 子节点。每次新增 Token 时，将新增 Token 节点标记为绿色，并将其前缀的节点标记为蓝色。这种标记主要是更新节点的访问时间，当缓存空间不足时，会将最近没被访问的节点清除。
 
@@ -114,7 +124,7 @@ Arithmetic\ intensity= \frac{2 * q\_len*kv\_len * H + q\_len*kv\_len}{  2 *q\_le
 - **共享前缀 Batch Decoding Attention CUDA 实现原理**：回到共享前缀的场景。当 Batch Decoding Attention 所有输入请求的前缀完全一致时，输入的 Q 、K 、 V 三个矩阵的 Shape 分别为 [B, N, q\_len, H]、[1, N, shared\_kv\_len, H]、[1, N, shared\_kv\_len, H]。**类似 MQA ，GridSize 可以设置为 **[N]** ，那么一个 Thread Block 的三个输入矩阵 **q,k,v** 的 Shape 将为 **[B*q\_len, H]**、**[shared\_kv\_len, H]**、**[shared\_kv\_len, H]**， **q\_len** 相比 MHA 实现"提升"了 **B** 倍，算术强度也提升接近**B** 倍，同样可以降低访存开销。**以下是 Decoding 阶段的 MHA、MQA 以及 BatchPrefixAttention（BPA）的对比：
 Attention 类型Grid Size设置算术强度MHA[B, N]O(1)MQA[B]O(N)BPA[N]O(B)但 BPA 这个算子只适用于前缀完全一样时的 Decoding，当输入多个请求的后缀不同时，仍然需要使用常规的 Decoding Attention 算子，计算后缀的注意力的局部结果，然后使用类似 FlashAttention 将前缀、后缀的注意力局部结果进行合并。这就是 Cascade Inference 的做法。具体流程如下图所示：
 
-![](asset/img_74df005e482d.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_74df005e482d.jpg)
 
 图中上半部分描述了常规的 Decoding Attention 的做法，下半部分描述了 Cascade Inference 的思想。Cascade Inference 主要包含三个步骤：
 
@@ -181,7 +191,7 @@ Attention 类型Grid Size设置算术强度MHA[B, N]O(1)MQA[B]O(N)BPA[N]O(B)但 
 
 LayerSkip 作者在设计 LayerSkip 前做了一个实验，观察整个 Transformer 每一层到底完成什么事情。
 
-![](asset/img_0636ff6dab6a.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_0636ff6dab6a.jpg)
 
 作者使用 LLaMA 7B 测试 HumanEval 代码测试集，主要用于代码生成。实验时在 LLaMA -7B 每层 TransformerLayer 后都接入 LM Head 层，统计整个生成过程中，每一层 TransformerLayer 生成每一个 Token 的概率分布。通过上图右侧表格可以观察到两个现象：
 
@@ -189,7 +199,7 @@ LayerSkip 作者在设计 LayerSkip 前做了一个实验，观察整个 Transfo
 - 大部分情况下不需执行所有层，提前退出计算也可获得最终结果。
 所以，针对以上两个现象，作者提出 LayerSkip，利用“早退”+ 投机采样优化推理性能，具体贡献为：
 
-![](asset/img_21fc6854118e.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_21fc6854118e.jpg)
 
 - 训练侧：早退层没有和 LMHead 适配，导致生成效果很差，所以在训练时候需要前面的层适应早退，具有一定的直接生成 Token 的能力，所以针对早退层添加了一个 Early Exit Loss，增强早退层的生成能力，如上图左侧所示；
 - 推理侧：自投机解码策略。利用早退层推理速度快的特点，生成多个 draft tokens，然后验证阶段跑全量层，将通过验证的 draft tokens 返回。上图右侧所示的是自投机解码策略整体架构。浅绿色节点表示 缓存到显存的状态 KVCache，深绿色节点表示需要进行计算，透明节点表示跳过计算。通过图可得知，仅早退层及之前的层需要 KVCache，后续的层都不需要，所以 LayerSkip 有两大优化：加速预测性能；降低显存开销，潜在提升服务最大吞吐。
@@ -197,11 +207,11 @@ LayerSkip 作者在设计 LayerSkip 前做了一个实验，观察整个 Transfo
 
 上述提到的方法主要是用“裁剪”层方式，仅用部分层的 KVCache 完成全量结果的计算。除了“裁剪”层方式，还可以通过“共享”层方式压缩 KVCache。微软提出了 **Y**ou** O**nly **C**ache **O**nce（**YOCO**），通过多层共享 KVCache 的方式压缩。
 
-![](asset/img_d19cd0f3634d.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_d19cd0f3634d.jpg)
 
 YOCO 模型架构与 LLaMa 等 Decoder Only 模型不同，YOCO 采用 Decoder-Decoder 模型架构，模型架构如上图所示。YOCO 主要由两大模块组成：Self-Decoder 和 Cross-Decoder。YOCO 的前 L/2 层由 Self-Decoder 层堆叠，由最后一层Self-Decoder 层输出 KVCache；后 L/2 层由 Cross-Decoder 层堆叠，由第一层加载 Cross-Decoder 层加载 KVCache，生成最终结果。由于只有一层 KVCache，所以推理时 Prefill 和 Decode 流程均和传统的 Transformer 不同。
 
-![](asset/img_254c6793c131.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_254c6793c131.jpg)
 
 - Prefill 阶段：在传统的 Transformer 结构的模型中，每一层都会计算 KVCache，所以在 Prefill 阶段每一层都会运行，并且生成 KVCache；而 YOCO 只有 Self-Decoder 才会生成 KVCache，并且生成下一个 Token 取决于当前 Token 的值，所以在 Prefill 时所有输入的 Token 经过 Self-Decoder 计算后，仅最后一个 Token 需要运行后续 Cross-Decoder，完成首 Token 的生成。
 - Decode 阶段：在该阶段，模型输入只有当前一个 Token，输出下一个 Token。所以在 Self-Decoder 仅对当前Token 进行 Attention 计算，类似对一个 Token 进行 Prefill，生成该 Token 的 KVCache，然后在 Cross-Decoder 进行Decode Attention计算，生成下一个 Token。
@@ -210,11 +220,11 @@ YOCO 模型架构与 LLaMa 等 Decoder Only 模型不同，YOCO 采用 Decoder-D
 
 在这个维度上，主要的相关工作有 MQA、GQA 和 MLA，借用 DeepSeek V2技术报告的一张图解释下这三者的做法。
 
-![](asset/img_4ef121baca72.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_4ef121baca72.jpg)
 
 MHA、GQA、MQA 以及 MLA 做法从左到右依次是 MHA、GQA、MQA 以及 MLA 。图中有阴影的长条表示会缓存到显存的结果。MHA、GQA、MQA 都需要将 KVCache 缓存到显存。MHA KVCache 在 NumHeads 这个维度和 Q 矩阵一样，属于“一对一”，而 GQA、MQA 在 NumHeads 维度比 Q 矩阵小，KVCache 一个头共享 Q 矩阵多个头，属于 “一对多”，与 MHA 相比 KVCache 显存占用降低到 \frac{1}{GroupSize} （GroupSize 表示共享 Q 矩阵的头数），理论上可以存储的 KVCache 最大 Tokens 数相比 MHA 可以提升 GroupSize 倍。与 GQA、MQA 直接压缩 KVCache 头维度不同，MLA 压缩 HiddenSize 维度。MLA 对输入的 HiddenState 会先做低秩转换，将一个 Shape 为  [S, H] 的 HiddenState 压缩到 Shape 为 [S, CH] 的 c_{t}^{KV} ，其中 CH\ll H 。MLA 会将 c_{t}^{KV}作为 KVCache 存储到长显存中。当 Decode 阶段需要进行 MHA 时，会将加载 c_{t}^{KV} ，然后做两个升秩转换，分别转换为 Shape 均为 [S, H] 的 K、V 矩阵，然后进行 MHA 计算。MLA 通过低秩转换方式压缩 KVCache，从公式来看引入了额外的升秩转换计算，并且需要存储升秩转换计算的激活值结果。但可以根据矩阵乘的交换率特性，将升秩转换的矩阵乘权重和其他权重融合，然后在 attention kernel 直接通过c_{t}^{KV}完成 attention 计算，无需引入额外的计算开销以及存储开销。以下是 MHA、GQA、MQA 以及 MLA 每个 Token 的 KVCache 存储成本。MLA 的 KVCache 存储成本约等于 GroupNum = 2.25 的 GQA 的 KVCache 存储成本。
 
-![](asset/img_58efbed044ba.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_58efbed044ba.jpg)
 
 #### 2.3 DataType
 

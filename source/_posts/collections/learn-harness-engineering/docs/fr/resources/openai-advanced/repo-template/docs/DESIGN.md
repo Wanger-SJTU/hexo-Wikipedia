@@ -1,3 +1,16 @@
+---
+title: DESIGN.md
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/fr/resources/openai-advanced/repo-template/docs/DESIGN/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # DESIGN.md
 
 Ce fichier est le point d'entrée de la conception. Gardez-le bref et utilisez-le pour

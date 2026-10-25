@@ -1,9 +1,19 @@
 ---
-title: "【目录序言翻译】硬件预取技术导论《A Primer on Hardware Prefetching》"
-date: 2021-07-20
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/373038275
+title: 【目录序言翻译】硬件预取技术导论《A Primer on Hardware Prefetching》
+date: "2021-07-20 00:00:00"
+updated: "2021-07-20 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/优化/【目录序言翻译】硬件预取技术导论《A-Primer-on-Hardware-Prefetching》/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/373038275
 ---
+
 
 ### 序言
 
@@ -107,11 +117,11 @@ note：本文包括很多算法或方法，这些算法或方法的名称也被�
 
 **1.1 存储墙**
 
-![](asset/img_e44daf964a99.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_e44daf964a99.jpg)
 
 图1.1，处理器与内存间的差距越来越大，来自[3]图1.1显示了过去四十年间，处理器和内存间日益扩大的性能差距。在这段时期，微架构、电路和制造技术的创新导致了处理器性能的指数增长。与此同时，DRAM则主要受益于密度的增加，其速度只在名义上有所提高。虽然未来的预测表明，处理器性能的提高可能不会再以同样速度进行下去，但目前的性能差距将使我们有必要在未来几年内采用相关技术，以应对漫长的内存访问延迟。
 
-![](asset/img_4f6edfb83fc7.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_4f6edfb83fc7.jpg)
 
 图1.2，一个现代的存储层次计算机架构师们尝试通过建立高速缓冲存储器（cache）的层次结构来弥补这一性能差距。图1.2就展示了一个现代计算机的cache层次结构，该层次由若干层级cache组成，每层都在延迟与容量间经历了权衡。该层次结构的目的主要是通过在cache中完成大部分内存访问，减少较慢的DRAM访问的次数，以改善平均内存访问时间。靠近核心的cache会更小但更快，以有效降低访问延迟。我们将最靠近核心的cache层级称为一级缓存（L1），然后依次对cache层级进行编号，最后一级cache称作LLC（last level cache）
 
@@ -164,4 +174,4 @@ note：本文包括很多算法或方法，这些算法或方法的名称也被�
 
 我们在本书中考虑的所有硬件预取器都属于后者（非绑定）。它们主要的区别在于预取值的放置和替换的策略设计。
 
-![](asset/img_4b68050210f6.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_4b68050210f6.jpg)

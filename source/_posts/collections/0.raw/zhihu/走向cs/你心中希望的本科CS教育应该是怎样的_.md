@@ -1,10 +1,19 @@
 ---
-title: "你心中希望的本科CS教育应该是怎样的?"
-date: 2016-03-17
-tags: [知乎]
-source: https://www.zhihu.com/question/41147552/answer/91066033
-
+title: 你心中希望的本科CS教育应该是怎样的?
+date: "2016-03-17 00:00:00"
+updated: "2016-03-17 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/走向cs/你心中希望的本科CS教育应该是怎样的_/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://www.zhihu.com/question/41147552/answer/91066033
 ---
+
 
 和CMU或者MIT之类的学校（我只比较清楚这两所）的CS本科教育就比较像了，然而国内实力差距太大，导致就算知道应该是怎么样的，也没有能力做到罢了。
 

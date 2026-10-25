@@ -1,9 +1,19 @@
 ---
-title: "大模型推理优化技术-KV Cache量化"
-date: 2024-10-31
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/4335176084
+title: 大模型推理优化技术-KV Cache量化
+date: "2024-10-31 00:00:00"
+updated: "2024-10-31 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/LLM-SD/大模型推理优化技术-KV-Cache量化/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/4335176084
 ---
+
 
 近两年大模型火出天际；同时，也诞生了大量针对大模型的优化技术。本系列将针对一些常见大模型优化技术进行讲解。
 
@@ -58,7 +68,7 @@ KIVI 通过对流行的 LLM 的 KV 缓存中的元素分布进行了全面的研
 
 **
 
-![](asset/img_4b760575cb35.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_4b760575cb35.jpg)
 
  具体解决方案如下：
 
@@ -74,7 +84,7 @@ KIVI 通过对流行的 LLM 的 KV 缓存中的元素分布进行了全面的研
 
 整个算法的伪代码如下所示。
 
-![](asset/img_cec8a33d388f.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_cec8a33d388f.jpg)
 
 #### KVQuant
 
@@ -88,11 +98,11 @@ KV 缓存已然成为长序列长度和大批量大小的内存消耗的主要�
 
 通过分析KV缓存的分布情况发现Key矩阵在特定通道上存在明显的异常值，这些通道的平均幅值比其他通道大；这与之前（LLM.int8()、SmoothQuant）的论文中关于LLM激活中的异常通道的观察结果一致。而Value矩阵既存在异常通道也存在异常token（但这些异常值没有Key矩阵中的通道的异常值那么极端）。
 
-![](asset/img_d969276e0bff.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_d969276e0bff.jpg)
 
 为了更好地匹配分布，研究了按通道的KV缓存量化，即缩放因子和零点由同一通道中的元素共享。通过沿通道维度共享缩放因子和零点，将具有相似幅度的值组合在一起，从而在低精度量化时减轻异常通道对其他通道的影响，并且通过实验发现对Key按通道量化带来了显著的准确性，但对Value则不然。通过消融比较发现对 Key 按通道量化和对 Value 按 token 量化获得了更好的困惑度（Perplexity）。
 
-![](asset/img_2c3f3b3bdf37.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_2c3f3b3bdf37.jpg)
 
 此外，按通道量化可能面临挑战，因为如果在线计算，每次向Key缓存中添加新token时可能需要重新计算缩放因子。本文展示了可以通过使用校准集离线校准缩放因子，从而避免昂贵的在线重新计算。
 
@@ -124,7 +134,7 @@ KV 缓存已然成为长序列长度和大批量大小的内存消耗的主要�
 
 下图展示了通过移除一小部分数值离群值，并保持其全精度的好处，以及按向量（Per-Vector）密集和稀疏量化相对于每层（Per-Tenser/Per-Matrix）使用单个全局离群值阈值的优势。
 
-![](asset/img_0e011017ac72.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_0e011017ac72.jpg)
 
 五、**Attention Sink感知量化**
 
@@ -148,7 +158,7 @@ Transformers 中的 KV Cache 量化很大程度上受启发于 [KIVI: A Tuning-F
 
 目前，Transformers 支持 KV 量化的后端有: quanto 后端，支持 int2 和 int4 量化; HQQ 后端，支持 int2 、 int4 和 int8 量化。如下图所示，两个后端的 `int4` 缓存的生成质量与原始 `fp16` 几乎相同，而使用 `int2` 时出现了质量下降。
 
-![](asset/img_78d8121c1c0d.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_78d8121c1c0d.jpg)
 
 以下为使用 HQQ 后端 进行 KV 缓存量化的示例：
 

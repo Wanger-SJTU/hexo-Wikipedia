@@ -1,3 +1,16 @@
+---
+title: 設計文件索引
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/zh-TW/resources/openai-advanced/repo-template/docs/design-docs/index/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # 設計文件索引
 
 把這份索引當成可查找的設計歷史索引。

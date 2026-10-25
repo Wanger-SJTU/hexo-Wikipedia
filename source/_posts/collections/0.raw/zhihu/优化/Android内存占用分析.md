@@ -1,9 +1,19 @@
 ---
-title: "Android内存占用分析"
-date: 2019-12-16
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/90076117
+title: Android内存占用分析
+date: "2019-12-16 00:00:00"
+updated: "2019-12-16 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/优化/Android内存占用分析/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/90076117
 ---
+
 
 ** 思考的问题：
  1、为什么/proc/meminfo中的内存总大小比物理内存小?

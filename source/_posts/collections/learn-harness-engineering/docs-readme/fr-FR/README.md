@@ -1,3 +1,16 @@
+---
+title: Learn Harness Engineering
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs-readme/fr-FR/README/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 <p align="center">
   <a href="../../README.md"><img alt="English" src="https://img.shields.io/badge/EN-English-blue?style=flat-square"></a>
   <a href="../zh-CN/README.md"><img alt="简体中文" src="https://img.shields.io/badge/ZH-简体中文-red?style=flat-square"></a>
@@ -47,17 +60,17 @@ Learn Harness Engineering est un cours dédié à l'ingénierie des agents de co
 ### Page d'Accueil du Cours
 > Un plan de cours complet et une introduction aux philosophies fondamentales, offrant un chemin clair pour commencer.
 
-![Aperçu de la page d'accueil du cours](../../docs/public/screenshots/readme/zh-home.png)
+![Aperçu de la page d'accueil du cours](/images/collections/learn-harness-engineering/docs/public/screenshots/readme/zh-home.png)
 
 ### Cours Immersifs
 > Des plongées approfondies dans les problèmes concrets et des projets pratiques (comme le Projet 01) pour une expérience d'apprentissage immersive.
 
-![Aperçu des cours](../../docs/public/screenshots/readme/zh-lecture-01.png)
+![Aperçu des cours](/images/collections/learn-harness-engineering/docs/public/screenshots/readme/zh-lecture-01.png)
 
 ### Bibliothèque de Ressources Prête à l'Emploi
 > Des modèles et des configurations de référence conçus pour résoudre les problèmes courants dans le développement d'agents IA multi-tours, tels que la perte de contexte et l'achèvement prématuré des tâches.
 
-![Aperçu de la bibliothèque de ressources](../../docs/public/screenshots/readme/zh-resources.png)
+![Aperçu de la bibliothèque de ressources](/images/collections/learn-harness-engineering/docs/public/screenshots/readme/zh-resources.png)
 
 ## Livres de Cours en PDF
 

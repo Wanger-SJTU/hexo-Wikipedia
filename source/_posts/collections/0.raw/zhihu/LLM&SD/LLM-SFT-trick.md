@@ -1,9 +1,19 @@
 ---
-title: "LLM-SFT-trick"
-date: 2024-03-12
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/682604566
+title: LLM-SFT-trick
+date: "2024-03-12 00:00:00"
+updated: "2024-03-12 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/LLM-SD/LLM-SFT-trick/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/682604566
 ---
+
 
 假期时间，终于有时间做个最近工作的小结。最近一个多月，做了很多大模型微调的工作，包括了生成式任务以及判别式任务，典型的任务如文创、意图分类等。整理一下微调的经验与感想 （几十块A100的堆出来的，都是钱啊！）。
 

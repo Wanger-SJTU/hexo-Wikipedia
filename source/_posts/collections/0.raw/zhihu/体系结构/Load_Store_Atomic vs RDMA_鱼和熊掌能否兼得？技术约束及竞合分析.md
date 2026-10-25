@@ -1,9 +1,19 @@
 ---
-title: "Load/Store/Atomic vs RDMA:鱼和熊掌能否兼得？技术约束及竞合分析"
-date: 2026-03-11
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/2014996241344373641
+title: Load/Store/Atomic vs RDMA:鱼和熊掌能否兼得？技术约束及竞合分析
+date: "2026-03-11 00:00:00"
+updated: "2026-03-11 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/体系结构/Load_Store_Atomic-vs-RDMA_鱼和熊掌能否兼得-技术约束及竞合分析-a88135/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/2014996241344373641
 ---
+
 
 当前AI算力网络领域出现了一个引人深思的现象：以腾讯（ETH-X）和字节跳动（EthLink）为代表的**客户侧计算互联协议设计**普遍要求同时支持**基于Load/Store/Atomic的细粒度**（≤512B）**数据访问**和**基于RDMA的粗粒度**（≥4K）**数据传输；**而NVIDIA的NVLink、AMD主导的UALink及Broadcom主导的SUE(Scale Up Ethernet)等**解决方案提供方的计算互联协议设计**却仅支持Load、Store、Atomic，AMD主导的UEC（Ultra Ethernet Consortium）则专注于RDMA优化。这一分化背后存在哪些深刻的技术约束？还反映了哪些产业链的商业竞争与合作考量？能不能从技术约束和商业竞争合作两个维度展开深度剖析，揭示AI算力网络发展的核心矛盾与未来走向？
 

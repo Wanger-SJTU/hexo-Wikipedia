@@ -1,10 +1,19 @@
 ---
-title: "L2 prefetch"
-date: 2026-06-29
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/2055051175477655441
-
+title: L2 prefetch
+date: "2026-06-29 00:00:00"
+updated: "2026-06-29 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/L2-prefetch/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/2055051175477655441
 ---
+
 
 最近读了2篇关于L2预取的论文。分别是NV和昇腾上做的。
 

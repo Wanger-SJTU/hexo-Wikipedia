@@ -1,9 +1,19 @@
 ---
-title: "SGLang 的 DP Attention 模式浅析"
-date: 2025-11-30
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/1978594821250783074
+title: SGLang 的 DP Attention 模式浅析
+date: "2025-11-30 00:00:00"
+updated: "2025-11-30 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/AI-infra/SGLang-的-DP-Attention-模式浅析/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/1978594821250783074
 ---
+
 
 为尽量介绍清楚 DP Attention 的顶层设计，本文有上万字，新手读者可能需要花费数个小时，才能掌握本文提及的知识。
 1. 简介

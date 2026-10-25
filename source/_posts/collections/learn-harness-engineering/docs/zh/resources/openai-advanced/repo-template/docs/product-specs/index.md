@@ -1,3 +1,16 @@
+---
+title: 产品规格索引
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/zh/resources/openai-advanced/repo-template/docs/product-specs/index/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # 产品规格索引
 
 这个目录用来放当前仍然有效的用户可见行为规格。

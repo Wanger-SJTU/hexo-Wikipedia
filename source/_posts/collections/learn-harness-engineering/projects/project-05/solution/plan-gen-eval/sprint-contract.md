@@ -1,3 +1,16 @@
+---
+title: Sprint Contract - ConversationHistory Feature
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/projects/project-05/solution/plan-gen-eval/sprint-contract/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # Sprint Contract - ConversationHistory Feature
 
 ## Sprint Overview

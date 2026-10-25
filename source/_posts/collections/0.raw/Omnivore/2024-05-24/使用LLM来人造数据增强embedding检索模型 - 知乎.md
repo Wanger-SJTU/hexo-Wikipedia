@@ -1,4 +1,17 @@
 ---
+title: 使用LLM来人造数据增强embedding检索模型 - 知乎
+date: "2026-04-11 21:40:28"
+updated: "2026-04-11 21:40:28"
+layout: post
+permalink: /collections/0.raw/Omnivore/2024-05-24/使用LLM来人造数据增强embedding检索模型-知乎/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
+---
 id: 6dae27b8-afb7-4c77-9ed4-f11060c85e98
 ---
 

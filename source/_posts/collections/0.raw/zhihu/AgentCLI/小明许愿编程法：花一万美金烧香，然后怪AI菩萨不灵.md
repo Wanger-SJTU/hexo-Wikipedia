@@ -1,9 +1,19 @@
 ---
-title: "小明许愿编程法：花一万美金烧香，然后怪AI菩萨不灵"
-date: 2026-02-19
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/2007656505554511663
+title: 小明许愿编程法：花一万美金烧香，然后怪AI菩萨不灵
+date: "2026-02-19 00:00:00"
+updated: "2026-02-19 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/AgentCLI/小明许愿编程法-花一万美金烧香,然后怪AI菩萨不灵/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/2007656505554511663
 ---
+
 
 知乎上小明同学写了一篇[《Vibe Coding一年实践后的冷思考》](https://zhuanlan.zhihu.com/p/2003390589538956495)，自称花了一万美金token，用遍opus4.6、codex-5.3-xhigh、gemini3-pro等地球最强模型，得出结论：AI coding不行，要用Rust和Haskell，要给红黑树加形式化验证来"上强度学CS"。
 

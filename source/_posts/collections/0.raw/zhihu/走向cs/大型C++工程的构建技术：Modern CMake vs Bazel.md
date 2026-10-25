@@ -1,9 +1,19 @@
 ---
-title: "大型C++工程的构建技术：Modern CMake vs Bazel"
-date: 2020-03-18
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/112712537
+title: 大型C++工程的构建技术：Modern CMake vs Bazel
+date: "2020-03-18 00:00:00"
+updated: "2020-03-18 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/走向cs/大型C-工程的构建技术-Modern-CMake-vs-Bazel/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/112712537
 ---
+
 
 感谢评论区提醒，补充下：CMake也支持外部依赖的管理功能：也可以做到打平依赖树，上层模块依赖下层模块的任意版本。
 

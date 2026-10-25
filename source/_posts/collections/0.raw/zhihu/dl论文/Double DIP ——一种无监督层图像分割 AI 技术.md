@@ -1,10 +1,19 @@
 ---
-title: "Double DIP ——一种无监督层图像分割 AI 技术"
-date: 2019-06-03
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/67926513
-
+title: Double DIP ——一种无监督层图像分割 AI 技术
+date: "2019-06-03 00:00:00"
+updated: "2019-06-03 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/dl论文/Double-DIP-——一种无监督层图像分割-AI-技术/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/67926513
 ---
+
 
 **雷锋网 AI 科技评论按：**每月《Computer Vision News》都会选择一篇关于计算机视觉领域研究成果的论文进行回顾。今年三月份，他们选择了由 Yossi Gandelsman，Assaf Shocher 和 Michal Irani 三位学者（下文中所提到的作者，均指以上三位学者）共同完成的关于 Double-DIP 模型的论文，其中详细介绍了基于耦合的深度图像先验网络对单个图像进行无监督层分割这一技术。
 

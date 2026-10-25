@@ -1,9 +1,19 @@
 ---
-title: "从 efinance 到 TickFlow：斩获 GitHub 3.4k ⭐ 后，我又开发了免费、稳定、全面的股票、ETF行情数据服务"
-date: 2026-03-29
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/2015793350209450091
+title: 从 efinance 到 TickFlow：斩获 GitHub 3.4k ⭐ 后，我又开发了免费、稳定、全面的股票、ETF行情数据服务
+date: "2026-03-29 00:00:00"
+updated: "2026-03-29 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/AgentCLI/从-efinance-到-TickFlow-斩获-GitHub-3.4k-⭐-后,我又开发了免费、稳定、全面的股票、ETF行情数据服务/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/2015793350209450091
 ---
+
 
 #### 📌 太长不看
 

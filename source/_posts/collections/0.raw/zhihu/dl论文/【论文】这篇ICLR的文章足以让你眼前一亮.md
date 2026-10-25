@@ -1,10 +1,19 @@
 ---
-title: "【论文】这篇ICLR的文章足以让你眼前一亮"
-date: 2020-09-04
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/215734661
-
+title: 【论文】这篇ICLR的文章足以让你眼前一亮
+date: "2020-09-04 00:00:00"
+updated: "2020-09-04 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/dl论文/【论文】这篇ICLR的文章足以让你眼前一亮/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/215734661
 ---
+
 
 [An empirical study of example forgetting during deep neural network learning](https://link.zhihu.com/?target=https%3A//arxiv.org/pdf/1812.05159.pdf). (ICLR, 2019)
 这篇文章是我最近看到的最有意思的文章之一了，同时我跑了这篇文章的代码并做了很深入的研究和分析。很有意思，值得一读！希望这篇博客能对您目前的工作有所启发！

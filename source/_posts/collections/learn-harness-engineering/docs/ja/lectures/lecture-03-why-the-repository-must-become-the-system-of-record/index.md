@@ -1,3 +1,16 @@
+---
+title: 講義 03. リポジトリを唯一の信頼できる情報源にする
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/ja/lectures/lecture-03-why-the-repository-must-become-the-system-of-record/index/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 [中文版本 →](../../../zh/lectures/lecture-03-why-the-repository-must-become-the-system-of-record/)
 
 > コード例: [code/](https://github.com/walkinglabs/learn-harness-engineering/blob/main/docs/ja/lectures/lecture-03-why-the-repository-must-become-the-system-of-record/code/)

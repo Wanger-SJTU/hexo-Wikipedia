@@ -1,9 +1,20 @@
 ---
-title: "苹果新论文发出惊人一问：What do your logits know?"
-date: 2026-04-29
-source: "https://mp.weixin.qq.com/s/xi-wYsgd_bIdtRTSN-9oKg"
-tags: [wechat, AI]
+title: 苹果新论文发出惊人一问：What do your logits know?
+date: "2026-04-29 00:00:00"
+updated: "2026-04-29 00:00:00"
+layout: post
+permalink: /collections/0.raw/wechat/苹果新论文发出惊人一问-What-do-your-logits-know/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - wechat
+  - AI
+source_url: https://mp.weixin.qq.com/s/xi-wYsgd_bIdtRTSN-9oKg
 ---
+
 
 
 ![image](https://mmbiz.qpic.cn/sz_mmbiz_png/KmXPKA19gW889cR13aBX42evqQIRibKlicoCrHPEpT0tQiceNphESCa2eJTqstP8G0yqMTkeMFrOGue6kOyCKdTkA/640?wx_fmt=png&from=appmsg)

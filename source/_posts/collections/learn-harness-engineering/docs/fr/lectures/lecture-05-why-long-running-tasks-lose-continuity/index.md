@@ -1,3 +1,16 @@
+---
+title: Leçon 05. Garder le contexte vivant entre les sessions
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/fr/lectures/lecture-05-why-long-running-tasks-lose-continuity/index/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 [中文版本 →](../../../zh/lectures/lecture-05-why-long-running-tasks-lose-continuity/)
 
 > Exemples de code : [code/](https://github.com/walkinglabs/learn-harness-engineering/blob/main/docs/fr/lectures/lecture-05-why-long-running-tasks-lose-continuity/code/)

@@ -1,10 +1,19 @@
 ---
-title: "FlashAttention在NPU设计中的硬化思路（顺便勘正Tri Dao FA2/3论文错误）"
-date: 2026-06-20
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/2051636583225468285
-
+title: FlashAttention在NPU设计中的硬化思路（顺便勘正Tri Dao FA2/3论文错误）
+date: "2026-06-20 00:00:00"
+updated: "2026-06-20 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/AI-infra/FlashAttention在NPU设计中的硬化思路(顺便勘正Tri-Dao-FA2_3论文错误)/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/2051636583225468285
 ---
+
 
 最近在做自研 NPU 的架构及建模设计，就免不了 FlashAttention 的近似 asic 流水化来提高计算效率。本篇作为专栏首篇，先大致介绍一下整体思路。
 

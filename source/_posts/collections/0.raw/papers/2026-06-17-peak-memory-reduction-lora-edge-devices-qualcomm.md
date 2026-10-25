@@ -1,3 +1,16 @@
+---
+title: 面向边缘设备 LLM LoRA 微调的峰值显存降低技术
+date: "2026-06-21 16:16:53"
+updated: "2026-06-21 16:16:53"
+layout: post
+permalink: /collections/0.raw/papers/2026-06-17-peak-memory-reduction-lora-edge-devices-qualcomm/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # 面向边缘设备 LLM LoRA 微调的峰值显存降低技术
 
 > **原文**: Techniques for Peak Memory Reduction for LoRA Fine-tuning of LLMs on Edge Devices

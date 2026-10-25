@@ -1,9 +1,19 @@
 ---
-title: "Chunkwise Parallel 详解：如何将 O(L) 顺序计算变成 O(L/C)"
-date: 2026-04-03
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/2022071052365301640
+title: Chunkwise Parallel 详解：如何将 O(L) 顺序计算变成 O(L/C)
+date: "2026-04-03 00:00:00"
+updated: "2026-04-03 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/LLM-SD/Chunkwise-Parallel-详解-如何将-O(L)-顺序计算变成-O(L_C)/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/2022071052365301640
 ---
+
 
 ** 本文深入解析 Gated DeltaNet 的 Chunkwise Parallel 算法，从数学推导到实现细节，帮你理解这个让”无法并行”的算法变得高效的关键技术。TL;DR**: GDN 的 delta rule 存在严格顺序依赖，无法用 Parallel Scan。Chunkwise Parallel 的解法是：将序列分成 L/C 个 chunk，**chunk 内用矩阵乘法**（Tensor Core 友好），**chunk 间顺序传递状态**。这样顺序步骤从 O(L) 降到 O(L/C)，同时获得 Tensor Core 加速。
 

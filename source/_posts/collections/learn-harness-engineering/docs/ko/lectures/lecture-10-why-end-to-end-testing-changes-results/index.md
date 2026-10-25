@@ -1,3 +1,16 @@
+---
+title: 강의 10. 엔드투엔드 테스트(end-to-end testing)만이 진정한 검증이다
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/ko/lectures/lecture-10-why-end-to-end-testing-changes-results/index/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 [English Version →](../../../en/lectures/lecture-10-why-end-to-end-testing-changes-results/)
 
 > 이 강의의 코드 예제: [code/](https://github.com/walkinglabs/learn-harness-engineering/blob/main/docs/en/lectures/lecture-10-why-end-to-end-testing-changes-results/code/)

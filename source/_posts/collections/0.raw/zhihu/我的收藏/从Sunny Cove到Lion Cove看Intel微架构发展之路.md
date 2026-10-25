@@ -1,9 +1,19 @@
 ---
-title: "(2 条消息) 从Sunny Cove到Lion Cove看Intel微架构发展之路"
-date: 2024-11-27
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/9153350232
+title: (2 条消息) 从Sunny Cove到Lion Cove看Intel微架构发展之路
+date: "2024-11-27 00:00:00"
+updated: "2024-11-27 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/从Sunny-Cove到Lion-Cove看Intel微架构发展之路/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/9153350232
 ---
+
 
 **导言**
 
@@ -33,7 +43,7 @@ source: https://zhuanlan.zhihu.com/p/9153350232
 
 下图是`Intel`性能核的一些重要参数供大家参考，从各项数据来看，2024年的`Intel`的核没有挤牙膏，但实际市场反馈不完全是由核决定的。 
 
-![](asset/img_4b34118cb147.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_4b34118cb147.jpg)
 
 **
 
@@ -41,7 +51,7 @@ source: https://zhuanlan.zhihu.com/p/9153350232
 
 2019年 
 
-![](asset/img_5fa3a6e9268c.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_5fa3a6e9268c.jpg)
 
 **
 
@@ -49,7 +59,7 @@ source: https://zhuanlan.zhihu.com/p/9153350232
 
 2020年 
 
-![](asset/img_bc820eb2ba1e.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_bc820eb2ba1e.jpg)
 
 **
 
@@ -57,7 +67,7 @@ source: https://zhuanlan.zhihu.com/p/9153350232
 
 2021年 
 
-![](asset/img_7689f202514b.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_7689f202514b.jpg)
 
 **
 
@@ -65,7 +75,7 @@ source: https://zhuanlan.zhihu.com/p/9153350232
 
 2022年 
 
-![](asset/img_9c252085e2df.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_9c252085e2df.jpg)
 
 **
 
@@ -73,7 +83,7 @@ source: https://zhuanlan.zhihu.com/p/9153350232
 
 2023年 
 
-![](asset/img_542419368069.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_542419368069.jpg)
 
 **
 
@@ -81,7 +91,7 @@ source: https://zhuanlan.zhihu.com/p/9153350232
 
 2024年 
 
-![](asset/img_e14a490ce8d4.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_e14a490ce8d4.jpg)
 
 **
 

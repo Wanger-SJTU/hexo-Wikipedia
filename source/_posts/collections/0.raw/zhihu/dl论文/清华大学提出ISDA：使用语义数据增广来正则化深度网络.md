@@ -1,10 +1,19 @@
 ---
-title: "清华大学提出ISDA：使用语义数据增广来正则化深度网络"
-date: 2020-08-06
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/170610480
-
+title: 清华大学提出ISDA：使用语义数据增广来正则化深度网络
+date: "2020-08-06 00:00:00"
+updated: "2020-08-06 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/dl论文/清华大学提出ISDA-使用语义数据增广来正则化深度网络/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/170610480
 ---
+
 
 ISDA：隐式语义数据增广新方法，涨点明显！可提高分类、目标检测、实例分割等任务性能，代码现已开源！
 

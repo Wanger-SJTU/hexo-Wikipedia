@@ -1,9 +1,19 @@
 ---
-title: "简单讲解C++内存池原理与实现（通俗易懂）"
-date: 2021-11-20
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/434087002
+title: 简单讲解C++内存池原理与实现（通俗易懂）
+date: "2021-11-20 00:00:00"
+updated: "2021-11-20 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/走向cs/简单讲解C-内存池原理与实现(通俗易懂)/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/434087002
 ---
+
 
 ### 一、为什么需要使用内存池
 
@@ -441,4 +451,4 @@ int main()
 
 `
 
-![](asset/img_b4126017a8e0.jpg)
+![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_b4126017a8e0.jpg)

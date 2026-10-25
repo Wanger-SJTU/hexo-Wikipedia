@@ -1,10 +1,19 @@
 ---
 title: "停止在旧基准刷分: KV Cache压缩改进空间在哪里？"
-date: 2026-02-06
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/2003133660560377265
-
+date: "2026-02-06 00:00:00"
+updated: "2026-02-06 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/AI-infra/停止在旧基准刷分_-KV-Cache压缩改进空间在哪里/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/2003133660560377265
 ---
+
 
 投完ICML，借着休息的机会来分享一下KV Cache压缩领域中自己认为的Top-1重要的点：**恰当评估是算法改进的基石，如果没有适当的评估基准，就很难有算法改进。**如果我们只是在已经过时的评测中卷一两个点的增量，那么不管付出多少努力，算法的真实价值和贡献其实是被严重限制的。那么在KV Cache压缩的领域中，许多研究者会认为现有KV Cache领域能做的几乎都差不多了，现有的很多文章中似乎压缩到5%几乎无损，哪里还会有改进的空间呢？
 

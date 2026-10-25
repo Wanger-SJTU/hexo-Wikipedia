@@ -1,10 +1,19 @@
 ---
-title: "一点浅见：deepep 为什么快？"
-date: 2025-03-12
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/28867733102
-
+title: 一点浅见：deepep 为什么快？
+date: "2025-03-12 00:00:00"
+updated: "2025-03-12 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/AI-infra/一点浅见-deepep-为什么快/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/28867733102
 ---
+
 
 [朱然：小红书大模型AI Infra团队介绍&招聘信息](https://zhuanlan.zhihu.com/p/29101694086)
 deepep 为什么快

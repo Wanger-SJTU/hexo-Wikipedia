@@ -1,16 +1,26 @@
 ---
-title: "(2 条消息) LLMs量化系列|LLM量化方法小结"
-date: 2025-06-03
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/12568191406
+title: (2 条消息) LLMs量化系列|LLM量化方法小结
+date: "2025-06-03 00:00:00"
+updated: "2025-06-03 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/LLMs量化系列_LLM量化方法小结/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/12568191406
 ---
+
 
 LLM量化的论文是挺多的，之前看主要还是以处理通道级的**Normal outlier**为主（SmoothQuant,AWQ,Outlier Suppression+,OmniQuant等等), 或者结合LoRA的方法吸收量化误差(QLoRA,QALoRA,LoftQ,LRQAT等等）。最近一年出现了旋转矩阵的方法（QuIP,QuaRot,DuQuant,SpinQuant等等），这类方法一般利用单位随机矩阵和权重变换之后再量化，使得变换后的权重更容易量化。利用随机正交矩阵对权重进行多次旋转变换，使之不仅消除了通道上的**Normal outlier**，也消除了**Massive outlier，**值得研究。此外，基于Look Up Table(LUT)/Vector Quantizaton的方法似乎也有一些进展（AQLM,GPTVQ,QuIP#,PV-Tuning)。由于KV-Cache的压缩需求，KV-Cache的量化（KIVI,KVQuant,ZipCache等)也是一条全新的赛道，并且有一些新的特点。
 
 小结仅为个人的理解，有错误的地方欢迎指出。
 
 **Normal Outliers与Massive Outliers****我们所说的LLM的Outliers更多是指激活值的Outliers，因为权重的整体变化幅度还是比较小的。Outliers的出现会使得量化更难进行，因为数值的变化范围变大了，而我们的编码精度是有限的，如INT4就只有16个数，从而导致了更大的量化误差。
-早期对Outliers是不做区分的，人们认为的Outliers一般指Normal Outliers，其更多地出现在Channel维度，这也是之前的通道级量化方法想解决的。最近的工作如Massive Activations in Large Language Models等将在token维度出现的值特别大，但又非常少的Outliers视为Massive outlier，这是之前通道级量化方法解决不了的，但是可以通过旋转矩阵或者CushionCache（Prompt）吸收的方式解决。![](asset/img_f48911e8fbbc.jpg)
+早期对Outliers是不做区分的，人们认为的Outliers一般指Normal Outliers，其更多地出现在Channel维度，这也是之前的通道级量化方法想解决的。最近的工作如Massive Activations in Large Language Models等将在token维度出现的值特别大，但又非常少的Outliers视为Massive outlier，这是之前通道级量化方法解决不了的，但是可以通过旋转矩阵或者CushionCache（Prompt）吸收的方式解决。![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_f48911e8fbbc.jpg)
 
 DuQuant: Distributing Outliers via Dual Transformation Makes Stronger Quantized LLMs. In NeurIPS2024.
 ### 通道级量化方法
@@ -21,11 +31,11 @@ SmoothQuant认为大语言模型的权重好量化，而激活值比较难量化
 
 论文的具体方法就是逐通道对权重乘上缩放因子，在激活上乘上缩放因子矩阵的逆，从而保持整体的输出不变，激活值整体变小，权重整体变大，激活值更好量化了。缩放因子 s_j直接根据规则公式（4）计算，超参数 \alpha 用来调节缩放因子。
 
-![](asset/img_b338d6517886.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_b338d6517886.jpg)
 
-![](asset/img_19c6f285f73f.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_19c6f285f73f.jpg)
 
-![](asset/img_baa58ced53bc.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_baa58ced53bc.jpg)
 
 > [ICML2023] [W8A8] [SmoothQuant: Accurate and Efficient Post-Training Quantization for Large Language Models](https://link.zhihu.com/?target=https%3A//openreview.net/forum%3Fid%3DsHfSV8eYEp)
 
@@ -33,24 +43,24 @@ SmoothQuant认为大语言模型的权重好量化，而激活值比较难量化
 
 作者观察到Outlier是不对称的**，并且集中在特定通道中。方法：**提出了一种channel-wise shifting和scaling操作，以消除不对称性并缩小问题通道**。作者证明这些操作可以无缝地迁移到后续模块中，同时保持等价性。
 
-![](asset/img_0b9055674a11.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_0b9055674a11.jpg)
 
-![](asset/img_7cf1adeade44.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_7cf1adeade44.jpg)
 
 **[EMNLP2023] [W8A8] [Outlier Suppression+: Accurate quantization of large language models by equivalent and effective shifting and scaling](https://link.zhihu.com/?target=https%3A//aclanthology.org/2023.emnlp-main.102/)
 #### AWQ [MLSys2024]
 
 权重并不是同等重要的，仅保护1%的显著权重可以大大减少量化误差**。那么什么样的权重值得保护呢，在推理时被显著激活的权重肯定更重要，即较大激活值对应的权重比较重要。
 
-![](asset/img_0697813fd323.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_0697813fd323.jpg)
 
 为了同时考虑显著权重和非显著权重，作者选择**自动搜索最佳（每个输入通道）缩放因子，使某一层量化后的输出差最小**。从形式上看，希望优化以下目标，其中，Q 表示权重量化函数，W 表示 FP16 中的原始权重，X 是从小校准集中的输入特征。
 
-![](asset/img_0cfc36764544.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_0cfc36764544.jpg)
 
 其中，s仅与激活的大小有关，使用单个超参数α来平衡显著通道和非显著通道的保护。可以通过在 [0, 1] 区间内进行快速网格搜索（grid search）来找到最佳的 α（0 表示不进行缩放；1 对应于最激进的缩放） 
 
-![](asset/img_3bb70c3fecfa.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_3bb70c3fecfa.jpg)
 
 **[MLSys2024] [W3A16] [AWQ: Activation-aware Weight Quantization for LLM Compression and Acceleration](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2306.00978v4)
 #### OmniQuant [ICLR2024]
@@ -61,15 +71,15 @@ OmniQuant包括两个组件：可学习的权重裁剪( LWC )和可学习的等�
 
 我们的优化目标是最小化量化前后的误差：
 
-![](asset/img_71690eeb3f01.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_71690eeb3f01.jpg)
 
 LWC：可学习的权重裁剪范围，即下面表达式里的 \gamma 和 \beta 参数
 
-![](asset/img_b28e1d19583c.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_b28e1d19583c.jpg)
 
 LET：可学习等效转换参数，即下面表达式里的 \delta 、 s 与 s_a 
 
-![](asset/img_6fc7c70c72cf.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_6fc7c70c72cf.jpg)
 
 > [ICLR2024] [W4A4] [OmniQuant: Omnidirectionally Calibrated Quantization for Large Language Models](https://link.zhihu.com/?target=https%3A//openreview.net/forum%3Fid%3D8Wuvhh0LYW)
 
@@ -109,22 +119,22 @@ GPTQ有个问题是：传统的权重-激活量化一般是最小化当前block/
 
 因此，GPTAQ算法的改进之处是将优化的目标改成了\hat wX-w \tilde{X}  考虑到激活值误差的影响，将激活值的量化误差加到GPTQ更新公式中，这里就不推公式了
 
-![](asset/img_be4ec03db94b.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_be4ec03db94b.jpg)
 
-![](asset/img_7bfd346c8d08.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_7bfd346c8d08.jpg)
 
 **[ICML2025] [GPTQv2: Efficient Finetuning-Free Quantization for Asymmetric Calibration](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2504.02692v1)
 #### MagR [NeurIPS2024]
 
 先前的研究通过权重转换的方法，旋转矩阵的方法或是其他变换方法，量化的是TW矩阵， 这为量化的过程引入了额外的计算开销和存储开销，降低了大模型推理的推理速度。
 
-![](asset/img_466fbcd62b2e.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_466fbcd62b2e.jpg)
 
 如果能直接优化掉这些Outlier其实就不需要加一些其他变换参数。为了解决这个问题，作者提出了权重幅度缩减（MagR）的简单优化技术。MagR作为一种非线性变换作用于权重，而不改变原始特征/激活。优化程序旨在找到具有最小最大幅度的新权重，即 l _\infty 范数，同时保持层的输出。
 
 权重的无穷范数其实就是权重的绝对值最大值，如果在优化目标中加入无穷范数的正则项，不就能在优化时削减权重范围，从而更好地量化了？这个方法的问题是无穷范数是不可微的，因此作者使用了近端梯度下降来作为优化器。
 
-![](asset/img_5375411387bb.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_5375411387bb.jpg)
 
 > [NeurIPS2024] [W2A16] [MagR: Weight Magnitude Reduction for Enhancing Post-Training Quantization](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2406.00800v2)
 
@@ -140,7 +150,7 @@ QuIP作者发现**当权重和海森矩阵不相关时，量化过程更容易�
 
 然后作者给出的方法就是在forward阶段对权重做所谓的“不相干性处理”(旋转变换）后进行量化，量化完再将权重变换回去，保持模型输出等价。
 
-![](asset/img_1acadc9e660a.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_1acadc9e660a.jpg)
 
 其实作者说了一大堆，根据我的理解，说人话就是：**权重矩阵的所有权重分布应该是越均匀越好量化的。怎么才能让权重变得更均匀呢？那就给矩阵乘上一个随机的矩阵。一个随机的矩阵其分布是趋近于高斯分布的，其熵比较大。一个训练好的权重矩阵并不是那么均匀的，特别是充分训练的大语言模型。用一个随机的矩阵乘上不均匀的训练好的矩阵，那么得到的结果肯定是熵增的，即比原来的分布更均匀。**
 
@@ -154,19 +164,19 @@ QuIP作者发现**当权重和海森矩阵不相关时，量化过程更容易�
 
 QuaRot没有用随机正交矩阵，而是利用计算不变性，对权重进行Hadamard变换，消除Outlier使之更容易量化。
 
-![](asset/img_c3c64884aacf.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_c3c64884aacf.jpg)
 
-![](asset/img_37cfd4551094.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_37cfd4551094.jpg)
 
 其实我有个疑问就是为什么要用Hadamard矩阵，Hadamard矩阵比起随机正交矩阵的优势在哪儿？作者给出的解释只是说效果好，并且可以用CUDA kernel加速。
 
-![](asset/img_53561a7f80ae.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_53561a7f80ae.jpg)
 
 https://openreview.net/forum?id=dfqsW38v1X[](https://zhuanlan.zhihu.com/p/12186430182)
 
 为此，Flash Attention的作者Tri Dao实现了可以加速Hadamard矩阵变换的库
 
-![](asset/img_a85f6ca31e5d.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_a85f6ca31e5d.jpg)
 
 [](https://link.zhihu.com/?target=https%3A//github.com/Dao-AILab/fast-hadamard-transform)
 
@@ -176,7 +186,7 @@ https://openreview.net/forum?id=dfqsW38v1X[](https://zhuanlan.zhihu.com/p/121864
 
 SpinQuant在QuaRot的基础上将可以和权重merge的旋转矩阵用Cayley SGD学习，其他在线旋转的矩阵使用Hadamard矩阵
 
-![](asset/img_e8da36e63167.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_e8da36e63167.jpg)
 
 > [ICLR2025] [SpinQuant: LLM quantization with learned rotations.](https://link.zhihu.com/?target=https%3A//openreview.net/forum%3Fid%3DogO6DGE6FZ)
 
@@ -184,7 +194,7 @@ SpinQuant在QuaRot的基础上将可以和权重merge的旋转矩阵用Cayley SG
 
 OSTQ则是在SpinQuant的基础上将类似OmniQuant的权重变化矩阵也加了进去一起学习，并且用Top-K KL散度对齐量化输出与全精度输出
 
-![](asset/img_3a14db0d1c69.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_3a14db0d1c69.jpg)
 
 > [ICLR2025] [OstQuant: Refining Large Language Model Quantization with Orthogonal and Scaling Transformations for Better Distribution Fitting.](https://link.zhihu.com/?target=https%3A//openreview.net/forum%3Fid%3DrAcgDBdKnP)
 
@@ -192,15 +202,15 @@ OSTQ则是在SpinQuant的基础上将类似OmniQuant的权重变化矩阵也加�
 
 DuQuant认为SmoothQuant这类方法会引入新的Outlier,并且一次旋转变换可能还不足以消除所有的Outlier。
 
-![](asset/img_54bd7d00e928.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_54bd7d00e928.jpg)
 
-![](asset/img_6ea8218e5811.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_6ea8218e5811.jpg)
 
 作者的解决方法是先利用一些先验的信息构造旋转矩阵，并采用锯齿形排序的方法将Outlier分散到权重的各个地方进行变换，使得最终旋转出来的权重更加均匀。
 
-![](asset/img_bcc8dc7943b3.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_bcc8dc7943b3.jpg)
 
-![](asset/img_5d1c8bdcffe7.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_5d1c8bdcffe7.jpg)
 
 > [NeurIPS2024] [DuQuant: Distributing Outliers via Dual Transformation Makes Stronger Quantized LLMs](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2406.01721v3)
 
@@ -214,45 +224,45 @@ QLoRA就是在PTQ的过程中用一个全精度的LoRA矩阵去学这个量化�
 
 这么做最大的问题在于模型在推理的时候还是需要和一个全精度的LoRA一起推理，计算全精度模型的加和，没法将LoRA融入到量化的模型里**。本来想用量化的方式加速推理，现在只降低了显存开销。
 
-![](asset/img_a42c017babe1.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_a42c017babe1.jpg)
 
 L4Q: Parameter Efficient Quantization-Aware Fine-Tuning on Large Language Models**关于NF4数据格式：
 标准的INT4量化是将权重映射到线性分布的16个数上，并保存其量化参数（FP16）。在模型推理时根据量化参数（FP16）和保存的INT4的数反量化用于推理。而NF4是利用高斯分布的分位数计算出这16个数不应该是线性分布的，而是越靠近0分布越密集，越远离0分布越稀疏，这和实际模型的权重分布类似。所以说理论上讲NF4数据格式更优。但是由于INT4可以在硬件端实现加速，而NF4没有硬件加速，目前只是通过查表的方式实现**，所以性能不是最优的。此外，[Llama.cpp](https://link.zhihu.com/?target=https%3A//github.com/ggerganov/llama.cpp)里**IQ系列**量化的实现其实也是类似NF4这种非均匀的编码。**还有一篇论文指出NF4不是最优的，感兴趣可以看看：
-[NF4 Isn't Information Theoretically Optimal (and that's Good)](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2306.06965)![](asset/img_e6362cdc6d8b.jpg)
+[NF4 Isn't Information Theoretically Optimal (and that's Good)](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2306.06965)![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_e6362cdc6d8b.jpg)
 
-![](asset/img_450985f1fe71.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_450985f1fe71.jpg)
 
 #### QALoRA [ICLR2024]
 
 前面提到，QLoRA仅仅考虑训练时候的资源，没有考虑推理，且NF4类型的数据不支持硬件加速。QLoRA直接用LoRA补偿量化损失，但是LoRA是FP16的，这意味着模型在推理的时候仍然需要反量化成FP16与LoRA进行计算。实际部署仍然需要再次PTQ量化成INT4，这又会导致显著的精度损失。
 
-![](asset/img_c2027e0ab454.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_c2027e0ab454.jpg)
 
 注意到量化参数其实是全精度（FP16）的，并且只要是线性量化，都需要将量化后的参数反量化（De-quantize)回FP16得到 x_f , x_f=s(x_q-z) ,其中 s 和 z 都是FP16的量化参数。有没有办法能将LoRA融合到量化参数中？这样就不需要单独存储FP16的LoRA分支？
 
-![](asset/img_dc4ffa7272aa.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_dc4ffa7272aa.jpg)
 
 以非对称量化为例，https://blog.csdn.net/weixin_45116099/article/details/136682407注意到LoRA是直接和权重矩阵做线性的加法运算， x_q 和 z 也是做线性的运算，那么是不是可以将LoRA参数融合到 z 里？
 
 量化参数 z 的维度和LoRA的维度是不匹配的。如果是per- tensor量化，那么一层的权重只有一个量化参数，不可能加一个1 \times 1大小的LoRA；如果是权重per-channel+激活per-token的量化，那么一层的权重对应channel数量或者输入token数量的量化参数，这个LoRA矩阵对应的维度应该是一维的张量，不可能加一个1 \times n大小的LoRA；如果是per-group量化，可以将权重分成一个个组，每一组对应一个量化参数。假设分成了m \times n个组，那么就有m \times n个量化参数 z ，这样只需要加一个m \times n的LoRA矩阵即可。
 
-![](asset/img_9f28a129c504.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_9f28a129c504.jpg)
 
 https://lilianweng.github.io/posts/2023-01-10-inference-optimization/下一个问题是，LoRA的维度变小了，假设从 D_{out}\times D_{in} 变成了 D_{out}\times L ，  D_{in}//L  是分组的大小， L 是分组数量。怎么训练LoRA呢？作者给的方法是用一个平均池化操作得到一个中间变量矩阵 QA ，原来 W=W_0+BA 变成了 W=W_0+QA \times BA 。其中 A 矩阵的维度变小了，使得 BA 大小与模型权重维度不匹配，故加了这么一个中间变量 QA 把维度给升上去。
 
 QALoRA虽然使得LoRA可以合并到量化参数中，但是由于LoRA变小了，其实性能提升比较有限。
 
-![](asset/img_c9e852e718f9.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_c9e852e718f9.jpg)
 
 #### CBQ [ICLR2025]
 
 AdaRound学习参数矩阵V使得并且让 \Delta_W 接近0或1来学习权重向上舍入还是向下舍入，CBQ则是将V替换成了LoRA矩阵来降低LLM用Rounding方式的量化开销
 
-![](asset/img_37277cc0ca32.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_37277cc0ca32.jpg)
 
 值得注意的是，在重构损失的时候使用滑动窗口形式一起优化相邻的block块
 
-![](asset/img_0838c0153740.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_0838c0153740.jpg)
 
 > [ICLR2025] [CBQ: Cross-Block Quantization for Large Language Models.](https://link.zhihu.com/?target=https%3A//openreview.net/forum%3Fid%3DeW4yh6HKz4)
 
@@ -271,11 +281,11 @@ AdaRound学习参数矩阵V使得并且让 \Delta_W 接近0或1来学习权重�
 
 PrefixQuant不学习这个"prefix token"，而是将大于设定阈值的outlier token填充到KV-Cache前，这些token一般是". \n [BOS]"等特殊符号。
 
-![](asset/img_8eb5a486beb4.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_8eb5a486beb4.jpg)
 
-Prefixing Attention Sinks can Mitigate Activation Outliers for Large Language Model Quantization.![](asset/img_bf8d42d1ea5f.jpg)
+Prefixing Attention Sinks can Mitigate Activation Outliers for Large Language Model Quantization.![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_bf8d42d1ea5f.jpg)
 
-PrefixQuant: Static Quantization Beats Dynamic through Prefixed Outliers in LLMs![](asset/img_e057d8bbc682.jpg)
+PrefixQuant: Static Quantization Beats Dynamic through Prefixed Outliers in LLMs![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_e057d8bbc682.jpg)
 
 Vision Transformers Need Registers.代表性的论文有如下这些，这里就不解释了，我上一篇笔记就是讲这个的。
 
@@ -293,7 +303,7 @@ ABQ-LLM则是另一种思路，通过KL散度使attention sink量化前后的分
 
 > 对于长文本生成任务，KV-Cache的开销是推理的内存瓶颈
 
-![](asset/img_853fd45222ab.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_853fd45222ab.jpg)
 
 KVQuant: Towards 10 Million Context Length LLM Inference with KV Cache Quantization.> [一文读懂KVCache - 知乎](https://zhuanlan.zhihu.com/p/686183300)
 
@@ -301,20 +311,20 @@ KVQuant: Towards 10 Million Context Length LLM Inference with KV Cache Quantizat
 
 作者发现在KV-Cache中，Key上有更多Channel-wise的Outlier，而Value上Outlier较少**
 
-![](asset/img_5dca1c7ca37f.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_5dca1c7ca37f.jpg)
 
 所以很自然地想到Key做Per-Channel量化而Value做Per-token的量化
 
-![](asset/img_2902e1dfd609.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_2902e1dfd609.jpg)
 
 **[ICML2024] [KIVI: A Tuning-Free Asymmetric 2bit Quantization for KV Cache.](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2402.02750v2)
 #### KVQuant [NeurIPS2024]
 
 KVQuant则是进一步观察到Key-Cache在RoPE前后呈现不同的Outlier模式，而Value-Cache则没有明显的Outlier。**
 
-![](asset/img_9a579f839335.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_9a579f839335.jpg)
 
-![](asset/img_09fd6181bf29.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_09fd6181bf29.jpg)
 
 **[NeurIPS2024] [KVQuant: Towards 10 Million Context Length LLM Inference with KV Cache Quantization.](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2401.18079v5)
 #### ZipCache [NeurIPS2024]
@@ -327,7 +337,7 @@ KVQuant则是进一步观察到Key-Cache在RoPE前后呈现不同的Outlier模�
 
 针对第二个问题，对attention score做了归一化，并根据归一化后的注意力分数为分数高的分配更多比特数，分数低的分配更少比特数，做了混合精度量化处理。
 
-![](asset/img_44fc50464bdb.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_44fc50464bdb.jpg)
 
 **[NeurIPS2024] [ZipCache: Accurate and Efficient KV Cache Quantization with Salient Token Identification](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2405.14256v1).
 ### MoE 量化方法
@@ -340,12 +350,12 @@ MoE模型的量化特点是MoE的专家只在特定输入下会被激活。**也
 
 解决上面两个问题感觉还是偏System一点，QMoE做的也是偏System方面的优化：比如事先存储token隐藏层的状态；Lazy Weight Fetch；对专家进行分组方便进行类似batch GPTQ算法的量化；鲁棒性优化：如设置Token数量限制避免有些专家输入过多Token导致OOM；有极少数的层Hessians矩阵不可逆，则跳过GPTQ，改用RTN。
 
-![](asset/img_80c3feff4f7d.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_80c3feff4f7d.jpg)
 
 **[MLSys2024] [QMoE: Practical Sub-1-Bit Compression of Trillion-Parameter Models.](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2310.16795v1)
 ### Scaling Laws for Precision
 
-![](asset/img_5ca7c1a6f39d.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_5ca7c1a6f39d.jpg)
 
 主要结论，引用 [白话版Scaling Laws for Precision 解读 ](https://zhuanlan.zhihu.com/p/6848989432)
 
@@ -362,9 +372,9 @@ MoE模型的量化特点是MoE的专家只在特定输入下会被激活。**也
 
 对于LLM PTQ来说，如果这种方法成为普遍做法，那么有一些PTQ量化方法就成为历史了，因为你拿到的就是一个FP8的模型，未来可能会更低。再进一步，如果未来像Pytorch你训练模型的时候默认训练就是FP4或者INT4之类的格式，并且效果还能和之前FP16性能相当，PTQ量化是否就完成了其历史使命了？
 
-![](asset/img_2cae7264802d.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_2cae7264802d.jpg)
 
-DeepSeek-V3 Technical Report. ![](asset/img_bc460b1275c4.jpg)
+DeepSeek-V3 Technical Report. ![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_bc460b1275c4.jpg)
 
 DeepSeek-V3 Technical Report. **[deepseek-ai/DeepSeek-V3 (github.com)](https://link.zhihu.com/?target=https%3A//github.com/deepseek-ai/DeepSeek-V3)
 ### 基于LookUp Table (LUT)/Vector Quantization的方法**
@@ -387,6 +397,6 @@ Vector Quantization概念在图像生成领域如VQVAE也有广泛应用，量�
 [NeurIPS2024] [QTIP: Quantization with Trellises and Incoherence Processing.](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2406.11235v3)
 [NeurIPS2024] [PV-Tuning: Beyond Straight-Through Estimation for Extreme LLM Compression.](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2405.14852v2)
 
-![](asset/img_d965ef76717f.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_d965ef76717f.jpg)
 
 [](https://zhuanlan.zhihu.com/p/680567656)

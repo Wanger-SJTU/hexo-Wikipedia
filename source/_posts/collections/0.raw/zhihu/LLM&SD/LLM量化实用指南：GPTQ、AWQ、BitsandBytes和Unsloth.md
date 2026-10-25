@@ -1,9 +1,19 @@
 ---
-title: "LLM量化实用指南：GPTQ、AWQ、BitsandBytes和Unsloth"
-date: 2025-04-14
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/1893987794843592456
+title: LLM量化实用指南：GPTQ、AWQ、BitsandBytes和Unsloth
+date: "2025-04-14 00:00:00"
+updated: "2025-04-14 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/LLM-SD/LLM量化实用指南-GPTQ、AWQ、BitsandBytes和Unsloth/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/1893987794843592456
 ---
+
 
 在大语言模型(LLMs)的时代，由于模型规模庞大，我们需要理解量化技术才能在本地PC上运行它们。然而，存在许多实现量化的技术，像我这样的初学者很容易感到困惑。因此，在这篇博客中，我将介绍我们必须了解的主要量化技术，并解释如何在Google Colab环境中实现它们。
 
@@ -11,18 +21,18 @@ source: https://zhuanlan.zhihu.com/p/1893987794843592456
 
 量化是将浮点数映射到低位整数的技术。它在减少LLMs模型大小和推理成本方面非常有效。例如，当我们将7B模型（在float32中大约为4 x 7B = 28GB）量化为float16时，我们可以将其减少到2 x 7B = 14GB。如果我们能将float32模型量化为int8，大小将会是1 x 7B = 7GB！下图显示了每种数据类型的位表示。这些是LLMs常用的数据类型。
 
-![](asset/img_7c6ff75cb25e.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_7c6ff75cb25e.jpg)
 
 LLMs使用的常见数据类型那么，我们如何实际减少位大小呢？答案是将值从一种数据类型“四舍五入”到另一种数据类型。为了具体理解量化概念，我们将学习两种基本的四舍五入值的方法：零点量化和绝对最大值量化。
 
 - **零点量化**
 零点量化将给定数据中的最小值和最大值映射到目标数据类型范围的最小值和最大值。让我们考虑将FP16值转换为Int8。下图展示了这种量化方式。
 
-![](asset/img_3aae6c4963d4.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_3aae6c4963d4.jpg)
 
 零点量化图片来自文档我们想要将数据缩放到Int8范围（在这种情况下是0 ~ 255）。因此，我们计算原始比例中的相对值，并通过乘以Int8比例（即255）来重新缩放它们。公式可以描述如下：
 
-![](asset/img_d456972f17c6.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_d456972f17c6.jpg)
 
 零点量化的四舍五入公式其中n是用于量化的位数（在这种情况下是8）。注意，如果我们想要将值重新缩放到-127 ~ 127，我们从上述结果中减去127，然后四舍五入。
 
@@ -31,11 +41,11 @@ LLMs使用的常见数据类型那么，我们如何实际减少位大小呢？�
 - **绝对最大值量化**
 绝对最大值量化将给定数据中的最大绝对值映射到目标数据类型的有符号范围。再次，让我们考虑将FP16值转换为Int8。为了简单起见，我们考虑受限的量化范围，即-127 ~ 127。供参考，完整的量化范围是-128 ~ 127。下图展示了这种量化方式。
 
-![](asset/img_931355dd20b8.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_931355dd20b8.jpg)
 
 绝对最大值量化图片改编自文档我们首先计算数据中的绝对最大值，并用它来重新缩放原始数据。公式可以描述如下：
 
-![](asset/img_f6550d991a22.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_f6550d991a22.jpg)
 
 绝对最大值量化的四舍五入公式这种方法在计算上比零点量化更简单。然而，这种方法受数据中异常值的影响很大，所以我们需要仔细检查我们的数据是否适合这种方法。
 
@@ -57,11 +67,11 @@ PTQ允许对预训练模型进行量化，而无需额外训练。因此，它�
 
 从技术上讲，GPTQ独立量化权重矩阵的每一行，以找到最小化量化误差的最优权重。为了精确量化，它利用Hessian矩阵来计算剩余权重的最优更新，从而减轻压缩过程带来的损失。注意，GPTQ保持嵌入层和输出层为完整的FP16精度，以保持模型精度。下面的伪代码描述了GPTQ算法。
 
-![](asset/img_6dd8bb8a7f8e.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_6dd8bb8a7f8e.jpg)
 
 伪代码改编自论文[1]根据论文，使用单个A100 GPU（80GB VRAM）大约需要四个小时来量化175B参数模型。OPT-175B的量化结果如下表所示。
 
-![](asset/img_46194da9ba9a.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_46194da9ba9a.jpg)
 
 结果表格改编自论文[1]供参考，困惑度衡量模型预测句子中下一个词的能力。因此，困惑度值的降低意味着模型对其预测更有信心。在上表中，与16位精度相比，GPTQ量化的模型保持了困惑度值增加的最小化。
 
@@ -69,11 +79,11 @@ PTQ允许对预训练模型进行量化，而无需额外训练。因此，它�
 
 激活感知权重量化(AWQ)[2]最近成为最受欢迎的量化算法之一。该算法关注对LLM性能非常重要的显著权重。作者的研究表明，LLM有一小部分权重（0.1~1%）显著影响量化误差。他们利用激活幅度来找到这一小部分权重，并应用每通道缩放来减轻显著权重的量化误差。下图(c)展示了这个过程。
 
-![](asset/img_133bad21b43a.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_133bad21b43a.jpg)
 
 AWQ算法示意图改编自论文[2]下表显示了Llama-2和LLaMA模型的AWQ结果。如你所见，AWQ能够获得比最近舍入(RTN)量化和GPTQ更好的困惑度。
 
-![](asset/img_e3e3a3b889b3.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_e3e3a3b889b3.jpg)
 
 Llama量化的结果比较改编自论文[2]需要注意的是，根据论文，AWQ有时对某些模型（如Mistral模型和指令调整模型）的效果不如GPTQ。当我们量化LLMs时，我们应该比较这些算法的结果并选择最好的一个。
 
@@ -83,13 +93,13 @@ BitsandBytes是一个将模型量化为8位或4位的量化库。由于其便利
 
 BitsandBytes的8位量化基于LLM.int8()论文[3]。为了减轻量化误差，它将模型权重中的敏感异常值保持在FP16中，其他部分保持在INT8中，然后分别进行矩阵乘法。最后，它将它们加在一起返回FP16格式。下图显示了这个过程。
 
-![](asset/img_b6d6e7079740.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_b6d6e7079740.jpg)
 
 LLM.int8()架构改编自论文[3]这种技术可以应用于高达170B规模的模型，但它仍然需要8 x 24GB VRAM来运行170B模型，4 x 24GB VRAM来运行66B模型。这对于在消费级GPU上运行大规模模型来说仍然不够。
 
 因此，4位量化被开发出来解决这个问题。Bitsandbytes的4位量化通常与QLoRA[4]一起使用来微调量化的LLMs。直观地说，QLoRA将目标模型量化为4位，使其冻结，并使用LoRA微调冻结的4位模型。以下是完整微调、LoRA和QLoRA之间的比较。
 
-![](asset/img_ffddebf856a6.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_ffddebf856a6.jpg)
 
 完整微调、LoRA和QLoRA架构比较改编自论文[4]从技术上讲，QLoRA主要利用以下特性：
 
@@ -104,7 +114,7 @@ QLoRA应用分页优化器来避免突然的GPU内存峰值。分页优化器使
 
 你可以查看这篇文章来更详细地了解这些特性。下表显示了参数大小与GPU VRAM消耗的关系。
 
-![](asset/img_0c345b14900b.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_0c345b14900b.jpg)
 
 参数大小与内存消耗的关系改编自论文[4]注意，内存列显示的是模型的内存需求，所以它不包含微调部分。虽然这取决于数据集或超参数设置，但我们可能可以使用消费级24GB VRAM机器微调高达13B参数的模型。
 
@@ -114,7 +124,7 @@ QLoRA应用分页优化器来避免突然的GPU内存峰值。分页优化器使
 
 虽然Unsloth不是量化方法，但我想介绍这个用于LLMs的超高效微调开源库。[Unsloth](https://link.zhihu.com/?target=https%3A//github.com/unslothai/unsloth)是一个完全集成了参数高效微调方法（如LoRA和QLoRA）的库。它为开源著名LLMs优化了每个内核，实现了高达~70%的内存使用减少！例如，它支持开源LLMs，如Llama、Mistral、Phi、Qwen和Gemma。
 
-![](asset/img_41cc8e15c737.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_41cc8e15c737.jpg)
 
 Unsloth支持表格改编自官方仓库Unsloth与HuggingFace和vllm兼容，我们可以在它们之间互换格式。当模型受支持时，我们应该使用Unsloth来节省内存并提高性能。
 
@@ -152,7 +162,7 @@ model = AutoModelForCausalLM.from_pretrained(model_name_or_path, device_map="aut
 
 你可以看到，我们可以只用~5GB VRAM就加载一个量化的7B模型。
 
-![](asset/img_6861da20e348.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_6861da20e348.jpg)
 
 Mistral-GPTQ VRAM使用情况（作者提供）加载模型部分完成。
 
@@ -212,7 +222,7 @@ tokenizer.save_pretrained(result_dir)`
 
 对3B模型进行量化大约需要30分钟。当我们保存量化模型时，输出目录将如下图所示。
 
-![](asset/img_ffcb12d9ecfe.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_ffcb12d9ecfe.jpg)
 
 输出目录图片（作者提供）
 
@@ -235,7 +245,7 @@ model = AutoModelForCausalLM.from_pretrained(model_name_or_path, device_map="aut
 
 **
 
-![](asset/img_2f5bd20cae0e.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_2f5bd20cae0e.jpg)
 
 Mistral AWQ VRAM使用情况（作者提供）
 
@@ -301,7 +311,7 @@ tokenizer.save_pretrained(result_dir)`
 
 当我们保存量化模型时，输出目录将如下图所示。它看起来像GPTQ量化模型的保存目录。
 
-![](asset/img_d43d66ade15f.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_d43d66ade15f.jpg)
 
 AWQ输出目录图片（作者提供）
 
@@ -351,7 +361,7 @@ model_nf4 = get_peft_model(model_nf4, config)`
 
 **
 
-![](asset/img_ae54f16da1b8.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_ae54f16da1b8.jpg)
 
 使用BitsandBytes量化的Llama3.2 VRAM使用情况图片（作者提供）对于指令调整数据集，我们使用grade-school-math-instructions[5]。我们可以通过dataset API加载它。
 
@@ -426,7 +436,7 @@ trainer.save_model(output_dir)`
 
 我们可以保存分词器和LoRA模型权重。保存的目录看起来如下图所示。
 
-![](asset/img_80300d4630dc.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_80300d4630dc.jpg)
 
 保存目录图片（作者提供）
 
@@ -491,7 +501,7 @@ model, tokenizer = FastLanguageModel.from_pretrained(
 
 你可以看到，我们可以只用~3GB VRAM就加载一个量化的3B模型。
 
-![](asset/img_262383770cbe.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_262383770cbe.jpg)
 
 Unsloth VRAM使用情况图片（作者提供）除了上述设置外，其余部分几乎相同。我们使用SFTTrainer进行微调。处理整个数据集大约需要2小时。在这篇博客中，为了训练速度，数据量被限制了。
 
@@ -511,7 +521,7 @@ trainer.train()`
 model.save_pretrained(os.path.join(output_dir, "lora_model"))
 tokenizer.save_pretrained(os.path.join(output_dir, "lora_model"))`
 
-![](asset/img_bd5d3a96c991.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_bd5d3a96c991.jpg)
 
 保存目录图片（作者提供）这种方法保存了一个名为adapter_config.json的配置文件用于加载模型。在推理时，Unsloth会自动读取设置，我们只需要传递保存LoRA权重和配置的目录名称。
 

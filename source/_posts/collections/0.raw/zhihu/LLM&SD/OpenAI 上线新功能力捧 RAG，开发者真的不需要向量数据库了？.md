@@ -1,9 +1,19 @@
 ---
-title: "OpenAI 上线新功能力捧 RAG，开发者真的不需要向量数据库了？"
-date: 2023-11-15
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/667003209
+title: OpenAI 上线新功能力捧 RAG，开发者真的不需要向量数据库了？
+date: "2023-11-15 00:00:00"
+updated: "2023-11-15 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/LLM-SD/OpenAI-上线新功能力捧-RAG,开发者真的不需要向量数据库了/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/667003209
 ---
+
 
 近期， OpenAI 的开发者大会迅速成为各大媒体及开发者的热议焦点，有人甚至发出疑问“向量数据库是不是失宠了？”
 
@@ -41,7 +51,7 @@ OpenAI Assistants 中内置的检索功能绑定 Assistant，每个知识库产�
 
 下表显示了在 OpenAI Assistants 中存储文档的成本：
 
-![](asset/img_f26119ebd94c.png)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_f26119ebd94c.png)
 
 根据上表的定价计算，其代价十分高昂——每月每 GB 的存储需要花费 6 美元。（参考 AWS S3 的收费仅为 0.023 美元。）具体 Assistants API 定价可在此 （https://openai.com/pricing）获取。如果将共享文档复制到每个 Assistant 中，会显著增加存储成本，所以在 OpenAI 上存储重复的文档是一种不现实的方案。但是，如果让所有用户都共享同一个 Assistant，那么将无法支持用户检索自己的私有文档。
 
@@ -53,7 +63,7 @@ OpenAI Assistants 中内置的检索功能绑定 Assistant，每个知识库产�
 
 Milvus 是一款高度灵活、可扩展的开源向量数据库，毫秒内即可实现十亿级别向量的存储和检索。由于优秀的扩展性和超低的查询延时，Milvus 是定制 OpenAI Assistants 检索的首选。
 
-![](asset/img_3812544b4cb7.png)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_3812544b4cb7.png)
 
 ｜OpenAI Assistant 函数调用的工作原理
 
@@ -188,7 +198,7 @@ for m in messages:
 
 至此，我们已成功实现用自定义的检索功能来增强 OpenAI Assistant 的回答能力。
 
-![](asset/img_17a36e822e2c.png)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_17a36e822e2c.png)
 
 ### 03.总结
 

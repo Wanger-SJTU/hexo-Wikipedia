@@ -1,13 +1,23 @@
 ---
-title: "(1 封私信) 不论是训练还是部署都会让你踩坑的Batch Normalization"
-date: 2021-07-11
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/388730276
+title: (1 封私信) 不论是训练还是部署都会让你踩坑的Batch Normalization
+date: "2021-07-11 00:00:00"
+updated: "2021-07-11 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/模型部署那些事/不论是训练还是部署都会让你踩坑的Batch-Normalization/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/388730276
 ---
+
 
 原文来自：
 
-[![](asset/img_6788c640f41d.jpg)不看必进坑~不论是训练还是部署都会让你踩坑的Batch Normalizationmp.weixin.qq.com/s?__biz=Mzg3ODU2MzY5MA==&mid=2247487388&idx=1&sn=915ef017a4de77dd545f788bfcd4d86d&chksm=cf109799f8671e8ff68dd5ac34929982d99a9d4a75638ac23ba77741f2f2d0d42c019de9b36e&token=1139683613&lang=zh_CN#rd](https://link.zhihu.com/?target=https%3A//mp.weixin.qq.com/s%3F__biz%3DMzg3ODU2MzY5MA%3D%3D%26mid%3D2247487388%26idx%3D1%26sn%3D915ef017a4de77dd545f788bfcd4d86d%26chksm%3Dcf109799f8671e8ff68dd5ac34929982d99a9d4a75638ac23ba77741f2f2d0d42c019de9b36e%26token%3D1139683613%26lang%3Dzh_CN%23rd)
+[![](/images/collections/0.raw/zhihu/%25E6%25A8%25A1%25E5%259E%258B%25E9%2583%25A8%25E7%25BD%25B2%25E9%2582%25A3%25E4%25BA%259B%25E4%25BA%258B/asset/img_6788c640f41d.jpg)不看必进坑~不论是训练还是部署都会让你踩坑的Batch Normalizationmp.weixin.qq.com/s?__biz=Mzg3ODU2MzY5MA==&mid=2247487388&idx=1&sn=915ef017a4de77dd545f788bfcd4d86d&chksm=cf109799f8671e8ff68dd5ac34929982d99a9d4a75638ac23ba77741f2f2d0d42c019de9b36e&token=1139683613&lang=zh_CN#rd](https://link.zhihu.com/?target=https%3A//mp.weixin.qq.com/s%3F__biz%3DMzg3ODU2MzY5MA%3D%3D%26mid%3D2247487388%26idx%3D1%26sn%3D915ef017a4de77dd545f788bfcd4d86d%26chksm%3Dcf109799f8671e8ff68dd5ac34929982d99a9d4a75638ac23ba77741f2f2d0d42c019de9b36e%26token%3D1139683613%26lang%3Dzh_CN%23rd)
 
 ### **简单的Batch Normalization**
 
@@ -23,20 +33,20 @@ BN层往往用在深度神经网络的卷积层之后、激活层之前。其作
 
 借一下Pytorch官方文档中的BN公式，我们来回顾一下：
 
-![](asset/img_7e2e202489d5.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%25A8%25A1%25E5%259E%258B%25E9%2583%25A8%25E7%25BD%25B2%25E9%2582%25A3%25E4%25BA%259B%25E4%25BA%258B/asset/img_7e2e202489d5.jpg)
 
 上述的式子很简单，无非就是减均值除方差(其实是标准差)，然后乘以一个权重加上一个系数，其中权重和系数是**可以学习**的，在模型forward和backward的时候会进行更新。是不是很简单？
 
 但BN层的作用和内部原理可能远远不止于此。可研究点还有很多，前一阵子facebook新出的论文**[Rethinking “Batch” in Batch Norm](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2105.07576)**对BN层进行了一次新的解释。
 
-![](asset/img_26beb6aafc88.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%25A8%25A1%25E5%259E%258B%25E9%2583%25A8%25E7%25BD%25B2%25E9%2582%25A3%25E4%25BA%259B%25E4%25BA%258B/asset/img_26beb6aafc88.jpg)
 
 借用**[陀飞轮兄](https://www.zhihu.com/question/38102762/answer/1895873061)**的回答：
 
 ** BN效果好是因为BN的存在会引入mini-batch内其他样本的信息，就会导致预测一个独立样本时，其他样本信息相当于正则项，使得loss曲面变得更加平滑，更容易找到最优解。相当于一次独立样本预测可以看多个样本，学到的特征泛化性更强，更加general。
  BN层仍然有一些我们未知的特性待我们去发掘，不过BatchNormalization的简单介绍先到这里**，接下来我们讨论下BN的细节以及会遇到的坑，不论是训练还是部署，如果对BN不熟悉，说不定哪天就会踩到坑里~
 
-![](asset/img_823631a7e83b.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%25A8%25A1%25E5%259E%258B%25E9%2583%25A8%25E7%25BD%25B2%25E9%2582%25A3%25E4%25BA%259B%25E4%25BA%258B/asset/img_823631a7e83b.jpg)
 
 ### **BN层都在哪里**
 
@@ -44,7 +54,7 @@ BN层往往用在深度神经网络的卷积层之后、激活层之前。其作
 
 除了BN层，还有GN(Group Normalization)、LN(Layer Normalization、IN(Instance Normalization)这些个标准化方法，每个标注化方法都适用于不同的任务。
 
-![](asset/img_c7ac86924079.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%25A8%25A1%25E5%259E%258B%25E9%2583%25A8%25E7%25BD%25B2%25E9%2582%25A3%25E4%25BA%259B%25E4%25BA%258B/asset/img_c7ac86924079.jpg)
 
 举几个简单的应用场景：
 
@@ -99,7 +109,7 @@ resnet作为我们常见的**万年青backbone**不是没有理由的，**效果
 
 但我们都知道BN层在**推理的时候**也只需要之前训练好**固定的参数**：均值{\hat{\sigma}}、方差\sigma_{2}、权重\gamma以及偏置\beta:
 
-![](asset/img_14df9cfb07ec.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%25A8%25A1%25E5%259E%258B%25E9%2583%25A8%25E7%25BD%25B2%25E9%2582%25A3%25E4%25BA%259B%25E4%25BA%258B/asset/img_14df9cfb07ec.jpg)
 
 那么，有没有办法将BN层的参数和前一层的卷积合并，这样BN层就可以功成名就了，之后的模型推理也就不再需要它了。
 
@@ -107,7 +117,7 @@ resnet作为我们常见的**万年青backbone**不是没有理由的，**效果
 
 而BN层的输出公式可以转化为以下形式：
 
-![](asset/img_914d8bf48aac.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%25A8%25A1%25E5%259E%258B%25E9%2583%25A8%25E7%25BD%25B2%25E9%2582%25A3%25E4%25BA%259B%25E4%25BA%258B/asset/img_914d8bf48aac.jpg)
 
 我们对于最后的w、x和偏置b，发现只需要将**卷积权重缩放一定倍数，并对偏置进行一定变化**，就可以将BN层的参数融合进Conv中了。这就相当于**两次线性变化**，两个线性变化是可以叠加融合的。
 
@@ -117,7 +127,7 @@ resnet作为我们常见的**万年青backbone**不是没有理由的，**效果
 
 这种基本的优化方式TensorRT肯定是不会放过的，我们来看看TensorRT对BN层的处理：
 
-![](asset/img_af4fadccea23.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%25A8%25A1%25E5%259E%258B%25E9%2583%25A8%25E7%25BD%25B2%25E9%2582%25A3%25E4%25BA%259B%25E4%25BA%258B/asset/img_af4fadccea23.jpg)
 
 这张图是官方介绍TensorRT优化的例子，很显然上述的`3x3 conv + bias + relu`被合并成了一个`3x3 CBR`，其中bias可以相当于bn(之后会介绍)，我们简单看下Pytorch中inception的结构：
 
@@ -160,7 +170,7 @@ resnet作为我们常见的**万年青backbone**不是没有理由的，**效果
 
 在TensorRT中BN层相当于Scale级别的变化，为什么，回顾一下老潘介绍过的公式：
 
-![](asset/img_914d8bf48aac.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%25A8%25A1%25E5%259E%258B%25E9%2583%25A8%25E7%25BD%25B2%25E9%2582%25A3%25E4%25BA%259B%25E4%25BA%258B/asset/img_914d8bf48aac.jpg)
 
 我们在利用TensorRT进行模型解析时，比如从ONNX中解析成TensorRT的网络结构，我们会提前对BN层的一些操作进行合并和融合。来看看**[ONNX-TensorRT](https://link.zhihu.com/?target=https%3A//github.com/onnx/onnx-tensorrt)**是怎么做的吧:
 

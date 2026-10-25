@@ -1,9 +1,19 @@
 ---
-title: "有哪些相见恨晚的 TensorFlow 小技巧？"
-date: 2026-04-15
-tags: [知乎]
-source: https://www.zhihu.com/question/268375146/answer/339110449
+title: 有哪些相见恨晚的 TensorFlow 小技巧？
+date: "2026-04-15 00:00:00"
+updated: "2026-04-15 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/机器学习/有哪些相见恨晚的-TensorFlow-小技巧/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://www.zhihu.com/question/268375146/answer/339110449
 ---
+
 
 闲的发慌，分享一些调包畜 trick 骗赞，至于炒鸡底层的函数功能，效率评测众说纷纭，比如队列那些，写起来还特别浪费时间，码畜也不敢乱 claim 啥技巧，只说一些高层抽象上的 trick，高速搬砖出活用。
 

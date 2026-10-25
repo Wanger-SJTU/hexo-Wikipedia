@@ -1,9 +1,19 @@
 ---
-title: "【Cache篇】DMA和Cache一致性"
-date: 2022-05-02
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/508439396
+title: 【Cache篇】DMA和Cache一致性
+date: "2022-05-02 00:00:00"
+updated: "2022-05-02 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/体系结构/【Cache篇】DMA和Cache一致性/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/508439396
 ---
+
 
 总目录：
 
@@ -38,7 +48,7 @@ source: https://zhuanlan.zhihu.com/p/508439396
 
 在DMA传输之前，CPU的cache可能缓存了内存数据，需要调用cache clean/flush操作，**把cache内容写入到内存中**。因为CPU cache里可能缓存了最新的数据，然后再启动DMA传输数据，把DMA buffer的数据传输到设备的FIFO。
 
-![](asset/img_37a35f52ffa2.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_37a35f52ffa2.jpg)
 
 **
 
@@ -50,7 +60,7 @@ source: https://zhuanlan.zhihu.com/p/508439396
 
 传输路径：设备FIFO -> 内存 （设备把数据写入到内存中）
 
-![](asset/img_e1c5ccbee5b1.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_e1c5ccbee5b1.jpg)
 
 设备的FIFO产生了新数据，需要把数据写入到DMA buffer里，然后CPU就可以读到设备的数据，类似网卡的收包的过程。
 

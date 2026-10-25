@@ -1,9 +1,19 @@
 ---
-title: "对大规模 model training 感兴趣，请问有相关推荐的文章吗？"
-date: 2026-04-23
-tags: [知乎]
-source: https://www.zhihu.com/question/508671222/answer/2290801813
+title: 对大规模 model training 感兴趣，请问有相关推荐的文章吗？
+date: "2026-04-23 00:00:00"
+updated: "2026-04-23 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/dl论文/对大规模-model-training-感兴趣,请问有相关推荐的文章吗/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://www.zhihu.com/question/508671222/answer/2290801813
 ---
+
 
 知乎用户
 ​

@@ -1,9 +1,19 @@
 ---
-title: "HotChips 2023 CPU设计微结构改动总结"
-date: 2024-03-14
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/686419721
+title: HotChips 2023 CPU设计微结构改动总结
+date: "2024-03-14 00:00:00"
+updated: "2024-03-14 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/体系结构/HotChips-2023-CPU设计微结构改动总结/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/686419721
 ---
+
 
 本文主要记录和介绍CPU设计和微结构改进方面的内容，尤其是我个人认为值得关注的点，考虑到hotchips内容覆盖整个集成电路领域，本文无法做到面面俱到。另外对于只增大size（例如ROB、L1$、TLB）的内容也不做过多介绍，都不做解读，因为这些主要是工艺进步的红利。
 
@@ -25,9 +35,9 @@ core流水线前端的改进：
 
 注意：mop Cache在X3,N2中还有，但是到了X4，N3中被去掉的：**
 
-![](asset/img_d15324b1692e.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_d15324b1692e.jpg)
 
-ARM X4去掉了Mop Cache![](asset/img_ddd2d067d7c2.jpg)
+ARM X4去掉了Mop Cache![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_ddd2d067d7c2.jpg)
 
 5. Malloc后的memset操作会把cacheline memset为0, 自动detect这种streaming write 写操作，对于这类store miss，不在L1和L2 cache中allocate, 避免污染cache, 直接写回memory或者SLC
 
@@ -69,11 +79,11 @@ ARM X4去掉了Mop Cache![](asset/img_ddd2d067d7c2.jpg)
 
 ### Ventana V1
 
-![](asset/img_74361b53f872.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_74361b53f872.jpg)
 
 Veyron V1 流水线框图1. Icache 512KB, **dcache: 64KB, private L2 512KB
 
-![](asset/img_adfbb72c4d8a.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_adfbb72c4d8a.jpg)
 
 **
 
@@ -121,7 +131,7 @@ Veyron V1 流水线框图1. Icache 512KB, **dcache: 64KB, private L2 512KB
 
 **16.** **为什么8-wide的流水线只有4个int执行单元? 答：考虑到Flexibility, 后端瓶颈主要来源于memory, 其他执行单元多了也没用(https://chipsandcheese.com/2023//hot-chips-2023-ventanas-unconventional-veyron-v1/)**
 
-![](asset/img_ed6ee2ff1561.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_ed6ee2ff1561.jpg)
 
 SandyBridge的端口利用率
 ### Intel Xeon E-core(Sierra Forest)
@@ -138,9 +148,9 @@ SandyBridge的端口利用率
 
 ### P870 RISC-V
 
-![](asset/img_52d071312f99.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_52d071312f99.jpg)
 
-![](asset/img_3f0ea1b894ef.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_3f0ea1b894ef.jpg)
 
 1. BP3和译码做到一起：猜测应该是Decode bypass，也就是microOp Cache hit时，不需要decode直接进入rename
 

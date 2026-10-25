@@ -1,16 +1,26 @@
 ---
 title: "DeepGEMM #304浅析：Mega MoE、FP4 Indexer 与全面架构升级"
-date: 2026-04-29
-source: "https://mp.weixin.qq.com/s/I3ijRMTp1Kz_iK7xqDJOkw"
-tags: [wechat]
+date: "2026-04-29 00:00:00"
+updated: "2026-04-29 00:00:00"
+layout: post
+permalink: /collections/0.raw/wechat/DeepGEMM-304浅析Mega-MoEFP4-Indexer-与全面架构升级/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - wechat
+source_url: https://mp.weixin.qq.com/s/I3ijRMTp1Kz_iK7xqDJOkw
 ---
+
 
 关键词：**Mega MoE**、***FP4 Indexer***、动态 Swap A/B、PDL（Programmatic Dependent Launch）、JIT 编译优化
 
 从 GEMM 库到统一 LLM 计算原语平台。DeepGEMM 自 2025 年初发布以来，一直是 DeepSeek 团队面向 NVIDIA GPU（SM90/SM100）的高性能 Tensor Core 内核库。
 
 然而，本次 PR #304 标志着 DeepGEMM 从一个"干净高效的 GEMM 库"向"现代大语言模型统一计算原语平台"的质变——README 的自我定位**已从 "a library designed for clean and efficient GEMMs" 更新为 *"a unified, high-performance tensor core kernel library that brings together the key computation primitives of modern large language models"。***
-![image](asset/DeepGEMM-304浅析Mega-MoEFP4-Indexer-与全面架构升级_001.png)- 
+![image](/images/collections/0.raw/wechat/asset/DeepGEMM-304%25E6%25B5%2585%25E6%259E%2590Mega-MoEFP4-Indexer-%25E4%25B8%258E%25E5%2585%25A8%25E9%259D%25A2%25E6%259E%25B6%25E6%259E%2584%25E5%258D%2587%25E7%25BA%25A7_001.png)- 
 **[Public release 26/04] Introducing Mega MoE, FP4 Indexer and other features/fixes**
 
 - 
@@ -95,7 +105,7 @@ https://github.com/deepseek-ai/DeepGEMM/pull/304
 - 
 总结
 
-![image](asset/DeepGEMM-304浅析Mega-MoEFP4-Indexer-与全面架构升级_000.png)
+![image](/images/collections/0.raw/wechat/asset/DeepGEMM-304%25E6%25B5%2585%25E6%259E%2590Mega-MoEFP4-Indexer-%25E4%25B8%258E%25E5%2585%25A8%25E9%259D%25A2%25E6%259E%25B6%25E6%259E%2584%25E5%258D%2587%25E7%25BA%25A7_000.png)
 
 交流加群请在 NeuralTalk 公众号后台回复：加群
 

@@ -1,9 +1,19 @@
 ---
-title: "记AI-infra/大模型推理社招面试一兄弟的全过程 (v3.0)"
-date: 2025-08-22
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/1920946738270810330
+title: 记AI-infra/大模型推理社招面试一兄弟的全过程 (v3.0)
+date: "2025-08-22 00:00:00"
+updated: "2025-08-22 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/记AI-infra_大模型推理社招面试一兄弟的全过程-(v3.0)/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/1920946738270810330
 ---
+
 
 记AI-infra/大模型推理社招面试一兄弟的全过程 (v3.0)
 

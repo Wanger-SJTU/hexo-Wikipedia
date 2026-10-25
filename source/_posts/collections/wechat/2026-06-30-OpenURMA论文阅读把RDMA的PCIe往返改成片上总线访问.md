@@ -1,3 +1,16 @@
+---
+title: OpenURMA 论文阅读：把 RDMA 的 PCIe 往返改成片上总线访问
+date: "2026-07-04 13:45:37"
+updated: "2026-07-04 13:45:37"
+layout: post
+permalink: /collections/wechat/2026-06-30-OpenURMA论文阅读把RDMA的PCIe往返改成片上总线访问/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # OpenURMA 论文阅读：把 RDMA 的 PCIe 往返改成片上总线访问
 
 > 原文链接: https://mp.weixin.qq.com/s/0NXD0FadkjgO6uCS28Cvow
@@ -8,7 +21,7 @@
 
 MiracleFarmsREADING · NOTE
 
-![图片](asset/93c289113f66.jpg)
+![图片](/images/collections/wechat/asset/93c289113f66.jpg)
 
 
 长上下文推理、KV 池化和超节点互连正在把“远端内存访问”推到更热的位置。OpenURMA 这篇论文把问题压到 64B remote fetch：如果一次小读还要走 WQE、doorbell、DMA 和 completion，RDMA 的低延迟神话会被 PCIe 往返重新收税。读懂这篇文章，就能更具体地判断 UB / memory-semantic fabric 到底改变了哪一层成本。
@@ -22,7 +35,7 @@ RDMA 小请求的税，主要交给了 PCIe 往返
 论文把这条路径拆成四次 PCIe crossing；再把 target-side NIC 读远端 host DRAM 的 DMA 显式计入，64B READ 的关键路径里，PCIe 相关成本合计约 1650 ns[1]。一个读远端 64B 的动作，被拆成了好几次“CPU 告诉外设、外设再回来告诉 CPU”。对大块传输来说，这些固定成本还能被 payload 摊薄；对 pointer chase、锁、barrier、KV lookup 这类小操作来说，它们就直接变成延迟主体。
 
 
-![图片](asset/567054df6f77.jpg)
+![图片](/images/collections/wechat/asset/567054df6f77.jpg)
 
 
 图 1：论文把差异压成三步链路：RoCEv2 RC 把 NIC 放在 PCIe 后面、每个应用-远端端点绑定一个 QP、默认 strict order；UB / OpenURMA 把 controller 放到 on-chip bus，拆出 Jetty 与 TP Channel，并把 ordering 改成 opt-in。来源：OpenURMA 论文 Figure 1。
@@ -34,7 +47,7 @@ Jetty / TP Channel 先把状态规模压住
 OpenURMA 对 QP 的重构有很朴素的协议分层味道：应用是谁，和传输到哪个远端 host，应该是两件事。UB 把 per-application endpoint state 放到 Jetty，把 per-remote-host transport state 放到 TP Channel，任意 Jetty 可以经共享 TP Channel pool 指向远端端点。
 
 
-![图片](asset/7ff803e04148.jpg)
+![图片](/images/collections/wechat/asset/7ff803e04148.jpg)
 
 
 图 2：RoCE 的 per-pair QP 让 NIC 状态按 O(N·M) 增长；UB 的 Jetty + TP Channel 拆分后，状态按 O(N+M) 增长。这个拆分决定 controller 能不能稳定留在片上状态里。来源：OpenURMA 论文 Figure 3。
@@ -42,7 +55,7 @@ OpenURMA 对 QP 的重构有很朴素的协议分层味道：应用是谁，和�
 状态规模会继续变成热路径成本。生产 NIC 的 connection context 通常要塞进片上 SRAM；一旦 QP working set 溢出，每个操作都可能额外付一次 context refetch。论文在 Figure 14 里把这个 cliff 画出来：RoCE 在大约 N≈23 就触发 QP cache spill，而 UB 到 N≈1024 才触发；RoCE spill 之后每次 READ 约多付 1000 ns[1]。
 
 
-![图片](asset/5255dc58ebd4.jpg)
+![图片](/images/collections/wechat/asset/5255dc58ebd4.jpg)
 
 
 图 3：状态模型最终会变成延迟曲线。RoCE 的 QP cache cliff 在 N≈23 附近出现，UB 因状态按加法增长，把 cliff 推到 N≈1024；图中数据来自论文仿真。来源：OpenURMA 论文 Figure 14。
@@ -55,13 +68,13 @@ OpenURMA 对 QP 的重构有很朴素的协议分层味道：应用是谁，和�
 UB load/store path 直接把 CPU load 指令接到 on-chip bus controller，完成后数据回到发起 load 的寄存器。短 remote fetch 过去要先把一次操作描述成 WQE，再让 NIC 作为外设读取、执行、写回完成；UB 的 load/store path 让远端访问进入 CPU 的 load-use dependency chain，transport header、sequence number、retransmission slot 和 completion queue 都退出这条热路径。
 
 
-![图片](asset/1ba49a19b54c.jpg)
+![图片](/images/collections/wechat/asset/1ba49a19b54c.jpg)
 
 
 图 4：论文把 64B pointer-chase 的延迟拆成软件、PCIe、NIC pipeline、wire propagation 和 remote DRAM 几部分。RoCE 的红色 PCIe 部分占了主要成本；UB load/store 基本消掉这块固定开销。来源：OpenURMA 论文 Figure 22。
 
 
-![图片](asset/ff9e16cb5eb9.jpg)
+![图片](/images/collections/wechat/asset/ff9e16cb5eb9.jpg)
 
 
 图 5：UB 在 load/store 上复现 500 ns vs 2186 ns 的主差距；即便回到 URMA work-request path，READ/WRITE/SEND/atomic 也因为避开 PCIe 往返而保持约 2.2× 到 2.9× 优势。来源：OpenURMA 论文 Figure 23。
@@ -72,7 +85,7 @@ ordering 按需付费，才给 runtime 留出空间
 OpenURMA 给生产系统的一条启发，是把“南向内存语义通道”和“北向 RDMA 通道”的分工讲得更硬。CloudMatrix384 的服务论文已经展示过一个系统层答案：UB 平面承载异步细粒度内存池访问，RDMA 平面承载 prefill 到 decode 的同步 KV 大块交接，VPC 管控制流[4]。OpenURMA 从协议实现层解释了为什么这个分工合理：细粒度、延迟敏感、可被 load/store 表达的访问适合内存语义；吞吐导向、可批量、可 overlap 的大块搬运仍然适合队列化路径，甚至可以继续交给 RDMA。
 
 
-![图片](asset/09dfaa839d91.jpg)
+![图片](/images/collections/wechat/asset/09dfaa839d91.jpg)
 
 
 图 6：UB 只在 Work Request 明确请求 strict order 时付 fence / gating 成本；RoCE RC 默认强顺序，因此延迟和吞吐曲线基本不随请求比例变化。这个实验把“ordering opt-in”从协议描述变成了性能曲线。来源：OpenURMA 论文 Figure 35。

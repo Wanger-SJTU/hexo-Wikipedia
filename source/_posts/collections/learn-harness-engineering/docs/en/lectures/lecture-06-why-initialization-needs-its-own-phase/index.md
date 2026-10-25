@@ -1,3 +1,16 @@
+---
+title: Lecture 06. Make the Agent Initialize Before Every Work Session
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/en/lectures/lecture-06-why-initialization-needs-its-own-phase/index/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 [中文版 →](../../../zh/lectures/lecture-06-why-initialization-needs-its-own-phase/)
 
 > Code examples: [code/](https://github.com/walkinglabs/learn-harness-engineering/blob/main/docs/en/lectures/lecture-06-why-initialization-needs-its-own-phase/code/)

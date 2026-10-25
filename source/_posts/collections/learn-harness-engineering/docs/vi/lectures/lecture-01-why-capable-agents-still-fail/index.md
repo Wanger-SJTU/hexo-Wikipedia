@@ -1,3 +1,16 @@
+---
+title: Bài 01. Mô hình Mạnh Không có nghĩa là Thực thi Đáng tin cậy
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/vi/lectures/lecture-01-why-capable-agents-still-fail/index/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 [English Version →](../../../en/lectures/lecture-01-why-capable-agents-still-fail/) | [中文版本 →](../../../zh/lectures/lecture-01-why-capable-agents-still-fail/)
 
 > Ví dụ mã nguồn: [code/](https://github.com/walkinglabs/learn-harness-engineering/blob/main/docs/vi/lectures/lecture-01-why-capable-agents-still-fail/code/)

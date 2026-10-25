@@ -1,9 +1,19 @@
 ---
-title: "PCIE 枚举之后的BAR是虚拟地址？还是物理地址？"
-date: 2026-04-21
-tags: [知乎]
-source: https://www.zhihu.com/question/524121501/answer/1995758802314736519
+title: PCIE 枚举之后的BAR是虚拟地址？还是物理地址？
+date: "2026-04-21 00:00:00"
+updated: "2026-04-21 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/体系结构/PCIE-枚举之后的BAR是虚拟地址-还是物理地址/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://www.zhihu.com/question/524121501/answer/1995758802314736519
 ---
+
 
 硬件工程师宝典
 

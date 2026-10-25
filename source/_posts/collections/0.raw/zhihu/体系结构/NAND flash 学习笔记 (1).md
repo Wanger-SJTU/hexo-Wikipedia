@@ -1,10 +1,19 @@
 ---
-title: "NAND flash 学习笔记 (1)"
-date: 2025-09-02
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/1946154917942268996
-
+title: NAND flash 学习笔记 (1)
+date: "2025-09-02 00:00:00"
+updated: "2025-09-02 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/体系结构/NAND-flash-学习笔记-(1)/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/1946154917942268996
 ---
+
 
 NAND Flash原理
 先整体看一下NAND Flash。最小的存储单元是一个Cell，32个Cell连成一条String，很多条String排列成一个Block，就是一块存储阵列。

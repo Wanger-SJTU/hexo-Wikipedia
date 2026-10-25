@@ -1,10 +1,19 @@
 ---
-title: "FAIR提出：注意力可视化之外的Transformer可解释性"
-date: 2020-12-19
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/338156132
-
+title: FAIR提出：注意力可视化之外的Transformer可解释性
+date: "2020-12-19 00:00:00"
+updated: "2020-12-19 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/dl论文/FAIR提出-注意力可视化之外的Transformer可解释性/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/338156132
 ---
+
 
 本文提出了一种计算Transformers网络相关性的新方法，其基于深度泰勒分解原理分配局部相关性，然后将其传播到各层。实验证明了相对于现有可解释性方法的明显优势，代码现已开源！
 

@@ -1,3 +1,16 @@
+---
+title: "AGENTS.md -- Project 03: Multi-Session Continuity with Scope Control"
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/projects/project-03/solution/AGENTS/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # AGENTS.md -- Project 03: Multi-Session Continuity with Scope Control
 
 ## Startup Rules

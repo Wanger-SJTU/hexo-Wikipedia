@@ -1,3 +1,16 @@
+---
+title: AGENTS.md
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/zh-TW/resources/templates/AGENTS/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # AGENTS.md
 
 這個儲存庫是為長時編碼代理工作設計的。重點是讓下一個工作階段能在不靠猜測的情況下繼續推進，而非單純追求程式碼產量。

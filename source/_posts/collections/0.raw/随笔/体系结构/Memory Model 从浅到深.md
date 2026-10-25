@@ -1,10 +1,23 @@
+---
+title: Memory Model 从浅到深
+date: "2026-04-11 21:40:28"
+updated: "2026-04-11 21:40:28"
+layout: post
+permalink: /collections/0.raw/随笔/体系结构/Memory-Model-从浅到深/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 C++11开始对内存模型做了统一的约束。
 #TODO  c++ 内存模型的介绍
 
 ### 为什么需要内存模型
 内存模型是因现代处理器对缓存以及多核运算的支持引出的。早期的单核无缓存结构的处理器而言，指令都是单线程运行的，同一个变量也只会存在一份，这种情况下所有行为都是可以预期的。
 对含有cache的结构，存在cache到memory的的一致性问题；对多核的CPU情形，则存在不同CPU核的顺序问题以及多份变量的同步一致性问题。
-![[assets/cpu_momory.png]]
+![cpu_momory.png](/images/collections/0.raw/%25E9%259A%258F%25E7%25AC%2594/cpu_memory/cpu_momory.png)
 
 #### 简单的多线程访问数据问题
 假设在程序执行之前，A=B=0，有两个线程同时分别执行如下的代码：
@@ -31,18 +44,18 @@ C++11开始对内存模型做了统一的约束。
 下面分析一下不同结果可能出现的情况：
 - `(1,0)`
 
-![[Pasted image 20221026213741.png]]
+![Pasted image 20221026213741.png](/images/collections/assets/Pasted%2520image%252020221026213741.png)
 
 - `(0,2)`
 
-![[Pasted image 20221026220031.png]]
+![Pasted image 20221026220031.png](/images/collections/assets/Pasted%2520image%252020221026220031.png)
 
 - `(1,2)` 
-![[Pasted image 20221026213513.png]]
+![Pasted image 20221026213513.png](/images/collections/assets/Pasted%2520image%252020221026213513.png)
 - `(0,1)`
-![[Pasted image 20221026215948.png]]
+![Pasted image 20221026215948.png](/images/collections/assets/Pasted%2520image%252020221026215948.png)
 
 - `(2,1)`
 
-![[Pasted image 20221026220143.png]]
+![Pasted image 20221026220143.png](/images/collections/assets/Pasted%2520image%252020221026220143.png)
 - `(0,0)`

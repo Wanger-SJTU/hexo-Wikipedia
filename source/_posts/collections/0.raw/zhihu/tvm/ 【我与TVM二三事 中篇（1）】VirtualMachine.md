@@ -1,9 +1,19 @@
 ---
-title: "(1 封私信) 【我与TVM二三事 中篇（1）】VirtualMachine"
-date: 2022-01-17
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/457693496
+title: (1 封私信) 【我与TVM二三事 中篇（1）】VirtualMachine
+date: "2022-01-17 00:00:00"
+updated: "2022-01-17 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/tvm/【我与TVM二三事-中篇(1)】VirtualMachine/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/457693496
 ---
+
 
 除了使用GraphExecutor以外，VirtualMachine也可以作为runtime的选择，本篇梳理一下使用VirtualMachine的流程。测试代码为: [https://github.com/Archermmt/tvm_walk_through/blob/master/adv_virtualmachine/demo.py](https://link.zhihu.com/?target=https%3A//github.com/Archermmt/tvm_walk_through/blob/master/adv_virtualmachine/demo.py)
 
@@ -110,11 +120,11 @@ source: https://zhuanlan.zhihu.com/p/457693496
 
 这个Pass的调用流程在[【我与TVM二三事 前篇（3）】relay optimize](https://zhuanlan.zhihu.com/p/457134643) ： **Step 3.2.2 ToANormalForm**中梳理过，主要就是修改赋值格式。在relay中没有用作IR的优化所以没有可视化效果，在此填一下坑。
 
-![](asset/img_6a9a51501a96.jpg)
+![](/images/collections/0.raw/zhihu/tvm/asset/img_6a9a51501a96.jpg)
 
 使用前Relay部分结构Netron查看完整结构：[https://github.com/Archermmt/tvm_walk_through/blob/master/adv_virtualmachine/visualizes/raw_mod.prototxt](https://link.zhihu.com/?target=https%3A//github.com/Archermmt/tvm_walk_through/blob/master/adv_virtualmachine/visualizes/raw_mod.prototxt)
 
-![](asset/img_ea55e82835b6.jpg)
+![](/images/collections/0.raw/zhihu/tvm/asset/img_ea55e82835b6.jpg)
 
 使用后Relay对应结构Netron查看完整结构：[https://github.com/Archermmt/tvm_walk_through/blob/master/adv_virtualmachine/visualizes/to_a_normal_form.prototxt](https://link.zhihu.com/?target=https%3A//github.com/Archermmt/tvm_walk_through/blob/master/adv_virtualmachine/visualizes/to_a_normal_form.prototxt)
 
@@ -127,11 +137,11 @@ source: https://zhuanlan.zhihu.com/p/457693496
   1.1 VisitExpr_(LetNode)(将var：value关系保存到var_map)
   1.2 VisitExpr_(CallNode)(去除var：value对，直接链接function)`
 
-![](asset/img_0c666bc76858.jpg)
+![](/images/collections/0.raw/zhihu/tvm/asset/img_0c666bc76858.jpg)
 
 优化前Relay部分结构Netron查看完整结构：[https://github.com/Archermmt/tvm_walk_through/blob/master/adv_virtualmachine/visualizes/to_a_normal_form.prototxt](https://link.zhihu.com/?target=https%3A//github.com/Archermmt/tvm_walk_through/blob/master/adv_virtualmachine/visualizes/to_a_normal_form.prototxt)
 
-![](asset/img_acf8fb678169.jpg)
+![](/images/collections/0.raw/zhihu/tvm/asset/img_acf8fb678169.jpg)
 
 优化后Relay对应结构Netron查看完整结构：[https://github.com/Archermmt/tvm_walk_through/blob/master/adv_virtualmachine/visualizes/inline_primitives.prototxt](https://link.zhihu.com/?target=https%3A//github.com/Archermmt/tvm_walk_through/blob/master/adv_virtualmachine/visualizes/inline_primitives.prototxt)
 
@@ -203,11 +213,11 @@ struct PrimitiveInliner : ExprMutator {
 3 transform::FuseOps
 4 重复1-3多次`
 
-![](asset/img_7050073b58b9.jpg)
+![](/images/collections/0.raw/zhihu/tvm/asset/img_7050073b58b9.jpg)
 
 优化前Relay部分结构Netron查看完整结构：[https://github.com/Archermmt/tvm_walk_through/blob/master/adv_virtualmachine/visualizes/inline_primitives.prototxt](https://link.zhihu.com/?target=https%3A//github.com/Archermmt/tvm_walk_through/blob/master/adv_virtualmachine/visualizes/inline_primitives.prototxt)
 
-![](asset/img_d3b8c6db7cae.jpg)
+![](/images/collections/0.raw/zhihu/tvm/asset/img_d3b8c6db7cae.jpg)
 
 优化后Relay对应结构Netron查看完整结构：[https://github.com/Archermmt/tvm_walk_through/blob/master/adv_virtualmachine/visualizes/memory_opt.prototxt](https://link.zhihu.com/?target=https%3A//github.com/Archermmt/tvm_walk_through/blob/master/adv_virtualmachine/visualizes/memory_opt.prototxt)
 

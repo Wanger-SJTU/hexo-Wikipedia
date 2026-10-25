@@ -1,9 +1,19 @@
 ---
-title: "现代C++的内存模型"
-date: 2021-09-22
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/382372072
+title: 现代C++的内存模型
+date: "2021-09-22 00:00:00"
+updated: "2021-09-22 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/走向cs/现代C-的内存模型/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/382372072
 ---
+
 
 写这篇文章的初衷，起因是在读《C++ Concurrency In Action》第5章时，感觉异常难懂，特别是5.3.3节作者举了一个不相关且并不适合的例子来解释Relaxed Ordering，让人更是一头雾水。所以当时便有计划在弄明白C++的内存模型后，写一个更好懂的版本，于是便有了此文。
 
@@ -15,17 +25,17 @@ source: https://zhuanlan.zhihu.com/p/382372072
 
 先说一下理想的硬件，如图1所示，我们编程都是基于此种理想架构，CPU Core直接对RAM进行读写，而无需考虑二者速度差异。从最初的单核时代，到如今的多核时代，都是如此，至少大部分编程都可只做如此假设。这样的理想架构在最开始的单核时代，程序性能甚至可以在不修改代码的前提下而仅靠CPU主频提升而得到大幅改善，这种性能提升就是所谓的Free Lunch。随着主频提升到达极限，多核时代来临，原来单核时代的好日子便一去不复返，复杂的并发程序设计开始成为主流。
 
-![](asset/img_504eb5d6abc1.jpg)
+![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_504eb5d6abc1.jpg)
 
 图1. 理想的架构不过，单纯地比较图1左右部分的架构，其实多核并没有带来更高的复杂度，但实际的CPU/RAM架构远比图1的复杂，图2便是实际的某款CPU架构。
 
-![](asset/img_6e9d238b2630.jpg)
+![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_6e9d238b2630.jpg)
 
 图2. 实际的CPU架构图2左侧为CPU的实际芯片，大约有85%面积为Cache，而图2右侧，在CPU Core和RAM之间，还有共三层的Cache结构（L1/L2/L3），此外还有Store Buffer (SB)，且SB和L1 是每个Core独享，而L2是两个Core共享，L3是所有Core共享，当然，该结构只是对这款实际CPU产品而言，并不能代表全部。但这足以说明，理想和实际的区别。
 
 为什么非要引入Cache？根据Jeff Dean对程序运行方面的一些时间数据的论述，如图3所示：
 
-![](asset/img_51a529a5cf57.jpg)
+![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_51a529a5cf57.jpg)
 
 图3 程序员应该知道的一些时间数据我们可以看出，在速度上，CPU和内存之间有两个数量级的差异。试想，如果没有Cache，CPU每执行一条指令，都要去内存取下一条，而执行一条指令也就几个时钟周期（几ns），而取指令却要上百个时钟周期，这将导致CPU大部分时间都在等待状态，进而导致执行效率低下。
 
@@ -37,7 +47,7 @@ source: https://zhuanlan.zhihu.com/p/382372072
 
 要了解内存模型，我觉得还是要先谈谈一些重要的优化，包括编译器和CPU/Cache方面。优化主要包括Reorder/Invent/Remove，正如图4所言，优化发生在哪一层并不重要。但有哪些类型的优化还是值得一提。
 
-![](asset/img_4ec682d10f0e.jpg)
+![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_4ec682d10f0e.jpg)
 
 图4. 优化（Herb Sutter: atomic Weapons）对于重排（Reordering），编译器和CPU都会有重排，主要就是为了优化性能。既然发生在哪一层不重要，我们这里就从编译器方面来看，以下面代码为例，
 
@@ -122,11 +132,11 @@ if S(a) p L(b) ⇒ S(a) m L(b)
 
 对于临界区区内的语句，显而易见，我们不能将其移出临界区，如图5所示，编译器和CPU都不会做这种移出临界区的优化：
 
-![](asset/img_0da3d562804b.jpg)
+![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_0da3d562804b.jpg)
 
 图5. 不能移出临界区区内代码但我们可以将临界区区外的代码移进来，如图6所示
 
-![](asset/img_7fe0410d4da8.jpg)
+![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_7fe0410d4da8.jpg)
 
 图6. 临界区区外代码可以移入临界区从图5和图6我们可以看出，lock和unlock可以看作两个单方向的屏障，lock对应的屏障，只允许代码往下方向移动，而unlock则只允许上方向移动。
 
@@ -136,13 +146,13 @@ C++内存模型借鉴lock/unlock，引入了两个等效的概念，Acquire（�
 
 有人也许会问，用非原子变量难道不能实现Synchronizes-with关系？首先，非原子变量，显然不能被多个线程同时读写，再者，其无法提供内存屏障，不要忘了前文重排的例子，试想，若线程1中A和B的写入操作被重排到了p.store的后面，且即使替换p.store的非原子变量操作在多线程下可以正确执行，但此时"int r1 = A"能读取到正确的值吗？
 
-![](asset/img_3d3582627931.jpg)
+![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_3d3582627931.jpg)
 
 图7. 使用内存顺序为Acquire/Release模型进行同步 值得说明的是，线程2需要看到线程1对原子变量p的写结果，才能认为线程1 synchronizes-with 线程2，所以线程2对p的读取是在while中进行的。相比于mutex，两个线程都不再需要lock/unlock操作，而仅靠对原子变量的写/读(release/acquire)便能进行同步。
 
 上述线程1和线程2中用到的memory_order_release和memory_order_acquire，其实是比SC-DRF更为宽松的模型，C++默认的SC-DRF对应为memory_order_seq_cst，使用该默认模型的操作，上移下移都不被允许，相当于双向屏障，可以用图8稍作总结。
 
-![](asset/img_c79bdadaf85c.jpg)
+![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_c79bdadaf85c.jpg)
 
 图8. 三种屏障 （可下移、可上移、不能跨越）现代C++的内存模型，其实主要表现在对原子变量进行操作时，通过指定memory order（内存顺序）的参数，来控制线程间同步。图7的示例便是其中一种内存顺序模型（获取发布模型：Acquire-Release Ordering）。memory order是一个枚举值，定义如下：
 
@@ -224,7 +234,7 @@ int main()
 
 各线程关系如图9所示：
 
-![](asset/img_c2a4d1eb3464.jpg)
+![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_c2a4d1eb3464.jpg)
 
 图9. .顺序一致模型的线程同步（2）获取发布模型（acquire-release ordering）
 
@@ -232,7 +242,7 @@ int main()
 
 但此时，我们不能简单按照图1的理想架构来分析代码，而应该按照图2的实际架构进行分析。该代码最终的执行结果，z值可能为0. 
 
-![](asset/img_940bdba16e7b.jpg)
+![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_940bdba16e7b.jpg)
 
 图10. 获取发布模型的线程同步由代码及图10可知，线程a Synchronizes-with 线程c（线程c读取到了线程a对原子变量x的写入值），同理，线程b Synchronizes-with 线程d（根据对原子变量y的写入读取）。但因为所有线程没有参考一个全局的内存顺序，我们无法推出与SC-DRF模型相同的结果，即该模型下，z可能为0。
 

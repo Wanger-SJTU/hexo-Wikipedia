@@ -1,3 +1,16 @@
+---
+title: Promptni sozlash (Prompt Calibration)
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/uz/resources/reference/prompt-calibration/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # Promptni sozlash (Prompt Calibration)
 
 Asosiy (root) yoʻriqnomalar har bir mumkin boʻlgan harakatni emas, balki ishlash tizimini (operating frame) belgilashi kerak.

@@ -1,9 +1,19 @@
 ---
-title: "如何评价论文《Are All Layers Created Equal?》？"
-date: 2020-01-11
-tags: [知乎]
-source: https://www.zhihu.com/question/311869117/answer/2250693074
+title: 如何评价论文《Are All Layers Created Equal?》？
+date: "2020-01-11 00:00:00"
+updated: "2020-01-11 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/dl论文/如何评价论文《Are-All-Layers-Created-Equal_》/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://www.zhihu.com/question/311869117/answer/2250693074
 ---
+
 
 雪化知松
 

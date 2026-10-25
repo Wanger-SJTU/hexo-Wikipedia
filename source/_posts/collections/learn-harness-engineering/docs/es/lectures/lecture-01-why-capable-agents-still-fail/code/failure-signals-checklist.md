@@ -1,3 +1,16 @@
+---
+title: Lista de Verificación de Señales de Fallo
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/es/lectures/lecture-01-why-capable-agents-still-fail/code/failure-signals-checklist/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # Lista de Verificación de Señales de Fallo
 
 Usa esta lista al revisar una ejecución de harness débil.

@@ -1,3 +1,16 @@
+---
+title: Projet 05. Faire vérifier son propre travail par l'agent
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/fr/projects/project-05-grounded-qa-verification/index/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 [中文版本 →](../../../zh/projects/project-05-grounded-qa-verification/)
 
 > Leçons liées : [Leçon 09. Empêcher les agents de déclarer la victoire trop tôt](./../../lectures/lecture-09-why-agents-declare-victory-too-early/index.md) · [Leçon 10. Seule une exécution de pipeline complet compte comme vraie vérification](./../../lectures/lecture-10-why-end-to-end-testing-changes-results/index.md)

@@ -1,10 +1,19 @@
 ---
-title: "DeepSeek Attention之从V3 MLA到V4 CSA+HCA"
-date: 2026-04-25
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/2031133178354716993
-
+title: DeepSeek Attention之从V3 MLA到V4 CSA+HCA
+date: "2026-04-25 00:00:00"
+updated: "2026-04-25 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/AI-infra/DeepSeek-Attention之从V3-MLA到V4-CSA-HCA/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/2031133178354716993
 ---
+
 
 本文为DeepSeek infra的第二篇
 

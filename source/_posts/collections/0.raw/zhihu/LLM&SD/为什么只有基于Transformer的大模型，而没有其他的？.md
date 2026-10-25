@@ -1,9 +1,19 @@
 ---
-title: "为什么只有基于Transformer的大模型，而没有其他的？"
-date: 2024-02-21
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/682990234
+title: 为什么只有基于Transformer的大模型，而没有其他的？
+date: "2024-02-21 00:00:00"
+updated: "2024-02-21 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/LLM-SD/为什么只有基于Transformer的大模型,而没有其他的/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/682990234
 ---
+
 
 其它模型效果不好，全文完（不是）。
 
@@ -13,13 +23,13 @@ source: https://zhuanlan.zhihu.com/p/682990234
 
 **（2）以ELMo为代表的基于blstm的模型后续发展乏力 **ELMo在其提出时也实现了多项任务上的性能提升，但其后出现的无论是bert还是gpt1, 它都打不过。
 
-![](asset/img_8a4fad534056.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_8a4fad534056.jpg)
 
-bert vs ELMo![](asset/img_992153da685e.jpg)
+bert vs ELMo![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_992153da685e.jpg)
 
 ELMo vs gpt1**（3）众多研究“用脚投票”** 很多研究已经证明了 Transformer 提取特征的能力是要远强于 LSTM 的，当前ai届统治者openai说了：lstm相比transformer在总集上掉5.6个点，只有一个集不掉点。
 
-** we analyze the effect of the Transformer by comparing it with a single layer 2048 unit LSTM using the same framework. We observe a 5.6 average score drop when using the LSTM instead of the Transformer. The LSTM only outperforms the Transformer on one dataset – MRPC![](asset/img_58054df06730.jpg)
+** we analyze the effect of the Transformer by comparing it with a single layer 2048 unit LSTM using the same framework. We observe a 5.6 average score drop when using the LSTM instead of the Transformer. The LSTM only outperforms the Transformer on one dataset – MRPC![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_58054df06730.jpg)
 
 2、transformer处理长距离依赖更有效**
 

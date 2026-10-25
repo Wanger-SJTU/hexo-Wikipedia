@@ -1,9 +1,19 @@
 ---
-title: "DeepSeek-V2 高性能推理 (1)：通过矩阵吸收十倍提速 MLA 算子"
-date: 2025-03-04
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/700214123
+title: DeepSeek-V2 高性能推理 (1)：通过矩阵吸收十倍提速 MLA 算子
+date: "2025-03-04 00:00:00"
+updated: "2025-03-04 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/AI-infra/DeepSeek-V2-高性能推理-(1)-通过矩阵吸收十倍提速-MLA-算子-65824c/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/700214123
 ---
+
 
 DeepSeek-V2 高性能推理 (1)：通过矩阵吸收十倍提速 MLA 算子
 

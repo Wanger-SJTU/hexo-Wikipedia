@@ -1,9 +1,19 @@
 ---
-title: "(2 条消息) 菜鸟读flash attention-序"
-date: 2025-06-23
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/1920426925765145060
+title: (2 条消息) 菜鸟读flash attention-序
+date: "2025-06-23 00:00:00"
+updated: "2025-06-23 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/菜鸟读flash-attention-序/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/1920426925765145060
 ---
+
 
 年初deepseek的风也吹到了我，从内核转过来做GPU本来就是一个挑战，看算法是想都没敢想。但是，ds让我做了个梦，对，就是白日梦。
 
@@ -21,7 +31,7 @@ cpu（比如intel）提供任务（可以理解thread）在cpu上下文，内核
 
 cuda core编程比较简单，kernel函数一定会计算。很多指令的操作数都只支持寄存器寻址，虽然我们写的程序都是处理显存，编译过程就分配寄存器。cuda core编程时候，SM内可以共享shared memory，但是默认线程寄存器是私有的。了解tensor core之后，发现volta里面tensor core寄存器在quad pair（NV文章叫法）维度共享，ampere之后warp维度共享。参看[reed大佬回答](https://www.zhihu.com/question/587780273)。
 
-![](asset/img_f74cd0d6201a.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_f74cd0d6201a.jpg)
 
 但是有个问题：ldmatrix访问寄存器。
 
@@ -31,9 +41,9 @@ ldmatrix指定是每行的地址，以每个线程方式指定。从PTX汇编指
 
 在flash attn v1中，a和b都是用ldmatrix.x4加载的。b本身是列序不需要转置，（0，0），（1，0），（8，0），（9，0）。区别是smem_read_offset_计算不同，a是Smem_tile_row_a，b是Smem_tile_col_b。v1是手搓kernel，swizzle是smem_write_offset和smem_read_offset计算实现的。
 
-![](asset/img_1869540cb0b5.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_1869540cb0b5.jpg)
 
-![](asset/img_01dfda3aab38.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_01dfda3aab38.jpg)
 
 关于tensor core有篇非常厉害文章Modeling Deep Learning Accelerator Enabled GPUs，利用分析PTX汇编对应的SASS汇编和修改部分寄存器的值，把每个线程寄存器持有的数据和tensor core架构图推测出来。
 
@@ -45,7 +55,7 @@ NV有篇论文印证了寄存器映射关系，Graphene: An IR for Optimized Ten
 
 右上角的这个小图就是浮点点乘组件，可以分解成几个FMA。
 
-![](asset/img_58e15b129099.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_58e15b129099.jpg)
 
 上面是tensor core架构图，比如a100一个SM 4个partition，每个partition 2个tensor core。这组合起来的算力如何利用？上文提及NV大佬喜欢用replicate，hardware调度器通过给thread block指定SM把计算任务分布到SM上，SM的warp scheduler选择一个warp来运行。假如做GEMM计算, 每个tensor core都在做矩阵乘法，这就形成了replicate。跟指令执行SIMD类似，这是warp层之上的在spatial方向是扩展。
 

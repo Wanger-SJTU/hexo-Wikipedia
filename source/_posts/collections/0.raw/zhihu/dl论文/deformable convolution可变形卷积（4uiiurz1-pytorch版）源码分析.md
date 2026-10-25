@@ -1,10 +1,19 @@
 ---
-title: "deformable convolution可变形卷积（4uiiurz1-pytorch版）源码分析"
-date: 2020-01-18
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/102707081
-
+title: deformable convolution可变形卷积（4uiiurz1-pytorch版）源码分析
+date: "2020-01-18 00:00:00"
+updated: "2020-01-18 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/dl论文/deformable-convolution可变形卷积(4uiiurz1-pytorch版)源码分析/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/102707081
 ---
+
 
 暑假老板给了个工作要用到可变卷积（[Deformable Convolutional Networks](https://zhuanlan.zhihu.com/p/102707081/h%3C/i%3Ettp://www.baidu.com/link?url=9cjIuEjRWep_NtswjToZsj89nvbNl8HJYcuFgZ_mnLbQfRnAhfILve0lHSHl7pSu)），原作者用cuda实现了相关操作，那个时候不是很能看懂，所以找了另一个大佬用纯pytorch实现的版本(冗余比较多，吃内存，其实感觉不是很棒)。当时上手也很苦噶，期末了想起来，写个总结分析一下源码啥的，也希望能帮到同是小白的朋友。
 

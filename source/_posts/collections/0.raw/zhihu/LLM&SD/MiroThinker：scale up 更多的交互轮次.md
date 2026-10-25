@@ -1,9 +1,19 @@
 ---
-title: "MiroThinker：scale up 更多的交互轮次"
-date: 2026-01-23
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/1998096980543562428
+title: MiroThinker：scale up 更多的交互轮次
+date: "2026-01-23 00:00:00"
+updated: "2026-01-23 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/LLM-SD/MiroThinker-scale-up-更多的交互轮次/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/1998096980543562428
 ---
+
 
 MiroThinker 用 30B 模型跑出了 SoTA 的 Agentic 性能，并提出了 Agentic 时代一个新的 scale up 维度：交互轮次。本文结合其技术报告和代码，从上下文工程、数据合成、模型训练三个角度，来看 MiroThinker 是如何打造一个 SoTA 的 Agent 系统的。
 
@@ -17,7 +27,7 @@ $第 t" role="presentation">tt 轮开始时，agent 的上下文窗口中是这�
 
 这样迭代循环进行思考、工具调用、得到工具结果的循环，直到模型的回复中不在包括工具调用 At=&#x2298;" role="presentation">At=⊘A_t=\oslash，此时模型会基于已有的轨迹结果，生成最终回答 y=g&#x03B8;(Ht)" role="presentation">y=gθ(Ht)y=g_\theta(H_t)。
 
-![](asset/img_1f4b11ad3c5c.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_1f4b11ad3c5c.jpg)
 
 #### 工具集
 
@@ -135,7 +145,7 @@ MiroThinker 在 BrowseComp、HLE、GAIA 等多个数据集上进行了评估，�
 
 下图第一行，展示的是轮次的分布，明显 RL 模型比 SFT 模型分布更靠右，即 RL 后模型倾向于用更多轮次来完成任务。第二行，展示的是任务完成的累积分布，可以看到，RL 模型分布更靠右，这也是说明 RL 模型会在更多的轮次后完成任务。另外可以看到，RL 模型的 Acc 比 SFT 模型在四个 benchmark 上普遍高了 10 个点左右。**也就是说，Miro 通过 DPO 和 RL 训练成功地引导模型在交互轮次的维度 scale up，用更多的轮次去全面地收集信息、验证结果，并且随着轮次的增多，也真的大幅提升了最终的任务成功率。验证了 interact scale up 的有效性**。
 
-![](asset/img_9833066cd2e9.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_9833066cd2e9.jpg)
 
 ### 局限性
 

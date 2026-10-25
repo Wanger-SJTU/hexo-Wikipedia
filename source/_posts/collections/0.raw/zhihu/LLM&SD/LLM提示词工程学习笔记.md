@@ -1,9 +1,19 @@
 ---
-title: "LLM提示词工程学习笔记"
-date: 2023-12-04
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/666572032
+title: LLM提示词工程学习笔记
+date: "2023-12-04 00:00:00"
+updated: "2023-12-04 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/LLM-SD/LLM提示词工程学习笔记/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/666572032
 ---
+
 
 #### 提示词工程（Prompt Engineering）是什么
 
@@ -29,7 +39,7 @@ Few-shot指的是提供一些示例，引导LLM给出更高质量的结果，有
 
 （3）*常见token偏差（common token bias）*，相较于稀有token，LLM更倾向于产生在训练数据中更常见的token。
 
-![](asset/img_cddb372e6937.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_cddb372e6937.jpg)
 
 *Fig. 1. [多数标签和近期偏差](https://link.zhihu.com/?target=https%3A//arxiv.org/pdf/2102.09690.pdf)*
 
@@ -58,7 +68,7 @@ Few-shot指的是提供一些示例，引导LLM给出更高质量的结果，有
 
 通过在prompt中包含高质量的推理链的示例，来让LLM完成推理，这些示例可以是自己编写的，或者由模型生成的。
 
-![](asset/img_ca8776db1b4c.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_ca8776db1b4c.jpg)
 
 *Fig. 2. [Chain-of-Thought prompting](https://link.zhihu.com/?target=https%3A//arxiv.org/pdf/2201.11903.pdf)*
 
@@ -66,13 +76,13 @@ Few-shot指的是提供一些示例，引导LLM给出更高质量的结果，有
 
 触发LLM的推理能力并不一定要提供示例，也可以通过一些话术来实现，例如 *Let's think step by step.* ([Large Language Models are Zero-Shot Reasoners](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2205.11916)) 
 
-![](asset/img_2d41deb9d6f8.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_2d41deb9d6f8.jpg)
 
 *Fig. 3. [Zero-Shot Reasoners](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2205.11916)*
 
 或者类似的*Let's work this out in a step by step way to be sure we have the right answer.* ([Large Language Models Are Human-Level Prompt Engineers](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2211.01910)) 
 
-![](asset/img_7155948f291a.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_7155948f291a.jpg)
 
 *Fig. 4. [Different Zero-Shot CoT Trigger Prompt](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2211.01910)*
 
@@ -82,7 +92,7 @@ Few-shot指的是提供一些示例，引导LLM给出更高质量的结果，有
 
 **自洽抽样**通过设置temperature > 0来获取多个不同输出，然后选择最佳答案，通常的选择方法是进行多数投票，即选择出现次数最多的答案。
 
-![](asset/img_849ea4eb6a96.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_849ea4eb6a96.jpg)
 
 *Fig. 5. [Self-Consistency Sampling](https://link.zhihu.com/?target=https%3A//arxiv.org/pdf/2203.11171.pdf)*
 
@@ -90,7 +100,7 @@ Few-shot指的是提供一些示例，引导LLM给出更高质量的结果，有
 
 **推理加强集成**通过改变prompt中的示例顺序，或者使用模型生成的推理来代替人工编写的推理，从而在多个样本试验中引入随机性，然后在这些结果中以多数票选举法得到最终答案。
 
-![](asset/img_006a37633bda.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_006a37633bda.jpg)
 
 *Fig. 6. [Rationale-Augmented Ensembles](https://link.zhihu.com/?target=https%3A//arxiv.org/pdf/2207.00747.pdf)*
 
@@ -98,7 +108,7 @@ Few-shot指的是提供一些示例，引导LLM给出更高质量的结果，有
 
 上文提到的**自洽抽样**和**推理加强集成**是多样本并行推理，然后通过多数票选举的方式得到最终结果，**渐进提示**是一个串行处理，将基础的prompt输入到LLM中获得第一个结果，然后将结果作为提示加回到prompt再次输入到LLM中获取第二个结果，如果第二个结果与第一个不同，那么再将第二个加回到prompt继续迭代，直到相邻两次结果相同为止，“收敛”到最终结果。
 
-![](asset/img_75bb619b6e48.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_75bb619b6e48.jpg)
 
 *Fig. 7. [Progressive-Hint Prompting](https://link.zhihu.com/?target=https%3A//arxiv.org/pdf/2304.09797.pdf)*
 
@@ -106,7 +116,7 @@ Few-shot指的是提供一些示例，引导LLM给出更高质量的结果，有
 
 **复杂推理提示**证明了更高的推理复杂度可以获得更好的推理表现，复杂度通常指的是推理的步骤数，同时可以结合自洽抽样方法，在选择最佳答案时，只针对复杂推理的结果进行多数投票选举。
 
-![](asset/img_3a35bace2348.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_3a35bace2348.jpg)
 
 *Fig. 8. [Complexity-Based Prompting for Multi-Step Reasoning](https://link.zhihu.com/?target=https%3A//arxiv.org/pdf/2210.00720.pdf)]*
 
@@ -114,19 +124,19 @@ Few-shot指的是提供一些示例，引导LLM给出更高质量的结果，有
 
 **自提问**指的是通过反复提示LLM提出后续问题，或者子问题，来迭代构建CoT，获得最终结果。
 
-![](asset/img_b8749b32043c.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_b8749b32043c.jpg)
 
 *Fig. 9. [Self-ask](https://link.zhihu.com/?target=https%3A//arxiv.org/pdf/2210.03350.pdf)*
 
 更进一步，构建CoT过程中的这些子问题也可以通过搜索引擎来获取最新的答案。
 
-![](asset/img_0da04a4b4ce1.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_0da04a4b4ce1.jpg)
 
 *Fig. 10. [Self-ask + search engine](https://link.zhihu.com/?target=https%3A//arxiv.org/pdf/2210.03350.pdf)*
 
 类似方法还有将CoT生成步骤和信息检索步骤交错使用的[IRCoT](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2212.10509)。 
 
-![](asset/img_2a2d242852e2.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_2a2d242852e2.jpg)
 
 *Fig. 11. [IRCoT](https://link.zhihu.com/?target=https%3A//arxiv.org/pdf/2212.10509.pdf)*
 
@@ -134,7 +144,7 @@ Few-shot指的是提供一些示例，引导LLM给出更高质量的结果，有
 
 CoT与行为（Action）相结合，根据CoT中每一步的任务来决定采取什么样的行动，行动可能是使用工具（搜索引擎、计算器等），调用API或者生成一段内容等，然后把行动结果加回到prompt中，让LLM自己判断（observe）下一步的任务，如此迭代得出CoT的最终结果。ReAct目前在业界使用比较广泛，Langchain默认Agent类型也是采用ReAct。
 
-![](asset/img_50bf018cb7be.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_50bf018cb7be.jpg)
 
 *Fig. 12. [ReAct: Synergizing Reasoning and Acting in Language Models](https://link.zhihu.com/?target=https%3A//arxiv.org/pdf/2210.03629.pdf)*
 
@@ -142,7 +152,7 @@ CoT与行为（Action）相结合，根据CoT中每一步的任务来决定采�
 
 ToT是对CoT的一个延展，在每一个步骤上不再只有一个推理结果，而是探索多种推理可能性，从一个链结构变成一个树结构，可以通过BFS或者DFS来进行搜索，每个状态由分类器或者多数投票来决定。
 
-![](asset/img_145af191941e.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_145af191941e.jpg)
 
 *Fig. 13. [Tree of Thoughts](https://link.zhihu.com/?target=https%3A//arxiv.org/pdf/2305.10601.pdf)*
 
@@ -152,7 +162,7 @@ ToT是对CoT的一个延展，在每一个步骤上不再只有一个推理结�
 
 APE目的是自动化进行指令生成和选择，通过LLM生成指令，将这些生成的指令放到一个指令池中，选择一个打分函数对这些指令进行打分，然后选择出分数最高的指令，工作流如下所示：
 
-![](asset/img_66f23bebe003.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_66f23bebe003.jpg)
 
 *Fig. 14. [APE workflow](https://link.zhihu.com/?target=https%3A//arxiv.org/pdf/2211.01910.pdf)*
 
@@ -164,7 +174,7 @@ APE目的是自动化进行指令生成和选择，通过LLM生成指令，将�
 
 （2）选择：通过优化一组潜在变量，来选择最有用、最合适的带思维链的样本。
 
-![](asset/img_4eed0807c4de.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_4eed0807c4de.jpg)
 
 *Fig. 15. [Automate-CoT](https://link.zhihu.com/?target=https%3A//arxiv.org/pdf/2302.12822.pdf)*
 
@@ -176,7 +186,7 @@ Zero-Shot CoT这种简化的方法类似黑盒操作，存在局限性，例如L
 
 （2）示例采样：从每个聚类中选择一个具有代表性的问题，并使用简单启发式的Zero-Shot CoT生成其推理链来构建few-shot prompt。
 
-![](asset/img_2a66388a2ba1.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_2a66388a2ba1.jpg)
 
 *Fig. 16. [Auto-Cot](https://link.zhihu.com/?target=https%3A//arxiv.org/pdf/2210.03493.pdf)*
 
@@ -192,7 +202,7 @@ Zero-Shot CoT这种简化的方法类似黑盒操作，存在局限性，例如L
 
 OpenAI团队fine-tune了一个可以搜索和浏览网页的GPT-3模型，并且通过人工反馈来优化回答问题的效果。 
 
-![](asset/img_d9629546aa5d.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_d9629546aa5d.jpg)
 
 *Fig. 17. [WebGPT](https://link.zhihu.com/?target=https%3A//arxiv.org/pdf/2112.09332.pdf)*
 
@@ -200,7 +210,7 @@ OpenAI团队fine-tune了一个可以搜索和浏览网页的GPT-3模型，并且
 
 WebGPT提供的方法需要对模型进行fine-tune，这无疑限制了回答问题的范围以及实现成本，因此DeepMind团队又提出了一个通过few-shot进行互联网信息增强的方法，而不需要进行任何的fine-tune。为了提升信息抽取的有效性，对搜索引擎返回的结果（文档形式）进行一个切分，每个段落包含6个句子，通过TF-IDF余弦相关性算法进行搜索内容与请求的相似性排序，选取最相关的段落加入到prompt中，输入给LLM获取答案。
 
-![](asset/img_3c82faf47827.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_3c82faf47827.jpg)
 
 *Fig. 18. [Internet-augmented LLM](https://link.zhihu.com/?target=https%3A//arxiv.org/pdf/2203.05115.pdf)*
 
@@ -212,7 +222,7 @@ WebGPT提供的方法需要对模型进行fine-tune，这无疑限制了回答�
 
 PAL方法的核心是在prompt的自然语言指令中，通过在中间推理步骤中加入代码行（例如Python代码）来引导LLM通过使用Python来输出结果，而不是仅基于自然语言的推理，本质也是对CoT的一种改进。
 
-![](asset/img_d879a0ef3140.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_d879a0ef3140.jpg)
 
 *Fig. 19. [PAL](https://link.zhihu.com/?target=https%3A//arxiv.org/pdf/2211.10435.pdf)*
 
@@ -220,13 +230,13 @@ PAL方法的核心是在prompt的自然语言指令中，通过在中间推理�
 
 PoT的思想同PAL类似，原始的CoT是通过LLM进行推理和计算，而PoT是将推理和计算拆分开，将CoT中每一步的计算放到外部的代码执行器中执行，再将结果放回到prompt中。 
 
-![](asset/img_6d7a7b98b738.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_6d7a7b98b738.jpg)
 
 *Fig. 20. [PoT](https://link.zhihu.com/?target=https%3A//arxiv.org/pdf/2211.12588.pdf)*
 
 PoT与PAL十分类似，最大区别在于PoT的prompt中的每一步都是用编程语言描述，PAL是自然语言与编程语言混合在一起，作者也给出了PoT与PAL在一些测试集上的对比结果，不分伯仲吧： 
 
-![](asset/img_e2b4f0945529.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_e2b4f0945529.jpg)
 
 *Fig. 21. [PaL vs PoT](https://link.zhihu.com/?target=https%3A//arxiv.org/pdf/2211.12588.pdf)*
 
@@ -238,7 +248,7 @@ PoT与PAL十分类似，最大区别在于PoT的prompt中的每一步都是用�
 
 HuggingGPT是将LLM（ChatGPT）当做一个控制器，首先对用户的请求任务进行规划，拆分成不同的子任务，然后根据不同AI模型的功能描述来选择使用哪个模型来完成子任务，最终将结果汇总返回给用户。其中AI模型均来自Hugging Face提供的开源模型库，在实际使用过程中只需要在context中包含可能用到的模型描述（此步需要进行模型选择，例如根据模型下载量和任务相关性进行排序，选择top-K模型放到prompt里），而不需要对LLM进行fine-tune。
 
-![](asset/img_dec5a44650d5.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_dec5a44650d5.jpg)
 
 *Fig. 22. [HuggingGPT](https://link.zhihu.com/?target=https%3A//arxiv.org/pdf/2303.17580.pdf)*
 

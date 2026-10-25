@@ -1,9 +1,19 @@
 ---
-title: "(2 条消息) LLM推理并行优化的必备知识"
-date: 2026-02-15
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/1937449564509545940
+title: (2 条消息) LLM推理并行优化的必备知识
+date: "2026-02-15 00:00:00"
+updated: "2026-02-15 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/LLM推理并行优化的必备知识/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/1937449564509545940
 ---
+
 
 随着模型的参数的增长，推理GPU资源需求从1/N卡、单卡、多卡、多节点、再到超节点，规模不断增加，之前在训练里面常用的DP/TP/SP(CP)/EP/PP/Zero等并行方法也在推理中逐步使用起来。
 
@@ -39,7 +49,7 @@ source: https://zhuanlan.zhihu.com/p/1937449564509545940
 
 B矩阵二分(**列切**)后，子矩阵B1、B2的尺寸为**[N, K/2]**，切分计算不改变局部元素值，但需要进行一次**列维度**的拼接才能获得完整矩阵C。
 
-![](asset/img_9ee89126df10.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_9ee89126df10.jpg)
 
 **特点**：计算量减半，多了一次allgather集群通信；显存空间变化不一定，若是非原地操作，则变化为  (- K/2 * N  + M * K/2) * element_memory。
 
@@ -81,7 +91,7 @@ print("\n验证一致性:", np.array_equal(C_final, C_ground_truth))`
 
 A矩阵二分(行切)后，子矩阵A1、A2的尺寸为**[M/2, N]**，切分不改变局部元素值，但需要进行一次**行维度**的拼接才能获得完整矩阵C。
 
-![](asset/img_40ab0360919e.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_40ab0360919e.jpg)
 
 **特点**：计算量减半，多了一次集群通信（allgather）；若是非原地操作，显存变化：  (K-N) * M/2 * element_memory。
 
@@ -95,7 +105,7 @@ A矩阵二分(行切)后，子矩阵A1、A2的尺寸为**[M/2, N]**，切分不�
 
 A、B矩阵都进行二分后，输出矩阵C的大小不变，所有C矩阵进行元素求和，才能让结果与之前的计算结果相等。
 
-![](asset/img_37c4ec6e03a2.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_37c4ec6e03a2.jpg)
 
 **特点**：计算量减半，多了一次集群通信（allreduce）；显存变化：输入、权重减半，输出值变化取决于是否为原地操作。
 
@@ -105,7 +115,7 @@ A、B矩阵都进行二分后，输出矩阵C的大小不变，所有C矩阵进�
 
 在A x B x C矩阵乘法场景，B矩阵列切， C矩阵行切。
 
-![](asset/img_628ffe24031a.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_628ffe24031a.jpg)
 
 **特点**：在场景三基础上，中间值的存储大小减半。
 
@@ -119,7 +129,7 @@ A、B矩阵都进行二分后，输出矩阵C的大小不变，所有C矩阵进�
 
 可根据输入激活值的切分维度对应不同的并行策略，一般**切batch为DP、切序列为SP、切隐藏层尺寸为TP**。
 
-![](asset/img_013798314241.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_013798314241.jpg)
 
 **关键特点：**
 
@@ -134,11 +144,11 @@ DP与SP/TP可以解耦独立使用，SP与TP一般可以配合使用(在当前�
 - SP不影响元素操作的运算，如LayerNorm，softmax
 所以在上面矩阵运算**场景四**的基础上，对于最后的集群通信操作有如下改进，将allreduce运算进行拆分，变为两个步骤。并且将allgather操作移动到softmax计算后：
 
-![](asset/img_0737a1f22667.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_0737a1f22667.jpg)
 
 这样能够**降低元素运算相关计算的数据大小、**降低过程中激活值的大小（示例中GPU上的LayerNorm输入减半），既能节省显存、也能提升速度。在megatron论文里面介绍了这种场景的应用，MLP层中用**SP-TP-SP**的组合方式：
 
-![](asset/img_1b9a7a9de2c6.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_1b9a7a9de2c6.jpg)
 
 #### **2.2 层间并行**
 
@@ -146,7 +156,7 @@ DP与SP/TP可以解耦独立使用，SP与TP一般可以配合使用(在当前�
 
 在推理中，由于特殊计算场景，比如FFN为稀疏的MoE结构时，往往attention与FFN对算力需求不同，**层间并行可以变为异构模式, **如AFD，attention层与MoE分离部署到不同设备上：
 
-![](asset/img_26857c38dc2c.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_26857c38dc2c.jpg)
 
 #### 2.3 冗余参数消除
 
@@ -156,11 +166,11 @@ DP与SP/TP可以解耦独立使用，SP与TP一般可以配合使用(在当前�
 
 由于GPU支持多流，所以可以做计算、广播通信的掩盖，比如计算到x层时，提前把x+1层的权重先广播出去（**权重预取**）。
 
-![](asset/img_e8b7e9ed3b7c.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_e8b7e9ed3b7c.jpg)
 
 这种方式适合于模型层权重偏小的场景，模型层权重比较大时，或者说更常使用的是权重切片（shard）。即将每一层的权重进行n等分，每个GPU设备上面存一份，当需计算时将其**allgather**回来。
 
-![](asset/img_daa538db074d.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_daa538db074d.jpg)
 
 ### 3 Attention层的并行计算
 
@@ -170,7 +180,7 @@ Attention层的并行计算与FFN或者说模型中其它线性层的计算的�
 - 序列（seq_len维度)并行需要**修正运算**。
 在并行维度上面，将Head维度的切分也算到TP里面，而序列维度并行上称之为**CP(context parallel)或SP**。
 
-![](asset/img_4e5caeae75c6.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_4e5caeae75c6.jpg)
 
  Attention的层间并行、冗余参数消除方式与线性层的方式一致，层内并行的主要差异是**TP和SP**，所以重点关注到这两类上面。
 
@@ -178,7 +188,7 @@ Attention层的并行计算与FFN或者说模型中其它线性层的计算的�
 
 在经过线性映射计算后，模型输入变为多头的Q、K、V值，其尺寸表达为：[bs,  heads, seq_len,  head_dim]，序列并行是切分seq_len维度。有个前提问题：QKV的序列并行跟线性层的差异在哪，**是否能直接拆分运算后合并？**
 
-![](asset/img_0c8552b480b6.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_0c8552b480b6.jpg)
 
 Scaled Dot-Product Attention这里我们分三个子问题来分析：
 
@@ -248,7 +258,7 @@ print("结果是否一致:", np.allclose(global_out, local_out, atol=1e-6))`
 
 当前比较常用的解决方式是：**QKV按照相同方式切分，然后对计算结果进行修正**，这个方法在BlockwiseMulti-HeadAttention、ring attention、tree attention、merge attention中都有应用，softmax修正：
 
-![](asset/img_0d32e00adf73.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_0d32e00adf73.jpg)
 
 关键点：
 
@@ -260,11 +270,11 @@ print("结果是否一致:", np.allclose(global_out, local_out, atol=1e-6))`
 
 **decode**：与prefill阶段不同的是，在decode阶段Q的长度为1，若对应的KV值分散在各个GPU设备中，可以将Q复制N份与切片的KV值进行attention计算后，最后将结果gather到一个设备上再计算修正结果。
 
-![](asset/img_77b3a7c5983f.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_77b3a7c5983f.jpg)
 
 这个方式意味着GPU0需要完成最大值、修正运算、求和运算，GPU0可能成为瓶颈。一种Tree attention算法对过程做了改进，提升了通信效率。就是把gather换成多次allreduce，这种方式在跨节点场景中优势明显。
 
-![](asset/img_55b3d9ef334e.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_55b3d9ef334e.jpg)
 
 Tree attention**prefix cache**：在prefill阶段，还有个特殊场景**prefix cache，**若开启了prefix cache功能，表示有一段KV cache可以复用。把序列seq_len拆分成两部分讨论，prefix_cache_seq_len、tail_seq_len。 Q/K/V的激活值尺寸：
 
@@ -280,7 +290,7 @@ Tree attention**prefix cache**：在prefill阶段，还有个特殊场景**prefi
 - **问题2**：已有的prefix cache如何从存储位置传递到计算位置（prefix cache可能不在GPU上）。
 这里举例一个简单的实现方式，将prefix_cache_seq_len和tail_seq_len进行均分，每个GPU拿取一份，同时进行Q分片的轮转，如下图所示：
 
-![](asset/img_99c5bb8f32c1.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_99c5bb8f32c1.jpg)
 
 with Q pass ring attention优势：当切分比例保持不变且KV值每次计算后都在本地显存中，则无须进行KV分片的搬运，(解决了问题2)。当prefix cache在其它存储位置时，比如内存中，依然要考虑重新切分和cache的传输问题。
 
@@ -294,17 +304,17 @@ QKV运算的TP切分一般针对heads维度，相当于矩阵的并行的批量�
 
 Attention的张量并行与其它层的并行可结合使用降低通信/计算量，这里给出megatron中TP-SP结合的例子：
 
-![](asset/img_1b329d44956f.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_1b329d44956f.jpg)
 
 megatron并行示例目前的deepseek中用的attention模块MLA与MHA的计算在线性层的处理中有些不同，导致其**线性层的TP的并行策略设计也要做对应的调整**。这里做一个详细的展开讨论：**首先看一下MLA的计算公式：
 
-![](asset/img_168d459bbb97.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_168d459bbb97.jpg)
 
 MLA计算公式MLA相较于MHA的主要特点是：线性运算多了一个步骤：在QKV生成之前，先要做降维down_project线性运算，然后进行升维up_project线性运算。分头运算是在up_project阶段**。
 
 根据公式绘制运算流图，非矩阵吸收的MLA（KV up_project运算在压缩计算后）如下所示，这种形态常用在prefill阶段（Q的输入为完整序列时）。
 
-![](asset/img_adfe8f72b225.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_adfe8f72b225.jpg)
 
 MLA一般形态主要的计算步骤：
 
@@ -320,7 +330,7 @@ MLA一般形态主要的计算步骤：
 - 步骤4的attention则进行heads维度切分(**head split**)。
 MLA还有第二种形态，就是将KV的up_project运算移动到Q上面，即K、V输入没有了up_project计算（多heads通过广播实现）。**MLA吸收矩阵形态**的逻辑如下所示：
 
-![](asset/img_acdf8c32336a.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_acdf8c32336a.jpg)
 
 这种形态的TP切分策略：
 
@@ -333,11 +343,11 @@ MLA还有第二种形态，就是将KV的up_project运算移动到Q上面，即K
 
 ### 附1：常见的集群通信方式
 
-![](asset/img_7b2b43afef59.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_7b2b43afef59.jpg)
 
-![](asset/img_87d9bec6e1e3.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_87d9bec6e1e3.jpg)
 
-![](asset/img_24b720f9622e.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_24b720f9622e.jpg)
 
 参考文献：
 

@@ -1,3 +1,16 @@
+---
+title: AGENTS.md
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/ja/resources/templates/AGENTS/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # AGENTS.md
 
 このリポジトリは長時間実行されるコーディングエージェント作業用に設計されています。目標は

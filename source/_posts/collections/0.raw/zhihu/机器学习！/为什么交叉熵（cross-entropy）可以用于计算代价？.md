@@ -1,9 +1,19 @@
 ---
-title: "为什么交叉熵（cross-entropy）可以用于计算代价？"
-date: 2026-04-15
-tags: [知乎]
-source: https://www.zhihu.com/question/65288314/answer/244557337
+title: 为什么交叉熵（cross-entropy）可以用于计算代价？
+date: "2026-04-15 00:00:00"
+updated: "2026-04-15 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/机器学习/为什么交叉熵(cross-entropy)可以用于计算代价/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://www.zhihu.com/question/65288314/answer/244557337
 ---
+
 
 通用的说，熵(Entropy)被用于描述一个系统中的不确定性(the uncertainty of a system)。在不同领域熵有不同的解释，比如热力学的定义和信息论也不大相同。
 
@@ -123,7 +133,7 @@ $\begin{equation*} H(A,B)= -\sum_{i}P_{A}(x_i)log(P_{B}(x_i)) \end{equation*}$
 
 [1] 不同的领域都有不同解释，更传统的机器学习说法是似然函数的最大化就是交叉熵。**正所谓横看成岭侧成峰，大家没必要非说哪种思路是对的，有道理就好**。
 
-[![](asset/img_c197b69ecf41.jpg)广告
+[![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_c197b69ecf41.jpg)广告
 
 信息论：基础理论与应用（第4版）
 

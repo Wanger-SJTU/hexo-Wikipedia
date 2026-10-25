@@ -1,9 +1,19 @@
 ---
-title: "深入理解io_uring（三）一个完整请求"
-date: 2024-12-12
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/12097798333
+title: 深入理解io_uring（三）一个完整请求
+date: "2024-12-12 00:00:00"
+updated: "2024-12-12 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/编程向/深入理解io_uring(三)一个完整请求/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/12097798333
 ---
+
 
 ### 前言
 
@@ -11,17 +21,17 @@ source: https://zhuanlan.zhihu.com/p/12097798333
 
 ### 加入io_uring后的存储栈
 
-![](asset/img_a5f629b563cf.jpg)
+![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_a5f629b563cf.jpg)
 
 图片来自：《Performance Characterization of Modern Storage Stacks: POSIX I/O, libaio, SPDK, andio_uring》在开始介绍一次完整请求前，我们有必要看下加入io_uring后，Linux存储栈变成什么样了。在此在重复一遍，io_uring的核心是异步，那么Linux存储栈中所有可能导致阻塞的地方，都需要想方设法异步化，所以先从存储栈入手能方便理解io_uring的实现细节。
 
-上图中将Linux存储栈分成了15个流程（忽略关于pread、libaio、SPDK相关内容，本文并不是讨论他们的区别），需要提醒的是，从图中我们可以看出io_uring更多是代替system call这一层（*注意：也有直通驱动的实现*[[1]](#ref_1)），底下还是基于原来VFS、block等模块。我们简单分析这15个流程可能的阻塞点。
+上图中将Linux存储栈分成了15个流程（忽略关于pread、libaio、SPDK相关内容，本文并不是讨论他们的区别），需要提醒的是，从图中我们可以看出io_uring更多是代替system call这一层（*注意：也有直通驱动的实现*<span class="wikilink wikilink--missing" title="未导入的页面">1</span>(#ref_1)），底下还是基于原来VFS、block等模块。我们简单分析这15个流程可能的阻塞点。
 
 - **提交SQ：**如果遇到SQ满的情况，需要忙等一个空闲SQE或者调用io_uring_enter来等待至少一个SQE被处理。
 - **处理SQE：**应用通过io_uring_enter（*注意：是的，这个接口既可以用于提交请求，也可以用于等待至少一个请求完成*）系统调用来进入内核io_uring模块来处理请求。一般是根据SQE中请求类型，直接调用该类型预定义处理流程，通常是提交到VFS层处理。**可能阻塞点一：无法对folio上锁**
 - **提交bio：**将请求装载成一个bio（*注意：**可能阻塞点二：无法提交bio**，所以一般指定NON_BLOCK的flag，表示执行非阻塞io*）后，提交到block层，遇到需要阻塞的操作，会返回EAGAIN错误。
 - **转成request：**在block层将优化后的bio（*注意：可能经过了合并、排序等处理*）装配成一个request。
-- **提交到软件队列：**将request提交到per-core的软件队列[[2]](#ref_2)，这是避免直接提交到硬件队列需要上锁，导致性能低下。
+- **提交到软件队列：**将request提交到per-core的软件队列<span class="wikilink wikilink--missing" title="未导入的页面">2</span>(#ref_2)，这是避免直接提交到硬件队列需要上锁，导致性能低下。
 - **提交到硬件队列：**block层根据调度算法，将软件队列中的请求提交到硬件队列。
 - 同流程6，一个流程的2个阶段。
 - **分发到驱动：**硬件队列将请求分发到驱动。
@@ -36,9 +46,9 @@ source: https://zhuanlan.zhihu.com/p/12097798333
 
 ### 提交请求
 
-![](asset/img_43739031d79c.jpg)
+![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_43739031d79c.jpg)
 
-图片来自：https://static.sched.com/hosted_files/kvmforumc/KVMForum_2020_io_uring_passthrough_Stefano_Garzarella.pdf用户程序将请求装配成一个SQE后，就可以提交到SQ队列（*通过WRITE_ONCE刷新sqe_tail*），详细过程如下[[3]](#ref_3)
+图片来自：https://static.sched.com/hosted_files/kvmforumc/KVMForum_2020_io_uring_passthrough_Stefano_Garzarella.pdf用户程序将请求装配成一个SQE后，就可以提交到SQ队列（*通过WRITE_ONCE刷新sqe_tail*），详细过程如下<span class="wikilink wikilink--missing" title="未导入的页面">3</span>(#ref_3)
 
 `    read_barrier();
     index = tail & *s->sq_ring.ring_mask;
@@ -63,7 +73,7 @@ source: https://zhuanlan.zhihu.com/p/12097798333
 
 #### True Async
 
-如果不存在sq_thread时，需要程序调用io_uring_enter来提交请求。io_uring优先在本线程（*原因参考下图*）中去提交io，有类似的栈[[4]](#ref_4)：
+如果不存在sq_thread时，需要程序调用io_uring_enter来提交请求。io_uring优先在本线程（*原因参考下图*）中去提交io，有类似的栈<span class="wikilink wikilink--missing" title="未导入的页面">4</span>(#ref_4)：
 
 `io_issue_sqe(req, IO_URING_F_NONBLOCK | IO_URING_F_COMPLETE_DEFER)
 io_queue_sqe
@@ -75,7 +85,7 @@ io_uring只有True Async才叫IO_URING_F_NONBLOCK，表示真正执行非阻塞i
 
 #### async buffer操作
 
-上面提到True Async可能由于folio被争用而无法上锁时，需要等待其他任务释放锁后，才能继续完成提交操作。这是可以利用VFS已有特性async buffered reads[[5]](#ref_5)来将请求放到某个等待队列中。一旦folio被释放后，就回唤醒队列中的等待任务，继续完成读请求（*注意：这是针对读请求优化，其他请求并不存在这样特性*）。
+上面提到True Async可能由于folio被争用而无法上锁时，需要等待其他任务释放锁后，才能继续完成提交操作。这是可以利用VFS已有特性async buffered reads<span class="wikilink wikilink--missing" title="未导入的页面">5</span>(#ref_5)来将请求放到某个等待队列中。一旦folio被释放后，就回唤醒队列中的等待任务，继续完成读请求（*注意：这是针对读请求优化，其他请求并不存在这样特性*）。
 
 #### Worker-based async
 
@@ -90,9 +100,9 @@ io_uring的io-wq采用线程池的实现方式，通常是根据CPU数量、SQE�
 
 需要注意的是，Worker-based sync的方式相比True Async劣化不少：
 
-![](asset/img_85f6d9149cb9.jpg)
+![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_85f6d9149cb9.jpg)
 
-图片来自：https://www.usenix.org/system/files/fast24-joshi.pdf根据论文[[1]](#ref_1)结果，True Async能充分发挥io_uring的优势，所以在设计接口时，更多考虑True Async的方式。
+图片来自：https://www.usenix.org/system/files/fast24-joshi.pdf根据论文<span class="wikilink wikilink--missing" title="未导入的页面">1</span>(#ref_1)结果，True Async能充分发挥io_uring的优势，所以在设计接口时，更多考虑True Async的方式。
 
 ### 完成请求
 

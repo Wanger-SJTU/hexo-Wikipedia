@@ -1,9 +1,19 @@
 ---
-title: "Flash Attention个人理解"
-date: 2025-10-26
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/1965867186716407094
+title: Flash Attention个人理解
+date: "2025-10-26 00:00:00"
+updated: "2025-10-26 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/AI-infra/Flash-Attention个人理解/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/1965867186716407094
 ---
+
 
 由于前两天面试一家百亿私募被问到简历里的attention，空间复杂度是 
 ![](https://www.zhihu.com/equation?tex=O%28n%5E2%29) 该如何优化显存，自己支支吾吾的在问attention的时候回答出来了去年大一暑假时上课讲的flash attention，但是面试时只记得flash attention可以加速，不记得加速原理和可以优化空间复杂度，遂写一篇文章记录一下

@@ -1,10 +1,19 @@
 ---
 title: "[V-14][A-37]ARMv8/v9-GIC-虚拟中断直接注入VM的软件架构(ITS驱动架构)"
-date: 2026-07-04
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/2056746236506535677
-
+date: "2026-07-04 00:00:00"
+updated: "2026-07-04 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/[V-14][A-37]ARMv8_v9-GIC-虚拟中断直接注入VM的软件架构(ITS驱动架构)/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/2056746236506535677
 ---
+
 
 ver0.1
 

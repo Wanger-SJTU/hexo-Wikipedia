@@ -1,3 +1,16 @@
+---
+title: Dự án 05. Để Agent Xác minh Công việc của Chính nó
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/vi/projects/project-05-grounded-qa-verification/index/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 [English Version →](../../../en/projects/project-05-grounded-qa-verification/) | [中文版本 →](../../../zh/projects/project-05-grounded-qa-verification/)
 
 > Bài giảng liên quan: [Bài 09. Ngăn agent tuyên bố hoàn thành quá sớm](./../../lectures/lecture-09-why-agents-declare-victory-too-early/index.md) · [Bài 10. Chỉ testing end-to-end mới là xác minh thực sự](./../../lectures/lecture-10-why-end-to-end-testing-changes-results/index.md)

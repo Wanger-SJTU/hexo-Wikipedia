@@ -1,4 +1,17 @@
 ---
+title: 高级RAG检索中的五种查询重写策略 - 知乎
+date: "2026-04-11 21:40:28"
+updated: "2026-04-11 21:40:28"
+layout: post
+permalink: /collections/0.raw/Omnivore/2024-05-24/高级RAG检索中的五种查询重写策略-知乎/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
+---
 id: e80bbbef-9848-434e-9b19-c39c38227efe
 ---
 

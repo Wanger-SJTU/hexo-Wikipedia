@@ -1,3 +1,16 @@
+---
+title: Projekt 05. Den Agenten seine eigene Arbeit verifizieren lassen
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/de/projects/project-05-grounded-qa-verification/index/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 [中文版本 →](../../../zh/projects/project-05-grounded-qa-verification/)
 
 > Zugehörige Lektionen: [Lektion 09. Agenten daran hindern, zu früh Erfolg zu melden](./../../lectures/lecture-09-why-agents-declare-victory-too-early/index.md) · [Lektion 10. Nur ein vollständiger Pipeline-Lauf zählt als echte Verifikation](./../../lectures/lecture-10-why-end-to-end-testing-changes-results/index.md)

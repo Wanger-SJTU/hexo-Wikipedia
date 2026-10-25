@@ -1,15 +1,25 @@
 ---
-title: "LLM 可以从简单数据中学习吗？"
-date: 2024-05-17
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/698416218
+title: LLM 可以从简单数据中学习吗？
+date: "2024-05-17 00:00:00"
+updated: "2024-05-17 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/LLM-SD/LLM-可以从简单数据中学习吗/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/698416218
 ---
+
 
 在 10 月份的一次周会结束后，我提到 SFT 训练后的 Loss 曲线呈现阶梯状，至于为什么，并没有人有合理的解释，加上当时的重心是提升次日留存率，Loss 曲线呈现阶梯状与次日留存率的关系还太远，即使有问题，起码次日留存率是逐渐在提升。
 
 幸运的是，在一次逛论坛时发现了一篇博客 Can LLMs learn from a single example?，也是我这篇博客的标题名称由来，在其基础上结合了公司业务的一些现状和我个人的思考。
 
-![](asset/img_38c665fda6a5.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_38c665fda6a5.jpg)
 
 可以清楚地看到每个 epoch 的终点——loss 突然向下跳。我们以前也见过类似的损失曲线，但都是由于错误造成的。例如，在评估验证集时，很容易意外地让模型继续学习——这样在验证之后，模型就会突然变得更好。因此，开始寻找训练过程中的错误。
 
@@ -17,7 +27,7 @@ source: https://zhuanlan.zhihu.com/p/698416218
 
 9 月中旬，老板要求我们加上验证 loss，于是出现了如下图所示的 eval loss 曲线。
 
-![](asset/img_ebff658b4a0b.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_ebff658b4a0b.jpg)
 
 该问题在 Discord 上讨论得越来越激烈，也有人反映在不使用 Trainer 的情况下，也会出现阶梯状的 loss 曲线。
 
@@ -25,13 +35,13 @@ source: https://zhuanlan.zhihu.com/p/698416218
 
 资料提到了一项实验：使用以下学习率计划，对 Kaggle 模型进行了两个 epoch 的训练：
 
-![](asset/img_e28b0f995d08.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_e28b0f995d08.jpg)
 
 如今，这种 schedule 并不常见，但莱斯利-史密斯（Leslie Smith）在 2015 年发表的论文《训练神经网络的循环学习率》（Cyclical Learning Rates for Training Neural Networks）中讨论了这种方法，并取得了很大成功。
 
 下面就是我们因此而看到的看起来很疯狂的训练和验证损失曲线：
 
-![](asset/img_09b701b11ee0.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_09b701b11ee0.jpg)
 
 到目前为止，我们唯一能完全解释这种情况的方法就是假设是正确的：**模型正在快速学习识别实例，即使只看到一次**。让我们依次查看 loss 曲线的各个部分：
 
@@ -40,7 +50,7 @@ source: https://zhuanlan.zhihu.com/p/698416218
 - 曲线的末端是特别有趣的地方。训练 loss 开始变得越来越大，而这是绝对不应该发生的！事实上，我还从未在使用合理的学习率时遇到过这种情况。根据记忆假说，这完全说得通：这些批次是模型在学习率再次下降时看到的，因此它无法有效地记忆这些批次。但模型仍然过于自信，因为它刚刚得到了一大堆几乎完全正确的批次，还没有适应现在看到的批次没有机会学得那么好这一事实。它会逐渐重新校准到一个更合理的置信度水平，但这需要一段时间，因为学习率越来越低。在重新校准的过程中，验证 loss 会再次下降。
 记忆假说很有可能是真的。按照先前小模型时代的训练经验，我们往往需要大量的数据来让模型学习输入分布和模式。使用随机梯度下降法（SGD）导航的损失面太崎岖，无法一下子跳得很远。不过，有些东西可以让损失面变得更平滑，比如使用残差连接，如经典论文《可视化神经网络的损失景观》（Li et al，2018）中所示。
 
-![](asset/img_020c29f76e19.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_020c29f76e19.jpg)
 
 很可能的情况是，**预训练的大语言模型在接近最小损失的区域具有极其平滑的损失面，而开源社区所做的大量微调工作都是在这一区域**。这是基于最初开发微调通用语言模型的基本前提。简单来说，我们的训练数据并不能够让模型跳出该平滑的损失面，只是让模型记住了 BOT 的回复、以及通过几个数据就让模型学到了说话风格。
 

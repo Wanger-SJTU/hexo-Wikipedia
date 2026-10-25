@@ -1,10 +1,21 @@
 ---
-title: "How to Be Good at Research"
-author: vivek (@itsreallyvivek)
-date: 2026-06-10
-url: https://x.com/itsreallyvivek/status/2064686372737454155
-tags: [research, methodology, AI, ML]
+title: How to Be Good at Research
+date: "2026-06-10 00:00:00"
+updated: "2026-06-10 00:00:00"
+layout: post
+permalink: /collections/x/2026-06-10-how-to-be-good-at-research/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - research
+  - methodology
+  - AI
+  - ML
 ---
+
 
 # How to Be Good at Research
 

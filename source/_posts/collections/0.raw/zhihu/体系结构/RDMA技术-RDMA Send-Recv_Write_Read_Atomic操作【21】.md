@@ -1,15 +1,25 @@
 ---
-title: "RDMA技术-RDMA Send-Recv/Write/Read/Atomic操作【21】"
-date: 2026-03-09
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/2012287560865576638
+title: RDMA技术-RDMA Send-Recv/Write/Read/Atomic操作【21】
+date: "2026-03-09 00:00:00"
+updated: "2026-03-09 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/体系结构/RDMA技术-RDMA-Send-Recv_Write_Read_Atomic操作【21】-f9e799/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/2012287560865576638
 ---
+
 
 ### 1. RDMA工作队列
 
 RDMA 技术中， QP（ queue pair）作为 RDMA 通信的基本单元，可以在两个节点之间进行直接内存访问，实现零拷贝的数据传输和低延迟的交互。如图 1 所示， QP 通常包含三种工作队列：发送队列（ send queue， SQ）、接收队 列（ receive queue， RQ）、完成队列（ complete queue， CQ）。 SQ 用于存储发送方的数据和命令信息， RQ 用于存储接收方的数据和命令信息， CQ 用于存储数据传输完成的相关信息，可以多个 SQ 或多个 RQ 共用一个 CQ。
 
-![](asset/img_6f91236c1450.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_6f91236c1450.jpg)
 
 图 1 RDMA 的工作队列工作队列分别由内存中的多个非连续的区域组成，每个区域按顺序存储着应用层给硬件下发的工作任务（ work queue entry， WQE）， WQE 中包含两端数据交互的一些信息，具体如图 2 所示。应用层通过门铃机制通知 RDMA 网卡有新的 WQE 存放在工作队列中。
 
@@ -17,7 +27,7 @@ RDMA 技术中， QP（ queue pair）作为 RDMA 通信的基本单元，可以�
 
 RDMA 技术的通信模型如图 3 所示。纵向上划分为控制通路、数据通路。控制通路需要进入内核态，准备通信所需的各种资源，需要 CPU 的参与，一般在链路建立时使用。控制通路通过发送 RDMA Send-Recv 命令，创建和配置RDMA 通信的基本元素，如 QP、 CQ 等。数据通路专门负责数据的收发，因为已通过控制通路获取到了通信所需要的基本元素，如虚拟地址 VA、远端的 Rkey 等，此时进行数据通信不需要 CPU 介入，可以直接对远端内存进行操作。
 
-![](asset/img_4909df4f7ac1.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_4909df4f7ac1.jpg)
 
 图 3 RDMA 技术的通信模型
 #### 2.1 RDMA Send-Recv操作流程
@@ -46,7 +56,7 @@ RDMA 通信模型中，控制通路进行 RDMA Send-Recv 操作的流程如图 4
 
 （ 11）远端应用层收到接收到新数据的指示。
 
-![](asset/img_439443792d29.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_439443792d29.jpg)
 
 图 4 RDMA Send-Recv 操作流程
 #### 2.2 RDMA Write操作流程
@@ -69,7 +79,7 @@ RDMA 通信模型中，数据通路进行 RDMA Write 操作的流程如图 5 所
 
 （ 8）本地应用层收到命令处理完成的指示。
 
-![](asset/img_da554f5f2bbb.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_da554f5f2bbb.jpg)
 
 图 5 RDMA Write 操作流程**
 
@@ -93,7 +103,7 @@ RDMA 通信模型中，数据通路进行 RDMA Read 操作的流程如图 6 所�
 
 （ 8）本地应用层收到命令处理完成的指示。
 
-![](asset/img_d6e77014065c.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_d6e77014065c.jpg)
 
 图 6 RDMA Read 操作流程
 ### 3. RDMA Atomic操作
@@ -111,11 +121,11 @@ RDMA 通信模型中，数据通路进行 RDMA Read 操作的流程如图 6 所�
 2. 将读取的 64 bit 数据，返回请求端；
 3. 将读取的 64 bit 数据，加上操作数 2，重新写入远端 VA 地址对应的内存。以 Fetch and Add 的 atomic 操作为例， 一 次正常的RDMA atomic操作的交互，如图7所示。
 
-![](asset/img_1f02d99d3911.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_1f02d99d3911.jpg)
 
 图 7 正常的 RDMA atomic（FAA）操作以 Fetch and Add 的 atomic 操作为例，一次带有重传的RDMA atomic 操作的交互，如图 8 所示
 
-![](asset/img_98c23f4cc301.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_98c23f4cc301.jpg)
 
 图 8 重传的 RDMA atomic（FAA）操作
 #### 3.1 RDMA原子操作 
@@ -131,7 +141,7 @@ RDMA 通信模型中，数据通路进行 RDMA Read 操作的流程如图 6 所�
 
 参考：RDMA Aware Networks Programming User Manual
 
-![](asset/img_2ed39d1acbb7.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_2ed39d1acbb7.jpg)
 
 RDMA（Remote Direct Memory Access）中，`FETCH_AND_ADD`和`CMP_AND_SWAP`是两种原子操作，它们通常用于分布式系统中的并发控制，能够直接在远程节点的内存上执行原子性操作。它们是RDMA协议（如InfiniBand、RoCE）支持的操作码（opcode）的一部分，专门设计用于跨节点的数据一致性和并发控制。
 

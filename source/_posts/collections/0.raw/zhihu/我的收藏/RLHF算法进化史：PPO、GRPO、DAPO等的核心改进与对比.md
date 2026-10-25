@@ -1,20 +1,30 @@
 ---
-title: "RLHF算法进化史：PPO、GRPO、DAPO等的核心改进与对比"
-date: 2025-10-13
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/1959981457079506045
+title: RLHF算法进化史：PPO、GRPO、DAPO等的核心改进与对比
+date: "2025-10-13 00:00:00"
+updated: "2025-10-13 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/RLHF算法进化史-PPO、GRPO、DAPO等的核心改进与对比/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/1959981457079506045
 ---
+
 
 本文主要梳理了一些用于LLM post-training的RLHF算法，以PPO为起点，总结了DPO，GRPO，Dr.GRPO，DAPO，VAPO，DCPO，GSPO等方法的改进思路，重点关注了不同方法在优势函数计算，clip处理，loss设计等方面的差异。
 
-![](asset/img_4ae33766702c.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_4ae33766702c.jpg)
 
 不同RLHF算法间的改进关系
 ### **基础**
 
 #### 涉及的模型
 
-![](asset/img_0af82d17227a.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_0af82d17227a.jpg)
 
 PPO与GRPO早期的RLHF（PPO）需要同时load 四个模型，但后续的一些优化算法旨在减少同时load的模型数量从而降低RLHF的门槛。
 
@@ -46,7 +56,7 @@ sequence-leveltoken-level定义在序列级别上进行优化，即整个生成�
 
 ### PPO**
 
-![](asset/img_5520f5ac7770.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_5520f5ac7770.jpg)
 
 PPO算法的演进
 #### 数据准备
@@ -95,7 +105,7 @@ $$- actor loss：优化actor model，目的是鼓励模型采取能够产生更�
 
 #### 工作过程
 
-![](asset/img_e562353a81da.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_e562353a81da.jpg)
 
 PPO的训练过程
 
@@ -126,7 +136,7 @@ $$- 计算策略概率比，即： r_t=\frac{p_{new}(a_t|s_t)}{p_{old}(a_t|s_t)}
 
 ### **DPO**
 
-![](asset/img_40a2fa788b9d.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_40a2fa788b9d.jpg)
 
 #### 数据准备
 
@@ -161,7 +171,7 @@ $$L_{DPO}(\theta) = - \sum_{t=1}^{T} \log \sigma \left( \beta \left( \log \frac{
 
 #### 工作过程
 
-![](asset/img_df394f6f8790.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_df394f6f8790.jpg)
 
 DPO训练过程
 #### Reference
@@ -171,7 +181,7 @@ DPO训练过程
 
 ### GRPO**
 
-![](asset/img_cc7feb09f4f5.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_cc7feb09f4f5.jpg)
 
 #### 数据准备
 
@@ -222,7 +232,7 @@ $$GRPO主要按照上式的 \frac{1}{G} \sum_{i=1}^G \frac{1}{|o_i|} \sum_{t=1}^
 
 #### 工作过程
 
-![](asset/img_1f30cd6833b6.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_1f30cd6833b6.jpg)
 
 - **准备数据和模型**：一个batch中的数据右对齐（不等长的序列填充左侧）；准备policy model， refer model，reward策略/reward model
 - **生成补全（Generating completions）：在每一步训练中，抽样一个batch的prompt并为每个提示生成一组G个补全**（completions）

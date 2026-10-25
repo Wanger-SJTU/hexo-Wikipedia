@@ -1,9 +1,19 @@
 ---
-title: "Auto data transform"
-date: 2021-09-01
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/405655362
+title: Auto data transform
+date: "2021-09-01 00:00:00"
+updated: "2021-09-01 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/优化/Auto-data-transform/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/405655362
 ---
+
 
 Auto data tranform是AutoSearch的一个功能模块，这部分工作是由AutoKernel实习生（huxingyu)完成的, 整个工作大概花了3个月（2021.1~2021.3），后面实习生离职后，这部分工作也就暂停了>_Data Transform开发文档autokernel-docs-en.readthedocs.io/zh_CN/latest/dev-doc/datatransform.html](https://link.zhihu.com/?target=https%3A//autokernel-docs-en.readthedocs.io/zh_CN/latest/dev-doc/datatransform.html)
 

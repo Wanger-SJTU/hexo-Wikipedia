@@ -1,9 +1,19 @@
 ---
-title: "AI移动端常用汇编指令汇总以及底层算子汇编实现（附带一点点干货）"
-date: 2019-05-05
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/64025085
+title: AI移动端常用汇编指令汇总以及底层算子汇编实现（附带一点点干货）
+date: "2019-05-05 00:00:00"
+updated: "2019-05-05 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/优化/AI移动端常用汇编指令汇总以及底层算子汇编实现(附带一点点干货)/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/64025085
 ---
+
 
 ### **一、初衷**
 
@@ -19,7 +29,7 @@ source: https://zhuanlan.zhihu.com/p/64025085
 
 4、最后可能会结合一个具体的实例来写写，比如我们做图像处理的时候有RGB转YUV（或者其他各式各样的格式转换）的需求吧，平时我们都是c++裸实现的，现在我们可以转成汇编，然后优化下流水访存啥的，最后对比下性能加速比，哇～如此完整的实践～美哉～（当然，我可能也不会写最后这一节，因为真的很费时间啊，你看我周末来深圳陪女朋，我在干嘛？我居然在陪她搞学习！！！
 
-![](asset/img_ef7703d0a43b.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_ef7703d0a43b.jpg)
 
 我爱学习~）
 
@@ -117,7 +127,7 @@ END_FUNCTION q8gemm_ukernel_4x8__aarch32_neon
 
 其次A32指令集下NEON寄存器是Q0~Q15共计16个，A64下是V0~V31共计32个，其表现形式以及硬件结构都有所差异，我们直接看图吧！
 
-![](asset/img_dd4b71a8ed25.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_dd4b71a8ed25.jpg)
 
 For ArmV7这是AArch32状态下的NEON寄存器组，Q0~Q15，同时对应D0~D32，一个Q分为两个D，这两个D是可以单独操作的；
 
@@ -125,7 +135,7 @@ For ArmV7这是AArch32状态下的NEON寄存器组，Q0~Q15，同时对应D0~D32
 
 可以看到特点是寄存器是连续的，Q0等价于D0+D1等价于S0+S1+S2+S3，这在我们做矢量运算的时候是很方便的（实例中可以见到），但是在AArch64状态下的NEON寄存器组可就不一样咯~
 
-![](asset/img_b1a9edfa6c94.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_b1a9edfa6c94.jpg)
 
 ArmV8你看V0对应AArch32状态下Q0，这里只对应D0，跟AArch32不同的是D1分配到V1中去了，也就是说寄存器不连续了，这里可能有人有疑问，假如我要把数据放到V0的上班部分怎么办呢？这个当然考虑到了比如smlal2指令就是专门处理这类问题的，后面慢慢会接触到的，这里就先不展开说了。
 
@@ -143,11 +153,11 @@ ArmV8你看V0对应AArch32状态下Q0，这里只对应D0，跟AArch32不同的�
 
 Arm的A32/T32指令集跟A64指令集在SIMD汇编指令语法这块的整体区别如下：
 
-![](asset/img_7203c8b84839.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_7203c8b84839.jpg)
 
 数据来源：《Arm® Compiler Version 6.6 armasm User Guide》3.2** **常用指令汇总**
 
-![](asset/img_0c83630c951b.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_0c83630c951b.jpg)
 
 **注1.  *A64下不仅仅只有取到L1cache并keep这一种预取方式啊，还有stream模式，取到L2cache的模式啊，具体可取查看上面我给我的那个手册哈；*
 注2.  *A64更专注于指令表达意思的本身，数据类型让寄存器来设定;*
@@ -170,7 +180,7 @@ v8：**
 
 ** pld1kepp这个参数是可以改的，改为预取到L2中，不keep，而是流式缓存，也就是不会真放进cache中，具体的可以去看芯片手册（看下面的图片）。` "prfm   pldl1keep, [%1, #512]       \n"`
 
-![](asset/img_23fa52831ad5.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_23fa52831ad5.jpg)
 
 《ARM® Architecture Reference Manual ARMv8, for ARMv8-A architecture profile》p180
 
@@ -293,7 +303,7 @@ v8的int16操作：以int16 的方式加载一个D寄存器的_k0出来，然后
 
 但**并不是所有的汇编指令都可以接受任何类型的变量作为输入或输出变量的**，因此汇编器需要知道这些变量到底用在什么地方，从而帮助在传递之前做一些转换。常用的限定符主要有以下一些，而且汇编语句到底是ARM的还是Thumb的，对限定符的定义也会不同：
 
-![](asset/img_49584770f45c.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_49584770f45c.jpg)
 
 常用的也就是r，f和m等几个。
 
@@ -301,7 +311,7 @@ v8的int16操作：以int16 的方式加载一个D寄存器的_k0出来，然后
 
 GCC中定义了三个修改符，分别是：
 
-![](asset/img_30c2993ed7be.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_30c2993ed7be.jpg)
 
 所以，作为输出操作数，只需要在限定符前加上“=”就可以了。
 
@@ -338,7 +348,7 @@ GCC中定义了三个修改符，分别是：
 
 对于嵌入内联ARM汇编来说，此列表中的值有下面三种类型： 
 
-![](asset/img_50164441daed.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_50164441daed.jpg)
 
 对于“memory”来说，它并不是表示寄存器被读取或修改了，而是表示内存中的值被修改了。出于优化的目的，在执行你的汇编代码之前，编译器将某些变量的值还保存在寄存器中，并没有被写到实际的内存中。但是，如果你的汇编代码会读取内存中的值，则很有可能新的值还在寄存器中，而内存中存放的还是老的值，这样就会造成错误。添加了“memory”之后，编译器会在执行你的代码之前，保证将保存在寄存器中，没有更新到内存中的值全部都写入到内存中。
 
@@ -350,15 +360,15 @@ GCC中定义了三个修改符，分别是：
 
 我假设大家已经知道1x1s1卷积的的原理了哈，网上有很多图例的呀，我这里就展示一个三维版的哈：如下图所示，输入是CHW=(32,16,16)的数据，输出是（8,16,16），weights是NCHW排布的，size为(8,32,1,1)；
 
-![](asset/img_8b6be623eff8.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_8b6be623eff8.jpg)
 
 俯视图如下，我们看到具体的size值：
 
-![](asset/img_9fbddef8ee77.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_9fbddef8ee77.jpg)
 
  我们再看下卷积核心中的核心的动态图（浪费了我的周末时间啊，建模、配色玩的不亦乐乎~要是大家喜欢的话这个可以gayhub一下啊~）：
 
-![](asset/img_5c2ab83dfefe.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_5c2ab83dfefe.jpg)
 
 好了，言归正传，我们如何实现这个卷积，老规矩，先实现纯C++板，分析下性能，然后再写NEON版再分析下性能，不行的话接着优化：
 
@@ -451,7 +461,7 @@ cruiser0.GET_RawEvent_TOCK(setRawEvent);
 
 直接获取性能数据如下：
 
-![](asset/img_343a27d24b02.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_343a27d24b02.jpg)
 
 ** label@perf,CPU_CYCLES=365336032
 E/perf@perf: label@perf,SW_INCR=0
@@ -471,6 +481,6 @@ Todo~
 
 4.2  pooling （图纸only， now）**
 
-![](asset/img_6025da856370.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_6025da856370.jpg)
 
 #### **4.3 to be continue......**

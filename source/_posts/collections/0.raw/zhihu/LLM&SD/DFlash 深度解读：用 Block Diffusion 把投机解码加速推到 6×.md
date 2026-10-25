@@ -1,10 +1,19 @@
 ---
-title: "DFlash 深度解读：用 Block Diffusion 把投机解码加速推到 6×"
-date: 2026-06-14
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/2049539716261864313
-
+title: DFlash 深度解读：用 Block Diffusion 把投机解码加速推到 6×
+date: "2026-06-14 00:00:00"
+updated: "2026-06-14 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/LLM-SD/DFlash-深度解读-用-Block-Diffusion-把投机解码加速推到-6×/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/2049539716261864313
 ---
+
 
 **论文**：DFlash: Block Diffusion for Flash Speculative Decoding 
 **作者**：Jian Chen, Yesheng Liang, Zhijian Liu（UC San Diego） **会议**：ICML 2026　|　**arXiv**: 2602.06036 

@@ -1,9 +1,19 @@
 ---
-title: "聊聊低 bit 训练"
-date: 2024-03-16
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/687306246
+title: 聊聊低 bit 训练
+date: "2024-03-16 00:00:00"
+updated: "2024-03-16 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/LLM-SD/聊聊低-bit-训练/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/687306246
 ---
+
 
 原文链接：
 
@@ -13,7 +23,7 @@ source: https://zhuanlan.zhihu.com/p/687306246
 
 先讲讲 BitNet，用了比较激进的 1-bit 训练，提几点文章中比较关键的点
 
-![](asset/img_5d0e5b9a5100.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_5d0e5b9a5100.jpg)
 
 1）还是有一个 fp16 的 master weight：`While the weights and the activations are quantized to low precision, the gradients and the optimizer states are stored in high precision to ensure training stability and accuracy` 
 
@@ -31,7 +41,7 @@ The Era of 1-bit LLMs: All Large Language Models are in 1.58 Bits 这个文章�
 
 所以总的来说，这种低比特训练，训练前期可能还行。而事实上，大模型训练到大后期对精度要求很高。所以这篇文章所提出的方法，主要也就是在训练前期有用，训练后期 loss 预估是很难降下去，文章也巧妙地避开了训练大后期的评测（>1T 数据）
 
-![](asset/img_4d29f72ca451.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_4d29f72ca451.jpg)
 
 FP8-LM 做的比较 solid 一些，在 All-Reduce Communication、gradient scaling 上面都有一些设计。loss 曲线相比 fp16 没有明显的 gap，这一点比 BitNet 好。比较精细化的分配 fp8 的 scale，未来应该有在预训练阶段大规模应用的空间。
 

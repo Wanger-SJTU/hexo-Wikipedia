@@ -1,10 +1,19 @@
 ---
-title: "35000核压到40台，Helmsman做对了什么？"
-date: 2026-08-09
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/2069768613402300958
-
+title: 35000核压到40台，Helmsman做对了什么？
+date: "2026-08-09 00:00:00"
+updated: "2026-08-09 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/35000核压到40台,Helmsman做对了什么/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/2069768613402300958
 ---
+
 
 它先换了索引的访问形态，再逐项削掉软件、剪枝和构建开销。
 

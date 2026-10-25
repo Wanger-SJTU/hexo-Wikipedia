@@ -1,13 +1,23 @@
 ---
-title: "LLM推理优化系统工程概述"
-date: 2024-02-04
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/680635901
+title: LLM推理优化系统工程概述
+date: "2024-02-04 00:00:00"
+updated: "2024-02-04 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/LLM-SD/LLM推理优化系统工程概述/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/680635901
 ---
+
 
 最近看了CMU Catalyst团队23年底出的一篇总结LLM推理加速的综述文章[Towards Efficient Generative Large Language Model Serving: A Survey from Algorithms to Systems](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2312.15234)，覆盖面还是挺广的，文章从算法和系统工程两个大的视角出发对业界现有工作进行了归纳和总结，最后还提出了对未来发展方向的几点预测。本文主要对系统工程和市面上已有的推理框架进行一些讲解，算是查漏补缺吧，算法部分可以看[Hsword：大模型如何高效部署？CMU最新万字综述纵览LLM推理MLSys优化技术](https://zhuanlan.zhihu.com/p/677635306)这篇文章，讲的很详细了。
 
-![](asset/img_0821dc912210.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_0821dc912210.jpg)
 
 推理加速技术分类**
 
@@ -20,7 +30,7 @@ source: https://zhuanlan.zhihu.com/p/680635901
 量化已经不是什么新技术了，通过使用更少的位表示数值来显著地减少内存消耗，加速在硬件平台上的推理过程。传统的量化方法分为Quantization-Aware Training (QAT) 和 Post-Training Quantization (PTQ)，可以简单通过是否需要重新训练来进行区分，经过这些年的发展围绕QAT和PTQ也衍生了很多经典算法，如下图所示，而在LLM时代，PTQ和QAT又焕发出新的活力，成为模型压缩的一大重要技术。
  
 
-![](asset/img_19f4fa5d04ab.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_19f4fa5d04ab.jpg)
 
 PTQ主要是对模型权重值和激活值进行INT8/INT4量化，[A Comprehensive Study on Post-Training Quantization for Large Language Models](https://link.zhihu.com/?target=https%3A//arxiv.org/pdf/2303.08302v2.pdf)这篇文章是LLM PTQ的一篇综述文章，介绍对比了RTN、GPTQ、ZQ-Global、ZQ-Local这些算法，其中[GPTQ](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2210.17323)、[SmoothQuant](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2211.10438)算法影响力都不小，都可以展开看一看。因为权重和激活值的不同属性有多种精度组合，如W8A16(权重INT8+激活值FP16或BF16)、W4A16、W8A8、W4A4，分别有很多文章来介绍这些类型的量化技术。当然这也是需要硬件来支持，N厂的Ampere架构支持了INT8和INT4的tensor core，Hopper架构支持了FP8的tensor core， 其实也进一步说明了这方面的需求非常旺盛，得到了硬件厂商的肯定。
 
@@ -80,7 +90,7 @@ LLM推理的另一个独特挑战在于，序列的输入长度和输出长度�
 
 ### 推理框架
 
-![](asset/img_1ac0a47a3cfd.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_1ac0a47a3cfd.jpg)
 
 从并行计算支持方法、迭代粒度、attention kernel实现方案和优先级支持几个维度对常见推理框架进行了对比。然后每家因为出生不同都有一些自身特性。
 

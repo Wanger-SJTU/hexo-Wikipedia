@@ -1,19 +1,29 @@
 ---
-title: "OpenAI 如何优化 LLM 的效果"
-date: 2023-11-17
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/667439436
+title: OpenAI 如何优化 LLM 的效果
+date: "2023-11-17 00:00:00"
+updated: "2023-11-17 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/LLM-SD/OpenAI-如何优化-LLM-的效果/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/667439436
 ---
+
 
 本文基于 OpenAI 最新的分享 “**A Survey of Techniques for Maximizing LLM Performance**” 整理而成。由ChatGPT完成初稿后，再人工进行check和调整。更好的阅读体验见：
 
-[![](asset/img_ae41e467fe44.jpg)OpenAI 如何优化 LLM 的效果 | Breezedeus.comwww.breezedeus.com/article/make-llm-greater](https://link.zhihu.com/?target=https%3A//www.breezedeus.com/article/make-llm-greater)
+[![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_ae41e467fe44.jpg)OpenAI 如何优化 LLM 的效果 | Breezedeus.comwww.breezedeus.com/article/make-llm-greater](https://link.zhihu.com/?target=https%3A//www.breezedeus.com/article/make-llm-greater)
 
 分享讲述了 LLM 优化时需要考虑的两个方向：**上下文优化（Context Optimization）**和 **LLM优化**。
 
 - **上下文优化：** 模型需要知道什么信息才能解决问题。
 - **LLM优化：** 模型需要如何行动才能解决问题。
-![](asset/img_18613283c55d.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_18613283c55d.jpg)
 
 **
 
@@ -25,7 +35,7 @@ source: https://zhuanlan.zhihu.com/p/667439436
 
 **评估在整个流程中起着决定性作用**，因为它决定是否需要更改策略以提升性能。
 
-![](asset/img_8efda1993b4c.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_8efda1993b4c.jpg)
 
 ### 三种优化方法
 
@@ -35,19 +45,19 @@ source: https://zhuanlan.zhihu.com/p/667439436
 
 但提示工程的策略不应止步于此。为了进一步扩展其能力，可以提供**参考文本**和**使用外部工具**，这些做法能够进一步增强模型的能力，尤其是在需要广泛背景知识的复杂任务中。
 
-![](asset/img_5ab356c9780e.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_5ab356c9780e.jpg)
 
 提示工程是开始优化的最佳起点。它适合于早期的测试和学习，尤其是当与评估结合使用时，它为进一步的优化建立了基准。但**提示工程并不适合于引入新信息，或者可靠地复刻一个复杂的风格或方法**，例如学习一种新的编程语言，它也不适合于最小化token的使用。
 
-![](asset/img_f171100edc6a.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_f171100edc6a.jpg)
 
 一个好的prompt示例：
 
-![](asset/img_730fc17d6d76.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_730fc17d6d76.jpg)
 
 可以在示例中加入**少量示例**（**少样本学习，Few-shot Learning**）：
 
-![](asset/img_d1de236823cc.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_d1de236823cc.jpg)
 
 简单总结下：
 
@@ -62,13 +72,13 @@ source: https://zhuanlan.zhihu.com/p/667439436
 
 **RAG** 一般流程：
 
-![](asset/img_620558f98b73.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_620558f98b73.jpg)
 
 在优化大型语言模型（LLM）的过程中，我们会遇到一个选择的分岔点，即是采用**检索增强生成（RAG）**还是**模型精调（Fine-tuning）**。这种决策可以通过比较短期记忆和长期记忆问题来解释。**当模型需要特定信息以回答问题时**，例如需要回答用户的直接询问或解决特定的信息查询任务，**RAG**提供了一种方法，通过检索来扩展模型的知识库。这类似于为即将参加考试的学生提供教科书（开卷考试），学生可以翻阅教科书找答案。
 
 另一方面，当需要模型去**复刻特定的结构、风格或格式（一致的指令执行）时，模型精调**就显得尤为重要。这可以类比于学生通过长时间的学习来内化知识，以便能够在没有提示的情况下复现所学内容。值得强调的是，**RAG和精调并不是互斥的，而是可以相互补充。**在某些情况下，将这两种技术结合使用可以实现最佳的模型性能，这是因为它们在不同的层面上增强了模型的能力。而且RAG+精调优化的整个过程可能需要多次迭代才能最终获得好的效果。
 
-![](asset/img_7facb45d3d30.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_7facb45d3d30.jpg)
 
 **
 
@@ -81,7 +91,7 @@ RAG接近于给模型提供基于特定问题的上下文知识。
 - 教会模型理解广泛领域，如法律或医学。
 - 教会模型学习新的语言、格式或风格，这更多是模型精调的范畴。
 
-![](asset/img_5737201bca0e.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_5737201bca0e.jpg)
 
 #### 成功案例
 
@@ -97,7 +107,7 @@ RAG接近于给模型提供基于特定问题的上下文知识。
 
 在这个过程中，他们没有使用精调，这一点非常值得注意。在这个案例中，他们**面临的所有问题都与上下文有关**，问题的关键在于没有给它正确的上下文，或者它不知道哪些上下文块是正确的。这就是为什么明确要解决的问题是什么很关键。
 
-![](asset/img_18b46c11abfc.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_18b46c11abfc.jpg)
 
 检索出来的结果并不是越多越好。
 
@@ -109,7 +119,7 @@ RAG接近于给模型提供基于特定问题的上下文知识。
 
 通过这些细致的评估指标，我们能够深入了解并优化LLM在RAG应用中的表现，以实现最佳的性能和效率。
 
-![](asset/img_36b9a8de91f0.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_36b9a8de91f0.jpg)
 
 **
 
@@ -125,7 +135,7 @@ RAG接近于给模型提供基于特定问题的上下文知识。
 
 最后，精调的常见用例之一是**从像GPT-4这样的大型模型中提取知识，转移到像GPT-3.5 Turbo这样的小型模型中**。与大型模型相比，与小型模型交互总是更加高效的。
 
-![](asset/img_14f8067183d3.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_14f8067183d3.jpg)
 
 **模型精调**非常适合**强调基础模型中已存在的知识**。以文本转SQL任务为例，他们可能有非常强大的通用基础模型，如3.5 Turbo和GPT-4，这些模型对SQL语法、不同的SQL方言以及数据库的工作方式都有深刻理解。但他们可能需要模型精调来强调特定的SQL方言，或者使模型避免走向特定的、容易出错的边缘情况。本质上，他们在做的是取出基础模型中的知识，并强调其中的一部分。
 
@@ -135,13 +145,13 @@ RAG接近于给模型提供基于特定问题的上下文知识。
 
 另一方面，**模型精调并不适合给模型添加新知识**。LLM中的知识是在大规模的预训练运行期间植入的，你基本上无法在这些有限的模型精调运行中添加新知识。如果试图给模型添加新知识，可以寻求RAG等方法。此外，**模型精调也不适合快速迭代新用例**。如果进行模型精调，这是一个相对缓慢的反馈循环。需要大量投资来创建数据集以及模型精调的其他各个部分。所以，他们**建议不要以模型精调作为起点**。
 
-![](asset/img_4ef7b0015c73.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_4ef7b0015c73.jpg)
 
 下面Canva的成功案例突显了模型精调在强调基础模型中已有知识方面的有效性。他们面临的任务是将用户想要的设计模型的自然语言描述转换为结构化的设计指南，然后由LLM输出。他们的目标是使用这些结构化的设计指南来生成全尺寸的模型，并呈现给用户。下图为结果。
 
 为什么这个用例会成功？首先，**没有新知识的需求**。解决这个问题所需的所有知识都已经存在于基础模型中，但模型需要输出具有非常特定结构的结果。然后他们使用了**非常高质量的训练数据**，并且有很好的基线来比较两者。他们对3.5 Turbo和GPT-4进行了评估，理解了它们在哪些方面成功，在哪些方面不足，因此他们知道模型精调将是解决这个任务的一个好方法。
 
-![](asset/img_ff1ef5342ba9.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_ff1ef5342ba9.jpg)
 
 **
 
@@ -157,7 +167,7 @@ RAG接近于给模型提供基于特定问题的上下文知识。
 
 最终，部署模型。这些可以形成某种反馈循环和数据反馈循环。可以训练模型，对其进行评估，将其部署到生产环境，从生产中采集样本，使用这些样本构建一个新的数据集，对数据集进行下采样，然后进一步在这个数据集上进行模型精调，从而形成某种飞轮效应。
 
-![](asset/img_87e250c8a5ab.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_87e250c8a5ab.jpg)
 
 总结一些在模型精调时推荐的最佳实践。首先是从提示工程（prompt engineering）**和**少样本学习（few-shot learning）**开始。这些是非常简单且投入少的技术，能够提供一些直觉来理解LLMs在特定问题上的操作方式，这是开始的好地方。
 
@@ -165,19 +175,19 @@ RAG接近于给模型提供基于特定问题的上下文知识。
 
 最后，在进行模型精调时，应该从小处着手，不要下载14万条Slack消息并尝试一次性处理。他们**应该开发一个小型的高质量数据集**，执行模型精调，然后**评估模型以确定是否朝着正确的方向前进**。这里可以采取类似主动学习（active learning）的方法。模型精调后，观察模型的输出，看看它在哪些领域存在困难，然后用新数据专门针对这些领域进行改进。在模型精调方面，**数据质量比数据数量更重要**。数据数量是在预训练过程中处理的，现在他们真正要关注的是更少的高质量示例。
 
-![](asset/img_2d2f09d7ccfe.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_2d2f09d7ccfe.jpg)
 
 在某些应用中，模型精调和RAG的结合使用可能是两全其美的方案。通常，这样的工作方式是**先对模型进行精调，使其能够理解复杂指令**，然后就不再需要提供这些复杂的指令或少样本示例了。这些都已经被整合进精调后的模型中。这也意味着为检索到的上下文留出了更多空间。
 
 然后，可以**使用RAG将相关知识注入到上下文中**，而此时可用的上下文已经在这一点上被最大化。当然，必须小心不要让上下文过度饱和，可能会与问题无关的噪音。不是检索的结果越多越好。
 
-![](asset/img_e49d520c7132.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_e49d520c7132.jpg)
 
 #### **一个示例**：通过 Fine-tuning + RAG 达到SOTA效果
 
 任务 **Spider 1.0: Yale Semantic Parsing and Text-to-SQL Challenge**。这个任务上的SOTA精度是 84%（包括很多负责的前后处理流程）。
 
-![](asset/img_341e15ebbf51.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_341e15ebbf51.jpg)
 
 Spider 1.0: SQL语句生成任务，左边为输入（表schema，以及自然语言的prompt），右边为期望的输出（SQL语句）他们开始尝试RAG最简单的方法，也就是简单的检索。他们使用余弦相似度（cosine similarity），使用问题来查找回答类似问题的SQL查询。他们还尝试了不同的嵌入格式和提示工程，但结果并不理想。随后，他们考虑到一个问题可能会因为不同的数据库模式（schema）而有完全不同的答案，因此仅使用问题进行相似度搜索对这个问题来说并不合适。相反，使用一个假设的问题的答案进行搜索可能会得到更好的结果。
 
@@ -189,9 +199,9 @@ Spider 1.0: SQL语句生成任务，左边为输入（表schema，以及自然�
 
 最后，他们仅仅增加了示例数量，就接近达到了该领域的最高水平。这一切仅仅是通过几天的尝试，从提示工程开始，转向RAG，就展示了他们能够从这些非常基本的起点方法中挤压出的巨大性能。
 
-![](asset/img_9dcbe76cc0d0.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_9dcbe76cc0d0.jpg)
 
-![](asset/img_557b9547b002.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_557b9547b002.jpg)
 
 在进行模型精调方面，他们将工作交给了他们的合作伙伴Scale AI。Scale AI首先建立了基线，正如他们之前推荐的，与之前幻灯片中的69%相同。这是仅用简单的提示工程技术实现的。
 
@@ -203,7 +213,7 @@ Spider 1.0: SQL语句生成任务，左边为输入（表schema，以及自然�
 
 这突显了模型精调和RAG结合使用时的强大潜力。
 
-![](asset/img_90bcec9f8145.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_90bcec9f8145.jpg)
 
 ### 总结
 

@@ -1,3 +1,16 @@
+---
+title: 명세가 부족한 작업 예시
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/ko/lectures/lecture-01-why-capable-agents-still-fail/code/underspecified-task/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # 명세가 부족한 작업 예시
 
 AI 질의응답 기능이 있는 데스크톱 지식 베이스 앱을 만드십시오.

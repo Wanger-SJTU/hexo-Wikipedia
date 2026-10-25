@@ -1,10 +1,19 @@
 ---
-title: "Harness Engineering：如何构建高效的AI编码智能体"
-date: 2026-03-22
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/2019061294423126127
-
+title: Harness Engineering：如何构建高效的AI编码智能体
+date: "2026-03-22 00:00:00"
+updated: "2026-03-22 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/AgentCLI/Harness-Engineering-如何构建高效的AI编码智能体/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/2019061294423126127
 ---
+
 
 编程智能体的确厉害，CLI扣动扳机，然后，坐等击中目标。
 

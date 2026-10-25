@@ -1,11 +1,21 @@
 ---
-title: "CNN中，增加Padding过后，为我们带来的那些负面影响。"
-date: 2019-05-19
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/66289618
+title: CNN中，增加Padding过后，为我们带来的那些负面影响。
+date: "2019-05-19 00:00:00"
+updated: "2019-05-19 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/机器学习/CNN中,增加Padding过后,为我们带来的那些负面影响。/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/66289618
 ---
 
-![](asset/img_1f9eefbc95de.jpg)
+
+![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_1f9eefbc95de.jpg)
 
 如上图所示:
 

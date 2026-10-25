@@ -1,9 +1,19 @@
 ---
-title: "CPU 优化技术-NEON 指令介绍"
-date: 2022-02-28
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/441686632
+title: CPU 优化技术-NEON 指令介绍
+date: "2022-02-28 00:00:00"
+updated: "2022-02-28 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/体系结构/CPU-优化技术-NEON-指令介绍/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/441686632
 ---
+
 
 **版权声明 ©本文首发于知乎专栏：移动端算法优化****本专栏「移动端算法优化」所有文章著作权归作者所有。****允许个人直接分享本专栏文章到个人微博、朋友圈。但媒体（包括但不限于网站、微信公众号、微博营销号）转载需事先征得专栏同意。转载需在正文开头显著位置注明出处，给出原始链接，注明「发表于知乎专栏《移动端算法优化》」，并不得进行任何形式的修改演绎。**
 
@@ -19,7 +29,7 @@ ARM NEON 可以提升计算机视觉等计算密集型程序的性能，编译�
 
 Armv7-A 和 Armv8-A 的关系如下图所示:
 
-![](asset/img_00b10eaee9e7.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_00b10eaee9e7.jpg)
 
 ARM ISAArmv8-A 的执行状态可以分为 **AArch64** 和 **AArch32 **两种状态。
 
@@ -33,7 +43,7 @@ Armv9-A 是 arm 当前最新的指令架构，Armv9-A 除了向前兼容 Armv8-A
 
 **向量寄存器**用来存放向量数据，*每个向量元素的类型必须相同*。向量寄存器根据处理元素的大小可以划分为 / 个通道。
 
-![](asset/img_30e3dabbd251.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_30e3dabbd251.jpg)
 
 SIMD register
 #### **2.2.1 AArch64 向量寄存器**
@@ -45,7 +55,7 @@ AArch64 有 32 个 128bit 的向量寄存器，这些寄存器又可以划分为
 - 32 个 32bit 的 S 寄存器，S0~S31。
 每种类型寄存器的映射关系如下：
 
-![](asset/img_dc54eadf1fec.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_dc54eadf1fec.jpg)
 
 AArch64 SIMD register
 #### **2.2.2 AArchh32 / ARMV7向量寄存器**
@@ -57,7 +67,7 @@ AArch32/Armv7 有 16 个 128bit 的向量寄存器，这些寄存器又可以划
 - 32 个 32bit 的 S 寄存器，S0~S31。
 每种类型寄存器的映射关系如下：
 
-![](asset/img_735dc8c6e497.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_735dc8c6e497.jpg)
 
 AArch32 SIMD register
 #### **2.3 汇编指令格式介绍**
@@ -91,19 +101,19 @@ AArch64 与AArch32 / Armv7-A 的 NEON 汇编指令除了种类上存在差异，
 
 - **L / L2 ：**表示输出向量是输入向量长度的 2 倍，其中 L 表示输入寄存器的低 64bit 数据有效，L2 表示输入寄存器的高 64bit 数据有效。
 
-![](asset/img_6cde0a99cf47.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_6cde0a99cf47.jpg)
 
 L/L2
 
 - **N/N2：**表示输出向量是输入向量的  倍，N 表示输出向量只有低 64bit 有效，N2 则表示输出向量只有高 64bit 有效。
 
-![](asset/img_af432003c3a5.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_af432003c3a5.jpg)
 
 N/N2
 
 - **W/W2：**表示输出向量和第一个输入向量长度相等，且这两个向量是第二个向量长度的 2 倍，其中 W 表示第二个输入向量的低 64bit 有效，W2 表示第二输入向量的高 64bit 有效。
 
-![](asset/img_c971d2bb4665.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_c971d2bb4665.jpg)
 
 W/W2**4） **表示单个通道的数据类型，**8B/16B/4H/8H/2S/4S/2D**，B 表示 8bit，H 表示 16bit，S 表示 32bit，D 表示 64bit。
 
@@ -131,7 +141,7 @@ V0[2] = SAT((V2[0] + round_const) >> shift)
 V0[3] = SAT((V2[1] + round_const) >> shift)
 `
 
-![](asset/img_4d5190100f48.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_4d5190100f48.jpg)
 
 SQRSHRN2
 #### **2.3.2 AArch32 / Armv7汇编指令格式 **
@@ -185,7 +195,7 @@ for (int i = 0; i  4; i++)
 }
 `
 
-![](asset/img_38a6c789de10.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_38a6c789de10.jpg)
 
 VQDMULL.S16
 #### **2.4 intrinsics指令格式**
@@ -208,7 +218,7 @@ type>size>xnumber_of_lanes>xlength_of_array>_t
 
 **4)  **数组中元素个数。
 
-![](asset/img_1e6467a2dddc.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_1e6467a2dddc.jpg)
 
 向量类型示意图
 #### **2.4.2 NEON内联函数格式**
@@ -283,7 +293,7 @@ int16x4_t vmul_lane_s16(int16x4_t a, int16x4_t v, const int lane);
 - **q**：表示使用 128bit 的向量，否则使用 64bit 的向量。
 **5)  **表示单个通道的数据类型，有`u8`、`s8`、`u16`、`s16`、`u32`、`s32`、`f32`、`f64`。
 
-![](asset/img_cfc51bec1177.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_cfc51bec1177.jpg)
 
 内联函数结构示意图
 ### **三、intrinsics 指令介绍**
@@ -313,7 +323,7 @@ void vst[n]q>_type(Scalar_t* N, Vector_t M);
 void vst[n]q>_lane_type(Scalar_t *p_addr, Vector_t M, int N);
 `
 
-![](asset/img_b4ccc9526195.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_b4ccc9526195.jpg)
 
 2 个向量中多通道 load/store, 以及单个通道的load/store
 #### **3.2.2 Arithmetic**
@@ -352,7 +362,7 @@ Result_t vraddhn_type(Vector1_t N, Vector2_t M);
 Result_t vrsubhn_type(Vector1_t N, Vector2_t M);
 `
 
-![](asset/img_3d9034cf5690.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_3d9034cf5690.jpg)
 
 vhadd_s32 instrisics指令的操作
 #### **3.2.3 Multiply**
@@ -406,7 +416,7 @@ Result_t vqdmlsl_lane_type(Vector1_t N, Vector2_t M, Vector3_t P, int n);
 Result_t vqdmulhq>_lane_type(Vector1_t N, Vector2_t M, int n);
 `
 
-![](asset/img_decfa15f2fe2.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_decfa15f2fe2.jpg)
 
 vmla_lane_s32 intrinsics 指令的操作
 
@@ -500,7 +510,7 @@ Result_t vsriq>_n_type(Vector1_t N, Vector2_t M, int n);
 Result_t vsliq>_n_type(Vector1_t N, Vector2_t M, int n);
 `
 
-![](asset/img_e4119199fe06.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_e4119199fe06.jpg)
 
 vsliq_n_u32  intrinsics 指令的操作
 #### **3.2.5 Logical and compare**
@@ -530,7 +540,7 @@ Result_t vmvnq>_type(Vector_t N);
 Result_t veorq>_type(Vector1_t N, Vector2_t M);
 `
 
-![](asset/img_44dd5f541203.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_44dd5f541203.jpg)
 
 vmvn_s32 intrinsics 指令操作
 
@@ -571,7 +581,7 @@ Result_t vcvt_f32_f16(Vector_t N);
 `Result_t vfmsq>_type(Vector1_t N, Vector2_t M, Vector3_t P);
 `
 
-![](asset/img_1c90fe88a397.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_1c90fe88a397.jpg)
 
 vfms intrinsics 指令操作
 #### **3.2.7 Permutation**
@@ -580,7 +590,7 @@ vfms intrinsics 指令操作
 `Result_t vextq>_type(Vector1_t N, Vector2_t M, int n);
 `
 
-![](asset/img_c63587ddfc8b.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_c63587ddfc8b.jpg)
 
 vextq_u8 intrinsics 指令操作
 
@@ -595,7 +605,7 @@ Result_t vrev32q>_type(Vector_t N);
 Result_t vrev16q>_type(Vector_t N);
 `
 
-**`vrev16_type` 按照 16bit 为块，块内数据按照 8bit 为单位进行翻转。****`vrev32_type` 按照 32bit 为块，块内数据按照 8bit，16bit 为单位进行翻转。****`vrev64_type` 按照 64bit 为块，块内数据按照8bit, 16bit, 32bit为单位进行翻转。**![](asset/img_19b4cfd61c92.jpg)
+**`vrev16_type` 按照 16bit 为块，块内数据按照 8bit 为单位进行翻转。****`vrev32_type` 按照 32bit 为块，块内数据按照 8bit，16bit 为单位进行翻转。****`vrev64_type` 按照 64bit 为块，块内数据按照8bit, 16bit, 32bit为单位进行翻转。**![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_19b4cfd61c92.jpg)
 
 vrev16_s8, vrev32_s8 intrinsics 指令操作
 
@@ -604,7 +614,7 @@ vrev16_s8, vrev32_s8 intrinsics 指令操作
 Result_t vtrn2q>_type(Vector1_t N, Vector2_t M);
 `
 
-![](asset/img_8973a9c3f118.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_8973a9c3f118.jpg)
 
 vtrn1q_s32, vtrn2q_s32 intrinsics 指令操作
 
@@ -616,7 +626,7 @@ Result_t vzipq>_type(Vector1_t N, Vector2_t M);
 Result_t vuzpq>_type(Vector1_t N, Vector2_t M);
 `
 
-![](asset/img_7ac2ed5b0c54.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_7ac2ed5b0c54.jpg)
 
 vzip_u8 intrinsics 指令操作
 #### 3.2.8 Miscellaneous**
@@ -634,7 +644,7 @@ Result_t vmovq_n_type(Scalar_t N);
 `Result_t vdupq>_lane_type(Vector_t N, int n);
 `
 
-![](asset/img_23c4b23a1998.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_23c4b23a1998.jpg)
 
 vdup_lane_s32 intrinsics 指令操作
 #### **3.2.9 Data processing**
@@ -649,7 +659,7 @@ Result_t vpmax_type(Vector1_t N, Vector2_t M);
 Result_t vpmin_type(Vector1_t N, Vector2_t M);
 `
 
-![](asset/img_f72a4d49951b.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_f72a4d49951b.jpg)
 
 vpmin_s16 intrinsics 指令操作
 
@@ -732,7 +742,7 @@ Result_t vqmovun_type(Vector_t N);
 Result_t vget_low_type(Vector_t N);
 `
 
-![](asset/img_5e093f915494.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_5e093f915494.jpg)
 
 vget_low_s32 \ vget_high_s32 intrinsics 指令操作**
 
@@ -767,7 +777,7 @@ uint8x16x3_t vec = vld3q(in_ptr);
 vst3q(out_ptr, vec);
 `
 
-![](asset/img_905e3b0cd0d6.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_905e3b0cd0d6.jpg)
 
 load/store 示意图
 #### **5.2 查表操作**
@@ -786,7 +796,7 @@ NEON 在常规重排指令外，支持使用`TBL`和`TBX`指令来完成任意�
 uint8x8_t c = vtbl2_u8(a, b)
 `
 
-![](asset/img_f57595167d47.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_f57595167d47.jpg)
 
 vtbl2_u8 intrisics 操作
 #### 5.3 边缘处理**
@@ -809,7 +819,7 @@ uint8x8_t v_1 = vext_u8(v_c0, v_0, 5)
 uint8x8_t v_border = vext_u8(v_1, v_c0, 3)
 `
 
-![](asset/img_38aa22611bda.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_38aa22611bda.jpg)
 
 边界扩展示意图
 #### **5.4 SAD操作**
@@ -833,7 +843,7 @@ v_sum = vdotq_u32(v_sum , v_abd_res, v_c1);
 uint32_t res = vaddvq_u32(v_sum);
 `
 
-![](asset/img_f4fbe5024544.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_f4fbe5024544.jpg)
 
 NEON SAD 操作示意图
 #### **六、总结**

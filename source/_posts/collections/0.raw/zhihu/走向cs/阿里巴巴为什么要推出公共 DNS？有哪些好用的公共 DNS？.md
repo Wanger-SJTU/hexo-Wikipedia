@@ -1,10 +1,19 @@
 ---
-title: "阿里巴巴为什么要推出公共 DNS？有哪些好用的公共 DNS？"
-date: 2014-12-06
-tags: [知乎]
-source: https://www.zhihu.com/question/26856736/answer/34644193
-
+title: 阿里巴巴为什么要推出公共 DNS？有哪些好用的公共 DNS？
+date: "2014-12-06 00:00:00"
+updated: "2014-12-06 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/走向cs/阿里巴巴为什么要推出公共-DNS-有哪些好用的公共-DNS/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://www.zhihu.com/question/26856736/answer/34644193
 ---
+
 
 =======================好用的DNS部分=============================
 

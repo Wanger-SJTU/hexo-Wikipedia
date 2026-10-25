@@ -1,9 +1,19 @@
 ---
-title: "NPU 为什么很难支持 FlashAttention?"
-date: 2026-04-22
-tags: [知乎]
-source: https://www.zhihu.com/question/1964791844773822881/answer/1971378739620329005
+title: NPU 为什么很难支持 FlashAttention?
+date: "2026-04-22 00:00:00"
+updated: "2026-04-22 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/NPU-为什么很难支持-FlashAttention_/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://www.zhihu.com/question/1964791844773822881/answer/1971378739620329005
 ---
+
 
 THU Markov
 ​

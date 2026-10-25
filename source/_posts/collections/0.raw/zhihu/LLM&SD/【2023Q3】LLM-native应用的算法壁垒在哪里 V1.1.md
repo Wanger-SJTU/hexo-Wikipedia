@@ -1,9 +1,19 @@
 ---
-title: "【2023Q3】LLM-native应用的算法壁垒在哪里 V1.1"
-date: 2024-04-03
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/642322064
+title: 【2023Q3】LLM-native应用的算法壁垒在哪里 V1.1
+date: "2024-04-03 00:00:00"
+updated: "2024-04-03 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/LLM-SD/【2023Q3】LLM-native应用的算法壁垒在哪里-V1.1/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/642322064
 ---
+
 
 本文V1版本写作于2023.7
 

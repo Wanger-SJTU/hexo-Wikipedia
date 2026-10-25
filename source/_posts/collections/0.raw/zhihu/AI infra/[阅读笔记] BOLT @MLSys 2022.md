@@ -1,9 +1,19 @@
 ---
 title: "[阅读笔记] BOLT @MLSys 2022"
-date: 2022-05-31
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/514032549
+date: "2022-05-31 00:00:00"
+updated: "2022-05-31 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/AI-infra/[阅读笔记]-BOLT-MLSys-2022-a167fb/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/514032549
 ---
+
 
 [阅读笔记] BOLT @MLSys 2022
 

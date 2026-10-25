@@ -1,7 +1,20 @@
+---
+title: SVE-1 SVE的谓词寄存器
+date: "2026-04-11 21:40:18"
+updated: "2026-04-11 21:40:18"
+layout: post
+permalink: /collections/0.raw/随笔/SVE-1-SVE的谓词寄存器/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 #sve 
 
 ## 谓词寄存器
-![[assets/Pasted image 20230715163356.png]]
+![Pasted image 20230715163356.png](/images/collections/assets/Pasted%2520image%252020230715163356.png)
 
 - 谓词寄存器的长度是SVE 向量寄存器的1/8，正好对应了最小位宽时的uint8的数目。
 - 谓词寄存器的1bit 对应了向量寄存器的1 Byte

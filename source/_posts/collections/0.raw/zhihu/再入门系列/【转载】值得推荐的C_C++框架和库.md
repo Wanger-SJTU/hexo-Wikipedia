@@ -1,9 +1,19 @@
 ---
-title: "【转载】值得推荐的C/C++框架和库"
-date: 2017-02-26
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/25443704
+title: 【转载】值得推荐的C/C++框架和库
+date: "2017-02-26 00:00:00"
+updated: "2017-02-26 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/再入门系列/【转载】值得推荐的C_C-框架和库/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/25443704
 ---
+
 
 转载自：值得推荐的C/C++框架和库 - 蓝色理想 - C++博客
 

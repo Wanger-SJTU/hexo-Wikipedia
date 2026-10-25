@@ -1,9 +1,19 @@
 ---
-title: "关于 Bank Conflict 与 Swizzle"
-date: 2024-12-08
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/11132414477
+title: 关于 Bank Conflict 与 Swizzle
+date: "2024-12-08 00:00:00"
+updated: "2024-12-08 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/关于-Bank-Conflict-与-Swizzle/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/11132414477
 ---
+
 
 关于 Bank Conflict 与 Swizzle
 

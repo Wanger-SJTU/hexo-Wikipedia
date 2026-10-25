@@ -1,10 +1,19 @@
 ---
-title: "CPU的一级缓存为什么不能做得大一点？"
-date: 2024-01-05
-tags: [知乎]
-source: https://www.zhihu.com/question/21132822/answer/3350331430
-
+title: CPU的一级缓存为什么不能做得大一点？
+date: "2024-01-05 00:00:00"
+updated: "2024-01-05 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/CPU的一级缓存为什么不能做得大一点/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://www.zhihu.com/question/21132822/answer/3350331430
 ---
+
 
 看了一圈，大家回答的都很好，缓存大多都是基于SRAM设计的，一级缓存能不能做的大一点，这个取决于当前芯片的面积，功耗和性能的约束。因为一级缓存越大，占用的面积以及功耗就越大，同时频率很难满足需求。即使采用直接相连的缓存，也很难找到能满足处理器核几个GHz的频率的SRAM。如果一级缓存足够大，二级缓存还有存在必要吗？这个问题要看处理器适用的场景，如果是嵌入式处理器，其实都没必要使用一级缓存，更不用说二级缓存了。
 

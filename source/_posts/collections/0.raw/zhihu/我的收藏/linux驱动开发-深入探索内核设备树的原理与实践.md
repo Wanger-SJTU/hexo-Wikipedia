@@ -1,9 +1,19 @@
 ---
-title: "(2 条消息) linux驱动开发-深入探索内核设备树的原理与实践"
-date: 2024-10-12
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/972681787
+title: (2 条消息) linux驱动开发-深入探索内核设备树的原理与实践
+date: "2024-10-12 00:00:00"
+updated: "2024-10-12 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/linux驱动开发-深入探索内核设备树的原理与实践/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/972681787
 ---
+
 
 ### 一、基础知识
 
@@ -51,7 +61,7 @@ dtc是编译dts的工具，可以在Ubuntu系统上通过指令apt-get install d
 
 dtb(Device Tree Blob)，dts经过dtc编译之后会得到dtb文件，dtb通过Bootloader引导程序加载到内核。所以Bootloader需要支持设备树才行；Kernel也需要加入设备树的支持；
 
-![](asset/img_1b81385ef627.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_1b81385ef627.jpg)
 
 #### 3. DTS结构
 
@@ -293,7 +303,7 @@ valueDescription“okay”表示设备正在运行“disabled”表示该设备�
 
 与遵循树的自然结构而进行的地址转换不同，机器上的任何设备都可以发起和终止中断信号。另外地址的编址也不同于中断信号，前者是设备树的自然表示，而后者者表现为独立于设备树结构的节点之间的链接。 下图显示了设备的自然结构以及每个节点在逻辑中断树中的位置。
 
-![](asset/img_f3e459391f94.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_f3e459391f94.jpg)
 
 上图包括以下部分：
 
@@ -348,7 +358,7 @@ dtc工具的使用方法是：
 
 dts和dtb文件的转换如图1所示
 
-![](asset/img_8a5e236aca2c.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_8a5e236aca2c.jpg)
 
 #### 2. Device Tree头信息
 
@@ -460,7 +470,7 @@ fdtdump工具的输出信息即是以上结构中每一个成员的值，struct 
 
 Device Tree文件结构如下图所示。dtb的头部首先存放的是fdt_header的结构体信息，接着是填充区域，填充大小为off_dt_struct – sizeof(struct fdt_header)，填充的值为0。接着就是struct fdt_property结构体的相关信息。最后是dt_string部分。
 
-![](asset/img_a8301f29da7f.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_a8301f29da7f.jpg)
 
 Device Tree源文件的结构分为header、fill_area、dt_struct及dt_string四个区域。fill_area区域填充数值0。节点（node）信息使用struct fdt_node_header结构体描述。属性信息使用struct fdt_property结构体描述。各个结构体信息如下:
 
@@ -470,7 +480,7 @@ struct fdt_node_header { fdt32_t tag; char name[0];}; struct fdt_property { fdt3
 
 例如：compatible = “samsung,goni”, “samsung,s5pv210”;compatible是属性名称，“samsung,goni”, "samsung,s5pv210"是属性值。compatible属性名称字符串存放的区域是dt_string。“samsung,goni”, "samsung,s5pv210"存放的位置是fdt_property.data后面。因此fdt_property.data指向该属性值。fdt_property.tag的值为属性标识，len为属性值的长度（包括‘\0’，单位：字节）,此处len = 29。nameoff为compatible字符串的位置相对于off_dt_strings的偏移地址，即&compatible = nameoff + off_dt_strings。 dt_struct在Device Tree中的结构如下图所示。节点的嵌套也带来tag标识符的嵌套。
 
-![](asset/img_129ce7e1a2ec.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_129ce7e1a2ec.jpg)
 
 ### 三、u-boot设备树的传递
 
@@ -515,7 +525,7 @@ tftp 0x30001000 s3c2440-smdk2440.dtb
 - 不要破坏内核本身: 内核本身的空间不能占用, 内核要用到的内存区域也不能占用
 对于该问题，我们拿了一块2440的地址空间分配图来说明该问题
 
-![](asset/img_d6540b9c32fc.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_d6540b9c32fc.jpg)
 
 对于dtb的存放，只能存放在空闲区，并且不能与其他区有重合的地方。
 
@@ -1003,7 +1013,7 @@ uboot把设备树DTB文件随便放到内存的某一个地方就可以使用，
 
 对于dtb最后都存储在，其结构图如下
 
-![](asset/img_4dbd673bb1d4.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_4dbd673bb1d4.jpg)
 
 #### 6. linux kernel的设备驱动模型
 
@@ -1226,7 +1236,7 @@ core_initcall(of_init);`
 
 学习完了设备树的文件系统查看方法，那么对于在源码中去拿到设备树的节点或者属性信息，内核提供了那些操作函数呢？内核中开放出来的接口函数的声明大多在include/linux/下面，关于设备树的都是以of形式开头的命名
 
-![](asset/img_d7409a62304d.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_d7409a62304d.jpg)
 
 对应各个文件主要完成什么功能如下：
 

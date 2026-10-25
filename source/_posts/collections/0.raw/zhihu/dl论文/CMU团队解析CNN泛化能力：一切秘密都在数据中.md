@@ -1,10 +1,19 @@
 ---
-title: "CMU团队解析CNN泛化能力：一切秘密都在数据中"
-date: 2020-09-16
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/248068207
-
+title: CMU团队解析CNN泛化能力：一切秘密都在数据中
+date: "2020-09-16 00:00:00"
+updated: "2020-09-16 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/dl论文/CMU团队解析CNN泛化能力-一切秘密都在数据中/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/248068207
 ---
+
 
 如何理解神经网络的泛化能力？CMU 的汪浩瀚、邢波等人在论文《High-frequency Component Helps Explain the Generalization of Convolutional Neural Network》中另辟蹊径，从数据的角度入手，探讨那些曾让我们百思不得其解的泛化现象。
 ![](https://pic1.zhimg.com/v2-353a973f20fc55ae388347a138050c4c_r.jpg)论文链接：[https://arxiv.org/pdf/1905.13545.pdf](https://link.zhihu.com/?target=https%3A//arxiv.org/pdf/1905.13545.pdf)

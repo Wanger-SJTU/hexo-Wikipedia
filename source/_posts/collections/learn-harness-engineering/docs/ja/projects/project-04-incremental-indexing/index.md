@@ -1,3 +1,16 @@
+---
+title: プロジェクト 04. ランタイムフィードバックでエージェントの挙動を修正する
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/ja/projects/project-04-incremental-indexing/index/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 [中文版本 →](../../../zh/projects/project-04-incremental-indexing/)
 
 > 関連講義: [講義 07. エージェントのタスク境界を明確に引く](./../../lectures/lecture-07-why-agents-overreach-and-under-finish/index.md) · [講義 08. 機能リストでエージェントの作業を制約する](./../../lectures/lecture-08-why-feature-lists-are-harness-primitives/index.md)

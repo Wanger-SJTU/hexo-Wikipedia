@@ -1,15 +1,25 @@
 ---
-title: "两路CPU通讯那些事-缓存一致性（CCIX）"
-date: 2023-10-08
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/659199436
+title: 两路CPU通讯那些事-缓存一致性（CCIX）
+date: "2023-10-08 00:00:00"
+updated: "2023-10-08 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/体系结构/两路CPU通讯那些事-缓存一致性(CCIX)/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/659199436
 ---
+
 
 #### 两路CPU，什么是两路CPU？
 
 两路CPU是指计算机系统中使用了两个CPU（中央处理器）来处理数据和运行程序。其设计在服务器领域通常进行使用，为了提高计算机系统的性能和处理能力，特别是在需要大量计算的应用程序中。使用两个CPU可以让服务器同时处理更多的任务，提高服务器的吞吐量和响应速度。此外，两路CPU还可以提高服务器的可靠性和容错能力，因为当一个CPU出现故障时，另一个CPU仍然可以继续工作，保证了服务器的正常运行。
 
-![](asset/img_9e772c671682.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_9e772c671682.jpg)
 
 那么这两个CPU之间内存空间是如何共享的？那么会涉及到缓存一致性。
 
@@ -25,7 +35,7 @@ CCIX（Cache Coherent Interconnect for Accelerators）是一种高性能互联�
 
 CCIX总线可以在不同的物理层上运行，包括PCIe物理层、基于CoaXPress的物理层、串行RS-232物理层等。这种灵活性允许CCIX适应各种硬件配置和需求。而对于PCle物理层在高性能CPU是不可缺少的一部分，所以为CCIX总线提供了传输的物理通道，因此CCIX的吸引力之一就是其与PCI Express的兼容性。
 
-![](asset/img_67f58b3aea42.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_67f58b3aea42.jpg)
 
 CCIX总线架构CCIX总线架构可以看到其可以大致分为两层：
 
@@ -47,7 +57,7 @@ CCIX拓扑结构样例
 
 CCIX总线支持多种灵活的拓扑结构，在下面图中分别为单节点树、网状结构、复杂拓扑结构—全互连。
 
-![](asset/img_3dc51a212eb9.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_3dc51a212eb9.jpg)
 
 CCIX拓扑结构样例
 #### 小结

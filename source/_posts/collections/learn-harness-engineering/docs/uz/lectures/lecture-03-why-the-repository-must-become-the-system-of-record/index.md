@@ -1,3 +1,16 @@
+---
+title: 3-maʼruza. Repozitoriyni yagona haqiqat manbaiga aylantiring
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/uz/lectures/lecture-03-why-the-repository-must-become-the-system-of-record/index/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 [English version →](../../../en/lectures/lecture-03-why-the-repository-must-become-the-system-of-record/)
 
 > Kod misollari: [code/](https://github.com/walkinglabs/learn-harness-engineering/blob/main/docs/en/lectures/lecture-03-why-the-repository-must-become-the-system-of-record/code/)

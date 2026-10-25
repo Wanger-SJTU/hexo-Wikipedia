@@ -1,9 +1,19 @@
 ---
-title: "聊一聊VCCL背后的那点事"
-date: 2025-09-24
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/1953950437062456356
+title: 聊一聊VCCL背后的那点事
+date: "2025-09-24 00:00:00"
+updated: "2025-09-24 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/体系结构/聊一聊VCCL背后的那点事/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/1953950437062456356
 ---
+
 
 概述
 最近，我们团队持续开发接近一年的VCCL([https://github.com/sii-research/VCCL](https://link.zhihu.com/?target=https%3A//github.com/sii-research/VCCL))终于正式开源了，VCCL最早基于NCCL2.21版本开发，最终开源版本是暂时迁移到了2.26版本，其中主要引入了三大核心特性：分别是无核+零拷贝、容错和telemetry。其中，容错和telemetry的开发工作基本是我着手完成的。其实最早，这两个特性的开发在四月底就已经完成并也已经在大规模的生产集群完成了验证（无核当时第一版也已经开发完成，但因为一些不可抗力延缓了代码的开源，但也因祸得福，带来了终极体的SM free），本文也就不完全的聊技术细节本身，单纯分享下我个人在VCCL开发过程中的感悟以及中间遇到的一些艰辛（改NCCL实在是件无比头疼的事情），发表言论不代表任何单位，VCCL在我个人看来其实工程上的实践远超过所谓的idea创新，真正一路走来，踩了无数的坑，这篇文章主要提及部分我遇到的记忆犹新的bug吧！

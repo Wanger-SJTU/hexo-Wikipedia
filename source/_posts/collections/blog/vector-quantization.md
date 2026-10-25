@@ -1,9 +1,22 @@
 ---
 title: 向量量化：如何在压缩向量的同时不丢失关键信息
-source: https://chimchim89.github.io/vector-quantization/
-saved: 2026-06-30
-tags: [向量量化, embedding, 压缩, 搜索优化]
+date: "2026-06-30 18:19:30"
+updated: "2026-06-30 18:19:30"
+layout: post
+permalink: /collections/blog/vector-quantization/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 向量量化
+  - embedding
+  - 压缩
+  - 搜索优化
+source_url: https://chimchim89.github.io/vector-quantization/
 ---
+
 
 ## 1. Introduction
 

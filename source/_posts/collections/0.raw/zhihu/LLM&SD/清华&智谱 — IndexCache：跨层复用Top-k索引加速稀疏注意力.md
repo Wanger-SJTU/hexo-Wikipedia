@@ -1,10 +1,19 @@
 ---
-title: "清华&智谱 — IndexCache：跨层复用Top-k索引加速稀疏注意力"
-date: 2026-03-15
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/2016484051897295760
-
+title: 清华&智谱 — IndexCache：跨层复用Top-k索引加速稀疏注意力
+date: "2026-03-15 00:00:00"
+updated: "2026-03-15 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/LLM-SD/清华-智谱-—-IndexCache-跨层复用Top-k索引加速稀疏注意力/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/2016484051897295760
 ---
+
 
 论文名称：IndexCache: Accelerating Sparse Attention via Cross-Layer Index Reuse
 论文链接：[http://www.arxiv.org/abs/2603.12201](https://link.zhihu.com/?target=http%3A//www.arxiv.org/abs/2603.12201)

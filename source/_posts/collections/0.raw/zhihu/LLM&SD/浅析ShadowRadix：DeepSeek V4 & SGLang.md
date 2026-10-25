@@ -1,10 +1,19 @@
 ---
-title: "浅析ShadowRadix：DeepSeek V4 & SGLang"
-date: 2026-04-26
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/2031708802161046746
-
+title: 浅析ShadowRadix：DeepSeek V4 & SGLang
+date: "2026-04-26 00:00:00"
+updated: "2026-04-26 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/LLM-SD/浅析ShadowRadix-DeepSeek-V4-SGLang/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/2031708802161046746
 ---
+
 
 当GPT-5.5, Claude Opus 4.7等模型接连登场时，DeepSeek V4的压轴亮相，以其对推理内存和计算的极致优化，或许为这一轮模型大战打响了最后一枪。SGLang对DeepSeek的支持更是其提升真实部署能力的关键。两天前，DeepSeek V4发布。非常激动看到SGLang在发布的Day-0就对DS的新架构和技术进行了支持，具体如下：
 

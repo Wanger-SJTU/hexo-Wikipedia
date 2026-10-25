@@ -1,9 +1,19 @@
 ---
-title: "(1 封私信) fp16*int4计算kernel--MARLIN代码走读"
-date: 2024-05-20
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/698715169
+title: (1 封私信) fp16*int4计算kernel--MARLIN代码走读
+date: "2024-05-20 00:00:00"
+updated: "2024-05-20 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/体系结构/fp16_int4计算kernel-MARLIN代码走读/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/698715169
 ---
+
 
 ### 前言
 
@@ -297,7 +307,7 @@ ldmatrix.sync.aligned.m8n8.x4.shared.b16 指令来实现。
 
 该指令也需要传入32个行首地址。
 
-![](asset/img_c14e77bf3906.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_c14e77bf3906.jpg)
 
 至于这4个8*8的顺序是这样的：
 
@@ -409,7 +419,7 @@ B矩阵的读取指令在vllm库中为了支持H100，稍有修改，建议参�
 
 前面提到了A矩阵，thread 0-32,下面来看B矩阵
 
-![](asset/img_ca531c2431bf.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_ca531c2431bf.jpg)
 
 B矩阵的偏移如上图所示。
 
@@ -498,7 +508,7 @@ PERM1.
 
 最后看一下C矩阵的排布：
 
-![](asset/img_fa7bb6412df3.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_fa7bb6412df3.jpg)
 
 在计算块内部，会在DIM_K进行迭代，会将结果放在frag_c的寄存器中。
 

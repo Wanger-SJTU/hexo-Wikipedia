@@ -1,9 +1,19 @@
 ---
 title: "OpenClaw + Codex/ClaudeCode Agent Swarm: 一人搭建开发团队"
-date: 2026-02-26
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/2010324070751826756
+date: "2026-02-26 00:00:00"
+updated: "2026-02-26 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/AgentCLI/OpenClaw-Codex_ClaudeCode-Agent-Swarm_-一人搭建开发团队/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/2010324070751826756
 ---
+
 
 我现在不再直接使用 Codex 或 Claude Code 了。
 
@@ -13,7 +23,7 @@ source: https://zhuanlan.zhihu.com/p/2010324070751826756
 - 一天 94 次提交 。我最高效的一天——我进行了 3 次客户通话，一次都没有打开过编辑器。平均每天大约 50 次提交。
 - 30 分钟内 7 个 PR。从想法到生产非常快，因为编码和验证大多是自动化的。
 - 提交 → MRR: 我用它来构建一个真实的 B2B SaaS——将其与创始人领导的销售捆绑，以实现大多数功能请求的当日交付。速度将潜在客户转化为付费客户。
-![](asset/img_61dd157376b5.jpg)
+![](/images/collections/0.raw/zhihu/AgentCLI/asset/img_61dd157376b5.jpg)
 
 1 月前：仅 CC/codex | 1 月后：Openclaw 协调 CC/codex&lt;br&gt;>  我的 git 历史看起来就像我刚雇佣了一个开发团队。实际上，我只是从管理 Claude code，转变为管理一个 Openclaw 代理，该代理管理着一支其他 Claude code 和 Codex 代理的舰队。
  
@@ -27,7 +37,7 @@ source: https://zhuanlan.zhihu.com/p/2010324070751826756
 
 OpenClaw 改变了这一局面。`它作为你与所有智能体之间的协调层——它将我的业务上下文（客户数据、会议笔记、过往决策、哪些有效、哪些失败）保存在我的 Obsidian 知识库中，并将历史上下文转化为精确的提示，供每个编码智能体使用。智能体专注于代码。协调者则保持在高策略层面`。 系统的高层次工作原理如下：
 
-![](asset/img_ad92bef44930.jpg)
+![](/images/collections/0.raw/zhihu/AgentCLI/asset/img_ad92bef44930.jpg)
 
 上周 Stripe 写了一篇关于他们后台智能体系统"Minions"的文章——由集中式协调层支持的并行编码智能体。我无意中构建了同样的系统，但它运行在我的 Mac mini 上。
 
@@ -42,7 +52,7 @@ OpenClaw 改变了这一局面。`它作为你与所有智能体之间的协调�
 
 OpenClaw 和 Codex 的上下文差异极大：
 
-![](asset/img_d158f0017d45.jpg)
+![](/images/collections/0.raw/zhihu/AgentCLI/asset/img_d158f0017d45.jpg)
 
 通过上下文实现专业化，而非通过不同的模型。
 

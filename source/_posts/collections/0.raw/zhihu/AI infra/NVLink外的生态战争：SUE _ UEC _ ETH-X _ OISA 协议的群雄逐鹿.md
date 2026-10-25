@@ -1,10 +1,19 @@
 ---
-title: "NVLink外的生态战争：SUE / UEC / ETH-X / OISA 协议的群雄逐鹿"
-date: 2026-06-11
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/2048413019521169190
-
+title: NVLink外的生态战争：SUE / UEC / ETH-X / OISA 协议的群雄逐鹿
+date: "2026-06-11 00:00:00"
+updated: "2026-06-11 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/AI-infra/NVLink外的生态战争-SUE-_-UEC-_-ETH-X-_-OISA-协议的群雄逐鹿/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/2048413019521169190
 ---
+
 
 NVLink外的生态战争：SUE / UEC / ETH-X / OISA 协议的群雄逐鹿
 

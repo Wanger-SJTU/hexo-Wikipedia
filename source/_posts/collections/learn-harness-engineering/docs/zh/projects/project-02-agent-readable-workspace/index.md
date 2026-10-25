@@ -1,3 +1,16 @@
+---
+title: Project 02. 让 agent 看懂项目、接住上次的工作
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/zh/projects/project-02-agent-readable-workspace/index/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # Project 02. 让 agent 看懂项目、接住上次的工作
 
 > 相关讲义：[L03. 让代码仓库成为唯一的事实来源](./../../lectures/lecture-03-why-the-repository-must-become-the-system-of-record/index.md) · [L04. 为什么一个巨大的指令文件会失败](./../../lectures/lecture-04-why-one-giant-instruction-file-fails/index.md)

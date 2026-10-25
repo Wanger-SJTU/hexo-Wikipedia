@@ -1,9 +1,19 @@
 ---
-title: "(1 条消息) Qwen-Audio：突破性音频理解多模态模型，跨越30种任务和8种语言，效果超预期"
-date: 2023-11-16
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/667264146
+title: (1 条消息) Qwen-Audio：突破性音频理解多模态模型，跨越30种任务和8种语言，效果超预期
+date: "2023-11-16 00:00:00"
+updated: "2023-11-16 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/Qwen-Audio-突破性音频理解多模态模型,跨越30种任务和8种语言,效果超预期/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/667264146
 ---
+
 
 文章名称：Qwen-Audio: Advancing Universal Audio Understanding via Unified Large-Scale Audio-Language Models
 
@@ -19,7 +29,7 @@ github链接：[https://github.com/QwenLM/Qwen-Audio](https://link.zhihu.com/?ta
 
 **解决思路：**为了解决这个问题，他们设计了一个多任务训练框架，通过在解码器上引入一系列层级标签，促进知识共享，并通过共享和指定的标签来减少干扰。此外，他们还将语音识别与单词级时间戳预测（SRWT）任务纳入了训练中，这通常被忽视。结果显示，Qwen-Audio在多样化的基准任务中取得了卓越的性能，无需进行任何特定任务的微调，超过了其他模型。
 
-![](asset/img_dabe6674d4ab.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_dabe6674d4ab.jpg)
 
 ### section-相关工作
 
@@ -44,7 +54,7 @@ github链接：[https://github.com/QwenLM/Qwen-Audio](https://link.zhihu.com/?ta
 
 Qwen-Audio 模型的架构如下：
 
-![](asset/img_831f1d3e7d13.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_831f1d3e7d13.jpg)
 
 **主要组件**：
 
@@ -116,7 +126,7 @@ Qwen-Audio-Chat 模型的构建过程是通过利用广泛的预训练多任务�
 
 Qwen-Audio-Chat 模型处理来自音频和纯文本模态的多种输入的方式是通过一种称为 ChatML 的格式。在训练过程中，该模型使用了结合了音频中心指令数据和纯文本指令数据来使模型能够无缝处理不同形式的输入。
 
-![](asset/img_d35962111dec.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_d35962111dec.jpg)
 
 具体来说，Qwen-Audio-Chat 模型采用了 ChatML 格式，在这种格式下，每个交互的语句都用两个特殊的标记  和  标记，以便于对话的结束和对话的起始。这种格式能够处理音频和纯文本输入，并且在训练过程中使用了两种类型的数据：
 
@@ -136,7 +146,7 @@ Qwen-Audio-Chat 模型在训练过程中结合了这两种类型的指令数据�
 - ACC (Accuracy)：用于衡量声学场景分类、语音情感识别、音频问答等任务的准确性。
 - CIDEr、SPICE、SPIDEr：用于评估音频字幕任务的质量。
 - MAP (Mean Average Precision)：用于衡量音乐音符分析任务的性能。
-![](asset/img_4270513e3e64.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_4270513e3e64.jpg)
 
 ### Refs
 

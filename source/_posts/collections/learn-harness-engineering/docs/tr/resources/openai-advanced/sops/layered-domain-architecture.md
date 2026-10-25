@@ -1,3 +1,16 @@
+---
+title: "SOP: Katmanlı Alan Mimarisi"
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/tr/resources/openai-advanced/sops/layered-domain-architecture/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # SOP: Katmanlı Alan Mimarisi
 
 Bu SOP'u, ajan sınırları sürekli ihlal ettiğinde, katmanlar arasında

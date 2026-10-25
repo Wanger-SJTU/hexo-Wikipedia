@@ -1,9 +1,19 @@
 ---
-title: "(2 条消息) 论文笔记：DejaVu、LLM in Flash、PowerInfer"
-date: 2024-01-06
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/675585887
+title: (2 条消息) 论文笔记：DejaVu、LLM in Flash、PowerInfer
+date: "2024-01-06 00:00:00"
+updated: "2024-01-06 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/论文笔记-DejaVu、LLM-in-Flash、PowerInfer/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/675585887
 ---
+
 
 你经历过似曾相识的感觉吗？当你处在一个陌生场景里，却隐隐约约地感觉到，此刻的光线，周围散发出的味道，正在说话的人和他正在说的话，都像曾经发生过，或者梦见过的事情，这种感觉往往只在那一刻，转瞬即逝。这种熟悉感被称为Deja-vu现象，原文为法语 Déjà vu，中文翻译成“**既视感**”。
 
@@ -37,7 +47,7 @@ DejaVu 这篇论文用这个名字，还是挺有艺术感的。
 
 相对于非上下文稀疏性或静态稀疏性，上下文稀疏性在效率和准确度之间有更好的权衡。这句话怎么理解呢？
 
-![](asset/img_e62f8d780ce4.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_e62f8d780ce4.jpg)
 
 Accuracy-Efficiency Trade-offs如图所示，如果直接做静态稀疏和非上下文稀疏化（主要就是指静态剪枝和随机动态剪枝），会使得准确度快速下降，而上下文稀疏化则会好很多。原因是上下文稀疏性不仅取决于单个输入标记，还取决于它们之间的相互关联，当然在这篇文章中相互关联最后是靠预测器来提供，而预测器是额外训练的。这里 Theoretical Reduction 应该代表的是几倍稀疏化，“leads to a 7× parameter reduction”。
 
@@ -45,7 +55,7 @@ Accuracy-Efficiency Trade-offs如图所示，如果直接做静态稀疏和非�
 
 这里的稀疏化会被分为 MLP 和 Attention 两部分分开做。并且作者在这里给出了没有被激活的 heads/neurons 的可视化曲线，说实话，可稀疏化的空间比我想象的要大得多。
 
-![](asset/img_99d969a466df.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_99d969a466df.jpg)
 
 注意力头中超过80%的部分会在实验中变得不活跃，而 MLP 层上的平均稀疏性则可以发现，超过95%的MLP参数都可以不参与推理。
 
@@ -59,7 +69,7 @@ Accuracy-Efficiency Trade-offs如图所示，如果直接做静态稀疏和非�
 
 在注意力层中，有时候某个头的输出是一枝独秀（heavy hitter）的，而某个头输出则是平分秋色（uniform）的，例如下图 head43 相对更加平分秋色一些，head42 则一枝独秀。作者在这里的发现通俗点说就是，只选择一枝独秀同时丢弃平分秋色，相比全都选是没有啥影响的，反正平分秋色的也没有啥 token 之间的关联信息量。
 
-![](asset/img_54c65d18b804.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_54c65d18b804.jpg)
 
 这里作者进行了又一次的假设，他们认为在学习过程中注意力机制是在进行一次 mean shift 聚类。[均值漂移聚类算法](https://link.zhihu.com/?target=https%3A//cloud.tencent.com/developer/article/1459530)的思想是假设不同簇类的数据集符合不同的概率密度分布，找到任一样本点密度增大的最快方向（最快方向的含义就是Mean Shift）。
 
@@ -121,11 +131,11 @@ OPT-175B 推理加速 2 倍以上，某些情况下达到 6 倍。稀疏度 75% 
 
 这里文章和 DejaVu 不一样的一点是：ReLU 函数将所有负值映射为零，在 FFN 中间产生大量的零值，所以采用了 low rank 低秩预测器（也就是 LoRA）来识别 ReLU 激活后将变为零的元素。
 
-![](asset/img_720d368f40ab.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_720d368f40ab.jpg)
 
 通过后续的实验数据看，增加了 predictor 之后读取的数量从 6.7GB 锐减到 0.9GB，再增加 windowing 技术之后会进一步减少到 0.2GB 。
 
-![](asset/img_88ffca73a597.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_88ffca73a597.jpg)
 
 #### 内存优化：
 
@@ -137,7 +147,7 @@ OPT-175B 推理加速 2 倍以上，某些情况下达到 6 倍。稀疏度 75% 
 
 **Row-Column Bundling**：文章中的思路简单说是：“By bundling columns of up project and rows of down project”这句话不太好理解。经评论区讨论应该理解为 FFN 里面的 up linear layer 和down linear layer 这两个 layer 正好尺寸的 mxn 和 nxm，所以行列正好相反。如图所示进行连续存储之后，在从flash加载的时候作为一个chunk，从而增大吞吐量。
 
-![](asset/img_1b35029dd397.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_1b35029dd397.jpg)
 
 **Bundling Based on Co-activation**：这里还是因为和前文同理的稀疏性特点，尤其是聚类特点，某些神经元经常一起激活。所以本文将这些高度相关的神经元绑定在一起，一起加载和卸载，而不是单独处理。
 
@@ -171,7 +181,7 @@ co-activation 的神经元经常一起激活，有什么特点？文中没有详
 
 这个标题是我给起的。
 
-![](asset/img_4a4725da9ead.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_4a4725da9ead.jpg)
 
 如图可以发现这里将数据分配到 GPU/CPU 是靠一个 offline 的 predictor 来完成的。既然是 offline 的，那么这里的预测就是基于一个对于通用数据集的数据分布分析的。这里的逻辑和前文几个方法的 online 不一样了，**前文 online 时的稀疏比例这里理论上是不适用的**。这里的offline 在理论上就更像之前的**静态剪枝方法，一次完成多次使用，但缺少灵活性**。所以这里后续还是会有一个 online 的 predictor ，两者配合着来，结构相比前面两篇文章就复杂了不少。
 

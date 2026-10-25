@@ -1,10 +1,19 @@
 ---
-title: "从Fusion、Tiling、Layout来看AI时代的计算范式变革"
-date: 2026-05-08
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/2035814498754372533
-
+title: 从Fusion、Tiling、Layout来看AI时代的计算范式变革
+date: "2026-05-08 00:00:00"
+updated: "2026-05-08 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/AI-infra/从Fusion、Tiling、Layout来看AI时代的计算范式变革/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/2035814498754372533
 ---
+
 
 写在前面
 在计算技术演进中，三项看似”编译器优化细节”的技术——Fusion（算子融合）、Tiling（分块优化）与Layout（数据布局）——正在成为定义AI时代计算范式的核心驱动力。过去几十年，通用计算关注的是指令流的高效执行与多任务并发调度；而今天，当GPU主导的张量计算成为主流工作负载时，计算的核心矛盾已从”程序如何使用CPU时间”转向”张量程序如何高效利用异构算力与多层内存”。

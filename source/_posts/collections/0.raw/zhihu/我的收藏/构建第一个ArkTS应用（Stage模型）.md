@@ -1,9 +1,19 @@
 ---
-title: "(2 条消息) 构建第一个ArkTS应用（Stage模型）"
-date: 2024-06-20
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/704562553
+title: (2 条消息) 构建第一个ArkTS应用（Stage模型）
+date: "2024-06-20 00:00:00"
+updated: "2024-06-20 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/构建第一个ArkTS应用(Stage模型)/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/704562553
 ---
+
 
 ### 构建第一个ArkTS应用（Stage模型）
 
@@ -12,7 +22,7 @@ source: https://zhuanlan.zhihu.com/p/704562553
 -  若首次打开**DevEco Studio**，请点击**Create Project**创建工程。如果已经打开了一个工程，请在菜单栏选择**File** > **New** > **Create Project**来创建一个新工程。** 
 -  选择Application**应用开发（本文以应用开发为例，Atomic Service对应为原子化服务开发），选择模板“**Empty Ability**”，点击**Next**进行下一步配置。** 
 
-![](asset/img_c95824cf8630.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_c95824cf8630.jpg)
 
 点击放大
 
@@ -21,7 +31,7 @@ source: https://zhuanlan.zhihu.com/p/704562553
 
 **
 
-![](asset/img_e33eb13f6f9d.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_e33eb13f6f9d.jpg)
 
 点击放大
 
@@ -31,7 +41,7 @@ source: https://zhuanlan.zhihu.com/p/704562553
 
 **
 
-![](asset/img_96ed76f8a5a2.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_96ed76f8a5a2.jpg)
 
 img
 
@@ -109,7 +119,7 @@ struct Index {
 - 在编辑窗口右上角的侧边工具栏，点击Previewer，打开预览器。第一个页面效果如下图所示：
 **
 
-![](asset/img_fa9c48d333c2.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_fa9c48d333c2.jpg)
 
 img
 
@@ -118,7 +128,7 @@ img
 -  创建第二个页面。
  
 -  新建第二个页面文件。在“Project**”窗口，打开“**entry > src > main > ets**”，右键点击“**pages**”文件夹，选择“**New > ArkTS File**”，命名为“**Second**”，点击“**Finish**”。可以看到文件目录结构如下：** 
-![](asset/img_0d3981267ea5.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_0d3981267ea5.jpg)
 
 img
  说明
@@ -270,13 +280,13 @@ struct Second {
 `
 
 - 打开Index.ets文件，点击预览器中的
-![](asset/img_00233f8de8a1.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_00233f8de8a1.jpg)
 
 img按钮进行刷新。效果如下图所示：
 
 **
 
-![](asset/img_fa39e6fcb6b7.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_fa39e6fcb6b7.jpg)
 
 img
 
@@ -287,15 +297,15 @@ img
 -  点击File** > **Project Structure...** > **Project** > **SigningConfigs**界面勾选“**Support HarmonyOS**”和“**Automatically generate signature**”，点击界面提示的“**Sign In**”，使用华为帐号登录。等待自动签名完成后，点击“**OK**”即可。如下图所示：
  
 
-![](asset/img_745588cf0cf3.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_745588cf0cf3.jpg)
 
 点击放大
 
 - 在编辑窗口右上角的工具栏，点击
-![](asset/img_a4f1b49d20a5.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_a4f1b49d20a5.jpg)
 
 img按钮运行。效果如下图所示：
 
-![](asset/img_4037191f70f8.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_4037191f70f8.jpg)
 
 点击放大

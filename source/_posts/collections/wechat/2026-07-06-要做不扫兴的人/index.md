@@ -1,3 +1,16 @@
+---
+title: 要做不扫兴的人
+date: "2026-07-06 23:34:50"
+updated: "2026-07-06 23:34:50"
+layout: post
+permalink: /collections/wechat/2026-07-06-要做不扫兴的人/index/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # 要做不扫兴的人
 
 > 来源: caoz

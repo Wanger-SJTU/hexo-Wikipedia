@@ -1,9 +1,19 @@
 ---
-title: "简单两步加速PyTorch里的Dataloader"
-date: 2019-06-05
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/68191407
+title: 简单两步加速PyTorch里的Dataloader
+date: "2019-06-05 00:00:00"
+updated: "2019-06-05 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/编程向/简单两步加速PyTorch里的Dataloader/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/68191407
 ---
+
 
 PyTorch中通过Dataloader加载图片，使用十分方便。但当加载图片较多并且需要做较多变换时，加载的速度很慢，会出现加载数据过慢（即使已经使用了多个worker），GPU空闲等待数据加载的情况。这篇文章就和大家分享一下怎么给Dataloader提提速。
 
@@ -26,7 +36,7 @@ if __name__ == "__main__":
 
 自己在小数据上测试了一下，使用opencv读取一个epoch需要7.5s，使用jpeg4py只需要3~4s，提速了近一倍。
 
-[![](asset/img_306902ab7b36.jpg)ajkxyz/jpeg4pygithub.com/ajkxyz/jpeg4py](https://link.zhihu.com/?target=https%3A//github.com/ajkxyz/jpeg4py)
+[![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_306902ab7b36.jpg)ajkxyz/jpeg4pygithub.com/ajkxyz/jpeg4py](https://link.zhihu.com/?target=https%3A//github.com/ajkxyz/jpeg4py)
 
 2、预取下一次迭代需要的数据
 

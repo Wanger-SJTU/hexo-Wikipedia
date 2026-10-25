@@ -1,3 +1,16 @@
+---
+title: 規格不足的任務範例
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/zh-TW/lectures/lecture-01-why-capable-agents-still-fail/code/underspecified-task/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # 規格不足的任務範例
 
 建構一個具備 AI 問答功能的桌面知識庫應用程式。

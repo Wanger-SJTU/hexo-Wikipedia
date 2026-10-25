@@ -1,11 +1,21 @@
 ---
-title: "(1 条消息) ICML 2023 真实超分：DeSRA"
-date: 2024-01-07
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/676307954
+title: (1 条消息) ICML 2023 真实超分：DeSRA
+date: "2024-01-07 00:00:00"
+updated: "2024-01-07 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/ICML-2023-真实超分-DeSRA/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/676307954
 ---
 
-![](asset/img_93c8ad0868f8.jpg)
+
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_93c8ad0868f8.jpg)
 
 paper：[https://arxiv.org/pdf/2307.02457.pdf](https://link.zhihu.com/?target=https%3A//arxiv.org/pdf/2307.02457.pdf)
 
@@ -43,9 +53,9 @@ SR方法可以分为MSE-based和GAN-based，MSE-based方法是只用reconstructi
 
 MSE-based方法会导致图像过于平滑，GAN在产生细节的同时会产生伪影，有的甚至比MSE-based方法还要多，如下图。并且这些伪影很复杂。
 
-![](asset/img_a57336d56c98.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_a57336d56c98.jpg)
 
-![](asset/img_ec628c44185d.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_ec628c44185d.jpg)
 
 GAN-inference artifacts有以下两个特性：
 
@@ -55,7 +65,7 @@ GAN-inference artifacts有以下两个特性：
 
 一些能够轻微改变退化的操作，比如加噪声、缩放等，可以减少伪影。这些操作实际上是将真实场景退化更加接近合成数据退化，因此可以看出这个伪影产生的部分原因是out-of-distribution。同时，训练的不稳定也会导致这样的伪影的出现。
 
-![](asset/img_367dd71cbdd1.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_367dd71cbdd1.jpg)
 
 Automatically Detect GAN-inference Artifacts**
 
@@ -69,7 +79,7 @@ d(x, y)=\left(\sigma_x-\sigma_y\right)^2
 
 但是这样会有一个问题，如果一个patch本身纹理较为复杂，那么计算出的标准差会很大，那么相对而言两个结果之间patch的标准差也会较大，这样可能会造成误判。如下图：
 
-![](asset/img_1ea9fd9d8efe.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_1ea9fd9d8efe.jpg)
 
 a行是具有相似纹理的两对结果，上面的结果没有伪影，计算出标准差差异较小，下面的结果有伪影，计算出的标准差差异较大；b行是不同纹理的两对结果，标准差差异都较大，但是上面的树没有伪影而下面的楼房有伪影，这就涉及到之前LDL中提到的B类与C类纹理的区别，b类树的纹理比较无规则，没有明显的结构先验，更为复杂多变，因此本身标准差就较大，差异也相对较大；c类楼房的存在明显、清晰、规则的纹理变化和结构先验，因此标准差差异大意味着存在伪影。那么单纯使用标准差差异去判断伪影则可能会产生误判，因此要做一个归一化，去除本身纹理复杂性带来的方差差异，从一个绝对标准差差异得到一个相对标准差差异。
 
@@ -93,7 +103,7 @@ $A_k=P_{85}\left(D_k\right), k \in\{1,2, \ldots, K\} $
 
 A_k 是第 k 类的adjustment weight， D_k 是第 k 类的所有D值。这个weight越低代表该类的perceptual tolerance rate越大，这一点在LDL中有一些解释，即A类纹理，Smooth areas / Large-scale structures，GAN复原的难度较低，不容易产生伪影，而B类Texture-like aliasing details和C类Fine-scale aliasing structures更容易产生伪影，相对来说最为复杂的B类最容易产生伪影，因此其85%分位数的D值最低，其次是C类，最高是A类，在DeSRA论文中展示的分别是tree，building，sky，如图：
 
-![](asset/img_bd439ec1692f.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_bd439ec1692f.jpg)
 
 那么根据上面的adjustment weight得到的 the refined detected map如下：
 
@@ -105,11 +115,11 @@ morphological manipulations
 
 最后会加一些形态学操作，具体而言，主要是膨胀(dilation)与腐蚀(erosion)
 
-![](asset/img_ae30a0b94c53.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_ae30a0b94c53.jpg)
 
 总体流程如下：
 
-![](asset/img_4cd1e4f40e9a.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_4cd1e4f40e9a.jpg)
 
 **
 
@@ -121,7 +131,7 @@ $\tilde{y}=M \cdot y_{M S E}+(1-M) \cdot y_{G A N} $
 
 Finetune的过程如下图：
 
-![](asset/img_a99aaee6e71e.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_a99aaee6e71e.jpg)
 
 **
 
@@ -133,7 +143,7 @@ Model：**RealESRGAN, LDL，SwinIR
 
 提出了一个GAN-SR artifacts dataset，具体而言，选取ImageNet-1K的验证集作为LR，对每个模型（RealESRGAN, LDL, SwinIR）分别选200张带伪影的GAN-SR图像构建数据集。由于没有GT，因此人工标注伪影区域，如下图：
 
-![](asset/img_8b1cd0cca28d.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_8b1cd0cca28d.jpg)
 
 **
 
@@ -173,17 +183,17 @@ Results**
 
 伪影检测的实验结果
 
-![](asset/img_5c8f580027b8.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_5c8f580027b8.jpg)
 
-![](asset/img_96066da69752.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_96066da69752.jpg)
 
-![](asset/img_8b5393923ae6.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_8b5393923ae6.jpg)
 
 伪影去除的实验结果
 
-![](asset/img_5a57be748158.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_5a57be748158.jpg)
 
-![](asset/img_d7d7a6648a6b.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_d7d7a6648a6b.jpg)
 
 IoU的明显下降代表伪影被去除。
 
@@ -193,40 +203,40 @@ User Study **
 
 作者进行了用户调研，让参与者对Finetuned GAN-SR结果和GAN-SR，MSE-SR结果分别进行比较，主观判断哪一种伪影更少，结果如下：
 
-![](asset/img_8a96566552af.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_8a96566552af.jpg)
 
 **
 
 Ablation Studies**
 
-![](asset/img_c1c56a3e4489.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_c1c56a3e4489.jpg)
 
 #### 可视化结果
 
 不同方法的detection map可视化
 
-![](asset/img_a52be26bda83.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_a52be26bda83.jpg)
 
 可以发现DeSRA最为准确
 
 使用了DeSRA的伪影去除效果
 
-![](asset/img_c13c0910c6e4.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_c13c0910c6e4.jpg)
 
-![](asset/img_51145f1ff2cf.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_51145f1ff2cf.jpg)
 
-![](asset/img_dcfec491786e.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_dcfec491786e.jpg)
 
-![](asset/img_6181de4dc688.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_6181de4dc688.jpg)
 
-![](asset/img_f6a7118fa7f4.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_f6a7118fa7f4.jpg)
 
-![](asset/img_d5ecf41a7102.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_d5ecf41a7102.jpg)
 
-![](asset/img_5880ff8e27b0.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_5880ff8e27b0.jpg)
 
 补充：NIQE与MANIQA的结果不能代表可视化效果：
 
-![](asset/img_2c2520a7919c.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_2c2520a7919c.jpg)
 
 可以发现左边一列的效果不如右边一列，但与指标的结果相反，因此这两个指标不能很好地反映可视化效果。

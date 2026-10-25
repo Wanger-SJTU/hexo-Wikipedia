@@ -1,9 +1,19 @@
 ---
-title: "如何理解 Tomasulo 算法？"
-date: 2026-04-21
-tags: [知乎]
-source: https://www.zhihu.com/question/275648655/answer/2190658050
+title: 如何理解 Tomasulo 算法？
+date: "2026-04-21 00:00:00"
+updated: "2026-04-21 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/体系结构/如何理解-Tomasulo-算法/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://www.zhihu.com/question/275648655/answer/2190658050
 ---
+
 
 张雅宸
 

@@ -1,3 +1,16 @@
+---
+title: MLX 框架浅析
+date: "2026-04-11 21:40:17"
+updated: "2026-04-11 21:40:17"
+layout: post
+permalink: /collections/草稿/MLX-框架浅析/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 最近Apple 新发布了一个MLX的DL框架，这是继 ML Compute 可用于在 Mac 上进行 TensorFlow 模型的训练，PyTorch 在 M1芯片后可使用 Metal Performance Shaders (MPS) 作为GPU 加速的 PyTorch 机器学习模型训练之后，进一步的尝试。
 
 与MLX同时开源的还有数据读取的框架MLX-data，以及最近大模型相关的一些Example代码，MLX-examples
@@ -45,9 +58,9 @@ https://github.com/ml-explore/mlx/issues/12
 M2 Max
 
 FP16 10 token/s
-![[assets/Pasted image 20231213220124.png]]
+![Pasted image 20231213220124.png](/images/collections/assets/Pasted%2520image%252020231213220124.png)
 
-![[assets/Pasted image 20231213220841.png]]
+![Pasted image 20231213220841.png](/images/collections/assets/Pasted%2520image%252020231213220841.png)
 
 ## 可能的 Roadmap
 1. 有微调模型诉求的非算法人员。 比如lora、大模型的

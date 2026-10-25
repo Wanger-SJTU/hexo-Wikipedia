@@ -1,9 +1,19 @@
 ---
-title: "vLLM 分布式并行与通信全景"
-date: 2026-07-28
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/2065444514379178422
+title: vLLM 分布式并行与通信全景
+date: "2026-07-28 00:00:00"
+updated: "2026-07-28 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/AI-infra/vLLM-分布式并行与通信全景/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/2065444514379178422
 ---
+
 
 本文从完整请求数据流出发，说明 vLLM 在不同并行配置下如何放置权重、KV cache 和 token，以及模型 forward、采样、状态迁移和运行时协调中会发生哪些通信。
 

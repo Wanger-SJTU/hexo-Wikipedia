@@ -1,15 +1,25 @@
 ---
-title: "TGI + exllama - llama 量化部署方案"
-date: 2023-07-29
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/646716367
+title: TGI + exllama - llama 量化部署方案
+date: "2023-07-29 00:00:00"
+updated: "2023-07-29 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/LLM-SD/TGI-exllama-llama-量化部署方案/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/646716367
 ---
+
 
 本文对 [Text generation inference](https://link.zhihu.com/?target=https%3A//github.com/huggingface/text-generation-inference) + exllama 的 LLaMa 量化服务方案进行单卡 4090 部署测试。
 
 在之前的笔记中，我们提到了 TGI 和 vllm 的对比测试，在使用 vllm 和 TGI 对 float16 模型进行部署后，能够在单卡 4090 上达到 3.5+ request/秒的吞吐量：
 
-[![](asset/img_3e9c71888d5d.png)Kevin吴嘉文：vllm vs TGI 部署 llama v2 7B 踩坑笔记148 赞同 · 65 评论 文章](https://zhuanlan.zhihu.com/p/645732302)
+[![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_3e9c71888d5d.png)Kevin吴嘉文：vllm vs TGI 部署 llama v2 7B 踩坑笔记148 赞同 · 65 评论 文章](https://zhuanlan.zhihu.com/p/645732302)
 
 就在几天前 TGI 优化了 exllama，基于之前量化 LLaMa 的测试：[Kevin吴嘉文：LLaMa 量化部署](https://zhuanlan.zhihu.com/p/641641929)，exllama 能在控制精度损失的情况下，将模型的推理速度提升，同时减小显存占用要求。以下参考 TGI 的官方手册对采用 AUTOGPTQ 量化后的 LLaMa v2 gptq 权重进行部署:
 

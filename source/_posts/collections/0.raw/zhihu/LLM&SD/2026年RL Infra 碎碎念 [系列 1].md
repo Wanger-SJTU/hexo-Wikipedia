@@ -1,13 +1,23 @@
 ---
-title: "2026年RL Infra 碎碎念 [系列 1]"
-date: 2026-02-26
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/2006100992429688731
+title: 2026年RL Infra 碎碎念 [系列 1]
+date: "2026-02-26 00:00:00"
+updated: "2026-02-26 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/LLM-SD/2026年RL-Infra-碎碎念-[系列-1]/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/2006100992429688731
 ---
+
 
 2025 年初我正式入坑 RL infra，并有幸加入阿里的 ROLL 团队。过去一年里，我参与了一系列 RL infra 的系统研究与工程工作。ROLL 团队一个很鲜明的特点是算法与系统结合非常紧密——从 system 侧的协作体验来看，很多需求对齐、问题定位和方案落地都非常**丝滑**。这里想借写知乎回顾，整理自己入坑 RL infra 一年来的研究经历（主要围绕 [rollpacker](https://link.zhihu.com/?target=https%3A//arxiv.org/pdf/2509.21009)以及阿里的相关技术报告 [ROLL](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2506.06122), [ROLL-Flash](https://link.zhihu.com/?target=https%3A//arxiv.org/pdf/2510.11345), [Let it Flow](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2512.24873)），也从实习的视角分享一些在 ROLL 团队做 infra 研究与开发的体验与思考。
 
-![](asset/img_02ce5321ed34.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_02ce5321ed34.jpg)
 
 ### 初次尝试 [2025.02-2025.04]
 
@@ -21,7 +31,7 @@ source: https://zhuanlan.zhihu.com/p/2006100992429688731
 
 rollout是RL 训练重头戏，其中rollout时间占比很高，这几乎已经是RL 优化的共识了，想要加速RL 训练，自然要优化rollout。
 
-![](asset/img_8b4cab922a23.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_8b4cab922a23.jpg)
 
 其实rollout优化我们早期经历了一些失败，以下两个也有不少同行已经做成功了，我在这里分享一下当初失败的原因和为什么放弃这些继续优化这个方向的理由，也给有类似想法的小伙伴们一些启发。
 
@@ -38,7 +48,7 @@ redundant sampling ROLL的最早release的版本就暴露了类似的接口，�
 - Workload Characterization 
 (1) 在优化 redundant sampling 的过程中，我观察到一个很有意思的现象：不同 iteration 之间，生成长度分布的 p75 / p90 不仅明显更短，而且非常稳定。当时我就隐约觉得，这种特性一定能派上用场。
 (2) 在做 redundant sampling 的过程，有些任务的 reward worker 耗时特别长，主要是因为出现了不少 timeout。随着 redundant sampling 把 rollout 时间压下去之后，reward 计算的耗时上升为新的瓶颈——说明端到端优化不能只盯着 rollout，本质上 reward 侧也有不少可挖的空间，这个就诞生了后来的rollpacker 里面的 reward scheduler 。
-![](asset/img_06b86f1162f5.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_06b86f1162f5.jpg)
 
 - Tail Batching 
 
@@ -47,7 +57,7 @@ redundant sampling ROLL的最早release的版本就暴露了类似的接口，�
  的鞭策，让我们不断反思改进自己的思路，一直在on-policy的道路优化。
 - 其实这段时间还没有完全放弃SD，不过主力研究SD地合作者已经被搞得筋疲力尽了，某一天讨论的精疲力尽的时候想到既然每个prompt 的用redundant sampling不一定产生效果，不如在prompt 层面也采用redundant sampling，并且为了不让prompt 被丢弃，采用了tail batching的策略，也算是起死回生吧，个人觉得tail batching 在让RollPacker 被NSDI 26接受起了至关重要的作用，至此 RollPacker 工作终于成型。
 
-![](asset/img_fc3c271cd866.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_fc3c271cd866.jpg)
 
 > 回头看，当时最初几个月对于length prediction 和 SD 的优化投入似乎有些“打水漂”，放弃这些方案也确实可惜,尤其现在看到不少团队已经把这些方向跑通并做出了稳定收益。 但是当做完rollpacker,回望这段经历带来的需要汲取的教训更为重要：
 (1) 做优化前先想清楚技术的适用边界与场景。很多方法并不是“做不成”，而是对数据分布、长度分布/长尾形态等前提条件高度敏感,换一个更匹配的 workload 设置，可能就能让方案起死回生。 

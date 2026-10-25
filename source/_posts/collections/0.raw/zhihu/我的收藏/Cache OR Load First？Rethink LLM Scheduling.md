@@ -1,10 +1,19 @@
 ---
-title: "Cache OR Load First？Rethink LLM Scheduling"
-date: 2026-07-11
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/2059354689678862105
-
+title: Cache OR Load First？Rethink LLM Scheduling
+date: "2026-07-11 00:00:00"
+updated: "2026-07-11 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/Cache-OR-Load-First-Rethink-LLM-Scheduling/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/2059354689678862105
 ---
+
 
 今天分享一篇2026.7.9发布在arxiv上的文章，聚焦agent serving efficiency问题，来自sjtu IPADS实验室和阿里。
 

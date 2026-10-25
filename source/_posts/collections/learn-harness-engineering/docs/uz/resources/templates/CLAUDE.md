@@ -1,3 +1,16 @@
+---
+title: CLAUDE.md
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/uz/resources/templates/CLAUDE/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # CLAUDE.md
 
 Siz uzoq davom etadigan (long-running) implementatsiya (kod yozish) ishlari uchun moʻljallangan repozitoriydasiz. Tezlikdan koʻra ishonchli yakunlashga, sessiyalar oʻrtasidagi uzluksizlikka (continuity) va ishlarni isbotlashga (explicit verification) ustuvorlik bering.

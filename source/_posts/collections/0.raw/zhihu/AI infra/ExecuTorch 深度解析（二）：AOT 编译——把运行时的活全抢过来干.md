@@ -1,10 +1,19 @@
 ---
-title: "ExecuTorch 深度解析（二）：AOT 编译——把运行时的活全抢过来干"
-date: 2026-05-04
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/2034782380385359322
-
+title: ExecuTorch 深度解析（二）：AOT 编译——把运行时的活全抢过来干
+date: "2026-05-04 00:00:00"
+updated: "2026-05-04 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/AI-infra/ExecuTorch-深度解析(二)-AOT-编译——把运行时的活全抢过来干/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/2034782380385359322
 ---
+
 
 系列第二篇。上一篇讲了 Meta 为什么造 ExecuTorch，这篇深入拆解它最核心的武器：AOT 编译到底干了什么，怎么做到让运行时只剩 50KB。
 

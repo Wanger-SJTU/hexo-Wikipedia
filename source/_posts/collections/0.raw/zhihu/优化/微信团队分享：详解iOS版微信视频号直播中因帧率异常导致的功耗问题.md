@@ -1,16 +1,26 @@
 ---
-title: "微信团队分享：详解iOS版微信视频号直播中因帧率异常导致的功耗问题"
-date: 2023-11-16
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/667129554
+title: 微信团队分享：详解iOS版微信视频号直播中因帧率异常导致的功耗问题
+date: "2023-11-16 00:00:00"
+updated: "2023-11-16 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/优化/微信团队分享-详解iOS版微信视频号直播中因帧率异常导致的功耗问题/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/667129554
 ---
+
 
 **本文由微信客户端团队rhythm分享，原题“视频号直播：如何进一步降低功耗占用？”，本文有修订和改动。
 ### 1、引言**
 
 **功耗优化一直是 app 性能优化中让人头疼的问题，尤其是在直播这种用户观看时长特别久的场景。怎样能在不影响主体验的前提下，进一步优化微信iOS端视频号直播的功耗占用，本文给出了一个不太一样的答案。**
 
-![](asset/img_341aa8506e4f.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_341aa8506e4f.jpg)
 
 ### **2、问题背景**
 
@@ -24,7 +34,7 @@ source: https://zhuanlan.zhihu.com/p/667129554
 
 **如下图所示 PerfDog 数据显示在 13 pro max上直播点赞期间 FPS 直奔120：**
 
-**![](asset/img_a5c939d68a24.jpg)
+**![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_a5c939d68a24.jpg)
 
 **正常情况下，视频号直播里大部分主播开播流基本都是30fps 以内，也就是正常情况下我们只需要维持30fps 渲染，就能保持好流程的用户体验。
 
@@ -92,13 +102,13 @@ App 本身并不负责渲染，渲染是由独立的进程 Render Server 来负�
 - ***2）***App 完成视图的 layout、图像 decode 等操作，并触发 CA::Transaction 提交；
 - ***3）***Render Server 接收 App 提交的 Transction 和图片数据，Render Server 可直接跨进程访问 App 进程的位图内存资源，并最终触发 GPU 调用；
 - ***4）***GPU 最终完成了图像的渲染并显示到屏幕 Display。
-![](asset/img_316ee90dba39.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_316ee90dba39.jpg)
 
 #### **4.2Render Server**
 
 如下图所示，最终的上屏任务提交操作是由 Render Server 也即 backboardd 进程来最终触发的。
 
-![](asset/img_14d24d30f808.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_14d24d30f808.jpg)
 
 在 iOS 中 Render Server 通常指的是 backboardd 进程，backboardd 进程是一个与 SpringBoard 守护进程一起运行的守护进程。
 
@@ -110,19 +120,19 @@ App 本身并不负责渲染，渲染是由独立的进程 Render Server 来负�
 
 **如下图 ips 文件日志所示：**
 
-![](asset/img_d95b56e7436f.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_d95b56e7436f.jpg)
 
 #### **4.3Render Loop**
 
 Render Loop 是包括了从 app 到 Render Server 再最终到屏幕的一系列任务触发，刷新，更新与提交，直到上屏的一系列过程，是对渲染管道的进一步封装，类似于一套 runloop 循环机制，能随时的处理输入和输出。
 
-![](asset/img_c4cc0c6ce7b6.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_c4cc0c6ce7b6.jpg)
 
 #### **4.4动画渲染**
 
 当我们调用-[UIView animateWithDuration:animations:] api触发动画后，整体动画渲染过程如下图3步所示。
 
-![](asset/img_ee76ea848506.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_ee76ea848506.jpg)
 
 #### **4.5帧率**
 
@@ -153,7 +163,7 @@ FPS 越高对于游戏等高清视频效果就更细腻更好，但是并不是�
 
 **苹果的建议是把动画分为了如下几档：**
 
-![](asset/img_4b9d8937287a.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_4b9d8937287a.jpg)
 
 #### **5.2CAAnimation 降帧原理**
 
@@ -169,13 +179,13 @@ iOS15开始苹果引入了 CAFrameRateRange 相关 api 来供 app 去设置 CADi
 
 当我们触发[scrollView setContentOffset:CGPointMake(120,0) animated:YES]后，会触发创建一个 UIScrollViewAnimation 的实例对象（UIAnimation的子类），接下来会调用 UIUpdateSequenceInsertItem 将这个动画实例注册到当前的 UIUpdateCycle 循环中。
 
-![](asset/img_a507120a9ffb.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_a507120a9ffb.jpg)
 
 UIUpdateCycle 负责根据设备的 CADisplay 屏幕刷新率和设置动态效果里设置的是否限制帧速率来抉择出到底是以120hz还是60hz来驱动 UIUpdateCycle 循环的触发，当以120hz触发动画循环时，接着会在每8ms间触发一次_UIUpdateSequenceRun，来执行 UIScrollViewAnimation 的动画 progress 计算操作。
 
 **如图：**
 
-![](asset/img_e5ba4b81f7ce.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_e5ba4b81f7ce.jpg)
 
 每次触发触发 _UIUpdateSequenceRun 时，会向 UIScrollViewAnimation 请求[UIAnimation fractionForTime:]来返回对应时间戳的 contentOffset 和 progress，然后触发修改 contentOffset，最终接近目标 contentOffset 后就完成了完整的动画。
 
@@ -185,7 +195,7 @@ UIUpdateCycle 负责根据设备的 CADisplay 屏幕刷新率和设置动态效�
 
 **如下图：**
 
-![](asset/img_912b90cbfd48.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_912b90cbfd48.jpg)
 
 #### **5.5帧率变化探索**
 
@@ -193,7 +203,7 @@ UIUpdateCycle 负责根据设备的 CADisplay 屏幕刷新率和设置动态效�
 
 QuartzCore 提供了一个系统级的面板工具，它可以很方便的显示当前的 QuartzCore 渲染信息，包括fps，frame duration等一应俱全。
 
-![](asset/img_b0f73e10a8eb.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_b0f73e10a8eb.jpg)
 
 我们可以在越狱后给 app 自签名 com.apple.QuartzCore.debug 这个 entitlement 后，再调用如下代码所示的私有 api 即可全局打开这个面板，可以方便的在手机端查看 Render Server 上的实际 FPS。
 
@@ -212,11 +222,11 @@ voidCARenderServerSetDebugValue(mach_port_t port, intkey, intvalue);
 
 ***3）***触发 CA::Transaction 对象的提交：除了触发动画提交，触发 view property 提交变更外，甚至创建 view 也会导致 source0触发一次，如下图所示。
 
-![](asset/img_a3b658ccf20a.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_a3b658ccf20a.jpg)
 
 通过调试分析，我们大概清楚了 iOS15引入的 CAAnimation 的 preferredFrameRateRange 工作机制，如下图所示。
 
-![](asset/img_197ea34e7449.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_197ea34e7449.jpg)
 
 我们只要修改 UIUpdateSequenceRun 的回调频率，也就是 -[UIAnimator _advanceAnimationsOnScreenWithIdentifier:withTimestamp:] 的回调频次我们就能控制部分系统动画的帧率，强制调节他的执行频次，或者我们通过模拟系统设置->动态效果->限制帧速率的实现方式，主动调用 -[CADisplay overrideMinimumFrameDuration:] 传入4便可将 UIAnimator 的刷新率调节为 =60hz，或者传入8即可将系统动画刷新率调节为 =30hz。
 
@@ -247,7 +257,7 @@ voidCARenderServerSetDebugValue(mach_port_t port, intkey, intvalue);
 
 **如图所示：**
 
-![](asset/img_0164c0183a0d.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_0164c0183a0d.jpg)
 
 我们是否可以 hook CAAnimation 然后寻找时机设置它的 preferredFrameRateRange 以达到降帧的目的？
 
@@ -312,7 +322,7 @@ completion:^(UIViewAnimatingPosition finalPosition) {
 
 **这是因为：**如下图所示，对于13 pro max 高刷屏设备而言，其 UI 动画的系统回调频次是240hz，渲染帧率是可变的可为0~120fps 之间，而常规的 NSTimer 是基于 RunLoop 触发回调的，RunLoop 的回调间隔可能只有几十 us，那么 Timer 的灵敏度远高于 DisplayLink，所以完全是有可能在2帧渲染之间，回调了一次 Timer，而最终导致可能会多触发了一帧的提交或一次渲染事件。所以我们采取 CADisplayLink 来替换 NSTimer，尽可能避免和 Display 不同步的渲染触发操作。
 
-![](asset/img_062d6db8b954.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_062d6db8b954.jpg)
 
 ### **7、优化后的效果**
 
@@ -320,19 +330,19 @@ completion:^(UIViewAnimatingPosition finalPosition) {
 
 并且 app 的刷新率是由所有内容的最高刷新率决定的，也就是高 FPS 的界面元素会导致整个屏幕全局 FPS 提升，只有适当平衡全局界面元素的 FPS 后，才能进一步降低不必要的性能消耗。
 
-![](asset/img_f76e6c952a3a.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_f76e6c952a3a.jpg)
 
 基于上述指导思想和优化方案，我们最终在视频号直播上验证测试如下：
 
 先基于 「UIViewAnimationOptionPreferredFramesPerSecond30」 将直播点赞场景下的fps从高刷屏的120fps 降低到60fps，再基于 「UIViewPropertyAnimator」 将任意UIView block animation的帧率降低到30~48fps（最终全局稳定在40~50fps），帧率同比下降16%而 GPU 同比下降了26%~38%（在主场景和其他场景）。并且由于我们的视频画面依旧是25fps的低帧率，所以此处降帧只是降低了 QuartzCore 的重复帧，而没有减少任何画面细节，最终本质上是无损的画面降帧。
 
-![](asset/img_a2111c8705d7.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_a2111c8705d7.jpg)
 
 另外，「在实验过程中调试」，进一步发现了一些很有用的环境变量，可以帮助我们更好的调试UI问题。
 
 **如下：**
 
-![](asset/img_25082120bfb3.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_25082120bfb3.jpg)
 
 ### **8、问题扩展**
 
@@ -344,7 +354,7 @@ completion:^(UIViewAnimatingPosition finalPosition) {
 
 方案如下：
 
-![](asset/img_a1436db16fbe.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_a1436db16fbe.jpg)
 
 最终也一样取得了GPU 同比下降28%甚至更高的效果，有效减轻了过热时的系统负载和功耗，并且从肉眼上基本无法分辨出差异。
 

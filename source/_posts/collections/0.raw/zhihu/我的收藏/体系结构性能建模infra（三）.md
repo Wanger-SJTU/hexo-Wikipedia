@@ -1,9 +1,19 @@
 ---
-title: "(2 条消息) 体系结构性能建模infra（三）"
-date: 2025-05-24
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/1891135474493547187
+title: (2 条消息) 体系结构性能建模infra（三）
+date: "2025-05-24 00:00:00"
+updated: "2025-05-24 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/体系结构性能建模infra(三)/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/1891135474493547187
 ---
+
 
 该infra将每个port抽象为一个一写多读的队列，读写分离，通过管理每个port的队列实现打拍，显式记录每个port可以读取的时间，但是代价比较大，但是作者提出了补救方案。此外：该框架也不是最终版本。
 

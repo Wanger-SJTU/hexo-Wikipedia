@@ -1,3 +1,16 @@
+---
+title: PLANS.md
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/ar/resources/openai-advanced/repo-template/docs/PLANS/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # PLANS.md
 
 يحدد هذا الملف كيفية إنشاء خطط التنفيذ وتحديثها وإكمالها وأرشفتها.

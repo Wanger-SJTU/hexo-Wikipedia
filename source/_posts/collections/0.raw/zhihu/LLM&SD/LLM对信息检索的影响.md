@@ -1,9 +1,19 @@
 ---
-title: "LLM对信息检索的影响"
-date: 2023-11-12
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/666381742
+title: LLM对信息检索的影响
+date: "2023-11-12 00:00:00"
+updated: "2023-11-12 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/LLM-SD/LLM对信息检索的影响/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/666381742
 ---
+
 
 来源论文地址：[2308.07107.pdf (arxiv.org)](https://link.zhihu.com/?target=https%3A//arxiv.org/pdf/2308.07107.pdf)
 
@@ -38,7 +48,7 @@ LLM进行查询的重写其实就是改善检索数据的一种方式。当然�
 
 当前，除了改善，LLM也可以用来生成检索数据。包含生成问题和生成相关性标签。如下图所示
 
-![](asset/img_8714f2f80cba.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_8714f2f80cba.jpg)
 
 LLM检索数据生成框架生成查询的方法，将文档送给LLM, 生成相应的查询问题。然后对查询问题进行过滤，留下高相关性的查询进行训练。生成相关性标签方法是将问题和相关性较高的一些文档送给LLM来生成相关性的标签，用作后续训练。类似与数据的精标。
 

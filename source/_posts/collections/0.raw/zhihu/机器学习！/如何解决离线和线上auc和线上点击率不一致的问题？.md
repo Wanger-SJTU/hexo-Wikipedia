@@ -1,9 +1,19 @@
 ---
-title: "如何解决离线和线上auc和线上点击率不一致的问题？"
-date: 2026-04-15
-tags: [知乎]
-source: https://www.zhihu.com/question/305823078/answer/552640544
+title: 如何解决离线和线上auc和线上点击率不一致的问题？
+date: "2026-04-15 00:00:00"
+updated: "2026-04-15 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/机器学习/如何解决离线和线上auc和线上点击率不一致的问题/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://www.zhihu.com/question/305823078/answer/552640544
 ---
+
 
 离线指标和线上指标不一致是个常见的问题，但首先要排除不是低级错误引起的。
 

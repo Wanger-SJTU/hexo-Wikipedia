@@ -1,3 +1,16 @@
+---
+title: AGENTS.md
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/ko/resources/templates/AGENTS/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # AGENTS.md
 
 이 파일은 하네스(harness) 리소스 라이브러리에 포함된 샘플 템플릿입니다. 실제 프로젝트에 복사한 뒤 프로젝트 고유의 명령어와 경로로 수정하여 사용하십시오. 에이전트(agent)가 세션을 시작할 때 가장 먼저 읽는 파일로, 안정적인 장기 작업의 토대를 제공합니다.

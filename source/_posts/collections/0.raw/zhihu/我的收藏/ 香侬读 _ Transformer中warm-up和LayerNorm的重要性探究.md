@@ -1,9 +1,19 @@
 ---
-title: "(1 条消息) 香侬读 | Transformer中warm-up和LayerNorm的重要性探究"
-date: 2019-10-01
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/84614490
+title: (1 条消息) 香侬读 | Transformer中warm-up和LayerNorm的重要性探究
+date: "2019-10-01 00:00:00"
+updated: "2019-10-01 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/香侬读-_-Transformer中warm-up和LayerNorm的重要性探究/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/84614490
 ---
+
 
 **论文标题**：On Layer Normalization in the Transformer Architecture
 
@@ -25,7 +35,7 @@ source: https://zhuanlan.zhihu.com/p/84614490
 
 下图是两种结构的示意图，相当直观：
 
-![](asset/img_eb3c1a91295a.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_eb3c1a91295a.jpg)
 
 ### Post-LN Transformer与Pre-LN Transformer
 
@@ -43,7 +53,7 @@ $$\text{lr}(t)=\frac{t}{T_{\text{warmup}}}\text{lr}_{\text{max}},t\le T_{\text{w
 
 下图是相关结果。可以看到，无论对Adam还是SGD，warm-up都相当必要，没有warm-up，结果瞬间爆炸。而且，T_{\text{warmup}}实际上还是有影响（至少对Adam）。
 
-![](asset/img_ba55b2f72de0.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_ba55b2f72de0.jpg)
 
 从上面的实验可以得出：（1）warm-up的使用增加了训练时间；（2）在训练的开始阶段，loss很大，一开始使用大学习率对模型是毁灭性的打击。（Liu et al. 2019a）认为warm-up对Adam而言非常重要，因此提出了RAdam，但是这里的结果表明，warm-up对SGD同样非常重要，并不是Adam的“宠妃”。
 
@@ -59,7 +69,7 @@ $$**定理1（Transformer最后一个FFN层的梯度）** 告诉我们，`Post-L
 
 下面我们又以`IWSLT14 De-En`数据集为例实验，实验设置同上。我们计算不同阶段、不同参数的梯度期望值，结果如下。
 
-![](asset/img_f9cd08f94d6a.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_f9cd08f94d6a.jpg)
 
 可以看到，实验结果验证了上述的推论。而且，注意图中的绿色部分（真的有，不是忘了画！），非常小，这时候可以用大学习率训练。这说明了，warm-up的确有助于训练的稳定性。那么，用`Pre-LN Transformer`能不能去掉warm-up呢，在接下来一节将用实验证明。
 
@@ -71,11 +81,11 @@ $$**定理1（Transformer最后一个FFN层的梯度）** 告诉我们，`Post-L
 
 下图是机器翻译的结果。对`Pre-LN Transformer`，warm-up不再必要，而且收敛更快。此外，相比用RAdam替换Adam，似乎改变LN的结构更显著。
 
-![](asset/img_c469075711fd.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_c469075711fd.jpg)
 
 下图是无监督预训练的结果，指标有Validation Loss，MRPC和RTE上的Accuracy。可以看到，`Pre-LN Transformer`收敛更快，效果更好。总而言之一句话，`Pre-LN Transformer`似乎不再需要warm-up了。
 
-![](asset/img_cba128e4c04c.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_cba128e4c04c.jpg)
 
 ### 小结
 

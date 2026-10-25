@@ -1,9 +1,19 @@
 ---
-title: "(1 封私信) 为什么要压缩模型，而不是直接训练一个小的CNN？"
-date: 2026-04-14
-tags: [知乎]
-source: https://www.zhihu.com/question/303922732/answer/1047904697
+title: (1 封私信) 为什么要压缩模型，而不是直接训练一个小的CNN？
+date: "2026-04-14 00:00:00"
+updated: "2026-04-14 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/模型部署那些事/为什么要压缩模型,而不是直接训练一个小的CNN/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://www.zhihu.com/question/303922732/answer/1047904697
 ---
+
 
 更具体的回答下模型压缩的意义和具体的实现方式有可能会回答到你的问题，以下是我自己的学习笔记，请各位大神轻拍~
 
@@ -17,7 +27,7 @@ source: https://www.zhihu.com/question/303922732/answer/1047904697
 
 举个例子，比如用深度学习变脸这样的业务。
 
-![](asset/img_40e03e492561.jpg)![](asset/img_762633dca2f6.webp)
+![](/images/collections/0.raw/zhihu/%25E6%25A8%25A1%25E5%259E%258B%25E9%2583%25A8%25E7%25BD%25B2%25E9%2582%25A3%25E4%25BA%259B%25E4%25BA%258B/asset/img_40e03e492561.jpg)![](/images/collections/0.raw/zhihu/%25E6%25A8%25A1%25E5%259E%258B%25E9%2583%25A8%25E7%25BD%25B2%25E9%2582%25A3%25E4%25BA%259B%25E4%25BA%258B/asset/img_762633dca2f6.webp)
 
 假设在模型优化前，原始模型处理每个视频要30秒，那么一张GPU卡一分钟只能处理2个视频。假设APP的使用峰值是1000人同时使用，那么这家公司至少要有500张GPU卡才能满足需求，不然就会出现服务排队现象，500张卡的成本大约在3000万每年。
 
@@ -27,7 +37,7 @@ source: https://www.zhihu.com/question/303922732/answer/1047904697
 
 目前我自己了解到的的模型剪枝技术包含以下几个方向，
 
-![](asset/img_2953c4202c7c.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%25A8%25A1%25E5%259E%258B%25E9%2583%25A8%25E7%25BD%25B2%25E9%2582%25A3%25E4%25BA%259B%25E4%25BA%258B/asset/img_2953c4202c7c.jpg)
 
 （模型构成）
 
@@ -42,7 +52,7 @@ source: https://www.zhihu.com/question/303922732/answer/1047904697
 
 简单理解的话如下图所示:
 
-![](asset/img_94cc47814a4b.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%25A8%25A1%25E5%259E%258B%25E9%2583%25A8%25E7%25BD%25B2%25E9%2582%25A3%25E4%25BA%259B%25E4%25BA%258B/asset/img_94cc47814a4b.jpg)
 
 每一层把数值小的神经元去掉，但是究竟剪枝粒度维持到多大是很有讲究的，比如可以把每层最小的5个减掉，也可能只剪3个，或者每层有每层不同的策略，也可以用L1/L2正则的方式去做。
 
@@ -54,15 +64,15 @@ source: https://www.zhihu.com/question/303922732/answer/1047904697
 
 模型的精度量化并不是简单的将高精度的权重用低精度权重表示就好了，这里面涉及到许多适配硬件的因素。先来看下神经元权重是如何在计算机里表示的。目前DL中大部分都是用32bit float类型进行计算的，bit位数的多少直接限制了数据类型能够表达的数据范围，比如float 32的数据是由1bit表示符号，8bit表示整数部，23位表示分数部组成（计算机课都学过的）。
 
-![](asset/img_63a819e43d95.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%25A8%25A1%25E5%259E%258B%25E9%2583%25A8%25E7%25BD%25B2%25E9%2582%25A3%25E4%25BA%259B%25E4%25BA%258B/asset/img_63a819e43d95.jpg)
 
 用更低位的数值类型意味着更小的数据表示范围和更稀疏的数值，量化的时候就会造成数值精度损失。比如要把float数值量化到int类型，那么首先小数部分会损失，而那些超过int类型能够表达的范围的值也会被压缩到int能够表达的最大或最小值。
 
-![](asset/img_ee23d64ce226.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%25A8%25A1%25E5%259E%258B%25E9%2583%25A8%25E7%25BD%25B2%25E9%2582%25A3%25E4%25BA%259B%25E4%25BA%258B/asset/img_ee23d64ce226.jpg)
 
 所以，如果要压缩模型，从float32压缩到多少变的关键，目前主流的方式是压缩到int8。压缩到int8意味着内存的节省，节约了，同时也提升了计算效率，因为在GPU这样的硬件上，低位的浮点计算速度会远远高于高位浮点计算速度。
 
-![](asset/img_26f94d03cc9d.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%25A8%25A1%25E5%259E%258B%25E9%2583%25A8%25E7%25BD%25B2%25E9%2582%25A3%25E4%25BA%259B%25E4%25BA%258B/asset/img_26f94d03cc9d.jpg)
 
 So，why int 8？有相关的人士分析过，从概率分布角度去看，int8的字符长度可以较完整的覆盖大部分的模型权重值。float 32到int8的转变，只需要一个系数乘积将原有的小数部分变为整数。int 8量化效果在许多论文上可以看到，是目前最主流的模型压缩方式。
 
@@ -70,17 +80,17 @@ So，why int 8？有相关的人士分析过，从概率分布角度去看，int
 
 共享权重的概念指的是模型在构建的过程中是否有些局部的信息在全局是多次出现并重复使用的，举一个卷积神经网络的例子。当CNN模型在识别以下这个图像的时候，
 
-![](asset/img_f1145e72dbfb.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%25A8%25A1%25E5%259E%258B%25E9%2583%25A8%25E7%25BD%25B2%25E9%2582%25A3%25E4%25BA%259B%25E4%25BA%258B/asset/img_f1145e72dbfb.jpg)
 
 需要卷积核去全图扫描这个图像，找出每个边缘的特点，但是这种对称图像一定存在一些形状的重复性，比如下图我框出的这些结构。
 
-![](asset/img_4f2fde5bab98.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%25A8%25A1%25E5%259E%258B%25E9%2583%25A8%25E7%25BD%25B2%25E9%2582%25A3%25E4%25BA%259B%25E4%25BA%258B/asset/img_4f2fde5bab98.jpg)
 
 这些重复结构意味着卷积核在计算权重的时候会有部分权重的相似性，这些相似性是全局可共享的。那么如果可以通过聚类的方式挖掘出这些可以共享的权重系数，并且以类别的方式让它们共享一些权重，就可以实现模型的压缩。
 
 下图表示的就是卷积核中的部分权重是有共享关系的，可以将他们分为4个种类，然后针对类别去更新权值即可。
 
-![](asset/img_07e3f39e0141.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%25A8%25A1%25E5%259E%258B%25E9%2583%25A8%25E7%25BD%25B2%25E9%2582%25A3%25E4%25BA%259B%25E4%25BA%258B/asset/img_07e3f39e0141.jpg)
 
 ### 总结
 

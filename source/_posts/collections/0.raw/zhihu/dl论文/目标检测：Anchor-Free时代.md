@@ -1,10 +1,19 @@
 ---
-title: "目标检测：Anchor-Free时代"
-date: 2019-04-13
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/62103812
-
+title: 目标检测：Anchor-Free时代
+date: "2019-04-13 00:00:00"
+updated: "2019-04-13 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/dl论文/目标检测-Anchor-Free时代/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/62103812
 ---
+
 
 **欢迎关注[Smarter](https://link.zhihu.com/?target=https%3A//mp.weixin.qq.com/s%3F__biz%3DMzg4MjQ1NzI0NA%3D%3D%26mid%3D2247485220%26idx%3D1%26sn%3Dc911ddb7c1d4e17bd4ce6b08a1f1a494%26chksm%3Dcf5728d7f820a1c14fbd1ab15d109362a75f5cb2f6fcea76ef891ef6c6729194f65ff866c841%26token%3D1072730905%26lang%3Dzh_CN%23rd)公众号**
 

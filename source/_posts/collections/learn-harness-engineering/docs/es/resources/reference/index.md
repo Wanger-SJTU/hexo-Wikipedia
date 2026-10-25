@@ -1,3 +1,16 @@
+---
+title: Referencia
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/es/resources/reference/index/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # Referencia
 
 Estas notas explican cómo usar las plantillas como un harness funcional en lugar de una

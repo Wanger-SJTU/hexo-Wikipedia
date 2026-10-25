@@ -1,10 +1,19 @@
 ---
-title: "在K40小破卡训练50层BERT Large的宝藏trick"
-date: 2020-04-21
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/134008239
-
+title: 在K40小破卡训练50层BERT Large的宝藏trick
+date: "2020-04-21 00:00:00"
+updated: "2020-04-21 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/dl论文/在K40小破卡训练50层BERT-Large的宝藏trick/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/134008239
 ---
+
 
 前言
 虽然TPU的显存令人羡慕，但是由于众所周知的原因，绝大部分人还是很难日常化使用的。英伟达又一直在挤牙膏，至今单卡的最大显存也仅仅到32G（参考V100、DGX-2）。然而，训练一个24层的BERT Large模型的时候，如果sequence length开满512，那么batch size仅仅开到8（有时候能到10）就把这寥寥32G的显存打满了。如果想训练一个48层乃至100层的BERT Large，那完全是土豪们的游戏了，需要疯狂的模型并行+分布式多机训练。

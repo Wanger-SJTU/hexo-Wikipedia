@@ -1,3 +1,16 @@
+---
+title: "SOP: Kiến trúc Domain Phân lớp"
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/vi/resources/openai-advanced/sops/layered-domain-architecture/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # SOP: Kiến trúc Domain Phân lớp
 
 Sử dụng SOP này khi agent tiếp tục vi phạm ranh giới, sao chép logic qua các lớp, hoặc tạo ra mã khó review sau một vài phiên.

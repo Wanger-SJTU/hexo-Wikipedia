@@ -1,4 +1,17 @@
 ---
+title: 大模型RAG框架llama-index技术调研 - 知乎
+date: "2026-04-11 21:40:28"
+updated: "2026-04-11 21:40:28"
+layout: post
+permalink: /collections/0.raw/Omnivore/2024-04-09/大模型RAG框架llama-index技术调研-知乎/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
+---
 id: 3d585dce-facc-4509-baa2-0bf4b5fe5269
 ---
 

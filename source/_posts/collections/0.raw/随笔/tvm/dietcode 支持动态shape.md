@@ -1,6 +1,18 @@
 ---
-tags: [tvm ]
+title: dietcode 支持动态shape
+date: "2026-04-11 21:40:28"
+updated: "2026-04-11 21:40:28"
+layout: post
+permalink: /collections/0.raw/随笔/tvm/dietcode-支持动态shape/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - tvm
 ---
+
 近年来，随着深度学习领域动态 shape 推理场景激增，如机器翻译、语音识别等，针对动态 shape 模型的优化成为了热门研究议题。本文主要介绍了 DietCode 的整体架构设计，尝试了解 DietCode 如何针对动态 shape 进行调优。以 BERT 模型为例，DietCode 与 Ansor 相比， 搜索时间减少 5.88倍，性能提高约 70%。DietCode项目已经开始合入TVM中，但目前来看，只是在 tir 优化 Pass 中增加了 LocalPad，其他 feature 还未合入。
 
 ## 1 背景

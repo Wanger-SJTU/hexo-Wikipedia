@@ -1,4 +1,17 @@
 ---
+title: c++中函数参数里，是否能用 const reference 的地方尽量都用？ - 知乎
+date: "2026-04-11 21:40:28"
+updated: "2026-04-11 21:40:28"
+layout: post
+permalink: /collections/0.raw/Omnivore/2024-05-13/c-中函数参数里,是否能用-const-reference-的地方尽量都用-知乎/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
+---
 id: 6296b55f-25fc-4612-b14d-f58f8cc00cc6
 ---
 

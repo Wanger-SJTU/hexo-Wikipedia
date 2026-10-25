@@ -1,3 +1,16 @@
+---
+title: Turbo Sparse
+date: "2026-04-11 21:40:18"
+updated: "2026-04-11 21:40:18"
+layout: post
+permalink: /collections/0.raw/随笔/Turbo-Sparse/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 
 ## 关于llama稀疏性的观察
 llama原始模型的FFN计算过程为：
@@ -21,7 +34,7 @@ class FeedForward(nn.Module):
 $$
 \text{Combined dReLU} (x) := max(0, xW_{gate} ) \odot max(0, xW_{up} )
 $$
-![[assets/Pasted image 20240810223409.png]]
+![Pasted image 20240810223409.png](/images/collections/assets/Pasted%2520image%252020240810223409.png)
 从训练过程上来看，替换以后收敛性没有影响，结果的评价指标上也没有太大影响。
 
 下一步就是进一步评价下修改以后得稀疏度了。这里没有直接用两个mask的交集，而是按照topk的方法做了评测
@@ -32,9 +45,9 @@ $$
 $$
 		\text{Gated-MLP}(x) := (\text{Combined}(x) ∗ \text{Mask}(x))W_{down}
 $$
-![[assets/Pasted image 20240810224217.png]]
+![Pasted image 20240810224217.png](/images/collections/assets/Pasted%2520image%252020240810224217.png)
 显然效果显著。不影响模型表现的情况下，稀疏到达到了80%，而牺牲一定精度的条件下可以到达**90%**
 
 ## Sparsity of Sparsifi ed Models
 
-![[assets/Pasted image 20240810224413.png]]
+![Pasted image 20240810224413.png](/images/collections/assets/Pasted%2520image%252020240810224413.png)

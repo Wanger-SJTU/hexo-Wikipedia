@@ -1,9 +1,19 @@
 ---
-title: "泛化神器！李沐等人提出两种正则化技术：在CV和NLP均有大幅度提升"
-date: 2021-02-08
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/350067666
+title: 泛化神器！李沐等人提出两种正则化技术：在CV和NLP均有大幅度提升
+date: "2021-02-08 00:00:00"
+updated: "2021-02-08 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/dl论文/泛化神器-李沐等人提出两种正则化技术-在CV和NLP均有大幅度提升/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/350067666
 ---
+
 
 本文提出两种解决out-of-distribution(OOD)问题的正则化技术：**SelfNorm**和**CrossNorm**，两者还可以相互补充，实验证明该方法在CV/NLP、分类/分割、监督/半监督上效果显著！
 
@@ -13,7 +23,7 @@ source: https://zhuanlan.zhihu.com/p/350067666
 
 **作者：ChaucerG
 原出处：AI人工智能初学者
-原文链接：[泛化神器 | 李沐老师新作进一步提升模型在多域多的泛化性，CV和NLP均有大幅度提升(文末获取论文)](https://link.zhihu.com/?target=https%3A//mp.weixin.qq.com/s/LpoUzRXVSnsIDuuYyMZcmA)![](asset/img_91c4aeccd978.jpg)
+原文链接：[泛化神器 | 李沐老师新作进一步提升模型在多域多的泛化性，CV和NLP均有大幅度提升(文末获取论文)](https://link.zhihu.com/?target=https%3A//mp.weixin.qq.com/s/LpoUzRXVSnsIDuuYyMZcmA)![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_91c4aeccd978.jpg)
 
 SelfNorm and CrossNorm for Out-of-Distribution Robustness
 
@@ -64,35 +74,35 @@ Data augmentation是训练深度模型的重要工具。目前流行的Data augm
 
 ### 3.1 背景
 
-![](asset/img_5baadc00510c.jpg)
+![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_5baadc00510c.jpg)
 
-![](asset/img_b962c01f1bdb.jpg)
+![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_b962c01f1bdb.jpg)
 
 如图所示，style transfer实验证实了和可以编码一些style信息。
 
 ### 3.2 SelfNorm
 
-![](asset/img_b3e025fb6beb.jpg)
+![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_b3e025fb6beb.jpg)
 
-![](asset/img_542c9c7b268f.jpg)
+![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_542c9c7b268f.jpg)
 
 ### 3.3 CrossNorm
 
-![](asset/img_492e4f92de04.jpg)
+![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_492e4f92de04.jpg)
 
-![](asset/img_8c6d26b02f10.png)
+![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_8c6d26b02f10.png)
 
-![](asset/img_619057457fb2.jpg)
+![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_619057457fb2.jpg)
 
 A和B相互标准化，因此称为**CrossNorm**。CrossNorm的动机是基于一个关键的观察，即一个目标数据集，例如一个分类数据集，具有丰富的Styles。具体来说，每个实例，甚至每个通道，都有其独特的风格。交换统计信息可以有效地进行Style扩展，减少决策时的Style偏差。在小批量训练中，一般以一定的概率使用CrossNorm。
 
-![](asset/img_28f9550bd610.jpg)
+![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_28f9550bd610.jpg)
 
 ### 3.4 对立统一
 
 SelfNorm和CrossNorm都是从IN开始的，但方向相反。SelfNorm重新校准统计数据，只关注必要的Style，减少标准化特征(零均值和单位方差)和统计混合多样性。而CrossNorm在Channel间传递统计信息，丰富了标准化特征与统计信息的结合。它们执行相反的操作主要是因为它们针对的是不同的阶段。SelfNorm致力于在测试中进行Style的重新校准，而CrossNorm只在训练中起作用。请注意，SelfNorm是一个可学习的模块，需要训练才能发挥作用。
 
-![](asset/img_28f9550bd610.jpg)
+![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_28f9550bd610.jpg)
 
 上图显示了SelfNorm和CrossNorm的流程图。此外，SelfNorm有助于降低模型对外观变化的敏感性，而CrossNorm旨在减少模型的Style偏差。尽管有这些差异，它们都可以促进分布外推广。此外，CrossNorm可以提高SelfNorm的表现，因为它的Style增强可以防止SelfNorm过拟合特定的Style。总的来说，这两种看似对立的方法形成了一个统一，即使用标准化统计来提高分布外的鲁棒性。
 
@@ -100,15 +110,15 @@ SelfNorm和CrossNorm都是从IN开始的，但方向相反。SelfNorm重新校�
 
 CrossNorm的核心思想是在特征映射之间交换均值和方差。不同的特征映射选择会导致不同的CrossNorm变体。
 
-![](asset/img_e18904c052e8.jpg)
+![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_e18904c052e8.jpg)
 
 #### Crop
 
 此外，不同的空间区域可能有不同的均值和方差统计量。为了促进风格的多样性，建议对Crop区域进行CrossNorm:
 
-![](asset/img_2bcafeb6a7a0.png)
+![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_2bcafeb6a7a0.png)
 
-其中，crop函数返回一个面积比为不小于阈值t(0![](asset/img_77b322b5249c.jpg)
+其中，crop函数返回一个面积比为不小于阈值t(0![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_77b322b5249c.jpg)
 
 例如，在ResNet中，把它们放到一个residual模块中。对于residual模块中有限的位置，搜索空间显著缩小。模块化设计允许在一个网络中使用多个SelfNorm和CrossNorm。作者在消融研究中表明，累积style重新校准有助于模型的鲁棒性。由于过度的style扩展是有害的，因此作者在前向推理的过程中只是随机地启用一些CrossNorm。
 
@@ -116,7 +126,7 @@ CrossNorm的核心思想是在特征映射之间交换均值和方差。不同�
 
 #### mCE on CIFAR-10-C and CIFAR-100-C
 
-![](asset/img_fea1b7f695e6.jpg)
+![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_fea1b7f695e6.jpg)
 
 从表1可以看出，单独的SN和CN对看不见的腐蚀的鲁棒性优于大多数以前的方法，将它们组合在一起CIFAR-10-C和CIFAR-100-c上的平均误差都降低了12%。一个可能的解释是腐蚀主要改变了图像纹理。
 
@@ -124,13 +134,13 @@ CrossNorm的核心思想是在特征映射之间交换均值和方差。不同�
 
 #### Ablation study of IBN,SN,CN
 
-![](asset/img_6737f18c18ef.jpg)
+![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_6737f18c18ef.jpg)
 
 从表1可以看出，在ResNet50+IBN-a的基础上将CN+AM组合在一起使用mCE在原有IBN-a的基础上降低了8.7%；在ResNet50+IBN-b的基础上将SNCN+AM组合在一起使用mCE在原有IBN-b的基础上降低了11.3%；可以看出都是比较大的提升。
 
-![](asset/img_c24d4f70350c.jpg)
+![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_c24d4f70350c.jpg)
 
-![](asset/img_7c951cba39a9.jpg)
+![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_7c951cba39a9.jpg)
 
 CN可视化在头部(左)，尾部(中)2块和开始3块(右)在一个WideResNet-40-2。内容(行)和样式(列)图像都来自CIFAR-10。与第1块CNs相比(如图5所示)，第2块CNs和第3块CNs的风格传递效果较弱，因为High-Level Features Map的统计信息可能包含较少的Low Level视觉信息。
 

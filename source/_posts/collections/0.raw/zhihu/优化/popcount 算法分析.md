@@ -1,17 +1,27 @@
 ---
-title: "popcount 算法分析"
-date: 2022-10-06
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/341488123
+title: popcount 算法分析
+date: "2022-10-06 00:00:00"
+updated: "2022-10-06 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/优化/popcount-算法分析/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/341488123
 ---
 
-popcount[[1]](#ref_1)（population count），也叫 sideways sum，是计算一个整数的二进制表示有多少位是1。在一些场合下很有用，比如计算0-1稀疏矩阵（sparse matrix）或位数组（bit array）中非零元素个数、比如计算两个字符串的汉明距离(Hamming distance)。
+
+popcount<span class="wikilink wikilink--missing" title="未导入的页面">1</span>(#ref_1)（population count），也叫 sideways sum，是计算一个整数的二进制表示有多少位是1。在一些场合下很有用，比如计算0-1稀疏矩阵（sparse matrix）或位数组（bit array）中非零元素个数、比如计算两个字符串的汉明距离(Hamming distance)。
 
 ### 指令、库
 
 　　Intel 在2008年的 Nehalem 架构的处理器 Core i7 引入了 SSE4.2 指令集，其中有 CRC32 和 POPCNT 指令，POPCNT可以处理16, 32, 64位整数。后在 AVX-512 指令集引入了向量化的popcount, 叫 VPOPCNTDQ。
 
-　　C++委员会在2020年的 C++20 标准加入了**头文件，有判断游戏里的纹理尺寸是否是 2n" role="presentation">2n2^n 的函数，不过不叫 isPowerOfTwo，而是 std::has_single_bit ，也有本文即将登场的主角 std::popcount。 链接中给出了两种实现方式，前者运算量少。Python则在2021年的 3.10 版本加入了函数 int.bit_count()[[2]](#ref_2)。
+　　C++委员会在2020年的 C++20 标准加入了**头文件，有判断游戏里的纹理尺寸是否是 2n" role="presentation">2n2^n 的函数，不过不叫 isPowerOfTwo，而是 std::has_single_bit ，也有本文即将登场的主角 std::popcount。 链接中给出了两种实现方式，前者运算量少。Python则在2021年的 3.10 版本加入了函数 int.bit_count()<span class="wikilink wikilink--missing" title="未导入的页面">2</span>(#ref_2)。
 
 `template std::unsigned_integral T>
 //    requires unsigned integral type
@@ -25,7 +35,7 @@ constexpr bool has_single_bit(T x) noexcept
 }
 `
 
-　　如今，底层硬件指令和上层库都给予了对 popcount 的支持，生活变得越来越美好。个中的算法，在此也讲解一番，可以提升数学和算法功底。算法大致有以下几种[[3]](#ref_3)：
+　　如今，底层硬件指令和上层库都给予了对 popcount 的支持，生活变得越来越美好。个中的算法，在此也讲解一番，可以提升数学和算法功底。算法大致有以下几种<span class="wikilink wikilink--missing" title="未导入的页面">3</span>(#ref_3)：
 
 ### iterated_popcnt
 
@@ -130,7 +140,7 @@ constexpr bool has_single_bit(T x) noexcept
 
 parallel_popcnt 利用了**并行计算**。下面给出图片解说：
 
-![](asset/img_a892c7334a35.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_a892c7334a35.jpg)
 
 　　想象一下我们已经算好了的每k位一组的 popcount（k = 1是初始值），现在向  2k 位挺进。 n = a \cdot 2^k + b , a为高k位，b为低k位，于是结果就为 popcount(n) = a + b。代码里用mask分别屏蔽高低k位取出a和b再加。如此，32位整数需5次迭代，64位整数需6次迭代。
 
@@ -179,7 +189,7 @@ parallel_popcnt 利用了**并行计算**。下面给出图片解说：
 }
 `
 
-取名 hacker_popcnt 是因为来自于 Hacker's Delight[[4]](#ref_4) 这本书。网上有电子版下载，强烈推荐翻阅。书中第5章专门讲 Counting Bits。上面这段代码来自第一节的 *Figure 5-2 Counting 1-bits in a word。*该段代码在各大开源项目都有。JDK 库源码里的 java.lang.Integer 和 java.lang.Long 类中的方法 bitCount，分别对应32位和64位的 popcount，至于任意精度的整数（java.lang.BigInteger ），则通过 Integer#bitCount 方法来计算。FFmpeg 工程的文件 [libavutil/common.h](https://link.zhihu.com/?target=https%3A//github.com/FFmpeg/FFmpeg/blob/master/libavutil/common.h%23L381) 中也有这段代码。
+取名 hacker_popcnt 是因为来自于 Hacker's Delight<span class="wikilink wikilink--missing" title="未导入的页面">4</span>(#ref_4) 这本书。网上有电子版下载，强烈推荐翻阅。书中第5章专门讲 Counting Bits。上面这段代码来自第一节的 *Figure 5-2 Counting 1-bits in a word。*该段代码在各大开源项目都有。JDK 库源码里的 java.lang.Integer 和 java.lang.Long 类中的方法 bitCount，分别对应32位和64位的 popcount，至于任意精度的整数（java.lang.BigInteger ），则通过 Integer#bitCount 方法来计算。FFmpeg 工程的文件 [libavutil/common.h](https://link.zhihu.com/?target=https%3A//github.com/FFmpeg/FFmpeg/blob/master/libavutil/common.h%23L381) 中也有这段代码。
 
 ### hakmem_popcnt
 
@@ -219,7 +229,7 @@ int hakmem_popcount(uint32_t n)
 }
 `
 
-　　取名 hakmem_popcnt 是因为来自于 HAKMEM (Hacks Memo)，来自 MIT AI Lab，里面有很多关于数学的有用而且漂亮的算法[[5]](#ref_5)。这里用到了一个技巧：**popcount(n) = n - (n>>1) - (n>>2) - ... - (n>>31) = a31 + a30 + ... + a0。** 
+　　取名 hakmem_popcnt 是因为来自于 HAKMEM (Hacks Memo)，来自 MIT AI Lab，里面有很多关于数学的有用而且漂亮的算法<span class="wikilink wikilink--missing" title="未导入的页面">5</span>(#ref_5)。这里用到了一个技巧：**popcount(n) = n - (n>>1) - (n>>2) - ... - (n>>31) = a31 + a30 + ... + a0。** 
 
 证明不难，提示： 2^k - 2^{k-1} - 2^{k-2} - ... - 2^1 - 2^0 = 1 对任意整数k成立。
 
@@ -245,7 +255,7 @@ int hakmem_popcount(uint32_t n)
 
 > *Before  an application attempts to use the POPCNT instruction, it must check  that the processor supports SSE4.2 (if CPUID.01H:ECX.SSE4_2[bit 20] = 1)  and POPCNT (if CPUID.01H:ECX.POPCNT[bit 23] = 1).*
 
-　　asm 可以用来在 C/C++ 代码中插入汇编指令，然后 asm 本来是 C++ 的关键字的，编译器都不能好好地支持。Visual  C++编译器不支持ARM、x64平台插入汇编[[6]](#ref_6)。MSDN上说
+　　asm 可以用来在 C/C++ 代码中插入汇编指令，然后 asm 本来是 C++ 的关键字的，编译器都不能好好地支持。Visual  C++编译器不支持ARM、x64平台插入汇编<span class="wikilink wikilink--missing" title="未导入的页面">6</span>(#ref_6)。MSDN上说
 
 > *The  __asm keyword replaces C++ asm syntax. asm is reserved for  compatibility with other C++ implementations, but not implemented.  Use__asm. *
 
@@ -256,7 +266,7 @@ GNU编译器也内置了很多函数，也包括 int __builtin_popcount (unsigne
 
 　　到这里，9种方法都讲完了。接下来需要测试功能和评估效率了。完整代码见附件。
 
-[![](asset/img_d7b95712a008.jpg)popcount.cpp
+[![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_d7b95712a008.jpg)popcount.cpp
 
 5.5K
 

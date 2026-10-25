@@ -1,9 +1,19 @@
 ---
-title: "模型的Robustness和Generalization是什么关系？"
-date: 2026-04-23
-tags: [知乎]
-source: https://www.zhihu.com/question/410332622/answer/1367527402
+title: 模型的Robustness和Generalization是什么关系？
+date: "2026-04-23 00:00:00"
+updated: "2026-04-23 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/dl论文/模型的Robustness和Generalization是什么关系/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://www.zhihu.com/question/410332622/answer/1367527402
 ---
+
 
 Aalanyj
 

@@ -1,9 +1,19 @@
 ---
-title: "KV Cache压缩新阶段:走向问题指令无关下的压缩探索"
-date: 2025-02-04
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/21106979890
+title: KV Cache压缩新阶段:走向问题指令无关下的压缩探索
+date: "2025-02-04 00:00:00"
+updated: "2025-02-04 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/LLM-SD/KV-Cache压缩新阶段_走向问题指令无关下的压缩探索/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/21106979890
 ---
+
 
 最近在和朋友交流中，经常就会聊到了KV Cache压缩这个方向现在变得比较卷，许多Cache压缩方法都已经变得非常无损，很难进一步提升，继续研究的意义不大之类的问题。我也曾被这个问题困扰过，但近期和NVIDIA kvpress开源团队合作中，对这个问题有了一些新的思考。写一些东西宣传一下最近工作的进展，同时分享一下自己的看法：**KV Cache压缩未来的研究重点可以尝试关注在摆脱问题指令依赖性方面，这里仍有很大的研究空间。** 
 
@@ -11,7 +21,7 @@ source: https://zhuanlan.zhihu.com/p/21106979890
 
 在[NVIDIA kvpress](https://link.zhihu.com/?target=https%3A//github.com/NVIDIA/kvpress) [Blog](https://link.zhihu.com/?target=https%3A//huggingface.co/blog/nvidia/kvpress)这个开源项目中，它提供了一种很好的问题指令无关的压缩评估方法：首先将问题从上下文中剔除，此时KV Cache压缩方法对上下文（比如一个很长的文档）进行压缩，在压缩完成后输入问题评估LLM的生成质量，这样子就可以很好的模拟在问题未知的情况下Cache压缩的性能。我们和NVIDIA团队的合作，将我们Ada-KV（以及未来即将到来的工作）纳入到这一场景下进行了充分评估，发现利用Ada-KV头间调度就可以很好的缓解指令依赖性问题，通过增强现有方法达到了该Benchmark下的最高分数。
 
-![](asset/img_8bc1226e8d53.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_8bc1226e8d53.jpg)
 
 NVIDIA团队在Blog中给出的问题指令无关评估结果（其中使用Ada-KV增强后的SnapKV和Expected Attention均有着显著提升，其中Ada-KV增强后的Expected Attention成为了全新的SOTA method）同时也宣传一下自己的工作：
 
@@ -33,7 +43,7 @@ NVIDIA团队在Blog中给出的问题指令无关评估结果（其中使用Ada-
 
 **
 
-![](asset/img_3b73c368b2ef.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_3b73c368b2ef.jpg)
 
 问题指令对KV Cache压缩的影响（SnapKV和Ada-SnapKV（AdaKV强化后的SnapKV）在ruler上的均分）
 
@@ -41,7 +51,7 @@ NVIDIA团队在Blog中给出的问题指令无关评估结果（其中使用Ada-
 
 - **设计更合理的Cache 重要性指标：**例如一开始的NVIDIA评估结果中就展示了一种新的cache 压缩方法expected_attention，这个方法由NVIDIA kvpress团队提出放在了kvpress项目中开源，目前文章还没有公开。可以看到这个expected_attention在这种不依赖特定的问题的压缩场景下，其性能要高于SnapKV，这个就主要得益于它对于cache 重要性的估计更为精准。
 - **注意力头间的压缩预算调度增强：**我们的AdaKV就是首个实现了注意力头间的预算调度的压缩方法，可以看到通过AdaKV增强后的expected_attention和snapkv都有了非常明显的性能提升，尤其是ada_expected_attention，在50%的压缩率下已经接近85分数。
-![](asset/img_b455ab9bd04a.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_b455ab9bd04a.jpg)
 
 NVIDIA kvpress团队在ruler上不带问题压缩测试结果（使用了Ada-KV分别增强了snapkv和expected_attention，其中ada_expected_attention获得了这个benchmark上所有方法的最高分）**
 

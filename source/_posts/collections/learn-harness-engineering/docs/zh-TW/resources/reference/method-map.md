@@ -1,3 +1,16 @@
+---
+title: 方法對照表
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/zh-TW/resources/reference/method-map/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # 方法對照表
 
 這個表把最常見的長時編碼代理失敗模式，對應到通常最先能修正它的工件或操作規則。

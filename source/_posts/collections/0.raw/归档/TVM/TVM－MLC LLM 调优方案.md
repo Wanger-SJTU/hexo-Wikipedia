@@ -1,3 +1,16 @@
+---
+title: TVM－MLC LLM 调优方案
+date: "2026-04-11 21:40:28"
+updated: "2026-04-11 21:40:28"
+layout: post
+permalink: /collections/0.raw/归档/TVM/TVM-MLC-LLM-调优方案/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 #TVM #llm 
 LLM 等GPT大模型大火以后,TVM社区推出了自己的部署方案，支持Llama，Vicuna，Dolly等模型在iOS、Android、GPU、浏览器等平台上部署运行。
 https://github.com/mlc-ai/mlc-llm
@@ -7,7 +20,7 @@ https://github.com/mlc-ai/mlc-llm
 ## pipeline
 
 在正式介绍TVM mlc.ai部署LLM方案之前，首先简要介绍一下当前主流LLM的一个工作流程。
-![[Excalidraw/LLM pipe flow.excalidraw|LLM pipe flow.excalidraw]]
+!<span class="wikilink wikilink--missing" title="未导入的页面">LLM pipe flow.excalidraw</span>
 
 >需要说明一点的是，上图中的prefill跟Decode指的的同一个模型，只是输入的shape存在差异。
 

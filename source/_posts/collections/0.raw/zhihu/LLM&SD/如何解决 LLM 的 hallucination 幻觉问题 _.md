@@ -1,10 +1,19 @@
 ---
-title: "如何解决 LLM 的 hallucination 幻觉问题 ?"
-date: 2023-07-16
-tags: [知乎]
-source: https://www.zhihu.com/question/604881501/answer/3120771940
-
+title: 如何解决 LLM 的 hallucination 幻觉问题 ?
+date: "2023-07-16 00:00:00"
+updated: "2023-07-16 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/LLM-SD/如何解决-LLM-的-hallucination-幻觉问题-_/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://www.zhihu.com/question/604881501/answer/3120771940
 ---
+
 
 近年来，大型语言模型在处理复杂的多步推理任务方面取得了显著的进展。然而，即使是最先进的模型仍然会出现逻辑错误，这通常被称为“幻觉”(hallucinations)。减少这些幻觉是实现通用人工智能(AGI)的重要一步，因为它能够提高模型的准确性和可靠性。
 

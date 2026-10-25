@@ -1,3 +1,16 @@
+---
+title: AGENTS.md
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/vi/resources/templates/AGENTS/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # AGENTS.md
 
 Kho lưu trữ này được thiết kế cho công việc coding-agent chạy lâu. Mục tiêu không phải là tối đa hóa đầu ra mã thô. Mục tiêu là để lại repo ở trạng thái mà phiên tiếp theo có thể tiếp tục mà không cần đoán.

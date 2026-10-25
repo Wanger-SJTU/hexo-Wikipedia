@@ -1,9 +1,21 @@
 ---
-title: "DeepSeek做大→Mega MoE，Tri Dao团队加快→SonicMoE"
-date: 2026-05-05
-tags: [MoE, DeepSeek, SonicMoE]
-source: https://mp.weixin.qq.com/s/aZWTQxXqrfzc5rboCof4DA
+title: DeepSeek做大→Mega MoE，Tri Dao团队加快→SonicMoE
+date: "2026-05-05 00:00:00"
+updated: "2026-05-05 00:00:00"
+layout: post
+permalink: /collections/0.raw/wechat/2026-05-05-mega-moe-sonicmoe/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - MoE
+  - DeepSeek
+  - SonicMoE
+source_url: https://mp.weixin.qq.com/s/aZWTQxXqrfzc5rboCof4DA
 ---
+
 
 来源：机器之心
 

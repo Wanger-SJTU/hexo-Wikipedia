@@ -1,9 +1,19 @@
 ---
-title: "Resnet到底在解决一个什么问题呢？"
-date: 2026-04-23
-tags: [知乎]
-source: https://www.zhihu.com/question/64494691/answer/220989469
+title: Resnet到底在解决一个什么问题呢？
+date: "2026-04-23 00:00:00"
+updated: "2026-04-23 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/dl论文/Resnet到底在解决一个什么问题呢/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://www.zhihu.com/question/64494691/answer/220989469
 ---
+
 
 知乎用户
 ​​​

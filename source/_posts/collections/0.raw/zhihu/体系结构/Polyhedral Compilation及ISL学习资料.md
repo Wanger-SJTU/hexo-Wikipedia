@@ -1,9 +1,19 @@
 ---
-title: "Polyhedral Compilation及ISL学习资料"
-date: 2021-07-01
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/385722777
+title: Polyhedral Compilation及ISL学习资料
+date: "2021-07-01 00:00:00"
+updated: "2021-07-01 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/体系结构/Polyhedral-Compilation及ISL学习资料/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/385722777
 ---
+
 
 ### **Polyhedral Compilation及ISL学习资料**
 

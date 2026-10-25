@@ -1,9 +1,19 @@
 ---
 title: "[AI编译器后端优化] 计算与调度"
-date: 2024-04-01
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/687720171
+date: "2024-04-01 00:00:00"
+updated: "2024-04-01 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/tvm/[AI编译器后端优化]-计算与调度-be948f/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/687720171
 ---
+
 
 [AI编译器后端优化] 计算与调度
 

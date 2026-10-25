@@ -1,3 +1,16 @@
+---
+title: المحاضرة 09. منع الوكلاء من إعلان النجاح مبكرًا
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/ar/lectures/lecture-09-why-agents-declare-victory-too-early/index/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 [中文版本 →](../../../zh/lectures/lecture-09-why-agents-declare-victory-too-early/)
 
 > Code examples for this lecture: [code/](https://github.com/walkinglabs/learn-harness-engineering/blob/main/docs/ar/lectures/lecture-09-why-agents-declare-victory-too-early/code/)

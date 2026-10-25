@@ -1,3 +1,16 @@
+---
+title: 완료된 계획(Completed Plans)
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/ko/resources/openai-advanced/repo-template/docs/exec-plans/completed/index/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # 완료된 계획(Completed Plans)
 
 완료된 계획은 삭제하지 말고 이 폴더로 이동하십시오. 완료된 계획은 저장소 메모리 표면의 일부로, 이후 에이전트(agent) 실행 시 코드가 현재와 같은 형태가 된 이유를 이해하는 데 도움이 됩니다.

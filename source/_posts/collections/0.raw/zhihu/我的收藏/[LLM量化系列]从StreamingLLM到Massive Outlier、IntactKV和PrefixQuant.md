@@ -1,9 +1,19 @@
 ---
-title: "(2 条消息) [LLM量化系列]从StreamingLLM到Massive Outlier、IntactKV和PrefixQuant"
-date: 2024-12-02
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/9814639857
+title: (2 条消息) [LLM量化系列]从StreamingLLM到Massive Outlier、IntactKV和PrefixQuant
+date: "2024-12-02 00:00:00"
+updated: "2024-12-02 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/[LLM量化系列]从StreamingLLM到Massive-Outlier、IntactKV和PrefixQuant/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/9814639857
 ---
+
 
 自从Tim Dettmers在NeurIPS 2022提出的[LLM.int8()](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2208.07339)后，LLM PTQ量化的关注点就开始围绕Outlier Activation进行，一系列优秀的量化算法如不断涌现出来，从早期的SmoothQuant、AWQ，到后来的RPTQ、OmniQuant、ATOM、QUICK、QuaRot、SpinQuant、QServe等，研究者们在Outlier Activation的发现和处理优化上逐步精细化、完备化。本文试图梳理Outlier中的一种类型Massive Outlier的处理发展历程，期望能够触发一些思考。
 
@@ -11,11 +21,11 @@ source: https://zhuanlan.zhihu.com/p/9814639857
 
 LLM在2022年底开始火爆后，处理长上下文成为各个MaaS厂商PR的一个热点，而[StreamingLLM](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2309.17453)的初衷就是试图优化长文本在LLM中的推理过程。届时window attention是一个不错的优化方案，即对长文本来说保持一个滑动的推理计算窗口(而不是全量q/k/v)能够有效地减少计算量和存储量，可以稳定地输出结果。但同时不可避免也会带来精度下降的问题(毕竟做了很大程度的裁剪)。针对这个问题，StreamingLLM首次发现了**attention sink**现象，即**保持几个初始token的KV值在很大程度上可以恢复window attention的精度**，并利用这个现象保证了长文本下window attention的推理精度，如下图最右图所示（黄色一列即为attention sink）。
 
-![](asset/img_4d192c4c8805.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_4d192c4c8805.jpg)
 
 这个现象非常有趣，作用也很显著。尽管初始token大多缺乏很强的语义，**但它们收集了显著的注意力分数**，如下图所示。StreamingLLM有分析背后的原因，它将其归因为**自回归模型语言建模的特性**，即**初始token对几乎所有后续的token都是可见的**，因此最初的token更容易被训练成为注意力汇集点，吸引一些不必要的注意力。
 
-![](asset/img_8d00b40e48c5.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_8d00b40e48c5.jpg)
 
 **
 
@@ -27,13 +37,13 @@ StreamingLLM之后，CMU和Meta的研究人员又做了进一步的分析，在[
 
 基于此研究人员将massive activation和普通activation在计算attention output时进行了区分，得到了如下图。massive activation给最终结果带来的变化非常固定，为此作者引入了可学习的参数k/v试图替换massive activation，晒一下公式。
 
-![](asset/img_5c7e18d29127.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_5c7e18d29127.jpg)
 
-![](asset/img_ae0aaf59dd21.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_ae0aaf59dd21.jpg)
 
 令人惊喜的是使用它们进行训练可以消除LLM学习massive activation的需要，在最终效果上几乎一致，使得激活值非常平滑，从而利于量化处理。
 
-![](asset/img_eb36d2f7c19f.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_eb36d2f7c19f.jpg)
 
 **
 
@@ -43,7 +53,7 @@ StreamingLLM之后，CMU和Meta的研究人员又做了进一步的分析，在[
 
 具体来说，给定一个LLM模型，PrefixQuant首先计算N个异常token数，然后在KVCache中选择Top-N个高频离群token作为前缀，如下图所示。这样再结合smooth、rotate、reorder等经典等效操作后剩下的outlier就可以忽略不计了，这样针对activation就可以用per-tensor量化来替换per-token量化，从而在保证推理精度的前提下提升了推理速度。
 
-![](asset/img_6f7bdd3dce45.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_6f7bdd3dce45.jpg)
 
  
 
@@ -53,7 +63,7 @@ StreamingLLM之后，CMU和Meta的研究人员又做了进一步的分析，在[
 
 它以离线的方式从全精度模型中生成pivot token的无损KVCache，通过保持pivot token的KVCache精度，在其余的解码步骤中连接其他token的量化KVCache，可以有效地减轻在self-attention输出上积累的量化误差，如下图所示。本质上是以混合精度的方式来存储KVCache来达到提高推理结果精度的目标**。在pivot token的选取上，采用了经验的[BOS]、system prompt等token，它们的KVCache也可以作为可训练参数来通过校准获得。
 
-![](asset/img_0e60fb8c0648.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_0e60fb8c0648.jpg)
 
 ### 五、总结
 

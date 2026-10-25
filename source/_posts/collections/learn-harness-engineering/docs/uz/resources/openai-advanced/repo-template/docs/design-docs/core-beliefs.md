@@ -1,3 +1,16 @@
+---
+title: Asosiy Qarashlar (Core Beliefs)
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/uz/resources/openai-advanced/repo-template/docs/design-docs/core-beliefs/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # Asosiy Qarashlar (Core Beliefs)
 
 - Agentlar uchun yagona haqiqat manbai (system of record) bu repozitoriydir.

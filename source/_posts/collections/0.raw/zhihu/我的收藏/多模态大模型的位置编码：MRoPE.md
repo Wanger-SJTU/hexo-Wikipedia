@@ -1,9 +1,19 @@
 ---
-title: "多模态大模型的位置编码：MRoPE"
-date: 2025-11-30
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/1978600727963276994
+title: 多模态大模型的位置编码：MRoPE
+date: "2025-11-30 00:00:00"
+updated: "2025-11-30 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/多模态大模型的位置编码-MRoPE/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/1978600727963276994
 ---
+
 
 多模态大模型的位置编码：MRoPE
 
@@ -285,7 +295,7 @@ t_index = torch.arange(llm_grid_t).view(-1, 1).expand(-1, llm_grid_h * llm_grid_
 h_index = torch.arange(llm_grid_h).view(1, -1, 1).expand(llm_grid_t, -1, llm_grid_w).flatten()
 # 原理：在每个时间和高度组合内，宽度索引按照网格模式重复
 # torch.arange(2) -  [0, 1]
-# .view(1, 1, -1) -  [[[0, 1]]]
+# .view(1, 1, -1) -  [<span class="wikilink wikilink--missing" title="未导入的页面">0, 1</span>]
 # .expand(3, 2, -1) -  [[[0,1], [0,1]], [[0,1], [0,1]], [[0,1], [0,1]]]
 # .flatten() -  [0,1,0,1, 0,1,0,1, 0,1,0,1]  (每个空间位置：宽度0和1交替)
 w_index = torch.arange(llm_grid_w).view(1, 1, -1).expand(llm_grid_t, llm_grid_h, -1).flatten()

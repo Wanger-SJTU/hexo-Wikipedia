@@ -1,3 +1,16 @@
+---
+title: 스킬 (Skills)
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/ko/skills/index/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # 스킬 (Skills)
 
 이 디렉터리에는 본 강의와 함께 제공되는 번들(bundled) AI 에이전트(agent) 스킬(skill)이 포함되어 있습니다. 스킬은 AI 코딩 에이전트(Claude Code, Codex, Cursor, Windsurf 등)가 특수한 작업을 수행하기 위해 로드(load)할 수 있는 자기 완결적 프롬프트 템플릿(template)입니다.

@@ -1,9 +1,19 @@
 ---
-title: "(1 封私信) BOOM微架构学习(1)——取指单元与分支预测"
-date: 2020-09-12
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/168755384
+title: (1 封私信) BOOM微架构学习(1)——取指单元与分支预测
+date: "2020-09-12 00:00:00"
+updated: "2020-09-12 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/硬件/BOOM微架构学习(1)——取指单元与分支预测/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/168755384
 ---
+
 
 之前在[RISC-V的“Demo”级项目——Rocket-chip](https://zhuanlan.zhihu.com/p/140360043)一文中曾经简介过BOOM处理器的流水线，这次我们开始一个系列，深入学习一下BOOM的微架构，这样对于乱序执行的超标量处理器会有一个较为深入的认识。
 
@@ -17,7 +27,7 @@ source: https://zhuanlan.zhihu.com/p/168755384
 
 BOOM的前端如下图所示，它包括取指和分支预测在内共划分为5个周期（从F0到F4）。当后端发现分支预测错误，或者分支预测器预测需要改变取指的位置，就会给前端发一个请求，前端就会从新的PC开始取指令。
 
-![](asset/img_9b7432e9b837.jpg)
+![](/images/collections/0.raw/zhihu/%25E7%25A1%25AC%25E4%25BB%25B6/asset/img_9b7432e9b837.jpg)
 
 BOOM前端架构图BOOM并不是每次从I-Cache中取一条指令，而是一次从指令缓存中取出一个Fetch Packet的指令（就像是批发一样，一次批发一包指令进来）。之后对这些指令进行快速译码（为分支预测提供信息），并写到Fetch Buffer（Fetch Buffer是一个将前后端解耦的指令队列）中供后端使用；同时将给后端用的PC和分支预测信息则写到Fetch Target Queue中（Fetch Target Queue保存着从I-Cache取得的指令的地址以及地址对应的分支预测信息；当指令被提交后，ROB会从Fetch Target Queue中取出该指令的相应信息；当取指单元重定向时Fetch Target Queue会被更新）。
 
@@ -37,7 +47,7 @@ BOOM前端架构图BOOM并不是每次从I-Cache中取一条指令，而是一�
 
 NLP中的BTB如下图所示。和一般简单的处理器不同的是，NLP的预测不是基于某条指令进行分支预测的判断，而是根据一整个Fetch Packet进行判断。 每次预测时，NLP首先将Fetch PC（即当前Fetch Packet的开头的地址）和BTB中的PC tags进行匹配， 如果发现有匹配上的项，BTB和RAS一起判断该Fetch Packet中是否包含分支、跳转或者返回指令，以及具体是哪条指令发生了跳转（记录在BTB的bidx字段中）。
 
-![](asset/img_894abc0a4f27.jpg)
+![](/images/collections/0.raw/zhihu/%25E7%25A1%25AC%25E4%25BB%25B6/asset/img_894abc0a4f27.jpg)
 
 BOOM的BTB当确定某条指令为分支指令时，NLP会查询BIM表来决策跳转还是不跳转；当确定某条指令为返回指令时，NLP会查询RAS来确定下一次取指的Fetch PC。
 
@@ -69,7 +79,7 @@ BPD采用了基于全局历史的分支预测设计，它使用全局历史寄�
 
 BOOM定义了一个分支预测抽象类`BranchPredictor`，实现这个类即可为BOOM实现一种新的基于全局历史的分支预测方案。 `BranchPredictor`为BPD的实现提供了接口以及GHR的控制逻辑，实现类不需要再去处理上文中提到的有关GHR的更新、快照维护等事情，而专注于分支预测的逻辑即可。分支预测抽象类的接口逻辑结构如下图所示。
 
-![](asset/img_6b98577ec0f5.jpg)
+![](/images/collections/0.raw/zhihu/%25E7%25A1%25AC%25E4%25BB%25B6/asset/img_6b98577ec0f5.jpg)
 
 BOOM的抽象分支预测类框图
 #### 2-bit计数器表
@@ -78,7 +88,7 @@ BPD中专门设计了一个2-bit计数器表（Two-bit Counter Table，简称2BC
 
 在BOOM中，为了节约面积将2BCT存入SRAM中，对2-bit计数器进行了调整：如果当前状态为`0b10`，而此次输入为“没有跳转”，则状态直接转移到`0b00`；如果当前状态为`0b01`，而此次输入为“跳转”，则状态直接转移到`0b11`。调整后的时序转移图如下。
 
-![](asset/img_fdce8c92abc4.jpg)
+![](/images/collections/0.raw/zhihu/%25E7%25A1%25AC%25E4%25BB%25B6/asset/img_fdce8c92abc4.jpg)
 
 经过这样的调整以后，P位和H位可以在硬件上分开进行设计： 对于P位来说，每次预测时读取从而进行是否跳转的判断，而每次判断错误时则进行取反写入；对于H位来说，在预测错误时进行读取，而每次分支指令执行后进行写入（写入分支结果）。
 
@@ -90,7 +100,7 @@ BPD中专门设计了一个2-bit计数器表（Two-bit Counter Table，简称2BC
 
 GShare分支预测器实现比较简单，下图为其逻辑框图。它将GHR与指令的PC做异或后，作为2BCT的索引进行查询和更新。
 
-![](asset/img_400a949cbcf9.jpg)
+![](/images/collections/0.raw/zhihu/%25E7%25A1%25AC%25E4%25BB%25B6/asset/img_400a949cbcf9.jpg)
 
 GShare预测器
 
@@ -98,7 +108,7 @@ GShare预测器
 
 TAGE(TAgged GEometric)是一种新型的高度可配置的分支预测算法，它既能快速学习短期历史，也能学习长期历史（可以学习超过1000条分支历史记录）。
 
-![](asset/img_ac525b16c5d3.jpg)
+![](/images/collections/0.raw/zhihu/%25E7%25A1%25AC%25E4%25BB%25B6/asset/img_ac525b16c5d3.jpg)
 
 TAGE预测器
 

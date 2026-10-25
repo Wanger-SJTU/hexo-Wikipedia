@@ -1,3 +1,16 @@
+---
+title: Dự án 04. Sử dụng Phản hồi Runtime để Điều chỉnh Hành vi Agent
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/vi/projects/project-04-incremental-indexing/index/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 [English Version →](../../../en/projects/project-04-incremental-indexing/) | [中文版本 →](../../../zh/projects/project-04-incremental-indexing/)
 
 > Bài giảng liên quan: [Bài 07. Vạch ranh giới tác vụ rõ ràng cho agent](./../../lectures/lecture-07-why-agents-overreach-and-under-finish/index.md) · [Bài 08. Sử dụng feature list để ràng buộc những gì agent làm](./../../lectures/lecture-08-why-feature-lists-are-harness-primitives/index.md)

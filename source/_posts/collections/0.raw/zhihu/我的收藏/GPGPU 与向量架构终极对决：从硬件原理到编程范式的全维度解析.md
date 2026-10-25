@@ -1,9 +1,19 @@
 ---
-title: "GPGPU 与向量架构终极对决：从硬件原理到编程范式的全维度解析"
-date: 2025-11-30
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/1978415117659051152
+title: GPGPU 与向量架构终极对决：从硬件原理到编程范式的全维度解析
+date: "2025-11-30 00:00:00"
+updated: "2025-11-30 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/GPGPU-与向量架构终极对决-从硬件原理到编程范式的全维度解析/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/1978415117659051152
 ---
+
 
 GPGPU 与向量架构终极对决：从硬件原理到编程范式的全维度解析
 

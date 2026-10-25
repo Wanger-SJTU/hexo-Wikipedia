@@ -1,10 +1,19 @@
 ---
-title: "如何理解现有的各种序列并行技术，Ulysses, Megatron-LM SP/CP等？"
-date: 2024-12-09
-tags: [知乎]
-source: https://www.zhihu.com/question/4130491572/answer/51095129472
-
+title: 如何理解现有的各种序列并行技术，Ulysses, Megatron-LM SP/CP等？
+date: "2024-12-09 00:00:00"
+updated: "2024-12-09 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/LLM-SD/如何理解现有的各种序列并行技术,Ulysses,-Megatron-LM-SP_CP等/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://www.zhihu.com/question/4130491572/answer/51095129472
 ---
+
 
 这个，序列并行的核心是分布式attention。Ulysses, Megatron-LM SP/CP这几个都是分布式attention场景的不同实现，用于训练场景。然而推理场景也有序列并行，所有所有的序列并行技术、以及不同的场景（训练和推理），笔者均有详细总结和分析。
 

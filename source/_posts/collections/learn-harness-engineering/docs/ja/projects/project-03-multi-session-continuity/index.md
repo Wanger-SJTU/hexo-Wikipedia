@@ -1,3 +1,16 @@
+---
+title: プロジェクト 03. セッション再起動後もエージェントが作業を続けられるようにする
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/ja/projects/project-03-multi-session-continuity/index/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 [中文版本 →](../../../zh/projects/project-03-multi-session-continuity/)
 
 > 関連講義: [講義 05. セッションをまたいでコンテキストを保つ](./../../lectures/lecture-05-why-long-running-tasks-lose-continuity/index.md) · [講義 06. すべてのエージェントセッション前に初期化する](./../../lectures/lecture-06-why-initialization-needs-its-own-phase/index.md)

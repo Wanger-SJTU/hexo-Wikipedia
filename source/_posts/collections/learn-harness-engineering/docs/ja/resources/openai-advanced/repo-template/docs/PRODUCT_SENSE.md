@@ -1,3 +1,16 @@
+---
+title: PRODUCTSENSE.md
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/ja/resources/openai-advanced/repo-template/docs/PRODUCT_SENSE/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # PRODUCT_SENSE.md
 
 このファイルは、エージェントがコードだけからは確実に推測できない、永続的なプロダクト判断を記録します。

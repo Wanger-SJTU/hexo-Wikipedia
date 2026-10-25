@@ -1,9 +1,19 @@
 ---
-title: "华为NPU昇腾芯片是否属于重大战略方向性失误，应该选择GPGPU，导致CANN软件栈面临作废状态？"
-date: 2026-04-21
-tags: [知乎]
-source: https://www.zhihu.com/question/1925252282942988983/answer/1999087025727505601
+title: 华为NPU昇腾芯片是否属于重大战略方向性失误，应该选择GPGPU，导致CANN软件栈面临作废状态？
+date: "2026-04-21 00:00:00"
+updated: "2026-04-21 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/体系结构/华为NPU昇腾芯片是否属于重大战略方向性失误,应该选择GPGPU,导致CANN软件栈面临作废状态/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://www.zhihu.com/question/1925252282942988983/answer/1999087025727505601
 ---
+
 
 Hellc
 ​

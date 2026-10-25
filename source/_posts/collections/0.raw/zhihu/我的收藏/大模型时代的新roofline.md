@@ -1,9 +1,19 @@
 ---
-title: "大模型时代的新roofline"
-date: 2026-04-21
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/2029981166191780212
+title: 大模型时代的新roofline
+date: "2026-04-21 00:00:00"
+updated: "2026-04-21 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/大模型时代的新roofline/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/2029981166191780212
 ---
+
 
 最近大模型推理需求已经到了爆炸式增长阶段，推理infra的重要性不言而喻，memory bound、compute bound的分析也让现在infra层面乐此不彼地折腾各种PD分离、AF分离的各种异构方案，芯片层面同样乐此不彼地折腾prefill芯片、attention芯片和ffn芯片。不过memory bound、compute bound的划分实际上还是经典计算访存比的roofline视角划分。
 

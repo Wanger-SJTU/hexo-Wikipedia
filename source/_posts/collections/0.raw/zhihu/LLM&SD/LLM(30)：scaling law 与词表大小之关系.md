@@ -1,13 +1,23 @@
 ---
-title: "LLM(30)：scaling law 与词表大小之关系"
-date: 2025-03-14
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/710813718
+title: LLM(30)：scaling law 与词表大小之关系
+date: "2025-03-14 00:00:00"
+updated: "2025-03-14 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/LLM-SD/LLM(30)-scaling-law-与词表大小之关系/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/710813718
 ---
+
 
 在之前的文章中，笔者比较简略讨论过 scaling law 与词表大小的关系，当时的主要结论如下：
 
-[![](asset/img_b234209566c0.jpg)紫气东来：LLM（廿六）：从信息论的角度解释 scaling law373 赞同 · 20 评论 文章](https://zhuanlan.zhihu.com/p/687278237)
+[![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_b234209566c0.jpg)紫气东来：LLM（廿六）：从信息论的角度解释 scaling law373 赞同 · 20 评论 文章](https://zhuanlan.zhihu.com/p/687278237)
 
 - 词表大小决定了信息熵\mathrm{H}(\mathrm{P})的上界。词表的增大，会导致 loss 的增大。
 - 当模型不变时，适当增加词表会提高编码率及模型性能，但当词表过大时，会导致训练不充分，反而降低模型性能
@@ -21,13 +31,13 @@ source: https://zhuanlan.zhihu.com/p/710813718
 
 CR = D/H \\ 下表展示了部分 BPE 分词的词表大小与不同语言的压缩率的关系。
 
-![](asset/img_076695ff1da8.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_076695ff1da8.jpg)
 
 关于词表和压缩率的关系，可以拟合成如下公式： f(V)=a \log ^2(V)+b \log (V)+c\\
 
 其中整体误差较小的系数组合是  =0.0064,  =−0.1581,  =1.2047 。
 
-![](asset/img_8066b06bd85b.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_8066b06bd85b.jpg)
 
 需要说明的是：
 
@@ -61,11 +71,11 @@ $当模型参数量为 N ，token 数为 D 时，总的计算 FLOPs 可以估算
 
 $共设置了 7 组模型， N_{\mathrm{nv}} 从 33M 到 1.13B。每组中词表大小从 4K 到 96K，研究在相同 FLOPs 下的结果。$
 
-![](asset/img_f6b46c0f2392.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_f6b46c0f2392.jpg)
 
 $为每个 FLOPs 选择最小 \mathcal{L}_u 的数据点，该点是对 （N_{\mathrm{nv}}， N_{\mathrm{v}}， H） 的计算最优分配，根据scaling law 的结论，可以假设 N_{\mathrm{nv}}=k_1 C^{\alpha_1}, N_{\mathrm{v}}=k_2 C^{\alpha_2} ,  H=k_3 C^{\alpha_3} 进行拟合$
 
-![](asset/img_e775d25711fd.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_e775d25711fd.jpg)
 
 $拟合后的结果显示： N_{\mathrm{nv}}=0.08 * C^{0.50} ， N_{\mathrm{v}}=0.20 * C^{0.42} ，H=6.42 * C^{0.50}  据此可以得到以下几点结论：$
 
@@ -79,7 +89,7 @@ $- N_{\mathrm{v}} 的缩放速度慢于 N_{\mathrm{nv}} $
 
 $$对（1）式求导，可得 \begin{aligned} \frac{\partial C}{\partial V}= & \frac{\partial}{\partial V}\left[6\left(N_{n v}+d V\right) H(f(V))\right] \\ = & \frac{\partial}{\partial V}\left[6\left(N_{n v}+d V\right) H\left(a(\log (V))^2+b \log (V)+c\right)\right] \\ = & 6 H\left[\left(N_{n v}+d V\right) \frac{d}{d V}\left(a(\log (V))^2+b \log (V)+c\right)\right. \\ & \left.\quad+\left(a(\log (V))^2+b \log (V)+c\right) \frac{d}{d V}\left(N_{n v}+d V\right)\right] \\ & =6 H\left[\left(N_{n v}+V d\right) \frac{2 a \log (V)+b}{V}+\left(a(\log (V))^2+b \log (V)+c\right) d\right] \end{aligned}\\ 那么 \frac{\partial C}{\partial V}=0 时，C 取最小值，使用数值搜索找到最优值点如下：$$
 
-![](asset/img_e71a12866afc.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_e71a12866afc.jpg)
 
 值得注意的是，在最佳词汇表大小 时，该模型在给定预算下花费了最大数量的训练字符。这恰恰说明，在最优词表的情况下，相同的预算可以训练更多数据。
 
@@ -117,21 +127,21 @@ $也可以对（2）式进行最优化变换，即 \begin{gathered} \min _{a_1, 
 
 最终得到的是\mathcal{L}_u与 V 的关系曲线如下：
 
-![](asset/img_838fb14919c0.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_838fb14919c0.jpg)
 
 #### 2.4 三种方法的比较与当前模型比较
 
 以上的三种方法得到了类似的结论，即最优词表大小与计算预算相关，且是可以计算的。以下是三种方法计算得到的最优词表大小值：
 
-![](asset/img_39edc7058e1e.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_39edc7058e1e.jpg)
 
 根据这一结论可以反观当前的主流开源模型，除了Gemma2-9B之外，所有模型分配的词表参数都小于预测的最佳词表参数。
 
-![](asset/img_b70c613cc946.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_b70c613cc946.jpg)
 
 最后研究最佳词表大小如何随着不同数量的训练数据而变化的趋势。只改变数据量，但保持非词表参数固定。词表大小的选择有8⁢K、10⁢K、16⁢K、24⁢K、32⁢K 和48⁢K。以 N_{nv}=302⁢M 为例，当可用数据是瓶颈时，最佳词表大小根据经验减小（防止过度拟合）。相反，当训练大量数据时，最优词表大小增加。
 
-![](asset/img_34ee742b5e9e.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_34ee742b5e9e.jpg)
 
 左图说明了所有词表选择中的最佳词表大小如何随着训练数据而变化。非词表参数是固定的N_{nv}=302⁢M。左图中的每个单元格表示给定一定FLOP预算的损失，以进行公平评估，颜色强度指示损失值。带标记的黑线表示每个FLOPs 预算的最佳词汇量，它基本上随着训练数据数量的增加而增加。右图为给定一定的 FLOPs 预算，不同词表大小的训练 token 数略有不同。为了保持 FLOPs 的一致性，具有较大词表大小的模型在较少的 tokens 上进行训练。
 

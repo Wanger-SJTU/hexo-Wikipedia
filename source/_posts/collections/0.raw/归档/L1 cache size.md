@@ -1,3 +1,16 @@
+---
+title: L1 cache size
+date: "2026-04-11 21:40:17"
+updated: "2026-04-11 21:40:17"
+layout: post
+permalink: /collections/0.raw/归档/L1-cache-size/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 #microarch
 
 L1 data缓存为什么一般只有32K或者64K？为什么不能更大一点？更大不是更好吗？

@@ -1,9 +1,19 @@
 ---
-title: "有哪些朴实无华的c++库？"
-date: 2026-04-17
-tags: [知乎]
-source: https://www.zhihu.com/question/666819229/answer/13711170384
+title: 有哪些朴实无华的c++库？
+date: "2026-04-17 00:00:00"
+updated: "2026-04-17 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/有哪些朴实无华的c-库/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://www.zhihu.com/question/666819229/answer/13711170384
 ---
+
 
 631 人赞同了该回答
 
@@ -64,7 +74,7 @@ source: https://www.zhihu.com/question/666819229/answer/13711170384
 **作者：程序喵
 CPP学习网站：[程序喵/cpp-learning](https://link.zhihu.com/?target=https%3A//gitee.com/chengxumiaodaren/cpp-learning)这个网站也收录了各个方向的C++库，强烈推荐
 
-![](asset/img_0aea8ee23eff.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_0aea8ee23eff.jpg)
 
 网站地址：
 

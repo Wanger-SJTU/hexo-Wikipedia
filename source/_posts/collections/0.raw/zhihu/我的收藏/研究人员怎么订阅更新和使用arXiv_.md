@@ -1,10 +1,19 @@
 ---
-title: "研究人员怎么订阅更新和使用arXiv?"
-date: 2023-04-01
-tags: [知乎]
-source: https://www.zhihu.com/question/538284979/answer/2963471337
-
+title: 研究人员怎么订阅更新和使用arXiv?
+date: "2023-04-01 00:00:00"
+updated: "2023-04-01 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/研究人员怎么订阅更新和使用arXiv_/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://www.zhihu.com/question/538284979/answer/2963471337
 ---
+
 
 今天推荐个别人的工具，[BriefGPT](https://link.zhihu.com/?target=https%3A//briefgpt.xyz/)
 [BriefGPT](https://link.zhihu.com/?target=https%3A//briefgpt.xyz/)昨天我们自己总结了4.5w篇的顶会论文，但是受限于我们的开发能力，可能需要几天才能上线，然后今天群友推荐了一个其他的工具，因此我也推荐个大家（虽然可能是竞品，但我目前也不是一个藏私的人，还是比较客观的推荐给大家）。

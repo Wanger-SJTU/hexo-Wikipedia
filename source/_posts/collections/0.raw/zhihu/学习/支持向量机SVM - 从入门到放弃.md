@@ -1,9 +1,19 @@
 ---
-title: "支持向量机SVM - 从入门到放弃"
-date: 2017-11-01
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/30596284
+title: 支持向量机SVM - 从入门到放弃
+date: "2017-11-01 00:00:00"
+updated: "2017-11-01 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/学习/支持向量机SVM-从入门到放弃/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/30596284
 ---
+
 
 支持向量机全称**S**upport **V**ector **M**achine，简称SVM，其公式推导是广大机器学习面试中经典的问题之一。用纸笔推算SVM的对偶性(Duality)更是面试官们喜闻乐见的测试，已近成为了机器学习八股文。而很多机器学习的实践者也非常喜欢SVM，更是以擅长推公式而感到“自豪”。那今天就让我们来谈谈SVM，分享一些我的看法。
 
@@ -13,7 +23,7 @@ source: https://zhuanlan.zhihu.com/p/30596284
 
 **1. 模型稳定性低，输入的微小变化会使得模型难以收敛**。以Python为例，Sklearn中的Support Vector Classifier是基于C++版本的Libsvm。可调的参数包括C，取值范围为0-1(在sklearn中)，决定了分类器对于误分类的容忍度，C的取值越大，容忍度越低。当C=1时，分类器不允许误分类的存在。如果SVM当下配合的核函数是非线性函数，如RBF，那么在高维空间的确可以找到完全没有误分的方法。**但如果用线性核搭配C=1或者较大的C，那么有很大的概率分类器不会收敛，会一直运行下去**。如下图所示，C的大小代表了对误分类的容忍度，从左至右C越来越小，容忍度越来大。当然，图中的C的取值并不是0-1，这个和具体的代码有关。
 
-![](asset/img_e4ab5b86a1ef.jpg)
+![](/images/collections/0.raw/zhihu/%25E5%25AD%25A6%25E4%25B9%25A0/asset/img_e4ab5b86a1ef.jpg)
 
 按照道理来说较大的C也可能收敛，但这个优化算法有关，如果你的数据恰好各个维度间差别很大，那么会因为各种原因在优化中陷入死循环无法跳脱，此处暂时不表。而对于新手来说，很多时候对于参数其实理解有限，很容易用网格搜索(GridSearch)扔进去一堆参数，那么如果碰到上面这个情况，是否能收敛就看命了。而因为越来越多的工具包封装程度很高，大部分人不会设置最大运行次数，所以会陷入死循环。如果你的数据集不大且长时间SVM无法收敛，可以尝试：
 

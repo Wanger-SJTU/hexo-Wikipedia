@@ -1,9 +1,19 @@
 ---
 title: "[笔记]NVSHMEM IBRC实现"
-date: 2025-12-14
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/1983593168772554974
+date: "2025-12-14 00:00:00"
+updated: "2025-12-14 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/体系结构/[笔记]NVSHMEM-IBRC实现/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/1983593168772554974
 ---
+
 
 [上一份笔记](https://zhuanlan.zhihu.com/p/1982525738998588869)记录了RDMA的基础知识，继续学习下去，就到了NVSHMEM的具体实现。这篇笔记，我们先学习最常用的NVSHMEM IBRC实现。默认情况下，[Triton-distributed](https://link.zhihu.com/?target=https%3A//github.com/ByteDance-Seed/Triton-distributed)用的就是IBRC（因为NVSHMEM官方的bitcode lib不带IBGDA支持，只有source code编译才支持）。
 

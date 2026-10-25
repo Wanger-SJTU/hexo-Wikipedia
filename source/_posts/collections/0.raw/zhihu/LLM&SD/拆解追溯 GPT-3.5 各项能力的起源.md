@@ -1,9 +1,19 @@
 ---
-title: "拆解追溯 GPT-3.5 各项能力的起源"
-date: 2023-02-18
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/607522540
+title: 拆解追溯 GPT-3.5 各项能力的起源
+date: "2023-02-18 00:00:00"
+updated: "2023-02-18 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/LLM-SD/拆解追溯-GPT-3.5-各项能力的起源/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/607522540
 ---
+
 
 **符尧**, [yao.fu@ed.ac.uk](mailto:yao.fu@ed.ac.uk)
 
@@ -66,7 +76,7 @@ source: https://zhuanlan.zhihu.com/p/607522540
 
 从最初的 GPT-3 开始，为了展示 OpenAI 是如何发展到ChatGPT的，我们看一下 GPT-3.5 的进化树：
 
-![](asset/img_c2599959e806.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_c2599959e806.jpg)
 
 在 2020 年 7 月**，OpenAI 发布了模型索引为的 `davinci` 的初代 GPT-3 论文，从此它就开始不断进化。在 **2021 年 7 月**，Codex 的论文发布，其中初始的 Codex 是根据（可能是内部的）120 亿参数的 GPT-3 变体进行微调的。后来这个 120 亿参数的模型演变成 OpenAI API 中的`code-cushman-001`。在 **2022 年 3 月**，OpenAI 发布了指令微调 (instruction tuning) 的论文，其监督微调 (supervised instruction tuning) 的部分对应了`davinci-instruct-beta`和`text-davinci-001`。在 **2022 年 4 月至 7 月的**，OpenAI 开始对`code-davinci-002`模型进行 Beta 测试，也称其为 Codex。然后`code-davinci-002`、`text-davinci-003`和`ChatGPT` 都是从`code-davinci-002`进行指令微调得到的。详细信息请参阅 OpenAI的模型索引文档。
 
@@ -184,7 +194,7 @@ source: https://zhuanlan.zhihu.com/p/607522540
 
 到目前为止，我们已经仔细检查了沿着进化树出现的所有能力，下表总结了演化路径：
 
-![](asset/img_75f9566c3ae0.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_75f9566c3ae0.jpg)
 
 我们可以得出结论：
 

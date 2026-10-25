@@ -1,10 +1,19 @@
 ---
-title: "在编译器指令重排做得比较好的情况下, CPU乱序执行的意义有多大?"
-date: 2019-08-07
-tags: [知乎]
-source: https://www.zhihu.com/question/339022053/answer/778405223
-
+title: 在编译器指令重排做得比较好的情况下, CPU乱序执行的意义有多大?
+date: "2019-08-07 00:00:00"
+updated: "2019-08-07 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/走向cs/在编译器指令重排做得比较好的情况下,-CPU乱序执行的意义有多大_/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://www.zhihu.com/question/339022053/answer/778405223
 ---
+
 
 一般寄存器依赖编译器可以很好的分析，但是由于一般指令集中的寄存器数量有限，所以会有WAW这样的依赖，乱序执行cpu通过重命名可以解决。
 

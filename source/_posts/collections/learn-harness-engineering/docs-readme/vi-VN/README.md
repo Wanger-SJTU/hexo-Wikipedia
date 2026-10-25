@@ -1,3 +1,16 @@
+---
+title: Learn Harness Engineering
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs-readme/vi-VN/README/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 <p align="center">
   <a href="../../README.md"><img alt="English" src="https://img.shields.io/badge/EN-English-blue?style=flat-square"></a>
   <a href="../zh-CN/README.md"><img alt="简体中文" src="https://img.shields.io/badge/ZH-简体中文-red?style=flat-square"></a>
@@ -47,17 +60,17 @@ Learn Harness Engineering là một khóa học dành riêng cho kỹ thuật li
 ### Trang chủ khóa học
 > Tổng quan khóa học toàn diện và giới thiệu về các triết lý cốt lõi, cung cấp lộ trình rõ ràng để bắt đầu.
 
-![Xem trước trang chủ khóa học](../../docs/public/screenshots/readme/zh-home.png)
+![Xem trước trang chủ khóa học](/images/collections/learn-harness-engineering/docs/public/screenshots/readme/zh-home.png)
 
 ### Bài giảng nhập môn
 > Đi sâu vào các vấn đề thực tế và dự án thực hành (như Dự án 01) mang đến trải nghiệm học tập nhập môn.
 
-![Xem trước bài giảng khóa học](../../docs/public/screenshots/readme/zh-lecture-01.png)
+![Xem trước bài giảng khóa học](/images/collections/learn-harness-engineering/docs/public/screenshots/readme/zh-lecture-01.png)
 
 ### Thư viện tài nguyên sẵn sàng sử dụng
 > Các mẫu và cấu hình tham khảo được thiết kế để giải quyết các vấn đề phổ biến trong phát triển agent AI nhiều lượt, chẳng hạn như mất ngữ cảnh và hoàn thành tác vụ quá sớm.
 
-![Xem trước thư viện tài nguyên](../../docs/public/screenshots/readme/zh-resources.png)
+![Xem trước thư viện tài nguyên](/images/collections/learn-harness-engineering/docs/public/screenshots/readme/zh-resources.png)
 
 ## Sách giáo trình PDF
 

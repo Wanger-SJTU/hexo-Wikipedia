@@ -1,9 +1,19 @@
 ---
-title: "神经网络中的label smooth为什么没有火？"
-date: 2026-04-15
-tags: [知乎]
-source: https://www.zhihu.com/question/65339831/answer/568001901
+title: 神经网络中的label smooth为什么没有火？
+date: "2026-04-15 00:00:00"
+updated: "2026-04-15 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/机器学习/神经网络中的label-smooth为什么没有火/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://www.zhihu.com/question/65339831/answer/568001901
 ---
+
 
 推荐一篇效果强文：
 

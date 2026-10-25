@@ -1,9 +1,19 @@
 ---
-title: "(2 条消息) 有哪些值得学习的国内 c++ 开源项目？"
-date: 2026-04-17
-tags: [知乎]
-source: https://www.zhihu.com/question/332778359/answer/3519201011
+title: (2 条消息) 有哪些值得学习的国内 c++ 开源项目？
+date: "2026-04-17 00:00:00"
+updated: "2026-04-17 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/有哪些值得学习的国内-c-开源项目/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://www.zhihu.com/question/332778359/answer/3519201011
 ---
+
 
 92 人赞同了该回答
 

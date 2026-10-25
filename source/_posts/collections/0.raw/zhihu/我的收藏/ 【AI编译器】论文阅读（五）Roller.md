@@ -1,9 +1,19 @@
 ---
-title: "(1 条消息) 【AI编译器】论文阅读（五）Roller"
-date: 2023-07-18
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/644383797
+title: (1 条消息) 【AI编译器】论文阅读（五）Roller
+date: "2023-07-18 00:00:00"
+updated: "2023-07-18 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/【AI编译器】论文阅读(五)Roller/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/644383797
 ---
+
 
 #### 基本信息
 
@@ -48,7 +58,7 @@ Roller的观察：
 
 下图展示了Roller的系统概述：
 
-![](asset/img_422165b9342e.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_422165b9342e.jpg)
 
 **
 
@@ -56,13 +66,13 @@ Roller从张量表达式中提取张量的形状，并利用硬件的相关规�
 
 rTile的数据结构如下：
 
-![](asset/img_5a6bc2bc6e69.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_5a6bc2bc6e69.jpg)
 
 rTile必须和给定张量表达式中的张量形状和底层硬件特性对齐。（*该部分可以配合CUDA学习笔记来看）*
 
 - 与硬件的执行单元对齐，如NVIDIA中的wrap（32）、TensorCore（16x16x16）
 - 与内存事务对齐，如图5.a所示，避免事务读取数据的浪费
-![](asset/img_c14500b8e5c2.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_c14500b8e5c2.jpg)
 
 - 与内存存储体对齐，如图5.b所示，避免存储体冲突。rTiles通过padding数据避免低效访问。
 - 与张量形状对齐
@@ -72,7 +82,7 @@ Roller可以通过增加rTile的大小来获取更多的数据重用机会。Rol
 
 下图显示了矩阵乘算子rTiles的分层。可以从c中看到L0，L1和L2层的数据移动。
 
-![](asset/img_a06ad3135594.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_a06ad3135594.jpg)
 
 给定一个数据处理管道，其rProgram的优化目标是最大化管道的吞吐量，该目标可以转换为：
 
@@ -82,7 +92,7 @@ Roller可以通过增加rTile的大小来获取更多的数据重用机会。Rol
 Roller首先使用scale up以满足前两点，之后利用scale out利用多核并行性。
 
 - scale up：Roller从内存结构由顶至下构建不同层次的rTile尺寸，Roller首先进行rTile的初始化，之后迭代扩大rTile的大小，最大程度提升数据重用得分。
-![](asset/img_f071ae88b1e4.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_f071ae88b1e4.jpg)
 
 - scale out：Roller在最底层的内存尺寸上构造单一单元执行的rProgram，并通过将每层的rTile平均分配来将rProgram复制到其他单元。一般会在reduce的轴上分配单元。
 Roller尝试沿着具有最小数据重用得分的轴上收缩rTiles以实现足够的并行度。

@@ -1,9 +1,19 @@
 ---
-title: "MoE的top-p routing"
-date: 2024-07-15
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/708995369
+title: MoE的top-p routing
+date: "2024-07-15 00:00:00"
+updated: "2024-07-15 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/LLM-SD/MoE的top-p-routing/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/708995369
 ---
+
 
 【往期文章】
 [MoE模型的前世今生](https://zhuanlan.zhihu.com/p/694653556)
@@ -70,7 +80,7 @@ $t=\underset{k\in\{1...,N\}}{argmin}\sum_{jg_i(\mathbf{x})=\begin{cases}P_i&e_i\
 
 top-k routing和top-p routing的示意图如下：
 
-![](asset/img_1316ddb8cbbb.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_1316ddb8cbbb.jpg)
 
 ### 2.Loss
 
@@ -134,7 +144,7 @@ $Loss=Loss_{lm}+\alpha Loss_b+\beta Loss_d \\$
 - batch size = 2048
 上面5个模型的在下游任务的对比如下
 
-![](asset/img_28b68fdbde30.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_28b68fdbde30.jpg)
 
 top-p MoE在下游任务上的平均激活专家数为1.76。
 
@@ -146,7 +156,7 @@ top-p MoE以≤top-2 MoE模型90%的激活参数量，获得了比top-2 MoE提�
 
 不同的阈值p（0.1~0.7）下的模型效果
 
-![](asset/img_767a3afc07a8.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_767a3afc07a8.jpg)
 
 当p值特别低比如0.1或者0.2时，效果比较差，而p≥0.3之后基本就效果保持在比较好的水平了。
 
@@ -154,7 +164,7 @@ top-p MoE以≤top-2 MoE模型90%的激活参数量，获得了比top-2 MoE提�
 
 top-p MoE在训练一开始激活的专家数会比较多，而随着训练进行，激活专家数逐渐下降：
 
-![](asset/img_2759780718dd.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_2759780718dd.jpg)
 
 可以看到在60B以后就逐渐低于2了，并且从图上看还有下降趋势。这里实验只做了100B，如果训了1T或者10T，应该会有更大的收益。
 
@@ -164,7 +174,7 @@ BBH（BIG-Bench Hard），包括了23个比较有挑战性的BIG-Bench任务。
 
 从下图可以看到，相比其他任务，模型在BBH任务会激活更多的专家
 
-![](asset/img_51816848b0e5.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_51816848b0e5.jpg)
 
 并且相对于其他下游任务，top-p MoE在BBH上的提升也是最多的。
 
@@ -176,7 +186,7 @@ top-p MoE以更少的激活参数量在下游任务取得更好的效果，这�
 
 下图给出模型不同MoE层的平均激活专家数量
 
-![](asset/img_47658c78f08f.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_47658c78f08f.jpg)
 
 这样的现象和overthinking有些相似。
 

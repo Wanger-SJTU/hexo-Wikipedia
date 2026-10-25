@@ -1,9 +1,19 @@
 ---
-title: "(2 条消息) 从DeepSeek-R1中了解强化学习的策略优化，从PPO, TRPO到GRPO"
-date: 2025-02-10
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/20858086974
+title: (2 条消息) 从DeepSeek-R1中了解强化学习的策略优化，从PPO, TRPO到GRPO
+date: "2025-02-10 00:00:00"
+updated: "2025-02-10 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/从DeepSeek-R1中了解强化学习的策略优化,从PPO,-TRPO到GRPO/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/20858086974
 ---
+
 
 在本次模型发布中，DeepSeek共发布了三个系列的模型
 
@@ -23,11 +33,11 @@ source: https://zhuanlan.zhihu.com/p/20858086974
 
 其实在ChatGPT最初开源的一个训练流程把PPO policy展示了出来，在第三个环节，如下图：
 
-![](asset/img_4267edd6210e.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_4267edd6210e.jpg)
 
 PPO的核心公式如下所示，
 
-![](asset/img_993ed58b605a.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_993ed58b605a.jpg)
 
 **
 
@@ -37,14 +47,14 @@ PPO的核心公式如下所示，
 
 (1) 重要性采样（Importance Sampling），它的目标是**复用旧策略收集的数据，提高样本效率，具体的方法则是通过新旧策略的概率比修正旧数据的权重：
 
-![](asset/img_59a0fa5d4c09.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_59a0fa5d4c09.jpg)
 
 - 其中 θold 是旧策略的参数，θ 是新策略的参数。
 **(2) 裁剪机制（Clipping）**
 
 - **数学目标**：**限制新旧策略的概率比 rt(θ) 的变化范围，防止更新幅度过大。**
 - **目标函数**
-![](asset/img_536a7e098caf.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_536a7e098caf.jpg)
 
 - At 是优势函数（Advantage），衡量当前动作相对于平均水平的优势。
 - ϵ 是超参数（如0.2），控制裁剪范围
@@ -54,25 +64,25 @@ PPO的核心公式如下所示，
 
 [](https://link.zhihu.com/?target=https%3A//blog.csdn.net/v_JULY_v/article/details/128579457)
 
-![](asset/img_cfa7c5fd247e.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_cfa7c5fd247e.jpg)
 
-图1![](asset/img_b9cdb71dc4f7.jpg)
+图1![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_b9cdb71dc4f7.jpg)
 
-图2![](asset/img_53c62fe98c04.jpg)
+图2![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_53c62fe98c04.jpg)
 
-图3![](asset/img_61bf76cec1e8.jpg)
+图3![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_61bf76cec1e8.jpg)
 
-图4![](asset/img_54bf412d9528.jpg)
+图4![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_54bf412d9528.jpg)
 
-图5![](asset/img_f534bd5da696.jpg)
+图5![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_f534bd5da696.jpg)
 
-图6![](asset/img_9a12a999271d.jpg)
+图6![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_9a12a999271d.jpg)
 
 图7**
 
-![](asset/img_46f38ebbec9c.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_46f38ebbec9c.jpg)
 
-图8![](asset/img_0b327630cf32.jpg)
+图8![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_0b327630cf32.jpg)
 
 图9
 
@@ -84,7 +94,7 @@ PPO的核心公式如下所示，
 
 **下面这张图片直观地感受下裁剪函数的作用，其实就是不要低于下限，不要高于上限。**
 
-![](asset/img_d9c2cfa9e0ef.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_d9c2cfa9e0ef.jpg)
 
 #### **1.3 PPO的关键优势**
 
@@ -107,7 +117,7 @@ PPO的核心公式如下所示，
 #### 2.1 TRPO**核心目标**
 
 - **数学目标**：在最大化期望回报的同时，约束新旧策略的差异（通过KL散度）。
-![](asset/img_4be19f0a4a0f.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_4be19f0a4a0f.jpg)
 
 #### 2.2 TRPO的训练流程
 
@@ -133,19 +143,19 @@ GRPO 是一种在线学习算法（online learning algorithm），这意味着�
 
 GRPO（Generalized Reinforcement Learning with Policy Optimization）是一种改进的策略优化方法**，旨在**提高强化学习的稳定性**，减少近端策略优化（PPO）中存在的策略崩溃（Policy Collapse）问题，同时保持高效的训练性能。**先贴一个GRPO的改进点脑图：**
 
-![](asset/img_2352f29329bc.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_2352f29329bc.jpg)
 
 **
 
 GRPO 主要在 PPO** 、 TRPO基础上做了下面的改进：
 
-![](asset/img_792bc42e599a.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_792bc42e599a.jpg)
 
 **（1）无需价值函数模型**
 
 GRPO去除了PPO中使用的单独的价值函数模型，简化了训练过程，降低了内存使用，提高了效率。**也就是说PPO有策略模型、参考模型、奖励模型、价值函数模型等，GRPO则没有价值函数模型（**Critic模型**），通过群体计算来估计基线。GRPO**通过去除价值函数模型，并从群体分数估计基线，而不是要求个体反馈，从而提高强化学习（RL）的效率。**大家可以对比下面这张PPO网络的图，里卖弄很明显有个Critic的环节，GRPO其实是去掉了这个环节。**
 
-![](asset/img_d8b3e2e023f0.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_d8b3e2e023f0.jpg)
 
 PPO网络**（2）基于组的优势计算**
 
@@ -174,7 +184,7 @@ PPO网络**（2）基于组的优势计算**
 - **团队混乱**：因为缺乏整体协调，最终的比赛结果不佳。
 传统 PPO（Proximal Policy Optimization）的问题,如果我们用**PPO（近端策略优化）**来训练，每个球员都会独立优化自己的回报（Reward）：
 
-![](asset/img_c17e461b7e8b.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_c17e461b7e8b.jpg)
 
 其中：
 
@@ -192,7 +202,7 @@ GRPO 认为：**个体的贡献应该相对整个团队来衡量，而不是单�
 
 除了球员自己的得分外，还要计算整个球队的总表现。例如：
 
-![](asset/img_e84335d965de.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_e84335d965de.jpg)
 
 - **比赛胜负**：获胜奖励+1，失败惩罚-1。
 - **团队配合评分**：基于传球、掩护等行为进行奖励。
@@ -201,17 +211,17 @@ GRPO 认为：**个体的贡献应该相对整个团队来衡量，而不是单�
 
 在 GRPO 中，每个球员的优势要**相对团队平均水平**进行衡量：
 
-![](asset/img_0e206fb01017.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_0e206fb01017.jpg)
 
-![](asset/img_a5e1e1a02381.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_a5e1e1a02381.jpg)
 
 **3️⃣ 用 GRPO 的目标函数优化策略**
 
-![](asset/img_c11a04949f87.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_c11a04949f87.jpg)
 
 **区别**：相比传统 PPO，这里的优势函数 A_{i}^{group} ​ 不是个体优势，而是**相对团队的优势**
 
-![](asset/img_db327a032e1f.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_db327a032e1f.jpg)
 
 **GRPO 让 AI 球员在学习过程中更关注团队协作，而不仅仅是个体得分，从而提高整体策略优化的稳定性和有效性。**
 
@@ -225,7 +235,7 @@ GRPO（Group Relative Policy Optimization，群体相对策略优化）算法，
 
 根据公式计算每个输出的优势值
 
-![](asset/img_5ab0ad556247.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_5ab0ad556247.jpg)
 
 ​其中，ri​ 是第 i 个输出的奖励得分，由奖励模型计算。分子是当前输出奖励与组内平均奖励的差值，衡量相对优势；分母是组内奖励的标准差，用于标准化处理，消除不同问题间的量纲差异。
 
@@ -233,7 +243,7 @@ GRPO（Group Relative Policy Optimization，群体相对策略优化）算法，
 
 (3) 目标函数优化（Objective Function Optimization）**
 
-![](asset/img_bec5ab890d85.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_bec5ab890d85.jpg)
 
 根据公式优化策略模型 
 
@@ -241,7 +251,7 @@ GRPO（Group Relative Policy Optimization，群体相对策略优化）算法，
 
 其中， \pi_{\theta}ref 是参考策略，通常为初始基座模型。重要性采样比衡量新旧策略对同一动作的概率差异，clip**操作限制策略更新的幅度（如 ϵ=0.2），防止过度优化，KL散度惩罚项约束新策略与参考策略的差异，防止过度偏离基座模型的原始能力。其中这个公式可以进一度拆解成下面的计算过程。上面的公式看着很复杂，**其实如果从不严谨的角度去分析，你只要关注下面这个计算比率策略 **r_{t} **，就可以了，这个是公式核心中的核心，至于clip和后面的KL散度约束其实还是一些计算上的优化而已。**
 
-![](asset/img_44b7d3be399f.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_44b7d3be399f.jpg)
 
 **
 

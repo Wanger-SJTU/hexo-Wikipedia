@@ -1,9 +1,19 @@
 ---
-title: "时间的朋友：ISCAS 2026韬定律-会议纪要"
-date: 2026-05-28
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/2043391161386152094
+title: 时间的朋友：ISCAS 2026韬定律-会议纪要
+date: "2026-05-28 00:00:00"
+updated: "2026-05-28 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/体系结构/时间的朋友-ISCAS-2026韬定律-会议纪要/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/2043391161386152094
 ---
+
 
 从摩尔定律到韬定律
 **主持人：**各位老师、各位同仁，大家好。

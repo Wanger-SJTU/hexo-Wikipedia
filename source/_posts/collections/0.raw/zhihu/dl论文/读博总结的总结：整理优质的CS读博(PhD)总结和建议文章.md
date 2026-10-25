@@ -1,10 +1,19 @@
 ---
-title: "读博总结的总结：整理优质的CS读博(PhD)总结和建议文章"
-date: 2021-01-26
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/347223193
-
+title: 读博总结的总结：整理优质的CS读博(PhD)总结和建议文章
+date: "2021-01-26 00:00:00"
+updated: "2021-01-26 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/dl论文/读博总结的总结-整理优质的CS读博(PhD)总结和建议文章/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/347223193
 ---
+
 
 我时常给同学们推荐各种我看过的优质读博总结与建议文章。大佬学弟 [@whoami](https://www.zhihu.com/people/f32345e23b3946a69c429e5dcd0f3d17) 表示说这么多文章，记不过来了，一直催我整理一下。另外也是看 [@Showthem](https://www.zhihu.com/people/f3b37f2564b4daa4abb74baf9eec367a) 大佬之前的总结说看到的读博经历分享寥寥无几，其实我感觉还是挺不少的。今天终于有了些空，整理一下我看过的优质文章。排名不分先后，想到啥写啥。
 

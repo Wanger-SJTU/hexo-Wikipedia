@@ -1,3 +1,16 @@
+---
+title: Erweitertes Repo-Template
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/de/resources/openai-advanced/repo-template/index/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # Erweitertes Repo-Template
 
 Kopieren Sie diesen Starter in ein echtes Repository, wenn Sie eine OpenAI-Stil

@@ -1,9 +1,19 @@
 ---
-title: "(1 条消息) 适合0基础或者刚刚起步的孩子用的英语启蒙资源（绘本、音频、app）等有哪些？（最好亲身实践过）？"
-date: 2026-04-15
-tags: [知乎]
-source: https://www.zhihu.com/question/54564426/answer/632107582
+title: (1 条消息) 适合0基础或者刚刚起步的孩子用的英语启蒙资源（绘本、音频、app）等有哪些？（最好亲身实践过）？
+date: "2026-04-15 00:00:00"
+updated: "2026-04-15 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/适合0基础或者刚刚起步的孩子用的英语启蒙资源(绘本、音频、app)等有哪些-(最好亲身实践过)/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://www.zhihu.com/question/54564426/answer/632107582
 ---
+
 
 收录于 · 幼儿早教与英语启蒙
 
@@ -11,15 +21,15 @@ source: https://www.zhihu.com/question/54564426/answer/632107582
 
 我女儿朵朵是16年11月出生的，从**4个月**开始亲子阅读，6个月开始英语启蒙。现在她4岁4个月，家里除去已经处理掉的，还有4000多本英文绘本和分级读物。她在3岁多时就掌握自然拼读，自主阅读英语母语国家3-6岁孩子的绘本，日常口语交流完全无障碍，经鲸鱼、VIPKID等多家机构测试，英语水平都达到美国小学一年级学生的水平。 
 
-![](asset/img_c5c9f18e9e6d.jpg)![](asset/img_ff366b58fe21.webp)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_c5c9f18e9e6d.jpg)![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_ff366b58fe21.webp)
 
-![](asset/img_80343874fec5.jpg)![](asset/img_586fe086ea16.webp)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_80343874fec5.jpg)![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_586fe086ea16.webp)
 
 4岁时写的西班牙语和汉字的数字把朵朵的英语启蒙分为两个阶段来看的话，0-3岁属于启蒙阶段，3岁以后就是​进阶学习阶段了。
 
 我把我们的英语启蒙进度整理成了表格。因为孩子有个体差异，所以这并不是一份标准，充其量只是个**参考**。
 
-![](asset/img_0f85d0bf11e9.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_0f85d0bf11e9.jpg)
 
 我们使用的家庭启蒙材料是：
 
@@ -39,15 +49,15 @@ source: https://www.zhihu.com/question/54564426/answer/632107582
 
 ###  英文绘本 **
 
-![](asset/img_37ee924e0c1d.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_37ee924e0c1d.jpg)
 
 为了写这篇文章，我特地让阿姨把朵朵所有的书从书橱里搬出来数了一下，除了小时候读完已经处理掉的，她的中英文书加起来竟然有4**000多本**！我仿佛看到了一大堆白花花的银子~​（注：这句话写于两年前）
 
-![](asset/img_fd1c02e89fca.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_fd1c02e89fca.jpg)
 
-▲朵朵的一部分书![](asset/img_8d0b11ea7cc3.jpg)
+▲朵朵的一部分书![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_8d0b11ea7cc3.jpg)
 
-![](asset/img_bfd0bc0a3dfd.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_bfd0bc0a3dfd.jpg)
 
 朵朵在刚启蒙时用到的英文书分为以下这几类，而更大的孩子还会用到**自然拼读教材**。有了一定阅读基础后，还会用到**桥梁书、章节书**等，本文暂不涉及。
 
@@ -69,15 +79,15 @@ source: https://www.zhihu.com/question/54564426/answer/632107582
 
 但是它的语言艺术性，和名家作品相比会欠缺一点。当然，错误或者不地道之处是没有的，可以放心使用。
 
-![](asset/img_54f626bc3f93.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_54f626bc3f93.jpg)
 
-![](asset/img_0d0f07eb6a6c.gif)![](asset/img_3b05cc20649e.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_0d0f07eb6a6c.gif)![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_3b05cc20649e.jpg)
 
 **
 
 (2)果酱英语**
 
-![](asset/img_f7fa16481728.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_f7fa16481728.jpg)
 
 ▲果酱英语这套是朵朵一岁半时买的，相比甜心更简单一些，并且30本书的难度分三个档次。
 
@@ -91,7 +101,7 @@ source: https://www.zhihu.com/question/54564426/answer/632107582
 
 (3)卡尔爷爷棕熊4册套装**
 
-![](asset/img_6e5f8cf8c508.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_6e5f8cf8c508.jpg)
 
 大家耳熟能详的棕熊四册，可以说是Eric Carle**最著名的绘本**。
 
@@ -99,21 +109,21 @@ source: https://www.zhihu.com/question/54564426/answer/632107582
 
 全书从棕色的熊开始，**介绍了不同颜色的不同动物**，绚烂的色彩可以加深小朋友对颜色和动物的认识。
 
-![](asset/img_b5ba944b227f.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_b5ba944b227f.jpg)
 
 绘本的最后几页汇总了书中出现的所有动物和人物，可以让小朋友更直观地看到这些**动物和人物的色彩与特点**。
 
-![](asset/img_2401b8233338.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_2401b8233338.jpg)
 
 **
 
 (4)学乐出版社 低幼启蒙6册**
 
-![](asset/img_e3ada35a31bb.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_e3ada35a31bb.jpg)
 
 其实适合零基础孩子的书非常多，但是能点读的并不多。在毛毛虫点读的书当中，这套学乐出版社的书也是相当出色的，尤其是还有男孩纸最爱的汽车书。
 
-![](asset/img_cc90892975cb.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_cc90892975cb.jpg)
 
 还有很多好书是非点读的，比如Karen Katz的Where is Baby's Belly Button系列套装书，Pat the Bunny三件套，My Mum, My Dad, I am a Bunny, Goodnight, Moon, Dear Zoo等等……建议大家买正版的，正版一般都是纸板书，质量好耐撕，能读很久。
 
@@ -131,13 +141,13 @@ source: https://www.zhihu.com/question/54564426/answer/632107582
 
 这套书是Usborne出版社出品，支持毛毛虫点读笔。它画风精美，点读音效丰富，还配有**动画+外教视频课程**。对英语再不感兴趣的孩子，都会被这套好书带入门。
 
-![](asset/img_bee80b39f6f2.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_bee80b39f6f2.jpg)
 
-▲彩虹兔童谣（毛毛虫点读）![](asset/img_944dc6f4692d.gif)![](asset/img_64e9cd0dd75b.jpg)
+▲彩虹兔童谣（毛毛虫点读）![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_944dc6f4692d.gif)![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_64e9cd0dd75b.jpg)
 
-![](asset/img_22add4db8a4e.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_22add4db8a4e.jpg)
 
-![](asset/img_020e3af8e158.gif)![](asset/img_0d98c7c0bf53.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_020e3af8e158.gif)![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_0d98c7c0bf53.jpg)
 
 彩虹兔还新出了一套Music Fun，带一套奥尔夫乐器，
 
@@ -151,9 +161,9 @@ source: https://www.zhihu.com/question/54564426/answer/632107582
 
 小达人点读，歌多，书便宜（才58一本，我后来买了日语的要158，西语的188），推荐给喜欢实惠的朋友。
 
-![](asset/img_6fbc5dc83695.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_6fbc5dc83695.jpg)
 
-这是正版精装SSS，9本那种是盗版的![](asset/img_efa16188b910.jpg)
+这是正版精装SSS，9本那种是盗版的![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_efa16188b910.jpg)
 
 当然，除了使用儿歌书，我也会直接用设备放歌，或者自己唱歌，这点放到后面讲。
 
@@ -169,21 +179,21 @@ source: https://www.zhihu.com/question/54564426/answer/632107582
 
 （1）小达人点读书：英语单词大书，幼儿认知小百科，Times 4000词，DK 1000词
 
-![](asset/img_e072577e9b92.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_e072577e9b92.jpg)
 
-▲英语单词大书点读版![](asset/img_9702b93b95dd.jpg)
+▲英语单词大书点读版![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_9702b93b95dd.jpg)
 
 ▲幼儿认知小百科点读版小达人点读的0基础认知书非常多，我楼上发的英语单词大书和幼儿认知小百科都很好。大一点的孩子可以选择Times 4000词，或者DK 1000词（这本也有毛毛虫点读的原版）。
 
-![](asset/img_0d4c2149d940.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_0d4c2149d940.jpg)
 
-Times 4000词![](asset/img_c0125a099238.jpg)
+Times 4000词![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_c0125a099238.jpg)
 
 DK 1000词 小达人点读版**
 
 （2）毛毛虫点读认知书：Alphabet Ice Cream**
 
-![](asset/img_343800a21a73.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_343800a21a73.jpg)
 
 Alphabet Ice Cream我得吐血推荐一套不同寻常的认知书：Alphabet Ice Cream and Other Rhymes，它不像单词书那样枯燥，而是简单而又幽默风趣。
 
@@ -191,11 +201,11 @@ Alphabet Ice Cream我得吐血推荐一套不同寻常的认知书：Alphabet Ic
 
 它的画面简单，色彩鲜艳，文字押韵，支持毛毛虫贴纸点读，尤其适合0-3岁的孩子，是朵朵和我们群里很多小朋友小时候的最爱！
 
-![](asset/img_0329ea9dcc51.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_0329ea9dcc51.jpg)
 
-![](asset/img_89193c561ff6.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_89193c561ff6.jpg)
 
-![](asset/img_ef1d2708bacb.gif)![](asset/img_3fc3e836c2b6.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_ef1d2708bacb.gif)![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_3fc3e836c2b6.jpg)
 
 印刷质量非常好，一定要买正版毛毛虫还有很多别的认知书，比如英国小老虎出版社的各种纸板认知书、卡尔爷爷的单词书、DK 1000词等，不过我最喜欢的还是上面这套。
 
@@ -217,13 +227,13 @@ Alphabet Ice Cream我得吐血推荐一套不同寻常的认知书：Alphabet Ic
 
 **（1）红火箭**
 
-![](asset/img_fd4e6ead1607.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_fd4e6ead1607.jpg)
 
 为啥推荐红火箭，除了它是为数不多的高质量正版小达人点读书，还有很重要的一点是因为它有官方的配套课程，是海尼曼分级的配音者，美国网红老师Aaron主讲的，课程质量相当不错。
 
 如果愿意一张张贴贴纸的话，美版大猫也不错，赠送外教精读课。
 
-![](asset/img_c2bcefdca5e6.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_c2bcefdca5e6.jpg)
 
 这两套书都是一半虚构故事，一半非虚构读物，比例搭配协调，适合入门。
 
@@ -233,15 +243,15 @@ Alphabet Ice Cream我得吐血推荐一套不同寻常的认知书：Alphabet Ic
 
 正版是毛毛虫点读的。虽然贵，但是拿到书你就会知道，物有所值。
 
-![](asset/img_5f308cd886a3.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_5f308cd886a3.jpg)
 
-有多贵，贴上来看看便知![](asset/img_0cf5148b4f3d.jpg)
+有多贵，贴上来看看便知![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_0cf5148b4f3d.jpg)
 
 牛津树的体系相当庞大，大家所知道的“家庭版”、“校园版”只是主干部分的两个分支而已。我自己整理了牛津树全系列的表格，大家可以看下。
 
 土黄色高亮的就是家庭版和学校版，真的只是九牛一毛。剩下的很多系列都有引进版，各大电商都能买到（丽声系列，按照我表格里的书名去搜），只不过印刷质量很一般，没有凯迪克原版的好。
 
-![](asset/img_4634cf4471ef.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_4634cf4471ef.jpg)
 
 朵朵目前读到6。有些家长号称孩子4岁读到9，我其实报保留态度，因为牛6以上就涉及到很多社会文化、历史、科学方面的知识，认知程度和英语水平不匹配，是读不下去的。并不是说愿意听家长读一遍，就代表都读懂了。
 
@@ -261,19 +271,19 @@ Alphabet Ice Cream我得吐血推荐一套不同寻常的认知书：Alphabet Ic
 
 **（1）棒棒英语（教材）**
 
-![](asset/img_e89e814c6aaf.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_e89e814c6aaf.jpg)
 
 大家可能都听说过大名鼎鼎的《蒲公英自然拼读》，棒棒英语就是蒲公英的点读版，支持小达人点读笔。
 
-![](asset/img_09c36ceac14b.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_09c36ceac14b.jpg)
 
 **
 
 （2）牛津树自然拼读系列（教材+故事）**
 
-![](asset/img_31c0dbae5d3d.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_31c0dbae5d3d.jpg)
 
-![](asset/img_e5a4f265a30b.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_e5a4f265a30b.jpg)
 
 正版牛津树，毛毛虫点读牛津树的自然拼读构成比较复杂，同时包括教材和故事两大部分，以1+级别为例：
 
@@ -295,9 +305,9 @@ Alphabet Ice Cream我得吐血推荐一套不同寻常的认知书：Alphabet Ic
 
 对话书是给大人学习口语用的，我买了**《美国家庭万用亲子英文8000句》和《跟小小孩说英文》**，并且在自己的群里引入了打卡程序，每天给大家领读和讲解《跟小小孩说英文》。
 
-![](asset/img_e9fa71202362.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_e9fa71202362.jpg)
 
-![](asset/img_605ae00ce243.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_605ae00ce243.jpg)
 
 儿童的语言表达能力一开始都是通过模仿习得的，大人也可以用同样的方式。书上的常用对话如果都能熟练掌握，加上日常亲子间的练习，口语水平必定将得到突破。
 
@@ -313,7 +323,7 @@ Alphabet Ice Cream我得吐血推荐一套不同寻常的认知书：Alphabet Ic
 
 朵朵的儿歌启蒙路线
 
-![](asset/img_9928cf62f1cc.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_9928cf62f1cc.jpg)
 
 我从朵朵出生后就开始给她唱英文歌。给宝宝唱歌是个增进亲子感情的好方法，随时随地都可以来几首。有时候在外面坐车，她会让我连着唱五六十首，考验我的曲库。
 
@@ -325,7 +335,7 @@ Alphabet Ice Cream我得吐血推荐一套不同寻常的认知书：Alphabet Ic
 
 我用的最多的资源，是前面提到的SSS和彩虹兔童谣。
 
-![](asset/img_690d71892a43.gif)![](asset/img_b14f7a6c221d.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_690d71892a43.gif)![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_b14f7a6c221d.jpg)
 
 SSS正版动画和音频已经由小小优趣独家正版引进听得多了以后，朵朵就学会了自己唱歌。她现在每天都要唱几遍字母歌，其他经常听的儿歌也都能唱个几句。有些歌是配合舞蹈动作的，她跳得有模有样，真是家里的开心果！
 
@@ -333,11 +343,11 @@ SSS正版动画和音频已经由小小优趣独家正版引进听得多了以�
 
 接下来是推荐工具
 
-![](asset/img_71a2fb982c42.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_71a2fb982c42.jpg)
 
 以及一些误区
 
-![](asset/img_87d1b8e07951.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_87d1b8e07951.jpg)
 
 **
 
@@ -369,11 +379,11 @@ SSS正版动画和音频已经由小小优趣独家正版引进听得多了以�
 
 朵朵目前还喜欢看**Alphablocks**（字母积木，可以帮助孩子学习自然拼读）、**Numberblocks**（数学启蒙）、**蓝色小考拉**、**Muzzy**（玛泽的故事，我们小时候霸屏的老牌英语学习动画片，我现在让她看西语版）等。
 
-![](asset/img_0e520509f366.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_0e520509f366.jpg)
 
 小小优趣可以切换双语版本有些片子有中文版也有英文版，我全都选择给她看英文版。有些动画片是纯情节类的，旨在培养孩子情商和好习惯；有些则有知识教学的部分，比如朵拉和Muzzy。可以按照需求选择。
 
-![](asset/img_227988c3bd7d.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_227988c3bd7d.jpg)
 
 小小优趣可以切换双语版本**至于看的时间，建议单次越短越好，一天内分多次看。**记得约定好看几集，并且时刻提醒还能看多久。
 
@@ -381,11 +391,11 @@ SSS正版动画和音频已经由小小优趣独家正版引进听得多了以�
 
 市面上儿歌动画类APP也挺多，大家公认做得比较成熟、全面的是小小优趣。
 
-![](asset/img_141ffa8cc8cb.gif)![](asset/img_4a1552d93ca6.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_141ffa8cc8cb.gif)![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_4a1552d93ca6.jpg)
 
 它不仅独家引进了正版SSS动画和音频，还有几百部带字幕的正版动画片，按难度和类型分好了，还能一键投屏。**所以父母也可以跟着孩子一起学英语，增加词汇量，学习地道的口语表达。**
 
-![](asset/img_77dbb6a2f613.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_77dbb6a2f613.jpg)
 
 说句题外话，我自己曾经也热衷于收集各种网盘资源，但是那些d版资源不仅获取起来麻烦，图像高糊，而且很多都没字幕，投屏电视也不方便。所以我还是情愿买正版。**知识付费时代，花钱买时间买质量买方便，每天也就几毛钱而已。**
 
@@ -433,7 +443,7 @@ SSS正版动画和音频已经由小小优趣独家正版引进听得多了以�
 
 她适应能力很强，很快就习惯了托班的生活，并且英语水平也有进步，有时候会说出一些我没有教过的句子。
 
-![](asset/img_95ed39a18c6a.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_95ed39a18c6a.jpg)
 
 但是，托班英语课的时间毕竟有限，**在家的启蒙才是重头戏。**我们绝不能依赖机构课程，而忽略了在家的亲子阅读。
 
@@ -459,13 +469,13 @@ AI课上一年差不多可以换直播课了。
 
 欢迎加入我们的多语言启蒙队伍中~
 
-![](asset/img_5b87a8d6a0fd.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_5b87a8d6a0fd.jpg)
 
-[所属专栏 · 2023-07-28 05:47 更新](https://zhuanlan.zhihu.com/xiaoyingyu)[![](asset/img_a4bb1f02122b.jpg)幼儿早教与英语启蒙
+[所属专栏 · 2023-07-28 05:47 更新](https://zhuanlan.zhihu.com/xiaoyingyu)[![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_a4bb1f02122b.jpg)幼儿早教与英语启蒙
 
-![](asset/img_c8c94a2ad4f8.jpg)老沐哥
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_c8c94a2ad4f8.jpg)老沐哥
 
-​![](asset/img_036bc273829e.png)儿童心理等 3 个话题下的优秀答主
+​![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_036bc273829e.png)儿童心理等 3 个话题下的优秀答主
 
 354 篇内容 · 60100 赞同
 

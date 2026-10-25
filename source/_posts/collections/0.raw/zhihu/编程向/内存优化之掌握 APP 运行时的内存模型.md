@@ -1,9 +1,19 @@
 ---
-title: "内存优化之掌握 APP 运行时的内存模型"
-date: 2022-12-11
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/591043079
+title: 内存优化之掌握 APP 运行时的内存模型
+date: "2022-12-11 00:00:00"
+updated: "2022-12-11 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/编程向/内存优化之掌握-APP-运行时的内存模型/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/591043079
 ---
+
 
 为了让大家深入掌握 App 运行时的内存模型，这一节的内容按照由外到内、逐步深入的原则，分为了 3 个部分：
 
@@ -84,7 +94,7 @@ ActivityManager.MemoryInfo memoryInfo = new ActivityManager.MemoryInfo();`
 
 我们以系统设置这个 App 为例子，通过 adb 命令获取的内存数据如下：
 
-![](asset/img_3652d4654efb.jpg)
+![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_3652d4654efb.jpg)
 
 这里把上面的数据分为两个部分：**A 区域和 B 区域**。其中 A 区域的数据主要来自前面提到的 `android_os_Debug_getMemInfo` 接口，B 区域的数据则是对 A 区域中的数据做了汇总处理。
 
@@ -98,7 +108,7 @@ maps 文件是分析内存很重要的一个文件，通过 maps 文件我们可
 
 对于 root 的手机，我们可以直接查看该目录下的 maps 文件。但是 maps 文件非常长，直接看会很吃力，所以我们一般会通过脚本对 maps 文件中的数据做分析和归类。下面还是以系统设置这个应用为例，它的 maps 文件的部分内容如下：
 
-![](asset/img_73addce03b7e.jpg)
+![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_73addce03b7e.jpg)
 
 图中从左至右各个数据段的解释如下：
 
@@ -354,7 +364,7 @@ static jlong android_os_Debug_getNativeHeapSize(JNIEnv *env, jobject clazz)
 
 我们可以看下 `mallinfo` 函数的说明文档：
 
-![](asset/img_d70460a093b7.jpg)
+![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_d70460a093b7.jpg)
 
 通过上面两个接口获取 Naitve 和 **Java** 的内存数据效率最高，性能消耗最小，所以适合在代码中做数据监控使用。**通过读取和解析 maps 文件来获取内存数据对性能的开销较大，所以从 Android10 开始加了 5 分钟的频控。**
 

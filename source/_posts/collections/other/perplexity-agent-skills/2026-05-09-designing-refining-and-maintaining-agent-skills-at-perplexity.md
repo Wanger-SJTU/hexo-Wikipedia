@@ -1,11 +1,22 @@
 ---
-title: "Designing, Refining, and Maintaining Agent Skills at Perplexity"
-author: "Perplexity Research"
-source: "https://research.perplexity.ai/articles/designing-refining-and-maintaining-agent-skills-at-perplexity"
-date: "2026-05-09"
-tags: ["博客", "Agent", "Skill", "Perplexity"]
-mathjax: true
+title: Designing, Refining, and Maintaining Agent Skills at Perplexity
+date: "2026-05-09 13:24:59"
+updated: "2026-05-09 13:24:59"
+layout: post
+permalink: /collections/other/perplexity-agent-skills/2026-05-09-designing-refining-and-maintaining-agent-skills-at-perplexity/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 博客
+  - Agent
+  - Skill
+  - Perplexity
+source_url: https://research.perplexity.ai/articles/designing-refining-and-maintaining-agent-skills-at-perplexity
 ---
+
 
 # Designing, Refining, and Maintaining Agent Skills at Perplexity
 
@@ -172,6 +183,6 @@ Perplexity 运行多种 eval 套件：
 
 更多示例见 [Agent Skills website](https://agent skills website)。
 
-![](asset/hr7cGJptEmhQmgDCyPXWQMxamIk.png)
+![](/images/collections/other/perplexity-agent-skills/asset/hr7cGJptEmhQmgDCyPXWQMxamIk.png)
 
-![](asset/StL77jSrvpQypM4nJ5omvZdkHQ.png)
+![](/images/collections/other/perplexity-agent-skills/asset/StL77jSrvpQypM4nJ5omvZdkHQ.png)

@@ -1,9 +1,19 @@
 ---
-title: "llm的检索rag-1-通过交互阅读突破上下文限制"
-date: 2023-10-24
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/662804785
+title: llm的检索rag-1-通过交互阅读突破上下文限制
+date: "2023-10-24 00:00:00"
+updated: "2023-10-24 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/LLM-SD/llm的检索rag-1-通过交互阅读突破上下文限制/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/662804785
 ---
+
 
 Walking Down the Memory Maze: Beyond Context Limit through Interactive Reading
 
@@ -55,13 +65,13 @@ Context window scaling/Recurrence/Retrieval./Reasoning agents.
 
 循环架构已被广泛研究以解决长序列问题，从基于循环神经网络的模型到基于现代变压器的模型。然而，每个重复步骤都会导致信息丢失，并且训练目标不会指导关于下游任务的“如何压缩”。通常，这种压缩意味着与最近的信息相比，对旧序列信息的召回较弱
 
-![](asset/img_0802bb3efb16.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_0802bb3efb16.jpg)
 
 adapting language models tocompress context论文23.05像上图的论文，就是通过循环的架构，压缩过长的上下文，来提炼压缩作为模型输入
 
 ### 方法
 
-![](asset/img_7f2899d563f6.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_7f2899d563f6.jpg)
 
 MEMWALKER的两阶段过程。顶部（阶段1）：构建内存树。底部（阶段2）：给定一个查询，LLM通过迭代提示导航树结构，并找到包含相关段的节点以形成答案。MEMWALKER的两阶段过程：
 
@@ -83,7 +93,7 @@ MEMWALKER的两阶段过程。顶部（阶段1）：构建内存树。底部（�
 
 **有关显示启用导航的LLM提示的详细示例，请参见表1（下表）**
 
-![](asset/img_d3843de14919.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_d3843de14919.jpg)
 
 来自QuALITY数据集的示例轨迹。
 
@@ -113,7 +123,7 @@ baseline：我们比较了三种基于相同底层LLM的基线记忆技术，即
 
 #### 结果与分析
 
-![](asset/img_7146fc649902.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_7146fc649902.jpg)
 
 Orig.表示使用整个数据集，Long表示较长序列的子集。顶部：与开源的长上下文模型的比较。底部：基线和MEMWALKER性能，所有方法都使用底层的Stable Beluga 2 LLM，最大上下文长度为4,096令牌。MEMWALKER在较长序列上的性能优于所有其他方法
 

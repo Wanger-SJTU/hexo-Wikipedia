@@ -1,9 +1,19 @@
 ---
-title: "Using the Visual Studio Emulator for Android from Android Studio"
-date: 2016-09-24
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/22593417
+title: Using the Visual Studio Emulator for Android from Android Studio
+date: "2016-09-24 00:00:00"
+updated: "2016-09-24 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/编程向/Using-the-Visual-Studio-Emulator-for-Android-from-Android-Studio/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/22593417
 ---
+
 
 Visual Studio Emulator for Android 是**微软公司**推出的安卓模拟器，由于其流畅程度可以和实体真机相媲美，所以受广大安卓开发者的喜爱。
 
@@ -21,11 +31,11 @@ Visual Studio Emulator for Android 可以随同Visual Studio 2015 一同安装�
 
 **必须打一下广告 ：) ，Surface Pro 4 性能有多强悍，装有 Visual Studio Enterprise 2015，SQL Server 2016，Office 365 订阅的 Office 2016 , Adobe Dreamweaver CC 2015 ，Adobe Photoshop CC 2015，Eclipse ，安装了商店里的多数优秀的应用。还有就是 Android Studio ,发现这个吃内存~  现在硬盘还有120GB。**
 
-![](asset/img_6629f56b873a.png)
+![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_6629f56b873a.png)
 
 **Hyper-V**
 
-![](asset/img_8847b315ddae.png)
+![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_8847b315ddae.png)
 
 既然是安卓模拟器，安卓开发者肯定会选择 Android Studio 与其组合使用（Visual Studio 2015 才是宇宙间最好的开发工具 ：)）。下面是如何在 Android Studio 里调用 Visual Studio  Emulator for Android 进行开发部署应用并进行调试。
 
@@ -34,7 +44,7 @@ API 19（Andorid 4.4）的x86镜像
 
 ，需要根据需求下载合适的模拟器，下载速度还是很快滴！）
 
-![](asset/img_13fd089b438d.png)
+![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_13fd089b438d.png)
 
 **
 Android Studio 是使用 adb** 作为桥梁来连接Visual Studio Emulator for Android
@@ -43,7 +53,7 @@ Android Studio 是使用 adb** 作为桥梁来连接Visual Studio Emulator for A
 
 接下来是有图有真相  :)      Android Studio 为**2.2**
 
-![](asset/img_344bef6213c4.png)
+![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_344bef6213c4.png)
 
 该如何设置？
 
@@ -53,14 +63,14 @@ Android Studio 是使用 adb** 作为桥梁来连接Visual Studio Emulator for A
 
 注：不同的 Android Studio 版本 Defaults 下方可能不是 **Android App** ,而是**Android Application**,但基本选项都是一样滴！ 还有**General **里的 **Deployment Target Options** 可能名**Target Device** ,需选择里面的 **Show chooser dialog**,并勾选下方的 **Use same device for future launches **。
 
-![](asset/img_25d50019c613.png)
+![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_25d50019c613.png)
 
 **2.****在
 Android Studio 里添加启动模拟器的快捷按钮**
 
 点击 Android Studio 左上方的 **File > Settings > Tools > External Tools** ,在右上方选择 Add 按钮（对，就是那个绿色的 **+** 符号）
 
-![](asset/img_ae170421e55f.png)
+![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_ae170421e55f.png)
 
 在弹出的 **Edit Tool** 窗口中的 Name: 里输入一个名字，名字尽可能要标注一下 安卓的版本号和 API xx。便于以后使用的识别。 
 
@@ -79,29 +89,29 @@ Android Studio 里添加启动模拟器的快捷按钮**
 
 **最后点击 Ok!**
 
-![](asset/img_a2a5284b23bd.png)
+![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_a2a5284b23bd.png)
 
-![](asset/img_42ef9f388fe4.png)
+![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_42ef9f388fe4.png)
 
 **3. 在 Android Studio 上方的任务栏里添加 已经添加模拟器的图标**
 
 **右键点击上方任务栏里空白的区域，点击 Customize Menus and Toolbars... 即自定义菜单**
 
-![](asset/img_008b23b11333.png)
+![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_008b23b11333.png)
 
 **在弹出的窗口中选择 Main menu > Main Toolbar > Android.MainToolBarActionGroup **,点击右上方的 **Add After **
 
-**![](asset/img_729e2fa95c1c.png)
+**![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_729e2fa95c1c.png)
 
 **
 
 **在弹出的新窗口中点击 External Tools > External Tools ,这时可以看见我们在设置已添加模拟器的名字，我的是 VS Emulator (4.4 API 19) ，所以选择这个，最后点击OK !**
 
-![](asset/img_28ea475e5a84.png)
+![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_28ea475e5a84.png)
 
 **点击OK之后 就会发现新的自定义小图标已经出现了 ！**
 
-**![](asset/img_655423a827f0.png)
+**![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_655423a827f0.png)
 
 **
 
@@ -109,9 +119,9 @@ Android Studio 里添加启动模拟器的快捷按钮**
 
 ****
 
-**![](asset/img_35d88ab05d8d.png)
+**![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_35d88ab05d8d.png)
 
-****不是说只有在这个才可以启动模拟器，在刚安装完 Visual Studio Emulator for Android 之后就可以启动模拟器了。![](asset/img_8502909fbbfc.png)
+****不是说只有在这个才可以启动模拟器，在刚安装完 Visual Studio Emulator for Android 之后就可以启动模拟器了。![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_8502909fbbfc.png)
 
 **
 
@@ -119,11 +129,11 @@ Android Studio 里添加启动模拟器的快捷按钮**
 
 **当然第一次启用不同的模拟器还需要下载相关的 Android SDK。点击上方的启动按钮。**
 
-![](asset/img_4614f519b612.png)
+![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_4614f519b612.png)
 
 **之后弹出 Select Deployment Target 窗口，这时我们会看见我们已经设置的模拟器出现在这里了。**
 
-**![](asset/img_6b9d239e00d4.png)
+**![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_6b9d239e00d4.png)
 
 **
 
@@ -133,7 +143,7 @@ Android Studio 里添加启动模拟器的快捷按钮**
 
 ** Windows + R **打开** Run,**并在里面输入** regedit **,然后依次选择** HKEY_LOCAL_MACHINE > SOFTWARE > WOW6432Node ，**新建一个 **Key ，**命名为** Android SDK Tools**，在这个上新建一个 **String Value **,命名为 **Path** ,里面的值为 **Android SDK 的安装路径。**
 
-![](asset/img_35256b9ba8bf.png)
+![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_35256b9ba8bf.png)
 
 **看见微软的实力了吧！ 别人家的产品都做得这么流畅~ 而自己的亲儿子 Windows Mobile  ~**
 
@@ -171,23 +181,23 @@ Android Studio 里添加启动模拟器的快捷按钮**
 
 **先放几张图就懂了~ 打开模拟器之后点击右方设置里的最后一项 之后会发现新大陆 ：)**
 
-![](asset/img_3e71a4e62aa1.png)
+![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_3e71a4e62aa1.png)
 
 ****
 
-**![](asset/img_0848207b6081.png)
+**![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_0848207b6081.png)
 
-****![](asset/img_d79450c47261.png)
+****![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_d79450c47261.png)
 
-****![](asset/img_50fccb7195d3.png)
+****![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_50fccb7195d3.png)
 
-****![](asset/img_11396ecf3f1b.png)
+****![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_11396ecf3f1b.png)
 
-****![](asset/img_475a764f4929.png)
+****![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_475a764f4929.png)
 
-****![](asset/img_216ab0f2a46f.png)
+****![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_216ab0f2a46f.png)
 
-****![](asset/img_791305a61d6e.png)
+****![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_791305a61d6e.png)
 
 ****依次有 Accelerometer Location Battery Screenshot Camera SD Card Network 可以对其设置 :)**
 
@@ -197,6 +207,6 @@ Android Studio 里添加启动模拟器的快捷按钮**
 
 **根据GitHub公布的数据，微软贡献了16419个，超过Facebook的15682个，进一步拉开了与Docker、Angular、谷歌和Apache的距离。**
 
-![](asset/img_31503dac2bbf.jpg)
+![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_31503dac2bbf.jpg)
 
 **Microsoft on GitHub**

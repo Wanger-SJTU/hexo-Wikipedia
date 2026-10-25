@@ -1,9 +1,19 @@
 ---
-title: "(1 封私信) 深度对比：华为昇腾 Ascend950 (DaVinci arch35) vs NVIDIA SM_90 微架构"
-date: 2026-04-02
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/2020921487947736363
+title: (1 封私信) 深度对比：华为昇腾 Ascend950 (DaVinci arch35) vs NVIDIA SM_90 微架构
+date: "2026-04-02 00:00:00"
+updated: "2026-04-02 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/体系结构/深度对比-华为昇腾-Ascend950-(DaVinci-arch35)-vs-NVIDIA-SM_90-微架构/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/2020921487947736363
 ---
+
 
 ### 深度对比：华为昇腾 Ascend950 (DaVinci arch35) vs NVIDIA SM_90 微架构
 
@@ -166,7 +176,7 @@ UB (Unified Buffer): 248 KB per AI Core
 
 **
 
-![](asset/img_7bb9884a2bc0.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_7bb9884a2bc0.jpg)
 
 arch35 AI Core 关键参数**：
 
@@ -194,7 +204,7 @@ DaVinci 架构从 910B 起，每个 AI Core 实际上包含两个**协同工作�
 
 **
 
-![](asset/img_a3808c099a54.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_a3808c099a54.jpg)
 
 AIC（AI Compute 子核心）**：
 
@@ -234,7 +244,7 @@ Ascend C 逻辑视角物理硬件说明一个 “AI Core” (Vector 算子)AIV �
 
 **
 
-![](asset/img_dce58cf0ba9a.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_dce58cf0ba9a.jpg)
 
 #### 4.2 L2 Cache 对比
 
@@ -242,7 +252,7 @@ L2 Cache 是连接片上计算核心与片外 HBM 的关键缓存层级，对实
 
 #### NVIDIA H100：大容量硬件管理 L2 Cache
 
-![](asset/img_a2bb5f1fb207.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_a2bb5f1fb207.jpg)
 
 H100 L2 Cache 特点**：
 
@@ -352,11 +362,11 @@ NVIDIA：隐式数据流** — 代码中直接访问全局内存指针，硬件�
 
 **
 
-![](asset/img_ab4fa2fe50a6.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_ab4fa2fe50a6.jpg)
 
 #### 5.2 昇腾 Ascend C：SPMD + SIMD/SIMT 双模型
 
-![](asset/img_5cecca26fd45.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_5cecca26fd45.jpg)
 
 > SIMD vs SIMT 关键区别**：** 
 
@@ -543,7 +553,7 @@ extern "C" __global__ __aicore__ void vector_add_kernel(
 
 **
 
-![](asset/img_626ba4bcfa8e.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_626ba4bcfa8e.jpg)
 
 #### 7. 代码实战：矩阵乘法思路对比
 
@@ -595,7 +605,7 @@ public:
 
 #### 7.3 矩阵乘法数据流对比
 
-![](asset/img_01fa7c11bcba.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_01fa7c11bcba.jpg)
 
 #### 8. Ascend950 独有特性解析
 
@@ -731,7 +741,7 @@ HiFloat8 不是简单的固定阶码/尾数分配，而是采用**变长前缀�
 
 **
 
-![](asset/img_d7dc4d006f08.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_d7dc4d006f08.jpg)
 
 #### 展望
 

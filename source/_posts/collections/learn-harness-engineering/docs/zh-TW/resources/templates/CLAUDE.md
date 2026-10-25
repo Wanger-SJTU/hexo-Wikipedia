@@ -1,3 +1,16 @@
+---
+title: CLAUDE.md
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/zh-TW/resources/templates/CLAUDE/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # CLAUDE.md
 
 你正在一個為長時實作工作設計的儲存庫中工作。請把可靠完成、跨工作階段連續性與明確驗證放在速度之前。

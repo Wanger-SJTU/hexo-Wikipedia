@@ -1,9 +1,19 @@
 ---
-title: "Sora 的一些个人思考"
-date: 2024-02-16
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/682430755
+title: Sora 的一些个人思考
+date: "2024-02-16 00:00:00"
+updated: "2024-02-16 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/LLM-SD/Sora-的一些个人思考/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/682430755
 ---
+
 
 Sora发布了新的视频生成技术，一时之间引起轰动， 很多技术谣言也开始漫天飞舞。
 
@@ -53,11 +63,11 @@ Sora是一个基于语言模型范式的视频模型
 
 这就是在技术文档中提到的概念：SpaceTime latent patch（时轮碎块, 我这个翻译是不是有点信达雅）
 
-![](asset/img_c8a542a4fe1e.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_c8a542a4fe1e.jpg)
 
-![](asset/img_f2a5a9f9fcdd.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_f2a5a9f9fcdd.jpg)
 
-![](asset/img_aff331dda19b.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_aff331dda19b.jpg)
 
 ### 那么, 套用 语言模型 这个盒子:
 
@@ -93,4 +103,4 @@ Sora是一个基于语言模型范式的视频模型
 
 比如下面这个画面:
 
-![](asset/img_a4ed8d5b4d44.jpg)00:07
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_a4ed8d5b4d44.jpg)00:07

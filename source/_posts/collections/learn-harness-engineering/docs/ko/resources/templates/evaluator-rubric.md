@@ -1,3 +1,16 @@
+---
+title: 평가자 루브릭 (Evaluator Rubric)
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/ko/resources/templates/evaluator-rubric/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # 평가자 루브릭 (Evaluator Rubric)
 
 구현 후, 최종 수락 전에 이 루브릭(rubric)을 사용하십시오. 에이전트(agent)는 자기 평가에 약한 경향이 있으므로, 이 점수표(scorecard)를 반복적으로 보정(calibration)하여 인간의 판단과 일치하도록 만들어야 합니다.

@@ -1,9 +1,19 @@
 ---
-title: "(2 条消息) moe为什么不把一个句子都放进一个专家，而是一个token呢？"
-date: 2026-04-17
-tags: [知乎]
-source: https://www.zhihu.com/question/646173158/answer/1934378397942936809
+title: (2 条消息) moe为什么不把一个句子都放进一个专家，而是一个token呢？
+date: "2026-04-17 00:00:00"
+updated: "2026-04-17 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/moe为什么不把一个句子都放进一个专家,而是一个token呢/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://www.zhihu.com/question/646173158/answer/1934378397942936809
 ---
+
 
 28 人赞同了该回答
 
@@ -17,7 +27,7 @@ source: https://www.zhihu.com/question/646173158/answer/1934378397942936809
 
 MOE 架构的基本思想是在传统 Transformer 模型中，将每个前馈网络（FFN）层替换为一个 MOE 层。一个 MOE 层通常由两个关键部分组成：
 
-![](asset/img_1ef1a4acb6e1.jpg)![](asset/img_0b5c546663d9.webp)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_1ef1a4acb6e1.jpg)![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_0b5c546663d9.webp)
 
 - **专家网络（Experts）** 每个专家是一个独立的子网络（通常是 FFN），在实际计算中只有部分专家会被激活参与处理。通过让多个专家分担不同数据子集的计算，模型在预训练时可以以较低的计算开销获得大参数量带来的表示能力​。
 - **门控网络（Gating/Router）** 该模块负责根据输入 token 的特征动态选择激活哪些专家。门控网络一般采用一个带 softmax 的简单前馈网络来计算每个专家的权重。经过训练后，门控网络会逐步学会将相似的输入路由到表现更好的专家​。
@@ -27,7 +37,7 @@ MOE 架构的基本思想是在传统 Transformer 模型中，将每个前馈网
 
 在我刚接触到MOE架构的时候，经常有一个疑问：“MOE模型中的专家方向是事先规划好的还是自发生成的。“ 经过研究发现，专家都是”自学成才“的。
 
-![](asset/img_c47dab9a44b0.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_c47dab9a44b0.jpg)
 
 #### 2.1 专家网络的角色
 
@@ -104,15 +114,15 @@ MOE 架构的基本思想是在传统 Transformer 模型中，将每个前馈网
 
 在第32层，抽象代数就是一个例子，它比其他专家更频繁地使用专家三和八。
 
-![](asset/img_002c2c575c34.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_002c2c575c34.jpg)
 
 第32层抽象代数的token分布 另一方面，职业法律领域主要激活专家四，而相对较少使用专家三和八。
 
-![](asset/img_e39c0d073369.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_e39c0d073369.jpg)
 
 第32层职业法律的token分布 世界宗教是另一个有趣的例子，专家七接收的token比专家八少五倍以上。
 
-![](asset/img_8ba81a3dea88.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_8ba81a3dea88.jpg)
 
 第32层世界宗教的token分布 这些实验结果表明，专家们的负载分布在各种主题中趋于均匀。然而，当样本全部属于某个特定主题时，可能会出现较大的分布不平衡。
 
@@ -120,38 +130,38 @@ MOE 架构的基本思想是在传统 Transformer 模型中，将每个前馈网
 
 下图中的词云显示了每个专家最常处理的token。实验中画出来的不同专家偏好的词云：
 
-![](asset/img_6c013d9c6534.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_6c013d9c6534.jpg)
 
 #### token最常选择的专家(Most preferred experts by tokens)
 
 每个token是否有偏好的专家？每个token似乎都有更偏好的专家集，如下例所示。
 
-![](asset/img_ae057997626b.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_ae057997626b.jpg)
 
 token“:”的专家分配**
 
-![](asset/img_667267a92421.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_667267a92421.jpg)
 
 token“.”的专家分配
 
-![](asset/img_a3dd4053ed83.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_a3dd4053ed83.jpg)
 
 token“what”的专家分配
 
-![](asset/img_2fac5dcd1d4f.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_2fac5dcd1d4f.jpg)
 
 token“who”的专家分配
 ### 6. DeepSeek‑v3 的实现案例
 
 DeepSeek V3 是一款基于混合专家（MoE）架构的大型语言模型，拥有 671B 参数，但每次推理仅激活 37B 参数，显著降低了计算成本。
 
-![](asset/img_cf1417dbf960.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_cf1417dbf960.jpg)
 
 其技术优势(仅从MOE架构角度)主要体现在以下几个方面：
 
 #### 6.1 MOE 架构
 
-![](asset/img_9469f7cc654a.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_9469f7cc654a.jpg)
 
 在 DeepSeek‐V3 的 MoE 模块中，主要包含两类专家：
 

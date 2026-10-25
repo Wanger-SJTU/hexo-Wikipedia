@@ -1,9 +1,19 @@
 ---
-title: "搞DDR必懂的关键技术笔记：深入探究DDR物理结构"
-date: 2024-08-06
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/713042976
+title: 搞DDR必懂的关键技术笔记：深入探究DDR物理结构
+date: "2024-08-06 00:00:00"
+updated: "2024-08-06 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/体系结构/搞DDR必懂的关键技术笔记-深入探究DDR物理结构/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/713042976
 ---
+
 
 ### **引言**
 
@@ -22,7 +32,7 @@ source: https://zhuanlan.zhihu.com/p/713042976
  
 我们将从单个DRAM存储单元开始，逐步探索它是如何构成焊接在PCB上的完整内存封装的。
 
-![](asset/img_39de75e9aad4.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_39de75e9aad4.jpg)
 
 图0：从存储单元到存储封装
 ### LPDDR5内存芯片**
@@ -31,20 +41,20 @@ source: https://zhuanlan.zhihu.com/p/713042976
 
 **
 
-![](asset/img_c35b0406953d.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_c35b0406953d.jpg)
 
  在最底层，一个位本质上是一个电容器，用于存储电荷，而晶体管则作为开关。由于电容器会随时间放电，信息最终会消失，除非电容器被定期“刷新”。
 
 >  这就是DRAM中“D”的来源——它指的是“动态”，与SRAM中的“静态”相对应。
  
 
-![](asset/img_d0201010a388.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_d0201010a388.jpg)
 
 #### Bank, Rows and Columns**
 
 **
 
-![](asset/img_d2de687acb47.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_d2de687acb47.jpg)
 
  当你放大一级视图时，你会注意到存储单元被排列成行和列的网格状。
 
@@ -65,14 +75,14 @@ source: https://zhuanlan.zhihu.com/p/713042976
  
 - 因此，每次读/写访问都会指定一个行地址和一个列地址，Bank会返回128位的数据。这个数字很重要，我们将在下一节中再次提及它。
  
-![](asset/img_b249a7c4aeb5.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_b249a7c4aeb5.jpg)
 
 图2：存储器阵列
 #### LPDDR5 Bank架构**
 
 **
 
-![](asset/img_d9c67d8278aa.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_d9c67d8278aa.jpg)
 
  再放大一级视图，每个LPDDR5芯片都有32个这样的Bank块。这32个块可以以3种不同的配置进行排列。
 
@@ -92,7 +102,7 @@ source: https://zhuanlan.zhihu.com/p/713042976
 您稍后会看到，16 Bank模式只能在低于3200 Mbps的速度下运行，而BG模式则在大于3200 Mbps的速度下运行。
 
 - 8 Bank模式 在这里，32个Bank块被组织成4组，每组8个Bank。[4 x 8 = 32]。因此，在读/写操作期间，提供的Bank地址会激活4个Bank，并访问总共512位的数据。
-![](asset/img_6484b7472131.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_6484b7472131.jpg)
 
 图3：LPDDR5 Bank架构>  那为什么有3种Bank模式而不是只有一种？ 
  
@@ -132,7 +142,7 @@ LPDDR5提供多种Bank模式以适应不同的操作速度（如3200Mbps、5400M
 ** 我们是如何得出这些数字的？
  在图2中，我们看到Bank中的每一行存储1KB的数据**（以64列、每列128位的方式排列）；
 
-![](asset/img_b249a7c4aeb5.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_b249a7c4aeb5.jpg)
 
 图2：存储器阵列并且，从图3中我们可以看到，在16 Bank模式和Bank组模式下，**两行会同时被激活以总共获取256位的数据**。因此，从内存芯片的角度来看，**两行被激活，所以总页大小为2x1KB = 2KB。**
 
@@ -154,9 +164,9 @@ LPDDR5内存芯片是按照特定的容量制造的，从JEDEC规范中指定的
 ** 4 (BG) x 4 (Banks) x 8192 (rows) x 64 (cols) x 256b (each col) = 2,147,483,648 = 2Gb
  再给你整个图放这里！
 
-![](asset/img_d9c67d8278aa.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_d9c67d8278aa.jpg)
 
-![](asset/img_587b6e65d37e.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_587b6e65d37e.jpg)
 
 ### 说说参数**
 
@@ -190,7 +200,7 @@ LPDDR5 接口有 16 个 DQ（数据）引脚。因此，默认情况下，内存
 - 更深的Row寻址空间**：由于一次只能激活一个Bank，并且访问宽度减半，因此每个Bank在逻辑上看起来像是拥有更多的Row。这是因为当访问宽度减少时，为了保持相同的总数据传输速率，需要访问更多的Row来填充数据通道。这并不意味着物理上增加了Row的数量，而是改变了数据访问的粒度。** 
 - Bank利用率**：在x16 DQ模式下，两个Bank可以同时被激活，这可能导致在某些情况下，一个Bank在等待另一个Bank完成操作时被闲置。而在x8 DQ模式下，虽然牺牲了并行性，但确保了每次只有一个Bank被完全利用，从而可能提高了某些特定工作负载下的整体效率。** 
 - 灵活性和优化**：在某些应用场景中，比如对延迟敏感的应用，减少并行性和增加深度可能是一个有利的权衡。这是因为较深的Row寻址空间可以减少PRECHARGE和ACTIVATE命令的频率，这些命令在DRAM操作中可能会引入相对较长的延迟。** 
-![](asset/img_f4afa192124e.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_f4afa192124e.jpg)
 
 图四: x8 DQ Mode>  表2：x8 DQ 模式寻址
  
@@ -202,7 +212,7 @@ Memory Density2Gb8Gb16Gb32GbNumber of Rows16,38465,536131,072262,144Number of Co
 
 ### LPDDR5 内存通道**
 
-![](asset/img_5fab3711318f.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_5fab3711318f.jpg)
 
 ** 表3：LPDDR5 输入/输出（IOs）
  `|`
@@ -215,12 +225,12 @@ PinWidthTypeDescriptionRESET_n1InputReset pinCK_t, CK_c1InputDifferential clockC
 - 2Gb通道容量：这很简单。只需将一个2Gb内存芯片连接到LPDDR5的IOs上。** 
 - 4Gb通道容量：在这里，我们有两个2Gb芯片，它们被“深度级联”，也称为2秩（Rank）配置。通过设置芯片选择0（CS0引脚）来访问芯片A，而芯片B则通过CS1引脚来选择。但是，由于一次只有一个芯片选择引脚处于活动状态，因此两个芯片共享相同的地址和数据总线。**** 
 - 8Gb通道容量：在这里，我们有四个2Gb芯片。与4Gb容量类似，这里也有2秩。但在每个秩内部，我们有两个“宽度级联”的芯片，即每个芯片都被配置为x8宽度模式**。** 
-![](asset/img_1b82e2e1c511.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_1b82e2e1c511.jpg)
 
 图5：LPDDR5 通道
 ### LPDDR5 内存封装**
 
-![](asset/img_c8ef09627481.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_c8ef09627481.jpg)
 
 图6：x64 4通道LPDDR5封装最后，我们再将视角拉远一点，现在我们看到的是整个LPDDR5内存设备封装。这是你可以从美光（Micron）或三星（Samsung）等供应商那里购买的产品。
 
@@ -238,7 +248,7 @@ PinWidthTypeDescriptionRESET_n1InputReset pinCK_t, CK_c1InputDifferential clockC
 
 为了与LPDDR5内存通信，SoC、ASIC、FPGA或处理器需要一个控制器和一个PHY。这三个实体——控制器、PHY和LPDDR5内存设备——共同构成了LPDDR5内存子系统。
 
-![](asset/img_9e2e74ce05e6.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_9e2e74ce05e6.jpg)
 
 图7：LPDDR5内存子系统
 ### **LPDDR5 接口**

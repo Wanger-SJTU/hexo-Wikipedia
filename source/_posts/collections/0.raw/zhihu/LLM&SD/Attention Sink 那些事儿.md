@@ -1,9 +1,19 @@
 ---
-title: "Attention Sink 那些事儿"
-date: 2026-01-01
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/1990116555888035411
+title: Attention Sink 那些事儿
+date: "2026-01-01 00:00:00"
+updated: "2026-01-01 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/LLM-SD/Attention-Sink-那些事儿/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/1990116555888035411
 ---
+
 
 Attention Sink 这一概念的正式出现，是 2023 年 9 月在 arxiv 上发布的论文《[Efficient Streaming Language Models with Attention Sinks](https://link.zhihu.com/?target=https%3A//openreview.net/forum%3Fid%3DNG7sS51zVF)》（2024 年 ICLR 收录）中被提出。但实际上，在 2023 年的 4 月份，空门在研究 Llama 时已经发现了该现象 [Perpetual Sampling with LLaMA-30B - 空门的文章 - 知乎](https://zhuanlan.zhihu.com/p/619703849)。
 

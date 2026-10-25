@@ -1,3 +1,16 @@
+---
+title: Loyiha 03. Agentning ishlashini sessiyalar boʻylab uzluksiz taʼminlang
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/uz/projects/project-03-multi-session-continuity/index/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 [English version →](../../../en/projects/project-03-multi-session-continuity/)
 
 > Tegishli maʼruzalar: [5-maʼruza. Sessiyalar oʻrtasida kontekstni saqlab qoling](./../../lectures/lecture-05-why-long-running-tasks-lose-continuity/index.md) · [6-maʼruza. Har bir agent sessiyasidan oldin inisializatsiya qiling](./../../lectures/lecture-06-why-initialization-needs-its-own-phase/index.md)

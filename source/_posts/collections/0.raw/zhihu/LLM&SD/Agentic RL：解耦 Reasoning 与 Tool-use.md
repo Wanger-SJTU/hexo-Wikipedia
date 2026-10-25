@@ -1,13 +1,23 @@
 ---
-title: "Agentic RL：解耦 Reasoning 与 Tool-use"
-date: 2026-04-11
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/2009946011120971848
+title: Agentic RL：解耦 Reasoning 与 Tool-use
+date: "2026-04-11 00:00:00"
+updated: "2026-04-11 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/LLM-SD/Agentic-RL-解耦-Reasoning-与-Tool-use/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/2009946011120971848
 ---
+
 
 近年来，随着 Agentic RL  的兴起，LLM 逐渐从“单次问答器”转变为能够在推理（Reasoning）与外部工具调用（Tool-use）之间反复交互（multi-turn）的智能体系统。从 Search-R1 到 ToolRL、SkyRL，一条清晰的技术路线正在形成：模型不仅要会“想”，还要会“查”“算”“调 API”，并在多步轨迹中通过 RL 不断自我改进。
 
-![](asset/img_66d542dbd09b.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_66d542dbd09b.jpg)
 
 The Landscape of Agentic Reinforcement Learning for LLMs: A Survey然而，这类方法几乎都建立在一个隐含假设之上：推理能力与工具使用能力可以在同一套共享参数空间中被联合优化，而且这种联合训练应当带来协同增益。
 
@@ -27,7 +37,7 @@ $$\frac{\mathbf{g}_1^\top \mathbf{g}_2}{\|\mathbf{g}_1\|\|\mathbf{g}_2\|} \appro
 
 设推理梯度为 \mathbf{g}_r，工具梯度为 \mathbf{g}_a。联合训练时实际更新方向是 \mathbf{g} = \mathbf{g}_r + \mathbf{g}_a。如果两者正交，则更新方向并不是任何一方的最优方向，而是落在一个“折中子空间”中。对推理任务而言， \mathbf{g}_a 相当于噪声；对工具任务而言， \mathbf{g}_r 也是噪声。
 
-![](asset/img_e7a876414f9e.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_e7a876414f9e.jpg)
 
 #### **Q2：既然多任务学习也有不同梯度，为什么 LLM 预训练没有这么严重的问题？**
 
@@ -39,27 +49,27 @@ $$\frac{\mathbf{g}_1^\top \mathbf{g}_2}{\|\mathbf{g}_1\|\|\mathbf{g}_2\|} \appro
 
 为了不只是停留在直觉层面的解释，作者提出了一个诊断框架 LEAS（Linear Effect Attribution System），用以定量刻画不同能力之间的协同或干扰关系。其核心思想是将模型的能力拆解为若干二元变量，并引入交互项刻画“联合训练”的效应，再通过构造多种模型变体来解一个线性方程组，从而得到每一类交互系数的符号与大小。当交互系数为负时，意味着两种能力在联合优化时存在干扰。
 
-![](asset/img_3081ac9329ba.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_3081ac9329ba.jpg)
 
 实验结果表明，在 NQ 与 HotpotQA 等多工具问答任务中，推理与工具使用的交互项几乎在所有问题上都是负的，这直接推翻了“共享参数必然带来协同”的经验假设。更耐人寻味的是，干扰最严重的区域，恰恰对应那些真正需要多步推理与工具交互的问题。这说明，Agentic RL 在最核心、最具挑战性的场景中，反而最容易触发参数竞争，从而限制模型潜力。
 
-![](asset/img_c5479bc7ecdd.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_c5479bc7ecdd.jpg)
 
 在确认干扰现象的普遍性之后，作者进一步提出了一种极为直接但有效的解决方案：与其在共享参数中强行调和冲突，不如在参数空间层面将两种能力解耦。这一方法被命名为 DART（Disentangled Action-Reasoning Tuning）。其基本做法是冻结原有 backbone 参数，在其上为推理能力与工具使用能力分别引入一套独立的 LoRA 适配器，并通过 token 级路由机制决定当前 token 的梯度应当流向哪一个子空间。推理 token 只更新推理 LoRA，工具 token 只更新工具 LoRA，从而在训练阶段实现显式的梯度隔离。
 
-![](asset/img_c966f58525ae.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_c966f58525ae.jpg)
 
 这种设计与传统多任务学习中通过损失加权或梯度投影来“缓和冲突”的思路截然不同。DART 并不试图在共享空间中寻找一个折中解，而是承认不同能力需要不同的参数子空间，让它们在各自的低秩空间中独立进化。形式上，前向传播只是在原始权重之外叠加一个由路由器选择的 LoRA 分支，但在优化层面，推理与行动已经被彻底分流。
 
-![](asset/img_b97f79fee22d.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_b97f79fee22d.jpg)
 
 实验结果显示，这种解耦策略在多个工具增强问答基准上带来了稳定而显著的提升。在 3B 模型规模上，DART 相比 Search-R1-GRPO 在平均 EM 分数上提升超过 6%，而在多跳推理任务上，相对提升幅度接近 30%。更重要的是，当作者在固定检索结果的条件下比较推理能力时，DART 仍然明显优于联合训练模型，这说明性能提升并非来自更好的检索，而是来自推理能力本身没有被联合优化所“拖累”。
 
-![](asset/img_f361fbcaac7b.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_f361fbcaac7b.jpg)
 
 作者还将 DART 与2-Agent 系统进行对比。后者使用一个独立模型负责推理，一个独立模型负责工具决策，理论上不存在梯度冲突，是一种性能上界。结果表明，DART 在单模型结构下复现了大部分 2-Agent 的性能优势，同时避免了多模型系统在显存占用、上下文切换和 KV-cache 重建方面的巨大工程成本。这一点对真实部署尤为关键，因为它意味着能力解耦不必以推理效率为代价。
 
-![](asset/img_06a9796e37e6.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_06a9796e37e6.jpg)
 
 #### **Q3：DART 为什么有效？用线性代数怎么理解？**
 

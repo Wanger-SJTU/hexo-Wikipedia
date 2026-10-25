@@ -1,9 +1,19 @@
 ---
-title: "详解深度学习中的Normalization，BN/LN/WN"
-date: 2021-09-11
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/33173246
+title: 详解深度学习中的Normalization，BN/LN/WN
+date: "2021-09-11 00:00:00"
+updated: "2021-09-11 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/机器学习/详解深度学习中的Normalization,BN_LN_WN/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/33173246
 ---
+
 
 深度神经网络模型训练之难众所周知，其中一个重要的现象就是 Internal Covariate Shift. Batch Norm 大法自 2015 年由Google 提出之后，就成为深度学习必备之神器。自 BN 之后， Layer Norm / Weight Norm / Cosine Norm 等也横空出世。本文从 Normalization 的背景讲起，用一个公式概括 Normalization 的基本思想与通用框架，将各大主流方法一一对号入座进行深入的对比分析，并从参数和数据的伸缩不变性的角度探讨 Normalization 有效的深层原因。
 
@@ -155,7 +165,7 @@ $$h=f\left(\bold{g}\cdot\frac{\bold{x}-\bold{\mu}}{\bold{\sigma}}+\bold{b}\right
 
 3.1  Batch Normalization —— 纵向规范化**
 
-![](asset/img_062ff59bb019.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_062ff59bb019.jpg)
 
 Batch Normalization 于2015年由 Google 提出，开 Normalization 之先河。其规范化针对单个神经元进行，利用网络训练时一个 mini-batch 的数据来计算该神经元 x_i 的均值和方差,因而称为 Batch Normalization。
 
@@ -175,7 +185,7 @@ BN 独立地规范化每一个输入维度 x_i ，但规范化的参数是一个
 
 3.2  Layer Normalization —— 横向规范化**
 
-![](asset/img_922598eacfc7.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_922598eacfc7.jpg)
 
 层规范化就是针对 BN 的上述不足而提出的。与 BN 不同，LN 是一种横向的规范化，如图所示。它综合考虑一层所有维度的输入，计算该层的平均输入值和输入方差，然后用同一个规范化操作来转换各个维度的输入。
 
@@ -197,7 +207,7 @@ $$前面我们讲的模型框架 h=f\left(\bold{g}\cdot\frac{\bold{x}-\bold{\mu}
 
 BN 和 LN 均将规范化应用于输入的特征数据 \bold{x} ，而 WN 则另辟蹊径，将规范化应用于线性变换函数的权重 \bold{w} ，这就是 WN 名称的来源。
 
-![](asset/img_5413ff74db6b.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_5413ff74db6b.jpg)
 
 具体而言，WN 提出的方案是，将权重向量 **\bold{w}** 分解为向量方向 **\hat{\bold{v}}** 和向量模 **g** 两部分**：
 
@@ -275,7 +285,7 @@ CN 通过用余弦计算代替内积计算实现了规范化，但成也萧何�
 
 我们以下面这个简化的神经网络为例来分析。
 
-![](asset/img_7b9863348e74.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_7b9863348e74.jpg)
 
 4.1 Normalization 的权重伸缩不变性**
 

@@ -1,9 +1,19 @@
 ---
-title: "conv_transpose depth-wise优化技巧"
-date: 2020-11-21
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/283091528
+title: conv_transpose depth-wise优化技巧
+date: "2020-11-21 00:00:00"
+updated: "2020-11-21 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/dl论文/conv_transpose-depth-wise优化技巧/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/283091528
 ---
+
 
 conv_transpose是啥？如果把常规convolution的计算过程理解成正卷积，那么conv_transpose就可以称做“反卷积”，一些框架索性把这个操作叫做deconvolution(caffe, MNN)，还有一些“正统框架”叫做conv_transpose(TensorFlow, PyTorch, PaddlePaddle), 笔者认为这两个名字所描述的操作是等价的。
 
@@ -72,7 +82,7 @@ tensor([[[[134., 245., 198.],
 
 caffe中计算deconvolution的方法是gemm+col2im,  这个方法实际当中被广泛采用来计算conv_transpose，下面做一下简要分析。
 
-![](asset/img_00972d5116d6.jpg)
+![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_00972d5116d6.jpg)
 
 gemm+col2im计算conv_transpose假设输入feature_map的layout是C*H*W(假设batch=1), filter layout是K*C*R*R,  对输入进行gemm后得到的中间结果layout是K*R*R*H*W (对gemm而言，M' = KRR, K'= C, N'=H*), 先做gemm可以把C这一维进行累加削除,  然后做col2im得到最后计算结果的layout是K*H'*W'(H'和W'是对应输出的宽高)，实际上这里的col2im通过累加的方式把KRR这一维降维到K, 对H'*W'这一维可以根据公式得到输入输出宽高的对应关系。
 
@@ -217,13 +227,13 @@ void conv_transpose_depthwisefloat>(const float* dst,
 
 理解了这4张图的含义才真正理解了conv_transpose的真正内涵，同时也说明了一个问题：用直接法计算conv_transpose时必须从输入出发来计算输出，这与常规卷积从输出出发来找输入完成计算是恰恰相反的(从输出每个点出发来找到输入的kernel_w*kernel_h个点，做乘累加得到输出点的计算结果)！而做conv_transpose如果硬要从输出出发来找输入，必须把卷积核旋转90度，才能一一对应做乘累加，这又回到了最开始陈述的那个问题，可能需要进行插0操作不可取。
 
-![](asset/img_b14dbdab6c90.jpg)
+![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_b14dbdab6c90.jpg)
 
-kx=0,ky=0时的反卷积计算示意图![](asset/img_8c7849ff7131.jpg)
+kx=0,ky=0时的反卷积计算示意图![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_8c7849ff7131.jpg)
 
-kx=0, ky=1时反卷积计算示意图![](asset/img_119c40fb96a1.jpg)
+kx=0, ky=1时反卷积计算示意图![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_119c40fb96a1.jpg)
 
-kx=1,ky=0时反卷积计算示意图![](asset/img_d57d8adf59d3.jpg)
+kx=1,ky=0时反卷积计算示意图![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_d57d8adf59d3.jpg)
 
 kx=1,ky=1时反卷积计算示意图第二版代码：
 

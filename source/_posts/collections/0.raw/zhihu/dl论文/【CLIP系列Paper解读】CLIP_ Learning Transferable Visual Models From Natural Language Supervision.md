@@ -1,9 +1,19 @@
 ---
 title: "【CLIP系列Paper解读】CLIP: Learning Transferable Visual Models From Natural Language Supervision"
-date: 2023-02-27
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/486857682
+date: "2023-02-27 00:00:00"
+updated: "2023-02-27 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/dl论文/【CLIP系列Paper解读】CLIP_-Learning-Transferable-Visual-Models-From-Natural-Language-Supervision/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/486857682
 ---
+
 
 **今天介绍一篇OpenAI的神作CLIP，文章发表在ICML-2021，于2021年3月挂在arXiv上的。截至2022年3月，文章已有700+引用量，可见其影响力。Paper传送门：
 
@@ -28,15 +38,15 @@ Code传送门：
 
 3. Model**
 
-**3.1 Objective****海量的（image，text）数据有了，问题是怎么设计并高效地训练模型。作者提出CLIP的模型，可以认为是ConVIRT[[1]](#ref_1)的简化版。这里先简单回顾下ConVIRT (咋一看是不是觉得CLIP和ConVIRT一摸一样... ).
+**3.1 Objective****海量的（image，text）数据有了，问题是怎么设计并高效地训练模型。作者提出CLIP的模型，可以认为是ConVIRT<span class="wikilink wikilink--missing" title="未导入的页面">1</span>(#ref_1)的简化版。这里先简单回顾下ConVIRT (咋一看是不是觉得CLIP和ConVIRT一摸一样... ).
 
-![](asset/img_94362ff6d928.jpg)
+![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_94362ff6d928.jpg)
 
 ConVIRTVonVIRT用（image，text）对来训练模型，其有一个image encoder和一个text encoder，训练目标是让两路的representation尽可能得一致（对偶地**最大化表征的agreement），其中gv和gu函数是一个non-linear得projection head，负责分别将图像和文本表征投影到一个shared的空间，从而计算距离。
 
-![](asset/img_37295896bad7.jpg)
+![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_37295896bad7.jpg)
 
-![](asset/img_a43a1d06a1cb.jpg)
+![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_a43a1d06a1cb.jpg)
 
 其实就是构造了一个对称的contrastive loss，在一个batch内预测谁是正样本。
 
@@ -49,17 +59,17 @@ ConVIRTVonVIRT用（image，text）对来训练模型，其有一个image encode
 - CLIP loss中的temperature参数τ是可学的。
 于是CLIP的预训练模型就有了：
 
-![](asset/img_208e5fa38335.jpg)
+![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_208e5fa38335.jpg)
 
 一个batch里有N对（image，text），然后和ConVIRT一样做对称的contrastive learning，伪代码如下：
 
-![](asset/img_9b64b462c9f4.jpg)
+![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_9b64b462c9f4.jpg)
 
 **3.2 Inference / Zero-shot prediction**
 
 一旦CLIP训练好了，我们就可以做zero-shot prediction了，如图所示：
 
-![](asset/img_5ce03334760e.jpg)
+![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_5ce03334760e.jpg)
 
 CLIP zero-shot prediction步骤可以整理成下面这样：
 
@@ -136,7 +146,7 @@ for value, index in zip(values, indices):
 
 **4.1 Zero-shot CLIP v.s. Linear Probe on ResNet50**
 
-![](asset/img_4b406538a972.jpg)
+![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_4b406538a972.jpg)
 
 CLIP的胜率在，已经很强了，因为CLIP是zero-shot的，即没有用下游任务的数据，而linear probed ResNet50用了下游数据进行finetune逻辑回归分类器的参数。
 
@@ -146,15 +156,15 @@ CLIP的胜率在，已经很强了，因为CLIP是zero-shot的，即没有用下
 
 从另一个角度，一张图的text描述其实有很多种的，只要text的核心语义和image相同就行，那么我们还可以做一些ensemble，比如ensemble一下"A photo of a big {label}."和"A photo of a small {label}."。
 
-![](asset/img_d6b7dca5246a.jpg)
+![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_d6b7dca5246a.jpg)
 
 Prompt ablation可以发现，采用Prompt engineering+ensembling的效果比只用没有上下文的类别名好得多。
 
-（PS：作者这里的发现直接motivate了之后的CoOp[[2]](#ref_2)，CoCoOp[[3]](#ref_3)之类learnable prompting的工作，后面有时间我会专门写一期关于这个的。）
+（PS：作者这里的发现直接motivate了之后的CoOp<span class="wikilink wikilink--missing" title="未导入的页面">2</span>(#ref_2)，CoCoOp<span class="wikilink wikilink--missing" title="未导入的页面">3</span>(#ref_3)之类learnable prompting的工作，后面有时间我会专门写一期关于这个的。）
 
 **4.3 Few-shot CLIP v.s. SOTA (ImageNet) SSL methods**
 
-![](asset/img_7253c90d7250.jpg)
+![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_7253c90d7250.jpg)
 
 y: 20个测试数据集上的平均得分; x: shots
 
@@ -162,7 +172,7 @@ y: 20个测试数据集上的平均得分; x: shots
 - Few-shot CLIP的performance远高于之前的SOTA模型。
 **4.4 How many shots is needed for achieving zero-shot performance**
 
-![](asset/img_d211318da939.jpg)
+![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_d211318da939.jpg)
 
 Few-shot (linear probing) CLIP （保持CLIP encoder 参数fixed，加一层逻辑回归分类器微调）平均需要20.8-shots才能match zero-shot CLIP性能。这里相当于保持了the same CLIP feature space上，观察few-shot finetuning和zero-shot的性能差异。这里其实说明通过自然语言学到的视觉概念比少量样本finetune学到的好。
 
@@ -170,13 +180,13 @@ Few-shot (linear probing) CLIP （保持CLIP encoder 参数fixed，加一层逻�
 
 这里不再是few-shot linear probing了，而是全量数据的linear probing，我们来看下其跟zero-shot性能的对比：
 
-![](asset/img_a41bc12a9af2.jpg)
+![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_a41bc12a9af2.jpg)
 
 总体上，两者的性能是正相关的，此外，大部分情况下linear probing的性能要好不少。
 
 再来一个linear probing的天梯图：
 
-![](asset/img_6572bfb85ad1.jpg)
+![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_6572bfb85ad1.jpg)
 
 CLIP GOAT！！！
 
@@ -184,7 +194,7 @@ CLIP GOAT！！！
 
 作者在ImageNet的7个shift datasets上观察各模型的平均性能。
 
-![](asset/img_5cc23a89c966.jpg)
+![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_5cc23a89c966.jpg)
 
 说实话，做domain adaptation（DA）/generalization（DG）的人看到这里应该挺兴奋，新的鲁棒特征来啦。不过问题来了，左边这张图是不是也反映了representation learning比DA、DG technique更重要呢？（那么，我们真的需要花那么大力气去卷DA嘛... 说不定通过这种大规模pretraining就能很大程度上解决domain shift的问题。但另一方面，DA、DG也可以在这些pretraining得到的表征上锦上添花。怎么说都有道理，但我更prefer to CLIP这类表征学习的意义。
 

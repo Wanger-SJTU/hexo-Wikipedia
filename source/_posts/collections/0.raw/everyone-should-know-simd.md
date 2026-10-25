@@ -1,10 +1,21 @@
 ---
 title: Everyone Should Know SIMD
-author: Mitchell Hashimoto
-url: https://mitchellh.com/writing/everyone-should-know-simd
-tags: [SIMD, performance, Zig, low-level]
-date: 2026-07-23
+date: "2026-07-23 00:00:00"
+updated: "2026-07-23 00:00:00"
+layout: post
+permalink: /collections/0.raw/everyone-should-know-simd/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - SIMD
+  - performance
+  - Zig
+  - low-level
 ---
+
 
 # Everyone Should Know SIMD
 

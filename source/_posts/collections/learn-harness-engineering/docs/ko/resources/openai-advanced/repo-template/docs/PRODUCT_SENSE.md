@@ -1,3 +1,16 @@
+---
+title: PRODUCTSENSE.md
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/ko/resources/openai-advanced/repo-template/docs/PRODUCT_SENSE/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # PRODUCT_SENSE.md
 
 이 파일은 에이전트(agent)가 코드만으로는 신뢰할 수 있게 추론할 수 없는 지속적인 제품 판단을 담습니다.

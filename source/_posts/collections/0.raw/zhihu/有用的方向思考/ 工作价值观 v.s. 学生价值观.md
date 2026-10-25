@@ -1,13 +1,23 @@
 ---
-title: "(1 封私信) 工作价值观 v.s. 学生价值观"
-date: 2025-12-11
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/1982479217628299773
+title: (1 封私信) 工作价值观 v.s. 学生价值观
+date: "2025-12-11 00:00:00"
+updated: "2025-12-11 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/有用的方向思考/工作价值观-v.s.-学生价值观/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/1982479217628299773
 ---
+
 
 刚刚阅读完李沐大神的文章，结合鹅厂打工四个月，写点一些思维心态上的转变。
 
-[![](asset/img_e62883f7c5fe.jpg)工作五年反思2.3 万赞同 · 313 评论 文章](https://zhuanlan.zhihu.com/p/374777591)
+[![](/images/collections/0.raw/zhihu/%25E6%259C%2589%25E7%2594%25A8%25E7%259A%2584%25E6%2596%25B9%25E5%2590%2591%25E6%2580%259D%25E8%2580%2583/asset/img_e62883f7c5fe.jpg)工作五年反思2.3 万赞同 · 313 评论 文章](https://zhuanlan.zhihu.com/p/374777591)
 
 #### what is important?
 

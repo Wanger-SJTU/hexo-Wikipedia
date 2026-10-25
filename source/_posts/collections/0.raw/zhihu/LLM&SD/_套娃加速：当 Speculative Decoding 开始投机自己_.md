@@ -1,9 +1,19 @@
 ---
-title: "套娃加速：当 Speculative Decoding 开始投机自己"
-date: 2026-04-13
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/2026747951905613706
+title: 套娃加速：当 Speculative Decoding 开始投机自己
+date: "2026-04-13 00:00:00"
+updated: "2026-04-13 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/LLM-SD/_套娃加速-当-Speculative-Decoding-开始投机自己_/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/2026747951905613706
 ---
+
 
 **论文来源**: Tanishq Kumar (Stanford), Tri Dao (Princeton / Together AI), Avner May (Together AI) **GitHub**: [https://github.com/tanishqkumar/ssd](https://link.zhihu.com/?target=https%3A//github.com/tanishqkumar/ssd) **面向读者**: 有编程经验的 ML 从业者，了解 Speculative Decoding、KV Cache、Rejection Sampling 等核心概念
 #### 一句话总结
@@ -18,7 +28,7 @@ Speculative Decoding 本身也有串行瓶颈——verification 完成前 draft 
 
 验证期间 draft 模型空闲，起草期间 target 模型空闲。如果把这两步并行化会怎样？（Section 1, p.1）
 
-**Figure 1: SD vs SSD 对比** 左图：标准 SD 中 draft 和 verify 交替执行，互相等待。中图：SSD 中 draft 在 verify 同时预测结果并预计算 speculation，命中后立即返回。右图：end-to-end 性能对比，SSD (Ours) 在 Llama-3.1-70B 上达到约 270 tok/s，比 vLLM SD (2.1x) 和 SGLang SD (3.1x) 更快，达到 4.0x 加速。** ![](asset/img_0806c49be7b4.jpg)
+**Figure 1: SD vs SSD 对比** 左图：标准 SD 中 draft 和 verify 交替执行，互相等待。中图：SSD 中 draft 在 verify 同时预测结果并预计算 speculation，命中后立即返回。右图：end-to-end 性能对比，SSD (Ours) 在 Llama-3.1-70B 上达到约 270 tok/s，比 vLLM SD (2.1x) 和 SGLang SD (3.1x) 更快，达到 4.0x 加速。** ![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_0806c49be7b4.jpg)
 
 #### 2. SSD 核心思想：预测 Verification 结果，提前备好 Speculation
 
@@ -32,7 +42,7 @@ SSD 的核心洞察很简单：
 
 #### 伪代码拆解
 
-**Algorithm 1: SSD Framework** 三个异步函数：main（启动器）、verifier（循环验证）、speculator（循环预测+缓存）。核心在 speculator 的 while loop 中：发送 spec_tokens → 预测 outcomes → 为每个 outcome 预计算 speculation → 等待验证结果 → 查缓存命中/fallback。** ![](asset/img_9e58186a5b5d.jpg)
+**Algorithm 1: SSD Framework** 三个异步函数：main（启动器）、verifier（循环验证）、speculator（循环预测+缓存）。核心在 speculator 的 while loop 中：发送 spec_tokens → 预测 outcomes → 为每个 outcome 预计算 speculation → 等待验证结果 → 查缓存命中/fallback。** ![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_9e58186a5b5d.jpg)
 
 用 Python 伪代码来理解 speculator 的核心逻辑：
 
@@ -73,7 +83,7 @@ Verification outcome 由两部分组成：接受了前多少个 token（accepted
 
 **Fan out** 策略：为每轮 speculation 预测 F 个最可能的 outcomes，只预计算这 F 个对应的 speculation。F 越大 cache hit rate 越高，但计算开销也越大。
 
-**Figure 2: Speculation 缓存构建示意图** 展示了如何在 token tree 的不同分支节点上进行 fan out，为每个可能的 verification outcome 预计算 speculation chain。** ![](asset/img_f72321f82e2d.jpg)
+**Figure 2: Speculation 缓存构建示意图** 展示了如何在 token tree 的不同分支节点上进行 fan out，为每个可能的 verification outcome 预计算 speculation chain。** ![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_f72321f82e2d.jpg)
 
 核心发现——Geometric Fan Out**：token 的 rejection rate 随位置**指数下降**。第 1 个 token 被 reject 的概率最高，后面的越来越低（因为后面的 token 是条件在前面已接受 token 上的）。所以应该把更多 fan out budget 分配给 early positions。（Section 4.1, p.7-8）
 
@@ -83,11 +93,11 @@ Verification outcome 由两部分组成：接受了前多少个 token（accepted
 
 其中 f_i 是分配给第 i 个位置的 fan out 数量，F 是总 fan out budget，K 是 speculation 长度。直觉上，i 越小（越靠前的位置），指数越大，分到的 fan out 越多。
 
-**Figure 3: Cache Hit Rate 随 Fan Out 的缩放** 左、中图展示 rejection rate 随 token 位置指数下降的经验规律。右图展示 geometric fan out 的 cache hit rate 显著优于 uniform fan out。F=8 时 greedy 解码下 cache hit rate 接近 95%。** ![](asset/img_95fc60330f5c.jpg)
+**Figure 3: Cache Hit Rate 随 Fan Out 的缩放** 左、中图展示 rejection rate 随 token 位置指数下降的经验规律。右图展示 geometric fan out 的 cache hit rate 显著优于 uniform fan out。F=8 时 greedy 解码下 cache hit rate 接近 95%。** ![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_95fc60330f5c.jpg)
 
  Figure 4: Geometric vs Uniform Fan Out** 高温采样下 geometric fan out 的优势更加显著，因为高温时 early position 的 rejection rate 更高，geometric 分配更能捕获这些变化。** 
 
-![](asset/img_eb3c8cf6f476.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_eb3c8cf6f476.jpg)
 
 *[解读者注]* Geometric fan out 的直觉很好理解：想象你在预测一个概率链条的结果。链条前端的不确定性最大（draft 和 target 分布差异最大），后端的 token 其实已经被前面接受的 token “锁定”了大半。所以预测 budget 应该集中在前端。
 
@@ -106,7 +116,7 @@ Saguaro sampling 通过一个混合分布来平衡：
 - \lambda = 0：退化为标准 draft sampling（纯 acceptance rate 优化）
 - \lambda = 1：退化为 greedy decoding（纯 cache hit rate 优化）
 - 最优 \lambda 取决于 cache hit time vs cache miss time 的比值
-**Figure 5: Saguaro Sampling** 展示了 λ 对 acceptance rate 和 cache hit rate 的 tradeoff 效果。存在一个最优 λ 使得整体 decoding 速度最大化。** ![](asset/img_5cd81cb621d2.jpg)
+**Figure 5: Saguaro Sampling** 展示了 λ 对 acceptance rate 和 cache hit rate 的 tradeoff 效果。存在一个最优 λ 使得整体 decoding 速度最大化。** ![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_5cd81cb621d2.jpg)
 
 关键定理 (Theorem 9, p.9-10)**：最优 \lambda 满足——当 cache hit 时节省的时间恰好等于因 acceptance rate 降低而增加的时间时达到平衡。具体来说，\lambda 应该随着 t_{\text{miss}} / t_{\text{hit}} 比值的增大而增大（cache miss 代价越高，越值得牺牲 acceptance rate 来换取更高的 cache hit rate）。
 
@@ -118,7 +128,7 @@ Cache miss 不可避免。此时需要 **backup speculator** 来生成 speculati
 
 **方案 A — Fast Speculator**：n-gram 匹配或简单启发式，几乎零延迟但质量低。 **方案 B — Neural Speculator**：用 draft model 重新跑一遍，质量高但有延迟。
 
-**Figure 6: Backup Speculator 选择** 左图：batch size 较小时 neural backup 更优（GPU 计算能力有富余），batch size 较大时 fast backup 更优（GPU 已饱和，neural backup 延迟太高）。右图：展示了 SSD 在不同 batch size 下的表现。** ![](asset/img_32b837ee3cdc.jpg)
+**Figure 6: Backup Speculator 选择** 左图：batch size 较小时 neural backup 更优（GPU 计算能力有富余），batch size 较大时 fast backup 更优（GPU 已饱和，neural backup 延迟太高）。右图：展示了 SSD 在不同 batch size 下的表现。** ![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_32b837ee3cdc.jpg)
 
 Theorem 17 (p.24)** 给出了选择准则：
 
@@ -134,7 +144,7 @@ SSD 的实现需要 draft 和 target 运行在**物理分离的 GPU** 上。论�
 关键实现细节：
 
 - **Custom Attention Mask**：每轮 draft 需要为 B·F·(K+1) 个 verification 分支并行解码。论文设计了自定义 attention mask，使得不同分支的 token 只能 attend 到自己分支的 prefix，实现单次 forward pass 处理所有分支。
-**Figure 8: Custom Attention Mask** 展示了多查询解码的 attention mask 结构，每个验证分支有独立的因果 mask。** ![](asset/img_122037d3516a.jpg)
+**Figure 8: Custom Attention Mask** 展示了多查询解码的 attention mask 结构，每个验证分支有独立的因果 mask。** ![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_122037d3516a.jpg)
 
 - Speculation Cache 内存开销**：存储 O(B \cdot F \cdot K \cdot (K+1) \cdot (V+1)) bits，其中 B 是 batch size，F 是 fan out，K 是 speculation 长度，V 是 vocab size。实际约几百 MB，在 H100 的 80GB HBM 中可以忽略。（Section B, p.30）
 - **通信开销**：每轮 target 发送 O(B) bits（accepted count + bonus token），draft 发送 spec tokens + logits。通信量远小于模型计算时间。
@@ -143,7 +153,7 @@ SSD 的实现需要 draft 和 target 运行在**物理分离的 GPU** 上。论�
 
 #### 5.1 主实验：Llama-3.1-70B
 
-**Figure 7: End-to-End 性能对比** 左图：SSD vs SD vs AR 在不同设置下的解码速度。SSD (Saguaro) 在 Llama-3.1-70B + 1B draft 配置下达到约 270 tok/s，比 SGLang SD (~200 tok/s) 快约 30%，比 vLLM AR (~65 tok/s) 快约 4x。右图：batch size scaling 表现。** ![](asset/img_5b40eefd5d3b.jpg)
+**Figure 7: End-to-End 性能对比** 左图：SSD vs SD vs AR 在不同设置下的解码速度。SSD (Saguaro) 在 Llama-3.1-70B + 1B draft 配置下达到约 270 tok/s，比 SGLang SD (~200 tok/s) 快约 30%，比 vLLM AR (~65 tok/s) 快约 4x。右图：batch size scaling 表现。** ![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_5b40eefd5d3b.jpg)
 
 具体数据（Section 5, Figure 7）：
 
@@ -155,11 +165,11 @@ SSD 的实现需要 draft 和 target 运行在**物理分离的 GPU** 上。论�
 
 论文非常仔细地 sweep 了 SD 基线的超参，确保对比公平：
 
-**Table 1: SGLang 基线 Sweep** 在 SGLang 0.5.9 上对 Llama-3.1-70B/1B 进行了 steps × topk 的全面网格搜索。EAGLE-3 最优配置为 steps=8, topk=3 (192.8 tok/s)，Standalone 最优为 steps=10, topk=3 (201.9 tok/s)。** ![](asset/img_87a435d262cd.jpg)
+**Table 1: SGLang 基线 Sweep** 在 SGLang 0.5.9 上对 Llama-3.1-70B/1B 进行了 steps × topk 的全面网格搜索。EAGLE-3 最优配置为 steps=8, topk=3 (192.8 tok/s)，Standalone 最优为 steps=10, topk=3 (201.9 tok/s)。** ![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_87a435d262cd.jpg)
 
  Table 2: vLLM 基线 Sweep** vLLM 0.16.0 上 EAGLE-3 最优为 K=6 (197.6 tok/s)，Standalone 最优为 K=2 (136.0 tok/s)。** 
 
-![](asset/img_a840bb9296bf.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_a840bb9296bf.jpg)
 
 *[解读者注]* 这里值得注意的是，论文选择了当时最新版本的 vLLM 和 SGLang 作为基线，并且做了详尽的超参搜索。很多 SD 论文只和 vanilla SD 比，而这篇直接对标生产级推理引擎的最优配置，说服力更强。
 
@@ -169,25 +179,25 @@ SSD 框架可以和其他 SD 变体结合。论文展示了 SSD + EAGLE-3 的组
 
 > Figure 9: SSD-EAGLE-3 vs EAGLE-3** 在 EAGLE-3 中，draft model 需要 target model 上一轮的 hidden states 作为输入。在 SSD-EAGLE-3 中，由于 draft 和 target 并行运行，无法获得当前轮的 hidden states，所以使用上一轮缓存的 hidden states 代替（activation conditioning 的变化）。** 
 
-![](asset/img_3cab67864fd3.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_3cab67864fd3.jpg)
 
 #### 5.4 Qwen-3 模型家族验证 (Appendix F)
 
 > Figure 10: Qwen-3 Cache Hit Rate 缩放** Qwen-3 模型也展现了与 Llama-3 类似的 rejection rate 指数下降规律，验证了 geometric fan out 的通用性。** 
 
-![](asset/img_a865d93941f6.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_a865d93941f6.jpg)
 
  Figure 11: Qwen-3 End-to-End 性能** SSD 在 Qwen-3-32B + 0.6B draft 上也展现了显著加速。** 
 
-![](asset/img_cc258fdf6f71.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_cc258fdf6f71.jpg)
 
  Figure 12: Qwen-3 模型家族 E2E 速度** 不同 Qwen-3 模型大小下 SSD 的端到端速度对比。** 
 
-![](asset/img_5fed43ca63b8.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_5fed43ca63b8.jpg)
 
  Figure 13: Qwen-3 Batch Size Scaling** Qwen-3 模型在不同 batch size 下的表现。** 
 
-![](asset/img_069c30601e50.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_069c30601e50.jpg)
 
 #### 6. 理论贡献
 

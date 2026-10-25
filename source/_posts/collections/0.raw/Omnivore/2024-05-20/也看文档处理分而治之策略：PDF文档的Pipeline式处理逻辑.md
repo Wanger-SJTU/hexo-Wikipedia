@@ -1,4 +1,17 @@
 ---
+title: 也看文档处理分而治之策略：PDF文档的Pipeline式处理逻辑
+date: "2026-04-11 21:40:28"
+updated: "2026-04-11 21:40:28"
+layout: post
+permalink: /collections/0.raw/Omnivore/2024-05-20/也看文档处理分而治之策略-PDF文档的Pipeline式处理逻辑/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
+---
 id: e505d4b9-448a-4747-a5e9-a169bab4522c
 ---
 

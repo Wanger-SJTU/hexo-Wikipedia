@@ -1,9 +1,19 @@
 ---
-title: "Softmax性能提升400%，加速边缘设备LLM推理"
-date: 2026-01-21
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/1996636375152342490
+title: Softmax性能提升400%，加速边缘设备LLM推理
+date: "2026-01-21 00:00:00"
+updated: "2026-01-21 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/Softmax性能提升400-,加速边缘设备LLM推理/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/1996636375152342490
 ---
+
 
 Softmax性能提升400%，加速边缘设备LLM推理
 

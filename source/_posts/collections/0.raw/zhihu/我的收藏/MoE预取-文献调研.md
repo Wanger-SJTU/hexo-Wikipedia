@@ -1,9 +1,19 @@
 ---
-title: "MoE预取-文献调研"
-date: 2026-06-02
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/2045187571597174770
+title: MoE预取-文献调研
+date: "2026-06-02 00:00:00"
+updated: "2026-06-02 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/MoE预取-文献调研/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/2045187571597174770
 ---
+
 
 近期在研究MoE预取，阅读了近些年的顶会论文，有这样几篇似乎比较好。
 

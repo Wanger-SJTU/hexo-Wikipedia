@@ -1,16 +1,26 @@
 ---
-title: "valgrind-android"
-date: 2021-02-21
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/351827480
+title: valgrind-android
+date: "2021-02-21 00:00:00"
+updated: "2021-02-21 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/体系结构/valgrind-android/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/351827480
 ---
+
 
 ### 一点点介绍
 
 - 新整的活
 - android arm64-v8a 的 valgrind 二进制包
 - 直接在 android adb shell 中用 valgrind 调试
-[![](asset/img_6b698ec6d395.jpg)nihui/valgrind-androidgithub.com/nihui/valgrind-android](https://link.zhihu.com/?target=https%3A//github.com/nihui/valgrind-android)
+[![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_6b698ec6d395.jpg)nihui/valgrind-androidgithub.com/nihui/valgrind-android](https://link.zhihu.com/?target=https%3A//github.com/nihui/valgrind-android)
 
 ### 一点点吐嘈
 
@@ -33,6 +43,6 @@ valgrind/bin/valgrind --tool=callgrind ./benchncnn 4 1 0 -1 0`
 `adb pull /data/local/tmp/callgrind.out.9519
 kcachegrind callgrind.out.9519`
 
-![](asset/img_14b415b9dc44.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_14b415b9dc44.jpg)
 
 ### 于是，就这样吧

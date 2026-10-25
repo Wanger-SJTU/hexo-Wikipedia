@@ -1,9 +1,19 @@
 ---
-title: "(2 条消息) SOC的多核启动流程详解"
-date: 2025-01-15
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/18481479330
+title: (2 条消息) SOC的多核启动流程详解
+date: "2025-01-15 00:00:00"
+updated: "2025-01-15 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/SOC的多核启动流程详解/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/18481479330
 ---
+
 
 > 目录
 1、基础概念
@@ -55,7 +65,7 @@ source: https://zhuanlan.zhihu.com/p/18481479330
 3、ATF(TF-A)代码的剖析
 以BL1代码为例分析，该代码适配支持cold reset/warm reset/primary boot/senondary boot等诸多场景。
 
-![](asset/img_dd1f533eb78a.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_dd1f533eb78a.jpg)
 
 - 如果reset是可编程的，PROGRAMMABLE_RESET_ADDRESS=1， 则_warm_boot_mailbox = 0，则下面这段代码不会被编译，无论cold boot还是warm boot都不会走_warm_boot_mailbox 。
 - 如果reset是不可编程的，PROGRAMMABLE_RESET_ADDRESS=0， 则_warm_boot_mailbox = 1，则下面这段代码会被编译，但cold boot走do_cold_boot 流程，warm boot需要走br x0 流程
@@ -131,13 +141,13 @@ mailbox就说一块内存，所有的core都能访问这块内存。
 6.2 mailbox的作用
 mailbox中定义了entrypoint地址，当core从BL1 BL2 BL31正常流程启动时，会在BL1、BL2 at EL3、BL31中，强制跳转到mailbox的地址，以跳过已初始化的部分。
 
-![](asset/img_cd4ebda16e5a.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_cd4ebda16e5a.jpg)
 
 6.3 mailbox的示例
 其实就是定义了一块内存，主核第一次跑时，会填充该内存。
 主核第二次跑时或从和跑时，检测该内存已经填充过了，则走warm启动流程，即强制跳转到mailbox中的address地址。
 
-![](asset/img_50504c3e6556.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_50504c3e6556.jpg)
 
 7、具体场景的总结
 

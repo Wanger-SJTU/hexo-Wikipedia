@@ -1,3 +1,16 @@
+---
+title: "إجراء التشغيل القياسي: حلقة التحقق من Chrome DevTools"
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/ar/resources/openai-advanced/sops/chrome-devtools-validation-loop/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # إجراء التشغيل القياسي: حلقة التحقق من Chrome DevTools
 
 استخدم هذا الإجراء عندما يعتمد عمل واجهة المستخدم على تفاعل وقت التشغيل الفعلي

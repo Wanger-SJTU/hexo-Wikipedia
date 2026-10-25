@@ -1,9 +1,19 @@
 ---
-title: "ARM Cortex MPU 内存保护单元"
-date: 2023-10-27
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/663730490
+title: ARM Cortex MPU 内存保护单元
+date: "2023-10-27 00:00:00"
+updated: "2023-10-27 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/体系结构/ARM-Cortex-MPU-内存保护单元/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/663730490
 ---
+
 
 **1. 受保护的内存系统架构PMSAv7****支持非特权和特权软件执行模型需要控制访问权限的内存保护方案。Armv7-M**支持受保护的内存系统架构**PMSAv7**（**Protected Memory System Architecture**）。**PMSAv7**实现的系统地址空间由内存保护单元 (**MPU**) 保护。**MPU** 将内存划分为多个区域（**regions**）。支持区域的数量是根据实现定义的（**IMPLEMENTATION DEFINED**）。**PMSAv7** 可以支持小至**32**字节的区域，但是**4GB**地址空间中的只有有限寄存器资源，也就意味着**MPU**只能提供固有的粗粒度保护方案。该方案是完全可预测的，所有控制信息都保存在与处理器紧密耦合的寄存器中。只有 **MPU** 寄存器接口的软件控制才需要内存访问，请参阅第 B3-635 页的 在SCS中PMSAv7的寄存器支持**同时 Armv7-M** 中的 **MPU** 支持是可选的。**2. MPU 与系统内存映射的关系****实现时，MPU** 与第B3-592页的系统地址映射中描述的系统内存映射的关系如下：**
 
@@ -20,9 +30,9 @@ source: https://zhuanlan.zhihu.com/p/663730490
 
 **
 
-![](asset/img_e67f797c4817.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_e67f797c4817.jpg)
 
-![](asset/img_8484155b5328.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_8484155b5328.jpg)
 
 3. 禁用 MPU 时的行为****通过将 MPU_CTRL.ENABLE** 位设置为 **0** 来禁用 **MPU**，意味着特权和非特权访问使用默认的内存映射。**当 MPU**被禁用时：**
 
@@ -148,22 +158,22 @@ MPU 区域编号寄存器会选择的相关区域寄存器：**
 - MPU区域属性和大小寄存器（**MPU Region Attribute and Size Register**），参见第B3-640页的MPU_RASR ，控制了内存区域的区域大小、子区域访问、访问权限、内存类型和其他属性。
 每组区域寄存器包括其自己的区域使能位。**如果 Armv7-M** 实现不支持 **PMSAv7**，则只需要 **MPU** 类型寄存器。MPU控制寄存器为**RAZ/WI**，该区域其他所有寄存器为保留，**UNK/SBZP**。**所有MPU寄存器都是 32** 位宽的。**
 
-![](asset/img_8e178a8ba36f.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_8e178a8ba36f.jpg)
 
-![](asset/img_35d71ee17d79.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_35d71ee17d79.jpg)
 
 注意：****复位后的 MPU_RASR** 寄存器的值是未知的。在使用 **MPU_CTRL** 寄存器启用 **MPU** 之前，必须将所有 **MPU_RASR** 寄存器编程为启用或禁用。**6. MPU类型寄存器，MPU_TYPE****6.1. 功能介绍****1. 目的****MPU**类型寄存器表示**MPU**支持多少个区域（**Region**）。软件可以使用它来确定处理器是否实现了**MPU**。**2. 使用限制****没有使用限制。
 3. 配置****始终执行。
 6.2. 字段说明****
 
-![](asset/img_c028edc9ce3e.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_c028edc9ce3e.jpg)
 
 1. Bits[31:24]****保留。
 2. IREGION，bits[23:16]****指令区域。RAZ。Armv7-M**只支持统一的**MPU**。**3. DREGION, bits[15:8]****MPU**支持的区域数。如果该字段读取为零，则处理器不实现**MPU**。**4. Bits[7:1]****保留。
 5. SEPARATE, bit[0]****表示支持单独的指令和数据地址映射。RAZ。Armv7-M**只支持统一的**MPU**。**7. MPU控制寄存器，MPU_CTRL****7.1. 功能介绍****1. 目的****启用 MPU**。当 **MPU** 启用时，控制是否启用默认内存映射作为特权访问的背景区域，以及当 **FAULTMASK** 设置为 **1** 时是否启用 **MPU** 用于 **HardFaults**、**NMI** 和异常处理程序。**2. 使用限制****没有使用限制。
 3. 配置****如果未实现 MPU**，则该寄存器为 **RAZ/WI**。**7.2. 字段说明****
 
-![](asset/img_bf1337677329.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_bf1337677329.jpg)
 
 1. Bits[31:3]****保留。
 2. PRIVDEFENA, bit[2]****当 ENABLE** 位设置为 **1** 时，该位的含义是：**
@@ -196,12 +206,12 @@ MPU 区域编号寄存器会选择的相关区域寄存器：**
 
 表 B3-12 显示了 MPU_CTRL.HFNMIENA** 和 **MPU_CTRL.ENABLE** 位在由 HardFault 或 NMI 的异常处理程序发出时，或 FAULTMASK 设置为 1 时的另一个异常时如何影响这些指令的处理，并且当这对于 其他特权软件。**
 
-![](asset/img_cefb231a204c.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_cefb231a204c.jpg)
 
 - HardFault** 或 **NMI** 处理程序，或 **FAULTMASK** 设置为 1 时的其他异常处理程序。
 表 B3-12 显示了 MPU 配置或默认内存映射是否决定了非特权加载或存储指令访问的地址的属性。指令访问的处理则取决于这些属性。如果属性不允许非特权访问，则内存系统会产生故障。如果访问来自 NMI 或 HardFault 处理程序，或者由于 FAULTMASK 设置为 1 而执行优先级为 -1，则此故障会导致锁定。**8. MPU区域号寄存器，MPU_RNR****8.1. 功能介绍****1. 目的****选择 MPU_RBAR** 和 **MPU_RASR** 当前访问的区域。**2. 使用限制****与 MPU_RBAR** 和 **MPU_RASR** 一起使用，请参见第B3-639页的MPU区域基地址寄存器 MPU_RBAR和第B3-640页的MPU区域属性和大小寄存器 MPU_RASR。如果实现支持**N**个区域，则区域编号从 **0** 到 **(N-1)**，将 **N** 或更大的值写入 **REGION** 字段的效果是不可预测的。**3. 配置****仅当处理器实现了MPU**时，才被实现。**8.2. 字段说明****
 
-![](asset/img_a7b2dab47b34.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_a7b2dab47b34.jpg)
 
 1. Bits[31:8]****保留。
 2. REGION, bits[7:0]****表示 MPU_RBAR** 和 **MPU_RASR** 访问的内存区域。**9. MPU区域基地址寄存器，MPU_RBAR****9.1. 功能介绍****1. 目的：****保存由 MPU_RNR** 标识的区域的基地址。在写入时，也可用于更新指定区域的基地址，范围为 **0-5**，用新的区域编号更新 **MPU_RNR**。**2. 使用限制：****
@@ -211,7 +221,7 @@ MPU 区域编号寄存器会选择的相关区域寄存器：**
 - 如果实现支持 **N** 个区域，则区域编号从 **0** 到 **(N-1)**。如果 **N** 小于 **16**，则将 **N** 或更大的值写入 **REGION** 字段的效果是不可预测的。
 **3. 配置：****仅当处理器实现了MPU**时，才被实现。**9.2. 字段说明****
 
-![](asset/img_d54066e7d7b5.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_d54066e7d7b5.jpg)
 
 1. ADDR, bits[31:5]****区域的基地址。
 2. VALID, bit[4]****在写入时，指示要更新的区域是由 MPU_RNR.REGION** 指定，还是由此写入中指定的 **REGION** 值指定。当使用由此写入指定的 **REGION** 值时，**MPU_RNR.REGION** 会更新为此值。**
@@ -224,7 +234,7 @@ MPU 区域编号寄存器会选择的相关区域寄存器：**
 - 写入小于相应 **MPU_RBAR** 支持的最小大小的 **SIZE** 值会产生不可预测的效果。
 **3. 配置：****仅当处理器实现了MPU**时，才被实现。**10.2. 字段说明****
 
-![](asset/img_c48a3e9bc55c.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_c48a3e9bc55c.jpg)
 
 1. ATTRS, bits[31:16]****MPU 区域属性字段，该字段具有以下子字段，在第B3-641页的区域属性控制中定义：
 
@@ -261,11 +271,11 @@ MPU 区域编号寄存器会选择的相关区域寄存器：**
 - XN 位是 Execute Never 位，指示处理器是否可以从该区域执行指令，请参阅第B3-642页的 从不执行编码。
 **
 
-![](asset/img_21246b4f771a.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_21246b4f771a.jpg)
 
 AP 位 AP[2:0] 用于访问权限。 见表 B3-15
 
-![](asset/img_b5e961bdf556.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_b5e961bdf556.jpg)
 
 10.5. 从不执行编码****XN 位提供从不执行功能。为了让处理器执行一条指令，该指令必须位于以下内存区域中：
 
@@ -273,6 +283,6 @@ AP 位 AP[2:0] 用于访问权限。 见表 B3-15
 - **XN** 位设置为 **0**。
 否则，处理器在发出执行指令时会产生 **MemManage** 故障。表 **B3-16** 显示了 **XN** 位的编码。**
 
-![](asset/img_8514809d67d1.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_8514809d67d1.jpg)
 
 11. MPU 别名寄存器支持****MPU_RBAR** 和 **MPU_RASR** 在地址范围 **0xE000ED9C-0xE000EDA3** 中形成一对字。如第B3-635页上的表 **B3-11** 所示，**Armv7-M** 处理器在距 **MPU_RBAR** 地址 **0xE000ED9C** 的 **+8** 字节、**+16** 字节和 **+24** 字节的偏移处实现此地址范围的别名。将这些寄存器别名与 **MPU_RBAR.REGION** 字段一起使用，并将 **MPU_RBAR.VALID** 字段设置为 **1**，软件可以使用字的写入流，有效地更新最多可达四个区域，前提是所有访问的区域都在区域 **0** 到区域的范围内 **15**.

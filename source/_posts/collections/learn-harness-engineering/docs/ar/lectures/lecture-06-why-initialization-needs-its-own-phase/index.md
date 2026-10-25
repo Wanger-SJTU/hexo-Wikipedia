@@ -1,3 +1,16 @@
+---
+title: المحاضرة 06. هيئ قبل كل جلسة وكيل
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/ar/lectures/lecture-06-why-initialization-needs-its-own-phase/index/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 [中文版本 →](../../../zh/lectures/lecture-06-why-initialization-needs-its-own-phase/)
 
 > أمثلة الكود: [code/](https://github.com/walkinglabs/learn-harness-engineering/blob/main/docs/ar/lectures/lecture-06-why-initialization-needs-its-own-phase/code/)

@@ -1,10 +1,19 @@
 ---
-title: "DeepSeek押注的Harness，被这篇最新综述彻底讲透了"
-date: 2026-06-03
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/2045588090547447756
-
+title: DeepSeek押注的Harness，被这篇最新综述彻底讲透了
+date: "2026-06-03 00:00:00"
+updated: "2026-06-03 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/AI-infra/DeepSeek押注的Harness,被这篇最新综述彻底讲透了/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/2045588090547447756
 ---
+
 
 大家好，我是PaperAgent，不是Agent！
 

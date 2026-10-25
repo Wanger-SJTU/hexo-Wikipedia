@@ -1,3 +1,16 @@
+---
+title: 시스템 오브 레코드 체크리스트
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/ko/lectures/lecture-03-why-the-repository-must-become-the-system-of-record/code/system-of-record-checklist/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # 시스템 오브 레코드 체크리스트
 
 새 에이전트(agent)가 저장소(repository)만으로 다음을 발견할 수 있는가?

@@ -1,9 +1,19 @@
 ---
-title: "(1 封私信) AI软件栈的一些思考"
-date: 2021-06-06
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/378389269
+title: (1 封私信) AI软件栈的一些思考
+date: "2021-06-06 00:00:00"
+updated: "2021-06-06 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/模型部署那些事/AI软件栈的一些思考/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/378389269
 ---
+
 
 最近有更多精力花在底层技术的思考和跟进上，也有了一些想法，记录下来，看看后续会有什么有趣的演化**。**
 

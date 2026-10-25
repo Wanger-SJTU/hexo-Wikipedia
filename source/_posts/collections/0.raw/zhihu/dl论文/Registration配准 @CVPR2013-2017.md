@@ -1,10 +1,19 @@
 ---
-title: "Registration配准 @CVPR2013-2017"
-date: 2019-08-28
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/80071766
-
+title: Registration配准 @CVPR2013-2017
+date: "2019-08-28 00:00:00"
+updated: "2019-08-28 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/dl论文/Registration配准-CVPR2013-2017/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/80071766
 ---
+
 
 **图像配准相关论文**
 **前情提要**

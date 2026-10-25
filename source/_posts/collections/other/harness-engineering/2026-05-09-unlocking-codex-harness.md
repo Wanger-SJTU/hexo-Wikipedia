@@ -1,16 +1,22 @@
 ---
 title: "Unlocking the Codex harness: how we built the App Server"
-date: "2026-05-09"
+date: "2026-05-10 01:36:12"
+updated: "2026-05-10 01:36:12"
+layout: post
+permalink: /collections/other/harness-engineering/2026-05-09-unlocking-codex-harness/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
 tags:
   - Codex
   - App Server
   - 软件工程
   - Agent
   - Harness
-categories:
-  - 技术解读
-mathjax: true
 ---
+
 
 *来源：[OpenAI](https://openai.com/index/unlocking-the-codex-harness/)，原文发表于 2026 年 2 月 4 日*
 

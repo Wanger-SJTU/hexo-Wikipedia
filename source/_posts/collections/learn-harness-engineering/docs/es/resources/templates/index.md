@@ -1,3 +1,16 @@
+---
+title: Guía de Plantillas
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/es/resources/templates/index/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # Guía de Plantillas
 
 Estas plantillas están listas para copiar en tu propio proyecto. Cada una cumple un propósito específico en el flujo de trabajo del agente. Edita el contenido para que coincida con los comandos, rutas, nombres de características y pasos de verificación de tu proyecto.

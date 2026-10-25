@@ -1,9 +1,19 @@
 ---
-title: "(2 条消息) 鸿蒙NEXT如何保证应用安全：详解鸿蒙NEXT数字签名和证书机制"
-date: 2025-04-09
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/1893267164884080586
+title: (2 条消息) 鸿蒙NEXT如何保证应用安全：详解鸿蒙NEXT数字签名和证书机制
+date: "2025-04-09 00:00:00"
+updated: "2025-04-09 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/鸿蒙NEXT如何保证应用安全-详解鸿蒙NEXT数字签名和证书机制/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/1893267164884080586
 ---
+
 
 **本文由美团技术团队张晨分享，原题“鸿蒙应用签名实操及机制探究”，下文进行了排版优化和内容修订。
 ### 1、引言**
@@ -14,13 +24,13 @@ source: https://zhuanlan.zhihu.com/p/1893267164884080586
 
 成文过程中特别参考了OpenHarmony 5.0.0-Release版的文档和源码，详见：[OpenHarmony 5.0.0 Release](https://link.zhihu.com/?target=https%3A//gitee.com/openharmony/docs/blob/OpenHarmony-5.0.0-Release/zh-cn/release-notes/OpenHarmony-v5.0.0-release.md)。
 
-![](asset/img_00e70c5acd0d.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_00e70c5acd0d.jpg)
 
 ### **2、签名机制**
 
 签名相关的代码在[developtools_hapsigner源码仓库](https://link.zhihu.com/?target=https%3A//gitee.com/openharmony/developtools_hapsigner/tree/OpenHarmony-v5.0.0-Release/)里，**签名流程梳理如下：**
 
-![](asset/img_0619f07de448.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_0619f07de448.jpg)
 
 **签名步骤可按如下分组：**
 
@@ -34,7 +44,7 @@ source: https://zhuanlan.zhihu.com/p/1893267164884080586
 
 通过华为的DevEco-Studio工具可以直接生成包含开发者公私钥的p12文件，操作步骤：[鸿蒙NEXT官方指南-生成密钥和证书请求文件](https://link.zhihu.com/?target=https%3A//developer.huawei.com/consumer/cn/doc/harmonyos-guides-V5/ide-signing-V5%23section462703710326)。
 
-![](asset/img_41fcd1b91705.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_41fcd1b91705.jpg)
 
 笔者示例生成的p12文件（保存为my.p12）是标准的PKCS#12格式（定义在[RFC 7292](https://link.zhihu.com/?target=https%3A//datatracker.ietf.org/doc/html/rfc7292)），用来存储一组或多组公钥证书（里面包含公钥）和其对应的私钥（用localKeyID字段进行匹配公私钥的匹配），使用ASN.1来定义其数据结构，并采用DER编码规则将这些结构编码为二进制形式。
 
@@ -55,13 +65,13 @@ fjmk1btJQDAKBggqhkjOPQQDAgNIADBFAiAAiMtQXgCMUxrKtaPKvGqllswi1FRU
 h1brCAbJ1t81FgIhAMXbzmeJlA7/zxZDULLRW0rCY6CU3KMDHr8N38EmuDug
 -----END CERTIFICATE-----公钥证书的表示是遵循Privacy Enhanced Mail（PEM）协议（定义在[RFC 7468](https://link.zhihu.com/?target=https%3A//datatracker.ietf.org/doc/html/rfc7468)）的文本文件，其格式如下：**
 
-![](asset/img_34dfe981f96e.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_34dfe981f96e.jpg)
 
 PEM 文件的label用于指示文件的内容类型。
 
 **以下是一些常见的 PEM header和footer**（后面会陆续见到）：
 
-![](asset/img_66dd652f6250.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_66dd652f6250.jpg)
 
 **解析具体公钥证书信息可以采用如下命令（将公钥证书以文本的形式保存为my.pem文件）：**
 
@@ -166,13 +176,13 @@ Certificate Request:
 - ***1）***叶子证书由中间证书颁发（即叶子证书的Issuer+AKID和中间证书的Subject+SKID相同）；
 - ***2）***中间证书由根证书颁发（即中间证书的Issuer+AKID和根证书的Subject+SKID相同）；
 - ***3）***根证书由自己颁发（也就是自签名，根证书的Issuer和Subject相同）。
-![](asset/img_d2284a25e56b.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_d2284a25e56b.jpg)
 
 我们需要的是用于给我们App签名的开发者签名叶子证书，这需要华为的开发者签名中间证书来帮我们颁发。
 
 **叶子证书分为调试证书和发布证书，我们以发布证书为例**（[操作步骤](https://link.zhihu.com/?target=https%3A//developer.huawei.com/consumer/cn/doc/app/agc-help-add-releasecert-0000001946273961)）：
 
-![](asset/img_9ead4001fe72.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_9ead4001fe72.jpg)
 
 **需要上传我们的CSR文件，得到的证书文件内容示例如下：**
 
@@ -374,13 +384,13 @@ TegCiesP1THuMgiZhZYOYl1kIZBPVrEB8O1wtxEm
 
 这里主要是在华为开发者平台上登记一下App的各项信息（[操作步骤](https://link.zhihu.com/?target=https%3A//developer.huawei.com/consumer/cn/doc/app/agc-help-harmonyos-releaseapp-0000001914554900)）。
 
-![](asset/img_a54b77346f33.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_a54b77346f33.jpg)
 
 **需要注意的是：**包名填写的时候，平台会在线检查一下是否和已经存在的包名有重复（包括其他人申请的包名）。
 
 **申请成功以后，会分配一个唯一的APP ID：**
 
-![](asset/img_8de22a412507.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_8de22a412507.jpg)
 
 这个APP ID用来在网站上标识APP的唯一性。后面文章中会出现类似的名称，为了消除歧义，相似的字段用括号内容区分，这里称为APP ID（网站）。
 
@@ -390,7 +400,7 @@ Profile文件是描述App的包名、签名、申请的权限列表、安装包�
 
 跟着[操作步骤](https://link.zhihu.com/?target=https%3A//developer.huawei.com/consumer/cn/doc/app/agc-help-add-releaseprofile-0000001914714796)，选择之前的APP ID（网站）和证书，**可以得到对应的Profile文件：**
 
-![](asset/img_a29aa5f722fe.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_a29aa5f722fe.jpg)
 
 Profile也分为发布和调试两种，发布只能选择发布证书，调试只能选择调试证书。这里继续以发布类型为例，生成的Profile文件（保存为my.p7b）被华为签名后， **通过如下命令可以查看里面的所有信息：**
 
@@ -427,7 +437,7 @@ openssl pkcs7 -in my.p7b -print_certs  -inform DER //查看证书信息得到的
 - **源码定义：**[provision_verify.cpp](https://link.zhihu.com/?target=https%3A//gitee.com/openharmony/security_appverify/blob/OpenHarmony-v5.0.0-Release/interfaces/innerkits/appverify/src/provision/provision_verify.cpp)
 **其中重点字段解析如下：**
 
-![](asset/img_405926aa4a01.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_405926aa4a01.jpg)
 
 **得到的示例证书内容如下：**
 
@@ -491,7 +501,7 @@ EeUCMGppWcaV//SIG1y5tEwthLwWeEaF613vUILWQLir8+CA3RZGsRBqtE8xSqfz
 yafLYQ==
 -----END CERTIFICATE-----这里依然是完整的三级证书链，注意，根证书和之前申请到的开发者签名证书的根证书一样，但中间证书和叶子证书均不一样，比较如下（红色底色表示内容相同）：
 
-![](asset/img_d615c2c3cc51.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_d615c2c3cc51.jpg)
 
 ### 5、生成签名的APP**
 
@@ -499,13 +509,13 @@ yafLYQ==
 
 将生成的Profile文件、叶子证书文件等配置到项目的signingConfigs里，使用华为的IDE可以直接得到签名后的App包。如下图所示。
 
-![](asset/img_8cbb76265845.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_8cbb76265845.jpg)
 
 或者参考[命令](https://link.zhihu.com/?target=https%3A//gitee.com/openharmony/developtools_hapsigner%23%25E4%25BD%25BF%25E7%2594%25A8%25E8%25AF%25B4%25E6%2598%258E)手动给未签名的App包进行签名。
 
 得到的签名的App包只是用于提供给华为商店进行审核和后续的拆包，并不能直接安装到手机上运行。App包实际上就是标准的ZIP格式，可以修改后缀为.zip进行解压（如下图所示）。
 
-![](asset/img_00236cddd355.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_00236cddd355.jpg)
 
 可以看到里面包括了.hap包和描述App一些信息的[http://pack.info](https://link.zhihu.com/?target=http%3A//pack.info)文件。
 
@@ -513,7 +523,7 @@ yafLYQ==
 
 **其结构如下：**
 
-![](asset/img_05c871d4740e.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_05c871d4740e.jpg)
 
 **HapSigningBlock区的魔数（转成string也就是）：**
 
@@ -532,7 +542,7 @@ public static final long HAP_SIG_BLOCK_MAGIC_HI_V3 = 0x3e6b636f6c62206eL;
  */
 public static final int HAP_SIG_BLOCK_HEADER_SIZE = 32;通过hex工具直接打开App包也可以在Central Directory区前面找到：**
 
-![](asset/img_cd4c167f2f66.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_cd4c167f2f66.jpg)
 
 **其中SignatureSchemeBlock区存放了CMS格式的Hap包签名信息，而Profile文件就存储在SigningBlock区，Type是0x20000002：**
 
@@ -591,13 +601,13 @@ yafLYQ==
 
 这里再和之前的证书对比一下**（红色和黄色底色表示内容分别相同）：
 
-![](asset/img_3adc1ec6f513.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_3adc1ec6f513.jpg)
 
 三者的根证书都一样，Profile签名证书和Hap签名证书的中间证书一样，三者的叶子证书均不一样。
 
 **另外，如果在上架应用市场的时候，勾选了加密：**
 
-![](asset/img_ccc1a1d133fe.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_ccc1a1d133fe.jpg)
 
 根据《[鸿蒙生态应用安全技术白皮书](https://link.zhihu.com/?target=https%3A//developer.huawei.com/consumer/cn/doc/guidebook/harmonyecoappsecurity-guidebook-0000001808819033)》描述，只是对Hap包里的代码做加密，然后重新签名，所以证书和Profile文件的解析均不受影响。
 
@@ -605,7 +615,7 @@ yafLYQ==
 
 签名相关的代码在[security_appverify源码仓库](https://link.zhihu.com/?target=https%3A//gitee.com/openharmony/security_appverify/tree/OpenHarmony-v5.0.0-Release/)里，签名校验流程梳理如下（图上所有判断条件在失败情况下均会导致签名校验失败，为了直观不画出此流程）：
 
-![](asset/img_c45bf401496e.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_c45bf401496e.jpg)
 
 **签名校验步骤可以分成三组，分别是：**
 
@@ -619,7 +629,7 @@ yafLYQ==
 
 **证书链完整性校验流程如下：**
 
-![](asset/img_4bdfbee2eccd.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_4bdfbee2eccd.jpg)
 
 校验叶子证书时，需要按证书指定算法重新计算证书的hash，并使用上一级证书（中间证书）的公钥对叶子证书里的证书签名进行解密，与重新计算的hash比对是否相同，相同则认为证书可信。中间证书继续通过根证书的公钥校验自己的证书签名。根证书用自己的公钥校验自己。
 
@@ -694,7 +704,7 @@ yafLYQ==
 
 **另外，在鸿蒙**[SignatureInfo API](https://link.zhihu.com/?target=https%3A//developer.huawei.com/consumer/cn/doc/harmonyos-references-V5/js-apis-bundlemanager-bundleinfo-V5%23signatureinfo)**中，会返回三个参数：**
 
-![](asset/img_145947c68ff0.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_145947c68ff0.jpg)
 
 其中API返回的appId为了消除歧义，这里称为APP ID（接口）。
 

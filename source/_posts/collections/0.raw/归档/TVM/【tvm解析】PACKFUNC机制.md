@@ -1,3 +1,16 @@
+---
+title: 【tvm解析】PACKFUNC机制
+date: "2026-04-11 21:40:28"
+updated: "2026-04-11 21:40:28"
+layout: post
+permalink: /collections/0.raw/归档/TVM/【tvm解析】PACKFUNC机制/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 
 为实现多种语言支持，需要满足以下几点：
 - 部署：编译结果可以从`python/javascript/c++`调用。

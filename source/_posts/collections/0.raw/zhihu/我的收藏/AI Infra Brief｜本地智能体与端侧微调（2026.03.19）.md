@@ -1,9 +1,19 @@
 ---
-title: "AI Infra Brief｜本地智能体与端侧微调（2026.03.19）"
-date: 2026-03-19
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/2018054684783428859
+title: AI Infra Brief｜本地智能体与端侧微调（2026.03.19）
+date: "2026-03-19 00:00:00"
+updated: "2026-03-19 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/AI-Infra-Brief-本地智能体与端侧微调(2026.03.19)/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/2018054684783428859
 ---
+
 
 2026 年 3 月 19 日，本地智能体、端侧微调和分布式推理基础设施迎来重要进展。
 

@@ -1,3 +1,16 @@
+---
+title: Калибровка промпта
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/ru/resources/reference/prompt-calibration/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # Калибровка промпта
 
 Корневые инструкции должны задавать операционный фрейм, а не каждое возможное действие.

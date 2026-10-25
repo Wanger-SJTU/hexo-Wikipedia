@@ -1,3 +1,16 @@
+---
+title: Project 03. 让 agent 关掉再打开还能接着干
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/zh/projects/project-03-multi-session-continuity/index/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # Project 03. 让 agent 关掉再打开还能接着干
 
 > 相关讲义：[L05. 为什么长时任务会丢失上下文](./../../lectures/lecture-05-why-long-running-tasks-lose-continuity/index.md) · [L06. 为什么初始化需要单独一个阶段](./../../lectures/lecture-06-why-initialization-needs-its-own-phase/index.md)

@@ -1,9 +1,19 @@
 ---
-title: "计算机体系结构：SIMD"
-date: 2025-02-24
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/651044595
+title: 计算机体系结构：SIMD
+date: "2025-02-24 00:00:00"
+updated: "2025-02-24 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/计算机体系结构-SIMD/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/651044595
 ---
+
 
 计算机体系结构：SIMD
 

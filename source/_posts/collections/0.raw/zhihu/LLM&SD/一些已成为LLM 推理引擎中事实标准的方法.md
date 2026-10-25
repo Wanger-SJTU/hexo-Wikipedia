@@ -1,9 +1,19 @@
 ---
-title: "一些已成为LLM 推理引擎中事实标准的方法"
-date: 2024-10-18
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/685706549
+title: 一些已成为LLM 推理引擎中事实标准的方法
+date: "2024-10-18 00:00:00"
+updated: "2024-10-18 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/LLM-SD/一些已成为LLM-推理引擎中事实标准的方法/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/685706549
 ---
+
 
 本文主要是记录目前在各个LLM推理引擎中经常使用的一些方法，算是一个备忘录吧，会持续更新进行补充。
 
@@ -15,13 +25,13 @@ source: https://zhuanlan.zhihu.com/p/685706549
 
 使用MQA的模型包括[PaLM](https://link.zhihu.com/?target=https%3A//arxiv.org/pdf/2204.02311)、StarCoder、Gemini等。
 
-![](asset/img_6840e1816d45.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_6840e1816d45.jpg)
 
 MHA和MQA实现对比**
 
 #### GQA(Grouped-Query Attention)
 
-![](asset/img_512bea6d7b62.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_512bea6d7b62.jpg)
 
 出自[GQA:Training Generalized Multi-Query Transformer Models from Multi-Head Checkpoints](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2305.13245)，提出了一种介于MHA和MQA之间的变种Attention GQA，看上图便可一目了然，这种折中的想法也很自然，至于这里设置多少个group就要看实践的技巧了。
 
@@ -31,13 +41,13 @@ GQA最知名的使用者，大概是Meta开源的LLAMA2-70B，以及LLAMA3全系
 
 来自[https://github.com/deepseek-ai/DeepSeek-V2](https://link.zhihu.com/?target=https%3A//github.com/deepseek-ai/DeepSeek-V2)提出的KVCache优化结构，和RoPE一样是国产之光。MLA的提出主要就是减少推理过程的KV Cache，从而实现在更少的设备上推理更长的Context，或者在相同的Context长度下增大batch size，实现更快的推理速度或者更大的吞吐总量，最终降低推理成本。MLA的好处来源于两个方面，一个是kv cache的显著降低(只缓存共享压缩变量)**，另一个是**权重矩阵的合并和吸收(事实上是伪吸收，在推理的时候重计算的效率会更高，本质上是改变了几个矩阵online乘法的计算顺序，避免生成大矩阵，从而降低计算量。**参考[ZHANG Mingxing：DeepSeek-V2 高性能推理 (1)：通过矩阵吸收十倍提速 MLA 算子](https://zhuanlan.zhihu.com/p/700214123))。MLA的核心是对keys和values进行低秩联合压缩来减少KV Cache的size，如下图所示。
 
-![](asset/img_fd31673a7798.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_fd31673a7798.jpg)
 
 核心计算流程如下所示，对RoPE做了一定的兼容，通过追加补充的方式完成位置编码的添加，方框为cache部分。
 
-![](asset/img_cc5b91b3b2ad.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_cc5b91b3b2ad.jpg)
 
-![](asset/img_6f01326eaecf.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_6f01326eaecf.jpg)
 
 大佬们的经典文章：
 
@@ -52,17 +62,17 @@ Mistral sliding window attention**
 
 这个是Mistral AI中使用的sliding window attention，详细可见[https://github.com/mistralai/mistral-src?tab=readme-ov-file#sliding-window-attention](https://link.zhihu.com/?target=https%3A//github.com/mistralai/mistral-src%3Ftab%3Dreadme-ov-file%23sliding-window-attention)。**针对long context非常有效，是一种local化的attention，在每层attention layer中只对固定的window size计算attentionScore，如下图所示。
 
-![](asset/img_70b3c7995410.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_70b3c7995410.jpg)
 
 这样经过多层的迭代其实可以覆盖完整的seq_len，这个想法在CV领域的很多算法上也有类似实现。下图是官方的配图，一开始不是很理解于是手撸了一个window_size=2的4层迭代，确实都覆盖到了。
 
-![](asset/img_fa4ee79171e9.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_fa4ee79171e9.jpg)
 
-![](asset/img_04089c4df268.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_04089c4df268.jpg)
 
 Longformer sliding window attention**
 
-![](asset/img_bb833f210519.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_bb833f210519.jpg)
 
 [Longformer The Long-Document Transformer](https://link.zhihu.com/?target=https%3A//arxiv.org/pdf/2004.05150.pdf)中的sliding window attention提供了window attention的较多玩法，固定长度的window、扩散长度的window、不同层变化长度的window和全局+window，也是按需使用吧。其中不同层变化长度的window， 在底层使用较小的滑窗，以构建局部信息；越上层滑窗越大，以扩大感受野。
 
@@ -72,11 +82,11 @@ Longformer sliding window attention**
 
 来自[Train Short, Test Long: Attention with Linear Biases Enables Input Length Extrapolation](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2108.12409)，作为位置编码的替代现在也是有很多推理引擎提供了支持，在extrapolation inference上效果确实不错。实现上很简单就是在计算attentionScore前加上一个基于位置的bias，从而通过位置信息影响其attention贡献值，如下图所示。
 
-![](asset/img_0cbef3049938.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_0cbef3049938.jpg)
 
-![](asset/img_4bc8e17b8531.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_4bc8e17b8531.jpg)
 
-![](asset/img_8d25a269e416.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_8d25a269e416.jpg)
 
 #### Rotary Position Embedding(RoPE)
 
@@ -84,11 +94,11 @@ Longformer sliding window attention**
 
 为了能利用上 token 之间的相对位置信息，假定 query 向量\bm{q}_m和 key 向量\bm{k}_n之间的内积操作可以被一个函数g表示，该函数g的输入是词嵌入向量\bm{x}_m，\bm{x}_n和它们之间的相对位置m-n。
 
-![](asset/img_3132a5e6ceb3.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_3132a5e6ceb3.jpg)
 
-![](asset/img_556278380c83.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_556278380c83.jpg)
 
-![](asset/img_917385a0a9ee.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_917385a0a9ee.jpg)
 
 总结来说，RoPE 的 self-attention 操作的流程是：对于 token 序列中的每个词嵌入向量，首先计算其对应的 query 和 key 向量，然后对每个 token 位置都计算对应的旋转位置编码，接着对每个 token 位置的 query 和 key 向量的元素按照两两一组**应用旋转变换（在query和key各自内部进行旋转），最后再计算 query 和 key 之间的内积得到 self-attention 的计算结果。
 
@@ -112,7 +122,7 @@ Longformer sliding window attention**
 
 4.如果小模型生成结果都满意，则用大模型采样下一个token。
 
-![](asset/img_4bc094d29b3a.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_4bc094d29b3a.jpg)
 
 ### 二、系统工程优化
 
@@ -139,7 +149,7 @@ Tri Dao的2篇大作[FlashAttention-2: Faster Attention with Better Parallelism 
 推理场景中prefill和decode阶段处理的sequence通常都是变长的，早期存储KVCache的方式比较简单粗暴的，就是静态地分配一个固定长度max_seq_len 空间，可想而知在组batch的场景下会有大量的碎片存储空间导致浪费，于是一个比较直接的想法就是利用动态分页的思想将逻辑空间和物理空间分离开来再通过一个map来映射**，这样逻辑上处理KVCache仍旧是连续的，在物理上block是非连续存储组织的，如此空间肯定是最大化利用了，处理流程上会有一些overhead但设计实现的好的话可以基本忽略。下面这张图可以清楚地表达分block映射的流程，详细的内容可参考：
 
 **https://blog.vllm.ai//20/vllm.html https://docs.vllm.ai/en/latest/dev/kernel/paged_attention.html#value 
-[SiriusNEO：LLM 高速推理框架 vLLM 源代码分析 / vLLM Source Code Analysis](https://zhuanlan.zhihu.com/p/641999400)![](asset/img_cd6bbae411ef.jpg)
+[SiriusNEO：LLM 高速推理框架 vLLM 源代码分析 / vLLM Source Code Analysis](https://zhuanlan.zhihu.com/p/641999400)![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_cd6bbae411ef.jpg)
 
 #### Continuous Batching
 
@@ -147,13 +157,13 @@ Continuous Batching现已成为大模型推理框架的必备技术，像vLLM,Te
 
 它通过将多个在线请求进行批处理，可以提高 GPU 的使用效率，如下图所示。与传统的组batch方式不同的是其将粒度由request-level变成iteration-level。上图为request粒度的组batch，可以看到由于最长处理序列的存在造成了大量的空闲时刻；下图为iteration粒度组batch，每个迭代可以是一次prefill的运行也可以是decode阶段的一次token生成，分成共存派（每个iteration中既有prefill又有decode）和独立派（每个iteration中只有prefill或decode），这样在完成一个request的处理后可以马上调度新的request进来进行计算一轮iteration计算，从而消灭空闲时刻。
 
-![](asset/img_bf310b94efed.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_bf310b94efed.jpg)
 
-![](asset/img_3464ab383803.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_3464ab383803.jpg)
 
 由于Attention机制的原因，不同seqlen、处在不同step的请求没法合并成一个batch进行运算，于是把运算的流程拆成可以batch运算的QKV Linear、分开运算的attention和可以batch运算的Out Linear三部分，也就是论文提到的Selective batching，**更详细的描述还可以参考以下大佬的文章。
 
-![](asset/img_ebac4553c560.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_ebac4553c560.jpg)
 
 [](https://zhuanlan.zhihu.com/p/676109470)
 
@@ -180,7 +190,7 @@ Prefill和Decode的Compute Intensity存在巨大差异(前者compute-bound后者
 
 PD分离是个比较大的topic，从早期的SplitWise的7个insight，到提出Goodput概念并对PD应用不同并行策略的DistServe，再到系统化、工程化程度更高的DéjàVu、TetriInfer、MemServe、Mooncake，延展了非常多内容，系统复杂性逐步攀高，如下图所示感受下mooncake的架构图。
 
-![](asset/img_04363a116cc0.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_04363a116cc0.jpg)
 
 系统演进过程中逐渐形成了一些固定组件，比如Global/Local Scheduler、Prefill Instance、Decode Instance、KVCache Manager等，这些组件在设计和实现过程中会涉及到很多因素，例如
 
@@ -210,21 +220,21 @@ MaaS厂商每天需要处理海量的LLM并发请求，这个场景其实和互�
 
 [](https://zhuanlan.zhihu.com/p/693556044)
 
-![](asset/img_d9881c7b1d41.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_d9881c7b1d41.jpg)
 
 #### Chunked Prefill
 
 chunked prefill解决的是用continuous batch后在long context请求中prefill阶段执行时间过长导致的decode响应抖动的问题，如下所示。
 
-![](asset/img_31cf2f9f6373.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_31cf2f9f6373.jpg)
 
 其最早由论文[SARATHI: Efficient LLM Inference by Piggybacking Decodes with Chunked Prefills](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2308.16369)提出，解决方法也比较直接就是对long context进行拆分处理，如下图所示，在prefill和decode分离时代，chunked prefill还可用于优化prefill阶段的gpu利用率，使单gpu处理long context成为可能。
 
-![](asset/img_efadf8a1b388.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_efadf8a1b388.jpg)
 
 论文提出的拆分方式只在causal mask模式下有效，由于casual mask的存在，prefill阶段在计算每个chunk的attention时仅需使用当前chunk的kv和之前chunk的kvcache便可完成(不依赖后续chunk的kv)，如下图所示，展示了分拆为4个chunk后第三个chunk的计算需要的数据和流程(这里简化了softmax的计算)，最终通过4个串行的chunked prefill阶段处理完成整个序列的attention运算**。
 
-![](asset/img_8d6ff7442606.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_8d6ff7442606.jpg)
 
 详细还可以看这篇大佬文章的解析，还有伪代码非常清楚。
 
@@ -240,7 +250,7 @@ Ulysses在论文[https://arxiv.org/abs/2309.14509](https://link.zhihu.com/?targe
 
 当然Ulysses也有个明显的缺点，就是切的份数不能超过head_num，否则All2All转置后单卡上的拆分hidden_size就不是一个完整的head_size了，需要卡间通信完成计算，在MQA场景比较吃亏（当然在USP里还可以用RingAttention继续切）。
 
-![](asset/img_2f9df2001262.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_2f9df2001262.jpg)
 
 **RingAttention**
 
@@ -248,6 +258,6 @@ Ring Attention可以理解成分布式多卡版本的flashattention，将原本�
 
 这里比较巧妙的是有个overlap，即KV Block数据传输和QKV attention运算的时间重叠，理论上确实可以做到没有时间消耗增量。具体的实现细节可以看论文[Ring Attention with Blockwise Transformers for Near-Infinite Context](https://link.zhihu.com/?target=https%3A//browse.arxiv.org/pdf/2310.01889)，也可以看下面大佬写的高赞文，对seqlen的切分也做了一些优化使得负载更加均衡 。
 
-![](asset/img_3d8e666d253f.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_3d8e666d253f.jpg)
 
 [](https://zhuanlan.zhihu.com/p/683714620)

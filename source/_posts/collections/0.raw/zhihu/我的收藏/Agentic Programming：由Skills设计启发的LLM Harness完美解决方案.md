@@ -1,16 +1,26 @@
 ---
-title: "Agentic Programming：由Skills设计启发的LLM Harness完美解决方案"
-date: 2026-04-04
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/2023791484751679788
+title: Agentic Programming：由Skills设计启发的LLM Harness完美解决方案
+date: "2026-04-04 00:00:00"
+updated: "2026-04-04 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/Agentic-Programming-由Skills设计启发的LLM-Harness完美解决方案/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/2023791484751679788
 ---
+
 
 ** 从设计Skills项目的挫败，到重新思考“谁应该控制流程”。
 #### 起因：Skill写得再好，大模型也不一定听
 
 在做GUI Agent项目时——让大模型操作电脑界面，完成截图、识别元素、点击按钮——遇到了一个反复出现的问题。
 
-![](asset/img_59953c3fc1df.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_59953c3fc1df.jpg)
 
 一个简单的登录流程，Skill 写得很清楚：
 
@@ -61,7 +71,7 @@ source: https://zhuanlan.zhihu.com/p/2023791484751679788
 
 “把 LLM 嵌入函数”这件事，工程实践中很多人在做。DSPy、Marvin、Microsoft Guidance 都有类似思路。
 
-![](asset/img_aac2a9b5c7bb.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_aac2a9b5c7bb.jpg)
 
 但把它作为一种**编程范式**系统化之后，引出了几个有意思的设计：
 

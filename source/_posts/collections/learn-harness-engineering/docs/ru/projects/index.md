@@ -1,3 +1,16 @@
+---
+title: Добро пожаловать в Проекты
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/ru/projects/index/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # Добро пожаловать в Проекты
 
 Это практическая часть курса Learn Harness Engineering. Чтения лекций недостаточно — вам нужно собрать окружения самостоятельно и понаблюдать, как Codex, Claude Code или другие AI-агенты ведут себя при разных правилах.

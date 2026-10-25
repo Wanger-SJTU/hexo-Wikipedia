@@ -1,3 +1,16 @@
+---
+title: "SOP: 보이지 않는 지식을 저장소에 인코딩하기"
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/ko/resources/openai-advanced/sops/encode-knowledge-into-repo/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # SOP: 보이지 않는 지식을 저장소에 인코딩하기
 
 중요한 컨텍스트(context)가 여전히 Google Docs, 채팅 스레드, 티켓, 혹은 사람들의 머릿속에만 있을 때 이 표준 작업 절차(SOP)를 사용하십시오.

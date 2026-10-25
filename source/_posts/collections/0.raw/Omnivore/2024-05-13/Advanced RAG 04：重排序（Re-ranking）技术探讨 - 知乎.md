@@ -1,4 +1,17 @@
 ---
+title: Advanced RAG 04：重排序（Re-ranking）技术探讨 - 知乎
+date: "2026-04-11 21:40:28"
+updated: "2026-04-11 21:40:28"
+layout: post
+permalink: /collections/0.raw/Omnivore/2024-05-13/Advanced-RAG-04-重排序(Re-ranking)技术探讨-知乎/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
+---
 id: c563d7ac-9999-4fc2-9ad9-62df66dfea12
 ---
 

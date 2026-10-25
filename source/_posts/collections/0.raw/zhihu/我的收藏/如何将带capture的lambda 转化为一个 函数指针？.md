@@ -1,9 +1,19 @@
 ---
-title: "(2 条消息) 如何将带capture的lambda 转化为一个 函数指针？"
-date: 2026-04-17
-tags: [知乎]
-source: https://www.zhihu.com/question/57184661/answer/19648995610
+title: (2 条消息) 如何将带capture的lambda 转化为一个 函数指针？
+date: "2026-04-17 00:00:00"
+updated: "2026-04-17 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/如何将带capture的lambda-转化为一个-函数指针/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://www.zhihu.com/question/57184661/answer/19648995610
 ---
+
 
 一般来说，如果 C api 接受一个回调，通常会额外允许设置一个 void* 的回调参数。 用户可以把一些额外的参数用这个 void* 传给回调函数。 比如
 

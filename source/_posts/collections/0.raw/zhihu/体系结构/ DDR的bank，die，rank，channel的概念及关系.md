@@ -1,9 +1,19 @@
 ---
-title: "(1 封私信) DDR的bank，die，rank，channel的概念及关系"
-date: 2025-09-17
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/1951615520425087344
+title: (1 封私信) DDR的bank，die，rank，channel的概念及关系
+date: "2025-09-17 00:00:00"
+updated: "2025-09-17 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/体系结构/DDR的bank,die,rank,channel的概念及关系/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/1951615520425087344
 ---
+
 
 #### 通俗的比喻
 
@@ -28,13 +38,13 @@ DDR的bank，die，rank，channel需要在软件中配置，特别在一个平�
 
 如下图DDR的结构：
 
-![](asset/img_4d7bf51dca90.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_4d7bf51dca90.jpg)
 
 图1从图1中可知，这个DDR芯片有2个Die，2个channel, 但是看不出有多少个Rank，有个方法就是看片选 CS的PIN的命名，如上图，有CS0_A,CS0_B,两个片选PIN，CS0_A中的0表示Rank的编号，A表示channel的编号。所以，这个DDR只有0号Rank，1个Rank。
 
 比较复杂DDR的结构如下图：
 
-![](asset/img_25b9d415f95e.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_25b9d415f95e.jpg)
 
 图2从图2中可知，这个DDR芯片有8个Die，有A,B,C,D,4个channel,  通过看片选 CS的PIN的命名：
 

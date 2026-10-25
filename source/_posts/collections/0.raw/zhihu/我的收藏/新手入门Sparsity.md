@@ -1,9 +1,19 @@
 ---
-title: "(2 条消息) 新手入门Sparsity"
-date: 2025-05-11
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/1903645364210341650
+title: (2 条消息) 新手入门Sparsity
+date: "2025-05-11 00:00:00"
+updated: "2025-05-11 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/新手入门Sparsity/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/1903645364210341650
 ---
+
 
 今天花了一些时间研究了一下LLM inference中的sparsity，大致搞明白了sparse attention在解决什么问题。本文针对对LLM有一定了解，想要快速理解sparsity的人群。
 
@@ -24,9 +34,9 @@ sparsity主要是在decoding阶段中，对当前token产生的query( Q" role="p
 
 现在的LLM推理主要分为两个阶段，prefill和decode。如下图所示，
 
-![](asset/img_bf9280051bd3.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_bf9280051bd3.jpg)
 
-Prefill阶段产生全量KV Cache![](asset/img_b35f1e4940f7.jpg)
+Prefill阶段产生全量KV Cache![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_b35f1e4940f7.jpg)
 
 Decode阶段利用之前prefill和decode产生的KV Cache减少计算Prefill阶段会对一个prompt产生全量的KV Cache，在attention中执行matrix-matrix multiplication得到attention score。Decode阶段则利用之前prefill阶段以及之前decode产生的KV Cache，在attention中执行vector matrix-matrix multiplication
 
@@ -49,7 +59,7 @@ Quest和Arkvale这两篇paper主要的contribution都是针对1，即在每一�
 
 #### Quest
 
-![](asset/img_02704c091260.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_02704c091260.jpg)
 
 Quest中对每个page产生一个element-wise min key以及一个element-wise max key，用query跟这两个key分别做element-wise乘，再对这个乘的结果做一个element-wise max，最后sum over all elements得到一个分数。按照分数从高到低排序选K 页进行attentionQuest中按照page来组织KV Cache，每个paper包括N个token的Key。如上图每个page包括4个token的Key。Quest首先对每个page 产生一个elemet-wise min key和max key。这里的element-wise指的是对每个channel产生一个数，即head dim中的每个dimension产生一个数。min key和max key的dim都是`[1, head_dim]` 。然后query和min key max key分别做element-wise product，然后把这两个product的结果合成一个per channel max vector，其中每个element取这两个product中大的数。这样做的intuition是最后这个 \Sigma(per-channel\ max\ vector) 是一个当前query和这个page上的K产生的attention score的上界。quest 通过这个上界来评估哪些page上的Key和这个query最近似，会对有大的贡献。
 
@@ -59,11 +69,11 @@ Quest中对每个page产生一个element-wise min key以及一个element-wise ma
 
 Arkvale针对的问题跟Quest类似，也是选哪些页。本质上选哪些页（即页上token的key）是计算页上token的key和当前query的相似度，也就是下图中b里面的importance score。下面先看一下arkvale 工作流程，这个工作流程也可以被视为传统dynamic sparsity的工作流程。
 
-![](asset/img_0282cf4e2f19.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_0282cf4e2f19.jpg)
 
 Arkvale中的系统设计arkvale的工作流程没有什么特别的，首先产生的KV cache异步传回CPU，然后对每个包含key的page产生一个importance score 。排序之后只用Top-K确定哪些page需要来做attention。把在GPU上不需要的page evict到cpu，把cpu上需要的page recall回GPU。
 
-![](asset/img_0a4d6474cbf8.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_0a4d6474cbf8.jpg)
 
 把一个页上的向量组成一个高维球或者立方arkvale给出了几个不同方法估计importance score。核心思想如上图所示就是把page上多个key vector看成是高维空间上的一个球（sphere）或者立方（cuboid），然后在这个球上或者立方上找一个跟当前query相似度最高的vector（内积最大）作为代表vector，内积的结果就作为importance score。不同方法的区别在于球和立方半径的估算，在此也不多叙述，感兴趣的可以查阅。
 
@@ -71,11 +81,11 @@ Arkvale中的系统设计arkvale的工作流程没有什么特别的，首先产
 
 PSA跟上面两个工作的不同之处在于它关注选多少token而不是怎么选token。PSA没有像之前两个一样使用每层attention固定的top-K去选择K个页或者token，而是使用一个动态算法确定每层选择多少个页。这基于PSA的一个观察，对不同层，得到95% attention score（即要求的精度，可以理解为SLO）需要的token数量是不一样的。
 
-![](asset/img_d659463f73ef.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_d659463f73ef.jpg)
 
 这个图说的是，给定K个Token（x轴）的KV Cache，在decode过程中，有多少个query token能够满足attention score至少95%。L1需要至少100个Token的KV cache，Layer4 给10个token就能有60%的decode token达到比较好的精度于是PSA在排序后不是用static的topk，而是每次加载一个batch (line 9)，算一下attention (line 10)，得到output和相应的attention score，跟之前得到的output加权平均得到新的output (line 11)。更新累计的Attention Score 和最小的Attention Score (line 12, 13)。由于在对所有 KV 块执行注意力计算之前，总Attention Score是未知的*。 *为了知道算完这个batch之后attention的占比，PSA 记录迄今为止遇到的最小块级Attention Score估算占比，直到占比超过threshold结束加载。
 
-![](asset/img_7bbcac3e0b94.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_7bbcac3e0b94.jpg)
 
 PSA 动态KV Cache加载算法
 #### RetroInfer
@@ -84,7 +94,7 @@ PSA 动态KV Cache加载算法
 
 具体来说，Retroinfer将所有的token分成了三部分，如下图所示：
 
-![](asset/img_3124f86e1d6d.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_3124f86e1d6d.jpg)
 
 Retroinfer splits all tokens into 3 parts. Steady zone where attention is computed precisely with KV always on GPU. Retrieval zone where KV has to be fetched from on-GPU cache or on CPU KV store. Estimation zone where attention is estimated using the centroid of each clustersteady zone 中token的KV cache一直保留在GPU上，在attention计算时会精准计算。这部分的token包括开头和结尾的token。很多算法paper都指出这部分的token对最终attention score的贡献非常大，因此在任何情况下都应该保留。
 
@@ -94,7 +104,7 @@ Retroinfer指出，找当前query的近似向量本质上是一个ANNS(Approxima
 
 于是Retroinfer基于ANNS常用的算法，K-means聚类算法，设计了一个叫做wave index的数据结构进行token选择，如下图所示：
 
-![](asset/img_4cbf77abd328.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_4cbf77abd328.jpg)
 
 Tokens after prefill are split into segments. Retroinfer use K-means within each segments to generate clusters. Then it stores the centroid of each cluster, the number of tokens in each cluster, and the sum of value vectors of each cluster into the meta index on GPU. 在Prefill阶段结束后，所有的token除了开头结尾位于steady zone的token之外，被切分成固定大小（8k）的segment。Retroinfer在每个segment内执行K-means算法进行聚类。聚类会得到每个cluster的中心向量（Centroid, averaged over all key vectors in a cluster），每个cluster的大小（token的数量），以及每个cluster中token的Value Vector的sum。这三个重要的metatdata会保存在位于GPU上的Meta Index里。Meta Index将会被用来决定对当前Query Vector，哪些cluster中的Key Vector是在Retrival zone里需要加载进GPU，哪些则只需要进行估计。
 
@@ -104,11 +114,11 @@ Tokens after prefill are split into segments. Retroinfer use K-means within each
 
 $$接下去我们来说一下estimation是怎么算的。这也是我认为很巧妙的部分。Estimation以cluster粒度进行。如下面的公式所示，attention直接就用centroid vector代替，这是因为根据jensen不等式，用centroid key vector计算是使用所有在这个cluster中的key vector计算的一个lower bound ( C_i = \frac{\sum_{j=1..s_i}K_j}{s_i}, e^{\frac{q\cdot C^T_i}{\sqrt{d}}} \leq \frac{\sum_{j=1..s_i} e^{\frac{q\cdot K_j^T}{\sqrt{d}}}}{s_i} , 其中 C_i  为第i个cluster的centroid， s_i  为这个cluster的token数量, K为这个cluster中token的key vector，d为head dim)。$$
 
-![](asset/img_d867a9ab86cd.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_d867a9ab86cd.jpg)
 
 对每个处于estimation zone中的cluster的estimated attention score，其中p指的是steady zone 中token数量，m指的是聚类完总共cluster的数量，S_j 是cluster_j 中token数量，C_j 是cluster_j 中key vector的centroid。q为当前query vector，d为head size。而最后的attention output ( \tilde{o_i} )就只需要用这个centroid得到的attention score ( \tilde{a_i} )乘上这个cluster中所有value vector的sum(即图里面meta index中保存的 \sum(v) ) 得到。
 
-![](asset/img_32fc966ba6eb.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_32fc966ba6eb.jpg)
 
 由于centroid和 \sum(v) 都保存在GPU中，而且相比原来全部的token小的多，estimated attention计算可以在GPU上很快进行。这个是算法和系统结合的非常巧妙的地方。
 
@@ -138,7 +148,7 @@ PSA分别的解决方法是：
 Retroinfer主要通过两个方法来降低或者隐藏传输代价
 
 - 使用了一个on-GPU的Block Cache来Cache一部分重要的KV Cache。Block Cache的设计主要基于基于temporal locality，即相邻decode token之间attend的重要的Key Vector发生的变化不会太大，所以 token_{n+1} 只需要在token_{n}的基础上从CPU里取一小部分，大部分主要是Block Cache hit。（不过这部分我个人认为pattern应该是，不怎么变，然后突然到了下一个语义的阶段发生很大变化，然后再不怎么变，再变化很大....）
-![](asset/img_074373076af3.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_074373076af3.jpg)
 
 Cache replacement 主要由CPU上的buffer manager负责，GPU上用Block Cache存一部分重要的KV Vector，attention算完了最后异步更新。2. 如何overlap不同的步骤。这个在文章里没有说的特别明确，结合后面eval来看的话应该是按照如下的顺序(这部分按照我个人理解推测的，可能跟paper有一些出入)：
 

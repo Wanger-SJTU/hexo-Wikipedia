@@ -1,3 +1,16 @@
+---
+title: プロジェクト 06. 完全なエージェント harness を構築する（総合課題）
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/ja/projects/project-06-runtime-observability-and-debugging/index/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 [中文版本 →](../../../zh/projects/project-06-runtime-observability-and-debugging/)
 
 > 関連講義: [講義 11. エージェントのランタイムを観測可能にする](./../../lectures/lecture-11-why-observability-belongs-inside-the-harness/index.md) · [講義 12. すべてのセッション終了時にきれいな引き継ぎを残す](./../../lectures/lecture-12-why-every-session-must-leave-a-clean-state/index.md)

@@ -1,9 +1,19 @@
 ---
-title: "探秘Transformer系列之（26）--- KV Cache优化 之 PD分离or合并"
-date: 2025-07-09
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/1894492016718639469
+title: 探秘Transformer系列之（26）--- KV Cache优化 之 PD分离or合并
+date: "2025-07-09 00:00:00"
+updated: "2025-07-09 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/探秘Transformer系列之(26)-KV-Cache优化-之-PD分离or合并/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/1894492016718639469
 ---
+
 
 探秘Transformer系列之（26）--- KV Cache优化 之 PD分离or合并
 

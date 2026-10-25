@@ -1,10 +1,19 @@
 ---
-title: "pd分离下decode请求被抢占再恢复"
-date: 2026-08-13
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/2071256072153837666
-
+title: pd分离下decode请求被抢占再恢复
+date: "2026-08-13 00:00:00"
+updated: "2026-08-13 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/AI-infra/pd分离下decode请求被抢占再恢复/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/2071256072153837666
 ---
+
 
 在大模型推理服务中，长上下文请求会占用大量 KV Cache。当 Decode 节点的 HBM 空间不足时，调度器通常需要抢占部分请求，释放它们占用的 KV blocks。
 

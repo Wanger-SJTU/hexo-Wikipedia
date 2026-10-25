@@ -1,3 +1,16 @@
+---
+title: CLAUDE.md
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/ja/resources/templates/CLAUDE/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # CLAUDE.md
 
 あなたは長時間の実装作業用に設計されたリポジトリで作業しています。

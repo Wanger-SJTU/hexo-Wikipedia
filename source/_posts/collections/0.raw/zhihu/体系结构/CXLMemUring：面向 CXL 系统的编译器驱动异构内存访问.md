@@ -1,9 +1,19 @@
 ---
-title: "CXLMemUring：面向 CXL 系统的编译器驱动异构内存访问"
-date: 2025-11-04
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/1968840336215376258
+title: CXLMemUring：面向 CXL 系统的编译器驱动异构内存访问
+date: "2025-11-04 00:00:00"
+updated: "2025-11-04 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/体系结构/CXLMemUring-面向-CXL-系统的编译器驱动异构内存访问/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/1968840336215376258
 ---
+
 
 摘要
 CXL（Compute Express Link）为主机提供到远端内存池的缓存一致访问能力，但本地 DRAM 与 CXL 挂载内存之间显著的**延迟与带宽非对称**会在不规则访存负载中造成严重性能退化。本文提出 **CXLMemUring**：一种**编译器—运行时协同**的系统，将传统“CPU 单边取数”的执行模型重构为主机 x86 与 CXL 设备侧 ARM 管理核的**协同执行**。为此，我们设计了新的中间表示 **CIRA（CXL Intermediate Representation for Asynchrony）**，在 IR 层显式刻画异步取数、LLC 安装与跨核同步；并配套异构运行时进行在线画像与自适应调参。代码开源在[https://github.com/CXLMemUring/CXLMemUring](https://link.zhihu.com/?target=https%3A//github.com/CXLMemUring/CXLMemUring)。

@@ -1,9 +1,19 @@
 ---
-title: "再读《神经网络量化白皮书》- 0x03 训练后量化(PTQ)"
-date: 2022-02-15
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/463198140
+title: 再读《神经网络量化白皮书》- 0x03 训练后量化(PTQ)
+date: "2022-02-15 00:00:00"
+updated: "2022-02-15 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/dl论文/再读《神经网络量化白皮书》-0x03-训练后量化(PTQ)/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/463198140
 ---
+
 
 ### 3、训练后量化(Post-training quantization)
 
@@ -19,56 +29,56 @@ PTQ过程中的一个基本步骤是为每个量化器找到良好的量化范�
 
 **Min-max** 最小-最大范围，为了覆盖张量的整个动态范围，我们可以定义量化参数如下：
 
-![](asset/img_619422ad8f17.png)
+![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_619422ad8f17.png)
 
 公式14&amp;amp;amp;amp;amp;公式15其中 V 表示要量化的张量。这不会导致截断误差。但是这种方法对异常值很敏感，因为强异常值可能会导致过多的舍入误差(强异常值会使得量化步长偏大)。
 
 **Mean squared error (MSE)** 均方误差(MSE)，缓解强离群值问题的一个方法是使用基于MSE的范围设置。在这种范围设置方法中，我们找到qmin和qmax，使原始张量和量化张量之间的MSE最小化。
 
-![](asset/img_3e237be832ea.png)
+![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_3e237be832ea.png)
 
 公式16其中 V^(qmin,qmax) 表示 V 的量化版本， \left| \left| . \right| \right|_{F}^{2} 是 Frobenius 范数。优化问题通常使用网格搜索、黄金分割法或具有封闭形式解的解析近似来解决。文献中存在这种范围设定方法的几个变种，但它们在目标函数和优化方面都非常相似。
 
 **Cross entropy **交叉熵，对于某些层被量化的值可能并不同等重要。其中一种情况是分类网络最后一层的logits量化，在这种情况下，必须保留量化后的相对大小顺序。这个时候MSE可能不是一个合适的衡量标准，因为它对张量中的所有值进行了同等的权衡，而不管它们的顺序如何。对于大多数的类，我们通常会得到大量对预测准确性不那么重要的小对数或者是负对数，而有意义的大对数则会少很多。在这种情况下当MSE试图减少大量小对数误差的时，会对少量的大对数产生较大的量化误差。在这类特定情况下，最小化以下交叉熵损失函数是有益的。
 
-![](asset/img_5617d1585352.png)
+![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_5617d1585352.png)
 
 公式17其中 H(·,·) 表示交叉熵函数，ψ 是 softmax 函数，v 是 logits 向量。
 
 **BN based range setting** 基于BN的范围设置，激活量化器的范围设置通常需要一些校准数据。如果一个层具有批量归一化操作，则激活的每通道均值和标准差分别等于学习的批量归一化偏移和缩放参数。这些值可以用来为激活量化器找到合适的参数，如下所示。
 
-![](asset/img_19305f976eae.png)
+![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_19305f976eae.png)
 
 公式18&amp;amp;amp;amp;amp;公式19其中 β 和 γ 是每个通道学习的偏移和缩放参数的向量。并且α > 0，Nagel 等人 使用 α = 6，使得只有较大的异常值会被截断。
 
 ***Comparison*** 比较，在表1中，我们比较了权重量化的范围设置方法。对于高位宽，MSE和min-max方法基本持平。然而，在较低的位宽下，MSE方法明显优于min-max。在表2中，我们对激活量化进行了类似的比较。我们注意到，MSE与最后一层的交叉熵相结合，表示为MSE + Xent，优于其他方法，特别是在较低的位宽下。该表还清楚地表明了对最后一层使用交叉熵而不是MSE目标的好处。(权重bit用Wx表示，激活bit用Ax表示)
 
-![](asset/img_f5ad6e1ff9e4.jpg)
+![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_f5ad6e1ff9e4.jpg)
 
-表格1![](asset/img_ec27d4505d10.jpg)
+表格1![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_ec27d4505d10.jpg)
 
 表格2
 #### 3.2、跨层均衡化(Cross-Layer Equalization)
 
 导致量化误差的一个常见问题是同一张量中的元素可以有明显不同的大小。正如上一节所讨论的，量化范围的设置试图在截断误差和舍入误差之间找到一个良好的平衡点。不幸的是，在某些情况下，它们(张量值)之间的差异是比较大的，以至于即使是适度的量化(如INT8)，我们也无法找到一个合适的折衷方案。Nagel等人表明，这在深度可分离层中尤其普遍，因为每个输出特征只有几个权重，这可能导致权重的更高可变性。此外他们指出，批量归一化折叠(就是bn融合，将batch norm的计算融合到前一个卷积或者全连接中去)会增加这种效果(补充：因为batch norm融合到卷积或者全连接的时候会改变权重参数，同时因为bn学习了偏移和缩放参数，可能会导致各个通道的差异进一步变大。两个操作分别量化现在被合并到一起量化了，所以可能会加剧通道间的差异)，并可能导致连接到各输出通道的权重之间的强烈不平衡(见图5)。虽然后者对于更精细的量化粒度(例如，每通道量化 per-channel)来说问题不大，但对于更广泛使用的按张量(per-tensor)量化来说，这仍然是一个大问题。许多文章注意到了带有分度可分离卷积的模型，例如MobileNetV1和MobileNetV2在PTQ中显示出明显的下降，甚至导致随机结果的出现。
 
-![](asset/img_c3ff60c6028c.jpg)
+![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_c3ff60c6028c.jpg)
 
 图5Nagel等人介绍了一个克服这种不平衡的解决方案，不需要使用按通道(per-channel)量化。Meller等人在同时进行的工作中也介绍了一个类似的方法。在这两篇论文中，作者观察到，对于许多常见的激活函数(例如ReLU、PreLU)，下面公式的正比例的缩放关系是成立的。
 
-![](asset/img_dbd8512192ca.png)
+![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_dbd8512192ca.png)
 
 公式20对于任何非负实数s，这种关系适用于所有一阶齐次函数，并且可以通过缩放参数的扩展支持任何非线性分段函数(例如Relu6)。我们可以在神经网络的连续层中应用这种正比例缩放关系。给定两个层，h=f(W(1)x+b(1))和y=f(W(2)h+b(2))，通过缩放等价性，我们可以看到
 
-![](asset/img_57f26b21ca59.png)
+![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_57f26b21ca59.png)
 
 公式21其中 S = diag(s) 是一个对角矩阵，其值为 Sii 表示神经元 i 的缩放因子 si。这使我们能够重新参数化我们的模型，～W(2)=W(2)S，～W(1)=S^-1W(1)和～b(1)=S^-1b(1)。在 CNN 的情况下，缩放将按通道进行，并在空间维度上相应地广播。我们在图6中说明了这个重新缩放的过程。
 
-![](asset/img_03dbd4d7a581.jpg)
+![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_03dbd4d7a581.jpg)
 
 图6为了使模型对量化更加鲁棒，我们可以找到一个缩放因子 si 使得重新缩放层中的量化噪声最小。跨层均衡化(CLE)通过均衡连续层的动态范围来实现这一点。他们证明了通过设置 S 来实现最优的权重均衡，使得
 
-![](asset/img_e299c4570aaa.png)
+![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_e299c4570aaa.png)
 
 公式22其中 r_{i}^{(j)} 是权重张量 j 的通道 i 的动态范围。 Meller 等人的算法引入了一个类似的比例因子，它也考虑了中间激活张量。但是他们没有证明这种方法的最优性。
 
@@ -122,17 +132,17 @@ def equalize(weight1, bias1, weight2, bias2, weight3):
 
 **Absorbing high biases** 吸收高偏差，Nagel进一步注意，在某些情况下，尤其是在 CLE 之后，高偏差会导致激活的动态范围不同。因此他们提出了一个程序，如果可能的话将高偏差吸收到下一层。为了将第一层的 c（后跟一个 ReLU 激活函数 f）吸收到第二层，我们可以进行以下重新参数化
 
-![](asset/img_ab90d807c473.jpg)
+![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_ab90d807c473.jpg)
 
 公式23其中～b(2)=W(2)c+b(2)，～h=h-c，且～b(1)=b(1)-c。第二步，我们利用这样一个事实：对于具有ReLU函数f的层，有一个非负向量c，使得r(Wx + b -c) = r(Wx + b) -c。平凡解 c = 0 适用于所有 x。然而，根据 x 的分布以及 W 和 b 的值，可能存在一些 ci > 0 的值，对于经验分布中的（几乎）所有 x，这种等式成立。这个值等于
 
-![](asset/img_e8d76dc9a76c.png)
+![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_e8d76dc9a76c.png)
 
 公式24其中minx是在一个小的校准数据集上获得的。为了消除对数据的依赖性，作者建议通过批量归一化层的偏移和缩放参数来估计(公式24)的右边，其结果是ci = max(0,βi -3γi)。
 
 **Experiments** 实验，在表 3 中，我们展示了 CLE 和偏置吸收对将 MobileNetV2 量化为 8 位的效果。由于跨层连接破坏了层之间的等方差，我们仅对每个残差块内的层应用跨层均衡。
 
-![](asset/img_d4238b1500b9.jpg)
+![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_d4238b1500b9.jpg)
 
 表格3与 Krishnamoorthi (2018) 类似，我们观察到将 MobileNetV2 量化为 INT8 时模型性能接近随机。应用CLE使我们回到FP32性能的2%以内，接近于按通道量化的性能。我们注意到，吸收高偏差会导致 FP32 性能小幅下降，因为它是一个近似值，但由于更精确的激活量化，它会将量化性能提高 1%。同时使用CLE 和偏置吸收可以使得按张量(per-tensor)的量化效果比按通道(per-channel)量化的效果更好。
 
@@ -142,74 +152,74 @@ def equalize(weight1, bias1, weight2, bias2, weight3):
 
 一些文章注意到了这个问题并介绍了纠正预期分布变化的方法。对于量化误差为 ∆W = ̂W −W 的量化层  ̂W，预期输出分布为
 
-![](asset/img_ac8251c325ee.png)
+![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_ac8251c325ee.png)
 
 公式25因此，有偏见的误差由E [∆Wx]给出。由于∆W是常数，我们有E [∆Wx] = ∆W E [x]。在∆W E [x]非零的情况下，输出分布会发生偏移。为了抵消这种偏移，我们可以从输出中减去它
 
-![](asset/img_dac89cd4922d.png)
+![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_dac89cd4922d.png)
 
 公式26请注意，此校正项是与偏置项具有相同形状的向量，因此可以在推理时被吸收到偏置中而无需任何额外开销。计算偏差校正项有几种方法，其中最常见的两种是*经验偏差校正和分析偏差校正(*empirical bias correction and analytic bias correction*)*。
 
 **Empirical bias correction** 经验偏差校正，如果我们能获得一个校准数据集，偏差校正项可以简单地通过比较量化模型和全精度模型的激活来计算。在实践中，这可以通过计算以下内容逐层完成
 
-![](asset/img_f00d29629bee.png)
+![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_f00d29629bee.png)
 
 公式27**Analytic bias correction **分析偏差校正，Nagel等引入一种不需要数据的分析计算偏差误差的方法。对于具有批量归一化和 ReLU 函数的常见网络，他们使用前一层的 BN 统计量来计算预期的输入分布 E [x]。BN 参数 γ 和 β 对应于 BN 层输出的均值和标准差。假设输入值是正态分布的，ReLU 对分布的影响可以使用截断正态分布来建模。他们表明
 
-![](asset/img_22b40deab402.png)
+![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_22b40deab402.png)
 
 公式28其中xpre是预激活(上一层)输出，假定其为正态分布，每个通道的平均值为β，每个通道的标准差为γ，Φ(-)是标准正态CDF，符号N(x)用来表示标准正态PDF。(补充：**PDF：概率密度函数（probability density function）, 在数学中，连续型随机变量的概率密度函数（在不至于混淆时可以简称为密度函数）是一个描述这个随机变量的输出值，在某个确定的取值点附近的可能性的函数；CDF：累积分布函数 (cumulative distribution function)，又叫分布函数，是概率密度函数的积分，能完整描述一个实随机变量X的概率分布。**) 注意所有向量的操作都是逐元素进行的(按通道 per-channel，意思是每个通道用一组值进行操作)。在计算了输入分布E[x]之后，修正项可以通过与权重量化误差∆W相乘而简单得出(补充：看一下公式26，∆W是固定的，因为量化不会修改原本权重的信息，所以公式26是非常容易计算出来的)。
 
 **实验** 在表 4 中，我们展示了偏差校正对将 MobileNetV2 量化为 8 位的效果。应用分析偏差校正将量化模型性能从随机性能提高到 50% 以上，这表明量化引入的偏差误差会严重损害模型性能。将偏差校正与 CLE 结合使用时，我们看到这两种技术是互补的。它们一起在不使用任何数据的情况下实现了接近 FP32 的性能。
 
-![](asset/img_c4a82948f2cc.jpg)
+![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_c4a82948f2cc.jpg)
 
 表格4
 #### 3.4、自适应取整(AdaRound)
 
 神经网络的**权重**通常是通过将每个FP32值映射到最近的量化网格点来进行量化的，如均匀量化网格的「.」方程（4）所示。我们把这种量化策略称为 "四舍五入"。四舍五入策略的动机是，对于一个固定的量化网格，它在浮点权重和量化权重之间产生的MSE最小。然而Nagel发现四舍五入在训练后**量化权重**时并不是最佳选择。为了说明这一点，作者使用100个不同的随机舍入样本将ResNet18第一层的权重量化为4比特，并评估了每个舍入选择的网络性能。其中最好的舍入选择比四舍五入的表现要好10%以上。图7通过在Y轴上绘制这些舍入选择的性能来说明这一点。
 
-![](asset/img_cdd3c827c1fe.jpg)
+![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_cdd3c827c1fe.jpg)
 
 图表7在这一节中，我们将介绍AdaRound，这是一种为PTQ寻找好的权重舍入选择的系统方法。AdaRound是一种理论上有根据的、计算上有效的方法，在实践中显示出显著的性能改进。
 
 由于主要目标是最小化量化对最终任务损失的影响，我们首先根据这种损失制定优化问题
 
-![](asset/img_7093218adaa0.png)
+![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_7093218adaa0.png)
 
 公式29其中，∆w表示量化引起的扰动，每个权重可以取两个可能的值，一个是将权重向上舍入，另一个是将权重向下舍入。我们希望能有效地解决这个二元优化问题，第一步我们使用二阶泰勒级数扩展对成本函数进行近似。这就减轻了在优化过程中对每个新的舍入选择进行性能评估的需要。然后我们进一步假设模型已经收敛，这意味着可以忽略梯度项在近似中的贡献，并且 Hessian 是块对角线，忽略了跨层相关性。这引出以下基于 Hessian 的二次无约束二元优化 (QUBO) 问题
 
-![](asset/img_cddeb0266b22.png)
+![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_cddeb0266b22.png)
 
 公式30图 7 中等式 (30) 的验证准确度和目标之间的明显相关性表明后者可以很好地代表任务损失（等式 29），即使对于 4 位权重量化也是如此。尽管性能有所提高（见表 5），但方程（30）不能广泛应用于权重舍入，主要有两个原因：
 
 - 计算Hessian的内存和计算复杂性对于一般的使用情况来说是不现实的。
 - 方程 (30) 的 QUBO 问题是 NP-Hard。
-![](asset/img_71ff4026eeae.jpg)
+![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_71ff4026eeae.jpg)
 
 表格5*===接下来的一段会比较绕，建议多读几次原版的文章===*
 
 为了解决第一个问题，作者引入了其他合适的假设，允许将方程（30）的目标简化为以下的局部优化问题，使一个层的输出激活的MSE最小。
 
-![](asset/img_5dee4e92142d.png)
+![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_5dee4e92142d.png)
 
 公式31等式 (31) 既不需要计算 Hessian 矩阵，也不需要来自后续层的任何其他反向或正向传播信息。请注意，用于将方程（30）的QUBO问题与方程（31）的局部优化问题联系起来的近似和分析与舍入问题无关。因此这种分析也有利于其他问题的算法设计，包括模型压缩和NAS。
 
 (31)的优化仍然是一个NP-hard的优化问题。为了以合理的计算复杂度找到一个好的近似解，作者将优化问题放宽为以下连续优化问题
 
-![](asset/img_7bb4cabaa21f.png)
+![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_7bb4cabaa21f.png)
 
 公式32其中\left| \left| . \right| \right|_{F}^{2} 表示Frobenius范数，～W是软量化的权重，定义为
 
-![](asset/img_8289baaafdfe.png)
+![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_8289baaafdfe.png)
 
 公式33我们使用 n 和 p 来表示整数网格限制，n = qmin/s 和 p = qmax/s。 Vi,j 是我们优化的连续变量，h 可以是值在 0 和 1 之间的任何单调函数，即 h(Vi,j) ∈[0,1]。在Nagel等的文章中，作者使用修正的sigmoid函数来作为h。(32)的目标函数中还引入了一个正则项，鼓励连续优化变量h(Vi,j)收敛到0或1，这样它们就是(31)中离散优化的有效解。Nagel等人使用的正则器是
 
-![](asset/img_a064c807dc7f.png)
+![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_a064c807dc7f.png)
 
 公式34其中β在优化过程中被退火，最初允许h(Vi,j)的自由移动，后来迫使它们收敛到0或1。为了避免神经网络各层的错误积累，并考虑到非线性问题，作者提出了以下最终优化问题
 
-![](asset/img_8a066054a1d5.png)
+![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_8a066054a1d5.png)
 
 公式35其中ˆx是该层的输入，前面所有的层都被量化，fa是激活函数。(35)的目标可以使用随机梯度下降法进行有效和高效的优化。这种优化权重舍入的方法被称为AdaRound。
 
@@ -219,7 +229,7 @@ def equalize(weight1, bias1, weight2, bias2, weight3):
 
 在这一节中，我们根据相关文献和广泛的实验，提出了PTQ的最佳实践流程。我们在图8中说明了推荐的流程。这个流程为许多计算机视觉以及自然语言处理模型及任务实现了有竞争力的PTQ结果。根据不同的模型，有些步骤可能是不需要的，或者其他的选择可能会导致相同或更好的性能。
 
-![](asset/img_1e77274602c4.jpg)
+![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_1e77274602c4.jpg)
 
 图例8**Cross-layer equalization 跨层均衡 **首先我们应用跨层均衡化（CLE），这是一个对全精度模型的预处理步骤，使其对量化更加友好。CLE对于具有深度可分离层的模型和按张量(per-tensor)量化特别重要，但它通常也显示出对其他层和量化选择的改进。
 
@@ -237,7 +247,7 @@ def equalize(weight1, bias1, weight2, bias2, weight3):
 
 我们现在评估上述PTQ流程在常见的计算机视觉和自然语言理解应用上的性能。我们的结果总结在表6中。对于语义分割的任务，我们在Pascal VOC上评估了DeepLabV3（以MobileNetV2为骨干），对于物体检测，在COCO 2017上评估了EfficientDet。其余的计算机视觉模型是在ImageNet分类基准上评估的。对于自然语言理解，我们在GLUE基准上评估BERT-base。
 
-![](asset/img_1970e5176701.jpg)
+![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_1970e5176701.jpg)
 
 表格6在所有情况下，我们观察到权重和激活的8位量化（W8A8）与浮点相比所有模型的准确性都只有微小的损失（0.7%以内）。对于W8A8这种量化方式，我们也没有看到按通道(per-channel)有显著受益。然而当权重被量化为4比特（W4A8）时，情况发生了变化。对于ResNet和InceptionV3来说，按张量(per-tensor)和按通道(per-channel)量化的准确率下降仍在1%以内。然而对于更高效的网络，例如 MobileNetV2 和 EfficientNet lite，按张量(per-tensor)量化的准确率下降分别增加到 2.5% 和 4.2%。这可能是由于深度可分离卷积的量化所致。在这种情况下按通道(per-channel)量化可以显示出显著的优势，例如在 EfficientNet lite 中，按通道(per-channel)量化与按张量(per-tensor)量化相比将准确度提高了 2.8%，使其量化精度在全精度准确度的 1.4% 以内。我们看到 EfficientDet-D1 和 DeeplabV3 (这里也许是想说EfficientNet lite)有类似的效果，它们都在其主干中使用了深度可分离卷积。
 
@@ -249,7 +259,7 @@ def equalize(weight1, bias1, weight2, bias2, weight3):
 
 我们展示了标准 PTQ 流程可以为各种模型和网络实现具有竞争力的结果。但如果按照我们的步骤执行后，模型的性能仍然不理想，我们建议采取一系列的诊断步骤来确定瓶颈并提高性能。虽然这不是严格意义上的算法，但这些调试步骤可以让人们了解量化模型表现不佳的原因，并帮助解决根本问题。这些步骤以流程图的形式显示在图9中，下面会有更详细的描述。
 
-![](asset/img_acf6a670d700.jpg)
+![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_acf6a670d700.jpg)
 
 图例9，pdf第18页**FP32 sanity check **FP32合理性检查，一个重要的初始调试步骤是确保浮点模型和量化模型在前向传递中的行为相似，尤其是在使用自定义量化流程时。将权重和激活的量化模型位宽设置为 32 位，或者如果可能的话，绕过量化操作，并检查准确度是否与 FP32 模型的准确度匹配。
 

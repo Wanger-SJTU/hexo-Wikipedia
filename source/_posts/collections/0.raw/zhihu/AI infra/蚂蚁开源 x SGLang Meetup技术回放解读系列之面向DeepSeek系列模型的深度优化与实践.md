@@ -1,10 +1,19 @@
 ---
-title: "蚂蚁开源 x SGLang Meetup技术回放解读系列之面向DeepSeek系列模型的深度优化与实践"
-date: 2026-05-06
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/2035331396995129665
-
+title: 蚂蚁开源 x SGLang Meetup技术回放解读系列之面向DeepSeek系列模型的深度优化与实践
+date: "2026-05-06 00:00:00"
+updated: "2026-05-06 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/AI-infra/蚂蚁开源-x-SGLang-Meetup技术回放解读系列之面向DeepSeek系列模型的深度优化与实践/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/2035331396995129665
 ---
+
 
 前言的前言
  欢迎关注 [https://github.com/BBuf/AI-Infra-Auto-Driven-SKILLS](https://link.zhihu.com/?target=https%3A//github.com/BBuf/AI-Infra-Auto-Driven-SKILLS)  一起自动驾驶SGLang SKILLS

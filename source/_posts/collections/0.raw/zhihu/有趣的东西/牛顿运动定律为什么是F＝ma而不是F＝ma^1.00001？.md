@@ -1,9 +1,19 @@
 ---
-title: "牛顿运动定律为什么是F＝ma而不是F＝ma^1.00001？"
-date: 2026-04-21
-tags: [知乎]
-source: https://www.zhihu.com/question/531643777/answer/2498449701
+title: 牛顿运动定律为什么是F＝ma而不是F＝ma^1.00001？
+date: "2026-04-21 00:00:00"
+updated: "2026-04-21 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/有趣的东西/牛顿运动定律为什么是F-ma而不是F-ma^1.00001/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://www.zhihu.com/question/531643777/answer/2498449701
 ---
+
 
 电光幻影炼金术
 

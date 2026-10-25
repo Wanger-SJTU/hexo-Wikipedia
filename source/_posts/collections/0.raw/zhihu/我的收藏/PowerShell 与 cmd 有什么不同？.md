@@ -1,15 +1,25 @@
 ---
-title: "PowerShell 与 cmd 有什么不同？"
-date: 2026-04-17
-tags: [知乎]
-source: https://www.zhihu.com/question/22611859/answer/75054963209
+title: PowerShell 与 cmd 有什么不同？
+date: "2026-04-17 00:00:00"
+updated: "2026-04-17 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/PowerShell-与-cmd-有什么不同/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://www.zhihu.com/question/22611859/answer/75054963209
 ---
+
 
 2 人赞同了该回答
 
 大家好！今天我要和大家分享一个实用的小技巧：如何为 PowerShell 设置代理。无论你是为了访问外网的资源，还是为了加速下载，这个方法都能派上用场。
 
-![](asset/img_d2f906483639.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_d2f906483639.jpg)
 
 ### **为什么需要设置代理？**
 

@@ -1,3 +1,16 @@
+---
+title: AGENTS.md
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/ja/resources/openai-advanced/repo-template/AGENTS/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # AGENTS.md
 
 このリポジトリは長時間実行されるコーディングエージェントの作業に最適化されています。このファイルは短く保ち、巨大な指示のダンプではなく、記録のシステム文書へのルーティング層として使用してください。

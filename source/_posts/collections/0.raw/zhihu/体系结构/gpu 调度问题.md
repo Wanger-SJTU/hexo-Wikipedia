@@ -1,9 +1,19 @@
 ---
-title: "gpu 调度问题"
-date: 2025-05-02
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/25685241636
+title: gpu 调度问题
+date: "2025-05-02 00:00:00"
+updated: "2025-05-02 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/体系结构/gpu-调度问题/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/25685241636
 ---
+
 
 - [CUDA多流并发处理时，如何让流并发运行而不是顺序运行? - 知乎 (zhihu.com)](https://www.zhihu.com/question/549222968/answer/2903330890)
 - [Cuda里面Wrap Shuffle Function - 知乎 (zhihu.com)](https://zhuanlan.zhihu.com/p/691186175)

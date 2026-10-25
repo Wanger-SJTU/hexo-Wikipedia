@@ -1,9 +1,19 @@
 ---
-title: "记录一次gcc 4.8.5 的cow string 引发的问题"
-date: 2021-01-14
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/344115460
+title: 记录一次gcc 4.8.5 的cow string 引发的问题
+date: "2021-01-14 00:00:00"
+updated: "2021-01-14 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/走向cs/记录一次gcc-4.8.5-的cow-string-引发的问题/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/344115460
 ---
+
 
 ### 问题说明
 

@@ -1,3 +1,16 @@
+---
+title: Projelere Hoş Geldiniz
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/tr/projects/index/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # Projelere Hoş Geldiniz
 
 Burası Learn Harness Engineering'in uygulamalı bölümüdür. Yalnızca dersleri okumak yeterli değildir; ortamları kendiniz inşa etmeniz ve Codex, Claude Code ya da diğer yapay zeka ajanlarının farklı kurallar altında nasıl davrandığını gözlemlemeniz gerekir.

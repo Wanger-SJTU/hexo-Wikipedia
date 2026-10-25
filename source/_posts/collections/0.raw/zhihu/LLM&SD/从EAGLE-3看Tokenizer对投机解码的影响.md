@@ -1,17 +1,27 @@
 ---
-title: "从EAGLE-3看Tokenizer对投机解码的影响"
-date: 2025-06-14
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/1916965162755285553
+title: 从EAGLE-3看Tokenizer对投机解码的影响
+date: "2025-06-14 00:00:00"
+updated: "2025-06-14 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/LLM-SD/从EAGLE-3看Tokenizer对投机解码的影响/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/1916965162755285553
 ---
+
 
 最近一直在优化LLM端侧的推理性能，目前来看投机解码是加速decode最好方法。EAGLE-3发布后直接成为了投机解码的SOTA，官方论文里的速度也确实非常快，在[Spec Bench](https://link.zhihu.com/?target=https%3A//github.com/hemingkx/Spec-Bench/blob/main/Leaderboard.md)中也是目前最快的方法。
 
-![](asset/img_be4a6d06b9a7.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_be4a6d06b9a7.jpg)
 
 我在服务器上下载了EAGLE-3的模型测试了一下，结果非常喜人：`vicuna-13b-v1.3`的加速比高得惊人，与论文中的数据基本一致。
 
-![](asset/img_33aadee834a2.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_33aadee834a2.jpg)
 
 vicuna-13b EAGLE-3紧接着，我又测试了其他更常用的模型，比如`Meta-Llama-3.1-8B-Instruct`和`DeepSeek-R1-Distill-Llama-8B`。然而，实际测试下来，它们在同样的测试场景下，表现似乎就不如Vicuna那么抢眼了，尤其是`DeepSeek-R1-Distill-Llama-8B`,在简单的测试似乎上达不到论文中的效果。我开始思考：EAGLE3能带来如此高的加速比，除了它本身优秀的草稿模型和验证机制外，是不是还有其他“玄机”？**初步猜测：**
 
@@ -101,7 +111,7 @@ vicuna-13b EAGLE-3紧接着，我又测试了其他更常用的模型，比如`M
 - 通过这种方式可以计算出：如果这些文本是由其他模型的tokenizer来处理，它们会产生多少**等效的Token**。这个等效Token数除以投机解码的步数，就是其他模型在“相同语义内容”下的**预估加速比**。
 使用Gemini 2.5 Flash实现了分析和对比的脚本，结果如下：
 
-![](asset/img_0249aa177d2d.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_0249aa177d2d.jpg)
 
 EAGLE-3实测模型与词表等价加速比
 

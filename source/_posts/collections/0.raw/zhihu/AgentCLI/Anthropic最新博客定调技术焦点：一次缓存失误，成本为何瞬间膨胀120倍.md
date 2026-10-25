@@ -1,10 +1,19 @@
 ---
-title: "Anthropic最新博客定调技术焦点：一次缓存失误，成本为何瞬间膨胀120倍"
-date: 2026-05-03
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/2034367229135937946
-
+title: Anthropic最新博客定调技术焦点：一次缓存失误，成本为何瞬间膨胀120倍
+date: "2026-05-03 00:00:00"
+updated: "2026-05-03 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/AgentCLI/Anthropic最新博客定调技术焦点-一次缓存失误,成本为何瞬间膨胀120倍/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/2034367229135937946
 ---
+
 
 **导读**：2026年4月底，Anthropic工程师Thariq Shihipar发布了一篇内部复盘博客，披露Claude Code如何在prompt caching上构建整个产品。这篇看似技术细节的文章，实际上揭示了长周期Agent产品得以存续的经济学基础。
  

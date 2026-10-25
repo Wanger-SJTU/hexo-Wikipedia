@@ -1,9 +1,19 @@
 ---
-title: "如何评价Karpathy提出的个人知识库的架构？"
-date: 2026-04-22
-tags: [知乎]
-source: https://www.zhihu.com/question/2024197832765128929/answer/2024474561505140848
+title: 如何评价Karpathy提出的个人知识库的架构？
+date: "2026-04-22 00:00:00"
+updated: "2026-04-22 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/如何评价Karpathy提出的个人知识库的架构/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://www.zhihu.com/question/2024197832765128929/answer/2024474561505140848
 ---
+
 
 知乎用户
 ​

@@ -1,10 +1,19 @@
 ---
-title: "Liquid小模型训练经验谈"
-date: 2026-04-30
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/2033146563766269442
-
+title: Liquid小模型训练经验谈
+date: "2026-04-30 00:00:00"
+updated: "2026-04-30 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/LLM-SD/Liquid小模型训练经验谈/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/2033146563766269442
 ---
+
 
 Liquid AI是一家专做小模型的AI公司，他们的LFM系列模型在业内一直很受认可。
 

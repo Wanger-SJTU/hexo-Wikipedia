@@ -1,13 +1,23 @@
 ---
-title: "国产AI芯片厂商新突破！论文入选 ISCA 2026，破解 AI 芯片静态调度困局"
-date: 2026-04-09
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/2025500292049847493
+title: 国产AI芯片厂商新突破！论文入选 ISCA 2026，破解 AI 芯片静态调度困局
+date: "2026-04-09 00:00:00"
+updated: "2026-04-09 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/体系结构/国产AI芯片厂商新突破-论文入选-ISCA-2026,破解-AI-芯片静态调度困局-4b28e1/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/2025500292049847493
 ---
 
-![](asset/img_2b499980bc70.jpg)
 
-**![](asset/img_a28bdee692df.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_2b499980bc70.jpg)
+
+**![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_a28bdee692df.jpg)
 
 ****奕行智能动态调度架构论文入选计算机架构国际顶会ISCA 2026。**
 
@@ -23,7 +33,7 @@ source: https://zhuanlan.zhihu.com/p/2025500292049847493
 
 **
 
-![](asset/img_2c7c582808d3.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_2c7c582808d3.jpg)
 
 二、静态调度为什么不够用？**
 
@@ -33,7 +43,7 @@ source: https://zhuanlan.zhihu.com/p/2025500292049847493
 
 但现实中，业界主流采用的编译时静态调度方案，在程序运行前就将所有任务的执行顺序一次性、固定地排定，硬件在运行时只能严格按此“剧本”执行，无法应对任何突发状况。这好比工厂厂长提前排定了未来一个月的详尽生产计划，却无法处理设备突发故障、原料临时短缺或工人请假。一旦现实与计划出现偏差，部分流水线就不得不“空转”（产生 “流水线气泡”pipeline bubble ），宝贵的算力被白白浪费。
 
-![](asset/img_da1f431cfc02.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_da1f431cfc02.jpg)
 
 （由AI生成）有人或许会问：现代GPU不是具备动态调度能力吗？确实，GPU在线程束（Warp）调度等底层机制上引入了动态性——但这些机制仅能解决**CUDA Core内部的指令调度问题**，无法协调数据搬运单元TMA、Tensor Core与CUDA Core三者的并发执行。
 
@@ -59,7 +69,7 @@ TISA 中，每一个计算任务（Tile，即把一个大算子切分成若干�
 
 整个决策过程极为迅速，从判断到下发仅需几纳秒，不会给芯片带来额外负担，却能大幅减少各单元"空等"的时间，动态地消除空闲气泡，实现跨单元、跨算子的执行重叠。
 
-![](asset/img_0ee0af4251b5.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_0ee0af4251b5.jpg)
 
 TISA动态调度架构**四、用FlashAttention-3 说话**
 
@@ -73,13 +83,13 @@ TISA 动态调度架构的调度器实时观察每个任务的数据是否就绪
 
 **结果：**TISA 版本代码量减少 30%，同步调用减少 50%，性能达到手调基线的 95% 以上——完全由编译器自动生成，无需任何手工优化。
 
-![](asset/img_37eaf93a06b3.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_37eaf93a06b3.jpg)
 
 **五、实测性能数据：效率反超****
 
 论文在ResNet-50、BERT、GPT-J、LLaMA2 等主流模型上进行了全面评测，核心数据如下：
 
-![](asset/img_7b975f80e2ad.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_7b975f80e2ad.jpg)
 
 其中最值得关注的一组数字是：在峰值算力低于国际主流竞品的情况下，奕行智能自研芯片EPOCH凭借TISA架构，实现了平均1.46倍的推理延迟优势。这强有力地证明，通过动态调度提升的“实际可用算力”，足以弥补甚至反超纯硬件算力上的差距。在算力竞赛的下半场，效率才是真正的护城河。
 

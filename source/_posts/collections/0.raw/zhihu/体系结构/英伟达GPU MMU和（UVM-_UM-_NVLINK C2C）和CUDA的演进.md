@@ -1,9 +1,19 @@
 ---
-title: "英伟达GPU MMU和（UVM->UM->NVLINK C2C）和CUDA的演进"
-date: 2025-02-13
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/23506400985
+title: 英伟达GPU MMU和（UVM->UM->NVLINK C2C）和CUDA的演进
+date: "2025-02-13 00:00:00"
+updated: "2025-02-13 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/体系结构/英伟达GPU-MMU和(UVM-_UM-_NVLINK-C2C)和CUDA的演进/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/23506400985
 ---
+
 
 英伟达 GPU 的内存管理单元（MMU）主要承担功能：
 

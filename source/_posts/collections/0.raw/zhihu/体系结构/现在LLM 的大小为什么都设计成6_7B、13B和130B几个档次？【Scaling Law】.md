@@ -1,9 +1,19 @@
 ---
-title: "现在LLM 的大小为什么都设计成6/7B、13B和130B几个档次？【Scaling Law】"
-date: 2023-12-10
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/670046783
+title: 现在LLM 的大小为什么都设计成6/7B、13B和130B几个档次？【Scaling Law】
+date: "2023-12-10 00:00:00"
+updated: "2023-12-10 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/体系结构/现在LLM-的大小为什么都设计成6_7B、13B和130B几个档次-【Scaling-Law】/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/670046783
 ---
+
 
 除了文章题目，实践中也许会遇到以下问题：
 
@@ -31,7 +41,7 @@ transformer 语言模型的核心结论：
 
 下图的意思是N、D、C中每一个增加，模型loss都会平滑下降。为了获得最优模型性能，三个因素需要同时增加。幂律关系的前提是增加其中一个因素的时候，不受另外两个因素的限制。
 
-![](asset/img_a0ae712c1df5.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_a0ae712c1df5.jpg)
 
 图1**3、过拟合的通用性。**N和D同时增加时模型性能会增加。但N和D有一个固定住时，另外一个增加，模型性能的增益会消失。模型大小增加时8倍时，数据至少要增加5倍。
 

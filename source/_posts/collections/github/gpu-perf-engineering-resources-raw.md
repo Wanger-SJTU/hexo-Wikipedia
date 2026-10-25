@@ -1,3 +1,16 @@
+---
+title: AI Performance Engineering
+date: "2026-09-21 10:52:34"
+updated: "2026-09-21 10:52:34"
+layout: post
+permalink: /collections/github/gpu-perf-engineering-resources-raw/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 <p align="center">
   <img src="cover.avif" alt="AI Performance Engineering" width="100%">
 </p>

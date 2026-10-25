@@ -1,9 +1,19 @@
 ---
-title: "AArch64指令 -- cache维护指令"
-date: 2024-04-20
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/677750807
+title: AArch64指令 -- cache维护指令
+date: "2024-04-20 00:00:00"
+updated: "2024-04-20 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/体系结构/AArch64指令-cache维护指令/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/677750807
 ---
+
 
 AArch64指令集中有两条关于缓存维护（cache maintenance）的指令，分别是IC和DC。**IC用于指令缓存操作，DC用于数据缓存操作**。
 
@@ -33,7 +43,7 @@ IC , `
 
 DC和IC指令包含两个参数：一个是操作码；另一个是通用寄存器Xt，用于传递参数，例如虚拟地址等。
 
-![](asset/img_073c20a36a26.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_073c20a36a26.jpg)
 
 DC和IC指令格式操作码可以分成4部分：
 
@@ -45,7 +55,7 @@ IC指令格式中的U还可以和共享属性IS结合来表示属于同一个内
 
 ARMv8架构支持的cache维护指令如下表所示：
 
-![](asset/img_48acfd65f0c6.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_48acfd65f0c6.jpg)
 
 另外，在这里补充一下PoC/PoU/PoP的概念：
 
@@ -55,7 +65,7 @@ PoU（Point of Unification）：在此处，**确保PE的I-cache、D-cache以及
 
 PoP（Point of Persistence）: 持久节点，它是Memory系统中的一个节点，**当系统电源断开时，对Memory的写入会被维持**，当电源恢复到Memory中受影响的位置时，写入会被可靠地恢复。
 
-![](asset/img_78ea9fd1f339.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_78ea9fd1f339.jpg)
 
 图1：图中没有集成L2 cache，只有一个Core和I/D cache和TLB，所以PoU等于PoC。
 

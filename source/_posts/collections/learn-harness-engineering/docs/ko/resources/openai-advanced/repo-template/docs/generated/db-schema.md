@@ -1,3 +1,16 @@
+---
+title: 데이터베이스 스키마(Database Schema)
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/ko/resources/openai-advanced/repo-template/docs/generated/db-schema/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # 데이터베이스 스키마(Database Schema)
 
 이 폴더는 에이전트(agent)가 코드를 역공학(reverse-engineering)하지 않고도 검사할 수 있도록 생성(generated)되거나 파생된 산출물(artifact)을 보관하는 데 사용하십시오.

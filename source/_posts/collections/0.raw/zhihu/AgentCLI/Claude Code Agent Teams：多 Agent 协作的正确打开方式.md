@@ -1,9 +1,19 @@
 ---
-title: "Claude Code Agent Teams：多 Agent 协作的正确打开方式"
-date: 2026-02-06
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/2003061730788521596
+title: Claude Code Agent Teams：多 Agent 协作的正确打开方式
+date: "2026-02-06 00:00:00"
+updated: "2026-02-06 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/AgentCLI/Claude-Code-Agent-Teams-多-Agent-协作的正确打开方式/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/2003061730788521596
 ---
+
 
 **原文来源于我的博客: Claude Code Agent Teams：多 Agent 协作的正确打开方式
  当一个 Agent 不够用的时候，就上一个团队
@@ -23,7 +33,7 @@ Anthropic 显然也意识到了这个瓶颈。Claude Code 最近推出了一个�
 
 组件职责Team Lead主 Claude Code session，创建团队、拆分任务、分配工作、汇总结果Teammates独立的 Claude Code 实例，各自有自己的上下文窗口，独立执行任务Task List共享的任务列表，所有队员都能看到，可以认领和完成任务Mailbox消息系统，Agent 之间的通信通道用一张图表示它们的关系：
 
-![](asset/img_55b8c885c3dd.jpg)
+![](/images/collections/0.raw/zhihu/AgentCLI/asset/img_55b8c885c3dd.jpg)
 
 和 subagent 最本质的区别是：**teammate 之间可以直接通信**。subagent 只能把结果报告给主 Agent，是单向的上报关系；而 Agent Teams 里的队员可以互相发消息、互相质疑对方的结论，更像真实的团队协作。
 
@@ -80,7 +90,7 @@ Task List 也是一种隐性的”通信”——所有人都能看到任务的�
 
 那 Subagent 和 Agent Teams 到底怎么选？用图来对比一下两者的通信拓扑，差异一目了然：
 
-![](asset/img_0a5cd4031c2e.jpg)
+![](/images/collections/0.raw/zhihu/AgentCLI/asset/img_0a5cd4031c2e.jpg)
 
 SubagentAgent Teams上下文独立窗口，结果返回给调用者独立窗口，完全自治通信方式只能向主 Agent 汇报结果队员之间可以直接对话协调方式主 Agent 统一管理共享任务列表，可自行协调适合场景聚焦型任务，只需要结果需要讨论和协作的复杂任务Token 成本较低（结果摘要回传）较高（每个队员是独立实例）简单来说：需要”跑腿”拿结果的用 subagent，需要”开会讨论”的用 Agent Teams。
 
@@ -114,7 +124,7 @@ Agent Teams 目前还是实验性功能，默认关闭。需要手动开启，�
 
 Claude 收到指令后的完整流程：
 
-![](asset/img_a2026f4610e7.jpg)
+![](/images/collections/0.raw/zhihu/AgentCLI/asset/img_a2026f4610e7.jpg)
 
 你也可以精确控制队员数量和使用的模型：
 
@@ -164,7 +174,7 @@ Agent Teams 支持两种显示模式，这个选择挺影响使用体验的：
 
 任务的状态流转：
 
-![](asset/img_b8710f8daa00.jpg)
+![](/images/collections/0.raw/zhihu/AgentCLI/asset/img_b8710f8daa00.jpg)
 
 任务分配有两种方式：
 
@@ -180,7 +190,7 @@ Agent Teams 支持两种显示模式，这个选择挺影响使用体验的：
 
 队员会在只读的 plan mode 下工作，只能搜索和阅读代码，不能修改任何东西。计划写好后提交给 lead 审核。整个流程是这样的：
 
-![](asset/img_4c8bcd0b184e.jpg)
+![](/images/collections/0.raw/zhihu/AgentCLI/asset/img_4c8bcd0b184e.jpg)
 
 lead 对计划的审批是自主决策的。如果你想影响它的判断标准，可以在 prompt 里说清楚，比如”只批准包含测试覆盖方案的计划”或者”拒绝涉及数据库 schema 修改的计划”。
 
@@ -248,7 +258,7 @@ lead 会发一个 shutdown request，队员可以批准（优雅退出）或拒�
 
 这三个队员可以同时开工，后端和前端可以先约定好接口格式再各自实现，测试队员可以根据需求文档先搭好测试框架。实际的协作过程大致是这样：
 
-![](asset/img_b4864e03ec51.jpg)
+![](/images/collections/0.raw/zhihu/AgentCLI/asset/img_b4864e03ec51.jpg)
 
 当后端完成后，通过消息系统把实际的 API 契约发给前端，前端再对接。任务依赖系统会自动处理阻塞和解锁。
 

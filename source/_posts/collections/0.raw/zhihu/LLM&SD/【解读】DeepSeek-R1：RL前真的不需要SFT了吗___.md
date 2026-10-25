@@ -1,9 +1,19 @@
 ---
-title: "【解读】DeepSeek-R1：RL前真的不需要SFT了吗???"
-date: 2025-10-26
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/19623772462
+title: 【解读】DeepSeek-R1：RL前真的不需要SFT了吗???
+date: "2025-10-26 00:00:00"
+updated: "2025-10-26 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/LLM-SD/【解读】DeepSeek-R1-RL前真的不需要SFT了吗___/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/19623772462
 ---
+
 
 **我是小冬瓜AIGC，原创超长文知识分享，原创课程已帮助多名同学速成上岸LLM赛道。 
 研究方向：LLM、RL、RLHF先回答：
@@ -23,7 +33,7 @@ source: https://zhuanlan.zhihu.com/p/19623772462
 - DeepSeek-R1-Distill：基于Qwen和Llama作为Base从R1数据蒸馏成小模型
 整体流程为
 
-![](asset/img_f831ec5d7b4d.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_f831ec5d7b4d.jpg)
 
 ### 导读问题
 
@@ -56,7 +66,7 @@ Deepseek-V3-base模型不做SFT就可以RL训练，“问题是RL的数据和rew
 
 (3) 对于有多个奖励，做归一化，体现相对性。
 
-![](asset/img_9e6d9df827fd.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_9e6d9df827fd.jpg)
 
 好处：1.不需要Value Model，2. 优势估计是无偏的
 
@@ -64,7 +74,7 @@ Deepseek-V3-base模型不做SFT就可以RL训练，“问题是RL的数据和rew
 
 以下为提示词模版，可以见到有特定的标签如`` 和``
 
-![](asset/img_39a781a2ada0.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_39a781a2ada0.jpg)
 
 在RL训练时，可以仅收集数学题和正确答案(作为Label)，不需要解答（RL训练过程可以在线采样）
 
@@ -87,11 +97,11 @@ Deepseek-V3-base模型不做SFT就可以RL训练，“问题是RL的数据和rew
 
 性能比肩DeepSeek-R1-Zero
 
-![](asset/img_73dfc936971a.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_73dfc936971a.jpg)
 
 在RL训练过程的在线采样中，可见输出长度逐渐增加，越来越多的CoT解答，另外自发的产生自省、revisits和revaluate行为
 
-** Behaviors such as reflection—where the model revisits and reevaluates its previous steps—and the exploration of alternative approaches to problem-solving arise spontaneously![](asset/img_19063320d6a5.jpg)
+** Behaviors such as reflection—where the model revisits and reevaluates its previous steps—and the exploration of alternative approaches to problem-solving arise spontaneously![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_19063320d6a5.jpg)
 
 意味着不需要人为的数据教授模型CoT** ，模型通过规则奖励和人工数据，就能产生思维类风格的输出。
 
@@ -99,7 +109,7 @@ Deepseek-V3-base模型不做SFT就可以RL训练，“问题是RL的数据和rew
 
 将RL过程中的Checkpoint 进行采样生成，发现一些有趣的“自言自语”式的文本，而这些思考的文本，是模型自己的采样输出。
 
-** It underscores the power and beauty of reinforcement learning: rather than explicitly teaching the model on how to solve a problem, we simply provide it with the right incentives, and it autonomously develops advanced problem-solving strategies![](asset/img_950ba598bc72.jpg)
+** It underscores the power and beauty of reinforcement learning: rather than explicitly teaching the model on how to solve a problem, we simply provide it with the right incentives, and it autonomously develops advanced problem-solving strategies![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_950ba598bc72.jpg)
 
 #### 1.7 `DeepSeek-R1-Zero`弊端
 
@@ -121,7 +131,7 @@ How can we train a user-friendly model that not only produces clear and coherent
 - 如何能够产生简洁的CoT和保持通用能力？
 我们根据原文实现重绘流程图帮助理解
 
-![](asset/img_af74368970f3.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_af74368970f3.jpg)
 
 #### 2.1 Cold Start
 
@@ -178,11 +188,11 @@ Reasoning Data：**
 
 先说方法，基于dense模型从R1蒸馏，8B左右效果就已经很好，纯sft蒸馏。
 
-** For distilled models, we apply only SFT and do not include an RL stage, even though incorporating RL could substantially boost model performance.![](asset/img_cfe2e4569501.jpg)
+** For distilled models, we apply only SFT and do not include an RL stage, even though incorporating RL could substantially boost model performance.![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_cfe2e4569501.jpg)
 
 问题：从零R1训练小模型 VS 蒸馏R1到小模型，哪个推理能力更强
 
-![](asset/img_2b578d8cc525.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_2b578d8cc525.jpg)
 
 记住结论：
 

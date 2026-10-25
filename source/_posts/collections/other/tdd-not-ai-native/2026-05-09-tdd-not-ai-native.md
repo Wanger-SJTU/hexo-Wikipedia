@@ -1,14 +1,21 @@
 ---
-title: "为什么 TDD 反而不是 AI 时代的答案"
-date: "2026-05-09"
+title: 为什么 TDD 反而不是 AI 时代的答案
+date: "2026-05-09 23:38:27"
+updated: "2026-05-09 23:38:27"
+layout: post
+permalink: /collections/other/tdd-not-ai-native/2026-05-09-tdd-not-ai-native/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
 tags:
   - AI编程
   - TDD
   - 软件工程
   - 方法论
-categories:
-  - 工程思考
 ---
+
 
 *来源：[yage.ai](https://yage.ai/share/tdd-not-ai-native-20260508.html)*
 

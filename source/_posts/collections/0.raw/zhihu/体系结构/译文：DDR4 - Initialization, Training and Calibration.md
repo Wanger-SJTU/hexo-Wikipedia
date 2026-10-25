@@ -1,9 +1,19 @@
 ---
-title: "译文：DDR4 - Initialization, Training and Calibration"
-date: 2020-10-04
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/261747940
+title: 译文：DDR4 - Initialization, Training and Calibration
+date: "2020-10-04 00:00:00"
+updated: "2020-10-04 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/体系结构/译文-DDR4-Initialization,-Training-and-Calibration/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/261747940
 ---
+
 
 **一文了解 DDR4 中的初始化(Initialization)、内存训练(Training )以及校准(Calibration)，简称 ITC。（ITC 只是译者自己想的缩写）。
 原文地址： https://www.systemverilog.io/ddr4-initialization-and-calibration
@@ -12,7 +22,7 @@ source: https://zhuanlan.zhihu.com/p/261747940
 
 当一个拥有 DRAM 子系统的设备启动时，有几件事需要在 DRAM 进入工作状态之前完成。下图是来自 JEDEC specification （DDR4 标准，https://www.jedec.org/standards-documents/docs/jesd79-4a）的状态机，展示出上电之后 DRAM 经历的几个状态。
 
-![](asset/img_49f26fac531c.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_49f26fac531c.jpg)
 
 图-1 DDR4 初始化状态机
 
@@ -26,13 +36,13 @@ source: https://zhuanlan.zhihu.com/p/261747940
 
 为了能够更好地理解接下来的几节内容，这里我们假设有一个如下图中的系统：具有单个 DIMM 器件（即只有单个内存条）的 ASIC/FPGA/处理器（译注：以下称为主机）。
 
-![](asset/img_f192538ba77b.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_f192538ba77b.jpg)
 
 图-2 示例系统
 
 #### **初始化 Initialization**
 
-![](asset/img_f7cbca888c3e.png)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_f7cbca888c3e.png)
 
 图-3 初始化相关的状态
 
@@ -50,13 +60,13 @@ source: https://zhuanlan.zhihu.com/p/261747940
 
 #### **ZQ 校准 ZQ Calibration**
 
-![](asset/img_239f942f7476.png)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_239f942f7476.png)
 
 图-4 ZQCL
 
 ZQ 校准的概念与 DDR 数据信号线 DQ 的电路有关。当讨论 ZQ 校准做了什么以及为何而做之前，我们首先需要来看下每个 DQ 管脚之后的电路。请注意，DQ 管脚都是双向的（bidirectional），负责在写操作时接收数据，在读操作时发送数据。
 
-![](asset/img_bb11cb6ce040.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_bb11cb6ce040.jpg)
 
 图-5 DQ 校准模块
 
@@ -81,13 +91,13 @@ DQ 电路中的 240 欧姆电阻是 Poly Silicon Resistor 类型的，通常来�
 
 下图中放大了某个电阻的内部结构，有 5 个 PMOS 管与 DQ 电阻并联，通过 VOU[0:4] 控制管子的开关，以控制并联上来的电阻数量。
 
-![](asset/img_98578627aedb.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_98578627aedb.jpg)
 
 图-6 DQ driver/receiver 电路，来自 Micron datasheet
 
 连接至 DQ 校准控制模块的电路包括一个由两个电阻组成的分压电路，其中一个是上面提到的可调阻值的 poly 电阻，而另一个则是精准的 240 欧姆电阻。当 ZQCL 命令发出后，DQ 校准控制模块使能，并通过其内部逻辑控制 VOH[0:4] 信号调整 poly 电阻阻值，直到分压电路的电压达到 VDDQ/2，即两者均为 240 欧姆。此时 ZQ 校准结束，并保存此时的 VOH 值，复制到每个 DQ 管脚的电路。
 
-![](asset/img_fc23a568402a.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_fc23a568402a.jpg)
 
 图-7 DQ 校准模块，来自 Micron datasheet
 
@@ -99,13 +109,13 @@ DQ 电路中的 240 欧姆电阻是 Poly Silicon Resistor 类型的，通常来�
 
 #### **DQ 判决电平校准 Verf DQ Calibraton**
 
-![](asset/img_03ad4136a056.png)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_03ad4136a056.png)
 
 图-8 VrefDQ Calibration
 
 DDR4 数据线的端接方式（Termination Style）从 CCT（Center Tapped Termination，也称 SSTL，Series-Stud Terminated Logic）更改为 POD（Pseudo Open Drain）。这是为了提高高速下的信号完整性，并节约 IO 功耗。这不是 POD 的首次应用，GDDR5 同样使用 POD。
 
-![](asset/img_4f2e0ba542f6.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_4f2e0ba542f6.jpg)
 
 图-9 DDR3（SSTL）v.s. DDR4（POD），来自 Micron datasheet
 
@@ -128,7 +138,7 @@ DDR4 数据线的端接方式（Termination Style）从 CCT（Center Tapped Term
 
 - 数据（DQ）以及数据有效（DQS）信号连接至内存条的相应位置，因为内存条与主机上相应端口是一一对应的，因此采用星型拓扑。
 - 时钟、命令&地址信号（CK，CKE，A，WE，CSn）连接至 DIMM 内存条时，采用一种称为 fly-by 的拓扑结构，如下图黑线所示。DIMM 上的多个颗粒（比如下图中有 8 个）都共享同一组地址/控制信号，采用 fly-by 结构能够提高信号完整性与信号速度。
-![](asset/img_b2b8c08b09fc.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_b2b8c08b09fc.jpg)
 
 图-10 详细的参考系统示例
 
@@ -172,7 +182,7 @@ DRAM 写入中最重要的，不能违反的时序参数是 tDQSS，表示数据
 - 通过向模式寄存器 MR1 的比特 7 写 0，退出 Write Leveling 模式
 下图展示了 Write Leveling 的概念。
 
-![](asset/img_f34ad36a8ed2.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_f34ad36a8ed2.jpg)
 
 图-11 Write Leveling 示意图
 
@@ -182,7 +192,7 @@ MPR（Multi Purpose Register，多用途寄存器）Pattern Write 实际上并�
 
 DDR4 DRAM 包括四个 8 比特可编程寄存器，称为 MPR，用于 DQ 比特训练（比如 Read/Write Centering）。通过向模式寄存器 MR3[2] 写 1，进入 MPR 访问模式，在该模式下所以向 DRAM 进行的读写操作都会同 MPR 进行，而不是真正的存储介质。
 
-![](asset/img_ab9afb62afc3.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_ab9afb62afc3.jpg)
 
 #### **Read Centering**
 

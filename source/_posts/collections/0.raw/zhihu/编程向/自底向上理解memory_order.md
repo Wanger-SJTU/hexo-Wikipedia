@@ -1,34 +1,44 @@
 ---
-title: "自底向上理解memory_order"
-date: 2024-03-02
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/682286231
+title: 自底向上理解memory_order
+date: "2024-03-02 00:00:00"
+updated: "2024-03-02 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/编程向/自底向上理解memory_order/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/682286231
 ---
+
 
 在C++/Rust中，在访问一个原子变量时，无论读写，都要求传入一个叫做`memory_order` 的枚举变量，这些变量有什么用？它们是如何影响我们程序的正确性和性能的？我们要如何选择合适的`memory_order`? 本文以最常见的x86系统为例，从体系结构说起，理解不同memory order背后CPU的不同操作。
 
 **阅读前置要求: 了解经典5级流水线的基本概念，知道每一步在做什么，明白流水线对性能的提升，了解cache的基本原理，了解缓存一致性协议MESI。 另外，不要把本文当做教程，因为不可能把各方面细节都讲清楚，可以当做一个引子，对感兴趣的部分还是要多读原文。**
 
-### 1. 经典5级流水线[[1]](#ref_1) 
+### 1. 经典5级流水线<span class="wikilink wikilink--missing" title="未导入的页面">1</span>(#ref_1) 
 
-![](asset/img_11bcdab34774.jpg)
+![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_11bcdab34774.jpg)
 
 经典5级流水线CPU将指令执行分解成5个部分，分别是IF 取指令，ID 译码，EX 执行，MEM 访问内存和WB 写回，由于默认大家已经了解经典的5级流水线CPU，这里不再介绍每一步的意义。
 
 #### 1.1 Data hazard
 
 - **True dependence: read-after-write (RAW)**
-![](asset/img_1a73dd7e6506.jpg)
+![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_1a73dd7e6506.jpg)
 
 RAW流水线中常见的data hazard，由于第一条指令更新R1要在第5个时钟周期才完成，而第二条指令需要在第3个时钟周期就需要知道R1更新后的值，因此第二条指令必须阻塞等待，否则第二条指令读到的就是旧的R1值，使程序结果错误。这种对同一个寄存器先写后读的情况就称为RAW(read-after-write)，也叫true dependency，表示两条指令有依赖关系。在某些场景下，可以通过bypassing或者叫forwarding的方式来避免等待，但这只是属于优化，不过多关注。
 
 - **Anti dependence: write-after-read (WAR)**
-![](asset/img_43a3ef312342.jpg)
+![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_43a3ef312342.jpg)
 
 WAR对同一个寄存器，第一条指令读它，第二条指令写它，这种场景就是WAR(write-after-read)，也叫anti dependence。幸运的是，在5级流水线中，因为WB阶段在最后，所以第1条指令读到的R2值，肯定是第二条指令更新R2前的旧值，也就不存在data hazard。
 
 - **Output dependence: write-after-write (WAW)**
-![](asset/img_dc237ed9bc86.jpg)
+![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_dc237ed9bc86.jpg)
 
 WAW对同一个寄存器，第一条指令写它，第二条指令也写它，这种场景就是WAW(write-after-write)，也叫output dependence。和WAR的分析类似，第二条指令更新R1一定在第一条指令更新R1之后，也就是说R1最后的值一定是第二条指令决定的，不会反转顺序造成结果错误。
 
@@ -42,9 +52,9 @@ WAW对同一个寄存器，第一条指令写它，第二条指令也写它，�
 
 **
 
-### 2. 超标量处理器[[2]](#ref_2) 
+### 2. 超标量处理器<span class="wikilink wikilink--missing" title="未导入的页面">2</span>(#ref_2) 
 
-![](asset/img_33aedf661467.jpg)
+![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_33aedf661467.jpg)
 
 superscalar processor实际上，在EX阶段，不同指令需要的硬件单元和时间都是不一样的，比如计算整数的硬件可能无法计算浮点数，且除法运算会比加法慢得多。如果还像5级流水线那样统一EX的周期，且一次只允许一条指令在EX阶段，那么处理器性能会有显著瓶颈。比如假设第一条指令是浮点数乘法，需要EX 7个单位时间，那么第二条的整数加法就需要一直等待浮点数乘法结束后才能执行，而实际上完全可以在执行浮点数乘法的时候同时执行整数加法。
 
@@ -54,7 +64,7 @@ ILP理论上有多种实现方式，工程师们可以发挥自己的聪明才�
 
 这里我们讲述一个现代主流的实现，in-order fetch/decode, out-of-order execution, in-order commit的处理器. 简单说，就是这个处理器仍然按顺序读取指令，按顺序解码指令，但在解码后可能会乱序执行指令(即先解码的指令后执行，后解码的指令先执行)，最后通过某种机制再按顺序提交(commit)这些指令的最终结果，从而修改处理器的状态。
 
-![](asset/img_4276a835a472.jpg)
+![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_4276a835a472.jpg)
 
 顺序取指，乱序执行，顺序提交整体结构如上图，下面依次分析
 
@@ -96,7 +106,7 @@ decoding阶段会识别指令类型，读取需要的操作数，但是操作数
 
 我们已经知道，超标量处理器的运行结果和按顺序一条条执行指令的结果是一样的。但是，我们只讨论了单核的情况，所有指令都在一个处理器中执行，而现代处理器几乎都是多核，因此需要重新思考在多核情况下，上面描述的超标量处理器行为是否和没有任何优化的处理器结果相同。
 
-#### 3.1  cache coherence[[3]](#ref_3) 
+#### 3.1  cache coherence<span class="wikilink wikilink--missing" title="未导入的页面">3</span>(#ref_3) 
 
 如果两个处理器核没有读写同一个内存位置，那么不会有任何data race产生，因此我们考虑不同的核读写同一个内存位置。根据体系结构的知识，我们知道处理器不是直接和内存交互的，处理器只会直接读写L1 cache，至于缓存何时写回main memory，缓存如何淘汰替换等等都是由memory子系统决定的。CPU不关心具体实现，CPU只知道在cache miss的时候会等很久。
 
@@ -126,7 +136,7 @@ L2: r2 = x;`
 
 我们先前假设了这个多核处理器是没有任何优化的，所有指令依次执行，没有交替。我们说满足这个特征的处理器是符合sequential consistency(**SC**)的。SC简单理解就是没有任何优化的交替顺序执行。回到上面的例子，分析哪些结果是符合SC的，哪些不是。
 
-![](asset/img_5fb5082c693e.jpg)
+![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_5fb5082c693e.jpg)
 
 4种可能的执行结果，前3种是符合SC的上面前3种执行结果是符合SC的，比较容易理解。第4种不是，因为S2最先执行，L1最后执行，那么L1读y值应该是NEW而不是0，因此是不满足SC的。
 
@@ -169,7 +179,7 @@ TSO模型因为引入了write buffer，会产生一些反直觉的结果，但�
 
 2. 每一个Load指令，读到的值要么是相同位置最后一次Store指令写入的值(和SC相同，从cache中读)，要么是从本地write buffer中读(Store指令还没有发送给cache)。
 
-![](asset/img_e710416bfae0.jpg)
+![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_e710416bfae0.jpg)
 
 TSO允许，SC不允许再重新分析上面不符合SC的结果，有了write buffer以后，S2将写操作放进write buffer，然后L2读r2为0。接着S1执行写操作，也将其放进自己的write buffer，然后执行L1. 而此时S2可能还在write buffer中，没有真正更新cache，因此L1读到的还是0. 最后时刻，S1和S2离开write buffer，此时x, y都是新值，但之前r1, r2读到的都是0，这就是TSO带来的反直觉的结果。
 
@@ -183,15 +193,15 @@ TSO允许，SC不允许再重新分析上面不符合SC的结果，有了write b
 
 fence本身是保证program order在fence之前的指令，其memory order先于，program order在fence之后的指令。对于TSO来说，因为只缺Store -> Load约束，所以fence本质是不让load指令从write buffer中通过bypassing读值。因此fence一种简单的实现就是排空write buffer，并且在fence指令commit之前，不允许后续的Load指令执行。
 
-![](asset/img_c65c12319dbb.jpg)
+![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_c65c12319dbb.jpg)
 
 有了fence以后，上面的例子不再可能出现r1 = r2 = 0的情况，因为fence强制清空write buffer。
 
 #### 3.4  x86体系结构
 
-关于x86的一致性模型，其官方始终没有严格说明，但是根据研究人员探索，大致描述出了x86-TSO[[4]](#ref_4)结构，基本可以认为和上面描述的TSO一样。具体细节可以阅读参考资料中的原文，另外需要注意的是，x86官方从来没有保证实现的是TSO，也没有保证未来不变。
+关于x86的一致性模型，其官方始终没有严格说明，但是根据研究人员探索，大致描述出了x86-TSO<span class="wikilink wikilink--missing" title="未导入的页面">4</span>(#ref_4)结构，基本可以认为和上面描述的TSO一样。具体细节可以阅读参考资料中的原文，另外需要注意的是，x86官方从来没有保证实现的是TSO，也没有保证未来不变。
 
-### 4. C++ memory_order[[5]](#ref_5) 
+### 4. C++ memory_order<span class="wikilink wikilink--missing" title="未导入的页面">5</span>(#ref_5) 
 
 终于从硬件来到语言层面，了解了硬件工作原理后，再来理解C++ 的memory_order就要容易得多。C++是可以运行在不同硬件平台的，不同平台有不同的一致性模型，我们这里只描述其在x86系统下的实现。
 

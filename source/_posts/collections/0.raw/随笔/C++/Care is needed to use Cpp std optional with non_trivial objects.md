@@ -1,3 +1,16 @@
+---
+title: Care is needed to use Cpp std optional with non_trivial objects
+date: "2026-04-11 21:40:28"
+updated: "2026-04-11 21:40:28"
+layout: post
+permalink: /collections/0.raw/随笔/C/Care-is-needed-to-use-Cpp-std-optional-with-non_trivial-objects/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 We often have to represent in software a value that might be missing. Different programming languages have abstraction for this purpose.
 
 A recent version of C++ (C++17) introduces std::optional templates. It is kind of neat. You can write code that prints a string, or a warning if no string is available as follows:

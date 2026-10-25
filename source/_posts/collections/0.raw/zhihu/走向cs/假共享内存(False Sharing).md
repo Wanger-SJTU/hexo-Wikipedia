@@ -1,9 +1,19 @@
 ---
-title: "假共享内存(False Sharing)"
-date: 2020-10-06
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/210665963
+title: 假共享内存(False Sharing)
+date: "2020-10-06 00:00:00"
+updated: "2020-10-06 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/走向cs/假共享内存(False-Sharing)/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/210665963
 ---
+
 
 (本文已经迁移备份到gitee项目中，不再为知乎提供内容，但对于本文，由于讨论区和内容相关，所以内容仍留在原地。后续全部内容都会迁移，完成后再删除帐号）
 

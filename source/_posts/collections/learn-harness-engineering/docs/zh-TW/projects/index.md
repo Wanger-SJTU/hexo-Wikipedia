@@ -1,3 +1,16 @@
+---
+title: 歡迎來到專案實戰
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/zh-TW/projects/index/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # 歡迎來到專案實戰
 
 這裡是 Learn Harness Engineering 的動手實踐部分。僅僅閱讀講義是不夠的，你需要親自搭建環境，觀察 Codex 或 Claude Code 等代理在不同規則下的真實表現。

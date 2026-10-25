@@ -1,4 +1,17 @@
 ---
+title: 苹果的黑魔法？Apple M1的栈操作消除（上） - 知乎
+date: "2026-04-11 21:40:28"
+updated: "2026-04-11 21:40:28"
+layout: post
+permalink: /collections/0.raw/Omnivore/2024-04-10/苹果的黑魔法-Apple-M1的栈操作消除(上)-知乎/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
+---
 id: 3134bde3-2547-4016-a19e-fb2a0fb38eae
 ---
 

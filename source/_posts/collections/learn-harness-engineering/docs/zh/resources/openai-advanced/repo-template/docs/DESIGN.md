@@ -1,3 +1,16 @@
+---
+title: DESIGN.md
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/zh/resources/openai-advanced/repo-template/docs/DESIGN/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # DESIGN.md
 
 这份文件是设计文档入口。保持简短，把更细的内容路由到

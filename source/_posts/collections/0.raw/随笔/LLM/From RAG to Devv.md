@@ -1,5 +1,18 @@
+---
+title: From RAG to Devv
+date: "2026-04-11 21:40:28"
+updated: "2026-04-11 21:40:28"
+layout: post
+permalink: /collections/0.raw/随笔/LLM/From-RAG-to-Devv/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
 
-![[assets/Pasted image 20240313215833.png]]
+
+![Pasted image 20240313215833.png](/images/collections/assets/Pasted%2520image%252020240313215833.png)
 
 一个最小的 RAG 系统就是由 3 个部分组成的： 
 1. 语言模型 
@@ -8,12 +21,12 @@
 
 ## 语言模型 
 为什么 2020 年的这篇论文直到今年才火起来？一个主要的原因就是之前的基座模型能力不够。 如果底层模型很笨，那么即使给到了 丰富的外部知识，模型也不能基于这些知识进行推演。 从论文的一些 benchmark 上也可以看出效果有提升，但是并没有特别显著。
-![[assets/Pasted image 20240313220850.png]]
+![Pasted image 20240313220850.png](/images/collections/assets/Pasted%2520image%252020240313220850.png)
 ## 模型所需要的外部知识集合 
 
 现在应该大家都了解了 embedding 模型了，包括 embedding 数据的召回。 embedding 本质上就是把数据转化为向量，然后通过余弦相似度来找到最匹配的两个或多个向量。 knowledge -> chunks -> vector user query -> vector
 
-![[assets/Pasted image 20240313220934.png]]
+![Pasted image 20240313220934.png](/images/collections/assets/Pasted%2520image%252020240313220934.png)
 ### 这个模块分成两个部分： 
 1. embedding 模型 
 2. 存储 embedding vector 的数据库 
@@ -46,13 +59,13 @@
 
 https://a16z.com/emerging-architectures-for-llm-applications/
 
-![[assets/Pasted image 20240313221609.png]]
+![Pasted image 20240313221609.png](/images/collections/assets/Pasted%2520image%252020240313221609.png)
 
 
 
 
 
-![[assets/Pasted image 20240313215246.png]]
+![Pasted image 20240313215246.png](/images/collections/assets/Pasted%2520image%252020240313215246.png)
 
 
 - **RAG 的核心在 R 不在 G**

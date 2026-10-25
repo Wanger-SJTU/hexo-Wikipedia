@@ -1,3 +1,16 @@
+---
+title: تعلّم هندسة الحزام (Learn Harness Engineering)
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs-readme/ar-SA/README/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 <p align="center">
   <a href="../../README.md"><img alt="English" src="https://img.shields.io/badge/EN-English-blue?style=flat-square"></a>
   <a href="../zh-CN/README.md"><img alt="简体中文" src="https://img.shields.io/badge/ZH-简体中文-red?style=flat-square"></a>
@@ -47,17 +60,17 @@
 ### 🏠 الصفحة الرئيسية للدورة
 > مخطط شامل للدورة ومقدمة للفلسفات الأساسية، توفر مساراً واضحاً للبدء.
 
-![معاينة الصفحة الرئيسية للدورة](../../docs/public/screenshots/readme/zh-home.png)
+![معاينة الصفحة الرئيسية للدورة](/images/collections/learn-harness-engineering/docs/public/screenshots/readme/zh-home.png)
 
 ### 📖 محاضرات تفاعلية
 > غوص عميق في نقاط الألم الواقعية ومشاريع عملية (مثل المشروع 01) لتجربة تعليمية تفاعلية.
 
-![معاينة محاضرة الدورة](../../docs/public/screenshots/readme/zh-lecture-01.png)
+![معاينة محاضرة الدورة](/images/collections/learn-harness-engineering/docs/public/screenshots/readme/zh-lecture-01.png)
 
 ### 🗂️ مكتبة موارد جاهزة للاستخدام
 > قوالب وتكوينات مرجعية مصممة لحل المشكلات الشائعة في تطوير وكلاء الذكاء الاصطناعي متعددة الأدوار، مثل فقدان السياق والإنهاء المبكر للمهام.
 
-![معاينة مكتبة الموارد](../../docs/public/screenshots/readme/zh-resources.png)
+![معاينة مكتبة الموارد](/images/collections/learn-harness-engineering/docs/public/screenshots/readme/zh-resources.png)
 
 ## كتيبات الدورة بصيغة PDF
 

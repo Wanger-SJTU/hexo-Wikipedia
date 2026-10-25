@@ -1,3 +1,16 @@
+---
+title: "AGENTS.md -- Project 02: Agent-Readable Workspace"
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/projects/project-02/solution/AGENTS/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # AGENTS.md -- Project 02: Agent-Readable Workspace
 
 ## Startup Rules

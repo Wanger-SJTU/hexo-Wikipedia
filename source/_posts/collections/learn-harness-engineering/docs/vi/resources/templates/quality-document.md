@@ -1,3 +1,16 @@
+---
+title: Tài liệu Chất lượng
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/vi/resources/templates/quality-document/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # Tài liệu Chất lượng
 
 Một snapshot chất lượng cho mỗi domain sản phẩm và lớp kiến trúc. Cả agent và con người đều có thể sử dụng tài liệu này để nhanh chóng hiểu nơi nào codebase mạnh và nơi nào cần cải thiện.

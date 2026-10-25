@@ -1,3 +1,16 @@
+---
+title: 클린 상태 체크리스트 (Clean State Checklist)
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/ko/resources/templates/clean-state-checklist/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # 클린 상태 체크리스트 (Clean State Checklist)
 
 세션 종료 전에 이 체크리스트를 실행하여 다음 세션이 깨끗한 클린 상태(clean state)에서 시작할 수 있도록 저장소를 정돈하십시오. 에이전트(agent)도 세션 종료 루틴의 일부로 이 항목들을 점검해야 합니다.

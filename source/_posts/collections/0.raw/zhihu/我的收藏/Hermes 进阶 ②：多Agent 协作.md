@@ -1,10 +1,19 @@
 ---
-title: "Hermes 进阶 ②：多Agent 协作"
-date: 2026-07-07
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/2056075324220248780
-
+title: Hermes 进阶 ②：多Agent 协作
+date: "2026-07-07 00:00:00"
+updated: "2026-07-07 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/Hermes-进阶-2-多Agent-协作/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/2056075324220248780
 ---
+
 
 Hermes 里多个Agent 要如何协作？无论是通过共享文档传递，还是在Kanban看板上分配任务，Hermes的多Agent协作本质都是定好接力规则，剩下的让Profile自己跑。上一篇 [Hermes 进阶 ①：自进化的 Skills 和多 Agent 配置](https://link.zhihu.com/?target=https%3A//mp.weixin.qq.com/s%3F__biz%3DMzY4MjA1MzA3Mw%3D%3D%26mid%3D2247484304%26idx%3D1%26sn%3D08190e3f1369c1bd620179fbcf2b1c84%26scene%3D21%23wechat_redirect) 后，有友友说里面只说了多个 Agent 怎么配置，那 Hermes 里多个 Agent 要怎么协作呢？
 

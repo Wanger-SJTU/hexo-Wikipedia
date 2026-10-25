@@ -1,9 +1,19 @@
 ---
-title: "(1 封私信) protobuf 中 UB 行为的表现"
-date: 2022-06-09
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/526558967
+title: (1 封私信) protobuf 中 UB 行为的表现
+date: "2022-06-09 00:00:00"
+updated: "2022-06-09 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/安全/protobuf-中-UB-行为的表现/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/526558967
 ---
+
 
 最近遇到一个奇怪的问题，protobuf 解包偶发性失败。通过进一步定位发现，由于 bool 值在某些情形下没有被初始化，导致了此问题。
 下面写了一个最小的 POC 来模拟此行为。

@@ -1,4 +1,17 @@
 ---
+title: RAG系统中答案无关片段对LLMs生成结果有何影响？ - 知乎
+date: "2026-04-11 21:40:28"
+updated: "2026-04-11 21:40:28"
+layout: post
+permalink: /collections/0.raw/Omnivore/2024-04-10/RAG系统中答案无关片段对LLMs生成结果有何影响-知乎/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
+---
 id: f9b8a918-8798-4fbc-aee4-9a3b8489fea4
 ---
 

@@ -1,9 +1,19 @@
 ---
-title: "(2 条消息) GPU架构梳理(Hopper前)"
-date: 2026-01-02
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/661533704
+title: (2 条消息) GPU架构梳理(Hopper前)
+date: "2026-01-02 00:00:00"
+updated: "2026-01-02 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/GPU架构梳理(Hopper前)/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/661533704
 ---
+
 
 ### 一、GPU架构概述
 
@@ -11,7 +21,7 @@ source: https://zhuanlan.zhihu.com/p/661533704
 
 GPU架构是围绕一个流式多处理器（SM）的扩展阵列搭建的。通过复制这种结构来实现GPU的硬件并行。  
 
-![](asset/img_baa5f4cf9b60.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_baa5f4cf9b60.jpg)
 
 SM包括关键组件：
 
@@ -30,11 +40,11 @@ SM包括关键组件：
 - 4 个 Special Function Units (SFU)
 **每个 SM 具有 32 个 CUDA 内核**，就是图中写着Core的绿色小方块儿，每个 CUDA 内核都有一个完全流水线化的算术逻辑单元 ALU（Arthmetic Logit Unit）和浮点运算单元 FPU（Floating Point Unit）：
 
-![](asset/img_7a96a2ac061c.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_7a96a2ac061c.jpg)
 
 #### GPU架构(以Fermi为例)
 
-![](asset/img_2e4a51dd4652.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_2e4a51dd4652.jpg)
 
 Fermi架构逻辑图如上，使用 30 亿个晶体管实现，共计512个CUDA内核。
 
@@ -48,7 +58,7 @@ Fermi架构逻辑图如上，使用 30 亿个晶体管实现，共计512个CUDA�
 
 主机接口(host interface )通过 PCI-Express 将 GPU 连接到 CPU。 Giga Thread 全局调度器将线程块分发给 SM 线程调度器。
 
-![](asset/img_1f2576914183.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_1f2576914183.jpg)
 
 整个 GPU 有多个 GPC(图形处理集群)，单个GPC包含一个光栅引擎(Raster Engine)，四个 SM（流式多处理器），GPC 可以被认为是一个独立的 GPU。所有从 Fermi 开始的 NVIDIA GPU，都有 GPC。
 
@@ -67,7 +77,7 @@ Fermi架构逻辑图如上，使用 30 亿个晶体管实现，共计512个CUDA�
 
 下图从逻辑角度和硬件角度描述了CUDA编程模型对应的组件。  
 
-![](asset/img_02969fff4410.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_02969fff4410.jpg)
 
 SM中共享内存，和寄存器是关键的资源，线程块中线程通过共享内存和寄存器相互通信协调。 寄存器和共享内存的分配可以严重影响性能！
 
@@ -150,7 +160,7 @@ Local Memory，它是每个线程专有的线程，但却是存在于Global Memo
 
 每个`SM`都有一个一级缓存，所有`SM`公用一个二级缓存，`SM`通过`L2 cache`连接到`Global Memory，GPU`读操作是可以使用缓存的，但写操作不能被缓存。
 
-![](asset/img_afe0f7b411af.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_afe0f7b411af.jpg)
 
 **L1、L2和SMEM关系**
 
@@ -168,7 +178,7 @@ L2缓存保存了显存的一部分拷贝。在必要情况下（GPU没有独立
 
 #### 6. 总结
 
-存储器作用域声明期RegisterThreadKernelLocal MemoryThreadKernelShared MemoryBlockKernelGlobal MemoryGridApplicationConstantGridApplication![](asset/img_32ea6b560f25.jpg)
+存储器作用域声明期RegisterThreadKernelLocal MemoryThreadKernelShared MemoryBlockKernelGlobal MemoryGridApplicationConstantGridApplication![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_32ea6b560f25.jpg)
 
 参考：
 

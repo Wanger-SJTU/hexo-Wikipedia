@@ -1,19 +1,29 @@
 ---
-title: "再谈tenstorrent"
-date: 2022-03-13
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/480182683
+title: 再谈tenstorrent
+date: "2022-03-13 00:00:00"
+updated: "2022-03-13 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/体系结构/再谈tenstorrent/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/480182683
 ---
+
 
 一篇有趣的文章。
 
-[![](asset/img_99b0ff5ad33c.jpg)Tenstorrent虫洞分析：挑战英伟达的新玩家？mp.weixin.qq.com/s/egXyuUfGlSB2RqiQe6HSkQ](https://link.zhihu.com/?target=https%3A//mp.weixin.qq.com/s/egXyuUfGlSB2RqiQe6HSkQ)
+[![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_99b0ff5ad33c.jpg)Tenstorrent虫洞分析：挑战英伟达的新玩家？mp.weixin.qq.com/s/egXyuUfGlSB2RqiQe6HSkQ](https://link.zhihu.com/?target=https%3A//mp.weixin.qq.com/s/egXyuUfGlSB2RqiQe6HSkQ)
 
 **
 
-![](asset/img_1b5370b85865.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_1b5370b85865.jpg)
 
-![](asset/img_f2f7805e3f70.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_f2f7805e3f70.jpg)
 
 这里引入了一个粒度的问题，要不要把actor模型下沉到device呢 ？   
 
@@ -37,4 +47,4 @@ tenstorrent的借用了actor机制把原本OS kernel中的memory malloc卸载为
 
 AI领域第一人，潘多拉的盒子打开了！
 
-![](asset/img_4c85603e030b.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_4c85603e030b.jpg)

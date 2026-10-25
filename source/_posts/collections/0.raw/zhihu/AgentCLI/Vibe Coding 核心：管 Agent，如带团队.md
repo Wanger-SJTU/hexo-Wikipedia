@@ -1,9 +1,19 @@
 ---
-title: "Vibe Coding 核心：管 Agent，如带团队"
-date: 2026-03-10
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/2008273917891076619
+title: Vibe Coding 核心：管 Agent，如带团队
+date: "2026-03-10 00:00:00"
+updated: "2026-03-10 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/AgentCLI/Vibe-Coding-核心-管-Agent,如带团队/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/2008273917891076619
 ---
+
 
 #### 先说清楚什么是 Vibe Coding
 
@@ -75,13 +85,13 @@ Agent 跑完了，你多快能判断结果是否正确？你犹豫的每一分�
 
 我尝试用了各种各样开源的工具，最后发现简单反而更好：直接在 tmux 下面加了一个状态栏，哪一个 Agent 跑完了我都能收到反馈。
 
-![](asset/img_5777b3e55d69.jpg)
+![](/images/collections/0.raw/zhihu/AgentCLI/asset/img_5777b3e55d69.jpg)
 
 输入速度也是瓶颈之一。语音输入是一个很好的方案，我试过 Superwhisper 之后最终切换到了 **Typeless**，它的使用体验、准确度和延迟的平衡非常出色，现在超过 10 个字基本不打字了。**墙裂推荐！！**
 
-![](asset/img_a73d29e97378.jpg)
+![](/images/collections/0.raw/zhihu/AgentCLI/asset/img_a73d29e97378.jpg)
 
-typeless![](asset/img_382311205965.jpg)
+typeless![](/images/collections/0.raw/zhihu/AgentCLI/asset/img_382311205965.jpg)
 
 **任务的描述与拆解**
 
@@ -176,7 +186,7 @@ Anthropic 做了一个实验，让 Claude 等 AI agent 自主尝试完成复杂�
 
 **Reviewer** 是在处理复杂的多变量问题时候，Review 代码和结论的。下面这个例子，没有这个 Reviewer，Executor的结论层层汇报上去，可能Orchestrator认为目标达到了，开始询问你是否终止任务了。
 
-![](asset/img_2f8b121a6def.jpg)
+![](/images/collections/0.raw/zhihu/AgentCLI/asset/img_2f8b121a6def.jpg)
 
 这个架构解决了两个核心问题。**自主决策**：Planner 拆解任务，Reviewer 验收结果，日常循环不需要你介入。**纠错机制**：Executor 产出有问题，Reviewer 会拦住；Executor 自身不会因为长时间运行而积累偏见，因为每次都是新的。
 
@@ -188,9 +198,9 @@ Anthropic 做了一个实验，让 Claude 等 AI agent 自主尝试完成复杂�
 
 你看看，和我们上面说的跟从 IC 转来的 TL 一样！因为他太会写代码了！
 
-![](asset/img_5e6a2fab246e.jpg)
+![](/images/collections/0.raw/zhihu/AgentCLI/asset/img_5e6a2fab246e.jpg)
 
-![](asset/img_36becb85941b.jpg)
+![](/images/collections/0.raw/zhihu/AgentCLI/asset/img_36becb85941b.jpg)
 
 一旦它开始执行，它就被阻塞了。你在终端那边干等着，整个交互节奏崩掉。它本应是你和 Sub-Agent 团队之间的通道，现在这个通道堵住了。
 

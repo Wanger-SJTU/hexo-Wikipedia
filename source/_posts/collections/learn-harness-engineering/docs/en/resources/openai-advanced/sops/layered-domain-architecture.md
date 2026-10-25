@@ -1,3 +1,16 @@
+---
+title: "SOP: Layered Domain Architecture"
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/en/resources/openai-advanced/sops/layered-domain-architecture/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # SOP: Layered Domain Architecture
 
 Use this SOP when the agent keeps violating boundaries, duplicating logic across

@@ -1,4 +1,17 @@
 ---
+title: 从长期记忆的角度谈Agent - 知乎
+date: "2026-04-11 21:40:28"
+updated: "2026-04-11 21:40:28"
+layout: post
+permalink: /collections/0.raw/Omnivore/2024-05-09/从长期记忆的角度谈Agent-知乎/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
+---
 id: 84378245-f5dc-4af1-a23f-582287fbbba7
 ---
 

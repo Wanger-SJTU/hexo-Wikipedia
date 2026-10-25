@@ -1,9 +1,19 @@
 ---
-title: "(2 条消息) 大家的NAS在哪里下载电影和电视剧？"
-date: 2026-04-17
-tags: [知乎]
-source: https://www.zhihu.com/question/1948476117431354079/answer/1949043890247151984
+title: (2 条消息) 大家的NAS在哪里下载电影和电视剧？
+date: "2026-04-17 00:00:00"
+updated: "2026-04-17 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/大家的NAS在哪里下载电影和电视剧/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://www.zhihu.com/question/1948476117431354079/answer/1949043890247151984
 ---
+
 
 849 人赞同了该回答
 

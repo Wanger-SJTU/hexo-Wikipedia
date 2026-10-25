@@ -1,9 +1,19 @@
 ---
-title: "(1 条消息) 卷积算法另一种高效实现，as_strided详解"
-date: 2019-06-13
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/64933417
+title: (1 条消息) 卷积算法另一种高效实现，as_strided详解
+date: "2019-06-13 00:00:00"
+updated: "2019-06-13 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/卷积算法另一种高效实现,as_strided详解/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/64933417
 ---
+
 
 感谢 @Sebastian 提供的完整实现：[https://github.com/sebgao/cTensor](https://link.zhihu.com/?target=https%3A//github.com/sebgao/cTensor)
 
@@ -89,13 +99,13 @@ X = \left[ \begin{array}{lll}{1} & {2} & {3} \\ {4} & {5} & {6} \\ {7} & {8} & {
 
 再来看A更高一个维度的距离，如下图：
 
-![](asset/img_f3b1e27dcded.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_f3b1e27dcded.jpg)
 
 也就是要确定上图中相同颜色圈中的两个元素之间的距离：1和2，2和3，8和9，等等
 
 在矩阵 X = \left[ \begin{array}{lll}{1} & {2} & {3} \\ {4} & {5} & {6} \\ {7} & {8} & {9}\end{array}\right] 可以发现，它们的距离都是4字节，就算找遍其他例子也是一样，所以，现在可以确定strides =（？，4，12，4），只剩最后一个维度的距离需要确定了，先上图
 
-![](asset/img_0ce2ab696ab5.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_0ce2ab696ab5.jpg)
 
 这里就不用多说了吧，最后可以strides =（12，4，12，4），运行代码：
 
@@ -172,11 +182,11 @@ A_1=\left[ \begin{array}{ll}{\left[ \begin{array}{ll}{\left[ \begin{array}{ll}{1
 
  如果要确定新的步长参数strides1，那么考虑到X1不过是在X的基础上增加了一个维度，在卷积中相当于多了一个通道，所以strides1的前四项还是按照上面的方法推导，依然不变，strides1 =（？，12，4，12，4），所以只要确定最高一个维度的值就可以了：
 
-![](asset/img_ff94cb6c780d.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_ff94cb6c780d.jpg)
 
 也就是上图1和10，5和14之间的关系，现在来看X中对应元素的距离：
 
-![](asset/img_929e2b88fa1e.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_929e2b88fa1e.jpg)
 
 而X1.strides =（36，12，4），所以strides1 =（36，12，4，12，4）
 

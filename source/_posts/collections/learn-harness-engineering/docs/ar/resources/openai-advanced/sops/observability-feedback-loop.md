@@ -1,3 +1,16 @@
+---
+title: "إجراء التشغيل القياسي: حلقة التغذية الراجعة للمراقبة"
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/ar/resources/openai-advanced/sops/observability-feedback-loop/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # إجراء التشغيل القياسي: حلقة التغذية الراجعة للمراقبة
 
 استخدم هذا الإجراء عندما يكون التصحيح بطيئًا، أو يستمر الوكلاء في الادعاء بالنجاح

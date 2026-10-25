@@ -1,10 +1,19 @@
 ---
-title: "transformer如何处理长文本？"
-date: 2024-01-22
-tags: [知乎]
-source: https://www.zhihu.com/question/635395282/answer/3372320028
-
+title: transformer如何处理长文本？
+date: "2024-01-22 00:00:00"
+updated: "2024-01-22 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/LLM-SD/transformer如何处理长文本/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://www.zhihu.com/question/635395282/answer/3372320028
 ---
+
 
 之前介绍了如何在位置编码和 attention 机制方面进行文本长度的有效拓展，这两个方面都是“经济适用性”的，即只需要简单微调或者直接外推即可，接下来将是最困难，也是成本最高的部分，即讨论如何在预训练阶段提高文本长度。
 

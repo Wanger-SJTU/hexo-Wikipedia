@@ -1,9 +1,19 @@
 ---
-title: "通过 SSH 实现 TCP / IP 隧道（端口转发）：使用 OpenSSH 可能的 8 种场景"
-date: 2017-10-10
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/30000490
+title: 通过 SSH 实现 TCP / IP 隧道（端口转发）：使用 OpenSSH 可能的 8 种场景
+date: "2017-10-10 00:00:00"
+updated: "2017-10-10 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/学习/通过-SSH-实现-TCP-_-IP-隧道(端口转发)-使用-OpenSSH-可能的-8-种场景/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/30000490
 ---
+
 
 对于 Secure Shell (SSH) 这样的网络协议来说，其主要职责就是在终端模式下访问一个远程系统。因为 SSH 协议对传输数据进行了加密，所以通过它在远端系统执行命令是安全的。此外，我们还可以在这种加密后的连接上通过创建隧道（端口转发）的方式，来实现两个不同终端间的互联。凭借这种方式，只要我们能通过 SSH 创建连接，就可以绕开防火墙或者端口禁用的限制。
 
@@ -21,7 +31,7 @@ source: https://zhuanlan.zhihu.com/p/30000490
 
 **
 
-![](asset/img_7097735bc54a.jpg)
+![](/images/collections/0.raw/zhihu/%25E5%25AD%25A6%25E4%25B9%25A0/asset/img_7097735bc54a.jpg)
 
 *SSH tunnels: no tunnel*
 
@@ -29,7 +39,7 @@ source: https://zhuanlan.zhihu.com/p/30000490
 
 **在 externo1 节点访问由 interno1 节点提供的 TCP 服务（本地端口转发 / 绑定地址 = localhost / 主机 = localhost ）externo1 节点可以通过 OpenSSH 连接到 interno1 节点，之后我们想通过其访问运行在 5900 端口上的 VNC 服务。
 
-![](asset/img_a0aee9b14993.jpg)
+![](/images/collections/0.raw/zhihu/%25E5%25AD%25A6%25E4%25B9%25A0/asset/img_a0aee9b14993.jpg)
 
 *SSH Tunnels: Scenario 1*
 
@@ -56,7 +66,7 @@ Tcp 0 0 127.0.0.1:7900 0.0.0.0:*  LISTEN
 
 **在 externo2 节点上访问由 interno1 节点提供的 TCP 服务（本地端口转发 / 绑定地址 = 0.0.0.0 / 主机 = localhost）这次的场景跟方案 1 的场景的类似，但是我们这次想从 externo2 节点来连接到 interno1 上的 VNC 服务：
 
-![](asset/img_508801de3474.jpg)
+![](/images/collections/0.raw/zhihu/%25E5%25AD%25A6%25E4%25B9%25A0/asset/img_508801de3474.jpg)
 
 *SSH Tunnels: Scenario 2*
 
@@ -102,7 +112,7 @@ Tcp 0 0 192.168.24.80:7900 0.0.0.0:* LISTEN
 
 **在 interno1 上访问由 externo1 提供的 TCP 服务（远程端口转发 / 绑定地址 = localhost / 主机 = localhost）在场景 1 中 SSH 服务器与 TCP 服务（VNC）提供者在同一个节点上。现在我们想在 SSH 客户端所在的节点上，提供一个 TCP 服务（VNC）供 SSH 服务端来访问：
 
-![](asset/img_1ae1cae87b34.jpg)
+![](/images/collections/0.raw/zhihu/%25E5%25AD%25A6%25E4%25B9%25A0/asset/img_1ae1cae87b34.jpg)
 
 *SSH Tunnels: Scenario 3*
 
@@ -129,7 +139,7 @@ Tcp 0 0 127.0.0.1:7900 0.0.0.0:* LISTEN
 
 **interno2 使用 externo1 上提供的 TCP 服务（远端端口转发 / 绑定地址 = 0.0.0.0 / 主机 = localhost）与场景 3 类似，但是现在我们尝试指定允许访问转发端口的 IP（就像场景 2 中做的一样）为 0.0.0.0，这样其他节点也可以访问 VNC 服务：
 
-![](asset/img_cc75038affa0.jpg)
+![](/images/collections/0.raw/zhihu/%25E5%25AD%25A6%25E4%25B9%25A0/asset/img_cc75038affa0.jpg)
 
 *SSH Tunnels: Scenario 4*
 
@@ -171,7 +181,7 @@ Tcp 0 0 0.0.0.0:7900 0.0.0.0:* LISTEN
 
 **在 externo1 上使用由 interno2 提供的 TCP 服务（本地端口转发 / 绑定地址 localhost / 主机 = interno2 ）
 
-![](asset/img_90dab5a8e84a.jpg)
+![](/images/collections/0.raw/zhihu/%25E5%25AD%25A6%25E4%25B9%25A0/asset/img_90dab5a8e84a.jpg)
 
 *SSH Tunnels: Scenario 5*
 
@@ -187,7 +197,7 @@ Tcp 0 0 0.0.0.0:7900 0.0.0.0:* LISTEN
 
 **在 interno1 上使用由 externo2 提供的 TCP 服务（远程端口转发 / 绑定地址 = localhost / host = externo2）
 
-![](asset/img_3582df7d6878.jpg)
+![](/images/collections/0.raw/zhihu/%25E5%25AD%25A6%25E4%25B9%25A0/asset/img_3582df7d6878.jpg)
 
 *SSH Tunnels: Scenario 6*
 
@@ -203,7 +213,7 @@ Tcp 0 0 0.0.0.0:7900 0.0.0.0:* LISTEN
 
 **在 externo2 上使用由 interno2 提供的 TCP 服务（本地端口转发 / 绑定地址 = 0.0.0.0 / 主机 = interno2）
 
-![](asset/img_697a0f5c246e.jpg)
+![](/images/collections/0.raw/zhihu/%25E5%25AD%25A6%25E4%25B9%25A0/asset/img_697a0f5c246e.jpg)
 
 *SSH Tunnels: Scenario 7*
 
@@ -223,7 +233,7 @@ Tcp 0 0 0.0.0.0:7900 0.0.0.0:* LISTEN
 
 > 在 interno2 上使用由 externo2 提供的 TCP 服务（远程端口转发 / 绑定地址 = 0.0.0.0 / 主机 = externo2）
 
-![](asset/img_acabfd955202.jpg)
+![](/images/collections/0.raw/zhihu/%25E5%25AD%25A6%25E4%25B9%25A0/asset/img_acabfd955202.jpg)
 
 *SSH Tunnels: Scenario 8*
 

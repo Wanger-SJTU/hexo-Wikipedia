@@ -1,9 +1,19 @@
 ---
-title: "什么是In-Context Learning（上下文学习）？"
-date: 2023-03-04
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/611217770
+title: 什么是In-Context Learning（上下文学习）？
+date: "2023-03-04 00:00:00"
+updated: "2023-03-04 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/dl论文/什么是In-Context-Learning(上下文学习)/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/611217770
 ---
+
 
 关注“**FightingCV**”公众号
 
@@ -11,7 +21,7 @@ source: https://zhuanlan.zhihu.com/p/611217770
 
 **点击进入→****FightingCV交流群**
 
-![](asset/img_ec66fc0e4b83.jpg)
+![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_ec66fc0e4b83.jpg)
 
 ### **前言**
 
@@ -41,7 +51,7 @@ source: https://zhuanlan.zhihu.com/p/611217770
 
 [https://zhuanlan.zhihu.com/p/484999828](https://zhuanlan.zhihu.com/p/484999828)
 
-![](asset/img_94762bd57e76.jpg)
+![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_94762bd57e76.jpg)
 
 ### **什么是In-Context Learning**
 
@@ -49,13 +59,13 @@ source: https://zhuanlan.zhihu.com/p/611217770
 
 *[https://arxiv.org/pdf/2301.00234.pdf](https://link.zhihu.com/?target=https%3A//arxiv.org/pdf/2301.00234.pdf)*
 
-![](asset/img_0ee5d3ebbef7.jpg)
+![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_0ee5d3ebbef7.jpg)
 
 In Context Learning（ICL）的关键思想是从类比中学习。上图给出了一个描述语言模型如何使用 ICL 进行决策的例子。首先，ICL 需要一些示例来形成一个演示上下文。这些示例通常是用自然语言模板编写的。然后 ICL 将查询的问题（即你需要预测标签的 input）和一个上下文演示（一些相关的 cases）连接在一起，形成带有提示的输入，并将其输入到语言模型中进行预测。
 
 值得注意的是，与需要使用反向梯度更新模型参数的训练阶段的监督学习不同，**ICL 不需要参数更新，并直接对预先训练好的语言模型进行预测（这是与 prompt，传统 demonstration learning 不同的地方，ICL 不需要在下游 P-tuning 或 Fine-tuning）**。我们希望该模型学习隐藏在演示中的模式，并据此做出正确的预测。
 
-![](asset/img_c196369bcdd8.jpg)
+![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_c196369bcdd8.jpg)
 
 ### **论文分析**
 
@@ -65,11 +75,11 @@ Rethinking the Role of Demonstrations: What Makes In-Context Learning Work？中
 
 作者采用 12 个模型进行了实验。我们包括 6 种语言模型（表 1），所有这些模型都是仅限解码器的 dense LM。LMs 的大小从 774M 到 175B 不等。
 
-![](asset/img_c7fb9e6791ec.jpg)
+![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_c7fb9e6791ec.jpg)
 
 对于每个模型，作者采用了两种应用方式，即 direct 和 channel：
 
-![](asset/img_908ad33d176a.jpg)
+![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_908ad33d176a.jpg)
 
 **Direct：**直接计算给定 input x 条件下，label y 的概率 P(y|x)。
 
@@ -77,9 +87,9 @@ Rethinking the Role of Demonstrations: What Makes In-Context Learning Work？中
 
 作者在如下数据集上进行实验，包括情感分析，段落检测，自然语言推理，仇恨言语检测，问答，句子补全等任务。
 
-![](asset/img_f62bc2064a5f.jpg)
+![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_f62bc2064a5f.jpg)
 
-![](asset/img_aa37e57fb3d8.jpg)
+![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_aa37e57fb3d8.jpg)
 
 ### **结论1：ICL中Ground Truth信息无关紧要**
 
@@ -92,7 +102,7 @@ Rethinking the Role of Demonstrations: What Makes In-Context Learning Work？中
 
 **Demos w random labels：**抽样 K 个 examples 提示，但样本 labels 在标签集中随机采样，而非 groundtruth。
 
-![](asset/img_78179837e4a6.jpg)
+![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_78179837e4a6.jpg)
 
 我们发现，用随机标签替换黄金标签只会轻微影响性能。这一趋势在几乎所有的模型上都是一致的：模型看到的性能下降在 0-5% 的绝对范围内。在多选择任务中（平均 1.7%）替换标签的影响小于在分类任务中（2.6% 的绝对标签）。
 
@@ -100,15 +110,15 @@ Rethinking the Role of Demonstrations: What Makes In-Context Learning Work？中
 
 作者在以下 3 个维度上进一步做了消融实验：**正确演示占总的百分比**（下图1）与**演示样本数量 K**（下图2），**演示的模板样式**（下图3）。
 
-![](asset/img_c1630c6d2ccf.jpg)
+![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_c1630c6d2ccf.jpg)
 
-![](asset/img_77f8306f076f.jpg)
+![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_77f8306f076f.jpg)
 
-![](asset/img_63248a98a271.jpg)
+![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_63248a98a271.jpg)
 
 可以得到相似的结论，在演示正确与否影响并不大。
 
-![](asset/img_8c31d6e1110e.jpg)
+![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_8c31d6e1110e.jpg)
 
 ### **结论2：ICL的性能收益主要来自独立规范的输入空间和标签空间，以及正确一致的演示格式**
 
@@ -134,27 +144,27 @@ Rethinking the Role of Demonstrations: What Makes In-Context Learning Work？中
 
 **4. The format：**使用输入标签配对作为格式。
 
-![](asset/img_111137426b1f.jpg)
+![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_111137426b1f.jpg)
 
 **输入文本分布实验：**
 
 下图中，青绿色的柱子为用（从外部语料中）随机采样的句子替换输入句子的设置。可以看到，模型表现明显下降。因此，in-context learning 中，演示中的分布内输入极大地有助于提高性能。这可能是因为已 IND（in-distribution）文本的条件使任务更接近于语言建模，因为 LM 在此期间总是以 IND 文本为条件进行推理标签。
 
-![](asset/img_e00d10113308.jpg)
+![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_e00d10113308.jpg)
 
 **标签空间实验：**
 
 下图中，青绿色的柱子为用随机英语词汇替代展示样本中的标签。可以看到，模型表现明显下降。因此，in-context learning 中，标签空间的一致性显著有助于提高性能。
 
-![](asset/img_99b8e9f9b2aa.jpg)
+![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_99b8e9f9b2aa.jpg)
 
 **演示格式实验：**
 
 下图中，分别用 labels only（深紫）和 no labels（深绿）来探索演示模式的差异对模型表现的影响。可以看到，模型相对于上面两图的 OOD setting 而言，都有了进一步的下降。这可以表明 ICL 中保持输入-标签对的格式是关键的。
 
-![](asset/img_2d21d2357deb.jpg)
+![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_2d21d2357deb.jpg)
 
-![](asset/img_54668af35321.jpg)
+![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_54668af35321.jpg)
 
 ### **有意思的讨论**
 
@@ -164,7 +174,7 @@ Rethinking the Role of Demonstrations: What Makes In-Context Learning Work？中
 
 ### 
 
-![](asset/img_91081b536831.jpg)
+![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_91081b536831.jpg)
 
 ### **总结**
 

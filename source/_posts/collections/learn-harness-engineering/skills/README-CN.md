@@ -1,3 +1,16 @@
+---
+title: Skills（技能集）
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/skills/README-CN/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 <p align="center">
   <a href="README.md"><img alt="English" src="https://img.shields.io/badge/English-d9d9d9"></a>
   <a href="README-CN.md"><img alt="简体中文" src="https://img.shields.io/badge/简体中文-d9d9d9"></a>

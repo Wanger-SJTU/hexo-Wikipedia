@@ -1,9 +1,19 @@
 ---
-title: "The year of agent - 2025"
-date: 2025-12-26
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/1987926431406253561
+title: The year of agent - 2025
+date: "2025-12-26 00:00:00"
+updated: "2025-12-26 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/The-year-of-agent-2025/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/1987926431406253561
 ---
+
 
 The year of agent - 2025
 

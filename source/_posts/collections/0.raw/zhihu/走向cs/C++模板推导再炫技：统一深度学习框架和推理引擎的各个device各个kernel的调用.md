@@ -1,9 +1,19 @@
 ---
-title: "C++模板推导再炫技：统一深度学习框架和推理引擎的各个device各个kernel的调用"
-date: 2024-03-20
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/688135917
+title: C++模板推导再炫技：统一深度学习框架和推理引擎的各个device各个kernel的调用
+date: "2024-03-20 00:00:00"
+updated: "2024-03-20 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/走向cs/C-模板推导再炫技-统一深度学习框架和推理引擎的各个device各个kernel的调用/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/688135917
 ---
+
 
 最近迷恋上了模板，看了很多模板推导，模板偏特化，模板特化，变长参数模板的例子，之前也发过一些模板的文章，比如[这篇paddle的](https://link.zhihu.com/?target=http%3A//mp.weixin.qq.com/s%3F__biz%3DMzg2ODk4MzE2MQ%3D%3D%26mid%3D2247484113%26idx%3D1%26sn%3D047f740a448f3d15ca3eceff32cd3615%26chksm%3Dcea54ac7f9d2c3d1e7e6e3c83fba79068b8ef76b51150bd8b8029969da55e89b26825d6b3737%26scene%3D21%23wechat_redirect)，本文会比paddle的这篇略简单一点，另外，准备后面几期文章再带来几个C++模板与深度学习应用结合的case。[原文位于此](https://link.zhihu.com/?target=https%3A//mp.weixin.qq.com/s%3F__biz%3DMzg2ODk4MzE2MQ%3D%3D%26mid%3D2247484289%26idx%3D1%26sn%3Dbbbfefaa2232ca61ecee18c91663e032%26chksm%3Dcea54b97f9d2c281a2db6e01b6e7ee10254e29505dab7d8c074247a38c7659c489b10429d2e2%26token%3D416700032%26lang%3Dzh_CN%23rd)
 

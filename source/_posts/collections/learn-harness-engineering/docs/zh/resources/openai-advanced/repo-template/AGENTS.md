@@ -1,3 +1,16 @@
+---
+title: AGENTS.md
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/zh/resources/openai-advanced/repo-template/AGENTS/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # AGENTS.md
 
 这个仓库面向长时运行的 coding-agent 工作流。保持这个文件简短，把它当成“唯一事实来源”文档的入口和路由层，而不是一个不断膨胀的大说明书。

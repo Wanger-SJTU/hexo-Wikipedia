@@ -1,3 +1,16 @@
+---
+title: thread_local
+date: "2026-04-11 21:40:28"
+updated: "2026-04-11 21:40:28"
+layout: post
+permalink: /collections/0.raw/随笔/C/thread_local/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 #cpp
 
 很少并不是没有，最近就在考虑C++ thread_local关键字的运行时开销，它对executable和对动态链接库开销差别很大，对dll中定义的thread_local每次访问都会有额外的函数调用以及间接跳转，对cpu的流水线也很不友好，而这些都是我看了很多GNU文档、博客，对着满屏的反汇编分析了一两天又上gdb追踪了两三天才确定下来的...

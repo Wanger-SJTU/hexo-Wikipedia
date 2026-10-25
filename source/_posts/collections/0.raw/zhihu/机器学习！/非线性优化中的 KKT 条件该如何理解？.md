@@ -1,9 +1,19 @@
 ---
-title: "非线性优化中的 KKT 条件该如何理解？"
-date: 2026-04-15
-tags: [知乎]
-source: https://www.zhihu.com/question/23311674/answer/235256926
+title: 非线性优化中的 KKT 条件该如何理解？
+date: "2026-04-15 00:00:00"
+updated: "2026-04-15 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/机器学习/非线性优化中的-KKT-条件该如何理解/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://www.zhihu.com/question/23311674/answer/235256926
 ---
+
 
 普通本科数学教材中都会介绍Lagrange乘子法，用于求解带等式约束的极值问题，KKT条件是拉格朗日乘子法的推广，由于表述比较繁琐，知名度较低。也许是因为出现在SVM模型的推导中，机器学习研究者倒是对其有所耳闻。
 
@@ -53,7 +63,7 @@ N_f = N_f^+\cup N_f^-
 
 N_f 是两条射线的并，是由梯度方向张成的一维子空间。与这个一维子空间正交的n-1一维空间，被称为切空间或者切平面 T_f(x) ，自变量在 T_f(x) 中的方向上移动时，函数值 f 变化不大。我们都知道对于光滑的曲面，如果把它在一点 x 上无限放大，最终会近似成为平面，这个平面就是 x+T_f(x) 。（如果你不明白这段在说什么，请拖到最下方看注1**。）下图是一个例子：
 
-![](asset/img_1e7076528f71.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_1e7076528f71.jpg)
 
 从而，在曲面 f(x)=0 上一点 x 周围，我们把空间分成了三部分：
 
@@ -71,7 +81,7 @@ N_f^+\cup N_f^-\cup T_f=R^n
 
 三种情况我们总结在下表中：
 
-![](asset/img_bce0de6c574e.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_bce0de6c574e.jpg)
 
 总结一下就是：假设一个点满足某约束，可行方向是这样一些方向，在这些方向上移动一点点，点仍然近似满足约束。对等式约束，可行方向是切空间；对不等式约束，如果点正好在边界上，可行方向是半空间，如果不在边界上，可行方向是全空间。
 
@@ -85,11 +95,11 @@ N_f^+\cup N_f^-\cup T_f=R^n
 
 **例1：**两个等式约束 h_i(x)=0 和 h_j(x)=0 是三维空间中的二维曲面，二者的交是一维曲线（下图中蓝白相间的部分），考虑曲线上的一个点 x ，这一点作为曲线上的一点，切空间是一维的，也就是曲线的切线，而这条切线恰好是两个等式约束的切平面的交。
 
-![](asset/img_52df39d2dc65.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_52df39d2dc65.jpg)
 
 **例2：**等式约束 h_j(x)=0 是下图右边的球面，不等式约束 g_i\leq0 是左边绿色球面外面的空间区域，同时满足二者的可行域是右边球面露在左边球面外面的部分（红白相间的部分）。为保持两个约束仍然满足，点 x 既可以在两球面交线上滑动 (h_j(x)=g_i(x)=0) ，也可以朝右边球面上移动(h_j(x)=0,g_i(x) ，所以可行方向是下图右边那半块玻璃。同时，可行方向也是 h_j(x)=0 的可行方向、平面 T_{h_j} （下图中右边那块平面玻璃）和 g_i\leq0 在边界上的可行方向、半空间 T_{g_i}\cup N_{g_i}^- （下图中左面那块平面玻璃靠上的所有区域）的交集。
 
-![](asset/img_ab80e08ca6bc.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_ab80e08ca6bc.jpg)
 
 **五、KKT条件的证明**
 
@@ -159,7 +169,7 @@ B=R^3-A 。
 
 送礼物
 
-![](asset/img_506bd350a544.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_506bd350a544.jpg)
 
 1 人已送礼物
 

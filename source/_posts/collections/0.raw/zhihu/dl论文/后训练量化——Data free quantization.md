@@ -1,13 +1,23 @@
 ---
-title: "后训练量化——Data free quantization"
-date: 2021-12-24
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/393556057
+title: 后训练量化——Data free quantization
+date: "2021-12-24 00:00:00"
+updated: "2021-12-24 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/dl论文/后训练量化——Data-free-quantization/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/393556057
 ---
+
 
 本文首发于公众号：
 
-[![](asset/img_8061b175abbd.jpg)后训练量化——Data free quantizationmp.weixin.qq.com/s?__biz=Mzg4ODA3MDkyMA==&mid=2247484062&idx=1&sn=e7f544a95dca6e7039437a396ad2a736&chksm=cf81f4f9f8f67def2f94cdec41a1520ad42590aeb39a0893eccfe0ed889537c892f61ad5be70&mpshare=1&scene=1&srcid=07273L3astgZ7RbNNGCZfMtW&sharer_sharetime=1627355504861&sharer_shareid=da991721ac56acde0344d993139eb9ca&exportkey=AUgqBMSOTVjUvfU3hYEFa5o%3D&pass_ticket=7v5vASXiJPySQtqVBiTQch2CA100DJ9FS1%2F74mtKH0XegMexV2Cvrb%2BbG3LwsbMI&wx_header=0#rd](https://link.zhihu.com/?target=https%3A//mp.weixin.qq.com/s%3F__biz%3DMzg4ODA3MDkyMA%3D%3D%26mid%3D2247484062%26idx%3D1%26sn%3De7f544a95dca6e7039437a396ad2a736%26chksm%3Dcf81f4f9f8f67def2f94cdec41a1520ad42590aeb39a0893eccfe0ed889537c892f61ad5be70%26mpshare%3D1%26scene%3D1%26srcid%3D07273L3astgZ7RbNNGCZfMtW%26sharer_sharetime%3D1627355504861%26sharer_shareid%3Dda991721ac56acde0344d993139eb9ca%26exportkey%3DAUgqBMSOTVjUvfU3hYEFa5o%253D%26pass_ticket%3D7v5vASXiJPySQtqVBiTQch2CA100DJ9FS1%252F74mtKH0XegMexV2Cvrb%252BbG3LwsbMI%26wx_header%3D0%23rd)
+[![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_8061b175abbd.jpg)后训练量化——Data free quantizationmp.weixin.qq.com/s?__biz=Mzg4ODA3MDkyMA==&mid=2247484062&idx=1&sn=e7f544a95dca6e7039437a396ad2a736&chksm=cf81f4f9f8f67def2f94cdec41a1520ad42590aeb39a0893eccfe0ed889537c892f61ad5be70&mpshare=1&scene=1&srcid=07273L3astgZ7RbNNGCZfMtW&sharer_sharetime=1627355504861&sharer_shareid=da991721ac56acde0344d993139eb9ca&exportkey=AUgqBMSOTVjUvfU3hYEFa5o%3D&pass_ticket=7v5vASXiJPySQtqVBiTQch2CA100DJ9FS1%2F74mtKH0XegMexV2Cvrb%2BbG3LwsbMI&wx_header=0#rd](https://link.zhihu.com/?target=https%3A//mp.weixin.qq.com/s%3F__biz%3DMzg4ODA3MDkyMA%3D%3D%26mid%3D2247484062%26idx%3D1%26sn%3De7f544a95dca6e7039437a396ad2a736%26chksm%3Dcf81f4f9f8f67def2f94cdec41a1520ad42590aeb39a0893eccfe0ed889537c892f61ad5be70%26mpshare%3D1%26scene%3D1%26srcid%3D07273L3astgZ7RbNNGCZfMtW%26sharer_sharetime%3D1627355504861%26sharer_shareid%3Dda991721ac56acde0344d993139eb9ca%26exportkey%3DAUgqBMSOTVjUvfU3hYEFa5o%253D%26pass_ticket%3D7v5vASXiJPySQtqVBiTQch2CA100DJ9FS1%252F74mtKH0XegMexV2Cvrb%252BbG3LwsbMI%26wx_header%3D0%23rd)
 
 前面介绍了一些后训练量化的基本方法，从这篇文章开始我们来学习一些高阶操作。
 
@@ -37,13 +47,13 @@ weight equalization 是论文的关键点之一，这在另一篇论文 **Same, 
 
 weight equalization，顾名思义，就是对 weight 进行均衡化操作。为什么要有这个操作呢？因为高通研究人员在剖析 MobileNetV2 的时候发现，这个网络用 per-layer 量化精度下降极其严重，只有用上 per-channel 的时候才能挽救一下。具体实验数据出自 Google 的白皮书。我特意去翻了一下，发现还真是：
 
-![](asset/img_e641313662fb.jpg)
+![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_e641313662fb.jpg)
 
 Mobilenet 类的网络在 per-layer 量化下，精度直接掉到 0.001 了，而同样作为小网络的 Nasnet 下降很小 (per-layer 精度一般是比 per-channel 低一些，但这么严重的精度下降，我怀疑是不是 Google 的程序员跑错代码了)。
 
 为什么会有这种情况呢？原因在于 MobileNetV2 中用了大量的可分离卷积 (depthwise conv)，这个卷积的特殊之处是每个 output channel 都只由一个 conv kernel 计算得到，换句话说，不同 channel 之间的数值是相互独立的。研究人员调查了某一层可分离卷积的 weight 数值，发现不同的卷积核，其数值分布相差非常大：
 
-![](asset/img_13ac8c8557bb.jpg)
+![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_13ac8c8557bb.jpg)
 
 纵坐标是数值分布，横坐标表示不同的卷积核。你会发现，有些 weight 的数值分布在 0 附近，有些数值范围就非常大。在这种情况下，如果使用 per-layer 量化，那这些大范围的 weight 就会主导整体的数值分布，导致那些数值分布很小的 weight 在量化的时候直接压缩没了。这也是为什么 per-channel 对可分离卷积效果更好的原因。
 
@@ -63,19 +73,19 @@ $$E[\widetilde{y_j}-y_j]\approx\frac{1}{N}(\sum_n(\widetilde{W}x_n)_j-(Wx_n)_j) 
 
 用这个公式可以算出引入量化误差后的 feature map 上每个点和原先的相差了多少，统计一下这些误差，就得到下面这张图：
 
-![](asset/img_4a99676d5403.jpg)
+![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_4a99676d5403.jpg)
 
 这里面蓝色的柱状图就统计了量化后的误差分布，看得出，有不少 feature 的误差已经超过了 1，而理想状态下，我们是希望量化后的误差能集中到 0 附近，越接近 0 越好，就像橙色直方图那样。
 
 其实，这种 biased error 不仅仅只有量化的时候会出现，在做模型压缩的时候也会遇到。做过画质类任务模型剪枝的同学可能有这种体验，就是当你把一个大模型里面某些卷积的通道数砍掉时，会发现模型的输出结果出现一种整体上的色彩变化。比如，我在一个图像去噪的实验中用了剪枝后，出现下面这种现象：
 
-![](asset/img_769430bb30a9.jpg)
+![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_769430bb30a9.jpg)
 
 模型剪枝后，你会发现模型的输出结果和原来相比，好像整体的颜色上多了一个偏移 (biased)，但图像里面的物体基本还能辨识 (数值分布的形态没有发生变化)。
 
 我自己画了幅简图描述这种现象：
 
-![](asset/img_4950bec66063.jpg)
+![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_4950bec66063.jpg)
 
 其中红色的分布是原模型的分布，而橙色分布就是剪枝后带了 biased error 的分布，它的形状大体上和红色分布类似，但整体向右发生了一点偏移，从而导致整个画面的色彩发生了变化。一般来说，经过 finetune 后，这种现象可以慢慢得到缓解。
 
@@ -99,7 +109,7 @@ f(sx)=sf(x) \tag{2}
 
 (注意这个式子的 s 必须是正数)
 
-![](asset/img_e101d82a64f9.jpg)
+![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_e101d82a64f9.jpg)
 
 对于卷积来说，在卷积核上乘以放缩系数，等效于在输出上乘以同样的放缩系数。全连接层同理。(简单起见，上图中的 bias 被省略了)
 
@@ -107,13 +117,13 @@ f(sx)=sf(x) \tag{2}
 
 ReLU(sx)=sReLU(x) \tag{3} 
 
-![](asset/img_157b4441cc02.jpg)
+![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_157b4441cc02.jpg)
 
 其实不只是 ReLU，任何分段线性的函数，都满足 Positive scaling equivariance。不过由于我们大部分时候使用的都是类 ReLU 的函数，所以这里就不再延伸了。
 
 有了以上这些性质后，我们就可以在下一个卷积核上，乘以一个逆放缩系数，从而抵消第一个卷积核放缩的影响，实现计算上的等效性。
 
-![](asset/img_dc888ed8905a.jpg)
+![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_dc888ed8905a.jpg)
 
 这一切成立的前提都在于 conv 和类 ReLU 函数满足公式 (2)，从而可以把缩放系数等价地作用到下一层输入上，并进一步被下一层卷积的逆缩放系数吸收掉。需要注意的是，第一个卷积的缩放系数是乘在每个 kernel 上，而第二个卷积的逆缩放系数则是乘在每个 kernel 的 channel 上的。
 
@@ -135,7 +145,7 @@ p_i^{(1)}=\frac{r_i^{(1)}}{R^{(1)}} \tag{7}
 
 需要注意的是，在计算下一个卷积核的均衡化系数时，不能像第一个卷积核一样每个 kernel 单独计算，而应该把相同缩放系数的通道重新排列后，再按照前者的方式计算。(只是求解缩放系数的时候需要这么处理，正常卷积运算还是按照原来的卷积核来算)
 
-![](asset/img_118bcf12061c.jpg)
+![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_118bcf12061c.jpg)
 
 这种处理方法在数学优化以及代码实现上都能带来极大的方便。卷积核重新排列后，第二个卷积核的 kernel 数就和第一个相同了。
 
@@ -194,7 +204,7 @@ E[x] 表示从几个样本上计算得到的均值，又称期望，而 \epsilon
 
 根据期望的性质 E[\epsilon x]=\epsilon E[x]，由于 \epsilon 是可以根据权重计算的，因此只要知道 E[x]，即输入的期望即可。那该如何在没有输入数据的情况下，得到输入的期望呢？论文假定，对于某一层 Conv 层，它的前一层跟着一个 BN 层和一个类 ReLU 的激活函数：
 
-![](asset/img_3ce396203009.jpg)
+![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_3ce396203009.jpg)
 
 我们只要算出 ReLU 的输出的均值，那就相当于我们得到了所要求的 Conv 的输入均值 E[x]。这里起关键作用的是 BN，我们知道，BN 里面有两个参数：\gamma 和 \beta，它们表示 scale 和 shift，但同时它们还包含另一层物理意义，即均值和方差。换句话说，上面这幅图里面，x^{pre} 的均值就是 \gamma。
 
@@ -210,17 +220,17 @@ $$\begin{align} E[x_c]&=E[ReLU(x_c^{pre})] \tag{11} \\ &=\gamma_{c}N(\frac{-\bet
 
 首先是 weight equalize + per-layer 和 per-channel 量化的效果对比，毕竟用 weight equalize 就是希望用 per-layer 达到或接近 per-channel 的效果：
 
-![](asset/img_7a6b17ee809d.jpg)
+![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_7a6b17ee809d.jpg)
 
 从 ImageNet 分类这个任务来看，在 MobilenetV2 这个网络上，weight equalize 和 per-channel 量化效果相当了。
 
 我们也可以直观地感受下加上 weight equalize 后，权重是如何变化的。下图里面，左图是 MobilenetV2 里面，某个可分离卷积不同 kernel 的数值分布，右图是用上 weight equalize 后的数值分布，可以明显看到，用上 weight equalize 后，数值范围从 -50~100 的区间缩小到了 -0.75~0.75 的区间，这也正是 per-layer 量化时希望看到的结果：
 
-![](asset/img_68157c266684.jpg)
+![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_68157c266684.jpg)
 
 此外，我关注的另一个实验是，如果我们把卷积 kernel 中，那些大的 range 直接截断一部分，强制让每个 kernel 的数值接近，这样能不能取得好的结果呢？论文做的实验是强行把 kernel 的数值范围截断到 [-15, 15] 之间，然后对比和 weight equalize 的效果：
 
-![](asset/img_077f03e5afe2.jpg)
+![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_077f03e5afe2.jpg)
 
 从结果来看，强行对 kernel 的数值进行截断，在没有重新训练的情况下，虽然全精度模型还能维持在 67% 的准确率上 (全精度只有 71%)，但量化后还是凉凉。如果截断到更小的范围，全精度的准确率应该要下降更多了，那量化后更没法比了。
 
@@ -232,7 +242,7 @@ $$\begin{align} E[x_c]&=E[ReLU(x_c^{pre})] \tag{11} \\ &=\gamma_{c}N(\frac{-\bet
 
 这篇文章主要介绍了高通 Data-Free 论文中的两个神技：Weight Equalization 和 Bias Correction。通过这些技巧，可以在卷积 (或者全连接层) 的 kernel 数值差异较大的情况下，用 per-layer 量化达到 per-channel 的效果。算法流程可以概括为下图：
 
-![](asset/img_562524599681.jpg)
+![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_562524599681.jpg)
 
 下一章中，我们挖一下 pytorch 源码，看看大佬们是怎么实现 Weight Equalization 和 Bias Correction 的，咱们下回见。
 

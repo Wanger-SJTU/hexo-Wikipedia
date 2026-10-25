@@ -1,9 +1,19 @@
 ---
-title: "Instruction scheduling in LLVM"
-date: 2023-10-17
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/360364235
+title: Instruction scheduling in LLVM
+date: "2023-10-17 00:00:00"
+updated: "2023-10-17 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/体系结构/Instruction-scheduling-in-LLVM/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/360364235
 ---
+
 
 最近工作接触到指令调度，所以就抓住机会~~~写一篇博文把~~~初次学习，如果有写的不对，请大佬们指正。首先简单介绍下，与指令调度相关的一些基础概念：
 
@@ -30,10 +40,10 @@ source: https://zhuanlan.zhihu.com/p/360364235
 **指令调度与寄存器分配**某种程度上是有种相互约束的关系。因为指令调度主要是挖掘程序的并行度，而寄存器分配，又是挖掘程序的局部性。在LLVM 中，其在寄存器分配前后，都有调度。在LLVM中，后端IR有不同的形式和状态存在，无论其在寄存器之前和之后做，本质上都是基于当前IR状态，尽可能的去提升程序并行度，提高调度程序带来优化的机会。可以看下寄存器分配前后，对调度程序产生的一些影响：
 
 - 寄存器分配之前做调度：在寄存器分配之前做，可以更大程序上的优化代码的并行度。当前LLVM IR 状态下分配的寄存器均为虚拟寄存器，由于虚拟寄存器的个数不受限制，导致当前程序会不受约束的使用虚拟寄存器，从而可能会额外的增加寄存器分配的变量，增加活性寄存器数量，从而增加了寄存器压力，可能会产生寄存器Spill场景产生，直接影响程序性能（当寄存器数量不够用的时候，会将当前程序没有使用的变量从寄存器ST回内存，等当此变量再次被使用时，需要重新LD 回寄存器，产生LD/ST操作，通常访存操作的Latency 都比较大，故狠影响程序性能）。下图%2，23%，可能在寄存器分配阶段，增加了2个寄存器数量（这个代码比较简单，所以应该会复用寄存器的哈）
-![](asset/img_7bc86028ecf6.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_7bc86028ecf6.jpg)
 
 - 寄存器分配之后做调度：寄存器分配之后，会将上图所有使用虚拟寄存器的地方全部换成真实的物理寄存器，如下图所示。由于每个后端平台的寄存器个数都有一定的限制，所以一般会通过复用寄存器的方式，来减低寄存器压力，降低产生寄存器spill 的场景，但是这样同样会引来一些问题。如下图X11寄存器的复用，导致ADD指令和LW指令之间，存在了anti-dependence。可以想象下，如果把寄存器资源都过度的集中限制在一个范围中，那么可能会导致程序引入更多的依赖，从而直接影响到调度优化的效果
-![](asset/img_ffd13ccb23f9.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_ffd13ccb23f9.jpg)
 
 根据调度程序处理的粒度以及调度处理的场景，可以将调度分成：
 
@@ -47,7 +57,7 @@ LLVM 调度有两种IR状态的调度，基于SchduleDAGSDNode 或者基于Sched
 -enable-misched      - Enable the machine instruction scheduling pass.默认开启
 -enable-post-misched - Enable the post-ra machine instruction scheduling pass. 默认开启`
 
-![](asset/img_472f8828093f.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_472f8828093f.jpg)
 
       上图，绿色的部分代表的是Instruction Scheduling发生的阶段，蓝色部分代表当前基于Function级别的一些pass，主要表示当前可以触发指令调度的优化有哪些。（目前LLVM框架下，很多后端都是基于MachineSchedul 做调度。重点可以看下2，3两个阶段优化的实现）。图中一开始，输入是DAG 节点，经过selectionDAGISel 的调度阶段之后，转化为以List为base 的MI中间表示法。主要原因是由于当前CPU/GPU只能执行线性指令集，不能执行DAG，所以需要将DAG转化为线性指令集。这个过程主要是对DAG进行一次拓扑排序完成，会得到线性化指令集，当然在LLVM中除了TopoLogical 还会有一些别的启发式算法结合，-pre-RA-Shed=Value值。如基于source等，利用拓扑排序+启发式算法完成本次调度，简单介绍下SelectionDAGIsel调度程序，SelectionDAG nodes
 
@@ -121,7 +131,7 @@ list scheduling ：本质上是拓扑排序，针对有向无环图做序列化�
 }`
 
 - 改变DAG mutation。通常调度之前，已经创建好Data Dependence Grapy，LLVM 在这边提供一个机会可以重新计算Dependence机会。通常列表调度 + 启发式算法，只是尽量让调度结果达到最优解，可能存在某些场景不能覆盖到。看下图，假设节点a到b 和节点 a到c的边距一样，则经过调度之后，产生的指令序列可以是：abcd或者acbd，如果当前你的架构，要求指令a指令完成之后，一定要先执行b，则可以在bc 之间增加mutation
-![](asset/img_6f9aac0fa544.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_6f9aac0fa544.jpg)
 
 参考文档以及视频：
 

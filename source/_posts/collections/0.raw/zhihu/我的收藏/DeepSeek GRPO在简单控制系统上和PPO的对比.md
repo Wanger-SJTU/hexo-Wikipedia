@@ -1,9 +1,19 @@
 ---
-title: "DeepSeek GRPO在简单控制系统上和PPO的对比"
-date: 2025-02-03
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/21131372654
+title: DeepSeek GRPO在简单控制系统上和PPO的对比
+date: "2025-02-03 00:00:00"
+updated: "2025-02-03 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/DeepSeek-GRPO在简单控制系统上和PPO的对比/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/21131372654
 ---
+
 
 DeepSeek 的深度强化学算法 GRPO，在LLM领域提升数学推理上的效果非常好，所以我前几天就想着能不能把GRPO用到机器人控制系统上。
 
@@ -15,15 +25,15 @@ DeepSeek 的深度强化学算法 GRPO，在LLM领域提升数学推理上的效
 
 1)由于GRPO没有Value网络，所以收敛速度非常快，但结果不稳定（只使用了最简单的Reward作为反向传播的计算依据，所以能感受到的实际情况信息太少）
 
-![](asset/img_14e35c218cf6.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_14e35c218cf6.jpg)
 
 GRPO @CartPole-v12）PPO ，由于有Value网络，包含使用了，详细的被控系统state信息（使用了更丰富的信息来实现反向传播），所以收敛过程虽然有点慢但很稳定，最终效果也比较好
 
-![](asset/img_9d44d65fab42.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_9d44d65fab42.jpg)
 
 PPO @CartPole-v13）在上述GRPO的程序基础上，我简单改一下，把state中的水平位置信息，加到Reward里面，性能也有明显的提升
 
-![](asset/img_805af3ff59a5.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_805af3ff59a5.jpg)
 
 GRPO+RS @CartPole-v1**
 

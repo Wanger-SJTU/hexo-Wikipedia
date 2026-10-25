@@ -1,10 +1,19 @@
 ---
-title: "全网第一SoTA成绩却朴实无华的pytorch版efficientdet"
-date: 2020-04-11
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/129016081
-
+title: 全网第一SoTA成绩却朴实无华的pytorch版efficientdet
+date: "2020-04-11 00:00:00"
+updated: "2020-04-11 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/dl论文/全网第一SoTA成绩却朴实无华的pytorch版efficientdet/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/129016081
 ---
+
 
 **太长不看版：我，在清明假期，三天，实现了pytorch版的efficientdet D0到D7，迁移weights，稍微finetune了一下，是全网第一个跑出了接近论文的成绩的pytorch版，处理速度还比原版快。现在提供pretrained的weights。感兴趣的小伙伴可以去watch、star、fork三连我的repo。**
 

@@ -1,9 +1,19 @@
 ---
-title: "(2 条消息) 语音识别中使用CTC训练，除了blank外，其余的训练目标会形成尖峰，怎么解释这一现象的形成？"
-date: 2026-04-17
-tags: [知乎]
-source: https://www.zhihu.com/question/302589692/answer/533950472
+title: (2 条消息) 语音识别中使用CTC训练，除了blank外，其余的训练目标会形成尖峰，怎么解释这一现象的形成？
+date: "2026-04-17 00:00:00"
+updated: "2026-04-17 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/语音识别中使用CTC训练,除了blank外,其余的训练目标会形成尖峰,怎么解释这一现象的形成/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://www.zhihu.com/question/302589692/answer/533950472
 ---
+
 
 这是个好问题！先来解释一下题目。我觉得题目问的是：为什么 CTC 在输出一个非空音素（如 a）的时候，倾向于只在一帧给 a 一个高概率，而不是在 a 持续的整个时间段上都给 a 一个高概率？
 

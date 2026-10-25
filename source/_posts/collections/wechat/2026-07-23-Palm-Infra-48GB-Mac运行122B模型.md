@@ -1,10 +1,22 @@
 ---
 title: 现在，48GB Mac 也能运行 122B 模型！腾讯优图 Palm-Infra：用图执行、W4 量化与 SSD 专家缓存，重写端侧大模型推理边界
-author: NeuralTalk
-url: https://mp.weixin.qq.com/s/1Xcaj2LlthvMSnUDAq3I3Q
-date: 2026-07-23
-tags: [端侧推理, ARM优化, 模型量化, MoE卸载, 图执行引擎]
+date: "2026-07-23 00:00:00"
+updated: "2026-07-23 00:00:00"
+layout: post
+permalink: /collections/wechat/2026-07-23-Palm-Infra-48GB-Mac运行122B模型/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 端侧推理
+  - ARM优化
+  - 模型量化
+  - MoE卸载
+  - 图执行引擎
 ---
+
 
 # 现在，48GB Mac 也能运行 122B 模型！腾讯优图 Palm-Infra：用图执行、W4 量化与 SSD 专家缓存，重写端侧大模型推理边界
 

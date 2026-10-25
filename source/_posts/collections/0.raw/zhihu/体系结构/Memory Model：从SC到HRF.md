@@ -1,9 +1,19 @@
 ---
-title: "Memory Model：从SC到HRF"
-date: 2024-12-22
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/13980513759
+title: Memory Model：从SC到HRF
+date: "2024-12-22 00:00:00"
+updated: "2024-12-22 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/体系结构/Memory-Model-从SC到HRF/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/13980513759
 ---
+
 
 Memory Model，存储模型。这并不是一个简单的硬件概念，往往是硬件/软件约定好的一套访问memroy的规则。换言之，Processor设计者会给出详细的memroy model，使用Processor的软件人员需要透彻了解该model，才能写出访存功能无错的code。
 
@@ -17,7 +27,7 @@ Memory Model核心的一个词语是“Consistency”，区别于Cache的Coheren
 
 定义:多个线程中的所有内存访问指令最终是以某种先后顺序（全局内存访问顺序，global memory order）访问集体共享的memory。然后具体到一个线程中的内存访问指令，这些指令在global memory order中的先后顺序跟它在程序中的先后顺序（program order）一致。
 
-![](asset/img_dfbcd7cac384.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_dfbcd7cac384.jpg)
 
 SC模型示意如图所示，线程1和2都可以访问二者共享的一个Memory，二者访存的指令序分别是ABC和123，在Memory端口上允许ABC123这样的顺序进入Memroy，也允许A12BC3、1AB23C……，但是不允许BAC123，因此SC模型要求线程自己的Program Order要体现在全局的Global Order中，B跑到A前面，不被允许。
 
@@ -29,13 +39,13 @@ SC模型示意如图所示，线程1和2都可以访问二者共享的一个Memo
 
 借用一下这张图，使用者自己通过程序手段来实现一定顺序：
 
-![](asset/img_89dd0d1e39bd.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_89dd0d1e39bd.jpg)
 
 C1设置flag，C2在读到flag之前一直循环FENCE指令就是保序显式指令，或者叫内存barrier。可以简单理解为一堵墙，在FENCE之前的指令不能越过这堵墙跑到后面，反之，在其后的指令也不能跑到前面执行。（此处的前后是Program Order）
 
 TSO引入后，load->store序不再强制要求，借助write buffer甚至可以将同地址的load->store进行优化，即：store的data直接forwarding给后续的load，避免了load再去访问Memory，很多资料中所谓的bypass。在TSO中，可以总结load、store之间的保序关系见下图：
 
-![](asset/img_b2e937a8e2a7.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_b2e937a8e2a7.jpg)
 
 TSO的保序要求图中的RMW是read-modify-write，常常是atomic操作，在不可打断的过程中，完成一次完整的的先读，再改，改完结果再写入Memory的操作。**
 
@@ -70,7 +80,7 @@ release(x)
 
 weak模型下的load/store保序要求见下图：可以非常明显的看到，只有同地址或显式指定，才要求保序
 
-![](asset/img_6a63676978a4.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_6a63676978a4.jpg)
 
 XC下的保序要求
 
@@ -138,7 +148,7 @@ RVWMO的ProcessorRVTSO的ProcessorRVWMO的程序合适低效但是不会错RVTSO
 - Load value Axiom: load读到的value，一定是global memory order/program order最近一次的store更新进去的。
 2. Atomicity Axiom
 
-![](asset/img_dc8aa368fc97.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_dc8aa368fc97.jpg)
 
 Atomicity Axiom示意LR-SC是RISCV A扩展中的显式指令，LR是load一个地址的value，同时形成一把锁，SC是store condition，也就是后面再来store该地址如果发现锁已经被破坏，返回store 失败信息。LR和SC必须成对出现。
 
@@ -160,7 +170,7 @@ Atomicity Axiom示意LR-SC是RISCV A扩展中的显式指令，LR是load一个�
 
 参考论文：
 
-![](asset/img_2760427b7a34.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_2760427b7a34.jpg)
 
 参考论文截图论文认为，在当前流行的异构架构中，原有的同构架构下的处理器memory model不再完全适配。由于异构架构下的全局通信延迟非常高，所以有了scope的概念，只需要在scope范围内实现consistency。
 但是各家有各家的具体玩法，没有一个统一的memory model，论文提出了SC for HRF，具体分为两个类别：HRF-direct和HRF_indirect
@@ -180,7 +190,7 @@ Formal Definition：**
 - **SC for HRF（HRF-direct）**：跑的都是7这样的程序，说明这个系统遵循HRF-direct。
 论文抽象了一个现在GPGPU常见的架构框图，如下所示：
 
-![](asset/img_a047ff2ce98f.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_a047ff2ce98f.jpg)
 
 论文抽象GPGPU框图在该结构下，如果想遵循HRF-direct该怎么做呢？
 
@@ -195,7 +205,7 @@ Formal Definition：**
 
 显然，HRF-indirect相比于HRF-direct更为宽松，类似于RVWMO和RVTSO的关系，后者的程序不能跑在前者的Processor上，可能会有功能错误。
 
-![](asset/img_ff3673d62279.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_ff3673d62279.jpg)
 
 ### 写在最后
 

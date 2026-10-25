@@ -1,9 +1,19 @@
 ---
-title: "(2 条消息) 如何系统性定位并分析 PyTorch 模型训练/推理中的性能瓶颈？"
-date: 2026-04-17
-tags: [知乎]
-source: https://www.zhihu.com/question/1927112862976972744/answer/1927113899741779156
+title: (2 条消息) 如何系统性定位并分析 PyTorch 模型训练/推理中的性能瓶颈？
+date: "2026-04-17 00:00:00"
+updated: "2026-04-17 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/如何系统性定位并分析-PyTorch-模型训练_推理中的性能瓶颈/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://www.zhihu.com/question/1927112862976972744/answer/1927113899741779156
 ---
+
 
 ​目录
 
@@ -19,13 +29,13 @@ source: https://www.zhihu.com/question/1927112862976972744/answer/19271138997417
 
 其实有点类似于c++ stl和os的关系，os内存只划分堆栈的管理方式，对于上层应用来说管理的粒度太粗了，在内核态虽然也有buddy、slab等分配器，但不能申请一个byte都要陷入到内核态，stl在用户空间也维护了一套两级的内存分配器：当一次申请的内存够大，超过128bytes时，就移交给第一级内存分配器，就是直接new和delete出一块大内存；当一次申请的空间小于128bytes，就使用二级分配器以内存池的形式进行管理。
 
-![](asset/img_1a1627d1cefa.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_1a1627d1cefa.jpg)
 
 ref：https://www.geeksforgeeks.org/power-of-two-free-lists-allocators-kernal-memory-allocators/pytorch和cuda的关系与上面类似，pytorch也从cuda手中接管了显存的分配，基于池化机制，有一套自定义的显存分配器，该分配器维护了一个预分配内存块的缓存池，当张量不再需要时，其占用的内存并不会立即返回给GPU系统，而是保存在这个内部池中以供后续重用。
 
 pytorch通过segment和block两层申请，将显存的申请与使用过程进行了分离，即显存申请后会进行二次分配，其过程是：先通过cudaMalloc申请一个显存块segment，然后从segment分离出来子显存块block，框架的上层应用使用的是分离后的block显存，上层应用不直接使用segment。
 
-![](asset/img_99c06734cede.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_99c06734cede.jpg)
 
 ref：https://docs.pytorch.org/docs/stable/torch_cuda_memory.html对于pytorch的ai workload可以使用torch的cuda memory snapshot对显存生成快照：
 
@@ -44,7 +54,7 @@ torch.cuda.memory._dump_snapshot("my_snapshot.pickle")`
 
 并在[pytorch.org/memory_viz](https://link.zhihu.com/?target=https%3A//pytorch.org/memory_viz)上进行交互式分析，快照的pickle文件记录了所有张量随时间的变化，可以查看对应堆栈调用的详细信息：
 
-![](asset/img_9021b2f6a129.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_9021b2f6a129.jpg)
 
 ### 耗时分析
 
@@ -131,23 +141,23 @@ with torch.profiler.profile(
 
 上面的profiling程序会输出3个文件：txt文件记录了对应的kernel耗时，html文件记录了程序显存的大体占用情况，在训练中显存通常有模型参数、梯度、优化器状态、activation激活值这几部分组成。
 
-![](asset/img_689b9a28150c.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_689b9a28150c.jpg)
 
-txt：kernel耗时![](asset/img_1bdab5cca131.jpg)
+txt：kernel耗时![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_1bdab5cca131.jpg)
 
 html：显存占用还有用于耗时分析的trace文件json.gz，trace文件是由一系列事件event组成的json文件，可以拖到[perfetto](https://link.zhihu.com/?target=https%3A//ui.perfetto.dev/%23%21/viewer)中进行交互式分析，perfetto是google开源出来的一个对复杂系统进行性能检测和trace分析的生产级开源堆栈，perfetto将trace数据转换为sqlite数据库，允许用户通过sql查询来分析数据，从trace文件中分析有意义的信息，指导性能瓶颈定位，给优化提供数据驱动的方向建议。
 
-![](asset/img_cb14f4cc2dd6.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_cb14f4cc2dd6.jpg)
 
 可以拖拽进行timeline的详细耗时分析，以及输入对应的命令，比如> Open table: slice，并根据annotation进行filter，筛选定位插入自定义annotation的位置。
 
-![](asset/img_1c69a390ea12.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_1c69a390ea12.jpg)
 
 以及通过sql进行数据的高级分析，trace文件中的event事件都被组织成了slice，可以通过sql进行统计和聚合分析：
 
-![](asset/img_cefa1cb7187f.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_cefa1cb7187f.jpg)
 
-select * from slice where cat = &#39;kernel&#39;![](asset/img_3a24fa96d920.jpg)
+select * from slice where cat = &#39;kernel&#39;![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_3a24fa96d920.jpg)
 
 select sum(dur)/1e6 as total_kernel_ms from slice where category = &#39;kernel&#39;
 
@@ -155,9 +165,9 @@ select sum(dur)/1e6 as total_kernel_ms from slice where category = &#39;kernel&#
 
 还没有人送礼物，鼓励一下作者吧
 
-[所属专栏 · 2026-04-14 22:53 更新](https://zhuanlan.zhihu.com/c_1899981893593703807)[![](asset/img_b83d8bf17f63.jpg)AI Infra杂谈
+[所属专栏 · 2026-04-14 22:53 更新](https://zhuanlan.zhihu.com/c_1899981893593703807)[![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_b83d8bf17f63.jpg)AI Infra杂谈
 
-![](asset/img_c118c79976b8.jpg)雪人
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_c118c79976b8.jpg)雪人
 
 41 篇内容 · 2930 赞同
 

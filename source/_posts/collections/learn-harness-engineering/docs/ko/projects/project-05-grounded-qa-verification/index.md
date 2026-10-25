@@ -1,3 +1,16 @@
+---
+title: 프로젝트 05. 에이전트가 자신의 작업을 검증하도록 만들기
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/ko/projects/project-05-grounded-qa-verification/index/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 [English Version →](../../../en/projects/project-05-grounded-qa-verification/)
 
 > 관련 강의: [강의 09. 에이전트가 섣불리 완료를 선언하지 않도록 막기](./../../lectures/lecture-09-why-agents-declare-victory-too-early/index.md) · [강의 10. 완전한 파이프라인 실행만이 진정한 검증으로 인정됩니다](./../../lectures/lecture-10-why-end-to-end-testing-changes-results/index.md)

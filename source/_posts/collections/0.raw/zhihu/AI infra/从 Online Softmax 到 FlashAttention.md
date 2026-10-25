@@ -1,10 +1,19 @@
 ---
-title: "从 Online Softmax 到 FlashAttention"
-date: 2026-03-16
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/2016897558933426874
-
+title: 从 Online Softmax 到 FlashAttention
+date: "2026-03-16 00:00:00"
+updated: "2026-03-16 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/AI-infra/从-Online-Softmax-到-FlashAttention/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/2016897558933426874
 ---
+
 
 翻译自 [https://courses.cs.washington.edu/courses/cse599m/23sp/notes/flashattn.pdf](https://link.zhihu.com/?target=https%3A//courses.cs.washington.edu/courses/cse599m/23sp/notes/flashattn.pdf)
  FlashAttention 核心创新在于采用了与 Online Softmax 类似的思想，对自注意力计算进行分块计算。从而我们可以融合整个多头注意力层，不用去访问 GPU 全局内存来存储中间的 logits 和注意力分数。这篇笔记中，我将简要的解释下为什么分块 self-attention 计算并非易事，如何驱动 FlashAttention 计算从 online softmax 这个技巧。

@@ -1,9 +1,19 @@
 ---
-title: "2026, 人的巧思和 AI Infra"
-date: 2026-02-17
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/2007160770979440329
+title: 2026, 人的巧思和 AI Infra
+date: "2026-02-17 00:00:00"
+updated: "2026-02-17 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/AgentCLI/2026,-人的巧思和-AI-Infra/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/2007160770979440329
 ---
+
 
 2025年初，我决定创业，与此同时，一直在做一些 AI 相关的探索。在8月我写了第一篇关于 AI coding 的文章，至今已达 5000 赞，远远出乎我的意料。我的习惯是当我有一些思考的时候，我就找一个地方写下来，后来也有人催我写一些答案，但实在没什么想法。到了今天，2026的春节，想记录下几个关键的新思考。
 

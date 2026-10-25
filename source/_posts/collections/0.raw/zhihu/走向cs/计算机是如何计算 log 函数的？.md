@@ -1,9 +1,19 @@
 ---
-title: "计算机是如何计算 log 函数的？"
-date: 2026-04-15
-tags: [知乎]
-source: https://www.zhihu.com/question/333371020/answer/1686069171
+title: 计算机是如何计算 log 函数的？
+date: "2026-04-15 00:00:00"
+updated: "2026-04-15 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/走向cs/计算机是如何计算-log-函数的/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://www.zhihu.com/question/333371020/answer/1686069171
 ---
+
 
 不要听什么歪门邪道，我们看标准方案，这套方案是 1993 年由 Sun Microsystems 正式写入 C 标准库的方案，函数为 `double ieee754log(double x)`（ieee754: IEEE二进制浮点数算术标准）。但这套方法为了性能的苛刻而写得过于复杂，我提核心的捡。
 
@@ -200,9 +210,9 @@ $$\ln(x) = k\ln 2 + \ln (1+f) = k\ln2 + f - {ff\over2}  + s(\frac{ff}{2}+R(z)) $
 
 算法还是同C一样的，这次看完相信大家一定能手写了！
 
-[所属专栏 · 2021-03-20 04:03 更新](https://zhuanlan.zhihu.com/suneo)[![](asset/img_c958578de470.jpg)小亦日記
+[所属专栏 · 2021-03-20 04:03 更新](https://zhuanlan.zhihu.com/suneo)[![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_c958578de470.jpg)小亦日記
 
-![](asset/img_5b1631aae11b.jpg)dadada
+![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_5b1631aae11b.jpg)dadada
 
 18 篇内容 · 8054 赞同
 

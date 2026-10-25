@@ -1,9 +1,19 @@
 ---
-title: "【LLM系列】开源模型和闭源模型之争--写在LLaMA2 开源之后"
-date: 2023-07-21
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/644892671
+title: 【LLM系列】开源模型和闭源模型之争--写在LLaMA2 开源之后
+date: "2023-07-21 00:00:00"
+updated: "2023-07-21 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/LLM-SD/【LLM系列】开源模型和闭源模型之争-写在LLaMA2-开源之后/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/644892671
 ---
+
 
 本来没打算这么快就写LLM系列的第二篇文章的，但是最近LLaMA2发布和并几乎完全商业可用几乎引爆了LLM圈，好多人都在讨论Meta AI真正做到了OpenAI，是开源LLM的一个重要里程碑，甚至觉得国内和OpenAI的差距又缩小了。其实，关于开源和闭源模型之争的讨论也持续了有几个月了。就这个问题而言，我对开源模型是比较悲观的，LLaMA2的发布并没有减轻这种悲观，反而隐约加重了这种悲观的看法。借着LLaMA2开源这个话题，记录下自己当下对这个问题的看法，希望有一些工作能让我对开源LLM变得乐观起来。
 
@@ -17,7 +27,7 @@ source: https://zhuanlan.zhihu.com/p/644892671
 
  最近报告中的图，理由很一致：缺算力，时间差。看看这这次LLaMA2开源中狂欢的最厉害的一些人 **1）研究人员（特别是高校研究人员）**，有了一个新的基础能力还不错的开源模型，做点微调改进，又可以刷榜了，随便针对LLaMA2做点新东西，指标上从接近GPT3.5到超越GPT3.5，就是一个工作；**2）中小企业**，没能力训练基础模型，现在来个还不错的，做做微调，随便改改，就是自研大模型了；**3）创业者（不包括基础大模型创业者）**，基于不错的基础模型做应用似乎有机会了。**一个共同特质都是，没有大规模算力资源训练基础大模型，但善于做微调**的那部分人。真正只会用ChatGPT的用户也不会转移去用LLaMA。
 
-![](asset/img_7eff51463293.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_7eff51463293.jpg)
 
 ### LLaMA2对于追赶OpenAI帮助不大
 

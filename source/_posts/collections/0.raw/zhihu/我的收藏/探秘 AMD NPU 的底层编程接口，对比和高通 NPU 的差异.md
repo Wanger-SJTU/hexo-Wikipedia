@@ -1,12 +1,21 @@
 ---
-title: "探秘 AMD NPU 的底层编程接口，对比和高通 NPU 的差异"
-date: 2026-03-26
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/2020396235404617501
+title: 探秘 AMD NPU 的底层编程接口，对比和高通 NPU 的差异
+date: "2026-03-26 00:00:00"
+updated: "2026-03-26 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/探秘-AMD-NPU-的底层编程接口,对比和高通-NPU-的差异/
 disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/2020396235404617501
 ---
 
-![](asset/img_8a3f4eeeac82.jpg)
+
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_8a3f4eeeac82.jpg)
 
 AMD NPU 是所有民用 NPU 里最开放的。相比 Intel NPU 那种只能给个计算图的黑盒。AMD NPU告诉你了，它是一块拥有独立处理器核心、512-bit 向量单元、硬件乘累加引擎的**空间计算阵列**。而且，它的工具链是完全开源的。
 

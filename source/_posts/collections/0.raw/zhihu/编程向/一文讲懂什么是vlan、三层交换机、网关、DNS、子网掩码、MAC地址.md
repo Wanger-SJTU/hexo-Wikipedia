@@ -1,9 +1,19 @@
 ---
-title: "一文讲懂什么是vlan、三层交换机、网关、DNS、子网掩码、MAC地址"
-date: 2023-09-04
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/654167456
+title: 一文讲懂什么是vlan、三层交换机、网关、DNS、子网掩码、MAC地址
+date: "2023-09-04 00:00:00"
+updated: "2023-09-04 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/编程向/一文讲懂什么是vlan、三层交换机、网关、DNS、子网掩码、MAC地址/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/654167456
 ---
+
 
 大家好，我的网工朋友 
 
@@ -89,7 +99,7 @@ VLAN所指的LAN特指使用路由器分割的网络——也就是广播域。
 
 单臂路由的实现方式，其实就是普通二层交换机加路由器，从而实现不同vlan间的可以互相通信。
 
-![](asset/img_006ee3bc4a77.jpg)
+![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_006ee3bc4a77.jpg)
 
 **
 
@@ -103,7 +113,7 @@ VLAN所指的LAN特指使用路由器分割的网络——也就是广播域。
 
 关于三层交换机的内部结构，可以参照下面的简图。
 
-![](asset/img_dec5d8fddae3.jpg)
+![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_dec5d8fddae3.jpg)
 
 在一台本体内，分别设置了交换机模块和路由器模块；而内置的路由模块与交换模块相同，使用ASIC硬件处理路由。
 
@@ -161,7 +171,7 @@ IP地址范为“192.168.2.1~192.168.2.254”，子网掩码255.255.255.0。
 
 如果需要与其它网段通信，那么它的网关可以设置为192.168.2.1，当然也可以设置为网段内其它的一个ip地址。
 
-![](asset/img_06107510f045.jpg)
+![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_06107510f045.jpg)
 
 **
 
@@ -245,7 +255,7 @@ MAC是网络中用来标识网卡设备的唯一网络地址。
 
 但是你的名字不变，这个就是MAC，不同的是我们的MAC不允许重名。
 
-![](asset/img_4277c0626511.jpg)
+![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_4277c0626511.jpg)
 
 我们的IP分为两个部分：如上图分为网络部分和主机部分。
 

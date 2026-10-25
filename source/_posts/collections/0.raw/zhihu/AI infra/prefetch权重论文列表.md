@@ -1,10 +1,19 @@
 ---
-title: "prefetch权重论文列表"
-date: 2025-04-26
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/1899538967348634456
-
+title: prefetch权重论文列表
+date: "2025-04-26 00:00:00"
+updated: "2025-04-26 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/AI-infra/prefetch权重论文列表/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/1899538967348634456
 ---
+
 
 缓存的预取，场景应该针对memory bound。比如模型权重预取（尤其是decoding，KV cache），还有MOE预取等等。
 

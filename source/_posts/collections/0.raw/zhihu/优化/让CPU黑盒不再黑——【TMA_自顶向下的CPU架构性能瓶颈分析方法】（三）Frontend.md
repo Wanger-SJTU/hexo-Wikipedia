@@ -1,9 +1,19 @@
 ---
-title: "让CPU黑盒不再黑——【TMA_自顶向下的CPU架构性能瓶颈分析方法】（三）Frontend"
-date: 2020-05-08
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/61015720
+title: 让CPU黑盒不再黑——【TMA_自顶向下的CPU架构性能瓶颈分析方法】（三）Frontend
+date: "2020-05-08 00:00:00"
+updated: "2020-05-08 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/优化/让CPU黑盒不再黑——【TMA_自顶向下的CPU架构性能瓶颈分析方法】(三)Frontend/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/61015720
 ---
+
 
 上篇文章简单地介绍了TMA具体的实现原理和方法，后续文章将会对TMA的四个大的分类逐级展开，以帮助大家更好地理解TMA整套方法学，了解TMA究竟为什么要这样设计和划分。这篇文章将会对Frontend Bound进行展开，介绍该层级下的各项分类和相关的计算公式，所涉及到的计算公式，均来源于GitHub上**[pmu-tools](https://link.zhihu.com/?target=https%3A//github.com/andikleen/pmu-tools)**项目中toplev的源码。
 
@@ -13,7 +23,7 @@ source: https://zhuanlan.zhihu.com/p/61015720
 
 也许您并不关心如何对CPU的Microarchitecture Performance Bottleneck进行分析，只想了解CPU的Microarchitecture；又或许您所关心的只是使用ARM、MIPS、RISC-V这些RISC ISA的CPU。这都没关系，因为TMAM是一个通用性很强的方法学，在我的理解看来，TMAM不仅仅适用于x86 CPU，也同样适用于其他ISA的CPU，甚至也适用于GPU、DSP等的分析。并且由于本文是基于Intel Skylake架构CPU进行讲解的，即使您对分析方法不感兴趣，但是通过了解TMAM的设计思路，相信也能帮助您更好地去了解目前Intel CPU的架构。在讲解的过程中，我希望可以帮助大家理解为什么，即TMAM整套方法学背后的机理，而不是仅仅告诉大家TMAM要如何实现，怎么做。
 
-![](asset/img_38ccf6f5f62a.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_38ccf6f5f62a.jpg)
 
 Intel Skylake Frontend Bound的展开Frontend Bound可以划分为Latency和Bandwidth两个子类，分别表示由于前端Latency过大的导致没有uops发送到后端的比重，和由于前端decode能力羸弱导致前端不能充分利用四发射的带宽的比重。然后这两个大类下面也进一步对可能的原因进行细分，目的是找出究竟是Intel CPU中的哪一部分的模块导致了前端成为了瓶颈，帮助用户更好地去定位、分析问题。
 
@@ -41,7 +51,7 @@ if ebs_mode **else(EV("CPU_CLK_UNHALTED.THREAD_ANY", level) / 2) **if smt_enable
 
 SMT**, Simultaneous Multi-Threading，即同步多线程，在Intel的CPU中称作HT (Hyper Threading)。不过在Intel和AMD的CPU中，每个Core最多为双线程，即一个Core可以同时运行两个Thread。当smt_enabled为True时，Core Clks为CPU_CLK_UNHALTED.THREAD_ANY除以2，CPU_CLK_UNHALTED.THREAD_ANY事件的解释为：Core cycles when at least one thread on the physical core is not in halt state，即有线程在Core内执行的周期数。这里除以2是因为超线程的时候，两个线程会共享4发射的流水线宽度，若两个线程是静态划分的话，这样每个线程的Slots数量即为2*Clks。
 
-![](asset/img_c144f096a6cf.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_c144f096a6cf.jpg)
 
 在AMD的CPU中，Micro-op和Retire两个Queue为静态划分所以，从此也可以佐证，TMA对于超线程的CPU进行分析也是可以的，因为开启超线程的时候，可以简单理解为每个逻辑内核的流水线宽度变为原来的一半，SLOTS数量变为原来的二分之一。
 
@@ -89,9 +99,9 @@ SMT**, Simultaneous Multi-Threading，即同步多线程，在Intel的CPU中称�
 
 对于***DSB_Switches***，这个分类统计的是从DSB pipeline切换到MITE pipeline导致前端停顿的周期比重。这里的**DSB**是Decoded Stream Buffer的缩写，存放的一些已经被decode的uops，可以把它理解为一个uops ICahce，DSB是在Intel的Sandy Bridge架构中引入的，有兴趣的朋友可以在网上找到更多相关的资料。DSB对应到AMD中就是Op Cache，顾名思义，就是存放uOps的Cache。**MITE**是Micro-instruction Translation Engine的缩写，其实就是没有引入DSB之前传统的decode pipeline。
 
-![](asset/img_ce4ee4a637b0.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_ce4ee4a637b0.jpg)
 
-![](asset/img_c00fe310a454.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_c00fe310a454.jpg)
 
 由于前端从DSB切换到MITE Pipeline，会有一定的惩罚周期，导致没有uops发往Micro-op Queue，这个分类主要就是计算这部分周期占总周期的一个比重。
 
@@ -139,7 +149,7 @@ SMT**, Simultaneous Multi-Threading，即同步多线程，在Intel的CPU中称�
 
 **self.val = (EV("IDQ.ALL_DSB_CYCLES_ANY_UOPS**", 3) - EV("**IDQ.ALL_DSB_CYCLES_4_UOPS**", 3)) / CORE_CLKS(self, EV, 3)其中，公式中的两个事件解释与MITE公式中的两个事件解释一致，只不过观察的对象变成了DSB pipeline。两个事件之差，便是DSB效率低的周期数，再除以总的周期数，便可以得到相应的比重。
 
-![](asset/img_b5c06b557197.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_b5c06b557197.jpg)
 
 不过我发现，好像随着Intel CPU Microarchitecture的升级，MITE和DSB的Bandwidth也有所升级，最大的带宽肯定不再是4。再次拿Skylake的架构图来说明，通过架构图我们可以了解到，DSB的最大Bandwidth已经变成了6，MITE的Bandwidth变成了5。所以这里的公式应该用MITE/DSB有uops发射的周期，减去uops带宽大于等于4的周期，才比较合理。要么就用发送1、2、3 uops的周期数的和作为分子，除以总的周期数，而不是用减法实现。
 
@@ -156,7 +166,7 @@ AFAIK the  cases only happen with fusion, so 4 is the full width. Ignoring that 
 
 LSD是Loop Stream Detector的缩写，通过下图可以得知，LSD处于uOp Queue内部，中文翻译过来叫做**循环流检测器**，其实就是检测、保存uops循环序列，当uops循环序列小于或等于LSD的容量时候，可存放在LSD中，便可以不需要再通过前端的译码得到相应的uops序列，只需要不断从LSD中取出相应的uops序列便可。
 
-![](asset/img_ef32caf8da72.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_ef32caf8da72.jpg)
 
 **在一些罕见的情况下，比如uops循环的大小与当前硬件的LSD结构不匹配，就会出现LSD带宽不足的情况。对于Intel的Skylake，该项的值直接等于0，也许是Intel对Skylake的LSD进行了Update，不会再出现Bandwidth的相应问题？还是说相关的PMC出现了异常？我们不得而知。
 

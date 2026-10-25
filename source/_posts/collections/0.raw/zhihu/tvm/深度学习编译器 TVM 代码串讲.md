@@ -1,10 +1,19 @@
 ---
-title: "深度学习编译器 TVM 代码串讲"
-date: 2022-11-01
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/446976730
+title: 深度学习编译器 TVM 代码串讲
+date: "2022-11-01 00:00:00"
+updated: "2022-11-01 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/tvm/深度学习编译器-TVM-代码串讲-27aab6/
 disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/446976730
 ---
+
 
 深度学习编译器 TVM 代码串讲
 

@@ -1,10 +1,23 @@
+---
+title: Claude Mythos泄露草稿深度解读
+date: "2026-04-04 23:00:34"
+updated: "2026-04-04 23:00:34"
+layout: post
+permalink: /collections/0.raw/wechat/claude-mythos-leak-analysis/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # Claude Mythos泄露草稿深度解读
 
 > 原文链接：https://mp.weixin.qq.com/s/jphweWCIfEnwGlcCOARPDg
 > 来源：微信公众号文章
 > 抓取时间：2026-04-04
 
-![封面图](images/img1.jpg)
+![封面图](/images/collections/0.raw/wechat/images/img1.jpg)
 
 2026年3月26日到27日，Anthropic自家内容管理系统出了大问题。数据缓存意外公开，近三千份未发布的内部文件瞬间就能被搜索引擎找到。Fortune杂志记者Bea Nolan第一个发现并做了独家报道，安全研究人员也立刻跟进验证。Anthropic很快修复了漏洞，并承认这是人为配置错误。他们同时确认，新模型真实存在，正在小范围早期测试中。
 
@@ -78,6 +91,6 @@ Mythos不是一次孤立的泄露，而是2026年AI发展转折的缩影。行�
 
 对普通人来说，可能现在已经是最后的机会。趁还能低成本用上最强模型，尽快把自己的AI技能用于生产价值。未来，最强模型的窗口也许正在关闭，它们很可能只属于那些付得起钱的富人。
 
-![配图1](images/img2.png)
+![配图1](/images/collections/0.raw/wechat/images/img2.png)
 
-![配图2](images/img3.jpg)
+![配图2](/images/collections/0.raw/wechat/images/img3.jpg)

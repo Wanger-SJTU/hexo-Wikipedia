@@ -1,10 +1,19 @@
 ---
-title: "GM以色列研究中心最新发表的3-D车道线检测论文"
-date: 2020-04-20
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/133623737
-
+title: GM以色列研究中心最新发表的3-D车道线检测论文
+date: "2020-04-20 00:00:00"
+updated: "2020-04-20 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/dl论文/GM以色列研究中心最新发表的3-D车道线检测论文/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/133623737
 ---
+
 
 2020年3月11日GM以色列研发中心在arXiv上传论文“Semi-Local 3D Lane Detection and Uncertainty Estimation”。
 

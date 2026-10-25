@@ -1,9 +1,19 @@
 ---
-title: "MLIR实验(1)"
-date: 2021-07-24
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/392826624
+title: MLIR实验(1)
+date: "2021-07-24 00:00:00"
+updated: "2021-07-24 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/体系结构/MLIR实验(1)/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/392826624
 ---
+
 
 最近MLIR更新了很多，整个AI的各层IR快齐了，做了一些实验。
 

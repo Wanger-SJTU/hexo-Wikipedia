@@ -1,9 +1,19 @@
 ---
-title: "线性注意力与稀疏注意力：Lightning Attention、NSA、InfLLM-v2、MiniCPM‑SALA"
-date: 2026-04-22
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/2028600546257301718
+title: 线性注意力与稀疏注意力：Lightning Attention、NSA、InfLLM-v2、MiniCPM‑SALA
+date: "2026-04-22 00:00:00"
+updated: "2026-04-22 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/LLM-SD/线性注意力与稀疏注意力-Lightning-Attention、NSA、InfLLM-v2、MiniCPM‐SALA/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/2028600546257301718
 ---
+
 
 线性注意力和稀疏注意力都是非传统注意力，它们都是为了解决传统注意力计算耗时的问题。
 

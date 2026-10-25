@@ -1,17 +1,27 @@
 ---
 title: "[深挖FA4] FA4的优化思想和代码解析"
-date: 2026-04-04
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/2023356213597929481
+date: "2026-04-04 00:00:00"
+updated: "2026-04-04 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/体系结构/[深挖FA4]-FA4的优化思想和代码解析-88a262/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/2023356213597929481
 ---
+
 
 ### 概述
 
-![](asset/img_c1686edcf34c.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_c1686edcf34c.jpg)
 
-Pipleline一览![](asset/img_4c8b01e5a869.jpg)
+Pipleline一览![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_4c8b01e5a869.jpg)
 
-![](asset/img_1e8422659052.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_1e8422659052.jpg)
 
 本文分析 SM100 (Blackwell 架构) Flash Attention kernel 的执行流程，实现在我的课程专用repo [https://github.com/deciding/cutex](https://link.zhihu.com/?target=https%3A//github.com/deciding/cutex) 里。为了方便大家测试自己玩 我把原先3000多行的代码简化了一下放到`flash_fwd_sm100_simple.py` 中，虽然也有2000行但是里面有大量注释，配合本文食用应该还是挺清晰的。
 
@@ -480,11 +490,11 @@ SOFT  │░░░░░░│█████████████│██�
 
 贴个图方便手机端的同学观看
 
-![](asset/img_149e212f871b.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_149e212f871b.jpg)
 
-为什么Correction Warps有用![](asset/img_1a74515ea813.jpg)
+为什么Correction Warps有用![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_1a74515ea813.jpg)
 
-为什么2 q_tages有用![](asset/img_97567b76c518.jpg)
+为什么2 q_tages有用![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_97567b76c518.jpg)
 
 为什么split P有用
 #### 8. TMEM Layout

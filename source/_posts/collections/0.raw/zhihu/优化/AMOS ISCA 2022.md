@@ -1,9 +1,19 @@
 ---
-title: "AMOS ISCA 2022"
-date: 2022-06-19
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/530626092
+title: AMOS ISCA 2022
+date: "2022-06-19 00:00:00"
+updated: "2022-06-19 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/优化/AMOS-ISCA-2022/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/530626092
 ---
+
 
 纽约时间今天早八点，第49届ISCA会议就将在美国纽约开幕了。在本次会议上，我有一篇文章得以发表，题目是AMOS: Enabling Automatic Mapping for Tensor Computations On Spatial Accelerators with Hardware Abstraction。作为一种记录，这里简要介绍一下AMOS是什么，解决什么问题。
 
@@ -15,7 +25,7 @@ AMOS这个工作，其实很早就开始做了，我们设计代码生成工作�
 
 在接下来的几天里，我快速熟悉了如何用TVM的tensorize接口使用Tensor Core，并且想到不能只针对Tensor Core一个硬件优化，我还得更通用点，于是把带有特殊指令的其它硬件也一起放进来，初步构思了一个框架
 
-![](asset/img_6854ef1e793f.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_6854ef1e793f.jpg)
 
 在这个框架里，第一个要解决的问题就是如何从一个比较普通的输入compute里知道哪一部分是可以使用特殊指令的呢，其实这里就是一个匹配问题，比如说给定一个以下的NCHW卷积定义
 

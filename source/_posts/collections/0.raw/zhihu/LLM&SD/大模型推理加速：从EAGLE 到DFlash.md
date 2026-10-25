@@ -1,15 +1,25 @@
 ---
-title: "大模型推理加速：从EAGLE 到DFlash"
-date: 2026-02-13
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/2004595351189987521
+title: 大模型推理加速：从EAGLE 到DFlash
+date: "2026-02-13 00:00:00"
+updated: "2026-02-13 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/LLM-SD/大模型推理加速-从EAGLE-到DFlash/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/2004595351189987521
 ---
+
 
 这段时间折腾了一下 EAGLE 推理加速的事情，在 GPT-OSS-120B 上取得了不错的加速效果，8 并发下加速 36% 左右。趁着春节临近，总结一下 EAGLE 的加速原理，顺便介绍近期刚出来的新方法 DFlash，号称加速效果是 EAGLE 的两倍。
 
 ### 一、EAGLE
 
-![](asset/img_a4a1ebedbfc4.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_a4a1ebedbfc4.jpg)
 
 **EAGLE（Extrapolation Algorithm for Greater Language-model Efficiency） **最早由 2024 年论文 *“*[EAGLE: Speculative Sampling Requires Rethinking Feature Uncertainty](https://link.zhihu.com/?target=https%3A//arxiv.org/pdf/2401.15077)*”* 提出，核心聚焦于一种 **无损（lossless）推理加速** 的 *speculative decoding* 方法：在不改变目标模型输出分布的前提下，将单次 forward 能够“确认”的 token 数从 1 提升至 **3～4 个甚至更多**，从而显著降低推理延迟并提升整体吞吐。
 
@@ -23,7 +33,7 @@ source: https://zhuanlan.zhihu.com/p/2004595351189987521
 - 能**可证明地保持**与普通解码一致：生成文本的**分布与 vanilla decoding 保持一致**（即不改变输出分布的一致性）。
 - **可训练、可复现**：用 **8×RTX 3090**，大约 **1–2 天**就能训练并测试，所以即使 GPU 资源不多也负担得起。
 - **易组合**：可以和其他并行/加速技术叠加使用，例如 **vLLM、DeepSpeed、Mamba、FlashAttention、量化**以及各种**硬件优化**等。
-![](asset/img_f9c37da9762b.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_f9c37da9762b.jpg)
 
 ####  1.1 EAGLE 简介
 
@@ -84,15 +94,15 @@ EAGLE 的两个关键观察（作者认为是“需要重新思考”的点）
 
 - 生成时 target LLM 会从分布里采样 token，引入随机性；而特征是连续高维的，**下一步特征取决于你刚刚采样到了哪个 token**，因此仅凭当前特征很难确定“唯一正确的下一特征”。
 - 作者用 “I” 后面可能采样到 “am” 或 “always” 来说明：不同 token 分支对应不同的特征轨迹，导致训练/预测目标变得含混。
-![](asset/img_6592f9afdbc8.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_6592f9afdbc8.jpg)
 
 图 1-1：特征序列的不确定性EAGLE 的核心解法：把“采样结果”显式喂给 draft（shifted token）
 
 - 为了解决上面的不确定性，EAGLE 在 draft 输入里加入 **“shifted token”**，从而让 draft 在预测下一特征时知道“刚刚实际采样了什么”。把“采样结果”显式喂给 draft（用 shifted token 作为条件），于是从 f_I 预测下一 feature 变成从 (f_I, t_{\text{sampled}}) 预测——例如用 (f_I, t_\text{always}) 预测 f_\text{always}，用 (f_I, t_\text{am}) 预测 f_\text{am} 。
 - 作者声称这样能显著提高 speedup（能从 1.9x 提到 2.8x）。
-![](asset/img_15b91bacc441.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_15b91bacc441.jpg)
 
-图 1-2：EAGLE 引入倒数第二层特征+shifted token![](asset/img_9e7ae2b3bb2d.jpg)
+图 1-2：EAGLE 引入倒数第二层特征+shifted token![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_9e7ae2b3bb2d.jpg)
 
 图 1-3：引入shifted token 显著提升效果
 #### 1.2 EAGLE——加速 LLM 生成效率
@@ -126,13 +136,13 @@ EAGLE 和其它 speculative decoding 最大的不同点在 draft（草稿）怎�
 - 将shifted token → embedding，然后与 feature 拼接成 (bs, seq_len, 2×hidden_dim)
 - 接着，以这些特征为起点，**FeatExtrapolator（特征外推器）**开始进入“猜测（guessing）”阶段。
 - FeatExtrapolator 以自回归方式预测下一个特征向量。随后，我们使用原始模型中冻结的 LM head 来得到 token 的概率分布，并从该分布中进行采样生成 token。
-![](asset/img_b35cc2713c51.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_b35cc2713c51.jpg)
 
 图 1-4：EAGLE 模型结构通过多次重复：“预测特征 → LM head 得到 token 分布 → 采样 token”的过程，我们可以形成一种类似树状（tree-like）的生成过程，如下图所示。
 
 在图中的示例里，FeatExtrapolator 只用了 3 次 forward，就“猜”出了一个包含 10 个 token 的树状候选序列。
 
-![](asset/img_071972245593.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_071972245593.jpg)
 
 图 1-5：使用树状结构起草**Verification 阶段（目标模型一次前向并行验证）**
 
@@ -156,7 +166,7 @@ $$- 直接接受并输出 x 的概率是  \hat p(x)\cdot \min\left(1,\frac{p(x)}
 
 具体流程如下：
 
-![](asset/img_34150d0ca3f3.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_34150d0ca3f3.jpg)
 
 图 1-6：树状结构下多轮 speculative sampling 
 #### 1.3 EAGLE 训练
@@ -171,7 +181,7 @@ $\begin{align} p_{i+2}&=\text{Softmax}\left( \text{LM_Head}\left( f_{i+1} \right
 
 **Temperature 对加速的影响**
 
-![](asset/img_a0f363b57b21.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_a0f363b57b21.jpg)
 
 图1-7：Temperature 对加速的影响作者发现 **T=0（greedy）通常比 T=1（非贪心采样）更快**。例如 LLaMA2-Chat 13B：
 
@@ -191,14 +201,14 @@ $\begin{align} p_{i+2}&=\text{Softmax}\left( \text{LM_Head}\left( f_{i+1} \right
 
 作者指出推理常是 **memory-bound**，speculative 的核心是更好利用算力；**batch 越大，可用算力余量越小，所以 speedup 会下降**。
 
-![](asset/img_d4e045396c43.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_d4e045396c43.jpg)
 
 图 1-8：batch size越大，加速比越低
 ### 二、EAGLE-2
 
 和 **EAGLE-1** 比，**EAGLE-2** 的主要改进是把“固定形状的静态 draft tree”换成“基于上下文动态调整的 draft tree”，并取得了比 EAGLE-1 快 20% 以上的效果。
 
-![](asset/img_4b363b4cf69a.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_4b363b4cf69a.jpg)
 
 图 2-1：EAGLE-2 和EAGLE-1 效果对比前面的 EAGLE-1 用了**静态（固定形状）的 draft tree**。这种做法隐含了一个假设：**某个 draft token 会不会被接受，只取决于它在树里的位置**。 
 
@@ -226,13 +236,13 @@ EAGLE 总是用固定（static）的 draft tree 形状；EAGLE-2 会根据上下
 
 当 query 变成 **“10+2”**（注意没有等号）时，下一个 token 变得难预测，因此 EAGLE-2 会在这里加 **两个候选**。
 
-![](asset/img_6f28cc53c3db.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_6f28cc53c3db.jpg)
 
 图 2-2：EAGLE-2 和 EAGLE 的差异EAGLE-1 / 许多树状 speculative decoding 方法默认一个假设：**草稿 token 的接受率（acceptance rate）主要由它在草稿树里的“位置”决定**，所以用一个固定形状（静态）的草稿树就够了。EAGLE-2 要验证的是：
 
 **接受率真的“只”跟位置有关吗？如果不是，那静态树就会有先天上限，需要动态树。 为此，作者在 Alpaca 数据集 + Vicuna 7B** 上，统计草稿树里不同位置的 token 接受率，如下图所示：
 
-![](asset/img_6d07bdd57a52.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_6d07bdd57a52.jpg)
 
 图 2-3：不同位置下的接受率
 
@@ -258,7 +268,7 @@ EAGLE 总是用固定（static）的 draft tree 形状；EAGLE-2 会根据上下
 
 结论非常直接：两者 **强正相关**，而且几乎接近一条从 (0,0) 到 (1,1) 的线，如下图所示：
 
-![](asset/img_2107e210bba5.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_2107e210bba5.jpg)
 
 图 2-4：草稿模型不同置信度下的接受率 论文给了两个很有代表性的数值区间：
 
@@ -289,7 +299,7 @@ EAGLE 总是用固定（static）的 draft tree 形状；EAGLE-2 会根据上下
 $- 于是用 draft model 的 **confidence score** c_j  近似 p_j ，得到：** V_i=\prod_{t_j\in \text{Path}(\text{root},t_i)} p_j \approx \prod_{t_j\in \text{Path}(\text{root},t_i)} c_j\\$
 在“当前最后一层”里，选 value 最大的 top-k 节点**作为下一次 draft model 的输入，把它们扩展出的新 token 接到树上。 下图是一个具体例子，边上的值代表draft model 的 confidence score，方块里括号的数字代表 value。
 
-![](asset/img_13e9e28e4c81.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_13e9e28e4c81.jpg)
 
 图 2-5：在扩展阶段选择当前层（橙色块）中值最高的2个节点作为草稿模型的输入，并将生成的token（绿色块）连接到草稿树**Reranking Phase：为什么还要重排、怎么选 top-m**
 
@@ -301,7 +311,7 @@ $- 于是用 draft model 的 **confidence score** c_j  近似 p_j ，得到：**
 
 - 在整棵草稿树的所有节点里，选 **value 最高的 top-m 节点**。 
 - 为了保证挑出来的仍然是一棵“连通的树”，作者利用一个性质：**子节点的 value ≤ 父节点的 value**；如果 value 相同，优先选更浅的节点，这样 top-m 仍会形成连通结构。 
-![](asset/img_f25db50dcc71.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_f25db50dcc71.jpg)
 
 图 2-6：rerank阶段**Flatten + Attention mask（非常关键）**
 
@@ -311,7 +321,7 @@ $- 于是用 draft model 的 **confidence score** c_j  近似 p_j ，得到：**
 - 每个 token 只能看到它在树上的祖先节点
 所以要按树结构构造 attention mask，保证验证阶段与标准自回归分布一致（lossless）。
 
-![](asset/img_6219d7c18b31.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_6219d7c18b31.jpg)
 
 图 2-7：Attention mask
 #### ** 2.4 实验
@@ -336,7 +346,7 @@ acceptance rate 只反映 draft model 本身；而 EAGLE-2 不改 draft model �
 
 ### 三、EAGLE-3
 
-![](asset/img_17df2009f080.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_17df2009f080.jpg)
 
 维度EAGLE-1EAGLE-2EAGLE-3核心目标在无损的 speculative decoding 中，复用目标模型（target）的顶层特征来增强小型 draft，从而提升接受率在 EAGLE-1 的树状草稿基础上，把“固定树”变成上下文相关的动态树，减少资源浪费进一步提升可扩展性与稳定性：训练-推理一致（training-time test）+ 去掉特征预测约束 + 多层特征融合Draft 的“生成单位”feature-level autoregression：先自回归生成特征，再用 target 的 LM head 得到 draft token同 EAGLE-1（仍是 EAGLE 框架），但树结构生成策略改成动态仍沿用 EAGLE 的 draft→verify 框架，但 draft 的输入与训练发生了显著变化：既可以使用来自 target 的特征 (g)，也需要在多步场景下接收并利用自身生成的中间表示 (a)。草稿结构树状 draft（同一位置多 token），用 tree attention 并行验证动态草稿树：用 draft 置信度近似接受率，按上下文动态生成并在末尾剪枝沿用 EAGLE-2 的上下文动态树训练目标有 feature prediction 相关约束（论文中称 feature prediction loss l_fea）——这会限制“靠加数据继续提升”的空间同 EAGLE-1（EAGLE-2 主要改树生成/剪枝策略）移除 feature prediction loss（l_fea），从而能更自由地用中间层特征、提升 scaling使用哪些 target 特征主要复用 top-layer features（LM head 前一层）同 EAGLE-1（仍以 top-layer 复用为主）引入 多层特征融合（low/mid/high → concat → FC 得 g），不只依赖 top-layer推理阶段输入主要是 target 的 top-layer 特征 + 上一步采样 token 信息同 EAGLE-1Step  起，由于这些 token 尚未经过 target 验证，无法获得融合特征 (g_I / g_{do})，改用 draft 自身生成的中间表示 (a_I / a_{do}) 作为替代输入效果总结（论文给的结论性说法）相对 vanilla AR 明显加速（具体数值取决于模型/任务）相比 EAGLE-1：通过动态树减少浪费、提升效率相比 EAGLE-2：总体 20%–40% speedup 改善，并在多任务/多模型上达到更高 speedup 与平均接受长度上面的表格描述了 EAGLE-3 和 EAGLE-2 和 EAGLE-1 的主要区别。
 
@@ -346,17 +356,17 @@ EAGLE-3 的两大关键改动
 
 在 EAGLE 的训练目标里，loss 由两部分组成：**feature prediction loss ** l_{\text{fea}} 和 **token loss ** l_{\text{token}} 。其中 l_{\text{fea}} 要求 draft 在特征空间拟合 target 的 top-layer feature，这在一定程度上帮助模型只训练 Step 1 也能泛化到 Step 2，但同时也带来了**额外约束**：如果最终目标是把 token 猜对，那么“先把输出拉回到特征形态再映射到 token”会限制 draft 的表达能力，使得**仅靠扩大训练数据**很难继续显著提升加速效果。
 
-![](asset/img_2680bb38f402.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_2680bb38f402.jpg)
 
 图 3-1：EAGLE 训练引入l_fea，训练推理先预测fea再映射到tokenEAGLE-3 的第一个关键改动就是：**直接移除 **l_{\text{fea}}，让 draft 不再必须拟合 target 的 top-layer feature，而是更直接地服务于“猜 token”，从而释放模型容量，让“加数据”真正能转化为更高的 Step 1 接受率。
 
 如下图的左边所示，你会看到当训练数据规模增大时，**第一个 draft token 的接受率（0-α）显著提升**。
 
-![](asset/img_5de9c66d6551.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_5de9c66d6551.jpg)
 
 图 3-2：不同方法的接受率对比（其中横轴代表数据规模）但这个改动会立刻引出一个新问题： 如果训练只覆盖“Step 1 的直接 token 预测”，那么到了 Step 2、Step 3，draft 的输入里会混入它自己前一步生成的中间输出（论文里用  \hat a 表示），而这些自生成量与训练时看到的分布不一致，导致 **distribution shift / 误差累积**。下图是训练-推理示意图：
 
-![](asset/img_1492bb557735.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_1492bb557735.jpg)
 
 图 3-3：直接移除 l_fea，训练只覆盖Step 1 token 预测于是就出现了 图 3-2（右图） 的典型现象：**0-α 上去了，但第二个 token 的接受率（1-α）反而会崩得很低**——也就是说，只去掉特征约束会让“第一步更准”，却让“多步更不稳”。
 
@@ -364,7 +374,7 @@ EAGLE-3 的两大关键改动
 
 为了解决上面这种“训练-推理不一致 / 多步误差累积”，EAGLE-3 引入 **training-time test**：训练时不再只训练 Step 1，而是**在训练过程中显式执行“测试时会发生的步骤”。**如下图所示：
 
-![](asset/img_03df58843dbc.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_03df58843dbc.jpg)
 
 图 3-4：EAGLE3 引入Training-Time Test，训练引入Step 1 中间结果把 Step 1 生成出来的中间量（记作 a 或 \hat a ）**回灌到后续 Step 2/Step 3**，让模型在训练阶段就经历与推理一致的输入形态（即：输入里既包含来自 target 的特征，也包含 draft 自己生成的中间表示）。
 
@@ -382,7 +392,7 @@ EAGLE-3 的两大关键改动
 
 论文用一个例子说明 EAGLE-3 的 Inference Pipeline，如下图所示：
 
-![](asset/img_f46a8cc5db1f.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_f46a8cc5db1f.jpg)
 
 图 3-5：EAGLE-3 inference pipelineprefix 是 “How can”：
 
@@ -449,7 +459,7 @@ EAGLE-3 的 draft model 核心是一个 **Transformer decoder layer**。论文�
 
 **4) Attention mask 怎么改：从“下三角”到“树状因果关系”**
 
-![](asset/img_4ce378ff63e8.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_4ce378ff63e8.jpg)
 
 图 3-6：训练/推理期间的Attention Mask如图 3-6 所示：原始训练数据是长度 3 的序列 “How can I”，它的依赖是正常链式，所以 mask 是标准下三角（图 3-6 左上角）。
 
@@ -465,19 +475,19 @@ EAGLE-3 的 draft model 核心是一个 **Transformer decoder layer**。论文�
 
 和 EAGLE-2 和 EAGLE-1 相比，加速比有很大提升，如下图所示：
 
-![](asset/img_592a8e12fcc5.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_592a8e12fcc5.jpg)
 
 图 3-7：EAGLE-3 实验结果下图则显示了 EAGLE-3 没有出现误差累计：
 
 - EAGLE：随着输入里“来自 draft 自己的估计”变多，接受率明显下滑；
 - EAGLE-3：接受率几乎不变，说明 training-time test 的有效性。
-![](asset/img_ca34941259a6.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_ca34941259a6.jpg)
 
 图 3-8：每个位置的接受率对比此外，作者还做了两组消融实验：
 
 - **移除 feature prediction constraint**（“remove fea con”）
 - **融合 low/mid/high 层特征（fused features）**，替代只用 top-layer features
-![](asset/img_c0cf3cd2f24a.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_c0cf3cd2f24a.jpg)
 
 图 3-9：去掉特征预测（remove fea con）+引入融合特征（fused features）**去掉 feature 约束**先带来一大步（τ 明显上升），**再做多层特征融合**还能再推一截。
 
@@ -488,13 +498,13 @@ EAGLE-3 的 draft model 核心是一个 **Transformer decoder layer**。论文�
 但 SGLang v0.4.4 的测试显示：
 
 - batch=64 时 **EAGLE-3 仍有 1.38× 吞吐提升（+38%）**；而 EAGLE 在 batch=24 时就开始降低吞吐。 
-![](asset/img_99ce5218d967.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_99ce5218d967.jpg)
 
 图 3-10：SGLang 中不同batch size 吞吐对比**EAGLE-3 in vLLM：同样看大 batch 吞吐**
 
 作者也在 vLLM 上测了“大 batch 吞吐影响”，结果表明 EAGLE 的吞吐提升峰值出现在 batch=24，而 EAGLE-3 的峰值推迟到 batch=56。
 
-![](asset/img_e5811c16cbfe.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_e5811c16cbfe.jpg)
 
 图 3-11：VLLM 中不同batch size 吞吐对比
 #### 3.4 代码实现
@@ -509,13 +519,13 @@ EAGLE-3 的 draft model 核心是一个 **Transformer decoder layer**。论文�
 
 感受一下 DFlash 的推理速度：
 
-![](asset/img_7423aa02ec24.jpg)00:26
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_7423aa02ec24.jpg)00:26
 
 DFlash演示视频
 
 在实验中，DFlash 在 **Qwen3-8B** 上实现了最高 **6.17× 的无损（lossless）加速**；比前面的 **EAGLE-3** 快三到 **2.5×**。
 
-![](asset/img_c4813aa85fe1.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_c4813aa85fe1.jpg)
 
 图 4-1：DFlash 和 EAGLE-3 加速效果对比
 #### 4.1 为什么选择 DFlash
@@ -553,7 +563,7 @@ DFlash演示视频
 - 然后在一些数学任务上，用它来给 Qwen3-4B 做 speculative decoding。
 结论是：如果不引入额外机制（作者说的“additional help”），这个小模型的**推理能力不够。**如下图所示，小模型很难和目标模型对齐，导致 **acceptance（接受率）不高**，最终 **speedup（加速）也很有限**。
 
-![](asset/img_5fb14e4af120.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_5fb14e4af120.jpg)
 
 图 4-2：小模型加速受限那么我们能不能做出一个 drafter：既**足够小**（意味着快、便宜、好部署），又**足够准**（意味着高接受率、能带来大加速）？
 
@@ -577,7 +587,7 @@ DFlash演示视频
 
 下图展示了 DFlash 的整体系统设计：
 
-![](asset/img_f6177e0a9f65.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_f6177e0a9f65.jpg)
 
 图 4-3：DFlash 的整体设计。先从目标模型（target model）中提取并融合其隐藏的上下文特征（hidden context features），然后把这些特征输入到草稿模型（draft model）的每一层中，使草稿模型能够在这些特征的条件约束下进行条件式投机生成（conditional speculation）。核心流程可以拆成四步：
 
@@ -633,7 +643,7 @@ EAGLE-3 的配置
 - 所有测试都关闭 Qwen3 的 “thinking” 模式
 下面是对比结果：
 
-![](asset/img_5b09924e452d.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_5b09924e452d.jpg)
 
 图 4-4：DFlash 实验结果
 ### 参考

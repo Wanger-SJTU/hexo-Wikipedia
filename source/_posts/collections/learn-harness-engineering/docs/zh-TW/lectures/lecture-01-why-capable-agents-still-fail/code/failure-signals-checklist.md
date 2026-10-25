@@ -1,3 +1,16 @@
+---
+title: 失敗訊號檢查清單
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/zh-TW/lectures/lecture-01-why-capable-agents-still-fail/code/failure-signals-checklist/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # 失敗訊號檢查清單
 
 在審查一次較弱的 harness 執行結果時，請使用此清單。

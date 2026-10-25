@@ -1,4 +1,17 @@
 ---
+title: 基于VTune Profiler 的自上而下的性能分析方法 - 知乎
+date: "2026-04-11 21:40:28"
+updated: "2026-04-11 21:40:28"
+layout: post
+permalink: /collections/0.raw/Omnivore/2024-05-11/基于VTune-Profiler-的自上而下的性能分析方法-知乎/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
+---
 id: f12ef57b-b5e6-493f-adbe-9879614f8ecc
 ---
 

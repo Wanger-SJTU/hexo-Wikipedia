@@ -1,9 +1,19 @@
 ---
-title: "(2 条消息) C++ 一个偶现的内存破坏"
-date: 2022-11-04
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/578290634
+title: (2 条消息) C++ 一个偶现的内存破坏
+date: "2022-11-04 00:00:00"
+updated: "2022-11-04 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/C-一个偶现的内存破坏/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/578290634
 ---
+
 
 **原文：[《C++ 一个偶现的内存破坏》](https://link.zhihu.com/?target=https%3A//bot-man-jl.github.io/articles/%3Fpost%3D2022/Cpp-Memory-Occasionally-Corruption)，公众号 BOTManJL**~http://weixin.qq.com/r/zigHAh3EUtUuKFlhb31K (二维码自动识别)
 
@@ -117,7 +127,7 @@ BufferReader reader(response.buffer());
 
 首先，从 **反汇编代码** 可以看出：
 
-![](asset/img_e4cf1c846e7f.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_e4cf1c846e7f.jpg)
 
 - 一行 `BufferReader reader(response.buffer().data());` 对应了 4 个函数调用
 

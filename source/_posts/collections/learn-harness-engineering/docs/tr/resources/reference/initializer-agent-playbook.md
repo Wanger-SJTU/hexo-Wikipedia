@@ -1,3 +1,16 @@
+---
+title: Başlatıcı Ajan Oyun Kitabı
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/tr/resources/reference/initializer-agent-playbook/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # Başlatıcı Ajan Oyun Kitabı
 
 Bu oyun kitabını, artımlı özellik işine başlamadan önce, bir depodaki ilk

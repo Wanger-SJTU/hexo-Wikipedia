@@ -1,15 +1,25 @@
 ---
-title: "Cache 一致性（Coherence）总结与设计方案"
-date: 2025-03-07
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/681522097
+title: Cache 一致性（Coherence）总结与设计方案
+date: "2025-03-07 00:00:00"
+updated: "2025-03-07 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/体系结构/Cache-一致性(Coherence)总结与设计方案/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/681522097
 ---
+
 
 ### 1. 问题的引入
 
 什么是cache的coherence问题？
 
-![](asset/img_499ac2a989e6.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_499ac2a989e6.jpg)
 
 coherence从何而来cache一致性问题的产生，往往来源于三个方面：
 
@@ -34,7 +44,7 @@ DMA操作会绕过host，直接从外部memory想main memory中搬运数据。�
 
 Host #1发生的修改，广播到总线上，host #2-#3看到后，发现内部L0C存有该地址数据，也要修改。即使host #1发生的修改，并未更新到main meory，也要做上述一致性处理**。（所以下图中用虚线表示更新到main memory）。**显然：该机制下，总线负载太重，不常用。
 
-![](asset/img_fe2a4f233096.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_fe2a4f233096.jpg)
 
 bus snoop（2）Write invalidate（写无效）
 
@@ -59,7 +69,7 @@ Host #1发生的修改，广播到总线上，host #2-#3看到后，发现内部
 M001000，说明该data在host #3中被modify
 由此，可以将BUS Snooping中的全局广播，转为定向广播。**
 
-![](asset/img_6c402d689d64.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_6c402d689d64.jpg)
 
 全映射目录目录占据cacheline的比例为：N/C。  假设C是这个cacheline的总size
 
@@ -67,7 +77,7 @@ M001000，说明该data在host #3中被modify
 
 全映射目录中，有多少个host，就需要多少bit的位向量标识。**而有限目录的基本思想就是，不管系统大小如何，位向量标识是固定的，设为P个。则对一个cacheline而言，只记录P个host的情况，P自然是小于N的，那这里就不能用1bit来指向具体哪个host了，要直接使用host的idex。
 
-![](asset/img_34710cb62122.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_34710cb62122.jpg)
 
 有限目录图中M是对N的对数编码位宽。则目录占据cacheline的比例为：log2（N）*P / C。  假设C是这个cacheline的总size。
 所以控制P的大小，可以让有限目录耗费的空间降低。但是会引入新的问题，那就是：超过P个host，存了该addr的data，怎么办？（目录项溢出）
@@ -79,7 +89,7 @@ M001000，说明该data在host #3中被modify
 不同host的cache，如果拥有同一个addr的data，则纳入链表中。
 一个单向链表如下所示：
 
-![](asset/img_542df5e6bcf1.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_542df5e6bcf1.jpg)
 
 单链表示意显然：基于单向链表找到保留同数据块的host，是要将整个建立起来的链表进行遍历。
 
@@ -96,9 +106,9 @@ MESIM×××√E×××√S××√√I√√√√基于这样的状态耦合关�
 
 盗图2张
 
-![](asset/img_99f7a14048c0.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_99f7a14048c0.jpg)
 
-状态跳转![](asset/img_f8f0b0ebabb6.jpg)
+状态跳转![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_f8f0b0ebabb6.jpg)
 
 状态跳转举一个例子：
 Host #0的L0C中，一个对应addr为0xFF40的cacheline 处于shared 状态，host #0对它的访问是写hit，则：
@@ -128,11 +138,11 @@ Host #0的L0C中，一个对应addr为0xFF40的cacheline 处于shared 状态，h
 
 MOESIM××××√O×××√√E××××√S×√×√√I√√√√√盗图一张，MOESI协议下，状态之间的跳转。（ARM中采用）
 
-![](asset/img_45042b45cc9a.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_45042b45cc9a.jpg)
 
 状态跳转比对着理解：Probe前缀代表其他host的动作
 
-![](asset/img_b807f6dc57e4.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_b807f6dc57e4.jpg)
 
 状态跳转标记为S的cacheline中data，应该是和O cacheline的data保持一致。
 

@@ -1,10 +1,19 @@
 ---
-title: "LLAMA 中的K-V cache 每一层的K V 都能用吗？"
-date: 2024-03-28
-tags: [知乎]
-source: https://www.zhihu.com/question/633256870/answer/3447033317
-
+title: LLAMA 中的K-V cache 每一层的K V 都能用吗？
+date: "2024-03-28 00:00:00"
+updated: "2024-03-28 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/LLM-SD/LLAMA-中的K-V-cache-每一层的K-V-都能用吗/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://www.zhihu.com/question/633256870/answer/3447033317
 ---
+
 
 首先需要明确的一点是，每一层的都会有自己的KV Cache，然后每一层的KV Cache都是根据上一层的输出叠加的。它的叠加方式：上一层输出一个token，当前层计算出对应token的K、V值追加到KV Cache中。
 

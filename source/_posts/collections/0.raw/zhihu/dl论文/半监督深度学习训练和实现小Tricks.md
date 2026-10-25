@@ -1,10 +1,19 @@
 ---
-title: "半监督深度学习训练和实现小Tricks"
-date: 2019-12-30
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/100252944
-
+title: 半监督深度学习训练和实现小Tricks
+date: "2019-12-30 00:00:00"
+updated: "2019-12-30 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/dl论文/半监督深度学习训练和实现小Tricks/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/100252944
 ---
+
 
 临近毕业，忽然想实现一下一些比较经典的半监督深度学习算法。恰逢一周前有个师妹问我有没有关于半监督深度学习训练技巧的文章，我一想，好像没有，便想自己写一篇。Talk is cheap, show you my code: 
 

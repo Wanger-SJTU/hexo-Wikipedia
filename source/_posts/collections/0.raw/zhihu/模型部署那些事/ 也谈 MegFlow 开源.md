@@ -1,9 +1,19 @@
 ---
-title: "(1 封私信) 也谈 MegFlow 开源"
-date: 2021-09-22
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/412862645
+title: (1 封私信) 也谈 MegFlow 开源
+date: "2021-09-22 00:00:00"
+updated: "2021-09-22 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/模型部署那些事/也谈-MegFlow-开源/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/412862645
 ---
+
 
 #### -1. 搬砖
 
@@ -13,7 +23,7 @@ source: https://zhuanlan.zhihu.com/p/412862645
 
  up 赏饭吃，添加 -mfpu=neon-vfpv4 后(我 PR 了，PR NCNN 能混进 NCNN 里番群)混过了试用期，然后就面临如何部署的问题了。从一个略显简陋的无依赖 Caffe 版本 SDK Framework 开始，改写为支持多种后端的 Framework，可以支撑海思 SoC 到 CPU/GPU 云服务器，并且在模型训练配合下，将线上业务从只有十几 QPS 的 V100 双卡云服务器优化到可以使用只有几百一个月的 CPU 服务器，QPS 却达到了 100+(骨干网满带宽，CPU 没满负荷)。
 
-![](asset/img_172c98ff8742.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%25A8%25A1%25E5%259E%258B%25E9%2583%25A8%25E7%25BD%25B2%25E9%2582%25A3%25E4%25BA%259B%25E4%25BA%258B/asset/img_172c98ff8742.jpg)
 
 分析实际部署工程师的需求，主要还是适配不同的硬件平台，不同的模型处理模式。首先得承认，大多数公司不会有很多人力投入到工程中，团队总是希望投入更多的 HC 给训模师，苦逼的工程师只有苦逼的钱。怎么用较少的人力完成更多的活或支撑更多的场景落地，就是苦逼部署工程师的价值。
 
@@ -38,11 +48,11 @@ AI 本身不是门生意，四小龙也要靠业务赚钱，单纯的算法性�
 
 从[猫猫围栏的 CPU 配置](https://link.zhihu.com/?target=https%3A//github.com/MegEngine/MegFlow/blob/master/flow-python/examples/cat_finder/image_cpu.toml)可以看出，[MegFlow](https://link.zhihu.com/?target=https%3A//github.com/MegEngine/MegFlow) 可以很容易的配置模型的输入输出，业务的 Pipeline 情况；当实际需要时，在弹性容器里也可以很容易的通过业务模板进行扩张，基本上把 SAAS 或微服务的相对部分的工作完成了，而这部分业务开发又是和 AI 部署不直接相关的，传统开发工程师也可以参与进来进行编排。
 
-![](asset/img_4f6d001761d5.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%25A8%25A1%25E5%259E%258B%25E9%2583%25A8%25E7%25BD%25B2%25E9%2582%25A3%25E4%25BA%259B%25E4%25BA%258B/asset/img_4f6d001761d5.jpg)
 
 打开了注册猫头的本地 IP，注册猫后就可以尝试猫猫围栏了，测试视频不适合分享，请自行实验(注意 Docker 的 IP 映射问题)。
 
-![](asset/img_0457a856d103.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%25A8%25A1%25E5%259E%258B%25E9%2583%25A8%25E7%25BD%25B2%25E9%2582%25A3%25E4%25BA%259B%25E4%25BA%258B/asset/img_0457a856d103.jpg)
 
 #### +3. 
 

@@ -1,10 +1,19 @@
 ---
-title: "人人都能看懂的 On-Policy Distillation（OPD）：原理、源码与工业实践"
-date: 2026-05-18
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/2039659658575656354
-
+title: 人人都能看懂的 On-Policy Distillation（OPD）：原理、源码与工业实践
+date: "2026-05-18 00:00:00"
+updated: "2026-05-18 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/LLM-SD/人人都能看懂的-On-Policy-Distillation(OPD)-原理、源码与工业实践/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/2039659658575656354
 ---
+
 
 人人都能看懂的 On-Policy Distillation（OPD）：原理、源码与工业实践
 大家好，DeepSeek V4 的技术报告放出来，看完之后我最大的感受不是它把 context 拉到了 1M、也不是它的 1.6T MoE 架构有多花哨，而是 post-training 那一段的设计——**V3.2 时代那一整套 mix RL pipeline，被 V4 几乎整个换成了 OPD（On-Policy Distillation）**。

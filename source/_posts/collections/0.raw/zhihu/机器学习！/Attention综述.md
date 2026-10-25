@@ -1,9 +1,19 @@
 ---
-title: "Attention综述"
-date: 2019-04-12
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/62136754
+title: Attention综述
+date: "2019-04-12 00:00:00"
+updated: "2019-04-12 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/机器学习/Attention综述/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/62136754
 ---
+
 
 注意力模型在大部分的自然语言处理任务中都得到了广泛应用，而且取得很不错的效果，甚至说它曾经横扫NLP各个任务也不为过。虽然他的idea很简单，但是你确定完全了解它吗？
 
@@ -23,7 +33,7 @@ source: https://zhuanlan.zhihu.com/p/62136754
 
         这里偷个懒，用原文的截图来解释吧（其实这个图还不是太好，不够直观）。在下图中，第一个句子跟第三个句子最相关，“delicious” 和 “amazing ”是决定情感最重要的词。
 
-![](asset/img_bd94e993e77b.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_bd94e993e77b.jpg)
 
         我一直认为先定性的认识某个东西，再定量的去认识，这样才能更精确、更长久的记住它。所以在上面例子的基础上，下面简单介绍下注意力机制的计算方式。
 
@@ -31,7 +41,7 @@ source: https://zhuanlan.zhihu.com/p/62136754
 
      基于以上讨论，不难发现attention有了很大的施展空间。为了解决上述问题，可以在 encoder-decoder的基础上，在decoder阶段加入获取input（已经被encoder）中特定部分的机制，这就是attention。用原文的图表示就是：
 
-![](asset/img_e3b7f03d159a.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_e3b7f03d159a.jpg)
 
 其中x_1、x_2、x_3是输入，y_1、y_2是输出，h_1、h_2、h_3是encoder后的隐藏状态(本文把它叫做candidate state)，s_1和s_2是decoder的隐藏状态(本文把它叫做query state)，α_ij是s_i和h_j的相关程度，c是h的加权和(权重是s和h的相关程度)，把它当作attention作用于decoder。以上这就是最基本、最简单的attention机制的计算过程。
 
@@ -39,7 +49,7 @@ source: https://zhuanlan.zhihu.com/p/62136754
 
 注意力可以分为**不互斥**的4类，所谓不互斥有两层含义：他们是按不同方面/纬度划分的attention；设计出的attention机制可以**同时属于多个**方面/维度中的某个特定类别。具体分类如下表：
 
-![](asset/img_741483139062.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_741483139062.jpg)
 
 3.1 按Number of **sequences**分类：按输入输出的**sequence个数**分类
 
@@ -55,7 +65,7 @@ single-level：只是按原始输入序列算attention
 
 multi- level：按输入的多种抽象level算attention（比如词粒度、短语粒度、句子粒度、文档粒度等），它包括top-down和 bottom-up两种计算抽象粒度的方法。具体见下图：
 
-![](asset/img_06d13c03b1b6.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_06d13c03b1b6.jpg)
 
 3.3 按Number of **positions**分类：按输入序列的不同**position**分类
 
@@ -85,15 +95,15 @@ memory network包含四部分内容：**query（输入）的向量、一系列�
 
 偷个懒，直接用论文中的图了
 
-![](asset/img_a5b96286d007.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_a5b96286d007.jpg)
 
 MT中对齐权重的可视化，很好的解释了工作过程**
 
-![](asset/img_fcc30704ae1f.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_fcc30704ae1f.jpg)
 
 推荐的权重可视化，很好的解释了工作过程
 
-![](asset/img_d044dbcd90d9.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_d044dbcd90d9.jpg)
 
 图像caption的可视化，不够直观
 

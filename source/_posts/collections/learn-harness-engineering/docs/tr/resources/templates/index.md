@@ -1,3 +1,16 @@
+---
+title: Şablon Rehberi
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/tr/resources/templates/index/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # Şablon Rehberi
 
 Bu şablonlar kendi projenize kopyalanmaya hazırdır. Her biri, ajanın iş akışında belirli bir amaca hizmet eder. İçerikleri projenizin komutlarına, yollarına, özellik adlarına ve doğrulama adımlarına uyacak şekilde düzenleyin.

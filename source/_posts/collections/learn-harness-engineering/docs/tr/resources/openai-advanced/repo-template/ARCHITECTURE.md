@@ -1,3 +1,16 @@
+---
+title: ARCHITECTURE.md
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/tr/resources/openai-advanced/repo-template/ARCHITECTURE/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # ARCHITECTURE.md
 
 Bu dosya sistemin üst düzey haritasıdır. Kısa ve öz kalmalı, gerektiğinde

@@ -1,10 +1,19 @@
 ---
-title: "扒源码：sharding loss in Pytorch"
-date: 2019-12-06
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/95687913
-
+title: 扒源码：sharding loss in Pytorch
+date: "2019-12-06 00:00:00"
+updated: "2019-12-06 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/dl论文/扒源码-sharding-loss-in-Pytorch/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/95687913
 ---
+
 
 源码：[https://github.com/OpenNMT/OpenNMT-py/blob/master/onmt/utils/loss.py](https://link.zhihu.com/?target=https%3A//github.com/OpenNMT/OpenNMT-py/blob/master/onmt/utils/loss.py)OpenNMT 在计算 NMT 模型的loss时，进行了“shard”处理，即对解码序列 y 分段进行梯度回溯。如果不这样做，超长序列的 loss.backward() 时会导致显存爆炸。
 

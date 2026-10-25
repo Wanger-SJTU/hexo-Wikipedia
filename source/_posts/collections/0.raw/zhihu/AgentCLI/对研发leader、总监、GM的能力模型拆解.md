@@ -1,9 +1,19 @@
 ---
-title: "对研发leader、总监、GM的能力模型拆解"
-date: 2025-03-09
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/29011063345
+title: 对研发leader、总监、GM的能力模型拆解
+date: "2025-03-09 00:00:00"
+updated: "2025-03-09 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/AgentCLI/对研发leader、总监、GM的能力模型拆解/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/29011063345
 ---
+
 
 **本文（首发自公众号：[对研发leader、总监、GM的能力模型拆解](https://link.zhihu.com/?target=https%3A//mp.weixin.qq.com/s/5AxGspCVDLSHod32cdDWHw)）内容是由我通过回顾自己管理幅度的变化，工作内容的变化，尝试理解总结得来，肯定存在片面性，用于自己复盘，仅供参考21年我作为一个team leader，当时自信团队带的不错，但我却找不到成就感，我发觉带好一个team很简单，我已经无法从日常的工作中找到更多的困难或者新鲜感，这让我对管理工作感到无聊。
 
@@ -78,9 +88,9 @@ GM需要放大总监时期做的事情，并能够有信得过的总监帮助cov
 
 > leader、总监、GM的工作职责到底应该是什么，这个岗位的人，又到底需要什么样的能力模型呢？
 
-![](asset/img_17546bcfaaf8.jpg)
+![](/images/collections/0.raw/zhihu/AgentCLI/asset/img_17546bcfaaf8.jpg)
 
-![](asset/img_57c604d328a9.jpg)
+![](/images/collections/0.raw/zhihu/AgentCLI/asset/img_57c604d328a9.jpg)
 
 其实在我管理一个部门前，我就看到过这样一个模型（卡茨管理技能模型：图片来自《麦肯锡思考工具》），那时我对此还不能完全理解，直到我有幸完整的经历了这一切，我才意识到这个模型的含金量。回顾完我的工作内容，关于我的疑问，我自己的答案就是这个模型，不确定这些是否能给到其他朋友们参考。
 

@@ -1,10 +1,19 @@
 ---
-title: "南加大和Intel提出：基于注意力的图像上采样"
-date: 2021-01-24
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/346708849
-
+title: 南加大和Intel提出：基于注意力的图像上采样
+date: "2021-01-24 00:00:00"
+updated: "2021-01-24 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/dl论文/南加大和Intel提出-基于注意力的图像上采样/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/346708849
 ---
+
 
 本文提出基于注意力的上采样方法，其在使用较少参数的情况下，性能始终优于转置卷积或基于自适应滤波器的传统上采样方法！通过对单图像超分辨率和联合图像上采样任务进行验证。
 

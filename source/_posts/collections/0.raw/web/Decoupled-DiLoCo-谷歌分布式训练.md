@@ -1,12 +1,21 @@
 ---
 title: "Decoupled DiLoCo: 谷歌革命性分布式训练技术"
-date: 2026-04-25
-tags: [微信]
-source: https://mp.weixin.qq.com/s/VCtSLapQKucVpqlvJp-48g
-
+date: "2026-04-25 00:00:00"
+updated: "2026-04-25 00:00:00"
+layout: post
+permalink: /collections/0.raw/web/Decoupled-DiLoCo-谷歌分布式训练/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 微信
+source_url: https://mp.weixin.qq.com/s/VCtSLapQKucVpqlvJp-48g
 ---
 
-![](Decoupled-DiLoCo-谷歌分布式训练/e41d181c.png)
+
+![](/images/collections/0.raw/web/Decoupled-DiLoCo-%25E8%25B0%25B7%25E6%25AD%258C%25E5%2588%2586%25E5%25B8%2583%25E5%25BC%258F%25E8%25AE%25AD%25E7%25BB%2583/e41d181c.png)
 
 编辑｜Panda
 
@@ -14,21 +23,21 @@ source: https://mp.weixin.qq.com/s/VCtSLapQKucVpqlvJp-48g
 
 据介绍，他们提出的 Decoupled DiLoCo 是一种革命性的分布式训练技术，能够利用全球各地的异构硬件进行训练，并且即使当硬件发生故障时，系统也不会停止运行！
 
-![](Decoupled-DiLoCo-谷歌分布式训练/64a53908.png)
+![](/images/collections/0.raw/web/Decoupled-DiLoCo-%25E8%25B0%25B7%25E6%25AD%258C%25E5%2588%2586%25E5%25B8%2583%25E5%25BC%258F%25E8%25AE%25AD%25E7%25BB%2583/64a53908.png)
 
 这项重磅研究成果引发了广泛关注，论文 Leads 作者之一的 Arthur Douillard 在 X 上的分享推文获得了超 260 万次浏览！
 
 值得注意的是，著名研究者、Google DeepMind 和 Google Research 首席科学家 Jeff Dean 也是作者之一。他也发布了多条推文介绍这项成果。
 
-![](Decoupled-DiLoCo-谷歌分布式训练/f7020020.png)
+![](/images/collections/0.raw/web/Decoupled-DiLoCo-%25E8%25B0%25B7%25E6%25AD%258C%25E5%2588%2586%25E5%25B8%2583%25E5%25BC%258F%25E8%25AE%25AD%25E7%25BB%2583/f7020020.png)
 
 推文中，他还回忆了自己 14 年前的一篇一作论文《Large Scale Distributed Deep Networks》。在这篇 NeurIPS 2012 论文中，他们就已经证明大规模训练和异步技术可以用于训练非常庞大的神经网络，并以容错的方式将训练任务分散到数千台机器上。
 
-![](Decoupled-DiLoCo-谷歌分布式训练/aca91061.png)
+![](/images/collections/0.raw/web/Decoupled-DiLoCo-%25E8%25B0%25B7%25E6%25AD%258C%25E5%2588%2586%25E5%25B8%2583%25E5%25BC%258F%25E8%25AE%25AD%25E7%25BB%2583/aca91061.png)
 
 而现在，Decoupled DiLoCo 有望将这个理念真正变成切实可行的大规模工程实践。
 
-![](Decoupled-DiLoCo-谷歌分布式训练/3f6ded6a.png)
+![](/images/collections/0.raw/web/Decoupled-DiLoCo-%25E8%25B0%25B7%25E6%25AD%258C%25E5%2588%2586%25E5%25B8%2583%25E5%25BC%258F%25E8%25AE%25AD%25E7%25BB%2583/3f6ded6a.png)
 
 论文标题：Decoupled DiLoCo for Resilient Distributed Pre-training
 
@@ -52,19 +61,19 @@ source: https://mp.weixin.qq.com/s/VCtSLapQKucVpqlvJp-48g
 
 Decoupled DiLoCo 的核心思路，是彻底放弃让所有机器保持同步这个前提。
 
-![](Decoupled-DiLoCo-谷歌分布式训练/beaee64a.png)
+![](/images/collections/0.raw/web/Decoupled-DiLoCo-%25E8%25B0%25B7%25E6%25AD%258C%25E5%2588%2586%25E5%25B8%2583%25E5%25BC%258F%25E8%25AE%25AD%25E7%25BB%2583/beaee64a.png)
 
-![](Decoupled-DiLoCo-谷歌分布式训练/12aaaeb5.png)
+![](/images/collections/0.raw/web/Decoupled-DiLoCo-%25E8%25B0%25B7%25E6%25AD%258C%25E5%2588%2586%25E5%25B8%2583%25E5%25BC%258F%25E8%25AE%25AD%25E7%25BB%2583/12aaaeb5.png)
 
 这套框架把整个训练集群拆分成若干个独立的「学习器」（Learner）。每个学习器各自用自己分到的数据独立训练，不需要等待其他学习器。当某个学习器出了故障，其余的学习器完全感知不到，继续自己的训练节奏。这就好比把一个大型联合考场拆成了若干个独立考场，一个考场里出了火情疏散，不影响其他考场里的学生继续答题。
 
-![](Decoupled-DiLoCo-谷歌分布式训练/7600b9fe.png)
+![](/images/collections/0.raw/web/Decoupled-DiLoCo-%25E8%25B0%25B7%25E6%25AD%258C%25E5%2588%2586%25E5%25B8%2583%25E5%25BC%258F%25E8%25AE%25AD%25E7%25BB%2583/7600b9fe.png)
 
 那各个学习器之间怎么协同，让最终训练出的是同一个模型？
 
 这里引入了一个轻量级的「同步器」（Syncer）。同步器运行在相对稳定的 CPU 资源上，负责周期性地收集各个学习器的参数更新，做一次合并，再把合并后的结果推送回去。
 
-![](Decoupled-DiLoCo-谷歌分布式训练/10f302be.png)
+![](/images/collections/0.raw/web/Decoupled-DiLoCo-%25E8%25B0%25B7%25E6%25AD%258C%25E5%2588%2586%25E5%25B8%2583%25E5%25BC%258F%25E8%25AE%25AD%25E7%25BB%2583/10f302be.png)
 
 关键在于：同步器不需要等所有学习器都准备好才开始合并。只要有足够数量（论文称为「最小法定数」，即 Minimum Quorum）的学习器汇报了自己的进度，同步器就可以开始工作，出故障的那个学习器直接跳过，等它恢复后再补上。
 
@@ -72,11 +81,11 @@ Decoupled DiLoCo 的核心思路，是彻底放弃让所有机器保持同步这
 
 还有一个细节叫「自适应宽限窗口」（Adaptive Grace Window）：同步器在达到最小法定数后，不会立刻合并，而是会多等一点点时间，争取让更多学习器赶上这一轮同步，从而提高每次合并的质量。这个等待时间被精心控制在不影响整体训练速度的范围之内。
 
-![](Decoupled-DiLoCo-谷歌分布式训练/1af29bff.png)
+![](/images/collections/0.raw/web/Decoupled-DiLoCo-%25E8%25B0%25B7%25E6%25AD%258C%25E5%2588%2586%25E5%25B8%2583%25E5%25BC%258F%25E8%25AE%25AD%25E7%25BB%2583/1af29bff.png)
 
 另一个技术细节是「平衡张量分片」（Balanced Tensor Fragmentation）。模型参数不再一整块传输，而是被切成若干大小相近的碎片，每一步只传输其中一片，均匀分摊通信压力，避免带宽使用忽高忽低的「脉冲式」传输。
 
-![](Decoupled-DiLoCo-谷歌分布式训练/10d898c6.png)
+![](/images/collections/0.raw/web/Decoupled-DiLoCo-%25E8%25B0%25B7%25E6%25AD%258C%25E5%2588%2586%25E5%25B8%2583%25E5%25BC%258F%25E8%25AE%25AD%25E7%25BB%2583/10d898c6.png)
 
 实验结果：故障率极高时，性能几乎不掉
 
@@ -84,11 +93,11 @@ Decoupled DiLoCo 的核心思路，是彻底放弃让所有机器保持同步这
 
 在 Goodput（有效吞吐率）方面，模拟 240 万块芯片、平均每年每块故障一次的场景（此时整个集群故障间隔不足一分钟），Decoupled DiLoCo 使用 8 个学习器时，Goodput 维持在 88%。而同等条件下，传统弹性数据并行方案的 Goodput 只有 58%。
 
-![](Decoupled-DiLoCo-谷歌分布式训练/f0ac7177.png)
+![](/images/collections/0.raw/web/Decoupled-DiLoCo-%25E8%25B0%25B7%25E6%25AD%258C%25E5%2588%2586%25E5%25B8%2583%25E5%25BC%258F%25E8%25AE%25AD%25E7%25BB%2583/f0ac7177.png)
 
 在模型质量方面，论文对比了 5B 参数稠密模型在 1 万亿 token 上的训练结果。无论是文本基准（ARC、BoolQ、HellaSwag 等）还是视觉基准（DocVQA、TextVQA 等），Decoupled DiLoCo 的下游评测成绩与传统数据并行训练几乎没有差距。也就是说，大幅提升了容错能力，但并没有以牺牲模型质量为代价。
 
-![](Decoupled-DiLoCo-谷歌分布式训练/2dd6f864.png)
+![](/images/collections/0.raw/web/Decoupled-DiLoCo-%25E8%25B0%25B7%25E6%25AD%258C%25E5%2588%2586%25E5%25B8%2583%25E5%25BC%258F%25E8%25AE%25AD%25E7%25BB%2583/2dd6f864.png)
 
 论文还验证了这套方案在混合旧式芯片（TPUv5e 与 TPUv5p）场景下的表现。即便最慢的学习器比最快的慢了接近 20%，通过最小法定数加自适应宽限窗口的组合，系统依然实现了与完全同步训练相当的模型质量，同时计算利用率维持在 100%。
 
@@ -110,7 +119,7 @@ Decoupled DiLoCo 不同，新学习器加入时，可以先从邻近学习器异
 
 Jeff Dean 在回忆 2012 年那篇论文时说，当年他们就已经在想：如果能容忍一定程度的不一致性，是不是可以让训练更有弹性？只是受限于当时的规模和工程条件，这个想法没能完全落地。
 
-![](Decoupled-DiLoCo-谷歌分布式训练/207ade91.png)
+![](/images/collections/0.raw/web/Decoupled-DiLoCo-%25E8%25B0%25B7%25E6%25AD%258C%25E5%2588%2586%25E5%25B8%2583%25E5%25BC%258F%25E8%25AE%25AD%25E7%25BB%2583/207ade91.png)
 
 十四年后，当模型规模扩展到数十亿参数、训练集群动辄几十万乃至数百万块芯片，这个问题已不再是单纯的研究问题，而是「必须解决」的工程问题。
 
@@ -120,7 +129,7 @@ Decoupled DiLoCo 给出的答案是：放弃全局强一致性，用异步和分
 
 看起来，这篇论文正在重新定义下一代超大规模模型训练的基础设施。
 
-![](Decoupled-DiLoCo-谷歌分布式训练/6800a150.png)
+![](/images/collections/0.raw/web/Decoupled-DiLoCo-%25E8%25B0%25B7%25E6%25AD%258C%25E5%2588%2586%25E5%25B8%2583%25E5%25BC%258F%25E8%25AE%25AD%25E7%25BB%2583/6800a150.png)
 
 © THE END 
 

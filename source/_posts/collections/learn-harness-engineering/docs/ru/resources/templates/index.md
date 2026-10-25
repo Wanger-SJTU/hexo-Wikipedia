@@ -1,3 +1,16 @@
+---
+title: Гайд по шаблонам
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/ru/resources/templates/index/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # Гайд по шаблонам
 
 Эти шаблоны готовы к копированию в ваш проект. Каждый из них служит конкретной цели в воркфлоу агента. Редактируйте содержимое, чтобы оно соответствовало командам, путям, именам фич и шагам верификации вашего проекта.

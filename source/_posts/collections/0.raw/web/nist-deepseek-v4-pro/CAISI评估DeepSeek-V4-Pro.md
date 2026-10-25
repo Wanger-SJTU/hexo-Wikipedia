@@ -1,15 +1,29 @@
 ---
-title: "CAISI 对 DeepSeek V4 Pro 的评估"
-source: https://www.nist.gov/news-events/news/2026/05/caisi-evaluation-deepseek-v4-pro
-date: 2026-05-04
-tags: [AI评估, DeepSeek, NIST, CAISI, benchmark]
+title: CAISI 对 DeepSeek V4 Pro 的评估
+date: "2026-05-04 00:00:00"
+updated: "2026-05-04 00:00:00"
+layout: post
+permalink: /collections/0.raw/web/nist-deepseek-v4-pro/CAISI评估DeepSeek-V4-Pro/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - AI评估
+  - DeepSeek
+  - NIST
+  - CAISI
+  - benchmark
+source_url: https://www.nist.gov/news-events/news/2026/05/caisi-evaluation-deepseek-v4-pro
 ---
+
 
 # CAISI 对 DeepSeek V4 Pro 的评估
 
 2026年4月，美国国家标准与技术研究院（NIST）下属的 AI 标准与创新中心（CAISI）对开源权重 AI 模型 DeepSeek V4 Pro 进行了独立评估。CAISI 的评估表明，DeepSeek V4 的能力落后美国前沿约 **8 个月**。
 
-![图1：中美 AI 模型整体能力随时间变化对比](figure1-overall-capability.png)
+![图1：中美 AI 模型整体能力随时间变化对比](/images/collections/0.raw/web/nist-deepseek-v4-pro/figure1-overall-capability.png)
 
 *图1：美国和中国最强大的公开模型在各领域基准测试中的综合能力对比。y 轴每增加 200 分，解决特定任务的概率增加 3 倍。模型能力通过基于项目反应理论（IRT）的方法拟合。*
 
@@ -23,7 +37,7 @@ tags: [AI评估, DeepSeek, NIST, CAISI, benchmark]
 
 ## 能力测试结果
 
-![图2：各基准测试模型表现汇总](figure2-benchmark-results.png)
+![图2：各基准测试模型表现汇总](/images/collections/0.raw/web/nist-deepseek-v4-pro/figure2-benchmark-results.png)
 
 *图2：各能力基准测试的模型表现（越高越好）。加粗高亮为该基准的最佳表现者。*
 
@@ -101,7 +115,7 @@ DeepSeek 的技术报告表明 DeepSeek V4 在一系列基准测试中与美国�
 
 ## 成本对比
 
-![图4：GPT-5.4 mini 和 DeepSeek V4 Pro 在不同基准测试上的端到端成本对比](figure4-cost-comparison.png)
+![图4：GPT-5.4 mini 和 DeepSeek V4 Pro 在不同基准测试上的端到端成本对比](/images/collections/0.raw/web/nist-deepseek-v4-pro/figure4-cost-comparison.png)
 
 *图4：两模型都正确解决的基准测试任务的端到端成本。高于 1.0 表示 DeepSeek V4 比 GPT-5.4 mini 更贵。*
 

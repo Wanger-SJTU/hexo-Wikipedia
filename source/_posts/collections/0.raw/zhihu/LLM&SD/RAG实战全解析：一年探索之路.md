@@ -1,9 +1,19 @@
 ---
-title: "RAG实战全解析：一年探索之路"
-date: 2024-04-17
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/682253496
+title: RAG实战全解析：一年探索之路
+date: "2024-04-17 00:00:00"
+updated: "2024-04-17 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/LLM-SD/RAG实战全解析-一年探索之路/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/682253496
 ---
+
 
 ### 1. 背景介绍
 
@@ -36,7 +46,7 @@ RAG主要面临三个方面的挑战：检索质量、增强过程和生成质�
 
 #### 3.1 产品架构
 
-![](asset/img_c0a8bbd16229.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_c0a8bbd16229.jpg)
 
 **从图上可以清晰的看出，整个产品架构包含如下四层：
 
@@ -47,7 +57,7 @@ RAG主要面临三个方面的挑战：检索质量、增强过程和生成质�
 
 #### 3.2 技术架构
 
-![](asset/img_22a2b276037d.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_22a2b276037d.jpg)
 
 为了理解检索增强生成框架，我们将其分为三个主要组成部分：query理解、检索模型和生成模型。
 
@@ -81,13 +91,13 @@ RAG主要面临三个方面的挑战：检索质量、增强过程和生成质�
 
 Hypothetical Document Embeddings（HyDE）是一种生成文档嵌入以检索相关文档而不需要实际训练数据的技术。首先，LLM创建一个假设答案来响应query。虽然这个答案反映了与query相关的模式，但它包含的信息可能在事实上并不准确。接下来，query和生成的答案都被转换为嵌入。然后，系统从预定义的数据库中识别并检索在向量空间中最接近这些嵌入的实际文档。
 
-![](asset/img_74cfb61f71a8.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_74cfb61f71a8.jpg)
 
 **4.2.2 [Rewrite-Retrieve-Read](https://link.zhihu.com/?target=https%3A//arxiv.org/pdf/2305.14283.pdf%3Fref%3Dblog.langchain.dev)**
 
 这项工作引入了一个新的框架--Rewrite-Retrieve-Read，从query改写的角度改进了检索增强方法。之前的研究主要是调整检索器或LLM。与之不同的是，该方法注重query的适应性。因为对于 LLM 来说，原始query并不总是最佳检索结果，尤其是在现实世界中。首先利用LLM 进行改写query，然后进行检索增强。同时，为了进一步提高改写的效果，应用小语言模型（[T5](https://link.zhihu.com/?target=https%3A//arxiv.org/pdf/1910.10683.pdf)）作为可训练的改写器，改写搜索query以满足冻结检索器和 LLM的需要。为了对改写器进行微调，该方法还使用伪数据进行有监督的热身训练。然后，将 "先检索后生成 "管道建模为强化学习环境。通过最大化管道性能的奖励，改写器被进一步训练为策略模型。
 
-![](asset/img_ad9c6af4db45.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_ad9c6af4db45.jpg)
 
 #### 4.3 Query扩写
 
@@ -97,25 +107,25 @@ Hypothetical Document Embeddings（HyDE）是一种生成文档嵌入以检索�
 
 该工作探索了LLM如何通过抽象和推理两个步骤来处理涉及许多低级细节的复杂任务。第一步先是使用 LLM "后退一步"生成高层次的抽象概念，将推理建立在抽象概念的基础上，以减少在中间推理步骤中出错的概率。这种方法即可以在有检索的情况下使用，也可以在无检索的情况下使用。当在有检索情况下使用时，抽象的概念和原始问题都用来进行检索，然后这两个结果都用来作为LLM响应的基础。
 
-![](asset/img_76710dfcad39.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_76710dfcad39.jpg)
 
 **4.3.2 [CoVe](https://link.zhihu.com/?target=https%3A//arxiv.org/pdf/2309.11495.pdf)**
 
 Chain of Verification (CoVe) 旨在通过系统地验证和完善回答以尽量减少不准确性，从而提高大型语言模型所提供答案的可靠性，特别是在事实性问题和回答场景中。它背后的概念是基于这样一种理念，即大型语言模型（LLM）生成的响应可以用来验证自身。这种自我验证过程可用于评估初始响应的准确性，并使其更加精确。**在RAG系统中，针对用户实际场景中日益复杂的问题，借鉴了 CoVe技术，将复杂 Prompt 拆分为多个独立且能并行检索的搜索友好型query，让LLM对每个子查询进行定向知识库搜索，最终提供更准确详实答案的同时减少幻觉输出。
 
-![](asset/img_9b2849bf42a2.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_9b2849bf42a2.jpg)
 
 4.3.3 [RAG-Fusion](https://link.zhihu.com/?target=https%3A//github.com/Raudaschl/rag-fusion)**
 
 在这种方法中，原始query经过LLM 生成多个query。然后可以并行执行这些搜索查询，并将检索到的结果一并传递。当一个问题可能依赖于多个子问题时，这种方法就非常有用。RAG-Fusion便是这种方法的代表，它是一种搜索方法，旨在弥合传统搜索范式与人类查询的多面性之间的差距。这种方法先是采用LLM生成多重查询，之后使用倒数排名融合（Reciprocal Rank Fusion，RRF）来重新排序。
 
-![](asset/img_2c17dbb23b6b.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_2c17dbb23b6b.jpg)
 
 **4.3.4 [ReAct](https://link.zhihu.com/?target=https%3A//arxiv.org/pdf/2210.03629.pdf)**
 
 最近，在RAG系统中，使用ReAct思想，将复杂查询分解成更简单的"子查询"，知识库的不同部分可能会围绕整个查询回答不同的 "子查询"。这对组合图尤其有用。在组成图中，一个查询可以路由到多个子索引，每个子索引代表整个知识语料库的一个子集。通过查询分解，我们可以在任何给定的索引中将查询转化为更合适的问题。
 
-![](asset/img_4e94edddcc73.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_4e94edddcc73.jpg)
 
 **ReAct的模式如上图所示，它是将思维链提示（Chain of Thoughts，简写为CoT）和Action计划生成结合起来，相互补充增强，提升大模型解决问题的能力。其中CoT的Reasoning推理跟踪有助于模型诱导、跟踪和更新行动计划以及处理异常。Action操作允许它与知识库或环境等外部来源接口并收集其他信息。
 
@@ -134,7 +144,7 @@ Chain of Verification (CoVe) 旨在通过系统地验证和完善回答以尽量
 
 #### 5.2 架构
 
-![](asset/img_c695f37303e4.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_c695f37303e4.jpg)
 
 注：图片来源于langchain。
 #### 5.3 文档加载器
@@ -166,7 +176,7 @@ NameSplits OnAdds MetadataDescriptionRecursiveA list of user defined charactersR
 
 随着嵌入式的兴起，人们开始需要向量数据库来支持这些嵌入式的高效存储和搜索。存储和搜索非结构化数据的最常见方法之一是嵌入数据并存储由此产生的嵌入向量，然后在查询时嵌入非结构化查询并检索与嵌入查询 "最相似 "的嵌入向量。向量数据库负责存储嵌入数据并执行向量搜索。
 
-![](asset/img_8da1618676cd.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_8da1618676cd.jpg)
 
 关于向量数据库，这里向大家推荐看一下《大模型引发爆发增长的向量数据库》文章。如果对向量数据库已经有认知了，可以直接跳过本节进行阅读。
 
@@ -179,13 +189,13 @@ NameSplits OnAdds MetadataDescriptionRecursiveA list of user defined charactersR
 
 摘要索引只是将节点存储为顺序链。在后续的检索和生成阶段，可以简单地顺序遍历所有节点，也可以基于关键词进行过滤。
 
-![](asset/img_b569251ab8cb.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_b569251ab8cb.jpg)
 
 **5.7.2 树索引**
 
 树索引将一组节点 ( 文本块 ) 构建成具有层级的树状索引结构，其从叶节点 (原始文本块) 向上构建，每个父节点都是子节点的摘要。在检索阶段，既可以从根节点向下进行遍历，也可以直接利用根节点的信息。树索引提供了一种更高效地查询长文本块的方式，它还可以用于从文本的不同部分提取信息。与链式索引不同，树索引无需按顺序查询。
 
-![](asset/img_f11f13fcdcef.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_f11f13fcdcef.jpg)
 
 **
 
@@ -193,7 +203,7 @@ NameSplits OnAdds MetadataDescriptionRecursiveA list of user defined charactersR
 
 关键词表索引从每个节点中提取关键词，构建了每个关键词到相应节点的多对多映射，意味着每个关键词可能指向多个节点，每个节点也可能包含多个关键词。在检索阶段，可以基于用户查询中的关键词对节点进行筛选。
 
-![](asset/img_3d2658153ac9.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_3d2658153ac9.jpg)
 
 **
 
@@ -201,7 +211,7 @@ NameSplits OnAdds MetadataDescriptionRecursiveA list of user defined charactersR
 
 向量索引是当前最流行的一种索引方法。这种方法一般利用文本嵌入模型将文本块映射成一个固定长度的向量，然后存储在向量数据库中。检索的时候，对用户查询文本采用同样的Embedding模型映射成向量，然后基于向量相似度计算获取最相似的一个或者多个节点。
 
-![](asset/img_6b9348a50545.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_6b9348a50545.jpg)
 
 #### **5.8 排序和后处理**
 
@@ -240,7 +250,7 @@ NameSplits OnAdds MetadataDescriptionRecursiveA list of user defined charactersR
 为了解决上述问题，我们提出了一种基于混合演示检索的上下文学习方法。该方法充分考虑不同检索模型的优劣，提出一种融合算法，通过利用文本检索（例如，BM25和TF-IDF）和语义检索（例如，OpenAI embedding-ada和sentence-bert）进行多路召回，解决单路召回率不高的问题。然而，这带来全新的挑战，即如何将不同的召回结果进行融合。这是由于不同检索算法分数范围不匹配，例如，文本检索分数通常在 0 和某个最大值之间（这具体取决于查询的相关性）；而语义搜索（例如，余弦相似度）生成 0 到 1 之间的分数，这使得直接对召回结果进行排序变得很棘手。因此，我们又提出一种基于倒序排序融合算法（Reciprocal Rank fusion）的重排方法，该算法在不需要调整模型的情况下，利用位置来组合不同检索算法的结果，同时，考虑到大模型对相关信息出现在输入上下文的开头或结尾时，性能往往最高，设计重排算法，从获得高质量的融合结果。
 具体的模型架构如下图所示，它包括检索模块、重排模块和生成模块。 
 
-![](asset/img_31233063f10c.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_31233063f10c.jpg)
 
 #### 7.1 检索模块
 

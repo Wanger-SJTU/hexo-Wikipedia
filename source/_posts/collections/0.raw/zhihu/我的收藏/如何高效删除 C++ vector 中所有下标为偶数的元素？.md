@@ -1,10 +1,19 @@
 ---
-title: "如何高效删除 C++ vector 中所有下标为偶数的元素？"
-date: 2023-03-01
-tags: [知乎]
-source: https://www.zhihu.com/question/586781784/answer/2915965991
-
+title: 如何高效删除 C++ vector 中所有下标为偶数的元素？
+date: "2023-03-01 00:00:00"
+updated: "2023-03-01 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/如何高效删除-C-vector-中所有下标为偶数的元素/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://www.zhihu.com/question/586781784/answer/2915965991
 ---
+
 
 这个面试题非常好，其实考的是对stl算法的熟练度。
 

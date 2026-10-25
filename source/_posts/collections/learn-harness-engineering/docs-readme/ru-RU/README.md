@@ -1,3 +1,16 @@
+---
+title: Learn Harness Engineering
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs-readme/ru-RU/README/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 <p align="center">
   <a href="../../README.md"><img alt="English" src="https://img.shields.io/badge/EN-English-blue?style=flat-square"></a>
   <a href="../zh-CN/README.md"><img alt="简体中文" src="https://img.shields.io/badge/ZH-简体中文-red?style=flat-square"></a>
@@ -47,17 +60,17 @@ Learn Harness Engineering — курс, посвящённый инженери�
 ### Главная страница курса
 > Обзор курса и введение в ключевые философии, формирующие чёткий путь для старта.
 
-![Предпросмотр главной страницы курса](../../docs/public/screenshots/readme/zh-home.png)
+![Предпросмотр главной страницы курса](/images/collections/learn-harness-engineering/docs/public/screenshots/readme/zh-home.png)
 
 ### Иммерсивные лекции
 > Глубокое погружение в реальные проблемы и практические проекты (например, Проект 01) для иммерсивного обучения.
 
-![Предпросмотр лекций курса](../../docs/public/screenshots/readme/zh-lecture-01.png)
+![Предпросмотр лекций курса](/images/collections/learn-harness-engineering/docs/public/screenshots/readme/zh-lecture-01.png)
 
 ### Библиотека шаблонов
 > Шаблоны и эталонные конфигурации, созданные для решения распространённых проблем при разработке многоходовых KI-агентов, таких как потеря контекста и преждевременное завершение задач.
 
-![Предпросмотр библиотеки шаблонов](../../docs/public/screenshots/readme/zh-resources.png)
+![Предпросмотр библиотеки шаблонов](/images/collections/learn-harness-engineering/docs/public/screenshots/readme/zh-resources.png)
 
 ## PDF-учебники курса
 

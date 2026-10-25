@@ -1,9 +1,19 @@
 ---
-title: "CXL协议 -- 总体架构介绍"
-date: 2025-06-05
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/742496727
+title: CXL协议 -- 总体架构介绍
+date: "2025-06-05 00:00:00"
+updated: "2025-06-05 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/体系结构/CXL协议-总体架构介绍/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/742496727
 ---
+
 
 CXL的全称是Compute Express Link，是一种在**PCIe物理层上构建的缓存一致性系统**。
 

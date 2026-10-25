@@ -1,9 +1,19 @@
 ---
-title: "HBM浅析：架构、协议、产业格局，以及与DDR/LPDDR/GDDR的区别"
-date: 2026-08-10
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/2070193978914378884
+title: HBM浅析：架构、协议、产业格局，以及与DDR/LPDDR/GDDR的区别
+date: "2026-08-10 00:00:00"
+updated: "2026-08-10 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/HBM浅析-架构、协议、产业格局,以及与DDR_LPDDR_GDDR的区别/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/2070193978914378884
 ---
+
 
 一、前言
 HBM（High Bandwidth Memory）并不是一种全新的存储单元。它的核心仍然是 DRAM，只是把多层 DRAM Core Die 通过 TSV 垂直堆叠，在底部加入 Base/Logic Die，并通过封装内超宽并行接口与 GPU 或 AI SoC 相连。

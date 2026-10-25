@@ -1,9 +1,19 @@
 ---
-title: "大模型推理优化RoadMap-持续更新"
-date: 2026-07-02
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/2056050797784438492
+title: 大模型推理优化RoadMap-持续更新
+date: "2026-07-02 00:00:00"
+updated: "2026-07-02 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/AI-infra/大模型推理优化RoadMap-持续更新/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/2056050797784438492
 ---
+
 
 ![](https://pic3.zhimg.com/v2-cff12bdd9171ce51f5286075be25b0a6_r.jpg)
 LLM推理优化技术路线

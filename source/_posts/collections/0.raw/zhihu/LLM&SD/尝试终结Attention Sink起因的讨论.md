@@ -1,9 +1,19 @@
 ---
-title: "尝试终结Attention Sink起因的讨论"
-date: 2025-08-06
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/1932066570714215838
+title: 尝试终结Attention Sink起因的讨论
+date: "2025-08-06 00:00:00"
+updated: "2025-08-06 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/LLM-SD/尝试终结Attention-Sink起因的讨论/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/1932066570714215838
 ---
+
 
 ### TLDR
 
@@ -12,12 +22,12 @@ source: https://zhuanlan.zhihu.com/p/1932066570714215838
 
 最早是Streaming LLM发现了这一个现象，越深的层越会关注第一个token，成为Attention Sink，但是没有解释原因。
 
-![](asset/img_fcae8fad94d8.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_fcae8fad94d8.jpg)
 
 https://arxiv.org/abs/2309.17453**But Why？
 在我的认知里面，似乎至今没有论文给出一个令人信服的解释，关于为什么模型会有如此的表现，去年有一个[工作](https://link.zhihu.com/?target=https%3A//arxiv.org/pdf/2410.10781)专门做了empirical study来研究一些规律：
 
-![](asset/img_c1ceee03abab.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_c1ceee03abab.jpg)
 
 https://arxiv.org/pdf/2410.10781
 ### Understanding Attention Sink
@@ -28,7 +38,7 @@ https://arxiv.org/pdf/2410.10781
 
 #### 证据一：首个token的value几乎为0**
 
-![](asset/img_20d73e906ec8.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_20d73e906ec8.jpg)
 
 https://arxiv.org/pdf/2410.10781empirical study的图中第一行第三列的图可以发现，第一个token的value的norm非常小，意味着即使被attend到，对最终结果的贡献也不会太大，那模型为什么要attend一个0呢？
 
@@ -41,9 +51,9 @@ https://arxiv.org/pdf/2410.10781empirical study的图中第一行第三列的图
 - 那么必须靠Softmax Attention来实现，也就是key空间里面必须存在一个特殊的key： k_\text{zero} ，这个key的value是0，且需要模型在想要输出0的时候可以精确的attend到。
 - 这也意味着模型必须给这个 k_\text{zero}分配一个单独的子空间，这个k_\text{zero}和所有的其他key都是正交或者负相关的，这样可以保证 q,\,  k_\text{zero} 夹角很小的时候 q^\top  k_\text{zero} 的分数最高，实现attend到sink token并输出0。
 - 同时这个key的模长也必须比较小，这样在不需要输出恒等的时候，对正常的Attention结果尽量产生小的影响。如下图所示。**
-![](asset/img_e3b8d913471b.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_e3b8d913471b.jpg)
 
-sink token和其余token的key会有什么区别![](asset/img_c08ade96d0cc.jpg)
+sink token和其余token的key会有什么区别![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_c08ade96d0cc.jpg)
 
 https://arxiv.org/pdf/2410.10781empirical study的图中实验图的第二行第二列也可以看出，sink发生的时候，其他key的相似度几乎都是0或者负的，同时第一行第二列可以看出第一个token的key的模长显著小，这佐证了我们的猜想。
 
@@ -61,7 +71,7 @@ https://arxiv.org/pdf/2410.10781empirical study的图中实验图的第二行第
 
  进行了实验，验证了这个猜想。GPT-oss也使用了一样的技术，只是变成了可学习的。**
 
-![](asset/img_29001f9d0861.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_29001f9d0861.jpg)
 
 https://arxiv.org/pdf/2410.10781同时empirical study的论文（上图）发现了非归一化的Attention没有sink问题，也佐证了我们的猜想。 如果模型score不一定非负，那么也可以组合出0的Attention，也不会有sink。
 
@@ -70,13 +80,13 @@ https://arxiv.org/pdf/2410.10781同时empirical study的论文（上图）发现
 Attention Sink导致必须给k_\text{zero}分配一个子空间，我们合理怀疑这个会产生dim的浪费（给分母加e也无法解决）。一个想法是使用gating操作，使得模型可以data-dep的输出0.
 正好Qwen最近做了这个实验：
 
-![](asset/img_b0a950a9c0dc.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_b0a950a9c0dc.jpg)
 
 https://arxiv.org/pdf/2505.06708先不谈效果提升幅度，他们发现Attention在输出阶段（G1）加入gate最有效，且消除了Attention Sink。这和我们的猜想一致（在G2、G3、G4都不能使得Attention输出0，但是G1可以）。
 
-![](asset/img_f7d4267b18f2.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_f7d4267b18f2.jpg)
 
-![](asset/img_c57bbec418c5.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_c57bbec418c5.jpg)
 
 ### 总结
 

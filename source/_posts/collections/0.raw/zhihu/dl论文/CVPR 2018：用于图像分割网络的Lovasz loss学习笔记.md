@@ -1,10 +1,19 @@
 ---
-title: "CVPR 2018：用于图像分割网络的Lovasz loss学习笔记"
-date: 2019-08-06
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/76825379
-
+title: CVPR 2018：用于图像分割网络的Lovasz loss学习笔记
+date: "2019-08-06 00:00:00"
+updated: "2019-08-06 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/dl论文/CVPR-2018-用于图像分割网络的Lovasz-loss学习笔记/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/76825379
 ---
+
 
 Lovasz loss是在[kaggle的分割比赛中被推荐](https://www.zhihu.com/question/272988870/answer/562262315)的loss，据说比Dice loss要好一些，作者给了代码，虽然拿过来就能套着用，但里面的用到的数学工具不是很trival，看了三四遍文章第二部分的方法介绍，还是没完全吃透，在此记录下学习笔记，把看懂的记录下，后面有新的理解随时更新。
 

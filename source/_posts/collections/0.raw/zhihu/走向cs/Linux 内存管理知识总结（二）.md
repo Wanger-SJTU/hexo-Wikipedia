@@ -1,15 +1,25 @@
 ---
-title: "Linux 内存管理知识总结（二）"
-date: 2021-04-26
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/367993367
+title: Linux 内存管理知识总结（二）
+date: "2021-04-26 00:00:00"
+updated: "2021-04-26 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/走向cs/Linux-内存管理知识总结(二)/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/367993367
 ---
+
 
 作者：dengxuanshi，腾讯 IEG 后台开发工程师
 
 文章第一部分在这里：
 
-[![](asset/img_88aa0307c5ca.jpg)腾讯技术工程：Linux 内存管理知识总结（一）118 赞同 · 4 评论 文章](https://zhuanlan.zhihu.com/p/366957562)
+[![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_88aa0307c5ca.jpg)腾讯技术工程：Linux 内存管理知识总结（一）118 赞同 · 4 评论 文章](https://zhuanlan.zhihu.com/p/366957562)
 
 #### **Linux 内存管理框架**
 
@@ -17,7 +27,7 @@ source: https://zhuanlan.zhihu.com/p/367993367
 
 而**NUMA**模式是一种分布式存储器访问方式，处理器可以同时访问不同的存储器地址，大幅度提高并行性。NUMA 模式下系统的每个 CPU 都有本地内存，可支持快速访问，各个处理器之间通过总线连接起来，以支持对其它 CPU 本地内存的访问，但是这些访问要比处理器本地内存的慢.
 
-![](asset/img_170b2ef8f564.jpg)
+![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_170b2ef8f564.jpg)
 
 Linux 内核通过插入一些兼容层，使两个不同体系结构的差异被隐藏，两种模式都使用了同一个数据结构。
 
@@ -33,7 +43,7 @@ Linux 内核通过插入一些兼容层，使两个不同体系结构的差异�
 
 综上，**linux 的物理内存管理机制将物理内存划分为三个层次来管理**，依次是：Node（存储节点）、Zone（管理区）和 Page（页面），它们之间的关系如下：
 
-![](asset/img_7bce276d37ea.jpg)
+![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_7bce276d37ea.jpg)
 
 其中，zone 的类型如下：
 
@@ -328,7 +338,7 @@ native_pagetable_init()函数内容如下：
 
 可以对着这个图看：
 
-![](asset/img_a54569277937.jpg)
+![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_a54569277937.jpg)
 
 前面已经分析过低端内存、固定映射区中临时映射区的内核页表的建立，这里 paging_init 将会完成剩下的工作，首先看**pagetable_init**()
 
@@ -384,7 +394,7 @@ pfn_to_page/page_to_pfn 的作用是 struct page* 和 pfn 页帧号之间的转�
 
 如果 cpu 在访问物理内存的时候，**其地址空间有一些空洞，是不连续的**，那么这种计算机系统的内存模型就是**Discontiguous memory**。一般而言，NUMA 架构的计算机系统的 memory model 都是选择 Discontiguous Memory，不过 NUMA 强调的是 memory 和 processor 的位置关系，和内存模型其实是没有关系的（NUMA 并没有规定其内存的连续性，而 Discontiguous memory 系统也并非一定是 NUMA 系统，但是这两种都是多节点的），只不过，由于同一 node 上的 memory 和 processor 有更紧密的耦合关系（访问更快），因此需要多个 node 来管理。**Discontiguous memory 本质上是 flat memory 内存模型的扩展，整个物理内存的内存空间大部分是成片的大块内存，中间会有一些空洞，每一个成片的内存地址空间属于一个 node（如果局限在一个 node 内部，其内存模型是 flat memory）**。
 
-![](asset/img_b95dee9de6d3.jpg)
+![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_b95dee9de6d3.jpg)
 
 在这种模型下，从 PFN 转换到具体的 struct page 会稍微复杂一点，首先要从 PFN 得到 node ID，然后根据这个 ID 找到对于的节点 node 数据结构，也就找到了对应的 page 数组，之后的方法就类似 flat memory 了。
 
@@ -410,7 +420,7 @@ Discontiguous memory 模型需要获取 node id，只要找到 node id，一切�
 
 在**sparse memory**内存模型下，连续的地址空间按照 SECTION（例如 1G）被分成了一段一段的，其中每一 section 都是 hotplug 的，**因此 sparse memory 下，内存地址空间可以被切分的更细**。整个连续的物理地址空间是按照一个个**section**来切断的，在每一个 section 内部，其 memory 是连续的（即符合 flat memory 的特点），因此，**mem_map 的 page 数组依附于 section 结构（struct mem_section），而不是 node 结构（struct pglist_data）。在这个模型下，PFN 转 struct page 变为了转换变成了 PFNSectionpage。**
 
-![](asset/img_1c708e7d15cb.png)
+![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_1c708e7d15cb.png)
 
 linux 内核中静态定义了一个 mem_section 的指针数组，一个 section 中往往包括多个 page，因此需要通过 PFN 得到 section 号，用 section 号做为 index 在 mem_section 指针数组可以找到该 PFN 对应的 section 数据结构。实际上**PFN 分成两个部分：一部分是 section index，另外一个部分是 page 在该 section 的偏移**，找到 section 之后，沿着其 mem_map 就可以找到对应的 page 数据结构。
 
@@ -878,23 +888,23 @@ calculate_node_totalpages()后面就是各种简单的赋值操作了，这里�
 
 nr_kernel_pages、nr_all_pages 和页面的关系可以参考下图：
 
-![](asset/img_5f7925fe4523.jpg)
+![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_5f7925fe4523.jpg)
 
 这里以我自己的私服为例，看一下我私服 node 和 zone 的情况
 
 首先是 node 的个数，GNU/Linux 根据物理 CPU 的数量分配 node，因此可以直接查物理 CPU 的数量：
 
-![](asset/img_3e389c37300d.jpg)
+![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_3e389c37300d.jpg)
 
 当然，用 numactl 会更加直观：
 
-![](asset/img_f4fc58f59474.jpg)
+![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_f4fc58f59474.jpg)
 
 我的机器上只有一个 node，接下来可以用 cat /proc/zoneinfo 查看这个 node 下各个 zone 的情况：
 
-![](asset/img_040e98deec9b.jpg)
+![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_040e98deec9b.jpg)
 
-![](asset/img_d1380c44e81f.jpg)
+![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_d1380c44e81f.jpg)
 
 回到 free_area_init_core()函数的最后，memmap_init()->memmap_init_zone()，该函数主要是根据 PFN，然后通过 pfn_to_page 找到对应的 struct page 结构，并将该结构进行初始化处理，并设置 MIGRATE_MOVABLE 标志，表明可移动。
 
@@ -1069,7 +1079,7 @@ struct page 这个结构相当复杂，这里我放上网上找到的一个全�
 
 首先介绍一下**flags，它描述 page 的状态和其它的一些信息**，如下图。
 
-![](asset/img_d609b8674831.jpg)
+![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_d609b8674831.jpg)
 
 主要分为 4 部分，其中标志位 flag 向高位增长，其余位字段向低位增长，中间存在空闲位。
 

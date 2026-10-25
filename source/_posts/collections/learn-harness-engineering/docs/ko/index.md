@@ -1,3 +1,16 @@
+---
+title: Learn Harness Engineering에 오신 것을 환영합니다
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/ko/index/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # Learn Harness Engineering에 오신 것을 환영합니다
 
 Learn Harness Engineering은 AI 코딩 에이전트(coding agent)의 엔지니어링에 집중하는 강의입니다. 우리는 업계에서 가장 앞선 하네스 엔지니어링(Harness Engineering) 이론과 실천을 깊이 학습하고 정리했습니다. 핵심 참고 자료는 다음과 같습니다.

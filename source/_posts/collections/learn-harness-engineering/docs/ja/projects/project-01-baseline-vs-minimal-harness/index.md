@@ -1,3 +1,16 @@
+---
+title: "プロジェクト 01. プロンプトのみ vs ルール優先: どれほど差が出るか"
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/ja/projects/project-01-baseline-vs-minimal-harness/index/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 [中文版本 →](../../../zh/projects/project-01-baseline-vs-minimal-harness/)
 
 > 関連講義: [講義 01. 強いモデルは信頼できる実行を意味しない](./../../lectures/lecture-01-why-capable-agents-still-fail/index.md) · [講義 02. harness とは何か](./../../lectures/lecture-02-what-a-harness-actually-is/index.md)

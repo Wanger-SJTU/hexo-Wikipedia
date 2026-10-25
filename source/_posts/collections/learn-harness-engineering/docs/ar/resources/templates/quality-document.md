@@ -1,3 +1,16 @@
+---
+title: وثيقة الجودة
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/ar/resources/templates/quality-document/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # وثيقة الجودة
 
 لقطة جودة لكل مجال منتج وطبقة معمارية. يمكن للوكلاء والبشر على حد سواء استخدام هذه الوثيقة لفهم أين تكون قاعدة الكود قوية وأين تحتاج إلى عمل بسرعة.

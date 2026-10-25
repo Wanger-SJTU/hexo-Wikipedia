@@ -1,10 +1,19 @@
 ---
-title: "(1 条消息) 分析transformer模型的参数量、计算量、中间激活、KV cache"
-date: 2024-01-01
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/624740065
+title: (1 条消息) 分析transformer模型的参数量、计算量、中间激活、KV cache
+date: "2024-01-01 00:00:00"
+updated: "2024-01-01 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/分析transformer模型的参数量、计算量、中间激活、KV-cache/
 disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/624740065
 ---
+
 
 ### 1. 前言
 
@@ -12,7 +21,7 @@ disableNunjucks: true
 
 现在业界的大语言模型都是基于transformer模型的，模型结构主要有两大类：encoder-decoder（代表模型是T5）和decoder-only，具体的，decoder-only结构又可以分为Causal LM（代表模型是GPT系列）和Prefix LM（代表模型是GLM）。归因于GPT系列取得的巨大成功，大多数的主流大语言模型都采用Causal LM结构。因此，针对decoder-only框架，为了更好地理解训练训练大语言模型的显存效率和计算效率，本文分析采用decoder-only框架transformer模型的模型参数量、计算量、中间激活值、KV cache。
 
-![](asset/img_b5aa8211143e.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_b5aa8211143e.jpg)
 
 为了方便分析，先定义好一些数学符号。记transformer模型的层数为 l" role="presentation">ll ，隐藏层维度为 h" role="presentation">hh ，注意力头数为 a" role="presentation">aa 。词表大小为 V" role="presentation">VV ，训练数据的批次大小为 b" role="presentation">bb ，序列长度为 s" role="presentation">ss 。
 
@@ -26,7 +35,7 @@ MLP块由2个线性层组成，一般地，第一个线性层是先将维度从 
 
 self-attention块和MLP块各有一个layer normalization，包含了2个可训练模型参数：缩放参数 \gamma 和平移参数 \beta ，形状都是 [h] 。2个layer normalization的参数量为 4h 。
 
-![](asset/img_f2f2e1a2154e.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_f2f2e1a2154e.jpg)
 
 总的，**每个transformer层的参数量**为 12h^2+13h 。
 
@@ -45,7 +54,7 @@ self-attention块和MLP块各有一个layer normalization，包含了2个可训�
 
 在一次训练迭代中，每个可训练模型参数都会对应1个梯度，并对应2个优化器状态（Adam优化器梯度的一阶动量和二阶动量）。设模型参数量为 \Phi ，那么梯度的元素数量为 \Phi ，AdamW优化器的元素数量为 2\Phi 。float16数据类型的元素占2个bytes，float32数据类型的元素占4个bytes。在混合精度训练中，会使用float16的模型参数进行前向传递和后向传递，计算得到float16的梯度；在优化器更新模型参数时，会使用float32的优化器状态、float32的梯度、float32的模型参数来更新模型参数。因此，对于每个可训练模型参数，占用了 (2+4) + (2+4)+(4+4)=20bytes 。使用AdamW优化器和混合精度训练来训练参数量为 \Phi 的大模型，**模型参数、梯度和优化器状态占用的显存大小为** 20\Phi \space bytes 。
 
-![](asset/img_41adb57ea504.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_41adb57ea504.jpg)
 
 #### **2.2 推理过程中的显存占用分析**
 
@@ -91,7 +100,7 @@ x=f_{gelu}(x_{out}W_1)W_2+x_{out}\\
 
 $$6 \times 174600 \times 10^{6} \times 300 \times 10^{9} = 3.1428 \times 10^{23} flops\\$$
 
-![](asset/img_135f31ea9a61.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_135f31ea9a61.jpg)
 
 #### 3.2 训练时间估计
 
@@ -101,7 +110,7 @@ $$6 \times 174600 \times 10^{6} \times 300 \times 10^{9} = 3.1428 \times 10^{23}
 
 $$训练时间\approx \frac{8\times tokens数\times 模型参数量}{GPU数\times GPU峰值flops\times GPU利用率}\\$$
 
-![](asset/img_356ba09ae483.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_356ba09ae483.jpg)
 
 $$以GPT3-175B为例，在1024张40GB显存的A100上，在300B tokens的数据上训练175B参数量的GPT3。40GB显存A100的峰值性能为312TFLOPS，设GPU利用率为0.45，则**所需要的训练时间为34天，这与[7]中的训练时间是对得上的**。 \frac{8\times(300 \times 10^9) \times (175 \times 10^9)}{1024\times (312\times 10^{12})\times 0.45}\approx 2921340 \space seconds\approx 34 days\\$$
 

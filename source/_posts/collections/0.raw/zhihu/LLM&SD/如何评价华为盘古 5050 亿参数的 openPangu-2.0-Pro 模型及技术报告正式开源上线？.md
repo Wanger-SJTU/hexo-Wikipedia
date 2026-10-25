@@ -1,10 +1,19 @@
 ---
-title: "如何评价华为盘古 5050 亿参数的 openPangu-2.0-Pro 模型及技术报告正式开源上线？"
-date: 2026-08-01
-tags: [知乎]
-source: https://www.zhihu.com/question/2066567142019786000/answer/2066697831432320385
-
+title: 如何评价华为盘古 5050 亿参数的 openPangu-2.0-Pro 模型及技术报告正式开源上线？
+date: "2026-08-01 00:00:00"
+updated: "2026-08-01 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/LLM-SD/如何评价华为盘古-5050-亿参数的-openPangu-2.0-Pro-模型及技术报告正式开源上线/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://www.zhihu.com/question/2066567142019786000/answer/2066697831432320385
 ---
+
 
 盘古大模型，堂堂复活！
 

@@ -1,9 +1,19 @@
 ---
-title: "(2 条消息) 2024年MLSys推荐关注列表 - 系统篇"
-date: 2025-01-05
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/13621083399
+title: (2 条消息) 2024年MLSys推荐关注列表 - 系统篇
+date: "2025-01-05 00:00:00"
+updated: "2025-01-05 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/2024年MLSys推荐关注列表-系统篇/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/13621083399
 ---
+
 
 众所周知，MLSys还挺热门的，好多人啊（）
 

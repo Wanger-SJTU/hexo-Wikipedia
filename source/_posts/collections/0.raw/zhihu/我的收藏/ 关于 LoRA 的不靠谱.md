@@ -1,9 +1,19 @@
 ---
-title: "(1 条消息) 关于 LoRA 的不靠谱"
-date: 2025-04-09
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/662295224
+title: (1 条消息) 关于 LoRA 的不靠谱
+date: "2025-04-09 00:00:00"
+updated: "2025-04-09 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/关于-LoRA-的不靠谱/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/662295224
 ---
+
 
 “茴香豆”有了点进展，现在微信群里可以看到它的身影。
 

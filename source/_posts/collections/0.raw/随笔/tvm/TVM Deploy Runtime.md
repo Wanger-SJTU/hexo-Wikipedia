@@ -1,6 +1,19 @@
+---
+title: TVM Deploy Runtime
+date: "2026-04-11 21:40:28"
+updated: "2026-04-11 21:40:28"
+layout: post
+permalink: /collections/0.raw/随笔/tvm/TVM-Deploy-Runtime/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 #TVM 
 
-![[随笔/tvm deploy.map]]
+!<span class="wikilink wikilink--missing" title="未导入的页面">随笔/tvm deploy.map</span>
 tvm 中在部署时有多个选择，最开始的`graph exectuor runtime` 、后来降低overhead 引入的`AOT runtime`, 以及后来`Nimble` 中动态shape引入的`VM Runtime`, 前者存在C++ 以及CRT两套接口。
 
 

@@ -1,3 +1,16 @@
+---
+title: Chào mừng đến với Learn Harness Engineering
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/vi/index/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # Chào mừng đến với Learn Harness Engineering
 
 Learn Harness Engineering là khóa học chuyên về kỹ thuật của các AI coding agent. Chúng tôi đã nghiên cứu sâu sắc và tổng hợp các lý thuyết cũng như thực tiễn về Harness Engineering tiên tiến nhất trong ngành. Các tài liệu tham khảo cốt lõi của chúng tôi bao gồm:

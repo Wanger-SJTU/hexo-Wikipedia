@@ -1,9 +1,19 @@
 ---
-title: "现代中央处理器（CPU）的分支目标缓冲（BTB）是怎么设计的？"
-date: 2026-04-21
-tags: [知乎]
-source: https://www.zhihu.com/question/645121724/answer/3403546257
+title: 现代中央处理器（CPU）的分支目标缓冲（BTB）是怎么设计的？
+date: "2026-04-21 00:00:00"
+updated: "2026-04-21 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/体系结构/现代中央处理器(CPU)的分支目标缓冲(BTB)是怎么设计的/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://www.zhihu.com/question/645121724/answer/3403546257
 ---
+
 
 杨靖奎
 

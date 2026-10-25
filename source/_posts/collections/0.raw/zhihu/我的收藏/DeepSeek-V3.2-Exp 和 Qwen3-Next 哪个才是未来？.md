@@ -1,9 +1,19 @@
 ---
-title: "(2 条消息) DeepSeek-V3.2-Exp 和 Qwen3-Next 哪个才是未来？"
-date: 2026-04-17
-tags: [知乎]
-source: https://www.zhihu.com/question/1956137082197083536/answer/1956419187820962012
+title: (2 条消息) DeepSeek-V3.2-Exp 和 Qwen3-Next 哪个才是未来？
+date: "2026-04-17 00:00:00"
+updated: "2026-04-17 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/DeepSeek-V3.2-Exp-和-Qwen3-Next-哪个才是未来/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://www.zhihu.com/question/1956137082197083536/answer/1956419187820962012
 ---
+
 
 这里准确说不是 sparse_attention 和 linear attention 之争，而是 sparse_attention 和 linear hybrid attention 之争。
 

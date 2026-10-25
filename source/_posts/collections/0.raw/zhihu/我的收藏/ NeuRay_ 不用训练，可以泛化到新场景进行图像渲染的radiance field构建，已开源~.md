@@ -1,21 +1,31 @@
 ---
 title: "(1 条消息) NeuRay: 不用训练，可以泛化到新场景进行图像渲染的radiance field构建，已开源~"
-date: 2022-04-09
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/495709285
+date: "2022-04-09 00:00:00"
+updated: "2022-04-09 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/NeuRay_-不用训练,可以泛化到新场景进行图像渲染的radiance-field构建,已开源~/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/495709285
 ---
+
 
 厚着脸皮来宣传一下我们CVPR2022的论文：Neural Rays for Occlusion-aware Image-based Rendering。这篇论文主要是用于新视角图像合成（Novel View Synthesis，NVS）任务：给定一些关于某个场景的图片，合成其他任意视角下关于这个场景的图片。我们的目标主要是提出一种不用在新场景上训练，而能够直接泛化到新场景下进行新视角图像合成的方法。
 
 下面是我们模型泛化到一个新场景(我女票的手办们)的效果。这里我拍了大概35张图片，然后通过合成新视角图片得到的一个视频。
 
-![](asset/img_413a969615c2.jpg)00:10
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_413a969615c2.jpg)00:10
 
 新场景下NeuRay渲染效果
 
 论文链接：
 
-[![](asset/img_960a86f39fe0.jpg)Neural Rays for Occlusion-aware Image-based Renderingarxiv.org/abs/2107.13421](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2107.13421)
+[![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_960a86f39fe0.jpg)Neural Rays for Occlusion-aware Image-based Renderingarxiv.org/abs/2107.13421](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2107.13421)
 
 论文主页：
 
@@ -31,11 +41,11 @@ source: https://zhuanlan.zhihu.com/p/495709285
 
 是否能够设计一种可以泛化到新场景的NeRF呢？答案是肯定的。有一系列工作IBRNet、PixelNeRF、MVSNeRF、GRF，他们都是通过类似多视图重建（MVS）的方法，构建一个radiance field，去计算每个点的density和RGB颜色。如下图所示，给定一个3D点，这些方法首先把这个点投影到所有的输入图像上，看看这个点在各个图像上的局部特征是不是一致的。如果是，那么这个点就应该有比较大的density，表示这里有一个表面；如果不是，那么这一点的density就应该为0，表示这里没有表面。同时，该点的颜色可以通过投影到各个view下的投影点的颜色决定。最后通过volume rendering渲染得到光线对应像素的颜色。通过这种在线构建radiance field的方式，这些方法能够直接利用输入图片去渲染新视角下的图片，从而泛化到新场景下。但是这样泛化到新场景情况下的效果依然不够好，存在比较多的错误。
 
-![](asset/img_a836a72df4a8.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_a836a72df4a8.jpg)
 
 通过判定局部图像特征是否一致，我们能够得到一个点是否存在表面（图片来自Stereo Radiance Field [CVPR2021]）**分析：**我们分析了一下这些模型，发现难以处理的问题大多集中在存在遮挡的边缘。如下图所示，(a) 所有输入图片对某个点的局部特征都一致，那么它肯定是一个表面、拥有比较大的density，但是如果他们并不是特别一致如(b) (c)所示，那么这里的不一致可能是由于遮挡导致的（依然有比较大的density），也可能这一个点并不是一个表面（没有density）。这就容易让模型比较困扰，到底要多不一致就算这一点没有density呢？这尤其在我们这个新视角图像合成的任务中会比较困难，因为我们并没有场景几何的真值用来做监督信号。
 
-![](asset/img_6ced7a175e1c.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_6ced7a175e1c.jpg)
 
 当输入图像的局部特征不一致(inconsistency)的时候，我们比较难以判断这个3D点上到底有没有表面，是因为遮挡导致的？还是因为这一点就是非表面点？**解决方案：**我们的key idea很简单：如果我们知道了每个输入图片对空间中一个点是否是可见的，那么我们就可以比较容易的分辨这里的不一致是来自于(b)这种情况，还是(c)这种情况。基于这个idea，我们提出一个叫做Neural Rays （NeuRay）的场景表达。NeuRay表示为每张输入图像上的一个HxWxC的特征图。将空间中一个3D点投影到这张输入图像上，我们可以通过在这个HxWxC上插值得到这一点的特征向量，然后通过这个特征向量计算得到这个3D点对于这个输入图像的可见性(visibility)。最后，这个可见性会被放到前文提到的的radiance field构建中去判定consistency与inconsistency，从而更加准确的得到每个点density和color。确定了大致方案思路，我们依然还有一些问题没有解决：
 
@@ -45,7 +55,7 @@ source: https://zhuanlan.zhihu.com/p/495709285
 
 完整的pipeline如下：
 
-![](asset/img_01f1a8e143ae.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_01f1a8e143ae.jpg)
 
 感兴趣的话，可以去看看paper。除了泛化到新场景外，我们还在paper中讨论了1）在某个特定场景内finetune时，NeuRay可以引入一个记忆的机制去记住场景的几何信息，从而进一步更好的重建整个场景。 2）NeuRay可以大致估计surface的位置去加速渲染。当然，我们现在的模型也还有很多提升空间：我们主要还是基于输入图像之间的特征匹配来构建用于渲染的场景表达；当特征匹配无法进行或者比较困难的时候（例如高光表面、繁杂重复纹理等），依然会出现artifacts。欢迎大家去尝试代码，关于论文或代码的任何问题也欢迎来讨论~
 

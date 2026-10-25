@@ -1,10 +1,19 @@
 ---
-title: "【PCIe】PCIE的地址映射"
-date: 2024-12-06
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/11129034854
-
+title: 【PCIe】PCIE的地址映射
+date: "2024-12-06 00:00:00"
+updated: "2024-12-06 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/【PCIe】PCIE的地址映射/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/11129034854
 ---
+
 
 转自：[谈谈PCIE的地址映射](https://link.zhihu.com/?target=https%3A//mp.weixin.qq.com/s/EVLrbEJahGk5ts5xp0FtxA)
 

@@ -1,3 +1,16 @@
+---
+title: 프로젝트에 오신 것을 환영합니다
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/ko/projects/index/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # 프로젝트에 오신 것을 환영합니다
 
 이곳은 Learn Harness Engineering의 실습(hands-on) 섹션입니다. 강의를 읽는 것만으로는 충분하지 않습니다. 직접 환경을 구축하고, 서로 다른 규칙 아래에서 Codex, Claude Code 또는 다른 AI 에이전트(agent)가 어떻게 동작하는지 관찰해야 합니다.

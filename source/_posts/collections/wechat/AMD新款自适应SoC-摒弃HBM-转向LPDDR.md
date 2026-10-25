@@ -1,3 +1,16 @@
+---
+title: AMD新款自适应SoC：摒弃HBM，转向LPDDR
+date: "2026-07-02 08:52:25"
+updated: "2026-07-02 08:52:25"
+layout: post
+permalink: /collections/wechat/AMD新款自适应SoC-摒弃HBM-转向LPDDR/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # AMD新款自适应SoC：摒弃HBM，转向LPDDR
 
 - **来源**: 微信公众号「半导体芯闻」

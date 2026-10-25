@@ -1,10 +1,19 @@
 ---
-title: "Registration配准 @CVPR2018"
-date: 2019-08-21
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/79184834
-
+title: Registration配准 @CVPR2018
+date: "2019-08-21 00:00:00"
+updated: "2019-08-21 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/dl论文/Registration配准-CVPR2018/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/79184834
 ---
+
 
 ![](https://pic2.zhimg.com/v2-af706c552d9f2e9d5c69b477c8871f2f_r.jpg)PS：前天撰写了CVPR2019相关论文的整理，有老师同学的正面反馈，所以继续整理其他会议的相关论文。
 另外，由于还没阅读这几篇论文，无法撰写介绍性或者评论的文字，欢迎老师和同学在评论区多多指教！2019.8.21下期预告：

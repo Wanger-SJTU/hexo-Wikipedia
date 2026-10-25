@@ -1,10 +1,19 @@
 ---
-title: "Hidden Decoding 能把计算深度从串行搬到并行吗？"
-date: 2026-08-09
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/2069875199235843606
-
+title: Hidden Decoding 能把计算深度从串行搬到并行吗？
+date: "2026-08-09 00:00:00"
+updated: "2026-08-09 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/Hidden-Decoding-能把计算深度从串行搬到并行吗/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/2069875199235843606
 ---
+
 
 能。论文已经把这条路训到 617B MoE，并在匹配的早期 SFT-only 对照中，让 80B 与 617B 两档 Hidden Decoding 模型在九项共享 benchmark 上逐项领先。
 

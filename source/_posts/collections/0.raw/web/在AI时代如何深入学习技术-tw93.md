@@ -1,10 +1,21 @@
 ---
-title: "在 AI 时代，我是如何深入学习一个技术领域的"
-date: 2026-04-06
-tags: [学习, AI, 方法论]
-source: https://tw93.fun/2026-04-06/learn.html
-
+title: 在 AI 时代，我是如何深入学习一个技术领域的
+date: "2026-04-06 00:00:00"
+updated: "2026-04-06 00:00:00"
+layout: post
+permalink: /collections/0.raw/web/在AI时代如何深入学习技术-tw93/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 学习
+  - AI
+  - 方法论
+source_url: https://tw93.fun/2026-04-06/learn.html
 ---
+
 
 想和大伙聊聊，在 AI 时代我是怎么深入学习一个技术领域的。没有 AI 之前，更多是看书、翻这个领域国内外有名的人的博客，然后摘抄记录到笔记本，速度挺慢，但很有学习的乐趣。比如当时学 WebGL，学懂一个东西差不多要半年空闲时间，慢但快乐。
 

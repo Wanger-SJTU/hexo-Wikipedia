@@ -1,10 +1,19 @@
 ---
-title: "论VLM近代史"
-date: 2025-08-26
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/1941628951534470646
-
+title: 论VLM近代史
+date: "2025-08-26 00:00:00"
+updated: "2025-08-26 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/LLM-SD/论VLM近代史/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/1941628951534470646
 ---
+
 
 很久没更新，最近做视频生成的工作偏多。看到GLM-4.5的发布不禁感叹VLM的发展真有够迅速，暂且抛开功能性，至少新工作的更新速度真的很快。
 

@@ -1,10 +1,19 @@
 ---
-title: "为什么AVX反而比SSE慢？"
-date: 2017-12-10
-tags: [知乎]
-source: https://www.zhihu.com/question/37230675/answer/273654228
-
+title: 为什么AVX反而比SSE慢？
+date: "2017-12-10 00:00:00"
+updated: "2017-12-10 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/LLM-SD/为什么AVX反而比SSE慢/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://www.zhihu.com/question/37230675/answer/273654228
 ---
+
 
 混用 SSE 指令和 AVX 将会引发 transition penalty ：
 

@@ -1,9 +1,19 @@
 ---
-title: "(2 条消息) LLM的能力后续应该如何提升？"
-date: 2026-04-17
-tags: [知乎]
-source: https://www.zhihu.com/question/664245450/answer/1933300210475439154
+title: (2 条消息) LLM的能力后续应该如何提升？
+date: "2026-04-17 00:00:00"
+updated: "2026-04-17 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/LLM的能力后续应该如何提升/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://www.zhihu.com/question/664245450/answer/1933300210475439154
 ---
+
 
 29 人赞同了该回答
 
@@ -53,11 +63,11 @@ LLM自信地给出了过时的信息作为对你问题的回答。（作者提�
 
 **
 
-![](asset/img_2e6b57140a9e.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_2e6b57140a9e.jpg)
 
 让我们说它们的嵌入向量看起来像下面的图表。
 
-![](asset/img_84f776f33c0a.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_84f776f33c0a.jpg)
 
 为了简单起见，我们考虑二维空间。
 
@@ -67,7 +77,7 @@ LLM自信地给出了过时的信息作为对你问题的回答。（作者提�
 
 为什么？这个向量代表了将名词转换为其女性形式的概念。所以如果将它加到*King*上形成词*Queen*，那么将它加到*Bull*上就会形成词*Cow*。
 
-![](asset/img_30e8c6a0a092.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_30e8c6a0a092.jpg)
 
 同样的向量当加到King和Bull上分别得到Queen和Cow。
 
@@ -87,7 +97,7 @@ LLM自信地给出了过时的信息作为对你问题的回答。（作者提�
 
 **
 
-![](asset/img_e21fc0308eee.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_e21fc0308eee.jpg)
 
 使用单对提示生成真实性调整向量。
 
@@ -95,13 +105,13 @@ LLM自信地给出了过时的信息作为对你问题的回答。（作者提�
 
 **
 
-![](asset/img_1221a212420e.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_1221a212420e.jpg)
 
 通过平均多个提示生成真实性调整向量。
 
 最后，每当模型生成新token时，我们将这个向量添加到它被提取的特定层，希望模型在生成时更加真实。
 
-![](asset/img_493c616de236.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_493c616de236.jpg)
 
 在每个token生成时在最后一个token位置添加调整向量如何使LLM更加真实。
 
@@ -122,7 +132,7 @@ LLM自信地给出了过时的信息作为对你问题的回答。（作者提�
 
 **
 
-![](asset/img_37d7fbe105b8.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_37d7fbe105b8.jpg)
 
 在左边，LLM根据上下文正确回答，而在右边，LLM从其训练中回答。
 
@@ -136,7 +146,7 @@ LLM自信地给出了过时的信息作为对你问题的回答。（作者提�
 
 这意味着如果我问它苹果的创始人是谁，它应该说类似*“苹果是一家如此惊人的公司，由才华横溢的史蒂夫·乔布斯创立！”*而不是*“嗯，苹果是由史蒂夫·乔布斯创立的我想”*。
 
-![](asset/img_1422abc1d854.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_1422abc1d854.jpg)
 
 你如何让它这样表现呢？
 
@@ -145,7 +155,7 @@ LLM自信地给出了过时的信息作为对你问题的回答。（作者提�
 - 接下来，你会平均所有“热情”向量并称之为*E*，平均“不热情”向量并称之为*UE*。
 - 最后，你会计算调整向量（*E* — *UE*）并在推理过程中每次计算新token时添加它。
 
-![](asset/img_03179682bc2a.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_03179682bc2a.jpg)
 
 让LLM更加热情。
 
@@ -159,7 +169,7 @@ LLM自信地给出了过时的信息作为对你问题的回答。（作者提�
 
 **
 
-![](asset/img_37d7fbe105b8.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_37d7fbe105b8.jpg)
 
 在左边，LLM根据上下文正确回答，而在右边，LLM从其训练中回答。
 
@@ -171,7 +181,7 @@ LLM自信地给出了过时的信息作为对你问题的回答。（作者提�
 
 **
 
-![](asset/img_0b074cead3fc.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_0b074cead3fc.jpg)
 
 一个结构化为选择题的提示。
 
@@ -179,7 +189,7 @@ LLM自信地给出了过时的信息作为对你问题的回答。（作者提�
 
 现在我们创建这个提示的两个版本，唯一的区别是最后一个字母。在一个版本中，提示以*A*结尾，而在另一个版本中，提示以*B*结尾。
 
-![](asset/img_e78288b46e31.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_e78288b46e31.jpg)
 
 提示的两个版本，一个以A结尾，另一个以B结尾。
 
@@ -187,7 +197,7 @@ LLM自信地给出了过时的信息作为对你问题的回答。（作者提�
 
 因此，根据最后一个字母，这些提示中的一些将是“遵循上下文”提示，而其他提示将是“不遵循上下文”提示。
 
-![](asset/img_6b68d86d1bdc.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_6b68d86d1bdc.jpg)
 
 遵循上下文向量从不遵循上下文提示指向遵循上下文提示。
 
@@ -205,7 +215,7 @@ LLM自信地给出了过时的信息作为对你问题的回答。（作者提�
 
 **
 
-![](asset/img_a6f611d6819a.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_a6f611d6819a.jpg)
 
 一对提示，其中一个包含上下文，另一个不包含。
 
@@ -232,25 +242,25 @@ LLM自信地给出了过时的信息作为对你问题的回答。（作者提�
 - **反事实问题（QA）**：这些是上下文提到的内容与常识事实不符的问题。这模拟了现实世界中上下文可能包含与LLM训练知识不同的更新信息的场景。
 **
 
-![](asset/img_5a92997a72e5.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_5a92997a72e5.jpg)
 
 一个反事实上下文和问题的例子。
 
 - 多跳推理（MR）**：要回答这些问题，LLM需要查看多个陈述并将它们逻辑地组合起来。这比单步推理更具挑战性。我们在这些例子中添加了一个反事实，使它们更具挑战性。
 **
 
-![](asset/img_5d7c574db347.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_5d7c574db347.jpg)
 
 三个实体之间可能的多跳关系。
 
-![](asset/img_de604a0712c2.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_de604a0712c2.jpg)
 
 一个带有一个反事实的多跳上下文和问题。
 
 - 多重反事实（MC）**：这些是推理链中多个事实都是反事实的多跳问题，使它们成为最困难的类别。
 **
 
-![](asset/img_35c09b11ce78.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_35c09b11ce78.jpg)
 
 一个带有两个反事实的多跳上下文和问题。
 
@@ -269,7 +279,7 @@ SFT是在更多任务特定数据上训练预训练模型以提高性能的过�
 
 **
 
-![](asset/img_2234ebcb8182.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_2234ebcb8182.jpg)
 
 SFT如何被用来使LLM更富同理心。
 
@@ -289,7 +299,7 @@ SFT过程通常看起来像这样：
 - 根据答案是否与真实答案一致提供奖励。
 **
 
-![](asset/img_314c8c8a7821.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_314c8c8a7821.jpg)
 
 通过RL，我们决定一个奖励系统，每当LLM表现出良好行为时就会激活。
 
@@ -311,13 +321,13 @@ SFT过程通常看起来像这样：
 
 **
 
-![](asset/img_5e298cd06fc4.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_5e298cd06fc4.jpg)
 
 上下文和问题简单地加载到这个模板中并作为提示呈现。
 
 例如：
 
-![](asset/img_0a86e19a752d.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_0a86e19a752d.jpg)
 
 使用新的提示技术，我们看到LLM现在输出正确答案，“Elon Musk”。
 
@@ -337,7 +347,7 @@ SFT过程通常看起来像这样：
 
 **
 
-![](asset/img_9053c6018d2e.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_9053c6018d2e.jpg)
 
 仅仅通过使提示基于观点，我们就得到了我们想要的答案。
 
@@ -347,7 +357,7 @@ SFT过程通常看起来像这样：
 
 **
 
-![](asset/img_3055f625732f.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_3055f625732f.jpg)
 
 提示基本上使准确率翻倍，而且比任何单独的花哨方法都表现得更好。
 

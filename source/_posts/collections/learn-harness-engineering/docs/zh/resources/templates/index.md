@@ -1,3 +1,16 @@
+---
+title: 模板使用指南
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/zh/resources/templates/index/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # 模板使用指南
 
 这些模板可以直接复制到你的项目里用。每个文件在 agent 的工作流程中各有分工。复制过去后，把里面的命令、路径、功能名称和验证步骤换成你自己项目的。

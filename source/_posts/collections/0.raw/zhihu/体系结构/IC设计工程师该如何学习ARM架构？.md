@@ -1,10 +1,19 @@
 ---
-title: "IC设计工程师该如何学习ARM架构？"
-date: 2016-01-21
-tags: [知乎]
-source: https://www.zhihu.com/question/39683427/answer/82585642
-
+title: IC设计工程师该如何学习ARM架构？
+date: "2016-01-21 00:00:00"
+updated: "2016-01-21 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/体系结构/IC设计工程师该如何学习ARM架构/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://www.zhihu.com/question/39683427/answer/82585642
 ---
+
 
 如果不是特别针对某个模块设计或者UT，详细阅读ARM的manual或者TRM的收益是不大的，特别是arch的manual，对于ST的角度来说，它是用来查询的，就像牛津词典一样。
 

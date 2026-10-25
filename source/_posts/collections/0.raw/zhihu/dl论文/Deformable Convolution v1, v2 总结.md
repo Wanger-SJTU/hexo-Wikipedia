@@ -1,10 +1,19 @@
 ---
-title: "Deformable Convolution  v1, v2 总结"
-date: 2019-08-18
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/77644792
-
+title: Deformable Convolution  v1, v2 总结
+date: "2019-08-18 00:00:00"
+updated: "2019-08-18 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/dl论文/Deformable-Convolution-v1,-v2-总结/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/77644792
 ---
+
 
 最近在复现其它文章时，发现他们用了 DCN 的网络。这里就总结下 Jifeng Dai 的关于 Deformable Convolution  的这两篇文章。文章挺有 insight 的。
 

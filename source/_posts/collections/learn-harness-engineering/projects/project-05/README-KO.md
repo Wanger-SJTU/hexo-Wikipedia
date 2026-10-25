@@ -1,3 +1,16 @@
+---
+title: "프로젝트 05: 평가기 루프와 3역할 업그레이드"
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/projects/project-05/README-KO/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 [English](./README.md) · **한국어**
 
 # 프로젝트 05: 평가기 루프와 3역할 업그레이드

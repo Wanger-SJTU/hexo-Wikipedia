@@ -1,9 +1,19 @@
 ---
-title: "(2 条消息) 使用LLM来人造数据增强embedding检索模型"
-date: 2024-05-23
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/699299481
+title: (2 条消息) 使用LLM来人造数据增强embedding检索模型
+date: "2024-05-23 00:00:00"
+updated: "2024-05-23 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/使用LLM来人造数据增强embedding检索模型/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/699299481
 ---
+
 
 ### 前言：
 
@@ -23,7 +33,7 @@ query和doc一般是异构的，因此，通过LLM为doc人造一个query，充�
 
 **
 
-![](asset/img_0058f7433d81.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_0058f7433d81.jpg)
 
 主要工作：**
 
@@ -31,11 +41,11 @@ query和doc一般是异构的，因此，通过LLM为doc人造一个query，充�
 
 **
 
-![](asset/img_f68b498aa55b.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_f68b498aa55b.jpg)
 
 生成人造query和title的prompt如下：
 
-![](asset/img_580228625d0b.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_580228625d0b.jpg)
 
 ### doc-level embedding框架：
 
@@ -43,13 +53,13 @@ query和doc一般是异构的，因此，通过LLM为doc人造一个query，充�
 
 其中如下图所示，人造query以及chunk有多个，而title只有一个。作者认为：这样可以从不同的角度来表示doc的语义。有利于检索。
 
-![](asset/img_b66dcfe06394.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_b66dcfe06394.jpg)
 
 #### 双塔模型的应用：
 
 本质上就是在这种框架下，如何计算query和doc的相似度。
 
-![](asset/img_555d1d301ed8.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_555d1d301ed8.jpg)
 
 s是相似度函数，一般为余弦相似度。
 
@@ -69,7 +79,7 @@ w_f是0-1之间的权重参数，代表不同表示的重要性。
 
 另外，因此相似度函数(点积和余弦相似度是线性的，因此，上述的公式可以被简化为：**
 
-![](asset/img_ed31d8b7ca6e.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_ed31d8b7ca6e.jpg)
 
 **因此，每个chunk有自己的一个embedding即可，同时，也可以用ANN搜索。**
 
@@ -77,7 +87,7 @@ w_f是0-1之间的权重参数，代表不同表示的重要性。
 
 **作者认为，因为colbert是token级别的计算相似度(query的一个token的embedding，会去和doc所有token的embedding去计算相似度，然后取最大)，因此将doc的不同表示**synthetic queries, title and chunk，拼接起来就行。他们会参与query与doc的计算。**
 
-![](asset/img_b7751b3c29cc.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_b7751b3c29cc.jpg)
 
 ### 实验：
 
@@ -99,11 +109,11 @@ chunk_size=64
 
 **双塔：**
 
-![](asset/img_ca508f264d3b.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_ca508f264d3b.jpg)
 
 **迟交互：**
 
-![](asset/img_bda9061a7166.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_bda9061a7166.jpg)
 
 实验结论：使用这种doc-levl embedding框架，相比原来的结果，都有较大提升。
 
@@ -113,7 +123,7 @@ chunk_size=64
 
 只使用doc的一种表示，并且权重设置为1。
 
-![](asset/img_bd6eae543ba5.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_bd6eae543ba5.jpg)
 
 实验结论：**大多数情况下，人造query带来的提升比其他两种大，另外，合并三种不同的doc表示的提升一般最大。**
 
@@ -135,7 +145,7 @@ For each query (or batch of queries), it is necessary to re-compute the embeddin
 
 **检索的排序任务，主要关注的是相对的序以及正例和负例之间的差距。因此，他们采用了**margin ranking loss。
 
-![](asset/img_1f452423032c.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_1f452423032c.jpg)
 
 作者的实验展示，这种margin loss优于交叉熵loss，再具体数据的微调中。
 

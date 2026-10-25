@@ -1,9 +1,19 @@
 ---
-title: "The year of agent - 2025"
-date: 2025-12-26
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/1987926431406253561
+title: The year of agent - 2025
+date: "2025-12-26 00:00:00"
+updated: "2025-12-26 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/AgentCLI/The-year-of-agent-2025/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/1987926431406253561
 ---
+
 
 趁年底，也对2025年关注过的一些技术做一个总结，回顾下自己的认知变化。 
 

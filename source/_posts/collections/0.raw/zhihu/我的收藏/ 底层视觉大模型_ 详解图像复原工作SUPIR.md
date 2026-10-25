@@ -1,11 +1,21 @@
 ---
-title: "(1 条消息) 底层视觉大模型? 详解图像复原工作SUPIR"
-date: 2024-01-29
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/679850929
+title: (1 条消息) 底层视觉大模型? 详解图像复原工作SUPIR
+date: "2024-01-29 00:00:00"
+updated: "2024-01-29 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/底层视觉大模型_-详解图像复原工作SUPIR/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/679850929
 ---
 
-![](asset/img_43591e4b2db1.jpg)
+
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_43591e4b2db1.jpg)
 
 Project Page：https://supir.xpixel.group
 
@@ -17,7 +27,7 @@ arxiv：[https://arxiv.org/pdf/2401.13627.pdf](https://link.zhihu.com/?target=ht
 
 这是部分可视化结果，整体视觉效果还是很好的：
 
-![](asset/img_447d1f687169.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_447d1f687169.jpg)
 
 另外Project Page上有一些可交互的可视化结果。
 
@@ -41,7 +51,7 @@ arxiv：[https://arxiv.org/pdf/2401.13627.pdf](https://link.zhihu.com/?target=ht
 
 整体架构见下图
 
-![](asset/img_c368c4b0e71c.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_c368c4b0e71c.jpg)
 
 #### Model Scaling Up
 
@@ -65,13 +75,13 @@ $\mathcal{E}_{\mathrm{dr}} 是Degradation-Robust Encoder， \mathcal{D} 是固�
 
 Large-Scale Adaptor Design**
 
-![](asset/img_7d11988ef08a.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_7d11988ef08a.jpg)
 
 当前的几种adapter， LoRA, T2I adaptor, ControlNet，都有局限性，最常用的ControlNet的问题在于如果在SDXL这种大模型上用的话，encoder复制一份代价太大，那么作者主要对其有两个改动：
 
 - 模型剪枝。具体而言，对SDXL每个encoder block中的ViT blocks剪掉一半；
 - 重新设计adapter和SDXL的connector。connector的设计是非常重要的，最初的SD用的是zero convolution；PASD是用了带cross-attention的PACA模块；StableSR是用了IKC中的SFT模块；PromptSR和SeeSR也是带cross-attention的模块。IKC中SFT模块如下，可以看成是退化估计向量作为原图仿射变换的参数。这里的SFT也是类似， X_c 是adapter的输出， X_s,X_f 分别是encoder的shortcut和decoder的feature map。一方面，adapter的输出与shortcut相加后与encoder拼接，并接上一个GroupNorm；另一方面，adapter输出作为仿射变换的系数与上面的feature结合。
-![](asset/img_851d6ce4b07c.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_851d6ce4b07c.jpg)
 
 **
 
@@ -81,13 +91,13 @@ Large-Scale Adaptor Design**
 
 图像复原领域数量多且质量高的数据集目前尚未出现，因此作者收集了一个数据集，包含20M张1024*1024的高质量图像。并加入了70K张未对齐的FFHQ-raw数据集图像从而提升face restoration的能力。可以看到和其他数据集对比如下：
 
-![](asset/img_993ce53fb706.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_993ce53fb706.jpg)
 
 **Multi-Modality Language Guidance**
 
 $textual prompts在image restoration中非常重要，这里作者使用了多模态大模型LLaVa(NeurIPS 2023)对退化鲁棒的LQ图像 x_{L Q}^{\prime}=\mathcal{D}\left(\mathcal{E}_{\mathrm{dr}}\left(x_{L Q}\right)\right) 提取内容语义描述；并且用PixART的方法收集了textual annotations。$
 
-![](asset/img_79e8b11b2b18.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_79e8b11b2b18.jpg)
 
 **
 
@@ -101,13 +111,13 @@ $\mathcal{H}(\cdot) 是DM， \sigma_t 是t步的噪声方差， \lambda_{\mathrm
 
 但是只有negative prompts没有negative samples，模型无法理解negative prompts，因此作者在训练数据中加入了negative samples，具体而言，用SDXL生成100K张低质量图像。效果如图：
 
-![](asset/img_04e93e2acf65.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_04e93e2acf65.jpg)
 
 **Restoration-Guided Sampling**
 
 Diffusion model做restoration会面临一个fidelity-Realness的trade-off，强大的生成能力可能会造成保真度的下降。因此作者提出了一种采样策略，基于EDM。简单概括，在DM生成图像的早期阶段，主要生成低频信息，那么需要约束其与LQ图像的一致性，提高保真度，在后期，主要生成高频细节纹理，那么这个时候就不需要过多约束，保证生成的真实性效果，方法如图所示，详细说明见论文。
 
-![](asset/img_673f8529bcfb.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_673f8529bcfb.jpg)
 
 #### Experiments
 
@@ -121,16 +131,16 @@ Diffusion model做restoration会面临一个fidelity-Realness的trade-off，强�
 
 注意虽然有参考的指标不是SOTA，但无参考指标对于图像感知质量更加重要。
 
-![](asset/img_7d7e58e4d82e.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_7d7e58e4d82e.jpg)
 
-![](asset/img_645c0c31df78.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_645c0c31df78.jpg)
 
-![](asset/img_3b6d35ab5965.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_3b6d35ab5965.jpg)
 
-![](asset/img_a700a9df6e79.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_a700a9df6e79.jpg)
 
-![](asset/img_dc5b1a495e59.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_dc5b1a495e59.jpg)
 
-![](asset/img_f82f821ee222.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_f82f821ee222.jpg)
 
-![](asset/img_6c2b9fd14999.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_6c2b9fd14999.jpg)

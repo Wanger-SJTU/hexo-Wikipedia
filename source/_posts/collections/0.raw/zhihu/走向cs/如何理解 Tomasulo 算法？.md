@@ -1,9 +1,19 @@
 ---
-title: "如何理解 Tomasulo 算法？"
-date: 2026-04-15
-tags: [知乎]
-source: https://www.zhihu.com/question/275648655/answer/2190658050
+title: 如何理解 Tomasulo 算法？
+date: "2026-04-15 00:00:00"
+updated: "2026-04-15 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/走向cs/如何理解-Tomasulo-算法/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://www.zhihu.com/question/275648655/answer/2190658050
 ---
+
 
 ​目录
 
@@ -28,7 +38,7 @@ Tomasulo算法1966年提出，设计目标是让编译器在360系列计算机�
 
 ### 不带ROB
 
-![](asset/img_3e89722cbd36.jpg)![](asset/img_6ca171c6d631.webp)
+![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_3e89722cbd36.jpg)![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_6ca171c6d631.webp)
 
 图来自computer architecture —— a quantitative approach 6th edition(英文版) P198在不带ROB的版本里，执行单元(FP adders/FP mulitipliers)产出的数据会直接写入到对应的register file和等待这个数据的RS中，不能实现Precise exception和HW Speculation，所以这里关注带有ROB版本的Tomasulo 算法。
 
@@ -42,7 +52,7 @@ fsub.d f12,f12,f14`
 
 ### 带ROB
 
-![](asset/img_094e1d137fe0.jpg)
+![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_094e1d137fe0.jpg)
 
 图来自computer architecture —— a quantitative approach 6th edition(英文版) P210ROB的存在使得指令虽然乱序执行，但是必须顺序提交，防止不可撤销的更新操作发生（写寄存器，写内存）。
 
@@ -78,7 +88,7 @@ FIFO queue，每一项ROB包含4个字段：
 
 由于Commit阶段存在，Register File只能由ROB通过CDB去更新，RS不能直接更新Register File. **Register File存放着将要向此寄存器更新值的ROB entry tag。**如果没有值或者为0，代表此寄存器的值可用，**否则，意味着该寄存器的值会被前面的指令更新，用该寄存器作为源操作数的需要等待CDB将更新后的值传输过来。**
 
-![](asset/img_a9b804bf59a6.jpg)
+![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_a9b804bf59a6.jpg)
 
 #### Load Buffer/Store Buffer
 
@@ -89,7 +99,7 @@ load/store指令对于相同的effective address也是存在hazard的，而且�
 - fsd f5, 1000(f0), fld f0, 1000(f0)
 - fsd f5, 1000(f0), fld f0, 1000(f1) —— 虽然base register不同，但是有可能f0和f1的值相同，计算后的effective address也相同，这就存在RAW hazard. 
 
-![](asset/img_976cccc005b9.jpg)
+![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_976cccc005b9.jpg)
 
 ### 指令执行过程
 
@@ -122,7 +132,7 @@ load/store指令对于相同的effective address也是存在hazard的，而且�
 
 这个是整体流程的伪代码，来自computer architecture —— a quantitative approach 6th edition(英文版) P216 
 
-![](asset/img_5e07c4188b76.jpg)
+![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_5e07c4188b76.jpg)
 
 - rd —— 目标寄存器，rs/rt —— 源寄存器。
 - RS —— Reservation Station，r和b —— 为指令分配的Reservation Station entry和ROB entry。

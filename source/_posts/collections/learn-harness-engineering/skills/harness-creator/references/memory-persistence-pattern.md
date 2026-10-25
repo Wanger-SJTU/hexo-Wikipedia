@@ -1,3 +1,16 @@
+---
+title: Memory and Persistence Pattern
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/skills/harness-creator/references/memory-persistence-pattern/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # Memory and Persistence Pattern
 
 ## Problem

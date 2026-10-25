@@ -1,3 +1,16 @@
+---
+title: ndk std_thread 获取pid
+date: "2026-04-11 21:40:17"
+updated: "2026-04-11 21:40:17"
+layout: post
+permalink: /collections/0.raw/归档/ndk-std_thread-获取pid/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 #cpp #ndk
 
 最近在解决tvm绑核问题时，发现android下绑核只有`sched_setaffinity`函数，这导致无法使用标准库中的`td::thread::native_handle_type thread` 进行绑核操作。虽然在ndk 21以上的版本提供了`pthread_gettid_np`函数获取线程相应的pid，但在较低版本中，还是没办法直接使用。

@@ -1,15 +1,25 @@
 ---
-title: "打造 Claude Code 并行自主开发环境：Auto Claude + GLM 4.7"
-date: 2026-01-26
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/1999079916122183598
+title: 打造 Claude Code 并行自主开发环境：Auto Claude + GLM 4.7
+date: "2026-01-26 00:00:00"
+updated: "2026-01-26 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/AgentCLI/打造-Claude-Code-并行自主开发环境-Auto-Claude-GLM-4.7/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/1999079916122183598
 ---
+
 
 不久前，我试了下 **Auto Claude**，这是一个开源的**自主编程智能体**工具。用了一段时间后发现，它和我之前用过的类似工具确实有些不一样。最有意思的一点是：在同一个项目里，它可以同时跑多个 AI 任务，每个任务走自己的分支，负责不同功能和流程，几乎不会互相干扰，合并冲突也很少。
 
 **Auto Claude** 的核心理念是让 AI 智能体在安全的隔离环境里自主完成任务，同时保证代码质量。它可以并行跑多个任务，用 **Git Worktrees** 确保主分支不会被影响，还内置了自验证机制，让代码在提交前就经过严格检查。
 
-![](asset/img_6c57d6191314.jpg)
+![](/images/collections/0.raw/zhihu/AgentCLI/asset/img_6c57d6191314.jpg)
 
 下面我们来看看，这款工具到底能做什么，又该怎么上手使用。
 
@@ -27,7 +37,7 @@ source: https://zhuanlan.zhihu.com/p/1999079916122183598
 
 折腾半天，效率没上来，心态先崩了。
 
-![](asset/img_d8ea60a8f043.jpg)
+![](/images/collections/0.raw/zhihu/AgentCLI/asset/img_d8ea60a8f043.jpg)
 
 #### Git Worktrees 解决方案**
 
@@ -93,15 +103,15 @@ Auto Claude 提供了一套完整的功能模块，帮助你从不同角度管�
 
 **看板（Kanban Board）**：可视化任务状态，从规划到完成全程跟踪
 
-![](asset/img_5cd8580359cd.jpg)
+![](/images/collections/0.raw/zhihu/AgentCLI/asset/img_5cd8580359cd.jpg)
 
 **智能体终端（Agent Terminals）**：支持多个终端并行运行，每个终端自动关联任务上下文，也可以随时手动介入编码
 
-![](asset/img_fea081e22dc3.jpg)
+![](/images/collections/0.raw/zhihu/AgentCLI/asset/img_fea081e22dc3.jpg)
 
 **路线图（Roadmap）**：基于当前项目状态，给出下一步优先实现的功能建议
 
-![](asset/img_10331f4055c8.jpg)
+![](/images/collections/0.raw/zhihu/AgentCLI/asset/img_10331f4055c8.jpg)
 
 #### **其他功能**
 
@@ -182,41 +192,41 @@ Auto Claude 提供了一套完整的功能模块，帮助你从不同角度管�
 
 步骤3: 导航到 **Settings → API Profile**, 添加你的 GLM 模型配置
 
-![](asset/img_c580ebc62003.jpg)
+![](/images/collections/0.raw/zhihu/AgentCLI/asset/img_c580ebc62003.jpg)
 
 #### **快速开始**
 
 1、打开项目：选择你的 Git 仓库目录
 
-![](asset/img_53321fb665a4.jpg)
+![](/images/collections/0.raw/zhihu/AgentCLI/asset/img_53321fb665a4.jpg)
 
 2、创建任务：描述需要实现的功能
 
-![](asset/img_213f9a65015d.jpg)
+![](/images/collections/0.raw/zhihu/AgentCLI/asset/img_213f9a65015d.jpg)
 
 3、开始运行：系统会自动完成规划、编码和验证
 
-![](asset/img_c0f067ff607c.jpg)
+![](/images/collections/0.raw/zhihu/AgentCLI/asset/img_c0f067ff607c.jpg)
 
 4、完成任务：创建 PR，合并分支
 
-![](asset/img_d31475990503.jpg)
+![](/images/collections/0.raw/zhihu/AgentCLI/asset/img_d31475990503.jpg)
 
 整个过程都可以在看板中实时查看进度。
 
-![](asset/img_3e8cd6857e62.jpg)
+![](/images/collections/0.raw/zhihu/AgentCLI/asset/img_3e8cd6857e62.jpg)
 
 查看任务清单
 
-![](asset/img_776da0fbbfa8.jpg)
+![](/images/collections/0.raw/zhihu/AgentCLI/asset/img_776da0fbbfa8.jpg)
 
 查看工作日志
 
-![](asset/img_eeddef156943.jpg)
+![](/images/collections/0.raw/zhihu/AgentCLI/asset/img_eeddef156943.jpg)
 
 查看任务 Worktrees 分支
 
-![](asset/img_07d69febd76a.jpg)
+![](/images/collections/0.raw/zhihu/AgentCLI/asset/img_07d69febd76a.jpg)
 
 #### **常见问题**
 

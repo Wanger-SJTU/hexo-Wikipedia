@@ -1,3 +1,16 @@
+---
+title: Learn Harness Engineering
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs-readme/uz-UZ/README/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 <p align="center">
   <a href="../../README.md"><img alt="English" src="https://img.shields.io/badge/EN-English-blue?style=flat-square"></a>
   <a href="../zh-CN/README.md"><img alt="简体中文" src="https://img.shields.io/badge/ZH-简体中文-red?style=flat-square"></a>
@@ -47,17 +60,17 @@ Learn Harness Engineering — KI kod yozuvchi agentlarini ishlab chiqishga bagʻ
 ### Kurs bosh sahifasi
 > Kursning toʻliq umumiy koʻrinishi va aniq boshlash yoʻlini taʼminlovchi asosiy falsafalarga kirish.
 
-![Kurs bosh sahifasining oldindan koʻrinishi](../../docs/public/screenshots/readme/zh-home.png)
+![Kurs bosh sahifasining oldindan koʻrinishi](/images/collections/learn-harness-engineering/docs/public/screenshots/readme/zh-home.png)
 
 ### Choʻmilishli maʼruzalar
 > Haqiqiy muammolar va amaliy loyihalar (masalan, 01-loyiha) boʻyicha chuqur tahlillar, choʻmilishli oʻqish tajribasi uchun.
 
-![Kurs maʼruzasi oldindan koʻrinishi](../../docs/public/screenshots/readme/zh-lecture-01.png)
+![Kurs maʼruzasi oldindan koʻrinishi](/images/collections/learn-harness-engineering/docs/public/screenshots/readme/zh-lecture-01.png)
 
 ### Andozalar kutubxonasi
 > Koʻp burqli KI agentlarini ishlab chiqishda uchraydigan umumiy muammolarni, masalan kontekst yoʻqotilishi va muddatidan oldin vazifani tugatishni hal qilish uchun moʻljallangan andozalar va moslashtirilgan konfiguratsiyalar.
 
-![Andozalar kutubxonasi oldindan koʻrinishi](../../docs/public/screenshots/readme/zh-resources.png)
+![Andozalar kutubxonasi oldindan koʻrinishi](/images/collections/learn-harness-engineering/docs/public/screenshots/readme/zh-resources.png)
 
 ## PDF kurs kitoblari
 

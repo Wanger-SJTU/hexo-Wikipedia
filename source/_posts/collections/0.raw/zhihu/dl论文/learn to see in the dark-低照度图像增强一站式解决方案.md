@@ -1,10 +1,19 @@
 ---
-title: "learn to see in the dark-低照度图像增强一站式解决方案"
-date: 2019-01-05
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/54119008
-
+title: learn to see in the dark-低照度图像增强一站式解决方案
+date: "2019-01-05 00:00:00"
+updated: "2019-01-05 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/dl论文/learn-to-see-in-the-dark-低照度图像增强一站式解决方案/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/54119008
 ---
+
 
 最近因为项目的需要，调研了一些低光照条件下的图像增强的算法。传统的有直方图均衡，同态滤波，基于暗通道的去噪等等。深度学习的有HDR Net，稀疏降噪自编码器等等。今天要介绍的是由UIUC，Intel，腾讯联合出品的一篇文章：learn to see in the dark。
 

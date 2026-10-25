@@ -1,13 +1,23 @@
 ---
-title: "Flash Attention 4浅析"
-date: 2025-11-12
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/1969881877331547787
+title: Flash Attention 4浅析
+date: "2025-11-12 00:00:00"
+updated: "2025-11-12 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/Flash-Attention-4浅析/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/1969881877331547787
 ---
+
 
 FA4 虽然论文还没出来，但是代码已经开源。目前网上的分析较少，笔者最近看到有个英文博客对 FA4 代码进行了分析，虽然不是很全面，但是也基本上能对 FA4 有个大概的认识。
 
-**总的来说，FA4 针对 B 系列进行了优化，关键算法改进包括：****1. 高效的在线 softmax**：采用了一种新型在线 softmax 算法，可跳过 90% 的输出重缩放操作。**2. exp 近似加速**：为更有效地使 softmax 计算与张量核计算重叠，运用指数的软件模拟以提升吞吐量。**此外，FA4 在工程实现上也做了优化，利用 warp specialization **的特性设计了 5 阶段的流水线，充分发挥了 GPU 的并行性。![](asset/img_84b7473457fd.jpg)
+**总的来说，FA4 针对 B 系列进行了优化，关键算法改进包括：****1. 高效的在线 softmax**：采用了一种新型在线 softmax 算法，可跳过 90% 的输出重缩放操作。**2. exp 近似加速**：为更有效地使 softmax 计算与张量核计算重叠，运用指数的软件模拟以提升吞吐量。**此外，FA4 在工程实现上也做了优化，利用 warp specialization **的特性设计了 5 阶段的流水线，充分发挥了 GPU 的并行性。![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_84b7473457fd.jpg)
 
 前向推理的计算效率对比，可见FA4相对于Nvidia cuDNN Attention内核性能提升约 20%。(B200 FP16算力为2.2PFLOPS，图中可见算力利用率最高为72%)**
 
@@ -24,7 +34,7 @@ FA4 虽然论文还没出来，但是代码已经开源。目前网上的分析�
 
 - 核心思想：当发现新的最大值时，之前累加的结果需要按比例校正。与旧版每次遇新最大值就更新相比，FA4 **只有在最大值变化足够大以威胁数值稳定时才更新缩放因子**
 $$- 背景补充：softmax 在计算 exp 时，为了数值稳定，需要减去最大值，即 P_{ij}=\frac{exp(s_{ij}-max_j(s_{ij}))}{\sum_iexp(s_{ij}-max_j(s_{ij}))} **在 FA 中，采用 online softmax，计算流程如下：$$
-![](asset/img_01f13d30a618.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_01f13d30a618.jpg)
 
    由伪代码可知， m_i^{(j)} 以在线的方式记录了最大值，每次最大值有变化,  l_i^{(j)} , O_i^{(j)} 都需要更新。
 
@@ -75,7 +85,7 @@ g(r)=0.07711909*r^3+0.22756439*r^2+0.69514614*r+1.0
 
 将 f(r)和 g(r)画图如下，可见在[0, 1)之间，两者几乎重合
 
-![](asset/img_2d574d208bd9.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_2d574d208bd9.jpg)
 
 f(r)和g(r)在[0,1]之内几乎重合
 
@@ -178,7 +188,7 @@ def e2e_asm2(x: Float32, y: Float32, *, loc=None, ip=None) -> Tuple[Float32, Flo
 - **Correction Warps**：对先前计算的输出执行数值校正。四个 Correction warp 监视归一化过程中的最大值变化，当 Softmax 阶段更新了新的缩放因子时，它们会加载对应的输出 O 块（从张量内存到寄存器）进行按比例缩放。随后将最终结果写回共享内存（称为 correction_epilogue），并通知 Epilogue warp 可以复用该缓冲区。
 - **Epilogue Warp**：将输出从共享内存写回全局内存。根据硬件配置，通常有 1–2 个 Epilogue warp 完成这个工作。如果允许使用 TMA，则单个 Epilogue warp 等待 Correction 完成后直接通过 TMA 将结果块传输回全局内存。
 
-![](asset/img_c3823a022392.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_c3823a022392.jpg)
 
 ### 关键差异对比（FA 1/2/3 vs FA4）
 

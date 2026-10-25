@@ -1,9 +1,19 @@
 ---
-title: "(2 条消息) triton是否会冲击cuda生态？"
-date: 2026-04-17
-tags: [知乎]
-source: https://www.zhihu.com/question/1919763006750975400/answer/1921121681612739823
+title: (2 条消息) triton是否会冲击cuda生态？
+date: "2026-04-17 00:00:00"
+updated: "2026-04-17 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/triton是否会冲击cuda生态/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://www.zhihu.com/question/1919763006750975400/answer/1921121681612739823
 ---
+
 
 ​目录
 
@@ -17,11 +27,11 @@ source: https://www.zhihu.com/question/1919763006750975400/answer/19211216816127
 
 meta针对Triton再联合自己的Pytorch自研芯片MTIA的软件栈
 
-![](asset/img_d2431dbe05f5.jpg)![](asset/img_70577daad25b.webp)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_d2431dbe05f5.jpg)![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_70577daad25b.webp)
 
 还看到了一个来自于HSBC estimates, TrendForce的报告介绍了这些大厂在卷芯片，当然这些主要是内部使用的，部分信息对的上，但不全对也。不过Triton坚持自己的编程模型在商业逻辑上能解释得通了。
 
-![](asset/img_78c8220d5aaf.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_78c8220d5aaf.jpg)
 
 ### 一、性能对比
 
@@ -31,7 +41,7 @@ meta针对Triton再联合自己的Pytorch自研芯片MTIA的软件栈
 
 我们以flash_attention，head=128，batch=32 为例
 
-![](asset/img_0a28a2e3c7f2.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_0a28a2e3c7f2.jpg)
 
 aten：原始 PyTorch 实现，最慢，超大规模下会 OOM。
 
@@ -41,15 +51,15 @@ sdpa：torch.nn.functional.scaled_dot_product_attention（现代版本 PyTorch �
 
 head=48，batch=4的数据
 
-![](asset/img_1c332de476f2.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_1c332de476f2.jpg)
 
 详细数据表
 
-![](asset/img_fc6d199dd943.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_fc6d199dd943.jpg)
 
 朋友在h100的详细数据表，flash_v3快起来了。还是得靠头部算子工程师
 
-![](asset/img_d25ca823a1a3.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_d25ca823a1a3.jpg)
 
 在一些不常见or旧卡上Triton的性能比较exciting非常正常，毕竟不是每个算子工程师都非常了解Nvidia的架构。来做这件一件事商业价值不高，直接用编译器工程师的优化经验吧。
 
@@ -59,7 +69,7 @@ Triton作者Tillet关于其设计的论文发表在MAPL2019，其设计了多层
 
 在Triton代码的编写中我们更关心一个Block，用户不需要感知shared memory。Triton借助Layout设计以及Pass优化，能够减轻用户写kernel的负担，也能保证一定的性能，关于Triton和CUDA的对比如下图所示，来源[Pytorch2023会议](https://link.zhihu.com/?target=https%3A//static.sched.com/hosted_files/pytorch2023/2c/Triton_compiler.pdf)
 
-![](asset/img_43a53a2289c2.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_43a53a2289c2.jpg)
 
 **一句话解释** 关注影响性能的核心，避免过度关注硬件spec，让编译器去解决它能处理的abstract部分。
 
@@ -105,7 +115,7 @@ Triton现在不太好debug，而且为了中立感知不到其他warp，会带�
 
 Triton upstream想到的办法是Gluon，使用其来进行内存，layout，调度等细粒度控制，本质是写Triton GPU IR。[https://github.com/triton-lang/triton/tree/main/python/tutorials/gluon](https://link.zhihu.com/?target=https%3A//github.com/triton-lang/triton/tree/main/python/tutorials/gluon)  这是官方的tutorials
 
-![](asset/img_a311c67c516f.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_a311c67c516f.jpg)
 
 #### 2、向上追求抽象/性能
 
@@ -115,7 +125,7 @@ NPU/DSA的粒度相比GPGPU要更粗，造一整套工具链轮子和打磨多�
 
 受到Triton的冲击后，Nvidia在拥抱Python，[CUDA: New Features and Beyond](https://link.zhihu.com/?target=https%3A//www.nvidia.com/en-us/on-demand/session/gtc25-s72383)。最近也是release了CuTeDSL，以CuTe抽象为中心，kernel在thread级别，性能会更好。暴露了一些接口，但是写kernel负担依旧很重。更值得算法工程师和普通开发者期待的是cuTile，是对标Triton的，期待vendor大力出奇迹。
 
-![](asset/img_8bf4f7d8189f.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_8bf4f7d8189f.jpg)
 
 ### 六、Pythonic is future!
 

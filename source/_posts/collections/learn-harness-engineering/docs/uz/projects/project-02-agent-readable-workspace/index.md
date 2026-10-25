@@ -1,3 +1,16 @@
+---
+title: Loyiha 02. Loyihani oʻqishga qulay qiling va toʻxtagan joyidan davom ettiring
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/uz/projects/project-02-agent-readable-workspace/index/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 [English version →](../../../en/projects/project-02-agent-readable-workspace/)
 
 > Tegishli maʼruzalar: [3-maʼruza. Repozitoriyni yagona haqiqat manbaiga aylantiring](./../../lectures/lecture-03-why-the-repository-must-become-the-system-of-record/index.md) · [4-maʼruza. Yoʻriqnomalarni fayllar boʻylab ajrating](./../../lectures/lecture-04-why-one-giant-instruction-file-fails/index.md)

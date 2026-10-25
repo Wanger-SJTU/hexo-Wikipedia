@@ -1,9 +1,19 @@
 ---
-title: "人脸识别损失函数简介与Pytorch实现：ArcFace、SphereFace、CosFace"
-date: 2019-05-10
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/60747096
+title: 人脸识别损失函数简介与Pytorch实现：ArcFace、SphereFace、CosFace
+date: "2019-05-10 00:00:00"
+updated: "2019-05-10 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/dl论文/人脸识别损失函数简介与Pytorch实现-ArcFace、SphereFace、CosFace/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/60747096
 ---
+
 
 一般来说，人脸识别分三步走：
 
@@ -28,7 +38,7 @@ source: https://zhuanlan.zhihu.com/p/60747096
 
 维基百科介绍：
 
-$> Softmax函数**，或称**归一化指数函数**[[1]](https://link.zhihu.com/?target=https%3A//zh.wikipedia.org/wiki/Softmax%25E5%2587%25BD%25E6%2595%25B0%23cite_note-bishop-1)，是逻辑函数的一种推广。它能将一个含任意实数的K维向量 z" role="presentation">z{\displaystyle \mathbf {z} }  “压缩”到另一个K维实向量 &#x03C3;(z)" role="presentation">σ(z){\displaystyle \sigma (\mathbf {z} )} 中，使得每一个元素的范围都在 &#x03C3;(z)" role="presentation">σ(z){\displaystyle \sigma (\mathbf {z} )} $
+$> Softmax函数**，或称**归一化指数函数**<span class="wikilink wikilink--missing" title="未导入的页面">1</span>(https://link.zhihu.com/?target=https%3A//zh.wikipedia.org/wiki/Softmax%25E5%2587%25BD%25E6%2595%25B0%23cite_note-bishop-1)，是逻辑函数的一种推广。它能将一个含任意实数的K维向量 z" role="presentation">z{\displaystyle \mathbf {z} }  “压缩”到另一个K维实向量 &#x03C3;(z)" role="presentation">σ(z){\displaystyle \sigma (\mathbf {z} )} 中，使得每一个元素的范围都在 &#x03C3;(z)" role="presentation">σ(z){\displaystyle \sigma (\mathbf {z} )} $
 之间，并且所有元素的和为1。该函数的形式通常按下面的式子给出：
  $$&#x03C3;(z)j=ezj&#x2211;k=1Kezk&#xA0;for&#xA0;j=1,&#x2026;,K." role="presentation">σ(z)j=ezj∑k=1Kezk for j=1,…,K.{\displaystyle \sigma (\mathbf {z} )_{j}={\frac {e^{z_{j}}}{\sum _{k=1}^{K}e^{z_{k}}}}}  \  for\ j= 1, …,K. $$
 
@@ -110,13 +120,13 @@ $$L_{ang}=\frac{1}{N}\sum_i-log({\frac {e^{||x||\psi(\theta_{y_i,i})}}{e^{||x||\
 
 论文中的可视化图片：
 
-![](asset/img_6cc62d12a930.jpg)
+![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_6cc62d12a930.jpg)
 
-![](asset/img_69cd0d10f539.jpg)
+![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_69cd0d10f539.jpg)
 
-![](asset/img_44989219c663.jpg)
+![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_44989219c663.jpg)
 
-![](asset/img_81f2fa8d48c7.jpg)
+![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_81f2fa8d48c7.jpg)
 
 Pytorch代码实现：
 
@@ -227,7 +237,7 @@ cos(\theta_j,i)=W^T_jx_i
 
 以上我们就得到了CosFace中提出的 Large\ Margin\ Cosine\ Loss 
 
-![](asset/img_9a0c5f4f871e.jpg)
+![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_9a0c5f4f871e.jpg)
 
 代码实现：
 
@@ -293,7 +303,7 @@ cos(\theta_j,i)=W^T_jx_i
 
 可以看到和CosFace非常类似，只是将 m 作为角度加上去了，这样就强行拉大了同类之间的角度，使得神经网络更努力地将同类收得更紧。
 
-![](asset/img_eb7a0efa58bc.jpg)
+![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_eb7a0efa58bc.jpg)
 
 伪代码实现步骤：
 
@@ -382,6 +392,6 @@ class ArcMarginProduct(nn.Module):
 
 欢迎关注个人微信公众号：
 
-![](asset/img_d3143c5fc425.jpg)
+![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_d3143c5fc425.jpg)
 
 欢迎扫码关注~

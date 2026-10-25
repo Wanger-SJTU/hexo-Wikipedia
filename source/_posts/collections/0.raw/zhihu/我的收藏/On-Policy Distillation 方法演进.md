@@ -1,9 +1,19 @@
 ---
-title: "On-Policy Distillation 方法演进"
-date: 2026-07-21
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/2062918960367120976
+title: On-Policy Distillation 方法演进
+date: "2026-07-21 00:00:00"
+updated: "2026-07-21 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/On-Policy-Distillation-方法演进/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/2062918960367120976
 ---
+
 
 阶段时间代表工作主要问题核心改进相对前一阶段的递进奠基：从静态模仿到学生分布2023GKD；MiniLLM离线蒸馏存在 exposure bias，学生推理时会访问训练中未见的状态让学生生成轨迹，教师在学生访问的状态上提供监督；MiniLLM 强调 reverse KL从“模仿教师答案”转为“纠正学生自己的错误”工程化基线2025Thinking Machines OPD；Qwen3 实践RL 奖励稀疏，SFT 又是 off-policy学生采样 + 教师逐 token log-prob + sampled reverse KL将 on-policy 采样与密集 token 监督组合为可复现训练配方去除外部教师2026.01Self-Distilled Reasoner（OPSD）大教师在线推理昂贵，且要求同词表 logits同一模型分成 student/teacher 两个条件分布，teacher 额外看到正确推理或答案教师从“更大模型”变为“获得 privileged information 的自己”用反馈解释错误2026.01SDPORLVR 只有终局 0/1 reward，无法定位错误 tokenteacher 条件化环境反馈或成功 sibling rollout，再把反馈知情分布蒸回 student从“答案监督”推进到“反馈知情的细粒度信用分配”按样本路由2026.04SRPOSDPO 在正确样本上产生路径歧义，后期容易坍缩正确轨迹走 GRPO，错误轨迹走 SDPO；再按 teacher entropy 动态加权教师不再对所有样本一视同仁，只在失败时重点介入分离方向与强度2026.04RLSDprivileged teacher 直接决定梯度方向会造成信息泄漏verifier 决定更新正负方向，teacher 概率比只调 token 更新幅度将“是否奖励”与“奖励哪个 token 更多”解耦离线化2026.04Lightning OPD在线教师服务带来高算力与系统开销在 teacher consistency 条件下缓存 SFT 轨迹上的教师 log-prob从严格在线 OPD 放宽为可控偏差的 offline/on-distribution 蒸馏上下文自蒸馏2026.04OPSDL长上下文中的无关信息导致推理与引用证据不稳定长上下文 student 由同模型的相关短上下文 teacher 监督privileged information 从“答案”变成“更易处理的上下文”结果级校准2026.05Uni-OPDtoken KL 的累计分数可能与最终对错不一致outcome-guided margin calibration，并做离线难度与在线正确率均衡用 trajectory outcome 约束 token-level teacher signal 的排序按 advantage 分区2026.05AOPD负 advantage 高方差、零 advantage 无梯度正 advantage 保留 RL exploitation，非正区域改用局部 KL imitation在同一批轨迹内按学习信号可靠性切换 RL 与蒸馏解放教师接口2026.05ROPDlogit OPD 只能使用白盒且同词表教师从师生回答对比中生成 rubric，再用 rubric reward 做 on-policy 优化教师信号从概率分布扩展为结构化语义评价，可接黑盒模型Agent 步级门控2026.05SOD错误工具调用污染后续 observation，统一 token 权重放大噪声按工具 observation 切 step，以相邻 step 的师生 divergence 变化自适应衰减/恢复蒸馏可靠性控制从 sample 级细化到 agent step 级反向利用教师分歧2026.05RLRT成功轨迹仍被 teacher 拉回标准路径，损害学生独立探索仅在成功轨迹上强化“学生偏好、教师不偏好”的关键 token教师从模仿目标转为“学生独创路径探测器”训练前诊断2026.05Unmasking OPD不清楚哪种 teacher/context、哪些 token 真正有益用 ideal-gradient alignment 对 teacher、样本和 token 做无训练诊断从事后看总分转为训练前估计信号价值PI 适用边界2026.05Many Faces of OPDOPSD 在不同任务上结果矛盾区分 shared-rule PI 与 instance-specific PI，并修复 Top-K 梯度偏差、教师分布错配说明自蒸馏成功取决于 PI 结构，而不只是 loss多轮 Agent 非对称门控2026.05SDAR多轮误差复利；检索技能不完整时 teacher rejection 不可靠RL 为主目标，OPSD 仅作 sigmoid 门控辅助；强化 endorse，软化 reject从“是否用 teacher”推进到“教师正负信号采用不同信任度”Token 信任区域2026.06TrOPD师生分布差异大时 sampled reverse-KL 出现梯度 outlier可信区用 reverse KL，outlier 区用 teacher Top-K forward KL，并加入 teacher-prefix 冷启动对不同 token 区域动态选择散度，而非简单 mask对比去除风格漂移2026.06RLCSDPI-conditioned teacher 的差异集中在风格 token，导致坍缩或长度收缩正确 hint 与错误 hint 的 teacher gap 相减，抵消与正确性无关的风格变化把 teacher signal 分解为 task signal 与 privilege-induced style drift
 1. 背景：OPD 到底改了什么

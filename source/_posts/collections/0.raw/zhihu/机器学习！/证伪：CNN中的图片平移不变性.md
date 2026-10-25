@@ -1,9 +1,19 @@
 ---
-title: "证伪：CNN中的图片平移不变性"
-date: 2018-06-13
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/38024868
+title: 证伪：CNN中的图片平移不变性
+date: "2018-06-13 00:00:00"
+updated: "2018-06-13 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/机器学习/证伪-CNN中的图片平移不变性/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/38024868
 ---
+
 
 编译：[Bot](https://link.zhihu.com/?target=https%3A//mp.weixin.qq.com/s%3F__biz%3DMzI3ODkxODU3Mg%3D%3D%26mid%3D2247486579%26idx%3D3%26sn%3De1ad5da0a3c9076c36cb585c1734061e%26chksm%3Deb4ee8b0dc3961a636204d74686fb6814dec55ffd590f69ceb532da09a473ef1f36a404fe89e%23rd)
 
@@ -11,7 +21,7 @@ source: https://zhuanlan.zhihu.com/p/38024868
 
 编者按：今天论智给大家带来的论文是希伯来大学的Aharon Azulay和Yair Weiss近期发表的[Why do deep convolutional networks generalize so poorly to small image transformations?](https://link.zhihu.com/?target=https%3A//arxiv.org/pdf/1805.12177.pdf) 这篇文章发现当小尺寸图像发生平移后，CNN会出现识别错误的现象，而且这一现象是普遍的。
 
-![](asset/img_69c75da3a554.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_69c75da3a554.jpg)
 
 ### 摘要
 
@@ -25,17 +35,17 @@ source: https://zhuanlan.zhihu.com/p/38024868
 
 但事实真的如此吗？
 
-![](asset/img_80e007d8a9b5.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_80e007d8a9b5.jpg)
 
 在上图中，左侧图像是模型的输入，右侧折线图是模型评分，使用的模型是InceptionResNet-V2 CNN。可以发现，作者在这里分别对图像做了平移、放大和微小形变。在最上方的输入中，他们只是将图像从左到右依次下移了一像素，就使模型评分出现了剧烈的波动；在中间的输入中，图像被依次放大，模型的评分也经历了直线下降和直线上升；而对于最下方的输入，这三张图是从BBC纪录片中选取的连续帧，它们在人类眼中是北极熊的自然运动姿态，但在CNN“眼中”却很不一样，模型评分同样遭遇“滑铁卢”。
 
 为了找出导致CNN失误的特征，他们又从ImageNet验证集中随机选择了200幅图像，并把它们嵌入较大的图像中做系统性平移，由图像平移导致的空白区域已经用程序修补过了，在这个基础上，他们测试了VGG16、ResNet50和InceptionResNetV2三个现代CNN模型的评分，结果如下：
 
-![](asset/img_7f2479bbb35a.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_7f2479bbb35a.jpg)
 
 **
 
-![](asset/img_15fab28abd80.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_15fab28abd80.jpg)
 
 图A的纵坐标是200张图像，它用颜色深浅表示模型识别结果的好坏，其中非黑色彩表示模型存在能对转变后的图像正确分类的概率，全黑则表示完全无法正确分类。通过观察颜色变化我们可以发现，无论是VGG16、ResNet50还是InceptionResNetV2，它们在许多图片上都显示出了由浅到深的突然转变。
 
@@ -69,7 +79,7 @@ CNN的上述失误是令人费解的。因为从直观上来看，如果网络�
 
 对于特征信号 r(x) 和二次采样因子 s ，如果信号中 x 处的任意输出 x 是采样网格的线性插值：
 
-![](asset/img_2c6f7ba4b9f1.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_2c6f7ba4b9f1.jpg)
 
 那么我们就可以认为 r(x) 是“可移位的”。因为参照之前图像位移的说法，既然采样后信号具有平移不变性，那原信号载体就是可以移动的。其中 x_i 是二次采样因子s采样网格上的信号， B_s(x) 是从采样中重建的 r(x) 基函数。
 
@@ -83,7 +93,7 @@ CNN的上述失误是令人费解的。因为从直观上来看，如果网络�
 
 采样网格上的全局池化其实就相当于所有 x 的全局池化：
 
-![](asset/img_d9bcac45c5e4.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_d9bcac45c5e4.jpg)
 
 其中， K = ∑_xB(x − x_i) 和 K 与 x_i 无关。
 

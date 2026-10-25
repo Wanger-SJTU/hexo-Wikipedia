@@ -1,9 +1,19 @@
 ---
-title: "超标量处理器设计学习-0x02 Cache"
-date: 2022-03-02
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/474001387
+title: 超标量处理器设计学习-0x02 Cache
+date: "2022-03-02 00:00:00"
+updated: "2022-03-02 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/体系结构/超标量处理器设计学习-0x02-Cache/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/474001387
 ---
+
 
 ### 一、Cache的一般设计
 
@@ -17,7 +27,7 @@ Cache是广泛存在的，例如DRAM可以看做是硬盘（disk）或者闪存�
 
 在当前硅工艺下，大容量存储器的访问速度比处理器要慢**一个甚至几个数量级**。所以催生了L1，L2这类和处理器采用相同硅工艺的部件，其中L1 Cache和处理器紧密耦合，属于流水线的一环。
 
-![](asset/img_0cdf44fd8e79.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_0cdf44fd8e79.jpg)
 
 L1 Cache一般包括两个物理组件：**指令（I-Cache）**和**数据（D-Cache）**，它们的原理一致，但是D-Cache有读和写，I-Cache一般只有读（后面如果没特殊说明，都是指D-Cache）。L1 Cache一般采用SRAM来实现，大容量的SRAM需要更多的时间来找到特定的地址内容，可能就无法和处理器配速，所以“快”是L1 Cache的主要指标。
 
@@ -29,14 +39,14 @@ Cache主要由两个部分组成：**Tag部分**和**Data部分**
 - Tag部分保存这片连续数据的**公共地址**
 一个Tag和它对应的所有数据组成的一行称为Cache Line；而Cache Line中的数据部分被称为数据块（Cache Data Block）；如果一个数据可以存储在Cache的多个地方，这些被同一个地址找到的多个Cache Line就称为Cache Set。下面是Cache一种可能的结构：
 
-![](asset/img_6c24b5685da5.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_6c24b5685da5.jpg)
 
 Cache的三种主要实现方式：
 
 - **直接映射（direct-mapped）**：物理内存中的一个数在Cache中**只有一个地方**容纳它；
 - **组相连（set-associative）**：物理内存中的一个数在Cache中有**多个地方**可以存放；
 - **全相连（fully-associative）**：物理内存中的一个数在Cache中**任何地方**都可以存放；
-![](asset/img_418234c810da.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_418234c810da.jpg)
 
 可以看出直接映射和全相连是组相连的两个特殊情况。**TLB和Victim Cache（后面会说这两个是啥）多采用全相连结构，普通的I-Cache和D-Cache则采用组相连结构。**
 
@@ -53,7 +63,7 @@ Cache只能保存最近使用过的内容，有时候需要找的指令或者数
 
 这种方式是最容易实现的，处理器访问存储器的地址被分为三个部分：Tag，Index，Block Offset。使用Index找到Cache Line，但是所有Index相同的都会找到同一个Cache Line。因此Cache Line中的Tag部分就用来和地址进行比较，只有它们相等才表明这个Cache Line是真实需要的。Block Offset用来找到Cache Line中的多个数据，可以定位到每个字节。同时在Cache Line中还有一个有效位（Valid）来标记这个Cache Line是否保存着有效数据。只有之前被访问过的存储器地址，它的数据才会在对应的Cache Line中，相应的有效位也会置为1。
 
-![](asset/img_2a7129a9844a.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_2a7129a9844a.jpg)
 
 对于Index相同的存储器地址，会寻址到同一个Cache Line，这就造成了冲突。这种情况是直接相连的一大缺点。但是实现简单，不需要替换算法。不过因为效率不高，所以现代处理器比较少用了。
 
@@ -61,7 +71,7 @@ Cache只能保存最近使用过的内容，有时候需要找的指令或者数
 
 一个数据可以放在多个Cache Line中，如果一个数据可以放在n个位置，则称这个Cache是n路组相连Cache（n-way set-assocaiative Cache），如下是一个两路组相连Cache
 
-![](asset/img_9e41a8d99b0d.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_9e41a8d99b0d.jpg)
 
 这种结构依然采用Index来选择Cache Line，此时会得到两个Cache Line，这就是一个Cache Set。在这两个Cache Line中究竟哪个Line才是需要的就根据Tag比较结果来确定。如果两个Line的结果都不相等，那就是发生了缺失，说明数据不在Cache中。
 
@@ -71,21 +81,21 @@ Cache只能保存最近使用过的内容，有时候需要找的指令或者数
 
 **并行访问**：同时访问Tag SRAM和Data SRAM。在访问Tag的时候把对应的Data数据也读取出来然后送到一个受Tag比较结果控制的多路选择器上，选出对应的Data Block，然后根据Block Offset选出对应的字节（选字节的过程一般称为数据对齐Data Alignment）
 
-![](asset/img_894c7bdcf2a0.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_894c7bdcf2a0.jpg)
 
 如果在一个周期内处理完这个访问过程，实际上是比较消耗时间的，所以通常采用流水的方式进行
 
-![](asset/img_d0941e1ade7e.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_d0941e1ade7e.jpg)
 
 通过将Cache的访问放到几个流水周期内完成，可以降低处理器的周期时间，从而提升效率。
 
 **串行访问**：先访问Tag SRAM，然后根据比较结果再访问Data SRAM，不需要多路选择器，同时不需要的那一部分SRAM可以被置为无效信号，能节省部分功耗。
 
-![](asset/img_c3e74152be01.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_c3e74152be01.jpg)
 
 对于这种串行方式来说，处理器的周期时间会更大，所以还是要采用流水处理方式
 
-![](asset/img_331d7f61f880.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_331d7f61f880.jpg)
 
 对于串行和并行是比较难区分好坏的。并行访问会有较低的时钟频率和较大的功耗，但是访问周期减少了。对于超标量处理器来说，我们可以通过乱序和将Cache访问流水操作来掩盖延迟，因此使用串行访问提升时钟频率，同时不会因为增加的访问周期导致处理器性能下降；对于顺序执行的处理器来说，增加一个访问周期可能就会引起性能降低，所以采用并行可能更合适。
 
@@ -93,7 +103,7 @@ Cache只能保存最近使用过的内容，有时候需要找的指令或者数
 
 由于数据可以放在任何一个Cache Line中，所以不再需要Index部分，而是直接将Tag进行比较来定位需要的Cache Line。这相当于直接使用存储器的内容来寻址，从存储器找到匹配的项，也就是内容寻址存储器（Content Address Memory，CAM），实际中的全相连Cache都是使用CAM来存储Tag，使用普通的SRAM存储数据。全相连非常灵活，缺失率也最低，但是由于大量比较内容，所以延迟也是最大的。所以采用这种结构的容量都不会太大例如TLB。
 
-![](asset/img_8d152a9888c4.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_8d152a9888c4.jpg)
 
 #### 1.1.2 Cache的写入
 
@@ -109,15 +119,15 @@ Cache只能保存最近使用过的内容，有时候需要找的指令或者数
 - **Write Allocate**：首先从下级存储器将缺失地址对应的数据块取出来，然后将要写入的数据和这个数据块合并，然后将合并数据写入D-Cache中。具体要不要写入下级存储就可以选择上面的写通或者写回来决策了。
 考虑一下为啥不直接把数据写入空的或者随意一个Line中？（指令修改一般不会达到Data Block的大小）
 
-![](asset/img_cad820b5b506.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_cad820b5b506.jpg)
 
 容易想到，写通总是配合Non-Write Allocate，都是直接将数据写入下一级
 
-![](asset/img_bf4a4d2f3e68.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_bf4a4d2f3e68.jpg)
 
 写回总是配合Write Allocate
 
-![](asset/img_0a1221d44d0a.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_0a1221d44d0a.jpg)
 
 注意当替换的Line是dirty状态时，会发生两次对下级存储器的访问：写入Line数据到下一级，从下级读取缺失地址对应的数据块，合并数据并标记为dirty。**写回配合Write Allocate 要比 写通配合Non-Write Allocate的方式复杂，但是可以减少下级存储器的写入频率，因此可以使处理器有更好的性能。**
 
@@ -129,7 +139,7 @@ Cache只能保存最近使用过的内容，有时候需要找的指令或者数
 
 选择最近被使用次数最少的Line，需要跟踪每个Line的使用情况，例如为每个Line设置个age，每次访问就增加对应Line的age或者减少其它Line的age。实际一般使用“伪LRU“方式，将way进行分组。下面是一个示例（就是一个不断二分的过程）
 
-![](asset/img_c281fea17fe4.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_c281fea17fe4.jpg)
 
 **2、随机替换（Random Replacement）**
 
@@ -143,7 +153,7 @@ Cache只能保存最近使用过的内容，有时候需要找的指令或者数
 
 当一个Cache Line需要被写入下级时（例如dirty状态的Line要被替换掉了），如果直接写下级存储器可能会导致效率较低，因为L2或者DARM的访问时间都比较长而且是串行的。这时候就可以用写缓存（Write Buffer）来解决，dirty数据会先写入缓存，然后择机写入下级缓存中。
 
-![](asset/img_4ecd36b5e6a5.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_4ecd36b5e6a5.jpg)
 
 由于写通便于一致性管理，所以多核处理器多采用这种结构来组成L1 Cache。但是采用这种结构之后发生读缺失时，除了在下级存储器查找，还需要在写缓存中查找，因此需要在写缓存中加入地址比较电路CAM，显然写缓存的数据比下级存储的要新，所以优先使用。
 
@@ -151,7 +161,7 @@ Cache只能保存最近使用过的内容，有时候需要找的指令或者数
 
 在写D-Cache的时候，由于需要先比较Tag然后才能确定Data SRAM，这个串行操作在高主频处理器中很难一个周期完成，所以通常采用流水来进行。一种简单的方式就是将Tag比较和写Data分成两个部分。
 
-![](asset/img_13348fd4c156.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_13348fd4c156.jpg)
 
 但是这种方式有个问题就是，我们的load指令需要的数据可能正好在store指令流水寄存器中，这就需要一个机制来检测load指令的地址和store寄存器的地址是不是相同。如果相等就将store指令的数据作为load指令的结果**。因此对D-Cache加流水需要增加硬件复杂度。*这里作者再次diss了Pentium 4处理器加深流水线反而成了负作用。*
 
@@ -159,11 +169,11 @@ Cache只能保存最近使用过的内容，有时候需要找的指令或者数
 
 一般情况L1 Cache容量都很小，能和处理器内核保持相同速度等级；L2 Cache需要消耗几个时钟周期，但是容量更大。
 
-![](asset/img_fcc56ba45518.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_fcc56ba45518.jpg)
 
 一般来说L1和L2 Cache都和处理器放在同一个芯片内，高阶处理器还可能有更大容量的L3 Cache。注意看下面示例中的有些是每core独有的。
 
-![](asset/img_067e0c7ed48d.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_067e0c7ed48d.jpg)
 
 在一般处理器中，L1 Cache采用写通，L2 Cache采用写回。这样便于简化流水设计以及方便多核环境进行一致性管理。
 
@@ -173,7 +183,7 @@ Cache只能保存最近使用过的内容，有时候需要找的指令或者数
 
 **Exclusive**：L2 Cache和L1 Cache**内容**互不相同，则称L2 Cache是Exclusive。
 
-![](asset/img_fa8c7e48e07f.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_fa8c7e48e07f.jpg)
 
 ***注意这里是指内容，不是指硬件设计。***
 
@@ -187,17 +197,17 @@ Exclusive避免了硬件浪费，但是多核一致性管理需要检测所有�
 
 在Cache中经常会出现刚被”踢出“的数据马上又要被使用。例如
 
-![](asset/img_cafc1e20ef70.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_cafc1e20ef70.jpg)
 
 一个2-way的Cache，要使用同一个Cache Set的三个数据，就会发生循环缺失的情况。如果增加way的个数，会浪费大量空间，因此采用**Victim Cache**来提高way的个数，一般采用全相连，容量较小（4~16个数据），其在处理器中的位置如下
 
-![](asset/img_63c1d04012ef.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_63c1d04012ef.jpg)
 
 一般情况Victim Cache和Cache存在互斥关系，处理器同时读取二者来确认是否有需要的数据。如果是Victim Cache命中，那数据会写入Cache，同时Cache的数据写入Victim Cache中，就产生了数据互换。这个过程类似Exclusive类型的Cache，可以减少Cache的缺失，提升处理器性能，大多数处理器都采用了Victim Cache。
 
 另外一种和Victim Cache类似的思路称为**Filter Cache**，**不过Filter Cache是在Cache之前，Victim Cache是在Cache之后**。当数据要被使用时，首先进入Filter Cache中，当再次被使用才进入Cache中。这个可以**过滤掉偶然**使用的数据，从而提升处理器效率。
 
-![](asset/img_6119ef0db62f.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_6119ef0db62f.jpg)
 
 #### 2.1.5 预取
 
@@ -207,7 +217,7 @@ Exclusive避免了硬件浪费，但是多核一致性管理需要检测所有�
 
 对指令来说，猜测后续指令会比较容易，因为程序局部是串行的（先不考虑分支），因此访问I-Cache的时候，将对应数据块后续的数据也读入Cache即可。不过因为分支和错误处理的存在，这种操作可能造成”Cache 污染“，读取的指令可能是不会执行，从而影响处理器效率。因此可以将预取的指令放到一个单独缓存中
 
-![](asset/img_c956d02d5618.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_c956d02d5618.jpg)
 
 在I-Cache发生缺失的时候，同时去Stream Buffer中找，如果找到了就把数据搬到I-Cache中，同时从下一级取后续的数据块放到Stream Buffer中。同样的当发生分支或者错误处理时，Stream Buffer中的数据就浪费了，这会造成功耗和带宽的上升。因此预取是一把双刃剑，尤其是对数据的预取，实际设计要权衡利弊。
 
@@ -217,7 +227,7 @@ Exclusive避免了硬件浪费，但是多核一致性管理需要检测所有�
 
 在程序编译阶段，编译器通过对程序分析，在有预取指令支持的时候，就可以控制预取。预取就会有针对性。
 
-![](asset/img_df41c370702d.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_df41c370702d.jpg)
 
 这段程序提前将数据进行预取，就可以保证求和时从D-Cache可以找到需要的数据。但是软件预取比较考验时机，**太早可能被覆盖，太晚又来不及预取**。
 
@@ -236,19 +246,19 @@ Exclusive避免了硬件浪费，但是多核一致性管理需要检测所有�
 
 实际中不太可能采用这种直接多端口的设计，这种方法使用一个多端口的SRAM来实现多端口的Cache，例如在双端口Cache中，需要两套地址解码器使得两个端口可以同时寻址Tag和Data SRAM；有两个多路选择器来同时读两个端口的数据；比较器增加一倍用来判断端口命中情况；需要两个对齐器。这种方式可以精确提供双端口功能，但面积增加，访问时间增加，功耗增加。对处理器周期负面影响很大，所以一般不会采用这种方式。
 
-![](asset/img_81a19154f48a.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_81a19154f48a.jpg)
 
 #### 3.1.2 Multiple Cache Copies
 
 这种方法将Tag和Data SRAM进行复制，其它部分和上面的方式基本一致，只是不需要多端口结构，消除对处理器周期时间的影响。但是这浪费了很多面积，同时保持Cache一致也比较麻烦，现代处理器很少使用。
 
-![](asset/img_e82f3cbec764.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_e82f3cbec764.jpg)
 
 #### 3.1.3 Multi-banking
 
 这种方法将Cache分成很多bank，**每个bank都只有一个端口**。只要同一个周期内访问的地址位于不同的bank上，就不会有冲突。只有**多端口访问地址位于同一个bank才会冲突**（bank conflict）。这种方法中双端口的Cache还是需要两个地址解码器，两个多路选择器，两套比较器和两个对齐器，而Data SRAM不需要多端口了，这样就提高了速度，并一定程度减少了面积。
 
-![](asset/img_654d6e47a6d1.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_654d6e47a6d1.jpg)
 
 为了减少bank 冲突，可以增加bank数量来缓解，还可以在编译器支持时尽可能避免让有用数据在同一个bank中。这种结构需要更多的布线资源，不过相比前两种方式还是可以降低总面积的，而且不会大幅增加处理器周期时间，因此现代处理器大多采用这种方式。
 
@@ -256,11 +266,11 @@ Exclusive避免了硬件浪费，但是多核一致性管理需要检测所有�
 
 Opteron（皓龙）系列是64位处理器，也就是处理器内部数据都是64位的，但是处理器物理地址（Physical Address，PA）只有40位，虚拟地址（Virtual Address，VA）只有48位。很多64位处理器为了节约面积都会采用这种简化地址，例如Intel的Core i7。Opteron的D-Cache是双端口64位的，每周期支持两条load/store同时访问，内部使用Mutil-banking实现。
 
-![](asset/img_e6ba38341d67.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_e6ba38341d67.jpg)
 
 其中数据块是64字节，需要6位地址进行寻址；每个数据块分为8个独立的bank；每个bank为64位单端口SRAM。整个Cache大小64KB；分成两路组相连所以每路为32KB；采用虚拟地址直接访问Cache；32KB大小每路需要VAl[14:0]来寻址，数据块64字节需要VA[5:0]，剩下的VA[14:6]用来找到Cache Set。划分如下：
 
-![](asset/img_1c2eceb9ae53.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_1c2eceb9ae53.jpg)
 
 每个Line分为8个bank，每个bank为64位宽的SRAM（8个字节）,所以用VA[5:3]来找到某个bank，用VA[2:0]来定位某个字节。这种方式将两个连续的64位数放到两个相邻但不同的bank中，当发生空间相关性访问时，自然就在不同的bank中了。
 
@@ -268,23 +278,23 @@ Opteron（皓龙）系列是64位处理器，也就是处理器内部数据都�
 
 对于一个n-way超标量处理器，在给出一个取指令的地址后，I-Cache应该能至少送出n条指令，这n条指令称为一组（fetch group）。I-Cache最简单的支持就是让数据块大小为n个字：
 
-![](asset/img_1a650f7c769c.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_1a650f7c769c.jpg)
 
 在上图中，如果取指令的地址是n字对齐的，那就可以每周期取出n条指令，但实际是不会总是对齐n字的。
 
-![](asset/img_ed9ebae22099.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_ed9ebae22099.jpg)
 
 如果不能对齐的话，就会导致流水空置，如图n=4的情况下，理论取指令个数为2.5。虽然实际要比2.5大，因为当上一条是未对齐时，下一条就是对齐的了。
 
-![](asset/img_3dc0ef56ebe0.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_3dc0ef56ebe0.jpg)
 
 如果这个时候改变为2-way的超标量处理器，就没有问题了，实际上很多处理器就是这样的方法，每周期取出的指令数大于能解码的数量，多余的通过缓存暂时保存。或者是将Cache的数据块变大。
 
-![](asset/img_b45ca9408a5b.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_b45ca9408a5b.jpg)
 
 不过这种方式会减少Cache Set的数量，可能更容易发生缺失。同时这样还需要更多的SRAM保护电路，会导致面积过大，所以实际一般会用两个4字的SRAM来实现8字的效果。
 
-![](asset/img_9728fcbe9855.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_9728fcbe9855.jpg)
 
 一个8字的Cache Line占用了SRAM的两行，所以只需要4个32位的SRAM，当Tag命中时，两行都是有效的。读数据时可能就会某些SRAM读第一行，某些读第二行。然后通过重排序得到正确的指令顺序。所以这需要两个额外电路，
 
@@ -292,4 +302,4 @@ Opteron（皓龙）系列是64位处理器，也就是处理器内部数据都�
 - 一个是SRAM的重排序：将指令按程序指定顺序重排
 对于带分支预测的时候，取指过程会更复杂；带虚拟存储指令可能还需要转换为物理地址等。
 
-![](asset/img_61312d6a9bd1.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_61312d6a9bd1.jpg)

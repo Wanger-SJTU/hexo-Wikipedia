@@ -1,3 +1,16 @@
+---
+title: SOP：可觀測性回饋迴圈
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/zh-TW/resources/openai-advanced/sops/observability-feedback-loop/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # SOP：可觀測性回饋迴圈
 
 當除錯速度太慢、代理在沒有證據時反覆宣稱成功，或執行期行為比程式碼本身更難觀察時，就使用這份 SOP。

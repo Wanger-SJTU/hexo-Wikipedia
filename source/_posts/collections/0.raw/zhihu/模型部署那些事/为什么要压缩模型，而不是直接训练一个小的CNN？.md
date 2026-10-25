@@ -1,10 +1,19 @@
 ---
-title: "为什么要压缩模型，而不是直接训练一个小的CNN？"
-date: 2018-12-07
-tags: [知乎]
-source: https://www.zhihu.com/question/303922732/answer/547325762
-
+title: 为什么要压缩模型，而不是直接训练一个小的CNN？
+date: "2018-12-07 00:00:00"
+updated: "2018-12-07 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/模型部署那些事/为什么要压缩模型,而不是直接训练一个小的CNN-1cc835/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://www.zhihu.com/question/303922732/answer/547325762
 ---
+
 
 专门做这个方向的，说一下自己的观点吧。
 

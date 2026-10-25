@@ -1,10 +1,19 @@
 ---
-title: "应该坚持学 C++ 吗？"
-date: 2022-01-04
-tags: [知乎]
-source: https://www.zhihu.com/question/36456036/answer/2297226410
-
+title: 应该坚持学 C++ 吗？
+date: "2022-01-04 00:00:00"
+updated: "2022-01-04 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/走向cs/应该坚持学-C-吗/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://www.zhihu.com/question/36456036/answer/2297226410
 ---
+
 
 我写了快 10 年的 C/C++ 了，参与过 10 + 大型商业 C++ 项目的开发。
 

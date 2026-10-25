@@ -1,3 +1,16 @@
+---
+title: "프로젝트 01. 프롬프트 단독 vs. 규칙 우선(Rules-First): 차이는 얼마나 클까"
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/ko/projects/project-01-baseline-vs-minimal-harness/index/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 [English Version →](../../../en/projects/project-01-baseline-vs-minimal-harness/)
 
 > 관련 강의: [강의 01. 강력한 모델이 곧 신뢰할 수 있는 실행을 의미하지는 않습니다](./../../lectures/lecture-01-why-capable-agents-still-fail/index.md) · [강의 02. 하네스가 실제로 의미하는 것](./../../lectures/lecture-02-what-a-harness-actually-is/index.md)

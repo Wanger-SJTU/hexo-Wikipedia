@@ -1,3 +1,16 @@
+---
+title: "Project 05: Evaluator Loops and Three-Role Upgrades"
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/projects/project-05/README-CN/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # Project 05: Evaluator Loops and Three-Role Upgrades
 
 测量角色分离（单角色 / 生成+评估 / 计划+生成+评估）如何改变实现质量。

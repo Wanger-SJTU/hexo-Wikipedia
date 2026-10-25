@@ -1,3 +1,16 @@
+---
+title: 评审评分表
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/zh/resources/templates/evaluator-rubric/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # 评审评分表
 
 在实现完成后、正式验收前，用这张表做一次评审。

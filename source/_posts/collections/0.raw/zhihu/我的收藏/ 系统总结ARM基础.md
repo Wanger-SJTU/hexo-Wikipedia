@@ -1,9 +1,19 @@
 ---
-title: "(1 条消息) 系统总结ARM基础"
-date: 2024-04-26
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/694757259
+title: (1 条消息) 系统总结ARM基础
+date: "2024-04-26 00:00:00"
+updated: "2024-04-26 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/系统总结ARM基础/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/694757259
 ---
+
 
 `一
 
@@ -167,7 +177,7 @@ CPSR寄存器包含当前程序状态信息，包括：
 
 Arm-v8架构有31个通用寄存器X0-X30 (64位长），而Arm-v7架构仅有16个通用寄存器R0-R15（32位长）。
 
-![](asset/img_4604a76dc9ec.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_4604a76dc9ec.jpg)
 
 #### 
 
@@ -209,7 +219,7 @@ Arm-v8架构有31个通用寄存器X0-X30 (64位长），而Arm-v7架构仅有16
 
 ARM处理器几种工作模式`
 
-![](asset/img_9bfc9c41f269.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_9bfc9c41f269.jpg)
 
 #### 用户模式 (User Mode):**
 
@@ -608,7 +618,7 @@ BNE label     ; 如果 r4 的值与 0x80 异或后不为零，则跳转到 label
 
 ### 比较值指令**
 
-![](asset/img_1ddfdc969949.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_1ddfdc969949.jpg)
 
 ### **堆栈的指令组合后缀**
 

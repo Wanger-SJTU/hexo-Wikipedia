@@ -1,3 +1,16 @@
+---
+title: Loyiha 05. Agentga oʻz ishini oʻzi tekshirishiga imkon bering
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/uz/projects/project-05-grounded-qa-verification/index/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 [English version →](../../../en/projects/project-05-grounded-qa-verification/)
 
 > Tegishli maʼruzalar: [9-maʼruza. Agentlarni vaqtidan oldin gʻalabani eʼlon qilishdan saqlash](./../../lectures/lecture-09-why-agents-declare-victory-too-early/index.md) · [10-maʼruza. Faqatgina End-to-End testlash chinakam tekshiruvdir](./../../lectures/lecture-10-why-end-to-end-testing-changes-results/index.md)

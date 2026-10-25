@@ -1,9 +1,19 @@
 ---
-title: "(2 条消息) 你不懂SIMD的坑--就别乱写什么加速。"
-date: 2026-02-05
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/1910713130323021966
+title: (2 条消息) 你不懂SIMD的坑--就别乱写什么加速。
+date: "2026-02-05 00:00:00"
+updated: "2026-02-05 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/你不懂SIMD的坑-就别乱写什么加速。/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/1910713130323021966
 ---
+
 
 我看到不少人说：哎呀我写的SIMD怎么这么慢啊，这不行那不行的。我说:只要你觉得自己没错，那一定是别人的错。要怪就去骂INTEL这个老邓.
 
@@ -63,7 +73,7 @@ vaddsd xmm0, xmm1, xmm2  ; 新的3操作数，非破坏操作
 
 amd zen5解决了这个狗屎intel问题，只有 a和b俩状态了，没有拉胯的c状态，因为v版本的它直接分了2个128的微操作:
 
-![](asset/img_2f9f4ae122d5.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_2f9f4ae122d5.jpg)
 
 更完~
 
@@ -187,9 +197,9 @@ C/cpp语言也同理，比如循环体内塞满一堆这种AVX...
 
 拿AVX512举例:
 
-![](asset/img_11c98a081e41.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_11c98a081e41.jpg)
 
-![](asset/img_63d6cbe3e11c.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_63d6cbe3e11c.jpg)
 
 AVX2也同理.
 
@@ -209,11 +219,11 @@ AVX2也同理.
 
 对比c标准库结果:
 
-![](asset/img_a22e3e5fd9f6.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_a22e3e5fd9f6.jpg)
 
 为了场景公平，c代码给了一个结果变量来影响编译器。 
 
-![](asset/img_a1a50258b64d.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_a1a50258b64d.jpg)
 
 但这个说明不了什么(场景简单)，也没有利用avx，差距不是很大(10-20提升)。但本文主要说的是avx2以上的各种问题。空了
 

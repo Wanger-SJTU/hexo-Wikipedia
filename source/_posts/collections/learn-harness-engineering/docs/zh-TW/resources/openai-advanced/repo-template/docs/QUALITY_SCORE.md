@@ -1,3 +1,16 @@
+---
+title: QUALITYSCORE.md
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/zh-TW/resources/openai-advanced/repo-template/docs/QUALITY_SCORE/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # QUALITY_SCORE.md
 
 這份文件用來追蹤儲存庫是隨時間變強還是變弱。

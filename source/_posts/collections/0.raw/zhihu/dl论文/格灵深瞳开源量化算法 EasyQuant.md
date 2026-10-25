@@ -1,10 +1,19 @@
 ---
-title: "格灵深瞳开源量化算法 EasyQuant"
-date: 2020-06-28
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/151383244
-
+title: 格灵深瞳开源量化算法 EasyQuant
+date: "2020-06-28 00:00:00"
+updated: "2020-06-28 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/dl论文/格灵深瞳开源量化算法-EasyQuant/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/151383244
 ---
+
 
 深度学习给人工智能算法带来了跃阶式的突破，引领了近几年的AI繁荣发展。相应的，“AI+”和“+AI”落地应用在各产业领域遍地开花。而深度网络模型的嵌入式应用和加速，则是人工智能落地的重要方向。
 

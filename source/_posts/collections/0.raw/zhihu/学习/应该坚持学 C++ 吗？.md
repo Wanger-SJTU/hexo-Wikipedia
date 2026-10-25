@@ -1,9 +1,19 @@
 ---
-title: "应该坚持学 C++ 吗？"
-date: 2026-04-15
-tags: [知乎]
-source: https://www.zhihu.com/question/36456036/answer/2297226410
+title: 应该坚持学 C++ 吗？
+date: "2026-04-15 00:00:00"
+updated: "2026-04-15 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/学习/应该坚持学-C-吗/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://www.zhihu.com/question/36456036/answer/2297226410
 ---
+
 
 我写了快 10 年的 C/C++ 了，参与过 10 + 大型商业 C++ 项目的开发。
 
@@ -13,7 +23,7 @@ C++ 代码要想写好，关键点并不在于你有多么熟悉 C++ 的语法�
 
 #### 第一本书 《提高 C++  的编程技术》
 
-![](asset/img_61c942453a60.jpg)![](asset/img_db518c670d01.webp)
+![](/images/collections/0.raw/zhihu/%25E5%25AD%25A6%25E4%25B9%25A0/asset/img_61c942453a60.jpg)![](/images/collections/0.raw/zhihu/%25E5%25AD%25A6%25E4%25B9%25A0/asset/img_db518c670d01.webp)
 
 《提高 C++ 性能的编程技术》详细讨论了临时对象、内存管理、继承、虚函数、内联、引用计数以及 stl 等一切有可能提升 C++ 效率的细节内容。最终，该书将 C++ 性能提升的各种终极利器，完美地呈现在广大读者的面前！渴望突破 C++ 编程瓶颈、大幅提升自我修为的程序设计爱好者，都可以通过此书获益良多。
 
@@ -24,13 +34,13 @@ C++ 代码要想写好，关键点并不在于你有多么熟悉 C++ 的语法�
 **链接：https://pan.baidu.com/s/1w2B20KHowcNOFcqa-fyoyQ 提取码: iwhs 
 #### 第二本书 《C++性能优化指南》
 
-![](asset/img_0f78c7362949.jpg)![](asset/img_9810644cfe1b.webp)
+![](/images/collections/0.raw/zhihu/%25E5%25AD%25A6%25E4%25B9%25A0/asset/img_0f78c7362949.jpg)![](/images/collections/0.raw/zhihu/%25E5%25AD%25A6%25E4%25B9%25A0/asset/img_9810644cfe1b.webp)
 
 这本书是一本 C++ 代码优化指南。书中主要内容有：代码优化的意义和总原则，与优化有关的计算机硬件背景知识，能行分析方法及工具，优化字符串的使用，算法、查找和排序等等。
 
 图书目录如下：
 
-![](asset/img_12b7d28de3f1.jpg)
+![](/images/collections/0.raw/zhihu/%25E5%25AD%25A6%25E4%25B9%25A0/asset/img_12b7d28de3f1.jpg)
 
 网上有同学分享出来了（链接收集于网络，喜欢请购买正版）：
 
@@ -42,9 +52,9 @@ C++ 代码要想写好，关键点并不在于你有多么熟悉 C++ 的语法�
 
 [](https://link.zhihu.com/?target=https%3A//mp.weixin.qq.com/s/Oej6y-pYcv20YGo6cCyLwg)
 
-![](asset/img_2c65aa91557a.jpg)
+![](/images/collections/0.raw/zhihu/%25E5%25AD%25A6%25E4%25B9%25A0/asset/img_2c65aa91557a.jpg)
 
-![](asset/img_03bd84da9b9e.jpg)
+![](/images/collections/0.raw/zhihu/%25E5%25AD%25A6%25E4%25B9%25A0/asset/img_03bd84da9b9e.jpg)
 
 #### 想要还有
 

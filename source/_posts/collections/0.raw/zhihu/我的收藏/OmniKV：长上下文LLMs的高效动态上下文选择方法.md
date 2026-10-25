@@ -1,9 +1,19 @@
 ---
-title: "(2 条消息) OmniKV：长上下文LLMs的高效动态上下文选择方法"
-date: 2025-07-11
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/1927141897853465859
+title: (2 条消息) OmniKV：长上下文LLMs的高效动态上下文选择方法
+date: "2025-07-11 00:00:00"
+updated: "2025-07-11 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/OmniKV-长上下文LLMs的高效动态上下文选择方法/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/1927141897853465859
 ---
+
 
 ### 摘要
 

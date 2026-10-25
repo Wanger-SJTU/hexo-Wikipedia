@@ -1,9 +1,16 @@
 ---
-title: "MemSifter：用4B小模型给大模型当"记忆管家"，检索又快又准"
-date: 2026-03-07
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/2013668063875190925
+title: MemSifter：用4B小模型给大模型当_记忆管家_，检索又快又准
+date: "2026-04-18 21:55:45"
+updated: "2026-04-18 21:55:45"
+layout: post
+permalink: /collections/0.raw/zhihu/AgentCLI/MemSifter-用4B小模型给大模型当_记忆管家_,检索又快又准/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
 ---
+
 
 MemSifter：用4B小模型给大模型当"记忆管家"，检索又快又准
 
@@ -46,7 +53,7 @@ MemSifter的思路很直接：**让一个小模型（4B参数）专门负责记�
 
 MemSifter的推理流程分三个阶段。下面结合框架图逐一拆解。
 
-![](asset/img_19c22139f354.jpg)
+![](/images/collections/0.raw/zhihu/AgentCLI/asset/img_19c22139f354.jpg)
 
 MemSifter框架图：上半部分为Memory RL训练流程，下半部分为推理流程**阶段一：预处理——会话切分**
 
@@ -100,7 +107,7 @@ MemSifter的做法彻底不同：**用工作LLM的实际回答质量作为奖励
 
 具体实现如下图所示：
 
-![](asset/img_b0627d058bf1.jpg)
+![](/images/collections/0.raw/zhihu/AgentCLI/asset/img_b0627d058bf1.jpg)
 
 边际效用奖励计算流程假设代理模型输出了一个排序列表，MemSifter按Fibonacci序列\{1, 2, 3, 5, 8, ...\}选取检查点。对于每个检查点k_n，取排序列表的前k_n个session，拼接到任务中让工作LLM回答，得到评分s_{k_n}。同时，不给任何记忆让工作LLM回答同一个问题，得到基线分s_0。
 
@@ -116,7 +123,7 @@ $$w_n = \frac{1}{\log_2(k_n + 1)} - \frac{1}{\log_2(k_{n+1} + 1)} \\$$
 
 这个权重设计的含义：排名越靠前的session，权重越大。下图直观地展示了权重的衰减趋势：
 
-![](asset/img_c2537ce86c18.jpg)
+![](/images/collections/0.raw/zhihu/AgentCLI/asset/img_c2537ce86c18.jpg)
 
 权重w_n随检索session数量的衰减曲线w_1 = 0.3691，w_2 = 0.1309，w_3 = 0.1131，w_5 = 0.0714，w_8 = 0.0528。排名第1的session权重是排名第8的7倍。这个设计鼓励代理模型把最相关的session排到最前面——因为排在前面的session对奖励的贡献远大于排在后面的。
 
@@ -211,7 +218,7 @@ NDCG@1反映的是"排在第1位的session是否真的最相关"。MemSifter在�
 
 #### 3.6 训练动态
 
-![](asset/img_9129be76bffc.jpg)
+![](/images/collections/0.raw/zhihu/AgentCLI/asset/img_9129be76bffc.jpg)
 
 训练曲线：LoCoMo和LongMemEval上的F1分数随训练步数的变化上图展示了训练过程中F1分数的变化。几个观察：
 

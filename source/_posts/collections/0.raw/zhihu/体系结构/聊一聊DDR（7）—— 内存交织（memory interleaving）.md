@@ -1,9 +1,19 @@
 ---
-title: "聊一聊DDR（7）—— 内存交织（memory interleaving）"
-date: 2023-07-30
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/646850159
+title: 聊一聊DDR（7）—— 内存交织（memory interleaving）
+date: "2023-07-30 00:00:00"
+updated: "2023-07-30 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/体系结构/聊一聊DDR(7)——-内存交织(memory-interleaving)/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/646850159
 ---
+
 
 **“** Memory Interleaving可以翻译为内存交织，即通过在不同内存上的交错访问来提高内存访问性能的技术。**”****
 
@@ -26,13 +36,13 @@ source: https://zhuanlan.zhihu.com/p/646850159
 
 ​在开篇引用的文章中介绍了turnaround时间的问题。为解决这个问题，很自然地想到了统筹规划和流水线作业，如下图。
 
-![](asset/img_5c6112f5a643.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_5c6112f5a643.jpg)
 
 可以看到上图中，红色的区块表示数据输出，在时间这个维度上看就是连续的，不会被介质读写本身的turnaround时间所限制。
 
 在上面的文章中，我们把Bank比作一个excel表格的tab，每次数据读写，都会将对应的一行数据，读取到sense amplifier当中。为了避免数据不可用时间，在bank级别的interleaving如下面的动图所示。
 
-![](asset/img_00bd79cb95c0.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_00bd79cb95c0.jpg)
 
 那么，是不是​只在bank级别去做interleave形成这种流水线就可以了？
 
@@ -46,7 +56,7 @@ source: https://zhuanlan.zhihu.com/p/646850159
 下图是Intel Sapphire Rapid这一代​的CPU，每个CPU有四个内存控制器，每个内存控制器有两个channel，每个channel有2根DIMM。通过interleaving我们可以享受到四个内存控制器，两个channel的并行数据，因此单个​内存访问的最大带宽理论值即为：
 4800（MT/s）*64（bit）/8（bit/Byte）= 307，200 MBps
 
-![](asset/img_256040db3a66.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_256040db3a66.jpg)
 
 ### 内存插法的影响​
 

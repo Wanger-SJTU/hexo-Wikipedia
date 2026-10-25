@@ -1,3 +1,16 @@
+---
+title: "SOP: Görünmez Bilgiyi Depoya Kodlama"
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/tr/resources/openai-advanced/sops/encode-knowledge-into-repo/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # SOP: Görünmez Bilgiyi Depoya Kodlama
 
 Bu SOP'u, önemli bağlam hâlâ Google Dokümanlar'da, sohbet konularında,

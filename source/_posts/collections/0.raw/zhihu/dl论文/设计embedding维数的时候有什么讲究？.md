@@ -1,9 +1,19 @@
 ---
-title: "设计embedding维数的时候有什么讲究？"
-date: 2022-05-21
-tags: [知乎]
-source: https://www.zhihu.com/question/60648826/answer/2442192637
+title: 设计embedding维数的时候有什么讲究？
+date: "2022-05-21 00:00:00"
+updated: "2022-05-21 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/dl论文/设计embedding维数的时候有什么讲究/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://www.zhihu.com/question/60648826/answer/2442192637
 ---
+
 
 rot.cx
 

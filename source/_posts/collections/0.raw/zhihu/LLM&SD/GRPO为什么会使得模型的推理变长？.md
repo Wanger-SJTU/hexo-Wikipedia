@@ -1,10 +1,19 @@
 ---
-title: "GRPO为什么会使得模型的推理变长？"
-date: 2025-07-24
-tags: [知乎]
-source: https://www.zhihu.com/question/1912123003191433189/answer/1931657139484624539
-
+title: GRPO为什么会使得模型的推理变长？
+date: "2025-07-24 00:00:00"
+updated: "2025-07-24 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/LLM-SD/GRPO为什么会使得模型的推理变长/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://www.zhihu.com/question/1912123003191433189/answer/1931657139484624539
 ---
+
 
 直入主题，我们先把一个batch中的样本做一个分类，为了简化，我们只考虑0-1 reward，也就是说只有答对和打错两种可能，叠加回答的长度，我们可以分成以下四类：
 

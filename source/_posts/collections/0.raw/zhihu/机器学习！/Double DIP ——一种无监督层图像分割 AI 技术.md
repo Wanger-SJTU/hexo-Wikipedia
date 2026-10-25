@@ -1,9 +1,19 @@
 ---
-title: "Double DIP ——一种无监督层图像分割 AI 技术"
-date: 2019-06-03
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/67926513
+title: Double DIP ——一种无监督层图像分割 AI 技术
+date: "2019-06-03 00:00:00"
+updated: "2019-06-03 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/机器学习/Double-DIP-——一种无监督层图像分割-AI-技术/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/67926513
 ---
+
 
 **雷锋网 AI 科技评论按：**每月《Computer Vision News》都会选择一篇关于计算机视觉领域研究成果的论文进行回顾。今年三月份，他们选择了由 Yossi Gandelsman，Assaf Shocher 和 Michal Irani 三位学者*（下文中所提到的作者，均指以上三位学者）*共同完成的关于 Double-DIP 模型的论文，其中详细介绍了基于耦合的深度图像先验网络对单个图像进行无监督层分割这一技术。
 
@@ -21,13 +31,13 @@ source: https://zhuanlan.zhihu.com/p/67926513
 
 这种方法将图像分割成若干基本层，并提供一个统一的框架来对大量明显不同且无关的计算机视觉任务进行处理。所有这些图像分割的共同点是每个单独层内小块的分布比「混合」图像（即原始图像）更「简单」（均匀），从而导致每个单独层的内部相似性很强。已有研究证明小图像块（例如 5×5，7×7）的统计特征（分布）在自然图像中极具重复性，所以这种强内部重复性，可以很好的用于处理各种计算机视觉任务。
 
-![](asset/img_2fcbd631aeed.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_2fcbd631aeed.jpg)
 
 图1：图像分割的统一框架作者的方法结合内部补丁重现，即小块图像的重复出现的特性（无需监督即可解决任务的能力）和深度学习的强大力量，提出了一种基于 DIP 网络的无监督框架。当 DIP 网络的输入是随机噪声时，它也能学会重建单个图像（该图像作为训练的唯一输入）时，单个 DIP 网络被证明可以很好的捕获单个自然图像的低级统计数据。这个网络还被证实在无监督情况下，完全能够解决如：去噪，超分辨率和修复等问题。
 
 **图像分割基本原理**
 
-![](asset/img_a36f9a41aaf3.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_a36f9a41aaf3.jpg)
 
 图2：图像分割基本原理图 2 向我们说明了该方法的基本原理。它展示了如何利用 X 和 Y 两个图案，来混合产生新的更复杂的图像 Z。每个「纯」图案（X 和 Y）的小图像块的分布相比混合图像 Z 小图像块的分布更简单。众所周知，如果 X 和 y 是两个独立的随机变量，那么它们的和 Z = X + Y 的熵大于它们各自的熵。
 
@@ -37,7 +47,7 @@ source: https://zhuanlan.zhihu.com/p/67926513
 
 **图像分割工作模型**
 
-![](asset/img_2a58cf9ca489.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_2a58cf9ca489.jpg)
 
 图3：图像分割工作模型图 3 详细说明了 Double-DIP 对图像进行分割时的工作模型。两个深度图像先验（DIP）网络（DIP1 DIP2）将输入图像分割成对应的图像层（y1＆y2），然后根据二进制掩模 m（x）进行重组，以形成尽可能接近于输入图像本身的重建图像 I。
 
@@ -51,13 +61,13 @@ source: https://zhuanlan.zhihu.com/p/67926513
 
 每个 DIP 网络重建输入图像 I 的不同图层 yi；每个 DIPi 的输入是随机采样的均匀噪声 zi； 使用权重掩模 m（x） 混合 DIP 输出 yi = DIPi（zi），从而生成重建图像：
 
-![](asset/img_cda2b89cf751.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_cda2b89cf751.jpg)
 
 其应尽可能接近输入图像 I。
 
 对于某些任务中，权重掩模 m 非常简单，而在其他情况下则需要进行学习（使用附加 DIP 网络）。学习的掩模 m 可以是均匀的或空间变化的，连续的或二进制的。对 m 的约束条件与任务相关联，并且使用指定任务的「正则化损失」来强制执行。因此优化损失是：
 
-![](asset/img_f3c6a53a1600.png)
+![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_f3c6a53a1600.png)
 
 关于 Double-DIP 网络的训练和优化类似于基本 DIP。而在输入噪声中，增加额外的非恒定噪声扰动可以增加重建的稳定性。通过使用 8 个变换（4 个旋转 90°和 2 个镜像反射 - 垂直和水平）转换输入图像 I 和所有 DIP 的相应随机噪声输入，可以进一步丰富训练集。
 
@@ -74,17 +84,17 @@ source: https://zhuanlan.zhihu.com/p/67926513
 - **前景/背景分割**
 我们可以设想将图像分割成前景和背景区域，前景层为 y1，背景层为 y2，对于每个像素根据二进制掩模 m（x）进行组合，得到：
 
-![](asset/img_8a8f1a25770c.png)
+![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_8a8f1a25770c.png)
 
 **
 
 这个公式非常适合文中所提到的框架，它将「好的图像片段」定义为易于通过自身合成，但很难使用图像其他部分进行合成这个概念。为了使分割掩码 m（x）变为二进制，我们使用以下正则化损失：
 
-![](asset/img_8cfd71744eb8.png)
+![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_8cfd71744eb8.png)
 
 Double-DIP 能够基于无监督的层分割获得高质量的分割，如图 4 所示，更多图像分割结果可以在该项目的网站上进行观看。尽管有许多其他分割方法（其中包括语义分割）的表现甚至比 DIP 要好，然而它们都有一个的缺点——需要用大量的数据训练。
 
-![](asset/img_8e4264fecff4.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_8e4264fecff4.jpg)
 
 图4：图像分割实例
 
@@ -93,7 +103,7 @@ Double-DIP 能够基于无监督的层分割获得高质量的分割，如图 4 
 
 和图像分割不同，在这种情况下，掩模没有被明确设置，而是使用两种实际解决方案之一来处理固有的透明层模糊性。如果仅涉及单个水印，则用户通过带有边界框来标记水印区域；而当有少量图像具有相同的水印时（通常 2-3 张图像），在训练过程中将由模糊性原则自行处理。图 5 为一些水印去除的实例：
 
-![](asset/img_b2913438103a.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_b2913438103a.jpg)
 
 图5：水印去除实例**结论**
 
@@ -107,4 +117,4 @@ Double-DIP 能够基于无监督的层分割获得高质量的分割，如图 4 
 杂志原文地址
 https://www.rsipvision.com/ComputerVisionNews-2019May/4/Github项目推荐：**
 
-![](asset/img_f7cf3653f079.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_f7cf3653f079.jpg)

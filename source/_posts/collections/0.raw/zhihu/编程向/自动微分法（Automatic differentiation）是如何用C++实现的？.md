@@ -1,10 +1,19 @@
 ---
-title: "自动微分法（Automatic differentiation）是如何用C++实现的？"
-date: 2026-04-15
-tags: [知乎]
-source: https://www.zhihu.com/question/48356514/answer/123290631
+title: 自动微分法（Automatic differentiation）是如何用C++实现的？
+date: "2026-04-15 00:00:00"
+updated: "2026-04-15 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/编程向/自动微分法(Automatic-differentiation)是如何用C-实现的/
 disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://www.zhihu.com/question/48356514/answer/123290631
 ---
+
 
 - - - - - - - - - - - - - - - - - - - - - - - - 2016年10月6日 更新- - - - - - - - - - - - - - - - - - - - - - - - 
 
@@ -18,7 +27,7 @@ disableNunjucks: true
 
 **图一**
 
-![](asset/img_18018a571aa9.jpg)![](asset/img_47dea8e2ee17.webp)
+![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_18018a571aa9.jpg)![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_47dea8e2ee17.webp)
 
 自动微分的第一个难点就在这，微积分中的链式法则。大家在课堂上学的链式法则的示例通常只有两到三个函数，而自动微分面对的计算，有无数个函数。许多人不习惯在这样大的规模上应用链式法则。不过一旦习惯，就会发现自动微分的原理十分简单。
 
@@ -26,7 +35,7 @@ disableNunjucks: true
 
 **图二**
 
-![](asset/img_43bc951ca4c4.jpg)![](asset/img_2d4e6a9f7615.webp)
+![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_43bc951ca4c4.jpg)![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_2d4e6a9f7615.webp)
 
 在上图中，顶部方程是二维旋转。输入 x 有三个变量，旋转角度及二维坐标。输出 z 有两个变量，即旋转后的二维坐标。上图列表第二列是该计算的序列形式，第一列是每一步对应的表达式，第三列是对应的链式法则（请对比图一）。
 
@@ -36,7 +45,7 @@ disableNunjucks: true
 
 **图三**
 
-![](asset/img_75a588d4d9f6.jpg)
+![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_75a588d4d9f6.jpg)
 
 不难发现，两张图是等价的。也就是说，计算序列形式的每一步都与其导数计算的步骤有一一对应的关系。源程序怎么算，其导数就可以怎么算（从顺序上来说）。
 
@@ -147,7 +156,7 @@ int main()
 
 运行结果：
 
-![](asset/img_aa1be7729dda.jpg)
+![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_aa1be7729dda.jpg)
 
 矢量 [2,1] 被旋转 180° ， 变为 [-2,-1]。关于角度的导数为 [-1,2]。
 

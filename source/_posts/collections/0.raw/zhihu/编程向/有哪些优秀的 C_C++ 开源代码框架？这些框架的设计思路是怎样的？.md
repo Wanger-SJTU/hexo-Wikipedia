@@ -1,9 +1,19 @@
 ---
-title: "有哪些优秀的 C/C++ 开源代码框架？这些框架的设计思路是怎样的？"
-date: 2026-04-15
-tags: [知乎]
-source: https://www.zhihu.com/question/20201738/answer/2928936881
+title: 有哪些优秀的 C/C++ 开源代码框架？这些框架的设计思路是怎样的？
+date: "2026-04-15 00:00:00"
+updated: "2026-04-15 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/编程向/有哪些优秀的-C_C-开源代码框架-这些框架的设计思路是怎样的/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://www.zhihu.com/question/20201738/answer/2928936881
 ---
+
 
 给你几个能学到思路的：
 
@@ -11,7 +21,7 @@ source: https://www.zhihu.com/question/20201738/answer/2928936881
 
 **“Structured concurrency” refers to a way to structure async  computations so that child operations are guaranteed to complete before  their parents, just the way a function is guaranteed to complete before  its caller.****“结构化并发”指的是一种构建异步计算的方式，以便保证子操作在其父操作之前完成，就像保证函数在其调用者之前完成的方式一样。简单地说，有了这种思想的保证，即使在并发环境中，函数嵌套调用时参数的作用域也是严格嵌套的，你不需要用智能指针之类的技术，也不会发生不小心的内存泄露。如果想要详细理解，看这里：
 
-[![](asset/img_d8cfa17add10.jpg)Structured Concurrencyericniebler.com//08/structured-concurrency/](https://link.zhihu.com/?target=https%3A//ericniebler.com//08/structured-concurrency/)
+[![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_d8cfa17add10.jpg)Structured Concurrencyericniebler.com//08/structured-concurrency/](https://link.zhihu.com/?target=https%3A//ericniebler.com//08/structured-concurrency/)
 
 C++标准想要一个官方的异步调用模型，在最后一次投票中，senders以微弱的优势打败了asio。
 
@@ -25,7 +35,7 @@ senders源码：
 
 asio源码的设计思想看起来自成一套，而且有一些看似独特的概念，像completion token之类的，其实这并非作者发明，而是运用了一些早已被总结出来的设计模式，这些模式被收录在《面向模式的软件体系构架，卷2》中：
 
-![](asset/img_b9d64e1ca3de.jpg)![](asset/img_4274d977f6a9.webp)
+![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_b9d64e1ca3de.jpg)![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_4274d977f6a9.webp)
 
 这个书的内容本身并不难，如果想彻底看懂asio的源码，可以花点时间看看此书。
 
@@ -37,7 +47,7 @@ asio源码：
 
 LSM-Tree全名Log-structured merge-tree，是一种分层、有序、面向磁盘的数据结构，其核心思想是充分了利用了「磁盘批量顺序写要远比随机写性能高出很多」的原理。
 
-![](asset/img_d0f1a2754fd5.jpg)
+![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_d0f1a2754fd5.jpg)
 
 从leveldb中学到了很多东西，但是我觉得最值得学习的还是lsm，虽然它是一种古老的数据结构，但是leveldb让它老树开出了新花，理解它、并且能够自己用代码实现它，可以让自己的编程能力提高一个level，这也契合了leveldb这个名字。
 

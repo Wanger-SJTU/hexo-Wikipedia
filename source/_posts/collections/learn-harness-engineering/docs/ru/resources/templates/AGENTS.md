@@ -1,3 +1,16 @@
+---
+title: AGENTS.md
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/ru/resources/templates/AGENTS/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # AGENTS.md
 
 Этот репозиторий рассчитан на длительную работу с агентом-кодером. Цель — не максимизировать сырой объём кода. Цель — оставить репозиторий в состоянии, в котором следующая сессия сможет продолжить, не гадая.

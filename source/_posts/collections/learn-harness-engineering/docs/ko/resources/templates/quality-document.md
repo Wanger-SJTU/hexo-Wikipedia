@@ -1,3 +1,16 @@
+---
+title: 품질 문서 (Quality Document)
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/ko/resources/templates/quality-document/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # 품질 문서 (Quality Document)
 
 각 제품 도메인(product domain)과 아키텍처(architecture) 레이어(layer)에 대한 품질 스냅샷(snapshot)입니다. 에이전트(agent)와 사람 모두 이 문서를 사용하여 코드베이스(codebase)에서 강한 부분과 보완이 필요한 부분을 빠르게 파악할 수 있습니다.

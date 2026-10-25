@@ -1,9 +1,19 @@
 ---
-title: "(2 条消息) MNN Geometry机制详解"
-date: 2024-10-10
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/674095025
+title: (2 条消息) MNN Geometry机制详解
+date: "2024-10-10 00:00:00"
+updated: "2024-10-10 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/MNN-Geometry机制详解/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/674095025
 ---
+
 
 ### MNN开源地址：
 
@@ -17,7 +27,7 @@ MNN在[1.1.0](https://link.zhihu.com/?target=https%3A//github.com/alibaba/MNN/re
 
 首先说一下Geometry的动机，是为了降低适配多种后端的工作量而引入的。MNN作为一个通用性强的推理框架，需要满足算子支持上的通用性和后端可执行设备的通用性。因为算子需要针对每种后端做实现和优化，因此`总工作量 = 算子 x 后端`，在通用性的支持上工作量是非常大的。同时我们发现有一些算子其实是可以拆解为更基础的算子组合来实现的，但是组合实现是非常灵活的，并不能简单进行拆解组合。因此我们引入了Geometry的机制，通过引入了Raster元算子来抽象所有的内存映射来完成这个拆解组合实现，来降低通用性适配的工作量。
 
-![](asset/img_f0fccdf9cf9a.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_f0fccdf9cf9a.jpg)
 
 ### Raster元算子
 
@@ -27,7 +37,7 @@ MNN在[1.1.0](https://link.zhihu.com/?target=https%3A//github.com/alibaba/MNN/re
 
 那么具体应该怎么描述这种张量的映射规则呢？考虑到我们对内存的实际操作是在一维空间，所以对于所有张量 \vec{x} \in Z^{n} 其映射到一维空间的函数可以描述为 f(\vec{x}) = \vec{stride} \cdot \vec{x} + \vec{offset} ；因此对于任意张量 \vec{x} 我们只需要 \vec{stride}和 \vec{offset} 就可以描述其到一维空间的映射，我们只需要给出张量的读、写映射，以及张量的范围就可以描述这内存的映射规则；对于相同的内存空间不同的 f(\vec{x}) 映射读取的张量如下图所示：
 
-![](asset/img_e091b57cf83d.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_e091b57cf83d.jpg)
 
 因此我们可以使用stride和offset来描述一段内存，指定张量的任意读取方式；同样的也可以描述任意张量对应的写方式。为了实现更加简单，同时考虑到GPU中的实现，这里我们将stride和offset的长度固定为3，对于不足3的高位补0即可；对于大于3的张量可以使用多组stride和offset来描述。因此我们使用如下数据结构来描述内存的映射关系，对于任意内存映射都可以通过改变这些这些参数来描述。
 
@@ -57,9 +67,9 @@ $Raster的实际实现就是遍历所有的Region，按照映射规则 \forall\v
 
 有了能够描述所有内存映射的Raster元算子之后，我们可以将算子划分为3类：原子算子（基础计算），形变算子（只有内存映射），复合算子（基础运算+内存映射的组合）。对于这3类算子我们可以将其进行转换，原子算子不变，形变算子全部变换为Raster，复合算子拆解成Raster与原子算子的组合。这样实现之后我们就可以大大降低算子到各个后端实现的工作量。将算子分解转换之后，后端实际需要实现的算子总工作量相比原始的实现，总工作量可以降低约46%，提升算子优化的工作效率。
 
-![](asset/img_394d4fbe7a32.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_394d4fbe7a32.jpg)
 
-![](asset/img_6f20f939bf4a.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_6f20f939bf4a.jpg)
 
 ### 元算子融合
 
@@ -70,15 +80,15 @@ $Raster的实际实现就是遍历所有的Region，按照映射规则 \forall\v
 - 删除：size=1维度可删除（loop unroll）
 - 交换：各维度可以互换（loop interchange）
 - 扩充：可按照规则增加维度（loop tiling）
-![](asset/img_c3a27cb5fcfa.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_c3a27cb5fcfa.jpg)
 
 考虑循环融合的规则，基础融合的规则为：读写stride相同可消去（loop fusion)。在前面3条等价变换的规则加上融合规则后可以搜索出多种融合规则。
 
-![](asset/img_e8c2046d18a7.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_e8c2046d18a7.jpg)
 
 在引入这些规则之后，能够将连续的Raster进行融合，降低Raster的数目，减少内存开销；以下是一些模型0融合前后的Raster数目，可以看到优化之后内存相关的总操作可以降低10%左右。
 
-![](asset/img_033e1c423069.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_033e1c423069.jpg)
 
 ### 总结
 

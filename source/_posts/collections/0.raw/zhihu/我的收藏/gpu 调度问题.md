@@ -1,9 +1,19 @@
 ---
-title: "gpu 调度问题"
-date: 2025-05-02
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/25685241636
+title: gpu 调度问题
+date: "2025-05-02 00:00:00"
+updated: "2025-05-02 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/gpu-调度问题/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/25685241636
 ---
+
 
 gpu 调度问题
 

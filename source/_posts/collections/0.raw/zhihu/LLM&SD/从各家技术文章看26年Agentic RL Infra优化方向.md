@@ -1,9 +1,19 @@
 ---
-title: "从各家技术文章看26年Agentic RL Infra优化方向"
-date: 2026-02-21
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/2007250216227729670
+title: 从各家技术文章看26年Agentic RL Infra优化方向
+date: "2026-02-21 00:00:00"
+updated: "2026-02-21 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/LLM-SD/从各家技术文章看26年Agentic-RL-Infra优化方向/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/2007250216227729670
 ---
+
 
 趁着春节有空，自己调研了一些目前Agentic RL场景下对Infra的一些需求，主要内容都来自于各家大厂的文章
 
@@ -27,7 +37,7 @@ RLFramework(Verl/Slime) -> [AgentServer  RolloutEngine] => [AsyncBuffer] -> Trai
 
 整体架构是这样的
 
-![](asset/img_ebe51633b2f5.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_ebe51633b2f5.jpg)
 
 而对于AgentServer实际上又有两种情况
 
@@ -37,11 +47,11 @@ RLFramework(Verl/Slime) -> [AgentServer  RolloutEngine] => [AsyncBuffer] -> Trai
 
 比如在DeepSeek V32技术报告中提到的对于thinking模型的做法是一旦当用户消息到达时，会清除掉Thinking 的内容避免上下文过长。
 
-![](asset/img_350b71eb0990.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_350b71eb0990.jpg)
 
 而对于SearchAgent(例如BrowseComp)，目前几家(ClaudeCode opus4.5 / DS v32 / Kimi K2.5 / GLM 5)都是采用了discard-all策略：即token阈值超过80%时 reset掉整个上下文窗口，ClaudeCode给出的API大概长这样
 
-![](asset/img_ea34ec0f62a1.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_ea34ec0f62a1.jpg)
 
 在ForgeRL中会将 Context Management 建模为 agent action，显式的在训练中告知模型上下文的变化情况，从而让模型在训练阶段就能感知到CM的变化，进而在CM变化时更加关注 State-critical Token .
 
@@ -53,7 +63,7 @@ RLFramework(Verl/Slime) -> [AgentServer  RolloutEngine] => [AsyncBuffer] -> Trai
 
 具体的算法如下，原文讲的比较详细
 
-![](asset/img_5c8c28ac0dab.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_5c8c28ac0dab.jpg)
 
 #### Prefix Tree Merging
 
@@ -63,7 +73,7 @@ RLFramework(Verl/Slime) -> [AgentServer  RolloutEngine] => [AsyncBuffer] -> Trai
 
 蚂蚁AReal团队也提了一种类似的TreeAttention的方案，使用DFS来算Attention，详细可见论文：AREAL-DTA: Dynamic Tree Attention for Efficient Reinforcement Learning of Large Language Models
 
-![](asset/img_20d2e5377aa2.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_20d2e5377aa2.jpg)
 
 #### 推理加速
 
@@ -90,13 +100,13 @@ mmx的原文如下，讲的也比较直白
 
 和ForgeRL类似，Roll框架也实现了单独的AgentServer：即采用Rock作为Sandbox，启动内置了iFlow Cli作为Agent实现与模型的交互
 
-![](asset/img_7f1d34025f79.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_7f1d34025f79.jpg)
 
 #### Agent环境处理
 
 在Agentic RL训练时，由于Agent经常会留下中间产物 (例如 临时文件)，这些临时产物可能会间接的提示模型，因此需要对严格环境进行管理，否则会导致模型经常"偷懒"，甚至会直接读取或修改测试脚本 (例如在观测结果中看到测试脚本调用次数显著上升)
 
-![](asset/img_0ac773cff88a.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_0ac773cff88a.jpg)
 
 -  防止资源泄露与污染，Roll进行严格的环境清理：
 
@@ -136,7 +146,7 @@ mmx的原文如下，讲的也比较直白
 
 ThunderAgent解决问题的思路非常直观：遇事不决加一层，ThunderAgent就是在AgentServer与RolloutEngine之间加了一个代理层
 
-![](asset/img_0f202ceee7a8.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_0f202ceee7a8.jpg)
 
 #### program Abstraction
 
@@ -233,7 +243,7 @@ Group → req1 → chunk1(8K) → chunk2(8K) → chunk3(8K) → ...
 
 #### Adaptive Grouped Speculative Decoding (自适应分组Spec)
 
-![](asset/img_fa9d9e057080.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_fa9d9e057080.jpg)
 
 - 对于采用Draft-Model做Spec的方式，会时常由于RL在Target Model和Draft Model之间的权重更新不同步导致DraftModel的接受率降低
 - 对于传统的N-Gram算法，受限于单机执行，无法充分利用GRPO算法的特点

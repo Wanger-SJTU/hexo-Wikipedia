@@ -1,3 +1,16 @@
+---
+title: OpenAI 高级资源包
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/zh/resources/openai-advanced/index/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # OpenAI 高级资源包
 
 这个文件夹把 OpenAI 那篇《Harness engineering: leveraging Codex in an

@@ -1,13 +1,23 @@
 ---
 title: "(1 条消息) Search Anything: 给本地搜索插上大模型的翅膀—语义搜索你的电脑、手机和云端的任何信息"
-date: 2023-09-07
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/641128049
+date: "2023-09-07 00:00:00"
+updated: "2023-09-07 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/Search-Anything_-给本地搜索插上大模型的翅膀—语义搜索你的电脑、手机和云端的任何信息/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/641128049
 ---
+
 
 **哎？我前几天和同事讨论的关于「LLM的总结」**放哪啦？我记得是放XXX文件夹的呀... **该写论文了，想找出「所有关于LLM prompt的文献」**，但有的没有打标签，该怎么寻找呢？ ‍ **女朋友叫我做一个VLOG纪念三周年，要找出「我们的所有合照」**，一张一张找好费时间呀... 你是否正为大量信息的检索而苦恼？我们的开源项目：**「SearchAnything」**，将成为你的解决方案。SearchAnything利用最尖端的AI大模型，采用**「语义搜索」**的方式，彻底改变处理和获取信息的方式！对于文本和图像的内容，SearchAnything基于其语义进行索引和搜索，而不仅仅是基于关键词。这一创新性的设计，使得无论你在寻找具体信息，还是在寻找含义相关的上下文，SearchAnything都能够提供准确而高效的结果。
 
-![](asset/img_0d0a6786ef45.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_0d0a6786ef45.jpg)
 
 现在，SearchAnything支持的文件类型包括PDF、TXT、MD格式的文本，以及JPG、JPEG、PNG格式的图像。我们的目标是让SearchAnything成为处理任何类型文件的强大工具，未来我们将加入对PPTX，WORD以及音频的支持！我的SearchAnything可以帮助文字工作者、视频创作者快速的检阅想要的内容，更高效的进行创作。随着Windows Copilot等大模型集成于操作系统和专业的应用软件，我们相信，Search Anything所代表的大模型为核心的人机交互方式也会助力今后的新一代应用开发。
 
@@ -20,12 +30,12 @@ source: https://zhuanlan.zhihu.com/p/641128049
 ### **  DEMO 体验**
 
 - **文本搜索：**
-![](asset/img_e2f21cd9a965.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_e2f21cd9a965.jpg)
 
 搜索文本
 
 - 图片搜索：
-![](asset/img_ddd171a043ed.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_ddd171a043ed.jpg)
 
 图片搜索**
 
@@ -33,7 +43,7 @@ source: https://zhuanlan.zhihu.com/p/641128049
 
 下图展示了Search Anything的工作流程。
 
-![](asset/img_b83b6bdc0639.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_b83b6bdc0639.jpg)
 
 Search Anything主要涉及两个步骤：
 

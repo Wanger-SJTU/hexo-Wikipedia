@@ -1,3 +1,16 @@
+---
+title: Proyecto 02. Haz el proyecto legible y retoma el trabajo donde lo dejaste
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/es/projects/project-02-agent-readable-workspace/index/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 [中文版本 →](../../../zh/projects/project-02-agent-readable-workspace/)
 
 > Lecciones relacionadas: [Lección 03. Convierte el repositorio en tu única fuente de verdad](./../../lectures/lecture-03-why-the-repository-must-become-the-system-of-record/index.md) · [Lección 04. Divide las instrucciones en varios archivos](./../../lectures/lecture-04-why-one-giant-instruction-file-fails/index.md)

@@ -1,3 +1,16 @@
+---
+title: Dự án 03. Giữ cho Agent Tiếp tục Làm việc Qua Các Lần Khởi động Lại Phiên
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/vi/projects/project-03-multi-session-continuity/index/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 [English Version →](../../../en/projects/project-03-multi-session-continuity/) | [中文版本 →](../../../zh/projects/project-03-multi-session-continuity/)
 
 > Bài giảng liên quan: [Bài 05. Duy trì ngữ cảnh qua các phiên](./../../lectures/lecture-05-why-long-running-tasks-lose-continuity/index.md) · [Bài 06. Khởi tạo trước mỗi phiên agent](./../../lectures/lecture-06-why-initialization-needs-its-own-phase/index.md)

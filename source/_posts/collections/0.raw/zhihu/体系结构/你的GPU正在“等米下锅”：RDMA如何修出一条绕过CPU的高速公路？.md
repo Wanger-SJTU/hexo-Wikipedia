@@ -1,10 +1,19 @@
 ---
-title: "你的GPU正在“等米下锅”：RDMA如何修出一条绕过CPU的高速公路？"
-date: 2026-03-18
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/2017534731764377452
-
+title: 你的GPU正在“等米下锅”：RDMA如何修出一条绕过CPU的高速公路？
+date: "2026-03-18 00:00:00"
+updated: "2026-03-18 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/体系结构/你的GPU正在“等米下锅”-RDMA如何修出一条绕过CPU的高速公路/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/2017534731764377452
 ---
+
 
 打破冯·诺依曼的枷锁——RDMA与现代集群网络的觉醒
 欢迎来到这场关于现代数据中心网络底座的深度拆解之旅。本文是全面解析RDMA及Mooncake、Infinistore等现代传输库的三部曲之第一部。在这部分中，我们将把显微镜对准底层架构，看看为了喂饱那些饥渴的GPU，网络技术究竟经历了怎样惨烈的进化。

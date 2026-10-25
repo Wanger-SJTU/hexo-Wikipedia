@@ -1,3 +1,16 @@
+---
+title: 프롬프트 보정 (Prompt Calibration)
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/ko/resources/reference/prompt-calibration/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # 프롬프트 보정 (Prompt Calibration)
 
 루트 지침(root instructions)은 가능한 모든 행동을 나열하는 것이 아니라 운영 프레임(operating frame)을 정의해야 합니다. 파일이 지나치게 커지면 에이전트(agent)가 중요한 정보를 찾기 어려워지고, 유지보수도 까다로워집니다.

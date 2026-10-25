@@ -1,9 +1,19 @@
 ---
-title: "详解CUDA的Context、Stream、Warp、SM、SP、Kernel、Block、Grid"
-date: 2023-05-20
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/266633373
+title: 详解CUDA的Context、Stream、Warp、SM、SP、Kernel、Block、Grid
+date: "2023-05-20 00:00:00"
+updated: "2023-05-20 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/优化/详解CUDA的Context、Stream、Warp、SM、SP、Kernel、Block、Grid/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/266633373
 ---
+
 
 最近做了些模型性能优化的项目，用到了CUDA的context、stream、SM、Warp、多流、MPS等概念，在此做个总结笔记。如有不准确的地方欢迎指正交流~
 
@@ -22,7 +32,7 @@ context类似于CPU上的进程上下，表示了，管理了由Driver层分配�
 
 与CPU进程的管理类似，每个Context有自己的地址空间，之间是隔离的，在一个Context中有效的东西（例如某个指针，指向一段显存；或者某个纹理对象），只能在这一个Context中使用。但一个CUDA Context中的任何一个kernel，挂掉后，则整个Context中的所有东西都会失效（例如所有的缓冲区，kernel对象，纹理对象，stream等等）。在同一个GPU上，可能同时存在1个或者多个CUDA Context的。
 
-![](asset/img_262cef43df11.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_262cef43df11.jpg)
 
 多个context在GPU上的运行方式对于context的创建与管理，CUDA runtime和CUDA driver API的方式稍有不同：
 
@@ -42,7 +52,7 @@ CUDA API可分为同步和异步两类，同步函数会阻塞host端的线程�
 
 当我们使用CUDA异步函数与多流（Multi Stream）时，多线程间既可以实现并行进行数据传输与计算，如下图所示。不过需要注意的是， CUDA runtime API默认的default stream是同步串行的，且一个进程内的所有线程都在default stream下，需要显式声明default之外的Stream才可以实现多流并发。
 
-![](asset/img_241ef5b1376b.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_241ef5b1376b.jpg)
 
 默认流与多流对比
 ### Hyper-Queue
@@ -53,7 +63,7 @@ Hyper-Q是GPU从Kepler架构后，Nvidia提出的硬件特性，允许多个CPU 
 
 **1、多流：**在stream中已经有介绍，利用CUDA异步函数以及多流的声明，既可以实现在多个线程的计算与数据传输的并行，增加GPU利用率。
 
-![](asset/img_0f1cee6c13d1.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_0f1cee6c13d1.jpg)
 
 多流示例**2、MPS：**多进程时使用MPS（Multi Process Service）。我们知道，每个进程默认对应一个context，而GPU在同一时刻只会运行一个context，因此进程间实际是无法并发的。
 
@@ -69,7 +79,7 @@ MPS是一个二进制兼容的客户端-服务器运行时实现的CUDA API，�
 
 **SM（streaming multiprocessor）：**多个SP加上其他的一些资源组成一个SM，也叫GPU大核，其他资源如：warp scheduler，register，shared memory等。SM可以看做GPU的心脏（对比CPU核心），register和shared memory是SM的稀缺资源。CUDA将这些资源分配给所有驻留在SM中的threads。因此，这些有限的资源就使每个SM中active warps有非常严格的限制，也就限制了并行能力。如下图是一个SM的基本组成，其中每个绿色小块代表一个SP。
 
-![](asset/img_50c4c0bc9ffe.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_50c4c0bc9ffe.jpg)
 
 SM构成每个SM包含的SP数量依据GPU架构而不同，Fermi架构GF100是32个，GF10X是48个，Kepler架构都是192个，Maxwell都是128个。当一个kernel启动后，thread会被分配到很多SM中执行。大量的thread可能会被分配到不同的SM，但是同一个block中的thread必然在同一个SM中并行执行。
 
@@ -89,7 +99,7 @@ SM构成每个SM包含的SP数量依据GPU架构而不同，Fermi架构GF100是3
 
 这里的grid与block是CUDA的线程组织方式，具体如下图所示：
 
-![](asset/img_ee817fdcc620.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_ee817fdcc620.jpg)
 
 **Grid：**由一个单独的kernel启动的所有线程组成一个grid，grid中所有线程共享global memory。Grid由很多Block组成，可以是一维二维或三维。
 
@@ -97,7 +107,7 @@ SM构成每个SM包含的SP数量依据GPU架构而不同，Fermi架构GF100是3
 
 CUDA中可以创建的网格数量跟GPU的计算能力有关，可创建的Grid、Block和Thread的最大数量如下所示：
 
-![](asset/img_10cd3000c01c.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_10cd3000c01c.jpg)
 
 所有CUDA kernel的启动都是异步的，当CUDA kernel被调用时，控制权会立即返回给CPU。在分配Grid、Block大小时，我们可以遵循这几点原则：
 

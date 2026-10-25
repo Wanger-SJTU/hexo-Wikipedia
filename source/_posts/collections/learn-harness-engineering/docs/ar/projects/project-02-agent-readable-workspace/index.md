@@ -1,3 +1,16 @@
+---
+title: المشروع 02. اجعل المشروع قابلًا للقراءة واستأنف من حيث توقفت
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/ar/projects/project-02-agent-readable-workspace/index/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 [中文版本 →](../../../zh/projects/project-02-agent-readable-workspace/)
 
 > محاضرات مرتبطة: [المحاضرة 03. اجعل المستودع مصدر الحقيقة الوحيد](./../../lectures/lecture-03-why-the-repository-must-become-the-system-of-record/index.md) · [المحاضرة 04. قسّم التعليمات عبر ملفات](./../../lectures/lecture-04-why-one-giant-instruction-file-fails/index.md)

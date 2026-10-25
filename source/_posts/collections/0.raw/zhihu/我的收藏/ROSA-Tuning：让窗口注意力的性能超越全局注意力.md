@@ -1,10 +1,19 @@
 ---
-title: "ROSA-Tuning：让窗口注意力的性能超越全局注意力"
-date: 2025-10-13
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/1961157231279047650
-
+title: ROSA-Tuning：让窗口注意力的性能超越全局注意力
+date: "2025-10-13 00:00:00"
+updated: "2025-10-13 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/ROSA-Tuning-让窗口注意力的性能超越全局注意力/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/1961157231279047650
 ---
+
 
 github网址：[zyaaa-ux/ROSA-Tuning: ROSA-Tuning](https://link.zhihu.com/?target=https%3A//github.com/zyaaa-ux/ROSA-Tuning)
 

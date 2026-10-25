@@ -1,3 +1,16 @@
+---
+title: "Projet 01. Prompt seul vs règles d'abord : quelle différence cela fait-il ?"
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/fr/projects/project-01-baseline-vs-minimal-harness/index/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 [中文版本 →](../../../zh/projects/project-01-baseline-vs-minimal-harness/)
 
 > Leçons liées : [Leçon 01. Les modèles forts ne garantissent pas une exécution fiable](./../../lectures/lecture-01-why-capable-agents-still-fail/index.md) · [Leçon 02. Ce que signifie vraiment harness](./../../lectures/lecture-02-what-a-harness-actually-is/index.md)

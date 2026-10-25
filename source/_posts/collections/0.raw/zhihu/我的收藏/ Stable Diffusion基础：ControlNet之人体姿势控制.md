@@ -1,9 +1,19 @@
 ---
-title: "(1 条消息) Stable Diffusion基础：ControlNet之人体姿势控制"
-date: 2024-12-03
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/649325629
+title: (1 条消息) Stable Diffusion基础：ControlNet之人体姿势控制
+date: "2024-12-03 00:00:00"
+updated: "2024-12-03 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/Stable-Diffusion基础-ControlNet之人体姿势控制/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/649325629
 ---
+
 
 在AI绘画中精确控制图片是一件比较困难的事情，不过随着 ControlNet 的诞生，这一问题得到了很大的缓解。 今天我就给大家分享一个使用Stable Diffusion WebUI + OpenPose ControlNet 复制照片人物姿势的方法，效果可以参考上图。
 
@@ -21,7 +31,7 @@ source: https://zhuanlan.zhihu.com/p/649325629
 
 **
 
-![](asset/img_df90840ee46f.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_df90840ee46f.jpg)
 
 如果访问github不畅，也可以通过别的方式下载插件包和对应的模型，然后自己部署到 stable-diffusion-webui 中。文章最后提供了我整理的插件包和各种模型。
 
@@ -34,17 +44,17 @@ source: https://zhuanlan.zhihu.com/p/649325629
 
 安装成功后，在“文生图”、“图生图”界面的下方会出现 ControlNet 区域，点击右侧的展开按钮，下边有4个ControlNet单元，也就是我们可以同时使用4个ControlNet模型控制出图的效果，一般也就够了。
 
-![](asset/img_2fd3f20a7069.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_2fd3f20a7069.jpg)
 
 如果你的 ControlNet 只有1个单元，或者你想修改这个单元的数量，可以到“设置”中调整，如下图所示，找到“多重控制网:最大模型数量”，更改之后别忘了重启。
 
-![](asset/img_20d917888a86.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_20d917888a86.jpg)
 
 ### 复制图片姿势
 
 进入“文生图”界面，只需要选择一个你喜欢的大模型，填写简单的提示词就可以了。文章最后提供了我整理的模型合集，有兴趣的可以参考使用。
 
-![](asset/img_cfa7d5a0a03e.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_cfa7d5a0a03e.jpg)
 
 然后在页面下方的 ControlNet 中设置 OpenPose，按照下图所示的步骤操作：
 
@@ -57,15 +67,15 @@ source: https://zhuanlan.zhihu.com/p/649325629
 - 模型会自动带出，不用修改。它是在生成图片时根据骨架图控制人体姿势的。
 - 这个按钮可以将参考图片的尺寸带到“文生图”参数中，如果参考图片的高宽没有超过 1024 ，建议使用，超过1024的出图会比较慢，可以按照图片比例手动设置“文生图”中的高宽参数。
 
-![](asset/img_4f0010f2186a.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_4f0010f2186a.jpg)
 
 最后点击“生成”就等着出图吧。这里会输出两张图片，一张是使用大模型加OpenPose生成的图片，另一张是根据参考图片生成的骨架图，我们可以把这个骨架图复制出来，以后继续使用或者分享给别人使用。
 
-![](asset/img_1f774df7a5e4.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_1f774df7a5e4.jpg)
 
 注意看这个骨架图中是有一点手的形状的，所以理论上，如果我们在骨架图中描绘了手的形状，生成图片中的手是会受到一定约束的。再来一张总统挥手的照片，这只手看着还不错，不过也是生成了很多张之后挑选出来的。
 
-![](asset/img_931a179803f7.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_931a179803f7.jpg)
 
 生图参数：**
 
@@ -81,7 +91,7 @@ Steps: 20, Sampler: Euler a, CFG scale: 7, Seed: 289185078, Size: 656x432, Model
 - 上传照片使用骨架图。
 - 预处理器设置为None，因为我们不需要再从照片中提取人物的骨架图。
 
-![](asset/img_90070a82aa8d.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_90070a82aa8d.jpg)
 
 其他参数都不变，直接生成就好了。
 
@@ -104,7 +114,7 @@ Steps: 20, Sampler: Euler a, CFG scale: 7, Seed: 289185078, Size: 656x432, Model
 - 这里可以随机生成很多人体姿势。
 - 这里可以进入查看别人分享的姿势，有标签说明姿势是什么含义，选择下载就好了。
 
-![](asset/img_ebf1b367d662.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_ebf1b367d662.jpg)
 
 #### OpenPose Editor
 
@@ -112,11 +122,11 @@ Steps: 20, Sampler: Euler a, CFG scale: 7, Seed: 289185078, Size: 656x432, Model
 
 安装成功后，我们可以在一级页签中看到“OpenPose Editor”，这个插件的使用比较简单，可以在绘图区域这里直接调整人物的姿势，然后下载图片备用，或者直接发送到文生图、图生图等使用。
 
-![](asset/img_dc5c9eb4d867.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_dc5c9eb4d867.jpg)
 
 这里贴出我这个骨架图的出图效果：
 
-![](asset/img_eb4ac03beff3.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_eb4ac03beff3.jpg)
 
 生图参数：**
 
@@ -135,29 +145,29 @@ Steps: 30, Sampler: DPM++ 2M Karras, CFG scale: 7, Seed: 1995058330, Face restor
 - 特别支持了手脚的深度图、边缘检测图，用于优化手脚的生成，也可以单独只生成手。
 调整好后，点击“生成”。
 
-![](asset/img_f461e7fa806d.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_f461e7fa806d.jpg)
 
 生成后的预览图如下，第一张是骨架图，后边几张是用来画手脚的辅助图。
 
-![](asset/img_20a58a024773.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_20a58a024773.jpg)
 
 可以直接发送到文生图和图生图，也可以下载后备用。直接发送感觉不太好用，建议先下载再上传。ControlNet的设置方式和上文直接使用骨架图生成图片一样，注意不需要选择预处理器。
 
-![](asset/img_5ee7732851b8.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_5ee7732851b8.jpg)
 
 如果我们希望对手脚进行专门的修复，可以使用画手脚的辅助图。这里选择边缘检测这个ControlNet，注意还是不要选择预处理器，启动控制步数和结束控制步数大家可以根据实际情况调整，文生图中不要从0到1，会影响图片的结构，图生图中可以使用局部绘图修手修脚。
 
-![](asset/img_743d12c5ece1.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_743d12c5ece1.jpg)
 
 虽然我们专门对手脚进行了处理，但是出图的效果还是经常出现畸形的手脚，效果是有的，但和期望的差距还比较大。下边是两个例子：
 
 - 文生图带修手：
 
-![](asset/img_3de2d357001f.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_3de2d357001f.jpg)
 
 - 先文生图，再图生图局部修手：
 
-![](asset/img_be35e0a0f406.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_be35e0a0f406.jpg)
 
 ### 资源下载
 

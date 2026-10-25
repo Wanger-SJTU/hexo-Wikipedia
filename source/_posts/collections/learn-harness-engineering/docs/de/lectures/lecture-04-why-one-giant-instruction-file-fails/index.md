@@ -1,3 +1,16 @@
+---
+title: Lektion 04. Anweisungen auf Dateien verteilen
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/de/lectures/lecture-04-why-one-giant-instruction-file-fails/index/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 [中文版本 →](../../../zh/lectures/lecture-04-why-one-giant-instruction-file-fails/)
 
 > Codebeispiele: [code/](https://github.com/walkinglabs/learn-harness-engineering/blob/main/docs/de/lectures/lecture-04-why-one-giant-instruction-file-fails/code/)

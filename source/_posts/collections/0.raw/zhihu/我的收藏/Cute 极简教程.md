@@ -1,9 +1,19 @@
 ---
-title: "Cute 极简教程"
-date: 2026-01-04
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/1991248525925819668
+title: Cute 极简教程
+date: "2026-01-04 00:00:00"
+updated: "2026-01-04 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/Cute-极简教程/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/1991248525925819668
 ---
+
 
 Cute 极简教程
 

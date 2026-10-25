@@ -1,10 +1,24 @@
 ---
 title: Rebuilding Agentic AI for AMD GPU
-author: AMD AI Group, Moonshot AI Team
-url: https://www.amd.com/en/developer/resources/technical-articles/2026/rebuilding-agentic-ai-for-amd-gpu.html
-tags: [AI, GPU, AMD, KV Cache, Agentic, Serving, SGLang]
-date: 2026-07-23
+date: "2026-07-23 00:00:00"
+updated: "2026-07-23 00:00:00"
+layout: post
+permalink: /collections/0.raw/rebuilding-agentic-ai-for-amd-gpu/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - AI
+  - GPU
+  - AMD
+  - KV Cache
+  - Agentic
+  - Serving
+  - SGLang
 ---
+
 
 > 原文链接：<https://www.amd.com/en/developer/resources/technical-articles/2026/rebuilding-agentic-ai-for-amd-gpu.html>
 

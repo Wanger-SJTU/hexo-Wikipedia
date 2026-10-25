@@ -1,9 +1,19 @@
 ---
-title: "AI/Architecture/System/Hardware优质课程资源"
-date: 2025-12-26
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/1987691618317391635
+title: AI/Architecture/System/Hardware优质课程资源
+date: "2025-12-26 00:00:00"
+updated: "2025-12-26 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/体系结构/AI_Architecture_System_Hardware优质课程资源-7fbfdd/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/1987691618317391635
 ---
+
 
 ### 公开可下载的e-book
 

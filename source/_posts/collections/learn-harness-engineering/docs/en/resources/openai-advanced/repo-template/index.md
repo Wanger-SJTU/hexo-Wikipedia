@@ -1,3 +1,16 @@
+---
+title: Advanced Repo Template
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/en/resources/openai-advanced/repo-template/index/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # Advanced Repo Template
 
 Copy this starter into a real repository when you want an OpenAI-style

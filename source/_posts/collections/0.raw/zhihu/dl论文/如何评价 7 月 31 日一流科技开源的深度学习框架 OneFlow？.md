@@ -1,9 +1,19 @@
 ---
-title: "如何评价 7 月 31 日一流科技开源的深度学习框架 OneFlow？"
-date: 2026-04-23
-tags: [知乎]
-source: https://www.zhihu.com/question/409036335/answer/1373468192
+title: 如何评价 7 月 31 日一流科技开源的深度学习框架 OneFlow？
+date: "2026-04-23 00:00:00"
+updated: "2026-04-23 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/dl论文/如何评价-7-月-31-日一流科技开源的深度学习框架-OneFlow/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://www.zhihu.com/question/409036335/answer/1373468192
 ---
+
 
 成诚
 ​

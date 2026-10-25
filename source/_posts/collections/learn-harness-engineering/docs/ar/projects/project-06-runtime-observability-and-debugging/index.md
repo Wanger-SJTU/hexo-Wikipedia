@@ -1,3 +1,16 @@
+---
+title: المشروع 06. ابنِ harness كاملًا للوكيل (Capstone)
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/ar/projects/project-06-runtime-observability-and-debugging/index/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 [中文版本 →](../../../zh/projects/project-06-runtime-observability-and-debugging/)
 
 > محاضرات مرتبطة: [المحاضرة 11. اجعل runtime الخاص بالوكيل قابلًا للملاحظة](./../../lectures/lecture-11-why-observability-belongs-inside-the-harness/index.md) · [المحاضرة 12. Handoff نظيف في نهاية كل جلسة](./../../lectures/lecture-12-why-every-session-must-leave-a-clean-state/index.md)

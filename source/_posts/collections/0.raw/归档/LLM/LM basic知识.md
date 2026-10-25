@@ -1,14 +1,27 @@
+---
+title: LM basic知识
+date: "2026-04-11 21:40:28"
+updated: "2026-04-11 21:40:28"
+layout: post
+permalink: /collections/0.raw/归档/LLM/LM-basic知识/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 #llm 
 
 ## Causual LM
-这里以llama模型为例，通常在执行用户输入之前会有一个[[归档/LLM/LM basic知识#Prefill]]的过程。然后根据用户promts 得到输出。
+这里以llama模型为例，通常在执行用户输入之前会有一个<span class="wikilink wikilink--missing" title="未导入的页面">归档/LLM/LM basic知识</span>的过程。然后根据用户promts 得到输出。
 
-![[随笔/LLM/assets/causual LM.excalidraw|causual LM.excalidraw]]
+!<span class="wikilink wikilink--missing" title="未导入的页面">causual LM.excalidraw</span>
 
 
 ### Perfix LM
 这里以GLM为例介绍，展示了基本的流程。
-![[随笔/LLM/assets/prefix LM.excalidraw|prefix LM.excalidraw]]
+!<span class="wikilink wikilink--missing" title="未导入的页面">prefix LM.excalidraw</span>
 
 
 ## prefix LM和causal LM的区别

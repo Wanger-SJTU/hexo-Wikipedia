@@ -1,11 +1,21 @@
 ---
-title: "c++编译时间优化思路汇总"
-date: 2022-03-13
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/480293039
+title: c++编译时间优化思路汇总
+date: "2022-03-13 00:00:00"
+updated: "2022-03-13 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/优化/c-编译时间优化思路汇总/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/480293039
 ---
 
-![](asset/img_7b5d127eb3f7.jpg)
+
+![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_7b5d127eb3f7.jpg)
 
 作为c++程序员，瘫坐在椅子上等着clang给自己发工资（雾）是一种常态了。糟糕的代码结构和不合理的构建设计往往导致编译时间变的很长。所以，分析和优化c++代码的编译速度我认为是对程序员非常重要的。减少在电脑前坐牢的时间，避免加班。
 
@@ -29,7 +39,7 @@ ccache应该是最常见的优化方式，使用也非常简单，在编译指�
 
  从下图可以看出目前我的ccache提升效果还是可以的，命中率高达63%
 
-![](asset/img_0e34ad8a70d0.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_0e34ad8a70d0.jpg)
 
 实际在使用之后也能明显感受到从第二次开始的重新编译，走文件的速度有显著的改善
 
@@ -47,7 +57,7 @@ clang-9中增加了一个选项可以产生编译耗时的具体详情，通过�
 
 通过命令`clang++ -ftime-trace -c ./main.cpp -o test` 可以在编译的过程中多得到一个.json文件，简单的处理方法是直接拽到`chrome://tracing`里分析 一个简单的使用cout的hello world的编译耗时如下图所示
 
-![](asset/img_474b9f1cc0c8.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_474b9f1cc0c8.jpg)
 
 可以看到，主要的核心耗时是解析`iostream`这个头文件上，不知道这是否和你的预期相符呢
 

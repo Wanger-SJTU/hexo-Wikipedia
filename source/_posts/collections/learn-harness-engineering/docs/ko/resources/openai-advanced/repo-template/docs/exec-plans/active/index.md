@@ -1,3 +1,16 @@
+---
+title: 활성 계획(Active Plans)
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/ko/resources/openai-advanced/repo-template/docs/exec-plans/active/index/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # 활성 계획(Active Plans)
 
 이 폴더에 활성 실행 계획(active execution plan)을 마크다운 파일 형식으로 하나씩 보관하십시오.

@@ -1,3 +1,16 @@
+---
+title: Learn Harness Engineering へようこそ
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/ja/index/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # Learn Harness Engineering へようこそ
 
 Learn Harness Engineering は、AI コーディングエージェントを工程として扱うためのコースです。業界で進んでいる Harness Engineering の理論と実践を調査し、実際の開発に使える形に整理しています。主な参考資料は次のとおりです。

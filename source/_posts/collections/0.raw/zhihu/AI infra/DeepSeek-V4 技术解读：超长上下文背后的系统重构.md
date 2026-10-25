@@ -1,9 +1,19 @@
 ---
-title: "DeepSeek-V4 技术解读：超长上下文背后的系统重构"
-date: 2026-07-11
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/2059328957376377036
+title: DeepSeek-V4 技术解读：超长上下文背后的系统重构
+date: "2026-07-11 00:00:00"
+updated: "2026-07-11 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/AI-infra/DeepSeek-V4-技术解读-超长上下文背后的系统重构/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/2059328957376377036
 ---
+
 
 本文整理自 PACMAN 组内 DeepSeek-V4 技术报告分享，作者 @郭旻坤。 相比逐项复述指标，本文更关心一个工程问题：1M token context 到底贵在哪里，DeepSeek-V4 又是怎么压缩性能成本，把这件事做进可用区间的。DeepSeek 背后有很深的 infra 积累，以至于每一次模型发布，组里就跟过年一样。到 DeepSeek-V4 这一代，它做的事情已经不只是把模型上下文窗口扩到 1M token，而是把超长上下文带来的成本问题拆到模型结构、训练稳定性、推理缓存、MoE 通信和产品链路里分别处理。
 

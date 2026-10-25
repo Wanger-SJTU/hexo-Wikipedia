@@ -1,9 +1,19 @@
 ---
-title: "(1 条消息) CPU学习笔记：CHI协议-1.Introduction"
-date: 2023-08-09
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/647841067
+title: (1 条消息) CPU学习笔记：CHI协议-1.Introduction
+date: "2023-08-09 00:00:00"
+updated: "2023-08-09 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/CPU学习笔记-CHI协议-1.Introduction/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/647841067
 ---
+
 
 ### Introduction是CHI协议的第一章，主要内容是介绍了CHI的概念，应用场景，基本工作流程及其构成
 
@@ -74,7 +84,7 @@ PCIE子系统
 - Protocol
 - Network
 - Link
-![](asset/img_044e93f6b4e7.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_044e93f6b4e7.jpg)
 
  Layers of the CHI architecture> Communication granularity：通讯颗粒度
 Transaction：传输
@@ -119,7 +129,7 @@ Flit：切片
 
 #### 1.2拓扑结构**
 
-![](asset/img_6cc924465775.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_6cc924465775.jpg)
 
 CHI-Topology
 
@@ -237,7 +247,7 @@ Snoop
 
 #### 1.4.2传输种类列表
 
-![](asset/img_dfd681c78a91.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_dfd681c78a91.jpg)
 
 #### 1.5 一致性总览（Coherence overview）
 
@@ -247,7 +257,7 @@ Snoop
 - 如果两个组件往相同地址的memory发起写操作，这些操作可以被所有的组件以相同的顺序观察到，那么这个memory区域就是一致性的；
 图1所示为包含三个master组件的一致性系统，每个master组件包含一份loacl cache和一致性协议节点。CHI协议允许memory数据存放在一处或多处master cache当中。
 
-![](asset/img_eb84a4c6f3c3.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_eb84a4c6f3c3.jpg)
 
 coherence协议确保所有 master 在任何给定地址位置都观察到正确的数据值，它强制执行在任何位置出现 stores 时，不存在超过一个副本(*注：即MESI中的M，或者说MOESI中的O，这也是为什么cacheline中没有O时，代表着cache内的数据一定与主存一致，因为没人修改过它或者说修改已被推入主存*)。每次存储到某个位置后，其他主机可以为自己的本地缓存获得数据的新副本，从而允许存在多个缓存副本。After each store to a location, other masters can obtain a new copy of the data for their own local cache, to permit multiple cached copies to exist
 
@@ -263,9 +273,9 @@ CHI协议允许（不强求）主存的数据不是实时更新，只有在所�
 
 为了使得一个组件在访问cache line时，可以确定是否该执行某操作，CHI协议定义了cache state。每个cache state基于如下的cache line特性：
 
-![](asset/img_123886099c67.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_123886099c67.jpg)
 
-![](asset/img_443ea24d675c.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_443ea24d675c.jpg)
 
 > 协议节点访问cacheline后所需要执行的动作是根据cacheline state决定的，CHI协议规定的每个cacheline状态如下，一个cache允许只实现如下这些cache state的子集：
     I：Invalid，该cache line不存在于当前cache中(present in the cache)，即cache中没有目标数据使cacheline有效；
@@ -286,9 +296,9 @@ UDP态的获得：UDP态获得的前提是当前cacheline为UCE态，然后Reque
 
 先考虑cacheline是否是valid or invalid的，再考虑是否是unique or shared，之后再分别考虑dirty or clean;
 
-![](asset/img_c55be9b5460d.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_c55be9b5460d.jpg)
 
-![](asset/img_599fc181c173.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_599fc181c173.jpg)
 
 不过要特殊注意理解UCE和UDP；**
 
@@ -314,9 +324,9 @@ SN**（Subordinate Node）用于接收来自HN的请求，完成相应的操作,
 
 - **SN-F**：(Subordinate/slave Node type FOR Normal memory)（还记得ARM中的normal memory是啥不？）的从节点，可以处理Non-snoop读写请求、atomic请求、以及这些命令的其它形式、CMO（Cache Maintenance Operation）请求。
 - **SN-I**：Subordinate/slave Node type For peripheral or normal memory的从节点，可以处理Non-snoop读写、atomic操作、以及这些命令的其它形式、CMO请求。
-![](asset/img_eff9bc839f71.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_eff9bc839f71.jpg)
 
-![](asset/img_186f4ea74151.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_186f4ea74151.jpg)
 
 #### 1.7 读数据源
 
@@ -325,7 +335,7 @@ SN**（Subordinate Node）用于接收来自HN的请求，完成相应的操作,
 - Cache within ICN
 - Slave Node
 - Peer RN-F
-![](asset/img_ebea357a1376.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_ebea357a1376.jpg)
 
 对于RN-F或SN返回的读数据，可以发送给HN，HN再转发数据给原始的Requester；也可以直接跳过HN，返回数据给原始Requester，这样可以减少读数据的latency。有以下两种直接返回数据方式：
 

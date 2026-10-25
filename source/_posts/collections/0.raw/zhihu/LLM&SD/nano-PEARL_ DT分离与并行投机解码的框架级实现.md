@@ -1,10 +1,19 @@
 ---
 title: "nano-PEARL: DT分离与并行投机解码的框架级实现"
-date: 2025-11-03
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/1968679023782655324
-
+date: "2025-11-03 00:00:00"
+updated: "2025-11-03 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/LLM-SD/nano-PEARL_-DT分离与并行投机解码的框架级实现/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/1968679023782655324
 ---
+
 
 News: 
 

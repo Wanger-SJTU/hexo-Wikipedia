@@ -1,9 +1,19 @@
 ---
-title: "自己收藏的自学编程CS计算机科学和国外四大计算机名校路线课程计算机科班专业基础架构程序抽象数据结构算法"
-date: 2022-05-13
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/320063653
+title: 自己收藏的自学编程CS计算机科学和国外四大计算机名校路线课程计算机科班专业基础架构程序抽象数据结构算法
+date: "2022-05-13 00:00:00"
+updated: "2022-05-13 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/走向cs/自己收藏的自学编程CS计算机科学和国外四大计算机名校路线课程计算机科班专业基础架构程序抽象数据结构算法/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/320063653
 ---
+
 
 - 我不是程序猿，本人是水平极烂的阿猫阿狗社会业余人士。
 - 内容对错自己评判，一概不负责。希望不会误导人
@@ -22,7 +32,7 @@ source: https://zhuanlan.zhihu.com/p/320063653
 
 ——##——很多内容都更新到上面清爽版链接了。这篇有些内容没更新。
 
-![](asset/img_413f11b9bc7b.jpg)
+![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_413f11b9bc7b.jpg)
 
 - **启**
 
@@ -535,21 +545,21 @@ source: https://zhuanlan.zhihu.com/p/320063653
 
 ### 上面内容 · 补充细节描述
 
-**本文作者起初制作的图，仅作参考![](asset/img_d83a5061cb8f.jpg)
+**本文作者起初制作的图，仅作参考![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_d83a5061cb8f.jpg)
 
 > 《计算机系统要素》nand2tetris教学路线图
 
-![](asset/img_ea5832187f25.jpg)
+![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_ea5832187f25.jpg)
 
-![](asset/img_8d5c72381d47.jpg)
+![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_8d5c72381d47.jpg)
 
 > Berkeley课程路线图（大图点击链接）⭐⭐**
 
-![](asset/img_0df3160b9022.jpg)
+![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_0df3160b9022.jpg)
 
 ### 英语
 
-![](asset/img_e6be9912b30f.jpg)
+![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_e6be9912b30f.jpg)
 
 ### **如何看英文文档**
 
@@ -618,7 +628,7 @@ source: https://zhuanlan.zhihu.com/p/320063653
 - CS COURSE MAP
 - 加州大学伯克利分校（UCB）计算机学生的课程安排
 - [[持续更新] 那些年, 我在伯克利CS上过的神课](https://link.zhihu.com/?target=http%3A//yc.eethu.cn/%3F/article/12)
-![](asset/img_37ade752e2d0.jpg)
+![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_37ade752e2d0.jpg)
 
 ### 斯坦福计算机科学计划 
 
@@ -627,7 +637,7 @@ source: https://zhuanlan.zhihu.com/p/320063653
 - Stanford斯坦福--计算机科学官网 
 - CMU计算机科学计划
 - 计算机科学附加专业(2017年入学前)
-![](asset/img_3fe5d97161f1.jpg)
+![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_3fe5d97161f1.jpg)
 
 - CS106A 是编程和计算机科学的第一门课程，为那些没有任何经验的人开设。CS106B 是第二门课程，为那些懂得基本编程的人讲授更高级的编程和计算机科学。
 - CS106A 为以前没有编过程序的人介绍了代码和计算机编程。**
@@ -655,20 +665,20 @@ source: https://zhuanlan.zhihu.com/p/320063653
 
 ### CMU卡内基梅隆大学  计算机科学
 
-![](asset/img_61a425fb1bf9.jpg)
+![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_61a425fb1bf9.jpg)
 
 ### MIT OpenCourseWare (OCW)
 
 > 这个想法很简单: 把我们所有的课程材料都发布到网上，让每个人都能广泛地获得。”麻省理工学院工程学院教授 Dick k.p. Yue 麻省理工学院 MIT开放课程是一个基于网络的出版物，几乎涵盖了麻省理工学院的所有课程内容。开放式课程对全世界开放，并且是麻省理工学院的永久活动。 通过开放式课程，教育工作者改进课程和课程，使学校更加有效; 学生找到额外的资源来帮助他们成功; 独立学习者丰富他们的生活，并使用内容来应对我们世界上最困难的挑战，包括可持续发展、气候变化和根除癌症。
 
 - 麻省理工MIT计算机科学与工程
-![](asset/img_a12db92ef810.jpg)
+![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_a12db92ef810.jpg)
 
 ### 康奈尔大学
 
 - CS课程索引
 
-![](asset/img_f74b684b7baf.jpg)
+![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_f74b684b7baf.jpg)
 
 ### 普林斯顿
 

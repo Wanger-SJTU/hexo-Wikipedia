@@ -1,9 +1,19 @@
 ---
-title: "LLM(21)：从 RAG 到 Self-RAG —— LLM 的知识增强"
-date: 2025-03-14
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/661465330
+title: LLM(21)：从 RAG 到 Self-RAG —— LLM 的知识增强
+date: "2025-03-14 00:00:00"
+updated: "2025-03-14 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/LLM-SD/LLM(21)-从-RAG-到-Self-RAG-——-LLM-的知识增强/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/661465330
 ---
+
 
 ### 一、 RAG 及其必要性
 
@@ -11,7 +21,7 @@ source: https://zhuanlan.zhihu.com/p/661465330
 
 RAG（Retrieval Augmented Generation, 检索增强生成），即 LLM 在回答问题或生成文本时，先会从大量文档中检索出相关的信息，然后基于这些信息生成回答或文本，从而提高预测质量。RAG 方法使得开发者不必为每一个特定的任务重新训练整个大模型，只需要外挂上知识库，即可为模型提供额外的信息输入，提高其回答的准确性。RAG模型尤其适合知识密集型的任务。
 
-![](asset/img_8764a61a746c.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_8764a61a746c.jpg)
 
 LLM V.S. RAG LLM在 LLM 已经具备了较强能力的基础上，仍然需要 RAG ，主要有以下几点原因：
 
@@ -25,7 +35,7 @@ LLM V.S. RAG LLM在 LLM 已经具备了较强能力的基础上，仍然需要 R
 
 RAGSFTData动态数据。 RAG 不断查询外部源，确保信息保持最新，而无需频繁的模型重新训练。(相对)静态数据，并且在动态数据场景中可能很快就会过时。 SFT 也不能保证记住这些知识。External KnowledgeRAG 擅长利用外部资源。通过在生成响应之前从知识源检索相关信息来增强 LLM 能力。 它非常适合文档或其他结构化/非结构化数据库。SFT 可以对 LLM 进行微调以对齐预训练学到的外部知识，但对于频繁更改的数据源来说可能不太实用。Model CustomizationRAG 主要关注信息检索，擅长整合外部知识，但可能无法完全定制模型的行为或写作风格。SFT 允许根据特定的语气或术语调整LLM 的行为、写作风格或特定领域的知识。Reducing HallucinationsRAG 本质上不太容易产生幻觉，因为每个回答都建立在检索到的证据上。SFT 可以通过将模型基于特定领域的训练数据来帮助减少幻觉。 但当面对不熟悉的输入时，它仍然可能产生幻觉。TransparencyRAG 系统通过将响应生成分解为不同的阶段来提供透明度，提供对数据检索的匹配度以提高对输出的信任。SFT 就像一个黑匣子，使得响应背后的推理更加不透明。Technical ExpertiseRAG 需要高效的检索策略和大型数据库相关技术。另外还需要保持外部数据源集成以及数据更新。SFT 需要准备和整理高质量的训练数据集、定义微调目标以及相应的计算资源。当然这两种方法并非非此即彼的，合理且必要的方式是结合业务需要与两种方法的优点，合理使用两种方法。
 
-![](asset/img_94dc29147415.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_94dc29147415.jpg)
 
 LLM, SFT, RAG 之间的关系通过以上讨论，也能总结出 RAG 具有一下优点：
 
@@ -43,7 +53,7 @@ LLM, SFT, RAG 之间的关系通过以上讨论，也能总结出 RAG 具有一�
 
 概括来说，RAG 的实现主要包括三个主要步骤：数据索引、检索和生成。如下图所示：
 
-![](asset/img_e908431ddc21.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_e908431ddc21.jpg)
 
 **2.1.1 数据索引的构建**
 
@@ -69,7 +79,7 @@ LLM, SFT, RAG 之间的关系通过以上讨论，也能总结出 RAG 具有一�
 
 常用的工具如 langchain.text_splitter 库中的类CharacterTextSplitter，可以指定分隔符、块大小、重叠和长度函数来拆分文本。
 
-![](asset/img_780768e0bbee.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_780768e0bbee.jpg)
 
 **  Step 3: 向量化（embedding）及创建索引**
 
@@ -124,7 +134,7 @@ ChatPDF的实现流程如下：
 - 当用户提出问题时，ChatPDF使用OpenAI的Embeddings API将问题转换为一个向量，并与每个分段的向量进行比较，以找到最相似的分段。这个相似度计算可以使用余弦相似度等常见的方法进行。
 - ChatPDF将找到的最相似的分段与问题作为prompt，调用OpenAI的Completion API，让ChatGPT学习分段内容后，再回答对应的问题。
 - 最后，ChatPDF会将ChatGPT生成的答案返回给用户，完成一次查询。
-![](asset/img_e0201da9cc1d.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_e0201da9cc1d.jpg)
 
 另外笔者之前也实现并开源过一个类似的案例，具体可参考
 
@@ -134,13 +144,13 @@ ChatPDF的实现流程如下：
 
 百川大模型的搜索增强系统融合了多个模块，包括指令意图理解、智能搜索和结果增强等组件。该体系通过深入理解用户指令，精确驱动查询词的搜索，并结合大语言模型技术来优化模型结果生成的可靠性。通过这一系列协同作用，大模型实现了更精确、智能的模型结果回答，通过这种方式减少了模型的幻觉。
 
-![](asset/img_9e19f63a93a1.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_9e19f63a93a1.jpg)
 
 2.2.3 Multi-modal retrieval-based LMs
 
 RA-CM3 是一个检索增强的多模态模型，其包含了一个信息检索框架来从外部存储库中获取知识，具体来说，作者首先使用预训练的 CLIP 模型来实现一个检索器（retriever），然后使用 CM3 Transformer 架构来构成一个生成器（generator），其中检索器用来辅助模型从外部存储库中搜索有关于当前提示文本中的精确信息，然后将该信息连同文本送入到生成器中进行图像合成，这样设计的模型的准确性就会大大提高。
 
-![](asset/img_984ecbd3d811.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_984ecbd3d811.jpg)
 
 2.2.4 LeanDojo
 
@@ -149,7 +159,7 @@ RA-CM3 是一个检索增强的多模态模型，其包含了一个信息检索�
 - **顶部右边：**LeanDojo从Lean中提取证明到数据库中，用来训练机器学习模型。这个流程也可以通过和Lean的证明环境进行交互后让训练好的模型来证明定理。
 - **顶部左边：**这是Lean定理 \begin{aligned} & n: \mathbb{N} \\ & \vdash \operatorname{gcd} ~n~ n=n \end{aligned} 的证明树。在这里gcd即最大公约数。在证明定理时，我们从原始定理作为初始状态（根）开始，并重复应用策略（边）将状态分解为更简单的子状态，直到所有状态都得到解决（叶节点处）。策略可能依赖于大型数学库中定义的诸如 mod_self 和 gcd_zero_left 之类的前提。例如，mod_self 是证明中用于简化目标的现有定理 ： \text { ( } \mathrm{n}: \text { nat) : } \mathrm{n}~ \%~ \mathrm{n} 
 - **底部：**只要给定一个状态，Reprover模型就能从数学库中检索前提，这些前提与状态连接起来，输入到一个作为编码器和解码器的Transformer中以生成下一个策略。
-![](asset/img_8ace4be53de2.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_8ace4be53de2.jpg)
 
 #### 2.3 RAG 的挑战及部分改进方法
 
@@ -166,13 +176,13 @@ RA-CM3 是一个检索增强的多模态模型，其包含了一个信息检索�
 
 简单来说，RA-DIT 方法分别对 LLM 和检索器进行微调。 更新 LLM 以最大限度地提高在给定检索增强指令的情况下正确答案的概率，同时更新检索器以最大限度地减少文档与查询在语义上相似（相关）的程度。通过这种方式，使 LLM 更好地利用相关背景知识，并训练 LLM 即使在检索错误块的情况下也能产生准确的预测，从而使模型能够依赖自己的知识。
 
-![](asset/img_d575267dc73b.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_d575267dc73b.jpg)
 
 2.3.2 多向量检索器（Multi-Vector Retriever）
 
 多向量检索器 (Multi-Vector Retriever) 是 LangChain 推出的一个关键工具，用于优化 RAG 的过程。多向量检索器的核心想法是将我们想要用于答案合成的文档与我们想要用于检索的参考文献分开。这允许系统为搜索优化文档的版本而不失去答案合成时的上下文。
 
-![](asset/img_ea37ab9755a6.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_ea37ab9755a6.jpg)
 
 简单来说就是将一个文档分解为较长的几个逻辑较为完整和独立的部分，例如包括不同的文本、表格甚至是图片都可以，然后分解后的文档使用摘要的方式进行总结，这个摘要需要可以明确覆盖相关内容。然后摘要进行向量化，检索的时候直接检索摘要，一旦匹配，即可将摘要背后的完整文档作为上下文输入给大模型。
 
@@ -180,7 +190,7 @@ RA-CM3 是一个检索增强的多模态模型，其包含了一个信息检索�
 
 在某些情况下，用户的 query 可能出现表述不清、需求复杂、内容无关等问题，为了解决这些问题，查询转换（Query Transformations）的方案利用了大型语言模型(LLM)的强大能力，通过某种提示或方法将原始的用户问题转换或重写为更合适的、能够更准确地返回所需结果的查询。LLM的能力确保了转换后的查询更有可能从文档或数据中获取相关和准确的答案。
 
-![](asset/img_4a959c6de8d3.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_4a959c6de8d3.jpg)
 
 查询转换的核心思想是，用户的原始查询可能不总是最适合检索的，所以我们需要某种方式来改进或扩展它。
 
@@ -197,17 +207,17 @@ RA-CM3 是一个检索增强的多模态模型，其包含了一个信息检索�
 - 生成结果会引用相关片段，以及输出结果是否符合该片段，便于查证事实。
 二者过程的比较如下图所示：
 
-![](asset/img_bc2938562bdd.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_bc2938562bdd.jpg)
 
 Self-RAG 的一个重要创新是** Reflection tokens (反思字符)**：通过生成反思字符这一特殊标记来检查输出。这些字符会分为 Retrieve 和 Critique 两种类型，会标示：检查是否有检索的必要，完成检索后检查输出的相关性、完整性、检索片段是否支持输出的观点。模型会基于原有词库和反思字段来生成下一个 token。
 
-![](asset/img_b41d83a7d1f5.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_b41d83a7d1f5.jpg)
 
 #### 3.1 Self-RAG 训练过程
 
 对于训练，模型通过将反思字符集成到其词汇表中来学习生成带有反思字符的文本。 它是在一个语料库上进行训练的，其中包含由 Critic 模型预测的检索到的段落和反思字符。 该 Critic 模型评估检索到的段落和任务输出的质量。 使用反思字符更新训练语料库，并训练最终模型以在推理过程中独立生成这些字符。
 
-![](asset/img_154a9e8a86d3.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_154a9e8a86d3.jpg)
 
 为了训练 Critic 模型，手动标记反思字符的成本很高，于是作者使用 GPT-4 生成反思字符，然后将这些知识提炼到内部 Critic 模型中。 不同的反思字符会通过少量演示来提示具体说明。 例如，检索令牌会被提示判断外部文档是否会改善结果。
 
@@ -269,11 +279,11 @@ print([pred.outputs[0].text for pred in preds])`
 - 基于 ChatGPT 对 prompt 进行 augmentation
 - 使用现有 pre-train LLM 进行模型 fine-tuning
 - 基于 external graph toolkits 的 graph reasoning
-![](asset/img_c10d5e4b1c9f.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_c10d5e4b1c9f.jpg)
 
 Graph-ToolFormer Framework更近一步地，这些方式实际上都是以 LLM 为核心的，多 agent 协同模式下的具体呈现形式，在此范式下，LLM 充当思考和决策的中心，通过合理的 API 及工具的调用，完成各种复杂的任务和指令。
 
-![](asset/img_1f980c6f66d4.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_1f980c6f66d4.jpg)
 
 LLM-powered autonomous agent system关于 (Multi) Agent 及其协同的内容本篇点到为止，关于 multi-agent 的更多内容，可以参考笔者的下一篇文章
 

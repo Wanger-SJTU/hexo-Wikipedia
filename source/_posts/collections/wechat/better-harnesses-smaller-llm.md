@@ -1,3 +1,16 @@
+---
+title: Better Harnesses, Smaller LLM！CMU 用自动化 Harness 让小模型 Agent 成本骤降 90%
+date: "2026-07-24 23:35:49"
+updated: "2026-07-24 23:35:49"
+layout: post
+permalink: /collections/wechat/better-harnesses-smaller-llm/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # Better Harnesses, Smaller LLM！CMU 用自动化 Harness 让小模型 Agent 成本骤降 90%
 
 > 原文：https://mp.weixin.qq.com/s/ONRwbfqOOVKy8wsCUBHVUg

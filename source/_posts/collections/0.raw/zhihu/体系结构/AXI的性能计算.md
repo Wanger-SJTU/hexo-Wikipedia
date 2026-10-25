@@ -1,9 +1,19 @@
 ---
-title: "AXI的性能计算"
-date: 2026-04-15
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/2027748507956572209
+title: AXI的性能计算
+date: "2026-04-15 00:00:00"
+updated: "2026-04-15 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/体系结构/AXI的性能计算/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/2027748507956572209
 ---
+
 
 计算axi的带宽
 

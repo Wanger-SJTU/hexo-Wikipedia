@@ -1,9 +1,19 @@
 ---
-title: "这个求指数函数exp()的快速近似方法的原理是什么?"
-date: 2026-04-15
-tags: [知乎]
-source: https://www.zhihu.com/question/51026869/answer/123794632
+title: 这个求指数函数exp()的快速近似方法的原理是什么?
+date: "2026-04-15 00:00:00"
+updated: "2026-04-15 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/再入门系列/这个求指数函数exp()的快速近似方法的原理是什么_/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://www.zhihu.com/question/51026869/answer/123794632
 ---
+
 
 计算近似值最重要的一步是计算出双精度浮点数的阶码，阶码是这么个数：
 

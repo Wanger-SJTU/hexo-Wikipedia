@@ -1,9 +1,19 @@
 ---
-title: "Is SIMD all you need?"
-date: 2021-11-06
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/430223278
+title: Is SIMD all you need?
+date: "2021-11-06 00:00:00"
+updated: "2021-11-06 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/优化/Is-SIMD-all-you-need_/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/430223278
 ---
+
 
 ### 引言
 
@@ -11,13 +21,13 @@ source: https://zhuanlan.zhihu.com/p/430223278
 
 体系结构大牛Lemire在2018年做了一个SIMD的实验[1]，benchmark使用一个计算密集型的Mandelbrot算法，在Skylake X服务器中实验结果如下：
 
-![](asset/img_71561e5ee72e.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_71561e5ee72e.jpg)
 
 实验结果显示，AVX-512指令导致了3%～4%的性能下降。
 
 而在另一篇文章中，作者用不同的机器部署NGINX观察性能，得到了更夸张的性能结果，使用AVX-512指令的服务相比不使用AVX-512的服务性能下降了大概10%[5]。
 
-![](asset/img_c0350fb51b18.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_c0350fb51b18.jpg)
 
 上述实验结论大体相似，就是AVX-512指令会导致主频下降，从而导致预期外的性能下降。
 
@@ -31,7 +41,7 @@ source: https://zhuanlan.zhihu.com/p/430223278
 
 而在CPU进行dynamic frequency scaling中不得不提的一点是，在CPU发展过程中，虽然晶体管的数量仍然能勉强维持摩尔定律[4]，并且单核越来越复杂，但是芯片的能耗限制却始终没有解除。所以，当进行某些更加复杂、耗能的计算时（例如AVX-512中的FMA计算），CPU必须要保证自身热能与电能的能耗不超过限制，这也是dynamic frequency scaling的作用，就是通过自身主动升频、降频，能够在保证能耗限制的同时，尽可能对程序进行优化。
 
-![](asset/img_bf8b61751b40.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_bf8b61751b40.jpg)
 
 CPU有三种不同的频率级别，也称为三种不同的license，从最快到最慢：L0、L1和L2。L0是写在盒子上的“标称”速度：当芯片上写着“3.5 GHz turbo”时，它们指的是单核L0 turbo。L1是一种较低的速度，有时称为AVX turbo或AVX2 turbo，最初与AVX和AVX2指令相关。L2的速度低于L1，有时称为“AVX-512 turbo”。而由于不同的workload表现出不同的热能特性和电能特性，因此它们也具有不同的频率。Intel将workload分为三类：
 
@@ -40,15 +50,15 @@ CPU有三种不同的频率级别，也称为三种不同的license，从最快�
 - AVX-512 Heavy
 各自的典型Workload及主频变化区间如下
 
-![](asset/img_790acffa8371.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_790acffa8371.jpg)
 
 除此之外，不同核数对于主频的影响也是不同的，下图是xeon gold系列中主频对比，可以看出，核数越多，AVX512指令对于CPU降频的影响是越大的（其他系列的主频变化不太一样，但是观察到的现象大致相同）。
 
-![](asset/img_41577267bda5.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_41577267bda5.jpg)
 
 另外也有一篇文章指出，其实指令是否导致CPU降频是和操作数的位数相关的，具体结论如下：
 
-![](asset/img_3ac0e9fc042c.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_3ac0e9fc042c.jpg)
 
 根据上述分析，我们现在可以把性能下降归咎于特定宽度、特定指令和特定操作类型。所以，我们如何能在自己的程序中避免引入SIMD出现的性能回退呢？
 

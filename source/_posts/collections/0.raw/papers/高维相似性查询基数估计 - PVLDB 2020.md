@@ -1,3 +1,16 @@
+---
+title: 高维相似性查询基数估计：基于自适应桶探测的方法
+date: "2026-04-19 21:55:27"
+updated: "2026-04-19 21:55:27"
+layout: post
+permalink: /collections/0.raw/papers/高维相似性查询基数估计-PVLDB-2020/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # 高维相似性查询基数估计：基于自适应桶探测的方法
 
 **Cardinality Estimation for High Dimensional Similarity Queries with Adaptive Bucket Probing**

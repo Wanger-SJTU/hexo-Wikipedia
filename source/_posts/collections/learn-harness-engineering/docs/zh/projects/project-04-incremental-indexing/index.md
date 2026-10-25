@@ -1,3 +1,16 @@
+---
+title: Project 04. 用运行反馈修正 agent 的行为
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/zh/projects/project-04-incremental-indexing/index/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # Project 04. 用运行反馈修正 agent 的行为
 
 > 相关讲义：[L07. 为什么 agent 会多做或少做](./../../lectures/lecture-07-why-agents-overreach-and-under-finish/index.md) · [L08. 为什么功能清单是 harness 原语](./../../lectures/lecture-08-why-feature-lists-are-harness-primitives/index.md)

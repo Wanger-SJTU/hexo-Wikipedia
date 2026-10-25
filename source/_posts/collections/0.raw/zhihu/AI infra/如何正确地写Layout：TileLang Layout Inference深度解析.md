@@ -1,10 +1,19 @@
 ---
-title: "如何正确地写Layout：TileLang Layout Inference深度解析"
-date: 2026-06-27
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/2054144124052415821
-
+title: 如何正确地写Layout：TileLang Layout Inference深度解析
+date: "2026-06-27 00:00:00"
+updated: "2026-06-27 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/AI-infra/如何正确地写Layout-TileLang-Layout-Inference深度解析/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/2054144124052415821
 ---
+
 
 Disclaimer：笔者不是TileLang核心开发者，啃源码写的文章，不一定完全正确。权作抛砖引玉，供大家参考。如有纰漏，欢迎指正，不胜感激。
 引子

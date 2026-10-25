@@ -1,9 +1,19 @@
 ---
-title: "Flexgen LLM推理 CPU Offload计算架构到底干了什么事情？"
-date: 2023-03-22
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/615021309
+title: Flexgen LLM推理 CPU Offload计算架构到底干了什么事情？
+date: "2023-03-22 00:00:00"
+updated: "2023-03-22 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/Flexgen-LLM推理-CPU-Offload计算架构到底干了什么事情/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/615021309
 ---
+
 
 注：偏综述型分析，读起来需要一些耐心，不适合跳读，不适合期望速成的读者。
 
@@ -15,7 +25,7 @@ source: https://zhuanlan.zhihu.com/p/615021309
 
 Flexgen（[https://github.com/FMInference/FlexGen](https://link.zhihu.com/?target=https%3A//github.com/FMInference/FlexGen)）文章刚出来几天热度是非常高的，5天增长到5000stars，受到OpenAI chatGPT以及Meta LLaMA新闻热度的影响，Flexgen以单GPU跑出100倍以上的LLM大模型推理计算性能（[跑ChatGPT体量模型，从此只需一块GPU：加速百倍的方法来了](https://link.zhihu.com/?target=https%3A//www.163.com/dy/article/HU6LRQL40511AQHO.html)），传播速度之快已经非常令人惊叹了。
 
-![](asset/img_03b5491317e7.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_03b5491317e7.jpg)
 
 知乎上也有一些大佬发表了相关评论文章，认为它也是一个突破，但是似乎没有深入解读分析的。我也比较感兴趣，在新技术面前总得保持谦虚，所以非常认真研读了几遍，并做了一些笔记，整理出来。
 
@@ -41,7 +51,7 @@ Flexgen（[https://github.com/FMInference/FlexGen](https://link.zhihu.com/?targe
 
 作者基于一些假设前提，设定了一个形式话抽象，简单的说**，就是作者基于zig-zag的并行策略，该策略高优先通过流水等延迟隐藏方法不断向GPU输送batch样本，且GPU端仅仅进行一个Transformer layer的计算，一旦计算完成就对KVcache、激活、weight权重参数进行checkpoint，也是流水化overlapping的将数据转移到CPU DRAM和磁盘；当batch纬度并行达到一定的阶段后，再进入下一个layer的计算，且也是高优先batch纬度并行，同样利用overlapping技术隐藏CPU Dram和磁盘的访存延迟；依次进入下一个layer；直到所有layer完成。到这里肯可能prompt计算完了，然后Generating的token同样按照这样的并行技巧，优先batch并行，然后进行layer并行。*（****有点绕口，记住核心是用batch纬度并行打破同batch内seq token的generating过程中时序依赖导致的并发度不足，这个insight最重要，是定性的性能思路****）***。具体可以参看伪代码：
 
-![](asset/img_55bc339c70f3.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_55bc339c70f3.jpg)
 
 简化后的并行框架伪代码，代码背后是完美的overlapping工程实现的假设***感觉论文不足地方： ***作者论文中没有直接说prompt怎么并行的，示意图是token的generating过程的zig-zag并行。无伤大雅，假定它跟generating过程类似，也是不影响系统分析的。
 
@@ -49,7 +59,7 @@ Flexgen（[https://github.com/FMInference/FlexGen](https://link.zhihu.com/?targe
 
 基于上面的并行思路，假定我们实现了一个“磁盘-CPU-GPU”的pipeline流水并行系统，来overlapping整个链路中的***“计算、数据读、数据写”***的延迟，这个完美的系统，但是，多少数据放到磁盘上，多少数据放到cpu端，多少数据放到GPU端，都会影响整体pipeline的效率，故作者给出了一个计算disk磁盘到cpu端拖取数据的耗时的量化结论： 
 
-![](asset/img_5f1ef1dd60c5.png)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_5f1ef1dd60c5.png)
 
 dtoc(g), 即GPU在计算generating 下一个token的时候，需要pipeline给GPU输送数据时，disk到磁盘这个环节需要耗费的延迟***简单解释一下这个量化公式***（***上面图里的公式gd应该写错了，应该是wd，:-)***）： 
 
@@ -59,7 +69,7 @@ dtoc(g)进行generating token的时候，需要下一层的activation、KV cache
 
 4h1^2是attention的参数大小，2h1*h2是2个h1*h2 FFN矩阵参数大小，分别乘以2字节（fp16）；activation对一个tokens只有一个hidden大小，就是2*bls*h1（***所以从这里可以看出其实没有估算prompt这块的计算，可能耗时占比不大所以忽略吧***）；KV cache主要2个字节、KV共2个缓存项、seq平均长度、隐藏大小、批大小。加起来就是下面的公式：
 
-![](asset/img_7234b1429cd1.png)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_7234b1429cd1.png)
 
 dtoc(g)进行generating token的时候，数据搬移时间的量化结果***pipeline每个环节都用类似的评估方法形式化除量化公式，然后基于这个量化公式，进行线性规划的优化，寻找一些性能更佳的参数。做理论研究，***似乎还可以基于实际情况（不用上面的理论建模），用类似***强化学习方法***，探索更优的系统参数。因为上面形式化方法偏理想，因为对于一个pipeline，当某一个计算单元需要相关参数的时候，参数在磁盘、cpu和dram上实际占比是不确定的，尤其再考虑不用简化的并行模型（比如，batch数据并行和layer并行是混合的场景，系统模型更加复杂，无法构建这样的形式化模型，也较难收集稳定的性能数据）。
 
@@ -75,7 +85,7 @@ dtoc(g)进行generating token的时候，数据搬移时间的量化结果***pip
 
 - ***GPU上同时“几个batch以及几个Layers”混跑***。GPU上默认先尽最大可能进行batch内/间的数据并行，文章说为了***简化工程实现***（论文附录分析了还有更优的设计，分析思路有兴趣读者可以继续深入），直到batch计算产生的激活和KVcache把下游memory hierarchy存储空间，比如DRAM，打满（批注： 理论上也可以不用极端的打满，到一个上界应该就不影响系统最终吞吐就可以了，这个上界跟batch size、DRAM访存带宽、GPU计算密度、GPU存储空间有一定的关系，对于特定的GPU和服务器架构，理论上可以实验获取这个超参）
 
-![](asset/img_f570214c0cf2.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_f570214c0cf2.jpg)
 
 基础系统设计： Zig-zag以及伪代码所以，基于上面的假设简化，flexgen的并行重点参照ZiG-zag设计，用通俗话说，极端的用batch填满GPU计算密度，达到一定阶段（就是前面讲的***阈值***，文章里讲更极端，*就是****等DRAM或者CPU这些内存被填满***）后，再进行下一个layer的计算调度（因为可以不考虑latency，所以这种极端设计也是合理的），参看右侧的伪代码，工程上上面一些步骤要异步实现，将***weight、activate、KV cache的存储和更新隐藏（overlapping）到GPU的计算***里去（原文： the weight load of the next layer, cache/activation load of the next batch, cache/activation store of the previous batch and the computation of the current batch. 仔细理解过前面量化分析章节后，有一定经验的并行计算工程师，这段非常容易理解，不赘述）。
 
@@ -99,7 +109,7 @@ dtoc(g)进行generating token的时候，数据搬移时间的量化结果***pip
 
 作者为了用4bit位的量化压缩（*实验发现3bit精度损失无法保证了）***，采用fine grain的压缩：
 
-![](asset/img_01b0a9951505.png)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_01b0a9951505.png)
 
 压缩考虑作者仍然采用fp16进行GPU上的运算，这个可能时cpu offload系统特点，***因为offload系统瓶颈都在IO端，是IO带宽瓶颈，***GPU上的算力和存储相对充分，所以还原fp16可以最大程度的保持算法精度。
 
@@ -109,7 +119,7 @@ dtoc(g)进行generating token的时候，数据搬移时间的量化结果***pip
 此处就是稀疏的attention计算，下面的计算中QK计算结构进行TopK筛选，然后结合TopK结果去load稀疏V值，进行稀疏计算：
  
 
-![](asset/img_40fa625fe8b4.png)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_40fa625fe8b4.png)
 
 文章描述到： ”After computing the attention matrices, for each query, we calculate the indices of its Top-K tokens from the K cache. We then simply drop other tokens and only load a subset of the V cache according to the indices.“， 个人觉得这种优化策略未必有用，因为在确定了稀疏的QK之后再load稀疏V计算，可能导致多级memory hierarchy cache miss，而且也断pipeline流水了，所以这种稀疏化为了在offload系统中瓶颈在于IO测的时候，未必能奏效。
 

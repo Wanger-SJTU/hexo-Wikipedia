@@ -1,15 +1,25 @@
 ---
-title: "【RAG研究综述】高级 RAG 技术：图解概述（精华版）"
-date: 2025-06-25
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/674906924
+title: 【RAG研究综述】高级 RAG 技术：图解概述（精华版）
+date: "2025-06-25 00:00:00"
+updated: "2025-06-25 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/LLM-SD/【RAG研究综述】高级-RAG-技术-图解概述(精华版)/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/674906924
 ---
+
 
 ### 高级RAG(Advanced RAG)
 
 下图展示了涉及的核心步骤和算法的图表。为了保持图表的可读性，省略了一些逻辑循环和复杂的多步骤**智能体行为（Agentic Behaviours）。**
 
-![](asset/img_9afd92149d4b.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_9afd92149d4b.jpg)
 
 高级 RAG 架构中的一些关键组成部分图表中的绿色元素是接下来将要讨论的核心RAG技术，蓝色元素代表文本。并非所有高级RAG的想法都能在单一图表上轻松可视化，比如各种上下文扩展方法都在上图中被省略了。
 
@@ -35,7 +45,7 @@ Transformer模型有固定的输入序列长度，即使输入上下文窗口很
 
 **向量存储索引(Vector Store Index)**
 
-![](asset/img_38b8311131b0.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_38b8311131b0.jpg)
 
 在这个方案的介绍以及文中的其他部分里，作者为了简化方案省略了Encoder模块，直接将查询发送到索引。当然，查询总是首先被向量化。同样，索引检索的是前k个向量而不是块，但作者将它们替换为块，因为获取它们很简单。RAG管道的关键部分是搜索索引，它存储了前一步骤中获得的向量化内容。最简单的实现使用了**平面索引(flat index)**——在查询向量和所有块向量之间进行直接距离计算。
 
@@ -49,7 +59,7 @@ LlamaIndex支持许多向量存储索引，但也支持其他更简单的索引�
 
 **多层索引(Hierarchical Indices) **
 
-![](asset/img_9a2bc071d96d.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_9a2bc071d96d.jpg)
 
 多层索引检索流程如果需要从很多文档中检索，那就需要能够高效地搜索其中的相关信息，找到有用的并将其合成为带有来源引用的单一答案。在处理大型数据库的情况中，要高效做到这一点的方法是**创建两个索引**——**一个由摘要组成，另一个由文档块组成**，并进行两步搜索，首先通过摘要筛选出满足相关性要求的文档，然后仅在这些文档内继续深入搜索。
 
@@ -72,14 +82,14 @@ LlamaIndex支持许多向量存储索引，但也支持其他更简单的索引�
 
 为了在获取最相关的单个句子后更好地推理所找到的上下文，我们通过在检索到的句子前后各扩展k个句子来扩展上下文窗口，然后将这个扩展的上下文发送给LLM。
 
-![](asset/img_6a19bba1a999.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_6a19bba1a999.jpg)
 
 绿色部分是在索引中找到的句子向量，而整个黑色+绿色段落被提交给LLM以在推理所提供的查询时扩大其上下文。
 
 - **自动合并检索器(Auto-merging Retriever，又称父文档检索器 Parent Document Retriever) **
 这里的想法与句子窗口检索器非常相似——搜索更颗粒度更细的信息，然后在将检索到的上下文送给LLM推理前扩展上下文窗口。文档被递归地分割成更大父块中更小的子块。
 
-![](asset/img_680e61cc0a0f.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_680e61cc0a0f.jpg)
 
 文档被分割成一个多层结构的块，然后最小的叶子块被发送到索引。在检索时，我们首先检索k个叶子块，如果在前k个检索到的块中有n个块指向同一个父块，我们用这个父块替换送给LLM的上下文这个过程就像将几个检索到的子块自动合并到一个更大的父块一样。需要注意的是——搜索仅在子节点索引中执行。有关**递归检索器+节点引用**的更深入探讨，请查看LlamaIndex教程。
 
@@ -89,7 +99,7 @@ LlamaIndex支持许多向量存储索引，但也支持其他更简单的索引�
 
 这里关键的技巧是正确地结合具有不同相似度得分的检索结果——这个问题通常通过**互惠排名融合(**Reciprocal Rank Fusion, RRF**)**算法解决，对检索结果进行重新排序以得出最终输出。
 
-![](asset/img_a02c006c3ad3.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_a02c006c3ad3.jpg)
 
 融合检索/混合搜索流程在LangChain中，这是在Ensemble Retriever类中实现的，结合了用户定义的一系列检索器，例如基于faiss的向量索引和基于BM25的检索器，并使用RRF进行重新排序。在LlamaIndex中的实现方式也非常的相似。
 
@@ -107,7 +117,7 @@ LlamaIndex支持许多向量存储索引，但也支持其他更简单的索引�
 
 查询转换是一系列技术的总称，使用LLM作为推理引擎来修改用户输入，以提高检索质量。有几种不同的方法可以做到这一点。
 
-![](asset/img_7bf02e008a0d.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_7bf02e008a0d.jpg)
 
 查询转换原则示意图如果查询很复杂，LLM可以将其分解为几个子查询。例如，如果用户问：“*在Github上，Langchain和LlamaIndex哪个更优秀？*”，而我们不太可能在语料库中的某些文本中找到直接的比较，所以将这个问题分解为两个子查询是有意义的，假设更简单、更具体的信息检索：“*Langchain在Github上有多少星星？*”“*Llamaindex在Github上有多少星星？*”它们将并行执行，然后将检索到的上下文合并到一个提示中，供LLM合成对初始查询的最终答案。
 
@@ -137,7 +147,7 @@ LlamaIndex支持许多向量存储索引，但也支持其他更简单的索引�
 - 另一种相对复杂的情况是CondensePlusContextMode，在这种模式下，每次交互中的聊天记录和最后一条消息被压缩成一个新的查询，然后这个查询被发送到索引里，并把检索到的上下文连同原始用户消息一起传递给LLM以生成答案。
 值得注意的是，LlamaIndex还支持基于OpenAI智能体聊天引擎，提供了更灵活的聊天模式，而Langchain也支持OpenAI的功能性API。
 
-![](asset/img_73ab0c6b8517.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_73ab0c6b8517.jpg)
 
 两种类型聊天引擎的原理示意图聊天引擎是RAG系统中的一个关键组件，它不仅处理用户的直接查询，还能够理解和响应与之前对话上下文相关的内容。通过这种方式，RAG系统能够提供更连贯、更自然的对话体验。
 
@@ -167,7 +177,7 @@ OpenAI Assistants基本上实现了LLM周边之前在开源项目中已经存在
 
 这个方案展示了一个高级RAG架构，其中每个智能体都做出了许多路由决策。**这种方法的好处是能够比较在不同文档及其摘要中有所描述的解决方案或实体**，同时也适用于传统的单文档摘要和问答机制——以上基本上涵盖了大多数与文档集合聊天的案例。
 
-![](asset/img_5d96f4d58be7.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_5d96f4d58be7.jpg)
 
 多文档智能体的示意图，涉及查询路由和智能体的行为模式**
 

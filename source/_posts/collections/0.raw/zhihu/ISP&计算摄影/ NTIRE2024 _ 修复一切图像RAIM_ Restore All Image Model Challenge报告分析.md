@@ -1,9 +1,19 @@
 ---
 title: "(1 封私信) NTIRE2024 | 修复一切图像RAIM: Restore All Image Model Challenge报告分析"
-date: 2024-06-08
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/701048076
+date: "2024-06-08 00:00:00"
+updated: "2024-06-08 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/ISP-计算摄影/NTIRE2024-_-修复一切图像RAIM_-Restore-All-Image-Model-Challenge报告分析/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/701048076
 ---
+
 
 【更新日志】**06-01：初稿：赛事信息整理和MiAlgo分析
 06-08：完稿：剩余所有部分
@@ -14,7 +24,7 @@ source: https://zhuanlan.zhihu.com/p/701048076
 
 马上CVPR2024就要开幕，各大挑战赛的排名和详细报告也都出炉。近期留意到这个名字很屌的赛道，修复一切图像的模型，小米的团队的拿了第1， 第2小红书，排在后面的都是高校队伍。
 
-![](asset/img_4573e1a46e23.jpg)
+![](/images/collections/0.raw/zhihu/ISP%2526%25E8%25AE%25A1%25E7%25AE%2597%25E6%2591%2584%25E5%25BD%25B1/asset/img_4573e1a46e23.jpg)
 
 比赛挑战排名整个赛道的设置和参赛团队的报告信息量比较大，笔者也是抽时间阅读后选取一些有意思的trick或者tech进行记录，以期后续算法研究中能够予己助益。更期待读者中各位巨巨能够分享和反馈有效的信息。
 
@@ -58,7 +68,7 @@ unpaired数据对衡量，邀请18个老司机参与主观打分，评价维度�
 
 #### **2.1、MiAlgo（小米）：万级自筹UHD数据集，“三年陈**”**技术照打天下**
 
-![](asset/img_5dd4d3c8e72e.jpg)
+![](/images/collections/0.raw/zhihu/ISP%2526%25E8%25AE%25A1%25E7%25AE%2597%25E6%2591%2584%25E5%25BD%25B1/asset/img_5dd4d3c8e72e.jpg)
 
 MiAlgo模型：上下采样处使用Harr小波，主要conv、高层有一个自注意力，最后加一个refinement**2.1.1、模型结构**
 
@@ -68,7 +78,7 @@ MiAlgo模型：上下采样处使用Harr小波，主要conv、高层有一个自
 
 AIM2020：[AIM 2020 Challenge on Learned Image Signal Processing Pipeline](https://link.zhihu.com/?target=https%3A//arxiv.org/pdf/2011.04994)
 
-![](asset/img_e25c24aaef10.jpg)
+![](/images/collections/0.raw/zhihu/ISP%2526%25E8%25AE%25A1%25E7%25AE%2597%25E6%2591%2584%25E5%25BD%25B1/asset/img_e25c24aaef10.jpg)
 
 MW-ISPNet：主要采用小波变换和通道注意力机制提升图像处理能力**【self-attention：RSATT】**
 
@@ -76,7 +86,7 @@ MW-ISPNet：主要采用小波变换和通道注意力机制提升图像处理�
 
 关于为什么自注意力对底层视觉任务有帮助，笔者5月初正好在重庆参加了VALSE2024，其中一个workshop上南理工的潘金山老师的报告很深入潜入，推荐大家观看：【VALSE2024】0506《Workshop ：面向移动端的AI图像增强》_哔哩哔哩_bilibili。
 
-![](asset/img_3fe8e5641b2c.jpg)
+![](/images/collections/0.raw/zhihu/ISP%2526%25E8%25AE%25A1%25E7%25AE%2597%25E6%2591%2584%25E5%25BD%25B1/asset/img_3fe8e5641b2c.jpg)
 
 潘金山：自注意力可以实现nonlocal的信号修复**【最后提拉：refinement】**
 
@@ -121,7 +131,7 @@ MW-ISPNet：主要采用小波变换和通道注意力机制提升图像处理�
 
 阶段3就复杂了，团队的报告花了很大的篇幅介绍他们的方案，在IR的任务上直接套用CVPR2024的[SUPIR](https://link.zhihu.com/?target=https%3A//arxiv.org/pdf/2401.13627)（这个工作笔者之前阅读了一点点，后续看完会补充报告链接在这里），为了平衡细节效果和fidelity，又用[DeSRA](https://link.zhihu.com/?target=https%3A//arxiv.org/pdf/2307.02457)来辅助分类，把SUPIR放飞自我的图像区域替替换到弱生成的内容，最后用一个SRformer的backbone训练一个fusion模块融合两者结果。但很可惜阶段3的提交分数稍微拉了胯，最终评分掉到了rank2。
 
-![](asset/img_4aa64661e7c3.jpg)
+![](/images/collections/0.raw/zhihu/ISP%2526%25E8%25AE%25A1%25E7%25AE%2597%25E6%2591%2584%25E5%25BD%25B1/asset/img_4aa64661e7c3.jpg)
 
 Xhs-IAG模型：利用SUPIR的强生成和DeSRA的伪纹分类，最终修复出细节保真的结果**2.2.1、模型结构**
 
@@ -132,13 +142,13 @@ Xhs-IAG模型：利用SUPIR的强生成和DeSRA的伪纹分类，最终修复出
 Xhs-IAG介绍到SUPIR使用了2千万级数据训练、输出结果自然度较好，但团队也坦言赛期紧张且SUPIR并未开源训练工程，因此就“拿来主义”了，最多在推理的时候调整了部分参数和prompt。
 
 **【笔者看法】
-RAIM的挑战并未约束开销，就SUPIR基于StableDiffusion-XL的体量，断然就不是一个对部署条件很友好的方案。**同时，目前**扩散模型在对文字的处理上还欠缺稳定，对于real-world场景中广泛存在的文本图像场景，甚至要对已经经过拍摄设备SR处理过的劣化文字进行处理，可能会起到反作用（可以从本文上方图的zoom效果和下方效果看到效果，字符笔画碎裂）。****这一反差从Xhs-IAG团队阶段2只用SrFormer的分数相对优于阶段3的分数也看得出草蛇灰线**。![](asset/img_8fafdf1c95ef.jpg)
+RAIM的挑战并未约束开销，就SUPIR基于StableDiffusion-XL的体量，断然就不是一个对部署条件很友好的方案。**同时，目前**扩散模型在对文字的处理上还欠缺稳定，对于real-world场景中广泛存在的文本图像场景，甚至要对已经经过拍摄设备SR处理过的劣化文字进行处理，可能会起到反作用（可以从本文上方图的zoom效果和下方效果看到效果，字符笔画碎裂）。****这一反差从Xhs-IAG团队阶段2只用SrFormer的分数相对优于阶段3的分数也看得出草蛇灰线**。![](/images/collections/0.raw/zhihu/ISP%2526%25E8%25AE%25A1%25E7%25AE%2597%25E6%2591%2584%25E5%25BD%25B1/asset/img_8fafdf1c95ef.jpg)
 
 SUPIR论文展示素材中唯一的文字样本，LQ中的车牌已看不清是啥文字，但出来的结果并不是一个很规整的字符序列**【fidelity保姆：DeSRA】**
 
 针对扩散模型在细节纹理和结构表现上视觉效果好但不一定保真的情况，团队借鉴了DeSRA（[DeSRA: Detect and Delete the Artifacts of GAN-based Real-World Super-Resolution Models](https://link.zhihu.com/?target=https%3A//arxiv.org/pdf/2307.02457)）的模型。
 
-![](asset/img_37abd288d71a.jpg)
+![](/images/collections/0.raw/zhihu/ISP%2526%25E8%25AE%25A1%25E7%25AE%2597%25E6%2591%2584%25E5%25BD%25B1/asset/img_37abd288d71a.jpg)
 
 DeSRA：辨别SR中出手过重的区域并给出mask，引导模型采用更加保真的策略这篇工作来自腾讯优图，发表在ICML2023。这篇工作针对GAN生成纹理容易出现过度生成的artifacts训练了一个像素辨别器，进一步地，该模型还具备一定的语义分割能力，可借助semantic的信息对纹理进行更加精细的判别。
 
@@ -148,7 +158,7 @@ DeSRA：辨别SR中出手过重的区域并给出mask，引导模型采用更加
 
 团队使用SRFormer作为backbone来做最终的fusion和图像修复，原作为单图SR任务，团队这里输入有三项内容：LQ输入、DeSRA判定的mask、套上mask之后回贴了LQ和SUPIR之后的结果。
 
-![](asset/img_523e2b393192.jpg)
+![](/images/collections/0.raw/zhihu/ISP%2526%25E8%25AE%25A1%25E7%25AE%2597%25E6%2591%2584%25E5%25BD%25B1/asset/img_523e2b393192.jpg)
 
 Fusion部分：3个输入最终输出修复的结果这一步模型的训练，团队采用了inpainting任务的思路，随机生成mask区域并把GT的区域贴回，并采用了任务针对性的loss：valid_loss、hole_loss、perceptual_loss和gan_loss；在推理的时候GT的角色由SUPIR的输出替代，这样训练的fusion模块实则与阶段2的模型相近，区别在于GAN的大刀只挥向LQ的区域，SUPIR的结果予以保留。
 
@@ -168,7 +178,7 @@ Fusion部分：3个输入最终输出修复的结果这一步模型的训练，�
 
 #### 2.3、So Elegant（石油大学）：DiffIR开路，首步输出约束后续扩散过程的保真度
 
-![](asset/img_7ccce22ce8c0.jpg)
+![](/images/collections/0.raw/zhihu/ISP%2526%25E8%25AE%25A1%25E7%25AE%2597%25E6%2591%2584%25E5%25BD%25B1/asset/img_7ccce22ce8c0.jpg)
 
 So Elegant模型：三段式，DiffIR开路，输出持续约束后续扩散，并在末段用DeSRA各取所长**2.3.1、模型结构与训练**
 
@@ -196,7 +206,7 @@ So Elegant模型：三段式，DiffIR开路，输出持续约束后续扩散，�
 
 同时，论文为了弥合与赛事任务数据的domain gap，还采用了论文[Crafting Training Degradation Distribution for the Accuracy-Generalization Trade-off in Real-World Super-Resolution](https://link.zhihu.com/?target=https%3A//arxiv.org/pdf/2305.18107)的方法，这篇论文提出的问题正是real-world图像超分、修复和增强的关键问题。
 
-![](asset/img_e5c70fea10f1.jpg)
+![](/images/collections/0.raw/zhihu/ISP%2526%25E8%25AE%25A1%25E7%25AE%2597%25E6%2591%2584%25E5%25BD%25B1/asset/img_e5c70fea10f1.jpg)
 
 real-world的图像修复问题的关键挑战，就是兼顾好的泛化性与好的效果。**【笔者看法】上图是real-world问题的核心追求，但同时也是巨大挑战，如何模拟真实劣化进来也有不少工作崭露头角。过去常见的方法是采用自监督学习，而这篇论文笔者此前未touch到，会择机翻阅研究。2.3.3、小结**
 
@@ -214,13 +224,13 @@ real-world的图像修复问题的关键挑战，就是兼顾好的泛化性与�
 
 **团队放开了以往去模糊/超分工作中核权重为正且和为1的先验限制，以使得模型能够学习到更丰富的劣化表征。**而为了尽可能保留在修复过程中劣化表征的信息，团队利用SPADE结构把表征注入到每一层Unet的bridge上。
 
-![](asset/img_496de07801f3.jpg)
+![](/images/collections/0.raw/zhihu/ISP%2526%25E8%25AE%25A1%25E7%25AE%2597%25E6%2591%2584%25E5%25BD%25B1/asset/img_496de07801f3.jpg)
 
 IIP IR阶段1模型：FFTformer执行deblur任务，估计不设限模糊核导入SPADE输出重建LQ**【Stage 2：x2Up过SD然后Down回来】**
 
 stage1的处理相对只是把图像的模糊劣化给解决了，但图像缺失而有显著改善人眼主观感受的细节纹理仍有缺失。因此团队把图像经过HAT（[Activating More Pixels in Image Super-Resolution Transformer](https://link.zhihu.com/?target=https%3A//arxiv.org/pdf/2205.04437)）进行2倍超分，再送入StableSR@SD-Turbo。**这样做是为了让模型利用预训练的扩散模型时，能够更好的解决原本很细小的字符纹理**。最后再用LANCZOS插值把图像下采样后输出。
 
-![](asset/img_3d51f7fc6a38.jpg)
+![](/images/collections/0.raw/zhihu/ISP%2526%25E8%25AE%25A1%25E7%25AE%2597%25E6%2591%2584%25E5%25BD%25B1/asset/img_3d51f7fc6a38.jpg)
 
 IIP IR阶段2模型：stableSR超分后送入预训练的StableSR，输出再下采样回来。**【笔者看法】
 武大团队思路是比较清晰的，针对赛事数据的特点明确采用了放开限制的模糊核估计，这种模型设计更好的应对赛会数据的模糊劣化特点。并且也在起用扩散模型的时候知道其在字符纹理处理上的短板，因此先上采样扩展字符笔画间距、将其送入扩散模型相对擅长的信号频率范围。
@@ -260,7 +270,7 @@ DA-CLIP（Degradation-aware CLIP）：[Controlling Vision-Language Models for Mu
 
 MARSHAL团队对赛事阶段2和3的图像倾向性进行了分析，并分别使用了遵照fidelity和人眼主观诉求的两阶段策略，后者采用扩散模型。考虑到扩散模型在字符细节上的短板，在最终推理环节，团队先把图像resize到2048输入到扩散模型，以此实现了稳定的字符纹理。
 
-![](asset/img_6fdec2649377.jpg)
+![](/images/collections/0.raw/zhihu/ISP%2526%25E8%25AE%25A1%25E7%25AE%2597%25E6%2591%2584%25E5%25BD%25B1/asset/img_6fdec2649377.jpg)
 
 resize再送入扩散模型，处理结果的字符纹理完整且稳定
 ### 3、报告总结

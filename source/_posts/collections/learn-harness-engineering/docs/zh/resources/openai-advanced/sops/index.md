@@ -1,3 +1,16 @@
+---
+title: OpenAI 高级 SOP
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/zh/resources/openai-advanced/sops/index/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # OpenAI 高级 SOP
 
 这些 SOP 把文章里的工作方式翻成可以直接参考、执行、改造的操作手册。

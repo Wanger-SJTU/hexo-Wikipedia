@@ -1,9 +1,19 @@
 ---
-title: "GPU优化策略与优化实现"
-date: 2021-10-10
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/419868175
+title: GPU优化策略与优化实现
+date: "2021-10-10 00:00:00"
+updated: "2021-10-10 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/体系结构/GPU优化策略与优化实现/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/419868175
 ---
+
 
 **[GPU的硬件特性及优化原则](https://link.zhihu.com/?target=http%3A//mp.weixin.qq.com/s%3F__biz%3DMzIzOTc4NDA4NQ%3D%3D%26mid%3D2247485951%26idx%3D1%26sn%3D3e7d1cadb0245843308cc3eeb7782b9a%26chksm%3De9259005de521913de160965f0438519bfe720a535e73af3f4443278696f15974f14489ba04e%26scene%3D21%23wechat_redirect)**
 

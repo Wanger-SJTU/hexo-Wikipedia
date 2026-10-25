@@ -1,3 +1,16 @@
+---
+title: Hiệu chỉnh Prompt
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/vi/resources/reference/prompt-calibration/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # Hiệu chỉnh Prompt
 
 Hướng dẫn gốc nên định nghĩa khung vận hành, không phải mọi nước đi có thể.

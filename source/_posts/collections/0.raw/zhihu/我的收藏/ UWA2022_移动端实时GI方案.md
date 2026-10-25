@@ -1,9 +1,19 @@
 ---
-title: "(1 条消息) UWA2022_移动端实时GI方案"
-date: 2023-01-18
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/599876256
+title: (1 条消息) UWA2022_移动端实时GI方案
+date: "2023-01-18 00:00:00"
+updated: "2023-01-18 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/UWA2022_移动端实时GI方案/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/599876256
 ---
+
 
 (Github正常排版: [移动端实时GI方案](https://link.zhihu.com/?target=https%3A//github.com/HHHHHHHHHHHHHHHHHHHHHCS/MyStudyNote/blob/main/MyUWA2022Note/%25E7%25A7%25BB%25E5%258A%25A8%25E7%25AB%25AF%25E5%25AE%259E%25E6%2597%25B6GI%25E6%2596%25B9%25E6%25A1%2588.md))
 
@@ -34,14 +44,14 @@ UWA视频地址, 2021年Unity开放日就讲过了 文章地址, 视频地址.
 - 同时可以让Tile Light Culling 更加精确
 - (其实Light Layer上也可以解决漏光)
 
-![](asset/img_26b679435596.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_26b679435596.jpg)
 
 #### 1.3 Light Num**
 
 - 检测屏幕物体接受光源的数量
 - 如果是深红色则说明超标了
 - (有点类似于OverDraw的感觉)
-![](asset/img_d6ab64ab8724.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_d6ab64ab8724.jpg)
 
 ### **2. GI**
 
@@ -57,7 +67,7 @@ UWA视频地址, 2021年Unity开放日就讲过了 文章地址, 视频地址.
 - 相关文章
 - 储存每一块区域的光照信息
 - 他们游戏就是用的这套
-![](asset/img_5ad102798659.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_5ad102798659.jpg)
 
 #### **2.3 储存详细**
 
@@ -68,22 +78,22 @@ UWA视频地址, 2021年Unity开放日就讲过了 文章地址, 视频地址.
 
 - 为了压缩数据
 
-![](asset/img_bcbcafd22df4.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_bcbcafd22df4.jpg)
 
 - Sky Visbility?
 
 - 有点类似于长距离AO, AO分为长距离AO和短距离AO
 - 下图GI AO 即 Sky Visbility, 可以看到往内部区域走会逐渐变暗
 
-![](asset/img_97acdac333af.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_97acdac333af.jpg)
 
 - 计算公式?**
 
 - 间接光 = GIIndirectSH(烘焙) * LightIntensity(美术调节) + GISkyVisibility(烘焙) * SkySH(美术调节)
 
-![](asset/img_2879ff2d7f76.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_2879ff2d7f76.jpg)
 
-![](asset/img_1c5be1d80d2c.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_1c5be1d80d2c.jpg)
 
 - Light Mask?
 
@@ -91,11 +101,11 @@ UWA视频地址, 2021年Unity开放日就讲过了 文章地址, 视频地址.
 - 当白天变成晚上时, 区域的光照贡献主要是附加光, 则亮度不怎么会产生变化
 - 如冰柱的主要贡献是平行光, 白天还好, 但是晚上冰柱周围都变暗了, 冰柱没有变暗会很诡异
 
-![](asset/img_eeff54dc95e4.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_eeff54dc95e4.jpg)
 
-![](asset/img_f0b44dcf8c21.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_f0b44dcf8c21.jpg)
 
-![](asset/img_c4b186f29c08.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_c4b186f29c08.jpg)
 
 #### 2.4 Streaming**
 
@@ -115,7 +125,7 @@ UWA视频地址, 2021年Unity开放日就讲过了 文章地址, 视频地址.
 
 - 因为3D Texture覆盖范围比较小 远处就需要2D 做弥补
 
-![](asset/img_61b40705bc70.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_61b40705bc70.jpg)
 
 #### **2.5 耗时**
 
@@ -132,7 +142,7 @@ UWA视频地址, 2021年Unity开放日就讲过了 文章地址, 视频地址.
 
 - 当巨高的场景, 可以用做数据整合, 使其规则化
 
-![](asset/img_75cc96bd03c7.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_75cc96bd03c7.jpg)
 
 - Lightmap VS Irradiance Volume
 Lightmap VolumeIrradiance Volume静态物体两者都可需要UV2不用UV2更大的包体和内存占用包体和内存小可扩展性强大数据要自定义效果更好漏光兼容度更好是用Compute Shader 和 3D Texutre烘焙慢烘焙更快离线烘焙可以实时GI
@@ -193,11 +203,11 @@ LPV需要用RSM来考虑遮挡关系, 但是这里没有用到RSM. 所以引入�
 
 间接光SH也差不多, 就是多考虑了方向性. 比如L1在靠近L0反向的颜色为黑色.
 
-![](asset/img_cde080db0e6d.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_cde080db0e6d.jpg)
 
-![](asset/img_1fa52eec1357.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_1fa52eec1357.jpg)
 
-![](asset/img_526291135d0d.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_526291135d0d.jpg)
 
 **迭代叠加越加越亮?**
 
@@ -205,13 +215,13 @@ LPV需要用RSM来考虑遮挡关系, 但是这里没有用到RSM. 所以引入�
 
 比如Pixel Shader 对于两张RT的pingpong, 就是雅克比. 但是他们这里用Compute Shader, 如果是高斯赛德尔迭代, 就需要很处理Barrier和数据一致性, 比较繁琐性能也不好. 所以这里就很随意如果数据更新了就用新的, 没有更新就用旧的.
 
-![](asset/img_2dd937374298.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_2dd937374298.jpg)
 
 **迭代反射?**
 
 用迭代近似处理多次反射. 比如下面的L3是不连通的, 因此会反射一定的irrdiance, 计算的时候就会考虑一定的从下往上的加成.
 
-![](asset/img_e41b12e23377.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_e41b12e23377.jpg)
 
 **耗时?**
 
@@ -227,9 +237,9 @@ LPV需要用RSM来考虑遮挡关系, 但是这里没有用到RSM. 所以引入�
 
 比平行光 Diffuse效果要好, 而且效率也会高点. 不过高光部分效果不太行, 平行光是GGX, 而Lux高光效果会变散.
 
-![](asset/img_009e8066d0c1.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_009e8066d0c1.jpg)
 
-![](asset/img_62a7b761d4cb.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_62a7b761d4cb.jpg)
 
 #### **3.4 漏光**
 
@@ -237,21 +247,21 @@ LPV需要用RSM来考虑遮挡关系, 但是这里没有用到RSM. 所以引入�
 
 (后面一篇文章也会快速讲一个这个)
 
-![](asset/img_06582e019f49.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_06582e019f49.jpg)
 
 一种是区分室内室外做两套probe. 对于规则物体的demo效果比较好, 但是实际上房子不太规则, 所以没有采样.
 
-![](asset/img_37d971734b7e.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_37d971734b7e.jpg)
 
-![](asset/img_78d0372afe6f.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_78d0372afe6f.jpg)
 
 COD用四面体. probe储存四面体中一个点到对面三角面的每个点的深度, 然后做深度对比.
 
-![](asset/img_97b193220a88.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_97b193220a88.jpg)
 
 DDGI. 每个probe对应一个2D的八面体深度贴图, 八个点的距离, 距离平方, 然后用切比雪夫不等式做一个概率估计. 不用线性插值, 而且自己还可以做权重处理. 但是需要的数据量太多了. 每个probe需要16*16个Bytes来记录深度.
 
-![](asset/img_bf80a0aff8c5.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_bf80a0aff8c5.jpg)
 
 Lux.
 
@@ -265,7 +275,7 @@ Lux.
 
 因为球谐的形状比较圆, 但是球面高斯比较符合墙角的形状.
 
-![](asset/img_0a4e39089a17.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_0a4e39089a17.jpg)
 
 #### **3.5 性能**
 

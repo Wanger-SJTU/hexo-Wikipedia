@@ -1,9 +1,19 @@
 ---
-title: "triton是否会冲击cuda生态？"
-date: 2026-04-23
-tags: [知乎]
-source: https://www.zhihu.com/question/1919763006750975400/answer/1921121681612739823
+title: triton是否会冲击cuda生态？
+date: "2026-04-23 00:00:00"
+updated: "2026-04-23 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/AI-infra/triton是否会冲击cuda生态/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://www.zhihu.com/question/1919763006750975400/answer/1921121681612739823
 ---
+
 
 BobHuang
 ​​

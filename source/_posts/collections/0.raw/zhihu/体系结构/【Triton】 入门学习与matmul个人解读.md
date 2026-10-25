@@ -1,9 +1,19 @@
 ---
-title: "【Triton】 入门学习与matmul个人解读"
-date: 2025-12-14
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/1898846353355944605
+title: 【Triton】 入门学习与matmul个人解读
+date: "2025-12-14 00:00:00"
+updated: "2025-12-14 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/体系结构/【Triton】-入门学习与matmul个人解读-1ab69f/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/1898846353355944605
 ---
+
 
 Triton的学习需要会GPU架构：[复习GPU架构 以及 Triton 课程](https://zhuanlan.zhihu.com/%E5%A4%8D%E4%B9%A0GPU%E6%9E%B6%E6%9E%84%20%E4%BB%A5%E5%8F%8A%20Triton%20%E8%AF%BE%E7%A8%8B.md)
 
@@ -38,7 +48,7 @@ Triton的学习需要会GPU架构：[复习GPU架构 以及 Triton 课程](https
  
 - 对组的理解：在示例中，组沿着M维度的大小 `group_size_m` 是 3，然后在N维度上是所有的线程数，因此一个组一共是 `num_pid_in_group = GROUP_SIZE_M * num_pid_n`,正如知乎中所说的红色方框内的是一组。
 -  还是以官方教程中的图示为例说明一下我个人的理解：每个核函数负责执行的仍然是一个线程块（如图中的小方格为例）。所有的分组等操作都是为了改变每个 warp 所负责的计算结果。row-wise 实例中，相邻的9个warp负责的是C矩阵的一行；block-wise实例中，相邻的9个warp 负责的是C矩阵的一个块。具体如何分配是通过 `pid =tl.program_id(axis=0)`的全局线程块索引 通过某些引导步骤 获得 需要计算的数据指针范围，以此让线程块与实际负责的数据分块对应，线程块的实际排布可以通过 `pid++`的方式来模拟相邻程序块与数据分块的对应。 通常若干个 warp 会被组织到一个SM中，底层编译器会自动根据warp 与数据块的对应关系 load 对应的数据，会放到L2 Cache中。因此如果想要尽量减少 load次数，就是让若干连续的 warp 负责 分大块后的数据块。 
-![](asset/img_45c58d224054.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_45c58d224054.jpg)
 
 文章配图
 
@@ -56,7 +66,7 @@ Triton的学习需要会GPU架构：[复习GPU架构 以及 Triton 课程](https
 
 在上面的小节学习中，MAT_MUL 核函数实际计算时内部使用group-major的方式改变warp内 gropram的计算顺序，从而减少 load 和 store次数从而 提高 Cache Hit Rate。
 
-![](asset/img_70488fde08d8.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_70488fde08d8.jpg)
 
 文章配图
 
@@ -100,7 +110,7 @@ OpenAI-Triton MLIR 第三章 Triton-shared开箱 - GiantPandaCV
  triton-share**** 提供一个胶水一样的中间层，通过对 middle-layer的设计方便我们的编程语言或者编译器对接到下游的不同硬件生态。
  
 
-![](asset/img_fbf324ede12b.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_fbf324ede12b.jpg)
 
 文章配图 当用户写完 triton DSL（Domine Specify Language）翻译为 python 的AST（Abstract Snytax Tree，抽象语法树）;之后再到Triton Dialect（方言）。
  中间： 当转为 Triton GPU Dialect时正式进入MLIR这套生态；triton支持nv GPU；当从triton gpu dialect开始，走向标准的LLVM代码生成，之后从 LLVM IR 一直到lower到 PTX（Parallel Thread eXecution，一种中间指令集），再到SASS（SASS 是实际在 NVIDIA GPU 上执行的机器代码），最终可以运行在NV的GPU上。
@@ -148,7 +158,7 @@ matmul_kernel[grid](
 
 **
 
-![](asset/img_f2f4d4c11454.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_f2f4d4c11454.jpg)
 
 文章配图
 

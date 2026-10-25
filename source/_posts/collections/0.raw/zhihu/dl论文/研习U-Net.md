@@ -1,10 +1,19 @@
 ---
-title: "研习U-Net"
-date: 2018-09-20
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/44958351
-
+title: 研习U-Net
+date: "2018-09-20 00:00:00"
+updated: "2018-09-20 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/dl论文/研习U-Net/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/44958351
 ---
+
 
 - **Author：**[Zongwei Zhou](https://link.zhihu.com/?target=https%3A//www.zongweiz.com/) | 周纵苇
 - **Weibo：**[@MrGiovanni](https://link.zhihu.com/?target=http%3A//weibo.com/u/1060010800)

@@ -1,9 +1,19 @@
 ---
-title: "Systolic Array Universal Optimization"
-date: 2025-06-08
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/1914806885644731957
+title: Systolic Array Universal Optimization
+date: "2025-06-08 00:00:00"
+updated: "2025-06-08 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/体系结构/Systolic-Array-Universal-Optimization/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/1914806885644731957
 ---
+
 
 SA 的优化有几个大方向：
 

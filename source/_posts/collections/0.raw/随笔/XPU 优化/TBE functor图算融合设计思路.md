@@ -1,3 +1,16 @@
+---
+title: TBE functor图算融合设计思路
+date: "2026-04-11 21:40:28"
+updated: "2026-04-11 21:40:28"
+layout: post
+permalink: /collections/0.raw/随笔/XPU-优化/TBE-functor图算融合设计思路/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 
 tbe 原生是从te对接HiAI IR算子的，这样的话在优化过程中只能对接算个单个算子进行优化，对于npu这种可以自己控制cache的dsa ''ip，就很难拿到更高的性能功耗收益。比如'fftl这种
 

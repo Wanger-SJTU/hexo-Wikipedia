@@ -1,9 +1,19 @@
 ---
-title: "大模型量化领域梳理（三）：重要的Hadamard变换"
-date: 2025-11-10
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/1971155871955399081
+title: 大模型量化领域梳理（三）：重要的Hadamard变换
+date: "2025-11-10 00:00:00"
+updated: "2025-11-10 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/LLM-SD/大模型量化领域梳理(三)-重要的Hadamard变换/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/1971155871955399081
 ---
+
 
 这篇文档是我去年在做大模型量化工作时初步完成的。学习大模型量化算法的过程中，只有两个地方让我感到挫败，一个是GPTQ的二阶加权误差最小化，另一个是哈达玛变换，剩下的大多是比较易懂的概念。我把这两个概念的理解看作大模型量化技术的两个标志，是调包和深入理解的界限。我们这篇先主要集中在Hadamard变换本身，不过多的涉及它在具体算法中的应用。
 

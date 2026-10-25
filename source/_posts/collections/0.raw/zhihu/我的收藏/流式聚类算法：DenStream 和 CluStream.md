@@ -1,9 +1,19 @@
 ---
-title: "(2 条消息) 流式聚类算法：DenStream 和 CluStream"
-date: 2024-12-03
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/10130905669
+title: (2 条消息) 流式聚类算法：DenStream 和 CluStream
+date: "2024-12-03 00:00:00"
+updated: "2024-12-03 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/流式聚类算法-DenStream-和-CluStream/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/10130905669
 ---
+
 
 **直接说结论：全量聚类用 DBSCAN；无监督流式聚类用 DenStream；已知聚类数、按较大时间间隔获取聚类标签且对计算量敏感，用 CluStream.GitHub 项目地址：[stream-clustering](https://link.zhihu.com/?target=https%3A//github.com/luochang212/stream-clustering)
 
@@ -90,7 +100,7 @@ plt.legend(handles, labels_for_legend, title="Clusters", loc='center left', bbox
 plt.title('DBSCAN Clustering')
 plt.show()`
 
-![](asset/img_862832183ad9.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_862832183ad9.jpg)
 
 `# 将样本和聚类结果存到一个 DataFrame
 cluster_df = pd.DataFrame({
@@ -147,7 +157,7 @@ plt.xlabel("Points sorted by distance")
 plt.ylabel("Distance to the k-th nearest neighbor")
 plt.show()`
 
-![](asset/img_50fba0830159.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_50fba0830159.jpg)
 
 观察纵坐标，选择一个距离开始加快之前的距离作为 eps 值。
 
@@ -223,7 +233,7 @@ plt.legend(handles, labels_for_legend, title="Clusters", loc='center left', bbox
 plt.title('DBSCAN Clustering')
 plt.show()`
 
-![](asset/img_cf259b912de4.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_cf259b912de4.jpg)
 
 #### 6. 一站式 DBSCAN 函数
 
@@ -324,7 +334,7 @@ test_data = np.concatenate([
 best_params, labels = auto_dbscan(data=test_data)
 print(f'best_params: {best_params}')`
 
-![](asset/img_55faad10423a.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_55faad10423a.jpg)
 
 `best_params: {'eps': 0.9, 'min_samples': 6}`
 
@@ -503,7 +513,7 @@ for i in save_test.keys():
 `dbscan_best_params, dbscan_labels = utils.auto_dbscan(data=X)
 print(f'best_params: {dbscan_best_params}')`
 
-![](asset/img_4bc6571643cf.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_4bc6571643cf.jpg)
 
 `best_params: {'eps': 0.9, 'min_samples': 6}
 # dbscan_labels.shape
@@ -544,7 +554,7 @@ utils.simple_scatter(data=X,
                      labels=denstream_labels,
                      title='DenStream Clustering')`
 
-![](asset/img_9841ef073e3f.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_9841ef073e3f.jpg)
 
 结论：DenStream 的聚类效果不如 DBSCAN，主要差在全局信号，从局部来看 DenStream 聚得没什么问题。
 
@@ -574,7 +584,7 @@ utils.simple_scatter(data=X,
                      labels=denstream_labels,
                      title='DenStream Clustering')`
 
-![](asset/img_796a117b7b87.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_796a117b7b87.jpg)
 
 结论：借用 DBSCAN 的最优 `epsilon` 参数参数对 DenStream 帮助不大。
 
@@ -681,7 +691,7 @@ utils.simple_scatter(data=X,
                      labels=clustream_labels,
                      title='CluStream Clustering')`
 
-![](asset/img_2d2f03bc37a8.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_2d2f03bc37a8.jpg)
 
 **2）宏簇数量 与 真实聚类数 不等的情况**
 
@@ -712,7 +722,7 @@ utils.simple_scatter(data=X,
                      labels=clustream_labels,
                      title='CluStream Clustering')`
 
-![](asset/img_3832498e75c9.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_3832498e75c9.jpg)
 
 #### 5. DenStream 与 CluStream 增量训练效果对比
 
@@ -739,7 +749,7 @@ utils.simple_scatter(data=X,
                      labels=denstream_inc_lables,
                      title='DenStream Clustering')`
 
-![](asset/img_9b5f14d12e41.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_9b5f14d12e41.jpg)
 
 `# CluStream 增量训练
 
@@ -766,7 +776,7 @@ utils.simple_scatter(data=X,
                      labels=clustream_inc_lables,
                      title='CluStream Clustering')`
 
-![](asset/img_e0e1d5b2f6ee.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_e0e1d5b2f6ee.jpg)
 
 结论：如果你需要对数据做增量学习，并且实时使用聚类标签，那么 DenStream 的效果更胜一筹。
 

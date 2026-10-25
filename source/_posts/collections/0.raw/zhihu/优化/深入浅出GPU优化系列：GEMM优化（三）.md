@@ -1,9 +1,19 @@
 ---
-title: "深入浅出GPU优化系列：GEMM优化（三）"
-date: 2022-09-01
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/481600052
+title: 深入浅出GPU优化系列：GEMM优化（三）
+date: "2022-09-01 00:00:00"
+updated: "2022-09-01 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/优化/深入浅出GPU优化系列-GEMM优化(三)/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/481600052
 ---
+
 
 本篇是通用矩阵乘法（GEMM）优化的第三部分，主要说明**如何从汇编级别来分析代码性能**以及**如何调整汇编代码以获得更高的性能表现**。本篇的内容需要建立在[GEMM（一）](https://zhuanlan.zhihu.com/p/435908830)和[GEMM（二](https://zhuanlan.zhihu.com/p/442930482)）的基础上，如果没有看过前两篇文章的读者可以先花点时间再阅读一下。当然，如果对sgemm优化十分熟悉的话，也可以直接服用本篇文章。
 
@@ -35,17 +45,17 @@ NV每一代机器的指令集都有所不同。关于指令集相关资料，NV�
 
 技巧2，shared memory->register，将8×8的读取变成4个4×4的读取，从而避免bank冲突。
 
-![](asset/img_9878e435afb2.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_9878e435afb2.jpg)
 
 shared memory -&amp;amp;amp;amp;gt;register技巧3，Store C矩阵的时候，为了合并访存，采用了一种非常奇怪的方式去store。
 
-![](asset/img_b09ee9b742e9.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_b09ee9b742e9.jpg)
 
 store C matrix针对大矩阵的sgemm计算时。如果k维度足够大，global->shared memory以及store C的耗时占比会非常小，所以这两个优化技巧在大矩阵中并不能起到很大的作用。所以相对来说，**技巧2会更加具有借鉴意义**。
 
 紧接着，我们来分析一下sgemm中最耗时的部分，也就是最内层的迭代部分。需要计算8×8×8=512次乘加运算。Scott的sgemm在maxwell产生的汇编代码如下图左，为了比较，我们将GEMM（二）中的代码sgemm_v2最后生成的[SASS码](https://link.zhihu.com/?target=https%3A//github.com/Liu-xiandong/How_to_optimize_in_GPU/blob/master/sgemm/asm/sgemm_pre.sm_70.cuasm)放在一起用以比较。
 
-![](asset/img_bc7be3decf59.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_bc7be3decf59.jpg)
 
 SASS代码比较可以从上面看到，512条FFMA和32条LDS指令，最核心的计算指令和访存指令都是一样的。但是GEMM（二）中用编译器产生的汇编码有更多的非计算指令存在。而且如果从上面的链接点进去的话，就会发现，FFMA指令被划到2个代码块中，相对而言，中间会多一个跳转指令。另外一个需要注意的点是scott的代码是针对Maxwell架构，所以将可以用于双发射的指令进行了单独标记。而笔者写的代码是在volta架构上编译运行的，volta架构取消了双发射。但是两个cycle发射一条FFMA指令就可以将所有的fp32 core填满。计算指令和访存指令占据不同的发射端口，计算和访存可以隔一个cycle发射。所以我的猜想是这样的，对于volta架构，t0 cycle的时候发射一条FFMA指令，t1 cycle的时候发射一条LDS指令，而后t2时刻再发射一条FFMA指令。这样的话，FFMA指令隔了2个cycle，中间还发射了一条LDS指令，但fp32的core依旧是被用满的状态。这样的话，即使没有了双发射，理论上也能将fp32 core打满。从volta架构编译出来的控制码中也可以看出一些端倪，如下，FFMA指令stall两个cycle，而LDS指令stall一个cycle。
 
@@ -64,23 +74,23 @@ SASS代码比较可以从上面看到，512条FFMA和32条LDS指令，最核心�
 
 在这里面，由于每代架构中的硬件细节有所不同，所以register的remapping细节也有所不同。首先说一下这里面的硬件细节不同是指，不同的架构中，寄存器到bank的映射方式不同。kepler架构的映射比较奇怪，并不是很规则，如下：**
 
-![](asset/img_d69ba51cc55c.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_d69ba51cc55c.jpg)
 
 kepler register bank 映射对于Maxwell架构而言，相对来说更加简单一些，bank index即reg_index%4这么一个简单的关系。Pascal架构和Maxwell架构的寄存器bank映射关系一样。而volta架构又有一些不同，在volta之前都是4路的bank，而volta架构变成了2路的bank。
 
 由于架构不一样，针对不同架构的register重映射方式也不一样。对于kepler架构，keplerAs的作者采用的映射方式如下：
 
-![](asset/img_d7c437ec4d9f.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_d7c437ec4d9f.jpg)
 
 kepler reg remapping对于Maxwell架构，Scott采用的映射方式如下：
 
-![](asset/img_239e3a2349d6.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_239e3a2349d6.jpg)
 
 maxwell reg remapping上图中间那些带黑框的数字代表不可避免的寄存器冲突，scott随后又使用了指令重排来减缓寄存器的冲突。
 
 而volta架构的话，Dissecting the NVIDIA Volta GPU Architecture via Microbenchmarking作者采用的方式如下，作了一个转置，然后相邻两行进行一个交换。
 
-![](asset/img_13c9d2d67445.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_13c9d2d67445.jpg)
 
 volta reg remapping3.2 指令重排
 
@@ -112,7 +122,7 @@ FFMA R3, R64.reuse, R72, R3; # R64 从 Reuse Cache 中获取，避免与 R72 冲
 
 `readAs = ((tid128 >> 4) | ((tid >> 1) & 7)) > 3) | (tid & 1)) 
 
-![](asset/img_a92962a87d30.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_a92962a87d30.jpg)
 
 shared memory详细解析总之，这个索引给我整不会了。作为一个正常的人类，我实在是不太能直观地去理解这个位运算。思量许久，我决定用一种最简单粗暴的索引计算方式。我们本质上是要知道，每一个线程，对应到128个元素中的哪一个元素？这个是我们的核心问题。
 

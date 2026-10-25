@@ -1,10 +1,19 @@
 ---
 title: "[译]理解 UMAP(1)：UMAP是如何工作的 & UMAP 与 tSNE的原理对比"
-date: 2021-02-23
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/150788883
+date: "2021-02-23 00:00:00"
+updated: "2021-02-23 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/dl论文/[译]理解-UMAP(1)-UMAP是如何工作的-UMAP-与-tSNE的原理对比/
 disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/150788883
 ---
+
 
 [译]理解 UMAP(1)：UMAP是如何工作的   UMAP 与 tSNE的原理对比
 

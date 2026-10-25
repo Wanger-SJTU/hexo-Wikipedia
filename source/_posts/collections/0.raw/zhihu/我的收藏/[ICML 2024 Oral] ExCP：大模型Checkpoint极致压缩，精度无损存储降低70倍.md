@@ -1,9 +1,19 @@
 ---
-title: "(2 条消息) [ICML 2024 Oral] ExCP：大模型Checkpoint极致压缩，精度无损存储降低70倍"
-date: 2024-06-19
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/704158815
+title: (2 条消息) [ICML 2024 Oral] ExCP：大模型Checkpoint极致压缩，精度无损存储降低70倍
+date: "2024-06-19 00:00:00"
+updated: "2024-06-19 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/[ICML-2024-Oral]-ExCP-大模型Checkpoint极致压缩,精度无损存储降低70倍/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/704158815
 ---
+
 
 - 论文地址：
 [](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2406.11257)
@@ -17,7 +27,7 @@ source: https://zhuanlan.zhihu.com/p/704158815
 
 ### **二、方法**
 
-![](asset/img_694f3295b201.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_694f3295b201.jpg)
 
 **1. Checkpoint残差**
 
@@ -45,11 +55,11 @@ $\Delta \mathcal P_t = \{\Delta \mathcal W_t, \mathcal O_t\} = \{\mathcal W_t-\m
 
 我们的整体压缩流程如Algorithm 1所示，依次进行计算权重残差/联合压缩/非均匀量化/编码压缩等步骤，得到最终的压缩结果。
 
-![](asset/img_290005b098fa.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_290005b098fa.jpg)
 
 而恢复出checkpoint完整文件的流程则如Algorithm 2所示，进行解压缩之后，首先从非均匀量化后存储的码本和下标中恢复出浮点结果，然后再与基准权重（上一个checkpoint的原始权重或恢复出的重建权重）相加，得到checkpoint完整文件。而恢复出整个训练流程中的checkpoint文件的流程如Algorithm 3所示，我们在完成训练后只保存初始化权重的随机种子和每个checkpoint存储的压缩结果，然后依次对checkpoint进行恢复以得到完整的checkpoint序列，以供从其中选择某个或多个checkpoint恢复训练/进行测试等。
 
-![](asset/img_3a8613d47605.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_3a8613d47605.jpg)
 
 ### **三、实验结果**
 
@@ -57,25 +67,25 @@ $\Delta \mathcal P_t = \{\Delta \mathcal W_t, \mathcal O_t\} = \{\mathcal W_t-\m
 
 我们在Pythia和PanGu-π上验证了我们的压缩效果，其中Pythia-410M上我们选取了Pile数据集的一个1/20的子集进行基准模型训练和带压缩的模型训练以进行对比，而PanGu-π上我们遵从了原论文的训练策略。
 
-![](asset/img_7d03eb39d8d9.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_7d03eb39d8d9.jpg)
 
-![](asset/img_cb8528e3e5c6.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_cb8528e3e5c6.jpg)
 
 可以看到，我们的结果对比原始模型几乎没有损失，同时实现了25-70倍的高倍率整体压缩。同时，我们也提供了在Pythia-410M上的训练loss曲线和checkpoint文件尺寸变化曲线。可以看到带压缩的训练loss曲线与无压缩的训练基本保持一致，损失只有非常微小的增加。
 
-![](asset/img_899410a261c5.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_899410a261c5.jpg)
 
 **2. 视觉模型**
 
 此外，为了方便与现有方法进行对比，我们在ViT-L32模型上进行了实验，同时比较了其他SOTA方法以及我们的不同剪枝策略。为了进行公平比较，我们根据权重和优化器动量的尺寸大小估算了其他方法的整体压缩率。但需要注意的是，即使是用其他方法在权重上的压缩率与我们的整体压缩率比较，我们仍然要高出很多。表里的消融也证明了我们联合剪枝策略的有效性。
 
-![](asset/img_d2ac238b75c9.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_d2ac238b75c9.jpg)
 
 **3. 消融实验**
 
 我们进一步在Pythia-410M上进行了消融实验，尝试去除压缩流程中的不同步骤以评估各部分的效果。结果表明，直接对权重而非权重残差进行压缩时，精度损失会比较严重，联合使用残差计算、剪枝和量化能够取得最好的压缩比例和精度。
 
-![](asset/img_4b557c9a2c51.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_4b557c9a2c51.jpg)
 
 ### **四、总结**
 

@@ -1,10 +1,19 @@
 ---
-title: "memcpy到底会不会消耗cpu？memcpy是如何消耗cpu的？"
-date: 2024-05-17
-tags: [知乎]
-source: https://www.zhihu.com/question/654514738/answer/3500963676
-
+title: memcpy到底会不会消耗cpu？memcpy是如何消耗cpu的？
+date: "2024-05-17 00:00:00"
+updated: "2024-05-17 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/memcpy到底会不会消耗cpu-memcpy是如何消耗cpu的/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://www.zhihu.com/question/654514738/answer/3500963676
 ---
+
 
 为什么会有那么多回答认为memcpy不消耗CPU？主流的C库，不管是MSVC，glibc，用的要么是repz movs，要么是SIMD指令，这些指令都是消耗CPU的。
 

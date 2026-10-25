@@ -1,9 +1,19 @@
 ---
-title: "如何深入浅出地理解DDR Controller？"
-date: 2025-11-03
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/1944487789962957623
+title: 如何深入浅出地理解DDR Controller？
+date: "2025-11-03 00:00:00"
+updated: "2025-11-03 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/如何深入浅出地理解DDR-Controller/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/1944487789962957623
 ---
+
 
 如何深入浅出地理解DDR Controller？
 

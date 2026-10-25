@@ -1,3 +1,16 @@
+---
+title: SOP：Chrome DevTools 验证闭环
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/zh/resources/openai-advanced/sops/chrome-devtools-validation-loop/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # SOP：Chrome DevTools 验证闭环
 
 当 UI 改动必须经过真实交互、截图、DOM 状态和 console 输出来判断，而不是只靠读代码时，就用这份 SOP。

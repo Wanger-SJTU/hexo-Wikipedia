@@ -1,9 +1,19 @@
 ---
-title: "ResRep：剪枝SOTA！用结构重参数化实现CNN无损压缩（ICCV）"
-date: 2021-09-27
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/402106979
+title: ResRep：剪枝SOTA！用结构重参数化实现CNN无损压缩（ICCV）
+date: "2021-09-27 00:00:00"
+updated: "2021-09-27 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/dl论文/ResRep-剪枝SOTA-用结构重参数化实现CNN无损压缩(ICCV)/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/402106979
 ---
+
 
 分享一篇我去年突发奇想做的剪枝paper，已被ICCV-2021接受。
 
@@ -29,7 +39,7 @@ ResRep这个名字包括两部分：**Res**指的是Gradient Resetting，本文�
 
 ResRep提出的解决方案是：将原CNN**等价拆分**成负责“记忆”（保持精度不降低）的部分和负责“遗忘”（去掉某些通道）的部分，前者进行“记忆训练”（不改变原目标函数、不改变训练超参、不改变更新规则），后者进行“遗忘训练”（一种基于SGD的魔改更新规则，即**Res**），应该能取得更好的效果（更高压缩率、更少精度损失）。然后，如果我们能将“记忆”和“遗忘”部分**等价合并**成一个更小的模型，不就能实现剪枝了吗？（如下图B）
 
-![](asset/img_9bcdb3d0ac2a.jpg)
+![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_9bcdb3d0ac2a.jpg)
 
 ### Rep：结构重参数化原理
 
@@ -37,7 +47,7 @@ ResRep提出的解决方案是：将原CNN**等价拆分**成负责“记忆”�
 
 **等价拆分**：若convB的kernel为单位矩阵，则整个结构的输出不变（对任意x，convB(convA(x)) == convA(x)）。
 
-训练（应用我们提出的**花式操作**，即**Res**，稍后详细介绍）结束后，假设已经把convB剪成了有D'（D' ![](asset/img_f613c6a5bbcf.jpg)
+训练（应用我们提出的**花式操作**，即**Res**，稍后详细介绍）结束后，假设已经把convB剪成了有D'（D' ![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_f613c6a5bbcf.jpg)
 
 ### Res：魔改SGD的花式操作
 
@@ -47,7 +57,7 @@ ResRep提出的解决方案是：将原CNN**等价拆分**成负责“记忆”�
 
 这种做法可以表示为下式，L(total)是总的损失函数，L(perf)是与模型性能（精度）相关的损失函数（例如分类任务上就是交叉熵），K是任意一个kernel的参数张量，P表示某种惩罚项（L1/L2/Lasso），λ是我们预定义的系数。
 
-![](asset/img_09263878d127.png)
+![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_09263878d127.png)
 
 当我们加载一个训好的模型，刚开始剪枝训练时，L(perf)较小（因为这初始模型已经训好了嘛），P(K)较大（因为kernel都还比较大嘛），所以第一项导出的梯度显著小于第二项导出的梯度，K在惩罚项主导的梯度影响下，逐渐变小。很好，这是我们需要的。
 
@@ -57,7 +67,7 @@ ResRep提出的解决方案是：将原CNN**等价拆分**成负责“记忆”�
 
 听起来挺复杂，但实现其实很简单：我们不往原来的损失函数上加惩罚项loss（即L(perf) == L(total)），正常地前传和反传，求出每个K的梯度，往梯度上加**惩罚项梯度**（**往loss上加惩罚项loss等价于往梯度上加惩罚项梯度**）。如下式所示，F表示kernel中的任意一个通道（即filter），G(F)表示用于更新F的梯度，我们这里用Lasso做惩罚项，第二项就是Lasso的梯度。当选出一部分我们想要变为0的通道之后，我们往这些通道的由L(perf)导出的梯度上乘一个0（下式中的m），用如此魔改后的G(F)去更新F即可。
 
-![](asset/img_923ba26617a7.jpg)
+![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_923ba26617a7.jpg)
 
 读者可能已经发现了这种粗暴做法的问题：第一项梯度是从损失函数导出的，带着维持模型性能不降低（即指导参数如何更新）的信息呢，直接去掉，信息损失会不会太大了？
 
@@ -67,7 +77,7 @@ ResRep提出的解决方案是：将原CNN**等价拆分**成负责“记忆”�
 
 **实验证明，我们方法的效果远好于其他通道剪枝方法（更高压缩率、更少性能损失，超过50%压缩率下无损）。**
 
-![](asset/img_36cb0b16a48d.jpg)
+![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_36cb0b16a48d.jpg)
 
 ### ResRep与“重参宇宙”
 

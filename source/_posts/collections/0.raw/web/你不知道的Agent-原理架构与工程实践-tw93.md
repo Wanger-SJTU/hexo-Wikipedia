@@ -1,11 +1,21 @@
 ---
-title: "你不知道的 Agent：原理、架构与工程实践 - Tw93"
-date: 2026-03-21
-tags: [Agent, 架构, 工程实践]
-source: https://tw93.fun/2026-03-21/agent.html
-PPT版: https://tw93.fun/files/share/agent.html
-
+title: 你不知道的 Agent：原理、架构与工程实践 - Tw93
+date: "2026-03-21 00:00:00"
+updated: "2026-03-21 00:00:00"
+layout: post
+permalink: /collections/0.raw/web/你不知道的Agent-原理架构与工程实践-tw93/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - Agent
+  - 架构
+  - 工程实践
+source_url: https://tw93.fun/2026-03-21/agent.html
 ---
+
 
 ## 你不知道的 Agent：原理、架构与工程实践
 

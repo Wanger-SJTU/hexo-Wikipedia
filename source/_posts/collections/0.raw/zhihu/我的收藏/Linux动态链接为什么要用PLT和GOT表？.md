@@ -1,9 +1,19 @@
 ---
-title: "(2 条消息) Linux动态链接为什么要用PLT和GOT表？"
-date: 2026-04-17
-tags: [知乎]
-source: https://www.zhihu.com/question/21249496/answer/70677127797
+title: (2 条消息) Linux动态链接为什么要用PLT和GOT表？
+date: "2026-04-17 00:00:00"
+updated: "2026-04-17 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/Linux动态链接为什么要用PLT和GOT表/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://www.zhihu.com/question/21249496/answer/70677127797
 ---
+
 
 22 人赞同了该回答
 
@@ -29,7 +39,7 @@ PS：延迟绑定也会带来一些坏处，比如说延迟绑定会要求got.pl
 
 能够延迟绑定的外部函数都有其对应的plt代码（plt代码指的是那个以@plt结尾的函数），它们的重定位信息会放在.rela.plt节中。
 
-![](asset/img_0621920ab603.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_0621920ab603.jpg)
 
 #### 2.2 什么时候会使用延迟绑定
 
@@ -39,7 +49,7 @@ PS：延迟绑定也会带来一些坏处，比如说延迟绑定会要求got.pl
 - 当环境变量LD_BIND_NOW被设置为非空值时。
 除以上两种情况外，延迟绑定都会被启用。
 
-![](asset/img_d3f613ccab32.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_d3f613ccab32.jpg)
 
 设置了BIND_NOW
 ### 3 延迟绑定的具体表现
@@ -58,7 +68,7 @@ PS：延迟绑定也会带来一些坏处，比如说延迟绑定会要求got.pl
 
 之后我会介绍一下延迟绑定在运行时的具体表现，以下面这张图为例。
 
-![](asset/img_a14c24af6e86.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_a14c24af6e86.jpg)
 
 当动态库想调用__cxa_finalize函数时，会先调用__cxa_finalize@plt函数。__cxa_finalize@plt函数的具体执行流程与其是否是第一次被调用有关。
 
@@ -66,7 +76,7 @@ PS：延迟绑定也会带来一些坏处，比如说延迟绑定会要求got.pl
 
 __cxa_finalize@plt中的第一条指令`jmp *0x460a(%rip)`会使pc跳转到0x5d990（这其实是相对基地址的偏移量）所保存的地址处（这里是地址无关的，通过当前pc值加上偏移量0x460a进行访存），这个0x5d990其实就包含在.got.plt节内，如下图所示：
 
-![](asset/img_d08f7829e122.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_d08f7829e122.jpg)
 
 0x5d990里保存着__cxa_finalize@plt函数第二条指令`push $0x0`在运行时的真实地址（基地址+0x59386），于是执行完第一条指令后就会紧接着执行第二条指令，压入0（0其实是__cxa_finalize函数的重定位信息在.rela.plt节中的索引）到栈后跳转到0x59370处，然后又压入got.plt[1]的值到栈中，最后跳转到got.plt[2]中保存的地址。（这里为了描述的简单将got.plt看作一个usize类型的数组）
 
@@ -100,7 +110,7 @@ PS：压入栈的got.plt[1]中的值和0会用于辅助got.plt[2]中保存的函
 
 那么动态链接器是如何完成重定位的呢？这里离不开静态链接器（这里为了与动态链接器做区分，我将ld/lld叫做静态链接器）的配合，从下图中可以看到，0x5d990中保存的是0x59386（小端序，这是直接编码到动态库文件里的），这恰好就是__cxa_finalize@plt的第二条指令相对于基地址的偏移量。所以动态链接器在加载动态库时只需将0x5d990中保存的内容加上基地址，就可以得到__cxa_finalize@plt的第二条指令在运行时的真实地址。
 
-![](asset/img_ce2edc7f203f.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_ce2edc7f203f.jpg)
 
 除了对.rela.plt节进行简单的重定位外，动态链接器在加载动态库时还需要向got.plt[1]（对应着0x5d980）填入辅助延迟绑定的结构体的地址，向got.plt[2]（对应着0x5d988）处填入延迟绑定的处理函数dl_runtime_resolve的地址。需要注意的是这里的填充与CPU指令集架构有关，不同指令集的填充位置不一样。
 
@@ -203,7 +213,7 @@ dl_runtime_resolve:
 
 PS：__cxa_finalize重定位信息里保存的就是0x5d990，因此`let ptr =(dylib.segments.base()+ rela.r_offset())as*mut usize`会使ptr指向0x5d990在运行时的真实地址。 
 
-![](asset/img_6b738880dd9c.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_6b738880dd9c.jpg)
 
 以上就是动态链接器实现延迟绑定的全部内容。
 

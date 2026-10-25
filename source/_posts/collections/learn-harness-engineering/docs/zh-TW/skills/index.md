@@ -1,3 +1,16 @@
+---
+title: Skills（技能集）
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/zh-TW/skills/index/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # Skills（技能集）
 
 本目錄包含課程附帶的 AI 代理技能。每個技能都是自包含的提示詞範本，可被 AI 程式設計代理（Claude Code、Codex、Cursor、Windsurf 等）載入以執行專業任務。

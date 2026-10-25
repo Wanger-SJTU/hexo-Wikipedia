@@ -1,18 +1,29 @@
 ---
-title: "Learning Beyond Gradients"
-author: "Jiayi Weng"
-source: "https://trinkle23897.github.io/learning-beyond-gradients/"
-date: "2026-05-09"
-tags: ["博客", "RL", "Heuristic Learning", "Continual Learning"]
-mathjax: true
+title: Learning Beyond Gradients
+date: "2026-05-09 11:25:53"
+updated: "2026-05-09 11:25:53"
+layout: post
+permalink: /collections/other/learning-beyond-gradients/2026-05-09-learning-beyond-gradients/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 博客
+  - RL
+  - Heuristic Learning
+  - Continual Learning
+source_url: https://trinkle23897.github.io/learning-beyond-gradients/
 ---
+
 
 # Learning Beyond Gradients
 
 > 原文：https://trinkle23897.github.io/learning-beyond-gradients/
 > 作者：Jiayi Weng
 
-![](asset/ig_0c2dd0d2f07176560169fbc256930481969d3c6ba3316d5486.png)
+![](/images/collections/other/learning-beyond-gradients/asset/ig_0c2dd0d2f07176560169fbc256930481969d3c6ba3316d5486.png)
 
 ## The Anomaly
 
@@ -187,21 +198,21 @@ Many heuristics looked hopeless because the real issue was maintenance cost. The
 
 ### Atari Breakout 样本效率
 
-![](asset/heuristic_breakout_sample_efficiency.png)
+![](/images/collections/other/learning-beyond-gradients/asset/heuristic_breakout_sample_efficiency.png)
 
 ### MuJoCo Ant 样本效率
 
-![](asset/heuristic_ant_sample_efficiency.png)
+![](/images/collections/other/learning-beyond-gradients/asset/heuristic_ant_sample_efficiency.png)
 
 ### MuJoCo HalfCheetah 样本效率
 
-![](asset/heuristic_halfcheetah_sample_efficiency.png)
+![](/images/collections/other/learning-beyond-gradients/asset/heuristic_halfcheetah_sample_efficiency.png)
 
 ### Atari57 对比
 
-![](asset/atari57_openrl_sample_efficiency_context.png)
+![](/images/collections/other/learning-beyond-gradients/asset/atari57_openrl_sample_efficiency_context.png)
 
-![](asset/atari57_per_game_hns_comparison.png)
+![](/images/collections/other/learning-beyond-gradients/asset/atari57_per_game_hns_comparison.png)
 
 ---
 

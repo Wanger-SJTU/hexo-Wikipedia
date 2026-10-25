@@ -1,9 +1,19 @@
 ---
-title: "从线性布局的视角看 CuTe 布局"
-date: 2025-08-14
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/1937977743569577920
+title: 从线性布局的视角看 CuTe 布局
+date: "2025-08-14 00:00:00"
+updated: "2025-08-14 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/从线性布局的视角看-CuTe-布局/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/1937977743569577920
 ---
+
 
 为了解决矩阵布局运算表达的困难，CuTe 使用了自己的[布局代数](https://link.zhihu.com/?target=https%3A//docs.nvidia.com/cutlass/media/docs/cpp/cute/02_layout_algebra.html)体系，但只作为一系列的记号，没有说明具体的使用范围等。这一体系在 Jay Shah 的论文 [A Note on the Algebra of CuTe Layouts](https://link.zhihu.com/?target=https%3A//research.colfax-intl.com/a-note-on-the-algebra-of-cute-layouts/) 里建立了较为完善的理论基础，不过稍显晦涩，[毛磊的博客](https://link.zhihu.com/?target=https%3A//leimao.github.io/article/CuTe-Layout-Algebra/)正好补充了这一点。
 
@@ -52,11 +62,11 @@ CuTe 中最常用的分块运算为除法，定义为A\oslash B=A\circ(B,B^*)，
 
 当然，除法更有意义的可能是在 B 不满射的情况下，此时可以将 A 中的元素间隔着聚到一起，例如教程中，不同的颜色对应着 B 布局，通过除法运算，将 A 中不同的颜色都聚到了一起。
 
-![](asset/img_a32df5ad0505.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_a32df5ad0505.jpg)
 
 CuTe divisionCuTe 中还定义了乘法运算，A\otimes B=(A, A^*\circ B)，补全将 A 的陪域补到了 A 的定义域与 B 的陪域的乘积，也就是保证A^*的定义域适配 B 的陪域。 用线性布局表示，则是\begin{bmatrix}A&\\&A^*B\end{bmatrix}。 显然，当 A 是满射时，A^*=I，这个运算和线性布局中的乘法A\times B定义相同。当 A 不是满射时，还会插空往空隙里填上 A 中没有没有的元素再和 B 复合。
 
-![](asset/img_7f1754eedfef.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_7f1754eedfef.jpg)
 
 CuTe product
 

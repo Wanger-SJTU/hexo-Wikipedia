@@ -1,9 +1,19 @@
 ---
-title: "(1 条消息) C++内存池的简单原理及实现(纯代码解析)"
-date: 2021-11-19
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/434081696
+title: (1 条消息) C++内存池的简单原理及实现(纯代码解析)
+date: "2021-11-19 00:00:00"
+updated: "2021-11-19 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/C-内存池的简单原理及实现(纯代码解析)/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/434081696
 ---
+
 
 ### 一，为什么要用内存池
 
@@ -26,15 +36,15 @@ C++程序默认的内存管理（new，delete，malloc，free）会频繁地在�
 - 如果一个内存区占满了，则新开辟一个内存区，维持一个内存区的链表，同指针相连，头指针指向最新的内存区，新的内存块从该区内重新划分和申请
 **如图所示：**
 
-![](asset/img_60d7850adbcf.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_60d7850adbcf.jpg)
 
-![](asset/img_775e5e275ebe.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_775e5e275ebe.jpg)
 
-![](asset/img_87e64a2ea52a.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_87e64a2ea52a.jpg)
 
 **【文章福利**】小编推荐自己的Linux内核技术交流群:【**865977150**】整理了一些个人觉得比较好的学习书籍、视频资料共享在群文件里面，有需要的可以自行添加哦！！！前100名进群领取，额外赠送一份价值**699的内核资料包**（含视频教程、电子书、实战项目及代码)
 
-![](asset/img_40740d8f402e.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_40740d8f402e.jpg)
 
 **内存池实现**
 
@@ -182,4 +192,4 @@ p6 00000174BEDD5320 6
 
 - 在内存分配和释放的环节需要加锁来保证线程安全
 - 还没有实现对象数组的分配和释放
-![](asset/img_48efc3975032.png)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_48efc3975032.png)

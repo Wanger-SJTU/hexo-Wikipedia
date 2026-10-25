@@ -1,9 +1,19 @@
 ---
 title: "闻名世界的经典演讲《You and Your Research》: 为什么只有少数科学家能做出重大科研成果，而大部分都会被历史遗忘？"
-date: 2025-03-19
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/31283972369
+date: "2025-03-19 00:00:00"
+updated: "2025-03-19 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/闻名世界的经典演讲《You-and-Your-Research》_-为什么只有少数科学家能做出重大科研成果,而大部分都会被历史遗忘/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/31283972369
 ---
+
 
 最近在阅读与学习力相关的书籍，在书中作者写到: 
 
@@ -41,7 +51,7 @@ source: https://zhuanlan.zhihu.com/p/31283972369
 
 为什么这个话题重要？因为你只有一次生命。即使你相信来世，那也没关系，**为什么不在今生就做一些重大的事呢。**
 
-![](asset/img_09bdcb7599dc.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_09bdcb7599dc.jpg)
 
 **01 要有做大事的想法**
 

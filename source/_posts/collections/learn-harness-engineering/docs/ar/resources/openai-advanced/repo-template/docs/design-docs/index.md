@@ -1,3 +1,16 @@
+---
+title: فهرس وثائق التصميم
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/ar/resources/openai-advanced/repo-template/docs/design-docs/index/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # فهرس وثائق التصميم
 
 استخدم هذا الفهرس كخريطة قابلة للاكتشاف لتاريخ التصميم.

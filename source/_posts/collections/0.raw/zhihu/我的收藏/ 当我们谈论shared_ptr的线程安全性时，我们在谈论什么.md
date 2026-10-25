@@ -1,9 +1,19 @@
 ---
-title: "(1 条消息) 当我们谈论shared_ptr的线程安全性时，我们在谈论什么"
-date: 2023-06-12
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/416289479
+title: (1 条消息) 当我们谈论shared_ptr的线程安全性时，我们在谈论什么
+date: "2023-06-12 00:00:00"
+updated: "2023-06-12 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/当我们谈论shared_ptr的线程安全性时,我们在谈论什么/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/416289479
 ---
+
 
 自C++11起，shared_ptr从boost转正进入标准库已有10年了。然而当C++程序员们在谈论shared_ptr是不是线程安全的的时候，还时常存在分歧。确实关于shared_ptr 的线程安全性不能直接了当地用安全或不安全来简单回答的，下面我来探讨一下。
 

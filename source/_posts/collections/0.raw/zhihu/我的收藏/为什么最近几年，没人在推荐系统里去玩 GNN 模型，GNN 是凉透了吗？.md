@@ -1,10 +1,19 @@
 ---
-title: "为什么最近几年，没人在推荐系统里去玩 GNN 模型，GNN 是凉透了吗？"
-date: 2024-11-21
-tags: [知乎]
-source: https://www.zhihu.com/question/3320585936/answer/36857602893
-
+title: 为什么最近几年，没人在推荐系统里去玩 GNN 模型，GNN 是凉透了吗？
+date: "2024-11-21 00:00:00"
+updated: "2024-11-21 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/为什么最近几年,没人在推荐系统里去玩-GNN-模型,GNN-是凉透了吗/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://www.zhihu.com/question/3320585936/answer/36857602893
 ---
+
 
 我们做推荐系统的优化，一定要清楚每次优化的效果收益来源是什么。一般来说，收益总是来源于**样本、特征和模型**三个方向的一个或多个。但归根到底，可以再精炼成两个方面，收益要么来源于**信息的增加（样本、特征）**，要么来源于**信息利用能力的增强（模型）**。
 

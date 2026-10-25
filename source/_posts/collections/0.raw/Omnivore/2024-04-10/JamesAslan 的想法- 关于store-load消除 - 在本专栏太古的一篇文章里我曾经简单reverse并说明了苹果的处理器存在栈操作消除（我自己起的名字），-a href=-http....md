@@ -1,4 +1,17 @@
 ---
+title: "JamesAslan 的想法: 关于store-load消除 | 在本专栏太古的一篇文章里我曾经简单reverse并说明了苹果的处理器存在栈操作消除（我自己起的名字），<a href=\"https://zhuanlan.zhihu.com/p/595582920\" data-insert-way=\"force\" data-draft-node=\"inline\" data-draft-type=\"text-link\" class=\"internal\" data-icon-type=\"link\" data-original-url=\"https://zhuanlan.zhihu.com/p/595582920\">苹果的黑魔法？Apple M1的栈操作消...</a> 当时文中提过一嘴x86两家做得更激进，以后详细probe了再写一篇文章。说来也巧，这次HPCA2024就有人帮干了哈：《Uncovering and Exploiting AMD Speculative Memory Access Predictors for Fun and Profit》，有兴趣的可以看看，肯定比我闲下来玩玩弄得细致得多得多。<br>AMD的话是在Zen3引入的这一机制，有什么作用的话可以自行体会一番(⊙v⊙) - 知乎"
+date: "2026-04-11 21:40:28"
+updated: "2026-04-11 21:40:28"
+layout: post
+permalink: /collections/0.raw/Omnivore/2024-04-10/JamesAslan-的想法-关于store-load消除-在本专栏太古的一篇文章里我曾经简单reverse并说明了苹果的处理器存在栈操作消除(我自己起的名字),-a-href-h/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
+---
 id: 0c9cbe4d-645c-425d-a916-d0da5626a782
 ---
 
@@ -52,7 +65,7 @@ AMD的话是在Zen3引入的这一机制，有什么作用的话可以自行体�
 
 [@Qianlong](http://www.zhihu.com/people/3a18660ac0844ef2612f1c5c3621477c)
 
-![[可怜]](https://proxy-prod.omnivore-image-cache.app/0x0,sogefkIB7POraMxMZLRTxgZerGI5KJ-2u8pWDDVd5oA8/https://pic1.zhimg.com/v2-aa15ce4a2bfe1ca54c8bb6cc3ea6627b.png)
+!<span class="wikilink wikilink--missing" title="未导入的页面">可怜</span>(https://proxy-prod.omnivore-image-cache.app/0x0,sogefkIB7POraMxMZLRTxgZerGI5KJ-2u8pWDDVd5oA8/https://pic1.zhimg.com/v2-aa15ce4a2bfe1ca54c8bb6cc3ea6627b.png)
 
 04-08 · IP 属地北京
 
@@ -86,7 +99,7 @@ zen2也有消歧呀，组里有同学在做呢
 
 [Freeman](https://www.zhihu.com/people/e9b69b47a1f638bd9df726368866b7ea)
 
-下载不了啊![[捂脸]](https://proxy-prod.omnivore-image-cache.app/0x0,s2vV3klXf3vprH4raEBnnzXOW3bKa7eTxEseG7iWuZos/https://pic1.zhimg.com/v2-b62e608e405aeb33cd52830218f561ea.png)
+下载不了啊!<span class="wikilink wikilink--missing" title="未导入的页面">捂脸</span>(https://proxy-prod.omnivore-image-cache.app/0x0,s2vV3klXf3vprH4raEBnnzXOW3bKa7eTxEseG7iWuZos/https://pic1.zhimg.com/v2-b62e608e405aeb33cd52830218f561ea.png)
 
 04-08 · IP 属地上海
 
@@ -98,7 +111,7 @@ zen2也有消歧呀，组里有同学在做呢
 
 作者
 
-![[捂脸]](https://proxy-prod.omnivore-image-cache.app/0x0,s2vV3klXf3vprH4raEBnnzXOW3bKa7eTxEseG7iWuZos/https://pic1.zhimg.com/v2-b62e608e405aeb33cd52830218f561ea.png)只能八仙过海各显神通了，这些文章也是才上架
+!<span class="wikilink wikilink--missing" title="未导入的页面">捂脸</span>(https://proxy-prod.omnivore-image-cache.app/0x0,s2vV3klXf3vprH4raEBnnzXOW3bKa7eTxEseG7iWuZos/https://pic1.zhimg.com/v2-b62e608e405aeb33cd52830218f561ea.png)只能八仙过海各显神通了，这些文章也是才上架
 
 04-08 · IP 属地北京
 

@@ -1,3 +1,16 @@
+---
+title: 方法对照表
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/zh/resources/reference/method-map/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # 方法对照表
 
 这个表把最常见的长时 coding-agent 失败模式，对应到最先该补的工件或规则。

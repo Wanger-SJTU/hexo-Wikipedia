@@ -1,9 +1,19 @@
 ---
-title: "LLM 推理系统、Code Agent 与电网"
-date: 2026-02-27
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/2006506955775169424
+title: LLM 推理系统、Code Agent 与电网
+date: "2026-02-27 00:00:00"
+updated: "2026-02-27 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/AgentCLI/LLM-推理系统、Code-Agent-与电网/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/2006506955775169424
 ---
+
 
 K2.5 发布之后，最近的流量增加太猛了。我期盼了许久友商的发布来让团队能好好休息一下，但可惜的是似乎并没有成功的缓解我们的集群压力TuT。
 
@@ -11,7 +21,7 @@ K2.5 发布之后，最近的流量增加太猛了。我期盼了许久友商的
 
 #### Topic1：心跳
 
-![](asset/img_ffea58b8a359.jpg)
+![](/images/collections/0.raw/zhihu/AgentCLI/asset/img_ffea58b8a359.jpg)
 
 心电图一般的流量曲线我们的流量曲线总是在整点的时候都来一波冲刺，导致集群的自动负载均衡总是很难处理，不得已给很多用户返回了一些 429。
 

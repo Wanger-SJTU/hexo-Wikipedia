@@ -1,17 +1,27 @@
 ---
-title: "(1 条消息) 机器学习中的高性能计算（二）SSE优化"
-date: 2021-09-14
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/409973153
+title: (1 条消息) 机器学习中的高性能计算（二）SSE优化
+date: "2021-09-14 00:00:00"
+updated: "2021-09-14 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/机器学习中的高性能计算(二)SSE优化/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/409973153
 ---
 
-**在上篇文章中的最后，我们介绍了SIMD指令，最后留了一个小尾巴，今天补充完整。上文链接：[![](asset/img_a4bfe64df6ab.jpg)陈震：机器学习中的高性能计算（一）CPU优化316 赞同 · 16 评论 文章](https://zhuanlan.zhihu.com/p/384654825)
+
+**在上篇文章中的最后，我们介绍了SIMD指令，最后留了一个小尾巴，今天补充完整。上文链接：[![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_a4bfe64df6ab.jpg)陈震：机器学习中的高性能计算（一）CPU优化316 赞同 · 16 评论 文章](https://zhuanlan.zhihu.com/p/384654825)
 
 #### 8 SSE指令集介绍**
 
 目前，绝大多数的CPU都支持SIMD，不同的CPU架构和厂商提供了不同的SIMD指令集来支持，以常用的x86架构来说，我们可以通过SSE指令集来使用x86架构下的SIMD能力。
 
-![](asset/img_50020c116ca4.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_50020c116ca4.jpg)
 
 以SSE为代表的多种SIMD指令集SSE指令集是对普通指令集的扩充，其使用方法可以归纳为：“接-化-发”，即：
 
@@ -20,7 +30,7 @@ source: https://zhuanlan.zhihu.com/p/409973153
 - 使用SSE专门的STORE指令把计算结果从寄存机写回到内存
 在实际写代码中，我们可以直接使用汇编调用SSE相关的指令，但是更常见的方式还是用Intel提供的C/C++的指令集内联函数intrinsics，详细的文档见：Intel® Intrinsics Guide。比如跟LOAD指令相关的内联函数就有这么多，主要功能是从内存地址mem_addr处，加载128bit的数据到寄存器。
 
-![](asset/img_d2cc18feef6e.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_d2cc18feef6e.jpg)
 
 Intel intrinsics中与load相关的指令集函数之所以有这么多种，首先由于支持的数据类型不同。其中__m128表示128bit的单精度浮点数；__m128h表示半精度；__128d表示128bit的双精度浮点数；__m128i表示128bit的整数型。
 
@@ -29,7 +39,7 @@ Intel intrinsics中与load相关的指令集函数之所以有这么多种，首
 - 第一部分均以_mm开头，表示属于SSE指令集;
 - 第二部分表明操作类型，比如load，add，store等。但部分指令后面跟有[l|h|u|r]等字母，比如u表示mem_addr不需要内存对齐，r表示反向读取等；
 - 第三部分主要包括两个字母，大部分以[p|s]开头，p表示packed即对128bits的数据全部执行相同的操作，s表示scalar，只对128bit中的第一组数据执行操作，如下图所示。而第二个字母往往和数据类型相关，比如[d|h|s]等，分别表示双精度、半精度、单精度等。
-![](asset/img_da3f168417a9.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_da3f168417a9.jpg)
 
 由于SSE指令集发展多年，有SSE、SSE2、SSE3、SSEE3、SSE4.1、AVX等众多版本，但是命名上主要遵循上面的规则。在真正使用时可以查阅Intel® Intrinsics Guide 了解细节。
 
@@ -37,7 +47,7 @@ Intel intrinsics中与load相关的指令集函数之所以有这么多种，首
 
 接下来尝试使用SSE指令集对原来的代码进行优化。由于SSE指令集操作的单位都是128bit，即可同时操作四个32bit的单精度float数据，为了编程方便，我们修改blur操作的kernel大小，从3*3修改为3*4，代码执行的流程如下图：
 
-![](asset/img_8e53603a7a7a.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_8e53603a7a7a.jpg)
 
 利用SSE指令集修改计算流程
 
@@ -76,7 +86,7 @@ void blur_mat_sse(const vector> &input,
 
 看一下动图：
 
-![](asset/img_4048bcfd1cce.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_4048bcfd1cce.jpg)
 
 实际编译运行看一下效果。由于使用了SSE指令集，在编译时需要显示指定编译选项-msse3：
 
@@ -84,7 +94,7 @@ void blur_mat_sse(const vector> &input,
 
 经过SSE指令集的优化，我们代码的性能进一步提升到了130ms，相较于最原始的版本，加速了30倍。
 
-![](asset/img_4bf97962ae0b.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_4bf97962ae0b.jpg)
 
 #### 9 小结
 
@@ -122,7 +132,7 @@ void blur_mat_sse(const vector> &input,
 
  合著的书籍，近一年下来读者的反馈还是很正面的，适合对机器学习算法基本原理和深度学习框架的工程实现感兴趣的同学。感谢大家捧场。
 
-[![](asset/img_74d6afdf49f1.jpg)广告
+[![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_74d6afdf49f1.jpg)广告
 
 用Python实现深度学习框架（图灵出品）
 

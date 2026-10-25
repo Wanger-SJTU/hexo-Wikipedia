@@ -1,9 +1,19 @@
 ---
 title: "Speculative Decoding: 从Padding 的视角重新理解投机解码"
-date: 2026-01-06
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/1991904699117490479
+date: "2026-01-06 00:00:00"
+updated: "2026-01-06 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/LLM-SD/Speculative-Decoding_-从Padding-的视角重新理解投机解码/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/1991904699117490479
 ---
+
 
 **写在前言：**最近在思考 Speculative Decoding 底层系统设计的时候，顺着一条逻辑链想下去，突然冒出了一个新的理解视角。本文尝试把这个思考过程完整地梳理一下.
 
@@ -21,7 +31,7 @@ Prefill 阶段做的是矩阵-矩阵乘（GEMM），计算量大，是 compute-b
 
 - **Batch size 增大**：算力需求增长得比带宽需求快 → 系统往 compute-bound 方向走
 - **Context length 增大**：带宽需求增长得比算力需求快 → 系统往 memory-bound 方向走
-说人话就是：小 batch 的时候算力闲着，长 context 的时候带宽不够用.[[1]](#ref_1)
+说人话就是：小 batch 的时候算力闲着，长 context 的时候带宽不够用.<span class="wikilink wikilink--missing" title="未导入的页面">1</span>(#ref_1)
 
 ### 1. 一个自然的问题：闲置的算力怎么办？
 

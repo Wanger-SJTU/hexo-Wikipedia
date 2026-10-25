@@ -1,9 +1,19 @@
 ---
-title: "(1 封私信) MLIR 文章视频汇总"
-date: 2022-01-28
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/141256429
+title: (1 封私信) MLIR 文章视频汇总
+date: "2022-01-28 00:00:00"
+updated: "2022-01-28 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/tvm/MLIR-文章视频汇总/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/141256429
 ---
+
 
 从刚刚接触MLIR的时候开始写文章，已经积累了一些，这篇文章做一个梳理，为自己写起来方便，也为大家读起来方便，之后的文章也会在汇总里持续更新。
 

@@ -1,9 +1,19 @@
 ---
-title: "(1 条消息) 内存一致性(Memory Consistency)"
-date: 2021-10-18
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/422848235
+title: (1 条消息) 内存一致性(Memory Consistency)
+date: "2021-10-18 00:00:00"
+updated: "2021-10-18 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/内存一致性(Memory-Consistency)/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/422848235
 ---
+
 
 *写在本章之前：*
 
@@ -11,7 +21,7 @@ source: https://zhuanlan.zhihu.com/p/422848235
 
 什么是内存一致性模型？为什么需要内存一致性模型？还是让我们来看一下我们前面介绍cache一致性问题时讨论过的一个例子：
 
-![](asset/img_b6a9420252d8.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_b6a9420252d8.jpg)
 
 有两个任务T0和T1分别被操作系统调度在两个CPU核上运行，前面的章节告诉我们：如果不解决cache的一致性问题，则T1任务一致处于空循环中运行，无法执行到print(A), 但是不是cache一致性保证后，该程序的运行就一切水到渠成了？大家可以思考一下T1任务运行到print(A)后打印出的值应该是多少呢？
 
@@ -33,7 +43,7 @@ source: https://zhuanlan.zhihu.com/p/422848235
 
 （3） 多核之间代码可以以任意的顺序进行交织运行（但每个核内还是严格的顺序执行）
 
-![](asset/img_1afa642a0de3.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_1afa642a0de3.jpg)
 
 在sequential模型下，上述问题的运行结果就只能是先A=1,然后才发生flag=1,所以不可能打印出A=0的结果。
 
@@ -45,7 +55,7 @@ Sequential模型的优点是实现简单（对硬件和软件人员都简单）�
 
 前面介绍的Sequential模型就是要求严格保持4种可能的内存读写顺序场景（即使这些操作之间没有控制上的，数据上的，流水线上的依赖关系）： 
 
-![](asset/img_ec95d599e359.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_ec95d599e359.jpg)
 
 宽松模型的关键思想是允许乱序执行读取(load)和写入(store)操作,通过使用同步操作来实现处理器之间的同步。宽松模型的方式可以多种多样的，我们可以根据放松了哪种读取和写入顺序来进行分类。
 
@@ -63,13 +73,13 @@ Sequential模型的优点是实现简单（对硬件和软件人员都简单）�
 
 我们知道CPU访问主memory需要的开销非常大（上100个cycles），如果CPU想存储一个数据到memory而该数据又不在data cache中，则这个过程是相当耗时的，大大地降低了CPU性能。为了进一步加快内存访问速度，CPU设计中引入了store buffer这个部件，store buffer是位于执行单元（比如浮点执行单元FPU, 算术逻辑单元ALU等）与data cache之间的小一块存储单元。(借用一下BOOMv3中的一个架构图)
 
-![](asset/img_1b4ecb5f55e3.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_1b4ecb5f55e3.jpg)
 
 ** 注：使用store buffer的好处不仅在于加快存储的速度，另外还可以利用store buffer实现乱序执行以及实现推断执行(speculative execution)失败后的回退roll back，等
 
 当CPU需要写(store)数据时, 数据不直接写到memory或者cache中，而是先写到store buffer中，store buffer负责后续以某种次序写入L1 data Cache 。我们还是用前面那个例子来解释一下什么情况下会输出另外一种结果：
 
-![](asset/img_b6a9420252d8.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_b6a9420252d8.jpg)
 
  假设T0在CPU0上执行，T1在CPU1上执行：
 
@@ -100,7 +110,7 @@ RISC-V采用的内存模型叫RVWMO(RISC-V Weak Memory Ordering)，其设计目�
   每个指令可以分多个步骤执行。返回值公理SC(Sequential
   Consistency)读操作返回最近的对同一个地址写操作的值(Load value Axiom)读操作返回前面最近的对同一个地址写操作的值。TSO（RVTSO）读操作返回程序顺序或者内存顺序中的最近的对同一个地址写操作的值（看程序顺序和内存操作顺序哪个更晚些）读取操作先从store buffer中获取，如果失败，则返回前面最近的对同一个地址写操作的值。RVWMO读操作返回程序顺序或者内存顺序中的最近的对同一个地址写操作的值（看程序顺序和内存操作顺序哪个更晚些）读取操作先从store buffer中获取，如果失败，则返回前面最近的对同一个地址写操作的值。 对TSO（RVTSO）模型再做一点解释：
 
-![](asset/img_364fe6175ec8.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_364fe6175ec8.jpg)
 
 如上图所示一个内存写指令的执行可以分为两个步骤（1）从CPU执行单元写入store buffer (2)从store buffer写入memory；这两步可以独立完成；一个内存的读操作可以从两个地方返回结果（1）直接从store buffer中返回结果，CPU的LSU单元在处理load指令时会先到自己的store buffer中进行查找，如果找到了地址和size相同的内容则直接返回；（2）如果store buffer中没有需要的内容，则从memory中读取。
 
@@ -110,7 +120,7 @@ RISC-V采用的内存模型叫RVWMO(RISC-V Weak Memory Ordering)，其设计目�
 
 在RVWMO中定义13条规则（称为PPO，Preserved Program Order）, 在程序顺序上如果操作A出现在B操作之前，并且A和B操作满足如下的约定的模式之一，则A和B的全局顺序必须满足这13条约定。(下图来自Dan Lusing, RISC-V memory consistency model tutorial)
 
-![](asset/img_1ef30fba231d.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_1ef30fba231d.jpg)
 
 因为图中的表达方式对于非内存模型领域的朋友们有点不太好懂，我们简单地解释一下这些规则：
 
@@ -148,9 +158,9 @@ Fence指令，其语法格式为：Fence [r][w][i][o], [r][w][i][o]; 顾名思�
 
 AMO和LR/SC指令格式中含有可选的acquire和release指示位，如下图所示：
 
-![](asset/img_91b8b17554b9.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_91b8b17554b9.jpg)
 
-![](asset/img_77295755012c.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_77295755012c.jpg)
 
 通过这些指示位，可以达到如下的内存访问顺序保证：
 

@@ -1,13 +1,23 @@
 ---
-title: "更适合 flash attenion 体质的长上下文训练方案"
-date: 2024-09-07
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/718486708
+title: 更适合 flash attenion 体质的长上下文训练方案
+date: "2024-09-07 00:00:00"
+updated: "2024-09-07 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/LLM-SD/更适合-flash-attenion-体质的长上下文训练方案/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/718486708
 ---
+
 
 年初的时候，我尝试去结合了 ring attention 和 flash attention，并设计了 zigzag ring attention：
 
-[![](asset/img_ee29cf6568d2.png)朱小霖：ring attention + flash attention：超长上下文之路1314 赞同 · 118 评论 文章](https://zhuanlan.zhihu.com/p/683714620)
+[![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_ee29cf6568d2.png)朱小霖：ring attention + flash attention：超长上下文之路1314 赞同 · 118 评论 文章](https://zhuanlan.zhihu.com/p/683714620)
 
 理论上来看，zigzag ring attention 基本做到了线性扩展 context length 的最优解，即：
 
@@ -42,7 +52,7 @@ source: https://zhuanlan.zhihu.com/p/718486708
 
 具体来说，当我们直接去切分全部数据的时候，可能会遇到如下的 3 种情况：
 
-![](asset/img_038ecb0a3b51.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_038ecb0a3b51.jpg)
 
 - 如果只留下了 q 的前半部分，如左图的 q0~q2，那么只需要匹配等长的前半段 k，即 k0~k2；
 - 如果只留下了 q 的后半部分，如中图的 q3~q4，那么需要匹配全部的 k，即 k0~k4；

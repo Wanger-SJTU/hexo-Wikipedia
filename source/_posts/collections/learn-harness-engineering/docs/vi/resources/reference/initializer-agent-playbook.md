@@ -1,3 +1,16 @@
+---
+title: Playbook Initializer Agent
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/vi/resources/reference/initializer-agent-playbook/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # Playbook Initializer Agent
 
 Sử dụng playbook này cho phiên nghiêm túc đầu tiên trong một kho lưu trữ, trước khi công việc tính năng tăng dần bắt đầu.

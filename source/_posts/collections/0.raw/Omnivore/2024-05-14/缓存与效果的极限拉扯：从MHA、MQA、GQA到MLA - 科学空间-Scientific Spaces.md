@@ -1,4 +1,17 @@
 ---
+title: 缓存与效果的极限拉扯：从MHA、MQA、GQA到MLA - 科学空间|Scientific Spaces
+date: "2026-04-11 21:40:28"
+updated: "2026-04-11 21:40:28"
+layout: post
+permalink: /collections/0.raw/Omnivore/2024-05-14/缓存与效果的极限拉扯-从MHA、MQA、GQA到MLA-科学空间-Scientific-Spaces/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
+---
 id: 952a5671-4744-42ce-b2ff-e22d2ba62ec2
 ---
 

@@ -1,9 +1,19 @@
 ---
-title: "为什么英伟达认为Training≈Prefill华为却把Training和Decode放一起，谁错了？"
-date: 2026-04-26
-tags: [知乎]
-source: https://www.zhihu.com/question/2029953946404541284/answer/2031716182231920953
+title: 为什么英伟达认为Training≈Prefill华为却把Training和Decode放一起，谁错了？
+date: "2026-04-26 00:00:00"
+updated: "2026-04-26 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/AI-infra/为什么英伟达认为Training≈Prefill华为却把Training和Decode放一起,谁错了/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://www.zhihu.com/question/2029953946404541284/answer/2031716182231920953
 ---
+
 
 ![](https://picx.zhimg.com/v2-c1bd43c9186b95df56a240ff67012f21_r.jpg?source=2c26e567)
 谁都没错，但你们讨论的”像不像”根本不在同一个维度上

@@ -1,3 +1,16 @@
+---
+title: "Project 01. Prompt-Only vs. Rules-First: How Much Difference Does It Make"
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/en/projects/project-01-baseline-vs-minimal-harness/index/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 [中文版本 →](../../../zh/projects/project-01-baseline-vs-minimal-harness/)
 
 > Related lectures: [Lecture 01. Strong models don't mean reliable execution](./../../lectures/lecture-01-why-capable-agents-still-fail/index.md) · [Lecture 02. What harness actually means](./../../lectures/lecture-02-what-a-harness-actually-is/index.md)

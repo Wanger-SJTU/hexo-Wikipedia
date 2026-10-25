@@ -1,9 +1,19 @@
 ---
-title: "优化lora以及判断lora训练结果 分析lora训练中的蛛丝马迹"
-date: 2023-08-22
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/641153468
+title: 优化lora以及判断lora训练结果 分析lora训练中的蛛丝马迹
+date: "2023-08-22 00:00:00"
+updated: "2023-08-22 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/LLM-SD/优化lora以及判断lora训练结果-分析lora训练中的蛛丝马迹/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/641153468
 ---
+
 
 ### 从lora目的角度判断核心追求指标
 
@@ -68,7 +78,7 @@ source: https://zhuanlan.zhihu.com/p/641153468
 
 怎么选择一个恰当的学习率有各种各样的方法，我就不献丑了，更多是说一下怎么发现学习率不恰当，首先不论unet还是te的学习率太高都会出现loss起飞（一般都是双高）
 
-![](asset/img_cb4f42265446.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_cb4f42265446.jpg)
 
 起飞！！其次训练loss在下降，但是生成图片中出现古神，大量色块等，这表明是unet学习率偏高了；
 

@@ -1,9 +1,19 @@
 ---
-title: "Understanding Transformer from the Perspective of Associative Memory 论文学习笔记"
-date: 2026-01-12
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/1986946791497819070
+title: Understanding Transformer from the Perspective of Associative Memory 论文学习笔记
+date: "2026-01-12 00:00:00"
+updated: "2026-01-12 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/LLM-SD/Understanding-Transformer-from-the-Perspective-of-Associative-Memory-论文学习笔记/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/1986946791497819070
 ---
+
 
 这篇文章是近期读过比较有趣的一篇，它主要是从联想记忆的角度对于当前 Transformer 结构做了一个解读。其中将 context 视为一种动态的记忆，然后将模型的参数视为一种静态的记忆并不是一种很新颖的观点。它的独特的看法在于，通过核函数的方式将模型的表达式重构，然后提出了 Associate Matrix 以及 Memory Update 的角度。
 
@@ -35,11 +45,11 @@ source: https://zhuanlan.zhihu.com/p/1986946791497819070
 
 $首先我们将整个 Attention 的计算公式写开，这里我们先忽略底下的归一化项，并且将 &#x03D5;" role="presentation">ϕ\phi 通过拆开这里的分子得到，即 exp(ki&#x22A4;qt/dk)=&#x03D5;(ki)&#x22A4;&#x03D5;(qt)" role="presentation">exp(ki⊤qt/dk)=ϕ(ki)⊤ϕ(qt)exp(k_i^\top q_t/\sqrt d_k)=\phi(k_i)^\top \phi(q_t) 。$
 
-![](asset/img_25f4549cb043.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_25f4549cb043.jpg)
 
 attention 展开的表达式，注意这里的推导无视了分母的归一化项然后这样就有
 
-![](asset/img_3cf767b2a41f.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_3cf767b2a41f.jpg)
 
 从这个式子从，我们可以注意到 S 实际上就是 \sum_i v_i\phi(k_i)^\top 的形式，也就是可以在一个或许有限或许无穷维（因为 \phi 可能映射到无穷维）里的多个秩为1 的矩阵之和。
 
@@ -47,7 +57,7 @@ attention 展开的表达式，注意这里的推导无视了分母的归一化�
 
 那么一个自然的问题是，对于 FFN  来说我们能不能写出来一个类似的表达式，最好长的越像越好。那么作者顺着这条道出发，对于最基础的 MLP，即 y = W_{down}ReLU(W_{up}x) 来说，我们首先将上面的 kv 的符号想办法带入进去，就可以获得 y = W_v^\top ReLU(W_k x) 
 
-![](asset/img_cbd662c78a11.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_cbd662c78a11.jpg)
 
  $然后注意到这里的非线性函数 ReLU 实际上也能拆成两个特征映射，那么实际上就有 S = \sum_i W^\top_{V_i}\phi(W_{K_i}) ,然后实际上也是\sum_i v_i\phi(k_i)^\top的形式。$
 
@@ -65,19 +75,19 @@ $\begin{aligned} o = S\phi(k_i) &= v_i\phi(k_i)^\top \phi(k_i) + \sum_{i\neq j}v
 
 从这个式子中，我们可以看到，第一项的结果就是也就是完全取得了具体的 v_i 的方向信息记为 ，可以认为是**信号**，然后后面那一项就可以视为一个额外的**噪声**。此时，我们就可以定义出噪信比了，并且可以证明出其表达式如下。
 
-![](asset/img_081c5e1b48ba.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_081c5e1b48ba.jpg)
 
 作者证明出的噪信比的表达形式然后作者经过一通数学分析后，得到了以下几种核的 SNR^{-1} 
 
-![](asset/img_b1bb87187369.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_b1bb87187369.jpg)
 
-核函数为 k^Tq 形式时的噪信比![](asset/img_cf7eeaacc5ac.jpg)
+核函数为 k^Tq 形式时的噪信比![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_cf7eeaacc5ac.jpg)
 
-核函数为exp(k^Tq)时候的噪信比![](asset/img_1b33b647d08a.jpg)
+核函数为exp(k^Tq)时候的噪信比![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_1b33b647d08a.jpg)
 
 核函数为ReLU(k^Tq)时候的噪信比不难看出，这里的 exp 的噪信比是指数形式的，而这个恰好就出现在 attention 的 softmax 里面，因此可以论证为什么这里哪怕每一个 head 的维度都那么低就可以有那么强的表达能力，而且哪怕将多头合一也不会有太大的提升，因为这里指数级已经容量非常大了，这一点在作者后面的试验中也有证实。
 
-![](asset/img_0d6a2fcd2bdd.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_0d6a2fcd2bdd.jpg)
 
 可以看到，图中的多头和单头（合在一起那种）的差距相对较小，表明每个头维度没有那么大效果就已经很好了
 #### 记忆更新
@@ -88,26 +98,26 @@ $$然后从这里出发可以推导出一个非常有趣的视角，就是这里
 
 那么将上面那个更新公式推广开，我们就可以写成如下的形式，并得到在这种形式下的loss
 
-![](asset/img_3494f3e1000f.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_3494f3e1000f.jpg)
 
-![](asset/img_85b9b9b421db.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_85b9b9b421db.jpg)
 
 然后这个时候就可以将之前的各种工作全都套到当前这个迭代的范式下
 
-![](asset/img_07d31f899328.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_07d31f899328.jpg)
 
 ### 和 Delta rule 结合
 
 写出来上面的那个 general 的形式后，作者就想我们能不能在之前的 softmax 的基础上加一下 delta rule，换句话说，就是结合一下deltanet和核函数，也就是下面这个形式
 
-![](asset/img_5c863e7c1898.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_5c863e7c1898.jpg)
 
 然后经过一系列的推导后，可以得到如下的形式，其中 \kappa_1,\kappa_2 是两个可以自己选的函数，然后在特定的选择下可以完全退化回 deltanet。
 
-![](asset/img_53d5fefaec92.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_53d5fefaec92.jpg)
 
 然后作者也从一些电路的角度出发，证明了这里提出的格式要比原始的表达能力更强一些
 
-![](asset/img_23302dc23ba5.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_23302dc23ba5.jpg)
 
 最后作者也在一个 toy model 上做了一些实验，证明了这里结合 delta rule 和 softmax attention 确实有一定的作用

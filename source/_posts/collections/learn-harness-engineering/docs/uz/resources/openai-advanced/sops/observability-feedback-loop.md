@@ -1,3 +1,16 @@
+---
+title: "SOP: Kuzatuvchanlik va Qayta aloqa sikli (Observability Feedback Loop)"
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/uz/resources/openai-advanced/sops/observability-feedback-loop/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # SOP: Kuzatuvchanlik va Qayta aloqa sikli (Observability Feedback Loop)
 
 Qachonki nosozliklarni izlash (debugging) sekinlashsa, agentlar doimiy ravishda ishni hech qanday dalilsiz (evidence) muvaffaqiyatli yakunlaganini eʼlon qilsa, yoki tizimning ishlashi davomidagi (runtime) xatti-harakatlarni tekshirish shunchaki kodni oʻqishdan koʻra qiyinroq boʻlsa, ushbu SOPʼdan foydalaning.

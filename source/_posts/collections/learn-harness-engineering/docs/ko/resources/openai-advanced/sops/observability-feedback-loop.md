@@ -1,3 +1,16 @@
+---
+title: "SOP: 관측 가능성 피드백 루프(Observability Feedback Loop)"
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/ko/resources/openai-advanced/sops/observability-feedback-loop/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # SOP: 관측 가능성 피드백 루프(Observability Feedback Loop)
 
 디버깅이 느리거나, 에이전트(agent)가 증거 없이 성공을 주장하거나, 런타임 동작이 코드 자체보다 파악하기 어려울 때 이 표준 작업 절차(SOP)를 사용하십시오.

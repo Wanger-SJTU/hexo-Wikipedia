@@ -1,9 +1,19 @@
 ---
-title: "【性能】【案例】输出维度不亲和场景下的Matmul性能优化"
-date: 2025-12-31
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/1989667023207303012
+title: 【性能】【案例】输出维度不亲和场景下的Matmul性能优化
+date: "2025-12-31 00:00:00"
+updated: "2025-12-31 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/体系结构/【性能】【案例】输出维度不亲和场景下的Matmul性能优化-26941c/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/1989667023207303012
 ---
+
 
 ​
 
@@ -17,7 +27,7 @@ source: https://zhuanlan.zhihu.com/p/1989667023207303012
 
 在昇腾硬件上，矩阵乘算法通常采用分块矩阵乘的思想，将输出矩阵沿行列方向划分成若干个基本块并交由对应的计算单元（AICORE）进行计算。如图1所示，在计算每个基本块的过程中，中间结果会以NZ格式存储在L0C上并完成累加。当累加完成后，FixPipe单元会将L0C上的数据搬出至GM，并在搬运过程中完成随路NZ到ND的格式转换。然而，由于昇腾A2/A3平台的硬件特性，当矩阵乘结果矩阵（维度通常是 $\tt M\times N$）的内轴，即N轴，不满足512字节对齐时，FixPipe在搬运过程中的随路NZ2ND效率很低。针对这一问题，我们提出了本文所介绍的性能优化方案。
 
-![](asset/img_11db4510bf42.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_11db4510bf42.jpg)
 
 图1：基线方案数据流图**
 
@@ -31,7 +41,7 @@ source: https://zhuanlan.zhihu.com/p/1989667023207303012
 
 #### 3.1.1 数据流图
 
-![](asset/img_1a065d19413f.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_1a065d19413f.jpg)
 
 图2：优化方案数据流图
 
@@ -51,7 +61,7 @@ source: https://zhuanlan.zhihu.com/p/1989667023207303012
 
 （5）Vec将处理好的结果搬运会C Tensor
 
-![](asset/img_751eda642ccd.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_751eda642ccd.jpg)
 
 图3：利用Vec做NZ2ND示意图
 

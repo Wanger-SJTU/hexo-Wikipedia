@@ -1,10 +1,19 @@
 ---
-title: "【论文】ICCV美文：从过拟合到欠拟合？"
-date: 2020-09-17
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/242304519
-
+title: 【论文】ICCV美文：从过拟合到欠拟合？
+date: "2020-09-17 00:00:00"
+updated: "2020-09-17 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/dl论文/【论文】ICCV美文-从过拟合到欠拟合/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/242304519
 ---
+
 
 如果大家想查阅ICCV的所有论文，可以点击下面的数据库，不仅可以查看ICCV 2021年的论文，还能看到每篇论文的视频解读、研究溯源、代码链接和自动提取的论文摘要等内容。 
 [ICCV论文数据库](https://xg.zhihu.com/plugin/98a85951a63b8f2427645670f4ee67a3?BIZ=ECOMMERCE)

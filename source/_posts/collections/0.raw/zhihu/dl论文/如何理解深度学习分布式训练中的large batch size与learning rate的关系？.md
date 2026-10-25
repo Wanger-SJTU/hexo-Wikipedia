@@ -1,9 +1,19 @@
 ---
-title: "如何理解深度学习分布式训练中的large batch size与learning rate的关系？"
-date: 2026-04-23
-tags: [知乎]
-source: https://www.zhihu.com/question/64134994/answer/1925682805
+title: 如何理解深度学习分布式训练中的large batch size与learning rate的关系？
+date: "2026-04-23 00:00:00"
+updated: "2026-04-23 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/dl论文/如何理解深度学习分布式训练中的large-batch-size与learning-rate的关系/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://www.zhihu.com/question/64134994/answer/1925682805
 ---
+
 
 Summer Clover
 ​

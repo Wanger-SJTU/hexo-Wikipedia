@@ -1,9 +1,19 @@
 ---
-title: "(2 条消息) 怎么使用 LLM 图转换器构建知识图谱"
-date: 2025-08-25
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/1943429453502980274
+title: (2 条消息) 怎么使用 LLM 图转换器构建知识图谱
+date: "2025-08-25 00:00:00"
+updated: "2025-08-25 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/怎么使用-LLM-图转换器构建知识图谱/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/1943429453502980274
 ---
+
 
 深入解析 LangChain 在图谱构建中的实现
 
@@ -67,7 +77,7 @@ graph =Neo4jGraph(  url="bolt://54.87.130.140:7687",  username="neo4j",  passwor
 
 ****
 
-**![](asset/img_f61933278b5c.jpg)
+**![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_f61933278b5c.jpg)
 
 **
 
@@ -198,7 +208,7 @@ no_schema =LLMGraphTransformer(llm=llm)`接下来使用异步的`aconvert_to_gra
 
 我们可以使用**Neo4j Browser**对结果进行可视化，从而获得更清晰、直观的理解。
 
-![](asset/img_09853ae06cd5.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_09853ae06cd5.jpg)
 
 > 下图（原文示意）展示了**在未定义图谱模式（schema）**的情况下，对同一段玛丽·居里（Marie Curie）文本进行两次抽取的可视化对比。
 本例使用**GPT-4 的工具驱动抽取**，因此可能出现“**孤立节点**”。
@@ -210,7 +220,7 @@ no_schema =LLMGraphTransformer(llm=llm)`接下来使用异步的`aconvert_to_gra
 
 使用提示驱动模式（Prompt-based）进行同样的抽取对于**支持工具**的模型，也可以通过设置`ignore_tool_usage`参数来启用**提示驱动模式**：
 
-`no_schema_prompt=LLMGraphTransformer(llm=llm, ignore_tool_usage=True)data= await no_schema.aconvert_to_graph_documents(documents)`![](asset/img_2f74925ad0d3.jpg)
+`no_schema_prompt=LLMGraphTransformer(llm=llm, ignore_tool_usage=True)data= await no_schema.aconvert_to_graph_documents(documents)`![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_2f74925ad0d3.jpg)
 
 使用提示驱动模式的效果与局限在**提示驱动模式（prompt-based approach）**下，不会出现“**孤立节点**”。
 不过，与之前的抽取一样，由于未定义 schema，**同一输入在不同运行之间的结构仍可能变化**，从而得到不同的输出。
@@ -227,7 +237,7 @@ no_schema =LLMGraphTransformer(llm=llm)`接下来使用异步的`aconvert_to_gra
 
 `allowed_nodes=["Person","Organization","Location","Award","ResearchField"]nodes_defined=LLMGraphTransformer(llm=llm, allowed_nodes=allowed_nodes)data= await allowed_nodes.aconvert_to_graph_documents(documents)`在这里，我们规定 LLM 只能抽取五类节点，如`Person`、`Organization`、`Location`等。 随后，可以在 Neo4j Browser 中对两次独立执行的结果进行可视化对比。
 
-![](asset/img_578c2150a024.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_578c2150a024.jpg)
 
 通过**明确期望的节点类型**，节点抽取的确会更一致；但仍可能出现差异。
 例如：第一次运行中将 “radioactivity（放射性）” 抽取为`ResearchField`，而第二次运行则未抽取到。
@@ -245,7 +255,7 @@ no_schema =LLMGraphTransformer(llm=llm)`接下来使用异步的`aconvert_to_gra
 rels_defined =LLMGraphTransformer( llm=llm, allowed_nodes=allowed_nodes, allowed_relationships=allowed_relationships)
 data = await rels_defined.aconvert_to_graph_documents(documents)`随后，可以再次对两次独立抽取进行对比可视化，观察在限定了节点与关系之后，输出在结构与语义上的一致性是否显著提升。
 
-![](asset/img_be132623d740.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_be132623d740.jpg)
 
 同时限定节点与关系后的效果当**节点类型**与**关系类型**都被限定后，输出的一致性显著提升。
 例如：关于 Marie 的信息会稳定地包含：
@@ -271,7 +281,7 @@ data = await rels_defined.aconvert_to_graph_documents(documents)`使用三元组
 
 可视化结果
 
-![](asset/img_0c3721b8a2f3.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_0c3721b8a2f3.jpg)
 
 通过在**Neo4j Browser**中再次进行可视化，可以直观对比：
 
@@ -300,7 +310,7 @@ node_properties =Truerelationship_properties =True
 props_defined =LLMGraphTransformer( llm=llm, allowed_nodes=allowed_nodes, allowed_relationships=allowed_relationships, node_properties=node_properties, relationship_properties=relationship_properties)
 data = await props_defined.aconvert_to_graph_documents(documents)graph.add_graph_documents(data)`接下来即可查看结果，评估在属性启用后，节点与关系是否携带了更丰富的上下文信息（如时间、职位、地点、获奖年份等）。
 
-![](asset/img_6ebe340a171e.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_6ebe340a171e.jpg)
 
 > 注：方案二通常是**显式列举允许的属性键**并限制类型与必选/可选，但本文段落暂仅介绍“让模型自主决定”的做法。
 
@@ -318,7 +328,7 @@ node_properties =["birth_date","death_date"]relationship_properties =["start_dat
 props_defined =LLMGraphTransformer( llm=llm, allowed_nodes=allowed_nodes, allowed_relationships=allowed_relationships, node_properties=node_properties, relationship_properties=relationship_properties)
 data = await props_defined.aconvert_to_graph_documents(documents)graph.add_graph_documents(data)`接下来即可查看 LLM 的抽取结果，验证是否正确填充了：
 
-![](asset/img_6ad39d97332b.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_6ad39d97332b.jpg)
 
 与前一次抽取相比，**出生日期**与**逝世日期**保持一致。
 此外，这一次模型还抽取出了**玛丽在巴黎大学任教的起始日期**（教授任期的开始时间）。
@@ -352,7 +362,7 @@ data = await props_defined.aconvert_to_graph_documents(documents)graph.add_graph
 
 `graph.add_graph_documents(graph_documents)`此方法会直接导入传入的图文档中的所有节点与关系。 在本文的实验与演示中，我们一直采用这种方式来验证不同 LLM 与 schema 配置下的结果。
 
-![](asset/img_9679199fa221.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_9679199fa221.jpg)
 
 #### 基础实体标签（Base Entity Label）
 
@@ -367,7 +377,7 @@ data = await props_defined.aconvert_to_graph_documents(documents)graph.add_graph
 
 `graph.add_graph_documents(graph_documents, baseEntityLabel=True)`启用`baseEntityLabel`后，每个节点都会额外拥有一个`__Entity__`标签。 这样我们就能基于`__Entity__`建立索引，从而提升 导入效率 和 查询性能， 而无需为图中每个可能出现的节点标签单独设置索引。
 
-![](asset/img_952faad17876.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_952faad17876.jpg)
 
 导入源文档（Include Source Documents）最后一个可选项是**同时导入源文档**，以记录节点与关系的出处。
 这种方式可以帮助我们追踪：**某个实体或关系来源于哪些文档**， 便于后续的溯源与分析。
@@ -377,7 +387,7 @@ data = await props_defined.aconvert_to_graph_documents(documents)graph.add_graph
 `graph.add_graph_documents(graph_documents, include_source=True)`在可视化结果中，**源文档（source document）**会以蓝色高亮显示，
 并通过**MENTIONS**关系与从该文档中抽取出的所有实体相连。
 
-![](asset/img_0888a3ebd15c.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_0888a3ebd15c.jpg)
 
 这种模式不仅能展示信息来源，还可以构建同时利用
 **结构化搜索**与**非结构化搜索**的检索器（retrievers）

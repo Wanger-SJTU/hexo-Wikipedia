@@ -1,9 +1,19 @@
 ---
-title: "TVM第三方论文调研（一）"
-date: 2022-10-21
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/573512820
+title: TVM第三方论文调研（一）
+date: "2022-10-21 00:00:00"
+updated: "2022-10-21 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/优化/TVM第三方论文调研(一)/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/573512820
 ---
+
 
 本系列收录对TVM编译器的第三方改进调研，涉及量化、稀疏、后端、算子优化、自动调优等方面。调研方法：在谷歌学术点击对TVM论文的引用，根据标题和摘要判断是否涉及对TVM的修改或增强。
 
@@ -23,20 +33,20 @@ source: https://zhuanlan.zhihu.com/p/573512820
 
 **转换流**
 
-![](asset/img_2a64e7094166.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_2a64e7094166.jpg)
 
 **im2col的算子实现**
 
-![](asset/img_b66858d584c6.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_b66858d584c6.jpg)
 
-直接卷积![](asset/img_7f0ebc551bfc.jpg)
+直接卷积![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_7f0ebc551bfc.jpg)
 
 转换为im2col根据卷积的kernel size、padding、stride、dilation等计算im2col转换后矩阵的size
 
 具体公式如下：** 
  
 
-![](asset/img_42dad4680e8b.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_42dad4680e8b.jpg)
 
 模型的转换：**
 
@@ -44,7 +54,7 @@ source: https://zhuanlan.zhihu.com/p/573512820
 
 使用一个**visitor**来发现和转换计算图：从conv2d到im2col with gemm
 
-![](asset/img_5f19d4fe0c11.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_5f19d4fe0c11.jpg)
 
 第一次转换，将conv2d转换为im2col
 
@@ -57,7 +67,7 @@ source: https://zhuanlan.zhihu.com/p/573512820
 
 由于TVM的形状检查，因此在dense算子后插入reshape算子，恢复4维。
 
-![](asset/img_269bb10a01c2.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_269bb10a01c2.jpg)
 
 第二次变换，转换存储格式**2.第二次变换**
 
@@ -67,7 +77,7 @@ source: https://zhuanlan.zhihu.com/p/573512820
 
 两次变换的算法伪代码如下：
 
-![](asset/img_04d91cfa1c01.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_04d91cfa1c01.jpg)
 
 #### 实验
 
@@ -75,11 +85,11 @@ source: https://zhuanlan.zhihu.com/p/573512820
 
 正确率与稀疏率：
 
-![](asset/img_02edfc6484b8.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_02edfc6484b8.jpg)
 
 加速比：为公平起见，均未启用任何优化和自动调优
 
-![](asset/img_aaa3eb9a94fd.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_aaa3eb9a94fd.jpg)
 
 ### Effificient Execution of Quantized Deep Learning Models: A Compiler Approach
 
@@ -102,7 +112,7 @@ source: https://zhuanlan.zhihu.com/p/573512820
 - 可以定义新的QNN优化pass来转换图，使其适配特定硬件后端** 
 设计与实现**
 
-![](asset/img_715c0b0698b8.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_715c0b0698b8.jpg)
 
 **流程**：
 
@@ -120,7 +130,7 @@ source: https://zhuanlan.zhihu.com/p/573512820
 
 **对于不同的框架，相同名称的算子可能代表不同操作**，因此需要对每个框架进行单独适配
 
-![](asset/img_574c1cbc310b.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_574c1cbc310b.jpg)
 
 **QNN合法化pass：**
 
@@ -152,7 +162,7 @@ QNN规范化pass将QNN算子转化为由开发者定义的一系列relay算子�
 
 2.对于优化所有的conv-core加速器提供适当地抽象.
 
-![](asset/img_043cac28583b.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_043cac28583b.jpg)
 
 使用该IR进行硬件无关优化：
 
@@ -165,7 +175,7 @@ QNN规范化pass将QNN算子转化为由开发者定义的一系列relay算子�
 
 **算子支持库：**
 
-![](asset/img_319b57827f83.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_319b57827f83.jpg)
 
 硬件相关优化：
 

@@ -1,10 +1,19 @@
 ---
-title: "为什么不能跨4KB boundary"
-date: 2026-07-21
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/2062997102960103851
-
+title: 为什么不能跨4KB boundary
+date: "2026-07-21 00:00:00"
+updated: "2026-07-21 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/体系结构/为什么不能跨4KB-boundary/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/2062997102960103851
 ---
+
 
 在学习AXI、PCIe之类的协议时，都能看到spec里面说不允许跨4KB boundary。
 

@@ -1,10 +1,19 @@
 ---
-title: "非常推荐的一篇AI 芯片长文《Designing AI Chip Software and Hardware》"
-date: 2026-05-09
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/2036393638645724548
-
+title: 非常推荐的一篇AI 芯片长文《Designing AI Chip Software and Hardware》
+date: "2026-05-09 00:00:00"
+updated: "2026-05-09 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/AI-infra/非常推荐的一篇AI-芯片长文《Designing-AI-Chip-Software-and-Hardware》/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/2036393638645724548
 ---
+
 
 最近读了一篇很少见的长文：《Designing AI Chip Software and Hardware》，推荐！！!
 

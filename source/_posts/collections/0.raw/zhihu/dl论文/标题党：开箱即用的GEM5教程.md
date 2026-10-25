@@ -1,9 +1,19 @@
 ---
-title: "标题党：开箱即用的GEM5教程"
-date: 2019-12-26
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/99604481
+title: 标题党：开箱即用的GEM5教程
+date: "2019-12-26 00:00:00"
+updated: "2019-12-26 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/dl论文/标题党-开箱即用的GEM5教程/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/99604481
 ---
+
 
 在我们实验室内部，我基本上做到了开箱即用，因为我可以直接把各种现成的文件拷贝给师弟。但因为SPEC的知识产权问题，导致我不能直接拷贝SPEC的二进制和输入文件，所以我只能打包工具链出来。因此这是一篇标题党文章。
 
@@ -28,10 +38,10 @@ source: https://zhuanlan.zhihu.com/p/99604481
 如果创建进程的脚本写得更好，按理说是不需要这一步的，但是我……一言难尽，有兴趣可以看看这个 [创建进程的脚本](https://link.zhihu.com/?target=https%3A//github.com/shinezyy/gem5/blob/master/configs/spec2017/get_spec_proc.py) 和 [这个目录](https://link.zhihu.com/?target=https%3A//github.com/shinezyy/gem5/tree/master/configs/spec2017)。我直接用了SPEC 2017 dry run的输出作为模板，简单parse一下来创建进程。dry run命令没有指明文件路径，所以你需要干这个脏活。
 
 - 创建一个目录，用于存放输入文件，环境变量`$spec2017_run_dir` 指向该目录。
-- 把`spec17root/benchspec/CPU/502.gcc_r/data/refrate/input` 、`spec17root/benchspec/CPU/500.perlbench_r/data/all/input`等目录下面的文件对应拷贝到`$spec2017_run_dir/gcc`和 `$spec2017_run_dir/perlbench`目录[[1]](#ref_1) 。行为很简单，一个10行代码的程序就可以做到。最后的组织形式如图：
-![](asset/img_a3c973a6353e.jpg)
+- 把`spec17root/benchspec/CPU/502.gcc_r/data/refrate/input` 、`spec17root/benchspec/CPU/500.perlbench_r/data/all/input`等目录下面的文件对应拷贝到`$spec2017_run_dir/gcc`和 `$spec2017_run_dir/perlbench`目录<span class="wikilink wikilink--missing" title="未导入的页面">1</span>(#ref_1) 。行为很简单，一个10行代码的程序就可以做到。最后的组织形式如图：
+![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_a3c973a6353e.jpg)
 
-![](asset/img_941ed145745d.jpg)
+![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_941ed145745d.jpg)
 
 ### 修改配置文件
 

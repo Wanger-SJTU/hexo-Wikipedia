@@ -1,9 +1,19 @@
 ---
-title: "AI Agent 性能优化和成本控制"
-date: 2026-02-25
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/2009938845945328180
+title: AI Agent 性能优化和成本控制
+date: "2026-02-25 00:00:00"
+updated: "2026-02-25 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/AgentCLI/AI-Agent-性能优化和成本控制/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/2009938845945328180
 ---
+
 
 ** 部署上线只是开始，如何降低成本、提高性能，才是长期运营的关键。这篇文章将分享实战经验。🎯 你将学到什么
 

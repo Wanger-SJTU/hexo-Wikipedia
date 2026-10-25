@@ -1,3 +1,16 @@
+---
+title: 기술 부채 추적기(Tech Debt Tracker)
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/ko/resources/openai-advanced/repo-template/docs/exec-plans/tech-debt-tracker/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # 기술 부채 추적기(Tech Debt Tracker)
 
 실제로 존재하고, 인지되어 있으며, 의도적으로 미뤄진 기술 부채(tech debt)에 이 파일을 사용하십시오.

@@ -1,9 +1,19 @@
 ---
-title: "(2 条消息) 我们预判了DeepSeek-V3.2的性能瓶颈，SparseServe分级内存是最优解，利好超节点"
-date: 2025-10-01
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/1956407490485940573
+title: (2 条消息) 我们预判了DeepSeek-V3.2的性能瓶颈，SparseServe分级内存是最优解，利好超节点
+date: "2025-10-01 00:00:00"
+updated: "2025-10-01 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/我们预判了DeepSeek-V3.2的性能瓶颈,SparseServe分级内存是最优解,利好超节点/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/1956407490485940573
 ---
+
 
 昨天，自带稀疏注意力的DeepSeek-3.2-Exp 模型发布了，而我们为稀疏注意力模型量身定制的 SparseServe关键技术也正好完工。先抛一个问题：大家有没有考虑过像 DeepSeek-v3.2 这种稀疏注意力出来后，对推理系统的根本性改变是什么？我们的预判是：稀疏注意力使推理系统的主要瓶颈从显存带宽转移到了显存容量。而 SparseServe 正是基于这一预判应运而生的。SparseServe 的核心思想是HBM-DRAM分级存储，这将利好超节点，特别是 GPU/NPU + DRAM 内存池混部的超节点。
 
@@ -43,7 +53,7 @@ DSA的背景和瓶颈**：
 
 **
 
-![](asset/img_6f25a12ab100.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_6f25a12ab100.jpg)
 
 图1： Dynamic Sparse Attention (DSA) 流程示意图
 
@@ -69,7 +79,7 @@ DSA的背景和瓶颈**：
 
 **
 
-![](asset/img_cf3eb047376e.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_cf3eb047376e.jpg)
 
 图2：在不同Batch Size情况下，基于HBM-DRAM分级推理的吞吐量和KV Block加载数
 
@@ -93,7 +103,7 @@ SparseServe：释放 DSA 的潜能**
 
 #### 2.1 系统概览
 
-![](asset/img_2a1d790b5de1.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_2a1d790b5de1.jpg)
 
 图3：SparseServe系统架构图
 
@@ -119,7 +129,7 @@ KV 缓存管理器（KV Cache Manager）：**KV 缓存管理器在 HBM 与 DRAM 
 
 SparseServe 的分层存储依赖在 HBM 与 DRAM 间数据的高效 Load 与 Save。但由于 KV  Cache 访问通常在 per Layer, per Head 上进行，访问模式呈现高度碎片化，导致频繁的传输阻塞。为此，SparseServe 引入 FlashD2H&H2D 机制 —— 一种面向 GPU 直接加载与 CPU 辅助保存的碎片感知型传输方法，显著降低了数据移动开销。
 
-![](asset/img_f5478883b6c1.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_f5478883b6c1.jpg)
 
 图4：(a) 采用 CudaMemory 和 FlashH2D 的 KV Cache加载带宽对比；(a) 采用 CudaMemory 和 FlashD2H 的 KV Cache 保存带宽对比
 
@@ -129,7 +139,7 @@ SparseServe 的分层存储依赖在 HBM 与 DRAM 间数据的高效 Load 与 Sa
 
 在每层注意力计算前，DSA 会基于每个头动态地从 DRAM 选择并加载所需 KV 块到 HBM。传统基于 cudaMemcpy 的加载方式需对每个离散块分别调用 memcpy，导致函数调用次数激增、PCIe 带宽利用率低下，尤其在块数量较多时问题更严重（见图 5）。
 
-![](asset/img_7164f509a29d.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_7164f509a29d.jpg)
 
 图5：碎片化的 KV Cache 加载示意图
 
@@ -141,7 +151,7 @@ SparseServe 利用 统一虚拟寻址（Unified Virtual Addressing, UVA），使
 
 在每层开始时，上一层的隐藏状态被投影为形状为 (N, H, D) 的 KV 张量，并写入 HBM 中相应 KV 块。当块填满后，通过独立 CUDA 流异步写回 DRAM，与计算重叠执行。由于这些块在 HBM 中地址分散，直接保存同样面临碎片化问题。
 
-![](asset/img_3e6d16d7bcc1.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_3e6d16d7bcc1.jpg)
 
 图6：FlashD2H 的执行流示意图
 
@@ -159,7 +169,7 @@ SparseServe 采用了一种工作集感知的 Batch Size 控制策略在运行�
 
 **
 
-![](asset/img_8bf57ac0d28b.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_8bf57ac0d28b.jpg)
 
 图7：前后解码步骤中所访问 KV 块的平均重叠率 （我们将所考虑的前序解码步骤数量称为Window Size）
 
@@ -169,7 +179,7 @@ SparseServe 采用了一种工作集感知的 Batch Size 控制策略在运行�
 
 #### 2.4 Layer-Segmented Prefill
 
-![](asset/img_562691b6673a.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_562691b6673a.jpg)
 
 图8：Layer-segmented prefill工作流示意图 （该 LLM 模型由三层组成，每个批次包含三个解码请求和一个 prefill 请求，分段大小设置为 1）
 
@@ -183,7 +193,7 @@ SparseServe 采用了一种工作集感知的 Batch Size 控制策略在运行�
 
 对于 SparseServe、vLLM-S 和 vLLM-SO，注意力 KV 缓存的 Token 预算在 LWM-7B 和 LLaMA3-8B 上均设置为 2,048，以确保稀疏注意力的准确率达到全注意力准确率的 99%，这一配置在生产场景中较为典型。
 
-![](asset/img_a130b611b8ca.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_a130b611b8ca.jpg)
 
 图9：TTFT 对比
 
@@ -191,7 +201,7 @@ TTFT（首词元时间）：**图 9 显示了所有系统在不同请求率下�
 
 **
 
-![](asset/img_8c019d57777d.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_8c019d57777d.jpg)
 
 图10：吞吐量对比
 
@@ -199,7 +209,7 @@ TTFT（首词元时间）：**图 9 显示了所有系统在不同请求率下�
 
 **
 
-![](asset/img_15c04be79e6b.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_15c04be79e6b.jpg)
 
 图11：TBT对比
 
@@ -207,7 +217,7 @@ TBT：** 图 11 显示了不同请求率下的平均 TBT。为了防止 vLLM 请
 
 **
 
-![](asset/img_31d3cc1c3175.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_31d3cc1c3175.jpg)
 
 图12：Goodput对比
 
@@ -223,7 +233,7 @@ Goodput（有效吞吐量）：** 最后，我们分析 SparseServe 各设计组
 
 上面的结论非常利好超节点，特别是 GPU/NPU + DRAM 内存池混部的超节点**。前段时间，华为徐总最近发布的一种**昇腾 NPU 和鲲鹏 CPU 混合部署**在相同的 8K超节点中的形态非常适合稀疏注意力分级的场景，**可以实现足够的 DRAM 容量和 H2D 带宽**。
 
-![](asset/img_ed014a853bf7.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_ed014a853bf7.jpg)
 
 华为昇腾超节点发布
 
@@ -231,4 +241,4 @@ Goodput（有效吞吐量）：** 最后，我们分析 SparseServe 各设计组
 
 华为 CloudMatrix384 已 0 day 适配 DeepSeek-V3.2-Exp ，欢迎大家到华为云上体验。
 
-![](asset/img_82b4a336541c.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_82b4a336541c.jpg)

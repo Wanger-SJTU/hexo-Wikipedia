@@ -1,3 +1,16 @@
+---
+title: Proje 06. Eksiksiz bir ajan harness'ı inşa edin (Bitirme Projesi)
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/tr/projects/project-06-runtime-observability-and-debugging/index/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 [中文版本 →](../../../zh/projects/project-06-runtime-observability-and-debugging/)
 
 > İlgili dersler: [Ders 11. Ajanın runtime'ını gözlemlenebilir kılın](./../../lectures/lecture-11-why-observability-belongs-inside-the-harness/index.md) · [Ders 12. Her oturumun sonunda temiz devir](./../../lectures/lecture-12-why-every-session-must-leave-a-clean-state/index.md)

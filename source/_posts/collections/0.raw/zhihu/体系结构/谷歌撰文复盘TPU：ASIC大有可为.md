@@ -1,10 +1,19 @@
 ---
-title: "谷歌撰文复盘TPU：ASIC大有可为"
-date: 2026-06-18
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/2051004999463973376
-
+title: 谷歌撰文复盘TPU：ASIC大有可为
+date: "2026-06-18 00:00:00"
+updated: "2026-06-18 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/体系结构/谷歌撰文复盘TPU-ASIC大有可为/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/2051004999463973376
 ---
+
 
 近日，谷歌的David Patterson等人和加州大学伯克利分校的研究人员发表了一篇题为“Google’s Training Supercomputers from TPU v2 to Ironwood: Architectural Stability, Scale, Resilience, Power Efficiency, and Sustainability Across Five Generations.”的技术论文。
 

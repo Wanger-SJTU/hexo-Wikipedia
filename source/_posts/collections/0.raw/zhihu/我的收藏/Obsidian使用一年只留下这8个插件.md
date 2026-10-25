@@ -1,10 +1,19 @@
 ---
-title: "Obsidian使用一年只留下这8个插件"
-date: 2026-06-27
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/2054247012590171646
-
+title: Obsidian使用一年只留下这8个插件
+date: "2026-06-27 00:00:00"
+updated: "2026-06-27 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/Obsidian使用一年只留下这8个插件/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/2054247012590171646
 ---
+
 
 关注[@科叔AI进化记](https://link.zhihu.com/?target=https%3A//mp.weixin.qq.com/mp/appmsgalbum%3F__biz%3DMzkzODkwODYwMA%3D%3D%26action%3Dgetalbum%26album_id%3D4355166178646786051%26scene%3D142%23wechat_redirect) 每天分享一点AI好东西
 

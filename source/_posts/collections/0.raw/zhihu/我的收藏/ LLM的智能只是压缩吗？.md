@@ -1,9 +1,19 @@
 ---
-title: "(1 条消息) LLM的智能只是压缩吗？"
-date: 2023-05-03
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/626446776
+title: (1 条消息) LLM的智能只是压缩吗？
+date: "2023-05-03 00:00:00"
+updated: "2023-05-03 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/LLM的智能只是压缩吗/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/626446776
 ---
+
 
 ChatGPT引发的讨论还是比较多的，我也逐渐发现大家对于LLM的理解、期待以及批评都是存在比较大的偏差的，前一阵我也写了我的一些理解，[mackler：自举：ChatGPT的AGI之路](https://zhuanlan.zhihu.com/p/623585915)，不过缺乏观点的碰撞，也很难抛砖引玉，今天就再写一篇来点更多的观点的碰撞，关于LLM的理解。
 

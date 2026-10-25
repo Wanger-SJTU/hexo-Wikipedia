@@ -1,3 +1,16 @@
+---
+title: イニシャライザーエージェントプレイブック
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/ja/resources/reference/initializer-agent-playbook/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # イニシャライザーエージェントプレイブック
 
 インクリメンタルな機能作業が始まる前の、リポジトリでの最初の本格的なセッションに

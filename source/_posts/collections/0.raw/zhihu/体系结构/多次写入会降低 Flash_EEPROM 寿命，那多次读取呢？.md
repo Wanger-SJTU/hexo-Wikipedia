@@ -1,9 +1,19 @@
 ---
-title: "多次写入会降低 Flash/EEPROM 寿命，那多次读取呢？"
-date: 2024-11-08
-tags: [知乎]
-source: https://www.zhihu.com/question/2781739689/answer/1905702027754996101
+title: 多次写入会降低 Flash/EEPROM 寿命，那多次读取呢？
+date: "2024-11-08 00:00:00"
+updated: "2024-11-08 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/体系结构/多次写入会降低-Flash_EEPROM-寿命,那多次读取呢/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://www.zhihu.com/question/2781739689/answer/1905702027754996101
 ---
+
 
 wjjj
 

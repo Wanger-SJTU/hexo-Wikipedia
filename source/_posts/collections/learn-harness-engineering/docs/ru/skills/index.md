@@ -1,3 +1,16 @@
+---
+title: Skills
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/ru/skills/index/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # Skills
 
 Эта директория содержит встроенные скилы AI-агентов, которые поставляются с курсом. Скилы — это самодостаточные шаблоны промптов, которые могут быть загружены AI-агентами для написания кода (Claude Code, Codex, Cursor, Windsurf и т. д.) для выполнения специализированных задач.

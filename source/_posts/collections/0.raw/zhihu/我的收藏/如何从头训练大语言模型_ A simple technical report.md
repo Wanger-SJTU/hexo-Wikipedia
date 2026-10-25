@@ -1,9 +1,19 @@
 ---
 title: "(2 条消息) 如何从头训练大语言模型: A simple technical report"
-date: 2024-10-12
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/906819356
+date: "2024-10-12 00:00:00"
+updated: "2024-10-12 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/如何从头训练大语言模型_-A-simple-technical-report/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/906819356
 ---
+
 
 ### 写在前面
 
@@ -32,9 +42,9 @@ GQA介于MHA与MQA之间，把attention head分成多个group, 组内共享KV,�
 
 而最后一个MLA ,只需要少量的 KV 缓存，相当于只有 2.25 组的 GQA，但却能获得比 MHA 更强的性能。不过没法直接使用ROPE倒是一个弊病, 需要做一些改动。虽然MLA会增加一些计算,但是推理速度无疑是很快的
 
-![](asset/img_4f32a02db70c.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_4f32a02db70c.jpg)
 
-MHA,GQA,MQA,MLA一家子![](asset/img_4a018eedca64.jpg)
+MHA,GQA,MQA,MLA一家子![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_4a018eedca64.jpg)
 
 MoE也是天生为推理加速用的...就是实在太难驯了。多模态MoE更是顶级，相当难训
 #### 1.2 Norm, Activation, Initialization
@@ -88,7 +98,7 @@ SFT相比pretrain数据量很小,不过指令跟随能力习得完全靠这部�
 
 Quality is all your need, 应该是今年所有人的共识。**数据的diversity和quality的评估一定要做好**,数据量倒不是很多。
 
-![](asset/img_c297c1cf9430.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_c297c1cf9430.jpg)
 
 偷懒，搬运了llama 3.1的数据配比2.2.3 Diversity
 
@@ -123,7 +133,7 @@ Quality is all your need, 应该是今年所有人的共识。**数据的diversi
 - 记得记录不同domain的loss变化, 可以给下一阶段数据配比调整做准备。预训练末期的loss一般已经降到1.7左右, 但是SFT不同domain的Loss差别很大,我观察到SFT末期不同domain是0.5到3的loss之间都有
 - 如果认真做了数据,效果还不好----要么是pretrain知识没学够,要么是special token检查一下
 - Qwen组的DMT给了一个大致的数据配比方案,二阶段微调。模型最后见到的数据非常重要!直接影响用户体验。所以stage1进行一些数学代码这种特殊任务的提升,stage2进行更general的数据训练,看上去泛化性更好。要是倒过来,模型的输出可能就比较贴近特殊domain了(想刷榜math/code的反着来就行)。不过,还是得记得joint train, stage2也要混合stage1甚至pretrain数据, 保持一定的前阶段能力
-![](asset/img_103f000e6968.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_103f000e6968.jpg)
 
 谢谢qwen
 
@@ -144,24 +154,24 @@ LLM训练的大Boss: Pretrain。
 
 ***请认真读一下上面两篇！***
 
-![](asset/img_a8cde5fb967f.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_a8cde5fb967f.jpg)
 
 7月份我和洪神在飞书整理了一下scaling law，偷懒，直接截屏放上来了3.1 基本训练setting
 
 - 优化器AdamW，weight decay 0.1, (看情况用ZeRO1/2)，余弦退火，warmup
 - Batch: GPT3是32K过渡到3M，动态增大batch。较小的批次对应反向传播的频率更高，训练早期可以使用少量的数据让模型的损失尽快下降；而较大的批次可以在后期让模型的损失下降地更加稳定，使模型更好地收敛。这里也有一些finding optimal batch的方法[Scaling Laws for Neural Language Models](https://link.zhihu.com/?target=https%3A//arxiv.org/pdf/2001.08361) ，[[1812.06162] An Empirical Model of Large-Batch Training (arxiv.org)](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/1812.06162)。不过需要借助scaling law来预测batch，可惜我没做这个实验。我的方案是取让集群tgs(tokens/gpu/second）数最高的batch，毕竟对我来说，最大的瓶颈是集群算力
-![](asset/img_7e33a4195e34.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_7e33a4195e34.jpg)
 
-minicpm: optimal batch size![](asset/img_b4c5dc493ff9.jpg)
+minicpm: optimal batch size![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_b4c5dc493ff9.jpg)
 
 from scaling law
 
 - scaling law: 建议openai, chinchllia,deepmind那三篇scaling law都要读一下，看完会有不一样的收获。由数据量，算力，大致能估算一个模型大小出来(就是需要很多实验才能测出来...给出的值也是非常不精确的，做到心里有数即可
 - 开源框架还是用megatron和deepspeed吧，各大公司内部肯定都有自己的infra代码，我也不好讲。记得flash-attn开起来。
 - lr很重要！玄学的地方。BF16训练稳定是个共识。gradient clip一般1.0。似乎回归任务都不太适合dropout。
-![](asset/img_addeb8a3cb85.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_addeb8a3cb85.jpg)
 
-minicpm: lr![](asset/img_6ea276a73079.jpg)
+minicpm: lr![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_6ea276a73079.jpg)
 
 人大aibox收集的图3.2 先讲一下Evaluation
 
@@ -169,7 +179,7 @@ pretrain测评最简单就是看ppl。有一些测评也能看多任务的续写
 
 大模型：你猜我拟合的怎么样了，task_A是升了还是task_B是降了，升了一定不好吗，降了也不一定好。有的人升了，是为了别人将来更好地降；有的人陡降了，是为了别人loss疯狂飙升，是吧 loss spike。
 
-![](asset/img_fb215c5a1f34.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_fb215c5a1f34.jpg)
 
 loss评估是眼下最难做的东西，好像卷的人也不多。
 
@@ -183,15 +193,15 @@ loss评估是眼下最难做的东西，好像卷的人也不多。
 
 看榜单benchmark也就图一乐，还是chatbot arena靠谱点。大家多多少少都会把benchmark拿过去拟合一下用。GSM8K已经被卷烂了（我感觉弱智吧都有过拟合的表现)，与其信某些模型的性能，不如信我是秦始皇。
 
-![](asset/img_8fb86ad10058.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_8fb86ad10058.jpg)
 
-llama 3.1诡计多端的8-shot![](asset/img_5310e2ef85c6.jpg)
+llama 3.1诡计多端的8-shot![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_5310e2ef85c6.jpg)
 
 天工的报告：各大厂商overfit现象谁掌握了评估，谁就掌握了未来。
 
 #### 3.3 预训练数据处理
 
-![](asset/img_604c3cd57e37.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_604c3cd57e37.jpg)
 
 零一万物数据pipeline，一图胜千言
 
@@ -208,7 +218,7 @@ llama 3.1诡计多端的8-shot![](asset/img_5310e2ef85c6.jpg)
 
 还是scaling law贯穿始终
 
-![](asset/img_3b9ee0ec5653.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_3b9ee0ec5653.jpg)
 
 llama3: 大家的配比和这个都差不多，不过这里的推理数据量确实占比有点高了[[2406.01375] D-CPT Law: Domain-specific Continual Pre-Training Scaling Law for Large Language Models (arxiv.org)](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2406.01375)
 
@@ -245,7 +255,7 @@ llama3: 大家的配比和这个都差不多，不过这里的推理数据量确
 
 简单的估算是运算量=6CN(如果没用Gradient checkpointing）用了多一次forward，修正为8CN
 
-![](asset/img_7505a86b8020.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_7505a86b8020.jpg)
 
 来自ruc aibox gradient checkpointing介绍以 LLaMA (7B) 的训练为例介绍运算总量的计算方法。其参数量 N ≈ 6.74×10^9。这里假设训练数据的词元总数均为   = 1×10^9，不使用激活重计算技术， 那么 LLaMA (7B) 的训练过程中浮点运算总量为 6 × 6.74 × 10^9 × 10^9 ≈ 4.04 × 10^19
 
@@ -277,7 +287,7 @@ $$T=\frac{运算量}{GPU数\times GPU每秒浮点运算数}  $$
 
 前面已经写了SFT，但我不会RLHF，(摊手，坦诚.jpg）。只会step-DPO调一下，其实DPO我也训不好，欸
 
-![](asset/img_edfaf8d021fd.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_edfaf8d021fd.jpg)
 
 post-training pipeline今年以及未来很长一段时间的主流都会是Post-Training，实在太重要了，尤其是o1出来之后。大家都热情高涨。虽然真要应用MCTS的下游任务也不是很多，但是着实有趣，大模型推理是一定要拿下的一座山峰。
 

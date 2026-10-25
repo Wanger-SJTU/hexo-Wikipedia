@@ -1,9 +1,19 @@
 ---
-title: "关于ARM 32位架构页表的疑问"
-date: 2025-07-29
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/1933578680564704490
+title: 关于ARM 32位架构页表的疑问
+date: "2025-07-29 00:00:00"
+updated: "2025-07-29 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/关于ARM-32位架构页表的疑问/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/1933578680564704490
 ---
+
 
 最近在做页表结构相关设计，想要借鉴ARM的页表思路，发现ARM Arch32的页表一个无法理解的设计：
 
@@ -21,8 +31,8 @@ source: https://zhuanlan.zhihu.com/p/1933578680564704490
 
 有大佬能解答吗
 
-![](asset/img_0a2c49eff05f.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_0a2c49eff05f.jpg)
 
-![](asset/img_475d2ee512f5.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_475d2ee512f5.jpg)
 
-![](asset/img_3b214a415682.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_3b214a415682.jpg)

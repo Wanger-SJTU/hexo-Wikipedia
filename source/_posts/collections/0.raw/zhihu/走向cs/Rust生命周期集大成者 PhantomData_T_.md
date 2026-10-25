@@ -1,15 +1,25 @@
 ---
-title: "Rust生命周期集大成者 PhantomData<T>"
-date: 2024-07-13
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/686143745
+title: Rust生命周期集大成者 PhantomData<T>
+date: "2024-07-13 00:00:00"
+updated: "2024-07-13 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/走向cs/Rust生命周期集大成者-PhantomData_T_/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/686143745
 ---
+
 
 在Rust中PhantomData出现次数不算稀有，本来以为只是一个简单的占位结构体，没想到越深入越难懂，花了好几天时间才稍稍理解一点。因为我没有任何PL的学术背景(其实是没有任何学术背景，一个小小本科学历)，所以只能从语法规则上尝试理解，如果有错误欢迎大家指出，要是有学术大佬能高屋建瓴地阐述PhantomData的理念和作用就更好了~
 
-**阅读前置要求: 对Rust有基本了解，懂生命周期长短的比较，懂协变，逆变规则**[[1]](#ref_1) 。
+**阅读前置要求: 对Rust有基本了解，懂生命周期长短的比较，懂协变，逆变规则**<span class="wikilink wikilink--missing" title="未导入的页面">1</span>(#ref_1) 。
 
-### 0. Variance[[2]](#ref_2) 
+### 0. Variance<span class="wikilink wikilink--missing" title="未导入的页面">2</span>(#ref_2) 
 
 **Variance is a property that generic types have with respect to their arguments.默认大家都懂什么是*covariant, contravariant *和 *invariant，*这里就不详细解释了。简单回顾，就是讨论在类型 `T1` 是 `T2` 的子类型的情况下，带类型参数的类型(generic type) `SomeType` 是不是 `SomeType` 的子类型。 
 
@@ -19,7 +29,7 @@ source: https://zhuanlan.zhihu.com/p/686143745
 
 ### 1. PhantomData是怎样出现的
 
-PhantomData在2014年12月出现在RFC-0738提案[[3]](#ref_3) 中，也就是很久很久以前。那个时候，Rust允许这样的语法
+PhantomData在2014年12月出现在RFC-0738提案<span class="wikilink wikilink--missing" title="未导入的页面">3</span>(#ref_3) 中，也就是很久很久以前。那个时候，Rust允许这样的语法
 
 `struct AnimalT> {
     age: i32,
@@ -270,14 +280,14 @@ fn main() {
 
 但首先引入一个概念: **drop glue**
 
-Drop glue is compiler generated and first calls::drop and then recursively calls the drop glue of any recursively **owned values**. 简单说就是编译器生成的，用于调用drop函数的代码。然而需要注意的是，原文用词是owned values，并不是调用每一个值的drop glue。比如如果 T 有成员 `t1: Vec`  ，那么drop glue会调用t1的 drop 函数。如果 T 有成员 `t2: &mut Vec`，drop glue 则不会调用 `t2.drop()`，因为按照规则 t2 不属于 T 的owned values。具体哪些算owned values，哪些不算，可以查阅rust dev-guide[[4]](#ref_4)
+Drop glue is compiler generated and first calls::drop and then recursively calls the drop glue of any recursively **owned values**. 简单说就是编译器生成的，用于调用drop函数的代码。然而需要注意的是，原文用词是owned values，并不是调用每一个值的drop glue。比如如果 T 有成员 `t1: Vec`  ，那么drop glue会调用t1的 drop 函数。如果 T 有成员 `t2: &mut Vec`，drop glue 则不会调用 `t2.drop()`，因为按照规则 t2 不属于 T 的owned values。具体哪些算owned values，哪些不算，可以查阅rust dev-guide<span class="wikilink wikilink--missing" title="未导入的页面">4</span>(#ref_4)
 
-接下来继续说明drop check的流程。这里引用Rust doc中drop check[[5]](#ref_5) 的定义，而不是RFC-0769[[6]](#ref_6) 中定义，因为 RFC-0769 写于2013年8月，过于古老，和现在的规则虽然精神内核一样，但具体规则已经有所不同。
+接下来继续说明drop check的流程。这里引用Rust doc中drop check<span class="wikilink wikilink--missing" title="未导入的页面">5</span>(#ref_5) 的定义，而不是RFC-0769<span class="wikilink wikilink--missing" title="未导入的页面">6</span>(#ref_6) 中定义，因为 RFC-0769 写于2013年8月，过于古老，和现在的规则虽然精神内核一样，但具体规则已经有所不同。
 
 rust doc关于drop check的检查过程是这样说的
 
 - 如果类型 T 和它的所有 (recursive) fields 都没有实现 Drop trait的话（即 T 没有drop glue），不进行drop check。其中`PhantomData`and`ManuallyDrop`  都被认为是没有实现Drop trait的。
-- 如果 T 实现了Drop trait，那么无论 T 的 type parameter 还是 lifetime parameter都要保证在drop 函数中是有效的(注: 但如果有 #[may_dangle] 修饰[[7]](#ref_7)，会完全忽略)。
+- 如果 T 实现了Drop trait，那么无论 T 的 type parameter 还是 lifetime parameter都要保证在drop 函数中是有效的(注: 但如果有 #[may_dangle] 修饰<span class="wikilink wikilink--missing" title="未导入的页面">7</span>(#ref_7)，会完全忽略)。
 - 如果 T 有drop glue，那么对 T 递归**包含(own)**的所有的类型 U来说，要保证 U 在 drop 时，所有类型或生命周期都是有效的。(注意，这里和drop glue相同的是都要求包含关系，但drop glue关心的是value，这里关心的是类型)
 接下来说明如何计算包含(own)关系，这里直接搬运一下(如果你能坚持看到这里，下面这段原文也一定能大概理解)
 
@@ -299,11 +309,11 @@ struct UnownedVec {
 }
 `
 
-那么到目前为止，drop check和PhantomData到底又有什么关系呢？ 讲述一个Jon Gjengset 的例子[[8]](#ref_8) 就明白了。
+那么到目前为止，drop check和PhantomData到底又有什么关系呢？ 讲述一个Jon Gjengset 的例子<span class="wikilink wikilink--missing" title="未导入的页面">8</span>(#ref_8) 就明白了。
 
 前面铺垫了那么多，现在思考一下，什么情况需要用到#[may_dangle]，一个例子是Box
 
-![](asset/img_093fb6232823.jpg)
+![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_093fb6232823.jpg)
 
 Box&lt;T&gt; 的drop方法用到了#[may_dangle]   为什么呢？让我们尝试自己实现一个简单的MyBox
 
@@ -393,7 +403,7 @@ fn main() {
 }
 `
 
-在上面的代码中，我们新增了一个Wrapper结构，其在drop的时候真的会访问T，所以我们希望drop check能检查出 main 函数中的隐含错误: 变量 b 会在 main函数结束后执行MyBox::drop()，而MyBox又会隐式执行Wrapper::drop()，而在Wrapper::drop() 中会一直持有变量 x 的可变引用。因此我们希望 main 函数中不能成功打印 x 的值，否则违反borrow checker规则。但实际编译会发现，能编译成功，说明代码中还有问题。而这个问题就在于#[may_dangle]一下子把检查又放的太开了，我们只保证不会访问MyBox中的 T，并没有说不会drop T。(所以现在有关于修改#[may_dangle]的提案[[9]](#ref_9))
+在上面的代码中，我们新增了一个Wrapper结构，其在drop的时候真的会访问T，所以我们希望drop check能检查出 main 函数中的隐含错误: 变量 b 会在 main函数结束后执行MyBox::drop()，而MyBox又会隐式执行Wrapper::drop()，而在Wrapper::drop() 中会一直持有变量 x 的可变引用。因此我们希望 main 函数中不能成功打印 x 的值，否则违反borrow checker规则。但实际编译会发现，能编译成功，说明代码中还有问题。而这个问题就在于#[may_dangle]一下子把检查又放的太开了，我们只保证不会访问MyBox中的 T，并没有说不会drop T。(所以现在有关于修改#[may_dangle]的提案<span class="wikilink wikilink--missing" title="未导入的页面">9</span>(#ref_9))
 
 现在如下的MyBox结构下
 

@@ -1,9 +1,19 @@
 ---
-title: "为什么m4max可以轻松堆128g显存，nvidia消费端显卡却长期被限制在24g？"
-date: 2026-04-21
-tags: [知乎]
-source: https://www.zhihu.com/question/3829296269/answer/1949982709377107757
+title: 为什么m4max可以轻松堆128g显存，nvidia消费端显卡却长期被限制在24g？
+date: "2026-04-21 00:00:00"
+updated: "2026-04-21 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/体系结构/为什么m4max可以轻松堆128g显存,nvidia消费端显卡却长期被限制在24g/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://www.zhihu.com/question/3829296269/answer/1949982709377107757
 ---
+
 
 歪睿老哥
 ​​​

@@ -1,3 +1,16 @@
+---
+title: "إجراء التشغيل القياسي: بنية المجالات المتطبقة"
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/ar/resources/openai-advanced/sops/layered-domain-architecture/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # إجراء التشغيل القياسي: بنية المجالات المتطبقة
 
 استخدم هذا الإجراء عندما يستمر الوكيل في انتهاك الحدود أو تكرار المنطق عبر

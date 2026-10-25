@@ -1,9 +1,19 @@
 ---
-title: "(1 条消息) CSAPP Attack Lab"
-date: 2022-01-16
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/454224518
+title: (1 条消息) CSAPP Attack Lab
+date: "2022-01-16 00:00:00"
+updated: "2022-01-16 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/CSAPP-Attack-Lab/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/454224518
 ---
+
 
 这是我实现CSAPP Attack Lab的笔记。Attack Lab属于前几个Lab，代码量不是很大，更重视原理和理解。做的内容是我个人之前不熟悉的东西，觉得非常有趣。本文的源码在[这里](https://link.zhihu.com/?target=https%3A//github.com/Anarion-zuo/AnBlogs/blob/master/csapp/attacklab.md)。
 

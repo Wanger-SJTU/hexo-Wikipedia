@@ -1,9 +1,19 @@
 ---
-title: "(2 条消息) Lightning Attention 是如何克服传统线性注意力机制需要累加求和的缺陷的？"
-date: 2026-04-17
-tags: [知乎]
-source: https://www.zhihu.com/question/9740764576/answer/80735153803
+title: (2 条消息) Lightning Attention 是如何克服传统线性注意力机制需要累加求和的缺陷的？
+date: "2026-04-17 00:00:00"
+updated: "2026-04-17 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/Lightning-Attention-是如何克服传统线性注意力机制需要累加求和的缺陷的/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://www.zhihu.com/question/9740764576/answer/80735153803
 ---
+
 
 1/18 update: 做了一个视频介绍linear attention一些近期进展
 
@@ -63,7 +73,7 @@ $在这个方案里， \mathbf{S}_t 在前向传播的过程中是不会被保�
 
 而 \mathbf{k}_t, \mathbf{v}_t 的梯度不依赖于 \mathbf{S}_t ，可以直接通过平常的BPTT来算出来。
 
-![](asset/img_12dfddbde303.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_12dfddbde303.jpg)
 
 到此为止，memory的问题解决了。
 
@@ -78,7 +88,7 @@ $在这个方案里， \mathbf{S}_t 在前向传播的过程中是不会被保�
 - 把input序列分成若干个大小为C的等长chunk，只算每个chunk最后的hidden state
 - 在chunk-level的hidden state上进行recurrence
 - 每个chunk通过前一个chunk的last hidden state来aggregate历史信息，在chunk内部则是用一个attention的parallel形式直接得到output，而不是通过当前hidden state来算output。
-![](asset/img_887b3517ae4c.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_887b3517ae4c.jpg)
 
 **
 
@@ -101,29 +111,29 @@ Chunkwise parallel form的核心优势在于：
 - 整体的复杂度是 \mathcal{O}(Ld^2+LCd) 。在C固定的情况下，整体复杂度对sequence length L是线性的。（通常情况下，C取64，128，或者256这三个值来balance整体的计算复杂度和并行度）
 这个过程可以用下图表示：
 
-![](asset/img_79f9a763a8c8.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_79f9a763a8c8.jpg)
 
 from https://sustcsonglin.github.io/blog/2024/deltanet-2/这样，我们linear attention循环训练的第二个痛点：没有序列上的并行度，以及不能利用tensor core加速的问题也解决啦。
 
 $但是，如果仅仅用pytorch来实现chunkwise算法的话，速度会跟flashattention有一定的差距，这是因为我们没有进行I/O cost的优化。比方说，每次算output的时候， \mathbf{Q}_{[t]} \mathbf{S}_{[t]}^\top + (\mathbf{Q}_{[t]}\mathbf{K}_{[t]}^\top \odot \mathbf{M}) \mathbf{V}_{[t]} 加号两边的 \mathbf{Q}_{[t]} 明显可以复用：只需要load一遍省去重复读取的开销。同时，我们中间的attention矩阵 (\mathbf{Q}_{[t]}\mathbf{K}_{[t]}^\top \odot \mathbf{M}) 也没有必要写到HBM里面去，可以在SRAM里面一次做了。 诸如此类的I/O优化还有很多，在这里我就不一一列举啦。Flashattention的成功正是靠着fused kernel的I/O优化：$
 
-![](asset/img_263cc0b7a387.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_263cc0b7a387.jpg)
 
 在[Gated Linear Attention Transformers with Hardware-Efficient Training](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2312.06635) 中，我们提到了两种chunkwise linear attention的硬件优化方式：
 
 第一种是
 
-![](asset/img_e76524891217.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_e76524891217.jpg)
 
 flash linear attention (nonmaterialization version)这个方式总共的I/O读取是最少的，因为每个QKV block都只被读了一次，而hidden state从始至终都没有被在SRAM里面，没有被写到HBM里面一次过。这样，如果batch size和number of head提供的并行度足够大，我们用这种方式来训练linear attention就已经绰绰有余了。
 
-![](asset/img_49f2e7dc90ee.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_49f2e7dc90ee.jpg)
 
 I/O优化可以有4倍的运行速度的提升。但是呢，在大规模训练里面，batch size往往很小，batch size x num_head 乘起来可能还没有GPU里的Streaming Multiprocessors的数量多，“喂不饱”GPU，并行度没打满。
 
 这就需要我们有sequence dimension上面的并行度（这也是flashattention2的核心思想）。针对这个常见的case（large-scale training几乎单卡的batch size都开不大），我们可以用到另外一种materialize hidden state的形式，可以分为两步：
 
-![](asset/img_5a24f9de4efd.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_5a24f9de4efd.jpg)
 
 - 第一步：我们只算hidden state，并且materialize chunk-level state。
 - 第二步：我们对于每个chunk来并行计算output，打满并行。
@@ -133,9 +143,9 @@ I/O优化可以有4倍的运行速度的提升。但是呢，在大规模训练�
 
 此外，lightning attention主要是为了[Transnormer](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2307.14995)架构服务的（[retnet](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2307.08621)同期工作，都是linear attention + scalar-valued data-independent decay for each chunk)，所以他们的算法里，还需要把decay的term考虑进去。这个credits公道来讲，是要给retnet的：
 
-![](asset/img_4656f67fa084.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_4656f67fa084.jpg)
 
-![](asset/img_dc1144c82144.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_dc1144c82144.jpg)
 
 retnet让很多人第一次注意到chunkwise的形式（包括当时年幼刚踏进序列建模的sonta）而且decay的融入法很有insight，直接启发了mamba2的chunkwise算法（跟retnet的没啥区别，只不过data-indepedent decay变成了data-dependent decay)。GLA则是融入了一些更加fine-grained的decay term，chunkwise算法跟retnet的算法也大差不差。
 

@@ -1,3 +1,16 @@
+---
+title: 初始化代理操作手册
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/zh/resources/reference/initializer-agent-playbook/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # 初始化代理操作手册
 
 这个手册用于仓库里的第一轮重要会话，也就是正式开始增量开发之前的初始化阶段。

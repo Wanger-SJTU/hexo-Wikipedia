@@ -1,9 +1,19 @@
 ---
-title: "面向端侧大模型推理：深度解析Session30.1自适应位宽 MXFP 存算一体芯片"
-date: 2026-05-06
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/2035378626850448291
+title: 面向端侧大模型推理：深度解析Session30.1自适应位宽 MXFP 存算一体芯片
+date: "2026-05-06 00:00:00"
+updated: "2026-05-06 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/体系结构/面向端侧大模型推理-深度解析Session30.1自适应位宽-MXFP-存算一体芯片/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/2035378626850448291
 ---
+
 
 **01 / 研究背景：微缩浮点格式下存算一体架构的效率瓶颈**
 

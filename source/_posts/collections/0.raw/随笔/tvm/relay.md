@@ -1,6 +1,18 @@
 ---
-tags: [tvm]
+title: relay
+date: "2026-04-11 21:40:28"
+updated: "2026-04-11 21:40:28"
+layout: post
+permalink: /collections/0.raw/随笔/tvm/relay/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - tvm
 ---
+
 ## Let Binding and Scopes
 至此，已经介绍了如何用深度学习框架中的旧方法来构建计算图。这一节将讨论一个Relay的一个新的构造-let bindings。
 

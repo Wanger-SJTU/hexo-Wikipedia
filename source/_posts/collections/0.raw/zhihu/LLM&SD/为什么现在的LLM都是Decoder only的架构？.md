@@ -1,10 +1,19 @@
 ---
-title: "为什么现在的LLM都是Decoder only的架构？"
-date: 2024-03-07
-tags: [知乎]
-source: https://www.zhihu.com/question/588325646/answer/3422090041
-
+title: 为什么现在的LLM都是Decoder only的架构？
+date: "2024-03-07 00:00:00"
+updated: "2024-03-07 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/LLM-SD/为什么现在的LLM都是Decoder-only的架构/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://www.zhihu.com/question/588325646/answer/3422090041
 ---
+
 
 从 Infra 角度回答一下，作为 Encoder-Decoder 架构的代表模型： T5 为什么没落了 以及 为什么 T5 最大的模型只有 11B。 （其实是对 [@王睿](https://www.zhihu.com/people/b51b1a581e643aec8309033f97141345) 回答中的第一点的补充和扩展）
 

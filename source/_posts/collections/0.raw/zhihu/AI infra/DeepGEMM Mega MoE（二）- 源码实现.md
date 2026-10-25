@@ -1,10 +1,19 @@
 ---
-title: "DeepGEMM Mega MoE（二）- 源码实现"
-date: 2026-04-28
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/2032493993485924283
+title: DeepGEMM Mega MoE（二）- 源码实现
+date: "2026-04-28 00:00:00"
+updated: "2026-04-28 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/AI-infra/DeepGEMM-Mega-MoE(二)-源码实现/
 disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/2032493993485924283
 ---
+
 
 上一节中介绍了Mega MoE的整体流程以及Blackwell如何做block scaling，本节继续以test_mega_moe.py中的用法介绍具体的实现。
 
@@ -627,9 +636,9 @@ copy的时候设置了num_tma_multicast=2，因此会执行SM100_TMA_2SM_LOAD_2D
 struct SM100_TMA_2SM_LOAD_2D
 {
   CUTE_HOST_DEVICE static void
-  copy([[maybe_unused]] void const* desc_ptr, [[maybe_unused]] uint64_t* mbar_ptr, [[maybe_unused]] uint64_t cache_hint,
-       [[maybe_unused]] void      * smem_ptr,
-       [[maybe_unused]] int32_t const& crd0, int32_t const& crd1)
+  copy(<span class="wikilink wikilink--missing" title="未导入的页面">maybe_unused</span> void const* desc_ptr, <span class="wikilink wikilink--missing" title="未导入的页面">maybe_unused</span> uint64_t* mbar_ptr, <span class="wikilink wikilink--missing" title="未导入的页面">maybe_unused</span> uint64_t cache_hint,
+       <span class="wikilink wikilink--missing" title="未导入的页面">maybe_unused</span> void      * smem_ptr,
+       <span class="wikilink wikilink--missing" title="未导入的页面">maybe_unused</span> int32_t const& crd0, int32_t const& crd1)
   {
     uint64_t gmem_int_desc = reinterpret_cast<uint64_t>(desc_ptr);
     // Executed by both CTAs. Set peer bit to 0 so that the

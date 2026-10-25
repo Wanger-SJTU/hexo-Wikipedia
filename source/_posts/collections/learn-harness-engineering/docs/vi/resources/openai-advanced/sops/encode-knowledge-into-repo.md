@@ -1,3 +1,16 @@
+---
+title: "SOP: Mã hóa Kiến thức Ẩn vào Repo"
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/vi/resources/openai-advanced/sops/encode-knowledge-into-repo/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # SOP: Mã hóa Kiến thức Ẩn vào Repo
 
 Sử dụng SOP này khi ngữ cảnh quan trọng vẫn còn trong Google Docs, luồng chat, ticket hoặc trong đầu của mọi người.

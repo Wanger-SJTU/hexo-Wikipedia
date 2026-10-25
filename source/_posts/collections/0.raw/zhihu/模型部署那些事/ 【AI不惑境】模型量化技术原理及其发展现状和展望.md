@@ -1,9 +1,19 @@
 ---
-title: "(1 封私信) 【AI不惑境】模型量化技术原理及其发展现状和展望"
-date: 2022-04-22
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/141641433
+title: (1 封私信) 【AI不惑境】模型量化技术原理及其发展现状和展望
+date: "2022-04-22 00:00:00"
+updated: "2022-04-22 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/模型部署那些事/【AI不惑境】模型量化技术原理及其发展现状和展望/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/141641433
 ---
+
 
 大家好，这是专栏《AI不惑境》的第十篇文章，讲述模型量化相关的内容。
 
@@ -33,7 +43,7 @@ source: https://zhuanlan.zhihu.com/p/141641433
 
 (3) 更快的计算速度。相对于浮点数，大多数处理器都支持8bit数据的更快处理，如果是二值量化，则更有优势。
 
-![](asset/img_6a85988d68e3.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%25A8%25A1%25E5%259E%258B%25E9%2583%25A8%25E7%25BD%25B2%25E9%2582%25A3%25E4%25BA%259B%25E4%25BA%258B/asset/img_6a85988d68e3.jpg)
 
 上图展示的是一个二值权重和激活值矩阵的运算，卷积过程中的乘加都可以转换为异或操作，并行程度更高，运算速度因此也更快。
 
@@ -49,9 +59,9 @@ source: https://zhuanlan.zhihu.com/p/141641433
 
 二值量化是最高效率的量化方式，也可以称之为1bit量化，即将32位浮点数量化为1bit整型，非常适合FPGA等平台进行并行运算。二值量化模型以Binary Connect和Binarized Neural Networks为代表。
 
-BinaryConnect[1]是首先做二值化研究的论文，它们对权重进行了二值化。将权重和每层的激活值全部二值化的方法有两种方法。第一种就是符号函数，即x>0，则f(x)=1，x![](asset/img_de3546cd9767.jpg)
+BinaryConnect[1]是首先做二值化研究的论文，它们对权重进行了二值化。将权重和每层的激活值全部二值化的方法有两种方法。第一种就是符号函数，即x>0，则f(x)=1，x![](/images/collections/0.raw/zhihu/%25E6%25A8%25A1%25E5%259E%258B%25E9%2583%25A8%25E7%25BD%25B2%25E9%2582%25A3%25E4%25BA%259B%25E4%25BA%258B/asset/img_de3546cd9767.jpg)
 
-![](asset/img_b84f6ee5d344.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%25A8%25A1%25E5%259E%258B%25E9%2583%25A8%25E7%25BD%25B2%25E9%2582%25A3%25E4%25BA%259B%25E4%25BA%258B/asset/img_b84f6ee5d344.jpg)
 
 需要注意的是，为了保持精度，权重在前向传播和反向传播计算的时候进行二值化，但是在进行参数更新的时候使用浮点类型。随机的二值化策略能够起到提高模型泛化能力的作用，这与Dropout，Dropconnect等技术是类似的。
 
@@ -61,7 +71,7 @@ BinaryConnect[1]是首先做二值化研究的论文，它们对权重进行了�
 
 下图展示的就是一个二值化的权重。
 
-![](asset/img_6d8806b9e973.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%25A8%25A1%25E5%259E%258B%25E9%2583%25A8%25E7%25BD%25B2%25E9%2582%25A3%25E4%25BA%259B%25E4%25BA%258B/asset/img_6d8806b9e973.jpg)
 
 当然了，二值量化还有非常多的技术，包括XNorNet[3]等基于重建的模型，优化目标敏感的二值化模型，基于阈值的二值化改进，激活值正则化等，篇幅有限不再详述，读者可以阅读综述文章[4]进行学习。
 
@@ -75,11 +85,11 @@ FP32(T) = scale_factor(s) * 8-bit(t) +FP32_bias(b)
 
 实验证明偏置实际上是不需要的，去掉偏置后就是T=s∗t。其中s就是比例因子（scaling factor），因此现在的问题就是如何确定比例因子，一个简单的示意图如下：
 
-![](asset/img_dc020d1111e3.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%25A8%25A1%25E5%259E%258B%25E9%2583%25A8%25E7%25BD%25B2%25E9%2582%25A3%25E4%25BA%259B%25E4%25BA%258B/asset/img_dc020d1111e3.jpg)
 
 上图直接将一个tensor中的-|max|和|max|的FP32值线性映射为-127和127，这样的映射是对称的，并且是不饱和的，实验结果显示这样做会导致比较大的精度损失。主要的原因是max值可能会存在一些离散点噪声，如果直接进行线性缩放，可能就放大了这些噪声，TensorRT的改进做法是从127和|max|之间选择好一个阈值T，把大于这个阈值T的部分截断，示意图如下：
 
-![](asset/img_840a0c46d483.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%25A8%25A1%25E5%259E%258B%25E9%2583%25A8%25E7%25BD%25B2%25E9%2582%25A3%25E4%25BA%259B%25E4%25BA%258B/asset/img_840a0c46d483.jpg)
 
 只要阈值选取得当，就能将不稳定的大激活值舍弃掉，并且使精度损失不至于降低太多。原始的数据是一个FP32的分布，现在我们要用INT8的分布来表达这个tensor，根据阈值|T|的取值不同有多种选择，只需要选择其中最接近FP32的即可，所以现在的问题是确定|T|。
 
@@ -91,7 +101,7 @@ P，Q分别称为参考分布(reference_distribution)、量化分布(quantize_di
 
 所以完整的流程如下：
 
-![](asset/img_fcb7811afbc1.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%25A8%25A1%25E5%259E%258B%25E9%2583%25A8%25E7%25BD%25B2%25E9%2582%25A3%25E4%25BA%259B%25E4%25BA%258B/asset/img_fcb7811afbc1.jpg)
 
 (1) 首先将FP32的模型在一个数据集(Calibration Dataset)上跑一遍记录下每一层的FP32激活值，这里没必要去跑整个训练集，比较现实的做法是从验证集中选取一个子集，当然它最好有代表性，多样性好。之后对网络的每一层收集激活值，得到直方图，bins的大小官方建议为2048，所以阈值就在128和2047之间。
 
@@ -99,7 +109,7 @@ P，Q分别称为参考分布(reference_distribution)、量化分布(quantize_di
 
 具体的代码实现可以看源代码，下表展示的是一些实验结果，证明分类任务上精度损失并不大。
 
-![](asset/img_ed5e0743403d.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%25A8%25A1%25E5%259E%258B%25E9%2583%25A8%25E7%25BD%25B2%25E9%2582%25A3%25E4%25BA%259B%25E4%25BA%258B/asset/img_ed5e0743403d.jpg)
 
 当前8bit的量化还有以Google提出的非对称量化方法[6]，篇幅有限不再赘述。
 
@@ -107,7 +117,7 @@ P，Q分别称为参考分布(reference_distribution)、量化分布(quantize_di
 
 除了2bit和8bit两类最常见的量化方法，3bit，4bit，6bit等也经常被研究，以韩松等人提出的Deep Compression[7]为例，Deep Compression综合应用了剪枝、量化、编码三个步骤来进行模型压缩，是2016 ICLR最佳论文。
 
-![](asset/img_029f99caf29f.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%25A8%25A1%25E5%259E%258B%25E9%2583%25A8%25E7%25BD%25B2%25E9%2582%25A3%25E4%25BA%259B%25E4%25BA%258B/asset/img_029f99caf29f.jpg)
 
 整个框架如上所示，包括三个步骤：
 
@@ -119,7 +129,7 @@ P，Q分别称为参考分布(reference_distribution)、量化分布(quantize_di
 
 如下图，这是一个4×4的权值矩阵，量化权重为4阶，即2bit，分别对应浮点数-1.0，0，1.5，2.0。
 
-![](asset/img_d5736edddfdc.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%25A8%25A1%25E5%259E%258B%25E9%2583%25A8%25E7%25BD%25B2%25E9%2582%25A3%25E4%25BA%259B%25E4%25BA%258B/asset/img_d5736edddfdc.jpg)
 
 对weights矩阵采用cluster index进行存储后，原来需要16个32bit float，现在只需要4个32bit float，与16个2bit uint，参数量为原来的(16×2+4×32)/(16×32)=0.31。
 
@@ -139,31 +149,31 @@ P，Q分别称为参考分布(reference_distribution)、量化分布(quantize_di
 
 所谓混合精度量化，它可以指不同的网络层有不同的量化位阶，或者权重，激活以及输出采用不同的量化方案，当下可以利用AutoML技术来实现，以HAQ[78]框架为例。
 
-![](asset/img_7724ad504442.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%25A8%25A1%25E5%259E%258B%25E9%2583%25A8%25E7%25BD%25B2%25E9%2582%25A3%25E4%25BA%259B%25E4%25BA%258B/asset/img_7724ad504442.jpg)
 
 **3.2 量化训练框架**
 
 目前前向传播中权重和激活的量化比较成熟，但是训练中大部分的计算在反向传播步骤，如果能够将量化技术应用在反向传播中，则可以加速卷积的反向梯度传播过程，不过这需要对梯度也进行量化操作，而梯度的分布比较复杂，容易带来误差造成训练过程的不稳定。如何让量化模型的训练更加稳定，这是非常值得研究的方向[9]。
 
-![](asset/img_4dc406da5e90.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%25A8%25A1%25E5%259E%258B%25E9%2583%25A8%25E7%25BD%25B2%25E9%2582%25A3%25E4%25BA%259B%25E4%25BA%258B/asset/img_4dc406da5e90.jpg)
 
 **3.3 非均匀量化方案**
 
 通常来说量化函数是一个分段的常数函数，不同的量化等级之间的距离是相等的，即均匀量化，然而数据的分布往往不是均匀的，所以均匀量化不是最合理的方案，因此有一些研究针对量化函数本身进行学习[10]。
 
-![](asset/img_1b2944def35f.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%25A8%25A1%25E5%259E%258B%25E9%2583%25A8%25E7%25BD%25B2%25E9%2582%25A3%25E4%25BA%259B%25E4%25BA%258B/asset/img_1b2944def35f.jpg)
 
 除此之外，还有基于重建与损失敏感的量化方法，量化正则化方法，量化网络结构的设计，量化的具体硬件实现等内容。
 
 我们不再一一介绍，对模型量化感兴趣的同学，欢迎到**有三AI知识星球的网络结构1000变-模型压缩-模型量化板块**进行学习，数十期内容定能满足你的求知欲。
 
-![](asset/img_fd8cfa86a184.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%25A8%25A1%25E5%259E%258B%25E9%2583%25A8%25E7%25BD%25B2%25E9%2582%25A3%25E4%25BA%259B%25E4%25BA%258B/asset/img_fd8cfa86a184.jpg)
 
 扫码即可加入，了解有三AI知识星球详情请阅读以下文章。
 
 [](https://link.zhihu.com/?target=http%3A//mp.weixin.qq.com/s%3F__biz%3DMzA3NDIyMjM1NA%3D%3D%26mid%3D2649038096%26idx%3D1%26sn%3D30d01042f6386da141550083a0f1bf15%26chksm%3D8712a36db0652a7b0f99ad3e97385416f6579c6b4dfd03de80dbe98ff7578b35625c50191026%26scene%3D21%23wechat_redirect)
 
-![](asset/img_56b7e278ae77.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%25A8%25A1%25E5%259E%258B%25E9%2583%25A8%25E7%25BD%25B2%25E9%2582%25A3%25E4%25BA%259B%25E4%25BA%258B/asset/img_56b7e278ae77.jpg)
 
 参考文献
 
@@ -191,15 +201,15 @@ P，Q分别称为参考分布(reference_distribution)、量化分布(quantize_di
 
 [](https://link.zhihu.com/?target=https%3A//mp.weixin.qq.com/s/jjHW5QIS6_Ud4CsBAHxKRQ)
 
-![](asset/img_f91ef6d75102.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%25A8%25A1%25E5%259E%258B%25E9%2583%25A8%25E7%25BD%25B2%25E9%2582%25A3%25E4%25BA%259B%25E4%25BA%258B/asset/img_f91ef6d75102.jpg)
 
-![](asset/img_dd89f6d7ac11.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%25A8%25A1%25E5%259E%258B%25E9%2583%25A8%25E7%25BD%25B2%25E9%2582%25A3%25E4%25BA%259B%25E4%25BA%258B/asset/img_dd89f6d7ac11.jpg)
 
 或者有三AI秋季划-模型优化组，系统性地学习数据使用，模型使用和调参，模型性能分析，紧凑模型设计，模型剪枝，模型量化，模型部署，NAS等内容。
 
 [](https://link.zhihu.com/?target=https%3A//mp.weixin.qq.com/s/iCjttVkSFus8IFUjHtgIqA)
 
-![](asset/img_4eb7e49cc064.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%25A8%25A1%25E5%259E%258B%25E9%2583%25A8%25E7%25BD%25B2%25E9%2582%25A3%25E4%25BA%259B%25E4%25BA%258B/asset/img_4eb7e49cc064.jpg)
 
 > AI白身境系列完整阅读：
 

@@ -1,16 +1,29 @@
+---
+title: SVE-0 SVE特性以及寄存器
+date: "2026-04-11 21:40:28"
+updated: "2026-04-11 21:40:28"
+layout: post
+permalink: /collections/0.raw/随笔/XPU-优化/SVE-0-SVE特性以及寄存器/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 #sve 
 
 SVE对比NEON有几个新增的地方。
 1. 变长的向量
 2. 支持Gather-load && Scatter-store
- ![[assets/Pasted image 20230714210209.png]]
+ ![Pasted image 20230714210209.png](/images/collections/assets/Pasted%2520image%252020230714210209.png)
 3. 可以由P寄存器控制向量通道的计算
-![[assets/Pasted image 20230714210237.png]]
+![Pasted image 20230714210237.png](/images/collections/assets/Pasted%2520image%252020230714210237.png)
 5. 由软件控制的向量切分。
 	1. 基于First Fault 寄存器完成的，加载不合法内存页的时候，会有记录
-	![[assets/Pasted image 20230714210254.png]]
+	![Pasted image 20230714210254.png](/images/collections/assets/Pasted%2520image%252020230714210254.png)
 6. 扩展浮点和位运算的水平缩减
- ![[assets/Pasted image 20230714210309.png]]
+ ![Pasted image 20230714210309.png](/images/collections/assets/Pasted%2520image%252020230714210309.png)
 
 ## SVE 寄存器
 - Scalable vector registers
@@ -22,5 +35,5 @@ SVE对比NEON有几个新增的地方。
 	- P8-P15做循环控制
 	- FFR ： 用来软件推测的FFR寄存器
 
-![[assets/Pasted image 20230714211844.png]]
+![Pasted image 20230714211844.png](/images/collections/assets/Pasted%2520image%252020230714211844.png)
 

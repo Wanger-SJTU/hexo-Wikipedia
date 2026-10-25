@@ -1,3 +1,16 @@
+---
+title: Proje 03. Ajanı oturum yeniden başlatmaları boyunca çalışır tutun
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/tr/projects/project-03-multi-session-continuity/index/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 [中文版本 →](../../../zh/projects/project-03-multi-session-continuity/)
 
 > İlgili dersler: [Ders 05. Bağlamı oturumlar boyunca canlı tutun](./../../lectures/lecture-05-why-long-running-tasks-lose-continuity/index.md) · [Ders 06. Her ajan oturumundan önce başlatma yapın](./../../lectures/lecture-06-why-initialization-needs-its-own-phase/index.md)

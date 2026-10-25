@@ -1,9 +1,19 @@
 ---
-title: "【ASPLOS 2022】机器学习访存密集计算编译优化框架AStitch，大幅提升任务执行效率"
-date: 2022-03-08
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/475898491
+title: 【ASPLOS 2022】机器学习访存密集计算编译优化框架AStitch，大幅提升任务执行效率
+date: "2022-03-08 00:00:00"
+updated: "2022-03-08 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/dl论文/【ASPLOS-2022】机器学习访存密集计算编译优化框架AStitch,大幅提升任务执行效率/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/475898491
 ---
+
 
 **作者：郑祯** 
 
@@ -33,11 +43,11 @@ XLA所使用的优化方法是kernel fusion，进一步分析XLA的fusion优化�
 
 Element层面是指消费者处理的每个element和生产者生产的每个element之间的依赖关系，比如Broadcast算子会生成一对多的数据依赖关系。
 
-![](asset/img_009e39b772cf.jpg)
+![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_009e39b772cf.jpg)
 
 Operator层面是指图层面的算子依赖关系，下图展示了一个访存密集型计算子图的拓扑关系（来自一个Transformer模型），可以看到复杂的多对一、一对多依赖关系。
 
-![](asset/img_7e92fd76c702.jpg)
+![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_7e92fd76c702.jpg)
 
 如今的模型类型极为丰富，变种繁多，计算拓扑图无法枚举，不同于HPC领域的手工kernel fusion，让编译器自动化地对任意可能的计算子图做fusion优化是非常具有挑战性。这也是XLA和TVM目前只做保守fusion优化的一个重要原因。
 
@@ -53,19 +63,19 @@ Fusion问题，核心是代码生成能力问题，能力越大，fusion越好�
 
 XLA所支持的是Local的策略，只支持通过寄存器传递数据，算子的并行策略被分开来考虑。一些Fusion工作可以支持Independent依赖，主要包括Kernel Packing等。AStitch拓展了fusion的优化空间，Regional策略将数据存储在shared memory中，支持GPU thread block locality，Global策略将数据存储在global memory中，支持全局的locality。其中，并行度的考虑在于，上述每种stitch策略都需要特定locality的支持，locality越是局部，对并行策略的可能限制越大。从Local，到Regional，再到Global，locality的限制逐渐降低，对并行策略的限制也随之逐渐取消。需要说明的是，Global的策略需要GPU kernel所有线程的全局同步，其相当于将kernel之间的隐式的同步inline到kernel内部来进行，减少一次CPU（包括框架和驱动）和GPU之间的切换。
 
-![](asset/img_2525aa83914b.jpg)
+![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_2525aa83914b.jpg)
 
 对于并行度，为访存密集型计算做shape-aware的并行代码生成（Adaptive Thread Mapping）是AStitch的一个重要贡献。其基本思想是，基于SIMT的架构，合并小的（Task Packing），拆分大的（Task Splitting），以得到合适的CUDA thread block大小和数量。
 
 值得说明的是，对于Global的策略，为了实现全局同步，需要保证总的CUDA thread block数量不大于一个wave可以调度的最大数量，AStitch通过做纵向的Task Packing来达到这一要求，这相当于将原本由硬件调度器调度的任务转变为软件上预先调度好的任务，实际上还有机会节省调度开销。
 
-![](asset/img_dcf8d48f3388.jpg)
+![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_dcf8d48f3388.jpg)
 
 对于自动代码生成，穷举每个算子的stitching策略和并行策略是不现实的，我们提出了一种先分组解决局部代码生成，再聚合生成全局代码的方法。一个重要的insight是，轻量级的element-wise的计算只需要跟随其consumer的代码生成schedule即可，最终通过Local策略进行数据传输；而reduce等复杂计算则需要优先考虑并行度的优化，再去考虑与其consumer的stitch策略。
 
 基于此，我们依据算子类型进行分组，reduce及跟有broadcast的expensive element-wise（Power, Sqrt等）作为每一个组的dominant，每个dominant的直接的或间接的producer被分到其对应的组中。组内的数据传播都是通过Local策略进行，dominant生成自己的并行策略schedule后，传播给组内的其他算子；最后检查组间的数据局部性，为两个组边缘的算子选择可达到的locality最优的stitch策略。这种方法简洁有效地解决了搜索空间爆炸的问题，在此过程中，我们还有一些locality和parallelism之间的权衡，其中更多的细节请阅读我们ASPLOS 2022的论文。
 
-![](asset/img_e01a9929a773.jpg)
+![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_e01a9929a773.jpg)
 
 ### **结语**
 

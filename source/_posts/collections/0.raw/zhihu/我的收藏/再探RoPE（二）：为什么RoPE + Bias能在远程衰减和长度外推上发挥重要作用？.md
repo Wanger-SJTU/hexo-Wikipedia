@@ -1,9 +1,19 @@
 ---
-title: "再探RoPE（二）：为什么RoPE + Bias能在远程衰减和长度外推上发挥重要作用？"
-date: 2025-01-09
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/17397790476
+title: 再探RoPE（二）：为什么RoPE + Bias能在远程衰减和长度外推上发挥重要作用？
+date: "2025-01-09 00:00:00"
+updated: "2025-01-09 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/再探RoPE(二)-为什么RoPE-Bias能在远程衰减和长度外推上发挥重要作用/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/17397790476
 ---
+
 
 ### 1、引言：RoPE + Bias 有助于长度外推
 
@@ -13,13 +23,13 @@ source: https://zhuanlan.zhihu.com/p/17397790476
 
 该篇博客中，我们特别提到了Qwen2.5系列模型中的 `nn.Linear`层中**只针对**q,k,vq,k,v添加了 `bias`项，也简单给出了笔者的猜测，相关介绍截图如下：
 
-![](asset/img_ff1a6caef3c5.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_ff1a6caef3c5.jpg)
 
 而当前，其他一些头部模型其实很多是没有添加 `bias`的，比如[deepseek-ai/DeepSeek-V3](https://link.zhihu.com/?target=https%3A//huggingface.co/deepseek-ai/DeepSeek-V3/blob/main/modeling_deepseek.py)，不添加 `bias`也有诸多解释性的缘由，比如避免过拟合等。那么Qwen2.5系列特意针对q,k,v添加了 `bias`项，他们本身的出发点究竟是什么呢？
 
 这个问题终于在Qwen团队发布了Qwen2.5的技术报告[Qwen2.5 Technical Report](https://link.zhihu.com/?target=https%3A//arxiv.org/pdf/2412.15115)后给出了解释：
 
-![](asset/img_6c9e4161e85d.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_6c9e4161e85d.jpg)
 
 可见Qwen团队引入 `bias`的缘由还是因为苏神在
 

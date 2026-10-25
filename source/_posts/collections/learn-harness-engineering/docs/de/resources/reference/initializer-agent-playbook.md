@@ -1,3 +1,16 @@
+---
+title: Initializer-Agenten-Playbook
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/de/resources/reference/initializer-agent-playbook/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # Initializer-Agenten-Playbook
 
 Verwenden Sie dieses Playbook für die erste ernsthafte Session in einem Repository,

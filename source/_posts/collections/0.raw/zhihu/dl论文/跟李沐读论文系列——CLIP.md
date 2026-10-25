@@ -1,9 +1,19 @@
 ---
-title: "跟李沐读论文系列——CLIP"
-date: 2023-02-22
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/593661212
+title: 跟李沐读论文系列——CLIP
+date: "2023-02-22 00:00:00"
+updated: "2023-02-22 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/dl论文/跟李沐读论文系列——CLIP/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/593661212
 ---
+
 
 CLIP 是OpenAI 在2021年初的一篇工作：[Learning Transferable Visual Models From Natural Language Supervision](https://link.zhihu.com/?target=https%3A//arxiv.org/pdf/2103.00020.pdf) 。它是一个 zero-shot 的视觉分类模型，预训练的模型在没有微调的情况下在下游任务上取得了很好的迁移效果。作者在30多个数据集上做了测试，涵盖了 OCR、视频中的动作检测、坐标定位等任务。
 
@@ -15,7 +25,7 @@ CLIP 是OpenAI 在2021年初的一篇工作：[Learning Transferable Visual Mode
 
 其实，预训练网络的输入是文字与图片的配对，每一张图片都配有一小句解释性的文字。将文字和图片分别通过一个编码器，得到向量表示。这里的文本编码器就是 Transformer；而图片编码器既可以是 Resnet，也可以是 Vision transformer，作者对这两种结构都进行了考察。
 
-![](asset/img_9145da14aae3.jpg)
+![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_9145da14aae3.jpg)
 
 预训练网络结构假设现在分别得到了 N 个图片和 N 个文本的编码。接下来，我们需要对它们进行对比学习（contrastive learning）。对比学习需要一些正样本和负样本。在这里，配对的句子和文本就是一对正样本（也就是对角线上的）；反之，不配对的就是负样本（对角线之外的）。预训练网络的目标，就是最大化正样本对的余弦相似度，并最小化负样本的余弦相似度。
 
@@ -27,13 +37,13 @@ CLIP 是OpenAI 在2021年初的一篇工作：[Learning Transferable Visual Mode
 
 作者提到，相比于单纯地给定分类标签，给定一个句子的分类效果更好。比如一种句子模板 `A photo of a ...`，后面填入分类标签。这种句子模板叫做 `prompt`（提示）。这也很好理解：预训练时模型看到的大多是句子，如果在推理时突然变成单词，效果肯定会下降。作者还说，句子模板的选择很有讲究，还专门讨论了`prompt engineering`，测试了好多种类的句子模板。 
 
-![](asset/img_16bd81a44a1a.jpg)
+![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_16bd81a44a1a.jpg)
 
 推理过程中最关键的一点，在于我们有很高的自由度去设置“多项选择题”。从前的分类网络的类别数量是固定的，一般最后一层是跟着 softmax 的全连接层；如果要更改类别数量，就要更换最后一层；并且预测的内容是固定的，不能超过训练集的类别范围。
 
 但对于 CLIP 来说，提供给网络的分类标签不仅数量不固定，内容也是自由的。如果提供两个标签，那就是一个二分类问题；如果提供1000个标签，那就是1000分类问题。标签内容可以是常规的分类标签，也可以是一些冷门的分类标签。我认为这是 **CLIP 的一大主要贡献——摆脱了事先定好的分类标签**。
 
-![](asset/img_0517e65d1974.jpg)
+![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_0517e65d1974.jpg)
 
 CLIP 的官方博客 上举了一个例子，说明 CLIP 迁移能力的强大。尽管 Resnet101 在 Imagenet 上的准确度很高，但如果迁移到其他数据集上，它对于香蕉的识别准确度就大幅下降。但反观 CLIP，它可以识别动漫里的、表情包里的、素描画里的各种类型的香蕉，迁移能力很强。
 

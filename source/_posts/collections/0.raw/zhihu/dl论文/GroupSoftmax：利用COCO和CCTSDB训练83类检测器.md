@@ -1,10 +1,19 @@
 ---
-title: "GroupSoftmax：利用COCO和CCTSDB训练83类检测器"
-date: 2019-08-26
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/73162940
-
+title: GroupSoftmax：利用COCO和CCTSDB训练83类检测器
+date: "2019-08-26 00:00:00"
+updated: "2019-08-26 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/dl论文/GroupSoftmax-利用COCO和CCTSDB训练83类检测器/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/73162940
 ---
+
 
 通常，CV算法工程师在利用YOLO，Faster RCNN，CenterNet等一系列detection算法对公司的业务数据一顿猛train，看到自己的模型用在了业务上，陶醉在CEO对自己的工作很满意、即将升职加薪的幻觉之中时，往往迎来的是CEO的灵魂拷问。考虑如下问题：
 

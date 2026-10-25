@@ -1,9 +1,19 @@
 ---
-title: "Code Simplifier：Claude Code团队自用的代码清理工具，开源了"
-date: 2026-01-14
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/1994888583312605256
+title: Code Simplifier：Claude Code团队自用的代码清理工具，开源了
+date: "2026-01-14 00:00:00"
+updated: "2026-01-14 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/AgentCLI/Code-Simplifier-Claude-Code团队自用的代码清理工具,开源了/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/1994888583312605256
 ---
+
 
 Code Simplifier：Claude Code团队自用的代码清理工具，开源了
 
@@ -11,7 +21,7 @@ AI 写代码快，但代码质量参差不齐是个老问题。Claude Code 创�
 
 前几天，Anthropic 正式开源了这个团队内部一直在用的工具。
 
-![](asset/img_6b00f60471d2.jpg)
+![](/images/collections/0.raw/zhihu/AgentCLI/asset/img_6b00f60471d2.jpg)
 
 它能帮你把那些看起来有点乱、有点复杂的代码变得更清晰、更好懂。如果你也常常为代码的“可读性”和“维护性”发愁，那这个插件你可得好好了解一下。
 

@@ -1,10 +1,19 @@
 ---
-title: "Cpu访问cache未命中，是否还需要访问一次cache? ?"
-date: 2021-11-19
-tags: [知乎]
-source: https://www.zhihu.com/question/419394566/answer/2232250294
-
+title: Cpu访问cache未命中，是否还需要访问一次cache? ?
+date: "2021-11-19 00:00:00"
+updated: "2021-11-19 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/体系结构/Cpu访问cache未命中,是否还需要访问一次cache_-_/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://www.zhihu.com/question/419394566/answer/2232250294
 ---
+
 
 多年前工作原因参与Power多核系列CPU设计和验证，负责cache一致性工作，对MESI 等4状态至多13状态一致性协议有较为深入的理解。本文试图从最简单的MESI 4状态协议开始，直到IBM在Power6中开始使用13状态的一致性协议来进一步提升性能做一个知识梳理。
 

@@ -1,9 +1,19 @@
 ---
-title: "FlashAttention 的速度优化原理是怎样的？"
-date: 2026-04-21
-tags: [知乎]
-source: https://www.zhihu.com/question/611236756/answer/1995961359377138616
+title: FlashAttention 的速度优化原理是怎样的？
+date: "2026-04-21 00:00:00"
+updated: "2026-04-21 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/体系结构/FlashAttention-的速度优化原理是怎样的/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://www.zhihu.com/question/611236756/answer/1995961359377138616
 ---
+
 
 yahah
 ​​​

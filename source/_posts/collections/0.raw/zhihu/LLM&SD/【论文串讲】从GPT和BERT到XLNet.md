@@ -1,9 +1,19 @@
 ---
-title: "【论文串讲】从GPT和BERT到XLNet"
-date: 2022-04-05
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/182377100
+title: 【论文串讲】从GPT和BERT到XLNet
+date: "2022-04-05 00:00:00"
+updated: "2022-04-05 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/LLM-SD/【论文串讲】从GPT和BERT到XLNet/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/182377100
 ---
+
 
 文字长度: ★★★★☆
 
@@ -46,11 +56,11 @@ $$p(x_{1:T})\approx\prod_{t=1}^{T}p(x_{t}|\tilde{x})^{m_{t}}$$
 
 GPT和BERT的对比如下图所示
 
-![](asset/img_50533ef5d23e.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_50533ef5d23e.jpg)
 
 **我们的核心的关注点是: 如何取两者之长，避两者之短**。首先要提到的就是XLNet这篇工作：XLNet是一种广义的Auto-Regressive模型，它可以看作将序列的联合概率分布按照打乱的顺序重新因式分解，其将LM的**顺序拆解推广到随机拆解**，token之间的自回归关系不再是基于在**天然序列**中的前后顺序，而是基于**打乱后的序列**中的前后顺序。
 
-![](asset/img_aac24511701d.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_aac24511701d.jpg)
 
 LM顺序拆解(左)和乱序拆解(右)
 
@@ -67,16 +77,16 @@ LM顺序拆解(左)和乱序拆解(右)
 **we keep the original sequence order**, use the **positional encodings** corresponding to the original sequence, and rely on a **proper attention mask** in Transformers to achieve permutation of the factorization order.
 
 - 举例来详细解释一下，如下的3张图分别对应了不同的permutation，前2张图是同样目标序列输出对应的不同permutation顺序的输入，第3张图(从右向左)和前两张(从左向右)的目标序列不同(注意第3张图的解码实际顺序是it-read-to-like-，不是图中画的从下到上的顺序)。同理我们也可以得出"like-to-read-it-I"->"I-like-to-read-it"等permutation的mask。
-![](asset/img_842d161ba004.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_842d161ba004.jpg)
 
-decoder 输入 I-like-to-read-it, target输出 I-like-to-read-it![](asset/img_d9e20cd7ef43.jpg)
+decoder 输入 I-like-to-read-it, target输出 I-like-to-read-it![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_d9e20cd7ef43.jpg)
 
-decoder 输入 it-read-to-like-I, target输出I-like-to-read![](asset/img_f8f70d91fb3b.jpg)
+decoder 输入 it-read-to-like-I, target输出I-like-to-read![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_f8f70d91fb3b.jpg)
 
 decoder 输入 it-read-to-like-I, target输出it-read-to-like-I
 
 - 作者也提供了一张图来解释这个机制：下图都是同一序列不同因式分解顺序，在解码 x_3 时的示意图。
-![](asset/img_80fac6e31f0f.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_80fac6e31f0f.jpg)
 
 **XLNet的优化目标函数**
 
@@ -117,7 +127,7 @@ Query Representations和Content Representations的更新过程如下：
 
 **示意图**
 
-![](asset/img_533002a65be2.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_533002a65be2.jpg)
 
 **初始化**
 
@@ -126,7 +136,7 @@ Query Representations和Content Representations的更新过程如下：
 **更新的公式**
 
 - 如果self-attention有M层，对第m层
-![](asset/img_b89985d8516b.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_b89985d8516b.jpg)
 
 - 在finetune的时候，因为没有了permutation，也就不需要模型去预测z_{t}，因此此时只需要使用content stream就可以了。
 
@@ -138,6 +148,6 @@ $c} \mid \mathbf{x}_{\mathbf{z}_{\leq c}}\right)\right]=\mathbb{E}_{\mathbf{z} \
 
 ### 4. 总结
 
-![](asset/img_6792fd641405.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_6792fd641405.jpg)
 
 GPT和BERT各自有其适用的场景: GPT适用于NLG任务，而BERT适用于NLU任务。XLNet试图使得一个预训练模型同时具备NLG和NLU的能力，于是它提出了Permuted Language Model的建模方法，迂回地解决了Auto-Regressive模型中缺乏双边信息的问题，使得模型在具有Auto-Regressive的建模能力的基础之上，还学到了bidirectional context。

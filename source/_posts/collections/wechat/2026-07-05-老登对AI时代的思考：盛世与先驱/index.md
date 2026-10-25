@@ -1,9 +1,20 @@
 ---
 title: 老登对AI时代的思考：盛世与先驱
-date: 2026-07-05
-tags: [AI, 思考]
-source: https://mp.weixin.qq.com/s/PgH2sdI6ZS6hM_WM5vwxMA
+date: "2026-07-05 00:00:00"
+updated: "2026-07-05 00:00:00"
+layout: post
+permalink: /collections/wechat/2026-07-05-老登对AI时代的思考-盛世与先驱/index/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - AI
+  - 思考
+source_url: https://mp.weixin.qq.com/s/PgH2sdI6ZS6hM_WM5vwxMA
 ---
+
 
 # 老登对AI时代的思考：盛世与先驱
 
@@ -29,7 +40,7 @@ AI再次带给我震撼是在两年前：谷歌DeepMind团队的Demis Hassabis�
 
 2026年全球AI企业净利润预测
 
-![image](asset/img_0.jpg)
+![image](/images/collections/wechat/2026-07-05-%25E8%2580%2581%25E7%2599%25BB%25E5%25AF%25B9AI%25E6%2597%25B6%25E4%25BB%25A3%25E7%259A%2584%25E6%2580%259D%25E8%2580%2583%25EF%25BC%259A%25E7%259B%259B%25E4%25B8%2596%25E4%25B8%258E%25E5%2585%2588%25E9%25A9%25B1/asset/img_0.jpg)
 
 来源：网络 
 
@@ -45,7 +56,7 @@ AI再次带给我震撼是在两年前：谷歌DeepMind团队的Demis Hassabis�
 
 费城半导体指数一年多来上涨三倍
 
-![image](asset/img_1.png)
+![image](/images/collections/wechat/img_1.png)
 
 来源：WIND，中泰国际
 
@@ -119,7 +130,7 @@ AI泡沫：
 
 四年前，我在一篇文章中提及我儿时对“泡沫”的观察：小时候每逢下雨，我就不能到院子里玩了。呆呆地看着雨水往下滴，雨打在水缸的水面上，会泛起一个个水泡，但一眨眼，水泡就被雨滴打碎，同时，又在破灭的地方，泛起一个个水泡。
 
-![image](asset/img_2.jpg)
+![image](/images/collections/wechat/2026-07-05-%25E8%2580%2581%25E7%2599%25BB%25E5%25AF%25B9AI%25E6%2597%25B6%25E4%25BB%25A3%25E7%259A%2584%25E6%2580%259D%25E8%2580%2583%25EF%25BC%259A%25E7%259B%259B%25E4%25B8%2596%25E4%25B8%258E%25E5%2585%2588%25E9%25A9%25B1/asset/img_2.jpg)
 
 那么，泡沫什么时候才会破呢？看来要等到雨停了之后。如今正值AI突飞猛进的时代，雨下得正猛。当一批泡沫破了，又会泛起一批泡沫。我们是否应该寻找持续时间更长、更坚硬的泡沫？
 

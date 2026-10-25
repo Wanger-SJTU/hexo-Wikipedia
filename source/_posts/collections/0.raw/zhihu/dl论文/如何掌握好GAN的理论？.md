@@ -1,9 +1,19 @@
 ---
-title: "如何掌握好GAN的理论？"
-date: 2026-04-23
-tags: [知乎]
-source: https://www.zhihu.com/question/353542348/answer/877653244
+title: 如何掌握好GAN的理论？
+date: "2026-04-23 00:00:00"
+updated: "2026-04-23 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/dl论文/如何掌握好GAN的理论/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://www.zhihu.com/question/353542348/answer/877653244
 ---
+
 
 龙鹏-笔名言有三
 

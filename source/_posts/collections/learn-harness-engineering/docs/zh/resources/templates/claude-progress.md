@@ -1,3 +1,16 @@
+---
+title: 进度日志
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/zh/resources/templates/claude-progress/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # 进度日志
 
 ## 当前已验证状态

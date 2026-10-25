@@ -1,9 +1,19 @@
 ---
-title: "(1 条消息) 无锁编程——从CPU缓存一致性讲到内存模型"
-date: 2023-08-18
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/642416997
+title: (1 条消息) 无锁编程——从CPU缓存一致性讲到内存模型
+date: "2023-08-18 00:00:00"
+updated: "2023-08-18 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/无锁编程——从CPU缓存一致性讲到内存模型/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/642416997
 ---
+
 
 ### 引言
 
@@ -34,11 +44,11 @@ source: https://zhuanlan.zhihu.com/p/642416997
 
 ### CPU缓存
 
-![](asset/img_7ac2cdca3b6e.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_7ac2cdca3b6e.jpg)
 
 CPU缓存架构CPU的缓存结构如上图所示，通常分为3级缓存，其中L1、L2为每个CPU独有的，L3是多个CPU共享的，层级越高的缓存价格越贵，容量越小，访问速度越快。CPU访问数据时会依次访问寄存器、L1缓存、L2缓存、L3缓存、内存，其中CPU缓存由多个Cache Line组成，每个Cache Line由状态位、组标记、高速缓存块（2的幂次方大小）组成。
 
-![](asset/img_9a5c09538cfa.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_9a5c09538cfa.jpg)
 
 cache line结构
 
@@ -47,13 +57,13 @@ cache line结构
 
 - **直接映射**：直接映射中主存块按照缓存行数进行分组，如下图所示，缓存中有4个缓存行，因此每4个内存块划分为一组，每个组有自己的组号，每个组内的内存块有自己的块号，于是每一个主存地址由**组号、组内块号（组索引）、块内偏移量**三部分信息唯一标识。内存块按照**组内块号取模**映射到对应的缓存行，映射关系如下图箭头所示，因此在进行缓存数据访问时可以通过内存地址的组内块号直接映射到对应的缓存行。**不同的内存块可能会映射到同一缓存行中，同一组的内存块不会映射到同一个缓存行**，因此可以通过组号判断当前缓存行中数据是否为想要访问的数据，如果是的话则根据块偏移量获取缓存行数据中对应的字，否则从内存中读取。可见数据的缓存地址可以由组内块号（组索引）和块内偏移量唯一标识。
 
-![](asset/img_1f58edf3e1f2.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_1f58edf3e1f2.jpg)
 
 直接映射
 
 - **组相连映射**：直接映射中每个内存块固定只能映射到一个缓存行中，块冲突概率高，为了缓解块冲突问题而产生了组相连映射。组相连映射中将缓存行和内存块都进行了分组，主存中每个组的内存块数与缓存行的分组数相同。同直接映射一样，主存地址可由**组号、组内块号、块内偏移量**三部分信息唯一标识。如下图所示，缓存行分成了两组（按颜色分组），于是每两个内存块分为一组（B0B1、B2B3...)，内存组中的各内存块分别映射到某个缓存组中，最终可映射到缓存组内的任意缓存行中，即**内存块映射到哪个缓存组仍然是固定的，但是映射到缓存组内哪个缓存行是任意的**，如B0可以映射到缓存行1或缓存行2，B1可以映射到缓存行3或缓存行4，如下图内存块映射到相同颜色的缓存行。同直接映射一样，**组相连映射中不同组的内存块可能会映射到同一缓存行中，同一组的内存块不会映射到同一个缓存组**，这样避免了内存块只能映射到固定的缓存行的同时又具备一定的索引能力，在进行缓存数据访问时可以通过内存地址的**组内块号**直接映射到对应的**缓存组**，再遍历缓存组内的所有缓存行进行组号比对。如果命中缓存行则根据块偏移量获取缓存行数据中对应的字，否则从内存中读取。
 
-![](asset/img_fe33615b13b4.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_fe33615b13b4.jpg)
 
 组相连映射
 
@@ -85,7 +95,7 @@ cache line结构
 
 上文说到CPU进行数据更新时需要广播给其他CPU，CPU之间是通过总线接收和发送信息的。在这个机制下，CPU需要将每个修改动作都通过总线进行广播，并实时监听总线上的消息，这并不高效。而且总线嗅探无法保证事务的串行化，为了解决上述问题，缓存一致性协议（MESI）产生了。
 
-![](asset/img_bfe9dbc3c793.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_bfe9dbc3c793.jpg)
 
 总线嗅探
 #### 串行化：MESI协议
@@ -100,7 +110,7 @@ MESI首先规定了缓存行的四种状态：
 
 *表注释：当前状态列表示缓存行的状态，事件列中Local Read / Local Write代表本地CPU的读写行为，Remote Read / Remote Write代表其他CPU的读写行为，状态流转规则描述了事件发生后缓存行状态将如何变化。*
 
-![](asset/img_d0cf36cb1997.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_d0cf36cb1997.jpg)
 
 MESI状态流转规则
 ### Store Buffer和Invalidate Queue
@@ -111,7 +121,7 @@ MESI状态流转规则
 
 为了优化写操作性能，在CPU和Cache之间引入了store buffer，写操作时无需立即向其他CPU发送 invalidate 消息，而是先写入store buffer中，然后立刻返回执行其他操作，由 **store buffer 异步执行发送广播消息**，等到接收到其他cpu的响应后再将数据从store buffer移到cache line。
 
-![](asset/img_c3a2219cac6d.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_c3a2219cac6d.jpg)
 
 store buffer由于引入了store buffer，**CPU对数据A进行写操作后会在store buffer中存有修改后A的数据，此时CPU的cache line和store buffer中将存在两份A的数据备份**，一份修改前，一份修改后的，如果后续逻辑使用到了数据A，应当访问cache line还是store buffer中的数据呢，显然应当访问最新值，这种访问方式即为"**store Forwarding**"，具体可以描述为在数据访问时先去storebuffer中查找，如果查到就使用storebuffer中的最新值，否则访问cache line中的数据。
 
@@ -119,7 +129,7 @@ store buffer由于引入了store buffer，**CPU对数据A进行写操作后会�
 
 上文说到利用store buffer，每次CPU写操作都无需发送invalidate消息并等待invalidate ack，而是将invalidate消息存储在store buffer中异步发送，提高了写性。但是store buffer容量是有限的，如果store buffer发送invalidate消息后，接收到消息的CPU处于忙碌状态无法及时响应消息，store buffer中消息可能不断堆积而导致溢出。为了解决上述问题，需要接收消息的CPU能尽可能及时的进行消息响应，为此引入了Inavladate Queue，CPU接收到invalidate消息后会存储在Inavladate Queue中并立即响应invalidate ack，之后**Inavladate Queue再异步的执行缓存行失效操作。**可见**store buffer相当于CPU消息中的发送缓冲区，invalidate queue则相当于接收缓冲区**。
 
-![](asset/img_0b209c84d02f.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_0b209c84d02f.jpg)
 
 invalidate queue
 #### 顺序性与缓存一致性

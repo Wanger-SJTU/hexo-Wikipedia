@@ -1,9 +1,19 @@
 ---
-title: "(2 条消息) bLLC：传统处理器末级缓存的演进与应用"
-date: 2025-08-06
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/1936420864447980897
+title: (2 条消息) bLLC：传统处理器末级缓存的演进与应用
+date: "2025-08-06 00:00:00"
+updated: "2025-08-06 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/bLLC-传统处理器末级缓存的演进与应用/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/1936420864447980897
 ---
+
 
 **bLLC：传统处理器末级缓存的演进与应用**
 

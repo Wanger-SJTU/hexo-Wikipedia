@@ -1,10 +1,23 @@
 ---
 title: Reasonix 源码分析：为缓存命中而生的 Agent Loop
-date: 2026-05-31
-source: https://github.com/esengine/DeepSeek-Reasonix
-author: 二哥
-tags: [Reasonix, DeepSeek, Agent, 缓存优化, 架构分析]
+date: "2026-05-31 00:00:00"
+updated: "2026-05-31 00:00:00"
+layout: post
+permalink: /collections/wechat/2026-05-31-reasonix-source-code-analysis/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - Reasonix
+  - DeepSeek
+  - Agent
+  - 缓存优化
+  - 架构分析
+source_url: https://github.com/esengine/DeepSeek-Reasonix
 ---
+
 
 # Reasonix 源码分析：为缓存命中而生的 Agent Loop
 

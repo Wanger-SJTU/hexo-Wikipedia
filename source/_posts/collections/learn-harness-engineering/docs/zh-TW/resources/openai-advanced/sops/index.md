@@ -1,3 +1,16 @@
+---
+title: OpenAI 進階 SOP
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/zh-TW/resources/openai-advanced/sops/index/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # OpenAI 進階 SOP
 
 這些 SOP 把文章中的運作方式整理成可直接參考或調整的操作手冊。

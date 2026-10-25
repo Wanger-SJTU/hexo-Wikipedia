@@ -1,9 +1,19 @@
 ---
-title: "Flash Decoding 原理与实现"
-date: 2026-02-15
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/2006503288565163143
+title: Flash Decoding 原理与实现
+date: "2026-02-15 00:00:00"
+updated: "2026-02-15 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/LLM-SD/Flash-Decoding-原理与实现/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/2006503288565163143
 ---
+
 
 本文复制自我的个人博客：
 
@@ -29,7 +39,7 @@ Flash Attention 在训练阶段和推理的预填充（Prefill）阶段表现出
 
 这里复用我在 [Flash Attention 的基本原理](https://zhuanlan.zhihu.com/ml/flash-attention-overview/) 中的图示：
 
-![](asset/img_29802b914e52.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_29802b914e52.jpg)
 
 在计算时可以将 Q 分为多个块，每个分块由一个线程块（Thread Block）处理，每个 Q 块和所有的 K 和 V 块进行注意力计算，得到该 Q 块对应的输出。这个阶段，GPU 有较多的任务可以执行，计算资源可以被充分利用。
 
@@ -54,7 +64,7 @@ Flash Decoding 的解决方案很直观：既然 Q 维度没有足够的并行�
 - **归约（Reduce）**：所有线程块完成计算后，通过一次归约操作将各个局部结果合并为最终的全局注意力输出。
 下图展示了 Flash Decoding 的计算流程：
 
-![](asset/img_464c9635fa06.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_464c9635fa06.jpg)
 
 **
 
@@ -62,7 +72,7 @@ Flash Decoding 的解决方案很直观：既然 Q 维度没有足够的并行�
 
 下面还有一个来自 PyTorch 的博客中的动画示意：
 
-![](asset/img_baa3175729c0.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_baa3175729c0.jpg)
 
 ### Flash Decoding 的计算过程
 

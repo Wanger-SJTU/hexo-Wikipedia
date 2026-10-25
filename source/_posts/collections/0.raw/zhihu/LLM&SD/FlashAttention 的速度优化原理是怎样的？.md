@@ -1,10 +1,19 @@
 ---
-title: "FlashAttention 的速度优化原理是怎样的？"
-date: 2026-01-17
-tags: [知乎]
-source: https://www.zhihu.com/question/611236756/answer/1995961359377138616
-
+title: FlashAttention 的速度优化原理是怎样的？
+date: "2026-01-17 00:00:00"
+updated: "2026-01-17 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/LLM-SD/FlashAttention-的速度优化原理是怎样的/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://www.zhihu.com/question/611236756/answer/1995961359377138616
 ---
+
 
 本文将从第一性原理出发，基于现象观察和算法推导提供 FlashAttention 从软件到硬件的分析视角。
 

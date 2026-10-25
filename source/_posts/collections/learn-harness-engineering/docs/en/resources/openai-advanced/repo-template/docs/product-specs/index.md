@@ -1,3 +1,16 @@
+---
+title: Product Specs Index
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/en/resources/openai-advanced/repo-template/docs/product-specs/index/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # Product Specs Index
 
 Use this folder for current user-facing behavior specs.

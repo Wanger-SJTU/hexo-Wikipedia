@@ -1,9 +1,19 @@
 ---
-title: "(1 条消息) 基于知识库和 LLM 的问答系统经验分享"
-date: 2024-10-09
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/661668629
+title: (1 条消息) 基于知识库和 LLM 的问答系统经验分享
+date: "2024-10-09 00:00:00"
+updated: "2024-10-09 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/基于知识库和-LLM-的问答系统经验分享/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/661668629
 ---
+
 
 大家好，我是雨飞，最近一直在做检索增强和问答系统的内容。今天给大家分享一些关于LLM和知识库相结合的技巧和使用场景，提供一些信息增量。江湖经验，欢迎有相关经验和感兴趣的伙伴一起交流学习。
 
@@ -20,7 +30,7 @@ source: https://zhuanlan.zhihu.com/p/661668629
 
 目前比较常见的开源 LLM 的问答系统都会遵循下图这种结构去进行设计，整个流程用文字表述如下：加载文件 -> 读取文本 -> 文本分割 -> 文本向量化 -> 问句向量化 -> 在文本向量中匹配出与问句向量最相似的 `top k`个 -> 匹配出的文本作为上下文和问题一起添加到 `prompt`中 -> 提交给 `LLM`生成回答。
 
-![](asset/img_732e5694afab.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_732e5694afab.jpg)
 
 LangChain+ChatGLM 框架示意图参照之前，我们将之前的 QA 问题的过程进行细化，梳理出更详细的解决方案：
 

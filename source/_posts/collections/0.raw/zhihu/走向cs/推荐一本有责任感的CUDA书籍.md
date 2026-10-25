@@ -1,9 +1,19 @@
 ---
-title: "推荐一本有责任感的CUDA书籍"
-date: 2021-01-22
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/342934660
+title: 推荐一本有责任感的CUDA书籍
+date: "2021-01-22 00:00:00"
+updated: "2021-01-22 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/走向cs/推荐一本有责任感的CUDA书籍/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/342934660
 ---
+
 
 很多GPU开发者知道我们在QQ群里回答大家CUDA编程的问题很多年了，我们也有自己的GPU技术论坛，也有不少朋友问我们为啥不出书？对于我们来说最好的学习书籍就是NVIDIA自己出的CUDA编程手册，所以我们也曾经搞了一个CUDA学习100天的活动，在微信公众号上带领大家学习CUDA编程手册。
 
@@ -13,7 +23,7 @@ source: https://zhuanlan.zhihu.com/p/342934660
 
 这次终于可以跟大家推荐一本：
 
-![](asset/img_7502306bfe58.jpg)
+![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_7502306bfe58.jpg)
 
 樊哲勇博士在写书的过程中也经常在我们的QQ技术群里回答大家的CUDA编程问题，我们也算是亲历了樊博士写书的整个过程。樊博士写书的第一版手稿我们也全部阅读过，并提供了很多修改意见。
 
@@ -21,7 +31,7 @@ source: https://zhuanlan.zhihu.com/p/342934660
 
 终于等到书出版的这一天了！
 
-![](asset/img_0f88b8cf4d5d.jpg)
+![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_0f88b8cf4d5d.jpg)
 
 目   录
 

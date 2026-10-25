@@ -1,3 +1,16 @@
+---
+title: Nhật ký Tiến độ
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/vi/resources/templates/claude-progress/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # Nhật ký Tiến độ
 
 ## Trạng thái Đã xác minh Hiện tại

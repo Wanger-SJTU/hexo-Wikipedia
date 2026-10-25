@@ -1,9 +1,19 @@
 ---
-title: "(1 条消息) RAG探索之路的血泪史及曙光"
-date: 2023-11-10
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/664921095
+title: (1 条消息) RAG探索之路的血泪史及曙光
+date: "2023-11-10 00:00:00"
+updated: "2023-11-10 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/RAG探索之路的血泪史及曙光/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/664921095
 ---
+
 
 2023.11.02，受 @腾讯技术工程
 
@@ -44,41 +54,41 @@ source: https://zhuanlan.zhihu.com/p/664921095
 
 #### 内容摘要
 
-![](asset/img_da6d9e24711d.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_da6d9e24711d.jpg)
 
-![](asset/img_d28135fa5d84.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_d28135fa5d84.jpg)
 
-![](asset/img_2d80e87cc7ee.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_2d80e87cc7ee.jpg)
 
-![](asset/img_4d82af64d521.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_4d82af64d521.jpg)
 
-![](asset/img_27033e707932.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_27033e707932.jpg)
 
-![](asset/img_9df27c5e4b5d.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_9df27c5e4b5d.jpg)
 
-![](asset/img_8650e5693793.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_8650e5693793.jpg)
 
-![](asset/img_3ae66029f4a8.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_3ae66029f4a8.jpg)
 
-![](asset/img_9ef0ecbc1a8a.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_9ef0ecbc1a8a.jpg)
 
-![](asset/img_204d85b40684.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_204d85b40684.jpg)
 
-![](asset/img_4c820aed93b4.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_4c820aed93b4.jpg)
 
-![](asset/img_5cb9ecd6f29d.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_5cb9ecd6f29d.jpg)
 
-![](asset/img_ef999c950f27.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_ef999c950f27.jpg)
 
-![](asset/img_7e7b19da1dc7.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_7e7b19da1dc7.jpg)
 
-![](asset/img_a91e8c343078.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_a91e8c343078.jpg)
 
-![](asset/img_50aad2d42c00.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_50aad2d42c00.jpg)
 
 #### 完整视频
 
-![](asset/img_2b6370614d93.jpg)126:48
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_2b6370614d93.jpg)126:48
 
 RAG 探索之路的血泪史及曙光
 

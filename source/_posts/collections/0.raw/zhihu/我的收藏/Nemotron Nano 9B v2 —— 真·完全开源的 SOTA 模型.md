@@ -1,15 +1,25 @@
 ---
-title: "(2 条消息) Nemotron Nano 9B v2 —— 真·完全开源的 SOTA 模型"
-date: 2025-08-28
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/1944321797139985921
+title: (2 条消息) Nemotron Nano 9B v2 —— 真·完全开源的 SOTA 模型
+date: "2025-08-28 00:00:00"
+updated: "2025-08-28 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/Nemotron-Nano-9B-v2-——-真·完全开源的-SOTA-模型/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/1944321797139985921
 ---
+
 
 NVIDIA 近日完全开源了 **Nemotron Nano 9B v2** 模型，不仅释出了模型权重，还公开了训练数据及数据生成方法。仅从基准测试成绩来看，其表现已超过 **Qwen3 8B**。在架构设计上，Nemotron Nano 9B v2 采用 **Mamba 与 Global Attention 的混合方案**，实现了比 Qwen3 8B 更高的推理吞吐量。本文将对该模型的数据生成流程与训练流程进行系统梳理与总结。
 
 [https://arxiv.org/pdf/2508.14444#page=1.53arxiv.org/pdf/2508.14444#page=1.53](https://link.zhihu.com/?target=https%3A//arxiv.org/pdf/2508.14444%23page%3D1.53)
 
-![](asset/img_15f8c71de645.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_15f8c71de645.jpg)
 
 也可访问由 GPT-5 生成的阅读笔记
 

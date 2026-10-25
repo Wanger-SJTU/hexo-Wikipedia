@@ -1,9 +1,19 @@
 ---
-title: "PyTorch 区域编译（Regional Compilation）"
-date: 2026-04-21
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/2029894341162992606
+title: PyTorch 区域编译（Regional Compilation）
+date: "2026-04-21 00:00:00"
+updated: "2026-04-21 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/AI-infra/PyTorch-区域编译(Regional-Compilation)/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/2029894341162992606
 ---
+
 
 1. 概述与背景
 

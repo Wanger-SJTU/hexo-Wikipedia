@@ -1,3 +1,16 @@
+---
+title: SOP：把不可见知识编码进仓库
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/zh/resources/openai-advanced/sops/encode-knowledge-into-repo/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # SOP：把不可见知识编码进仓库
 
 当重要上下文还散落在 Google Docs、聊天记录、ticket 或人的脑子里时，就用这份 SOP。

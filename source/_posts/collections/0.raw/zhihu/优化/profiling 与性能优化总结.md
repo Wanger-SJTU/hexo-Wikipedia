@@ -1,9 +1,19 @@
 ---
-title: "profiling 与性能优化总结"
-date: 2021-04-09
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/362575905
+title: profiling 与性能优化总结
+date: "2021-04-09 00:00:00"
+updated: "2021-04-09 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/优化/profiling-与性能优化总结/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/362575905
 ---
+
 
 **作者：王璐璐 | 旷视 MegEngine 架构师
 ### 一、背景
@@ -67,7 +77,7 @@ Linux 系统上的 time 命令能够告诉我们一些粗糙的信息，我们�
 
 本文主要关注 Python（包括 C/C++ 拓展） 程序的优化，一个典型的 Python 和 C/C++ 拓展程序的进程如下图所示：
 
-![](asset/img_8bfe407d0335.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_8bfe407d0335.jpg)
 
 一个 Python 进程必须包含一个 Python 主线程，可能包含若干个 Python 子线程和若干个 C/C++ 子线程。因此我们进一步把优化对象细分为三类：
 
@@ -85,7 +95,7 @@ Linux 系统上的 time 命令能够告诉我们一些粗糙的信息，我们�
 - 是否能够从 CPython 解释器的调用栈中解析出 Python 调用栈
 我们介绍将介绍 6 个 profiler，分别为 py-spy、cProfile、pyinstrument、perf、systemtap 和 eu-stack。为了方便大家进行选择，我们按照上面介绍的特征，把这些 profiler 分成了 4 类并总结在了下面的表格中 （其中✅、⚠、❌分别表示支持、不完全支持和不支持）：
 
-![](asset/img_5a28235c8e65.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_5a28235c8e65.jpg)
 
 表格中第一种是纯 Python profiler，只能观测 Python 线程中 Python 函数的调用栈，适合优化纯 Python 代码时使用，本文将介绍 CProfile（Python 的 built-in profiler）和 pyinstrument（第三方 Python profiler），这类 profiler 还有很多，比如 scalene、line-profiler、pprofile 等，由于这些 profiler 在能力上差异不大，因此这里就不一一介绍了。**
 第二类是 Python 线程 profiler，与第一类的主要区别是除了能够观测 Python 线程里的 Python 调用栈，还能观测 c/c++ 拓展的调用栈，这一类只介绍 py-spy。
@@ -107,7 +117,7 @@ Linux 系统上的 time 命令能够告诉我们一些粗糙的信息，我们�
 火焰图（flamegraph）是一个功能强大的可视化 profiling 结果的工具。它即可以对多种 profiler 的输出进行处理，也可以对处理后的结果进行可视化。它能够处理不同平台上的十多种 profiler 的原始输出，除了能够可视化 cpu 上的 profiling 结果，它也可以对一些内存 profiler 的输出结果进行可视化。**
 flamegraph 的使用流程一般是对 profiler 的原始输出结果进行处理，之后再生成一个 SVG 文件，可以在浏览器里打开，效果如下：
 
-![](asset/img_27a211533aa6.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_27a211533aa6.jpg)
 
 flamegraph 的主要功能就是显示 profiler 采样的调用栈的频率分布，图中纵向堆起来的代表调用栈，调用栈中的矩形块的宽度代表该函数运行时被采到的频率（某个执行路径的时间占比与它被采样到的概率成正比，因此采样频率近似等于该执行路径的时间占比）。通过观察火焰图，我们可以看到程序都有哪些执行路径，以及每个执行路径的时间占比，然后对时间占比较大的性能瓶颈（或"热点"）进行优化，来达到优化性能的目的。
 
@@ -128,7 +138,7 @@ flamegraph 的主要功能就是显示 profiler 采样的调用栈的频率分�
 
 进入 https://www.speedscope.app/ 中，打开 json 格式的 profiling 结果（我们会在下面各种 profiler 的使用方法中介绍如何将结果转为这种 json）。可以看到以下界面（与 flamegraph 的一个不同之处是 speedscope 的调用栈是倒过来的）:
 
-![](asset/img_a6f4325180fd.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_a6f4325180fd.jpg)
 
 左上角可以选择三种模式:
 
@@ -235,7 +245,7 @@ gprof2dot -f pstats xxx.cprof | dot -Tpng -o xxx.png && feh`
 
 转成 flamegraph
 
-![](asset/img_4e3a0227346a.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_4e3a0227346a.jpg)
 
 - 转成flamegraph
 `# dependency: flameprof
@@ -287,7 +297,7 @@ Program: train.py
 
 效果如下：
 
-![](asset/img_0384f5c430dd.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_0384f5c430dd.jpg)
 
 ### 5.4 perf
 
@@ -339,7 +349,7 @@ flamegraph.pl perf.fold > perf.svg`
 
 对于 Python 程序的优化，perf 也有一些局限性，因为 perf 不是为 python 定制的 profiler，对 python 的函数调用，perf 采样的是 CPython 解释器的调用栈，所以无法直接看到具体的 Python 函数，如下图所示：
 
-![](asset/img_8e78ec453523.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_8e78ec453523.jpg)
 
 因此 perf 不太适合优化纯 Python 代码，更适合观测 C/C++ 线程。此外，上面使用的 perf record 命令只会对程序 CPU time 的调用栈进行采样，如果要对 off-CPU time 进行观测，需要使用 perf 的 trace 命令，这里就不详细展开了，具体做法可以参考这篇文章：http://www.brendangregg.com/blog/2015-02-26/linux-perf-off-cpu-flame-graph.html 。目前为止 perf 还不支持同时对 CPU time 和 off-CPU time 进行观测，对这两种情况只能独立进行分析。
 
@@ -469,7 +479,7 @@ Python 主线程: 执行python训练脚本，并且向队列里发送任务展�
 - worker 线程：是一个纯 C++ 线程，负责从队列里取任务并且执行
 我们首先对 Python 主线程进行了 profiling，由于希望能同时观测到 C/C++ extension，纯 Python profiler 无法满足我们的需求，因此我们使用了 py-spy，我们打开了–idle 选项来使结果包含 off cpu time 上的样本，最终得到了下面的结果：
 
-![](asset/img_62fb263b8ce8.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_62fb263b8ce8.jpg)
 
 我们发现，主线程大约有 80% 的时间花在了等待上，如上图中的红色框所示。有两个地方是获取一个 tensor 的 numpy ndarray，单个地方是获取一个 tensor 的 shape，这两种情况的等待全部都是 sync worker 线程引发的。MegEngine 中主线程发命令和 worker 执行命令之间是异步进行的，当我们需要获得一个 tensor 的 numpy ndarray 时，则需要等 worker 在 CUDA 上完成计算并将结果 copy 到 memory 中，因此会触发 sync。另一种情况是获得一个 tensor 的 shape，如果某个算子的输出的 shape 无法提前推测出来，也需要等 worker 完称计算才能知道，因此也会触发 sync。
 
@@ -477,7 +487,7 @@ Python 主线程: 执行python训练脚本，并且向队列里发送任务展�
 
 于是我们打算对 worker 线程进行 profiling，由于 worker 线程是纯 C/C++ 线程，因此我们可选的工具有 perf、systemtap 和 eu-stack，我们不确定问题出在 CPU time 上还是 off-CPU time 上，为了能够将两种状态下的结果放在一起观测，我们选择使用 eu-stack，于是获得了以下结果：
 
-![](asset/img_fa6b8bfa9523.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_fa6b8bfa9523.jpg)
 
 我们发现 worker 线程居然有 85% 以上的时间花在了 topk 算子调用 `cudaGetDeviceProperties` 的地方（图中的红色框），查阅文档后发现这个 api 的 overhead 比较大，且多进程同时调用时会发生 io traffic 竞争，因此 ioctl 在 8 进程的时间消耗过大。我们随后修改了 topk 的实现（[commit](https://link.zhihu.com/?target=https%3A//github.com/MegEngine/MegEngine/commit/54e79dd1d936dcba427933772d8a2537903d2e7c)），避免调用 `cudaGetDeviceProperties`，之后再次测试，发现该模型的速度回复正常：单进程速度提升了约 13%，8 进程速度提升了 1 倍以上。
 

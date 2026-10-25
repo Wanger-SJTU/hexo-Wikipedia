@@ -1,9 +1,19 @@
 ---
-title: "【笔记】Stable Diffusion模型优化入门级介绍 - LoRA vs Dreambooth vs Textural Inversion vs Hypernetworks"
-date: 2023-03-13
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/612992813
+title: 【笔记】Stable Diffusion模型优化入门级介绍 - LoRA vs Dreambooth vs Textural Inversion vs Hypernetworks
+date: "2023-03-13 00:00:00"
+updated: "2023-03-13 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/dl论文/【笔记】Stable-Diffusion模型优化入门级介绍-LoRA-vs-Dreambooth-vs-Textural-Inversion-vs-Hypernetworks/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/612992813
 ---
+
 
 22年9月份一个获奖作品使AI绘画引爆全网，10月我在本地部署了一个StableDiffusionWebUI程序，然后，就没有然后了。看着我本地生成的一张张垃圾图，从小就喜欢画画又没有天赋的我心里默默留下了泪水。
 
@@ -17,7 +27,7 @@ source: https://zhuanlan.zhihu.com/p/612992813
 
 ### Dreambooth
 
-![](asset/img_64621be7b6f4.jpg)
+![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_64621be7b6f4.jpg)
 
 Dreambooth通过直接修改整个原始模型来对模型输出结果进行调校
 
@@ -46,7 +56,7 @@ Dreambooth最核心的一点，就是它将训练出一个完整的新模型出�
 
 ### Textual Inversion
 
-![](asset/img_740f1bde7064.jpg)
+![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_740f1bde7064.jpg)
 
 示例中我们仍然是训练柯基犬图像与SKS关键词的关联，整个过程的大部分步骤都与Dreambooth是一样的。
 
@@ -66,19 +76,19 @@ Textual Inversion非常的轻量化，也非常的酷，它以一种易于理解
 
 ### LoRA
 
-![](asset/img_fd85656aa027.jpg)
+![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_fd85656aa027.jpg)
 
 全称Low Rank Adaption，想要理解它的原理首先非常非常概括的介绍下AI模型的内部实现。
 
 现今AI模型所使用的神经网络结构大多是由许多的计算层叠加而成的。你的输入输出首先传入第一层，经过其计算，生成一组新的数据，再作为数据传入第二层，依次计算传递，最终由最后一层给出结果。随着层数的叠加，整个模型逐渐的能够理解你所输出数据的含义并最终给出期望的结果，这就是神经网络的一个大致的描述。 
 
-![](asset/img_ae8279a7679c.jpg)
+![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_ae8279a7679c.jpg)
 
 LoRA并不是AI绘画专有的技术，其原本是针对于LLM（大语言模型）所开发的技术，旨在解决避免将整个模型参数拷贝下来才能对模型进行调校的问题。（相较于SD，LLM的模型参数量完全是另外一个级别的了，比如ChatGPT3据说有1750亿参数，如果每次修改都要拷贝整个模型出来，那就有点太难以调校了）
 
 LoRA采用的方式是向原有的模型中插入新的数据处理层，这样就避免了去修改原有的模型参数，从而避免将整个模型进行拷贝的情况，同时其也优化了插入层的参数量，最终实现了一种很轻量化的模型调校方法。
 
-![](asset/img_d2f1f15189d1.jpg)
+![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_d2f1f15189d1.jpg)
 
 因此，与前面方法一样，通过训练，我们最终将训练出一整套新数据处理层的参数，而这些参数插入进原有的SD模型中，将会使输出结果与SKS产生我们所期望的关联关系，即SKS - 柯基犬图像。
 
@@ -86,7 +96,7 @@ LoRA训练相较于Dreambooth更快且使用更少的VRAM，其数据大小相�
 
 ### Hypernetwork
 
-![](asset/img_192270e44e0a.jpg)
+![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_192270e44e0a.jpg)
 
 Hypernetwork的训练原理与LoRA差不多，目前其并没有官方的文档说明*【据传其来源于被泄密的代码】*。视频作者通过阅读AUTOMATIC1111 WebUI中使用的Hypernetwork插件代码来分析其作用原理。
 

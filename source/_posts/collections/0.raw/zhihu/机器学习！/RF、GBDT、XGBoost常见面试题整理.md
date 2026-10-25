@@ -1,9 +1,19 @@
 ---
-title: "RF、GBDT、XGBoost常见面试题整理"
-date: 2018-05-28
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/34679467
+title: RF、GBDT、XGBoost常见面试题整理
+date: "2018-05-28 00:00:00"
+updated: "2018-05-28 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/机器学习/RF、GBDT、XGBoost常见面试题整理/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/34679467
 ---
+
 
 1：RF与GBDT之间的区别
 
@@ -63,7 +73,7 @@ b. 借鉴投票机制。用相同的gbdt参数对w每个特征训练出一个模
 
 ，
 
-![](asset/img_6017e565cb0a.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_6017e565cb0a.jpg)
 
 损失函数极小值
 

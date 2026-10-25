@@ -1,9 +1,19 @@
 ---
-title: "AI infra 26秋招面经"
-date: 2026-04-20
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/2017740483217081305
+title: AI infra 26秋招面经
+date: "2026-04-20 00:00:00"
+updated: "2026-04-20 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/AI-infra-26秋招面经/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/2017740483217081305
 ---
+
 
 AI infra 26秋招面经
 

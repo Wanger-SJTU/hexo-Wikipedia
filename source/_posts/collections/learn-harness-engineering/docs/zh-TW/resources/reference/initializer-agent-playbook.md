@@ -1,3 +1,16 @@
+---
+title: 初始化代理操作手冊
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/zh-TW/resources/reference/initializer-agent-playbook/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # 初始化代理操作手冊
 
 在儲存庫中的第一個重要工作階段使用這份手冊，也就是增量功能開發開始前的階段。

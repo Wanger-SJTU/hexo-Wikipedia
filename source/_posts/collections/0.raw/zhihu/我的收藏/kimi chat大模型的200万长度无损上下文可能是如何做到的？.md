@@ -1,9 +1,19 @@
 ---
-title: "(2 条消息) kimi chat大模型的200万长度无损上下文可能是如何做到的？"
-date: 2026-04-17
-tags: [知乎]
-source: https://www.zhihu.com/question/649192998/answer/3546745976
+title: (2 条消息) kimi chat大模型的200万长度无损上下文可能是如何做到的？
+date: "2026-04-17 00:00:00"
+updated: "2026-04-17 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/kimi-chat大模型的200万长度无损上下文可能是如何做到的/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://www.zhihu.com/question/649192998/answer/3546745976
 ---
+
 
 这周，清华和Moonshot发了一个[技术报告](https://link.zhihu.com/?target=https%3A//github.com/kvcache-ai/Mooncake/blob/main/Mooncake-v1.pdf)，介绍Kimi背后的LLM服务系统Mooncake，它采用分离式设计，将Prefill和Decode两阶段解耦，构建了一个全局KVCache Pool，实现以Cache为中心的调度。
 
@@ -35,11 +45,11 @@ Mooncake分离式架构动机是Prefill和Decode阶段性质不同，Prefill是�
 
 二是，将KVCache和计算分离开，它将GPU集群的CPU、DRAM、SSD和RDMA资源分组组成Distributed KVCache Pool，KVCache也是分块以Paged方式管理，KVCache Blocks如何在Pool中调度请求和复用KVCache乃本文精髓。
 
-![](asset/img_d560095ad95e.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_d560095ad95e.jpg)
 
 我们跟随论文的安排，跟Figure 4先走马观花过一遍Mooncake处理一个request的流程。一个request到达（tokenized之后的），调度程序会选择一对Prefill Instance和Decode Instance，模型参数要在两个Instance都有副本，并启动包含四个步骤的工作流程：
 
-![](asset/img_1a93f0e4ef99.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_1a93f0e4ef99.jpg)
 
 s1）**KVCache Reuse**：Prefill Instance将request分成token blocks，考虑request之间存在共同前缀，需要尽可能将token block调度到Prefix KVCache最长的节点处理，来resuse KVCache。为此作者提出一种以KVCache为中心的调度，将在章节5 KVCache-centric Scheduling中详细介绍。
 
@@ -65,11 +75,11 @@ Prefill和Decode的计算性质不同，前者吃计算，后者吃带宽。这�
 
 Mooncake为Prefill阶段设计了Chunked Pipeline Parallelism (CPP)  ，其实就是[TeraPipe](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2102.07988)。TeraPipe正是vLLM核心作者Zhuohan Li的2021年的工作，当时是用在流水线训练里，这里只用它的forward过程即可。TeraPipe将模型沿着Layer切分成N个stage，放在不同设备上，将输入沿着序列维度切分成若干chunk。这样就可以在一个推理任务里，不同chunk流水在不同stage上的计算就可以流水起来起来。如下图所示，切分方式看左图，流水方式看右图一个Forward过程即可。
 
-![](asset/img_d5abd02a4337.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_d5abd02a4337.jpg)
 
 TeraPipe用于训练时不能均分序列，一个token要和之前所有token做计算（因为Causal Attention引起的），位置越靠后计算量越大，均分序列的话Attention计算会负载不均衡，所以越靠后sequence chunk越小才好，所以TeraPipe论文用动态规划来找最佳划分策略。在Mooncake中，章明星说TeraPipe*只有 forward 没有 backword 的话不需要啥动态规划来平衡每个 Chunk 的计算量，只要给每个 Chunk 设置一个最小的值就行*。这点我是有些疑惑的，我觉得forward也需要和训练类似的负载均衡策略，如下图上半部分。对这个问题，我新开了一个文章讨论：[方佳瑞：为Token-level流水并行找PMF：从TeraPipe，Seq1F1B，HPipe到PipeFusion](https://zhuanlan.zhihu.com/p/706475158)
 
-![](asset/img_2a73e6780e65.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_2a73e6780e65.jpg)
 
 来自TeraPipe论文TeraPipe做推理好处 1）它仅在每个stage的边界处需要跨节点通信，这可以很容易地与计算重叠。这导致更好的MFU并且KVCache传输的网络资源争用更少。2）短和长上下文均适用。原文给了解释原因是bringing no significant overhead for short context prefill and avoiding frequent dynamic adjustment of node partitioning。我理解是：layer分布在不同设备不需要改变，长短上下文都TeraPipe，长文相当于用上了多卡资源，尽管有些气泡，相当于并行加速了，可以满足TTFT。短文本来也不用并行TTFT单GPU也可以满足，因为TeraPipe通信少，所以和一个设备做Prefill时间一样，因此和*单个设备做Prefill比*没有明显开销。
 
@@ -81,9 +91,9 @@ TeraPipe用于训练时不能均分序列，一个token要和之前所有token�
 
 这一节比较晦涩，我理解是在Prefill阶段对KVCache做CPU Offloading（或者传输到Decode Instance？）。这些操作都是异步的，而且是Layer-wise的，也就是一层Prefill一个Layer的KVCache Block算出来，就立刻transfer（发给decode Instance）或dump（cpu offload）来最小化GPU显存占用。
 
-为何着急忙慌赶人家KVCache走呢？我理解是因为Prefill机器比Decode少，因为Prefill负载占LLM推理的比例低，但是Prefill产生的KVCache和Decode消耗KVCache一样多，所以Decode那边为了把硬件榨干，需要让KVCache刚好用满GPU显存，那Prefill显存肯定不够，必须Offload。这也是Mooncake论文Figure 1中之所以写成“Prefill阶段KVCache ![](asset/img_654466fd799f.jpg)
+为何着急忙慌赶人家KVCache走呢？我理解是因为Prefill机器比Decode少，因为Prefill负载占LLM推理的比例低，但是Prefill产生的KVCache和Decode消耗KVCache一样多，所以Decode那边为了把硬件榨干，需要让KVCache刚好用满GPU显存，那Prefill显存肯定不够，必须Offload。这也是Mooncake论文Figure 1中之所以写成“Prefill阶段KVCache ![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_654466fd799f.jpg)
 
-Splitwise论文Fig 11，Optimize KVCache transformers![](asset/img_78c4ca35d70e.jpg)
+Splitwise论文Fig 11，Optimize KVCache transformers![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_78c4ca35d70e.jpg)
 
 Mooncake论文Figure 5
 ### 5 KVCache-centric Scheduling 
@@ -94,7 +104,7 @@ KVCache Pool用Paged方式管理KVCache（本章简称Cache）。如下图所示
 
 Prefill节点接收到一个request，它根据prefix cache ID将前prefix cache从远程CPU内存加载到本地GPU内存，以启动request的prefill计算。如果不存在prefix cache，则需要自己Prefill计算了。这种选择平衡了三个目标：尽可能多地重用KVCache（三板斧中Caching）、平衡不同预填充节点的工作负载，并保证TTFT SLO（三板斧中Scheduling）。
 
-![](asset/img_9521e3592727.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_9521e3592727.jpg)
 
 #### 5.1 Prefill Global Scheduling 
 
@@ -126,7 +136,7 @@ Prefill节点接收到一个request，它根据prefix cache ID将前prefix cache
 
 本节描述了为Moonshot设计的early rejection policy，应该就是下图氪金之后和Kimi一起登月的背后原理。我没花时间看，就不班门弄斧分析了，但是这一环节对线上服务很重要。当然，作为用户还是希望Kimi不要拒绝服务。
 
-![](asset/img_d77fea75ffae.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_d77fea75ffae.jpg)
 
 ### 总结
 

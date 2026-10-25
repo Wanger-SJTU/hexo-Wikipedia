@@ -1,3 +1,16 @@
+---
+title: Bienvenue dans Learn Harness Engineering
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/fr/index/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # Bienvenue dans Learn Harness Engineering
 
 Learn Harness Engineering est un cours consacré à l'ingénierie des agents de codage IA. Nous avons étudié et synthétisé des théories et pratiques avancées de Harness Engineering utilisées dans l'industrie. Nos références principales sont :

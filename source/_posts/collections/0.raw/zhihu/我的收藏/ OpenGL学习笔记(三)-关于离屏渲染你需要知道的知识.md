@@ -1,9 +1,19 @@
 ---
-title: "(1 条消息) OpenGL学习笔记(三)-关于离屏渲染你需要知道的知识"
-date: 2020-07-12
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/157649253
+title: (1 条消息) OpenGL学习笔记(三)-关于离屏渲染你需要知道的知识
+date: "2020-07-12 00:00:00"
+updated: "2020-07-12 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/OpenGL学习笔记(三)-关于离屏渲染你需要知道的知识/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/157649253
 ---
+
 
 ### 0.测试代码
 
@@ -44,7 +54,7 @@ img2.image = [UIImage imageNamed:@"image.png"];`
 
 打开模拟器的Color off-screen Rendered，看到的结果如下:
 
-![](asset/img_08a49c1d5587.png)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_08a49c1d5587.png)
 
 案例发现第一个和第二个颜色变成了黄色，说明发生了离屏渲染。
 
@@ -54,19 +64,19 @@ img2.image = [UIImage imageNamed:@"image.png"];`
 
 **1.1.正常的渲染渲染流程**
 
-![](asset/img_f7056bd5b628.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_f7056bd5b628.jpg)
 
 渲染渲染流程App以60FPS给帧缓冲区(Frame Buffer)填入数据，显示器以60Hz的速度向帧缓冲区取数据并显示在屏幕上。这是正常的完美情况，但是，实际上确不一定是这样的，因为CPU和GPU存在瓶颈，或者其他的原因导致这个正常的情况会被打破。
 
 **1.2.离屏渲染流程**
 
-![](asset/img_dbe5ba92f8ff.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_dbe5ba92f8ff.jpg)
 
 发生了离屏渲染的流程当正常的渲染流程被打破时，App就会先把数据存入离屏缓存区，然后进行图层的叠加，放入帧缓冲区，最后再去显示，但是这时数据在离屏缓冲区，就会发生上下文切换，如果在一个TableView或者CollectionView上快速滑动的话，就会导致卡顿掉帧。
 
 **1.3.使用遮罩时发生的离屏渲染**
 
-![](asset/img_7807b06ba7f6.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_7807b06ba7f6.jpg)
 
 使用遮罩时发生的离屏渲染如上图所示：
 
@@ -86,9 +96,9 @@ img2.image = [UIImage imageNamed:@"image.png"];`
 
 1.4.毛玻璃渲染流程**
 
-![](asset/img_6ecd2dd0a5c0.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_6ecd2dd0a5c0.jpg)
 
-官方图![](asset/img_12ab28c53c13.jpg)
+官方图![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_12ab28c53c13.jpg)
 
 毛玻璃渲染流程当使用系统的UIVisualEffectView来实现毛玻璃效果时，整个流程如上图所示，
 
@@ -113,13 +123,13 @@ img2.image = [UIImage imageNamed:@"image.png"];`
 - 离屏渲染缓存空间优先，超过2.5倍的屏幕像素大小的话，也会失效，且无法进行复用。
 2.2圆角导致**
 
-![](asset/img_a049f73978a5.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_a049f73978a5.jpg)
 
 图层的构造图层由三个部分构成：backgroundColor，contents，border组成。
 
 当仅仅只设置view.layer.cornerRadius = 2时，能触发离屏渲染吗?
 
-![](asset/img_9431ba949f71.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_9431ba949f71.jpg)
 
 官方文档文档上说，如果只设置了view.layer.cornerRadius时，只会设置background和border的圆角，不会设置content的圆角，除非同时设置了layer.maskToBounds为True。
 
@@ -127,21 +137,21 @@ img2.image = [UIImage imageNamed:@"image.png"];`
 
 油画算法
 
-![](asset/img_d7760a1d5879.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_d7760a1d5879.jpg)
 
 油画算法图层叠加时，使用油画算法来绘制，即先渲染远处的，再渲染中间，最后渲染近区的。所以苹果建议，尽量不要使用很多图层叠加，因为图层太多后，进行渲染时计算量很大，会有一点的性能开销。
 
 不进行圆角等操作时:
 
-![](asset/img_5cd0a4f7f0a2.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_5cd0a4f7f0a2.jpg)
 
 不使用离屏渲染时当sublayer绘制到屏幕上之后，就会将sublayer从帧缓冲区中移除，从而节省空间。
 
 当需要进行圆角等操作时:
 
-![](asset/img_e796dcc67394.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_e796dcc67394.jpg)
 
-开始圆角![](asset/img_a06a7774891d.jpg)
+开始圆角![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_a06a7774891d.jpg)
 
 三个进行圆角后，组合渲染比显示
 ### 4.圆角处理手段

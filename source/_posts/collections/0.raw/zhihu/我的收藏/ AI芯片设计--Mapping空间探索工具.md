@@ -1,9 +1,19 @@
 ---
-title: "(1 条消息) AI芯片设计--Mapping空间探索工具"
-date: 2024-01-09
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/676947023
+title: (1 条消息) AI芯片设计--Mapping空间探索工具
+date: "2024-01-09 00:00:00"
+updated: "2024-01-09 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/AI芯片设计-Mapping空间探索工具/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/676947023
 ---
+
 
 有许多工作已经开发出解决DNN加速器mapping问题的工具。比如Eyeriss mapper [184]，MAESTRO [190]，R-Stream [191]，Timeloop [192]和TVM [130]。其他解决类似问题的著名工具有：Halide [193]和Tiramisu [194]，但它们最初并不是针对DNN加速器的。Halide介绍了算法与调度(或mapping)的分离，Tiramisu虽然只针对CPU和GPU，但特别有趣，因为它优化了第8章讨论的稀疏计算。
 
@@ -23,7 +33,7 @@ mapper和类似mapper的工具的典型特征在于它们如何处理下列问�
 
 为了在支持的架构范围内提供更大的灵活性，并预估能耗（以及性能），一些工具使用自定义的分析模型。这样的工具包括Eyeriss mapper（使用第6.4节中描述的模型）、MAESTRO和Timeloop。Timeloop与离散能耗评估框架Accelergy [187]配对使用，允许基于模板的描述架构和组件能耗成本，如图6.12所示。后者的能力对于理解像第10章中讨论的新技术的影响尤为有用。
 
-![](asset/img_8b1b6d540fbd.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_8b1b6d540fbd.jpg)
 
 图6.12：Timeloop [192]通过整合Accelergy [187]作为能量估计模型。Timeloop将映射的操作计数发送到Accelergy，并接收能量估计以指导搜索。Accelergy插件允许自定义组件能量估计。这些工具可在http://accelergy.mit.edu/tutorial.html上获得。总之，有各种mapper（或类似映射器的）工具，针对各种DNN加速器架构，以找到最佳mapping。它们通常使用一种循环嵌套（或循环嵌套序列）的变体来描述映射空间中的映射，并使用分析工具来预测性能和能量，以指导映射空间的搜索，以找到最佳映射。
 

@@ -1,9 +1,19 @@
 ---
-title: "基于KVCache的层次化存储方案还有未来吗"
-date: 2026-03-16
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/2015743850526844804
+title: 基于KVCache的层次化存储方案还有未来吗
+date: "2026-03-16 00:00:00"
+updated: "2026-03-16 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/基于KVCache的层次化存储方案还有未来吗/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/2015743850526844804
 ---
+
 
 ### 个人刚调研 KVCache，基于自己当前理解结合 Codex 生成。如有不足，欢迎指正批评。
 
@@ -158,21 +168,21 @@ Qwen3.5-27B 的关键变化不是“没有状态”，而是 token-linear 状态
 - Qwen3.5-27B：约 262,144 tokens
 解读：Hybrid attention 的确显著降低了 token-linear KV 压力，但这并不等价于“不再需要 KVCache”。它更像是把“必须做缓存”的压力从极短上下文推迟到了更长上下文，并把系统设计重点从“能不能放下”逐渐转向“什么 tier 值得放、何时放、如何取”。
 
-![](asset/img_c4215bc64ab2.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_c4215bc64ab2.jpg)
 
 #### 7. 结果二：MFU=0.4 时，tier break-even 如何分层
 
 在 MFU=0.4、BW_util=0.7 时，tier break-even 的主结论是：
 
-- HBM / CPU DRAM / RDMA Pool / Local SSD 全部在 ![](asset/img_ac3a305b53c4.jpg)
+- HBM / CPU DRAM / RDMA Pool / Local SSD 全部在 ![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_ac3a305b53c4.jpg)
 
 再看 phase diagram。它最直观地告诉我们：在 10+ GB/s 的近端 tier 上，整个展示窗口几乎都在 fetch-wins 区域；真正贴着边界游走的是 sub-GB/s 的 Remote Block 这一层。
 
-![](asset/img_b85c245c4e5a.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_b85c245c4e5a.jpg)
 
 最后看 storage pyramid。它比折线图更适合组会讲“系统层次 + 调度逻辑”：同一层介质上，两种模型的箭头起点不同，意味着真正需要的是 cost-based scheduler，而不是静态的全局 offload 策略。
 
-![](asset/img_071601232ce4.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_071601232ce4.jpg)
 
 这里最重要的解释不是“哪条线更高”，而是架构差异如何改变远端慢介质的适用窗口：
 
@@ -191,11 +201,11 @@ Qwen3.5-27B 的关键变化不是“没有状态”，而是 token-linear 状态
 
 这说明 notes/kvcacheProfit.md 里的核心判断是成立的：GPU 越强、prefill 越快，远端慢 tier 越难打赢重算。也就是说，MoE / hybrid 时代不是 KVCache 没价值，而是对慢 tier 的要求更高，对 scheduler 的要求更严。
 
-![](asset/img_0df3211a057a.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_0df3211a057a.jpg)
 
-![](asset/img_e39b6eb3886d.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_e39b6eb3886d.jpg)
 
-![](asset/img_2803ada8f662.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_2803ada8f662.jpg)
 
 和 MFU=0.4 相比，这组三张图共同说明了一件事：不是 tier 层次变了，而是同样一套 tier，在更高的 GPU compute regime 下会变得“更像远端慢存储”。因此系统设计不能只写死一个 break-even，需要把实时 MFU、队列拥塞和上下文长度都放进调度器。
 
@@ -220,7 +230,7 @@ GPUQwen3-14BQwen3.5-27BA100 80GB512K1280KH100 80GB512K1280KH200 141GB902.4K2256K
 
 - **Remote Block 交点随代际算力线性抬升**：从 Hopper 到 Blackwell，Dense BF16 FLOPS 从 989 增长到 1750⁄2250 TFLOPS，`t_prefill` 缩短，Remote Block 的 break-even 跟着右移——B200 对 Qwen3-14B 的交点推至 684K，对 Qwen3.5-27B 推至 464K。这意味着在 Blackwell 世代，需要更长的上下文才能证明 Remote Block 的取回值得做。
 - **H100 和 H200 的外部 tier 交点几乎重合**：因为两者 dense BF16 FLOPS 相同（同为 989 TFLOPS），`t_prefill` 一样长，所以 Remote Block 的 break-even 近似。H200 相对 H100 的主要优势是本地 HBM 容量（141 GB vs 80 GB），体现为更大的 KV 理论上界（902.4K vs 512K）。
-- **B100 与 B200 都显著提高了外部 tier 门槛**：B100（1750 TFLOPS）和 B200（2250 TFLOPS）将 Remote Block 交点推至 500K–700K 以上。对大多数实际部署（上下文 ![](asset/img_a0cb75b67a5e.jpg)
+- **B100 与 B200 都显著提高了外部 tier 门槛**：B100（1750 TFLOPS）和 B200（2250 TFLOPS）将 Remote Block 交点推至 500K–700K 以上。对大多数实际部署（上下文 ![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_a0cb75b67a5e.jpg)
 
 #### MFU=0.9, BW_util=0.6 的统一 tier line plot：A100/H100/B100/B200
 
@@ -240,7 +250,7 @@ HardwareQwen3-14BQwen3.5-27BA100 80GB227.8K83.5KH100 80GB794.5K555.8KB100 192GB>
 
 **数据中心不太需要卸载到单块闪存，如果闪存阵列随着 PCIe 带宽不断翻倍，可能还有空间。**手机电脑端侧由于算力更低、可能也还有些机会。
 
-![](asset/img_663df56b83fa.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_663df56b83fa.jpg)
 
 如果把详细 tier 表展开，会看到和前文一致的结构：这张四硬件对比图里，HBM / CPU DRAM / RDMA / Local SSD 大体仍落在 `@无名
 

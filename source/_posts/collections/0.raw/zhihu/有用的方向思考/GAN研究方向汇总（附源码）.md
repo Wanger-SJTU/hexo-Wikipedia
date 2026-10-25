@@ -1,9 +1,19 @@
 ---
-title: "GAN研究方向汇总（附源码）"
-date: 2020-05-10
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/69305310
+title: GAN研究方向汇总（附源码）
+date: "2020-05-10 00:00:00"
+updated: "2020-05-10 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/有用的方向思考/GAN研究方向汇总(附源码)-e17816/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/69305310
 ---
+
 
 GAN研究方向汇总（附源码）
 

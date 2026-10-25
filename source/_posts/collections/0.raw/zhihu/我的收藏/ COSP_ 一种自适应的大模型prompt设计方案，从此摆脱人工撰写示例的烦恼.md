@@ -1,9 +1,19 @@
 ---
 title: "(1 条消息) COSP: 一种自适应的大模型prompt设计方案，从此摆脱人工撰写示例的烦恼"
-date: 2023-11-11
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/666358822
+date: "2023-11-11 00:00:00"
+updated: "2023-11-11 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/COSP_-一种自适应的大模型prompt设计方案,从此摆脱人工撰写示例的烦恼/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/666358822
 ---
+
 
 **提纲**
 
@@ -37,7 +47,7 @@ source: https://zhuanlan.zhihu.com/p/666358822
 
 **
 
-![](asset/img_15aae589c7d6.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_15aae589c7d6.jpg)
 
 图1: COSP框架
 
@@ -53,7 +63,7 @@ source: https://zhuanlan.zhihu.com/p/666358822
 
 **
 
-![](asset/img_d1c90dbd3455.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_d1c90dbd3455.jpg)
 
 图2: COSP算法流程图
 
@@ -63,13 +73,13 @@ source: https://zhuanlan.zhihu.com/p/666358822
 
 **
 
-![](asset/img_6c203429f88e.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_6c203429f88e.jpg)
 
 图3: 在两个不同规模的语言模型上效果对比
 
     b) 通过消融实验验证了COSP中各个设计的必要性，包括构建demonstration集合的规则（C+D），综合考虑两个阶段的预测结果（S1+2），以及自适应选择in-context leanring中的样例个数。
 
-![](asset/img_f64c84370ab9.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_f64c84370ab9.jpg)
 
 图4: 消融实验
 

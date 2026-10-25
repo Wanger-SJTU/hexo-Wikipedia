@@ -1,3 +1,16 @@
+---
+title: Lektion 08. Feature-Listen nutzen, um Agentenarbeit zu begrenzen
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/de/lectures/lecture-08-why-feature-lists-are-harness-primitives/index/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 [中文版本 →](../../../zh/lectures/lecture-08-why-feature-lists-are-harness-primitives/)
 
 > Codebeispiele: [code/](https://github.com/walkinglabs/learn-harness-engineering/blob/main/docs/de/lectures/lecture-08-why-feature-lists-are-harness-primitives/code/)

@@ -1,9 +1,19 @@
 ---
-title: "如果你是一位cuda面试官，你会问哪些问题？"
-date: 2026-04-22
-tags: [知乎]
-source: https://www.zhihu.com/question/10951382954/answer/1991904219184263333
+title: 如果你是一位cuda面试官，你会问哪些问题？
+date: "2026-04-22 00:00:00"
+updated: "2026-04-22 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/如果你是一位cuda面试官,你会问哪些问题/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://www.zhihu.com/question/10951382954/answer/1991904219184263333
 ---
+
 
 bigpunch
 

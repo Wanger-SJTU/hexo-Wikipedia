@@ -1,3 +1,16 @@
+---
+title: 编码：从Embeding 到 Rerank
+date: "2026-04-11 21:40:18"
+updated: "2026-04-11 21:40:18"
+layout: post
+permalink: /collections/草稿/编码-从Embeding-到-Rerank/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 
 通常在计算机里里面，所有的文字、图像都以一种特定的编码格式存储在硬盘和内存中，这些信息编码的目的就是希望编码后计算机认识、解码后人也认识，但缺少一种编码后NN 网络认识的方式。
 像已有的编码表示如JPEG、UTF等都是方便计算机处理的离散编码格式，虽然方便处理，但是对于NN的神经网络来说直接理解就有很大困难了，这就需要将已经编码后的文字、图像从离散的向量空间映射到一个连续的向量空间。于是，有了embedding 的技术。
@@ -20,7 +33,7 @@ word embeding 有很多种表示方法，在前DL时代就有很多方法，在N
 
 在这里输入要转换的内容假设有一个语料库C，其中有D个文档：{d1, d2, …, dD}，C中一共有N个word。这N个word构成了原始输入的dictionary，我们据此可以生成一个矩阵M，其规模是$D \times N$
 
-![[assets/Pasted image 20240602220627.png]]
+![Pasted image 20240602220627.png](/images/collections/assets/Pasted%2520image%252020240602220627.png)
 
 - TF-IDF 
 上面的count word的方法总体来说还是有点太机械，对不同文档的适用性不是很强。于是就有了基于文档词频的方法。

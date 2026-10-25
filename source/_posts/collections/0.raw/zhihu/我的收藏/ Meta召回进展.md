@@ -1,9 +1,19 @@
 ---
-title: "(1 条消息) Meta召回进展"
-date: 2024-01-25
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/679733540
+title: (1 条消息) Meta召回进展
+date: "2024-01-25 00:00:00"
+updated: "2024-01-25 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/Meta召回进展/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/679733540
 ---
+
 
 ### 2020年进展
 
@@ -17,17 +27,17 @@ source: https://zhuanlan.zhihu.com/p/679733540
 
 #### **2.结构**
 
-![](asset/img_697ae8316f83.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_697ae8316f83.jpg)
 
 召回层的模型结构，就是经典的双塔结构，左侧user塔包括用户的检索 query，以及用户位置、用户社交关系等上下文特征，document 塔的输入包括文档本身text，以及文档的social特征(这里指使用facebook群组搜索来获取相关群组的社交集群)、位置等特征。相似度函数用直接取query和doc的embedding的Cos操作。
 
-![](asset/img_1cdbb6bd3d39.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_1cdbb6bd3d39.jpg)
 
 #### **3.Loss**
 
 定义三元组函数，
 
-![](asset/img_a8ccffffbb14.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_a8ccffffbb14.jpg)
 
 其中，D是距离函数， q^{(i)} 是第i个样本的query， d_{+}^{(i)} 是第i个样本的正样本， d_{-}^{(i)} 是负样本，N是样本数量，m是Margine value。损失函数的理解：正负样本的距离差在一定的范围内(|m|时，损失函数增加，为了最小化损失函数，再次拉远此时的正负样本。故损失函数的主要目的是将正负样本更好的远离。
 
@@ -80,7 +90,7 @@ source: https://zhuanlan.zhihu.com/p/679733540
 
 #### 3.结构
 
-![](asset/img_6c291ba85ae1.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_6c291ba85ae1.jpg)
 
 我们先看看Que2Search的整体架构，仍然是经典的双塔结构，query塔侧的输入信息相对较少，结构也比较简单。作者主要在document塔侧下了很大的功夫，这些都是为了解决提到的商品理解的问题。
 
@@ -111,13 +121,13 @@ Doc塔侧有五个（三类）输入特征，分别是：
 
 loss1：batch softmax
 
-![](asset/img_9e6e3b8b5d8d.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_9e6e3b8b5d8d.jpg)
 
 loss2：pair-wise loss
 
 基于困难样本的pair-wise loss
 
-![](asset/img_e0be543a9b81.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_e0be543a9b81.jpg)
 
 #### 5.样本选择
 

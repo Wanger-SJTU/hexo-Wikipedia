@@ -1,9 +1,19 @@
 ---
-title: "让CPU黑盒不再黑——【TMA_自顶向下的CPU架构性能瓶颈分析方法】（五）Retiring"
-date: 2019-05-04
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/64576459
+title: 让CPU黑盒不再黑——【TMA_自顶向下的CPU架构性能瓶颈分析方法】（五）Retiring
+date: "2019-05-04 00:00:00"
+updated: "2019-05-04 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/优化/让CPU黑盒不再黑——【TMA_自顶向下的CPU架构性能瓶颈分析方法】(五)Retiring/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/64576459
 ---
+
 
 继上篇文章对TMAM的Bad Speculation做了简要的介绍后，这篇文章将讲解Retiring这条分支上的各个节点的计算公式和所代表的含义。与其他兄弟节点不同，Retiring这个大类代表的是有效地利用pipeline slots数量所占的比重，即被issued且最终成功retired的uops数量比重。对于4发射的CPU，若Retiring的值为100%，表明该CPU每个周期可以Retire 4条uops。需要注意的是，具有高的Retiring值，并不意味着没有进一步可以优化的空间。我们可以通过了解Retired的uops指令类型及其比重，来优化程序，使得程序的执行效率更高，比如将大量的标量指令转变成矢量指令。
 
@@ -11,7 +21,7 @@ source: https://zhuanlan.zhihu.com/p/64576459
 
 [](https://zhuanlan.zhihu.com/p/64529137)
 
-![](asset/img_5d7e627eb5aa.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_5d7e627eb5aa.jpg)
 
 Retiring分支上的各个节点对于Retiring这个大类，代表的是Retired的uops数量占所有slots数量的比重。现代x86 CPU内部会将CISC指令转换成RISC指令来执行，变成一条条uops，但是有些复杂的CISC指令，并不会通过Frontend中的Decoder来得到相应的uops，而是通过Microcode Sequencer (MS) unit来生成相应的uops指令。故在Retiring这个大类中，划分成了Base和Microcode Sequencer两个子类，分别代表传统Decoder生成的uops和由MS生成的uops所占的比重。
 

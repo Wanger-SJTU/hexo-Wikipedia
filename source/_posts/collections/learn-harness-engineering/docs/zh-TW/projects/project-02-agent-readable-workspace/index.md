@@ -1,3 +1,16 @@
+---
+title: Project 02. 讓代理看懂專案、銜接上次的工作
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/zh-TW/projects/project-02-agent-readable-workspace/index/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # Project 02. 讓代理看懂專案、銜接上次的工作
 
 > 相關講義：[L03. 讓程式碼儲存庫成為唯一的事實來源](./../../lectures/lecture-03-why-the-repository-must-become-the-system-of-record/index.md) · [L04. 把指令拆分到不同檔案裡](./../../lectures/lecture-04-why-one-giant-instruction-file-fails/index.md)

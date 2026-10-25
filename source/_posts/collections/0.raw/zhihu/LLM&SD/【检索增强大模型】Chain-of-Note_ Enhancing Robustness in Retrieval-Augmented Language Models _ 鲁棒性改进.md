@@ -1,9 +1,19 @@
 ---
 title: "【检索增强大模型】Chain-of-Note: Enhancing Robustness in Retrieval-Augmented Language Models | 鲁棒性改进"
-date: 2023-11-27
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/669043394
+date: "2023-11-27 00:00:00"
+updated: "2023-11-27 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/LLM-SD/【检索增强大模型】Chain-of-Note_-Enhancing-Robustness-in-Retrieval-Augmented-Language-Models-_-鲁棒性改/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/669043394
 ---
+
 
 ### 背景
 
@@ -32,7 +42,7 @@ source: https://zhuanlan.zhihu.com/p/669043394
 
 #### Note 设计
 
-![](asset/img_3079d348a523.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_3079d348a523.jpg)
 
 三种情况人类的面对检索信息与问题，一般有三种情况：
 
@@ -58,7 +68,7 @@ NOTE：与随机文档相比，噪声检索到的文档通常包含误导性信�
 
 值得关注的分析：当只有噪声文档时，标准 RALM 和 CON 的性能都比原始 LLaMa-2 差。然而，CON 表现了没有 IR 近似的性能，这表明它的噪声鲁棒性和忽略不相关信息的能力。
 
-![](asset/img_c7ed5c8bc7ec.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_c7ed5c8bc7ec.jpg)
 
 图 3 说明了标准 RALM 和 CON 对于随机文档的处理效果比对于噪声检索文档的处理效果更好。这表明语义相关的噪声文档更有可能误导语言模型产生不正确的信息。
 

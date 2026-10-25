@@ -1,9 +1,19 @@
 ---
-title: "如何判断是自己prompt写的不够好还是基座模型的能力不够达不到预期的效果，才需要做模型微调？"
-date: 2026-04-22
-tags: [知乎]
-source: https://www.zhihu.com/question/1963256821990012133/answer/1964479557953384885
+title: 如何判断是自己prompt写的不够好还是基座模型的能力不够达不到预期的效果，才需要做模型微调？
+date: "2026-04-22 00:00:00"
+updated: "2026-04-22 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/如何判断是自己prompt写的不够好还是基座模型的能力不够达不到预期的效果,才需要做模型微调/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://www.zhihu.com/question/1963256821990012133/answer/1964479557953384885
 ---
+
 
 姚广
 ​

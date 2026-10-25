@@ -1,9 +1,19 @@
 ---
-title: "NPU(一)：架构浅析"
-date: 2025-02-01
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/20851746736
+title: NPU(一)：架构浅析
+date: "2025-02-01 00:00:00"
+updated: "2025-02-01 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/体系结构/NPU(一)-架构浅析/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/20851746736
 ---
+
 
 最近几个月的工作都是深度学习模型在Qualcomm端侧芯片的部署和优化工作，芯片可用的异构计算单元，尤其是NPU的微架构是模型部署和优化工作的基础，但Qualcomm鲜有相关的技术资料，封闭的生态导致了高昂的学习成本，形成体系化认知的时间成本太高了，我基于目前所掌握的技术资料，从模型部署和优化的角度浅析一下Qualcomm的SoC及NPU微架构，并附上最近从公开渠道获取的NPU相关的技术资料，旨在为刚开始Qualcomm端侧部署的小伙伴提供一个快速建立认识的途径。
 
@@ -21,7 +31,7 @@ Qualcomm SA8295P芯片架构如下图所示，5nm工艺，专为汽车座舱设�
 
 BTW，带宽=内存频率×总线宽度×双倍数据速率/8.
 
-![](asset/img_ac313e992f89.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_ac313e992f89.jpg)
 
 Qualcomm SA8295P SoC
 #### 二、Qualcomm NPU 微架构
@@ -30,9 +40,9 @@ Qualcomm SA8295P SoC
 
 了解NPU的微架构是为了什么？从模型部署和算法优化的角度，最直接相关的就两个内容，存储结构和编程模型。下面主要基于Qualcomm在2023年的技术分享对NPU的架构做一些浅析。下图是Qualcomm NPU的微架构，主要包括三部分计算能力，Scalar/Vector/Tensor，设计了TCM高速缓存器，提供低延迟和高带宽的内存访问性能，Qualcomm SA8295P TCM大小为8 MB。NPU采用VLIW指令并行架构，通过软件（编译器）的静态调度，将多条无依赖关系的指令组合成一个指令包（Instruction Bundle），然后同时发送给多个独立的功能部件进行并行执行。
 
-![](asset/img_b9daf97f038e.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_b9daf97f038e.jpg)
 
-Hexagon NPU(HC2023)![](asset/img_56d8380c9ea3.jpg)
+Hexagon NPU(HC2023)![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_56d8380c9ea3.jpg)
 
 Hexagon Tensor(HC2023)Hexagon NPU Tensor，Tensor内部对矩阵乘加/激活/convert做了专门的设计，也是现在NPU的主要设计理念，把LLM的运算拆开和硬件对上去，此外ISA优化了一系列算子。在高通的世界里，你甚至无法知道SA8295P V68 NPU的核心频率，也无法知道Tensor内部对不同数据类型的计算支持分配，你只知道它能提供30TOPS的算力。
 
@@ -40,11 +50,11 @@ Hexagon Tensor(HC2023)Hexagon NPU Tensor，Tensor内部对矩阵乘加/激活/co
 
 VLIW提供指令并行，标量指令集ISA用于数据流控制和串行任务调度，Scalar/Vector/Tensor都有专用的寄存器。算法部署主要是和QNN SDK交互，在短期内和指令没什么交互，主要是靠Qualcomm去做优化和升级，一些算法的SOTA特性全靠Qualcomm自觉。
 
-![](asset/img_3cbe26bc37cc.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_3cbe26bc37cc.jpg)
 
 Hexagon Threads(HC2023)下图是Hexagon的内存模型，Vector计算单元能够通过L2 Cache或者TCM和LPDDR交互，Tensor计算单元只能通过TCM和LPDDR交互。TCM说是带宽更高，多高咱也不知道，通过DMA实现DDR延迟覆盖。
 
-![](asset/img_7d1a1da4619f.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_7d1a1da4619f.jpg)
 
 Hexagon Memory Model(HC2023)以上基本就是Qualcomm NPU架构和算法部署和加速相关的内容，了解芯片架构能够在算法性能测试和优化前提供一个方向，Qualcomm的软硬件生态很难给工程师机会去做算法的灵活部署和优化，能够按照Qualcomm提供的脚本把目前SOTA模型部署到端侧运行起来已经很不容易了，因为你在开源生态上几乎找不到优质的QNN代码仓库。
 
@@ -58,7 +68,7 @@ Lunar Lake芯片架构如下，Global Control&MMU负责设备的能源管理和�
 
 在计算单元方面，Intel设计了Inference Pipeline去完成链式计算，避免内存反复读取，SHAVE DSP主要用于Vector计算，例如Attention的Add/Norm/Softmax；MAC Array用于tensor计算，如Multi-head Attention和MLP，同样设计了激活函数和数据转换(datatype conversion)模块，基于这些硬件能够完成LLM的所有计算内容。
 
-![](asset/img_60da4f512339.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_60da4f512339.jpg)
 
 Intel Lunar lake npu
 #### 四、参考资料

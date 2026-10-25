@@ -1,4 +1,17 @@
 ---
+title: 原理简介：Linux内存分配机制：伙伴系统buddy system和slab分配器 - 知乎
+date: "2026-04-11 21:40:28"
+updated: "2026-04-11 21:40:28"
+layout: post
+permalink: /collections/0.raw/Omnivore/2024-05-15/原理简介-Linux内存分配机制-伙伴系统buddy-system和slab分配器-知乎/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
+---
 id: 3bbadbe3-517e-41ac-883d-9f7b7aab1050
 ---
 

@@ -1,9 +1,19 @@
 ---
-title: "第107篇 - GPU UVA 与 UVM 解析"
-date: 2026-01-29
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/1987302295352939853
+title: 第107篇 - GPU UVA 与 UVM 解析
+date: "2026-01-29 00:00:00"
+updated: "2026-01-29 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/第107篇-GPU-UVA-与-UVM-解析/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/1987302295352939853
 ---
+
 
 在 GPU 异构计算体系中，UVA（Unified Virtual Addressing，统一虚拟寻址）与 UVM（Unified Memory，统一内存）是打破 CPU 与 GPU 内存壁垒的核心技术。两者一脉相承却定位不同：UVA 构建“地址层面的统一”，解决多设备内存地址隔离问题；UVM 在 UVA 基础上实现“管理层面的统一”，完成透明化数据迁移与协同调度。本文从技术本质出发，逐层拆解其实现原理与应用价值。
 

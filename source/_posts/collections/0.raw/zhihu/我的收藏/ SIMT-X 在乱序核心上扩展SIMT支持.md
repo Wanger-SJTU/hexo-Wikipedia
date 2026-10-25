@@ -1,9 +1,19 @@
 ---
-title: "(1 条消息) SIMT-X 在乱序核心上扩展SIMT支持"
-date: 2024-01-03
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/675819329
+title: (1 条消息) SIMT-X 在乱序核心上扩展SIMT支持
+date: "2024-01-03 00:00:00"
+updated: "2024-01-03 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/SIMT-X-在乱序核心上扩展SIMT支持/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/675819329
 ---
+
 
 论文：https://inria.hal.science/hal-02542333
 
@@ -80,7 +90,7 @@ SIMT-X 微架构为寄存器重命名和路径跟踪都提供了解决方案，�
 
 #### 从SMPD控制流到SIMD控制流
 
-![](asset/img_58cfb344f072.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_58cfb344f072.jpg)
 
 Image
 
@@ -94,7 +104,7 @@ SIMT-X的动态微架构使用两个微操作（µops）来管理路径：分支
 
 ### SIMT-X实现
 
-![](asset/img_848ded212b41.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_848ded212b41.jpg)
 
 Image
 
@@ -163,7 +173,7 @@ SIMT-X 采用三种类型的 µops：
 
 ### 分歧和分支预测
 
-![](asset/img_163b86f0e534.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_163b86f0e534.jpg)
 
 Image
 
@@ -195,7 +205,7 @@ Image
 
 ### 寄存器重命名
 
-![](asset/img_e63516a8f473.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_e63516a8f473.jpg)
 
 Image
 

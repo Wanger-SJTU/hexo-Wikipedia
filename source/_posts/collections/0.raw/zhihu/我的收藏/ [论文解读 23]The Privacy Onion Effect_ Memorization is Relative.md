@@ -1,9 +1,19 @@
 ---
 title: "(1 条消息) [论文解读 23]The Privacy Onion Effect: Memorization is Relative"
-date: 2023-06-25
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/639242511
+date: "2023-06-25 00:00:00"
+updated: "2023-06-25 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/[论文解读-23]The-Privacy-Onion-Effect_-Memorization-is-Relative/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/639242511
 ---
+
 
 最近看了一些关于大模型记忆的文章，目前来看，这个领域非常的新，而且大部分是empirical-driven的。本文是Carlini一作发表在NeurIPS的工作。
 
@@ -54,7 +64,7 @@ $\operatorname{ASR}(x, X):=\operatorname{Pr}_{f_s \leftarrow \mathcal{T}\left(X_
 
 之后，移除了5000个最敏感的数据。
 
-![](asset/img_c6f661c9a7b2.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_c6f661c9a7b2.jpg)
 
 **Re-compute the privacy scores of each example**
 
@@ -64,7 +74,7 @@ $\operatorname{ASR}(x, X):=\operatorname{Pr}_{f_s \leftarrow \mathcal{T}\left(X_
 
 Does removing the easy-to-attack examples significantly improve privacy? Surprisingly, we find the answer is no! **移除最容易被暴露隐私的样本造成了新的样本隐私被暴露。**
 
-![](asset/img_01b2105d97e7.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_01b2105d97e7.jpg)
 
 ### **Potential (Incorrect) Explanations for the Onion Effect**
 
@@ -96,7 +106,7 @@ $实验思路也非常的简单，进行了一个实验，即在之前LiRA攻击
 
 就是，在没有 x 时，衡量所有模型的 x' 的成员推断平均攻击成功率。完成这些分数的计算后，删除预期目标具有最大影响的 k  个训练样本。
 
-![](asset/img_029c394d60b1.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_029c394d60b1.jpg)
 
 Consequences for Machine Unlearning **
 

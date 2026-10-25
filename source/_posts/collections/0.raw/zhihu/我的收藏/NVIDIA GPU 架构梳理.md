@@ -1,9 +1,19 @@
 ---
-title: "(2 条消息) NVIDIA GPU 架构梳理"
-date: 2023-04-28
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/394352476
+title: (2 条消息) NVIDIA GPU 架构梳理
+date: "2023-04-28 00:00:00"
+updated: "2023-04-28 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/NVIDIA-GPU-架构梳理/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/394352476
 ---
+
 
 最近在学习**并行计算**相关的东西，需要对底层的硬件有所了解，而目前高性能计算领域，英伟达显卡一家独大，因此本文总结一下NVIDIA GPU的架构演变。
 
@@ -24,7 +34,7 @@ TODO：英伟达显卡型号梳理
 八、Turing架构
 九、Ampere架构
 
-### 一、NVIDIA GPU的架构演变历史和基本概念[[1]](#ref_1)
+### 一、NVIDIA GPU的架构演变历史和基本概念<span class="wikilink wikilink--missing" title="未导入的页面">1</span>(#ref_1)
 
 截止2021年，发布时间离我们最近的8种NVIDIA GPU微架构是：
 
@@ -46,7 +56,7 @@ NVIDIA一般以历史上一些著名科学家的名字命名自己的GPU微架�
 
 Tesla 架构的资料在官网也没找到多少，不过这是英伟达第一个实现统一着色器模型**的微架构。
 
-![](asset/img_c25b5f3bef9b.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_c25b5f3bef9b.jpg)
 
 **
 
@@ -57,10 +67,10 @@ Tesla 架构的资料在官网也没找到多少，不过这是英伟达第一�
 - G80 是第一款使用标量线程处理器的 GPU，无需程序员手动管理向量寄存器
 - G80 引入了单指令多线程 (SIMT) 执行模型，即多个独立线程使用一条指令并发执行。
 - G80 为线程间通信引入了共享内存(shared memory)和屏障同步(barrier synchronization)。
-![](asset/img_e671a6faeac1.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_e671a6faeac1.jpg)
 
 G80 显卡
-### 三、Fermi架构[[2]](#ref_2)
+### 三、Fermi架构<span class="wikilink wikilink--missing" title="未导入的页面">2</span>(#ref_2)
 
 Fermi 架构是NVIDIA GPU 架构自初代 G80 以来最重大的飞跃。
 
@@ -109,7 +119,7 @@ NVIDIA的GPU研发团队从G80和GT200两个型号上汲取经验，采用全新
 
 #### 下面具体看看Fermi 架构的配置
 
-![](asset/img_c3ff5a774fda.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_c3ff5a774fda.jpg)
 
 Fermi 架构
 
@@ -124,12 +134,12 @@ Fermi 架构
 **GDDR5：第五版图形用双倍数据传输率存储器
 DRAM：动态随机存取存储器主机接口(host interface )通过 PCI-Express 将 GPU 连接到 CPU。 Giga Thread 全局调度器将线程块分发给 SM 线程调度器。
 
-![](asset/img_08ab7b5791e2.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_08ab7b5791e2.jpg)
 
 Fermi图形渲染架构
 整个 GPU 有多个 GPC(图形处理集群)，单个GPC包含一个光栅引擎(Raster Engine)，四个 SM（流式多处理器），GPC 可以被认为是一个独立的 GPU。所有从 Fermi 开始的 NVIDIA GPU，都有 GPC。
 
-![](asset/img_c308bccb250b.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_c308bccb250b.jpg)
 
 Fermi Streaming Multiprocessor (SM)上图是将16个SM中的 1 个拿出来放大后的详细结构图，其中包含：
 
@@ -140,7 +150,7 @@ Fermi Streaming Multiprocessor (SM)上图是将16个SM中的 1 个拿出来放�
 - 4 个 Special Function Units (SFU)
 每个 SM 具有 32 个 CUDA 内核**，就是图中写着Core的绿色小方块儿，每个 CUDA 内核都有一个完全流水线化的整数算术逻辑单元 (ALU) 和浮点单元 (FPU)：
 
-![](asset/img_7a96a2ac061c.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_7a96a2ac061c.jpg)
 
 CUDA 内核**
 
@@ -148,11 +158,11 @@ SM（Streaming Multiprocessors）是GPU架构中非常重要的部分，GPU硬�
 
 ### 四、Kepler架构
 
-![](asset/img_1335aa40ba0e.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_1335aa40ba0e.jpg)
 
 Kepler架构的思路是：减少SM单元数(在这一代中叫SMX单元)，增加每组SM单元中的CUDA内核数。在Kepler架构中，每个SM单元的CUDA内核数由Fermi架构的32个激增至192个。
 
-![](asset/img_bf050b760625.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_bf050b760625.jpg)
 
 在每个SMX中：
 
@@ -166,9 +176,9 @@ Kepler架构的思路是：减少SM单元数(在这一代中叫SMX单元)，增�
 
 Maxwell架构的SM单元和Kepler架构相比，又有很大变化，这一代的SM单元更像是把4个Fermi 架构的SM单元，按照2x2的方式排列在一起，这一代称为SMM单元：
 
-![](asset/img_f637945e0cc6.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_f637945e0cc6.jpg)
 
-![](asset/img_413ff31c9fe7.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_413ff31c9fe7.jpg)
 
 SMM 使用基于象限的设计，具有四个 32 核处理块(processing blocks)，每个处理块都有一个专用的 warp 调度程序，能够在每个时钟分派两条指令。 
 
@@ -192,7 +202,7 @@ CUDA内核总数 从Kpler时代的每组SM单元192个减少到了每组128个�
 
 ### 六、Pascal架构**
 
-![](asset/img_6dfc33fd3aa7.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_6dfc33fd3aa7.jpg)
 
 pascal架构的GP100核心这里有一个新概念：**核心**
 
@@ -204,7 +214,7 @@ NVIDIA不同的架构会有几种不同的核心，Pascal架构有GP100、GP102�
 
 不同的显卡产品可以使用不同的 GP100 配置，一般是满配或者减配，比如Tesla P100 使用了 56 个 SM 单元。
 
-![](asset/img_92b3078f0094.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_92b3078f0094.jpg)
 
 GP100核心的SM单元每个SM单元中，分为2个Process Block，每个Process Block中：
 
@@ -221,11 +231,11 @@ CUDA内核总数从Maxwell时代的每组SM单元128个减少到了每组64个�
 
 ### 七、Volta架构**
 
-![](asset/img_14d55005faf6.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_14d55005faf6.jpg)
 
 Volta架构的GV100核心**
 
-![](asset/img_4380385c79b7.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_4380385c79b7.jpg)
 
 GV100核心的SM单元
 
@@ -250,7 +260,7 @@ Volta架构在传统的单双精度计算之外还增加了专用的**Tensor Cor
 
 ### 八、Turing架构**
 
-![](asset/img_f7a7ec8351b7.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_f7a7ec8351b7.jpg)
 
 Turing架构的TU102核心Turing架构目前一共有三种核心：
 
@@ -259,7 +269,7 @@ Turing架构的TU102核心Turing架构目前一共有三种核心：
 - TU106核心
 **
 
-![](asset/img_d5bf48236487.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_d5bf48236487.jpg)
 
 TU102核心的SM单元每个SM单元有4个处理块，每个处理块中：
 
@@ -273,11 +283,11 @@ TU102核心的SM单元每个SM单元有4个处理块，每个处理块中：
 
 ### 九、Ampere架构**
 
-![](asset/img_f289c15ba161.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_f289c15ba161.jpg)
 
 Ampere架构的GA102核心
 
-![](asset/img_6b0a9cabbf74.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_6b0a9cabbf74.jpg)
 
 GA102核心的SM单元每个SM单元分成4个处理块，每个处理块中：
 
@@ -290,7 +300,7 @@ GA102核心的SM单元每个SM单元分成4个处理块，每个处理块中：
 - 4 个 SFU
 这一代架构又把FP64 Core加回来了，同时也是自Volta架构以来的，NVIDIA第三代Tensor技术，保持一代架构更新一次Tensor。
 
-![](asset/img_31c9610692a6.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_31c9610692a6.jpg)
 
 暂时写到这里，还有好多不足的地方，在后面的学习过程中慢慢补充。
 

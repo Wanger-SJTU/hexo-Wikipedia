@@ -1,3 +1,16 @@
+---
+title: DESIGN.md
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/ko/resources/openai-advanced/repo-template/docs/DESIGN/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # DESIGN.md
 
 이 파일은 설계 진입점(design entrypoint)입니다. 간결하게 유지하고 `docs/design-docs/` 아래의 더 상세한 파일들로 라우팅하는 데 사용하십시오.

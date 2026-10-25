@@ -1,10 +1,19 @@
 ---
-title: "AI Infra 面试问题QA 总结——大模型推理"
-date: 2026-04-25
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/2031444649823449112
-
+title: AI Infra 面试问题QA 总结——大模型推理
+date: "2026-04-25 00:00:00"
+updated: "2026-04-25 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/AI-infra/AI-Infra-面试问题QA-总结——大模型推理/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/2031444649823449112
 ---
+
 
 都是本人面试时被问到的问题，简单整理分类，并简单解答。如有错误，欢迎指出，感谢！🙏
 

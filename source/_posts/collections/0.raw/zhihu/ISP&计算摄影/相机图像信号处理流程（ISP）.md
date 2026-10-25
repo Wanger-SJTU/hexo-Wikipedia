@@ -1,9 +1,19 @@
 ---
-title: "相机图像信号处理流程（ISP）"
-date: 2023-11-30
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/669484515
+title: 相机图像信号处理流程（ISP）
+date: "2023-11-30 00:00:00"
+updated: "2023-11-30 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/ISP-计算摄影/相机图像信号处理流程(ISP)-5a2dd8/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/669484515
 ---
+
 
 相机图像信号处理流程（ISP）
 

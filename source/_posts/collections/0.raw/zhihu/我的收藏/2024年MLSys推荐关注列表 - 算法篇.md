@@ -1,9 +1,19 @@
 ---
-title: "(2 条消息) 2024年MLSys推荐关注列表 - 算法篇"
-date: 2025-01-05
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/13960662604
+title: (2 条消息) 2024年MLSys推荐关注列表 - 算法篇
+date: "2025-01-05 00:00:00"
+updated: "2025-01-05 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/2024年MLSys推荐关注列表-算法篇/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/13960662604
 ---
+
 
 年底了，推荐一手**我自己**MLSys推荐关注的列表，有老师，有业界，有很优秀的同龄人或者PhD，如有遗漏，还望多多海涵，可以在评论区提醒我一下~
 

@@ -1,9 +1,19 @@
 ---
-title: "(1 条消息) CPU架构——CPU如何获取自己的功耗？"
-date: 2023-07-23
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/645372042
+title: (1 条消息) CPU架构——CPU如何获取自己的功耗？
+date: "2023-07-23 00:00:00"
+updated: "2023-07-23 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/CPU架构——CPU如何获取自己的功耗/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/645372042
 ---
+
 
 **“** RAPL是一个闭环控制算法，准确的控制需要有精准的功耗监控，那么，CPU是怎么知道自己的功耗的？**”****
 
@@ -30,7 +40,7 @@ source: https://zhuanlan.zhihu.com/p/645372042
 
 - 支持PMBUS的设备提供功率​信息，例如PSU。
 
-![](asset/img_14fc991f02c1.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_14fc991f02c1.jpg)
 
 ### 给力的外援
 
@@ -49,7 +59,7 @@ RAPL同样需要准确的电源功耗测量，一般实现方法有两种：一�
 
 给力的外援，即CPU 通过SVID控制器让CPU的VR定时的测量监控IMON和PMON，并且汇报给CPU。
 
-![](asset/img_8894a8f25fc4.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_8894a8f25fc4.jpg)
 
 ### 复杂的内存
 
@@ -63,7 +73,7 @@ DRAM RAPL在概念上和socket RAPL基本一致。即监控电源，并且调整
 
 此外，在DRAM的功率测量上也有不同，并且在DDR4 和DDR5两代产品上还有差别。
 
-![](asset/img_26ab2bda134b.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_26ab2bda134b.jpg)
 
 DDR4 时代****DDR4给内存供电的功耗，不仅仅给内存供电，还负责CPU的DDR I/O。这部分电是属于CPU域的，通常就用一些内部的方法来估计获得。
 所以这部分电需要从给内存供电的VR读值中，减掉。

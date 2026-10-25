@@ -1,3 +1,16 @@
+---
+title: GPU 图向量检索 CAGRA
+date: "2026-04-11 21:40:17"
+updated: "2026-04-11 21:40:17"
+layout: post
+permalink: /collections/草稿/GPU-图向量检索-CAGRA/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 [CAGRA](https://docs.rapids.ai/api/raft/nightly/pylibraft_api/neighbors/#cagra) 是 N社在RAFT项目中 最新的 ANN 向量索引。这是一种高性能的、 GPU 加速的、基于图的方法，尤其是针对**小批量情况进行了优化**，其中每次查找只包含一个或几个查询向量。
 
 与其他像HNSW、SONG等这类基于图的方法相似，CAGRA在索引训练阶段构建了一个经过优化的 k-最近邻（k-NN）图。这个图具备多种优良特性，能够在保持合理召回率的同时实现高效的搜索。与NSW、HNSW算法不同的是，CARGA算法是单层的图，为了适用GPU计算加速，在构建和查询阶段做了特殊的优化。
@@ -41,13 +54,13 @@ CAGRA构建的图有几个不同之处：
 
 ### 构建过程
 
-![[assets/Pasted image 20240615220440.png]]
+![Pasted image 20240615220440.png](/images/collections/assets/Pasted%2520image%252020240615220440.png)
 
 CAGRA算法的构建训练过程，先初始化一个knn graph，然后优化其中的边关系。
 1. 初始knn-graph创建：比较简单，这里实际上可以理论上依赖任何一种已有的算法，但在实现上选了IVF-PQ、和NN-Descent算法。这里就不过多展开了
 	> 步骤一结束后，每个节点都有k个邻居节点，并且通常按距离排序
 2. 基于**rank**的重排序：这里每个节点出边按照初始rank重新排序，并且过滤掉一些边
-	![[assets/Pasted image 20240616105302.png]]
+	![Pasted image 20240616105302.png](/images/collections/assets/Pasted%2520image%252020240616105302.png)
 	 - 左侧：来自节点X及其他相关边的初始排名。
 	 - 中间：可能的两跳路径（XAB、XBC、XCD、XAC、XDC），根据方程3被分类为可绕路和不可绕路的。我们使用排名代替距离。
 		 $$
@@ -63,7 +76,7 @@ CAGRA算法的构建训练过程，先初始化一个knn graph，然后优化其
 之前的HNSW一类算法之所以不能满足GPU计算主要原因就是并行度不够，很难去发挥GPU多线程计算的优势。CAGRA不同之处在于在构图的时候尽可能保证了任意两点的可达性，在查找的时候放弃了按照最近路径找到目标节点的优化思路，而是通过提高吞吐量来尽可能覆盖尽可能多的点来提高召回率和GPU利用率。
 
 这里需要特别提一点就是这里的buffer。其实是两部分的，前半部分top-M的，我猜测是有序的，后半部是候选访问区，不必一定保证有序。
-![[assets/Pasted image 20240616173848.png]]
+![Pasted image 20240616173848.png](/images/collections/assets/Pasted%2520image%252020240616173848.png)
 
 计算过程：
 1. 随机选取E个节点，计算他们与 query 的距离，并存在 candidate buffer 中

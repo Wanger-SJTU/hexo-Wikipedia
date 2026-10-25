@@ -1,4 +1,17 @@
 ---
+title: Rerank——RAG中百尺竿头更进一步的神器，从原理到解决方案 - 知乎
+date: "2026-04-11 21:40:28"
+updated: "2026-04-11 21:40:28"
+layout: post
+permalink: /collections/0.raw/Omnivore/2024-04-09/Rerank——RAG中百尺竿头更进一步的神器,从原理到解决方案-知乎/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
+---
 id: 73394124-4190-41ba-8c0e-32a3a7975351
 ---
 

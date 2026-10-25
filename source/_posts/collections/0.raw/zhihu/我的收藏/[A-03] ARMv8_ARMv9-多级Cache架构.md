@@ -1,9 +1,19 @@
 ---
-title: "(2 条消息) [A-03] ARMv8/ARMv9-多级Cache架构"
-date: 2024-11-13
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/6571624318
+title: (2 条消息) [A-03] ARMv8/ARMv9-多级Cache架构
+date: "2024-11-13 00:00:00"
+updated: "2024-11-13 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/[A-03]-ARMv8_ARMv9-多级Cache架构/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/6571624318
 ---
+
 
 *关注W***X公*众**号，解锁更多精彩文章。*
 
@@ -31,7 +41,7 @@ source: https://zhuanlan.zhihu.com/p/6571624318
 
 先来简单回顾一下SOC的架构，如图1-1所示，现代芯片已经不是简单的计算单元，特别是在嵌入式领域将多个功能单元(Master)通过一个总线架构连接到一起，既节省物理空间，也降低了功耗，还能够有效提高整个系统的性能。各个Master包括CPU要按照总线架构中的接口(CHI、ACE5-Lite DVM、AXI5、ACE-Lite)规范进行设计和开发，然后通过Coherent interconnect上的接口(CHI、ACE5-Lite DVM、AXI5、ACE-Lite)做接合，就构成一个完整、具备一定功能的SOC。接合本文讨论的主题，自然我们更加关注的Master包括Memory System 、CPU节点(CPU 内部的Memory System)。
 
-![](asset/img_3110d6a676dd.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_3110d6a676dd.jpg)
 
 图1-1 典型SOC架构**1.2 总线架构**
 
@@ -61,7 +71,7 @@ CCI是ARM架构中用于实现多核处理器之间缓存一致性的关键技�
 
 下面来看一个具体CCI实例，如图1-2所示。
 
-![](asset/img_5465419b88ea.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_5465419b88ea.jpg)
 
 图1-2 CCI实例通过CCI的实例可以看到外围的Master通过接入缓存一致性总线的接口ACE等接入到了SOC系统，这里就包括Cortex-A72 CPU簇和Cortex-A53 CPU簇。显然Cortex-A系列的微架构内肯定也要支持ACE接口规范才能够和CCI契合，进而才能够连接并接受总线规范约束，后面章节我们会论证这一点。
 
@@ -93,7 +103,7 @@ CCI是ARM架构中用于实现多核处理器之间缓存一致性的关键技�
 
 下面来看一个CMN总线的接口，如图1-3所示。
 
-![](asset/img_b1990dbdaa5d.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_b1990dbdaa5d.jpg)
 
 图1-3 CMN接口通过上图可以看出，CMN的主要作⽤是可以互联多个CHI Master 、 ACE - lite Master ，然后通过CHI接⼝协议，做到多个Master之间的缓存⼀致性。可以看出Master(CPU)要接入CMN总线需要支持CHI或者ACE接口规范，这里后面章节也会具体通过实例进行论证。
 
@@ -113,17 +123,17 @@ CCI是ARM架构中用于实现多核处理器之间缓存一致性的关键技�
 
 下面我们看一个具体big.Little架构，如图1-4所示。
 
-![](asset/img_c56acbd5ba06.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_c56acbd5ba06.jpg)
 
 图1-4 典型的big.Little架构在 big . LITTLE 架构中，⼤核⼩核在不同的cluster中，做为两个不同的ACE或CHI Master，连接到缓存⼀致性总线上(CCI或CMN)。⼤核cluster和⼩核cluster的缓存⼀致性，也需要通过⼀致性总线来解决。big.LittleCluster中的PE-Core是支持可配置的，例如上图中就是小核A53和大核A57组成的两个Cluster。
 
 现在我们需要看一下，这些Cortex-A系列的处理器是如何和总线架构CCI对接的，如图1-5。
 
-![](asset/img_500c9b32c42f.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_500c9b32c42f.jpg)
 
 图1-5 A53处理器配置实例通过图1-5所示，A53处理器配置了ACE或者CHI接口以后，就可以和CCI总线的ACE或者CHI接口对接，进而联接到整个SOC系统中。那么这里我们可以得出一个结论只要是配置的ACE或者CHI接口的处理器都可以接入CCI总线(如图1-6所示)，当两个算力有差异的Cluster都连接到SOC系统后，就形成了典型的Big.Little架构。
 
-![](asset/img_2c60d22a5c7e.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_2c60d22a5c7e.jpg)
 
 图1-6 A72处理器配置实例**1.3.2 DynamIQ架构**
 
@@ -137,7 +147,7 @@ CCI是ARM架构中用于实现多核处理器之间缓存一致性的关键技�
 
 下面看一个典型的基于DynamIQ的架构的SOC拓扑，如图1-7所示。
 
-![](asset/img_80b3cd11416b.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_80b3cd11416b.jpg)
 
 图1-7 典型基于DSU的总线架构关于DSU的细节我们不展开讨论，这里直接说两个结论：
 
@@ -147,11 +157,11 @@ CCI是ARM架构中用于实现多核处理器之间缓存一致性的关键技�
 
 下面我们看一下DSU的接口，来回应下前面遗留的课题，看一下DSU是如何接入到SOC系统总线上的，如图1-8所示。
 
-![](asset/img_418550a08e6e.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_418550a08e6e.jpg)
 
 图1-8 典型DSU配置实例通过上图可以看出DSU配置了ACE或者CHI接口之后，就可以和SOC的缓存一致性总线CCI或者CMN的ACE或者CHI接口契合，最终合入到SOC系统。注意这里的DSU其实是一个封装PE-Core的架构，它的内部还会按照异构架构设计模式自由组合，如图1-9所示。
 
-![](asset/img_e3b555086f16.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_e3b555086f16.jpg)
 
 图1-9 Cortex-A710配置实例这里我们直接引用手册中的描述，介绍一下A710以及其月DSU的关系，可以看出新一代的ARM芯片基本都要依托DSU架构才能工作。
 
@@ -163,11 +173,11 @@ CCI是ARM架构中用于实现多核处理器之间缓存一致性的关键技�
 
 前面画了很多篇幅介绍了SOC的架构、总线架构、以及CPU的微架构，目的就是想让大家知道多级Cache在不同架构体系下的详细架构以及区别。“大夫的目的很简单，就是想让大家了解它们到底是怎么来的。(80后应该了解这句话的含义，哈哈)”。很多时候，如果不能把背景交代清楚，大家理解起来还是有困难的，总是觉得心里空唠唠的，所以我们花费一点笔墨是值得的。这里我们把Big.Little和DynamIQ架构下的多级Cache架构捏合在一起看，如图1-10、图1-11所示。
 
-![](asset/img_2cab8d55af69.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_2cab8d55af69.jpg)
 
 图1-10 Big.Little架构下的多级Cache**
 
-![](asset/img_ebfa2a893139.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_ebfa2a893139.jpg)
 
 图1-11 DSU架构下的多级Cache通过上面两图的展示和对比，我们可以总结归纳一下ARM体系下到目前为止的多级Cache的特征如下：
 
@@ -203,7 +213,7 @@ CCI是ARM架构中用于实现多核处理器之间缓存一致性的关键技�
 
 *• AMBA 4 AXI Coherency Extensions (ACE) or CHI master interface.*
 
-![](asset/img_ce1c72ad068b.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_ce1c72ad068b.jpg)
 
 图1-12 Cortex-A72 功能框图**基于DSU的PE-Core多级Cache实例**
 
@@ -219,7 +229,7 @@ CCI是ARM架构中用于实现多核处理器之间缓存一致性的关键技�
 
 *• Support for Memory System Resource Partitioning and Monitoring (MPAM)*
 
-![](asset/img_33cd221a8087.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_33cd221a8087.jpg)
 
 图1-13 Cortex-A710 功能框图
 ### 结语

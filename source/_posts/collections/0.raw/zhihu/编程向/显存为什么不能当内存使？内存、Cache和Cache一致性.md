@@ -1,15 +1,25 @@
 ---
-title: "显存为什么不能当内存使？内存、Cache和Cache一致性"
-date: 2021-05-08
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/63494668
+title: 显存为什么不能当内存使？内存、Cache和Cache一致性
+date: "2021-05-08 00:00:00"
+updated: "2021-05-08 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/编程向/显存为什么不能当内存使-内存、Cache和Cache一致性/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/63494668
 ---
+
 
 外置显卡（独显）动辄8G以上显存，很多朋友都希望能够“借”一些给CPU当普通内存用。这在某种程度上是十分容易做到的。显存基本上都会被映射到PCI的mmio地址空间中，一个简单的驱动就可以将它们映射到普通的地址空间中，但如果在其上运行任何banchmark软件你就会发现性能相当差。这固然有GDDR和PC DDR设计初衷不同导致的问题，关于这部分以及之前[DDR4的文章](https://zhuanlan.zhihu.com/p/62234511)末尾部分知友的提问“为什么显存都DDR5了，内存还DDR4”，我后续还有一篇GDDR vs DDR vs HBM的文章来解释，敬请期待，这里就按下不表了。如果我们忽略GDDR的不同，一个进一步的问题就是，为什么不能通过PCIe来扩展普通内存？
 
 主要的原因在于Cache。前一阵举行的“Interconnect Day 2019”，Intel宣布了一系列新技术。其中CXL（Compute Express Link）看起来并不显眼，但却是解决这个问题的关键：
 
-![](asset/img_c52fcab756fd.jpg)
+![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_c52fcab756fd.jpg)
 
 CXL实际上有更大的野心：解决CPU和设备、设备和设备之间的memory鸿沟。普通电脑用户也许偶尔会想到用用显存，用不了也无伤大雅，这个需求并不强烈。但服务器用户有巨大的内存池和数量庞大的基于PCIe运算加速器，每个上面都有很大的内存。内存的分割已经造成巨大的浪费、不便和性能下降。CXL就是为解决这个问题而诞生，**我迫不及待得想要给大家介绍这种新技术，但是为了更好的理解它，必须要有些预备知识**，也是为什么偷显存性能低的原因：显存不能保证被cache，或者说无法保证cache的一致性。感谢 @木头龙
 
@@ -23,15 +33,15 @@ Cache Memory简称Cache，是存储器子系统的组成部分，存放着程序
 
 CPU里面L3/LLC实际上被切成很多小片，每个Core对应一个小片：
 
-![](asset/img_71a6b2691203.jpg)
+![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_71a6b2691203.jpg)
 
 Haswell-EP这些小片在Ring bus上都有个Ring stop来连接，Ring bus和Ring bus之间的高速队列将这些L3小片整合在一起，形成一个虚拟的大一统L3。当然在Mesh network后不再有Ring bus，但L3的小片还是存在。我们来看统一后的两路情况：
 
-![](asset/img_6122baee56b5.jpg)
+![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_6122baee56b5.jpg)
 
 如果我们不讨论Cache的层级，可以化简成这样：
 
-![](asset/img_d9fa0cf578fd.jpg)
+![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_d9fa0cf578fd.jpg)
 
 假设我用红框标出的内存已经被Socket1/Node0和Socket2/Node1访问过了，它的部分数据已经被它们分别cache了。现在socket 1上的一个程序P1改写了一点这些内存中的内容，socket2上的另一个程序P2也要用这段内存。P1的改写和P2的读取如果都仅仅发生在各自的Cache中，就不能保证数据的全局一致性。**换句话说就是在一个多处理器系统中，Cache们和内存池可能对同一份数据有多份副本，如何保证这些副本的一致性（Coherency）是个必须严肃对待的问题**。
 
@@ -41,11 +51,11 @@ Haswell-EP这些小片在Ring bus上都有个Ring stop来连接，Ring bus和Rin
 
 X86、ARM和Power系列的Cache Coherency的原始模型都出自MESI protocol(参考资料2)。在MESI协议中，每个Cache Line（x86中是64 bytes）都有MESI四种状态：
 
-![](asset/img_a6efe00d76dc.jpg)
+![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_a6efe00d76dc.jpg)
 
  MESI之间的转换可以表示为有限状态机的描述形态：
 
-![](asset/img_ff57ae5a064f.jpg)
+![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_ff57ae5a064f.jpg)
 
 我并不打算相信介绍各个状态及它们之间的转换，对此有兴趣可以阅读参考资料2和其中的链接。
 
@@ -57,7 +67,7 @@ Cache Line实际上是加了几个bits来表示这些状态。有了这些状态
 
 Home Agent(HA)，在内存控制器端；Cache Agent(CA)，在L3 Cache端。他们都在Ring bus上监听和发送snoop消息。这种模型叫做Bus snooping模型，与之相对的还有Directory模型。Snoop消息会在QPI总线上广播，会造成很大的带宽消耗，为了减小这种带宽消耗，如何snoop有很多讲究，在参考资料1里面有介绍Intel的两种snoop的方式：Home Snoop和Source Snoop。它们的主要区别在于谁主导Snoop消息的发送，HA主导叫做Home Snoop,CA主导叫做Source Snoop。一个跨socket/node的Home Snoop例子：
 
-![](asset/img_160a289fad62.jpg)
+![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_160a289fad62.jpg)
 
 ### 结语
 
@@ -103,7 +113,7 @@ CPU访问mmio一般是不cache的，意味着这次访问完，下次还要重�
 
 欢迎大家关注本专栏和用微信扫描下方二维码加入微信公众号"UEFIBlog"，在那里有最新的文章。
 
-![](asset/img_963b44142a22.jpg)
+![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_963b44142a22.jpg)
 
 用微信扫描二维码加入UEFIBlog公众号
 ### 参考资料：

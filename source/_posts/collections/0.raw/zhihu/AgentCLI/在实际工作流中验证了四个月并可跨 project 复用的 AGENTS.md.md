@@ -1,9 +1,19 @@
 ---
-title: "在实际工作流中验证了四个月并可跨 project 复用的 AGENTS.md"
-date: 2026-02-24
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/2009629370684306095
+title: 在实际工作流中验证了四个月并可跨 project 复用的 AGENTS.md
+date: "2026-02-24 00:00:00"
+updated: "2026-02-24 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/AgentCLI/在实际工作流中验证了四个月并可跨-project-复用的-AGENTS.md/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/2009629370684306095
 ---
+
 
 **# AGENTS.md - Agent Coding Guidelines
 ****## 文档写作原则：Self-Contained（自解释）****

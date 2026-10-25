@@ -1,3 +1,16 @@
+---
+title: Session Handoff
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/skills/harness-creator/templates/session-handoff/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # Session Handoff
 
 ## Current Objective

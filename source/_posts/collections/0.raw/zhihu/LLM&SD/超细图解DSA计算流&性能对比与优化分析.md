@@ -1,10 +1,19 @@
 ---
-title: "超细图解DSA计算流&性能对比与优化分析"
-date: 2025-10-27
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/1963371483985319543
-
+title: 超细图解DSA计算流&性能对比与优化分析
+date: "2025-10-27 00:00:00"
+updated: "2025-10-27 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/LLM-SD/超细图解DSA计算流-性能对比与优化分析/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/1963371483985319543
 ---
+
 
 DSA(DeepSeek Sparse Attention)的计算在Prefill、Decode阶段存在差异，本文结合MLA模块绘制了一版DSA的计算流图，同时根据该结构还分析了DSA计算性能情况，包括如下问题：
 

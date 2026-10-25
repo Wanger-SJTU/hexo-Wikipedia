@@ -1,9 +1,19 @@
 ---
-title: "当lto+汇编的静态库，遇上动态库"
-date: 2022-08-26
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/557923508
+title: 当lto+汇编的静态库，遇上动态库
+date: "2022-08-26 00:00:00"
+updated: "2022-08-26 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/编程向/当lto-汇编的静态库,遇上动态库/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/557923508
 ---
+
 
 简单回答：
 
@@ -73,4 +83,4 @@ lto只对C/C++编译生效，汇编不受影响，难道是这混合的情况导
 
 值得一提的是去自己的脚本里改流程的时候，发现自己早就为gcc换了`gcc-ar`……这么说来，其实我已经解决过了一次这个问题？
 
-![](asset/img_ed7f8bb49b52.jpg)
+![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_ed7f8bb49b52.jpg)

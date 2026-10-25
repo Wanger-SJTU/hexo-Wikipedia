@@ -1,15 +1,25 @@
 ---
 title: "[NeurIPS'25 Spotlight] 清华/MIT/伯克利联合推出，自适应、层级化的Top-p 稀疏注意力 Twilight"
-date: 2025-11-04
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/1965053340472809384
+date: "2025-11-04 00:00:00"
+updated: "2025-11-04 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/LLM-SD/[NeurIPS'25-Spotlight]-清华_MIT_伯克利联合推出,自适应、层级化的Top-p-稀疏注意力-Twilight/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/1965053340472809384
 ---
+
 
 在沉淀了半年后，Twilight 终于被 NeurIPS 2025 接受并且分数还挺高，拿了个 Spotlight，我也是终于可以把这篇在 Sparse Attention 沉淀了这么久的心得体会给大家写出来。最新版本的论文和代码如下，欢迎Star/讨论 😘：
 
 - [Twilight: Adaptive Attention Sparsity with Hierarchical Top-$p$ Pruning](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2502.02770)
 - [https://github.com/tsinghua-ideal/Twilight](https://link.zhihu.com/?target=https%3A//github.com/tsinghua-ideal/Twilight)
-![](asset/img_b05261534380.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_b05261534380.jpg)
 
 ### 稀疏注意力综述
 
@@ -30,11 +40,11 @@ source: https://zhuanlan.zhihu.com/p/1965053340472809384
 - Sparse Attention，负责接收 indices 并进行计算，这里其实一般直接复用成熟的 Paged Attention 实现就可以了，读者很容易会发现这个接口和 PA 是差不多的。
 我们会发现这类算法的收益来源是 Sparse Attention 只需要算 k 个 tokens，而 Token Selector 作为额外引入的 overhead 一般很小。实际部署时，一般会指定一个固定的 k 或者固定的 ratio（k=ratio*seq_len）。但由于实际的分布往往变化很大，固定的 k 并不高效，这一问题在我们把稀疏算法部署到 Serving Engine 里问题更大，因为你要在启动 Engine 的时候决定 k，那么这个固定的 k 在 Engine 运行时就都没法改。
 
-因此，学术界就有一系列 Adaptive Budget[[1]](#ref_1) [[2]](#ref_2) [[3]](#ref_3) [[4]](#ref_4) [[5]](#ref_5)的工作。就以 [PyramidKV](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2406.02069) 为例，它观察到 Transformer 的不同层需要不同 Budget，因此拟合出了一个调整 Budget 的策略（其实就是等差数列递减）。 [DuoAttention](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2410.10819) 则提出的是不同的 head 需要不同 Budget，不过它提出 head 间主要是两极分化，即一部分用 full，一部分用 streaming 即可取得不错的效果。除了不同 layers、不同 heads，不同 queries、不同 prompts 也都会影响这个 Budget。因此这不由得让我们思考：这个动态 Budget 的本质是什么？
+因此，学术界就有一系列 Adaptive Budget<span class="wikilink wikilink--missing" title="未导入的页面">1</span>(#ref_1) <span class="wikilink wikilink--missing" title="未导入的页面">2</span>(#ref_2) <span class="wikilink wikilink--missing" title="未导入的页面">3</span>(#ref_3) <span class="wikilink wikilink--missing" title="未导入的页面">4</span>(#ref_4) <span class="wikilink wikilink--missing" title="未导入的页面">5</span>(#ref_5)的工作。就以 [PyramidKV](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2406.02069) 为例，它观察到 Transformer 的不同层需要不同 Budget，因此拟合出了一个调整 Budget 的策略（其实就是等差数列递减）。 [DuoAttention](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2410.10819) 则提出的是不同的 head 需要不同 Budget，不过它提出 head 间主要是两极分化，即一部分用 full，一部分用 streaming 即可取得不错的效果。除了不同 layers、不同 heads，不同 queries、不同 prompts 也都会影响这个 Budget。因此这不由得让我们思考：这个动态 Budget 的本质是什么？
 
-到这里，我们突然联想到了一个同属于 LLM 组件，但是位置不太一样的地方：sampling，即把 logits 分布转换为 output token 的最后一步。我们其实面临一个和 Sampling 之前很像的境遇：之前的 top-k sampling 也是由于固定的 k 无法适应动态的分布，随后引入了 top-p sampling（nucleus sampling[[6]](#ref_6)）。 基于此我们进一步思考：Budget 的定义是**“达到某个目标的最小预算”**，因此研究 Budget 本质就是在研究这个目标是什么。最根本的当然是长文能力，俗一点说就是 benchmark 上的点，不过这里肯定没法直接反馈到注意力上。因此我们根据注意力的 output error 给了一个 bound，我们发现我们可以用所选 tokens 的 attention weights 之和来 bound 住这个 output error——这个之和刚好就是 top-p 里的 p。因此这个目标虽然不是最终目标，但是起码也有了个 bound，故也说明了 top-p 的初步合理性。我们基于 oracle top-p 评估了一个具体 LLM 的实际 budget 情况，果然观察到了不同层级的 budget dynamism（见 Appendix A）：
+到这里，我们突然联想到了一个同属于 LLM 组件，但是位置不太一样的地方：sampling，即把 logits 分布转换为 output token 的最后一步。我们其实面临一个和 Sampling 之前很像的境遇：之前的 top-k sampling 也是由于固定的 k 无法适应动态的分布，随后引入了 top-p sampling（nucleus sampling<span class="wikilink wikilink--missing" title="未导入的页面">6</span>(#ref_6)）。 基于此我们进一步思考：Budget 的定义是**“达到某个目标的最小预算”**，因此研究 Budget 本质就是在研究这个目标是什么。最根本的当然是长文能力，俗一点说就是 benchmark 上的点，不过这里肯定没法直接反馈到注意力上。因此我们根据注意力的 output error 给了一个 bound，我们发现我们可以用所选 tokens 的 attention weights 之和来 bound 住这个 output error——这个之和刚好就是 top-p 里的 p。因此这个目标虽然不是最终目标，但是起码也有了个 bound，故也说明了 top-p 的初步合理性。我们基于 oracle top-p 评估了一个具体 LLM 的实际 budget 情况，果然观察到了不同层级的 budget dynamism（见 Appendix A）：
 
-![](asset/img_0141bc113292.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_0141bc113292.jpg)
 
 可以看到不同层级的 Budget dynamism 都被我们统一衡量出来了，并且我们还观察到了 Head-level 的 dynamism 是最大的，这也和之前工作的一些观察比较吻合需要注意的是，不止我们注意到了 Top-k 注意力的局限性。[MagicPIG](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2410.16179) 也同样打破了 Top-k 的局限性，而且它还不受制于 selection-based，即它并不是选择部分 tokens 进行计算。我们也与其进行了比较，同样发现它相比 Top-k attention 是好上不少的。
 
@@ -46,11 +56,11 @@ source: https://zhuanlan.zhihu.com/p/1965053340472809384
 
 不过具体实现起来也有很多困难，这部分甚至占了我们 Paper 的一大部分（Sys Paper 实锤了 x）。首先是我们如何做一个高效的 Top-p Pruner。大体过程和 Top-k 肯定一样，先做一个 lightweight 的 QK，再喂给 Top-p 算子。这里 lightweight 的意思一般会把 K cache 做一些压缩（因为这一步也是 memory bound），然鹅我们发现 Top-k 能用的压缩率在 Top-p 完全不行。DoubleSparse 里可以把 K cache 压到 2bit 再加上  的 channel pruning 达到 16x 的压缩，但是我们来看 Top-p 上的实验：
 
-![](asset/img_ef90a6a8fca1.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_ef90a6a8fca1.jpg)
 
 可以发现用 2bit 估出的 Attention Weights 去筛 top-p 会灾难性地下滑。4bit 表现倒是不错，这也比较合理：Top-p 的精度要求夹在 Top-k 和 Full Attention 之间。[SageAttention 2](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2411.10958) 用的也是 4bit，跑的也不错。因此我们这里就敲定用 4bit 精度，虽然这样会导致开销比 16x 的压缩慢，但是由于 Top-p 是精筛，刚好 seq len 也没那么长。做到这里其实能感受到这个方法的一点美感：最上层的 TopK 精度差，所以 Budget 选大一点； TopP 落在中间层，Seqlen 中等，但是精度也中等；最下层的 Attention 需要 fp16 的值，但是 Budget 最小。刚好是一个 trade-off。我们收益就是在赌 Twilight 的额外开销（Top-p Pruner）要比我们在 Attention 部分节省的多。这里我特地画了一张图来描述这部分的收益，但是最后没放进去，就在这里用一下吧：
 
-![](asset/img_369412f628e3.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_369412f628e3.jpg)
 
 然后下一步就是要实现一个高效的 Top-p 算子。由于灵感是 sampling 那边来的，我就魔改了FlashInfer top-p sampling 的实现，具体是通过一个二分查找来实现的，不需要排序，实际跑下来还挺快就没继续改。不过 FlashInfer 最近还改进了它们的算法：Sorting-Free GPU Kernels for LLM Sampling，并且很荣幸地 Twilight 在其中被提到了hahaha。在这里也给 FlashInfer 打个广告，想比 Triton 更快又想魔改注意力，请第一时间认准！
 
@@ -68,7 +78,7 @@ source: https://zhuanlan.zhihu.com/p/1965053340472809384
 - Bit-packing，这里主要是针对 INT4，由于 C++ 寻址的最小单位是 byte/8 bits，因此这里在代码实现上有一些 tricks 要注意。具体来讲，我们传入的时候存储类型用的是 `uint8_t`，但是在逻辑处理上后续都当成 4bit 计算，最后 dequantize 到 fp16 参与计算。
 在 qk dot 上，原先 FlashInfer 采用的是 fp32 的 q_vec/k_vec buffer，这里为了速度改用 fp16 的 buffer（accumulator 还是 fp32），实际测下来精度会有掉，但是由于我们本来就 int4 quantized 了，而且只是传给 top-p 用的，因此精度需求并不高。在具体实现中，参考了很多[QServe](https://link.zhihu.com/?target=https%3A//github.com/mit-han-lab/omniserve/tree/qserve)和[Atom](https://link.zhihu.com/?target=https%3A//github.com/efeslab/Atom/tree/main)的代码，在这里也深表感谢。注意，我们这里花大力气做计算的优化主要是因为如果不做好的话，这部分就不会 memory bound，导致 int4 可能还没有 int8 快。最后经过精心调优测量的结果也是比较 nice：
 
-![](asset/img_5b80133a1615.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_5b80133a1615.jpg)
 
 #### GQA 兼容
 
@@ -76,13 +86,13 @@ GQA 和 Sparse Attention 八字不合已经不是什么新鲜事了，NSA 论文
 
 Twilight 当然也不能免俗，因此我们采取了一个比较通用的做法：对同一个 group 的 query 取它们 indices 的 union。同时，我们上面提到过了由于不同 head budget 不同，Paged Attention Kernel 需要对 num_heads 做 flatten。这部分设计还要和 GQA 兼容做一些适配。最后我们对 GQA 的设计就是把 KV cache 的 num_heads flatten 掉，对于 query 则按 group 拆分，每个 group 是一个 sub-request，和对应的 KV cache 进行计算。大概设计可以看下图。不过这里还有个问题是这样对 Tensor Core 可能就没那么友好了，因此需要继续思考。
 
-![](asset/img_123bdde890f1.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_123bdde890f1.jpg)
 
 我们也做了一些简单的 evaluation，相比 Padded（即每个 head 都 pad 到最长）、Head Varlen（即对 GQA 仍然采用我们 MHA 中的方法，可能存在 repetitive loading），这个 Group-wise 的 dynamic budget 还是有收益的。
 
 ### 结语
 
-Evaluation 部分就不放了，其实最后收益没那么大，在大 batch 的情况下 Quest-Twi 相比 Quest 在注意力部分最高达到 1.4x 的加速，放到 model 的 end-to-end 场景就更被稀释了（当然和 Full Attention 以及 PyTorch 比肯定还是随便十几x的）。感觉做了这么多还是以提一个新的 idea 为主吧，希望能给稀疏领域带来一些启发[[7]](#ref_7)，看看 Top-p attention 能怎样在新的架构上发挥作用，同时试图去收敛 Adaptive Budget。同样也很高兴 Top-p 的 idea 也已经被 Video Generation 的稀疏算法[[8]](#ref_8)用上了，希望不久的将来能看到诸如 Trainable Top-p Attention 这样的更神奇的操作！
+Evaluation 部分就不放了，其实最后收益没那么大，在大 batch 的情况下 Quest-Twi 相比 Quest 在注意力部分最高达到 1.4x 的加速，放到 model 的 end-to-end 场景就更被稀释了（当然和 Full Attention 以及 PyTorch 比肯定还是随便十几x的）。感觉做了这么多还是以提一个新的 idea 为主吧，希望能给稀疏领域带来一些启发<span class="wikilink wikilink--missing" title="未导入的页面">7</span>(#ref_7)，看看 Top-p attention 能怎样在新的架构上发挥作用，同时试图去收敛 Adaptive Budget。同样也很高兴 Top-p 的 idea 也已经被 Video Generation 的稀疏算法<span class="wikilink wikilink--missing" title="未导入的页面">8</span>(#ref_8)用上了，希望不久的将来能看到诸如 Trainable Top-p Attention 这样的更神奇的操作！
 
 ### 参考
 

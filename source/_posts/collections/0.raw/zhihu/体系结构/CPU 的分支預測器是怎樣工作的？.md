@@ -1,9 +1,19 @@
 ---
-title: "CPU 的分支預測器是怎樣工作的？"
-date: 2026-04-21
-tags: [知乎]
-source: https://www.zhihu.com/question/23973128/answer/72783972
+title: CPU 的分支預測器是怎樣工作的？
+date: "2026-04-21 00:00:00"
+updated: "2026-04-21 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/体系结构/CPU-的分支預測器是怎樣工作的/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://www.zhihu.com/question/23973128/answer/72783972
 ---
+
 
 Sean
 ​

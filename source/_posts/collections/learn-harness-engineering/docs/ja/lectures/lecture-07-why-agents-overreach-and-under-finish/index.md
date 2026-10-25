@@ -1,3 +1,16 @@
+---
+title: 講義 07. エージェントのタスク境界を明確にする
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/ja/lectures/lecture-07-why-agents-overreach-and-under-finish/index/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 [中文版本 →](../../../zh/lectures/lecture-07-why-agents-overreach-and-under-finish/)
 
 > コード例: [code/](https://github.com/walkinglabs/learn-harness-engineering/blob/main/docs/ja/lectures/lecture-07-why-agents-overreach-and-under-finish/code/)

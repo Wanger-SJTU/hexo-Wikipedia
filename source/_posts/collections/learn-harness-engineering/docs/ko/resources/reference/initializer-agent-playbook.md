@@ -1,3 +1,16 @@
+---
+title: 초기화 에이전트 플레이북 (Initializer Agent Playbook)
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/ko/resources/reference/initializer-agent-playbook/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # 초기화 에이전트 플레이북 (Initializer Agent Playbook)
 
 저장소에서 첫 번째 본격적인 세션, 즉 점진적인 기능 작업이 시작되기 전에 이 플레이북(playbook)을 사용하십시오. 초기화(initialization)는 이후 모든 세션이 안정적으로 작동할 수 있는 기반을 마련하는 단계입니다.

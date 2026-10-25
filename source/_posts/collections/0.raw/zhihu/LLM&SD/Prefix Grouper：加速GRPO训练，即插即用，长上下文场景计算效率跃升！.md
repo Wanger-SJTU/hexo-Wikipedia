@@ -1,9 +1,19 @@
 ---
-title: "Prefix Grouper：加速GRPO训练，即插即用，长上下文场景计算效率跃升！"
-date: 2025-06-09
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/1913646405106529974
+title: Prefix Grouper：加速GRPO训练，即插即用，长上下文场景计算效率跃升！
+date: "2025-06-09 00:00:00"
+updated: "2025-06-09 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/LLM-SD/Prefix-Grouper-加速GRPO训练,即插即用,长上下文场景计算效率跃升/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/1913646405106529974
 ---
+
 
 技术报告、代码均已开源：
 
@@ -29,7 +39,7 @@ Group Relative Policy Optimization (GRPO) 是一种强大的强化学习优化�
 
 算法的关键在于如何处理这种拼接序列中的自注意力计算。Prefix Grouper **将自注意力计算巧妙地拆分为两部分**：
 
-![](asset/img_62b4fa3554a1.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_62b4fa3554a1.jpg)
 
 Grouped Attention方法示意图
 
@@ -43,9 +53,9 @@ Grouped Attention方法示意图
 
 #### 显著效率提升
 
-![](asset/img_3ce2e0b73b93.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_3ce2e0b73b93.jpg)
 
-固定前缀长度下（4096、8192、16384）不同前后缀长度比例（前缀长度 / 后缀长度）的FLOPs结果![](asset/img_fe86d17bff29.jpg)
+固定前缀长度下（4096、8192、16384）不同前后缀长度比例（前缀长度 / 后缀长度）的FLOPs结果![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_fe86d17bff29.jpg)
 
 固定前缀长度下（4096、8192、16384）不同前后缀长度比例（前缀长度 / 后缀长度）的显存占用结果
 

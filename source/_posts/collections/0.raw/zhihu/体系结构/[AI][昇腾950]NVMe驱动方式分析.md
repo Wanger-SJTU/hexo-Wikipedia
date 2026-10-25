@@ -1,9 +1,19 @@
 ---
 title: "[AI][昇腾950]NVMe驱动方式分析"
-date: 2026-07-28
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/2065534316545937587
+date: "2026-07-28 00:00:00"
+updated: "2026-07-28 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/体系结构/[AI][昇腾950]NVMe驱动方式分析/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/2065534316545937587
 ---
+
 
 1. 摘要
 昇腾950 平台驱动 NVMe SSD 有 **4 条可行路径**，硬件支撑度从高到低：

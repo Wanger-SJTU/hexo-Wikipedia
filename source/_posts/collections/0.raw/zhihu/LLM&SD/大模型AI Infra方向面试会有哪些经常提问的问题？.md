@@ -1,10 +1,19 @@
 ---
-title: "大模型AI Infra方向面试会有哪些经常提问的问题？"
-date: 2026-02-26
-tags: [知乎]
-source: https://www.zhihu.com/question/1916645420085514580/answer/2010266450347184947
-
+title: 大模型AI Infra方向面试会有哪些经常提问的问题？
+date: "2026-02-26 00:00:00"
+updated: "2026-02-26 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/LLM-SD/大模型AI-Infra方向面试会有哪些经常提问的问题/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://www.zhihu.com/question/1916645420085514580/answer/2010266450347184947
 ---
+
 
 最近三年在ai infer方向面试过上百人，也绞尽脑汁整理过一些知识点，这里从大模型推理方向给出一些面试知识点，希望能够给准备入行的同学一些帮助。
 

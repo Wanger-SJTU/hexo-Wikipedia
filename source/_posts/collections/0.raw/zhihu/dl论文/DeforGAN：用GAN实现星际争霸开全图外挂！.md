@@ -1,10 +1,19 @@
 ---
-title: "DeforGAN：用GAN实现星际争霸开全图外挂！"
-date: 2020-04-02
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/123303841
-
+title: DeforGAN：用GAN实现星际争霸开全图外挂！
+date: "2020-04-02 00:00:00"
+updated: "2020-04-02 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/dl论文/DeforGAN-用GAN实现星际争霸开全图外挂/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/123303841
 ---
+
 
 对于广大星际争霸迷来说，地图全开作弊代码「Black sheep wall」应该是再熟悉不过了！如何根据现有状态预测未知信息是博弈过程中举足轻重的一环。日前，韩国三星公司的研究人员在星际争霸游戏中，将预测战争迷雾背后的作战单位信息建模为了一个部分可观察马尔科夫决策过程，并使用基于 GAN 的方法实现了当前性能最佳的战争迷雾去雾算法。选自arXiv，作者：Yonghyun Jeong等，机器之心编译，参与：李诗萌、Geek AI。
 

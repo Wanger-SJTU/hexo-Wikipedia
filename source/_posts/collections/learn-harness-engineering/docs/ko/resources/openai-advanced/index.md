@@ -1,3 +1,16 @@
+---
+title: OpenAI 고급 팩(Advanced Pack)
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/ko/resources/openai-advanced/index/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # OpenAI 고급 팩(Advanced Pack)
 
 이 폴더는 OpenAI의 "Harness engineering: leveraging Codex in an agent-first world" 문서에서 설명하는 보다 견고한 저장소(repository) 구조를 복사해서 바로 사용할 수 있는 스타터 파일로 패키징한 것입니다.

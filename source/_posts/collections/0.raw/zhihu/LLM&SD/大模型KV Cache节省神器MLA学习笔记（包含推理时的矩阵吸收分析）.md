@@ -1,23 +1,33 @@
 ---
-title: "大模型KV Cache节省神器MLA学习笔记（包含推理时的矩阵吸收分析）"
-date: 2024-06-17
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/703862723
+title: 大模型KV Cache节省神器MLA学习笔记（包含推理时的矩阵吸收分析）
+date: "2024-06-17 00:00:00"
+updated: "2024-06-17 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/LLM-SD/大模型KV-Cache节省神器MLA学习笔记(包含推理时的矩阵吸收分析)/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/703862723
 ---
+
 
 >  首先，本文回顾了MHA的计算方式以及KV Cache的原理，然后深入到了DeepSeek V2的MLA的原理介绍，同时对MLA节省的KV Cache比例做了详细的计算解读。接着，带着对原理的理解理清了HuggingFace MLA的全部实现，每行代码都去对应了完整公式中的具体行并且对每个操作前后的Tensor Shape变化也进行了解析。我们可以看到目前的官方实现在存储KV Cache的时候并不是存储隐向量，而是把隐向量都解压缩变成了标准的MHA的KV Cache，实际上是完全不能节省显存的。接着，就继续学习了一下清华大学的ZHANG Mingxing组实现的MLA矩阵吸收的工程实现，在这一节也详细分析了原理包括WUK" role="presentation">WUKW^{UK}和WUV" role="presentation">WUVW_{UV}分别如何吸收到WUQ" role="presentation">WUQW_{UQ}和Wo" role="presentation">WoW_o中，分析了实现了矩阵吸收的每行代码的原理以及操作发生前后相关Tensor的维度变化。接着，对矩阵吸收代码实现里的矩阵乘法的性质进行分析，可以看到MLA在大多数阶段都是计算密集型而非访存密集型的。最后引用了作者团队的Benchmark结果，以及说明为何不是直接保存吸收后的大投影矩阵，而是在forward里面重新计算两个矩阵的吸收。
  
 
 这里提一下，我维护的几个记录个人学习笔记以及社区中其它大佬们的优秀博客链接的仓库都获得了不少star，感谢读者们的认可，我也会继续在开源社区多做贡献。github主页：[https://github.com/BBuf](https://link.zhihu.com/?target=https%3A//github.com/BBuf) ，欢迎来踩
 
-![](asset/img_2372548ca739.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_2372548ca739.jpg)
 
 在这里插入图片描述
 ### 0x0. 前言
 
 这篇文章主要是对Deepseek2提出的优化KV Cache的MLA方法做个人理解，特别是关于MLA的矩阵吸收部分，这部分Paper以及官方开源实现没有给出。然后，开源社区大佬确实出手很快，在知乎的《如何看待 DeepSeek 发布的 MoE 大模型 DeepSeek-V2？》问题下清华大学的ZHANG Mingxing组就提出了MLA的矩阵吸收实现并且给出了一个兼容现有Transformers实现的PR（[https://huggingface.co/deepseek-ai/DeepSeek-V2-Chat/discussions/12](https://link.zhihu.com/?target=https%3A//huggingface.co/deepseek-ai/DeepSeek-V2-Chat/discussions/12)）。 ​
 
-![](asset/img_de0aa0e2f99f.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_de0aa0e2f99f.jpg)
 
 在这里插入图片描述翻译：
 
@@ -66,11 +76,11 @@ $$o_{t,i} = \sum_{j=1}^{t} \text{Softmax}_j \left( \frac{q_{t,i} k_{j,i}}{\sqrt{
 
 ### 0x2. DeepSeek2 MLA 原理介绍
 
-![](asset/img_23cc0f8cd1f0.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_23cc0f8cd1f0.jpg)
 
 在这里插入图片描述上面的图是Deepseek2 paper中对集中常见KV Cache压缩方法的对比，可以看到MLA的核心是对keys和values进行低秩联合压缩来减少KV Cache。对应paper的公式9-11。
 
-![](asset/img_6e3dfa236fe3.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_6e3dfa236fe3.jpg)
 
 在这里插入图片描述其中，
 
@@ -81,7 +91,7 @@ $- \mathbf{W}^{UK}, \mathbf{W}^{UV} \in \mathbb{R}^{d_h n_h \times d_c}：表示
 
 此外，为了降低训练过程中的激活内存，DeepSeek2还对query进行低秩压缩，即便这并不能降低KV Cache：
 
-![](asset/img_76a0cb9bba71.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_76a0cb9bba71.jpg)
 
 在这里插入图片描述其中，
 
@@ -101,7 +111,7 @@ $- \mathbf{W}^{DQ} \in \mathbb{R}^{d'_c \times d}, \mathbf{W}^{UQ} \in \mathbb{R
 >  这里的\mathbf{W}^{UK} 就整合到 \mathbf{W}^{Q} 请看下面截图的解释，来自苏神的博客。我会在下一大节再仔细讨论这个原理。
  
 
-![](asset/img_fb49b167447e.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_fb49b167447e.jpg)
 
 在这里插入图片描述因此，DeepSeek2提出了解耦 RoPE 策略，具体来说：
 
@@ -109,7 +119,7 @@ $使用额外的多头 queries \mathbf{q}_{t, i}^{R} \in \mathbb{R}^{d_h^R} 以�
 
 基于这种解耦的 RoPE 策略，MLA 遵循的计算逻辑为：
 
-![](asset/img_49b9832452a7.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_49b9832452a7.jpg)
 
 在这里插入图片描述其中：
 
@@ -117,7 +127,7 @@ $- \mathbf{W}^{QR} \in \mathbb{R}^{d_h^R n_h \times d_c'} 和 \mathbf{W}^{KR} \i
 - RoPE(\cdot) 表示应用 RoPE 的操作； [ \cdot ; \cdot ] 表示拼接操作
 推理时，只需要缓存解耦后的 key 即可，当然还有上面的隐向量 \mathbf{c}_{t}^{KV}，因此对于单个 token 的 KV Cache 只包含 (d_c + d_h^R)l 个元素，这里没考虑层数和bf16的字节数。具体可以看一下Table 1的数据对比：
 
-![](asset/img_0352ca7eab39.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_0352ca7eab39.jpg)
 
 翻译一下：
 
@@ -128,7 +138,7 @@ $- \mathbf{W}^{QR} \in \mathbb{R}^{d_h^R n_h \times d_c'} 和 \mathbf{W}^{KR} \i
 
 这里再特别说明一下Paper中相比于Dense的Deepseek 67B（或者LLaMa3 70B）节省93.3% KV Cache的计算方法：
 
-![](asset/img_2cbe34e199a7.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_2cbe34e199a7.jpg)
 
 在这里插入图片描述首先是层数，DeepSeek2是60层，而Deepseek 67B为95层，层数的节省比例为 60 / 95
 
@@ -145,7 +155,7 @@ $- \mathbf{W}^{QR} \in \mathbb{R}^{d_h^R n_h \times d_c'} 和 \mathbf{W}^{KR} \i
 
 为了便于描述代码，这里直接把完整的公式贴出来，Paper的附录C：
 
-![](asset/img_5505ea998b18.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_5505ea998b18.jpg)
 
 在这里插入图片描述对照上面的原理介绍下面对 DeepseekV2Attention 模块进行解读，代码链接：[https://huggingface.co/deepseek-ai/DeepSeek-V2-Chat/blob/main/modeling_deepseek.py#L680](https://link.zhihu.com/?target=https%3A//huggingface.co/deepseek-ai/DeepSeek-V2-Chat/blob/main/modeling_deepseek.py%23L680)
 
@@ -223,7 +233,7 @@ class DeepseekV2Attention(nn.Module):
 
 为了方便理解forward代码时回看公式，这里再重复贴一下完整公式：
 
-![](asset/img_5505ea998b18.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_5505ea998b18.jpg)
 
 在这里插入图片描述接下来再看一下forward的代码，这对应了完整公式里面的详细计算过程：
 
@@ -316,11 +326,11 @@ class DeepseekV2Attention(nn.Module):
 
 这一节就是学习和理解一下清华大学的ZHANG Mingxing组实现的MLA矩阵吸收（ [https://zhuanlan.zhihu.com/p/700214123](https://zhuanlan.zhihu.com/p/700214123) ）。它的代码是直接应用在HF实现上的，所以可以很方便进行应用。为了理解再重复贴一下完整公式：
 
-![](asset/img_5505ea998b18.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_5505ea998b18.jpg)
 
 在这里插入图片描述以及Paper中提到的矩阵吸收，
 
-![](asset/img_4c9364575d1d.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_4c9364575d1d.jpg)
 
 在这里插入图片描述
 ### 0x4.1 W^{UK}的吸收
@@ -437,9 +447,9 @@ attn_output = torch.matmul(attn_output, out_absorb.mT)
 
 最后，作者团队在他们的Blog中给出了一些Benchmark结果，可以看到这个矩阵吸收的有效性。
 
-![](asset/img_a1ec9cf6e296.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_a1ec9cf6e296.jpg)
 
-在这里插入图片描述![](asset/img_e3e194deb870.jpg)
+在这里插入图片描述![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_e3e194deb870.jpg)
 
 在这里插入图片描述图中的标签分别表示 原始的解压缩版本CacheDecompressed (CD)，KV缓存压缩后的CacheCompressed（CC），吸收后直接使用 compressed_kv 计算的 Absorbed_CacheCompressed (A_CC) 版本，和增加了 move elision 优化的最终版本 Absorbed_CacheCompressed_MoveElision (A_CC_ME)。
 
@@ -447,7 +457,7 @@ attn_output = torch.matmul(attn_output, out_absorb.mT)
 
 以W^{UK}的吸收为例子，这里实际上是说在矩阵吸收的时候是否要提前把W^{UK}和W^{UQ}的矩阵乘结果保存下来，而不是在forward的时候重计算。作者在评论区回复过这个问题，意思就是直接在forward的时候重计算速度会更优。博客里面的解释如下：
 
-![](asset/img_aba2633e7f40.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_aba2633e7f40.jpg)
 
 在这里插入图片描述
 ### 0x5. 总结

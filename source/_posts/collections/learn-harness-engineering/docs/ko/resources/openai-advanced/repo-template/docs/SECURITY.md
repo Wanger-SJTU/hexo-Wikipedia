@@ -1,3 +1,16 @@
+---
+title: SECURITY.md
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/ko/resources/openai-advanced/repo-template/docs/SECURITY/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # SECURITY.md
 
 이 파일은 에이전트(agent)가 추측해서는 안 되는 보안(security) 및 안전 규칙을 정의합니다.

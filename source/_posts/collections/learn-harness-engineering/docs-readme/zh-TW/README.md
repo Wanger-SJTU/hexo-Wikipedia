@@ -1,3 +1,16 @@
+---
+title: Learn Harness Engineering
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs-readme/zh-TW/README/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 <p align="center">
   <a href="../../README.md"><img alt="English" src="https://img.shields.io/badge/EN-English-blue?style=flat-square"></a>
   <a href="../zh-CN/README.md"><img alt="简体中文" src="https://img.shields.io/badge/ZH-简体中文-red?style=flat-square"></a>
@@ -47,17 +60,17 @@ Learn Harness Engineering 是一門專注於 AI 程式設計代理工程化的�
 ### 🏠 課程首頁
 > 完整的課程大綱與核心理念介紹，提供明確的上手路徑。
 
-![課程首頁預覽](../../docs/public/screenshots/readme/en-home.png)
+![課程首頁預覽](/images/collections/learn-harness-engineering/docs/public/screenshots/readme/en-home.png)
 
 ### 📖 沉浸式講座
 > 深入探討實際痛點與動手專案（如 Project 01），帶來沉浸式的學習體驗。
 
-![課程講座預覽](../../docs/public/screenshots/readme/en-lecture-01.png)
+![課程講座預覽](/images/collections/learn-harness-engineering/docs/public/screenshots/readme/en-lecture-01.png)
 
 ### 🗂️ 即用的資源庫
 > 專為解決多輪 AI 代理開發中常見陷阱（如脈絡遺失、過早宣告任務完成）而設計的模板與參考配置。
 
-![資源庫預覽](../../docs/public/screenshots/readme/en-resources.png)
+![資源庫預覽](/images/collections/learn-harness-engineering/docs/public/screenshots/readme/en-resources.png)
 
 ## PDF 課程教材
 

@@ -1,3 +1,16 @@
+---
+title: مكتبة الموارد العربية
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/ar/resources/index/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # مكتبة الموارد العربية
 
 يحول هذا المجلد طرق المساق إلى قوالب جاهزة للنسخ ومراجع مختصرة يمكنك استخدامها في مستودع حقيقي.

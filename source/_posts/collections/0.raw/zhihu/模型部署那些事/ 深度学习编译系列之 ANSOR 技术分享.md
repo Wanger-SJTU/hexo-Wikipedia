@@ -1,9 +1,19 @@
 ---
-title: "(1 封私信) 深度学习编译系列之 ANSOR 技术分享"
-date: 2021-05-14
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/360041136
+title: (1 封私信) 深度学习编译系列之 ANSOR 技术分享
+date: "2021-05-14 00:00:00"
+updated: "2021-05-14 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/模型部署那些事/深度学习编译系列之-ANSOR-技术分享/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/360041136
 ---
+
 
 文@小P 家的 001314
 
@@ -31,7 +41,7 @@ TVM 作为深度学习编译器，首先将深度学习网络转换为其内部�
 
 虽然将表示和优化分离可以显著提高模型的调优效率，但是 Schedule 要么需要手写，要么依赖于 模板，这对于包含复杂计算的深度学习网络来说是很困难的。以深度学习模型中常见的计算图 MatMul + Add + Relu 为例，TVM 的代码生成需要以下三个步骤：
 
-![](asset/img_32232a46b769.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%25A8%25A1%25E5%259E%258B%25E9%2583%25A8%25E7%25BD%25B2%25E9%2582%25A3%25E4%25BA%259B%25E4%25BA%258B/asset/img_32232a46b769.jpg)
 
 TVM 以一个计算图作为输入，将其转换成其领域特定语言 Tensor Expression，如上图中间黄色的部分。编程人员需要采用手动或者半手动的方式指定 Schedule，如上图中间灰色的部分，然后再通过 TVM 的代码生成 Pipeline 进行代码生成，得到一系列嵌套的 for 循环，如上图右部所示。
 
@@ -39,7 +49,7 @@ TVM 以一个计算图作为输入，将其转换成其领域特定语言 Tensor
 
 为了解决上述问题，TVM 在其 Pipeline 中加入了 **ANSOR**，如下图所示：
 
-![](asset/img_c8b410580bc2.png)
+![](/images/collections/0.raw/zhihu/%25E6%25A8%25A1%25E5%259E%258B%25E9%2583%25A8%25E7%25BD%25B2%25E9%2582%25A3%25E4%25BA%259B%25E4%25BA%258B/asset/img_c8b410580bc2.png)
 
 这样编程人员仅需提供模型，ANSOR 会自动选择出一套调度策略，再通过 TVM 的代码生成，就可以得到优化后的代码。
 
@@ -47,7 +57,7 @@ TVM 以一个计算图作为输入，将其转换成其领域特定语言 Tensor
 
 这里对 ANSOR 的 pipeline 展开详细介绍。ANSOR Pipeline 如下图所示：
 
-![](asset/img_82a79efe3cb2.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%25A8%25A1%25E5%259E%258B%25E9%2583%25A8%25E7%25BD%25B2%25E9%2582%25A3%25E4%25BA%259B%25E4%25BA%258B/asset/img_82a79efe3cb2.jpg)
 
 ANSOR 的 Pipeline 可以分为如下几个步骤：
 
@@ -90,7 +100,7 @@ Sketch 对每个计算子图进行优化，可以分为以下三个步骤：
 - 调度策略的选择
 首先，**拓扑排序**主要是将 TE 描述的计算图转化成计算队列，获得算子的执行顺序，如下面所示：
 
-![](asset/img_0838721a585a.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%25A8%25A1%25E5%259E%258B%25E9%2583%25A8%25E7%25BD%25B2%25E9%2582%25A3%25E4%25BA%259B%25E4%25BA%258B/asset/img_0838721a585a.jpg)
 
 ANSOR 采用深度优先搜索的方式将计算图转化为计算队列，方便后续的静态分析和调度策略的选择。
 
@@ -98,13 +108,13 @@ ANSOR 采用深度优先搜索的方式将计算图转化为计算队列，方�
 
 一个典型的特征就是这个算子是否对输入数据做了复用。例如 Vector Add 算子，其 Tensor Expression 的表达和伪代码如下所示：
 
-![](asset/img_175fe1b53d51.png)
+![](/images/collections/0.raw/zhihu/%25E6%25A8%25A1%25E5%259E%258B%25E9%2583%25A8%25E7%25BD%25B2%25E9%2582%25A3%25E4%25BA%259B%25E4%25BA%258B/asset/img_175fe1b53d51.png)
 
 它输出的 axis 和输入的 axis 相同，均为 i，因此没有数据的复用。
 
 而 Matmul 算子，其 Tensor Expression 的表达和伪代码如下所示：
 
-![](asset/img_183fc320a1e9.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%25A8%25A1%25E5%259E%258B%25E9%2583%25A8%25E7%25BD%25B2%25E9%2582%25A3%25E4%25BA%259B%25E4%25BA%258B/asset/img_183fc320a1e9.jpg)
 
 输入 A 和输入 B 产生输出 C，C 的 axis 为 i, j；A 的 axis 为 i，k；B 的axis 为 k，j。说明在计算 C[i, *] 的过程中，A[i, k] 被重复使用了 Range(j) = 1024 次，B[k, j] 也被重复使用了 Range(i) = 1024 次。如果我们在实际代码生成的过程中，将 A 和 B 的一部分数据进行缓存，可以显著降低带宽，从而减少运行时间。
 
@@ -112,7 +122,7 @@ ANSOR 根据静态分析提取了如下算子特征：
 
 特征说明IsStrictInlinable输入和输出的维度是否是一一对应的，且语句中不含有 if-then-else 等特殊的表达式HasDataReuse在计算输出数据时，输入的数据是否被重复使用HasFusibleConsumer后面的算子是否可以和该算子融合HasMoreReductionParallel该算子主要为 reduce 操作，这种情况是否需要用 rfactor 调度原语在静态分析获取算子特征后，下一步为**派生策略的选择**，从后向前遍历拓扑排序生成的计算队列，根据算子的特征为算子选择调度策略。 ANSOR 提供了如下调度策略：
 
-![](asset/img_cba50aeb1c30.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%25A8%25A1%25E5%259E%258B%25E9%2583%25A8%25E7%25BD%25B2%25E9%2582%25A3%25E4%25BA%259B%25E4%25BA%258B/asset/img_cba50aeb1c30.jpg)
 
 根据静态分析的结果可以派生调度策略，可以简单地用如下几个派生条件表达：
 
@@ -125,7 +135,7 @@ ANSOR 根据静态分析提取了如下算子特征：
 
 派生规则触发条件Schedule 策略Skip\\Always Inline无数据复用的简单算子compute_inlineMulti-level Tiling有数据复用的算子fuse, splitMulti-level Tiling with Fusion数据复用算子和简单算子融合fuse, split, compute_atAdd Cache Stage数据复用算子的输入、输出cache_read, cache_writeReduction Factorization存在 Reduce 操作，且算子的 Spatial axis 迭代次数较少rfactor同样以一个 Matmul + ReLU + Add 为例，选取后端设备为 GPU，Sketch 的输入为计算子图，输出为应用 Schedule 后产生的代码模板，如下面图所示：
 
-![](asset/img_56f2383e907c.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%25A8%25A1%25E5%259E%258B%25E9%2583%25A8%25E7%25BD%25B2%25E9%2582%25A3%25E4%25BA%259B%25E4%25BA%258B/asset/img_56f2383e907c.jpg)
 
 其中 Add 算子和 Relu 算子为 Simple Op，可以对 Add 算子做 compute inline，产生蓝色部分的代码，可以对 Matmul 算子做分窗，产生红色部分代码，可以对 Input 和 Weight 做 cache_read 产生灰色部分代码。  
 
@@ -142,19 +152,19 @@ Annotation 会随机确定上述内容，生成完整的代码。Annotation 只�
 
 待优化的计算有可能十分复杂，遍历所有的 Annotation 来获取最优实现是不现实的。ANSOR 训练了一个 XGBoost Tree 来对代码的性能进行评估，相比直接跑 Runtime 获取 ground truth，训练获得的 XGBoost Tree 可以大致确定代码的好坏,并且花费的时间更少。为了评定 Annotation 生成的代码的性能，ANSOR 对每个算子的实现提取了如下特征来训练模型，这些特征可以通过遍历 TVM 的 tir 来获取：
 
-![](asset/img_25f7daa611b0.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%25A8%25A1%25E5%259E%258B%25E9%2583%25A8%25E7%25BD%25B2%25E9%2582%25A3%25E4%25BA%259B%25E4%25BA%258B/asset/img_25f7daa611b0.jpg)
 
 根据 Annotation 获取的样本，提取上述特征，再通过 Runtime 获取样本的 ground truth，就可以训练一棵 XGBoost Tree：
 
-![](asset/img_0a35c9030b69.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%25A8%25A1%25E5%259E%258B%25E9%2583%25A8%25E7%25BD%25B2%25E9%2582%25A3%25E4%25BA%259B%25E4%25BA%258B/asset/img_0a35c9030b69.jpg)
 
 通过 XGBoost 库提供的接口可以对 XGBoost Tree 可视化，一个 Matmul + ReLU + Add 的 Annotation 样本训练出的 XGBoost Tree 如下图所示，对于矩阵乘法来说，XGBoost Tree 的特征向量是比较稀疏的，起决定性的特征主要有 vthread_len、threadIdx_x_len、blockIdx_x_len 等。
 
-![](asset/img_92ea5f1d223b.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%25A8%25A1%25E5%259E%258B%25E9%2583%25A8%25E7%25BD%25B2%25E9%2582%25A3%25E4%25BA%259B%25E4%25BA%258B/asset/img_92ea5f1d223b.jpg)
 
 ANSOR 应用 Evolutionary Search，使得优化能更快的收敛，减少遍历的时间。整个 Evolutionary Search 的流程如下图所示：
 
-![](asset/img_20f20f8993b7.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%25A8%25A1%25E5%259E%258B%25E9%2583%25A8%25E7%25BD%25B2%25E9%2582%25A3%25E4%25BA%259B%25E4%25BA%258B/asset/img_20f20f8993b7.jpg)
 
 可以看到特征提取的输入有三个来源：
 

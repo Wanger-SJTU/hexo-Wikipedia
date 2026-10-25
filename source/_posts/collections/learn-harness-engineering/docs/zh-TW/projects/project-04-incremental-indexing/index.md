@@ -1,3 +1,16 @@
+---
+title: Project 04. 用執行回饋修正代理的行為
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/zh-TW/projects/project-04-incremental-indexing/index/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # Project 04. 用執行回饋修正代理的行為
 
 > 相關講義：[L07. 給 agent 劃清每次任務的邊界](./../../lectures/lecture-07-why-agents-overreach-and-under-finish/index.md) · [L08. 用功能清單約束 agent 該做什麼](./../../lectures/lecture-08-why-feature-lists-are-harness-primitives/index.md)

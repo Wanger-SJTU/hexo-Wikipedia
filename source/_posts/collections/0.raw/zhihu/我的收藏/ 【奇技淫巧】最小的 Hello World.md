@@ -1,9 +1,19 @@
 ---
-title: "(1 条消息) 【奇技淫巧】最小的 Hello World"
-date: 2023-05-17
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/623724335
+title: (1 条消息) 【奇技淫巧】最小的 Hello World
+date: "2023-05-17 00:00:00"
+updated: "2023-05-17 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/【奇技淫巧】最小的-Hello-World/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/623724335
 ---
+
 
 最近发现一个事情，我写的代码编译为 exe 后动辄 1MB 向上，而很多的小工具往往只有几 KB——甚至还带图形界面。如何优化编译后代码的大小？
 

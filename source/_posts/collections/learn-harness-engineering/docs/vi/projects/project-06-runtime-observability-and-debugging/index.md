@@ -1,3 +1,16 @@
+---
+title: Dự án 06. Xây dựng Harness Agent Đầy đủ (Capstone)
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/vi/projects/project-06-runtime-observability-and-debugging/index/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 [English Version →](../../../en/projects/project-06-runtime-observability-and-debugging/) | [中文版本 →](../../../zh/projects/project-06-runtime-observability-and-debugging/)
 
 > Bài giảng liên quan: [Bài 11. Làm cho runtime của agent có thể quan sát được](./../../lectures/lecture-11-why-observability-belongs-inside-the-harness/index.md) · [Bài 12. Bàn giao sạch sẽ ở cuối mỗi phiên](./../../lectures/lecture-12-why-every-session-must-leave-a-clean-state/index.md)

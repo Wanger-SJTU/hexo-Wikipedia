@@ -1,3 +1,16 @@
+---
+title: "SOP: 계층형 도메인 아키텍처(Layered Domain Architecture)"
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/ko/resources/openai-advanced/sops/layered-domain-architecture/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # SOP: 계층형 도메인 아키텍처(Layered Domain Architecture)
 
 에이전트(agent)가 경계를 계속 위반하거나, 계층 간에 로직을 중복 작성하거나, 몇 번의 세션 후에 검토하기 어려운 코드를 생성할 때 이 표준 작업 절차(SOP)를 사용하십시오.

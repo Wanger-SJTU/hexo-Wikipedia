@@ -1,10 +1,19 @@
 ---
-title: "有没有什么比TPU更好的实现矩阵乘法的脉动阵列？"
-date: 2026-05-23
-tags: [知乎]
-source: https://www.zhihu.com/question/1907759496014571228/answer/2041310753362371733
-
+title: 有没有什么比TPU更好的实现矩阵乘法的脉动阵列？
+date: "2026-05-23 00:00:00"
+updated: "2026-05-23 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/体系结构/有没有什么比TPU更好的实现矩阵乘法的脉动阵列/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://www.zhihu.com/question/1907759496014571228/answer/2041310753362371733
 ---
+
 
 两年前我用 chisel 从头开始设计 NPU。当时想的很简单，做一个最简单的基于脉动矩阵的矩阵乘法单元，然后放在 FPGA 上面稍微验证一下。中间磕磕绊绊两年多，也因为自己个人的工作原因没有时间继续写。现在抽空终于在板子上面验证了，也就借着这个机会写个知乎分享一下自己的探索和尝试。
 

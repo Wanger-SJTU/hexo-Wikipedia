@@ -1,9 +1,19 @@
 ---
-title: "有哪些优秀的 C/C++ 开源代码框架？这些框架的设计思路是怎样的？"
-date: 2026-04-21
-tags: [知乎]
-source: https://www.zhihu.com/question/20201738/answer/2928936881
+title: 有哪些优秀的 C/C++ 开源代码框架？这些框架的设计思路是怎样的？
+date: "2026-04-21 00:00:00"
+updated: "2026-04-21 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/有趣的东西/有哪些优秀的-C_C-开源代码框架-这些框架的设计思路是怎样的/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://www.zhihu.com/question/20201738/answer/2928936881
 ---
+
 
 知乎用户
 ​

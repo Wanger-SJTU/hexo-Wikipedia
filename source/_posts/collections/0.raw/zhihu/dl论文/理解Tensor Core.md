@@ -1,10 +1,19 @@
 ---
-title: "理解Tensor Core"
-date: 2019-07-30
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/75753718
-
+title: 理解Tensor Core
+date: "2019-07-30 00:00:00"
+updated: "2019-07-30 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/dl论文/理解Tensor-Core/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/75753718
 ---
+
 
 作者： 汪岩
 

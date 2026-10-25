@@ -1,3 +1,16 @@
+---
+title: 优质promt
+date: "2026-04-11 21:40:28"
+updated: "2026-04-11 21:40:28"
+layout: post
+permalink: /collections/0.raw/归档/LLM/Prompt-手册——gpt-best-practices/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 #prompt
 
 
@@ -70,9 +83,9 @@ GPT 可以自信地编造假答案，尤其是当被问及深奥的话题或引�
 附图是两个优秀的Prompt：AutoGPT核心指令+小红书写手。都覆盖了框架的大部分
 
 
-![[assets/20230620_003440.jpg]]
+![20230620_003440.jpg](/images/collections/assets/20230620_003440.jpg)
 
-![[assets/20230620_003610.jpg]]
+![20230620_003610.jpg](/images/collections/assets/20230620_003610.jpg)
 1️⃣ 角色、技能、个性
 角色：该提示以声明AI的明确角色开始。这已经成为了标准的最佳实践。它会切换到那个角色来思考问题
 技能：要告诉它能做什么事情，有哪些工具可以用

@@ -1,13 +1,23 @@
 ---
-title: "挑战 Transformer：全新架构 Mamba 详解"
-date: 2025-09-23
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/684231320
+title: 挑战 Transformer：全新架构 Mamba 详解
+date: "2025-09-23 00:00:00"
+updated: "2025-09-23 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/LLM-SD/挑战-Transformer-全新架构-Mamba-详解/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/684231320
 ---
+
 
 打个小广告 ☻，知乎专栏**《大模型前沿应用》**的内容已经收录在新书**《揭秘大模型：从原理到实战》**中。感兴趣的朋友可以购买，多谢支持！♥♥
 
-[![](asset/img_d0c6b624226d.jpg)广告
+[![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_d0c6b624226d.jpg)广告
 
 揭秘大模型：从原理到实战
 
@@ -31,13 +41,13 @@ source: https://zhuanlan.zhihu.com/p/684231320
 
 与类似规模的 Transformer 相比，Mamba 具有 5 倍的吞吐量**，**而且 Mamba-3B 的效果与两倍于其规模的 Transformer 相当**。性能高、效果好，Mamba 成为新的研究热点。
 
-![](asset/img_a75536ef4a51.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_a75536ef4a51.jpg)
 
 图1 Mamba 在推理过程中的吞吐量对比本文将详细的解读 Mamba 架构，由于 Mamba 是基于 SSM->HiPPO->S4->Mamba 演化过来的，而 HiPPO、S4、Mamba 的一作者都是卡内基梅隆大学机器学习系助理教授** Albert Gu**。因此，本文将从标准 SSM 开始，逐步介绍 HiPPO、S4、Mamba。
 
 图2总结了SSM、HiPPO、S4、Mamba的主要区别，以及各个模型的主要内容。本文内容也将按图中内容展开。
 
-![](asset/img_c2ab19a3af5e.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_c2ab19a3af5e.jpg)
 
 图2-2：HiPPO、S4、Mamba
 ### 一、现有架构问题
@@ -50,24 +60,24 @@ source: https://zhuanlan.zhihu.com/p/684231320
 
 Transformer 的一个主要优点是，无论它接收到多长的输入，它都使用序列中的所有 token 信息（无论序列有多长）来对输入数据进行处理。
 
-![](asset/img_a55a9c315fa2.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_a55a9c315fa2.jpg)
 
 图1-1：Transformer会查看过去所有 token但是为了获得全局信息，注意力机制在长序列上非常耗费显存。注意力创建一个矩阵，将每个 token 与之前的每个 token 进行比较。矩阵中的权重由 token 对之间的相关性决定。
 
-![](asset/img_18fafb9c659e.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_18fafb9c659e.jpg)
 
 图1-2：Transformer 会计算每个 token 之间的 Attention在训练过程中，Attention 计算可以并行化，所以可以极大地加快训练速度。但是在推理过程中，当生成下一个 token 时，我们需要重新计算整个序列的注意力。
 
-![](asset/img_066d832d207f.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_066d832d207f.jpg)
 
 图1-3：生成新 token 时需要重新计算整个序列的注意力长度为 L 的序列生成 token 大约需要 L² 的计算量，如果序列长度增加，计算量会平方级增长。因此，**需要重新计算整个序列是 Transformer 体系结构的主要瓶颈**。
 
-![](asset/img_f193eb65cadf.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_f193eb65cadf.jpg)
 
 图1-4：Transformer 训练快、推理慢
 #### 1.2 RNN 的问题
 
-![](asset/img_8a994c3e9261.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_8a994c3e9261.jpg)
 
 图1-5：循环神经网络 RNN在生成输出时，RNN 只需要考虑之前的隐藏状态和当前的输入。这样不会重新计算以前的隐藏状态，这正Transformer 不具备的。
 
@@ -75,11 +85,11 @@ Transformer 的一个主要优点是，无论它接收到多长的输入，它�
 
 RNN 的每个隐藏状态都是之前所有隐藏状态的聚合。但是这里会有一个问题，在生成 token "Liang" 时，最后一个隐藏状态不再包含关于 token "Hello" 的信息。这会导致随着时间的推移，RNN 会忘记更久的信息，因为它只考虑前一个状态。
 
-![](asset/img_e8af4acdcd86.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_e8af4acdcd86.jpg)
 
 图1-6：只考虑前一个 hidden state并且 RNN 的这种顺序性产生了另一个问题。**训练不能并行进行**，因为它需要按顺序完成每一步。
 
-![](asset/img_b3d89c08211a.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_b3d89c08211a.jpg)
 
 图1-7：RNN 训练不能并行RNN的统一定义为：
 
@@ -93,7 +103,7 @@ $$\nabla_{\theta}\bm{x}_{t}=\frac{\partial \bm{x}_t}{\partial \bm{x}_{t-1}}\nabl
 
 与 Transformer 相比，RNN 的问题完全相反！它的**推理速度非常快，但不能并行化导致训练很慢**。
 
-![](asset/img_3e810c0a470b.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_3e810c0a470b.jpg)
 
 图1-8：RNN 和 Transformer对比**人们一直在寻找一种既能像 Transformer 那样并行化训练，能够记住先前的信息，又能在推理时时间是随序列长度线性增长的模型，Mamba 就是这样应运而生的**。解下来我们从 SSM 开始，逐步介绍 Mamaba。
 
@@ -109,28 +119,28 @@ $$\begin{align} \frac{d\bm{x}\left( t \right)}{dt} &=\bm{Ax}\left( t \right)+\bm
 
 下图是 SSM 的架构，主要包含两个部分：状态更新方程和输出方程。
 
-![](asset/img_4020eeca1420.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_4020eeca1420.jpg)
 
 图2-1：SSM结构SSM 可以简化为以下结构：
 
-![](asset/img_7ec3fa7d4dfe.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_7ec3fa7d4dfe.jpg)
 
 图2-2：简化的SSM结构下面我们看一下更详细的结构，首先是状态更新，如下所示：
 
-![](asset/img_6e525aeeaba8.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_6e525aeeaba8.jpg)
 
 图2-3：状态更新详细结构**备注**：图中的输入 \bm{u}_\left( t \right)\in \mathbb{R}^D ，表示输入的信号是 D 维的。 SSM 也可以用于处理多维信号输入。
 
 然后是输出方程，详细机构如下所示：
 
-![](asset/img_b3ac26ec20a7.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_b3ac26ec20a7.jpg)
 
 图2-4：输出方程详细结构
 #### 2.3 SSM 例子：弹簧振子
 
 下面举一个描述弹簧振子系统的 SSM 例子。
 
-![](asset/img_3704f3fc8815.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_3704f3fc8815.jpg)
 
 图2-5：弹簧振子考虑一个质量为 m 的物体，它连接在一个劲度系数为 k 的弹簧上，并且受到阻尼系数为 c 的阻尼力作用。当物体从平衡位置偏离时，它会在弹簧力的作用下进行振动。我们可以用状态空间模型来描述这个系统的动态。
 
@@ -218,7 +228,7 @@ $**投影操作符**：作者定义了一个投影操作符 \text{proj}_t ，它
 
 **在线函数逼近**
 
-![](asset/img_98e40551d666.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_98e40551d666.jpg)
 
 图3-1：HiPPO框架图2-6展示了 HiPPO 框架，首先需要找到投影\text{proj}_t ，将输入 \bm{u}\left( t \right) 投影到多项式空间；然后将投影通过一组系数\bm{x}\left( t \right)来表示，这些系数捕捉了函数\bm{u}\left( t \right)的历史信息；使用连续时间下的一阶常微分方程来表示系数\bm{x}\left( t \right)如何随时间 t 动态变化；最后，将连续时间的动态变换转化为离散时间的递归关系（比如双线性变换），这允许 HiPPO 在每个时间步 k 更新系数 \bm{x}_k 。
 
@@ -240,7 +250,7 @@ $$k \end{cases} \end{equation} ,\space B_n=1 \tag{10}">\textbf{LagT: }A_{nk}=-\f
 
 由于我们处理的输入往往是离散的，因此我们需要将公式（9）的 ODE 离散化。ODE 离散化是一种常用的数据技术，它将**连续时间的常微分方程转换为离散时间的差分方程**。这通常涉及到选择一个合适的时间步长（或步长Δt），并使用数值方法（如欧拉方法、双线性）来近似连续微分。
 
-![](asset/img_89c5b82402e8.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_89c5b82402e8.jpg)
 
 图3-2：连续信号离散化使用双线性离散化，如下所示：
 
@@ -248,15 +258,15 @@ $$\begin{align} x\left( t +\Delta t\right)-\frac{\Delta t}{2}Ax\left( t+\Delta t
 
 离散化之后的 SSM 结构可以表示如下：
 
-![](asset/img_4de67f610a21.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_4de67f610a21.jpg)
 
 $图3-3：离散化 SSM在每个时间步长，我们计算当前输入( \bar{\bm{B}}{u}_k )如何影响前一个状态( \bar{\bm{A}}\bm{x}_{t-1} )，然后计算预测输出( \bar{\bm{C}}\bm{x}_k )。$
 
-![](asset/img_c7877052fc5c.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_c7877052fc5c.jpg)
 
 图3-4：每个时间步的计算这种表示看起来是不是有点熟悉？其实他的处理方法和RNN一样。
 
-![](asset/img_c1ecb14d2d4e.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_c1ecb14d2d4e.jpg)
 
 图3-5：离散化后和RNN类似
 #### 3.2 HiPPO-LegS
@@ -285,11 +295,11 @@ $将 HiPPO 和 RNN 相结合，当前状态 \bm{h}_{t}\in \mathbb{R}^d 不仅和
 
 模型结构如下：
 
-![](asset/img_70cbc5a436e5.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_70cbc5a436e5.jpg)
 
 图3-6：HiPPO和RNN结合下面是pMINIST 数据集上的结果，可以看到 LegS 的效果要好于 LagT 和 LegT，同时 HiPPO 的效果好于之前的其它模型。
 
-![](asset/img_194864454004.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_194864454004.jpg)
 
 图3-7：HiPPO实验结果备注：**pMNIST（permuted MNIST）是一个经过修改的MNIST数据集**，它用于测试和评估机器学习模型在处理序列数据和学习长期依赖关系方面的能力。在 pMNIST 中，原始 MNIST 图像的像素被重新排列。这意味着图像的像素不再是按照自然顺序（从左到右，从上到下）呈现，而是按照一个固定的、随机的排列顺序。这种排列方式使得模型必须学习像素之间的长期依赖关系，而不能简单地依赖于局部空间结构。
 
@@ -333,19 +343,19 @@ $\begin{align} &{y}_k=\bar{\bm{C}}\bar{\bm{A}}^k\bar{\bm{B}}{u}_0+\bar{\bm{C}}\b
 
 作者在这一节中还讨论了如何计算 SSMn卷积核，这是他们技术贡献的关键部分。通过这种卷积表示，SSM 可以被有效地训练，同时保持其在处理长距离依赖（LRDs）方面的能力。这种表示形式为 SSM 在各种序列建模任务中的应用提供了灵活性，包括图像处理、语音识别和时间序列分析等。 
 
-![](asset/img_4a57a77761af.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_4a57a77761af.jpg)
 
 图4-1：SSM 卷积核形式下面是一个具体的例子，如何使用卷积核生成输出。
 
-![](asset/img_bf951a0202fa.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_bf951a0202fa.jpg)
 
 图4-2：使用卷积核生成输出卷积的一个主要好处是它可以并行训练。但是由于核大小是固定，它们的推理不如 RNN 快速并且对序列长度有限制。
 
-![](asset/img_fd12397b6c4e.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_fd12397b6c4e.jpg)
 
 图4-3：递归 SSM 和 卷积 SSM 的对比这里可以使用一个简单的技巧，即根据任务选择表示。在训练过程中使用可以并行化的卷积表示，在推理过程中，我们使用高效的循环表示。
 
-![](asset/img_edff2294be15.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_edff2294be15.jpg)
 
 图4-4：递归推理、卷积训练
 #### 4.4 为什么对角化可以减少 SSM 计算复杂度
@@ -454,7 +464,7 @@ $\begin{align} &\bm{x}_k=\bar{\bm{A}}\bm{x}_{k-1}+\bar{\bm{B}}{u}_k=\bm{A}_1\bm{
 
 最后作者对比了 S4 和原始卷积、递归、Attention 之间的计算复杂度，可以看到 S4 是最低的，如下图所示：
 
-![](asset/img_deb7c6d60faa.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_deb7c6d60faa.jpg)
 
 图4-5：计算复杂度对比图中 L 表示序列长度，B 表示 batch size，H 表示隐藏维度。
 
@@ -466,7 +476,7 @@ $\begin{align} &\bm{x}_k=\bar{\bm{A}}\bm{x}_{k-1}+\bar{\bm{B}}{u}_k=\bm{A}_1\bm{
 
 在图 4-15 中，显示了 S4 的推理复杂度为 O\left( H^2 \right) ，而 Transformer 的推理复杂度为 O\left( L^2H+LH^2 \right) ，我们看一下具体的测试对比，如下图所示。
 
-![](asset/img_3296ca350e13.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_3296ca350e13.jpg)
 
 图4-6：推理速度对比序列长度为 1024 时，S4 的推理速度是 Transformer 的 1.58 倍；序列长度为 4096 时，是 Transformer 推理速度的 5.19 倍，由于不需要 KV cache，因此内存占用非常小。
 
@@ -474,7 +484,7 @@ $\begin{align} &\bm{x}_k=\bar{\bm{A}}\bm{x}_{k-1}+\bar{\bm{B}}{u}_k=\bm{A}_1\bm{
 
 将 S4 应用在生成模型中，实验结果如下图所示。
 
-![](asset/img_f4718c83bb10.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_f4718c83bb10.jpg)
 
 图4-7：S4 作为生成模型的效果**HiPPO 影响**
 
@@ -487,7 +497,7 @@ HiPPO 矩阵是 S4 模型中用于处理长距离依赖（LRDs）的关键组件
 - NPLR SSMs：作者进一步研究了在没有 HiPPO 矩阵的情况下，随机 NPLR（Normal Plus Low-Rank，正规+低秩矩阵）的表现。结果表明，即使在 NPLR 形式下，这些随机矩阵的性能仍然不佳，这验证了 HiPPO 矩阵在 S4 模型中的核心作用。
 通过这些消融实验，作者强调了 HiPPO 矩阵在 S4 模型中的重要性。这些实验结果不仅证实了 HiPPO 矩阵在处理长距离依赖方面的有效性，而且也表明了它在提升模型整体性能方面的关键作用。这些发现对于理解 S4 模型的设计和优化至关重要。
 
-![](asset/img_46531533777e.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_46531533777e.jpg)
 
 图4-8：HiPPO 矩阵初始化效果远远高于其它矩阵初始化虽然 S4 在保证了计算效率的同时，优化了长距离依赖问题。但是由于矩阵 \bm{A},\bm{B},\bm{C} 是固定不变的，和输入 token 无关，这就导致了 S4 在一些合成任务上效果不佳，比如选择性复制任务。
 
@@ -511,7 +521,7 @@ HiPPO 矩阵是 S4 模型中用于处理长距离依赖（LRDs）的关键组件
 
 在选择性复制任务中，SSM 的目标是复制输入的部分内容并按顺序输出它们：
 
-![](asset/img_d575f40861f7.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_d575f40861f7.jpg)
 
 图5-1：选择性复制任务然而，由于（循环/卷积）SSM 是线性时间不变的，因此在这项任务中表现不佳。正如我们之前看到的，对于 SSM生成的每个 token，矩阵 A、B 和 C 都是相同的。
 
@@ -519,17 +529,17 @@ HiPPO 矩阵是 S4 模型中用于处理长距离依赖（LRDs）的关键组件
 
 SSM 表现不佳的第二项任务是归纳头，其目标是重现输入中发现的模式：
 
-![](asset/img_784575ffcc5e.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_784575ffcc5e.jpg)
 
 图5-2：重现输入中发现的模式在上面的例子中，我们本质上是在执行一次提示，我们试图“教”模型在每个“Q:”之后提供一个“A:”的回应。然而，由于 SSM 是时间不变的，它无法选择从历史中回忆哪些之前的 token。
 
 让我们通过关注矩阵 B 来说明这一点。无论输入 u 是什么，矩阵 B 都保持不变，因此与 u 无关：
 
-![](asset/img_0e15bb1233b7.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_0e15bb1233b7.jpg)
 
 图5-3：矩阵 B 与输入 u 无关同理，无论输入是什么，A 和 C 也不变，这就是我们上面说的静态。
 
-![](asset/img_e7d9d4864e24.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_e7d9d4864e24.jpg)
 
 图5-4：A 和 C 矩阵也和输入 u 无关相比之下，这些任务对于 Transformer 来说相对容易，因为它们会根据输入序列动态地改变自己的注意力。它们可以选择性地“查看”或“关注”序列的不同部分。
 
@@ -541,25 +551,25 @@ SSM 在这些任务上的糟糕表现说明了时间不变 SSM 的潜在问题�
 
 Mamba 集成了 S4 和 Transformer 的精华，一个更加高效（S4），一个更加强大（Transformer）。
 
-![](asset/img_b65295cdb901.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_b65295cdb901.jpg)
 
 图5-5：Mamba 集成了 S4 和 Transformer 各自的优点正如上面所提到的，它是通过有选择地将数据压缩到状态中来实现的。当你有一个输入句子时，通常会有一些信息，比如停用词，没有太多意义。
 
 为了有选择地压缩信息，我们需要让参数依赖于输入。为此，我们首先来探讨一下 SSM 在训练过程中输入和输出的维度。
 
-![](asset/img_af1af66f2ad7.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_af1af66f2ad7.jpg)
 
 图5-6：SSM 输入（u）输出（y）维度**备注**：在前面的 HiPPO 和 S4 中，我们假设的输入信号 u\left( t \right) 是 1 维的，而实际应用中大多数都是多维的，后面我们默认是多维输入（默认维度为 D）。**而且需要强调的是 S4 用的是 Single-input-single-output (SISO)，即对应于每一个输入的维度，都有一套独立的 SSM 参数 （传统的 RNN 是 MIMO，multiple-input-multiple-output, 很容易混淆）**。
 
 在 S4 中，矩阵 A、B 和 C 与输入无关，因为它们的维度 N 和 D 是静态的，不会改变。
 
-![](asset/img_20cc861560dd.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_20cc861560dd.jpg)
 
 图5-7：S4 中的矩阵A、B、C**备注**：实际上矩阵 \bm{A}\in \mathbb{R}^{N\times N}，但是通过对角化技术，可以转化为 N 维，因此图5-7中，每个输入维度对应的矩阵 A 维度为 N，输入一共是 D 维，因此矩阵 A 可以表示为 N \times D 的矩阵。
 
 相反，Mamba 通过将输入序列的长度和批次大小结合起来，使矩阵 B 和 C，甚至步长 ∆ 都依赖于输入：
 
-![](asset/img_bcf6193cff7f.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_bcf6193cff7f.jpg)
 
 图5-8：Mamba 中的矩阵B、C和输入有关（L是序列长度）这意味着对于每个输入 token，我们现在有不同的 B 和 C 矩阵。
 
@@ -569,11 +579,11 @@ Mamba 集成了 S4 和 Transformer 的精华，一个更加高效（S4），一�
 
 在 SSM 中，通过调整 ∆，模型可以控制对当前输入的关注度，从而实现类似于 RNN 门控的效果。例如，**当 ∆ 较大时，模型倾向于关注当前输入并忽略之前的信息**；而当∆较小时，模型则倾向于保留更多的历史信息：
 
-![](asset/img_669f009e1b14.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_669f009e1b14.jpg)
 
 图5-9：步长 ∆ 效果相当于门控下面我们看一下选择性 SSM 的完整过程，如下所示：
 
-![](asset/img_366c5db7d71b.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_366c5db7d71b.jpg)
 
 图5-10：选择性 SSM 完整过程图 5-10 中的 Represents structured N\times N  matrix 说的就是原始 N\times N 的矩阵 \bm{A} 经过对角化之后变成维度 N 。
 
@@ -622,7 +632,7 @@ multiply and sum with C，得到最后的(B,L,D) output 写入HBM
 
 整个过程的总读写量是 O(BLN) ，比之前省了 O\left( N \right) 倍。 backward 的时候就把 \overline{\boldsymbol{A}}, \overline{\boldsymbol{B}} 重算一遍，类似于flashattn 重算 attention 分数矩阵的思想。只要重算的时间比读 O(BLND) 快就算有效。
 
-![](asset/img_c38c523bf924.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_c38c523bf924.jpg)
 
 图5-10：Mamba 的 scan 和其它方法对比Mamba 的实现比其它方法实现快很多倍，scan 在输入长度 2k 的时候就开始比 FlashAttention 快了，之后越长越快。同时 scan 也比 Convolution 快。
 
@@ -630,17 +640,17 @@ multiply and sum with C，得到最后的(B,L,D) output 写入HBM
 
 下图是 Mamba 的模型结构：
 
-![](asset/img_b0ed55bcdeb2.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_b0ed55bcdeb2.jpg)
 
 图5-11：Mamba 模型结构之前的 SSM 模型要 work，都会加上 output gating，之后再过个线性层 channel mixing，如上图的最左边所示。这两个部分跟 Gated MLP（上图中间）右边的支路和最上面的 channel mixing 是一样的。所以 SSM 层如果跟Gated MLP 合并的话，难免会感觉有点冗余，所以作者干脆把两个合二为一，把 token mixing 层和 channel mixing。
 
 图 5-11 的 Mamba 可以作为一个块来实现，就像我们可以在解码器块中表示自注意力一样。
 
-![](asset/img_394c2c1ebb26.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_394c2c1ebb26.jpg)
 
 图5-12：Mamba 块与解码器一样，我们可以堆叠多个 Mamba 块，并使用它们的输出作为下一个 Mamba 块的输入：
 
-![](asset/img_3460bfcb9b7d.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_3460bfcb9b7d.jpg)
 
 图5-13：多个Mamba块组合使用它首先进行线性投影以扩展输入 embedding。然后，在应用选择性 SSM 之前进行卷积。选择性 SSM 具有以下属性：
 
@@ -650,22 +660,22 @@ multiply and sum with C，得到最后的(B,L,D) output 写入HBM
 - 硬件感知算法，加速计算；
 **下面是一个端到端（输入到输出）的例子：
 
-![](asset/img_fad3ee3f5ae7.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_fad3ee3f5ae7.jpg)
 
 图5-14：Mamba 架构端到端输出例子下面我们看一下 Mamba 和 Transformer 以及 RNN 的对比：
 
-![](asset/img_54189ac840bc.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_54189ac840bc.jpg)
 
 图5-15：Mamaba和Transformer以及RNN对比
 #### 5.5 实验
 
 之前提到 \Delta 的作用类似遗忘门，而遗忘门毫无疑问是 LSTM 里面最重要的门，下面这个消融实验结果就论证了 \Deltadata dependent 影响最大。**
 
-![](asset/img_f12632009e5f.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_f12632009e5f.jpg)
 
 图5-16：对不同参数data dependent的敏感性最后再看一下模型效果：
 
-![](asset/img_bf76698bb515.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_bf76698bb515.jpg)
 
 图5-17：Mamba和Transformer对比总结起来就是，效果最好，速度最快！
 

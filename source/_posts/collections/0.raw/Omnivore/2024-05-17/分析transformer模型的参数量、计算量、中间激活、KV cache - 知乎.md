@@ -1,6 +1,18 @@
 ---
-id: caf4a4ea-9604-457d-92b1-43d4fb14f27d
+title: 分析transformer模型的参数量、计算量、中间激活、KV cache - 知乎
+date: "2026-04-11 21:40:28"
+updated: "2026-04-11 21:40:28"
+layout: post
+permalink: /collections/0.raw/Omnivore/2024-05-17/分析transformer模型的参数量、计算量、中间激活、KV-cache-知乎/
 disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
+---
+id: caf4a4ea-9604-457d-92b1-43d4fb14f27d
 ---
 
 # 分析transformer模型的参数量、计算量、中间激活、KV cache - 知乎

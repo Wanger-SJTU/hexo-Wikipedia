@@ -1,9 +1,19 @@
 ---
-title: "Roofline模型：算子性能分析理论基础"
-date: 2026-01-16
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/1995487023952336382
+title: Roofline模型：算子性能分析理论基础
+date: "2026-01-16 00:00:00"
+updated: "2026-01-16 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/AI-infra/Roofline模型-算子性能分析理论基础/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/1995487023952336382
 ---
+
 
 计算强度
 在高性能计算（HPC）与深度学习领域中，模型的**计算强度**（Computational Intensity，亦称算术强度，Arithmetic Intensity）是一个核心性能指标，用于刻画**计算量与数据访问量之间的比例关系**，从而判断模型或算子更容易受限于计算能力还是内存带宽。

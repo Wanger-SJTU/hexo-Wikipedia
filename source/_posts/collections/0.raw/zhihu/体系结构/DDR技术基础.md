@@ -1,13 +1,23 @@
 ---
-title: "DDR技术基础"
-date: 2020-08-20
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/20940759
+title: DDR技术基础
+date: "2020-08-20 00:00:00"
+updated: "2020-08-20 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/体系结构/DDR技术基础/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/20940759
 ---
+
 
 核弹炸楼：
 
-![](asset/img_c2f3ded6aa96.png)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_c2f3ded6aa96.png)
 
 作为一个不打游戏的三好青年，本人对于显卡本身是不感兴趣的，反正穷，也买不起；但是作为一名有追求的工程师，看到GTX1080的技术参数中含有GDDR5x的时候，我本能的搜了一搜。
 
@@ -21,7 +31,7 @@ source: https://zhuanlan.zhihu.com/p/20940759
 
 简单回顾一下DRAM相关技术的发展历史：
 
-![](asset/img_ee1e60ccfb4a.png)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_ee1e60ccfb4a.png)
 
 早期的DRAM处于异步工作模式，其主频与CPU的主频并不一致。在DRAM的46年的发展历史中，一半时间（前23年）处于这种“远古”阶段。在此阶段，DRAM的容量从1Kb，做到4Kb，16Kb......到了89年，DRAM的容量达到4MB，92年16MB，接口技术其实并没有什么本质创新，频率被限制在50M以下。当然了，这频率也不算差，1989年的intel 486 DX处理器主频也只有33M而已。
 
@@ -29,7 +39,7 @@ source: https://zhuanlan.zhihu.com/p/20940759
 
 DDR接口的出现，带来了内存速度的大幅提高。下面这张图比较好的给出了DDR接口的演进历史，从DDR2->DDR3->DDR4等。解释下含义：DDR3-1333是说，DRAM接口单根pin的速度为1333Mbit/s，如果接口为128pin，那么DRAM接口速度可以达到21.3GB/s。
 
-![](asset/img_cc92948800bf.png)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_cc92948800bf.png)
 
 需要指出的是，现代化的DRAM技术，更像是一门接口技术，而不像是存储技术。得益于摩尔定律，随着工艺尺寸的不断缩进，DRAM的容量越做越大，这个并不难，但是如果没有DDR1，DDR2和DDR3，DDR4等不断的倍频高速接口出现，DRAM的速度基本没有办法提高。
 
@@ -41,7 +51,7 @@ DDR接口的出现，带来了内存速度的大幅提高。下面这张图比�
 
 在下图给出的示例中，SDRAM的接口速度是133M，DDR1接口的速度是266M，DDR2接口的速度是533M，DDR3的接口速度是1066M。每提高一代，接口性能都提高了一倍，但是注意看，这四代接口的核心频率都是133M！！也就是说，DRAM存储单元的读写速度没有丝毫提高！！
 
-![](asset/img_8f4004e1e054.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_8f4004e1e054.jpg)
 
 这是怎么做到的？？？
 
@@ -59,11 +69,11 @@ DDR3是双沿传输的。核心频率依然是133M，但是有8bit预取，也�
 
 下面这张图给出了DDR各代技术的对比，没有包含最新的DDR4，大家看个大概即可，关键是理解上面说的原理：
 
-![](asset/img_876b5d5e7c08.png)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_876b5d5e7c08.png)
 
 当然了，DRAM接口的速度提高，内部存储单元的数据带宽也必须同步提高；但是由于存储单元的操作频率又上不去，所以只能不停的增加DRAM内部的BUS宽度。如果预取为2，那么对于64pin的DRAM，其内部BUS位宽是128bit宽，内外BUS宽比为2:1；如果预取为4，那么内部BUS的位宽是256bit宽，内外BUS宽比为4。如下图：
 
-![](asset/img_7b4ae7fa57a0.png)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_7b4ae7fa57a0.png)
 
 粗暴的增加DRAM内部BUS的宽度，每个T取出更多的bit，然后使用超高速的IO接口把这些数敲出去，这就是DRAM各代技术的简化版。正因为如此，我们说DRAM更像是一门接口技术，反而不太像存储技术。DDR接口技术乃是十分经典的并行接口技术，DDR的BUS协议也被广泛借鉴，目前的NAND Flash也沿用了DDR接口技术。
 

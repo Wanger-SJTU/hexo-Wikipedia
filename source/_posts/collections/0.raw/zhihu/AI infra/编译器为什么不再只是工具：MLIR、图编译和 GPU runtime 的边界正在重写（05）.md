@@ -1,10 +1,19 @@
 ---
-title: "编译器为什么不再只是工具：MLIR、图编译和 GPU runtime 的边界正在重写（05）"
-date: 2026-04-10
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/2025935949230618433
-
+title: 编译器为什么不再只是工具：MLIR、图编译和 GPU runtime 的边界正在重写（05）
+date: "2026-04-10 00:00:00"
+updated: "2026-04-10 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/AI-infra/编译器为什么不再只是工具-MLIR、图编译和-GPU-runtime-的边界正在重写(05)/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/2025935949230618433
 ---
+
 
 在传统软件里，编译器更像构建阶段工具：源码进来，二进制出去，任务完成。但在 AI 系统里，这个边界越来越站不住。图编译、MLIR、多层 IR、GPU lowering、layout、buffer planning 这些东西，已经不只是在“翻译程序”，而是在提前定义运行时将面对什么样的资源现实。
 

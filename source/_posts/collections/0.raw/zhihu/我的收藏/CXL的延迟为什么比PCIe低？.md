@@ -1,10 +1,19 @@
 ---
-title: "CXL的延迟为什么比PCIe低？"
-date: 2023-11-30
-tags: [知乎]
-source: https://www.zhihu.com/question/621490847/answer/3308431649
-
+title: CXL的延迟为什么比PCIe低？
+date: "2023-11-30 00:00:00"
+updated: "2023-11-30 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/CXL的延迟为什么比PCIe低/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://www.zhihu.com/question/621490847/answer/3308431649
 ---
+
 
 -  模拟 PHY 是同一个，所以最底层传数据延时一样；
 -  除了模拟 PHY, 上面还有传输层，数据链路层，逻辑 PHY, CXL 使用 Flit 包，大小固定，每个字段单独定义，携带信息量大， 对于64字节这种有效数据带宽高。没有了PCIe 的排序规则、DLLP、访问权限检查等这些耗时的操作。简单来说，就是 CXL 在控制器IP 的设计上做了优化，延迟更低, 有效数据是控制器到控制器 PCIe 50ns, CXL 25ns。

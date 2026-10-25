@@ -1,9 +1,19 @@
 ---
-title: "临界区互斥实现：Dekker互斥算法"
-date: 2020-04-01
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/122544351
+title: 临界区互斥实现：Dekker互斥算法
+date: "2020-04-01 00:00:00"
+updated: "2020-04-01 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/编程向/临界区互斥实现-Dekker互斥算法/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/122544351
 ---
+
 
 在学习OS的过程中遇到了这个由荷兰数学家Dekker提出的互斥算法，觉得有必要记录总结一下。一些基本的概念如: ***race conditin、mutual exclution、critical section*** 就不在此赘述了。
 

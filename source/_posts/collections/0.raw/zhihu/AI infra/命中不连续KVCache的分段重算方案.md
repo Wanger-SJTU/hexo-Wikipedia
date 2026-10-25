@@ -1,9 +1,19 @@
 ---
-title: "命中不连续KVCache的分段重算方案"
-date: 2026-07-24
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/2063989921711501424
+title: 命中不连续KVCache的分段重算方案
+date: "2026-07-24 00:00:00"
+updated: "2026-07-24 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/AI-infra/命中不连续KVCache的分段重算方案/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/2063989921711501424
 ---
+
 
 背景
 推理架构一般仅支持到L1和L2缓存的管理和淘汰策略，比如SGLANG的hicache架构会使用radix tree统一管理L1和L2，淘汰策略会从叶子结点逐级向上淘汰，所以命中的KVCache一定连续。

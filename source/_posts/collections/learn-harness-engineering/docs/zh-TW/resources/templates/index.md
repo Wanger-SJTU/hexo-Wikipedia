@@ -1,3 +1,16 @@
+---
+title: 範本指南
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/zh-TW/resources/templates/index/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # 範本指南
 
 這些範本可以直接複製到你的專案中。每份文件在代理工作流程中都有明確用途。請把內容改成符合你的專案命令、路徑、功能名稱與驗證步驟。

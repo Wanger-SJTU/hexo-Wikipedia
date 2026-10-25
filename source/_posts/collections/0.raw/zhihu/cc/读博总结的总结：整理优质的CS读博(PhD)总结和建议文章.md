@@ -1,9 +1,19 @@
 ---
-title: "读博总结的总结：整理优质的CS读博(PhD)总结和建议文章"
-date: 2021-04-17
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/347223193
+title: 读博总结的总结：整理优质的CS读博(PhD)总结和建议文章
+date: "2021-04-17 00:00:00"
+updated: "2021-04-17 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/cc/读博总结的总结-整理优质的CS读博(PhD)总结和建议文章/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/347223193
 ---
+
 
 我时常给同学们推荐各种我看过的优质读博总结与建议文章。大佬学弟 @whoami
 
@@ -22,7 +32,7 @@ source: https://zhuanlan.zhihu.com/p/347223193
 - Maithra Raghu的Reflections on my (Machine Learning) PhD Journey Maithra毕业于Cornell，现在在Google Brain，之前获得过福布斯30 under 30科技精英的荣誉，是深度学习+医疗的专家。这篇小文章是总结了一些她对读机器学习PhD的小建议，也非常实用。这里有中文翻译版：[谷歌大脑高级研究科学家：我的六年机器学习博士生涯总结](https://link.zhihu.com/?target=https%3A//mp.weixin.qq.com/s/NRiy7YrXaJh3e9UHR9EJPA)
 - Eric Gilbert的[Syllabus for Eric's PhD students](https://link.zhihu.com/?target=https%3A//docs.google.com/document/d/11D3kHElzS2HQxTwPqcaTnU5HCJ8WGE5brTXI4KLf4dM/edit) Eric是UMich的副教授，这是他给他的学生写的一个小指南。我个人倒是觉得对我的启发性不大，不过这篇指南最后还推荐了几篇好文章，其中就有PG的文章。这里有中文翻译版：[21页优雅读博指南：佐治亚理工学院助理教授Eric Gilbert撰写，入坑前必读](https://link.zhihu.com/?target=https%3A//mp.weixin.qq.com/s/9jvlp2lfpyhba-4chN-SEw)
 - MIT 6.869 Advanced Computer Vision课程 的最后一课是讲How to do research, How to give a talk, 和Advices for PhD的，很多slide都非常得好，推荐所有的slide。我特别推荐这个How to do research，是他们找MIT CS所有的教授一人给PhD一条建议，超级好玩~ 而且因为我上过不少MIT的公开课，看到了好多熟面孔，感觉很亲切~另外也是因为觉得这样的最后一课非常有意义，所以我前段时间在给学生讲《机器学习》的时候，最后一课也讲了一些类似的内容，比如下面这张slide：
-![](asset/img_4351f318baba.jpg)
+![](/images/collections/0.raw/zhihu/cc/asset/img_4351f318baba.jpg)
 
 6. 评论区小伙伴 @momento
 

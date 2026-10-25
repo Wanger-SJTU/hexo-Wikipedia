@@ -1,9 +1,19 @@
 ---
 title: "再深挖DeepSeek-R1: Reward is Enough"
-date: 2025-11-01
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/20053834500
+date: "2025-11-01 00:00:00"
+updated: "2025-11-01 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/LLM-SD/再深挖DeepSeek-R1_-Reward-is-Enough/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/20053834500
 ---
+
 
 **我是小冬瓜AIGC，原创超长文知识分享，原创课程已帮助多名同学速成上岸LLM赛道。  
 研究方向：LLM、RL、RLHF*Reward is Enough.***
@@ -12,7 +22,7 @@ source: https://zhuanlan.zhihu.com/p/20053834500
 
 我们在前日对`DeepSeek-R1`进行了解读，更多关注实现的方法和成效
 
-[![](asset/img_1649a72079f6.png)小冬瓜AIGC：【解读】DeepSeek-R1：RL前真的不需要SFT了吗???168 赞同 · 13 评论 文章](https://zhuanlan.zhihu.com/p/19623772462)
+[![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_1649a72079f6.png)小冬瓜AIGC：【解读】DeepSeek-R1：RL前真的不需要SFT了吗???168 赞同 · 13 评论 文章](https://zhuanlan.zhihu.com/p/19623772462)
 
 仔细想来仍有较多值得玩味的地方，我们以端到端视角看`DeepSeek-R1-zero`, 数学推理场景下为什么Reward is Enough。
 
@@ -44,7 +54,7 @@ source: https://zhuanlan.zhihu.com/p/20053834500
 
 - 选择题/填空题：特指我们只要答对答案就可以，特点是答案是客观的，无歧义的，答案形式如`` 或 `0.5` ，意义也是准确的，比如你在一个几何题里你用量尺直接得到答案，只要撞对ground truth，也能够得分，这个打分的判别是`Answer-Check` 
 - 解答题：根据题干我们需要有解答过程，推导出正确答案，我们才能拿到分数，那么这里的解答过程Solution，在严格的评判标准里，推导的过程也是要计算分数的。这个打分的判别是`Solution-Answer-Check` 的
-![](asset/img_efba7cc72c66.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_efba7cc72c66.jpg)
 
 DeepSeek-R1-Zero 所训练的数据形式是：Close-form Answer-Check的这种有客观答案的问题我们定义为`close-form`的问题， 当前主流的LLM数学能力评判其实是`Answer-Check`， 就意味着评判LLM的能力不关心解答过程Solution。而主流的数学推理能力需要思维链(Chain-of-thought)生成solution，只是一种提高answer的准确性的手段。
 
@@ -63,7 +73,7 @@ DeepSeek-R1-Zero 所训练的数据形式是：Close-form Answer-Check的这种�
 
 #### 1.2.1 `DeepSeek-R1-Zero`目标
 
-![](asset/img_48b25155da7c.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_48b25155da7c.jpg)
 
 我们先简要说明`DeepSeek-V3-Base` 到`DeepSeek-R1-Zero` 的RL训练目标
 
@@ -83,7 +93,7 @@ A:  CoT过程不一定是正确的，没有严格要求；未经过指令微调�
 - `GRPO` on-policy采样时相较`PPO`，会Rejection Sampling 出多个output（即`GRPO`是一种探索，或者理解为MC rollout），哪怕探索出的答案都是错的，那么RL训练能抑制这一批推导错误的生成。如果有多个正反馈，那么也能某种程度保证模型输出多样性。手撕GRPO：
 [](https://zhuanlan.zhihu.com/p/20812786520)
 
-![](asset/img_b9899a93a06a.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_b9899a93a06a.jpg)
 
 所以“Aha Moment”本质是搜索，我们有足量的搜索，一定能顿悟，搜索出错误答案对于RL那就避免这个行为产生，搜索出错误的答案对于训练也是有用的(learning from mistake) 。
 
@@ -150,7 +160,7 @@ B. 当模型能够输出可读性好的reasoning数据（合成数据），才�
 
 - 通用的数据部分可能也有较强的推理属性，如代码、谜题、摘要和脑经急转弯等，丰富了推理的模式
 - 格式化组织数据，使得数据表征更高效。
-![](asset/img_002d0374bf9f.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_002d0374bf9f.jpg)
 
 #### 1.2.6 R1 工程部署优势
 
@@ -194,7 +204,7 @@ B. 当模型能够输出可读性好的reasoning数据（合成数据），才�
 
 通过这种端到端思想，就可以提高推理能力，弊端无一例外在于Rationale或CoT里推断的准确性是无法保证的。
 
-![](asset/img_4171d2f4781e.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_4171d2f4781e.jpg)
 
 #### 2.3 OpenAI强化学习微调ReFT
 
@@ -206,7 +216,7 @@ B. 当模型能够输出可读性好的reasoning数据（合成数据），才�
 
 样例来自OpenAI 12days: Day2 的视频demo ，我们按照`R1-Zero` RL训练需求数据，实际上要的专家级问题可以不用solution但是需要final answer ，仅需final answer “Answer”就可以进行监督，如下例的Correct Answer ： FOXE3
 
-![](asset/img_a36bebc7481c.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_a36bebc7481c.jpg)
 
 不需要solution，仅需要收集问题和final answer
 ### 3. MCTS Search的挑战
@@ -229,7 +239,7 @@ title简介Math-Shepherd: Verify and Reinforce LLMs Step-by-step without Human A
 
 ** Scaling LLM Test-Time Compute Optimally can be More Effective than Scaling Model Parameter[](https://zhuanlan.zhihu.com/p/877197813)
 
-![](asset/img_8155e3b7897f.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_8155e3b7897f.jpg)
 
 PRM-Search类的方法对于数学等级5的难题，聊胜于无PRM无法准确描述环境，那么在难题上的Search就是可有可无, R1的评价是“Limited”
 

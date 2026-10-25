@@ -1,9 +1,19 @@
 ---
 title: "Google-ICML2023: 大型语言模型难以学习长尾知识，检索增强LLM前景广阔"
-date: 2023-07-30
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/646876000
+date: "2023-07-30 00:00:00"
+updated: "2023-07-30 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/LLM-SD/Google-ICML2023_-大型语言模型难以学习长尾知识,检索增强LLM前景广阔/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/646876000
 ---
+
 
 **本期分享Google在AI顶级会议ICML2023发表的文章(链接见文末)：****Large Language Models Struggle to Learn Long-Tail Knowledge
 
@@ -13,7 +23,7 @@ source: https://zhuanlan.zhihu.com/p/646876000
 
 **
 
-![](asset/img_5c0a7b745af9.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_5c0a7b745af9.jpg)
 
 ****
 
@@ -25,7 +35,7 @@ source: https://zhuanlan.zhihu.com/p/646876000
 
 **
 
-![](asset/img_43ffc57c1c12.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_43ffc57c1c12.jpg)
 
 图1. 语言模型很难捕捉到网络上的长尾信息。上图是 BLOOM 模型系列在 TriviaQA 上的准确率与模型预训练数据中与每个问题相关的文档数量的函数关系图。 我们观察到，对于众多问答(QA)数据集、不同预训练数据和不同大小模型，LM 回答问题的能力与与该问题相关的预训练文档数量之间存在很强的相关性（如图 1）。例如，当相关预训练文档的数量从 10^1 增加到 10^4 时，BLOOM-176B的准确率从 25% 跃升到 55% 以上。
 
@@ -43,7 +53,7 @@ source: https://zhuanlan.zhihu.com/p/646876000
 
 *问题：诗人但丁出生在哪个城市的问题？**答案：佛罗伦萨、佛罗伦萨市。*
 
-![](asset/img_5bdb6c2c4202.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_5bdb6c2c4202.jpg)
 
 图2. 在我们的文档计数流程中，我们首先在大型预训练数据集上运行实体链接（左上），并存储每个实体出现的文档索引集（右上）。然后，我们对下游 QA 对进行实体链接，并提取突出的问题和答案实体（下图）。最后，对于每个问题，我们计算问题和答案实体共同出现的文档数量。
 
@@ -69,9 +79,9 @@ Q: [Test Question]`
 
 我们通过贪婪解码生成答案，直到模型生成一个换行符，然后使用标准的 Exatch Match（EM）度量方法对照事实答案集进行评估。
 
-![](asset/img_a61438f2b36f.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_a61438f2b36f.jpg)
 
-图3. 我们绘制了 GPT-Neo 的 TriviaQA 准确率与相关文档数量的对比图。其趋势与 BLOOM 的趋势一致（图 1）。我们还附上了直方图，显示每个桶中有多少 QA 示例。![](asset/img_a87ac5b844fd.jpg)
+图3. 我们绘制了 GPT-Neo 的 TriviaQA 准确率与相关文档数量的对比图。其趋势与 BLOOM 的趋势一致（图 1）。我们还附上了直方图，显示每个桶中有多少 QA 示例。![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_a87ac5b844fd.jpg)
 
 图4. 我们绘制了 GPT-Neo 的自然问题准确率与相关文档数量的对比图。其趋势与 TriviaQA 中的趋势一致-模型的准确性高度依赖于相关文档数量。我们在 TriviaQA 上评估了 BLOOM 和 GPT-Neo 模型系列，并在图 1 和图 3 中绘制了它们的 QA 准确率与相关文档数量的关系图。例如，当相关文档数从 10^1 增加到 10^4 时，BLOOM-176B 的准确率从 25% 跃升到 55% 以上。模型大小也是知识学习的一个重要因素：随着模型参数数量的增加，质量保证性能也会大幅提高。例如，在相关文档超过 10^5 篇的 TriviaQA 问题上，BLOOM176B 的准确率比 BLOOM-560M 高出 4 倍多。我们使用自然问题 QA 数据集重复了这一实验，发现所有模型包括GPT-Neo(图4)、BLOOM、GPT-3都有类似的趋势。
 
@@ -85,12 +95,12 @@ Q: [Test Question]`
 
 **
 
-![](asset/img_4620cdb4bc8d.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_4620cdb4bc8d.jpg)
 
 表1. The Pile、ROOTS、C4、OpenWebText和Wikipedia中TriviaQA示例的相关文档计数的斯皮尔曼等级相关性。尽管采用了不同的收集方法，但这些预训练数据集在包含与不同问答对相关的信息量方面高度相关。
 #### 4.2 扩大模型规模**
 
-使用更大的模型始终能产生更好的质量保证性能。然而，我们的结果表明，要想在长尾问题上获得高准确率，需要非常大的LLM。在图 6 中，我们绘制了长尾知识学习的缩放趋势线，显示了自然问题（![](asset/img_f1b2b7c2087c.jpg)
+使用更大的模型始终能产生更好的质量保证性能。然而，我们的结果表明，要想在长尾问题上获得高准确率，需要非常大的LLM。在图 6 中，我们绘制了长尾知识学习的缩放趋势线，显示了自然问题（![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_f1b2b7c2087c.jpg)
 
 图6. 知识学习的扩展趋势。我们绘制了 BLOOM 对自然问题（&lt; 100 个相关文档）中罕见实例的准确率与模型大小对数的函数关系图。从经验最佳拟合线（R 2 = 0.98 时与趋势非常接近）推断，要想获得高准确率，必须要有非常大的模型。
 #### 4.3 添加辅助检索模块**
@@ -101,13 +111,13 @@ Q: [Test Question]`
 
 **
 
-![](asset/img_9f90fda936d9.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_9f90fda936d9.jpg)
 
 图8. BM25 等检索系统对文档数量有轻微的依赖性。上面我们绘制了 BM25 在自然问题上不同 k 值的最高检索率。我们首先评估了 BM25 检索器在其知识语料库（维基百科）上的 top-k 召回率与相关文档数量的函数关系，并将结果绘制在图 8 中。我们发现 BM25 获得了相当高的召回率，尤其是在 k 值较大的情况下。接下来，我们评估了 BM25 增强的 GPT-Neo 模型在自然问题上的准确性，并将结果绘制在图 9 中。总体而言，在所有相关文档数量范围内，检索增强模型都优于闭卷(closed-book)模型，尤其是在罕见知识上。这些结果表明，检索增强为提高预训练数据集中相关文档较少的问题的性能提供了一条很有前景的途径。**
 
 **
 
-![](asset/img_d053a063485f.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_d053a063485f.jpg)
 
 图9. 检索增强型LM在罕见知识情况下不再表现出低准确率。我们绘制了使用 BM25中三个段落增强的GPT-Neo在自然问题上的准确率。
 ### 5. 结论和未来工作**

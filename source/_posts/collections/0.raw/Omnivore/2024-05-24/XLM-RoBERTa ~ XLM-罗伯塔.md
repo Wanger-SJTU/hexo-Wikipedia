@@ -1,4 +1,17 @@
 ---
+title: XLM-RoBERTa ~ XLM-罗伯塔
+date: "2026-04-11 21:40:28"
+updated: "2026-04-11 21:40:28"
+layout: post
+permalink: /collections/0.raw/Omnivore/2024-05-24/XLM-RoBERTa-~-XLM-罗伯塔/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
+---
 id: 914d4d4f-5b97-4527-b503-5573e302a5e6
 ---
 

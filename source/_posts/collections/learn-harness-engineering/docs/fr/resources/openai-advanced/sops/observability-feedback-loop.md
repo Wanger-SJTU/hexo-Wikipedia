@@ -1,3 +1,16 @@
+---
+title: "SOP : Boucle de rétroaction d'observabilité"
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/fr/resources/openai-advanced/sops/observability-feedback-loop/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # SOP : Boucle de rétroaction d'observabilité
 
 Utilisez cette SOP lorsque le débogage est lent, que les agents affirment leur succès

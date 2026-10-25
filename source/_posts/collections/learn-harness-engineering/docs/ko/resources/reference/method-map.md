@@ -1,3 +1,16 @@
+---
+title: 메서드 맵 (Method Map)
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/ko/resources/reference/method-map/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # 메서드 맵 (Method Map)
 
 이 표는 장기 코딩 에이전트(agent) 작업에서 자주 발생하는 실패 유형(failure mode)을, 보통 가장 먼저 이를 해결하는 산출물(artifact) 또는 운영 규칙(operating rule)에 매핑합니다. 새로운 문제를 발견했을 때 전역 지침 파일에 더 많은 텍스트를 덧붙이는 대신, 해당 실패 유형에 직접 대응하는 최소한의 산출물을 추가하는 원칙을 따릅니다.

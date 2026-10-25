@@ -1,3 +1,16 @@
+---
+title: tvm relay IR 可视化
+date: "2026-04-11 21:40:28"
+updated: "2026-04-11 21:40:28"
+layout: post
+permalink: /collections/0.raw/归档/TVM/tvm-relay-IR-可视化/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 #TVM 
 发现最近relay 的可视化已经在tvm主线上支持了，这里有一个简单的demo代码记录一下
 
@@ -74,4 +87,4 @@ viz.render("eval")
 ```
 
 可视化的图
-![[Pasted image 20221023223333.png]]
+![Pasted image 20221023223333.png](/images/collections/assets/Pasted%2520image%252020221023223333.png)

@@ -1,10 +1,19 @@
 ---
-title: "编译器领域的多面体模型（Polyhderal Model）"
-date: 2020-11-24
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/310142893
-
+title: 编译器领域的多面体模型（Polyhderal Model）
+date: "2020-11-24 00:00:00"
+updated: "2020-11-24 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/编译器领域的多面体模型(Polyhderal-Model)/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/310142893
 ---
+
 
 **这篇文章中的图片全是我之前在一本书中摘录的，但是因为我个人习惯不好，现在不知道出处了。如果有人知道请告诉我，我好给那些图片加上reference**
 

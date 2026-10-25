@@ -1,9 +1,19 @@
 ---
-title: "浅谈C++内存管理"
-date: 2018-12-17
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/51855842
+title: 浅谈C++内存管理
+date: "2018-12-17 00:00:00"
+updated: "2018-12-17 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/编程向/浅谈C-内存管理/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/51855842
 ---
+
 
 ### **1.从内存对齐讲起**
 
@@ -46,7 +56,7 @@ C++中可以使用alignof获取类型的对齐值，char类型的对齐值为1�
 
 现在考虑一个double类型的数组(double类型为8字节对齐)， 其在内存中所处的位置如下：
 
-![](asset/img_3552c0c25509.jpg)
+![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_3552c0c25509.jpg)
 
 数组的首地址为2，根据原则1数组未对齐。若CPU每次从内存中为8字节整数倍的地址开始读入8字节的数据，则每次从未对齐的数组中读取一个成员都要进行两次读取操作，而从对齐的数组中读取则只需要一次读取操作，数组对齐时读取效率有较大提升（虽然现在也有很多处理器支持非对齐的读取，但是还是推荐对齐)。
 
@@ -58,7 +68,7 @@ a.windows内存管理机制
 
 Windows系统中的内存分配机制如下图所示：
 
-![](asset/img_c53e47521063.jpg)
+![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_c53e47521063.jpg)
 
 Windows内存管理机制操作系统将Physical Memory映射为连续的Virtual Memory(通过TLB)，并提供了一些与Virtual Memory相关的API(VirtualAlloc，VirtualFree...)对Virtual Memory进行管理，在Virtual Memory API之上又构建了Heap Memory Memory API(HeapALloc...)，而C的内存管理机制(malloc，free)就构建在 Heap Memory Memory API之上。
 
@@ -68,7 +78,7 @@ b.Linux内存管理机制
 
 Linux中可以借助brk或mmap函数从用户空间中申请连续内存。
 
-![](asset/img_f119eea7f15a.jpg)
+![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_f119eea7f15a.jpg)
 
 Linux寻址空间(32位)，用户空间为3GB，内核空间为1GB通过调用brk(0)可以获取指向用户空间某一地址的指针，随后调用brk(len)可以在原指针地址的基础上移动该指针以达到申请或释放内存的目的。而mmap则是直接在用户空间中申请一块连续的空闲内存。(更详细的Linux内存分配机制可以参见1)
 
@@ -76,7 +86,7 @@ c.C内存管理机制
 
 C/C++程序的内存布局如下：
 
-![](asset/img_698528eae940.jpg)
+![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_698528eae940.jpg)
 
 C/C++ Memory Layout从Code Segment到Stack的内存地址均位于用户空间中，其地址空间由低到高。其中：
 
@@ -123,7 +133,7 @@ struct BlockNode
 
 Header中记录了指向下一块内存的指针和一个size_t类型的flag，flag的前4位中记录了一个Magic Number用来标记这块内存是否由我们所实现的Malloc申请得到的，而其它位记录了这块内存数据区的大小。
 
-![](asset/img_317a86334731.jpg)
+![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_317a86334731.jpg)
 
 Header的结构这里定义了一些简单的函数来帮助读取或设置flag中的信息：
 

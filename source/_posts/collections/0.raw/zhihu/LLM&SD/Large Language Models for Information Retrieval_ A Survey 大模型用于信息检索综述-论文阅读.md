@@ -1,9 +1,19 @@
 ---
 title: "Large Language Models for Information Retrieval: A Survey 大模型用于信息检索综述-论文阅读"
-date: 2023-11-12
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/666414155
+date: "2023-11-12 00:00:00"
+updated: "2023-11-12 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/LLM-SD/Large-Language-Models-for-Information-Retrieval_-A-Survey-大模型用于信息检索综述-论文阅读/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/666414155
 ---
+
 
 论文地址：[https://arxiv.org/abs/2308.07107](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2308.07107)
 
@@ -19,7 +29,7 @@ IR是信息获取的主要手段，在对话、问答、推荐系统中均有应
 
 IR系统图示如下，其中rerank阶段只对检索到的有限doc集排序，需要使用复杂的模型来保证检索效果；reader阶段是对检索到doc进行总结，以给用户提供一个简明的答案。在传统的IR系统中，通常由用户最近对检索结果进行总结，但在new Bing等新IR中，这一步是必要的。
 
-![](asset/img_23b41ccd9503.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_23b41ccd9503.jpg)
 
  作者收集并将持续更新LLM应用于信息检索的相关论文和代码，地址在 [https://github.com/RUC-NLPIR/LLM4IR-Survey](https://link.zhihu.com/?target=https%3A//github.com/RUC-NLPIR/LLM4IR-Survey)。如上图所示，大模型可以应用于IR系统的多个步骤。
 
@@ -45,7 +55,7 @@ LM可以做文本生成，大量的自然语言处理问题可以被表示为文
 
 现有的LLM从模型结构划分，可以分为encoder-decoder机构和纯decoder结构，encoder-decoder将输入表示成一个向量，并基于向量解码得到生成的文本；纯decoder结构以GPT为代表，使用self-attention配合diagonal-attention-mask 从左到右生成文本。不同模型和结构的关系如下图，GPT-J、BLOOM、OPT、Chinchilla、LLaMA和gpt的结构相同，训练数据有差异。
 
-![](asset/img_d57d27e01fa8.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_d57d27e01fa8.jpg)
 
 LLM用于信息检索可以采用 in-context learning (ICL) 和 parameter-efficient fine-tuning方式。ICL不需要调整LLM的参数，是LLM应用于信息检索领域的最普遍方式。parameter-efficient fine-tuning的目标是在保持模型性能的同时降低模型训练的参数量， LoRA 是这个方向上普遍使用于开源大模型微调的方法。
 
@@ -69,7 +79,7 @@ LLM用于信息检索可以采用 in-context learning (ICL) 和 parameter-effici
 - 不依赖于第一遍检索。传统的伪相关反馈（PRF）方法检索一组伪相关文档作为源来细化原始查询。然而，伪相关反馈集中不相关结果的存在会引入噪声，并可能损害检索性能。相反，LLM可以直接基于原始查询生成查询重写，这独立于第一次通过检索，并避免了潜在的噪声的干扰。
 
 - LLMs用于Ad-hoc检索阶段的方式：输入查询query，LLM生成doc，生成的doc和query组成新的query输入的查询系统中进行信息检索。这样做是因为生成doc中的包含的额外细节信息。如下图中query是hen was Pokemon Green released，LLM生成的doc中补充了细节“Pokemon Green was released in Japan on February 27t”
-![](asset/img_033b6332068a.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_033b6332068a.jpg)
 
 **对话式搜索**
 
@@ -79,7 +89,7 @@ LLM用于信息检索可以采用 in-context learning (ICL) 和 parameter-effici
 - LLM具有强大的生成能力，可以模拟用户和系统之间的对话，从而促进更稳健的搜索意图建模。
 LLMs用于对话式搜索有个工作叫LLMCS-Large Language Models know yourContextual   Search   intent：
 
-![](asset/img_79b1468fecd8.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_79b1468fecd8.jpg)
 
 *上述图示中有个地方有疑问：第二轮问的是买手机应该考虑哪个方面，重写后变成了推荐哪个智能手机？大模型引进的错误如何解？*
 
@@ -100,7 +110,7 @@ LLMs用于对话式搜索有个工作叫LLMCS-Large Language Models know yourCon
 
 #### **方法**
 
-![](asset/img_6993e7d9209d.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_6993e7d9209d.jpg)
 
 主流方法有三种：
 
@@ -112,7 +122,7 @@ LLMs用于对话式搜索有个工作叫LLMCS-Large Language Models know yourCon
 - zero-shot prompt-零样本。只依赖模型自身对输入query的理解能力生成文本，是一种简单有效的query重写方法。
 - few-shot prompt-少样本。即上下文学习（ in-context  learnin），通过输入有限的示例，让模型具有适应特定任务或场景的能力。
 - Chain-of-thought prompt-思维链。给模型提供一系列指令或部分输出，以让模型做更深入的思考。对话式搜索中，query重新是通过多轮对话完成的，ad-hoc搜索因为只有一轮输入query，只能用简单粗糙的方式实现思维链prompt。
-![](asset/img_aac70fa20d5d.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_aac70fa20d5d.jpg)
 
 **微调模型**
 
@@ -140,7 +150,7 @@ LLM用不检索阶段有两种方法：用LLM生成检索结果；用LLM增强�
 
 检索模型是监督学习模型，需要训练数据（query和doc）和label（doc和query是否相关），因为doc一般是一个相对固定的集合，故数据增强从doc中生成伪query和生成label两个方向考虑。
 
-![](asset/img_5c178bce7eaf.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_5c178bce7eaf.jpg)
 
 **生成伪query**
 
@@ -163,7 +173,7 @@ LLM具有很好的文本编码和解码能力，可以用于query和doc的理解
 - 传统的IR系统包括“index-retrieval-rank” 三个阶段，生成式检索模型用一个单一的模型针对查询query直接生成doc。做法包括微调大模型和prompt大模型两种。
 - DSI是一个用检索数据对预训练的T5模型进行微调的方法，该方法对查询query进行编码，并对doc进行解码以得到查询结果。为了保证得到的doc真实有效，DSI使用多有的doc的ID构建字典树，并使用beam search进行解码。
 - prompt大模型是直接让大模型生成针对输入query的文档url。LLM-URL模型是本方向的一个工作，模型用GPT-3 text-davinci-003模型生成候选url，然后设计正则化表示从候选中提取有效的url。
-![](asset/img_576024b109ed.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_576024b109ed.jpg)
 
 ### **排序阶段**
 
@@ -201,7 +211,7 @@ LLM用于排序阶段有三种做法：微调大模型、prompt大模型和使�
 
 - pairwise比listwise简单。
 - pairwise排序prompt让LLM判断一个doc是不是比另一个doc更相关，然后设计了几种排序算法来利用这种pair结果对整个文档列表进行重新排序。
-![](asset/img_38f0f0fc46d7.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_38f0f0fc46d7.jpg)
 
 #### **LLM用于训练数据增广**
 

@@ -1,9 +1,21 @@
 ---
-title: "LLM近期重大架构进化一览：从Gemma 4到DeepSeek V4"
-date: 2026-05-19
-tags: [LLM, 架构, Gemma, DeepSeek]
-mathjax: true
+title: LLM近期重大架构进化一览：从Gemma 4到DeepSeek V4
+date: "2026-05-19 00:00:00"
+updated: "2026-05-19 00:00:00"
+layout: post
+permalink: /collections/wechat/2026-05-19-LLM近期重大架构进化一览-从Gemma-4到DeepSeek-V4/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - LLM
+  - 架构
+  - Gemma
+  - DeepSeek
 ---
+
 
 > 来源：[机器之心](https://mp.weixin.qq.com/s/wRtvQK0P0o4cvVTlRq0LXA)
 > 原文：[Recent Developments in LLM Architectures: KV Sharing, mHC, and Compressed Attention](https://magazine.sebastianraschka.com/p/recent-developments-in-llm-architectures) — Sebastian Raschka, PhD

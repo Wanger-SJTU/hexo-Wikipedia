@@ -1,9 +1,19 @@
 ---
-title: "(1 条消息) 专用架构与AI软件栈（6）"
-date: 2022-03-08
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/474668889
+title: (1 条消息) 专用架构与AI软件栈（6）
+date: "2022-03-08 00:00:00"
+updated: "2022-03-08 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/专用架构与AI软件栈(6)/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/474668889
 ---
+
 
 上篇文章链接
 

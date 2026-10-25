@@ -1,13 +1,23 @@
 ---
-title: "(2 条消息) 零基础入门PLUTO的自动循环变换算法"
-date: 2023-06-14
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/631634938
+title: (2 条消息) 零基础入门PLUTO的自动循环变换算法
+date: "2023-06-14 00:00:00"
+updated: "2023-06-14 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/零基础入门PLUTO的自动循环变换算法/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/631634938
 ---
+
 
 本文主要聚焦于PLUTO原始论文[1]的第三章，详细介绍**PLUTO算法中通过循环变换生成permutable band的具体做法**。相比于Gri04[2]介绍的：先用Feautrier算法求出一个合法的调度再求解Placement两步走的做法，PLUTO算法直接求得一个完全可交换循环带的变换，然后基于变换后的迭代空间进行分块、并标记坐标轴作为时间维度还是空间维度、然后进行代码生成。根据作者的阐述，这样可以得到一个比Gri04局部性更好、数据传输量更小的解。（原因解释：TODO1）
 
-![](asset/img_e94faef761e7.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_e94faef761e7.jpg)
 
 受限于本人学习效率不高和智力不足等因素，我这两周刚勉强把PLUTO第三章看懂，**然而第三章的知识并不闭环**，它没有讲解——
 
@@ -27,27 +37,27 @@ source: https://zhuanlan.zhihu.com/p/631634938
 
 PLUTO的循环变换算法旨于寻找一个原始迭代空间上的多维仿射变换，使得所有依赖的affine components都满足非负的条件（3.3式），同时希望这样的差尽可能小（3.4式尽可能小），并且想要尽量多的得到这样线性不相关的多维仿射变换，将变换得到的循环组合起来构成permutable band——因为交换这些循环的顺序不违反程序依赖，所以是permutable的。
 
-![](asset/img_9b5d37aaa38d.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_9b5d37aaa38d.jpg)
 
-![](asset/img_e625328887ea.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_e625328887ea.jpg)
 
 **3.3式的条件使得经过这样变换后的迭代空间以任意矩形形状进行分块都是合法的。**分块的好处在于：对时间维度分块可以减少同步的频率；对空间维度分块一方面受限于物理处理器数量的限制不得不合并虚拟的空间节点，并且也可以减少跨处理器的通信量。
 
 分块变换可以改变循环的执行顺序，将n层循环嵌套拆分成2n层循环嵌套，前n层表示分块之间的迭代顺序，后n层表示分块内部实例的迭代顺序，而不违反原始程序的所有依赖关系。原因在于所有原程序中的依赖关系在经过PLUTO循环变换算法后都指向超平面相等或更大值的方向——事实上Gri04论文按Feautrier和FCO Placement变换后得到的时间维度和空间维度也满足3.3式的条件，进而也实现了可以对变换后的迭代空间任意进行矩形分块的目标，参见：《[零基础入门多面体编译的FCO Placements](https://zhuanlan.zhihu.com/p/624335201)》。
 
-![](asset/img_d8f97c6eb7be.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_d8f97c6eb7be.jpg)
 
 当仿射函数表示时间维度时，3.4式表示存在数据依赖的迭代实例映射到时间超平面上间隔的虚拟时间，物理含义是数据的时间重用距离，距离越长则意味着数据访问的时间局部性越不好；类似地，当仿射函数表示空间维度时，3.4式表示数据依赖跨越的空间超平面的数量，使用它可以大致估计出分块后跨处理器的数据通信量（而且这个估计值还是仿射的）。
 
 如下图所示[5]，当空间超平面为135°的斜线时，向量(1, 1)表示空间超平面的法向量，是仿射函数值增加的方向。对于原程序迭代实例之间存在的三类依赖关系，粉色依赖跨越2个空间超平面，蓝色跨越1个，紫色没有跨越。当我们进行分块的时候，表示不同处理器上的分块的迭代实例之间如果存在依赖，我们把源点标记出来，用跟空间超平面平行的线段把这些源点连接起来，如(c)图中的两条红线。**因为程序中所有依赖最多跨越了2个空间超平面，所以会发生跨处理器数据传输的迭代实例也构成了2条线段位于分块的边界上。**
 
-![](asset/img_6e568a9547cc.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_6e568a9547cc.jpg)
 
 同理，如果超平面为水平的斜线时，向量(0, 1)表示空间超平面的法向量，是仿射函数值增加的方向。此时原程序所有依赖最多只跨越1个空间超平面，进而当我们分块时，会发生跨处理器数据传递的迭代实例值构成了1条线段位于分块的边界上。
 
 综上这两个都满足正确性的空间分块方案，下面的分块方式可以更好地减少系统的通信量，**体现了3.4式是对分块后跨处理器数据通信量的一个很好的仿射形式的估计值**。
 
-![](asset/img_d0c7f1bba6ab.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_d0c7f1bba6ab.jpg)
 
 **
 
@@ -67,7 +77,7 @@ PLUTO循环变换算法的目标是：为程序中**每一个静态语句**都�
 
 对于1）的目标，使用Farkas引理将一个定义域在多面体的约束下永远非负的仿射函数用非负的系数（Farkas因子）和多面体约束的线性组合进行表示，以线性化不等式中的非线性因子（即，未知的待求系数和循环变量的乘积）；然后令等式左右两边关于循环变量的系数各自相等以消除等式中的循环变量和结构参数。**最终得到只包含Farkas因子和待求的仿射函数系数的等式、以及Farkas因子大于等于0的约束。以上的过程应用于程序中**[每一个依赖关系]（每一个依赖关系都对应一个依赖多面体）**，每一次应用Farkas引理推导得到的约束条件需要整合起来，这些条件最终需要同时被满足。
 
-![](asset/img_256d41dfb259.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_256d41dfb259.jpg)
 
 **
 
@@ -75,33 +85,33 @@ PLUTO循环变换算法的目标是：为程序中**每一个静态语句**都�
 
 如3.8式所示，我们同样应用Farkas引理将3.7式中**每一个依赖多面体对应**的不等式转换为用多面体边界表达式的非负线性组合来表示的等式，然后用跟1）相同的做法消除循环变量和结构参数，得到关于Farkas因子和待求的仿射函数系数的等式、以及Farkas因子大于等于0的约束。
 
-![](asset/img_2172f0dc9275.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_2172f0dc9275.jpg)
 
-![](asset/img_5af51b88d7cd.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_5af51b88d7cd.jpg)
 
-![](asset/img_1c528a3c0fae.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_1c528a3c0fae.jpg)
 
 另外，依赖距离过大也会制约分块大小（tiling width）的取值，优化3.5式的代价函数的上限可以限制依赖距离，增加程序优化的可能。这点我们留在以后再盘，迫不及待的小伙伴可以阅读Gri04[2]的第10章。（TODO2）
 
-![](asset/img_da9b570a64dd.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_da9b570a64dd.jpg)
 
 **
 
 对于3）的目标，循环变换仿射系数为全0的平凡解会把所有迭代实例映射至相同的虚拟时间节点上或相同的处理器上，失去并行性。为避免这样的解，一个直观的想法是为[每个静态语句]**增加如3.10式的约束条件。
 
-![](asset/img_b376ae16ccde.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_b376ae16ccde.jpg)
 
 然而从一个凸集中刨去一个凸集（一个全0的向量）会得到一个非凸集合，而Simplex Algorithm只能在凸集上进行lexmin的求解，所以需要将一个非凸集合分裂成多个凸集合（数量与原始凸集合的维度相关）分别求解，并取这多个凸集中的字典序最小值。这会导致算法的复杂度与静态语句的数量成指数级别的关系。
 
-![](asset/img_fa27fef38b3f.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_fa27fef38b3f.jpg)
 
 所以，为避免算法指数级别的爆炸，**PLUTO循环变换算法大刀阔斧地增加了[系数向量c每个元素大于等于0]的限制，并且系数和大于等于1意味着消去了全0的平凡解。——施加了这两条约束条件的多面体仍然是凸集。**系数向量每个元素大于等于0的约束条件会使我们失去关于程序循环反转变换的可能，然而根据作者描述，这并不太影响性能。
 
-![](asset/img_044c50658a4e.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_044c50658a4e.jpg)
 
 另外，PLUTO+算法[4]通过假设系数向量有边界的限制、用一种类似于进制的方式表示出系数空间上的一个**单射的仿射函数**，于是只有全0的系数会对应于为0的函数值，最终对于每个静态语句只需要考虑在两个凸集的并集上求解lexmin。虽然这仍然存在指数级的爆炸，但从一定程度上减小了求解存在循环反转变换可能性时解空间的大小。关于PLUTO+算法的详细解析我们留作以后再盘：（TODO3）
 
-![](asset/img_7b783257b9cd.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_7b783257b9cd.jpg)
 
 **
 
@@ -111,9 +121,9 @@ PLUTO循环变换算法的目标是：为程序中**每一个静态语句**都�
 
 3.9式将代价函数上限的系数u作为字典序权重最高的部分，体现了代价函数**渐进最小化**的优化目标。因为当u向量为全0时，代价函数上限是一个常数（O(1)），与结构参数无关；否则代价函数上限的量级是O(N)，其中向量N代表结构参数。算法导论告诉我们当结构参数非常大的时候要倾向于O(1)的解。
 
-![](asset/img_ae5fbb1bc734.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_ae5fbb1bc734.jpg)
 
-![](asset/img_88ce8bc96485.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_88ce8bc96485.jpg)
 
 **
 
@@ -125,9 +135,9 @@ PLUTO循环变换算法的目标是：为程序中**每一个静态语句**都�
 
 将3.12式求得的约束条件添加至前3步的约束条件中，继续用Simplex Algorithm算法求得一组lexmin，可以得到跟之前解都线性无关的一组一维仿射变换的系数值。不断重复这一过程，直至添加的约束使得多面体无解。
 
-![](asset/img_ecd18330bfff.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_ecd18330bfff.jpg)
 
-![](asset/img_08f439cd4ced.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_08f439cd4ced.jpg)
 
 **
 
@@ -135,61 +145,61 @@ PLUTO循环变换算法的目标是：为程序中**每一个静态语句**都�
 
 考虑一个比赵捷老师书里P122页更复杂的一个例子（尽管我这里举的例子也是perfect loop nest的），我们对这个程序找寻一组循环变换得到permutable band。
 
-![](asset/img_7741353d121e.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_7741353d121e.jpg)
 
-![](asset/img_1ca227a1f92f.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_1ca227a1f92f.jpg)
 
-![](asset/img_1545d2d07be0.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_1545d2d07be0.jpg)
 
-![](asset/img_10285a4c60f3.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_10285a4c60f3.jpg)
 
-![](asset/img_054158720718.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_054158720718.jpg)
 
-![](asset/img_509ac914294c.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_509ac914294c.jpg)
 
-![](asset/img_6ef59228d0a1.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_6ef59228d0a1.jpg)
 
 我们使用isl工具验证得到的约束和我们手工用推导的结果是一致的。
 
-![](asset/img_3b5cf9a27b8d.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_3b5cf9a27b8d.jpg)
 
 关于依赖2代价函数上限最小化约束条件的求解采用跟上面一样的方法，这次就不手工推了，直接通过isl工具得到结果如下所示。
 
-![](asset/img_2d8ac78e8980.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_2d8ac78e8980.jpg)
 
-![](asset/img_25f78d1c2de7.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_25f78d1c2de7.jpg)
 
 整理目前得到的所有约束条件用isl工具求解lexmin。
 
-![](asset/img_4ee9a5b3c024.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_4ee9a5b3c024.jpg)
 
-![](asset/img_d44d24218dc2.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_d44d24218dc2.jpg)
 
 再继续求解第2组线性无关的仿射函数的系数。
 
-![](asset/img_b0ea4e53a1f0.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_b0ea4e53a1f0.jpg)
 
-![](asset/img_2929f573a715.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_2929f573a715.jpg)
 
 **
 
 ### 四、调用C语言风格的isl API进行Fourier-Motzkin Elimination运算消去Farkas因子并计算集合的lexmin**（Updated on 2023/06/14）
 
-![](asset/img_4ed19ab18a33.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_4ed19ab18a33.jpg)
 
-![](asset/img_8059e2911515.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_8059e2911515.jpg)
 
-![](asset/img_66192bb1e249.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_66192bb1e249.jpg)
 
-![](asset/img_ee4777dc284e.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_ee4777dc284e.jpg)
 
-![](asset/img_b06765de96f0.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_b06765de96f0.jpg)
 
-![](asset/img_bc8225734ae8.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_bc8225734ae8.jpg)
 
-![](asset/img_06a800ad17bf.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_06a800ad17bf.jpg)
 
-![](asset/img_5a93d83208f5.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_5a93d83208f5.jpg)
 
 **
 
@@ -213,7 +223,7 @@ PLUTO循环变换算法的目标是：为程序中**每一个静态语句**都�
 
 我们现在再来看Pluto automatic transformation algorithm的伪代码，除了蓝色的部分暂时还看不懂以外，其他的我们是不是已经理论结合示例讲解非常清楚了呢！夸我！！夸我！！！（全文完）
 
-![](asset/img_b4bd49aebc75.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_b4bd49aebc75.jpg)
 
 ### 六、参考文献**
 
@@ -237,12 +247,12 @@ PLUTO循环变换算法的目标是：为程序中**每一个静态语句**都�
 
 1. P51：第一个任意量词符号应该是存在，即，待求的行向量只需要跟正交矩阵中的某一个行向量存在相关性就足够了，不需要所有；
 
-![](asset/img_2a5dce4a3ab8.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_2a5dce4a3ab8.jpg)
 
 2. P58：依赖2的代价函数公式写错了；
 
-![](asset/img_81878a196c1b.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_81878a196c1b.jpg)
 
 3. P59：求解正交矩阵的公式写错了；
 
-![](asset/img_9e321d42af7b.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_9e321d42af7b.jpg)

@@ -1,3 +1,16 @@
+---
+title: Prompt Calibration
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/en/resources/reference/prompt-calibration/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # Prompt Calibration
 
 Root instructions should define the operating frame, not every possible move.

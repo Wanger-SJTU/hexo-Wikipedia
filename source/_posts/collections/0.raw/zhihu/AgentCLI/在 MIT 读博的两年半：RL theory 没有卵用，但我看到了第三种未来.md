@@ -1,9 +1,19 @@
 ---
-title: "在 MIT 读博的两年半：RL theory 没有卵用，但我看到了第三种未来"
-date: 2026-02-23
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/2009291412156465511
+title: 在 MIT 读博的两年半：RL theory 没有卵用，但我看到了第三种未来
+date: "2026-02-23 00:00:00"
+updated: "2026-02-23 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/AgentCLI/在-MIT-读博的两年半-RL-theory-没有卵用,但我看到了第三种未来/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/2009291412156465511
 ---
+
 
 0. 写这篇随笔，是因为最近 OpenClaw 出来之后，我总算想明白了一些道理。
 

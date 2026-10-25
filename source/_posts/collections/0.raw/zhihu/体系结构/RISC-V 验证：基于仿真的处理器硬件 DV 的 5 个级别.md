@@ -1,9 +1,19 @@
 ---
-title: "RISC-V 验证：基于仿真的处理器硬件 DV 的 5 个级别"
-date: 2022-03-23
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/486090856
+title: RISC-V 验证：基于仿真的处理器硬件 DV 的 5 个级别
+date: "2022-03-23 00:00:00"
+updated: "2022-03-23 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/体系结构/RISC-V-验证-基于仿真的处理器硬件-DV-的-5-个级别/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/486090856
 ---
+
 
 RISC-V的出现，一定程度上降低了体系结构研究的门槛。从最简单的五级流水线处理器，到更为复杂的乱序超标量处理器，网上关于RISC-V处理器核设计的资料也越来越多。然而，一个学术研究所用的处理器核与工业级别的处理器核，其设计目的有着本质的区别。前者往往希望探索体系结构上的创新，而后者则更加注重设计的无误性。因此，对于一个工业级别的处理器核来说，设计工作只占很小一部分，而验证工作及其方法论则往往占了更大的比重。
 
@@ -37,7 +47,7 @@ RISC-V 正在改变传统的处理器 IP 设计权衡决策，从讨论“ **P**
 
 ### 简单关卡：阶段 #1
 
-![](asset/img_d496f49876bc.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_d496f49876bc.jpg)
 
 Fig. 1: Simple log or signature file comparison method with free riscvOVPsim from GitHub.验证处理器的第一步是运行一些测试用例，并将输出与质量参考模型或自测签名进行比较，如图 1 所示。相同的软件输入激励可以在新的 RTL 仿真中运行RISC-V 处理器实现。被测处理器 (DUT) 的 RTL 使用 Verilog 进行仿真，或者使用 SystemVerilog 在验证测试台中进行仿真，并将结果输出保存到日志文件中以供分析。相同的输入也适用于参考模型，输出也保存到文件中。两个文件之间的比较可能会显示一些差异。但是，由于处理器是一个复杂的状态机，因此两个单独的模拟可能无法准确对齐以达到充分的验证目的。
 
@@ -53,7 +63,7 @@ RISC-V 国际架构合规性测试套件配置为具有集成签名的测试，�
 
 ### 跟踪比较：阶段 #2
 
-![](asset/img_60db9a330bd1.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_60db9a330bd1.jpg)
 
 Fig. 2: The post-simulation trace-compare method with the free riscvOVPsimPlus.一种更复杂的输出比较方法是将比较扩展到完整的指令跟踪级别分析。图 2 所示的流程包括一个测试生成器，用于刺激被测 RTL 和参考模型，并比较输出跟踪日志文件。在此示例中，指令流生成器 (ISG) 是最初由 Google 开发并在 GitHub [2] 上提供的开源 RISCV‑DV。由于纯粹随机的指令序列将包括大量非法和无效的组合，因此 ISG 生成随机指令，但受限于提供合法和有效的指令序列。使用意外序列运行处理器有助于针对极端情况场景，以广泛测试处理器的完整运行范围。
 
@@ -75,7 +85,7 @@ riscvOVPsimPlus 支持所有规范的配置选项和版本参考，以涵盖作�
 
 ### 数据路径锁步比较：阶段 #3
 
-![](asset/img_6f6343ed4303.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_6f6343ed4303.jpg)
 
 Fig. 3: The data-path lockstep method for step-and-compare verification.为了提供基于比较的流程而没有跟踪比较后处理的缺点和低效，可以在同一 SystemVerilog 测试台中与 RTL DUT 同步模拟参考模型。该流程如图 3 所示。参考模型封装在 SystemVerilog 测试平台中，不仅在发现差异时提供即时指示，还提供用于调查差异的交互式调试环境。处理器验证计划通常侧重于覆盖率的关键指标，但识别和调查差异的效率是选择验证方法的重要因素。
 
@@ -83,7 +93,7 @@ Fig. 3: The data-path lockstep method for step-and-compare verification.为了�
 
 ### 异步锁步比较：阶段 #4
 
-![](asset/img_cec945b3a3ac.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_cec945b3a3ac.jpg)
 
 RISC-V 正在被一些最复杂的设计项目采用，这些项目具有最先进的处理器架构特性，例如硬件多线程、无序（超标量）、多处理器和异构阵列，以及用于 AI 和 DL 计算引擎的 RISC-V 矢量规范。图 4 所示的异步锁步比较方法充分发挥了复杂处理器的多状态行为，还支持中断和调试模式等异步事件。
 

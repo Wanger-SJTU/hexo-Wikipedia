@@ -1,4 +1,17 @@
 ---
+title: 使用 Ragas 评估 RAG（含代码） - 知乎
+date: "2026-04-11 21:40:28"
+updated: "2026-04-11 21:40:28"
+layout: post
+permalink: /collections/0.raw/Omnivore/2024-04-09/使用-Ragas-评估-RAG(含代码)-知乎/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
+---
 id: 9f3d0852-7958-4328-bd42-67b2fbf0c25d
 ---
 

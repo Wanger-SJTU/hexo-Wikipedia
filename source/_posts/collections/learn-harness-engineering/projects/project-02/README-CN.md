@@ -1,3 +1,16 @@
+---
+title: "Project 02: Agent-Readable Workspace"
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/projects/project-02/README-CN/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # Project 02: Agent-Readable Workspace
 
 演示仓库可读性和显式连续性产物如何减少跨会话开发中的上下文丢失。

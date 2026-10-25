@@ -1,9 +1,19 @@
 ---
 title: "(2 条消息) AI Infra: PyTorch Offload技术优化实践"
-date: 2026-01-18
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/1949075068694013367
+date: "2026-01-18 00:00:00"
+updated: "2026-01-18 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/AI-Infra_-PyTorch-Offload技术优化实践/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/1949075068694013367
 ---
+
 
 **本文很大程度上参考PyTorch Tutorial：[https://docs.pytorch.org/tutorials/intermediate/pinmem_nonblock.html](https://link.zhihu.com/?target=https%3A//docs.pytorch.org/tutorials/intermediate/pinmem_nonblock.html) 以及 [https://developer.nvidia.com/blog/how-overlap-data-transfers-cuda-cc/](https://link.zhihu.com/?target=https%3A//developer.nvidia.com/blog/how-overlap-data-transfers-cuda-cc/)在大模型推理过程中，有很多内存换计算的技术，如LLM的KVCache、Diffusion的Feature Cache等，然而GPU的显存往往是不够的，我们会希望借助更充足的CPU内存进行“扩容”，这就是offload技术——前提是offload的开销（主要为数据搬移）小于直接计算开销。
 
@@ -28,7 +38,7 @@ source: https://zhuanlan.zhihu.com/p/1949075068694013367
 
 与可分页内存不同的是，RAM中还存在锁页内存（pinned memory)，这是一种无法被换出到磁盘的内存，允许更快、更可预测的访问时间，代价是内存大小和灵活性受到限制。
 
-![](asset/img_7e3f73940e14.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_7e3f73940e14.jpg)
 
 图1: CPU内存架构和CUDA数据搬移**
 
@@ -112,20 +122,20 @@ benchmark_with_profiler(pinned=1, streamed=1)`
 
 在上面的实验中，在满足条件1的gpu上调用`to(non_blocking=True)`进行数据搬移，并控制变量，模拟了条件2（非默认流）和条件3（锁页内存）的有无，并观察了执行的trace，我在A800上的实验结果如下：
 
-![](asset/img_45ffb0d205b4.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_45ffb0d205b4.jpg)
 
-无stream无pinned，memcpy1423us，无overlap![](asset/img_65241bd00366.jpg)
+无stream无pinned，memcpy1423us，无overlap![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_65241bd00366.jpg)
 
-无stream有pinned，memcpy操作变快了(811us)，但是无overlap![](asset/img_1c66d69ad91f.jpg)
+无stream有pinned，memcpy操作变快了(811us)，但是无overlap![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_1c66d69ad91f.jpg)
 
-有stream无pinned，memcpy1217us，无overlap![](asset/img_a32ff8db6d8f.jpg)
+有stream无pinned，memcpy1217us，无overlap![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_a32ff8db6d8f.jpg)
 
 有stream有pinned，memcpy811us，有overlap
 #### `pin_memory()` ：转移数据到CPU锁页内存
 
 上面的实验我们观察到，对于pinned memory，进行数据搬移的速度会变快，而且支持multi-stream的overlap操作，如果想要利用这项特性，PyTorch提供了`pin_memory()`方法，将pageable的数据搬移到锁页内存上。那么，开销是多少呢？
 
-![](asset/img_43fd380ef813.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_43fd380ef813.jpg)
 
 先进行pin_memory()再搬移会更慢。将pinned tensor搬到gpu上会更快，但是现将pageable tensor搬到pinned memory再转移到gpu则往往会导致更高的开销（与硬件和tensor大小有关）。而且`pin_memory()`本身会导致主线程阻塞。 因此，在申请内存时直接申请锁页内存可能是更好的选择。
 
@@ -263,11 +273,11 @@ if __name__ == "__main__":
 
 画图结果如下：
 
-![](asset/img_64b3a94c39ba.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_64b3a94c39ba.jpg)
 
 Normal copy time: 12.37ms，Non-blocking copy time: 5.20ms，Speed ratio: 0.42x毫无疑问non_blocking+synchronize的效果是更好的。观察breakdown的数据：
 
-![](asset/img_a30cd509e940.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_a30cd509e940.jpg)
 
 CUDA时间差不多（传输操作本身的开销），但是CPU时间差异巨大（同步的阻塞时间）。
 
@@ -275,7 +285,7 @@ CUDA时间差不多（传输操作本身的开销），但是CPU时间差异巨�
 
 对于不同储存形式的tensor，传输的阻塞与否同样影响性能。
 
-![](asset/img_8fa6d9abf29e.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_8fa6d9abf29e.jpg)
 
 首先，non-blocking几乎总是好的，因为这允许了cpu并发地起任务（包括传输任务和内存转移任务），减小host端的开销。另一方面，注意到pin_memory()+blocking()带来了极差的效果，这是由于串行起任务和memory alloc的开销，以及频繁的synchronize；以及，手动的pin_memory()操作导致主线程阻塞，从而抵消non_blocking的优势。
 
@@ -627,8 +637,8 @@ Layers: 30, Compute Intensity: 20
 
 Profile结果如下：
 
-![](asset/img_e5c00474dd9f.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_e5c00474dd9f.jpg)
 
-串行执行![](asset/img_49f4b1cfa6d3.jpg)
+串行执行![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_49f4b1cfa6d3.jpg)
 
 双流执行> 本文同步发布于：[Offload技术初探 - Here with Yu.Y](https://link.zhihu.com/?target=https%3A//chen-yy20.github.io/2025/09/11/offloading.html)

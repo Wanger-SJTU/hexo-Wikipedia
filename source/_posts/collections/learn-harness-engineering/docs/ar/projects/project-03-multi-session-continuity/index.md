@@ -1,3 +1,16 @@
+---
+title: المشروع 03. أبقِ الوكيل يعمل بعد إعادة تشغيل الجلسات
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/ar/projects/project-03-multi-session-continuity/index/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 [中文版本 →](../../../zh/projects/project-03-multi-session-continuity/)
 
 > محاضرات مرتبطة: [المحاضرة 05. حافظ على السياق حيًا عبر الجلسات](./../../lectures/lecture-05-why-long-running-tasks-lose-continuity/index.md) · [المحاضرة 06. هيئ قبل كل جلسة وكيل](./../../lectures/lecture-06-why-initialization-needs-its-own-phase/index.md)

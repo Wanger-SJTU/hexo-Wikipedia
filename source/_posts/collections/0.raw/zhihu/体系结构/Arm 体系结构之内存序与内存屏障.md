@@ -1,9 +1,19 @@
 ---
-title: "Arm 体系结构之内存序与内存屏障"
-date: 2024-01-18
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/678584093
+title: Arm 体系结构之内存序与内存屏障
+date: "2024-01-18 00:00:00"
+updated: "2024-01-18 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/体系结构/Arm-体系结构之内存序与内存屏障/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/678584093
 ---
+
 
 **欢迎关注我的公众号：窗有老梅**
 
@@ -103,7 +113,7 @@ Normal 是系统中最常见的 memory type，如下图：
 
 **
 
-![](asset/img_c5b395bf525e.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_c5b395bf525e.jpg)
 
 图 1：normal type
 
@@ -117,7 +127,7 @@ Normal 是系统中最常见的 memory type，如下图：
 
 Device memory type 是用来描述外设的。外设寄存器通常称为 Memory-Mapped I/O(MMIO)。下图是一个示例地址映射下被标记为 Device 的内存区域：
 
-![](asset/img_899939b1a51c.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_899939b1a51c.jpg)
 
 图 2：memory mapped device type
 
@@ -164,7 +174,7 @@ memory type 描述了一个地址的可允许行为（译者：“行为”指�
 
 **
 
-![](asset/img_e9a0e4361baf.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_e9a0e4361baf.jpg)
 
 图 3：device type
 
@@ -186,7 +196,7 @@ Armv8-A 是个弱内存序体系结构，其所支持的内存访问，不会强
 - 跨越一个外设的 Device-nR 访问。
 内存乱序可以让处理器运行地更快，如下图所示：
 
-![](asset/img_3399da806148.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_3399da806148.jpg)
 
 图 4：内存序示例
 
@@ -203,7 +213,7 @@ Armv8-A 是个弱内存序体系结构，其所支持的内存访问，不会强
 
 **
 
-![](asset/img_dfceca95f275.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_dfceca95f275.jpg)
 
 图 5：示例内存乱序限制的代码序列
 
@@ -410,7 +420,7 @@ Load-Acquire LDAR 指令的保序规则如下：
 
 **
 
-![](asset/img_81c95ea340d0.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_81c95ea340d0.jpg)
 
 图 6：LDAR 保序规则
 
@@ -424,7 +434,7 @@ Store-Release STLR 指令的保序规则如下：
 
 **
 
-![](asset/img_fad1b9203757.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_fad1b9203757.jpg)
 
 图 7：STLR 保序规则
 
@@ -441,7 +451,7 @@ X1X30x00x00x10x00x10x1表 4
 
 Load-Acquire 和 Store-Release 指令可以作为一个 pair 组合来对代码临界区进行保护。这些指令的组合使用，可以确保代码临界区内的访问不会被乱序到临界区之外。代码临界区之外的访问（译者：这里原文应该是笔误了，原文是 accesses inside the critical code section）不受影响，可以被乱序，如下图所示：
 
-![](asset/img_fd50968398eb.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_fd50968398eb.jpg)
 
 图 8：使用 LDAR-STLR pair 保护一个代码临界区
 
@@ -451,7 +461,7 @@ acquire/release 操作使用 sequentially consistent 模型。意思是，当一
 
 **
 
-![](asset/img_935aa7d0be59.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_935aa7d0be59.jpg)
 
 图 9：sequentially consistent 保序要求
 
@@ -459,7 +469,7 @@ acquire/release 操作使用 sequentially consistent 模型。意思是，当一
 
 Armv8.3-A 还提供了 Load-AcquirePC 指令。Load-AcquirePC 和 Store-Release 的组合使用，可以支持更弱的 Release Consistency processor consistent(RCpc) 模型，如下图所示：
 
-![](asset/img_1fa5f2050341.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_1fa5f2050341.jpg)
 
 图 10：Load-AcquirePC 指令
 
@@ -473,7 +483,7 @@ LORegions 可以避免在等待一个内存访问（针对内存映射中的任�
 
 **
 
-![](asset/img_74d11496e954.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_74d11496e954.jpg)
 
 图 11：使用 LORegions 的多 socket 系统
 
@@ -504,7 +514,7 @@ ISB`
 
 **
 
-![](asset/img_ddd0e028761a.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_ddd0e028761a.jpg)
 
 图 12：LORegion 内存访问示例
 

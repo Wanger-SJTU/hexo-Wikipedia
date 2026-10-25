@@ -1,12 +1,21 @@
 ---
 title: Is Grep All You Need? Agent检索如何重塑Agentic Search
-authors: Sahil Sen, Akhil Kasturi, Elias Lumer, Anmol Gulati, Vamse Kumar Subbiah
-date: 2026-05-14
-arxiv: 2605.15184
-original: https://arxiv.org/abs/2605.15184
-tags: [Agent, RAG, 检索, Tool-Calling]
-mathjax: true
+date: "2026-05-14 00:00:00"
+updated: "2026-05-14 00:00:00"
+layout: post
+permalink: /collections/0.raw/papers/Is-Grep-All-You-Need-Agent检索重塑/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - Agent
+  - RAG
+  - 检索
+  - Tool-Calling
 ---
+
 
 # 摘要
 

@@ -1,3 +1,16 @@
+---
+title: Projekt 06. Einen vollständigen Agenten-harness bauen (Capstone)
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/de/projects/project-06-runtime-observability-and-debugging/index/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 [中文版本 →](../../../zh/projects/project-06-runtime-observability-and-debugging/)
 
 > Zugehörige Lektionen: [Lektion 11. Die Runtime des Agenten beobachtbar machen](./../../lectures/lecture-11-why-observability-belongs-inside-the-harness/index.md) · [Lektion 12. Sauberes Handoff am Ende jeder Session](./../../lectures/lecture-12-why-every-session-must-leave-a-clean-state/index.md)

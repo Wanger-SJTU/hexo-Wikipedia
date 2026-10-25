@@ -1,9 +1,19 @@
 ---
-title: "(1 条消息) 体系结构和系统性能分析architecture&performance"
-date: 2023-12-14
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/672024071
+title: (1 条消息) 体系结构和系统性能分析architecture&performance
+date: "2023-12-14 00:00:00"
+updated: "2023-12-14 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/体系结构和系统性能分析architecture-performance/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/672024071
 ---
+
 
 电路的分析是很难的， 因为模拟电路大量经验参数是需要流片试出来，物理层面许多数据根本没法计算。 计算机系统明明都是人造的东西， 但是当部件足够多的时候， 对系统的性能进行分析也并不是一件简单的事情。这门课主要就是学习如何进行分析，你需要明确哪些参数，不知道参数的时候怎么进行假设。学习专业知识需要自己花时间看ppt和思考, 上课老师可以教授"道"。
 

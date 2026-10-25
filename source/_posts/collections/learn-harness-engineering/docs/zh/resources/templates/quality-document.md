@@ -1,3 +1,16 @@
+---
+title: 质量文档
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/zh/resources/templates/quality-document/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # 质量文档
 
 每个产品领域和架构层的质量快照。agent 和人都能通过这份文档快速了解项目哪里强、哪里弱。

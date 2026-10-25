@@ -1,11 +1,21 @@
 ---
-title: "(1 封私信) cache coherency model如何深层理解？"
-date: 2026-04-14
-tags: [知乎]
-source: https://www.zhihu.com/question/590540790/answer/2943285963
+title: (1 封私信) cache coherency model如何深层理解？
+date: "2026-04-14 00:00:00"
+updated: "2026-04-14 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/硬件/cache-coherency-model如何深层理解/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://www.zhihu.com/question/590540790/answer/2943285963
 ---
 
-![](asset/img_9da12470c1aa.jpg)![](asset/img_d4ee987c5361.webp)
+
+![](/images/collections/0.raw/zhihu/%25E7%25A1%25AC%25E4%25BB%25B6/asset/img_9da12470c1aa.jpg)![](/images/collections/0.raw/zhihu/%25E7%25A1%25AC%25E4%25BB%25B6/asset/img_d4ee987c5361.webp)
 
 想成为Java架构师，突破职业发展瓶颈，欢迎来咕泡教育见字如面，我是咕泡科技创始人Mic（谭锋）
 
@@ -17,7 +27,7 @@ source: https://www.zhihu.com/question/590540790/answer/2943285963
 - COAST：是一个用于模拟多处理器系统的高性能缓存一致性模拟器，支持多种常见的缓存一致性协议，包括MESI、MOESI、MESIF等。可以通过修改配置文件来模拟不同的协议和处理器拓扑结构。
 - Herd：是一个用于模拟多处理器系统的缓存一致性验证工具，可以通过编写简单的C语言程序来验证不同的缓存一致性协议。通过编写C语言程序来验证协议的方式非常适合学习和理解缓存一致性协议的工作原理。
 - CacheLab：是一个用于模拟多处理器系统的缓存一致性实验室，包括多个实验，旨在帮助学生深入理解缓存一致性协议。可以用于学习和理解MESI、MOESI等常见的缓存一致性协议。
-![](asset/img_e8a28a383c4a.jpg)![](asset/img_8dbdb6ff9658.webp)
+![](/images/collections/0.raw/zhihu/%25E7%25A1%25AC%25E4%25BB%25B6/asset/img_e8a28a383c4a.jpg)![](/images/collections/0.raw/zhihu/%25E7%25A1%25AC%25E4%25BB%25B6/asset/img_8dbdb6ff9658.webp)
 
 https://ke.gupaoedu.cn/course/java
 

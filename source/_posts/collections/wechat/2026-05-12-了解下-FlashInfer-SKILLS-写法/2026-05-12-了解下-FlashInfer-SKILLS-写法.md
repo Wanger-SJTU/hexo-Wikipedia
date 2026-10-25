@@ -1,10 +1,19 @@
 ---
-title: "了解下 FlashInfer SKILLS 写法"
-date: 2026-05-12
+title: 了解下 FlashInfer SKILLS 写法
+date: "2026-05-12 00:00:00"
+updated: "2026-05-12 00:00:00"
+layout: post
+permalink: /collections/wechat/2026-05-12-了解下-FlashInfer-SKILLS-写法/2026-05-12-了解下-FlashInfer-SKILLS-写法/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
 tags:
   - 微信文章
-source: https://mp.weixin.qq.com/s/rb9-m1IiuzOdZQfNU1nSIA
+source_url: https://mp.weixin.qq.com/s/rb9-m1IiuzOdZQfNU1nSIA
 ---
+
 
 > **作者**: BBuf  
 > **原文**: [微信文章](https://mp.weixin.qq.com/s/rb9-m1IiuzOdZQfNU1nSIA)  
@@ -367,7 +376,7 @@ FlashInfer 的这三个 SKILL 文件把项目中三个最核心的开发场景�
  
  
  
- ![](asset/img_3.jpg)
+ ![](/images/collections/wechat/2026-07-06-%25E5%25AD%2598%25E5%2582%25A8%25E5%25AF%25A1%25E5%25A4%25B4%25E6%25B8%25B8%25E8%25AF%25B4%25E7%2599%25BD%25E5%25AE%25AB%25E8%2583%258C%25E5%2590%258E%25EF%25BC%259A%25E7%259F%25AD%25E7%25BC%25BA%25E8%25A6%2581%25E6%2589%259B%25E5%2588%25B02027%25EF%25BC%2581/asset/img_3.jpg)
  alt=""
  />
  
@@ -473,7 +482,7 @@ FlashInfer 的这三个 SKILL 文件把项目中三个最核心的开发场景�
  
  
  
- ![](asset/img_3.jpg) alt="作者头像">
+ ![](/images/collections/wechat/2026-07-06-%25E5%25AD%2598%25E5%2582%25A8%25E5%25AF%25A1%25E5%25A4%25B4%25E6%25B8%25B8%25E8%25AF%25B4%25E7%2599%25BD%25E5%25AE%25AB%25E8%2583%258C%25E5%2590%258E%25EF%25BC%259A%25E7%259F%25AD%25E7%25BC%25BA%25E8%25A6%2581%25E6%2589%259B%25E5%2588%25B02027%25EF%25BC%2581/asset/img_3.jpg) alt="作者头像">
  
  
  

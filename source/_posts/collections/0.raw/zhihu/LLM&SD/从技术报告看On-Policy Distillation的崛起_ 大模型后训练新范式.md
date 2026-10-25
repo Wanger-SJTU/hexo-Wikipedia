@@ -1,10 +1,19 @@
 ---
 title: "从技术报告看On-Policy Distillation的崛起: 大模型后训练新范式"
-date: 2026-04-24
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/2031101471563962191
-
+date: "2026-04-24 00:00:00"
+updated: "2026-04-24 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/LLM-SD/从技术报告看On-Policy-Distillation的崛起_-大模型后训练新范式/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/2031101471563962191
 ---
+
 
 过去一年，大模型后训练路线出现了一个清晰变化：**On-Policy Distillation 正在成为事实上的后训练新范式**。从 Qwen3 用 OPD 高效训练轻量模型，到 GLM-5 用它修复多阶段 RL 后的能力遗忘；从小米 MiMo-V2 通过多教师 OPD 整合数学、代码、搜索等专家能力，再到 DeepSeek-V4（[DeepSeek-V4技术报告解读: 从架构到 Infra 的全栈重构](https://zhuanlan.zhihu.com/p/2030982954617414764)） 直接以 OPD 替代 mixed RL，各家技术报告都指向同一个趋势：后训练不再只是依赖昂贵的 RL 探索，而是越来越重视如何稳定、高效地把已有强模型的能力迁移到目标模型中。
 

@@ -1,3 +1,16 @@
+---
+title: مرجع عربي
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/ar/resources/reference/index/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # مرجع عربي
 
 تشرح هذه الملاحظات كيفية استخدام القوالب كـ harness عامل بدلاً من

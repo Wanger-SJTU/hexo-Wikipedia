@@ -1,10 +1,19 @@
 ---
-title: "DeepEP图解"
-date: 2026-05-23
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/1972433913054994664
-
+title: DeepEP图解
+date: "2026-05-23 00:00:00"
+updated: "2026-05-23 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/DeepEP图解/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/1972433913054994664
 ---
+
 
 TL;DR
 笔者最近在学习DeepEP的代码，作为通信优化的初学者，在感叹All2All通信库竟然能写得如此复杂、使用了如此多优化技巧的同时，趁着周末、试着用清晰的图示、通俗的语言记录学习所得，敬请纠正～

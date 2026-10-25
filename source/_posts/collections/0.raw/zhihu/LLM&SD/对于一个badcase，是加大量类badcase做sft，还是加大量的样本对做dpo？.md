@@ -1,10 +1,19 @@
 ---
-title: "对于一个badcase，是加大量类badcase做sft，还是加大量的样本对做dpo？"
-date: 2025-02-01
-tags: [知乎]
-source: https://www.zhihu.com/question/9246153349/answer/90565674993
-
+title: 对于一个badcase，是加大量类badcase做sft，还是加大量的样本对做dpo？
+date: "2025-02-01 00:00:00"
+updated: "2025-02-01 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/LLM-SD/对于一个badcase,是加大量类badcase做sft,还是加大量的样本对做dpo/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://www.zhihu.com/question/9246153349/answer/90565674993
 ---
+
 
 如果答主说的badcase是指大模型生成的不良回复的话，应该用DPO。
 

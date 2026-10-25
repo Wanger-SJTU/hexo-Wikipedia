@@ -1,3 +1,16 @@
+---
+title: 評估評分標準範例
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/zh-TW/lectures/lecture-11-why-observability-belongs-inside-the-harness/code/evaluator-rubric/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # 評估評分標準範例
 
 對每個維度使用 1-5 分評分：

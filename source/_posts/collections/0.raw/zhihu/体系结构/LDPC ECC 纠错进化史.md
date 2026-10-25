@@ -1,9 +1,19 @@
 ---
-title: "LDPC ECC 纠错进化史"
-date: 2026-07-16
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/2061096699741967196
+title: LDPC ECC 纠错进化史
+date: "2026-07-16 00:00:00"
+updated: "2026-07-16 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/体系结构/LDPC-ECC-纠错进化史/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/2061096699741967196
 ---
+
 
 NAND Flash 从写入数据的那一刻起就可能会产生错误。电荷泄漏、温度漂移、单元间干扰、读写扰动——这些因素持续改变着存储单元内的电压状态。存储单元密度越高、电压窗口越窄，出错概率越大。
 

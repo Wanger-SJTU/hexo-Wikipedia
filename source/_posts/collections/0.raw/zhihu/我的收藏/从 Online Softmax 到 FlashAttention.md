@@ -1,9 +1,19 @@
 ---
-title: "从 Online Softmax 到 FlashAttention"
-date: 2026-03-16
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/2016897558933426874
+title: 从 Online Softmax 到 FlashAttention
+date: "2026-03-16 00:00:00"
+updated: "2026-03-16 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/从-Online-Softmax-到-FlashAttention/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/2016897558933426874
 ---
+
 
 ** 翻译自 [https://courses.cs.washington.edu/courses/cse599m/23sp/notes/flashattn.pdf](https://link.zhihu.com/?target=https%3A//courses.cs.washington.edu/courses/cse599m/23sp/notes/flashattn.pdf)
  FlashAttention 核心创新在于采用了与 Online Softmax 类似的思想，对自注意力计算进行分块计算。从而我们可以融合整个多头注意力层，不用去访问 GPU 全局内存来存储中间的 logits 和注意力分数。这篇笔记中，我将简要的解释下为什么分块 self-attention 计算并非易事，如何驱动 FlashAttention 计算从 online softmax 这个技巧。
@@ -24,7 +34,7 @@ X=QK^T, A = softmax(X), O=AV
 
 对于经典算法如矩阵乘，tiling 被用来确保片上内存不会超过硬件限制。图中展示了一个例子。在 kernel 执行期间，仅有 3T^2 的元素被存储在片上，无论矩阵形状如何。这个分片方法是有效的，因为加法满足结合律**，这使得我们可以将整个矩阵乘法**分解**为多个分块矩阵乘法的**和**。
 
-![](asset/img_21c03e61f83d.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_21c03e61f83d.jpg)
 
 **
 
@@ -52,7 +62,7 @@ $\{d_i\}: {\sum_{j=1}^{N} e^{x_j - m_N}}，d_0=0，d_N是 saft softmax 的分母
 
 \{a_i\}: 最终的 softmax 值
 
-![](asset/img_e6ab19feee49.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_e6ab19feee49.jpg)
 
 这个算法需要迭代[1, N]三次。自注意力中，\{x_i\}是 softmax 前的 logits，由QK^T得出。这意味着我们无法保存全部的 logit 值（没有足够的片上 SRAM 来存储它们）。就必须三次访问 Q 和 K（以便在计算时重新生成 logit），而这种方式的 I/O 效率很低。
 
@@ -62,11 +72,11 @@ $\{d_i\}: {\sum_{j=1}^{N} e^{x_j - m_N}}，d_0=0，d_N是 saft softmax 的分母
 
 $我们创建了另外一个公式d_i' := \sum_{j=1}^{i} e^{x_j - m_i}作为原来的替代公式 8d_i := \sum_{j=1}^{i} e^{x_j - m_N}的替代，这里移除了对 N 的依赖。这两个公式第N个项目是相同的d_N=d'_N，因此我们可以完全替代公式9中的d_N使用d'_N，我们也发现了d'_i和d'_{i-1} 的关系：$
 
-![](asset/img_7c9e57712294.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_7c9e57712294.jpg)
 
 这个递归仅依赖于m_i和m_{i-1}，我们可以计算m_j和d'_j在同一个循环中。
 
-![](asset/img_9c362ae8834d.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_9c362ae8834d.jpg)
 
 这个就是 Online Softmax 算法。然而这个仍需要两步完成 softmax 计算，我们可以减少到一步吗？
 
@@ -78,35 +88,35 @@ $我们创建了另外一个公式d_i' := \sum_{j=1}^{i} e^{x_j - m_i}作为原�
 
 ### Self-Attention 多步算法
 
-![](asset/img_4f675eca6e30.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_4f675eca6e30.jpg)
 
 让我们用等式 11 定义的替换等式 12 中的a_i：
 
-![](asset/img_3efb96481544.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_3efb96481544.jpg)
 
 公式能依赖于m_N和d'_N，这两个需要前边循环结束才能确定下来。这里我们仍然可以利用之前替代的小技巧，通过创建替代序列o'：
 
-![](asset/img_2fe5a10e97c7.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_2fe5a10e97c7.jpg)
 
 o和o'的第n个元素是相同的：o'_N=o_N，这样我们就找到了o'_i和o'_{i-1}递归关系：
 
-![](asset/img_6a79b555d12e.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_6a79b555d12e.jpg)
 
 这里的o'_i仅依赖d'_i、d'_{i-1}、m_{i-1}、m_i和x_i，因此我们可以融合 Self-Attention 所有计算放到一步中。
 
 ### FlashAttention 算法
 
-![](asset/img_e45d7b83ab2b.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_e45d7b83ab2b.jpg)
 
 状态x_i，m_i，d'_i和o'_i占用空间很小，可以轻松的放到 GPU 共享内存中。因为所有操作都满足交换律，所以很容易使用 tiling。如果我们计算按 tile 切换计算状态，那么算法就变为如下了：
 
 ### 分块 FlashAttention 算法
 
-![](asset/img_17a01f412a08.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_17a01f412a08.jpg)
 
-![](asset/img_c982a97669f8.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_c982a97669f8.jpg)
 
-![](asset/img_e0124f0627d6.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_e0124f0627d6.jpg)
 
 这张图介绍了 FlashAttention 如何在硬件上计算的。蓝色块表示放在 SRAM 中的分块，而红色的块表示第i行。L表示的是序列长度，可以很大（例如 16k），D表示的是 head 维度，通常很小（GPT3 为 128），B是可以控制的区块 block size。
 

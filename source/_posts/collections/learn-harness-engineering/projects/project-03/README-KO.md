@@ -1,3 +1,16 @@
+---
+title: "프로젝트 03: 범위 제어와 근거 기반 검증"
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/projects/project-03/README-KO/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 [English](./README.md) · **한국어**
 
 # 프로젝트 03: 범위 제어와 근거 기반 검증

@@ -1,9 +1,19 @@
 ---
-title: "再读MLA，还有多少细节是你不知道的"
-date: 2025-01-21
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/19585986234
+title: 再读MLA，还有多少细节是你不知道的
+date: "2025-01-21 00:00:00"
+updated: "2025-01-21 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/LLM-SD/再读MLA,还有多少细节是你不知道的/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/19585986234
 ---
+
 
 **关于MLA，在本文开头想先简单记录下我了解它的心路历程：****
 
@@ -32,7 +42,7 @@ source: https://zhuanlan.zhihu.com/p/19585986234
 
 我们先来快速复习一下decoder架构的MHA的运作流程，如下图：
 
-![](asset/img_fdc720256d1c.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_fdc720256d1c.jpg)
 
 这里head_num = 4，图中刻画了head0的运算过程，包括 `attn_weights = Matmul(q, k)` 以及 `attn_sv = Matmul(attn_weights, v)`，图中虚线灰框表示 h_{i} 在head0上的结果是由包括其在内的若干前置tokens计算结果汇总而来。为了表达简便，这里省去了诸如softmax， W_{O} 的计算过程。图中被红色虚线框圈起来的部分，就是大家熟知的将被用在推理阶段的KV cache。****
 
@@ -40,7 +50,7 @@ KV cache的存在，本来是为了避免在推理阶段对前置序列的重复
 
 MQA和GQA的运作方式如下：
 
-![](asset/img_2f9833354251.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_2f9833354251.jpg)
 
 - 在MQA的情况下，一个token所有的heads都共享同一个k和v**。这样在降低param weights大小的同时，还让原本需要保存num_heads份的kv cache降低为只需保存1份。
 - 但是，MQA可能造成模型效果上的损失，毕竟原来对于1个token，它的每个head都有各自的k、v信息的，现在却被压缩为一份。**所以GQA作为一种折衷的方案出现了**，即将1个token的head分成num_group组，每个group内共享同一个k，v信息，使得信息压缩不像GQA那样严重。
@@ -60,7 +70,7 @@ MQA和GQA的运作方式如下：
 
 我们现在的总目标是节省K cache，当你再次端详上面这幅图时，一个idea在你的头脑中出现：****
 
-![](asset/img_aae5dcb9c632.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_aae5dcb9c632.jpg)
 
 - 当前我要存的K cache是4个k_head（图中深绿色框），但如果我能从这4个k_head中抽取出1份共有的信息**，然后在做attn计算时，**每个head都用这1份共有的信息做计算**，那么我也只需存这1份共有信息作为K cache了。这样我就**把K cache从原来num_heads = 4变成num_heads = 1**，这不就能节省K cache了吗？
 - 但是等等，**现在共有的k_head信息是抽取出来了，那么相异的k_head信息呢？**（**简单来说，就是由** W_{K}  **不同head部分学习到的相异信息**）。我们当然是希望k_head间相异的信息也能保留下来，那么该把它们保留至哪里呢？当你回顾attn_weights的计算公式时，一个想法在你脑中闪现：**q部分不是也有heads吗！我可以把每个k_head独有的信息转移到对应的q_head上吗！写成公式解释就是： ****
@@ -75,7 +85,7 @@ MQA和GQA的运作方式如下：
 
 现在我们更具体地画出上面这套“信息转移”方案的具体流程：
 
-![](asset/img_f68b8a8f1411.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_f68b8a8f1411.jpg)
 
 ⚠️ ⚠️⚠️：再次说明，在本部分，我们侧重于抽象出MLA的优化思路，大家在阅读上面这幅图时，请不要带入任何具体的细节（例如矩阵尺寸）等去做计算，这部分细节我们会在下文详细介绍。**   我们来详细看这幅图：**
 
@@ -100,7 +110,7 @@ MQA和GQA的运作方式如下：
 
 现在我们可以来看MLA的运作细节了。
 
-![](asset/img_80db485774c4.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_80db485774c4.jpg)
 
 **
 
@@ -131,7 +141,7 @@ MQA和GQA的运作方式如下：
 
 CD**（**CacheDecompressed**）**zh表格效果有点鸡肋...我直接从我笔记里截图了
 
-![](asset/img_48e1348ca2d3.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_48e1348ca2d3.jpg)
 
 CD我们对这张表格做一些说明：
 
@@ -149,7 +159,7 @@ CD我们对这张表格做一些说明：
 
 我们直接对着2.1的图，列出CC表格：
 
-![](asset/img_5d78f738b7ee.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_5d78f738b7ee.jpg)
 
 CC
 不难发现，在这个中间态CC优化的MLA下：
@@ -163,7 +173,7 @@ CC
 
 现在，终于来到我们心心念念的涉及吸收的优化了**
 
-![](asset/img_e19cc84daf2a.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_e19cc84daf2a.jpg)
 
 A_CC
 
@@ -182,13 +192,13 @@ A_CC
 
 **最后，这个优化其实就是在A_CC的基础上，在计算attn_weights的时候，把nope和rope的部分拆开算，然后再求和。这样做是为了避开无用的数据拷贝和广播（可以看代码，你会发现A_CC为了做数据拼接，是先初始化一个一个拼接好的空张量，再往里塞数据，这样就是2倍的显存开销。而避开拼接各自算各自的，可以直接复用已有的数据）
 
-![](asset/img_38e6558563bb.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_38e6558563bb.jpg)
 
 ### 三、MLA可以用TP吗
 
 现在，回来看一个经常被讨论的问题：MLA可以做TP吗？因为看样子，对于每一个token来说，它所有的num_heads上的kv信息已经被压缩成compress_kv了，好像是不能再切分了？**为了解答这个问题，我们这里再贴出2.1中的流程图：
 
-![](asset/img_80db485774c4.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_80db485774c4.jpg)
 
 我们着重关注流程图中红色部分（也就是param_weights），大家回想一下之前的介绍：尽管compress_kv已经被抽取成类似单头的形式了（1个token只有1个，且不区分heads），但是它能这样做的原因是因为kv_heads上的信息转移去q_heads了，对了！q还是有heads的呀！！**
 

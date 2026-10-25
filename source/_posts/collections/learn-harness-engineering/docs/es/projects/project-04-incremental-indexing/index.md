@@ -1,3 +1,16 @@
+---
+title: Proyecto 04. Usa feedback de runtime para corregir el comportamiento del agente
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/es/projects/project-04-incremental-indexing/index/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 [中文版本 →](../../../zh/projects/project-04-incremental-indexing/)
 
 > Lecciones relacionadas: [Lección 07. Define límites claros de tarea para los agentes](./../../lectures/lecture-07-why-agents-overreach-and-under-finish/index.md) · [Lección 08. Usa listas de funciones para restringir lo que hace el agente](./../../lectures/lecture-08-why-feature-lists-are-harness-primitives/index.md)

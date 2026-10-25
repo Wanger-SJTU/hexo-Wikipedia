@@ -1,9 +1,19 @@
 ---
-title: "长文本外推——详解RoPE的功过是非"
-date: 2025-03-06
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/14369935885
+title: 长文本外推——详解RoPE的功过是非
+date: "2025-03-06 00:00:00"
+updated: "2025-03-06 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/LLM-SD/长文本外推——详解RoPE的功过是非/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/14369935885
 ---
+
 
 **现在开源社区对 RoPE 的评价是两种一边倒，要么只褒，要么只贬。更加遗憾的是，这些褒贬都站在 RoPE 原文的理论框架之下，缺少更多信息量。本文将站在波、频域、傅里叶变换的角度，在不一样的视角详解 RoPE 的功过是非。
 ### TL; DR**
@@ -105,7 +115,7 @@ $$X(\omega)=\alpha\delta(\omega_m)+\frac{\sin[(N-\alpha N_m)(\omega-\omega_m)]}{
 
 $$其中，\alpha=\lfloor\frac{N}{N_{\omega_m}}\rfloor是截断长度与周期长度相除后向下取整的整数值，\delta(\omega_m)是在 \omega_m 处无限大但积分为1、在其他位置取值均为0的奇异函数。$$
 
-![](asset/img_02b89fe419e8.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_02b89fe419e8.jpg)
 
 Sa函数示意图（中心频率等于0时）可以看到，时域截断会让主要频率 \omega_m 的强度向周围的频率扩散，降低信噪比。如果该函数的周期 N_{\omega_m} 大于截断长度 N，这个信噪比将变得很低，会极大地抑制对只要频率的学习。巧合的是，RoPE 中其实使用了大量频率低、周期长的分量，所以这个问题尤为严重。 
 
@@ -149,7 +159,7 @@ RoPE的频率通常设置为 (0,1] （1可以取到、0会取比较接近的小�
 
 ### **补充证明 **
 
-![](asset/img_e4f6762676ee.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_e4f6762676ee.jpg)
 
 傅里叶变换示意图
 #### **证明 1：RoPE-based LM 的 Hidden States 是频谱系数**

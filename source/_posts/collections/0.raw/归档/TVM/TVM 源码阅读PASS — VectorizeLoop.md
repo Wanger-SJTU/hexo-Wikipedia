@@ -1,3 +1,16 @@
+---
+title: TVM 源码阅读PASS — VectorizeLoop
+date: "2026-04-11 21:40:28"
+updated: "2026-04-11 21:40:28"
+layout: post
+permalink: /collections/0.raw/归档/TVM/TVM-源码阅读PASS-—-VectorizeLoop/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 #TODO  #TVM 
 
 VectorizeLoop这个PASS就是对标记为`ForKind::kVectorized`的`For`循环做向量化处理，并对For循环中的语句涉及到的变量，替换为`Ramp`，以便于在Codegen的过程中生成相关的向量化运算的指令。
@@ -89,7 +102,7 @@ Vectorizer(Var var, int var_lanes) : var_(var), var_lanes_(var_lanes) {
 
 因为TVM中，Stmt的表达可以视为一个DSL的语言，访问的时候也是按照深度优先的策略遍历的AST，这里把上面的计算过程简单表示为一个AST的语法树，然后再分析一下流程中调用的各个函数是如何处理的。
 
-![[Excalidraw/vectorize_loop.excalidraw|width=100%]]
+!<span class="wikilink wikilink--missing" title="未导入的页面">width=100%</span>
 
 从上面的AST的示意图可以看出来，对于上面的sch，依次访问了`BufferStoreNode`、`Add` `Mul`、`BufferLoadNode` 等。这里就以这几个Node的处理介绍一下向量化的过程。
 

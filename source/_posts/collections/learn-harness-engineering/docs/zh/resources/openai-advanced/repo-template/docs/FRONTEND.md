@@ -1,3 +1,16 @@
+---
+title: FRONTEND.md
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/zh/resources/openai-advanced/repo-template/docs/FRONTEND/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # FRONTEND.md
 
 这份文件定义稳定的前端预期，避免 agent 每次都临场发明一套 UI 模式。

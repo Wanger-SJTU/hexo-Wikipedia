@@ -1,9 +1,19 @@
 ---
-title: "一文读懂VAE的底层逻辑"
-date: 2024-03-17
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/686158547
+title: 一文读懂VAE的底层逻辑
+date: "2024-03-17 00:00:00"
+updated: "2024-03-17 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/dl论文/一文读懂VAE的底层逻辑/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/686158547
 ---
+
 
 跟之前一样，还是录了一个视频版讲解，比文章中讲的会更细致一点，包括加入了VAE和latent diffusion之间异同的思考，大家有兴趣的可以看一下，一个视频看懂VAE的原理以及关于latent diffusion的思考_哔哩哔哩_bilibili
 
@@ -78,6 +88,6 @@ $$\displaystyle\frac{1}{2}\sum\limits_{j=1}^J (1+\log((\sigma_j)^2)-(\mu_j)^2-(\
 
 这里面其实有一点可能会给大家造成困惑，就是我们在训练过程中，我们一直在最小化KL散度KL(q_{\phi}(z|x_i)||p(z)) ，那是不是说明 q_{\phi}(z|x_i) 到最后都趋近于标准正态分布呢？并不是的，我在另一篇外文博客中看到了一幅分布图，可以很清晰的解释这个问题
 
-![](asset/img_ce40f490d3c3.jpg)
+![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_ce40f490d3c3.jpg)
 
 这个图上不同10种不同的颜色代表的是MNIST数据中10个不同的数字对应的隐空间分布。首先，左图是只使用了重构loss，其实就是传统的AutoEncoder（AE），可以看到，整体分布没有规律，很难进行抽样生成新图像。中间的图是只使用了KL散度，当训练较好的前提下，每个数字对应的隐空间分布均近似为标准正态分布。而右图才是VAE的隐空间分布，可以看到，由于有了重构loss的加入，不同颜色在整体空间分布上已经有了区域性划分，这说明重构图像需要学到不同数字的不同特征，这些特征可能造成了不同数字的隐空间分布的区域差异性，但有了KL散度作为loss，又使得隐空间分布的整体趋向于标准正态分布，方便后续采样生成新的图像。

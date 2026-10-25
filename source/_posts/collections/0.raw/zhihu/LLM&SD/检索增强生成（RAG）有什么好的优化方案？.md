@@ -1,10 +1,19 @@
 ---
-title: "检索增强生成（RAG）有什么好的优化方案？"
-date: 2023-12-11
-tags: [知乎]
-source: https://www.zhihu.com/question/628651389/answer/3321989558
-
+title: 检索增强生成（RAG）有什么好的优化方案？
+date: "2023-12-11 00:00:00"
+updated: "2023-12-11 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/LLM-SD/检索增强生成(RAG)有什么好的优化方案/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://www.zhihu.com/question/628651389/answer/3321989558
 ---
+
 
 RAG优化分为两个方向：RAG基础功能优化、RAG架构优化。我们分别展开讨论。
 

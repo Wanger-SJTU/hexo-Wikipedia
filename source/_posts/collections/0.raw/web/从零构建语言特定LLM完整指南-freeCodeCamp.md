@@ -1,9 +1,22 @@
 ---
-title: "如何从零构建语言特定的LLM [完整手册]"
-date: 2026-04-25
-tags: [LLM, 训练, 教程, freeCodeCamp]
-source: https://www.freecodecamp.org/news/how-to-build-your-own-language-specific-llm-handbook/
+title: 如何从零构建语言特定的LLM [完整手册]
+date: "2026-04-25 00:00:00"
+updated: "2026-04-25 00:00:00"
+layout: post
+permalink: /collections/0.raw/web/从零构建语言特定LLM完整指南-freeCodeCamp/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - LLM
+  - 训练
+  - 教程
+  - freeCodeCamp
+source_url: https://www.freecodecamp.org/news/how-to-build-your-own-language-specific-llm-handbook/
 ---
+
 
 2026年4月24日
 

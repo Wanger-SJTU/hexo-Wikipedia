@@ -1,9 +1,19 @@
 ---
-title: "(2 条消息) 压缩率90%效果依然坚挺？通过蒸馏kv-cache降低部署成本"
-date: 2025-03-18
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/30901350014
+title: (2 条消息) 压缩率90%效果依然坚挺？通过蒸馏kv-cache降低部署成本
+date: "2025-03-18 00:00:00"
+updated: "2025-03-18 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/压缩率90-效果依然坚挺-通过蒸馏kv-cache降低部署成本/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/30901350014
 ---
+
 
 **论文标题**
 
@@ -47,7 +57,7 @@ KV-Cache是当前常用的推理加速手段，通过空间换时间的方式提
 
 **
 
-![](asset/img_6e8ad61f197e.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_6e8ad61f197e.jpg)
 
 ### 本文方法**
 
@@ -59,19 +69,19 @@ KV-Cache是当前常用的推理加速手段，通过空间换时间的方式提
 
 说明：在某些实现中，注意力计算完成后，多头的结果拼接在一起，然后会乘以一个矩阵，此矩阵被称为O
 
-![](asset/img_d0a5e9702d98.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_d0a5e9702d98.jpg)
 
 3. 模型需要计算两个输出分布：一是所有token经过原始主干模块的输出（相当于教师模型输出），二是被FFN选中的token经过带Lora模块的输出（相当于学生模型输出），如下图所示
 
-![](asset/img_cfb36e65ab40.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_cfb36e65ab40.jpg)
 
 4. 模型训练的目标为：最小化上述两个分布差异；整个过程中只有FFN和Lora模块需要更新，其他部分都冻结参数
 
-![](asset/img_a4781124156a.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_a4781124156a.jpg)
 
 消融实验结论：
 
-![](asset/img_b5fdeb474f19.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_b5fdeb474f19.jpg)
 
 同时使用正向和反向 KL 散度的组合目标函数能够获得最佳性能。仅使用正向或反向 KL 散度的模型性能显著下降，而使用自编码和语言建模目标（如 ICAE 和 DODO）的模型性能则更差
 
@@ -83,7 +93,7 @@ KV-Cache是当前常用的推理加速手段，通过空间换时间的方式提
 
 **
 
-![](asset/img_1987e7151c5b.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_1987e7151c5b.jpg)
 
 与H2I方法相比，KV-distill保持了较好的长上下文检索能力，即使是在压缩率90%时也能保持较好的准确性
 
@@ -91,7 +101,7 @@ KV-Cache是当前常用的推理加速手段，通过空间换时间的方式提
 
 **
 
-![](asset/img_052b4a45d996.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_052b4a45d996.jpg)
 
 应用到各个模型中，长文本抽取式问答的zero-shot准确率均好于对照组
 
@@ -99,13 +109,13 @@ KV-Cache是当前常用的推理加速手段，通过空间换时间的方式提
 
 **
 
-![](asset/img_82ed257baeb1.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_82ed257baeb1.jpg)
 
 在长文本理解性问答测试中（需要深入理解上下文才能回答问题），KV-Distill方法即使是在90%的压缩率下，也保持了和原始模型相当的性能
 
 #### 四、摘要生成测试**
 
-![](asset/img_0b9cae2f3a81.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_0b9cae2f3a81.jpg)
 
     在长文本生成摘要的任务中，表现依然良好
 

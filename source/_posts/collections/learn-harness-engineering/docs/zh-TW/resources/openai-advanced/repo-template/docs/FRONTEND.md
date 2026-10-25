@@ -1,3 +1,16 @@
+---
+title: FRONTEND.md
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/zh-TW/resources/openai-advanced/repo-template/docs/FRONTEND/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # FRONTEND.md
 
 這份檔案定義穩定的前端預期，避免代理不可預測地建立不同的 UI 模式。

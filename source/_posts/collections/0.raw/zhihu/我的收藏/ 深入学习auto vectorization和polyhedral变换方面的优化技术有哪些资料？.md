@@ -1,9 +1,19 @@
 ---
-title: "(1 条消息) 深入学习auto vectorization和polyhedral变换方面的优化技术有哪些资料？"
-date: 2026-04-15
-tags: [知乎]
-source: https://www.zhihu.com/question/65708935/answer/475572657
+title: (1 条消息) 深入学习auto vectorization和polyhedral变换方面的优化技术有哪些资料？
+date: "2026-04-15 00:00:00"
+updated: "2026-04-15 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/深入学习auto-vectorization和polyhedral变换方面的优化技术有哪些资料/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://www.zhihu.com/question/65708935/answer/475572657
 ---
+
 
 parallelization和vectorization的内容在经典的编译系列丛书中比较难找到，或者即便找到了也和当下在科研前端上的研究热点相比，知识比较陈旧的原因，一方面是时间问题，另一个更重要的原因是这些编译系列丛书是介绍编译程序的整个流程，从前端词法分析、语法分析到中间优化以及后端代码生成。在前端上，很多知识和形式语言与自动机等理论知识密切结合，而parallelization和vectorization这些优化技术主要是编译中间优化环节的研究内容，在龙虎鲸书等经典教材上知识点较少的现象也是情理之中。
 

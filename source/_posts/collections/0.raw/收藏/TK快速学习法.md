@@ -1,3 +1,16 @@
+---
+title: TK快速学习法
+date: "2026-04-11 21:40:17"
+updated: "2026-04-11 21:40:17"
+layout: post
+permalink: /collections/0.raw/收藏/TK快速学习法/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 
 这两天论坛上又有人开始抱怨世风日下，大家都现实了，都不开放了，不交流了。对这种“月经贴”，我基本上已经习惯了，不过因为吃了粉皮炖鸡，心情比较好，于是就说了两句。
 

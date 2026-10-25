@@ -1,10 +1,19 @@
 ---
-title: "从FlashAttention到编译器自动融合：浅读PLDI 2026论文Neptune"
-date: 2026-05-19
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/2040074326905462952
-
+title: 从FlashAttention到编译器自动融合：浅读PLDI 2026论文Neptune
+date: "2026-05-19 00:00:00"
+updated: "2026-05-19 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/AI-infra/从FlashAttention到编译器自动融合-浅读PLDI-2026论文Neptune/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/2040074326905462952
 ---
+
 
 最近读到一篇很有意思的PLDI 2026论文：[Neptune: Advanced ML Operator Fusion for Locality and Parallelism on GPUs](https://link.zhihu.com/?target=https%3A//arxiv.org/pdf/2510.08726)。这篇论文解决的问题非常典型，很多深度学习算子明明在数学上只有几行公式，但在gpu上跑得快，往往需要专家手写复杂kernel，比如flashattention（FA）、flashdecoding（FD）。Neptune想解决的问题是FA这种高级融合算子，能不能不靠专家手写，而是变成tensor compiler里的通用优化primitive。
 

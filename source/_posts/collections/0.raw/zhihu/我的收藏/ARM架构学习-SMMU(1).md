@@ -1,15 +1,25 @@
 ---
-title: "(2 条消息) ARM架构学习-SMMU(1)"
-date: 2025-01-03
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/16243460276
+title: (2 条消息) ARM架构学习-SMMU(1)
+date: "2025-01-03 00:00:00"
+updated: "2025-01-03 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/ARM架构学习-SMMU(1)/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/16243460276
 ---
+
 
 SMMU是ARM架构中完成内存虚拟化功能的一个重要组件，整体包含功能较多。本文从PCIe应用的角度出发，重点梳理了SMMU中和PCIe命令处理相关的基本功能和流程。此外，本文只是基于SMMU的官方Spec对相关功能和流程做一个基本介绍，不会深入到细节和具体数据结构，感兴趣的读者请自行查阅ARM的Spec。
 
 SMMU即system memory management unit，在x86体系结构中对应的是IOMMU。SMMU在ARM体系中用于翻译来自I/O Devices的DMA请求的地址，并且SMMU的作用是单向的，只翻译来自I/O Devices的请求。系统发给I/O Devices的请求的地址翻译，由其它方式完成，比如Processing Element (PE，可以认为是processor或者core) MMUs。
 
-![](asset/img_e156c069a628.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_e156c069a628.jpg)
 
 图 1 System MMU in DMA TrafficSMMU中，不同的streams和不同的devices绑定，可以基于devices/streams做不同的translation（即可以认为每个stream有独立的translation配置）。
 
@@ -31,7 +41,7 @@ ARM的地址空间可以分为三类：
 
 三者的转换关系如下图所示：
 
-![](asset/img_7fb71d101df4.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_7fb71d101df4.jpg)
 
 图 2 ARM中不同的地址空间及关系VMM/Hypervisor控制了哪部分物理空间可以被一个VM访问，并映射到VM的OS中的哪一块地址（即OS看到的物理地址空间，ARM中称为Intermediate Physical Address）。所以stage 2 translation可以保证VM只看分配给它的物理资源。
 
@@ -49,11 +59,11 @@ SMMU的主要数据结构是stream table，stream table中的entries包含了sta
 
 第一种是Linear Stream table，STEs和stream ID一一线性对应，在物理空间上的地址也是连续的。
 
-![](asset/img_a90cee1ed0b8.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_a90cee1ed0b8.jpg)
 
 图 3 Linear Stream table第二种是2-level Stream table，第一级stream table的entries，包含的是第二级stream table的pointer或者说descriptors。所以一级 stream table可以包含多个二级stream table，同时每一个二级stream table都是一个linear stream table。
 
-![](asset/img_89e75947537b.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_89e75947537b.jpg)
 
 图 4 2-level Stream table2-level Stream table的主要好处是stream table的保存在物理空间上可以是不连续的。
 
@@ -73,9 +83,9 @@ SMMU的主要数据结构是stream table，stream table中的entries包含了sta
 
 Context descriptor中保存了stage 1 translation table的基址，stream的configuration以及ASID。如果使能了substream ID，则每个substream ID使用的context descriptor也会不同。
 
-![](asset/img_fdabc88e1336.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_fdabc88e1336.jpg)
 
-图 5 Configuration structure example![](asset/img_47fbea8430fa.jpg)
+图 5 Configuration structure example![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_47fbea8430fa.jpg)
 
 图 6 Multiple Context Descriptors for Substreams注：VMID即virtual machine ID，stage 2的翻译是基于virtual machine（VM），即一个VM对应一个stage 2 translation table。ASID为Address Space ID，与OS/VM的application对应（不同于PCIe PASID），每个VM的ASID namespace是独立的。
 
@@ -89,15 +99,15 @@ CD中的TTB0表示用户（user）的stage 1 translation table基址，TTB1表�
 
 SMMU的翻译过程如下图所示：
 
-![](asset/img_5629f80e917b.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_5629f80e917b.jpg)
 
 图 7 Configuration and translation lookup sequence上图中，TLB用于cache translation table及相关的configurations。
 
 Streamworld是地址翻译的regime（a mode of rule），等同于一个PE的Exception Level，与transaction的权限等级相关，具体如下表所示：
 
-![](asset/img_df235679a97b.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_df235679a97b.jpg)
 
-![](asset/img_867abfad445f.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_867abfad445f.jpg)
 
 最终输出的地址是一个input address，StreamWorld（(Stream Security state and Exception level), ASID和VMID的函数。
 
@@ -193,7 +203,7 @@ StreamID Security state (SEC_SID)决定了一个transaction的security state，0
 
 Security state和允许访问的PA space的state对应关系如下（YES表示允许访问）：
 
-![](asset/img_daf372e0c60e.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_daf372e0c60e.jpg)
 
 #### Device Permission Table（SMMU System Spec 3.24）
 
@@ -219,7 +229,7 @@ DPT check（DPC）会基于Access Control（AC），W和VMID等进行检查：
 
 3） DPT中的AC和VMID域段会和STE中的DPT_VMATCH和S2VMID域段结合进行检查。如下表所示，Yes表示STE中的S2VMID必须和DPT中的VMID matched，才可以access对应region（此时不matched，则返回Device Access fault）。No则表示不需要检查VMID是否matched：
 
-![](asset/img_7e9d80550c83.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_7e9d80550c83.jpg)
 
 对于Realm属性的STEs，DPT_VMATCH固定为2'b00。
 
@@ -239,37 +249,37 @@ GPT查表分为两级，level 0中的entry分为GPT Block和GPT Table descriptor
 
 level 0 GPT Table descriptor format：
 
-![](asset/img_797a68bed6b3.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_797a68bed6b3.jpg)
 
 图 8 Level 0 GPT Table descriptor format用于保存next level的GPT Table地址，bit[3:0]=4'b0011表示此entry为GPT Table descriptor。
 
 level 0 GPT Block descriptor format:
 
-![](asset/img_fd5e0d6addd4.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_fd5e0d6addd4.jpg)
 
 图 9 level 0 GPT Block descriptor formatBit[7:4]为GPI，其encoding如下：
 
-![](asset/img_684445035121.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_684445035121.jpg)
 
-![](asset/img_2778a6ed7d99.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_2778a6ed7d99.jpg)
 
 bit[3:0]=4'b0001表示此entry为level 0 GPT Block descriptor。
 
 level 1 GPT Granules descriptor：
 
-![](asset/img_4502097b0fe7.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_4502097b0fe7.jpg)
 
 图 10 Level 1 GPT Granules descriptor format一个GPT Granules descriptor包含了16个physical granules（即包含了连续的16个物理地址范围的GPI），基于每个GPI对应的size配置（最小为4KB），其与物理地址关联如下：
 
-![](asset/img_b639cb79f9a4.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_b639cb79f9a4.jpg)
 
 level 1 GPT Contiguous descriptor format:
 
-![](asset/img_71c922dafd3e.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_71c922dafd3e.jpg)
 
 图 11 Level 1 GPT Contiguous descriptor formatbit[3:0]=4'b0001表示此entry为Contiguous descriptor，bit[7:4]表示地址对应的GPI。Bit[9:8]为Contig域段，encoding如下：
 
-![](asset/img_ec2af336e827.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_ec2af336e827.jpg)
 
 表示对应地址空间大小的GPI都是相同的。
 

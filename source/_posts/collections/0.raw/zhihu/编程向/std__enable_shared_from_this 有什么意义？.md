@@ -1,9 +1,19 @@
 ---
-title: "std::enable_shared_from_this 有什么意义？"
-date: 2026-04-15
-tags: [知乎]
-source: https://www.zhihu.com/question/30957800/answer/2700292012
+title: std::enable_shared_from_this 有什么意义？
+date: "2026-04-15 00:00:00"
+updated: "2026-04-15 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/编程向/std__enable_shared_from_this-有什么意义/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://www.zhihu.com/question/30957800/answer/2700292012
 ---
+
 
 之前和同学讨论过这个，当时也没想得太清楚。
 
@@ -13,7 +23,7 @@ source: https://www.zhihu.com/question/30957800/answer/2700292012
 
 `std::shared_ptr`对象在内存中是这样：
 
-![](asset/img_f481fb600bba.jpg)![](asset/img_9d875c969a52.webp)
+![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_f481fb600bba.jpg)![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_9d875c969a52.webp)
 
 当指向对象的`std::shared_ptr`一创建，被管理对象的控制块就建立了。被管理的对象的控制块中有引用计数(reference count)，当引用计数为0时，被管理的对象会被销毁。
 

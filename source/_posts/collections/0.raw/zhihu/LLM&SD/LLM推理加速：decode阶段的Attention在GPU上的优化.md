@@ -1,9 +1,19 @@
 ---
-title: "LLM推理加速：decode阶段的Attention在GPU上的优化"
-date: 2024-10-11
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/715348837
+title: LLM推理加速：decode阶段的Attention在GPU上的优化
+date: "2024-10-11 00:00:00"
+updated: "2024-10-11 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/LLM-SD/LLM推理加速-decode阶段的Attention在GPU上的优化/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/715348837
 ---
+
 
 (甚至还有英文版，感谢阿里云：
 
@@ -19,9 +29,9 @@ RTP-LLM是阿里巴巴智能引擎团队开发的大模型推理加速引擎，�
 
 我们比较熟悉的Attention计算如下图所示，包含Q与K相乘，其结果在mask后做softmax，然后与V相乘，得到Attention的结果。在LLM推理的decode阶段，由于加入KV Cache优化，一次迭代只需要计算新增的一个token，因此计算可以变化为当前step的Q（seq == 1）与K Cache、V Cache做计算。
 
-![](asset/img_3029e8eb2a8c.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_3029e8eb2a8c.jpg)
 
-![](asset/img_b32fbd945c17.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_b32fbd945c17.jpg)
 
 计算过程中各tensor的shape可以表示为：
 
@@ -63,13 +73,13 @@ dim3 block(THREAD_PER_BLOCK, 1, 1);`
 
 Q乘K Cache的计算在D上累加。假设我们用half存KV Cache，用float做乘累加，为了保证load效率，每个thread会load连续的16bytes数据，也就是8个elements。对于常见的D==128来说，需要16个threads完成一个head的计算。可以认为给block中的threads进行了分组，每组16个threads负责一个head的计算，其中每个threads读8个elements，并完成这8个elements对应的乘累加，然后这组threads间通过warp内的shuffle完成当前head的计算，并将计算结果存到smem中。组和组在S上展开。
 
-![](asset/img_ee720786488d.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_ee720786488d.jpg)
 
 接下来计算SoftMax，由于前面的计算保证了SoftMax需要的输入都在当前block内的smem中，通过Block Reduce Max和Block Reduce Sum就可以完成SoftMax的计算。
 
 乘V Cache的计算思路与上文乘K Cache非常类似，略有不同的是这一步计算需要在S上累加。依然将threads分组，每组16个threads负责一个head, 每个thread负责8个elements的计算。由于需要在S上累加，因此每个thread需要保存当前所计GPUsde算的8个elements的部分累加和。最后借助smem，将不同threads上的部分和累加，得到Attention的输出。
 
-![](asset/img_3fbddac1bd30.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_3fbddac1bd30.jpg)
 
 在计算过程中，qk dot除了hfma计算外，也可以调用hmma来完成单个head的计算。但由于kernel的性能瓶颈在访存上，dot用哪种计算方式对性能的影响不大；我们的测试也验证了这个结论。
 
@@ -90,7 +100,7 @@ dim3 block(THREAD_PER_BLOCK, 1, 1);`
 
 在这种任务划分下，结合上文分析，假设长seq每个SM上仅有一个active block，则waves可以计算为：
 
-![](asset/img_9796ec3105ad.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_9796ec3105ad.jpg)
 
 当waves越接近ceil值，意味着device occupancy会越高。在小B大S的场景下，如果在S切分，也就是S_tile > 1，有利于增加occupancy。在这种情况下，S_tile个block共同完成一个head在S上的计算，每个block负责S / S_tile的计算，block间的reduce通过开辟额外的global buffer来完成。这种模式下，新增的global读写会带来有额外的耗时，但因为增加了device occupancy，因此在小B大S的场景下有明显的性能提升。这也就是flash decoding的思路，且在各框架均有支持。
 

@@ -1,3 +1,16 @@
+---
+title: 在端侧，RAG 是平台的还是业务的
+date: "2026-04-11 21:40:18"
+updated: "2026-04-11 21:40:18"
+layout: post
+permalink: /collections/0.raw/随笔/在端侧,RAG-是平台的还是业务的/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 RAG 的愿景上来看，还是很性感很美好的。
 - 从用户的视角来看，数据给你了，那我就可以随便向你发问
 - 从业务的视角来看，RAG 就像积木一样，把不同模块放一起拼凑一下，哎，这个流程就跑通了；

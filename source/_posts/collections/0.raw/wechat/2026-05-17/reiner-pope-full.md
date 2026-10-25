@@ -1,3 +1,16 @@
+---
+title: reiner-pope-full
+date: "2026-05-17 19:55:13"
+updated: "2026-05-17 19:55:13"
+layout: post
+permalink: /collections/0.raw/wechat/2026-05-17/reiner-pope-full/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 关键词：批量推理、MoE 模型、KV 缓存、流水线并行、算力瓶颈、AI 缩放定律
 
 ---

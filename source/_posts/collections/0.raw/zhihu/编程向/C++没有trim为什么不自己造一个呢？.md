@@ -1,9 +1,19 @@
 ---
-title: "C++没有trim为什么不自己造一个呢？"
-date: 2022-08-12
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/553071153
+title: C++没有trim为什么不自己造一个呢？
+date: "2022-08-12 00:00:00"
+updated: "2022-08-12 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/编程向/C-没有trim为什么不自己造一个呢/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/553071153
 ---
+
 
 本文分享我自己造的trim，基于std ranges库，因为基于标准库开发，所以没有任何负担。
 

@@ -1,9 +1,19 @@
 ---
-title: "Agentic Post-training技术调研"
-date: 2026-04-21
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/2029952170645259049
+title: Agentic Post-training技术调研
+date: "2026-04-21 00:00:00"
+updated: "2026-04-21 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/LLM-SD/Agentic-Post-training技术调研/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/2029952170645259049
 ---
+
 
 Agent = tool + LLM + loop；目前AI dev方向主要还是从harness角度对这agent进行着优化，我们看到的越来越powerful的agent，例如openclaw，**[easy-claw](https://zhuanlan.zhihu.com/p/2029191881351787466)**等，都是沿着设施harness周边进行了优化，充分提升激发llm的能力。但是，对于这种llm调用tool推理的原生能力到底怎么来，目前开源界讨论却很少。因此本文从这个底层能力学习角度，对agentic post-training进行了深入的剖析。
 

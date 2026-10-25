@@ -1,9 +1,19 @@
 ---
-title: "关于Linux中的mmap和page cache的问题?"
-date: 2024-03-28
-tags: [知乎]
-source: https://www.zhihu.com/question/545026509/answer/3445935948
+title: 关于Linux中的mmap和page cache的问题?
+date: "2024-03-28 00:00:00"
+updated: "2024-03-28 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/走向cs/关于Linux中的mmap和page-cache的问题_/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://www.zhihu.com/question/545026509/answer/3445935948
 ---
+
 
 引言
 本篇文章主要引用自[从内核世界透视 mmap 内存映射的本质（原理篇） (qq.com)](https://link.zhihu.com/?target=https%3A//mp.weixin.qq.com/s%3F__biz%3DMzg2MzU3Mjc3Ng%3D%3D%26mid%3D2247488750%26idx%3D1%26sn%3D247a4603299e203793fac8b6c5e61071%26chksm%3Dce77d2a9f9005bbf3b024bc9f9192f2de63a70fd33db1113d9f9c0d8a1ced2099fbeb727a3d7%26scene%3D178%26cur_album_id%3D2559805446807928833%23rd)，本文主要是对原文的一些核心概念做了一些梳理再加上了一些自己的理解与总结，适用于想要了解 mmap 的后端开发人员。原文很硬核涉及大量的内核源码，感兴趣的读者可以自行阅读。

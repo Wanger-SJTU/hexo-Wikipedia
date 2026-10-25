@@ -1,21 +1,31 @@
 ---
-title: "(1 封私信) 如何在谷歌校招网测 Kick Start 中取得高分？"
-date: 2026-04-14
-tags: [知乎]
-source: https://www.zhihu.com/question/340144492/answer/808173912
+title: (1 封私信) 如何在谷歌校招网测 Kick Start 中取得高分？
+date: "2026-04-14 00:00:00"
+updated: "2026-04-14 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/有用的方向思考/如何在谷歌校招网测-Kick-Start-中取得高分/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://www.zhihu.com/question/340144492/answer/808173912
 ---
+
 
 我发现越来越多的同学注意到了谷歌的Kick Start，当然参加的同学有很多被虐得很真实……
 
-![](asset/img_fc3a97cb07da.jpg)![](asset/img_84b8370870a5.webp)
+![](/images/collections/0.raw/zhihu/%25E6%259C%2589%25E7%2594%25A8%25E7%259A%2584%25E6%2596%25B9%25E5%2590%2591%25E6%2580%259D%25E8%2580%2583/asset/img_fc3a97cb07da.jpg)![](/images/collections/0.raw/zhihu/%25E6%259C%2589%25E7%2594%25A8%25E7%259A%2584%25E6%2596%25B9%25E5%2590%2591%25E6%2580%259D%25E8%2580%2583/asset/img_84b8370870a5.webp)
 
-特立独行MVP在牛客讨论区是人尽皆知的大佬![](asset/img_159208ade491.jpg)![](asset/img_8cd7140527bc.webp)
+特立独行MVP在牛客讨论区是人尽皆知的大佬![](/images/collections/0.raw/zhihu/%25E6%259C%2589%25E7%2594%25A8%25E7%259A%2584%25E6%2596%25B9%25E5%2590%2591%25E6%2580%259D%25E8%2580%2583/asset/img_159208ade491.jpg)![](/images/collections/0.raw/zhihu/%25E6%259C%2589%25E7%2594%25A8%25E7%259A%2584%25E6%2596%25B9%25E5%2590%2591%25E6%2580%259D%25E8%2580%2583/asset/img_8cd7140527bc.webp)
 
  （对不起我想不到更温和的词了）
 
 想参加谷歌校招或者实习生的同学，必然要跨越Kick Start这道坎，来看下谷歌的校招流程：
 
-![](asset/img_45528110b16e.jpg)![](asset/img_c715e3d339be.webp)
+![](/images/collections/0.raw/zhihu/%25E6%259C%2589%25E7%2594%25A8%25E7%259A%2584%25E6%2596%25B9%25E5%2590%2591%25E6%2580%259D%25E8%2580%2583/asset/img_45528110b16e.jpg)![](/images/collections/0.raw/zhihu/%25E6%259C%2589%25E7%2594%25A8%25E7%259A%2584%25E6%2596%25B9%25E5%2590%2591%25E6%2580%259D%25E8%2580%2583/asset/img_c715e3d339be.webp)
 
 （来源：https://www.nowcoder.com/discuss/155633）
 

@@ -1,9 +1,19 @@
 ---
-title: "C++读写Mat文件"
-date: 2016-11-01
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/23334508
+title: C++读写Mat文件
+date: "2016-11-01 00:00:00"
+updated: "2016-11-01 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/有趣的东西/C-读写Mat文件/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/23334508
 ---
+
 
 **一、为什么要这么做这种吃力不讨好的事**
 
@@ -54,7 +64,7 @@ libeng.lib
 
 若工程配置正常，则此时应该不报错，右键点击mat.h，还能打开该文件： 
 
-![](asset/img_06ab19d58656.png)
+![](/images/collections/0.raw/zhihu/%25E6%259C%2589%25E8%25B6%25A3%25E7%259A%2584%25E4%25B8%259C%25E8%25A5%25BF/asset/img_06ab19d58656.png)
 
 3. Mat文件的读写
 
@@ -106,7 +116,7 @@ int main()
 plot(time, wave)
 `
 
-![](asset/img_d5ba40e81fc0.png)
+![](/images/collections/0.raw/zhihu/%25E6%259C%2589%25E8%25B6%25A3%25E7%259A%2584%25E4%25B8%259C%25E8%25A5%25BF/asset/img_d5ba40e81fc0.png)
 
 读取程序和上面类似，不过我用不到，就先不写了。
 

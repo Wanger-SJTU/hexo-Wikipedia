@@ -1,9 +1,19 @@
 ---
-title: "NAND Flash工艺笔记 (1)"
-date: 2026-01-20
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/1996879434335142892
+title: NAND Flash工艺笔记 (1)
+date: "2026-01-20 00:00:00"
+updated: "2026-01-20 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/NAND-Flash工艺笔记-(1)/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/1996879434335142892
 ---
+
 
 NAND Flash工艺笔记 (1)
 

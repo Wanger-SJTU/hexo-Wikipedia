@@ -1,10 +1,19 @@
 ---
-title: "Lasso—原理及最优解"
-date: 2020-03-25
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/116869931
-
+title: Lasso—原理及最优解
+date: "2020-03-25 00:00:00"
+updated: "2020-03-25 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/dl论文/Lasso—原理及最优解/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/116869931
 ---
+
 
 Lasso方法最早由Robert  Tibshiran于1996年提出，文章发表在“统计四大”之一的皇家统计学会期刊上，尽管至今已有二十多年，但依然有着广泛的应用，由其发展出的方法层出不穷。本文着重介绍一下Lasso的原理以及2个最优解解法。
 

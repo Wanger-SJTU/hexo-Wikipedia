@@ -1,15 +1,25 @@
 ---
-title: "tvm算子优化schedule（一）--CPU篇"
-date: 2021-09-24
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/403163009
+title: tvm算子优化schedule（一）--CPU篇
+date: "2021-09-24 00:00:00"
+updated: "2021-09-24 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/体系结构/tvm算子优化schedule(一)-CPU篇/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/403163009
 ---
+
 
 之前有段时间看过一些关于tvm的资料，虽然说它的精髓在于auto schedule和autotvm，但是我在看的过程中收获更大的是复习和了解了一些算子优化的策略。tvm本身的编译流程DLmodel→RelayIR→TE→autotvm/autoschedule→TIR→machinec ode，就是从网络→算子的从粗粒度到细粒度的优化过程，而细粒度的算子优化空间更大。tvm对不同的后端都支持各种优化策略，并且在官方文档上对cpu/gpu/tensorcore介绍了详细的优化方法，我们这里就也先介绍一下最通用的在cpu上的优化思想，并以一些算子为例，之后会补充上在gpu上的优化。由于我本人对算子优化也只是简单的学习，因此涉及到的都是一些比较简单和通用的优化策略，并且这些方法在官方文档中都有提到，这里只当学习记录并复习下tvm的简单用法，属于入门级别，大佬请无视~。
 
 算子优化的目标就是要榨干硬件的性能，因此我们需要先对cpu的大致结构有个了解。在算子优化中会涉及几个概念：SIMD、多核、L1 cache、内存局部性等，算子优化的过程就是怎么利用cpu的这些特性。关于SIMD可以参照下图，图片来源与一篇tvm的介绍文档dive into deep learning compile。
 
-![](asset/img_c41aa53bf2c2.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_c41aa53bf2c2.jpg)
 
 图里面左边虚线最左边的就是单核不带SIMD的cpu，其中SIMD指的是单指令多数据，是指用同一条指令同时处理多个元素。 在这个普通的cpu核中，有一个取指令和解码单元，然后会在处理单元 (PU) 上运行指令，例如 ALU（算术逻辑单元），用于处理一个元素。图中两条虚线中间的就是带SIMD的单核cpu，它有多个PU可以同时处理多个元素，但取指令和解码单元还是一个，每次取码单元向每个PU提交相同的指令同时执行。最右边的是多核带SIMD的cpu，很显然它的性能更强大，因此我们的目的就是利用其性质进行并行计算。
 
@@ -31,7 +41,7 @@ Parallelization非常好理解，就是利用了cpu的多核特性，进行并�
 
 而假设我们的cpu是有 t 个 core，那么我们首先创建 t 个线程，每个core一个线程。在TVM中，将长度为n的循环平均分成 t 个block，每个线程只需要处理一个block。如果 j % t = i，那么第 i 个线程将执行第 j 个block。例如当t=4，n=20时，每个core上的分配如下：
 
-![](asset/img_c22bf8e60b73.png)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_c22bf8e60b73.png)
 
 另外，TVM 在运行时将每个工作线程绑定到一个不相交的物理内核，以避免资源争用和线程迁移开销。 在tvm中这种schedule的实现如下：
 
@@ -47,7 +57,7 @@ Parallelization非常好理解，就是利用了cpu的多核特性，进行并�
 
 为了利用cpu的SIMD的特性，我们再添加一种schedule--vectorization。首先我们定义一个factor，将原来的维度拆分，也就是将原来的一级 for 循环拆分为二级嵌套 for 循环。factor就是内循环迭代的次数，这些迭代将相应地组合在一起以在内核上的 SIMD 指令中执行。 外循环中的迭代仍然并行运行。当我们的factor=8时，各个core处理的数据分配下，每个core都执行SIMD。
 
-![](asset/img_e48a6e555c0f.png)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_e48a6e555c0f.png)
 
 tvm实现如下：
 
@@ -72,11 +82,11 @@ Reorder这种策略在矩阵乘法中用的比较多，比如在卷积神经网�
     s = te.create_schedule(C.op)
     return s, A, B, C`
 
-![](asset/img_fab7000a4fd6.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_fab7000a4fd6.jpg)
 
 可以看到在计算中矩阵B是逐列访问，但是它的元素是按行存储（行优先）。如果我们简单地切换最内层的两个 for 循环可以使所有元素按顺序读取和写入。如下图，一次计算输出的一行，可以使得B按行访问，这种方法利用的是内存的空间局部性，加快数据的访问速度。
 
-![](asset/img_c59fd1c4f921.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_c59fd1c4f921.jpg)
 
 在tvm中的实现为：
 

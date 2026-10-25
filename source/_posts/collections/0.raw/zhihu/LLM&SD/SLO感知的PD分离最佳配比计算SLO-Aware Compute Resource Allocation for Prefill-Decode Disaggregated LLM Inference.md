@@ -1,9 +1,19 @@
 ---
-title: "SLO感知的PD分离最佳配比计算SLO-Aware Compute Resource Allocation for Prefill-Decode Disaggregated LLM Inference"
-date: 2026-03-06
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/2004998208758252289
+title: SLO感知的PD分离最佳配比计算SLO-Aware Compute Resource Allocation for Prefill-Decode Disaggregated LLM Inference
+date: "2026-03-06 00:00:00"
+updated: "2026-03-06 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/LLM-SD/SLO感知的PD分离最佳配比计算SLO-Aware-Compute-Resource-Allocation-for-Prefill-Decode-Disaggregated-LLM/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/2004998208758252289
 ---
+
 
 ### Introduction
 
@@ -27,7 +37,7 @@ arXiv: [https://arxiv.org/abs/2603.04716](https://link.zhihu.com/?target=https%3
 
 我们提出P/D资源使用量和比例与用户需求的throughput，请求输入输出长度，以及P/D各自部署的throughput的关系：
 
-![](asset/img_ec60c1c5f376.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_ec60c1c5f376.jpg)
 
 其中，TPtotal是用户总的throughput需求，Lin和Lout是请求输入输出长度，这些都是用户需求已知量。这里面未知的变量主要是P/D各自的throughput值TPprefill和TPdecode。
 
@@ -35,7 +45,7 @@ arXiv: [https://arxiv.org/abs/2603.04716](https://link.zhihu.com/?target=https%3
 
 我们创新地基于M/M/1排队论建模prefill过程，得出了TTFT，实际达成的prefill throughput和极限prefill throughput这三者的关系：
 
-![](asset/img_c9e8873ab3a1.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_c9e8873ab3a1.jpg)
 
 也就是说，我们只要得到极限的prefill throughput和Toverhead，就可以根据TTFT预测实际达成的prefill throughput，实际的prefill request rate，系统利用率等等一系列结果。
 

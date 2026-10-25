@@ -1,10 +1,19 @@
 ---
-title: "为什么我还是无法理解transformer？"
-date: 2023-10-24
-tags: [知乎]
-source: https://www.zhihu.com/question/596771388/answer/3263001703
-
+title: 为什么我还是无法理解transformer？
+date: "2023-10-24 00:00:00"
+updated: "2023-10-24 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/LLM-SD/为什么我还是无法理解transformer/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://www.zhihu.com/question/596771388/answer/3263001703
 ---
+
 
 要理解和熟悉一个新的技术/新模型，比较好的方式是通过以下框架结构来熟悉：
 

@@ -1,9 +1,19 @@
 ---
-title: "(1 条消息) DSA后端Compute Schedule与Buffer Schedule"
-date: 2023-02-27
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/609483844
+title: (1 条消息) DSA后端Compute Schedule与Buffer Schedule
+date: "2023-02-27 00:00:00"
+updated: "2023-02-27 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/DSA后端Compute-Schedule与Buffer-Schedule/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/609483844
 ---
+
 
 之前写过一篇[带宽受限下的DSA后端优化](https://zhuanlan.zhihu.com/p/585176512), 不过主要是针对已经构建好Compute Schedule之后的优化, 今天准备展开讲讲.  从单层卷积到优化计算,再到Layer Fusion,以及后续各种优化,下面将通过一系列的例子来介绍:
 

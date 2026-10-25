@@ -1,3 +1,16 @@
+---
+title: SVE  Introduction
+date: "2026-04-11 21:40:28"
+updated: "2026-04-11 21:40:28"
+layout: post
+permalink: /collections/0.raw/随笔/XPU-优化/SVE-Introduction/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 #sve #arm
 
 **什么是SVE**
@@ -21,7 +34,7 @@ SVE指令集包含了几百条指令，它们可以分成如下几大类。
 SVE2指令集在SVE指令集的基础进一步扩充和完善，新增了部分指令和扩展。本节不对每条指令做详细的介绍，有兴趣的读者可以阅读ARMv9指令集文档：《Arm A64 Instruction SetArchitecture，Armv9, for Armv9-A architectureprofile》
 
 SISD VS SIMD
-![[Pasted image 20230414214920.png]]
+![Pasted image 20230414214920.png](/images/collections/assets/Pasted%2520image%252020230414214920.png)
 **SVE寄存器组**
 
 SVE指令集提供了一组全新的寄存器。
@@ -60,10 +73,10 @@ P寄存器为Z寄存器中的每个字节(8bit)保留一个位，也就是说，
 
 比如下面的例子, 对于以一个双精度的数据类型，256bit的向量寄存器中有4个数值，那么P寄存器(32bit)划分为4组，每组用1来标识该lane是不是有效的。但实际上只判断的是最低位的1bit数据。
 
-![[Pasted image 20230415224244.png]]
+![Pasted image 20230415224244.png](/images/collections/assets/Pasted%2520image%252020230415224244.png)
 
-除此之外：一个为packed vector数据初始化的P寄存器数值，对unpacked数据同样适用。 [[android&&arm/SVE/SVE Programming Examples#Predicate reuse example for unpacked elements.]]
-![[Pasted image 20230415224824.png]]
+除此之外：一个为packed vector数据初始化的P寄存器数值，对unpacked数据同样适用。 <span class="wikilink wikilink--missing" title="未导入的页面">android&amp;&amp;arm/SVE/SVE Programming Examples</span>
+![Pasted image 20230415224824.png](/images/collections/assets/Pasted%2520image%252020230415224824.png)
 
 
 ## FFR寄存器

@@ -1,10 +1,19 @@
 ---
-title: "Prompt Tuning 相比于 Fine Tuning 在哪些场景下表现更好？"
-date: 2022-08-08
-tags: [知乎]
-source: https://www.zhihu.com/question/504324484/answer/2615221419
-
+title: Prompt Tuning 相比于 Fine Tuning 在哪些场景下表现更好？
+date: "2022-08-08 00:00:00"
+updated: "2022-08-08 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/LLM-SD/Prompt-Tuning-相比于-Fine-Tuning-在哪些场景下表现更好/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://www.zhihu.com/question/504324484/answer/2615221419
 ---
+
 
 **泻药。笔者最近就在做 Template Prompt Tuning，恰好读到一篇解答这个问题的经典论文 The Power of Scale for Parameter-Efficient Prompt Tuning，在这里回答一下这个问题，并且附上论文精华部分的翻译。**
 

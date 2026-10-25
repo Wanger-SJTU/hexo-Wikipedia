@@ -1,9 +1,19 @@
 ---
-title: "苦涩的教训！ROLL团队分享：Agentic RL 训练中的实践经验"
-date: 2026-02-15
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/2006389553703982040
+title: 苦涩的教训！ROLL团队分享：Agentic RL 训练中的实践经验
+date: "2026-02-15 00:00:00"
+updated: "2026-02-15 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/LLM-SD/苦涩的教训-ROLL团队分享-Agentic-RL-训练中的实践经验/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/2006389553703982040
 ---
+
 
 ** 作者：Yancheng He, Weixun Wang, and Xiaoyang Li | Project Leader:  Weixun Wang
 
@@ -19,7 +29,7 @@ source: https://zhuanlan.zhihu.com/p/2006389553703982040
 
 - 📊 Benchmarks: [https://github.com/alibaba/terminal-bench-pro](https://link.zhihu.com/?target=https%3A//github.com/alibaba/terminal-bench-pro)
 
-![](asset/img_c203a472393e.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_c203a472393e.jpg)
 
 ### 两个 RLers 的故事
 
@@ -57,7 +67,7 @@ RLVR 训练的是一个“会回答”的模型。 而 Agentic RL 训练的是�
 
 **
 
-![](asset/img_5a3fb2ca71ad.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_5a3fb2ca71ad.jpg)
 
 RLVR 在数学、代码与通用推理任务上带来了显著提升。但在其成功背后，也隐藏着一种结构上的简化：传统的 RLVR 更像是一种 in-context bandit 问题**——模型生成一次完整回答，获得奖励，然后更新参数。过程中不存在多步交互式决策与环境状态转移。
 
@@ -100,7 +110,7 @@ Agentic RL 则更接近多步交互式 MDP 的设定：模型需要**采取行�
 
 **
 
-![](asset/img_1f4481975d93.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_1f4481975d93.jpg)
 
 在许多 Agentic RL 训练管线中，训练阶段的 prompt 设计与上下文管理往往与生产环境中的真实 Agent 框架不同，这通常会导致部署后的模型能力下降。为了更好地与 Agent 侧的优化保持一致，我们也同时开发了 CLI-Native Mode**。
 
@@ -123,9 +133,9 @@ Agentic RL 具有明显的**长尾延迟（long-tail latency）特性：大多�
 
 **
 
-![](asset/img_4028872494cc.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_4028872494cc.jpg)
 
-![](asset/img_d70525025468.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_d70525025468.jpg)
 
 为了解决这一问题，我们在 ROLL 中构建了一套完全异步的训练管线**。具体包括：
 
@@ -139,7 +149,7 @@ Agentic RL 具有明显的**长尾延迟（long-tail latency）特性：大多�
 
 **
 
-![](asset/img_db7ce449bd29.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_db7ce449bd29.jpg)
 
 #### 保持环境“干净”
 
@@ -151,7 +161,7 @@ Agentic RL 具有明显的**长尾延迟（long-tail latency）特性：大多�
 - 在少量合成环境中，测试文件尽管经过目录隔离与权限控制，模型仍可能通过某些路径或命令被模型间接访问到。
 尤其是第二种情况，模型会非常迅速地“偷懒”：与其认真推理任务，不如直接读取甚至修改测试脚本。图中展示了早期训练中最常见命令的分布情况。测试脚本调用次数（红色标注）显著上升，说明模型越来越依赖这种捷径，最终大量 rollout 退化为直接执行测试文件。
 
-![](asset/img_5376fe8d563a.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_5376fe8d563a.jpg)
 
 为防止此类泄露与污染，我们会进行严格的环境清理：
 
@@ -199,7 +209,7 @@ then I see the output "hello world"`
 
 **
 
-![](asset/img_915a9cbad0d7.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_915a9cbad0d7.jpg)
 
 为了解决这个问题，我们在数据合成流程中引入了一个完备的 LLM-as-judge 验证模块**。多个 LLM 协同审查每一组“指令–测试”对，识别具有高 false-positive 风险的实例。对于这些高风险样本，我们会强化测试用例或调整任务描述。只有通过验证的实例，才会进入 RL 训练池。
 
@@ -226,7 +236,7 @@ then I see the output "hello world"`
 
 **
 
-![](asset/img_616bf0baf6e8.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_616bf0baf6e8.jpg)
 
 ### 如何保证终端环境中Agentic RL 的稳定性
 
@@ -332,7 +342,7 @@ then I see the output "hello world"`
 
 **
 
-![](asset/img_22579f52af78.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_22579f52af78.jpg)
 
 #### 保守起步：先从正样本轨迹学习
 
@@ -346,11 +356,11 @@ then I see the output "hello world"`
 
 **
 
-![](asset/img_bdaab9216ffc.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_bdaab9216ffc.jpg)
 
 当切换到小规模、高质量、经过专家验证的数据后，趋势发生变化：两种方法都能稳定训练，但加入负轨迹后，下游测试集上的性能提升更显著。
 
-![](asset/img_e9bca16b5a82.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_e9bca16b5a82.jpg)
 
 基于此，我们采用了一种简单的课程式策略：
 
@@ -395,13 +405,13 @@ then I see the output "hello world"`
 
 **
 
-![](asset/img_3085021335d6.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_3085021335d6.jpg)
 
 关于 Chunked MDP 的完整公式、masking 策略以及 chunk 初始化重采样方法，我们已在技术报告中进行了系统整理。对完整技术细节感兴趣的读者，可参考我们的技术报告。
 
 下面展示的是采用最终 IPA 算法训练得到的模型训练曲线：
 
-![](asset/img_cd7ad59b9f22.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_cd7ad59b9f22.jpg)
 
 #### 自适应地应用 RL 技巧
 
@@ -440,7 +450,7 @@ Agentic RL 为什么更难？**
 
 **
 
-![](asset/img_4fcc9f814d7c.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_4fcc9f814d7c.jpg)
 
 这一现象与我们此前在 RLVR 任务中对各类 RL 技巧的分析结果是一致的。感兴趣的读者可以参考我们的论文以了解更多细节：[RL Tricks](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2508.08221)
 
@@ -464,13 +474,13 @@ Agentic RL 为什么更难？**
 
 **
 
-![](asset/img_76e9c6424447.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_76e9c6424447.jpg)
 
 但在大约 40 个 step 之后，不稳定再次出现。这一次，最早的信号是负样本数量逐渐增加**。针对这一现象，我们对负样本进行全局重加权，降低其在策略更新中的整体贡献。结果如橙色曲线所示。
 
 **
 
-![](asset/img_c85a5ea4fede.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_c85a5ea4fede.jpg)
 
 通过这一步调整，训练再次恢复稳定。这只是一个简单的示例——在整个训练过程中，我们经历了许多类似的时刻。
 
@@ -522,7 +532,7 @@ Agentic RL 为什么更难？**
 
 **
 
-![](asset/img_ba1b0567e15a.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_ba1b0567e15a.jpg)
 
 我们的训练离不开ROCK工程团队的长期支持。所使用的沙盒管理系统[ROCK](https://link.zhihu.com/?target=https%3A//github.com/alibaba/ROCK)已经开源，欢迎了解
 
@@ -584,7 +594,7 @@ Agentic RL 其实非常地吃工程能力，需要高并发、低阻塞、可扩
 
 **
 
-![](asset/img_316d51773392.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_316d51773392.jpg)
 
 进一步的分析发现，claude-sonnet-4.5 往往更擅长在执行具体操作前识别当前真正需要的信息**。它通常不会立刻进入执行阶段，而是先识别环境中的关键不确定性，并在同一步骤中通过多个并行的“检查类调用”获取信息。
 
@@ -611,7 +621,7 @@ Agentic RL 其实非常地吃工程能力，需要高并发、低阻塞、可扩
 
 **
 
-![](asset/img_a80866aeb157.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_a80866aeb157.jpg)
 
 ### 总结
 

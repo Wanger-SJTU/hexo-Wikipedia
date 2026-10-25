@@ -1,10 +1,19 @@
 ---
-title: "Triton学习笔记"
-date: 2023-12-13
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/672086654
-
+title: Triton学习笔记
+date: "2023-12-13 00:00:00"
+updated: "2023-12-13 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/AI-infra/Triton学习笔记/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/672086654
 ---
+
 
 **备注：**比较好奇`Triton`和`TVMScript`优缺点。同时，我们组之前魔改过`TVMScript`，自己也试着用魔改的`TVMScript`写过简单算子。梳理一下`Triton`，理解我们组做到那种程度，以及可能遇到有那些瓶颈。**实践经验少，有理解错误的地方，烦请指正。**
 

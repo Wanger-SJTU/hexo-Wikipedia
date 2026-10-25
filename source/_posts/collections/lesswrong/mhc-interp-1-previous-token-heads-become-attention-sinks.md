@@ -1,10 +1,22 @@
 ---
 title: "MHC Interp #1: Previous-Token Heads Become Attention Sinks Under Manifold-Constrained Hyper-Connections"
-source: https://www.lesswrong.com/posts/BBgZ4bCbP4dfKeRhk/mhc-interp-1-previous-token-heads-become-attention-sinks
-date: 2026-05-03
-tags: [LLMs, mHC, AI, Mechanistic-Interpretation]
-mathjax: true
+date: "2026-05-03 00:00:00"
+updated: "2026-05-03 00:00:00"
+layout: post
+permalink: /collections/lesswrong/mhc-interp-1-previous-token-heads-become-attention-sinks/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - LLMs
+  - mHC
+  - AI
+  - Mechanistic-Interpretation
+source_url: https://www.lesswrong.com/posts/BBgZ4bCbP4dfKeRhk/mhc-interp-1-previous-token-heads-become-attention-sinks
 ---
+
 
 ## 背景
 

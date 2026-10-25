@@ -1,10 +1,19 @@
 ---
-title: "如何评价框架共用的模型文件格式ONNX？"
-date: 2023-02-06
-tags: [知乎]
-source: https://www.zhihu.com/question/65050141/answer/2879112334
-
+title: 如何评价框架共用的模型文件格式ONNX？
+date: "2023-02-06 00:00:00"
+updated: "2023-02-06 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/如何评价框架共用的模型文件格式ONNX/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://www.zhihu.com/question/65050141/answer/2879112334
 ---
+
 
 欢迎加入 ONNX QQ 群 1021964010！入群密码 nndab。也可加我的微信 daquexian 拉入微信群（备注 “ONNX 微信群”）
 

@@ -1,9 +1,19 @@
 ---
-title: "为什么banking能提高memory throughput?"
-date: 2022-11-18
-tags: [知乎]
-source: https://www.zhihu.com/question/552560505/answer/2667267774
+title: 为什么banking能提高memory throughput?
+date: "2022-11-18 00:00:00"
+updated: "2022-11-18 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/体系结构/为什么banking能提高memory-throughput_/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://www.zhihu.com/question/552560505/answer/2667267774
 ---
+
 
 骑鹤下江南
 

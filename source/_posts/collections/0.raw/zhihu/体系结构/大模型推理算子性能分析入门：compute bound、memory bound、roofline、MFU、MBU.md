@@ -1,9 +1,19 @@
 ---
-title: "大模型推理算子性能分析入门：compute bound、memory bound、roofline、MFU、MBU"
-date: 2026-07-30
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/2066036349120123080
+title: 大模型推理算子性能分析入门：compute bound、memory bound、roofline、MFU、MBU
+date: "2026-07-30 00:00:00"
+updated: "2026-07-30 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/体系结构/大模型推理算子性能分析入门-compute-bound、memory-bound、roofline、MFU、MBU/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/2066036349120123080
 ---
+
 
 前言
 本文主要介绍 计算强度、roofline、MFU、MBU 等算子性能评估和分析的工具。

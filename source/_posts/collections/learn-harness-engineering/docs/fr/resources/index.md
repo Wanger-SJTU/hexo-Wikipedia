@@ -1,3 +1,16 @@
+---
+title: Bibliothèque de ressources en français
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/fr/resources/index/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # Bibliothèque de ressources en français
 
 Ce dossier transforme les méthodes du cours en modèles prêts à copier et en références compactes utilisables dans un vrai dépôt.

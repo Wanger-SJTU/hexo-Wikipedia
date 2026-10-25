@@ -1,9 +1,19 @@
 ---
 title: "LangChain - RAG: 做 RAG 的天选打工人，拿这几个指标找老板加薪！"
-date: 2023-11-15
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/656990524
+date: "2023-11-15 00:00:00"
+updated: "2023-11-15 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/LLM-SD/LangChain-RAG_-做-RAG-的天选打工人,拿这几个指标找老板加薪/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/656990524
 ---
+
 
 #### 先说结论：
 
@@ -12,7 +22,7 @@ source: https://zhuanlan.zhihu.com/p/656990524
 - **实时性（faith fullness）**
 - **答案相关性（answer relevance）**
 - **上下文相关性（context relevance，又细分为 Precision 和  Recall，所以可以看到有些类似的框架引入了 F1  指标）**
-![](asset/img_eb48cf5e6ca2.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_eb48cf5e6ca2.jpg)
 
 图一：Ragas  针对  RAG  系统的三个评估维度**
 
@@ -79,7 +89,7 @@ result["result"]`
 
 结果还成：
 
-![](asset/img_65de9e308b6e.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_65de9e308b6e.jpg)
 
 图一：qa retrieval  结果 测试
 
@@ -155,7 +165,7 @@ print("evaluating...")
 r = faithfulness_chain.evaluate(examples, predictions)
 r`
 
-![](asset/img_32d115f16b5c.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_32d115f16b5c.jpg)
 
 图二：batch  操作到这里，ragas 的评测就完成了，如果对 langsmith 不感兴趣可以就此打住...
 
@@ -220,24 +230,24 @@ result = run_on_dataset(
 
 执行到这里，创建好的  dataset、生成的结果都已经乖乖上传到了 smith.langchain.com:
 
-![](asset/img_57a61886041c.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_57a61886041c.jpg)
 
-图三：smith  帅帅的后台![](asset/img_605204a29543.jpg)
+图三：smith  帅帅的后台![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_605204a29543.jpg)
 
-图四：三个维度、四个指标![](asset/img_3ecfa101fa09.jpg)
+图四：三个维度、四个指标![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_3ecfa101fa09.jpg)
 
 图五：langsmith  的好处就是啥啥都留下来了...正如开始我们提到的，针对 LLMs  生成的内容进行检测评估至关重要！尽早发现冗余、无关的信息并在送入 LLMs 之前把这些信息过滤掉不仅影响到 token  的消耗（经费在燃烧）；也关系到整个  RAG 系统的效率和质量。
 
 最终，我们要算一个单一指标，ragas  里面采用的是「调和平均数」（the harmonic mean），奇怪的是 RagasEvaluatorChain 返回的结果里面并没有这个值，不过没关系我们可以调用  statistics  的 harmonic_mean 方法自己算一个
 
-![](asset/img_6e7ff8d8aab4.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_6e7ff8d8aab4.jpg)
 
 图六：RagasEvaluatorChain 里面记录的  project  名字有了上面这个名字就可以去  smith.langchain.com 里面找到对应的结果，如下：
 
-![](asset/img_ec2c01e83ac8.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_ec2c01e83ac8.jpg)
 
 图七：RagasEvaluatorChain 返回的四个指标自己算一下调和平均数：
 
-![](asset/img_6bd7a5f14bad.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_6bd7a5f14bad.jpg)
 
 图八： 最终的单一指标**至此！终于！可以拿着一个谁都容易理解的指标去找老板加薪了！！！**

@@ -1,3 +1,16 @@
+---
+title: Oʻzbekcha tarjima uslub qoʻllanmasi
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/uz/STYLE-GUIDE/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # Oʻzbekcha tarjima uslub qoʻllanmasi
 
 Ushbu hujjat `docs/uz/` ostidagi barcha tarjimalar uchun majburiy. LQA tekshiruvi shu qoidalarga muvofiq oʻtkaziladi.

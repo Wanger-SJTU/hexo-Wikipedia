@@ -1,3 +1,16 @@
+---
+title: Kỹ năng (Skills)
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/vi/skills/index/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # Kỹ năng (Skills)
 
 Thư mục này chứa các bộ kỹ năng (skills) đi kèm với khóa học này. Các kỹ năng là các mẫu prompt độc lập có thể được nạp bởi các AI coding agent (Claude Code, Codex, Cursor, Windsurf, v.v.) để thực hiện các tác vụ chuyên môn.

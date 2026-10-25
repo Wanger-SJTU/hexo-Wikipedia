@@ -1,15 +1,25 @@
 ---
-title: "CLIPPO：纯图像的 CLIP，参数减半且更强大！"
-date: 2023-01-12
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/598308737
+title: CLIPPO：纯图像的 CLIP，参数减半且更强大！
+date: "2023-01-12 00:00:00"
+updated: "2023-01-12 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/dl论文/CLIPPO-纯图像的-CLIP,参数减半且更强大/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/598308737
 ---
+
 
 **出品人：Towhee 技术团队 张晨（**@橙子**）、顾梦佳（**@JJJael**）**
 
 多模态模型变得越来越有效，部分原因在于统一的组件，例如 Transformer 架构。 然而，多模态模型仍然经常包含许多特定于任务和模态的部分和训练过程。 例如，CLIP 通过对比损失训练独立的文本和图像塔。 CLIPPO 选择使用对比损失进行训练，**尝试使用纯像素模型来执行图像、文本和多模式任务**。 CLIPPO 执行基于图像的任务，例如检索和 zero-shot 图像分类，几乎与 CLIP 一样好，参数数量只有一半，并且没有文本特定的塔或嵌入。 当通过图像-文本对比学习和下一句对比学习联合训练时，CLIPPO 可以在自然语言理解任务上表现出色，没有任何词级损失（语言建模或掩码语言建模），优于基于像素的先前工作。 令人惊讶的是，CLIPPO 只需将问题和图像一起渲染，就可以在视觉问答中获得很好的准确性。 由于 CLIPPO 不需要 tokenizer，它可以在不修改的情况下在多语言多模态检索上实现强大的性能。**
 
-![](asset/img_6328f988a976.jpg)
+![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_6328f988a976.jpg)
 
 > CLIP vs. CLIPPO
 

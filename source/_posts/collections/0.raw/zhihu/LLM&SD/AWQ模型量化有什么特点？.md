@@ -1,11 +1,21 @@
 ---
-title: "AWQ模型量化有什么特点？"
-date: 2026-04-14
-tags: [知乎]
-source: https://www.zhihu.com/question/645963779/answer/4841384841
+title: AWQ模型量化有什么特点？
+date: "2026-04-14 00:00:00"
+updated: "2026-04-14 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/LLM-SD/AWQ模型量化有什么特点/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://www.zhihu.com/question/645963779/answer/4841384841
 ---
 
-[![](asset/img_90ef15a6c991.jpg)](//www.zhihu.com/people/alan-70-79-23)
+
+[![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_90ef15a6c991.jpg)](//www.zhihu.com/people/alan-70-79-23)
 
 [Chayenne Zhao](//www.zhihu.com/people/alan-70-79-23)
 
@@ -66,13 +76,13 @@ source: https://www.zhihu.com/question/645963779/answer/4841384841
 - Quantization maps a floating-point number into lower-bit integers. 模型量化通常将浮点数映射到低位数的整数上，最简单 valina 的 baseline 就是直接把浮点参数 round to nearest integer。映射为整数的好处自然不少：硬件支持和计算效率更好，毕竟整形计算通常比浮点数更快更节能；存储效率更高...
 2. 虽然前文已经阐述了，PPL 不是个科学的指标。但是作者基于此得到的结果还是非常有趣，具体可以参考下表、基于参数的 L2 norm 进行 scaling 远逊色于基于激活值的 L2 norm 进行 scaling：
 
-![](asset/img_6b7375aac95c.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_6b7375aac95c.jpg)
 
 3. 虽然保留 0.1% 的参数不进行量化可以带来很好的 PPL 性质，但是实际上混合精度系统非常难实现。不应该实际上直接保留为 FPP16。
 
 4. 这里再保留一张很有趣的图。
 
-![](asset/img_04e156b7e0b1.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_04e156b7e0b1.jpg)
 
 a 图中的 context 应该就是 prefill 的意思，从而看出 prefill 相比 decode 是 marginal 的。b 图【没看懂...】c 图则进一步展现出 decode 阶段，memory 开销无论在 attention 还是在 FFN 中都远远超出计算开销。考虑到模型的 FLOPS 是给定的，减轻 memory 大小更加刻不容缓。
 
@@ -85,7 +95,7 @@ a 图中的 context 应该就是 prefill 的意思，从而看出 prefill 相比
 
 4. 下图显示，AWQ 需要的校准数据集更小，且相对校准数据集更为鲁棒。当然，我觉得他们可以试图理论证明这件事情，但是 system paper 很少理论证明，倒也无可厚非。
 
-![](asset/img_7747562cc831.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_7747562cc831.jpg)
 
 [发布于 2024-10-12 08:58](//www.zhihu.com/question/645963779/answer/4841384841)・美国
 

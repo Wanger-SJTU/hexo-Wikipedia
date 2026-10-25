@@ -1,10 +1,19 @@
 ---
-title: "Agentic RL 时代的 Infra 重构：以Forge、ROLL、Seer 、Slime为例"
-date: 2026-04-01
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/2022786148087464077
-
+title: Agentic RL 时代的 Infra 重构：以Forge、ROLL、Seer 、Slime为例
+date: "2026-04-01 00:00:00"
+updated: "2026-04-01 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/AI-infra/Agentic-RL-时代的-Infra-重构-以Forge、ROLL、Seer-、Slime为例/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/2022786148087464077
 ---
+
 
 这篇文章是在阅读了 Forge、ROLL 、Seer 、slime的博客及技术报告（链接在最后）之后，对这四家公司在 infra 和 agentic RL 相关工作中的部分底层算法所做的整理与总结。作者主要是纯算法背景，对 infra 也有一定了解，但并不算特别深入。因此，这篇文章更多是从应用算法的视角出发，尝试理解和梳理 RL infra 相关技术，并且作为个人学习相关知识的笔记。文中若有理解不准确或表述不严谨之处，也非常欢迎各位老师的批评指正。
 

@@ -1,9 +1,19 @@
 ---
-title: "从PTX修饰符看看GPU的弱内存模型"
-date: 2026-01-10
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/1987244050529661562
+title: 从PTX修饰符看看GPU的弱内存模型
+date: "2026-01-10 00:00:00"
+updated: "2026-01-10 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/从PTX修饰符看看GPU的弱内存模型/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/1987244050529661562
 ---
+
 
 发现居然很少有科普文章来介绍PTX指令的一些基础知识，我这里试着写一篇来填补一下这里的空缺。
 
@@ -13,7 +23,7 @@ PTX的设计初衷是构建一个稳定的、硬件无关的中间层，解耦�
 
 还是以这个reduction指令为例，我们可以看到，在指令之后是有大量的修饰符的。这些修饰符会在基础功能的基础上，描述指令在内存一致性（Consistency）、可见性范围（Scope）以及缓存策略（Cache Policy）等的具体行为，以适配不同的场景。
 
-![](asset/img_0a3e051f3a0f.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_0a3e051f3a0f.jpg)
 
 Reduction PTX 9.1要充分理解这些修饰符，其实会涉及到很多方面。
 
@@ -28,7 +38,7 @@ Reduction PTX 9.1要充分理解这些修饰符，其实会涉及到很多方面
 
 State space是逻辑上独立的内存区域抽象。每个状态空间具有不同的寻址方式、生命周期和访问权限。
 
-![](asset/img_4ed52af08997.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_4ed52af08997.jpg)
 
 State space introduction from PTX 9.1State space有以下几种：
 
@@ -48,7 +58,7 @@ CPU中常见的强一致性（如顺序一致性SC）要求所有写入必须立
 
 PTX显式引入了Scope概念，来维护一致性。
 
-![](asset/img_83ec81554194.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_83ec81554194.jpg)
 
 Scope introduction from PTX 9.1
 

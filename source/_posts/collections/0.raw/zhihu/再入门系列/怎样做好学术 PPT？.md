@@ -1,9 +1,19 @@
 ---
-title: "怎样做好学术 PPT？"
-date: 2026-04-15
-tags: [知乎]
-source: https://www.zhihu.com/question/22446174/answer/46862061
+title: 怎样做好学术 PPT？
+date: "2026-04-15 00:00:00"
+updated: "2026-04-15 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/再入门系列/怎样做好学术-PPT/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://www.zhihu.com/question/22446174/answer/46862061
 ---
+
 
 想到几点：
 

@@ -1,9 +1,19 @@
 ---
-title: "(1 条消息) Polyhedral Compilation资料汇总"
-date: 2021-02-02
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/348830014
+title: (1 条消息) Polyhedral Compilation资料汇总
+date: "2021-02-02 00:00:00"
+updated: "2021-02-02 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/Polyhedral-Compilation资料汇总/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/348830014
 ---
+
 
 （此文仅供参考）
 
@@ -15,7 +25,7 @@ Polyhedral Compilationpolyhedral.info/
 
 isl的python库（isl的代码不好阅读，可以直接基于此库开发）
 
-[![](asset/img_c8b82c58383f.jpg)Home - islpy 2020.2.2 documentationdocumen.tician.de/islpy/index.html](https://link.zhihu.com/?target=https%3A//documen.tician.de/islpy/index.html)
+[![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_c8b82c58383f.jpg)Home - islpy 2020.2.2 documentationdocumen.tician.de/islpy/index.html](https://link.zhihu.com/?target=https%3A//documen.tician.de/islpy/index.html)
 
 一个可视化工具，对于教学和理解多面体有很大帮助，可以基于此多做实验
 

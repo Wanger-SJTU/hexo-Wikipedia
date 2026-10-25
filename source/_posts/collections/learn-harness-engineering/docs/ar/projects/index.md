@@ -1,3 +1,16 @@
+---
+title: مرحبًا بك في المشاريع
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/ar/projects/index/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # مرحبًا بك في المشاريع
 
 هذا هو القسم العملي من Learn Harness Engineering. قراءة المحاضرات وحدها لا تكفي؛ عليك بناء البيئات بنفسك ومراقبة كيف يتصرف Codex أو Claude Code أو غيرهما من وكلاء الذكاء الاصطناعي تحت قواعد مختلفة.

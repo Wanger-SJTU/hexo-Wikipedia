@@ -1,3 +1,16 @@
+---
+title: 隐藏状态漂移时：KV缓存能否拯救长程投机解码？
+date: "2026-05-01 23:01:38"
+updated: "2026-05-01 23:01:38"
+layout: post
+permalink: /collections/0.raw/papers/KVShot-隐藏状态漂移与KV缓存拯救投机解码-arXiv2604.26412/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # 隐藏状态漂移时：KV缓存能否拯救长程投机解码？
 
 **作者**：Tianyu Liu<sup>1,2</sup>, Yuhao Shen<sup>1,3</sup>, Xinyi Hu<sup>1</sup>, Baolin Zhang<sup>1</sup>, Hengxin Zhang<sup>1</sup>, Jun Dai<sup>1</sup>, Jun Zhang<sup>1,3</sup>\*, Shuang Ge<sup>1</sup>\*, Lei Chen<sup>1</sup>, Yue Li<sup>1</sup>, Mingcheng Wan<sup>1</sup>

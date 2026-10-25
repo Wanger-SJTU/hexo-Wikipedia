@@ -1,3 +1,16 @@
+---
+title: プロジェクト 05. エージェントに自分の作業を検証させる
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/ja/projects/project-05-grounded-qa-verification/index/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 [中文版本 →](../../../zh/projects/project-05-grounded-qa-verification/)
 
 > 関連講義: [講義 09. エージェントの早すぎる完了宣言を止める](./../../lectures/lecture-09-why-agents-declare-victory-too-early/index.md) · [講義 10. フルパイプライン実行だけが本当の検証である](./../../lectures/lecture-10-why-end-to-end-testing-changes-results/index.md)

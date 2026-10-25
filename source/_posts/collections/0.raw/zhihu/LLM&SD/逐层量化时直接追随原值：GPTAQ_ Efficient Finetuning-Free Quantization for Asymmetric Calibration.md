@@ -1,9 +1,19 @@
 ---
 title: "逐层量化时直接追随原值：GPTAQ: Efficient Finetuning-Free Quantization for Asymmetric Calibration"
-date: 2025-07-31
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/1928814340871549979
+date: "2025-07-31 00:00:00"
+updated: "2025-07-31 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/LLM-SD/逐层量化时直接追随原值-GPTAQ_-Efficient-Finetuning-Free-Quantization-for-Asymmetric-Calibration/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/1928814340871549979
 ---
+
 
 [https://arxiv.org/pdf/2504.02692](https://link.zhihu.com/?target=https%3A//arxiv.org/pdf/2504.02692)
 
@@ -32,7 +42,7 @@ $GPTQ (Symmetric Calibration): min \text{GPTQ (Symmetric Calibration): } \min_{
 
 **Kenji博士:** (身体前倾，双手交叉) 从系统实现的角度看，这种误差累积是致命的。这意味着模型越深，后面的层接收到的输入激活值就离原始的全精度模型的激活值越远。论文中的图2非常直观地展示了这一点。
 
-![](asset/img_53d9f5ae689e.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_53d9f5ae689e.jpg)
 
 **Kenji士:** 在左边的GPTQ图中，我们可以看到随着Transformer块（Block Index）的增加，输入激活的平均绝对误差（MAE loss）在持续增长，形成了一个明显的“山坡”。这正是累积误差的可视化证据。而右边的GPTAQ图，整个曲面被压平了。这太惊人了。那么，GPTAQ的“非对称”究竟是怎么做的？
 
@@ -60,13 +70,13 @@ $GPTQ (Symmetric Calibration): min \text{GPTQ (Symmetric Calibration): } \min_{
 
 **Kenji博士:** 我明白了！他们把一个大的矩阵更新问题，分解成了一系列可以独立计算的向量与矩阵的乘积。他们预先计算一个矩阵P，其中 P_q,: = ΔX_q,:X̄ᵀH⁻¹，然后第二项的计算就变成了 W_{:,q}P_q,:，非常高效。而且论文的图3展示了他们如何利用Cholesky分解和掩码矩阵来并行计算整个P矩阵。
 
-![](asset/img_99b1eb0b9fde.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_99b1eb0b9fde.jpg)
 
 **
 
 Kenji博士:** 这种利用GPU架构特性的优化思路非常高明。他们用Cholesky分解 H⁻¹ = LLᵀ 替代了高斯消元，保证了数值稳定性，并通过Lazy-Batch Updates，按块（block）更新权重，进一步提升了GPU的利用率。从图4的延迟测试来看，相比于GPTQ，GPTAQ增加的额外延迟非常小，在典型层维度（如4096）下低于10%，这在实践中完全可以接受。
 
-![](asset/img_3fa24e9c3879.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_3fa24e9c3879.jpg)
 
 **
 

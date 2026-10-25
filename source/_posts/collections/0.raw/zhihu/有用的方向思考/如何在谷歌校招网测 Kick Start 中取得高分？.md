@@ -1,9 +1,19 @@
 ---
-title: "如何在谷歌校招网测 Kick Start 中取得高分？"
-date: 2026-04-21
-tags: [知乎]
-source: https://www.zhihu.com/question/340144492/answer/808173912
+title: 如何在谷歌校招网测 Kick Start 中取得高分？
+date: "2026-04-21 00:00:00"
+updated: "2026-04-21 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/有用的方向思考/如何在谷歌校招网测-Kick-Start-中取得高分-4f240e/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://www.zhihu.com/question/340144492/answer/808173912
 ---
+
 
 牛客
 

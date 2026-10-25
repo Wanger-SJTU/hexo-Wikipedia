@@ -1,3 +1,16 @@
+---
+title: FRONTEND.md
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/de/resources/openai-advanced/repo-template/docs/FRONTEND/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # FRONTEND.md
 
 Diese Datei definiert stabile Frontend-Erwartungen, damit Agenten nicht unvorhersehbar

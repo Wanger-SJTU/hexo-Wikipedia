@@ -1,9 +1,19 @@
 ---
-title: "gdb 的使用技巧有哪些？"
-date: 2026-04-15
-tags: [知乎]
-source: https://www.zhihu.com/question/586771392/answer/3229528090
+title: gdb 的使用技巧有哪些？
+date: "2026-04-15 00:00:00"
+updated: "2026-04-15 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/走向cs/gdb-的使用技巧有哪些/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://www.zhihu.com/question/586771392/answer/3229528090
 ---
+
 
 收录于 · linux调试工具
 
@@ -76,7 +86,7 @@ w 字，即四字节
 
 g 八字节
 
-命令全名说明x/4xwexamine打印4次，每次4个字节，以16进制打印x/4ow打印4次，每次4个字节，以8进制打印![](asset/img_8b0406525370.jpg)
+命令全名说明x/4xwexamine打印4次，每次4个字节，以16进制打印x/4ow打印4次，每次4个字节，以8进制打印![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_8b0406525370.jpg)
 
 #### 2.6查看cpu寄存器**
 
@@ -91,37 +101,37 @@ g 八字节
 
 命令全名说明btbacktrace打印当前函数的调用栈，包括函数参数，位置bt full除了上面列出的信息，还包括局部变量的值inf frameinfo frame查看最外层(栈顶)的帧frame 2查看指定调用帧info locals查看局部变量的值bt
 
-![](asset/img_f7bcc1ea8ac3.jpg)
+![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_f7bcc1ea8ac3.jpg)
 
 C语言函数调用栈(一)
 
 C语言函数调用栈(二) 
 
-![](asset/img_c93a0cdeca2f.jpg)
+![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_c93a0cdeca2f.jpg)
 
 **
 
 查看backtrace details, bt full
 
-![](asset/img_665a27e9833b.jpg)
+![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_665a27e9833b.jpg)
 
 查看指定栈帧: frame 2
 
-![](asset/img_4858499b528f.jpg)
+![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_4858499b528f.jpg)
 
-![](asset/img_36af27976237.jpg)
+![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_36af27976237.jpg)
 
   与上图配套的调用栈，可以看到通过rbp可以知道每个栈帧的内容，不断回溯到栈底。
 
-![](asset/img_6f5fab8865fd.jpg)
+![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_6f5fab8865fd.jpg)
 
 #### 2.10 多线程调试**
 
 命令全名说明info threads查看当前进程的所有线程thread apply all bt打印所有线程堆栈参考 GDB 常用命令
 
-[所属专栏 · 2025-07-24 23:49 更新](https://zhuanlan.zhihu.com/c_1793303128336117762)[![](asset/img_b284909e1ee4.jpg)linux调试工具
+[所属专栏 · 2025-07-24 23:49 更新](https://zhuanlan.zhihu.com/c_1793303128336117762)[![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_b284909e1ee4.jpg)linux调试工具
 
-![](asset/img_1775e301363d.jpg)双耳书生
+![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_1775e301363d.jpg)双耳书生
 
 11 篇内容 · 201 赞同
 

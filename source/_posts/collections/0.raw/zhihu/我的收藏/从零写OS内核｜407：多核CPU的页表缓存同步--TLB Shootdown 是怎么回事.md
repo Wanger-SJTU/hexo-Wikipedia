@@ -1,9 +1,19 @@
 ---
-title: "从零写OS内核｜407：多核CPU的页表缓存同步--TLB Shootdown 是怎么回事"
-date: 2026-08-10
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/2070270846145401677
+title: 从零写OS内核｜407：多核CPU的页表缓存同步--TLB Shootdown 是怎么回事
+date: "2026-08-10 00:00:00"
+updated: "2026-08-10 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/从零写OS内核-407-多核CPU的页表缓存同步-TLB-Shootdown-是怎么回事/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/2070270846145401677
 ---
+
 
 **摘要**：在一个多核 CPU 上，一个核心修改了页表——其他核心的 TLB 里还缓存着旧的映射，这个矛盾怎么解决？答案是 **TLB Shootdown**：向所有其他核心发送**核间中断（IPI）**，强制它们刷新 TLB。Linux 内核在每次进程切换、内存映射变更时都在默默做这件事，但你可能从来没注意过它。
 

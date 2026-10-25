@@ -1,3 +1,16 @@
+---
+title: Loyihalarga xush kelibsiz
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/uz/projects/index/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # Loyihalarga xush kelibsiz
 
 Bu Learn Harness Engineering kursining amaliyot qismidir. Faqat maʼruzalarni oʻqish yetarli emas — muhitlarni oʻzingiz qurishingiz va turli qoidalar ostida Codex, Claude Code yoki boshqa AI agentlar qanday harakat qilishini kuzatishingiz kerak.

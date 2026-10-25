@@ -1,9 +1,19 @@
 ---
-title: "通过Include依赖扩展TVM"
-date: 2024-10-12
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/942317791
+title: 通过Include依赖扩展TVM
+date: "2024-10-12 00:00:00"
+updated: "2024-10-12 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/通过Include依赖扩展TVM/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/942317791
 ---
+
 
 之前在一篇文章中我提到过一句：`一千个基于TVM的项目，就有一千个被爆改过的TVM`，这是我对基于TVM开发项目现状的吐槽。理解TVM的代码对于开发者来说已经是一件不容易的事情，更不用说开发者们在面对一个当前TVM无法解决的场景，想要修改进行扩展的时候是怎样的困难。往往，基于TVM的项目都是Fork一份TVM的代码来修改，例如为TVM添加一个新的优化Pass，就在`src/tir/transformation`文件夹下面新建一个Pass文件，然后通过`ffi`绑定到python侧的代码，其他的需求，例如注册一个新的语法树节点，添加新的代码生成等，也都是如此来实现,我自己的github上fork的[LeiWang1999/tvm](https://link.zhihu.com/?target=https%3A//github.com/LeiWang1999/tvm)就包含十几个分支，有为了[BitBLAS](https://link.zhihu.com/?target=https%3A//github.com/microsoft/BitBLAS)扩展(引入了一些新的Node和Schedule来进行优化)的bitblas分支，有为了[Ladder/Welder](https://link.zhihu.com/?target=https%3A//github.com/microsoft/BitBLAS/tree/osdi24_ladder_artifact)做高性能的算子融合而添加了一些优化Pass的ladder分支，有为给AMD上做代码生产的`amd_hip`分支。这些分支的关系已经非常错综复杂了，我以[BitBLAS](https://link.zhihu.com/?target=https%3A//github.com/microsoft/BitBLAS)为例，探讨一下为什么这样的开发方式会导致困难，并且提供一种解决方法(参考自[MLC-LLM](https://link.zhihu.com/?target=https%3A//github.com/mlc-ai/mlc-llm))，供大家一起讨论，代码放在[LeiWang1999/TVM.CMakeExtend](https://link.zhihu.com/?target=https%3A//github.com/LeiWang1999/TVM.CMakeExtend)。
 
@@ -34,7 +44,7 @@ if with_zeros:
 
 对于这个场景，我心里一直有一个理想的方案，那就是维持一套核心的核心的TVM代码，大家通过引入tvm的方式来扩展TVM的功能，并且这种扩展是不需要被合并到TVM的上游代码中，如图：
 
-![](asset/img_aaf1162befd0.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_aaf1162befd0.jpg)
 
 例如用户写了一个TensorIR的算子表达式，我们可以使用TVM自己的Tunner去对算子进行调优，也可以使用我们自己的第三方的框架进行调优，例如用户获得了一个整个模型的Relax计算图，我们可以使用TVM自己的Pass进行优化，也可以使用用户自己实现的Pass，例如Welder进行优化，大家相互分隔开，互不影响。但是为什么现在这种硬基于tvm开发的方法行不通呢？例如我之前想在MLC-LLM的基础上引入Welder的优化:
 
@@ -51,7 +61,7 @@ relax_mod = welder.tune(relax_mod)
 
 在TVM社区里的[Phasing out Legacy Components](https://link.zhihu.com/?target=https%3A//discuss.tvm.apache.org/t/phasing-out-legacy-components/17703),tianqi对这个问题的看法是: 开发者应该避免在不同项目中直接修改 TVM 的源码，而是要确保所有下游项目（如 ProjectA 和 ProjectB）依赖于同一个核心 TVM 库。这样一来，大家可以在同一个 TVM 版本的基础上进行扩展，而不会因为各自的修改而导致兼容性问题。为此，他建议重构项目的组织方式，像 [MLC-LLM](https://link.zhihu.com/?target=https%3A//github.com/mlc-ai/mlc-llm) 那样，将自定义的 Pass 和优化功能作为独立模块附加在 TVM 上，而不是直接对 TVM 做内联修改。这种做法能够通过模块化的方式来提升开发的灵活性和可维护性。未来，随着上游 API 逐渐变得更加模块化，社区希望不同项目能够更自然地基于相同的核心 TVM 进行各种变换和优化，从而在整个生态中形成更加有机的协作。
 
-![](asset/img_24867c94e0c0.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_24867c94e0c0.jpg)
 
 因此，我在这里学习了一下MLC-LLM的项目结构，并且借鉴和简化了一下，把一个基于TVM实现的小项目使用这种方式分离成一个单独的小项目: [LeiWang1999/TVM.CMakeExtend](https://link.zhihu.com/?target=https%3A//github.com/LeiWang1999/TVM.CMakeExtend).
 

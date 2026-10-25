@@ -1,10 +1,19 @@
 ---
-title: "Hydragen：共享前缀既能省 KV Cache，也能把 Attention 从访存瓶颈拉回矩阵乘"
-date: 2026-07-18
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/2061773314687868962
-
+title: Hydragen：共享前缀既能省 KV Cache，也能把 Attention 从访存瓶颈拉回矩阵乘
+date: "2026-07-18 00:00:00"
+updated: "2026-07-18 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/AI-infra/Hydragen-共享前缀既能省-KV-Cache,也能把-Attention-从访存瓶颈拉回矩阵乘/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/2061773314687868962
 ---
+
 
 📌 本文为论文 Hydragen: High-Throughput LLM Inference with Shared Prefixes 的中文解读、转述、提炼与译者评注，并非逐字翻译。论文作者为 Jordan Juravsky、Bradley Brown、Ryan Ehrlich、Daniel Y. Fu、Christopher Ré、Azalia Mirhoseini，机构包括 Stanford University、University of Oxford、University of Waterloo，arXiv 版本为 2024-05-13。原文链接：[https://arxiv.org/pdf/2402.05099](https://link.zhihu.com/?target=https%3A//arxiv.org/pdf/2402.05099) ，代码链接：[https://github.com/jordan-benjamin/hydragen](https://link.zhihu.com/?target=https%3A//github.com/jordan-benjamin/hydragen) ，版权归原作者所有。
 

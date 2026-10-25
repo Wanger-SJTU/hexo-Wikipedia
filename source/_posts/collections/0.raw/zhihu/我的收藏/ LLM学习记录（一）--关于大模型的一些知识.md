@@ -1,9 +1,19 @@
 ---
-title: "(1 条消息) LLM学习记录（一）--关于大模型的一些知识"
-date: 2023-05-14
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/624918286
+title: (1 条消息) LLM学习记录（一）--关于大模型的一些知识
+date: "2023-05-14 00:00:00"
+updated: "2023-05-14 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/LLM学习记录(一)-关于大模型的一些知识/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/624918286
 ---
+
 
 折腾大模型（small LLM）一段时间了，以下是平民版的LLM学习记录，记录了自己遇到的问题，以及给出不完美的解答。
 
@@ -11,9 +21,9 @@ source: https://zhuanlan.zhihu.com/p/624918286
 
 1. 最主流的开源模型？
 
-ChatGLM-6B[[1]](#ref_1)  prefix LM
+ChatGLM-6B<span class="wikilink wikilink--missing" title="未导入的页面">1</span>(#ref_1)  prefix LM
 
-LLaMA-7B[[2]](#ref_2)      causal LM
+LLaMA-7B<span class="wikilink wikilink--missing" title="未导入的页面">2</span>(#ref_2)      causal LM
 
 2. prefix LM和causal LM的区别？
 
@@ -29,7 +39,7 @@ GPT系列就是Causal LM，目前除了T5和GLM，其他大模型基本上都是
 
 对于这种现象我有一个直观的解释（猜想）：prompt部分通常很长，在生成文本时可以近似看作不变，那么条件概率 P(B|A)也不变，一直是最大的。
 
-生成重复内容，是语言模型本身的一个弱点，无论是否微调，都有可能出现。并且，理论上良好的指令微调能够缓解大语言模型生成重复内容的问题。[[3]](#ref_3)但是因为指令微调策略的问题，在实践中经常出现指令微调后复读机问题加重的情况。
+生成重复内容，是语言模型本身的一个弱点，无论是否微调，都有可能出现。并且，理论上良好的指令微调能够缓解大语言模型生成重复内容的问题。<span class="wikilink wikilink--missing" title="未导入的页面">3</span>(#ref_3)但是因为指令微调策略的问题，在实践中经常出现指令微调后复读机问题加重的情况。
 
 另外，可能出现重复用户问题的情况，原因未知。
 
@@ -48,7 +58,7 @@ GPT系列就是Causal LM，目前除了T5和GLM，其他大模型基本上都是
 ### 软件基础
 
 - 如果自己折腾，建议的软件环境是什么？
-python环境建议3.9，因为fastchat[[4]](#ref_4)等比较好的开源项目需要3.9及以上。
+python环境建议3.9，因为fastchat<span class="wikilink wikilink--missing" title="未导入的页面">4</span>(#ref_4)等比较好的开源项目需要3.9及以上。
 
 cuda环境越高越好，c++版本建议直接装9.1.0以上。
 
@@ -70,9 +80,9 @@ conda是个好东西，建议用conda构建环境，也可以用来快速安装c
 
 3. 大模型在gpu和cpu上推理速度如何？
 
-7B量级下，cpu推理速度约10token/s，单卡A6000和8核AMD的推理速度通常为 10:1。[[5]](#ref_5)
+7B量级下，cpu推理速度约10token/s，单卡A6000和8核AMD的推理速度通常为 10:1。<span class="wikilink wikilink--missing" title="未导入的页面">5</span>(#ref_5)
 
-![](asset/img_e1aca769b545.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_e1aca769b545.jpg)
 
 推理速度对比4. 能否用4 * v100 32G训练vicuna 65b？
 
@@ -100,7 +110,7 @@ vicuna-7B为例，官方样例配置为 4*A100 40G，测试了一下确实能占
 
 8. 如果就是想要试试65b模型，但是显存不多怎么办？
 
-最少大概50g显存，可以在llama-65b-int4（gptq）模型基础上LoRA[[6]](#ref_6)，当然各种库要安装定制版本的。
+最少大概50g显存，可以在llama-65b-int4（gptq）模型基础上LoRA<span class="wikilink wikilink--missing" title="未导入的页面">6</span>(#ref_6)，当然各种库要安装定制版本的。
 
 ### RLHF部分
 
@@ -132,7 +142,7 @@ rank 8 target_module query_key_value条件下，大约15M。
 - 如何给LLM注入领域知识？
 第一种办法，检索+LLM，先用问题在领域数据库里检索到候选答案，再用LLM对答案进行加工。
 
-第二种方法，把领域知识构建成问答数据集，用SFT让LLM学习这部分知识。[[7]](#ref_7)
+第二种方法，把领域知识构建成问答数据集，用SFT让LLM学习这部分知识。<span class="wikilink wikilink--missing" title="未导入的页面">7</span>(#ref_7)
 
 2. 为什么SFT之后感觉LLM傻了?
 
@@ -140,7 +150,7 @@ rank 8 target_module query_key_value条件下，大约15M。
 
 SFT的重点在于激发大模型的能力，SFT的数据量一般也就是万恶之源alpaca数据集的52k量级，相比于预训练的数据还是太少了。如果抱着灌注领域知识而不是激发能力的想法，去做SFT的话，可能确实容易把LLM弄傻。
 
-**新版答案：**[[3]](#ref_3)
+**新版答案：**<span class="wikilink wikilink--missing" title="未导入的页面">3</span>(#ref_3)
 
 > 指令微调是为了增强（或解锁）大语言模型的能力。
 
@@ -156,11 +166,11 @@ SFT的重点在于激发大模型的能力，SFT的数据量一般也就是万�
 
 3. 如果想要快速体验各种模型，该怎么办？
 
-推荐fastchat[[4]](#ref_4)，集成了各路开源模型，从自己的vicuna到stable AI的stableLM。
+推荐fastchat<span class="wikilink wikilink--missing" title="未导入的页面">4</span>(#ref_4)，集成了各路开源模型，从自己的vicuna到stable AI的stableLM。
 
 4. 找数据集哪里找？
 
-推荐Alpaca-COT[[8]](#ref_8)，数据集整理的非常全，眼花缭乱。
+推荐Alpaca-COT<span class="wikilink wikilink--missing" title="未导入的页面">8</span>(#ref_8)，数据集整理的非常全，眼花缭乱。
 
 ### 参考
 

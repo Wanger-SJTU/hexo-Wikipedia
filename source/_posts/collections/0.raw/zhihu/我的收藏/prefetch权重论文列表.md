@@ -1,9 +1,19 @@
 ---
-title: "prefetch权重论文列表"
-date: 2025-05-27
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/1899538967348634456
+title: prefetch权重论文列表
+date: "2025-05-27 00:00:00"
+updated: "2025-05-27 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/prefetch权重论文列表/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/1899538967348634456
 ---
+
 
 prefetch权重论文列表
 

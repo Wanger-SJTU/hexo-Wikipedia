@@ -1,10 +1,19 @@
 ---
-title: "Muon新解"
-date: 2026-03-30
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/2021649476964610281
-
+title: Muon新解
+date: "2026-03-30 00:00:00"
+updated: "2026-03-30 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/LLM-SD/Muon新解/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/2021649476964610281
 ---
+
 
 目前我看过的对Muon优化器为什么好的解释主要有以下五种：
 

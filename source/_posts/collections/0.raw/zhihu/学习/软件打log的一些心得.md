@@ -1,9 +1,19 @@
 ---
-title: "软件打log的一些心得"
-date: 2017-01-09
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/24785018
+title: 软件打log的一些心得
+date: "2017-01-09 00:00:00"
+updated: "2017-01-09 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/学习/软件打log的一些心得/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/24785018
 ---
+
 
 在  [同事离职，我接盘了个垃圾项目，该如何是好？ －－血狼的回答](https://www.zhihu.com/question/49279694/answer/139414734?group_id=801702854334218240) 中，我分享了重构的方法，其中提到了软件打log的方法是第一步，也有不少朋友在评论中问打log的原则。
 

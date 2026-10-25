@@ -1,3 +1,16 @@
+---
+title: Documento de Calidad
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/es/resources/templates/quality-document/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # Documento de Calidad
 
 Una instantánea de calidad para cada dominio de producto y capa arquitectónica. Tanto agentes como humanos pueden usar este documento para entender rápidamente dónde el código base es fuerte y dónde necesita trabajo.

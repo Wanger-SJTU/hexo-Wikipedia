@@ -1,9 +1,19 @@
 ---
 title: "大模型的幻觉问题调研: LLM Hallucination Survey"
-date: 2023-07-19
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/644541524
+date: "2023-07-19 00:00:00"
+updated: "2023-07-19 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/LLM-SD/大模型的幻觉问题调研_-LLM-Hallucination-Survey/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/644541524
 ---
+
 
 幻觉问题是LLM的实际落地应用中大家非常关注的一个问题。推荐一个前人写的比较全面的综述，但这篇Survey较少涉及2023年以后LLM时代的幻觉问题工作。
 
@@ -248,13 +258,13 @@ HaluEval benchmark**
 
 对LLM生成的不符合事实的错误的类型进行分类和统计：
 
-![](asset/img_a64e44ac7443.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_a64e44ac7443.jpg)
 
-![](asset/img_f842558d3cd2.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_f842558d3cd2.jpg)
 
 定义了三个能力，可能导致幻觉的：
 
-![](asset/img_cb51d2c30a9e.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_cb51d2c30a9e.jpg)
 
 - 知识记忆
 - 知识调用
@@ -289,7 +299,7 @@ Retrieval有助于显著减少LLM的幻觉现象。
 - 模型容量和评估效果并不完全正相关
 - 使用额外的其他任务训练，可以提升automatic attribution evaluation的能力（QA/NLI/FC）
 
-![](asset/img_92ba64946ce2.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_92ba64946ce2.jpg)
 
 - 后一个工作
 
@@ -302,7 +312,7 @@ Retrieval有助于显著减少LLM的幻觉现象。
 - parametric memory：模型内部的知识
 - counter-memeory：与模型内部知识相反的内容
 
-![](asset/img_5873247f8736.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_5873247f8736.jpg)
 
 - 当只有一个单一的知识源时：
 
@@ -323,7 +333,7 @@ LLM幻觉的滚雪球现象**
 
 本文作者认为：LLM出现幻觉现象，很多情况下并不是因为它们缺少对应的知识，而仅仅是在调用知识的过程中出错。他们发现：LLMs如果在回复一开始做出了错误的判断，那么它们随后会给出错误的解释（幻觉）。他们称这一现象为幻觉的滚雪球现象。但是，当仅给定错误的解释时，LLMs往往可以成功判断它是不正确的。这证明LLMs其实具备相应的知识，只是被早期的错误断言给误导了。
 
-![](asset/img_e83e4ba7ae97.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_e83e4ba7ae97.jpg)
 
 作者也探索了一些缓解幻觉滚雪球问题的方法：
 
@@ -340,7 +350,7 @@ LLM幻觉的原子粒度评估**
 
 将LLM生成的内容（本文选用的内容是人物简介）分解为多个原子事实（instructGPT分解，人类校对），评估生成事实的精确度：
 
-![](asset/img_d91794301c0a.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_d91794301c0a.jpg)
 
 人工标注常用LLMs的原子事实精确度后，发现：
 
@@ -354,13 +364,13 @@ LLM幻觉的原子粒度评估**
 - 更大的LLM能够更好地评估。
 最后，作者基于自动指标，评估了现阶段LLM的原子事实性：
 
-![](asset/img_2725c3042949.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_2725c3042949.jpg)
 
 有一些有趣的发现：比如Dolly模型经常频繁提及Databricks公司，导致事实错误（因为dolly的训练语料是databricks公司员工手写的）
 
 最后作者研究了自动利用LLMs修复事实错误的可能性，发现在原子粒度纠正以及提供检索信息，能显著提高纠正的效果。
 
-![](asset/img_a01181793483.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_a01181793483.jpg)
 
 除了模型生成事实的精确度外，还应该考虑召回度（即内容中的原子事实信息尽可能多），否则LLMs可能走捷径，生成一些无意义的废话。
 
@@ -429,7 +439,7 @@ LLM幻觉的原子粒度评估**
 
 本质上，该系统是一个检索知识->生成回复->评估的反复迭代/决策的过程，能够通过外部知识库和检查模块，显著提升生成的各维度效果，包括事实性。
 
-![](asset/img_59e4a2c521dd.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_59e4a2c521dd.jpg)
 
 零资源黑盒LLM幻觉检测**
 
@@ -453,7 +463,7 @@ ETH-Zurich也有一篇类似的工作，着重关注LLM生成回复中的自相�
 
 [](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2305.07982)
 
-![](asset/img_81c8fed2eb7d.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_81c8fed2eb7d.jpg)
 
 提出了一个五步的零资源事实错误纠正流水线：
 
@@ -470,7 +480,7 @@ ETH-Zurich也有一篇类似的工作，着重关注LLM生成回复中的自相�
 
 MSRA的工作，本文允许LLM在自我检查答案正确性的过程中调用外部工具，比如知识库、搜索引擎和维基百科，从而缓解事实性和幻觉问题。
 
-![](asset/img_e92a923544b7.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_e92a923544b7.jpg)
 
 通过推理时干预诱导LLM生成符合事实的答案**
 
@@ -483,7 +493,7 @@ MSRA的工作，本文允许LLM在自我检查答案正确性的过程中调用�
 作者假设：LLMs know more than they say，LLM内部存在着隐藏的、可解释的结构，这些结构和事实性息息相关，因此可以通过干预：
 
 - 作者探索了LLM的生成回复准确率（直接回答问题）和Probe准确率（用一个linear classifier基于中间状态选择回答）的关系，发现LLM很多情况下知道知识，但无法正确生成回复。
-![](asset/img_1d900ffe09c2.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_1d900ffe09c2.jpg)
 
 - ITI方法选择和事实知识紧密相关的head，进行干预，让激活值移动到truthful相关的方向，实验表明能够有效提升回复的事实性。
 训练小模型后处理幻觉问题**
@@ -492,7 +502,7 @@ MSRA的工作，本文允许LLM在自我检查答案正确性的过程中调用�
 
 [](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2305.14908)
 
-![](asset/img_153314f449ea.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_153314f449ea.jpg)
 
 Google的工作，核心思想是用LLM自动对一个正确样本生成幻觉样本，组成平行语料，训练一个T5学会降噪：
 
@@ -507,7 +517,7 @@ Google的工作，核心思想是用LLM自动对一个正确样本生成幻觉�
 
 MIT&Google，利用多个智能体（LLM）相互辩论来解决事实性问题，相当于是一种变相的self-verify。
 
-![](asset/img_b07f53ee91f0.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_b07f53ee91f0.jpg)
 
 人在回路的幻觉消除**
 
@@ -515,6 +525,6 @@ MIT&Google，利用多个智能体（LLM）相互辩论来解决事实性问题�
 
 本文提出基于人机交互，让LLM获得更好的知识-问题对齐，从而提升回复的事实性，减轻幻觉。
 
-![](asset/img_9d2f6682c043.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_9d2f6682c043.jpg)
 
 原文链接： [不关岳岳的事：大模型的幻觉问题调研: LLM Hallucination Survey](https://zhuanlan.zhihu.com/p/642648601)

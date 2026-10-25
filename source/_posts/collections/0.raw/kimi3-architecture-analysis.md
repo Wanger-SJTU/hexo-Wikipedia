@@ -1,10 +1,16 @@
 ---
-title: Understanding Kimi3 (1): Linear Attention, Sparse Attention, and the Architecture War at Million-Token Scale
-author: backyes
-date: 2026-07-21
-url: https://backyes.github.io/posts/kimi3-architecture-analysis.html
-tags: [Kimi3, linear-attention, sparse-attention, DSA, MLA, architecture, long-context]
+title: "Understanding Kimi3 (1): Linear Attention, Sparse Attention, and the Architecture War at Million-Token Scale"
+date: "2026-07-23 08:38:18"
+updated: "2026-07-23 08:38:18"
+layout: post
+permalink: /collections/0.raw/kimi3-architecture-analysis/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
 ---
+
 
 # Understanding Kimi3 (1): Linear Attention, Sparse Attention, and the Architecture War at Million-Token Scale
 

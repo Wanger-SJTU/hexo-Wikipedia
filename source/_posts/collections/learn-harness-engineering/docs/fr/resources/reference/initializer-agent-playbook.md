@@ -1,3 +1,16 @@
+---
+title: Playbook de l'agent initialiseur
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/fr/resources/reference/initializer-agent-playbook/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # Playbook de l'agent initialiseur
 
 Utilisez ce playbook pour la première session sérieuse dans un dépôt, avant que

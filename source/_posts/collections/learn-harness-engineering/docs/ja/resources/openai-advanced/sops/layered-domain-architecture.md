@@ -1,3 +1,16 @@
+---
+title: "SOP: レイヤードドメインアーキテクチャ"
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/ja/resources/openai-advanced/sops/layered-domain-architecture/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # SOP: レイヤードドメインアーキテクチャ
 
 この SOP は、エージェントが境界を繰り返し違反している、レイヤー間で

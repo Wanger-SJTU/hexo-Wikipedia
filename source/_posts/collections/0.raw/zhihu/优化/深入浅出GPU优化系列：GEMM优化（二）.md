@@ -1,13 +1,23 @@
 ---
-title: "深入浅出GPU优化系列：GEMM优化（二）"
-date: 2022-03-27
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/442930482
+title: 深入浅出GPU优化系列：GEMM优化（二）
+date: "2022-03-27 00:00:00"
+updated: "2022-03-27 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/优化/深入浅出GPU优化系列-GEMM优化(二)/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/442930482
 ---
+
 
 本篇是通用矩阵乘法（GEMM）优化的第二部分，主要来说说具体的代码，并做一个详细的解析。第一部分主要是讲了一些原理，如果没有看过的读者可以去看看，链接在下面。
 
-[![](asset/img_962e5d5cffb7.jpg)深入浅出GPU优化系列：GEMM优化（一）1408 赞同 · 109 评论 文章](https://zhuanlan.zhihu.com/p/435908830)
+[![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_962e5d5cffb7.jpg)深入浅出GPU优化系列：GEMM优化（一）1408 赞同 · 109 评论 文章](https://zhuanlan.zhihu.com/p/435908830)
 
 这篇文章的主要目的是让读者尽可能地理解GEMM优化的技巧，所以代码尽可能地**通俗易懂**。在兼顾易读性的同时，代码有**不错的性能表现**，在1024-4096的矩阵上平均能够达到**cublas 91%**的性能表现。
 
@@ -23,11 +33,11 @@ source: https://zhuanlan.zhihu.com/p/442930482
 
 明确了上面的参数之后，我们来仔细地观察其中一个block的计算逻辑。对于这个block而言，它需要进行=256次迭代，我们先把这个迭代称为**大迭代**，每一次大迭代都需要把A里面128×8=1024个元素和B里面8×128=1024个元素先放到shared memory中。然后这个block中的256个线程把结果计算出来。计算完之后，再进入下一次大迭代。不断重复该过程，直至这个block负责的16384个元素的结果被求解出。大迭代示意图如下：
 
-![](asset/img_8c34b530cc4e.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_8c34b530cc4e.jpg)
 
 随后再具体看看每一个大迭代中，block中的线程的计算逻辑。在进行一个大迭代时，shared memory中有128×8=1024个A矩阵元素和8×128=1024个B矩阵元素。随后，每个线程需要进行8次迭代，我们把这个迭代成为**小迭代**。bk=8，所以有8次小迭代。每一次小迭代中，每个线程需要从shared memory中拿到A矩阵的一小列和B矩阵的一小行，即8个A的元素和8个B的元素。线程将这8+8=16个元素放置在寄存器中。每个线程需要负责8×8=64个元素的计算，一共会产生64条FFMA指令。小迭代示意图如下：
 
-![](asset/img_f99760180680.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_f99760180680.jpg)
 
 以上就是不采用数据预取的GEMM算法计算逻辑。总的来说，**对于一个block而言，有256个大迭代，每个大迭代中又有8个小迭代**。这是后续内容的基础，如果还是不太清楚的话，可以再仔细看看，把这个过程完全搞清楚后，我们再继续接下来的内容，即采用数据预取后的GEMM算法计算逻辑。
 
@@ -46,7 +56,7 @@ source: https://zhuanlan.zhihu.com/p/442930482
 		prefecth next loop data to write_REG
 		compute in read_REG`
 
-![](asset/img_53d55c302b6f.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_53d55c302b6f.jpg)
 
 以上就是采用数据预取的GEMM计算流程。其核心思想就是提前将下一轮迭代所需要的数据取出然后放置到更近的存储中，然后通过pipline的形式来减少访存的latency。
 
@@ -96,7 +106,7 @@ source: https://zhuanlan.zhihu.com/p/442930482
 
 最后需要说明的参数是在global->shared memory阶段用到。我们开启了256个线程，在一次大迭代中需要将128×8个元素搬运到shared memory中。我们用下面的参数说明了这个搬运的逻辑。**A_TILE_THREAD_PER_ROW**代表把搬运一行数据需要使用多少个线程，为了搬运A的一行，需要使用2个线程。**A_TILE_ROW_START**代表在这个维度为bm×bk的数据块中，当前线程需要搬运的数据的竖向坐标，而**A_TILE_COL**代表需要搬运的数据的横向坐标。对3号线程而言，由于它要搬运（1，1）号数据块中的4个元素。所以，A_TILE_ROW_START是1，A_TILE_COL是4。**A_TILE_ROW_STRIDE**代表在进行多次搬运时需要跨越的行。假设As是一块256×8的数据块（这个设置跟前面不一样），256个线程进行搬运，一次搬运4个数，所以要搬运两次。对于3号线程而言，分别搬运下图中的绿色数据块。
 
-![](asset/img_aa45cf5258ab.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_aa45cf5258ab.jpg)
 
 `// threads number in one row
     const int A_TILE_THREAD_PER_ROW = BLOCK_SIZE_K / 4;
@@ -203,7 +213,7 @@ for (int thread_y = 0; thread_y
 
 **针对第一个问题**，固定了bm、bn、bk、rm、rn的取值为64、8、64、8、8。在V100上测试了不同维度的矩阵（设置M=N=K），并且对比了cublas，其性能结果如下图。横坐标是矩阵维度，纵坐标是GFLOPS。可以在图中看出，在大维度的矩阵下，我们手写的Sgemm大概能达到平均14TFLOPS，**性能表现达到cublas的 91%**。V100的单精度峰值性能是15.7TFLOPS，在**完全不使用汇编，并且有着较好的代码可读性的同时**，我们手写的Sgemm大概能达到**90%**的单精度峰值效率。当然，**如果不考虑代码可读性的话，这个性能可以进一步提高**。github上有一些代码，比如[Yujia Zhai](https://link.zhihu.com/?target=https%3A//github.com/yzhaiustc)同学的[sgemm](https://link.zhihu.com/?target=https%3A//github.com/yzhaiustc/Optimizing-SGEMM-on-NVIDIA-Turing-GPUs)。纯手写的CUDA能够达到cublas的**96.8%**。在这里可以得出结论，其实也是想消除大家的一个误解。**很多人觉得只有写汇编才能写出高性能的代码**。其实并不是这样，**性能优化中最重要的是并行算法和优化策略，单纯地将代码写成汇编并不会有多少性能提升。**
 
-![](asset/img_59ead940cd15.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_59ead940cd15.jpg)
 
 **针对第二个问题**，测试了在不同参数下的GEMM性能表现。主要就是在不同模板参数下的性能表现，结果如下表。其矩阵维度:M=N=K=4096。前五列对应的是参数设置，第六列是在V100的GFLOPS，第七列是和cublas的比较。可以从中看出，不同的参数性能差异巨大，同样的代码，最差的配置是56.2%，最好的配置是93.5%。针对不同shape，也会有不同的参数配置，这个需要大量的调优工作。
 

@@ -1,9 +1,19 @@
 ---
-title: "LD/ST？ 内存语义？ 傻傻分不清"
-date: 2025-04-21
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/1888313027880808563
+title: LD/ST？ 内存语义？ 傻傻分不清
+date: "2025-04-21 00:00:00"
+updated: "2025-04-21 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/LD_ST-内存语义-傻傻分不清/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/1888313027880808563
 ---
+
 
 有人说我写文章喜欢打哑谜：） 我并不否认，因为这是我写文章的一个非常有趣的动机。
 
@@ -49,7 +59,7 @@ Zartbot详细列举了Nvidia GPU的Memory Model，其实就是告诉你，好的
 
 算了，画了一张图。
 
-![](asset/img_0ca9dcae7e6f.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_0ca9dcae7e6f.jpg)
 
  1、如果你强调Load/Store是指令的同步行为，必须按照指令顺序执行要等load完成后data inside reg才执行下一条指令，那么你属于体系结构中最原教旨主义的Load/Store定义 ：）
 
@@ -111,4 +121,4 @@ Zartbot详细列举了Nvidia GPU的Memory Model，其实就是告诉你，好的
 
 **为了保证更丰富和机制的内存语义在Scale-Up系统上无损的传递，一个好的Scale-Up协议应当不仅仅是Load/Store，还需要定制若干Macro行为来让某些更复杂内存语义在跨机时的高效表达，这是下一个哑谜，也是Ualink/Nvlink还没有做到的事情。**
 
-![](asset/img_5f35098c0b7c.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_5f35098c0b7c.jpg)

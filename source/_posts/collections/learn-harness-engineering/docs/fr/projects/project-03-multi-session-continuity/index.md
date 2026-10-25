@@ -1,3 +1,16 @@
+---
+title: Projet 03. Garder l'agent au travail après les redémarrages de session
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/fr/projects/project-03-multi-session-continuity/index/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 [中文版本 →](../../../zh/projects/project-03-multi-session-continuity/)
 
 > Leçons liées : [Leçon 05. Garder le contexte vivant entre les sessions](./../../lectures/lecture-05-why-long-running-tasks-lose-continuity/index.md) · [Leçon 06. Initialiser avant chaque session d'agent](./../../lectures/lecture-06-why-initialization-needs-its-own-phase/index.md)

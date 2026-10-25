@@ -1,3 +1,16 @@
+---
+title: 코딩 에이전트 시작 흐름 (Coding Agent Startup Flow)
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/ko/resources/reference/coding-agent-startup-flow/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # 코딩 에이전트 시작 흐름 (Coding Agent Startup Flow)
 
 초기화(initialization)가 완료된 후 모든 세션 시작 시 이 흐름을 사용하십시오. 이 고정된 순서를 따르면 에이전트(agent)가 상태를 재발견하는 데 시간을 낭비하지 않고 즉시 작업에 집중할 수 있습니다.

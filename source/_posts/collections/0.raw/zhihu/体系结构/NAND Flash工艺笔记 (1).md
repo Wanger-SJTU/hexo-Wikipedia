@@ -1,10 +1,19 @@
 ---
-title: "NAND Flash工艺笔记 (1)"
-date: 2026-01-20
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/1996879434335142892
-
+title: NAND Flash工艺笔记 (1)
+date: "2026-01-20 00:00:00"
+updated: "2026-01-20 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/体系结构/NAND-Flash工艺笔记-(1)/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/1996879434335142892
 ---
+
 
 我们来学习一个基于2010年后技术节点的Flash NAND工艺流程，它包含几个典型特征：自对准浅槽隔离（SA-STI）、ONO（氧化硅-氮化硅-氧化硅）介电叠层、双多晶硅栅（浮栅和控制栅）、自对准源/漏、钨接触以及铜互连。
 

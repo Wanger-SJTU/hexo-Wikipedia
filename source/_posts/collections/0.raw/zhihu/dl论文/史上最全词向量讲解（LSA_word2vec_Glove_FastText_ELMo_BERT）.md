@@ -1,10 +1,19 @@
 ---
-title: "史上最全词向量讲解（LSA/word2vec/Glove/FastText/ELMo/BERT）"
-date: 2019-07-27
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/75391062
-
+title: 史上最全词向量讲解（LSA/word2vec/Glove/FastText/ELMo/BERT）
+date: "2019-07-27 00:00:00"
+updated: "2019-07-27 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/dl论文/史上最全词向量讲解(LSA_word2vec_Glove_FastText_ELMo_BERT)/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/75391062
 ---
+
 
 声明：其实大多数内容都是来自别人的博客和知乎文章，只是有一部分是自己写的，帮助自己记忆的，只是因为要准备面试，所以整理了一下词向量，里面都有参考链接，想看详细推导公式的可以进参考链接，很多都是基于自己的理解，第一次发文章，希望不足和错误之处可以指出！！实在没时间敲公式！要准备面试和毕业设计！所以都是粘贴的图片！
 

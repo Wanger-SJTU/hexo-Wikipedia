@@ -1,3 +1,16 @@
+---
+title: AGENTS.md
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/zh-TW/resources/openai-advanced/repo-template/AGENTS/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # AGENTS.md
 
 這個儲存庫針對長時間執行的程式設計代理工作做了最佳化。保持這個檔案簡短。把它當成通往系統記錄文件的路由層，不要把所有指令都堆在這裡。

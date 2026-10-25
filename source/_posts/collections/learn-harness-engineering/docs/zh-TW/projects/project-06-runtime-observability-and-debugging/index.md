@@ -1,3 +1,16 @@
+---
+title: Project 06. 搭建完整的代理工作環境
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/zh-TW/projects/project-06-runtime-observability-and-debugging/index/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # Project 06. 搭建完整的代理工作環境
 
 > 相關講義：[L11. 讓 agent 的執行過程可觀測](./../../lectures/lecture-11-why-observability-belongs-inside-the-harness/index.md) · [L12. 每次工作階段結束前都做好交接](./../../lectures/lecture-12-why-every-session-must-leave-a-clean-state/index.md)

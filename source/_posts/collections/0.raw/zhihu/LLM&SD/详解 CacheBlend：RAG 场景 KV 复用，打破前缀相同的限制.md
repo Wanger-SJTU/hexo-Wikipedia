@@ -1,9 +1,19 @@
 ---
-title: "详解 CacheBlend：RAG 场景 KV 复用，打破前缀相同的限制"
-date: 2024-11-19
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/7781800255
+title: 详解 CacheBlend：RAG 场景 KV 复用，打破前缀相同的限制
+date: "2024-11-19 00:00:00"
+updated: "2024-11-19 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/LLM-SD/详解-CacheBlend-RAG-场景-KV-复用,打破前缀相同的限制/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/7781800255
 ---
+
 
 [CacheBlend: Fast Large Language Model Serving for RAG with Cached Knowledge Fusion](https://link.zhihu.com/?target=https%3A//arxiv.org/pdf/2405.16444)
 
@@ -17,7 +27,7 @@ Retrieval-Augmented Generation (RAG，检索增强生成) 通过提供领域知�
 
 如下图所示，一个典型的 RAG 工作流是这样的，用户输入一个 query 后，根据 query 在事先构建好的向量数据库中检索出多个相关的文本块（text chunks），然后将这些文本块按照一定的顺序拼接在一起作为上下文，再在后面拼接上用户输入的 query，构成一个完整的输入请求喂给 LLM。
 
-![](asset/img_ecd6967a6744.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_ecd6967a6744.jpg)
 
 显然，文本块会极大地增大输入的长度，因此 RAG 是一个典型的长上下文场景，增加计算开销和 KV Cache 内存占用。SGLang、vLLM 等框架通过 KV Cache 复用可以用来减少长上下文的计算和显存开销，但通用的 KV Cache 复用机制没有为 RAG 场景的特点进行针对性优化。
 
@@ -49,7 +59,7 @@ RAG 有以下特点：
 
 - 好处：Attention 计算等效，生成质量不变
 - 坏处：复用条件苛刻，并且缓存占用空间大，因为一个文档在不同的文档序列中会有多个不同的 KV Cache 块，如下图： 
-![](asset/img_a4101085e2a2.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_a4101085e2a2.jpg)
 
 RAGCache
 #### **Full KV Reuse**
@@ -60,7 +70,7 @@ RAGCache
 
 尽管能解决位置编码的问题，交叉注意力缺失的问题无法解决，根本原因是当请求产生的时候才知道前序有哪些文本块。交叉注意力的缺失会丢失文档之间的联系，导致生成质量的下降，作者举了一个例子： 
 
-![](asset/img_0e1e182f2b05.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_0e1e182f2b05.jpg)
 
 缺失文本块之间的注意力，导致问题回答错误
 
@@ -68,7 +78,7 @@ RAGCache
 - 坏处：忽视文本块之间的交叉注意力，生成质量下降严重
 比较上面几种 KV Cache 复用方案，复用效率高的会牺牲生成质量，保持生成质量又会降低复用效率。
 
-![](asset/img_27db55ed35a5.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_27db55ed35a5.jpg)
 
 现有 KV 复用方案与 CacheBlend 的对比因此，作者想办法在两者之间取得一个权衡，既保持高复用率，又不损失太多生成质量，核心思想是在 Full KV Reuse 的基础上再计算少量 token 的注意力以恢复文本块之间的交叉注意力。
 
@@ -82,7 +92,7 @@ CacheBlend 的方案主要分为两部分：先拼接起不同文本块的 KV Ca
 
 ROPE 不同于作用在 embedding 层的绝对位置编码，而是直接作用在 token 的 q 和 k 上，将第 $m$ 个位置的 token 旋转 $m\theta$ 个角度。
 
-![](asset/img_647f60c329c3.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_647f60c329c3.jpg)
 
 ROPEROPE 最大的特点是只关注 token 间的相对距离而非绝对位置。根据这个特性，一个请求 [C1、C2、C3] ，如果缓存的 C1、C2、C3 的 KV Cache 都是从位置 0  开始的，拼接时只需要把 C2 每一层的 K 都旋转 Length(C1) 个角度，把 C3 每一层的 K 都旋转 Length(C1)+Length(C2) 个角度，就能恢复出正确的位置编码。
 
@@ -96,7 +106,7 @@ CacheBlend 利用了老生常谈的 **attention 稀疏性**和**相邻层之间�
 
 实际上 token 间构成的 attention matrix 是很稀疏的。某个 token[i] 和前序 token[1~i-1] 进行 attention 计算时，它只和少部分的前序 token 的 attention score 高，因为 softmax 的存在，只有这少部分 attention score 高的前序 token 的 k v 真正影响了 token[i] 的 attention output。
 
-![](asset/img_b9338143a908.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_b9338143a908.jpg)
 
 注意力矩阵是很稀疏的，黄框里的是两个文本块之间的交叉注意力大白话说，一个 token 一般只“重点”关注少部分 token，而如果一个 token “重点”关注的这少部分 token 又恰巧跟自己在同一个文本块中，那么其实缺失交叉注意力对它影响不大。
 
@@ -104,27 +114,27 @@ CacheBlend 利用了老生常谈的 **attention 稀疏性**和**相邻层之间�
 
 下图说明了通过重新计算少量 KV 偏差大的 token 来还原 attention 结果的有效性：
 
-![](asset/img_cee44095bc13.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_cee44095bc13.jpg)
 
 重新计算少量 token，得到的 attention 结果与真实值的差距就比较小了但是实际上我们不能知道 KV 偏差，我们不知道真实的 KV 是多少，因为我们不会真的做 Full KV Re-compute。这里 CacheBlend 利用了相邻层之间的相似性：**上一层 KV 偏差大的 token 大概率也是下一层 KV 偏差大的**，如下图：
 
-![](asset/img_326407abc242.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_326407abc242.jpg)
 
 根据这个特性，CacheBlend 给出的方法是，在第一层 Layer 1 完整计算所有 token，这样得到的 Layer 2 的 KV Cache 将和 pre-computed Layer 2 KV Cache 不同，从中筛选出 KV 偏差大的 r1 个 token 重新计算，这样在 Layer 3 中将至多有 r1 个 token 的 KV 与 pre-computed 的不同，再其中再挑选出 KV 偏差大的 r2 个 token 重新计算，以此类推……作者形象地把这个方法称为 gradual filtering scheme（渐进过滤方案），下一层选择进行 reompute 的 token 是上一层 recompute token 的子集。
 
 >  这里论文中的图似乎有问题，Layer 1 的完整计算得到的 KV 和 pre-computed 得到的 KV 应该是一样的，KV 应该从 Layer 2 开始才会产生区别。
 
-![](asset/img_37d0b339214e.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_37d0b339214e.jpg)
 
 上面的选择性重新计算，Q 是挑选出的 token 的 Q，而 KV 是 pre-computed KV 与挑选出的 token 的 KV 拼出来的进，输出是挑选出的 token 的 output，根据这些 output 可以更新下一层的对应位置的 KV Cache，如下图。因此，选择性重新计算的复杂度正比于挑选的比例。
 
-![](asset/img_7508e7a78dcc.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_7508e7a78dcc.jpg)
 
 #### Pipeline KV loading and recompute
 
 如何减少 recompute 带来的开销？recompute 第 i 层的 KV Cache，实际上需要的是加载第 i-1 层的 pre-computed KV Cache 并从第 i-1 层的 KV 偏差中选择需要重新计算的 token 进行 forward 计算。因此，recompute 第 i 层的 KV Cache 和 加载第 i 层的 KV Cache 到 GPU 这两个步骤可以 pipeline 起来。如果 recompute 1 层的时间低于 load 一层 KV Cache 的实际，理论上可以完全 hide 掉 recompute 的开销。
 
-![](asset/img_74c368d1e6d6.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_74c368d1e6d6.jpg)
 
 KV 加载和交叉注意力恢复两个步骤形成的 pipeline 而 load 和 recompute 的时间分别可以通过存储介质和 recompute token 的比例进行调整，详见论文。
 
@@ -132,14 +142,14 @@ KV 加载和交叉注意力恢复两个步骤形成的 pipeline 而 load 和 rec
 
 完整的处理流程是这样的：用户输入 query，根据 query 查询需要的文本块，从多级存储中逐层加载已被缓存的文本块的 KV Cache，同时逐层挑选 token 进行交叉注意力恢复，最后得到恢复后的 KV Cache 用于后续的文本生成。
 
-![](asset/img_e51c6e6503b4.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_e51c6e6503b4.jpg)
 
 CacheBlend 流程
 ### 实验
 
 CacheBlend 实际上是在生成质量和 KV 复用效率上进行了一个折中，相较于 Prefix Caching（SGLang），复用效率更高，TTFT 低，但生成质量可能会有所较低；相较于 Full KV Reuse（PromptCache），会有交叉注意力恢复产生的 overhead，但是生成质量更高。
 
-![](asset/img_86b9ec69aa8f.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_86b9ec69aa8f.jpg)
 
 几种方案的生成质量（纵轴）和性能（横轴）的对比
 ### 参考

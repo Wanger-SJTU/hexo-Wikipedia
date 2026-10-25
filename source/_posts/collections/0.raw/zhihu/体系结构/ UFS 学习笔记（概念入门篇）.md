@@ -1,9 +1,19 @@
 ---
-title: "(1 封私信) UFS 学习笔记（概念入门篇）"
-date: 2023-11-01
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/663057180
+title: (1 封私信) UFS 学习笔记（概念入门篇）
+date: "2023-11-01 00:00:00"
+updated: "2023-11-01 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/体系结构/UFS-学习笔记(概念入门篇)/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/663057180
 ---
+
 
 *笔者作为初次学习存储协议的学生，在目前水平下无法假设出您作为已经拥有何种基础的朋友，但会持续的对文章进行修正完善，以确保您能容易的从本文中理解相关术语或通过 bing 搜索引擎准确的查找到该术语的解释。*
 
@@ -17,7 +27,7 @@ source: https://zhuanlan.zhihu.com/p/663057180
 
 经过固态技术协会（Joint Electron Device Engineering Council，JEDEC）不断对 eMMC 协议的完善，eMMC 5.1 发布后因为无法继续提高其传输速度，JEDEC 于 2011 年发布了 UFS 1.0 协议，尽管 UFS 1.0 相比较同时期的 eMMC 并没有实质上的优势，但由于 UFS 协议基础优秀，随着时代逐步发展，UFS 2.1 相比较 eMMC 已经形成绝对压倒性优势，奠定了 UFS 协议未来成为存储技术主流的地位：
 
-![](asset/img_3d46dcc5e78e.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_3d46dcc5e78e.jpg)
 
 UFS 之所以可以如此之快的原因在于：
 
@@ -28,7 +38,7 @@ UFS 之所以可以如此之快的原因在于：
 
 - UFS 支持多通道数据传输（目前最多支持两个通道），多通道可以让 UFS 在成本、功耗和性能之间做取舍；
 - 全双工（eMMC 是半双工）；
-![](asset/img_2dce73507637.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_2dce73507637.jpg)
 
 要让 UFS 速度快，这些基础设施是必须的。但要充分利用底层高速数据传输通道，还需要上层数据传输协议配合：
 
@@ -36,41 +46,41 @@ UFS 之所以可以如此之快的原因在于：
 - UFS 支持异步命令（并行乱序执行，谁先完成谁先返回状态，eMMC 的同步命令处理方式不支持）；
 UFS 协议更像是一个整合者，重新定义的东西不多，Application Layer 主要是将 SCSI 规范搬过来，下面的 M-PHY 和 UniPro 则直接挪用 MIPI 标准的部分，优点当然显而易见，处理不用担心以往优秀且成熟协议的稳定性外，也同时大大减少重新设计硬件的工作量。
 
-![](asset/img_e99e219c27cf.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_e99e219c27cf.jpg)
 
 **M-PHY 和 UniPro 扩展：图摘自《mipi_M-PHY_specification》《mipi_UniPro_specification》
-L1，M-PHY：专为移动设备开发的一种串行接口技术，时钟频率能够达到 5.8Gbps（高 performance），每个 Upstream Lane 或者 Downstream Lane 只需要两根差分信号线（pin 脚少，方便 PCB 布线），并且具有多种省电模式。M-PHY 是全双工且不要求上行 Lane 和下行 Lane 成对出现，下图就是两个下行 Lane 配一个上行 Lane 的例子。但是注意针对目前的 UFS 上行下行 Lane 还都是成对出现的；![](asset/img_76f28ca979aa.jpg)
+L1，M-PHY：专为移动设备开发的一种串行接口技术，时钟频率能够达到 5.8Gbps（高 performance），每个 Upstream Lane 或者 Downstream Lane 只需要两根差分信号线（pin 脚少，方便 PCB 布线），并且具有多种省电模式。M-PHY 是全双工且不要求上行 Lane 和下行 Lane 成对出现，下图就是两个下行 Lane 配一个上行 Lane 的例子。但是注意针对目前的 UFS 上行下行 Lane 还都是成对出现的；![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_76f28ca979aa.jpg)
 
 > UniPro：也是针对 mobile 设备开发的，广泛用于移动设备 AP、协处理器和 modem 之前的通信协议，通常把这层看作是对硬件接口的抽象、管理和负责通信的的软件层来帮助理解；
 
-![](asset/img_a7783ef5cc66.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_a7783ef5cc66.jpg)
 
 > L1.5 PHY Adapter：物理适配层，用于检测双向 Lane 通路的个数，并提供软件支持。允许访问对端 L1.5 层的控制参数和状态，并可以通过原子操作改变对端 Power Mode。下图显示了 L1.5 层的数据是以 *Symbol*** 为单位的，每个 symbol 有 17 个 bits，包含有两个 Byte 和一个 control bit (bit16)。Control bit 是 1 的时候，表明后面跟着的两个 bytes 是控制命令；如果是 0 ，说明后面的两个 bytes 是 data payload；
 
-![](asset/img_f25943e8275e.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_f25943e8275e.jpg)
 
-**L2 Data Link：数据链路层，主要保证数据通信过程中的可靠性。其中采用 ECC 保证接收数据的准确性，接收端也要留有足够的 buffer 来缓存接收到的数据。一旦接收失败，发送端必须重新发送一次。L 2层的数据单位是 *Frame***，在原有 L1 层的基础上，把独立的 symbol 打包。每个 Frame 最多可以打包 144 个 symbol，并在 Frame 的头尾处各添加上 Header（ESC_DL+SOF+TC+Reserved） 和 Trailer（ESC_DL+EOF_EVEN+Frame Seq. Number）之后，附上16bits ECC 来侦查纠错。**这层有个比较重要的概念是 TC（Traffic Class），UFS 支持两种优先级的 Data Frame TC0 和 TC1。TC1 的优先级高于 TC0，绝大多数的数据都是在 TC0 这个级别传递的，紧急的数据通过 TC1 来传递。TC1 可以中断、抢占正在发送的 TC0 的数据发送。![](asset/img_ffde6edff154.jpg)
+**L2 Data Link：数据链路层，主要保证数据通信过程中的可靠性。其中采用 ECC 保证接收数据的准确性，接收端也要留有足够的 buffer 来缓存接收到的数据。一旦接收失败，发送端必须重新发送一次。L 2层的数据单位是 *Frame***，在原有 L1 层的基础上，把独立的 symbol 打包。每个 Frame 最多可以打包 144 个 symbol，并在 Frame 的头尾处各添加上 Header（ESC_DL+SOF+TC+Reserved） 和 Trailer（ESC_DL+EOF_EVEN+Frame Seq. Number）之后，附上16bits ECC 来侦查纠错。**这层有个比较重要的概念是 TC（Traffic Class），UFS 支持两种优先级的 Data Frame TC0 和 TC1。TC1 的优先级高于 TC0，绝大多数的数据都是在 TC0 这个级别传递的，紧急的数据通过 TC1 来传递。TC1 可以中断、抢占正在发送的 TC0 的数据发送。![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_ffde6edff154.jpg)
 
 > L3 Network：网络层，负责数据 route 到正确的目标设备，比如下图的 AP#3 这个设备，它不仅能与设备 1、2、5 通信，那么通过 UniPro L3 也允许其与设备 4 和 6 进行通信。
 
-![](asset/img_151a4b7eb640.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_151a4b7eb640.jpg)
 
 > L3 的数据的单位是 *package***，在层 2 的 Frame 的基础上增加了 7bits 的 shorter-header，用来标识数据 route 的目标地址。**L4 Transport：传输层。由于基本通信服务已经在底层处理的差不多了，所以传输层是相对比较简单的一层，它提供对多 device 和多 client 的支持。L4 层的数据的单位是 *segment***，在 package 的基础上增加了 5bit 的“Cport” identifier，我们在这里可以把它看做是 UFS 的 sub-address。
 
-![](asset/img_669a00eb704c.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_669a00eb704c.jpg)
 
-**DME（Device Management Entity）与 UniPro 的每层都留有 SAP 接口（Service Access Point），通过 SAP DME 可以访问每个 layer 的控制和状态参数，管理他们的 power 模式，并且可以访问、控制对端设备的 UniPro 模块。![](asset/img_ef67b8bdf783.jpg)
+**DME（Device Management Entity）与 UniPro 的每层都留有 SAP 接口（Service Access Point），通过 SAP DME 可以访问每个 layer 的控制和状态参数，管理他们的 power 模式，并且可以访问、控制对端设备的 UniPro 模块。![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_ef67b8bdf783.jpg)
 
 > UniPro 的上面就是 UTP 和 SCSI 命令集，由于涉及的 SCSI 命令是很大一块需要单独来讲，所以这里只简单两笔。正如最开始提到的，UTP 和 SCSI 是属于 SCSI 这部分，在 JEDEC 的标准里能找到它们的具体说明。
 UTP（UFS Transport Protocol）：这层软件主要有两个目的，一是把 UniPro 的 segment 打包成 UFS 直接可以识别的命令格式；二是通过这层可以让 UFS 自己来掌握发送数据的节奏、控制自身的状态等，这样既可以免去 host 端持续的查询 UFS 的状态所带来的系统消耗，也是因为只有 UFS 本身最了解自己的内部状态，能够选择以最佳的方式在最佳时间把数据传递出去。
 SCSI 扩展：图摘自《JESD223D》《JESD220E-3.1》
 UFS Application Command Layer：这层是 UFS 命令集，分为 UFS 的独有内建命令集和 SCSI（Small Computer System Interface）的命令集。SCSI 命令分为 SBC 和 SPC，分别是 SCSI Block Commands 和 SCSI Primary Command。
 
-![](asset/img_3912bb443a96.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_3912bb443a96.jpg)
 
 > 在 SCSI 架构中，主机上的 SCSI 接口卡称为 Initiator，与其相连接的 SCSI 磁盘等设备称为 Target，在逻辑上，Initiator 和 Target 之间通信的工作模式，与两个网络设备之间的模式相似，他们之间采用 client-server 的“请求-回应”模式：
 
-![](asset/img_6c5466b2fab1.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_6c5466b2fab1.jpg)
 
 > SCSI 的 Initiator 与 Target 共同构成了一个典型的 C/S 模型，每个指令都是“请求/应答”这样的模型来实现：
 * Initiator主要任务：发出SCSI请求；
@@ -79,11 +89,11 @@ LU（Logical Unit）：逻辑单元，是指一个可被操作系统识别和访
 LUs ： LU 的复数形式；
 LUN（Logical Unit Number）：逻辑单元号码，是用来标识不同 LU 的唯一编号。每个 LU 都有一个对应的 LUN，它可以用来在系统中唯一地标识和访问该 LU；
 备注：
-I_T_L_Q Nexus：唯一地定义了连接到特定 Host Initiator Port (I) 的一个特定 Device Target Port (T) 上的一个特定 Logical Unit (L) 内的一个 command slot (Q)[[1]](#ref_1)。
+I_T_L_Q Nexus：唯一地定义了连接到特定 Host Initiator Port (I) 的一个特定 Device Target Port (T) 上的一个特定 Logical Unit (L) 内的一个 command slot (Q)<span class="wikilink wikilink--missing" title="未导入的页面">1</span>(#ref_1)。
 
 ### 二、UFS 重要 Layer
 
-![](asset/img_3e6e87059bc8.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_3e6e87059bc8.jpg)
 
 #### 2.1 UFS Application Layer**
 
@@ -102,11 +112,11 @@ UFS 应用层由基于 SCSI 体系结构模型 （SAM） 的 UFS SCSI 命令集�
 
 UFS 设备有若干个 LU，LU 接收主机发过来的命令或请求可能来自应用层的 SCSI 模块、设备管理器或者任务管理器：**
 
-![](asset/img_2de04d97bb88.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_2de04d97bb88.jpg)
 
 每个 LU 都是独立的，“独立”表现在下面几个方面：
 
-- 逻辑地址空间是独立的，都是从LBA[[2]](#ref_2) 0（Logical Block Addressing，逻辑块寻址）开始；
+- 逻辑地址空间是独立的，都是从LBA<span class="wikilink wikilink--missing" title="未导入的页面">2</span>(#ref_2) 0（Logical Block Addressing，逻辑块寻址）开始；
 - 逻辑块大小可以不同，可以为4KB，..；
 - 可以有不同的安全属性，比如可以设置不同的写保护属性；
 - 每个 LU 可以有自己的命令队列；
@@ -114,15 +124,15 @@ UFS 设备有若干个 LU，LU 接收主机发过来的命令或请求可能来�
 总结来说，划分不同 LU 有以下作用：
 
 - 外部可寻址；
-- 存储实体（可以单独做 Boot 启动、写保护或 RPMB[[3]](#ref_3)（Replay Protected Memory Block，重播保护内存块） ）；
+- 存储实体（可以单独做 Boot 启动、写保护或 RPMB<span class="wikilink wikilink--missing" title="未导入的页面">3</span>(#ref_3)（Replay Protected Memory Block，重播保护内存块） ）；
 - 内部任务队列；
 一个 UFS 设备最多可以有 32 个逻辑单元用来存储用户数据的，此外可能有 4 个知名逻辑单元 （Well Known LU）：
 
-![](asset/img_c39bda1d66ac.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_c39bda1d66ac.jpg)
 
 各个 LU 相对地址如下：
 
-![](asset/img_ab31a7a0cb7f.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_ab31a7a0cb7f.jpg)
 
 - REPORT LUN
 
@@ -138,11 +148,11 @@ UFS 设备有若干个 LU，LU 接收主机发过来的命令或请求可能来�
 
 > 在下面的例子中，LU 1 充当 Boot LU A，LU 4 充当 Boot LU B。由于有两份启动代码，分别保存在LU 1和LU 4。主机启动时，首先应该通过设备管理器，发送 Query 请求给设备，获取一个叫做“bBootLunEn ”的属性，该属性标识当前活跃（Active）的 Boot LU：
 
-![](asset/img_2917072094e6.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_2917072094e6.jpg)
 
 > 如果 bBootLunEn = 01，说明 Boot LU A 是当前活跃的 Boot LU，因此主机会从 LU 1 上读取启动代码完成系统的启动。Boot LU 不是必须的。如果系统的启动代码不是存储在 UFS 设备上，那么 Boot LU就不需要，因此bBootLunEn = 0：
 
-![](asset/img_2cbc83ab5e8c.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_2cbc83ab5e8c.jpg)
 
 - RPMB
 
@@ -150,7 +160,7 @@ UFS 设备有若干个 LU，LU 接收主机发过来的命令或请求可能来�
 
 > 四个 Well Known LU 能接收的命令如下图，绿色命令为他们能接收一些通用的命令，红色命令表示只有该 LU 能执行的命令：
 
-![](asset/img_91b229bf1a97.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_91b229bf1a97.jpg)
 
 > 注意：一般 LU 的写是 cache 操作的，即主机数据到设备的内部 buffer，设备就会回命令完成状态给主机，但 Boot LU 和 RPMB LU 写操作不支持 cache，数据必须写到闪存中以后才算该命令完成。
 
@@ -164,21 +174,21 @@ UFS 传输层的事务由称为 UFS 协议信息单元 （UPIU） 的数据包�
 - 每个 UPIU 包含一个 12 字节的标头，后跟可选字段，具体取决于UPIU的类型；
 在这一层中主机和设备的交互如下：
 
-![](asset/img_c616367a5b52.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_c616367a5b52.jpg)
 
 ### 三、UFS 架构
 
 UFS 架构以 HCI（Host Controller Interface，主机控制器接口）为界划分为三部分。如下图，蓝色框上方调用 HCI 的为主机软件部分，蓝色框下方的为 HCI 封装的硬件处理细节部分，即 HC（Host Controller，主机控制器） ：
 
-![](asset/img_57b52239818e.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_57b52239818e.jpg)
 
 #### **3**.1 HCI 接口架构
 
 数据结构服务于软件，主机的软件通过内存中的一系列主机 register 和数据结构 Transfer Request Descriptors 来与 Host controller 硬件进行交互。UFSHCI 定义了两种接口：IO Memory/Registar Space 以及 Host Memory Space，下图展示了 UFS HCI 的框图：
 
-![](asset/img_2e8b5ee4b173.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_2e8b5ee4b173.jpg)
 
-IO Memory/Registar Space：在这个空间，主机 register 被定义为主机的软件接口，通过 MMIO[[4]](#ref_4)（Memory-Mapped I/O，内存映射 I/O）的方式被实现，主要包含了下面三种类型的寄存器：
+IO Memory/Registar Space：在这个空间，主机 register 被定义为主机的软件接口，通过 MMIO<span class="wikilink wikilink--missing" title="未导入的页面">4</span>(#ref_4)（Memory-Mapped I/O，内存映射 I/O）的方式被实现，主要包含了下面三种类型的寄存器：
 
 - Host Controller Capability Registers：这些寄存器提供了关于 HC 功能的描述。包括 UFS 标准版本、主机控制器支持的命令队列的大小以及主机控制器标识数据；
 - Runtime and Operation Registers：
@@ -201,20 +211,20 @@ Host Memory Space：该空间中包含了能够描述将执行命令和命令中
 
 相应数据结构体具体在代码中的表示如下：
 
-![](asset/img_463996d20e9b.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_463996d20e9b.jpg)
 
 - HCI 中配置了 Transfer Request List 首地址，在该 List 的每一条 Transfer Request 中记录该 slot 的 UPIU buffer 首地址，以及其它 buffer 偏移和长度信息；
 - Command Descriptor Buffer List 为每一个 slot 提供两个方向的 UPIU buffer；
 - LRB（Local Reference Block，本地参考块） 用于 HC 软件本地管理快速直接访问 slot 资源；
 UFS Task Management 在代码中的表示如下：
 
-![](asset/img_0e73b6ac922a.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_0e73b6ac922a.jpg)
 
 #### 3.2 传输请求接口（Transfer Request Interface）
 
 UFS 的 host system 由一些硬件（host controller）和软件层组成（host software）：
 
-![](asset/img_31b0c290cca2.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_31b0c290cca2.jpg)
 
 为了管理 host software 和 UFS 设备间的通信，host controller 为 host software 发送出传输请求提供了 3 个独立的接口：
 
@@ -243,21 +253,21 @@ host software 对于 UFS HCI 的操作又分为三部分：Host controller配置
 
 UPIU 是命令、数据和状态信息传输的载体，是 UFS 协议栈的灵魂。UPIU 是有固定格式的数据包，我们分析数据包格式，有助于我们更深的理解 UPIU 以及整个 UFS 协议。在学习 UPIU 数据包之前我们先回顾下数据在 UniPro 各个层级之间是如何层层封装和解包的，意义并不是说 UniPro 中的数据包与 UPIU 数据包有什么对应关系，因为事实恰恰相反，回顾的意义是将我们之前学习的这些概念放在一边，以避免与我们将要学习的概念搞混：**
 
-![](asset/img_bdde37bbab7d.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_bdde37bbab7d.jpg)
 
 每个 UPIU 都有一个 12 字节的 Header，再加上跟每个 UPIU 相关的域。一个 UPIU（包括 Header）最小为 32字节，最大为 65600 字节：
 
-![](asset/img_27b1a00a5a07.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_27b1a00a5a07.jpg)
 
 通用的 Header 体如下：
 
-![](asset/img_0906a4238ca4.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_0906a4238ca4.jpg)
 
 - Transaction Type：指定 UPIU 类型：
-![](asset/img_111528daa1e6.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_111528daa1e6.jpg)
 
 - Flags：指定命令命令 UPIU 和其回应的 UPIU 的属性；
-![](asset/img_0006823a6a65.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_0006823a6a65.jpg)
 
 > R：如果该比特置起来，说明该命令是读命令；
 W：如果该比特置起来，说明该命令是写命令；
@@ -269,7 +279,7 @@ CP：表示命令的优先级。1 为高优先级，0 为低优先级，注意�
 
 - LUN：Logical Unit Numbe，用以寻址指定命令发送的 LU，“一、UFS 协议技术”中有解释；
 - Task Tag：UFS 支持命令队列，因此需要为每个命令贴上标签 Tag 以区分跟这个命令或者请求相关的数据 UPIU 和状态 UPIU。对于下面这个读命令来说，COMMAND UPIU、所有的DATA IN UPIU和RESPONSE UPIU都具有同一个task tag：
-![](asset/img_e62d5b25b478.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_e62d5b25b478.jpg)
 
 - Initiator ID：主机ID（手机系统中一般一个主机连接一个UFS设备所以该属性一般为0）；
 - Command Set Type：命令类型。UFS 预期有三类命令：一是简化的 SCSI 命令，二是 UFS 自己原生的命令，三就是用户自定义命令。目前 UFS 的命令都是从 SCSI 借来的，自己一个命令也没有制定，如用户无自定义命令，该域就是 0 表示 SCSI 命令；
@@ -277,20 +287,20 @@ CP：表示命令的优先级。1 为高优先级，0 为低优先级，注意�
 
 - Task Management Function（任务管理器）有如下功能：
 
-![](asset/img_734ec42ba7d7.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_734ec42ba7d7.jpg)
 
 - Query Function（查询）有如下功能：
 
-![](asset/img_64fb507026ab.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_64fb507026ab.jpg)
 
 - Response：设备告知主机命令或请求执行是否成功；
 - Status：设备返回命令执行状态。对 SCSI 命令的状态信息，UFS 有如下状态：
-![](asset/img_a636a63ccbf8.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_a636a63ccbf8.jpg)
 
 - Device Information：设备信息。该域往往跟该命令或者请求无关，属于设备夹带私货。因为UFS主机和设备是主从关系，如果 UFS 主机没有向设备发命令或者请求，UFS 设备是不能主动向主机报告设备状况的。如果UFS设备有特殊事件发生，它可以趁返回 RESPONSE UPIU 的时候把事件顺带告诉主机。所以该域只对 RESPONSE UPIU 有效。
 总结通用的 Header 体各个域功能如下，如果需要对各种 UPIU 做更详细的域了解请参见《JESD220E》10.7  UFS Protocol Information Units：
 
-![](asset/img_802df6803c1c.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_802df6803c1c.jpg)
 
 #### 4.2 UPIU **分类
 
@@ -311,7 +321,7 @@ CP：表示命令的优先级。1 为高优先级，0 为低优先级，注意�
 - UFS 命令模块发送简化版本的 SCSI 命令，当传输层收到命令请求后，它会生成 **COMMAND UPIU **，把命令封装起来；
 - 应用层通过任务管理器来管理任务队列，比如终止（Abort）和查询命令队列中的命令。当传输层收到来自任务管理器中的请求后，它会生成 **TASK MANAGEMENT REQUEST UPIU **，把请求封装起来；
 - UFS 通过设备管理器来管理 UFS 设备，比如设置和查询 UFS 设备的配置（Configuration）。当传输层收到来自设备管理器发来的请求后，它会生成 **QUERY REQUEST UPIU **，把请求封装起来；
-![](asset/img_3a717febd7f9.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_3a717febd7f9.jpg)
 
 **4.2.2 数据传输相关UPIU**
 
@@ -335,13 +345,13 @@ CP：表示命令的优先级。1 为高优先级，0 为低优先级，注意�
 
 主机先发送读 96KB 数据的命令给设备，然后设备执行命令，分了三批把数据返回给主机，最后返回命令执行状态给主机：
 
-![](asset/img_220b72362573.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_220b72362573.jpg)
 
 **4.3.2 例子二：主机往设备写64KB数据**
 
 主机发送写 64KB 数据的命令给设备，然后在那里等设备回应。当设备说你可以传来 24KB 数据时，主机写 24KB数据给设备；接着，设备又来通知说可以继续传 32KB 数据，主机照做。最后，设备通知说可以把最后 8KB 数据也传过来，主机于是写最后 8KB 数据。最后，主机收到设备命令执行完成的回应。主机必须等收到 RTT 后才能启动数据传输。
 
-![](asset/img_3ae544774040.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_3ae544774040.jpg)
 
 ### 五、SCSI 命令
 
@@ -405,7 +415,7 @@ write 命令包含 write(6)/write(10)/write(16)，不同的 write 命令 LBA 的
 
 用于调整 device 的电源状态以及指定 LU 的启动与关闭。在调整 device 电源状态的场景中，start stop unit 命令与硬件平台息息相关，不同的 UFS 设备硬件资源不同，需要执行的操作也并不相同。可以通过 query 配置上电启动时的电源状态。如果设备 server 端正在处理该命令，后续有确认过的 CDB 请求逻辑单元执行启动/停止单元命令更换电源状态的话，设备 server 端应中断后续的启动/停止单元命令。
 
-![](asset/img_441c42f4365e.png)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_441c42f4365e.png)
 
 sufun*如果参考引用了您的创作却未署名，请一定联系我添加，给您添麻烦了！*
 

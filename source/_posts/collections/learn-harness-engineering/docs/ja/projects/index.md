@@ -1,3 +1,16 @@
+---
+title: プロジェクトへようこそ
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/ja/projects/index/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # プロジェクトへようこそ
 
 ここは Learn Harness Engineering の実践セクションです。講義を読むだけでは不十分です。自分で環境を作り、Codex、Claude Code、その他の AI エージェントがルールの違いでどう振る舞うかを観察します。

@@ -1,9 +1,19 @@
 ---
-title: "如何实现 C/C++ 与 Python 的通信？"
-date: 2026-04-15
-tags: [知乎]
-source: https://www.zhihu.com/question/23003213/answer/56121859
+title: 如何实现 C/C++ 与 Python 的通信？
+date: "2026-04-15 00:00:00"
+updated: "2026-04-15 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/编程向/如何实现-C_C-与-Python-的通信/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://www.zhihu.com/question/23003213/answer/56121859
 ---
+
 
 ########## 以下所有文字均为答主手敲，转载请注明出处和作者 ##########
 
@@ -345,7 +355,7 @@ BOOL WINAPI DllMain(HINSTANCE hinstDLL,DWORD fdwReason,LPVOID lpReserved) {
 
 会得到一个dllmain.dll。我们在Excel里面使用它，没错，传说中的**Excel与Python混合编程**：
 
-![](asset/img_6c83cbe4b246.jpg)
+![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_6c83cbe4b246.jpg)
 
 参考资料：Cython的官方文档，质量非常高：
 

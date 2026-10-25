@@ -1,3 +1,16 @@
+---
+title: PRODUCTSENSE.md
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/zh-TW/resources/openai-advanced/repo-template/docs/PRODUCT_SENSE/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # PRODUCT_SENSE.md
 
 這份檔案記錄代理無法只靠程式碼可靠推斷的產品判斷。

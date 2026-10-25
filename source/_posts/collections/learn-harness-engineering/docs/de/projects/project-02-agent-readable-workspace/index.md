@@ -1,3 +1,16 @@
+---
+title: Projekt 02. Das Projekt lesbar machen und dort weiterarbeiten, wo du aufgehört hast
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/de/projects/project-02-agent-readable-workspace/index/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 [中文版本 →](../../../zh/projects/project-02-agent-readable-workspace/)
 
 > Zugehörige Lektionen: [Lektion 03. Mache das Repository zur einzigen Quelle der Wahrheit](./../../lectures/lecture-03-why-the-repository-must-become-the-system-of-record/index.md) · [Lektion 04. Teile Anweisungen auf mehrere Dateien auf](./../../lectures/lecture-04-why-one-giant-instruction-file-fails/index.md)

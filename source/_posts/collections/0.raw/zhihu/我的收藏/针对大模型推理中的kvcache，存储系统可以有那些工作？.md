@@ -1,9 +1,19 @@
 ---
-title: "针对大模型推理中的kvcache，存储系统可以有那些工作？"
-date: 2026-04-22
-tags: [知乎]
-source: https://www.zhihu.com/question/1962439455760717679/answer/1975312705071121055
+title: 针对大模型推理中的kvcache，存储系统可以有那些工作？
+date: "2026-04-22 00:00:00"
+updated: "2026-04-22 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/针对大模型推理中的kvcache,存储系统可以有那些工作/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://www.zhihu.com/question/1962439455760717679/answer/1975312705071121055
 ---
+
 
 SuSun
 

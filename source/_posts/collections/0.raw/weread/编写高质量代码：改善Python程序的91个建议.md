@@ -1,15 +1,16 @@
 ---
-doc_type: weread-highlights-reviews
-bookId: "621966"
-author: 张颖 赖勇浩
-cover: https://weread-1258476243.file.myqcloud.com/weread/cover/4/YueWen_621966/t7_YueWen_621966.jpg
-reviewCount: 0
-noteCount: 5
-title: null
-isbn: 9787111467045
-category: 计算机-编程设计
-lastReadDate: 2020-03-23
+title: 高亮划线
+date: "2026-04-11 21:40:17"
+updated: "2026-04-11 21:40:17"
+layout: post
+permalink: /collections/0.raw/weread/编写高质量代码-改善Python程序的91个建议/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
 ---
+
 
 
 # 高亮划线

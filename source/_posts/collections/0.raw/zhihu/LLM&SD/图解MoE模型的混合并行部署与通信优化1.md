@@ -1,17 +1,27 @@
 ---
-title: "图解MoE模型的混合并行部署与通信优化1"
-date: 2026-03-24
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/2019814309815927081
+title: 图解MoE模型的混合并行部署与通信优化1
+date: "2026-03-24 00:00:00"
+updated: "2026-03-24 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/LLM-SD/图解MoE模型的混合并行部署与通信优化1/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/2019814309815927081
 ---
+
 
 随着大规模混合专家（MoE）模型在在线推理中的应用不断扩大，Fine-Grained MoE 模型逐渐成为核心服务模型，理解推理过程中 MoE 推理过程中的计算流程有助于看懂当前主流推理框架的优化点，为了简化问题我们先考虑非 Hybird-Attention 架构的模型来对计算通信计算流程进行剖析，在此声明，本文以看图为主。
 
 ### **单卡推理 MoE 模型**
 
-![](asset/img_56a0580ac378.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_56a0580ac378.jpg)
 
-图1. Transformer Block with MoE Module 示意图![](asset/img_bd468eec2b0f.jpg)
+图1. Transformer Block with MoE Module 示意图![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_bd468eec2b0f.jpg)
 
 图2. 图解MoE GEMM 计算流程如图2所示，整体MoE相比于之前的FFN来说会多几块， **a. **通过activation计算得到选择的专家；**b. 增加**map between token and expert 模块用于activation到真实Expert 的输入进行Dispatch；**c. **依据 map between token and expert 模块 用于Expert 输出的Combine。
 
@@ -25,7 +35,7 @@ source: https://zhuanlan.zhihu.com/p/2019814309815927081
 
 #### 多卡 TP 推理 MoE 模型计算流程解析
 
-![](asset/img_e4868fcd89a6.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_e4868fcd89a6.jpg)
 
 图3. MoE 类模型一层Transformer Block的通信示意图，可以看到一层Block存在两个All Reduce，另外在一次模型推理过程中会有两个AllGather图中展示了一个基于 Tensor Parallel（TP）的 MoE Transformer 推理流程，计算在 GPU0 和 GPU1 之间对称展开。
 
@@ -41,7 +51,7 @@ Feed Forward 层采用 MoE 结构。输入经过 RMSNorm 和激活后进入 Fuse
 
 #### 多卡 EP 推理 MoE 模型计算流程解析
 
-![](asset/img_7db0c08b4c67.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_7db0c08b4c67.jpg)
 
 图4. 8GPU或者4GPU混合并行部署架构示意图图中展示了一个在 4 张 GPU 上运行的混合并行架构，采用 TP（Tensor Parallel）+ EP（Expert Parallel）+ DP（Data Parallel）的组合方式。
 
@@ -55,15 +65,15 @@ Attention 输出进入 Dispatch 模块，将数据按路由分发到不同专家
 
 最终结果分别输出回对应的 Batch（Batch 0 和 Batch 1）。
 
-![](asset/img_bdd0aa0d5027.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_bdd0aa0d5027.jpg)
 
 图5. EP 部署计算流程解析相比于单卡部署的Dispatch和Combine模块中，多了Rank维度，由之前的Token 2 Expert 和 Expert 2 Token 多了Rank to Token 的维度，那么也就是需要将对应的Token Dispatch 到 其它的专家GPU上，此时因为传统的NCCL（区别于NCCL-EP工作） 对于All2All 支持不够友好，所以需要有DeepEP的优化引入，仔细理解此图能够对EP并行有更清晰的理解。
 
 ### 多卡TP并行推理 MoE 模型通算融合优化
 
-![](asset/img_f855a5b9606f.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_f855a5b9606f.jpg)
 
-图6. AllReduce 推理优化拆解为Reduce-Scatter + All-Gather示意图![](asset/img_19ca4127b741.jpg)
+图6. AllReduce 推理优化拆解为Reduce-Scatter + All-Gather示意图![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_19ca4127b741.jpg)
 
 图7. TP并行 AllReduce 拆解为 Reduce Scatter + All Gather 的示意图依据图6和图7所示，优于All Gather 可以拆解为Reduce Scatter + All Gather，所以我们可以将Reduce Scatter 和 All Gather 分别和其最近的GEMM相结合，然后在GEMM计算过程中利用通信单元空闲的特性，来进行Overlap，具体可以参考Comet文章，这个地方值得注意的是，在第一层的Attention QKV GEMM和最后一层的Moe FFN Out Down GEMM 是没法做Overlap的，并且需要仔细考虑为啥通信转移后，中间的其它操作不会影响最终的结果。
 
@@ -73,7 +83,7 @@ Attention 输出进入 Dispatch 模块，将数据按路由分发到不同专家
 
 ***最后附一张MetaShuffling 16 GPU 混合部署的结构图，对应优化内容可以看官方文档 MetaShuffling: Accelerating Llama 4 MoE Inference***
 
-![](asset/img_c651c73c3b24.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_c651c73c3b24.jpg)
 
 图8. Meta Shuffling 优化方案多GPU混合部署示意图**
 

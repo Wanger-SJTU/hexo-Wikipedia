@@ -1,9 +1,19 @@
 ---
-title: "(2 条消息) 多模态大模型里面的语义一致性Tokenization"
-date: 2024-06-16
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/703711019
+title: (2 条消息) 多模态大模型里面的语义一致性Tokenization
+date: "2024-06-16 00:00:00"
+updated: "2024-06-16 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/多模态大模型里面的语义一致性Tokenization/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/703711019
 ---
+
 
 《Towards Semantic Equivalence of Tokenization in Multimodal LLM》是NTU、NUS和昆仑天工AI提出来的一个工作，探索了多模态大模型里面对视觉信息的Tokenization，同时提出了一个有效的Semantic-Equivalent Vision Tokenizer (SeTok)，通过动态聚类算法，将视觉特征划分为一个一个的语义单元，基于图像的复杂度灵活决定图片的token数目，这样可以更好地保留图片的语义完整性、低频和高频视觉特征，如图Fig 1所示。
 
@@ -13,11 +23,11 @@ source: https://zhuanlan.zhihu.com/p/703711019
 
 [](https://link.zhihu.com/?target=https%3A//github.com/ChocoWu/SeTok)
 
-![](asset/img_4fa42a98c1e3.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_4fa42a98c1e3.jpg)
 
 Fig 1 视觉Tokenization方法对比模型结构结构如图Fig 2所示，下面对模型的各个部分做简单的介绍。
 
-![](asset/img_3e37f6603769.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_3e37f6603769.jpg)
 
 Fig 2
 ### Semantic-equivalent Vision Tokenizer
@@ -33,11 +43,11 @@ $$选择位置 (i,j) 的时候，是基于该位置处的密度峰值，即 \rho
 
 $KNN(x_{i,j},X) 是 x_{i,j} 在 X 中的K-nearest邻居。接下来度量特征 x_{i,j} 和其他特征的距离 \delta_{i,j} ，$
 
-![](asset/img_7b8734da8874.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_7b8734da8874.jpg)
 
 最后每一个位置处的得分为 s_{i,j}=\rho_{i,j}\times \delta_{i,j} 。接下来便是选择得分最高的且没有归属于任何cluster的位置 (i,j) ，具体算法流程如图Fig 3所示。
 
-![](asset/img_64de0638a18d.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_64de0638a18d.jpg)
 
 $Fig 3接下来有一个Cluster Merge步骤，具体来说先是得到每一cluster的特征向量集合， \hat{X}_i=PE(X)\odot M_i+X\odot M_i ，flatten之后得到 \hat{X}_i=\{x_i\}\in \mathbb{R}^{N\times d} ， N 是每一个cluster的特征向量的数目，接下来通过average pooling（ u_i=\text{Avg}(\text{Merger}(\hat{X}_i))\in \mathbb{R}^d ）和Transformer得到图片的token特征 U=\{u_i\}\in \mathbb{R}^{k\times d} 。$
 
@@ -45,18 +55,18 @@ $Fig 3接下来有一个Cluster Merge步骤，具体来说先是得到每一clus
 
 训练分为三个阶段，每一个阶段使用到的数据如下图Fig 4所示，
 
-![](asset/img_ead943e1debd.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_ead943e1debd.jpg)
 
 Fig 4
 #### Stage-I: Tokenizer Pretraining
 
 如图Fig 2所示，首先是经过Cluster以及Merge之后的图像特征通过Q-Former之后，作为扩散模型的Unet模型的attention模块的key和value，或者说条件输入，引导图片的生成，损失如下图Fig 5所示
 
-![](asset/img_a2c62dc46dc7.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_a2c62dc46dc7.jpg)
 
 Fig 5除此以外，经过Cluster以及Merge之后的图像特征也会通过一个mask decoder，和原来的图像特征进行dot-product，得到分割的mask，同时也会用前面得到的聚类mask \pi 和预测的mask计算KL散度，即
 
-![](asset/img_d97497e11d3e.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_d97497e11d3e.jpg)
 
 $Fig 5\pi \in [0,1]^{h\times w\times k}, \sum_{n}\pi_{i,j,n}=1 $
 

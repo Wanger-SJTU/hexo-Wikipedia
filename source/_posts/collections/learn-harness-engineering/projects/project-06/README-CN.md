@@ -1,3 +1,16 @@
+---
+title: "Project 06: Runtime Observability and Debugging (Capstone)"
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/projects/project-06/README-CN/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # Project 06: Runtime Observability and Debugging (Capstone)
 
 课程毕业项目：构建并基准测试完整的 harness，执行清理循环验证质量可维护性。

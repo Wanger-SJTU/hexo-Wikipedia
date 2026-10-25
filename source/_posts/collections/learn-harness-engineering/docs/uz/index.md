@@ -1,3 +1,16 @@
+---
+title: Harness Engineering kursiga xush kelibsiz
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/uz/index/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # Harness Engineering kursiga xush kelibsiz
 
 Learn Harness Engineering — sunʼiy intellektga asoslangan kod yozuvchi agentlar muhandisligiga bagʻishlangan kurs. Sanoatdagi eng ilgʻor Harness Engineering nazariyasi va amaliyotini chuqur oʻrganib sintez qildik. Asosiy manbalarimiz:

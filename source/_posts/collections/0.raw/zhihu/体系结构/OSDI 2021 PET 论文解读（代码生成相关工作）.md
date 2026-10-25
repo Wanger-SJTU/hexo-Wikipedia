@@ -1,9 +1,19 @@
 ---
-title: "OSDI 2021 PET 论文解读（代码生成相关工作）"
-date: 2022-06-25
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/533807811
+title: OSDI 2021 PET 论文解读（代码生成相关工作）
+date: "2022-06-25 00:00:00"
+updated: "2022-06-25 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/体系结构/OSDI-2021-PET-论文解读(代码生成相关工作)/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/533807811
 ---
+
 
 今天来阅读一篇OSDI 2021的论文，《PET: Optimizing Tensor Programs with Partially Equivalent Transformations and Automated Corrections》。
 
@@ -13,13 +23,13 @@ source: https://zhuanlan.zhihu.com/p/533807811
 
 无论是 Ansor 还是 PET 我个人认为都相当惊艳，我之前对 Ansor 的论文解读在这个仓库中：
 
-[![](asset/img_6fc8a01169e2.jpg)GitHub - BBuf/tvm_mlir_learn: tvm learngithub.com/BBuf/tvm_mlir_learn](https://link.zhihu.com/?target=https%3A//github.com/BBuf/tvm_mlir_learn)
+[![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_6fc8a01169e2.jpg)GitHub - BBuf/tvm_mlir_learn: tvm learngithub.com/BBuf/tvm_mlir_learn](https://link.zhihu.com/?target=https%3A//github.com/BBuf/tvm_mlir_learn)
 
  。感兴趣的小伙伴可以读一下，而本篇文章就来阅读一下 PET 。
 
 ### **0x1. 标题和作者**
 
-![](asset/img_e46e30aef961.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_e46e30aef961.jpg)
 
 PET标题和作者标题可以翻译为：**基于部分等价变换和自动校正来优化张量化程序**。作者团队来自清华，CMU和FaceBook等。这篇论文的一作王豪杰来自清华大学。后面会介绍到这篇论文在生成突变程序集合时，要维护K个效率最高的突变程序时，使用了ASO中的代价模型和评估方式，所以作者有贾志豪大神也不奇怪。
 
@@ -42,7 +52,7 @@ PET标题和作者标题可以翻译为：**基于部分等价变换和自动校
 
 这一节没什么好讲的，感觉和Introduction有一点重复，我们只讲讲图1，帮助大家理解什么是部分等价变换。首先图1长这样：
 
-![](asset/img_c0a05859a6f6.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_c0a05859a6f6.jpg)
 
 图1首先(a)代表一个普通的卷积操作，其中T_1是输入Tensor，它的数据排布可以记作：[b, c, h, w]，即批量大小，输入通道数，输入特征图长度和宽度。然后部分等价变换也就是图(b)通过一个reshape和transpose把图中**批量方向**的相邻两个特征图拼起来了，也就是这样：[b, c, h, w] -> reshape -> [b / 2, 2, c, h, w] -> transpose -> [b / 2, c , h, w, 2] 。也就是图中的 T_3">T_1->T_3 ，然后和原卷积核做卷积操作之后得到T_4，再利用reshape和transpose将输出特征图还原为原始的输入特征图大小。注意经过这个变换之后我们发现输出Tensor在边界部分存在和原始卷积的输出Tensor数值不相等的情况，所以还需要对不相等的边界部分进行校正，即(c)图展示的意思。
 
@@ -52,15 +62,15 @@ PET标题和作者标题可以翻译为：**基于部分等价变换和自动校
 
 PET是**第一个**利用部分等价变换去优化张量化程序的框架，它利用了张量化程序的多线性性质。这里首先要解释一下什么是**Multi-linear tensor programs (MLTPs)** 即多线性张量化程序，后面我们一律用MLTPs的说法。一个拥有n个输入张量I_1, ..., I_n的Op，如果对于每一个输入I_k都是线性的那么就称这个Op是多线性的：
 
-![](asset/img_a054a2f12408.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_a054a2f12408.jpg)
 
 线性的定义其中X和Y是具有和I_k相同形状的任意张量，\alpha是任意标量。深度学习模型一般由线性（Conv，MatMul）和非线性（例如ReLU，Sigmoid）的算子所组成，PET框架中使用的线性算子如Table1所示：
 
-![](asset/img_ad60ae3b69d6.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_ad60ae3b69d6.jpg)
 
 PET使用的多线性算子注意这个表是可以扩展的。**一个程序是多线性张量化程序（MLTP）当且仅当程序中的所有的Op都是多线性的**。接下来我们讲讲PET的设计总览，也就是Figure2。
 
-![](asset/img_1f44bed02fe1.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_1f44bed02fe1.jpg)
 
 PET总览**首先原始的张量化程序输入到PET框架中，然后PET首先把这个程序分解成一些小的子程序来降低每个子程序的搜索复杂度。对于每一个子程序，PET的Mutation Generator会通过为子程序的MLTPs产生可能的变体来发现部分等价变换变体程序。每个变体程序和原子程序拥有相同的输入输出Shape。为了保持端到端的数值正确性，PET的Mutation Corrector检查原始程序和突变程序有哪些区域是不等的，并自动生成校正Kernel进行校正，PET利用了严格的数学理论来简化了这个富有挑战性的任务。**
 
@@ -70,7 +80,7 @@ PET总览**首先原始的张量化程序输入到PET框架中，然后PET首先
 
 这一节主要描述了Mutation Generator的算法实现流程并描述了几种生成的典型突变模式。Mutation Generator的算法如下图所示：
 
-![](asset/img_3a0a9c6fa096.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_3a0a9c6fa096.jpg)
 
 Mutation Generator Algorithm首先有一个原始的多线性张量化程序MLTP P_0，以及一个算子集合O。需要输出的是一个合法的突变程序集合M。接下来，定义了一个I_0表示原始的MLTP中的所有输入Tensor。然后M初始化为空的集合。接下来执行BUILD这个DFS算法进行突变程序集合的生成。然后看到第8-9行也就是DFS算法的返回条件，当P和P_0的输入输出形状完全相同时说明当前的突变程序是合法的，可以将这个突变程序P加入到集合M中。然后当ni，如果输入Tensor i对于当前op来说是合法的，就将op添加到集合P中然后就是DFS的常规操作了。
 
@@ -78,7 +88,7 @@ Mutation Generator Algorithm首先有一个原始的多线性张量化程序MLTP
 
 - **Reshape + Transpose。** 上面的Figure1我们已经讲解了这种变体，通过Reshape和Transpose的结合可以改变Tensor的数据排布，比如让输入特征图的宽度更大对并行计算有好处。另外reshape和transpose经常连用，所以在PET里面将这两个操作合成一个叫作 **reshape & transpose** 。这个融合减少了突变体的大小并允许探索更大，更复杂的突变体。
 - **Single-operator mutants。** PET可以将不高效的算子替换成高效的算子，比如将Dilated Conv变成普通的卷积以大大加速其计算效率。如Figure3所示：
-![](asset/img_74513bd067dd.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_74513bd067dd.jpg)
 
 Dialated Conv通过Mutation Generator变成普通的Conv计算以获得加速这里可以获得加速的原因是因为Dilated Conv在一些加速库中一般没有得到太大的优化，而普通的卷积则被深度优化过，所以加速效果会十分明显。注意到这里仍然有校正的过程。
 
@@ -92,11 +102,11 @@ PET中最重要的一环应该就是这个Mutation Corrector。设计突变校�
 
 我这里不完全按照论文的写作来讲，而是按照我自己的理解来讲，讲得更加通俗不那么理论化。首先我们可以看一下一个3\times 3的卷积可以由如下公式进行表示：
 
-![](asset/img_1133b70a43db.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_1133b70a43db.jpg)
 
 3x3卷积的公式描述其中I_1和I_2分别表示输入Tensor和卷积Kernel，然后 D, H, W 分别表示输入Tensor I_1通道数，长宽。求和符号上方和下方的数字分别表示求和区间的上限和下限。然后对于这个卷积的输出Tensor来讲每一个元素都对应了一个求和区域。对于上面定义的卷积算子，计算左上角的输出位置即h = 0, w = 0只涉及一个2\times 2的Kernel，即0，因为该位置没有左邻居或者上邻居。论文将求和区域相同的位置叫作一个Box，对于这个卷积例子来说所有的Box可以表示为Figure 4。
 
-![](asset/img_e4a6e71fbb64.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_e4a6e71fbb64.jpg)
 
 3x3卷积的例子共有9个boxes同一个Box的所有输出位置具有相同的求和区间并且共享相似的数学性质，PET在检查程序等效性时会利用这些属性。PET不需要在所有单独的位置上验证2个MLTP的等价性，只需要验证**它们在每个Box的m+1个特性位置的等价性即可，其中m表示输出张量的维数** 。这个定理的证明论文提到是通过对比P_1以及P_2关于输入变量的系数矩阵完成的，我们这里不关心具体的证明过程，只需要知道基于这个定理在做等效性验证时就可以避免检查所有的输出元素即可，者大大降低了校正检查的复杂度。
 
@@ -104,7 +114,7 @@ PET中最重要的一环应该就是这个Mutation Corrector。设计突变校�
 
 有了上述两个定理，PET只需要在很少的位置进行验证就可以确定哪些位置是和原始程序不等价的了。下图展示了定理1和定理2对需要验证的输入元素数量的影响。
 
-![](asset/img_9cfd33e1180c.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_9cfd33e1180c.jpg)
 
 Table2
 ### **0x7.2 Mutation Correction算法**
@@ -112,7 +122,7 @@ Table2
 有了上述两个定义就可以引出Mutation Correction算法。此算法分为以下三个步骤：
 
 - **Step 1: Box propagation**。第一步通Box Propagation计算给定MLTP的值。PET为张量的每个维度维护一组分割点，以识别Box的边界。对于多线性算子，**根据输入张量的分割点以及算子类型和超参数来推断输出张量的分割点**，Figure5展示了Figure1中的突变例子的Box传播过程。
-![](asset/img_bb3196351c91.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_bb3196351c91.jpg)
 
 框传播算法示例
 
@@ -123,7 +133,7 @@ Table2
 
 这里就是对上面Step3的一个解释。请看Figure6：
 
-![](asset/img_092f010a9bb7.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_092f010a9bb7.jpg)
 
 Figure6Figure6(a)表示一个标准的卷积过程。然后Figure6(b)表示在Figure6(a)上应用一个部分等效变换。Conv-2是校正Kernel，这里和Conv-1是共享权重的，所以我们可以把conv1-conv2融合起来变成一个conv-1-2，如Figire6(c)所示。具体来说这个融合操作就是将T_1和T_0^{'} 联合到一个单独的Tensor并将Conv-1-2的输出结果分解成T^2和T_3^{'}。这里的联合和分解只包含数据拷贝，可以用reshape和transpose来做到。
 
@@ -131,7 +141,7 @@ Figure6Figure6(a)表示一个标准的卷积过程。然后Figure6(b)表示在Fi
 
 这一节介绍了PET中的程序优化器，它可以通过将等效变换和部分等效变换结合起来探索一个更大的程序优化搜索空间。**首先程序优化器将输入程序分解成几个更小尺寸的子程序并传给Mutation Generator。然后为了优化每个子程序，PET在一个丰富的搜索空间中通过调整参与突变的Op集合以及DFS搜索算法的迭代次数找到最好的变体程序。最后，把所有优化后的子程序缝合到一起的时候会跨边界应用额外的后优化包括算子融合，消除冗余Op等等**。下面的算法2描述了程序优化器的整个流程：
 
-![](asset/img_4a9b488b1ede.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_4a9b488b1ede.jpg)
 
 程序优化器的流程整个算法流程并不复杂，首先第8行把整个程序切开，切成一些子程序。对于每一个子程序S我们都使用GETMUTANTS函数为这个子程序产生突变程序集合记作mutants（对应第9行），然后初始化一个新的栈H_{new}。再遍历原始的栈H，对其中的每个程序P，基于刚才获得的突变结果M，对P中的子程序进行突变获得一个新的突变程序P_{new}，再把P_{new}推导新的栈H_{new}中。最后再更新原始的栈H为H_{new}开完成当前子程序的突变。
 
@@ -145,7 +155,7 @@ Figure6Figure6(a)表示一个标准的卷积过程。然后Figure6(b)表示在Fi
 - Detail4. PET的程序优化器和完全等价变换是完全兼容的。通过组合完全等价变换和部分等价变换可以探索更大的搜索空间。
 **这一节最后还讲了一下Post-Optimizations** 。上面提到过，最后所有的子程序突变体需要缝合到一起。除了连接它们的输入和输出张量之外，PET还**跨子程序边界执行了一些后优化以进一步提升程序性能**。可以注意到PET的变异生成器产生了大量的Reshape和Transpose（R/T）算子，尤其是在子程序的开头和结尾。所以这里有机会跨子程序融合这些R/T算子并进一步融合上述子程序优化中排除的非线性算子。Figure7为我们展示了一个包含两个优化子程序的例子，为了优化子程序的边界，PET首先通过重排非线性算子和R/T算子将两个子程序之间的R/T算子组合在一起。如Figure7(b)所示，这种重排正确性是完全保证的。重排还允许PET将非线性的激活算子和其它算子进行融合，比如将Conv和ReLU融合到Conv-ReLU中，如Figure7(c)所示。
 
-![](asset/img_44888549844c.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_44888549844c.jpg)
 
 后优化示例因此这里包含三种优化：
 
@@ -161,13 +171,13 @@ Figure6Figure6(a)表示一个标准的卷积过程。然后Figure6(b)表示在Fi
 
 论文给出的实验结果是相当丰富的，这里就不仔细讲每一种实验结果图表了。只讲一个最重要的实验结果图：
 
-![](asset/img_ce5baa8e4707.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_ce5baa8e4707.jpg)
 
 PET在多种网络上的性能表现在ResNet-18，CSRNet，InceptionV3，BERT，ResNet33D-18上相比于目前一些流行的框架均有显著优势，不过可惜这里没有和PyTorch的结果进行对比。
 
 实验部分还提到PET可以轻易的和TVM以及Ansor相结合，进一步提升生成的张量化程序的效率。**在PET中可以将cuDNN/cuBLAS/TVM/Ansor等流行的优化库以及代码生成编译器作为它的后端来生成高效的张量化程序**。Figure12展示了这些框架作为后端时一些常见的单算子的加速效果：
 
-![](asset/img_56dcdeeaa0fb.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_56dcdeeaa0fb.jpg)
 
 不同框架或者库作为后端时一些常见的单算子的加速效果这里感觉说明了PET的扩展性是比较好的，可以结合大多数先进的代码生成类工作以及手工优化的算子库。
 

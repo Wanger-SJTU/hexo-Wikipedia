@@ -1,12 +1,22 @@
 ---
-title: "这梦一般的街景，全是AI伪造的（把GAN秒成渣渣）｜Paper+Code"
-date: 2017-08-15
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/28527379
+title: 这梦一般的街景，全是AI伪造的（把GAN秒成渣渣）｜Paper+Code
+date: "2017-08-15 00:00:00"
+updated: "2017-08-15 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/学习/这梦一般的街景,全是AI伪造的(把GAN秒成渣渣)-Paper-Code/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/28527379
 ---
 
+
 **李杉 李林 编译整理
-量子位 报道 | 公众号 QbitAI![](asset/img_fbbd70424b3a.jpg)
+量子位 报道 | 公众号 QbitAI![](/images/collections/0.raw/zhihu/%25E5%25AD%25A6%25E4%25B9%25A0/asset/img_fbbd70424b3a.jpg)
 
 △** 『凡所有相，皆是虚妄』
 
@@ -16,7 +26,7 @@ source: https://zhuanlan.zhihu.com/p/28527379
 
 在谷歌地图上，根本找不到这样的街道。一个神经网络，根据自己在训练过程中见过的真实街道，生成了它。
 
-![](asset/img_a88dc58f61af.jpg)
+![](/images/collections/0.raw/zhihu/%25E5%25AD%25A6%25E4%25B9%25A0/asset/img_a88dc58f61af.jpg)
 
 ### 比GAN更强
 
@@ -24,7 +34,7 @@ source: https://zhuanlan.zhihu.com/p/28527379
 
 在论文中，斯坦福大学博士陈启峰和英特尔实验室视觉组主管Vladlen Koltun展示了一种根据语义布局来合成照片的方法。所谓语义布局，就是像这样，在图片上标出各种物体的位置：
 
-![](asset/img_c97bd9fb9d13.jpg)
+![](/images/collections/0.raw/zhihu/%25E5%25AD%25A6%25E4%25B9%25A0/asset/img_c97bd9fb9d13.jpg)
 
 而他们的算法可以看作一个渲染引擎，输入上面的图片，就相当于告诉它图片中间是道路、路上有车、上半部分有树、有交通灯、右上有一些行人，然后按照图上的布局，输出一张逼真的照片。
 
@@ -38,15 +48,15 @@ source: https://zhuanlan.zhihu.com/p/28527379
 
 当然，他们在论文里也展示了自己的算法如何将各种基于GAN的生成模型秒成渣渣：
 
-![](asset/img_77ead928f7b0.jpg)
+![](/images/collections/0.raw/zhihu/%25E5%25AD%25A6%25E4%25B9%25A0/asset/img_77ead928f7b0.jpg)
 
 **
 
-![](asset/img_0d28e39e1ee0.jpg)
+![](/images/collections/0.raw/zhihu/%25E5%25AD%25A6%25E4%25B9%25A0/asset/img_0d28e39e1ee0.jpg)
 
 这篇论文入选了今年10月在威尼斯举办的国际计算机视觉大会ICCV 2017，要进行口头报告，相应的源代码在GitHub上已经收获了402个星，月初还登顶了GitHub热门项目Python排行榜。
 
-![](asset/img_27e9b1c245ee.jpg)
+![](/images/collections/0.raw/zhihu/%25E5%25AD%25A6%25E4%25B9%25A0/asset/img_27e9b1c245ee.jpg)
 
 ### 现实，梦境
 
@@ -78,7 +88,7 @@ source: https://zhuanlan.zhihu.com/p/28527379
 
 最后，放一张陈启峰6月的博士毕业照。
 
-![](asset/img_8cc20e08a487.jpg)
+![](/images/collections/0.raw/zhihu/%25E5%25AD%25A6%25E4%25B9%25A0/asset/img_8cc20e08a487.jpg)
 
 ### 相关链接
 

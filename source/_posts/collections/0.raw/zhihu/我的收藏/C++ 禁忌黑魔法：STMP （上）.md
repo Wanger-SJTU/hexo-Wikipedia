@@ -1,13 +1,23 @@
 ---
-title: "(2 条消息) C++ 禁忌黑魔法：STMP （上）"
-date: 2026-03-29
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/646752343
+title: (2 条消息) C++ 禁忌黑魔法：STMP （上）
+date: "2026-03-29 00:00:00"
+updated: "2026-03-29 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/C-禁忌黑魔法-STMP-(上)/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/646752343
 ---
+
 
 众所周知，传统的 C++ 的常量表达式求值既不依赖也不改变程序全局的状态。对于任意相同的输入，它的输出结果总是相同的，被认为是**纯函数式 (purely functional)** 的。**模板元编程 (Template Meta Programming)** 作为常量求值的一个子集，也应该遵守这个规则。
 
-![](asset/img_69b9431686b7.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_69b9431686b7.jpg)
 
 但事实真的如此吗？在不违背 C++ 标准的情况下，下面的代码可能通过编译吗？
 

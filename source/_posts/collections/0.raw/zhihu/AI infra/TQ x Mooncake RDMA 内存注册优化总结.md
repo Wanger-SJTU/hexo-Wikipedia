@@ -1,10 +1,19 @@
 ---
-title: "TQ x Mooncake RDMA 内存注册优化总结"
-date: 2026-04-29
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/2032862444796785454
-
+title: TQ x Mooncake RDMA 内存注册优化总结
+date: "2026-04-29 00:00:00"
+updated: "2026-04-29 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/AI-infra/TQ-x-Mooncake-RDMA-内存注册优化总结/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/2032862444796785454
 ---
+
 
 序言
 最近 MooncakeStore 更新了一系列针对 RL 场景的关键特性，通过 Hard Pin 机制将数据的生命周期管理交还给用户，并引入 Upsert 接口以实现数据覆写，使 Mooncake 生态在 RL 场景中更具实用性。

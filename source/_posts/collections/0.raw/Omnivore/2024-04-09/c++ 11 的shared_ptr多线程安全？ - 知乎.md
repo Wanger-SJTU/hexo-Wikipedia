@@ -1,4 +1,17 @@
 ---
+title: c++ 11 的sharedptr多线程安全？ - 知乎
+date: "2026-04-11 21:40:28"
+updated: "2026-04-11 21:40:28"
+layout: post
+permalink: /collections/0.raw/Omnivore/2024-04-09/c-11-的shared_ptr多线程安全-知乎/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
+---
 id: ee7c123e-d985-4e07-b574-6a02130c79ea
 ---
 

@@ -1,9 +1,19 @@
 ---
-title: "false sharing"
-date: 2024-02-07
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/681744521
+title: false sharing
+date: "2024-02-07 00:00:00"
+updated: "2024-02-07 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/体系结构/false-sharing/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/681744521
 ---
+
 
 False Sharing（伪共享）是多线程编程中一种特殊的性能问题，它发生在多个线程访问并修改同一个cache line上的不同数据时。这会导致无效的缓存一致性流量，因为处理器必须不断地在cpu核之间同步数据，即使各个线程访问的是不同的内存位置。
 

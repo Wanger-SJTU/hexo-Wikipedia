@@ -1,10 +1,19 @@
 ---
-title: "编译器llvm 和乱序cpu指令发射 如何配合?"
-date: 2021-11-21
-tags: [知乎]
-source: https://www.zhihu.com/question/500409301/answer/2235878071
-
+title: 编译器llvm 和乱序cpu指令发射 如何配合?
+date: "2021-11-21 00:00:00"
+updated: "2021-11-21 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/走向cs/编译器llvm-和乱序cpu指令发射-如何配合_/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://www.zhihu.com/question/500409301/answer/2235878071
 ---
+
 
 首先，这里有两个优化问题。
 

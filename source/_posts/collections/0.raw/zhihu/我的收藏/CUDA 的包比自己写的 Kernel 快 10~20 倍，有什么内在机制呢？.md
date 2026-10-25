@@ -1,10 +1,19 @@
 ---
-title: "CUDA 的包比自己写的 Kernel 快 10~20 倍，有什么内在机制呢？"
-date: 2022-04-21
-tags: [知乎]
-source: https://www.zhihu.com/question/356661099/answer/2449633440
-
+title: CUDA 的包比自己写的 Kernel 快 10~20 倍，有什么内在机制呢？
+date: "2022-04-21 00:00:00"
+updated: "2022-04-21 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/CUDA-的包比自己写的-Kernel-快-10~20-倍,有什么内在机制呢/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://www.zhihu.com/question/356661099/answer/2449633440
 ---
+
 
 我写过一个20行的kernel。
 

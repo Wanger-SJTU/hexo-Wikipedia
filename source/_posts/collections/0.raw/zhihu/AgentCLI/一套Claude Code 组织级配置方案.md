@@ -1,9 +1,19 @@
 ---
-title: "一套Claude Code 组织级配置方案"
-date: 2026-02-23
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/2009243481537811148
+title: 一套Claude Code 组织级配置方案
+date: "2026-02-23 00:00:00"
+updated: "2026-02-23 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/AgentCLI/一套Claude-Code-组织级配置方案/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/2009243481537811148
 ---
+
 
 `trailofbits/claude-code-config` 是 Trail of Bits 开源的一套 Claude Code 组织级配置方案，核心在把日常 AI coding 过程标准化：从终端选型、权限边界、沙箱策略，到 hooks、skills、MCP、上下文管理和团队习惯都给出模板。
 

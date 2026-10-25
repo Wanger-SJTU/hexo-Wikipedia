@@ -1,3 +1,16 @@
+---
+title: AI 大模型产品
+date: "2026-04-11 21:40:17"
+updated: "2026-04-11 21:40:17"
+layout: post
+permalink: /collections/0.raw/收藏/AI-大模型产品/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 #ai #产品思维
 
 之前跟纯银吃饭，他就给我讲了这个重要判断：

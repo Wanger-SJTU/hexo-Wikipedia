@@ -1,13 +1,23 @@
 ---
-title: "(1 封私信) 矩阵乘法的并行优化（3）：共享内存多核CPU优化"
-date: 2021-05-18
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/371893547
+title: (1 封私信) 矩阵乘法的并行优化（3）：共享内存多核CPU优化
+date: "2021-05-18 00:00:00"
+updated: "2021-05-18 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/模型部署那些事/矩阵乘法的并行优化(3)-共享内存多核CPU优化/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/371893547
 ---
+
 
 我们已经了解了**OPENMP**是基于共享内存模型的多线程并行模式，非常适合于单机多核心平台。在第（1）篇优化中我们已经使用 OpenMP 实现了常规矩阵乘法的多核运算。
 
-[![](asset/img_5b92d5d94ac9.jpg)pizh12thu：矩阵乘法的并行优化（1）：OPENMP、CUDA实现73 赞同 · 3 评论 文章](https://zhuanlan.zhihu.com/p/368870275)
+[![](/images/collections/0.raw/zhihu/%25E6%25A8%25A1%25E5%259E%258B%25E9%2583%25A8%25E7%25BD%25B2%25E9%2582%25A3%25E4%25BA%259B%25E4%25BA%258B/asset/img_5b92d5d94ac9.jpg)pizh12thu：矩阵乘法的并行优化（1）：OPENMP、CUDA实现73 赞同 · 3 评论 文章](https://zhuanlan.zhihu.com/p/368870275)
 
 然而这个算法本身没有经过任何优化，访存延迟和通信开销还很大。
 
@@ -72,7 +82,7 @@ $$C=\left[ \begin{matrix} C_{00}&C_{01}\\ C_{10}&C_{11} \end{matrix} \right]= \l
 
 借鉴CUDA优化中的矩阵分块方式，让BLOCK大小的方块在A的行方向和B的列方向上滑动，直到计算完所有n个元素的相乘累加。
 
-![](asset/img_9f068c40efe2.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%25A8%25A1%25E5%259E%258B%25E9%2583%25A8%25E7%25BD%25B2%25E9%2582%25A3%25E4%25BA%259B%25E4%25BA%258B/asset/img_9f068c40efe2.jpg)
 
 分块矩阵示意只不过这里CPU的核心数通常比GPU少的多，不可能分配每个线程到C中的一个元素的计算。这里采用外层并行的方法，即块间的滑动循环可以分配到多个核心上，块内的小矩阵相乘仍然采用单线程算法（更多线程只会徒增线程间开销）。
 

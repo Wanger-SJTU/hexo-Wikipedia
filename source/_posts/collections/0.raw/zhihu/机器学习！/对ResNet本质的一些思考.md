@@ -1,9 +1,19 @@
 ---
-title: "对ResNet本质的一些思考"
-date: 2019-03-28
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/60668529
+title: 对ResNet本质的一些思考
+date: "2019-03-28 00:00:00"
+updated: "2019-03-28 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/机器学习/对ResNet本质的一些思考/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/60668529
 ---
+
 
 最近在总结完成语义分割任务的轻量级神经网络时，看到了MobileNet V2中对于ReLU层的思考，于是我也回过头重新审视ResNet之所以work的本质原因。以下是一些个人的见解，如有错误，还望及时指正。
 
@@ -17,11 +27,11 @@ source: https://zhuanlan.zhihu.com/p/60668529
 
 具体表现出来就是：若是我们对一个feature，先通过一个给定的变换规则T，将它映射到它的embedding space中，再在该embedding space中，利用一个ReLU去处理该feature，最后再把这个feature以同样的变换规则（逆方向）给映射回原始空间，我们会发现，这时，这个feature已经变得连亲妈都不认得了。如图↓
 
-![](asset/img_94122c1fb3a0.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_94122c1fb3a0.jpg)
 
 图片来自《MobileNetV2: Inverted Residuals and Linear Bottlenecks》ReLU这个东西，其实就是一个滤波器，只不过这个滤波器的作用域不是信号处理中的频域，而是特征域。那么滤波器又有什么作用呢？维度压缩，俗话说就是降维啦：如果我们有m个feature被送入ReLU层，过滤剩下n个（n梯度消失，这将导致神经元的权重无法再通过梯度下降法进行更新，这种现象被称为特征退化。所以这个神经元相当于死掉了，丧失了学习能力。我们说，一旦神经元的输出陷入0值，就无法恢复了。
 
-![](asset/img_c3fbf86dada0.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_c3fbf86dada0.jpg)
 
 那么，我们应该怎么去规避数据的坍塌呢？非线性激活层到底是个什么样的东西？
 

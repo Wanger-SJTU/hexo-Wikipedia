@@ -1,9 +1,19 @@
 ---
-title: "AI Agent 深度学习指南"
-date: 2026-02-25
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/2009766290772993640
+title: AI Agent 深度学习指南
+date: "2026-02-25 00:00:00"
+updated: "2026-02-25 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/AgentCLI/AI-Agent-深度学习指南/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/2009766290772993640
 ---
+
 
 ### Claude opus4.6生成的AI Agent 深度学习指南
 

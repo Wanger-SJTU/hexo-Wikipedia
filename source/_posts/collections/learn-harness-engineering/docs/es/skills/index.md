@@ -1,3 +1,16 @@
+---
+title: Skills
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/es/skills/index/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # Skills
 
 Este directorio contiene los skills de agentes de IA incluidos con el curso. Los skills son plantillas de prompt autocontenidas que pueden cargar agentes de programación con IA, como Claude Code, Codex, Cursor o Windsurf, para realizar tareas especializadas.

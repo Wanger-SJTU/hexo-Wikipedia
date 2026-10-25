@@ -1,16 +1,25 @@
 ---
-title: "(1 封私信) 深度学习编译器 TVM 代码串讲"
-date: 2022-11-01
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/446976730
+title: (1 封私信) 深度学习编译器 TVM 代码串讲
+date: "2022-11-01 00:00:00"
+updated: "2022-11-01 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/tvm/深度学习编译器-TVM-代码串讲/
 disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/446976730
 ---
+
 
 随着深度学习应用的攻城略地，存在越来越多的需求需要将深度学习模型在各种各样的设备上高效运行起来。不同的设备上存在不同的内存结构以及计算原语，传统的做法是在图层面做一些优化，并配合专家实现的在特定设备上的高性能算子完成任务。这当中比较知名的就是Nvidia TensorRT，而即使是付出了大量工作的TensorRT，在面临用户自定义算子或者非常见的网络结构时，其图层面的优化也被迫打了折扣。深度学习编译器则是有别于传统方法的新思路，本文将会从比较基础的东西开始，深入代码层面解读 TVM 这一有着极大影响力的编译器。
 
 ### 1. Overview
 
-![](asset/img_87d04a083029.jpg)
+![](/images/collections/0.raw/zhihu/tvm/asset/img_87d04a083029.jpg)
 
 TVM是一个End2End的方案，接收来自Tensorflow/Pytorch等框架的 High Level 模型，转换为一个同样High Level的Graph IR，并对Graph IR进行Graph Level的优化得到优化后的Graph IR. 在Graph IR中的每个Operator则使用 TVM 定义的名为Tensor Expression的DSL来描述。Tensor Expression源于Halide中compute/schedule分离的思想，通俗地说，compute定义了算子的数学公式，schedule定义了如何把这个数学公式映射到硬件设备上。由于对特定的compute来说，其可能的schedule多种多样，于是TVM还存在一个基于机器学习的优化器负责找到最优的schedule. 确定schedule后，TVM就可以依据schedule生成Low Level的LLVM IR，之后就可以复用传统编译器的工作了。
 
@@ -202,7 +211,7 @@ CudaModule 定义在 `src/runtime/cuda/cuda_module.cc` 中，CudaModule接口中
 
 在了解了 tvm runtime 之后，我们可以重新了解一下 TVM 的编译流程，大致步骤如下图
 
-![](asset/img_805632a631f4.jpg)
+![](/images/collections/0.raw/zhihu/tvm/asset/img_805632a631f4.jpg)
 
 上图的最后一个环节即是我们已经充分了解过的 tvm runtime. TVM 中存在两种类型的 IR, 对应于图中的 high level 的 relay 和 low level 的 tir, 且两种 IR 都对应于同一个类型 IRModule. IRModule 与 relay.Function/tir.PrimFunc 的关系类似于 runtime.Module 与 PackedFunc 的关系，即 IRModule 会包含多个 relay.Function/tir.PrimFunc。统一的 IRModule 类型使得其可以同时含有 relay.Function 和 tir.PrimFunc, 为优化提供便利。
 
@@ -836,7 +845,7 @@ class PatternNode : public RelayNode {
 
 Let Binding 这个概念也来自函数式编程，为了理解引入 Let Binding 的原因，我们先看下面这个例子
 
-![](asset/img_b7ee921438f6.jpg)
+![](/images/collections/0.raw/zhihu/tvm/asset/img_b7ee921438f6.jpg)
 
 这是一个经典的计算图表达方式，唯一与传统不太一致的，就是使用 Function 来代替 Graph 的概念。在这个例子中，需要注意的是 add 的两个参数都是 1%，在 DAG 中出现了一个共享节点，我们假设 add 表达式的代码如下
 
@@ -857,7 +866,7 @@ Let Binding 这个概念也来自函数式编程，为了理解引入 Let Bindin
 
 也就意味着 `log(%x)+log(%x)` ，所以这里就出现了歧义，而为了能够保持和传统计算图的兼容，TVM 在打印 IR 到文本格式时，会为每个节点打印一行，并分配一个临时 id （也就是上面的%1, %2)，所以从文本格式看可能发现不了什么。为了解决歧义，TVM 引入了 Let Binding, 看下面这个例子
 
-![](asset/img_b9fbf8a18a66.jpg)
+![](/images/collections/0.raw/zhihu/tvm/asset/img_b9fbf8a18a66.jpg)
 
 Let 表达式为 Let (var, value, body) , 其将value求值赋给var，然后返回body的求值结果，其对应的 IR/AST 称为 A-normal form，如上图，上面那个 Let 将 log(%x) 作为 value 求值赋给其 var（也就是 %v1），被 add 引用。通过这种方式，解决了歧义问题。
 
@@ -880,7 +889,7 @@ Let 表达式为 Let (var, value, body) , 其将value求值赋给var，然后返
 
 事实上，Let Binding 的一个核心用途就是指定计算的Scope，我们看下面这个没有使用 Let Binding 的例子
 
-![](asset/img_69a7194414e4.jpg)
+![](/images/collections/0.raw/zhihu/tvm/asset/img_69a7194414e4.jpg)
 
 如果看文本格式，我们会觉得 %1 应该在 if 表达式外计算，但看 AST/IR, 我们又迷惑了，在下面这个例子中，这个迷惑就更明显了
 

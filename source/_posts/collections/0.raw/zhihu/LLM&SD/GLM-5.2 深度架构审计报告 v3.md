@@ -1,10 +1,19 @@
 ---
-title: "GLM-5.2 深度架构审计报告 v3"
-date: 2026-07-04
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/2056784898128621956
-
+title: GLM-5.2 深度架构审计报告 v3
+date: "2026-07-04 00:00:00"
+updated: "2026-07-04 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/LLM-SD/GLM-5.2-深度架构审计报告-v3/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/2056784898128621956
 ---
+
 
 GLM-5.2 深度架构审计报告 v3
 

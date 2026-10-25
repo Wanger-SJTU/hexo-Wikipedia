@@ -1,9 +1,19 @@
 ---
-title: "im2col方法实现卷积算法"
-date: 2019-06-23
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/63974249
+title: im2col方法实现卷积算法
+date: "2019-06-23 00:00:00"
+updated: "2019-06-23 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/机器学习/im2col方法实现卷积算法/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/63974249
 ---
+
 
 [永远在你身后：自己动手写深度神经网络框架（八）](https://zhuanlan.zhihu.com/p/69229755)
 
@@ -15,13 +25,13 @@ a=conv(x,k)" role="presentation">a=conv(x,k)a = conv\left( x,k \right)
 
 x" role="presentation">xx 是输入， k" role="presentation">kk 是卷积核， a" role="presentation">aa 是卷积的结果，即特征图（feature map），先看输入和卷积核都是矩阵的情况：
 
-![](asset/img_7143070c237a.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_7143070c237a.jpg)
 
 上图中蓝色的为输入，红色的是卷积核，灰色是结果
 
 卷积的过程就是，将输入划分成若干个**与卷积核相同大小**的不同子集，再分别与卷积核点乘：
 
-![](asset/img_f2b6ddb59155.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_f2b6ddb59155.jpg)
 
 如上图所示，本栗子的输入可以划分为4个子子集（为什么是4个，这里涉及一个步长的变量，后面讨论），将它们各自与卷积核点乘，得到的结果就是红框上面的输出
 
@@ -57,15 +67,15 @@ kH，kW是卷积核的宽和高，不过这里是下标是从0开始的
 
 现在将输入升级为**多通道**（例如图片一般都是三通道的），即变成一个三维张量，相对应的，之前的情况称之为**单通道**；同时，卷积核也必须升级成多通道的，为什么？因为**卷积核的通道数必须与输入的通道数相等**：
 
-![](asset/img_ce39fdd97bb1.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_ce39fdd97bb1.jpg)
 
 多通道如上图所示，输入变成双通道后，卷积核也必须变成双通道的，但是，输出还是一个通道，下面看一下计算过程，先画一个详细的图示：
 
-![](asset/img_bdd8cc03a4b4.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_bdd8cc03a4b4.jpg)
 
 同样，还是将输入划分成4个子集，具体的划分过程是，通道一和通道二各自划一个子集，与卷积核对应的通道大小相同：
 
-![](asset/img_0450abc75c5f.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_0450abc75c5f.jpg)
 
 将两个通道的子集上下拼接变成一个6行3列的矩阵，它们之间元素的顺序我用下标表示：
 
@@ -89,7 +99,7 @@ $a_{i, j}=\sum_{h=0}^{k H-1} \sum_{w=0}^{k W-1} \sum_{c} w_{h, w, c} x_{i+h, j+w
 
 接下来，在多通道的基础上，进一步升级，使用**多个卷积核**，大致如下图：
 
-![](asset/img_378a279f230a.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_378a279f230a.jpg)
 
 多卷积核可以看到，现在输出的结果变成多通道了，也就是说，**卷积结果的通道数等于卷积核的个数是一致的**，计算过程大致如下：
 
@@ -115,7 +125,7 @@ A=\left[\begin{array}{ll}{a_{1}} & {a_{5}} \\ {a_{2}} & {a_{6}} \\ {a_{3}} & {a_
 
 再上一个从网上找来的动图，相信能更好的理解
 
-![](asset/img_86302d10d5a3.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_86302d10d5a3.jpg)
 
 图片来自网络以上，就是多卷积核多通道的卷积变换矩阵乘法的过程，然后公式需要改一下：
 
@@ -125,7 +135,7 @@ $a_{i, j, d}=\sum_{h=0}^{k H-1} \sum_{w=0}^{k W-1} \sum_{c} w_{d, h, w, c} x_{i+
 
 有了前面多卷积核的计算过程做对比后，多输入的计算过程也是大同小异的，在前面的多卷积核的计算中，每个卷积核都独立与输入进行卷积，现在有多个输入也是一样，每一个输入独立与所有卷积核进行卷积计算得到一个输出，所以**输入的数量与输出的数量一致**
 
-![](asset/img_8c581fdbd225.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_8c581fdbd225.jpg)
 
 批量输入还是来看栗子吧，设输入的批量为2，对第一个输入采用与前面一样的操作，变换为一个矩阵：
 
@@ -153,11 +163,11 @@ $a_{n, i, j, d}=\sum_{h=0}^{k H-1} \sum_{w=0}^{k W-1} \sum_{c} w_{d, h, w, c} x_
 
 最后，讨论一下卷积的**步长**：
 
-![](asset/img_0c8b64ff4981.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_0c8b64ff4981.jpg)
 
 上图是步长为1时的卷积结果，如果令步长为2，那么就变成了：
 
-![](asset/img_684878e757bd.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_684878e757bd.jpg)
 
 上图中的卷积结果为灰色的表示被表过，可以看到，步长为2时的情况相当于在步长为1的计算结果基础上每个一步取一个结果，同样，步长为3甚至更大也是依次类推
 

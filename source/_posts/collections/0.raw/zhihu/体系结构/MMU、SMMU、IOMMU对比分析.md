@@ -1,9 +1,19 @@
 ---
-title: "MMU、SMMU、IOMMU对比分析"
-date: 2024-09-08
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/706779113
+title: MMU、SMMU、IOMMU对比分析
+date: "2024-09-08 00:00:00"
+updated: "2024-09-08 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/体系结构/MMU、SMMU、IOMMU对比分析/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/706779113
 ---
+
 
 （S，IO）MMU是一个与cache紧密关联的，不但体现在配合使用实现提升读取数据的性能，还体现在MMU内部实现中TLB（TBU）和TWU（TCU）也会分别使用cache来缓存va-pa的映射等信息，以及不同级页表的信息。
 
@@ -15,7 +25,7 @@ MMU即内存管理单元（Memory Manage Unit），无论是MMU、还是SMMU、I
 
 - TLB模块：用于缓存从虚拟地址到物理地址的转换结果
 - TWU模块：负责完成页表的查过程
-![](asset/img_53e94f3b3336.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_53e94f3b3336.jpg)
 
 术语定义：**
 
@@ -48,7 +58,7 @@ MMU是负责把虚拟地址映射为物理地址，但凡"映射"都要解决两
 
 直接看下面这张图吧，以64位的虚拟地址为例，其中CR3是CPU的一个寄存器，从图中也可以看出来用来存放顶级页目录项。所以MMU开启之后，首先就是读取CR3寄存器的内容
 
-![](asset/img_4a5c1d5a68eb.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_4a5c1d5a68eb.jpg)
 
 **操作系统和MMU**
 
@@ -70,21 +80,21 @@ MMU映射失败的几种情况**
 
 **
 
-![](asset/img_73c2bb9b09db.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_73c2bb9b09db.jpg)
 
-![](asset/img_0f1c7c0c177b.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_0f1c7c0c177b.jpg)
 
-![](asset/img_91897c36b6b3.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_91897c36b6b3.jpg)
 
 MMU**是在处理器中使用的，一个MMU仅支持一个CPU，用于将支持多进程的虚拟地址共享同一个物理内存，以及对物理地址的访问进行权限检查的一个硬件单元。
 
-![](asset/img_cdb2fe75a617.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_cdb2fe75a617.jpg)
 
 **
 
 根据MMU和cache的顺序关系——物理和虚拟cache**
 
-![](asset/img_f4652880b0ce.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_f4652880b0ce.jpg)
 
  Cache和MMU基本上都是一起使用的，会同时开启或同时关闭。因为MMU页表中的entry属性，控制着内存的权限和cache缓存的策略。
 
@@ -92,7 +102,7 @@ CPU在访问DDR的时候用的地址是虚拟地址（Virtual Address，VA），
 
 物理高速缓存在的缺点主要是，CPU查询TLB或MMU后才能访问cache，增加了流水线的延时。
 
-![](asset/img_9b319a984756.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_9b319a984756.jpg)
 
 CPU使用虚拟地址寻址高速缓存，这种高速缓存称为虚拟高速缓存。
 
@@ -106,17 +116,17 @@ cache缓存寻址方式与设计 – VIVT, VIPT, PIPT**
 
 •VIVT速度最快因为寻址时可以不经过MMU/TLB，但同时对操作系统的要求高，需要避免tag/index的歧义问题
 
-![](asset/img_00aa3d1e3074.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_00aa3d1e3074.jpg)
 
-VIVT-虚拟高速缓存 VIVT（Virtually-Indexed Virtually Tagged）![](asset/img_b5cdd6829040.jpg)
+VIVT-虚拟高速缓存 VIVT（Virtually-Indexed Virtually Tagged）![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_b5cdd6829040.jpg)
 
-VIPT-物理标记的虚拟高速缓存 VIPT（Virtually-Indexed Physically-Tagged）![](asset/img_6b0511b4153a.jpg)
+VIPT-物理标记的虚拟高速缓存 VIPT（Virtually-Indexed Physically-Tagged）![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_6b0511b4153a.jpg)
 
 PIPT-物理高速缓存 PIPT（Physically-Indexed，Physically-Tagged）**
 
 SMMU**是在子系统之间使用，SMMU可以支持多个外设，为了区分这些外设，使用StreamID来标识，同个SMMU的StreamID必须唯一，不同SMMU的StreamID互不影响。将离散的物理地址映射到连续的虚拟地址空间，避免内存分配过程中的碎片化问题，用于解决越界和地址踩他问题
 
-![](asset/img_1d9cabf0ecd7.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_1d9cabf0ecd7.jpg)
 
 SMMUv3.0 特性 
 
@@ -157,13 +167,13 @@ IPA : intermediate physical address (IPA) memory map 中间层 物理地址
 
 PA ： physical addresses (PAs) 物理地址
 
-![](asset/img_f0bd84e6fddd.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_f0bd84e6fddd.jpg)
 
 地址转换**：SMMU跟MMU一样，支持两级转换Stage 1 Translation和Stage2 Translation，例如VAIPAPA，但是在现实使用中，也可以直接bypass，stage 1 only，stage2 only，或者Stage 1+Stage 2
 
-![](asset/img_4cfce7f5501f.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_4cfce7f5501f.jpg)
 
-![](asset/img_4f99d52fb574.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_4f99d52fb574.jpg)
 
 **内存保护**：（S）MMU除了支持地址转换外，内存属性也是重要的部分，例如可以在页表内配置读写权限，执行权限，访问权限等
 
@@ -173,11 +183,11 @@ AP/APX：字段 AP 和 APX 的不同组合将形成不同的 访问权限，如�
 
 Privileged 指的是 CPU 处于 svc 等状态，而 Unprivileged 则为 CPU 处于 user 状态。
 
-![](asset/img_e51cab6ceb72.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_e51cab6ceb72.jpg)
 
 隔离：SMMU同时可以给多个Master使用，例如SMMUv2支持128个contexts，SMMUv3支持更多的Contexts，因为在SMMUv2中contexts的信息是保存在寄存器，在SMMUv3中context的信息是存储在内存里面，通过StreamID来查询，Stream ID是32位的。CPU可以和其他Master使用同一套页表，或者CPU可以SMMU单独建立页表，或者可以为每个Master建立一套或者多套页表，来控制不同的访问区域。
 
-![](asset/img_0b9c6a46e0c1.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_0b9c6a46e0c1.jpg)
 
 **
 

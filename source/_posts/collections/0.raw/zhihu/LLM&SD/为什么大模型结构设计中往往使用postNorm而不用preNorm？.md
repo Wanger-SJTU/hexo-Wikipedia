@@ -1,9 +1,19 @@
 ---
-title: "为什么大模型结构设计中往往使用postNorm而不用preNorm？"
-date: 2024-02-23
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/682747135
+title: 为什么大模型结构设计中往往使用postNorm而不用preNorm？
+date: "2024-02-23 00:00:00"
+updated: "2024-02-23 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/LLM-SD/为什么大模型结构设计中往往使用postNorm而不用preNorm/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/682747135
 ---
+
 
 本篇结合深度神经网络特点、postNorm与preNorm的公式阐释、实验结论以及具体Post Norm的用法来解释大模型结构设计中往往使用postNorm而非preNorm这一现象。
 
@@ -33,7 +43,7 @@ Pre Norm的深度有“水分”！
 
 **1）Pre Norm 和 Post Norm的公式**
 
-![](asset/img_632309388256.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_632309388256.jpg)
 
 式中，Norm主要指Layer Normalization，但在一般的模型中，它也可以是Batch Normalization、Instance Normalization等，相关结论本质上是通用的。
 
@@ -41,11 +51,11 @@ Pre Norm的深度有“水分”！
 
 对于Pre Norm我们可以迭代得到：
 
-![](asset/img_42f12cae2865.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_42f12cae2865.jpg)
 
 式中每一项都是同一量级的，那么有  ，也就是说第t+1层跟第t层的差别就相当于t+1与t的差别，当t较大时，两者的相对差别是很小的，因此
 
-![](asset/img_d4974b0eda87.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_d4974b0eda87.jpg)
 
 这个意思是说，当t比较大时，xt，xt+1相差较小，所以Ft+1(Norm(xt+1))与Ft+1(Norm(xt)很接近，因此原本一个t层的模型与t+1层和，近似等效于一个更宽的t层模型，所以在Pre Norm中多层叠加的结果更多是增加宽度而不是深度，层数越多，这个层就越“虚”。
 

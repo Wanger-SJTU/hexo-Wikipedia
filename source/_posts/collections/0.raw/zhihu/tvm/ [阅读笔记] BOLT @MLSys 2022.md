@@ -1,9 +1,19 @@
 ---
-title: "(1 封私信) [阅读笔记] BOLT @MLSys 2022"
-date: 2022-05-31
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/514032549
+title: (1 封私信) [阅读笔记] BOLT @MLSys 2022
+date: "2022-05-31 00:00:00"
+updated: "2022-05-31 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/tvm/[阅读笔记]-BOLT-MLSys-2022/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/514032549
 ---
+
 
 这篇文章是师弟发给我看的，之前扫MLSys的publicatioin居然没看到这个漏掉了，看了一下发现做的事情很有趣，很多想法是之前想过但是没付诸实践的，在文中得到了验证，因此记录一下。
 
@@ -17,7 +27,7 @@ source: https://zhuanlan.zhihu.com/p/514032549
 
 众所周知，现在很多深度学习编译器如TVM使用自动调优的工具来生成高性能代码，比如AutoTVM和Ansor。但是它们的性能其实不太理想，相比厂商自己提供的库如CuBlas和CuDNN，很难达到相当的水平。比如，对于非FP32的算子（换言之，可以用Tensor Core了），AutoTVM和Ansor的性能会差很多。如下图所示。
 
-![](asset/img_450eea61628f.jpg)
+![](/images/collections/0.raw/zhihu/tvm/asset/img_450eea61628f.jpg)
 
 此外，这些自动调优器的问题就是调优时间太长了。比如用AutoTVM调优ResNet-50，需要在GPU上跑七天（这个有点离谱，虽然慢，但是印象里也不至于这么慢，而且Ansor应该已经非常快了才对）。考虑到dyanmic shape问题，这种慢速调优方式难以接受。
 
@@ -43,27 +53,27 @@ source: https://zhuanlan.zhihu.com/p/514032549
 
 最后的一点，Bolt提出自动化模板代码生成，自动搜索模板参数。其实听起来挺trivial的，不过做的人应该很清楚，工程实现上也不是那么轻松。文章还提到了硬件友好模型设计，一笔带过了，对核心贡献不太重要。
 
-![](asset/img_fa6720e5e4f2.jpg)
+![](/images/collections/0.raw/zhihu/tvm/asset/img_fa6720e5e4f2.jpg)
 
 #### 4.1 Deeper operator fusion
 
 Bolt可以在一个kernel里fuse多个conv或者gemm。这个功能是Cutlass自己提供的，在examples里可以找到。Bolt利用了这一点，进行更深的fusion，如下图所示。
 
-![](asset/img_e2cee2ddc89a.jpg)
+![](/images/collections/0.raw/zhihu/tvm/asset/img_e2cee2ddc89a.jpg)
 
 直观上来说，就是第一个gemm算完的结果不要存出去，而是留在片上给下一个gemm用。实现上，需要控制threadblock先后处理两个大小可能不太一样的gemm块，如下图所示，文章中称为threadblock persistence。这个观点还是比较直接，缺少一些更具体的分析，不过作为早期成果，也是不错。
 
-![](asset/img_d3bf6d4eb015.jpg)
+![](/images/collections/0.raw/zhihu/tvm/asset/img_d3bf6d4eb015.jpg)
 
 至于在哪里放中间数据，Bolt首先介绍一种激进的方法，直接在一个warp的寄存器里暂存数据，如下图所示
 
-![](asset/img_177a4867fb2e.jpg)
+![](/images/collections/0.raw/zhihu/tvm/asset/img_177a4867fb2e.jpg)
 
 看过我之前[MMA文章](https://zhuanlan.zhihu.com/p/455166274)的读者应该清楚，Tensor Core的输入fragment和输出fragment的layout是不一样的。所以这就需要Bolt在进行第二个gemm之前把warp fragment里的数据relayout一下才能用，文章中说他们自己实现了一个warp fragment iterator。这个事情估计大部分用户都做不了。
 
 使用warp fragment暂存数据其实不太明智，因为寄存器资源太紧张了，过分使用寄存器会损害整体性能的。所以Bolt还有一种shared memory-resident fusion的选择，把中间数据放在shared memory。我个人认为，这种方式更实用。
 
-![](asset/img_8449c52db497.jpg)
+![](/images/collections/0.raw/zhihu/tvm/asset/img_8449c52db497.jpg)
 
 #### 4.2 Templated code generation
 
@@ -91,15 +101,15 @@ Bolt是用TVM自定义codegen的方式进行代码生成。此外，为了填模
 
 实验的话，老规矩，简单放几张图。首先是比较Bolt fuse两个gemm和conv
 
-![](asset/img_76fa8f17d085.jpg)
+![](/images/collections/0.raw/zhihu/tvm/asset/img_76fa8f17d085.jpg)
 
-![](asset/img_e7f51eb6ea35.jpg)
+![](/images/collections/0.raw/zhihu/tvm/asset/img_e7f51eb6ea35.jpg)
 
 可以看到合并这种比较“重”的算子真的会有加速比。我在TVM上用原生codegen是验证过的，基本符合我的实验结果。然后这里有个华点，文章里放的conv fuse conv的实验是3x3 conv fuse 1x1 conv，而且channel超级小，大家猜猜为什么作者不放3x3 conv fuse 3x3 conv或者放channel大一点的情形呢（这个问题我们研究了很久hhh）。
 
 Bolt和Ansor比的话，确实加速很大。毕竟Ansor支持不了Tensor Core。
 
-![](asset/img_9c081efb62a1.jpg)
+![](/images/collections/0.raw/zhihu/tvm/asset/img_9c081efb62a1.jpg)
 
 我最近发表的文章其实也可以处理自动Tensor Core代码生成的问题，有兴趣的同学或许可以瞧一瞧。代码在[这里](https://link.zhihu.com/?target=https%3A//github.com/KnowingNothing/AMOS)。
 

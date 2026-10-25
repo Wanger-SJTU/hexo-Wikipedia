@@ -1,3 +1,16 @@
+---
+title: 고급 저장소 템플릿(Advanced Repo Template)
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/ko/resources/openai-advanced/repo-template/index/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # 고급 저장소 템플릿(Advanced Repo Template)
 
 최소한의 하네스(harness)만으로는 부족하고, OpenAI 스타일의 에이전트 우선(agent-first) 문서 체계가 필요할 때 이 스타터를 실제 저장소에 복사하십시오.

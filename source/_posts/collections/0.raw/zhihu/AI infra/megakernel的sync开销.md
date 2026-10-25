@@ -1,10 +1,19 @@
 ---
-title: "megakernel的sync开销"
-date: 2026-06-29
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/2054985214791775283
-
+title: megakernel的sync开销
+date: "2026-06-29 00:00:00"
+updated: "2026-06-29 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/AI-infra/megakernel的sync开销/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/2054985214791775283
 ---
+
 
 近期AMD的2篇megakernel相关的内容引起了我的注意，都探讨了megakernel里的sync开销。
 

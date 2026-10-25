@@ -1,9 +1,19 @@
 ---
-title: "(1 封私信) Roofline Model与深度学习模型的性能分析"
-date: 2020-05-17
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/34204282
+title: (1 封私信) Roofline Model与深度学习模型的性能分析
+date: "2020-05-17 00:00:00"
+updated: "2020-05-17 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/模型部署那些事/Roofline-Model与深度学习模型的性能分析/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/34204282
 ---
+
 
 最近在不同的计算平台上验证几种经典深度学习模型的训练和预测性能时，经常遇到模型的实际测试性能表现和自己计算出的复杂度并不完全吻合的现象，令人十分困惑。机缘巧合听了Momenta的技术分享后，我意识到问题的答案其实就在于 Roof-line Model 这个理论，于是认真研究了一下相关论文。现在把自己的心得总结出来，分享给大家。
 
@@ -11,7 +21,7 @@ source: https://zhuanlan.zhihu.com/p/34204282
 
 在真实世界中，任何模型（例如 VGG / MobileNet 等）都必须依赖于具体的计算平台（例如CPU / GPU / ASIC 等）才能展现自己的实力。此时，模型和计算平台的"默契程度"会决定模型的实际表现。Roofline Model 提出了使用 Operational Intensity（计算强度）进行定量分析的方法，并给出了模型在计算平台上所能达到理论计算性能上限公式。**
 
-![](asset/img_eef5d36726c2.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%25A8%25A1%25E5%259E%258B%25E9%2583%25A8%25E7%25BD%25B2%25E9%2582%25A3%25E4%25BA%259B%25E4%25BA%258B/asset/img_eef5d36726c2.jpg)
 
 有了 Roofline Model，我就可以知道模型在机器上能跑多快喽～做梦都会笑出声来～
 $### **1. 计算平台的两个指标：算力 &#x03C0;" role="presentation">π\pi 与带宽 &#x03B2;" role="presentation">β\beta** $
@@ -67,7 +77,7 @@ $\quad\quad\quad \textrm{Conv Layer Space Complexity} : (K^2 \cdot C_{in} \cdot 
 
 - 算力**决定“屋顶”的高度（绿色线段）
 - **带宽**决定“房檐”的斜率（红色线段）
-![](asset/img_10a8345ece24.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%25A8%25A1%25E5%259E%258B%25E9%2583%25A8%25E7%25BD%25B2%25E9%2582%25A3%25E4%25BA%259B%25E4%25BA%258B/asset/img_10a8345ece24.jpg)
 
 ### **3.2 Roof-line 划分出的两个瓶颈区域**
 
@@ -93,7 +103,7 @@ $\quad\quad\quad \textrm{Conv Layer Space Complexity} : (K^2 \cdot C_{in} \cdot 
 
 ### 4.1 VGG16**
 
-![](asset/img_97d10de9f936.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%25A8%25A1%25E5%259E%258B%25E9%2583%25A8%25E7%25BD%25B2%25E9%2582%25A3%25E4%25BA%259B%25E4%25BA%258B/asset/img_97d10de9f936.jpg)
 
 VGG-16**VGG 可以说是在计算强度上登峰造极的一个模型系列，简约不简单**。以 VGG16 为例，从上表可以看到，仅包含一次前向传播的计算量就达到了 15 GFLOPs，如果包含反向传播，则需要再乘二。访存量则是 Kernel Mem 和 Output Mem 之和再乘以四，大约是 600MB。**因此 VGG16 的计算强度就是 25 FLOPs/Byte。**
 
@@ -103,7 +113,7 @@ VGG-16**VGG 可以说是在计算强度上登峰造极的一个模型系列，�
 
 ### 4.2 MobileNet**
 
-![](asset/img_38c49b5c71a0.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%25A8%25A1%25E5%259E%258B%25E9%2583%25A8%25E7%25BD%25B2%25E9%2582%25A3%25E4%25BA%259B%25E4%25BA%258B/asset/img_38c49b5c71a0.jpg)
 
 MobileNet 是以轻量著称的小网络代表（最近新出了V2版本，[分析见这里](https://zhuanlan.zhihu.com/p/33075914)）。相比简单而庞大的 VGG16 结构，MobileNet 的网络更为细长，加入了大量的BN，每一层都通过 DW + PW 的方式降低了计算量，同时也付出了计算效率低的代价。从上面超级长的表格就能有一个感性的的认识。
 
@@ -122,7 +132,7 @@ MobileNet 的计算量只有大约 0.5 GFLOPs（VGG16 则是 15 GFLOPs），其�
 $- 因此 1080Ti 计算平台的最大计算强度 I_{max} \approx 24 $
 - VGG16 的计算强度 I_V \approx 25 
 - MobileNet 的计算强度 I_M \approx 7  
-![](asset/img_52df42a16e70.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%25A8%25A1%25E5%259E%258B%25E9%2583%25A8%25E7%25BD%25B2%25E9%2582%25A3%25E4%25BA%259B%25E4%25BA%258B/asset/img_52df42a16e70.jpg)
 
 Roof-line Model : VGG16 vs MobileNet
 
@@ -156,6 +166,6 @@ MobileNet 这类小型网络更适合运行在嵌入式平台之上。首先这�
 
 [](https://zhuanlan.zhihu.com/p/33693725)
 
-![](asset/img_8d36026e1ba4.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%25A8%25A1%25E5%259E%258B%25E9%2583%25A8%25E7%25BD%25B2%25E9%2582%25A3%25E4%25BA%259B%25E4%25BA%258B/asset/img_8d36026e1ba4.jpg)
 
 祝大家好胃口～

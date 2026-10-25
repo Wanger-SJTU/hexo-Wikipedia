@@ -1,9 +1,19 @@
 ---
-title: "(2 条消息) S3-FIFO缓存淘汰算法"
-date: 2025-09-29
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/1956103700922762926
+title: (2 条消息) S3-FIFO缓存淘汰算法
+date: "2025-09-29 00:00:00"
+updated: "2025-09-29 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/S3-FIFO缓存淘汰算法/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/1956103700922762926
 ---
+
 
 **原文首发：异度部落格（微信公众号: yidooxyz，博客：[异度部落格](https://link.zhihu.com/?target=https%3A//www.yidoo.xyz)）
 转载声明：本文版权归作者所有。若需商业转载请联系作者授权，非商业转载请注明出处。> *在研究 AIBrix 的 KVCache 淘汰机制时，我第一次接触到 S3FIFO 这一算法。它以极致简洁的设计令我印象深刻，因此特意撰文记录与分享。*
@@ -67,12 +77,12 @@ Ghost 队列的作用是：当一个对象在被驱逐后又被访问时，从 G
 - 被淘汰的对象其 key 会被加入 G，以便未来可被检测到是否再次访问。
 下面是S3-FIFO的缓存访问和更新示例：
 
-![](asset/img_99abca42ae55.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_99abca42ae55.jpg)
 
 S3-FIFO性能****S3-FIFO由于其简洁设计和低成本的操作开销，性能上表现优异，下面是翻译自项目首页（[https://s3fifo.com/）的两句话：](https://link.zhihu.com/?target=https%3A//s3fifo.com/%25EF%25BC%2589%25E7%259A%2584%25E4%25B8%25A4%25E5%258F%25A5%25E8%25AF%259D%25EF%25BC%259A)
 
 - S3-FIFO 的未命中率比 LRU 低达 72%。**
-![](asset/img_73ca8dd02d4a.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_73ca8dd02d4a.jpg)
 
 - **S3-FIFO 将 LRU 缓存大小减少 46%，并将吞吐量提升 6 倍。**
-![](asset/img_833378e03f65.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_833378e03f65.jpg)

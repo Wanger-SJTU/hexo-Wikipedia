@@ -1,3 +1,16 @@
+---
+title: Рубрика evaluator
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/ru/resources/templates/evaluator-rubric/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # Рубрика evaluator
 
 Используйте эту рубрику после реализации и перед окончательным принятием.

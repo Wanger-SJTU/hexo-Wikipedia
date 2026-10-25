@@ -1,3 +1,16 @@
+---
+title: 한국어 리소스 라이브러리 (Resource Library)
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/ko/resources/index/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # 한국어 리소스 라이브러리 (Resource Library)
 
 이 폴더는 강의에서 소개한 메서드(method)를 실제 저장소에 바로 복사해 사용할 수 있는 템플릿(template)과 간결한 참고 자료로 구체화한 것입니다. 에이전트(agent)가 여러 세션에 걸쳐 일관성 있게 작동하려면 별도의 설정·상태·범위를 매번 재도출하는 대신, 이 자료들을 기반으로 삼아야 합니다.

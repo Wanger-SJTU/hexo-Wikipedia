@@ -1,3 +1,16 @@
+---
+title: Prompt 校准
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/zh/resources/reference/prompt-calibration/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # Prompt 校准
 
 根指令文件应该定义工作框架，而不是把所有动作写死。

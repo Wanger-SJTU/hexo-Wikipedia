@@ -1,10 +1,19 @@
 ---
-title: "Tensor的简易实现"
-date: 2020-12-28
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/340228853
-
+title: Tensor的简易实现
+date: "2020-12-28 00:00:00"
+updated: "2020-12-28 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/dl论文/Tensor的简易实现/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/340228853
 ---
+
 
 使用Pytorch等深度学习框架时，我们常常会用view、transpose等函数得到不同形状的Tensor，或者在某一维上进行索引、切片来截取部分数据。无论操作的Tensor含有多少数据，这些操作都可以很快地完成，时间复杂度几乎为常数。显然，要做到这一点，必须共享这些派生出来的Tensor底层的数据。那么形状各异的Tensor是如何共享数据的呢？下面来介绍Tensor内部的基本概念。
 

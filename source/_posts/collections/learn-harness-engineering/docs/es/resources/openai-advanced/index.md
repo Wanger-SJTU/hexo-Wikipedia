@@ -1,3 +1,16 @@
+---
+title: Pack Avanzado de OpenAI
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/es/resources/openai-advanced/index/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # Pack Avanzado de OpenAI
 
 Esta carpeta empaqueta la estructura de repositorio más opinionada descrita en

@@ -1,9 +1,19 @@
 ---
-title: "杂谈闪存三：FTL"
-date: 2018-03-24
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/26944064
+title: 杂谈闪存三：FTL
+date: "2018-03-24 00:00:00"
+updated: "2018-03-24 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/体系结构/杂谈闪存三-FTL/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/26944064
 ---
+
 
 上文（[杂谈闪存二：NOR和NAND Flash - 知乎专栏](https://zhuanlan.zhihu.com/p/26745577)）提到NAND flash管理的核心FTL（Flash Translation Layer）。事实上几乎所有的应用NAND Flash的设备都必须配备FTL，包括我们经常碰到的SD, eMMC, UFS, SSD等等。通常FTL由这些设备的固件提供实现。我们来深入了解下什么是FTL吧。
 
@@ -11,19 +21,19 @@ source: https://zhuanlan.zhihu.com/p/26944064
 
 一个典型的Flash芯片由Package, die, plane, block和page组成，如下图：
 
-![](asset/img_fd2a12d458ee.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_fd2a12d458ee.jpg)
 
 **
 
 Package**: 也就是chip即Flash芯片，就是我们经常在M.2的SSD上看到的NAND flash颗粒：
 
-![](asset/img_a03b1a290389.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_a03b1a290389.jpg)
 
 **
 
 Die**: 一个NAND颗粒是由一颗或者多颗Die封装在一起而成，这种封装可是平排的，也可以是层叠的。die内部可以通过3D 堆叠技术扩展容量，譬如三星的V-NAND每层容量都有128Gb（16GB），通过3D堆叠技术可以实现最多24层堆叠，这意味着24层堆叠的总容量将达到384GB！就像盖楼房一样：
 
-![](asset/img_b6714b5f85cf.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_b6714b5f85cf.jpg)
 
 **
 
@@ -43,7 +53,7 @@ Plane**: 一个die可以包含几个Plane.
 
 FTL简单来说就是系统维护了一个逻辑Block地址（LBA，logical block addresses ）和物理Block地址（PBA, physical block addresses）的对应关系, 如图：
 
-![](asset/img_53a640d519ee.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_53a640d519ee.jpg)
 
 **
 
@@ -69,7 +79,7 @@ LBA/PBA的映射本身会对寿命均衡产生正面影响。就如我们SD卡�
 
 废块需要找时机回收，这就需要垃圾回收（GC，Garbage Collection）机制。
 
-![](asset/img_0e4c3307e13a.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_0e4c3307e13a.jpg)
 
 **
 
@@ -79,7 +89,7 @@ LBA/PBA的映射本身会对寿命均衡产生正面影响。就如我们SD卡�
 
 这个表随时可以变化，我们把它存储在哪里呢？是不是也找个page存起来呢？事实上，在大部分的NAND Flash里，还有些空闲块，我们叫它OP(Over Provisioning)。如下图:
 
-![](asset/img_3e83f396dce9.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_3e83f396dce9.jpg)
 
 **
 
@@ -131,6 +141,6 @@ A．** 坏块处理。发现坏块，这些后备的可以立刻顶上，因为�
 
 欢迎大家关注本专栏和用微信扫描下方二维码加入微信公众号"UEFIBlog"，在那里有最新的文章。同时欢迎大家给本专栏和公众号投稿！
 
-![](asset/img_431421bffde3.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_431421bffde3.jpg)
 
 用微信扫描二维码加入UEFIBlog公众号

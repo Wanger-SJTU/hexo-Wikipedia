@@ -1,9 +1,19 @@
 ---
-title: "后注意力时代：Sparse is all you need"
-date: 2025-11-28
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/1977884110639890643
+title: 后注意力时代：Sparse is all you need
+date: "2025-11-28 00:00:00"
+updated: "2025-11-28 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/LLM-SD/后注意力时代-Sparse-is-all-you-need/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/1977884110639890643
 ---
+
 
 深度学习已经进入了**post-attention时代。**随着生成的精度逐渐令人满意，研究者们开始比拼上下文长度和生成效率。
 

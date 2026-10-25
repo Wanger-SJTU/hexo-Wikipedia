@@ -1,3 +1,16 @@
+---
+title: 프로젝트 03. 세션 재시작 후에도 에이전트가 계속 작업하도록 만들기
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/ko/projects/project-03-multi-session-continuity/index/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 [English Version →](../../../en/projects/project-03-multi-session-continuity/)
 
 > 관련 강의: [강의 05. 세션 간에 컨텍스트를 유지하기](./../../lectures/lecture-05-why-long-running-tasks-lose-continuity/index.md) · [강의 06. 모든 에이전트 세션 전에 초기화하기](./../../lectures/lecture-06-why-initialization-needs-its-own-phase/index.md)

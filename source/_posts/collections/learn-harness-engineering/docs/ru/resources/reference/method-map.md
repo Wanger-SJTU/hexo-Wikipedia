@@ -1,3 +1,16 @@
+---
+title: Карта методов
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/ru/resources/reference/method-map/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # Карта методов
 
 Эта таблица сопоставляет самые распространённые режимы отказа в долгих задачах агента-кодера с артефактом или операционным правилом, которое обычно решает их первым.

@@ -1,11 +1,21 @@
 ---
-title: "无限长的上下文，也干不掉的RAG"
-date: 2024-03-22
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/688370566
+title: 无限长的上下文，也干不掉的RAG
+date: "2024-03-22 00:00:00"
+updated: "2024-03-22 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/LLM-SD/无限长的上下文,也干不掉的RAG/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/688370566
 ---
 
-**之前有一个论调，说如果大模型支持足够长的上下文内容时候，是否就不在需要向量库。下面这个论文，通过实验证明了，即时上下文足够的丰富，通过调整位置、上下文内容，对于生成的效果具有显著的影响。![](asset/img_8b08e718385a.jpg)
+
+**之前有一个论调，说如果大模型支持足够长的上下文内容时候，是否就不在需要向量库。下面这个论文，通过实验证明了，即时上下文足够的丰富，通过调整位置、上下文内容，对于生成的效果具有显著的影响。![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_8b08e718385a.jpg)
 
 ### 概述**
 

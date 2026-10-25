@@ -1,9 +1,19 @@
 ---
-title: "Claude Code 使用技巧详解"
-date: 2026-03-02
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/2011882791802004093
+title: Claude Code 使用技巧详解
+date: "2026-03-02 00:00:00"
+updated: "2026-03-02 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/AgentCLI/Claude-Code-使用技巧详解/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/2011882791802004093
 ---
+
 
 ### [https://github.com/ykdojo/claude-code-tips](https://link.zhihu.com/?target=https%3A//github.com/ykdojo/claude-code-tips)
 
@@ -483,7 +493,7 @@ Worktree 方式：
 `claude() {
   local args=()
   for arg in "$@"; do
-    if [[ "$arg" == "--fs" ]]; then
+    if <span class="wikilink wikilink--missing" title="未导入的页面">&quot;$arg&quot; == &quot;--fs&quot;</span>; then
       args+=("--fork-session")
     else
       args+=("$arg")

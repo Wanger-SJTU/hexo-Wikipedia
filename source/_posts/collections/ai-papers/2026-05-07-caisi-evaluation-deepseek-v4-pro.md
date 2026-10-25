@@ -1,21 +1,29 @@
 ---
 title: CAISI 对 DeepSeek V4 Pro 的评估
-date: 2026-05-07
+date: "2026-05-07 00:00:00"
+updated: "2026-05-07 00:00:00"
+layout: post
+permalink: /collections/ai-papers/2026-05-07-caisi-evaluation-deepseek-v4-pro/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
 tags:
   - AI
   - 评测
   - DeepSeek
   - NIST
   - 大模型
-mathjax: true
-source: https://www.nist.gov/news-events/news/2026/05/caisi-evaluation-deepseek-v4-pro
+source_url: https://www.nist.gov/news-events/news/2026/05/caisi-evaluation-deepseek-v4-pro
 ---
+
 
 > **原文**：[CAISI Evaluation of DeepSeek V4 Pro](https://www.nist.gov/news-events/news/2026/05/caisi-evaluation-deepseek-v4-pro)（NIST，2026年5月）
 
 2026年4月，人工智能标准与创新中心（CAISI）对开源权重 AI 模型 DeepSeek V4 Pro（"DeepSeek V4"）进行了评估。CAISI 评估结果表明，DeepSeek V4 的能力落后于前沿水平约 **8个月**（图1）。
 
-![图1：美国与中国模型能力综合对比](/images/caisi-deepseek-v4-pro/fig1-overall-capability.png)
+![图1：美国与中国模型能力综合对比](/images/collections/ai-papers/asset/fig1-overall-capability.png)
 
 > 图1：基于覆盖五个领域的基准测试套件，对美国和中国的最强公开模型进行的能力综合对比。y轴每增加200点，解决给定任务的概率提升3倍。模型能力采用类项目反应理论（IRT）方法拟合，详见附录。使用了16个基准测试和35个模型生成本图。趋势线通过对前沿模型进行最小二乘法回归拟合。误差条表示95%置信区间。
 
@@ -54,7 +62,7 @@ source: https://www.nist.gov/news-events/news/2026/05/caisi-evaluation-deepseek-
 > 
 > ***通过 IRT 从子样本推断。
 
-![图2：基准测试详细结果对比](/images/caisi-deepseek-v4-pro/fig2-benchmark-table.png)
+![图2：基准测试详细结果对比](/images/collections/ai-papers/asset/fig2-benchmark-table.png)
 
 ## DeepSeek 评估 vs CAISI 评估
 
@@ -68,7 +76,7 @@ DeepSeek 的技术报告表明，DeepSeek V4 在一系列基准测试上与美�
 
 DeepSeek V4 在7项 CAISI 基准测试中的5项上比 GPT-5.4 mini 成本更低。在这些7项基准测试中，DeepSeek V4 的成本从比 GPT-5.4 mini 便宜53%到贵41%不等。有两项 CAISI 基准测试被排除在成本比较之外：PortBench 因为它采用连续评分，CAISI 的成本比较方法尚不支持；以及 ARC-AGI-2 因为 GPT-5.4 mini 评估运行的技术问题。
 
-![图4：GPT-5.4 mini 与 DeepSeek V4 Pro 在不同基准测试上的端到端费用](/images/caisi-deepseek-v4-pro/fig3-cost-comparison.png)
+![图4：GPT-5.4 mini 与 DeepSeek V4 Pro 在不同基准测试上的端到端费用](/images/collections/ai-papers/asset/fig3-cost-comparison.png)
 
 > 图4：两个模型在两者都正确解决的基准测试任务上的端到端费用。条形越高表示端到端成本越高。数值大于1.0表示 DeepSeek V4 的成本高于 GPT-5.4 mini。条形内的数字表示模型解决基准测试任务/问题所产生的平均费用（平均值在两个模型都正确解决的基准测试任务/问题集上计算）。
 

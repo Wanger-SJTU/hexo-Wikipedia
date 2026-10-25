@@ -1,9 +1,19 @@
 ---
-title: "MoE训练&&推理，开TP还是EP?"
-date: 2026-04-12
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/2026763517529695535
+title: MoE训练&&推理，开TP还是EP?
+date: "2026-04-12 00:00:00"
+updated: "2026-04-12 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/LLM-SD/MoE训练-推理,开TP还是EP_/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/2026763517529695535
 ---
+
 
 ### 摘要
 

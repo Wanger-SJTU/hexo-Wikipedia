@@ -1,10 +1,19 @@
 ---
-title: "图解MSA（MiniMax Sparse Attention）"
-date: 2026-07-11
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/2059278715834652015
-
+title: 图解MSA（MiniMax Sparse Attention）
+date: "2026-07-11 00:00:00"
+updated: "2026-07-11 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/LLM-SD/图解MSA(MiniMax-Sparse-Attention)/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/2059278715834652015
 ---
+
 
 本文主要解读MiniMax稀疏注意力机制（MiniMax Sparse Attention，简称MSA）技术论文第2、3小节里的数学公式。其中“预备知识”这一小节大致对应论文第2小节，复习一下标准注意力机制，以及MQA、GQA和稀疏注意力等优化机制。“MiniMax稀疏注意力”这一小节大致对应论文第3.1小节，会详细介绍MSA架构。
 

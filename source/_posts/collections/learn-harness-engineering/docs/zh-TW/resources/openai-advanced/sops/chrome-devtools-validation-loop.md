@@ -1,3 +1,16 @@
+---
+title: SOP：Chrome DevTools 驗證循環
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/zh-TW/resources/openai-advanced/sops/chrome-devtools-validation-loop/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # SOP：Chrome DevTools 驗證循環
 
 當 UI 工作需要真實的執行階段互動，而且截圖、DOM 狀態與 console 輸出比單看程式碼更重要時，就使用這份 SOP。

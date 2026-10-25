@@ -1,9 +1,19 @@
 ---
-title: "GitHub狂飙3万star的LLM公开资料 - 大模型入门教程"
-date: 2024-12-29
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/686277638
+title: GitHub狂飙3万star的LLM公开资料 - 大模型入门教程
+date: "2024-12-29 00:00:00"
+updated: "2024-12-29 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/LLM-SD/GitHub狂飙3万star的LLM公开资料-大模型入门教程/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/686277638
 ---
+
 
 `文章题目： ️ Large Language Model Course
 文章作者：Maxime Labonne
@@ -15,7 +25,7 @@ huggingface：https://huggingface.co/mlabonne
 
 ### **先用一张图片说明这篇blog多火热！**
 
-![](asset/img_5c5ad39b12c6.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_5c5ad39b12c6.jpg)
 
  本篇大型语言模型（LLM）课程分为三个部分：
 
@@ -55,7 +65,7 @@ Quantization
 
 ### 1.    LLM 基础
 
-![](asset/img_f634b9734ad8.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_f634b9734ad8.jpg)
 
 #### 1.1 机器学习 ML 的数学基础
 
@@ -155,7 +165,7 @@ colah的博客 - 理解LSTM网络：关于LSTM网络的更具理论性的文章�
 
 ### 2.  ‍  LLM Scientist
 
-![](asset/img_775ac293a84d.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_775ac293a84d.jpg)
 
 本节注于学习如何使用最新技术构建最佳的大型语言模型（LLMs）。
 
@@ -357,7 +367,7 @@ FriendliAI的理解激活感知权重量化：AWQ技术的概述及其好处。
 
 ### 3.   LLM 工程师
 
-![](asset/img_5ba368610080.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_5ba368610080.jpg)
 
 本节专注于学习如何构建可以在生产环境中使用的由大型语言模型（LLM）驱动的应用程序，重点是增强模型并部署它们。
 

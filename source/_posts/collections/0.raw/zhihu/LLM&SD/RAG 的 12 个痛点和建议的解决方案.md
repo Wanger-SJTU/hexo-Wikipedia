@@ -1,13 +1,23 @@
 ---
-title: "RAG 的 12 个痛点和建议的解决方案"
-date: 2024-02-02
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/681066379
+title: RAG 的 12 个痛点和建议的解决方案
+date: "2024-02-02 00:00:00"
+updated: "2024-02-02 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/LLM-SD/RAG-的-12-个痛点和建议的解决方案/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/681066379
 ---
+
 
 https://archive.is/bNbZo
 
-![](asset/img_aa1a71265934.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_aa1a71265934.jpg)
 
 · Pain Point 1: Missing Content 内容缺失**· Pain Point 2: Missed the Top Ranked Documents 错过排名靠前的文档
 · Pain Point 3: Not in Context — Consolidation Strategy Limitations 不在上下文中——整合战略的局限性
@@ -31,7 +41,7 @@ First, let’s examine the seven pain points addressed in the paper mentioned ab
 
 首先，让我们研究一下上述论文中提到的七个痛点；请参阅下图。然后，我们将添加另外五个痛点及其建议的解决方案。
 
-![](asset/img_40078c49b462.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_40078c49b462.jpg)
 
 Image source: Seven Failure Points When Engineering a Retrieval Augmented Generation SystemPain Point 1: Missing Content  内容缺失
 The RAG system provides a plausible but incorrect answer when the actual answer is not in the knowledge base, rather than stating it doesn’t know. Users receive misleading information, leading to frustration.
@@ -615,7 +625,7 @@ The implementation for the helper function `moderate_and_query`:
 
 The sample output below shows that the query is unsafe and violated category 8 in the custom taxonomy.
 
-![](asset/img_7bedaa9d25d6.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_7bedaa9d25d6.jpg)
 
 For more details on how to use Llama Guard, check out my previous article, Safeguarding Your RAG Pipelines: A Step-by-Step Guide to Implementing Llama Guard with LlamaIndex. 有关如何使用Llama Guard的更多详细信息，请参阅我之前的文章《保护您的RAG管道：使用LlamaIndex实施Llama警卫队的分步指南》。
 
@@ -624,11 +634,11 @@ For more details on how to use Llama Guard, check out my previous article, Safeg
 We explored 12 pain points (7 from the paper and 5 additional ones) in developing RAG pipelines and provided corresponding proposed solutions to all of them. See the diagram below, adapted from the original diagram from the paper [Seven Failure Points When Engineering a Retrieval Augmented Generation System](https://link.zhihu.com/?target=https%3A//archive.is/o/bNbZo/https%3A//arxiv.org/pdf/2401.05856.pdf). 我们探讨了开发RAG管道的12个痛点（论文中的7个和另外的5个），并为所有这些痛点提供了相应的解决方案。请参阅下图，该图改编自论文《设计检索增强生成系统时的七个故障点》中的原始图。
  
 
-![](asset/img_aa1a71265934.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_aa1a71265934.jpg)
 
 Putting all 12 RAG pain points and their proposed solutions side by side in a table, we now have:
 
-![](asset/img_dbdf2e2e7a29.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_dbdf2e2e7a29.jpg)
 
 While this list is not exhaustive, it aims to shed light on the multifaceted challenges of RAG system design and implementation. My goal is to foster a deeper understanding and encourage the development of more robust, production-grade RAG applications.
 Happy coding!

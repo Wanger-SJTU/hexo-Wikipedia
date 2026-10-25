@@ -1,3 +1,16 @@
+---
+title: Electron 아키텍처 규칙
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/ko/lectures/lecture-10-why-end-to-end-testing-changes-results/code/architecture-rules/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # Electron 아키텍처 규칙
 
 - 렌더러 코드는 파일시스템에 직접 접근할 수 없습니다.

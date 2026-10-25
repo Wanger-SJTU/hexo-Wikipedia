@@ -1,9 +1,19 @@
 ---
-title: "一种Python全局配置规范以及其魔改"
-date: 2017-12-25
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/31669135
+title: 一种Python全局配置规范以及其魔改
+date: "2017-12-25 00:00:00"
+updated: "2017-12-25 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/编程向/一种Python全局配置规范以及其魔改/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/31669135
 ---
+
 
 ### 0x01 模块 or global
 
@@ -17,7 +27,7 @@ source: https://zhuanlan.zhihu.com/p/31669135
 
 通过模块配置全局变量的试例如下，在configs.py中定义CONFIG_A和CONFIG_B。在user.py中用import导入。
 
-![](asset/img_ecc1aceb75e9.jpg)
+![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_ecc1aceb75e9.jpg)
 
 这个其实是Python中的基本操作了，本来是没啥好讲的，不过在这篇文章最后我展示了一种根据json配置的动态模块，供大家参考。
 

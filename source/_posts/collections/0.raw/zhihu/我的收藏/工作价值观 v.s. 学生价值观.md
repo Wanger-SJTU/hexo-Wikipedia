@@ -1,9 +1,19 @@
 ---
-title: "工作价值观 v.s. 学生价值观"
-date: 2025-12-11
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/1982479217628299773
+title: 工作价值观 v.s. 学生价值观
+date: "2025-12-11 00:00:00"
+updated: "2025-12-11 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/工作价值观-v.s.-学生价值观/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/1982479217628299773
 ---
+
 
 工作价值观 v.s. 学生价值观
 

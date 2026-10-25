@@ -1,9 +1,19 @@
 ---
-title: "(2 条消息) 模集第二章：MOS器件基础（总结）"
-date: 2024-12-24
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/720969530
+title: (2 条消息) 模集第二章：MOS器件基础（总结）
+date: "2024-12-24 00:00:00"
+updated: "2024-12-24 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/模集第二章-MOS器件基础(总结)/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/720969530
 ---
+
 
 ### 2.1 MOSFET的结构
 
@@ -15,7 +25,7 @@ MOS器件简图：
 
 n型MOS（NMOS）器件的简化结构图：
 
-![](asset/img_88d07ca7e109.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_88d07ca7e109.jpg)
 
 Poly：指多晶硅 
 
@@ -35,7 +45,7 @@ t_{ox} ：氧化层厚度
 
      MOSFET是一个四端器件，因为经典的MOS工作中，源（S）和漏（D）结二极管都必须反偏，所以我们认为NMOS晶体管的衬底被链接到系统的最低点位。
 
-![](asset/img_278c9e03a50c.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_278c9e03a50c.jpg)
 
 NMOS加上电压后，电压高的一侧是D极，电压低的一侧是S极，PMOS则相反
 
@@ -45,7 +55,7 @@ NMOS加上电压后，电压高的一侧是D极，电压低的一侧是S极，PM
 - B:  body
     在互补MOS（**CMOS**）技术中同时使用到了NMOS和PMOS，而在实际生产中，二者必须做在同一晶片上（即同一衬底）。
 
-![](asset/img_f8018f4c3591.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_f8018f4c3591.jpg)
 
 如图，在P衬底上制作一个隔离的n阱区域来做PMOS。其中的n-well称为n阱。    由图可以看出来：不同的NMOS的衬底（B极）都只能接在一起的（因为是做在整块P衬底上），通常是接地。而不同PMOS的B极可以隔离，因为PMOS可以做在衬底的许多地方，它们的 V_B 可以不同。
 
@@ -79,7 +89,7 @@ V_{OD} = V_{GS}-V_{TH} :被称为"**过驱动电压(overdrive voltage)"**
 
 I-V曲线：
 
-![](asset/img_dc425a93e01e.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_dc425a93e01e.jpg)
 
 VGS不同时根据（1）式得到的抛物线由图可知：
 
@@ -92,23 +102,23 @@ $$I_{D}\approx \mu_{n}C_{ox}\frac{W}{L}(V_{GS}-V_{TH})V_{DS} $$
 
 可以看出，此时漏极电流是 V_{DS} 的线性函数，在V_{DS} 较小时可以从上图的曲线中很明显地看出来。我们可以将每条抛物线用一条直线来近似，这种线性关系表明源漏之间的通道可以用一个线性电阻来表示：
 
-![](asset/img_68c6cfb3f0c8.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_68c6cfb3f0c8.jpg)
 
 $$深三级管区的线性工作即：                                  R_{on} = \frac{1}{ \mu_{n}C_{ox}\frac{W}{L}(V_{GS}-V_{TH})} \tag{3} $$
 
-![](asset/img_94b147389493.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_94b147389493.jpg)
 
 作为可空线性电阻的MOSFET(2)器件工作在"饱和区"**
 
 此时 V_{GS}-V_{TH}">V_{DS}>V_{GS}-V_{TH} ：
 
-![](asset/img_4b6a3db31fa2.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_4b6a3db31fa2.jpg)
 
 漏电流的饱和此时漏极电流不遵循抛物线特性，且 I_D  相对恒定。
 
 我们可以从器件的夹断特性来理解：
 
-![](asset/img_f6b24c24daac.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_f6b24c24daac.jpg)
 
 夹断特性如图，如果 V_{DS} 略大于 V_{GS}-V_{TH} ，则反型区将在 x\le L 处终止，称为：**”沟道被夹断“**
 
@@ -132,9 +142,9 @@ $$和 I_{D,max} = -\frac{1}{2}\mu_{n}C_{ox}\frac{W}{L'}(V_{GS}-V_{TH})^2 \tag{6}
 
       若L为常数，那么工作在饱和区的MOSFET构成一个链接源和漏的电流源。（注意：NMOS电流源向地注入电流而PMOS电流源从 **V_{DD}** 抽取电流）**
 
-![](asset/img_701b67fea15e.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_701b67fea15e.jpg)
 
-NMOS![](asset/img_ffa0d036bc32.jpg)
+NMOS![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_ffa0d036bc32.jpg)
 
 PMOS于此（1）（4）（5）（6）表示N(P)MOS器件的大信号特性，即只要晶体管导体，就可以利用这些式子计算栅、源和漏在任意偏压下的漏电流。而由于电流特性的非线性特性带来的困难，后面常采用线性近似（小信号模型）分析电路。
 
@@ -166,7 +176,7 @@ $$I_D  \approx \mu_n C_{ox}\frac{W}{L} (V_{GS}-V_{TH})^2(1+\lambda V_{DS}) \tag{
 
 如图：
 
-![](asset/img_e091dedc990e.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_e091dedc990e.jpg)
 
 沟道长度调制效应所引起的饱和区有限斜率这种现象使得I-V特性曲线在饱和区出现非零斜率，因而使D和S之间电流源非理想。
 
@@ -188,7 +198,7 @@ $$\lambda \propto 1/L\\ \frac{\partial I_D}{\partial V_{GS}}|_{V_{DS}=const}=g_m
 
 v_{BS} 对增强型NMOS管的转移特性的影响如图：
 
-![](asset/img_207d5db4dd47.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_207d5db4dd47.jpg)
 
 具有衬底调制效应的转移特性曲线示意图|v_{BS}| 越大，则 V_{TH} 就越大。这种现象被称为**衬底调制效应**。衬底B因此又被称为背栅。
 
@@ -208,11 +218,11 @@ V_{SB} 是源衬电势差
 
 我们认为电容存在于MOSFET的四个端子中任意两个之间：
 
-![](asset/img_fa6e48d78961.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_fa6e48d78961.jpg)
 
 MOS电容**可以注意到图中只显示了五个电容，但是照排列组合四个端口应该会有六个电容。实际上S和D之间的电容是可以忽略不计的，这和制造MOS的工艺有关。感兴趣的同学可以去了解一下相关工艺。注意，做题时可能会将几个电容等效为一个电容，比如做题时题目图中不会显示电容 C_{GB} 那很有可能是与电容 C_{GS} 串联而等效成一个电容了。
 
-![](asset/img_e9c0718043ac.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_e9c0718043ac.jpg)
 
 直观图C_{GB}">C_1+C_2-->C_{GB} C_{GS}">C_3 -->C_{GS} 
 
@@ -220,7 +230,7 @@ C_{GD}">C_4 -->C_{GD} C_{SB}">C_5-->C_{SB} C_{DB}">C_6-->C_{DB}
 
 了解到器件存在电容之后还要能画出包括器件电容在内的完整的小信号模型（其实先画小信号模型再画电容，同时把可以合并电容合并在一起即可）
 
-![](asset/img_c0e2dcf0469e.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_c0e2dcf0469e.jpg)
 
 完整的MOS小信号模型
 ### 2.5 MOS小信号模型
@@ -233,13 +243,13 @@ C_{GD}">C_4 -->C_{GD} C_{SB}">C_5-->C_{SB} C_{DB}">C_6-->C_{DB}
 
 我们让栅源端产生一个电压增量 \nabla V = V_{GS} （小信号量），该电压增益引起的漏电流的增量为： g_m V_{GS} ，可以用链接在栅源之间的压控电流源来模拟。栅电流非常小，其变化可以忽略。
 
-![](asset/img_096d8f482790.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_096d8f482790.jpg)
 
 **（b）用独立电流源来表示沟道长度调制效应**
 
 由于沟道长度调制效应，漏电流也随着漏-源电压变化，这一效应也可以用一个压控电流源模拟：
 
-![](asset/img_096d8f482790.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_096d8f482790.jpg)
 
 独立电流源来表示沟道长度调制效应（c）用电阻来表示沟道长度调制效应
 
@@ -251,7 +261,7 @@ $假定 \lambda V_{DS} \le 1 ，有：$
 
  $$r_0 \approx \frac{1}{\lambda I_D}  \tag{10} $$
 
-![](asset/img_d34102ca0276.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_d34102ca0276.jpg)
 
 用电阻来表示沟道长度调制效应**（d）体效应用独立电流源表示**
 
@@ -263,13 +273,13 @@ $式中 \eta = g_{mb}/g_m ,典型值为0.25。（当 V_{SB} 增加时，体效�
 
 注意, g_m V_{GS} 和 g_{mb}V_{BS} 有相同的极性，也就是说，增大栅电压与增大衬底电压效果相同。
 
-![](asset/img_fdc726ca908f.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_fdc726ca908f.jpg)
 
 体效应用独立电流源表示**PMOS小信号模型：**
 
 虽然两者的画法差异较大，但是要记住NMOS器件和PMOS器件的小信号模型是相同的！
 
-![](asset/img_4b908f50c55f.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_4b908f50c55f.jpg)
 
 PMOS小信号模型
 

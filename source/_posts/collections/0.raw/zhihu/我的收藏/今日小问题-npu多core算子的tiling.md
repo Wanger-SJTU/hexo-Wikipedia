@@ -1,9 +1,19 @@
 ---
-title: "今日小问题-npu多core算子的tiling"
-date: 2026-01-19
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/1994528041406334011
+title: 今日小问题-npu多core算子的tiling
+date: "2026-01-19 00:00:00"
+updated: "2026-01-19 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/今日小问题-npu多core算子的tiling/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/1994528041406334011
 ---
+
 
 今日小问题-npu多core算子的tiling
 

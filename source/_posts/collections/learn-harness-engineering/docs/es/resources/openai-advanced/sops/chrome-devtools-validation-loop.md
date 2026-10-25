@@ -1,3 +1,16 @@
+---
+title: "SOP: Bucle de Validación con Chrome DevTools"
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/es/resources/openai-advanced/sops/chrome-devtools-validation-loop/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # SOP: Bucle de Validación con Chrome DevTools
 
 Usa este SOP cuando el trabajo de UI depende de la interacción real en tiempo de ejecución y las capturas de pantalla,

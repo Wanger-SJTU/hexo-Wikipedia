@@ -1,9 +1,19 @@
 ---
-title: "GRPO为什么会使得模型的推理变长？"
-date: 2026-04-23
-tags: [知乎]
-source: https://www.zhihu.com/question/1912123003191433189/answer/1931657139484624539
+title: GRPO为什么会使得模型的推理变长？
+date: "2026-04-23 00:00:00"
+updated: "2026-04-23 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/AgentCLI/GRPO为什么会使得模型的推理变长/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://www.zhihu.com/question/1912123003191433189/answer/1931657139484624539
 ---
+
 
 彭建
 

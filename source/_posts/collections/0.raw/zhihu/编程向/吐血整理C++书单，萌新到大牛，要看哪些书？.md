@@ -1,9 +1,19 @@
 ---
-title: "吐血整理C++书单，萌新到大牛，要看哪些书？"
-date: 2019-08-02
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/76369741
+title: 吐血整理C++书单，萌新到大牛，要看哪些书？
+date: "2019-08-02 00:00:00"
+updated: "2019-08-02 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/编程向/吐血整理C-书单,萌新到大牛,要看哪些书/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/76369741
 ---
+
 
 #### 前言：
 
@@ -114,18 +124,18 @@ C++给了程序员过高的自由度，这反而不是一件好事，这两本�
 
 **VS编译器，图形库**
 
-![](asset/img_b6b076c24b18.jpg)
+![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_b6b076c24b18.jpg)
 
 **C语言相关电子书**
 
-![](asset/img_c7074fc07eb2.jpg)
+![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_c7074fc07eb2.jpg)
 
 **C/C++基础视频及笔记**
 
-![](asset/img_cf41c95e5750.jpg)
+![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_cf41c95e5750.jpg)
 
 **C/C++项目实战**
 
-![](asset/img_b7d3202d791e.jpg)
+![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_b7d3202d791e.jpg)
 
 **日积月累，终有所成！！！**

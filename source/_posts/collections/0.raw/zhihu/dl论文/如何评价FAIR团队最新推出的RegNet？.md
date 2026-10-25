@@ -1,9 +1,19 @@
 ---
-title: "如何评价FAIR团队最新推出的RegNet？"
-date: 2026-04-23
-tags: [知乎]
-source: https://www.zhihu.com/question/384255803/answer/1122828283
+title: 如何评价FAIR团队最新推出的RegNet？
+date: "2026-04-23 00:00:00"
+updated: "2026-04-23 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/dl论文/如何评价FAIR团队最新推出的RegNet/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://www.zhihu.com/question/384255803/answer/1122828283
 ---
+
 
 郑侠武
 

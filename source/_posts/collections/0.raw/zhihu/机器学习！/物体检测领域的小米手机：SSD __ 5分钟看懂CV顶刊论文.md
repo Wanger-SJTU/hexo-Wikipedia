@@ -1,10 +1,19 @@
 ---
-title: "物体检测领域的小米手机：SSD || 5分钟看懂CV顶刊论文"
-date: 2019-04-12
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/57399396
+title: 物体检测领域的小米手机：SSD || 5分钟看懂CV顶刊论文
+date: "2019-04-12 00:00:00"
+updated: "2019-04-12 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/机器学习/物体检测领域的小米手机-SSD-__-5分钟看懂CV顶刊论文/
 disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/57399396
 ---
+
 
 **本文结构：**
 
@@ -37,11 +46,11 @@ disableNunjucks: true
 
 $IOU：又称Jaccard Index， J(A,B)=|A&#x2229;B||A&#x222A;B|=|A&#x2229;B||A|+|B|&#x2212;|A&#x2229;B|." role="presentation">J(A,B)=|A∩B||A∪B|=|A∩B||A|+|B|−|A∩B|.{\displaystyle J(A,B)={{|A\cap B|} \over {|A\cup B|}}={{|A\cap B|} \over {|A|+|B|-|A\cap B|}}.} $
 
-![](asset/img_b9e5d2bfed63.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_b9e5d2bfed63.jpg)
 
 IOU**Jaccard index - Wikipedia锚框：人为设计的一系列固定大小和宽高比例的图框。
 
-![](asset/img_f4eb05114c98.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_f4eb05114c98.jpg)
 
 锚框
 
@@ -55,9 +64,9 @@ SSD的设计思路也不例外，其高明之处做了两处改进：
 - 对图片（实际上是feature map，特征图）进行多次缩放构成多级图（类似图像金字塔），对每级图都进行检测。这么做的原因是缩放得到的小尺寸的图用固定大小的锚框容易识别出大物体，而没缩放的大尺寸图可以用固定大小的锚框识别出小物体，这样就可以提高识别的准度。
 大致结构如下图所示，图片特征用训练好的VGG16进行提取。
 
-![](asset/img_7a0fc4f68c5d.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_7a0fc4f68c5d.jpg)
 
-论文原图![](asset/img_388df081cfa9.jpg)
+论文原图![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_388df081cfa9.jpg)
 
 来源：https://zhuanlan.zhihu.com/p/24954433大致的结构设计说完了，该讲讲怎么训练这个模型了。如果把这个SSD模型当作一个啥也不懂的小朋友——嗯，干脆叫他**傻傻弟**好了，要让傻傻弟能够准确地找出图片中的不同物体，我们该怎么训练他呢？首先，你得让他看很多图片，让他随便框，随便说框出来的是个啥，然后你去告诉他标准答案（真框以及其类别），纠正他，如此往复。那么第一个问题就出现，傻傻弟框了那么多框，怎么让这些框框与标准答案匹配呢？
 
@@ -144,13 +153,13 @@ $2、\sum_{m\in\{cx,cy,w,h\}} 表示m只有四个取值， 即框的中心横纵
 
 4、smooth_{L1} 是个啥？很简单， y=|x| 知道吧？ x=0 处是不是很尖，很容易伤到手（不可导）？来，我们让它smooth一下~
 
-![](asset/img_1ff870af0398.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_1ff870af0398.jpg)
 
 $也就是说， x\in(-0.5,0.5),y=0.5x^{2}\ otherwise \ y=|x|-0.5 $
 
 在上一张带上L1、L2全家福：
 
-![](asset/img_fd9f6a695931.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_fd9f6a695931.jpg)
 
 5、这个一大堆 G(g) 看着真让人GG。还是老话，莫方，其实很简单的。
 
@@ -160,13 +169,13 @@ $也就是说， x\in(-0.5,0.5),y=0.5x^{2}\ otherwise \ y=|x|-0.5 $
 
 **
 
-![](asset/img_f4eb05114c98.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_f4eb05114c98.jpg)
 
 锚框为什么需要锚框呢？或者说锚框解决了什么问题？这其实和买衣服鞋帽一样，每个人的身材都各有差别，如果商家要根据每个人的身材来设计制造衣服，那尺码的种类就会多得吓人，商家也无力应对。合理的方式就如同我们生活中见到的一样，每款衣服设计不多的一系列尺寸大小，客户选个差不多合身的就行啦。
 
 锚框的意义也是如此，在保证框出物体位置的同时，减少框框“型号”的数量，降低计算成本。
 
-![](asset/img_a700b83cb59c.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_a700b83cb59c.jpg)
 
 锚框是怎么工作的呢？如上图，锚框会对每个位置点用设计好的一系列大小来框出物体，检查里面是否有目标物体存在。比如上图b，有8x8个位置点，4种锚框，这样只需框出 8*8*4=256  个框一一检查有没有需要预测的物体，如果物体太大，也很简单，把原图（其实是feature map，不影响理解）缩小，如果框不变话，就相当于框变大了，也就可以顺利框出大物体了。
 
@@ -194,7 +203,7 @@ $$有了基本大小，还需要高宽比才能得出锚框具体的规格，论
 
 > 参考链接：https://blog.csdn.net/shuzfan/article/details/52711706
 
-![](asset/img_495d49af96cc.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_495d49af96cc.jpg)
 
 框得都对，但...其实框得很完美了，只是有冗余，那该如何只保留最好的那个框，而将其他的框都去除呢？这就需要NMS非极大抑制了。
 
@@ -202,15 +211,15 @@ $$有了基本大小，还需要高宽比才能得出锚框具体的规格，论
 
 step 1：将所有框的得分排序，选中最高分及其对应的框：
 
-![](asset/img_41da24d9dc86.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_41da24d9dc86.jpg)
 
 step 2：遍历其余的框，如果和当前最高分框的重叠面积(IOU)大于一定阈值，我们就将框删除。
 
-![](asset/img_a2f00758d122.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_a2f00758d122.jpg)
 
 step 3：从未处理的框中继续选一个得分最高的，重复上述过程。
 
-![](asset/img_def38aeb766e.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_def38aeb766e.jpg)
 
 完美啦！傻傻弟正式成为了聪明弟。看完文章的你，是不是比昨天又更聪明了呢？
 
@@ -220,4 +229,4 @@ PS：
 
 理工狗不想被人文素养拖后腿？不妨关注微信公众号：
 
-![](asset/img_d3143c5fc425.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_d3143c5fc425.jpg)

@@ -1,9 +1,19 @@
 ---
-title: "如何用简单易懂的例子解释条件随机场（CRF）模型？它和HMM有什么区别？"
-date: 2026-04-15
-tags: [知乎]
-source: https://www.zhihu.com/question/35866596/answer/236886066
+title: 如何用简单易懂的例子解释条件随机场（CRF）模型？它和HMM有什么区别？
+date: "2026-04-15 00:00:00"
+updated: "2026-04-15 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/机器学习/如何用简单易懂的例子解释条件随机场(CRF)模型-它和HMM有什么区别/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://www.zhihu.com/question/35866596/answer/236886066
 ---
+
 
 **so far till now, 我还没见到过将CRF讲的个明明白白的。一个都没。就不能不抄来抄去吗？
 我打算搞一个这样的版本，无门槛理解的。
@@ -91,7 +101,7 @@ d.再跨理论，查阅经典理论巨作。这时感性理性都有一定高度
 
 在统计概率图（probability graph models）中，参考宗成庆老师的书，是这样的体系结构（个人非常喜欢这种类型的图）：**
 
-![](asset/img_7cf51d017059.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_7cf51d017059.jpg)
 
 在概率图模型中，数据(样本)由公式 G=(V,E) 建模表示： 
 
@@ -109,7 +119,7 @@ $对于有向图模型，这么求联合概率： P(x_{1}, {\cdots}, x_{n} )=\pr
 
 举个例子，对于下面的这个有向图的随机变量(注意，这个图我画的还是比较广义的)：
 
-![](asset/img_288fc5bf1874.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_288fc5bf1874.jpg)
 
 应该这样表示他们的联合概率:
 
@@ -121,7 +131,7 @@ $$P(x_{1}, {\cdots}, x_{n} )=P(x_{1})·P(x_{2}|x_{1} )·P(x_{3}|x_{2} )·P(x_{4}
 
 对于无向图，我看资料一般就指马尔科夫网络(注意，这个图我画的也是比较广义的)。
 
-![](asset/img_3fccbbf717bf.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_3fccbbf717bf.jpg)
 
 如果一个graph太大，可以用因子分解将 P=(Y) 写为若干个联合概率的乘积。咋分解呢，将一个图分为若干个“小团”，注意每个团必须是“最大团”（就是里面任何两个点连在了一块，具体……算了不解释，有点“最大连通子图”的感觉），则有：
 
@@ -208,13 +218,13 @@ $$P(Y|X) = \frac{P(X,Y)}{P(X)}好了，应该说清楚了。$$
 这一点明白后，后面讲到的HMM与CRF的区别也会非常清晰。
 最后identity the picture below:
 
-![](asset/img_93af9f03c44a.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_93af9f03c44a.jpg)
 
 ### 2.3 序列建模**
 
 为了号召零门槛理解，现在解释如何为序列问题建模。
 
-![](asset/img_3ff1d686253c.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_3ff1d686253c.jpg)
 
 序列包括时间序列以及general sequence，但两者无异。连续的序列在分析时也会先离散化处理。常见的序列有如：时序数据、本文句子、语音数据、等等。
 
@@ -258,7 +268,7 @@ $- B ，观测概率矩阵，这个就是另一个概率分布。他是个矩阵
 - π ，在第一个隐状态节点 i_{t} ,我得人工单独赋予，我第一个隐状态节点的隐状态是 N 中的每一个的概率分别是多少，然后 π 就是其概率分布。
 所以图看起来是这样的：
 
-![](asset/img_6317addbb432.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_6317addbb432.jpg)
 
 看的很清楚，我的模型先去学习要确定以上5要素，之后在inference阶段的工作流程是：首先，隐状态节点 i_{t} 是不能直接观测到的数据节点， o_{t} 才是能观测到的节点，并且注意箭头的指向表示了依赖生成条件关系， i_{t} 在A的指导下生成下一个隐状态节点 i_{t+1} ，并且 i_{t} 在 B 的指导下生成依赖于该 i_{t} 的观测节点 o_{t} , 并且我只能观测到序列 （o_{1}, \cdots, o_{i}) 。
 
@@ -303,11 +313,11 @@ $$\hat{b_{j}}(k) = \frac{B_{jk}}{\sum_{k=1}^{M}B_{jk}}$$
 - step3. 直接估计 π
 比如说，在代码里计算完了就是这样的： 
 
-![](asset/img_c0e8912a3c14.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_c0e8912a3c14.jpg)
 
-![](asset/img_a3cc297490ec.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_a3cc297490ec.jpg)
 
-![](asset/img_f7e06a7c6bdb.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_f7e06a7c6bdb.jpg)
 
 **
 
@@ -335,7 +345,7 @@ $$Q_{max} = argmax_{allQ}\frac{P(Q,O)}{P(O)}$$
 
 Viterbi计算有向无环图的一条最大路径，应该还好理解。如图：
 
-![](asset/img_8e131b80c735.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_8e131b80c735.jpg)
 
 关键是注意，每次工作热点区只涉及到t 与 t-1,这对应了DP的无后效性的条件。如果对某些同学还是很难理解，请参考[这个答案](https://www.zhihu.com/question/20136144)下@Kiwee的回答吧。
 
@@ -401,7 +411,7 @@ $$P(I|O) = \prod_{t=1}^{n}\frac{ exp(\sum_{a})\lambda_{a}f_{a}(o,i) }{Z(o,i_{i-1
 
 所以说，他是判别式模型，直接对条件概率建模。 上图： 
 
-![](asset/img_60869ce22bd4.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_60869ce22bd4.jpg)
 
 MEMM需要两点注意：
 
@@ -444,7 +454,7 @@ MEMM讨论的最多的是他的labeling bias 问题。
 
 是从街货上烤过来的…… 
 
-![](asset/img_a82ea1110c48.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_a82ea1110c48.jpg)
 
 用Viterbi算法解码MEMM，状态1倾向于转换到状态2，同时状态2倾向于保留在状态2。 解码过程细节（需要会viterbi算法这个前提）：
 
@@ -475,7 +485,7 @@ $请看第一张概率图模型构架图，CRF上面是马尔科夫随机场（�
 
 不过一般说CRF为序列建模，就专指CRF线性链（linear chain CRF）：
 
-![](asset/img_ad1089fe6b6d.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_ad1089fe6b6d.jpg)
 
 在2.1.2中有提到过，概率无向图的联合概率分布可以在因子分解下表示为：
 
@@ -749,7 +759,7 @@ LSTM+CRF这个组合其实我在知乎上答过问题，然后顺便可以整合
 
 应该看到了熟悉的图了，现在看这个图的话，应该可以很清楚地get到他所表达的含义了。这张图的内容正是按照生成式&判别式来区分的，NB在sequence建模下拓展到了HMM；LR在sequence建模下拓展到了CRF。
 
-![](asset/img_9a1b5a4e4a49.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_9a1b5a4e4a49.jpg)
 
 **2. HMM vs. MEMM vs. CRF**
 

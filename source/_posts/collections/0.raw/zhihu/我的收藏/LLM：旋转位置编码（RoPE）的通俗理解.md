@@ -1,9 +1,19 @@
 ---
-title: "(2 条消息) LLM：旋转位置编码（RoPE）的通俗理解"
-date: 2024-12-03
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/690610231
+title: (2 条消息) LLM：旋转位置编码（RoPE）的通俗理解
+date: "2024-12-03 00:00:00"
+updated: "2024-12-03 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/LLM-旋转位置编码(RoPE)的通俗理解/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/690610231
 ---
+
 
 ChatGLM 和 LLaMA 中使用的**旋转位置编码（RoPE）**，原版论文中大段大段的公式推导实在是太绕了，看了脑壳疼。这篇文章我用能理解能记住的方式梳理一下。
 
@@ -67,7 +77,7 @@ $对于绝对位置为 m 的语义向量 x_m ，按照 m\theta 进行旋转。�
 
 这里插入一个复变函数小知识。每个复数，都可以在表示成一个横轴为实部、纵轴也虚部的二维平面向量。对复数乘以 e^{i\theta} ，相当于把该向量逆时针旋转角度 \theta 。
 
-![](asset/img_989fe8b847e0.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_989fe8b847e0.jpg)
 
 这就是“旋转位置编码”这个名字的由来。
 

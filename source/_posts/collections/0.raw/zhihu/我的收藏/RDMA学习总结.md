@@ -1,9 +1,19 @@
 ---
-title: "RDMA学习总结"
-date: 2025-03-06
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/28133133540
+title: RDMA学习总结
+date: "2025-03-06 00:00:00"
+updated: "2025-03-06 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/RDMA学习总结/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/28133133540
 ---
+
 
 RDMA学习总结
 

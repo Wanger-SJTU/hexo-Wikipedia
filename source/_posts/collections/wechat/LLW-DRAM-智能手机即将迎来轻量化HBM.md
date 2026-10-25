@@ -1,10 +1,23 @@
 ---
 title: LLW DRAM：智能手机即将迎来轻量化HBM
-date: 2026-06-16
-source: https://mp.weixin.qq.com/s/xociUK7_AZ02FgFVmX3c5Q
-author: 存储随笔
-tags: [存储, HBM, LLW-DRAM, 移动端AI, 先进封装]
+date: "2026-06-16 00:00:00"
+updated: "2026-06-16 00:00:00"
+layout: post
+permalink: /collections/wechat/LLW-DRAM-智能手机即将迎来轻量化HBM/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 存储
+  - HBM
+  - LLW-DRAM
+  - 移动端AI
+  - 先进封装
+source_url: https://mp.weixin.qq.com/s/xociUK7_AZ02FgFVmX3c5Q
 ---
+
 
 # LLW DRAM：智能手机即将迎来轻量化HBM
 

@@ -1,4 +1,17 @@
 ---
+title: 为你的RAG选择最好的嵌入和排序模型 - 知乎
+date: "2026-04-11 21:40:28"
+updated: "2026-04-11 21:40:28"
+layout: post
+permalink: /collections/0.raw/Omnivore/2024-04-09/为你的RAG选择最好的嵌入和排序模型-知乎/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
+---
 id: 4fea7b3b-1612-41f0-8ab1-e87f0189ce01
 ---
 

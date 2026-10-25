@@ -1,9 +1,19 @@
 ---
-title: "从词到数：Tokenizer与Embedding串讲"
-date: 2023-07-23
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/631463712
+title: 从词到数：Tokenizer与Embedding串讲
+date: "2023-07-23 00:00:00"
+updated: "2023-07-23 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/dl论文/从词到数-Tokenizer与Embedding串讲/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/631463712
 ---
+
 
 泻药。**分词**和**嵌入**一直是LM被忽略的一部分。随着各大框架如HF的不断完善，大家对tokenization和embedding的重视程度越来越低，到现在初学者大概只能停留在调用`tokenizer.encode`这样的程度了。
 
@@ -57,7 +67,7 @@ Word-Piece和BPE非常相似，BPE使用**出现最频繁的组合**构造子词
 
 有关BERT的tokenizer还有一个重点：BERT在使用Word-Piece时加入了一些特殊的token，例如[CLS]和[SEP]。我们可以自己试一下：
 
-![](asset/img_fcaa73c5ad9e.jpg)
+![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_fcaa73c5ad9e.jpg)
 
 发现BERT在句首加上了[CLS]，句尾加上了[SEP]，而且对coolest做了子词分解，对词根est加上了##来表示这是一个后缀。对于没有出现在词汇表里的单词例如asmita（是个印度人名），BERT所用的Word-Piece tokenizer会将它分解为Word-Piece算法形成的子词词汇表中存在的as，mit和a，组成一个子词。
 
@@ -65,7 +75,7 @@ Word-Piece和BPE非常相似，BPE使用**出现最频繁的组合**构造子词
 
 大家在使用HF的时候有时候会提示安装Sentence-Piece，这个包其实是HF里面大量模型会调用的包，例如ALBERT，XLM-RoBERTa和T5：
 
-![](asset/img_f105dc267f43.png)
+![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_f105dc267f43.png)
 
 这个包主要是为了多语言模型设计的，它做了两个重要的转化：
 
@@ -80,11 +90,11 @@ Word-Piece和BPE非常相似，BPE使用**出现最频繁的组合**构造子词
 
 这些问题不存在于WordPiece中。这是因为SentencePiece需要对多语言情况进行优化，有些token迫不得已要被删掉。想要加上某些本来tokenizer中不存在的token，可以使用`add_tokens()`方法。
 
-![](asset/img_b735fa1755a0.jpg)
+![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_b735fa1755a0.jpg)
 
 使用后，保存的文件夹里面会出现一个`added_tokens.json`文件，里面就包含这两个新的token。这个时候再load这个tokenizer，这两个token就可以被模型识别了。
 
-![](asset/img_4af8d86730dc.jpg)
+![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_4af8d86730dc.jpg)
 
 这之后，还需要告诉模型我已经更新了词汇表，使用`model.resize_token_embeddings(len(tokenizer))`。完整的添加例子如下： 
 
@@ -133,12 +143,12 @@ tokenizer.decode(output[0])`
 - 这四个数字会变成四个one-hot向量，例如8774会变成[0, 0, ..., 1, 0, 0..., 0, 0]，其中向量的index为8774的位置为1，其他位置全部为0。假设词表里面一共有30k个可能出现的token，则向量长度也是30k，这样才能保证出现的每个单词都能被one-hot向量表示。
 - 也就是说，一个形状为 (4) 的输入序列向量，会变成形状为 (4, 30\text{k}) 的输入one-hot向量。为了将每个单词转换为一个word embedding，每个向量都需要被被送到embedding层进行dense降维。
 - 现在思考一下，多大的矩阵可以满足这个要求？没错，假设embedding size为768，则矩阵的形状应该为 (30\text{k}, 768) ，与BERT的实现一致：
-![](asset/img_e6ceb5586e32.jpg)
+![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_e6ceb5586e32.jpg)
 
 #### 理解Embedding矩阵
 
 **Embedding矩阵的本质就是一个查找表**。由于输入向量是one-hot的，**embedding矩阵中有且仅有一行被激活**。行间互不干扰。这是什么意思呢？如下图所示，假设词汇表一共有6个词，则one-hot表示的长度为6。现在我们有三个单词组成一个句子，则输入矩阵的形状为 (3, 6) 。然后我们学出来一个embedding矩阵，根据上面的推导，如果我们的embedding size为4，则embedding矩阵的形状应该为 (6, 4) 。这样乘出来的输出矩阵的形状应为 (3, 4) 。
 
-![](asset/img_bad0ed1fb634.jpg)
+![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_bad0ed1fb634.jpg)
 
 我在图中用不同颜色标明了三个subword embedding分别的计算过程。对于第一个单词'I'，假设其one-hot编码为 [0, 0, 1, 0, 0, 0] ，将其与embedding矩阵相乘，相当于**取出**embedding矩阵的第3行（index为2）。同理，对于单词'love'，相当于**取出**embedding矩阵的第二行（index为1）。这样一来大家就理解了，embedding矩阵的本质是一个**查找表**，每个单词会定位这个表中的某一行，而这一行就是这个单词学习到的在嵌入空间的语义。

@@ -1,9 +1,19 @@
 ---
-title: "NCCL和NVSHMEM的主要区别是什么？"
-date: 2025-10-20
-tags: [知乎]
-source: https://www.zhihu.com/question/1963176103897179405/answer/1963537895559247799
+title: NCCL和NVSHMEM的主要区别是什么？
+date: "2025-10-20 00:00:00"
+updated: "2025-10-20 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/AI-infra/NCCL和NVSHMEM的主要区别是什么/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://www.zhihu.com/question/1963176103897179405/answer/1963537895559247799
 ---
+
 
 一. 总结
 两者最本质的区别就是NCCL通信还需要CPU发起，GPU作为CPU加速器而存在；NVSHMEM则是完全以GPU为中心：

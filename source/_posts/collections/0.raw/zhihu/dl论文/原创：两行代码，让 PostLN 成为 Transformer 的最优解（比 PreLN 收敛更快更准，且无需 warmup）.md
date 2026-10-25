@@ -1,13 +1,23 @@
 ---
-title: "原创：两行代码，让 PostLN 成为 Transformer 的最优解（比 PreLN 收敛更快更准，且无需 warmup）"
-date: 2022-02-18
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/466943663
+title: 原创：两行代码，让 PostLN 成为 Transformer 的最优解（比 PreLN 收敛更快更准，且无需 warmup）
+date: "2022-02-18 00:00:00"
+updated: "2022-02-18 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/dl论文/原创-两行代码,让-PostLN-成为-Transformer-的最优解(比-PreLN-收敛更快更准,且无需-warmup)/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/466943663
 ---
+
 
 我发现，PostLN 的初始收敛困难，不是中间层的梯度问题，而是最初的嵌入层的梯度问题。通过两行代码，可以让 PostLN 的初始收敛从蓝线变成绿线，比 PreLN 收敛快得多：
 
-![](asset/img_991083f035e9.jpg)
+![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_991083f035e9.jpg)
 
 具体原因是，如果你 print 嵌入层，会发现，它在每步的移动大致是 lr 的程度，而它的初始值通常是 std=0.02 的正态分布，因此，网络需要很多步才能跳出初始的噪音嵌入，也容易被卡住。
 

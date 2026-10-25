@@ -1,15 +1,25 @@
 ---
-title: "常用的模型集成方法介绍：bagging、boosting 、stacking"
-date: 2019-05-15
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/65888174
+title: 常用的模型集成方法介绍：bagging、boosting 、stacking
+date: "2019-05-15 00:00:00"
+updated: "2019-05-15 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/机器学习/常用的模型集成方法介绍-bagging、boosting-、stacking/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/65888174
 ---
+
 
 **「团结就是力量」。这句老话很好地表达了机器学习领域中强大「集成方法」的基本思想。总的来说，许多机器学习竞赛（包括 Kaggle）中最优秀的解决方案所采用的集成方法都建立在一个这样的假设上：将多个模型组合在一起通常可以产生更强大的模型。选自towardsdatascience，作者：Joseph Rocca、BaptisteRocca，机器之心编译，参与：Geek AI、shooting。**
 
 本文介绍了集成学习的各种概念，并给出了一些必要的关键信息，以便读者能很好地理解和使用相关方法，并且能够在有需要的时候设计出合适的解决方案。
 
-![](asset/img_1b66cf156770.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_1b66cf156770.jpg)
 
 本文将讨论一些众所周知的概念，如自助法、自助聚合（bagging）、随机森林、提升法（boosting）、堆叠法（stacking）以及许多其它的基础集成学习模型。
 
@@ -40,7 +50,7 @@ source: https://zhuanlan.zhihu.com/p/65888174
 
 在接下来的章节中，我们将具体介绍 bagging 和 boosting 方法（它们比 stacking 方法使用更广泛，并且让我们可以讨论一些集成学习的关键概念），然后简要概述 stacking 方法。
 
-![](asset/img_9e88419aabad.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_9e88419aabad.jpg)
 
 我们可以将弱学习器结合起来以得到性能更好的模型。组合基础模型的方法应该与这些模型的类型相适应。**关于 Bagging** 
 
@@ -50,7 +60,7 @@ source: https://zhuanlan.zhihu.com/p/65888174
 
 这种统计技术先随机抽取出作为替代的 B 个观测值，然后根据一个规模为 N 的初始数据集生成大小为 B 的样本（称为自助样本）。
 
-![](asset/img_65f13d6b8d48.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_65f13d6b8d48.jpg)
 
 自助抽样过程示意图。在某些假设条件下，这些样本具有非常好的统计特性：在一级近似中，它们可以被视为是直接从真实的底层（并且往往是未知的）数据分布中抽取出来的，并且彼此之间相互独立。因此，它们被认为是真实数据分布的代表性和独立样本（几乎是独立同分布的样本）。
 
@@ -66,7 +76,7 @@ source: https://zhuanlan.zhihu.com/p/65888174
 
 然而，我们可以使用自助法生成一些自助样本，它们可被视为「最具代表性」以及「最具独立性」（几乎是独立同分布的样本）的样本。这些自助样本使我们可以通过估计每个样本的值，近似得到估计量的方差。
 
-![](asset/img_0238d7f9bdff.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_0238d7f9bdff.jpg)
 
 自助法经常被用于评估某些统计估计量的方差或置信区间。**关于 Boosting** 
 
@@ -88,13 +98,13 @@ Boosting 方法和bagging 方法的工作思路是一样的：我们构建一系
 
 简而言之，这两种元算法在顺序化的过程中创建和聚合弱学习器的方式存在差异。自适应增强算法会更新附加给每个训练数据集中观测数据的权重，而梯度提升算法则会更新这些观测数据的值。这里产生差异的主要原因是：两种算法解决优化问题（寻找最佳模型——弱学习器的加权和）的方式不同。 
 
-![](asset/img_73dfe473e97f.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_73dfe473e97f.jpg)
 
 Boosting 会迭代地拟合一个弱学习器，将其聚合到集成模型中，并「更新」训练数据集，从而在拟合下一个基础模型时更好地考虑当前集成模型的优缺点。**自适应 boosting**
 
 在自适应 boosting（通常被称为「adaboost」）中，我们将集成模型定义为 L 个弱学习器的加权和
 
-![](asset/img_a427175ea0e2.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_a427175ea0e2.jpg)
 
 ，其中 c_l 是系数而 w_l 是弱学习器  
 
@@ -102,11 +112,11 @@ Boosting 会迭代地拟合一个弱学习器，将其聚合到集成模型中�
 
 另外，我们将弱学习器逐个添加到当前的集成模型中，在每次迭代中寻找可能的最佳组合（系数、弱学习器）。换句话说，我们循环地将 s_l 定义如下： 
 
-![](asset/img_c95102a890c3.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_c95102a890c3.jpg)
 
 其中，c_l 和 w_l 被挑选出来，使得 s_l 是最适合训练数据的模型，因此这是对 s_(l-1) 的最佳可能改进。我们可以进一步将其表示为：
 
-![](asset/img_3196f422ed9c.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_3196f422ed9c.jpg)
 
 其中，E(.) 是给定模型的拟合误差，e(.,.)是损失/误差函数。因此，我们并没有在求和过程中对所有 L 个模型进行「全局优化」，而是通过「局部」优化来近似最优解并将弱学习器逐个添加到强模型中。 
 
@@ -122,7 +132,7 @@ Boosting 会迭代地拟合一个弱学习器，将其聚合到集成模型中�
 - 计算新观测数据的权重，该权重表示我们想在下一轮迭代中关注哪些观测数据（聚和模型预测错误的观测数据的权重增加，而正确预测的观测数据的权重减小）
 重复这些步骤，我们顺序地构建出 L 个模型，并将它们聚合成一个简单的线性组合，然后由表示每个学习器性能的系数加权。注意，初始 adaboost 算法有一些变体，比如 LogitBoost（分类）或 L2Boost（回归），它们的差异主要取决于损失函数的选择。 
 
-![](asset/img_50548447c9fc.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_50548447c9fc.jpg)
 
 Adaboost 在每次迭代中更新观测数据的权重。正确分类的观测数据的权重相对于错误分类的观测数据的权重有所下降。在最终的集成模型中，性能更好的模型具有更高的权重。Stacking 概述**
 
@@ -148,11 +158,11 @@ Stacking 与 bagging 和 boosting 主要存在两方面的差异。首先，Stac
 
 换句话说，它会在 k-1 折数据上进行训练，从而对剩下的一折数据进行预测。迭代地重复这个过程，就可以得到对任何一折观测数据的预测结果。这样一来，我们就可以为数据集中的每个观测数据生成相关的预测，然后使用所有这些预测结果训练元模型。
 
-![](asset/img_78269cf6d716.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_78269cf6d716.jpg)
 
 Stacking 方法会训练一个元模型，该模型根据较低层的弱学习器返回的输出结果生成最后的输出。**
 
-*![](asset/img_0fd794650ff4.jpg)
+*![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_0fd794650ff4.jpg)
 
 *
 

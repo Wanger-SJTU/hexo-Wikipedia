@@ -1,9 +1,19 @@
 ---
-title: "百面LLM-21"
-date: 2024-04-04
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/688369625
+title: 百面LLM-21
+date: "2024-04-04 00:00:00"
+updated: "2024-04-04 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/LLM-SD/百面LLM-21/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/688369625
 ---
+
 
 **提问：**如果我们把推理结果相关的多个关键段落按照下列规则藏在一段文章里：
 
@@ -15,7 +25,7 @@ source: https://zhuanlan.zhihu.com/p/688369625
 
 **回答：**B > A > C > D. 这是一个经典的长文本的大海捞针的问题，整体而言，模型的attention分布集中在头部和尾部，中间的attention较少，那么B > A > C。最后还有如果分散在文章中，这个结论就更难获得。Mistral 70B的研究结果如下：
 
-![](asset/img_b14faa3dc3a8.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_b14faa3dc3a8.jpg)
 
 更多结论可以参考论文 Same Task, More Tokens: the Impact of Input Length on the Reasoning Performance of Large Language Models [1]。
 

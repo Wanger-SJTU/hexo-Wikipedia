@@ -1,9 +1,19 @@
 ---
-title: "UFS FTL分析"
-date: 2026-04-20
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/2028210271303246544
+title: UFS FTL分析
+date: "2026-04-20 00:00:00"
+updated: "2026-04-20 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/体系结构/UFS-FTL分析/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/2028210271303246544
 ---
+
 
 UFS FTL分析
 

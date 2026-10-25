@@ -1,10 +1,19 @@
 ---
-title: "现代中央处理器（CPU）是怎样进行分支预测的？"
-date: 2021-09-16
-tags: [知乎]
-source: https://www.zhihu.com/question/486239354/answer/2124789791
-
+title: 现代中央处理器（CPU）是怎样进行分支预测的？
+date: "2021-09-16 00:00:00"
+updated: "2021-09-16 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/体系结构/现代中央处理器(CPU)是怎样进行分支预测的/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://www.zhihu.com/question/486239354/answer/2124789791
 ---
+
 
 推测执行，不是提前执行。分支预测后，分支二选一的选择题已经做完了，那么执行就完全是正常执行的。叫推测执行是因为这部分只是分支的其中一种可能性，按照分支预测的结果执行的。预测对了，这部分推测执行就可以提交到内存。预测错了，推测执行的部分就没有用了（不写入内存），流水线就需要清空，重新从正确的分支执行；清空的方式是填充nop直到推测执行的部分都计算完成。
 

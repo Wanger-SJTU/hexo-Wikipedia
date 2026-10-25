@@ -1,9 +1,19 @@
 ---
-title: "(1 封私信) 深度学习对图像的处理，为什么大多基于RGB，而没有其他色彩空间，比如HSV？"
-date: 2026-04-14
-tags: [知乎]
-source: https://www.zhihu.com/question/264647314/answer/120729945954
+title: (1 封私信) 深度学习对图像的处理，为什么大多基于RGB，而没有其他色彩空间，比如HSV？
+date: "2026-04-14 00:00:00"
+updated: "2026-04-14 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/相机算法相关/深度学习对图像的处理,为什么大多基于RGB,而没有其他色彩空间,比如HSV/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://www.zhihu.com/question/264647314/answer/120729945954
 ---
+
 
 因为颜色的本质是三维空间中的一个点，
 

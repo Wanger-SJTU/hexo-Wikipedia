@@ -1,3 +1,16 @@
+---
+title: OpenAI 高階資源包
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/zh-TW/resources/openai-advanced/index/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # OpenAI 高階資源包
 
 這個資料夾把 OpenAI〈Harness engineering: leveraging Codex in an agent-first world〉一文中較具傾向性的儲存庫結構，整理成可直接複製的起步檔案。

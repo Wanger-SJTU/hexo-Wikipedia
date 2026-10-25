@@ -1,15 +1,25 @@
 ---
-title: "(1 条消息) 用 LangChain 搭建基于 Notion 文档的 RAG 应用"
-date: 2023-12-01
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/669896230
+title: (1 条消息) 用 LangChain 搭建基于 Notion 文档的 RAG 应用
+date: "2023-12-01 00:00:00"
+updated: "2023-12-01 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/用-LangChain-搭建基于-Notion-文档的-RAG-应用/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/669896230
 ---
+
 
 如何通过语言模型查询 Notion 文档？LangChain 和 Milvus 缺一不可。
 
 在整个过程中，我们会将 LangChain 作为框架，Milvus 作为相似性搜索引擎，用二者搭建一个基本的检索增强生成（RAG）应用。在之前的文章中，我们已经介绍过 LangChain 中的“自查询”（Self-querying）。本质上，LangChain 中的自查询功能就是构建一个基本的 RAG 架构，如图所示：
 
-![](asset/img_2cf4cda15a93.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_2cf4cda15a93.jpg)
 
 在 LangChain 中处理 Notion 文档共包含三个步骤：获取、存储和查询文档。获取是指获取 Notion 文档并将内容加载到内存中。存储步骤包括启动向量数据库（Milvus）、将文档转化为向量、将文档向量存储至向量数据库中。查询部分包括针对 Notion 文档进行提问。本文将带大家一一拆解这三个步骤，代码请参考 **colab notebook**。
 
@@ -47,7 +57,7 @@ all_splits
 
 下图展示了部分分割的 document 对象，其中包含了页面内容和元数据。元数据显示了内容是从哪个章节中提取出来的。
 
-![](asset/img_56ac37d12461.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_56ac37d12461.jpg)
 
 ### **02.存储 Notion 文档**
 
@@ -99,7 +109,7 @@ retriever.get_relevant_documents("What makes a distinguished engineer?")
 
 响应如下图所示。我们获得了与提问在语义上最相似的文档片段。但不难发现，其回答也仅仅只是语义上相似，并非完全正确。
 
-![](asset/img_4c6667e1bd3d.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_4c6667e1bd3d.jpg)
 
 本教程介绍了如何加载并解析 Notion 文档，并搭建一个基本的 RAG 应用查询 Notion 文档。我们使用到了 LangChain 作为框架，Milvus 作为向量数据库用于相似性搜索。如果想要进行深入的探索，建议大家调整分块大小和重叠等参数，检查不同的参数值是如何影响查询结果的。
 

@@ -1,3 +1,16 @@
+---
+title: Qualitätsdokument
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/de/resources/templates/quality-document/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # Qualitätsdokument
 
 Eine Qualitätsmomentaufnahme für jede Produktdomäne und Architekturschicht. Sowohl Agenten als auch Menschen können dieses Dokument nutzen, um schnell zu verstehen, wo die Codebasis stark ist und wo sie Arbeit braucht.

@@ -1,10 +1,19 @@
 ---
-title: "深入解析现代 CPU 微架构：统一 PRF 架构与 ROB 暂存架构"
-date: 2026-07-04
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/2056670865467634847
-
+title: 深入解析现代 CPU 微架构：统一 PRF 架构与 ROB 暂存架构
+date: "2026-07-04 00:00:00"
+updated: "2026-07-04 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/体系结构/深入解析现代-CPU-微架构-统一-PRF-架构与-ROB-暂存架构/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/2056670865467634847
 ---
+
 
 在高性能乱序执行（Out-of-Order）处理器设计中，如何处理寄存器重命名与精确异常控制是决定芯片性能与功耗的核心命题。微架构师主要依赖两种相互竞争的范式：基于重排序缓存（ROB）的数据暂存架构与统一物理寄存器堆（PRF）架构。虽然早期设计偏爱 ROB 数据存储的简便性，但现代高性能 CPU 已全面迁移至统一 PRF 方案。
 

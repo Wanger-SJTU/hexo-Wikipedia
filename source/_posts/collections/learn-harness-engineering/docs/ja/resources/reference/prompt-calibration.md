@@ -1,3 +1,16 @@
+---
+title: プロンプトキャリブレーション
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/ja/resources/reference/prompt-calibration/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # プロンプトキャリブレーション
 
 ルート指示は操作フレームを定義すべきで、可能なすべての手を定義すべきではない。

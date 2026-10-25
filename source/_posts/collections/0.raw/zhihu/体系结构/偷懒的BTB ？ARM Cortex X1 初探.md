@@ -1,15 +1,25 @@
 ---
-title: "偷懒的BTB ？ARM Cortex X1 初探"
-date: 2023-02-04
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/595585895
+title: 偷懒的BTB ？ARM Cortex X1 初探
+date: "2023-02-04 00:00:00"
+updated: "2023-02-04 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/体系结构/偷懒的BTB-ARM-Cortex-X1-初探/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/595585895
 ---
+
 
 ### 前言
 
 随着现代程序体量的膨胀，处理器面临越发巨大的前端压力；BTB作为前端的核心组件之一，在微架构的演进中也备受厂商重视。本专栏也不是第一次涉猎BTB相关的话题了：
 
-[![](asset/img_fce251f7a6b3.png)JamesAslan：I炮碎碎念：AMD就是逊啦——为什么需要巨大的BTB254 赞同 · 31 评论 文章](https://zhuanlan.zhihu.com/p/531364792)
+[![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_fce251f7a6b3.png)JamesAslan：I炮碎碎念：AMD就是逊啦——为什么需要巨大的BTB254 赞同 · 31 评论 文章](https://zhuanlan.zhihu.com/p/531364792)
 
 为了应对巨大的程序代码段带来的海量跳转指令，大部分高性能处理器核心的BTB容量都在不断扩展，前有IBM z系列史诗级的16K+128K（用于mainframe，纯服务器环境），后有Intel GoldenCove、RaptorCove的6K+12K（用于包括消费级在内的商业环境）。其他主流厂家也不逞多让，AMD Zen4（1K+7K）、胎死腹中的三星猫鼬M5、M6等等无一例外拥有巨大的BTB；唯一的例外恐怕是苹果，由于其采用了不一样的前端设计故BTB容量较小，这里暂且不讨论。ARM公版核心主攻移动市场并正向服务器市场进军，不妨看看ARM在BTB设计上采用了什么策略。
 
@@ -19,7 +29,7 @@ source: https://zhuanlan.zhihu.com/p/595585895
 
 一台开发机（Microsoft windows dev kit 2023）的奇妙旅程：康涅狄格 → 纽约 → 香港 → 澳门 → 湛江 → 广州 → 北京。个人对此类设备抱有极大的好奇与好感，无论是当初的zen/zen+还是后来的m1；而8cx gen3算是第一代真正可用的高通desktop soc了，自然不能错过。但是微软在国内并不对个人出售dev kit，故只能代购转运，也就有了它跋山涉水游历四方的传奇旅途。我们的实验平台便是8cx gen3，其配备了4颗Cortex X1和4颗Cortex A78，本次我们专注于Cortex X1（下文简称X1）的表现。
 
-![](asset/img_f06b64331362.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_f06b64331362.jpg)
 
 拿在手里还有点好看，难道这就是田牌的信仰之力吗=-=
 ### 正文
@@ -110,11 +120,11 @@ for(int i=0;iM;i++){
 
 运行测试后我们将数据整理并绘图：
 
-![](asset/img_5900e9a23184.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_5900e9a23184.jpg)
 
 上图包含了海量信息，我们不妨选定橘黄色曲线并观察其延迟跳变的位置：
 
-![](asset/img_a15ff816acf6.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_a15ff816acf6.jpg)
 
 - **当分支指令数量小于96条时，平均每条分支指令的执行延迟仅有0.5 cycle；即此时ARM Cortex X1每周期预测2条taken分支且代价为0**。这是十分了不起的特性，并不是传统BTB能够实现的。考虑最朴素的设计，（每周期2 taken的BTB当然不会简单得如此设计，只是借此说明这一特性并不平凡）BTB的输入为当周期的PC0，一旦第一条分支指令taken，则PC0会覆写为PC1；以PC1作为输入再次查询BTB，我们才能得到第二条分支，而这也是一条taken分支；那么我们需要将PC1更新为PC2再进入下一周期。上述串行流程都需要在同一个时钟周期内完成，可想而知会给处理器带来巨大的时序压力，进而导致产品无法运行在高频（ARM Cortex X1 能够以短流水线运行在3+GHz，每周期的时间并不宽裕）。现如今的其他消费级处理器中仅有Intel的新产品12代、13代酷睿（GoldenCove等）拥有与之匹敌的特性。**96项也对应着X1的L0 BTB容量**。
 - **当分支指令大于96条小于8192条时，平均每条分支指令的执行延迟仅有1-2 cycle**；即此时X1每周期预测1条taken分支的代价在0-1间波动。**8192项也对应着X1的L1 BTB容量**，容量如此巨大的BTB延迟却如此之低（1-1.5）简直匪夷所思。作为参照，12K项的Intel GoldenCove BTB延迟为2，7K项的AMD Zen4 BTB延迟为1.5-2。
@@ -124,11 +134,11 @@ for(int i=0;iM;i++){
 
 仔细观察上图曲线，我们不难发现一些怪异的现象。在分支最密集的情况下X1的BTB性能特别低，L0 BTB的容量似乎也并不是上文所说的96项（下图所示）。
 
-![](asset/img_0aa87c8c1fd8.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_0aa87c8c1fd8.jpg)
 
 尽管其他密度曲线的跳变点都在8192附近，但是细节上的行为并不一致（如下图所示）。
 
-![](asset/img_4670270b4fad.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_4670270b4fad.jpg)
 
 显然是BTB的结构导致了这些现象，那么会影响BTB性能表现的除了物理上确定的容量和延迟还有什么呢？
 
@@ -142,7 +152,7 @@ for(int i=0;iM;i++){
 
 多层次BTB设计中大容量的BTB往往是组相联的，因为物理上难以实现容量巨大的全相联设计；小容量的BTB可以选择全相联的设计。那么X1的BTB是如何设计的呢？为了得出结论我们需要在更宽的分支间隔范围内进行试验。对于全相联BTB，影响其有效容量的只有实际的物理项数和Tag hash算法这两大因素（当然替换和预取算法也会影响，但目前商业实现的算法都较为简单，不会显著改变有效容量）；只要Tag的Hash算法选取得当，我们预期不会因为分支间隔的变化而观测到有效容量的波动。对于组相联BTB，影响其有效容量的还有Set Hash算法这一因素。
 
-![](asset/img_03a797ea3717.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_03a797ea3717.jpg)
 
 在查询BTB时，我们首先要获得分支对应的set号才能访问Ram读出Tag和其对应的跳转目标，这就决定了Set号的生成是时序敏感的，算法不能过于复杂。而且Set号的位数是固定的，由Ram深度决定。这就意味着当我们改变分支间隔时很容易触及Set Hash算法的盲区，进而使得部分Ram永远无法被索引，导致有效容量减少。以最简单的情形为例，我们截取PC的低2-3位共2 bit作为Set号（0-1位永远为0，因为每条指令的大小为4 Byte）。当分支间隔为4 Byte时：
 
@@ -172,13 +182,13 @@ for(int i=0;iM;i++){
 
 循环往复，可知Set号仅会在0，2之间循环；只有一半的Set有机会被访问到，有效容量仅剩一半。我们观察X1的相关结果，观察的分支间隔范围为4-2048 Byte：
 
-![](asset/img_8864d51191b1.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_8864d51191b1.jpg)
 
-分支间隔4-64 Byte![](asset/img_0fd99d6b593f.jpg)
+分支间隔4-64 Byte![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_0fd99d6b593f.jpg)
 
 分支间隔128-2048 Byte，保留4 Byte曲线作为参照可以看到L1 BTB有明显的组相联特征**，在分支间隔到达一定程度后，间隔每扩大1倍容量缩小1半：
 
-![](asset/img_facc30602175.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_facc30602175.jpg)
 
 间隔每扩大1倍容量缩小1半而**L0 BTB在（无视4 Byte时的情况）8-512 Byte时都稳定表现出96项的有效容量，这似乎是全相联的特征**。那么为何在分支间隔达到1024 Byte及以后，L0 BTB的有效容量也出现了衰减了呢？观察跳变点，每隔1024 Byte一条分支指令会使代码段的总大小在跳变点处达到64 * 1024 = 64 KB；每隔2048 Byte一条指令会使得代码段的总大小达到32 * 2048 = 64 KB；这是一个巧合吗？各位可以自行思考（滑稽）。
 
@@ -186,7 +196,7 @@ for(int i=0;iM;i++){
 
 我们一直强调不使用性能计数器难以精确刻画BTB行为，这里给出一个例子。
 
-![](asset/img_adf2d29d724d.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_adf2d29d724d.jpg)
 
 可以看到，在分支间隔较大时各线条都有多次阶跃。以黄线为例，第一次阶跃在96附近，超出L0 BTB容量；第二次阶跃在128附近；第三次阶跃在384；第四次阶跃在512。那么第三次阶跃为何存在呢？**X1的ITLB容量为48 entry**，在4KB页下384个512 Byte的代码块会占据48个页，正好超出ITLB容量，ITLB miss会极大影响程序运行速度。因此使用平均执行时长会受到众多因素干扰，难以精确刻画BTB行为。
 
@@ -198,7 +208,7 @@ for(int i=0;iM;i++){
 
 分支间隔 （Byte）变动PC bit483-15（8192组）164-16（8192组）325-17（8192组）646-18（8192组）1287-19（8192组）但是当分支间隔达到64 Byte时，L1 BTB容量只被使用到了：
 
-![](asset/img_c09d574c7863.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_c09d574c7863.jpg)
 
 我们可以借此得知Set Hash算法开始出现瑕疵，一旦PC触及bit 18的变动就不能反映到Set号上，进而导致只能索引到一半的Set号；随着PC触及的bit整体向大于bit 18的方向移动，能够索引到的Set号不断减少。因此，**朴素的猜想即X1只使用了bit 17及以下的部分进行Index Hash，但折叠的方式并不平凡。**各位可以自行推演，平凡的折叠方式并不能达到这样的效果。考虑到ARM在CMN-700上炫酷的折叠方式，这里就不展开推导了，会掉太多头发。
 
@@ -206,7 +216,7 @@ for(int i=0;iM;i++){
 
 我们之间就注意到，尽管分支间隔为8、16、32时都能使用到8192项的L1 BTB，但是细节行为并不相同：
 
-![](asset/img_4670270b4fad.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_4670270b4fad.jpg)
 
 这三条线之间似乎存在某种关系，它们的阶跃点每次前移，它们的延迟与1 cycle的差值每次提升1倍；这两个数量关系并不是偶然，而是**可能预示了Tag Hash算法的盲区。**在PC触及bit区间移动时，Tag的冲突概率在不断升高，致使执行延迟出现抖动。这一猜想目前无法证实，因为1.我们没有性能计数器来确认这是BTB独自造成的。2.推演Hash算法会掉很多头发（滑稽）。
 
@@ -214,7 +224,7 @@ for(int i=0;iM;i++){
 
 为了验证路数我们更换测试方法，使用更大的分支间隔的同时只使用1-16条分支指令。这样一旦出现Hash算法的冲突，执行延迟就会陡增；同时由于使用的指令数量极少，无关因素也较少。
 
-![](asset/img_8c43a02c4b7b.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_8c43a02c4b7b.jpg)
 
 x方向为分支间隔，单位Byte；y方向为分支指令数量我们可以粗略得看到，无论分支间隔多大总有至少4条指令可以被BTB容纳，即**L1 BTB路数大于等于4路**。观察红色部分可见交界处并非陡增，因此**替换算法可能不是最朴素的LRU，而是考虑了use bit或其他指标**。
 
@@ -226,14 +236,14 @@ x方向为分支间隔，单位Byte；y方向为分支指令数量我们可以�
 
 将之前的测试扩展到96条指令（L0 BTB容量），
 
-![](asset/img_62f20a7f38cb.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_62f20a7f38cb.jpg)
 
 x方向为分支间隔，单位Byte；y方向为分支指令数量除了4 Byte的情况下X1的L0 BTB容量仅有60项外，其似乎也展现出了组相联设计的可能性。随着分支间隔的不断增加，L0 BTB的有效容量也在不断减少，每次减少至之前的一半。但是需要注意的是，使用Set与Tag Hash的并不只有BTB，还有ICache与ITLB；**从延迟判断，此处也很可能是触及了ICache的Hash算法盲区导致了取指miss；因此4路也可能仅仅代表了ICache的路数。**
 
-![](asset/img_d4c870688cf8.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_d4c870688cf8.jpg)
 
 ### 后记
 
 从初步试验来看，Cortex X1的BTB不乏有趣的设计，反映了ARM对处理器前端演化的巧思；在诸如SPEC06、SPEC17的诸多测试中，Cortex X1的分支误预测率也确实不逊于Intel等老牌劲旅，让人十分期待X3乃至X4的前端表现。本次探究也留下了太多悬而未决、模棱两可的论断，希望能够尽快使用性能计数器重测，得到更加可靠的结论。（本专栏干脆改名叫“我与性能计数器的那些事儿”算了23333）
 
-![](asset/img_6b087d4f0570.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_6b087d4f0570.jpg)

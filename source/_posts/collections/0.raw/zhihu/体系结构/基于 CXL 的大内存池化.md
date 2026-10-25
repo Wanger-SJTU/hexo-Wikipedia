@@ -1,9 +1,19 @@
 ---
-title: "基于 CXL 的大内存池化"
-date: 2022-07-07
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/538689902
+title: 基于 CXL 的大内存池化
+date: "2022-07-07 00:00:00"
+updated: "2022-07-07 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/体系结构/基于-CXL-的大内存池化/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/538689902
 ---
+
 
 **什么是CXL？**
 

@@ -1,9 +1,19 @@
 ---
-title: "(1 条消息) 给IT行业年轻人的职业建议2(处理好职业困惑)"
-date: 2025-03-23
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/685689541
+title: (1 条消息) 给IT行业年轻人的职业建议2(处理好职业困惑)
+date: "2025-03-23 00:00:00"
+updated: "2025-03-23 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/给IT行业年轻人的职业建议2(处理好职业困惑)/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/685689541
 ---
+
 
 上一篇文章[给IT行业年轻人的职业建议(选择学习什么样的技术)](https://zhuanlan.zhihu.com/p/683124185?utm_psn=1748990219787894784)阅读量挺多的，接着这个话题继续谈谈。三年前我因为公司独立原因离开了前公司，知乎上也分享了一下自己十二年的经历，其中概括起来就是结合业务需求持续对技术进行学习，探索和应用。近几年带团队，也逐步接触很多新员工和工作没几年的同事，获得了一些反馈。另外我自己也曾经历过不少职业困惑。碰到职业困惑如何处理呢，也是困扰年轻人的问题。
 

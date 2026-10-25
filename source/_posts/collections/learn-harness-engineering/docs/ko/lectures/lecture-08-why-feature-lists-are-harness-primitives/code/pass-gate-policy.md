@@ -1,3 +1,16 @@
+---
+title: 패스 게이트 정책(Pass Gate Policy)
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/ko/lectures/lecture-08-why-feature-lists-are-harness-primitives/code/pass-gate-policy/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # 패스 게이트 정책(Pass Gate Policy)
 
 기능이 `passes: false`에서 `passes: true`로 이동하려면 다음 조건을 모두 만족해야 합니다:

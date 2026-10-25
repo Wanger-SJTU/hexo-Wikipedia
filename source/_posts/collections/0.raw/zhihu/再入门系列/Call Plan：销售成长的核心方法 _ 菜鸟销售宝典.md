@@ -1,9 +1,19 @@
 ---
-title: "Call Plan：销售成长的核心方法 | 菜鸟销售宝典"
-date: 2016-12-05
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/24181984
+title: Call Plan：销售成长的核心方法 | 菜鸟销售宝典
+date: "2016-12-05 00:00:00"
+updated: "2016-12-05 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/再入门系列/Call-Plan-销售成长的核心方法-_-菜鸟销售宝典/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/24181984
 ---
+
 
 最近忙于新职位接手和智能工厂总体规划设计，输入过多，思考过少，经过周末的休整和反思，接下来会写两篇关于「Plan」的文章，一篇是销售拜访计划（Call Plan），一篇是实施计划（Execute Plan），这也是我这一周高强度工Si作Bi的收获总结。
 
@@ -42,13 +52,13 @@ OK，案例教学开始，在本文中我会带着你按照正确的思路的做
 
 尚不清楚这次有哪些竞争对手介入。
 
-## 客户项目当前所处阶段![](asset/img_f9efe035d49d.png)
+## 客户项目当前所处阶段![](/images/collections/0.raw/zhihu/%25E5%2586%258D%25E5%2585%25A5%25E9%2597%25A8%25E7%25B3%25BB%25E5%2588%2597/asset/img_f9efe035d49d.png)
 
 > 在确定销售的阶段目标之前，必须先理解甲方目前处于哪个阶段，然后再根据甲方所处阶段，明确自己所处的销售阶段。
 
 在这个项目中，虽然房管局目前仅有这样一个想法，但是考虑到房管局也要在每年的工作中拿出成绩来，而GIS的建设也是一个明显的管理层面的改善，那么可以认为这个项目的建设目标已经明确了；甲方目前属于阶段2——明确工作目标
 
-## 项目目前所处销售阶段![](asset/img_7bbbca730fb8.png)
+## 项目目前所处销售阶段![](/images/collections/0.raw/zhihu/%25E5%2586%258D%25E5%2585%25A5%25E9%2597%25A8%25E7%25B3%25BB%25E5%2588%2597/asset/img_7bbbca730fb8.png)
 
 > 对应甲方的工作阶段窗口，乙方销售的工作也分为六个（虽然交付不算销售的工作，但是如果交付做不好，那以后这个客户就再也不会选择你了），分别是identify、Validate、Qualify、Make Agreement、Win、Deliver。原谅我由于最早接受了IBM的培训，所以无法用确切的中文词把这六个阶段描述出来。回头我会专门写一篇关于这六个阶段的文章，详细用中文进行解释。
 

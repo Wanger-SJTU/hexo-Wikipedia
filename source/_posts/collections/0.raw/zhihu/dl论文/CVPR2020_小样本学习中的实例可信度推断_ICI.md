@@ -1,10 +1,19 @@
 ---
-title: "CVPR2020|小样本学习中的实例可信度推断|ICI"
-date: 2020-03-30
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/120354934
-
+title: CVPR2020|小样本学习中的实例可信度推断|ICI
+date: "2020-03-30 00:00:00"
+updated: "2020-03-30 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/dl论文/CVPR2020_小样本学习中的实例可信度推断_ICI/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/120354934
 ---
+
 
 本文介绍复旦大学付彦伟老师课题组在CVPR2020的一篇文章：Instance Credibility Inference for Few-Shot Learning（[论文链接](https://link.zhihu.com/?target=https%3A//arxiv.org/pdf/2003.11853.pdf)）。论文代码将在走完必要程序后开源（[GitHub链接](https://link.zhihu.com/?target=https%3A//github.com/Yikai-Wang/ICI-FSL)）。
 

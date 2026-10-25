@@ -1,9 +1,19 @@
 ---
-title: "让CPU黑盒不再黑——【TMA_自顶向下的CPU架构性能瓶颈分析方法】（四）Speculation"
-date: 2019-05-04
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/64529137
+title: 让CPU黑盒不再黑——【TMA_自顶向下的CPU架构性能瓶颈分析方法】（四）Speculation
+date: "2019-05-04 00:00:00"
+updated: "2019-05-04 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/优化/让CPU黑盒不再黑——【TMA_自顶向下的CPU架构性能瓶颈分析方法】(四)Speculation/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/64529137
 ---
+
 
 上篇文章简要地介绍完TMAM的Frontend Bound分支后，这篇文章将简要地对Bad Speculation分支做一个简要的讲解和说明。该大类表示的是错误的分支预测和CPU中的Machine Clears机制对CPU性能影响情况，将Bad Speculation做为一个大的分类是TMAM的一个特点。若该分类的值大于一定程度时，需先调查解决该分类。因为哪怕此时其他分支也占据很大的比重，但可能暴露出这些问题的都是那些处于错误分支上的指令，并不能真实地反映出CPU运行该程序正确指令流的特性，所以需要先解决该分类的问题，再去调查研究其他的分支。
 
@@ -11,7 +21,7 @@ source: https://zhuanlan.zhihu.com/p/64529137
 
 [](https://zhuanlan.zhihu.com/p/61015720)
 
-![](asset/img_c71af1a42ae8.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_c71af1a42ae8.jpg)
 
 Bad Speculation展开Bad Speculation分类代表的是由于错误的Speculation所浪费的Slots数量，例如错误分支上的uops虽然被issued了，但是最终没有retired，这部分的slots便属于浪费的一部分；又或者是Frontend issue-pipeline由于从错误分支Recovery到正确分支，导致Pipeline Stall，没有uops issue到Backend，这一个过程中所浪费的slots数量也属于该分类。
 

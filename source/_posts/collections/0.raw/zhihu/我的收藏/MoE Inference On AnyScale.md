@@ -1,9 +1,19 @@
 ---
-title: "(2 条消息) MoE Inference On AnyScale"
-date: 2025-03-07
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/28680264165
+title: (2 条消息) MoE Inference On AnyScale
+date: "2025-03-07 00:00:00"
+updated: "2025-03-07 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/MoE-Inference-On-AnyScale/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/28680264165
 ---
+
 
 ### Expert Parallelism推理优化探索之路
 
@@ -15,7 +25,7 @@ source: https://zhuanlan.zhihu.com/p/28680264165
 
 基于此，我们团队致力于开发高效的MoE分布式并行推理框架，以提升EP在实际应用中的可用性。当前，我们已基于SGLang框架实现了支持AlltoAll-based EP版本，并在DeepSeek-R1模型上完成了初步实验验证。实验结果表明，在32卡NVIDIA A100 GPU集群环境下，我们的EP实现相比SGLang框架的原生方案，将DeepSeek-R1模型的推理吞吐量提升了30%以上。这一结果验证了EP的有效性。未来我们将继续通过blog分享研发进展，并开源相关实现，敬请关注。
 
-![](asset/img_8d6fae6f072c.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_8d6fae6f072c.jpg)
 
 图1 单层MoE的并行策略对比
 #### 为什么传统TP方案难以支撑大规模 MoE 推理？
@@ -46,7 +56,7 @@ EP同时使得每个GPU可以计算不同的input data，而不需要像TP一样
 
 - **Prefill阶段优化：** 我们在Prefill阶段实现了显著的性能提升，为后续的推理优化奠定了坚实基础。具体来说，我们优化了数据加载和预处理流程，并实现了高效的GPU内存管理，从而减少了Prefill阶段的时间开销。
 - **性能提升显著：** 我们的初步测试结果表明，与SGLang基于TP的实现相比，我们的方案在吞吐量上提升了30%。我们的测试使用了32个A100 GPU集群进行测试，以及DeepSeek-R1模型，BF16精度。
-![](asset/img_b8788fc8bd37.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_b8788fc8bd37.jpg)
 
 #### 近期的开发计划
 

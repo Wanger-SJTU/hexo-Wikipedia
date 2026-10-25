@@ -1,10 +1,19 @@
 ---
-title: "CVPR 2018 Best Paper Taskonomy 作者解读"
-date: 2018-06-25
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/38425434
-
+title: CVPR 2018 Best Paper Taskonomy 作者解读
+date: "2018-06-25 00:00:00"
+updated: "2018-06-25 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/dl论文/CVPR-2018-Best-Paper-Taskonomy-作者解读/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/38425434
 ---
+
 
 大家好，我是沈博魁，斯坦福本科生／准博士生，Taskonomy的共同二作。鉴于poster session时发现很多人对Taskonomy的理解有偏差，万年潜水的我写了一篇Taskonomy的中文解读，希望能对大家有帮助。很多专业词汇的中文翻译可能有偏差，希望大家见谅。如果有问题，欢迎大家评论私信。
 

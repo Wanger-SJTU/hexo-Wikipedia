@@ -1,10 +1,19 @@
 ---
-title: "Object Detection from Scratch - A Brief Review"
-date: 2020-05-02
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/137410354
-
+title: Object Detection from Scratch - A Brief Review
+date: "2020-05-02 00:00:00"
+updated: "2020-05-02 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/dl论文/Object-Detection-from-Scratch-A-Brief-Review/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/137410354
 ---
+
 
 **之前看过很多人对于这个问题的解读，趁现在天天在家，也想谈一下自己对于这个问题的一些看法和理解，所以今天就来讨论一下learning object detection from scratch这个主题，顺便回顾一下我们之前的工作DSOD（大约16年底开始的一个project，发表于ICCV2017），还有Kaiming等人[1]以及ScratchDet [2]等其他几篇相关的工作。个人觉得这还是一个比较重要的topic，毕竟现在很多基于nas的detection backbone结构搜索的工作都是基于目标检测可以脱离预训练网络这个基本前提假设的 [7, 8]。**
 

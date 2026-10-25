@@ -1,4 +1,17 @@
 ---
+title: 提升RAG——选择最佳Embedding和重新排名模型 | 我的学习笔记 | 土猛的员外
+date: "2026-04-11 21:40:28"
+updated: "2026-04-11 21:40:28"
+layout: post
+permalink: /collections/0.raw/Omnivore/2024-05-17/提升RAG——选择最佳Embedding和重新排名模型-我的学习笔记-土猛的员外/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
+---
 id: a96641a9-f185-4170-bade-080bd880dbe2
 ---
 

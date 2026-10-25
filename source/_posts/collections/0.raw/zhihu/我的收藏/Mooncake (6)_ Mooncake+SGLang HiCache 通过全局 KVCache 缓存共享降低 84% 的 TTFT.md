@@ -1,9 +1,19 @@
 ---
 title: "(2 条消息) Mooncake (6): Mooncake+SGLang HiCache 通过全局 KVCache 缓存共享降低 84% 的 TTFT"
-date: 2025-10-08
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/1959366095443064318
+date: "2025-10-08 00:00:00"
+updated: "2025-10-08 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/Mooncake-(6)_-Mooncake-SGLang-HiCache-通过全局-KVCache-缓存共享降低-84-的-TTFT/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/1959366095443064318
 ---
+
 
 **作者：来自 SGLang community、趋境、蚂蚁、阿里的很多很多贡献者，详细可见 [lmsys blog](https://link.zhihu.com/?target=https%3A//lmsys.org/blog/2025-09-10-sglang-hicache/)
 ### TL;DR
@@ -20,7 +30,7 @@ source: https://zhuanlan.zhihu.com/p/1959366095443064318
 
 HiCache 通过引入 HiRadixTree 作为页表，来统一引用 GPU 显存和 CPU 内存中的 KV Cache。同时，Cache Controller 负责自动管理跨层级的数据加载与回写，包括远程 KV Cache 的读取与写入。借助这一机制，HiCache 将 GPU、CPU、SSD 的“闲置”存储空间充分利用，并依赖 Mooncake、3FS、NIXL 等分布式存储系统来实现全局 KV Cache 的存储与调度。在保障读取性能的前提下，KV Cache 的可用容量得到了大幅提升。**
 
-![](asset/img_e6987ada4852.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_e6987ada4852.jpg)
 
 上图展示了我们在 8 卡 H800 服务器上进行多轮对话测试的实验结果。其中 GPU only、+L2、+Mooncake 分别对应 KVCache 缓存仅包含 GPU VRAM 作为 L1、包含 L1 + 本地 CPU DRAM 作为 L2、以及包含 L1+L2+ 全局的 Mooncake Store  的三种情况。结果清晰表明：通过扩展容量提升缓存命中率对 prefill 性能有显著提升，具体来说
 
@@ -33,7 +43,7 @@ HiCache 通过引入 HiRadixTree 作为页表，来统一引用 GPU 显存和 CP
 
 HiCache 的工作流程主要涉及两个关键操作：预取和写回。当系统收到新的请求时，会首先在本地的 L1 和 L2 中查找匹配的 KV Cache。对于本地未命中的部分，则会尝试从 L3 中预取。在预取结束后，将所有 KV Cache 加载到 GPU 中进行计算。在 Prefill 计算结束后，则会考虑将新的数据存入 L2 或 L3。
 
-![](asset/img_3978c6b30256.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_3978c6b30256.jpg)
 
 数据预取：**预取采用了多线程、异步计算的方式提高预取效率。线程 `prefetch_thread_func` 会不断从 `prefetch_queue` 中取出可能需要预取操作的 Prefill 请求，并查询 L3 得到 C2，若 C2 超过阈值，则会放入等待预取的 `prefetch_buffer`。同时，`prefetch_io_aux_func` 线程会不断从 `prefetch_buffer` 中取出预取请求，并提交 L3 的后端执行。对于需要预取的数据，Mooncake 会通过 RDMA，并行地从多个远程存储节点中读取数据。这个设计让数据预取可以高效快速地完成。**
 
@@ -67,11 +77,11 @@ HiCache 的工作流程主要涉及两个关键操作：预取和写回。当系
 
  同学通过 [PR8651](https://link.zhihu.com/?target=https%3A//github.com/sgl-project/sglang/pull/8651)和 [PR10060](https://link.zhihu.com/?target=https%3A//github.com/sgl-project/sglang/pull/10060) 在 HiCache 中支持了 `page first` 和 `page first direct` 的布局。在使用 `page first` 或 `page first direct` 的情况下，同一个 page 的所有 KV Cache 数据都放在连续的内存里，可以直接作为一个完整的对象通过零拷贝的方式传递给 L3。
 
-![](asset/img_0cadfcd4e6c7.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_0cadfcd4e6c7.jpg)
 
 但由于 GPU 中 KV 的计算是按层进行的，所以 GPU 中天然是 `layer first` 的。而将 `page first` 的 L2 数据传入 `layer first` 的 GPU 时，只能以一个 token 的一个 layer 为粒度传。`page first direct` 则改善了这个问题，在此布局下，L2 到 GPU 的传输可以将一个 page 的一个 layer 聚合到一起。
 
-![](asset/img_988c45d705f2.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_988c45d705f2.jpg)
 
 更进一步，Mooncake 支持高效的批量读写，并能够利用 RDMA 对一个 batch 的数据通过多个网卡并行地同多个远程节点进行数据传输。在 HiCache 中，目前经验性地将 batch size 的上限设置为 128 个 page，超过该值则会被拆分为多个 batch。这是一种权衡：一方面，通过批量并行传输可以提升 I/O 效率；另一方面，分批完成则能保证在 `best_effort` 或 `timeout` 设置触发终止时，至少已完成的 batch 数据能够被利用上。
 

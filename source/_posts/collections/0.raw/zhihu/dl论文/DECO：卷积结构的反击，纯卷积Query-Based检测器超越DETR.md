@@ -1,15 +1,25 @@
 ---
-title: "DECO：卷积结构的反击，纯卷积Query-Based检测器超越DETR"
-date: 2024-03-08
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/686011746
+title: DECO：卷积结构的反击，纯卷积Query-Based检测器超越DETR
+date: "2024-03-08 00:00:00"
+updated: "2024-03-08 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/dl论文/DECO-卷积结构的反击,纯卷积Query-Based检测器超越DETR/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/686011746
 ---
 
+
 - 论文地址：
-[![](asset/img_cbfe7191992e.jpg)DECO: Query-Based End-to-End Object Detection with ConvNetsarxiv.org/abs/2312.13735](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2312.13735)
+[![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_cbfe7191992e.jpg)DECO: Query-Based End-to-End Object Detection with ConvNetsarxiv.org/abs/2312.13735](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2312.13735)
 
 - Pytorch代码：
-[![](asset/img_0131380718cc.jpg)GitHub - xinghaochen/DECO: Official PyTorch implementation of "DECO: Query-Based End-to-End Object Detection with ConvNets"github.com/xinghaochen/DECO](https://link.zhihu.com/?target=https%3A//github.com/xinghaochen/DECO)
+[![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_0131380718cc.jpg)GitHub - xinghaochen/DECO: Official PyTorch implementation of "DECO: Query-Based End-to-End Object Detection with ConvNets"github.com/xinghaochen/DECO](https://link.zhihu.com/?target=https%3A//github.com/xinghaochen/DECO)
 
 - Mindspore代码：
 [https://github.com/mindspore-lab/models/tree/master/research/huawei-noah/DECOgithub.com/mindspore-lab/models/tree/master/research/huawei-noah/DECO](https://link.zhihu.com/?target=https%3A//github.com/mindspore-lab/models/tree/master/research/huawei-noah/DECO)
@@ -22,7 +32,7 @@ Detection Transformer（DETR）推出之后，迅速引发了目标检测领域�
 
 DETR的主要特点是利用Transformer Encoder-Decoder的结构，对一张输入图像，利用一组Query跟图像特征进行交互，可以直接输出指定数量的检测框，从而可以摆脱对NMS等后处理操作的依赖。我们提出的DECO总体架构上跟DETR类似，也包括了Backbone来进行图像特征提取，一个Encoder-Decoder的结构跟Query进行交互，最后输出特定数量的检测结果。唯一的不同在于，DECO的Encoder和Decoder是纯卷积的结构，因此DECO是一个由纯卷积构成的Query-Based端对端检测器。
 
-![](asset/img_bcb1efe3f8e6.jpg)
+![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_bcb1efe3f8e6.jpg)
 
 DECO和DETR框架的对比**DECO Encoder结构 **
 
@@ -32,7 +42,7 @@ Encoder的结构替换相对比较直接，我们选择使用4个ConvNeXt Block�
 
 相比而言，Decoder的替换则复杂得多。Decoder的主要作用为对图像特征和Query进行充分的交互，使得Query可以充分感知到图像特征信息，从而对图像中的目标进行坐标和类别的预测。Decoder主要包括两个输入：Encoder的特征输出和一组可学的查询向量（Query）。我们把Decoder的主要结构分为两个模块：自交互模块（Self-Interaction Module, SIM）和交叉交互模块（Cross-Interaction Module, CIM）。
 
-![](asset/img_730c3eac7342.jpg)
+![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_730c3eac7342.jpg)
 
 DECO的Decoder结构SIM模块主要融合Query和上层Decoder层的输出，这部分的结构，可以利用若干个卷积层来组成，使用9x9 depthwise卷积和1x1卷积分别在空间维度和通道维度进行信息交互，充分获取所需的目标信息以送到后面的CIM模块进行进一步的目标检测特征提取。Query为一组随机初始化的向量，该数量决定了检测器最终输出的检测框数量，其具体的值可以随实际需要进行调节。对DECO来说，因为所有的结构都是由卷积构成的，因此我们把Query变成二维，比如100个Query，则可以变成10x10的维度。
 
@@ -60,10 +70,10 @@ CIM模块的主要作用是让图像特征和Query进行充分的交互，使得
 
 我们在COCO上进行了实验，在保持主要架构不变的情况下将DECO和DETR进行了比较，比如保持Query数量一致，保持Decoder层数不变等，仅将DETR中的Transformer结构按上文所述换成我们的卷积结构。可以看出，DECO取得了比DETR更好的精度和速度的Tradeoff。
 
-![](asset/img_19716a5e5f0d.png)
+![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_19716a5e5f0d.png)
 
 DECO和DETR的性能比较我们也把搭配了多尺度特征后的DECO跟更多目标检测方法进行了对比，其中包括了很多DETR的变体，从下图中可以看到，DECO取得了很不错的效果，比很多以前的检测器都取得了更好的性能。
 
-![](asset/img_590793afaa8b.jpg)
+![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_590793afaa8b.jpg)
 
 DECO和不同检测器的性能比较文章中DECO的结构进行了很多的消融实验及可视化，包括在Decoder中选用的具体融合策略（相加、点乘、Concat），以及Query的维度怎么设置才有最优的效果等，也有一些比较有趣的发现，更详细的结果和讨论请参看原文。

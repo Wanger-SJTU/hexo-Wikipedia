@@ -1,3 +1,16 @@
+---
+title: Harness 元件範例
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/zh-TW/lectures/lecture-02-what-a-harness-actually-is/code/harness-components/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # Harness 元件範例
 
 對於在本機 repo 中工作的程式碼 Agent：

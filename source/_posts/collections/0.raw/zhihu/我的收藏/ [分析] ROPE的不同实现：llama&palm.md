@@ -1,9 +1,19 @@
 ---
-title: "(1 条消息) [分析] ROPE的不同实现：llama&palm"
-date: 2023-05-07
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/627536105
+title: (1 条消息) [分析] ROPE的不同实现：llama&palm
+date: "2023-05-07 00:00:00"
+updated: "2023-05-07 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/[分析]-ROPE的不同实现-llama-palm/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/627536105
 ---
+
 
 看到苏神的[Rotary Position Embedding](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2104.09864)在Meta的llama和Google的palm里面都被采用了，非常佩服。细心的朋友可能发现，llama和palm对ROPE的实现有点细微的差别。
 

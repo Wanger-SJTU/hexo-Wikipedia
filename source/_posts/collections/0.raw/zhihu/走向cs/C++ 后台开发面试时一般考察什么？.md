@@ -1,10 +1,19 @@
 ---
-title: "C++ 后台开发面试时一般考察什么？"
-date: 2020-12-05
-tags: [知乎]
-source: https://www.zhihu.com/question/34574154/answer/1612013803
-
+title: C++ 后台开发面试时一般考察什么？
+date: "2020-12-05 00:00:00"
+updated: "2020-12-05 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/走向cs/C-后台开发面试时一般考察什么/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://www.zhihu.com/question/34574154/answer/1612013803
 ---
+
 
 **在腾讯做Linux C++ 后台开发的来回答下, 去年校招我主要是投的后台开发方向，本身语言也是 C++，走的是 Linux C/C++后台开发方向，拿到过百度、腾讯、字节等大厂offer。**
 

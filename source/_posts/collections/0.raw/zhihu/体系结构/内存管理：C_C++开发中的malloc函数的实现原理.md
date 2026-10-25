@@ -1,15 +1,25 @@
 ---
-title: "内存管理：C/C++开发中的malloc函数的实现原理"
-date: 2022-01-05
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/452686042
+title: 内存管理：C/C++开发中的malloc函数的实现原理
+date: "2022-01-05 00:00:00"
+updated: "2022-01-05 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/体系结构/内存管理-C_C-开发中的malloc函数的实现原理/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/452686042
 ---
+
 
 C语言中使用malloc可以分配一段连续的内存空间。在c/c++开发中，因为malloc属于C标准库函数，经常会使用其分配内存。malloc是在堆中分配一块可用内存给用户。作为一个使用频繁的基础函数，理解清楚其实现原理很有必要，因此本文主要探讨malloc的具体实现原理，以及在linux系统中这该函数的实现方式。
 
 ### 进程地址空间
 
-![](asset/img_fd91d41b5fb1.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_fd91d41b5fb1.jpg)
 
 如上图所示在一个32位系统中，可寻址的空间大小是4G，linux系统下0-3G是用户模式，3-4G是内核模式。而在用户模式下又分为代码段、数据段、.bss段、堆、栈。其中代码段主要存放进程的可执行二进制代码，字符串字面值和只读变量。数据段存放已经初始化且初始值非0的全局变量和局部静态变量。bss段则存放未初始化或初始值为0的全局变量和局部静态变量。而堆段则是存放由用户动态分配内存存储的变量。栈段则主要存储局部变量、函数参数、返回地址等。
 
@@ -52,7 +62,7 @@ struct mm_struct {
 
 **malloc只知道start_brk 和brk之间连续可用的内存空间它可用任意分配，如果不够用了就向系统申请增大brk。后面一部分主要就malloc如何分配内存进行说明。【文章福利**】小编推荐自己的Linux内核技术交流群:【**865977150**】整理了一些个人觉得比较好的学习书籍、视频资料共享在群文件里面，有需要的可以自行添加哦！！！
 
-![](asset/img_c38e0460b253.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_c38e0460b253.jpg)
 
 **内核学习网站：**
 
@@ -69,7 +79,7 @@ brk函数将break指针直接设置为某个地址，而sbrk将break指针从当
 
 **ps: 如果将increment设置为0，则可以获得当前break的地址。 另外需要注意的是，由于Linux是按页进行内存映射的，所以如果break被设置为没有按页大小对齐，则系统实际上会在最后映射一个完整的页，从而实际已映射的内存空间比break指向的地方要大一些。但是使用break之后的地址是很危险的（尽管也许break之后确实有一小块可用内存地址）。进程所面对的虚拟内存地址空间，只有按页映射到物理内存地址，才能真正使用。受物理存储容量限制，整个堆虚拟内存空间不可能全部映射到实际的物理内存。因此每个进程有一个rlimit**表示当前进程可用的资源上限。这个限制可以通过**getrlimit系统调用**得到。
 
-![](asset/img_4cc8bbe26e91.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_4cc8bbe26e91.jpg)
 
 **
 
@@ -98,7 +108,7 @@ mmap函数第一种用法是映射磁盘文件到内存中；而malloc使用的m
 
 由于brk/sbrk/mmap属于系统调用，如果每次申请内存，都调用这三个函数中的一个，那么每次都要产生系统调用开销（即cpu从用户态切换到内核态的上下文切换，这里要保存用户态数据，等会还要切换回用户态），这是非常影响性能的；其次，这样申请的内存容易产生碎片，因为堆是从低地址到高地址，如果低地址的内存没有被释放，高地址的内存就不能被回收。鉴于此，malloc采用的是内存池的实现方式**，malloc内存池实现方式更类似于STL分配器和memcached的内存池，先申请一大块内存，然后将内存分成不同大小的内存块，然后用户申请内存时，直接从内存池中选择一块相近的内存块即可。
 
-![](asset/img_ed44f486a389.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_ed44f486a389.jpg)
 
 内存池保存在bins这个长128的数组中，每个元素都是一双向个链表。
 
@@ -117,7 +127,7 @@ unsorted bin 的队列使用 bins 数组的第一个，如果被用户释放的 
 - 当fast bin和bins都不能满足内存需求时，malloc会设法在**top chunk**中分配一块内存给用户；top chunk为在mmap区域分配一块较大的空闲内存模拟sub-heap。（比较大的时候） >top chunk是堆顶的chunk，堆顶指针brk位于top chunk的顶部。移动brk指针，即可扩充top chunk的大小。当top chunk大小超过128k(可配置)时，会触发malloc_trim操作，调用sbrk(-size)将内存归还操作系统。
 - 当chunk足够大，fast bin和bins都不能满足要求，甚至top chunk都不能满足时，malloc会从mmap来直接使用内存映射来将页映射到进程空间，这样的chunk释放时，直接解除映射，归还给操作系统。（极限大的时候）
 - Last remainder是另外一种特殊的chunk，就像top chunk和mmaped chunk一样，不会在任何bins中找到这种chunk。当需要分配一个small chunk,但在small bins中找不到合适的chunk，如果last remainder chunk的大小大于所需要的small chunk大小，last remainder chunk被分裂成两个chunk，其中一个chunk返回给用户，另一个chunk变成新的last remainder chunk。（这个应该是fast bins中也找不到合适的时候，用于极限小的）
-![](asset/img_02034b160f19.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_02034b160f19.jpg)
 
 由之前的分析可知malloc利用chunk结构来管理内存块，malloc就是由不同大小的chunk链表组成的。malloc会给用户分配的空间的前后加上一些控制信息，用这样的方法来记录分配的信息，以便完成分配和释放工作。chunk指针指向chunk开始的地方,图中的mem指针才是真正返回给用户的内存指针。
 
@@ -144,7 +154,7 @@ free释放内存时，有两种情况：
 
 - chunk和top chunk相邻，则和top chunk合并
 - chunk和top chunk不相邻，则直接插入到unsorted_list中
-![](asset/img_5dbbf1045169.png)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_5dbbf1045169.png)
 
 如上图示: top chunk是堆顶的chunk，堆顶指针brk位于top chunk的顶部。移动brk指针，即可扩充top chunk的大小。当top chunk大小超过128k(可配置)时，会触发malloc_trim操作，调用sbrk(-size)将内存归还操作系统。**
 
@@ -154,4 +164,4 @@ malloc 40k内存，即chunkA，brk = 512k + 40k = 552k malloc 50k内存，即chu
 
 此时，由于brk = 662k，而释放的内存是位于[512k, 552k]之间，无法通过移动brk指针，将区域内内存交还操作系统，因此，在[512k, 552k]的区域内便形成了一个内存空洞即**内存碎片**。 按照glibc的策略，free后的chunkA区域由于不和top chunk相邻，因此，无法和top chunk 合并，应该挂在unsorted_list链表上。
 
-![](asset/img_10d99e3c8129.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_10d99e3c8129.jpg)

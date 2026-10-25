@@ -1,3 +1,16 @@
+---
+title: Learn Harness Engineering
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs-readme/ko-KR/README/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 <p align="center">
   <a href="../../README.md"><img alt="English" src="https://img.shields.io/badge/EN-English-blue?style=flat-square"></a>
   <a href="../zh-CN/README.md"><img alt="简体中文" src="https://img.shields.io/badge/ZH-简体中文-red?style=flat-square"></a>
@@ -47,17 +60,17 @@ Learn Harness Engineering은 AI 코딩 에이전트의 엔지니어링에 집중
 ### 🏠 강좌 홈페이지
 > 포괄적인 강좌 개요와 핵심 철학에 대한 소개로, 시작하기 위한 명확한 경로를 제공합니다.
 
-![강좌 홈페이지 미리보기](../../docs/public/screenshots/readme/zh-home.png)
+![강좌 홈페이지 미리보기](/images/collections/learn-harness-engineering/docs/public/screenshots/readme/zh-home.png)
 
 ### 📖 몰입형 강의
 > 실제 문제점에 대한 심층 분석과 실습 프로젝트(예: Project 01)를 통한 몰입형 학습 경험.
 
-![강좌 강의 미리보기](../../docs/public/screenshots/readme/zh-lecture-01.png)
+![강좌 강의 미리보기](/images/collections/learn-harness-engineering/docs/public/screenshots/readme/zh-lecture-01.png)
 
 ### 🗂️ 바로 사용 가능한 리소스 라이브러리
 > 다중 턴 AI 에이전트 개발에서 발생하는 컨텍스트 손실, 조기 작업 완료 등 일반적인 문제를 해결하기 위해 설계된 템플릿과 참조 구성.
 
-![리소스 라이브러리 미리보기](../../docs/public/screenshots/readme/zh-resources.png)
+![리소스 라이브러리 미리보기](/images/collections/learn-harness-engineering/docs/public/screenshots/readme/zh-resources.png)
 
 ## PDF 강좌 자료
 

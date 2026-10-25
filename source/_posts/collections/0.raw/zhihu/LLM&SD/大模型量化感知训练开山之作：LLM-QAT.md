@@ -1,10 +1,19 @@
 ---
-title: "大模型量化感知训练开山之作：LLM-QAT"
-date: 2023-08-03
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/647589650
-
+title: 大模型量化感知训练开山之作：LLM-QAT
+date: "2023-08-03 00:00:00"
+updated: "2023-08-03 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/LLM-SD/大模型量化感知训练开山之作-LLM-QAT/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/647589650
 ---
+
 
 本系列将针对一些常见大模型量化方案（GPTQ、LLM.int8()、SmoothQuant、AWQ等）进行讲述。
 

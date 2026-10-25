@@ -1,9 +1,19 @@
 ---
-title: "如何评价PLUTO编译器？"
-date: 2026-04-21
-tags: [知乎]
-source: https://www.zhihu.com/question/329294933/answer/718893348
+title: 如何评价PLUTO编译器？
+date: "2026-04-21 00:00:00"
+updated: "2026-04-21 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/体系结构/如何评价PLUTO编译器/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://www.zhihu.com/question/329294933/answer/718893348
 ---
+
 
 要术甲杰
 

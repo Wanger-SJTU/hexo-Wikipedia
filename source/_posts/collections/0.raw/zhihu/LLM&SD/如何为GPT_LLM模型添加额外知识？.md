@@ -1,10 +1,19 @@
 ---
-title: "如何为GPT/LLM模型添加额外知识？"
-date: 2023-06-02
-tags: [知乎]
-source: https://www.zhihu.com/question/591935281/answer/3056126688
-
+title: 如何为GPT/LLM模型添加额外知识？
+date: "2023-06-02 00:00:00"
+updated: "2023-06-02 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/LLM-SD/如何为GPT_LLM模型添加额外知识/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://www.zhihu.com/question/591935281/answer/3056126688
 ---
+
 
 泻药。最近都在讨论大模型怎么结合外部知识，但是都没人关注怎么用外部知识让模型的生成变得更准确。其实让LLM更准确，只要找到模型生成的对应的外部知识即可。如果生成答案的时候不结合外部知识，就可以用post-hoc方法去用外部知识修改模型生成的答案；如果生成答案的时候结合了外部知识，则要想办法让外部知识不影响模型生成答案的流畅度，同时提高模型的准确性。这两种方法各有优劣。
 

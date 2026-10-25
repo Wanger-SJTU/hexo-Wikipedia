@@ -1,9 +1,19 @@
 ---
-title: "超全整理！Linux性能分析工具汇总合集"
-date: 2018-12-11
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/52107689
+title: 超全整理！Linux性能分析工具汇总合集
+date: "2018-12-11 00:00:00"
+updated: "2018-12-11 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/优化/超全整理-Linux性能分析工具汇总合集/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/52107689
 ---
+
 
 高能预警：文章涵盖了一个系统的方方面面，如果没有完善的**计算机系统知识、网络知识**和**操作系统知识**，文档中的工具是不可能完全掌握的，另外，对系统性能分析和优化是一个长期的过程。**
 本文主要是结合Linux 大牛，Netflix 高级性能架构师 Brendan Gregg 更新 Linux 性能调优工具的博文，搜集Linux系统性能优化相关文章整理后的一篇综合性文章，主要是结合博文对涉及到的原理和性能测试的工具展开说明。
@@ -15,7 +25,7 @@ source: https://zhuanlan.zhihu.com/p/52107689
 
 首先来看一张图：
 
-![](asset/img_cd95e11e0d82.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_cd95e11e0d82.jpg)
 
 上图是Brendan Gregg 的一次性能分析的分享，这里面的所有工具都可以通过man来获得它的帮助文档，下问简单介绍介绍一下常规的用法：
 
@@ -24,7 +34,7 @@ source: https://zhuanlan.zhihu.com/p/52107689
 vmstat的常规用法：vmstat interval times即每隔interval秒采样一次，共采样times次，如果省略times,则一直采集数据，直到用户手动停止为止。
 简单举个例子：
 
-![](asset/img_71db205ecd39.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_71db205ecd39.jpg)
 
 可以使用ctrl+c停止vmstat采集数据。
 
@@ -39,7 +49,7 @@ vmstat的常规用法：vmstat interval times即每隔interval秒采样一次，
 
 ▲iostat--用于报告中央处理器统计信息****iostat用于报告中央处理器（CPU）统计信息和整个系统、适配器、tty 设备、磁盘和 CD-ROM 的输入/输出统计信息，默认显示了与vmstat相同的cpu使用信息，使用以下命令显示扩展的设备统计：
 
-![](asset/img_7f3f36ccb21a.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_7f3f36ccb21a.jpg)
 
 第一行显示的是自系统启动以来的平均值，然后显示增量的平均值，每个设备一行。
 常见linux的磁盘IO指标的缩写习惯：rq是request,r是read,w是write,qu是queue，sz是size,a是verage,tm是time,svc是service。
@@ -55,7 +65,7 @@ vmstat的常规用法：vmstat interval times即每隔interval秒采样一次，
 ▲dstat--系统监控工具****dstat显示了cpu使用情况，磁盘io情况，网络发包情况和换页情况，输出是彩色的，可读性较强，相对于vmstat和iostat的输入更加详细且较为直观。在使用时，直接输入命令即可，当然也可以使用特定参数。
 如下：dstat –cdlmnpsy
 
-![](asset/img_ff2c02ed17ae.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_ff2c02ed17ae.jpg)
 
 ▲iotop--LINUX进程实时监控工具****iotop命令是专门显示硬盘IO的命令，界面风格类似top命令，可以显示IO负载具体是由哪个进程产生的。是一个用来监视磁盘I/O使用状况的top类工具，具有与top相似的UI，其中包括PID、用户、I/O、进程等相关信息。
 
@@ -74,7 +84,7 @@ vmstat的常规用法：vmstat interval times即每隔interval秒采样一次，
 
 ▲htop****htop 是Linux系统中的一个互动的进程查看器,一个文本模式的应用程序(在控制台或者X终端中),需要ncurses。
 
-![](asset/img_6962ba931c7a.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_6962ba931c7a.jpg)
 
 Htop可让用户交互式操作，支持颜色主题，可横向或纵向滚动浏览进程列表，并支持鼠标操作。
 与top相比，htop有以下优点：
@@ -135,7 +145,7 @@ http://blog.csdn.net/trochiluses/article/details/10261339
 ### 
 一、 Linux observability tools | Linux 性能观测工具****
 
-![](asset/img_9fe3f89b44e1.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_9fe3f89b44e1.jpg)
 
 ### 
 ▪ 首先学习的Basic Tool有如下：
@@ -147,19 +157,19 @@ sar、netstat、pidstat、strace、tcpdump、blktrace、iotop、slabtop、sysctl
 
 二、Linux benchmarking tools | Linux 性能测评工具****
 
-![](asset/img_30e0ef6ab191.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_30e0ef6ab191.jpg)
 
 是一款性能测评工具，对于不同模块的性能测试可以使用相应的工具，想要深入了解，可以参考最下文的附件文档。
 
 三、Linux tuning tools | Linux 性能调优工具****
 
-![](asset/img_b6b639984a21.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_b6b639984a21.jpg)
 
 是一款性能调优工具，主要是从linux内核源码层进行的调优，想要深入了解，可以参考下文附件文档。
 
 四、Linux observability sar | linux性能观测工具**
 
-![](asset/img_57b8b3afe5b4.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_57b8b3afe5b4.jpg)
 
 sar（System Activity Reporter系统活动情况报告）是目前LINUX上最为全面的系统性能分析工具之一，可以从多方面对系统的活动进行报告，包括：文件的读写情况、系统调用的使用情况、磁盘I/O、CPU效率、内存使用状况、进程活动及IPC有关的活动等方面。
 

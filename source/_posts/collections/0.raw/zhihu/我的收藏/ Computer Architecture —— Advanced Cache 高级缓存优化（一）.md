@@ -1,13 +1,23 @@
 ---
-title: "(1 条消息) Computer Architecture —— Advanced Cache 高级缓存优化（一）"
-date: 2021-06-29
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/384874383
+title: (1 条消息) Computer Architecture —— Advanced Cache 高级缓存优化（一）
+date: "2021-06-29 00:00:00"
+updated: "2021-06-29 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/Computer-Architecture-——-Advanced-Cache-高级缓存优化(一)/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/384874383
 ---
+
 
 大家好，我是老萧。
 
-[![](asset/img_713079a5a96f.jpg)Computer Architecture —— Cache 缓存器介绍 （三）：缓存的基础优化34 赞同 · 0 评论 文章](https://zhuanlan.zhihu.com/p/347651405)
+[![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_713079a5a96f.jpg)Computer Architecture —— Cache 缓存器介绍 （三）：缓存的基础优化34 赞同 · 0 评论 文章](https://zhuanlan.zhihu.com/p/347651405)
 
 距离上一篇关于缓存的文章，已经过去了大半年了。中间发布了一些其他主题的文章，再加上学业繁忙，关于缓存这块一直没有更新。今天老萧重新整理了一下以前的笔记，准备给大家继续带来关于缓存系统优化的知识点。
 
@@ -15,7 +25,7 @@ source: https://zhuanlan.zhihu.com/p/384874383
 
 **为什么需要带有流水线的缓存呢？**
 
-![](asset/img_58a4c8349d01.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_58a4c8349d01.jpg)
 
 图1. 分开来的 Tag Array 和 Data Array通常来说，将数据写入缓存有两步：
 
@@ -48,7 +58,7 @@ CHK = Check Tag`
 
 **流水线缓存的得与失**
 
-![](asset/img_c15abc41699f.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_c15abc41699f.jpg)
 
 图2. Delayed Cache Stored Buffer 的 Bypass 路线（黄色标注部分）看似 Pipelined Cache 这种优化思路能够拆分写入缓存的步骤，减少写命中时间，但从硬件实现的角度来说，这一点还需要斟酌。假设有一个情况，一个 Load 指令紧接着 Store 指令，那么这个 Load 指令就需要去 Delayed Stored Buffer 里面寻找有没有相同的地址。如果有，就需要使用 Bypass 把数据送还给 CPU。图2 中的黄色标注路线就是 Bypass 路径。可以看出，为了实现这一点，一些新的硬件模块比如多路复用器（MUX）和比较器（Comparator）被加入到了缓存系统，而新的硬件则会为 Timing 和命中时间（Hit Time）带来新的挑战。
 

@@ -1,9 +1,19 @@
 ---
-title: "ARM底层汇编优化之NEON优化 - 概述（基础入门 ）"
-date: 2019-04-04
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/61356656
+title: ARM底层汇编优化之NEON优化 - 概述（基础入门 ）
+date: "2019-04-04 00:00:00"
+updated: "2019-04-04 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/体系结构/ARM底层汇编优化之NEON优化-概述(基础入门-)/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/61356656
 ---
+
 
 ### 一、官网介绍：
 
@@ -15,13 +25,13 @@ NEON整体介绍developer.arm.com/technologies/neon
 
 NEON Programmer’s Guide Version: 1.0 – Arm Developerdeveloper.arm.com/docs/den0018/latest
 
-![](asset/img_e2bdc3290726.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_e2bdc3290726.jpg)
 
 ### 1.1、 NEON整体描述
 
 Arm NEON technology is an advanced SIMD (single instruction multiple data) architecture extension for the Arm Cortex-A series and Cortex-R52 processors.
 
-![](asset/img_73d52089de0e.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_73d52089de0e.jpg)
 
 NEON technology was introduced to the Armv7-A and Armv7-R profiles. It is also now an extension to the Armv8-A and Armv8-R profiles.
 
@@ -29,9 +39,9 @@ NEON technology is intended to improve the multimedia user experience by acceler
 
 **其他具体的细节，在官网还有很多描述，自己去看嘛（*嘿嘿，其实我就是懒~*）**
 
-![](asset/img_fb71e68cec33.png)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_fb71e68cec33.png)
 
-伸懒腰一天零十二分钟零4秒~![](asset/img_eb6fc3d1c4c1.jpg)
+伸懒腰一天零十二分钟零4秒~![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_eb6fc3d1c4c1.jpg)
 
 舒服了舒服了~接着讲~
 ### 2、继续学习
@@ -48,7 +58,7 @@ NEON是SIMD架构下的一个加速部分，其实本来是给多媒体做的，
 
 于是这NEON就出来了，嗯！就是这么信手拈来、口若悬河~
 
-![](asset/img_9574cf45dff0.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_9574cf45dff0.jpg)
 
 **详细的教程如下系列：**
 
@@ -74,7 +84,7 @@ NEON是SIMD架构下的一个加速部分，其实本来是给多媒体做的，
 
 你看看下面这一篇，就知道什么叫做严谨，什么叫做geek了！**
 
-![](asset/img_7fb2cc2e8234.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_7fb2cc2e8234.jpg)
 
 **
 
@@ -97,11 +107,11 @@ Hazard：**
 
 看下面的图（可治陈年老颈椎）：
 
-![](asset/img_a3191ea3b7f3.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_a3191ea3b7f3.jpg)
 
 你看上面一条指令假设需要花很多个指令周期（NEON指令确实如此），那么就被推入了流水线，并分割为好多的小步骤，其中最后一个步骤就是把数据写回Q0，让当前这条指令的下一句就是先取Q0的值，然后做运算啥的，你从图上看，是不是很有可能上一条指令的Q0还没写进去，我下面的Q0就读出来啦！**因此在微架构里面叫这玩意做：Hazard**。
 
-**当然咯！这种情况肯定是不允许出现的，具体怎么解我不知道，我知道的是，肯定得等Q0写完才能读，因此势必流水线就会被破坏，势必就有资源会被作为牺牲品，因此这就是为什么不提倡上述这种操作方式，再下面的NEON优化部分，我会有更专业的操作来验证。![](asset/img_1151873267b5.png)
+**当然咯！这种情况肯定是不允许出现的，具体怎么解我不知道，我知道的是，肯定得等Q0写完才能读，因此势必流水线就会被破坏，势必就有资源会被作为牺牲品，因此这就是为什么不提倡上述这种操作方式，再下面的NEON优化部分，我会有更专业的操作来验证。![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_1151873267b5.png)
 
 老是挖坑~而且还不填~
 
@@ -115,13 +125,13 @@ Hazard：**
 
 看完这些资料，我有一种感觉，就是相信，我的代码将会有一巨型加速挂加身：
 
-![](asset/img_87bb52097721.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_87bb52097721.jpg)
 
 #### 3.1、Introduction
 
 如其名，就是Neon优化的，讲了一些实践技巧。hin重要啊！我可是看完了，你们可要去看啊~
 
-![](asset/img_ee18603750e0.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_ee18603750e0.jpg)
 
 #### 3.2、Skill1：Remove data dependencies
 
@@ -433,7 +443,7 @@ VADD qAcc0, qAcc0, qAcc3
 
 下面是上面提到的，指令周期对照表：
 
-![](asset/img_7b80e5c5903e.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_7b80e5c5903e.jpg)
 
 优化手段大体总结如下：**
 
@@ -447,7 +457,7 @@ VADD qAcc0, qAcc0, qAcc3
 
 NEON汇编方式跟intrinsics方式对比如下：
 
-![](asset/img_90951210df81.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_90951210df81.jpg)
 
 我们可以看到是分三个方面进行对比的：
 
@@ -470,7 +480,7 @@ NEON汇编方式跟intrinsics方式对比如下：
 
 一些在真实开发过程中可能会出现的问，现描述如下：
 
-![](asset/img_41e20011aaa8.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_41e20011aaa8.jpg)
 
 **Flexibility of instruction**
 
@@ -478,7 +488,7 @@ NEON汇编方式跟intrinsics方式对比如下：
 
 **当然这个不足，可以在将来的编译器升级过程中进行解决。有时候，编译器是有能力将两条内联函数指令优化为一条汇编指令的，比如：
 
-![](asset/img_dc83cfdebe75.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_dc83cfdebe75.jpg)
 
 因此，伴随着ARMv8工具连的升级，有望使得内联函数方式有跟汇编一样的灵活度；
 
@@ -506,7 +516,7 @@ Register allocation**：
 
 编译器将会在NEON优化的过程中产生影响，下面这张图描述了NEON实现和优化的通常过程：
 
-![](asset/img_e3e3822fe95d.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_e3e3822fe95d.jpg)
 
 NEON汇编和内联方式有同样的实现过程，编码-调试-性能测试，但是他们却有不同的优化步骤：
 
@@ -541,7 +551,7 @@ NEON intrinsics 精调的方法更难哟！**：
 
 许多现已存的NEON汇编代码，仅能在ARMv7-A/ARMv8-A平台下的AArch32模式下运行，假如你想让这些代码在ARMv8-A AArch64模式下运行，你必须重写这些代码**，这需要花费很多的功夫啊！
 
-![](asset/img_fef61d7ba6e0.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_fef61d7ba6e0.jpg)
 
 在这样的情形下，假如代码是用内联函数方式实现的，它们能够在ARMv8-A AArch64 模式下直接运行。
 
@@ -592,7 +602,7 @@ scratch[3].i = scratch_in[3].i * scratch_tw[2].r + scratch_in[3].r * scratch_tw[
 
 > （嗯，听上去很不错呢!!! 但是我还是选择手写汇编，都到了汇编这一层次了就不差再往前走一点点的~~~吧！）
 
-![](asset/img_6d934ea34f8a.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_6d934ea34f8a.jpg)
 
 最后关于内联函数总结几点人生经验：
 
@@ -604,20 +614,20 @@ scratch[3].i = scratch_in[3].i * scratch_tw[2].r + scratch_in[3].r * scratch_tw[
 
 哇，啰啰嗦嗦写了这么一大串也不知道你喜不喜欢看，也不知道对不对得起各位看官老爷在这里消费的好几分钟时间~
 
-![](asset/img_0390a4fdeedf.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_0390a4fdeedf.jpg)
 
 要是万一不喜欢的话，后面我会继续深入讲解诸如指令流水线优化、cache优化、Powerperf等等这一系列干货的哟~
 
 先别说这么多了，来，大哥，我请你按摩、喝冰阔罗~
 
-![](asset/img_2a416dd4d1d0.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_2a416dd4d1d0.jpg)
 
 什么？你说这些都太小儿科了，你不喜欢？得嘞~您也别着急着走，给您安排的明明白白得~我已经给在座各位去同时预约好几位大佬了，大佬们将会分享专业干货以及实时行业动态哟~比如自带千年魂环特效的低比特量化领域、炼丹领域以及AI行业动态等等~
 
-![](asset/img_31e95412b930.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_31e95412b930.jpg)
 
 总之，要是喜欢的话点个赞再走哟~听说点个赞再走的跟圈圈虫大佬一样都是人生赢家呀~
 
-![](asset/img_1a1abc6ab171.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_1a1abc6ab171.jpg)
 
-![](asset/img_9c74e1ad14cf.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_9c74e1ad14cf.jpg)

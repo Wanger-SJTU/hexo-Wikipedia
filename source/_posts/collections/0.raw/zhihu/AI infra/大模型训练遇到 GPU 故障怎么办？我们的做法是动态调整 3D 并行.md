@@ -1,9 +1,19 @@
 ---
-title: "大模型训练遇到 GPU 故障怎么办？我们的做法是动态调整 3D 并行"
-date: 2026-05-11
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/2036192731547035544
+title: 大模型训练遇到 GPU 故障怎么办？我们的做法是动态调整 3D 并行
+date: "2026-05-11 00:00:00"
+updated: "2026-05-11 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/AI-infra/大模型训练遇到-GPU-故障怎么办-我们的做法是动态调整-3D-并行/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/2036192731547035544
 ---
+
 
 入坑 AI infra 也有近两年了，最近做了一篇训练容错、弹性调度相关的工作——[ResiHP: Taming LLM Training Failures with Dynamic Hybrid Parallelism](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2605.06374)，有幸被 HPDC ‘26接收。
 

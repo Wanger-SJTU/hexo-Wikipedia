@@ -1,9 +1,19 @@
 ---
-title: "(1 封私信) PCIe 里的地址，为什么一会儿是 CPU 地址，一会儿又成了 DMA 地址？"
-date: 2026-03-20
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/2018310591131960250
+title: (1 封私信) PCIe 里的地址，为什么一会儿是 CPU 地址，一会儿又成了 DMA 地址？
+date: "2026-03-20 00:00:00"
+updated: "2026-03-20 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/体系结构/PCIe-里的地址,为什么一会儿是-CPU-地址,一会儿又成了-DMA-地址/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/2018310591131960250
 ---
+
 
 做 PCIe 的人，迟早都会被几个地址绕进去。
 
@@ -33,7 +43,7 @@ source: https://zhuanlan.zhihu.com/p/2018310591131960250
 
 PCIe 里的这几种地址，差不多也是这个意思。
 
-![](asset/img_e63eba4cbe8f.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_e63eba4cbe8f.jpg)
 
 先从 CPU 地址说起。
 
@@ -55,7 +65,7 @@ RC 会把这次 CPU 发起的访问做一次地址转换，然后变成一笔 PC
 
 也就是说，同一件事，从 CPU 这边看，是在访问 `0x40100040**`；从设备这边看，是 BAR0 里偏移 `**0x40**` 的寄存器被访问了。
 
-![](asset/img_8c13a84e2827.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_8c13a84e2827.jpg)
 
 这个地方特别容易让初学者犯迷糊。**因为大家很容易下意识觉得：既然访问的是同一个寄存器，那地址应该就是同一个。
 但实际上不是。
@@ -67,7 +77,7 @@ RC 会把这次 CPU 发起的访问做一次地址转换，然后变成一笔 PC
 对 CPU 来说，它在 `0x40100040`。**对设备来说，它是 BAR0 里的 offset `0x40`。
 这不是两个寄存器，而是同一个寄存器在两个不同坐标系里的位置。
 
-![](asset/img_72996fea0abb.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_72996fea0abb.jpg)
 
 到这里，其实 CPU 地址和 PCIe 地址的差别就已经出来了。
 
@@ -95,7 +105,7 @@ PCIe 地址，则更像是 PCIe 总线世界里的地址，是事务真正到了
 
 你没看错，的确可能差很多。**但这不是出错了，而是因为它们本来就不是给同一个主体使用的地址。
 
-![](asset/img_8248d51c58f5.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_8248d51c58f5.jpg)
 
 这时候，DMA 地址这个概念其实就很好理解了。
 
@@ -104,7 +114,7 @@ DMA 地址，不是“CPU 觉得好像可以用的一个地址”，而是设备
 很多人第一次接触这块时，会觉得驱动代码特别别扭。**明明 buffer 是我申请的，为什么又冒出来一个 DMA 地址？
 其实原因很简单：CPU 看到的地址，未必就是设备能直接使用的地址。**
 
-![](asset/img_688073c4ad98.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_688073c4ad98.jpg)
 
 讲到这里，可以停一下，回头看一眼前面这两个场景。**你会发现，很多时候我们不是被“地址太多”绕晕了，而是把两种完全不同的访问方向混在了一起。
 
@@ -116,7 +126,7 @@ DMA 地址，不是“CPU 觉得好像可以用的一个地址”，而是设备
 
 如果把这两个场景并排放在一起，其实就特别清楚了
 
-![](asset/img_6016d33cb931.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_6016d33cb931.jpg)
 
 这个时候，再回过头去记三个名字，就会轻松很多。
 
@@ -144,7 +154,7 @@ DMA 地址，不是“CPU 觉得好像可以用的一个地址”，而是设备
 这种现象不是在说明三者概念上相同，而只是说明这个平台刚好把不同视角下的地址做得比较接近。
 一旦平台复杂起来，中间多几层转换，这几个地址很快就会分家。
 
-![](asset/img_fd3f327099ff.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_fd3f327099ff.jpg)
 
 说到这里，其实很多原来看起来很玄的现象，就都能解释了。
 
@@ -170,7 +180,7 @@ DMA 地址，不是“CPU 觉得好像可以用的一个地址”，而是设备
 
 这个问题一旦问清楚，很多原本像一团毛线一样缠在一起的现象，立刻就会顺很多。
 
-![](asset/img_6765a66335f9.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_6765a66335f9.jpg)
 
 如果非要把这篇文章再压缩成一句话，那其实就是：
 
@@ -183,4 +193,4 @@ DMA 地址，不是“CPU 觉得好像可以用的一个地址”，而是设备
 因为 PCIe 里的很多概念，难不在“信息量大”，而在“不同视角经常被混着讲”。
 一旦你把视角拆开，把“谁在访问、谁在发起、谁在看这个地址”这件事想明白，原本那些让人头大的 BAR、DMA、地址转换，都会一下子顺起来。
 
-![](asset/img_182a5122f540.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_182a5122f540.jpg)

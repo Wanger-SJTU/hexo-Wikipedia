@@ -1,9 +1,19 @@
 ---
-title: "From Sparse to Soft Mixtures of Experts"
-date: 2023-09-03
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/653976943
+title: From Sparse to Soft Mixtures of Experts
+date: "2023-09-03 00:00:00"
+updated: "2023-09-03 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/LLM-SD/From-Sparse-to-Soft-Mixtures-of-Experts/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/653976943
 ---
+
 
 From Sparse to Soft Mixtures of Experts
 

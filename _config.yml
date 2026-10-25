@@ -104,3 +104,7 @@ ignore:
 theme: hexowiki
 
 # 主题级配置见 themes/hexowiki/_config.yml
+
+# 旧链接重定向（导入 collections 后保留原 /wiki/<文件名>/ 链接）
+wiki_redirects:
+  "/wiki/ protobuf 中 UB 行为的表现/": "/collections/0.raw/zhihu/安全/protobuf-中-UB-行为的表现/"

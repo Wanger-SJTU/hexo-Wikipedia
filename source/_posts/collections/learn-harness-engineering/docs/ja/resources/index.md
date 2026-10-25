@@ -1,3 +1,16 @@
+---
+title: 日本語リソースライブラリ
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/ja/resources/index/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # 日本語リソースライブラリ
 
 このフォルダは、コースで扱う方法を、実際のリポジトリで使えるコピー可能なテンプレートと短いリファレンスに変換したものです。

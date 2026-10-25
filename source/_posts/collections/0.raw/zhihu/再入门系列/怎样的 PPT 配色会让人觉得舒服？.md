@@ -1,9 +1,19 @@
 ---
-title: "怎样的 PPT 配色会让人觉得舒服？"
-date: 2026-04-15
-tags: [知乎]
-source: https://www.zhihu.com/question/30709836/answer/103524500
+title: 怎样的 PPT 配色会让人觉得舒服？
+date: "2026-04-15 00:00:00"
+updated: "2026-04-15 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/再入门系列/怎样的-PPT-配色会让人觉得舒服/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://www.zhihu.com/question/30709836/answer/103524500
 ---
+
 
 看了下大家的回答，有对色彩理论的剖析，也有PPT技巧的运用，都写得很好，但却鲜有结合回答。一直自学设计，颜色也曾一度困惑很久的问题。
 
@@ -30,15 +40,15 @@ source: https://www.zhihu.com/question/30709836/answer/103524500
 
 平时我们常见的电视、显示器、网页等都会采用RGB的色彩模式。但由于三原色混合不太可能达到纯黑的效果，所以印刷时候会加上K（黑），也就是CMYK的模式。
 
-![](asset/img_a7c4403126fe.jpg)![](asset/img_5eca38a61387.webp)
+![](/images/collections/0.raw/zhihu/%25E5%2586%258D%25E5%2585%25A5%25E9%2597%25A8%25E7%25B3%25BB%25E5%2588%2597/asset/img_a7c4403126fe.jpg)![](/images/collections/0.raw/zhihu/%25E5%2586%258D%25E5%2585%25A5%25E9%2597%25A8%25E7%25B3%25BB%25E5%2588%2597/asset/img_5eca38a61387.webp)
 
 **但在PPT中还支持一种色彩模式，HSL（色相H、饱和度S、明度L）。我们可以通过三个颜色通道的变化以及它们相互之间的叠加来得到各式各样的颜色。
 
 PPT支持RGB调色和HSL调色。**
 
-![](asset/img_84f297f27475.jpg)
+![](/images/collections/0.raw/zhihu/%25E5%2586%258D%25E5%2585%25A5%25E9%2597%25A8%25E7%25B3%25BB%25E5%2588%2597/asset/img_84f297f27475.jpg)
 
-![](asset/img_0dee5f620f6d.jpg)
+![](/images/collections/0.raw/zhihu/%25E5%2586%258D%25E5%2585%25A5%25E9%2597%25A8%25E7%25B3%25BB%25E5%2588%2597/asset/img_0dee5f620f6d.jpg)
 
 **这是关于色彩模式最基本的知识，当然研究起来还有很多。但知道这些最基础的我们就可以尝试自己调色了。
 
@@ -52,18 +62,18 @@ PPT支持RGB调色和HSL调色。**
 
 ，把PPT的颜色分类四类：VI色、行业色、主题色、领导色。**
 
-![](asset/img_c61d8296eec0.jpg)
+![](/images/collections/0.raw/zhihu/%25E5%2586%258D%25E5%2585%25A5%25E9%2597%25A8%25E7%25B3%25BB%25E5%2588%2597/asset/img_c61d8296eec0.jpg)
 
 **
 01、VI色**
 
 VI就是企业的视觉化设计，一般体现在画册上，比如这些：
 
-![](asset/img_2f848320ce7a.jpg)
+![](/images/collections/0.raw/zhihu/%25E5%2586%258D%25E5%2585%25A5%25E9%2597%25A8%25E7%25B3%25BB%25E5%2588%2597/asset/img_2f848320ce7a.jpg)
 
-![](asset/img_320553af5b29.jpg)
+![](/images/collections/0.raw/zhihu/%25E5%2586%258D%25E5%2585%25A5%25E9%2597%25A8%25E7%25B3%25BB%25E5%2588%2597/asset/img_320553af5b29.jpg)
 
-![](asset/img_defe3e48e59f.jpg)
+![](/images/collections/0.raw/zhihu/%25E5%2586%258D%25E5%2585%25A5%25E9%2597%25A8%25E7%25B3%25BB%25E5%2588%2597/asset/img_defe3e48e59f.jpg)
 
 **如果你是一名在职人员，那么在做PPT的时候，可以参考一下你们公司的VI设计，直接用VI的配色系统就可以了。
 
@@ -75,25 +85,25 @@ VI就是企业的视觉化设计，一般体现在画册上，比如这些：
 
 锤子的：
 
-![](asset/img_5f607fc08af0.jpg)
+![](/images/collections/0.raw/zhihu/%25E5%2586%258D%25E5%2585%25A5%25E9%2597%25A8%25E7%25B3%25BB%25E5%2588%2597/asset/img_5f607fc08af0.jpg)
 
-![](asset/img_caae8ebaa6b3.jpg)
+![](/images/collections/0.raw/zhihu/%25E5%2586%258D%25E5%2585%25A5%25E9%2597%25A8%25E7%25B3%25BB%25E5%2588%2597/asset/img_caae8ebaa6b3.jpg)
 
-![](asset/img_a7b3c8011319.jpg)
+![](/images/collections/0.raw/zhihu/%25E5%2586%258D%25E5%2585%25A5%25E9%2597%25A8%25E7%25B3%25BB%25E5%2588%2597/asset/img_a7b3c8011319.jpg)
 
 **小米的：
 
-![](asset/img_0f240dd72bb1.jpg)
+![](/images/collections/0.raw/zhihu/%25E5%2586%258D%25E5%2585%25A5%25E9%2597%25A8%25E7%25B3%25BB%25E5%2588%2597/asset/img_0f240dd72bb1.jpg)
 
-![](asset/img_0ba0991bc0f7.jpg)
+![](/images/collections/0.raw/zhihu/%25E5%2586%258D%25E5%2585%25A5%25E9%2597%25A8%25E7%25B3%25BB%25E5%2588%2597/asset/img_0ba0991bc0f7.jpg)
 
-![](asset/img_5e68674c21cb.jpg)
+![](/images/collections/0.raw/zhihu/%25E5%2586%258D%25E5%2585%25A5%25E9%2597%25A8%25E7%25B3%25BB%25E5%2588%2597/asset/img_5e68674c21cb.jpg)
 
 又或者你是特殊行业，比如政府，那就应该是这样的：
 
-![](asset/img_0ec271989eb1.jpg)
+![](/images/collections/0.raw/zhihu/%25E5%2586%258D%25E5%2585%25A5%25E9%2597%25A8%25E7%25B3%25BB%25E5%2588%2597/asset/img_0ec271989eb1.jpg)
 
-![](asset/img_2a770a79de98.jpg)
+![](/images/collections/0.raw/zhihu/%25E5%2586%258D%25E5%2585%25A5%25E9%2597%25A8%25E7%25B3%25BB%25E5%2588%2597/asset/img_2a770a79de98.jpg)
 
 03、主题色**
 
@@ -102,13 +112,13 @@ VI就是企业的视觉化设计，一般体现在画册上，比如这些：
 比如我自己做的毕业答辩模板，也欢迎免费下载：
 
 【PowerPoint】三色实用毕业答辩模板**
-![](asset/img_79b89b0db413.jpg)
+![](/images/collections/0.raw/zhihu/%25E5%2586%258D%25E5%2585%25A5%25E9%2597%25A8%25E7%25B3%25BB%25E5%2588%2597/asset/img_79b89b0db413.jpg)
 
-![](asset/img_64fc873913a7.jpg)
+![](/images/collections/0.raw/zhihu/%25E5%2586%258D%25E5%2585%25A5%25E9%2597%25A8%25E7%25B3%25BB%25E5%2588%2597/asset/img_64fc873913a7.jpg)
 
-![](asset/img_6b42672d6817.jpg)
+![](/images/collections/0.raw/zhihu/%25E5%2586%258D%25E5%2585%25A5%25E9%2597%25A8%25E7%25B3%25BB%25E5%2588%2597/asset/img_6b42672d6817.jpg)
 
-![](asset/img_8fb52fe5dead.jpg)
+![](/images/collections/0.raw/zhihu/%25E5%2586%258D%25E5%2585%25A5%25E9%2597%25A8%25E7%25B3%25BB%25E5%2588%2597/asset/img_8fb52fe5dead.jpg)
 
 很久以前的作品了，现在看来有很多地方不够成熟，但举例还是足够了。
 
@@ -118,21 +128,21 @@ VI就是企业的视觉化设计，一般体现在画册上，比如这些：
 
 [愤怒的小鸟：有时候我只是脾气不好](https://link.zhihu.com/?target=http%3A//mp.weixin.qq.com/s%3F__biz%3DMzAxMTI2MDc0MQ%3D%3D%26mid%3D504608934%26idx%3D1%26sn%3D42f67e10352f1d5fe13d959f86bf11f3%23rd)
 
-![](asset/img_149b7520861e.jpg)
+![](/images/collections/0.raw/zhihu/%25E5%2586%258D%25E5%2585%25A5%25E9%2597%25A8%25E7%25B3%25BB%25E5%2588%2597/asset/img_149b7520861e.jpg)
 
-![](asset/img_00a8164ab7d9.jpg)
+![](/images/collections/0.raw/zhihu/%25E5%2586%258D%25E5%2585%25A5%25E9%2597%25A8%25E7%25B3%25BB%25E5%2588%2597/asset/img_00a8164ab7d9.jpg)
 
-![](asset/img_6ef5bb7ee8b6.jpg)
+![](/images/collections/0.raw/zhihu/%25E5%2586%258D%25E5%2585%25A5%25E9%2597%25A8%25E7%25B3%25BB%25E5%2588%2597/asset/img_6ef5bb7ee8b6.jpg)
 
-![](asset/img_c2df79f9b472.jpg)
+![](/images/collections/0.raw/zhihu/%25E5%2586%258D%25E5%2585%25A5%25E9%2597%25A8%25E7%25B3%25BB%25E5%2588%2597/asset/img_c2df79f9b472.jpg)
 
-![](asset/img_ecf521ab4441.jpg)
+![](/images/collections/0.raw/zhihu/%25E5%2586%258D%25E5%2585%25A5%25E9%2597%25A8%25E7%25B3%25BB%25E5%2588%2597/asset/img_ecf521ab4441.jpg)
 
 涉及到具体颜色的时候，可以用PPT的取色器，直接用图片中的颜色。
 
 在所有颜色编辑里，都有取色器。
 
-![](asset/img_ee23f2b81b32.jpg)
+![](/images/collections/0.raw/zhihu/%25E5%2586%258D%25E5%2585%25A5%25E9%2597%25A8%25E7%25B3%25BB%25E5%2588%2597/asset/img_ee23f2b81b32.jpg)
 
 04、领导色**
 
@@ -146,7 +156,7 @@ Behance
 
 Behance的名气就不多说了，你可以默认上面的就是最好的颜色，然后不断模仿，并尝试自己调色。
 
-![](asset/img_ba6e344d6e4d.jpg)
+![](/images/collections/0.raw/zhihu/%25E5%2586%258D%25E5%2585%25A5%25E9%2597%25A8%25E7%25B3%25BB%25E5%2588%2597/asset/img_ba6e344d6e4d.jpg)
 
 调色是一个异常痛苦同时伟大的过程，做好很不容易。
 
@@ -157,25 +167,25 @@ Behance的名气就不多说了，你可以默认上面的就是最好的颜色�
 网页设计常用色彩搭配表
 按色相、印象进行了分类组合，现成的色彩组合，用时不会出现明显的错误。
 
-![](asset/img_6a6b5ed7e01c.jpg)
+![](/images/collections/0.raw/zhihu/%25E5%2586%258D%25E5%2585%25A5%25E9%2597%25A8%25E7%25B3%25BB%25E5%2588%2597/asset/img_6a6b5ed7e01c.jpg)
 
 2、
 
 网页配色,设计配色,配色图表,配色卡,配色方案图谱生成-SDC优设网配色工具优设网关于中国传统色彩的网页，整理了很多中国传统色彩的名称以及分类。
 
-![](asset/img_9fa0c335961c.jpg)
+![](/images/collections/0.raw/zhihu/%25E5%2586%258D%25E5%2585%25A5%25E9%2597%25A8%25E7%25B3%25BB%25E5%2588%2597/asset/img_9fa0c335961c.jpg)
 
 3、
 
 NIPPON COLORS一个日本传统配色的网站，典型日式的风格。
 
-![](asset/img_f1119253b731.jpg)
+![](/images/collections/0.raw/zhihu/%25E5%2586%258D%25E5%2585%25A5%25E9%2597%25A8%25E7%25B3%25BB%25E5%2588%2597/asset/img_f1119253b731.jpg)
 
 4、
 
 Color Huntercolorhunter能够直接从图像中提取配色，然后给出配色解决方案，再去用的时候就会非常和谐。
 
-![](asset/img_c0d248fceada.jpg)
+![](/images/collections/0.raw/zhihu/%25E5%2586%258D%25E5%2585%25A5%25E9%2597%25A8%25E7%25B3%25BB%25E5%2588%2597/asset/img_c0d248fceada.jpg)
 
 相关阅读：
 

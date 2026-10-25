@@ -1,10 +1,19 @@
 ---
-title: "从 MLA 到 High-Rank MQA"
-date: 2026-04-25
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/2031149621397935813
-
+title: 从 MLA 到 High-Rank MQA
+date: "2026-04-25 00:00:00"
+updated: "2026-04-25 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/LLM-SD/从-MLA-到-High-Rank-MQA/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/2031149621397935813
 ---
+
 
 DeepSeek-V4 的论文里已经基本看不到 MLA 形式的表述了，attention 部分是以原生 shared-KV MQA 的形式出现的，而且这个 MQA 还是 head_num=128(64)，head_dim=512 的 high-rank MQA（通常模型 head_num*head_dim 这个值是和 hidden_size 一个量级，但是 DeepSeek-V4  MQA 已经基本上是8倍了）。
 

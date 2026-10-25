@@ -1,3 +1,16 @@
+---
+title: スキル
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/ja/skills/index/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # スキル
 
 このディレクトリには、このコースに同梱されている AI エージェント用スキルが含まれています。スキルは、Claude Code、Codex、Cursor、Windsurf などの AI コーディングエージェントが読み込んで専門的な作業を行うための、自己完結したプロンプトテンプレートです。

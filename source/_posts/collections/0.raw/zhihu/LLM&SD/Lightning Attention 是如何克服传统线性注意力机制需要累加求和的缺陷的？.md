@@ -1,10 +1,19 @@
 ---
-title: "Lightning Attention 是如何克服传统线性注意力机制需要累加求和的缺陷的？"
-date: 2025-01-16
-tags: [知乎]
-source: https://www.zhihu.com/question/9740764576/answer/80735153803
-
+title: Lightning Attention 是如何克服传统线性注意力机制需要累加求和的缺陷的？
+date: "2025-01-16 00:00:00"
+updated: "2025-01-16 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/LLM-SD/Lightning-Attention-是如何克服传统线性注意力机制需要累加求和的缺陷的/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://www.zhihu.com/question/9740764576/answer/80735153803
 ---
+
 
 1/18 update: 做了一个视频介绍linear attention一些近期进展
 

@@ -1,3 +1,16 @@
+---
+title: 클린 상태 체크리스트(Clean State Checklist)
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/ko/lectures/lecture-09-why-agents-declare-victory-too-early/code/clean-state-checklist/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # 클린 상태 체크리스트(Clean State Checklist)
 
 - 수동 수리 없이 앱이 시작됩니다

@@ -1,9 +1,19 @@
 ---
-title: "CPU 优化技术-NEON 自动向量化"
-date: 2021-11-22
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/435342281
+title: CPU 优化技术-NEON 自动向量化
+date: "2021-11-22 00:00:00"
+updated: "2021-11-22 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/走向cs/CPU-优化技术-NEON-自动向量化/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/435342281
 ---
+
 
 **版权声明 ©本文首发于知乎专栏：移动端算法优化****本专栏「移动端算法优化」所有文章著作权归作者所有。****允许个人直接分享本专栏文章到个人微博、朋友圈。但媒体（包括但不限于网站、微信公众号、微博营销号）转载需事先征得专栏同意。转载需在正文开头显著位置注明出处，给出原始链接，注明「发表于知乎专栏《移动端算法优化》」，并不得进行任何形式的修改演绎。**
 ### **一、概述**
@@ -35,7 +45,7 @@ SIMD 作为一种重要的并行化技术，在提升性能的同时也会增加
 `
 
 - **SLP 向量化**：编译器将多个标量运算绑定到一起，使其成为向量运算。下图将四次标量运算替换为一次向量运算。
-![](asset/img_28d3b678904b.jpg)
+![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_28d3b678904b.jpg)
 
 SLP 自动向量化接下来介绍如何通过编译器实现自动向量化。
 
@@ -108,7 +118,7 @@ arm-none-linux-gnueabihf-gcc -mfpu=neon -ftree-vectorize -O2 main.c -o avtest`
 `arm-none-linux-gnueabihf-objdump -d avtest > assemble.txt`
 
 - 反汇编结果对比如下图:
-![](asset/img_bbd81026b844.jpg)
+![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_bbd81026b844.jpg)
 
 反汇编代码启用自动向量化之后，编译器通过***矢量化加载*** (**ldr** -> **vld1**）、***求和*** (**add **-> **vadd**)以及***保存*** (**str** -> **vst1**)等指令，将每次循环中处理的数据变为 4 个，循环次数精简为之前的 。
 

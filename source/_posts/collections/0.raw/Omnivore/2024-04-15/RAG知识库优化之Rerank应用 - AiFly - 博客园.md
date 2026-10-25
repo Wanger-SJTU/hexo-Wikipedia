@@ -1,4 +1,17 @@
 ---
+title: RAG知识库优化之Rerank应用 - AiFly - 博客园
+date: "2026-04-11 21:40:28"
+updated: "2026-04-11 21:40:28"
+layout: post
+permalink: /collections/0.raw/Omnivore/2024-04-15/RAG知识库优化之Rerank应用-AiFly-博客园/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
+---
 id: e73dcc67-8164-4272-afed-448f7ff1d6c9
 ---
 

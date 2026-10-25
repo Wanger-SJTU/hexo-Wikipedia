@@ -1,3 +1,16 @@
+---
+title: Projet 02. Rendre le projet lisible et reprendre là où vous vous êtes arrêté
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/fr/projects/project-02-agent-readable-workspace/index/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 [中文版本 →](../../../zh/projects/project-02-agent-readable-workspace/)
 
 > Leçons liées : [Leçon 03. Faire du dépôt votre source de vérité unique](./../../lectures/lecture-03-why-the-repository-must-become-the-system-of-record/index.md) · [Leçon 04. Répartir les instructions entre plusieurs fichiers](./../../lectures/lecture-04-why-one-giant-instruction-file-fails/index.md)

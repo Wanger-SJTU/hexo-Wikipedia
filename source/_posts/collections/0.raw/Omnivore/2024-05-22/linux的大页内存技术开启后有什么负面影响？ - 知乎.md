@@ -1,4 +1,17 @@
 ---
+title: linux的大页内存技术开启后有什么负面影响？ - 知乎
+date: "2026-04-11 21:40:28"
+updated: "2026-04-11 21:40:28"
+layout: post
+permalink: /collections/0.raw/Omnivore/2024-05-22/linux的大页内存技术开启后有什么负面影响-知乎/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
+---
 id: 382a203e-1274-4114-9f9c-e9f3fb95ecc3
 ---
 

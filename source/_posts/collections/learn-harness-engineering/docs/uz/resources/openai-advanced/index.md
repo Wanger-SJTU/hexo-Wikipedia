@@ -1,3 +1,16 @@
+---
+title: OpenAI Ilgʻor toʻplami (Advanced Pack)
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/uz/resources/openai-advanced/index/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # OpenAI Ilgʻor toʻplami (Advanced Pack)
 
 Bu jild OpenAIʼning “Harness engineering: leveraging Codex in an agent-first world” maqolasida tasvirlangan ancha qatʼiy repo tuzilishini nusxalashga tayyor boshlangʻich fayllarga (starter files) toʻplaydi.

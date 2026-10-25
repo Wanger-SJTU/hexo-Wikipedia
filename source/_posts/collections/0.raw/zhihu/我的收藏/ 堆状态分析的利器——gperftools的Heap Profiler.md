@@ -1,9 +1,19 @@
 ---
-title: "(1 条消息) 堆状态分析的利器——gperftools的Heap Profiler"
-date: 2024-07-22
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/681986521
+title: (1 条消息) 堆状态分析的利器——gperftools的Heap Profiler
+date: "2024-07-22 00:00:00"
+updated: "2024-07-22 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/堆状态分析的利器——gperftools的Heap-Profiler/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/681986521
 ---
+
 
 ﻿在《内存泄漏分析的利器——gperftools的Heap Checker》一文中，我们介绍了如何使用gperftools分析内存泄漏。本文将介绍其另一个强大的工具——Heap Profiler去分析堆的变化过程。 我们使用类似于《堆状态分析的利器——valgraind的DHAT》中的测试代码作为例子。为了让Heap Profiler产生多份快照文件，我将申请的内存放大了很多
 
@@ -97,25 +107,25 @@ Total: 2048.0 MB
 
 显示结果如下 
 
-![](asset/img_336b838f1ab7.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_336b838f1ab7.jpg)
 
 在这里插入图片描述 上图中，main下面“1024.0（50.0%）”意思是main函数直接申请了1024M尚未释放的空间，占总未释放空间的50%。再下面一行“of 2048.0 (100.0%)”意思是main函数直接或者间接申请了2048M尚未释放的空间（这意味着它申请并释放了的空间不在该统计内）。create中的信息解读是类似的。 如果只是单纯的看一个快照点，是比较难以发现问题。我们需要对比两个快照，比如我们对比1号和2号快照，看看1G内存的增长是什么导致的。
 
 `pprof --gv heap_profiler --base=/tmp/profile.0001.heap  /tmp/profile.0002.heap`
 
-![](asset/img_0fa2780490fd.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_0fa2780490fd.jpg)
 
 在这里插入图片描述 可以发现，快照1和快照2的变化是：main函数自身申请了1G的空间。 我们再对比下8和9号快照。
 
 `pprof --gv heap_profiler --base=/tmp/profile.0008.heap  /tmp/profile.0009.heap`
 
-![](asset/img_9bf822d5dad3.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_9bf822d5dad3.jpg)
 
 在这里插入图片描述 上面显示：main函数内部释放了4G的空间（出现了负值）。这个就是第29行代码的执行结果，分析和代码逻辑一致。 最后我们再看下最后一片快照。
 
 `pprof --gv heap_profiler /tmp/profile.0009.heap`
 
-![](asset/img_dab462f77969.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_dab462f77969.jpg)
 
 在这里插入图片描述 create函数导致的4G内存泄漏就一目了然了。 最后提一句，如果项目不能链接tcmalloc，则可以使用如下的指令去获取快照
 

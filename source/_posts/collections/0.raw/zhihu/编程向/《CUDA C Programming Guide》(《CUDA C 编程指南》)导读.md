@@ -1,9 +1,19 @@
 ---
-title: "《CUDA C Programming Guide》(《CUDA C 编程指南》)导读"
-date: 2019-06-14
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/53773183
+title: 《CUDA C Programming Guide》(《CUDA C 编程指南》)导读
+date: "2019-06-14 00:00:00"
+updated: "2019-06-14 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/编程向/《CUDA-C-Programming-Guide》(《CUDA-C-编程指南》)导读/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/53773183
 ---
+
 
 ### 说明
 
@@ -23,7 +33,7 @@ source: https://zhuanlan.zhihu.com/p/53773183
 
 GPU是能够高度并行化、具有很多处理器核心的器件，具有很强的计算能力和内存带宽。下图是CPU和GPU在浮点运算上的性能对比发展趋势。
 
-![](asset/img_b25e1212d4b3.jpg)
+![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_b25e1212d4b3.jpg)
 
 NVIDIA GPU和 Intel CPU 浮点计算能力对比**
 
@@ -31,7 +41,7 @@ NVIDIA GPU和 Intel CPU 浮点计算能力对比**
 
 如下图所示，CPU仅仅具有有限的核心数量。相比于GPU，CPU的核心属于“少而精”的存在，核心数虽然很少，但是每个核心的性能很强，适合处理具有很多分支的复杂的逻辑。近些年来，CPU中集成了一些并行指令集，如SSE、AVX等，其中AVX可以同时处理256位(32个字节)，可以大大加速并行计算。但是相比于GPU，还是小巫见大巫。
 
-![](asset/img_972fee87c4d7.jpg)
+![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_972fee87c4d7.jpg)
 
 CPU 与 GPU 内部结构对比
 
@@ -49,7 +59,7 @@ CUDA(Compute Unified Device Architecture)，是NVIDIA推出的通用并行计算
 
 CUDA还支持C++/Python等更高级的语言编程；此外，NVIDIA还提供了CuDNN、TensorRT、NPP等更高级的库函数。
 
-![](asset/img_676f07e48f38.jpg)
+![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_676f07e48f38.jpg)
 
 各代显卡、CUDA、上层库之间的关系
 
@@ -59,7 +69,7 @@ CUDA还支持C++/Python等更高级的语言编程；此外，NVIDIA还提供了
 
 CUDA的编程模型，使得同一个CUDA程序，可以在不同的显卡上运行。
 
-![](asset/img_5cfbbf104c7e.jpg)
+![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_5cfbbf104c7e.jpg)
 
 CUDA编程模型
 
@@ -79,7 +89,7 @@ CUDA编程模型
 
 CUDA编程是一个多线程编程，数个线程(Thread)组成一个线程块(Block)，所有线程块组成一个线程网格(Grid)，如下图所示：
 
-![](asset/img_c7d7beb43631.jpg)
+![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_c7d7beb43631.jpg)
 
 CUDA线程层级
 
@@ -154,7 +164,7 @@ int main()
 
 同CPU一样，GPU也有不同层级的内存。越靠近核心的内存速度越快，但容量越小；反之，越远离核心的内存速度越慢，但容量较大。
 
-![](asset/img_aa8a1ad0df2e.jpg)
+![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_aa8a1ad0df2e.jpg)
 
 CUDA内存层级
 
@@ -171,7 +181,7 @@ CUDA内存层级
 
 以上是从硬件的角度解读了一下GPU的内存层级。从编程角度来看，CUDA的线程网格、线程块、线程与各个内存见的关系如下图：
 
-![](asset/img_e829f87440f0.jpg)
+![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_e829f87440f0.jpg)
 
 线程层级与内存层级对应图
 
@@ -184,7 +194,7 @@ CUDA内存层级
 
 一种最简单的CPU/GPU混合编程如下图所示：
 
-![](asset/img_260083eb5aba.jpg)
+![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_260083eb5aba.jpg)
 
 CPU/GPU混合编程
 
@@ -204,7 +214,7 @@ CPU和GPU的内存是独立的。因此在运行内核函数前，主机端需�
 
 计算能力为X.Y，其中主版本号X代表架构，各个架构如下表：
 
-![](asset/img_d5a5722a7a4e.png)
+![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_d5a5722a7a4e.png)
 
 版本号与架构名称在CUDA的书籍文档中，我们经常能看到"1.x"、"5.x"等这样的字眼，代表第1代/第5代架构，也就是Tesla/Maxwell架构。
 
@@ -311,7 +321,7 @@ int main(void)
 
 这里我对比了CUDA、CPU、OPENCV三种实现方式的执行时间：
 
-![](asset/img_732aff8d11ae.jpg)
+![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_732aff8d11ae.jpg)
 
 CUDA、CPU、OPENCV执行时间对比速度：CUDA>OPENCV>CPU。其中OPENCV快于CPU的主要原因是OPENCV调用了并行运算指令，但慢于CUDA。
 
@@ -867,7 +877,7 @@ CUDA driver API的版本定义在驱动的头文件中的`CUDA_VERSION`宏内。
 
 CUDA driver API不是向前兼容的。也就是说，针对新版本的CUDA driver API编译的程序、插件、库，并不能在旧版本的驱动上运行。
 
-![](asset/img_3084800acb16.jpg)
+![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_3084800acb16.jpg)
 
 CUDA Driver API 兼容性
 
@@ -913,7 +923,7 @@ GPU会将一些内存专门分配给primary surface，用于刷新显示设备�
 
 下图是一款比较老旧的显卡(G80/GT200)的硬件结构图：
 
-![](asset/img_6320aaca3e09.jpg)
+![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_6320aaca3e09.jpg)
 
 NVIDIA显卡硬件结构
 
@@ -922,7 +932,7 @@ NVIDIA显卡硬件结构
 
 流处理器簇(SM)内部结构如下图所示：
 
-![](asset/img_4ed5c8fee4b7.jpg)
+![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_4ed5c8fee4b7.jpg)
 
 SM内部结构
 
@@ -947,7 +957,7 @@ SM由一系列流处理器(Streaming Processor，SP)、寄存器文件(Register 
 线程束调度**** 当线程块被调度到SM上后，具体调度到哪个SP上运行，是由SM内部的调度器执行的。
  NVIDIA GPU在逻辑上以32个线程(线程束)，作为最小调度单位。但实际上在硬件方面，是以半个线程束(16个线程)调度的。只不过调度器在调度了前半个线程束后，会立刻调度后半个线程束。调度过程如下图所示(计算能力2.0平台)：
 
-![](asset/img_ccde51c873fa.jpg)
+![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_ccde51c873fa.jpg)
 
 CUDA线程束调度
 

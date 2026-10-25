@@ -1,9 +1,19 @@
 ---
-title: "(1 封私信) [AI编译器后端优化] 计算与调度"
-date: 2024-04-01
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/687720171
+title: (1 封私信) [AI编译器后端优化] 计算与调度
+date: "2024-04-01 00:00:00"
+updated: "2024-04-01 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/tvm/[AI编译器后端优化]-计算与调度/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/687720171
 ---
+
 
 **本系列文章为AI编译器后端优化系列视频的对应文章，同步更新在[chenzomi12/DeepLearningSystem: Deep Learning System core principles introduction. (github.com)github.com/chenzomi12/DeepLearningSystem](https://link.zhihu.com/?target=https%3A//github.com/chenzomi12/DeepLearningSystem)
 
@@ -132,11 +142,11 @@ void box_filter_3x3(const Mat &in, Mat &blury)
 - 实际代码生成的限制使得某些模式非法。特别是，我们只允许最内层循环（不是任何其他循环节点的祖先的循环节点）的矢量化，并且只允许确定宽度循环的矢量化和展开。
 对于任意的算子，可以定义其默认调度。其以行主序的形式遍历所有输出，并且内联所有函数调用，如下图所示：
 
-![](asset/img_c7f402f2713d.jpg)
+![](/images/collections/0.raw/zhihu/tvm/asset/img_c7f402f2713d.jpg)
 
 我们将调度树与原有的程序进行对应：
 
-![](asset/img_868a98ae7f41.jpg)
+![](/images/collections/0.raw/zhihu/tvm/asset/img_868a98ae7f41.jpg)
 
 在给定一个调度树后，可以通过深度优先搜索的方式进行遍历，然后转换成对应的程序代码：
 
@@ -182,7 +192,7 @@ for (int fused = 0; fused  4*4; fused++) {
 
 在调度树中，它就进行这样的变换：将树中同一函数的两个相邻循环节点合并为一个循环节点，新节点与原始外部循环节点保持在树中的相同位置，并且每个节点的子节点都连接起来，原始外部变量的子节点位于原始内部变量的子节点之前。
 
-![](asset/img_ff523e34ac03.jpg)
+![](/images/collections/0.raw/zhihu/tvm/asset/img_ff523e34ac03.jpg)
 
 在这一步首先对x轴和y轴进行循环分块，分块因子为4，然后将外侧的y和外侧的x轴循环进行融合(2+2=4)，再将这个融合后的操作进行并行操作。
 
@@ -208,7 +218,7 @@ for (int tile_index = 0; tile_index  4; tile_index++) {
 
 在调度树中使用Parallel：改变循环类型为并行化；类似还有顺序执行、向量化、循环展开，只需更改相应循环节点上的属性。
 
-![](asset/img_fb613ccc2cdd.jpg)
+![](/images/collections/0.raw/zhihu/tvm/asset/img_fb613ccc2cdd.jpg)
 
 如果用Halide实现一个完整的算子，它就是这样的风格：
 
@@ -233,8 +243,8 @@ for (int tile_index = 0; tile_index  4; tile_index++) {
 
 有效的调度树定义了算法的可能调度空间，而变换是在该空间中的点之间映射的运算符。不同调度树对应了不同的程序实现，具有不同的性能，我们如何能获得一个最优的调度树呢？最简单的方法就是通过静态分析来获得最优调度树。一旦循环大小确定，我们就有足够的信息来确定调度树的重要执行特征，例如它将分配多少内存和执行多少操作。计调度的成本就是这些数据点的加权总和。
 
-![](asset/img_a6b8b7d1acdd.jpg)
+![](/images/collections/0.raw/zhihu/tvm/asset/img_a6b8b7d1acdd.jpg)
 
 然而这个方法过于简单和天真了，首先我们无法确定每个操作的成本，只可能有一个大概的预估。其次这些操作是相互影响的，并不独立，也就是成本是动态变化的。成本的总和也并不是简单的线性叠加。总之寻找一个最优调度树是非常复杂的过程，目前主流的方法如TVM中采用的是自动调优法。即根据可利用的优化手段，将它们组合，生成一个十分庞大的调度空间，然后利用一些探索器如启发式算法或者机器学习算法，对这个调度空间进行遍历，去实际运行或者用模型预测其性能，根据实际性能反馈对调度空间的探索，最终在一定时间内选择一个相对最优的调度。
 
-![](asset/img_147c26c2b0c6.jpg)
+![](/images/collections/0.raw/zhihu/tvm/asset/img_147c26c2b0c6.jpg)

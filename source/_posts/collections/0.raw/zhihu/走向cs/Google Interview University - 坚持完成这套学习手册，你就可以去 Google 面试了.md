@@ -1,9 +1,19 @@
 ---
-title: "Google Interview University - 坚持完成这套学习手册，你就可以去 Google 面试了"
-date: 2016-10-26
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/22881223
+title: Google Interview University - 坚持完成这套学习手册，你就可以去 Google 面试了
+date: "2016-10-26 00:00:00"
+updated: "2016-10-26 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/走向cs/Google-Interview-University-坚持完成这套学习手册,你就可以去-Google-面试了/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/22881223
 ---
+
 
 > 原文地址：[Google Interview University](https://link.zhihu.com/?target=https%3A//github.com/jwasham/google-interview-university)
 原文作者：[John Washam](https://link.zhihu.com/?target=https%3A//github.com/jwasham)
@@ -15,7 +25,7 @@ source: https://zhuanlan.zhihu.com/p/22881223
 
 这是我为了从 web 开发者（自学、非计算机科学学位）蜕变至 Google 软件工程师所制定的计划，其内容历时数月。
 
-![](asset/img_2c0a3fa9da13.jpg)
+![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_2c0a3fa9da13.jpg)
 
 这一长列表是从 **Google 的指导笔记** 中萃取出来并进行扩展。因此，有些事情你必须去了解一下。我在列表的底部添加了一些额外项，用于解决面试中可能会出现的问题。这些额外项大部分是来自于 Steve Yegge 的“得到在 Google 工作的机会”。而在 Google 指导笔记的逐字间，它们有时也会被反映出来。
 
@@ -40,7 +50,7 @@ source: https://zhuanlan.zhihu.com/p/22881223
 
 把一个（或两个）印有“[future Googler](https://link.zhihu.com/?target=https%3A//github.com/jwasham/google-interview-university/blob/master/extras/future-googler.pdf)”的图案打印出来，并用你誓要成功的眼神盯着它。
 
-![](asset/img_f350c63e65c1.png)
+![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_f350c63e65c1.png)
 
 ### 我得到了工作吗？
 
@@ -61,7 +71,7 @@ source: https://zhuanlan.zhihu.com/p/22881223
 - Twitter: @StartupNextDoor
 - Google+: +Googleyasheck
 - LinkedIn: johnawasham
-![](asset/img_c4a9823dc3e0.png)
+![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_c4a9823dc3e0.png)
 
 ### 不要自以为自己足够聪明
 

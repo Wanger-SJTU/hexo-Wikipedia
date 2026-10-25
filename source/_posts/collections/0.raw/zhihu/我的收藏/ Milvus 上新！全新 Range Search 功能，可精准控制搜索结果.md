@@ -1,9 +1,19 @@
 ---
-title: "(1 条消息) Milvus 上新！全新 Range Search 功能，可精准控制搜索结果"
-date: 2023-11-14
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/666825515
+title: (1 条消息) Milvus 上新！全新 Range Search 功能，可精准控制搜索结果
+date: "2023-11-14 00:00:00"
+updated: "2023-11-14 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/Milvus-上新-全新-Range-Search-功能,可精准控制搜索结果/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/666825515
 ---
+
 
 Range Search 功能诞生于社区。
 
@@ -15,7 +25,7 @@ Range Search 功能诞生于社区。
 
 顾名思义，Range Search 即范围搜索。不同于 KNN Search 返回最相似的 TOP-K 个结果，Range Search 会返回向量距离落于某一区间的 TOP-K 个结果。
 
-![](asset/img_bfeef9975392.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_bfeef9975392.jpg)
 
 那么，何时选择 Range Search 而非 Top-K 搜索？
 
@@ -44,17 +54,17 @@ Range Search 重用了现有的搜索流程，二者在上层所有数据通路�
  
 - knowhere 再根据索引类型调用到对应的第三方库的 range_search 函数。
  
-![](asset/img_afa435263ea7.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_afa435263ea7.jpg)
 
 目前，所有的第三方库索引都只支持单边 Range Search，也就是只接收一个参数 radius，而且返回的结果是全量未排序的结果。下表概述了不同索引类型的 Range Search 策略“
 
-![](asset/img_6f839edb48bd.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_6f839edb48bd.jpg)
 
 对于 binary 类型的索引，HAMMING 和 JACCARD 全部都支持 Range Search，SUBSTRUCTURE/SUPERSTRUCTURE 由于返回值是 true/false，不满足 Range Search 的语义，所以不支持 Range Search。其余 float 类型索引，对于 L2/IP/COSINE 全部支持 Range Search。
 
 下表是所有支持 Range Search 的索引类型和 metric type：
 
-![](asset/img_5a5816b0540e.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_5a5816b0540e.jpg)
 
 ### 03.Range Search 使用方法**
 
@@ -85,7 +95,7 @@ res = collection.search(vectors[:nq], "float_vector", search_params, limit)`
 
 下表列出了所有 metric type 对应的 radius 合法值范围：
 
-![](asset/img_3e054a04be69.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_3e054a04be69.jpg)
 
 由于不同 metric type 对应的 radius 合法值范围不同，Milvus 不会检查 radius 的合法性，而是只检查 radius 和 range_filter 的相对合法性：
 

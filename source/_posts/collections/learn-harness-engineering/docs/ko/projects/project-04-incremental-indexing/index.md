@@ -1,3 +1,16 @@
+---
+title: 프로젝트 04. 런타임 피드백을 사용하여 에이전트 동작 수정하기
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/ko/projects/project-04-incremental-indexing/index/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 [English Version →](../../../en/projects/project-04-incremental-indexing/)
 
 > 관련 강의: [강의 07. 에이전트를 위한 명확한 작업 경계 설정하기](./../../lectures/lecture-07-why-agents-overreach-and-under-finish/index.md) · [강의 08. 기능 목록을 사용하여 에이전트가 하는 일을 제한하기](./../../lectures/lecture-08-why-feature-lists-are-harness-primitives/index.md)

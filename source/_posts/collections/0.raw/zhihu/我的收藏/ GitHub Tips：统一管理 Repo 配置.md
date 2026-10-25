@@ -1,9 +1,19 @@
 ---
-title: "(1 条消息) GitHub Tips：统一管理 Repo 配置"
-date: 2022-12-18
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/592708303
+title: (1 条消息) GitHub Tips：统一管理 Repo 配置
+date: "2022-12-18 00:00:00"
+updated: "2022-12-18 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/GitHub-Tips-统一管理-Repo-配置/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/592708303
 ---
+
 
 ### 背景
 
@@ -27,7 +37,7 @@ GitHub 有一些特殊的仓库规则，如你的账号名下，可以创建一�
 - 详见[官方文档](https://link.zhihu.com/?target=https%3A//docs.github.com/en/account-and-profile/setting-up-and-managing-your-github-profile/customizing-your-profile/managing-your-profile-readme)。
 **
 
-![](asset/img_6f3dfc2233e6.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_6f3dfc2233e6.jpg)
 
 image.png
 
@@ -36,7 +46,7 @@ image.png
 - `${owner}/.github-private/README.md` 是仅成员可见的介绍
 - 详见[官方文档](https://link.zhihu.com/?target=https%3A//docs.github.com/en/organizations/collaborating-with-groups-in-organizations/customizing-your-organizations-profile%23adding-a-member-only-organization-profile-readme)。
 
-![](asset/img_65bacf889ddc.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_65bacf889ddc.jpg)
 
 image.png
 
@@ -44,7 +54,7 @@ image.png
 
 让开发者在提交 Issue 或 PR 的时候，必须按你要求的格式填写内容，如下图：
 
-![](asset/img_766198ee2152.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_766198ee2152.jpg)
 
 image.png
 
@@ -60,7 +70,7 @@ image.png
 
 - 首先，安装 [https://github.com/apps/settings](https://link.zhihu.com/?target=https%3A//github.com/apps/settings) 这个 GitHub App，选择你需要的账号。
 
-![](asset/img_fc8a7aacd802.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_fc8a7aacd802.jpg)
 
 image.png
 
@@ -88,13 +98,13 @@ image.png
 
 - 在 `.github`仓库新建 `workflow-templates` 目录，配置对应的 yml 和 json 。
 
-![](asset/img_912232a4e5a0.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_912232a4e5a0.jpg)
 
 image.png
 
 - 然后在你的其他仓库的 Action 页即可直接配置。
 
-![](asset/img_10da3bf87a41.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_10da3bf87a41.jpg)
 
 image.png
 
@@ -114,7 +124,7 @@ image.png
 
 直接 Fork 我们的 [github.com/artusjs/.github](https://link.zhihu.com/?target=https%3A//github.com/artusjs/.github)，然后定时 Sync 下：
 
-![](asset/img_ab3a02d17b19.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_ab3a02d17b19.jpg)
 
 image.png> 这个仓库也刚刚建立，如 issue template 这些还没搞，可以先 Watch 后续 Sync 更新。
 

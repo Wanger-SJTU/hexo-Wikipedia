@@ -1,3 +1,16 @@
+---
+title: OpenAI アドバンスト SOP
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/ja/resources/openai-advanced/sops/index/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # OpenAI アドバンスト SOP
 
 これらの SOP は、記事の運用パターンを、フォローまたは適応可能な

@@ -1,3 +1,16 @@
+---
+title: SOP：可观测性反馈闭环
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/zh/resources/openai-advanced/sops/observability-feedback-loop/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # SOP：可观测性反馈闭环
 
 当调试太慢、agent 总在没证据的情况下宣布成功、或者运行时行为比代码本身还难看懂时，就用这份 SOP。

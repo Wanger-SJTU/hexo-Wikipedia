@@ -1,9 +1,19 @@
 ---
-title: "(2 条消息) 深入探讨C++多线程性能优化"
-date: 2024-11-07
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/4245202423
+title: (2 条消息) 深入探讨C++多线程性能优化
+date: "2024-11-07 00:00:00"
+updated: "2024-11-07 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/深入探讨C-多线程性能优化/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/4245202423
 ---
+
 
 作者：weiqiangwu
 
@@ -61,7 +71,7 @@ BENCHMARK_MAIN();
 
 跑出来的结果如下：
 
-![](asset/img_bf7d64933625.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_bf7d64933625.jpg)
 
 将任务切分成多个片段并交由多线程执行后，整体性能不仅没有提升，反而下降了，且性能与线程数成反比。那么，问题来了：导致这种结果的原因是什么？如何才能实现合理的并行执行，从而降低CPU的执行时间？在接下来的部分，笔者将为你揭示答案。
 
@@ -141,7 +151,7 @@ BENCHMARK_REGISTER_F(MyBenchmark, MultiThreadedWork)->Threads(8);
 BENCHMARK_MAIN();
 `
 
-![](asset/img_46e693c0c07a.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_46e693c0c07a.jpg)
 
 #### False Sharing
 
@@ -198,7 +208,7 @@ BENCHMARK_REGISTER_F(MyBenchmark, MultiThreadedWork)->Threads(8);
 BENCHMARK_MAIN();
 `
 
-![](asset/img_53b17c606f2f.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_53b17c606f2f.jpg)
 
 可以看到，尽管不同线程没有使用同一个变量，但由于 sums 里面的元素共享同一个缓存行（Cache Line），同样会导致性能急剧下降。
 
@@ -258,7 +268,7 @@ BENCHMARK_REGISTER_F(MyBenchmark, MultiThreadedWork)->Threads(8);
 BENCHMARK_MAIN();
 `
 
-![](asset/img_eda41320c0ae.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_eda41320c0ae.jpg)
 
 #### Lock VS Atomic
 
@@ -399,7 +409,7 @@ BENCHMARK_MAIN();
 
 benchmark结果：
 
-![](asset/img_10e71a41a81f.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_10e71a41a81f.jpg)
 
 第二个benchmark是对比竞争激烈时的性能，代码如下：
 
@@ -480,7 +490,7 @@ BENCHMARK_MAIN();
 
 benchmark结果：
 
-![](asset/img_b0751ef3a51f.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_b0751ef3a51f.jpg)
 
 可以看到，无论是哪一种情况，std::mutex 的性能都更优。当然，这个测试结果可能会因不同的操作系统而有所不同，但至少可以得出一个结论：这两者的性能是一个量级的，并不存在 atomic 一定比 std::mutex 更快的说法。这其实是因为现代 C++ 中的 std::mutex 实现已经高度优化，其实现与上面的自旋锁（SpinLock）非常相似，在低竞争的情况下并不会陷入内核态。
 
@@ -563,7 +573,7 @@ BENCHMARK_MAIN();
 
 benchmark结果：
 
-![](asset/img_52c6ee2cd734.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_52c6ee2cd734.jpg)
 
 case 2如下:
 
@@ -640,7 +650,7 @@ BENCHMARK_MAIN();
 
 benchmark结果：
 
-![](asset/img_33de9273b366.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_33de9273b366.jpg)
 
 接下来结合这两个优点来看，链式数据结构的场景非常适合使用 atomic 变量。
 
@@ -957,4 +967,4 @@ BENCHMARK_MAIN();
 
 benchmark结果：
 
-![](asset/img_dfa1224865a7.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_dfa1224865a7.jpg)

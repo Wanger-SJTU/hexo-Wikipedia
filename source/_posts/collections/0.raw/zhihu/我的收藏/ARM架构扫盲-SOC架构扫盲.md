@@ -1,17 +1,27 @@
 ---
-title: "ARM架构扫盲-SOC架构扫盲"
-date: 2025-01-10
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/17403267476
+title: ARM架构扫盲-SOC架构扫盲
+date: "2025-01-10 00:00:00"
+updated: "2025-01-10 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/ARM架构扫盲-SOC架构扫盲/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/17403267476
 ---
 
-![](asset/img_2b6fa605e4a4.jpg)
 
-![](asset/img_b3e367c20d3d.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_2b6fa605e4a4.jpg)
 
-![](asset/img_4aa74ccbc196.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_b3e367c20d3d.jpg)
 
-![](asset/img_2738f4252c3c.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_4aa74ccbc196.jpg)
+
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_2738f4252c3c.jpg)
 
 - 软硬件关系图
 - 架构在操作系统中的体现

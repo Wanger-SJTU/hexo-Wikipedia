@@ -1,10 +1,19 @@
 ---
-title: "Sparse AI Accelerator(GP)"
-date: 2025-05-29
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/1911457048283034313
-
+title: Sparse AI Accelerator(GP)
+date: "2025-05-29 00:00:00"
+updated: "2025-05-29 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/Sparse-AI-Accelerator(GP)/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/1911457048283034313
 ---
+
 
 1 MatRaptor
 **优点：**首次提出 Gust Product，输入输出都是 C2SR consistent formatting，方便链式运算。

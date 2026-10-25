@@ -1,10 +1,19 @@
 ---
-title: "win10是如何做到相比win7开机速度大幅度提升的？"
-date: 2022-11-10
-tags: [知乎]
-source: https://www.zhihu.com/question/38604081/answer/2752869354
-
+title: win10是如何做到相比win7开机速度大幅度提升的？
+date: "2022-11-10 00:00:00"
+updated: "2022-11-10 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/win10是如何做到相比win7开机速度大幅度提升的/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://www.zhihu.com/question/38604081/answer/2752869354
 ---
+
 
 其实微软是偷了个巧，按照以往如 Win7 关机的时候需要将用户会话和系统内核会话同时关闭掉，但在Windows 10中微软新增加了一个“混合启动”（Hybrid Boot）新功能，其原理是关机的时候只关闭用户会话，而系统内核会话则转入休眠状态（保存到一个文件中，下次开机时直接从这个文件中写回内存），从而提高系统启动速度。而微软在 Win10中就是把这个“混合启动”功能默认替代关机功能，并将其定义为帮助电脑在关机后更快速启动的设置（快速启动）。
 

@@ -1,9 +1,19 @@
 ---
-title: "Kaggle入门，看这一篇就够了"
-date: 2021-05-14
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/25686876
+title: Kaggle入门，看这一篇就够了
+date: "2021-05-14 00:00:00"
+updated: "2021-05-14 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/有趣的东西/Kaggle入门,看这一篇就够了/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/25686876
 ---
+
 
 这次酝酿了很久想给大家讲一些关于Kaggle那点儿事，帮助对数据科学(Data Science)有兴趣的同学们更好的了解这个平台，最好能亲身参与进来，体会一下学校所学的东西和想要解决一个实际的问题所需要的能力的差距。虽然不是Data Science出身，但本着严谨的科研态度，在进行了大量的调研、学习以及对相关经验者的访谈之后，决定写下这篇专栏，一方面让那些对数据科学（Data Science）有兴趣的申请者能真正了解这个项目，另一方面也让那些有想法参与进来的人get到正确的打开方式。
 

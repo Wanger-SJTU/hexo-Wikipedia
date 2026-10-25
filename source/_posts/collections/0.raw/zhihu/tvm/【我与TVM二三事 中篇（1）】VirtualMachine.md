@@ -1,9 +1,19 @@
 ---
-title: "【我与TVM二三事 中篇（1）】VirtualMachine"
-date: 2022-01-17
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/457693496
+title: 【我与TVM二三事 中篇（1）】VirtualMachine
+date: "2022-01-17 00:00:00"
+updated: "2022-01-17 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/tvm/【我与TVM二三事-中篇(1)】VirtualMachine-8750ef/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/457693496
 ---
+
 
 【我与TVM二三事 中篇（1）】VirtualMachine
 

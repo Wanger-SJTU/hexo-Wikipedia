@@ -1,10 +1,19 @@
 ---
-title: "OneFlow是如何做到世界最快深度学习框架的"
-date: 2020-11-02
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/271740706
-
+title: OneFlow是如何做到世界最快深度学习框架的
+date: "2020-11-02 00:00:00"
+updated: "2020-11-02 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/dl论文/OneFlow是如何做到世界最快深度学习框架的/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/271740706
 ---
+
 
 ——PK 经NVIDIA深度优化后的各框架最快实现 以及 官方实现；致简致快的深度学习框架OneFlow性能优化深度揭秘
 

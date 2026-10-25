@@ -1,9 +1,19 @@
 ---
-title: "理论与实操兼备：深入揭秘InternVL-2.5训练细节"
-date: 2025-02-05
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/14527170215
+title: 理论与实操兼备：深入揭秘InternVL-2.5训练细节
+date: "2025-02-05 00:00:00"
+updated: "2025-02-05 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/LLM-SD/理论与实操兼备-深入揭秘InternVL-2.5训练细节/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/14527170215
 ---
+
 
 ### 1 前言
 
@@ -11,7 +21,7 @@ source: https://zhuanlan.zhihu.com/p/14527170215
 
 Technical Report：**Expanding Performance Boundaries of Open-Source Multimodal Models with Model, Data, and Test-Time Scaling**
 
-[![](asset/img_cbfe7191992e.jpg)Expanding Performance Boundaries of Open-Source Multimodal Models with Model, Data, and Test-Time Scalingarxiv.org/abs/2412.05271](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2412.05271)
+[![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_cbfe7191992e.jpg)Expanding Performance Boundaries of Open-Source Multimodal Models with Model, Data, and Test-Time Scalingarxiv.org/abs/2412.05271](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2412.05271)
 
 Huggingface模型权重下载页：
 
@@ -29,11 +39,11 @@ Github:
 
 ### 2 Model Architecture
 
-![](asset/img_754ffd4f603c.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_754ffd4f603c.jpg)
 
 InternVL-2.5模型框架在模型框架上，InternVL-2.5仍然遵循：**ViT-MLP-LLM**这种MLLM的经典桥接式框架。但是组件做了细微的更改：
 
-![](asset/img_451041a2d27e.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_451041a2d27e.jpg)
 
 InternVL系列各模型组件概览
 #### **2.1 视觉编码器ViT**
@@ -52,7 +62,7 @@ InternVL-2.5系列包含了两种参数大小的ViT：**InternViT-6B** 和** Int
 
 #### 3.1 **Dynamic High-Resolution for Multimodal Data**
 
-![](asset/img_4771a5beb4a0.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_4771a5beb4a0.jpg)
 
 动态分辨率方案基于上文，由于ViT支持的分辨率是448\times448，即所有的图像在进入ViT之前都需要去resize成448\times448的放图。若是一张输入图像不是方图或分辨率过高（例如报纸、财报），这种resize会导致图片中的严重变形失真或是信息模糊，从而影响MLLM的训练。
 
@@ -144,9 +154,9 @@ def dynamic_preprocess(image, min_num=1, max_num=6, image_size=448, use_thumbnai
 
 #### 3.2 Single Model Training Pipeline
 
-![](asset/img_4fc49c72afa6.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_4fc49c72afa6.jpg)
 
-![](asset/img_75e13c059c79.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_75e13c059c79.jpg)
 
 训练细节InternVL-2.5的训练分为三个阶段，stage 1、stage 1.5（optional）和stage 2。stage 1和stage 1.5可以理解为预训练阶段**，而stage 2可以理解为**指令微调阶段**。
 
@@ -326,7 +336,7 @@ if labels is not None and loss_weight is not None:
 
 #### 4.1 Dataset Configuration
 
-![](asset/img_a95effa12365.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_a95effa12365.jpg)
 
 不同数据集的configuration
 

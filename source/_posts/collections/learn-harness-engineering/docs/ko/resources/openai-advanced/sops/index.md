@@ -1,3 +1,16 @@
+---
+title: OpenAI 고급 표준 작업 절차(SOP)
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/ko/resources/openai-advanced/sops/index/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # OpenAI 고급 표준 작업 절차(SOP)
 
 이 표준 작업 절차(SOP, Standard Operating Procedure) 모음은 원문 문서의 운영 패턴을 직접 따르거나 응용할 수 있는 구체적인 실행 지침서(playbook)로 변환한 것입니다.

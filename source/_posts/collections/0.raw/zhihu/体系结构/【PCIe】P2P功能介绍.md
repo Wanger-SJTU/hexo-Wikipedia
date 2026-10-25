@@ -1,9 +1,19 @@
 ---
-title: "【PCIe】P2P功能介绍"
-date: 2023-11-01
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/664434389
+title: 【PCIe】P2P功能介绍
+date: "2023-11-01 00:00:00"
+updated: "2023-11-01 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/体系结构/【PCIe】P2P功能介绍/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/664434389
 ---
+
 
 1 P2P概述
 P2P简称Peer-to-Peer，即点对点， PCIe P2P， 即一个EP设备直接访问另外一个EP设备。

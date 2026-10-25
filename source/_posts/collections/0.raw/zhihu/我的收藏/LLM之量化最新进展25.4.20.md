@@ -1,9 +1,19 @@
 ---
-title: "(2 条消息) LLM之量化最新进展25.4.20"
-date: 2025-04-20
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/1897066489246376792
+title: (2 条消息) LLM之量化最新进展25.4.20
+date: "2025-04-20 00:00:00"
+updated: "2025-04-20 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/LLM之量化最新进展25.4.20/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/1897066489246376792
 ---
+
 
 ### [VPTQ](https://link.zhihu.com/?target=https%3A//github.com/microsoft/VPTQ)
 
@@ -21,7 +31,7 @@ source: https://zhuanlan.zhihu.com/p/1897066489246376792
 
 那么就需要计算每个权重的影响力（显著性），也就是更新前后的loss差。loss差最小的权重，可以最先考虑量化。
 
-![](asset/img_b30e3b19dccd.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_b30e3b19dccd.jpg)
 
 上面公式其实就是将\Delta L=f(w*x)-f((w+\Delta w)*x)  \\  \Rightarrow argmin(\left| (f(w*x)-f((w+\Delta w)*x) ) \right|)  \\  \Rightarrow argmin((f(w*x)-f((w+\Delta w)*x) )^2) 
 
@@ -31,15 +41,15 @@ source: https://zhuanlan.zhihu.com/p/1897066489246376792
 
 > [如何理解拉格朗日乘子法？ - 马同学的回答 - 知乎](https://www.zhihu.com/question/38586401/answer/457058079)
 
-![](asset/img_f2ac5825b32d.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_f2ac5825b32d.jpg)
 
 对于模型量化有如下。
 
-![](asset/img_cc42a78f742d.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_cc42a78f742d.jpg)
 
 后来GPTQ做了一些尝试，发现逐层量化和按照 \Delta L 从小到大量化没有什么区别，但loss计算方法和权重更新内容没有改变。
 
-![](asset/img_fa643265c0e0.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_fa643265c0e0.jpg)
 
 #### AQLM原理**
 
@@ -48,7 +58,7 @@ source: https://zhuanlan.zhihu.com/p/1897066489246376792
 
 > [大模型低比特量化新思路 AQLM](https://zhuanlan.zhihu.com/p/706103629)
 
-![](asset/img_862938373864.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_862938373864.jpg)
 
 本质上就是用多个Codebook来拟合一组vector。
 
@@ -58,17 +68,17 @@ QuIP#引入了在VQ之前对权重矩阵使用随机化Hadamard变换的非相�
 
 VPTQ主要就是在GPTQ的基础上，将张量量化变成了矢量量化。
 
-![](asset/img_a420c5245e08.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_a420c5245e08.jpg)
 
 由于VQ可以使用更大的码本来存储量化数据，因此与GPTQ的标量量化相比，它覆盖更宽范围的数值分布，从而实现更好的精度。**
 
 从下图可以看出，大致流程和GPTQ是差不多的，只不过weight是向量化表示。
 
-![](asset/img_9a2040081d7a.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_9a2040081d7a.jpg)
 
 https://github.com/microsoft/VPTQ/blob/algorithm/vptq/vptq.py对于每一列，使用矢量量化（VQ）找到与原始向量最接近的码本向量（即最近邻向量），从而最小化量化误差。量化后，将当前量化误差传播到未量化的列中，以更新后续列的量化误差。
 
-![](asset/img_f81d9742bcba.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_f81d9742bcba.jpg)
 
 可以看出在低bit下( [FlatQuant: Flatness Matters for LLM Quantization](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2410.09426)
 [https://github.com/ruikangliu/FlatQuant](https://link.zhihu.com/?target=https%3A//github.com/ruikangliu/FlatQuant)
@@ -78,19 +88,19 @@ https://github.com/microsoft/VPTQ/blob/algorithm/vptq/vptq.py对于每一列，�
 由于 LLM 中存在异常值，因此必须平坦化权重和激活，以最小化具有等间距量化点的量化误差。
 先前的研究探索了各种预量化变换以抑制异常值，但变换后的权重和激活仍然可能保持陡峭和扩散。
 
-![](asset/img_6b688aaf510c.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_6b688aaf510c.jpg)
 
 本文提出了一种新的训练后量化方法 FlatQuant（快速且可学习的仿射变换），可增强权重和激活的平坦度。方法确定了针对每个线性层量身定制的最佳仿射变换，并通过轻量级目标在数小时内进行校准。
 
-![](asset/img_93310d686778.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_93310d686778.jpg)
 
 方法就是对于输入x和权重w，乘上矩阵P后进行量化，量化前后的结果基本一致的情况下，求解矩阵P的最佳权重。
 
-![](asset/img_377e5c9c1fa8.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_377e5c9c1fa8.jpg)
 
 最终效果看来还不错
 
-![](asset/img_307467f85af3.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_307467f85af3.jpg)
 
 总结：**首先对每个linear层训练一个旋转矩阵，减少原始权重的outliers，从而使后续的GPTQ的效果更好。
 
@@ -100,7 +110,7 @@ https://github.com/microsoft/VPTQ/blob/algorithm/vptq/vptq.py对于每一列，�
 
 本文是在1-bit LLMs的基础上，通过引入4-bit激活（activations）来减少量化误差，同时提高推理效率。
 
-![](asset/img_7519f91c4981.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_7519f91c4981.jpg)
 
 论文提出了BitNet a4.8，采用了一种混合量化和稀疏化策略来解决低比特激活带来的量化误差问题。具体方法如下：
 
@@ -108,7 +118,7 @@ https://github.com/microsoft/VPTQ/blob/algorithm/vptq/vptq.py对于每一列，�
 - **训练方法**：BitNet a4.8采用两阶段训练方法。第一阶段使用8-bit激活进行训练；第二阶段切换到4-bit激活，并采用混合量化和稀疏化策略。这种方法仅需少量训练token即可适应低比特激活，且性能损失可忽略。
 - **梯度近似**：使用直通估计器（STE）进行梯度近似，并采用混合精度训练更新参数。在反向传播中绕过非可微函数（如量化函数和Top-K稀疏化函数），同时在前向传播中动态量化参数为1.58-bit。
 - **浮点量化**：对于浮点量化，仅将FFN下投影的输入保留为8-bit整数，其余激活量化为FP4，使用MinMax量化器。这种量化方式可以处理激活的长尾分布。
-![](asset/img_b3b711450bf2.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_b3b711450bf2.jpg)
 
 **
 
@@ -118,23 +128,23 @@ https://github.com/microsoft/VPTQ/blob/algorithm/vptq/vptq.py对于每一列，�
 
 PTQ方法已经很流行，目前少有效果比较好的低位量化训练方法，本文方法可以在极低精度（1位到4位）下稳定训练大规模语言模型（LLMs），还能在模型大小更小的情况下获得与标准精度相当甚至更好的准确率。
 
-![](asset/img_e0a64a1572c9.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_e0a64a1572c9.jpg)
 
 #### 准确且快速的量化（Distribution Fitting）
 
 - Hadamard预处理**：在量化之前，使用Hadamard变换对权重和激活进行预处理。Hadamard变换是一种快速的正交变换，能够使权重分布更接近高斯分布，从而提高量化效果。具体来说，将目标张量通过Hadamard矩阵变换，然后进行量化。
 - **高斯拟合**：使用均方根（RMS）归一化将权重和激活的分布与标准高斯分布对齐，然后选择一个MSE最优的缩放因子α*，使得量化后的分布与原始分布的误差最小化。具体公式为：
-![](asset/img_2ca9f6dae68c.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_2ca9f6dae68c.jpg)
 
 #### 信任梯度估计（Trust Gradient Estimation）
 
 - **基本投影的信任估计器**：在反向传播中，传统的直通过估计器（STE）可能会导致较大的梯度估计误差。QuEST提出了一种信任估计器，通过引入一个“信任掩码”来减少这种误差。信任掩码根据量化误差的大小来决定是否信任某个权重的梯度估计。具体来说，如果量化误差小于某个阈值T（如*α*∗/2*b*−1），则认为该权重的梯度估计是可信的，否则不可信。
 - **Hadamard投影的信任估计器**：将信任估计器与Hadamard变换结合，在Hadamard域中进行梯度估计。这样可以更好地处理权重分布中的异常值，并且保持梯度的流动。具体公式为：
-![](asset/img_9ef97bce57ba.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_9ef97bce57ba.jpg)
 
 QuEST在所有测试的精度和模型大小下都能稳定收敛，而PACT在低精度下（如低于INT4）难以收敛，LSQ虽然能收敛但性能不如QuEST。
 
-![](asset/img_8b5580a89af9.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_8b5580a89af9.jpg)
 
 ** 
 
@@ -156,7 +166,7 @@ QuEST在所有测试的精度和模型大小下都能稳定收敛，而PACT在�
 
 - **目标**：使用 GPTQ 框架对旋转和缩放后的权重进行量化。
 - **方法**：在量化过程中，使用缩放后的标记特征来计算 Hessian 矩阵 *H*RSQ​=2*XR*2*X*⊤，并将其应用于权重更新公式。最终，通过 GPTQ 框架对旋转后的权重进行量化，从而完成整个量化过程。
-![](asset/img_94bdf1bcc195.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_94bdf1bcc195.jpg)
 
 实验表明，RSQ 在多个下游任务和长文本基准测试中均优于现有的量化方法，特别是在低量化位数时表现更为出色。此外，RSQ 在不同模型大小、校准数据集和量化方法上均表现出良好的泛化能力。
 
@@ -180,7 +190,7 @@ QuEST在所有测试的精度和模型大小下都能稳定收敛，而PACT在�
 
 ### [MixLLM: LLM Quantization with Global Mixed-precision between Output-features and Highly-efficient System Design](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2412.14590)
 
-![](asset/img_af04a96b25c9.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_af04a96b25c9.jpg)
 
 量化设计和决策**
 
@@ -207,9 +217,9 @@ MixLLM 使用一种全局精度搜索算法来确定哪些输出特征需要更�
 
 论文分析了BFloat16各组成部分（符号位、指数位和尾数位）的信息效率，发现指数位的熵约为2.6位，远低于其分配的8位，表明存在显著的压缩机会。论文利用这一特性，通过霍夫曼编码对指数位进行压缩，从而实现无损压缩。
 
-![](asset/img_d18599df3712.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_d18599df3712.jpg)
 
-![](asset/img_9e2490e97bfd.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_9e2490e97bfd.jpg)
 
 #### Dynamic-Length Float：LLMs无损压缩框架
 
@@ -229,7 +239,7 @@ MixLLM 使用一种全局精度搜索算法来确定哪些输出特征需要更�
 
 - 单个权重矩阵的解压缩通常会浪费GPU资源，因为其相对较小。论文提出在Transformer块级别进行解压缩，将Transformer块中所有权重矩阵的解压缩批量处理，显著提高吞吐量并减少推理延迟。
 
-![](asset/img_ab882d5892f7.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_ab882d5892f7.jpg)
 
 **
 
@@ -238,7 +248,7 @@ MixLLM 使用一种全局精度搜索算法来确定哪些输出特征需要更�
 - 模型大小压缩**：DFloat11将模型大小压缩至约70%，平均压缩比特宽度约为11位。例如，Llama-3.1-405B模型从811.71GB压缩至551.22GB，压缩比为67.91%。
 - **推理效率**：与将部分未压缩模型卸载到CPU以满足内存限制的潜在替代方案相比，DFloat11在标记生成方面实现了1.9–38.8倍的更高吞吐量。在固定的GPU内存预算下，DFloat11使上下文长度比未压缩模型延长了5.3–13.17倍。特别值得一提的是，DFloat11能够在单个节点上，配备8×80GB GPU，实现810GB的Llama-3.1-405B模型的无损推理。
 - **准确性**：DFloat11压缩后的模型在各种任务上的表现与原始BFloat16模型完全一致，包括在MMLU、TruthfulQA、WikiText和C4等标准基准测试中的准确性和困惑度评估。例如，Llama-3.1-8B-Instruct模型在MMLU任务上的准确率为68.010%，在TruthfulQA任务上的准确率为36.965%，在WikiText数据集上的困惑度为8.649，在C4数据集上的困惑度为21.677。压缩后的DFloat11模型在这些指标上与原始模型完全相同。
-![](asset/img_b8d3773b35fa.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_b8d3773b35fa.jpg)
 
 **
 
@@ -246,7 +256,7 @@ MixLLM 使用一种全局精度搜索算法来确定哪些输出特征需要更�
 
 论文介绍了一种名为LogQuant的2-bit量化技术，用于优化大规模语言模型（LLM）推理中的KV缓存管理。
 
-![](asset/img_18ec32c6083e.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_18ec32c6083e.jpg)
 
 LogQuant通过以下方式实现：
 
@@ -259,7 +269,7 @@ LogQuant通过以下方式实现：
 
 论文提出了一种名为Q-Filters的训练无关KV缓存压缩方法，通过利用Query和Key向量的几何特性来过滤掉不重要的KV对，从而减少KV缓存的大小。
 
-![](asset/img_104cc85ed256.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_104cc85ed256.jpg)
 
 具体方法如下：
 
@@ -267,7 +277,7 @@ LogQuant通过以下方式实现：
 
 - 通过分析Query（Q）和Key（K）的分布，发现存在一个主方向（由Q的主特征向量定义），该方向能够编码每个头（head）的输入选择过程。通过这个方向，可以估计哪些输入对当前头来说是不重要的，从而可以丢弃这些输入，而对性能的影响最小。
 - 通过奇异值分解（SVD）计算Q的主方向，并将其作为Q-Filters。这些Q-Filters能够估计Key向量在该方向上的投影，从而近似注意力分数。
-![](asset/img_3f73fb699fb8.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_3f73fb699fb8.jpg)
 
 - 具体来说，对于每个头，计算Q的SVD，取第一个右奇异向量作为Q-Filter。在推理时，将Key向量投影到这个方向上，根据投影值的大小来决定哪些KV对可以被丢弃。
 **2、Q-Filters的计算和应用**：

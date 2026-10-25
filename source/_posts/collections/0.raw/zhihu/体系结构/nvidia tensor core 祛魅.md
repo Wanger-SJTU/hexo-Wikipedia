@@ -1,9 +1,19 @@
 ---
-title: "nvidia tensor core 祛魅"
-date: 2025-10-26
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/1940518023904601791
+title: nvidia tensor core 祛魅
+date: "2025-10-26 00:00:00"
+updated: "2025-10-26 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/体系结构/nvidia-tensor-core-祛魅-cdea43/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/1940518023904601791
 ---
+
 
 ### **先说最重要的可取之处：**
 
@@ -22,7 +32,7 @@ $- 通过alloc/dealloc 的模式管理内存， &#x53EF;&#x4EE5;&#x5728;&#x786C;
 
 *tensor core 从nv 的 votal 架构就开始引入了。 具体的 细节我就不一一介绍了，知乎上有很多很多 朋友已经对各种架构和细节 进行了很详细的介绍。我这里只描述一些核心的内容，如果大家对一些实现细节有兴趣的话，可以去看 很多朋友对每代架构的详细介绍。*
 
-![](asset/img_e86f62313a60.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_e86f62313a60.jpg)
 
 $特性对比&#x6211;&#x8FD9;&#x91CC;&#x5148;&#x7EDF;&#x4E00;&#x6C47;&#x603B;&#x4E00;&#x4E9B;&#x8BBE;&#x8BA1;&#x4F7F;&#x7528;&#x75DB;&#x70B9;&#xFF0C;&#x5927;&#x5BB6;&#x53EF;&#x4EE5;&#x4ED4;&#x7EC6;&#x770B;&#x770B;&#x540E;&#x7EED;&#x7684;&#x4ECB;&#x7ECD;&#xFF1A;" role="presentation">我这里先统一汇总一些设计使用痛点，大家可以仔细看看后续的介绍：\color{red}{我这里先统一汇总一些设计使用痛点，大家可以仔细看看后续的介绍：} $
 
@@ -59,11 +69,11 @@ nv 的tcgen05 已经是将tensor_core 变成一个独立的编程单元了**。�
 
 ### 数据通路：
 
-![](asset/img_ad5c32b26741.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_ad5c32b26741.jpg)
 
 来源：SemiAnalysis首先看这个数据通路的变化。从这个tensor_core 的数据通路变化上看，其实可能很清楚的看出，面对过大的寄存器压力，和延迟的需求，nv 也解决不了了。从而选择和 市面上绝大多数 npu 厂商一样的路线。引入独立的memory 空间，专门为 tensor_core 供数。这里特别讲一下 blackwell 架构中 tensor_memory 的设计。
 
-![](asset/img_422fec86e1e6.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_422fec86e1e6.jpg)
 
 来源：SemiAnalysis [增加了图上红色的通道]
 
@@ -78,7 +88,7 @@ nv 的tcgen05 已经是将tensor_core 变成一个独立的编程单元了**。�
 是否相同sm访问方向延迟「cycles」相同register_file  shared_memory 本地路径29相同register_file  shared_memory dsm路径33不同register_file  shared_memory dsm路径184-213
 
 - \color{red}{那为什么还要支持这个功能吗？} 还是片内sram 太小了，让两个sm 的sram 可以一起使用，来提升存储的复用。 \color{red}{但这种设计真的好吗？} \color{blue}{和大家吹捧的 simt 天差地别啊。完全不是一个编程思路了。} 
-![](asset/img_5a54e085b4dd.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_5a54e085b4dd.jpg)
 
 Layout by @Kurnal**
 
@@ -140,7 +150,7 @@ Layout by @Kurnal**
 
 这一节，我会详细介绍nvidia tcgen05 引入了哪些 异步编程接口，和对应的同步方式。
 
-![](asset/img_aa9466632904.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_aa9466632904.jpg)
 
 tcgen05 指令汇总首先tcgen05 的异步编程方式和相关的内存一致性的问题**，都可以在 ptx 中的 
 
@@ -157,14 +167,14 @@ tcgen05 指令汇总首先tcgen05 的异步编程方式和相关的内存一致�
 
 而**不同指令的行为也不一样**，有的是**同步指令**，有的是**异步指令**。
 
-![](asset/img_607304432615.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_607304432615.jpg)
 
 category of each of the tcgen05 instruction
 #### 发射类型
 
 不同指令的发射类型也不一样的，如下图：
 
-![](asset/img_69b9f75966f4.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_69b9f75966f4.jpg)
 
 指令执行粒度从表格上看，大家也能看出来，**不同的指令**，有的是 \color{red}{线程粒度} ，有的是 \color{red}{warp粒度} 。**也是很麻烦**。
 

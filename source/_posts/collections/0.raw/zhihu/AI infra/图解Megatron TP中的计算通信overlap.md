@@ -1,9 +1,19 @@
 ---
-title: "图解Megatron TP中的计算通信overlap"
-date: 2025-01-06
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/16594218518
+title: 图解Megatron TP中的计算通信overlap
+date: "2025-01-06 00:00:00"
+updated: "2025-01-06 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/AI-infra/图解Megatron-TP中的计算通信overlap/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/16594218518
 ---
+
 
 这篇文章想来探索Megatron中实现计算通信overlap的方法。
 

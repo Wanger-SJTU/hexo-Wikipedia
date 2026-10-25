@@ -1,9 +1,19 @@
 ---
-title: "谈一谈AI芯片研发路上的困难"
-date: 2026-03-28
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/2021262593088582678
+title: 谈一谈AI芯片研发路上的困难
+date: "2026-03-28 00:00:00"
+updated: "2026-03-28 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/体系结构/谈一谈AI芯片研发路上的困难-676c86/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/2021262593088582678
 ---
+
 
 **我有一个朋友，最近被某司的NPU算子各种问题反复折磨。**比如某算子是一个大模型反向训练算子，逻辑复杂，其执行过程中，会出现很偶现的卡死。卡死信息只有PC，注释代码等方式均会导致问题现象发生变化，需要找出硬件时序设计的bug是什么。诸如此类......
 

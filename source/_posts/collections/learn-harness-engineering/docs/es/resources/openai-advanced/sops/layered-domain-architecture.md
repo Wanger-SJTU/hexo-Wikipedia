@@ -1,3 +1,16 @@
+---
+title: "SOP: Arquitectura de Dominio en Capas"
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/es/resources/openai-advanced/sops/layered-domain-architecture/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # SOP: Arquitectura de Dominio en Capas
 
 Usa este SOP cuando el agente sigue violando límites, duplicando lógica entre capas,

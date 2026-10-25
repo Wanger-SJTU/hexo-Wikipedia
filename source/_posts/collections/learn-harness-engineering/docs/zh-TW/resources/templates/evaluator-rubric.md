@@ -1,3 +1,16 @@
+---
+title: 評審評分表
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/zh-TW/resources/templates/evaluator-rubric/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # 評審評分表
 
 在實作完成後、正式接受前，使用這張評分表進行評審。

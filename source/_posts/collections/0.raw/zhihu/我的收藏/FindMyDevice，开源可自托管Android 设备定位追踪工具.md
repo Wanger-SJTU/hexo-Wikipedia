@@ -1,9 +1,19 @@
 ---
-title: "(2 条消息) FindMyDevice，开源可自托管Android 设备定位追踪工具"
-date: 2024-10-20
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/2101721601
+title: (2 条消息) FindMyDevice，开源可自托管Android 设备定位追踪工具
+date: "2024-10-20 00:00:00"
+updated: "2024-10-20 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/FindMyDevice,开源可自托管Android-设备定位追踪工具/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/2101721601
 ---
+
 
 2024年3月份，Google针对Android用户推出了 [Google Find My Device](https://link.zhihu.com/?target=https%3A//blog.google/products/android/android-find-my-device/) 服务，但由于依赖于Google Play及Google Account，因此国内用户无法直接使用此服务，同时在隐私数据上会被Google获取。
 

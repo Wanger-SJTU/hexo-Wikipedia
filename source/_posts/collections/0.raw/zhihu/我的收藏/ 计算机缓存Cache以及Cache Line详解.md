@@ -1,19 +1,29 @@
 ---
-title: "(1 条消息) 计算机缓存Cache以及Cache Line详解"
-date: 2018-06-06
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/37749443
+title: (1 条消息) 计算机缓存Cache以及Cache Line详解
+date: "2018-06-06 00:00:00"
+updated: "2018-06-06 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/计算机缓存Cache以及Cache-Line详解/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/37749443
 ---
+
 
 ### **1.计算机存储体系简介**
 
     存储器是分层次的，离CPU越近的存储器，速度越快，每字节的成本越高，同时容量也因此越小。寄存器速度最快，离CPU最近，成本最高，所以个数容量有限，其次是高速缓存（缓存也是分级，有L1，L2等缓存），再次是主存（普通内存），再次是本地磁盘。**
 
-![](asset/img_466dffce8303.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_466dffce8303.jpg)
 
 寄存器的速度最快，可以在一个时钟周期内访问，其次是高速缓存，可以在几个时钟周期内访问，普通内存可以在几十个或几百个时钟周期内访问。
 
-![](asset/img_4c6e9038c29f.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_4c6e9038c29f.jpg)
 
 存储器分级，利用的是局部性原理。我们可以以经典的阅读书籍为例。我在读的书，捧在手里（寄存器），我最近频繁阅读的书，放在书桌上（缓存），随时取来读。当然书桌上只能放有限几本书。我更多的书在书架上（内存）。如果书架上没有的书，就去图书馆（磁盘）。我要读的书如果手里没有，那么去书桌上找，如果书桌上没有，去书架上找，如果书架上没有去图书馆去找。可以对应寄存器没有，则从缓存中取，缓存中没有，则从内存中取到缓存，如果内存中没有，则先从磁盘读入内存，再读入缓存，再读入寄存器。
 
@@ -25,7 +35,7 @@ source: https://zhuanlan.zhihu.com/p/37749443
 
     cache，中译名高速缓冲存储器，其作用是为了更好的利用局部性原理，减少CPU访问主存的次数。简单地说，CPU正在访问的指令和数据，其可能会被以后多次访问到，或者是该指令和数据附近的内存区域，也可能会被多次访问。因此，第一次访问这一块区域时，将其复制到cache中，以后访问该区域的指令或者数据时，就不用再从主存中取出。**
 
-![](asset/img_67b069b61c24.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_67b069b61c24.jpg)
 
   cache分成多个组，每个组分成多个行，linesize是cache的基本单位，从主存向cache迁移数据都是按照linesize为单位替换的。比如linesize为32Byte，那么迁移必须一次迁移32Byte到cache。 这个linesize比较容易理解，想想我们前面书的例子，我们从书架往书桌搬书必须以书为单位，肯定不能把书撕了以页为单位。书就是linesize。当然了现实生活中每本书页数不同，但是同个cache的linesize总是相同的。
 
@@ -39,7 +49,7 @@ source: https://zhuanlan.zhihu.com/p/37749443
     OK，cache分成三类，
   1 直接映射高速缓存**，这个简单，即每个组只有一个line，选中组之后不需要和组中的每个line比对，因为只有一个line。**  2 组相联高速缓存**，这个就是我们前面介绍的cache。 S个组，每个组E个line。**  3 全相联高速缓存**，这个简单，只有一个组，就是全相联。不用hash来确定组，直接挨个比对高位地址，来确定是否命中。可以想见这种方式不适合大的缓存。想想看，如果4M 的大缓存　linesize为32Byte，采用全相联的话，就意味着4*1024* = 128K 个line挨个比较，来确定是否命中，这是多要命的事情。高速缓存立马成了低速缓存了。**
 
-![](asset/img_d862b75fbdc1.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_d862b75fbdc1.jpg)
 
   　描述一个cache需要以下参数　：
 
@@ -59,11 +69,11 @@ source: https://zhuanlan.zhihu.com/p/37749443
 
     倘若把内存地址分为以下三个区间：
 
-![](asset/img_a22b1d266f5a.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_a22b1d266f5a.jpg)
 
 tag, set index, block offset三个区间有什么用呢？再来看看Cache的逻辑结构吧：
 
-![](asset/img_92c7d2cbd39f.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_92c7d2cbd39f.jpg)
 
 将此图与上图做对比，可以得出各参数如下：
 

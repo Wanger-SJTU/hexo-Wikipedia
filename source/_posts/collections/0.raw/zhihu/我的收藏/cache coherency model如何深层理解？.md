@@ -1,10 +1,19 @@
 ---
-title: "cache coherency model如何深层理解？"
-date: 2023-03-19
-tags: [知乎]
-source: https://www.zhihu.com/question/590540790/answer/2943285963
-
+title: cache coherency model如何深层理解？
+date: "2023-03-19 00:00:00"
+updated: "2023-03-19 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/cache-coherency-model如何深层理解/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://www.zhihu.com/question/590540790/answer/2943285963
 ---
+
 
 ![](https://pic1.zhimg.com/v2-ba044fa359c84872bf78fb9f23a89751_r.jpg?source=2c26e567)想成为Java架构师，突破职业发展瓶颈，欢迎来咕泡教育[见字如面](https://www.zhihu.com/search?q=%E8%A7%81%E5%AD%97%E5%A6%82%E9%9D%A2&search_source=Entity&hybrid_search_source=Entity&hybrid_search_extra=%7B%22sourceType%22%3A%22answer%22%2C%22sourceId%22%3A2942468271%7D)，我是[咕泡科技](https://www.zhihu.com/search?q=%E5%92%95%E6%B3%A1%E7%A7%91%E6%8A%80&search_source=Entity&hybrid_search_source=Entity&hybrid_search_extra=%7B%22sourceType%22%3A%22answer%22%2C%22sourceId%22%3A2938881576%7D)[创始人](https://www.zhihu.com/search?q=%E5%88%9B%E5%A7%8B%E4%BA%BA&search_source=Entity&hybrid_search_source=Entity&hybrid_search_extra=%7B%22sourceType%22%3A%22answer%22%2C%22sourceId%22%3A2942468271%7D)[Mic](https://link.zhihu.com/?target=https%3A//ke.gupaoedu.cn/course/java)（[谭锋](https://www.zhihu.com/search?q=%E8%B0%AD%E9%94%8B&search_source=Entity&hybrid_search_source=Entity&hybrid_search_extra=%7B%22sourceType%22%3A%22answer%22%2C%22sourceId%22%3A2936255309%7D)）
 

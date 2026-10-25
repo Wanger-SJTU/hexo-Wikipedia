@@ -1,9 +1,19 @@
 ---
-title: "(1 封私信) HPCA '26 论文解读：RoMe —— 专为 LLM 设计的4KB行粒度内存系统"
-date: 2026-02-25
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/2009786843592409877
+title: (1 封私信) HPCA '26 论文解读：RoMe —— 专为 LLM 设计的4KB行粒度内存系统
+date: "2026-02-25 00:00:00"
+updated: "2026-02-25 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/体系结构/HPCA-'26-论文解读-RoMe-——-专为-LLM-设计的4KB行粒度内存系统/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/2009786843592409877
 ---
+
 
 ### 0. 前言
 
@@ -14,7 +24,7 @@ source: https://zhuanlan.zhihu.com/p/2009786843592409877
 **1. 这篇文章逻辑清晰，对一些基础的背景知识讲的也挺清楚的**（阅读这篇论文让我对HBM的层次结构和Memory Cotroller有了全面且基本的认知）。**2. 论文的思路说白了就是尽量完全复用HBM的物理总线、Bank等不做改动，只是改变其使用的逻辑**，大大提高访存的颗粒度，极大了简化了Memory Controller的调度逻辑。
 ### 1.  传统 HBM 架构的“历史包袱”
 
-![](asset/img_1971e29a79af.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_1971e29a79af.jpg)
 
 在深入 **RoMe** 之前，我们必须理解为什么现有的 HBM4 架构会变得如此复杂。
 
@@ -26,7 +36,7 @@ source: https://zhuanlan.zhihu.com/p/2009786843592409877
 
 - **Bank 组（Bank Group）**：允许在不同 Bank 组之间交替提取数据（Bank Group Interleaving），从而隐藏内部时序延迟。
 - **伪通道（Pseudo Channel, PC）**：将一个物理通道拆分为两个独立的伪通道，共享命令/地址（C/A）引脚，但平分数据引脚。这两个 PC 能够独立运行，从而支持并发数据传输并最大化吞吐量。 
-![](asset/img_289e7dd998c2.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_289e7dd998c2.jpg)
 
 如上图 HBM4 的物理架构示意图所示，HBM 采用 3D 堆叠技术，通过硅通孔（TSV）将多个 DRAM 裸片（Die）连接至底部的逻辑裸片。每个 HBM 设备由多个独立通道组成（在 HBM4 标准中最高可达 32 个通道）。每四个 DRAM 裸片构成一个堆叠 ID（Stack ID, SID，等效于传统 DRAM 标准中的 `Rank`），通道通过 SID 来识别其当前访问的特定裸片组。
 
@@ -42,7 +52,7 @@ source: https://zhuanlan.zhihu.com/p/2009786843592409877
 
 **以缓存行（cache line）粒度访问内存，极大地增加了内存系统设计的复杂性**。为了实现高性能，内存控制器（MC）必须实现复杂的`调度算法`，以兼顾繁多的`时序参数`和`动态的 Bank 状态`。先前的研究对这一设计空间中的关键组件进行了探索——包括地址映射 、页面策略 以及调度策略——而这些机制进一步加剧了 MC 架构的复杂性。
 
-![](asset/img_4a88daa913ff.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_4a88daa913ff.jpg)
 
 尽管具体实现各异，但传统的内存控制器（MC）通常包含四大核心组件（如上图所示):
 
@@ -54,7 +64,7 @@ source: https://zhuanlan.zhihu.com/p/2009786843592409877
 
 **2. 繁重的状态与时序管理**：**由于各个 Bank 独立运行，MC 必须实时追踪所有 Bank 的 7 种状态**（空闲 Idle、激活中 Activating、激活 Active、预充电 Precharging、读 Reading、写 Writing、刷新 Refreshing），并处理十几种复杂的时序参数（如表 2 所示）。 
 
-![](asset/img_3930991468cd.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_3930991468cd.jpg)
 
 **3. 极度复杂的调度策略**：**为了最大化带宽利用率并兼顾公平，命令调度器（尤其是请求调度器）必须同时在四个维度上进行“走钢丝”般的平衡：
 
@@ -66,7 +76,7 @@ source: https://zhuanlan.zhihu.com/p/2009786843592409877
 **🤷‍♂️总结****在传统的缓存行/`Cache Line`粒度下，MC 必须像一个极其精密的微观管理者，时刻紧盯每一个 Bank 的细微状态** 。这种设计在面对 LLM 动辄数兆字节的连续大块数据吞吐时，显得既臃肿又低效。内存控制器（MC）必须跟踪所有 Bank 的 7 种状态，处理至少 15 种复杂的时序参数（如 `tCCDS`, `tRRDS`, `tFAW`），并执行复杂的页面策略（Open/Close Page）。
 #### 1.2.2.  C/A 引脚开销激增
 
-![](asset/img_ce74f8ec81b0.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_ce74f8ec81b0.jpg)
 
 由于每一代 HBM 的数据通道（DQ）宽度都在减半（例如 HBM4 每个通道仅 64-bit），但独立的`命令/地址`引脚（C/A Pins）数量却无法同比例减少。这导致 **C/A 引脚与数据引脚的比例（C/A-to-DQ ratio）飙升**（HBM4 相比早期几乎翻倍）。这种引脚开销和 C/A 带宽需求的增长，使得未来的物理接口设计变得不可持续。
 
@@ -74,7 +84,7 @@ source: https://zhuanlan.zhihu.com/p/2009786843592409877
 
 ### 2.  LLM 时代的内存访问特征：连续与海量
 
-![](asset/img_b580aadc215b.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_b580aadc215b.jpg)
 
 RoMe 的设计灵感直接来源于 Transformer 架构大语言模型（如 DeepSeek-V3, Grok 1, Llama 3）的内存访问特征。
 
@@ -88,7 +98,7 @@ LLM 推理分为 `prefill`（预填充）和 `decode`（解码）两个阶段。
 
 RoMe（**Ro**w-granularity-access **Me**mory system）通过软硬件协同设计，对 DRAM 接口和内存控制器进行了大刀阔斧的改革。 
 
-![](asset/img_7b545a4b5481.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_7b545a4b5481.jpg)
 
 ### 3.1.  虚拟 Bank (Virtual Bank, VBA) 的诞生
 
@@ -98,13 +108,13 @@ RoMe（**Ro**w-granularity-access **Me**mory system）通过软硬件协同设�
 
 #### 3.1.1.  消除 Bank Group
 
-![](asset/img_89d6113fb585.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_89d6113fb585.jpg)
 
 如上图(d)的设计，将来自**不同 Bank 组的两个物理 Bank** 组合成一个 VBA。这两个 Bank 以时间复用（Time-multiplexed）的方式交替提取数据。
 
 #### 3.1.2.  消除 Pseudo Channel (PC)
 
-![](asset/img_44c632a1f319.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_44c632a1f319.jpg)
 
 如上图(b)的设计，让两个伪通道**同时运行**（类似于 HBM 的 Legacy Channel 模式），作为一个统一的宽通道。
 
@@ -161,7 +171,7 @@ module CommandGenerator (
 endmodule
 `
 
-**代码解析：**如下图所示命令生成器巧妙地插入了 `tRRDS - tCCDS` 的延迟，确保了向两个物理 Bank 发送的读命令能够以 `tCCDS`（如 1ns）的理想间隔完美交错，从而打满数据总线。![](asset/img_b02af8b566df.jpg)
+**代码解析：**如下图所示命令生成器巧妙地插入了 `tRRDS - tCCDS` 的延迟，确保了向两个物理 Bank 发送的读命令能够以 `tCCDS`（如 1ns）的理想间隔完美交错，从而打满数据总线。![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_b02af8b566df.jpg)
 
 ### 3.3.  引脚释放与带宽白嫖 (Bandwidth Expansion)
 
@@ -197,7 +207,7 @@ PC(伪通道) 交错VBA 交错大大简化
 
 ### 5.2.  负载均衡 (Load Balancing) 的挑战与化解
 
-![](asset/img_c9d334aa199e.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_c9d334aa199e.jpg)
 
 将访问粒度从 32B 提升到 4KB，最大的隐患是**通道负载不均衡 (LBR)**。如果数据分布不均，某些通道可能会闲置。
 

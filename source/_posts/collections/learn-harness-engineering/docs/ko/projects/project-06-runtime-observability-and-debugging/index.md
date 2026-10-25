@@ -1,3 +1,16 @@
+---
+title: 프로젝트 06. 완전한 에이전트 하네스 구축하기 (캡스톤)
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/ko/projects/project-06-runtime-observability-and-debugging/index/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 [English Version →](../../../en/projects/project-06-runtime-observability-and-debugging/)
 
 > 관련 강의: [강의 11. 에이전트의 런타임을 관찰 가능하게 만들기](./../../lectures/lecture-11-why-observability-belongs-inside-the-harness/index.md) · [강의 12. 모든 세션의 끝에서 깔끔하게 핸드오프하기](./../../lectures/lecture-12-why-every-session-must-leave-a-clean-state/index.md)

@@ -1,9 +1,19 @@
 ---
-title: "ByteScale：12,000 GPU 上的 2M 长序列高效训练方案 from 字节跳动"
-date: 2025-03-22
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/32047821042
+title: ByteScale：12,000 GPU 上的 2M 长序列高效训练方案 from 字节跳动
+date: "2025-03-22 00:00:00"
+updated: "2025-03-22 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/ByteScale-12,000-GPU-上的-2M-长序列高效训练方案-from-字节跳动/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/32047821042
 ---
+
 
 ByteScale：12,000 GPU 上的 2M 长序列高效训练方案 from 字节跳动
 

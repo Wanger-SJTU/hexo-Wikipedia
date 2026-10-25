@@ -1,9 +1,19 @@
 ---
-title: "ARM WFI和WFE指令"
-date: 2024-03-13
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/686063374
+title: ARM WFI和WFE指令
+date: "2024-03-13 00:00:00"
+updated: "2024-03-13 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/体系结构/ARM-WFI和WFE指令/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/686063374
 ---
+
 
 ### 1. 基本介绍
 

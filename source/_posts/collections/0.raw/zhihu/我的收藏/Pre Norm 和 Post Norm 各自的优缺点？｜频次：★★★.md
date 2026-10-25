@@ -1,9 +1,19 @@
 ---
-title: "(2 条消息) Pre Norm 和 Post Norm 各自的优缺点？｜频次：★★★"
-date: 2025-01-16
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/18753164849
+title: (2 条消息) Pre Norm 和 Post Norm 各自的优缺点？｜频次：★★★
+date: "2025-01-16 00:00:00"
+updated: "2025-01-16 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/Pre-Norm-和-Post-Norm-各自的优缺点-频次-★★★/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/18753164849
 ---
+
 
 这个问题其实还蛮难回答的，因为目前并没有特别好的理论来解释清楚。
 
@@ -15,11 +25,11 @@ Pre Norm 和 Post Norm 的区别 Layer Norm 和 Residual connections 组合方�
 
 **在原始的 Transformers 论文中，使用的是 Post Norm**，如下所示。
 
-![](asset/img_01d77da6eb5a.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_01d77da6eb5a.jpg)
 
 Post Norm 用公式可以表示为：
 
-![](asset/img_5aebb647c0f2.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_5aebb647c0f2.jpg)
 
 每一层的输入先与 Attention 相加，然后才计算 Layer Norm。早期的很多模型都用的是 Post Norm，比如著名的 Bert。
 
@@ -33,7 +43,7 @@ Post Norm 之所以这么设计，是把 Normalization 放在一个模块的最�
 
 假设输入 X、Attention(X)、FNN(X) 的均值为0，方差都为1，且相互独立。事实上可能没有那么理想，因为权重矩阵的分布在学习过程中并不一定能保持理想的分布，这里为了说明问题对建模进行了简化。
 
-![](asset/img_bb5e410debfb.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_bb5e410debfb.jpg)
 
 这个式子的第一项会随着层数递减，而且是指数的变小。如果层数较低还好，如果像是现在的大模型一样堆叠32层，那 几乎和0没什么区别了，也就丧失了 ResNet 的意义。
 

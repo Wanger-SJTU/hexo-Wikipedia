@@ -1,9 +1,19 @@
 ---
-title: "循环优化之循环分块（loop tiling）"
-date: 2022-10-15
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/292539074
+title: 循环优化之循环分块（loop tiling）
+date: "2022-10-15 00:00:00"
+updated: "2022-10-15 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/体系结构/循环优化之循环分块(loop-tiling)/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/292539074
 ---
+
 
 ### 引言
 

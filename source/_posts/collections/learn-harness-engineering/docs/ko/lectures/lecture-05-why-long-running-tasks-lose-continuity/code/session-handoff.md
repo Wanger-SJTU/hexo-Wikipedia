@@ -1,3 +1,16 @@
+---
+title: 세션 핸드오프(Session Handoff) 예제
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/ko/lectures/lecture-05-why-long-running-tasks-lose-continuity/code/session-handoff/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # 세션 핸드오프(Session Handoff) 예제
 
 ## 완료된 항목

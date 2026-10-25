@@ -1,10 +1,19 @@
 ---
-title: "也谈谈字节的 veRoCE"
-date: 2025-12-27
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/1987544070315332811
-
+title: 也谈谈字节的 veRoCE
+date: "2025-12-27 00:00:00"
+updated: "2025-12-27 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/AI-infra/也谈谈字节的-veRoCE/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/1987544070315332811
 ---
+
 
 上周技术圈发生了些事，我也收到些邀请，要我来评价两句，我很荣幸，就说两句。
 

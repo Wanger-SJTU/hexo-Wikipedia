@@ -1,10 +1,19 @@
 ---
-title: "深度学习实验总结(tricks)"
-date: 2020-10-06
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/261999668
-
+title: 深度学习实验总结(tricks)
+date: "2020-10-06 00:00:00"
+updated: "2020-10-06 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/dl论文/深度学习实验总结(tricks)/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/261999668
 ---
+
 
 深度模型是黑盒，而且本次并没有尝试超深和超宽的网络，所以结论只能提供一个先验，并不是标准答案！同时不同的任务也可能导致不同，比如分割，所以必须具体问题具体分析！
 

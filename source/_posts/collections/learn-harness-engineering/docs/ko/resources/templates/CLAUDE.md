@@ -1,3 +1,16 @@
+---
+title: CLAUDE.md
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/ko/resources/templates/CLAUDE/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # CLAUDE.md
 
 이 파일은 하네스(harness) 리소스 라이브러리에 포함된 샘플 템플릿입니다. 실제 프로젝트에 복사한 뒤 프로젝트 고유의 명령어와 경로로 수정하여 사용하십시오. `AGENTS.md`와 구조는 동일하며 Claude Code의 지침 스타일에 맞게 형식화된 버전입니다.

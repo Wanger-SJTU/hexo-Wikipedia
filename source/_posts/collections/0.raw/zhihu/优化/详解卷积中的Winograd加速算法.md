@@ -1,9 +1,19 @@
 ---
-title: "详解卷积中的Winograd加速算法"
-date: 2020-09-30
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/260109670
+title: 详解卷积中的Winograd加速算法
+date: "2020-09-30 00:00:00"
+updated: "2020-09-30 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/优化/详解卷积中的Winograd加速算法/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/260109670
 ---
+
 
 ### **1. 为什么会引入WinoGrad？**
 
@@ -19,7 +29,7 @@ $WinoGrad算法起源于1980年，是Shmuel Winograd提出用来减少FIR滤波�
 
 下面是一个经典例子，以1维卷积为例，输入信号d=[d0,d1,d2,d3]T" role="presentation">d=[d0,d1,d2,d3]Td=[d_0,d_1,d_2,d3]^T，卷积核g=[g0,g1,g2]T" role="presentation">g=[g0,g1,g2]Tg=[g_0,g_1,g_2]^T，则卷积可以写成如下矩阵乘法形式：
 
-![](asset/img_1329f9e730a6.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_1329f9e730a6.jpg)
 
 式子1如果这个计算过程使用普通的矩阵乘法，则一共需要**「6次乘法和4次加法」** 。
 
@@ -27,11 +37,11 @@ $WinoGrad算法起源于1980年，是Shmuel Winograd提出用来减少FIR滤波�
 
 然后WinoGrad的做法就是：
 
-![](asset/img_914fdd7fe2b6.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_914fdd7fe2b6.jpg)
 
 式子2其中，
 
-![](asset/img_3185b7d67479.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_3185b7d67479.jpg)
 
 等式3**
 
@@ -41,11 +51,11 @@ $WinoGrad算法起源于1980年，是Shmuel Winograd提出用来减少FIR滤波�
 
 这个例子实际上是**「1D的WinoGrad算法」**，我们将上面的计算过程写成矩阵的形式如下：
 
-![](asset/img_f0863745b222.png)
+![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_f0863745b222.png)
 
 式子4其中，\odot表示element-wise multiplication（Hadamard product）对应位置相乘。其中，
 
-![](asset/img_e694120f65a0.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_e694120f65a0.jpg)
 
 相关矩阵解释
 
@@ -62,19 +72,19 @@ $WinoGrad算法起源于1980年，是Shmuel Winograd提出用来减少FIR滤波�
 - 输出变换
 然后我们将1D的WinoGrad扩展到2D，就可以实现3\times 3卷积的加速了，那么如何从1维扩展到2维呢？公式如下：
 
-![](asset/img_cee6fd86681c.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_cee6fd86681c.jpg)
 
 2D WinoGrad矩阵形式计算推导其中，g为r\times r的卷积核，d为(m+r-1)\times (m+r-1)的图像块，我们把上面的F(2,3)扩展到F(2\times 2, 3\times 3)，先写成矩阵乘法的方式：
 
-![](asset/img_cf0d49c27f35.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_cf0d49c27f35.jpg)
 
 (2x2,3x3) 图片来自https://www.cnblogs.com/shine-lee/p/10906535.html上图表示我们将卷积核的元素拉成了一列，将输入信号每个滑动窗口中的元素拉成了一行。注意图中红线分成的矩阵块，每个矩阵块中重复元素的位置与一维相同，即：
 
-![](asset/img_1bb68c3cf786.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_1bb68c3cf786.jpg)
 
 二维和一维的WinoGrad矩阵关系然后，令D_0=[k_0,k_1,k_2,k_3]^T，即图像窗口中的第0行元素，然后D_1,D_2,D_3表示第1,2,3行，W_0=[w_0,w_1,w_2]^T，然后可以推导：
 
-![](asset/img_6bbe139c65a8.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_6bbe139c65a8.jpg)
 
 2D WinoGrad矩阵形式计算推导在上面的推导中，A^T[(GW_0)\odot (B^TD_0)]表示长度为4的D_0和长度为3的W_0卷积结果，结果为长度为2的列向量，其中(GW_0)和(B^TD_0)均为长度为4的列向量。
 
@@ -88,7 +98,7 @@ $WinoGrad算法起源于1980年，是Shmuel Winograd提出用来减少FIR滤波�
 
 下图表示2D WinoGrad的示意图：
 
-![](asset/img_b767d77a2db3.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_b767d77a2db3.jpg)
 
 2D WinoGrad示意图这个时候，WinoGrad算法的乘法次数为4\times 4=16，而如果直接卷积乘法次数为36，**「降低了2.25倍的乘法计算复杂度」**。
 
@@ -127,7 +137,7 @@ $WinoGrad算法起源于1980年，是Shmuel Winograd提出用来减少FIR滤波�
 
 通过这段代码，所有的卷积核g都被转换成了U，存放在了`kernel_tm`上，一行代表一个U(k,c)，`kernel_tm`的内存排布如下图所示：
 
-![](asset/img_beea25408b73.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_beea25408b73.jpg)
 
 $U_{k,c}的内存排布其中W=64的原因是因为F(6x6,3x3)需要每一个输入图像块(tile)的大小为8\times 8，权重块也对应8\times 8，这样才可以做卷积运算（eltwise_mult）。$
 
@@ -135,11 +145,11 @@ $U_{k,c}的内存排布其中W=64的原因是因为F(6x6,3x3)需要每一个输�
 
 将H的维度全部压到W维度上示意图：
 
-![](asset/img_d6c039ee4cda.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_d6c039ee4cda.jpg)
 
 将kernel_tm的H维度全部压到W维度变成一个扁平的Blob然后在这个基础上，将C维度进行进一步压缩，这个时候还需要注意的是对于每一个输出通道，我们在H\times W这个平面上是同时拿出了2行，也就是拿出了128个数据，然后进行交织排列，最后获得`kernel_tm2`。这里以输出通道的前4个为例，即刚好处理8个U矩阵之后结果矩阵`kernel_tm2`应该是长什么样子，如下图所示：
 
-![](asset/img_ff86d5ad5aa0.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_ff86d5ad5aa0.jpg)
 
 Pack策略之后的矩阵kernel_tm2就长这个样子这部分的代码实现如下：
 
@@ -236,7 +246,7 @@ Pack策略之后的矩阵kernel_tm2就长这个样子这部分的代码实现如
 
 可以看到这个地方不仅计算了V矩阵，并在存储时就对V矩阵进行了重新排列，以适应卷积核变化矩阵的Pack结果，方便后面进行卷积计算的加速同时获得更好的访存，这个过程如下图所示：
 
-![](asset/img_4c94546f03cd.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_4c94546f03cd.jpg)
 
 对输入矩阵进行变换的过程
 ### **4.3 计算M矩阵**
@@ -256,7 +266,7 @@ $M_{k,b}=\sum_{c}U_{k,c}\odot V_{c,b}$
 
 至此，我们获得了M矩阵，矩阵大概长下面这样子，它仍然是交错排列的：
 
-![](asset/img_78114df4fc6e.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_78114df4fc6e.jpg)
 
 M矩阵长得和V矩阵有点像，主要是通道维度变了
 ### **4.4 计算结果Y矩阵**
@@ -301,7 +311,7 @@ Y_{k,b}=A^TM_{k,b}A
 
 这部分代码就实现了M矩阵汇聚并利用A矩阵获得了最终的结果Y。这个过程上一节图中已经画了，这里主要实现的是图中的右半部分：
 
-![](asset/img_78114df4fc6e.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_78114df4fc6e.jpg)
 
 Y矩阵汇聚存放获得输出Blob但是需要注意的是这里获得的Y有可能是多了几行或者几列，也就是拖尾为0的部分，所以需要把这一部分Crop掉，才能获得我们最终outHeight * outWidth * outChannel的结果特征图。Crop部分的代码如下：
 

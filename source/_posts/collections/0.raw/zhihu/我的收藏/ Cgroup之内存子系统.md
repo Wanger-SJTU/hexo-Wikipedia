@@ -1,9 +1,19 @@
 ---
-title: "(1 条消息) Cgroup之内存子系统"
-date: 2023-07-23
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/645416263
+title: (1 条消息) Cgroup之内存子系统
+date: "2023-07-23 00:00:00"
+updated: "2023-07-23 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/Cgroup之内存子系统/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/645416263
 ---
+
 
 Memory 子系统主要完成两件事：
 
@@ -482,7 +492,7 @@ memory.swap.max
 
 high，low，max，min 的关系：
 
-![](asset/img_9aa29d06ec0b.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_9aa29d06ec0b.jpg)
 
 - memory.stat：只读，存在非 root cgroup 中。包含不同类型内存的详细信息，以及内存管理系统的状态和事件信息。单位都是 bytes。如果某个条目没有 node 级别的统计，使用 npn（non-per-node）标记，不会出现在`memory.numa_stat`文件中。
 
@@ -704,7 +714,7 @@ PID: 746644
 
 进程由于触发 OOM 被 kill：
 
-![](asset/img_d460dc04167e.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_d460dc04167e.jpg)
 
 Kernel 日志：
 

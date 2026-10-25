@@ -1,9 +1,19 @@
 ---
-title: "浅谈 Sora 未来的千倍推理算力需求"
-date: 2024-03-08
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/683636677
+title: 浅谈 Sora 未来的千倍推理算力需求
+date: "2024-03-08 00:00:00"
+updated: "2024-03-08 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/LLM-SD/浅谈-Sora-未来的千倍推理算力需求/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/683636677
 ---
+
 
 **观点：**
 
@@ -35,7 +45,7 @@ source: https://zhuanlan.zhihu.com/p/683636677
 
 首先估算 GPT-4 的算力需求， 根据 OpenAI 的 Paper： [Scaling Laws for Neural Language Models](https://link.zhihu.com/?target=https%3A//arxiv.org/pdf/2001.08361.pdf) , 训练 Transformer 模型的理论计算量为 FLOPs ≈ 6*ND ***。其中， N 为模型参数量大小， D 为训练数据量大小：
 
-![](asset/img_8ff94f59cbf8.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_8ff94f59cbf8.jpg)
 
 LLM 每 token 需要的计算量是 6 倍的模型大小基于一些"众所周知"的消息：
 
@@ -58,7 +68,7 @@ GPT-4 是 2022 年上半年训练的，据说 OpenAI 使用了 25000 张 A100。
 
 根据 OpenAI 的技术报告： Video generation models as world simulators ，Sora 是一个 Diffusion Model， 且应该使用的是 Diffusion Transformer** （DiT）作为主干模型网络。 虽然 Diffusion Transformer 和 LLM 的 Autoregression Model 架构不同， 但均为 Transformer 架构： 
 
-![](asset/img_075173a05eac.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_075173a05eac.jpg)
 
 Diffusion Transformer 架构且训练时，巨量的数据会随机分布在 T = [0, 1000] 的时间步上，以至于 DiT 的训练计算量估计 和 GPT 的训练计算量估计可以使用相同的公式。（Video Encoder/Decoder 的计算量相比 DiT 可以忽略不计）
 
@@ -74,7 +84,7 @@ Diffusion Transformer 架构且训练时，巨量的数据会随机分布在 T =
 
 目前有一个比较准确的估计， **一分钟视频约为 1M tokens 。   **
 
-![](asset/img_efefbd0420d9.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_efefbd0420d9.jpg)
 
 Sora 的 Video Encoder 部分参考 Diffusion Transformer， 256x256 的图片会被划分为 32x32 个 patch。 我们假设 1920x1080 分辨率的高清图像经过下采样得到 512x256 大小的图片，假设一个 patch 为 8x8 的像素块，则得到 64x32 大小的 patch 矩阵， **一张图片则约为： 64x32=2048 个 patch**。 高清视频 1s 约为 30 帧以上，但实际训练和推理也会做压缩，我们估计压缩后 **1s 约为 9 帧。 **则一分钟共 540 帧。 一分钟的视频一共有：  
 
@@ -90,7 +100,7 @@ $**注： 先前计算 Sora 的 FLOPs 仍使用了 6ND 的公式，但是这个�
 
 $C_{(fw+bw)/token} = 6N+6n_{layer}n_{ctx}d_{attn} = 6 (12n_{layer}d_{model}^{2} + n_{layer}n_{ctx}d_{attn}) \approx6(12n_{layer}d_{model}^{2} + 12n_{layer}*14d_{model}*d_{model}) = 6(N+14N) = 90N $
 
-![](asset/img_1455f55f8440.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_1455f55f8440.jpg)
 
 context length 很大时，Attention 部分的计算不能忽略因此，如果 Sora 全量数据训练都是 1M seq length，则 Sora 的训练成本需要增加 15 倍。**如果 Sora 是先训练一个 32k/64k 的模型，最后再 Continue Training 1M 的模型，则 Sora 的训练成本跟之前预估的接近。
 
@@ -165,7 +175,7 @@ $$Duration = \frac{C_{Sora}}{8C_{H100}MFU} = \frac{30N*D*T}{8*1979T*0.4} = \frac
 
 其实是 Groq 芯片的成功营销带来的启发，纯 SRAM 方案可能不是一个好方案，但是 Groq 找准了 Decoder-Only Transformer Model Inference 的痛点： Memory Bound ，所以 Groq 用了 14nm 设计了一个只有 188TFLOPs 的芯片，另一个更为熟知的是 Google TPU 直到 v5e 版本也只有 197 TFLOPs （对比之下，昇腾 910B 都有 376TFLOPs， 7nm+）。 因此，**一个高制程、高算力的芯片，在大模型推理时是发挥不出来它的算力能力的。**更具有性价比的设计是： **中制程、中算力、大显存 的推理芯片。**
 
-![](asset/img_ca0f0078773d.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_ca0f0078773d.jpg)
 
 Grop Card 规格， 14nm 188TFLOPs虽然 NVIDIA H100 已经是 4nm 工艺。但我们做推理完全用不到这么高的制程，14nm 的芯片 做到 180TFLOPs 对于 LLM 的推理来说完全够用。
 
@@ -177,7 +187,7 @@ Grop Card 规格， 14nm 188TFLOPs虽然 NVIDIA H100 已经是 4nm 工艺。但�
 
 当然未来的 LLM 推理可能由于 HBM 的近存计算（Processing in Memory）落地而发生巨变。包含 KVCache 的 Attention Inference 是大内存，小计算的 GEMV 向量矩阵乘，如果在内存上可以用很小的计算代价原地计算，则不需要占用宝贵的访存带宽，期待 HBM-PIM 会让 LLM 推理性能再翻一个台阶，很大程度上缓解内存墙的问题。
 
-![](asset/img_c31b48decce3.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_c31b48decce3.jpg)
 
 三星推出的 PIM 技术> 参考： Samsung Processing in Memory Technology at Hot Chips 2023
 

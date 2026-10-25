@@ -1,13 +1,23 @@
 ---
-title: "(2 条消息) OpenAI o1复现——清华大学提出 ReST-MCTS*"
-date: 2025-09-27
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/14200380598
+title: (2 条消息) OpenAI o1复现——清华大学提出 ReST-MCTS*
+date: "2025-09-27 00:00:00"
+updated: "2025-09-27 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/OpenAI-o1复现——清华大学提出-ReST-MCTS_/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/14200380598
 ---
+
 
 打个小广告 ☻，知乎专栏**《大模型前沿应用》**的内容已经收录在新书**《揭秘大模型：从原理到实战》**中。感兴趣的朋友可以购买，多谢支持！♥♥
 
-[![](asset/img_33b7de100ccc.jpg)广告
+[![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_33b7de100ccc.jpg)广告
 
 揭秘大模型：从原理到实战
 
@@ -40,17 +50,17 @@ GitHub 地址：[GitHub - THUDM/ReST-MCTS: ReST-MCTS*: LLM Self-Training via Pro
 #### 1. Rest-MCTS* 训练流程
 
 - **step0：初始化训练过程奖励模型**
-![](asset/img_2f57ad0ac9b5.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_2f57ad0ac9b5.jpg)
 
 step0：初始化训练过程奖励模型
 
 - **step1：MCTS* 算法生成多条推理路径**
-![](asset/img_a0eb848a27d8.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_a0eb848a27d8.jpg)
 
 step1：MCTS* 生成多条推理路径
 
 - **step2：从 step2 返回的搜索树中生成训练数据，用于策略模型和过程奖励模型的自训练**
-![](asset/img_80be1ba0084c.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_80be1ba0084c.jpg)
 
 step2：从MCTS*结果中生成新一轮的训练数据（用于训练策略模型和过程奖励模型）
 
@@ -60,16 +70,16 @@ step2：从MCTS*结果中生成新一轮的训练数据（用于训练策略模�
 
 Rest-MCTS* 在推理回答新问题时，使用的是 MCTS* 搜索，过程和上面的 step1 类似。最终会选择质量值最大的一条路径。下图是具体流程：
 
-![](asset/img_3ede848eb254.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_3ede848eb254.jpg)
 
 Rest-MCTS* 推理：新问题使用MCTS*搜索生成推理路径
 ### **详细版**
 
 ### 一、ReST-MCTS* 方法
 
-![](asset/img_4e13ed0582a7.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_4e13ed0582a7.jpg)
 
-![](asset/img_60f7df01ce62.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_60f7df01ce62.jpg)
 
 图1：左边部分展示了过程奖励引导的树搜索。右边部分表示过程奖励模型和策略模型的自训练。备注：
 
@@ -193,7 +203,7 @@ $$**加权奖励计算**：使用以下公式计算加权奖励： w_{s_k}=\frac
 
 上面我们介绍了如何构建过程奖励模型训练数据的目标值（也叫质量值），下面我们通过一个例子，看一下具体的计算过程，如下图所示：
 
-![](asset/img_89d1ec33a92d.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_89d1ec33a92d.jpg)
 
 图2: 初始化构建过程奖励模型的目标值（v_i）在图 2 中，初始化的 m=3 ，即到达正确答案的最小步骤数是 3，质量值为 v=0 。
 
@@ -232,7 +242,7 @@ $$\text{Accuracy}=\frac{1}{t}\sum_{i=1}^{t}{\text{I}\left( \left| \text{clip}\le
 
 **下图是自训练的具体流程：
 
-![](asset/img_9363f4497174.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_9363f4497174.jpg)
 
 图3: 过程奖励模型和策略模型的相互自训练
 #### 1.5 MCTS* 算法细节
@@ -263,7 +273,7 @@ $$\text{Accuracy}=\frac{1}{t}\sum_{i=1}^{t}{\text{I}\left( \left| \text{clip}\le
 
 **1.5.3 MCTS* 的五个阶段**
 
-![](asset/img_e42aad715def.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_e42aad715def.jpg)
 
 图4：MCTS*算法流程**阶段一：节点选择 (Node Selection)**
 
@@ -378,19 +388,19 @@ $- **更新节点质量值**：使用加权平均方法更新当前节点的质�
 - 每次生成推理步骤的分枝数 d=3 
 首先是在 MATH、GPQA、CEval-Hard 上的评测，如下图所示。
 
-![](asset/img_700714aa555b.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_700714aa555b.jpg)
 
 图5：自训练方法效果对比下面是奖励模型的对比，奖励模型用于验证模型回答是否正确。在 MATH500 上的准确率还是比较低。
 
-![](asset/img_5eb0e09a2204.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_5eb0e09a2204.jpg)
 
 图6：奖励模型准确率对比论文中提到，增加 MCTS* 采样次数，准确率会显著提升。此外，Rest-MCTS* 自训练两轮的效果会远好于一轮。
 
-![](asset/img_b95763e2f4ae.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_b95763e2f4ae.jpg)
 
 图7：增加MCTS*采样次数以及自训练轮次，准确率会显著提升下图是不同搜索算法的时间和效果对比。
 
-![](asset/img_404f1ad12ad8.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_404f1ad12ad8.jpg)
 
 图8：不同搜索算法的时间和准确率
 ### 附录 F
@@ -400,19 +410,19 @@ $- **更新节点质量值**：使用加权平均方法更新当前节点的质�
 要实现这些功能，就需要设计特殊的指令。下面是 ReST-MCTS∗ 在自训练过程中使用的指令示例。
 
 - **节点扩展指令（生成新的推理步骤）**：用于 MCTS* 算法中为当前节点生成子节点。
-![](asset/img_e3859832c774.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_e3859832c774.jpg)
 
 图9：节点扩展指令（生成新的推理步骤）
 
 - **自我批评指令：**用于生成 **EoI **信号或进一步搜索的建议。
-![](asset/img_59b495d54e63.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_59b495d54e63.jpg)
 
-![](asset/img_5702f88bba9e.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_5702f88bba9e.jpg)
 
 图10：自我批评指令（判断当前步骤是否到达最终答案）
 
 - **LLM 结果验证指令：**当答案需要通过 LLM（论文中用的是 GPT-4）进行验证时，此指令在自训练的数据生成过程中被使用。
-![](asset/img_09527c2fe57a.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_09527c2fe57a.jpg)
 
 图11：结果验证指令
 ### 参考
@@ -431,7 +441,7 @@ $- **更新节点质量值**：使用加权平均方法更新当前节点的质�
 
 感谢各位知友！
 
-[![](asset/img_6f6e99f381dd.jpg)广告
+[![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_6f6e99f381dd.jpg)广告
 
 揭秘大模型：从原理到实战
 

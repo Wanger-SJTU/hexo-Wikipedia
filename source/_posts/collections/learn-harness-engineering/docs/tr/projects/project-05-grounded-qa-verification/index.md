@@ -1,3 +1,16 @@
+---
+title: Proje 05. Ajanın kendi işini doğrulamasını sağlayın
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/tr/projects/project-05-grounded-qa-verification/index/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 [中文版本 →](../../../zh/projects/project-05-grounded-qa-verification/)
 
 > İlgili dersler: [Ders 09. Ajanların zaferi erken ilan etmesini durdurun](./../../lectures/lecture-09-why-agents-declare-victory-too-early/index.md) · [Ders 10. Yalnızca tam hat çalıştırması gerçek doğrulama sayılır](./../../lectures/lecture-10-why-end-to-end-testing-changes-results/index.md)

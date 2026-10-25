@@ -1,10 +1,19 @@
 ---
-title: "搞懂 CUDA Shared Memory 上的 bank conflicts 和向量化指令（LDS.128 / float4）的访存特点"
-date: 2024-04-01
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/690052715
-
+title: 搞懂 CUDA Shared Memory 上的 bank conflicts 和向量化指令（LDS.128 / float4）的访存特点
+date: "2024-04-01 00:00:00"
+updated: "2024-04-01 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/搞懂-CUDA-Shared-Memory-上的-bank-conflicts-和向量化指令(LDS.128-_-float4)的访存特点/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/690052715
 ---
+
 
 在做算子优化的时候（比如 GEMM），我们需要充分利用 shared memory 的 broadcast 机制，以及避免 bank conflicts 的出现。同时还会用 LDS.64 或 LDS.128 指令（也可以直接用 float2、float4）等一次访问 8 或 16 个 bytes。
 

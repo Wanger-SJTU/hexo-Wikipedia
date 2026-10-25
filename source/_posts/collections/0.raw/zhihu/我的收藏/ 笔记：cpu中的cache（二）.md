@@ -1,11 +1,21 @@
 ---
-title: "(1 条消息) 笔记：cpu中的cache（二）"
-date: 2020-05-31
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/144836286
+title: (1 条消息) 笔记：cpu中的cache（二）
+date: "2020-05-31 00:00:00"
+updated: "2020-05-31 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/笔记-cpu中的cache(二)/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/144836286
 ---
 
-![](asset/img_9d788cc4fab4.jpg)
+
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_9d788cc4fab4.jpg)
 
 **引入缓存后，必然会存在缓存一致性问题。**
 
@@ -25,11 +35,11 @@ CPU硬件上，两种方法来解决这个问题。
 
 **①Directory 协议**。这种方法的典型实现是要设计一个集中式控制器，它是主存储器控制器的一部分。其中有一个目录存储在主存储器中，其中包含有关各种本地缓存内容的全局状态信息。当单个CPU Cache 发出读写请求时，这个集中式控制器会检查并发出必要的命令，以在主存和CPU Cache之间或在CPU Cache自身之间进行数据同步和传输。
 
-![](asset/img_f223a9d0ff89.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_f223a9d0ff89.jpg)
 
 ②**Snoopy 协议**。这种协议更像是一种数据通知的总线型的技术。CPU Cache通过这个协议可以识别其它Cache上的数据状态。如果有数据共享的话，可以通过广播机制将共享数据的状态通知给其它CPU Cache。这个协议要求每个CPU Cache 都可以***“*窥探*”***数据事件的通知并做出相应的反应。（来源：https://coolshell.cn/articles/20793.html）
 
-![](asset/img_c86d907a22b2.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_c86d907a22b2.jpg)
 
 Snoopy Bus**
 
@@ -41,7 +51,7 @@ MESI协议**是一个基于失效的缓存一致性协议，是支持回写（wr
 - **独占（Exclusive）**缓存行，和主内存内容保持一致的一份拷贝，如果一个处理器持有了某个 E 状态的缓存行，那其他处理器就不能同时持有它，也即如果其他处理器原本也持有同一缓存行，那么它会马上变成“失效”状态。
 - **共享（Shared）**缓存行，它是和主内存内容保持一致的一份拷贝，在这种状态下的缓存行只能被读取，不能被写入，也即多组缓存可以同时拥有针对同一内存地址的共享缓存行。
 - **失效（Invalid）**缓存行，要么已经不在缓存中，要么它的内容已经过时。为了达到缓存的目的，这种状态的段将会被忽略。一旦缓存段被标记为失效，那效果就等同于它从来没被加载到缓存中。
-![](asset/img_86958cdc2f86.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_86958cdc2f86.jpg)
 
 **状态转换的操作：**
 
@@ -81,7 +91,7 @@ l) 收到invalidate请求。
 
 **
 
-![](asset/img_497dc0b77eb9.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_497dc0b77eb9.jpg)
 
 Store Buffers 
 
@@ -93,7 +103,7 @@ Store Buffers
 
 2）Invalidate操作并不真正执行，而是被放在一个Invalidate队列中，在方便的时候才会去执行。
 
-![](asset/img_8cf32f630798.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_8cf32f630798.jpg)
 
  invalidate queue**
 
@@ -111,7 +121,7 @@ voidexecutedOnCpu1(){
 }
 `
 
-![](asset/img_47791d16d748.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_47791d16d748.jpg)
 
 假定：cpu0 cache里面有个b，初值为0，cpu1 cache有个a，初值为0，各自执行方法。
 
@@ -149,7 +159,7 @@ voidexecutedOnCpu1(){
    assert(a == 1);
 }`
 
-![](asset/img_1b3cf4d6bdf7.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_1b3cf4d6bdf7.jpg)
 
 参考：
 

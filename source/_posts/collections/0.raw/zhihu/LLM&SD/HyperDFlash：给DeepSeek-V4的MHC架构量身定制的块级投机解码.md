@@ -1,10 +1,19 @@
 ---
-title: "HyperDFlash：给DeepSeek-V4的MHC架构量身定制的块级投机解码"
-date: 2026-06-26
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/2053896212118499517
-
+title: HyperDFlash：给DeepSeek-V4的MHC架构量身定制的块级投机解码
+date: "2026-06-26 00:00:00"
+updated: "2026-06-26 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/LLM-SD/HyperDFlash-给DeepSeek-V4的MHC架构量身定制的块级投机解码/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/2053896212118499517
 ---
+
 
 这是我「块扩散投机解码」系列的第三篇。前两篇分别讲了 **DFlash 的原理与实测**、以及 **DFlash + DDTree 把推理推到 8× 无损加速**。这一篇聊聊字节最新的 **HyperDFlash**（arXiv:2606.26744，2026-06）——它要解决的问题很具体：**当 target 模型不再是普通 Transformer，而是 DeepSeek-V4 这种「多超连接（MHC）+ 原生 MTP」的新架构时，DFlash 那套块级起草还能不能用、怎么用。**论文：HyperDFlash: MHC-Aligned Block Speculative Decoding with Gated Residual Reduction（ByteDance）。 系列前篇：
 

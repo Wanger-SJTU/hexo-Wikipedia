@@ -1,9 +1,19 @@
 ---
-title: "(2 条消息) 从微架构设计看ARM的发展之路"
-date: 2024-11-21
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/8090380799
+title: (2 条消息) 从微架构设计看ARM的发展之路
+date: "2024-11-21 00:00:00"
+updated: "2024-11-21 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/从微架构设计看ARM的发展之路/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/8090380799
 ---
+
 
 ### **导言**
 
@@ -13,19 +23,19 @@ ARM最近过的是风生水起，嵌入式尽管遭遇`RISC-V`的冲击，但依
 
 就技术角度而言，2018年ARM迎来了非凡的一年，推出了具备深远影响的A76核，代号`ENYO`，这一代的微架构不仅是移动端的开篇大作，也是服务器V/N系列的奠基之作，后续的服务器核也是源自A76改进。
 
-![](asset/img_23dba7cfe51a.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_23dba7cfe51a.jpg)
 
 ### **A77中坚力量**
 
 在2019年ARM推出了A77微架构，这一代比较前代加入了`uOp Cache`升级了预测器，加入`Mop Cache`这一设计影响了好几代微架构的设计。
 
-![](asset/img_4ac87e98880e.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_4ac87e98880e.jpg)
 
 ### **A78设计好评**
 
 2020这一代微架构市场反馈非常好，A78相比较A77微架构设计没有大的改变，核心在优化功耗。 
 
-![](asset/img_1b605f82b096.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_1b605f82b096.jpg)
 
 **
 
@@ -33,7 +43,7 @@ ARM最近过的是风生水起，嵌入式尽管遭遇`RISC-V`的冲击，但依
 
 同样在2020年，ARM第一次推出“超大核”X系列，对`Mop Cache`进行很大的升级，`Decode`通道也从4升级到5，说明预测器和ICache的优化都很好。 
 
-![](asset/img_365b82c185b8.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_365b82c185b8.jpg)
 
 **
 
@@ -41,7 +51,7 @@ ARM最近过的是风生水起，嵌入式尽管遭遇`RISC-V`的冲击，但依
 
 2021年推出的大核。 
 
-![](asset/img_948e0e443a81.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_948e0e443a81.jpg)
 
 **
 
@@ -49,7 +59,7 @@ ARM最近过的是风生水起，嵌入式尽管遭遇`RISC-V`的冲击，但依
 
 2021年推出的超大核，细节上有升级，但我关注的前端没看到核心改变。 
 
-![](asset/img_1a8dd58bb186.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_1a8dd58bb186.jpg)
 
 **
 
@@ -57,7 +67,7 @@ ARM最近过的是风生水起，嵌入式尽管遭遇`RISC-V`的冲击，但依
 
 2022年本代将decode升级为5路，说明前端发送指令能力水平提升。 
 
-![](asset/img_d208c07f8cb3.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_d208c07f8cb3.jpg)
 
 **
 
@@ -65,31 +75,31 @@ ARM最近过的是风生水起，嵌入式尽管遭遇`RISC-V`的冲击，但依
 
 2022年推出X3，本代`L0 BTB`相比前代指数级增长，覆盖更大的指令范围，Decode宽度也到6路（这里说一下，我说的Decode宽度想表达的是前端能达到这个指令吞吐量，因为decode本身没有难度，你加到12，IFU送不来这么多指令是没用的，所以这里同时也在说IFU的能力，不是简单指硬件参数） 
 
-![](asset/img_a1180e7190b0.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_a1180e7190b0.jpg)
 
 **
 
 ### A720**
 
-![](asset/img_e57541313265.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_e57541313265.jpg)
 
 ### **X4**
 
 2023年的超大核如果向官方宣称的那样，我觉得是X系列以来有大改变的一个版本，`Mop Cache`被删除，Decode宽度从前代6增到10，确保`Mop Cache`删除仍然能保持良好的性能以及功耗，同时说明前端发送指令的能力已经处在全球处理器设计的第一线。 
 
-![](asset/img_fabc1d18aa42.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_fabc1d18aa42.jpg)
 
 **
 
 ### A725**
 
-![](asset/img_ed2c183e0982.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_ed2c183e0982.jpg)
 
 ### **X925**
 
 2024年发布超大核X925，ARM觉得本代改变很大，觉得X5这个名字配不上这代了，直接改名字。L2直接到3MB，decode保持10路，可能相比前代优化了吞吐量，具体没有研究手册。 
 
-![](asset/img_c2fd9ff63ed4.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_c2fd9ff63ed4.jpg)
 
 **
 

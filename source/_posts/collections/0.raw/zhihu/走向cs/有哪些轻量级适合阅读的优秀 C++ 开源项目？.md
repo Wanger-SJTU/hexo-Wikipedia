@@ -1,10 +1,19 @@
 ---
-title: "有哪些轻量级适合阅读的优秀 C++ 开源项目？"
-date: 2021-10-26
-tags: [知乎]
-source: https://www.zhihu.com/question/40131963/answer/2189473621
-
+title: 有哪些轻量级适合阅读的优秀 C++ 开源项目？
+date: "2021-10-26 00:00:00"
+updated: "2021-10-26 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/走向cs/有哪些轻量级适合阅读的优秀-C-开源项目/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://www.zhihu.com/question/40131963/answer/2189473621
 ---
+
 
 我关注编译领域的项目比较多，我就简单介绍几个编译的小项目：
 

@@ -1,3 +1,16 @@
+---
+title: README
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/README/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 <p align="center">
   <a href="README.md"><img alt="English" src="https://img.shields.io/badge/EN-English-blue?style=flat-square"></a>
   <a href="docs-readme/zh-CN/README.md"><img alt="简体中文" src="https://img.shields.io/badge/ZH-简体中文-red?style=flat-square"></a>
@@ -56,17 +69,17 @@ Learn Harness Engineering is a course dedicated to the engineering of AI coding 
 ### 🏠 Course Homepage
 > A comprehensive course outline and introduction to core philosophies, providing a clear path to get started.
 
-![Course homepage preview](./docs/public/screenshots/readme/en-home.png)
+![Course homepage preview](/images/collections/learn-harness-engineering/docs/public/screenshots/readme/en-home.png)
 
 ### 📖 Immersive Lectures
 > Deep dives into real-world pain points and hands-on projects (like Project 01) for an immersive learning experience.
 
-![Course lecture preview](./docs/public/screenshots/readme/en-lecture-01.png)
+![Course lecture preview](/images/collections/learn-harness-engineering/docs/public/screenshots/readme/en-lecture-01.png)
 
 ### 🗂️ Ready-to-Use Resource Library
 > Templates and reference configurations designed to solve common pitfalls in multi-turn AI agent development, such as context loss and premature task completion.
 
-![Resource library preview](./docs/public/screenshots/readme/en-resources.png)
+![Resource library preview](/images/collections/learn-harness-engineering/docs/public/screenshots/readme/en-resources.png)
 
 ## PDF Coursebooks
 

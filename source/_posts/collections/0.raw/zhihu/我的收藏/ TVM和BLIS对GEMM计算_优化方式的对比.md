@@ -1,9 +1,19 @@
 ---
-title: "(1 条消息) TVM和BLIS对GEMM计算/优化方式的对比"
-date: 2022-04-21
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/494347227
+title: (1 条消息) TVM和BLIS对GEMM计算/优化方式的对比
+date: "2022-04-21 00:00:00"
+updated: "2022-04-21 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/TVM和BLIS对GEMM计算_优化方式的对比/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/494347227
 ---
+
 
 前段时间做了点用TVM对深度模型进行优化的事情。最近很空，因为觉得TVM比较有趣，就研究了一下TVM对GEMM的优化，并和BLIS库的实现进行了对比，记录如下。
 
@@ -39,9 +49,9 @@ source: https://zhuanlan.zhihu.com/p/494347227
 
         测试结果：
 
-![](asset/img_4b57e3d1baaa.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_4b57e3d1baaa.jpg)
 
-Numpy（MKL），TVM和BLIS进行1024x1024x1024的单精度矩阵乘法的性能测试![](asset/img_9a9f2192556f.jpg)
+Numpy（MKL），TVM和BLIS进行1024x1024x1024的单精度矩阵乘法的性能测试![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_9a9f2192556f.jpg)
 
 Numpy（MKL），TVM和BLIS进行1024x1024x1024的双精度矩阵乘法的性能测试        说明：
 
@@ -77,7 +87,7 @@ Numpy（MKL），TVM和BLIS进行1024x1024x1024的双精度矩阵乘法的性能
 
 下图对比了auto scheduler调优方案生成的IR（[tvm_autoscheduler_tune.py](https://link.zhihu.com/?target=https%3A//github.com/billmuch/matmul_perf_test/blob/main/tvm_autoscheduler_tune.py)），与How to例子代码提供的固定方案和参数生成的IR（[tvm_without_tune.py](https://link.zhihu.com/?target=https%3A//github.com/billmuch/matmul_perf_test/blob/main/tvm_without_tune.py)）。
 
-![](asset/img_9be4b0100cf7.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_9be4b0100cf7.jpg)
 
 Auto Scheduler调优IR和TVM How to中的IR对比        因为上述三份TVM对应的代码使用的优化方案基本相同，而autoscheduler的结果有最优的速度，所以后续会拿autoscheduler调优的方案和参数与BLIS的实现进行对比。
 
@@ -122,7 +132,7 @@ Auto Scheduler调优IR和TVM How to中的IR对比        因为上述三份TVM�
 
         项目中的[blis.cpp](https://link.zhihu.com/?target=https%3A//github.com/billmuch/matmul_perf_test/blob/main/blis.cpp)使用BLIS库做C+=AB的运算。参考介绍BLIS GEMM算法的[tutorial](https://link.zhihu.com/?target=https%3A//github.com/flame/blislab/blob/master/tutorial.pdf)，BLIS的计算方式如下图：
 
-![](asset/img_c5ab6671c8c3.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_c5ab6671c8c3.jpg)
 
 #### **5. **TVM和BLIS**分块及计算路径的对比**
 
@@ -130,7 +140,7 @@ Auto Scheduler调优IR和TVM How to中的IR对比        因为上述三份TVM�
 
          参考BLIS [tutorial](https://link.zhihu.com/?target=https%3A//github.com/flame/blislab/blob/master/tutorial.pdf)和BLIS代码，BLIS分块方式和计算路径如下图示：
 
-![](asset/img_5c46383de1fc.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_5c46383de1fc.jpg)
 
           BLIS（单线程）将C矩阵分成多个Cb(144 x 1024)的block（还有一些剩余的m != 144的块），A分成多个Ab(144 x 256)block，B分成多个Bb(256 x 1024)的block，按照需要将Ab的多个block与对应的不同的Bb相乘，将结果加回对应的Cb中。
 
@@ -140,7 +150,7 @@ Auto Scheduler调优IR和TVM How to中的IR对比        因为上述三份TVM�
 
           根据TVM auto scheduler生成的IR，搜索出的算法计算路径如下图示：
 
-![](asset/img_50a847c00c8e.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_50a847c00c8e.jpg)
 
           TVM将C矩阵分成多个Cb(512 x 128)的block，A分成多个Ab(512 x 1024)block，B分成多个Bb(1024 x 128)的block，按照需要将Ab的多个block与对应的不同的Bb相乘，将结果加回对应的Cb中。
 
@@ -274,13 +284,13 @@ Auto Scheduler调优IR和TVM How to中的IR对比        因为上述三份TVM�
 
         如下图示：
 
-![](asset/img_0dd90a4a246f.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_0dd90a4a246f.jpg)
 
-BLIS Kernel做如下计算![](asset/img_02049ac2f63f.jpg)
+BLIS Kernel做如下计算![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_02049ac2f63f.jpg)
 
-![](asset/img_0572e3683700.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_0572e3683700.jpg)
 
-![](asset/img_08b952bb4b1f.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_08b952bb4b1f.jpg)
 
         TVM auto scheduler生成的kernel对应的汇编代码如下：
 
@@ -309,9 +319,9 @@ BLIS Kernel做如下计算![](asset/img_02049ac2f63f.jpg)
 
         如下图示：
 
-![](asset/img_c3f425a937ad.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_c3f425a937ad.jpg)
 
-TVM Kernel做如下计算![](asset/img_75979ddd67a7.jpg)
+TVM Kernel做如下计算![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_75979ddd67a7.jpg)
 
 TVM kernel计算步骤
 #### **7. **TVM和BLIS的**Pack和Write Back Cache**
@@ -320,7 +330,7 @@ TVM kernel计算步骤
 
         TVM在所有计算开始前，将原先行主序1024x1024的B矩阵重排成每1024x16一组的行主序的小矩阵连续存放，称为B_Pack：
 
-![](asset/img_ee0e55e48bbf.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_ee0e55e48bbf.jpg)
 
         TVM IR声明了一个4x16大小的连续内存，作为C Write Back Cache使用。在kernel计算每个C(4x16)的块时，将C数据放到这部分连续的内存中。但是因为最终的优化算法将C(4x16)的数据常驻寄存器，并且将K从0到1024一次性计算完成（代表C(4x16)的数据一次性全部计算完成，不用重复加载），所以这部分C Write Back Cache并没有增加收益。
 
@@ -328,7 +338,7 @@ TVM kernel计算步骤
 
         参考介绍BLIS的[tutorial](https://link.zhihu.com/?target=https%3A//github.com/flame/blislab/blob/master/tutorial.pdf)和BLIS代码，BLIS在loop 4中对B的一条Bp（256x1024）做了pack，pack的方式和TVM中一样，将Bp中的数据按照每16列一组的方式重排。BLIS还在loop 3中对A的每一块Ab（144x256）做了非常精细的重排，让Ab中的所有数据按照在kernel中的访问顺序顺序排列。（对于6x16的kernel，Ab的pack顺序是每6行为一组，按照列顺序重排，排完一组再排下6行）如下图：
 
-![](asset/img_cfde0acf8ac5.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_cfde0acf8ac5.jpg)
 
 #### **8. **TVM和BLIS的**多线程**
 
@@ -340,7 +350,7 @@ TVM kernel计算步骤
 
         根据BLIS的[Multithreading](https://link.zhihu.com/?target=https%3A//github.com/flame/blis/blob/master/docs/Multithreading.md)文档，BLIS会根据问题的大小（M、N和K的大小）和可用线程数，在5层loop其中的4层中，将问题分解到多个线程中计算。BLIS库可以使用pthread或者openmp，我本地编译时指定使用openmp。调试观察到，设置的可用线程数（BLIS_NUM_THREADS）也会影响blocking时的分块大小。设置环境变量可控制绑核。
 
-![](asset/img_59a270d34c38.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_59a270d34c38.jpg)
 
 BLIS 影响线程的环境变量
 #### **9. 单精度GEMM时，TVM与BLIS的对比**

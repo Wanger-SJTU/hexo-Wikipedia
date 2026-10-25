@@ -1,10 +1,19 @@
 ---
-title: "英特尔携手 AMD 发布 ACE 架构，x86 矩阵计算密度提升 16 倍，这对行业意味着什么？"
-date: 2026-05-17
-tags: [知乎]
-source: https://www.zhihu.com/question/2033219016886589368/answer/2039315084518875316
-
+title: 英特尔携手 AMD 发布 ACE 架构，x86 矩阵计算密度提升 16 倍，这对行业意味着什么？
+date: "2026-05-17 00:00:00"
+updated: "2026-05-17 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/体系结构/英特尔携手-AMD-发布-ACE-架构,x86-矩阵计算密度提升-16-倍,这对行业意味着什么/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://www.zhihu.com/question/2033219016886589368/answer/2039315084518875316
 ---
+
 
 当英特尔和AMD坐下来一起写指令集，ACE的16倍从哪来，能改变什么？
 4月28号，英特尔和AMD联合发了一份白皮书，标题叫”AI Compute Extensions for x86”，简称ACE。这份文档11个作者签名，8个来自AMD，3个来自英特尔，由x86生态系统咨询小组（EAG）背书，把ACE定义为”x86架构的标准矩阵加速方案”。核心卖点一条：在消耗相同数量输入向量的前提下，ACE外积运算的计算密度比AVX10乘累加操作高16倍。

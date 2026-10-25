@@ -1,9 +1,19 @@
 ---
-title: "最近霸占 GitHub Trending 榜单的开源项目：CLI-Anything"
-date: 2026-03-12
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/2015432759355668382
+title: 最近霸占 GitHub Trending 榜单的开源项目：CLI-Anything
+date: "2026-03-12 00:00:00"
+updated: "2026-03-12 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/AgentCLI/最近霸占-GitHub-Trending-榜单的开源项目-CLI-Anything/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/2015432759355668382
 ---
+
 
 CLI-Anything 是由香港大学数据科学实验室（HKUDS）开源的一个创新项目。它的核心目标是弥合 AI 智能体（Agents）与现有专业软件之间的鸿沟，通过自动将任何软件转化为“智能体原生”（Agent-Native）的命令行界面（CLI），让 AI 能够像人类使用图形界面一样熟练地操控复杂软件。
 

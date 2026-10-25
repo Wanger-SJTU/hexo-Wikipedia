@@ -1,10 +1,19 @@
 ---
-title: "TPAMI 2021 | 换个损失函数就能实现数据扩增？"
-date: 2021-01-19
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/344953635
-
+title: TPAMI 2021 | 换个损失函数就能实现数据扩增？
+date: "2021-01-19 00:00:00"
+updated: "2021-01-19 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/dl论文/TPAMI-2021-_-换个损失函数就能实现数据扩增/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/344953635
 ---
+
 
 本文主要介绍我们刚刚被IEEE Transactions on Pattern Analysis and Machine Intelligence （**T-PAMI**）录用的一篇文章：[Regularizing Deep Networks with Semantic Data Augmentation](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2007.10538)。其会议版本发表在NeurIPS 2019：[链接](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/1909.12220)。代码和预训练模型已开源：[链接](https://link.zhihu.com/?target=https%3A//github.com/blackfeather-wang/ISDA-for-Deep-Networks)。
 

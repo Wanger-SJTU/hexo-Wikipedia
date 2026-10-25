@@ -1,9 +1,19 @@
 ---
 title: "Roberta: Bert调优"
-date: 2020-09-30
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/260693956
+date: "2020-09-30 00:00:00"
+updated: "2020-09-30 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/dl论文/Roberta_-Bert调优/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/260693956
 ---
+
 
 最近要开始使用Transformer去做一些事情了，特地把与此相关的知识点记录下来，构建相关的、完整的知识结构体系。
 
@@ -83,7 +93,7 @@ Roberta尝试了一种动态的方式，说是动态，其实也是用静态的�
 
 从结果中，可以看到动态mask能带来微小的提升。
 
-![](asset/img_7f31ab395521.jpg)
+![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_7f31ab395521.jpg)
 
 ### **模型输入格式与Next Sentence Prediction**
 
@@ -101,7 +111,7 @@ Bert的模型输入中是由两个segment组成的，因而就有两个问题：
 
 另外，Full-Sentence和Doc-Sentence能够带来微小的提升，说明NSP不是必须的。
 
-** 这点跟Bert中的消融实验结论相反，但是请注意它们的输入还是不同的，原始Bert中的输入是Segment-Pair，有50%/50%的采样，而Full/Doc-Sentence中则是从文章中连续sample来的句子。![](asset/img_be099e0fbe5c.jpg)
+** 这点跟Bert中的消融实验结论相反，但是请注意它们的输入还是不同的，原始Bert中的输入是Segment-Pair，有50%/50%的采样，而Full/Doc-Sentence中则是从文章中连续sample来的句子。![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_be099e0fbe5c.jpg)
 
 因为Doc-Sentence会导致不同的batch_size（因为要保证每个batch见到的token数类似），所以在Roberta中，使用Full-Sentence模式。
 
@@ -115,7 +125,7 @@ Bert的模型输入中是由两个segment组成的，因而就有两个问题：
 - batch_size=8k, 训练31k steps。
 从结果中看，batch_size=2k时结果最好。
 
-![](asset/img_ae8269daafdc.jpg)
+![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_ae8269daafdc.jpg)
 
 ### **输入编码**
 
@@ -127,17 +137,17 @@ Bert的模型输入中是由两个segment组成的，因而就有两个问题：
 
 增大语料和训练步数还是能带来比较大的提升的。
 
-![](asset/img_a562dca03b4b.jpg)
+![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_a562dca03b4b.jpg)
 
 ### **Roberta**
 
 就是上面所有改进的总和。可以看到，在各项任务中的提升还是很大的。Roberta的训练在1024个 V100GPU上训练一天左右。
 
-![](asset/img_66d311033ccd.jpg)
+![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_66d311033ccd.jpg)
 
-![](asset/img_cfc7a9dfb42b.jpg)
+![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_cfc7a9dfb42b.jpg)
 
-![](asset/img_91eefb1867de.jpg)
+![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_91eefb1867de.jpg)
 
 ### **思考与总结**
 

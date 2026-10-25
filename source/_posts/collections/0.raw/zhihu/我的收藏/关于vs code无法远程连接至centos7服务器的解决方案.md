@@ -1,9 +1,19 @@
 ---
-title: "(2 条消息) 关于vs code无法远程连接至centos7服务器的解决方案"
-date: 2025-05-29
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/1909663308669260068
+title: (2 条消息) 关于vs code无法远程连接至centos7服务器的解决方案
+date: "2025-05-29 00:00:00"
+updated: "2025-05-29 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/关于vs-code无法远程连接至centos7服务器的解决方案/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/1909663308669260068
 ---
+
 
 问题来源：由于vs code在1.85的版本之后，对远程服务器端的glibc要求版本大于等于2.28，导致glibc=2.17的centos7无法连接使用。（我这里的centos版本是7.9.2009，内核版本为3.10.0-1160.119.1.el7.x86_64）
 
@@ -68,13 +78,13 @@ ct-ng build`
 # 检查是否包含 --set-rpath 参数
 has_rpath=0
 for arg in "$@"; do
-  if [[ "$arg" == "--set-rpath" ]]; then
+  if <span class="wikilink wikilink--missing" title="未导入的页面">&quot;$arg&quot; == &quot;--set-rpath&quot;</span>; then
     has_rpath=1
     break
   fi
 done
 
-if [[ $has_rpath -eq 1 ]]; then
+if <span class="wikilink wikilink--missing" title="未导入的页面">$has_rpath -eq 1</span>; then
   exec /usr/local/bin/patchelf --force-rpath "$@"     #这里的路径是你安装的patchelf的路径
 else
   exec /usr/local/bin/patchelf "$@"

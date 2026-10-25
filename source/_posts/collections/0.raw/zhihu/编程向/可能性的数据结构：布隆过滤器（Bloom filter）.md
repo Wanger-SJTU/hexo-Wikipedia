@@ -1,9 +1,19 @@
 ---
-title: "可能性的数据结构：布隆过滤器（Bloom filter）"
-date: 2019-08-18
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/78713610
+title: 可能性的数据结构：布隆过滤器（Bloom filter）
+date: "2019-08-18 00:00:00"
+updated: "2019-08-18 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/编程向/可能性的数据结构-布隆过滤器(Bloom-filter)/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/78713610
 ---
+
 
 原文文章：probabilistic-data-structures-bloom-filter，本文仅仅是翻译。
 
@@ -19,7 +29,7 @@ source: https://zhuanlan.zhihu.com/p/78713610
 
 你知道哈希表是如何工作的吗？ 在简单数组或列表中插入新数据时，将插入此数据的索引不是从要插入的值确定的。 这意味着'key（index）'和'value（data）'之间没有直接关系。 因此，如果需要在数组中搜索值，则必须在所有索引中进行搜索。 现在，在哈希表中，您可以通过散列“值”来确定“键”或“索引”。 然后将此值放在列表中的该索引中。 这意味着'key'是根据'value'确定的，每次你需要检查列表中是否存在该值时，只需对值进行散列并搜索该键即可。 它非常快，并且需要以Big-O（大O）表示法进行O（1）搜索时间。
 
-![](asset/img_461b37491b30.jpg)
+![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_461b37491b30.jpg)
 
 现在，让我们考虑一下你有一个庞大的弱密码列表，它存储在一些远程服务器上。由于尺寸的原因，无法在内存/ RAM中一次加载它们。每次用户输入他/她的密码时，你想检查它是否是弱密码之一，如果是，你想给他/她一个警告，把它改成更强的东西。你能做什么？由于您已经拥有弱密码列表，您可以将它们存储在哈希表或类似的东西中，并且每次要匹配时，如果给定的密码有任何匹配，您可以检查它。匹配可能很快，但在磁盘上或通过远程服务器上的网络进行搜索的成本会使其变慢。不要忘记，您需要为每个用户提供的每个密码执行此操作。我们如何降低成本？
 
@@ -29,15 +39,15 @@ source: https://zhuanlan.zhihu.com/p/78713610
 
 布隆过滤器基本上由长度为m的位向量或位列表（仅包含0或1位值的列表）组成，最初所有值都设置为0，如下所示。
 
-![](asset/img_ad2a5be75d8c.jpg)
+![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_ad2a5be75d8c.jpg)
 
 要将项添加到bloom过滤器，我们将其提供给k个不同的哈希函数，并在结果位置将这些位设置为“1”。 如您所见，在哈希表中我们将使用单个哈希函数，因此只获得一个索引作为输出。 但是在bloom过滤器的情况下，我们将使用多个哈希函数，这将为我们提供多个索引。
 
-![](asset/img_6ff53128c8cb.jpg)
+![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_6ff53128c8cb.jpg)
 
 正如您在上面的示例中所看到的，对于给定的输入'geeks'，我们的3个散列函数将给出3个不同的输出 -  1,4和7.我们已经标记了它们。
 
-![](asset/img_25d820f499fe.jpg)
+![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_25d820f499fe.jpg)
 
 对于另一个输入'nerd'，哈希函数给出了3,4和5.您可能已经注意到索引'4'已经被先前的'极客'输入标记。 坚持你的想法，这一点很有趣，我们很快就会讨论它。
 
@@ -45,7 +55,7 @@ source: https://zhuanlan.zhihu.com/p/78713610
 
 简单。 就像我们在散列表中完成它一样。 我们将使用我们的3个哈希函数对“搜索输入”进行哈希处理，并查看结果索引保持的内容。
 
-![](asset/img_6e4c1668cea7.jpg)
+![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_6e4c1668cea7.jpg)
 
 因此，搜索'cat'，我们的哈希函数这次给我们1,3和7。我们可以看到所有索引都已标记为1.这意味着我们可以说，“也许'cat'已经插入我们的列表中”。但事实并非如此。出了什么问题？
 
@@ -69,7 +79,7 @@ source: https://zhuanlan.zhihu.com/p/78713610
 
 不错，是吗？
 
-![](asset/img_fce0f68c2105.jpg)
+![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_fce0f68c2105.jpg)
 
 ### 布隆过滤器操作
 
@@ -87,9 +97,9 @@ source: https://zhuanlan.zhihu.com/p/78713610
 
 什么都有？ 没有？ 让我帮助你一点。 让'geeks'和'nerd'插入后，让我们带回位向量。
 
-![](asset/img_6ff53128c8cb.jpg)
+![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_6ff53128c8cb.jpg)
 
-![](asset/img_25d820f499fe.jpg)
+![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_25d820f499fe.jpg)
 
 现在我们要从中删除'极客'。因此，如果我们从位向量中移除1,4,7，因为它们被'极客'标记，并将它们转换为'0'，会发生什么？您可以很容易地看到，下次如果我们搜索'nerd'，因为索引'4'将显示'0'，它肯定会告诉我们'nerd'不在列表中，尽管它实际上是。这意味着在不引入假阴性的情况下无法移除。
 
@@ -105,17 +115,17 @@ source: https://zhuanlan.zhihu.com/p/78713610
 
 另一个重要参数是“我们将使用多少哈希函数”。 我们使用的哈希函数越多，布隆过滤器就越慢，填充越快。 但是，如果我们的人数太少，我们可能会遭受太多误报。
 
-![](asset/img_8573809e2575.jpg)
+![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_8573809e2575.jpg)
 
 从上图可以看出，增加散列函数k的数量将大大降低错误率p。
 
 我们可以根据滤波器的大小，m，散列函数的数量，k和插入的元素数n来计算误差率p，公式如下：
 
-![](asset/img_75bb53d5a0c8.jpg)
+![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_75bb53d5a0c8.jpg)
 
 好像WTF？ 别担心，我们实际上大多需要决定我们的m和k是什么。 因此，如果我们自己设置误差容限值p和元素数量n，我们可以使用以下公式来计算这些参数：
 
-![](asset/img_cf42fb87cb9d.jpg)
+![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_cf42fb87cb9d.jpg)
 
 另外一点我还需要在这里提一下。 由于使用bloom过滤器的唯一目的是搜索速度更快，我们不能使用慢速哈希函数，对吧？ 诸如Sha-1，MD5之类的加密散列函数对于布隆过滤器来说不是一个好选择，因为它们有点慢。 因此，更快的哈希函数实现的更好选择将是murmur，fnv系列哈希，Jenkins哈希和HashMix。
 

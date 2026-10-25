@@ -1,10 +1,19 @@
 ---
-title: "【Part-最终篇】【OPD综述】三万字长文精讲 2026 上半年的 On-Policy Distillation"
-date: 2026-06-23
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/2052723229110820946
-
+title: 【Part-最终篇】【OPD综述】三万字长文精讲 2026 上半年的 On-Policy Distillation
+date: "2026-06-23 00:00:00"
+updated: "2026-06-23 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/LLM-SD/【Part-最终篇】【OPD综述】三万字长文精讲-2026-上半年的-On-Policy-Distillation/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/2052723229110820946
 ---
+
 
 写在前面的前面的前面
 经过6篇文章，终于是讲全了「OPD工作的六个分支」，感兴趣的同学可以点击下面的link挨个阅读；

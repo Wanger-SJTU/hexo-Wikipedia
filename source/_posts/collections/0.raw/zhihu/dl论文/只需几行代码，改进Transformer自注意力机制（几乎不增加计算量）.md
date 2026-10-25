@@ -1,9 +1,19 @@
 ---
-title: "只需几行代码，改进Transformer自注意力机制（几乎不增加计算量）"
-date: 2020-08-21
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/191393788
+title: 只需几行代码，改进Transformer自注意力机制（几乎不增加计算量）
+date: "2020-08-21 00:00:00"
+updated: "2020-08-21 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/dl论文/只需几行代码,改进Transformer自注意力机制(几乎不增加计算量)/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/191393788
 ---
+
 
 本文提出两种技巧，提升 NLP 任务中自注意力的效果，同时均有一定道理。
 
@@ -13,7 +23,7 @@ source: https://zhuanlan.zhihu.com/p/191393788
 
 这里和后续的改进会放到这个项目：
 
-[![](asset/img_e5ca62d61e36.jpg)BlinkDL/minGPT-tunedgithub.com/BlinkDL/minGPT-tuned](https://link.zhihu.com/?target=https%3A//github.com/BlinkDL/minGPT-tuned)
+[![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_e5ca62d61e36.jpg)BlinkDL/minGPT-tunedgithub.com/BlinkDL/minGPT-tuned](https://link.zhihu.com/?target=https%3A//github.com/BlinkDL/minGPT-tuned)
 
 ### 改进一：不妨称为 "Time-weighting"
 
@@ -35,7 +45,7 @@ att = self.attn_drop(att) # 这是原始代码`
 
 下图是典型的训练出的 time_weighting，很光滑：
 
-![](asset/img_de27ad0facb2.jpg)
+![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_de27ad0facb2.jpg)
 
 右边的凸起是 local context 效应，左边的凸起是 global context 效应。有趣的是中间略低，说明在距离20个字左右时，写作者会避免累赘重复。
 
@@ -78,7 +88,7 @@ v = self.value(x).view(B, T, self.n_head, C // self.n_head).transpose(1, 2) # �
 
 Perplexity 曲线，训练更快，最终效果更好：
 
-![](asset/img_6fd0a9b860a9.jpg)
+![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_6fd0a9b860a9.jpg)
 
 欢迎关注项目：
 

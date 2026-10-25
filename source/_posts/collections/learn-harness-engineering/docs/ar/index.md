@@ -1,3 +1,16 @@
+---
+title: مرحبًا بك في Learn Harness Engineering
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/ar/index/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # مرحبًا بك في Learn Harness Engineering
 
 Learn Harness Engineering هو مساق مخصص لهندسة وكلاء البرمجة بالذكاء الاصطناعي. درسنا و لخصنا مجموعة من أكثر نظريات وممارسات Harness Engineering تقدمًا في الصناعة. تشمل مراجعنا الأساسية:

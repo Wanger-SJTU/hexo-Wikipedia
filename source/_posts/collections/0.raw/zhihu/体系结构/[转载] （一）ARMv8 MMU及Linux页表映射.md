@@ -1,9 +1,19 @@
 ---
 title: "[转载] （一）ARMv8 MMU及Linux页表映射"
-date: 2020-02-21
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/108186054
+date: "2020-02-21 00:00:00"
+updated: "2020-02-21 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/体系结构/[转载]-(一)ARMv8-MMU及Linux页表映射-312259/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/108186054
 ---
+
 
 原文链接：https://www.cnblogs.com/LoyenWang/p/11406693.html
 
@@ -40,21 +50,21 @@ source: https://zhuanlan.zhihu.com/p/108186054
 - `Cache`：处理器和存储器之间的缓存机制，用于提高访问速率，在ARMv8上会存在多级Cache，其中`L1 Cache`分为`指令Cache`和`数据Cache`，在`CPU Core`的内部，支持虚拟地址寻址；`L2 Cache`容量更大，同时存储指令和数据，为多个`CPU Core`共用，这多个`CPU Core`也就组成了一个`Cluster`。
 下图浅黄色部分描述的就是一个地址转换的过程。**
 
-![](asset/img_22fceee46269.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_22fceee46269.jpg)
 
 由于上图没有体现出`L1和L2 Cache`和`MMU`的关系，所以再来一张图吧：
 
-![](asset/img_9d64d18bddaf.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_9d64d18bddaf.jpg)
 
 那具体是怎么访问的呢？再来一张图：
 
-![](asset/img_a3101d29b257.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_a3101d29b257.jpg)
 
 ### 2.2 虚拟地址到物理地址的转换**
 
 虚拟地址到物理地址的映射通过查表的机制来实现，ARMv8中，`Kernel Space`的页表基地址存放在`TTBR1_EL1`寄存器中，`User Space`页表基地址存放在`TTBR0_EL0`寄存器中，其中内核地址空间的高位为全1，`(0xFFFF0000_00000000 ~ 0xFFFFFFFF_FFFFFFFF)`，用户地址空间的高位为全0，`(0x00000000_00000000 ~ 0x0000FFFF_FFFFFFFF)`**
 
-![](asset/img_9ed0a394e90c.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_9ed0a394e90c.jpg)
 
 ARMv8中：
 
@@ -68,7 +78,7 @@ ARMv8中：
 我使用的内核配置为：39位有效位，4KB大小页面，3级页表，所以我会以这个组合来介绍。
 在ARMv8的手册中刚好找到了下图，描述了整个translation的过程，简直完美：
 
-![](asset/img_d86857d812cc.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_d86857d812cc.jpg)
 
 - 虚拟地址[63:39]用于区分内核空间与用户空间，从而选择不同的`TTBRn寄存器`来获取`Level 1页表基地址`；
 - 虚拟地址[38:30]放置`Level 1页表中的索引`，从而找到对应的描述符地址并获取描述符内容，根据描述符中的内容获取`Level 2页表基地址`;
@@ -77,7 +87,7 @@ ARMv8中：
 - 虚拟地址[11:0]放置的是物理地址的偏移，结合获取的物理地址高位，最终得到物理地址。
 讲到这里还没有完，是时候看一下`Table Descriptor`了，也就是页表中存放的内容，有以下四种类型：
 
-![](asset/img_80bd1de99b6c.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_80bd1de99b6c.jpg)
 
 类型有低两位来决定，其中`Level 0`中的`Table Descriptor`只能输出`Level 1`页表的地址，`Level 3`中的`Table Descriptor`只能输出`block addresses`。
 看到图中的`attributes`了吗，这些可以用于memory的权限控制，memory ordering，cache policy的操作等。
@@ -90,13 +100,13 @@ ARMv8中：
 
 看过《深入理解Linux内核》的同学应该很熟悉下边这张图片，Linux的分页模式（图中以X86为例，页表基地址由CR3寄存器指定）：**
 
-![](asset/img_796350bfff97.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_796350bfff97.jpg)
 
 在Linux内核中支持4级页表的模型，同时适用于32位和64位系统。
 
 那么ARMv8与Linux内核是怎么结合的呢？以我实际使用的设置（39位有效位，4KB大小页面，3级页表）为例，如下图所示：
 
-![](asset/img_6214ed5a0f64.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_6214ed5a0f64.jpg)
 
 基本上内核中关于页表的操作都会围绕着上图进行操作，似乎脱离了代码有点不太合适，那么就来一波fucking source code解析吧，主要讲讲各类page table相关的API。
 
@@ -113,7 +123,7 @@ ARMv8中：
 - 当`CONFIG_PGTABLE_LEVELS=2`时，没有`PUD`和`PMD`页表：`pgd(pud, pmd)-->pte`
 > 常用的宏定义
 
-![](asset/img_c327db102b7a.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_c327db102b7a.jpg)
 
 > 页表处理
 
@@ -170,7 +180,7 @@ typedef struct { pgdval_t pgd; } pgd_t;
 - `idmap_pg_dir`
 从名字可以看出，`identify map`，也就是物理地址和虚拟地址是相等的。为什么需要这么一个映射呢？我们都知道在MMU打开之前，CPU访问的都是物理地址，那么当MMU打开后访问的就是虚拟地址了，这段页表的映射就是从CPU到打开MMU之前的这段代码物理地址的映射，防止开启MMU后，无法获取页表。可以从`System.map`文件中查看这些代码：
 
-![](asset/img_15cdb403c0ae.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_15cdb403c0ae.jpg)
 
 - `swapper_pg_dir`
 Linux内核编译后，kernel image是需要进行映射的，包括`text，data`等各种段。
@@ -249,7 +259,7 @@ Linux内核编译后，kernel image是需要进行映射的，包括`text，data
 
 上述三个孤立的函数并不直观，所以，图来了：
 
-![](asset/img_2ed8f6c6ce5f.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_2ed8f6c6ce5f.jpg)
 
 总体来说，页表的创建过程相对来说还是比较易懂的，掌握好几级页表及各级页表index所占的位域，此外熟悉各个Level页表中entry的格式，理解起来就会顺畅很多了。
 

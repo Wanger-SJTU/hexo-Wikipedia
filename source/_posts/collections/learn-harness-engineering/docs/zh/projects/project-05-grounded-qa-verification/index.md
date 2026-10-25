@@ -1,3 +1,16 @@
+---
+title: Project 05. 让 agent 自己检查自己做的对不对
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/zh/projects/project-05-grounded-qa-verification/index/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # Project 05. 让 agent 自己检查自己做的对不对
 
 > 相关讲义：[L09. 为什么 agent 会提前宣告完成](./../../lectures/lecture-09-why-agents-declare-victory-too-early/index.md) · [L10. 为什么端到端测试会改变结果](./../../lectures/lecture-10-why-end-to-end-testing-changes-results/index.md)

@@ -1,3 +1,16 @@
+---
+title: 핵심 신념(Core Beliefs)
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/ko/resources/openai-advanced/repo-template/docs/design-docs/core-beliefs/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # 핵심 신념(Core Beliefs)
 
 이 문서는 프로젝트 전반에서 에이전트(agent)와 인간이 공유하는 에이전트 우선(agent-first) 운영 원칙을 정리한 것입니다. 개별 결정보다 상위에 있는 이 신념들은 모호한 상황에서 판단의 기준이 됩니다.

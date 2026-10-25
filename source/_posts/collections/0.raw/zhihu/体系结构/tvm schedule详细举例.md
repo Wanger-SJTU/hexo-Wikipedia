@@ -1,11 +1,21 @@
 ---
-title: "tvm schedule详细举例"
-date: 2021-08-23
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/94846767
+title: tvm schedule详细举例
+date: "2021-08-23 00:00:00"
+updated: "2021-08-23 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/体系结构/tvm-schedule详细举例/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/94846767
 ---
 
-schedule与计算逻辑分离是自动代码生成技术的核心概念，由MIT CASIL组的Jonathan Ragan-Kelley在2012年发表在SIGGRAPH上的文章率先提出，然后在2013年发表在PLDI上的文章给出了schedule的精确定义[[1]](#ref_1)：
+
+schedule与计算逻辑分离是自动代码生成技术的核心概念，由MIT CASIL组的Jonathan Ragan-Kelley在2012年发表在SIGGRAPH上的文章率先提出，然后在2013年发表在PLDI上的文章给出了schedule的精确定义<span class="wikilink wikilink--missing" title="未导入的页面">1</span>(#ref_1)：
 
 - When and where should be the value at each coordinate in each function be computed?
 - Where should they be stored?
@@ -160,7 +170,7 @@ produce B {
 }
 `
 
-**storage_align把stage对应的存储空间以factor为单位、以offset为偏置重新对齐，以避免GPU共享访问时的bank conflict，关于bank conflict可以参考[[2]](#ref_2)。compute_at**
+**storage_align把stage对应的存储空间以factor为单位、以offset为偏置重新对齐，以避免GPU共享访问时的bank conflict，关于bank conflict可以参考<span class="wikilink wikilink--missing" title="未导入的页面">2</span>(#ref_2)。compute_at**
 
 `// attr [B.rf] storage_scope = "global"
 allocate B.rf[float32 * 32]
@@ -322,7 +332,7 @@ produce B {
 }
 `
 
-**split是fuse的反操作，把iter以factor为间隔分离成outer与inner两层迭代，增加循环层数，用于将循环操作分割为更小的子任务。事实上，以CUDA为例，gridDim和blockDim都可以最多是三维，所以通过split可以产生新的维度用于绑定到grid和block上[[3]](#ref_3)。reorder**
+**split是fuse的反操作，把iter以factor为间隔分离成outer与inner两层迭代，增加循环层数，用于将循环操作分割为更小的子任务。事实上，以CUDA为例，gridDim和blockDim都可以最多是三维，所以通过split可以产生新的维度用于绑定到grid和block上<span class="wikilink wikilink--missing" title="未导入的页面">3</span>(#ref_3)。reorder**
 
 `produce C {
   for (i.outer, 0, 32) {
@@ -411,7 +421,7 @@ produce C {
 }
 `
 
-**unroll是一种常见的循环优化方法，减分支预测失败减少，如果循环体内语句没有数据相关，增加了并发执行的机会，也有利于指令流水线的调度[[4]](#ref_4)。
+**unroll是一种常见的循环优化方法，减分支预测失败减少，如果循环体内语句没有数据相关，增加了并发执行的机会，也有利于指令流水线的调度<span class="wikilink wikilink--missing" title="未导入的页面">4</span>(#ref_4)。
 ### 3. 多线程并行优化**
 
 **vectorize**
@@ -515,7 +525,7 @@ produce B {
 }
 `
 
-**pragma用于添加编译注释，使编译器遵循pragma的要求，实现unroll, vectorize等调度功能。事实上一个新的优化规则，都可以看做是一种gragma，也被称作directive[[5]](#ref_5)。prefetch**
+**pragma用于添加编译注释，使编译器遵循pragma的要求，实现unroll, vectorize等调度功能。事实上一个新的优化规则，都可以看做是一种gragma，也被称作directive<span class="wikilink wikilink--missing" title="未导入的页面">5</span>(#ref_5)。prefetch**
 
 `produce B {
   for (i, 0, 1024) {
@@ -567,7 +577,7 @@ produce C {
 }
 `
 
-**tensorize将计算作为整体，编译为一个tensor_intrin函数中。这是因为很多计算属于常用计算，针对这些计算已经有了很好的built-in的schedule，通过tensorize可以直接调用这些内置的intrinsic，其实这也就是intrinsic在计算机科学中的本意[[6]](#ref_6)。rfactor(tensor, axis, factor_axis=0)**
+**tensorize将计算作为整体，编译为一个tensor_intrin函数中。这是因为很多计算属于常用计算，针对这些计算已经有了很好的built-in的schedule，通过tensorize可以直接调用这些内置的intrinsic，其实这也就是intrinsic在计算机科学中的本意<span class="wikilink wikilink--missing" title="未导入的页面">6</span>(#ref_6)。rfactor(tensor, axis, factor_axis=0)**
 
 `produce B {
   B[0] = 0f

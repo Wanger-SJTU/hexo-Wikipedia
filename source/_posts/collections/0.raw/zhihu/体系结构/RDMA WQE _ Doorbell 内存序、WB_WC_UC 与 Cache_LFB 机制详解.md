@@ -1,10 +1,19 @@
 ---
-title: "RDMA WQE / Doorbell 内存序、WB/WC/UC 与 Cache/LFB 机制详解"
-date: 2026-07-16
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/2061100810134623162
-
+title: RDMA WQE / Doorbell 内存序、WB/WC/UC 与 Cache/LFB 机制详解
+date: "2026-07-16 00:00:00"
+updated: "2026-07-16 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/体系结构/RDMA-WQE-_-Doorbell-内存序、WB_WC_UC-与-Cache_LFB-机制详解/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/2061100810134623162
 ---
+
 
 本文主要是记录一下从事RDMA来对于集中内存机制的一个总结，希望能给其他遇到相关问题的同学提供一个科普。本文以 RDMA 用户态驱动(以 mlx5 / rdma-core 为例)的 WQE 写入 + doorbell 流程出发, 逐层下钻到 x86 内存类型(WB/WC/UC)、内存屏障、cache 一致性、Line Fill Buffer(LFB)、 RFO、以及 BlueFlame 的多 TLP 重组机制。并对比 ARM 弱序架构与非一致 DMA 场景。
  结论若无特别说明,均基于 **x86** 架构。

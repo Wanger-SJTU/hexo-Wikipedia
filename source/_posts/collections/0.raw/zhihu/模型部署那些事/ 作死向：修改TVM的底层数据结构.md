@@ -1,9 +1,19 @@
 ---
-title: "(1 封私信) 作死向：修改TVM的底层数据结构"
-date: 2020-07-09
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/151265644
+title: (1 封私信) 作死向：修改TVM的底层数据结构
+date: "2020-07-09 00:00:00"
+updated: "2020-07-09 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/模型部署那些事/作死向-修改TVM的底层数据结构/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/151265644
 ---
+
 
 > 本文使用 [Zhihu On VSCode](https://zhuanlan.zhihu.com/p/106057556) 创作并发布
 

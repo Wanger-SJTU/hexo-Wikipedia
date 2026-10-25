@@ -1,3 +1,16 @@
+---
+title: AI Infra 早报｜DSA 跨引擎共振：稀疏注意力进入省算力阶段，MX 量化接受精度验收
+date: "2026-07-04 13:46:23"
+updated: "2026-07-04 13:46:23"
+layout: post
+permalink: /collections/wechat/2026-07-04-AI-Infra-早报DSA-跨引擎共振稀疏注意力进入省算力阶段MX-量化接受精度验收/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # AI Infra 早报｜DSA 跨引擎共振：稀疏注意力进入省算力阶段，MX 量化接受精度验收
 
 MiracleFarmsBRIEF · DAILY
@@ -5,7 +18,7 @@ MiracleFarmsBRIEF · DAILY
 
 > 同一天里，vLLM、TRT-LLM、TokenSpeed 各自独立实现 DSA 跨层索引器共享；SGLang、TRT-LLM 同期暴露 MXFP8/MXFP4 精度静默 bug。跨引擎同向共振说明 DSA 和 MX 量化正从各自探索进入行业共识阶段。
 
-![image](asset/202833e098a8.jpg)
+![image](/images/collections/wechat/asset/202833e098a8.jpg)
 
 ## 稀疏注意力｜跨层索引器复用成为跨引擎共识
 

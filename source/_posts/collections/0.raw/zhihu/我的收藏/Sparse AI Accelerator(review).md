@@ -1,9 +1,19 @@
 ---
-title: "(2 条消息) Sparse AI Accelerator(review)"
-date: 2026-02-12
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/1908533318879777525
+title: (2 条消息) Sparse AI Accelerator(review)
+date: "2026-02-12 00:00:00"
+updated: "2026-02-12 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/Sparse-AI-Accelerator(review)/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/1908533318879777525
 ---
+
 
 ### 1. systolic array稀疏加速
 
@@ -13,59 +23,59 @@ SA 对稀疏的支持大部分还是基于结构化稀疏。
 
 #### 1.1 flexSA：将大SA切分为小SA
 
-![](asset/img_a8b1ed580f08.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_a8b1ed580f08.jpg)
 
 structed sparsity and SA utilization在结构化稀疏方面，Shape，Filter，Channel-wise 稀疏方式对 SA 更友好，但仍会造成大型 SA (128×128) 利用率低的问题（因为矩阵变小了），因此可以将大型 SA 切分为小型 SA 。实验表明 64×64 的切分效果最好（切分越多，控制、路由、SRAM 等逻辑也会增加）。
 
-![](asset/img_fb00c98e8de4.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_fb00c98e8de4.jpg)
 
 flexSA 四种运作方式flexSA 采用 IS/WS 数据流，以 WS 举例，FW 就是正常的大型 SA，VSW 是将 Core0 和 Core2 合并为一个，Core1 和 Core3 合并为一个，两个共享预载的 Weight，适合苗条的权重矩阵。HSW 就是横过来，适合胖的权重矩阵。ISW 是四个分别运作。
 
 #### 1.2 column packing & row permulation
 
-![](asset/img_e39e68b69362.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_e39e68b69362.jpg)
 
 column packing进行列打包，这样稀疏又变成稠密了。但存在三个问题，1. 在前层输出与后层输入之间需要进行重排，将要打包的列变为相邻，导致路由tradeoff。2. 如果权重矩阵三列打包则需要三行输入矩阵并行输入，造成带宽变大。3. column packing 的时候会丢数。
 
 解决第一个问题：使用row permutation
 
-![](asset/img_ffcd0d8f6073.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_ffcd0d8f6073.jpg)
 
 row permutation解决第二个问题：使用 bit-serial 的方法，interleaved 在 PE 间 systolic。
 
-![](asset/img_9eaedeeb89e5.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_9eaedeeb89e5.jpg)
 
 bit-serial interleaved解决第三个问题：分块 column packing，或者 row permutation
 
-![](asset/img_ff5764e5ca88.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_ff5764e5ca88.jpg)
 
 解决 column packing 丢数
 #### 1.3 Density-bound Block
 
-![](asset/img_dbd4b3136eec.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_dbd4b3136eec.jpg)
 
 DBB structed sparsity2020年的 STA(systolic tensor array)-DBB 和 2022年的 S2TA 都使用了这种结构化稀疏方式。个人认为 TPE 的设计比传统的 scalar-PE 要好，这样可以节省很多 p2p 控制逻辑和 Buffer 开销，且 sync-fifo 的数量也可以变少。即使在稠密情况下也是这样。但 TPE 应该做多大尺寸，还需要进一步探讨。
 
-![](asset/img_ae914d4c071a.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_ae914d4c071a.jpg)
 
 STA-DBBSTA-DBB 只支持权重 DBB 稀疏
 
-![](asset/img_28f93833501c.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_28f93833501c.jpg)
 
 S2TA PES2TA 支持权重和输入都可以稀疏。其中，W 是 DBB 的格式，而 A 支持1/8-8/8( 因为A是串行进入，即time-unroll，所以其有效位数可以动态调整)
 
-![](asset/img_eff116e1f2c9.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_eff116e1f2c9.jpg)
 
 S2TA-SA图a 绿色的带宽应该是 B×INT8。
 
 如何将 A-DBB 进行动态剪枝呢？S2TA 使用的是 Top-NNZ 的剪枝方法，NNZ 支持 1-5，通过级联 Maxpool 实现( 可 bypass )。
 
-![](asset/img_40b35cfb03d2.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_40b35cfb03d2.jpg)
 
 级联 Maxpool
 #### 1.4 simultaneous multithread
 
-![](asset/img_0b5be3f16342.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_0b5be3f16342.jpg)
 
 SMT-SASMT-SA 一次可以接收多个 W 和多个 A，如果有0就直接向后传播，非0数计算则是分拍进行。这样 SMT 设计需要在 SA PE 中设计一个数据 FIFO，同时会反压( backpressure )相邻的 PE。
 
@@ -75,7 +85,7 @@ SMT-SASMT-SA 一次可以接收多个 W 和多个 A，如果有0就直接向后�
 
 #### 2.1 稀疏存储格式
 
-![](asset/img_c014255c62a8.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_c014255c62a8.jpg)
 
 COO CSR FiberTreeCSR 格式中 Row PTR 第 i 个元素表示第 i 行的起始元素在 Payload 的位置，i+1 个元素表示第 i 行的终止元素在 Payload 的位置。CSC 格式把 Row 变成 Column。
 
@@ -85,9 +95,9 @@ COO CSR FiberTreeCSR 格式中 Row PTR 第 i 个元素表示第 i 行的起始�
 
 IP 是一种输出约简的计算，OP 输出完全不约简，Gust 介于之间。
 
-![](asset/img_29631702d404.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_29631702d404.jpg)
 
-IP OP GUST![](asset/img_0046cad2ac78.jpg)
+IP OP GUST![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_0046cad2ac78.jpg)
 
 Challenges**Inner Product：**
 
@@ -131,13 +141,13 @@ Challenges**Inner Product：**
 
 Tiling 添加新的 rank。也即划分子模块。Tiling 在大型矩阵运算中是必须的，因此也增加了稀疏计算中的维度，带来了更多硬件设计机会，不同 rank 可以使用不同的计算顺序（IP OP GP）。
 
-![](asset/img_17382d894e25.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_17382d894e25.jpg)
 
 Tile 内进行 IP，Tile 间进行 OP 的 Tiling 例子
 #### 2.4 硬件加速器评估
 
 review 用四个 criterion 对一些加速器进行分类：1. 是否能够独立完成计算还是需要 processor 介入。2. 处于内存层次：作为处理器的协处理器，介于处理器与内存间优化内存排布，直接连接主存进行大批量计算。3. IP OP Gust 4. 解决 gather 或者 scatter。
 
-![](asset/img_a2c34ac8d20e.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_a2c34ac8d20e.jpg)
 
 classification

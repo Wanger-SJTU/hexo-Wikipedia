@@ -1,9 +1,19 @@
 ---
-title: "(1 封私信) 从硬件层面理解memory barrier"
-date: 2020-08-15
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/184912992
+title: (1 封私信) 从硬件层面理解memory barrier
+date: "2020-08-15 00:00:00"
+updated: "2020-08-15 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/笔试面试/从硬件层面理解memory-barrier/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/184912992
 ---
+
 
 memory barrier对于程序员来讲应该都比较熟悉，具体是什么不再赘述。这篇文章主要参考Paul的论文从硬件的层面来深入理解memory barrier的作用原理，涉及cpu cache一致性、store buffer、invalidate queue和一点内存模型的相关知识。
 
@@ -13,11 +23,11 @@ memory barrier对于程序员来讲应该都比较熟悉，具体是什么不再
 
 **
 
-![](asset/img_9320eaf36b87.jpg)
+![](/images/collections/0.raw/zhihu/%25E7%25AC%2594%25E8%25AF%2595%25E9%259D%25A2%25E8%25AF%2595/asset/img_9320eaf36b87.jpg)
 
 对于给定的cpu，第一次访问某个数据item时会经历一次cache miss，需要从内存中读取放入cpu的cache中，再次访问时将从cache中找到。当cpu cache满了之后，新的数据将会淘汰cache中的数据，然而大多数caches即使未满，也可能被强制淘汰旧的数据，原因在于cache的硬件实现，如图2所示的例子中，这个cache由定长hash桶(也叫"sets")组成的hashtable实现，十六个"sets"和两个"ways"共组成32个"lines"，每个包含一个256字节的"cache line"。
 
-![](asset/img_ffe0996dac6e.jpg)
+![](/images/collections/0.raw/zhihu/%25E7%25AC%2594%25E8%25AF%2595%25E9%259D%25A2%25E8%25AF%2595/asset/img_ffe0996dac6e.jpg)
 
 因为cache是硬件实现，hash函数非常简单，只使用4位内存地址。如图2所示，每个单元是一个包含256字节的cache line，因为cache line是256字节对齐的，地址的低8位都是0，因此硬件的hash函数选择更高的4位来匹配左边的hash数值。
 
@@ -55,7 +65,7 @@ cache一致性协议通过管理cache-line的状态来防止不一致或者数�
 
 随着协议消息的发送和接收，给定的cache line的状态随之改变，如图3所示。
 
-![](asset/img_9b50a98589a6.jpg)
+![](/images/collections/0.raw/zhihu/%25E7%25AC%2594%25E8%25AF%2595%25E9%259D%25A2%25E8%25AF%2595/asset/img_9b50a98589a6.jpg)
 
 - (a)：cache line被写回内存，但cpu将其保留在cache中并保留进一步修改它的权利。这个转变需要一条"write back"消息。
 - (b)：cpu写入已独占的cache line。这个转变不需要发送和接收任何消息。
@@ -72,7 +82,7 @@ cache一致性协议通过管理cache-line的状态来防止不一致或者数�
 - (l)：一些其它cpu对该cache line中的数据做了store操作，该cache line也在其它cpu的cache中，保持为只读状态。通过接收“invalidate”消息。
 这里描述一个MESI的例子
 
-![](asset/img_a80b7d3aa735.jpg)
+![](/images/collections/0.raw/zhihu/%25E7%25AC%2594%25E8%25AF%2595%25E9%259D%25A2%25E8%25AF%2595/asset/img_a80b7d3aa735.jpg)
 
 如table1所示，一个cache line的数据初始位于地址为0的内存中，在包含四个cpu的系统中传输。第一列显示了操作顺序，第二列是执行操作的cpu，第三列是执行的操作，接着显示了每个cpu的cache line的状态。最后两列显示内存数据是最新的("V")还是过期的("I")。
 
@@ -90,11 +100,11 @@ cache一致性协议通过管理cache-line的状态来防止不一致或者数�
 
 虽然图1所示的cache结构对于给定cpu和给定数据集的重复读取和写入提供了良好的性能，但是对于给定cache line的第一次写入却十分差。如图4所示，展示了cpu0写一个cpu1 cache所持有的cache line的时间线，cpu0必须等待这段比较长的时间。
 
-![](asset/img_15831d76bbcb.jpg)
+![](/images/collections/0.raw/zhihu/%25E7%25AC%2594%25E8%25AF%2595%25E9%259D%25A2%25E8%25AF%2595/asset/img_15831d76bbcb.jpg)
 
 如下图所示，一种方式是使用在CPU和它的cache之间增加"store buffers"的方式来避免write stall，有了store buffer之后，cpu可以简单地将它的write记录在buffer中，继续执行其它操作。
 
-![](asset/img_0fdf33d2e31b.jpg)
+![](/images/collections/0.raw/zhihu/%25E7%25AC%2594%25E8%25AF%2595%25E9%259D%25A2%25E8%25AF%2595/asset/img_0fdf33d2e31b.jpg)
 
 但是这也带来了复杂性，第一个问题，cache和store buffer中有两份数据，需要保证cpu从其自身视角观察自己行为时看到的是符合program order的。针对这个问题硬件设计者实现了"store forwarding"，当cpu执行load操作时，不仅需要看cache还要看store buffer。即使store操作还未被写到cache中，也会被后续的load操作所看到。
 
@@ -152,7 +162,7 @@ invalidate确认花费较长时间的一个原因是必须要确保相应cache l
 
 如图6所示，invalidate消息可以在放入invalidate queue中后立刻回复确认，而不用等待真正失效完成。当然，CPU在发送invalidate消息之前需要先查看自己的invalidate queue，如果invalidate queue存在相应的cache line，则CPU必须等待invalidate queue中的entry被处理。
 
-![](asset/img_9f97790c7a6d.jpg)
+![](/images/collections/0.raw/zhihu/%25E7%25AC%2594%25E8%25AF%2595%25E9%259D%25A2%25E8%25AF%2595/asset/img_9f97790c7a6d.jpg)
 
 然而，invalidate消息缓存在invalidate queue中的方式再次引入额外的memory-misordering问题。
 
@@ -219,11 +229,11 @@ Doug Lea提出了四种类型的memory barrier，这四种barrier都是以防止
 
 这篇文章将多处理器间的交互类比为多个程序员工作于同一远程仓库项目，程序员A和程序员B都在本地有一份完整的远程仓库中的副本。A本地一系列的修改就类似store，提交到远程仓库的过程中是reordered，B从远程仓库拉取新的提交就类似load，拉取的过程中也是reordered。比较形象描述了这四种类型的memory barrier。
 
-![](asset/img_bfcf7927b889.jpg)
+![](/images/collections/0.raw/zhihu/%25E7%25AC%2594%25E8%25AF%2595%25E9%259D%25A2%25E8%25AF%2595/asset/img_bfcf7927b889.jpg)
 
 #### 特定cpu的Memory-Barrier指令
 
-![](asset/img_5c20896c1aa3.jpg)
+![](/images/collections/0.raw/zhihu/%25E7%25AC%2594%25E8%25AF%2595%25E9%259D%25A2%25E8%25AF%2595/asset/img_5c20896c1aa3.jpg)
 
 #### 6. Memoy Model
 
@@ -231,7 +241,7 @@ memory model是个比较大的话题，这里简单介绍一下。上述了解�
 
 按照所支持的内存顺序可分为弱一致性模型和强一致性模型，下图列举了各种模型的例子，物理设备代表了硬件内存模型，也列出了软件内存模型像c++11或者java。
 
-![](asset/img_75507d520a34.jpg)
+![](/images/collections/0.raw/zhihu/%25E7%25AC%2594%25E8%25AF%2595%25E9%259D%25A2%25E8%25AF%2595/asset/img_75507d520a34.jpg)
 
 #### Weak Memory Models
 

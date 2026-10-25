@@ -1,3 +1,16 @@
+---
+title: "SOP: Слоёная доменная архитектура"
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/ru/resources/openai-advanced/sops/layered-domain-architecture/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # SOP: Слоёная доменная архитектура
 
 Используйте этот SOP, когда агент постоянно нарушает границы, дублирует логику между

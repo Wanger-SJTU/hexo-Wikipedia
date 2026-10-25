@@ -1,3 +1,16 @@
+---
+title: 高级仓库模板
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/zh/resources/openai-advanced/repo-template/index/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # 高级仓库模板
 
 当你希望把仓库升级成更接近 OpenAI 文中那种 agent-first 文档面，而不只是一个最小 harness 时，就复制这套起步模板。

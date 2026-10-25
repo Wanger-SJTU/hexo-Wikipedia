@@ -1,9 +1,19 @@
 ---
-title: "如何评价KIMI K3正式开源，以及同步发布出技术报告？"
-date: 2026-07-29
-tags: [知乎]
-source: https://www.zhihu.com/question/2065214142915654338/answer/2065751772568852174
+title: 如何评价KIMI K3正式开源，以及同步发布出技术报告？
+date: "2026-07-29 00:00:00"
+updated: "2026-07-29 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/AI-infra/如何评价KIMI-K3正式开源,以及同步发布出技术报告/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://www.zhihu.com/question/2065214142915654338/answer/2065751772568852174
 ---
+
 
 **导读**
  这篇教程解读 X 用户 ali（ @waterloo_intern）的长文 [《22580: From GPT2 to Kimi3, Explained》](https://link.zhihu.com/?target=https%3A//x.com/waterloo_intern/article/2081762065392541951)——一篇获得 1.15 万点赞、2000 转发、460 万浏览量的技术文章。原文作者 ali 在 baseten 做推理引擎研究，他用代码驱动的叙事方式，把从 GPT-2（2019，124M 参数）到 Kimi K3（2026，2.8 万亿参数）这条演化路径上的每一步架构变化，都用可运行的 PyTorch 片段讲透了。

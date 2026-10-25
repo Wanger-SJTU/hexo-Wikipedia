@@ -1,9 +1,19 @@
 ---
-title: "(2 条消息) DDR5 内存是如何做到速度相比 DDR4 实现「质的飞跃」的？"
-date: 2026-04-17
-tags: [知乎]
-source: https://www.zhihu.com/question/9218009141/answer/75908553761
+title: (2 条消息) DDR5 内存是如何做到速度相比 DDR4 实现「质的飞跃」的？
+date: "2026-04-17 00:00:00"
+updated: "2026-04-17 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/DDR5-内存是如何做到速度相比-DDR4-实现「质的飞跃」的/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://www.zhihu.com/question/9218009141/answer/75908553761
 ---
+
 
 当内存来到DDR5这一代之后，内存的传输速度可谓突飞猛进。
 
@@ -17,35 +27,35 @@ DDR5起步就是4800MT/s，到了2024年，主流DDR5内存来到了6400MT/s，�
 
 “开天眼”这个词是不是觉得有点唐突，实际上，DFE的目的，就是开眼，这里所说的眼，是信号的眼图。
 
-![](asset/img_d56cd85ca39e.jpg)![](asset/img_d022f57edfdb.webp)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_d56cd85ca39e.jpg)![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_d022f57edfdb.webp)
 
 对于EE专业的同学来说，眼图是再熟悉不过的概念。可能有第一次听说眼图的同学，我这里就以最短篇幅快速介绍一下。
 
 理想的数字信号，高电平就是1，低电平就是0，所以信号都是直上直下的方波信号，但实际的信号，上升或下降是一个过程，就像下图中所示的，是斜的。
 
-![](asset/img_b54fb6a6ce7b.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_b54fb6a6ce7b.jpg)
 
 我们把各个周期的信号叠加在一起，就形成一个像眼睛一样的图形，我们称之为眼图。
 
-![](asset/img_4424abdda2dc.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_4424abdda2dc.jpg)
 
 理想的眼图，是一个接近长方形的圆，我们说眼睛睁的很大
 
-![](asset/img_46ddef053241.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_46ddef053241.jpg)
 
 但真实的信号，会有各种各样的畸变，延迟，反射
 
-![](asset/img_763518844416.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_763518844416.jpg)
 
 眼图看起来就会很乱，“眼睛”很小甚至没有：
 
-![](asset/img_0595a5884e44.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_0595a5884e44.jpg)
 
 ### 背景
 
 当DRAM的数据传输率超过 2933MT/s时，码间干扰（ISI Inter Symbol Interference）会急剧增加，以至于内存的眼睛无法睁开，比如下图是6Gb/s速度下的眼图，可以说徐志胜笑起来都比这个眼睛大。
 
-![](asset/img_200b03972c7a.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_200b03972c7a.jpg)
 
 这便是阻碍内存速度提高的一大障碍。
 
@@ -53,7 +63,7 @@ DDR5起步就是4800MT/s，到了2024年，主流DDR5内存来到了6400MT/s，�
 
 如果把信号线想象成一根管道，当你在一头说话，在另一头就能听到你讲话。
 
-![](asset/img_c1243a599da0.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_c1243a599da0.jpg)
 
 管道内是有回声的。
 
@@ -65,7 +75,7 @@ DDR5的On Die termination就是尽量降低阻抗上的各种回声，提升信�
 
 下图是DDR spec上一个反射脉冲的例子：
 
-![](asset/img_f9fc397640e3.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_f9fc397640e3.jpg)
 
 可以看到在信号边缘有一个60mV和一个20mV的波动，这两个波动叠加到下一个周期的信号中，就会严重影响眼图。
 
@@ -95,7 +105,7 @@ DFE(Decision Feedback Equalizer)是反馈滤波器，作为后端均衡器，反
 
 先放一个流程图，然后我们一步步来讲解。
 
-![](asset/img_dbd67f48b348.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_dbd67f48b348.jpg)
 
 在前面的小节中提到反射脉冲时，我们已经知道，输出信号到达接收端的时候，不仅自身受到了信道的影响，同时反射信号也会叠加在接收端。可以简单的用公式来表示这个过程：
 
@@ -128,19 +138,19 @@ DFE的内部是将一定数目的过去的数据以特定的加权值去做一�
 
 下图是一个5-tap DFE的示意图：
 
-![](asset/img_844b5431f155.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_844b5431f155.jpg)
 
 ### DDR5 DFE (Decision Feedback Equalization)
 
 DDR5引入了一个4-tap的DFE，前端的增益控制(Gain)用于确保当前信号位与所需矫正的码间干扰（ISI）保持一致关系，四个Tap通过Bias Multiplier对码间干扰（ISI）的影响做了加权矫正。
 
-![](asset/img_3836e14921f2.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_3836e14921f2.jpg)
 
 JEDEC的spec里还定义2-way interleaved 4-tap DFE和4-way interleaved 4-tap DFE，这个大家了解一下就可以了。
 
-![](asset/img_61daaf20518c.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_61daaf20518c.jpg)
 
-![](asset/img_7958812de42e.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_7958812de42e.jpg)
 
 DDR5这一代新增了一百多个MR（Mode Register），几乎都是和DFE相关的。
 
@@ -152,21 +162,21 @@ SDRAM的DM信号和所有DQ信号都需要DFE，所以对于DML，DMU，以及�
 
 这是MR具体的定义，知道一下就行了。
 
-![](asset/img_4f50f7e8b90e.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_4f50f7e8b90e.jpg)
 
-![](asset/img_1db266794757.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_1db266794757.jpg)
 
-![](asset/img_25ba9ffcefbd.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_25ba9ffcefbd.jpg)
 
-![](asset/img_aeced34d0201.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_aeced34d0201.jpg)
 
-![](asset/img_8782a6479fc6.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_8782a6479fc6.jpg)
 
 ### 总结
 
 高速信号的码间干扰（ISI）对眼图构成极其严重的影响，DFE作为一直反馈均衡器，非常适合消除码间干扰（ISI），像变魔术一样，将杂乱无章的眼图变成清晰的眼图。
 
-![](asset/img_c751d0bc1f7c.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_c751d0bc1f7c.jpg)
 
 DFE是DDR5的速度大幅提升的功臣，现在主流DDR5内存都来到6400MT/s，2025~2026年，我们将看到8000MT/s成为新的主流。
 

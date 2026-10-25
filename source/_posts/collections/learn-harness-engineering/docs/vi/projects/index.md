@@ -1,3 +1,16 @@
+---
+title: Chào mừng đến với Dự án
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/vi/projects/index/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # Chào mừng đến với Dự án
 
 Đây là phần thực hành của Learn Harness Engineering. Chỉ đọc các bài giảng là không đủ—bạn cần phải tự mình xây dựng các môi trường và quan sát cách Codex, Claude Code hoặc các AI agent khác hoạt động dưới các quy tắc khác nhau.

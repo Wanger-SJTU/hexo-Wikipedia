@@ -1,3 +1,16 @@
+---
+title: CLAUDE.md
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/vi/resources/templates/CLAUDE/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # CLAUDE.md
 
 Bạn đang làm việc trong một kho lưu trữ được thiết kế cho công việc triển khai chạy lâu. Ưu tiên hoàn thành đáng tin cậy, tính liên tục qua các phiên, và xác minh rõ ràng hơn tốc độ.

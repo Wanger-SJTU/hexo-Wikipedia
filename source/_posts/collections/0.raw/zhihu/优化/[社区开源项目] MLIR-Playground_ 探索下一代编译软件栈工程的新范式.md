@@ -1,11 +1,21 @@
 ---
 title: "[社区开源项目] MLIR-Playground: 探索下一代编译软件栈工程的新范式"
-date: 2022-09-04
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/560810344
+date: "2022-09-04 00:00:00"
+updated: "2022-09-04 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/优化/[社区开源项目]-MLIR-Playground_-探索下一代编译软件栈工程的新范式/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/560810344
 ---
 
-![](asset/img_25a1f629ff77.jpg)
+
+![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_25a1f629ff77.jpg)
 
 在过去，编译软件栈的研发是一个相对小众的领域。这很大程度上要归因于在过去芯片架构并没有太多的变化，于是人们也就没有从头打造编译软件栈的需求，往往会选择基于现有的编译栈进行二次开发。但是时代正在发生着一些变化，各式各样架构的商业化新硬件破土而出。如今芯片架构的多样性是过去30年内行业从未有过的景象。与之伴随而来的，便是配套的编译栈项目对于人才的大量需求。编译器人才的供不应求一直让业界非常头痛。尤其对于一些新涌现的非冯诺依曼架构芯片，比如数据流芯片，存算一体芯片，此前并没有类似基于LLVM为X86 CPU打造编译器的成熟落地经验。更要命的是，软件生态的碎片化进一步稀释了本就不充裕的编译器人才供给，让组建一支能端到端打造编译软件栈的团队难上加难。
 

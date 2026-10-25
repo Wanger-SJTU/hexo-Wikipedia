@@ -1,3 +1,16 @@
+---
+title: "Проект 01. Только промпт vs. правила в первую очередь: насколько велика разница"
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/ru/projects/project-01-baseline-vs-minimal-harness/index/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 [中文版本 →](../../../zh/projects/project-01-baseline-vs-minimal-harness/)
 
 > Связанные лекции: [Лекция 01. Сильные модели не означают надёжного выполнения](./../../lectures/lecture-01-why-capable-agents-still-fail/index.md) · [Лекция 02. Что на самом деле такое harness](./../../lectures/lecture-02-what-a-harness-actually-is/index.md)

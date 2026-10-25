@@ -1,9 +1,19 @@
 ---
-title: "GPU 优化技术-OpenCL kernel 开发"
-date: 2022-07-29
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/542361443
+title: GPU 优化技术-OpenCL kernel 开发
+date: "2022-07-29 00:00:00"
+updated: "2022-07-29 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/优化/GPU-优化技术-OpenCL-kernel-开发/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/542361443
 ---
+
 
 **版权声明 ©本文首发于知乎专栏：移动端算法优化本专栏「移动端算法优化」所有文章著作权归作者所有。允许个人直接分享本专栏文章到个人微博、朋友圈。但媒体（包括但不限于网站、微信公众号、微博营销号）转载需事先征得专栏同意。转载需在正文开头显著位置注明出处，给出原始链接，注明「发表于知乎专栏《移动端算法优化》」，并不得进行任何形式的修改演绎。**
 ### 一、概述 
@@ -56,7 +66,7 @@ __kernel是必须要有，函数声明为可由OpenCL设备上的应用程序执
 
 `__private const int length、int idx`等内部寄存器变量使用私有内存区域(__private)，对应下图存Private Memory，这块内存区域是每个工作组独有的，工作组和工作组之间不可相互访问，同一个工作组中的工作项共享一块内存区域。
 
-![](asset/img_34be93d8ab75.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_34be93d8ab75.jpg)
 
 OpenCL 内存模型
 
@@ -70,7 +80,7 @@ OpenCL 内存模型
 - 文本文件保存
 内核代码可以保存为后缀名为".cl"的文本文件，如add_kernel.cl。其读取处理方式和一般文件处理方式相同。同时add_kernel.cl的内容格式与C语言风格相似，很多代码编辑器（例如vscode）能自动识别.cl文件从而可以显示相应的语法高亮。
 
-![](asset/img_c4353030455c.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_c4353030455c.jpg)
 
 .cl文件.cl文件转换为字符串
 
@@ -124,7 +134,7 @@ OpenCL C严格遵循C99标准，不支持标准C99头文件、函数指针、递
 
 **OpenCL支持的标量数据类型比较简单，功能和C/C++中的数据类型一样。需要强调注意的点在于半精度和双精度浮点数是可选项。类型API类型描述char/ucharcl_char/cl_uchar有/无符号8位整数short/ushortcl_short/cl_ushort有/无符号16位整数int/uintcl_int/cl_uint有/无符号32位整数long/ulongcl_long/cl_ulong有/无符号64位整数float/doublecl_float/cl_double32位浮点数/64位浮点数，符合IEEE754存储格式halfcl_half16位浮点数。half数据类型必须符合IEEE754-2008半精度存储格式size_tn/a无符号整数类型，sizeof结果类型，匹配设备地址空间(32、64)voidvoid无类型数据3.1.1.1 半精度浮点数**
 
-![](asset/img_2bd7826a6a8f.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_2bd7826a6a8f.jpg)
 
 半精度浮点
 
@@ -184,7 +194,7 @@ float4 rgba = (float4)(vrgb, 1.0f);`
 
 矢量分量：OpenCL提供三种方式来访问矢量分量：数值索引、字母索引和hi/lo/even/odd方式。它们都是通过点(.)方式来访问分量。数值索引和字母索引对比使用如下所示：
 
-![](asset/img_331d6d998f29.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_331d6d998f29.jpg)
 
 实例代码
 
@@ -222,14 +232,14 @@ int4 d = data.odd; // d = (1, 3, 5, 7)`
 矢量加载/存储Tn vloadn(size_t offset, const [constant] T *p)从地址p+(offset * n)读一个T类型矢量数据floatn vload_halfn(size_t offset, const [constant] half *p)从地址p+(offset * n)读一个half矢量数据void vstoren(Tn data, size_t offset, T *p)写T类型矢量数据到地址p+(offset * n)void store_halfn(floatn data, size_t offset, half *p)写half矢量数据到地址p+(offset * n)
 
 - 矢量加载
-![](asset/img_c7a3a423b891.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_c7a3a423b891.jpg)
 
 矢量加载示意图
 
 - 合并访问
 合并访问是OpenCL和GPU并行计算的重要概念，基本就是底层硬件操作可以把多个工作项的数据load和store请求合并为一个请求，从而提升数据存储效率，如果不支持合并访问，GPU硬件必须为每个单独的请求执行数据load和store操作，从而导致性能下降。
 
-![](asset/img_908865de31d4.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_908865de31d4.jpg)
 
 合并访问示意图上图所示，针对8个工作项如果kernel代码中使用vload4，从内存中加载8个数据合并访问为2次load操作。但是，如果是标量加载则需要加载8次load请求操作。因此，矢量加载相对于标量加载可以减少4倍load内存请求，提高kernel的内存带宽利用率。 
 
@@ -261,7 +271,7 @@ __kernel void MatrixCopyVector(__global uchar *src,
 }`
 
 - 实测性能差异：在高通8450 Adreno GPUs上kernel的start->end执行时间如下图所示，向量化代码时间为1.17ms，标量代码时间为2.17ms，可以看出性能有接近1倍的提升。
-![](asset/img_b5db5acc9f8d.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_b5db5acc9f8d.jpg)
 
 合并访问性能对比图
 #### 3.3 修饰符
@@ -457,7 +467,7 @@ OpenCL 的浮点函数分为五类：算术和舍入、比较、指数和对数�
 
 **算术和舍入函数**
 
-![](asset/img_dfd52b0d13f0.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_dfd52b0d13f0.jpg)
 
 针对舍入函数：rint 舍入到最接近的偶数， round 返回最接近的整数，如果两个最接近的整数同样接近，则返回距离 0 更远的整数。 针对算术函数的乘加函数：“mad 优势是速度优于准确性，fma 优势是精度更高。 样例示意:
 
@@ -488,13 +498,13 @@ trunc: -6.0, -3.0, 3.0, 6.0`
 
 **比较函数**
 
-![](asset/img_5f875e76c9d6.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_5f875e76c9d6.jpg)
 
 比较函数主要是一些简单向量比较过程，注意点一般在clamp和smoothstep函数的区别。 
 
 **三角函数**
 
-![](asset/img_7a6234d3b95e.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_7a6234d3b95e.jpg)
 
 OpenCL提供了更多的三角函数，可以帮助我们更好的实现某些算法优化。 样例示意:
 
@@ -553,7 +563,7 @@ OpenCL 提供了广泛的整数运算，本节将它们分为三类：加减法�
 
 **加减法**
 
-![](asset/img_b87413bfe4c1.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_b87413bfe4c1.jpg)
 
 加法计算中经常会出现两个整数相加时发生溢出，或者在减法中因为操作数的不同导致相减发生溢出。样例示意：
 
@@ -578,7 +588,7 @@ sub0    = 2,147,483,647 (0x7FFFFFFF) //饱和`
 
 **乘法**
 
-![](asset/img_8128767215ba.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_8128767215ba.jpg)
 
 示例代码
 
@@ -603,7 +613,7 @@ dst[2] = ;`
 
 整数类型的一个最值、绝对值、限幅等函数的说明和使用。
 
-![](asset/img_48709ef9fee9.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_48709ef9fee9.jpg)
 
 示例代码
 
@@ -633,12 +643,12 @@ dst[1] = 0x9531;`
 `for( i = 0; i 
 
 - 示例结果
-![](asset/img_eeae837c7ea7.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_eeae837c7ea7.jpg)
 
  shuffle 示意图
 
 - 相关函数：`allm shuffle2(alln x, alln y, uintegerm mask);` 
-![](asset/img_a7a8bbf45bef.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_a7a8bbf45bef.jpg)
 
 shuffle2 示意图
 
@@ -658,12 +668,12 @@ select 函数：**
 for( i = 0; i 
 
 - 示例结果
-![](asset/img_9cf6e1f41353.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_9cf6e1f41353.jpg)
 
 select 示意图
 
 - 相关函数：`alln bitselect(alln a, alln b, u/integern mask)` 
-![](asset/img_631f0e00e008.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_631f0e00e008.jpg)
 
 bitselect 示意图更多的内置函数本文目前不讲解说明了，后面会有专门的文章进行说明。
 
@@ -732,7 +742,7 @@ OpenCL  kernel内核代码采用buffer的方式进行读写操作，每个工作
 
 完整的实现代码可以下载我们的github仓库运行。 下图是我们在高通骁龙8450平台上的运行结果，可以看到使用OpenCL优化之后运行时间从35.203ms(图像尺寸4096x4096)下降到了1.96ms，性能有了17倍多的提升, 感兴趣的读者可以自己运行下结果。
 
-![](asset/img_dcdf0ffbb541.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_dcdf0ffbb541.jpg)
 
 Gaussian 性能对比
 ### 五、工程代码

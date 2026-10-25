@@ -1,3 +1,16 @@
+---
+title: Vorlagen-Leitfaden
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/de/resources/templates/index/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # Vorlagen-Leitfaden
 
 Diese Vorlagen sind bereit, in Ihr eigenes Projekt kopiert zu werden. Jede erfüllt

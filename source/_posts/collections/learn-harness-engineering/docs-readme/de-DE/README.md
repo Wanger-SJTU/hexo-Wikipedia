@@ -1,3 +1,16 @@
+---
+title: Learn Harness Engineering
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs-readme/de-DE/README/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 <p align="center">
   <a href="../../README.md"><img alt="English" src="https://img.shields.io/badge/EN-English-blue?style=flat-square"></a>
   <a href="../zh-CN/README.md"><img alt="简体中文" src="https://img.shields.io/badge/ZH-简体中文-red?style=flat-square"></a>
@@ -47,17 +60,17 @@ Learn Harness Engineering ist ein Kurs, der sich der Entwicklung von KI-Coding-A
 ### Kurs-Startseite
 > Ein umfassender Kursüberblick und eine Einführung in die Kernphilosophien, die einen klaren Einstiegspfad bieten.
 
-![Vorschau der Kurs-Startseite](../../docs/public/screenshots/readme/zh-home.png)
+![Vorschau der Kurs-Startseite](/images/collections/learn-harness-engineering/docs/public/screenshots/readme/zh-home.png)
 
 ### Immersive Vorlesungen
 > Tiefe Einblicke in reale Problemstellungen und praktische Projekte (wie Projekt 01) für ein immersives Lernerlebnis.
 
-![Vorschau der Kurs-Vorlesung](../../docs/public/screenshots/readme/zh-lecture-01.png)
+![Vorschau der Kurs-Vorlesung](/images/collections/learn-harness-engineering/docs/public/screenshots/readme/zh-lecture-01.png)
 
 ### Vorlagen-Bibliothek
 > Vorlagen und Referenzkonfigurationen, die entwickelt wurden, um häufige Fallstricke bei der Entwicklung von Multi-Turn-KI-Agenten zu lösen, wie Kontextverlust und vorzeitiger Aufgabenabschluss.
 
-![Vorschau der Vorlagen-Bibliothek](../../docs/public/screenshots/readme/zh-resources.png)
+![Vorschau der Vorlagen-Bibliothek](/images/collections/learn-harness-engineering/docs/public/screenshots/readme/zh-resources.png)
 
 ## PDF-Kursbücher
 

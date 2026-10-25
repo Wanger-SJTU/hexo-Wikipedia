@@ -1,4 +1,17 @@
 ---
+title: 解决报错：Couldn't create temporary file /tmp/apt.conf.IRqbCz - 掘金
+date: "2026-04-11 21:40:28"
+updated: "2026-04-11 21:40:28"
+layout: post
+permalink: /collections/0.raw/Omnivore/2024-04-10/解决报错-Couldn't-create-temporary-file-tmp-apt.conf.IRqbCz-掘金/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
+---
 id: ae0accaf-6a97-4693-ab99-6689b9e80a35
 ---
 

@@ -1,3 +1,16 @@
+---
+title: 7-maʼruza. Agentlar uchun aniq vazifa chegaralarini chizing
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/uz/lectures/lecture-07-why-agents-overreach-and-under-finish/index/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 [English version →](../../../en/lectures/lecture-07-why-agents-overreach-and-under-finish/)
 
 > Kod misollari: [code/](https://github.com/walkinglabs/learn-harness-engineering/blob/main/docs/en/lectures/lecture-07-why-agents-overreach-and-under-finish/code/)

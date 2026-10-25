@@ -1,9 +1,20 @@
 ---
-title: "每个员工用上 AI Agent，不等于你的组织 AI-Native 了——一个被严重低估的「组织代差」"
-source: "https://mp.weixin.qq.com/s/X7k-RuTGxrAY8BlX82frMQ"
-date: 2026-04-29
-tags: [wechat, AI]
+title: 每个员工用上 AI Agent，不等于你的组织 AI-Native 了——一个被严重低估的「组织代差」
+date: "2026-04-29 00:00:00"
+updated: "2026-04-29 00:00:00"
+layout: post
+permalink: /collections/0.raw/wechat/每个员工用上-AI-Agent,不等于你的组织-AI-Native-了——一个被严重低估的「组织代差」/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - wechat
+  - AI
+source_url: https://mp.weixin.qq.com/s/X7k-RuTGxrAY8BlX82frMQ
 ---
+
 
 > 一句话先讲清楚：**给每个员工配 Cursor / ChatGPT / Copilot ，并不能让你赢这一轮 AI 革命。它只让你的员工每个人快了一点。但让企业赢的，从来不是员工个人快了多少，是组织作为一个整体进化到了哪一代**。
 

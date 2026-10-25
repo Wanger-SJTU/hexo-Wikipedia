@@ -1,9 +1,19 @@
 ---
-title: "(1 条消息) 高通个别驱动创建Buffer耗时高问题的解决"
-date: 2023-07-12
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/643075021
+title: (1 条消息) 高通个别驱动创建Buffer耗时高问题的解决
+date: "2023-07-12 00:00:00"
+updated: "2023-07-12 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/高通个别驱动创建Buffer耗时高问题的解决/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/643075021
 ---
+
 
 ### **前言**
 
@@ -15,9 +25,9 @@ source: https://zhuanlan.zhihu.com/p/643075021
 
 首先想到的是像内存管理一样预创建特定大小的Buffer，在后面所有使用到的地方直接从Pool里面去取，然后调用glBufferSubData去更新，这个时候Buffer的创建开销确实大缩短了，在framepro中基本上看不到Buffer创建的耗时，但是耗时开销转移了！转移到了创建纹理相关的操作上！！！而且耗时跟你预创建Buffer的数量成正比。
 
-![](asset/img_7e24630a0f4e.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_7e24630a0f4e.jpg)
 
-创建VB开销小了很多![](asset/img_2f272b254088.jpg)
+创建VB开销小了很多![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_2f272b254088.jpg)
 
 创建纹理开销显著增加那这个方案看起来是行不通的。
 
@@ -42,11 +52,11 @@ source: https://zhuanlan.zhihu.com/p/643075021
 
 优化前：
 
-![](asset/img_78d2b2f9d1dc.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_78d2b2f9d1dc.jpg)
 
 优化后：
 
-![](asset/img_d032a4a2a33a.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_d032a4a2a33a.jpg)
 
 可以看到优化前有很多峰值，优化后基本上看不到创建Buffer的开销，创建纹理的开销也正常。
 

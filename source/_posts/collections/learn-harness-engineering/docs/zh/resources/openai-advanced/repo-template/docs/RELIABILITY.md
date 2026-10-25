@@ -1,3 +1,16 @@
+---
+title: RELIABILITY.md
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/zh/resources/openai-advanced/repo-template/docs/RELIABILITY/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # RELIABILITY.md
 
 这份文件定义系统如何证明自己健康、可诊断、可重启。

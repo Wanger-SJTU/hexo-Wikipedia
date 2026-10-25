@@ -487,6 +487,21 @@ hexo.extend.generator.register('hexowiki-routes', function generateWikiRoutes(lo
     data
   });
 
+  const redirectRoutes = Object.entries(hexo.config.wiki_redirects || {})
+    .filter(([from, to]) => from && to)
+    .map(([from, to]) => {
+      const target = encodeURI(String(to));
+      const html = '<!doctype html><html lang="zh-CN"><head><meta charset="utf-8">' +
+        '<meta http-equiv="refresh" content="0; url=' + target.replace(/"/g, '%22') + '">' +
+        '<link rel="canonical" href="' + target.replace(/"/g, '%22') + '">' +
+        '<title>重定向</title></head><body><p>正在跳转到 <a href="' + target.replace(/"/g, '%22') + '">' +
+        target.replace(/&/g, '&amp;') + '</a>…</p></body></html>';
+      return {
+        path: String(from).replace(/^\/+/, '').replace(/\/?$/, '/') + 'index.html',
+        data: html
+      };
+    });
+
   const tagList = (locals && locals.tags ? locals.tags.toArray() : [])
     .map((tag) => ({
       name: String(tag.name),
@@ -518,6 +533,7 @@ hexo.extend.generator.register('hexowiki-routes', function generateWikiRoutes(lo
       type: 'wiki_allpages',
       description: '按首字排序的全部条目索引。'
     }),
+    ...redirectRoutes,
     pageRoute(routes.tags, 'wiki_tags', {
       title: '标签',
       layout: 'wiki_tags',

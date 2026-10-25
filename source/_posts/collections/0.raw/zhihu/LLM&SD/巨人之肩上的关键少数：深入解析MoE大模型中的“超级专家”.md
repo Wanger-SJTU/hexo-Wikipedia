@@ -1,10 +1,19 @@
 ---
-title: "巨人之肩上的关键少数：深入解析MoE大模型中的“超级专家”"
-date: 2025-08-02
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/1934938787022083701
-
+title: 巨人之肩上的关键少数：深入解析MoE大模型中的“超级专家”
+date: "2025-08-02 00:00:00"
+updated: "2025-08-02 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/LLM-SD/巨人之肩上的关键少数-深入解析MoE大模型中的“超级专家”/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/1934938787022083701
 ---
+
 
 近年来，混合专家模型（Mixture-of-Experts, MoE）以其强大的学习能力和参数扩展性，在大型语言模型（LLM）领域掀起了一场革命。通过引入稀疏激活的“专家”网络，MoE模型可以在不显著增加计算成本的前提下，将模型参数规模推向新的高峰，从而在各项任务中展现出卓越的性能。然而，这种“大即是美”的范式也带来了一个严峻的挑战：巨大的参数量使得模型的部署和推理变得异常困难和昂贵。
 

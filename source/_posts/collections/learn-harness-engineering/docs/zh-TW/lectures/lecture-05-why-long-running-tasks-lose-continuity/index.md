@@ -1,3 +1,16 @@
+---
+title: 第五講. 讓跨工作階段的任務保持脈絡連續
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/zh-TW/lectures/lecture-05-why-long-running-tasks-lose-continuity/index/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 [English Version →](../../../en/lectures/lecture-05-why-long-running-tasks-lose-continuity/)
 
 > 本篇程式碼示例：[code/](https://github.com/walkinglabs/learn-harness-engineering/blob/main/docs/zh-TW/lectures/lecture-05-why-long-running-tasks-lose-continuity/code/)

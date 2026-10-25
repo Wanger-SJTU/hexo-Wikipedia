@@ -1,3 +1,16 @@
+---
+title: تدفق بدء تشغيل وكيل البرمجة
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/ar/resources/reference/coding-agent-startup-flow/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # تدفق بدء تشغيل وكيل البرمجة
 
 استخدم هذا في بداية كل جلسة بعد اكتمال التهيئة.

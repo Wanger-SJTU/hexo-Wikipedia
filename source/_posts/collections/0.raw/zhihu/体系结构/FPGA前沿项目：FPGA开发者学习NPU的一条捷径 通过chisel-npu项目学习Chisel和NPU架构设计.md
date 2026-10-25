@@ -1,10 +1,19 @@
 ---
-title: "FPGA前沿项目：FPGA开发者学习NPU的一条捷径 通过chisel-npu项目学习Chisel和NPU架构设计"
-date: 2024-07-25
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/710852593
-
+title: FPGA前沿项目：FPGA开发者学习NPU的一条捷径 通过chisel-npu项目学习Chisel和NPU架构设计
+date: "2024-07-25 00:00:00"
+updated: "2024-07-25 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/体系结构/FPGA前沿项目-FPGA开发者学习NPU的一条捷径-通过chisel-npu项目学习Chisel和NPU架构设计/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/710852593
 ---
+
 
 前言：
 FPGA开发者在工作两三年之后，各种逻辑设计和接口设计估计都掌握得差不多了，如何提升技术是我们需要面对的问题。毕竟做技术都想更进一步。

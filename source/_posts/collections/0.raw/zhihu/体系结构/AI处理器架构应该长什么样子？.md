@@ -1,9 +1,19 @@
 ---
-title: "AI处理器架构应该长什么样子？"
-date: 2025-05-08
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/1903135541765054828
+title: AI处理器架构应该长什么样子？
+date: "2025-05-08 00:00:00"
+updated: "2025-05-08 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/体系结构/AI处理器架构应该长什么样子-e06311/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/1903135541765054828
 ---
+
 
 ### 写在前面
 
@@ -17,7 +27,7 @@ source: https://zhuanlan.zhihu.com/p/1903135541765054828
 
 Meta为了给自己的应用加速，最近这两年做了所谓的MTIA（Meta Inference Accelerator）芯片，并公布了其设计架构，见论文：
 
-![](asset/img_03f21804d71d.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_03f21804d71d.jpg)
 
 MTIA论文论文首先介绍了要做这款芯片的原因：
 
@@ -31,13 +41,13 @@ MTIA论文论文首先介绍了要做这款芯片的原因：
 
 我们来看一下它的架构设计：
 
-![](asset/img_28c87fcf79ca.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_28c87fcf79ca.jpg)
 
 MTIA顶层架构可见：多个PE（Processor Element）组成阵列形式，然后每个边以xbar连到片上memory和外部的DDR。
 
 我们来重点看下PE核内部的设计。
 
-![](asset/img_4769f0ed0cab.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_4769f0ed0cab.jpg)
 
 PE内部uARCH**MLU**
 
@@ -67,7 +77,7 @@ local memory。128KB，映射到系统地址空间，其他core均可访问，�
 
 以上6个单元，构成了粗粒度的AI加速Pipeline，比如一个CNN，顺次在这些单元上执行，得到最终结果。这些也是目前AI加速器中基本已经固化的通用部件了，玩不出什么花样，下图所示为NV的DLA框图。现在各家AI芯片公司能做的都是怎么优化出更好的能效、面效，怎么支持更多的典型算子，怎么更好被用起来。
 
-![](asset/img_d86f7d97c95d.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_d86f7d97c95d.jpg)
 
 NV DLA开源1.0版本架构图**CP**
 
@@ -77,7 +87,7 @@ command processor。管理local memory和寄存器堆，同时会接收来自两
 
 5级流水、顺序单发射（Andes的AX25定制化），其中一core个核挂载了DLEN=64B的RVV。
 
-![](asset/img_7e686928480c.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_7e686928480c.jpg)
 
 Andes AX25结构如果说DSA提供了强大快速的性能，那么集成Processer则是保证了**可编程性、灵活性**。就像论文中提到的，在意料之外的一些新算子，事先没有在DSA上做特定优化与适配，或者是诸如LayerNorm和BatchedReduceAdd的复杂算子，携带vector的Processor就可以派上用场了。
 
@@ -96,7 +106,7 @@ fabric Interface。PE对外连接的接口，借助该接口可用DMA方式操�
 
 论文给了一个例子：FC层常用到矩阵乘法。512*1024,1024*256。示意如何将这个运算分配部署到4*4的PE阵列上，过程讲的怪复杂，但本质就是GEMM tiling。512*1024的矩阵拆成8个（4行2列）128*512的sub matrix，同样1024*256的矩阵也拆分4个（2行2列）512*128的sub matrix。一共会是16次sub matrix乘，扔到这4*4的PE阵列上。PE内的DPE完成乘法计算，partial sum累加再借助RE完成，跨PE的部分和累加则借助上文提到的reduction network传递。
 
-![](asset/img_0544026a24d4.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_0544026a24d4.jpg)
 
 举例计算一个矩阵乘法
 #### 性能收益
@@ -134,7 +144,7 @@ BatchMatMul、Concat、Transpose等操作的性能表现如下：
 
 Andes和Sifive应该是目前在RISCV领域商业化IP最为成熟完备的两家公司（除中国大陆以外），目前Andes最新的架构已经迭代到了AX45和AX46。附图AX46架构图，其最大的特征是在RV vector单元中额外增加了所谓的AMM，即小型martrix，**这也是Processor+DSA是AI处理器发展方向的有力佐证之一。**
 
-![](asset/img_8f5255ef1405.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_8f5255ef1405.jpg)
 
 Andes（晶心科技）最新的的AX46 core
 ### Tenstorrent 
@@ -143,23 +153,23 @@ Andes（晶心科技）最新的的AX46 core
 
 非常明显，也是以core阵列形式组织：
 
-![](asset/img_bd102e9539eb.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_bd102e9539eb.jpg)
 
 多core阵列core内部用了5个riscv的CPU+固定的计算单元协同工作，不过1MB的sram倒是比较吓人的。
 
-![](asset/img_640f1e61ec63.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_640f1e61ec63.jpg)
 
 T core内部
 ### Nvidia GPGPU
 
 再回头去看英伟达的GPGPU，会发现H100每个SM的partial内部也是SIMT core + Tensor core。前者是通用化Processor，只不过是SIMT编程模型，是NV自己的ISA而非RISCV，后者则是可以专门用来加速卷积、矩阵计算。
 
-![](asset/img_877946b90482.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_877946b90482.jpg)
 
 H100每个SM的partial内部是SIMT core + Tensor coreGPGPU还有一个和上文MTIA显著的差异：GPGPU有多层级，不同层级和编程模型层级会有关系，而MTIA是平摊的结构。
 
 不过在MTIA论文的最后，作者也提出后续可能考虑将若干个core打包成cluster，多加一个层级，用来应对不同规模的任务。这其实是向着NV GPGPU结构靠拢了。
 
-![](asset/img_b5648e594727.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_b5648e594727.jpg)
 
 论文最后的讨论增加层级

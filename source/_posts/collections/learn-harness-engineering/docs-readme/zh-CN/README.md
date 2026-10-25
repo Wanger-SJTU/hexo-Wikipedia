@@ -1,3 +1,16 @@
+---
+title: Learn Harness Engineering
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs-readme/zh-CN/README/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 <p align="center">
   <a href="../../README.md"><img alt="English" src="https://img.shields.io/badge/EN-English-blue?style=flat-square"></a>
   <a href="../zh-CN/README.md"><img alt="简体中文" src="https://img.shields.io/badge/ZH-简体中文-red?style=flat-square"></a>
@@ -47,17 +60,17 @@ Learn Harness Engineering 是一门专注于 AI 编程代理工程化的课程�
 ### 课程主页
 > 全面的课程大纲和核心理念介绍，为你提供清晰的学习起点。
 
-![课程主页预览](../../docs/public/screenshots/readme/en-home.png)
+![课程主页预览](/images/collections/learn-harness-engineering/docs/public/screenshots/readme/en-home.png)
 
 ### 沉浸式讲座
 > 深入剖析真实痛点，配合动手项目（如项目 01），带来沉浸式学习体验。
 
-![课程讲座预览](../../docs/public/screenshots/readme/en-lecture-01.png)
+![课程讲座预览](/images/collections/learn-harness-engineering/docs/public/screenshots/readme/en-lecture-01.png)
 
 ### 即用资源库
 > 专为解决多轮 AI 代理开发中的常见问题而设计的模板和参考配置，例如上下文丢失和过早完成任务。
 
-![资源库预览](../../docs/public/screenshots/readme/en-resources.png)
+![资源库预览](/images/collections/learn-harness-engineering/docs/public/screenshots/readme/en-resources.png)
 
 ## PDF 课程手册
 

@@ -1,13 +1,23 @@
 ---
-title: "(1 条消息) berts-vits2声音克隆+roop换脸+sadtalker声音驱动嘴型（原创）"
-date: 2023-12-07
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/670203996
+title: (1 条消息) berts-vits2声音克隆+roop换脸+sadtalker声音驱动嘴型（原创）
+date: "2023-12-07 00:00:00"
+updated: "2023-12-07 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/berts-vits2声音克隆-roop换脸-sadtalker声音驱动嘴型(原创)/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/670203996
 ---
+
 
 先看效果视频，这是中国影视演员朱一龙的脸加上原神中上野的语音。
 
-![](asset/img_1aff68820312.jpg)01:07
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_1aff68820312.jpg)01:07
 
 换脸+声音克隆+语音驱动嘴型
 
@@ -17,11 +27,11 @@ source: https://zhuanlan.zhihu.com/p/670203996
 
 下面是原神一名女生的原始语音：
 
-![](asset/img_a44f60505c23.jpg)00:05
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_a44f60505c23.jpg)00:05
 
 然后是bert-vits2的克隆声音
 
-![](asset/img_642500a44288.jpg)00:11
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_642500a44288.jpg)00:11
 
 下面介绍利用bert-vits2来进行语音克隆的步骤，即如何通过特定人物的声音训练一个语音模型：
 
@@ -29,7 +39,7 @@ source: https://zhuanlan.zhihu.com/p/670203996
 
 （2）下载bert-vits2依赖的bert模型，一共有三个，分别是deberta-v2-large-japanese、deberta-v3-large、chinese-roberta-wwm-ext-large，把这三个模型从huggingface网站下载下来，放到bert-vits2-master/bert/文件夹里。另外，最好下载底模，供后续训练使用。
 
-![](asset/img_241938185d26.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_241938185d26.jpg)
 
 （模型地址：
 
@@ -45,17 +55,17 @@ source: https://zhuanlan.zhihu.com/p/670203996
 
 （3）下载训练的音频数据，这里用的是《原神》这款游戏的人物语音数据集。原始的数据集长下面这样子。
 
-![](asset/img_a6cc4f5a494f.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_a6cc4f5a494f.jpg)
 
-![](asset/img_8cb3ca249553.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_8cb3ca249553.jpg)
 
 每一个人物一个文件夹，然后每个人物文件夹里分别对应一个wav文件和lab文件，wav文件是人物的说话语音文件，lab文件是语音文件的标注文字。例如下图是lab文件的内容。
 
-![](asset/img_22cc79e36cf0.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_22cc79e36cf0.jpg)
 
 lab文件的内容（4）然后，我们要开始根据这些训练数据集。首先我们要把训练数据集中的lab文件转换成bert-vits2要求的训练格式。bert-vits2要求的格式参考bert-vits2-master/filelists目录下的esd.list,里面的内容如下：
 
-![](asset/img_643a1fcfc36c.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_643a1fcfc36c.jpg)
 
 文件名称|说话人物名称|语言（例如中文就是ZH）|说话的内容
 
@@ -300,13 +310,13 @@ preprocess_text是生成训练需要的train.txt和val.txt，同时对数据进�
 
 配置完这个config.json文件后，运行python bert_gen.py。在resampled/yuanshen的每个人物的文件夹内有.pt文件。如下图：
 
-![](asset/img_e4dfb48172b8.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_e4dfb48172b8.jpg)
 
 接着是train_ms阶段，在base字段里，选择要不要使用底模（这个底模相当于深度学习种的预训练模型），如何需要设置use_base_model为true，并填写底模的路径地址。 model字段设置为 "models"，表示生成的模型保存在bert-vits2-master/models路径下。运行python train_ms.py 完成训练。训练的时间有点久，5个人物语音用P40需要半天时间。
 
 训练完成后，在bert-vits2-master/models路径下会保存 ".pth"文件。如下图所示，我们需要用到的是G_数字.pth文件。
 
-![](asset/img_40f2508b07f8.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_40f2508b07f8.jpg)
 
 保存的训练文件
 
@@ -330,7 +340,7 @@ preprocess_text是生成训练需要的train.txt和val.txt，同时对数据进�
 
 我们可以在bert-vits2根目录下运行python webui.py，会弹出网页。
 
-![](asset/img_bfc1546a8e18.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_bfc1546a8e18.jpg)
 
 语音克隆的网页端页面可以输入文本，选择人物，让人物说话了。
 

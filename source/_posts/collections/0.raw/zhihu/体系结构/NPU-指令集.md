@@ -1,9 +1,19 @@
 ---
-title: "NPU-指令集"
-date: 2024-03-07
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/685735679
+title: NPU-指令集
+date: "2024-03-07 00:00:00"
+updated: "2024-03-07 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/体系结构/NPU-指令集/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/685735679
 ---
+
 
 **NPU（Neural network Processing Unit）**，即**神经网络处理器**。神经网络处理器（NPU）采用“数据驱动并行计算”的架构，特别擅长处理视频、图像类的海量多媒体数据。NPU处理器专门为物联网人工智能而设计，用于加速神经网络的运算，解决传统芯片在神经网络运算时效率低下的问题。
 
@@ -39,7 +49,7 @@ X86
 
 在X86_64中，其在AVX、AVX2等指令集中提供了VMULPS、VMULPD、VADDPS、VADDPD等一系列SIMD指令，这些指令可以使用一条指令来完成多组数据的运算。在矩阵乘法等应用中，数据之间没有相互依赖性，因此可以使用SIMD指令来提高运算效率。
 
-![](asset/img_540ea50f6c88.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_540ea50f6c88.jpg)
 
 VMULPS指令示意图与TPU相比，AVX至运算数据的尺寸上没有太多的限制，即使数据的规模较大，也可以拆分为多交指令执行。但这也造成AVX指令集的并行化程度一般不高，通常一条指令只能处理4-8条数据，效率远不如TPU等专门双击的架构，在人工智能的应用上仍然难以满足需要。
 

@@ -1,9 +1,19 @@
 ---
-title: "万字长文总结多模态大模型最新进展（Modality Bridging篇）"
-date: 2025-03-19
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/688215018
+title: 万字长文总结多模态大模型最新进展（Modality Bridging篇）
+date: "2025-03-19 00:00:00"
+updated: "2025-03-19 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/LLM-SD/万字长文总结多模态大模型最新进展(Modality-Bridging篇)/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/688215018
 ---
+
 
 系列笔记
 
@@ -44,7 +54,7 @@ source: https://zhuanlan.zhihu.com/p/688215018
 
 **
 
-![](asset/img_c94235c0bdf3.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_c94235c0bdf3.jpg)
 
  总的来说，首先，Perceiver Resampler接收来自视觉编码器的时空特征（从图像或视频获取），并输出固定数量的视觉标记。其次，这些视觉标记用于通过新初始化的交叉注意力层对冻结的语言模型进行条件化，这些层被插入到预训练的语言模型层之间。这些新层为语言模型提供了一种表达方式，以便将视觉信息纳入到下一个标记预测任务中
 
@@ -52,7 +62,7 @@ source: https://zhuanlan.zhihu.com/p/688215018
 
 视觉编码器**：是一个预训练并冻结的Normalizer-Free ResNet (NFNet)，使用Radford等人提出的 two-term contrastive loss，在图像和文本对数据集上对视觉编码器进行对比目标的预训练。使用最终阶段的输出，即一个二维空间网格的特征，将其压平为一个一维序列。对于视频输入，帧以1 FPS进行采样并独立编码，以获得一个三维时空特征网格，然后将学习到的时间嵌入添加到其中。特征然后被压平为一维，然后输入到Perceiver Resampler中。
 
-![](asset/img_6b8c5f461fd4.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_6b8c5f461fd4.jpg)
 
 Perceiver Resampler模块将由Vision Encoder输出的可变大小的时空视觉特征网格映射到固定数量的输出标记（图中为五个），与输入图像分辨率或输入视频帧数无关。这个transformer具有一组学习到的潜在向量作为查询，而键和值则是由时空视觉特征与学习到的潜在向量的连接组成。**Perceiver Resampler**：从不同大小的大型特征图到少量视觉标记。这个模块将视觉编码器连接到冻结的语言模型，如上图所示。它以视觉编码器中的图像或视频特征的可变数量作为输入，并产生固定数量的视觉输出（64个），从而降低了视觉-文本交叉注意力的计算复杂度。类似于Perceiver和DETR，本文学习了预定义数量的潜在输入查询，这些查询被输入到一个Transformer中，并对视觉特征进行交叉关注。消融研究中展示了使用这样一个视觉-语言重采样模块优于一个普通的Transformer和一个MLP。
 
@@ -60,22 +70,22 @@ Perceiver Resampler模块将由Vision Encoder输出的可变大小的时空视�
 
 **
 
-![](asset/img_f9a49ff6f7cc.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_f9a49ff6f7cc.jpg)
 
  上图提供了一个GATED XATTN-DENSE块的示意图，以及它与一个冻结的LM块的连接方式，同时附上了伪代码。下图绘制了Flamingo-3B模型的24个LM层在训练过程中（从0％到100％）不同层中tanh门控值的绝对值的演变。冻结的LM堆栈的所有层似乎都利用了视觉信息，因为tanh门控的绝对值从其0初始化中迅速增长。我们还注意到，绝对值似乎随着深度增加而增加。然而，从这个观察中很难得出强有力的结论：门控之前的激活的规模也可能随着深度变化。未来的工作需要更好地理解这些添加层对优化动态和模型本身的影响。
 
-![](asset/img_556a68f238da.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_556a68f238da.jpg)
 
 #### Multi-visual input support
 
-![](asset/img_6ccdad3636c4.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_6ccdad3636c4.jpg)
 
 首先通过在文本中的视觉数据位置插入image标签以及特殊标记BOS表示“序列开始”或EOC表示“块结束”）来处理文本。 图像由Vision Encoder和Perceiver Resampler独立处理，以提取视觉标记。 在给定的文本标记处，模型仅与最后一个前导图像/视频对应的视觉标记进行交叉关注。   指示文本标记可以关注的图像/视频，或者在没有前导图像/视频时为0上图说明了本文使用的mask方法，以限制某个文本标记看到的视觉标记数量。我们还对图像/视频和文本的交错序列的符号化进行了规范化。 交错的视觉数据和文本序列。我们考虑交错的图像/视频和文本示例：每个示例包含一系列文本  ，一系列图像/视频  ，以及图像在文本中的位置序列。基于视觉数据的位置，我们定义一个函数   : [1,  ] ↦ → [0,   ]，它为每个文本位置分配最后一个出现在该位置之前的图像/视频的索引（或者如果该位置之前没有视觉数据，则为0）。函数   定义了我们考虑用于预测的标记 l 的可用视觉输入：前面的标记 y_{.
 
 #### 训练细节
 
 - 训练数据集**由不同格式的训练数据集混合而成。去除交错的图像文本数据集M3W导致性能下降超过17％，而去除传统的配对图像文本对也会导致性能下降（下降9.8％），这表明需要不同类型的数据集。 
-![](asset/img_b63e419ab236.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_b63e419ab236.jpg)
 
 **
 
@@ -84,15 +94,15 @@ Perceiver Resampler模块将由Vision Encoder输出的可变大小的时空视�
 
 ### BLIP-2: Bootstrapping Language-Image Pre-training with Frozen Image Encoders and Large Language Models
 
-![](asset/img_ae5d2c0da4d6.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_ae5d2c0da4d6.jpg)
 
 BLIP-2框架概述。我们通过一个两阶段策略预训练轻量级的查询Transformer，以弥合模态差距。第一阶段从冻结的图像编码器中引导视觉-语言表示学习。第二阶段从冻结的LLM中引导视觉到语言的生成学习，这使得零样本指导的图像到文本生成成为可能。&lt;br&gt;LLM本质上是个语言模型，自然无法直接接受其他模态的信息。所以如何把各个模态的信息，统一到LLM能理解的特征空间，就是第一步要解决的问题。为此，作者提出了Q-Former。
 
-![](asset/img_5f411b1008ed.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_5f411b1008ed.jpg)
 
 （左）Q-Former和BLIP-2的第一阶段视觉-语言表示学习目标的模型架构。我们共同优化三个目标，这些目标强制查询（一组可学习的嵌入）提取与文本最相关的视觉表示。（右）每个目标的自注意力屏蔽策略，以控制查询-文本交互。Learned Query的引入在这里至关重要。可以看到这些Query通过Cross-Attention与图像的特征交互，通过Self-Attention与文本的特征交互。这样做的好处有两个：（1）这些Query是基于两种模态信息得到的；（2）无论多大的视觉Backbone，最后都是Query长度的特征输出，大大降低了计算量。比如在实际实验中，ViT-L/14的模型的输出的特征是257x1024的大小，最后也是32x768的Query特征。针对Q-Former的三个训练任务分别是 Image-Text Contrastive Learning (ITC)，Image-grounded Text Generation (ITG)，Image-Text Matching (ITM)。第一阶段，对于模型的训练，就是由以上三个任务组成，通过这几个任务，实现了对于特征的提取与融合。但现在模型还没见过LLM。我们现在用传感器完成了数据的提取与融合，下一步，我们得把数据转换成处理器能识别的格式。
 
-![](asset/img_d68ff92c92c2.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_d68ff92c92c2.jpg)
 
 BLIP-2的第二阶段视觉到语言生成预训练，从冻结的大型语言模型（LLM）中引导。 （顶部）引导基于解码器的LLM（例如OPT）。 （底部）引导基于编码器-解码器的LLM（例如FlanT5）。全连接层从Q-Former的输出维度调整到所选LLM的输入维度。通过第一阶段的训练，Query已经浓缩了图片的精华，现在要做的，就是把Query变成LLM认识的样子。这里作者针对两类不同LLM设计了不同的任务：
 
@@ -110,7 +120,7 @@ Decoder类型的LLM（如OPT）：以Query做输入，文本做目标； Encoder
 
 ### InstructBLIP: Towards General-purpose Vision-Language Models with Instruction Tuning
 
-![](asset/img_dd430f22b132.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_dd430f22b132.jpg)
 
 InstructBLIP的模型架构。Q-Former从冻结的图像编码器的输出嵌入中提取了指示感知的视觉特征，并将这些视觉特征作为软提示输入馈送给冻结的LLM。我们使用语言建模损失对模型进行指令调整，以生成响应。视觉编码器提取输入图片的特征，并喂入 Q-Former 中。此外，Q-Former 的输入还包括可学习的 Queries (BLIP-2 的做法) 和 Instruction。Q-Former 的内部结构黄色部分所示，其中可学习的 Queries 通过 Self-Attention 和 Instruction 交互，可学习的 Queries 通过 Cross-Attention 和输入图片的特征交互，鼓励提取与任务相关的图像特征。
 
@@ -128,11 +138,11 @@ Q-Former 的输出通过一个 FC 层送入 LLM，Q-Former 的预训练过程遵
 
 结合GPT-4优异的文字能力，将原始数据构造成结构化的文本信息作为Context，同时通过prompt template请求GPT-4得到一些结果，来生成原始的instruction data。在训练时，则可加入visual token，以得到align后的instruction-tuned model
 
-![](asset/img_760d50c98166.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_760d50c98166.jpg)
 
 训练分两步，第一步做对齐，只训projection layer；第二步e2e finetune，vision encoder（clip vit-L）是freeze的。可以看到instruction tuning对任务效果影响巨大，另外每个任务本身的指令数据也对各个任务都有互补作用
 
-![](asset/img_b57eef5994db.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_b57eef5994db.jpg)
 
 使用不同训练数据在LLaVA-Bench（COCO）上的消融实验。我们报告相对分数，相对于一个仅使用地面真实图像标题和边界框作为视觉输入的文本GPT-4模型。我们使用我们模型输出的答案和GPT-4（仅文本）的答案来提示GPT-4，并让它在两者之间进行比较并给出一个带有解释的评分。
 ### Improved Baselines with Visual Instruction Tuning
@@ -157,7 +167,7 @@ LLaVA-NeXT，它在推理、OCR和世界知识方面有所改进。LLaVA-NeXT甚
 
 #### Detailed Technical Improvement
 
-![](asset/img_39c958f5f22d.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_39c958f5f22d.jpg)
 
 通过将图像分割成网格并独立对其进行编码，将LLaVA-1.5扩展到更高分辨率。这使得模型能够适应任何分辨率，而无需为ViTs执行位置嵌入插值。我们还将下采样图像的特征连接起来，以为LLM提供全局上下文。**Scaling to Higher Resolutions** 我们通过将图像分成原始训练视觉编码器的分辨率的较小图像块，并独立对其进行编码来克服这一问题。在获取单个块的特征图后，我们将它们合并成目标分辨率的单个大特征图，并将其馈送到LLM中。为了为LLM提供全局上下文并减少分割-编码-合并操作的人为因素，我们还将一个降采样图像的特征连接到合并后的特征图中。这使我们能够将输入扩展到任意分辨率并保持LLaVA-1.5的数据效率。我们将这个结果模型称为LLaVA-1.5-HD。
 
@@ -173,7 +183,7 @@ LLaVA-NeXT，它在推理、OCR和世界知识方面有所改进。LLaVA-NeXT甚
 
 ### Cheap and Quick: Efficient Vision-Language Instruction Tuning for Large Language Models
 
-![](asset/img_08b455084242.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_08b455084242.jpg)
 
 Mixture-of-Modality Adaptation (MMA)概述及LaVIN的架构。在LaVIN中，采用了新颖的混合模态适配器来处理不同模态的指令。在指导调优过程中，LaVIN通过端到端的模态混合训练（Mixture of Modality Training，MMT）进行优化。本文提出了混合模态适应（Mixture-of-Modality Adaptation，MMA）：一种端到端的优化方案，通过轻量级适配器连接图像编码器和LLM。与此同时，我们还提出了MMA中的一种新颖路由算法，可以帮助模型自动调整单模态和多模态指令的推理路径。基于MMA，我们开发了一个名为LaVIN的大型视觉语言指导模型，它在各种遵循指令的任务中展现出了比现有多模态LLM更优异的训练效率和更好的推理能力。
 
@@ -181,17 +191,17 @@ LaVIN在效率上具有优越性，并且与现有的多模态LLM相比具有竞
 
 ### MIMIC-IT: Multi-Modal In-Context Instruction Tuning
 
-![](asset/img_2f7c6d9741fe.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_2f7c6d9741fe.jpg)
 
 MIMIC-IT数据集包括280万个多模态指令-回复对，涵盖了基本能力：感知、推理和规划。每个指令都伴随着多模态的对话背景，使得在MIMIC-IT上训练的VLM能够展现出在交互式指令遵循方面的强大熟练度，实现零-shot泛化。数据格式比较：LLaVA-Instruct-150K vs. MIMIC-IT。 (a) LLaVA-Instruct-150K由一张图片及其对应的仅包含语言的上下文信息（黄色框）组成。 (b) MIMIC-IT包含**多个图片或视频的输入数据**，并支持**多模态上下文信息**，即考虑图片/视频和语言输入作为上下文信息。
 
-![](asset/img_fe996ab8c29b.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_fe996ab8c29b.jpg)
 
 ### LLaVAR: Enhanced Visual Instruction Tuning for Text-Rich Image Understanding
 
 本工作通过文本丰富的图像（例如电影海报、书籍封面等）增强了当前的视觉指令调整流程。具体而言，我们首先**使用公开可用的OCR工具在LAION数据集的422K个文本丰富的图像上收集结果**。此外，我们使用识别出的文本和图像标题提示纯文本GPT-4生成16K个对话，每个对话包含针对文本丰富图像的问答对。通过将我们收集的数据与先前的多模态指令遵循数据相结合，我们的模型LLaVAR大大提高了LLaVA模型在基于文本的VQA数据集上的能力（最多提高20%的准确率）。
 
-![](asset/img_543ea977e224.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_543ea977e224.jpg)
 
 ### SVIT: Scaling up Visual Instruction Tuning
 
@@ -203,7 +213,7 @@ SVIT涉及构建一个包含420万个视觉指导调整数据点的数据集，�
 
 #### 数据集选择算法
 
-![](asset/img_a0d7f5a8be72.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_a0d7f5a8be72.jpg)
 
 流行的基准测试评估多模态大型语言模型（MLLM）的不同能力，这需要特定的训练数据配方来激发预训练模型。因此，我们设计了一种新的数据配方，即核心集选择算法，以更好地适应这些基准测试，并在性能和训练效率之间取得平衡。
 
@@ -217,7 +227,7 @@ SVIT涉及构建一个包含420万个视觉指导调整数据点的数据集，�
 
 **
 
-![](asset/img_0ac98509bd55.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_0ac98509bd55.jpg)
 
 预训练的第一阶段**，我们主要利用**大规模的、弱标记的、网络爬取**的图文对数据集。我们的预训练数据集由几个公开可访问的来源和一些内部数据组成。我们努力清理了数据集中的某些模式。原始数据集包含总共50亿个图文对，在清理后，仅剩14亿数据，其中77.3%是英文（文本）数据，22.7%是中文（文本）数据。**我们在这个阶段冻结了大型语言模型**，只优化了视觉编码器和VL适配器。输入图像被调整为224×224。训练目标是最小化文本标记的交叉熵。最大学习率为2e−4，训练过程使用了30720的图文对批量大小，整个预训练的第一阶段持续了50000个步骤，消耗了大约15亿个图文样本。更多的超参数详见附录C，该阶段的收敛曲线如图所示。
 
@@ -227,7 +237,7 @@ SVIT涉及构建一个包含420万个视觉指导调整数据点的数据集，�
 
 ### NExT-GPT: Any-to-Any Multimodal LLM
 
-![](asset/img_3e8b10924d7b.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_3e8b10924d7b.jpg)
 
 作者提出了一个端到端通用的任意对任意MM-LLM（Multimodal-Large Language Model）系统。NExT-GPT将LLM与多模态适配器和不同的扩散解码器连接起来，使NExT-GPT能够感知输入并以文本、图像、视频和音频的任意组合生成输出。
 
@@ -247,13 +257,13 @@ NExT-GPT基本思想是利用编码器对各种模态的输入进行编码，将
 
 **Lightweight Multimodal Alignment Learning（轻量级多模态对齐学习）**
 
-![](asset/img_113990307747.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_113990307747.jpg)
 
 为了完成编码器对齐，作者从现有语料库和基准中准备了“X-caption”对（“X”代表图像、音频或视频，caption代表文字）数据，然后强制 LLM 根据标注caption生成每个输入模态的caption，学习过程如上图所示。
 
 **
 
-![](asset/img_5cc2c393187d.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_5cc2c393187d.jpg)
 
  在解码端，NExT-GPT集成了来自外部资源的预训练条件扩散模型，对齐的主要目的是将扩散模型与LLM的输出指令保持一致**。 然而，在每个扩散模型和LLM之间执行全面的对齐过程将带来巨大的计算负担。 因此，我们在这里探索一种更有效的方法，即解码端指令跟随对齐，如上图所示。 具体来说，由于各种模态的扩散模型仅以文本标记输入为条件， 这种调节与NExT-GPT系统中 LLM 的模态信号标记不同，这导致扩散模型对 LLM 指令的准确解释存在差距。 因此，作者考虑**最小化 LLM 的模态信号标记表示与扩散模型的条件文本表示之间的距离**。 由于仅使用文本条件编码器（扩散模型的Text Encoder冻结），因此学习仅基于纯粹的字幕文本，即没有任何视觉或音频资源，这也确保了高度轻量级的训练。
 
@@ -261,7 +271,7 @@ NExT-GPT基本思想是利用编码器对各种模态的输入进行编码，将
 
 尽管编码和解码端能够与 LLM 保持一致，但距离使整个系统能够忠实地遵循和理解用户的指令并生成所需的多模态输出的目标仍然存在差距。 为了增强LLM的能力和可控性，进一步的指令调整（Instruction Tuning，IT）被认为有必要的。 IT 使用“（输入，输出）”对整体 MM-LLM 进行额外训练，其中“输入”代表用户的指令，“输出”表示符合给定指令的所需模型输出。
 
-![](asset/img_1b07329cd5b2.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_1b07329cd5b2.jpg)
 
 具体来说，作者利用 LoRA使 NExT-GPT中的一小部分参数能够在 IT 阶段与两层投影同时更新。 如上图所示，当 IT 对话样本输入系统时，LLM 会重建并生成输入的文本内容（并使用多模态信号标记表示多模态内容），优化的目标是根据金标注和LLM的输出进行的。 除了LLM调优之外，作者还对NExT-GPT的解码端进行了微调，将输出投影编码的模态信号标记表示与扩散条件编码器编码的金多模态caption标注表示对齐。 至此，全面的调优过程更加接近与用户忠实有效交互的目标。
 
@@ -273,7 +283,7 @@ NExT-GPT基本思想是利用编码器对各种模态的输入进行编码，将
 
 ### InternLM-XComposer: A Vision-Language Large Model for Advanced Text-image Comprehension and Composition
 
-![](asset/img_1bbcca18201f.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_1bbcca18201f.jpg)
 
 InternLM-XComposer的架构和训练方案。预训练阶段对齐了视觉和语言知识，SFT阶段激发了不同的模型能力。模型由三个组件构成
 
@@ -295,7 +305,7 @@ tl;nr: 使用已经训练好的LLM，然后给它添加图像的功能。方法�
 - ViT encoder：EVA2-CLIP-E ，负责将图像转化为特征表示。在CogVLM-17B中，**移除了ViT编码器的最后一层**，因为该层专注于整合 [CLS] 特征以用于对比学习。
 - MLP adapter：a two-layer SwiGLU MLP，用于将ViT的输出映射到与文本特征相同的空间。所有的图像特征在语言模型中共享相同的「位置编码id」。
 - Visual expert module：在 LLM 的每一层中引入可训练的 visual expert，其包含专门处理 image feature 的「QKV矩阵」和「MLP层」，以实现深度的视觉-语言特征对齐。QKV矩阵和MLP的形状与预训练语言模型中的相同，并从中进行初始化。trainable visual expert 专门用于转换图像特征，功能上和 LLM QKV/MLP 一致，但是只针对 image feature，从而实现模态间的深度融合。
-![](asset/img_cd00cb567d4e.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_cd00cb567d4e.jpg)
 
 CogVLM的架构。(a) 关于输入的说明，其中图像由预训练的ViT处理，并映射到与文本特征相同的空间中。(b) 语言模型中的Transformer块。图像特征具有不同的QKV矩阵和FFN。只有紫色部分是可训练的。&lt;br&gt;**PRETRAINING**: 用了公开可用的图像文本对进行训练，为 LAION-2B 和 COYO-700M
 
@@ -313,7 +323,7 @@ Monkey模型提出了一种有效地**提高输入分辨率的方法**，最高�
 
 #### 1、提高输入分辨率
 
-![](asset/img_8daef7338c3e.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_8daef7338c3e.jpg)
 
 Monkey的整体架构允许通过从原始图像中捕获全局特征和从分割补丁中获取局部特征来实现高分辨率。所有补丁都通过共享的静态ViT编码器进行处理，例如具有2b参数的ViT-BigG。
 
@@ -328,20 +338,20 @@ Monkey的整体架构允许通过从原始图像中捕获全局特征和从分�
 #### 关键发现
 
 - 提高分辨率能提高模型性能（r3-r9），四个LoRA能够帮助模型获得图像中不同部分的独特特征(r7 vs. r9)，并帮助模型建立对空间和上下文关系的理解。进一步提高输入分辨率能够提高模型在文档等更高分辨率的图像上的性能(r5,r6)。同时，相比与直接插值扩大模型输入分辨率的方法相比(r1,r2 vs. r9)，本文的方法在时间和性能上更具优势。表六中当把llava1.5的输入分辨率从224扩大为448，性能得到显著提升，进一步展现了本文方法的有效性。
-![](asset/img_3e8ef16a8e60.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_3e8ef16a8e60.jpg)
 
 ### LLaMA-VID: An Image is Worth 2 Tokens in Large Language Models
 
 当前的VLMs在诸如图像字幕和视觉问答等任务中表现出色，但在处理长视频时面临着计算负担，因为存在过多的视觉标记。LLaMA-VID通过用两个不同的标记表示每个帧来解决这个问题，即上下文标记和内容标记。上下文标记基于用户输入编码整体图像背景，而内容标记则封装了每个帧中的视觉线索。这种双标记策略显著减少了长视频的负担，同时又保留了关键信息。总的来说，LLaMA-VID赋予现有框架支持长达一小时的视频，并通过额外的上下文标记推动了它们的上限。在大多数基于视频或图像的基准测试中，它被证明超越了先前的方法。
 
-![](asset/img_8a04c2c9ca0a.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_8a04c2c9ca0a.jpg)
 
 LLaMA-VID的框架。在用户指令下，LLaMA-VID通过接受单个图像或视频帧作为输入，并从LLM生成响应。该过程始于一个视觉编码器，将输入帧转换为视觉嵌入。然后，文本解码器根据用户输入生成文本查询。在上下文注意力中，文本查询从视觉嵌入中聚合与文本相关的视觉线索。为了提高效率，提供了将视觉嵌入降采样到各种令牌大小甚至单个令牌的选项。然后，使用线性投影器制定文本引导的上下文令牌和视觉丰富的内容令牌来表示每个时间t的每个帧。最后，LLM接受用户指令和所有视觉令牌作为输入并给出响应。&lt;br&gt;
 ### MoE-LLaVA: Mixture of Experts for Large Vision-Language Models
 
 最近的进展表明，扩展大型视觉语言模型（LVLMs）有效地提高了下游任务的性能。然而，现有的扩展方法使得所有模型参数在计算中对每个标记都是活跃的，这带来了巨大的训练和推理成本。在这项工作中，我们提出了一种简单而有效的训练策略MoE-Tuning用于LVLMs。这一策略创新地解决了多模态稀疏学习中的性能下降问题，从而构建了一个具有惊人参数数量但计算成本恒定的稀疏模型。此外，我们提出了基于MoE的稀疏LVLM体系结构MoE-LLaVA，它在部署过程中通过路由器唯一激活了仅排名靠前的k个专家，使其余的专家保持不活跃状态。大量实验证明了MoE-LLaVA在各种视觉理解和物体幻觉基准测试中的显著性能。值得注意的是，仅有约3B个稀疏激活参数，MoE-LLaVA在各种视觉理解数据集上表现出与LLaVA-1.5-7B相当的性能，甚至在物体幻觉基准测试中超过了LLaVA-1.5-13B。通过MoE-LLaVA，我们旨在建立稀疏LVLMs的基准，并为未来研究开发更高效、更有效的多模态学习系统提供宝贵的见解。
 
-![](asset/img_fa531427375b.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_fa531427375b.jpg)
 
 MoE-Tuning的示意图。MoE-Tuning包括三个阶段。在第一阶段，只有MLP被训练。在第二阶段，除了视觉编码器（VE）之外，所有参数都被训练。在第三阶段，FFN被用来初始化MoE中的专家，只有MoE层被训练。对于每个MoE层，每个标记只激活两个专家，而其他专家保持沉默。**阶段一**：在这个阶段，我们的目标是使图像标记适应LLM，使LLM能够理解图像中的实例。为了实现这一目标，我们使用MLP将图像标记投影到LLM的输入域中，将图像块视为伪文本标记。**在这个阶段，LLM被训练来描述图像**。MoE层在这个阶段不应用于LLM。
 
@@ -349,7 +359,7 @@ MoE-Tuning的示意图。MoE-Tuning包括三个阶段。在第一阶段，只有
 
 **阶段三**：作为初始化，**我们多次复制FFN以初始化专家**。当图像标记和文本标记被输入到MoE层时，路由器计算每个标记与专家之间的匹配权重。然后，每个标记都由前k个专家处理，并且根据路由器的权重进行加权求和。当激活前k个专家时，其余的专家保持沉默。这种建模方法形成了MoE-LLaVA，具有无限可能的稀疏路径，提供了广泛的能力。
 
-![](asset/img_bc0c81bb3827.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_bc0c81bb3827.jpg)
 
 ### LLaVA-UHD: an LMM Perceiving Any Aspect Ratio and High-Resolution Images
 
@@ -357,7 +367,7 @@ MoE-Tuning的示意图。MoE-Tuning包括三个阶段。在第一阶段，只有
 
 为了解决这些挑战，该论文介绍了LLaVA-UHD，一种大型多模态模型，旨在高效处理任何纵横比和高分辨率的图像。LLaVA-UHD包括三个主要组成部分：
 
-![](asset/img_ec11c405e6de.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_ec11c405e6de.jpg)
 
 LLaVA-UHD框架。左图：给定一个高分辨率图像，LLaVA-UHD首先计算理想的切片数量，然后从可能的因式分解中选择最佳分区，将高分辨率图像分割成不同大小的切片。右图：切片通过在位置嵌入上进行2D插值以保持原始纵横比进行编码，然后压缩并按空间结构排列以供LLM处理。
 
@@ -383,7 +393,7 @@ LLaVA-UHD框架。左图：给定一个高分辨率图像，LLaVA-UHD首先计�
 
 ### Yi-VL
 
-![](asset/img_a7a13f171139.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_a7a13f171139.jpg)
 
 Yi-VL采用了LLaVA架构，经过全面的三阶段训练过程，以将视觉信息与Yi LLM的语义空间良好对齐：
 
@@ -397,7 +407,7 @@ Yi-VL采用了LLaVA架构，经过全面的三阶段训练过程，以将视觉�
 
 ### Beyond llava-hd: diving into high-resolution large multimodal models
 
-![](asset/img_0d32a1e32ad2.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_0d32a1e32ad2.jpg)
 
 aper: Beyond llava-hd: diving into high-resolution large multimodal models
 
@@ -407,11 +417,11 @@ Code: [https://github.com/yfzhang114/SliME](https://link.zhihu.com/?target=https
 
 现有的研究通常采用一种很直接的分辨率提升方法，其中图像由全局和局部分支组成，后者是被切片的图像块，但被调整为与前者相同的分辨率。这意味着更高的分辨率需要更多的局部块**，从而导致高昂的计算开销，同时，**局部图像标记的主导地位可能削弱全局上下文**。例如，在一张1024×1024的图像中被分为9个块时，全局图像标记仅占。
 
-  [/01] 使用了Qformer的SliME框架无缝扩展到视频分析[[扩展方式]](https://link.zhihu.com/?target=https%3A//github.com/yfzhang114/SliME/blob/main/Slime_video.md)。值得注意的是，即使该模型从未在视频数据上进行过专门培训，但它最多可以处理8帧。在Video-MME基准测试中，8B SliME超过了许多在视频数据集中接受过训练的7b/8b基线。这进一步强调了在使用Q-former的时候，global context的重要性 
+  [/01] 使用了Qformer的SliME框架无缝扩展到视频分析<span class="wikilink wikilink--missing" title="未导入的页面">扩展方式</span>(https://link.zhihu.com/?target=https%3A//github.com/yfzhang114/SliME/blob/main/Slime_video.md)。值得注意的是，即使该模型从未在视频数据上进行过专门培训，但它最多可以处理8帧。在Video-MME基准测试中，8B SliME超过了许多在视频数据集中接受过训练的7b/8b基线。这进一步强调了在使用Q-former的时候，global context的重要性 
 
 #### SliME: LMM with Sophisticated Tasks, Local image augmentation, and Mixture of global Experts
 
-![](asset/img_7e99737f8489.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_7e99737f8489.jpg)
 
 图1:(b) 使用专家混合来优化视觉适配器，(c) 优化局部压缩层，(d) 指令微调。SliME通过切片、投影和选择与查询对齐的相关局部特征来高效处理图像。我们的核心思想是全局信息应该被优先考虑，因此我们旨在提取和保留尽可能多的全局上下文，同时用局部图像细节增强它。在这项研究中，
 

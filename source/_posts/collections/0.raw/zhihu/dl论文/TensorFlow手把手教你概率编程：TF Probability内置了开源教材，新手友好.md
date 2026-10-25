@@ -1,10 +1,19 @@
 ---
-title: "TensorFlow手把手教你概率编程：TF Probability内置了开源教材，新手友好"
-date: 2018-12-13
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/52329022
-
+title: TensorFlow手把手教你概率编程：TF Probability内置了开源教材，新手友好
+date: "2018-12-13 00:00:00"
+updated: "2018-12-13 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/dl论文/TensorFlow手把手教你概率编程-TF-Probability内置了开源教材,新手友好/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/52329022
 ---
+
 
 晓查 栗子 发自 凹非寺 
 量子位 出品 | 公众号 QbitAI大家可能知道，要做**概率编程** (Probabilistic Programming) 的话，**TensorFlow Probability** (TFP) 这个库是个不错的选择。

@@ -1,4 +1,17 @@
 ---
+title: 最详细的文本分块(Chunking)方法，直接影响LLM应用效果 | 我的学习笔记 | 土猛的员外
+date: "2026-04-11 21:40:28"
+updated: "2026-04-11 21:40:28"
+layout: post
+permalink: /collections/0.raw/Omnivore/2024-04-09/最详细的文本分块(Chunking)方法,直接影响LLM应用效果-我的学习笔记-土猛的员外/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
+---
 id: e18a511a-3de0-4d17-97ac-559ada029d7b
 ---
 

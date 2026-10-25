@@ -1,9 +1,19 @@
 ---
-title: "10种常用降维算法源代码(python)"
-date: 2019-12-29
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/68754729
+title: 10种常用降维算法源代码(python)
+date: "2019-12-29 00:00:00"
+updated: "2019-12-29 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/机器学习/10种常用降维算法源代码(python)/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/68754729
 ---
+
 
 最近看了一些经典的降维算法，发现网上的资料大部分都不提供源代码，同时个人觉得通过代码理解算法是最有效的一种方式，因此决定自己整理和实现一些常见降维算法的代码。(**github上不止止有代码，还有相应的资料，同时后续也会继续整理其他代码**)
 
@@ -13,7 +23,7 @@ source: https://zhuanlan.zhihu.com/p/68754729
 
 ****
 
-**![](asset/img_d742b3a69953.jpg)
+**![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_d742b3a69953.jpg)
 
 **
 
@@ -21,7 +31,7 @@ source: https://zhuanlan.zhihu.com/p/68754729
 
 ****
 
-**![](asset/img_75f425703ffd.jpg)
+**![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_75f425703ffd.jpg)
 
 **
 
@@ -31,9 +41,9 @@ source: https://zhuanlan.zhihu.com/p/68754729
 
 ****
 
-**![](asset/img_81a7880b37c5.jpg)
+**![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_81a7880b37c5.jpg)
 
-非迭代****![](asset/img_3ab39d3a842a.jpg)
+非迭代****![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_3ab39d3a842a.jpg)
 
 迭代**
 
@@ -41,7 +51,7 @@ source: https://zhuanlan.zhihu.com/p/68754729
 
 ****
 
-**![](asset/img_11b8e780a5ac.jpg)
+**![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_11b8e780a5ac.jpg)
 
 **
 
@@ -49,7 +59,7 @@ source: https://zhuanlan.zhihu.com/p/68754729
 
 ****
 
-**![](asset/img_61892ef8c43e.jpg)
+**![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_61892ef8c43e.jpg)
 
 **
 
@@ -59,7 +69,7 @@ source: https://zhuanlan.zhihu.com/p/68754729
 
 ****
 
-**![](asset/img_755520d7edab.jpg)
+**![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_755520d7edab.jpg)
 
 **
 
@@ -67,7 +77,7 @@ source: https://zhuanlan.zhihu.com/p/68754729
 
 ****
 
-**![](asset/img_d18ae24f77b1.jpg)
+**![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_d18ae24f77b1.jpg)
 
 **
 
@@ -75,7 +85,7 @@ source: https://zhuanlan.zhihu.com/p/68754729
 
 使用AutoEncoder实现的PCA
 
-![](asset/img_161aba5a2750.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_161aba5a2750.jpg)
 
 **9. FastICA**
 
@@ -87,7 +97,7 @@ source: https://zhuanlan.zhihu.com/p/68754729
 
 11. LE**
 
-![](asset/img_52f58d0db07a.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_52f58d0db07a.jpg)
 
 **github链接如下:**
 

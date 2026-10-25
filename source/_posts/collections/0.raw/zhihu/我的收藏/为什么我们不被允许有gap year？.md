@@ -1,10 +1,19 @@
 ---
-title: "为什么我们不被允许有gap year？"
-date: 2023-11-05
-tags: [知乎]
-source: https://www.zhihu.com/question/593093174/answer/3277529378
-
+title: 为什么我们不被允许有gap year？
+date: "2023-11-05 00:00:00"
+updated: "2023-11-05 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/为什么我们不被允许有gap-year/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://www.zhihu.com/question/593093174/answer/3277529378
 ---
+
 
 这个问题下有人回答：不是不允许你有gap year，而是不允许那种纯粹瞎玩，浪费时间，毫无意义的gap year，你要拿gap year来提高自己，虽然不上班但也要学习其他的技能，这样的gap year才是被允许的，外国人的gap year虽然不是围绕考试和上学，但本质上也还是用各种活动来刷履历。
 

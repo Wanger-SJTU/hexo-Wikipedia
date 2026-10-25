@@ -1,3 +1,16 @@
+---
+title: 参考文档
+date: "2026-04-11 21:40:18"
+updated: "2026-04-11 21:40:18"
+layout: post
+permalink: /collections/草稿/端侧动态shape问题的现状和挑战/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 
 
 ## WHY 动态 Shape
@@ -8,7 +21,7 @@
 在这样固定输入输出的情况下所有与计算优化的信息都是已知的，可以最大程度上优化推理表现，去做一些内存复用、算子优化策略。
 
 但在很多业务场景下，还是希望支持动态尺寸的输入输出。
-![[assets/Pasted image 20240519221617.png]]
+![Pasted image 20240519221617.png](/images/collections/assets/Pasted%2520image%252020240519221617.png)
 
 这里引用一下的论文_arxiv 2403.00176的图。大概包括以下的情况
 1. 输入shape影响输出的值， 比如shape算子
@@ -17,9 +30,9 @@
 4. 决定了执行情况，这里大多是控制流算子
 
 
-![[assets/Pasted image 20240517221547.png]]
+![Pasted image 20240517221547.png](/images/collections/assets/Pasted%2520image%252020240517221547.png)
 
-![[assets/Pasted image 20240524220701.png]]
+![Pasted image 20240524220701.png](/images/collections/assets/Pasted%2520image%252020240524220701.png)
 
 ### 支持动态shape挑战：
 静态Shape的场景是一个确定的优化问题，在端侧设备上主要的优化目标也是减少推理延迟和降低内存需求。

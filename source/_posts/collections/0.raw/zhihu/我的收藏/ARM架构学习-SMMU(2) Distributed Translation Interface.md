@@ -1,13 +1,23 @@
 ---
-title: "(2 条消息) ARM架构学习-SMMU(2) Distributed Translation Interface"
-date: 2025-05-28
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/16724045320
+title: (2 条消息) ARM架构学习-SMMU(2) Distributed Translation Interface
+date: "2025-05-28 00:00:00"
+updated: "2025-05-28 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/ARM架构学习-SMMU(2)-Distributed-Translation-Interface/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/16724045320
 ---
+
 
 前文提到，SMMU在ARM架构中主要承担内存虚拟化的相关功能，具体实现上，一个SMMU一般由多个TBU模块，1个DTI interconnect和1个TCU模块组成，如下图所示：
 
-![](asset/img_7dc4275cac5a.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_7dc4275cac5a.jpg)
 
 图1 SMMU系统示例PCIe RP通过LTI接口与TBU交互，主要完成inbound请求的地址翻译业务；同时通过DTI接口与TCU交互，主要完成ATS相关业务。此外，TBU和TCU之间也是通过DTI接口交互。TBU可以简单理解为SMMU的一级cache，TCU是SMMU的二级cache。PCIe发给TBU的地址翻译业务，如果TBU在内部cache中没有找到对应entry，则会通过DTI接口发送请求给TCU，从TCU的cache中查找。当然它们的功能区别不止于此，本文暂不做展开。
 
@@ -25,17 +35,17 @@ DTI的接口协议可以细分为两种：
 
 DTI的message可以一共分为以下5种：
 
-![](asset/img_f9481dda892e.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_f9481dda892e.jpg)
 
 每个DTI message有固定的encoding和长度，且downstream和upstream方向的encoding不同。Downstream表示远离TBU或RC/RP的方向，即TBU或RC/RP发送请求给TCU的方向。Upstream表示发给TBU或RC/RP的请求方向（来自TCU）。
 
 DTI-ATS protocol的downstream message（TBU/RP发给TCU）如下所示：
 
-![](asset/img_4c5f531a1b3c.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_4c5f531a1b3c.jpg)
 
 Upstream message（TCU发给TBU/RP）如下所示：
 
-![](asset/img_b5d59a5a4411.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_b5d59a5a4411.jpg)
 
 #### Flow Control
 
@@ -61,11 +71,11 @@ DTI channel可能有4种状态：
 
 DTI channel的connect过程如下图所示：
 
-![](asset/img_8e68a71f1bca.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_8e68a71f1bca.jpg)
 
 图2 DTI connect handshake如果TCU配置发现配置异常，可能出现connect deny，如下图所示：
 
-![](asset/img_122fb426add7.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_122fb426add7.jpg)
 
 图3 DTI Connect Deny当TBU or PCIe RP发起disconnect后（处于REQ_DISCONNECT state），不需要再返回还在处理的（outstanding）的各类message的responses。此时TBU or PCIe RP依然需要能接收来自TCU的新的请求，但是可以直接丢弃，不需要返回responses；
 
@@ -75,7 +85,7 @@ DTI是点对点的协议，一个TCU可能通过多个DTI channel与多个TBU or
 
 各个state下channel可以发送的messages如下：
 
-![](asset/img_162d2aaeff20.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_162d2aaeff20.jpg)
 
 基于上表，可以看到在CONNECTED状态下继续发送Connect Request是允许的。
 
@@ -93,44 +103,44 @@ Connection和disconnection request由PCIe RP发起：
 
 2） 只有connected状态下，并且没有正在处理中的请求时，才能发起disconnected请求。
 
-![](asset/img_62a37855e34e.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_62a37855e34e.jpg)
 
 图4 DTI_ATS_CONDIS_REQ Message***DTI_ATS_CONDIS_ACK***
 
 TCU返回connection/disconnection acknowledgement给PCIe RP。
 
-![](asset/img_1f7f1d644b70.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_1f7f1d644b70.jpg)
 
 图5 DTI_ATS_CONDIS_ACK
 #### Translation request message group
 
 ***DTI_ATS_TRANS_REQ***
 
-![](asset/img_4beafb72f311.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_4beafb72f311.jpg)
 
 图6 DTI_ATS_TRANS_REQ Message一个ATS translation req要消耗一个translation token，RP只有在至少有一个translation token时才能发送translation req给TCU。
 
 ***DTI_ATS_TRANS_RESP***
 
-![](asset/img_099b56cbaf89.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_099b56cbaf89.jpg)
 
 图7 DTI_ATS_TRANS_RESP Message每个resp message也相当于返回一个translation token给RP。
 
 ATS Trans Rsp Message与ATS Completion Message的data entry的对应关系如下：
 
-![](asset/img_f32642432cfe.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_f32642432cfe.jpg)
 
-![](asset/img_504f4877c8fe.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_504f4877c8fe.jpg)
 
 ***DTI_ATS_TRANS_FAULT***
 
 用于TCU返回fault response（to a ATS Request）以及translation token给function。
 
-![](asset/img_465efa7a8b92.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_465efa7a8b92.jpg)
 
 图8 DTI_ATS_TRANS_FAULT Message其中，FAULT_TYPE定义如下所示：：
 
-![](asset/img_0d5430515bda.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_0d5430515bda.jpg)
 
 当FAULT_TYPE为2’b00时，RP返回给function的completion message中，status为success，但是data中的R和W都为0，其余域段均无效。
 
@@ -140,9 +150,9 @@ ATS Trans Rsp Message与ATS Completion Message的data entry的对应关系如下
 
 一个完整的ATS translation（inline translation）过程如下图所示：
 
-![](asset/img_83b39fc48fd4.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_83b39fc48fd4.jpg)
 
-图9 Example complete ATS translation sequence in DTI![](asset/img_72d35a41ce48.jpg)
+图9 Example complete ATS translation sequence in DTI![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_72d35a41ce48.jpg)
 
 RC/RP如果收到的一个ATS translation request中有多个连续的pages，可以选择将ATS request拆分成多个DTI_ATS_TRANS_REQ messages发送给TCU（也可以不拆分），并将TCU返回的多个DTI_ATS_TRANS_RESP messages组合在一起，最后返回一个ATS response给源function。
 
@@ -154,31 +164,31 @@ Invalidation SYNC是TCU发给RP确认invalidation已经完成的 。
 
 ***DTI_ATS_INV_REQ***
 
-![](asset/img_bc1fd0641643.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_bc1fd0641643.jpg)
 
 图10 DTI_ATS_INV_REQ Message一个invalidation req消耗一个invalidation token，TCU只有在至少有一个invalidation token时才能发送invalidation req。
 
 OPERATION的类型如下：
 
-![](asset/img_a5f03361ef90.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_a5f03361ef90.jpg)
 
 与SMMU command的对应如下：
 
-![](asset/img_55bbaf0c7258.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_55bbaf0c7258.jpg)
 
 Invalidation这里有个特殊的地方，就是如果operation为ATCI_PASID_GLOBAL，ARM建议PCIe RP在将invalidate请求转换为TLP发送给EP时，必须加上一个PASID Prefix，其中的PASID可以固定为0：
 
-![](asset/img_6311d9aed2c3.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_6311d9aed2c3.jpg)
 
 ***DTI_ATS_INV_ACK***
 
-![](asset/img_5145d92071f1.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_5145d92071f1.jpg)
 
 图11 DTI_ATS_INV_ACK Message用于RP返回invalidation token给TCU。
 
 ***DTI_ATS_SYNC_REQ***
 
-![](asset/img_d8809a99f6a1.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_d8809a99f6a1.jpg)
 
 图12 DTI_ATS_SYNC_REQ Message即使前面的invalidation requests已经sync过了，TCU也可以继续发sync message，RP/RC不需要报错;
 
@@ -186,11 +196,11 @@ Sync message必须在收到invalidation requests的ack messages之后才能发�
 
 Sync message必须在前面的sync message都受到ack之后才能发送（sync message的outstanding只能为1）。
 
-![](asset/img_27732f6fdaed.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_27732f6fdaed.jpg)
 
 ***DTI_ATS_SYNC_ACK***
 
-![](asset/img_aa5e0f4e0cc2.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_aa5e0f4e0cc2.jpg)
 
 图13 DTI_ATS_SYNC_ACK MessageERROR域段指示PCIe是否发生了错误，0表示成功（success），1表示有错误（error）。
 
@@ -198,9 +208,9 @@ Sync message必须在前面的sync message都受到ack之后才能发送（sync 
 
 Invalidation的流程如下图所示：
 
-![](asset/img_17a78de0e829.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_17a78de0e829.jpg)
 
-图14 DTI-ATS invalidation sequence![](asset/img_fc235adcb434.jpg)
+图14 DTI-ATS invalidation sequence![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_fc235adcb434.jpg)
 
 TCU如果收到一个DTI_ATS_SYNC_ACK message，这意味着：
 
@@ -234,7 +244,7 @@ DTI channel上，page request的outstanding只能为1，RP需要等到上一个�
 
 只有在connect阶段DTI channel表示支持PRI时（SUP_PRI为1），才可以发送PRI请求。
 
-![](asset/img_23d62a8417f3.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_23d62a8417f3.jpg)
 
 图15 DTI_ATS_PAGE_REQ MessageSTOP PASID marker为SSV=1，LAST=1，READ=0，WRITE=0.
 
@@ -242,7 +252,7 @@ DTI channel上，page request的outstanding只能为1，RP需要等到上一个�
 
 TCU返回acknowledge给RP，RP收到ack后，可以继续发下一个page req。
 
-![](asset/img_7eed69e5f17f.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_7eed69e5f17f.jpg)
 
 图16 DTI_ATS_PAGE_ACK Message***DTI_ATS_PAGE_RESP***
 
@@ -250,11 +260,11 @@ Page request的完成response。
 
 Page response message的outstanding也只能为1，必须等待RP返回resp ack后才能发下一个page response message。
 
-![](asset/img_c3626637a6e2.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_c3626637a6e2.jpg)
 
 图17 DTI_ATS_PAGE_RESP MessageResponse code的含义如下：
 
-![](asset/img_5bdc83b5185c.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_5bdc83b5185c.jpg)
 
 ResponseFailure指示TCU侧有系统异常，无法再正常响应page request；
 
@@ -266,7 +276,7 @@ InvalidRequest指示page group中至少有一个page的映射过程（或者叫p
 
 Resp ack是RP发给TCU的，响应page resp的message。
 
-![](asset/img_e1c30b909353.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_e1c30b909353.jpg)
 
 图18 DTI_ATS_PAGE_RESPACK Message
 ### DTI Transport Layer
@@ -277,4 +287,4 @@ Resp ack是RP发给TCU的，响应page resp的message。
  
  
 
-![](asset/img_b80514234a2c.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_b80514234a2c.jpg)

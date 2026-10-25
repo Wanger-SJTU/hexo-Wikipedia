@@ -1,3 +1,16 @@
+---
+title: Проект 06. Соберите полноценный агентский harness (Capstone)
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/ru/projects/project-06-runtime-observability-and-debugging/index/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 [中文版本 →](../../../zh/projects/project-06-runtime-observability-and-debugging/)
 
 > Связанные лекции: [Лекция 11. Сделайте runtime агента наблюдаемым](./../../lectures/lecture-11-why-observability-belongs-inside-the-harness/index.md) · [Лекция 12. Чистый handoff в конце каждой сессии](./../../lectures/lecture-12-why-every-session-must-leave-a-clean-state/index.md)

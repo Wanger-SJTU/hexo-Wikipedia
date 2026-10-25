@@ -1,10 +1,19 @@
 ---
-title: "如何评价 LLM Cannot Self-Correct Reasoning Yet？"
-date: 2024-12-02
-tags: [知乎]
-source: https://www.zhihu.com/question/625455785/answer/45691785285
-
+title: 如何评价 LLM Cannot Self-Correct Reasoning Yet？
+date: "2024-12-02 00:00:00"
+updated: "2024-12-02 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/如何评价-LLM-Cannot-Self-Correct-Reasoning-Yet/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://www.zhihu.com/question/625455785/answer/45691785285
 ---
+
 
 补充：
 

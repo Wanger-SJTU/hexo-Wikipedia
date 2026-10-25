@@ -1,3 +1,16 @@
+---
+title: 核心信念
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/zh-TW/resources/openai-advanced/repo-template/docs/design-docs/core-beliefs/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # 核心信念
 
 - 儲存庫是代理的唯一事實來源。

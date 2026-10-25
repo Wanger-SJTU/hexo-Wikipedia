@@ -1,6 +1,18 @@
 ---
-id: 7b859b52-f6b6-47c9-9215-9c8d8266f8e2
+title: 将所有阅读数据同步到 Obsidian | Omnivore 使用文档
+date: "2026-04-11 21:40:28"
+updated: "2026-04-11 21:40:28"
+layout: post
+permalink: /collections/0.raw/Omnivore/2024-04-09/将所有阅读数据同步到-Obsidian-Omnivore-使用文档/
 disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
+---
+id: 7b859b52-f6b6-47c9-9215-9c8d8266f8e2
 ---
 
 # 将所有阅读数据同步到 Obsidian | Omnivore 使用文档

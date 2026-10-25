@@ -1,9 +1,19 @@
 ---
-title: "PyTorch Internals 5：Autograd的实现"
-date: 2020-02-26
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/109338369
+title: PyTorch Internals 5：Autograd的实现
+date: "2020-02-26 00:00:00"
+updated: "2020-02-26 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/再入门系列/PyTorch-Internals-5-Autograd的实现/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/109338369
 ---
+
 
 神经网络的训练一般通过梯度下降的方法进行，其中最重要的一步就是通过链式法则计算网络中的参数相对于损失函数的梯度值。在PyTorch中，通过Autograd的方式自动的对梯度进行计算。在这篇文章中，我们将对PyTorch实现的自动微分引擎进行介绍，希望你看完这篇文章后，可以对PyTorch的Autograd实现有一个直观的理解。
 
@@ -11,7 +21,7 @@ source: https://zhuanlan.zhihu.com/p/109338369
 
 在平常的使用中，我们一般通过对PyTorch提供的算子进行组合即可完成我们期望的功能，对于这些提供的算子，PyTorch已经提供了前向和反向的计算方法，因此如果我们网络是通过PyTorch已有的算子搭建而成的，就不需要自己再实现其反向的过程，因为这一过程将由PyTorch的自动微分引擎替我们完成。为了实现上述的目的，PyTorch引入了计算图的概念。计算图是一个有向图，它的节点为已经实现的算子或者数据（叶子结点），箭头的方向表示数据流动的方向，从输入节点指向输出节点。假设我们想实现函数L(x)=mean(sin(x1*x2+x2))，翻译成计算图为：
 
-![](asset/img_ca6805ad0a3f.png)
+![](/images/collections/0.raw/zhihu/%25E5%2586%258D%25E5%2585%25A5%25E9%2597%25A8%25E7%25B3%25BB%25E5%2588%2597/asset/img_ca6805ad0a3f.png)
 
 从下往上即为前向传播的过程，如果想要计算L相对于x1和x2的梯度则可以从上往下进行求导，上述过程用PyTorch实现为：
 

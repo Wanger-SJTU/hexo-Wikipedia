@@ -1,4 +1,17 @@
 ---
+title: Sparse稀疏检索介绍与实践 - JadePeng - 博客园
+date: "2026-04-11 21:40:28"
+updated: "2026-04-11 21:40:28"
+layout: post
+permalink: /collections/0.raw/Omnivore/2024-05-11/Sparse稀疏检索介绍与实践-JadePeng-博客园/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
+---
 id: 5e54ef67-a3a1-4113-ac37-c2f3b97fc505
 ---
 

@@ -1,10 +1,19 @@
 ---
 title: "Speculative Decoding: 投机采样只能复用Hidden States吗？"
-date: 2026-05-11
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/2036027467606012834
-
+date: "2026-05-11 00:00:00"
+updated: "2026-05-11 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/LLM-SD/Speculative-Decoding_-投机采样只能复用Hidden-States吗/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/2036027467606012834
 ---
+
 
 **写在前言**: 主播又来给大家带来投机采样领域的最新进展了！这篇文章会简述最近一段时间我在投机采样领域的“失败”经验与探索，并且结合Gemma 4与最新的DFlash 给出一些analysis. 本文纯手写，AI 含量 0%，可以放心阅读。由于内容较多，可能有一些地方不够清晰，欢迎大家在评论区交流。
 

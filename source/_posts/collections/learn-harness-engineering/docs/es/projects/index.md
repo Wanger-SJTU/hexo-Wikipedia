@@ -1,3 +1,16 @@
+---
+title: Bienvenido a Proyectos
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/es/projects/index/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # Bienvenido a Proyectos
 
 Esta es la sección práctica de Learn Harness Engineering. Leer las lecciones no basta: necesitas construir los entornos tú mismo y observar cómo se comportan Codex, Claude Code u otros agentes de IA bajo reglas distintas.

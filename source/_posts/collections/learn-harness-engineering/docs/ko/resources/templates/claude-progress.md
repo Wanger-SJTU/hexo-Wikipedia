@@ -1,3 +1,16 @@
+---
+title: 진행 로그 (Progress Log)
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/ko/resources/templates/claude-progress/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # 진행 로그 (Progress Log)
 
 에이전트(agent)가 세션마다 이 파일에 기록하고, 새 세션은 이 파일을 가장 먼저 읽어 현재 상태와 다음 단계를 파악합니다. 이 파일은 프로젝트의 단일 진실 원천(single source of truth)입니다.

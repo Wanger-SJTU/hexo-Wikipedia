@@ -1,10 +1,19 @@
 ---
 title: "【实例分割论文】SOLOv2: Dynamic, Faster and Stronger"
-date: 2020-03-29
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/120263670
-
+date: "2020-03-29 00:00:00"
+updated: "2020-03-29 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/dl论文/【实例分割论文】SOLOv2_-Dynamic,-Faster-and-Stronger/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/120263670
 ---
+
 
 论文名称：《SOLO v2: Dynamic, Faster and Stronger》
 

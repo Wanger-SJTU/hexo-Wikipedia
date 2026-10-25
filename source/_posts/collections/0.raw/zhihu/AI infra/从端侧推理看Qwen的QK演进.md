@@ -1,10 +1,19 @@
 ---
-title: "从端侧推理看Qwen的QK演进"
-date: 2025-06-20
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/1919340508637016870
-
+title: 从端侧推理看Qwen的QK演进
+date: "2025-06-20 00:00:00"
+updated: "2025-06-20 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/AI-infra/从端侧推理看Qwen的QK演进/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/1919340508637016870
 ---
+
 
 前段时间，备受瞩目的Qwen3系列模型正式发布。除了全量引入Think之外，还有一处不太重大的变化就是引入了QK-Norm，官方Report中介绍如下。
 

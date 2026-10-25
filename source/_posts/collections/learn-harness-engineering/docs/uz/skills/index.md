@@ -1,3 +1,16 @@
+---
+title: Koʻnikmalar (Skills)
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/uz/skills/index/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # Koʻnikmalar (Skills)
 
 Ushbu katalog kurs bilan birga taqdim etiladigan AI agent koʻnikmalarini (skills) oʻz ichiga oladi. Koʻnikmalar (Skills) — maxsus vazifalarni bajarish uchun AI kod yozuvchi agentlari (Claude Code, Codex, Cursor, Windsurf va boshqalar) tomonidan yuklanishi mumkin boʻlgan mustaqil (self-contained) prompt andozalaridir.

@@ -1,3 +1,16 @@
+---
+title: Rúbrica del Evaluador
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/es/resources/templates/evaluator-rubric/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # Rúbrica del Evaluador
 
 Usa esta rúbrica después de la implementación y antes de la aceptación final.

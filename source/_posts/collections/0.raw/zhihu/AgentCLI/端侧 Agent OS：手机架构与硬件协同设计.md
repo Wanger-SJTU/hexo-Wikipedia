@@ -1,10 +1,19 @@
 ---
-title: "端侧 Agent OS：手机架构与硬件协同设计"
-date: 2026-06-08
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/2046723183487857048
-
+title: 端侧 Agent OS：手机架构与硬件协同设计
+date: "2026-06-08 00:00:00"
+updated: "2026-06-08 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/AgentCLI/端侧-Agent-OS-手机架构与硬件协同设计/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/2046723183487857048
 ---
+
 
 **端侧 Agent OS：手机架构与硬件协同设计**
 

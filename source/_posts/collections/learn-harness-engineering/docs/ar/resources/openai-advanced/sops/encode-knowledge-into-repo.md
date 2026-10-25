@@ -1,3 +1,16 @@
+---
+title: "إجراء التشغيل القياسي: ترميز المعرفة غير المرئية في المستودع"
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/ar/resources/openai-advanced/sops/encode-knowledge-into-repo/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # إجراء التشغيل القياسي: ترميز المعرفة غير المرئية في المستودع
 
 استخدم هذا الإجراء عندما لا تزال هناك معلومات سياقية مهمة في مستندات Google

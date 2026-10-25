@@ -1,9 +1,19 @@
 ---
-title: "Early Fusion 与 Late Fusion：多模态大模型的两种核心范式"
-date: 2026-02-26
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/2008312941645149174
+title: Early Fusion 与 Late Fusion：多模态大模型的两种核心范式
+date: "2026-02-26 00:00:00"
+updated: "2026-02-26 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/LLM-SD/Early-Fusion-与-Late-Fusion-多模态大模型的两种核心范式/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/2008312941645149174
 ---
+
 
 多模态大模型在处理视觉、语音与文本的跨模态交互时，Early Fusion 与 Late Fusion 是两种核心的架构范式。
 

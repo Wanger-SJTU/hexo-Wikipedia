@@ -1,9 +1,19 @@
 ---
-title: "堆状态分析的利器——valgrind的DHAT"
-date: 2024-07-22
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/682037394
+title: 堆状态分析的利器——valgrind的DHAT
+date: "2024-07-22 00:00:00"
+updated: "2024-07-22 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/优化/堆状态分析的利器——valgrind的DHAT/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/682037394
 ---
+
 
 ﻿在《堆问题分析的利器——valgrind的massif》一文中，我们介绍了如何使用massif查看和分析堆分配/释放的问题。但是除了申请和释放，堆空间还有其他问题，比如堆空间的使用率、使用周期等。通过分析这些问题，我们可以对程序代码进行优化以提高性能。本文介绍的工具DHAT——dynamic heap analysis tool就是分析这些问题的利器。 不同于massif是在程序结束时产生报告，DHAT是在程序运行时实时输出信息的。 我们继续以《堆问题分析的利器——valgrind的massif》文中末尾的代码为例。
 

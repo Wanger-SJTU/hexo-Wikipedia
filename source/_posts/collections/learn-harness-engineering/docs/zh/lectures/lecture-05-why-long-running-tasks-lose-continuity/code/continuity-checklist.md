@@ -1,3 +1,16 @@
+---
+title: 连续性检查清单
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/zh/lectures/lecture-05-why-long-running-tasks-lose-continuity/code/continuity-checklist/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # 连续性检查清单
 
 - 一个全新的 Agent 能否在五分钟内识别最近的工作？

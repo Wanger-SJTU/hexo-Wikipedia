@@ -1,3 +1,16 @@
+---
+title: Learn Harness Engineering
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs-readme/ja-JP/README/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 <p align="center">
   <a href="../../README.md"><img alt="English" src="https://img.shields.io/badge/EN-English-blue?style=flat-square"></a>
   <a href="../zh-CN/README.md"><img alt="简体中文" src="https://img.shields.io/badge/ZH-简体中文-red?style=flat-square"></a>
@@ -47,17 +60,17 @@ Learn Harness Engineering は、AIコーディングエージェントのエン�
 ### 🏠 コースホームページ
 > 包括的なコース概要とコア思想の紹介により、明確なスタートパスを提供します。
 
-![コースホームページプレビュー](../../docs/public/screenshots/readme/zh-home.png)
+![コースホームページプレビュー](/images/collections/learn-harness-engineering/docs/public/screenshots/readme/zh-home.png)
 
 ### 📖 没入型レクチャー
 > 実際の課題とハンズオンプロジェクト（プロジェクト01など）の深い解説により、没入型の学習体験を提供します。
 
-![コースレクチャープレビュー](../../docs/public/screenshots/readme/zh-lecture-01.png)
+![コースレクチャープレビュー](/images/collections/learn-harness-engineering/docs/public/screenshots/readme/zh-lecture-01.png)
 
 ### 🗂️ すぐに使えるリソースライブラリ
 > マルチターンAIエージェント開発における一般的な落とし穴（コンテキストの損失やタスクの早期完了など）を解決するために設計されたテンプレートと参照設定。
 
-![リソースライブラリプレビュー](../../docs/public/screenshots/readme/zh-resources.png)
+![リソースライブラリプレビュー](/images/collections/learn-harness-engineering/docs/public/screenshots/readme/zh-resources.png)
 
 ## PDF コースブック
 

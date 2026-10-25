@@ -1,3 +1,16 @@
+---
+title: 手机 CPU 为什么不采用超线程技术？
+date: "2026-04-11 21:40:18"
+updated: "2026-04-11 21:40:18"
+layout: post
+permalink: /collections/0.raw/随笔/手机-CPU-为什么不采用超线程技术/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 #smt #cpu 
 
 https://www.zhihu.com/question/350943889

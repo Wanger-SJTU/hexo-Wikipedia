@@ -1,9 +1,19 @@
 ---
-title: "深入理解DDR：DDR的基本操作"
-date: 2024-11-04
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/4822260489
+title: 深入理解DDR：DDR的基本操作
+date: "2024-11-04 00:00:00"
+updated: "2024-11-04 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/体系结构/深入理解DDR-DDR的基本操作/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/4822260489
 ---
+
 
 ——————————————————————————————————————————————
 
@@ -29,7 +39,7 @@ DDR内存的基本单元是存储单元（Memory Cell），这些存储单元组
 
 每个存储单元由一个电容和一个MOSFET晶体管组成，这种结构被称为1T1C（1 Transistor 1 Capacitor）。电容用于存储电荷，表示数据的“0”或“1”状态；晶体管用于控制电容的充电和放电。
 
-![](asset/img_378ed8ad95b0.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_378ed8ad95b0.jpg)
 
 电容是我们非常熟悉的电子元器件了，这里主要利用了电容存储电荷的功能。在DRAM中，电容的充电状态表示逻辑“1”，放电状态表示逻辑“0”。
 
@@ -37,7 +47,7 @@ DDR内存的基本单元是存储单元（Memory Cell），这些存储单元组
 
 当然，使用电容就必须克服它的缺点，主要是电容的漏电特性:
 
-![](asset/img_d91976c9699f.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_d91976c9699f.jpg)
 
 由于介质材料不可能完全绝缘，随着时间的变化，电容里面的电荷会慢慢移动，导致电容的电压会慢慢下降。比如如果电容原来电压值是1.0v，慢慢下降到了低于0.5v，那么数字电路里面就会判断这个电容存储的值由1变成了0.
 
@@ -45,41 +55,41 @@ DDR内存的基本单元是存储单元（Memory Cell），这些存储单元组
 
 MOSFET晶体管主要作为一个开关，用于控制电容的充电和放电。
 
-![](asset/img_ad0807b320cb.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_ad0807b320cb.jpg)
 
 通过在栅极(Gate)上施加一个小电压，来打开开关。当源极(Source)电压高，漏极的电容电压低的时候，就开始对电容充电。
 
-![](asset/img_3a4ed7911636.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_3a4ed7911636.jpg)
 
 同样，通过在栅极(Gate)上施加一个小电压，来打开开关。当源极(Source)电压低，漏极的电容电压高的时候，就开始对电容放电。
 
-![](asset/img_e97b34fa77ab.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_e97b34fa77ab.jpg)
 
 原理其实非常简单，结构也简单。到这里我们解决了存储0和1的问题。同时，问题也来了，如果我们要读一下里面的数据是0还是1，该怎么办呢？0还好，如果是1，那么只能通过电容放电，我们才能知道电容存储的是1，这样电容的值就改变了。所以这种结构是一种自毁型的，只能读一次，这显然不能满足我们对存储的要求。
 
 由于每个memory cell只表示一个bit，显然我们不会一个bit一个bit的去处理，而是把多个cell练成一个非常大的阵列来处理，可能达到65536行x8192列这么大的Memory Array，其中一部分如下所示：
 
-![](asset/img_fa080297306e.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_fa080297306e.jpg)
 
 把一行的栅极连接到一根线上，称为Wordline（字线），把一列的源极连接到一起，称为Bitline（位线）。通过这些Wordline和Bitline就把整个Memory Array连接起来。
 
 注意：这里的Wordline和Bitline是交叉的，但是不接触的，他们说在两个层级，之间是不导通的。3D图如下所示：
 
-![](asset/img_351949f9f689.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_351949f9f689.jpg)
 
 这样我们通过Wordline和Bitline就可以选择到任何的一个memory cell。
 
 这就是DDR的地址了。Wordline对应的就是行地址，Bitline对应的就是列地址。
 
-![](asset/img_96a9eb03bfd1.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_96a9eb03bfd1.jpg)
 
 那么我们怎么组织行地址和列地址呢？直接连接到Wordline和Bitline可以吗？
 
-![](asset/img_de594e7feb2d.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_de594e7feb2d.jpg)
 
 对于行地址来说，可以直接连接到Wordline，但是对于列来说，如果直接连接到Bitline就会有问题。比如读一个cell的数据，先发送行地址，把某一行通电，称为激活某一行，这时候，对应的这一行所有的电容都被导通了，这一行都直接输出了，没法选择某个特定列：
 
-![](asset/img_04555bed125e.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_04555bed125e.jpg)
 
 （图中黄色电容表示1，其他表示0.）
 
@@ -92,31 +102,31 @@ Sense Amplifier（感应放大器）是DDR关键组件之一，用于检测和�
 1）第一步，将Bitline预充电到工作电压，也就是1V的一半，0.5V；
 预充电（Precharge）操作**：在读取或写入操作之前，需要将位线（bitlines）预充电到一个已知的电压水平，以便进行数据的读取或写入。**预充电其实就是把Bitline连接到0.5v的电压上，做这个操作的原因是因为Sense Amplifier需要感应电容是放电还是充电。如果电容是1V（bit 1），那么电压会高于Bitline，这样电容会放电，导致对应的Bitline上的电压高于0.5v，这个电容增加会被Sense Amplifier感应，然后放大成为1。同样，电容是0V就反之。
 
-![](asset/img_cbe3c83127f0.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_cbe3c83127f0.jpg)
 
 2）第二步，发送行地址，选中某一行，也就是把某一行的Wordline导通。
 Wordline选通后，电容和Bitline的开关就被打开了，就出现了电容的充放电。
 每条Bitline的末端有一个Sense Amplifier，Sense Amplifier感应到Bitline的电压大于或者小于0.5v，进行判断，然后放大输出1或者0.
 可以看到，一个Memory 阵列有一行的Sense Amplifier。Sense Amplifier具体原理这里就不展开了。作用就是感应放大，同时Sense Amplifier里面有一个锁存器，可以把数值1或者0锁存到Sense Amplifier里面，而不会丢失。
 
-![](asset/img_b2a60044f79b.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_b2a60044f79b.jpg)
 
 到这一步，我们就读出了这一行存储的数值，并且把数字锁存在了Sense Amplifier里面，不会丢失.
 3）第三步，我们需要上某个电容器的值，而不是一行的值，这样我们需要通过一个列地址来选择某个列的数值。这就是我们很熟悉的多路选择器MUX。
 
-![](asset/img_3e4ab64e05d1.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_3e4ab64e05d1.jpg)
 
 到这里，我们就读出来了我们需要的某个Memory cell的值。但是这里还没结束，因为读的过程中，破坏了电容原有的值，导致我们只能读到一次正确的值，这显然不是我们想要的。我们需要把这一行的值恢复回去。
 怎么恢复呢？刚才说过了Sense Amplifier里面的值是锁存的，不会丢失，而且和这一行的值是一致的。我们只需要把Sense Amplifier里面锁存的值写回到这一行对应的Memory Cell里面就能恢复这一行的值了。
 4）第四步，把Sense Amplifier里面的锁存数据，写回到对应行的电容器里面。
 
-![](asset/img_47d6058ea663.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_47d6058ea663.jpg)
 
 到这一步，我们就到成了不破坏Memory Cell同时读取Memory Cell的数值的全部操作。
 现实中，我们都是以8个bit为最小单位来使用DDR的，这个解决方法就更简单了。我们只要把8个Memory Cell作为一个整体，每次读的时候都按照8bit来整体读就行了。只是这里的MUX设计稍微修改一下就行了。
 总结一下，读操作如下：****
 
-![](asset/img_422ad8e03e23.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_422ad8e03e23.jpg)
 
 点击图片可查看完整电子表格**
 
@@ -126,28 +136,28 @@ Wordline选通后，电容和Bitline的开关就被打开了，就出现了电�
 前两个步骤和读操作是一样的。
 3）第三步，我们需要把输入送给某个Memory cell，所以需要执行和MUX相反的操作，也就是需要一个DeMux。通过列地址选择这一行的某一列，然后把输入送给对应的Memory cell。DeMux如下图所示:
 
-![](asset/img_9771014c7e91.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_9771014c7e91.jpg)
 
 通过改造MUX变成MUX--DEMUX，既有MUX功能，又有DEMUX功能，在读写进行切换。通过列地址进行选择，然后修改对应的Sense Amplifier里面的锁存数据，比如需要修改第二个Memory cell的值为1，那么就先修改Sense Amplifier里面的锁存值为1.
 
-![](asset/img_3590cb640e14.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_3590cb640e14.jpg)
 
 4）第四步，把Sense Amplifier里面的锁存数据，写回到对应行的电容器里面。
 同读操作一样，仍然需要把数据写回，因为打开了Wordline就开始电容充放电了，破坏了电容的数值。只有Sense Amplifier里面的锁存数据才是可靠的。
 
-![](asset/img_4b25e3518495.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_4b25e3518495.jpg)
 
 到这一步，我们就完成了对DDR某个memory cell的写操作，并且没有破坏这一行的原始数值。
 总结一下，写操作如下：****
 
-![](asset/img_b2aecc7dcabf.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_b2aecc7dcabf.jpg)
 
 点击图片可查看完整电子表格**
 
 - **DDR的刷新操作**
 前面我们提到了，虽然电容非常简单，但是它也有缺点，就是电容会漏电：
 
-![](asset/img_75178a53d075.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_75178a53d075.jpg)
 
 由于介质材料不可能完全绝缘，随着时间的变化，电容里面的电荷会慢慢移动，导致电容的电压会慢慢下降。比如如果电容原来电压值是1.0v，慢慢下降到了低于0.5v，那么数字电路里面就会判断这个电容存储的值由1变成了0.
 
@@ -167,17 +177,17 @@ DDR支持自动刷新（Auto Refresh，ASR）和自刷新（Self Refresh，SR）
 
 2）第二步，发送行地址，选中某一行，也就是把某一行的Wordline导通。传感器放大器（Sense Amplifier）检测这些电压变化，并在其锁存器中记录值。
 
-![](asset/img_debcd600ec91.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_debcd600ec91.jpg)
 
 3）第三步，把传感器放大器值写回到对应行的电容，刷新电容的值。
 
-![](asset/img_d48bcdaf66b2.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_d48bcdaf66b2.jpg)
 
 这里不需要MUX-DEMUX进行任何操作。
 
 总结一下，刷新基本操作如下：
 
-![](asset/img_865d3d2d1788.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_865d3d2d1788.jpg)
 
 **点击图片可查看完整电子表格**
 

@@ -1,10 +1,16 @@
 ---
-title: "你的deepseek mHC可能不需要"m""
-date: 2026-02-28
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/2010852389670908320
-
+title: 你的deepseek mHC可能不需要_m_
+date: "2026-05-06 16:32:04"
+updated: "2026-05-06 16:32:04"
+layout: post
+permalink: /collections/0.raw/zhihu/LLM-SD/你的deepseek-mHC可能不需要_m_/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
 ---
+
 
 最近几周在学习deepseek mHC先进经验，捣鼓出一个令人啼笑皆非的实验结论：
 

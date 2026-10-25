@@ -1,3 +1,16 @@
+---
+title: RL Scaling Laws for LLMs
+date: "2026-04-21 00:37:04"
+updated: "2026-04-21 00:37:04"
+layout: post
+permalink: /collections/0.raw/web/RL-Scaling-Laws-for-LLMs-Cameron-Wolfe/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # RL Scaling Laws for LLMs
 
 > 来源：https://cameronrwolfe.substack.com/p/rl-scaling-laws

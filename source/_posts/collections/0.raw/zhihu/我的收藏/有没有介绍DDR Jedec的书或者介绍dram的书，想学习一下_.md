@@ -1,10 +1,19 @@
 ---
-title: "有没有介绍DDR Jedec的书或者介绍dram的书，想学习一下?"
-date: 2021-12-10
-tags: [知乎]
-source: https://www.zhihu.com/question/500592402/answer/2264306252
-
+title: 有没有介绍DDR Jedec的书或者介绍dram的书，想学习一下?
+date: "2021-12-10 00:00:00"
+updated: "2021-12-10 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/有没有介绍DDR-Jedec的书或者介绍dram的书,想学习一下_/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://www.zhihu.com/question/500592402/answer/2264306252
 ---
+
 
 1.入门教程《Memory - Cache, DRAM, Disk》的dram部分。强烈推荐，写的非常基础和细致，适合各种段位的人。缺点是这本书太老了，书上的很多东西跟今天已经天差地别了。不过作为了解dram的基本工作原理和发展历史的入门读物是完全可以的。
 

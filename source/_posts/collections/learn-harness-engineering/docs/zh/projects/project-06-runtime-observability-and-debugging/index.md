@@ -1,3 +1,16 @@
+---
+title: Project 06. 搭建一套完整的 agent 工作环境
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/zh/projects/project-06-runtime-observability-and-debugging/index/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # Project 06. 搭建一套完整的 agent 工作环境
 
 > 相关讲义：[L11. 为什么可观测性属于 harness](./../../lectures/lecture-11-why-observability-belongs-inside-the-harness/index.md) · [L12. 为什么每次会话都要留干净状态](./../../lectures/lecture-12-why-every-session-must-leave-a-clean-state/index.md)

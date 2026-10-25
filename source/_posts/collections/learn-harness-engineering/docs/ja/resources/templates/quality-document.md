@@ -1,3 +1,16 @@
+---
+title: 品質ドキュメント
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/ja/resources/templates/quality-document/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # 品質ドキュメント
 
 各プロダクトドメインとアーキテクチャレイヤーの品質スナップショット。エージェントと人間の両方がこのドキュメントを使用して、コードベースがどこが強いか、どこに作業が必要かを素早く理解できます。

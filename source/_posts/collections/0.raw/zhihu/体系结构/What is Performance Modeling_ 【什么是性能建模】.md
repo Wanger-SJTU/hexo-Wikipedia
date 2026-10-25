@@ -1,21 +1,31 @@
 ---
-title: "What is Performance Modeling? 【什么是性能建模】"
-date: 2021-05-22
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/374331876
+title: What is Performance Modeling? 【什么是性能建模】
+date: "2021-05-22 00:00:00"
+updated: "2021-05-22 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/体系结构/What-is-Performance-Modeling_-【什么是性能建模】/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/374331876
 ---
+
 
 之前简单整理了一些关于Performance Modeling的介绍，于是想着再整理整理放在知乎，希望可以帮助大家对Modeling有个基础的扫盲。
 
 ### 初识Performance Modeling
 
-![](asset/img_1887d64c4f7f.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_1887d64c4f7f.jpg)
 
 传统Silicon生产设计制造流程在传统的设计流程中，Architects直接提供设计文档给到RTL Design然后进行下一步的RTL Coding。对于一些简单的ASIC还好，但是对于复杂的类似于目前的GPU/CPU，架构师们其实还需要一些验证手段来确保当前的架构设计是合理的，期望与能得到一个当下最优解。这个时候就需要Performance Modeling的介入了，帮助架构师做各种大小/带宽/延时的权衡，对比分析不同策略在各种benchmark下的性能表现。
 
-![](asset/img_cebb9be13156.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_cebb9be13156.jpg)
 
-![](asset/img_0dc201302f64.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_0dc201302f64.jpg)
 
 另一种生产设计流程的划分然后关于Modeling的准确度，可以根据需要，来设计满足需求的模型。其目的就是能够快速地得到不同架构配置下的性能结果，以帮助架构师在早期制定设计文档和一些架构的实现细节需求。
 
@@ -62,7 +72,7 @@ Apple Performance Modeling Architect**
 
 ### 为什么需要Performance Modeling
 
-![](asset/img_4028550d7896.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_4028550d7896.jpg)
 
 LEGO ArchitectureWhy modeling?**
 
@@ -79,15 +89,15 @@ LEGO ArchitectureWhy modeling?**
 
 **
 
-![](asset/img_9d06bd2eba33.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_9d06bd2eba33.jpg)
 
-![](asset/img_c28bd79d96e4.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_c28bd79d96e4.jpg)
 
 这两张图是从*Cadence/Synopsys*那拿来的，可以看到目前EMU的速度也就50MHz这样，相对于软件模型的速度是完全不在一个数量级的。软件模型的仿真速度取决于模型的负责程度和模型运行机器的性能，但是速度起码是用MIPS单位，即Mega Instructions per second。
 
 SituationSimulation SpeedModel20-1000 mipsFPGA20-200M cpsHardware accelerator1M cpsC executables translated from RTL1-10K cpsRTL20-100 cpsGate1 cps
 
-![](asset/img_1cdfbf89f56a.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_1cdfbf89f56a.jpg)
 
 SW团队可以早早介入上图体现了SW团队可以早早介入，除此之外，RTL DV Team还可以用模型来进行对比分析，以发现RTL中的BUG。
 
@@ -153,13 +163,13 @@ Electronic/Executable System-Level Languages (ESL)
 
 Intel对于性能建模推出过Intel® CoFluent™ Studio这套工具集，下面是一个简介和Intel员工对这个Tools的一些评价和使用这个工具得到的一些实际性的结果，有兴趣可以去Intel的相应网站进一步了解一下。其实*Cadence&Synopsys*也推出过一些SystemC的设计工具和软件，有兴趣可以去了解了解。
 
-![](asset/img_d103c9f55afd.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_d103c9f55afd.jpg)
 
-![](asset/img_b9c0203f562a.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_b9c0203f562a.jpg)
 
-![](asset/img_414354ef14e6.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_414354ef14e6.jpg)
 
-![](asset/img_b6948e838329.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_b6948e838329.jpg)
 
 ### 从事Performance Modeling能习得的技能
 

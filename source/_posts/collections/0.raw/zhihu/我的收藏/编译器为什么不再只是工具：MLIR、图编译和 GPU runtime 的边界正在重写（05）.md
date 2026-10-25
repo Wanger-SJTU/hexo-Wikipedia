@@ -1,9 +1,19 @@
 ---
-title: "编译器为什么不再只是工具：MLIR、图编译和 GPU runtime 的边界正在重写（05）"
-date: 2026-04-12
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/2025935949230618433
+title: 编译器为什么不再只是工具：MLIR、图编译和 GPU runtime 的边界正在重写（05）
+date: "2026-04-12 00:00:00"
+updated: "2026-04-12 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/编译器为什么不再只是工具-MLIR、图编译和-GPU-runtime-的边界正在重写(05)/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/2025935949230618433
 ---
+
 
 编译器为什么不再只是工具：MLIR、图编译和 GPU runtime 的边界正在重写（05）
 

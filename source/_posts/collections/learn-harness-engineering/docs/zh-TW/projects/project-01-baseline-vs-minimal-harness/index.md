@@ -1,3 +1,16 @@
+---
+title: Project 01. 只寫提示詞讓代理做，和定好規則再讓它做，差多少
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/zh-TW/projects/project-01-baseline-vs-minimal-harness/index/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # Project 01. 只寫提示詞讓代理做，和定好規則再讓它做，差多少
 
 > 相關講義：[L01. 模型能力強，不等於執行可靠](./../../lectures/lecture-01-why-capable-agents-still-fail/index.md) · [L02. Harness 到底是什麼](./../../lectures/lecture-02-what-a-harness-actually-is/index.md)

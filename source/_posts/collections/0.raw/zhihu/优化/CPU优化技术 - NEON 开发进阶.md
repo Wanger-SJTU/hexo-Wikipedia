@@ -1,10 +1,19 @@
 ---
-title: "CPU优化技术 - NEON 开发进阶"
-date: 2022-07-29
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/479398400
+title: CPU优化技术 - NEON 开发进阶
+date: "2022-07-29 00:00:00"
+updated: "2022-07-29 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/优化/CPU优化技术-NEON-开发进阶/
 disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/479398400
 ---
+
 
 ***版权声明 ©*** ***本文首发于知乎专栏：移动端算法优化*** ***本专栏「移动端算法优化」所有文章著作权归作者所有。*** ***允许个人直接分享本专栏文章到个人微博、朋友圈。但媒体（包括但不限于网站、微信公众号、微博营销号）转载需事先征得专栏同意。转载需在正文开头显著位置注明出处，给出原始链接，注明「发表于知乎专栏《移动端算法优化》」，并不得进行任何形式的修改演绎。*** 
 
@@ -20,7 +29,7 @@ disableNunjucks: true
 
 **向量化就是使用SIMD指令同时对多个数据进行处理，达到提升程序性能的目的。 我们以数据加法为例，标量和向量处理的对比图如下。对于无符号16位类型的加法运算，普通的标量加法需要进行8次的计算量，使用向量加法指令一次就可以完成。
 
-![](asset/img_a68adf31f47e.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_a68adf31f47e.jpg)
 
 相比于标量编程，向量化编程对于初学者来说有一定的难度： 
 
@@ -32,7 +41,7 @@ disableNunjucks: true
 
  这是一个UV通道下采样代码，输入是u8类型的数据，通过邻近的4个像素求平均，输出u8类型的数据，达到下采样的目的。我们假定每行数据长度是16的整数倍。算法的示意图和参考代码如下所示。
 
-![](asset/img_2e8ea280fdae.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_2e8ea280fdae.jpg)
 
 C代码实现：
 
@@ -66,17 +75,17 @@ for (i = 0; i
 
 **2.2.2 数据类型的选择**
 
-![](asset/img_1941a224fb1f.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_1941a224fb1f.jpg)
 
 **2.2.3 指令的选择**
 
 输入数据加载：UV通道的数据是交织的，使用vld2指令可以实现解交织。
 
-![](asset/img_a7837fe4fef2.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_a7837fe4fef2.jpg)
 
-数据累加：水平方向两两相加（vpaddl），然后竖直方向相加（vadd），结果除以4（vshrn）![](asset/img_a81277880b91.jpg)
+数据累加：水平方向两两相加（vpaddl），然后竖直方向相加（vadd），结果除以4（vshrn）![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_a81277880b91.jpg)
 
-数据存储：输出数据是UV格式，需要使用vst2指令进行交织存储![](asset/img_6f42f4b785b2.jpg)
+数据存储：输出数据是UV格式，需要使用vst2指令进行交织存储![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_6f42f4b785b2.jpg)
 
 **2.2.4 代码实现**
 
@@ -113,7 +122,7 @@ void DownscaleUvNeon(uint8_t *src, uint8_t *dst, int32_t src_width, int32_t src_
 
 **2.3.1 Extend arrays with padding**
 
-![](asset/img_c7faad404197.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_c7faad404197.jpg)
 
 这个方法比较好理解，每行数据长度不是向量长度整数倍我们可以提前将数据补齐到需要的长度，这样处理时候就方便了。这个方法的使用是要分情况的。
 
@@ -121,7 +130,7 @@ void DownscaleUvNeon(uint8_t *src, uint8_t *dst, int32_t src_width, int32_t src_
 - 如果外部数据先要经过其他的处理（例如rgb2yuv），我们可以考虑将前一级的输出保存成需要的长度，这样后面的uv下采样就可以得到扩展的内存了。
 **2.3.2 Overlap data elements**
 
-![](asset/img_f716eaadc34a.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_f716eaadc34a.jpg)
 
 这种做法是在处理尾部数据的时候，从后往前提取一个向量的数据进行计算，这样会出现一部分数据重复计算。接着2.2.4节的示例，这种方法的实现代码如下：
 
@@ -161,7 +170,7 @@ void DownscaleUvNeon(uint8_t *src, uint8_t *dst, int32_t src_width, int32_t src_
 
 **2.3.3 Process leftovers as single elements**
 
-![](asset/img_b6a11bad7e59.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_b6a11bad7e59.jpg)
 
 这种做法利用NEON向量可以只加载/存储一个元素的功能，虽然使用向量指令，但是每个结果独立计算和存储。这是一种很不推荐的方法。每次的向量计算只使用一个元素，浪费了计算资源（NEON指令相比于标量指令的执行周期要长，各指令执行时间可以参考文献[2]）。
 
@@ -196,7 +205,7 @@ void DownscaleUvNeon(uint8_t *src, uint8_t *dst, int32_t src_width, int32_t src_
 
 左右边界填充也需要用到dup来的向量v8_const_pad，使用vext来组建新的向量，示意图及参考代码如下。
 
-![](asset/img_2397f69cd8c1.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_2397f69cd8c1.jpg)
 
 `//dup指令生成pading向量
 uint8x16_t v8_const_pad = vdupq_n_u8(pad_val);
@@ -217,7 +226,7 @@ uint8x16_t v8_next_row_data = vextq_u8(v8_const_pad, v8_tmp_data, 15); `
 
 - 上下边界的方法一样，我们可以使用vld加载第0行或者最后一行的数据即可。 
 - 左右边界的方法一样，对于左边界，我们可以使用VLD1_DUP指令提取边界数据，然后使用vext来组建新的向量，参考代码如下。
-![](asset/img_e089ccb03480.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_e089ccb03480.jpg)
 
 `//提取0行padding数据
 uint8x16_t v8_dup_pad = vld1q_dup_u8(pt_row0);
@@ -239,7 +248,7 @@ uint8x16_t v8_next_row_data = vextq_u8(v8_dup_pad, v8_tmp_data, 15);`
 
 上下边界的方法一样，我们需要根据反射类型，将padding行的数据向量赋值为相应行的数据向量即可。左右边界的方法一样，对于左边界，我们可以使用VLD1指令提取边界数据，然后使用vrev来翻转向量内部元素最后使用vext来组建新的向量。
 
-![](asset/img_4e3a8c684516.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_4e3a8c684516.jpg)
 
 参考代码：
 
@@ -300,7 +309,7 @@ Gaussian3x3RowCalcu实现
 
  左边界处理：
 
-![](asset/img_dd7882331c58.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_dd7882331c58.jpg)
 
 `static inline int32_t Gaussian3x3RowCalcu(const uint8_t *src0, const uint8_t *src1, const uint8_t *src2, uint8_t *dst, int32_t width)
 {
@@ -343,7 +352,7 @@ Gaussian3x3RowCalcu实现
 
 第二部分for循环是计算中间部分数据的结果，先做竖直方向的累加，再做水平方向的累加，每次计算8个输出结果。各向量的数据含义及计算方法（for循环第一次计算）见下图。
 
-![](asset/img_53a1863854be.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_53a1863854be.jpg)
 
 最后一次的向量计算单独处理，为了防止提取下一组数据时越界。
 
@@ -368,7 +377,7 @@ Gaussian3x3RowCalcu实现
 
 下图是我们在高通骁龙888平台上的运行结果，可以看到使用NEON优化之后运行时间从15.53ms(图像尺寸4095x2161)下降到了3.22ms，性能有了4倍多的提升。感兴趣的读者可以自己运行下结果。
 
-![](asset/img_2e216640b717.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_2e216640b717.jpg)
 
 运行结果
 #### 4.4 工程代码

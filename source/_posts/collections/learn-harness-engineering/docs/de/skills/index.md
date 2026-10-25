@@ -1,3 +1,16 @@
+---
+title: Skills
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/de/skills/index/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # Skills
 
 Dieses Verzeichnis enthält die mit dem Kurs ausgelieferten KI-Agenten-Skills. Skills sind eigenständige Prompt-Vorlagen, die KI-Coding-Agenten wie Claude Code, Codex, Cursor oder Windsurf laden können, um spezialisierte Aufgaben zu erledigen.

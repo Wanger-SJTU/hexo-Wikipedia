@@ -1,11 +1,21 @@
 ---
-title: "Cache的50问，您能回答上几个"
-date: 2025-01-07
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/16921952423
+title: Cache的50问，您能回答上几个
+date: "2025-01-07 00:00:00"
+updated: "2025-01-07 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/体系结构/Cache的50问,您能回答上几个/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/16921952423
 ---
 
-![](asset/img_4f8d390d7193.jpg)
+
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_4f8d390d7193.jpg)
 
 1、MMU关闭时cache的缓存策略是怎样的？
 

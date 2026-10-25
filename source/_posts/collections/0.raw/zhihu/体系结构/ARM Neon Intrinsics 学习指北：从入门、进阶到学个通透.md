@@ -1,9 +1,19 @@
 ---
-title: "ARM Neon Intrinsics 学习指北：从入门、进阶到学个通透"
-date: 2021-03-21
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/358603760
+title: ARM Neon Intrinsics 学习指北：从入门、进阶到学个通透
+date: "2021-03-21 00:00:00"
+updated: "2021-03-21 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/体系结构/ARM-Neon-Intrinsics-学习指北-从入门、进阶到学个通透/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/358603760
 ---
+
 
 本文同步发表于GiantPandaCV公众号，未经作者允许严禁转载
 
@@ -57,7 +67,7 @@ source: https://zhuanlan.zhihu.com/p/358603760
 
 ** 重点：**第6小节**program conventions**（编程惯例）介绍了Neon输出输出的对象类型和intrinsics命名规则。Intrinsics命名规则还是比较复杂的（如下图），如果没弄清楚，后期可能会检索不到需要的intrinsics或误用intrinsics。
 
-![](asset/img_dc406e2e5540.png)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_dc406e2e5540.png)
 
 Intrinsics命名规则（具体含义见链接）**1.2 如何检索Intrinsics**
 
@@ -65,9 +75,9 @@ Intrinsics命名规则（具体含义见链接）**1.2 如何检索Intrinsics**
 
         以float32类型的点对点乘法intrinsics **vaddq_f32**（q的含义请查阅上面命名规则，了解命名规则真的很重要）为例，从上到小描述操作、对应的汇编指令、入参、出参、伪代码和支持该intrinsics 的架构。
 
-![](asset/img_3230acb6c2df.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_3230acb6c2df.jpg)
 
-![](asset/img_c43600238840.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_c43600238840.jpg)
 
 检索示例**        注意兼容性问题：**核查intrinsics是否能用于项目所需兼容的全部架构。例如，笔者进行的项目需要兼容新旧手机，且当前只能集成ARMv7a（新旧手机均能运行，即**图中的v7**）架构的so库，而Aarch64（仅新手机支持，即**图中的A64**）架构的so库尚不支持。如果某条intrinsics的supported architectures只有A64，那么在编译ARMv7a架构的so库时将会无法通过编译。对于这种情况，只能放弃使用这条intrinsics，改用多条intrinsics拼凑出等效实现（这意味指令数的增加和性能的降低，为了兼容性这是无可奈何的事情）。
 
@@ -79,7 +89,7 @@ Intrinsics命名规则（具体含义见链接）**1.2 如何检索Intrinsics**
 
         直接把优化结果摘出来
 
-![](asset/img_ec2e15a87f53.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_ec2e15a87f53.jpg)
 
 优化结果        优化好算法后，普通C++实现是302.00ms（不排除编译器优化了部分运算，生成了部分Neon指令），Intrinsics实现是188.37ms，最优Assembly实现是145.92ms。Intrinsics优化和Assembly优化分别加速了约**38%**和约**52%**，Intrinsics优化生成的代码还和手工优化的Assembly存在差距。但注意到，如果仅是单纯地用Assembly改写C++，优化效果和Intrinsics一样（188.37ms VS 187.70ms），进一步的性能改进来自于额外的预取指令(pld)和对双发射流水(硬件设计)的利用。**简而言之，如果项目留有足够的优化时间并且对体系结构的驾驭能力有信心（至少速度不会低于Intrinsics），选择Assembly优化，否则选择Intrinsics优化。**
 
@@ -89,7 +99,7 @@ Intrinsics命名规则（具体含义见链接）**1.2 如何检索Intrinsics**
 
         其实核心点就是，在Gradle加上Neon的启用命令（如下红框），然后在cpp **#include **，写就完事了。余下的都是带Native代码的安卓开发的知识。
 
-![](asset/img_ab104f3a70ef.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_ab104f3a70ef.jpg)
 
 启用Neon**        关于在iOS开发中启用Neon（Xcode，版本12.3）**：笔者尝试过将Android的NDK代码迁移至iOS，在不修改Xcode任何设置的情况下，arm_neon.h可找到，编译可通过，那说明Xcode默认打开了Neon的启用开关，写就完事了。
 
@@ -113,7 +123,7 @@ Intrinsics命名规则（具体含义见链接）**1.2 如何检索Intrinsics**
 
         ARM官方的**Coding for Neon（第4节 Load and store - leftovers）**给了处理技巧
 
-![](asset/img_5a1c113f8cc6.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_5a1c113f8cc6.jpg)
 
 处理leftovers的3种方法
 
@@ -127,13 +137,13 @@ Intrinsics命名规则（具体含义见链接）**1.2 如何检索Intrinsics**
 
         Neon实现往往跟循环展开等技巧一起使用，代码往往比较长。我们可以先阅读普通实现的代码实现了解顶层逻辑，再阅读Neon实现的代码。例如，我们希望学习全连接层（innerproduct）的Neon实现，其普通实现的位置在ncnn/src/layer/innerproduct.cpp，对应的Neon加速实现的位置在ncnn/src/layer/arm/innerproduct_arm.cpp。
 
-![](asset/img_41b5b1f1a0bf.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_41b5b1f1a0bf.jpg)
 
 ncnn的算子代码组织逻辑        注意代码中出现较多的条件编译。原因我们上文提到过，有的intrinsics是较新Aarch64架构下专有的，为了兼容较老的ArmV7a架构，对于不能用的intrinsics只能用多条兼容的intrinsics等效替代。为了保证Aarch64下的性能同时保证对ArmV7a的兼容性，ncnn采用条件编译的方式处理不兼容的intrinsics（条件编译就是编译满足条件的分枝的代码，不满足条件的代码将不出现在最终的二进制文件汇总）。
 
         如果你只关注Aarch64平台下的实现，下图**#else**分支的代码跳过不看即可。
 
-![](asset/img_57c843a1450f.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_57c843a1450f.jpg)
 
 innerproduct_arm代码（部分）**2.4  算子源码学习（Nvidia carotene库，图像处理方向 ）**
 
@@ -143,7 +153,7 @@ innerproduct_arm代码（部分）**2.4  算子源码学习（Nvidia carotene库
 
         carotene的组织结构同样简单，且不依赖OpenCV的数据结构，想用想学习哪个函数直接提取出来即可。如下图，里面主要用Neon实现了色彩空间转换、均值滤波、Canny边缘检测等常见的图像处理算子。
 
-![](asset/img_a0e2ef03e10c.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_a0e2ef03e10c.jpg)
 
 carotene库**3. 学个通透**
 
@@ -151,7 +161,7 @@ carotene库**3. 学个通透**
 
         即使到了这里，我们仍然对Neon（或类似的SIMD指令）为什么能加速我们的代码充满疑问。我们可以在这本书（计算机体系结构的圣经之一）找寻答案——**《计算机体系结构：量化研究方法》。 **Neon是ARM平台的SIMD（Single Instruction Multiple Data，单指令多数据流）指令集实现，书中4.1~4.3讨论了SIMD。
 
-![](asset/img_44658447381b.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_44658447381b.jpg)
 
 SIMD相关目录摘录        笔者的学习总结如下：
 
@@ -167,13 +177,13 @@ SIMD相关目录摘录        笔者的学习总结如下：
 
          在讨论一个问题前，先插入一个使笔者拍案叫绝的相关案例：在另一本计算经典《深入理解计算机系统》的第5章 优化程序性能 中，该书作者考虑若干计算机硬件特性，将矩阵乘法连续优化了6个版本，直至优化到了该x86 CPU的吞吐量上限（注：**延迟latency **主要关注单个数据的执行情况，**吞吐量throughout**主要关注整个系统的执行情况，因此我们更关注的是吞吐量。因为CPU存在多种能在一个时钟周期内执行多条指令的设计，有个有的指令会出现吞吐量大于1指令/周期（或执行时间小于1个时钟周期，如下图）的情况）。
 
-![](asset/img_5e8256f8e2a5.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_5e8256f8e2a5.jpg)
 
 CS:APP 截图        回到问题，我们需要知道我们的吞吐量上界是多少。ARM官方为每个CPU架构（手机CPU一般大核是A7X架构，小核是A5X架构）提供对应的**Software Optimization Guide**，里面有进行各种运算的**latency**和**throughout。**以A76架构（采用该架构作为大核架构的CPU例如骁龙855，麒麟980）为例子，从ARM官网下载对应的pdf，
 
         翻到ASIMD那里，就能查阅各条Neon指令相应的latency和throughout。不同架构的吞吐量上界会有所不同，其他架构请自行在ARM官网文档中心下载。
 
-![](asset/img_5281cae886da.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_5281cae886da.jpg)
 
 文档截图        理论数据有了，至于如何通过实验测试峰值，可参考BBuf的文章
 

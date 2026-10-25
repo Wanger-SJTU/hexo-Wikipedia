@@ -1,13 +1,23 @@
 ---
-title: "来看 Meta 的新论文：大语言模型能记住多少东西？"
-date: 2025-06-04
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/1913718792497918000
+title: 来看 Meta 的新论文：大语言模型能记住多少东西？
+date: "2025-06-04 00:00:00"
+updated: "2025-06-04 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/来看-Meta-的新论文-大语言模型能记住多少东西/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/1913718792497918000
 ---
+
 
 来看 Meta 的新论文：大语言模型能记住多少东西？
 
-![](asset/img_196c61db30f9.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_196c61db30f9.jpg)
 
 简单来讲，这项研究创新性地将"记忆"分为两部分：真正的死记硬背（非预期记忆化）和对规律的理解（泛化）。就像学生背课文，有些是一字不差地背下来，有些是理解了意思能灵活表达。
 

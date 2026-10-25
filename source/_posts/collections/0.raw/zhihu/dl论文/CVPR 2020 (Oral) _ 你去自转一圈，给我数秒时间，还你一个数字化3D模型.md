@@ -1,10 +1,19 @@
 ---
-title: "CVPR 2020 (Oral) | 你去自转一圈，给我数秒时间，还你一个数字化3D模型"
-date: 2020-04-11
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/128979681
-
+title: CVPR 2020 (Oral) | 你去自转一圈，给我数秒时间，还你一个数字化3D模型
+date: "2020-04-11 00:00:00"
+updated: "2020-04-11 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/dl论文/CVPR-2020-(Oral)-_-你去自转一圈,给我数秒时间,还你一个数字化3D模型/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/128979681
 ---
+
 
 **Robust 3D Self-portraits in Seconds**
 

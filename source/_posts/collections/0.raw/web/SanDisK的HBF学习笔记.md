@@ -1,10 +1,20 @@
 ---
-title: "SanDisK的HBF学习笔记 - Winnie shao"
-date: 2026-04-23
-tags: [微信, 存储]
-source: https://mp.weixin.qq.com/s/R4mMgZdQXtpTaaIThxwLew
-
+title: SanDisK的HBF学习笔记 - Winnie shao
+date: "2026-04-23 00:00:00"
+updated: "2026-04-23 00:00:00"
+layout: post
+permalink: /collections/0.raw/web/SanDisK的HBF学习笔记/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 微信
+  - 存储
+source_url: https://mp.weixin.qq.com/s/R4mMgZdQXtpTaaIThxwLew
 ---
+
 
 先写一句题外话，有朋友2025年中就提醒我买入SanDisk，我听了200左右买了，恐慌中180卖了，不但没有赚到钱，还赔钱了... ...后来在400左右再买入，非常纠结，也没有拿很久，一有风吹草动就跑了.. ...好歹赚钱了。现在看，900多块钱，有什么可怕的。 
 

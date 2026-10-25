@@ -1,9 +1,19 @@
 ---
-title: "Data Prefetch指令预取"
-date: 2020-11-18
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/299596490
+title: Data Prefetch指令预取
+date: "2020-11-18 00:00:00"
+updated: "2020-11-18 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/体系结构/Data-Prefetch指令预取/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/299596490
 ---
+
 
 ### **引言**
 
@@ -50,7 +60,7 @@ source: https://zhuanlan.zhihu.com/p/299596490
 
 #### **基本流程**
 
-![](asset/img_f1ef04c4410e.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_f1ef04c4410e.jpg)
 
 - 图a, 表示没有prefetch的CPU执行流程，可以看到的是，内存读取操作r1,r2,r3到来的时候都触发了cache miss，CPU必须等待直到cache line被换入才能继续执行。
 - 图b，表示prefetch的最理想情况，指令预取的理想时机是CPU请求内存的时候刚好cache line被换入，这样主存和cpu是最大程度的并行，没有任何主存延迟。
@@ -60,7 +70,7 @@ source: https://zhuanlan.zhihu.com/p/299596490
 
 数据预取指令的目的就是在下一个load & store指令到来之前，先将数据从主存调入cache中，尽量掩盖cache miss带来的延迟，编译器也可能会在编译期自动化插入prefetch指令，不管是程序员还是编译器都无法在编译期准确的预测prefetch完成的时候刚好执行到load & store指令，所以如何正确的插入prefetch指令来匹配load & store指令是一个技术活，我们称为Prefetch scheduling。**prefetch最佳的引用场景是loop循环，因为loop循环中cache miss的概率非常大，我们可以用一个简单的loop来说明如何使用prefetch指令。
 
-![](asset/img_bc95d298ae36.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_bc95d298ae36.jpg)
 
 图a，表示没有prefetch指令的循环体。
 图b，表示在每次循环体中，都首先预取下一次循环中需要的数据也就是第i+1个数据。
@@ -88,7 +98,7 @@ Sequential prefetching的基本思路是每当取一个cache line的时候都默
 
 首先UE为不同的平台封装了Prefetch指令，比如windows平台的可以在WindowsPlatformMisc.h中看到：**
 
-![](asset/img_c84c3ae4b9a8.png)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_c84c3ae4b9a8.png)
 
 它里面调用了windows提供的_mm_prefetch，第一个参数是首地址，第二个参数是预取方式，分别为：
 
@@ -98,7 +108,7 @@ Sequential prefetching的基本思路是每当取一个cache line的时候都默
 - _MM_HINT_NTA，表示读到非临时缓存中，防止cache pollution。
 在粒子系统中，也有prefetch的应用：
 
-![](asset/img_835d94fb24a8.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_835d94fb24a8.jpg)
 
 可以看到，在更新每一个粒子之前，会先prefetch下一个粒子数据首地址对应的cache line以及下一个相邻的cache line，一共两个cache line, cache line的大小通常是64字节，UE的粒子数据是16字节对齐，一个完整的粒子一共128字节，刚好2个cache line，也就是说，在循环体中每次都预取下个粒子数据。
 

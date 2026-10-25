@@ -1,10 +1,19 @@
 ---
-title: "Linux C++ 服务器端这条线怎么走？一年半能做出什么？"
-date: 2014-01-27
-tags: [知乎]
-source: https://www.zhihu.com/question/22608820/answer/21968467
-
+title: Linux C++ 服务器端这条线怎么走？一年半能做出什么？
+date: "2014-01-27 00:00:00"
+updated: "2014-01-27 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/走向cs/Linux-C-服务器端这条线怎么走-一年半能做出什么/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://www.zhihu.com/question/22608820/answer/21968467
 ---
+
 
 既然你是在校学生，而且编程语言和数据结构的基础还不错，我认为应该在《操作系统》和《计算机体系结构》这两门课上下功夫，然后才去读编程方面的 APUE、UNP 等书。
 

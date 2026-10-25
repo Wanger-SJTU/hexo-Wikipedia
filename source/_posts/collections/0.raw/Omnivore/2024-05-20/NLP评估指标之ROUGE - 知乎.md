@@ -1,4 +1,17 @@
 ---
+title: NLP评估指标之ROUGE - 知乎
+date: "2026-04-11 21:40:28"
+updated: "2026-04-11 21:40:28"
+layout: post
+permalink: /collections/0.raw/Omnivore/2024-05-20/NLP评估指标之ROUGE-知乎/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
+---
 id: d8bc6931-bcb8-4b8b-ac4c-2946c2330adf
 ---
 

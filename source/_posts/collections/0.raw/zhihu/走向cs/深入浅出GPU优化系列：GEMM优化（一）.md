@@ -1,9 +1,19 @@
 ---
-title: "深入浅出GPU优化系列：GEMM优化（一）"
-date: 2022-09-01
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/435908830
+title: 深入浅出GPU优化系列：GEMM优化（一）
+date: "2022-09-01 00:00:00"
+updated: "2022-09-01 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/走向cs/深入浅出GPU优化系列-GEMM优化(一)/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/435908830
 ---
+
 
 本篇文章是深入浅出GPU优化系列的第两个专题，主要是**介绍如何对GPU中的矩阵乘法（GEMM）进行优化**。目前针对GEMM的优化，网络上已经有非常多的教程和示例了。大部分的重要资料我都看了看。但总的来说，还是不够接地气，然后理解起来还是会比较费解。所以希望写这么一篇文章，尽可能地去把GPU的GEMM优化说清楚，说明白。然后让小白读者也能通过这么一两篇文章去更好地了解GEMM优化的相关技术。
 
@@ -31,7 +41,7 @@ demo1代码写的好理解一些，但是优化工作没做完全，没有做到
 
 假设有矩阵A,B，需要计算矩阵A和B的乘，即矩阵C。A、B、C三个矩阵的维度分别为m*k，k*n，m*n\，且三个矩阵中的数据都是单精度浮点数。对于C中每一个元素，C[i][j]，可以看作是A的一行和B的一列进行一次归约操作。采用最naive的GEMM算法，在GPU中，一共开启m*n\个线程，每个线程需要读取矩阵A的一行与矩阵B的一列，而后将计算结果写回至矩阵C中。因而，完成计算一共需要从global memory中进行 2mnk\次读操作和m*n次写操作。大量的访存操作使得GEMM效率难以提高，因而考虑global memory中进行分块，并将矩阵块放置到shared memory中。其示意图如下：
 
-![](asset/img_465aebd0af77.jpg)
+![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_465aebd0af77.jpg)
 
 对global memory进行分块的GEMM算法示意图见上图右侧。首先将A、B、C三个矩阵划分为多个维度为bm*bk，bk*bn，bm*bn\的小矩阵块。三个矩阵形成M*K，K*N，M*N\的小矩阵网格。其中，M=m/bm，N=n/bn，K=k/bk\。随后在GPU中开启M*N\个block，每个block负责C中一个维度为bm*bn\的小矩阵块的计算。计算中一共有K次迭代，每一次迭代都需要读取A中一个维度为bm*bk\的小矩阵块和B中一个维度为bk*bn\的小矩阵块，并将其放置在shared memory中。因而，完成C中所有元素的计算一共需要从global memory中读取M*N*K*（bm*bk+bk*bn）\，即m*n*k（1/bm+1/bn）\个单精度浮点数。相比于naive的GEMM算法，访存量减少为原来的 *(1/bm+1/bn)\。通过global memory中分块算法极大地减少了对global memory的访存量。并且，相比于naive算法，对global进行分块可以更充分地利用数据局部性。在naive算法中，每一个线程都需要直接从global memory中取数，其时延非常长，计算性能非常差。而进行分块后，将维度为bm*bk，bk*bn\的小矩阵块先存储到shared memory之中。而后计算单元进行计算时可以直接从shared memory中取数，大大减少了访存所需要的时延。
 
@@ -39,7 +49,7 @@ demo1代码写的好理解一些，但是优化工作没做完全，没有做到
 
 随后，我们进一步考虑从shared memory到register的过程。在这里，只分析**一个block**中的计算。当进行K轮迭代中某一轮迭代时，GPU将维度为bm*bk，bk*bn\的小矩阵块存储到shared memory中，而后各个线程将shared memory中的数据存入register中进行计算。
 
-![](asset/img_3ae149eb3162.jpg)
+![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_3ae149eb3162.jpg)
 
 在**不对shared memory分块**时，一个block中含有bm*bn\个线程，**每一个线程负责C中一个元素的计算**。则一个block一共需要对shared memory进行 2*bm*bn*bk\次读操作。而后**考虑对shared memory进行分块**，对bm*bn\的小矩阵进行再一次划分，将其划分为多个维度为rm*rn\的子矩阵。则一个block需要负责X*Y\个子矩阵。其中，X=\frac{bm}{rm}\，Y=\frac{bn}{rn}\。随后，在一个block中开启X*Y\个线程，**每个线程负责一个维度为rm*rn\的子矩阵的计算**。在计算中，一个block一共需要从shared memory读取X*Y*(rm+rn)*bk\，即bm*bn*bk*(\frac{1}{rm}+\frac{1}{rn})\个单精度浮点数。相比于未分块的算法，对于shared memory中的访存量减少为原来的 *(\frac{1}{rm}+\frac{1}{rn})\。并且，由于将数据放入register中，可以直接对数据进行运算，减少了从shared memory中取数的时延。
 
@@ -55,7 +65,7 @@ demo1代码写的好理解一些，但是优化工作没做完全，没有做到
 FFMA R1, R16, R21, R1
 ……`
 
-![](asset/img_a07d6ecd9014.jpg)
+![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_a07d6ecd9014.jpg)
 
 可以从中看出，这会产生大量的register bank冲突，所以需要对参与计算的寄存器重新进行分配和排布,如上图右侧所示。在有些地方，这种方式也可以叫做register分块。
 
@@ -65,7 +75,7 @@ FFMA R1, R16, R21, R1
 
 为此，需要进行数据的Prefetch来尽可能地掩盖这种latency。思想也比较简单，需要多开一个buffer，进行读写分离。示意图如下。当block进行第2轮迭代时，需要对A2和B2进行计算，在计算单元进行计算的同时，我们将A3和B3提前放置到shared memory。而后，在进行第3轮迭代时，就可以直接对shared memory中的A3和B3进行计算，而不需要等待从global memory搬运到shared memory的时间。寄存器上的Prefetch也是同理。
 
-![](asset/img_a3682e2255d1.jpg)
+![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_a3682e2255d1.jpg)
 
 ### 总结
 

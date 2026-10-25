@@ -1,3 +1,16 @@
+---
+title: "@ValueatRisk 的微博：投资语录"
+date: "2026-07-06 12:09:08"
+updated: "2026-07-06 12:09:08"
+layout: post
+permalink: /collections/weibo/2026-07-05-投资语录-Value_at_Risk/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # @Value_at_Risk 的微博：投资语录
 
 1.一些公司在顺风的时候，确实好像傻子也能经营躺着都能赚钱，其实这就像在牛市的时候傻子赚的钱也可能最多一样。"护城河"当然是一个好东西，但好东西推到极致也会变成可怕的偏执。商业世界里"有限性"和"均值回归"从来铁面无私，对企业中长期经营态势的判断，是个复杂但极其重要的功课。

@@ -1,10 +1,19 @@
 ---
-title: "各家芯片厂商 Triton编译路径选择深度分析"
-date: 2026-07-05
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/2057073142737137777
-
+title: 各家芯片厂商 Triton编译路径选择深度分析
+date: "2026-07-05 00:00:00"
+updated: "2026-07-05 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/AI-infra/各家芯片厂商-Triton编译路径选择深度分析/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/2057073142737137777
 ---
+
 
 - [FlagTree之各家芯片triton Lower 过程整理（nvidia,AMD, 摩尔线程，sunrise, 华为Ascend, Enflame燧原）](https://zhuanlan.zhihu.com/p/2056693972614000814)**从[FlagTree之各家芯片triton Lower 过程整理](https://zhuanlan.zhihu.com/p/2056693972614000814)这篇文章中，我们想想梳理了各家芯片厂商triton Lower过程整理，这篇文章主要从硬件架构设计角度，进行深度分析它们triton Lower策略这么选择的核心原因**
 

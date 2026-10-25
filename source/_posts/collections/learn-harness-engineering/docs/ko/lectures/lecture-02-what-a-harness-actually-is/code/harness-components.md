@@ -1,3 +1,16 @@
+---
+title: 하네스 구성 요소 예시
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/ko/lectures/lecture-02-what-a-harness-actually-is/code/harness-components/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # 하네스 구성 요소 예시
 
 로컬 저장소(repository)에서 작업하는 코딩 에이전트(coding agent)의 경우:

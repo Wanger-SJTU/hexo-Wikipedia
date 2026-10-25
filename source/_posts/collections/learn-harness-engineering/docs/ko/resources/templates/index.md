@@ -1,3 +1,16 @@
+---
+title: 템플릿 가이드 (Template Guide)
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/ko/resources/templates/index/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # 템플릿 가이드 (Template Guide)
 
 이 템플릿들은 여러분의 프로젝트에 바로 복사해 사용할 수 있도록 준비된 것입니다. 각 파일은 에이전트(agent) 워크플로우의 특정 목적을 위해 설계되었습니다. 프로젝트의 명령어, 경로, 기능 이름, 검증 단계에 맞게 내용을 수정하십시오.

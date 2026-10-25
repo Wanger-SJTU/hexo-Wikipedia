@@ -1,15 +1,25 @@
 ---
-title: "Tiling切分原理"
-date: 2024-03-07
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/685761148
+title: Tiling切分原理
+date: "2024-03-07 00:00:00"
+updated: "2024-03-07 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/Tiling切分原理/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/685761148
 ---
+
 
 **Tiling的基本概念**
 
 由于大多数情况下，Ai core的Local Memory的存储容量，无法完整的容纳下算子的输入与输出，因此需要先搬运一部分输入进行计算然后搬出，再搬运下一部分输入进行计算，直到得到完整的最终结果，这个数据切分、分块计算的过程称之为Tiling。根据算子的shape等信息来确定数据切分算法相关参数（比如每次搬运的块大小，以及总共循环多少次）的计算程序，称之为Tiling实现。Tiling实现完成后，获取到的Tiling切分算法相关参数，会传递给kernel侧，用于指导并行数据的切分。
 
-![](asset/img_aed562cd09c5.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_aed562cd09c5.jpg)
 
 从上图可以看出，切分可分为核间切分和核内切分两块内容。核间切分是将数据分配给NPU的多个Aicore，也就是上图第二行中核1数据、核2数据等；分配到某个核计算的数据，也需要分批处理，这就是核内切分，如上图中的tiling块1、tiling块2等。
 
@@ -81,26 +91,26 @@ tailNum：分配到较少数据量的核心数；tailLength：每核分到的数
 
 1）核间均分、核内均分——输入向量shape为96*2048
 
-![](asset/img_6c00640a0e65.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_6c00640a0e65.jpg)
 
 2）核间均分，核内不均分——输入向量shape为32*80
 
-![](asset/img_e87a64a30a01.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_e87a64a30a01.jpg)
 
 3）核间不均分，核内都均分——输入向量shape为31*64+48
 
-![](asset/img_d46c6776e7c3.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_d46c6776e7c3.jpg)
 
 4）核间不均分，核内有不均分的情形——输入向量shape为1*96+31*80
 
-![](asset/img_ffa47bc1db23.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_ffa47bc1db23.jpg)
 
 2、输入向量不满足32字节对齐的情况——输入向量shape为32*64-3
 
-![](asset/img_63ae1a45af43.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_63ae1a45af43.jpg)
 
 3、输入数据量较少时——分配到若干核，输入向量shape为1*48，8*64
 
-![](asset/img_90a3a5d3e73c.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_90a3a5d3e73c.jpg)
 
-![](asset/img_e4b749a9e113.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_e4b749a9e113.jpg)

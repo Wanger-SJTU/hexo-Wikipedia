@@ -1,20 +1,31 @@
 ---
-title: "TokenSpeed 把 LLM 推理拆成可控流水线，为智能体编码时代重写 LLM 推理引擎的控制平面"
-author: "NeuralTalk"
-source: "https://mp.weixin.qq.com/s/vuGdWLUf1cELqnuOIZxtvQ"
-date: "2026-05-08"
-tags: ["微信", "LLM", "推理优化", "TokenSpeed"]
-mathjax: true
+title: TokenSpeed 把 LLM 推理拆成可控流水线，为智能体编码时代重写 LLM 推理引擎的控制平面
+date: "2026-05-08 08:55:45"
+updated: "2026-05-08 08:55:45"
+layout: post
+permalink: /collections/wechat/2026-05-08-TokenSpeed-LLM推理流水线/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 微信
+  - LLM
+  - 推理优化
+  - TokenSpeed
+source_url: https://mp.weixin.qq.com/s/vuGdWLUf1cELqnuOIZxtvQ
 ---
+
 
 # TokenSpeed 把 LLM 推理拆成可控流水线，为智能体编码时代重写 LLM 推理引擎的控制平面
 
 关键词：智能体推理、状态机调度、KV 缓存、MLA 内核、Blackwell 优化
 大型语言模型推理的瓶颈，早已不只是“矩阵乘得够不够快”。
-当 Claude Code、Codex、Cursor 等智能体编码系统从演示产品变成真实生产力工具，推理系统面对的流量形态也发生了根本变化：上下文动辄超过 50K tokens，对话跨越数十轮，工具调用、代码检索、补丁生成和反思修正不断交织。![](asset/tokenspeed/img_01.png)TokenSpeed: A Speed-of-Light LLM Inference Engine for Agentic Workloads博客：https://lightseek.org/blog/lightseek-tokenspeed.html代码：https://github.com/lightseekorg/tokenspeed8000 字，阅读 35 分钟，播客 22 分钟相关推荐从 AITER 内核到 P/D 分离，把 AMD GPU 推理优化从"算子快"推进到"系统快"的轻量闭环项目 ATOM构建面向 LLM 的下一代记忆管理系统，开源项目 Hypatia：为大模型装上“结构化外脑”大模型修硬件Bug，北大提出HWE-Bench，揭示智能体芯片设计的真实能力与致命短板
+当 Claude Code、Codex、Cursor 等智能体编码系统从演示产品变成真实生产力工具，推理系统面对的流量形态也发生了根本变化：上下文动辄超过 50K tokens，对话跨越数十轮，工具调用、代码检索、补丁生成和反思修正不断交织。![](/images/collections/wechat/asset/tokenspeed/img_01.png)TokenSpeed: A Speed-of-Light LLM Inference Engine for Agentic Workloads博客：https://lightseek.org/blog/lightseek-tokenspeed.html代码：https://github.com/lightseekorg/tokenspeed8000 字，阅读 35 分钟，播客 22 分钟相关推荐从 AITER 内核到 P/D 分离，把 AMD GPU 推理优化从"算子快"推进到"系统快"的轻量闭环项目 ATOM构建面向 LLM 的下一代记忆管理系统，开源项目 Hypatia：为大模型装上“结构化外脑”大模型修硬件Bug，北大提出HWE-Bench，揭示智能体芯片设计的真实能力与致命短板
 LightSeek 官方博客指出，为了承载这种增长，业界正在建设需要数十吉瓦电力的数据中心，并投入数千亿美元级别资本。
-在这样的规模下，每块 GPU 吞吐提升几个百分点，都可能转化为巨大的算力节省。TokenSpeed 的野心正在于此：它不是只优化某个 kernel，而是从建模、调度、KV 资源、安全复用、内核系统到请求入口，重新组织一套面向 agentic workloads 的 LLM 推理引擎。![](asset/tokenspeed/img_02.png)这组对比图揭示了TokenSpeed在MoE大模型推理中的显著性能优势：横轴为用户请求Token速率（代表并发压力），纵轴为GPU处理效率（Token/分钟，千级），覆盖Attn TP4/TP8与MoE TP/EP四种并行配置。TokenSpeed在所有场景下均优于TensorRT-LLM，尤其在MoE专家并行（EP）与高并发场景下差距被放大，说明其针对MoE的专家路由与跨设备通信做了深度优化，有效降低了调度开销。同时，Attn TP4的整体效率显著高于TP8，反映出过高的张量并行度会引入显著通信瓶颈，抵消算力收益；而TokenSpeed在TP8配置下仍能维持性能优势，体现了其并行优化的健壮性。整体而言，TokenSpeed实现了更优的“负载-效率”权衡，能在高用户并发下保持更高的GPU利用率，更适配智能体工作负载的低延迟、高吞吐需求。![](asset/tokenspeed/img_03.png)这张图展示了Kimi K2.5 MoE大模型在NVIDIA B200 GPU上，针对智能体（Agentic）工作负载的推理性能对比。横轴为用户侧单请求Token速率（Token/Sec/User，代表服务延迟与并发压力），纵轴为GPU侧Token处理效率（Token/Min/GPU，代表硬件利用率），核心对比了自研推理系统（TS）与NVIDIA TensorRT-LLM（TRTLLM）在张量并行（TP）、专家并行（EP）、数据并行（DP）等不同策略下的表现。 从趋势看，所有配置均呈现典型的“负载-效率”权衡：用户请求速率越高（服务延迟越低），GPU因调度与通信开销导致的处理效率越低。关键结论包括：其一，自研TS框架整体显著优于TRTLLM，尤其是TP4配置低负载下GPU效率可达1500k Token/Min/GPU，远超TRTLLM同配置的1100k，体现了针对MoE模型与智能体负载的深度优化优势；其二，MoE专家并行（EP）始终优于MoE张量并行（TP），所有配置中EP曲线均在TP曲线上方，说明EP更适配MoE的专家路由特性，减少了跨设备通信开销；其三，并行度并非越高越好，TP8效率低于TP4，DP8表现最差，说明过高并行度的通信延迟抵消了算力收益，智能体负载下低并行度+EP的组合更具优势。更多信息见：https://github.com/lightseekorg/tokenspeed/tree/main/test/agentic_benchmark![](asset/tokenspeed/img_04.png)这两张图表对比了TensorRT-LLM MLA与TokenSpeed MLA（开源OSS/二进制版）在大模型MLA（Multi-Head Latent Attention）机制下的Prefill与Decode阶段延迟性能。 Prefill阶段（上图）覆盖5种业务场景，TokenSpeed二进制版（Binary）延迟始终最优，在use case 3中较TensorRT-LLM降低约20%，展现了定制化算子优化的优势；TokenSpeed开源版（OSS）在部分场景延迟略高于TensorRT-LLM，或反映出其开源版本的优化尚未完全释放。Decode阶段（下图）聚焦不同批大小（4/8/16），TokenSpeed的延迟优势被进一步放大：批大小16时，TensorRT-LLM延迟达338.8us，而TokenSpeed仅146.3us，降幅超56%，说明其针对MLA解码的核心瓶颈（如注意力计算、归约操作）进行了深度优化，尤其适配高并发场景的低延迟需求。整体来看，TokenSpeed的MLA实现，尤其是二进制优化版，在Prefill与Decode阶段均展现出显著的性能优势，为大模型推理提供了更高效的底层实现方案。## unsetunset本文目录unsetunset
-一、快速上手与最小使用路径二、为什么智能体负载需要新的推理引擎三、架构总览：Python 执行平面与 C++控制平面的分工四、入口层：轻量 CLI 背后的异步请求主干五、请求主路径：从 tokenize 到调度器再回到用户六、C++状态机调度：TokenSpeed 最核心的系统设计七、KV 缓存：从张量缓存变成资源所有权系统八、MLA KV 布局：为长上下文与 FP8 缓存做结构化折中九、Attention 后端：按模型架构和硬件自动落位十、Kernel 系统：把异构硬件优化变成可注册、可解释、可覆盖的机制十一、MLA 性能优化：TokenSpeed 押注的 Blackwell 低延迟战场十二、性能预览：以 TPS/User 和 TPM/GPU 构造真实 Pareto 边界十三、PD 分离与服务拓扑：下一阶段的系统战场十四、协作生态与开源位置：站在 TensorRT-LLM 肩膀上继续推进十五、当前边界：预览版意味着什么结语：TokenSpeed 的本质是把推理性能问题系统化![](asset/tokenspeed/img_05.jpg)交流加群请在 NeuralTalk 公众号后台回复：加群## unsetunset一、快速上手与最小使用路径unsetunset
+在这样的规模下，每块 GPU 吞吐提升几个百分点，都可能转化为巨大的算力节省。TokenSpeed 的野心正在于此：它不是只优化某个 kernel，而是从建模、调度、KV 资源、安全复用、内核系统到请求入口，重新组织一套面向 agentic workloads 的 LLM 推理引擎。![](/images/collections/wechat/asset/tokenspeed/img_02.png)这组对比图揭示了TokenSpeed在MoE大模型推理中的显著性能优势：横轴为用户请求Token速率（代表并发压力），纵轴为GPU处理效率（Token/分钟，千级），覆盖Attn TP4/TP8与MoE TP/EP四种并行配置。TokenSpeed在所有场景下均优于TensorRT-LLM，尤其在MoE专家并行（EP）与高并发场景下差距被放大，说明其针对MoE的专家路由与跨设备通信做了深度优化，有效降低了调度开销。同时，Attn TP4的整体效率显著高于TP8，反映出过高的张量并行度会引入显著通信瓶颈，抵消算力收益；而TokenSpeed在TP8配置下仍能维持性能优势，体现了其并行优化的健壮性。整体而言，TokenSpeed实现了更优的“负载-效率”权衡，能在高用户并发下保持更高的GPU利用率，更适配智能体工作负载的低延迟、高吞吐需求。![](/images/collections/wechat/asset/tokenspeed/img_03.png)这张图展示了Kimi K2.5 MoE大模型在NVIDIA B200 GPU上，针对智能体（Agentic）工作负载的推理性能对比。横轴为用户侧单请求Token速率（Token/Sec/User，代表服务延迟与并发压力），纵轴为GPU侧Token处理效率（Token/Min/GPU，代表硬件利用率），核心对比了自研推理系统（TS）与NVIDIA TensorRT-LLM（TRTLLM）在张量并行（TP）、专家并行（EP）、数据并行（DP）等不同策略下的表现。 从趋势看，所有配置均呈现典型的“负载-效率”权衡：用户请求速率越高（服务延迟越低），GPU因调度与通信开销导致的处理效率越低。关键结论包括：其一，自研TS框架整体显著优于TRTLLM，尤其是TP4配置低负载下GPU效率可达1500k Token/Min/GPU，远超TRTLLM同配置的1100k，体现了针对MoE模型与智能体负载的深度优化优势；其二，MoE专家并行（EP）始终优于MoE张量并行（TP），所有配置中EP曲线均在TP曲线上方，说明EP更适配MoE的专家路由特性，减少了跨设备通信开销；其三，并行度并非越高越好，TP8效率低于TP4，DP8表现最差，说明过高并行度的通信延迟抵消了算力收益，智能体负载下低并行度+EP的组合更具优势。更多信息见：https://github.com/lightseekorg/tokenspeed/tree/main/test/agentic_benchmark![](/images/collections/wechat/asset/tokenspeed/img_04.png)这两张图表对比了TensorRT-LLM MLA与TokenSpeed MLA（开源OSS/二进制版）在大模型MLA（Multi-Head Latent Attention）机制下的Prefill与Decode阶段延迟性能。 Prefill阶段（上图）覆盖5种业务场景，TokenSpeed二进制版（Binary）延迟始终最优，在use case 3中较TensorRT-LLM降低约20%，展现了定制化算子优化的优势；TokenSpeed开源版（OSS）在部分场景延迟略高于TensorRT-LLM，或反映出其开源版本的优化尚未完全释放。Decode阶段（下图）聚焦不同批大小（4/8/16），TokenSpeed的延迟优势被进一步放大：批大小16时，TensorRT-LLM延迟达338.8us，而TokenSpeed仅146.3us，降幅超56%，说明其针对MLA解码的核心瓶颈（如注意力计算、归约操作）进行了深度优化，尤其适配高并发场景的低延迟需求。整体来看，TokenSpeed的MLA实现，尤其是二进制优化版，在Prefill与Decode阶段均展现出显著的性能优势，为大模型推理提供了更高效的底层实现方案。## unsetunset本文目录unsetunset
+一、快速上手与最小使用路径二、为什么智能体负载需要新的推理引擎三、架构总览：Python 执行平面与 C++控制平面的分工四、入口层：轻量 CLI 背后的异步请求主干五、请求主路径：从 tokenize 到调度器再回到用户六、C++状态机调度：TokenSpeed 最核心的系统设计七、KV 缓存：从张量缓存变成资源所有权系统八、MLA KV 布局：为长上下文与 FP8 缓存做结构化折中九、Attention 后端：按模型架构和硬件自动落位十、Kernel 系统：把异构硬件优化变成可注册、可解释、可覆盖的机制十一、MLA 性能优化：TokenSpeed 押注的 Blackwell 低延迟战场十二、性能预览：以 TPS/User 和 TPM/GPU 构造真实 Pareto 边界十三、PD 分离与服务拓扑：下一阶段的系统战场十四、协作生态与开源位置：站在 TensorRT-LLM 肩膀上继续推进十五、当前边界：预览版意味着什么结语：TokenSpeed 的本质是把推理性能问题系统化![](/images/collections/wechat/asset/tokenspeed/img_05.jpg)交流加群请在 NeuralTalk 公众号后台回复：加群## unsetunset一、快速上手与最小使用路径unsetunset
 TokenSpeed 当前处于预览发布阶段。README 明确说明，该版本主要用于复现 Kimi K2.5 on B200 和&nbsp;TokenSpeed MLA[1]&nbsp;on B200 的性能结果，仍在快速开发中，不建议直接用于生产部署。若要快速体验，官方推荐通过 runner 容器启动开发环境。docker pull lightseekorg/tokenspeed-runner:latest
 docker run -itd \
 &nbsp; --shm-size 32g \
@@ -513,7 +524,7 @@ Prefill benchmark 示例：python ./tokenspeed-mla/python/tokenspeed_mla/fmha.py
 &nbsp; --iterations 10 \
 &nbsp; --skip_ref_check
 值得一提的是，官方博客还提到&nbsp;TokenSpeed MLA 已被 vLLM 采用[6]。这说明它并不只是 TokenSpeed 自用优化，也可能成为更广泛推理生态中的底层能力。## unsetunset十二、性能预览：以 TPS/User 和 TPM/GPU 构造真实 Pareto 边界unsetunset
-TokenSpeed 官方博客没有只给单点吞吐数字，而是用更贴近 coding agent 的指标观察系统：![](asset/tokenspeed/img_06.png)这张图展示了Kimi K2.5 MoE大模型在B200 GPU上，面向智能体工作负载的推理性能对比，横轴为用户侧单请求Token速率（越高代表服务延迟越低、并发压力越大），纵轴为GPU侧Token处理效率（越高代表硬件利用率越好）。所有配置均呈现典型的“负载-效率”权衡：用户请求速率越高，GPU因调度与通信开销导致的处理效率越低。自研推理框架TS整体显著优于TRTLLM，其TP4配置在低负载下GPU效率可达1500k Token/Min/GPU，远超TRTLLM同配置的1100k，体现了针对MoE模型与智能体负载的深度优化优势；同时，专家并行（EP）普遍优于张量并行（TP），过高并行度的通信延迟会抵消算力收益，说明低并行度+EP的组合更适配智能体工作负载的性能需求。x 轴：TPS/User，即单用户 tokens per second，作为延迟体验指标；y 轴：TPM/GPU，即每 GPU tokens per minute，作为吞吐效率指标；通过 sweeping concurrency 画出 Pareto curve。
+TokenSpeed 官方博客没有只给单点吞吐数字，而是用更贴近 coding agent 的指标观察系统：![](/images/collections/wechat/asset/tokenspeed/img_06.png)这张图展示了Kimi K2.5 MoE大模型在B200 GPU上，面向智能体工作负载的推理性能对比，横轴为用户侧单请求Token速率（越高代表服务延迟越低、并发压力越大），纵轴为GPU侧Token处理效率（越高代表硬件利用率越好）。所有配置均呈现典型的“负载-效率”权衡：用户请求速率越高，GPU因调度与通信开销导致的处理效率越低。自研推理框架TS整体显著优于TRTLLM，其TP4配置在低负载下GPU效率可达1500k Token/Min/GPU，远超TRTLLM同配置的1100k，体现了针对MoE模型与智能体负载的深度优化优势；同时，专家并行（EP）普遍优于张量并行（TP），过高并行度的通信延迟会抵消算力收益，说明低并行度+EP的组合更适配智能体工作负载的性能需求。x 轴：TPS/User，即单用户 tokens per second，作为延迟体验指标；y 轴：TPM/GPU，即每 GPU tokens per minute，作为吞吐效率指标；通过 sweeping concurrency 画出 Pareto curve。
 这种评估方式比“最大吞吐”更适合智能体推理。因为 coding agent 不是离线批处理系统，用户体验高度依赖生成速度。官方给出的目标是在保持每用户 TPS 下限的同时最大化每 GPU TPM，常见下限为 70 TPS，有时要求 200 TPS 或更高。
 博客称，在 Kimi K2.5、NVIDIA B200、非 PD disaggregation 的部署设置中，对于 coding agents 常见的 70 TPS/User 以上区间，最佳配置为 Attention TP4 + MoE TP4。TokenSpeed 在整个 Pareto frontier 上优于 TensorRT-LLM：batch size 1 的最低延迟场景约快 9%，在 100 TPS/User 附近约有 11% 更高吞吐。
 这些数字的重要性不在于“9% 或 11% 是否听起来足够大”，而在于数据中心规模效应。官方博客开头指出，当 token 生成规模已经大到需要数十吉瓦级数据中心支撑时，每 GPU 效率的小幅提升都会被整个生产 fleet 放大。## unsetunset十三、PD 分离与服务拓扑：下一阶段的系统战场unsetunset
@@ -534,7 +545,7 @@ TokenSpeed 当前仍是 preview release。README 和官方博客都强调：开�
 README 中列出的 ongoing work 包括：模型覆盖：Qwen 3.6、DeepSeek V4、MiniMax M2.7；runtime features：PD、EPLB、KV store、Mamba cache、VLM、metrics；平台优化：Hopper、MI350 及相关 runtime 改进。
 这意味着 TokenSpeed&nbsp;当前更适合被视为一条技术路线和性能工程样板，而不是“马上替换线上推理集群”的成熟产品。它最值得研究的地方，是如何把智能体推理的典型痛点系统化：长上下文、短 decode、高并发、KV 复用、低 CPU overhead、异构 kernel 选择，以及控制平面的安全性。## unsetunset结语：TokenSpeed 的本质是把推理性能问题系统化unsetunset
 如果只看 MLA kernel，TokenSpeed 像是一个追逐 Blackwell 峰值的底层优化项目；如果只看&nbsp;tokenspeed serve，它又像是一个 OpenAI-compatible 推理服务。但把代码、README 和官方博客连起来看，它真正重要的地方在于：它把 LLM 推理从“单点算子优化”推进到了“系统级协同优化”。Python 前端负责易用接口和异步请求治理；C++ scheduler 用状态机把生命周期和资源所有权显式化；KV cache 从临时张量变成 page、prefix、host/device、writeback、retract 共同参与的资源系统；kernel registry 则把硬件差异、dtype、shape traits 和性能目标纳入可解释的选择过程；MLA 内核优化进一步针对 coding agent 的长 prefix、短 decode、小 head 利用率问题做底层加速。
-智能体时代的推理流量不会再只是“给一个 prompt，生成一段答案”。它会是成千上万条长上下文、短步长、多轮交互、频繁复用的请求流。谁能把这些请求像高速公路上的车辆一样调度，把 KV cache 像仓储物流一样复用，把 kernel 像不同路况下的发动机模式一样切换，谁就更接近所谓 speed-of-light inference。![](asset/tokenspeed/img_07.png)
+智能体时代的推理流量不会再只是“给一个 prompt，生成一段答案”。它会是成千上万条长上下文、短步长、多轮交互、频繁复用的请求流。谁能把这些请求像高速公路上的车辆一样调度，把 KV cache 像仓储物流一样复用，把 kernel 像不同路况下的发动机模式一样切换，谁就更接近所谓 speed-of-light inference。![](/images/collections/wechat/asset/tokenspeed/img_07.png)
 TokenSpeed 目前仍年轻，也明确处于预览阶段。但它给出的技术方向足够清晰：未来 LLM 推理系统的竞争，不只是单个 kernel 谁更快，而是谁能在建模、调度、缓存、内核、入口和服务拓扑之间建立一套可验证、可扩展、可持续优化的系统。参考资料[1]&nbsp;
 TokenSpeed MLA:&nbsp;https://github.com/lightseekorg/tokenspeed/tree/main/tokenspeed-mla[2]&nbsp;
 Getting Started:&nbsp;https://lightseek.org/tokenspeed/guides/getting-started[3]&nbsp;

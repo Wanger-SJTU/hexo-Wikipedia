@@ -1,9 +1,19 @@
 ---
-title: "(2 条消息) 一文搞定 Linux 设备树"
-date: 2021-10-25
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/425420889
+title: (2 条消息) 一文搞定 Linux 设备树
+date: "2021-10-25 00:00:00"
+updated: "2021-10-25 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/一文搞定-Linux-设备树/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/425420889
 ---
+
 
 设备树是一种描述硬件的数据结构，它起源于OpenFirmware（OF）。
 
@@ -38,7 +48,7 @@ source: https://zhuanlan.zhihu.com/p/425420889
 
 设备节点的例子如下图：
 
-![](asset/img_d9b513bec744.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_d9b513bec744.jpg)
 
 **
 
@@ -313,7 +323,7 @@ another-device-node {
 
 .dtb文件是 .dts 被 DTC 编译后的二进制格式的设备树文件，它的文件布局如下：
 
-![](asset/img_599b14d10023.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_599b14d10023.jpg)
 
 从上图可以看出，DTB文件主要包含四部分内容：struct ftdheader、memory reservation block、structure block、strings block；
 
@@ -365,7 +375,7 @@ structure block是用于描述设备树节点的结构，保存着节点的信�
 - ④ FDT_END (0x00000009)：表示structure block的结束。
 单个节点在structure block的存储格式如下图如所示：(注：子节点的存储格式也是一样)
 
-![](asset/img_03cb75a626c5.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_03cb75a626c5.jpg)
 
 总结：
 
@@ -408,7 +418,7 @@ structure block是用于描述设备树节点的结构，保存着节点的信�
 
 jz2440.dtb 文件的内容如下：
 
-![](asset/img_a9a99056fbf5.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_a9a99056fbf5.jpg)
 
 接下来我们对应上图的编号逐一分析，其中编号①~⑩表示的是fdtheader 结构体的成员信息：
 
@@ -434,8 +444,8 @@ jz2440.dtb 文件的内容如下：
 
 (1) dtb 文件的结构图如下：
 
-![](asset/img_37c603405303.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_37c603405303.jpg)
 
 Linux设备树语法规范 (2) 设备节点的结构图如下：
 
-![](asset/img_0ccf8dbf6f2d.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_0ccf8dbf6f2d.jpg)

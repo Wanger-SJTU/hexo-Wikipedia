@@ -1,10 +1,23 @@
 ---
 title: draft model 怎么训练、DSpark 如何做动态 verify？从 EAGLE 到 DSpark，拆解最新的推测解码技术
-author: SuSun (青稞AI)
-url: https://mp.weixin.qq.com/s?__biz=MzI1MzEwMzIwOQ==&mid=2247517847&idx=1&sn=ba12a4ca727669d7fa6ee17574e38d57
-date: 2026-07-23
-tags: [推测解码, speculative-decoding, EAGLE, DSpark, draft-model, LLM-inference]
+date: "2026-07-23 00:00:00"
+updated: "2026-07-23 00:00:00"
+layout: post
+permalink: /collections/wechat/2026-07-23-推测解码技术-从EAGLE到DSpark/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 推测解码
+  - speculative-decoding
+  - EAGLE
+  - DSpark
+  - draft-model
+  - LLM-inference
 ---
+
 
 # draft model 怎么训练、DSpark 如何做动态 verify？从 EAGLE 到 DSpark，拆解最新的推测解码技术
 

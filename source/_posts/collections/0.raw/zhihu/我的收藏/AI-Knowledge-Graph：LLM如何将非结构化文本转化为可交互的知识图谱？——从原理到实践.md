@@ -1,9 +1,19 @@
 ---
-title: "(2 条消息) AI-Knowledge-Graph：LLM如何将非结构化文本转化为可交互的知识图谱？——从原理到实践"
-date: 2025-09-25
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/1911805939247486365
+title: (2 条消息) AI-Knowledge-Graph：LLM如何将非结构化文本转化为可交互的知识图谱？——从原理到实践
+date: "2025-09-25 00:00:00"
+updated: "2025-09-25 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/AI-Knowledge-Graph-LLM如何将非结构化文本转化为可交互的知识图谱-——从原理到实践/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/1911805939247486365
 ---
+
 
 **导语：** 知识图谱作为一种强大的信息表示方式，通过实体（节点）和关系（边）展现了信息间的内在联系，其清晰的结构化优势远超非结构化文本。然而，从海量非结构化文本中构建知识图谱，传统方法往往面临挑战。本文将深入探讨如何利用大语言模型（LLM）的强大能力，构建一套自动化流程，将原始文本转化为交互式知识图谱网页。
 
@@ -21,7 +31,7 @@ source: https://zhuanlan.zhihu.com/p/1911805939247486365
 
 **“Henry, a talented musician from Canada, originally trained as a classical pianist under renowned conductor Maria Rodriguez. Henry later formed a rock band called The Maple Leaves with his sister Lucy, who studied music composition at the University of Toronto. The Maple Leaves released their debut album, Polar Lights, on August 12, 2020, earning critical acclaim for blending classical and rock influences. Lucy also pursued environmental activism and joined Clean Earth as a regional ambassador, where she campaigned for stricter wildlife protection laws. Henry was inspired by Lucy’s passion for charity work, so he started volunteering at local animal shelters in his hometown. Although Henry and Lucy initially struggled with creative differences, they eventually found harmony in combining Lucy’s classical compositions with Henry’s rock guitar riffs. The Maple Leaves toured across Europe in 2021, performing sold-out shows in major cities like Paris, Berlin, and Rome. During the tour, Henry developed a keen interest in international cuisine and collaborated with local chefs to film a short documentary on regional cooking techniques.”AI-Knowledge-Graph**工具将利用您配置的LLM，从上述文本中提取知识，并生成一个类似下图所示的交互式知识图谱HTML文件：
 
-![](asset/img_501210cfc2a1.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_501210cfc2a1.jpg)
 
 #### 高度抽象的工作原理
 
@@ -32,7 +42,7 @@ source: https://zhuanlan.zhihu.com/p/1911805939247486365
 - **实体标准化（Entity Standardization）：** 将指代同一实体的不同表述（如“AI”和“人工智能”）统一为单一名称。
 - **关系推理（Relationship Inference）：** 通过简单的逻辑规则（如传递性）和LLM的推理能力，推断出额外的关系，以连接不相连的子图。
 - **交互式可视化（Interactive Visualization）：** 将生成的知识图谱以交互式网络的形式在浏览器中展示。
-![](asset/img_34d706985442.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_34d706985442.jpg)
 
 #### 详细解析：每一步的精妙之处
 
@@ -161,7 +171,7 @@ source: https://zhuanlan.zhihu.com/p/1911805939247486365
 
 以下是该程序的基本流程（代码仓库的`README.md`中有更详细的程序流程图）：
 
-![](asset/img_9dc547f6d068.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_9dc547f6d068.jpg)
 
 #### 如何安装AI-Knowledge-Graph
 
@@ -313,7 +323,7 @@ file:///Users/robertm/mycode/ai-knowledge-graph/mydocument.html`
 
 您可以使用页面顶部的菜单展开控制面板，调整布局物理效果、隐藏或显示节点/边标签、查看图谱统计信息或选择/过滤节点和边。还有暗黑模式可供选择，如下图所示：
 
-![](asset/img_5870029b356a.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_5870029b356a.jpg)
 
 #### 实验与优化：探索最佳实践
 

@@ -1,3 +1,16 @@
+---
+title: arm 汇编
+date: "2026-04-11 21:40:28"
+updated: "2026-04-11 21:40:28"
+layout: post
+permalink: /collections/0.raw/随笔/XPU-优化/arm-汇编/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 
 ## q0跟v0
 q0跟v0指向的是同一个寄存器地址，前者是128bit 的scalar 后者是 vector
@@ -70,4 +83,4 @@ ref:to
 
 
 
-![[随笔/XPU 优化/SVE-0 SVE特性以及寄存器]]
+!<span class="wikilink wikilink--missing" title="未导入的页面">随笔/XPU 优化/SVE-0 SVE特性以及寄存器</span>

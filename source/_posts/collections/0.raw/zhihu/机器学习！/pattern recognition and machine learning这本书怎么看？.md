@@ -1,9 +1,19 @@
 ---
-title: "pattern recognition and machine learning这本书怎么看？"
-date: 2026-04-15
-tags: [知乎]
-source: https://www.zhihu.com/question/20970802/answer/23105951
+title: pattern recognition and machine learning这本书怎么看？
+date: "2026-04-15 00:00:00"
+updated: "2026-04-15 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/机器学习/pattern-recognition-and-machine-learning这本书怎么看/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://www.zhihu.com/question/20970802/answer/23105951
 ---
+
 
 本书是经典中的经典 我完整看了3遍以上 要算上没看完的几次 得有快10遍 是的 前几次我都是看的半途而废
 

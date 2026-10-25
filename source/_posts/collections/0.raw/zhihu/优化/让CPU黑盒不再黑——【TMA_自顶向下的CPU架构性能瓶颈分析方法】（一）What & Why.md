@@ -1,9 +1,19 @@
 ---
-title: "让CPU黑盒不再黑——【TMA_自顶向下的CPU架构性能瓶颈分析方法】（一）What & Why"
-date: 2019-03-31
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/60569271
+title: 让CPU黑盒不再黑——【TMA_自顶向下的CPU架构性能瓶颈分析方法】（一）What & Why
+date: "2019-03-31 00:00:00"
+updated: "2019-03-31 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/优化/让CPU黑盒不再黑——【TMA_自顶向下的CPU架构性能瓶颈分析方法】(一)What-Why/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/60569271
 ---
+
 
 由于目前的CPU越来越复杂，应用了许多方法使得CPU跑得越来越快，也使得CPU越来越难以被分析。普通的用户、软件开发人员，很少有精力去弄懂整个CPU架构，去了解每一个CPU模块。若有一种分析方法，可以帮助用户快速了解定位当前应用在CPU上的性能瓶颈，用户便可以有针对性地修改自己的程序，以充分利用当前的硬件资源。
 
@@ -21,7 +31,7 @@ Intel有一位工程师就找到了这么一种分析方法，称为*Top-down Mi
 
 再来看看具体可以得到的性能瓶颈架构图：
 
-![](asset/img_bd8dab4c1f76.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_bd8dab4c1f76.jpg)
 
 先简要地讲解下这张图，对于我们想要分析的具体应用，我们只需应用TMA方法，将该应用在我们的目标机器上运行一次，便可以得到上图的结果。TMA并不会减缓目标应用在目标机器上的运行速度，并且也不会产生大量的log数据，在应用结束的同时，我们就可以得到以上的结果。
 
@@ -33,27 +43,27 @@ Intel有一位工程师就找到了这么一种分析方法，称为*Top-down Mi
 
 叙述完了TMA到底是什么，接下来就说说为什么，为什么要选用TMA而不是其他的分析方法，得到TMA的分析结果究竟有什么用，相关人员又能如何利用该结果，来帮助自己的相关工作？为了帮助大家更好了解该方法的实用性，下面将介绍几个应用实例，以下例子均来源于Yasin的该篇论文。
 
-![](asset/img_03a4049af462.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_03a4049af462.jpg)
 
 使用TMA对SPEC CPU Benchmark进行分析通过对业界一致认可的相关Benchmark进行TMA分析，可以得知具体每个测试用例的性能瓶颈在CPU的哪部分，可以有针对性地添加相应的编译选项，来提高特定程序在特定CPU上的性能，以提高跑分。对于架构设计人员，可以通过分析结果，来了解当前架构的性能瓶颈体现，以便更好地对下一代相关的架构进行有针对性的优化。
 
-![](asset/img_df9582bda459.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_df9582bda459.jpg)
 
 SPEC CPU 1-copy vs 4-copy的TMA结果可以看到，对于SPEC CPU Benchmark，在1个copy的情况下，DRAM Bound原因是Latency导致的，但是在4 copy的情形下，DRAM Bandwidth的比重在某些测试用例中成为主要的DRAM Bound原因，这是由于这些用例都有对DRAM进行大量的数据访问所导致的。从中可以更好地了解每个测试用例的特性，是否存在大批量的对DRAM的数据访问。
 
-![](asset/img_728d27d9449f.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_728d27d9449f.jpg)
 
 SPEC CPU在Intel 3rd和4rd上的TMA结果通过运行同样测试用例（SPEC CPU Benchmark），可以快速地得到两种架构之间的差异，从结果可以得知，在4代Intel的处理器上，Front end Bound的比重明显减少，这有由于Intel在4代的处理器上对i-TLB和i-Cache均进行了优化所导致的。从该结果可以佐证对特定模块优化后的性能提升，并且还可以进行不同系列/不同架构直接的处理器对比，来更好地理解不同处理器之间的差异。
 
-![](asset/img_3f209f19bbde.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_3f209f19bbde.jpg)
 
 由于TMA对矩阵乘进行相应的优化想要提升特定应用在特定机器上的性能，若知道该应用在特定处理器上的相应表现，便可以有的放矢地进行相应的代码修改，以充分利用CPU资源，提升处理性能。在步骤一，先运行一次程序，发现瓶颈在DRAM，然后检测代码是否有优化DRAM访问的可能性，发现循环存在问题（跳跃访问，而不是连续访问）。对循环进行修正后，再次运行TMA，发现瓶颈落在后端的处理上，便可以考虑是否可以矢量化，以充分利用Core中的ALU运算模块，提升执行速度。矢量化后，发现瓶颈依然处在后端，便可以思考还有什么方法可以提升后端的处理能力，若程序员了解指令集中指令的优劣，便可以选用更优的指令集代替传统的指令集。通过这样一步步的分析，我们便可以充分压榨CPU的资源，以提升我们的处理速度。**
 
-![](asset/img_35fcb0b6d4e9.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_35fcb0b6d4e9.jpg)
 
 用TMA对多线程优化后的程序进行分析对于多线程优化，最怕就是锁啊这类问题，进行多线程后，整体的性能有可能会不升反降。要分析是什么原因导致了性能的下降，使用TMA便可以很快速地找到根本原因。通过结果，可以了解到是Cache上的Store出现了瓶颈，某一个线程在进行写操作，出现了False Sharing，这是由于多个线程处理的数据都映射到同一个Cache Line导致的，让不同的线程访问不同Cache Line的内容便可以解决这个问题。通过对比，修正后的多线程具有和单线程几乎一模一样的TMA结果，表示这是真正意义上的多线程优化。
 
-![](asset/img_1f530b294704.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_1f530b294704.jpg)
 
 对关键函数进行MEM Bound优化再来看一个对于特定应用优化的例子，对于程序中的热点函数进行TMA分析，得到87%比重在于Backend，然后发现主要是由于DRAM的Latency导致的。那么通过什么方法可以改善DRAM的访问呢？可以通过软件预取，提前讲所需的数据缓存到Cache中，以此来避免访问DRAM的延迟对整体程序性能造成影响。通过对实现软件预期的程序进行分析，可以发现DRAM Latency的比重有所下降，整体的速度比原来提升了2.5倍。
 
@@ -68,6 +78,6 @@ SPEC CPU在Intel 3rd和4rd上的TMA结果通过运行同样测试用例（SPEC C
 #### 补充：
 
 - TMA对性能进行分析的层级:
-![](asset/img_5d324a1caeaa.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_5d324a1caeaa.jpg)
 
 与传统的热点分析方法所处的层级不一样，TMA是站在微架构层级对软件的性能进行分析的

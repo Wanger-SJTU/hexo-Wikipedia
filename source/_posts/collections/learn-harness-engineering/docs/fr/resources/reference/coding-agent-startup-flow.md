@@ -1,3 +1,16 @@
+---
+title: Flux de démarrage de l'agent de codage
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/fr/resources/reference/coding-agent-startup-flow/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # Flux de démarrage de l'agent de codage
 
 Utilisez ceci au début de chaque session une fois l'initialisation terminée.

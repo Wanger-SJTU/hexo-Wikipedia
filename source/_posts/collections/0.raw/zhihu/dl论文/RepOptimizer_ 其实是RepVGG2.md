@@ -1,9 +1,19 @@
 ---
 title: "RepOptimizer: 其实是RepVGG2"
-date: 2022-06-21
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/531477704
+date: "2022-06-21 00:00:00"
+updated: "2022-06-21 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/dl论文/RepOptimizer_-其实是RepVGG2/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/531477704
 ---
+
 
 #### **前言**
 
@@ -20,7 +30,7 @@ source: https://zhuanlan.zhihu.com/p/531477704
 - RepVGG加入了结构先验（如1x1，identity分支），并使用常规优化器训练。而RepOptVGG则是**将这种先验知识加入到优化器实现中**
 - 尽管RepVGG在推理阶段可以把各分支融合，成为一个直筒模型。但是**其训练过程中有着多条分支，需要更多显存和训练时间**。而RepOptVGG可是 **真-直筒模型**，从训练过程中就是一个VGG结构
 - 我们通过定制优化器，实现了结构重参数化和梯度重参数化的等价变换，这种变换是通用的，可以拓展到更多模型
-![](asset/img_38bd4cfb5da6.jpg)
+![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_38bd4cfb5da6.jpg)
 
 #### **将结构先验知识引入优化器**
 
@@ -28,7 +38,7 @@ source: https://zhuanlan.zhihu.com/p/531477704
 
 我们先从一个简单的CSLA示例入手，考虑一个输入，经过2个卷积分支+线性缩放，并加到一个输出中：
 
-![](asset/img_f8d975364a1a.png)
+![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_f8d975364a1a.png)
 
 我们考虑等价变换到一个分支内，那等价变换对应2个规则：
 
@@ -36,13 +46,13 @@ source: https://zhuanlan.zhihu.com/p/531477704
 
 融合的权重需为：
 
-![](asset/img_73066622167d.png)
+![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_73066622167d.png)
 
 #### **更新规则**
 
 针对融合后的权重，其更新规则为： 
 
-![](asset/img_e8d2b1ede1d4.png)
+![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_e8d2b1ede1d4.png)
 
  这部分公式可以参考附录A中，里面有详细的推导
 
@@ -103,7 +113,7 @@ print(torch_fused_w_updated)
 
 进一步拓展到多分支中，假设s，t分别是3x3卷积，1x1卷积的缩放系数，那么对应的更新规则为：
 
-![](asset/img_c9a59cc25d6a.jpg)
+![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_c9a59cc25d6a.jpg)
 
 第一条公式对应输入通道==输出通道，此时一共有3个分支，分别是identity，conv3x3， conv1x1
 
@@ -123,13 +133,13 @@ print(torch_fused_w_updated)
 
 #### **实验结果**
 
-![](asset/img_0cc6df6f1ddc.jpg)
+![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_0cc6df6f1ddc.jpg)
 
 实验效果看上去非常不错，训练中没有多分支，可训练的batchsize也能增大，模型吞吐量也提升不少。
 
 在之前RepVGG中，不少人吐槽量化困难，那么在RepOptVGG下，这种直筒模型对于量化训练十分友好： 
 
-![](asset/img_dc97a6459621.jpg)
+![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_dc97a6459621.jpg)
 
 **
 
@@ -166,7 +176,7 @@ else:
 
 **
 
-![](asset/img_7b2f3c5cc5ef.jpg)
+![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_7b2f3c5cc5ef.jpg)
 
  如果还有Identity分支，我们则需要在对角线上加上1.0(Identity分支没有可学习缩放系数)
 

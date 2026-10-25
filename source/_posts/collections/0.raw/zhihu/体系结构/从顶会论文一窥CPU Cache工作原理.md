@@ -1,9 +1,19 @@
 ---
-title: "从顶会论文一窥CPU Cache工作原理"
-date: 2024-03-20
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/688153204
+title: 从顶会论文一窥CPU Cache工作原理
+date: "2024-03-20 00:00:00"
+updated: "2024-03-20 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/体系结构/从顶会论文一窥CPU-Cache工作原理/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/688153204
 ---
+
 
 前几天在看论文时看到这样一段话：We observe that a program often exhibits several different memory access patterns with different objects or at different phases, and they benefit from different Cache configurations. For example, sequential accesses fit a small directly mapped Cache with a Cache line size of multiple consecutive data elements, while accesses with good locality but large working sets fit a relatively large set-associative Cache.
 
@@ -17,13 +27,13 @@ source: https://zhuanlan.zhihu.com/p/688153204
 
 **
 
-![](asset/img_cced5d2d85ea.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_cced5d2d85ea.jpg)
 
 可以看到，访问寄存器的延迟约为0.3ns**，而访问内存的延迟为**62.9ns** [2]，两者之间差了数百倍，如果在Cache中没有我们想要的数据，那么CPU就需要等待漫长的load操作将数据从内存copy到Cache中。因此后来引入了多级Cache，等级越高，速度越慢，容量越大。在3级Cache的缓冲下，相邻Cache之间和Cache与memory之间的延迟差距也越来越小。让我们来看一下一个真实的案例——ARMv8-A架构的Cortex-A53处理器的Cache组织方式[3]（Switch上的SoC——Tegra X1里就是四个Cortex-A57核心和四个Cortex-A53核心）。
 
 **
 
-![](asset/img_d1b55aebfcd6.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_d1b55aebfcd6.jpg)
 
 Cortex-A53 通常采用两级或多级Cache来实现，即小型 L1 指令缓存(instruction Cache)和数据缓存(data Cache)以及较大的统一 L2 缓存，该缓存在集群(cluster)中的多个内核(core)之间共享。此外，还可以有一个外部 L3 缓存在集群之间共享。CPU每个core都有一个私有的L1 Cache。一个cluster内的所有core共享一个L2 Cache，L2 Cache不区分指令和数据，都可以缓存。所有cluster之间共享L3 Cache。L3 Cache通过总线和主存相连。
 
@@ -48,7 +58,7 @@ Cortex-A53 通常采用两级或多级Cache来实现，即小型 L1 指令缓存
 
 这是因为我们刚才一直讨论的是地址，这64位地址不仅仅是用来在Cache中寻找cache line的，它同时也是内存中的一个字节的唯一标识，也就是说，后14+6=20位相同但前44位不同的地址，尽管他们指向了Cache中同一条cache line中的同一个字节，但是它们标识的是内存中的不同位置！因此CPU拿着一条地址在Cache中寻找数据的时候需要tag来标识我们正在寻找的数据究竟是不是正确的，相应地，每条cache line中也必须包含tag。
 
-![](asset/img_46b0d52ae447.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_46b0d52ae447.jpg)
 
 那这种方式有没有什么问题呢？设想一下如果我们需要并行访问内存的多处区域，如果这些区域正好包含了Index相同的内存地址，那么就会频繁地发生冲突，因为它们都要用到Cache中的同一条cache line，从而降低性能。这种现象叫做缓存颠簸（cache thrashing）
 
@@ -56,7 +66,7 @@ Cortex-A53 通常采用两级或多级Cache来实现，即小型 L1 指令缓存
 
 答案是有的，现在的Cache普遍采用一种叫做Set Associative的方式进行组织，简单来说 n-way associative 就是把Cache进行了分组，使得每个组（Set）里面有n个cache line，这样在遇到Index相同但是tag不同的情况时就可以在一个组中同时存n个cache line，比如2-way associative就是下面这种形式，下面我们假设CPU为4-way associative
 
-![](asset/img_b667c1967f61.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_b667c1967f61.jpg)
 
 那我们现在看看在set associative的情况下如何寻找cache line，在L1 Cache中一共有2^14个cache line，而又因为是4-way associative，因此一共有2^^2=2^12个组，也就是说我们需要12位Index来找到是哪个组。同时我们同样需要6位Offset来在64B的cache line中找出是哪一个Byte。
 
@@ -66,7 +76,7 @@ CPU在访问Cache时，先根据index找到set，然后将组内的所有cache l
 
 对比一下direct mapping和set associative，我们可以发现其实direct mapping也可以看做成set associative中set大小为1的情况。那有大胆的同学可能会想，如果把set大小增大，变成整个Cache会怎么样呢？这种情况我们就称为fully associative。
 
-![](asset/img_732a59d1d2c6.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_732a59d1d2c6.jpg)
 
 在fully associative的情况下，因为整个Cache就是一个组，那么我们就不需要Index来寻找是哪个set了，因此地址只剩下了tag和offset。因为在访问Cache时高速缓存电路必须并行匹配许多tag，想要构造又大又快的fully associative cache是十分困难且昂贵的。因此fully associative cache只适合做小容量的cache，如TLB（又是一个坑）。
 

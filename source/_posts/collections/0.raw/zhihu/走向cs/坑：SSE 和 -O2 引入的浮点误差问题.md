@@ -1,13 +1,23 @@
 ---
-title: "坑：SSE 和 -O2 引入的浮点误差问题"
-date: 2020-08-19
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/188912696
+title: 坑：SSE 和 -O2 引入的浮点误差问题
+date: "2020-08-19 00:00:00"
+updated: "2020-08-19 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/走向cs/坑-SSE-和-O2-引入的浮点误差问题/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/188912696
 ---
+
 
 有人给 [RenderHelp](https://zhuanlan.zhihu.com/p/182872172) 报了个 BUG，两个三角形接缝处有漏点：
 
-![](asset/img_87d972203b49.jpg)
+![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_87d972203b49.jpg)
 
 我自己试了一下，两个三角形挨近镜头的时候确实容易出现裂缝，检查了一遍计算公式，没什么问题，继续跟踪调试，发现漏点处坐标：(400, 300) 对于第一个三角形：
 
@@ -57,6 +67,6 @@ p2={600,500}`
 
 最终结果：
 
-![](asset/img_c1bacffa0151.jpg)
+![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_c1bacffa0151.jpg)
 
 裂缝解决。

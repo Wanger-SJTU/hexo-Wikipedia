@@ -1,9 +1,19 @@
 ---
-title: "(1 封私信) OpenCV视频分析-光流分析"
-date: 2019-06-20
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/69999853
+title: (1 封私信) OpenCV视频分析-光流分析
+date: "2019-06-20 00:00:00"
+updated: "2019-06-20 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/有用的方向思考/OpenCV视频分析-光流分析/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/69999853
 ---
+
 
 ### 概述
 
@@ -11,7 +21,7 @@ source: https://zhuanlan.zhihu.com/p/69999853
 
 如下图所示，是一个球在连续的5帧图像中的运动,箭头显示其位移矢量.
 
-![](asset/img_8556adf3706f.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%259C%2589%25E7%2594%25A8%25E7%259A%2584%25E6%2596%25B9%25E5%2590%2591%25E6%2580%259D%25E8%2580%2583/asset/img_8556adf3706f.jpg)
 
 位移矢量**光流有很多应用场景如下：**
 
@@ -44,7 +54,7 @@ f_{x} u+f_{y} v+f_{t}=0
 
 **
 
-![](asset/img_cbd7ebb78b86.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%259C%2589%25E7%2594%25A8%25E7%259A%2584%25E6%2596%25B9%25E5%2590%2591%25E6%2580%259D%25E8%2580%2583/asset/img_cbd7ebb78b86.jpg)
 
 ✔️ 为了求解未知的 u, v ，采用Lucas-Kanada 方法解决,这个算法最早是有Bruce D. Lucas and Takeo Kanade两位作者提出来的，所以又被称为KLT。
 
@@ -174,7 +184,7 @@ while True:
 cv.destroyAllWindows()
 cap.release()`
 
-![](asset/img_a5fce382d542.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%259C%2589%25E7%2594%25A8%25E7%259A%2584%25E6%2596%25B9%25E5%2590%2591%25E6%2580%259D%25E8%2580%2583/asset/img_a5fce382d542.jpg)
 
 输出**2. 反向检测的光流分析：**
 
@@ -275,11 +285,11 @@ while True:
 cv.destroyAllWindows()
 cap.release()`
 
-![](asset/img_9fb360f7790c.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%259C%2589%25E7%2594%25A8%25E7%259A%2584%25E6%2596%25B9%25E5%2590%2591%25E6%2580%259D%25E8%2580%2583/asset/img_9fb360f7790c.jpg)
 
 输出
 
-![](asset/img_da73182c73fb.jpg)00:05
+![](/images/collections/0.raw/zhihu/%25E6%259C%2589%25E7%2594%25A8%25E7%259A%2584%25E6%2596%25B9%25E5%2590%2591%25E6%2580%259D%25E8%2580%2583/asset/img_da73182c73fb.jpg)00:05
 
 光流分析
 
@@ -351,9 +361,9 @@ while(1):
 cap.release()
 cv.destroyAllWindows()`
 
-![](asset/img_d8bd6c0f3eae.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%259C%2589%25E7%2594%25A8%25E7%259A%2584%25E6%2596%25B9%25E5%2590%2591%25E6%2580%259D%25E8%2580%2583/asset/img_d8bd6c0f3eae.jpg)
 
-原图![](asset/img_19e44ba6974b.jpg)
+原图![](/images/collections/0.raw/zhihu/%25E6%259C%2589%25E7%2594%25A8%25E7%259A%2584%25E6%2596%25B9%25E5%2590%2591%25E6%2580%259D%25E8%2580%2583/asset/img_19e44ba6974b.jpg)
 
 稠密------------------------------------------可爱の分割线------------------------------------------
 

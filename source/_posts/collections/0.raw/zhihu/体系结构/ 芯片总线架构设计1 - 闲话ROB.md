@@ -1,9 +1,19 @@
 ---
-title: "(1 封私信) 芯片总线架构设计1 - 闲话ROB"
-date: 2025-04-08
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/1892792634080225212
+title: (1 封私信) 芯片总线架构设计1 - 闲话ROB
+date: "2025-04-08 00:00:00"
+updated: "2025-04-08 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/体系结构/芯片总线架构设计1-闲话ROB/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/1892792634080225212
 ---
+
 
 虽说架构师的工资有一半本就是心灵补偿费，不过工作中碰上喜欢杠的同事依然很难让人心情愉快，与其浪费时间在科普体系结构常识上，不如花点时间来这里写写文章。anyway，芯片设计中有一条很简单的原则：就像从鸟巢到长安街的路一样，一款芯片的设计方法一定有很多不同的路径可走，不同路径之间没有绝对的优劣之分，所有的设计方法都只是在不同的维度上做trade-off，不过要想实现高效的设计，简单走一种路径更最合理的选择。走了主路就别奔小道，抄了近路就没必要再回环路，否则的话大概率会被堵在某个意料之外的路口。
 
@@ -36,6 +46,6 @@ source: https://zhuanlan.zhihu.com/p/1892792634080225212
 
 一般而言，最常规的做法是在地址交织发生的地方插入ROB，譬如DDR Controller的入口，不过此时会引入总线保序的问题，同一个ID同时把多笔传输发给不同的slave时不保序就有死锁的可能。所以更有效的做法是在master侧插入ROB，此时整个总线就都没有了保序需求，能够实现性能和PPA的最优解，这也是最近常提的全乱序总线的要求来源。
 
-![](asset/img_64fcdcbb4eda.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_64fcdcbb4eda.jpg)
 
 常规的ROB插入点，在总线Slave侧

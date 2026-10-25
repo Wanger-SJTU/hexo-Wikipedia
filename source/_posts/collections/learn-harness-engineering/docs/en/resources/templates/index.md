@@ -1,3 +1,16 @@
+---
+title: Template Guide
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/en/resources/templates/index/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # Template Guide
 
 These templates are ready to copy into your own project. Each one serves a specific purpose in the agent's workflow. Edit the contents to match your project's commands, paths, feature names, and verification steps.

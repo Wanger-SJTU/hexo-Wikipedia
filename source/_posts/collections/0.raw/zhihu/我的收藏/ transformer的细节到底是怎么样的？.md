@@ -1,9 +1,19 @@
 ---
-title: "(1 条消息) transformer的细节到底是怎么样的？"
-date: 2026-04-15
-tags: [知乎]
-source: https://www.zhihu.com/question/362131975/answer/3297483297
+title: (1 条消息) transformer的细节到底是怎么样的？
+date: "2026-04-15 00:00:00"
+updated: "2026-04-15 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/transformer的细节到底是怎么样的/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://www.zhihu.com/question/362131975/answer/3297483297
 ---
+
 
 这里是@TopGeeky，持续输出计算机相关优质好文，如果觉得文章对你有用的话，不如点赞、收藏、关注三连；关注不迷路，持续输出优质文章~
 
@@ -27,7 +37,7 @@ Transformer最早在2017年的[Attention Is All You Need](https://link.zhihu.com
 
 **
 
-![](asset/img_30a44fc1c479.jpg)![](asset/img_636b2d962349.webp)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_30a44fc1c479.jpg)![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_636b2d962349.webp)
 
 RNN基本结构
 
@@ -49,7 +59,7 @@ Transformer模型的核心思想是使用自注意力机制（Self-Attention）�
 
 **
 
-![](asset/img_b9c26185aab1.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_b9c26185aab1.jpg)
 
 Transformer结构
 
@@ -57,7 +67,7 @@ Transformer结构
 
 前面提到Transformer主要由Encoder和Decoder两部分组成。在Transformer的论文中，Encoder和Decoder均由6个Encoder和Decoder，通常我们称之为Encoder Block。
 
-![](asset/img_b17b368a237d.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_b17b368a237d.jpg)
 
 Encoder-Decoder模型
 
@@ -67,7 +77,7 @@ Encoder-Decoder模型
 
 Decoder也包含Encoder提到的两层网络，但是在这两层中间还有一层attention层，帮助当前节点获取到当前需要关注的重点内容。
 
-![](asset/img_a911cca80ab5.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_a911cca80ab5.jpg)
 
 结构拆解
 
@@ -75,7 +85,7 @@ Decoder也包含Encoder提到的两层网络，但是在这两层中间还有一
 
 `Self-Attention` 是 `Transformer`最核心的思想也是必须要理解的难点，这里将会花费大手笔去来详细解释和推导Self- Attention机制的过程。
 
-![](asset/img_f119727217ff.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_f119727217ff.jpg)
 
 Self Attention机制上面这个公式初看很难理解，也不知道最终的含义代表着什么。接下来紧跟我的思路，聊一聊这个公式的具体含义和过程。
 
@@ -123,7 +133,7 @@ Softmax(XX^T)X
 
 **
 
-![](asset/img_75135f198e36.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_75135f198e36.jpg)
 
 img
 
@@ -185,7 +195,7 @@ class Self_Attention(nn.Module):
 - 它必须是确定性的。
 Transformer的作者们提出了一个简单但非常创新的位置编码方法，能够满足上述所有的要求。首先，这种编码不是单一的一个数值，而是包含句子中特定位置信息的d维向量（非常像词向量）。第二，这种编码没有整合进模型，而是用这个向量让每个词具有它在句子中的位置的信息。换句话说，通过注入词的顺序信息来增强模型输入。
 
-![](asset/img_1a383cb320a2.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_1a383cb320a2.jpg)
 
 **关于更多的详细解释可以看看这篇博客：**
 

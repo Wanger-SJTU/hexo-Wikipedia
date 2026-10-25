@@ -1,3 +1,16 @@
+---
+title: プロジェクト 02. プロジェクトを読みやすくし、中断地点から再開できるようにする
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/ja/projects/project-02-agent-readable-workspace/index/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 [中文版本 →](../../../zh/projects/project-02-agent-readable-workspace/)
 
 > 関連講義: [講義 03. リポジトリを唯一の信頼できる情報源にする](./../../lectures/lecture-03-why-the-repository-must-become-the-system-of-record/index.md) · [講義 04. 指示を複数ファイルに分ける](./../../lectures/lecture-04-why-one-giant-instruction-file-fails/index.md)

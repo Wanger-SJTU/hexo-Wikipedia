@@ -1,3 +1,16 @@
+---
+title: VIPT PIPT VIVT PIVT
+date: "2026-04-11 21:40:17"
+updated: "2026-04-11 21:40:17"
+layout: post
+permalink: /collections/草稿/VIPT-PIPT-VIVT-PIVT/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 #页表 #cache
 
 关于Cache的歧义/别名问题和VIVT/VIPT/PIPT架构

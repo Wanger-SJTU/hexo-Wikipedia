@@ -1,13 +1,23 @@
 ---
-title: "万字综述，核心开发者全面解读PyTorch内部机制"
-date: 2019-06-02
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/67834038
+title: 万字综述，核心开发者全面解读PyTorch内部机制
+date: "2019-06-02 00:00:00"
+updated: "2019-06-02 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/机器学习/万字综述,核心开发者全面解读PyTorch内部机制/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/67834038
 ---
+
 
 **斯坦福大学博士生与 Facebook 人工智能研究所研究工程师 Edward Z. Yang 是 PyTorch 开源项目的核心开发者之一。他在 5 月 14 日的 PyTorch 纽约聚会上做了一个有关 PyTorch 内部机制的演讲，本文是该演讲的长文章版本。选自ezyang博客，作者：Edward Z. Yang，机器之心编译，参与：panda。
 
-![](asset/img_73c1f9d436cb.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_73c1f9d436cb.jpg)
 
 大家好！今天我想谈谈 PyTorch 的内部机制。
 
@@ -15,7 +25,7 @@ source: https://zhuanlan.zhihu.com/p/67834038
 
 本演讲的目的是为你提供一份导航图：为你讲解一个「支持自动微分的张量库」的基本概念结构，并为你提供一些能帮你在代码库中寻路的工具和技巧。我预设你之前已经写过一些 PyTorch，但却可能还没有深入理解机器学习软件库的编写方式。
 
-![](asset/img_7fde0b75a001.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_7fde0b75a001.jpg)
 
 本演讲分为两部分：在第一部分中，我首先会全面介绍张量库的各种概念。我首先会谈谈你们知道且喜爱的[张量](https://link.zhihu.com/?target=https%3A//mp.weixin.qq.com/s%3F__biz%3DMzA3MzI4MjgzMw%3D%3D%26mid%3D2650763179%26idx%3D1%26sn%3Dc41e016ef58f4b4079bb70fbe05081f4%26chksm%3D871aabd5b06d22c38550e6bdf2c645be073537d65e4a686c0345ca70f71ab68d8ff86f5ae35d%26token%3D1612885984%26lang%3Dzh_CN)数据类型，并详细讨论这种数据类型究竟能提供什么，这能让我们更好地理解其内部真正的实现方式。
 
@@ -29,17 +39,17 @@ source: https://zhuanlan.zhihu.com/p/67834038
 
 张量是 PyTorch 中的核心数据结构。对于张量直观上所表示的东西，你可能已有很好的理解：张量是一种包含某种标量类型（比如浮点数和整型数等）的 n 维数据结构。我们可以将张量看作是由一些数据构成的，还有一些元数据描述了张量的大小、所包含的元素的类型（dtype）、张量所在的设备（CPU 内存？CUDA 内存？）
 
-![](asset/img_e328d45ad606.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_e328d45ad606.jpg)
 
 另外还有一个你可能没那么熟悉的元数据：步幅（stride）。stride 实际上是 PyTorch 最别致的特征之一，所以值得稍微多讨论它一些。
 
-![](asset/img_849b21980be9.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_849b21980be9.jpg)
 
 张量一个数学概念。但要在我们的计算机中表示它，我们必须为它们定义某种物理表示方法。最常用的表示方法是在内存中相邻地放置张量的每个元素（这也是术语「contiguous（邻接）」的来源），即将每一行写出到内存，如上所示。在上面的案例中，我已经指定该张量包含 32 位的整型数，这样你可以看到每一个整型数都位于一个物理地址中，每个地址与相邻地址相距 4 字节。为了记住张量的实际维度，我们必须将规模大小记为额外的元数据。
 
 所以这幅图与步幅有什么关系？
 
-![](asset/img_62ff9b7fbdd8.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_62ff9b7fbdd8.jpg)
 
 假设我想要读取我的逻辑表示中位置张量 [0,1] 的元素。我该如何将这个逻辑位置转译为物理内存中的位置？步幅能让我们做到这一点：要找到一个张量中任意元素的位置，我将每个索引与该维度下各自的步幅相乘，然后将它们全部加到一起。在上图中，我用蓝色表示第一个维度，用红色表示第二个维度，以便你了解该步幅计算中的索引和步幅。进行这个求和后，我得到了 2（零索引的）；实际上，数字 3 正是位于这个邻接数组的起点以下 2 个位置。
 
@@ -47,7 +57,7 @@ source: https://zhuanlan.zhihu.com/p/67834038
 
 步幅是我们为 PyTorch 用户讲解方法的基本基础。举个例子，假设我想取出一个表示以上张量的第二行的张量：
 
-![](asset/img_92251c665974.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_92251c665974.jpg)
 
 使用高级的索引支持，我只需写出张量 [1, :] 就能得到这一行。重要的是：当我这样做时，不会创建一个新张量；而是会返回一个基于底层数据的不同域段（view）的张量。这意味着，如果我编辑该视角下的这些数据，它就会反映在原始的张量中。
 
@@ -57,7 +67,7 @@ source: https://zhuanlan.zhihu.com/p/67834038
 
 答案：你必须制作该域段的一个副本，由此断开其与原始物理内存的连接。你能做的其它事情实际上并不多。另外，如果你很久之前写过 Java，取一个字符串的子字符串也有类似的问题，因为默认不会制作副本，所以子字符串会保留（可能非常大的字符串）。很显然，Java 7u6 将其固定了下来。如果我想取第一列，还会更有意思：
 
-![](asset/img_39c46b38d5bc.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_39c46b38d5bc.jpg)
 
 当我们查看物理内存时，可以看到该列的元素不是相邻的：两者之间有一个元素的间隙。步幅在这里就大显神威了：我们不再将一个元素与下一个元素之间的步幅指定为 1，而是将其设定为 2，即跳两步。（顺便一提，这就是其被称为「步幅（stride）」的原因：如果我们将索引看作是在布局上行走，步幅就指定了我们每次迈步时向前多少位置。）
 
@@ -65,7 +75,7 @@ source: https://zhuanlan.zhihu.com/p/67834038
 
 我们现在退一步看看，想想我们究竟如何实现这种功能（毕竟这是一个关于内部机制的演讲）。如果我们可以得到张量的域段，这就意味着我们必须解耦张量的概念（你所知道且喜爱的面向用户的概念）以及存储张量的数据的实际物理数据的概念（称为「存储（storage）」）：
 
-![](asset/img_acf95cb3d720.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_acf95cb3d720.jpg)
 
 也许会有多个张量共享同一存储。存储会定义张量的 dtype 和物理大小，同时每个张量还会记录大小、步幅和偏移量，这定义的是物理内存的逻辑解释。
 
@@ -75,7 +85,7 @@ source: https://zhuanlan.zhihu.com/p/67834038
 
 我们已经介绍了一些张量的数据布局（有人可能会说，如果你正确地理解了数据表示，其它一切都会自然到位）。但还是有必要简要谈谈如何实现对张量的操作。在最抽象的层面上，当你调用 torch.mm 时，会发生两次调度：
 
-![](asset/img_9be084161d59.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_9be084161d59.jpg)
 
 第一次调度基于设备类型和张量布局：比如是 CPU 张量还是 [CUDA](https://link.zhihu.com/?target=https%3A//mp.weixin.qq.com/s%3F__biz%3DMzA3MzI4MjgzMw%3D%3D%26mid%3D2650763179%26idx%3D1%26sn%3Dc41e016ef58f4b4079bb70fbe05081f4%26chksm%3D871aabd5b06d22c38550e6bdf2c645be073537d65e4a686c0345ca70f71ab68d8ff86f5ae35d%26token%3D1612885984%26lang%3Dzh_CN)张量，是有步幅的张量还是稀疏的张量。这个调度是动态的：这是一个虚函数（virtual function）调用（这个虚函数调用究竟发生在何处是本演讲后半部分的主题）。
 
@@ -85,11 +95,11 @@ source: https://zhuanlan.zhihu.com/p/67834038
 
 如果你想要理解 PyTorch 中算子的调用方式，这可能就是你头脑中应有的最重要的知识。后面当我们更深入代码时还会回到这里。
 
-![](asset/img_e08141034a22.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_e08141034a22.jpg)
 
 因为我们已经谈过了张量，所以我还想花点时间谈谈张量扩展。毕竟，除了密集的 CPU 浮点数张量，还有其它很多类型的张量，比如 XLA 张量、量化张量、MKL-DNN 张量；而对于一个张量库，还有一件需要思考的事情：如何兼顾这些扩展？
 
-![](asset/img_cd0bf3bba3e8.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_cd0bf3bba3e8.jpg)
 
 我们当前的用于扩展的模型提供了张量的四个扩展点。首先，有三个独立地确定张量类型的配套参数：
 
@@ -102,7 +112,7 @@ source: https://zhuanlan.zhihu.com/p/67834038
 
 你何时应该编写张量 wrapper，而不是扩展 PyTorch 本身？关键的指标是你是否需要将这个张量传递通过 autograd（自动梯度）反向通过过程。举个例子，这个指标告诉我们稀疏张量应该是一种真正的张量扩展，而不只是一种包含一个索引和值张量的 Python 对象：当在涉及嵌入的网络上执行优化时，我们想要嵌入生成稀疏的梯度。
 
-![](asset/img_b37b3d47e566.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_b37b3d47e566.jpg)
 
 我们对扩展的理念也会影响张量本身的数据布局。对于我们的张量结构，我们真正想要的一件事物是固定的布局：我们不想要基本操作（这个说法很常见），比如「一个张量的大小是多少？」来请求虚调度。
 
@@ -114,11 +124,11 @@ source: https://zhuanlan.zhihu.com/p/67834038
 
 自动微分是做啥？这是负责运行神经网络的机制：
 
-![](asset/img_0f32ccba1425.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_0f32ccba1425.jpg)
 
 ……以及填充实际计算你的网络的梯度时所缺少的代码：
 
-![](asset/img_5ac8afff157a.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_5ac8afff157a.jpg)
 
 花点时间看看这幅图。其中有很多东西需要解读，我们来看看：
 
@@ -126,7 +136,7 @@ source: https://zhuanlan.zhihu.com/p/67834038
 - 如果代码的结构保持一样，而行为没有保持一样：来自前向的每一行都被替换为一个不同的计算，其代表了前向运算的导数。举个例子，tanh 运算被转译成了 tanh_backward 运算（这两行用图左边一条灰线连接）。前向和反向运算的输入和输出交换：如果前向运算得到 next_h2，反向运算就以 grad_next_h2 为输入。
 autograd 的意义就在于执行这幅图所描述的计算，但却不用真正生成这个源。PyTorch autograd 并不执行源到源的变换（尽管 PyTorch JIT 确实知道如何执行符号微分（symbolic differentiation））。
 
-![](asset/img_5bec6c0e2b91.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_5bec6c0e2b91.jpg)
 
 要做到这一点，我们需要在张量上执行运算时存储更多元数据。让我们调整一下我们对张量数据结构的图：现在不只是一个指向存储的张量，我们还有一个包装这个张量的变量，而且也存储更多信息（AutogradMeta），这是用户在自己的 PyTorch 脚本中调用 loss.backward() 执行 autograd 时所需的。
 
@@ -134,7 +144,7 @@ autograd 的意义就在于执行这幅图所描述的计算，但却不用真�
 
 我们也必须更新上面关于调度的图：
 
-![](asset/img_74cb9950a19b.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_74cb9950a19b.jpg)
 
 在我们调度到 CPU 或 CUDA 实现之前，还有另一个对变量的调度，其负责打开（unwrap）变量，调用底层实现（绿色），然后再重新将结果包装进变量并为反向过程记录必需的 autograd 元数据。
 
@@ -142,19 +152,19 @@ autograd 的意义就在于执行这幅图所描述的计算，但却不用真�
 
 在我的纽约聚会演讲中，我跳过了以下七页幻灯片。对它们的文本介绍还要等一段时间。
 
-![](asset/img_4f00bd70b802.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_4f00bd70b802.jpg)
 
-![](asset/img_8a97f0bdc503.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_8a97f0bdc503.jpg)
 
-![](asset/img_05d71027b348.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_05d71027b348.jpg)
 
-![](asset/img_c7f14d29b6db.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_c7f14d29b6db.jpg)
 
-![](asset/img_cffea36b14a0.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_cffea36b14a0.jpg)
 
-![](asset/img_85a74a443a9b.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_85a74a443a9b.jpg)
 
-![](asset/img_0825dd181c4d.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_0825dd181c4d.jpg)
 
 ### **工程开发**
 
@@ -164,7 +174,7 @@ autograd 的意义就在于执行这幅图所描述的计算，但却不用真�
 
 PyTorch 有大量文件夹，在 CONTRIBUTING.md 文档中有对它们的非常详细的描述，但实际上你只需知晓 4 个目录：
 
-![](asset/img_04c10ef17394.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_04c10ef17394.jpg)
 
 - 首先，torch/ 包含你最熟悉的东西：你导入和使用的实际的 Python 模块。这些东西是 Python 代码而且易于操作（只需要进行修改然后查看结果即可）。但是，如果太过深入……
 - torch/csrc/：实现了你可能称为 PyTorch 前端的 C++ 代码。用更描述性的术语讲，它实现了在 Python 和 C++ 间转换的绑定代码（binding code）；另外还有一些相当重要的 PyTorch 部分，比如 autograd 引擎和 JIT 编译器。它也包含 C++ 前端代码。
@@ -174,7 +184,7 @@ PyTorch 有大量文件夹，在 CONTRIBUTING.md 文档中有对它们的非常�
 
 我们看看在实践中是如何分离这些代码的：
 
-![](asset/img_f9dddd5a18d9.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_f9dddd5a18d9.jpg)
 
 当你调用一个函数时，比如 torch.add，会发生什么？如果你记得我们的有关调度的讨论，你脑中应该已有了这些基础：
 
@@ -184,7 +194,7 @@ PyTorch 有大量文件夹，在 CONTRIBUTING.md 文档中有对它们的非常�
 - 我们有实际的核，这要么是一个现代的原生函数，要么是传统的 TH 函数。
 其中每一步都具体对应于一些代码。让我们开路穿过这片丛林。
 
-![](asset/img_11a58dfb9e49.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_11a58dfb9e49.jpg)
 
 我们在 C++ 代码中的起始着陆点是一个 Python 函数的 C 实现，我们已经在 Python 那边见过它，像是 torch._C.VariableFunctions.add。THPVariable_add 就是这样一个实现。
 
@@ -194,7 +204,7 @@ PyTorch 有大量文件夹，在 CONTRIBUTING.md 文档中有对它们的非常�
 
 （这里幻灯片中有个错误：我应该讲解变量调度代码。我这里还没有修复。某些神奇的事发生了，于是……）
 
-![](asset/img_865846a00759.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_865846a00759.jpg)
 
 当我们在 Tensor 类上调用 add 方法时，还没有虚调度发生。相反，我有一个内联方法，其调用了一个内联方法，其会在「Type」对象上调用一个虚方法。这个方法是真正的虚方法（这就是我说 Type 只是一个让你实现动态调度的「小工具」的原因）。
 
@@ -204,7 +214,7 @@ PyTorch 有大量文件夹，在 CONTRIBUTING.md 文档中有对它们的非常�
 
 值得再次强调，一直到我们到达核，所有这些代码都是自动生成的。
 
-![](asset/img_60e48f437e5f.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_60e48f437e5f.jpg)
 
 道路蜿蜒曲折，一旦你能基本上把握方向了，我建议你直接跳到核部分。
 
@@ -212,7 +222,7 @@ PyTorch 有大量文件夹，在 CONTRIBUTING.md 文档中有对它们的非常�
 
 PyTorch 为有望编写核的人提供了大量有用工具。在这一节我们会了解其中一些。但首先，编写核需要什么？
 
-![](asset/img_6f580e2fb39c.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_6f580e2fb39c.jpg)
 
 **
 
@@ -226,37 +236,37 @@ PyTorch 为有望编写核的人提供了大量有用工具。在这一节我们
 - 最后，你需要读取数据并执行你想做的计算！
 在后面的幻灯片中，我将介绍 PyTorch 中能帮你实现这些步骤的工具。
 
-![](asset/img_2f6ed5162e4e.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_2f6ed5162e4e.jpg)
 
 要充分利用 PyTorch 的代码生成能力，你需要为你的算子写一个模式（schema）。这个模式能提供你的函数的 mypy 风格类型，并控制是否为 Tensor 上的方法或函数生成捆绑包。你还可以告诉模式针对给定的设备-布局组合，应该调用你的算子的哪种实现。
 
 有关这种格式的更多信息，请参阅：[https://github.com/pytorch/pytorch/blob/master/aten/src/ATen/native/README.md](https://link.zhihu.com/?target=https%3A//github.com/pytorch/pytorch/blob/master/aten/src/ATen/native/README.md)
 
-![](asset/img_b0b475800c65.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_b0b475800c65.jpg)
 
 你可能也需要为你在 derivatives.yaml 中的操作定义一个导数。
 
-![](asset/img_8b957b9a742f.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_8b957b9a742f.jpg)
 
 错误检查可以在低层 API 完成，也能通过高层 API 实现。低层 API 只是一个宏 TORCH_CHECK，其接收的是一个布尔值，然后还有任意数量的参数构成错误字符串（error string）以便得出结论看该布尔值是否为真。
 
-这个宏有个很好的地方：你可以将字符串与非字符串数据混合起来；每一项都使用它们的 operator![](asset/img_ba269b366403.jpg)
+这个宏有个很好的地方：你可以将字符串与非字符串数据混合起来；每一项都使用它们的 operator![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_ba269b366403.jpg)
 
 在用 PyTorch 写算子时，有一点很重要：你往往要注册三个算子：abs_out（其操作的是一个预分配的输出，其实现了 out= keyword 参数）、abs_（其操作的是 inplace）、abs（这只是一个算子的普通的旧功能版本）。
 
 大部分时间，abs_out 是真正的主力，abs 和 abs_ 只是围绕 abs_out 的薄弱 wrapper；但有时候也可为每个案例编写专门的实现。
 
-![](asset/img_dcfdead3677a.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_dcfdead3677a.jpg)
 
 要执行 dtype 调度，你应该使用 AT_DISPATCH_ALL_TYPES 宏。这会获取你想要进行调度操作的张量的 dtype，并还会为可从该宏调度的每个 dtype 指定一个 lambda。通常而言，这个 lambda 只是调用一个模板辅助函数。
 
 这个宏不只是「执行调度」，它也会决定你的核将支持的 dtype。这样，这个宏实际上就有相当多一些版本，这能让你选取不同的 dtype 子集以生成特定结果。大多数时候，你只需要 AT_DISPATCH_ALL_TYPES，但也要关注你可能需要调度其它更多类型的情况。
 
-![](asset/img_4a466ec2dccd.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_4a466ec2dccd.jpg)
 
 在 CPU 上，你通常需要并行化你的代码。过去，这通常是通过直接在你的代码中添加 OpenMP pragma 来实现。
 
-![](asset/img_863398ec2cc9.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_863398ec2cc9.jpg)
 
 某些时候，你必须真正访问数据。PyTorch 为此提供了相当多一些选择。
 
@@ -264,7 +274,7 @@ PyTorch 为有望编写核的人提供了大量有用工具。在这一节我们
 ();，我们会做一次运行时间测试以确保张量确实是这种格式；但那之后，每次存取都不会被检查。张量存取器能正确地处理步幅，因此你最好使用它们，而不是原始的指针访问（不幸的是，很多传统的核是这样做的）。另外还有 PackedTensorAccessor，这特别适用于通过 CUDA launch 发送存取器，这样你就能从你的 CUDA 核内部获取存取器。（一个值得一提的问题：TensorAccessor 默认是 64 位索引，这比 CUDA 中的 32 位索引要慢得多！）
 - 如果你在用很常规的元素存取编写某种算子，比如逐点运算，那么使用远远更高级的抽象要好得多，比如 TensorIterator。这个辅助类能为你自动处理广播和类型提升（type promotion），相当好用。
 - 要在 CPU 上获得真正的速度，你可能需要使用向量化的 CPU 指令编写你的核。我们也有用于这方面的辅助函数！Vec256 类表示一种标量向量，并提供了一些能在它们上一次性执行向量化运算的方法。然后 binary_kernel_vec 等辅助函数能让你轻松地运行向量化运算，然后结束那些没法用普通的旧指令很好地转换成向量指令的东西。这里的基础设施还能在不同指令集下多次编译你的核，然后在运行时间测试你的 CPU 支持什么指令，再在这些情况中使用最佳的核。
-![](asset/img_25fd79f3832f.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_25fd79f3832f.jpg)
 
 PyTorch 中大量核都仍然是用传统的 TH 风格编写的。（顺便一提，TH 代表 TorcH。这是个很好的缩写词，但很不幸被污染了；如果你看到名称中有 TH，可认为它是传统的。）传统 TH 风格是什么意思呢？
 
@@ -275,7 +285,7 @@ PyTorch 中大量核都仍然是用传统的 TH 风格编写的。（顺便一�
 
 工作流程效率**
 
-![](asset/img_740e15344d01.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_740e15344d01.jpg)
 
 最后我想谈谈在 PyTorch 上的工作效率。如果 PyTorch 那庞大的 C++ 代码库是阻拦人们为 PyTorch 做贡献的第一只拦路虎，那么你的工作流程的效率就是第二只。如果你想用 Python 习惯开发 C++，那可能会很艰辛：重新编译 PyTorch 需要大量时间，你也需要大量时间才能知道你的修改是否有效。
 
@@ -289,7 +299,7 @@ PyTorch 中大量核都仍然是用传统的 TH 风格编写的。（顺便一�
 
 ****
 
-**![](asset/img_c4c90c65314a.jpg)
+**![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_c4c90c65314a.jpg)
 
 **
 
@@ -303,7 +313,7 @@ PyTorch 中大量核都仍然是用传统的 TH 风格编写的。（顺便一�
 
 **
 
-*![](asset/img_0fd794650ff4.jpg)
+*![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_0fd794650ff4.jpg)
 
 *
 

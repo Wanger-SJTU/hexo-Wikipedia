@@ -1,10 +1,19 @@
 ---
-title: "从零读懂QPC Cache Miss的乱序响应：多QP并发下的“不堵车”设计"
-date: 2026-07-04
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/2056804151368193445
-
+title: 从零读懂QPC Cache Miss的乱序响应：多QP并发下的“不堵车”设计
+date: "2026-07-04 00:00:00"
+updated: "2026-07-04 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/AI-infra/从零读懂QPC-Cache-Miss的乱序响应-多QP并发下的“不堵车”设计/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/2056804151368193445
 ---
+
 
 在RDMA网卡（RNIC）中，QPC（Queue Pair Context，队列对上下文）缓存着一组关键状态——当前PSN、拥塞控制参数等。当网卡处理一个WQE时，需要先读取对应QP的QPC。如果它就在片上缓存中，只需几个时钟周期；如果不在，网卡必须通过PCIe从主机内存中读取，延迟高达数百纳秒甚至微秒级。
 

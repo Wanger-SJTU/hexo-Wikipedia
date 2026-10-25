@@ -1,9 +1,19 @@
 ---
-title: "如果你是一个C++面试官，你会问哪些问题？"
-date: 2026-04-15
-tags: [知乎]
-source: https://www.zhihu.com/question/451327108/answer/2055761495
+title: 如果你是一个C++面试官，你会问哪些问题？
+date: "2026-04-15 00:00:00"
+updated: "2026-04-15 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/编程向/如果你是一个C-面试官,你会问哪些问题/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://www.zhihu.com/question/451327108/answer/2055761495
 ---
+
 
 **talk is cheap,show me your code!**
 

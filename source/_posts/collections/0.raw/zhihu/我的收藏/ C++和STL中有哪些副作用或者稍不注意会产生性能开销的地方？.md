@@ -1,9 +1,19 @@
 ---
-title: "(1 条消息) C++和STL中有哪些副作用或者稍不注意会产生性能开销的地方？"
-date: 2026-04-15
-tags: [知乎]
-source: https://www.zhihu.com/question/355171938/answer/2173582004
+title: (1 条消息) C++和STL中有哪些副作用或者稍不注意会产生性能开销的地方？
+date: "2026-04-15 00:00:00"
+updated: "2026-04-15 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/C-和STL中有哪些副作用或者稍不注意会产生性能开销的地方/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://www.zhihu.com/question/355171938/answer/2173582004
 ---
+
 
 收录于 · 一鳞半爪
 
@@ -256,13 +266,13 @@ p4 = p1;
 
 送礼物
 
-![](asset/img_96042b8fe354.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_96042b8fe354.jpg)
 
 1 人已送礼物
 
-[所属专栏 · 2022-11-06 11:18 更新](https://zhuanlan.zhihu.com/c_1572544730096689152)[![](asset/img_44fa8ba141a5.jpg)一鳞半爪
+[所属专栏 · 2022-11-06 11:18 更新](https://zhuanlan.zhihu.com/c_1572544730096689152)[![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_44fa8ba141a5.jpg)一鳞半爪
 
-![](asset/img_dd0ccf0ca408.jpg)果冻虾仁
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_dd0ccf0ca408.jpg)果冻虾仁
 
 87 篇内容 · 19117 赞同
 

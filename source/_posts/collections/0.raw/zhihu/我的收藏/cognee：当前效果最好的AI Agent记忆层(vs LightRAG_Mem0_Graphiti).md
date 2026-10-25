@@ -1,15 +1,25 @@
 ---
-title: "(2 条消息) cognee：当前效果最好的AI Agent记忆层(vs LightRAG/Mem0/Graphiti)"
-date: 2025-08-25
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/1943451926181164200
+title: (2 条消息) cognee：当前效果最好的AI Agent记忆层(vs LightRAG/Mem0/Graphiti)
+date: "2025-08-25 00:00:00"
+updated: "2025-08-25 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/cognee-当前效果最好的AI-Agent记忆层(vs-LightRAG_Mem0_Graphiti)/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/1943451926181164200
 ---
+
 
 AI Agent落地最大瓶颈，大模型没有记忆。今天我们来看一下关于Agent Memory的一些工作，主要包括四个项目：LightRAG、Mem0、Graphiti (Zep)，以及当前效果最好的Agent记忆层：cognee。
 
 #### 一、Agent记忆层是什么？
 
-![](asset/img_ed6584ab87e2.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_ed6584ab87e2.jpg)
 
 https://www.dailydoseofds.com/p/hands-on-build-an-ai-agent-with-human-like-memory/看这张图，我们可以清楚地理解Agent记忆层的本质。它就是让AI能够记住过往经验的核心组件。
 
@@ -23,7 +33,7 @@ Agent记忆层的整个过程涉及四个关键环节：**知识提取**—从�
 
 **1. LightRAG：更聪明的“检索增强”引擎**
 
-![](asset/img_4b2e2f9fc745.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_4b2e2f9fc745.jpg)
 
 传统RAG系统依赖扁平化的文本块检索，缺乏对实体间复杂关系的理解，导致回答零散、缺乏全局一致性。LightRAG使用LLM从文本中提取实体和关系，构建知识图谱。
 
@@ -33,7 +43,7 @@ LightRAG的核心创新在于**两级检索，除了基础的实体和关系、�
 
 **2. Mem0：专注对话的记忆管家**
 
-![](asset/img_422d5b7d8638.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_422d5b7d8638.jpg)
 
 Mem0是专为多轮对话Agent设计的记忆系统。它的目标是让Agent能记住跨会话的用户信息[。](https://zhuanlan.zhihu.com/write)它将记忆表示为有向图，支持复杂推理。
 
@@ -41,7 +51,7 @@ Mem0是专为多轮对话Agent设计的记忆系统。它的目标是让Agent能
 
 **3. Graphiti (Zep)：企业级时序知识图谱**
 
-![](asset/img_a9d44f68fdb0.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_a9d44f68fdb0.jpg)
 
 Zep是一个商业化的记忆平台，其核心是名为Graphiti的时序知识图谱引擎，也是个开源项目。从知识图谱结构上与LightRAG类似，有**三层的图谱结构**，存储了原始对话的*情景层*、提取实体关系的*语义层*、自动聚类并总结的高层摘要层。相比上面两个工作，它还在工程方面做了更多工作。
 
@@ -54,7 +64,7 @@ Zep是一个商业化的记忆平台，其核心是名为Graphiti的时序知识
 
 **1. Cognee架构**
 
-![](asset/img_6f74a1cf6382.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_6f74a1cf6382.jpg)
 
 Cognee是一个开源的端到端知识图谱构建与检索框架。它的流程非常清晰，称为 **ECL（Extract-Cognify-Load）** 流水线：
 
@@ -87,7 +97,7 @@ Cognee是一个开源的端到端知识图谱构建与检索框架。它的流�
 
 #### 四、评测结果
 
-![](asset/img_8fda8f6675fe.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_8fda8f6675fe.jpg)
 
 https://www.cognee.ai/research-and-evaluation-results这个是Cognee官网上的评测结果，Cognee展现出了显著的技术优势。在四个关键评估维度中，Cognee在DeepEval Correctness（0.84）、DeepEval F1（0.83）和DeepEval EM（0.68）三项指标上均取得最高分，体现了其在准确性和完整性方面的表现。
 
@@ -95,7 +105,7 @@ https://www.cognee.ai/research-and-evaluation-results这个是Cognee官网上的
 
 Cognee的这一表现得益于Dreamify的超参数优化技术，下图是初始状态和经过Dreamify优化的结果，对比提升明显。
 
-![](asset/img_901e4541f624.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_901e4541f624.jpg)
 
 > 对这些项目的评估，采用了HotpotQA 测试集*--由卡内基梅隆大学 (CMU)、斯坦福等机构联合提出，是最早被广泛使用的多跳问答数据集之一。给定一个问题，模型需要在 Wikipedia 文档集合中找到相关段落，往往需要结合多个文档中的事实才能得到答案（例如“X 的丈夫在哪所大学任教？”需要先找到 X 的丈夫是谁，再找到他在哪工作）。*
 主要评估指标：

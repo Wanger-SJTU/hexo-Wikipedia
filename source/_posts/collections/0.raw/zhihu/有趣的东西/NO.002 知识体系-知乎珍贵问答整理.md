@@ -1,9 +1,19 @@
 ---
-title: "NO.002 知识体系-知乎珍贵问答整理"
-date: 2021-03-09
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/352546929
+title: NO.002 知识体系-知乎珍贵问答整理
+date: "2021-03-09 00:00:00"
+updated: "2021-03-09 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/有趣的东西/NO.002-知识体系-知乎珍贵问答整理/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/352546929
 ---
+
 
 作为一位使用知乎八年的用户，我收藏了3000余篇精彩的问答，这是一笔非常宝贵的财富。但是，在精简收藏的过程中，我逐渐感受到，**如果不将这庞大的碎片知识库进行系统地整合，那么我将很难高效地记忆并实践其中的精华。** 因此，我决定在这个新账号将我的整理结果分享出来，既能重捋自己的思路，又能回馈给知乎社区的各位读者，欢迎批评指正！**
 

@@ -1,9 +1,19 @@
 ---
-title: "Triton学习笔记"
-date: 2023-12-14
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/672086654
+title: Triton学习笔记
+date: "2023-12-14 00:00:00"
+updated: "2023-12-14 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/Triton学习笔记/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/672086654
 ---
+
 
 **备注：**比较好奇`Triton`和`TVMScript`优缺点。同时，我们组之前魔改过`TVMScript`，自己也试着用魔改的`TVMScript`写过简单算子。梳理一下`Triton`，理解我们组做到那种程度，以及可能遇到有那些瓶颈。**实践经验少，有理解错误的地方，烦请指正。**
 
@@ -15,7 +25,7 @@ source: https://zhuanlan.zhihu.com/p/672086654
 
 **DSA**
 
-![](asset/img_8f281b20ffde.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_8f281b20ffde.jpg)
 
 图片来源：https://www.usenix.org/conference/osdi23/presentation/zhao 图中的DSA架构中由多核核组成，通常一个核内由多个计算单元组成，比较常见的**计算单元**有向量（`vector`）、标量（`scalar`）、张量（`cube`）单元，还有一些数据搬移部件。通常DSA由多个核组成，当核数量达到一定数量后， 就需要考虑可扩展性问题。一般将几个核组成组成一个大的单元，这个单元叫**`cluster`**，然后通过互联操作，把其它`cluster`之间连起来。`cluster`内部一般是由一块` Memory` 作为**内存共享**，多个核可以访问这块共享内存。有些架构里把这个`Global Memory`成了`cache`。**数据搬移部件DMA,** 可以把DSA内部数据，搬运到外部的DDR，然后再通过`PCIE`等，传输到外部机器上。国内具有代表性的DSA是华为达芬奇 slide: [DaVinci: A Scalable Architecture for Neural Network Computing ](https://link.zhihu.com/?target=https%3A//pdfs.semanticscholar.org/4ca3/69ee20343433bd50c288c01ebcba2d6a03b2.pdf), paper: [Performance modeling on DaVinci AI core](https://link.zhihu.com/?target=https%3A//www.sciencedirect.com/science/article/abs/pii/S074373152300014X) 
 
@@ -29,21 +39,21 @@ source: https://zhuanlan.zhihu.com/p/672086654
 
 - **`Kernel` ：**表示并行执行的任务，是程序员编写的代码。这段代码被设计为在大量`Thread`上执行相同的操作。
 - **`Block`：**GPU将`Kernel`中的任务划分为多个`block`，在每个`block`内，包含大量的`Thread`。这些`Thread`以并行的方式执行`Kernel`中的代码，每个`Thread`处理不同的数据。
-![](asset/img_64118c074b8d.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_64118c074b8d.jpg)
 
 将Kernel的处理任务划分到多个Block图片来源：[https://www.nvidia.cn/docs/IO/51635/NVIDIA_CUDA_Programming_Guide_1.1_chs.pdf](https://link.zhihu.com/?target=https%3A//www.nvidia.cn/docs/IO/51635/NVIDIA_CUDA_Programming_Guide_1.1_chs.pdf)
 
 **`Thread Block`映射到`Grid`** 
 
 - **`Grid`**：将所有`Thread Block`组成一个`Grid`，形成一个二维或三维的结构。`Grid`是`Thread Block`的集合，它表示整个GPU执行任务的范围。
-![](asset/img_28e11a3de7a6.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_28e11a3de7a6.jpg)
 
 所有Thread Block组成一个GridGPU调度器将`Grid`映射到GPU处理器上，确保每个`Thread Block`都有对应的处理资源。
 
 **`Grid`划分为`Grid with Cluster`** 
 
 - 在一些情况下，为了更好地管理资源，Grid可能被进一步划分为`Grid with Cluster`。
-![](asset/img_c26511c84ed2.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_c26511c84ed2.jpg)
 
 每个Cluster包含多个Thread Block Cluster**`Grid with Cluster`映射到`SM`** 
 
@@ -63,7 +73,7 @@ source: https://zhuanlan.zhihu.com/p/672086654
 
 **`Global Memory`: **在整个流程中，数据的存储仍然可以使用`Global Memory`。`Global Memory`对于整个`Grid with Cluster`都是可见的，因此可以在不同的`Thread Block Cluster`之间进行数据交换和共享。
 
-![](asset/img_525f4b654365.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_525f4b654365.jpg)
 
                                              不同计算组织和层次结构的Memory范围
 
@@ -73,7 +83,7 @@ source: https://zhuanlan.zhihu.com/p/672086654
 
 在整个任务执行过程中，GPU调度器可能会进行SM之间的任务切换，确保每个SM都有任务执行，以充分利用GPU的计算资源。
 
-![](asset/img_49df849c5c28.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_49df849c5c28.jpg)
 
 其实关于GPU衍生出一些容易混淆的理解，详细可以阅读  [SIMT、SIMD和DSA（1）](https://zhuanlan.zhihu.com/p/562135333)、[总体流程设计（1）-CUDA程序的等级结构](https://zhuanlan.zhihu.com/p/129375374) 。
 
@@ -87,7 +97,7 @@ wiki上这样解释, [link ](https://link.zhihu.com/?target=https%3A//zh.wikiped
 
 #### **AI编译器**
 
-![](asset/img_819f3c04dc1a.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_819f3c04dc1a.jpg)
 
                          图片来源：[https://www.bilibili.com/video/BV17C4y1a74c/](https://link.zhihu.com/?target=https%3A//www.bilibili.com/video/BV17C4y1a74c/)
 
@@ -97,7 +107,7 @@ wiki上这样解释, [link ](https://link.zhihu.com/?target=https%3A//zh.wikiped
 
 通常听到`Block`、`Layer` 和 `Stage` 这些术语。这些术语在不同领域、不同使用者的角度有不同解释。比如：以经典的`ResNet50`网络结构解释为例，算法研究员和AI编译器开发者的角度出发。
 
-![](asset/img_1438debc0f14.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_1438debc0f14.jpg)
 
 图片来源：https://www.usenix.org/conference/osdi23/presentation/zhao名称算法研究员AI编译器开发者GPU硬件Layer通常指网络模型中的一层。这一层可以是卷积层、池化层、全连接层、池化层等。深度学习模型往往是由多个层组成的，每一层都执行一些特定的操作是一种Low-Level Abstraction，对网络计算过程进行细粒度划分的层次。通常由一组OPs组成，这些OP在计算上相对独立且可以并行执行。Low-Level 抽象可以帮助编译器在处理网络时实现更细粒度的优化和并行化，比如：循环优化、内存复用等局部运算调度Block通常指是网络的组成单元，它可以是一个层（layer）或多个层的组合。比如图中的block由包含卷积层、池化层、激活函数等，形成一个模块化的结构，方便网络的设计和管理是一种Intermediate Block Abstraction，对网络中的Block进行抽象和描述。Block通常由有多个Layer组成，这些Layer在功能上相互关联。Intermediate Block Abstraction可以将这些Layer组织在一起，以便在编译器中进行更精细的优化和调度，比如fusion操作在GPU中，Block是一组Thread的集合，这些Thread可以在同一个Block内进行协同工作。每个Block中的线程可以通过共享内存进行数据交换和协作Stage指将神经网络划分为不同的计算阶段或阶段性的处理过程。每个阶段可以由一个或多个block块或layer组成。一个阶段的输出通常成为下一个阶段的输入。通过将网络划分为stage，可以更好资源管理和分配，运用一些优化技术是一种High-Level Abstraction，用于描述神经网络的整体结构和计算过程。它将网络表示为一系列层的组合，每个层包含不同的OP和相应参数。高级图层抽象提供了一种更高层次的抽象，编译器可以对全局的数据流分析，以及跨Layer的调度现阶段针对深度学习编译器不同层次的抽象和DSL有多种，感兴趣可以阅读 [AI Compiler研究的分层设计 - Compiler Hierarchy](https://zhuanlan.zhihu.com/p/599134866) 、[(二)大话深度学习编译器中的自动调优·DSL与IR ](https://link.zhihu.com/?target=https%3A//jinzhuojun.blog.csdn.net/article/details/124760878)。
 
@@ -107,7 +117,7 @@ wiki上这样解释, [link ](https://link.zhihu.com/?target=https%3A//zh.wikiped
 
 `CUDA`好比单反相机，里面有各种专业模型和功能，用户可以更细粒度的功能，`Triton`更像是智能手机，它封装了单反相机的功能，操作简单，但存在效果比专业单反差的问题。
 
-![](asset/img_0aed17335a30.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_0aed17335a30.jpg)
 
 **`CUDA`** 
 
@@ -124,7 +134,7 @@ wiki上这样解释, [link ](https://link.zhihu.com/?target=https%3A//zh.wikiped
 
 #### **efficiency and flexibility **
 
-![](asset/img_2c260e1cc255.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_2c260e1cc255.jpg)
 
 - 开发效率，自低向下依次增加；灵活性，自顶向下依次增加
 - CUDA和PTX编程直接面向Thread编程，用户需要考虑的因素很多。例如：各个层级的分块策略、数据重用、`Share memory`的`bank`冲突、向量化访存
@@ -132,7 +142,7 @@ wiki上这样解释, [link ](https://link.zhihu.com/?target=https%3A//zh.wikiped
 **这里缺少Triton支持静态shaped的介绍，具体可以看看多年前Triton作者reddit帖子 [link](https://link.zhihu.com/?target=https%3A//www.reddit.com/r/MachineLearning/comments/otdpkx/n_introducing_triton_opensource_gpu_programming/)                         """Triton basically aims to be a simpler, open-source version of CUDA-C. Compute kernels are written in a single-threaded C-like language in which statically-shaped arrays are first-class citizen rather than just pointers to contiguous regions of memory (tutorial here). As a consequence, programmers don't have to worry about simultaneous multi-threading, shared memory, tensor cores, etc; the compiler will figure all of this automatically."""                                                                                                  Triton对静态shape处理比较友好，可以称为一等公民，而不是仅仅作为指向内存连续区域的指针。（不是很理解这种翻译，直到官网找到 [https://github.com/openai/triton/blob/main/docs/programming-guide/chapter-1/introduction.rst](https://link.zhihu.com/?target=https%3A//github.com/openai/triton/blob/main/docs/programming-guide/chapter-1/introduction.rst)）
 ####  product positioning**
 
-![](asset/img_af805b77d1b2.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_af805b77d1b2.jpg)
 
 - `Python-like`:`Triton`有`Python bounding`和`Python的API`，对`Python`的用户是很友好的。
 ***个人经验，看着接近Python语言，`Python`有些高阶的语法还是不兼容的*
@@ -144,7 +154,7 @@ wiki上这样解释, [link ](https://link.zhihu.com/?target=https%3A//zh.wikiped
 
 #### **Triton supports hopper for performance with limited additional complexity **
 
-![](asset/img_77784b0ef9b1.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_77784b0ef9b1.jpg)
 
 - 基于Hopper架构的H100相比于基于Ampere架构的A100，性能有较大提升
 
@@ -152,7 +162,7 @@ wiki上这样解释, [link ](https://link.zhihu.com/?target=https%3A//zh.wikiped
 
 #### **New features of Hopper**
 
-![](asset/img_1e70d2ec32a6.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_1e70d2ec32a6.jpg)
 
 - 还是要提一句，Triton设计的初衷还是是面向CTA编程
 - Hopper新架构主要特点
@@ -164,7 +174,7 @@ wiki上这样解释, [link ](https://link.zhihu.com/?target=https%3A//zh.wikiped
 
 #### **New API for CGA programming**
 
-![](asset/img_85cede3f9643.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_85cede3f9643.jpg)
 
 `先了解一下GPU硬件结构和参数设置，再看Triton接口理解可能更容易一些`
 
@@ -175,7 +185,7 @@ wiki上这样解释, [link ](https://link.zhihu.com/?target=https%3A//zh.wikiped
 
 #### **TMA Multicast and Asynchronous Transaction Barrier **
 
-![](asset/img_adf72aaeb8fa.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_adf72aaeb8fa.jpg)
 
 - 编程模型变化：`CGA`到`CTA`的编程模型
 - 添加了大量的异步指令：相比于Ampere架构上的异步内存拷贝指令 ，比如`LDGSTS` 
@@ -194,13 +204,13 @@ wiki上这样解释, [link ](https://link.zhihu.com/?target=https%3A//zh.wikiped
 **看到这里越发觉得现代的异构计算硬件设计是相互借鉴的，存在某种硬件设计的功能在GPU上性能表现比较好，但在另一种异构计算系统上，性能不一定被很好的发挥出来。当然也跟前期异构计算硬件的整体架构、软件生态、资源分配有关系。太湖之光超算机器也做了Hooper架构类似的功能，多个核可以访问一块 Global Memory, 功能和性能肯定达不到NV这么强大，感兴趣可以看论文[ BaGuaLu: Targeting Brain Scale Pretrained Models with over 37 Million Cores](https://link.zhihu.com/?target=https%3A//keg.cs.tsinghua.edu.cn/jietang/publications/PPOPP22-Ma%2520et%2520al.-BaGuaLu%2520Targeting%2520Brain%2520Scale%2520Pretrained%2520Models%2520w.pdf)--章节3 SystemArchitecture
 #### New load/store APIs for TMA **
 
-![](asset/img_beffa4c66e06.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_beffa4c66e06.jpg)
 
 - 如果要在Hopper架构上使用Triton，建议大家还是尽可能去使用新的API，因为旧的API功能上虽然是对的，因为没有办法用到`TMA`，性能可能会差一些 。
 
 #### **New API for Automatic Warp Specialization(Preview) **
 
-![](asset/img_6ef18df44f00.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_6ef18df44f00.jpg)
 
 为了将数据搬运和并行计算的时间相互抵消,尽可能逼近硬件理论峰值性能。引入Warp Specialization优化。
 
@@ -218,18 +228,18 @@ wiki上这样解释, [link ](https://link.zhihu.com/?target=https%3A//zh.wikiped
 #### **How to use**
 
 - Triton调用Hopper架构的架构需要打开两个开关，即红色框中的两个配置
-![](asset/img_b2503d1e53d7.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_b2503d1e53d7.jpg)
 
 #### **Triton GEMM**
 
 - Hopper架构上实现`GEMM`大概需要图中标记的地方
-![](asset/img_186c9937a84c.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_186c9937a84c.jpg)
 
 ### **Dialects & Pass pipelines**
 
 #### **Frontend **
 
-![](asset/img_cf3d40d8ef36.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_cf3d40d8ef36.jpg)
 
 - Python定义的函数上面 加上`@triton.jit` 这句话，表示下面这个函数是一个Triton的`Kernel`函数
 - 这个函数将会被继续解析成`Python的AST`， 也就是Python的抽象语法树，会继续往下`lower`。 
@@ -238,12 +248,12 @@ wiki上这样解释, [link ](https://link.zhihu.com/?target=https%3A//zh.wikiped
 
 **For backward compatibility **
 
-![](asset/img_dbd84ea72d97.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_dbd84ea72d97.jpg)
 
 - `Compute_Capability_Rewrite` 这个`Pass`，它保证了新老`API`的兼容, 这个`Paas`负责将当前GPU架构不支持的feature回滚到适配当前GPU架构的版本。
 ** New added dialects and attributes **
 
-![](asset/img_a81b2197ddad.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_a81b2197ddad.jpg)
 
 - `dialects ` 
 
@@ -267,17 +277,17 @@ wiki上这样解释, [link ](https://link.zhihu.com/?target=https%3A//zh.wikiped
 
 **Pipelines pass **
 
-![](asset/img_a7f759cd20f8.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_a7f759cd20f8.jpg)
 
 - `plan_cta、accelerate_matmul、optimize_epilogue、pipeline、warp_specialize、materialize_load_store、remove_layout_conversions、fence_insertion` 
 **PlanCTA Pass (CGA->CTA tiling)**
 
-![](asset/img_a5adad0321b6.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_a5adad0321b6.jpg)
 
 - 它负责了CTE到CGA之间分块的策略, 这个算法首先选择一些关键的`Operation`，并且为关键的`Operation`赋予合适的策略，比如`Dot`或`Reduce`操作。这个算法会尝试沿着`IR`结构， 往前和往后去传播这个策略。 因为访问`distributed shared memory`是比较昂贵的，所以这里的传播原则是尽可能减少不同`CTA`之间`distributed shared memory`访问。 换句话说, `PlanCTA` 的目的是寻找一种全局`CGA`划分策略，尽量让同一个`CGA`的`CTA`只访问它自己的shared memory, 减少跨CTA的`Shared memory`访问，如果当必须要跨`CTA`的话， 再看是否可以依赖`TMA`的`Multicast`来解决这个问题。如果还是不能解决的话， 最终才会去真正产生跨`CTA`的访存。
 **warp_specialize**
 
-![](asset/img_f30f67e0ae46.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_f30f67e0ae46.jpg)
 
 - `Warp Specialization` 是一种类似图着色的方法，去识别`IR`中的`Operation`， 并分类成`Predog`、`Math`和`Epilogue`三类。实际应用中，`Predog`通常是指数据加载，`Math`指数值计算, `Epilogue`指数据写回, 这三个阶段分别用了不同的硬件单元，所以才可以同时的去堆叠执行。
 - 算法接着会修改`IR`结构，将这三类的`Operation`分别划分给不同的`Workgroup`，最后在合适的位置插上不同的`Barrier`，这里插入的`Barrier`是保证堆叠执行的正确性和效率。
@@ -287,21 +297,21 @@ wiki上这样解释, [link ](https://link.zhihu.com/?target=https%3A//zh.wikiped
 
 #### **Backend **
 
-![](asset/img_7550b129ebbf.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_7550b129ebbf.jpg)
 
 - **目前的方案**：其实是一个临时的方案，是`TritonNVIDIAGPU`或者`TritonGPU`的`Direct`， `lower`到`LLVM`和`NVVM Direct`，同时会`inline`很多的`PTX`进去，因为`LLVM`、`NVVM Direct` 现在对Hopper架构的支持还不够完备，如果等到`Direct`对Hopper架构支持成熟了之后，会换成右边的方案。
 
 ### **Performance & Plans**
 
-![](asset/img_138be03b7ef0.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_138be03b7ef0.jpg)
 
 #### **Performance **
 
-![](asset/img_1d58c5ecbbca.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_1d58c5ecbbca.jpg)
 
 #### **future works**
 
-![](asset/img_847a08fa0299.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_847a08fa0299.jpg)
 
 ### **Question & Answer**
 
@@ -324,7 +334,7 @@ wiki上这样解释, [link ](https://link.zhihu.com/?target=https%3A//zh.wikiped
 - 这种auto codegen目前真能比手写还要快吗？**
 杨军老师画的图 
 
-![](asset/img_459813b7c8af.jpg)
+![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_459813b7c8af.jpg)
 
 ***用Triton实现一个矩阵乘，去超过Cutlass或者Cublas,其实还是一个比较难事情*
 

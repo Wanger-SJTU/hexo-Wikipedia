@@ -1,9 +1,19 @@
 ---
-title: "通用矩阵乘（GEMM）优化与卷积计算"
-date: 2020-05-25
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/66958390
+title: 通用矩阵乘（GEMM）优化与卷积计算
+date: "2020-05-25 00:00:00"
+updated: "2020-05-25 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/体系结构/通用矩阵乘(GEMM)优化与卷积计算/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/66958390
 ---
+
 
 > GEMM 主题文章写了两版，这是第一版，第二版参见我的博客。
 采用知识共享 署名-非商业性使用-禁止演绎 4.0 国际许可授权，转载请注明出处。
@@ -22,7 +32,7 @@ source: https://zhuanlan.zhihu.com/p/66958390
 
 通用矩阵乘（下文简称 GEMM）的一般形式是  =  C=AB， 其中  A 和  B 涵盖了各自转置的含义。*图一*是矩阵乘计算中为计算一个输出点所要使用的输入数据。三个矩阵的形状也如图所示。
 
-![](asset/img_b47cff5eec5b.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_b47cff5eec5b.jpg)
 
 *图一：矩阵乘一个输出元素的计算*
 
@@ -39,7 +49,7 @@ source: https://zhuanlan.zhihu.com/p/66958390
 
 *[How to optimize gemm](https://link.zhihu.com/?target=https%3A//github.com/flame/how-to-optimize-gemm/wiki)* 介绍了如何采用各种优化方法，将最基础的计算改进了约七倍（如*图二*）。其基本方法是将输出划分为若干个 4×4子块，以提高对输入数据的重用。同时大量使用寄存器，减少访存；向量化访存和计算；消除指针计算；重新组织内存以地址连续等。详细的可以参考原文。
 
-![](asset/img_8b4b0bd3240b.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_8b4b0bd3240b.jpg)
 
 *图二：[How to optimize gemm](https://link.zhihu.com/?target=https%3A//github.com/flame/how-to-optimize-gemm/wiki)* *的优化效果*
 
@@ -49,7 +59,7 @@ source: https://zhuanlan.zhihu.com/p/66958390
 
 *图三* 将输出的计算拆分为 1×4 的小块，即将   维度拆分为两部分。计算该块输出时，需要使用   矩阵的 1 行，和   矩阵的 4 列。
 
-![](asset/img_4324de5ef37f.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_4324de5ef37f.jpg)
 
 *图三：矩阵乘计算* *1×4输出*
 
@@ -76,7 +86,7 @@ source: https://zhuanlan.zhihu.com/p/66958390
 
 类似地，我们可以继续拆分输出的   维度，从而在内侧循环中计算 4×4 输出，如*图四*。
 
-![](asset/img_3b429b48e24c.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_3b429b48e24c.jpg)
 
 *图四：矩阵乘计算* *4×44×4输出*
 
@@ -99,7 +109,7 @@ source: https://zhuanlan.zhihu.com/p/66958390
 
 到目前为止，我们都是在输出的两个维度上展开，而整个计算还包含一个削减（Reduction）维度  。图五展示了在计算 4×4 输出时，将维度   拆分，从而每次最内侧循环计算出输出矩阵   的 4x4 部分和。
 
-![](asset/img_fc3531652b82.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_fc3531652b82.jpg)
 
 *图五：矩阵乘计算* *4×4 输出对* * * *维度的拆分*
 
@@ -128,7 +138,7 @@ $下面展示的是这部分计算的展开伪代码，其中维度   和   已�
 
 在介绍向量化计算的细节时，伪代码是很难理解的，下面依据*图六*介绍量化计算的具体过程。*图六*左侧部分的三幅小图分别展示了两个 4×4 矩阵相乘向量化的要素：首先是计算一个输出元素使用到的输入元素；然后是对各个矩阵内存的编码，均以行优先的形式编号；最后是向量化的具体计算方法。
 
-![](asset/img_dfd867d87d9b.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_dfd867d87d9b.jpg)
 
 *图六：两个* *4×4矩阵相乘的向量化*
 
@@ -144,7 +154,7 @@ $下面展示的是这部分计算的展开伪代码，其中维度   和   已�
 
 *图七*展示的是不同内存组织方式对的影响。图中两者都是行优先的内存排列，区别在于左侧小方块内部是不连续的，右侧小方块内部是连续的。图中用几个数字标记了各个元素在整个内存中的编号。
 
-![](asset/img_63d1b23c8f08.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_63d1b23c8f08.jpg)
 
 *图七：不同的局部内存组织*
 
@@ -154,7 +164,7 @@ $下面展示的是这部分计算的展开伪代码，其中维度   和   已�
 
 到这里为止，对 4×4 计算已经有了足够的优化，可以开始考虑视野更广一些的全局优化。图八是一个关于全局优化的小示例。
 
-![](asset/img_e2a7f8c4f012.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_e2a7f8c4f012.jpg)
 
 *图八：矩阵乘的全局优化一瞥*
 
@@ -207,13 +217,13 @@ $x_{float} = x_{scale} \times (x_{quantized} - x_{zero\_point}) $
 
 和上节所述类似，QNNPACK 的计算也是基于对输出的划分，拆分成如*图九*的   ×  MR×NR 小块。这里需要注意的一点是，原文图例中对  B 的标记有笔误， B 的列高度应该是  K 而非  N。（我们向 QNNPACK [报告了这一问题](https://link.zhihu.com/?target=https%3A//github.com/pytorch/QNNPACK/issues/55)，目前尚未得到修正。）
 
-![](asset/img_fc4d91a8193e.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_fc4d91a8193e.jpg)
 
 *图九：QNNPACK 矩阵乘划分示例*
 
 QNNPACK 实现了 4×8 的和 8×8 两种计算核（micro kernel），分别用于支持 armv7 和 arm64 指令集的处理器。这两种计算核在原理上区别不大，后者主要利用了更多的寄存器和双发射（Dual Issue）以提高计算的并行度。
 
-拆分后   ×   计算块使用的内存为   ∗  +  ∗ +  ∗ 。由于常规的神经网络计算  ![](asset/img_186f5e4b5a94.jpg)
+拆分后   ×   计算块使用的内存为   ∗  +  ∗ +  ∗ 。由于常规的神经网络计算  ![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_186f5e4b5a94.jpg)
 
 *图十：QNNPACK 和传统方法计算削减维度的对比*
 
@@ -225,7 +235,7 @@ QNNPACK 实现了 4×8 的和 8×8 两种计算核（micro kernel），分别用
 
 计算核中最小的计算单元处理的是两个 4×4 矩阵相乘。传统的方法由于   可能很大，需要对输入内存进行重新组织，防止相邻的访存引起高速缓存冲突，如*图十一*。
 
-![](asset/img_d13f9beb1eca.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_d13f9beb1eca.jpg)
 
 *图十一：QNNPACK 和传统矩阵乘对局部计算的处理*
 
@@ -247,7 +257,7 @@ im2col 是计算机视觉领域中将图片的不同通道（channel）转换成
 
 *图十二*是卷积的 im2col 过程的示例。随着卷积过滤器在输入上滑动，将被使用的那部分输入展开成一行大小为   ×  ×   的向量。在滑动结束后，则得到特征矩阵 ( × )×(  ×  ×  ) 。将过滤器展开成 (  )×(  ×  ×  ) 的矩阵，那么卷积即可表示成这两个矩阵相乘的结果（特征矩阵要进行转置操作）。
 
-![](asset/img_d93a3e94e77a.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_d93a3e94e77a.jpg)
 
 *图十二：im2col 过程（[来源](https://www.zhihu.com/question/28385679/answer/44297845)）*
 
@@ -259,7 +269,7 @@ im2col 计算卷积使用 GEMM 的代价是额外的内存开销，输入会使�
 
 对于不需要额外调整输入的 1×1 卷积，将 NCHW 内存布局的卷积对应到矩阵乘  =   时，  是卷积核（filter），  是输入（input）。各个矩阵的维度如*图十二*所示。
 
-![](asset/img_b305f18993b7.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_b305f18993b7.jpg)
 
 *图十二：NCHW 内存布局卷积转换成的矩阵乘*
 
@@ -269,7 +279,7 @@ im2col 计算卷积使用 GEMM 的代价是额外的内存开销，输入会使�
 
 *图十三*是与之相对的 NHWC 内存布局的示例。值得注意的是，NHWC 和 NCHW 中  、  矩阵所代表的张量发生了调换——      =     ×      。具体的拆分方式仍然一样。
 
-![](asset/img_154d584a2d49.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_154d584a2d49.jpg)
 
 *图十三：NHWC 内存布局卷积转换成的矩阵乘*
 

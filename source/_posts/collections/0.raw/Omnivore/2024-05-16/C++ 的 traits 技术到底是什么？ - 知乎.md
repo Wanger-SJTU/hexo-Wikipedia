@@ -1,4 +1,17 @@
 ---
+title: C++ 的 traits 技术到底是什么？ - 知乎
+date: "2026-04-11 21:40:28"
+updated: "2026-04-11 21:40:28"
+layout: post
+permalink: /collections/0.raw/Omnivore/2024-05-16/C-的-traits-技术到底是什么-知乎/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
+---
 id: 7952795c-3428-49c8-8c5d-6114fd428fae
 ---
 

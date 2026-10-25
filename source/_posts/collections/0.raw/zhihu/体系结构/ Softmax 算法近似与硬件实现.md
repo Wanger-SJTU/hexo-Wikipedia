@@ -1,9 +1,19 @@
 ---
-title: "(1 封私信) Softmax 算法近似与硬件实现"
-date: 2026-01-01
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/1948746945867802457
+title: (1 封私信) Softmax 算法近似与硬件实现
+date: "2026-01-01 00:00:00"
+updated: "2026-01-01 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/体系结构/Softmax-算法近似与硬件实现/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/1948746945867802457
 ---
+
 
 本文主要调研如何通过硬件实现 LLM 中的 softmax 函数
 
@@ -17,7 +27,7 @@ $$σ(zi)=ezi−zmax\sigma(z_i) = \frac{e^{z_i - z_{\max}}}{\sum_{j=1}^{N} e^{z_j
 
 计算分为三个阶段，并有很强的**数据相关性**，因此很难**流水线化**和**并行化；**同时 **exp **和 **division **操作硬件不友好：
 
-![](asset/img_1cb7f63b7ac4.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_1cb7f63b7ac4.jpg)
 
 本文用如下 e 指数实现方法：
 
@@ -25,9 +35,9 @@ $e^y = 2^{y \cdot \log_2 e} = 2^u \cdot 2^v\\$
 
 其中 u 表示 integer，v 表示 fraction。 2v" role="presentation">2v2^v 通过**线性近似**的方式实现， 2^u 通过**移位**的方式实现。
 
-![](asset/img_a68a9783a1c9.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_a68a9783a1c9.jpg)
 
-算法实现![](asset/img_3aeb2f52a3c5.jpg)
+算法实现![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_3aeb2f52a3c5.jpg)
 
 硬件电路实现首先将输入数据量化为 5-bit integer + 11-bit fraction，Max Block 通过**比较器树**( 并行度为n，**分 batch 进行** )实现，并且只比较 **integer **部分( Line 1 )，为了弥补 fraction，给 Max Block 输出的值**加1**( Line 2 )。然后相减( Line 5 )。
 
@@ -39,7 +49,7 @@ Round 模块将加法树的输出进行 **round 到最近的 2 的 n 次幂**( L
 
 由于硬件资源的限制，只能分 batch 进行 softmax 操作。同时由于填充和人类语言的冗余性，所以可以对输入进行剪枝。因为 softmax 是一个单调函数，因此将小输入值过滤掉即可
 
-![](asset/img_a8aa293ca2f4.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_a8aa293ca2f4.jpg)
 
 输入输出的结果分布，输出结果大量分布在0附近有两种方法：
 
@@ -51,11 +61,11 @@ Round 模块将加法树的输出进行 **round 到最近的 2 的 n 次幂**( L
 
 ***输入过滤***使用如下电路实现，但是没讲 b 图的实现细节，应该要用到一堆桶形移位器：
 
-![](asset/img_19da88d8a136.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_19da88d8a136.jpg)
 
 运算器生成移位量，然后进行移位**结果评估：**
 
-![](asset/img_76fa94a79cc6.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_76fa94a79cc6.jpg)
 
 Ours 1 为不剪枝，Ours 2 为剪枝可以看到这种近似计算方式在许多 LLM 中不会造成精度明显下降。
 
@@ -69,7 +79,7 @@ $exp2(x) \approx 2^{x_i} \cdot (slope_k \cdot x_f + intercept_k), \quad k \in [0
 
 因为本文是将 softmax 和 SA 做融合，因此进行8段线性拟合的计算也可以**复用 SA 硬件电路**。
 
-![](asset/img_702c8d6f70a0.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_702c8d6f70a0.jpg)
 
 复用 SA 电路实现 softmax 线性拟合
 ### 2. Log-Sum-Exp
@@ -84,7 +94,7 @@ $exp2(x) \approx 2^{x_i} \cdot (slope_k \cdot x_f + intercept_k), \quad k \in [0
 
 $e^{-x_i} = 2^{-x_i \cdot \log_2 e}, x_i \ge 0.\\e^{-x_i} = 2^{(-u_i)+(-v_i)} = 2^{-u_i} \cdot 2^{-v_i} = 2^{-v_i} \gg u_i.\\与前面一样，vi 为 fraction \subset (0,1] ，ui 为 integer。 2^{-v_i} 用**一阶线性**近似。用高 p 位作为 index 来决定使用的 k b。0.10111 是 log_2e 的二进制。$
 
-![](asset/img_43cc4a89b0d8.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_43cc4a89b0d8.jpg)
 
 exp 整体近似计算算法然后使用如下算法消掉 ln：
 
@@ -92,13 +102,13 @@ $F = \sum_{j=1}^{N} e^{x_j-x_{\max}} \ge e^{x_{\max}-x_{\max}} = 1.\\ \forall F 
 
 整体算法如下：
 
-![](asset/img_7b432084afec.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_7b432084afec.jpg)
 
-整体算法![](asset/img_1b903d94cb45.jpg)
+整体算法![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_1b903d94cb45.jpg)
 
-整体电路实现![](asset/img_302b3d6e3242.jpg)
+整体电路实现![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_302b3d6e3242.jpg)
 
-EU 微架构，使用 LUT 暂存 k b![](asset/img_022e420e8def.jpg)
+EU 微架构，使用 LUT 暂存 k b![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_022e420e8def.jpg)
 
 LNU 电路实现在本算法中 \ln F = \ln 2 \cdot (m - 1 + w) ，m-1 和 w 刚好分别占据小数位和整数位，因此可以直接**拼接**而成，无需加法器。
 
@@ -106,7 +116,7 @@ LNU 电路实现在本算法中 \ln F = \ln 2 \cdot (m - 1 + w) ，m-1 和 w 刚
 
 >1)-(A>>4)\\ =A+(A>>1)+1+(\sim(A>>4))\\ =A+(A>>1)+(\sim(A>>4))+1\\">1.0111\times A=A+(A>>1)-(A>>4)\\ =A+(A>>1)+1+(\sim(A>>4))\\ =A+(A>>1)+(\sim(A>>4))+1\\
 
-![](asset/img_ee4288f7ff37.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_ee4288f7ff37.jpg)
 
 电路实现
 #### 2.2 兼容 systolic 数据流的电路实现
@@ -115,7 +125,7 @@ LNU 电路实现在本算法中 \ln F = \ln 2 \cdot (m - 1 + w) ，m-1 和 w 刚
 
  $$使用如下变换：softmax(x_i) = \frac{e^{x_i}}{\sum_{j=1}^{N}e^{x_j}} = \frac{e^{x_i - x_{max}}}{\sum_{j=1}^{N}e^{x_j - x_{max}}}\\ softmax(x_i) = exp(x_i - x_{max} - ln(\sum_{j=1}^{N}e^{x_j - x_{max}}))\\ ln(x) = ln(2^q s) = qln2 + lns = 0.1011*q+s-1+c \\变换后 s 的范围是(1,2]，c 是补偿项。$$
 
-![](asset/img_07a91d51e891.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_07a91d51e891.jpg)
 
 电路结构本文使用了 SA 进行计算，为了**兼容 SA 输出数据流**，Softmax unit 也使用 systolic 式的数据流。LN 的电路由 LOD( leading 1 detector ), SF( shifter ), CM( constant multiplier ), LUT( 补偿值查表计算 ), ADD( 全部加起来 ) 构成。
 
@@ -152,7 +162,7 @@ $$\frac{P - min}{max - min} $$
 
 因此如果量化后为0可以直接跳过 softmax 计算：
 
-![](asset/img_4ae6dd5efc6e.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_4ae6dd5efc6e.jpg)
 
 stage1跳零的条件：
 
@@ -164,8 +174,8 @@ stage3跳零的条件：
 
 #### 3.3 整体算法
 
-![](asset/img_5b0762425e79.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_5b0762425e79.jpg)
 
-![](asset/img_2847473e396d.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_2847473e396d.jpg)
 
 还有一些使用 **CORDIC/MacLaurin **进行 **exp/division** 的实现就比较过时了

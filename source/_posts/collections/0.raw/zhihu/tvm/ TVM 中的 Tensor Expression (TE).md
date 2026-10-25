@@ -1,9 +1,19 @@
 ---
-title: "(1 封私信) TVM 中的 Tensor Expression (TE)"
-date: 2023-12-10
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/609249571
+title: (1 封私信) TVM 中的 Tensor Expression (TE)
+date: "2023-12-10 00:00:00"
+updated: "2023-12-10 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/tvm/TVM-中的-Tensor-Expression-(TE)/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/609249571
 ---
+
 
 ### 前言
 
@@ -15,7 +25,7 @@ source: https://zhuanlan.zhihu.com/p/609249571
 
 说回 TVM 的 TE，与描述 Module 本身的 DSL 不同，它更准确的定位是对张量计算（computation）的过程进行抽象，本质其实是一个 index lambda。在 TVM 架构上，TE 仍然位于偏前端的位置，用于定义计算。
 
-![](asset/img_90e3694712f1.png)
+![](/images/collections/0.raw/zhihu/tvm/asset/img_90e3694712f1.png)
 
 ### Einsum 求和约定
 

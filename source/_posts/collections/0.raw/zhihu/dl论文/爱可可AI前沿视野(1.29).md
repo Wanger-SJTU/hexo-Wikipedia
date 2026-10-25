@@ -1,10 +1,19 @@
 ---
-title: "爱可可AI前沿视野(1.29)"
-date: 2021-01-29
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/347829527
-
+title: 爱可可AI前沿视野(1.29)
+date: "2021-01-29 00:00:00"
+updated: "2021-01-29 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/dl论文/爱可可AI前沿视野(1.29)/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/347829527
 ---
+
 
 LG - 机器学习   CV - 计算机视觉   CL - 计算与语言   AS - 音频与语音 RO - 机器人
 (*表示值得重点关注)

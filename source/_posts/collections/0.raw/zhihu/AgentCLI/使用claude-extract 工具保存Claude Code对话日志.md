@@ -1,9 +1,19 @@
 ---
-title: "使用claude-extract 工具保存Claude Code对话日志"
-date: 2025-08-03
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/1935277276905316391
+title: 使用claude-extract 工具保存Claude Code对话日志
+date: "2025-08-03 00:00:00"
+updated: "2025-08-03 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/AgentCLI/使用claude-extract-工具保存Claude-Code对话日志/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/1935277276905316391
 ---
+
 
 如何从 Claude Code 的内部存储中提取干净的对话日志？
 
@@ -123,4 +133,4 @@ claude-extract 是一个命令行工具，旨在帮助用户轻松地将与 Clau
 
 交互式运行如下：
 
-![](asset/img_ed047c0deb67.jpg)
+![](/images/collections/0.raw/zhihu/AgentCLI/asset/img_ed047c0deb67.jpg)

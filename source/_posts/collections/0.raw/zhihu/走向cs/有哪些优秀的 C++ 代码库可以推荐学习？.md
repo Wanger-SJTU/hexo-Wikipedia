@@ -1,10 +1,19 @@
 ---
-title: "有哪些优秀的 C++ 代码库可以推荐学习？"
-date: 2019-11-24
-tags: [知乎]
-source: https://www.zhihu.com/question/281276664/answer/907647528
-
+title: 有哪些优秀的 C++ 代码库可以推荐学习？
+date: "2019-11-24 00:00:00"
+updated: "2019-11-24 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/走向cs/有哪些优秀的-C-代码库可以推荐学习/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://www.zhihu.com/question/281276664/answer/907647528
 ---
+
 
 [coost-A tiny boost library in C++11](https://link.zhihu.com/?target=https%3A//github.com/idealvin/coost)**[coost](https://link.zhihu.com/?target=https%3A//github.com/idealvin/coost)** 是一个**兼具性能与易用性**的跨平台 C++ 基础库，其目标是打造一把 C++ 开发神器，让 C++ 编程变得简单、轻松、愉快。
 

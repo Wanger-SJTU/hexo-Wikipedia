@@ -1,9 +1,19 @@
 ---
-title: "【LLM系列】对行业大模型的思考"
-date: 2023-07-17
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/643805698
+title: 【LLM系列】对行业大模型的思考
+date: "2023-07-17 00:00:00"
+updated: "2023-07-17 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/LLM-SD/【LLM系列】对行业大模型的思考/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/643805698
 ---
+
 
 看到了 [@Naiyan Wang](//www.zhihu.com/people/f5911fddc7fa5fd74a80d5ce2c12e1a2)
 

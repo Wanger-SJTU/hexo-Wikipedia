@@ -1,9 +1,19 @@
 ---
-title: "从ROPE到Yarn, 一条通用公式速通长文本大模型中的位置编码"
-date: 2025-03-22
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/15311461897
+title: 从ROPE到Yarn, 一条通用公式速通长文本大模型中的位置编码
+date: "2025-03-22 00:00:00"
+updated: "2025-03-22 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/LLM-SD/从ROPE到Yarn,-一条通用公式速通长文本大模型中的位置编码/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/15311461897
 ---
+
 
 从Qwen2.5到Deepseek V3, Yarn几乎已经是各家LLM做长文本外推的标配组件 （相比Pretrain微乎其微的资源消耗获得至少16倍的长度外推）。 然而我最近在和很多做LLM的朋友交流发现大家对长文本的认知还停留在ROPE的时代。本文尝试用一条通用公式，带你以最简洁的方式彻底理解ROPE及其演化的变种逻辑，梳理以下长文本外推的方法本质：
 
@@ -183,8 +193,8 @@ $$\text{softmax}\left(\frac{q_m^T k_n}{t \sqrt{|D|}}\right), \quad \sqrt{\frac{1
 最后放几张Yarn中的实验结果感受一下, Yarn无论在资源利用率还是128K长度性能上都超过其他PI, NTK 类方法，
 无怪Yarn成为目前Long Context LLM的标配。 
 
-![](asset/img_8f55cdd59ee0.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_8f55cdd59ee0.jpg)
 
-![](asset/img_daf6232df536.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_daf6232df536.jpg)
 
-![](asset/img_946a027e050c.jpg)
+![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_946a027e050c.jpg)

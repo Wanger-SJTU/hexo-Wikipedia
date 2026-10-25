@@ -1,9 +1,19 @@
 ---
-title: "探秘IOMMU：从概念到原理的深度解析"
-date: 2025-01-13
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/18100038357
+title: 探秘IOMMU：从概念到原理的深度解析
+date: "2025-01-13 00:00:00"
+updated: "2025-01-13 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/体系结构/探秘IOMMU-从概念到原理的深度解析/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/18100038357
 ---
+
 
 在计算机系统的复杂架构中，有许多关键组件在幕后默默运行，保障着系统的稳定与高效，IOMMU 便是其中之一。或许对于不少人来说，IOMMU 这个名字还稍显陌生，但它却在 I/O 设备与内存交互的关键环节中扮演着举足轻重的角色。它就像一位幕后的调度大师，精准地协调着 I/O 设备对内存的访问，让数据的传输有条不紊地进行。从它诞生的那一刻起，就致力于解决计算机发展进程中遇到的各种内存访问难题。今天，就让我们一起走进 IOMMU 的世界，从最基础的概念出发，逐步深入到其底层原理，揭开它神秘的面纱，看看它是如何在计算机系统中发挥神奇功效的。
 
@@ -29,19 +39,19 @@ Solaris 在 SPARC 平台上对 IOMMU 的支持，便是很好的例证。早期 
 
 后来走有了IOMMU，这个问题就迎刃而解了。在设备做DMA访问内存的时候，系统返回给设备驱动的不再是物理地址，而是虚拟地址，这个地址一般叫IOVA，设备访问内存时，由IOMMU来将这个虚拟地址转换为物理地址。但是当iommu bypass的时候，设备也可以直接使用物理地址来进行dma。
 
-![](asset/img_ce75cc0857e3.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_ce75cc0857e3.jpg)
 
 看到这里大家会看到，这怎么这么像MMU呢？是的，两者都是可以把虚拟地址翻译为物理地址，MMU是将CPU发出的虚拟地址通过页表翻译为物理地址，IOMMU是将设备发出的虚拟地址IOVA通过页表翻译为物理地址。
 
 上面就是IOMMU的一个基本功能:DMA Remapping。IOMMU还有其他的一些功能，例如Interrupt Remapping等。
 
-![](asset/img_13e44b392a5c.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_13e44b392a5c.jpg)
 
 ### 三、IOMMU 的底层原理
 
 IOMMU的核心思想是将物理内存划分为多个区域，每个区域都有一个唯一的ID。这些区域可以是连续的，也可以是不连续的。当CPU需要访问某个内存区域时，IOMMU会将该请求转换为一个虚拟地址，然后将这个虚拟地址与对应的物理地址进行映射。这样，IOMMU是DMA直接内存访问，即设备与内存直接通信，而无需经过CPU。
 
-![](asset/img_da6efb4af54f.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_da6efb4af54f.jpg)
 
 **IOMMU的主要组成部分包括：**
 
@@ -433,4 +443,4 @@ angus@jm212:/sys/class/iommu$ pwd
 angus@jm212:/sys/class/iommu$ ls
 dmar4  dmar5  dmar7`
 
-![](asset/img_5f5aeb4e2a42.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_5f5aeb4e2a42.jpg)

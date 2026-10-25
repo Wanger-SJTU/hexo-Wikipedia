@@ -1,9 +1,19 @@
 ---
-title: "求C++ 模板编程学习路线或推荐图书？"
-date: 2026-04-15
-tags: [知乎]
-source: https://www.zhihu.com/question/30716136/answer/1999572708
+title: 求C++ 模板编程学习路线或推荐图书？
+date: "2026-04-15 00:00:00"
+updated: "2026-04-15 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/编程向/求C-模板编程学习路线或推荐图书/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://www.zhihu.com/question/30716136/answer/1999572708
 ---
+
 
 ​目录
 

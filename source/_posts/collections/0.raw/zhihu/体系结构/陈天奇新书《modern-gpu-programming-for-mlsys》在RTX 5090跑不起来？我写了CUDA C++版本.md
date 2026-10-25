@@ -1,10 +1,19 @@
 ---
-title: "陈天奇新书《modern-gpu-programming-for-mlsys》在RTX 5090跑不起来？我写了CUDA C++版本"
-date: 2026-07-12
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/2059730024626905589
-
+title: 陈天奇新书《modern-gpu-programming-for-mlsys》在RTX 5090跑不起来？我写了CUDA C++版本
+date: "2026-07-12 00:00:00"
+updated: "2026-07-12 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/体系结构/陈天奇新书《modern-gpu-programming-for-mlsys》在RTX-5090跑不起来-我写了CUDA-C-版本/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/2059730024626905589
 ---
+
 
 1 背景
 看了这本书,觉得是一个入门AI编译器和算子优化的绝佳书籍，火速开始上手。

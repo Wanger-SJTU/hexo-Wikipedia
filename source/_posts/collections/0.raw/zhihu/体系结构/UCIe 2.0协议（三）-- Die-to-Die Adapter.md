@@ -1,9 +1,19 @@
 ---
-title: "UCIe 2.0协议（三）-- Die-to-Die Adapter"
-date: 2025-06-29
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/1922660895198286036
+title: UCIe 2.0协议（三）-- Die-to-Die Adapter
+date: "2025-06-29 00:00:00"
+updated: "2025-06-29 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/体系结构/UCIe-2.0协议(三)-Die-to-Die-Adapter/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/1922660895198286036
 ---
+
 
 UCIe是一个开放的，支持多协议的封装互联标准，用于在同一封装（package）上连接多个die。UCIe 2.0协议于2024年8月发布，本文介绍UCIe 2.0协议的Die-to-Die Adapter层。UCIe 2.0协议的总体介绍和协议层见以下链接：
 

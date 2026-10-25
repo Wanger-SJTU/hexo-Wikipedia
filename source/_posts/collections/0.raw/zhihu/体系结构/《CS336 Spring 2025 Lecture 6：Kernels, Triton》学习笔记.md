@@ -1,9 +1,19 @@
 ---
-title: "《CS336 Spring 2025 Lecture 6：Kernels, Triton》学习笔记"
-date: 2026-03-12
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/2015442629765137282
+title: 《CS336 Spring 2025 Lecture 6：Kernels, Triton》学习笔记
+date: "2026-03-12 00:00:00"
+updated: "2026-03-12 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/体系结构/《CS336-Spring-2025-Lecture-6-Kernels,-Triton》学习笔记-d42515/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/2015442629765137282
 ---
+
 
 ### 一、课程引入与作业说明
 

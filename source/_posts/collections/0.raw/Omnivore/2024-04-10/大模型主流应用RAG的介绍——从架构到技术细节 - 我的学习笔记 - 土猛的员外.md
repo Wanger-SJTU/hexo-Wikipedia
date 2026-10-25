@@ -1,4 +1,17 @@
 ---
+title: 大模型主流应用RAG的介绍——从架构到技术细节 | 我的学习笔记 | 土猛的员外
+date: "2026-04-11 21:40:28"
+updated: "2026-04-11 21:40:28"
+layout: post
+permalink: /collections/0.raw/Omnivore/2024-04-10/大模型主流应用RAG的介绍——从架构到技术细节-我的学习笔记-土猛的员外/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
+---
 id: e1eb3393-9887-4c29-8bab-ca6311c01936
 ---
 

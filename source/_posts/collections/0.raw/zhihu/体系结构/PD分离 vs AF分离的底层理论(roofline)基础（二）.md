@@ -1,15 +1,25 @@
 ---
-title: "PD分离 vs AF分离的底层理论(roofline)基础（二）"
-date: 2026-04-12
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/2026612737929684371
+title: PD分离 vs AF分离的底层理论(roofline)基础（二）
+date: "2026-04-12 00:00:00"
+updated: "2026-04-12 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/体系结构/PD分离-vs-AF分离的底层理论(roofline)基础(二)-0d152b/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/2026612737929684371
 ---
+
 
 上一篇我们推导了prefill阶段的attention以及ffn的AI，最后得出prefill阶段在长上下文场景下是算力瓶颈的结论。这一篇继续来计算decode阶段各模块的AI。
 
 先贴上这张图片，图源水印，从这张图上我们可以看到prefill阶段生成的kv cache在decode阶段的作用及参与运算的过程。
 
-![](asset/img_3d87eb018851.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_3d87eb018851.jpg)
 
 接下来让我们详细计算decode阶段的attention和ffn，看一下和prefill阶段的主要差异是什么。
 
@@ -30,13 +40,13 @@ V_new = x_new x v_proj = [B, 1, H] x [H, H] = [B, 1, H], **VFLOPS=BH^2**
 - 相似度矩阵计算
 严谨起见，我们这里仍然做一个多头拆分，其实在算力推导这里拆不拆多头都不影响算力计算，多头拆分主要影响后面的访存计算，但还是保持好习惯，严格按实际来。
 
-Q-->reshaped_Q: [[B,1,H]]-->[B, head_num, 1, head_dim],这里拆分后有个permute，新手可能要注意一下，permute的作用从数学上来讲是为了矩阵乘，从实际意义上讲是为了保持单头内部进行attention，不跨头做注意力。
+Q-->reshaped_Q: <span class="wikilink wikilink--missing" title="未导入的页面">B,1,H</span>-->[B, head_num, 1, head_dim],这里拆分后有个permute，新手可能要注意一下，permute的作用从数学上来讲是为了矩阵乘，从实际意义上讲是为了保持单头内部进行attention，不跨头做注意力。
 
 令head_num =d, head_dim=h
 
-K-->reshaped_K: [[B,L+1,H]]-->[B, d, L+1, h]
+K-->reshaped_K: <span class="wikilink wikilink--missing" title="未导入的页面">B,L+1,H</span>-->[B, d, L+1, h]
 
-V-->reshaped_V: [[B,L+1,H]]-->[B, d, L+1, h]
+V-->reshaped_V: <span class="wikilink wikilink--missing" title="未导入的页面">B,L+1,H</span>-->[B, d, L+1, h]
 
 s = QK^T=[B,d,1,h]x[B,d,h,L+1] = [B,d,1,L+1], **sFLOPS=BH(L+1)**
 
@@ -72,9 +82,9 @@ V=x*v_proj=[B,1,H], 读访存量：**BH+H^2**, 写访存量：**BH**
 QKV计算阶段的总访存量=**6BH+3H^2**
 
 - 相似度矩阵计算过程的访存量
-Q-->reshaped_Q: [[B,1,H]]-->[B, d, 1, h],
+Q-->reshaped_Q: <span class="wikilink wikilink--missing" title="未导入的页面">B,1,H</span>-->[B, d, 1, h],
 
-K-->reshaped_K: [[B,L+1,H]]-->[B, d, 1, h]
+K-->reshaped_K: <span class="wikilink wikilink--missing" title="未导入的页面">B,L+1,H</span>-->[B, d, 1, h]
 
 s = reshaped_Q x reshaped_K^T=[B,d,1,h]x[B,d,h,L+1] = [B,d,1,L+1]
 

@@ -1,9 +1,19 @@
 ---
-title: "内存管理特性分析（十二）:大页(huge pages)技术分析"
-date: 2023-03-05
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/609457879
+title: 内存管理特性分析（十二）:大页(huge pages)技术分析
+date: "2023-03-05 00:00:00"
+updated: "2023-03-05 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/走向cs/内存管理特性分析(十二)_大页(huge-pages)技术分析/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/609457879
 ---
+
 
 ### **1. 技术背景**
 
@@ -24,16 +34,16 @@ source: https://zhuanlan.zhihu.com/p/609457879
 ARM64 支持两种类型的大页。
 
 - pud/pmd 级别的块映射**这些是常规的大页面，其中 pmd 或 pud 页表条目指向内存块。无论 TLB 中支持的条目大小如何，块映射都会减少转换大页面地址所需的页表遍历深度。
-![](asset/img_46c4896efe2b.jpg)
+![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_46c4896efe2b.jpg)
 
 - 使用连续位
 该体系结构在转换表条目中提供了一个连续位，该位向 MMU 提示以指示它是可以缓存在单个 TLB 条目中的一组连续条目。在 Linux 中，连续位用于增加 pmd 和 pte（最后一个）级别的映射大小。支持的连续条目的数量因页大小和页表级别而异。
 
 支持以下大页面大小：
 
-![](asset/img_0d99b1dcfa0c.jpg)
+![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_0d99b1dcfa0c.jpg)
 
-![](asset/img_ba95b724d39d.jpg)
+![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_ba95b724d39d.jpg)
 
 ### 4. 标准大页(hugetlbfs)**
 
@@ -92,12 +102,12 @@ int main()
 #### **4.2 实现原理**
 
 - **标准大页内存预分配**
-![](asset/img_223b0cac6487.jpg)
+![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_223b0cac6487.jpg)
 
 - **标准大页映射**
-![](asset/img_f4df068dae84.png)
+![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_f4df068dae84.png)
 
-![](asset/img_976e858cc46c.jpg)
+![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_976e858cc46c.jpg)
 
 **
 
@@ -116,7 +126,7 @@ Never：从不使用透明大页
 #### 5.2 实现原理**
 
 - **透明大页映射**
-![](asset/img_4e618d6c4d99.jpg)
+![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_4e618d6c4d99.jpg)
 
 【PUD】:当发生缺页异常时，如果PUD目录项为空，并且VMA区域允许使用透明大页，通过create_huge_pud分配并映射到大页。如果分配大页失败，会回退使用PMD级别的大页。**如果PUD指向大页， 页表项没有设置写权限，但VMA有写权限，那么此时为写时复制，执行wp_huge_pud。如果分配大页失败，会回退使用PMD级别的大页。
 【PMD】:如果PMD目录项不存在， 先创建PMD目录项，如果PMD目录为空且VMA区域允许使用大页，那么分配大页，PMD页表项指向大页，如果分配大页失败，会回退使用PTE级别的普通页。如果PMD指向大页， 页表项没有设置写权限，但VMA有写权限，那么此时为写时复制，执行wp_huge_pmd。如果分配大页失败，会回退使用PMD级别的大页。
@@ -124,11 +134,11 @@ Never：从不使用透明大页
 
 - 透明大页解映射****当进程通过munmap释放内存的时候, 虚拟地址区域可能映射到透明大页, 可能是释放整个大页,也可能是释放大页的一部分。
 整体流程如下：
-![](asset/img_732982d24c34.jpg)
+![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_732982d24c34.jpg)
 
 __split_huge_pmd函数把PMD级别透明大页分裂成普通页,流程如下:
 
-![](asset/img_78d26d688872.jpg)
+![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_78d26d688872.jpg)
 
 从上面可以看到, 针对文件页映射,内核选择了直接解除映射而不是将其分裂, 主要是原因是觉得文件页分裂复杂度较高,还不如直接将其解映射。
 
@@ -137,11 +147,11 @@ __split_huge_pmd函数把PMD级别透明大页分裂成普通页,流程如下:
 
 【分裂前】：
 
-![](asset/img_f370d26ae934.jpg)
+![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_f370d26ae934.jpg)
 
 【分裂后】：
 
-![](asset/img_9ac3d518a579.jpg)
+![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_9ac3d518a579.jpg)
 
 分析过程主要是取出开始时预留的PTE页表，修改PMD页表指向PTE页表，PTE页表项目指向每个普通页。释放指定的普通页后把PTE删除。
 
@@ -236,11 +246,11 @@ __split_huge_pmd函数把PMD级别透明大页分裂成普通页,流程如下:
 
 实例推演一下页表分裂的过程。假设2个进程以PMD映射到一个thp大页，当进程A发生页表， 分裂前如下所示：
 
-![](asset/img_51db156f3aa8.jpg)
+![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_51db156f3aa8.jpg)
 
 分裂后如下所示：
 
-![](asset/img_da8c05c2f54a.jpg)
+![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_da8c05c2f54a.jpg)
 
 2) 大页分裂**
 
@@ -283,11 +293,11 @@ out:
 
 进程页表分裂后，其实还是没能进行内存回收。当进程B也发生的页表分裂，那么由于THP大页没有大页映射，会在内存回收时拆分大页。如下所示：
 
-![](asset/img_dae3ec155e49.jpg)
+![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_dae3ec155e49.jpg)
 
 当反向映射时，映射的进程都对某个普通页解除映射后，page的mapcount等于-1，refcount等于0，就可以进行释放了。
 
-![](asset/img_664055685471.jpg)
+![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_664055685471.jpg)
 
 **3) deferred_split**
 
@@ -429,20 +439,20 @@ next:
 
 我们再来看一下split_huge_page是如何进行大页分裂的. 它会调用到split_huge_page_to_list,传入的list参数为0,表示分裂后page加到LRU list. 最终调用到__split_huge_page进行分裂.
 
-![](asset/img_6735b3ba493d.jpg)
+![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_6735b3ba493d.jpg)
 
 上面介绍了页表分裂, 大页分裂, 延迟分裂deferred_split, 他们在内存回收,反向映射过程整体是怎样联合工作的呢? 总结一下,整体过程如下:
 
-![](asset/img_023e78555bf9.jpg)
+![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_023e78555bf9.jpg)
 
 - **khugepaged线程****Khugepaged是透明大页的内核守护线程 ，其负责定期扫描允许使用透明大页的VMA区域，尝试把普通页合并为大页。Khugepaged线程工作过程需要持mmap_sem锁， 因此对性能影响比较大。
 流程如下：
-![](asset/img_e40b31a6b687.jpg)
+![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_e40b31a6b687.jpg)
 
 collapse_huge_page负责把普通页合并成大页，它只会把最近访问过且具有写权限的页进行合并， 如果全部是只读页或最近没有访问过，不会进行合并。
 把普通页合并成大页流程如下：
 
-![](asset/img_405b3351ad33.jpg)
+![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_405b3351ad33.jpg)
 
 ### 6. 参考资料**
 

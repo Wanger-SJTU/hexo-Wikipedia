@@ -1,3 +1,16 @@
+---
+title: llm推理能力是真的吗
+date: "2026-04-11 21:40:17"
+updated: "2026-04-11 21:40:17"
+layout: post
+permalink: /collections/草稿/llm推理能力是真的吗/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 【LLM到底能不能进行推理&规划？】
 从以下几方面阐释了LLM模型并不真正具有推理和规划能力:
 - LLM模型的训练和使用过程中没有任何迹象表明其可以进行原则性的推理，这通常需要计算上十分困难的推断/搜索。一些文章声称LLM有零样本推理能力，但这些结论值得怀疑。   

@@ -1,9 +1,19 @@
 ---
-title: "从理解XGBoost到实现TGBoost"
-date: 2016-12-08
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/24247616
+title: 从理解XGBoost到实现TGBoost
+date: "2016-12-08 00:00:00"
+updated: "2016-12-08 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/学习/从理解XGBoost到实现TGBoost/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/24247616
 ---
+
 
 今年似乎在生活上学术上都没有什么大的进步，唯一欣慰的是打的几个比赛拿了奖，认识了一些牛人。如果需要发表获奖感言，那么最需要感谢的是机器学习圈里各种方便的开源工具，尤其是 
 

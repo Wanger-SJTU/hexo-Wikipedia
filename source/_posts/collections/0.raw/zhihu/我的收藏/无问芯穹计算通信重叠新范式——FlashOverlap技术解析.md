@@ -1,10 +1,19 @@
 ---
-title: "无问芯穹计算通信重叠新范式——FlashOverlap技术解析"
-date: 2025-04-28
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/1897633068380054002
-
+title: 无问芯穹计算通信重叠新范式——FlashOverlap技术解析
+date: "2025-04-28 00:00:00"
+updated: "2025-04-28 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/无问芯穹计算通信重叠新范式——FlashOverlap技术解析/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/1897633068380054002
 ---
+
 
 前言
 FlashOverlap是由无问芯穹推出的计算通信重叠工作，不同于目前主流的基于张量切分和算子融合的方案，我们提出了基于控制信号的计算通信重叠新思路，主要出发点在于提供一种低侵入矩阵乘法，无侵入通信的方式完成细粒度计算通信重叠，可以无缝适配矩阵乘法和各种常见的通信原语，包括不限于AllReduce、ReduceScatter、All2All等。**对于通信瓶颈显著的低端消费卡来讲优化效果尤为明显，可以达到高达1.65倍的性能提升。**欢迎大家关注。

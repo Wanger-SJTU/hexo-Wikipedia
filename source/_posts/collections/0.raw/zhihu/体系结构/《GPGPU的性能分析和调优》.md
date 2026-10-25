@@ -1,9 +1,19 @@
 ---
-title: "《GPGPU的性能分析和调优》"
-date: 2025-03-07
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/25832322272
+title: 《GPGPU的性能分析和调优》
+date: "2025-03-07 00:00:00"
+updated: "2025-03-07 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/体系结构/《GPGPU的性能分析和调优》-6ecb23/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/25832322272
 ---
+
 
 本文详细全面的介绍了GPGPU的一些基础知识，以及性能调优相关的内容，特别是还给出了一个GPGPU的analytical performance model，实现结果也表明其和真实硬件的结果基本一致，虽然出版时间较久，但其核心内容仍适用于现代GPGPU，是关于GPGPU为数不多的好书。
 
@@ -25,13 +35,13 @@ source: https://zhuanlan.zhihu.com/p/25832322272
 
 下图是一个经典的GPU系统，即使现在也是，不过会在这个基础上增加多个GPU并GPU之间存在C2C互连。其中，在需要的时候CPU将workload卸载到GPU，等待完成后再取回，其中PCIe的通信带宽往往会称为瓶颈。
 
-![](asset/img_c04ced3f131a.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_c04ced3f131a.jpg)
 
 1.2.1 GPU架构概述
 
 下图是G80 GPGPU的主要组件，其中包含一系列的SM(streaming multiprocessors)连接到外部DRAM，每个SM中又包含很多SIMD单元，称为SP(Stream Processor)，并支持多线程和0开销线程切换。
 
-![](asset/img_c0687fe185da.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_c0687fe185da.jpg)
 
 GPGPU的两个重要基础范式：
 
@@ -51,11 +61,11 @@ GPGPU的两个重要基础范式：
 
 CUDA程序包含运行在host上的代码以及运行在device侧(GPU)的kernel。下图是CUDA代码的编译过程。
 
-![](asset/img_210dd252e0b6.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_210dd252e0b6.jpg)
 
 下图则是CUDA代码执行的基本流程，CPU串行运行控制程序，通过`funcKernel >>(args)`语法调用GPU执行大量并行线程计算，依次穿插。其中，这样一个kernel称为`grid`，图片里这共包含两个`grid`。
 
-![](asset/img_169bcfa0e2c3.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_169bcfa0e2c3.jpg)
 
 1.3.2 CUDA的Thread层次
 
@@ -67,17 +77,17 @@ CUDA执行层次包括3级：Thread、Block和Grid，其中多个Thread组成Blo
 
 - 软件角度：Block是一组线程的组合，可以对这些线程之间进行细粒度的控制，且Block是dispatch和retirement的单位。
 - 硬件角度：一个Block通常被分配到一个SM，所以其内所有Thread可以使用Barrier指令进行同步，如下图。
-![](asset/img_464e0ea486c7.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_464e0ea486c7.jpg)
 
 CUDA并不指定Block之间的执行顺序，所以任意数量的Block都可以在硬件上执行，这种灵活性使得硬件实现非常灵活，可以根据实际硬件资源来同时执行不同数量的Block，如下图。
 
-![](asset/img_ada4ea4f4c3d.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_ada4ea4f4c3d.jpg)
 
 1.3.3 内存层级
 
 每个线程都有自己私有的register和local memory，每个Block又自己的share memory，由自己内部的thread共享。整个kernel还共享global memory。另外还有constant memory和texture memory，它们都是只读，只能由Host写入，constant memory存储一些常数变量，texture memory 存储一些纹理数据用于图像处理。各级memory比较如下表。
 
-![](asset/img_211ae5d821ef.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_211ae5d821ef.jpg)
 
 1.3.4 SIMT执行
 
@@ -85,13 +95,13 @@ CUDA并不指定Block之间的执行顺序，所以任意数量的Block都可以
 
 SIMT在概念上则类似于SIMD，不过可以更加细粒度的控制线程执行不同的工作，而传统的SIMD则在ISA级别就定义了一条指令作用与固定向量位宽的数据，而不够灵活（不过最近的发展，两者之前的区别越来越模糊，比如RISCV的RVV也可以灵活支持不同位宽的向量，并且可以支持mask等）。在warp内，通过predicate寄存器来支持bran指令，if指令内的分支也称为`divergent branches`，如下图。
 
-![](asset/img_a56dc0f0dafe.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_a56dc0f0dafe.jpg)
 
 1.3.5 CUDA语言扩展
 
 CUDA扩展了C的函数声明语法，不同关键词如下表。`__global__`, `__device__`和`__host__`分别直到编译器生成kernel函数、device函数以及host函数。
 
-![](asset/img_744de214dd23.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_744de214dd23.jpg)
 
 另外一个非常重要的拓展是使用内置变量来表示线程：`threadIdx`, `blockIdx`和`blockDim`。硬件中的不同线程看到不同的内置变量，并对应于不同的硬件寄存器。这些值可以使得不同线程计算自己不同的与data的映射，即寻址地址。
 
@@ -99,21 +109,21 @@ CUDA扩展了C的函数声明语法，不同关键词如下表。`__global__`, `
 
 传统的C语言实现的向量加法如下图，使用了for循环。
 
-![](asset/img_6a28799cb92f.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_6a28799cb92f.jpg)
 
 同样的功能移植到CPU+GPU异构系统中，CPU侧代码如下，用于控制GPU启动和收集结果。
 
-![](asset/img_c25c4e99e0f7.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_c25c4e99e0f7.jpg)
 
 GPU侧代码如下，负责执行具体的向量加法kernel。
 
-![](asset/img_f72b5e56c55a.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_f72b5e56c55a.jpg)
 
 真实硬件中，CPU和GPU都有各自独立的内存空间，GPU侧内存称为`global memory`或者`device memory`。所以第一步编程者需要在device memory分配内存并将数据从CPU传递到GPU。同样在GPU计算完成后，需要将结果取回并释放GPU内存。CUDA rumtime提供了管理device memory的API。
 
 在CUDA的SPMD/SIMT编程模型中，每个线程对不同数据进行操作。为了将thread映射到data，CUDA利用内置变量来标识thread进而计算地址，向量加的示例如下图。
 
-![](asset/img_cf8b859e20f5.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_cf8b859e20f5.jpg)
 
 1.3.7 PTX
 
@@ -134,7 +144,7 @@ CUDA并没有指定一个memory consistency model。同时CUDA也提供了`_thre
 
 OpenCL采用了类似CUDA的结果，但是承诺了跨平台的可移植性，包括NVIDIA GPU、AMD GOU和多核CPU等。下表则展示了OpenCL和CUDA的对比，两者模型很想，术语略有不同。
 
-![](asset/img_cac1aed1c95f.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_cac1aed1c95f.jpg)
 
 #### 1.4 GPU架构
 
@@ -144,7 +154,7 @@ OpenCL采用了类似CUDA的结果，但是承诺了跨平台的可移植性，�
 
 下图展示了一个SP的流水线架构，基于in-order调度，和传统的CPU架构很像，包括fetch、decode、scheduler、register read、exection和write back。
 
-![](asset/img_cbd36468e560.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_cbd36468e560.jpg)
 
 **取值和译码阶段**
 
@@ -156,7 +166,7 @@ front-end和传统的多线程架构类似，存在多个PC以支持多个warp�
 
 scheduler顺序进行调度，并通过score boarding以查找哪个warp处于ready状态。所以单个warp内时顺序执行，但是warp间为乱序执行，所以从程序员的角度来看，整个kernel还是乱序执行，如下图。
 
-![](asset/img_881bf5c75507.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_881bf5c75507.jpg)
 
 **coreboarding**
 
@@ -170,13 +180,13 @@ scoreboarding是一种用于实现动态调度的方法，由CDC6600首次引入
 
 通过将register file分为多个bank，可以提供更大带宽，如下图左侧，warp内每个thread对应一个bank，从而可以一个周期完成N个thread寄存器的读。
 
-![](asset/img_242c212ff255.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_242c212ff255.jpg)
 
 **Operand Buffer**
 
 如上图右侧，register file和执行单元中间存在一个operand buffer，使得可以缓存一定的register值，减轻register file的读压力。同样的operand collector缓存计算结果，减轻register file的写压力，同时还有利于forward 网络的搭建。
 
-![](asset/img_d1ae9443f60e.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_d1ae9443f60e.jpg)
 
 **Register File Cache**
 
@@ -198,13 +208,13 @@ scoreboarding是一种用于实现动态调度的方法，由CDC6600首次引入
 
 因为每个warp内的thread共用一个指令，所以，当该指令是branch时，warp内的指令会执行不同的指令路径。对于向量处理器，或者说RISCV的RVV扩展，通过predicated来mask掉部分SIMD执行单元，但是对于SIMT来说，还需要考虑另一个问题：**需要从不同的路径取指**。这个是SIMD和SIMT之间的主要区别。branch分支条件示例如下图。
 
-![](asset/img_22f5cabb83ca.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_22f5cabb83ca.jpg)
 
 一种常用的解决办法时SIMT Stack，执行到branch指令时，记录下重聚点，先执行一个分支，部分线程执行到重聚点后在执行另一个分支，当所有线程执行到重聚点之后即可以merge，之后所有的thread又可以lock-step执行。
 
 下图展示了一个SIMT Stack处理branch的示例。
 
-![](asset/img_cb59674a6301.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_cb59674a6301.jpg)
 
 stck中每个entry包含3个字段：
 
@@ -217,7 +227,7 @@ stck中每个entry包含3个字段：
 
 现在主流的L1 Cache多是software-hardware混合管理方案，即一部分时传统cache，一部分是scratchpad cache，由软件显示搬移数据。Tesla和Fermi架构中不同memory如下表。
 
-![](asset/img_e134094c1283.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_e134094c1283.jpg)
 
 **DRAM System**
 
@@ -227,13 +237,13 @@ stck中每个entry包含3个字段：
 
 对于SIMD执行单元来说，如果访问数据时register，访问的位置已硬件固定分布在不同的bank，这不会造成问题。但是如果时memory access，则因为每个thread有可能生成任意地址的访问，则情况变得复杂，这也是影响GPU性能的重要因素。如果memory是顺序访问则只会产生少数几个transaction，但如果是分布式的，则会造成很多transaction。CUDA还将其分为coalesced和uncoalesced memory地址，其中coalesced生成1-4个transaction，uncoalesced产生最多32个transaction如下图。通常需要专门的硬件来尽可能多的合并这些memory访问。
 
-![](asset/img_4aa65826794e.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_4aa65826794e.jpg)
 
 **多个in-flight内存访问**
 
 即使warp内顺序执行，但仍会发生多个内存请求，直到发生RAW依赖。这种方式可以增加in-flight内存请求的数量，尽可能增加MLP。如下图。
 
-![](asset/img_cf3770370a46.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_cf3770370a46.jpg)
 
 #### 1.5 其他GPU架构
 
@@ -268,7 +278,7 @@ Intel MIC(Many Intergrated Core)利用x86 ISA和SIMD来做高性能处理。现�
 
 在work-depth模型中，我们使用DAG(Directed Acyclic Graph)模型表示，如下图。其中每个节点表示一个单位成本的运算，有向边表示运算之间存在严格依赖。
 
-![](asset/img_d1cd6d8a26a1.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_d1cd6d8a26a1.jpg)
 
   $$给定一个DAG，使用W(n)测量该work大小，用D(n)来表示其depth或span。其中D(n)则代表最小执行时间，W(n)/D(n)则达标了平均并行度。设由p个相同的处理器，则执行时间可表示为  T_{comp}(n;p)=D(n)+\frac{W(n)-D(n)}{p}. $$
 
@@ -278,23 +288,23 @@ Intel MIC(Many Intergrated Core)利用x86 ISA和SIMD来做高性能处理。现�
 
 假设要计算n个值的和，顺序算法如下图所示，其W(n)/D(n)是一个常数。
 
-![](asset/img_551cdc57b884.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_551cdc57b884.jpg)
 
 并行算法的DAG如下图，使用了tree结构，其W(n)/D(n)=O(n/logn)，随着输入n增大而增加，具有更高并行度。16节点为例W(16)/D(16)==6.2，所以平均是6个节点看了一并行处理，超过6个处理器也不再能获得性能提升。
 
-![](asset/img_1f4683b3b2c7.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_1f4683b3b2c7.jpg)
 
 **例子：矩阵乘**
 
 考虑如下图所示的n\times n矩阵乘。其中W(n)=O(n^3)，D(n)=O(logn)两者比值随n的增大而快速增加，也证明了矩阵乘的并行性非常高。
 
-![](asset/img_f3edaaba27df.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_f3edaaba27df.jpg)
 
 #### 2.3 描述I/O行为：外部内存模型
 
 除并行性外，数据搬移是另一个算法重要特性。考虑如下图所示的两级内存模型，core为顺序执行，且运算只能作用域fast memory。
 
-![](asset/img_535bfe1ecea4.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_535bfe1ecea4.jpg)
 
 需要考虑在slow memory和fast memory之间的大小为L words的数据传输。以该模型设计算法时，除了测量W(n)外，还需要测量Q(n;Z,L)（表示大小n的输入时，在两个memory之间L-sized传输的次数）。最终，除了考虑2.2中介绍的work-optimality，还需要尽可能提高算法的computational intensity，即W(n)/(Q(n;Z,L)\times L)。也成为运算访存比，或者`flop-to-byte`比。
 
@@ -308,7 +318,7 @@ Intel MIC(Many Intergrated Core)利用x86 ISA和SIMD来做高性能处理。现�
 
 考虑两个不同的算法，第一个算法是2.2节算法，对于每一个计算结果进行大小为n的乘法缩减，此时的intensity为上述的O(1)，所以还存在更好的算法。如下图。
 
-![](asset/img_270fda8fabf3.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_270fda8fabf3.jpg)
 
 该算法按Block更新矩阵C，而不是之前的单个元素。其中
 
@@ -351,7 +361,7 @@ Intel MIC(Many Intergrated Core)利用x86 ISA和SIMD来做高性能处理。现�
 
 总的执行时间可以表示为T_{exec}=T_{comp}+T_{mem}-T_{overlap}.，如下图所示。
 
-![](asset/img_a16e20807c10.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_a16e20807c10.jpg)
 
 **计算成本T_{comp}**
 
@@ -359,41 +369,41 @@ Intel MIC(Many Intergrated Core)利用x86 ISA和SIMD来做高性能处理。现�
 
 具体的：
 
-![](asset/img_fb5074f090c3.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_fb5074f090c3.jpg)
 
 **内存访问成本T_{mem}**
 
 T_{mem}是内存访问数量、每个请求的延迟以及MLP的函数，具体的
 
-![](asset/img_c3fe8a959173.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_c3fe8a959173.jpg)
 
 **重叠成本T_{overlap}**
 
 T_{overlap}表示有多少访存的成本可以被计算覆盖，具体的
 
-![](asset/img_9ad1003c89ac.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_9ad1003c89ac.jpg)
 
 **潜在的收益**
 
 当可以消除理想性能与当前性能之间差异的时候，用于衡量其性能提升，下边最开始两个式子分别评估理想的计算性能和理想的内存性能。
 
-![](asset/img_8a6079ce6caf.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_8a6079ce6caf.jpg)
 
 此外，以上所有中参数的解释如下表。
 
-![](asset/img_3b36167ebb9c.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_3b36167ebb9c.jpg)
 
 4.1.2 应用该模型到FMM
 
 下图展示了不同优化方案下，上边analytical预测模型和真实硬件性能的结果对比，可以看到以上模型已经可以很好的拟合真实硬件的性能。
 
-![](asset/img_949f38bdbba6.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_949f38bdbba6.jpg)
 
 4.1.3 性能优化指南
 
 基于上边的性能模型，可以识别出性能的bottleneck以及消除这些bottleneck的收益。其中，4个潜在的潜在收益指标如下图。
 
-![](asset/img_e05b13f4910a.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_e05b13f4910a.jpg)
 
 其中x轴和y轴相加表示程序的执行时间，A点表示某个程序，但是因为使用多线程时，可以隐藏一定访存成本，所以降低到A'，y=x的曲线将整张图话扽为compute bound和memory bound两个区域。T_{fp}和T_{mem_min}分别代表理论最低的计算和访存成本。
 
@@ -405,11 +415,11 @@ T_{overlap}表示有多少访存的成本可以被计算覆盖，具体的
 - B_{serial}表示消除由于同步或资源冲突引起的串行执行引起的开销的潜在收益
 不同的指标描述可见下表。
 
-![](asset/img_00672ad5670f.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_00672ad5670f.jpg)
 
 下图展示了在应用shared memory之后，真实测试和B_{itilp}的归一化结果。
 
-![](asset/img_25e591a1d173.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_25e591a1d173.jpg)
 
 baseline优化前的4种指标分别为：B_{itilp}=6068，B_{memlp}=0，B_{fp}9691，B_{serial}6068。其中共享内存的使用增加了数据的复用，所以可以增加ILP，从图中也可以看到指标可以很好的预测。
 
@@ -421,7 +431,7 @@ baseline优化前的4种指标分别为：B_{itilp}=6068，B_{memlp}=0，B_{fp}9
 
 GPGPU里存在大量的DLP、ILP和MLP，如下图，最直接的就是通过程序员查看代码进行调优，是比较困难的。
 
-![](asset/img_846e6c5f9199.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_846e6c5f9199.jpg)
 
 4.2.2 WFG(Work Flow Graphs)
 
@@ -435,4 +445,4 @@ GPGPU里存在大量的DLP、ILP和MLP，如下图，最直接的就是通过程
 
 CPU和GPU领域应用都很多，可以标识是memory bound还是compute bound，如下图。
 
-![](asset/img_279ba4b6defc.jpg)
+![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_279ba4b6defc.jpg)

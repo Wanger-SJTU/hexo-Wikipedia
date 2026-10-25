@@ -1,9 +1,19 @@
 ---
-title: "PATMC2性能衔接"
-date: 2026-07-14
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/2060461467506365061
+title: PATMC2性能衔接
+date: "2026-07-14 00:00:00"
+updated: "2026-07-14 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/我的收藏/PATMC2性能衔接/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/2060461467506365061
 ---
+
 
 中文名： 《CPU性能分析与优化》，《Performance Analysis and Tuning on Modern CPUS》中有很多有价值的网站，整理一些通用的文章和工具参考（去除了特定芯片相关的文章和常识wiki文章），部分统一在[Android性能分析全景图](https://zhuanlan.zhihu.com/p/1910620887440416822)里面。
 

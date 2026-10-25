@@ -1,9 +1,19 @@
 ---
-title: "大语言模型Attention模块的文本并行(CP)"
-date: 2026-06-27
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/2053363290093401434
+title: 大语言模型Attention模块的文本并行(CP)
+date: "2026-06-27 00:00:00"
+updated: "2026-06-27 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/AI-infra/大语言模型Attention模块的文本并行(CP)/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/2053363290093401434
 ---
+
 
 使用Agent做编程开发是目前业界主流Agent使用场景，这类场景中，往往需要将大量的源码做为Prompt喂给大模型，文本长度长达几百K，这导致Prefill阶段需要实现长序列推理。大模型长序列推理中，**上下文并行（Context Parallelism, CP）**是突破单卡显存限制、支持超长上下文的关键技术。根据推理阶段的不同，CP 通常被分为**PCP（Prefill Context Parallelism，预填充上下文并行）**和**DCP（Decode Context Parallelism，解码上下文并行）**。
 

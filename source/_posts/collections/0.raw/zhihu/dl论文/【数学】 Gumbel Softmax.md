@@ -1,10 +1,19 @@
 ---
-title: "【数学】 Gumbel Softmax"
-date: 2020-03-23
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/115386452
-
+title: 【数学】 Gumbel Softmax
+date: "2020-03-23 00:00:00"
+updated: "2020-03-23 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/dl论文/【数学】-Gumbel-Softmax/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/115386452
 ---
+
 
 原文传送门
 ICLR 2017：[Jang, Eric, Shixiang Gu, and Ben Poole. &#34;Categorical reparameterization with gumbel-softmax.&#34; arXiv preprint arXiv:1611.01144 (2016).](https://link.zhihu.com/?target=https%3A//arxiv.org/pdf/1611.01144.pdf%2520http%3A//arxiv.org/abs/1611.01144.pdf)

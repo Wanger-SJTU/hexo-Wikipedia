@@ -1,3 +1,16 @@
+---
+title: "SOP: Vòng lặp Phản hồi Observability"
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/vi/resources/openai-advanced/sops/observability-feedback-loop/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
 # SOP: Vòng lặp Phản hồi Observability
 
 Sử dụng SOP này khi debug chậm, agent tiếp tục tuyên bố thành công mà không có bằng chứng, hoặc hành vi runtime khó kiểm tra hơn bản thân mã.

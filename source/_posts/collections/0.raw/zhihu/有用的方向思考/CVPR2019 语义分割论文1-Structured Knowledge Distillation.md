@@ -1,9 +1,19 @@
 ---
-title: "CVPR2019 语义分割论文1-Structured Knowledge Distillation"
-date: 2019-07-22
-tags: [知乎]
-source: https://zhuanlan.zhihu.com/p/73468830
+title: CVPR2019 语义分割论文1-Structured Knowledge Distillation
+date: "2019-07-22 00:00:00"
+updated: "2019-07-22 00:00:00"
+layout: post
+permalink: /collections/0.raw/zhihu/有用的方向思考/CVPR2019-语义分割论文1-Structured-Knowledge-Distillation-6b506b/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+tags:
+  - 知乎
+source_url: https://zhuanlan.zhihu.com/p/73468830
 ---
+
 
 CVPR2019 语义分割论文1-Structured Knowledge Distillation
 
