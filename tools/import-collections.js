@@ -390,7 +390,8 @@ function main() {
     if (!text || text.length > 300) return false;
     if (/^(```|~~~)/.test(text)) return false;
     if (/^`[^`]*`$/.test(text)) return false;
-    if (/^(#include|#define|#pragma|#if|#endif|using\s+|namespace\s+|template\b|typedef\b|struct\b|class\b|void\b|int\b|float\b|double\b|char\b|long\b|short\b|unsigned\b|signed\b|bool\b|const\b|static\b|public\b|private\b|protected\b|for\s*\(|while\s*\(|if\s*\(|else\b|switch\s*\(|case\b|return\b|break\b|continue\b|import\s+|from\s+|def\s+|print\s*\(|console\.|function\b|let\b|var\b|SELECT\b|INSERT\b|UPDATE\b|DELETE\b|CREATE\b|curl\b|pip\b|npm\b|git\b|docker\b|cmake\b|make\b|__m\d+|std::)/.test(text)) return true;
+    if (/^(#include|#define|#pragma|#if|#endif|using\s+|namespace\s+|template\b|typedef\b|struct\b|class\b|void\b|int\b|float\b|double\b|char\b|long\b|short\b|unsigned\b|signed\b|bool\b|const\b|static\b|public\b|private\b|protected\b|for\s*\(|while\s*\(|if\s*\(|else\b|switch\s*\(|case\b|return\b|break\b|continue\b|import\s+|from\s+|def\s+|print\s*\(|console\.|function\b|let\b|var\b|SELECT\b|INSERT\b|UPDATE\b|DELETE\b|CREATE\b|curl\b|pip\b|npm\b|git\b|docker\b|cmake\b|make\b|__m\d+|std::|Var\b|Func\b|Buffer\b|Expr\b|Image\b|Param\b|RVar\b|FuncRef\b|Halide::|gradient\b)/.test(text)) return true;
+    if (/^[A-Za-z_]\w*\.[A-Za-z_]\w*\s*\(/.test(text)) return true;
     if (/^[{}();,\[\]]+;?$/.test(text)) return true;
     if (/^\/\//.test(text) || /^\/\*/.test(text) || /^\*\s/.test(text)) return true;
     if (/^( {4}|\t)/.test(raw) && /[;{}()=]/.test(text)) return true;
@@ -398,16 +399,53 @@ function main() {
   }
 
   function detectLang(text) {
-    if (/(#include|std::|__m\d+|void\s+\w+\s*\(|int\s+\w+|for\s*\()/.test(text)) return 'cpp';
+    // Halide / C++ 特征优先
+    if (/(^|\n)\s*(Var|Func|Buffer|Expr|Image|Param|RVar|FuncRef)\b|gradient\.|#include|std::|__m\d+/.test(text)) return 'cpp';
+    const jsLike = /(console\.|=>|\bfunction\s+\w+\s*\(|\b(const|let)\s+\w+\s*=)/.test(text);
+    if (!jsLike && /(void\s+\w+\s*\(|int\s+\w+|for\s*\()/.test(text)) return 'cpp';
     if (/(^|\n)\s*(def\s+|import\s+|from\s+|print\s*\()/.test(text)) return 'python';
-    if (/(function\s+\w+|console\.|=>|const\s+\w+\s*=)/.test(text)) return 'js';
+    if (jsLike) return 'js';
     if (/\b(SELECT|INSERT|UPDATE|DELETE|CREATE)\b/i.test(text)) return 'sql';
     if (/(^|\n)\s*(\$ |pip\b|npm\b|git\b|docker\b|cmake\b)/.test(text)) return 'bash';
     return 'text';
   }
 
-  function autoFenceCode(body) {
+  function stripStrayBackticks(body) {
     const lines = String(body == null ? '' : body).split('\n');
+    const out = [];
+    let fence = null;
+    for (const line of lines) {
+      const f = /^\s{0,3}(`{3,}|~{3,})/.exec(line);
+      if (f) {
+        if (!fence) fence = f[1][0];
+        else if (f[1][0] === fence) fence = null;
+        out.push(line);
+        continue;
+      }
+      if (fence) {
+        out.push(line);
+        continue;
+      }
+      const trimmed = line.trim();
+      if (trimmed === '`') continue;
+      if (/^`(?!``)/.test(trimmed)) {
+        const rest = trimmed.slice(1);
+        // 单行完整的 `inline code` 保留
+        if (rest.length > 1 && rest.endsWith('`')) {
+          out.push(line);
+          continue;
+        }
+        out.push(line.replace(/^(\s*)`/, '$1'));
+        continue;
+      }
+      out.push(line);
+    }
+    return out.join('\n');
+  }
+
+  function autoFenceCode(body) {
+    const normalized = String(body == null ? '' : body).replace(/^(\s*)Bufferint>/gm, '$1Buffer<int>');
+    const lines = normalized.split('\n');
     const out = [];
     let fence = null;
     let i = 0;
@@ -457,7 +495,9 @@ function main() {
         i += 1;
         continue;
       }
-      const fixed = group.map((item) => item.replace(/^(#include)\s+([A-Za-z0-9_./-]+\.h)\s*$/, '$1 <$2>'));
+      const fixed = group.map((item) => item
+        .replace(/^(\s*)Bufferint>/, '$1Buffer<int>')
+        .replace(/^(#include)\s+([A-Za-z0-9_./-]+\.h)\s*$/, '$1 <$2>'));
       if (out.length && out[out.length - 1].trim()) out.push('');
       out.push('```' + detectLang(fixed.join('\n')));
       out.push(...fixed);
@@ -510,7 +550,7 @@ function main() {
   let replacedWiki = 0;
 
   for (const doc of docs) {
-    const body = transformBody(autoFenceCode(doc.body), doc);
+    const body = transformBody(autoFenceCode(stripStrayBackticks(doc.body)), doc);
     const fm = {
       title: doc.title,
       date: formatDate(doc.date),
