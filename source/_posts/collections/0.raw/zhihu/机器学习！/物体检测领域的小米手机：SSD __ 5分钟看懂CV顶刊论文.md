@@ -3,6 +3,7 @@ title: "物体检测领域的小米手机：SSD || 5分钟看懂CV顶刊论文"
 date: 2019-04-12
 tags: [知乎]
 source: https://zhuanlan.zhihu.com/p/57399396
+disableNunjucks: true
 ---
 
 **本文结构：**

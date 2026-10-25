@@ -3,6 +3,7 @@ title: "LLM(20)：漫谈 KV Cache 优化方法，深度理解 StreamingLLM"
 date: 2025-03-14
 tags: [知乎]
 source: https://zhuanlan.zhihu.com/p/659770503
+disableNunjucks: true
 ---
 
 在 Transformer 的 Encoder-base 的模型（如 BERT系列）中，推理和训练过程保持了高度的统一性（差异仅仅在于是否存在反向过程）。而在 Decoder-base 的生成式模型（如 GPT系列）中，推理和训练存在相当大的差异性，主要体现在推理过程具有以下3点特征：

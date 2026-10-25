@@ -1,5 +1,6 @@
 ---
 id: 7b859b52-f6b6-47c9-9215-9c8d8266f8e2
+disableNunjucks: true
 ---
 
 # 将所有阅读数据同步到 Obsidian | Omnivore 使用文档

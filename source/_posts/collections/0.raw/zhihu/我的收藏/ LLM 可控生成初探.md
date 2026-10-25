@@ -3,6 +3,7 @@ title: "(1 条消息) LLM 可控生成初探"
 date: 2023-07-10
 tags: [知乎]
 source: https://zhuanlan.zhihu.com/p/642690763
+disableNunjucks: true
 ---
 
 在做基于 LLM 的应用开发过程中，有几个常见的挑战，包括：如何避免“胡说八道”，提升模型输出的可靠性/稳定性，控制模型的计算开销和响应速度等等。目前主流的解决手段包括：

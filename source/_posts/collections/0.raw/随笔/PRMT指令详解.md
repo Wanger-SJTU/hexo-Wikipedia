@@ -1,3 +1,7 @@
+---
+disableNunjucks: true
+---
+
 ### 0x01 PRMT指令详解-通用模式
 
 参考NV PTX ISA 8.1 文档，章节9.7.8.7 Data Movement and Conversion Instructions: prmt的内容。

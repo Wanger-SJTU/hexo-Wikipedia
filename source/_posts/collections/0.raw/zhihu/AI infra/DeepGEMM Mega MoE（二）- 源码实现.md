@@ -3,6 +3,7 @@ title: "DeepGEMM Mega MoE（二）- 源码实现"
 date: 2026-04-28
 tags: [知乎]
 source: https://zhuanlan.zhihu.com/p/2032493993485924283
+disableNunjucks: true
 ---
 
 上一节中介绍了Mega MoE的整体流程以及Blackwell如何做block scaling，本节继续以test_mega_moe.py中的用法介绍具体的实现。

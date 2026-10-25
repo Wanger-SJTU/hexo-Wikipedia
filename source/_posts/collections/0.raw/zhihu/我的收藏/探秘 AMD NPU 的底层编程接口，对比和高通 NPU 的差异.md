@@ -3,6 +3,7 @@ title: "探秘 AMD NPU 的底层编程接口，对比和高通 NPU 的差异"
 date: 2026-03-26
 tags: [知乎]
 source: https://zhuanlan.zhihu.com/p/2020396235404617501
+disableNunjucks: true
 ---
 
 ![](asset/img_8a3f4eeeac82.jpg)

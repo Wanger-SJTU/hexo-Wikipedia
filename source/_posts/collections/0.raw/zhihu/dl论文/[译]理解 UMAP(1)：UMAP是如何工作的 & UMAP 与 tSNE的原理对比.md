@@ -3,6 +3,7 @@ title: "[译]理解 UMAP(1)：UMAP是如何工作的 & UMAP 与 tSNE的原理对
 date: 2021-02-23
 tags: [知乎]
 source: https://zhuanlan.zhihu.com/p/150788883
+disableNunjucks: true
 ---
 
 [译]理解 UMAP(1)：UMAP是如何工作的   UMAP 与 tSNE的原理对比

@@ -1,3 +1,7 @@
+---
+disableNunjucks: true
+---
+
 # {{AGENT_FILE_NAME}}
 
 {{PROJECT_PURPOSE}}

@@ -3,6 +3,7 @@ title: "(2 条消息) SSD：清华出品，可切换密集稀疏的大模型预�
 date: 2024-11-29
 tags: [知乎]
 source: https://zhuanlan.zhihu.com/p/9478276812
+disableNunjucks: true
 ---
 
 ** 来源：晓飞的算法工程笔记 公众号，转载请注明出处论文: Exploring the Benefit of Activation Sparsity in Pre-training**

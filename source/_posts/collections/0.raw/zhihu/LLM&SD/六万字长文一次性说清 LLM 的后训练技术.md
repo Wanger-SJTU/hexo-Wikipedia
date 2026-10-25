@@ -3,6 +3,7 @@ title: "六万字长文一次性说清 LLM 的后训练技术"
 date: 2025-06-11
 tags: [知乎]
 source: https://zhuanlan.zhihu.com/p/49358536242
+disableNunjucks: true
 ---
 
 **文章题目**：A SURVEY ON POST-TRAINING OF LARGE LANGUAGE MODELS

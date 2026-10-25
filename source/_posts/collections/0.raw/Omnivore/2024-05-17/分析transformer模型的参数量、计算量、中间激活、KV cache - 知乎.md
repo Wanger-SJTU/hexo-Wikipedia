@@ -1,5 +1,6 @@
 ---
 id: caf4a4ea-9604-457d-92b1-43d4fb14f27d
+disableNunjucks: true
 ---
 
 # 分析transformer模型的参数量、计算量、中间激活、KV cache - 知乎

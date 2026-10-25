@@ -3,6 +3,7 @@ title: "自动微分法（Automatic differentiation）是如何用C++实现的�
 date: 2026-04-15
 tags: [知乎]
 source: https://www.zhihu.com/question/48356514/answer/123290631
+disableNunjucks: true
 ---
 
 - - - - - - - - - - - - - - - - - - - - - - - - 2016年10月6日 更新- - - - - - - - - - - - - - - - - - - - - - - - 
