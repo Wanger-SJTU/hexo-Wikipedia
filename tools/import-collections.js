@@ -439,6 +439,10 @@ function main() {
     if (/^\.(LC\d+|L\d+|string|text|globl|section|data|align|type|size)\b/.test(text)) return true;
     if (/^[A-Za-z_]\w*::/.test(text) || /^[A-Za-z_]\w*\s*\[[^\]]*\]:$/.test(text)) return true;
     if (/^(sub|mov|add|call|ret|push|pop|lea|cmp|jne|je|jmp|test|xor|and|or|imul|movzx|movsx|nop|endbr64|inc|dec|shl|shr|neg|not)\b/.test(text)) return true;
+    if (/^[A-Za-z_]\w*[\w\s\*&]*\([^;]*$/.test(text)) return true; // 函数签名
+    if (/^[A-Za-z_]\w*[\w\s\*&]*[;=]/.test(text)) return true; // 声明/赋值
+    if (/^[A-Za-z_]\w*\s*->/.test(text)) return true; // 成员访问
+    if (/^[A-Za-z_]\w*\s*\([^)]*\)\s*;?$/.test(text)) return true; // 调用
     if (/^--?[A-Za-z]/.test(text)) return true;
     if (/^(docker|tokenspeed|pip|npm|yarn|curl|wget|cd|export|git|bash|sh|make|cmake|sudo)\b/.test(text)) return true;
     if (/\\\s*$/.test(raw)) return true;
