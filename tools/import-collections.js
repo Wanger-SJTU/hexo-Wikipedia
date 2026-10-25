@@ -32,6 +32,7 @@ const SRC = path.resolve(arg('src', '/home/wanger/codes/collections'));
 const DOCS_OUT = path.resolve(ROOT, arg('docs-dir', 'source/_posts/collections'));
 const ASSETS_OUT = path.resolve(ROOT, arg('assets-dir', 'source/images/collections'));
 const INDEX_FILE = path.resolve(ROOT, arg('index-file', 'source/collections/index.md'));
+const DATA_FILE = path.resolve(ROOT, arg('data-file', 'source/_data/collections.json'));
 const URL_PREFIX = ('/' + String(arg('url', '/collections')).replace(/^\/+|\/+$/g, '') + '/').replace(/\/+/g, '/');
 const IMAGE_URL_BASE = ('/images/' + path.basename(ASSETS_OUT) + '/').replace(/\/+/g, '/');
 const ONLY = String(arg('only', '')).replace(/^\/+|\/+$/g, '');
@@ -481,6 +482,35 @@ function main() {
     }
     ensureDir(path.dirname(INDEX_FILE));
     fs.writeFileSync(INDEX_FILE, lines.join('\n'));
+
+    const groups = tops.map((name) => {
+      const items = (indexGroups.get(name) || []).slice().sort((a, b) => b.date - a.date);
+      return {
+        name,
+        count: items.length,
+        examples: items.slice(0, 4).map((item) => ({ title: item.title, url: encodeUrl(item.url) }))
+      };
+    }).sort((a, b) => b.count - a.count || a.name.localeCompare(b.name, 'zh-Hans-CN'));
+
+    const tagSet = new Set();
+    for (const doc of docs) for (const tag of doc.tags) tagSet.add(tag);
+    const recent = docs.slice().sort((a, b) => b.date - a.date).slice(0, 10).map((item) => ({
+      title: item.title,
+      url: encodeUrl(item.url),
+      updated: formatDate(item.updated || item.date).slice(0, 10)
+    }));
+    const latest = docs.slice().sort((a, b) => b.date - a.date)[0];
+    const data = {
+      count: docs.length,
+      groups,
+      recent,
+      tags: tagSet.size,
+      updated: latest ? formatDate(latest.updated || latest.date).slice(0, 10) : '',
+      url: URL_PREFIX
+    };
+    ensureDir(path.dirname(DATA_FILE));
+    fs.writeFileSync(DATA_FILE, JSON.stringify(data, null, 2) + '\n');
+    console.log(`[import] 数据索引：${DATA_FILE}`);
   }
 
   console.log(`[import] 写入文档：${written}，索引：${INDEX_FILE}`);

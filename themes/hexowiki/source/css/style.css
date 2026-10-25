@@ -3313,3 +3313,14 @@ html[data-theme="dark"] .pagination__item.is-current {
 html[data-theme="dark"] .katex {
   color: var(--text);
 }
+
+/* 文档库首页 */
+.home--docs .topic-card__title-link {
+  color: inherit;
+  text-decoration: none;
+}
+
+.home--docs .topic-card__title-link:hover {
+  color: var(--link);
+  text-decoration: underline;
+}

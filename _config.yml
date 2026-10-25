@@ -3,9 +3,9 @@
 # 主题：themes/hexowiki
 # ---------------------------------------------------------------
 # Site
-title: HexWiki
-subtitle: '一个像维基百科一样生长的知识库'
-description: 'Wikipedia 风格的 Hexo 主题：多级目录导航、双向链接、关系图谱与链接统计。'
+title: HexWiki 知识库
+subtitle: '文档与笔记'
+description: '按目录整理的知识库：文档、笔记与代码片段。'
 keywords: 'wiki, hexo, 双链, 知识库, 关系图谱'
 author: HexWiki
 language: zh-CN

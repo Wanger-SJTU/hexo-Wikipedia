@@ -11,6 +11,9 @@
   const _statsUrl = _urls.stats || url_for('/stats/');
   const _allUrl = _urls.all || url_for('/wiki/all/');
   const _searchJson = _urls.search_json || url_for('/wiki-search.json');
+  const _docsData = (typeof site !== 'undefined' && site && site.data && site.data.collections) ? site.data.collections : null;
+  const _docsMode = !!(_theme.docs && _theme.docs.enable && _docsData && _docsData.count);
+  const _docsUrl = url_for((_theme.docs && _theme.docs.url) || '/collections/');
 %>
 <header class="wiki-header" role="banner">
   <button class="menu-toggle" type="button" data-menu-toggle aria-controls="wiki-sidebar" aria-expanded="false" aria-label="<%= __('menu_open') %>" title="<%= __('menu_open') %>" data-label-open="<%= __('menu_open') %>" data-label-close="<%= __('menu_close') %>">
@@ -37,7 +40,7 @@
   </a>
 
   <% if (_searchEnabled) { %>
-  <form class="wiki-search" role="search" action="<%- _allUrl %>" method="get" data-search-form data-src="<%- _searchJson %>" data-limit="<%- (_theme.search && _theme.search.limit) || 8 %>">
+  <form class="wiki-search" role="search" action="<%- _docsMode ? _docsUrl : _allUrl %>" method="get" data-search-form data-src="<%- _searchJson %>" data-limit="<%- (_theme.search && _theme.search.limit) || 8 %>">
     <label class="visually-hidden" for="wiki-search-input"><%= __('search_label') %></label>
     <svg class="wiki-search__icon" width="16" height="16" viewBox="0 0 20 20" aria-hidden="true" focusable="false">
       <circle cx="8.5" cy="8.5" r="5.5" fill="none" stroke="currentColor" stroke-width="1.7"/>
@@ -54,13 +57,17 @@
   <% } else { %><div class="wiki-header__spacer" aria-hidden="true"></div><% } %>
 
   <nav class="wiki-header__nav" aria-label="<%= __('sidebar_tools') %>">
-    <% if (_features.random !== false) { %>
+    <% if (_docsMode) { %>
+    <a class="wiki-header__link" href="<%- _docsUrl %>">文档库</a>
+    <a class="wiki-header__link" href="<%- url_for('/tags/') %>">标签</a>
+    <% } %>
+    <% if (!_docsMode && _features.random !== false) { %>
     <a class="wiki-header__link js-random" href="<%- _allUrl %>" data-random-src="<%- _searchJson %>"><%= __('random_page') %></a>
     <% } %>
-    <% if (_features.stats !== false) { %>
+    <% if (!_docsMode && _features.stats !== false) { %>
     <a class="wiki-header__link" href="<%- _statsUrl %>"><%= __('statistics') %></a>
     <% } %>
-    <% if (_features.graph !== false) { %>
+    <% if (!_docsMode && _features.graph !== false) { %>
     <a class="wiki-header__link" href="<%- _graphUrl %>"><%= __('graph') %></a>
     <% } %>
     <% if (_features.dark_mode !== false) { %>

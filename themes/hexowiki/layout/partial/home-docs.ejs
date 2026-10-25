@@ -1,0 +1,76 @@
+<%
+  const _docs = (typeof site !== 'undefined' && site && site.data && site.data.collections) ? site.data.collections : null;
+  const _cfg = (typeof theme !== 'undefined' && theme && theme.docs) ? theme.docs : {};
+  if (_docs && _docs.count) {
+    const _docsUrl = url_for(_cfg.url || '/collections/');
+    const _tagsUrl = url_for('/tags/');
+    const _archivesUrl = url_for('/archives/');
+    const _headline = _cfg.headline || '知识库';
+    const _intro = _cfg.intro || '按目录整理的文档与笔记，支持代码、数学公式与全文检索。';
+%>
+<div class="home home--docs">
+  <section class="home-hero" aria-labelledby="home-title">
+    <p class="home-hero__eyebrow">HEXWIKI · KNOWLEDGE BASE</p>
+    <h1 class="home-hero__title" id="home-title"><%- _headline %></h1>
+    <p class="home-hero__lead"><%- _intro %></p>
+    <div class="home-actions">
+      <a class="home-actions__primary" href="<%- _docsUrl %>">进入文档库</a>
+      <a class="home-actions__link" href="<%- _tagsUrl %>">标签</a>
+      <a class="home-actions__link" href="<%- _archivesUrl %>">归档</a>
+    </div>
+    <dl class="home-hero__stats">
+      <div class="home-hero__stat"><dt>文档</dt><dd><%- _docs.count %></dd></div>
+      <div class="home-hero__stat"><dt>目录</dt><dd><%- (_docs.groups || []).length %></dd></div>
+      <div class="home-hero__stat"><dt>标签</dt><dd><%- _docs.tags || 0 %></dd></div>
+      <div class="home-hero__stat"><dt>最近更新</dt><dd><%- _docs.updated || '—' %></dd></div>
+    </dl>
+  </section>
+
+  <section class="home-section" aria-labelledby="home-docs-title">
+    <div class="home-section__head">
+      <h2 class="home-section__title" id="home-docs-title">知识库目录</h2>
+      <a class="home-section__more" href="<%- _docsUrl %>">查看全部 →</a>
+    </div>
+    <div class="home-topics">
+      <% (_docs.groups || []).forEach(function (group) { %>
+      <section class="topic-card">
+        <h3 class="topic-card__title">
+          <a class="topic-card__title-link" href="<%- _docsUrl %>"><%- group.name %></a>
+          <span class="topic-card__count"><%- group.count %></span>
+        </h3>
+        <ul class="topic-card__list">
+          <% (group.examples || []).forEach(function (item) { %>
+          <li class="topic-card__item"><a class="topic-card__link" href="<%- item.url %>"><%- item.title %></a></li>
+          <% }); %>
+        </ul>
+      </section>
+      <% }); %>
+    </div>
+  </section>
+
+  <div class="home-columns">
+    <section class="home-section home-section--recent" aria-labelledby="home-recent-title">
+      <div class="home-section__head">
+        <h2 class="home-section__title" id="home-recent-title">最近更新</h2>
+        <a class="home-section__more" href="<%- _docsUrl %>">全部文档 →</a>
+      </div>
+      <ul class="recent-list">
+        <% (_docs.recent || []).forEach(function (item) { %>
+        <li class="recent-list__item">
+          <a class="recent-list__link" href="<%- item.url %>"><%- item.title %></a>
+          <% if (item.updated) { %><time class="recent-list__date" datetime="<%- item.updated %>"><%- item.updated %></time><% } %>
+        </li>
+        <% }); %>
+      </ul>
+    </section>
+
+    <section class="home-section" aria-labelledby="home-about-title">
+      <div class="home-section__head">
+        <h2 class="home-section__title" id="home-about-title">关于知识库</h2>
+      </div>
+      <p class="home-empty">文档按原始目录整理，每篇都有独立 URL；代码块使用高亮并支持一键复制，数学公式由 KaTeX 渲染。</p>
+      <p class="home-all"><a class="home-actions__link" href="<%- _docsUrl %>">进入文档库 →</a></p>
+    </section>
+  </div>
+</div>
+<% } %>
