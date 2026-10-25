@@ -528,6 +528,30 @@ hexo.extend.generator.register('hexowiki-routes', function generateWikiRoutes(lo
       };
     });
 
+  let docsData = null;
+  try {
+    const dataLocals = (locals && locals.data) || hexo.locals.get('data');
+    docsData = dataLocals ? (dataLocals.collections || (dataLocals.toObject ? dataLocals.toObject().collections : null)) : null;
+  } catch (err) {
+    docsData = null;
+  }
+  const dirRoutes = [];
+  if (docsData && docsData.dirs) {
+    for (const dir of Object.values(docsData.dirs)) {
+      if (!dir || !dir.route) continue;
+      dirRoutes.push({
+        path: 'collections/' + dir.route + '/index.html',
+        layout: 'wiki_directory',
+        data: {
+          title: dir.name,
+          layout: 'wiki_directory',
+          type: 'wiki_directory',
+          directory: dir
+        }
+      });
+    }
+  }
+
   const tagList = (locals && locals.tags ? locals.tags.toArray() : [])
     .map((tag) => ({
       name: String(tag.name),
@@ -560,6 +584,7 @@ hexo.extend.generator.register('hexowiki-routes', function generateWikiRoutes(lo
       description: '按首字排序的全部条目索引。'
     }),
     ...redirectRoutes,
+    ...dirRoutes,
     pageRoute(routes.tags, 'wiki_tags', {
       title: '标签',
       layout: 'wiki_tags',

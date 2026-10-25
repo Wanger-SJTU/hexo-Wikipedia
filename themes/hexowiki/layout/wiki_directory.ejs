@@ -1,0 +1,55 @@
+<%
+  const _dir = page.directory || {};
+  const _children = Array.isArray(_dir.children) ? _dir.children : [];
+  const _docs = Array.isArray(_dir.docs) ? _dir.docs : [];
+  const _ancestors = Array.isArray(_dir.ancestors) ? _dir.ancestors : [];
+  const _docsUrl = url_for((theme.docs && theme.docs.url) || '/collections/');
+%>
+<div class="list-page directory-page">
+  <nav class="directory-crumbs" aria-label="面包屑">
+    <a href="<%- _docsUrl %>">文档库</a>
+    <% _ancestors.forEach(function (item) { if (item && item.name !== '文档库') { %>
+    <span class="directory-crumbs__sep" aria-hidden="true">›</span>
+    <a href="<%- item.url %>"><%- item.name %></a>
+    <% } }); %>
+    <span class="directory-crumbs__sep" aria-hidden="true">›</span>
+    <span aria-current="page"><%- _dir.name %></span>
+  </nav>
+
+  <header class="list-page__header">
+    <h1 class="list-page__title"><%- _dir.name %></h1>
+    <p class="list-page__meta"><%- _dir.count || 0 %> 篇文档 · <code><%- _dir.path %></code></p>
+  </header>
+
+  <% if (_children.length) { %>
+  <section class="directory-section">
+    <h2 class="directory-section__title">子目录</h2>
+    <ul class="directory-grid">
+      <% _children.forEach(function (item) { %>
+      <li class="directory-grid__item">
+        <a class="directory-grid__link" href="<%- item.url %>">
+          <span class="directory-grid__name"><%- item.name %></span>
+          <span class="directory-grid__count"><%- item.count %></span>
+        </a>
+      </li>
+      <% }); %>
+    </ul>
+  </section>
+  <% } %>
+
+  <section class="directory-section">
+    <h2 class="directory-section__title">文档（<%- _docs.length %>）</h2>
+    <% if (_docs.length) { %>
+    <ul class="recent-list">
+      <% _docs.forEach(function (item) { %>
+      <li class="recent-list__item">
+        <a class="recent-list__link" href="<%- item.url %>"><%- item.title %></a>
+        <% if (item.date) { %><time class="recent-list__date" datetime="<%- item.date %>"><%- item.date %></time><% } %>
+      </li>
+      <% }); %>
+    </ul>
+    <% } else { %>
+    <p class="home-empty">该目录下没有直接文档，请进入子目录。</p>
+    <% } %>
+  </section>
+</div>

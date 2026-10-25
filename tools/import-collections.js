@@ -606,14 +606,91 @@ function main() {
     ensureDir(path.dirname(INDEX_FILE));
     fs.writeFileSync(INDEX_FILE, lines.join('\n'));
 
-    const groups = tops.map((name) => {
-      const items = (indexGroups.get(name) || []).slice().sort((a, b) => b.date - a.date);
+    // 目录树：保持原始多级结构，供侧栏与目录页使用
+    const dirRoot = { name: '', path: '', route: '', url: URL_PREFIX, children: new Map(), docs: [] };
+    for (const doc of docs) {
+      const parts = doc.rel.split('/').slice(0, -1);
+      let node = dirRoot;
+      for (const part of parts) {
+        let child = node.children.get(part);
+        if (!child) {
+          const childPath = node.path ? node.path + '/' + part : part;
+          const childRoute = childPath.split('/').map(slugSegment).join('/');
+          child = {
+            name: part,
+            path: childPath,
+            route: childRoute,
+            url: URL_PREFIX + childRoute + '/',
+            children: new Map(),
+            docs: []
+          };
+          node.children.set(part, child);
+        }
+        node = child;
+      }
+      node.docs.push({
+        title: doc.title,
+        url: encodeUrl(doc.url),
+        date: formatDate(doc.date).slice(0, 10)
+      });
+    }
+
+    const countDir = (node) => {
+      let total = node.docs.length;
+      for (const child of node.children.values()) total += countDir(child);
+      node.count = total;
+      return total;
+    };
+    countDir(dirRoot);
+
+    const sortDir = (node) => {
+      node.childrenArr = [...node.children.values()].sort((a, b) => b.count - a.count || a.name.localeCompare(b.name, 'zh-Hans-CN'));
+      node.childrenArr.forEach(sortDir);
+    };
+    sortDir(dirRoot);
+
+    const tree = dirRoot.childrenArr.map(function toNode(node) {
       return {
-        name,
-        count: items.length,
+        name: node.name,
+        path: node.path,
+        url: node.url,
+        count: node.count,
+        children: node.childrenArr.map(toNode)
+      };
+    });
+
+    const dirs = {};
+    const walkDirs = (node, ancestors) => {
+      for (const child of node.childrenArr) {
+        dirs[child.path] = {
+          name: child.name,
+          path: child.path,
+          route: child.route,
+          url: child.url,
+          count: child.count,
+          ancestors,
+          children: child.childrenArr.map((sub) => ({ name: sub.name, url: sub.url, count: sub.count })),
+          docs: child.docs
+            .slice()
+            .sort((a, b) => b.date.localeCompare(a.date) || a.title.localeCompare(b.title, 'zh-Hans-CN'))
+        };
+        walkDirs(child, ancestors.concat([{ name: child.name, url: child.url }]));
+      }
+    };
+    walkDirs(dirRoot, [{ name: '文档库', url: URL_PREFIX }]);
+
+    const groups = dirRoot.childrenArr.map((node) => {
+      const items = docs
+        .filter((doc) => doc.rel.indexOf(node.path + '/') === 0)
+        .slice()
+        .sort((a, b) => b.date - a.date);
+      return {
+        name: node.name,
+        count: node.count,
+        url: node.url,
         examples: items.slice(0, 4).map((item) => ({ title: item.title, url: encodeUrl(item.url) }))
       };
-    }).sort((a, b) => b.count - a.count || a.name.localeCompare(b.name, 'zh-Hans-CN'));
+    });
 
     const tagSet = new Set();
     for (const doc of docs) for (const tag of doc.tags) tagSet.add(tag);
@@ -626,6 +703,8 @@ function main() {
     const data = {
       count: docs.length,
       groups,
+      tree,
+      dirs,
       recent,
       tags: tagSet.size,
       updated: latest ? formatDate(latest.updated || latest.date).slice(0, 10) : '',

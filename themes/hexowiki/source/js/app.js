@@ -318,10 +318,13 @@
         return;
       }
 
-      var button = directChild(item, '.nav-tree__toggle');
+      var button = directChild(item, '.nav-tree__toggle')
+        || item.querySelector('.nav-tree__docs-head > .nav-tree__toggle');
       var wrapper = directChild(item, '.nav-tree__children');
       var labelEl = button ? button.querySelector('.nav-tree__label') : null;
-      var labelHit = !!(labelEl && labelEl.textContent.toLowerCase().indexOf(query) !== -1);
+      var linkEl = item.querySelector('.nav-tree__docs-head .nav-tree__link-text');
+      var labelText = (labelEl || linkEl || {}).textContent || '';
+      var labelHit = labelText.toLowerCase().indexOf(query) !== -1;
       var childList = wrapper ? directChild(wrapper, 'ul') : null;
       var childHit = filterList(childList, query);
 

@@ -3324,3 +3324,93 @@ html[data-theme="dark"] .katex {
   color: var(--link);
   text-decoration: underline;
 }
+
+/* 文档目录页 / 侧栏目录树 */
+.directory-crumbs {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px;
+  margin-bottom: 10px;
+  color: var(--text-muted);
+  font-size: 12px;
+}
+
+.directory-crumbs a {
+  color: var(--link);
+}
+
+.directory-crumbs__sep {
+  color: var(--border-subtle);
+}
+
+.directory-section {
+  margin: 20px 0 28px;
+}
+
+.directory-section__title {
+  margin: 0 0 10px;
+  padding-bottom: 5px;
+  border-bottom: 1px solid var(--border-subtle);
+  font-family: var(--font-serif);
+  font-size: 1.3rem;
+  font-weight: 400;
+}
+
+.directory-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+  gap: 6px 18px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.directory-grid__link {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 5px 2px;
+  border-bottom: 1px solid var(--border-faint);
+  color: var(--text);
+  text-decoration: none;
+}
+
+.directory-grid__link:hover {
+  color: var(--link);
+  background: var(--bg-subtle);
+}
+
+.directory-grid__count {
+  color: var(--text-muted);
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+.nav-tree__docs-head {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.nav-tree__toggle-spacer {
+  width: 16px;
+  flex: 0 0 16px;
+}
+
+.nav-tree__docs-head .nav-tree__link {
+  flex: 1;
+  min-width: 0;
+}
+
+.nav-tree__docs-head .nav-tree__toggle {
+  width: 16px;
+  flex: 0 0 16px;
+  padding: 0;
+  justify-content: center;
+}
+
+.nav-tree__docs-head .nav-tree__toggle:hover {
+  background: transparent;
+}

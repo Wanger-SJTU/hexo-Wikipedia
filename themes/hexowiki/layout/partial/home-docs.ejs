@@ -35,7 +35,7 @@
       <% (_docs.groups || []).forEach(function (group) { %>
       <section class="topic-card">
         <h3 class="topic-card__title">
-          <a class="topic-card__title-link" href="<%- _docsUrl %>"><%- group.name %></a>
+          <a class="topic-card__title-link" href="<%- group.url || _docsUrl %>"><%- group.name %></a>
           <span class="topic-card__count"><%- group.count %></span>
         </h3>
         <ul class="topic-card__list">
