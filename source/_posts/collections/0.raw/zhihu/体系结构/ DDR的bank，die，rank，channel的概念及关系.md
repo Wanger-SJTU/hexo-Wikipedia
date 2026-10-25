@@ -1,5 +1,5 @@
 ---
-title: (1 封私信) DDR的bank，die，rank，channel的概念及关系
+title: DDR的bank，die，rank，channel的概念及关系
 date: "2025-09-17 00:00:00"
 updated: "2025-09-17 00:00:00"
 layout: post

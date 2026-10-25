@@ -1,5 +1,5 @@
 ---
-title: (1 封私信) Roofline Model与深度学习模型的性能分析
+title: Roofline Model与深度学习模型的性能分析
 date: "2020-05-17 00:00:00"
 updated: "2020-05-17 00:00:00"
 layout: post

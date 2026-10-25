@@ -1,5 +1,5 @@
 ---
-title: (1 封私信) [转载] （一）ARMv8 MMU及Linux页表映射
+title: [转载] （一）ARMv8 MMU及Linux页表映射
 date: "2020-02-21 00:00:00"
 updated: "2020-02-21 00:00:00"
 layout: post

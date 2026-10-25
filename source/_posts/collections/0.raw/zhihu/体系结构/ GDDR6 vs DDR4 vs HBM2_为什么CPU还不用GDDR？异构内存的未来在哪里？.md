@@ -1,5 +1,5 @@
 ---
-title: (1 封私信) GDDR6 vs DDR4 vs HBM2?为什么CPU还不用GDDR？异构内存的未来在哪里？
+title: GDDR6 vs DDR4 vs HBM2?为什么CPU还不用GDDR？异构内存的未来在哪里？
 date: "2019-11-10 00:00:00"
 updated: "2019-11-10 00:00:00"
 layout: post

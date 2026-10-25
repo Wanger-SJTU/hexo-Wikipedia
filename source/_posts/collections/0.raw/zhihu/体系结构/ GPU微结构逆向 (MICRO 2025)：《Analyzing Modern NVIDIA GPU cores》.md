@@ -1,5 +1,5 @@
 ---
-title: (1 封私信) GPU微结构逆向 (MICRO 2025)：《Analyzing Modern NVIDIA GPU cores》
+title: GPU微结构逆向 (MICRO 2025)：《Analyzing Modern NVIDIA GPU cores》
 date: "2025-10-15 00:00:00"
 updated: "2025-10-15 00:00:00"
 layout: post

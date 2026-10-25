@@ -1,5 +1,5 @@
 ---
-title: (1 封私信) Cache的50问，您能回答上几个
+title: Cache的50问，您能回答上几个
 date: "2025-01-07 00:00:00"
 updated: "2025-01-07 00:00:00"
 layout: post

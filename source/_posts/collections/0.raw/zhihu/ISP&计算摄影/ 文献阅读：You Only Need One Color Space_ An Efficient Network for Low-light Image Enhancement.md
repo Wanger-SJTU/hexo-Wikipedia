@@ -1,5 +1,5 @@
 ---
-title: "(1 封私信) 文献阅读：You Only Need One Color Space: An Efficient Network for Low-light Image Enhancement"
+title: "文献阅读：You Only Need One Color Space: An Efficient Network for Low-light Image Enhancement"
 date: "2024-05-27 00:00:00"
 updated: "2024-05-27 00:00:00"
 layout: post

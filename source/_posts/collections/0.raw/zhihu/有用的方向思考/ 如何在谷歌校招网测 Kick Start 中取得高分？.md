@@ -1,5 +1,5 @@
 ---
-title: (1 封私信) 如何在谷歌校招网测 Kick Start 中取得高分？
+title: 如何在谷歌校招网测 Kick Start 中取得高分？
 date: "2026-04-14 00:00:00"
 updated: "2026-04-14 00:00:00"
 layout: post

@@ -1,5 +1,5 @@
 ---
-title: (1 封私信) 深度学习编译系列之 ANSOR 技术分享
+title: 深度学习编译系列之 ANSOR 技术分享
 date: "2021-05-14 00:00:00"
 updated: "2021-05-14 00:00:00"
 layout: post

@@ -1,5 +1,5 @@
 ---
-title: (1 封私信) DeepEP，nvshmem 和 IBGDA 二三事（1）
+title: DeepEP，nvshmem 和 IBGDA 二三事（1）
 date: "2025-07-28 00:00:00"
 updated: "2025-07-28 00:00:00"
 layout: post

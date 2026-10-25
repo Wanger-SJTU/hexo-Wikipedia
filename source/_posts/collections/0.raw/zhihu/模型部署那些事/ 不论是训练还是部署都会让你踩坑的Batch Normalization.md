@@ -1,5 +1,5 @@
 ---
-title: (1 封私信) 不论是训练还是部署都会让你踩坑的Batch Normalization
+title: 不论是训练还是部署都会让你踩坑的Batch Normalization
 date: "2021-07-11 00:00:00"
 updated: "2021-07-11 00:00:00"
 layout: post

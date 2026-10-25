@@ -1,5 +1,5 @@
 ---
-title: (1 封私信) DeepSeek-V2 高性能推理 (1)：通过矩阵吸收十倍提速 MLA 算子
+title: DeepSeek-V2 高性能推理 (1)：通过矩阵吸收十倍提速 MLA 算子
 date: "2025-03-04 00:00:00"
 updated: "2025-03-04 00:00:00"
 layout: post

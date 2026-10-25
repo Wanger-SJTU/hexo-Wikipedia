@@ -1,5 +1,5 @@
 ---
-title: (1 封私信) 工程实现 ｜加速神经网络推理之 8bit Quantization （模型量化压缩）
+title: 工程实现 ｜加速神经网络推理之 8bit Quantization （模型量化压缩）
 date: "2022-08-22 00:00:00"
 updated: "2022-08-22 00:00:00"
 layout: post

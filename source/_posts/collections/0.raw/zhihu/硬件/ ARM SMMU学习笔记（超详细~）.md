@@ -1,5 +1,5 @@
 ---
-title: (1 封私信) ARM SMMU学习笔记（超详细~）
+title: ARM SMMU学习笔记（超详细~）
 date: "2022-07-07 00:00:00"
 updated: "2022-07-07 00:00:00"
 layout: post

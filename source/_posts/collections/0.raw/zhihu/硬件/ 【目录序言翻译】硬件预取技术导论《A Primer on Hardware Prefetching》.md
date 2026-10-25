@@ -1,5 +1,5 @@
 ---
-title: (1 封私信) 【目录序言翻译】硬件预取技术导论《A Primer on Hardware Prefetching》
+title: 【目录序言翻译】硬件预取技术导论《A Primer on Hardware Prefetching》
 date: "2021-07-20 00:00:00"
 updated: "2021-07-20 00:00:00"
 layout: post

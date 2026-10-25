@@ -1,5 +1,5 @@
 ---
-title: (1 封私信) nvidia tensor core 祛魅
+title: nvidia tensor core 祛魅
 date: "2025-10-26 00:00:00"
 updated: "2025-10-26 00:00:00"
 layout: post

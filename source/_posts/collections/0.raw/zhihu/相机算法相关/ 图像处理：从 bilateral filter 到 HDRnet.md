@@ -1,5 +1,5 @@
 ---
-title: (1 封私信) 图像处理：从 bilateral filter 到 HDRnet
+title: 图像处理：从 bilateral filter 到 HDRnet
 date: "2018-05-28 00:00:00"
 updated: "2018-05-28 00:00:00"
 layout: post

@@ -1,5 +1,5 @@
 ---
-title: (1 封私信) 《CS336 Spring 2025 Lecture 6：Kernels, Triton》学习笔记
+title: 《CS336 Spring 2025 Lecture 6：Kernels, Triton》学习笔记
 date: "2026-03-12 00:00:00"
 updated: "2026-03-12 00:00:00"
 layout: post

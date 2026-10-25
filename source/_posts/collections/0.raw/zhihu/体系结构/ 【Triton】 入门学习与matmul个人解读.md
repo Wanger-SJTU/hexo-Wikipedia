@@ -1,5 +1,5 @@
 ---
-title: (1 封私信) 【Triton】 入门学习与matmul个人解读
+title: 【Triton】 入门学习与matmul个人解读
 date: "2025-12-14 00:00:00"
 updated: "2025-12-14 00:00:00"
 layout: post

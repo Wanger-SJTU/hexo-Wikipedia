@@ -1,5 +1,5 @@
 ---
-title: (1 封私信) 《GPGPU的性能分析和调优》
+title: 《GPGPU的性能分析和调优》
 date: "2025-03-07 00:00:00"
 updated: "2025-03-07 00:00:00"
 layout: post

@@ -105,7 +105,7 @@ CriticalKV: Identify Critical KV Cache in LLM Inference from an Output Perturbat
 DefensiveKV: Taming the Fragility of KV Cache Eviction in LLM Inference | OpenReview ICLR 2026
 
 ref: 之前关于KV Cache压缩的文章分享
-(1 封私信) KV Cache压缩新阶段:走向问题指令无关下的压缩探索 - 知乎
+KV Cache压缩新阶段:走向问题指令无关下的压缩探索 - 知乎
 
 分享最新ICLR25 Submissions中LLM KV Cache压缩领域部分工作（Budget Allocation in KV Cache Compression） - 知乎 (zhihu.com)
 

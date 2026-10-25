@@ -1,5 +1,5 @@
 ---
-title: (1 封私信) LLM Decode GQA & GEMV算子性能分析（一）
+title: LLM Decode GQA & GEMV算子性能分析（一）
 date: "2024-08-20 00:00:00"
 updated: "2024-08-20 00:00:00"
 layout: post

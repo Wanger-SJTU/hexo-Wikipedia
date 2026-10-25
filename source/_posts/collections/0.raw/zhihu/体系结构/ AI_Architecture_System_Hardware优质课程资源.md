@@ -1,5 +1,5 @@
 ---
-title: (1 封私信) AI/Architecture/System/Hardware优质课程资源
+title: AI/Architecture/System/Hardware优质课程资源
 date: "2025-12-26 00:00:00"
 updated: "2025-12-26 00:00:00"
 layout: post

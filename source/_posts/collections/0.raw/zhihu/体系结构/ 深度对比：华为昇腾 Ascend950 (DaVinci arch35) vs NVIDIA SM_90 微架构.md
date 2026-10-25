@@ -1,5 +1,5 @@
 ---
-title: (1 封私信) 深度对比：华为昇腾 Ascend950 (DaVinci arch35) vs NVIDIA SM_90 微架构
+title: 深度对比：华为昇腾 Ascend950 (DaVinci arch35) vs NVIDIA SM_90 微架构
 date: "2026-04-02 00:00:00"
 updated: "2026-04-02 00:00:00"
 layout: post

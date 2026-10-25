@@ -1,5 +1,5 @@
 ---
-title: (1 封私信) TVM 中的 Tensor Expression (TE)
+title: TVM 中的 Tensor Expression (TE)
 date: "2023-12-10 00:00:00"
 updated: "2023-12-10 00:00:00"
 layout: post

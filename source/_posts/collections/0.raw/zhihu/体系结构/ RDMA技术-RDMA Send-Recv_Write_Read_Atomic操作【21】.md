@@ -1,5 +1,5 @@
 ---
-title: (1 封私信) RDMA技术-RDMA Send-Recv/Write/Read/Atomic操作【21】
+title: RDMA技术-RDMA Send-Recv/Write/Read/Atomic操作【21】
 date: "2026-03-09 00:00:00"
 updated: "2026-03-09 00:00:00"
 layout: post

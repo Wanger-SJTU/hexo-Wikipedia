@@ -1,5 +1,5 @@
 ---
-title: (1 封私信) MLIR 文章视频汇总
+title: MLIR 文章视频汇总
 date: "2022-01-28 00:00:00"
 updated: "2022-01-28 00:00:00"
 layout: post

@@ -1,5 +1,5 @@
 ---
-title: (1 封私信) [阅读笔记] BOLT @MLSys 2022
+title: [阅读笔记] BOLT @MLSys 2022
 date: "2022-05-31 00:00:00"
 updated: "2022-05-31 00:00:00"
 layout: post

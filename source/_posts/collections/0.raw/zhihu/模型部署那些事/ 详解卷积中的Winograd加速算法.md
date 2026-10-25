@@ -1,5 +1,5 @@
 ---
-title: (1 封私信) 详解卷积中的Winograd加速算法
+title: 详解卷积中的Winograd加速算法
 date: "2020-09-30 00:00:00"
 updated: "2020-09-30 00:00:00"
 layout: post

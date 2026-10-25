@@ -1,5 +1,5 @@
 ---
-title: (1 封私信) 【我与TVM二三事 中篇（1）】VirtualMachine
+title: 【我与TVM二三事 中篇（1）】VirtualMachine
 date: "2022-01-17 00:00:00"
 updated: "2022-01-17 00:00:00"
 layout: post

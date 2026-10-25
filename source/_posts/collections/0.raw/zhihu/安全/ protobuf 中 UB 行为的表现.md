@@ -1,5 +1,5 @@
 ---
-title: (1 封私信) protobuf 中 UB 行为的表现
+title: protobuf 中 UB 行为的表现
 date: "2022-06-09 00:00:00"
 updated: "2022-06-09 00:00:00"
 layout: post

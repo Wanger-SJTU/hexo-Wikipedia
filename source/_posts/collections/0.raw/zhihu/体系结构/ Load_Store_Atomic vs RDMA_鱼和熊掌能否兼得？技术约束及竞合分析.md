@@ -1,5 +1,5 @@
 ---
-title: (1 封私信) Load/Store/Atomic vs RDMA:鱼和熊掌能否兼得？技术约束及竞合分析
+title: Load/Store/Atomic vs RDMA:鱼和熊掌能否兼得？技术约束及竞合分析
 date: "2026-03-11 00:00:00"
 updated: "2026-03-11 00:00:00"
 layout: post

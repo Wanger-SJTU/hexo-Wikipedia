@@ -1,5 +1,5 @@
 ---
-title: (1 封私信) TinyGPU：用最小化硬件实现讲清 GPU 的“并行 + 内存 + 控制流”
+title: TinyGPU：用最小化硬件实现讲清 GPU 的“并行 + 内存 + 控制流”
 date: "2026-04-11 00:00:00"
 updated: "2026-04-11 00:00:00"
 layout: post

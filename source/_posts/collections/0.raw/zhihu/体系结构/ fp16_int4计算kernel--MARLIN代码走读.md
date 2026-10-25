@@ -1,5 +1,5 @@
 ---
-title: (1 封私信) fp16*int4计算kernel--MARLIN代码走读
+title: fp16*int4计算kernel--MARLIN代码走读
 date: "2024-05-20 00:00:00"
 updated: "2024-05-20 00:00:00"
 layout: post

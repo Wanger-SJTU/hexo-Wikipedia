@@ -1,5 +1,5 @@
 ---
-title: (1 封私信) 拆解RDMA的麻雀—— RDMA核心技术理解入门篇
+title: 拆解RDMA的麻雀—— RDMA核心技术理解入门篇
 date: "2026-04-13 00:00:00"
 updated: "2026-04-13 00:00:00"
 layout: post

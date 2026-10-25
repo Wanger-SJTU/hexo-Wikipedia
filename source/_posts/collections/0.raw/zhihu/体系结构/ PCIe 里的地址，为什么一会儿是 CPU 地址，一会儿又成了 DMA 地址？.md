@@ -1,5 +1,5 @@
 ---
-title: (1 封私信) PCIe 里的地址，为什么一会儿是 CPU 地址，一会儿又成了 DMA 地址？
+title: PCIe 里的地址，为什么一会儿是 CPU 地址，一会儿又成了 DMA 地址？
 date: "2026-03-20 00:00:00"
 updated: "2026-03-20 00:00:00"
 layout: post

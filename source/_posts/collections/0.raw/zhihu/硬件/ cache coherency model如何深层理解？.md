@@ -1,5 +1,5 @@
 ---
-title: (1 封私信) cache coherency model如何深层理解？
+title: cache coherency model如何深层理解？
 date: "2026-04-14 00:00:00"
 updated: "2026-04-14 00:00:00"
 layout: post

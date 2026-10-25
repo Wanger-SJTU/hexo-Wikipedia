@@ -1,5 +1,5 @@
 ---
-title: "(1 封私信) NTIRE2024 | 修复一切图像RAIM: Restore All Image Model Challenge报告分析"
+title: "NTIRE2024 | 修复一切图像RAIM: Restore All Image Model Challenge报告分析"
 date: "2024-06-08 00:00:00"
 updated: "2024-06-08 00:00:00"
 layout: post

@@ -1,5 +1,5 @@
 ---
-title: (1 封私信) CS217课程解析：剖析QNNPACK的矩阵运算优化思路
+title: CS217课程解析：剖析QNNPACK的矩阵运算优化思路
 date: "2019-09-26 00:00:00"
 updated: "2019-09-26 00:00:00"
 layout: post

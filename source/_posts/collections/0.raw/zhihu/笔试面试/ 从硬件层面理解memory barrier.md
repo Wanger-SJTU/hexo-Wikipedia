@@ -1,5 +1,5 @@
 ---
-title: (1 封私信) 从硬件层面理解memory barrier
+title: 从硬件层面理解memory barrier
 date: "2020-08-15 00:00:00"
 updated: "2020-08-15 00:00:00"
 layout: post

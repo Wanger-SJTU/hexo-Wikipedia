@@ -1,5 +1,5 @@
 ---
-title: (1 封私信) RDMA技术-RDMA over Commodity Ethernet at Scale【22】
+title: RDMA技术-RDMA over Commodity Ethernet at Scale【22】
 date: "2026-03-12 00:00:00"
 updated: "2026-03-12 00:00:00"
 layout: post

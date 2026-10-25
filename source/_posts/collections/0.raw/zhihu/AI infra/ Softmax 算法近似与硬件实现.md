@@ -1,5 +1,5 @@
 ---
-title: (1 封私信) Softmax 算法近似与硬件实现
+title: Softmax 算法近似与硬件实现
 date: "2026-01-01 00:00:00"
 updated: "2026-01-01 00:00:00"
 layout: post

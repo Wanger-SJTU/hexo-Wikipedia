@@ -1,5 +1,5 @@
 ---
-title: (1 封私信) 推荐一款纳秒级的C++日志Nanolog
+title: 推荐一款纳秒级的C++日志Nanolog
 date: "2020-05-06 00:00:00"
 updated: "2020-05-06 00:00:00"
 layout: post

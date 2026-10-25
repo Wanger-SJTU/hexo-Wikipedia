@@ -1,5 +1,5 @@
 ---
-title: (1 封私信) HPCA '26 论文解读：RoMe —— 专为 LLM 设计的4KB行粒度内存系统
+title: HPCA '26 论文解读：RoMe —— 专为 LLM 设计的4KB行粒度内存系统
 date: "2026-02-25 00:00:00"
 updated: "2026-02-25 00:00:00"
 layout: post

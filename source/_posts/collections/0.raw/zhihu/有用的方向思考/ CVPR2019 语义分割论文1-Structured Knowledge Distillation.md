@@ -1,5 +1,5 @@
 ---
-title: (1 封私信) CVPR2019 语义分割论文1-Structured Knowledge Distillation
+title: CVPR2019 语义分割论文1-Structured Knowledge Distillation
 date: "2019-07-22 00:00:00"
 updated: "2019-07-22 00:00:00"
 layout: post
