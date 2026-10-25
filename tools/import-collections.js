@@ -396,6 +396,68 @@ function main() {
       .replace(/&#(\d+);/g, (whole, dec) => String.fromCodePoint(Number(dec)));
   }
 
+  function isShellBlockLine(line) {
+    const t = String(line || '').trim();
+    if (!t) return false;
+    if (/^#/.test(t)) return true;
+    if (/^(nproc|perf|sudo|systemctl|echo|cat|ls|grep|awk|sed|curl|wget|ps|top|taskset|numactl|bash|sh|python|pip|docker|git|cd|export|make|cmake|gcc|g\+\+|time|strace|objdump|readelf|bpftrace|trace-cmd)\b/.test(t)) return true;
+    if (/^(\.\/|\/|--?[A-Za-z])/.test(t)) return true;
+    if (/\\\s*$/.test(t)) return true;
+    return false;
+  }
+
+  function wrapLanguageMarkers(body) {
+    const lines = String(body == null ? '' : body).split('\n');
+    const out = [];
+    let fence = null;
+    for (let i = 0; i < lines.length; i += 1) {
+      const line = lines[i];
+      const f = /^\s{0,3}(`{3,}|~{3,})/.exec(line);
+      if (f) {
+        if (!fence) fence = f[1][0];
+        else if (f[1][0] === fence) fence = null;
+        out.push(line);
+        continue;
+      }
+      if (fence) {
+        out.push(line);
+        continue;
+      }
+      if (/^(BASH|SHELL|SH)$/i.test(line.trim())) {
+        const block = [];
+        let j = i + 1;
+        while (j < lines.length) {
+          const next = lines[j];
+          if (/^\s{0,3}(`{3,}|~{3,})/.test(next)) break;
+          if (!next.trim()) {
+            // 空行后如果仍是 shell 命令/注释，继续并入同一代码块
+            let k = j + 1;
+            while (k < lines.length && !lines[k].trim()) k += 1;
+            if (k < lines.length && isShellBlockLine(lines[k])) {
+              block.push('');
+              j += 1;
+              continue;
+            }
+            break;
+          }
+          if (!isShellBlockLine(next)) break;
+          block.push(next);
+          j += 1;
+        }
+        if (block.length) {
+          if (out.length && out[out.length - 1].trim()) out.push('');
+          out.push('```bash');
+          out.push(...block);
+          out.push('```', '');
+          i = j - 1;
+          continue;
+        }
+      }
+      out.push(line);
+    }
+    return out.join('\n');
+  }
+
   function splitEmbeddedCommands(body) {
     const lines = String(body == null ? '' : body).split('\n');
     const out = [];
@@ -620,7 +682,7 @@ function main() {
   let replacedWiki = 0;
 
   for (const doc of docs) {
-    const prepared = splitEmbeddedCommands(decodeHtmlEntities(doc.body));
+    const prepared = wrapLanguageMarkers(splitEmbeddedCommands(decodeHtmlEntities(doc.body)));
     const body = transformBody(autoFenceCode(stripStrayBackticks(prepared)), doc);
     const fm = {
       title: doc.title,

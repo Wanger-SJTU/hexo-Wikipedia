@@ -76,17 +76,21 @@ CLI-Anything 适用于多种领域的软件改造：
 
 1. 在 Claude Code 中使用（推荐）
 
-Bash
+```bash
 
 # 添加并安装插件 /plugin marketplace add HKUDS/CLI-Anything /plugin install cli-anything # 为目标软件生成 CLI（以 GIMP 为例） /cli-anything ./gimp
+```
+
 
 2. 使用生成的 CLI
 
 生成的工具安装后，可以像普通命令一样使用：
 
-Bash
+```bash
 
 # 查看帮助 cli-anything-gimp --help # 以 JSON 格式添加图层（AI 友好） cli-anything-gimp --json layer add -n "Background" --type solid --color "#1a1a2e" # 进入交互式 REPL 模式 cli-anything-gimp
+```
+
 
 CLI-Anything 不仅仅是一个工具，它提出了一套让软件进化为 Agent-Native 的标准方法论（详见其 HARNESS.md 规范）。它让 AI 不再受限于“看屏幕、点鼠标”的低效模式，而是通过结构化的指令集直接驱动专业软件，极大地提升了 AI 智能体在真实生产环境中的可用性和效率。
 

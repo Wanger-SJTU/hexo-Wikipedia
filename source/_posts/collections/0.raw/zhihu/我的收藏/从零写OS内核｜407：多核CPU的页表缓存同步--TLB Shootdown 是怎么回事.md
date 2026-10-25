@@ -256,7 +256,7 @@ int do_munmap(uintptr_t addr, size_t len) {
 
 在真实 Linux 系统上，可以观察 TLB shootdown 的效果：
 
-BASH
+```bash
 # 查看当前系统的 CPU 核心数
 nproc
 # 输出：8 （你有 8 个核心）
@@ -269,14 +269,18 @@ perf stat -e dTLB-loads,dTLB-load-misses,iTLB-loads,iTLB-load-misses \
 #  dTLB-load-misses:   12,345  # 每次 miss 要查页表
 #  iTLB-loads:     987,654
 #  iTLB-load-misses:   8,765  # 分支预测失败也触发 TLB miss
+```
+
 
 <strong>观察多核 shootdown 的效果</strong>：写一个程序频繁 `munmap` + `mmap`，用 `perf sched` 观察核间调度：
 
-BASH
+```bash
 # 记录调度事件
 perf sched record -a sleep 5
 # 查看延迟（包含 IPI 开销）
 perf sched latency
+```
+
 
 7. 为什么 Shootdown 是个性能瓶颈
 
