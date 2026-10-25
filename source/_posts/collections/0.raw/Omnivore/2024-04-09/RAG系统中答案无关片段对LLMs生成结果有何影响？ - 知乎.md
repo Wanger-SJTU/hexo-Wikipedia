@@ -1,0 +1,132 @@
+---
+id: 135c62a2-6b7e-4de4-a29c-6d2126b4c219
+---
+
+# RAG系统中答案无关片段对LLMs生成结果有何影响？ - 知乎
+#Omnivore
+
+[Read on Omnivore](https://omnivore.app/me/rag-ll-ms-18ec07a296a)
+[Read Original](https://www.zhihu.com/question/652266972/answer/3458904870)
+
+
+
+关注者
+
+**3**
+
+被浏览
+
+**239**
+
+创建时间：2024-04-08 20:46:28
+
+最后编辑：2024-04-08 20:54:05
+
+[![刘聪NLP](https://proxy-prod.omnivore-image-cache.app/0x0,sPoFWq-8RhvmZOm761VYg3172PoED-SOoWzKImole8C8/https://picx.zhimg.com/v2-53ee42573c43af1ebc16953b5dbd8768_l.jpg?source=2c26e567)](https://www.zhihu.com/people/LiuCongNLP)
+
+[刘聪NLP](https://www.zhihu.com/people/LiuCongNLP)
+
+[​](https://www.zhihu.com/question/48510028)​![](https://proxy-prod.omnivore-image-cache.app/0x0,sEQaOWrSM4sYxMszrQ6lhsM51WgM5AvlqxCkeG6GJZz4/https://pic1.zhimg.com/v2-4812630bc27d642f7cafcd6cdeca3d7a.jpg?source=88ceefae)
+
+云问科技 算法工程师
+
+​ 关注
+
+![](https://proxy-prod.omnivore-image-cache.app/0x0,sVYGbcrEAa0gwClwoalwPbaEVGOqtRb_vZZOhkQylekM/https://picx.zhimg.com/80/v2-048eadd105d4bf76d27da293b501d677_1440w.png)
+
+你关注的 周舒畅 赞同
+
+[发布于 2024-04-08 20:51](https://www.zhihu.com/question/652266972/answer/3458904870)・IP 属地荷兰
+
+RAG（检索增强生成）通过检索系统找到用户问题相关的信息片段，利用大模型综合生成一个答案，极大解决了大模型幻觉、信息更新不及时等问题，已经成为了大模型落地的重要手段。
+
+但在检索过程中，往往会检索到与问题极度相似、但又不包含答案或包含干扰答案的片段，这些答案无关片段对大模型生成答案有何影响呢？
+
+带给大家一篇相关文章《How Easily do Irrelevant Inputs Skew the Responses of Large Language Models?》
+
+```groovy
+Paper: https://arxiv.org/abs/2404.03302
+Github: https://github.com/Di-viner/LLM-Robustness-to-Irrelevant-Information
+```
+
+![](https://proxy-prod.omnivore-image-cache.app/1276x564,smzAdg92OD3ZZC_FT28koCVr_thahZ8tV2VV7pinwH0M/https://picx.zhimg.com/50/v2-511d07418605adc6d4446966d4a88e68_720w.jpg?source=2c26e567)
+
+先放相关结论，后面补充相关细节。
+
+* 与常见语义无关的答案无关片段相比，LLMs更容易受到高度语义相关的答案无关片段的影响；
+* 随着答案无关片段的增加，LLMs更容易分心，识别正确信息的能力降低；
+* LLMs对答案无关片段的的识别能力随着问题格式的不同有所不同，自由式问答>是非性问答>多项选择式问答；
+* 系统提示词中增加“忽略无关片段”等相关内容，对LLMs的识别能力有提升，但较小；
+* 存在高度语义相关的答案无关片段时，COT或者ICL会导致LLMs过度思考，识别能力变差。
+
+## 数据&片段构造
+
+将答案无关片段，分成三类：
+
+* 无关：与问题主题无关但相似性得分高的段落
+* 部分相关：不仅在相似性度量上得分高，而且与问题的主题部分内容重叠
+* 相关：不仅在相似性度量上得分高，而且与问题的主题内容重叠，但不包含正确答案。
+
+![](https://proxy-prod.omnivore-image-cache.app/627x399,s8NDQaiIpzlhJC_ljUg3zWVVWulI6wDi2Yk7jCdgu3dg/https://picx.zhimg.com/50/v2-2b9514e4018ba877cb4f8c3e6270b53b_720w.jpg?source=2c26e567)
+
+数据构造：
+
+* 无关：通过检索器直接检索Top10的段落；
+* 部分相关：从检索Top10的段落中选择一个包含subj，但缺少obj的段落，作为前半段；然后找到一个包含错误答案obj'的片段作为后半段；
+* 相关：与“部分相关”相比，“相关”片段与问题高度语义相关，但并不包含正确答案，主要涉及系误导性联类型、共同特征类型和虚构轶事类型。
+
+相关样例如下图所示， 
+
+![](https://proxy-prod.omnivore-image-cache.app/1230x874,scOQPBAtdoQBJ5_zv7aN1dgEviXaFuzbGKvwGqXRplmE/https://pica.zhimg.com/50/v2-147eb5c3df313cb0d382980dd83c1f62_720w.jpg?source=2c26e567)
+
+通过Contriever model计算不同片段相似度得分，相关和部分相关与问题的相似度甚至比真实片段更高，说明数据构造有效。
+
+![](https://proxy-prod.omnivore-image-cache.app/1290x687,sNEWmI4OLH0gY0OEpOhJmV01qXM4U0LURe3-Cas3QtGg/https://pic1.zhimg.com/50/v2-605400946035a6f7977ccc00393e5672_720w.jpg?source=2c26e567)
+
+评价指标：
+
+* 误表述比率（Misrepresentation Ratio，MR）：LLMs因受到答案无关信息影响而改变正确回答内容的比例，用于衡量LLMs被无关信息误导的倾向；
+* 不确定比率（Uncertainty Ratio，UR）：LLMs因受到答案无关信息影响而在回答中表述“不确定”的比例，用于衡量LLMs对干扰后生成答案的信心程度。
+
+为了方便评测，采用多项选择题的形式进行LLMs评估，将“正确答案”、“错误答案”以及“不确定”作为选择供LLMs选择。
+
+![](https://proxy-prod.omnivore-image-cache.app/1231x591,sz56tLpVlFJfEL9PW44f4XSf8FiCKbhOyY3VSU_VCWlw/https://picx.zhimg.com/50/v2-d73b0a8503bec801056c5ca96a515f01_720w.jpg?source=2c26e567)
+
+## 结论实验
+
+评估了LLMs在面对三个不同语义相关性级别的答案无关片段时的表现，如下表所示，随着片段的相关性增高，不同模型的效果均有所下降，对于干扰后生成的答案的信心更足。**闭源模型的效果远好于开源模型**。
+
+![](https://proxy-prod.omnivore-image-cache.app/1246x454,sE5rBka_oFWn3dluBZ8-7S9U_r92Zo4mB0MqI9C1EVpI/https://pic1.zhimg.com/50/v2-5573254c06833b6763cb69c747d59a5f_720w.jpg?source=2c26e567)
+
+PS：开源模型只做了Llama2-7B，感觉应该补充补充\~
+
+随着片段个数的不断增加，LLMs分心更严重，如下表所示，随着答案无关片段的数据增加，更愿意选择无关答案。
+
+![](https://proxy-prod.omnivore-image-cache.app/628x607,sr5cl7LuYtGN9sNrcUxGjIs2LQQumnx11bWAjYIWFIqM/https://pic1.zhimg.com/50/v2-80a4f32daad39454539910cd299ef6a9_720w.jpg?source=2c26e567)
+
+为了方便评估，选择多项选择的形式来对LLMs进行分析。但其他形式的问法表现如何？如下表所示，自由问答形式的问题受答案无关片段影响最小、其次是是否类型，影响最大的是多项选择式问题。
+
+![](https://proxy-prod.omnivore-image-cache.app/616x588,s9VLizsvKpIgPjPTG-oDnPXoxV-PCaLQw1Ti9JKakeJQ/https://picx.zhimg.com/50/v2-8a6ceff0554613c93e0dbb949cf96d88_720w.jpg?source=2c26e567)
+
+PS：对于自由式问题由于没有约束，答案较为散乱，不易评估，由采用了GPT3.5进行了答案对齐操作，人工抽检300条，准确率在97%，认为可靠。
+
+忽略式Prompt对结果有微弱的改善，COT、忽略式Prompt+ICL对结果有害，效果变得更差。
+
+![](https://proxy-prod.omnivore-image-cache.app/1279x559,skzCkhXsSbxTY_UGHULQtZnSqiBgfrQr_lGko7yDofnM/https://picx.zhimg.com/50/v2-0d51f538040cb3b64c528d8ada750050_720w.jpg?source=2c26e567)
+
+## PS：一个蛮有趣的实验报告，探索检索片段对RAG系统带来的额外影响。
+
+[发布于 2024-04-08 20:51](https://www.zhihu.com/question/652266972/answer/3458904870)・IP 属地荷兰
+
+真诚赞赏，手留余香
+
+赞赏
+
+还没有人赞赏，快来当第一个赞赏的人吧！
+
+​赞同 12​​4 条评论​收藏​喜欢
+
+​
+
+收起​
+

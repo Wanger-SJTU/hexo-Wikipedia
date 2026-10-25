@@ -1,0 +1,253 @@
+---
+title: "Muon新解"
+date: 2026-03-30
+tags: [知乎]
+source: https://zhuanlan.zhihu.com/p/2021649476964610281
+
+---
+
+目前我看过的对Muon优化器为什么好的解释主要有以下五种：
+
+- **Muon可以视为谱范数意义下的最速下降。**参考资料：[Muon优化器赏析：从向量到矩阵的本质跨越 - 科学空间|Scientific Spaces](https://link.zhihu.com/?target=https%3A//spaces.ac.cn/archives/10592)，[Deriving Muon](https://link.zhihu.com/?target=https%3A//jeremybernste.in/writing/deriving-muon)。但是谱范数本身为什么会更优越这一点依然得不到解释，有点像是同义反复的论证，我想这种解释的价值在于开辟搜索空间，启发我们尝试别的范数的优化器。
+- **Muon缓解了数据不平衡。**参考资料：[你有没有把 AdamW 换成 Muon？为什么？ - 知乎](https://www.zhihu.com/question/1910001570080359694/answer/1931678287899374389)。但是我自己尝试把一些解决类别不平衡的技术应用到特征或梯度层面，没有发现显著的收益，如果Muon主要是靠缓解数据不平衡来取得相对AdamW的收益的话，似乎这些技术也应当展现较好的效果。当然，我自己的尝试也是有限的，只能说这个观点对我的说服力不够。
+- **Muon提高了矩阵有效秩，降低了条件数，有利于优化。**我做实验发现的确有这样的现象，而且我们都知道模型参数越多越强，那么提高矩阵有效秩相当于提高了模型的有效参数，所以优化效果更好，这个解释听上去非常合理。但是当我在标准AdamW的基础上加正则损失，强行鼓励矩阵或MLP的有效秩增大时，训练表现可能会提升，但综合来看还是不一定比得过矩阵正交化的做法，[古德哈特定律 - 维基百科，自由的百科全书](https://link.zhihu.com/?target=https%3A//zh.wikipedia.org/zh-cn/%25E5%258F%25A4%25E5%25BE%25B7%25E5%2593%2588%25E7%2589%25B9%25E5%25AE%259A%25E5%25BE%258B)。所以这个解释对我来说也是不足的，因为它无法具体指导优化器的改进。
+- **Muon好在别的辅助技巧上。**参考资料：[你有没有把 AdamW 换成 Muon？为什么？ - 知乎](https://www.zhihu.com/question/1910001570080359694/answer/1916050159411893853)。但是在我自己的合成数据集上的实验显示，把Nesterov加速、动量系数、局部学习率都控制了后，矩阵正交化依然有优势，所以我不太同意这个解释。
+- **Muon利用了神经网络的对称性来加速。**参考资料：[[2602.09006] ARO: A New Lens On Matrix Optimization For Large Models](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2602.09006)。把Muon视为一种对称性传送的具体实现，这个视角非常有新意，说得通，再加上我在合成数据集上用ARO训练的确复现出了比Muon更好的效果，所以我对这个解释最买账，但是它基于Transformer模型具有旋转对称性这一假设/经验证据，论证链条比较复杂，而复杂的解释总是让人有点不放心，起码值得挑战。解释其实是多种多样的，一个事物可以容纳[不同的解释](https://link.zhihu.com/?target=https%3A//plato.stanford.edu/archives/win2019/entries/scientific-explanation/)。
+
+我将提出一种新的解释：
+
+**以Muon为代表的矩阵优化器（包括ARO），隐式地附带了对比学习中常见的重建损失。**
+
+我们知道在对比学习里，改善表征有很多手段，比如
+
+- 拉开正负样本的距离
+- 鼓励多视图的一致性
+- 重建某些信息
+- 直接约束表征分布，防止塌陷顺带一提，最近刚好读了LeCun提出的SIGReg——直接约束表征分布为标准正态分布，实现上只需要用正态分布的统计检验量作为正则损失，非常简洁优雅，实测也很有收益。
+
+我觉得这些做法都是相通的。鼓励信息可重建可以改善表征分布，反过来约束表征分布也有利于重建信息。实验中经常能观察到这些指标的相关性。
+
+我的解释是从重建出发的，这样“Muon为什么好”这个问题就可以归约为“重建损失为什么能改善表征”这个问题上，而后者已经有很多研究了。
+
+Muon的核心在于矩阵正交化，一个正交矩阵 
+![](https://www.zhihu.com/equation?tex=W) 满足什么性质？ 
+![](https://www.zhihu.com/equation?tex=W%5E%5Ctop+W%3DI) 或者 
+![](https://www.zhihu.com/equation?tex=W%5E%7B-1%7D%3DW%5E%5Ctop) 。
+
+ARO那篇文章把Muon要解决的问题视为对称性与坐标系旋转的问题，而我则视其为可逆性与重建的问题。
+
+先看最简单的线性层，假设输入是 
+![](https://www.zhihu.com/equation?tex=x) ，输出是 
+![](https://www.zhihu.com/equation?tex=y) ，变换为 
+![](https://www.zhihu.com/equation?tex=x%5Cto+y%3A+Wx%3Dy) ，那么重建就是 
+![](https://www.zhihu.com/equation?tex=y%5Cto+x) ，理论上应当用 
+![](https://www.zhihu.com/equation?tex=W%5E%7B-1%7D) 来重建，但 
+![](https://www.zhihu.com/equation?tex=W) 不一定可逆，此时最自然的一个选择是用 
+![](https://www.zhihu.com/equation?tex=W%5E%5Ctop) 来变换，因此我们的重建损失就变成了 
+
+![](https://www.zhihu.com/equation?tex=%7C%7C%5Chat%7Bx%7D-x%7C%7C%3D%7C%7CW%5E%5Ctop+y-x%7C%7C%3D%7C%7CW%5E%5Ctop+W+x-x%7C%7C%3D%7C%7C%28W%5E%5Ctop+W+-+I%29x%7C%7C) 
+
+如果我们对任意的 
+![](https://www.zhihu.com/equation?tex=x) 都最小化这个损失，那么最优解就是 
+![](https://www.zhihu.com/equation?tex=W%5E%5Ctop+W%3DI+) ，即正交化。
+
+再深入更复杂的模型之前，先回答读者可能的疑惑：为什么用转置矩阵 
+![](https://www.zhihu.com/equation?tex=W%5E%5Ctop) 来变换是最自然的？
+
+这个问题我在以前读[Bilinear MLPs enable weight-based mechanistic interpretability](https://link.zhihu.com/?target=https%3A//arxiv.org/pdf/2410.08417)这个文章时也产生过，作者在文中为了可视化特征，把下游向量用转置矩阵变换，重新传回上游的输入端。当时我心想，好吧，转置矩阵的确会把向量形状恢复，但是为什么能作为一种可逆变换的代替品呢？按我的理解，这种操作得是可逆变换才能产生有意义的结果，但他们用转置做确实生成了有意义的可视化图片，所以我很困惑，我就发邮件询问：
+
+![](https://pic1.zhimg.com/v2-6280327fe51b9cdfa96378e495913dd6_r.jpg)作者的回复是这样的：
+
+![](https://pic2.zhimg.com/v2-c8d973c643b6909873a65d53dcbf5dfd_r.jpg)读者如果有兴趣深入，可以问AI关于量子力学与“伴随”的知识。我也是半路出家，个人浅薄的理解就是状态与测量的关系，一个是列向量，一个是行向量，想要测量一个状态就用转置。
+
+好的，现在我们已经理解了在不能求逆的情况下，用转置做重建是最自然的，那么Muon就可以视为一种隐式附带了重建损失的优化器，它的好处可以用对比学习里重建损失改善激活表征的角度来解释，那么怎么解释ARO呢？ARO文章里说了它的更新矩阵不一定正交哦。
+
+从两个方面来讨论：
+
+第一个方面对Muon与ARO都成立，那就是我们推导出的重建损失是关于模型权重而非更新量的，Muon在更新量上的正交化并不必然带来模型权重的正交化，同样的，ARO在更新量上对正交化的偏离也并不然带来模型权重对正交化的偏离。实际上，实测会发现两者均一致地降低了重建损失。
+
+第二个方面则是重建的颗粒度的差异，虽然ARO在单个矩阵更新量上看似可以偏离正交，但是我们可以对MLP整体的输入与输出计算重建损失，而不是在每个线性层的层级上计算，此时ARO依然是会降低重建损失的。比如考虑一个双层线性网络，我们可以计算整体的重建损失 
+![](https://www.zhihu.com/equation?tex=%7C%7C%28W_1%5E%5Ctop+W_2%5E%5Ctop+W_2+W_1+-+I%29x%7C%7C) ， 
+![](https://www.zhihu.com/equation?tex=W_1%2C+W_2) 都不一定要接近正交化也能让损失降低。
+
+2026.4.4
+
+今天在cifar 10数据集上做了一次实验，模型是从[GitHub - hananshafi/vits-for-small-scale-datasets: [BMVC 2022] Official repository for &#34;How to Train Vision Transformer on Small-scale Datasets?&#34; · GitHub](https://link.zhihu.com/?target=https%3A//github.com/hananshafi/vits-for-small-scale-datasets)里选择的ViT，优化器是让AI写的。观察了Linear Recon Loss 
+![](https://www.zhihu.com/equation?tex=%7C%7C%28W%5E%5Ctop+W+-+I%29x%7C%7C) 与MLP Recon Loss 
+![](https://www.zhihu.com/equation?tex=%7C%7C%28W_1%5E%5Ctop+W_2%5E%5Ctop+W_2+W_1+-+I%29x%7C%7C) ，但是这里的 
+![](https://www.zhihu.com/equation?tex=W) 是权重不是更新量（优化器的重建损失里的 
+![](https://www.zhihu.com/equation?tex=W) 是更新量，我滥用了一下符号，下文凡是进行优化器推导时的
+![](https://www.zhihu.com/equation?tex=W) 都是更新量），其中MLP Recon Loss忽略了激活函数的反向，因为不知道怎么处理激活函数。
+
+![](https://pic4.zhimg.com/v2-f4a8749660bf9249d814bf65fa74fc11_r.jpg)指标
+![](https://pic3.zhimg.com/v2-ae3c2b0223748f2afffa05c2b762d8fc_r.jpg)图表发现在达到同等的主任务Loss条件下，ARO_Sinkhorn的MLP Recon Loss是最低的，而它前期的Linear Recon Loss也是最低的，不过后期上升了（注意图表里的横轴是Loss，这里前后期是说Epoch），而ARO_Sinkhorn也是在主任务上最终表现最好的优化器。
+
+直觉告诉我无论Muon还是ARO都能视为隐式附带了重建损失，但重建损失也可以有不同形式。
+
+可以把Muon视为在输入端的重建损失，它用 
+![](https://www.zhihu.com/equation?tex=W%5E%5Ctop) 把输出拉回到输入端，然后比较原始输入与重建输入。而ARO可以视为在输出端的重建损失（多视图一致性损失），它先用 
+![](https://www.zhihu.com/equation?tex=W) 得到一个输出，然后再用另一种变换 
+![](https://www.zhihu.com/equation?tex=V) 得到第二个输出，然后比较这两个输出。
+
+![](https://picx.zhimg.com/v2-f0a56cae923253ec776dad3a48c43d8d_r.jpg)重建流程示意图我们这样看待问题： 
+![](https://www.zhihu.com/equation?tex=W) 会把输入映射到坐标空间1， 
+![](https://www.zhihu.com/equation?tex=V) 会把输入映射到坐标空间2，不把它们看成是映射到同一坐标空间的两个不同映射，然后我们的建模假设是——从空间2到空间1的变换是一个旋转 
+![](https://www.zhihu.com/equation?tex=R) ——那么此时重建损失是 
+![](https://www.zhihu.com/equation?tex=%7C%7C%5Chat%7By%7D-y%7C%7C%3D%7C%7CRVx-Wx%7C%7C) ，消掉 
+![](https://www.zhihu.com/equation?tex=x) 后我们真正要最小化的损失就是 
+![](https://www.zhihu.com/equation?tex=%7C%7CRV-W%7C%7C) 。注意，我们需要在同一个坐标系下才能比较两个向量，因此重建损失不是 
+![](https://www.zhihu.com/equation?tex=%7C%7CVx-Wx%7C%7C) 。
+
+因为 
+![](https://www.zhihu.com/equation?tex=W) 已经是完全自由的矩阵了，所以如果对 
+![](https://www.zhihu.com/equation?tex=V) 也没有结构上的约束，那就没有意思了。不妨看一下把 
+![](https://www.zhihu.com/equation?tex=V) 限制在Sinkhorn矩阵时的情况，此时 
+![](https://www.zhihu.com/equation?tex=%5Chat%7By%7D_%7B%E6%96%B0%E7%A9%BA%E9%97%B4%7D%3DVx) 就自动获得了一个良好的性质：“质量守恒 + 重分配”，表征得到了更多的约束，又由于我们拉近了 
+![](https://www.zhihu.com/equation?tex=%5Chat%7By%7D%3DR%5Chat%7By%7D_%7B%E6%96%B0%E7%A9%BA%E9%97%B4%7D) 与 
+![](https://www.zhihu.com/equation?tex=y) 的距离，所以这种约束也会影响到 
+![](https://www.zhihu.com/equation?tex=y) ，这就又回到了前文提到的重建损失改善表征的解释。
+
+下面，我将要从这个重建损失推导出ARO的更新公式。
+
+已知当前更新量 
+![](https://www.zhihu.com/equation?tex=W) ，我们在优化器里对于重建损失做内优化，有两个可学习参数 
+![](https://www.zhihu.com/equation?tex=R%2CV) ，尝试分别求梯度。
+
+先固定 
+![](https://www.zhihu.com/equation?tex=R) ，看 
+![](https://www.zhihu.com/equation?tex=V) ：由于乘以旋转矩阵不改变范数，因此 
+![](https://www.zhihu.com/equation?tex=%7C%7CRV-W%7C%7C%5E2%3D%7C%7CV-R%5E%5Ctop+W%7C%7C%5E2) ，那么此时取 
+![](https://www.zhihu.com/equation?tex=V%3DR%5E%5Ctop+W) 可以最小化损失，但是由于 
+![](https://www.zhihu.com/equation?tex=V) 被约束为Sinkhorn矩阵，所以还要进行Sinkhorn变换来投影到约束集合中， 
+![](https://www.zhihu.com/equation?tex=V%3Df%28R%5E%5Ctop+W%29) ，其中 
+![](https://www.zhihu.com/equation?tex=f) 为Sinkhorn变换。
+
+再固定 
+![](https://www.zhihu.com/equation?tex=V) ，看 
+![](https://www.zhihu.com/equation?tex=R) ： 
+![](https://www.zhihu.com/equation?tex=%7C%7CRV-W%7C%7C%5E2%3D%7C%7CW%7C%7C%5E2%2B%7C%7CV%7C%7C%5E2-2%5Coperatorname%7Btr%7D%28R%5E%5Ctop+W+V%5E%5Ctop%29) ，因此等价于
+![](https://www.zhihu.com/equation?tex=%5Cmax%5Climits_%7BR%5E%5Ctop+R+%3D+I%7D+%5C%3B+%5Coperatorname%7Btr%7D%28R%5E%5Ctop+W+V%5E%5Ctop+%29) ，G老师说这是一个经典的正交Procrustes问题，它的解为 
+![](https://www.zhihu.com/equation?tex=R%3D%5Coperatorname%7BQR%7D%28WV%5E%5Ctop%29) 
+
+因此 
+![](https://www.zhihu.com/equation?tex=W) 的更新公式就是 
+![](https://www.zhihu.com/equation?tex=W_%7Bt%2B1%7D%3DR_%7Bt%2B1%7DV_%7Bt%2B1%7D%3D%5Coperatorname%7BQR%7D%28W_tV_t%5E%5Ctop%29f%28R_t%5E%5Ctop+W_t%29) ，直接迭代即可，不需要做梯度下降。
+
+论文的公式是 
+![](https://www.zhihu.com/equation?tex=W_%7Bt%2B1%7D%3DR_%7Bt%7Df%28R_t%5E%5Ctop+W_t%29) ，这应该是对 
+![](https://www.zhihu.com/equation?tex=R) 的更新顺序不一样。
+
+至此，我们成功从重建损失出发推导出了ARO的更新公式！而我们并没有基于对称性传送的理论或者Transformer对称性的经验证据，我们仅仅是假设了两种空间，一种是完全自由的空间，一种是有结构约束的空间，以及“从空间2到空间1的变换是一个旋转 
+![](https://www.zhihu.com/equation?tex=R)”，然后我们希望通过第二个空间的表征约束来改善第一个空间里的表征，自然而然地推导出了ARO。
+
+2026.4.5
+
+经过提醒，发现上面推导有一个BUG， 
+![](https://www.zhihu.com/equation?tex=R) 的解应该是 
+![](https://www.zhihu.com/equation?tex=R%3D%5Coperatorname%7BPolar%7D%28WV%5E%5Ctop%29) 而不是 
+![](https://www.zhihu.com/equation?tex=R%3D%5Coperatorname%7BQR%7D%28WV%5E%5Ctop%29) ，不过这样得到的更新公式就与ARO不一样了，我测试了Polar版本的ARO，发现它不如QR版本的（虽然也能正常训练）。
+
+然后我重新读了一下ARO论文，发现它其实提到过Polar分解（在C.2 Failure of Polar projection scheme章节里），而且也解释了为什么Polar版本会失败，似乎要考虑某种tradeoff，那我的重建损失推导思路本身应该还是合理的。
+
+虽然QR版本涉及到tradeoff，暂时不清楚如何直接推导出来，但是我发现Polar版本打不过QR版本的很大原因可能是它的Linear Recon Loss爆炸了，那么我们可以把Muon与ARO的重建损失直接加起来（毕竟一个管输入端重建，一个管输出端重建），得到 
+![](https://www.zhihu.com/equation?tex=%7C%7CRV-W%7C%7C%5E2%2B%7C%7CW%5E%5Ctop+W+-+I%7C%7C%5E2) ，具体实现就是在ARO的Polar版本的基础上再对最终更新量做Muon式的正交化（相当于整体再套一层Polar分解，
+![](https://www.zhihu.com/equation?tex=W_%7Bt%2B1%7D%3D%5Coperatorname%7BPolar%7D%28R_%7Bt%7Df%28R_t%5E%5Ctop+W_t%29%29)），发现这个版本的表现与QR版本旗鼓相当（甚至每Epoch统计指标都很接近），而它是有完全的理论推导的。
+
+![](https://picx.zhimg.com/v2-fd789af1089c7eef9f6d318d9e8d29d7_r.jpg)2026.4.6
+
+发现Muon其实也可以用ARO的重建图来解释。我们只要把 
+![](https://www.zhihu.com/equation?tex=V) 的约束从Sinkhorn矩阵改为正交矩阵，就能推导出Muon。
+
+此时 
+![](https://www.zhihu.com/equation?tex=f%3D%5Coperatorname%7BPolar%7D%2C+V%3Df%28R%5E%5Ctop+W%29%3D%5Coperatorname%7BPolar%7D%28R%5E%5Ctop+W%29) ，那么
+
+![](https://www.zhihu.com/equation?tex=%5Cbegin%7Balign%7D+W_%7Bt%2B1%7D+%26%3D+R_%7Bt%7Df%28R_t%5E%5Ctop+W_t%29+%5C%5C+%26%3D+R_%7Bt%7D%5Coperatorname%7BPolar%7D%28R_t%5E%5Ctop+W_t%29+%5C%5C+%26%3D+R_%7Bt%7DR_t%5E%5Ctop%5Coperatorname%7BPolar%7D%28W_t%29+%5C%5C+%26%3D+%5Coperatorname%7BPolar%7D%28W_t%29+%5C%5C++%5Cend%7Balign%7D) 
+
+这样说来，ARO论文似乎采用了一种在我看来比较怪异的观点，把Muon视为“
+![](https://www.zhihu.com/equation?tex=f%3D%5Coperatorname%7BRowNorm%7D) ，然后把旋转 
+![](https://www.zhihu.com/equation?tex=R) 固定为 
+![](https://www.zhihu.com/equation?tex=W) 进行SVD分解后产生的奇异矩阵”对应的优化器实例，然后认为Muon是非自适应的，因为它固定了 
+![](https://www.zhihu.com/equation?tex=R) ，而ARO则是Muon的一种自适应的版本。其实我觉得应该把Muon视为 
+![](https://www.zhihu.com/equation?tex=f%3D%5Coperatorname%7BPolar%7D) 对应的优化器实例，旋转 
+![](https://www.zhihu.com/equation?tex=R) 依然视为是自适应的，只不过它此时被抵消了，起不到作用。这个观点更加自然一点，因为此时 
+![](https://www.zhihu.com/equation?tex=V) 被约束为正交矩阵而不是“行范数相等的矩阵”，后者似乎没有什么数学意义。
+
+盯着ARO的重建图里的两条输出线，又让我想到了Lookahead优化器的思想，用有结构约束的矩阵的模型先学，再让无约束的矩阵的模型跟上，只是我们并不需要真的设置两个模型。
+
+[对Muon与ARO的第一性原理推导](https://zhuanlan.zhihu.com/p/2024583561924154784)2026.4.17
+
+一位大佬推荐我看这个论文：[https://people.csail.mit.edu/kaiming/publications/cvpr13opq.pdf](https://link.zhihu.com/?target=https%3A//people.csail.mit.edu/kaiming/publications/cvpr13opq.pdf)
+
+该文的公式与本文推导结果神似，只不过它的任务是向量量化，用重建误差来评估量化质量，求解算法也是旋转+交替更新。
+
+如此说来，我说的结构视图，可以视为一种矩阵的量化/结构化。
+
+向量量化矩阵优化器优化目标重建损失隐式重建损失约束量化向量∈码本矩阵V∈结构集合如何满足约束最近投影最近投影空间设置两个空间，相差一个旋转两个空间，相差一个旋转更新方法交替更新，kmeans交替更新，只做两步向量量化的评估标准本身就是重建损失，而我们的矩阵优化器，虽然可以视为隐式地优化重建损失，但是最终目的是提高模型的训练效率，那么就产生一些问题：
+
+- 为什么优化这种重建损失可以提高模型的训练效率呢？
+- V的结构约束是如何影响模型的训练效率的呢？如果把码本与结构集合之间建立类比关系，每个code对应的就是一个结构矩阵，每个向量投影到最近的code，对应的就是，每个矩阵投影到最近的结构矩阵。比如Muon，它的码本里只有一个code，那就是单位阵，又或者认为码本里都是正交矩阵。
+
+那么，前面两个问题可以翻译成：
+
+- 是否存在一种量化方案，可以提高模型训练效率？如果有，那么它提高模型训练效率的原理是什么？
+- 不同的码本是如何影响模型的训练效率的呢？直觉上量化应该不会提高训练效率。
+
+2026.4.20
+
+之前被批评“第一性推导”那篇文章里依然没解释清楚 
+![](https://www.zhihu.com/equation?tex=f) 应该具有什么样的结构，所以还是徒增复杂性。
+
+ARO原论文里并没有从理论上解释为什么某些 
+![](https://www.zhihu.com/equation?tex=f) 会更好，本文也解释不了。
+
+不过从我自己的一些实验看来，让 
+![](https://www.zhihu.com/equation?tex=f) 把矩阵投影到正交矩阵的子集里才会比较好。
+
+但是这不意味投影算子必须用 
+![](https://www.zhihu.com/equation?tex=%5Coperatorname%7BPolar%7D) ，也不意味着对应的Muon优化器就是最好了。比如我尝试过 
+![](https://www.zhihu.com/equation?tex=%5Coperatorname%7BPolar%7D+%5Ccirc+%5Coperatorname%7BSink%7D) 也不错，这就是有意思的地方，既然最终都是正交矩阵，奇异值都归一了，剩下的差别仅仅是左右奇异向量的差别。
+
+为了方便，下文的矩阵默认都是同形状的方阵。
+
+设 
+![](https://www.zhihu.com/equation?tex=W%3DU%5CSigma+V%5E%5Ctop) ，那么Muon对应的 
+![](https://www.zhihu.com/equation?tex=%5Ctilde+W+%3D+U+V%5E%5Ctop) ，直接把 
+![](https://www.zhihu.com/equation?tex=%5CSigma%5Cto+I)，左右奇异向量不变化。
+
+其实我们还可以旋转左右奇异向量，设 
+![](https://www.zhihu.com/equation?tex=%5Ctilde+U%3DUR_1%2C+%5Ctilde+V%5E%5Ctop+%3DR_2%5E%5Ctop+V%5E%5Ctop%2C+%5Ctilde+%5CSigma%3D+R_1%5E%5Ctop+%5CSigma+R_2) ，为了让单位阵投影的误差尽量小，一个自然的想法是先通过旋转让 
+![](https://www.zhihu.com/equation?tex=%5Ctilde+%5CSigma) 对角线元素变得均衡，然后再 
+![](https://www.zhihu.com/equation?tex=%5Ctilde%5CSigma%5Cto+I) ，最终得到的就是 
+![](https://www.zhihu.com/equation?tex=%5Ctilde+W+%3D+U+R+V%5E%5Ctop%2C+R%3DR_1+R_2%5E%5Ctop) ，其中 
+![](https://www.zhihu.com/equation?tex=R_1%2C+R_2) 满足的条件是 
+![](https://www.zhihu.com/equation?tex=R_1%5E%5Ctop+%5CSigma+R_2) 的对角线元素是均衡的，都等于奇异值平均值（可以设置缩放系数，因为系数为1时的最优解似乎就是 
+![](https://www.zhihu.com/equation?tex=R%3DI) ）。
+
+姑且叫它URV优化器，核心思想就是不直接硬投影 
+![](https://www.zhihu.com/equation?tex=%5CSigma%5Cto+I) ，而是先把对角线元素转均了再投影。
+
+我初步测试发现URV比Muon与ARO都强，为了避免乌龙，先再测试一段时间。
+
+对URV测试也没测出什么确定的结论，时好时坏。
+
+2026.5.4
+
+最近对Frank-Wolfe算法感兴趣，如果我们想让权重在优化过程中始终位于某个凸集中，那么用Frank-Wolfe算法优化可以确保这种内部性。它的做法是找出凸集边界上与梯度内积最小的点（这样的点总能取凸集的极点），然后把当前点与目标点进行插值，来移动当前点。
+
+假设我们想要约束权重在优化过程中始终位于某个谱范数球里，因为谱范数球的极点恰好就是奇异值全相等的矩阵，所以Muon里对梯度的正交化，其实就是沿着梯度方向找极点权重，然后把当前权重与目标权重之间进行插值（得配合一定的权重衰减才是严格插值），来移动当前权重。
+
+权重原本是自由移动的，现在只允许由特定的极点来牵引，但Frank-Wolfe算法好处就是权重在优化过程中可以始终保持位于集合内部，这是一个关于优化轨迹的整体性质。
+
+如果我们约束优化轨迹始终在以原点为中心的边长为2的立方体里，那么极点就是立方体顶点，每个坐标要么正1要么负1，这就是SignSGD。
+
+之前所说的codebook量化的类比，当时我觉得量化似乎是影响性能的，但从Frank-Wolfe算法角度来看，我们只不过是只用极点牵引，最终可抵达的权重是极点的凸组合，所以权重表达力并不会减弱。
+
+Frank-Wolfe算法既然是为了保证优化轨迹位于可行集中，那么换种做法，不像Muon那样对梯度进行正交化，就用普通梯度，等权重超出谱范数球后将其投影回谱范数球，应该也能保证优化轨迹始终位于可行集中。
+
+两者每一步的更新还是不一样的，这就提供了一个观察点，“优化轨迹始终位于谱范数球内”是否足以解释Muon的好处，还是说这类特定极点（奇异值全相等的矩阵）的牵引才是重要的。
+
+[[2506.04192] Lions and Muons: Optimization via Stochastic Frank-Wolfe](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2506.04192)
+
+2026.6.16
+
+[Muon新解·小实验](https://zhuanlan.zhihu.com/p/2050247311603807581)
