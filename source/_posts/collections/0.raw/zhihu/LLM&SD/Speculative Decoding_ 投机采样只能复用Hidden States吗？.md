@@ -15,7 +15,7 @@ source_url: https://zhuanlan.zhihu.com/p/2036027467606012834
 ---
 
 
-**写在前言**: 主播又来给大家带来投机采样领域的最新进展了！这篇文章会简述最近一段时间我在投机采样领域的“失败”经验与探索，并且结合Gemma 4与最新的DFlash 给出一些analysis. 本文纯手写，AI 含量 0%，可以放心阅读。由于内容较多，可能有一些地方不够清晰，欢迎大家在评论区交流。
+<strong>写在前言</strong>: 主播又来给大家带来投机采样领域的最新进展了！这篇文章会简述最近一段时间我在投机采样领域的“失败”经验与探索，并且结合Gemma 4与最新的DFlash 给出一些analysis. 本文纯手写，AI 含量 0%，可以放心阅读。由于内容较多，可能有一些地方不够清晰，欢迎大家在评论区交流。
 
 [When Hidden States Drift: Can KV Caches Rescue Long-Range Speculative Decoding?](https://link.zhihu.com/?target=https%3A//arxiv.org/pdf/2604.26412)
 Intuition: 复用 hidden states vs 复用 kv cache
@@ -43,7 +43,7 @@ Intuition: 复用 hidden states vs 复用 kv cache
 ![](https://www.zhihu.com/equation?tex=h_3) 几乎不包含 
 ![](https://www.zhihu.com/equation?tex=x_2) ，又怎么提取呢? 
 
-从上述这个例子我们可以看到，**复用 hidden states 会携带 target model 在当前position的attention bias; 这种 attention bias 对于短距离的预测有帮助，但是对于长距离的预测反而有害。**
+从上述这个例子我们可以看到，<strong>复用 hidden states 会携带 target model 在当前position的attention bias; 这种 attention bias 对于短距离的预测有帮助，但是对于长距离的预测反而有害。</strong>
 
 其实从这个角度也可以理解EAGLE-3为什么要用多层 hidden states: 因为不同层的hidden states通常带有不同的 attention bias; 最后一层的 
 ![](https://www.zhihu.com/equation?tex=h_3) 或许不含 
@@ -66,7 +66,7 @@ Intuition: 复用 hidden states vs 复用 kv cache
 
 经过一通分析之后，我们找到了第一个关键原因：
 
-injection 范式下，query estimate 的难度比想象中的高。**如果 draft model 想采用 injection 范式，则 draft model必须scale到多层**。因为当 draft model 仅为单层是，query 是 input embedding 的线性变化。也就是说，draft model 生成的 query 是上下文无关的，这极大损失了 draft model 的 query质量，无法正确的 re-attention 到target kvcache. 这个分析验证了一个重要性质：injection-kv 范式的方法必须要 scale 到多层。所以我们会看到，DFlash 的模型是多层的，Gemma 4的 MTP 也是多层的。
+injection 范式下，query estimate 的难度比想象中的高。<strong>如果 draft model 想采用 injection 范式，则 draft model必须scale到多层</strong>。因为当 draft model 仅为单层是，query 是 input embedding 的线性变化。也就是说，draft model 生成的 query 是上下文无关的，这极大损失了 draft model 的 query质量，无法正确的 re-attention 到target kvcache. 这个分析验证了一个重要性质：injection-kv 范式的方法必须要 scale 到多层。所以我们会看到，DFlash 的模型是多层的，Gemma 4的 MTP 也是多层的。
 
 ![](https://picx.zhimg.com/v2-844d05c84df0c70e3009062e57058157_r.jpg)那很自然的想法就是，我们来 scale draft layer 看看结果:
 

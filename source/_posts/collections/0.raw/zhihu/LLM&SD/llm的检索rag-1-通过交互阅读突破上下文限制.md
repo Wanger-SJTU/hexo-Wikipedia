@@ -65,35 +65,35 @@ Context window scaling/Recurrence/Retrieval./Reasoning agents.
 
 循环架构已被广泛研究以解决长序列问题，从基于循环神经网络的模型到基于现代变压器的模型。然而，每个重复步骤都会导致信息丢失，并且训练目标不会指导关于下游任务的“如何压缩”。通常，这种压缩意味着与最近的信息相比，对旧序列信息的召回较弱
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_0802bb3efb16.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_0802bb3efb16.jpg)
 
 adapting language models tocompress context论文23.05像上图的论文，就是通过循环的架构，压缩过长的上下文，来提炼压缩作为模型输入
 
 ### 方法
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_7f2899d563f6.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_7f2899d563f6.jpg)
 
 MEMWALKER的两阶段过程。顶部（阶段1）：构建内存树。底部（阶段2）：给定一个查询，LLM通过迭代提示导航树结构，并找到包含相关段的节点以形成答案。MEMWALKER的两阶段过程：
 
-**顶部（阶段1）：构建内存树。**
+<strong>顶部（阶段1）：构建内存树。</strong>
 
 将长文本拆分为预定大小的段，每个段首先汇总成一个摘要节点。摘要节点递归地汇总成更高级别的节点，直到到达根。
 
-**summ9 = LLM(summ7, summ8)**迭代LLM生成sum树 
+<strong>summ9 = LLM(summ7, summ8)</strong>迭代LLM生成sum树 
 
-**底部（阶段2）：查询/导航**
+<strong>底部（阶段2）：查询/导航</strong>
 
 给定一个查询，LLM通过迭代提示导航树结构，并找到包含相关段的节点以形成答案。
 
-**reasoning, action = LLM(summ, query)**LLM根据文本和问题进行回答，在回答同时会产生一个动作，这个动作用来指示/导航模型向哪里继续搜索
+<strong>reasoning, action = LLM(summ, query)</strong>LLM根据文本和问题进行回答，在回答同时会产生一个动作，这个动作用来指示/导航模型向哪里继续搜索
 
 为了回答用户查询，LLM从树的根节点开始导航。它遍历树，检查文本的各个部分以识别与回答查询相关的路径和段。并且如果LLM选择了错误的路径或手头的段不相关（虚线红色箭头），则LLM可以选择恢复动作返回父节点。
 
-**这里的导航方法是重点，不仅要尽量找到子树中正确路径，还要可以找错路后回退，还要存储路径信息。**
+<strong>这里的导航方法是重点，不仅要尽量找到子树中正确路径，还要可以找错路后回退，还要存储路径信息。</strong>
 
-**有关显示启用导航的LLM提示的详细示例，请参见表1（下表）**
+<strong>有关显示启用导航的LLM提示的详细示例，请参见表1（下表）</strong>
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_d3843de14919.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_d3843de14919.jpg)
 
 来自QuALITY数据集的示例轨迹。
 
@@ -111,9 +111,9 @@ LLM首先在根节点（图1中的summ 9）看到子节点的内容并生成响�
 
 QuALITY **是多项选择题回答数据集。该数据集包含来自古腾堡计划的长篇故事和由人类注释者注释的问题。我们使用187个示例的子集进行实验。
 
-**SummScreenFD**是一个电视和电影剧本的数据集，最初设计用于总结演员之间的对话形式。我们将数据集重新用于问答任务，其中原始提供的地面实况摘要文本用于使用Stable Beluga 2生成“谁”问题，然后由人类专家检查答案。与原始长篇文本配对的问题成为306个示例的重新利用的QA任务。
+<strong>SummScreenFD</strong>是一个电视和电影剧本的数据集，最初设计用于总结演员之间的对话形式。我们将数据集重新用于问答任务，其中原始提供的地面实况摘要文本用于使用Stable Beluga 2生成“谁”问题，然后由人类专家检查答案。与原始长篇文本配对的问题成为306个示例的重新利用的QA任务。
 
-**GovReport**政府报告数据集将国会研究服务中心和美国政府问责局的文件与专家提供的摘要一起聚合。我们将数据集重新用于包含101个示例的问答数据集，与SummScreenFD的方式相同。
+<strong>GovReport</strong>政府报告数据集将国会研究服务中心和美国政府问责局的文件与专家提供的摘要一起聚合。我们将数据集重新用于包含101个示例的问答数据集，与SummScreenFD的方式相同。
 
 所有三个数据集都具有每个示例不同长度的长上下文——一些较短的示例和一些较长的序列。因此，我们既报告原始数据集的结果，也报告每个任务仅包含较长序列的子集，以更好地评估更难、更长上下文情况下的内存访问。QuALITY的阈值高于8000个令牌，SummScreenFD的阈值高于6000个令牌，GovReport的阈值高于12000个令牌
 
@@ -123,7 +123,7 @@ baseline：我们比较了三种基于相同底层LLM的基线记忆技术，即
 
 #### 结果与分析
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_7146fc649902.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_7146fc649902.jpg)
 
 Orig.表示使用整个数据集，Long表示较长序列的子集。顶部：与开源的长上下文模型的比较。底部：基线和MEMWALKER性能，所有方法都使用底层的Stable Beluga 2 LLM，最大上下文长度为4,096令牌。MEMWALKER在较长序列上的性能优于所有其他方法
 

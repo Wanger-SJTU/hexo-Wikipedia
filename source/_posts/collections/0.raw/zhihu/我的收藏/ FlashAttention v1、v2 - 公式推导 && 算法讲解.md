@@ -15,13 +15,13 @@ source_url: https://zhuanlan.zhihu.com/p/680091531
 ---
 
 
-为了提高大模型中 Attention 层的计算速度，Tri Dao 在 2022 年 5 月提出了 FlashAttention 算法（即 V1），计算速度相比于标准实现提高了 2 - 4 倍（不同的 sequence length 会不一样）。***这个算法主要针对的是训练场景***～
+为了提高大模型中 Attention 层的计算速度，Tri Dao 在 2022 年 5 月提出了 FlashAttention 算法（即 V1），计算速度相比于标准实现提高了 2 - 4 倍（不同的 sequence length 会不一样）。*<strong>这个算法主要针对的是训练场景</strong>*～
 
 论文链接：
 
-[![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_cbfe7191992e.jpg)FlashAttention: Fast and Memory-Efficient Exact Attention with IO-Awarenessarxiv.org/abs/2205.14135v2](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2205.14135v2)
+[![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_cbfe7191992e.jpg)FlashAttention: Fast and Memory-Efficient Exact Attention with IO-Awarenessarxiv.org/abs/2205.14135v2](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2205.14135v2)
 
-然后在 2023 年 7 月推出了改进版本 FlashAttentionV2，进一步将速度提高为原来的 2 倍。***主要优化点是调换了外层和内层循环的顺序，并且将针对 Q 的循环也改为了使用多个 thread block 来计算***。
+然后在 2023 年 7 月推出了改进版本 FlashAttentionV2，进一步将速度提高为原来的 2 倍。*<strong>主要优化点是调换了外层和内层循环的顺序，并且将针对 Q 的循环也改为了使用多个 thread block 来计算</strong>*。
 
 原来是只针对 batch 和 head 维度进行了并发，即每个 sample 的每个 head 分配一个 thread block（共 batch_size * head_num 个 thread block）。现在则是将针对 Q 的循环也进行了并发，即总的 thread block 增加了，从而提高 GPU 的利用率。
 
@@ -29,7 +29,7 @@ FlashAttention V2 论文：
 
 [](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2307.08691)
 
-另外，Tri Dao 在 2023 年 10 月推出了***针对推理场景***的版本 FlashDecoding：
+另外，Tri Dao 在 2023 年 10 月推出了*<strong>针对推理场景</strong>*的版本 FlashDecoding：
 
 基本原理其实差不多，先好好理解下 FlashAttention，然后 FlashDecoding 也很容易理解了。
 
@@ -39,9 +39,9 @@ FlashAttention V2 论文：
 
 先看看标准的 Attention 实现：
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_73e48ee30a56.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_73e48ee30a56.jpg)
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_6023f7b7e5d9.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_6023f7b7e5d9.jpg)
 
 这里最主要的问题是第 1 - 3 步中，每一轮都要从 HBM（即 global memory）读数据，计算完后再将结果写回去，效率就很低。
 
@@ -61,11 +61,11 @@ $$\text{safe softmax}(s_i) = \frac{e^{s_i - m}}{\sum_{j=1}^{n} e^{s_j - m}} （�
 
 *我们先看看为了计算最终结果 O 中的 Br 行，具体需要经历哪些过程。然后再想办法优化***～～
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_3518d17a947e.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_3518d17a947e.jpg)
 
 - 加载 Q 中的 Br 行数据到（即大小为 Br * d）的矩阵，记为 Q_i ;
-- ***遍历*** K^T ，每次加载 Bc 列（即大小为 d * Bc），记为 K_{j}^{T} ，然后计算 S_{i,j} = Q_iK_{j}^{T} （大小为 Br * Bc）**然后得到了 S 中的 Br 行数据；
-- 为了计算 softmax，我们需要对 S 中的这 Br 行数据*遍历 3 遍***，**第一遍是计算每一行的最大值 m，
+- *<strong>遍历</strong>* K^T ，每次加载 Bc 列（即大小为 d * Bc），记为 K_{j}^{T} ，然后计算 S_{i,j} = Q_iK_{j}^{T} （大小为 Br * Bc）**然后得到了 S 中的 Br 行数据；
+- 为了计算 softmax，我们需要对 S 中的这 Br 行数据*遍历 3 遍*<strong>，</strong>第一遍是计算每一行的最大值 m，
 $第二遍计算每一行的 sumexp，即 \sum_{j=1}^{n} e^{s_j - m} ，$
 第三遍才是计算 safe softmax 的值；
 然后我们就得到了 P 的 Br 行数据；
@@ -77,7 +77,7 @@ $第二遍计算每一行的 sumexp，即 \sum_{j=1}^{n} e^{s_j - m} ，$
 
 即我们在遍历 K_{j}^{T} 的时候，就把 P_{i,j}  算好，然后乘以 V_j  （V 中第 j 块数据），再把每一次的结果（ j = 1 到 N）累加起来，就得到了 O 中对应位置的结果。
 
-***当然是可以的，这就是 FlashAttention 中做的事情***！
+*<strong>当然是可以的，这就是 FlashAttention 中做的事情</strong>*！
 
 下面我们再看看怎么做～～
 
@@ -99,7 +99,7 @@ $第二遍计算每一行的 sumexp，即 \sum_{j=1}^{n} e^{s_j - m} ，$
 
 计算过程：
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_9c3843c8f2bd.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_9c3843c8f2bd.jpg)
 
 接下来就可以思考下怎么把第 1、2 轮遍历，融合成一轮呢？
 
@@ -111,7 +111,7 @@ $于是，我们可以考虑，*构造 l_i 的替身*** \tilde{l}_i = \sum_{j =1
 
 且 \tilde{l}_N 等于 l_N。
 
-$***于是，只需要找到 \tilde{l}_i  和 \tilde{l}_{i-1} 的迭代关系，就可以融合成一轮遍历了***。$
+$*<strong>于是，只需要找到 \tilde{l}_i  和 \tilde{l}_{i-1} 的迭代关系，就可以融合成一轮遍历了</strong>*。$
 
 推导过程：
 
@@ -121,7 +121,7 @@ $\begin{align*} \tilde{l}_i &= \sum_{j=1}^{i} e^{s_j - m_i} \\ &= \left( \sum_{j
 
 现在 softmax 的计算可以优化成：（这个就 *Online Softmax***）
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_bebba3be52ea.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_bebba3be52ea.jpg)
 
 到这里后，就不再能压缩成一个 for 循环了。
 
@@ -144,7 +144,7 @@ $\begin{align*} \tilde{l}_i &= \sum_{j=1}^{i} e^{s_j - m_i} \\ &= \left( \sum_{j
 - 然后与整个 V 相乘，就得到了 O 中第 k 行；
 具体过程：
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_39dcc26995c8.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_39dcc26995c8.jpg)
 
 *现在我们的目标是将两个 for 循环，压缩成一个 ***！！
 
@@ -164,7 +164,7 @@ $$\tilde{o}_i = \sum_{j=1}^i( \frac{exp(s_j - m_i)}{\tilde{l}_i} V[j,:]) ，$$
 
 现在我们可以知道 \tilde{o}_N 等于 o_N。
 
-$***于是，只需要找到 ***\tilde{o}_i *** 和 ***\tilde{o}_{i-1}*** 的迭代关系，就可以融合成一轮遍历了***。$
+$*<strong>于是，只需要找到</strong>*\tilde{o}_i *<strong>和</strong>*\tilde{o}_{i-1}*<strong>的迭代关系，就可以融合成一轮遍历了</strong>*。$
 
 推导过程：
 
@@ -174,7 +174,7 @@ $$\begin{align*} \tilde{o}_i &= \sum_{j=1}^{i} \frac{e^{s_j - m_i}}{\tilde{l}_i}
 
 于是就有了 FlashAttention 中的算法：
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_44d24c8a31d9.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_44d24c8a31d9.jpg)
 
 实际计算时，我们一般是进行分块计算，就像 1.1 中的图那样子～～
 
@@ -202,13 +202,13 @@ FlashAttention v1 就是按照上面的公式来计算。
 
 具体操作时，用了分块计算，并且外层是对 K^T 进行循环，内层对 Q 进行循环；（v2 中就把这个循环的顺序调换了，更方便并行，本来每一行的计算就是独立的）
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_3aa450e31005.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_3aa450e31005.jpg)
 
 *下标有点凌乱，总结了几个理解技巧：***
 
-- **所有以** **ij** **作为下标的，都表示只针对当前分块的计算；**
-- **所有以** **i** **作为下标的，都表示截止到前一个分块（即第 1 到第 i - 1 个分块）的计算结果；**
-- **所有以** **new** **为上标的，都表示引入当前分块做更新后的结果；**
+- <strong>所有以</strong> <strong>ij</strong> <strong>作为下标的，都表示只针对当前分块的计算；</strong>
+- <strong>所有以</strong> <strong>i</strong> <strong>作为下标的，都表示截止到前一个分块（即第 1 到第 i - 1 个分块）的计算结果；</strong>
+- <strong>所有以</strong> <strong>new</strong> <strong>为上标的，都表示引入当前分块做更新后的结果；</strong>
 比如
 
 $\tilde{m}_{ij} 表示只对 S_{ij} 这个分块做 rowmax，$
@@ -231,19 +231,19 @@ v2 最主要的修改是循环顺序变为：外层是对 Q 逐块遍历，内�
 
 流程如下图：
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_71f4c20256f9.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_71f4c20256f9.jpg)
 
 外层的每轮遍历之间是互相独立的，就可以分别分配一个 thread block 去执行，以便于提高 GPU 利用率。
 
 另外还有两个小 trick：
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_91d0c123d8d2.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_91d0c123d8d2.jpg)
 
 第二点说的是保存必要数据，留在 backward pass 的时候用。
 
 具体算法：
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_075acf8c9789.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_075acf8c9789.jpg)
 
 ### 3、Backward 流程
 
@@ -261,7 +261,7 @@ $$（1）求 \frac{\partial y}{\partial z} $$
 
 先来看看 y = softmax(z) 的求导：（直接贴了 GPT 的回答，清晰明了）：
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_d7122c1af03b.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_d7122c1af03b.jpg)
 
 所以， *y* 关于 *z* 求导的结果是一个雅可比矩阵（Jacobian matrix），*它的 i 行 j 列元素是 y_i 关于 z_j 的偏导数***，
 
@@ -285,7 +285,7 @@ $$\begin{align*} \frac{\partial L}{\partial \mathbf{z}} &= \frac{\partial L}{\pa
 
 算法：
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_492468a73a73.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_492468a73a73.jpg)
 
 FlashAttention v1 附录 B.4 的图
 
@@ -305,13 +305,13 @@ P 则是用 S 和 m、l 重算）
 
 2、对 dS 进行了公式进行了简化：
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_0c3132edd13b.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_0c3132edd13b.jpg)
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_e46be5550682.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_e46be5550682.jpg)
 
 完整的算法：
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_34798179cd20.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_34798179cd20.jpg)
 
 #### 3.4、FlashAttention v2
 
@@ -323,7 +323,7 @@ P 则是用 S 和 m、l 重算）
 
 算法：（两点改动都圈出来了；下面的算法省略了 mask 和 dropout 步骤）
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_5862e374f68e.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_5862e374f68e.jpg)
 
 ### 4、总结
 
@@ -331,7 +331,7 @@ FlashAttention 算是近两年来在大模型训练方面影响力最大的工�
 
 求求点个赞呀！
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_374ee817c1d7.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_374ee817c1d7.jpg)
 
 ### Reference
 

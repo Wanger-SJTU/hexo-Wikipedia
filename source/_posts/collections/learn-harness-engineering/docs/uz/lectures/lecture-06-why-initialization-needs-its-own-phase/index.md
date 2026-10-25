@@ -64,22 +64,22 @@ OpenAIʼning Codex harness muhandislik qoʻllanmasi ham “repo operatsion yozuv
 
 ## Asosiy tushunchalar
 
-- **Inisializatsiya bosqichi (Initialization Phase)**: Agent ishlash siklidagi (lifecycle) birinchi bosqich — kod yozilmaydi, faqatgina keyingi barcha implementatsiya bosqichlari uchun sharoitlar yaratiladi. Uning natijasi kod emas, infratuzilmadir.
-- **Bootstrap shartnomasi (Bootstrap Contract)**: Yangi agent sessiyasi loyihani hech qanday noaniqliklarsiz boshqara olishi uchun kerak boʻlgan shartlar — loyihani ishga tushirish (start), test qilish (test), taraqqiyotni koʻrish (progress) va keyingi qadamlarni tanlash (next steps) mumkin boʻlishi kerak. Toʻrtta shart, barchasi zarur.
-- **Sovuq ishga tushirish (Cold Start) va Issiq ishga tushirish (Warm Start)**: Sovuq ishga tushirish — bu boʻsh katalogdan boshlanib, agent loyiha tuzilishini taxmin qilishiga toʻgʻri keladi; issiq ishga tushirish esa, infratuzilma allaqachon mavjud boʻlgan andoza (template) yoki joriy loyihadan boshlanishidir. Issiq ishga tushirish har doim sovuq ishga tushirishdan ustunroq — bu suv va elektr quvvati boʻlgan maydonda ish boshlash bilan, sahroda ish boshlash oʻrtasidagi farq kabidir.
-- **Topshirishga tayyorlik (Handoff Readiness)**: Loyiha istalgan vaqtda yangi agent qabul qilib ololadigan holatda turishi kerak. Ogʻzaki tushuntirish kerak emas — faqat repo ichidagilarning oʻzi yetarli.
-- **Birinchi tekshiruvgacha vaqt (Time to First Verification)**: Loyiha boshlanganidan to birinchi funksionallik (feature point) tekshiruvdan oʻtgunga qadar boʻlgan vaqt. Bu inisializatsiya samaradorligini oʻlchash uchun asosiy metrikadir.
-- **Keyingi bosqichda qoʻllanish yaroqliligi (Downstream Usability)**: Inisializatsiya sifatining eng yaxshi koʻrsatkichi — keyingi sessiyalarning yashirin bilimlarga tayanmasdan vazifalarni muvaffaqiyatli bajarish ulushidir.
+- <strong>Inisializatsiya bosqichi (Initialization Phase)</strong>: Agent ishlash siklidagi (lifecycle) birinchi bosqich — kod yozilmaydi, faqatgina keyingi barcha implementatsiya bosqichlari uchun sharoitlar yaratiladi. Uning natijasi kod emas, infratuzilmadir.
+- <strong>Bootstrap shartnomasi (Bootstrap Contract)</strong>: Yangi agent sessiyasi loyihani hech qanday noaniqliklarsiz boshqara olishi uchun kerak boʻlgan shartlar — loyihani ishga tushirish (start), test qilish (test), taraqqiyotni koʻrish (progress) va keyingi qadamlarni tanlash (next steps) mumkin boʻlishi kerak. Toʻrtta shart, barchasi zarur.
+- <strong>Sovuq ishga tushirish (Cold Start) va Issiq ishga tushirish (Warm Start)</strong>: Sovuq ishga tushirish — bu boʻsh katalogdan boshlanib, agent loyiha tuzilishini taxmin qilishiga toʻgʻri keladi; issiq ishga tushirish esa, infratuzilma allaqachon mavjud boʻlgan andoza (template) yoki joriy loyihadan boshlanishidir. Issiq ishga tushirish har doim sovuq ishga tushirishdan ustunroq — bu suv va elektr quvvati boʻlgan maydonda ish boshlash bilan, sahroda ish boshlash oʻrtasidagi farq kabidir.
+- <strong>Topshirishga tayyorlik (Handoff Readiness)</strong>: Loyiha istalgan vaqtda yangi agent qabul qilib ololadigan holatda turishi kerak. Ogʻzaki tushuntirish kerak emas — faqat repo ichidagilarning oʻzi yetarli.
+- <strong>Birinchi tekshiruvgacha vaqt (Time to First Verification)</strong>: Loyiha boshlanganidan to birinchi funksionallik (feature point) tekshiruvdan oʻtgunga qadar boʻlgan vaqt. Bu inisializatsiya samaradorligini oʻlchash uchun asosiy metrikadir.
+- <strong>Keyingi bosqichda qoʻllanish yaroqliligi (Downstream Usability)</strong>: Inisializatsiya sifatining eng yaxshi koʻrsatkichi — keyingi sessiyalarning yashirin bilimlarga tayanmasdan vazifalarni muvaffaqiyatli bajarish ulushidir.
 
 ## Inisializatsiyani qanday qilib toʻgʻri bajarish mumkin
 
-**Inisializatsiyaga maxsus alohida bosqich sifatida qarang.** Birinchi sessiya faqat inisializatsiya bilan shugʻullanadi — biznes mantigʻiga oid kod umuman yozilmaydi. Inisializatsiya natijasi:
+<strong>Inisializatsiyaga maxsus alohida bosqich sifatida qarang.</strong> Birinchi sessiya faqat inisializatsiya bilan shugʻullanadi — biznes mantigʻiga oid kod umuman yozilmaydi. Inisializatsiya natijasi:
 
-**1. Ishga tayyor muhit.** Loyiha ishga tushadi, kutubxonalar (dependencies) oʻrnatiladi, muhit muammolari yoʻq. Poydevor quyildi, hech qanday yoriq yoʻq.
+<strong>1. Ishga tayyor muhit.</strong> Loyiha ishga tushadi, kutubxonalar (dependencies) oʻrnatiladi, muhit muammolari yoʻq. Poydevor quyildi, hech qanday yoriq yoʻq.
 
-**2. Tekshiruvga tayyor test freymvorki.** Kamida bitta namuna (example) test oʻtishi kerak. Bu test freymvorkining oʻzi toʻgʻri sozlanganini isbotlaydi — goʻyoki ogʻirlikni koʻtara olishini isbotlash uchun poydevor ustiga ustun oʻrnatgandek.
+<strong>2. Tekshiruvga tayyor test freymvorki.</strong> Kamida bitta namuna (example) test oʻtishi kerak. Bu test freymvorkining oʻzi toʻgʻri sozlanganini isbotlaydi — goʻyoki ogʻirlikni koʻtara olishini isbotlash uchun poydevor ustiga ustun oʻrnatgandek.
 
-**3. Bootstrap shartnomasi hujjati.** Keyingi sessiyalarga nima qilishni ochiq-oydin tushuntiruvchi hujjat:
+<strong>3. Bootstrap shartnomasi hujjati.</strong> Keyingi sessiyalarga nima qilishni ochiq-oydin tushuntiruvchi hujjat:
 ```markdown
 # Inisializatsiya shartnomasi
 
@@ -102,7 +102,7 @@ OpenAIʼning Codex harness muhandislik qoʻllanmasi ham “repo operatsion yozuv
 - tests/ — Test fayllari
 ```
 
-**4. Vazifalarni qismlarga ajratish.** Butun loyihani tartiblangan vazifalar roʻyxatiga boʻling, har bir vazifa aniq qabul qilish mezonlariga (acceptance criteria) ega boʻlsin:
+<strong>4. Vazifalarni qismlarga ajratish.</strong> Butun loyihani tartiblangan vazifalar roʻyxatiga boʻling, har bir vazifa aniq qabul qilish mezonlariga (acceptance criteria) ega boʻlsin:
 ```markdown
 # Vazifalarni taqsimlash
 
@@ -120,11 +120,11 @@ OpenAIʼning Codex harness muhandislik qoʻllanmasi ham “repo operatsion yozuv
 - ...
 ```
 
-**5. Git commit checkpoint (nazorat nuqtasi) sifatida.** Inisializatsiya tugagandan soʻng, toza commit qiling. Keyingi barcha ishlar shu nazorat nuqtasidan boshlanadi.
+<strong>5. Git commit checkpoint (nazorat nuqtasi) sifatida.</strong> Inisializatsiya tugagandan soʻng, toza commit qiling. Keyingi barcha ishlar shu nazorat nuqtasidan boshlanadi.
 
-**Issiq ishga tushirish (Warm start) strategiyasi**: Boʻsh katalogdan ish boshlamang. Standart katalog strukturasini, bogʻliqliklarni sozlashni va test freymvorklarini oldindan oʻrnatish uchun loyiha andozasidan (create-react-app, fastapi-template va h.k.) foydalaning. Odatdagi inisializatsiya qadamlarini andoza ichiga kiritib yuboring, toki agent faqatgina oʻz loyihasiga xos boʻlgan inisializatsiya ishlarini qilsin. Bu xuddi suv va chirogʻi bor joyda ish boshlash bilan — sahroning oʻrtasidan qurilishni boshlash oʻrtasidagi farq kabidir.
+<strong>Issiq ishga tushirish (Warm start) strategiyasi</strong>: Boʻsh katalogdan ish boshlamang. Standart katalog strukturasini, bogʻliqliklarni sozlashni va test freymvorklarini oldindan oʻrnatish uchun loyiha andozasidan (create-react-app, fastapi-template va h.k.) foydalaning. Odatdagi inisializatsiya qadamlarini andoza ichiga kiritib yuboring, toki agent faqatgina oʻz loyihasiga xos boʻlgan inisializatsiya ishlarini qilsin. Bu xuddi suv va chirogʻi bor joyda ish boshlash bilan — sahroning oʻrtasidan qurilishni boshlash oʻrtasidagi farq kabidir.
 
-**Inisializatsiyani yakunlash mezoni**: “Qanchalik koʻp kod yozilganligi” emas, balki bootstrap shartnomasining toʻrtta talabiga javob berganligi bilan oʻlchanadi — boshlash mumkin, test qilish mumkin, joriy holatni koʻrish mumkin va keyingi qadamlarni aniqlab olish mumkin. Inisializatsiyani tasdiqlash uchun quyidagi tekshiruv roʻyxatidan foydalaning:
+<strong>Inisializatsiyani yakunlash mezoni</strong>: “Qanchalik koʻp kod yozilganligi” emas, balki bootstrap shartnomasining toʻrtta talabiga javob berganligi bilan oʻlchanadi — boshlash mumkin, test qilish mumkin, joriy holatni koʻrish mumkin va keyingi qadamlarni aniqlab olish mumkin. Inisializatsiyani tasdiqlash uchun quyidagi tekshiruv roʻyxatidan foydalaning:
 
 ```markdown
 ## Inisializatsiyani qabul qilish roʻyxati
@@ -139,9 +139,9 @@ OpenAIʼning Codex harness muhandislik qoʻllanmasi ham “repo operatsion yozuv
 
 React frontend loyihasi uchun ikkita inisializatsiya yondashuvi:
 
-**Aralash usul (poydevor quyish va devorlarni bir vaqtda qurish)**: 1-sessiyada agent loyiha tuzilishini yaratdi va bir vaqtning oʻzida birinchi funksiyani yozdi. Sessiya oxirida repoda ishlaydigan kod bor edi, ammo: loyihani boshlash/test qilish uchun aniq buyruqlar yoʻriqnomasi yoʻq, jarayonni kuzatib boradigan fayl yoʻq, vazifalar taqsimlanmagan edi. 2-sessiya loyiha strukturasi, test freymvorki va build jarayonini tushunib olishga ~20 daqiqa vaqt sarfladi — xuddi qurilish maydoniga kelib poydevor qayerda qotganini yoki suv quvurlari qayerdan oʻtganini bilmaydigan jamoa shuni bilish uchun bitta-bitta kovlab izlashiga oʻxshaydi.
+<strong>Aralash usul (poydevor quyish va devorlarni bir vaqtda qurish)</strong>: 1-sessiyada agent loyiha tuzilishini yaratdi va bir vaqtning oʻzida birinchi funksiyani yozdi. Sessiya oxirida repoda ishlaydigan kod bor edi, ammo: loyihani boshlash/test qilish uchun aniq buyruqlar yoʻriqnomasi yoʻq, jarayonni kuzatib boradigan fayl yoʻq, vazifalar taqsimlanmagan edi. 2-sessiya loyiha strukturasi, test freymvorki va build jarayonini tushunib olishga ~20 daqiqa vaqt sarfladi — xuddi qurilish maydoniga kelib poydevor qayerda qotganini yoki suv quvurlari qayerdan oʻtganini bilmaydigan jamoa shuni bilish uchun bitta-bitta kovlab izlashiga oʻxshaydi.
 
-**Maxsus inisializatsiya (avval poydevor)**: 1-sessiya faqat inisializatsiya bilan shugʻullandi — andozadan katalog strukturasini yaratdi, test freymvorkini sozladi (Vitest + React Testing Library), bitta namunaviy test yozib, uni tekshirib oldi, bootstrap shartnomasi hujjatini va vazifalar roʻyxatini tuzdi, hamda bularni initial checkpoint sifatida commit qildi. 2-sessiyaning tiklash vaqti (rebuild time) 3 daqiqadan oshmadi, u roʻyxatdagi vazifalardan toʻgʻridan toʻgʻri ishni boshladi — yangi jamoa maydonga kelib chizmaga bir koʻz tashlab, qayerdan davom ettirishni aniq biladi.
+<strong>Maxsus inisializatsiya (avval poydevor)</strong>: 1-sessiya faqat inisializatsiya bilan shugʻullandi — andozadan katalog strukturasini yaratdi, test freymvorkini sozladi (Vitest + React Testing Library), bitta namunaviy test yozib, uni tekshirib oldi, bootstrap shartnomasi hujjatini va vazifalar roʻyxatini tuzdi, hamda bularni initial checkpoint sifatida commit qildi. 2-sessiyaning tiklash vaqti (rebuild time) 3 daqiqadan oshmadi, u roʻyxatdagi vazifalardan toʻgʻridan toʻgʻri ishni boshladi — yangi jamoa maydonga kelib chizmaga bir koʻz tashlab, qayerdan davom ettirishni aniq biladi.
 
 Loyiha sikllarini toʻliq taqqoslash: aralash usuldagi umumiy tiklash vaqti (barcha sessiyalar uchun) maxsus inisializatsiya yondashuviga qaraganda ~60% ga koʻp boʻldi. Inisializatsiyaga sarflangan ortiqcha 20 daqiqa keyingi sessiyalarda necha marta oʻzini oqladi. Xuddi mustahkam poydevor devorlarni tezroq qurishga yordam berganidek — sekin qadam bu aslida tezlashishdir.
 
@@ -163,8 +163,8 @@ Loyiha sikllarini toʻliq taqqoslash: aralash usuldagi umumiy tiklash vaqti (bar
 
 ## Mashqlar
 
-1. **Bootstrap shartnomasi dizayni**: Oʻzingiz ishlayotgan loyiha uchun toʻliq bootstrap shartnomasini yozib chiqing. Soʻng mutlaqo yangi agent sessiyasini ochib, faqat repodagi maʼlumotlarni (ogʻzaki kontekstsiz) koʻrsatib, undan loyihani ishga tushirishni, testlarni ishga tushirishni va joriy jarayonni tushunishni talab qiling. U qanday muammolarga duch kelishini yozib oling — har bir duch kelingan muammo, sizning bootstrap shartnomangizda yetishmayotgan qoidani anglatadi.
+1. <strong>Bootstrap shartnomasi dizayni</strong>: Oʻzingiz ishlayotgan loyiha uchun toʻliq bootstrap shartnomasini yozib chiqing. Soʻng mutlaqo yangi agent sessiyasini ochib, faqat repodagi maʼlumotlarni (ogʻzaki kontekstsiz) koʻrsatib, undan loyihani ishga tushirishni, testlarni ishga tushirishni va joriy jarayonni tushunishni talab qiling. U qanday muammolarga duch kelishini yozib oling — har bir duch kelingan muammo, sizning bootstrap shartnomangizda yetishmayotgan qoidani anglatadi.
 
-2. **Taqqoslash tajribasi**: Oʻrtacha murakkablikdagi yangi loyihani tanlang. A yondashuv: agentʼga bir vaqtning oʻzida inisializatsiya qilishni va birinchi implementatsiyani amalga oshirishni ishonib topshiring. B yondashuv: birinchi sessiyani faqat inisializatsiyaga sarflang va ikkinchi sessiyadan implementatsiyani boshlang. 4 sessiyadan soʻng natijalarni solishtiring: birinchi tekshiruvgacha ketgan vaqt, tiklash narxi (rebuild cost) va funksiyalarni bajarish darajasi.
+2. <strong>Taqqoslash tajribasi</strong>: Oʻrtacha murakkablikdagi yangi loyihani tanlang. A yondashuv: agentʼga bir vaqtning oʻzida inisializatsiya qilishni va birinchi implementatsiyani amalga oshirishni ishonib topshiring. B yondashuv: birinchi sessiyani faqat inisializatsiyaga sarflang va ikkinchi sessiyadan implementatsiyani boshlang. 4 sessiyadan soʻng natijalarni solishtiring: birinchi tekshiruvgacha ketgan vaqt, tiklash narxi (rebuild cost) va funksiyalarni bajarish darajasi.
 
-3. **Inisializatsiyani tasdiqlash varaqasi (Checklist)**: Loyihangiz uchun inisializatsiyani tasdiqlash roʻyxatini tuzing. Yangi agent sessiyasi har bir tekshiruv elementini bajarsin va qay biri muvaffaqiyatli, qaysi biri muvaffaqiyatsiz boʻlganini qayd etsin. Muvaffaqiyatsiz tugagan elementlar — sizning harnessʼingizdagi boʻshliqlardir; ularni toʻgʻrilash kerak.
+3. <strong>Inisializatsiyani tasdiqlash varaqasi (Checklist)</strong>: Loyihangiz uchun inisializatsiyani tasdiqlash roʻyxatini tuzing. Yangi agent sessiyasi har bir tekshiruv elementini bajarsin va qay biri muvaffaqiyatli, qaysi biri muvaffaqiyatsiz boʻlganini qayd etsin. Muvaffaqiyatsiz tugagan elementlar — sizning harnessʼingizdagi boʻshliqlardir; ularni toʻgʻrilash kerak.

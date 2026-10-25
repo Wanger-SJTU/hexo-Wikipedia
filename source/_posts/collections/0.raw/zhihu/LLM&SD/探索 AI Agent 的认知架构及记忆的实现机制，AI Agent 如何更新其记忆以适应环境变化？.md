@@ -31,14 +31,14 @@ source_url: https://www.zhihu.com/question/663077797/answer/1961431306731754778
 
 更多解读请阅读：[最新成果！Agent记忆的第三种可能：生成式隐式记忆](https://link.zhihu.com/?target=https%3A//mp.weixin.qq.com/s/pqCPoUw0p2oTsnMUj9t2mw)
 
-**10月16日（周四）晚8点**，青稞Talk 第81期，新加坡国立大学博士生张桂彬，将直播分享最新成果《**MemGen：生成式隐式记忆，Agent Memory 的第三种可能**》。
+<strong>10月16日（周四）晚8点</strong>，青稞Talk 第81期，新加坡国立大学博士生张桂彬，将直播分享最新成果《<strong>MemGen：生成式隐式记忆，Agent Memory 的第三种可能</strong>》。
 
-**分享嘉宾**
+<strong>分享嘉宾</strong>
 张桂彬是新加坡国立大学计算学院博士研究生，导师为颜水成教授，研究方向为Multi-Agent System，Agent Memory和Self-Evolving Agent，目前在NeurIPS、ICML、ICLR、KDD、TKDE等顶级会议/期刊发表论文十余篇。
 
 他发表了Graph for Agent系列工作，包括G-Designer【ICML 2025 Oral】，G-Safeguard【ACL 2025】，以及G-Memory。其他工作如MaAS【ICML 2025 Oral】，AgentPrune【ICLR 2025】也受到关注。
 
-**主题提纲**
+<strong>主题提纲</strong>
 MemGen：生成式隐式记忆，Agent Memory 的第三种可能
 
 1、什么是 Agent Memory
@@ -46,8 +46,8 @@ MemGen：生成式隐式记忆，Agent Memory 的第三种可能
 3、第三种可能：动态、生成式的记忆框架 MemGen
 4、MemGen 的评估及 Agent Memory 未来探讨
 
-**直播时间**
+<strong>直播时间</strong>
 10月16日20:00 - 21:00
 
-**如何观看**
-Talk 将在青稞社区【视频号：**青稞AI**、Bilibili：**青稞AI**】上进行，欢迎预约！
+<strong>如何观看</strong>
+Talk 将在青稞社区【视频号：<strong>青稞AI</strong>、Bilibili：<strong>青稞AI</strong>】上进行，欢迎预约！

@@ -83,6 +83,6 @@ $\begin{equation}\begin{pmatrix}q_0 \\ q_1 \\ q_2 \\ q_3 \\ \vdots \\ q_{d-2} \\
 
 #### 参考
 
-- **Transformer升级之路：1、Sinusoidal位置编码追根溯源**
-- **让研究人员绞尽脑汁的Transformer位置编码**
-- **Transformer升级之路：2、博采众长的旋转式位置编码**
+- <strong>Transformer升级之路：1、Sinusoidal位置编码追根溯源</strong>
+- <strong>让研究人员绞尽脑汁的Transformer位置编码</strong>
+- <strong>Transformer升级之路：2、博采众长的旋转式位置编码</strong>

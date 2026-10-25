@@ -17,9 +17,9 @@ source_url: https://zhuanlan.zhihu.com/p/1938547315221705644
 
 #### 0x00 前言
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_7d5739b9155f.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_7d5739b9155f.jpg)
 
-Qwen-Image本文主要展示了如何使用cache-dit给Qwen-Image进行cache加速。在cache-dit: DBCache F8B0 + TaylorSeer + Cache CFG的配置下，跑在NVIDIA L20上（要开cpu offload），大概能有**1.5x**的性能加速，**效果几乎无损**。完整代码链接：[cache-dit/examples/run_qwen_image.py](https://link.zhihu.com/?target=https%3A//github.com/vipshop/cache-dit/blob/main/examples/run_qwen_image.py)，cache-dit详细使用文档，请参考：
+Qwen-Image本文主要展示了如何使用cache-dit给Qwen-Image进行cache加速。在cache-dit: DBCache F8B0 + TaylorSeer + Cache CFG的配置下，跑在NVIDIA L20上（要开cpu offload），大概能有<strong>1.5x</strong>的性能加速，<strong>效果几乎无损</strong>。完整代码链接：[cache-dit/examples/run_qwen_image.py](https://link.zhihu.com/?target=https%3A//github.com/vipshop/cache-dit/blob/main/examples/run_qwen_image.py)，cache-dit详细使用文档，请参考：
 
 [](https://link.zhihu.com/?target=https%3A//github.com/vipshop/cache-dit/tree/main)
 
@@ -30,7 +30,7 @@ Qwen-Image本文主要展示了如何使用cache-dit给Qwen-Image进行cache加�
 `pip install git+https://github.com/huggingface/diffusers
 pip install -U cache-dit`
 
-废话少说，直接贴示例代码，欢迎尝试。cache-dit为Qwen-Image提供了**DBCache、TaylorSeer**和**cache CFG**的缓存加速支持。提示：**需要安装最新的cache-dit以及最新的diffusers.**
+废话少说，直接贴示例代码，欢迎尝试。cache-dit为Qwen-Image提供了<strong>DBCache、TaylorSeer</strong>和<strong>cache CFG</strong>的缓存加速支持。提示：<strong>需要安装最新的cache-dit以及最新的diffusers.</strong>
 
 `import os
 import time
@@ -165,29 +165,29 @@ python3 run_qwen_image.py --cache --Fn 8 --Bn 0 --rdt 0.12 --taylorseer --order 
 #### 0x02 加速效果
 
 - Baseline 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_3c79570df209.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_3c79570df209.jpg)
 
 Baseline w/o cache-dit
 
-- cache-dit: DBCache F8B0 + TaylorSeer **O(2)** + Cache CFG, 1.5x Speed Up
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_3b0cb1437037.jpg)
+- cache-dit: DBCache F8B0 + TaylorSeer <strong>O(2)</strong> + Cache CFG, 1.5x Speed Up
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_3b0cb1437037.jpg)
 
 cache-dit 1.5x Speed Up: TaylorSeer O(2)
 
-- cache-dit: DBCache F8B0 + TaylorSeer **O(4)** + Cache CFG, 1.5x Speed Up
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_87d00bdba201.jpg)
+- cache-dit: DBCache F8B0 + TaylorSeer <strong>O(4)</strong> + Cache CFG, 1.5x Speed Up
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_87d00bdba201.jpg)
 
 cache-dit 1.5x Speed Up: TaylorSeer O(4)我们能看到，TaylorSeer 阶数越高，精度越好。TaylorSeer O(4)的图片，在小黑板上方生成的内容和Baseline基本一致，而TaylorSeer O(2)会生成一个新的环绕灯管。
 
 #### 0x03 warmup的影响
 
-由于大部分扩散模型在去噪阶段的**前面的步数属于高噪声**的阶段，因此合理的cache逻辑是warmup一些前边的步数（即不做cache），**对后边低噪声的步数做cache**。实测下来，指定warmup_steps > 0可以极大地提高精度。比如，在Qwen-Image的示例中，我们可以使用warmup_steps=8，对加速比影响不大。从结果上看，“电线”的生成和Baseline更接近了。
+由于大部分扩散模型在去噪阶段的<strong>前面的步数属于高噪声</strong>的阶段，因此合理的cache逻辑是warmup一些前边的步数（即不做cache），<strong>对后边低噪声的步数做cache</strong>。实测下来，指定warmup_steps > 0可以极大地提高精度。比如，在Qwen-Image的示例中，我们可以使用warmup_steps=8，对加速比影响不大。从结果上看，“电线”的生成和Baseline更接近了。
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_222d78a60bec.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_222d78a60bec.jpg)
 
 DBCache F8B0 + TaylorSeer O(4) + Cache CFG + warmup_steps 8
 #### 0x04 总结
 
-本文主要展示了如何使用cache-dit给Qwen-Image进行cache加速。在cache-dit: DBCache F8B0 + TaylorSeer + Cache CFG的配置下，跑在NVIDIA L20上（要开cpu offload），大概能有**1.5x**的性能加速，效果几乎无损。完整代码链接：[https://github.com/vipshop/cache-dit/blob/main/examples/run_qwen_image.py](https://link.zhihu.com/?target=https%3A//github.com/vipshop/cache-dit/blob/main/examples/run_qwen_image.py)，cache-dit详细使用文档，请参考：
+本文主要展示了如何使用cache-dit给Qwen-Image进行cache加速。在cache-dit: DBCache F8B0 + TaylorSeer + Cache CFG的配置下，跑在NVIDIA L20上（要开cpu offload），大概能有<strong>1.5x</strong>的性能加速，效果几乎无损。完整代码链接：[https://github.com/vipshop/cache-dit/blob/main/examples/run_qwen_image.py](https://link.zhihu.com/?target=https%3A//github.com/vipshop/cache-dit/blob/main/examples/run_qwen_image.py)，cache-dit详细使用文档，请参考：
 
 [](https://link.zhihu.com/?target=https%3A//github.com/vipshop/cache-dit/tree/main)

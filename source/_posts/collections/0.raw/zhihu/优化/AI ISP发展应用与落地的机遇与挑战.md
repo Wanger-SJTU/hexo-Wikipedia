@@ -18,11 +18,11 @@ source_url: https://zhuanlan.zhihu.com/p/552097768
 **作者丨技述无忌
 编辑丨3D视觉开发者社区*“天下皆知美之为美，恶己;皆知善，斯不善矣”***------《道德经》
 
-### **1 摘要**
+### <strong>1 摘要</strong>
 
 近些年，随着深度学习在各行业应用中不断的深入，传统图像处理ISP也不甘落后，AI ISP已经在一些特定的图像处理与应用中逐渐展露它的魅力。但与此同时，AI ISP的发展也面临不少的挑战，第一个重大且显而易见的挑战就是算力，AI ISP目前所需要的算力大部分端侧芯片都不能满足；第二个挑战是图像质量的检测。目前AI ISP算法通常采用的是基于数据集的模型训练，但是对于训练用的数据集的获取是一个非常复杂和困难的问题，数据集的图像质量如何判断，又依赖于人的主观感受，没有统一的标准，反过来影响训练模型效果的判断，盲图像质量（Blind Image Quality，BIQ）评价是传统ISP算法也是AI ISP算法需要攻克的课题。在盲图像质量评价问题未解决之前，传统ISP通过结合客观+主观评价对图像质量进行调优；而AI ISP则需要通过半自动的方法搜集基础数据集用于模型的训练；第三个挑战是对于图像调试人员的素质要求产生了质的变化，ISP图像调试人员需要掌握深度学习算法的基本原理，需要花大量时间采集图像（这一过程仍需调试人员对于图像质量进行主观判断），并重新训练或者fine-tune模型。短期来看在多样化的图像需求场景中，会面临不小挑战；当然AI ISP超出传统ISP的性能使得它极具未来的应用价值，特别是在手机、娱乐等领域将会优先发挥其优势。未来也许AI ISP以其良好去噪与色彩还原能力应用在具备人眼视觉的大部分领域，而传统ISP则以其低成本与AI算法融合并配合sensor传感器件主要解决机器视觉相关领域的问题。
 
-### **2 图像画质-----“真”、“善”、“美”**
+### <strong>2 图像画质-----“真”、“善”、“美”</strong>
 
 ISP是一项集技术与艺术为一体的系统化处理，它将图像传感器获取的信号转换为人、机器可以识别和分辨的信息，它有着一系列的客观评价指标，每一项指标的达成对图像都有着重要意义，然而在实践中，ISP的目标又不能被一系列的客观指标所限定，特别是有人参与的场景，由于图像的质量是由广大用户去判断，因而引入很多主观的感受；因此，图像的质量多了一层艺术的成分。一般地，ISP处理的图像有三个方向的偏向：
 
@@ -34,23 +34,23 @@ ISP是一项集技术与艺术为一体的系统化处理，它将图像传感�
 
 什么样的图像既“真”又“美”这个问题，是ISP图像最为重要的一个研究方向，它既是最复杂又是图像最最重要的研究问题。
 
-### **3 端到端AI ISP神经网络架构**
+### <strong>3 端到端AI ISP神经网络架构</strong>
 
 端到端的AI ISP算法输入为RAW图，输出为RGB图像，下面梳理几种典型网络，便于大家对于AI ISP有一个初步的理解。
 
-#### **3.1 MW-ISP NET**
+#### <strong>3.1 MW-ISP NET</strong>
 
 MW-ISP Net是一种基于U-Net的多级小波变换的ISP网络，其借鉴了MWCNN和RCAN的网络架构，在U-Net的每一层网络中，嵌入一个由20个残差通道注意力模块（RCAB）构成的组（RG），标准上下采样则由离散小波变化所取代（DWT），以降低每层的图像损失。使用Adam算法，结合基于L1、SSIM和VGG的损失函数对模型进行训练。有趣的是，作者也用同样的模型尝试在数据集SIDD训练了一个去噪的模型。
 
-![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_d8436df7ef91.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BC%98%E5%8C%96/asset/img_d8436df7ef91.jpg)
 
-#### **3.2 PyNet CNN**
+#### <strong>3.2 PyNet CNN</strong>
 
 作者提出一种新颖的金字塔CNN架构（PyNet）用于细粒度图像复原，它可以隐含的完成所有ISP过程（比如图像去马赛克、图像去噪、白平衡、颜色与对比度矫正、对摩尔纹等）。该模型可以直接将传感器采集的RAW数据转为到RGB空间，效果媲美高端数码相机，同时不依赖于手机ISP信息。
 
 为验证所提方法在真实数据上的有效性，作者收集了1W全分辨率RAW-RGB图像对（采用华为P20相机采集，以及佳能5D单反）。实验表明：所提方法可以轻易达到P20的ISP处理效果。
 
-![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_81c45189cb7e.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BC%98%E5%8C%96/asset/img_81c45189cb7e.jpg)
 
 上图给出了作者所设计的金字塔CNN架构PyNet，它包含5个尺度的特征。在训练过程中，作者采用逐级训练方式，先训练最底层，然后训练次一层级特征，直到期望分辨率输出为止，合计训练6次。
 
@@ -62,77 +62,77 @@ Level2-3: 作者认为该部分特征主要目的在于全局内容复原（颜�
 
 Level1: 作者认为该尺度为原始图像尺度空间，主要用于局部图像矫正（纹理增强、噪声移除、局部颜色处理等），因此采用了SSIM、感知损失以及MSE损失（0.75:1:0.05）。
 
-![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_05bbafe5a9d0.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BC%98%E5%8C%96/asset/img_05bbafe5a9d0.jpg)
 
 此模型在GPU上处理12MP的推理时间为3.8秒。
 
-#### **3.3 AWNET**
+#### <strong>3.3 AWNET</strong>
 
 该模型由三个块组成：横向块、上采样和下采样块。侧向块体由几个残差稠密块体（RDB）和一个全局上下文块体（GCB）组成。与其它些方法类似，作者使用了与DWT层并行的标准降尺度卷积和像素洗牌层，以获得更丰富的学习特征集，并且同时使用离散小波变换（DWT）而不是池化层用于保留低频信息。最后，作者训练了一个额外的神经网络模型，该模型将一个简单的去马赛克原始图像作为输入（而不是四个拜耳通道），并将两个模型的输出组合起来生成最终图像。该模型采用基于SSIM和VGG的损失函数组合进行训练。采用Adam算法对模型参数进行优化。
 
-![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_4432f7426809.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BC%98%E5%8C%96/asset/img_4432f7426809.jpg)
 
-![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_24d2ba345efc.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BC%98%E5%8C%96/asset/img_24d2ba345efc.jpg)
 
-#### **3.4 其它神经网络模型简述**
+#### <strong>3.4 其它神经网络模型简述</strong>
 
 大部分的ISP端到端的神经网络思路仍是基于金字塔网络和U-Net（通过把U-Net对称层连接以保持尺度信息），例如：PyNet-CA在标准PyNet体系结构的基础上增加了一些增强功能。特别是，多卷积层的输出上添加了RCAN风格的通道注意力机制。除此之外，删除了一些实例规范化操作，采用多卷积层对最终图像进行放大，并使用不同的单周期学习速率策略[对模型的每个级别进行训练。该网络通过MSE、基于VGG和SSIM损耗函数的组合进行训练，这些函数根据轨道和PyNET级别以不同的组合进行训练，另外还采用自集成策略生成最终输出。
 
-![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_3bd63f71dc84.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BC%98%E5%8C%96/asset/img_3bd63f71dc84.jpg)
 
 多尺度U-Net网络架构：
 
-![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_2b998686fb41.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BC%98%E5%8C%96/asset/img_2b998686fb41.jpg)
 
-### **4 局部功能AI ISP的神经网络架构**
+### <strong>4 局部功能AI ISP的神经网络架构</strong>
 
 上述提到的端到端的网络架构理论上来说，都可以胜任ISP任意一个功能模块的需要。下面介绍的一些网络架构虽然相关文献中仅训练了特定的ISP功能，但仍是可以满足端到端的ISP需求；此处将其放在ISP局部功能的实现章节，主要是尊重原文的相关功能说明。
 
-**低照环境下的去噪**：在《learning to see in the dark》中，将bayer Raw数据重组合为4通道图片，然后减去黑电平后对数据按照一定的放大倍率进行处理。对于神经网络的选择， 作者期望可以在GPU上运行全分辨率的图像处理（4240x2832 ，6000x4000），因此最终选择了U-Net作为训练与推理网络，而未选择多尺度上文聚合网络（CAN）以及全连接网络。
+<strong>低照环境下的去噪</strong>：在《learning to see in the dark》中，将bayer Raw数据重组合为4通道图片，然后减去黑电平后对数据按照一定的放大倍率进行处理。对于神经网络的选择， 作者期望可以在GPU上运行全分辨率的图像处理（4240x2832 ，6000x4000），因此最终选择了U-Net作为训练与推理网络，而未选择多尺度上文聚合网络（CAN）以及全连接网络。
 
-![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_a11c45d847f5.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BC%98%E5%8C%96/asset/img_a11c45d847f5.jpg)
 
 通过训练，其推理结果，去噪效果比传统BM3D等的效果提升明显。构建的RAW-RGB方法，适用于端到端的方案。其推理时间在0.38-0.66秒之间，距离图像的实时处理还有一段不小的距离。
 
-![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_895deb5948cf.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BC%98%E5%8C%96/asset/img_895deb5948cf.jpg)
 
-**去马赛克（Demosiac）：**该网络由特征提取金字塔（FE）与特征重建金字塔网络（FR）构成，因此网络架构被称为双塔网络（DPN），特征提取金字塔网络由特征映射与降采样模块构成，特征重建网络由特征映射、上采样模块和连接层构成。网络中的连接并未使用池化层。
+<strong>去马赛克（Demosiac）：</strong>该网络由特征提取金字塔（FE）与特征重建金字塔网络（FR）构成，因此网络架构被称为双塔网络（DPN），特征提取金字塔网络由特征映射与降采样模块构成，特征重建网络由特征映射、上采样模块和连接层构成。网络中的连接并未使用池化层。
 
-![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_d031ad88bae4.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BC%98%E5%8C%96/asset/img_d031ad88bae4.jpg)
 
 文中的结果对比可以看出，其对于高频纹理的还原是非常不错的。
 
-![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_96188a138039.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BC%98%E5%8C%96/asset/img_96188a138039.jpg)
 
 AI ISP还可以用HDR、色彩还原等等，但在此就不一一罗列。
 
-### **5 无参考图像质量评价与检测**
+### <strong>5 无参考图像质量评价与检测</strong>
 
 传统图像质量评价指标分为主观与客观评价：主观评价由观察者对图像质量进行主观打分，采用主观平均得分（MOS）对图像质量进行评估；而客观指标方面有：峰值信噪比PSNR(Peak Signal to Noise Ratio)，结构相似性SSIM（structural similarity） ,均方误差MSE(mean square error)，RMSE(root mean square error)， corss-correlation ;在此不做详述。
 
-![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_8eacb5b6b8ee.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BC%98%E5%8C%96/asset/img_8eacb5b6b8ee.jpg)
 
 盲图像质量评估（BIQA）方法，是一种无参考的图像质量评估方法，相对有参考图像的质量评估方法受限于找到合适的参考图像进行对比会更加适用，对于ISP的意义更加重大。BIQA也分为基于传统特征提取的方法和基于神经网络学习的方法，下面在数据集KonIQ-10k上的一个评估对比效果。
 
-![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_08a805f7b719.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BC%98%E5%8C%96/asset/img_08a805f7b719.jpg)
 
 此端到端的图像质量评估，一方面预测主观评价分数，另一个则预测图像评分的分布。通过对比可以发现在KonIQ-10K数据集上效果远超预期。
 
-![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_97c2a650f8c3.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BC%98%E5%8C%96/asset/img_97c2a650f8c3.jpg)
 
-### **6 业界AI ISP的架构**
+### <strong>6 业界AI ISP的架构</strong>
 
 AI ISP目前在芯片层面主要采用的还是传统ISP+NPU的架构，暂时未发现有仅用NPU做AI ISP并产品化的芯片。随着AI ISP的成熟，采用单NPU实现的芯片应该也会逐渐出现。目前华为、小米、OPPO、VIVO、阿里等厂商都在入局AI ISP技术研发与积累，AI ISP大有可为。
 
 爱芯元智的AI芯片AX630A采用的是算法与芯片协同设计，ISP统一由NPU实现，由此可知其方案采用的是端到端的ISP算法方案，其定位在端侧设备。
 
-![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_45d0bd0afcc4.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BC%98%E5%8C%96/asset/img_45d0bd0afcc4.jpg)
 
-![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_f2a7bd45bfd3.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BC%98%E5%8C%96/asset/img_f2a7bd45bfd3.jpg)
 
 OV的OAX8000的片上NPU得到了流行的TensorFlow、Caffe、MXNet和ONNX工具链的支持。此外，这款ASIC还嵌入了四颗采用Neon™技术的Arm® Cortex® A5 CPU内核，用于加速视频编码/解码和片上视频分析算法，以及图像处理、视频编码和RGB/IR处理的硬件。其高动态范围(HDR)处理能力使ASIC能够接受来自RBG/IR图像传感器的输入，并支持高质量的输出，适用于白天或夜间拍摄的视频，以及具有广泛的明暗对比的图像条件。其NPU的设计位于图像后端处理，仅是做为传统ISP处理的一个补充，同时NPU也可用于其它的智能分析算法，复用NPU算力。
 
-![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_516a7d9308f5.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BC%98%E5%8C%96/asset/img_516a7d9308f5.jpg)
 
 目前手机厂商华为、小米、OPPO、VIVO都在自家手机上采用了AI ISP相关算法来提升拍照效果，暂还未完全脱离传统ISP算法，主要还是作为补充。自研ISP是各家厂商目前的主流趋势，而AI ISP则可以帮助各家厂商在手机影像系统上研发出具备自身特色的功能。
 
@@ -140,11 +140,11 @@ OV的OAX8000的片上NPU得到了流行的TensorFlow、Caffe、MXNet和ONNX工�
 
 麒麟9000首创ISP+NPU融合架构，通过精密设计的融合架构将ISP处理流水线和NPU矩阵计算有效结合，实现了实时视频的像素级处理。ISP+NPU融合架构的最大优势在于数据和信息的直通。通过硬件直连的方式将NPU计算直接融入ISP的Pipeline中，利用SmartCache 2.0的大容量、大带宽能力，形成数据流的乒乓处理，即输入数据流和输出数据流都是连续不断的，没有任何停顿，完成数据的无缝缓冲与处理。通过这一硬件的帧内和帧间信息直通机制，麒麟9000能够高效完成ISP和NPU在多场景下的控制信息重配置，即使在一帧内也能实现多个算法无缝切换，如此一来，升级的华为Davinci 2.0架构NPU具备的强大算力也得以充分发挥。
 
-![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_7d748f422829.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BC%98%E5%8C%96/asset/img_7d748f422829.jpg)
 
-### **7 AI ISP算法应用面临的挑战与机遇**
+### <strong>7 AI ISP算法应用面临的挑战与机遇</strong>
 
-#### **7.1  机遇**
+#### <strong>7.1  机遇</strong>
 
 - 国内目前人工智芯片资源投入增加，大力推动人工智能市场应用落地，为AI ISP的实现与应用提供良好的硬件基础与广阔的市场应用场景；
 **

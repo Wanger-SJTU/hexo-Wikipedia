@@ -65,12 +65,12 @@ flowchart TB
 
 ## Concepts clés
 
-- **Surportée (Overreach)** : L'agent active plus de tâches en une seule session que ce qui est optimal. C'est quantifiable — faire 5 fonctionnalités avec 0 passage de bout en bout est une surportée.
-- **Sous-achèvement (Under-finish)** : Le ratio de tâches passant la vérification de bout en bout, parmi toutes les tâches activées, tombe en dessous du seuil. Du code écrit mais des tests qui ne passent pas est du sous-achèvement.
-- **Limite WIP (Work-in-Progress Limit)** : Issu de la méthodologie Kanban. Idée fondamentale : limiter le nombre de tâches en cours simultanément. Pour les agents, WIP=1 est le défaut le plus sûr — terminez-en un avant de commencer le suivant. Comme au buffet — n'empilez pas votre assiette, terminez-en une puis retournez en chercher une autre.
-- **Preuve de complétion (Completion Evidence)** : La condition vérifiable qu'une tâche doit satisfaire pour passer de « en cours » à « terminée ». Sans cela, les agents substituent « le code a l'air correct » à « le comportement passe les tests ».
-- **Surface de portée (Scope Surface)** : Une structure DAG où chaque nœud est une unité de travail et les arêtes sont des dépendances. Les états sont limités à quatre : not_started, active, blocked, passing.
-- **Pression d'achèvement (Completion Pressure)** : La force contraignante que le harness exerce via les limites WIP et les exigences de preuve de complétion, forçant l'agent à terminer la tâche en cours avant d'en commencer une nouvelle.
+- <strong>Surportée (Overreach)</strong> : L'agent active plus de tâches en une seule session que ce qui est optimal. C'est quantifiable — faire 5 fonctionnalités avec 0 passage de bout en bout est une surportée.
+- <strong>Sous-achèvement (Under-finish)</strong> : Le ratio de tâches passant la vérification de bout en bout, parmi toutes les tâches activées, tombe en dessous du seuil. Du code écrit mais des tests qui ne passent pas est du sous-achèvement.
+- <strong>Limite WIP (Work-in-Progress Limit)</strong> : Issu de la méthodologie Kanban. Idée fondamentale : limiter le nombre de tâches en cours simultanément. Pour les agents, WIP=1 est le défaut le plus sûr — terminez-en un avant de commencer le suivant. Comme au buffet — n'empilez pas votre assiette, terminez-en une puis retournez en chercher une autre.
+- <strong>Preuve de complétion (Completion Evidence)</strong> : La condition vérifiable qu'une tâche doit satisfaire pour passer de « en cours » à « terminée ». Sans cela, les agents substituent « le code a l'air correct » à « le comportement passe les tests ».
+- <strong>Surface de portée (Scope Surface)</strong> : Une structure DAG où chaque nœud est une unité de travail et les arêtes sont des dépendances. Les états sont limités à quatre : not_started, active, blocked, passing.
+- <strong>Pression d'achèvement (Completion Pressure)</strong> : La force contraignante que le harness exerce via les limites WIP et les exigences de preuve de complétion, forçant l'agent à terminer la tâche en cours avant d'en commencer une nouvelle.
 
 ## Surportée et sous-achèvement sont symbiotiques
 
@@ -84,7 +84,7 @@ C'est aussi un vieux problème dans le monde humain — Steve McConnell a docume
 
 ### 1. Imposer WIP=1
 
-C'est la méthode la plus directe et la plus efficace. Dans votre harness, dites explicitement à l'agent : **une seule tâche est autorisée en statut « active » à tout moment.** Dans le CLAUDE.md de Claude Code ou l'AGENTS.md de Codex, écrivez :
+C'est la méthode la plus directe et la plus efficace. Dans votre harness, dites explicitement à l'agent : <strong>une seule tâche est autorisée en statut « active » à tout moment.</strong> Dans le CLAUDE.md de Claude Code ou l'AGENTS.md de Codex, écrivez :
 
 ```
 ## Work Rules
@@ -117,19 +117,19 @@ Le harness devrait suivre en continu le VCR (Verified Completion Rate) = tâches
 
 Un projet d'API REST avec 8 fonctionnalités, deux stratégies comparées :
 
-**Mode buffet (sans contrainte)** : L'agent active 5 fonctionnalités simultanément lors de la session 1. Produit ~800 lignes sur 12 fichiers. Taux de réussite des tests de bout en bout : 20 % — seule l'inscription utilisateur fonctionne. Les 4 autres fonctionnalités : schéma de base de données créé mais logique de validation manquante, routes définies mais retournant de mauvais formats de réponse. Comme quelqu'un qui cuisine six plats à la fois, un seul est à peine comestible. À la fin de la session 3, seulement 3 fonctionnalités sur 8 sont complétées.
+<strong>Mode buffet (sans contrainte)</strong> : L'agent active 5 fonctionnalités simultanément lors de la session 1. Produit ~800 lignes sur 12 fichiers. Taux de réussite des tests de bout en bout : 20 % — seule l'inscription utilisateur fonctionne. Les 4 autres fonctionnalités : schéma de base de données créé mais logique de validation manquante, routes définies mais retournant de mauvais formats de réponse. Comme quelqu'un qui cuisine six plats à la fois, un seul est à peine comestible. À la fin de la session 3, seulement 3 fonctionnalités sur 8 sont complétées.
 
-**Mode assiette unique (WIP=1)** : L'agent ne travaille que sur l'inscription utilisateur lors de la session 1. Produit ~200 lignes sur 4 fichiers. Tests de bout en bout : 100 % de réussite. Commite une implémentation propre et vérifiée. À la fin de la session 4, 7 fonctionnalités sur 8 sont complétées (la 8e bloquée par une dépendance externe).
+<strong>Mode assiette unique (WIP=1)</strong> : L'agent ne travaille que sur l'inscription utilisateur lors de la session 1. Produit ~200 lignes sur 4 fichiers. Tests de bout en bout : 100 % de réussite. Commite une implémentation propre et vérifiée. À la fin de la session 4, 7 fonctionnalités sur 8 sont complétées (la 8e bloquée par une dépendance externe).
 
 Résultat : moins de code total (800 vs 1200 lignes) mais du code plus efficace. Taux de complétion : 87,5 % vs 37,5 %. Prenez une bouchée à la fois, et vous mangez finalement plus.
 
 ## Points clés
 
-- **WIP=1 est le réglage de sécurité par défaut pour les harness d'agents** — terminez-en un, puis commencez le suivant ; n'essayez pas de paralléliser. On ne devient pas gros en une bouchée.
-- **La preuve de complétion doit être exécutable** — « le code a l'air correct » ne compte pas ; « curl retourne 201 » compte.
-- **La surface de portée doit être externalisée dans un fichier** — pas juste mentionnée en conversation, mais enregistrée dans un format lisible par machine dans le repo.
-- **La surportée et le sous-achèvement sont symbiotiques** — résoudre l'un résout l'autre.
-- **« Faire moins mais terminer » bat toujours « faire plus mais laisser à moitié »** — les lignes de code de l'agent et le taux de complétion des fonctionnalités sont corrélés négativement. La qualité bat toujours la quantité.
+- <strong>WIP=1 est le réglage de sécurité par défaut pour les harness d'agents</strong> — terminez-en un, puis commencez le suivant ; n'essayez pas de paralléliser. On ne devient pas gros en une bouchée.
+- <strong>La preuve de complétion doit être exécutable</strong> — « le code a l'air correct » ne compte pas ; « curl retourne 201 » compte.
+- <strong>La surface de portée doit être externalisée dans un fichier</strong> — pas juste mentionnée en conversation, mais enregistrée dans un format lisible par machine dans le repo.
+- <strong>La surportée et le sous-achèvement sont symbiotiques</strong> — résoudre l'un résout l'autre.
+- <strong>« Faire moins mais terminer » bat toujours « faire plus mais laisser à moitié »</strong> — les lignes de code de l'agent et le taux de complétion des fonctionnalités sont corrélés négativement. La qualité bat toujours la quantité.
 
 ## Pour aller plus loin
 
@@ -140,8 +140,8 @@ Résultat : moins de code total (800 vs 1200 lignes) mais du code plus efficace.
 
 ## Exercices
 
-1. **Atomisation des tâches** : Prenez une exigence large (par ex., « implémenter un système de gestion des utilisateurs ») et décomposez-la en au moins 5 unités de travail atomiques. Pour chaque unité, spécifiez : (a) une description de comportement unique, (b) une commande de vérification exécutable, (c) les dépendances. Vérifiez si la décomposition satisfait la contrainte WIP=1.
+1. <strong>Atomisation des tâches</strong> : Prenez une exigence large (par ex., « implémenter un système de gestion des utilisateurs ») et décomposez-la en au moins 5 unités de travail atomiques. Pour chaque unité, spécifiez : (a) une description de comportement unique, (b) une commande de vérification exécutable, (c) les dépendances. Vérifiez si la décomposition satisfait la contrainte WIP=1.
 
-2. **Expérience comparative** : Exécutez le même projet deux fois — une fois sans contraintes, une fois avec WIP=1 imposé. Comparez : le taux de complétion vérifié, le nombre total de lignes de code, le ratio de code effectif.
+2. <strong>Expérience comparative</strong> : Exécutez le même projet deux fois — une fois sans contraintes, une fois avec WIP=1 imposé. Comparez : le taux de complétion vérifié, le nombre total de lignes de code, le ratio de code effectif.
 
-3. **Audit des preuves de complétion** : Examinez la sortie d'une exécution récente d'agent, en classant chaque modification de code comme « comportement complété », « comportement incomplet » ou « échafaudage ». Ajoutez les commandes de vérification manquantes pour chaque comportement incomplet.
+3. <strong>Audit des preuves de complétion</strong> : Examinez la sortie d'une exécution récente d'agent, en classant chaque modification de code comme « comportement complété », « comportement incomplet » ou « échafaudage ». Ajoutez les commandes de vérification manquantes pour chaque comportement incomplet.

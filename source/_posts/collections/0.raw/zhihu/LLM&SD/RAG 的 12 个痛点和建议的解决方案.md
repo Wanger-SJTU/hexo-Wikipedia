@@ -17,7 +17,7 @@ source_url: https://zhuanlan.zhihu.com/p/681066379
 
 https://archive.is/bNbZo
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_aa1a71265934.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_aa1a71265934.jpg)
 
 · Pain Point 1: Missing Content 内容缺失**· Pain Point 2: Missed the Top Ranked Documents 错过排名靠前的文档
 · Pain Point 3: Not in Context — Consolidation Strategy Limitations 不在上下文中——整合战略的局限性
@@ -41,7 +41,7 @@ First, let’s examine the seven pain points addressed in the paper mentioned ab
 
 首先，让我们研究一下上述论文中提到的七个痛点；请参阅下图。然后，我们将添加另外五个痛点及其建议的解决方案。
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_40078c49b462.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_40078c49b462.jpg)
 
 Image source: Seven Failure Points When Engineering a Retrieval Augmented Generation SystemPain Point 1: Missing Content  内容缺失
 The RAG system provides a plausible but incorrect answer when the actual answer is not in the knowledge base, rather than stating it doesn’t know. Users receive misleading information, leading to frustration.
@@ -50,7 +50,7 @@ We have two proposed solutions:
 当实际答案不在知识库中时，RAG系统提供了一个看似合理但不正确的答案，而不是说它不知道。用户收到误导性信息，导致沮丧。
 
 我们提出了两种解决方案：
-Clean your data  **清理数据**
+Clean your data  <strong>清理数据</strong>
 **Garbage in, garbage out. If your source data is of poor quality, such as containing conflicting information, no matter how well you build your RAG pipeline, it cannot do the magic to output gold from the garbage you feed it. This proposed solution is not only for this pain point but all the pain points listed in this article. Clean data is the prerequisite for any well-functioning RAG pipeline.
 
 垃圾进，垃圾出。如果你的源数据质量很差，比如包含冲突信息，无论你构建的RAG管道有多好，它都无法从你提供的垃圾中输出黄金。这个拟议的解决方案不仅适用于这个痛点，也适用于本文中列出的所有痛点。干净的数据是任何运行良好的RAG管道的先决条件。**Better prompting 更好的提示
@@ -348,8 +348,8 @@ print(str(response))`
 A Pydantic program serves as a versatile framework that converts an input string into a structured Pydantic object. LlamaIndex provides several categories of Pydantic programs: Pydantic程序是一个通用框架，用于将输入字符串转换为结构化Pydantic对象。LlamaIndex提供了几个类别的Pydantic程序：
 
 - LLM Text Completion Pydantic Programs**: These programs process input text and transform it into a structured object defined by the user, utilizing a text completion API combined with output parsing. LLM文本完成Pydantic程序：这些程序处理输入文本，并将其转换为用户定义的结构化对象，使用文本完成API结合输出解析。
-- **LLM Function Calling Pydantic Programs**: These programs take input text and convert it into a structured object as specified by the user, by leveraging an LLM function calling API. LLM函数调用Pydantic程序：这些程序利用调用API的LLM函数，将输入文本转换为用户指定的结构化对象。
-- **Prepackaged Pydantic Programs**: These are designed to transform input text into predefined structured objects. 预打包Pydantic程序：这些程序旨在将输入文本转换为预定义的结构化对象。
+- <strong>LLM Function Calling Pydantic Programs</strong>: These programs take input text and convert it into a structured object as specified by the user, by leveraging an LLM function calling API. LLM函数调用Pydantic程序：这些程序利用调用API的LLM函数，将输入文本转换为用户指定的结构化对象。
+- <strong>Prepackaged Pydantic Programs</strong>: These are designed to transform input text into predefined structured objects. 预打包Pydantic程序：这些程序旨在将输入文本转换为预定义的结构化对象。
 See below a sample code snippet from the OpenAI pydantic program. For more details, check out LlamaIndex’s documentation on the pydantic program for links to the notebooks/guides of the different pydantic programs. 请参阅下面的OpenAI pydantic程序的示例代码片段。有关更多详细信息，请查看LlamaIndex关于pydantic程序的文档，以获取不同pydanic程序的笔记本/指南的链接。
 
 `from pydantic import BaseModel
@@ -412,10 +412,10 @@ Partial responses aren’t wrong; however, they don’t provide all the details,
 
 Comparison questions especially do poorly in naïve RAG approaches. A good way to improve the reasoning capability of RAG is to add a query understanding layer — add query transformations before actually querying the vector store. Here are four different query transformations: 比较问题在天真的RAG方法中尤其表现不佳。提高RAG推理能力的一个好方法是添加查询理解层——在实际查询向量存储之前添加查询转换。以下是四种不同的查询转换：
 
-- **Routing**: Retain the initial query while pinpointing the appropriate subset of tools it pertains to. Then, designate these tools as the suitable options. 路由：保留初始查询，同时精确定位它所属的工具的适当子集。然后，将这些工具指定为适当的选项。
-- **Query-Rewriting**: Maintain the selected tools, but reformulate the query in multiple ways to apply it across the same set of tools. 查询重写：维护所选工具，但以多种方式重新编写查询，以便将其应用于同一组工具。
-- **Sub-Questions**: Break down the query into several smaller questions, each targeting different tools as determined by their metadata. 子问题：将查询分解为几个较小的问题，每个问题都针对由元数据确定的不同工具。
-- **ReAct Agent Tool Selection**: Based on the original query, determine which tool to use and formulate the specific query to run on that tool. ReAct Agent工具选择：根据原始查询，确定要使用的工具，并制定要在该工具上运行的特定查询。
+- <strong>Routing</strong>: Retain the initial query while pinpointing the appropriate subset of tools it pertains to. Then, designate these tools as the suitable options. 路由：保留初始查询，同时精确定位它所属的工具的适当子集。然后，将这些工具指定为适当的选项。
+- <strong>Query-Rewriting</strong>: Maintain the selected tools, but reformulate the query in multiple ways to apply it across the same set of tools. 查询重写：维护所选工具，但以多种方式重新编写查询，以便将其应用于同一组工具。
+- <strong>Sub-Questions</strong>: Break down the query into several smaller questions, each targeting different tools as determined by their metadata. 子问题：将查询分解为几个较小的问题，每个问题都针对由元数据确定的不同工具。
+- <strong>ReAct Agent Tool Selection</strong>: Based on the original query, determine which tool to use and formulate the specific query to run on that tool. ReAct Agent工具选择：根据原始查询，确定要使用的工具，并制定要在该工具上运行的特定查询。
 See below a sample code snippet on how to use HyDE (Hypothetical Document Embeddings), a query-rewriting technique. Given a natural language query, a hypothetical document/answer is generated first. This hypothetical document is then used for embedding lookup rather than the raw query. 请参阅下面关于如何使用HyDE（假设文档嵌入）（一种查询重写技术）的示例代码片段。给定一个自然语言查询，首先生成一个假设文档/答案。然后，这个假设文档被用于嵌入查找，而不是原始查询。
 
 `# load documents, build index
@@ -556,7 +556,7 @@ print(f"Optimal model: {response.raw['model']}")`
 
 OpenRouter is a unified API to access any LLM. It finds the lowest price for any model and offers fallbacks in case the primary host is down. According to OpenRouter’s documentation, the main benefits of using OpenRouter include: OpenRouter是一个统一的API，用于访问任何LLM。它找到了任何型号的最低价格，并在主主机出现故障时提供回退。根据OpenRouter文档，使用OpenRouter的主要好处包括：
 
-> *Benefit from the race to the bottom**. OpenRouter finds the lowest price for each model across dozens of providers. You can also let users pay for their own models via* *OAuth PKCE. 从竞争中获益到底。OpenRouter在数十家供应商中找到了每种型号的最低价格。您还可以让用户通过OAuth PKCE为自己的模型付费。****Standardized API**. No need to change your code when switching between models or providers. API标准化。在模型或提供者之间切换时，无需更改代码。****The best models will be used the most**. Compare models by* *how often they’re used, and soon, for which purposes. 最好的型号将被使用得最多。根据模型的使用频率和使用时间进行比较。*
+> *Benefit from the race to the bottom**. OpenRouter finds the lowest price for each model across dozens of providers. You can also let users pay for their own models via* *OAuth PKCE. 从竞争中获益到底。OpenRouter在数十家供应商中找到了每种型号的最低价格。您还可以让用户通过OAuth PKCE为自己的模型付费。**<strong>Standardized API</strong>. No need to change your code when switching between models or providers. API标准化。在模型或提供者之间切换时，无需更改代码。**<strong>The best models will be used the most</strong>. Compare models by* *how often they’re used, and soon, for which purposes. 最好的型号将被使用得最多。根据模型的使用频率和使用时间进行比较。*
 
 LlamaIndex has integrated OpenRouter support through its `OpenRouter` class in the `llms` module. See the code snippet below. Check out more details on the OpenRouter page. LlamaIndex通过llms模块中的OpenRouter类集成了对OpenRouter的支持。请参阅下面的代码片段。查看OpenRouter页面上的更多详细信息。
 
@@ -625,7 +625,7 @@ The implementation for the helper function `moderate_and_query`:
 
 The sample output below shows that the query is unsafe and violated category 8 in the custom taxonomy.
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_7bedaa9d25d6.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_7bedaa9d25d6.jpg)
 
 For more details on how to use Llama Guard, check out my previous article, Safeguarding Your RAG Pipelines: A Step-by-Step Guide to Implementing Llama Guard with LlamaIndex. 有关如何使用Llama Guard的更多详细信息，请参阅我之前的文章《保护您的RAG管道：使用LlamaIndex实施Llama警卫队的分步指南》。
 
@@ -634,11 +634,11 @@ For more details on how to use Llama Guard, check out my previous article, Safeg
 We explored 12 pain points (7 from the paper and 5 additional ones) in developing RAG pipelines and provided corresponding proposed solutions to all of them. See the diagram below, adapted from the original diagram from the paper [Seven Failure Points When Engineering a Retrieval Augmented Generation System](https://link.zhihu.com/?target=https%3A//archive.is/o/bNbZo/https%3A//arxiv.org/pdf/2401.05856.pdf). 我们探讨了开发RAG管道的12个痛点（论文中的7个和另外的5个），并为所有这些痛点提供了相应的解决方案。请参阅下图，该图改编自论文《设计检索增强生成系统时的七个故障点》中的原始图。
  
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_aa1a71265934.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_aa1a71265934.jpg)
 
 Putting all 12 RAG pain points and their proposed solutions side by side in a table, we now have:
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_dbdf2e2e7a29.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_dbdf2e2e7a29.jpg)
 
 While this list is not exhaustive, it aims to shed light on the multifaceted challenges of RAG system design and implementation. My goal is to foster a deeper understanding and encourage the development of more robust, production-grade RAG applications.
 Happy coding!

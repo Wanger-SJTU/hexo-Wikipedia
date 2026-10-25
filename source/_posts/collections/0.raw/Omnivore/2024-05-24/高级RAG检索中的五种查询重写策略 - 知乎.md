@@ -41,11 +41,11 @@ id: e80bbbef-9848-434e-9b19-c39c38227efe
 
 查询重写是使查询与文档语义一致的关键技术。例如：
 
-* **假设文档嵌入 (HyDE)** ：通过创建虚拟文档来使查询和文档的语义空间保持一致。
-* **重写-检索-阅读**：提出了一种全新的框架，它颠覆了传统的检索-阅读顺序，将重点放在查询重写上。
-* **回溯提示 (Step-Back Prompting)**： 允许大语言模型 (LLM) 基于高层概念进行抽象推理和检索。
-* **Query2Doc**： 利用来自大语言模型 (LLM) 的少量提示生成伪文档，并将这些伪文档与原始查询合并，构建新的查询。
-* **ITER-RETGEN**：提出了一种迭代式检索生成方法。它将前一次生成的结果与之前的查询相结合，然后检索相关文档并生成新的结果。这个过程会重复多次，直到最终得到理想的结果。
+* <strong>假设文档嵌入 (HyDE)</strong> ：通过创建虚拟文档来使查询和文档的语义空间保持一致。
+* <strong>重写-检索-阅读</strong>：提出了一种全新的框架，它颠覆了传统的检索-阅读顺序，将重点放在查询重写上。
+* <strong>回溯提示 (Step-Back Prompting)</strong>： 允许大语言模型 (LLM) 基于高层概念进行抽象推理和检索。
+* <strong>Query2Doc</strong>： 利用来自大语言模型 (LLM) 的少量提示生成伪文档，并将这些伪文档与原始查询合并，构建新的查询。
+* <strong>ITER-RETGEN</strong>：提出了一种迭代式检索生成方法。它将前一次生成的结果与之前的查询相结合，然后检索相关文档并生成新的结果。这个过程会重复多次，直到最终得到理想的结果。
 
 本文将介绍几种常用的查询重写策略，并探讨它们在实际项目中的应用场景。相信通过对查询重写的深入研究，能够进一步提升 RAG 系统的性能，为用户提供更加精准、高效的答案。
 
@@ -148,7 +148,7 @@ for i, (start_event, end_event) in enumerate(
 
 LlamaIndex 使用独立的 Python 包 llama-index-question-gen-openai 来生成子问题。它默认使用 OpenAI 模型进行子问题生成。提示模板可以在 LlamaIndex 官方仓库中找到。我们可以使用以下两种方法打印 LlamaIndex 中的提示：
 
-第一种方法是使用 **get\_prompts()** 方法。
+第一种方法是使用 <strong>get\_prompts()</strong> 方法。
 
 ```maxima
 prompts = query_engine.get_prompts()
@@ -163,7 +163,7 @@ for key in prompts.keys():
 * 我们遍历提示对象的每个键，检索与每个键对应的提示模板，并将其打印出来。
 * 子问题查询将包含 2 个提示模板：一个用于子问题生成，另一个用于常规 RAG。
 
-第二种方法是使用 **set\_global\_handler** 进行全局设置：
+第二种方法是使用 <strong>set\_global\_handler</strong> 进行全局设置：
 
 ```stylus
 from llama_index.core import set_global_handler
@@ -175,15 +175,15 @@ set_global_handler("simple")
 
 ## 三、HyDE 查询转换
 
-论文**「Precise Zero-Shot Dense Retrieval without Relevance Labels」** 提出了一种名为假设文档嵌入 (HyDE) 的方法。HyDE (Hypothetical Document Embeddings) 的本质是使用大语言模型 (LLM) 为用户查询生成假设文档。这些文档是根据 LLM 本身的知识生成的，可能包含错误或不准确之处。但是，它们与 RAG 知识库中的文档相关联。然后，通过使用这些假设文档来检索具有相似向量的真实文档，从而提高检索的准确性。你可以在此处参考有关 HyDE 的论文。下图展示了 HyDE 的主要流程。
+论文<strong>「Precise Zero-Shot Dense Retrieval without Relevance Labels」</strong> 提出了一种名为假设文档嵌入 (HyDE) 的方法。HyDE (Hypothetical Document Embeddings) 的本质是使用大语言模型 (LLM) 为用户查询生成假设文档。这些文档是根据 LLM 本身的知识生成的，可能包含错误或不准确之处。但是，它们与 RAG 知识库中的文档相关联。然后，通过使用这些假设文档来检索具有相似向量的真实文档，从而提高检索的准确性。你可以在此处参考有关 HyDE 的论文。下图展示了 HyDE 的主要流程。
 
 ![](https://proxy-prod.omnivore-image-cache.app/1400x397,syvPvLI60h7oCGs70V6JspYGk8V7_Gx4QhrRYPPmhtlA/https://pic1.zhimg.com/v2-bf8b005abea93074dabe460fda436698_b.jpg)
 
 HyDE 的工作流程主要分为四个步骤：
 
-1. **生成假设文档:** 使用大语言模型 (LLM) 根据用户查询生成若干个假设文档。这些假设文档可能并非完全真实，甚至可能包含错误，但它们应该与相关文档具有相似性。这一步骤旨在通过大语言模型来理解用户的查询意图。
-2. **文档编码:** 将生成的假设文档输入到编码器中，将其转换为一个密集向量 f(dk)。编码器的作用类似于一个过滤器，能够过滤掉假设文档中的噪声。这里，dk 表示第 k 个生成的假设文档，f 代表编码器操作。
-3. **计算向量:** 根据公式，对 k 个编码后的向量进行平均，得到一个新的向量 v。
+1. <strong>生成假设文档:</strong> 使用大语言模型 (LLM) 根据用户查询生成若干个假设文档。这些假设文档可能并非完全真实，甚至可能包含错误，但它们应该与相关文档具有相似性。这一步骤旨在通过大语言模型来理解用户的查询意图。
+2. <strong>文档编码:</strong> 将生成的假设文档输入到编码器中，将其转换为一个密集向量 f(dk)。编码器的作用类似于一个过滤器，能够过滤掉假设文档中的噪声。这里，dk 表示第 k 个生成的假设文档，f 代表编码器操作。
+3. <strong>计算向量:</strong> 根据公式，对 k 个编码后的向量进行平均，得到一个新的向量 v。
 
 ![](https://proxy-prod.omnivore-image-cache.app/938x220,sZ5LAFRmI_dyysmmzkCVn32Z_eNaxnufGmdHzftemKks/https://pic2.zhimg.com/v2-5faa265e79c6f9f8204f9fd7cca779fd_b.jpg)
 
@@ -191,7 +191,7 @@ HyDE 的工作流程主要分为四个步骤：
 
 ![](https://proxy-prod.omnivore-image-cache.app/1042x206,sDEjRBEDoiU82NO0j-YhncY0cHwWgMsutA_yjxWEY5tI/https://pic4.zhimg.com/v2-dd2bdd45344d8d722b8c6eae951bdbbf_b.jpg)
 
-1. **文档检索:** 使用向量 v 从文档库中检索答案。由于向量 v 包含了用户查询和所需答案模式的信息，因此能够提高检索的召回率。
+1. <strong>文档检索:</strong> 使用向量 v 从文档库中检索答案。由于向量 v 包含了用户查询和所需答案模式的信息，因此能够提高检索的召回率。
 
 下图展示了我对 HyDE 的理解。HyDE 的目标是生成假设文档，使得最终的查询向量 v 与向量空间中的实际文档尽可能接近。
 
@@ -217,9 +217,9 @@ embedding 0: Loki used the Tesseract, also known as the Cosmic Cube, in his atte
 embedding 1: What mysterious item did Loki use in an attempt to conquer Earth?
 ```
 
-* 首先，实例化一个 **HyDEQueryTransform** (HyDEQueryTransform) 对象，并指定参数**include\_original=True**，表示包含原始问题。需要注意的是，**include\_original** 的默认值为 **True**，这里传递参数仅用于演示。
-* 然后，用问题调用 **hyde** 对象，返回一个 **QueryBundle** 对象。
-* QueryBundle 对象的 **embedding\_strs** 属性是一个数组，其中第一个元素是生成的假设文档。如果 **include\_original** 为 **True**，则数组的第二个元素将包含原始问题。
+* 首先，实例化一个 <strong>HyDEQueryTransform</strong> (HyDEQueryTransform) 对象，并指定参数<strong>include\_original=True</strong>，表示包含原始问题。需要注意的是，<strong>include\_original</strong> 的默认值为 <strong>True</strong>，这里传递参数仅用于演示。
+* 然后，用问题调用 <strong>hyde</strong> 对象，返回一个 <strong>QueryBundle</strong> 对象。
+* QueryBundle 对象的 <strong>embedding\_strs</strong> 属性是一个数组，其中第一个元素是生成的假设文档。如果 <strong>include\_original</strong> 为 <strong>True</strong>，则数组的第二个元素将包含原始问题。
 
 我们发现，LLM 基于其知识，为用户提问提供了很好的答案，生成的假设文档也与电影情节摘要相符。
 
@@ -251,7 +251,7 @@ print(f"hyde query result: {response}")
 hyde query result: Loki used the Tesseract in his attempt to conquer Earth. This powerful artifact, also kn...
 ```
 
-* 构建一个基于 **HyDEQueryTransform** 和原始查询引擎的 **TransformQueryEngine**。
+* 构建一个基于 <strong>HyDEQueryTransform</strong> 和原始查询引擎的 <strong>TransformQueryEngine</strong>。
 * 查询引擎的查询方法首先为原始问题生成假设文档，然后基于这些假设文档进行搜索并生成答案。
 
 虽然得到了正确结果，但我们无法确定 LlamaIndex 是否在检索过程中使用了假设文档，可以通过以下代码进行验证。
@@ -272,7 +272,7 @@ for node in nodes:
     print(f"node id: {node.id_}, score: {node.get_score()}")
 ```
 
-* 在第一部分，使用 **TransformRetriever** 基于原始检索器和 **HyDEQueryTransform** 构建一个新的检索器。
+* 在第一部分，使用 <strong>TransformRetriever</strong> 基于原始检索器和 <strong>HyDEQueryTransform</strong> 构建一个新的检索器。
 * 使用新的检索器检索用户问题，并打印出检索到的文档 ID 和得分。
 * 在第二部分，使用原始检索器检索假设文档。假设文档是从 QueryBundle 对象的 embedding\_strs 获取的，该对象包含两个元素：一个假设文档和原始问题。
 * 打印出假设文档的文档 ID 和得分。
@@ -323,12 +323,12 @@ HyDE 是一种无监督的方法，在训练过程中没有对模型进行任何
 
 ![](https://proxy-prod.omnivore-image-cache.app/1400x1000,sJoGE3B1TB_kdoQx8jwVNG8NFp37YoXPUl-Tj2-A9LGA/https://pic3.zhimg.com/v2-9363dafbf271f1253352f4a2493654d2_b.jpg)
 
-**回溯提示的实施步骤**
+<strong>回溯提示的实施步骤</strong>
 
 回溯提示主要包括以下两个步骤：
 
-1. **抽象化（Abstraction）:** 我们首先引导大语言模型提出一个更广泛的问题，关注于高级概念或原则，而非直接解答用户的查询。随后，我们检索与这些概念或原则相关的信息。
-2. **推理（Reasoning）:** 基于检索到的关于高级概念或原则的信息，大语言模型可以进行抽象推理，从而推导出原始问题的答案。
+1. <strong>抽象化（Abstraction）:</strong> 我们首先引导大语言模型提出一个更广泛的问题，关注于高级概念或原则，而非直接解答用户的查询。随后，我们检索与这些概念或原则相关的信息。
+2. <strong>推理（Reasoning）:</strong> 基于检索到的关于高级概念或原则的信息，大语言模型可以进行抽象推理，从而推导出原始问题的答案。
 
 通过这种抽象化和推理的过程，回溯提示不仅提高了大语言模型在处理复杂问题时的准确性，而且增强了其在抽象思维和逻辑推理方面的能力。
 
@@ -440,7 +440,7 @@ step back result: Yes, in the Marvel Cinematic Universe, there was a significant
 
 ## 五、重写-检索-阅读
 
-论文**「Query Rewriting for Retrieval-Augmented Large Language Models」** 提出了一种新的方法：重写-检索-阅读。该方法认为，在实际应用中，原始查询并非总是最适合进行检索的。
+论文<strong>「Query Rewriting for Retrieval-Augmented Large Language Models」</strong> 提出了一种新的方法：重写-检索-阅读。该方法认为，在实际应用中，原始查询并非总是最适合进行检索的。
 
 因此，该论文建议先使用大语言模型 (LLM) 对查询进行重写，然后再进行检索和答案生成，而不是直接从原始查询中检索内容并生成答案。下图展示了这种方法的流程。
 
@@ -460,7 +460,7 @@ pip install duckduckgo-search
 pip install langchain_openai
 ```
 
-**环境配置与库导入**
+<strong>环境配置与库导入</strong>
 
 ```moonscript
 import os
@@ -473,7 +473,7 @@ from langchain_core.runnables import RunnablePassthrough
 from langchain_openai import ChatOpenAI
 ```
 
-**构建检索链并执行简单的查询**
+<strong>构建检索链并执行简单的查询</strong>
 
 ```python
 def june_print(msg, res):
@@ -521,7 +521,7 @@ june_print(
 )
 ```
 
-**结果展示**
+<strong>结果展示</strong>
 
 ```monkey
 (langchain) Florian:~ Florian$ python /Users/Florian/Documents/test_rewrite_retrieve_read.py 
@@ -535,7 +535,7 @@ The Los Angeles Lakers are the 2020 NBA Champions!Watch their championship celeb
 
 结果表明，根据搜索到的上下文，关于 “langchain” 的信息很少。
 
-**构建查询重写器**
+<strong>构建查询重写器</strong>
 
 ```python
 rewrite_template = """Provide a better search query for \
@@ -555,7 +555,7 @@ june_print(
 )
 ```
 
-**结果展示**
+<strong>结果展示</strong>
 
 ```applescript
 ----------------------------------------------------------------------------------------------------
@@ -563,7 +563,7 @@ Rewritten query:
 What is langchain framework and how does it work?
 ```
 
-**构建重写-检索-阅读链并使用重写后的查询**
+<strong>构建重写-检索-阅读链并使用重写后的查询</strong>
 
 ```lisp
 rewrite_retrieve_read_chain = (
@@ -582,7 +582,7 @@ june_print(
 )
 ```
 
-**结果展示**
+<strong>结果展示</strong>
 
 ```routeros
 ----------------------------------------------------------------------------------------------------
@@ -598,7 +598,7 @@ Query2doc 是一种利用大型语言模型 (LLM) 进行查询扩展的技术。
 
 ![](https://proxy-prod.omnivore-image-cache.app/736x866,sMxTI6zfWdT1tx-ZKR53MsmHKrc_Vcklg_ZoOt5SjXOQ/https://pic3.zhimg.com/v2-c1e8d5f416c8319278c74d30fe860386_b.jpg)
 
-**密集检索 (Dense Retrieval)** 是一种利用语义向量来进行文档检索的技术。它将文档和查询都映射到一个高维向量空间中，然后根据向量之间的相似度来进行检索。
+<strong>密集检索 (Dense Retrieval)</strong> 是一种利用语义向量来进行文档检索的技术。它将文档和查询都映射到一个高维向量空间中，然后根据向量之间的相似度来进行检索。
 
 在密集检索中，新的查询表示为 q+，它将原始查询 (q) 和伪文档 (d’) 串联起来，并用 \[SEP\] 分隔：q+ = concat(q, \[SEP\], d’)。
 
@@ -632,7 +632,7 @@ Query2doc 与 HyDE 方法的另一个区别在于，Query2doc 训练了一个监
 
 在实际应用中，选择合适的查询重写方法需要根据具体问题和性能要求来权衡。虽然查询重写能够显著提升检索结果的质量，但每次调用 LLM 都会带来额外的计算成本和延迟。因此，需要在保证检索效果的同时，合理管理资源和性能。
 
-**参考资料**
+<strong>参考资料</strong>
 
 \[1\]. Luyu Gao, Xueguang Ma, Jimmy Lin, Jamie Callan, R. (2022). Precise Zero-Shot Dense Retrieval without Relevance Labels: [https://arxiv.org/pdf/2212.10496.pdf](https://link.zhihu.com/?target=https%3A//arxiv.org/pdf/2212.10496.pdf)
 

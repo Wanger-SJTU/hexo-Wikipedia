@@ -19,7 +19,7 @@ source_url: https://zhuanlan.zhihu.com/p/2026612737929684371
 
 先贴上这张图片，图源水印，从这张图上我们可以看到prefill阶段生成的kv cache在decode阶段的作用及参与运算的过程。
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_3d87eb018851.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_3d87eb018851.jpg)
 
 接下来让我们详细计算decode阶段的attention和ffn，看一下和prefill阶段的主要差异是什么。
 
@@ -29,11 +29,11 @@ attention的详细计算见[PD分离 vs AF分离的底层理论(roofline)基础]
 - QKV线性投影计算
 x_new = [B, 1, H], 这里seq_len = 1了
 
-Q_new = x_new x q_proj = [B, 1, H] x [H, H] = [B, 1, H]，**QFLOPS = BH^2**
+Q_new = x_new x q_proj = [B, 1, H] x [H, H] = [B, 1, H]，<strong>QFLOPS = BH^2</strong>
 
-K_new = x_new x k_proj = [B, 1, H] x [H, H] = [B, 1, H],  **KFLOPS=BH^2**
+K_new = x_new x k_proj = [B, 1, H] x [H, H] = [B, 1, H],  <strong>KFLOPS=BH^2</strong>
 
-V_new = x_new x v_proj = [B, 1, H] x [H, H] = [B, 1, H], **VFLOPS=BH^2**
+V_new = x_new x v_proj = [B, 1, H] x [H, H] = [B, 1, H], <strong>VFLOPS=BH^2</strong>
 
 将K_new和V_new加入到kv cache里，更新kv cache，K = [B, L+1, H], V = [B, L+1, H]
 
@@ -48,17 +48,17 @@ K-->reshaped_K: <span class="wikilink wikilink--missing" title="未导入的页�
 
 V-->reshaped_V: <span class="wikilink wikilink--missing" title="未导入的页面">B,L+1,H</span>-->[B, d, L+1, h]
 
-s = QK^T=[B,d,1,h]x[B,d,h,L+1] = [B,d,1,L+1], **sFLOPS=BH(L+1)**
+s = QK^T=[B,d,1,h]x[B,d,h,L+1] = [B,d,1,L+1], <strong>sFLOPS=BH(L+1)</strong>
 
 - 自注意力计算
-attn = softmax(s/ \sqrt{d} )V = [B,d,1,L+1] x [B, d, L+1, h] = [B,d,1,h], **attnFLOPS=BH(L+1)**,因为我们关注的是flops，所以softmax这种算子的计算我们暂且忽略。
+attn = softmax(s/ \sqrt{d} )V = [B,d,1,L+1] x [B, d, L+1, h] = [B,d,1,h], <strong>attnFLOPS=BH(L+1)</strong>,因为我们关注的是flops，所以softmax这种算子的计算我们暂且忽略。
 
 - 多头合并以及输出矩阵线性投影
 attn_out = concat（attn）x Wo = concat([B,d,1,h]) x [H,H] = [B,1,H]x[H,H] = [B,1,H],
 
-**attn_outFLOPS=BH^2**
+<strong>attn_outFLOPS=BH^2</strong>
 
-**attnFlops=3BH^2+BH(L+1)+BH(L+1) + BH^2 = 4BH^2 + 2BH(L+1)**
+<strong>attnFlops=3BH^2+BH(L+1)+BH(L+1) + BH^2 = 4BH^2 + 2BH(L+1)</strong>
 
 至此，decode阶段的attention模块flops计算完毕。接下来计算attention部分的访存量。
 
@@ -73,13 +73,13 @@ Decode阶段我们只需要计算新token的QKV。
 
 x = [B, 1, H], q_proj=[H,H], v_proj=[H,H], k_proj=[H,H]
 
-Q=x*q_proj=[B,1,H], 读访存量：**BH+H^2**, 写访存量：**BH**
+Q=x*q_proj=[B,1,H], 读访存量：<strong>BH+H^2</strong>, 写访存量：<strong>BH</strong>
 
-K=x*k_proj=[B,1,H], 读访存量：**BH+H^2**, 写访存量：**BH**
+K=x*k_proj=[B,1,H], 读访存量：<strong>BH+H^2</strong>, 写访存量：<strong>BH</strong>
 
-V=x*v_proj=[B,1,H], 读访存量：**BH+H^2**, 写访存量：**BH**
+V=x*v_proj=[B,1,H], 读访存量：<strong>BH+H^2</strong>, 写访存量：<strong>BH</strong>
 
-QKV计算阶段的总访存量=**6BH+3H^2**
+QKV计算阶段的总访存量=<strong>6BH+3H^2</strong>
 
 - 相似度矩阵计算过程的访存量
 Q-->reshaped_Q: <span class="wikilink wikilink--missing" title="未导入的页面">B,1,H</span>-->[B, d, 1, h],
@@ -88,22 +88,22 @@ K-->reshaped_K: <span class="wikilink wikilink--missing" title="未导入的页�
 
 s = reshaped_Q x reshaped_K^T=[B,d,1,h]x[B,d,h,L+1] = [B,d,1,L+1]
 
-读访存量：**B(L+1)H+BH**，写访存量：**Bd(L+1)**
+读访存量：<strong>B(L+1)H+BH</strong>，写访存量：<strong>Bd(L+1)</strong>
 
 - softmax计算
-sf = softmax(s/ \sqrt{d}\ )，读访存量：**Bd(L+1)**， 写访存量：**Bd(L+1)**
+sf = softmax(s/ \sqrt{d}\ )，读访存量：<strong>Bd(L+1)</strong>， 写访存量：<strong>Bd(L+1)</strong>
 
 - 自注意力分数计算
 attn = sf x V = [B,d,1,L+1] x [B, d, L+1, h] = [B,d,1,h],
 
-读访存量：**Bd(L+1) + BH(L+1)**，写访存量：Bdh=**BH**
+读访存量：<strong>Bd(L+1) + BH(L+1)</strong>，写访存量：Bdh=<strong>BH</strong>
 
 - 输出
 out = concat(attn) x Wo = [B, 1, H] x [H,H] = [B, 1, H]
 
-读访存量：**BH+H^2**，写访存量：**BH**
+读访存量：<strong>BH+H^2</strong>，写访存量：<strong>BH</strong>
 
-因此，attention阶段总的访存量=6BH+3H^2 + B(L+1)H+BH + Bd(L+1) + Bd(L+1) + Bd(L+1)+Bd(L+1)+BH(L+1)+ BH+ BH+H^2 +  BH = **4H^2+12BH+4Bd+2BHL+4BdL**
+因此，attention阶段总的访存量=6BH+3H^2 + B(L+1)H+BH + Bd(L+1) + Bd(L+1) + Bd(L+1)+Bd(L+1)+BH(L+1)+ BH+ BH+H^2 +  BH = <strong>4H^2+12BH+4Bd+2BHL+4BdL</strong>
 
 - attention AI
  attn_AI = attnFlops/attn_访存 = (4BH^2 + 2BH(L+1)) / (4H^2+12BH+4Bd+2BHL+4BdL)，
@@ -130,4 +130,4 @@ FFN阶段FLPOS=BHI+BHI+BI+BHI=3BHI+BI , FFN阶段访存= BH+HI +BI+BH+HI+BI+2BI+
 
 FFN_AI = (3BHI+BI) / (3BH+3HI +6BI) = (3HI+I)/(3H+3HI/B + 6I),工业界大BATCH场景下，FFN_AI>硬件平衡AI，是算力瓶颈。
 
-**Decode_AI** = (attn_flops + ffn_flops) /(attn_访存+ffn_访存) = (4BH^2+2BH(L+1)+3BHI+BI) / (4H^2+15BH+4Bd+2BHL+4BdL+3HI+6BI4BH^2+2BH(L+1)+3BHI+BI​) \approx H/H+2d，远远小于硬件平衡AI，工业界场景下L远远大于H，忽略低阶项，属于**访存瓶颈**。
+<strong>Decode_AI</strong> = (attn_flops + ffn_flops) /(attn_访存+ffn_访存) = (4BH^2+2BH(L+1)+3BHI+BI) / (4H^2+15BH+4Bd+2BHL+4BdL+3HI+6BI4BH^2+2BH(L+1)+3BHI+BI​) \approx H/H+2d，远远小于硬件平衡AI，工业界场景下L远远大于H，忽略低阶项，属于<strong>访存瓶颈</strong>。

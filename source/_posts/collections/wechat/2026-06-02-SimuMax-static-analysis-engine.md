@@ -19,14 +19,14 @@ categories:
 
 ---
 
-Keywords: **static analytical model**, ***LLM distributed training***, parallel strategy search, pipeline scheduling, **memory modeling**
+Keywords: <strong>static analytical model</strong>, *<strong>LLM distributed training</strong>*, parallel strategy search, pipeline scheduling, <strong>memory modeling</strong>
 
 > When training a 100B+ parameter model, the most expensive part is often not the GPU itself, but the "trial and error." A single 1024-GPU strategy sweep can rack up an electricity bill equivalent to the price of a car; yet the `tp × pp × ep × cp × zero × recompute` combinations an engineer has to choose from can number in the thousands.
 
-- MooreThreads/SimuMax: **SimuMax is a simulator and analytical model designed for large-scale LLM training. It models compute cost, communication cost, and memory usage without launching a full training job**, ***helping users estimate throughput, peak memory, execution traces, and pipeline behavior before actually deploying workloads.***
+- MooreThreads/SimuMax: <strong>SimuMax is a simulator and analytical model designed for large-scale LLM training. It models compute cost, communication cost, and memory usage without launching a full training job</strong>, *<strong>helping users estimate throughput, peak memory, execution traces, and pipeline behavior before actually deploying workloads.</strong>*
 - https://github.com/MooreThreads/SimuMax
 
-Is it possible to estimate throughput, peak memory, pipeline bubbles, and communication bottlenecks to a reasonable degree of accuracy **without powering on a single GPU**? Moore Threads' open-source SimuMax answers with a resounding yes — it abstracts every operator in a Transformer, every collective communication call, and every piece of activation cache into analytically solvable algebraic expressions, then runs a "fake training" in milliseconds. This article walks through its directory structure, configuration, scheduler, and strategy searcher, examining how a static analysis model holds up against real B200 and A100 benchmarks.
+Is it possible to estimate throughput, peak memory, pipeline bubbles, and communication bottlenecks to a reasonable degree of accuracy <strong>without powering on a single GPU</strong>? Moore Threads' open-source SimuMax answers with a resounding yes — it abstracts every operator in a Transformer, every collective communication call, and every piece of activation cache into analytically solvable algebraic expressions, then runs a "fake training" in milliseconds. This article walks through its directory structure, configuration, scheduler, and strategy searcher, examining how a static analysis model holds up against real B200 and A100 benchmarks.
 
 ## Table of Contents
 
@@ -83,7 +83,7 @@ bash install.sh
 python -m streamlit run streamlit_app.py
 ```
 
-Further usage falls into five categories: running existing perf scripts, adding custom machine configs, adding custom models, generating simulator traces/memory snapshots, and performing strategy searches. Entry points for each are documented in docs/tutorial.md, docs/system.md, docs/model.md, docs/strategy.md, and examples/search_strategy_llama3_8b.py respectively. A key note: for **OOM feasibility screening alone**, the shipped configs are sufficient; but for `perf vs real` timing comparisons, follow the simu_tools/efficency_test measurement workflow to populate `system.miss_efficiency` first.
+Further usage falls into five categories: running existing perf scripts, adding custom machine configs, adding custom models, generating simulator traces/memory snapshots, and performing strategy searches. Entry points for each are documented in docs/tutorial.md, docs/system.md, docs/model.md, docs/strategy.md, and examples/search_strategy_llama3_8b.py respectively. A key note: for <strong>OOM feasibility screening alone</strong>, the shipped configs are sufficient; but for `perf vs real` timing comparisons, follow the simu_tools/efficency_test measurement workflow to populate `system.miss_efficiency` first.
 
 ## I. Architecture Overview & Design Philosophy
 
@@ -91,9 +91,9 @@ Further usage falls into five categories: running existing perf scripts, adding 
 
 > SimuMax decomposes "distributed training" into three orthogonal inputs:
 
-- **System**: Machine profile. Per-GPU compute, memory, multi-level bandwidths, operator efficiency factors.
-- **Strategy**: Strategy profile. `tp/pp/ep/cp/sp/zero/recompute/interleaving/...`, plus micro-batch and global batch shapes.
-- **Model**: Model profile. Hidden dimension, layer count, attention type (MHA/GQA/MLA), expert count, SwiGLU or not...
+- <strong>System</strong>: Machine profile. Per-GPU compute, memory, multi-level bandwidths, operator efficiency factors.
+- <strong>Strategy</strong>: Strategy profile. `tp/pp/ep/cp/sp/zero/recompute/interleaving/...`, plus micro-batch and global batch shapes.
+- <strong>Model</strong>: Model profile. Hidden dimension, layer count, attention type (MHA/GQA/MLA), expert count, SwiGLU or not...
 
 This decoupling yields a direct benefit: swap machines by changing System only, swap models by changing Model only, tune strategies by changing Strategy only — then hand everything to a unified `PerfLLM` for the "fake training." All config classes inherit from `Config` with built-in `to_dict / to_json_string / init_from_config_file`, ensuring JSON serialization and reproducibility:
 
@@ -237,8 +237,8 @@ def compute_op_accuracy_time(self, op_name: str, flops: int, shape_desc: str, ..
 
 Two details worth noting:
 
-- **Hits and misses are explicitly tracked**. Any query that can't find a per-shape efficiency entry falls into `miss_efficiency`, letting users clearly know which parts of the simulation are unreliable. SimuMax's README repeatedly emphasizes "fill in miss_efficiency before doing timing comparisons" — this mechanism is why.
-- **Operator efficiency is per-shape**. `accurate_efficient_factor` is a `shape → efficiency` dictionary, meaning SimuMax doesn't assume "matmul is always 70% efficient" but looks up efficiency by GEMM shape. This is key to achieving B200/A100 benchmark-accurate reconciliation.
+- <strong>Hits and misses are explicitly tracked</strong>. Any query that can't find a per-shape efficiency entry falls into `miss_efficiency`, letting users clearly know which parts of the simulation are unreliable. SimuMax's README repeatedly emphasizes "fill in miss_efficiency before doing timing comparisons" — this mechanism is why.
+- <strong>Operator efficiency is per-shape</strong>. `accurate_efficient_factor` is a `shape → efficiency` dictionary, meaning SimuMax doesn't assume "matmul is always 70% efficient" but looks up efficiency by GEMM shape. This is key to achieving B200/A100 benchmark-accurate reconciliation.
 
 The communication side's `compute_net_op_time` builds analytical expressions for all five collective operations (`all_reduce / all_gather / reduce_scatter / p2p / all2all`) using `actual_size = size * scale + offset_chunk` plus bandwidth discounts, with semantic-specific patches:
 
@@ -297,7 +297,7 @@ def qkv_proj_elements(self):
         return self.hidden_size * proj_size
 ```
 
-`flops_per_token` accounts for MoE `topk` amplification, Shared Expert extra width, MLA q/k/v head dimension differences, and the final vocab projection's "3·2·H·V" term. Implementing formulas that typically live in PowerPoint slides directly into config classes, combined with `dp_size` and `global_batch_size`, enables derived metrics like MFU to be **computed directly from the config layer** without waiting for real training.
+`flops_per_token` accounts for MoE `topk` amplification, Shared Expert extra width, MLA q/k/v head dimension differences, and the final vocab projection's "3·2·H·V" term. Implementing formulas that typically live in PowerPoint slides directly into config classes, combined with `dp_size` and `global_batch_size`, enables derived metrics like MFU to be <strong>computed directly from the config layer</strong> without waiting for real training.
 
 ## III. Performance Engine: PerfLLM & Operator Graph
 
@@ -360,7 +360,7 @@ This is why SimuMax emphasizes that its semantics strictly align with Megatron-L
 
 ### 3.3 Pipeline Schedule Modeling
 
-> `simumax/core/transformer/pipeline_schedule.py` arranges "per micro-batch forward / backward / weight update" into a timeline based on `pp_size`, `interleaving_size`, `microbatch_group_size_per_vp_stage`, `pp_comm_async`, etc., then computes **bubbles** and **effective compute ratio**. The repo currently supports 1F1B and sync-VPP (Preview).
+> `simumax/core/transformer/pipeline_schedule.py` arranges "per micro-batch forward / backward / weight update" into a timeline based on `pp_size`, `interleaving_size`, `microbatch_group_size_per_vp_stage`, `pp_comm_async`, etc., then computes <strong>bubbles</strong> and <strong>effective compute ratio</strong>. The repo currently supports 1F1B and sync-VPP (Preview).
 
 For more aggressive scheduling like "forward-backward overlap," the repo provides a standalone, highly readable parser in `simumax/pp_simu/utils.py` for analyzing DualPP / FB-overlap:
 
@@ -382,7 +382,7 @@ def mfu_dualpp(mbn, pp, F_cost, B_cost, W_cost, FandB_cost, opt_time, stage,
     return flops / (dur / 1000) / default_flops / 1e12
 ```
 
-`cal_FandB_multi_layers` further arranges sub-events like "attention forward, Dispatch, MLP backward, Combine, attention backward" into two timelines (compute / comm), using `max(...)` for hard synchronization at each step, ultimately yielding `compute_dur` and `comm_dur` with `max` as the "post-overlap F&B" effective cost. This code is an excellent **introductory sample for understanding pipeline overlap mechanisms**: it transforms graphical PP timing diagrams into a readable, debuggable, plottable Python function.
+`cal_FandB_multi_layers` further arranges sub-events like "attention forward, Dispatch, MLP backward, Combine, attention backward" into two timelines (compute / comm), using `max(...)` for hard synchronization at each step, ultimately yielding `compute_dur` and `comm_dur` with `max` as the "post-overlap F&B" effective cost. This code is an excellent <strong>introductory sample for understanding pipeline overlap mechanisms</strong>: it transforms graphical PP timing diagrams into a readable, debuggable, plottable Python function.
 
 ### 3.4 Memory Timeline & Trace Export
 
@@ -392,7 +392,7 @@ def mfu_dualpp(mbn, pp, F_cost, B_cost, W_cost, FandB_cost, opt_time, stage,
 - `simu_memory_snapshot.json`: Per-event memory snapshots;
 - `simu_memory_viz_snapshot.pickle`: Visualization pickle.
 
-For engineers, the real value of these artifacts lies in **reconciliation**: placing SimuMax's trace side-by-side with a real Megatron run's trace reveals at a glance "which segment was underestimated" or "which activation could actually be reclaimed." This is why the README repeatedly emphasizes that "a simulator doesn't replace real runs — it provides an interpretable reference for them."
+For engineers, the real value of these artifacts lies in <strong>reconciliation</strong>: placing SimuMax's trace side-by-side with a real Megatron run's trace reveals at a glance "which segment was underestimated" or "which activation could actually be reclaimed." This is why the README repeatedly emphasizes that "a simulator doesn't replace real runs — it provides an interpretable reference for them."
 
 ## IV. Strategy Search: Moving Trial-and-Error from Cluster to Laptop
 
@@ -423,7 +423,7 @@ CANDIDATE_STRATEGY = {
 }
 ```
 
-Note: `pp_size / ep_size / etp_size` are **not explicitly listed** — they are **auto-derived** by the searcher. This is the most insightful aspect of this code.
+Note: `pp_size / ep_size / etp_size` are <strong>not explicitly listed</strong> — they are <strong>auto-derived</strong> by the searcher. This is the most insightful aspect of this code.
 
 ### 4.2 Auto-Deriving PP/EP/ETP
 
@@ -458,7 +458,7 @@ def _comp_cand_parallel_size(self, params: dict):
     ...
 ```
 
-Concise but extremely dense: a nested loop encodes hard constraints like "PP must divide layer count, ETP must not exceed per-node GPU count, `world_size` must divide `pp·ep·etp`, ep must divide expert count" directly as candidate pruning. Each `if … continue` corresponds to an engineering reality, avoiding **Cartesian product explosion**.
+Concise but extremely dense: a nested loop encodes hard constraints like "PP must divide layer count, ETP must not exceed per-node GPU count, `world_size` must divide `pp·ep·etp`, ep must divide expert count" directly as candidate pruning. Each `if … continue` corresponds to an engineering reality, avoiding <strong>Cartesian product explosion</strong>.
 
 ### 4.3 Network Selection & Recompute Bucketing
 
@@ -529,11 +529,11 @@ self.strategies.sort(key=lambda x: x[1], reverse=True)
 
 Three points worth highlighting:
 
-- **Embedded batch search**: `search_max_micro_batch_size()` binary-searches or incrementally finds the largest micro-batch that fits within the current parallel layout, then writes it back to the strategy — meaning the outer grid only determines "topology," while micro-batch is adaptively determined by `PerfLLM`'s memory model;
-- **Proactive AssertionError catching**: All `sanity_check` failures are treated as "pruning" rather than crashes, making the search robust against candidates containing illegal combinations;
-- **Sorting by MFU**: While throughput / peak_cached_mem / breakdown are all preserved, strategies are sorted by MFU in descending order for topK selection. This aligns with the README's recommended path of "search micro-batch / micro-batch-num first, then sweep tp/pp in a narrow range."
+- <strong>Embedded batch search</strong>: `search_max_micro_batch_size()` binary-searches or incrementally finds the largest micro-batch that fits within the current parallel layout, then writes it back to the strategy — meaning the outer grid only determines "topology," while micro-batch is adaptively determined by `PerfLLM`'s memory model;
+- <strong>Proactive AssertionError catching</strong>: All `sanity_check` failures are treated as "pruning" rather than crashes, making the search robust against candidates containing illegal combinations;
+- <strong>Sorting by MFU</strong>: While throughput / peak_cached_mem / breakdown are all preserved, strategies are sorted by MFU in descending order for topK selection. This aligns with the README's recommended path of "search micro-batch / micro-batch-num first, then sweep tp/pp in a narrow range."
 
-The entire searcher is only 200 lines, but it combines "config constraints + memory budget + communication topology + MFU evaluation" into an **offline AutoTuner**. For engineers, it can tell you — before you drain the GPU queue — that "on this B200, running Llama3-405B across 1024 GPUs, the optimal strategy might be `tp8.pp16.ep4` rather than `tp4.pp8.ep8`."
+The entire searcher is only 200 lines, but it combines "config constraints + memory budget + communication topology + MFU evaluation" into an <strong>offline AutoTuner</strong>. For engineers, it can tell you — before you drain the GPU queue — that "on this B200, running Llama3-405B across 1024 GPUs, the optimal strategy might be `tp8.pp16.ep4` rather than `tp4.pp8.ep8`."
 
 ## V. Reconciliation with Real Clusters: From Algebra to Trustworthy Numbers
 
@@ -546,27 +546,27 @@ The entire searcher is only 200 lines, but it combines "config constraints + mem
 - Reproduction guide: docs/b200/b200_real_repro_guide.md
 - Full benchmarks: docs/FULL_RESULTS.md
 
-These materials address a long-standing trust issue in "performance modeling projects" — **dare you publish numbers, dare you provide reproduction scripts**. Most useful for developers is `simu_tools/efficency_test`: it provides a unified entry point for measuring operator efficiency and communication bandwidth, feeding the measured `efficient_factor` back into System JSON so that `compute_op_accuracy_time / compute_net_op_time` hits `accurate_efficient_factor`, progressively closing the gap between theoretical and actual values.
+These materials address a long-standing trust issue in "performance modeling projects" — <strong>dare you publish numbers, dare you provide reproduction scripts</strong>. Most useful for developers is `simu_tools/efficency_test`: it provides a unified entry point for measuring operator efficiency and communication bandwidth, feeding the measured `efficient_factor` back into System JSON so that `compute_op_accuracy_time / compute_net_op_time` hits `accurate_efficient_factor`, progressively closing the gap between theoretical and actual values.
 
 ### 5.2 When to Trust SimuMax, When to Measure First
 
 > The README provides clear boundaries:
 
-- **OOM feasibility screening**: Tolerate non-empty `miss_efficiency`, use shipped configs directly;
+- <strong>OOM feasibility screening</strong>: Tolerate non-empty `miss_efficiency`, use shipped configs directly;
 - **`perf vs simulator` / `perf vs real` timing reconciliation**: First measure and fill in the prominent operator and communication shapes in `miss_efficiency`.
 
-In other words, SimuMax doesn't try to "calculate every microsecond" for you — it **explicitly exposes** its uncertainty. This "honesty" is what distinguishes it from many "one-click MFU calculator" tools.
+In other words, SimuMax doesn't try to "calculate every microsecond" for you — it <strong>explicitly exposes</strong> its uncertainty. This "honesty" is what distinguishes it from many "one-click MFU calculator" tools.
 
 ## VI. Design Trade-offs & Value
 
 > Looking back, SimuMax's engineering trade-offs can be summarized:
 
-- **Pure Python, analytical, zero CUDA**: Trades "some precision loss" for "readability + modifiability + sub-second CPU execution." A perfect trade-off for strategy search scenarios.
-- **Trinity decoupling**: System / Strategy / Model are independently JSON-serializable and reusable; the community can contribute "machine profiles" and "model profiles" without touching the core engine.
-- **Sub-module-level recompute and activation modeling**: MLA's q_down/q_up/kv_down/kv_up/rope/core_attn switches enable it to approximate Megatron-LM 0.14's real behavior.
-- **Per-shape efficiency + miss/hit accounting**: Compute and bandwidth uncertainties are explicitly registered; simulation reports come with built-in "confidence metadata."
-- **Searcher is only 200 lines**: Complexity is compressed into `PerfLLM` and `StrategyConfig.sanity_check`; the outer scheduler stays "short, readable, and modifiable."
-- **Standalone pipeline overlap parser**: `pp_simu/utils.py` models DualPP/FB-overlap independently with visualization, letting researchers quickly validate scheduling ideas.
+- <strong>Pure Python, analytical, zero CUDA</strong>: Trades "some precision loss" for "readability + modifiability + sub-second CPU execution." A perfect trade-off for strategy search scenarios.
+- <strong>Trinity decoupling</strong>: System / Strategy / Model are independently JSON-serializable and reusable; the community can contribute "machine profiles" and "model profiles" without touching the core engine.
+- <strong>Sub-module-level recompute and activation modeling</strong>: MLA's q_down/q_up/kv_down/kv_up/rope/core_attn switches enable it to approximate Megatron-LM 0.14's real behavior.
+- <strong>Per-shape efficiency + miss/hit accounting</strong>: Compute and bandwidth uncertainties are explicitly registered; simulation reports come with built-in "confidence metadata."
+- <strong>Searcher is only 200 lines</strong>: Complexity is compressed into `PerfLLM` and `StrategyConfig.sanity_check`; the outer scheduler stays "short, readable, and modifiable."
+- <strong>Standalone pipeline overlap parser</strong>: `pp_simu/utils.py` models DualPP/FB-overlap independently with visualization, letting researchers quickly validate scheduling ideas.
 
 For an open-source project still in v1.x, its roadmap (more PP schedules, compute/comm overlap, offloading, larger-scale public sweeps) clearly points toward "algebraizing more real-world engineering details."
 

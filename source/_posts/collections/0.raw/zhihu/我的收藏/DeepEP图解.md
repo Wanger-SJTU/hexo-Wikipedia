@@ -23,15 +23,15 @@ DeepEP如此复杂的原因一方面是使用了非常多CUDA编程的优化技�
 一、推理用法
 DeepEP包含Internode Normal、Intranode Normal以及Internode Low Latency三种模式，推理框架一般是通过设置token阈值在运行时决定使用哪种模式。
 
-**Internode** **Normal**模式将通信实现为两跳:第一跳先将GPU本地的token通过RDMA转发其他结点同device_id的GPU卡上(同轨GPU)，比如node0 - GPU3将本地token发送到node0~3 - GPU 3上去，假设token选中了一个结点的多张卡也只发送token的一个备份(在node粒度做**去重**处理)；第二跳在结点内通过NVLink做token的转发。
+<strong>Internode</strong> <strong>Normal</strong>模式将通信实现为两跳:第一跳先将GPU本地的token通过RDMA转发其他结点同device_id的GPU卡上(同轨GPU)，比如node0 - GPU3将本地token发送到node0~3 - GPU 3上去，假设token选中了一个结点的多张卡也只发送token的一个备份(在node粒度做<strong>去重</strong>处理)；第二跳在结点内通过NVLink做token的转发。
 
-**Intranode** **Normal**模式在rank粒度做了token去重处理，全部采用NVLink做数据传输因此能实现极高带宽。Normal模式实现为非分离的send-recv模式，即数据的收发双方是通过一个有限的window buff同时进行读写的、发一点收一点。参考[DeepSeek-V3 Technical Report](https://link.zhihu.com/?target=https%3A//arxiv.org/pdf/2412.19437)的部署模式，Prefill适合使用Normal模式，因为Prefill的EP小且token多，一个结点内存储的Expert多、token选中结点内多张GPU的概率大，有去重的必要性；且token量大，适合用环形的窗口buffer来做收发双方的数据互传、而不是分配一个能容纳所有token的comm buffer。
+<strong>Intranode</strong> <strong>Normal</strong>模式在rank粒度做了token去重处理，全部采用NVLink做数据传输因此能实现极高带宽。Normal模式实现为非分离的send-recv模式，即数据的收发双方是通过一个有限的window buff同时进行读写的、发一点收一点。参考[DeepSeek-V3 Technical Report](https://link.zhihu.com/?target=https%3A//arxiv.org/pdf/2412.19437)的部署模式，Prefill适合使用Normal模式，因为Prefill的EP小且token多，一个结点内存储的Expert多、token选中结点内多张GPU的概率大，有去重的必要性；且token量大，适合用环形的窗口buffer来做收发双方的数据互传、而不是分配一个能容纳所有token的comm buffer。
 
-**Internode** **Low Latency**模式实现为分离的send&recv，即先完成数据的发送、再完成数据的接受，两者不是同时进行的；send阶段先将token通过RDMA or NVLink转发到目标GPU卡，由于RDMA的数据传输是异步的，send阶段在完成数据下发后就可以释放SM的占用并返回hook函数。如[tbo low-latency](https://link.zhihu.com/?target=https%3A//github.com/deepseek-ai/DeepEP/blob/main/figures/low-latency.png)所示，TBO(Two Batch Overlap)可以做到一个Batch占用SM做GEMM or Attn计算、另一个Batch做异步的RDMA网络传输；recv阶段从comm buffer里将token拷贝出来，为调用MoE GEMM做准备。参考[DeepSeek-V3 Technical Report](https://link.zhihu.com/?target=https%3A//arxiv.org/pdf/2412.19437)的部署模式，一张卡上存储的expert比较少，因此做token去重带来的收益较小。
+<strong>Internode</strong> <strong>Low Latency</strong>模式实现为分离的send&recv，即先完成数据的发送、再完成数据的接受，两者不是同时进行的；send阶段先将token通过RDMA or NVLink转发到目标GPU卡，由于RDMA的数据传输是异步的，send阶段在完成数据下发后就可以释放SM的占用并返回hook函数。如[tbo low-latency](https://link.zhihu.com/?target=https%3A//github.com/deepseek-ai/DeepEP/blob/main/figures/low-latency.png)所示，TBO(Two Batch Overlap)可以做到一个Batch占用SM做GEMM or Attn计算、另一个Batch做异步的RDMA网络传输；recv阶段从comm buffer里将token拷贝出来，为调用MoE GEMM做准备。参考[DeepSeek-V3 Technical Report](https://link.zhihu.com/?target=https%3A//arxiv.org/pdf/2412.19437)的部署模式，一张卡上存储的expert比较少，因此做token去重带来的收益较小。
 
 二、DeepEP设计
 
-- **Internode** **Low Latency**Low Latency模式实现成send & recv两个阶段，send阶段将token发送到对端GPU 的rdma_recv_buffer，recv阶段将每个rank发送过来的token从rdma_recv_buffer里拷贝出来按expert次序排列，为调用MoE GEMM做准备。
+- <strong>Internode</strong> <strong>Low Latency</strong>Low Latency模式实现成send & recv两个阶段，send阶段将token发送到对端GPU 的rdma_recv_buffer，recv阶段将每个rank发送过来的token从rdma_recv_buffer里拷贝出来按expert次序排列，为调用MoE GEMM做准备。
 
 ![](https://pica.zhimg.com/v2-c466735ff5e90c61ba140eda4308c26c_r.jpg)Internode Low Latency Dispatch如上图所示所示，dispatch send阶段将num个token分配给若干thread block，每个thread block一次负责一个token、thread block内用topk个warp去将token的一个备份发送到对端GPU上去(每个warp负责一个dst rank)。在send前，融合了一个可选的per channel fp8量化，因此实际传输的一个msg包括token_idx + fp8 hidden + scale_inv，其中token_idx是表示某个token备份在原始hidden states中的index，这部分信息在combine时使用；当不做量化时，也需要将hiddens拷贝到rdma_send_buffer里去、因为rdma只能操作事先注册好的buffer。在send时，可以判断dst GPU是否在结点内，是则可以选择通过NVLink通信(同步的数据传输)、否则通过RDMA传输(异步的数据传输： 数据下发后，网卡异步的完成数据传输)，参考[Opt](https://link.zhihu.com/?target=https%3A//github.com/deepseek-ai/DeepEP/pull/173)，这一招在EP比较小时还是很有效的。
 
@@ -43,7 +43,7 @@ recv阶段需要将每个rank发送到本地的token按照expert的次序进行�
 
 ![](https://pic2.zhimg.com/v2-893fc8977d71d5cb068c89f87ffe86f3_r.jpg)Internode Low Latency Combine相较于dispatch，combine是逆过来的操作。如low_latency_combine所示，每个warp group负责expert内一个rank的数据发送。combine阶段comm buffer的数据布局为[num_global_experts][num_mas_dispatch_tokens_per_rank]，其中num_global_experts = num_local_experts * num_global_ranks。由此可见，combine阶段的comm buffer反应的是一个GPU rank本地的token选中expert的情况，最极端的情况是所有token都选中了同一个expert，因此每个expert预留的空间为num_mas_dispatch_tokens_per_rank。可见，combine和dispatch的comm buffer的大小是一样的。这样每个warp group根据recv_range和recv_src_info，将数据从recv_x搬运到comm buffer，在发送完成hidden数据后set flag告诉对端数据传输已经完成。不同于dispatch，combine阶段源端不需要告诉对端发送的数据量。这是因为在combine recv阶段，每个rank可以根据topk_idx遍历token选中的每个专家，去comm buffer的位置读comm buffer。比如假设某个token选中了expert 5，则只需要根据token_idx去索引comm buffer对应的位置。
 
-2. **Internode** **Normal**
+2. <strong>Internode</strong> <strong>Normal</strong>
 有时间再继续～
 
 ![](https://pic4.zhimg.com/v2-6399082badd0b11122e6383235f5c937_r.jpg)Internode Normal Dispatch

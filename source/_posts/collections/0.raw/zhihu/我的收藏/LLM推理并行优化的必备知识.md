@@ -19,41 +19,41 @@ source_url: https://zhuanlan.zhihu.com/p/1937449564509545940
 
 推理的并行还有着自己的一些特点，比如PD分离场景下P和D的部署方式存在差异、PP场景下Attention与FFN数量可以不等。在展开推理并行优化前，对一些基础知识进行了解是必要的。
 
-**相关内容：**
+<strong>相关内容：</strong>
 
-**[大模型推理并行策略（一）：集合通信原理与实践](https://zhuanlan.zhihu.com/p/2006011081177457311)**
+<strong>[大模型推理并行策略（一）：集合通信原理与实践](https://zhuanlan.zhihu.com/p/2006011081177457311)</strong>
 
-**[大模型推理并行策略（二）：(DP/TP/PP/SP/EP)原理简介](https://zhuanlan.zhihu.com/p/2003423046342554380)**
+<strong>[大模型推理并行策略（二）：(DP/TP/PP/SP/EP)原理简介](https://zhuanlan.zhihu.com/p/2003423046342554380)</strong>
 
-**[大模型推理并行策略（三）：并行优化的必备知识](https://zhuanlan.zhihu.com/p/1937449564509545940)**
+<strong>[大模型推理并行策略（三）：并行优化的必备知识](https://zhuanlan.zhihu.com/p/1937449564509545940)</strong>
 
-**[大模型推理并行策略（四）：分布式推理优化思路](https://zhuanlan.zhihu.com/p/1937556222371946860)**
+<strong>[大模型推理并行策略（四）：分布式推理优化思路](https://zhuanlan.zhihu.com/p/1937556222371946860)</strong>
 
-**[其它知识参考：LLM推理知识指南](https://zhuanlan.zhihu.com/p/1954137524881580796)**
+<strong>[其它知识参考：LLM推理知识指南](https://zhuanlan.zhihu.com/p/1954137524881580796)</strong>
 
 ### 1 矩阵运算
 
-并行底层的运算涉及**二维矩阵拆分运算**、**多维矩阵切分与合并运算**。在神经网络中线性运算基本是矩阵乘法：**C = A x B**。矩阵运算的输入、输出可以是多维矩阵(>2维)，但维度之间有几个关键约束：
+并行底层的运算涉及<strong>二维矩阵拆分运算</strong>、<strong>多维矩阵切分与合并运算</strong>。在神经网络中线性运算基本是矩阵乘法：<strong>C = A x B</strong>。矩阵运算的输入、输出可以是多维矩阵(>2维)，但维度之间有几个关键约束：
 
-- 若A尺寸为**[M, N]**，B的第一维度**必须为N**。B为**[N, K]**时，计算得到的C尺寸为**[M, K]**。
+- 若A尺寸为<strong>[M, N]</strong>，B的第一维度<strong>必须为N</strong>。B为<strong>[N, K]</strong>时，计算得到的C尺寸为<strong>[M, K]</strong>。
 - 多维矩阵的乘法都会变为二维矩阵的乘法，倒数第1和第2维必须满足第一条的MNK关系。
 - 多维乘法认为是批量的二维矩阵乘法。
-对第二点有个补充：多维矩阵乘除了最后两维，**其它维度必须相等**(或者进行广播），举个例子：A size: [10 , 3, 2]、B size: [2, 4] ，计算A x B
+对第二点有个补充：多维矩阵乘除了最后两维，<strong>其它维度必须相等</strong>(或者进行广播），举个例子：A size: [10 , 3, 2]、B size: [2, 4] ，计算A x B
 
 -  B广播变为[10, 2, 4]，
 -  对应Ai [i, :, :] 与Bi [i, :, :]进行相乘，
 -  得到的C维度为[10, 3, 4]。
-知道尺寸的约束关系后，接下来分析矩阵的分块运算。先看二维矩阵的运算切分场景。下面的举例中都是**矩阵二分**，矩阵的多次切分可以看成二分的扩展。
+知道尺寸的约束关系后，接下来分析矩阵的分块运算。先看二维矩阵的运算切分场景。下面的举例中都是<strong>矩阵二分</strong>，矩阵的多次切分可以看成二分的扩展。
 
 #### 场景一：B矩阵列切(column split)
 
-B矩阵二分(**列切**)后，子矩阵B1、B2的尺寸为**[N, K/2]**，切分计算不改变局部元素值，但需要进行一次**列维度**的拼接才能获得完整矩阵C。
+B矩阵二分(<strong>列切</strong>)后，子矩阵B1、B2的尺寸为<strong>[N, K/2]</strong>，切分计算不改变局部元素值，但需要进行一次<strong>列维度</strong>的拼接才能获得完整矩阵C。
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_9ee89126df10.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_9ee89126df10.jpg)
 
-**特点**：计算量减半，多了一次allgather集群通信；显存空间变化不一定，若是非原地操作，则变化为  (- K/2 * N  + M * K/2) * element_memory。
+<strong>特点</strong>：计算量减半，多了一次allgather集群通信；显存空间变化不一定，若是非原地操作，则变化为  (- K/2 * N  + M * K/2) * element_memory。
 
-**应用**：在并行运算中，通常用两个GPU来完成这一个拆分运算，比如当A矩阵为输入激活值，B矩阵为权重，最后结果通过allgather进行拼接。
+<strong>应用</strong>：在并行运算中，通常用两个GPU来完成这一个拆分运算，比如当A矩阵为输入激活值，B矩阵为权重，最后结果通过allgather进行拼接。
 
 矩阵切分运算可用numpy做个辅助验证，这里提供一个示例：
 
@@ -89,25 +89,25 @@ print("\n验证一致性:", np.array_equal(C_final, C_ground_truth))`
 
 #### 场景二：A矩阵行切(row split)
 
-A矩阵二分(行切)后，子矩阵A1、A2的尺寸为**[M/2, N]**，切分不改变局部元素值，但需要进行一次**行维度**的拼接才能获得完整矩阵C。
+A矩阵二分(行切)后，子矩阵A1、A2的尺寸为<strong>[M/2, N]</strong>，切分不改变局部元素值，但需要进行一次<strong>行维度</strong>的拼接才能获得完整矩阵C。
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_40ab0360919e.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_40ab0360919e.jpg)
 
-**特点**：计算量减半，多了一次集群通信（allgather）；若是非原地操作，显存变化：  (K-N) * M/2 * element_memory。
+<strong>特点</strong>：计算量减半，多了一次集群通信（allgather）；若是非原地操作，显存变化：  (K-N) * M/2 * element_memory。
 
-**应用**：这类切分比较常见，如A矩阵是激活值，B矩阵为权重，如果后面的还是线性运算或者元素行运算，allgather步骤可以放到最后且只需进行一次。
+<strong>应用</strong>：这类切分比较常见，如A矩阵是激活值，B矩阵为权重，如果后面的还是线性运算或者元素行运算，allgather步骤可以放到最后且只需进行一次。
 
-如： A[M/2, N]  x B x E x F ...  -> allgather 与原计算得到结果一致。这就是常见的激活值进行序列切分的场景：[sequence/**sp**, hidden_dim] 。
+如： A[M/2, N]  x B x E x F ...  -> allgather 与原计算得到结果一致。这就是常见的激活值进行序列切分的场景：[sequence/<strong>sp</strong>, hidden_dim] 。
 
-**Note**: 这里有个值得注意的点，仅切分一个矩阵的方式，适合任何线性运算，但不一定能够带来性能/存储空间的收益。
+<strong>Note</strong>: 这里有个值得注意的点，仅切分一个矩阵的方式，适合任何线性运算，但不一定能够带来性能/存储空间的收益。
 
 #### 场景三：A矩阵列切+B矩阵行切
 
 A、B矩阵都进行二分后，输出矩阵C的大小不变，所有C矩阵进行元素求和，才能让结果与之前的计算结果相等。
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_37c4ec6e03a2.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_37c4ec6e03a2.jpg)
 
-**特点**：计算量减半，多了一次集群通信（allreduce）；显存变化：输入、权重减半，输出值变化取决于是否为原地操作。
+<strong>特点</strong>：计算量减半，多了一次集群通信（allreduce）；显存变化：输入、权重减半，输出值变化取决于是否为原地操作。
 
 这种切分方式的使用场景并不多，更多的是下面这种方式：
 
@@ -115,9 +115,9 @@ A、B矩阵都进行二分后，输出矩阵C的大小不变，所有C矩阵进�
 
 在A x B x C矩阵乘法场景，B矩阵列切， C矩阵行切。
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_628ffe24031a.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_628ffe24031a.jpg)
 
-**特点**：在场景三基础上，中间值的存储大小减半。
+<strong>特点</strong>：在场景三基础上，中间值的存储大小减半。
 
 在模型并行运算的过程中，大部分都是这些应用场景的组合与变形，需要根据模型层的特点设计合适的矩阵切分策略。
 
@@ -125,13 +125,13 @@ A、B矩阵都进行二分后，输出矩阵C的大小不变，所有C矩阵进�
 
 线性层的并行运算，包括层内切分、层间切分以及参数冗余消除，并行方式包括了数据并行（DP）、序列并行(SP)、张量并行（TP）、层并行（PP）、参数冗余消除（Zero）。
 
-#### **2.1 层内并行**
+#### <strong>2.1 层内并行</strong>
 
-可根据输入激活值的切分维度对应不同的并行策略，一般**切batch为DP、切序列为SP、切隐藏层尺寸为TP**。
+可根据输入激活值的切分维度对应不同的并行策略，一般<strong>切batch为DP、切序列为SP、切隐藏层尺寸为TP</strong>。
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_013798314241.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_013798314241.jpg)
 
-**关键特点：**
+<strong>关键特点：</strong>
 
 - DP可以看成批量矩阵乘法，不会改变二维矩阵的乘法形态，所以对应的权重不需要变化。
 - SP切分不会影响最后一维的计算，如：LayerNorm，softmax
@@ -142,53 +142,53 @@ DP与SP/TP可以解耦独立使用，SP与TP一般可以配合使用(在当前�
 
 - allreduce是可以被拆分为ReduceScatter和AllGather两个步骤
 - SP不影响元素操作的运算，如LayerNorm，softmax
-所以在上面矩阵运算**场景四**的基础上，对于最后的集群通信操作有如下改进，将allreduce运算进行拆分，变为两个步骤。并且将allgather操作移动到softmax计算后：
+所以在上面矩阵运算<strong>场景四</strong>的基础上，对于最后的集群通信操作有如下改进，将allreduce运算进行拆分，变为两个步骤。并且将allgather操作移动到softmax计算后：
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_0737a1f22667.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_0737a1f22667.jpg)
 
-这样能够**降低元素运算相关计算的数据大小、**降低过程中激活值的大小（示例中GPU上的LayerNorm输入减半），既能节省显存、也能提升速度。在megatron论文里面介绍了这种场景的应用，MLP层中用**SP-TP-SP**的组合方式：
+这样能够<strong>降低元素运算相关计算的数据大小、</strong>降低过程中激活值的大小（示例中GPU上的LayerNorm输入减半），既能节省显存、也能提升速度。在megatron论文里面介绍了这种场景的应用，MLP层中用<strong>SP-TP-SP</strong>的组合方式：
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_1b9a7a9de2c6.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_1b9a7a9de2c6.jpg)
 
-#### **2.2 层间并行**
+#### <strong>2.2 层间并行</strong>
 
-模型的各个层分散放在不同GPU上面，激活值按照流水的方式在层间传递，这种方式称为**流水线并行PP(Pipeline Parallelism)**，具体可参看megatron2论文。
+模型的各个层分散放在不同GPU上面，激活值按照流水的方式在层间传递，这种方式称为<strong>流水线并行PP(Pipeline Parallelism)</strong>，具体可参看megatron2论文。
 
-在推理中，由于特殊计算场景，比如FFN为稀疏的MoE结构时，往往attention与FFN对算力需求不同，**层间并行可以变为异构模式, **如AFD，attention层与MoE分离部署到不同设备上：
+在推理中，由于特殊计算场景，比如FFN为稀疏的MoE结构时，往往attention与FFN对算力需求不同，<strong>层间并行可以变为异构模式,</strong>如AFD，attention层与MoE分离部署到不同设备上：
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_26857c38dc2c.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_26857c38dc2c.jpg)
 
 #### 2.3 冗余参数消除
 
-冗余参数消除的方式，如deepseed的**Zero**，将参数分散存储，当参数需要使用时通过集群通信将参数召回。根据Zero的思想，这里介绍两种消除某一层权重冗余存储的方式。
+冗余参数消除的方式，如deepseed的<strong>Zero</strong>，将参数分散存储，当参数需要使用时通过集群通信将参数召回。根据Zero的思想，这里介绍两种消除某一层权重冗余存储的方式。
 
-一般而言大模型由多个blocks构成，blocks中有**重复的层结构**。当有多个设备时，可以把这些blocks的权重均分到各个设备中。如下图所示，以blocks中线性层B为例，每个GPU存储模型的两层权重，当GPU需要使用到某一层权重时，先对该层的权重进行广播。
+一般而言大模型由多个blocks构成，blocks中有<strong>重复的层结构</strong>。当有多个设备时，可以把这些blocks的权重均分到各个设备中。如下图所示，以blocks中线性层B为例，每个GPU存储模型的两层权重，当GPU需要使用到某一层权重时，先对该层的权重进行广播。
 
-由于GPU支持多流，所以可以做计算、广播通信的掩盖，比如计算到x层时，提前把x+1层的权重先广播出去（**权重预取**）。
+由于GPU支持多流，所以可以做计算、广播通信的掩盖，比如计算到x层时，提前把x+1层的权重先广播出去（<strong>权重预取</strong>）。
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_e8b7e9ed3b7c.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_e8b7e9ed3b7c.jpg)
 
-这种方式适合于模型层权重偏小的场景，模型层权重比较大时，或者说更常使用的是权重切片（shard）。即将每一层的权重进行n等分，每个GPU设备上面存一份，当需计算时将其**allgather**回来。
+这种方式适合于模型层权重偏小的场景，模型层权重比较大时，或者说更常使用的是权重切片（shard）。即将每一层的权重进行n等分，每个GPU设备上面存一份，当需计算时将其<strong>allgather</strong>回来。
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_daa538db074d.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_daa538db074d.jpg)
 
 ### 3 Attention层的并行计算
 
 Attention层的并行计算与FFN或者说模型中其它线性层的计算的主要不同之处：
 
-- 在计算attention之前，会多一个**head的维度**，这个head维度是在线性映射(投影)运算中产生的。[bs, seq_len,  heads * head_dim] -> [bs,  **heads**, seq_len,  head_dim]
-- 序列（seq_len维度)并行需要**修正运算**。
-在并行维度上面，将Head维度的切分也算到TP里面，而序列维度并行上称之为**CP(context parallel)或SP**。
+- 在计算attention之前，会多一个<strong>head的维度</strong>，这个head维度是在线性映射(投影)运算中产生的。[bs, seq_len,  heads * head_dim] -> [bs,  <strong>heads</strong>, seq_len,  head_dim]
+- 序列（seq_len维度)并行需要<strong>修正运算</strong>。
+在并行维度上面，将Head维度的切分也算到TP里面，而序列维度并行上称之为<strong>CP(context parallel)或SP</strong>。
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_4e5caeae75c6.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_4e5caeae75c6.jpg)
 
- Attention的层间并行、冗余参数消除方式与线性层的方式一致，层内并行的主要差异是**TP和SP**，所以重点关注到这两类上面。
+ Attention的层间并行、冗余参数消除方式与线性层的方式一致，层内并行的主要差异是<strong>TP和SP</strong>，所以重点关注到这两类上面。
 
 #### 3.1 序列并行
 
-在经过线性映射计算后，模型输入变为多头的Q、K、V值，其尺寸表达为：[bs,  heads, seq_len,  head_dim]，序列并行是切分seq_len维度。有个前提问题：QKV的序列并行跟线性层的差异在哪，**是否能直接拆分运算后合并？**
+在经过线性映射计算后，模型输入变为多头的Q、K、V值，其尺寸表达为：[bs,  heads, seq_len,  head_dim]，序列并行是切分seq_len维度。有个前提问题：QKV的序列并行跟线性层的差异在哪，<strong>是否能直接拆分运算后合并？</strong>
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_0c8552b480b6.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_0c8552b480b6.jpg)
 
 Scaled Dot-Product Attention这里我们分三个子问题来分析：
 
@@ -201,7 +201,7 @@ Scaled Dot-Product Attention这里我们分三个子问题来分析：
 - step2：softmax求解的是最后一个维度，计算元素值相同，得到attention_weights，
 - step3：attention_weights与V进行矩阵乘，还是左矩阵行切运算，元素值相同，计算得到O的分块结果
 - step4：将计算的O进行allgather，结果相等。
-所以：**单独切Q的序列值后进行结果拼接，与原计算相等**。我们可以通过如下例子来验证：
+所以：<strong>单独切Q的序列值后进行结果拼接，与原计算相等</strong>。我们可以通过如下例子来验证：
 
 `import numpy as np
 
@@ -244,21 +244,21 @@ print("分片注意力输出:\n", local_out)
 # 验证一致性
 print("结果是否一致:", np.allclose(global_out, local_out, atol=1e-6))`
 
-**问题2**：单独切K的序列。
+<strong>问题2</strong>：单独切K的序列。
 
 第一步，QK乘法得到的score尺寸为：
 
-[bs,  heads, seq_len, seq_len/**SP**]
+[bs,  heads, seq_len, seq_len/<strong>SP</strong>]
 
-进一步计算softmax，由于最后一个维度的数据只有之前的一半长度，而**softmax的计算跟整个序列相关，**直接拼接会导致结果不相等。所以，**单独切K序列后拼接，结果不等。**
+进一步计算softmax，由于最后一个维度的数据只有之前的一半长度，而<strong>softmax的计算跟整个序列相关，</strong>直接拼接会导致结果不相等。所以，<strong>单独切K序列后拼接，结果不等。</strong>
 
-**问题3: **单独切V的序列。softmax之前的计算保持不变**，**得到attention_weights尺寸完整，计算attention_weights x **V**，因为**V**矩阵被行切，所以attention_weights 需要列切，根据前面的场景三，最后allreduce能够获得完整结果。
+<strong>问题3:</strong>单独切V的序列。softmax之前的计算保持不变<strong>，</strong>得到attention_weights尺寸完整，计算attention_weights x <strong>V</strong>，因为<strong>V</strong>矩阵被行切，所以attention_weights 需要列切，根据前面的场景三，最后allreduce能够获得完整结果。
 
-综上看到attention序列切分的关键：如果需要进行Q、K、V在序列维度的**同时切分**，要解决softmax的分块计算。
+综上看到attention序列切分的关键：如果需要进行Q、K、V在序列维度的<strong>同时切分</strong>，要解决softmax的分块计算。
 
-当前比较常用的解决方式是：**QKV按照相同方式切分，然后对计算结果进行修正**，这个方法在BlockwiseMulti-HeadAttention、ring attention、tree attention、merge attention中都有应用，softmax修正：
+当前比较常用的解决方式是：<strong>QKV按照相同方式切分，然后对计算结果进行修正</strong>，这个方法在BlockwiseMulti-HeadAttention、ring attention、tree attention、merge attention中都有应用，softmax修正：
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_0d32e00adf73.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_0d32e00adf73.jpg)
 
 关键点：
 
@@ -266,35 +266,35 @@ print("结果是否一致:", np.allclose(global_out, local_out, atol=1e-6))`
 - 最后的分块Oi结果需要进行修正；
 有了softmax的修正方式，结合推理的计算场景实现序列并行：
 
-**prefill**：训练forward/推理的prefill阶段，Q的序列长度与KV保持一致，开启SP后GPU之间需要交换KV值与Q进行运算（ring-attention方式）,计算过程的CP/SP并行可以参看：[[并行训练]Context Parallelism的原理与代码浅析](https://zhuanlan.zhihu.com/p/698447429)。至于是用KV传递还是Q传递，可以参看这篇分析([https://arxiv.org/pdf/2411.01783](https://link.zhihu.com/?target=https%3A//arxiv.org/pdf/2411.01783))
+<strong>prefill</strong>：训练forward/推理的prefill阶段，Q的序列长度与KV保持一致，开启SP后GPU之间需要交换KV值与Q进行运算（ring-attention方式）,计算过程的CP/SP并行可以参看：[[并行训练]Context Parallelism的原理与代码浅析](https://zhuanlan.zhihu.com/p/698447429)。至于是用KV传递还是Q传递，可以参看这篇分析([https://arxiv.org/pdf/2411.01783](https://link.zhihu.com/?target=https%3A//arxiv.org/pdf/2411.01783))
 
-**decode**：与prefill阶段不同的是，在decode阶段Q的长度为1，若对应的KV值分散在各个GPU设备中，可以将Q复制N份与切片的KV值进行attention计算后，最后将结果gather到一个设备上再计算修正结果。
+<strong>decode</strong>：与prefill阶段不同的是，在decode阶段Q的长度为1，若对应的KV值分散在各个GPU设备中，可以将Q复制N份与切片的KV值进行attention计算后，最后将结果gather到一个设备上再计算修正结果。
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_77b3a7c5983f.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_77b3a7c5983f.jpg)
 
 这个方式意味着GPU0需要完成最大值、修正运算、求和运算，GPU0可能成为瓶颈。一种Tree attention算法对过程做了改进，提升了通信效率。就是把gather换成多次allreduce，这种方式在跨节点场景中优势明显。
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_55b3d9ef334e.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_55b3d9ef334e.jpg)
 
-Tree attention**prefix cache**：在prefill阶段，还有个特殊场景**prefix cache，**若开启了prefix cache功能，表示有一段KV cache可以复用。把序列seq_len拆分成两部分讨论，prefix_cache_seq_len、tail_seq_len。 Q/K/V的激活值尺寸：
+Tree attention<strong>prefix cache</strong>：在prefill阶段，还有个特殊场景<strong>prefix cache，</strong>若开启了prefix cache功能，表示有一段KV cache可以复用。把序列seq_len拆分成两部分讨论，prefix_cache_seq_len、tail_seq_len。 Q/K/V的激活值尺寸：
 
- [bs,  heads, **prefix_cache_seq_len +tail_seq_len** ,  head_dim]
+ [bs,  heads, <strong>prefix_cache_seq_len +tail_seq_len</strong> ,  head_dim]
 
-其中KV值的prefix_cache_seq_len已被缓存，prefix_cache_seq_len KV的计算量更少。Q序列只需计算tail_seq_len的结果，加上前面的分析(**Q序列单独切分，不会改变元素计算结果**)可知，计算分为两类场景：
+其中KV值的prefix_cache_seq_len已被缓存，prefix_cache_seq_len KV的计算量更少。Q序列只需计算tail_seq_len的结果，加上前面的分析(<strong>Q序列单独切分，不会改变元素计算结果</strong>)可知，计算分为两类场景：
 
-- **Q **tail_seq_len  与 prefix_cache_seq_len **KV** 计算attention；
-- **Q** tail_seq_len  与tail_seq_len  **KV **计算attention；
+- <strong>Q</strong>tail_seq_len  与 prefix_cache_seq_len <strong>KV</strong> 计算attention；
+- <strong>Q</strong> tail_seq_len  与tail_seq_len  <strong>KV</strong>计算attention；
 在有prefix cache的序列切分时要考虑的：
 
-- **问题1**：两类计算如何分配，保证负载均衡？
-- **问题2**：已有的prefix cache如何从存储位置传递到计算位置（prefix cache可能不在GPU上）。
+- <strong>问题1</strong>：两类计算如何分配，保证负载均衡？
+- <strong>问题2</strong>：已有的prefix cache如何从存储位置传递到计算位置（prefix cache可能不在GPU上）。
 这里举例一个简单的实现方式，将prefix_cache_seq_len和tail_seq_len进行均分，每个GPU拿取一份，同时进行Q分片的轮转，如下图所示：
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_99c5bb8f32c1.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_99c5bb8f32c1.jpg)
 
 with Q pass ring attention优势：当切分比例保持不变且KV值每次计算后都在本地显存中，则无须进行KV分片的搬运，(解决了问题2)。当prefix cache在其它存储位置时，比如内存中，依然要考虑重新切分和cache的传输问题。
 
-该方式在计算的时候可能需要进一步拆分，因为按照SP切分后的KV序列与Q序列不一定相等：prefix_cache_seq_len/SP **!= **tail_seq_len/SP。若相等，理想情况下一次迭代计算中只需要两次attention运算。
+该方式在计算的时候可能需要进一步拆分，因为按照SP切分后的KV序列与Q序列不一定相等：prefix_cache_seq_len/SP <strong>!=</strong>tail_seq_len/SP。若相等，理想情况下一次迭代计算中只需要两次attention运算。
 
 #### 3.2 张量并行
 
@@ -304,17 +304,17 @@ QKV运算的TP切分一般针对heads维度，相当于矩阵的并行的批量�
 
 Attention的张量并行与其它层的并行可结合使用降低通信/计算量，这里给出megatron中TP-SP结合的例子：
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_1b329d44956f.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_1b329d44956f.jpg)
 
-megatron并行示例目前的deepseek中用的attention模块MLA与MHA的计算在线性层的处理中有些不同，导致其**线性层的TP的并行策略设计也要做对应的调整**。这里做一个详细的展开讨论：**首先看一下MLA的计算公式：
+megatron并行示例目前的deepseek中用的attention模块MLA与MHA的计算在线性层的处理中有些不同，导致其<strong>线性层的TP的并行策略设计也要做对应的调整</strong>。这里做一个详细的展开讨论：**首先看一下MLA的计算公式：
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_168d459bbb97.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_168d459bbb97.jpg)
 
 MLA计算公式MLA相较于MHA的主要特点是：线性运算多了一个步骤：在QKV生成之前，先要做降维down_project线性运算，然后进行升维up_project线性运算。分头运算是在up_project阶段**。
 
 根据公式绘制运算流图，非矩阵吸收的MLA（KV up_project运算在压缩计算后）如下所示，这种形态常用在prefill阶段（Q的输入为完整序列时）。
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_adfe8f72b225.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_adfe8f72b225.jpg)
 
 MLA一般形态主要的计算步骤：
 
@@ -323,31 +323,31 @@ MLA一般形态主要的计算步骤：
 - 3、KV上采样运算
 - 4、attention计算
 - 5、O线性运算
-分别来看一下这些计算步骤的**TP策略**：
+分别来看一下这些计算步骤的<strong>TP策略</strong>：
 
-- 下采样阶段还没有heads，所以一般而言Q、K、V的下采样**不进行TP切分**。考虑到独立切分适应任何场景，也可参考前面提的矩阵切分场景来分割下采样。
-- 如果按照heads进行切分的话，步骤2、3的W矩阵需要进行**列切(column split)，**步骤5的W矩阵**行切(row split)；**
-- 步骤4的attention则进行heads维度切分(**head split**)。
-MLA还有第二种形态，就是将KV的up_project运算移动到Q上面，即K、V输入没有了up_project计算（多heads通过广播实现）。**MLA吸收矩阵形态**的逻辑如下所示：
+- 下采样阶段还没有heads，所以一般而言Q、K、V的下采样<strong>不进行TP切分</strong>。考虑到独立切分适应任何场景，也可参考前面提的矩阵切分场景来分割下采样。
+- 如果按照heads进行切分的话，步骤2、3的W矩阵需要进行<strong>列切(column split)，</strong>步骤5的W矩阵<strong>行切(row split)；</strong>
+- 步骤4的attention则进行heads维度切分(<strong>head split</strong>)。
+MLA还有第二种形态，就是将KV的up_project运算移动到Q上面，即K、V输入没有了up_project计算（多heads通过广播实现）。<strong>MLA吸收矩阵形态</strong>的逻辑如下所示：
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_acdf8c32336a.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_acdf8c32336a.jpg)
 
 这种形态的TP切分策略：
 
 - 步骤1不采用TP切分；
-- 步骤2的W矩阵需要进行**列切(column split)；**
-- 步骤5的W矩阵**行切(row split)；**
-- 步骤4的attention则进行heads维度切分(**head split**)；
-- **步骤3的两次线性运算**均进行heads维度切分(**head split**)；
+- 步骤2的W矩阵需要进行<strong>列切(column split)；</strong>
+- 步骤5的W矩阵<strong>行切(row split)；</strong>
+- 步骤4的attention则进行heads维度切分(<strong>head split</strong>)；
+- <strong>步骤3的两次线性运算</strong>均进行heads维度切分(<strong>head split</strong>)；
 注：MLA的KV矩阵吸收运算（W_UK -> W_UQ     W_UV -> W_O）是重新建立一个线性映射矩阵（即，两次的W_UK不相等），MLA的矩阵吸收的证明见参考文献7。
 
 ### 附1：常见的集群通信方式
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_7b2b43afef59.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_7b2b43afef59.jpg)
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_87d9bec6e1e3.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_87d9bec6e1e3.jpg)
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_24b720f9622e.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_24b720f9622e.jpg)
 
 参考文献：
 
@@ -362,9 +362,9 @@ MLA还有第二种形态，就是将KV的up_project运算移动到Q上面，即K
 - [deepseek技术解读(1)-彻底理解MLA（Multi-Head Latent Attentio...](https://zhuanlan.zhihu.com/p/16730036197)
 - [merged attention] [FLASHINFER: EFFICIENT AND CUSTOMIZABLE ATTENTION ENGINE FOR LLMINFERENCE SERVING](https://link.zhihu.com/?target=https%3A//www.arxiv.org/pdf/2501.01005)
 - [tree-attention] [https://arxiv.org/pdf/2408.04093](https://link.zhihu.com/?target=https%3A//arxiv.org/pdf/2408.04093)
-**更多推理知识：[LLM推理知识指南](https://zhuanlan.zhihu.com/p/1954137524881580796)**
+<strong>更多推理知识：[LLM推理知识指南](https://zhuanlan.zhihu.com/p/1954137524881580796)</strong>
 
-**想深耕AI Infra领域？欢迎访问[InfraTech](https://link.zhihu.com/?target=https%3A//github.com/CalvinXKY/InfraTech)**库！内容涵盖大模型基础、PyTorch/vLLM/SGLang框架入门、性能加速等核心方向，配套**[50+知识干货](https://link.zhihu.com/?target=https%3A//github.com/CalvinXKY/InfraTech)**及适合初学者的**[notebook](https://link.zhihu.com/?target=https%3A//github.com/CalvinXKY/InfraTech)**练习。[](https://link.zhihu.com/?target=https%3A//github.com/CalvinXKY/InfraTech)
+<strong>想深耕AI Infra领域？欢迎访问[InfraTech](https://link.zhihu.com/?target=https%3A//github.com/CalvinXKY/InfraTech)</strong>库！内容涵盖大模型基础、PyTorch/vLLM/SGLang框架入门、性能加速等核心方向，配套<strong>[50+知识干货](https://link.zhihu.com/?target=https%3A//github.com/CalvinXKY/InfraTech)</strong>及适合初学者的<strong>[notebook](https://link.zhihu.com/?target=https%3A//github.com/CalvinXKY/InfraTech)</strong>练习。[](https://link.zhihu.com/?target=https%3A//github.com/CalvinXKY/InfraTech)
 
 **
 

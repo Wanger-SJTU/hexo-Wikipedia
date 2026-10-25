@@ -23,7 +23,7 @@ source_url: https://zhuanlan.zhihu.com/p/66281890
 
 什么才是半监督学习的正确打开方式呢？近期的一些半监督学习方法，通过在损失函数中添加与未标记数据相关的项，来鼓励模型举一反三，增加对陌生数据的泛化能力。
 
-**第一种方案是自洽正则化（Consistency Regularization）【3，4】**。以前遇到标记数据太少，监督学习泛化能力差的时候，人们一般进行训练数据增广，比如对图像做随机平移，缩放，旋转，扭曲，剪切，改变亮度，饱和度，加噪声等。数据增广能产生无数的修改过的新图像，扩大训练数据集。**自洽正则化的思路是，对未标记数据进行数据增广，产生的新数据输入分类器，预测结果应保持自洽。即同一个数据增广产生的样本，模型预测结果应保持一致。**此规则被加入到损失函数中，有如下形式，
+<strong>第一种方案是自洽正则化（Consistency Regularization）【3，4】</strong>。以前遇到标记数据太少，监督学习泛化能力差的时候，人们一般进行训练数据增广，比如对图像做随机平移，缩放，旋转，扭曲，剪切，改变亮度，饱和度，加噪声等。数据增广能产生无数的修改过的新图像，扩大训练数据集。<strong>自洽正则化的思路是，对未标记数据进行数据增广，产生的新数据输入分类器，预测结果应保持自洽。即同一个数据增广产生的样本，模型预测结果应保持一致。</strong>此规则被加入到损失函数中，有如下形式，
 
 $** &#x2016;p&#xA0;model&#xA0;(y|&#xA0;Augment&#xA0;(x);&#x03B8;)&#x2212;p&#xA0;model&#xA0;(y|&#xA0;Augment&#xA0;(x);&#x03B8;)&#x2016;22" role="presentation">‖p model (y| Augment (x);θ)−p model (y| Augment (x);θ)‖22\| \mathrm{p}_{\text { model }}(y | \text { Augment }(x) ; \theta)-\mathrm{p}_{\text { model }}(y | \text { Augment }(x) ; \theta) \|_{2}^{2} $
 
@@ -35,7 +35,7 @@ MixMatch 集成了自洽正则化。数据增广使用了对图像的随机左�
 
 MixMatch 使用 "sharpening" 函数，最小化未标记数据的熵。这一部分后面会介绍。
 
-**第三种方案称作传统正则化（Traditional Regularization）。**为了让模型泛化能力更好，一般的做法对模型参数做 L2 正则化，SGD下L2正则化等价于Weight Decay。MixMaxtch 使用了 Adam 优化器，而之前有篇文章发现 Adam 和 L2 正则化同时使用会有问题，因此 MixMatch 从谏如流使用了单独的Weight decay。
+<strong>第三种方案称作传统正则化（Traditional Regularization）。</strong>为了让模型泛化能力更好，一般的做法对模型参数做 L2 正则化，SGD下L2正则化等价于Weight Decay。MixMaxtch 使用了 Adam 优化器，而之前有篇文章发现 Adam 和 L2 正则化同时使用会有问题，因此 MixMatch 从谏如流使用了单独的Weight decay。
 
 最近发明的一种数据增广方法叫 Mixup 【6】，从训练数据中任意抽样两个样本，构造混合样本和混合标签，作为新的增广数据，
 
@@ -47,7 +47,7 @@ $\begin{array}{ll}{\tilde{x}=\lambda x_{i}+(1-\lambda) x_{j},} & {\text { where 
 
 MixMatch 偷学各派武功，取三家之长，补三家之短，最终成为天下第一高手 -- 最强半监督学习模型。这种 MixMatch 方法在小数据上做半监督学习的精度，远超其他同类模型。比如，在 CIFAR-10 数据集上，只用250个标签，他们就将误差减小了4倍（从38%降到11%）。在STL-10数据集上，将误差降低了两倍。 方法示意图如下，
 
-![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_b13dca197b1b.jpg)
+![](/images/collections/0.raw/zhihu/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%EF%BC%81/asset/img_b13dca197b1b.jpg)
 
 MixMatch 实现方法：对无标签数据，做数据增广，得到 K 个新的数据。因为数据增广引入噪声，将这 K 个新的数据，输入到同一个分类器，得到不同的预测分类概率。MinMax 利用算法（Sharpen），使多个概率分布的平均（Average）方差更小，预测结果更加自洽，系统熵更小。注：Google原文并未比较 MixMatch 和使用生成对抗网络GAN做半监督学习时的表现孰好孰坏。但从搜索到的资料来看，2016年 OpenAI 的 Improved GAN 【8】，使用4000张CIFAR10的标记数据，做半监督学习得到测试误差18.6。2017年，GAN做半监督学习的测试误差，在4000张CIFAR10标记数据上，将测试误差降低到14.41 【10】。2018年，GAN + 流形正则化，得到测试误差14.45。目前并没有看到来自GAN的更好结果。对比 MixMatch 使用 250 张标记图片，就可以将测试误差降低到 11.08，使用4000张标记图片，可以将测试误差降低到  6.24，应该算是大幅度超越使用GAN做半监督学习的效果。
 
@@ -58,9 +58,9 @@ $- 使用 MixMatch 算法，对一个 Batch 的标记数据 \mathcal{X} 和一�
 
 其中 T， K， \alpha  是超参数，后面会介绍。MixMatch 数据增广算法如下，
 
-![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_70451a159ec5.jpg)
+![](/images/collections/0.raw/zhihu/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%EF%BC%81/asset/img_70451a159ec5.jpg)
 
-MixMatch 算法。**算法描述：**for 循环对一个Batch的标记图片和未标记图片做数据增广。对标记图片，只做一次增广，标签不变，记为 p 。对未标记数据，做 K 次随机增广（文章中超参数K=2），输入分类器，得到平均分类概率，应用温度Sharpen 算法（T 是温度参数，此算法后面介绍），得到未标记数据的“猜测”标签 q 。此时增广后的标记数据 \mathcal{\hat{X}} 有一个Batch，增广后的未标记数据 \mathcal{\hat{U}} 有 K 个Batch。将 \mathcal{\hat{X}} 和 \mathcal{\hat{U}} 混合在一起，随机重排得到数据集 \mathcal{W} 。最终 MixMatch 增广算法输出的，是将 \mathcal{\hat{X}} 与 \mathcal{W} 做了MixUp() 的一个 Batch 的标记数据 \mathcal{X'} ，以及 \mathcal{\hat{U}} 与 \mathcal{W} 做了MixUp() 的 K 个Batch 的无标记增广数据 \mathcal{U'} 。
+MixMatch 算法。<strong>算法描述：</strong>for 循环对一个Batch的标记图片和未标记图片做数据增广。对标记图片，只做一次增广，标签不变，记为 p 。对未标记数据，做 K 次随机增广（文章中超参数K=2），输入分类器，得到平均分类概率，应用温度Sharpen 算法（T 是温度参数，此算法后面介绍），得到未标记数据的“猜测”标签 q 。此时增广后的标记数据 \mathcal{\hat{X}} 有一个Batch，增广后的未标记数据 \mathcal{\hat{U}} 有 K 个Batch。将 \mathcal{\hat{X}} 和 \mathcal{\hat{U}} 混合在一起，随机重排得到数据集 \mathcal{W} 。最终 MixMatch 增广算法输出的，是将 \mathcal{\hat{X}} 与 \mathcal{W} 做了MixUp() 的一个 Batch 的标记数据 \mathcal{X'} ，以及 \mathcal{\hat{U}} 与 \mathcal{W} 做了MixUp() 的 K 个Batch 的无标记增广数据 \mathcal{U'} 。
 
 2. 对增广后的标记数据 \mathcal{X'} ，和无标记增广数据 \mathcal{U'} 分别计算损失项，
 
@@ -108,7 +108,7 @@ $\begin{aligned} \lambda & \sim \operatorname{Beta}(\alpha, \alpha) \\ \lambda^{
 
 文章使用超参数 \alpha = 0.75 , 如果将此 Beta 分布画图表示，则如下图所示，
 
-![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_ffb90e6db0fe.jpg)
+![](/images/collections/0.raw/zhihu/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%EF%BC%81/asset/img_ffb90e6db0fe.jpg)
 
 $权重因子的分布。根据此 Beta(0.75, 0.75) 分布抽样，大部分数值落在接近 0 或 1 的区域。原始的 Mixup 算法中，第一步不变，第二步 \lambda' = \lambda 。MixMatch 做了极小的修改，使用 \lambda^{\prime} =\max (\lambda, 1-\lambda) 。如上图所示，根据 {\rm Beta} (\alpha=0.75, \alpha=0.75) 抽样得到的 \lambda 数值大部分落在 0 或 1 附近， \lambda^{\prime} =\max (\lambda, 1-\lambda) 函数则使得 \lambda^{\prime}  数值接近 1 。这样的好处是在 Mixup 标记数据 \mathcal{\hat{X}} 与混合数据 \mathcal{W}时，增加 \mathcal{\hat{X}}的权重；在 Mixup 未标记数据 \mathcal{\hat{U}} 与 \mathcal{W}时，增加 \mathcal{\hat{U}}的权重。分别对应于算法描述中的{\rm Mixup}( \mathcal{\hat{X}},  \mathcal{W}) 和 {\rm Mixup}( \mathcal{\hat{U}},  \mathcal{W})。$
 
@@ -116,17 +116,17 @@ $权重因子的分布。根据此 Beta(0.75, 0.75) 分布抽样，大部分数�
 
 ### 半监督学习 MixMatch 训练结果
 
-![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_686375e53b78.jpg)
+![](/images/collections/0.raw/zhihu/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%EF%BC%81/asset/img_686375e53b78.jpg)
 
 在 CIFAR-10 数据集上，使用全部五万个数据做监督学习，最低误差能降到百分之4.13。使用 MixMatch，250 个数据就能将误差降到百分之11，4000 个数据就能将误差降到百分之 6.24。结果惊艳。
 ### 更直观的效果对比
 
-![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_9e1f694831d6.jpg)
+![](/images/collections/0.raw/zhihu/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%EF%BC%81/asset/img_9e1f694831d6.jpg)
 
 MixMatch 算法测试误差用黑色星号表示，监督学习算法用虚线表示。观察最底下，误差最小的两条线，可看到 MixMatch 测试误差直逼监督学习算法！
 ### 解剖各部分贡献 （Ablation Test ）
 
-![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_fec9921aeecd.jpg)
+![](/images/collections/0.raw/zhihu/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%EF%BC%81/asset/img_fec9921aeecd.jpg)
 
 可以看到对结果贡献最大的是对未标记数据的 MixUp，Average 以及 Sharpen。 
 ### 结论：

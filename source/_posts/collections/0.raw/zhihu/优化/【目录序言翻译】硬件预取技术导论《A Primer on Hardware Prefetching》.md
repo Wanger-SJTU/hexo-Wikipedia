@@ -45,7 +45,7 @@ source_url: https://zhuanlan.zhihu.com/p/373038275
 - execution-based prefetching（基于执行的预取）
 我们假设读者已熟悉有关处理器架构和缓存的基础知识，并对更高级的主题如乱序执行有一定了解。本书列举了硬件预取器设计的关键问题，并对各种预取技术进行了高层次描述。为获得更完整的微架构细节与预取方案的性能评估，我们建议读者参阅书中所引用的出版物。
 
-**关键词：**hardware prefetching（硬件预取）, next-line prefetching（下一行预取）, branch-directed prefetching（分支定向的预取）, discontinuity prefetching（不连续的预取）, stride prefetching（跨步预取）, address-correlated prefetching（基于地址相关性的预取）, Markov prefetcher（马尔可夫预测器）, global history buffer（全局历史缓冲区）, temporal memory streaming（时间域上的存储流）, spatial memory streaming（空间域上的存储流）, execution-based prefetching（基于执行的预取）
+<strong>关键词：</strong>hardware prefetching（硬件预取）, next-line prefetching（下一行预取）, branch-directed prefetching（分支定向的预取）, discontinuity prefetching（不连续的预取）, stride prefetching（跨步预取）, address-correlated prefetching（基于地址相关性的预取）, Markov prefetcher（马尔可夫预测器）, global history buffer（全局历史缓冲区）, temporal memory streaming（时间域上的存储流）, spatial memory streaming（空间域上的存储流）, execution-based prefetching（基于执行的预取）
 
 **原书：《A Primer on Hardware Prefetching》Babak Falsafi, Thomas F. Wenisch（Morgan&Claypool Publishers - Synthesis Lectures On Computer Architecture）出版时间：May 2014
 个人汉化了此书的目录与前言，以便大家在搜索相关中文关键词时能获得参考，但也仅供参考。如果帮到了您，那就再好不过了，希望能留个赞支持一下！（有支持才有动力嘛）
@@ -115,13 +115,13 @@ note：本文包括很多算法或方法，这些算法或方法的名称也被�
 
 ### 引言
 
-**1.1 存储墙**
+<strong>1.1 存储墙</strong>
 
-![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_e44daf964a99.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BC%98%E5%8C%96/asset/img_e44daf964a99.jpg)
 
 图1.1，处理器与内存间的差距越来越大，来自[3]图1.1显示了过去四十年间，处理器和内存间日益扩大的性能差距。在这段时期，微架构、电路和制造技术的创新导致了处理器性能的指数增长。与此同时，DRAM则主要受益于密度的增加，其速度只在名义上有所提高。虽然未来的预测表明，处理器性能的提高可能不会再以同样速度进行下去，但目前的性能差距将使我们有必要在未来几年内采用相关技术，以应对漫长的内存访问延迟。
 
-![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_4f6edfb83fc7.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BC%98%E5%8C%96/asset/img_4f6edfb83fc7.jpg)
 
 图1.2，一个现代的存储层次计算机架构师们尝试通过建立高速缓冲存储器（cache）的层次结构来弥补这一性能差距。图1.2就展示了一个现代计算机的cache层次结构，该层次由若干层级cache组成，每层都在延迟与容量间经历了权衡。该层次结构的目的主要是通过在cache中完成大部分内存访问，减少较慢的DRAM访问的次数，以改善平均内存访问时间。靠近核心的cache会更小但更快，以有效降低访问延迟。我们将最靠近核心的cache层级称为一级缓存（L1），然后依次对cache层级进行编号，最后一级cache称作LLC（last level cache）
 
@@ -131,7 +131,7 @@ note：本文包括很多算法或方法，这些算法或方法的名称也被�
 
 关于内存墙，无论是算法、编译器、系统软件还是硬件，都已经提出了相当多种不同的技术。这些技术包括缓存无关的算法（cache-oblivious algorithms）、编译器级的代码/数据分布优化（code and data layout optimizations），以及以硬件为中心的方法。在本书，我们将集中讨论基于硬件的指令/数据预取技术。为更全面地处理存储系统，我们建议读者参阅Jacob的各个综合讲座[4]。
 
-**1.2 预取**
+<strong>1.2 预取</strong>
 
 隐藏内存访问延迟的一种办法就是预取（prefetch）。预取是指，预测后续的内存访问，并提前完成该访问，以隐藏有关的长延迟行为。在极限情况下（预取总是及时且正确的），内存访问不会导致任何额外开销，且内存性能似乎与处理器寄存器相当。但实际上，预期并不总是及时或正确，而延迟或不准确的预取则会浪费能源，最坏情况下还会影响性能。
 
@@ -140,7 +140,7 @@ note：本文包括很多算法或方法，这些算法或方法的名称也被�
 - 预测内存访问的地址（即，准确accurate）
 - 预测何时发出预取（即，及时timely）
 - 选择暂存预取数据的位置（以及可能要替换其它数据）
-**1.2.1 地址预测**
+<strong>1.2.1 地址预测</strong>
 
 正确预测内存地址是预取机制的一个关键挑战。若地址预测正确，预取机制就有机会提前获取有关内容并隐藏内存访问延迟。但如果不能准确预测地址的话，预取就可能会污染cache（即预取的cache块会逐出那些潜在有用的cache块），同时还会在内存系统中产生额外的通信量与争用。
 
@@ -156,22 +156,22 @@ note：本文包括很多算法或方法，这些算法或方法的名称也被�
 - 准确度（accuracy）度量了预取器所发出的有效访问的占比（即，所有预取中有效预取的占比）。
 许多简单的预取器都能以牺牲准确度为代价来提高覆盖率。而理想的预取器则可同时提供较高的准确度与覆盖率。
 
-**1.2.2 预取的前瞻性**
+<strong>1.2.2 预取的前瞻性</strong>
 
 理想情况下，预取机制将提前发出预取，并为预取数据提供足够的暂存空间，从而隐藏所有的内存访问延迟。但在实践中，准确预测向来是一个重大的挑战。即便地址预测正确，过早的预取也将意味着必须在数据被使用前一直在处理器附近暂存它们。在最好的情况下，过早预取是无用的，因为预取信息会在使用前被从处理器中移除。最坏情况下，它则可能会驱逐其它有用信息（例如其它预取块或cache中的有效块）。若预取较晚，则其将暴露内存访问的延迟，从而降低预取的有效性。极端情况下，出于额外的内存系统流量，以及对延迟敏感的关键访问需求造成的影响，较晚预取可能导致性能下降。
 
-**1.2.3 预取值的暂存**
+<strong>1.2.3 预取值的暂存</strong>
 
 最简单，也可能是最古老的软件策略就是直接将预取值加载到处理器的寄存器中，就如其它显式加载操作一样。许多架构，尤其是现代的乱序架构，在LOAD指令发射后并不会暂停执行，而是在不得不需要用到LOAD所加载的数据时，才暂停相关执行。
 
-这种预取策略通常被称为**绑定预取（binding prefetch）**，因为在发出预取时，数据的后续使用价值将会被绑定。这种方法存在很多缺点：
+这种预取策略通常被称为<strong>绑定预取（binding prefetch）</strong>，因为在发出预取时，数据的后续使用价值将会被绑定。这种方法存在很多缺点：
 
 - 它会消耗宝贵的处理器寄存器空间
 - 它会强制硬件进行预取，即便内存系统的负载很重
 - 在预取地址错误时会导致语义上的困难（例如，预取的无效地址是否会导致内存保护故障（fault）？）
 - 不清楚如何将这种策略用于指令
-与此相反，大多预取技术都会将预取值直接放入cache，或用于增强cache层次的补充缓冲区（supplemental buffer）中，并同时进行访问。在多核和多处理器系统中，这些cache和buffer还将参与cache一致性协议，因此预取值的存储位置可能在随后访问的期间发生改变；硬件需要保证被访问的值是最新的。这种预取策略被称作**非绑定策略（nonbinding）**。对于这些方案，预取将只是一种纯粹的性能方案，不影响程序语义。
+与此相反，大多预取技术都会将预取值直接放入cache，或用于增强cache层次的补充缓冲区（supplemental buffer）中，并同时进行访问。在多核和多处理器系统中，这些cache和buffer还将参与cache一致性协议，因此预取值的存储位置可能在随后访问的期间发生改变；硬件需要保证被访问的值是最新的。这种预取策略被称作<strong>非绑定策略（nonbinding）</strong>。对于这些方案，预取将只是一种纯粹的性能方案，不影响程序语义。
 
 我们在本书中考虑的所有硬件预取器都属于后者（非绑定）。它们主要的区别在于预取值的放置和替换的策略设计。
 
-![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_4b68050210f6.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BC%98%E5%8C%96/asset/img_4b68050210f6.jpg)

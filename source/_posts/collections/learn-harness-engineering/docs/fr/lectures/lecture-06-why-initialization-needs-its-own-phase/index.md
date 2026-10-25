@@ -64,22 +64,22 @@ Le guide de harness engineering d'OpenAI Codex souligne également le principe d
 
 ## Concepts clés
 
-- **Phase d'initialisation** : La première phase du cycle de vie de l'agent — pas d'implémentation de fonctionnalité, seulement l'établissement des prérequis pour toutes les phases d'implémentation suivantes. La sortie n'est pas du code, c'est de l'infrastructure.
-- **Contrat d'amorçage (Bootstrap Contract)** : Les conditions dans lesquelles un projet peut être exploité sans ambiguïté par une nouvelle session d'agent — peut démarrer, peut tester, peut voir la progression, peut reprendre les étapes suivantes. Quatre conditions, toutes obligatoires.
-- **Démarrage à froid vs démarrage à chaud** : Le démarrage à froid part d'un répertoire vide où l'agent doit deviner la structure du projet ; le démarrage à chaud part d'un modèle ou d'un projet existant où l'infrastructure est déjà en place. Le démarrage à chaud surpasse largement le démarrage à froid — comme commencer à travailler sur un chantier avec eau courante et électricité versus partir d'un terrain nu.
-- **Préparation à la passation (Handoff Readiness)** : Le projet est dans un état où, à tout moment, un agent neuf peut prendre le relais. Pas d'explication verbale nécessaire — seulement le contenu du repo.
-- **Temps jusqu'à la première vérification (Time to First Verification)** : Le temps entre le début du projet et le moment où le premier point de fonctionnalité passe la vérification. C'est la métrique clé pour mesurer l'efficacité de l'initialisation.
-- **Utilisabilité en aval** : La meilleure mesure de la qualité de l'initialisation — la proportion de sessions suivantes qui peuvent exécuter des tâches avec succès sans s'appuyer sur des connaissances implicites.
+- <strong>Phase d'initialisation</strong> : La première phase du cycle de vie de l'agent — pas d'implémentation de fonctionnalité, seulement l'établissement des prérequis pour toutes les phases d'implémentation suivantes. La sortie n'est pas du code, c'est de l'infrastructure.
+- <strong>Contrat d'amorçage (Bootstrap Contract)</strong> : Les conditions dans lesquelles un projet peut être exploité sans ambiguïté par une nouvelle session d'agent — peut démarrer, peut tester, peut voir la progression, peut reprendre les étapes suivantes. Quatre conditions, toutes obligatoires.
+- <strong>Démarrage à froid vs démarrage à chaud</strong> : Le démarrage à froid part d'un répertoire vide où l'agent doit deviner la structure du projet ; le démarrage à chaud part d'un modèle ou d'un projet existant où l'infrastructure est déjà en place. Le démarrage à chaud surpasse largement le démarrage à froid — comme commencer à travailler sur un chantier avec eau courante et électricité versus partir d'un terrain nu.
+- <strong>Préparation à la passation (Handoff Readiness)</strong> : Le projet est dans un état où, à tout moment, un agent neuf peut prendre le relais. Pas d'explication verbale nécessaire — seulement le contenu du repo.
+- <strong>Temps jusqu'à la première vérification (Time to First Verification)</strong> : Le temps entre le début du projet et le moment où le premier point de fonctionnalité passe la vérification. C'est la métrique clé pour mesurer l'efficacité de l'initialisation.
+- <strong>Utilisabilité en aval</strong> : La meilleure mesure de la qualité de l'initialisation — la proportion de sessions suivantes qui peuvent exécuter des tâches avec succès sans s'appuyer sur des connaissances implicites.
 
 ## Comment bien faire l'initialisation
 
-**Traitez l'initialisation comme une phase dédiée.** La première session ne fait que de l'initialisation — aucun code de fonctionnalité métier. L'initialisation produit :
+<strong>Traitez l'initialisation comme une phase dédiée.</strong> La première session ne fait que de l'initialisation — aucun code de fonctionnalité métier. L'initialisation produit :
 
-**1. Environnement exécutable.** Le projet démarre, les dépendances sont installées, aucun problème d'environnement. Fondations coulées, sans fissures.
+<strong>1. Environnement exécutable.</strong> Le projet démarre, les dépendances sont installées, aucun problème d'environnement. Fondations coulées, sans fissures.
 
-**2. Framework de test vérifiable.** Au moins un test exemple passe. Cela prouve que le framework de test lui-même est correctement configuré — comme dresser un pilier sur les fondations pour prouver qu'il peut supporter du poids.
+<strong>2. Framework de test vérifiable.</strong> Au moins un test exemple passe. Cela prouve que le framework de test lui-même est correctement configuré — comme dresser un pilier sur les fondations pour prouver qu'il peut supporter du poids.
 
-**3. Document de contrat d'amorçage.** Un document clair indiquant aux sessions suivantes :
+<strong>3. Document de contrat d'amorçage.</strong> Un document clair indiquant aux sessions suivantes :
 ```markdown
 # Initialization Contract
 
@@ -102,7 +102,7 @@ Le guide de harness engineering d'OpenAI Codex souligne également le principe d
 - tests/ — Test files
 ```
 
-**4. Découpage des tâches.** Divisez tout le projet en une liste ordonnée de tâches, chacune avec des critères d'acceptation clairs :
+<strong>4. Découpage des tâches.</strong> Divisez tout le projet en une liste ordonnée de tâches, chacune avec des critères d'acceptation clairs :
 ```markdown
 # Task Breakdown
 
@@ -120,11 +120,11 @@ Le guide de harness engineering d'OpenAI Codex souligne également le principe d
 - ...
 ```
 
-**5. Commit git comme point de contrôle.** Après la complétion de l'initialisation, commitez un point de contrôle propre. Tout le travail ultérieur part de ce point de contrôle.
+<strong>5. Commit git comme point de contrôle.</strong> Après la complétion de l'initialisation, commitez un point de contrôle propre. Tout le travail ultérieur part de ce point de contrôle.
 
-**Stratégie de démarrage à chaud** : Ne partez pas d'un répertoire vide. Utilisez un modèle de projet (create-react-app, fastapi-template, etc.) pour prérégler la structure de répertoires standard, la configuration des dépendances et le framework de test. Intégrez les étapes d'initialisation courantes dans le modèle, ne laissant que le travail d'initialisation spécifique au projet. Comme commencer à travailler sur un chantier avec eau courante et électricité — mille fois mieux que de partir d'un terrain nu.
+<strong>Stratégie de démarrage à chaud</strong> : Ne partez pas d'un répertoire vide. Utilisez un modèle de projet (create-react-app, fastapi-template, etc.) pour prérégler la structure de répertoires standard, la configuration des dépendances et le framework de test. Intégrez les étapes d'initialisation courantes dans le modèle, ne laissant que le travail d'initialisation spécifique au projet. Comme commencer à travailler sur un chantier avec eau courante et électricité — mille fois mieux que de partir d'un terrain nu.
 
-**Critères de complétion de l'initialisation** : Pas « combien de code a été écrit », mais si les quatre conditions du contrat d'amorçage sont remplies — peut démarrer, peut tester, peut voir la progression, peut reprendre les étapes suivantes. Utilisez cette liste de contrôle pour valider l'initialisation :
+<strong>Critères de complétion de l'initialisation</strong> : Pas « combien de code a été écrit », mais si les quatre conditions du contrat d'amorçage sont remplies — peut démarrer, peut tester, peut voir la progression, peut reprendre les étapes suivantes. Utilisez cette liste de contrôle pour valider l'initialisation :
 
 ```markdown
 ## Initialization Acceptance Checklist
@@ -139,9 +139,9 @@ Le guide de harness engineering d'OpenAI Codex souligne également le principe d
 
 Deux approches d'initialisation pour un projet frontend React :
 
-**Approche mixte (couler les fondations et monter les murs simultanément)** : L'agent a simultanément créé l'échafaudage du projet et implémenté la première fonctionnalité lors de la session 1. À la fin de la session, le repo avait du code exécutable mais : pas de documentation explicite des commandes start/test, pas de fichier de suivi de progression, pas de découpage des tâches. La session 2 a passé ~20 minutes à déduire la structure du projet, le framework de test et le processus de build — comme une nouvelle équipe de construction arrivant sur un chantier, ne sachant pas où en sont les fondations ni où passent les canalisations, devant creuser des trous un par un pour le découvrir.
+<strong>Approche mixte (couler les fondations et monter les murs simultanément)</strong> : L'agent a simultanément créé l'échafaudage du projet et implémenté la première fonctionnalité lors de la session 1. À la fin de la session, le repo avait du code exécutable mais : pas de documentation explicite des commandes start/test, pas de fichier de suivi de progression, pas de découpage des tâches. La session 2 a passé ~20 minutes à déduire la structure du projet, le framework de test et le processus de build — comme une nouvelle équipe de construction arrivant sur un chantier, ne sachant pas où en sont les fondations ni où passent les canalisations, devant creuser des trous un par un pour le découvrir.
 
-**Initialisation dédiée (fondations d'abord)** : La session 1 n'a fait que de l'initialisation — créé la structure de répertoires à partir d'un modèle, configuré le framework de test (Vitest + React Testing Library), écrit et vérifié un test exemple, créé le document de contrat d'amorçage et le fichier de découpage des tâches, committé le point de contrôle initial. Le temps de reconstruction de la session 2 était inférieur à 3 minutes, et elle a commencé à travailler directement à partir de la liste de tâches — l'équipe arrive, jette un coup d'oeil au plan, et sait exactement où reprendre.
+<strong>Initialisation dédiée (fondations d'abord)</strong> : La session 1 n'a fait que de l'initialisation — créé la structure de répertoires à partir d'un modèle, configuré le framework de test (Vitest + React Testing Library), écrit et vérifié un test exemple, créé le document de contrat d'amorçage et le fichier de découpage des tâches, committé le point de contrôle initial. Le temps de reconstruction de la session 2 était inférieur à 3 minutes, et elle a commencé à travailler directement à partir de la liste de tâches — l'équipe arrive, jette un coup d'oeil au plan, et sait exactement où reprendre.
 
 Comparaison sur le cycle complet du projet : le temps de reconstruction total de l'approche mixte (sur toutes les sessions) était ~60 % supérieur à celui de l'approche d'initialisation dédiée. Les 20 minutes supplémentaires passées à l'initialisation ont été récupérées plusieurs fois lors des sessions suivantes. Comme des fondations solides qui font monter les murs plus vite — lent c'est vite.
 
@@ -163,8 +163,8 @@ Comparaison sur le cycle complet du projet : le temps de reconstruction total de
 
 ## Exercices
 
-1. **Conception du contrat d'amorçage** : Écrivez un contrat d'amorçage complet pour un projet que vous développez. Ouvrez ensuite une toute nouvelle session d'agent, montrez-lui uniquement le contenu du repo (aucun contexte verbal), et demandez-lui d'essayer de lancer le projet, d'exécuter les tests et de comprendre la progression actuelle. Enregistrez chaque problème rencontré — chacun correspond à une clause manquante dans votre contrat d'amorçage.
+1. <strong>Conception du contrat d'amorçage</strong> : Écrivez un contrat d'amorçage complet pour un projet que vous développez. Ouvrez ensuite une toute nouvelle session d'agent, montrez-lui uniquement le contenu du repo (aucun contexte verbal), et demandez-lui d'essayer de lancer le projet, d'exécuter les tests et de comprendre la progression actuelle. Enregistrez chaque problème rencontré — chacun correspond à une clause manquante dans votre contrat d'amorçage.
 
-2. **Expérience comparative** : Choisissez un nouveau projet de complexité modérée. Approche A : laissez l'agent initialiser et faire la première implémentation simultanément. Approche B : consacrez une session à l'initialisation dédiée, commencez l'implémentation en session 2. Après 4 sessions, comparez : le temps jusqu'à la première vérification, le coût de reconstruction, le taux de complétion des fonctionnalités.
+2. <strong>Expérience comparative</strong> : Choisissez un nouveau projet de complexité modérée. Approche A : laissez l'agent initialiser et faire la première implémentation simultanément. Approche B : consacrez une session à l'initialisation dédiée, commencez l'implémentation en session 2. Après 4 sessions, comparez : le temps jusqu'à la première vérification, le coût de reconstruction, le taux de complétion des fonctionnalités.
 
-3. **Liste de contrôle d'acceptation de l'initialisation** : Concevez une liste de contrôle d'acceptation de l'initialisation pour votre projet. Demandez à une nouvelle session d'agent d'exécuter chaque élément de la liste de contrôle et d'enregistrer lesquels passent et lesquels échouent. Les éléments qui échouent indiquent les points où votre harness a besoin d'être renforcé.
+3. <strong>Liste de contrôle d'acceptation de l'initialisation</strong> : Concevez une liste de contrôle d'acceptation de l'initialisation pour votre projet. Demandez à une nouvelle session d'agent d'exécuter chaque élément de la liste de contrôle et d'enregistrer lesquels passent et lesquels échouent. Les éléments qui échouent indiquent les points où votre harness a besoin d'être renforcé.

@@ -61,17 +61,17 @@ source_url: https://zhuanlan.zhihu.com/p/556630201
 
 具体操作就是通过均值与标准差将特征归一化后再通过可学习的参数\gamma 与 \beta映射到一个新的分布上（注意这里的 \gamma与 \beta是针对每个特征值的，假如一个向量100维，进行标准化后就会有100个\gamma与 \beta）。根据要归一化的特征所在的不同位置，Normalization分为BatchNorm, LayerNorm等等，这里主要讨论这两种。还是看这张经典的图。(补充一下：这张图是面向CV的，像上面讨论的由于NLP数据的组织形式不同，这张图好像并不适用于NLP)
 
-![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_ce2d310fc03b.jpg)
+![](/images/collections/0.raw/zhihu/dl%E8%AE%BA%E6%96%87/asset/img_ce2d310fc03b.jpg)
 
 #### BatchNorm
 
 cv：就是对于某个通道c，所有batch在通道c的所有特征进行标准化（`B*H*W`），或者说是“逐通道**”进行，对每个通道都计算出均值、标准差，一共C组。
 
-nlp：根据之前的讨论，`[B, S, D]`看作S组的`[B,D]`，BN就可以看作是在`[B,D]`上对D的每一维分别进行标准化，或者说是“**逐维**”进行，对于token嵌入的每个维度都计算出均值和标准差，一共S*D组。根据上面引用的LayerNorm的原文，可以看到，BN需要计算batch中每个时间步（每个位置）的均值和标准差，而如果测试集存在长度大于S的文本，那这些文本的统计数据就是缺失的，这里就存在问题。
+nlp：根据之前的讨论，`[B, S, D]`看作S组的`[B,D]`，BN就可以看作是在`[B,D]`上对D的每一维分别进行标准化，或者说是“<strong>逐维</strong>”进行，对于token嵌入的每个维度都计算出均值和标准差，一共S*D组。根据上面引用的LayerNorm的原文，可以看到，BN需要计算batch中每个时间步（每个位置）的均值和标准差，而如果测试集存在长度大于S的文本，那这些文本的统计数据就是缺失的，这里就存在问题。
 
-注意，**下面这张图是错的**，不是对同一batch中同一位置的整体嵌入进行标准化，而是对嵌入的不同维度进行标准化。
+注意，<strong>下面这张图是错的</strong>，不是对同一batch中同一位置的整体嵌入进行标准化，而是对嵌入的不同维度进行标准化。
 
-![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_cc6150190f74.jpg)
+![](/images/collections/0.raw/zhihu/dl%E8%AE%BA%E6%96%87/asset/img_cc6150190f74.jpg)
 
 这张图中举例的BN是错误参照Pytorch的`torch.nn.BatchNorm2d`，cv的BatchNorm的实现如下：（NLP我的理解可能有问题这里就不放实现了）
 
@@ -83,9 +83,9 @@ cv_embedding = cv_batch_norm(cv_embedding) # cv_embedding: [B, C, H, W]`
 
 #### LayerNorm
 
-cv：对于batch内某个样本b，所有通道的所有特征进行归一化（`C*H*W`），或者说是“**逐样本**”进行，每个样本都计算均值、标准差，一共B组。
+cv：对于batch内某个样本b，所有通道的所有特征进行归一化（`C*H*W`），或者说是“<strong>逐样本</strong>”进行，每个样本都计算均值、标准差，一共B组。
 
-nlp: 根据之前的讨论，`[B, S, D]`看作S组的`[B,D]`，自然LN就是“**逐字**”进行，对每个token嵌入都计算均值、标准差，一共S*B组。
+nlp: 根据之前的讨论，`[B, S, D]`看作S组的`[B,D]`，自然LN就是“<strong>逐字</strong>”进行，对每个token嵌入都计算均值、标准差，一共S*B组。
 
 参照Pytorch的`torch.nn.LayerNorm`,cv和nlp的LayerNorm的实现如下：
 

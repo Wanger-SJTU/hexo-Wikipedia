@@ -196,7 +196,7 @@ ragas_output_df.head()
 
 ---
 
-**点赞关注 [二师兄 talk](https://www.zhihu.com/people/dev-daddy)** 获取更多资讯，并在 知乎 上阅读我的短篇技术文章
+<strong>点赞关注 [二师兄 talk](https://www.zhihu.com/people/dev-daddy)</strong> 获取更多资讯，并在 知乎 上阅读我的短篇技术文章
 
 发布于 2024-03-29 14:34・IP 属地广东 ，编辑于 2024-04-01 10:56・IP 属地广东
 

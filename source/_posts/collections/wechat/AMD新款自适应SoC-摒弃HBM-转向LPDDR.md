@@ -13,25 +13,25 @@ categories:
 
 # AMD新款自适应SoC：摒弃HBM，转向LPDDR
 
-- **来源**: 微信公众号「半导体芯闻」
-- **原文链接**: https://mp.weixin.qq.com/s/OZs9zHKymz0sjl82Jkkvkw
-- **抓取时间**: 2026-07-02
+- <strong>来源</strong>: 微信公众号「半导体芯闻」
+- <strong>原文链接</strong>: https://mp.weixin.qq.com/s/OZs9zHKymz0sjl82Jkkvkw
+- <strong>抓取时间</strong>: 2026-07-02
 
 ---
 
 过去一年，在人工智能需求的推动下，存储需求暴涨。随之而来的供应紧张以及内存成本的上升，也给存储需求方带来新的考验。
 
-AMD自适应与嵌入式计算事业部高级产品管理经理Mike Rather指出，嵌入式系统面临三大挑战：**成本问题**（内存需求增长推高成本）、**带宽需求**（需要足够的内存和带宽来实施工作负载）、**空间限制**（需要在更小的尺寸里封装更多能力）。
+AMD自适应与嵌入式计算事业部高级产品管理经理Mike Rather指出，嵌入式系统面临三大挑战：<strong>成本问题</strong>（内存需求增长推高成本）、<strong>带宽需求</strong>（需要足够的内存和带宽来实施工作负载）、<strong>空间限制</strong>（需要在更小的尺寸里封装更多能力）。
 
-在这种见解驱动下，AMD推出了**第二代 Versal Premium MoP**（Memory on Package），在更小设计中实现更高内存容量与性能。
+在这种见解驱动下，AMD推出了<strong>第二代 Versal Premium MoP</strong>（Memory on Package），在更小设计中实现更高内存容量与性能。
 
 ## 核心设计：从HBM转向LPDDR5X封装上内存
 
-过去AMD高端自适应SoC使用HBM（如2018年Virtex UltraScale HBM，16GB/400GB/s；2022年Versal HBM，容量带宽均翻番），但HBM存在**不支持10-15年生命周期**、**无法在0℃以下获得认证**等问题。
+过去AMD高端自适应SoC使用HBM（如2018年Virtex UltraScale HBM，16GB/400GB/s；2022年Versal HBM，容量带宽均翻番），但HBM存在<strong>不支持10-15年生命周期</strong>、<strong>无法在0℃以下获得认证</strong>等问题。
 
 第二代 Versal Premium MoP 的关键设计变化：
 
-- **不使用中介层**，用内生的基板直接把单个FPGA硅片和兼容JEDEC LPDDR5X进行连接
+- <strong>不使用中介层</strong>，用内生的基板直接把单个FPGA硅片和兼容JEDEC LPDDR5X进行连接
 - 制造更简单、更具可扩展性，供应链优势明显
 - 0.4毫米间距，密度更大，用户操作更简单
 
@@ -49,10 +49,10 @@ AMD自适应与嵌入式计算事业部高级产品管理经理Mike Rather指出
 
 ## 核心优势
 
-1. **极致小型化**：封装上集成双通道64b接口内存，同等内存容量下板极面积节省超过60%
-2. **高可靠性与安全性**：宽温域、超长生命周期、封装内内存减少物理攻击面
-3. **加速上市**：省去外部内存接口的元器件选型与认证、布局、信号完整性分析等步骤
-4. **新系统形态**：使以往离散内存方案无法实现的形态成为可能（如EDSFF）
+1. <strong>极致小型化</strong>：封装上集成双通道64b接口内存，同等内存容量下板极面积节省超过60%
+2. <strong>高可靠性与安全性</strong>：宽温域、超长生命周期、封装内内存减少物理攻击面
+3. <strong>加速上市</strong>：省去外部内存接口的元器件选型与认证、布局、信号完整性分析等步骤
+4. <strong>新系统形态</strong>：使以往离散内存方案无法实现的形态成为可能（如EDSFF）
 
 ## 集成功能
 

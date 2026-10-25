@@ -15,7 +15,7 @@ source_url: https://zhuanlan.zhihu.com/p/1941251607946847037
 ---
 
 
-### **前言**
+### <strong>前言</strong>
 
 本来是要写虚拟化系列的文章，而虚拟化技术又是和硬件密切相关的，于是就依托ARM体系架构相继写了几篇虚拟化基础性的文章。等写到内存的时候，发现内存又太过重要，不是写一篇综述级别的文章就能讲清楚的，但是在检讨内存管理的原理时，又觉得Cache太过重要，不写清楚Cache，总觉得内存的事情讲不透，于是就先写了Cache相关系列文章。现在Cache系列的文章暂时告一段落，我们可以开始进入内存的世界，也就离我们码农更近了一些，离CPU远了一些，不过没关系，大家还是要密切配合才能工作，码农平时写得代码以及代码中操作的数据还是要经过内存传递给CPU，由CPU自己处理或者统一调配给总线上的其他功能单元或者外设继续处理，然后实现我们的业务需求，比如可以看到高清画质的大片。基于以上的背景，我们研究内存管理的基本原理就显得更加有必要，可以帮助我们在研究内核的源码中一些核心的数据结构、用户空间内存优化、以及性能调优时候提供理论和方法论的依据。本篇我们先来介绍，ARM体系内存管理的核心单元MMU，也算是我们ARM内存系列文章的绪论。更多精彩内容请参考：
 
@@ -25,11 +25,11 @@ source_url: https://zhuanlan.zhihu.com/p/1941251607946847037
 
 [虚拟化技术合集](https://link.zhihu.com/?target=https%3A//mp.weixin.qq.com/mp/appmsgalbum%3F__biz%3DMzkwNDY5NzM0NA%3D%3D%26action%3Dgetalbum%26album_id%3D3465892385727528966%26scene%3D173%26subscene%3D%26sessionid%3Dsvr_bd05ff70e6d%26enterid%3D1755610584%26from_msgid%3D2247484110%26from_itemidx%3D1%26count%3D3%26nolastread%3D1%23wechat_redirect)
 
-### **正文**
+### <strong>正文</strong>
 
 前面我们介绍了ARM Cache子系统的相关的知识，我们了解到Cache因为特殊的电路结构，作为PE-Core执行单元最亲近的存储组织，通过备份主存中的数据，可以极大提高CPU的工作效率。Cache的结构和容量决定了其在工作的时候也涉及到Cache内部寻址的过程，也可以说是一个映射的过程，就是说通过主存的虚拟地址如何找到主存副本所在的Cache Line，主要有3种方式：VIVT、VIPT、PIPT。简单归纳一下，串联主存、CPU、Cache的线索就是虚拟地址，而在背后驱动这个虚拟地址的功能单元其实就是MMU，内存管理单元。从总线架构的视角看过去，MMU所在位置如图1-1所示。
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_90bf0c352b60.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_90bf0c352b60.jpg)
 
 图1-1 MMU与典型的ARM总线架构的关系通过图1-1，ARM体系下每一个PE-Core(Master-1中的功能单元)都有一个MMU，负责处理与内存有关的事物。当然，有些情况也要做一下说明：
 
@@ -45,25 +45,25 @@ source_url: https://zhuanlan.zhihu.com/p/1941251607946847037
 
 首先，我们看一下ARM手册中中对MMU的描述：
 
-*Memory Management Unit (**MMU**)*
+*Memory Management Unit (<strong>MMU</strong>)*
 
-*Provides detailed control of the part of a memory system that provides a single stage of address **translation**. Most of the control is provided using translation tables that are held in memory, and define the attributes of different regions of the physical memory map.*
+*Provides detailed control of the part of a memory system that provides a single stage of address <strong>translation</strong>. Most of the control is provided using translation tables that are held in memory, and define the attributes of different regions of the physical memory map.*
 
-*When memory is accessed, the Memory Management Unit (MMU) controls address translation, memory access permissions, memory attribute determination, and memory attribute **checking**.*
+*When memory is accessed, the Memory Management Unit (MMU) controls address translation, memory access permissions, memory attribute determination, and memory attribute <strong>checking</strong>.*
 
-*The MMU uses the most significant bits of the Virtual Address to index entries in a translation table and establish which block is being accessed. The MMU translates the Virtual Addresses of code and data to the Physical Addresses in the actual system. The translation is carried out automatically in hardware and is **transparent** to the application. In addition to address translation, the MMU controls memory access permissions, memory ordering, and cache policies for each region of memory.*
+*The MMU uses the most significant bits of the Virtual Address to index entries in a translation table and establish which block is being accessed. The MMU translates the Virtual Addresses of code and data to the Physical Addresses in the actual system. The translation is carried out automatically in hardware and is <strong>transparent</strong> to the application. In addition to address translation, the MMU controls memory access permissions, memory ordering, and cache policies for each region of memory.*
 
 *Armv8-A uses a Virtual Memory system where the addresses used by code (virtual addresses) are translated into physical addresses which are used by the memory system. This translation is performed by a part of the processor that is called a Memory Management Unit (MMU). MMUs in the Arm architecture use translation tables stored in memory to translate virtual addresses to physical addresses. The MMU will automatically read the translation tables when necessary, this process is known as a Table Walk.*
 
-*An important function of the MMU is to enable the system to run multiple tasks, as independent programs running in their own private virtual memory **space**. They do not need any knowledge of the physical memory map of the system, that is, the addresses that are used by the hardware, or about other programs that might execute at the same time.*
+*An important function of the MMU is to enable the system to run multiple tasks, as independent programs running in their own private virtual memory <strong>space</strong>. They do not need any knowledge of the physical memory map of the system, that is, the addresses that are used by the hardware, or about other programs that might execute at the same time.*
 
 通过手册中的描述，我们可以抓住这样几个关键词：
 
-**Space**：
+<strong>Space</strong>：
 
 在内存的世界里面空间的概念从不同的维度看过去可以有不同的解读，如图1-2所示：
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_a0963a1c5ec1.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_a0963a1c5ec1.jpg)
 
 图1-2 ARM的内存空间这里我们简单的归纳如下，后续的文章我们会围绕着这些内存管理的重要概念展开讨论，帮助理解内存管理机制的核心思想。
 
@@ -73,25 +73,25 @@ source_url: https://zhuanlan.zhihu.com/p/1941251607946847037
 
 (3)从权限(异常等级)的角度出发，其实可以对内存空间做细分，比如User Space(EL0)、Kernel Space(EL1)、Hypervisor Space(EL2)、Secure Space(EL3)，上面这个分类的方式可能不是特别严谨，但是大家能了解到从这个维度去细分内存空间就可以了，后面的文章还会详细讨论。对ARM异常模型不了解的同学，可以复习下笔者前序的文章，暂时能理解Userspace和Kernel Space就可以了。
 
-**Checking**：
+<strong>Checking</strong>：
 
 第二个关键词就是检查，MMU还负责检查或者核查。这里就引出了，内存管理的另外一个重要的课题就是内存的属性，内存空可以根据不同的配置在不同上下文发挥不同的作用，这些属性包括：内存的类型(正常内存、设备内存)、共享属性(核间共享、系统内部共享等)、Cache属性、权限属性(读、写、执行)、对齐和大小端等。这里暂时也不展开，只举一个例子，当CPU试图访问一个只读内存区域往里面做写的动作的时候，一定会被组织并抛出异常，这个哨兵就是MMU。关于内存的属性，这里也举一个简单的例子帮助大家有一个感性的认识，如图1-3所示。
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_9e16d213b708.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_9e16d213b708.jpg)
 
-图1-3 内存的share属性**Translation**：
+图1-3 内存的share属性<strong>Translation</strong>：
 
 MMU重要的一个功能就是地址翻译，将虚拟地址翻译成物理地址。现代处理器的发展也伴随着现代操作系统的发展，两者是相辅相成的，最终的目的却是统一的，那就是在单位时间内执行更多的任务，满足人们的需求，这就是并发这个设计思想的由来。而要做到并发，硬件已经准备好了，前面的文章我们介绍了CPU的架构，大家也不用绕远，看看图1-1 也能发现，现代CPU都是多PE-Core的结构，而且越来越多，随着总线架构的不断向前迭代，ARM已经进军服务器领域了。既然硬件准备好了，接力棒就交到软件领域了，所以OS也对硬件资源做了隔离，初代隔离者是kernel，二代隔离者是Hypervisor，但是这些隔离者对用户来说都是透明的，甚至对一般的用户空间程序的开发者来说也是透明的，用户空间的程序运行的时候，都以为自己拥有全世界，这个世界其实就是虚拟内存空间，如图1-4所示。
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_ad0cd69db812.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_ad0cd69db812.jpg)
 
 图1-4 虚拟地址空间的分类对于内核空间来说，每个操作系统只能有一个共同的区域(在虚拟化环境下，每个OS，不论是Host OS还是GuestOS都有自己的内核空间)，而对于用户空间来说每个进程都拥有一个独立的空间。但是，实际的物理内存空间确实固定且唯一的，那么虚拟的终归是虚拟，总要面对现实，那么这个维持虚拟环境并完成地址空间转换的角色就是MMU。
 
-**Transparent**
+<strong>Transparent</strong>
 
 这最后一个关键字就是透明，这也是令广大码农朋友最幸福的关键词了，每当在手册中看见“transparent”，就感到眼前一亮，这个时候就会觉得这个世界真好，这个ARM的设计真好，“寡人，从此可以高枕无忧矣，哈哈哈哈”。确实很幸福，该做的事儿，MMU都给你做了，比如MMU的核心功能地址翻译，它都默默给你做好了，如图1-5所示，PE-Core的地址翻译功能。
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_8208457359ff.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_8208457359ff.jpg)
 
 图1-5 ARM PE-Core地址翻译通过上面的介绍，我们可以讲MMU是PE-Core中一个独立的功能单元，辅助PE-Core进行虚拟地址到物理地址翻译，并通过对内存属性的检查借助异常处理机制是PE-Core的执行始终处于高效且合规的状态执行。而对于应用层软件(对于PE-Core来说，所有的代码包括kernel和User Process都是运行于应用层)，借助MMU的管理机制可以到并发执行多任务的目的。
 
@@ -99,11 +99,11 @@ MMU重要的一个功能就是地址翻译，将虚拟地址翻译成物理地�
 
 经过上面的介绍，我们初步搞清楚了MMU诞生的背景以及关键的feature，本节我们主要关注一下MMU的结构。我们知道MMU是PE-Core中的一个独立的功能单元，这里我们具象化一个具体的PE-Core，如图1-6所示。
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_69097543444a.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_69097543444a.jpg)
 
 图1-6 ARM Cortex-A 725 Block图先看一下手册中对MMU的描述：
 
-*The Memory Management Unit (**MMU**) translates an input address to an output address.*
+*The Memory Management Unit (<strong>MMU</strong>) translates an input address to an output address.*
 
 *This translation is based on address mapping and memory attribute information that is available in the Cortex ® -A725 core internal registers and translation tables. The MMU also controls memory access permissions, memory ordering, and cache policies for each region of memory.*
 
@@ -117,7 +117,7 @@ MMU重要的一个功能就是地址翻译，将虚拟地址翻译成物理地�
 
 *In addition to translating an input address to an output address, a stage of address translation also deﬁnes the memory attributes of the output address. With a two-stage translation, the stage 2 translation can modify the attributes that the stage 1 translation deﬁnes. A stage of address translation can be disabled or bypassed, and cores can deﬁne memory attributes for disabled and bypassed stages of translation.*
 
-*Each stage of address translation uses address translations and associated memory properties that are held in memory-mapped **translation tables**. Translation table entries can be cached into a Translation Lookaside Buﬀer (**TLB**). The translation table entries enable the MMU to provide ﬁne-grained memory system control and to control the table walk hardware.*
+*Each stage of address translation uses address translations and associated memory properties that are held in memory-mapped <strong>translation tables</strong>. Translation table entries can be cached into a Translation Lookaside Buﬀer (<strong>TLB</strong>). The translation table entries enable the MMU to provide ﬁne-grained memory system control and to control the table walk hardware.*
 
 下面我们对手册中的内容做一下解读(手册中的描述就是干货，就是精辟而不是屁精，哈哈哈)：
 
@@ -131,7 +131,7 @@ MMU重要的一个功能就是地址翻译，将虚拟地址翻译成物理地�
 
 了解了MMU设计的一些背景之后，我们再来看一下Cotex-A725的MMU内部有哪些组件构成， 如图1-7所示。
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_79c696cf12ec.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_79c696cf12ec.jpg)
 
 图1-7 Cortex-A725 MMU 组件这里面我们重点介绍一下TLB，先看下手册的描述：
 
@@ -153,7 +153,7 @@ MMU重要的一个功能就是地址翻译，将虚拟地址翻译成物理地�
 
 根据手册的描述，TLB大概长这个样子，如图1-8所示：
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_a9bff7415dcd.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_a9bff7415dcd.jpg)
 
 图1-8 TLB的结构示意图其他的内存前面我们都介绍了，这里只讨论两点：
 
@@ -171,13 +171,13 @@ MMU重要的一个功能就是地址翻译，将虚拟地址翻译成物理地�
 
 (2) TLBs的空间也支持软件的方式可编程的干预，具体不展开，这里只列出部分指令(如图1-9所示)，一般的码农很少会涉猎这部分内容的编辑，因此不是我们研究的重点，考虑的文章的完整性，这里简单罗列一下，感兴趣的同学可以自行查阅手册。
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_1b413c50f004.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_1b413c50f004.jpg)
 
-图1-9 部分TLB操作指令**1.3 MMU的工作流程**
+图1-9 部分TLB操作指令<strong>1.3 MMU的工作流程</strong>
 
 关于MMU的内容还有很多，比如MMU工作的空间配置、内存属性的检查流程、异常处理等等，我们陆续都会在后续的文章中穿插进去给大家介绍清楚。这里我们先归纳一下MMU工作的一般流程，如图1-10所示。
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_7a4ec5076900.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_7a4ec5076900.jpg)
 
 图1-10 MMU的一般工作流程我们对MMU的工作流程做一个简单归纳如下。
 

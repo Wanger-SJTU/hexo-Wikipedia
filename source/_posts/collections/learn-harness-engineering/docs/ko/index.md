@@ -45,7 +45,7 @@ Learn Harness Engineering은 AI 코딩 에이전트(coding agent)의 엔지니�
 
 ## 하네스의 핵심 메커니즘
 
-하네스(harness)는 모델을 "더 똑똑하게" 만드는 도구가 아닙니다. 대신, 모델을 위한 닫힌 루프(closed loop) **작업 시스템**을 만들어 줍니다. 핵심 흐름은 다음 다이어그램으로 이해할 수 있습니다.
+하네스(harness)는 모델을 "더 똑똑하게" 만드는 도구가 아닙니다. 대신, 모델을 위한 닫힌 루프(closed loop) <strong>작업 시스템</strong>을 만들어 줍니다. 핵심 흐름은 다음 다이어그램으로 이해할 수 있습니다.
 
 ```mermaid
 graph TD

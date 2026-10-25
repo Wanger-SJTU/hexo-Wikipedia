@@ -13,9 +13,9 @@ categories:
 
 # 推测解码技术演进
 
-**作者**: 青稞AI
-**原始链接**: https://mp.weixin.qq.com/s/tuACi4VhtoVMRSjqXmjALA
-**知乎原文**: https://zhuanlan.zhihu.com/p/2055675996611912757
+<strong>作者</strong>: 青稞AI
+<strong>原始链接</strong>: https://mp.weixin.qq.com/s/tuACi4VhtoVMRSjqXmjALA
+<strong>知乎原文</strong>: https://zhuanlan.zhihu.com/p/2055675996611912757
 
 ---
 

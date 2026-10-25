@@ -25,13 +25,13 @@ LLM Inference Acceleration: GPU Optimization for Attention in the Decode Phase
 
 RTP-LLM是阿里巴巴智能引擎团队开发的大模型推理加速引擎，作为一个高性能的大模型推理解决方案，它已被广泛应用于阿里内部。在这篇文章里，我们将基于RTP-LLM的实践，介绍decode阶段的Attention在GPU上是如何优化的。
 
-### **背景**
+### <strong>背景</strong>
 
 我们比较熟悉的Attention计算如下图所示，包含Q与K相乘，其结果在mask后做softmax，然后与V相乘，得到Attention的结果。在LLM推理的decode阶段，由于加入KV Cache优化，一次迭代只需要计算新增的一个token，因此计算可以变化为当前step的Q（seq == 1）与K Cache、V Cache做计算。
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_3029e8eb2a8c.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_3029e8eb2a8c.jpg)
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_b32fbd945c17.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_b32fbd945c17.jpg)
 
 计算过程中各tensor的shape可以表示为：
 
@@ -58,7 +58,7 @@ out = matmul(res, V)`
 
 在整个计算过程中，BiasAdd、Rotary Embedding相对计算量较小，对kernel的latency影响较小，因此下文省略这一部分的分析。
 
-### **计算分析**
+### <strong>计算分析</strong>
 
 我们以当前的[TensorRT-LLM](https://link.zhihu.com/?target=https%3A//github.com/NVIDIA/TensorRT-LLM)中Masked Multi Head Attention(MMHA)的实现为例，分析当前的MMHA是怎么实现高性能。
 
@@ -73,13 +73,13 @@ dim3 block(THREAD_PER_BLOCK, 1, 1);`
 
 Q乘K Cache的计算在D上累加。假设我们用half存KV Cache，用float做乘累加，为了保证load效率，每个thread会load连续的16bytes数据，也就是8个elements。对于常见的D==128来说，需要16个threads完成一个head的计算。可以认为给block中的threads进行了分组，每组16个threads负责一个head的计算，其中每个threads读8个elements，并完成这8个elements对应的乘累加，然后这组threads间通过warp内的shuffle完成当前head的计算，并将计算结果存到smem中。组和组在S上展开。
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_ee720786488d.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_ee720786488d.jpg)
 
 接下来计算SoftMax，由于前面的计算保证了SoftMax需要的输入都在当前block内的smem中，通过Block Reduce Max和Block Reduce Sum就可以完成SoftMax的计算。
 
 乘V Cache的计算思路与上文乘K Cache非常类似，略有不同的是这一步计算需要在S上累加。依然将threads分组，每组16个threads负责一个head, 每个thread负责8个elements的计算。由于需要在S上累加，因此每个thread需要保存当前所计GPUsde算的8个elements的部分累加和。最后借助smem，将不同threads上的部分和累加，得到Attention的输出。
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_3fbddac1bd30.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_3fbddac1bd30.jpg)
 
 在计算过程中，qk dot除了hfma计算外，也可以调用hmma来完成单个head的计算。但由于kernel的性能瓶颈在访存上，dot用哪种计算方式对性能的影响不大；我们的测试也验证了这个结论。
 
@@ -87,7 +87,7 @@ Q乘K Cache的计算在D上累加。假设我们用half存KV Cache，用float做
 
 主流框架如[vllm](https://link.zhihu.com/?target=https%3A//github.com/vllm-project/vllm)，[xformers](https://link.zhihu.com/?target=https%3A//github.com/facebookresearch/xformers)等对MMHA的实现和优化思路都是比较类似的，仅在细节处略有差异。TensorRT-LLM在mmha外还实现了XQA以继续优化decode阶段Attention的计算，但由于代码未开源，本文也不做分析。
 
-### **改进与优化**
+### <strong>改进与优化</strong>
 
 当然上文分析到的简单优化在实际应用中还是不那么够用的，最常见的就是小B和长S场景。
 
@@ -100,7 +100,7 @@ dim3 block(THREAD_PER_BLOCK, 1, 1);`
 
 在这种任务划分下，结合上文分析，假设长seq每个SM上仅有一个active block，则waves可以计算为：
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_9796ec3105ad.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_9796ec3105ad.jpg)
 
 当waves越接近ceil值，意味着device occupancy会越高。在小B大S的场景下，如果在S切分，也就是S_tile > 1，有利于增加occupancy。在这种情况下，S_tile个block共同完成一个head在S上的计算，每个block负责S / S_tile的计算，block间的reduce通过开辟额外的global buffer来完成。这种模式下，新增的global读写会带来有额外的耗时，但因为增加了device occupancy，因此在小B大S的场景下有明显的性能提升。这也就是flash decoding的思路，且在各框架均有支持。
 

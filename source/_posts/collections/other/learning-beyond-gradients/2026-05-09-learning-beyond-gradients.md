@@ -48,13 +48,13 @@ That is when I felt a new concept was needed. The thing being updated was no lon
 
 ## Heuristic Learning
 
-After more iteration with Codex, I started calling this process **Heuristic Learning (HL)**:
+After more iteration with Codex, I started calling this process <strong>Heuristic Learning (HL)</strong>:
 
 - HL is built out of program code.
 - Like Deep RL as commonly practiced today, it has a loop of state, action, feedback, and update; unlike that setup, the object being updated is software structure rather than neural-network parameters.
 - Its feedback is consumed by a coding agent, and can come from environment reward, test cases, logs, videos, replays, or human feedback.
 - Its updates do not use backpropagation. The coding agent directly edits policies, state detectors, tests, configuration, or memory.
-- HL is the learning and update process. The object maintained by HL over time can be called a **Heuristic System (HS)**.
+- HL is the learning and update process. The object maintained by HL over time can be called a <strong>Heuristic System (HS)</strong>.
 - An HS is more than an isolated `policy.py`. It contains at least a programmatic policy, state representation, feedback channels, experiment records, replays or tests, memory, and an update mechanism executed by a coding agent. A single rule is not enough. Rules, feedback, history, and the next update path all need to connect before it becomes an HS.
 
 | Axis | Deep RL | HL |
@@ -68,11 +68,11 @@ After more iteration with Codex, I started calling this process **Heuristic Lear
 
 Heuristic Learning has several useful properties compared with Deep RL:
 
-- **Explainability**: neural networks are hard to explain, while HL policies can often be translated into plain language.
-- **Sample Efficiency**: one effective code update can jump directly to a new policy, rather than slowly climbing through learning-rate tuning.
-- **Regression-testability**: old capabilities can become tests, replays, or golden cases.
-- **Overfitting can be constrained**: code heuristics can still overfit to seeds, environment details, or test loopholes, but simplification, regression checks, and multi-seed evaluation provide an engineering form of regularization.
-- **It can avoid part of catastrophic forgetting**: old capabilities do not have to live only inside model weights; they can be written into rule sets and tests.
+- <strong>Explainability</strong>: neural networks are hard to explain, while HL policies can often be translated into plain language.
+- <strong>Sample Efficiency</strong>: one effective code update can jump directly to a new policy, rather than slowly climbing through learning-rate tuning.
+- <strong>Regression-testability</strong>: old capabilities can become tests, replays, or golden cases.
+- <strong>Overfitting can be constrained</strong>: code heuristics can still overfit to seeds, environment details, or test loopholes, but simplification, regression checks, and multi-seed evaluation provide an engineering form of regularization.
+- <strong>It can avoid part of catastrophic forgetting</strong>: old capabilities do not have to live only inside model weights; they can be written into rule sets and tests.
 
 The point is that a class of heuristics that used to be too expensive to maintain may now be worth owning.
 
@@ -135,14 +135,14 @@ This is very different from compressing experience into neural network weights. 
 
 A healthy HS therefore needs at least two operations:
 
-- **Absorb feedback**: write new failures, logs, and rewards back into the system.
-- **Compress history**: fold local patches back into simpler, more maintainable representations.
+- <strong>Absorb feedback</strong>: write new failures, logs, and rewards back into the system.
+- <strong>Compress history</strong>: fold local patches back into simpler, more maintainable representations.
 
 That turns Continual Learning from "how do we update parameters?" into "how do we maintain a software system that keeps absorbing feedback?"
 
 ## The Complexity of Heuristic Systems
 
-I define **coupling complexity** as the level of strategy complexity a coding agent can maintain in order to support HL. More concretely, it is how many interdependent states, rules, tests, feedback signals, and historical constraints an update has to account for at the same time.
+I define <strong>coupling complexity</strong> as the level of strategy complexity a coding agent can maintain in order to support HL. More concretely, it is how many interdependent states, rules, tests, feedback signals, and historical constraints an update has to account for at the same time.
 
 This cannot be measured by lines of code. A 500-line policy with clean module boundaries, good tests, reproducible state, and clear logs may be easy to maintain. An 80-line policy where every line affects every other line, with no logs or replays, may be a time bomb.
 
@@ -164,9 +164,9 @@ Montezuma is a useful counterexample. In Atari57, one unattended run reached 400
 
 ## The Next Paradigm?
 
-The current paradigm shift has gone from pretraining to RLHF, and then to large-scale RL / RLVR. **Anything that can be verified starts to become solvable.**
+The current paradigm shift has gone from pretraining to RLHF, and then to large-scale RL / RLVR. <strong>Anything that can be verified starts to become solvable.</strong>
 
-Online Learning and Continual Learning can be partially addressed by agents produced by RLVR, through Heuristic Learning. From that perspective, I would call it a candidate for the next paradigm: **anything that can be continuously iterated on starts to become solvable.**
+Online Learning and Continual Learning can be partially addressed by agents produced by RLVR, through Heuristic Learning. From that perspective, I would call it a candidate for the next paradigm: <strong>anything that can be continuously iterated on starts to become solvable.</strong>
 
 Why only partially? Because Heuristic Learning cannot do everything neural networks can do. It is bounded by what code can express, especially in complex perception and long-horizon generalization. With what I know today, I cannot imagine an agent writing pure Python code, without a neural network, to solve ImageNet.
 
@@ -174,9 +174,9 @@ The real question is how to combine neural networks and HL to address Online Lea
 
 Take robotics as an example. If we borrow the System 1 / System 2 language, one possible division of labor is:
 
-- **Specialized shallow NNs**: part of System 1, fast and cheap, responsible for perception, classification, and object-state estimation.
-- **HL**: also part of System 1, responsible for fresh data handling, rules, tests, replays, memory, safety boundaries, and local recovery.
-- **LLM agent**: System 2, responsible for giving feedback to HL, improving data, and periodically extracting HL-generated data to update itself.
+- <strong>Specialized shallow NNs</strong>: part of System 1, fast and cheap, responsible for perception, classification, and object-state estimation.
+- <strong>HL</strong>: also part of System 1, responsible for fresh data handling, rules, tests, replays, memory, safety boundaries, and local recovery.
+- <strong>LLM agent</strong>: System 2, responsible for giving feedback to HL, improving data, and periodically extracting HL-generated data to update itself.
 
 This can be further decomposed into a hierarchy:
 
@@ -188,11 +188,11 @@ Lower levels handle safety and low-latency control. Middle levels handle gait an
 
 LLM agents can share what they learn, or they can learn inside robotics in isolated branches. The open problem is how the specific data distribution produced by HL can avoid destabilizing the LLM's periodic updates.
 
-Agentic coding changes the speed of writing code. It also changes **which code is worth owning for the long term**.
+Agentic coding changes the speed of writing code. It also changes <strong>which code is worth owning for the long term</strong>.
 
 Many heuristics looked hopeless because the real issue was maintenance cost. They were not necessarily too weak. Coding agents change that maintenance curve. Rules, tests, logs, memory, and patches used to be scattered engineering materials. Now they can become a continuously updated Heuristic System, one that can genuinely address problems Online Learning and Continual Learning have struggled to solve.
 
-**Welcome to the next paradigm.**
+<strong>Welcome to the next paradigm.</strong>
 
 ## 实验数据
 

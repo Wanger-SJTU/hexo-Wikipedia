@@ -79,19 +79,19 @@ What if you could build your own LLM, one that speaks your native language, all 
 
 We'll go through each step of creating your own LLM in a specific language (Urdu in this case). This will help you understand what goes on inside an LLM.
 
-Modern LLMs trace back to the research paper that changed everything: [**"Attention Is All You Need"**](https://arxiv.org/abs/1706.03762). But rather than getting lost in the math (I am bad at math, sadly), we'll learn by building one from scratch.
+Modern LLMs trace back to the research paper that changed everything: [<strong>"Attention Is All You Need"</strong>](https://arxiv.org/abs/1706.03762). But rather than getting lost in the math (I am bad at math, sadly), we'll learn by building one from scratch.
 
 ## Who is This Handbook For?
 
 Software engineers, product owners, or anyone curious about how LLMs work. If you have a little machine learning knowledge, that would be great, but if not, no worries. I've written this so that you don't have to go anywhere outside this tutorial.
 
-By the end, you will have a **working Urdu LLM chatbot** deployed and running. You can create one for your own native language as well by following the steps defined below.
+By the end, you will have a <strong>working Urdu LLM chatbot</strong> deployed and running. You can create one for your own native language as well by following the steps defined below.
 
 ## A Note on Expectations:
 
 The goal here is to educate ourselves on how LLMs work by practically going through all the steps.
 
-The goal is **not** that your LLM will act like ChatGPT. That has multiple constraints like massive datasets, months of training, and reinforcement learning from human feedback (RLHF), all of which you'll understand better by going through this tutorial.
+The goal is <strong>not</strong> that your LLM will act like ChatGPT. That has multiple constraints like massive datasets, months of training, and reinforcement learning from human feedback (RLHF), all of which you'll understand better by going through this tutorial.
 
 ## A Note on the Code:
 
@@ -211,35 +211,35 @@ Gradio (for chat UI deployment)
 
 Google Colab (free T4 GPU for training)
 
-**Note:** Make sure to install all the dependencies listed in the `requirements.txt` file of the repository before getting started.
+<strong>Note:</strong> Make sure to install all the dependencies listed in the `requirements.txt` file of the repository before getting started.
 
 ## 1. Data Preparation
 
-In data preparation, the first and foremost step is **data collection**. An LLM needs to be trained on a large amount of text data. There is no single place to get this data. Depending on the type of model you want to build, you can collect text from many sources:
+In data preparation, the first and foremost step is <strong>data collection</strong>. An LLM needs to be trained on a large amount of text data. There is no single place to get this data. Depending on the type of model you want to build, you can collect text from many sources:
 
-**Digital libraries and archives:** [Internet Archive](https://archive.org/) or Wikipedia dumps
+<strong>Digital libraries and archives:</strong> [Internet Archive](https://archive.org/) or Wikipedia dumps
 
-**Code repositories:** GitHub, GitLab (useful if your model needs to understand code)
+<strong>Code repositories:</strong> GitHub, GitLab (useful if your model needs to understand code)
 
-**Web scraping:** Crawling websites, blogs, and forums using automated scripts
+<strong>Web scraping:</strong> Crawling websites, blogs, and forums using automated scripts
 
-**Academic datasets:** Research papers, open-access journals
+<strong>Academic datasets:</strong> Research papers, open-access journals
 
-**Pre-built datasets:** Platforms like [Hugging Face Datasets](https://huggingface.co/datasets) and [Kaggle](https://www.kaggle.com/datasets) host thousands of ready-to-use datasets
+<strong>Pre-built datasets:</strong> Platforms like [Hugging Face Datasets](https://huggingface.co/datasets) and [Kaggle](https://www.kaggle.com/datasets) host thousands of ready-to-use datasets
 
-In practice, large-scale LLMs like GPT and LLaMA rely heavily on web scraping from many sources using automated pipelines. But there's one important rule to follow: **only use publicly available, open-source data.** Don't scrape private or personal user information. Stick to data that's explicitly shared for public use or falls under permissive licenses.
+In practice, large-scale LLMs like GPT and LLaMA rely heavily on web scraping from many sources using automated pipelines. But there's one important rule to follow: <strong>only use publicly available, open-source data.</strong> Don't scrape private or personal user information. Stick to data that's explicitly shared for public use or falls under permissive licenses.
 
-**Also,** keep this principle in mind: **garbage in, garbage out**. Just getting the data isn't enough. It should be correct, clean, and without noise.
+<strong>Also,</strong> keep this principle in mind: <strong>garbage in, garbage out</strong>. Just getting the data isn't enough. It should be correct, clean, and without noise.
 
-In actual practice, you can collect data from different sources. In my case, I found good enough data from **Hugging Face**. Hugging Face has [**CulturaX**](https://huggingface.co/datasets/uonlp/CulturaX) that has multilingual datasets. The dataset was huge, so I didn't download all of it and only downloaded a small portion.
+In actual practice, you can collect data from different sources. In my case, I found good enough data from <strong>Hugging Face</strong>. Hugging Face has [<strong>CulturaX</strong>](https://huggingface.co/datasets/uonlp/CulturaX) that has multilingual datasets. The dataset was huge, so I didn't download all of it and only downloaded a small portion.
 
-For this tutorial, I used **Hugging Face** as my data source. I chose it for a few reasons.
+For this tutorial, I used <strong>Hugging Face</strong> as my data source. I chose it for a few reasons.
 
 First, since the goal was to learn how LLMs work, I wanted to spend my time on the model, not on writing web scrapers. Hugging Face already has a large collection of datasets in a cleaned and structured format, which saves a lot of upfront work.
 
-Second, Hugging Face offers language-specific datasets. Since I was building an Urdu LLM, I needed Urdu text specifically, and Hugging Face has [**CulturaX**](https://huggingface.co/datasets/uonlp/CulturaX) which provides multilingual datasets including Urdu and many other languages. The dataset was huge, so I avoided downloading all of it and only downloaded a small portion.
+Second, Hugging Face offers language-specific datasets. Since I was building an Urdu LLM, I needed Urdu text specifically, and Hugging Face has [<strong>CulturaX</strong>](https://huggingface.co/datasets/uonlp/CulturaX) which provides multilingual datasets including Urdu and many other languages. The dataset was huge, so I avoided downloading all of it and only downloaded a small portion.
 
-**Important:** Before you start downloading the dataset from Hugging Face, you need to create an account. Then log into the CLI, from where you'll be able to download the dataset.
+<strong>Important:</strong> Before you start downloading the dataset from Hugging Face, you need to create an account. Then log into the CLI, from where you'll be able to download the dataset.
 
 In the script below, we load the dataset from Hugging Face and turn streaming to `True`. The purpose of doing this is so that we don't have to download all the data but only chunks of samples as defined in `NUM_SAMPLES`.
 
@@ -277,13 +277,13 @@ print(raw_texts[0][:500])
 
 ## Data Cleaning
 
-Simply having the data is not enough to start training your model. The next step is probably the most important one: **data cleaning**. The goal is to make the data as pure as possible.
+Simply having the data is not enough to start training your model. The next step is probably the most important one: <strong>data cleaning</strong>. The goal is to make the data as pure as possible.
 
 As I was building a language-specific Urdu LLM, I had to write cleaning logic to remove non-Urdu text, HTML links, special characters, duplicate content, and excess whitespace. All these factors pollute the training data and can cause issues during training.
 
 Based on the type of dataset, some language-specific or use-case cleaning will be required.
 
-One thing that might be new to you is the **NFKC Unicode normalization** step. This normalizes text that appears the same but exists in different Unicode forms, keeping one canonical form.
+One thing that might be new to you is the <strong>NFKC Unicode normalization</strong> step. This normalizes text that appears the same but exists in different Unicode forms, keeping one canonical form.
 
 You'll also see some regex patterns that are used to keep only the Urdu text. As Urdu script is based on Arabic, we'll use Arabic Unicode ranges. I also removed artifacts like `//`, `--`, and extra empty spaces that were present in the raw data.
 
@@ -380,11 +380,11 @@ print(f"\nIs mostly Urdu: {is_mostly_urdu(cleaned)}")
 
 ```
 
-After cleaning, I stored the data in two formats: a **text file** (used for tokenizer training) and a **JSONL file** (used for pre-training). Each format serves a specific purpose in the upcoming steps.
+After cleaning, I stored the data in two formats: a <strong>text file</strong> (used for tokenizer training) and a <strong>JSONL file</strong> (used for pre-training). Each format serves a specific purpose in the upcoming steps.
 
 ## 2. Tokenization
 
-The next step after cleaning is **tokenization**. Tokenization converts text into numbers, and provides a way to convert those numbers back into text.
+The next step after cleaning is <strong>tokenization</strong>. Tokenization converts text into numbers, and provides a way to convert those numbers back into text.
 
 This is necessary because neural networks can't understand text – they only understand numbers. So tokenization is essentially a translation layer between human language and what the model can process.
 
@@ -432,13 +432,13 @@ This is a smaller vocabulary (we use 32K tokens), and it can handle any word, ev
 
 BPE is the industry standard, used by GPT, LLaMA, and most modern LLMs. Here is how it works step by step:
 
-**Start with characters**: vocabulary = all individual characters
+<strong>Start with characters</strong>: vocabulary = all individual characters
 
-**Count pairs**: find the most frequent adjacent pair of tokens
+<strong>Count pairs</strong>: find the most frequent adjacent pair of tokens
 
-**Merge**: combine that pair into a new token
+<strong>Merge</strong>: combine that pair into a new token
 
-**Repeat**: until vocabulary reaches desired size
+<strong>Repeat</strong>: until vocabulary reaches desired size
 
 Here's an example:
 
@@ -456,7 +456,7 @@ This is the approach we'll use for our Urdu LLM. I trained a BPE tokenizer with 
 
 ## Special Tokens
 
-Along with BPE, we also need to add some **special tokens**. These tokens give the model structural information it needs during training and inference.
+Along with BPE, we also need to add some <strong>special tokens</strong>. These tokens give the model structural information it needs during training and inference.
 
 Token
 Purpose
@@ -496,13 +496,13 @@ system
 
 ## BPE Tokenizer Configuration
 
-I set vocab size to **32K**. What does that mean? It means the model will have 32K tokens in its vocabulary lookup table.
+I set vocab size to <strong>32K</strong>. What does that mean? It means the model will have 32K tokens in its vocabulary lookup table.
 
 This is a good balance between language coverage and model size. If we increase vocab size, the embedding layer and output layer both grow, which means more parameters to train. For a learning project, 32K keeps things manageable.
 
 `MIN_FREQUENCY` is set to 2, meaning a token must appear at least twice in the corpus to be included. This filters out one-off noise tokens that would waste vocabulary slots.
 
-**For reference:** GPT-2 uses a vocabulary of 50K tokens, and LLaMA uses 32K. Our choice of 32K is in line with production models.
+<strong>For reference:</strong> GPT-2 uses a vocabulary of 50K tokens, and LLaMA uses 32K. Our choice of 32K is in line with production models.
 
 ```
 VOCAB_SIZE = 32_000  # Number of tokens in our vocabulary
@@ -626,7 +626,7 @@ print("Post-processor configured (auto-adds <bos> and <eos>)")
 
 ```
 
-**Note:** You might wonder why we need this step when we already defined `<bos>` and `<eos>` in `SPECIAL_TOKENS`. The `SPECIAL_TOKENS` list only **reserves vocabulary slots** for these tokens (assigns them IDs). Post-processing tells the tokenizer to **automatically insert** them into every encoded sequence.
+<strong>Note:</strong> You might wonder why we need this step when we already defined `<bos>` and `<eos>` in `SPECIAL_TOKENS`. The `SPECIAL_TOKENS` list only <strong>reserves vocabulary slots</strong> for these tokens (assigns them IDs). Post-processing tells the tokenizer to <strong>automatically insert</strong> them into every encoded sequence.
 
 Without this step, the tokens would exist in the vocabulary but never appear in your data unless you added them manually each time.
 
@@ -763,13 +763,13 @@ print(f"    Tokenizer loads correctly!")
 
 ```
 
-Once saved, we have a lookup table. Using this, along with our corpus of data, we can perform the next important step: **pre-training**.
+Once saved, we have a lookup table. Using this, along with our corpus of data, we can perform the next important step: <strong>pre-training</strong>.
 
 ## 3. Pre-Training
 
 In this part, the model learns the language, grammar, patterns, and vocabulary. Once training is done, the model is able to predict the next word in a sequence, and this is where we start to see raw data turning into an LLM.
 
-**LLMs are actually next-word predictors.** Given a sequence of words, they predict the most probable next word.
+<strong>LLMs are actually next-word predictors.</strong> Given a sequence of words, they predict the most probable next word.
 
 With the help of training, the model learns:
 
@@ -908,7 +908,7 @@ Lower: stable but slower learning. Higher: risk of exploding gradients
 
 ## Transformer Architecture
 
-Next up is the main part of training: writing the **transformer architecture**. Before jumping into code, it's important to know what a transformer architecture is.
+Next up is the main part of training: writing the <strong>transformer architecture</strong>. Before jumping into code, it's important to know what a transformer architecture is.
 
 To learn in depth about what transformers are and how they differ from RNNs and CNNs, I would recommend going through this article: [AWS: What is Transformers in Artificial Intelligence](https://aws.amazon.com/what-is/transformers-in-artificial-intelligence/)
 
@@ -916,9 +916,9 @@ But in short:
 
 "Transformers are a type of neural network architecture that transforms or changes an input sequence into an output sequence."
 
-The original Transformer paper introduced both an **encoder** (reads input) and a **decoder** (generates output). But GPT-style models like ours use only the decoder part. This is called a **decoder-only** architecture.
+The original Transformer paper introduced both an <strong>encoder</strong> (reads input) and a <strong>decoder</strong> (generates output). But GPT-style models like ours use only the decoder part. This is called a <strong>decoder-only</strong> architecture.
 
-The decoder takes a sequence of tokens, applies [**self-attention**](https://www.ibm.com/think/topics/self-attention) to understand relationships between them, and predicts the next token.
+The decoder takes a sequence of tokens, applies [<strong>self-attention</strong>](https://www.ibm.com/think/topics/self-attention) to understand relationships between them, and predicts the next token.
 
 Self-attention is what makes transformers powerful: instead of processing tokens one by one in order (like RNNs), the model looks at all previous tokens simultaneously and determines which ones are most relevant for the current prediction.
 
@@ -1101,19 +1101,19 @@ This code builds a text prediction machine. You give it some Urdu words, and it 
 
 Imagine reading a sentence. When you see the word "اس" (this), your brain looks back to figure out what "this" refers to. That's attention.
 
-**Q, K, V**: Think of it like a library:
+<strong>Q, K, V</strong>: Think of it like a library:
 
-**Query (Q):** "I'm looking for information about X"
+<strong>Query (Q):</strong> "I'm looking for information about X"
 
-**Key (K):** Each previous word holds up a sign: "I have info about Y"
+<strong>Key (K):</strong> Each previous word holds up a sign: "I have info about Y"
 
-**Value (V):** The actual information that word carries
+<strong>Value (V):</strong> The actual information that word carries
 
-**6 heads** = 6 different "readers" looking at the sentence simultaneously. One might focus on grammar, another on meaning, another on nearby words, and so on.
+<strong>6 heads</strong> = 6 different "readers" looking at the sentence simultaneously. One might focus on grammar, another on meaning, another on nearby words, and so on.
 
-**Causal mask** = A rule that says: "You can only look at words that came before you, not after." (Because when generating, future words don't exist yet!)
+<strong>Causal mask</strong> = A rule that says: "You can only look at words that came before you, not after." (Because when generating, future words don't exist yet!)
 
-**The math:** Multiply Q×K to get "how relevant is each word?", then use those scores to grab the most useful info from V.
+<strong>The math:</strong> Multiply Q×K to get "how relevant is each word?", then use those scores to grab the most useful info from V.
 
 ## 2. FeedForward: "The Thinking Step"
 
@@ -1121,41 +1121,41 @@ After attention figured out which words matter, this is where the model actually
 
 It's just two layers:
 
-**Expand (384 → 1536):** Give the model more "brain space" to think
+<strong>Expand (384 → 1536):</strong> Give the model more "brain space" to think
 
-**Shrink (1536 → 384):** Compress the thought back down
+<strong>Shrink (1536 → 384):</strong> Compress the thought back down
 
-**GELU activation:** A filter that decides "keep this thought" or "discard it" (smoothly, not harshly)
+<strong>GELU activation:</strong> A filter that decides "keep this thought" or "discard it" (smoothly, not harshly)
 
 ## 3. TransformerBlock: "One Round of Reading"
 
 One pass of reading a sentence and thinking about it.
 
-**Step 1:** Look at other words (attention)
+<strong>Step 1:</strong> Look at other words (attention)
 
-**Step 2:** Think about what you saw (feed-forward)
+<strong>Step 2:</strong> Think about what you saw (feed-forward)
 
-**LayerNorm:** Like resetting your brain between steps so numbers don't get too big or too small.
+<strong>LayerNorm:</strong> Like resetting your brain between steps so numbers don't get too big or too small.
 
-**Residual connection (**`x + ...`**):** The model keeps its original thought AND adds the new insight. It's like taking notes: you don't erase old notes, you add new ones.
+<strong>Residual connection (</strong>`x + ...`<strong>):</strong> The model keeps its original thought AND adds the new insight. It's like taking notes: you don't erase old notes, you add new ones.
 
 The model does this 6 times (6 blocks). Each round understands the text a little deeper.
 
 ## 4. UrduGPT: "The Full Machine"
 
-**Setup (**`__init__`**):**
+<strong>Setup (</strong>`__init__`<strong>):</strong>
 
-**Token embedding:** A giant lookup table. Each of 32,000 Urdu words/subwords gets a list of 384 numbers that represent its "meaning."
+<strong>Token embedding:</strong> A giant lookup table. Each of 32,000 Urdu words/subwords gets a list of 384 numbers that represent its "meaning."
 
-**Position embedding:** Another lookup table that tells the model "this word is 1st, this is 2nd, this is 3rd..." (otherwise it wouldn't know word order).
+<strong>Position embedding:</strong> Another lookup table that tells the model "this word is 1st, this is 2nd, this is 3rd..." (otherwise it wouldn't know word order).
 
-**6 Transformer blocks:** The 6 rounds of reading described above.
+<strong>6 Transformer blocks:</strong> The 6 rounds of reading described above.
 
-**LM head:** At the end, converts the model's internal "thoughts" (384 numbers) back into a score for each of the 32,000 possible next words.
+<strong>LM head:</strong> At the end, converts the model's internal "thoughts" (384 numbers) back into a score for each of the 32,000 possible next words.
 
-**Weight tying:** The input lookup table and output scoring table share the same data. Saves memory and actually works better!
+<strong>Weight tying:</strong> The input lookup table and output scoring table share the same data. Saves memory and actually works better!
 
-**Processing (**`forward`**):**
+<strong>Processing (</strong>`forward`<strong>):</strong>
 
 Look up each word's meaning (embedding)
 
@@ -1167,17 +1167,17 @@ Score every possible next word
 
 If we know the correct answer, calculate how wrong we were (loss)
 
-**Generating text (**`generate`**):** A simple loop:
+<strong>Generating text (</strong>`generate`<strong>):</strong> A simple loop:
 
 Feed in the words so far
 
 Get scores for the next word
 
-**Temperature:** Controls creativity. Low = safe/predictable, high = wild/creative
+<strong>Temperature:</strong> Controls creativity. Low = safe/predictable, high = wild/creative
 
-**Top-K:** Only consider the K best options (ignore the 31,950 unlikely words)
+<strong>Top-K:</strong> Only consider the K best options (ignore the 31,950 unlikely words)
 
-**Top-P (nucleus):** Dynamically select the smallest set of tokens whose cumulative probability reaches the threshold
+<strong>Top-P (nucleus):</strong> Dynamically select the smallest set of tokens whose cumulative probability reaches the threshold
 
 Randomly pick one word from the remaining options
 
@@ -1332,11 +1332,11 @@ optimizer = torch.optim.AdamW(model.parameters(), lr=config.learning_rate, weigh
 
 `AdamW` maintains two running statistics per parameter (23M × 2 = 46M extra values in memory):
 
-**First moment (momentum):** Exponential moving average of gradients. Smooths out noisy updates so the optimizer doesn't zigzag.
+<strong>First moment (momentum):</strong> Exponential moving average of gradients. Smooths out noisy updates so the optimizer doesn't zigzag.
 
-**Second moment:** Exponential moving average of squared gradients. Gives each parameter its own adaptive learning rate (frequently updated params get smaller steps, rare ones get larger).
+<strong>Second moment:</strong> Exponential moving average of squared gradients. Gives each parameter its own adaptive learning rate (frequently updated params get smaller steps, rare ones get larger).
 
-**Weight decay (0.1):** Each step, weights are multiplied by `(1 - lr × 0.1)`, shrinking them slightly. This is **L2 regularization**. It prevents any single weight from growing too large, which reduces overfitting. The "W" in AdamW means this decay is decoupled from the gradient update (applied directly to weights, not mixed into the gradient like vanilla Adam).
+<strong>Weight decay (0.1):</strong> Each step, weights are multiplied by `(1 - lr × 0.1)`, shrinking them slightly. This is <strong>L2 regularization</strong>. It prevents any single weight from growing too large, which reduces overfitting. The "W" in AdamW means this decay is decoupled from the gradient update (applied directly to weights, not mixed into the gradient like vanilla Adam).
 
 ## 2. Learning Rate Schedule
 
@@ -1351,13 +1351,13 @@ def get_lr(step):
 
 ```
 
-**Warmup (first 500 steps):** At step 0, weights are random and gradients point in semi-random directions, so a large LR would cause destructive parameter updates. By linearly ramping from 0 to 3e-4, we let the loss landscape "stabilize" before making aggressive updates.
+<strong>Warmup (first 500 steps):</strong> At step 0, weights are random and gradients point in semi-random directions, so a large LR would cause destructive parameter updates. By linearly ramping from 0 to 3e-4, we let the loss landscape "stabilize" before making aggressive updates.
 
-**Cosine decay (remaining steps):** The formula `0.5 × (1 + cos(π × progress))` traces a smooth S-curve from 1.0 to 0.0 as progress goes from 0 to 1. Multiplied by peak LR, this gives:
+<strong>Cosine decay (remaining steps):</strong> The formula `0.5 × (1 + cos(π × progress))` traces a smooth S-curve from 1.0 to 0.0 as progress goes from 0 to 1. Multiplied by peak LR, this gives:
 
-**Early:** Large LR – big parameter changes which results in rapid loss reduction
+<strong>Early:</strong> Large LR – big parameter changes which results in rapid loss reduction
 
-**Late:** Tiny LR – small tweaks which results in fine-tuning without overshooting local minima
+<strong>Late:</strong> Tiny LR – small tweaks which results in fine-tuning without overshooting local minima
 
 ```
 LR:  0 ──ramp──▶ peak ──smooth curve──▶ ~0
@@ -1376,7 +1376,7 @@ best_val_loss = float('inf')                    # Tracks best validation; starts
 
 ## 4. Training Loop
 
-**Outer Loop: Epochs**
+<strong>Outer Loop: Epochs</strong>
 
 ```
 for epoch in range(config.max_epochs):
@@ -1386,9 +1386,9 @@ for epoch in range(config.max_epochs):
 
 Each epoch = one full pass through all training data. We repeat for `max_epochs` rounds.
 
-**Inner Loop: Batches**
+<strong>Inner Loop: Batches</strong>
 
-**1. Move to GPU:**
+<strong>1. Move to GPU:</strong>
 
 ```
 input_ids, targets = input_ids.to(device), targets.to(device)
@@ -1397,7 +1397,7 @@ input_ids, targets = input_ids.to(device), targets.to(device)
 
 Transfers tensor data from CPU RAM to GPU VRAM. Matrix multiplications in transformers (attention, FFN) run 50–100× faster on GPU due to massive parallelism.
 
-**2. Manual LR Update:**
+<strong>2. Manual LR Update:</strong>
 
 ```
 lr = get_lr(global_step)
@@ -1408,7 +1408,7 @@ for g in optimizer.param_groups:
 
 PyTorch's AdamW doesn't natively support custom schedules, so we manually override the LR each step. `param_groups` is a list (here just one group), and each group can have its own LR/weight decay.
 
-**3. Forward Pass:**
+<strong>3. Forward Pass:</strong>
 
 ```
 outputs = model(input_ids, targets)
@@ -1418,7 +1418,7 @@ loss = outputs['loss']
 
 Input tokens flow through: embeddings → 6 transformer blocks → LM head → logits. Cross-entropy loss is computed between the logits (shape `[batch, seq_len, 32000]`) and target token IDs. This loss measures the negative log-probability the model assigns to the correct next token, averaged over all positions and batch elements.
 
-**4. Backward Pass + Update:**
+<strong>4. Backward Pass + Update:</strong>
 
 ```
 optimizer.zero_grad()          # Reset all parameter gradients to zero (they accumulate by default)
@@ -1428,15 +1428,15 @@ optimizer.step()               # θ_new = θ_old - lr × adam_adjusted_gradient 
 
 ```
 
-`zero_grad()`**:** PyTorch accumulates gradients by default (useful for gradient accumulation across micro-batches). We must manually clear them before each new backward pass.
+`zero_grad()`<strong>:</strong> PyTorch accumulates gradients by default (useful for gradient accumulation across micro-batches). We must manually clear them before each new backward pass.
 
-`loss.backward()`**:** Backpropagation traverses the computation graph in reverse, computing ∂loss/∂θ for every parameter using the chain rule. This is the most compute-intensive step alongside the forward pass.
+`loss.backward()`<strong>:</strong> Backpropagation traverses the computation graph in reverse, computing ∂loss/∂θ for every parameter using the chain rule. This is the most compute-intensive step alongside the forward pass.
 
-**Gradient clipping:** Computes the L2 norm across all parameter gradients concatenated into one vector. If the norm exceeds 1.0, every gradient is multiplied by `1.0/norm`, preserving direction but capping magnitude. This prevents rare batches (unusual token distributions) from causing catastrophically large updates that destabilize training.
+<strong>Gradient clipping:</strong> Computes the L2 norm across all parameter gradients concatenated into one vector. If the norm exceeds 1.0, every gradient is multiplied by `1.0/norm`, preserving direction but capping magnitude. This prevents rare batches (unusual token distributions) from causing catastrophically large updates that destabilize training.
 
-`optimizer.step()`**:** AdamW applies the update rule using momentum, adaptive per-parameter LR, and decoupled weight decay.
+`optimizer.step()`<strong>:</strong> AdamW applies the update rule using momentum, adaptive per-parameter LR, and decoupled weight decay.
 
-**5. Bookkeeping:**
+<strong>5. Bookkeeping:</strong>
 
 ```
 epoch_loss += loss.item()      # .item() extracts the Python float from the CUDA tensor (avoids GPU memory leak)
@@ -1485,7 +1485,7 @@ if val_loss < best_val_loss:
 
 `model.state_dict()` returns an `OrderedDict` mapping parameter names onto tensors. `torch.save` serializes this to disk using Python's pickle + zip. We only save when val loss improves.
 
-This is **early stopping** in spirit: we keep the checkpoint that generalizes best, regardless of what happens in later epochs.
+This is <strong>early stopping</strong> in spirit: we keep the checkpoint that generalizes best, regardless of what happens in later epochs.
 
 ## Summary: One Batch in 6 Steps
 
@@ -1503,9 +1503,9 @@ Repeat ~5000 times, save the best checkpoint → done
 
 ## Key Metrics
 
-**Cross-entropy loss** measures how far the predicted probability distribution is from the true next token. A random model over 32K vocab gets loss ≈ ln(32000) ≈ 10.4
+<strong>Cross-entropy loss</strong> measures how far the predicted probability distribution is from the true next token. A random model over 32K vocab gets loss ≈ ln(32000) ≈ 10.4
 
-**Perplexity = e^loss**, interpretable as "the model is choosing between N equally likely tokens"
+<strong>Perplexity = e^loss</strong>, interpretable as "the model is choosing between N equally likely tokens"
 
 PPL 32,000 = random guessing
 
@@ -1515,9 +1515,9 @@ PPL 10 = quite confident predictions
 
 Once training is completed and we've saved the model in Drive, the next step is to download the model to your local system to perform the next steps.
 
-Now we have a model that's ready, but a question arises: Is it ready to where we can chat with it like we do with any AI tool like ChatGPT, Claude, or Copilot? The answer is **no**, it's not quite ready yet. Why?
+Now we have a model that's ready, but a question arises: Is it ready to where we can chat with it like we do with any AI tool like ChatGPT, Claude, or Copilot? The answer is <strong>no</strong>, it's not quite ready yet. Why?
 
-The training part is done, but it doesn't know how to structure or write in a conversational manner, like it's answering user queries. This is the step we call **Supervised Fine-Tuning (SFT)**.
+The training part is done, but it doesn't know how to structure or write in a conversational manner, like it's answering user queries. This is the step we call <strong>Supervised Fine-Tuning (SFT)</strong>.
 
 ## 4. Supervised Fine-Tuning (SFT)
 
@@ -1536,11 +1536,11 @@ To achieve this, we'll create a dataset of examples with the following key pairs
 
 ```
 
-Around **79 examples** get fed to the system and saved in JSONL format. In real cases, you would use many more examples. As I already mentioned, more examples lead to better results.
+Around <strong>79 examples</strong> get fed to the system and saved in JSONL format. In real cases, you would use many more examples. As I already mentioned, more examples lead to better results.
 
 ## Formatting Conversations for Training
 
-The next step is formatting the conversations saved above for training. This is the conversation formatting step for SFT. It converts raw conversation JSON into token ID sequences with **loss masking**, so the model only learns to generate assistant responses.
+The next step is formatting the conversations saved above for training. This is the conversation formatting step for SFT. It converts raw conversation JSON into token ID sequences with <strong>loss masking</strong>, so the model only learns to generate assistant responses.
 
 Loss masking means we intentionally hide certain parts of the input from the training loss. In this case, we mask the system prompt and user message so the model isn't trained to memorize or reproduce them. The training signal comes only from the assistant's response, which is the useful part in teaching the model what to generate and when to stop.
 
@@ -1561,11 +1561,11 @@ IGNORE_INDEX = -100
 
 ```
 
-`no_padding()`**:** Tells the tokenizer "don't add padding automatically, I'll handle it myself." We need full control over the token sequence.
+`no_padding()`<strong>:</strong> Tells the tokenizer "don't add padding automatically, I'll handle it myself." We need full control over the token sequence.
 
 We fetch the integer IDs for each special token so we can manually insert them at the right positions.
 
-`IGNORE_INDEX = -100`**:** PyTorch's `cross_entropy` has a built-in feature: any label set to -100 is skipped in loss computation. This is how we implement loss masking.
+`IGNORE_INDEX = -100`<strong>:</strong> PyTorch's `cross_entropy` has a built-in feature: any label set to -100 is skipped in loss computation. This is how we implement loss masking.
 
 ## Part 2: `format_conversation()`: The Core Function
 
@@ -1577,7 +1577,7 @@ labels:    [-100, -100, -100, -100, -100, ..., -100, -100, -100,    -100,..., -1
 
 ```
 
-**Step-by-step inside the function:**
+<strong>Step-by-step inside the function:</strong>
 
 1. Start with BOS:
 
@@ -1618,9 +1618,9 @@ assistant
 
 The assistant's role token (`<|assistant|>`) itself is masked because we don't want the model to learn to predict that. But the actual response content and the `<eos>` do have labels, so the model learns:
 
-**What to say** (the response content)
+<strong>What to say</strong> (the response content)
 
-**When to stop** (predicting `<eos>`)
+<strong>When to stop</strong> (predicting `<eos>`)
 
 4. Truncate and pad:
 
@@ -1742,16 +1742,16 @@ class SFTDataset(Dataset):
 
 This wraps all 79 formatted conversations into a PyTorch Dataset. At init time, it pre-formats every conversation using `format_conversation()` and stores the results. When the DataLoader requests item `idx`, it returns `(input_ids, labels)` as tensors.
 
-**DataLoader:**
+<strong>DataLoader:</strong>
 
 ```
 sft_loader = DataLoader(sft_dataset, batch_size=4, shuffle=True)
 
 ```
 
-`batch_size=4`**:** Small batch because we only have 79 examples. Larger batches would mean fewer gradient updates per epoch.
+`batch_size=4`<strong>:</strong> Small batch because we only have 79 examples. Larger batches would mean fewer gradient updates per epoch.
 
-`shuffle=True`**:** Randomize order each epoch so the model doesn't memorize a fixed sequence of examples.
+`shuffle=True`<strong>:</strong> Randomize order each epoch so the model doesn't memorize a fixed sequence of examples.
 
 ## Loading the Pre-trained Model
 
@@ -1886,7 +1886,7 @@ loss = F.cross_entropy(
 
 There's a key difference from pre-training: in pre-training, we passed targets directly to `model(input_ids, targets)` which computed loss internally on ALL tokens. Here we compute loss manually so we can use `ignore_index=-100` to mask non-assistant positions.
 
-**The shift:** `logits[:, :-1]` and `labels[:, 1:]` implement next-token prediction. The model's prediction at position `i` is compared against the actual token at position `i+1`.
+<strong>The shift:</strong> `logits[:, :-1]` and `labels[:, 1:]` implement next-token prediction. The model's prediction at position `i` is compared against the actual token at position `i+1`.
 
 Backward pass + update:
 
@@ -1964,7 +1964,7 @@ def chat(model, tokenizer, user_message: str, system_prompt: str = None,
 
 And here's a step-by-step breakdown:
 
-**1. Build the prompt:**
+<strong>1. Build the prompt:</strong>
 
 ```
 prompt_ids = [BOS_ID, SYSTEM_ID]
@@ -1986,7 +1986,7 @@ This constructs exactly the same format the model saw during SFT training:
 
 The model sees `<|assistant|>` and knows "I should generate a response now" because during SFT, it learned that tokens after `<|assistant|>` are what it should produce.
 
-**2. Generate autoregressively:**
+<strong>2. Generate autoregressively:</strong>
 
 ```
 with torch.no_grad():
@@ -2001,17 +2001,17 @@ with torch.no_grad():
 
 ```
 
-`torch.no_grad()`**:** No gradients needed for inference, which saves memory and speed
+`torch.no_grad()`<strong>:</strong> No gradients needed for inference, which saves memory and speed
 
-`temperature=0.7`**:** Slightly sharpened distribution for coherent but not robotic output
+`temperature=0.7`<strong>:</strong> Slightly sharpened distribution for coherent but not robotic output
 
-`top_k=50`**:** Only sample from top 50 tokens to avoid low-probability noise
+`top_k=50`<strong>:</strong> Only sample from top 50 tokens to avoid low-probability noise
 
-`top_p=0.9`**:** Nucleus sampling that dynamically selects the smallest set of tokens whose cumulative probability ≥ 0.9
+`top_p=0.9`<strong>:</strong> Nucleus sampling that dynamically selects the smallest set of tokens whose cumulative probability ≥ 0.9
 
-`eos_token_id`**:** Stop generating when `<eos>` is produced
+`eos_token_id`<strong>:</strong> Stop generating when `<eos>` is produced
 
-**3. Extract and decode:**
+<strong>3. Extract and decode:</strong>
 
 ```
 generated_ids = output_ids[0][len(prompt_ids):].tolist()    # Only the new tokens
@@ -2078,11 +2078,11 @@ if __name__ == "__main__":
 
 `theme=gr.themes.Soft()` gives a clean, modern visual theme.
 
-**Note:** Hugging Face Spaces runs `app.py` as a standalone script, so the full `app.py` in the repository inlines everything into one file: the model config, the complete transformer architecture, model loading with `gc.collect()` for memory optimization, the `chat()` function, and the Gradio interface above.
+<strong>Note:</strong> Hugging Face Spaces runs `app.py` as a standalone script, so the full `app.py` in the repository inlines everything into one file: the model config, the complete transformer architecture, model loading with `gc.collect()` for memory optimization, the `chat()` function, and the Gradio interface above.
 
 We won't repeat all of that here since it was already covered in the Pre-Training and SFT sections.
 
-**Running locally:**
+<strong>Running locally:</strong>
 
 ```
 python app.py
@@ -2096,7 +2096,7 @@ python app.py
 
 Hugging Face Spaces provides free CPU hosting for Gradio apps.
 
-**What to upload:**
+<strong>What to upload:</strong>
 
 ```
 urdu-llm-chat/
@@ -2114,7 +2114,7 @@ urdu-llm-chat/
 
 ```
 
-**How it works:**
+<strong>How it works:</strong>
 
 Create a free account on [huggingface.co](https://huggingface.co)
 
@@ -2128,7 +2128,7 @@ Hugging Face automatically installs dependencies and runs `app.py`
 
 Your model is live at `https://huggingface.co/spaces/USERNAME/urdu-llm-chat`
 
-**Why CPU is fine:** Our model is only 23M parameters (~90MB). Inference takes <1 second on CPU. No GPU needed for serving.
+<strong>Why CPU is fine:</strong> Our model is only 23M parameters (~90MB). Inference takes <1 second on CPU. No GPU needed for serving.
 
 ## Option B: Running Locally
 
@@ -2305,19 +2305,19 @@ python inference/chat.py
 Phase
 Description
 
-**Phase 1**
+<strong>Phase 1</strong>
 Raw Urdu Text → Clean corpus
 
-**Phase 2**
+<strong>Phase 2</strong>
 Corpus → BPE Tokenizer (32K vocab)
 
-**Phase 3**
+<strong>Phase 3</strong>
 Tokenized chunks → Pre-train GPT (23M params, next-token prediction)
 
-**Phase 4**
+<strong>Phase 4</strong>
 Conversations → SFT with loss masking → Chat model
 
-**Deploy**
+<strong>Deploy</strong>
 `app.py` + model weights → Hugging Face Spaces / Local
 
 You can check out the deployed model here: [https://huggingface.co/spaces/Wisamul/urdu_llm](https://huggingface.co/spaces/Wisamul/urdu_llm)

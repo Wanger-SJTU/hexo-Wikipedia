@@ -15,7 +15,7 @@ source_url: https://zhuanlan.zhihu.com/p/2022071052365301640
 ---
 
 
-** 本文深入解析 Gated DeltaNet 的 Chunkwise Parallel 算法，从数学推导到实现细节，帮你理解这个让”无法并行”的算法变得高效的关键技术。TL;DR**: GDN 的 delta rule 存在严格顺序依赖，无法用 Parallel Scan。Chunkwise Parallel 的解法是：将序列分成 L/C 个 chunk，**chunk 内用矩阵乘法**（Tensor Core 友好），**chunk 间顺序传递状态**。这样顺序步骤从 O(L) 降到 O(L/C)，同时获得 Tensor Core 加速。
+<strong>本文深入解析 Gated DeltaNet 的 Chunkwise Parallel 算法，从数学推导到实现细节，帮你理解这个让”无法并行”的算法变得高效的关键技术。TL;DR</strong>: GDN 的 delta rule 存在严格顺序依赖，无法用 Parallel Scan。Chunkwise Parallel 的解法是：将序列分成 L/C 个 chunk，<strong>chunk 内用矩阵乘法</strong>（Tensor Core 友好），<strong>chunk 间顺序传递状态</strong>。这样顺序步骤从 O(L) 降到 O(L/C)，同时获得 Tensor Core 加速。
 
 #### 一、问题背景：为什么 GDN 无法直接并行？
 
@@ -44,7 +44,7 @@ S_t = g * S_{t-1} + outer(delta, k)  # 更新状态`
 
 `S₀ → old_v₀ → Δ₀ → S₁ → old_v₁ → Δ₁ → S₂ → ...`
 
-**每个 token 必须等待前一个 token 完成状态更新**，导致 O(L) 的顺序步骤。
+<strong>每个 token 必须等待前一个 token 完成状态更新</strong>，导致 O(L) 的顺序步骤。
 
 #### 1.3 Parallel Scan 为什么不行？
 
@@ -52,13 +52,13 @@ $理论上，形如 St=AtSt&#x2212;1+Bt" role="presentation">St=AtSt−1+BtS_t =
 
 $&#x0394;t=&#x03B2;t(vt&#x2212;St&#x2212;1kt&#x23DF;&#x4F9D;&#x8D56;&#x72B6;&#x6001;)" role="presentation" style="font-size: 100%; display: inline-block; position: relative;">Δt=βt(vt−St−1kt⏟依赖状态) \Delta_t = \beta_t (v_t - \underbrace{S_{t-1} k_t}_{\text{依赖状态}})  $
 
-\Delta_t **本身就依赖 **S_{t-1}，不是预先可知的常数。这打破了 Parallel Scan 的前提条件。
+\Delta_t <strong>本身就依赖</strong>S_{t-1}，不是预先可知的常数。这打破了 Parallel Scan 的前提条件。
 
 #### 二、Chunkwise Parallel 的核心思想
 
 #### 2.1 分而治之
 
-既然 token 级别无法并行，我们退而求其次：**chunk 级别并行**。
+既然 token 级别无法并行，我们退而求其次：<strong>chunk 级别并行</strong>。
 
 `原始序列 (L=256 tokens):
 t₁ t₂ t₃ ... t₆₄ | t₆₅ t₆₆ ... t₁₂₈ | t₁₂₉ ... t₁₉₂ | t₁₉₃ ... t₂₅₆
@@ -75,7 +75,7 @@ t₁ t₂ t₃ ... t₆₄ | t₆₅ t₆₆ ... t₁₂₈ | t₁₂₉ ... t�
 
 #### 2.2 关键洞察：Chunk 内部可以矩阵化
 
-在一个 chunk 内部，虽然 token 间有依赖，但我们可以把整个 chunk 的计算**重新表述为矩阵运算**。
+在一个 chunk 内部，虽然 token 间有依赖，但我们可以把整个 chunk 的计算<strong>重新表述为矩阵运算</strong>。
 
 设 chunk 大小为 C，chunk 内的输入为：
 
@@ -95,7 +95,7 @@ $- S_{out} \in \mathbb{R}^{d \times d} (chunk 结束时的状态)$
 
 设 chunk 的初始状态为 S_0，我们逐步展开每个 token 的状态更新：
 
-**Token 1:** 
+<strong>Token 1:</strong> 
 
  \begin{align} \text{old\_v}_1 &= S_0 k_1 \\ \Delta_1 &= \beta_1 (v_1 - \text{old\_v}_1) \\ S_1 &= g_1 S_0 + \Delta_1 k_1^\top \end{align} 
 
@@ -124,12 +124,12 @@ $- \gamma_{j:t} = \prod_{i=j+1}^{t} g_i 是从 token j 到 t 的衰减$
 
  $o_t = \underbrace{\gamma_t (S_0 q_t)}_{\text{来自初始状态}} + \underbrace{\sum_{j=1}^{t} \gamma_{j:t} \Delta_j (k_j^\top q_t)}_{\text{来自 chunk 内更新}}  $
 
-关键观察**：第二项可以写成**因果注意力**的形式！
+关键观察<strong>：第二项可以写成</strong>因果注意力**的形式！
 
 定义：
 
 $- A_{tj} = \gamma_{j:t} (k_j^\top q_t) 为”衰减注意力分数”$
-- 这是一个**下三角矩阵**（因果性：t 只能看到 j \leq t）
+- 这是一个<strong>下三角矩阵</strong>（因果性：t 只能看到 j \leq t）
 则： 
 
  $O = \underbrace{\Gamma \cdot (S_0 Q^\top)^\top}_{\text{状态贡献}} + \underbrace{\text{CausalAttn}(\Delta, K, Q, G)}_{\text{Chunk 内交互}} $
@@ -249,7 +249,7 @@ Chunk 间必须顺序传递状态，但只有 L/C 步：
 
 - 朴素方法：4096 顺序步骤
 - Chunkwise：64 顺序步骤 + 并行矩阵乘法
-**加速比：64x 顺序步骤减少！**
+<strong>加速比：64x 顺序步骤减少！</strong>
 
 #### 5.2 空间复杂度
 
@@ -271,7 +271,7 @@ Intra-Chunk 阶段的核心操作是：
 
 $最棘手的部分是 \Delta_t 依赖 S_{t-1}。有两种处理方式：$
 
-**方式 A：迭代求解（精确）**
+<strong>方式 A：迭代求解（精确）</strong>
 
 `def compute_deltas_iterative(K, V, G, B, S_init):
     """Chunk 内迭代计算 Δ"""
@@ -298,7 +298,7 @@ gamma = cumprod(G.float()).to(G.dtype)`
 
 #### 6.3 Memory-Efficient 实现
 
-为了避免 O(C²) 的注意力矩阵，可以使用 **Flash Attention 风格**的分块：
+为了避免 O(C²) 的注意力矩阵，可以使用 <strong>Flash Attention 风格</strong>的分块：
 
 `def memory_efficient_chunk(Q, K, V, G, B, S_init, BLOCK=16):
     """分块计算，避免 O(C²) 显存"""
@@ -338,27 +338,27 @@ gamma = cumprod(G.float()).to(G.dtype)`
 
 在 NVIDIA B200 GPU 上的 GDN Prefill 测试：
 
-方法序列长度耗时 (ms)吞吐 (M tok/s)纯递推40963.311.24Chunkwise (C=64)4096~0.5~8.2Chunkwise + Tensor Core4096~0.3~13.6**加速比：6-10x！**
+方法序列长度耗时 (ms)吞吐 (M tok/s)纯递推40963.311.24Chunkwise (C=64)4096~0.5~8.2Chunkwise + Tensor Core4096~0.3~13.6<strong>加速比：6-10x！</strong>
 
 #### 8.2 Chunk Size 的选择
 
-Chunk Size优点缺点C=32更少顺序步骤矩阵太小，Tensor Core 利用率低C=64平衡推荐C=128Tensor Core 利用率高更多顺序步骤C=256最高并行度内存压力大，顺序步骤多通常 **C=64 或 C=128** 是最优选择。
+Chunk Size优点缺点C=32更少顺序步骤矩阵太小，Tensor Core 利用率低C=64平衡推荐C=128Tensor Core 利用率高更多顺序步骤C=256最高并行度内存压力大，顺序步骤多通常 <strong>C=64 或 C=128</strong> 是最优选择。
 
 #### 九、总结
 
 #### 核心思想
 
-**Chunkwise Parallel 的本质是将”无法并行”的 token 级递推，转化为”可以高效并行”的 chunk 级矩阵运算。**
+<strong>Chunkwise Parallel 的本质是将”无法并行”的 token 级递推，转化为”可以高效并行”的 chunk 级矩阵运算。</strong>
 #### 三个关键步骤
 
-- **分块**：将长度 L 的序列分成 L/C 个 chunk
-- **Intra-Chunk 并行**：每个 chunk 内部用矩阵乘法（Tensor Core）
-- **Inter-Chunk 顺序**：chunk 之间顺序传递状态（O(L/C) 步）
+- <strong>分块</strong>：将长度 L 的序列分成 L/C 个 chunk
+- <strong>Intra-Chunk 并行</strong>：每个 chunk 内部用矩阵乘法（Tensor Core）
+- <strong>Inter-Chunk 顺序</strong>：chunk 之间顺序传递状态（O(L/C) 步）
 
 #### 适用场景
 
-- **Training / Prefill**：处理长序列，需要高吞吐
-- **不适用于 Decode**：Decode 每次只处理 1 个 token，无法 chunk
+- <strong>Training / Prefill</strong>：处理长序列，需要高吞吐
+- <strong>不适用于 Decode</strong>：Decode 每次只处理 1 个 token，无法 chunk
 
 #### 实现建议
 
@@ -398,12 +398,12 @@ def _prefill_kernel_naive(Q, K, V, State, ...):
 
 实测结果 (B200)**:
 
-- 单序列 4096 tokens: **3.31 ms, 1.24 M tok/s**
+- 单序列 4096 tokens: <strong>3.31 ms, 1.24 M tok/s</strong>
 - 问题：完全顺序执行，Tensor Core 完全没用上
 
 #### 10.2 第一次优化：V-Slice 并行
 
-$我们发现：状态矩阵 S \in \mathbb{R}^{128 \times 128} 的不同**行**之间是独立的！$
+$我们发现：状态矩阵 S \in \mathbb{R}^{128 \times 128} 的不同<strong>行</strong>之间是独立的！$
 
 `状态矩阵 S [128, 128]:
 ┌─────────────────────────┐
@@ -448,14 +448,14 @@ def _prefill_kernel(Q, K, V, State, ..., BLOCK_V: tl.constexpr):
         ov = scale * tl.sum(S * qv[None, :], axis=1)
         tl.store(Out + ... + v0 + tl.arange(0, BLOCK_V), ov)`
 
-**Grid 配置**:
+<strong>Grid 配置</strong>:
 
 `# Grid: (N=num_seqs, H=8, V_BLOCKS)
 V_BLOCKS = D // BLOCK_V  # 128 // 16 = 8 或 128 // 32 = 4
 
 _prefill_kernel[(N, num_v_heads, V_BLOCKS)](...)`
 
-**效果**：
+<strong>效果</strong>：
 
 - 并行度从 `N × H` 提升到 `N × H × V_BLOCKS`
 - BLOCK_V=16 时，并行度提升 8x
@@ -464,7 +464,7 @@ _prefill_kernel[(N, num_v_heads, V_BLOCKS)](...)`
 
 我们发现不同 batch size 下，最优的 BLOCK_V 不同：
 
-Batch SizeBLOCK_V=16BLOCK_V=32最优选择N=1✅ 更多并行❌ SM 占用低16N=4✅ 刚好⚠️ 略低16N=8+⚠️ 过多 programs✅ 平衡32**实现**：
+Batch SizeBLOCK_V=16BLOCK_V=32最优选择N=1✅ 更多并行❌ SM 占用低16N=4✅ 刚好⚠️ 略低16N=8+⚠️ 过多 programs✅ 平衡32<strong>实现</strong>：
 
 `def kernel(q, k, v, state, ...):
     N = cu_seqlens.shape[0] - 1
@@ -474,7 +474,7 @@ Batch SizeBLOCK_V=16BLOCK_V=32最优选择N=1✅ 更多并行❌ SM 占用低16N
 
 #### 10.4 GVA 处理：Query/Key 共享
 
-Qwen3 使用 **Grouped Value Attention (GVA)**：
+Qwen3 使用 <strong>Grouped Value Attention (GVA)</strong>：
 
 - num_q_heads = 4
 - num_v_heads = 8
@@ -491,44 +491,44 @@ vv = tl.load(V_ptr + t * stride_v_t + h * stride_v_h + v0 + vd)`
 
 #### 10.5 实测数据：优化效果
 
-**单序列吞吐 (确认顺序依赖)**:
+<strong>单序列吞吐 (确认顺序依赖)</strong>:
 
-序列长度耗时 (ms)吞吐 (M tok/s)时间/token5120.421.210.82 μs10240.841.230.82 μs20481.661.230.81 μs40963.311.240.81 μs**观察**：时间与长度严格线性，每 token ~0.82 μs，这证实了顺序依赖。
+序列长度耗时 (ms)吞吐 (M tok/s)时间/token5120.421.210.82 μs10240.841.230.82 μs20481.661.230.81 μs40963.311.240.81 μs<strong>观察</strong>：时间与长度严格线性，每 token ~0.82 μs，这证实了顺序依赖。
 
-**Multi-Batch 吞吐 (并行收益)**:
+<strong>Multi-Batch 吞吐 (并行收益)</strong>:
 
-BatchTokens吞吐 (M tok/s)加速比N=140961.241.0xN=440964.703.8xN=16409611.389.2xN=32409614.1311.4xN=64409613.7011.1x**观察**：N=32 是甜点，超过后饱和（SM 数量限制）。
+BatchTokens吞吐 (M tok/s)加速比N=140961.241.0xN=440964.703.8xN=16409611.389.2xN=32409614.1311.4xN=64409613.7011.1x<strong>观察</strong>：N=32 是甜点，超过后饱和（SM 数量限制）。
 
 #### 10.6 关键洞察：为什么我们没用”真正的” Chunkwise Parallel？
 
-你可能注意到，我们的实现**仍然是逐 token 扫描**，只是在 V 维度上做了并行。这是因为：
+你可能注意到，我们的实现<strong>仍然是逐 token 扫描</strong>，只是在 V 维度上做了并行。这是因为：
 
-**理论 vs 实践的 Gap**:
+<strong>理论 vs 实践的 Gap</strong>:
 
-理论 Chunkwise我们的实现Chunk 内 token 并行Chunk 内 token 顺序需要复杂的矩阵分解直接 delta rule利用 Tensor Core纯向量运算实现复杂度高实现简单**为什么我们选择简单方案？**
+理论 Chunkwise我们的实现Chunk 内 token 并行Chunk 内 token 顺序需要复杂的矩阵分解直接 delta rule利用 Tensor Core纯向量运算实现复杂度高实现简单<strong>为什么我们选择简单方案？</strong>
 
-- **正确性优先**：复杂的 chunk 内矩阵求解容易出 bug
-- **Multi-Batch 足够**：生产环境 batch 通常 >= 16，已经够快
-- **ROI 考量**：Tensor Core 方案的收益 ~2-3x，但实现成本高
-- **FlashInfer 基线**：官方实现也是类似方案（CuTe DSL，非 chunk 并行）
+- <strong>正确性优先</strong>：复杂的 chunk 内矩阵求解容易出 bug
+- <strong>Multi-Batch 足够</strong>：生产环境 batch 通常 >= 16，已经够快
+- <strong>ROI 考量</strong>：Tensor Core 方案的收益 ~2-3x，但实现成本高
+- <strong>FlashInfer 基线</strong>：官方实现也是类似方案（CuTe DSL，非 chunk 并行）
 
 #### 10.7 未来优化方向
 
 如果要进一步优化，可以考虑：
 
-**1. Chunk 内 Tensor Core（高收益，高难度）**
+<strong>1. Chunk 内 Tensor Core（高收益，高难度）</strong>
 
 `目标：将 Chunk 内的多个 token 合并成矩阵乘法
 预期收益：2-3x
 难点：正确处理 delta 的状态依赖`
 
-**2. TMA + Double Buffering（中收益，中难度）**
+<strong>2. TMA + Double Buffering（中收益，中难度）</strong>
 
 `目标：异步预取下一 chunk 的数据
 预期收益：1.3-1.5x
 实现：cp.async.bulk.tensor 指令`
 
-**3. State 量化（低-中收益，低难度）**
+<strong>3. State 量化（低-中收益，低难度）</strong>
 
 `目标：FP32 状态 → FP8/BF16
 预期收益：2-4x 带宽减少
@@ -538,14 +538,14 @@ BatchTokens吞吐 (M tok/s)加速比N=140961.241.0xN=440964.703.8xN=16409611.389
 
 #### 核心思想回顾
 
-**Chunkwise Parallel 的本质是将”无法并行”的 token 级递推，转化为”可以高效并行”的 chunk 级矩阵运算。**
+<strong>Chunkwise Parallel 的本质是将”无法并行”的 token 级递推，转化为”可以高效并行”的 chunk 级矩阵运算。</strong>
 #### 实践建议
 
 场景建议方案理由快速原型V-Slice 并行 + Adaptive BLOCK_V简单可靠，效果不错生产部署Multi-Batch (N=16-32)最佳性价比追求极致完整 Chunkwise + Tensor Core但要准备好调 bug
 #### 踩坑记录
 
-- **GVA 索引错误**：qk_head 和 v_head 的映射关系要搞清楚
-- **状态布局**：k-last vs v-last，搞反了 shape 完全不对
-- **Triton 的 constexpr**：BLOCK_V 必须是编译期常量
-- **num_warps 选择**：4 warps 通常最优，8 warps 反而更慢
+- <strong>GVA 索引错误</strong>：qk_head 和 v_head 的映射关系要搞清楚
+- <strong>状态布局</strong>：k-last vs v-last，搞反了 shape 完全不对
+- <strong>Triton 的 constexpr</strong>：BLOCK_V 必须是编译期常量
+- <strong>num_warps 选择</strong>：4 warps 通常最优，8 warps 反而更慢
 *本文是 GDN 系列文章的第二篇。上一篇：*[深入理解 Qwen3.5 的 Gated DeltaNet](https://zhuanlan.zhihu.com/ZHIHU_GDN_INFERENCE.md)

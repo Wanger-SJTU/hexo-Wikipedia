@@ -32,7 +32,7 @@ Triton的学习需要会GPU架构：[复习GPU架构 以及 Triton 课程](https
 这篇文章以 mat_mul 代码为例，详解了 triton的编程，并有一些自己的想法。
 
 - program_id的个人理解。从CUDA的角度来说，一个 grid 内部可以分为多个 block，其中 block 的排布可以是一维的、二维的、三维的。Triton 通常是以块为单位进行调度计算，那么 program_id 指的是某一个块的全局索引。（也可以理解成循环，如果只有一个SM，就要让该SM循环执行所有的 Block。）那么我们可以通过 `pid = tl.program_id(axis=0)` 和 `pid = tl.program_id(axis=1)`  来获得某个块在某个维度的索引。
-**Block-wise编程，Block上面的归用户，Block内部的归Triton compiler自动化处理**与CUDA对应，Triton 以 Block 为单位，因此获得的是块的索引。CUDA是以 Thread 为单位，因此需要获得现成的索引。
+<strong>Block-wise编程，Block上面的归用户，Block内部的归Triton compiler自动化处理</strong>与CUDA对应，Triton 以 Block 为单位，因此获得的是块的索引。CUDA是以 Thread 为单位，因此需要获得现成的索引。
 
 -  pid = tl.program_id(axis=0)  表示当前执行的 程序块序号；该值可能是持续增加的，但是核函数内具体的 pid_m 和 pid_n 则是通过 pid 计算出来的，比如在 row_major中 计算为：         `python         pid_m = pid // num_pid_n         pid_n = pid % num_pid_n`         在group_major中计算为：         ```python          pid_m = first_pid_m + (pid % group_size_m)          pid_n = (pid % num_pid_in_group) // group_size_m** 
 -  stride 的理解（以pytorch为例）：`a =torch.rand([3,6])     a.stride()     # (6, 1)`
@@ -48,7 +48,7 @@ Triton的学习需要会GPU架构：[复习GPU架构 以及 Triton 课程](https
  
 - 对组的理解：在示例中，组沿着M维度的大小 `group_size_m` 是 3，然后在N维度上是所有的线程数，因此一个组一共是 `num_pid_in_group = GROUP_SIZE_M * num_pid_n`,正如知乎中所说的红色方框内的是一组。
 -  还是以官方教程中的图示为例说明一下我个人的理解：每个核函数负责执行的仍然是一个线程块（如图中的小方格为例）。所有的分组等操作都是为了改变每个 warp 所负责的计算结果。row-wise 实例中，相邻的9个warp负责的是C矩阵的一行；block-wise实例中，相邻的9个warp 负责的是C矩阵的一个块。具体如何分配是通过 `pid =tl.program_id(axis=0)`的全局线程块索引 通过某些引导步骤 获得 需要计算的数据指针范围，以此让线程块与实际负责的数据分块对应，线程块的实际排布可以通过 `pid++`的方式来模拟相邻程序块与数据分块的对应。 通常若干个 warp 会被组织到一个SM中，底层编译器会自动根据warp 与数据块的对应关系 load 对应的数据，会放到L2 Cache中。因此如果想要尽量减少 load次数，就是让若干连续的 warp 负责 分大块后的数据块。 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_45c58d224054.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_45c58d224054.jpg)
 
 文章配图
 
@@ -66,7 +66,7 @@ Triton的学习需要会GPU架构：[复习GPU架构 以及 Triton 课程](https
 
 在上面的小节学习中，MAT_MUL 核函数实际计算时内部使用group-major的方式改变warp内 gropram的计算顺序，从而减少 load 和 store次数从而 提高 Cache Hit Rate。
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_70488fde08d8.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_70488fde08d8.jpg)
 
 文章配图
 
@@ -110,7 +110,7 @@ OpenAI-Triton MLIR 第三章 Triton-shared开箱 - GiantPandaCV
  triton-share**** 提供一个胶水一样的中间层，通过对 middle-layer的设计方便我们的编程语言或者编译器对接到下游的不同硬件生态。
  
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_fbf324ede12b.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_fbf324ede12b.jpg)
 
 文章配图 当用户写完 triton DSL（Domine Specify Language）翻译为 python 的AST（Abstract Snytax Tree，抽象语法树）;之后再到Triton Dialect（方言）。
  中间： 当转为 Triton GPU Dialect时正式进入MLIR这套生态；triton支持nv GPU；当从triton gpu dialect开始，走向标准的LLVM代码生成，之后从 LLVM IR 一直到lower到 PTX（Parallel Thread eXecution，一种中间指令集），再到SASS（SASS 是实际在 NVIDIA GPU 上执行的机器代码），最终可以运行在NV的GPU上。
@@ -134,7 +134,7 @@ https://triton-lang.org/main/index.html
 
 而在triton.Config中 BlOCK_SIZE 代表核函数中用于处理数据的块大小，同哈根用于优化矩阵运算或其他计算密集型任务。
 
-例如： - `BLOCK_SIZE_M`**: 处理 M 维度时每个块的大小，例如，128 表示每个块将处理 128 行数据。 - **`BLOCK_SIZE_N`**: 处理 N 维度时的块大小，影响列的处理量。 - **`BLOCK_SIZE_K`**: 对于涉及多个维度的操作（如矩阵乘法），它通常表示 K 维度上的块大小。
+例如： - `BLOCK_SIZE_M`<strong>: 处理 M 维度时每个块的大小，例如，128 表示每个块将处理 128 行数据。 -</strong>`BLOCK_SIZE_N`<strong>: 处理 N 维度时的块大小，影响列的处理量。 -</strong>`BLOCK_SIZE_K`**: 对于涉及多个维度的操作（如矩阵乘法），它通常表示 K 维度上的块大小。
 
 在自动调优过程中，Triton 会探索不同的 BLOCK_SIZE 组合，以找到最佳的性能配置。这种你探索能够版主确定最适合特定硬件核输入数据特征的块大小，从而最大化执行效率。
 
@@ -158,7 +158,7 @@ matmul_kernel[grid](
 
 **
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_f2f4d4c11454.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_f2f4d4c11454.jpg)
 
 文章配图
 
@@ -176,12 +176,12 @@ matmul_kernel[grid](
 
 `num_stages` 定义了计算内核中异步操作的流水线阶段数量。每个阶段包含一组并行的内存加载（Load）、计算（Compute）和存储（Store）操作。
 
-该参数直接对应 NVIDIA GPU 的 Shared Memory Bank 数量** 和 AMD GPU 的 **Wavefront 调度深度**，控制着计算单元与存储单元的交错执行节奏
+该参数直接对应 NVIDIA GPU 的 Shared Memory Bank 数量<strong>和 AMD GPU 的</strong>Wavefront 调度深度**，控制着计算单元与存储单元的交错执行节奏
 
-- **优化原理**
+- <strong>优化原理</strong>
 `triton.Config({'BLOCK_M':128, 'BLOCK_N':256}, num_stages=3)`
 
-- **延迟隐藏**
+- <strong>延迟隐藏</strong>
 增加 num_stages 可以让更多计算操作覆盖内存访问延迟。当设置为3时，计算单元可以在等待第1阶段数据加载时，并行处理第2阶段的计算和第0阶段的存储
 
 - 寄存器压力平衡

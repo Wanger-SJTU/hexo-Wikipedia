@@ -17,7 +17,7 @@ source_url: https://zhuanlan.zhihu.com/p/658873953
 
 大语言模型的爆火也推动了大量prompt工程的研究，我想用过ChatGPT之类大模型的同学应该都听过思维链这一方法，简单好用！继思维链之后，延伸出了许多新的方法，本文主要梳理下目前常见的一些方法。
 
-### **思维链(Chain-of-Thought，CoT)**
+### <strong>思维链(Chain-of-Thought，CoT)</strong>
 
 论文链接：[https://arxiv.org/pdf/2201.11903.pdf](https://link.zhihu.com/?target=https%3A//arxiv.org/pdf/2201.11903.pdf)
 
@@ -25,9 +25,9 @@ source_url: https://zhuanlan.zhihu.com/p/658873953
 
 步骤：a) 分解问题；b) 设计示例；c) 组织示例为prompt；d) LLM逐步推理
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_a03d567f55c8.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_a03d567f55c8.jpg)
 
-### **CoT-Self-consistency**
+### <strong>CoT-Self-consistency</strong>
 
 论文链接：[https://arxiv.org/pdf/2203.11171.pdf](https://link.zhihu.com/?target=https%3A//arxiv.org/pdf/2203.11171.pdf)
 
@@ -35,9 +35,9 @@ source_url: https://zhuanlan.zhihu.com/p/658873953
 
 步骤：a) 构建多个链；b) 评分；c) 选择最高分链
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_53341e9689ba.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_53341e9689ba.jpg)
 
-### **Tree-of-Thoughts (ToT)**
+### <strong>Tree-of-Thoughts (ToT)</strong>
 
 论文链接：[https://arxiv.org/pdf/2305.10601.pdf](https://link.zhihu.com/?target=https%3A//arxiv.org/pdf/2305.10601.pdf)
 
@@ -45,9 +45,9 @@ source_url: https://zhuanlan.zhihu.com/p/658873953
 
 步骤：a) 分解问题；b) 生成候选思维；c) 搜索遍历树；d) 评价思维求最优路径
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_5a209bae1676.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_5a209bae1676.jpg)
 
-### **Graph-of-Thoughts (GoT)**
+### <strong>Graph-of-Thoughts (GoT)</strong>
 
 论文链接：[https://arxiv.org/pdf/2308.09687.pdf](https://link.zhihu.com/?target=https%3A//arxiv.org/pdf/2308.09687.pdf)
 
@@ -55,9 +55,9 @@ source_url: https://zhuanlan.zhihu.com/p/658873953
 
 步骤：a) 建图；b) 应用转换更新图；c) 评分思维；d) 排序思维；e) 返回最高分思维
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_c29a676aec7d.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_c29a676aec7d.jpg)
 
-### **Algorithm-of-Thoughts (AoT)**
+### <strong>Algorithm-of-Thoughts (AoT)</strong>
 
 论文链接：[https://arxiv.org/pdf/2308.10379.pdf](https://link.zhihu.com/?target=https%3A//arxiv.org/pdf/2308.10379.pdf)
 
@@ -65,9 +65,9 @@ source_url: https://zhuanlan.zhihu.com/p/658873953
 
 步骤：a) 分解问题；b) 持续生成解；c) 评价解的可行性；d) 决定下一步搜索方向
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_dd38e179efe7.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_dd38e179efe7.jpg)
 
-### **Skeleton-of-Thought (SoT)**
+### <strong>Skeleton-of-Thought (SoT)</strong>
 
 论文链接：[https://arxiv.org/pdf/2307.15337.pdf](https://link.zhihu.com/?target=https%3A//arxiv.org/pdf/2307.15337.pdf)
 
@@ -75,9 +75,9 @@ source_url: https://zhuanlan.zhihu.com/p/658873953
 
 步骤：a) 生成框架；b) 并行扩展框架细节
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_3cb5540ed37c.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_3cb5540ed37c.jpg)
 
-### **Program-of-Thoughts (PoT)**
+### <strong>Program-of-Thoughts (PoT)</strong>
 
 论文链接：[https://arxiv.org/pdf/2211.12588.pdf](https://link.zhihu.com/?target=https%3A//arxiv.org/pdf/2211.12588.pdf)
 
@@ -85,4 +85,4 @@ source_url: https://zhuanlan.zhihu.com/p/658873953
 
 步骤：a) 转化为程序任务；b) 生成程序；c) 运行程序；d) 将程序结果融入答案
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_d22d9c70a869.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_d22d9c70a869.jpg)

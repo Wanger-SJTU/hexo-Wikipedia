@@ -50,11 +50,11 @@ The Knowledge Base is an Electron desktop application built with TypeScript and 
 
 The main process is the Node.js process that manages the application lifecycle. Responsibilities:
 
-- **Window management**: Creates `BrowserWindow` instances with secure web preferences (`contextIsolation: true`, `nodeIntegration: false`).
-- **IPC registration**: Maps IPC channel names to service methods via `registerIpcHandlers()`.
-- **Service initialization**: Constructs `PersistenceService`, `DocumentService`, `IndexingService`, and `QaService` with dependency injection.
+- <strong>Window management</strong>: Creates `BrowserWindow` instances with secure web preferences (`contextIsolation: true`, `nodeIntegration: false`).
+- <strong>IPC registration</strong>: Maps IPC channel names to service methods via `registerIpcHandlers()`.
+- <strong>Service initialization</strong>: Constructs `PersistenceService`, `DocumentService`, `IndexingService`, and `QaService` with dependency injection.
 
-**Key invariant**: The main process never imports React or renderer code.
+<strong>Key invariant</strong>: The main process never imports React or renderer code.
 
 ### Preload (`src/preload/`)
 
@@ -68,7 +68,7 @@ window.knowledgeBase = {
 }
 ```
 
-**Key invariant**: The preload bridge is the only communication channel between renderer and main. No Node.js modules are accessible from the renderer.
+<strong>Key invariant</strong>: The preload bridge is the only communication channel between renderer and main. No Node.js modules are accessible from the renderer.
 
 ### Renderer (`src/renderer/`)
 
@@ -81,7 +81,7 @@ The renderer is a React 18 application bundled by Vite. Components:
 - `QuestionPanel` -- Text input for asking questions.
 - `StatusBar` -- Shows index status and document count.
 
-**Key invariant**: Renderer code never imports `fs`, `path`, `electron`, or any Node.js module.
+<strong>Key invariant</strong>: Renderer code never imports `fs`, `path`, `electron`, or any Node.js module.
 
 ### Services (`src/services/`)
 
@@ -92,7 +92,7 @@ Business logic classes running in the main process:
 - `IndexingService` -- Paragraph-aware chunking (~500 chars per chunk) and index management.
 - `QaService` -- Mock question answering with keyword-based retrieval and citation generation.
 
-**Key invariant**: Services may import shared types but never renderer code.
+<strong>Key invariant</strong>: Services may import shared types but never renderer code.
 
 ## Data Flow
 

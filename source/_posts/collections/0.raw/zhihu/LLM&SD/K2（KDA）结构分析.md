@@ -31,7 +31,7 @@ KDA从结构来说，是集Linear attention大家之所长。他的主体结构�
 ![](https://www.zhihu.com/equation?tex=%5Cbeta_t) 是来控制memory更新的力度，从DeltaNet公式可以感受到，他就是控制一个新旧value在整个memory矩阵中的权重
 - 
 ![](https://www.zhihu.com/equation?tex=%5Calpha_t) 是来控制遗忘的速度，带这个参数的结构也叫做DeltaNet with forget gate。因为默认DeltaNet完全刷新memory矩阵中的信息，至少需要d step，有了 
-![](https://www.zhihu.com/equation?tex=%5Calpha_t) 就可以实现快速遗忘KDA论文中另一个比较大的技术点，在于其『**Hardware-Efficient Chunkwise Algorithm**』，但这块也借鉴了sonta在[DeltaNet Explained (Part II)](https://link.zhihu.com/?target=https%3A//sustcsonglin.github.io/blog/2024/deltanet-2/)中的研究。
+![](https://www.zhihu.com/equation?tex=%5Calpha_t) 就可以实现快速遗忘KDA论文中另一个比较大的技术点，在于其『<strong>Hardware-Efficient Chunkwise Algorithm</strong>』，但这块也借鉴了sonta在[DeltaNet Explained (Part II)](https://link.zhihu.com/?target=https%3A//sustcsonglin.github.io/blog/2024/deltanet-2/)中的研究。
 
 ![](https://www.zhihu.com/equation?tex=S%7B%5Bt%2B1%5D%7D+%3D+Diag%28%CE%B3_%7B%5Bt%5D%7D%5EC%29S%5Bt%5D+%2B+%28%CE%93_%7B%5Bt%5D%7D%5E%7Bi%E2%86%92C%7D+%E2%8A%99+K_%7B%5Bt%5D%7D%29%5E%5Ctop+%28U_%7B%5Bt%5D%7D+%E2%88%92+W_%7B%5Bt%5D%7DS_%7B%5Bt%5D%7D%29%5Cin+R%5E%7Bd_k%C3%97d_v%7D) 
 
@@ -45,7 +45,7 @@ KDA最大的意义在于用生产环境大规模实验论证了：LA具有生产
 为了更好的理解上面的公式和拆解，我们可以把相关推导也都熟悉下。
 
 3.1 DeltaNet -> Gated DeltaNet -> KDA
-**公式推导一**
+<strong>公式推导一</strong>
 
 原始定义如下： 
 ![](https://www.zhihu.com/equation?tex=%5Cbegin%7Bequation%7D+q_t%3DW_Qx_t%2Ck_t%3DW_Kx_t%2Cv_t%3DW_vx_t+%5C%5C+%5Cbeta_t%3Dsigmoid%28W_%7B%5Cbeta%7Dx_t%29+%5C%5C+v_t%5E%7Bold%7D%3DS_%7Bt-1%7Dk_t+%5C%5C+v_t%5E%7Bnew%7D%3D%5Cbeta_tv_t%2B%281-%5Cbeta_t%29v_t%5E%7Bold%7D+%5Cend%7Bequation%7D++) 
@@ -69,7 +69,7 @@ KDA最大的意义在于用生产环境大规模实验论证了：LA具有生产
 ![](https://www.zhihu.com/equation?tex=%5Cbeta_t) 是和每个位置的输入相关的，所以他的表达能力是超越 
 ![](https://www.zhihu.com/equation?tex=TC%5E0) 的。
 
-**公式推导二**
+<strong>公式推导二</strong>
 
 公式转换一下：
 
@@ -96,7 +96,7 @@ KDA最大的意义在于用生产环境大规模实验论证了：LA具有生产
 
 ③  
 ![](https://www.zhihu.com/equation?tex=%5Cbegin%7Balign%2A%7D+%5Cmathbf%7BS%7D_t+%3D+%5Cmathbf%7BS%7D_%7Bt-1%7D+%5Cleft%28%7B%5Ccolor%7Bred%7D%7B%5Calpha_t%7D%7D%28%5Cmathbf%7BI%7D+-+%5Cbeta_t+%5Cmathbf%7Bk%7D_t+%5Cmathbf%7Bk%7D_t%5E%5Ctop%29%5Cright%29+%2B+%5Cbeta_t+%5Cmathbf%7Bv%7D_t+%5Cmathbf%7Bk%7D_t%5E%5Ctop+%5Cend%7Balign%2A%7D) ，上面公式在训练过程中还是还是会爆炸，因此Gated DeltaNet就增加一个缩放系数 
-![](https://www.zhihu.com/equation?tex=%5Calpha_t) ，**这是一个标量**
+![](https://www.zhihu.com/equation?tex=%5Calpha_t) ，<strong>这是一个标量</strong>
 
 ④  
 ![](https://www.zhihu.com/equation?tex=%5Cbegin%7Balign%2A%7D+%5Cmathbf%7BS%7D_t+%3D+%5Cleft%28%5Cmathbf%7BI%7D+-+%5Cbeta_t+%5Cmathbf%7Bk%7D_t+%5Cmathbf%7Bk%7D_t%5E%5Ctop%5Cright%29%5Ccolor%7Bred%7D%7B%5Cmathbf%7BDiag%7D%28%7B%5Calpha_t%7D%7D%29%5Cmathbf%7BS%7D_%7Bt-1%7D++%2B+%5Cbeta_t+%5Cmathbf%7Bv%7D_t+%5Cmathbf%7Bk%7D_t%5E%5Ctop+%5Cend%7Balign%2A%7D%5Cin%7BR%5E%7Bd_k%2Ad_v%7D%7D) ； 
@@ -105,7 +105,7 @@ KDA最大的意义在于用生产环境大规模实验论证了：LA具有生产
 
 ![](https://pica.zhimg.com/v2-2ac22c531aa2a01506fb0896e9546e9a_r.jpg)
 3.2 Chunk wise parallel
-**原始线性注意力分块并行**
+<strong>原始线性注意力分块并行</strong>
 
 先从普通的线性注意力来看： 
 ![](https://www.zhihu.com/equation?tex=S_t%3DS_%7Bt-1%7D%2Bv_tk_t%5E%5Ctop%3BO_t%3Dq_tS_t) 
@@ -133,7 +133,7 @@ KDA最大的意义在于用生产环境大规模实验论证了：LA具有生产
 - 然后再串行计算每个chunk的 
 ![](https://www.zhihu.com/equation?tex=S_%7B%5Bt%5D%7D) 
 - 最后再并行计算chunk内所有元素的 
-![](https://www.zhihu.com/equation?tex=O_%7B%5Bt%5D%7D) **DeltaNet分块并行**
+![](https://www.zhihu.com/equation?tex=O_%7B%5Bt%5D%7D) <strong>DeltaNet分块并行</strong>
 
 DeltaNet由于引入了 
 ![](https://www.zhihu.com/equation?tex=%5Cbeta_t) 相关的矩阵操作，上面的公式不能直接套用。我们也顺着最开始的公式来看： 

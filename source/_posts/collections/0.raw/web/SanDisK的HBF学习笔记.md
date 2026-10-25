@@ -26,11 +26,11 @@ source_url: https://mp.weixin.qq.com/s/R4mMgZdQXtpTaaIThxwLew
 
 HBF（High-Bandwidth Flash）：
 
-为 AI 推理设计，**带宽接近 HBM、容量是 HBM 8–16 倍**。
+为 AI 推理设计，<strong>带宽接近 HBM、容量是 HBM 8–16 倍</strong>。
 
-单颗 **256Gb**、16 层堆叠达 **512GB**、带宽 **1.6TB/s**。
+单颗 <strong>256Gb</strong>、16 层堆叠达 <strong>512GB</strong>、带宽 <strong>1.6TB/s</strong>。
 
-功耗与尺寸匹配 HBM4，**低成本大容量 AI 内存**。
+功耗与尺寸匹配 HBM4，<strong>低成本大容量 AI 内存</strong>。
 
 ![](https://mmbiz.qpic.cn/sz_mmbiz_jpg/AKfYzxeJTZ2M7ced9XicPaY9AuaRax9c5YxK4GQYmRyhXmwaoke198BdPyR8eWKu5qX65f48OasOuSj1nDueKh6iazibyJD1Y6FD4XxXvKFBDs/640?wx_fmt=jpeg&from=appmsg)
 架构原理：NAND + HBM 封装的混血技术

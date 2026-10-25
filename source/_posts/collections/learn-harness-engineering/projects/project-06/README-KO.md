@@ -11,7 +11,7 @@ categories:
   - 文档
 ---
 
-[English](./README.md) · **한국어**
+[English](./README.md) · <strong>한국어</strong>
 
 # 프로젝트 06: 런타임 가관측성과 디버깅 (캡스톤)
 
@@ -23,8 +23,8 @@ categories:
 
 | 디렉터리 | 의미 |
 |----------|------|
-| `starter/` | **시작점** — 완전한 제품 코드이지만 하네스가 의도적으로 약화되어 있습니다(기본 AGENTS.md만 있고, feature_list.json, session-handoff, clean-state-checklist가 없음). |
-| `solution/` | **참고 구현** — 최대 하네스: 모든 산출물 파일이 완비되어 있고, 품질 문서 점수가 높으며, 벤치마크 스크립트와 정리 스캐너가 포함되어 있습니다. |
+| `starter/` | <strong>시작점</strong> — 완전한 제품 코드이지만 하네스가 의도적으로 약화되어 있습니다(기본 AGENTS.md만 있고, feature_list.json, session-handoff, clean-state-checklist가 없음). |
+| `solution/` | <strong>참고 구현</strong> — 최대 하네스: 모든 산출물 파일이 완비되어 있고, 품질 문서 점수가 높으며, 벤치마크 스크립트와 정리 스캐너가 포함되어 있습니다. |
 
 ## 사용 방법
 

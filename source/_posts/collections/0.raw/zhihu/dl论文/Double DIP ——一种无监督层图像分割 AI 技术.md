@@ -15,9 +15,9 @@ source_url: https://zhuanlan.zhihu.com/p/67926513
 ---
 
 
-**雷锋网 AI 科技评论按：**每月《Computer Vision News》都会选择一篇关于计算机视觉领域研究成果的论文进行回顾。今年三月份，他们选择了由 Yossi Gandelsman，Assaf Shocher 和 Michal Irani 三位学者（下文中所提到的作者，均指以上三位学者）共同完成的关于 Double-DIP 模型的论文，其中详细介绍了基于耦合的深度图像先验网络对单个图像进行无监督层分割这一技术。
+<strong>雷锋网 AI 科技评论按：</strong>每月《Computer Vision News》都会选择一篇关于计算机视觉领域研究成果的论文进行回顾。今年三月份，他们选择了由 Yossi Gandelsman，Assaf Shocher 和 Michal Irani 三位学者（下文中所提到的作者，均指以上三位学者）共同完成的关于 Double-DIP 模型的论文，其中详细介绍了基于耦合的深度图像先验网络对单个图像进行无监督层分割这一技术。
 
-**概况**
+<strong>概况</strong>
 
 许多看似无关的计算机视觉任务可以被视为图像分割为不同的层的特殊情况。举两个突出的例子：图像分割——分割成背景层和前景层的区域；图像去雾——分割为清晰图层和有雾图层。在该论文中，作者提出了一种基于耦合的「深度图像先验」（DIP）网络对单个图像进行无监督层分割的统一框架。
 
@@ -25,7 +25,7 @@ source_url: https://zhuanlan.zhihu.com/p/67926513
 
 作者向我们展示了该方法在各类计算机视觉任务上的运用，比如：水印去除，前景/背景分割，图像去雾以及视频中的透明度分离等。在没有提供任何额外数据的情况下，只需要在单张图像上进行训练，就可以完成以上所有的任务。
 
-**关于「图像分割的统一框架」**
+<strong>关于「图像分割的统一框架」</strong>
 
 由三个不同任务重新定义的原图分割，可以视为简单基本层的混合，如下图所示，图像分割、图像去雾、透明度分离这三种任务都可以看作是，先把原始图像拆分成一些基本层，然后再把这些层重新混合。
 
@@ -33,7 +33,7 @@ source_url: https://zhuanlan.zhihu.com/p/67926513
 
 ![](https://picx.zhimg.com/v2-ab129bbfd9aca9fdb81d147ddaff86f3_r.jpg)图1：图像分割的统一框架作者的方法结合内部补丁重现，即小块图像的重复出现的特性（无需监督即可解决任务的能力）和深度学习的强大力量，提出了一种基于 DIP 网络的无监督框架。当 DIP 网络的输入是随机噪声时，它也能学会重建单个图像（该图像作为训练的唯一输入）时，单个 DIP 网络被证明可以很好的捕获单个自然图像的低级统计数据。这个网络还被证实在无监督情况下，完全能够解决如：去噪，超分辨率和修复等问题。
 
-**图像分割基本原理**
+<strong>图像分割基本原理</strong>
 
 ![](https://pic1.zhimg.com/v2-4c5672cab0fbfdc6f41f9fed51b9de00_r.jpg)图2：图像分割基本原理图 2 向我们说明了该方法的基本原理。它展示了如何利用 X 和 Y 两个图案，来混合产生新的更复杂的图像 Z。每个「纯」图案（X 和 Y）的小图像块的分布相比混合图像 Z 小图像块的分布更简单。众所周知，如果 X 和 y 是两个独立的随机变量，那么它们的和 Z = X + Y 的熵大于它们各自的熵。
 
@@ -41,7 +41,7 @@ source_url: https://zhuanlan.zhihu.com/p/67926513
 
 为了证明这个现象不是偶然，作者从 BSD100 数据集（为了防止自然图像与规则图案间有差异）中随机选择了 100 对自然图像来重复该实验。而结果证明，混合图像与合成图像组之间 MSE 损失值的差值甚至更高。
 
-**图像分割工作模型**
+<strong>图像分割工作模型</strong>
 
 ![](https://pic3.zhimg.com/v2-dbefd8e2ee37b4edddea524efebc055a_1440w.jpg)图3：图像分割工作模型图 3 详细说明了 Double-DIP 对图像进行分割时的工作模型。两个深度图像先验（DIP）网络（DIP1 DIP2）将输入图像分割成对应的图像层（y1＆y2），然后根据二进制掩模 m（x）进行重组，以形成尽可能接近于输入图像本身的重建图像 I。
 
@@ -63,7 +63,7 @@ source_url: https://zhuanlan.zhihu.com/p/67926513
 
 优化过程使用到了 ADAM 优化器，而每张图片在 Tesla V100 GPU 上仅需要几分钟来完成。
 
-** 研究成果**
+<strong>研究成果</strong>
 
  论文内提到的多个成果中，我们在下文中着重讨论：
 
@@ -71,7 +71,7 @@ source_url: https://zhuanlan.zhihu.com/p/67926513
 
 2）水印去除
 
-- **前景/背景分割**我们可以设想将图像分割成前景和背景区域，前景层为 y1，背景层为 y2，对于每个像素根据二进制掩模 m（x）进行组合，得到：
+- <strong>前景/背景分割</strong>我们可以设想将图像分割成前景和背景区域，前景层为 y1，背景层为 y2，对于每个像素根据二进制掩模 m（x）进行组合，得到：
 
 ![](https://pic4.zhimg.com/v2-5b4ffc9cb6729a44adb4ed84b31dc2e1_1440w.png)
 
@@ -82,11 +82,11 @@ source_url: https://zhuanlan.zhihu.com/p/67926513
 Double-DIP 能够基于无监督的层分割获得高质量的分割，如图 4 所示，更多图像分割结果可以在该项目的网站上进行观看。尽管有许多其他分割方法（其中包括语义分割）的表现甚至比 DIP 要好，然而它们都有一个的缺点——需要用大量的数据训练。
 
 ![](https://pic2.zhimg.com/v2-2e9d4103c008699419e5550bfa397939_r.jpg)图4：图像分割实例
-- **水印去除**水印广泛用于保护受版权保护的图像和视频。Double-DIP 能够将水印作为图像反射的特殊情况来进行去除，其中图层 y1 和图层 y2 是分别是清理后的图像和水印。
+- <strong>水印去除</strong>水印广泛用于保护受版权保护的图像和视频。Double-DIP 能够将水印作为图像反射的特殊情况来进行去除，其中图层 y1 和图层 y2 是分别是清理后的图像和水印。
 
 和图像分割不同，在这种情况下，掩模没有被明确设置，而是使用两种实际解决方案之一来处理固有的透明层模糊性。如果仅涉及单个水印，则用户通过带有边界框来标记水印区域；而当有少量图像具有相同的水印时（通常 2-3 张图像），在训练过程中将由模糊性原则自行处理。图 5 为一些水印去除的实例：
 
-![](https://pic3.zhimg.com/v2-b43fd2aeaa9ac114ef657b0e971ac3ac_r.jpg)图5：水印去除实例**结论**
+![](https://pic3.zhimg.com/v2-b43fd2aeaa9ac114ef657b0e971ac3ac_r.jpg)图5：水印去除实例<strong>结论</strong>
 
 「Double-DIP」为无监督层分割的提供了统一的框架，这个框架可以适用于各种各样的任务。除了输入图像/视频之外，它不需要任何其它训练数据。尽管这是一种通用的方法，但在某些任务中（如去雾），它所得到的结果可以与该领域的最先进的专业技术效果相当或甚至更好。该论文的作者认为，用语义/感知线索增强 Double-DIP 可能会使得语义分割和其他高级计算机视觉任务方面的进步，在接下来的工作中，他们也打算对这个方面做进一步的研究。
 
@@ -96,6 +96,6 @@ Double-DIP 能够基于无监督的层分割获得高质量的分割，如图 4 
 [https://arxiv.org/abs/1812.00467](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/1812.00467)
 
 杂志原文地址
-[https://www.rsipvision.com/ComputerVisionNews-2019May/4/](https://link.zhihu.com/?target=https%3A//www.rsipvision.com/ComputerVisionNews-2019May/4/)**Github项目推荐：**
+[https://www.rsipvision.com/ComputerVisionNews-2019May/4/](https://link.zhihu.com/?target=https%3A//www.rsipvision.com/ComputerVisionNews-2019May/4/)<strong>Github项目推荐：</strong>
 
 ![](https://pic1.zhimg.com/v2-3c48dde73a6b6af2dd59107a5b85a318_r.jpg)

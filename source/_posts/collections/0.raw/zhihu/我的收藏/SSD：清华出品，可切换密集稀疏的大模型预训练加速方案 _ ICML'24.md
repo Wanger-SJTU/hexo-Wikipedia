@@ -15,12 +15,12 @@ source_url: https://zhuanlan.zhihu.com/p/9478276812
 ---
 
 
-** 来源：晓飞的算法工程笔记 公众号，转载请注明出处论文: Exploring the Benefit of Activation Sparsity in Pre-training**
+<strong>来源：晓飞的算法工程笔记 公众号，转载请注明出处论文: Exploring the Benefit of Activation Sparsity in Pre-training</strong>
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_066343d5c8ef.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_066343d5c8ef.jpg)
 
-- **论文地址：[https://arxiv.org/abs/2410.03440](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2410.03440)**
-- **论文代码：[https://github.com/thunlp/moefication](https://link.zhihu.com/?target=https%3A//github.com/thunlp/moefication)**
+- <strong>论文地址：[https://arxiv.org/abs/2410.03440](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2410.03440)</strong>
+- <strong>论文代码：[https://github.com/thunlp/moefication](https://link.zhihu.com/?target=https%3A//github.com/thunlp/moefication)</strong>
 
 ### 创新点
 
@@ -47,7 +47,7 @@ source_url: https://zhuanlan.zhihu.com/p/9478276812
 
 ### SSD
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_901cc67f2f50.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_901cc67f2f50.jpg)
 
 `SSD`专注于加速`Transformer`中的前馈网络（通常占总计算量的`60%`以上），通过在预训练阶段切换稀疏和密集模式实现加速。
 
@@ -109,9 +109,9 @@ $其中 {\mathbf{W}}_{i,n}^m 是 {\mathbf{W}}_{i,n} 的第 m 行，而 {\mathbf{
 
 ### 主要实验
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_b088783e1917.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_b088783e1917.jpg)
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_037adbbe2563.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_037adbbe2563.jpg)
 
 >  如果本文对你有帮助，麻烦点个赞或在看呗～
 更多内容请关注 微信公众号【晓飞的算法工程笔记】

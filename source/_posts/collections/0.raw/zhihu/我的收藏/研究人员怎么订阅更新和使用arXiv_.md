@@ -22,7 +22,7 @@ source_url: https://www.zhihu.com/question/538284979/answer/2963471337
 
 ![](https://picx.zhimg.com/v2-c88a7bcd79071b5d932be1ebaa47a048_r.jpg?source=2c26e567)今天详细介绍这款briefgpt:
 
-首页分三个选项：**最新，顶会**，以及和**chat**相关的论文：
+首页分三个选项：<strong>最新，顶会</strong>，以及和<strong>chat</strong>相关的论文：
 
 ![](https://pic1.zhimg.com/v2-0e94457e959a361b1ceb27aea5036c2c_r.jpg?source=2c26e567)
 
@@ -42,6 +42,6 @@ source_url: https://www.zhihu.com/question/538284979/answer/2963471337
 
 和我们方案的区别是，我们的提取的内容更加丰富。首先提取abs和intro的内容，然后进行集中总结，对method部分进行总结，对conclusion进行总结，总之每篇文章花费的token是他们的5倍，然后提取的信息量可能会提高个2成左右。
 
-**大家在评论区可以讨论下，哪个会更加适合自己！**
+<strong>大家在评论区可以讨论下，哪个会更加适合自己！</strong>
 
 ![](https://picx.zhimg.com/v2-2f3e2f2c7ef05cad4c46e173b486a955_r.jpg?source=2c26e567)

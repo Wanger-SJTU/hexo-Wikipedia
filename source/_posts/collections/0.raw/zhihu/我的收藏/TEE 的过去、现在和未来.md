@@ -30,11 +30,11 @@ SGX 难用的根本原因在于，许多必要的组件并没有被包含在 TCB
 早在 2017 年的 Linux 峰会上，AMD 就率先介绍了 SEV（Secure Encrypted Virtualization）。随后，在 2020 年左右，第二代的 SNP（Secure Nested Paging）横空出世，成为第一个商用的 VM-based TEE。紧接着，Intel 也推出了他们的 VM-based TEE，称为 TDX（Trusted Domain eXtension）。这两者的设计既有共通之处，也各具特色。由于 TDX 发布较晚，可以说是站在巨人的肩膀上，因此在设计上更加前卫。总体而言，基于虚拟化的 TEE 通常具备以下特性：
 
 - 全内存加密（Total Memory Encryption / Secure Memory Encryption 等）**：通常情况下，CPU 内部会有一个熔丝（fuse）的根密钥作为信任根。每个 VM 会通过一些协议，经由宿主机（Host）向 CPU 发送密钥协商请求，从而生成每个 VM 的临时密钥来加密整个 VM 的内存。这一功能保障了数据在使用中的机密性和完整性。
-- **页表保护**：SEV 早期的设计缺陷在于，虽然内存被加密，但页表管理中缺乏所有权保护，导致攻击者可以将多个物理地址（HPA）映射到同一个虚拟地址（GPA），从而间接窃取数据。SNP 则通过 CPU 机制在 GPA 到 HPA 的翻译中，加入了所有权和完整性保护，确保 GPA 和 HPA 的映射是唯一的。
-- **虚拟机状态保护**：通常情况下，中断处理会导致 VM 暂停，并由 Hypervisor 负责处理。这时 VM 的上下文状态必须保存起来交给 Hypervisor，而这些中间状态也需要被加密，否则 Hypervisor 可能会窃取或修改数据，造成严重后果。比如，在 SSH 认证时直接注入一个 `rax = 0` 就可能绕过密码验证，这显然是不可接受的。
-- **远程认证（Remote Attestation）**：这是所有 TEE 必须具备的重要特性。云端的 TEE 必须向用户证明自身的可信性，否则用户无法放心地将数据托付给它。
-- **权限分离**：就像内核（kernel）运行在 ring 0 一样，普通 VM 的权限需要被降低。Intel 和 AMD 都有类似的权限管理机制，以确保虚拟机运行环境的安全性。
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_5ca077af4e1d.jpg)
+- <strong>页表保护</strong>：SEV 早期的设计缺陷在于，虽然内存被加密，但页表管理中缺乏所有权保护，导致攻击者可以将多个物理地址（HPA）映射到同一个虚拟地址（GPA），从而间接窃取数据。SNP 则通过 CPU 机制在 GPA 到 HPA 的翻译中，加入了所有权和完整性保护，确保 GPA 和 HPA 的映射是唯一的。
+- <strong>虚拟机状态保护</strong>：通常情况下，中断处理会导致 VM 暂停，并由 Hypervisor 负责处理。这时 VM 的上下文状态必须保存起来交给 Hypervisor，而这些中间状态也需要被加密，否则 Hypervisor 可能会窃取或修改数据，造成严重后果。比如，在 SSH 认证时直接注入一个 `rax = 0` 就可能绕过密码验证，这显然是不可接受的。
+- <strong>远程认证（Remote Attestation）</strong>：这是所有 TEE 必须具备的重要特性。云端的 TEE 必须向用户证明自身的可信性，否则用户无法放心地将数据托付给它。
+- <strong>权限分离</strong>：就像内核（kernel）运行在 ring 0 一样，普通 VM 的权限需要被降低。Intel 和 AMD 都有类似的权限管理机制，以确保虚拟机运行环境的安全性。
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_5ca077af4e1d.jpg)
 
 这样一来，一些敏感操作可以被转交给一个“更安全”的模块来处理。由于这个模块体积更小，因此更容易实现高安全性。在这方面，TDX 表现得更为出色。它引入了一个 TDX 模块，直接将 Hypervisor 屏蔽，使得虚拟机可以直接调用 TDX 模块来完成某些操作，只有在真正需要时才会请求 Hypervisor 的协助。这种设计不仅减少了对 Hypervisor 的依赖，还显著提高了整体的安全性。
 
@@ -44,7 +44,7 @@ SGX 难用的根本原因在于，许多必要的组件并没有被包含在 TCB
 
 **swiotlb is a memory buffer allocator used by the Linux kernel DMA layer. It is typically used when a device doing DMA can’t directly access the target memory buffer because of hardware limitations or other requirements.在 Linux 系统上，有一个名为 SWIOTLB 的机制：它是一个内存缓冲区分配器，用于 Linux 内核的 DMA 层，通常在硬件限制或其他需求导致设备无法直接访问目标内存缓冲区时使用。基于此，出现了一个巧妙的“hack”：将这块内存设为共享，从而解决设备访问问题。实际上，TDX 就是这样实现的。具体来说，当虚拟机内的内核启动时，它会尝试启用 TDX 功能。如果检测到 TDX 支持，就会使用 TDCALL 将共享内存区域映射给 SWIOTLB，供 DMA 使用。这样一来，GPU 和 CPU 就可以在这块共享内存上进行 DMA 操作。当然，为了防止数据泄露，GPU 和 CPU 之间的数据传输会使用协商后的密钥进行加密，从而确保数据在共享内存中的安全性。
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_fa250e2c2c49.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_fa250e2c2c49.jpg)
 
 当然这个就是一个非常 high level 的示意图，实际上里面还牵扯到 IOMMU pass through、qemu vfio、Enc/Dec等复杂过程。AMD 的做法有所不同，它允许直接使用 SNP 指令将一段内存设置为共享。这样一来，Linux 内核中就可以直接通过调用这些指令来实现内存的共享管理。
 
@@ -64,13 +64,13 @@ int rmp_make_shared(u64 pfn, enum pg_level level)
 
 ### 性能好差：TIO
 
-使用共享内存作为 DMA bouncing buffer 虽然能解决问题，但性能损耗是显而易见的。每次 DMA 事务都需要额外的压缩、加密和数据拷贝操作，增加了大量的开销。我们在 llama 的 benchmark 中测了一下，数据显示，这种方法在 LLM 推理任务中可能导致 inference 速度下降高达 60%（？！！！）**。其实，硬件厂商已经注意到这一问题，并提出了一项名为 **Trusted IO** 的提案。这个提案旨在优化设备和虚拟机之间的数据传输流程，以减少不必要的开销，增强 DMA 操作的性能，同时保持数据传输的安全性。目前，Trusted IO 已被列入议程，有望成为解决这一瓶颈的下一步技术突破。
+使用共享内存作为 DMA bouncing buffer 虽然能解决问题，但性能损耗是显而易见的。每次 DMA 事务都需要额外的压缩、加密和数据拷贝操作，增加了大量的开销。我们在 llama 的 benchmark 中测了一下，数据显示，这种方法在 LLM 推理任务中可能导致 inference 速度下降高达 60%（？！！！）<strong>。其实，硬件厂商已经注意到这一问题，并提出了一项名为</strong>Trusted IO** 的提案。这个提案旨在优化设备和虚拟机之间的数据传输流程，以减少不必要的开销，增强 DMA 操作的性能，同时保持数据传输的安全性。目前，Trusted IO 已被列入议程，有望成为解决这一瓶颈的下一步技术突破。
 
 [](https://link.zhihu.com/?target=https%3A//www.amd.com/content/dam/amd/en/documents/developer/sev-tio-whitepaper.pdf)
 
-简而言之，**Trusted IO** 允许各个设备之间相互认证对方的身份，这通常是通过 **SPDM 协议**（安全设备通信和管理协议）来实现的。尽管它最初的设计目的不一定是为了解决 TEE 的 IO 问题，但这个机制确实可以用于增强 TEE 环境中的设备交互安全性。通过在设备间进行身份认证，Trusted IO 能确保只有经过认证的设备才能参与数据传输。这种机制可以用来优化 TEE 的 IO 操作，使得在可信环境下的数据交换更加高效、安全，并减少冗余的加密、解密过程。
+简而言之，<strong>Trusted IO</strong> 允许各个设备之间相互认证对方的身份，这通常是通过 <strong>SPDM 协议</strong>（安全设备通信和管理协议）来实现的。尽管它最初的设计目的不一定是为了解决 TEE 的 IO 问题，但这个机制确实可以用于增强 TEE 环境中的设备交互安全性。通过在设备间进行身份认证，Trusted IO 能确保只有经过认证的设备才能参与数据传输。这种机制可以用来优化 TEE 的 IO 操作，使得在可信环境下的数据交换更加高效、安全，并减少冗余的加密、解密过程。
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_d7eba511f4d2.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_d7eba511f4d2.jpg)
 
 一个大大大饼，啥时候落地咱暂且蒙在鼓里（
 ### 还有一些能做的东西
@@ -82,7 +82,7 @@ int rmp_make_shared(u64 pfn, enum pg_level level)
 但我们来看 RA 的两部分：
 
 - TEE 身份认证**：这一部分相对简单，只需报告一些版本号、构建版本等信息，来确认 TEE 的身份。
-- **软件可信性**：这里的问题就比较复杂了，因为 TEE 只能告诉你内部运行的是什么（通过哈希值来验证完整性），但无法真正解释软件的**属性或行为**。当前的做法通常是软件发布方提供一个哈希值，用户自己去比对，这种方法粗糙且存在诸多问题，比如：
+- <strong>软件可信性</strong>：这里的问题就比较复杂了，因为 TEE 只能告诉你内部运行的是什么（通过哈希值来验证完整性），但无法真正解释软件的<strong>属性或行为</strong>。当前的做法通常是软件发布方提供一个哈希值，用户自己去比对，这种方法粗糙且存在诸多问题，比如：
 
 - 编译的二进制代码真的来自于提供的源代码吗？
 - 运行时程序是否可能自我修改？

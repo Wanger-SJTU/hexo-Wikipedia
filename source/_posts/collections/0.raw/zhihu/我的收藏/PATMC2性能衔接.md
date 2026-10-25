@@ -39,7 +39,7 @@ source_url: https://zhuanlan.zhihu.com/p/2060461467506365061
 - [Debugging performance — “What part of the hardware is slow?”](https://link.zhihu.com/?target=https%3A//github.com/aws/aws-graviton-getting-started/blob/main/perfrunbook/debug_hw_perf.md)
 - [Understanding-performance-events-skid](https://link.zhihu.com/?target=https%3A//easyperf.net/blog/2018/08/29/Understanding-performance-events-skid)
 - [Process and System Utilities for Python](https://link.zhihu.com/?target=https%3A//github.com/giampaolo/psutil)
-- **[Hidden Costs of Memory Allocation](https://link.zhihu.com/?target=https%3A//randomascii.wordpress.com/2014/12/10/hidden-costs-of-memory-allocation/)**
+- <strong>[Hidden Costs of Memory Allocation](https://link.zhihu.com/?target=https%3A//randomascii.wordpress.com/2014/12/10/hidden-costs-of-memory-allocation/)</strong>
 - [Forced Inlining Might Be Slow ·  Aras&#39; website](https://link.zhihu.com/?target=https%3A//aras-p.info/blog/2017/10/09/Forced-Inlining-Might-Be-Slow/)
 - [Parsing Protobuf at 2+GB/s: How I Learned To Love Tail Calls in C](https://link.zhihu.com/?target=https%3A//blog.reverberate.org/2021/04/21/musttail-efficient-interpreters.html)
 - [glossary-perfect-loop-nesting/](https://link.zhihu.com/?target=https%3A//open-catalog.codee.com/Glossary/Perfect-loop-nesting/)

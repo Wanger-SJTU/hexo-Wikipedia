@@ -21,7 +21,7 @@ tags:
 
 # draft model 怎么训练、DSpark 如何做动态 verify？从 EAGLE 到 DSpark，拆解最新的推测解码技术
 
-**作者**：SuSun | **公众号**：青稞AI | **知乎**：[原文链接](https://zhuanlan.zhihu.com/p/2061569158689698340)
+<strong>作者</strong>：SuSun | <strong>公众号</strong>：青稞AI | <strong>知乎</strong>：[原文链接](https://zhuanlan.zhihu.com/p/2061569158689698340)
 
 感谢 openinfer team 的小伙伴们的支持，共同编写了 openinfer 的推测解码代码和该博客。
 
@@ -63,10 +63,10 @@ let b = 2;
 以 Qwen3 4B 为例，收集一些 prompt 下模型输出过程中的 logits，观察输出每个 token 时熵的变化。
 
 四个典型负载：
-- **coding**：来自 HumanEval
-- **math**：来自 GSM8K
-- **prose**：来自 r/WritingPrompts
-- **chat**：来自 MT-Bench Q81 + Alpaca
+- <strong>coding</strong>：来自 HumanEval
+- <strong>math</strong>：来自 GSM8K
+- <strong>prose</strong>：来自 r/WritingPrompts
+- <strong>chat</strong>：来自 MT-Bench Q81 + Alpaca
 
 ## 熵分析实例
 
@@ -92,9 +92,9 @@ code 和 math 的熵更低，输出更确定；chat 和 prose 则更发散。
 
 贪心解码下，target model 全程取 argmax，存在一条唯一确定的"标准答案"序列。spec decode 在 greedy 下的"无损"，就是输出和这条标准序列逐 token 完全一致，只是 forward 次数变少了。
 
-**draft 阶段**：用小模型自回归吐 K 个候选 d1...dK，这是 K 次小模型 forward，代价很小。
+<strong>draft 阶段</strong>：用小模型自回归吐 K 个候选 d1...dK，这是 K 次小模型 forward，代价很小。
 
-**verify 阶段**：把整条喂进 target model，只跑一次 forward。
+<strong>verify 阶段</strong>：把整条喂进 target model，只跑一次 forward。
 
 为什么一次 forward 就能拿到多个位置的 verify？利用 causal mask 机制。mask 规定位置 i 只能看 1..i，看不到未来。所以可以把多个 draft token 一起塞进去，每个位置的输出都只依赖它自己和左边的 token；每个 token 的计算和正常 decode 时没有差别。
 
@@ -112,18 +112,18 @@ code 和 math 的熵更低，输出更确定；chat 和 prose 则更发散。
 
 如果同时开启推测解码和 sampling，针对同一个请求生成很多回复，这些回复的分布并不等价于 base model 自己的 sampling 结果。比如开了 top_k=2，"a" 和 "b" 都合法，但如果 draft 只给 "b"，无脑接受就会丧失 sampling 给予 model 本身的随机性。
 
-**DeepMind 的 Speculative Sampling** 方案：对每一个具体的 token，看主模型想要它的频率 q(x) 和 draft 提议它的频率 p(x)。
+<strong>DeepMind 的 Speculative Sampling</strong> 方案：对每一个具体的 token，看主模型想要它的频率 q(x) 和 draft 提议它的频率 p(x)。
 
 - draft 提得比主模型想要的少 (p < q)：全收，剩下的缺口 (q-p) 自己补上
 - draft 提得比主模型想要的多 (p > q)：每提一次只按 q/p 的概率留下
 
-**工程化方案**（OpenInfer 的方式）：先让主模型按自己的 sampling 采出一个 token，再和 draft 给出的 token 对比；相同就接受，不同就丢弃。实测影响较小。
+<strong>工程化方案</strong>（OpenInfer 的方式）：先让主模型按自己的 sampling 采出一个 token，再和 draft 给出的 token 对比；相同就接受，不同就丢弃。实测影响较小。
 
 ## 如何训练 draft model：以 EAGLE 为例
 
 Naive 做法：基于 token 去做，类似纯函数，接受率不太高。
 
-**EAGLE**：使用 logits 之前的 hidden state，加上往前挪一个时间步的 token embedding，作为输入。本体是一个单层自回归 Transformer，直接预测 hidden state，之后用主模型的 lm_head 完成 hidden → logits → token 的转换。
+<strong>EAGLE</strong>：使用 logits 之前的 hidden state，加上往前挪一个时间步的 token embedding，作为输入。本体是一个单层自回归 Transformer，直接预测 hidden state，之后用主模型的 lm_head 完成 hidden → logits → token 的转换。
 
 训练数据：用 target LLM 跑训练文本，收集 hidden state。EAGLE 论文显示，用固定数据集 prefill 可实现 2.78 倍加速；用 target 自己生成的 decode 数据可实现 2.88 倍。
 
@@ -155,23 +155,23 @@ speedup ≈ (Σ_{k=1}^{K} α^k + 1) / (c_d * K + c_v(K))
 
 分母表示每多 draft 一个 token，都要支付一份近似固定的成本。第 k 个 draft token 带来的期望收益只有 α^k，收益越来越小，成本却不会消失。当边际收益抵不过增加的 draft 和 verify 开销时，继续拉长 draft 反而会降低加速比。因此 K 继续增大不一定更好，通常存在一个最优值。
 
-**低 batch**（内存带宽限制）：verify 一次处理 K 个位置与处理一个相近（c_v ≈ 1），只要前几个 K 的收益大于 draft 额外成本就能加速。
+<strong>低 batch</strong>（内存带宽限制）：verify 一次处理 K 个位置与处理一个相近（c_v ≈ 1），只要前几个 K 的收益大于 draft 额外成本就能加速。
 
-**高 batch**（计算受限）：verify 成本随位置数增长，加速比很快跌到 1 以下。
+<strong>高 batch</strong>（计算受限）：verify 成本随位置数增长，加速比很快跌到 1 以下。
 
 ## 动态 verify 长度：DSpark
 
 vLLM 实测：动态缩短 verify 长度让 acceptance length 下降 4.5%，吞吐提高 59.8%、TPOT 降低 41.2%。
 
-**DSpark 的方案**：为每个请求、每个位置分别预测接受概率，动态决定多少个值得送给 target model 验证。
+<strong>DSpark 的方案</strong>：为每个请求、每个位置分别预测接受概率，动态决定多少个值得送给 target model 验证。
 
-在 draft model 上增加一个 **confidence head**，输入当前位置的 hidden state 和前一个 draft token 的 embedding，经过一次线性投影和 sigmoid，预测当前位置的条件接受率。
+在 draft model 上增加一个 <strong>confidence head</strong>，输入当前位置的 hidden state 和前一个 draft token 的 embedding，经过一次线性投影和 sigmoid，预测当前位置的条件接受率。
 
 训练数据直接用 draft 和 target 在该位置的分布差异计算，不需要真的采样很多次来统计。
 
-**事后校准**：给每个位置一个 T 去压低置信度，因为 confidence head 高估时会放大 verify 成本（连乘效应）。
+<strong>事后校准</strong>：给每个位置一个 T 去压低置信度，因为 confidence head 高估时会放大 verify 成本（连乘效应）。
 
-**调度器优化**：
+<strong>调度器优化</strong>：
 
 假设 batch 里有 N 个请求，请求 i 验证 k_i 个 draft token 时，target model 一共要处理 Σk_i 个位置。调度器优化的是系统期望吞吐：
 

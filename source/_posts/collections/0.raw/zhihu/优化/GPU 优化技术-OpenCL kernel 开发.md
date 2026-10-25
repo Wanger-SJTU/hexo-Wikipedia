@@ -15,7 +15,7 @@ source_url: https://zhuanlan.zhihu.com/p/542361443
 ---
 
 
-**版权声明 ©本文首发于知乎专栏：移动端算法优化本专栏「移动端算法优化」所有文章著作权归作者所有。允许个人直接分享本专栏文章到个人微博、朋友圈。但媒体（包括但不限于网站、微信公众号、微博营销号）转载需事先征得专栏同意。转载需在正文开头显著位置注明出处，给出原始链接，注明「发表于知乎专栏《移动端算法优化》」，并不得进行任何形式的修改演绎。**
+<strong>版权声明 ©本文首发于知乎专栏：移动端算法优化本专栏「移动端算法优化」所有文章著作权归作者所有。允许个人直接分享本专栏文章到个人微博、朋友圈。但媒体（包括但不限于网站、微信公众号、微博营销号）转载需事先征得专栏同意。转载需在正文开头显著位置注明出处，给出原始链接，注明「发表于知乎专栏《移动端算法优化》」，并不得进行任何形式的修改演绎。</strong>
 ### 一、概述 
 
 OpenCL程序由host端运行时API调用和OpenCL kernel 两部分组成，在“[GPU 优化技术-OpenCL 运行时 API 介绍](https://zhuanlan.zhihu.com/p/451101452)”中我们已经对host端运行时API做了系统而详细的介绍，接下来我们开始OpenCL kernel 部分的介绍。 
@@ -66,7 +66,7 @@ __kernel是必须要有，函数声明为可由OpenCL设备上的应用程序执
 
 `__private const int length、int idx`等内部寄存器变量使用私有内存区域(__private)，对应下图存Private Memory，这块内存区域是每个工作组独有的，工作组和工作组之间不可相互访问，同一个工作组中的工作项共享一块内存区域。
 
-![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_34be93d8ab75.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BC%98%E5%8C%96/asset/img_34be93d8ab75.jpg)
 
 OpenCL 内存模型
 
@@ -80,7 +80,7 @@ OpenCL 内存模型
 - 文本文件保存
 内核代码可以保存为后缀名为".cl"的文本文件，如add_kernel.cl。其读取处理方式和一般文件处理方式相同。同时add_kernel.cl的内容格式与C语言风格相似，很多代码编辑器（例如vscode）能自动识别.cl文件从而可以显示相应的语法高亮。
 
-![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_c4353030455c.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BC%98%E5%8C%96/asset/img_c4353030455c.jpg)
 
 .cl文件.cl文件转换为字符串
 
@@ -132,9 +132,9 @@ OpenCL C严格遵循C99标准，不支持标准C99头文件、函数指针、递
 
 3.1.1 标量数据类型**
 
-**OpenCL支持的标量数据类型比较简单，功能和C/C++中的数据类型一样。需要强调注意的点在于半精度和双精度浮点数是可选项。类型API类型描述char/ucharcl_char/cl_uchar有/无符号8位整数short/ushortcl_short/cl_ushort有/无符号16位整数int/uintcl_int/cl_uint有/无符号32位整数long/ulongcl_long/cl_ulong有/无符号64位整数float/doublecl_float/cl_double32位浮点数/64位浮点数，符合IEEE754存储格式halfcl_half16位浮点数。half数据类型必须符合IEEE754-2008半精度存储格式size_tn/a无符号整数类型，sizeof结果类型，匹配设备地址空间(32、64)voidvoid无类型数据3.1.1.1 半精度浮点数**
+<strong>OpenCL支持的标量数据类型比较简单，功能和C/C++中的数据类型一样。需要强调注意的点在于半精度和双精度浮点数是可选项。类型API类型描述char/ucharcl_char/cl_uchar有/无符号8位整数short/ushortcl_short/cl_ushort有/无符号16位整数int/uintcl_int/cl_uint有/无符号32位整数long/ulongcl_long/cl_ulong有/无符号64位整数float/doublecl_float/cl_double32位浮点数/64位浮点数，符合IEEE754存储格式halfcl_half16位浮点数。half数据类型必须符合IEEE754-2008半精度存储格式size_tn/a无符号整数类型，sizeof结果类型，匹配设备地址空间(32、64)voidvoid无类型数据3.1.1.1 半精度浮点数</strong>
 
-![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_2bd7826a6a8f.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BC%98%E5%8C%96/asset/img_2bd7826a6a8f.jpg)
 
 半精度浮点
 
@@ -149,7 +149,7 @@ err = clGetDeviceInfo(device,CL_DEVICE_HALF_FP_CONFIG, sizeof(cl_device_fp_confi
 #pragma OpenCL EXTENSION cl_khr_fp16 : enable
 #endif`
 
-**3.1.1.2 双精度浮点数**
+<strong>3.1.1.2 双精度浮点数</strong>
 
 针对可选项类型，高通Adreno GPU不支持双精度浮点数，因此需要查询设备是否支持双精度浮点数，如果device_flag结果为0，则说明设备不支持双精度。
 
@@ -166,13 +166,13 @@ err = clGetDeviceInfo(device,CL_DEVICE_DOUBLE_FP_CONFIG, sizeof(cl_device_fp_con
 
 对于OpenCL设备而言，双精度计算速度比单精度慢2~3倍，因此为了提升整体程序的性能，尽量使用单精度浮点类型。
 
-**3.1.2 矢量数据类型**
+<strong>3.1.2 矢量数据类型</strong>
 
 变量后面是一个n来定义矢量中的元素个数，对所有矢量数据类型，支持的n值包括2、3、4、8和16。double类型是可选项，需要设备支持双精度时才可用。
 
 高通Adreno设备上使用矢量数据编写kernel，性能会有2倍左右的提升。然后在Mali设备上矢量类型kernel和标量类型kernel性能没有差异。
 
-**3.1.2.1 矢量数据类型分类**
+<strong>3.1.2.1 矢量数据类型分类</strong>
 
 类型API类型描述charn/ucharncl_charn/cl_ucharnn个8位有/无符号整数值的矢量shortn/ushortncl_shortn/cl_ushortnn个16位有/无符号整数值的矢量intn/uintncl_intn/cl_uintnn个32位有/无符号整数值的矢量longn/ulongncl_longn/cl_ulongnn个64位有/无符号整数值的矢量floatncl_floatnn个32位浮点数值的矢量doublencl_doublenn个64位浮点数值的矢量矢量初始化
 
@@ -194,7 +194,7 @@ float4 rgba = (float4)(vrgb, 1.0f);`
 
 矢量分量：OpenCL提供三种方式来访问矢量分量：数值索引、字母索引和hi/lo/even/odd方式。它们都是通过点(.)方式来访问分量。数值索引和字母索引对比使用如下所示：
 
-![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_331d6d998f29.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BC%98%E5%8C%96/asset/img_331d6d998f29.jpg)
 
 实例代码
 
@@ -232,14 +232,14 @@ int4 d = data.odd; // d = (1, 3, 5, 7)`
 矢量加载/存储Tn vloadn(size_t offset, const [constant] T *p)从地址p+(offset * n)读一个T类型矢量数据floatn vload_halfn(size_t offset, const [constant] half *p)从地址p+(offset * n)读一个half矢量数据void vstoren(Tn data, size_t offset, T *p)写T类型矢量数据到地址p+(offset * n)void store_halfn(floatn data, size_t offset, half *p)写half矢量数据到地址p+(offset * n)
 
 - 矢量加载
-![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_c7a3a423b891.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BC%98%E5%8C%96/asset/img_c7a3a423b891.jpg)
 
 矢量加载示意图
 
 - 合并访问
 合并访问是OpenCL和GPU并行计算的重要概念，基本就是底层硬件操作可以把多个工作项的数据load和store请求合并为一个请求，从而提升数据存储效率，如果不支持合并访问，GPU硬件必须为每个单独的请求执行数据load和store操作，从而导致性能下降。
 
-![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_908865de31d4.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BC%98%E5%8C%96/asset/img_908865de31d4.jpg)
 
 合并访问示意图上图所示，针对8个工作项如果kernel代码中使用vload4，从内存中加载8个数据合并访问为2次load操作。但是，如果是标量加载则需要加载8次load请求操作。因此，矢量加载相对于标量加载可以减少4倍load内存请求，提高kernel的内存带宽利用率。 
 
@@ -271,12 +271,12 @@ __kernel void MatrixCopyVector(__global uchar *src,
 }`
 
 - 实测性能差异：在高通8450 Adreno GPUs上kernel的start->end执行时间如下图所示，向量化代码时间为1.17ms，标量代码时间为2.17ms，可以看出性能有接近1倍的提升。
-![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_b5db5acc9f8d.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BC%98%E5%8C%96/asset/img_b5db5acc9f8d.jpg)
 
 合并访问性能对比图
 #### 3.3 修饰符
 
-**3.3.1 地址空间修饰符 **
+<strong>3.3.1 地址空间修饰符</strong>
 
 OpenCL的存储器模型分别为：全局存储器、局部存储器、常量存储器和私有存储器，对应的地址空间修饰符为：__global(或global)、__local(或local)、__constant(或constant)和__private(或private)。 
 
@@ -295,7 +295,7 @@ __constant参数的数据将存储在全局只读内存中（有效）。
 __local参数的数据将存储在本地内存中。
 __private参数的数据将存储在私有内存中（默认）。`
 
-**3.3.2 函数修饰符 **
+<strong>3.3.2 函数修饰符</strong>
 
 - kernel修饰符 
 __kernel（kernel）修饰符声明一个函数为内核函数，在OpenCL设备上执行。
@@ -330,7 +330,7 @@ __kernel __attribute__((work_group_size_hint(16, 16, 1)))
 // 指定必须使用的工作组大小，local_work_size的大小
 __kernel __attribute__((reqd_work_group_size(16, 16, 1)))`
 
-**3.3.3 对象访问修饰符**
+<strong>3.3.3 对象访问修饰符</strong>
 
 **访问修饰符用于指定图像类型的参数, 内核参数中的图像对象可以声明为只读、只写或者读写。 __read_only(或read_only)和__write_only(或write_only)来修饰图像对象参数。__read_write(或read_write)只能在内核中对又读又写的图像对象参数进行修饰。默认修饰符为read_only。
 
@@ -390,13 +390,13 @@ int4 v_sum = v_d * d;// (1, 2, 3, 4) * (3, 3，3，3) = (3, 6, 9, 12)`
     *output = vec;
 }`
 
-#### **3.5 build-in 函数 **
+#### <strong>3.5 build-in 函数</strong>
 
 **build-in：内建函数通俗的理解就是OpenCL c标准中自带的内部函数，有点类似与C语言的math.h文件中的函数。内置函数支持标量和向量类型参数，同时返回类型和实际类型保持一致。同时内置函数也会扩展 cl_khr_fp64和cl_khr_fp16 的支持，只需要使用时指定double和half类型就可以。
 
 3.5.1 工作项函数**
 
-**工作项作为内核执行的最小单元工需要遍历整个数据，主要是根据执行内核的所有其他工作项中的 ID。维度和工作项**
+<strong>工作项作为内核执行的最小单元工需要遍历整个数据，主要是根据执行内核的所有其他工作项中的 ID。维度和工作项</strong>
 
 对于工作项的数目、ID及维度OpenCL内核提供了一下几个内置查询函数。如下表所示。
 
@@ -423,7 +423,7 @@ __kernel void image_process(__global uchar *src,
     int dim_size = get_work_dim; //当前设置工作组为2维， 值为 2
 }`
 
-**工作组**
+<strong>工作组</strong>
 
 **当工作项需要同步它们的执行时，工作组变得很重要。工作组内的工作项可以共享局部存储器。对于工作组的信息，OpenCL内核提供了一下几个内置查询函数。如下表所示：
 
@@ -465,9 +465,9 @@ __kernel void group_sample(__global float *dst)
 
 OpenCL 的浮点函数分为五类：算术和舍入、比较、指数和对数、三角函数和杂项。 
 
-**算术和舍入函数**
+<strong>算术和舍入函数</strong>
 
-![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_dfd52b0d13f0.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BC%98%E5%8C%96/asset/img_dfd52b0d13f0.jpg)
 
 针对舍入函数：rint 舍入到最接近的偶数， round 返回最接近的整数，如果两个最接近的整数同样接近，则返回距离 0 更远的整数。 针对算术函数的乘加函数：“mad 优势是速度优于准确性，fma 优势是精度更高。 样例示意:
 
@@ -496,15 +496,15 @@ ceil: -6.0, -3.0, 4.0, 7.0
 floor: -7.0, -4.0, 3.0, 6.0
 trunc: -6.0, -3.0, 3.0, 6.0`
 
-**比较函数**
+<strong>比较函数</strong>
 
-![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_5f875e76c9d6.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BC%98%E5%8C%96/asset/img_5f875e76c9d6.jpg)
 
 比较函数主要是一些简单向量比较过程，注意点一般在clamp和smoothstep函数的区别。 
 
-**三角函数**
+<strong>三角函数</strong>
 
-![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_7a6234d3b95e.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BC%98%E5%8C%96/asset/img_7a6234d3b95e.jpg)
 
 OpenCL提供了更多的三角函数，可以帮助我们更好的实现某些算法优化。 样例示意:
 
@@ -520,7 +520,7 @@ OpenCL提供了更多的三角函数，可以帮助我们更好的实现某些�
 //输出
 (0.5, 0.866025, 1, 0.866025)`
 
-**类型转换** 
+<strong>类型转换</strong> 
 
 类型转换主要分为标量类型转换和向量类型转换及饱和四舍五入操作。 
 
@@ -538,32 +538,32 @@ Tn a = (Tn)(b);`
 destType convert_destType(srcType)
 destTypeN convert_destTypeN(srcTypeN)`
 
-饱和处理：**_sat**是饱和溢出处理,例如int转uchar, 限幅在0-255之间; 
+饱和处理：<strong>_sat</strong>是饱和溢出处理,例如int转uchar, 限幅在0-255之间; 
 
 四舍五入：浮点数转整数 
 
-**_rte**：向最近邻偶数舍入 
+<strong>_rte</strong>：向最近邻偶数舍入 
 
-**_rtz**：向最近邻零舍入 
+<strong>_rtz</strong>：向最近邻零舍入 
 
-**_rtp**：向正无穷方向舍入 
+<strong>_rtp</strong>：向正无穷方向舍入 
 
-**_rtn**：向负无穷方向舍入 
+<strong>_rtn</strong>：向负无穷方向舍入 
 
-**默认**：convert默认舍入为rtz
+<strong>默认</strong>：convert默认舍入为rtz
 
 `float4 vin = (float4)(1.3, 2.6, 3.4, 5.6);
 uchar4 vot = convert_uchar4_sat_rte(vin);
 // 输出
 1 2 3 6`
 
-**3.5.3 整数数学函数**
+<strong>3.5.3 整数数学函数</strong>
 
 OpenCL 提供了广泛的整数运算，本节将它们分为三类：加减法、乘法和杂项。 在每种情况下，整数数据类型指的是所有有符号和无符号整数：uchar/char, ushort/short, uint/int, ulong/long。 
 
-**加减法**
+<strong>加减法</strong>
 
-![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_b87413bfe4c1.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BC%98%E5%8C%96/asset/img_b87413bfe4c1.jpg)
 
 加法计算中经常会出现两个整数相加时发生溢出，或者在减法中因为操作数的不同导致相减发生溢出。样例示意：
 
@@ -586,9 +586,9 @@ add0    = 2,147,483,647 (0x7FFFFFFF) //饱和
 sub_sum = –393,705,336 (0xE8888888)
 sub0    = 2,147,483,647 (0x7FFFFFFF) //饱和`
 
-**乘法**
+<strong>乘法</strong>
 
-![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_8128767215ba.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BC%98%E5%8C%96/asset/img_8128767215ba.jpg)
 
 示例代码
 
@@ -609,11 +609,11 @@ dst[0] = 0x3268ACF1;
 dst[1] = ;
 dst[2] = ;`
 
-**其它整数函数**
+<strong>其它整数函数</strong>
 
 整数类型的一个最值、绝对值、限幅等函数的说明和使用。
 
-![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_48709ef9fee9.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BC%98%E5%8C%96/asset/img_48709ef9fee9.jpg)
 
 示例代码
 
@@ -633,7 +633,7 @@ dst[1] = 0x9531;`
 
 #### 3.6 shuffle 和 select 函数
 
-**shuffle 函数：** 
+<strong>shuffle 函数：</strong> 
 
 **在OpenCL中，经常会碰到会对向量的多个分量进行交叉运算的情况，针对运算对象并不是相邻，存在交叉的情况，效率可能并不会很好，使用shuffle性能可能会提升10%以上。 OpenCL 的 shuffle 函数接受一个或两个输入向量并创建一个包含输入分量的输出向量。 
 
@@ -643,12 +643,12 @@ dst[1] = 0x9531;`
 `for( i = 0; i 
 
 - 示例结果
-![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_eeae837c7ea7.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BC%98%E5%8C%96/asset/img_eeae837c7ea7.jpg)
 
  shuffle 示意图
 
 - 相关函数：`allm shuffle2(alln x, alln y, uintegerm mask);` 
-![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_a7a8bbf45bef.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BC%98%E5%8C%96/asset/img_a7a8bbf45bef.jpg)
 
 shuffle2 示意图
 
@@ -668,12 +668,12 @@ select 函数：**
 for( i = 0; i 
 
 - 示例结果
-![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_9cf6e1f41353.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BC%98%E5%8C%96/asset/img_9cf6e1f41353.jpg)
 
 select 示意图
 
 - 相关函数：`alln bitselect(alln a, alln b, u/integern mask)` 
-![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_631f0e00e008.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BC%98%E5%8C%96/asset/img_631f0e00e008.jpg)
 
 bitselect 示意图更多的内置函数本文目前不讲解说明了，后面会有专门的文章进行说明。
 
@@ -689,12 +689,12 @@ native函数 **
 native_log2, native_log10, native_powr, native_recip, native_rsqrt, native_sin,
 native_sqrt, native_tan`
 
-**native和build-in函数比较 **
+<strong>native和build-in函数比较</strong>
 
 数学函数定义如何使用精度性能fast低精度函数-cl-fast-relaxed-math 编译选项中中native硬件直接计算native_function低高
 ### 四、OpenCL 高斯滤波 kernel 实例
 
-**4.1 代码展示** 
+<strong>4.1 代码展示</strong> 
 
 以 8 位灰度图像高斯滤波为例编写 CPU C 代码和 OpenCL 的kernel内核代码。CPU的C代码采用行列分离的方式进行计算，边界方式使用反射101的方式。具体代码如下所示。
 
@@ -738,11 +738,11 @@ OpenCL  kernel内核代码采用buffer的方式进行读写操作，每个工作
     vstore4(v_dst, 0, dst + dst_index);
 }`
 
-**4.2 结果展示** 
+<strong>4.2 结果展示</strong> 
 
 完整的实现代码可以下载我们的github仓库运行。 下图是我们在高通骁龙8450平台上的运行结果，可以看到使用OpenCL优化之后运行时间从35.203ms(图像尺寸4096x4096)下降到了1.96ms，性能有了17倍多的提升, 感兴趣的读者可以自己运行下结果。
 
-![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_dcdf0ffbb541.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BC%98%E5%8C%96/asset/img_dcdf0ffbb541.jpg)
 
 Gaussian 性能对比
 ### 五、工程代码

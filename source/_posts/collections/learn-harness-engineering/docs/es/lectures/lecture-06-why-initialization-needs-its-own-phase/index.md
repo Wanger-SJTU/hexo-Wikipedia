@@ -64,22 +64,22 @@ La guía de ingeniería de harness de Codex de OpenAI también enfatiza el princ
 
 ## Conceptos clave
 
-- **Fase de inicialización**: La primera fase en el ciclo de vida del agente — sin implementación de funcionalidades, solo estableciendo los prerrequisitos para todas las fases de implementación posteriores. La salida no es código, es infraestructura.
-- **Contrato de bootstrap**: Las condiciones bajo las cuales un proyecto puede ser operado sin ambigüedad por una nueva sesión de agente — puede iniciar, puede probar, puede ver el progreso, puede retomar los siguientes pasos. Cuatro condiciones, todas requeridas.
-- **Arranque en frío vs arranque en caliente**: El arranque en frío es desde un directorio vacío donde el agente debe adivinar la estructura del proyecto; el arranque en caliente es desde una plantilla o proyecto existente donde la infraestructura ya está en su lugar. El arranque en caliente supera ampliamente al arranque en frío — como empezar a trabajar en un sitio con agua corriente y electricidad versus comenzar desde un terreno baldío.
-- **Preparación para entrega**: El proyecto está en un estado en cualquier momento dado donde un agente nuevo puede tomar el control. No se necesita explicación verbal — solo el contenido del repositorio.
-- **Tiempo hasta la primera verificación**: El tiempo desde el inicio del proyecto hasta que el primer punto de funcionalidad pasa la verificación. Esta es la métrica central para medir la eficiencia de inicialización.
-- **Usabilidad posterior**: La mejor medida de la calidad de la inicialización — la proporción de sesiones posteriores que pueden ejecutar tareas exitosamente sin depender de conocimiento implícito.
+- <strong>Fase de inicialización</strong>: La primera fase en el ciclo de vida del agente — sin implementación de funcionalidades, solo estableciendo los prerrequisitos para todas las fases de implementación posteriores. La salida no es código, es infraestructura.
+- <strong>Contrato de bootstrap</strong>: Las condiciones bajo las cuales un proyecto puede ser operado sin ambigüedad por una nueva sesión de agente — puede iniciar, puede probar, puede ver el progreso, puede retomar los siguientes pasos. Cuatro condiciones, todas requeridas.
+- <strong>Arranque en frío vs arranque en caliente</strong>: El arranque en frío es desde un directorio vacío donde el agente debe adivinar la estructura del proyecto; el arranque en caliente es desde una plantilla o proyecto existente donde la infraestructura ya está en su lugar. El arranque en caliente supera ampliamente al arranque en frío — como empezar a trabajar en un sitio con agua corriente y electricidad versus comenzar desde un terreno baldío.
+- <strong>Preparación para entrega</strong>: El proyecto está en un estado en cualquier momento dado donde un agente nuevo puede tomar el control. No se necesita explicación verbal — solo el contenido del repositorio.
+- <strong>Tiempo hasta la primera verificación</strong>: El tiempo desde el inicio del proyecto hasta que el primer punto de funcionalidad pasa la verificación. Esta es la métrica central para medir la eficiencia de inicialización.
+- <strong>Usabilidad posterior</strong>: La mejor medida de la calidad de la inicialización — la proporción de sesiones posteriores que pueden ejecutar tareas exitosamente sin depender de conocimiento implícito.
 
 ## Cómo hacer bien la inicialización
 
-**Trata la inicialización como una fase dedicada.** La primera sesión solo hace inicialización — nada de código de funcionalidades de negocio. La inicialización produce:
+<strong>Trata la inicialización como una fase dedicada.</strong> La primera sesión solo hace inicialización — nada de código de funcionalidades de negocio. La inicialización produce:
 
-**1. Entorno ejecutable.** El proyecto arranca, las dependencias están instaladas, sin problemas de entorno. Cimientos vertidos, sin grietas.
+<strong>1. Entorno ejecutable.</strong> El proyecto arranca, las dependencias están instaladas, sin problemas de entorno. Cimientos vertidos, sin grietas.
 
-**2. Framework de pruebas verificable.** Al menos una prueba de ejemplo pasa. Esto demuestra que el framework de pruebas en sí está correctamente configurado — como poner un pilar sobre los cimientos para demostrar que puede soportar peso.
+<strong>2. Framework de pruebas verificable.</strong> Al menos una prueba de ejemplo pasa. Esto demuestra que el framework de pruebas en sí está correctamente configurado — como poner un pilar sobre los cimientos para demostrar que puede soportar peso.
 
-**3. Documento de contrato de bootstrap.** Un documento claro que indica a las sesiones posteriores:
+<strong>3. Documento de contrato de bootstrap.</strong> Un documento claro que indica a las sesiones posteriores:
 ```markdown
 # Initialization Contract
 
@@ -102,7 +102,7 @@ La guía de ingeniería de harness de Codex de OpenAI también enfatiza el princ
 - tests/ — Test files
 ```
 
-**4. Desglose de tareas.** Divide todo el proyecto en una lista ordenada de tareas, cada una con criterios de aceptación claros:
+<strong>4. Desglose de tareas.</strong> Divide todo el proyecto en una lista ordenada de tareas, cada una con criterios de aceptación claros:
 ```markdown
 # Task Breakdown
 
@@ -120,11 +120,11 @@ La guía de ingeniería de harness de Codex de OpenAI también enfatiza el princ
 - ...
 ```
 
-**5. Commit de git como punto de control.** Después de que se completa la inicialización, haz commit de un punto de control limpio. Todo el trabajo posterior comienza desde este punto de control.
+<strong>5. Commit de git como punto de control.</strong> Después de que se completa la inicialización, haz commit de un punto de control limpio. Todo el trabajo posterior comienza desde este punto de control.
 
-**Estrategia de arranque en caliente**: No comiences desde un directorio vacío. Usa una plantilla de proyecto (create-react-app, fastapi-template, etc.) para preestablecer la estructura de directorios estándar, la configuración de dependencias y el framework de pruebas. Integra los pasos comunes de inicialización en la plantilla, dejando solo el trabajo de inicialización específico del proyecto. Como empezar a trabajar en un sitio con agua corriente y electricidad — diez mil veces mejor que comenzar desde un terreno baldío.
+<strong>Estrategia de arranque en caliente</strong>: No comiences desde un directorio vacío. Usa una plantilla de proyecto (create-react-app, fastapi-template, etc.) para preestablecer la estructura de directorios estándar, la configuración de dependencias y el framework de pruebas. Integra los pasos comunes de inicialización en la plantilla, dejando solo el trabajo de inicialización específico del proyecto. Como empezar a trabajar en un sitio con agua corriente y electricidad — diez mil veces mejor que comenzar desde un terreno baldío.
 
-**Criterios de finalización de inicialización**: No "cuánto código se escribió," sino si se cumplen las cuatro condiciones del contrato de bootstrap — puede iniciar, puede probar, puede ver el progreso, puede retomar los siguientes pasos. Usa esta lista de verificación para validar la inicialización:
+<strong>Criterios de finalización de inicialización</strong>: No "cuánto código se escribió," sino si se cumplen las cuatro condiciones del contrato de bootstrap — puede iniciar, puede probar, puede ver el progreso, puede retomar los siguientes pasos. Usa esta lista de verificación para validar la inicialización:
 
 ```markdown
 ## Initialization Acceptance Checklist
@@ -139,9 +139,9 @@ La guía de ingeniería de harness de Codex de OpenAI también enfatiza el princ
 
 Dos enfoques de inicialización para un proyecto frontend de React:
 
-**Enfoque mixto (verter cimientos y construir paredes simultáneamente)**: El agente simultáneamente creó el scaffolding del proyecto e implementó la primera funcionalidad en la sesión 1. Al final de la sesión, el repositorio tenía código ejecutable pero: sin documentación explícita de comandos de inicio/prueba, sin archivo de seguimiento de progreso, sin desglose de tareas. La sesión 2 dedicó ~20 minutos a inferir la estructura del proyecto, el framework de pruebas y el proceso de construcción — como un nuevo equipo de construcción que llega a un sitio sin saber cuánto avanzaron los cimientos o dónde van las tuberías, teniendo que cavar agujeros uno por uno para averiguarlo.
+<strong>Enfoque mixto (verter cimientos y construir paredes simultáneamente)</strong>: El agente simultáneamente creó el scaffolding del proyecto e implementó la primera funcionalidad en la sesión 1. Al final de la sesión, el repositorio tenía código ejecutable pero: sin documentación explícita de comandos de inicio/prueba, sin archivo de seguimiento de progreso, sin desglose de tareas. La sesión 2 dedicó ~20 minutos a inferir la estructura del proyecto, el framework de pruebas y el proceso de construcción — como un nuevo equipo de construcción que llega a un sitio sin saber cuánto avanzaron los cimientos o dónde van las tuberías, teniendo que cavar agujeros uno por uno para averiguarlo.
 
-**Inicialización dedicada (cimientos primero)**: La sesión 1 solo hizo inicialización — creó la estructura de directorios desde una plantilla, configuró el framework de pruebas (Vitest + React Testing Library), escribió y verificó una prueba de ejemplo, creó el documento de contrato de bootstrap y el archivo de desglose de tareas, hizo commit del punto de control inicial. El tiempo de reconstrucción de la sesión 2 fue menos de 3 minutos, y comenzó a trabajar directamente desde la lista de tareas — el equipo llega, echa un vistazo al plano y sabe exactamente dónde retomar.
+<strong>Inicialización dedicada (cimientos primero)</strong>: La sesión 1 solo hizo inicialización — creó la estructura de directorios desde una plantilla, configuró el framework de pruebas (Vitest + React Testing Library), escribió y verificó una prueba de ejemplo, creó el documento de contrato de bootstrap y el archivo de desglose de tareas, hizo commit del punto de control inicial. El tiempo de reconstrucción de la sesión 2 fue menos de 3 minutos, y comenzó a trabajar directamente desde la lista de tareas — el equipo llega, echa un vistazo al plano y sabe exactamente dónde retomar.
 
 Comparación del ciclo completo del proyecto: el tiempo total de reconstrucción del enfoque mixto (a través de todas las sesiones) fue ~60% más que el enfoque de inicialización dedicada. Los 20 minutos extra gastados en inicialización fueron recuperados muchas veces en las sesiones posteriores. Como cimientos sólidos haciendo que las paredes se levanten más rápido — lento es rápido.
 
@@ -163,8 +163,8 @@ Comparación del ciclo completo del proyecto: el tiempo total de reconstrucción
 
 ## Ejercicios
 
-1. **Diseño de contrato de bootstrap**: Escribe un contrato de bootstrap completo para un proyecto que estés desarrollando. Luego abre una sesión de agente completamente nueva, muéstrale solo el contenido del repositorio (sin contexto verbal), y haz que intente iniciar el proyecto, ejecutar las pruebas y entender el progreso actual. Registra cada problema que encuentre — cada uno corresponde a una cláusula faltante en tu contrato de bootstrap.
+1. <strong>Diseño de contrato de bootstrap</strong>: Escribe un contrato de bootstrap completo para un proyecto que estés desarrollando. Luego abre una sesión de agente completamente nueva, muéstrale solo el contenido del repositorio (sin contexto verbal), y haz que intente iniciar el proyecto, ejecutar las pruebas y entender el progreso actual. Registra cada problema que encuentre — cada uno corresponde a una cláusula faltante en tu contrato de bootstrap.
 
-2. **Experimento comparativo**: Elige un proyecto nuevo de complejidad moderada. Enfoque A: deja que el agente inicialice y haga la primera implementación simultáneamente. Enfoque B: dedica una sesión a la inicialización, comienza la implementación en la sesión 2. Después de 4 sesiones, compara: tiempo hasta la primera verificación, costo de reconstrucción, tasa de completitud de funcionalidades.
+2. <strong>Experimento comparativo</strong>: Elige un proyecto nuevo de complejidad moderada. Enfoque A: deja que el agente inicialice y haga la primera implementación simultáneamente. Enfoque B: dedica una sesión a la inicialización, comienza la implementación en la sesión 2. Después de 4 sesiones, compara: tiempo hasta la primera verificación, costo de reconstrucción, tasa de completitud de funcionalidades.
 
-3. **Lista de verificación de aceptación de inicialización**: Diseña una lista de verificación de aceptación de inicialización para tu proyecto. Haz que una sesión de agente nueva ejecute cada elemento de la lista y registra cuáles pasan y cuáles fallan. Los elementos que fallan son donde tu harness necesita fortalecerse.
+3. <strong>Lista de verificación de aceptación de inicialización</strong>: Diseña una lista de verificación de aceptación de inicialización para tu proyecto. Haz que una sesión de agente nueva ejecute cada elemento de la lista y registra cuáles pasan y cuáles fallan. Los elementos que fallan son donde tu harness necesita fortalecerse.

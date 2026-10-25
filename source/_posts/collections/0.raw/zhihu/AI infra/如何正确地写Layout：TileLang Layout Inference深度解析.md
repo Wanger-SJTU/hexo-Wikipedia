@@ -57,8 +57,8 @@ with T.Kernel(1, threads=32):
 
 看上去没那么难是不是？其实并不。
 
-- 从**正确性**的角度，在TileLang中，我们可以声明thread的本地buffer，即fragment buffer。这些fragment可以在多个`T.Parallel`中穿插使用，但我们需要保证它们始终是thread-local的，即需要绑定到固定的thread。
-- 从**性能**的角度，`T.Parallel`的展开并不是简单直接按循环次数分配即可，还需要结合考虑如向量化来合并访问内存，减少延迟。对于fragment buffer，我们需要考虑一个额外变量：replication，即一个元素可能需要在多个thread上出现，导致元素索引和thread并不是双射。此外，我们在编程时总是使用block-level的fragment buffer索引，但编译到thread level时，只有一部分fragment buffer会真正被拷贝到这个thread level，所以还需要一个block-level索引到thread-level索引的映射。综上，对于fragment buffer需要回答两个问题：
+- 从<strong>正确性</strong>的角度，在TileLang中，我们可以声明thread的本地buffer，即fragment buffer。这些fragment可以在多个`T.Parallel`中穿插使用，但我们需要保证它们始终是thread-local的，即需要绑定到固定的thread。
+- 从<strong>性能</strong>的角度，`T.Parallel`的展开并不是简单直接按循环次数分配即可，还需要结合考虑如向量化来合并访问内存，减少延迟。对于fragment buffer，我们需要考虑一个额外变量：replication，即一个元素可能需要在多个thread上出现，导致元素索引和thread并不是双射。此外，我们在编程时总是使用block-level的fragment buffer索引，但编译到thread level时，只有一部分fragment buffer会真正被拷贝到这个thread level，所以还需要一个block-level索引到thread-level索引的映射。综上，对于fragment buffer需要回答两个问题：
 
 - 对于fragment buffer的索引`(i, j)`和replica `rep`，该元素应该分配到哪个thread。即 `forward_thread(i, j, rep) => thread`。
 - 对于fragment buffer的索引`(i, j)`和replica `rep`，在使用时，应该取thread buffer中的哪个索引。即 `forward_index(i, j, rep) => local_index`。
@@ -144,7 +144,7 @@ public:
     // ...
   }
 
-**floating fragment buffer**：类似如下情况。`A`在`if`语句下使用，不会被进行layout分析，所以会将`A`直接replicate到所有thread上保证正确性。
+<strong>floating fragment buffer</strong>：类似如下情况。`A`在`if`语句下使用，不会被进行layout分析，所以会将`A`直接replicate到所有thread上保证正确性。
 
 A = T.alloc_fragment(...)
 for i, j in T.Parallel:
@@ -855,7 +855,7 @@ for row, col in T.Parallel(4, 16):
                 B[row] = fragment[row, 0]
 推导第二个loop时，`fragment`已经有已知layout，所以`ComputeLoopLayoutFromBuffer`可以运行。它会将access indices替换进source fragment的thread表达式。带入`row = group * 2 + row_in_group`和，`col = 0`得到：
 
-- `forward_thread(group, row_in_group) = group * 32 + row_in_group * 16`四个逻辑iteration分别映射到thread 0, thread 16, thread 32, thread 48。问题是，**这个layout是稀疏的**。从数学角度看，这个映射仍然是单射：没有两个逻辑iteration映射到同一个物理位置。然而，当前inverse-lowering路径很难表示它。Lowering需要从物理thread坐标反推出逻辑loop变量，但推导过程需要整除约束：
+- `forward_thread(group, row_in_group) = group * 32 + row_in_group * 16`四个逻辑iteration分别映射到thread 0, thread 16, thread 32, thread 48。问题是，<strong>这个layout是稀疏的</strong>。从数学角度看，这个映射仍然是单射：没有两个逻辑iteration映射到同一个物理位置。然而，当前inverse-lowering路径很难表示它。Lowering需要从物理thread坐标反推出逻辑loop变量，但推导过程需要整除约束：
 
 group = thread / 32
 row_in_group = (thread % 32) / 16

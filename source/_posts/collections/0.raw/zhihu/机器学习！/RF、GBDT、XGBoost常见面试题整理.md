@@ -31,15 +31,15 @@ source_url: https://zhuanlan.zhihu.com/p/34679467
 - 随机森林不需要进行数据预处理，即特征归一化。而GBDT则需要进行特征归一化
 2：分类树和回归树的区别
 
-（1）**分类树使用信息增益或增益比率来划分节点；每个节点样本的类别情况投票决定测试样本的类别。**
+（1）<strong>分类树使用信息增益或增益比率来划分节点；每个节点样本的类别情况投票决定测试样本的类别。</strong>
 
-**（2)回归树使用最小化均方差划分节点；每个节点样本的均值作为测试样本的回归预测值**
+<strong>（2)回归树使用最小化均方差划分节点；每个节点样本的均值作为测试样本的回归预测值</strong>
 
-**3：说一下GBDT**
+<strong>3：说一下GBDT</strong>
 
-**GBDT的核心就在于，每一棵树学的是之前所有树结论和的残差**，这个**残差就是一个加预测值后能得真实值的累加量**
+<strong>GBDT的核心就在于，每一棵树学的是之前所有树结论和的残差</strong>，这个<strong>残差就是一个加预测值后能得真实值的累加量</strong>
 
-**4：**Xgboost和GBDT的区别
+<strong>4：</strong>Xgboost和GBDT的区别
 
 (1)传统GBDT以CART作为基分类器，xgboost还支持线性分类器，这个时候xgboost相当于带L1和L2正则化项的逻辑斯蒂回归（分类问题）或者线性回归（回归问题）。节点分裂的方式不同，gbdt是用的gini系数，xgboost是经过优化推导后的
 
@@ -73,7 +73,7 @@ b. 借鉴投票机制。用相同的gbdt参数对w每个特征训练出一个模
 
 ，
 
-![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_6017e565cb0a.jpg)
+![](/images/collections/0.raw/zhihu/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%EF%BC%81/asset/img_6017e565cb0a.jpg)
 
 损失函数极小值
 

@@ -17,7 +17,7 @@ source_url: https://zhuanlan.zhihu.com/p/80325757
 
 #### AC自动机
 
-我们经常用的字符串方法**indexOf**，都是判定两个字符串的包含关系，底层使用类似KMP，BM， Sunday这样的算法。如果我们要判断一个长字符串是否包含多个短字符串呢？比如在一篇文章找几个敏感词，在DNA串中找几个指定的基因对pattern进行预处理，如果我们的模式串存在多个，则不适合了，我们就需要用到一种多模式匹配算法。
+我们经常用的字符串方法<strong>indexOf</strong>，都是判定两个字符串的包含关系，底层使用类似KMP，BM， Sunday这样的算法。如果我们要判断一个长字符串是否包含多个短字符串呢？比如在一篇文章找几个敏感词，在DNA串中找几个指定的基因对pattern进行预处理，如果我们的模式串存在多个，则不适合了，我们就需要用到一种多模式匹配算法。
 
 最著名的多模式匹配算法为AC自动机，它是由贝尔实验室的两位研究人员 `Alfred V. Aho` 和 `Margaret J.Corasick` 于1975年发明的，几乎与KMP算法同时问世，至今日仍然在模式匹配领域被广泛应用。 
 
@@ -30,7 +30,7 @@ AC自动机的核心算法仍然是寻找模式串内部规律，达到在每次
 
 将模式串逐字符放进Trie树。 
 
-![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_fe6a83e27e31.jpg)
+![](/images/collections/0.raw/zhihu/%E7%BC%96%E7%A8%8B%E5%90%91/asset/img_fe6a83e27e31.jpg)
 
 `class Trie {
       constructor() {
@@ -59,7 +59,7 @@ AC自动机的核心算法仍然是寻找模式串内部规律，达到在每次
 
 然后我们尝试用它处理字符串sher。理想情况下是这样：
 
-![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_43a5812735a2.jpg)
+![](/images/collections/0.raw/zhihu/%E7%BC%96%E7%A8%8B%E5%90%91/asset/img_43a5812735a2.jpg)
 
 很遗憾，前缀树只会顺着某一路径往下查找，最多到叶子节点折回树节点，继续选择另一条路径。因此我们需要添加一些横向的路径，在失配时，跳到另一个分支上继续查找，保证搜索过的节点不会冗余搜索。
 
@@ -67,7 +67,7 @@ AC自动机的核心算法仍然是寻找模式串内部规律，达到在每次
 
 AC自动机的前缀树的节点都应该存在fail指针。下图中，红色的箭头就是失配指针。它表示文本串在当前节点失配后，我们应该到哪个节点去继续匹配。 
 
-![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_cb78f06d4ff7.jpg)
+![](/images/collections/0.raw/zhihu/%E7%BC%96%E7%A8%8B%E5%90%91/asset/img_cb78f06d4ff7.jpg)
 
 很显然，对于每个节点，其失配指针应该指向其他子树中的表示同一字符的那些节点，并且它与其子树能构成剩下的最长后缀。即，我们要匹配sher, 我们已经在某一子树中命中了sh，那么我们希望能在另一个子树中命中er。
 
@@ -75,7 +75,7 @@ AC自动机的前缀树的节点都应该存在fail指针。下图中，红色�
 
 因此根据补上一些失配指针，我们的AC自动机应该长成这样的。
 
-![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_fab1f76aaa7a.jpg)
+![](/images/collections/0.raw/zhihu/%E7%BC%96%E7%A8%8B%E5%90%91/asset/img_fab1f76aaa7a.jpg)
 
 现在的问题是，如何求fail指针？联系KMP算法的next数组的意义，容易发现root的每个儿子的fail都指向root（前缀和后缀是不会包含整个串的）。也就是上图中root所连的`s`和`h`的fail都指向root。若已经求得`sh`所在点的fail，我们来考虑如何求`she`所在点的fail。根据`sh`所在点的fail得到`h`是`sh`的最长后缀，而`h`又有儿子`e`，因此`she`的最长后缀应该是`he`，其fail指针就指向`he`所在点。
 
@@ -161,4 +161,4 @@ createFail(ac);
 console.log(match(ac, "one day she say her has eaten many shrimps"));
 `
 
-![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_e9bcca8ec70a.jpg)
+![](/images/collections/0.raw/zhihu/%E7%BC%96%E7%A8%8B%E5%90%91/asset/img_e9bcca8ec70a.jpg)

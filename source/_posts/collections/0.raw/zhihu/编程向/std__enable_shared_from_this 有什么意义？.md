@@ -23,7 +23,7 @@ source_url: https://www.zhihu.com/question/30957800/answer/2700292012
 
 `std::shared_ptr`对象在内存中是这样：
 
-![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_f481fb600bba.jpg)![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_9d875c969a52.webp)
+![](/images/collections/0.raw/zhihu/%E7%BC%96%E7%A8%8B%E5%90%91/asset/img_f481fb600bba.jpg)![](/images/collections/0.raw/zhihu/%E7%BC%96%E7%A8%8B%E5%90%91/asset/img_9d875c969a52.webp)
 
 当指向对象的`std::shared_ptr`一创建，被管理对象的控制块就建立了。被管理的对象的控制块中有引用计数(reference count)，当引用计数为0时，被管理的对象会被销毁。
 
@@ -32,7 +32,7 @@ source_url: https://www.zhihu.com/question/30957800/answer/2700292012
 - `std::make_shared`会创建控制块。
 - 从 `std::unique_ptr`  上构造出 `std::shared_ptr`的时候，会创建控制块。
 - 从原始指针上构造 `std::shared_ptr`的时候会创建控制块
-假若我们为一个指针构建了多个控制块，那么会有多个引用计数，意味着对象可能销毁多次，这是非法行为。所以使用 `std::shared_ptr`的时候，我们应该**避免构建多个控制块**。
+假若我们为一个指针构建了多个控制块，那么会有多个引用计数，意味着对象可能销毁多次，这是非法行为。所以使用 `std::shared_ptr`的时候，我们应该<strong>避免构建多个控制块</strong>。
 
 #### enabled_shared_from_this 的用处
 

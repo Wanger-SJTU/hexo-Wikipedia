@@ -29,7 +29,7 @@ categories:
 
 # Learn Harness Engineering
 
-> **一門專案導向的課程，教你建構讓 AI 程式設計代理可靠運作的環境、狀態管理、驗證與控制機制。**
+> <strong>一門專案導向的課程，教你建構讓 AI 程式設計代理可靠運作的環境、狀態管理、驗證與控制機制。</strong>
 
 Learn Harness Engineering 是一門專注於 AI 程式設計代理工程化的課程。我們深入研究並整合了業界最先進的 Harness Engineering 理論與實踐。核心參考資料包括：
 
@@ -38,7 +38,7 @@ Learn Harness Engineering 是一門專注於 AI 程式設計代理工程化的�
 - [Anthropic: Harness design for long-running application development](https://www.anthropic.com/engineering/harness-design-long-running-apps)
 - [Awesome Harness Engineering](https://github.com/walkinglabs/awesome-harness-engineering)
 
-> **想快速上手？** [`skills/harness-creator/`](../../skills/harness-creator/) 技能可以在幾分鐘內為你自己的專案搭建一套生產級的 harness（AGENTS.md、功能列表、init.sh、驗證流程）。
+> <strong>想快速上手？</strong> [`skills/harness-creator/`](../../skills/harness-creator/) 技能可以在幾分鐘內為你自己的專案搭建一套生產級的 harness（AGENTS.md、功能列表、init.sh、驗證流程）。
 
 ---
 
@@ -85,7 +85,7 @@ Learn Harness Engineering 是一門專注於 AI 程式設計代理工程化的�
 
 ## 模型很聰明，Harness 讓它可靠
 
-大多數人都是慘痛教訓後才明白，**世界上最強大的模型，如果你不在它周圍建構適當的環境，它在真實工程任務上仍然會失敗。**
+大多數人都是慘痛教訓後才明白，<strong>世界上最強大的模型，如果你不在它周圍建構適當的環境，它在真實工程任務上仍然會失敗。</strong>
 
 你可能自己也見過這種情況。你讓 Claude 或 GPT 在你的儲存庫中執行一項任務。它一開始表現不錯，讀取檔案、撰寫程式碼，看起來很有效率。然後出了問題。它跳過了一個步驟。它破壞了一個測試。它說「完成了」，但實際上什麼都不能用。你最後花的時間比自己動手做還多。
 
@@ -95,7 +95,7 @@ Learn Harness Engineering 是一門專注於 AI 程式設計代理工程化的�
 
 OpenAI 也報告了 Codex 的相同結果，在一個 well-harnessed 的儲存庫中，相同的模型從「不可靠」變成「可靠」。改變的規模遠超邊際調整，是質的轉變。
 
-**這門課程教你如何建構那個環境。**
+<strong>這門課程教你如何建構那個環境。</strong>
 
 ```text
                     HARNESS 模式
@@ -156,17 +156,17 @@ Harness Engineering 是關於在模型周圍建構一個完整的工作環境，
 
 每個子系統各有其職責：
 
-- **Instructions（指令）** — 告訴代理該做什麼、以什麼順序、以及在開始前該閱讀什麼。以漸進揭露的結構組織，讓代理按需導航，而非堆成一個巨大的檔案。
-- **State（狀態）** — 追蹤已完成的事項、正在進行的事項、以及接下來該做的事。持久化到磁碟，讓下一個工作階段可以精確地從上一個階段停止的地方接續。
-- **Verification（驗證）** — 只有通過的測試套件才算數。代理不能在沒有可執行證據的情況下宣告勝利。
-- **Scope（範圍）** — 將代理限制在每次只做一個功能。不過度延伸。不三件事做一半。不改寫功能列表來隱藏未完成的工作。
-- **Session Lifecycle（工作階段生命週期）** — 開始時初始化。結束時清理。為下一個工作階段留下乾淨的重啟路徑。
+- <strong>Instructions（指令）</strong> — 告訴代理該做什麼、以什麼順序、以及在開始前該閱讀什麼。以漸進揭露的結構組織，讓代理按需導航，而非堆成一個巨大的檔案。
+- <strong>State（狀態）</strong> — 追蹤已完成的事項、正在進行的事項、以及接下來該做的事。持久化到磁碟，讓下一個工作階段可以精確地從上一個階段停止的地方接續。
+- <strong>Verification（驗證）</strong> — 只有通過的測試套件才算數。代理不能在沒有可執行證據的情況下宣告勝利。
+- <strong>Scope（範圍）</strong> — 將代理限制在每次只做一個功能。不過度延伸。不三件事做一半。不改寫功能列表來隱藏未完成的工作。
+- <strong>Session Lifecycle（工作階段生命週期）</strong> — 開始時初始化。結束時清理。為下一個工作階段留下乾淨的重啟路徑。
 
 ---
 
 ## 為什麼會有這門課程
 
-問題不是「模型能不能寫程式？」它們能。問題是，**它們能不能在真實的儲存庫中，跨越多個工作階段，在沒有持續人工監督的情況下，可靠地完成真實的工程任務？**
+問題不是「模型能不能寫程式？」它們能。問題是，<strong>它們能不能在真實的儲存庫中，跨越多個工作階段，在沒有持續人工監督的情況下，可靠地完成真實的工程任務？</strong>
 
 目前的答案是，沒有 harness 就不行。
 
@@ -201,13 +201,13 @@ Harness Engineering 是關於在模型周圍建構一個完整的工作環境，
 
 ## 課程內容與文件
 
-完整的課程資料，請造訪**[文件網站](https://walkinglabs.github.io/learn-harness-engineering/)**。
+完整的課程資料，請造訪<strong>[文件網站](https://walkinglabs.github.io/learn-harness-engineering/)</strong>。
 
 課程分為三個部分：
 
-1. **講座**：12 個概念單元，解釋 harness engineering 背後的理論。
-2. **專案**：6 個動手專案，讓你從零建構一個代理工作空間。
-3. **資源庫**：可直接複製使用的模板（`AGENTS.md`、`feature_list.json`、`init.sh` 等），今天就能在你的儲存庫中使用。
+1. <strong>講座</strong>：12 個概念單元，解釋 harness engineering 背後的理論。
+2. <strong>專案</strong>：6 個動手專案，讓你從零建構一個代理工作空間。
+3. <strong>資源庫</strong>：可直接複製使用的模板（`AGENTS.md`、`feature_list.json`、`init.sh` 等），今天就能在你的儲存庫中使用。
 
 ---
 
@@ -233,7 +233,7 @@ Harness Engineering 是關於在模型周圍建構一個完整的工作環境，
 
 ## 畢業專案：一個真實的應用程式
 
-所有六個課程專案都圍繞著同一個產品：**一個基於 Electron 的個人知識庫桌面應用程式**。
+所有六個課程專案都圍繞著同一個產品：<strong>一個基於 Electron 的個人知識庫桌面應用程式</strong>。
 
 ```text
     ┌─────────────────────────────────────────────────────┐
@@ -390,7 +390,7 @@ Harness Engineering 是關於在模型周圍建構一個完整的工作環境，
 
 ## 代理工作階段生命週期
 
-這門課程的核心理念之一：**代理的工作階段應該遵循結構化的生命週期，而不是隨意進行。** 以下是它的樣貌：
+這門課程的核心理念之一：<strong>代理的工作階段應該遵循結構化的生命週期，而不是隨意進行。</strong> 以下是它的樣貌：
 
 ```text
     代理工作階段生命週期
@@ -563,7 +563,7 @@ learn-harness-engineering/
 
 本儲存庫還包含可重用的 AI 代理技能，你可以直接安裝到你的 IDE 或代理工作空間。
 
-- [**harness-creator**](../../skills/harness-creator/)：一個幫助你在幾分鐘內為自己的專案搭建生產級 harness 的技能。
+- [<strong>harness-creator</strong>](../../skills/harness-creator/)：一個幫助你在幾分鐘內為自己的專案搭建生產級 harness 的技能。
 
 ---
 
@@ -573,7 +573,7 @@ learn-harness-engineering/
 
 [![Hands-on Modern RL](https://img.shields.io/badge/HANDS--ON_MODERN_RL-0052cc?style=for-the-badge)](https://github.com/walkinglabs/hands-on-modern-rl)
 
-**Hands-on Modern RL**，一個開源的實作課程，從基礎 RL 概念銜接到 LLM 對齊、RLVR 和進階 Agentic 系統。
+<strong>Hands-on Modern RL</strong>，一個開源的實作課程，從基礎 RL 概念銜接到 LLM 對齊、RLVR 和進階 Agentic 系統。
 
 ---
 

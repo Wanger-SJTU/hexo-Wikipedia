@@ -52,7 +52,7 @@ $- PEm" role="presentation">PEm \text{PE}_m : 位置编码，具体由 sin" role
 
 #### 2. ROPE：一切的起点
 
-在Transformer模型中，位置编码是连接输入序列与模型结构的重要桥梁。**Rotary Position Embedding (ROPE)** 是一种基于旋转变换的相对位置编码方法，它以极其优雅的方式将位置索引转化为模型内部的旋转信息。其核心数学公式如下：
+在Transformer模型中，位置编码是连接输入序列与模型结构的重要桥梁。<strong>Rotary Position Embedding (ROPE)</strong> 是一种基于旋转变换的相对位置编码方法，它以极其优雅的方式将位置索引转化为模型内部的旋转信息。其核心数学公式如下：
 
 ROPE的定义可以直接映射到通用公式：
 
@@ -83,7 +83,7 @@ $f_q(x_m, m) = e^{im\theta} W_q x_m, \quad f_k(x_n, n) = e^{in\theta} W_k x_n \\
 
 $\text{Re}(f_q(x_m, m)^* \cdot f_k(x_n, n)) = \text{Re}(x_m^* W_q^* W_k x_n \cdot e^{i\theta(m-n)}) \\$
 
-注意，点积中与位置 m 和 n 相关的部分仅依赖于它们的**相对距离** m-n。这意味着，ROPE天然具有对相对位置的敏感性，无需额外编码绝对位置。**
+注意，点积中与位置 m 和 n 相关的部分仅依赖于它们的<strong>相对距离</strong> m-n。这意味着，ROPE天然具有对相对位置的敏感性，无需额外编码绝对位置。**
 
 2.2 数学推导中的频率参数 \theta_d 
 
@@ -102,21 +102,21 @@ $\theta_d = b^{-2d/|D|} \\$
 频率参数 \theta_d 决定了每个维度的旋转速度：
 
 对于低维度（即  d  值较小的维度），
- $\theta_d = b^{-2d/D}  更接近于 1**。**对于高维度（即  d  值较大的维度），$
+ $\theta_d = b^{-2d/D}  更接近于 1<strong>。</strong>对于高维度（即  d  值较大的维度），$
  \theta_d  会迅速衰减到接近 0**。
 
 旋转角度  m \cdot \theta_d  决定了频率，
 
-- 当  \theta_d  **接近 1**（低维度）， m \cdot \theta_d  的变化较大，**旋转更快**。
-- 当  \theta_d  **接近 0**（高维度）， m \cdot \theta_d  的变化较小，**旋转更慢**。
+- 当  \theta_d  <strong>接近 1</strong>（低维度）， m \cdot \theta_d  的变化较大，<strong>旋转更快</strong>。
+- 当  \theta_d  <strong>接近 0</strong>（高维度）， m \cdot \theta_d  的变化较小，<strong>旋转更慢</strong>。
 因此低维度具有更快的旋转（对应局部细节捕捉），高维度具有更慢的旋转（对应长距离依赖）。这种设计巧妙地结合了长距离和短距离的信息编码能力。
 
 #### 2.3 为什么ROPE直接外推在长文本外推中受限？
 
 尽管ROPE在预训练窗口范围内表现优异，其主要限制在于：
 
-- **频率不变性**：\theta_d 在预训练时被固定，无法适应更长的上下文长度。
-- **频率分布的刚性**：所有维度的频率分布固定，不支持动态调整，导致当序列长度超出预训练范围时，旋转编码出现混乱。
+- <strong>频率不变性</strong>：\theta_d 在预训练时被固定，无法适应更长的上下文长度。
+- <strong>频率分布的刚性</strong>：所有维度的频率分布固定，不支持动态调整，导致当序列长度超出预训练范围时，旋转编码出现混乱。
 当上下文窗口从预训练的 L 扩展到 L' 时，相对位置 m-n 的值可能远超预期范围。此时，旋转频率无法捕捉新的位置信息，导致模型性能显著下降。
 
 #### 3. Position Interpolation (PI)：均匀拉伸的位置插值，也叫线性内插
@@ -129,7 +129,7 @@ PI尝试通过重新定义  g(m) 将位置索引拉伸到预训练窗口内：
 
 $$f_W'(x_m, m, \theta_d) = f_W(x_m, \frac{m}{s}, \theta_d) \\ $$
 
-**优点**：简单有效，训练开销小。**缺点**：对所有维度频率统一缩放，导致高频信息丢失，影响局部关系建模。
+<strong>优点</strong>：简单有效，训练开销小。<strong>缺点</strong>：对所有维度频率统一缩放，导致高频信息丢失，影响局部关系建模。
 
 #### 4. NTK-Aware Interpolation：非均匀频率缩放，介于直接外推和线性内插之间的平滑方法
 
@@ -145,7 +145,7 @@ $这里 d=|D|/2时，h(\theta_d) = b^{-1} \cdot s^{-1} ，变成了线性内插�
 
 所以该方法可以理解为介于直接外推和线性内插之间的平滑方法。 它主要通过对低频维度更大幅度地插值，高频维度保持不变，保留了更多高频细节。
 
-**优点**：在未微调模型中显著提升长文本建模能力。**缺点**：部分频率超出预训练范围，可能引发性能不稳定。
+<strong>优点</strong>：在未微调模型中显著提升长文本建模能力。<strong>缺点</strong>：部分频率超出预训练范围，可能引发性能不稳定。
 
 #### 5. Dynamic Scaling：动态适配插值比例， NTK-Aware Interpolation升级版
 
@@ -161,16 +161,16 @@ $h(\theta_d)  = b^{-2i/d} \cdot \exp(-a \cdot (2i + 1)^b) \tag{2} $
 
 其中，参数 a 和 b 的取值决定了缩放函数的动态灵活性。且 a,b需要满足 a (d/2)^b = \log k，且 b 的推荐范围为 [0.625, 0.75]，公式 (2) 可有效提升上下文适配能力。
 
-相比于传统线性内插方法，公式 (1) 和 (2) 差不多可以实现 **1%-2% 的性能增益**，其优点在于：通过 a 和 b 调整缩放范围，位置索引从 [0, l] 被映射到更合理的区间范围，避免传统方式中索引越大越不充分的问题。
+相比于传统线性内插方法，公式 (1) 和 (2) 差不多可以实现 <strong>1%-2% 的性能增益</strong>，其优点在于：通过 a 和 b 调整缩放范围，位置索引从 [0, l] 被映射到更合理的区间范围，避免传统方式中索引越大越不充分的问题。
 
 #### 6.2 NTK-by-parts Interpolation：基于波长局部分段插值
 
-$$- **基于波长的维度分类**：“NTK-by-parts”方法着重考虑RoPE公式中定义的波长\lambda_d。对于每个隐藏维度d，计算其波长\lambda_d = \frac{2\pi}{\theta_d} = 2\pi b^{\frac{2d}{|D|}}（其中\theta_d = b^{-2d/|D|}，b = 10000）。根据波长与原始上下文大小L的比值r(d)=\frac{L}{\lambda_d}，将隐藏维度分为不同类别。$$
-- **不同类别维度的插值策略**： 
+$$- <strong>基于波长的维度分类</strong>：“NTK-by-parts”方法着重考虑RoPE公式中定义的波长\lambda_d。对于每个隐藏维度d，计算其波长\lambda_d = \frac{2\pi}{\theta_d} = 2\pi b^{\frac{2d}{|D|}}（其中\theta_d = b^{-2d/|D|}，b = 10000）。根据波长与原始上下文大小L的比值r(d)=\frac{L}{\lambda_d}，将隐藏维度分为不同类别。$$
+- <strong>不同类别维度的插值策略</strong>： 
 
-- **高频维度（** \beta">r(d) > \beta**）**：对于波长明显小于上下文大小的维度 (波长越小，频率越高)，这些维度被认为包含较多高频信息。不进行任何插值，直接保留原始频率，以避免高频细节的丢失（如局部位置关系破坏）。
-- **低频维度（**r(d) **）**：当波长大于等于上下文大小 (波长越大，频率越低)，对低频维度进行线性插值，避免外推带来的位置混淆（如绝对位置偏移）。
-- **中间维度**：对于介于上述两种情况之间的维度，采用一种混合策略，通过引入一个 ramp 函数\gamma(r)来确定插值程度。具体而言，这些维度的插值是在原始频率和拉伸后的频率之间进行线性插值，插值程度由\gamma(r(d))决定。
+- <strong>高频维度（</strong> \beta">r(d) > \beta<strong>）</strong>：对于波长明显小于上下文大小的维度 (波长越小，频率越高)，这些维度被认为包含较多高频信息。不进行任何插值，直接保留原始频率，以避免高频细节的丢失（如局部位置关系破坏）。
+- <strong>低频维度（</strong>r(d) <strong>）</strong>：当波长大于等于上下文大小 (波长越大，频率越低)，对低频维度进行线性插值，避免外推带来的位置混淆（如绝对位置偏移）。
+- <strong>中间维度</strong>：对于介于上述两种情况之间的维度，采用一种混合策略，通过引入一个 ramp 函数\gamma(r)来确定插值程度。具体而言，这些维度的插值是在原始频率和拉伸后的频率之间进行线性插值，插值程度由\gamma(r(d))决定。
 
 $$**根据上述策略，“NTK-by-parts”方法对RoPE的修改可以用以下公式表示： 定义g(m) = m，保持位置索引不变； h(\theta_d) = (1 - \gamma(r(d))) \frac{\theta_d}{s} + \gamma(r(d))\theta_d，根据维度的不同类别对频率参数进行相应的变换。其中，ramp函数\gamma(r)定义为：  \beta \\ 1, & if\ r \gamma(r) = \begin{cases}0, & if\ r > \beta \\ 1, & if\ r $$
 
@@ -193,8 +193,8 @@ $$\text{softmax}\left(\frac{q_m^T k_n}{t \sqrt{|D|}}\right), \quad \sqrt{\frac{1
 最后放几张Yarn中的实验结果感受一下, Yarn无论在资源利用率还是128K长度性能上都超过其他PI, NTK 类方法，
 无怪Yarn成为目前Long Context LLM的标配。 
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_8f55cdd59ee0.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_8f55cdd59ee0.jpg)
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_daf6232df536.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_daf6232df536.jpg)
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_946a027e050c.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_946a027e050c.jpg)

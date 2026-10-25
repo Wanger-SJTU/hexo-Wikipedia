@@ -107,7 +107,7 @@ categories:
 
 ---
 
-> **Note: We will keep updating this with new questions and answers.**
+> <strong>Note: We will keep updating this with new questions and answers.</strong>
 >
 > For topic-wise questions and answers, see [AI Engineering Interview Questions and Answers](https://github.com/amitshekhariitbhu/ai-engineering-interview-questions).
 
@@ -457,11 +457,11 @@ categories:
 
 ### Anthropic
 
-> **Roles this covers:** Member of Technical Staff (MTS), Software Engineer (product / infra / API-serving), Research Engineer, Research Scientist, Applied AI Engineer, Forward Deployed Engineer (Applied AI), Performance Engineer (inference & kernels), Product Engineer (Claude Code / Claude.ai).
+> <strong>Roles this covers:</strong> Member of Technical Staff (MTS), Software Engineer (product / infra / API-serving), Research Engineer, Research Scientist, Applied AI Engineer, Forward Deployed Engineer (Applied AI), Performance Engineer (inference & kernels), Product Engineer (Claude Code / Claude.ai).
 >
-> **Interview loop, as publicly reported:** Recruiter screen (~30 min, substantive and failable) → CodeSignal-style or live coding assessment (~70–90 min, one practical problem in ~4 progressive levels) → virtual onsite of roughly five rounds: project deep-dive, one or two coding rounds, system design, and a dedicated values/culture round. Reported end-to-end: 3 weeks to ~2 months. Some MLE loops now include an AI-collaboration round where Claude is provided and you are graded on how you direct and verify it.
+> <strong>Interview loop, as publicly reported:</strong> Recruiter screen (~30 min, substantive and failable) → CodeSignal-style or live coding assessment (~70–90 min, one practical problem in ~4 progressive levels) → virtual onsite of roughly five rounds: project deep-dive, one or two coding rounds, system design, and a dedicated values/culture round. Reported end-to-end: 3 weeks to ~2 months. Some MLE loops now include an AI-collaboration round where Claude is provided and you are graded on how you direct and verify it.
 >
-> **Also prepare:** the [common questions](#common-questions-asked-across-companies) tagged Anthropic under [LLM Internals and Architecture](#llm-internals-and-architecture), [Inference, Serving and GPU Performance](#inference-serving-and-gpu-performance), [Agents and Tool Use](#agents-and-tool-use), [Evaluation and Observability](#evaluation-and-observability), [Safety, Security and Responsible AI](#safety-security-and-responsible-ai), [AI System Design](#ai-system-design), [Coding and Data Structures](#coding-and-data-structures).
+> <strong>Also prepare:</strong> the [common questions](#common-questions-asked-across-companies) tagged Anthropic under [LLM Internals and Architecture](#llm-internals-and-architecture), [Inference, Serving and GPU Performance](#inference-serving-and-gpu-performance), [Agents and Tool Use](#agents-and-tool-use), [Evaluation and Observability](#evaluation-and-observability), [Safety, Security and Responsible AI](#safety-security-and-responsible-ai), [AI System Design](#ai-system-design), [Coding and Data Structures](#coding-and-data-structures).
 
 #### Coding and Data Structures
 
@@ -539,11 +539,11 @@ categories:
 
 ### OpenAI
 
-> **Roles this covers:** Member of Technical Staff, Software Engineer, Machine Learning Engineer, Research Engineer, Research Scientist, Applied AI Engineer, Forward Deployed Engineer, Solutions Architect, Data Scientist.
+> <strong>Roles this covers:</strong> Member of Technical Staff, Software Engineer, Machine Learning Engineer, Research Engineer, Research Scientist, Applied AI Engineer, Forward Deployed Engineer, Solutions Architect, Data Scientist.
 >
-> **Interview loop, as publicly reported:** Recruiter screen → technical screen (practical coding, often a build-something-real task rather than LeetCode) → onsite: two or three coding/practical rounds, a domain-depth or ML round, a system design round, and behavioural/mission-fit. Applied AI and FDE loops add a customer-scenario and solution-design round.
+> <strong>Interview loop, as publicly reported:</strong> Recruiter screen → technical screen (practical coding, often a build-something-real task rather than LeetCode) → onsite: two or three coding/practical rounds, a domain-depth or ML round, a system design round, and behavioural/mission-fit. Applied AI and FDE loops add a customer-scenario and solution-design round.
 >
-> **Also prepare:** the [common questions](#common-questions-asked-across-companies) tagged OpenAI under [LLM Internals and Architecture](#llm-internals-and-architecture), [Inference, Serving and GPU Performance](#inference-serving-and-gpu-performance), [Agents and Tool Use](#agents-and-tool-use), [Fine-Tuning, Post-Training and Alignment](#fine-tuning-post-training-and-alignment), [Evaluation and Observability](#evaluation-and-observability), [Safety, Security and Responsible AI](#safety-security-and-responsible-ai), [AI System Design](#ai-system-design), [Coding and Data Structures](#coding-and-data-structures).
+> <strong>Also prepare:</strong> the [common questions](#common-questions-asked-across-companies) tagged OpenAI under [LLM Internals and Architecture](#llm-internals-and-architecture), [Inference, Serving and GPU Performance](#inference-serving-and-gpu-performance), [Agents and Tool Use](#agents-and-tool-use), [Fine-Tuning, Post-Training and Alignment](#fine-tuning-post-training-and-alignment), [Evaluation and Observability](#evaluation-and-observability), [Safety, Security and Responsible AI](#safety-security-and-responsible-ai), [AI System Design](#ai-system-design), [Coding and Data Structures](#coding-and-data-structures).
 
 #### Coding and Data Structures
 
@@ -611,11 +611,11 @@ categories:
 
 ### Google DeepMind and Google AI
 
-> **Roles this covers:** Research Engineer, Research Scientist, Machine Learning Engineer, Software Engineer (ML), Forward Deployed Engineer, Applied AI Engineer (Google Cloud / Vertex AI), Data Scientist.
+> <strong>Roles this covers:</strong> Research Engineer, Research Scientist, Machine Learning Engineer, Software Engineer (ML), Forward Deployed Engineer, Applied AI Engineer (Google Cloud / Vertex AI), Data Scientist.
 >
-> **Interview loop, as publicly reported:** Recruiter screen → technical phone screen (coding, sometimes ML fundamentals) → onsite: two coding rounds, an ML domain/breadth round, an ML system design round, and Googleyness/leadership. DeepMind Research Engineer loops add a research deep-dive plus maths/probability and a from-scratch implementation round; hiring committee and team matching follow.
+> <strong>Interview loop, as publicly reported:</strong> Recruiter screen → technical phone screen (coding, sometimes ML fundamentals) → onsite: two coding rounds, an ML domain/breadth round, an ML system design round, and Googleyness/leadership. DeepMind Research Engineer loops add a research deep-dive plus maths/probability and a from-scratch implementation round; hiring committee and team matching follow.
 >
-> **Also prepare:** the [common questions](#common-questions-asked-across-companies) tagged Google DeepMind under [LLM Internals and Architecture](#llm-internals-and-architecture), [Inference, Serving and GPU Performance](#inference-serving-and-gpu-performance), [AI System Design](#ai-system-design), [Coding and Data Structures](#coding-and-data-structures).
+> <strong>Also prepare:</strong> the [common questions](#common-questions-asked-across-companies) tagged Google DeepMind under [LLM Internals and Architecture](#llm-internals-and-architecture), [Inference, Serving and GPU Performance](#inference-serving-and-gpu-performance), [AI System Design](#ai-system-design), [Coding and Data Structures](#coding-and-data-structures).
 
 #### Coding and Data Structures
 
@@ -663,11 +663,11 @@ categories:
 
 ### Meta (Superintelligence Labs, FAIR, Llama)
 
-> **Roles this covers:** Machine Learning Engineer (E4–E7), Research Engineer, Research Scientist, AI Infrastructure Engineer, Software Engineer (ML), Applied Research Scientist.
+> <strong>Roles this covers:</strong> Machine Learning Engineer (E4–E7), Research Engineer, Research Scientist, AI Infrastructure Engineer, Software Engineer (ML), Applied Research Scientist.
 >
-> **Interview loop, as publicly reported:** Recruiter screen → technical screen (2 coding problems in 45 min) → onsite: two coding rounds, one ML system design round, one ML domain/breadth round, and a behavioural (“Jedi”) round. Some 2026 loops now include an AI-assisted coding round in three stages: explore and fix issues, implement new functionality, extend and improve the system.
+> <strong>Interview loop, as publicly reported:</strong> Recruiter screen → technical screen (2 coding problems in 45 min) → onsite: two coding rounds, one ML system design round, one ML domain/breadth round, and a behavioural (“Jedi”) round. Some 2026 loops now include an AI-assisted coding round in three stages: explore and fix issues, implement new functionality, extend and improve the system.
 >
-> **Also prepare:** the [common questions](#common-questions-asked-across-companies) tagged Meta under [LLM Internals and Architecture](#llm-internals-and-architecture), [Inference, Serving and GPU Performance](#inference-serving-and-gpu-performance), [Multimodal, Speech and Voice AI](#multimodal-speech-and-voice-ai), [AI System Design](#ai-system-design).
+> <strong>Also prepare:</strong> the [common questions](#common-questions-asked-across-companies) tagged Meta under [LLM Internals and Architecture](#llm-internals-and-architecture), [Inference, Serving and GPU Performance](#inference-serving-and-gpu-performance), [Multimodal, Speech and Voice AI](#multimodal-speech-and-voice-ai), [AI System Design](#ai-system-design).
 
 #### Coding and Data Structures
 
@@ -735,11 +735,11 @@ categories:
 
 ### xAI
 
-> **Roles this covers:** Member of Technical Staff, AI Engineer, Infrastructure Engineer, Research Engineer, Product Engineer (Grok), Data / RL environments engineer.
+> <strong>Roles this covers:</strong> Member of Technical Staff, AI Engineer, Infrastructure Engineer, Research Engineer, Product Engineer (Grok), Data / RL environments engineer.
 >
-> **Interview loop, as publicly reported:** Fast, low-process loops. Typically a recruiter or hiring-manager screen → one or two live coding rounds heavy on data structures and systems → a practical build-something round (often a timed four-hour product build or a stubbed-out module in a real codebase) → founder/leadership conversation. Speed and raw shipping ability are weighted heavily.
+> <strong>Interview loop, as publicly reported:</strong> Fast, low-process loops. Typically a recruiter or hiring-manager screen → one or two live coding rounds heavy on data structures and systems → a practical build-something round (often a timed four-hour product build or a stubbed-out module in a real codebase) → founder/leadership conversation. Speed and raw shipping ability are weighted heavily.
 >
-> **Also prepare:** the [common questions](#common-questions-asked-across-companies) tagged xAI under [LLM Internals and Architecture](#llm-internals-and-architecture), [Inference, Serving and GPU Performance](#inference-serving-and-gpu-performance), [AI System Design](#ai-system-design), [Coding and Data Structures](#coding-and-data-structures).
+> <strong>Also prepare:</strong> the [common questions](#common-questions-asked-across-companies) tagged xAI under [LLM Internals and Architecture](#llm-internals-and-architecture), [Inference, Serving and GPU Performance](#inference-serving-and-gpu-performance), [AI System Design](#ai-system-design), [Coding and Data Structures](#coding-and-data-structures).
 
 #### Coding and Data Structures
 
@@ -769,11 +769,11 @@ categories:
 
 ### Mistral AI
 
-> **Roles this covers:** Research Engineer, ML Engineer, Applied AI Engineer, Solutions Architect / Forward Deployed Engineer, Inference Engineer, Platform Engineer.
+> <strong>Roles this covers:</strong> Research Engineer, ML Engineer, Applied AI Engineer, Solutions Architect / Forward Deployed Engineer, Inference Engineer, Platform Engineer.
 >
-> **Interview loop, as publicly reported:** Recruiter screen → technical screen (Python + ML fundamentals) → pair-programming round building a small LLM-backed service → deep-dive on transformer/serving internals → customer-scenario round for applied roles → culture/founders round. European enterprise and on-prem deployment context shows up throughout.
+> <strong>Interview loop, as publicly reported:</strong> Recruiter screen → technical screen (Python + ML fundamentals) → pair-programming round building a small LLM-backed service → deep-dive on transformer/serving internals → customer-scenario round for applied roles → culture/founders round. European enterprise and on-prem deployment context shows up throughout.
 >
-> **Also prepare:** the [common questions](#common-questions-asked-across-companies) tagged Mistral AI under [LLM Internals and Architecture](#llm-internals-and-architecture), [Inference, Serving and GPU Performance](#inference-serving-and-gpu-performance), [Agents and Tool Use](#agents-and-tool-use), [Fine-Tuning, Post-Training and Alignment](#fine-tuning-post-training-and-alignment), [Coding and Data Structures](#coding-and-data-structures).
+> <strong>Also prepare:</strong> the [common questions](#common-questions-asked-across-companies) tagged Mistral AI under [LLM Internals and Architecture](#llm-internals-and-architecture), [Inference, Serving and GPU Performance](#inference-serving-and-gpu-performance), [Agents and Tool Use](#agents-and-tool-use), [Fine-Tuning, Post-Training and Alignment](#fine-tuning-post-training-and-alignment), [Coding and Data Structures](#coding-and-data-structures).
 
 #### Coding and Data Structures
 
@@ -809,11 +809,11 @@ categories:
 
 ### Cohere
 
-> **Roles this covers:** Member of Technical Staff, ML Engineer, Applied AI Engineer, Solutions Architect / Forward Deployed Engineer, Platform & Inference Engineer.
+> <strong>Roles this covers:</strong> Member of Technical Staff, ML Engineer, Applied AI Engineer, Solutions Architect / Forward Deployed Engineer, Platform & Inference Engineer.
 >
-> **Interview loop, as publicly reported:** Recruiter screen → technical screen (practical Python, streaming/API-shaped problems) → onsite: coding, retrieval/RAG depth, enterprise deployment design, customer-scenario round, and a values round. Remote-first; autonomy and ownership are explicitly tested.
+> <strong>Interview loop, as publicly reported:</strong> Recruiter screen → technical screen (practical Python, streaming/API-shaped problems) → onsite: coding, retrieval/RAG depth, enterprise deployment design, customer-scenario round, and a values round. Remote-first; autonomy and ownership are explicitly tested.
 >
-> **Also prepare:** the [common questions](#common-questions-asked-across-companies) tagged Cohere under [LLM Internals and Architecture](#llm-internals-and-architecture), [RAG and Retrieval](#rag-and-retrieval), [Fine-Tuning, Post-Training and Alignment](#fine-tuning-post-training-and-alignment), [Evaluation and Observability](#evaluation-and-observability), [Coding and Data Structures](#coding-and-data-structures).
+> <strong>Also prepare:</strong> the [common questions](#common-questions-asked-across-companies) tagged Cohere under [LLM Internals and Architecture](#llm-internals-and-architecture), [RAG and Retrieval](#rag-and-retrieval), [Fine-Tuning, Post-Training and Alignment](#fine-tuning-post-training-and-alignment), [Evaluation and Observability](#evaluation-and-observability), [Coding and Data Structures](#coding-and-data-structures).
 
 #### Coding and Data Structures
 
@@ -851,11 +851,11 @@ categories:
 
 ### DeepSeek
 
-> **Roles this covers:** Research Engineer, Infrastructure / Systems Engineer, Inference Engineer, Data Engineer, Algorithm Engineer.
+> <strong>Roles this covers:</strong> Research Engineer, Infrastructure / Systems Engineer, Inference Engineer, Data Engineer, Algorithm Engineer.
 >
-> **Interview loop, as publicly reported:** Heavily research- and systems-weighted: paper deep-dive, from-scratch implementation rounds in PyTorch, distributed-training and low-precision depth, plus an algorithmic coding round. Expect direct questions about their published architecture and training papers.
+> <strong>Interview loop, as publicly reported:</strong> Heavily research- and systems-weighted: paper deep-dive, from-scratch implementation rounds in PyTorch, distributed-training and low-precision depth, plus an algorithmic coding round. Expect direct questions about their published architecture and training papers.
 >
-> **Also prepare:** the [common questions](#common-questions-asked-across-companies) tagged DeepSeek under [LLM Internals and Architecture](#llm-internals-and-architecture), [Fine-Tuning, Post-Training and Alignment](#fine-tuning-post-training-and-alignment).
+> <strong>Also prepare:</strong> the [common questions](#common-questions-asked-across-companies) tagged DeepSeek under [LLM Internals and Architecture](#llm-internals-and-architecture), [Fine-Tuning, Post-Training and Alignment](#fine-tuning-post-training-and-alignment).
 
 #### LLM Internals and Architecture
 
@@ -886,11 +886,11 @@ categories:
 
 ### Moonshot AI (Kimi)
 
-> **Roles this covers:** Research Engineer, Infrastructure Engineer, Inference / Serving Engineer, Agent Engineer.
+> <strong>Roles this covers:</strong> Research Engineer, Infrastructure Engineer, Inference / Serving Engineer, Agent Engineer.
 >
-> **Interview loop, as publicly reported:** Research and long-context systems focused: architecture deep-dive, distributed serving design, a PyTorch implementation round, and an agentic-evaluation discussion.
+> <strong>Interview loop, as publicly reported:</strong> Research and long-context systems focused: architecture deep-dive, distributed serving design, a PyTorch implementation round, and an agentic-evaluation discussion.
 >
-> **Also prepare:** the [common questions](#common-questions-asked-across-companies) tagged Moonshot AI under [LLM Internals and Architecture](#llm-internals-and-architecture), [Inference, Serving and GPU Performance](#inference-serving-and-gpu-performance), [Evaluation and Observability](#evaluation-and-observability), [Coding and Data Structures](#coding-and-data-structures).
+> <strong>Also prepare:</strong> the [common questions](#common-questions-asked-across-companies) tagged Moonshot AI under [LLM Internals and Architecture](#llm-internals-and-architecture), [Inference, Serving and GPU Performance](#inference-serving-and-gpu-performance), [Evaluation and Observability](#evaluation-and-observability), [Coding and Data Structures](#coding-and-data-structures).
 
 #### LLM Internals and Architecture
 
@@ -927,11 +927,11 @@ categories:
 
 ### Zhipu AI (GLM)
 
-> **Roles this covers:** Research Engineer, Agent Engineer, RL Infrastructure Engineer, Applied AI Engineer.
+> <strong>Roles this covers:</strong> Research Engineer, Agent Engineer, RL Infrastructure Engineer, Applied AI Engineer.
 >
-> **Interview loop, as publicly reported:** Architecture and post-training depth, an RL-infrastructure design round, a GUI-agent design round, and an implementation round in PyTorch.
+> <strong>Interview loop, as publicly reported:</strong> Architecture and post-training depth, an RL-infrastructure design round, a GUI-agent design round, and an implementation round in PyTorch.
 >
-> **Also prepare:** the [common questions](#common-questions-asked-across-companies) tagged Zhipu AI under [LLM Internals and Architecture](#llm-internals-and-architecture), [Fine-Tuning, Post-Training and Alignment](#fine-tuning-post-training-and-alignment), [Evaluation and Observability](#evaluation-and-observability).
+> <strong>Also prepare:</strong> the [common questions](#common-questions-asked-across-companies) tagged Zhipu AI under [LLM Internals and Architecture](#llm-internals-and-architecture), [Fine-Tuning, Post-Training and Alignment](#fine-tuning-post-training-and-alignment), [Evaluation and Observability](#evaluation-and-observability).
 
 #### LLM Internals and Architecture
 
@@ -969,11 +969,11 @@ categories:
 
 ### Alibaba (Qwen)
 
-> **Roles this covers:** Algorithm Engineer (LLM), Research Engineer, Inference Engineer, Multimodal Engineer, Applied AI Engineer (Alibaba Cloud / Model Studio).
+> <strong>Roles this covers:</strong> Algorithm Engineer (LLM), Research Engineer, Inference Engineer, Multimodal Engineer, Applied AI Engineer (Alibaba Cloud / Model Studio).
 >
-> **Interview loop, as publicly reported:** Classic Alibaba structure: two or three technical rounds (algorithms + ML depth), a cross-examination round with a senior manager, and an HR round, with Qwen-specific architecture and multilingual questions layered on top.
+> <strong>Interview loop, as publicly reported:</strong> Classic Alibaba structure: two or three technical rounds (algorithms + ML depth), a cross-examination round with a senior manager, and an HR round, with Qwen-specific architecture and multilingual questions layered on top.
 >
-> **Also prepare:** the [common questions](#common-questions-asked-across-companies) tagged Alibaba under [LLM Internals and Architecture](#llm-internals-and-architecture), [Fine-Tuning, Post-Training and Alignment](#fine-tuning-post-training-and-alignment), [Evaluation and Observability](#evaluation-and-observability), [Multimodal, Speech and Voice AI](#multimodal-speech-and-voice-ai), [Coding and Data Structures](#coding-and-data-structures).
+> <strong>Also prepare:</strong> the [common questions](#common-questions-asked-across-companies) tagged Alibaba under [LLM Internals and Architecture](#llm-internals-and-architecture), [Fine-Tuning, Post-Training and Alignment](#fine-tuning-post-training-and-alignment), [Evaluation and Observability](#evaluation-and-observability), [Multimodal, Speech and Voice AI](#multimodal-speech-and-voice-ai), [Coding and Data Structures](#coding-and-data-structures).
 
 #### Coding and Data Structures
 
@@ -1013,11 +1013,11 @@ categories:
 
 ### Sarvam AI
 
-> **Roles this covers:** Research Engineer (LLM / speech), ML Engineer, Applied AI / Forward Deployed Engineer, Speech Engineer, Edge / Inference Engineer.
+> <strong>Roles this covers:</strong> Research Engineer (LLM / speech), ML Engineer, Applied AI / Forward Deployed Engineer, Speech Engineer, Edge / Inference Engineer.
 >
-> **Interview loop, as publicly reported:** Research and applied rounds side by side: Indic NLP and tokenizer depth, a speech/ASR round, an implementation round, a deployment-on-constrained-hardware round, and a government/enterprise deployment scenario.
+> <strong>Interview loop, as publicly reported:</strong> Research and applied rounds side by side: Indic NLP and tokenizer depth, a speech/ASR round, an implementation round, a deployment-on-constrained-hardware round, and a government/enterprise deployment scenario.
 >
-> **Also prepare:** the [common questions](#common-questions-asked-across-companies) tagged Sarvam AI under [LLM Internals and Architecture](#llm-internals-and-architecture), [Fine-Tuning, Post-Training and Alignment](#fine-tuning-post-training-and-alignment), [Multimodal, Speech and Voice AI](#multimodal-speech-and-voice-ai).
+> <strong>Also prepare:</strong> the [common questions](#common-questions-asked-across-companies) tagged Sarvam AI under [LLM Internals and Architecture](#llm-internals-and-architecture), [Fine-Tuning, Post-Training and Alignment](#fine-tuning-post-training-and-alignment), [Multimodal, Speech and Voice AI](#multimodal-speech-and-voice-ai).
 
 #### Coding and Data Structures
 
@@ -1070,11 +1070,11 @@ categories:
 
 ### Microsoft
 
-> **Roles this covers:** AI Engineer, Applied Scientist, Machine Learning Engineer, Software Engineer (AI Platform / Copilot), Azure AI Solutions Architect, Principal Applied AI Engineer.
+> <strong>Roles this covers:</strong> AI Engineer, Applied Scientist, Machine Learning Engineer, Software Engineer (AI Platform / Copilot), Azure AI Solutions Architect, Principal Applied AI Engineer.
 >
-> **Interview loop, as publicly reported:** Recruiter screen → technical phone screen (coding + a little ML) → onsite loop of 4–5 rounds: two coding, one ML/AI depth, one AI system design or low-level design, and an as-appropriate-hire round with a senior leader. Azure AI and Copilot roles add a customer-architecture round.
+> <strong>Interview loop, as publicly reported:</strong> Recruiter screen → technical phone screen (coding + a little ML) → onsite loop of 4–5 rounds: two coding, one ML/AI depth, one AI system design or low-level design, and an as-appropriate-hire round with a senior leader. Azure AI and Copilot roles add a customer-architecture round.
 >
-> **Also prepare:** the [common questions](#common-questions-asked-across-companies) tagged Microsoft under [Inference, Serving and GPU Performance](#inference-serving-and-gpu-performance), [RAG and Retrieval](#rag-and-retrieval), [Agents and Tool Use](#agents-and-tool-use), [Fine-Tuning, Post-Training and Alignment](#fine-tuning-post-training-and-alignment), [Safety, Security and Responsible AI](#safety-security-and-responsible-ai), [AI System Design](#ai-system-design).
+> <strong>Also prepare:</strong> the [common questions](#common-questions-asked-across-companies) tagged Microsoft under [Inference, Serving and GPU Performance](#inference-serving-and-gpu-performance), [RAG and Retrieval](#rag-and-retrieval), [Agents and Tool Use](#agents-and-tool-use), [Fine-Tuning, Post-Training and Alignment](#fine-tuning-post-training-and-alignment), [Safety, Security and Responsible AI](#safety-security-and-responsible-ai), [AI System Design](#ai-system-design).
 
 #### Coding and Data Structures
 
@@ -1111,11 +1111,11 @@ categories:
 
 ### Amazon (AWS)
 
-> **Roles this covers:** Applied Scientist (I/II/III), Machine Learning Engineer, Data Scientist, Software Development Engineer (AI/ML), GenAI Specialist Solutions Architect, Applied AI Engineer (Bedrock, Q, SageMaker).
+> <strong>Roles this covers:</strong> Applied Scientist (I/II/III), Machine Learning Engineer, Data Scientist, Software Development Engineer (AI/ML), GenAI Specialist Solutions Architect, Applied AI Engineer (Bedrock, Q, SageMaker).
 >
-> **Interview loop, as publicly reported:** Online assessment or phone screen → onsite “loop” of 4–6 rounds, each anchored on Leadership Principles: two coding, one ML breadth, one ML depth / research deep-dive or ML system design, one bar-raiser. Applied Scientist loops add a research presentation.
+> <strong>Interview loop, as publicly reported:</strong> Online assessment or phone screen → onsite “loop” of 4–6 rounds, each anchored on Leadership Principles: two coding, one ML breadth, one ML depth / research deep-dive or ML system design, one bar-raiser. Applied Scientist loops add a research presentation.
 >
-> **Also prepare:** the [common questions](#common-questions-asked-across-companies) tagged Amazon under [LLM Internals and Architecture](#llm-internals-and-architecture), [Inference, Serving and GPU Performance](#inference-serving-and-gpu-performance), [AI System Design](#ai-system-design), [Coding and Data Structures](#coding-and-data-structures).
+> <strong>Also prepare:</strong> the [common questions](#common-questions-asked-across-companies) tagged Amazon under [LLM Internals and Architecture](#llm-internals-and-architecture), [Inference, Serving and GPU Performance](#inference-serving-and-gpu-performance), [AI System Design](#ai-system-design), [Coding and Data Structures](#coding-and-data-structures).
 
 #### Coding and Data Structures
 
@@ -1177,11 +1177,11 @@ categories:
 
 ### Apple
 
-> **Roles this covers:** Machine Learning Engineer, AI/ML Research Engineer, On-device ML Engineer, Software Engineer (Apple Intelligence / Siri), Applied Scientist.
+> <strong>Roles this covers:</strong> Machine Learning Engineer, AI/ML Research Engineer, On-device ML Engineer, Software Engineer (Apple Intelligence / Siri), Applied Scientist.
 >
-> **Interview loop, as publicly reported:** Recruiter screen → hiring-manager technical call → onsite of 4–6 rounds with the specific team: coding, ML depth, on-device/efficiency depth, system design, and behavioural. Secrecy means you may be interviewed for work you cannot be told about.
+> <strong>Interview loop, as publicly reported:</strong> Recruiter screen → hiring-manager technical call → onsite of 4–6 rounds with the specific team: coding, ML depth, on-device/efficiency depth, system design, and behavioural. Secrecy means you may be interviewed for work you cannot be told about.
 >
-> **Also prepare:** the [common questions](#common-questions-asked-across-companies) tagged Apple under [LLM Internals and Architecture](#llm-internals-and-architecture), [Inference, Serving and GPU Performance](#inference-serving-and-gpu-performance), [Agents and Tool Use](#agents-and-tool-use), [Fine-Tuning, Post-Training and Alignment](#fine-tuning-post-training-and-alignment), [Coding and Data Structures](#coding-and-data-structures).
+> <strong>Also prepare:</strong> the [common questions](#common-questions-asked-across-companies) tagged Apple under [LLM Internals and Architecture](#llm-internals-and-architecture), [Inference, Serving and GPU Performance](#inference-serving-and-gpu-performance), [Agents and Tool Use](#agents-and-tool-use), [Fine-Tuning, Post-Training and Alignment](#fine-tuning-post-training-and-alignment), [Coding and Data Structures](#coding-and-data-structures).
 
 #### Inference, Serving and GPU Performance
 
@@ -1222,11 +1222,11 @@ categories:
 
 ### NVIDIA
 
-> **Roles this covers:** Deep Learning Software Engineer (Inference / LLM Performance), CUDA Kernel Engineer, Machine Learning Engineer, Solutions Architect, Applied Scientist, TensorRT-LLM / Dynamo engineer.
+> <strong>Roles this covers:</strong> Deep Learning Software Engineer (Inference / LLM Performance), CUDA Kernel Engineer, Machine Learning Engineer, Solutions Architect, Applied Scientist, TensorRT-LLM / Dynamo engineer.
 >
-> **Interview loop, as publicly reported:** Recruiter screen → hiring-manager technical call → onsite of 4–6 rounds: CUDA/C++ or Python coding, GPU performance and roofline reasoning, LLM inference depth, ML fundamentals, and system/solution design. Solutions Architect loops replace kernel depth with customer-scenario rounds.
+> <strong>Interview loop, as publicly reported:</strong> Recruiter screen → hiring-manager technical call → onsite of 4–6 rounds: CUDA/C++ or Python coding, GPU performance and roofline reasoning, LLM inference depth, ML fundamentals, and system/solution design. Solutions Architect loops replace kernel depth with customer-scenario rounds.
 >
-> **Also prepare:** the [common questions](#common-questions-asked-across-companies) tagged NVIDIA under [LLM Internals and Architecture](#llm-internals-and-architecture), [Inference, Serving and GPU Performance](#inference-serving-and-gpu-performance).
+> <strong>Also prepare:</strong> the [common questions](#common-questions-asked-across-companies) tagged NVIDIA under [LLM Internals and Architecture](#llm-internals-and-architecture), [Inference, Serving and GPU Performance](#inference-serving-and-gpu-performance).
 
 #### Coding and Data Structures
 
@@ -1266,9 +1266,9 @@ categories:
 
 ### Tesla
 
-> **Roles this covers:** AI / ML Engineer (Autopilot, Optimus), Deep Learning Engineer, Computer Vision Engineer, Data Engineer (Autopilot), Inference / Silicon software engineer.
+> <strong>Roles this covers:</strong> AI / ML Engineer (Autopilot, Optimus), Deep Learning Engineer, Computer Vision Engineer, Data Engineer (Autopilot), Inference / Silicon software engineer.
 >
-> **Interview loop, as publicly reported:** Recruiter screen → hiring-manager technical call → onsite: coding (often C++/Python), deep-learning depth focused on vision and training pipelines, a data/infra round, and a hands-on debugging round. Loops are fast and heavy on practical engineering.
+> <strong>Interview loop, as publicly reported:</strong> Recruiter screen → hiring-manager technical call → onsite: coding (often C++/Python), deep-learning depth focused on vision and training pipelines, a data/infra round, and a hands-on debugging round. Loops are fast and heavy on practical engineering.
 
 #### Coding and Data Structures
 
@@ -1305,11 +1305,11 @@ categories:
 
 ### Consumer-Scale ML Companies (Uber, Netflix, LinkedIn, Airbnb, Pinterest, Spotify)
 
-> **Roles this covers:** Machine Learning Engineer, Senior/Staff MLE, Applied Scientist, ML Platform Engineer, GenAI Engineer.
+> <strong>Roles this covers:</strong> Machine Learning Engineer, Senior/Staff MLE, Applied Scientist, ML Platform Engineer, GenAI Engineer.
 >
-> **Interview loop, as publicly reported:** A consistent shape across all of them: coding screen → onsite with two coding rounds, one ML system design round (the differentiator), one ML breadth/depth round, and behavioural. GenAI rounds have been added to most of these loops since 2024.
+> <strong>Interview loop, as publicly reported:</strong> A consistent shape across all of them: coding screen → onsite with two coding rounds, one ML system design round (the differentiator), one ML breadth/depth round, and behavioural. GenAI rounds have been added to most of these loops since 2024.
 >
-> **Also prepare:** the [common questions](#common-questions-asked-across-companies) tagged Consumer-Scale ML Companies under [AI System Design](#ai-system-design).
+> <strong>Also prepare:</strong> the [common questions](#common-questions-asked-across-companies) tagged Consumer-Scale ML Companies under [AI System Design](#ai-system-design).
 
 #### Coding and Data Structures
 
@@ -1345,11 +1345,11 @@ categories:
 
 ### Databricks
 
-> **Roles this covers:** Software Engineer (ML Platform / Mosaic AI), Machine Learning Engineer, GenAI Solutions Architect, Forward Deployed / Delivery Solutions Architect, Applied AI Engineer.
+> <strong>Roles this covers:</strong> Software Engineer (ML Platform / Mosaic AI), Machine Learning Engineer, GenAI Solutions Architect, Forward Deployed / Delivery Solutions Architect, Applied AI Engineer.
 >
-> **Interview loop, as publicly reported:** Recruiter screen → technical screen (practical coding, often concurrency or data-heavy) → onsite: two coding rounds, a distributed-systems or Spark-internals round, a GenAI/ML design round, and a customer-scenario round for field roles.
+> <strong>Interview loop, as publicly reported:</strong> Recruiter screen → technical screen (practical coding, often concurrency or data-heavy) → onsite: two coding rounds, a distributed-systems or Spark-internals round, a GenAI/ML design round, and a customer-scenario round for field roles.
 >
-> **Also prepare:** the [common questions](#common-questions-asked-across-companies) tagged Databricks under [Inference, Serving and GPU Performance](#inference-serving-and-gpu-performance), [RAG and Retrieval](#rag-and-retrieval), [Fine-Tuning, Post-Training and Alignment](#fine-tuning-post-training-and-alignment), [AI System Design](#ai-system-design).
+> <strong>Also prepare:</strong> the [common questions](#common-questions-asked-across-companies) tagged Databricks under [Inference, Serving and GPU Performance](#inference-serving-and-gpu-performance), [RAG and Retrieval](#rag-and-retrieval), [Fine-Tuning, Post-Training and Alignment](#fine-tuning-post-training-and-alignment), [AI System Design](#ai-system-design).
 
 #### Coding and Data Structures
 
@@ -1375,11 +1375,11 @@ categories:
 
 ### Groq
 
-> **Roles this covers:** Compiler Engineer, Runtime / Systems Engineer, Inference Engineer, Silicon Software Engineer, Solutions Architect.
+> <strong>Roles this covers:</strong> Compiler Engineer, Runtime / Systems Engineer, Inference Engineer, Silicon Software Engineer, Solutions Architect.
 >
-> **Interview loop, as publicly reported:** Deep systems and compiler rounds: roofline and memory-hierarchy reasoning for an SRAM-only machine, compiler IR design, host-runtime design, a debugging round, and a customer/unit-economics round.
+> <strong>Interview loop, as publicly reported:</strong> Deep systems and compiler rounds: roofline and memory-hierarchy reasoning for an SRAM-only machine, compiler IR design, host-runtime design, a debugging round, and a customer/unit-economics round.
 >
-> **Also prepare:** the [common questions](#common-questions-asked-across-companies) tagged Groq under [Inference, Serving and GPU Performance](#inference-serving-and-gpu-performance).
+> <strong>Also prepare:</strong> the [common questions](#common-questions-asked-across-companies) tagged Groq under [Inference, Serving and GPU Performance](#inference-serving-and-gpu-performance).
 
 #### Coding and Data Structures
 
@@ -1415,11 +1415,11 @@ categories:
 
 ### Together AI
 
-> **Roles this covers:** Inference Engineer, Kernel Engineer, ML Systems Engineer, Solutions / Forward Deployed Engineer, Platform Engineer.
+> <strong>Roles this covers:</strong> Inference Engineer, Kernel Engineer, ML Systems Engineer, Solutions / Forward Deployed Engineer, Platform Engineer.
 >
-> **Interview loop, as publicly reported:** Inference-performance depth, a scheduler/serving design round, a practical streaming-server coding round, a distributed-training debugging round, and a customer-advisory round for field roles.
+> <strong>Interview loop, as publicly reported:</strong> Inference-performance depth, a scheduler/serving design round, a practical streaming-server coding round, a distributed-training debugging round, and a customer-advisory round for field roles.
 >
-> **Also prepare:** the [common questions](#common-questions-asked-across-companies) tagged Together AI under [LLM Internals and Architecture](#llm-internals-and-architecture), [Inference, Serving and GPU Performance](#inference-serving-and-gpu-performance).
+> <strong>Also prepare:</strong> the [common questions](#common-questions-asked-across-companies) tagged Together AI under [LLM Internals and Architecture](#llm-internals-and-architecture), [Inference, Serving and GPU Performance](#inference-serving-and-gpu-performance).
 
 #### Coding and Data Structures
 
@@ -1449,11 +1449,11 @@ categories:
 
 ### Hugging Face
 
-> **Roles this covers:** ML Engineer (open-source maintainer), Research Engineer, Infrastructure Engineer, Developer Advocate Engineer, Inference Engineer.
+> <strong>Roles this covers:</strong> ML Engineer (open-source maintainer), Research Engineer, Infrastructure Engineer, Developer Advocate Engineer, Inference Engineer.
 >
-> **Interview loop, as publicly reported:** Open-source-flavoured: a library-internals deep dive, a maintainer/code-review round, a practical fine-tuning or memory-budget round, a Hub/systems design round, and a culture round. Your public GitHub history is genuinely part of the evaluation.
+> <strong>Interview loop, as publicly reported:</strong> Open-source-flavoured: a library-internals deep dive, a maintainer/code-review round, a practical fine-tuning or memory-budget round, a Hub/systems design round, and a culture round. Your public GitHub history is genuinely part of the evaluation.
 >
-> **Also prepare:** the [common questions](#common-questions-asked-across-companies) tagged Hugging Face under [LLM Internals and Architecture](#llm-internals-and-architecture), [Fine-Tuning, Post-Training and Alignment](#fine-tuning-post-training-and-alignment).
+> <strong>Also prepare:</strong> the [common questions](#common-questions-asked-across-companies) tagged Hugging Face under [LLM Internals and Architecture](#llm-internals-and-architecture), [Fine-Tuning, Post-Training and Alignment](#fine-tuning-post-training-and-alignment).
 
 #### Coding and Data Structures
 
@@ -1485,11 +1485,11 @@ categories:
 
 ### Scale AI
 
-> **Roles this covers:** Software Engineer, Machine Learning Engineer, Research Engineer (SEAL evals), Forward Deployed Engineer, Product Engineer (data engine, RL environments).
+> <strong>Roles this covers:</strong> Software Engineer, Machine Learning Engineer, Research Engineer (SEAL evals), Forward Deployed Engineer, Product Engineer (data engine, RL environments).
 >
-> **Interview loop, as publicly reported:** Recruiter screen → technical screen (practical coding) → onsite: coding with progressive requirements, a data-quality/annotation design round, an evaluation-design round, and a customer-scenario round for FDE.
+> <strong>Interview loop, as publicly reported:</strong> Recruiter screen → technical screen (practical coding) → onsite: coding with progressive requirements, a data-quality/annotation design round, an evaluation-design round, and a customer-scenario round for FDE.
 >
-> **Also prepare:** the [common questions](#common-questions-asked-across-companies) tagged Scale AI under [LLM Internals and Architecture](#llm-internals-and-architecture), [Fine-Tuning, Post-Training and Alignment](#fine-tuning-post-training-and-alignment), [Evaluation and Observability](#evaluation-and-observability), [AI System Design](#ai-system-design).
+> <strong>Also prepare:</strong> the [common questions](#common-questions-asked-across-companies) tagged Scale AI under [LLM Internals and Architecture](#llm-internals-and-architecture), [Fine-Tuning, Post-Training and Alignment](#fine-tuning-post-training-and-alignment), [Evaluation and Observability](#evaluation-and-observability), [AI System Design](#ai-system-design).
 
 #### Coding and Data Structures
 
@@ -1526,11 +1526,11 @@ categories:
 
 ### Perplexity
 
-> **Roles this covers:** Software Engineer (search / infra), AI Engineer, Research Scientist, ML Engineer (ranking & retrieval), Product Engineer (Comet).
+> <strong>Roles this covers:</strong> Software Engineer (search / infra), AI Engineer, Research Scientist, ML Engineer (ranking & retrieval), Product Engineer (Comet).
 >
-> **Interview loop, as publicly reported:** Recruiter screen → technical screen → onsite: a system design round on retrieval/ranking at web scale, an ML/search deep-dive, a practical coding round, a product/craft round, and behavioural. Product taste about their own app is explicitly evaluated.
+> <strong>Interview loop, as publicly reported:</strong> Recruiter screen → technical screen → onsite: a system design round on retrieval/ranking at web scale, an ML/search deep-dive, a practical coding round, a product/craft round, and behavioural. Product taste about their own app is explicitly evaluated.
 >
-> **Also prepare:** the [common questions](#common-questions-asked-across-companies) tagged Perplexity under [LLM Internals and Architecture](#llm-internals-and-architecture), [Inference, Serving and GPU Performance](#inference-serving-and-gpu-performance), [RAG and Retrieval](#rag-and-retrieval), [Evaluation and Observability](#evaluation-and-observability), [AI System Design](#ai-system-design), [Coding and Data Structures](#coding-and-data-structures).
+> <strong>Also prepare:</strong> the [common questions](#common-questions-asked-across-companies) tagged Perplexity under [LLM Internals and Architecture](#llm-internals-and-architecture), [Inference, Serving and GPU Performance](#inference-serving-and-gpu-performance), [RAG and Retrieval](#rag-and-retrieval), [Evaluation and Observability](#evaluation-and-observability), [AI System Design](#ai-system-design), [Coding and Data Structures](#coding-and-data-structures).
 
 #### Coding and Data Structures
 
@@ -1578,11 +1578,11 @@ categories:
 
 ### Cursor (Anysphere)
 
-> **Roles this covers:** Software Engineer (product, infra, model serving), ML Engineer, Research Engineer, Infrastructure Engineer.
+> <strong>Roles this covers:</strong> Software Engineer (product, infra, model serving), ML Engineer, Research Engineer, Infrastructure Engineer.
 >
-> **Interview loop, as publicly reported:** Recruiter/hiring-manager screen (~45 min) → one to three 60-minute technical screens where you build data structures against Cursor's actual codebase (AI-tool access varies by round) → a two-day in-person project onsite (or an ~8-hour remote version) where you design and ship a feature on real Cursor code. Scoping, autonomy and effective AI-tool use are explicitly graded.
+> <strong>Interview loop, as publicly reported:</strong> Recruiter/hiring-manager screen (~45 min) → one to three 60-minute technical screens where you build data structures against Cursor's actual codebase (AI-tool access varies by round) → a two-day in-person project onsite (or an ~8-hour remote version) where you design and ship a feature on real Cursor code. Scoping, autonomy and effective AI-tool use are explicitly graded.
 >
-> **Also prepare:** the [common questions](#common-questions-asked-across-companies) tagged Cursor under [Inference, Serving and GPU Performance](#inference-serving-and-gpu-performance), [RAG and Retrieval](#rag-and-retrieval), [Evaluation and Observability](#evaluation-and-observability), [AI System Design](#ai-system-design).
+> <strong>Also prepare:</strong> the [common questions](#common-questions-asked-across-companies) tagged Cursor under [Inference, Serving and GPU Performance](#inference-serving-and-gpu-performance), [RAG and Retrieval](#rag-and-retrieval), [Evaluation and Observability](#evaluation-and-observability), [AI System Design](#ai-system-design).
 
 #### Coding and Data Structures
 
@@ -1630,11 +1630,11 @@ categories:
 
 ### Cognition (Devin, Windsurf)
 
-> **Roles this covers:** Member of Technical Staff, Agent Engineer, Infrastructure Engineer, Deployed Engineer, Research Engineer (agent RL).
+> <strong>Roles this covers:</strong> Member of Technical Staff, Agent Engineer, Infrastructure Engineer, Deployed Engineer, Research Engineer (agent RL).
 >
-> **Interview loop, as publicly reported:** Fast loop weighted toward building: a practical agent-building or debugging round, an infrastructure design round, an agent-evaluation round, and a deployed-engineering scenario for customer-facing roles.
+> <strong>Interview loop, as publicly reported:</strong> Fast loop weighted toward building: a practical agent-building or debugging round, an infrastructure design round, an agent-evaluation round, and a deployed-engineering scenario for customer-facing roles.
 >
-> **Also prepare:** the [common questions](#common-questions-asked-across-companies) tagged Cognition under [Agents and Tool Use](#agents-and-tool-use), [Evaluation and Observability](#evaluation-and-observability), [Coding and Data Structures](#coding-and-data-structures).
+> <strong>Also prepare:</strong> the [common questions](#common-questions-asked-across-companies) tagged Cognition under [Agents and Tool Use](#agents-and-tool-use), [Evaluation and Observability](#evaluation-and-observability), [Coding and Data Structures](#coding-and-data-structures).
 
 #### Agents and Tool Use
 
@@ -1668,11 +1668,11 @@ categories:
 
 ### Sierra
 
-> **Roles this covers:** Agent Engineer, Software Engineer, Forward Deployed Engineer, ML Engineer, Product Engineer.
+> <strong>Roles this covers:</strong> Agent Engineer, Software Engineer, Forward Deployed Engineer, ML Engineer, Product Engineer.
 >
-> **Interview loop, as publicly reported:** Recruiter screen → technical screen → a two-hour build session where you can use any AI tools you like → agent-design and evaluation rounds → customer-scenario round → founders/values. Judgment about where to put guardrails is the core signal.
+> <strong>Interview loop, as publicly reported:</strong> Recruiter screen → technical screen → a two-hour build session where you can use any AI tools you like → agent-design and evaluation rounds → customer-scenario round → founders/values. Judgment about where to put guardrails is the core signal.
 >
-> **Also prepare:** the [common questions](#common-questions-asked-across-companies) tagged Sierra under [Safety, Security and Responsible AI](#safety-security-and-responsible-ai), [AI System Design](#ai-system-design).
+> <strong>Also prepare:</strong> the [common questions](#common-questions-asked-across-companies) tagged Sierra under [Safety, Security and Responsible AI](#safety-security-and-responsible-ai), [AI System Design](#ai-system-design).
 
 #### Coding and Data Structures
 
@@ -1714,11 +1714,11 @@ categories:
 
 ### Harvey
 
-> **Roles this covers:** Software Engineer, ML / Applied AI Engineer, Forward Deployed Engineer, Research Engineer (legal domain).
+> <strong>Roles this covers:</strong> Software Engineer, ML / Applied AI Engineer, Forward Deployed Engineer, Research Engineer (legal domain).
 >
-> **Interview loop, as publicly reported:** Recruiter screen → paired coding round → an architecture presentation round on a legal-workflow system → an evaluation-design round → a customer/partner-scenario round. Domain rigour and grounding matter more than algorithmic puzzles.
+> <strong>Interview loop, as publicly reported:</strong> Recruiter screen → paired coding round → an architecture presentation round on a legal-workflow system → an evaluation-design round → a customer/partner-scenario round. Domain rigour and grounding matter more than algorithmic puzzles.
 >
-> **Also prepare:** the [common questions](#common-questions-asked-across-companies) tagged Harvey under [RAG and Retrieval](#rag-and-retrieval), [Evaluation and Observability](#evaluation-and-observability), [Coding and Data Structures](#coding-and-data-structures).
+> <strong>Also prepare:</strong> the [common questions](#common-questions-asked-across-companies) tagged Harvey under [RAG and Retrieval](#rag-and-retrieval), [Evaluation and Observability](#evaluation-and-observability), [Coding and Data Structures](#coding-and-data-structures).
 
 #### Coding and Data Structures
 
@@ -1757,11 +1757,11 @@ categories:
 
 ### Glean
 
-> **Roles this covers:** Software Engineer (search / ranking), ML Engineer, AI Engineer (agents), Forward Deployed Engineer, Infrastructure Engineer.
+> <strong>Roles this covers:</strong> Software Engineer (search / ranking), ML Engineer, AI Engineer (agents), Forward Deployed Engineer, Infrastructure Engineer.
 >
-> **Interview loop, as publicly reported:** Recruiter screen → coding screen → onsite: a retrieval/ranking design round, a permissions-and-connectors systems round, a practical coding round, an evaluation round, and behavioural.
+> <strong>Interview loop, as publicly reported:</strong> Recruiter screen → coding screen → onsite: a retrieval/ranking design round, a permissions-and-connectors systems round, a practical coding round, an evaluation round, and behavioural.
 >
-> **Also prepare:** the [common questions](#common-questions-asked-across-companies) tagged Glean under [RAG and Retrieval](#rag-and-retrieval), [Fine-Tuning, Post-Training and Alignment](#fine-tuning-post-training-and-alignment).
+> <strong>Also prepare:</strong> the [common questions](#common-questions-asked-across-companies) tagged Glean under [RAG and Retrieval](#rag-and-retrieval), [Fine-Tuning, Post-Training and Alignment](#fine-tuning-post-training-and-alignment).
 
 #### Coding and Data Structures
 
@@ -1797,11 +1797,11 @@ categories:
 
 ### Character.AI
 
-> **Roles this covers:** ML Engineer (inference), Research Engineer, Software Engineer (product / safety), Infrastructure Engineer.
+> <strong>Roles this covers:</strong> ML Engineer (inference), Research Engineer, Software Engineer (product / safety), Infrastructure Engineer.
 >
-> **Interview loop, as publicly reported:** Inference-economics and serving depth, a prompt-construction coding round, a safety-system design round, and product rounds on discovery and engagement.
+> <strong>Interview loop, as publicly reported:</strong> Inference-economics and serving depth, a prompt-construction coding round, a safety-system design round, and product rounds on discovery and engagement.
 >
-> **Also prepare:** the [common questions](#common-questions-asked-across-companies) tagged Character.AI under [LLM Internals and Architecture](#llm-internals-and-architecture), [Inference, Serving and GPU Performance](#inference-serving-and-gpu-performance), [Safety, Security and Responsible AI](#safety-security-and-responsible-ai), [AI System Design](#ai-system-design).
+> <strong>Also prepare:</strong> the [common questions](#common-questions-asked-across-companies) tagged Character.AI under [LLM Internals and Architecture](#llm-internals-and-architecture), [Inference, Serving and GPU Performance](#inference-serving-and-gpu-performance), [Safety, Security and Responsible AI](#safety-security-and-responsible-ai), [AI System Design](#ai-system-design).
 
 #### Coding and Data Structures
 
@@ -1841,11 +1841,11 @@ categories:
 
 ### ElevenLabs
 
-> **Roles this covers:** Research Engineer (speech), ML Engineer, Software Engineer (real-time audio), Forward Deployed Engineer, Infrastructure Engineer.
+> <strong>Roles this covers:</strong> Research Engineer (speech), ML Engineer, Software Engineer (real-time audio), Forward Deployed Engineer, Infrastructure Engineer.
 >
-> **Interview loop, as publicly reported:** A real-time-audio systems round, a speech-model depth round, a practical streaming coding round, a safety round on voice cloning, and a customer-deployment round for FDE roles.
+> <strong>Interview loop, as publicly reported:</strong> A real-time-audio systems round, a speech-model depth round, a practical streaming coding round, a safety round on voice cloning, and a customer-deployment round for FDE roles.
 >
-> **Also prepare:** the [common questions](#common-questions-asked-across-companies) tagged ElevenLabs under [Multimodal, Speech and Voice AI](#multimodal-speech-and-voice-ai).
+> <strong>Also prepare:</strong> the [common questions](#common-questions-asked-across-companies) tagged ElevenLabs under [Multimodal, Speech and Voice AI](#multimodal-speech-and-voice-ai).
 
 #### Coding and Data Structures
 
@@ -1873,11 +1873,11 @@ categories:
 
 ### Abridge
 
-> **Roles this covers:** ML Engineer (ASR / NLP), Research Scientist, Software Engineer (clinical products), Forward Deployed / Implementation Engineer.
+> <strong>Roles this covers:</strong> ML Engineer (ASR / NLP), Research Scientist, Software Engineer (clinical products), Forward Deployed / Implementation Engineer.
 >
-> **Interview loop, as publicly reported:** A clinical-ASR depth round, an evaluation-design round (there is rarely a single correct note), a healthcare-integration systems round, and a privacy/compliance round.
+> <strong>Interview loop, as publicly reported:</strong> A clinical-ASR depth round, an evaluation-design round (there is rarely a single correct note), a healthcare-integration systems round, and a privacy/compliance round.
 >
-> **Also prepare:** the [common questions](#common-questions-asked-across-companies) tagged Abridge under [RAG and Retrieval](#rag-and-retrieval), [Safety, Security and Responsible AI](#safety-security-and-responsible-ai), [Multimodal, Speech and Voice AI](#multimodal-speech-and-voice-ai).
+> <strong>Also prepare:</strong> the [common questions](#common-questions-asked-across-companies) tagged Abridge under [RAG and Retrieval](#rag-and-retrieval), [Safety, Security and Responsible AI](#safety-security-and-responsible-ai), [Multimodal, Speech and Voice AI](#multimodal-speech-and-voice-ai).
 
 #### ML and DL Fundamentals
 
@@ -1917,9 +1917,9 @@ categories:
 
 ### Figure AI
 
-> **Roles this covers:** Robotics AI Engineer, Research Engineer (VLA / manipulation), Controls Engineer, Data Engineer (teleoperation), Deployment Engineer.
+> <strong>Roles this covers:</strong> Robotics AI Engineer, Research Engineer (VLA / manipulation), Controls Engineer, Data Engineer (teleoperation), Deployment Engineer.
 >
-> **Interview loop, as publicly reported:** Robot-learning depth (VLA, imitation, RL), a data-pipeline design round, a sim-to-real round, a safety-architecture round, and a hands-on numerical/implementation round.
+> <strong>Interview loop, as publicly reported:</strong> Robot-learning depth (VLA, imitation, RL), a data-pipeline design round, a sim-to-real round, a safety-architecture round, and a hands-on numerical/implementation round.
 
 #### ML and DL Fundamentals
 
@@ -1953,9 +1953,9 @@ categories:
 
 ### Waymo
 
-> **Roles this covers:** Software Engineer (perception, prediction, planning), Research Scientist, ML Infrastructure Engineer, Simulation Engineer, Safety Engineer.
+> <strong>Roles this covers:</strong> Software Engineer (perception, prediction, planning), Research Scientist, ML Infrastructure Engineer, Simulation Engineer, Safety Engineer.
 >
-> **Interview loop, as publicly reported:** Coding screen → onsite: two coding rounds (often numerical/vectorised), a perception or planning depth round, an ML-infrastructure or simulation design round, and behavioural. Safety-case reasoning is weighted heavily for senior roles.
+> <strong>Interview loop, as publicly reported:</strong> Coding screen → onsite: two coding rounds (often numerical/vectorised), a perception or planning depth round, an ML-infrastructure or simulation design round, and behavioural. Safety-case reasoning is weighted heavily for senior roles.
 
 #### Coding and Data Structures
 
@@ -1991,11 +1991,11 @@ categories:
 
 ### Palantir
 
-> **Roles this covers:** Forward Deployed Engineer, Forward Deployed Software Engineer, Software Engineer, Data Engineer, Deployment Strategist, AIP engineer.
+> <strong>Roles this covers:</strong> Forward Deployed Engineer, Forward Deployed Software Engineer, Software Engineer, Data Engineer, Deployment Strategist, AIP engineer.
 >
-> **Interview loop, as publicly reported:** Recruiter call (~30 min) → technical screen (live coding or HackerRank: a coding challenge, a SQL query and an API task) → onsite of three 60-minute rounds drawn from decomposition, learning, coding, re-engineering and system design → hiring-manager round that revisits weaker areas. Decomposition is the signature round.
+> <strong>Interview loop, as publicly reported:</strong> Recruiter call (~30 min) → technical screen (live coding or HackerRank: a coding challenge, a SQL query and an API task) → onsite of three 60-minute rounds drawn from decomposition, learning, coding, re-engineering and system design → hiring-manager round that revisits weaker areas. Decomposition is the signature round.
 >
-> **Also prepare:** the [common questions](#common-questions-asked-across-companies) tagged Palantir under [RAG and Retrieval](#rag-and-retrieval), [Agents and Tool Use](#agents-and-tool-use), [AI System Design](#ai-system-design).
+> <strong>Also prepare:</strong> the [common questions](#common-questions-asked-across-companies) tagged Palantir under [RAG and Retrieval](#rag-and-retrieval), [Agents and Tool Use](#agents-and-tool-use), [AI System Design](#ai-system-design).
 
 #### Coding and Data Structures
 

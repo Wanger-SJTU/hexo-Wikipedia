@@ -261,7 +261,7 @@ function main() {
       rel,
       base: path.posix.basename(rel),
       ext: path.posix.extname(rel).toLowerCase(),
-      url: encodeUrl(IMAGE_URL_BASE + rel.split('/').map(encodeURIComponent).join('/'))
+      url: IMAGE_URL_BASE + rel.split('/').map(encodeURIComponent).join('/')
     };
     assetByRel.set(rel, item);
     if (!assetByBase.has(item.base)) assetByBase.set(item.base, []);
@@ -373,6 +373,13 @@ function main() {
     ));
 
     out = out.replace(/\[\[([^\[\]\n]+)\]\]/g, (whole, inner) => renderWikilink(inner, doc));
+
+    // 中文紧邻 ** 时 CommonMark 不识别加粗（如 **加粗**一方面），转为 <strong>
+    out = out.replace(/\*\*[ \t]*([^*\n]+?)[ \t]*\*\*/g, (whole, inner) => {
+      const text = inner.trim();
+      return text ? '<strong>' + text + '</strong>' : whole;
+    });
+
     return out;
   }
 

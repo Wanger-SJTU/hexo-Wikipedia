@@ -64,22 +64,22 @@ Hướng dẫn harness engineering Codex của OpenAI cũng nhấn mạnh nguyê
 
 ## Các Khái niệm Cốt lõi
 
-- **Giai đoạn Khởi tạo**: Giai đoạn đầu tiên trong vòng đời của agent — không triển khai tính năng, chỉ thiết lập các điều kiện tiên quyết cho tất cả các giai đoạn triển khai tiếp theo. Kết quả không phải là mã, mà là cơ sở hạ tầng.
-- **Bootstrap Contract**: Các điều kiện mà một dự án có thể được vận hành không mơ hồ bởi một phiên agent mới — có thể bắt đầu, có thể test, có thể thấy tiến độ, có thể chọn bước tiếp theo. Bốn điều kiện, tất cả đều cần thiết.
-- **Khởi động Lạnh vs. Khởi động Ấm (Cold Start vs. Warm Start)**: Khởi động lạnh là từ một thư mục trống nơi agent phải đoán cấu trúc dự án; khởi động ấm là từ một mẫu hoặc dự án hiện có nơi cơ sở hạ tầng đã có sẵn. Khởi động ấm vượt trội hơn nhiều so với khởi động lạnh — giống như bắt đầu làm việc trên công trường có nước chạy và điện so với bắt đầu từ vùng đất hoang.
-- **Sẵn sàng Bàn giao (Handoff Readiness)**: Dự án ở trạng thái tại bất kỳ thời điểm nào mà một agent mới có thể tiếp quản. Không cần giải thích bằng lời — chỉ cần nội dung repo.
-- **Thời gian Đến Xác minh Đầu tiên (Time to First Verification)**: Thời gian từ khi bắt đầu dự án đến khi điểm tính năng đầu tiên vượt qua xác minh. Đây là chỉ số cốt lõi để đo hiệu quả khởi tạo.
-- **Khả năng Sử dụng Downstream**: Thước đo tốt nhất về chất lượng khởi tạo — tỷ lệ các phiên tiếp theo có thể thực thi thành công các tác vụ mà không cần dựa vào kiến thức ẩn.
+- <strong>Giai đoạn Khởi tạo</strong>: Giai đoạn đầu tiên trong vòng đời của agent — không triển khai tính năng, chỉ thiết lập các điều kiện tiên quyết cho tất cả các giai đoạn triển khai tiếp theo. Kết quả không phải là mã, mà là cơ sở hạ tầng.
+- <strong>Bootstrap Contract</strong>: Các điều kiện mà một dự án có thể được vận hành không mơ hồ bởi một phiên agent mới — có thể bắt đầu, có thể test, có thể thấy tiến độ, có thể chọn bước tiếp theo. Bốn điều kiện, tất cả đều cần thiết.
+- <strong>Khởi động Lạnh vs. Khởi động Ấm (Cold Start vs. Warm Start)</strong>: Khởi động lạnh là từ một thư mục trống nơi agent phải đoán cấu trúc dự án; khởi động ấm là từ một mẫu hoặc dự án hiện có nơi cơ sở hạ tầng đã có sẵn. Khởi động ấm vượt trội hơn nhiều so với khởi động lạnh — giống như bắt đầu làm việc trên công trường có nước chạy và điện so với bắt đầu từ vùng đất hoang.
+- <strong>Sẵn sàng Bàn giao (Handoff Readiness)</strong>: Dự án ở trạng thái tại bất kỳ thời điểm nào mà một agent mới có thể tiếp quản. Không cần giải thích bằng lời — chỉ cần nội dung repo.
+- <strong>Thời gian Đến Xác minh Đầu tiên (Time to First Verification)</strong>: Thời gian từ khi bắt đầu dự án đến khi điểm tính năng đầu tiên vượt qua xác minh. Đây là chỉ số cốt lõi để đo hiệu quả khởi tạo.
+- <strong>Khả năng Sử dụng Downstream</strong>: Thước đo tốt nhất về chất lượng khởi tạo — tỷ lệ các phiên tiếp theo có thể thực thi thành công các tác vụ mà không cần dựa vào kiến thức ẩn.
 
 ## Cách Khởi tạo Đúng
 
-**Coi khởi tạo là một giai đoạn riêng biệt.** Phiên đầu tiên chỉ làm khởi tạo — hoàn toàn không có mã tính năng kinh doanh. Khởi tạo tạo ra:
+<strong>Coi khởi tạo là một giai đoạn riêng biệt.</strong> Phiên đầu tiên chỉ làm khởi tạo — hoàn toàn không có mã tính năng kinh doanh. Khởi tạo tạo ra:
 
-**1. Môi trường có thể chạy.** Dự án khởi động, dependencies được cài đặt, không có vấn đề môi trường. Móng được đổ, không có vết nứt.
+<strong>1. Môi trường có thể chạy.</strong> Dự án khởi động, dependencies được cài đặt, không có vấn đề môi trường. Móng được đổ, không có vết nứt.
 
-**2. Khung test có thể xác minh.** Ít nhất một test mẫu vượt qua. Điều này chứng minh bản thân khung test được cấu hình đúng — giống như đứng một cột trên móng để chứng minh nó có thể chịu được trọng lượng.
+<strong>2. Khung test có thể xác minh.</strong> Ít nhất một test mẫu vượt qua. Điều này chứng minh bản thân khung test được cấu hình đúng — giống như đứng một cột trên móng để chứng minh nó có thể chịu được trọng lượng.
 
-**3. Tài liệu bootstrap contract.** Một tài liệu rõ ràng cho các phiên sau:
+<strong>3. Tài liệu bootstrap contract.</strong> Một tài liệu rõ ràng cho các phiên sau:
 ```markdown
 # Khởi tạo Contract
 
@@ -102,7 +102,7 @@ Hướng dẫn harness engineering Codex của OpenAI cũng nhấn mạnh nguyê
 - tests/ — Tệp test
 ```
 
-**4. Phân chia tác vụ.** Chia toàn bộ dự án thành danh sách tác vụ có thứ tự, mỗi tác vụ có tiêu chí chấp nhận rõ ràng:
+<strong>4. Phân chia tác vụ.</strong> Chia toàn bộ dự án thành danh sách tác vụ có thứ tự, mỗi tác vụ có tiêu chí chấp nhận rõ ràng:
 ```markdown
 # Phân chia Tác vụ
 
@@ -120,11 +120,11 @@ Hướng dẫn harness engineering Codex của OpenAI cũng nhấn mạnh nguyê
 - ...
 ```
 
-**5. Git commit như checkpoint.** Sau khi khởi tạo hoàn thành, commit một checkpoint sạch. Tất cả công việc tiếp theo bắt đầu từ checkpoint này.
+<strong>5. Git commit như checkpoint.</strong> Sau khi khởi tạo hoàn thành, commit một checkpoint sạch. Tất cả công việc tiếp theo bắt đầu từ checkpoint này.
 
-**Chiến lược khởi động ấm**: Đừng bắt đầu từ một thư mục trống. Sử dụng mẫu dự án (create-react-app, fastapi-template, v.v.) để đặt trước cấu trúc thư mục chuẩn, cấu hình phụ thuộc và khung test. Nướng các bước khởi tạo thông thường vào mẫu, chỉ để lại công việc khởi tạo cụ thể cho dự án. Giống như bắt đầu làm việc trên công trường có nước chạy và điện — tốt hơn mười nghìn lần so với bắt đầu từ vùng đất hoang.
+<strong>Chiến lược khởi động ấm</strong>: Đừng bắt đầu từ một thư mục trống. Sử dụng mẫu dự án (create-react-app, fastapi-template, v.v.) để đặt trước cấu trúc thư mục chuẩn, cấu hình phụ thuộc và khung test. Nướng các bước khởi tạo thông thường vào mẫu, chỉ để lại công việc khởi tạo cụ thể cho dự án. Giống như bắt đầu làm việc trên công trường có nước chạy và điện — tốt hơn mười nghìn lần so với bắt đầu từ vùng đất hoang.
 
-**Tiêu chí hoàn thành khởi tạo**: Không phải "bao nhiêu mã đã được viết," mà là liệu bốn điều kiện của bootstrap contract có được đáp ứng không — có thể bắt đầu, có thể test, có thể thấy tiến độ, có thể chọn bước tiếp theo. Sử dụng danh sách kiểm tra này để xác nhận khởi tạo:
+<strong>Tiêu chí hoàn thành khởi tạo</strong>: Không phải "bao nhiêu mã đã được viết," mà là liệu bốn điều kiện của bootstrap contract có được đáp ứng không — có thể bắt đầu, có thể test, có thể thấy tiến độ, có thể chọn bước tiếp theo. Sử dụng danh sách kiểm tra này để xác nhận khởi tạo:
 
 ```markdown
 ## Danh sách Kiểm tra Chấp nhận Khởi tạo
@@ -139,9 +139,9 @@ Hướng dẫn harness engineering Codex của OpenAI cũng nhấn mạnh nguyê
 
 Hai cách tiếp cận khởi tạo cho một dự án frontend React:
 
-**Cách tiếp cận hỗn hợp (đồng thời đổ móng và xây tường)**: Agent đồng thời tạo scaffolding dự án và triển khai tính năng đầu tiên trong phiên 1. Ở cuối phiên, repo có mã có thể chạy nhưng: không có tài liệu lệnh bắt đầu/test rõ ràng, không có tệp theo dõi tiến độ, không có phân chia tác vụ. Phiên 2 dành ~20 phút để suy ra cấu trúc dự án, khung test và quy trình build — giống như đội xây dựng mới đến công trường, không biết móng đã chạy đến đâu hoặc đường ống nước ở đâu, phải đào lỗ từng chỗ để tìm ra.
+<strong>Cách tiếp cận hỗn hợp (đồng thời đổ móng và xây tường)</strong>: Agent đồng thời tạo scaffolding dự án và triển khai tính năng đầu tiên trong phiên 1. Ở cuối phiên, repo có mã có thể chạy nhưng: không có tài liệu lệnh bắt đầu/test rõ ràng, không có tệp theo dõi tiến độ, không có phân chia tác vụ. Phiên 2 dành ~20 phút để suy ra cấu trúc dự án, khung test và quy trình build — giống như đội xây dựng mới đến công trường, không biết móng đã chạy đến đâu hoặc đường ống nước ở đâu, phải đào lỗ từng chỗ để tìm ra.
 
-**Khởi tạo riêng biệt (móng trước)**: Phiên 1 chỉ làm khởi tạo — tạo cấu trúc thư mục từ mẫu, cấu hình khung test (Vitest + React Testing Library), viết và xác minh một test mẫu, tạo tài liệu bootstrap contract và tệp phân chia tác vụ, commit checkpoint ban đầu. Chi phí tái xây dựng của phiên 2 dưới 3 phút, và nó bắt đầu làm việc trực tiếp từ danh sách tác vụ — đội đến, nhìn vào bản vẽ, và biết chính xác nơi cần tiếp tục.
+<strong>Khởi tạo riêng biệt (móng trước)</strong>: Phiên 1 chỉ làm khởi tạo — tạo cấu trúc thư mục từ mẫu, cấu hình khung test (Vitest + React Testing Library), viết và xác minh một test mẫu, tạo tài liệu bootstrap contract và tệp phân chia tác vụ, commit checkpoint ban đầu. Chi phí tái xây dựng của phiên 2 dưới 3 phút, và nó bắt đầu làm việc trực tiếp từ danh sách tác vụ — đội đến, nhìn vào bản vẽ, và biết chính xác nơi cần tiếp tục.
 
 So sánh chu kỳ dự án đầy đủ: tổng thời gian tái xây dựng (qua tất cả các phiên) của cách tiếp cận hỗn hợp cao hơn ~60% so với cách tiếp cận khởi tạo riêng biệt. 20 phút thêm dành cho khởi tạo được thu hồi nhiều lần trong các phiên tiếp theo. Giống như móng vững giúp tường xây nhanh hơn — chậm là nhanh.
 
@@ -163,8 +163,8 @@ So sánh chu kỳ dự án đầy đủ: tổng thời gian tái xây dựng (qu
 
 ## Bài tập
 
-1. **Thiết kế bootstrap contract**: Viết một bootstrap contract hoàn chỉnh cho một dự án bạn đang phát triển. Sau đó mở một phiên agent hoàn toàn mới, chỉ hiển thị nội dung repo (không có ngữ cảnh lời nói), và để nó thử bắt đầu dự án, chạy test và hiểu tiến độ hiện tại. Ghi lại mọi vấn đề gặp phải — mỗi vấn đề tương ứng với một điều khoản còn thiếu trong bootstrap contract của bạn.
+1. <strong>Thiết kế bootstrap contract</strong>: Viết một bootstrap contract hoàn chỉnh cho một dự án bạn đang phát triển. Sau đó mở một phiên agent hoàn toàn mới, chỉ hiển thị nội dung repo (không có ngữ cảnh lời nói), và để nó thử bắt đầu dự án, chạy test và hiểu tiến độ hiện tại. Ghi lại mọi vấn đề gặp phải — mỗi vấn đề tương ứng với một điều khoản còn thiếu trong bootstrap contract của bạn.
 
-2. **Thí nghiệm so sánh**: Chọn một dự án mới cỡ vừa. Cách A: để agent đồng thời khởi tạo và thực hiện triển khai đầu tiên. Cách B: dành một phiên cho khởi tạo riêng biệt, bắt đầu triển khai trong phiên 2. Sau 4 phiên, so sánh: thời gian đến xác minh đầu tiên, chi phí tái xây dựng, tỷ lệ hoàn thành tính năng.
+2. <strong>Thí nghiệm so sánh</strong>: Chọn một dự án mới cỡ vừa. Cách A: để agent đồng thời khởi tạo và thực hiện triển khai đầu tiên. Cách B: dành một phiên cho khởi tạo riêng biệt, bắt đầu triển khai trong phiên 2. Sau 4 phiên, so sánh: thời gian đến xác minh đầu tiên, chi phí tái xây dựng, tỷ lệ hoàn thành tính năng.
 
-3. **Danh sách kiểm tra chấp nhận khởi tạo**: Thiết kế một danh sách kiểm tra chấp nhận khởi tạo cho dự án của bạn. Để một phiên agent mới thực thi từng mục trong danh sách kiểm tra và ghi lại cái nào vượt qua và cái nào thất bại. Các mục thất bại là nơi harness của bạn cần được tăng cường.
+3. <strong>Danh sách kiểm tra chấp nhận khởi tạo</strong>: Thiết kế một danh sách kiểm tra chấp nhận khởi tạo cho dự án của bạn. Để một phiên agent mới thực thi từng mục trong danh sách kiểm tra và ghi lại cái nào vượt qua và cái nào thất bại. Các mục thất bại là nơi harness của bạn cần được tăng cường.

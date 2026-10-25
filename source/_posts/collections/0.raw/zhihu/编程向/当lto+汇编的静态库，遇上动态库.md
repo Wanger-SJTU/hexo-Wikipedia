@@ -71,7 +71,7 @@ jump_arm64_aapcs_elf_gas.S.o:
 
 随着更多子项目被编译，我又发现`libpng`也出现了一模一样的情况，静态库里的符号全部没被动态库识别到。
 
-仔细分析两个项目，`libpng`和`boost.context`的共同点是：**项目里既有C/C++代码，又有单独的GAS汇编**。
+仔细分析两个项目，`libpng`和`boost.context`的共同点是：<strong>项目里既有C/C++代码，又有单独的GAS汇编</strong>。
 
 lto只对C/C++编译生效，汇编不受影响，难道是这混合的情况导致了问题？
 
@@ -83,4 +83,4 @@ lto只对C/C++编译生效，汇编不受影响，难道是这混合的情况导
 
 值得一提的是去自己的脚本里改流程的时候，发现自己早就为gcc换了`gcc-ar`……这么说来，其实我已经解决过了一次这个问题？
 
-![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_ed7f8bb49b52.jpg)
+![](/images/collections/0.raw/zhihu/%E7%BC%96%E7%A8%8B%E5%90%91/asset/img_ed7f8bb49b52.jpg)

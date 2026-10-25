@@ -17,15 +17,15 @@ source_url: https://zhuanlan.zhihu.com/p/2021649476964610281
 
 目前我看过的对Muon优化器为什么好的解释主要有以下五种：
 
-- **Muon可以视为谱范数意义下的最速下降。**参考资料：[Muon优化器赏析：从向量到矩阵的本质跨越 - 科学空间|Scientific Spaces](https://link.zhihu.com/?target=https%3A//spaces.ac.cn/archives/10592)，[Deriving Muon](https://link.zhihu.com/?target=https%3A//jeremybernste.in/writing/deriving-muon)。但是谱范数本身为什么会更优越这一点依然得不到解释，有点像是同义反复的论证，我想这种解释的价值在于开辟搜索空间，启发我们尝试别的范数的优化器。
-- **Muon缓解了数据不平衡。**参考资料：[你有没有把 AdamW 换成 Muon？为什么？ - 知乎](https://www.zhihu.com/question/1910001570080359694/answer/1931678287899374389)。但是我自己尝试把一些解决类别不平衡的技术应用到特征或梯度层面，没有发现显著的收益，如果Muon主要是靠缓解数据不平衡来取得相对AdamW的收益的话，似乎这些技术也应当展现较好的效果。当然，我自己的尝试也是有限的，只能说这个观点对我的说服力不够。
-- **Muon提高了矩阵有效秩，降低了条件数，有利于优化。**我做实验发现的确有这样的现象，而且我们都知道模型参数越多越强，那么提高矩阵有效秩相当于提高了模型的有效参数，所以优化效果更好，这个解释听上去非常合理。但是当我在标准AdamW的基础上加正则损失，强行鼓励矩阵或MLP的有效秩增大时，训练表现可能会提升，但综合来看还是不一定比得过矩阵正交化的做法，[古德哈特定律 - 维基百科，自由的百科全书](https://link.zhihu.com/?target=https%3A//zh.wikipedia.org/zh-cn/%25E5%258F%25A4%25E5%25BE%25B7%25E5%2593%2588%25E7%2589%25B9%25E5%25AE%259A%25E5%25BE%258B)。所以这个解释对我来说也是不足的，因为它无法具体指导优化器的改进。
-- **Muon好在别的辅助技巧上。**参考资料：[你有没有把 AdamW 换成 Muon？为什么？ - 知乎](https://www.zhihu.com/question/1910001570080359694/answer/1916050159411893853)。但是在我自己的合成数据集上的实验显示，把Nesterov加速、动量系数、局部学习率都控制了后，矩阵正交化依然有优势，所以我不太同意这个解释。
-- **Muon利用了神经网络的对称性来加速。**参考资料：[[2602.09006] ARO: A New Lens On Matrix Optimization For Large Models](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2602.09006)。把Muon视为一种对称性传送的具体实现，这个视角非常有新意，说得通，再加上我在合成数据集上用ARO训练的确复现出了比Muon更好的效果，所以我对这个解释最买账，但是它基于Transformer模型具有旋转对称性这一假设/经验证据，论证链条比较复杂，而复杂的解释总是让人有点不放心，起码值得挑战。解释其实是多种多样的，一个事物可以容纳[不同的解释](https://link.zhihu.com/?target=https%3A//plato.stanford.edu/archives/win2019/entries/scientific-explanation/)。
+- <strong>Muon可以视为谱范数意义下的最速下降。</strong>参考资料：[Muon优化器赏析：从向量到矩阵的本质跨越 - 科学空间|Scientific Spaces](https://link.zhihu.com/?target=https%3A//spaces.ac.cn/archives/10592)，[Deriving Muon](https://link.zhihu.com/?target=https%3A//jeremybernste.in/writing/deriving-muon)。但是谱范数本身为什么会更优越这一点依然得不到解释，有点像是同义反复的论证，我想这种解释的价值在于开辟搜索空间，启发我们尝试别的范数的优化器。
+- <strong>Muon缓解了数据不平衡。</strong>参考资料：[你有没有把 AdamW 换成 Muon？为什么？ - 知乎](https://www.zhihu.com/question/1910001570080359694/answer/1931678287899374389)。但是我自己尝试把一些解决类别不平衡的技术应用到特征或梯度层面，没有发现显著的收益，如果Muon主要是靠缓解数据不平衡来取得相对AdamW的收益的话，似乎这些技术也应当展现较好的效果。当然，我自己的尝试也是有限的，只能说这个观点对我的说服力不够。
+- <strong>Muon提高了矩阵有效秩，降低了条件数，有利于优化。</strong>我做实验发现的确有这样的现象，而且我们都知道模型参数越多越强，那么提高矩阵有效秩相当于提高了模型的有效参数，所以优化效果更好，这个解释听上去非常合理。但是当我在标准AdamW的基础上加正则损失，强行鼓励矩阵或MLP的有效秩增大时，训练表现可能会提升，但综合来看还是不一定比得过矩阵正交化的做法，[古德哈特定律 - 维基百科，自由的百科全书](https://link.zhihu.com/?target=https%3A//zh.wikipedia.org/zh-cn/%25E5%258F%25A4%25E5%25BE%25B7%25E5%2593%2588%25E7%2589%25B9%25E5%25AE%259A%25E5%25BE%258B)。所以这个解释对我来说也是不足的，因为它无法具体指导优化器的改进。
+- <strong>Muon好在别的辅助技巧上。</strong>参考资料：[你有没有把 AdamW 换成 Muon？为什么？ - 知乎](https://www.zhihu.com/question/1910001570080359694/answer/1916050159411893853)。但是在我自己的合成数据集上的实验显示，把Nesterov加速、动量系数、局部学习率都控制了后，矩阵正交化依然有优势，所以我不太同意这个解释。
+- <strong>Muon利用了神经网络的对称性来加速。</strong>参考资料：[[2602.09006] ARO: A New Lens On Matrix Optimization For Large Models](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2602.09006)。把Muon视为一种对称性传送的具体实现，这个视角非常有新意，说得通，再加上我在合成数据集上用ARO训练的确复现出了比Muon更好的效果，所以我对这个解释最买账，但是它基于Transformer模型具有旋转对称性这一假设/经验证据，论证链条比较复杂，而复杂的解释总是让人有点不放心，起码值得挑战。解释其实是多种多样的，一个事物可以容纳[不同的解释](https://link.zhihu.com/?target=https%3A//plato.stanford.edu/archives/win2019/entries/scientific-explanation/)。
 
 我将提出一种新的解释：
 
-**以Muon为代表的矩阵优化器（包括ARO），隐式地附带了对比学习中常见的重建损失。**
+<strong>以Muon为代表的矩阵优化器（包括ARO），隐式地附带了对比学习中常见的重建损失。</strong>
 
 我们知道在对比学习里，改善表征有很多手段，比如
 

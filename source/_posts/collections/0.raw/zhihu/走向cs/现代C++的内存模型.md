@@ -19,23 +19,23 @@ source_url: https://zhuanlan.zhihu.com/p/382372072
 
 本文将从编译器和CPU的优化，引出内存模型，最后再介绍内存模型的使用。
 
-**1、编译器和CPU的优化**
+<strong>1、编译器和CPU的优化</strong>
 
 为什么要有C++的内存模型呢？当然，此处说的内存模型是指多线程编程方面，而非对象的内存布局内存对齐之类。要回答这个问题，我们要从理想的硬件和实际的硬件差异说起。
 
 先说一下理想的硬件，如图1所示，我们编程都是基于此种理想架构，CPU Core直接对RAM进行读写，而无需考虑二者速度差异。从最初的单核时代，到如今的多核时代，都是如此，至少大部分编程都可只做如此假设。这样的理想架构在最开始的单核时代，程序性能甚至可以在不修改代码的前提下而仅靠CPU主频提升而得到大幅改善，这种性能提升就是所谓的Free Lunch。随着主频提升到达极限，多核时代来临，原来单核时代的好日子便一去不复返，复杂的并发程序设计开始成为主流。
 
-![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_504eb5d6abc1.jpg)
+![](/images/collections/0.raw/zhihu/%E8%B5%B0%E5%90%91cs/asset/img_504eb5d6abc1.jpg)
 
 图1. 理想的架构不过，单纯地比较图1左右部分的架构，其实多核并没有带来更高的复杂度，但实际的CPU/RAM架构远比图1的复杂，图2便是实际的某款CPU架构。
 
-![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_6e9d238b2630.jpg)
+![](/images/collections/0.raw/zhihu/%E8%B5%B0%E5%90%91cs/asset/img_6e9d238b2630.jpg)
 
 图2. 实际的CPU架构图2左侧为CPU的实际芯片，大约有85%面积为Cache，而图2右侧，在CPU Core和RAM之间，还有共三层的Cache结构（L1/L2/L3），此外还有Store Buffer (SB)，且SB和L1 是每个Core独享，而L2是两个Core共享，L3是所有Core共享，当然，该结构只是对这款实际CPU产品而言，并不能代表全部。但这足以说明，理想和实际的区别。
 
 为什么非要引入Cache？根据Jeff Dean对程序运行方面的一些时间数据的论述，如图3所示：
 
-![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_51a529a5cf57.jpg)
+![](/images/collections/0.raw/zhihu/%E8%B5%B0%E5%90%91cs/asset/img_51a529a5cf57.jpg)
 
 图3 程序员应该知道的一些时间数据我们可以看出，在速度上，CPU和内存之间有两个数量级的差异。试想，如果没有Cache，CPU每执行一条指令，都要去内存取下一条，而执行一条指令也就几个时钟周期（几ns），而取指令却要上百个时钟周期，这将导致CPU大部分时间都在等待状态，进而导致执行效率低下。
 
@@ -47,7 +47,7 @@ source_url: https://zhuanlan.zhihu.com/p/382372072
 
 要了解内存模型，我觉得还是要先谈谈一些重要的优化，包括编译器和CPU/Cache方面。优化主要包括Reorder/Invent/Remove，正如图4所言，优化发生在哪一层并不重要。但有哪些类型的优化还是值得一提。
 
-![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_4ec682d10f0e.jpg)
+![](/images/collections/0.raw/zhihu/%E8%B5%B0%E5%90%91cs/asset/img_4ec682d10f0e.jpg)
 
 图4. 优化（Herb Sutter: atomic Weapons）对于重排（Reordering），编译器和CPU都会有重排，主要就是为了优化性能。既然发生在哪一层不重要，我们这里就从编译器方面来看，以下面代码为例，
 
@@ -91,7 +91,7 @@ if( !cond)// check if we guessed wrong
 
 从上面的几类优化可以看出，即使编译器和CPU遵循As-if原则，优化仍然可能会影响多线程程序的行为。当然，在多线程编程中，我们一般借助于互斥锁去同步相关线程，即使在优化存在的条件下仍然能得到预期的程序行为。但是，互斥锁是较为高层的同步工具。C++11引入的现代C++内存模型，可以使我们在不借助互斥锁时，从更为底层的层面，让我们写出符合预期行为的多线程程序。
 
-**2、现代C++的内存模型**
+<strong>2、现代C++的内存模型</strong>
 
 谈内存模型之前，先谈谈如下几个概念，以便于后续分析多线程的同步过程。
 
@@ -116,7 +116,7 @@ if S(a) p L(b) ⇒ S(a) m L(b)
 
 既然顺序一致这么严格，其显然会限制编译器和CPU的优化，所以业界提出了很多宽松的模型，例如在X86中使用的TSO（Total Store Order）便允许某些条件下的重排。
 
-从程序员（a programmer-centric approach）的角度，抛开编译器和硬件，也即从语言层面，我们也可以提出合适的模型。现代C++（包括Java）都是使用了SC-DRF(Sequential consistency for data race free)。在SC-DRF模型下，程序员只要不写出Race Condition的代码，编译器和CPU便能保证程序的执行结果与顺序一致相同。**因而，内存模型就如同程序员与编译器/CPU之间的契约，需要彼此遵守承诺。C++的内存模型默认为SC-DRF，此外还支持更宽松的非SC-DRF的模型。**
+从程序员（a programmer-centric approach）的角度，抛开编译器和硬件，也即从语言层面，我们也可以提出合适的模型。现代C++（包括Java）都是使用了SC-DRF(Sequential consistency for data race free)。在SC-DRF模型下，程序员只要不写出Race Condition的代码，编译器和CPU便能保证程序的执行结果与顺序一致相同。<strong>因而，内存模型就如同程序员与编译器/CPU之间的契约，需要彼此遵守承诺。C++的内存模型默认为SC-DRF，此外还支持更宽松的非SC-DRF的模型。</strong>
 
 （2）Happens-before
 
@@ -132,11 +132,11 @@ if S(a) p L(b) ⇒ S(a) m L(b)
 
 对于临界区区内的语句，显而易见，我们不能将其移出临界区，如图5所示，编译器和CPU都不会做这种移出临界区的优化：
 
-![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_0da3d562804b.jpg)
+![](/images/collections/0.raw/zhihu/%E8%B5%B0%E5%90%91cs/asset/img_0da3d562804b.jpg)
 
 图5. 不能移出临界区区内代码但我们可以将临界区区外的代码移进来，如图6所示
 
-![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_7fe0410d4da8.jpg)
+![](/images/collections/0.raw/zhihu/%E8%B5%B0%E5%90%91cs/asset/img_7fe0410d4da8.jpg)
 
 图6. 临界区区外代码可以移入临界区从图5和图6我们可以看出，lock和unlock可以看作两个单方向的屏障，lock对应的屏障，只允许代码往下方向移动，而unlock则只允许上方向移动。
 
@@ -146,13 +146,13 @@ C++内存模型借鉴lock/unlock，引入了两个等效的概念，Acquire（�
 
 有人也许会问，用非原子变量难道不能实现Synchronizes-with关系？首先，非原子变量，显然不能被多个线程同时读写，再者，其无法提供内存屏障，不要忘了前文重排的例子，试想，若线程1中A和B的写入操作被重排到了p.store的后面，且即使替换p.store的非原子变量操作在多线程下可以正确执行，但此时"int r1 = A"能读取到正确的值吗？
 
-![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_3d3582627931.jpg)
+![](/images/collections/0.raw/zhihu/%E8%B5%B0%E5%90%91cs/asset/img_3d3582627931.jpg)
 
 图7. 使用内存顺序为Acquire/Release模型进行同步 值得说明的是，线程2需要看到线程1对原子变量p的写结果，才能认为线程1 synchronizes-with 线程2，所以线程2对p的读取是在while中进行的。相比于mutex，两个线程都不再需要lock/unlock操作，而仅靠对原子变量的写/读(release/acquire)便能进行同步。
 
 上述线程1和线程2中用到的memory_order_release和memory_order_acquire，其实是比SC-DRF更为宽松的模型，C++默认的SC-DRF对应为memory_order_seq_cst，使用该默认模型的操作，上移下移都不被允许，相当于双向屏障，可以用图8稍作总结。
 
-![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_c79bdadaf85c.jpg)
+![](/images/collections/0.raw/zhihu/%E8%B5%B0%E5%90%91cs/asset/img_c79bdadaf85c.jpg)
 
 图8. 三种屏障 （可下移、可上移、不能跨越）现代C++的内存模型，其实主要表现在对原子变量进行操作时，通过指定memory order（内存顺序）的参数，来控制线程间同步。图7的示例便是其中一种内存顺序模型（获取发布模型：Acquire-Release Ordering）。memory order是一个枚举值，定义如下：
 
@@ -234,7 +234,7 @@ int main()
 
 各线程关系如图9所示：
 
-![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_c2a4d1eb3464.jpg)
+![](/images/collections/0.raw/zhihu/%E8%B5%B0%E5%90%91cs/asset/img_c2a4d1eb3464.jpg)
 
 图9. .顺序一致模型的线程同步（2）获取发布模型（acquire-release ordering）
 
@@ -242,7 +242,7 @@ int main()
 
 但此时，我们不能简单按照图1的理想架构来分析代码，而应该按照图2的实际架构进行分析。该代码最终的执行结果，z值可能为0. 
 
-![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_940bdba16e7b.jpg)
+![](/images/collections/0.raw/zhihu/%E8%B5%B0%E5%90%91cs/asset/img_940bdba16e7b.jpg)
 
 图10. 获取发布模型的线程同步由代码及图10可知，线程a Synchronizes-with 线程c（线程c读取到了线程a对原子变量x的写入值），同理，线程b Synchronizes-with 线程d（根据对原子变量y的写入读取）。但因为所有线程没有参考一个全局的内存顺序，我们无法推出与SC-DRF模型相同的结果，即该模型下，z可能为0。
 
@@ -305,6 +305,6 @@ for(unsigned i=0;i10;++i) {
 `线程1：(0,0),(1,0),(2,0),(3,0),(4,0),(5,7),(6,7),(7,9),(8,9), (9,9)
 线程2：(0,0),(0,1),(0,2),(1,3),(8,4),(8,5),(8,6),(8,7),(10,8),(10,9)`
 
-由上述结果可知，对于线程中的变量，例如线程1中的x，其写入的值必定会被**同一个线程**后续的读取操作所读取，即使写入仅发生在Store Buffer，而未写入到内存。因而我们看到了线程1输出中连续递增的x （load/store都在线程1）。而线程2对于x的读取（x的写入操作在线程1），并不一定能读取到x的最新值，但如果能读取到（证明线程1将该值写入了内存），则也是按照x的写入顺序，即假设读取到8之后，后续读取不可能是8之前的值（即小于8的值）。 
+由上述结果可知，对于线程中的变量，例如线程1中的x，其写入的值必定会被<strong>同一个线程</strong>后续的读取操作所读取，即使写入仅发生在Store Buffer，而未写入到内存。因而我们看到了线程1输出中连续递增的x （load/store都在线程1）。而线程2对于x的读取（x的写入操作在线程1），并不一定能读取到x的最新值，但如果能读取到（证明线程1将该值写入了内存），则也是按照x的写入顺序，即假设读取到8之后，后续读取不可能是8之前的值（即小于8的值）。 
 
 因为本文篇幅已经很长，所以关于std::atomic<>在实际产品中的应用就另外再介绍了。

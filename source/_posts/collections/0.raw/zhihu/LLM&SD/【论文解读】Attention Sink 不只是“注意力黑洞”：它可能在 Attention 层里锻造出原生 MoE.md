@@ -17,15 +17,15 @@ source_url: https://zhuanlan.zhihu.com/p/2051751066975442836
 
 ![](https://picx.zhimg.com/v2-20277688d0854863b01473236aafdd15_r.jpg)最近读到一篇被ICML 2026接收的很有意思的论文：
 
-**Attention Sink Forges Native MoE in Attention Layers: Sink-Aware Training to Address Head Collapse**
+<strong>Attention Sink Forges Native MoE in Attention Layers: Sink-Aware Training to Address Head Collapse</strong>
 
 这篇文章讨论了一个大家已经比较熟悉的现象：
 
-- **Attention Sink**，也就是大语言模型在生成时，经常会把大量注意力分配给第一个 token，即使这个 token 本身并没有太强的语义相关性。过去我们通常把 attention sink 看作一种“softmax 归一化带来的副作用”：
+- <strong>Attention Sink</strong>，也就是大语言模型在生成时，经常会把大量注意力分配给第一个 token，即使这个 token 本身并没有太强的语义相关性。过去我们通常把 attention sink 看作一种“softmax 归一化带来的副作用”：
 
 - 注意力权重必须加和为 1，当模型并不需要把全部权重分配给有效 token 时，多余的注意力就需要找一个地方“倒掉”。于是，第一个 token 就成了天然的 sink。但这篇文章提出了一个更有意思的视角：
 
- Attention Sink 不只是一个需要被消除的异常现象，它实际上在 Attention 层内部诱导出了一种类似 MoE 的结构。 多头注意力中的每个 head 可以看作一个 expert，而分配给 sink 的注意力权重，则隐式地扮演了 gating / routing 的角色。这也进一步解释了一个相关现象：**Head Collapse**。
+ Attention Sink 不只是一个需要被消除的异常现象，它实际上在 Attention 层内部诱导出了一种类似 MoE 的结构。 多头注意力中的每个 head 可以看作一个 expert，而分配给 sink 的注意力权重，则隐式地扮演了 gating / routing 的角色。这也进一步解释了一个相关现象：<strong>Head Collapse</strong>。
 
 - 也就是说，在很多模型中，真正持续发挥作用的注意力头只有少数几个，而大量 head 长期处于低激活状态。作者认为，这和 MoE 中常见的 expert collapse 有类似机制。下面是我对这篇文章的理解。
 
@@ -58,7 +58,7 @@ TL;DR
 
 但是，如果第一个 token 接收了大量无意义注意力，它就可能污染输出。为了避免这种影响，模型还会学到另一个现象：
 
-- **value drain**。也就是说，第一个 token 对应的 value 向量会趋近于 0。这样即使第一个 token 获得很大的 attention weight，它对最终输出的贡献也很小。所以在 Vanilla Attention 中，attention sink 的逻辑可以理解为：
+- <strong>value drain</strong>。也就是说，第一个 token 对应的 value 向量会趋近于 0。这样即使第一个 token 获得很大的 attention weight，它对最终输出的贡献也很小。所以在 Vanilla Attention 中，attention sink 的逻辑可以理解为：
 
 - softmax 要求注意力权重总和为 1；
 - 多余的注意力需要一个“垃圾桶”；
@@ -69,7 +69,7 @@ TL;DR
 2. Sink Attention 和 Gated Attention：两种消除 sink 的方式
 为了缓解 Attention Sink，近期有两类代表性方法。
 
-第一类是 **Sink Attention**：
+第一类是 <strong>Sink Attention</strong>：
 
 它直接在 softmax 分母中加入一个可学习的 sink 参数： 
 
@@ -77,7 +77,7 @@ TL;DR
 
 这个 synthetic sink 不对应任何真实 token，也没有 value 向量。因此，分配给它的注意力权重对输出严格没有贡献。它本质上是把 Vanilla Attention 中“第一个 token 作为垃圾桶”的机制显式化、参数化了。
 
-第二类是 **Gated Attention**：
+第二类是 <strong>Gated Attention</strong>：
 
 它为每个 attention head 引入一个显式 gate： 
 
@@ -113,7 +113,7 @@ TL;DR
 
 ![](https://www.zhihu.com/equation?tex=+1-A_%7Bt%2C%5Cmathrm%7Bsink%7D%7D%5E%7Bl%2Ch%7D+)
 
-**自然地成为了整个 attention head 输出前面的缩放因子**。
+<strong>自然地成为了整个 attention head 输出前面的缩放因子</strong>。
 
 换句话说，Vanilla Attention 和 Sink Attention 中其实已经存在一个隐式 gate：
 
@@ -185,7 +185,7 @@ MoE 一般有两个核心组成：
 这解释了为什么去掉或显式化 attention sink，通常能改善长上下文任务和整体性能。
 
 6. Head Collapse：Attention 层里的“专家塌缩”
-有了“**attention head = expert，sink-derived gate = router**”这个视角后，作者进一步讨论了 **Head Collapse**。
+有了“<strong>attention head = expert，sink-derived gate = router</strong>”这个视角后，作者进一步讨论了 <strong>Head Collapse</strong>。
 
 所谓 Head Collapse，是指在训练或推理过程中，只有少数 attention head 长期保持高激活，而许多其他 head 的激活水平非常低。也就是说，模型虽然名义上有很多 head，但真正被充分利用的只是其中一小部分。
 
@@ -198,7 +198,7 @@ MoE 一般有两个核心组成：
 如果 
 ![](https://www.zhihu.com/equation?tex=%5Cmathrm%7BImp%7D%5E%7Bl%2Ch%7D) 越大，说明这个 head 被激活得越强，对该层输出贡献越大。
 
-![](https://picx.zhimg.com/v2-cf43e0a982619b777955101b2ba22dd5_r.jpg)作者在 LLaMA、GPT-OSS、Qwen3-Next 等模型中观察到，head importance 呈现明显不均衡：**少数 head 长期高激活，很多 head 低激活**。这说明 Head Collapse 不是某一种 attention 机制的偶然现象，而是在 Vanilla Attention、Sink Attention、Gated Attention 中都存在。
+![](https://picx.zhimg.com/v2-cf43e0a982619b777955101b2ba22dd5_r.jpg)作者在 LLaMA、GPT-OSS、Qwen3-Next 等模型中观察到，head importance 呈现明显不均衡：<strong>少数 head 长期高激活，很多 head 低激活</strong>。这说明 Head Collapse 不是某一种 attention 机制的偶然现象，而是在 Vanilla Attention、Sink Attention、Gated Attention 中都存在。
 
 进一步地，作者用每层内部 head importance 的变异系数 CV 来衡量 head load imbalance：
 
@@ -233,7 +233,7 @@ CV 越大，说明该层的 head 利用越不均衡。
 
 ![](https://pic3.zhimg.com/v2-e8fdb8bb4116ce137723396bd1a5e41e_r.jpg)预训练过程中，一些 head 可能已经变成 dominant heads，并承载了关键表示。如果微调时直接要求所有 head 均衡，很可能会破坏这些已经学好的行为。
 
-作者把这个问题称为 **head pinning effect**：
+作者把这个问题称为 <strong>head pinning effect</strong>：
 
 - dominant heads 的 gate 倾向于“钉住”在高激活状态，不容易被降低。此时如果强行做均衡，其他 head 可能只是被迫提高激活来追赶 dominant heads，而不是真正形成合理分工。为了解决这个问题，作者借鉴 DeepSeek-MoE 中 shared expert 和 routed expert 的思想：
 

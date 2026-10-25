@@ -17,7 +17,7 @@ source_url: https://www.zhihu.com/question/58121772/answer/1914708043062556662
 
 158 人赞同了该回答
 
-知乎专栏和回答似乎是不能同步更新的，后面的翻译我会逐步补上（**目前更新至第26篇**）。
+知乎专栏和回答似乎是不能同步更新的，后面的翻译我会逐步补上（<strong>目前更新至第26篇</strong>）。
 
 **
 
@@ -27,7 +27,7 @@ Linkedin上推送了Linux内核开发人员[Moon Hee Lee](https://link.zhihu.com
 
 有一定内核基础的，建议直接阅读原文，非常易懂，位置在这里：[The Kernel in the Mind](https://link.zhihu.com/?target=https%3A//www.linkedin.com/pulse/kernel-mind-moon-hee-lee-miwze/)。此系列翻译对应原文版本为V1.1.2025**
 
-**不方便访问原链接的，我上传到了国内网盘：**[https://www.123912.com/s/qJF4vd-q746H](https://link.zhihu.com/?target=https%3A//www.123912.com/s/qJF4vd-q746H)
+<strong>不方便访问原链接的，我上传到了国内网盘：</strong>[https://www.123912.com/s/qJF4vd-q746H](https://link.zhihu.com/?target=https%3A//www.123912.com/s/qJF4vd-q746H)
 
 以下为系列文章前言和目录部分：
 

@@ -17,11 +17,11 @@ source_url: https://zhuanlan.zhihu.com/p/373674481
 
 **作者：Smarter
 转载自：Smarter
-原文链接：[![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_77eda03bf0ce.jpg)Rethinking “Batch” in BatchNormmp.weixin.qq.com/s?__biz=Mzg4MjQ1NzI0NA==&mid=2247495027&idx=1&sn=c0bcb02c1b0a02f33a737a1dc1e90a12&chksm=cf54c280f8234b96f9fe5be408e15e0758da75e6f19bd0aad03017db2b16c54a2f4538715836&mpshare=1&scene=1&srcid=0519ekrsZ6hbubXV5klfMXWa&sharer_sharetime=1621432329798&sharer_shareid=3055fa2ca7e035740437beb9a3cbb17b&exportkey=AVy9E73HhPD20bLXiSIzcmw%3D&pass_ticket=XqPjiVA0Lca7%2F2sZvWzrzbqpD4oVk90Aw7z5NncmrxKbbv1%2B7lSaMgFJsULMRPVa&wx_header=0#rd](https://link.zhihu.com/?target=https%3A//mp.weixin.qq.com/s%3F__biz%3DMzg4MjQ1NzI0NA%3D%3D%26mid%3D2247495027%26idx%3D1%26sn%3Dc0bcb02c1b0a02f33a737a1dc1e90a12%26chksm%3Dcf54c280f8234b96f9fe5be408e15e0758da75e6f19bd0aad03017db2b16c54a2f4538715836%26mpshare%3D1%26scene%3D1%26srcid%3D0519ekrsZ6hbubXV5klfMXWa%26sharer_sharetime%3D1621432329798%26sharer_shareid%3D3055fa2ca7e035740437beb9a3cbb17b%26exportkey%3DAVy9E73HhPD20bLXiSIzcmw%253D%26pass_ticket%3DXqPjiVA0Lca7%252F2sZvWzrzbqpD4oVk90Aw7z5NncmrxKbbv1%252B7lSaMgFJsULMRPVa%26wx_header%3D0%23rd)
+原文链接：[![](/images/collections/0.raw/zhihu/dl%E8%AE%BA%E6%96%87/asset/img_77eda03bf0ce.jpg)Rethinking “Batch” in BatchNormmp.weixin.qq.com/s?__biz=Mzg4MjQ1NzI0NA==&mid=2247495027&idx=1&sn=c0bcb02c1b0a02f33a737a1dc1e90a12&chksm=cf54c280f8234b96f9fe5be408e15e0758da75e6f19bd0aad03017db2b16c54a2f4538715836&mpshare=1&scene=1&srcid=0519ekrsZ6hbubXV5klfMXWa&sharer_sharetime=1621432329798&sharer_shareid=3055fa2ca7e035740437beb9a3cbb17b&exportkey=AVy9E73HhPD20bLXiSIzcmw%3D&pass_ticket=XqPjiVA0Lca7%2F2sZvWzrzbqpD4oVk90Aw7z5NncmrxKbbv1%2B7lSaMgFJsULMRPVa&wx_header=0#rd](https://link.zhihu.com/?target=https%3A//mp.weixin.qq.com/s%3F__biz%3DMzg4MjQ1NzI0NA%3D%3D%26mid%3D2247495027%26idx%3D1%26sn%3Dc0bcb02c1b0a02f33a737a1dc1e90a12%26chksm%3Dcf54c280f8234b96f9fe5be408e15e0758da75e6f19bd0aad03017db2b16c54a2f4538715836%26mpshare%3D1%26scene%3D1%26srcid%3D0519ekrsZ6hbubXV5klfMXWa%26sharer_sharetime%3D1621432329798%26sharer_shareid%3D3055fa2ca7e035740437beb9a3cbb17b%26exportkey%3DAVy9E73HhPD20bLXiSIzcmw%253D%26pass_ticket%3DXqPjiVA0Lca7%252F2sZvWzrzbqpD4oVk90Aw7z5NncmrxKbbv1%252B7lSaMgFJsULMRPVa%26wx_header%3D0%23rd)
 
 这篇很有趣且很有用，激动的赶紧把文章看了一遍，不愧是FAIR，实验看的太爽了。
 
-之前对于Norm的研究主要在于改变Norm的维度，然后衍生出了BatchNorm、GroupNorm、InstanceNorm和LayerNorm等方法，但是除了BN外的其他Norm含义是确定，而BN的batch却可以有多种采样方式，本文就是为了探讨BN的batch使用不同的采样方式会有什么影响**，**堪称BatchNorm圣经，建议全文背诵**(ps：GN也是吴育昕的作品)。
+之前对于Norm的研究主要在于改变Norm的维度，然后衍生出了BatchNorm、GroupNorm、InstanceNorm和LayerNorm等方法，但是除了BN外的其他Norm含义是确定，而BN的batch却可以有多种采样方式，本文就是为了探讨BN的batch使用不同的采样方式会有什么影响<strong>，</strong>堪称BatchNorm圣经，建议全文背诵**(ps：GN也是吴育昕的作品)。
 
 **
 
@@ -29,11 +29,11 @@ source_url: https://zhuanlan.zhihu.com/p/373674481
 
 ### 01 Motivation**
 
-BatchNorm现在已经广泛的应用于CNN中。但是BN针对不同的场景使用时有许多细微的差异，如果选择不当会降低模型的性能。BatchNorm相对于其他算子来说，主要的不同在于BN是对batch数据进行操作的。BN在batch数据中进行统计量计算，而其他算子一般都是独立处理单个样本的。因此**影响BN的输出不仅仅取决于单个样本的性质，还取决于batch的采样方式**。
+BatchNorm现在已经广泛的应用于CNN中。但是BN针对不同的场景使用时有许多细微的差异，如果选择不当会降低模型的性能。BatchNorm相对于其他算子来说，主要的不同在于BN是对batch数据进行操作的。BN在batch数据中进行统计量计算，而其他算子一般都是独立处理单个样本的。因此<strong>影响BN的输出不仅仅取决于单个样本的性质，还取决于batch的采样方式</strong>。
 
 **
 
-![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_cb9b52d7bb6f.jpg)
+![](/images/collections/0.raw/zhihu/dl%E8%AE%BA%E6%96%87/asset/img_cb9b52d7bb6f.jpg)
 
 如图所示，左右各举例了三种batch采样方式。其中左图三种batch采样方式分别为entire dataset、mini-batches和subset of mini-batches，右图三种batch采样方式分别为entire domain、each domain和mixture of each domain。
 
@@ -77,7 +77,7 @@ EMA方法导致次优解的原因有两点：
 
 2.当 \lambda 太小时，最近几个mini-batches影响更大，统计量无法表示整个训练集的统计量。
 
-**Towards Precise Population Statistics**
+<strong>Towards Precise Population Statistics</strong>
 
 为了得到整个训练集更加精确的统计量，PreciseBN采用了两点小技巧：
 
@@ -99,7 +99,7 @@ $$\sigma_{\text {pop }}^{2}=\mathrm{E}\left[\mu_{\mathcal{B}}^{2}+\sigma_{B}^{2}
 
 **
 
-![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_5228d072130d.jpg)
+![](/images/collections/0.raw/zhihu/dl%E8%AE%BA%E6%96%87/asset/img_5228d072130d.jpg)
 
 100 samples of batch mean意思是相同epoch下模型对100个随机batch统计量的结果。如图所示，在训练早期EMA的统计量不精确，会导致最终模型性能次优。由于滑动平均的计算方式导致EMA的统计量滞后于PrciseBN。
 
@@ -107,19 +107,19 @@ $$\sigma_{\text {pop }}^{2}=\mathrm{E}\left[\mu_{\mathcal{B}}^{2}+\sigma_{B}^{2}
 
 **
 
-![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_22f07bf82486.jpg)
+![](/images/collections/0.raw/zhihu/dl%E8%AE%BA%E6%96%87/asset/img_22f07bf82486.jpg)
 
 1.推理时使用PreciseBN会更加稳定。
 
-![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_fb4c84793167.jpg)
+![](/images/collections/0.raw/zhihu/dl%E8%AE%BA%E6%96%87/asset/img_fb4c84793167.jpg)
 
 2.大batch训练对EMA影响更大。
 
-![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_dc294af4bb36.jpg)
+![](/images/collections/0.raw/zhihu/dl%E8%AE%BA%E6%96%87/asset/img_dc294af4bb36.jpg)
 
 3.PreciseBN只需要10^3~10^4个样本可以得到近似最优。
 
-![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_0643465a2bd7.jpg)
+![](/images/collections/0.raw/zhihu/dl%E8%AE%BA%E6%96%87/asset/img_0643465a2bd7.jpg)
 
 4.小batch会产生统计量积累错误。
 
@@ -147,7 +147,7 @@ normalization batch size对training noise和train-test inconsistency有着直接
 
 3.在验证集上对population统计量进行评估
 
-![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_d2db765f6894.jpg)
+![](/images/collections/0.raw/zhihu/dl%E8%AE%BA%E6%96%87/asset/img_d2db765f6894.jpg)
 
 Training noise：当normalization batch size非常小时，单个样本会受到同一个min-batch样本的严重影响，导致训练精度较差，优化困难。
 
@@ -161,7 +161,7 @@ Use Mini-batch in Inference**
 
 **
 
-![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_a7847a585bfa.jpg)
+![](/images/collections/0.raw/zhihu/dl%E8%AE%BA%E6%96%87/asset/img_a7847a585bfa.jpg)
 
 作者在Mask R-CNN上进行实验，mini-batch的结果超过了population的结果，证明了在推理中使用mini-batch可以有效的缓解训练测试不一致。(ps：不使用norm效果略差，使用GN效果更好)****
 
@@ -171,7 +171,7 @@ Use Population Batch in Training**
 
 **
 
-![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_a04517a34b04.jpg)
+![](/images/collections/0.raw/zhihu/dl%E8%AE%BA%E6%96%87/asset/img_a04517a34b04.jpg)
 
 FrozenBN可以有效缓解训练测试不一致，即使在小normalization batch size，也能达到比较好的性能。但是随着normalization batch size增大，作者提出的两种缓解不一致的方法都不如常规BN的结果。
 
@@ -189,7 +189,7 @@ Domain to Compute Population Statistics**
 
 **
 
-![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_adafa71b04b9.jpg)
+![](/images/collections/0.raw/zhihu/dl%E8%AE%BA%E6%96%87/asset/img_adafa71b04b9.jpg)
 
 作者实验发现，当存在显著的domain shift时，模型使用评估domain的population统计量会得到更好的结果，可以缓解训练测试的不一致。
 
@@ -197,13 +197,13 @@ BatchNorm in Multi-Domain Training**
 
 **
 
-![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_2a8c7f23e79e.jpg)
+![](/images/collections/0.raw/zhihu/dl%E8%AE%BA%E6%96%87/asset/img_2a8c7f23e79e.jpg)
 
 为了对多个domain的情况进行实验，作者将RetinaNet head中的BN统计量进行实验设计。RetinaNet的head是5个feature层共享的，这意味着会接收来自5个不同分布或者domain的输入进行训练。
 
 左图的训练形式非常简单，head独立作用于不同的feature层，都有自己独立的统计量。右图将所有输入特征flatten然后concat在一起，统一进行统计量计算。两种不同计算统计量的方式称为domain-specific statistics和shared statistics。
 
-![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_e0a97201290c.jpg)
+![](/images/collections/0.raw/zhihu/dl%E8%AE%BA%E6%96%87/asset/img_e0a97201290c.jpg)
 
 最终实验表明，SGD training、population statistics training和testing保持一致是非常重要的，并且全部使用domain-specific能取得最好的效果。(ps：不使用norm效果略差，使用GN效果更好)****
 
@@ -217,15 +217,15 @@ Exploit Patterns in Mini-batches**
 
 **
 
-![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_d8a71c009e34.jpg)
+![](/images/collections/0.raw/zhihu/dl%E8%AE%BA%E6%96%87/asset/img_d8a71c009e34.jpg)
 
 作者实验发现，当使用random采样的mini-batch统计量时，验证误差会增加，当使用population统计量时，验证误差会随着epoch的增加逐渐增大，验证了BN信息泄露问题的存在。
 
-![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_be2fea05a926.jpg)
+![](/images/collections/0.raw/zhihu/dl%E8%AE%BA%E6%96%87/asset/img_be2fea05a926.jpg)
 
 为了处理信息泄露问题，之前常见的作法是使用SyncBN，来弱化mini-batch内样本之间的相关性。另一种解决方法是在进入head之前在GPU之间随机打乱RoI features，这给每个GPU分配了一个随机的样本子集来进行归一化，同时也削弱了min-batch样本之间的相关性，如上图所示。
 
-![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_7174523c3741.jpg)
+![](/images/collections/0.raw/zhihu/dl%E8%AE%BA%E6%96%87/asset/img_7174523c3741.jpg)
 
 实验结果表明，shuffling和SyncBN都能有效地处理信息泄漏，使得head在测试时能够很好地泛化。在速度方面，我们注意到shuffling需要更少的跨gpu同步，但是shuffling每次传输的数据比SyncBN多。因此，shuffling和SyncBN的相对效率跟具体模型架构相关。
 
@@ -237,7 +237,7 @@ Cheating in Contrastive Learning**
 
 本文从多个角度探讨了BN的batch使用不同的采样方式会有什么影响，并且做了非常详尽的对比试验，堪称BatchNorm圣经，建议全文背诵。
 
-**另外，看完后最大的感触是，BN不会用就别用，GN yyds。**
+<strong>另外，看完后最大的感触是，BN不会用就别用，GN yyds。</strong>
 
 **
 
@@ -249,11 +249,11 @@ Reference**
 
 ### 机器学习/深度学习算法/自然语言处理交流群**
 
-已建立机器学习算-自然语言处理微信交流群！想要进交流群进行学习的同学，可以直接加我的微信号：**HIT_NLP**。加的时候备注一下：**知乎+学校+昵称 （不加备注不会接受同意，望谅解）**，想进**pytorch群，备注知乎+学校+昵称+Pytorch**即可。然后我们就可以拉你进群了。群里已经有非得多国内外高校同学，交流氛围非常好。
+已建立机器学习算-自然语言处理微信交流群！想要进交流群进行学习的同学，可以直接加我的微信号：<strong>HIT_NLP</strong>。加的时候备注一下：<strong>知乎+学校+昵称 （不加备注不会接受同意，望谅解）</strong>，想进<strong>pytorch群，备注知乎+学校+昵称+Pytorch</strong>即可。然后我们就可以拉你进群了。群里已经有非得多国内外高校同学，交流氛围非常好。
 
-**强烈推荐大家关注**机器学习算法与自然语言处理**账号和**[机器学习算法与自然语言处理](https://link.zhihu.com/?target=https%3A//mp.weixin.qq.com/s/VhZW2qS_UC3kUdXhvAVKxA)**微信公众号，可以快速了解到最新优质的干货资源。**
+<strong>强烈推荐大家关注</strong>机器学习算法与自然语言处理<strong>账号和</strong>[机器学习算法与自然语言处理](https://link.zhihu.com/?target=https%3A//mp.weixin.qq.com/s/VhZW2qS_UC3kUdXhvAVKxA)<strong>微信公众号，可以快速了解到最新优质的干货资源。</strong>
 
-### **推荐阅读**
+### <strong>推荐阅读</strong>
 
 [EMNLP 2021（征稿通知）+交流群](https://zhuanlan.zhihu.com/p/349345306)
 

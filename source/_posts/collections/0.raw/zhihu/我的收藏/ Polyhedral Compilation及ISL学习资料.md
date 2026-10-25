@@ -15,13 +15,13 @@ source_url: https://zhuanlan.zhihu.com/p/385722777
 ---
 
 
-### **Polyhedral Compilation及ISL学习资料**
+### <strong>Polyhedral Compilation及ISL学习资料</strong>
 
 Polyhedral Compilation：多面体编译
 
 ISL：一个用于操作由线性约束条件约束的整数点的集合和关系的库。主要作为实现Polyhedral Compilation的数学工具库。
 
-### **官方资料**
+### <strong>官方资料</strong>
 
 Integer Set Library: Manual ISL官方使用手册。包含C++端详细的API/函数介绍，实现细节，应用例子等。由于实在太长不建议新手上来直接看，可以更多的作为入门后的工具书。
 
@@ -43,11 +43,11 @@ Schedule Trees Schedule Trees 介绍Schedule Trees：将代码的schedule(调度
 
 ISL GoogleGroup ISL社区，有不懂的可以在上面提问讨论，Sven大佬会经常回复，非常推荐！
 
-### **Demo与测试**
+### <strong>Demo与测试</strong>
 
 ISL Playground in Python 在线playground，可以在这里上手python端的ISL。另外强烈推荐此网站中的Examples，新手最好都过一遍，对理解和上手ISL和Polyheral Compilation非常有帮助。
 
-### **中文社区资料**
+### <strong>中文社区资料</strong>
 
 Polyhedral编译调度算法(1,2,3) 知乎@要术甲杰大佬的文章，对具体算法原理感兴趣的话强烈推荐
 

@@ -33,7 +33,7 @@ Update： 已更新兼容 transformers 库的 MLA 优化实现，相关 pull req
 
 ### MLA 开源实现分析
 
-![](/images/collections/0.raw/zhihu/AI%2520infra/asset/img_151a95808b5d.jpg)
+![](/images/collections/0.raw/zhihu/AI%20infra/asset/img_151a95808b5d.jpg)
 
 Full Formulas of MLA from DeepSeek-V2 paper上图为论文中给出的 MLA 完整公式，以下对应公式分析实际的开源实现 [modeling_deepseek.py](https://link.zhihu.com/?target=https%3A//huggingface.co/deepseek-ai/DeepSeek-V2/blob/main/modeling_deepseek.py) 中非 flash attn 版本的 DeepseekV2Attention 算子实现。
 
@@ -91,7 +91,7 @@ kv_b_proj 大小为  [kv_lora_rank， num_heads * (q_head_dim - qk_rope_head_dim
 
 通过维度分析可以看到 kv_lora_rank 是 qk_nope_head_dim 的 4 倍且 K 和 V 共享 latent state，qk_rope_head_dim 只有 qk_nope_head_dim 的一半，结合起来 4+= 正式下图中 MLA KVCache per Token 大小的来源
 
-![](/images/collections/0.raw/zhihu/AI%2520infra/asset/img_72c7853d65ef.jpg)
+![](/images/collections/0.raw/zhihu/AI%20infra/asset/img_72c7853d65ef.jpg)
 
 不过从代码中我们也可以看到在开源实现中是展开成 MHA 存储的 KVCache，所以没有拿到这部分的收益。
 
@@ -139,7 +139,7 @@ kv_b_proj 大小为  [kv_lora_rank， num_heads * (q_head_dim - qk_rope_head_dim
 
 优化上述实现的核心在于实现论文中简单提了一句的”矩阵吸收“
 
-![](/images/collections/0.raw/zhihu/AI%2520infra/asset/img_a80ac203b883.jpg)
+![](/images/collections/0.raw/zhihu/AI%20infra/asset/img_a80ac203b883.jpg)
 
 #### W^{UK}  吸收
 
@@ -210,9 +210,9 @@ u   = einsum('hdD,bhqd->bqD', W_o, o)     # (6)`
 
 我们分别在 4080 单卡和 A100 单卡上测试了不同 batch size (B) 和不同 sequence length 情况下各实现的性能。
 
-![](/images/collections/0.raw/zhihu/AI%2520infra/asset/img_a0dfa8bd3a08.jpg)
+![](/images/collections/0.raw/zhihu/AI%20infra/asset/img_a0dfa8bd3a08.jpg)
 
-![](/images/collections/0.raw/zhihu/AI%2520infra/asset/img_7ccd2f519a76.jpg)
+![](/images/collections/0.raw/zhihu/AI%20infra/asset/img_7ccd2f519a76.jpg)
 
 可以看到，随着 sequence length 的提升DeepseekV2Attention 算子中 MLA 的部分在总耗时中的占比不断增加，而这一部分正是受益于计算强度增加更加充分利用算力的部分。在 single query 推理（即 B=1）的情况下如果不考虑模型实际能够支撑的 context length 直接撑满显存的话最高可以有 26 倍的加速。
 

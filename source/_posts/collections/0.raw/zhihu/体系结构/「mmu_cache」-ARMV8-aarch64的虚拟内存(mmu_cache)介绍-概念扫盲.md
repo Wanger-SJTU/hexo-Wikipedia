@@ -49,7 +49,7 @@ source_url: https://zhuanlan.zhihu.com/p/18242294800
 armv8定义了device memory和normal memory两种内存，其中device memory固定的就是Outer-Shareable和Non-cacheable，而normal memory有多种属性可选。
 说明一下：在B2.7.2章节中有这么一句话“Data accesses to memory locations are coherent for all observers in the system, and correspondingly are treated as being Outer Shareable”， treated as被看作是（但不是），所以在一些的文章中就认为device memory是没有shareable属性的。其实也能够理解，一段memory设置成了non-cacheable，然后再去讨论该memory的shareable属性，好像也没有意义。 不管怎么样，我们还是按照下方表格的来理解吧，device memory固定为Outer-Shareable和Non-cacheable
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_867e02c6e3dd.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_867e02c6e3dd.jpg)
 
 对于device memory，又分下面三种特性：
 ➨Gathering和non Gathering(G or nG)：表示对多个memory的访问是否可以合并，如果是nG，表示处理器必须严格按照代码中内存访问来进行，不能把两次访问合并成一次。例如：代码中有2次对同样的一个地址的读访问，那么处理器必须严格进行两次read transaction
@@ -71,7 +71,7 @@ PoU/PoC/Inner/Outer的定义
 简而言之，PoU/PoC定义了指令和命令的所能抵达的缓存或内存，在到达了指定地点后，Inner/Outer Shareable定义了它们被广播的范围。
 例如：在某个A15上执行Clean清指令缓存，范围指定PoU。显然，所有四个A15的一级指令缓存都会被清掉。那么其他的各个Master是不是受影响？那就要用到Inner/Outer/Non Shareable
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_55d00666b6df.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_55d00666b6df.jpg)
 
 有了上面的这些定义，那么我们再来看inner Shareable和outer Shareable
 
@@ -87,12 +87,12 @@ outer Shareable 内存在outer范围内是共享的
 写直通(write through)
 当CPU执行store指令并在cache命中时，我们更新cache中的数据并且更新主存中的数据。cache和主存的数据始终保持一致。
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_eaf76bfd7ac7.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_eaf76bfd7ac7.jpg)
 
 写回(write back)
 当CPU执行store指令并在cache命中时，我们只更新cache中的数据。并且每个cache line中会有一个bit位记录数据是否被修改过，称之为dirty bit（翻翻前面的图片，cache line旁边有一个D就是dirty bit）。我们会将dirty bit置位。主存中的数据只会在cache line被替换或者显示的clean操作时更新。因此，主存中的数据可能是未修改的数据，而修改的数据躺在cache中。cache和主存的数据可能不一致。
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_8220380aaa42.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_8220380aaa42.jpg)
 
 ➨ 在ARMV8定义这些属性的寄存器和linux kernel或optee软件代码中使用的示例，请点击此处
 
@@ -118,7 +118,7 @@ Point of Unification (PoU), Point of Coherency (PoC), Point of Persistence (PoP)
 4、MMU的介绍
 在ARMV8-aarch64体系下，ARM Core访问内存的硬件结构图如下所示：
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_79dce4ae7dcf.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_79dce4ae7dcf.jpg)
 
 其中，MMU由TLB和Table Walk Unit组成的.
 
@@ -149,15 +149,15 @@ Address tagging / Memory Tagging Extension / Pointer authentication
 (1)、地址翻译的过程
 MMU的地址翻译工作是一种自动行为，当填好页表、配置好系统寄存器之后，cpu发起的虚拟地址读写操作，将会经过MMU自动转换成物理地址，然后发送到AXI总线上完成真正的内存或device的读写操作. 如下列举了ARM在不同exception level中的地址翻译的模型.
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_043c976f3436.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_043c976f3436.jpg)
 
 在一般的情况下，我们是不会启用stage2的，除非enable了EL2、实现了hypervisor，那么这时候才会开启stage2，如下图所示：
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_29b1766110d8.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_29b1766110d8.jpg)
 
 (2)、和mmu相关的System registers
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_863ce6af66e8.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_863ce6af66e8.jpg)
 
 在armv8-aarch64体系下，TCR(Translation Control Register)寄存器有
 
@@ -184,7 +184,7 @@ The control register for stage 2 of the EL1&0 translation regime
  
 (3)、Enable mmu and endianness的相关寄存器
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_3b59bdf0a1eb.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_3b59bdf0a1eb.jpg)
 
 在ARMV8-aarch64架构下有三个sctlr寄存器
 
@@ -204,7 +204,7 @@ Supported IPA size – stage2页表转换的部分size，暂不介绍
  
 b. output address size
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_38e2eaa2abb8.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_38e2eaa2abb8.jpg)
 
 c . Input address size
 
@@ -218,7 +218,7 @@ d. Supported IPA size
 (5)、granule sizes
 a. state 1 granule sizes
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_43c5c4f72c5f.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_43c5c4f72c5f.jpg)
 
 b. state 2 granule sizes
 
@@ -226,7 +226,7 @@ b. state 2 granule sizes
 (6)、granule size对地址翻译的影响
 granule size的配置不同，将会影响到页表的建立，不同的granule size的页面有着不同的页表结构，例如下表所示的:
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_6cea6f356131.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_6cea6f356131.jpg)
 
 (7)、disable mmu
 disable mmu之后，the stage 1 translation，For the EL1&0：
@@ -243,21 +243,21 @@ MMU除了完成地址的翻译，还控制的访问权限、memory ordering、ca
 
 如图所示，列出了三种类型的entry信息:
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_2bc2778e9773.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_2bc2778e9773.jpg)
 
 bits[1:0]表示该输出是block address，还是next level table address，还是invalid entry
 
 (3)、granule sizes
 有三种granule sizes的页表:4kb、16kb、64kb
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_fc2b634b0819.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_fc2b634b0819.jpg)
 
 (4)、Cache configuration
 MMU使用translation tables 和 translation registers控制着cache policy、memory attributes、access permissions、va到pa的转换
 
 8、 ARM mmu三级页表查询的过程
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_b42a13fe7c22.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_b42a13fe7c22.jpg)
 
 (1)、在开启MMU后，cpu发起的读写地址是一个64bit的虚拟地址，
 (2)、该虚拟地址的高16bit要么是全0，要么是全1. 如果是全0，则选择TTBR0_ELx做为L1页表的基地址; 如果是全1，则选择TTBR1_ELx做为L1页表的基地址;
@@ -300,15 +300,15 @@ A reserved format
  
 如果是block entry，其attribute描述如下：
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_ee71da106a88.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_ee71da106a88.jpg)
 
 如果是stage2的entry，无论是table entry还是block entry，其attribute描述如下：
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_9bd148a9d36a.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_9bd148a9d36a.jpg)
 
 其实用如下的一张图来描述更清晰：
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_bb67eaf042a0.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_bb67eaf042a0.jpg)
 
 这里的bit[1:0]用于定义entry的类型（invalid? block ? table? reserved）
 bit[4:2]指向 MAIR_ELn寄存器中的其中的一个字节，用于定义内存(main memory和device memory)的类型
@@ -316,15 +316,15 @@ bit[4:2]指向 MAIR_ELn寄存器中的其中的一个字节，用于定义内存
 MAIR_ELn寄存器拆分成8个bytes，每个byte定义一种内存类型
 (MAIR_ELn, Memory Attribute Indirection Register (ELn))
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_c9dc149a57e9.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_c9dc149a57e9.jpg)
 
 每一个byte（attrn）的含义如下：
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_8499a176113c.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_8499a176113c.jpg)
 
 各个bit位的具体含义
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_8d615d6bc5b3.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_8d615d6bc5b3.jpg)
 
 例如optee中的内存属性配置如下:
 

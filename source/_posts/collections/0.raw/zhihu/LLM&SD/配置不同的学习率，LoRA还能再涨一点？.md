@@ -19,7 +19,7 @@ source_url: https://zhuanlan.zhihu.com/p/687660397
 
 配置不同的学习率，LoRA还能再涨一点？ - 科学空间|Scientific Spaceskexue.fm/archives/10001
 
-LoRA（Low-Rank Adaptation）是当前LLM的参数高效微调手段之一，此前我们在《梯度视角下的LoRA：简介、分析、猜测及推广》也有过简单讨论。这篇文章我们来学习LoRA的一个新结论： **给LoRA的两个矩阵分配不同的学习率，LoRA的效果还能进一步提升。**
+LoRA（Low-Rank Adaptation）是当前LLM的参数高效微调手段之一，此前我们在《梯度视角下的LoRA：简介、分析、猜测及推广》也有过简单讨论。这篇文章我们来学习LoRA的一个新结论： <strong>给LoRA的两个矩阵分配不同的学习率，LoRA的效果还能进一步提升。</strong>
 
 该结论出自最近的论文[《LoRA+: Efficient Low Rank Adaptation of Large Models》](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2402.12354)（下称“LoRA+”）。咋看之下，该结论似乎没有什么特别的，因为配置不同的学习率相当于引入了新的超参数，通常来说只要引入并精调超参数都会有提升。“LoRA+”的特别之处在于，它从理论角度肯定了这个必要性，并且断定最优解必然是右矩阵的学习率大于左矩阵的学习率。简而言之，“LoRA+”称得上是理论指导训练并且在实践中确实有效的经典例子，值得仔细学习一番。
 
@@ -29,7 +29,7 @@ $假设预训练参数为W_0 \in \mathbb{R}^{n\times m}，如果使用全量参�
 
 W_0\in\mathbb{R}^{n\times m} \quad + \quad A\in\mathbb{R}^{n\times r}\quad\times\quad B\in\mathbb{R}^{r\times m}\\  注意LoRA通常都是用于Dense层，但原论文的分析是基于权重左乘输入的，而实现中基本上都是输入右乘权重，为了避免理解上的困难，本文的记号跟实现对齐，即假设层的输入是X&#x2208;Rb&#x00D7;n" role="presentation">X∈Rb×nX\in\mathbb{R}^{b\times n}，层的运算是XW=X(W0+AB)" role="presentation">XW=X(W0+AB)XW = X(W_0 + AB)。由于“LoRA+”的结论跟预训练权重无关，因此不失一般性可以设W0=0" role="presentation">W0=0W_0=0，那么层运算简化为Y=XAB&#x2208;Rb&#x00D7;m" role="presentation">Y=XAB∈Rb×mY=XAB\in\mathbb{R}^{b\times m}。  “LoRA+”的结论是： 为了使LoRA的效果尽可能接近最优，权重B" role="presentation">BB的学习率应该要大于权重A的学习率。  注意，为了使初始模型等价于原始预训练模型，LoRA通常会将A,B" role="presentation">A,BA,B之一全零初始化。笔者一开始以为，该结论是由于全零初始化导致的，所以应该依赖于全零初始化的位置，但仔细阅读后发现，“LoRA+”所声称的结论跟全零初始化无关，也就是说，表面上A,B" role="presentation">A,BA,B是对称的，但实际上它们有着固有的不对称性，以至于不管选择A" role="presentation">AA还是B来全零初始化，结论都是B" role="presentation">BB的学习率要大于A" role="presentation">AA。这就有意思起来了。  然而，不得不说的是“LoRA+”原论文的讲解写得相当让人费解，所以下面都是笔者用自己的思路尽量简化后的推导。大体上，它基于两点假设： 
 
-**1、数值稳定**：模型每一层的输出值都应该是数值稳定的，跟网络宽度无关；  2、**贡献相当**：为了使LoRA最优，A,B" role="presentation">A,BA,B两个矩阵对效果应该有同等程度的贡献。  接下来我们逐一分析并量化这两点假设。  
+<strong>1、数值稳定</strong>：模型每一层的输出值都应该是数值稳定的，跟网络宽度无关；  2、<strong>贡献相当</strong>：为了使LoRA最优，A,B" role="presentation">A,BA,B两个矩阵对效果应该有同等程度的贡献。  接下来我们逐一分析并量化这两点假设。  
 
 ### 数值稳定
 

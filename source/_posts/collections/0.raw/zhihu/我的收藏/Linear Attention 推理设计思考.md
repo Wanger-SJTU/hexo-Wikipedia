@@ -23,7 +23,7 @@ source_url: https://zhuanlan.zhihu.com/p/1970421781090268661
 
 在深入优化前，我们必须先回答一个基础问题：Linear Attention的”线性”优势，在实际访存层面是否成立？
 
-**先给结论：不一定，取决于序列长度。**
+<strong>先给结论：不一定，取决于序列长度。</strong>
 
 我们来算一笔账：
 
@@ -41,9 +41,9 @@ MLA KV Cache 采取典型值kv_lora_rank=512, qk_rope_head_dim=64，每层缓存
 
 ### KDA Prologue Kernel 并行
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_647b7a3c91d4.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_647b7a3c91d4.jpg)
 
-观察KDA的核心计算路径[1]，我们会发现q、k、v、g、beta五个矩阵乘在prologue阶段完全独立，没有数据依赖。但并不能直接fuse为一次矩阵乘，因为乘法中间结果存在sigmoid、gate、conv等操作。因此更好的方案是**选择性地fuse一些矩阵乘，然后考虑用多个CUDA Stream并行发射算子，通过green ctx调节显卡资源可以让访存利用率低的算子计算延迟隐藏在利用率高的矩阵乘里。**
+观察KDA的核心计算路径[1]，我们会发现q、k、v、g、beta五个矩阵乘在prologue阶段完全独立，没有数据依赖。但并不能直接fuse为一次矩阵乘，因为乘法中间结果存在sigmoid、gate、conv等操作。因此更好的方案是<strong>选择性地fuse一些矩阵乘，然后考虑用多个CUDA Stream并行发射算子，通过green ctx调节显卡资源可以让访存利用率低的算子计算延迟隐藏在利用率高的矩阵乘里。</strong>
 
 `可能的方案：计算 qkv_proj 之后创建多个 cuda stream
 Stream 1: q/k/v conv1d
@@ -65,7 +65,7 @@ Bsz \times num\_drafts \times num\_heads \times head\_dim \times head\_dim
 
 学习了yywangcs的想法[2]([从推理框架的视角谈DeltaNet](https://link.zhihu.com/?target=https%3A//yywangcs.notion.site/DeltaNet-1fefc9f5d80580a496f8eb406a496f09))是在验证阶段结束后，只保留最开始的 S_{init} ，验证阶段生成的 S_n 随着forward过程传递。在下一轮验证的时候，把k个已经被接收的token和新的num_draft个token拼在一起重新做linear states更新，这次可以保存到 S_k 状态。确实节省了显存开销，但是会引入重复计算，对于FFN每次都需要重算更多的token： Bsz \times（k+num\_draft） ，接收的越多重算的越多，除非进行查表优化。这些额外计算和查表时间可能会把投机推理的优势吃掉很多。
 
-本文提出一种折中方案：**保留q/k/v的projection_states**，而非最终linear state，可以把存储开销由 head\_dim^2 降为线性。在下一轮验证的时候，对k个已经被接收的token使用其q/k/v states重算得到当前的状态 S_k ，FFN也不需要重复访存。
+本文提出一种折中方案：<strong>保留q/k/v的projection_states</strong>，而非最终linear state，可以把存储开销由 head\_dim^2 降为线性。在下一轮验证的时候，对k个已经被接收的token使用其q/k/v states重算得到当前的状态 S_k ，FFN也不需要重复访存。
 
 这种保留中间状态的另一种好处是层内计算可以和prologue kernel并行，不同层的重算也可以独立并行，与前面prologue的multi-stream策略可以拼在一起，进一步节省时间。
 

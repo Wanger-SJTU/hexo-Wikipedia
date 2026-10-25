@@ -524,7 +524,7 @@ return (key >> shift) & SLOT_MASK;
    这段 bit 的值，就是当前层要走的 slot 编号。
 所以 radix tree 的核心可以压缩成一句话：
 
-**把 key 切成多段，每一段决定一层分支；只为真实存在的 key 分配路径。**
+<strong>把 key 切成多段，每一段决定一层分支；只为真实存在的 key 分配路径。</strong>
 
 后面回到 page cache 时，只要把这里的 `key` 换成文件页偏移 `index`，把 `value` 换成 page / folio，就能理解 `mapping->i_pages` 为什么适合用这种结构。
 
@@ -1652,23 +1652,23 @@ page cache 查找：
 这两棵树都挂在 `address_space` 附近，但不是一件事。
 
 十五、常见误解
-**误解一：XArray 就是普通数组。**
+<strong>误解一：XArray 就是普通数组。</strong>
 
 不是。它的 API 看起来像巨大数组，但内部是稀疏树。没有 entry 的 index 范围不会真的分配数组槽位。
 
-**误解二：XArray 和 radix tree 完全无关。**
+<strong>误解二：XArray 和 radix tree 完全无关。</strong>
 
 不是。XArray 继承了 radix tree 按 index bit 分层寻址的核心思想，只是 API、entry 类型、mark、并发语义都重新整理过。
 
-**误解三：dirty tag 是挂在 folio 里的。**
+<strong>误解三：dirty tag 是挂在 folio 里的。</strong>
 
 不准确。folio 自己有 dirty flag；`PAGECACHE_TAG_DIRTY` 是挂在 `mapping->i_pages` 这个索引结构里的 mark。
 
-**误解四：有 dirty tag 就不需要 folio dirty flag。**
+<strong>误解四：有 dirty tag 就不需要 folio dirty flag。</strong>
 
 不是。tag/mark 是为了快速找到候选 entry；具体状态和并发校验仍然要看 folio 自己的状态。
 
-**误解五：writeback 会扫描所有文件页。**
+<strong>误解五：writeback 会扫描所有文件页。</strong>
 
 通常不是。writeback 先从 wb/inode 层面找到有脏页的 inode，再在该 inode 的 `mapping->i_pages` 里按 dirty/towrite mark 找 folio。
 
@@ -1738,7 +1738,7 @@ folio 被写脏
         └─ 调文件系统 writepages/writepage 写回
 一句话：
 
-**XArray 是 Linux 现代 page cache 的稀疏索引树；mark 是这棵树上的状态过滤索引。**
+<strong>XArray 是 Linux 现代 page cache 的稀疏索引树；mark 是这棵树上的状态过滤索引。</strong>
 
 参考源码
 本文源码判断主要基于：

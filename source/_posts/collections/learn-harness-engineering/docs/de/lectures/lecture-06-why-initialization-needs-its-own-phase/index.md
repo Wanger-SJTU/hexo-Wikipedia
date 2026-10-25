@@ -64,22 +64,22 @@ OpenAIs Codex harness Engineering-Leitfaden betont ebenfalls das Prinzip „Repo
 
 ## Zentrale Konzepte
 
-- **Initialisierungsphase**: Die erste Phase im Lebenszyklus des Agenten — keine Feature-Implementierung, nur die Schaffung von Voraussetzungen für alle nachfolgenden Implementierungsphasen. Die Ausgabe ist kein Code, sondern Infrastruktur.
-- **Bootstrap-Vertrag**: Die Bedingungen, unter denen ein Projekt von einer neuen Agenten-Session eindeutig betrieben werden kann — kann starten, kann testen, kann Fortschritt sehen, kann nächste Schritte aufnehmen. Vier Bedingungen, alle erforderlich.
-- **Kaltstart vs. Warmstart**: Kaltstart bedeutet ein leeres Verzeichnis, in dem der Agent die Projektstruktur erraten muss; Warmstart bedeutet eine Vorlage oder ein bestehendes Projekt, in dem die Infrastruktur bereits vorhanden ist. Warmstart schneidet deutlich besser ab — wie das Arbeiten auf einer Baustelle mit fließendem Wasser und Strom versus dem Beginn auf einer kargen Brache.
-- **Übergabebereitschaft**: Das Projekt befindet sich jederzeit in einem Zustand, in dem ein neuer Agent übernehmen kann. Keine mündliche Erklärung nötig — nur der Repo-Inhalt.
-- **Zeit bis zur ersten Verifizierung**: Die Zeit vom Projektstart bis zum ersten bestandenen Feature-Verifizierungspunkt. Dies ist die Kernkennzahl zur Messung der Initialisierungseffizienz.
-- **Downstream-Verwendbarkeit**: Das beste Maß für die Initialisierungsqualität — der Anteil nachfolgender Sessions, die erfolgreich Aufgaben ausführen können, ohne auf implizites Wissen angewiesen zu sein.
+- <strong>Initialisierungsphase</strong>: Die erste Phase im Lebenszyklus des Agenten — keine Feature-Implementierung, nur die Schaffung von Voraussetzungen für alle nachfolgenden Implementierungsphasen. Die Ausgabe ist kein Code, sondern Infrastruktur.
+- <strong>Bootstrap-Vertrag</strong>: Die Bedingungen, unter denen ein Projekt von einer neuen Agenten-Session eindeutig betrieben werden kann — kann starten, kann testen, kann Fortschritt sehen, kann nächste Schritte aufnehmen. Vier Bedingungen, alle erforderlich.
+- <strong>Kaltstart vs. Warmstart</strong>: Kaltstart bedeutet ein leeres Verzeichnis, in dem der Agent die Projektstruktur erraten muss; Warmstart bedeutet eine Vorlage oder ein bestehendes Projekt, in dem die Infrastruktur bereits vorhanden ist. Warmstart schneidet deutlich besser ab — wie das Arbeiten auf einer Baustelle mit fließendem Wasser und Strom versus dem Beginn auf einer kargen Brache.
+- <strong>Übergabebereitschaft</strong>: Das Projekt befindet sich jederzeit in einem Zustand, in dem ein neuer Agent übernehmen kann. Keine mündliche Erklärung nötig — nur der Repo-Inhalt.
+- <strong>Zeit bis zur ersten Verifizierung</strong>: Die Zeit vom Projektstart bis zum ersten bestandenen Feature-Verifizierungspunkt. Dies ist die Kernkennzahl zur Messung der Initialisierungseffizienz.
+- <strong>Downstream-Verwendbarkeit</strong>: Das beste Maß für die Initialisierungsqualität — der Anteil nachfolgender Sessions, die erfolgreich Aufgaben ausführen können, ohne auf implizites Wissen angewiesen zu sein.
 
 ## Wie man Initialisierung richtig durchführt
 
-**Behandeln Sie Initialisierung als dedizierte Phase.** Die erste Session führt nur Initialisierung durch — überhaupt kein Geschäfts-Feature-Code. Initialisierung produziert:
+<strong>Behandeln Sie Initialisierung als dedizierte Phase.</strong> Die erste Session führt nur Initialisierung durch — überhaupt kein Geschäfts-Feature-Code. Initialisierung produziert:
 
-**1. Ausführbare Umgebung.** Das Projekt startet, Abhängigkeiten sind installiert, keine Umgebungsprobleme. Fundament gegossen, keine Risse.
+<strong>1. Ausführbare Umgebung.</strong> Das Projekt startet, Abhängigkeiten sind installiert, keine Umgebungsprobleme. Fundament gegossen, keine Risse.
 
-**2. Verifizierbares Test-Framework.** Mindestens ein Beispieltest ist bestanden. Das beweist, dass das Test-Framework selbst richtig konfiguriert ist — wie das Aufstellen einer Säule auf dem Fundament, um zu beweisen, dass es Gewicht tragen kann.
+<strong>2. Verifizierbares Test-Framework.</strong> Mindestens ein Beispieltest ist bestanden. Das beweist, dass das Test-Framework selbst richtig konfiguriert ist — wie das Aufstellen einer Säule auf dem Fundament, um zu beweisen, dass es Gewicht tragen kann.
 
-**3. Bootstrap-Vertragsdokument.** Ein klares Dokument, das nachfolgenden Sessions sagt:
+<strong>3. Bootstrap-Vertragsdokument.</strong> Ein klares Dokument, das nachfolgenden Sessions sagt:
 ```markdown
 # Initialization Contract
 
@@ -102,7 +102,7 @@ OpenAIs Codex harness Engineering-Leitfaden betont ebenfalls das Prinzip „Repo
 - tests/ — Test files
 ```
 
-**4. Aufgaben-Aufschlüsselung.** Teilen Sie das gesamte Projekt in eine geordnete Aufgabenliste auf, jede Aufgabe mit klaren Akzeptanzkriterien:
+<strong>4. Aufgaben-Aufschlüsselung.</strong> Teilen Sie das gesamte Projekt in eine geordnete Aufgabenliste auf, jede Aufgabe mit klaren Akzeptanzkriterien:
 ```markdown
 # Task Breakdown
 
@@ -120,11 +120,11 @@ OpenAIs Codex harness Engineering-Leitfaden betont ebenfalls das Prinzip „Repo
 - ...
 ```
 
-**5. Git-Commit als Kontrollpunkt.** Nach Abschluss der Initialisierung einen sauberen Kontrollpunkt committen. Alle nachfolgende Arbeit beginnt ab diesem Kontrollpunkt.
+<strong>5. Git-Commit als Kontrollpunkt.</strong> Nach Abschluss der Initialisierung einen sauberen Kontrollpunkt committen. Alle nachfolgende Arbeit beginnt ab diesem Kontrollpunkt.
 
-**Warmstart-Strategie**: Nicht mit einem leeren Verzeichnis beginnen. Verwenden Sie eine Projektvorlage (create-react-app, fastapi-template, etc.), um eine Standardverzeichnisstruktur, Abhängigkeitskonfiguration und Test-Framework vorzugeben. Backen Sie häufige Initialisierungsschritte in die Vorlage ein und lassen Sie nur projektspezifische Initialisierungsarbeit übrig. Wie das Arbeiten auf einer Baustelle mit fließendem Wasser und Strom — zehntausendmal besser als der Beginn auf einer kargen Brache.
+<strong>Warmstart-Strategie</strong>: Nicht mit einem leeren Verzeichnis beginnen. Verwenden Sie eine Projektvorlage (create-react-app, fastapi-template, etc.), um eine Standardverzeichnisstruktur, Abhängigkeitskonfiguration und Test-Framework vorzugeben. Backen Sie häufige Initialisierungsschritte in die Vorlage ein und lassen Sie nur projektspezifische Initialisierungsarbeit übrig. Wie das Arbeiten auf einer Baustelle mit fließendem Wasser und Strom — zehntausendmal besser als der Beginn auf einer kargen Brache.
 
-**Initialisierungs-Abschlusskriterien**: Nicht „wie viel Code geschrieben wurde", sondern ob die vier Bedingungen des Bootstrap-Vertrags erfüllt sind — kann starten, kann testen, kann Fortschritt sehen, kann nächste Schritte aufnehmen. Verwenden Sie diese Checkliste zur Validierung der Initialisierung:
+<strong>Initialisierungs-Abschlusskriterien</strong>: Nicht „wie viel Code geschrieben wurde", sondern ob die vier Bedingungen des Bootstrap-Vertrags erfüllt sind — kann starten, kann testen, kann Fortschritt sehen, kann nächste Schritte aufnehmen. Verwenden Sie diese Checkliste zur Validierung der Initialisierung:
 
 ```markdown
 ## Initialization Acceptance Checklist
@@ -139,9 +139,9 @@ OpenAIs Codex harness Engineering-Leitfaden betont ebenfalls das Prinzip „Repo
 
 Zwei Initialisierungsansätze für ein React-Frontend-Projekt:
 
-**Gemischter Ansatz (Fundament gießen und Wände gleichzeitig bauen)**: Der Agent erstellte gleichzeitig Projektgerüst und implementierte das erste Feature in Session 1. Am Session-Ende hatte das Repo ausführbaren Code, aber: keine explizite Start-/Test-Befehlsdokumentation, keine Fortschritts-Tracking-Datei, keine Aufgaben-Aufschlüsselung. Session 2 verbrachte ~20 Minuten damit, Projektstruktur, Test-Framework und Build-Prozess zu erschließen — wie eine neue Baumannschaft, die auf einer Baustelle ankommt, nicht weiß, wie weit das Fundament ist oder wo die Rohre verlaufen, und Loch für Loch graben muss, um es herauszufinden.
+<strong>Gemischter Ansatz (Fundament gießen und Wände gleichzeitig bauen)</strong>: Der Agent erstellte gleichzeitig Projektgerüst und implementierte das erste Feature in Session 1. Am Session-Ende hatte das Repo ausführbaren Code, aber: keine explizite Start-/Test-Befehlsdokumentation, keine Fortschritts-Tracking-Datei, keine Aufgaben-Aufschlüsselung. Session 2 verbrachte ~20 Minuten damit, Projektstruktur, Test-Framework und Build-Prozess zu erschließen — wie eine neue Baumannschaft, die auf einer Baustelle ankommt, nicht weiß, wie weit das Fundament ist oder wo die Rohre verlaufen, und Loch für Loch graben muss, um es herauszufinden.
 
-**Dedizierte Initialisierung (erst das Fundament)**: Session 1 führte nur Initialisierung durch — erstellte Verzeichnisstruktur aus einer Vorlage, konfigurierte das Test-Framework (Vitest + React Testing Library), schrieb und verifizierte einen Beispieltest, erstellte das Bootstrap-Vertragsdokument und die Aufgaben-Aufschlüsselungsdatei, committete den initialen Kontrollpunkt. Session 2s Rebuild-Zeit lag unter 3 Minuten, und sie begann direkt aus der Aufgabenliste zu arbeiten — die Mannschaft kommt an, wirft einen Blick auf den Bauplan und weiß genau, wo sie ansetzen muss.
+<strong>Dedizierte Initialisierung (erst das Fundament)</strong>: Session 1 führte nur Initialisierung durch — erstellte Verzeichnisstruktur aus einer Vorlage, konfigurierte das Test-Framework (Vitest + React Testing Library), schrieb und verifizierte einen Beispieltest, erstellte das Bootstrap-Vertragsdokument und die Aufgaben-Aufschlüsselungsdatei, committete den initialen Kontrollpunkt. Session 2s Rebuild-Zeit lag unter 3 Minuten, und sie begann direkt aus der Aufgabenliste zu arbeiten — die Mannschaft kommt an, wirft einen Blick auf den Bauplan und weiß genau, wo sie ansetzen muss.
 
 Vergleich über den gesamten Projektzyklus: Die gesamte Rebuild-Zeit des gemischten Ansatzes (über alle Sessions) lag ~60% höher als beim dedizierten Initialisierungsansatz. Die zusätzlichen 20 Minuten für die Initialisierung wurden in nachfolgenden Sessions vielfach zurückgewonnen. Wie ein solides Fundament, das die Wände schneller hochgehen lässt — langsam ist schnell.
 
@@ -163,8 +163,8 @@ Vergleich über den gesamten Projektzyklus: Die gesamte Rebuild-Zeit des gemisch
 
 ## Übungen
 
-1. **Bootstrap-Vertrag entwerfen**: Schreiben Sie einen vollständigen Bootstrap-Vertrag für ein Projekt, das Sie entwickeln. Öffnen Sie dann eine komplett neue Agenten-Session, zeigen Sie ihr nur den Repo-Inhalt (kein mündlicher Kontext), und lassen Sie sie versuchen, das Projekt zu starten, Tests auszuführen und den aktuellen Fortschritt zu verstehen. Notieren Sie jedes Problem, auf das sie stößt — jedes entspricht einer fehlenden Klausel in Ihrem Bootstrap-Vertrag.
+1. <strong>Bootstrap-Vertrag entwerfen</strong>: Schreiben Sie einen vollständigen Bootstrap-Vertrag für ein Projekt, das Sie entwickeln. Öffnen Sie dann eine komplett neue Agenten-Session, zeigen Sie ihr nur den Repo-Inhalt (kein mündlicher Kontext), und lassen Sie sie versuchen, das Projekt zu starten, Tests auszuführen und den aktuellen Fortschritt zu verstehen. Notieren Sie jedes Problem, auf das sie stößt — jedes entspricht einer fehlenden Klausel in Ihrem Bootstrap-Vertrag.
 
-2. **Vergleichsexperiment**: Wählen Sie ein moderat komplexes neues Projekt. Ansatz A: Den Agenten gleichzeitig initialisieren und die erste Implementierung durchführen lassen. Ansatz B: Eine Session für dedizierte Initialisierung aufwenden, Implementierung in Session 2 beginnen. Nach 4 Sessions vergleichen: Zeit bis zur ersten Verifizierung, Rebuild-Kosten, Feature-Abschlussrate.
+2. <strong>Vergleichsexperiment</strong>: Wählen Sie ein moderat komplexes neues Projekt. Ansatz A: Den Agenten gleichzeitig initialisieren und die erste Implementierung durchführen lassen. Ansatz B: Eine Session für dedizierte Initialisierung aufwenden, Implementierung in Session 2 beginnen. Nach 4 Sessions vergleichen: Zeit bis zur ersten Verifizierung, Rebuild-Kosten, Feature-Abschlussrate.
 
-3. **Initialisierungs-Akzeptanz-Checkliste**: Entwerfen Sie eine Initialisierungs-Akzeptanz-Checkliste für Ihr Projekt. Lassen Sie eine neue Agenten-Session jeden Checklistenpunkt ausführen und notieren Sie, welche bestehen und welche fehlschlagen. Die fehlschlagenden Punkte sind die Stellen, an denen Ihr harness verstärkt werden muss.
+3. <strong>Initialisierungs-Akzeptanz-Checkliste</strong>: Entwerfen Sie eine Initialisierungs-Akzeptanz-Checkliste für Ihr Projekt. Lassen Sie eine neue Agenten-Session jeden Checklistenpunkt ausführen und notieren Sie, welche bestehen und welche fehlschlagen. Die fehlschlagenden Punkte sind die Stellen, an denen Ihr harness verstärkt werden muss.

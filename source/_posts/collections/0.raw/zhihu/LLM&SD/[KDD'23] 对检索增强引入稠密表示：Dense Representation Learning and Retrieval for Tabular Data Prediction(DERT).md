@@ -29,13 +29,13 @@ source_url: https://zhuanlan.zhihu.com/p/667183064
 - 在预测器中，设计了一个细粒度的特征交互和特征-标签交互模块来提升预测能力。
 术语表：
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_2ee909543171.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_2ee909543171.jpg)
 
 ### Method
 
 #### Overview
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_02cacd26b0f4.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_02cacd26b0f4.jpg)
 
 上图显示了DERT和传统的单样本模型，和基于BM25的检索增强的模型(RIM)的区别。
 
@@ -45,7 +45,7 @@ source_url: https://zhuanlan.zhihu.com/p/667183064
 
 DERT整体结构图如下：
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_69407ba840b8.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_69407ba840b8.jpg)
 
 #### Encoder
 
@@ -150,41 +150,41 @@ $x_\mathrm{agg}=\sum_{i=1}^k\alpha_ix_i $
 
 CTR任务
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_f15f774474a4.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_f15f774474a4.jpg)
 
 Top-N排序任务
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_1c42e6e27b54.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_1c42e6e27b54.jpg)
 
 #### Ablation Study
 
 对对比学习和标签交互的消融，看起来这些模块的提升貌似也不是很大......。值得注意的是，消融标签交互指的是去掉了 特征-标签 的交互。但是此时还是会使用标签的特征，即对检索样本的标签使用聚合操作，此时模型这部分退化成RIM的形式。
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_cddfd7a37db6.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_cddfd7a37db6.jpg)
 
 注意这里计算的是encoder的预测能力，AUC是计算encoder给出的预测值和ground truth的指标。其中NO CL值得是无对比学习的情况。这里的检索也是对目标样本在 D_{train} 中采样正负样本的检索。
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_e5967762322d.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_e5967762322d.jpg)
 
 #### Hyperparameter Study
 
 对检索样本k的实验。
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_42503662a1ee.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_42503662a1ee.jpg)
 
 对encoder中计算总损失函数时的 \lambda 进行实验。
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_a8310f30c66b.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_a8310f30c66b.jpg)
 
 #### Study of Efficiency
 
 RIM和DERT中预测器的推理时间。
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_9bb69515595e.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_9bb69515595e.jpg)
 
 RIM和DERT的检索时间，检索时间相比RIM快了很多，应该也得益于使用FAISS的实现方式。
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_f5a5ed3885b2.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_f5a5ed3885b2.jpg)
 
 ### Conclusion
 

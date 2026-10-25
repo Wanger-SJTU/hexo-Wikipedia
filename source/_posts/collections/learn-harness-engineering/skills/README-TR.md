@@ -35,19 +35,19 @@ Bu dizin, Learn Harness Engineering projesi için yeniden kullanılabilir yapay 
 
 Yapay zeka kodlama ajanları için üretim düzeyinde harness mühendisliği skill'i. Ajan harness dosyaları (AGENTS.md, özellik listeleri, doğrulama iş akışları, oturum sürekliliği mekanizmaları) oluşturma, değerlendirme ve iyileştirme konularında yardımcı olur.
 
-- **7 referans pattern**: Memory Persistence, Skill Runtime, Context Engineering, Tool Registry, Multi-Agent Coordination, Lifecycle & Bootstrap, Gotchas
-- **Şablonlar**: AGENTS.md/CLAUDE.md, feature-list.json, init.sh, progress.md, session-handoff.md
-- **Script'ler**: scaffold, doğrulama, HTML değerlendirme ve yapısal benchmark
-- **10 yerleşik eval test senaryosu**
+- <strong>7 referans pattern</strong>: Memory Persistence, Skill Runtime, Context Engineering, Tool Registry, Multi-Agent Coordination, Lifecycle & Bootstrap, Gotchas
+- <strong>Şablonlar</strong>: AGENTS.md/CLAUDE.md, feature-list.json, init.sh, progress.md, session-handoff.md
+- <strong>Script'ler</strong>: scaffold, doğrulama, HTML değerlendirme ve yapısal benchmark
+- <strong>10 yerleşik eval test senaryosu</strong>
 
 Tam belgeleme için [harness-creator/README.md](harness-creator/README.md) dosyasına bakın.
 
 ## harness-creator Nasıl Oluşturuldu
 
-`harness-creator` skill'i, Anthropic'in ajan skill'leri oluşturmak, test etmek ve üzerinde yineleme yapmak için resmi meta-skill'i olan **skill-creator** metodolojisi kullanılarak geliştirilmiştir. skill-creator, yerleşik eval runner'lar, grader'lar ve bir benchmark görüntüleyicisi ile birlikte yapılandırılmış bir iş akışı (taslak → test → değerlendirme → yineleme) sağlar.
+`harness-creator` skill'i, Anthropic'in ajan skill'leri oluşturmak, test etmek ve üzerinde yineleme yapmak için resmi meta-skill'i olan <strong>skill-creator</strong> metodolojisi kullanılarak geliştirilmiştir. skill-creator, yerleşik eval runner'lar, grader'lar ve bir benchmark görüntüleyicisi ile birlikte yapılandırılmış bir iş akışı (taslak → test → değerlendirme → yineleme) sağlar.
 
-- **skill-creator kaynağı**: [anthropics/skills — skill-creator](https://github.com/anthropics/skills/tree/main/skills/skill-creator)
-- **Anthropic Claude Code skills belgeleri**: [anthropics/claude-code — plugin-dev/skills](https://github.com/anthropics/claude-code/tree/main/plugins/plugin-dev/skills)
+- <strong>skill-creator kaynağı</strong>: [anthropics/skills — skill-creator](https://github.com/anthropics/skills/tree/main/skills/skill-creator)
+- <strong>Anthropic Claude Code skills belgeleri</strong>: [anthropics/claude-code — plugin-dev/skills](https://github.com/anthropics/claude-code/tree/main/plugins/plugin-dev/skills)
 
 ## Dizin Yapısı
 
@@ -79,9 +79,9 @@ skills/
 
 Her skill standart bir yapıyı izler:
 
-1. **SKILL.md** — Giriş noktası. YAML ön madde (ad, tetikleme için açıklama) ve ajan için Markdown talimatları içerir.
-2. **references/** — Gerektiğinde bağlama yüklenen ek belgeler.
-3. **templates/** — Skill'in kullanıcılar için oluşturabileceği başlangıç şablonları.
+1. <strong>SKILL.md</strong> — Giriş noktası. YAML ön madde (ad, tetikleme için açıklama) ve ajan için Markdown talimatları içerir.
+2. <strong>references/</strong> — Gerektiğinde bağlama yüklenen ek belgeler.
+3. <strong>templates/</strong> — Skill'in kullanıcılar için oluşturabileceği başlangıç şablonları.
 
 Skill'ler aşamalı açıklama kullanır: ajan önce yalnızca adı ve açıklamayı görür, tetiklendiğinde tam SKILL.md gövdesini yükler ve paketlenmiş kaynakları yalnızca gerektiğinde okur.
 

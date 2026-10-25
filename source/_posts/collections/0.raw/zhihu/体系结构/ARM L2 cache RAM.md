@@ -15,23 +15,23 @@ source_url: https://zhuanlan.zhihu.com/p/21286535032
 ---
 
 
-**cache控制器包括**
+<strong>cache控制器包括</strong>
 
 - cache控制逻辑（AXI slave，AXI master，RAM接口控制器，write buffer，eviction buffer，write allocate buffer，中断，时钟复位系统）
 - data RAM
 - tag RAM
 - data parity RAM
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_dda5dfbd12a5.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_dda5dfbd12a5.jpg)
 
-**MBIST support**![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_b5dd47d6d390.jpg)
+<strong>MBIST support</strong>![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_b5dd47d6d390.jpg)
 
-**cache的floorplanning规划图**
+<strong>cache的floorplanning规划图</strong>
 
 为获得最佳性能: 对数据RAM存储器进行分区，使其占据一半的平面图，标签存储器位于右下角 使标准单元可放置区域的长宽比尽可能接近1:1
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_a70a94d8b01f.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_a70a94d8b01f.jpg)
 
-**数据RAM存储的优势 **
+<strong>数据RAM存储的优势</strong>
 
 对于具有高时钟频率和大L2缓存的设计，时序收敛是困难的，尤其是对于数据RAM。这种系统需要高RAM latencies，这降低了系统的性能。
 
@@ -41,22 +41,22 @@ source_url: https://zhuanlan.zhihu.com/p/21286535032
 
 - 数据RAM建立延迟= 2个周期，编程值= 0x1 
 - 数据RAM读取延迟= 4个周期，编程值= 0x3
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_83be8c039974.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_83be8c039974.jpg)
 
-**Data RAM without banking**
+<strong>Data RAM without banking</strong>
 
  图2-9所示的data RAM被组织成n路256位宽的连续存储器， 其中n是8或16。它支持以下访问: 
 
 - 8字数据读取 
 - 256位数据写入，带字节使能控制 
 - 用于line分配的8 words数据写入。
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_4b4d49045572.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_4b4d49045572.jpg)
 
-**Data RAM with banking**
+<strong>Data RAM with banking</strong>
 
 data RAM划分为四个banks时。这使得流水线流访问成为可能。系统通过地址的位[6:5]选择banks，参见表2-19。 
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_543ab2eacdfa.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_543ab2eacdfa.jpg)
 
  图2-10显示了系统将数据RAM组织成4banks 的n路256位宽的连续存储器，其中n为8或16。
 
@@ -65,19 +65,19 @@ data RAM划分为四个banks时。这使得流水线流访问成为可能。系�
 - 8字数据读取 
 - 256位数据写入，带字节使能控制 
 - 用于line分配的8字数据写入
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_367abae15e69.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_367abae15e69.jpg)
 
-**Data parity RAM without banking**
+<strong>Data parity RAM without banking</strong>
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_239ef9746c21.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_239ef9746c21.jpg)
 
-**Data parity RAM with banking**
+<strong>Data parity RAM with banking</strong>
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_2fb6f0717692.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_2fb6f0717692.jpg)
 
-**Tag RAM**
+<strong>Tag RAM</strong>
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_43785358b10f.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_43785358b10f.jpg)
 
 tag RAM的组织结构如下: 
 
@@ -88,11 +88,11 @@ tag RAM的组织结构如下:
 - 1个可选位用于锁定信息。 
 - 1个可选奇偶校验位。 
 - NS位对于非安全数据取值1，对于安全数据取值0。
-其中，根据路的大小，地址标签最多18位。RAM总线使用（与data ram相关的**DATAADDR总线**，和与Tag RAM相关的**TAGADDR和TAGRDn/TAGWD总线**）与高速缓存关联性和路大小，主要涉及：Data RAM usage with or without banking和Tag RAM usage。
+其中，根据路的大小，地址标签最多18位。RAM总线使用（与data ram相关的<strong>DATAADDR总线</strong>，和与Tag RAM相关的<strong>TAGADDR和TAGRDn/TAGWD总线</strong>）与高速缓存关联性和路大小，主要涉及：Data RAM usage with or without banking和Tag RAM usage。
 
-**对于Data RAM usage with or without banking**
+<strong>对于Data RAM usage with or without banking</strong>
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_0074dcd9da1f.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_0074dcd9da1f.jpg)
 
 对于8路，way字段是[16:14]。 
 
@@ -106,7 +106,7 @@ tag RAM的组织结构如下:
 - 512KB路大小: 使用所有[13:0]位。 
 数据总线的所有位，DATARD和DATAWD，总是连接的
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_4642e176a63c.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_4642e176a63c.jpg)
 
 对于8路，way字段是[14:12]。 
 
@@ -120,7 +120,7 @@ tag RAM的组织结构如下:
 - 512KB路大小: 使用所有[11:0]位。 
 数据总线的所有位(DATARD和DATAWD)始终相连。
 
-**对于Tag RAM usage**
+<strong>对于Tag RAM usage</strong>
 
 TAGADDR和TAGRDn/TAGWD总线的使用取决于路的大小: 
 
@@ -144,29 +144,29 @@ RAM时钟
 
 如果ram的运行频率低于高速缓存控制器逻辑，则可以使用时钟使能。仅支持整数比率。利用这种方案，tag RAM和data RAM可以以不同的频率运行。表2-20显示了RAM时钟使能及其功能。
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_48a9b673ddef.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_48a9b673ddef.jpg)
 
-**TAGCLKEN，**时钟使能输入，使高速缓存控制器中的tag RAM接口能够与以较低频率计时的tag RAM通信。  
+<strong>TAGCLKEN，</strong>时钟使能输入，使高速缓存控制器中的tag RAM接口能够与以较低频率计时的tag RAM通信。  
 
-**TAGCLKOUTEN，** 时钟使能输出，用于门控tag RAM的时钟，以节省功耗。当tag RAM的运行频率低于高速缓存控制器逻辑时，使用此信号。  
+<strong>TAGCLKOUTEN，</strong> 时钟使能输出，用于门控tag RAM的时钟，以节省功耗。当tag RAM的运行频率低于高速缓存控制器逻辑时，使用此信号。  
 
-**TAGCLKOUT，时钟**的门控版本，仅在访问tag RAM时启用。如果tag RAM和高速缓存控制器逻辑以相同的频率运行，使用此时钟。 
+<strong>TAGCLKOUT，时钟</strong>的门控版本，仅在访问tag RAM时启用。如果tag RAM和高速缓存控制器逻辑以相同的频率运行，使用此时钟。 
 
-**DATACLKEN，** 时钟使能输入，使高速缓存控制器中的data RAM接口能够与以较低频率的data RAM通信。  
+<strong>DATACLKEN，</strong> 时钟使能输入，使高速缓存控制器中的data RAM接口能够与以较低频率的data RAM通信。  
 
-**DATACLKOUTEN，**时钟使能输出，用于门控数data RAM的时钟，以节省功耗。当data RAM的运行频率低于高速缓存控制器逻辑时，使用此信号。当有banking时，有四个时钟使能输出，每个bank一个。  
+<strong>DATACLKOUTEN，</strong>时钟使能输出，用于门控数data RAM的时钟，以节省功耗。当data RAM的运行频率低于高速缓存控制器逻辑时，使用此信号。当有banking时，有四个时钟使能输出，每个bank一个。  
 
-**DATACLKOUT，** 时钟的门控版本，仅在访问data RAM时启用。使用该时钟，数据RAM和高速缓存控制器逻辑以相同的频率运行。当有banking时，存在四个时钟输出，每个bank一个。
+<strong>DATACLKOUT，</strong> 时钟的门控版本，仅在访问data RAM时启用。使用该时钟，数据RAM和高速缓存控制器逻辑以相同的频率运行。当有banking时，存在四个时钟输出，每个bank一个。
 
 **
 
 第2-32页的图2-16显示了与高速缓存控制器相比，tag RAM以一半的频率运行的例子。
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_3f1f93bd0d76.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_3f1f93bd0d76.jpg)
 
 图2-17显示了如何实现tag RAM时钟中使用的不同时钟门控。
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_62cb436f71bf.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_62cb436f71bf.jpg)
 
 RAM延迟 
 
@@ -177,15 +177,15 @@ Programmable RAM latencies使高速缓存控制器能够管理需要几个时钟
 - write access.
 setup 延迟是指在RAM时钟边沿之前，RAM控制信号保持有效的周期数。图2-18显示了一个时序图，其中tag ram setup 延迟已被编程为0x1。
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_95b47275e95e.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_95b47275e95e.jpg)
 
 read access 延迟是指在RAM时钟边沿之后，读取数据变为有效所需的周期数。图2-19显示了一个时序图，其中tag ram读取访问延迟已被编程为0x1
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_19aea610fe46.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_19aea610fe46.jpg)
 
 write access延迟是写访问的RAM时钟沿和对应于另一个访问(读或写)的下一个RAM时钟沿之间的最小周期数。图2-20显示了一个时序图，其中标记ram写访问延迟已被编程为0x1。
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_5036c9b86a5b.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_5036c9b86a5b.jpg)
 
 MBIST support**
 
@@ -195,4 +195,4 @@ MBIST support**
 - 如果存在标签奇偶校验位与标签ram同时测试。奇偶校验位被视为标签数据总线上的额外位。  
 MBIST-cache controller-RAM接口连接示意图
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_288aac44449a.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_288aac44449a.jpg)

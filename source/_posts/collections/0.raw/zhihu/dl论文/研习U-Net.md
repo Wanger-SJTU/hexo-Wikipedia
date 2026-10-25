@@ -15,13 +15,13 @@ source_url: https://zhuanlan.zhihu.com/p/44958351
 ---
 
 
-- **Author：**[Zongwei Zhou](https://link.zhihu.com/?target=https%3A//www.zongweiz.com/) | 周纵苇
-- **Weibo：**[@MrGiovanni](https://link.zhihu.com/?target=http%3A//weibo.com/u/1060010800)
-- **Email：**[zongweiz@asu.edu](mailto:zongweiz@asu.edu)
-- **Conference paper (发表于DLMIA)：**[UNet++: A Nested U-Net Architecture for Medical Image Segmentation](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/1807.10165)
-- **Journal paper (发表于IEEE TMI)：**[UNet++: Redesigning Skip Connections to Exploit Multiscale Features in Image Segmentation](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/1912.05074)
-- **Code：**[github.com/UNetPlusPlus](https://link.zhihu.com/?target=https%3A//github.com/MrGiovanni/UNetPlusPlus)
-- **Talk：**[研习U-Net--现有的分割网络创新-AI慕课学院](https://link.zhihu.com/?target=http%3A//www.mooc.ai/open/course/549)
+- <strong>Author：</strong>[Zongwei Zhou](https://link.zhihu.com/?target=https%3A//www.zongweiz.com/) | 周纵苇
+- <strong>Weibo：</strong>[@MrGiovanni](https://link.zhihu.com/?target=http%3A//weibo.com/u/1060010800)
+- <strong>Email：</strong>[zongweiz@asu.edu](mailto:zongweiz@asu.edu)
+- <strong>Conference paper (发表于DLMIA)：</strong>[UNet++: A Nested U-Net Architecture for Medical Image Segmentation](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/1807.10165)
+- <strong>Journal paper (发表于IEEE TMI)：</strong>[UNet++: Redesigning Skip Connections to Exploit Multiscale Features in Image Segmentation](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/1912.05074)
+- <strong>Code：</strong>[github.com/UNetPlusPlus](https://link.zhihu.com/?target=https%3A//github.com/MrGiovanni/UNetPlusPlus)
+- <strong>Talk：</strong>[研习U-Net--现有的分割网络创新-AI慕课学院](https://link.zhihu.com/?target=http%3A//www.mooc.ai/open/course/549)
 
 参考材料
 [1] [Awesome Semantic Segmentation.](https://link.zhihu.com/?target=https%3A//github.com/mrgloom/awesome-semantic-segmentation)
@@ -106,7 +106,7 @@ U-Net和FCN非常的相似，U-Net比FCN稍晚提出来，但都发表在2015年
 
 先不要看后两个UNet++，就看这个不同深度的U-Net的表现，我们可以看出，不是越深越好吧，它背后的传达的信息就是，不同层次特征的重要性对于不同的数据集是不一样的，并不是说我设计一个4层的U-Net，就像原论文给出的那个结构，就一定对所有数据集的分割问题都最优。
 
-那么接下来是关键，我们心中的目标很明确了，**就是使用浅层和深层的特征！**但是总不能训练这些个U-Net吧，未免也太多了。好，这里可以暂停一下，想一想，要你来，你怎么来利用这些不同深度的，各自能抓取不同层次的特征的U-Net。
+那么接下来是关键，我们心中的目标很明确了，<strong>就是使用浅层和深层的特征！</strong>但是总不能训练这些个U-Net吧，未免也太多了。好，这里可以暂停一下，想一想，要你来，你怎么来利用这些不同深度的，各自能抓取不同层次的特征的U-Net。
 
 ![](https://pica.zhimg.com/v2-189da65b3cacae53d5f16f423981a01a_r.jpg)
 
@@ -180,7 +180,7 @@ U-Net和FCN非常的相似，U-Net比FCN稍晚提出来，但都发表在2015年
 
 ![](https://pic4.zhimg.com/v2-debfd1acf4b9f2a63eea5db0fe920ef5_r.jpg)
 
-**两个字：剪枝。**
+<strong>两个字：剪枝。</strong>
 
 同时引出三个问题：
 

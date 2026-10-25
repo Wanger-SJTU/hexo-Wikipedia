@@ -15,14 +15,14 @@ categories:
 
 Một snapshot chất lượng cho mỗi domain sản phẩm và lớp kiến trúc. Cả agent và con người đều có thể sử dụng tài liệu này để nhanh chóng hiểu nơi nào codebase mạnh và nơi nào cần cải thiện.
 
-**Tần suất cập nhật:** Sau mỗi phiên quan trọng, hoặc trước khi bắt đầu giai đoạn công việc mới.
+<strong>Tần suất cập nhật:</strong> Sau mỗi phiên quan trọng, hoặc trước khi bắt đầu giai đoạn công việc mới.
 
-**Thang điểm:**
+<strong>Thang điểm:</strong>
 
-- **A**: Tất cả xác minh đang vượt qua, kiến trúc sạch, agent có thể đọc được, test ổn định
-- **B**: Xác minh đang vượt qua, hầu hết sạch, thiếu nhỏ về khả năng đọc hoặc độ phủ test
-- **C**: Hoạt động một phần, có khoảng trống đã biết, một số khu vực mã khó cho agent hiểu
-- **D**: Không hoạt động, hoặc có vấn đề cấu trúc lớn
+- <strong>A</strong>: Tất cả xác minh đang vượt qua, kiến trúc sạch, agent có thể đọc được, test ổn định
+- <strong>B</strong>: Xác minh đang vượt qua, hầu hết sạch, thiếu nhỏ về khả năng đọc hoặc độ phủ test
+- <strong>C</strong>: Hoạt động một phần, có khoảng trống đã biết, một số khu vực mã khó cho agent hiểu
+- <strong>D</strong>: Không hoạt động, hoặc có vấn đề cấu trúc lớn
 
 ---
 

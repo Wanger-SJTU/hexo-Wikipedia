@@ -21,10 +21,10 @@ AI コーディングエージェント向けの本番級 harness engineering �
 
 ### できること
 
-- **harness をゼロから作る** — AGENTS.md、機能リスト、検証ワークフロー
-- **既存の harness を改善する** — 5 サブシステム評価と優先度付き改善案
-- **セッション継続性を設計する** — メモリ永続化、進捗追跡、引き継ぎ手順
-- **本番パターンを適用する** — メモリ、コンテキストエンジニアリング、ツール安全性、マルチエージェント協調
+- <strong>harness をゼロから作る</strong> — AGENTS.md、機能リスト、検証ワークフロー
+- <strong>既存の harness を改善する</strong> — 5 サブシステム評価と優先度付き改善案
+- <strong>セッション継続性を設計する</strong> — メモリ永続化、進捗追跡、引き継ぎ手順
+- <strong>本番パターンを適用する</strong> — メモリ、コンテキストエンジニアリング、ツール安全性、マルチエージェント協調
 
 ### クイックスタート
 
@@ -66,7 +66,7 @@ Claude Code で使う場合は、`harness-creator/` ディレクトリをプロ�
 
 ### このスキルの作り方
 
-`harness-creator` は **skill-creator** 方法論で開発されています。これは Anthropic 公式のメタスキルで、エージェントスキルの作成、テスト、反復改善に使います。skill-creator は、評価ランナー、採点器、ベンチマークビューアを備えた、ドラフト → テスト → 評価 → 反復の構造化ワークフローを提供します。
+`harness-creator` は <strong>skill-creator</strong> 方法論で開発されています。これは Anthropic 公式のメタスキルで、エージェントスキルの作成、テスト、反復改善に使います。skill-creator は、評価ランナー、採点器、ベンチマークビューアを備えた、ドラフト → テスト → 評価 → 反復の構造化ワークフローを提供します。
 
-- **skill-creator ソース**: [anthropics/skills — skill-creator](https://github.com/anthropics/skills/tree/main/skills/skill-creator)
-- **Claude Code skills docs**: [anthropics/claude-code — plugin-dev/skills](https://github.com/anthropics/claude-code/tree/main/plugins/plugin-dev/skills)
+- <strong>skill-creator ソース</strong>: [anthropics/skills — skill-creator](https://github.com/anthropics/skills/tree/main/skills/skill-creator)
+- <strong>Claude Code skills docs</strong>: [anthropics/claude-code — plugin-dev/skills](https://github.com/anthropics/claude-code/tree/main/plugins/plugin-dev/skills)

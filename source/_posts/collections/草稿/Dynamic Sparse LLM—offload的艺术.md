@@ -13,7 +13,7 @@ categories:
 
 
 # transformer block
-![Pasted image 20240922215653.png](/images/collections/assets/Pasted%2520image%252020240922215653.png)
+![Pasted image 20240922215653.png](/images/collections/assets/Pasted%20image%2020240922215653.png)
 > Attention是时空力场（LLM只有时，Version存在空间力场），而FFN则是空间结构，并且代表了基于Knowledge的静态高纬字典，也有人用图书馆来比喻。    ——夏Core
 
 首先回顾一下transformer block的结构，Attention +FFN，前者随着序列的增长占用越来越高，FFN则在权重中占了极大比例。按当前大家的认识来看，

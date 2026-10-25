@@ -17,10 +17,10 @@ categories:
 
 ### Session 1 -- 2026-03-30
 
-**Duration**: ~90 minutes
-**Goal**: Build complete capstone project with full product code and maximum harness
+<strong>Duration</strong>: ~90 minutes
+<strong>Goal</strong>: Build complete capstone project with full product code and maximum harness
 
-**What was done**:
+<strong>What was done</strong>:
 - Built full Electron application with all features from Projects 01-05
 - Added structured JSON logging module (logger.ts) with DEBUG/INFO/WARN/ERROR levels
 - All 5 services use `logger.forService()` for consistent structured output
@@ -34,20 +34,20 @@ categories:
 - Wrote docs/ with ARCHITECTURE.md, PRODUCT.md, RELIABILITY.md
 - All 15 features in feature_list.json at status "pass"
 
-**Decisions**:
+<strong>Decisions</strong>:
 - Used singleton Logger with `forService()` factory for per-service child loggers
 - Feedback stored in separate feedback.json rather than inline in qa-history.json
 - Clean state reset uses `fs.rmSync` with `force: true` for idempotent cleanup
 - ConversationHistory uses expandable citation sections rather than always-visible
 - Benchmark scripts use bash timing rather than Node.js for zero-dependency operation
 
-**Issues**: None
+<strong>Issues</strong>: None
 
-**Benchmark Results** (sample data):
+<strong>Benchmark Results</strong> (sample data):
 - Import 3 documents: ~120ms
 - Batch indexing: ~80ms (14 chunks)
 - Query "What is the architecture?": ~250ms with 2 citations
 - Query "meeting summary": ~180ms with 2 citations
 - Clean state reset: ~15ms
 
-**Next session**: No remaining features. Project 06 is complete.
+<strong>Next session</strong>: No remaining features. Project 06 is complete.

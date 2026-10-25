@@ -32,7 +32,7 @@ Anthropic đã thực hiện một thí nghiệm có kiểm soát. Cùng một p
 
 Họ không thay đổi mô hình. Opus 4.5 vẫn là Opus 4.5. Những gì thay đổi là bộ yên cương.
 
-Bài viết về harness engineering năm 2025 của OpenAI nói thẳng: Codex trong một kho lưu trữ được trang bị harness tốt đi từ "không đáng tin cậy" đến "đáng tin cậy." Lưu ý cách diễn đạt của họ — không phải "tốt hơn một chút," mà là một sự thay đổi về chất. Giống như một con ngựa thuần chủng: bạn có thể cưỡi nó không có bộ yên cương phù hợp, nhưng bạn sẽ không đi xa, không nhanh, và việc ngã ngựa không có gì là ngạc nhiên. Harness là cả bộ yên cương đó — **tất cả mọi thứ trong cơ sở hạ tầng kỹ thuật bên ngoài trọng số mô hình.**
+Bài viết về harness engineering năm 2025 của OpenAI nói thẳng: Codex trong một kho lưu trữ được trang bị harness tốt đi từ "không đáng tin cậy" đến "đáng tin cậy." Lưu ý cách diễn đạt của họ — không phải "tốt hơn một chút," mà là một sự thay đổi về chất. Giống như một con ngựa thuần chủng: bạn có thể cưỡi nó không có bộ yên cương phù hợp, nhưng bạn sẽ không đi xa, không nhanh, và việc ngã ngựa không có gì là ngạc nhiên. Harness là cả bộ yên cương đó — <strong>tất cả mọi thứ trong cơ sở hạ tầng kỹ thuật bên ngoài trọng số mô hình.</strong>
 
 ## Agent Thực sự Bị Kẹt Ở Đâu
 
@@ -52,22 +52,22 @@ Các tác vụ dài trải dài qua nhiều phiên còn tệ hơn — tất cả
 
 Với những tình huống này, các khái niệm sau không còn chỉ là thuật ngữ nữa:
 
-- **Khoảng cách Năng lực (Capability Gap)**: Khoảng cách lớn giữa hiệu suất mô hình trên các điểm chuẩn và hiệu suất trên các tác vụ thực tế. Tỷ lệ vượt qua 50-60% trên SWE-bench Verified có nghĩa là gần một nửa số vấn đề thực tế không thể được giải quyết.
-- **Harness**: Mọi thứ bên ngoài mô hình — hướng dẫn, công cụ, môi trường, quản lý trạng thái, phản hồi xác minh. Nếu không phải trọng số mô hình, thì đó là harness. Đó là cái chúng ta gọi là "bộ yên cương."
-- **Lỗi Do Harness (Harness-Induced Failure)**: Mô hình có đủ năng lực, nhưng môi trường thực thi có khiếm khuyết cấu trúc. Thí nghiệm có kiểm soát của Anthropic đã chứng minh điều này.
-- **Khoảng cách Xác minh (Verification Gap)**: Khoảng cách giữa sự tự tin của agent vào kết quả của nó và tính đúng đắn thực tế. Agent nói "tôi đã xong" khi chưa xong — đây là chế độ lỗi phổ biến nhất.
-- **Vòng lặp Chẩn đoán (Diagnostic Loop)**: Thực thi, quan sát lỗi, quy cho một lớp harness cụ thể, sửa lớp đó, thực thi lại. Đây là phương pháp luận cốt lõi của harness engineering.
-- **Định nghĩa Hoàn thành (Definition of Done)**: Một tập hợp các điều kiện có thể xác minh bằng máy — test qua, lint sạch, type check qua. Không có định nghĩa hoàn thành rõ ràng, agent sẽ tự bịa ra định nghĩa của mình.
+- <strong>Khoảng cách Năng lực (Capability Gap)</strong>: Khoảng cách lớn giữa hiệu suất mô hình trên các điểm chuẩn và hiệu suất trên các tác vụ thực tế. Tỷ lệ vượt qua 50-60% trên SWE-bench Verified có nghĩa là gần một nửa số vấn đề thực tế không thể được giải quyết.
+- <strong>Harness</strong>: Mọi thứ bên ngoài mô hình — hướng dẫn, công cụ, môi trường, quản lý trạng thái, phản hồi xác minh. Nếu không phải trọng số mô hình, thì đó là harness. Đó là cái chúng ta gọi là "bộ yên cương."
+- <strong>Lỗi Do Harness (Harness-Induced Failure)</strong>: Mô hình có đủ năng lực, nhưng môi trường thực thi có khiếm khuyết cấu trúc. Thí nghiệm có kiểm soát của Anthropic đã chứng minh điều này.
+- <strong>Khoảng cách Xác minh (Verification Gap)</strong>: Khoảng cách giữa sự tự tin của agent vào kết quả của nó và tính đúng đắn thực tế. Agent nói "tôi đã xong" khi chưa xong — đây là chế độ lỗi phổ biến nhất.
+- <strong>Vòng lặp Chẩn đoán (Diagnostic Loop)</strong>: Thực thi, quan sát lỗi, quy cho một lớp harness cụ thể, sửa lớp đó, thực thi lại. Đây là phương pháp luận cốt lõi của harness engineering.
+- <strong>Định nghĩa Hoàn thành (Definition of Done)</strong>: Một tập hợp các điều kiện có thể xác minh bằng máy — test qua, lint sạch, type check qua. Không có định nghĩa hoàn thành rõ ràng, agent sẽ tự bịa ra định nghĩa của mình.
 
 ## Khi Sự Cố Xảy ra, Sửa Harness Trước
 
-Nguyên tắc cốt lõi: **Khi sự cố xảy ra, đừng đổi mô hình trước — kiểm tra harness.** Nếu cùng một mô hình thành công trên các tác vụ tương tự, có cấu trúc tốt, hãy giả định đó là vấn đề harness. Giống như xe hơi bị hỏng — bạn không ngay lập tức nghi ngờ động cơ. Bạn kiểm tra xăng trước.
+Nguyên tắc cốt lõi: <strong>Khi sự cố xảy ra, đừng đổi mô hình trước — kiểm tra harness.</strong> Nếu cùng một mô hình thành công trên các tác vụ tương tự, có cấu trúc tốt, hãy giả định đó là vấn đề harness. Giống như xe hơi bị hỏng — bạn không ngay lập tức nghi ngờ động cơ. Bạn kiểm tra xăng trước.
 
 Các bước cụ thể:
 
-**Quy mọi lỗi cho một lớp cụ thể.** Đừng chỉ nói "mô hình không tốt." Hãy hỏi: tác vụ có mơ hồ không? Ngữ cảnh có không đủ không? Không có phương pháp xác minh không? Ánh xạ mỗi lỗi vào một trong năm lớp phòng thủ: đặc tả tác vụ, cung cấp ngữ cảnh, môi trường thực thi, phản hồi xác minh, quản lý trạng thái. Đây là các lớp chẩn đoán thực hành, không phải sáu thuật ngữ trong phần thuật ngữ phía trên. Xây dựng thói quen này, và bạn sẽ thấy "mô hình không đủ tốt" xuất hiện ngày càng ít hơn trong nhật ký của bạn.
+<strong>Quy mọi lỗi cho một lớp cụ thể.</strong> Đừng chỉ nói "mô hình không tốt." Hãy hỏi: tác vụ có mơ hồ không? Ngữ cảnh có không đủ không? Không có phương pháp xác minh không? Ánh xạ mỗi lỗi vào một trong năm lớp phòng thủ: đặc tả tác vụ, cung cấp ngữ cảnh, môi trường thực thi, phản hồi xác minh, quản lý trạng thái. Đây là các lớp chẩn đoán thực hành, không phải sáu thuật ngữ trong phần thuật ngữ phía trên. Xây dựng thói quen này, và bạn sẽ thấy "mô hình không đủ tốt" xuất hiện ngày càng ít hơn trong nhật ký của bạn.
 
-**Viết Định nghĩa Hoàn thành rõ ràng cho mỗi tác vụ.** Đừng nói "thêm tính năng tìm kiếm." Hãy nói:
+<strong>Viết Định nghĩa Hoàn thành rõ ràng cho mỗi tác vụ.</strong> Đừng nói "thêm tính năng tìm kiếm." Hãy nói:
 ```
 Tiêu chí hoàn thành:
 - Endpoint GET /api/search?q=xxx mới
@@ -77,21 +77,21 @@ Tiêu chí hoàn thành:
 - Type checking vượt qua (mypy --strict)
 ```
 
-**Tạo tệp AGENTS.md.** Đặt nó trong thư mục gốc của repo để cho agent biết tech stack của dự án, các quy ước kiến trúc, và các lệnh xác minh. Đây là bước đầu tiên trong harness engineering và bước có ROI cao nhất bạn có thể thực hiện. Một tệp `AGENTS.md` có thể hiệu quả hơn việc nâng cấp lên mô hình đắt tiền hơn — tôi không nói đùa.
+<strong>Tạo tệp AGENTS.md.</strong> Đặt nó trong thư mục gốc của repo để cho agent biết tech stack của dự án, các quy ước kiến trúc, và các lệnh xác minh. Đây là bước đầu tiên trong harness engineering và bước có ROI cao nhất bạn có thể thực hiện. Một tệp `AGENTS.md` có thể hiệu quả hơn việc nâng cấp lên mô hình đắt tiền hơn — tôi không nói đùa.
 
-**Xây dựng vòng lặp chẩn đoán.** Đừng coi lỗi là "mô hình lại ngốc rồi." Coi chúng là tín hiệu rằng harness của bạn có khiếm khuyết. Mỗi lỗi, xác định lớp, sửa nó, không bao giờ thất bại theo cách đó nữa. Sau vài vòng, harness của bạn mạnh hơn và hiệu suất agent ổn định hơn. Giống như vá đường — mỗi ổ gà bạn lấp đầy làm cho đoạn đường tiếp theo êm hơn.
+<strong>Xây dựng vòng lặp chẩn đoán.</strong> Đừng coi lỗi là "mô hình lại ngốc rồi." Coi chúng là tín hiệu rằng harness của bạn có khiếm khuyết. Mỗi lỗi, xác định lớp, sửa nó, không bao giờ thất bại theo cách đó nữa. Sau vài vòng, harness của bạn mạnh hơn và hiệu suất agent ổn định hơn. Giống như vá đường — mỗi ổ gà bạn lấp đầy làm cho đoạn đường tiếp theo êm hơn.
 
-**Định lượng cải tiến.** Giữ một nhật ký đơn giản: mỗi tác vụ có thành công hay thất bại, và lớp nào gây ra lỗi. Sau vài vòng, bạn sẽ thấy lớp nào là điểm nghẽn cổ chai — tập trung năng lượng của bạn ở đó.
+<strong>Định lượng cải tiến.</strong> Giữ một nhật ký đơn giản: mỗi tác vụ có thành công hay thất bại, và lớp nào gây ra lỗi. Sau vài vòng, bạn sẽ thấy lớp nào là điểm nghẽn cổ chai — tập trung năng lượng của bạn ở đó.
 
 ## Thí nghiệm Triệu Dòng Mã
 
 OpenAI đã thực hiện một thí nghiệm táo bạo vào năm 2025: sử dụng Codex để xây dựng một sản phẩm nội bộ hoàn chỉnh từ một kho git trống. Năm tháng sau, kho có khoảng một triệu dòng mã — logic ứng dụng, cơ sở hạ tầng, công cụ, tài liệu, công cụ dev nội bộ — tất cả được tạo bởi agent. Ba kỹ sư điều khiển Codex, mở và hợp nhất khoảng 1,500 PR. Trung bình 3.5 PR mỗi người mỗi ngày.
 
-Ràng buộc chính: **con người không bao giờ viết mã trực tiếp.** Đây không phải là trò gimmick — nó được thiết kế để buộc nhóm phải tìm ra điều gì thay đổi khi công việc chính của kỹ sư không còn là viết mã, mà là thiết kế môi trường, diễn đạt ý định, và xây dựng các vòng phản hồi.
+Ràng buộc chính: <strong>con người không bao giờ viết mã trực tiếp.</strong> Đây không phải là trò gimmick — nó được thiết kế để buộc nhóm phải tìm ra điều gì thay đổi khi công việc chính của kỹ sư không còn là viết mã, mà là thiết kế môi trường, diễn đạt ý định, và xây dựng các vòng phản hồi.
 
 Tiến độ ban đầu chậm hơn dự kiến. Không phải vì Codex không đủ năng lực, mà vì môi trường chưa đủ hoàn chỉnh — agent thiếu các công cụ, trừu tượng và cấu trúc nội bộ cần thiết để tiến lên các mục tiêu cấp cao. Công việc của các kỹ sư trở thành: chia nhỏ các mục tiêu lớn thành các khối xây dựng nhỏ (thiết kế, mã hóa, đánh giá, kiểm tra), để agent lắp ráp chúng, rồi sử dụng những khối đó để mở khóa các tác vụ phức tạp hơn. Khi có sự cố, câu trả lời gần như không bao giờ là "cố gắng hơn" — mà là "agent đang thiếu năng lực gì, và làm thế nào để chúng ta làm cho nó có thể hiểu và thực thi được?"
 
-Thí nghiệm này trực tiếp chứng minh luận điểm cốt lõi của bài giảng này: **cùng một mô hình tạo ra kết quả về cơ bản khác nhau trong môi trường trần trụi so với môi trường có harness đầy đủ.** Mô hình không thay đổi. Môi trường thay đổi.
+Thí nghiệm này trực tiếp chứng minh luận điểm cốt lõi của bài giảng này: <strong>cùng một mô hình tạo ra kết quả về cơ bản khác nhau trong môi trường trần trụi so với môi trường có harness đầy đủ.</strong> Mô hình không thay đổi. Môi trường thay đổi.
 
 > Nguồn: [OpenAI: Harness engineering: leveraging Codex in an agent-first world](https://openai.com/index/harness-engineering/)
 
@@ -123,8 +123,8 @@ Họ không thay đổi mô hình. Họ thay đổi harness.
 
 ## Bài tập
 
-1. **Thí nghiệm so sánh**: Chọn một codebase bạn biết rõ và một tác vụ sửa đổi không tầm thường. Đầu tiên, chạy agent mà không có hỗ trợ harness và ghi lại các lỗi. Sau đó thêm `AGENTS.md` với các lệnh xác minh rõ ràng và chạy lại với cùng agent. So sánh kết quả, quy mỗi lỗi vào một trong năm lớp phòng thủ.
+1. <strong>Thí nghiệm so sánh</strong>: Chọn một codebase bạn biết rõ và một tác vụ sửa đổi không tầm thường. Đầu tiên, chạy agent mà không có hỗ trợ harness và ghi lại các lỗi. Sau đó thêm `AGENTS.md` với các lệnh xác minh rõ ràng và chạy lại với cùng agent. So sánh kết quả, quy mỗi lỗi vào một trong năm lớp phòng thủ.
 
-2. **Đo lường khoảng cách xác minh**: Chọn 5 tác vụ lập trình. Sau mỗi tác vụ, ghi lại xem agent có tuyên bố hoàn thành không, sau đó xác minh tính đúng đắn thực tế bằng các bài test độc lập. Tính tỷ lệ lần agent tuyên bố xong khi thực tế chưa xong — đó là khoảng cách xác minh của bạn. Sau đó suy nghĩ: những lệnh xác minh nào sẽ giảm tỷ lệ này?
+2. <strong>Đo lường khoảng cách xác minh</strong>: Chọn 5 tác vụ lập trình. Sau mỗi tác vụ, ghi lại xem agent có tuyên bố hoàn thành không, sau đó xác minh tính đúng đắn thực tế bằng các bài test độc lập. Tính tỷ lệ lần agent tuyên bố xong khi thực tế chưa xong — đó là khoảng cách xác minh của bạn. Sau đó suy nghĩ: những lệnh xác minh nào sẽ giảm tỷ lệ này?
 
-3. **Thực hành vòng lặp chẩn đoán**: Tìm một tác vụ mà agent liên tục thất bại trong dự án của bạn. Chạy một lần, ghi lại lỗi. Quy nó cho một trong năm lớp. Sửa lớp đó. Chạy lại. Lặp lại ba đến năm vòng, ghi lại cải tiến mỗi lần.
+3. <strong>Thực hành vòng lặp chẩn đoán</strong>: Tìm một tác vụ mà agent liên tục thất bại trong dự án của bạn. Chạy một lần, ghi lại lỗi. Quy nó cho một trong năm lớp. Sửa lớp đó. Chạy lại. Lặp lại ba đến năm vòng, ghi lại cải tiến mỗi lần.

@@ -29,7 +29,7 @@ categories:
 
 # Learn Harness Engineering
 
-> **Khóa học dựa trên dự án về xây dựng môi trường, quản lý trạng thái, cơ chế kiểm chứng và điều khiển giúp các agent viết code AI hoạt động đáng tin cậy.**
+> <strong>Khóa học dựa trên dự án về xây dựng môi trường, quản lý trạng thái, cơ chế kiểm chứng và điều khiển giúp các agent viết code AI hoạt động đáng tin cậy.</strong>
 
 Learn Harness Engineering là một khóa học dành riêng cho kỹ thuật liên quan đến các agent viết code AI. Chúng tôi đã nghiên cứu sâu và tổng hợp các lý thuyết và thực tiễn Harness Engineering tiên tiến nhất trong ngành. Các tài liệu tham khảo cốt lõi của chúng tôi bao gồm:
 
@@ -38,7 +38,7 @@ Learn Harness Engineering là một khóa học dành riêng cho kỹ thuật li
 - [Anthropic: Harness design for long-running application development](https://www.anthropic.com/engineering/harness-design-long-running-apps)
 - [Awesome Harness Engineering](https://github.com/walkinglabs/awesome-harness-engineering)
 
-> **Bắt đầu nhanh?** Skill [`skills/harness-creator/`](../../skills/harness-creator/) có thể giúp bạn tạo nhanh một harness cấp sản xuất (AGENTS.md, feature lists, init.sh, quy trình kiểm chứng) cho dự án của riêng bạn chỉ trong vài phút.
+> <strong>Bắt đầu nhanh?</strong> Skill [`skills/harness-creator/`](../../skills/harness-creator/) có thể giúp bạn tạo nhanh một harness cấp sản xuất (AGENTS.md, feature lists, init.sh, quy trình kiểm chứng) cho dự án của riêng bạn chỉ trong vài phút.
 
 ---
 
@@ -85,7 +85,7 @@ Kho lưu trữ hiện đã bao gồm quy trình xây dựng PDF cho nội dung k
 
 ## Mô hình thì thông minh, Harness giúp nó đáng tin cậy
 
-Có một sự thật khắc nghiệt mà hầu hết mọi người đều học theo cách khó khăn nhất: **mô hình mạnh nhất thế giới vẫn sẽ thất bại trên các tác vụ kỹ thuật thực tế nếu bạn không xây dựng một môi trường phù hợp xung quanh nó.**
+Có một sự thật khắc nghiệt mà hầu hết mọi người đều học theo cách khó khăn nhất: <strong>mô hình mạnh nhất thế giới vẫn sẽ thất bại trên các tác vụ kỹ thuật thực tế nếu bạn không xây dựng một môi trường phù hợp xung quanh nó.</strong>
 
 Bạn có thể đã tự thấy điều này. Bạn giao một tác vụ cho Claude hoặc GPT trong kho mã của mình. Nó bắt đầu tốt — đọc tệp, viết code, trông có vẻ hiệu quả. Sau đó có điều gì đó sai. Nó bỏ qua một bước. Nó làm hỏng một bài kiểm tra. Nó nói "xong" nhưng thực tế không có gì hoạt động. Bạn dành nhiều thời gian hơn để dọn dẹp so với việc tự làm.
 
@@ -95,7 +95,7 @@ Bằng chứng là rõ ràng. Anthropic đã thực hiện một thí nghiệm �
 
 OpenAI cũng báo cáo điều tương tự với Codex: trong một kho mã được harness tốt, cùng mô hình chuyển từ "không đáng tin cậy" sang "đáng tin cậy." Không phải là cải thiện nhỏ — mà là sự chuyển đổi về chất.
 
-**Khóa học này dạy bạn cách xây dựng môi trường đó.**
+<strong>Khóa học này dạy bạn cách xây dựng môi trường đó.</strong>
 
 ```text
                     MÔ HÌNH HARNESS
@@ -156,17 +156,17 @@ Một harness có năm hệ thống con:
 
 Mỗi hệ thống con có một nhiệm vụ duy nhất:
 
-- **Instructions** — Cho agent biết phải làm gì, theo thứ tự nào, và phải đọc gì trước khi bắt đầu. Không phải một tệp khổng lồ duy nhất; mà là cấu trúc tiết lộ dần mà agent điều hướng theo nhu cầu.
-- **State** — Theo dõi những gì đã làm, những gì đang tiến hành, và những gì tiếp theo. Được lưu trữ trên đĩa để phiên tiếp theo tiếp tục chính xác nơi phiên trước đã dừng.
-- **Verification** — Chỉ một bộ bài kiểm tra đạt mới được tính là bằng chứng. Agent không thể tuyên bố hoàn thành mà không có bằng chứng có thể chạy được.
-- **Scope** — Giới hạn agent ở một tính năng tại một thời điểm. Không vượt quá phạm vi. Không hoàn thành một nửa ba việc. Không viết lại danh sách tính năng để che giấu công việc chưa hoàn thành.
-- **Session Lifecycle** — Khởi tạo ở đầu. Dọn dẹp ở cuối. Để lại đường dẫn khởi động lại sạch cho phiên tiếp theo.
+- <strong>Instructions</strong> — Cho agent biết phải làm gì, theo thứ tự nào, và phải đọc gì trước khi bắt đầu. Không phải một tệp khổng lồ duy nhất; mà là cấu trúc tiết lộ dần mà agent điều hướng theo nhu cầu.
+- <strong>State</strong> — Theo dõi những gì đã làm, những gì đang tiến hành, và những gì tiếp theo. Được lưu trữ trên đĩa để phiên tiếp theo tiếp tục chính xác nơi phiên trước đã dừng.
+- <strong>Verification</strong> — Chỉ một bộ bài kiểm tra đạt mới được tính là bằng chứng. Agent không thể tuyên bố hoàn thành mà không có bằng chứng có thể chạy được.
+- <strong>Scope</strong> — Giới hạn agent ở một tính năng tại một thời điểm. Không vượt quá phạm vi. Không hoàn thành một nửa ba việc. Không viết lại danh sách tính năng để che giấu công việc chưa hoàn thành.
+- <strong>Session Lifecycle</strong> — Khởi tạo ở đầu. Dọn dẹp ở cuối. Để lại đường dẫn khởi động lại sạch cho phiên tiếp theo.
 
 ---
 
 ## Tại sao khóa học này tồn tại
 
-Câu hỏi không phải là "mô hình có thể viết code không?" Chúng có thể. Câu hỏi là: **chúng có thể hoàn thành đáng tin cậy các tác vụ kỹ thuật thực tế bên trong các kho mã thực tế, qua nhiều phiên, mà không cần giám sát liên tục từ con người không?**
+Câu hỏi không phải là "mô hình có thể viết code không?" Chúng có thể. Câu hỏi là: <strong>chúng có thể hoàn thành đáng tin cậy các tác vụ kỹ thuật thực tế bên trong các kho mã thực tế, qua nhiều phiên, mà không cần giám sát liên tục từ con người không?</strong>
 
 Hiện tại, câu trả lời là: không thể nếu không có harness.
 
@@ -202,13 +202,13 @@ Những câu hỏi mà khóa học này thực sự quan tâm:
 
 ## Giáo trình & Tài liệu khóa học
 
-Để xem đầy đủ tài liệu khóa học, vui lòng truy cập **[Trang web Tài liệu](https://walkinglabs.github.io/learn-harness-engineering/)**.
+Để xem đầy đủ tài liệu khóa học, vui lòng truy cập <strong>[Trang web Tài liệu](https://walkinglabs.github.io/learn-harness-engineering/)</strong>.
 
 Giáo trình được chia thành ba phần:
 
-1. **Bài giảng**: 12 đơn vị khái niệm giải thích lý thuyết đằng sau harness engineering.
-2. **Dự án**: 6 dự án thực hành nơi bạn xây dựng một không gian làm việc agentic từ đầu.
-3. **Thư viện tài nguyên**: Các mẫu sẵn sàng sử dụng (`AGENTS.md`, `feature_list.json`, `init.sh`, v.v.) để sử dụng trong kho mã của riêng bạn ngay hôm nay.
+1. <strong>Bài giảng</strong>: 12 đơn vị khái niệm giải thích lý thuyết đằng sau harness engineering.
+2. <strong>Dự án</strong>: 6 dự án thực hành nơi bạn xây dựng một không gian làm việc agentic từ đầu.
+3. <strong>Thư viện tài nguyên</strong>: Các mẫu sẵn sàng sử dụng (`AGENTS.md`, `feature_list.json`, `init.sh`, v.v.) để sử dụng trong kho mã của riêng bạn ngay hôm nay.
 
 ---
 
@@ -234,7 +234,7 @@ Lấy các mẫu khởi đầu từ [Thư viện tài nguyên](https://walkingla
 
 ## Dự án tổng kết: Một ứng dụng thực tế
 
-Tất cả sáu dự án khóa học đều xoay quanh cùng một sản phẩm: **một ứng dụng desktop cơ sở tri thức cá nhân dựa trên Electron**.
+Tất cả sáu dự án khóa học đều xoay quanh cùng một sản phẩm: <strong>một ứng dụng desktop cơ sở tri thức cá nhân dựa trên Electron</strong>.
 
 ```text
     ┌─────────────────────────────────────────────────────┐
@@ -400,7 +400,7 @@ Mỗi giai đoạn mất khoảng một tuần nếu bạn học bán thời gia
 
 ## Vòng đời phiên Agent
 
-Một trong những ý tưởng cốt lõi trong khóa học này: **phiên của agent nên tuân theo một vòng đời có cấu trúc, không phải tự do không kiểm soát.** Đây là cách nó trông như thế này:
+Một trong những ý tưởng cốt lõi trong khóa học này: <strong>phiên của agent nên tuân theo một vòng đời có cấu trúc, không phải tự do không kiểm soát.</strong> Đây là cách nó trông như thế này:
 
 ```text
     VÒNG ĐỜI PHIÊN AGENT
@@ -573,7 +573,7 @@ learn-harness-engineering/
 
 Kho lưu trữ này cũng bao gồm các skill agent AI có thể tái sử dụng mà bạn có thể cài đặt trực tiếp vào IDE hoặc không gian làm việc agent của mình.
 
-- [**harness-creator**](../../skills/harness-creator/): Một skill giúp bạn tạo nhanh một harness cấp sản xuất cho dự án của riêng bạn chỉ trong vài phút.
+- [<strong>harness-creator</strong>](../../skills/harness-creator/): Một skill giúp bạn tạo nhanh một harness cấp sản xuất cho dự án của riêng bạn chỉ trong vài phút.
 
 ---
 
@@ -583,7 +583,7 @@ Kho lưu trữ này cũng bao gồm các skill agent AI có thể tái sử dụ
 
 [![Hands-on Modern RL](https://img.shields.io/badge/HANDS--ON_MODERN_RL-0052cc?style=for-the-badge)](https://github.com/walkinglabs/hands-on-modern-rl)
 
-**Hands-on Modern RL**: Một giáo trình thực hành mã nguồn mở kết nối khoảng cách từ các khái niệm RL cơ bản đến LLM alignment, RLVR và các hệ thống Agentic nâng cao.
+<strong>Hands-on Modern RL</strong>: Một giáo trình thực hành mã nguồn mở kết nối khoảng cách từ các khái niệm RL cơ bản đến LLM alignment, RLVR và các hệ thống Agentic nâng cao.
 
 ---
 

@@ -65,12 +65,12 @@ flowchart TB
 
 ## Temel kavramlar
 
-- **Sınırı aşma (Overreach)**: Ajan tek bir oturumda optimal olandan daha fazla görev etkinleştirir. Ölçülebilirdir — 0'ı uçtan uca geçen 5 özellik yapmak sınırı aşmadır.
-- **Yarım bırakma (Under-finish)**: Tüm etkinleştirilen görevlerden uçtan uca doğrulamayı geçen görevlerin oranı eşiğin altına düşer. Kod yazılmış ama testler geçmiyorsa bu yarım bırakmadır.
-- **WIP Limiti (Work-in-Progress Limit)**: Kanban metodolojisinden. Temel fikir: aynı anda kaç görevin uçuşta olduğunu sınırlamak. Ajanlar için WIP=1 en güvenli varsayılan değerdir — sıradakine başlamadan önce birini bitirin. Açık büfe gibi — tabağı doldurmayın, bir tabağı bitirin sonra geri dönün.
-- **Tamamlanma kanıtı (Completion Evidence)**: Bir görevin "devam ediyor"dan "tamamlandı"ya geçmesi için sağlaması gereken doğrulanabilir koşul. Bu olmadan ajanlar "kod iyi görünüyor"u "davranış testleri geçiyor"un yerine koyarlar.
-- **Kapsam yüzeyi (Scope Surface)**: Her düğümün bir iş birimi olduğu ve kenarların bağımlılıklar olduğu DAG yapısı. Durumlar dört ile sınırlıdır: not_started, active, blocked, passing.
-- **Tamamlama baskısı (Completion Pressure)**: Harness'ın WIP limitleri ve tamamlanma kanıtı gereksinimleri aracılığıyla uyguladığı kısıtlayıcı kuvvet, ajanı yeni bir göreve başlamadan önce mevcut görevi bitirmeye zorlar.
+- <strong>Sınırı aşma (Overreach)</strong>: Ajan tek bir oturumda optimal olandan daha fazla görev etkinleştirir. Ölçülebilirdir — 0'ı uçtan uca geçen 5 özellik yapmak sınırı aşmadır.
+- <strong>Yarım bırakma (Under-finish)</strong>: Tüm etkinleştirilen görevlerden uçtan uca doğrulamayı geçen görevlerin oranı eşiğin altına düşer. Kod yazılmış ama testler geçmiyorsa bu yarım bırakmadır.
+- <strong>WIP Limiti (Work-in-Progress Limit)</strong>: Kanban metodolojisinden. Temel fikir: aynı anda kaç görevin uçuşta olduğunu sınırlamak. Ajanlar için WIP=1 en güvenli varsayılan değerdir — sıradakine başlamadan önce birini bitirin. Açık büfe gibi — tabağı doldurmayın, bir tabağı bitirin sonra geri dönün.
+- <strong>Tamamlanma kanıtı (Completion Evidence)</strong>: Bir görevin "devam ediyor"dan "tamamlandı"ya geçmesi için sağlaması gereken doğrulanabilir koşul. Bu olmadan ajanlar "kod iyi görünüyor"u "davranış testleri geçiyor"un yerine koyarlar.
+- <strong>Kapsam yüzeyi (Scope Surface)</strong>: Her düğümün bir iş birimi olduğu ve kenarların bağımlılıklar olduğu DAG yapısı. Durumlar dört ile sınırlıdır: not_started, active, blocked, passing.
+- <strong>Tamamlama baskısı (Completion Pressure)</strong>: Harness'ın WIP limitleri ve tamamlanma kanıtı gereksinimleri aracılığıyla uyguladığı kısıtlayıcı kuvvet, ajanı yeni bir göreve başlamadan önce mevcut görevi bitirmeye zorlar.
 
 ## Sınırı aşma ve yarım bırakma simbiyotiktir
 
@@ -84,7 +84,7 @@ Bu insan dünyasında da eski bir sorundur — Steve McConnell *Rapid Developmen
 
 ### 1. WIP=1'i zorla
 
-Bu en doğrudan ve etkili yöntemdir. Harness'ınızda ajana açıkça söyleyin: **herhangi bir zamanda yalnızca bir görev "aktif" durumunda olabilir.** Claude Code'un CLAUDE.md'sinde veya Codex'in AGENTS.md'sinde şunu yazın:
+Bu en doğrudan ve etkili yöntemdir. Harness'ınızda ajana açıkça söyleyin: <strong>herhangi bir zamanda yalnızca bir görev "aktif" durumunda olabilir.</strong> Claude Code'un CLAUDE.md'sinde veya Codex'in AGENTS.md'sinde şunu yazın:
 
 ```
 ## İş Kuralları
@@ -117,19 +117,19 @@ Harness sürekli olarak VCR (Verified Completion Rate) = doğrulanmış görevle
 
 8 özellikli bir REST API projesi, iki strateji karşılaştırıldı:
 
-**Açık büfe modu (kısıtsız)**: Ajan oturum 1'de aynı anda 5 özelliği etkinleştirir. 12 dosyada ~800 satır üretir. Uçtan uca test geçme oranı: %20 — yalnızca kullanıcı kaydı çalışıyor. Diğer 4 özellik: veritabanı şeması oluşturuldu ama doğrulama mantığı eksik, rotalar tanımlandı ama yanlış yanıt formatları döndürüyor. Aynı anda altı yemek pişiren biri gibi, sadece biri zar zor yenilebilir. Oturum 3'ün sonunda 8 özellikten yalnızca 3'ü tamamlandı.
+<strong>Açık büfe modu (kısıtsız)</strong>: Ajan oturum 1'de aynı anda 5 özelliği etkinleştirir. 12 dosyada ~800 satır üretir. Uçtan uca test geçme oranı: %20 — yalnızca kullanıcı kaydı çalışıyor. Diğer 4 özellik: veritabanı şeması oluşturuldu ama doğrulama mantığı eksik, rotalar tanımlandı ama yanlış yanıt formatları döndürüyor. Aynı anda altı yemek pişiren biri gibi, sadece biri zar zor yenilebilir. Oturum 3'ün sonunda 8 özellikten yalnızca 3'ü tamamlandı.
 
-**Tek tabak modu (WIP=1)**: Ajan oturum 1'de yalnızca kullanıcı kaydı üzerinde çalışır. 4 dosyada ~200 satır üretir. Uçtan uca testler: %100 geçiyor. Temiz, doğrulanmış bir uygulamayı commit eder. Oturum 4'ün sonunda 8 özellikten 7'si tamamlandı (8.'si harici bir bağımlılık tarafından engellendi).
+<strong>Tek tabak modu (WIP=1)</strong>: Ajan oturum 1'de yalnızca kullanıcı kaydı üzerinde çalışır. 4 dosyada ~200 satır üretir. Uçtan uca testler: %100 geçiyor. Temiz, doğrulanmış bir uygulamayı commit eder. Oturum 4'ün sonunda 8 özellikten 7'si tamamlandı (8.'si harici bir bağımlılık tarafından engellendi).
 
 Sonuç: daha az toplam kod (800 vs 1200 satır) ama daha etkili kod. Tamamlanma oranı: %87.5 vs %37.5. Bir seferde bir ısırık alın ve aslında daha çok yiyin.
 
 ## Önemli çıkarımlar
 
-- **WIP=1 ajan harness'ları için varsayılan güvenli ayardır** — birini bitirin, sonra sıradakine başlayın; paralelleştirmeye çalışmayın. Bir ısırıkta şişman olamazsınız.
-- **Tamamlanma kanıtı yürütülebilir olmalı** — "kod iyi görünüyor" sayılmaz; "curl 201 döndürüyor" sayılır.
-- **Kapsam yüzeyi dosya olarak dışsallaştırılmalıdır** — sadece konuşmada bahsedilmemeli, depoda makine tarafından okunabilir bir formatta kaydedilmelidir.
-- **Sınırı aşma ve yarım bırakma simbiyotiktir** — birini çözmek diğerini de çözer.
-- **"Daha az yap ama bitir" her zaman "daha çok yap ama yarım bırak"ı yener** — ajan kod satırları ve özellik tamamlanma oranı negatif korelasyondadır. Kalite her zaman miktarı yener.
+- <strong>WIP=1 ajan harness'ları için varsayılan güvenli ayardır</strong> — birini bitirin, sonra sıradakine başlayın; paralelleştirmeye çalışmayın. Bir ısırıkta şişman olamazsınız.
+- <strong>Tamamlanma kanıtı yürütülebilir olmalı</strong> — "kod iyi görünüyor" sayılmaz; "curl 201 döndürüyor" sayılır.
+- <strong>Kapsam yüzeyi dosya olarak dışsallaştırılmalıdır</strong> — sadece konuşmada bahsedilmemeli, depoda makine tarafından okunabilir bir formatta kaydedilmelidir.
+- <strong>Sınırı aşma ve yarım bırakma simbiyotiktir</strong> — birini çözmek diğerini de çözer.
+- <strong>"Daha az yap ama bitir" her zaman "daha çok yap ama yarım bırak"ı yener</strong> — ajan kod satırları ve özellik tamamlanma oranı negatif korelasyondadır. Kalite her zaman miktarı yener.
 
 ## Daha fazla okuma
 
@@ -140,8 +140,8 @@ Sonuç: daha az toplam kod (800 vs 1200 satır) ama daha etkili kod. Tamamlanma 
 
 ## Alıştırmalar
 
-1. **Görev atomizasyonu**: Geniş bir gereksinim seçin (örneğin "bir kullanıcı yönetim sistemi uygula") ve onu en az 5 atomik iş birimine bölün. Her birim için şunları belirtin: (a) tek davranış tanımı, (b) yürütülebilir doğrulama komutu, (c) bağımlılıklar. Kırılımın WIP=1 kısıtını karşılayıp karşılamadığını kontrol edin.
+1. <strong>Görev atomizasyonu</strong>: Geniş bir gereksinim seçin (örneğin "bir kullanıcı yönetim sistemi uygula") ve onu en az 5 atomik iş birimine bölün. Her birim için şunları belirtin: (a) tek davranış tanımı, (b) yürütülebilir doğrulama komutu, (c) bağımlılıklar. Kırılımın WIP=1 kısıtını karşılayıp karşılamadığını kontrol edin.
 
-2. **Karşılaştırma deneyi**: Aynı projeyi iki kez çalıştırın — bir kez kısıtlamasız, bir kez WIP=1 zorunlu kılınmış. Karşılaştırın: doğrulanmış tamamlanma oranı, toplam kod satırı, etkili kod oranı.
+2. <strong>Karşılaştırma deneyi</strong>: Aynı projeyi iki kez çalıştırın — bir kez kısıtlamasız, bir kez WIP=1 zorunlu kılınmış. Karşılaştırın: doğrulanmış tamamlanma oranı, toplam kod satırı, etkili kod oranı.
 
-3. **Tamamlanma kanıtı denetimi**: Yakın tarihli bir ajan çalıştırmasının çıktısını inceleyin, her kod değişikliğini "tamamlanmış davranış," "tamamlanmamış davranış" veya "iskele" olarak sınıflandırın. Her tamamlanmamış davranış için eksik doğrulama komutları ekleyin.
+3. <strong>Tamamlanma kanıtı denetimi</strong>: Yakın tarihli bir ajan çalıştırmasının çıktısını inceleyin, her kod değişikliğini "tamamlanmış davranış," "tamamlanmamış davranış" veya "iskele" olarak sınıflandırın. Her tamamlanmamış davranış için eksik doğrulama komutları ekleyin.

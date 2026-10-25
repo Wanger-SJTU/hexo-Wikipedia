@@ -57,7 +57,7 @@ Snake: A Variable-length Chain-based Prefetching for GPUs
 
 3. L2到L1的预取
 
-**Alcop: Automatic load-compute pipelining in deep learning compiler for ai-gpus**
+<strong>Alcop: Automatic load-compute pipelining in deep learning compiler for ai-gpus</strong>
 真要说的话，multi- stage也可以算是。那就参考MLSYS23的ALCOP。
 
 ![](https://pic4.zhimg.com/v2-9ab872d009139a19e53b7641d506e74b_r.jpg)上图解释了multi-stage的概念，更多的stage有助于掩盖smem读取的bubble
@@ -70,13 +70,13 @@ Snake: A Variable-length Chain-based Prefetching for GPUs
 还真没见过L1到L0的预取。为什么呢？可能是global到L1太慢了是瓶颈，而L1到L0太快了不会卡住吧？
 
 WaSP: Warp Scheduling to Mimic Prefetching in Graphics WorkloadsWaSP: Warp Scheduling to Mimic Prefetching in Graphics Workloads(arxiv24)
-提出一种轻量级的**warp调度器**，通过提前启动部分“优先”warp来模拟预取，将Miss均匀分布在执行过程中以保持数据局部性。此方法无需额外缓存硬件，能显著增加内存并行度并减少缓存阻塞，实验证明在图形渲染应用上可带来约3.9%的平均性能提升
+提出一种轻量级的<strong>warp调度器</strong>，通过提前启动部分“优先”warp来模拟预取，将Miss均匀分布在执行过程中以保持数据局部性。此方法无需额外缓存硬件，能显著增加内存并行度并减少缓存阻塞，实验证明在图形渲染应用上可带来约3.9%的平均性能提升
 
 Treelet Prefetching For Ray Tracing(MICRO23)
 针对GPU的光线追踪工作负载，提出将BVH树切分为若干“树单元”（treelet）并预取到L1缓存中，利用当前warp中的射线轨迹预测后续访问路径，从而降低遍历延迟。这类专用预取器虽偏向图形渲染场景，但展示了为特定GPU应用定制预取策略的思路。（虽然这是修改了硬件，不过似乎是不是图计算也值得做点prefetch？）
 
 How Does Software Prefetching Work on GPU Query Processing?(damon24)(ccf-none)
-Deng等人（2024）在数据库领域研究了常见的**软件预取算法**（如Group Prefetch、SPP、AMAC、IMV等）在GPU哈希连接和B树搜索中的效果。他们利用CUDA提供的`prefetch.global.L1`指令显式将数据预取到L1缓存，以重叠计算和内存访问。结果表明在这些数据分析任务上，软件预取可带来最高≈1.3×的速度提升
+Deng等人（2024）在数据库领域研究了常见的<strong>软件预取算法</strong>（如Group Prefetch、SPP、AMAC、IMV等）在GPU哈希连接和B树搜索中的效果。他们利用CUDA提供的`prefetch.global.L1`指令显式将数据预取到L1缓存，以重叠计算和内存访问。结果表明在这些数据分析任务上，软件预取可带来最高≈1.3×的速度提升
 
 4. L1到L0的预取
 

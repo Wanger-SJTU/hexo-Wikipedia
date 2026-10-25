@@ -49,19 +49,19 @@ source_url: https://zhuanlan.zhihu.com/p/972681787
 
 硬件的相应信息都会写在.dts为后缀的文件中，每一款硬件可以单独写一份xxxx.dts，一般在Linux源码中存在大量的dts文件，对于arm架构可以在arch/arm/boot/dts找到相应的dts，一个dts文件对应一个ARM的machie。
 
-**2.2 dtsi**
+<strong>2.2 dtsi</strong>
 
 值得一提的是，对于一些相同的dts配置可以抽象到dtsi文件中，然后类似于C语言的方式可以include到dts文件中，对于同一个节点的设置情况，dts中的配置会覆盖dtsi中的配置。
 
-**2.3 dtc**
+<strong>2.3 dtc</strong>
 
 dtc是编译dts的工具，可以在Ubuntu系统上通过指令apt-get install device-tree-compiler安装dtc工具，不过在内核源码scripts/dtc路径下已经包含了dtc工具；
 
-**2.4 dtb**
+<strong>2.4 dtb</strong>
 
 dtb(Device Tree Blob)，dts经过dtc编译之后会得到dtb文件，dtb通过Bootloader引导程序加载到内核。所以Bootloader需要支持设备树才行；Kernel也需要加入设备树的支持；
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_1b81385ef627.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_1b81385ef627.jpg)
 
 #### 3. DTS结构
 
@@ -136,7 +136,7 @@ binary data 以方括号括起来，如：
 
 #### 5.1 标准属性
 
-**5.1.1 compatible**
+<strong>5.1.1 compatible</strong>
 
 每一个dts文件都是由一个root的根节点组成，内核通过根节点“/”的兼容性即可判断它启动的是什么设备，其代码结构如下
 
@@ -155,7 +155,7 @@ binary data 以方括号括起来，如：
 - model属性值是，它指定制造商的设备型号。推荐的格式是：“manufacturer，model”，其中manufacturer是一个字符串描述制造商的名称，而型号指定型号。
 - compatible属性值是,指定了系统的名称，是一个字符串列表，它包含了一个“,”形式的字符串。重要的是要指定一个确切的设备，并且包括制造商的名字，以避免命名空间冲突。
 - chosen 节点不代表一个真正的设备，但功能与在固件和操作系统间传递数据的地点一样，如根参数，取代以前bootloader的启动参数，控制台的输入输出参数等
-**5.1.2 #address-cells和#size-cells**
+<strong>5.1.2 #address-cells和#size-cells</strong>
 
 - #address-cells = : 基地址、片选号等绝对起始地址所占字长，单位uint32
 - #size-cells = : 长度所占字长，单位uint32
@@ -171,7 +171,7 @@ binary data 以方括号括起来，如：
 	};
 };`
 
-**5.1.3 CPU addressing**
+<strong>5.1.3 CPU addressing</strong>
 
 在讨论寻址时，CPU节点代表了最简单的情况。 每个CPU都分配有一个唯一的ID，并且没有与CPU ID相关联的大小。
 
@@ -192,7 +192,7 @@ binary data 以方括号括起来，如：
 
 你仍然需要注意reg值班需要与节点名的值相匹配。按照惯例，如果一个节点有一个reg属性，那么这个节点名称必须包括unit-address,这是reg属性的第一个address值。
 
-**5.1.4 Memory Mapped Devices**
+<strong>5.1.4 Memory Mapped Devices</strong>
 
 与在cpu节点中单独的address值不同，内存映射设备被分配了一系列将要响应的地址，因此不仅需要包含内存的基地址而且还需要映射地址的长度，因此需要使用#size-cells用来表示在每个子reg元组中长度字段的大小。在以下示例中，每个address值为1 cell(32 bits),每个长度值也是1 cell,这在32 bit系统是比较典型的。64 bit设备也许会为#address-cells和#size-cells使用数值2，在device tree中获取64 bit addressing。
 
@@ -229,7 +229,7 @@ binary data 以方括号括起来，如：
     ...
 };`
 
-**5.1.5 Non Memory Mapped Devices**
+<strong>5.1.5 Non Memory Mapped Devices</strong>
 
 处理器总线的其它设备为非内存映射设备。他们有地址范围，但不能被CPU直接寻址。母设备的驱动程序将代替CPU进行间接访问。以i2c设备为例，每个设备都分配了一个地址，但没有长度或范围与之相匹配。这与CPU地址分配很相似。
 
@@ -244,7 +244,7 @@ binary data 以方括号括起来，如：
      };
  };`
 
-**5.1.6 Ranges (Address Translation)**
+<strong>5.1.6 Ranges (Address Translation)</strong>
 
 我们已经讨论过如何向设备分配地址，但此时这些地址只是本地设备节点，还没有说明如何从那些地址里映射到cpu可以使用的地址。根节点经常描述地址空间的CPU视图。根节点的子节点已经使用了CPU的address domain，所以不需要任何明确的映射。例如，serial@101f0000设备被直接分配了地址0x101f0000。
 
@@ -291,7 +291,7 @@ Ranges是一个地址转换列表。每个输入ranges表格的是包含子地�
 - Offset 0 from chip select 2 is mapped to address range 0x30000000…0x30ffffff
 例如上面的总线是有片选的，就需要描述片选及片选的偏移量，在说明地址时，还需要说明地址映射范围
 
-**5.1.7 status**
+<strong>5.1.7 status</strong>
 
 device tree中的status标识了设备的状态，使用status可以去禁止设备或者启用设备，看下设备树规范中的status可选值
 
@@ -303,7 +303,7 @@ valueDescription“okay”表示设备正在运行“disabled”表示该设备�
 
 与遵循树的自然结构而进行的地址转换不同，机器上的任何设备都可以发起和终止中断信号。另外地址的编址也不同于中断信号，前者是设备树的自然表示，而后者者表现为独立于设备树结构的节点之间的链接。 下图显示了设备的自然结构以及每个节点在逻辑中断树中的位置。
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_f3e459391f94.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_f3e459391f94.jpg)
 
 上图包括以下部分：
 
@@ -358,7 +358,7 @@ dtc工具的使用方法是：
 
 dts和dtb文件的转换如图1所示
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_8a5e236aca2c.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_8a5e236aca2c.jpg)
 
 #### 2. Device Tree头信息
 
@@ -470,7 +470,7 @@ fdtdump工具的输出信息即是以上结构中每一个成员的值，struct 
 
 Device Tree文件结构如下图所示。dtb的头部首先存放的是fdt_header的结构体信息，接着是填充区域，填充大小为off_dt_struct – sizeof(struct fdt_header)，填充的值为0。接着就是struct fdt_property结构体的相关信息。最后是dt_string部分。
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_a8301f29da7f.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_a8301f29da7f.jpg)
 
 Device Tree源文件的结构分为header、fill_area、dt_struct及dt_string四个区域。fill_area区域填充数值0。节点（node）信息使用struct fdt_node_header结构体描述。属性信息使用struct fdt_property结构体描述。各个结构体信息如下:
 
@@ -480,7 +480,7 @@ struct fdt_node_header { fdt32_t tag; char name[0];}; struct fdt_property { fdt3
 
 例如：compatible = “samsung,goni”, “samsung,s5pv210”;compatible是属性名称，“samsung,goni”, "samsung,s5pv210"是属性值。compatible属性名称字符串存放的区域是dt_string。“samsung,goni”, "samsung,s5pv210"存放的位置是fdt_property.data后面。因此fdt_property.data指向该属性值。fdt_property.tag的值为属性标识，len为属性值的长度（包括‘\0’，单位：字节）,此处len = 29。nameoff为compatible字符串的位置相对于off_dt_strings的偏移地址，即&compatible = nameoff + off_dt_strings。 dt_struct在Device Tree中的结构如下图所示。节点的嵌套也带来tag标识符的嵌套。
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_129ce7e1a2ec.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_129ce7e1a2ec.jpg)
 
 ### 三、u-boot设备树的传递
 
@@ -525,7 +525,7 @@ tftp 0x30001000 s3c2440-smdk2440.dtb
 - 不要破坏内核本身: 内核本身的空间不能占用, 内核要用到的内存区域也不能占用
 对于该问题，我们拿了一块2440的地址空间分配图来说明该问题
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_d6540b9c32fc.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_d6540b9c32fc.jpg)
 
 对于dtb的存放，只能存放在空闲区，并且不能与其他区有重合的地方。
 
@@ -593,7 +593,7 @@ CONFIG_OF_SEPARATE=y
 - 获取dtb的地址，并且验证dtb的合法性
 - 根据你编译的是集成还是分离，如果是集成的话，需要为dtb预留内存空间并进行relocate
 - 重新获取一次dtb的地址，bootm传递给内核
-**4.1 获取dtb的地址，并且验证dtb的合法性**
+<strong>4.1 获取dtb的地址，并且验证dtb的合法性</strong>
 
 在系统起来的时候，进行一串的初始化函数中，fdtdec_setup会对dtb进行合法性验证
 
@@ -673,7 +673,7 @@ CONFIG_OF_SEPARATE=y
 	return 0;
 }`
 
-**4.2 为dtb分配新的内存地址空间**
+<strong>4.2 为dtb分配新的内存地址空间</strong>
 
 当使用CONFIG_OF_EMBED方式时，也就是dtb集成在uboot中的时候，relocate uboot过程中也会把dtb一起relocate，所以这里就不需要处理。当为分离式要为该dtb在内存中分配一片空间即可
 
@@ -1013,7 +1013,7 @@ uboot把设备树DTB文件随便放到内存的某一个地方就可以使用，
 
 对于dtb最后都存储在，其结构图如下
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_4dbd673bb1d4.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_4dbd673bb1d4.jpg)
 
 #### 6. linux kernel的设备驱动模型
 
@@ -1236,7 +1236,7 @@ core_initcall(of_init);`
 
 学习完了设备树的文件系统查看方法，那么对于在源码中去拿到设备树的节点或者属性信息，内核提供了那些操作函数呢？内核中开放出来的接口函数的声明大多在include/linux/下面，关于设备树的都是以of形式开头的命名
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_d7409a62304d.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_d7409a62304d.jpg)
 
 对应各个文件主要完成什么功能如下：
 

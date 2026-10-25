@@ -15,9 +15,9 @@ categories:
 
 ## Sprint Overview
 
-**Sprint:** P05-03 (Planner + Generator + Evaluator)
-**Feature:** Multi-turn Q&A conversation history
-**Duration:** 1 sprint
+<strong>Sprint:</strong> P05-03 (Planner + Generator + Evaluator)
+<strong>Feature:</strong> Multi-turn Q&A conversation history
+<strong>Duration:</strong> 1 sprint
 
 ## Scope
 
@@ -40,9 +40,9 @@ categories:
 
 | Role | Responsibility |
 |------|---------------|
-| **Planner** | Define acceptance criteria, scope boundaries, and rubric before implementation |
-| **Generator** | Implement the component based on planner specification |
-| **Evaluator** | Review implementation against acceptance criteria and rubric |
+| <strong>Planner</strong> | Define acceptance criteria, scope boundaries, and rubric before implementation |
+| <strong>Generator</strong> | Implement the component based on planner specification |
+| <strong>Evaluator</strong> | Review implementation against acceptance criteria and rubric |
 
 ## Acceptance Criteria
 

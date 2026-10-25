@@ -42,7 +42,7 @@ Elige tu ruta de aprendizaje. El curso se divide en clases teóricas, proyectos 
 
 ## El mecanismo central de un harness
 
-Un harness no "vuelve más inteligente al modelo"; establece un **sistema de trabajo** de ciclo cerrado para el modelo. Puedes entender el flujo central con este diagrama:
+Un harness no "vuelve más inteligente al modelo"; establece un <strong>sistema de trabajo</strong> de ciclo cerrado para el modelo. Puedes entender el flujo central con este diagrama:
 
 ```mermaid
 graph TD

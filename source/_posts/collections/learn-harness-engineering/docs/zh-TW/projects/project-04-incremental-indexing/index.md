@@ -69,9 +69,9 @@ categories:
 
 切換至 `p04-improved` 分支。在啟動代理之前，先在儲存庫中準備好：
 
-- **執行時期日誌**：啟動時輸出初始化步驟，匯入時輸出檔案數量和 chunk 結果，索引時輸出進度，問答失敗時輸出錯誤原因。
-- **架構約束**：在 `AGENTS.md` 裡明確寫 Electron 四層邊界（main / preload / renderer / services），說明哪些呼叫路徑是允許的。用 ESLint 規則或 guard 腳本檢查違規。
-- **乾淨狀態要求**：最終交付前必須能乾淨重啟。
+- <strong>執行時期日誌</strong>：啟動時輸出初始化步驟，匯入時輸出檔案數量和 chunk 結果，索引時輸出進度，問答失敗時輸出錯誤原因。
+- <strong>架構約束</strong>：在 `AGENTS.md` 裡明確寫 Electron 四層邊界（main / preload / renderer / services），說明哪些呼叫路徑是允許的。用 ESLint 規則或 guard 腳本檢查違規。
+- <strong>乾淨狀態要求</strong>：最終交付前必須能乾淨重啟。
 
 然後啟動代理：
 

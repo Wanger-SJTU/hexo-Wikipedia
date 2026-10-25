@@ -17,7 +17,7 @@ source_url: https://zhuanlan.zhihu.com/p/130220572
 
 论文题目: Rectifying Pseudo Label Learning via Uncertainty Estimation for Domain Adaptive Semantic Segmentation 
 
-**Paper 已经被 IJCV 接收了，感谢大家的意见和帮助，真的真的真的非常感谢。 **
+<strong>Paper 已经被 IJCV 接收了，感谢大家的意见和帮助，真的真的真的非常感谢。</strong>
 
 论文地址: [https://arxiv.org/pdf/2003.03773.pdf](https://link.zhihu.com/?target=https%3A//arxiv.org/pdf/2003.03773.pdf)
 
@@ -29,10 +29,10 @@ source_url: https://zhuanlan.zhihu.com/p/130220572
 
 [](https://www.zhihu.com/zvideo/1322108221906567168)What: 
 
-- 本文研究的是领域迁移问题中错误的伪标签(Pseudo Label)的问题，探讨了如何**自动设定阈值**来修正这种伪标签学习。
-- 之前的伪标签往往通过人为**卡阈值(Threshold)** 的方式来学高置信度的伪标签(Pseudo Label)，而忽略低置信度的标签。 但是这个阈值(Threshold) 往往很难决定。
-- 我们思考如何定这个阈值，其实会发现这个阈值取决于 source 和 target 有多接近，如果source域 和 target 域 **完全一样**，那么阈值甚至可以卡到0.999，大多数data都有很确定的label，那全部样本都可以拿来训练； 但如果source域 和 target 域 **完全不一样，** 那么阈值再怎么卡，都没有用，因为所有的pseudo label都是noisy的。
-- 所以在做domain adpation的问题就在于 在实际场景中，我们往往只能凭经验来 提前设置阈值 让模型来学伪标签。这是不合理的，或者卡得太高或者太低都会影响模型学习的。所以本文我们提出用不确定性来作为阈值，等同于自动**学一个阈值出来。**How:
+- 本文研究的是领域迁移问题中错误的伪标签(Pseudo Label)的问题，探讨了如何<strong>自动设定阈值</strong>来修正这种伪标签学习。
+- 之前的伪标签往往通过人为<strong>卡阈值(Threshold)</strong> 的方式来学高置信度的伪标签(Pseudo Label)，而忽略低置信度的标签。 但是这个阈值(Threshold) 往往很难决定。
+- 我们思考如何定这个阈值，其实会发现这个阈值取决于 source 和 target 有多接近，如果source域 和 target 域 <strong>完全一样</strong>，那么阈值甚至可以卡到0.999，大多数data都有很确定的label，那全部样本都可以拿来训练； 但如果source域 和 target 域 <strong>完全不一样，</strong> 那么阈值再怎么卡，都没有用，因为所有的pseudo label都是noisy的。
+- 所以在做domain adpation的问题就在于 在实际场景中，我们往往只能凭经验来 提前设置阈值 让模型来学伪标签。这是不合理的，或者卡得太高或者太低都会影响模型学习的。所以本文我们提出用不确定性来作为阈值，等同于自动<strong>学一个阈值出来。</strong>How:
 
 - 其实本质思想很简单，我们利用了分割模型中的辅助分类器（本来只是用来防止梯度消失的）。结构如下图：有一个主分类器接在res5c后面，一个辅助分类器接在res4b22. （本文研究的是图像分割， 如果您研究的是图像分类，也可以对应到分类问题中InceptionNet 系列，包括NASNet也是需要浅层辅助分类器的。）
 ![](https://pic2.zhimg.com/v2-f91d99ab30289b3c9fd37a9f143af777_r.jpg)

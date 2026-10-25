@@ -19,11 +19,11 @@ source_url: https://zhuanlan.zhihu.com/p/2071256072153837666
 
 最直接的做法是丢弃被抢占请求的 KV Cache，等它再次被调度时重新执行 Prefill。但对于长上下文请求，这意味着大量重复计算。一个自然的优化方向是：抢占时把 KV Cache 保存到 Host 内存，恢复时直接执行 H2D load-back。
 
-问题是，**KV Cache 能正确地 offload 和 restore，不代表请求一定能够及时恢复**。
+问题是，<strong>KV Cache 能正确地 offload 和 restore，不代表请求一定能够及时恢复</strong>。
 
 如果调度器要求一次性为完整 KV snapshot 分配所有 GPU blocks，却又没有为恢复请求预留容量，那么持续运行的 Decode 请求和后来进入的新请求就可能不断拿走刚释放的空间。最终表现为：Host 上明明保存着完整 KV Cache，恢复请求却长期拿不到足够的 HBM，甚至比重新 Prefill 更慢。
 
-这篇文章主要分析这一“恢复饥饿”问题，（**可以主要了解一下背景即可，方案我目前还没验证，验证后更新**）并给出一套由恢复队列、restore credit、admission control、恢复后保护组成的调度方案。
+这篇文章主要分析这一“恢复饥饿”问题，（<strong>可以主要了解一下背景即可，方案我目前还没验证，验证后更新</strong>）并给出一套由恢复队列、restore credit、admission control、恢复后保护组成的调度方案。
 
 1. 问题背景：抢占之后如何恢复 KV Cache
 对于一个已经进入 Decode 阶段的请求，其有效上下文不只包含原始 Prompt，还包含已经生成的 Token。调度器抢占该请求时，必须在以下两种恢复路径中做选择。
@@ -100,7 +100,7 @@ GPU HBM KV Cache
 - 空闲容量始终达不到完整恢复所需的 500 blocks；
 - 恢复请求在 waiting queue 中反复尝试；
 - 新请求和现有 Decode 请求继续消耗容量；
-- Host snapshot 始终无法执行 H2D。这不是 KV Offload 的正确性问题，也不一定是 PCIe、HCCS 或 NVLink 带宽问题，而是一个典型的**调度饥饿问题**：恢复请求需要一个较大的连续“容量机会”，但调度器没有为它积累和保护这个机会。
+- Host snapshot 始终无法执行 H2D。这不是 KV Offload 的正确性问题，也不一定是 PCIe、HCCS 或 NVLink 带宽问题，而是一个典型的<strong>调度饥饿问题</strong>：恢复请求需要一个较大的连续“容量机会”，但调度器没有为它积累和保护这个机会。
 
 3. 根因：全有或全无的恢复遇上无预留调度
 这个问题由三个条件共同造成。
@@ -151,10 +151,10 @@ SGLang 还提供 `num_reserved_decode_tokens` 一类的容量控制参数。其�
 
 项目PR / RFC状态主要解决方式vLLM#44560：Resolve multiple async KV load deadlock已合入为先进入的异步 KV load 预留完整剩余容量，避免后来请求抢走容量vLLM#33526：Progressive KV Cache CPU Onloading已关闭，未实施提议分批 progressive onload，主要解决传输阶段的队头阻塞vLLM#37307：Schedule requests based on full ISL已合入按完整 ISL 做 admission，避免长请求只因首个 chunk 能放下就进入vLLM#44594：Add KV Cache watermark已合入通过 watermark 预留少量空闲 blocks，降低抢占概率SGLang#7196：Support decode retract已合入保存并完整恢复 CPU snapshot，同时对恢复所需容量记账SGLang#29471：Radix-aware resume开放中如果 GPU 仍有 Radix Prefix，只从 CPU snapshot 恢复缺失的 suffixSGLang#17216：Dynamic block offload已合入NSA/DSA 稀疏注意力在运行期逐页 offload；不直接适用于普通 Full AttentionvLLM Ascend#10742：Recompute KV Cache offloading已合入在正常 waiting queue 中反复尝试完整恢复，未提供 reservation 或 agingvLLM Ascend#12128：Add KV Cache watermark开放中移植 KV watermark，降低抢占概率，但不直接解决已有 snapshot 的恢复饥饿从这些方案可以看到，watermark、完整 ISL admission、progressive onload 和恢复容量预留解决的是不同层面的问题：
 
-- **Watermark**：减少系统进入危险水位和触发抢占的概率；
-- **完整 ISL admission**：避免接纳注定无法稳定运行的长请求；
-- **Progressive onload**：降低单次传输粒度，缓解传输队头阻塞；
-- **Restore reservation**：让已经被抢占的请求最终一定能重新获得 HBM。其中，真正直接解决“Host snapshot 恢复饥饿”的是最后一项。
+- <strong>Watermark</strong>：减少系统进入危险水位和触发抢占的概率；
+- <strong>完整 ISL admission</strong>：避免接纳注定无法稳定运行的长请求；
+- <strong>Progressive onload</strong>：降低单次传输粒度，缓解传输队头阻塞；
+- <strong>Restore reservation</strong>：让已经被抢占的请求最终一定能重新获得 HBM。其中，真正直接解决“Host snapshot 恢复饥饿”的是最后一项。
 
 5. 建议方案：显式管理恢复债务
 建议组合 vLLM 的容量预留思路和 SGLang 的恢复债务记账方式，在每个 DP replica 内增加独立的恢复调度机制。

@@ -32,7 +32,7 @@ Anthropic führte ein kontrolliertes Experiment durch. Gleicher Prompt ("baue ei
 
 Sie änderten nicht das Modell. Opus 4.5 blieb Opus 4.5. Was sich änderte, war das Zaumzeug.
 
-OpenAIs Artikel zu Harness Engineering aus dem Jahr 2025 formuliert es direkt: Codex wechselt in einem gut geharnessten Repository von "unzuverlässig" zu "zuverlässig". Achte auf die Wortwahl - nicht "ein bisschen besser", sondern ein qualitativer Sprung. Wie bei einem Vollblutpferd: Du kannst ohne passendes Zaumzeug reiten, aber du kommst nicht weit, nicht schnell, und ein Sturz ist keine Überraschung. Der Harness ist dieses gesamte Zaumzeug - **alles in der Engineering-Infrastruktur außerhalb der Modellgewichte.**
+OpenAIs Artikel zu Harness Engineering aus dem Jahr 2025 formuliert es direkt: Codex wechselt in einem gut geharnessten Repository von "unzuverlässig" zu "zuverlässig". Achte auf die Wortwahl - nicht "ein bisschen besser", sondern ein qualitativer Sprung. Wie bei einem Vollblutpferd: Du kannst ohne passendes Zaumzeug reiten, aber du kommst nicht weit, nicht schnell, und ein Sturz ist keine Überraschung. Der Harness ist dieses gesamte Zaumzeug - <strong>alles in der Engineering-Infrastruktur außerhalb der Modellgewichte.</strong>
 
 ## Wo Agenten tatsächlich stecken bleiben
 
@@ -52,22 +52,22 @@ Lange Aufgaben über mehrere Sitzungen sind noch schlimmer: Alle Erkenntnisse au
 
 Mit diesen Szenarien im Hinterkopf sind die folgenden Begriffe kein bloßer Jargon mehr:
 
-- **Capability Gap**: Die große Lücke zwischen Modellleistung auf Benchmarks und Leistung bei realen Aufgaben. Eine Erfolgsrate von 50-60% auf SWE-bench Verified bedeutet, dass fast die Hälfte realer Issues nicht gelöst wird.
-- **Harness**: Alles außerhalb des Modells - Anweisungen, Tools, Umgebung, Zustandsverwaltung, Verifikationsfeedback. Wenn es keine Modellgewichte sind, gehört es zum Harness. Das ist das "Zaumzeug", von dem wir gesprochen haben.
-- **Harness-Induced Failure**: Das Modell hat grundsätzlich genug Fähigkeit, aber die Ausführungsumgebung hat strukturelle Defekte. Anthropics kontrolliertes Experiment hat genau das gezeigt.
-- **Verification Gap**: Die Lücke zwischen dem Vertrauen des Agenten in sein Ergebnis und der tatsächlichen Korrektheit. Der Agent sagt "ich bin fertig", obwohl er nicht fertig ist - der häufigste Fehlermodus.
-- **Diagnostic Loop**: Ausführen, Fehler beobachten, einer bestimmten Harness-Schicht zuordnen, diese Schicht reparieren, erneut ausführen. Das ist die Kernmethodik von Harness Engineering.
-- **Definition of Done**: Eine Menge maschinell überprüfbarer Bedingungen - Tests grün, Lint sauber, Type Checks bestanden. Ohne explizite Definition of Done erfindet der Agent seine eigene.
+- <strong>Capability Gap</strong>: Die große Lücke zwischen Modellleistung auf Benchmarks und Leistung bei realen Aufgaben. Eine Erfolgsrate von 50-60% auf SWE-bench Verified bedeutet, dass fast die Hälfte realer Issues nicht gelöst wird.
+- <strong>Harness</strong>: Alles außerhalb des Modells - Anweisungen, Tools, Umgebung, Zustandsverwaltung, Verifikationsfeedback. Wenn es keine Modellgewichte sind, gehört es zum Harness. Das ist das "Zaumzeug", von dem wir gesprochen haben.
+- <strong>Harness-Induced Failure</strong>: Das Modell hat grundsätzlich genug Fähigkeit, aber die Ausführungsumgebung hat strukturelle Defekte. Anthropics kontrolliertes Experiment hat genau das gezeigt.
+- <strong>Verification Gap</strong>: Die Lücke zwischen dem Vertrauen des Agenten in sein Ergebnis und der tatsächlichen Korrektheit. Der Agent sagt "ich bin fertig", obwohl er nicht fertig ist - der häufigste Fehlermodus.
+- <strong>Diagnostic Loop</strong>: Ausführen, Fehler beobachten, einer bestimmten Harness-Schicht zuordnen, diese Schicht reparieren, erneut ausführen. Das ist die Kernmethodik von Harness Engineering.
+- <strong>Definition of Done</strong>: Eine Menge maschinell überprüfbarer Bedingungen - Tests grün, Lint sauber, Type Checks bestanden. Ohne explizite Definition of Done erfindet der Agent seine eigene.
 
 ## Wenn etwas scheitert, repariere zuerst den Harness
 
-Kernprinzip: **Wenn etwas scheitert, tausche nicht zuerst das Modell aus - prüfe den Harness.** Wenn dasselbe Modell bei ähnlichen, gut strukturierten Aufgaben erfolgreich ist, gehe von einem Harness-Problem aus. Das ist wie bei einem Auto, das liegen bleibt: Du verdächtigst nicht sofort den Motor. Du prüfst zuerst, ob der Tank leer ist.
+Kernprinzip: <strong>Wenn etwas scheitert, tausche nicht zuerst das Modell aus - prüfe den Harness.</strong> Wenn dasselbe Modell bei ähnlichen, gut strukturierten Aufgaben erfolgreich ist, gehe von einem Harness-Problem aus. Das ist wie bei einem Auto, das liegen bleibt: Du verdächtigst nicht sofort den Motor. Du prüfst zuerst, ob der Tank leer ist.
 
 Konkrete Schritte:
 
-**Ordne jeden Fehler einer bestimmten Schicht zu.** Sag nicht nur "das Modell taugt nichts". Frage: War die Aufgabe unklar? War der Kontext unzureichend? Gab es keine Verifikationsmethode? Ordne jeden Fehler einer der fünf Fehlerschichten zu: Aufgabenspezifikation, Kontextbereitstellung, Ausführungsumgebung, Verifikationsfeedback, Zustandsverwaltung. Das sind praktische Diagnoseschichten, nicht die sechs Glossarbegriffe oben. Wenn du diese Gewohnheit aufbaust, wirst du "das Modell ist nicht gut genug" immer seltener in deinen Logs sehen.
+<strong>Ordne jeden Fehler einer bestimmten Schicht zu.</strong> Sag nicht nur "das Modell taugt nichts". Frage: War die Aufgabe unklar? War der Kontext unzureichend? Gab es keine Verifikationsmethode? Ordne jeden Fehler einer der fünf Fehlerschichten zu: Aufgabenspezifikation, Kontextbereitstellung, Ausführungsumgebung, Verifikationsfeedback, Zustandsverwaltung. Das sind praktische Diagnoseschichten, nicht die sechs Glossarbegriffe oben. Wenn du diese Gewohnheit aufbaust, wirst du "das Modell ist nicht gut genug" immer seltener in deinen Logs sehen.
 
-**Schreibe für jede Aufgabe eine explizite Definition of Done.** Sag nicht "füge eine Suchfunktion hinzu". Sag:
+<strong>Schreibe für jede Aufgabe eine explizite Definition of Done.</strong> Sag nicht "füge eine Suchfunktion hinzu". Sag:
 ```
 Completion criteria:
 - New endpoint GET /api/search?q=xxx
@@ -77,21 +77,21 @@ Completion criteria:
 - Type checking passes (mypy --strict)
 ```
 
-**Erstelle eine AGENTS.md-Datei.** Lege sie im Repository-Root ab, damit der Agent Tech Stack, Architekturkonventionen und Verifikationsbefehle des Projekts kennt. Das ist der erste Schritt im Harness Engineering und der Schritt mit dem höchsten ROI. Eine einzige `AGENTS.md`-Datei kann wirksamer sein als ein Upgrade auf ein teureres Modell - das ist kein Witz.
+<strong>Erstelle eine AGENTS.md-Datei.</strong> Lege sie im Repository-Root ab, damit der Agent Tech Stack, Architekturkonventionen und Verifikationsbefehle des Projekts kennt. Das ist der erste Schritt im Harness Engineering und der Schritt mit dem höchsten ROI. Eine einzige `AGENTS.md`-Datei kann wirksamer sein als ein Upgrade auf ein teureres Modell - das ist kein Witz.
 
-**Baue eine Diagnoseschleife.** Behandle Fehler nicht als "das Modell ist wieder dumm". Behandle sie als Signale, dass dein Harness einen Defekt hat. Bei jedem Fehler: Schicht identifizieren, reparieren, dafür sorgen, dass derselbe Fehler nicht wieder auftritt. Nach ein paar Runden wird dein Harness stärker und die Agentenleistung stabiler. Wie Straßenreparatur: Jedes gefüllte Schlagloch macht den nächsten Abschnitt glatter.
+<strong>Baue eine Diagnoseschleife.</strong> Behandle Fehler nicht als "das Modell ist wieder dumm". Behandle sie als Signale, dass dein Harness einen Defekt hat. Bei jedem Fehler: Schicht identifizieren, reparieren, dafür sorgen, dass derselbe Fehler nicht wieder auftritt. Nach ein paar Runden wird dein Harness stärker und die Agentenleistung stabiler. Wie Straßenreparatur: Jedes gefüllte Schlagloch macht den nächsten Abschnitt glatter.
 
-**Quantifiziere Verbesserungen.** Führe ein einfaches Log: War jede Aufgabe erfolgreich oder nicht, und welche Schicht hat den Fehler verursacht? Nach ein paar Runden siehst du, welche Schicht der Engpass ist - konzentriere deine Energie dort.
+<strong>Quantifiziere Verbesserungen.</strong> Führe ein einfaches Log: War jede Aufgabe erfolgreich oder nicht, und welche Schicht hat den Fehler verursacht? Nach ein paar Runden siehst du, welche Schicht der Engpass ist - konzentriere deine Energie dort.
 
 ## Das Millionen-Zeilen-Experiment
 
 OpenAI führte 2025 ein aggressives Experiment durch: Codex sollte aus einem leeren Git-Repository ein vollständiges internes Produkt bauen. Fünf Monate später hatte das Repository ungefähr eine Million Zeilen Code - Anwendungslogik, Infrastruktur, Tooling, Dokumentation, interne Entwicklerwerkzeuge - alles von Agenten erzeugt. Drei Engineers steuerten Codex und öffneten sowie mergten etwa 1.500 PRs. Im Schnitt 3,5 PRs pro Person und Tag.
 
-Die zentrale Einschränkung: **Menschen schreiben nie direkt Code.** Das war kein Trick, sondern sollte das Team zwingen herauszufinden, was sich ändert, wenn die Hauptaufgabe des Engineers nicht mehr Code schreiben ist, sondern Umgebungen zu entwerfen, Absichten präzise auszudrücken und Feedbackschleifen zu bauen.
+Die zentrale Einschränkung: <strong>Menschen schreiben nie direkt Code.</strong> Das war kein Trick, sondern sollte das Team zwingen herauszufinden, was sich ändert, wenn die Hauptaufgabe des Engineers nicht mehr Code schreiben ist, sondern Umgebungen zu entwerfen, Absichten präzise auszudrücken und Feedbackschleifen zu bauen.
 
 Der frühe Fortschritt war langsamer als erwartet. Nicht weil Codex unfähig war, sondern weil die Umgebung nicht vollständig genug war - dem Agenten fehlten notwendige Werkzeuge, Abstraktionen und interne Strukturen, um übergeordnete Ziele voranzubringen. Die Arbeit der Engineers wurde: große Ziele in kleine Bausteine zerlegen (Design, Code, Review, Test), den Agenten diese zusammensetzen lassen und diese Bausteine dann nutzen, um komplexere Aufgaben freizuschalten. Wenn etwas scheiterte, lautete die Lösung fast nie "streng dich mehr an", sondern "welche Fähigkeit fehlt dem Agenten, und wie machen wir sie verständlich und ausführbar?"
 
-Dieses Experiment belegt direkt die Kernaussage dieser Lektion: **Dasselbe Modell erzeugt in einer nackten Umgebung grundlegend andere Ergebnisse als in einer Umgebung mit vollständigem Harness.** Das Modell änderte sich nicht. Die Umgebung änderte sich.
+Dieses Experiment belegt direkt die Kernaussage dieser Lektion: <strong>Dasselbe Modell erzeugt in einer nackten Umgebung grundlegend andere Ergebnisse als in einer Umgebung mit vollständigem Harness.</strong> Das Modell änderte sich nicht. Die Umgebung änderte sich.
 
 > Quelle: [OpenAI: Harness engineering: leveraging Codex in an agent-first world](https://openai.com/index/harness-engineering/)
 
@@ -123,8 +123,8 @@ Sie änderten nicht das Modell. Sie änderten den Harness.
 
 ## Übungen
 
-1. **Vergleichsexperiment**: Wähle eine Codebase, die du gut kennst, und eine nicht triviale Änderungsaufgabe. Führe den Agenten zuerst ohne Harness-Unterstützung aus und protokolliere die Fehler. Füge dann eine `AGENTS.md` mit expliziten Verifikationsbefehlen hinzu und führe denselben Agenten erneut aus. Vergleiche die Ergebnisse und ordne jeden Fehler einer der fünf Verteidigungsschichten zu.
+1. <strong>Vergleichsexperiment</strong>: Wähle eine Codebase, die du gut kennst, und eine nicht triviale Änderungsaufgabe. Führe den Agenten zuerst ohne Harness-Unterstützung aus und protokolliere die Fehler. Füge dann eine `AGENTS.md` mit expliziten Verifikationsbefehlen hinzu und führe denselben Agenten erneut aus. Vergleiche die Ergebnisse und ordne jeden Fehler einer der fünf Verteidigungsschichten zu.
 
-2. **Messung der Verification Gap**: Wähle 5 Coding-Aufgaben. Notiere nach jeder Aufgabe, ob der Agent Abschluss behauptet, und prüfe anschließend die tatsächliche Korrektheit mit unabhängigen Tests. Berechne den Anteil der Fälle, in denen der Agent "fertig" sagt, obwohl er es tatsächlich nicht ist - das ist deine Verification Gap. Überlege dann: Welche Verifikationsbefehle würden diesen Anteil senken?
+2. <strong>Messung der Verification Gap</strong>: Wähle 5 Coding-Aufgaben. Notiere nach jeder Aufgabe, ob der Agent Abschluss behauptet, und prüfe anschließend die tatsächliche Korrektheit mit unabhängigen Tests. Berechne den Anteil der Fälle, in denen der Agent "fertig" sagt, obwohl er es tatsächlich nicht ist - das ist deine Verification Gap. Überlege dann: Welche Verifikationsbefehle würden diesen Anteil senken?
 
-3. **Übung zur Diagnoseschleife**: Finde eine Aufgabe, bei der der Agent in deinem Projekt wiederholt scheitert. Führe sie einmal aus und protokolliere den Fehler. Ordne ihn einer der fünf Schichten zu. Repariere diese Schicht. Führe erneut aus. Wiederhole das drei bis fünf Runden und dokumentiere die Verbesserungen nach jeder Runde.
+3. <strong>Übung zur Diagnoseschleife</strong>: Finde eine Aufgabe, bei der der Agent in deinem Projekt wiederholt scheitert. Führe sie einmal aus und protokolliere den Fehler. Ordne ihn einer der fünf Schichten zu. Repariere diese Schicht. Führe erneut aus. Wiederhole das drei bis fünf Runden und dokumentiere die Verbesserungen nach jeder Runde.

@@ -87,4 +87,4 @@ viz.render("eval")
 ```
 
 可视化的图
-![Pasted image 20221023223333.png](/images/collections/assets/Pasted%2520image%252020221023223333.png)
+![Pasted image 20221023223333.png](/images/collections/assets/Pasted%20image%2020221023223333.png)

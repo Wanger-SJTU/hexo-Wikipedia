@@ -23,7 +23,7 @@ source_url: https://zhuanlan.zhihu.com/p/387985644
 
 本文总结了这本书中介绍的各种缓存替换策略（cache replacement policy），首先将所有策略划分为了粗粒度和细粒度两类，然后再根据它们依据的不同局域性（locality）进一步的划分为了多个类，如下图所示：
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_0b7bb6cd157e.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_0b7bb6cd157e.jpg)
 
 图2.2：缓存替换策略的一种分类法。本文主要介绍该分类法的概念以及思路，对于上图中这些策略的进一步概述，以及相关论文的引用链接，可以在原书后续章节的正文中找到。
 
@@ -41,7 +41,7 @@ source_url: https://zhuanlan.zhihu.com/p/387985644
 
 为更好地理解我们的分类法，大家可以注意到，缓存策略通常是通过将少量替换状态（replacement state）与每个缓存行相关联来实现的（图2.1）：
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_ee9daa5f507a.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_ee9daa5f507a.jpg)
 
 图2.1：在整个缓存行生命周期间，所执行的不同替换策略操作。
 
@@ -64,7 +64,7 @@ source_url: https://zhuanlan.zhihu.com/p/387985644
 - 第一类基于最近访问情况（recency of access）来对缓存行进行排序，绝大多数粗粒度策略都属于这一类。
 - 第二类则是基于访问频率（frequency of access）来排序的。
 - 第三类策略则会监视缓存随时间的行为变化，来动态地选定给定时间段上的最佳粗粒度策略。
-**基于临时性的策略（Recency-Based Policies）**
+<strong>基于临时性的策略（Recency-Based Policies）</strong>
 
 **Recency：临时性/时间邻近性/（时间上）最近的一次，这里的意思是在时间上的邻近性，两个事件发生的时间间隔较短，则它们的临时性（recency）较高。临时性策略（Recency-Based Policies）根据每个缓存行在其生命周期内的最新引用（latest reference）来排序。为实现这种排序，临时性策略维护了一个概念性的临时性栈（conceptual recency stack），以提供各个行被引用的相对顺序。例如常见的LRU（最近最少使用）策略（及其变体）就会优先驱逐最近最少使用的行，而MRU（最近最多使用）则选择驱逐最近最多使用的行；其它策略则处于这两种策略中间。我们会在第3.1节（Section 3.1）中讨论这些策略。
 
@@ -96,13 +96,13 @@ source_url: https://zhuanlan.zhihu.com/p/387985644
 - 基于重用距离的策略（Reuse Distance-Based Policies）则会试图预测每团缓存行的具体重用距离信息。
 这两个类别可以分别作为谱系（spectrum）<span class="wikilink wikilink--missing" title="未导入的页面">7</span>(#ref_7)的两个末端的定义。其中处在谱系一端的策略仅有2个可能的预测值，而另一端的则有许多可能的预测值。很多策略都位于中间，例如具有4或8个可能的值。最后，我们还会在第三个类别下讨论Beckmann和Sanchez所提出的新指标 [Beckmann and Sanchez, 2017]。
 
-**基于分类的策略（Classification-Based Policies）**
+<strong>基于分类的策略（Classification-Based Policies）</strong>
 
 基于分类的策略将传入（缓存中的）行分为了两类：缓存友好行（cache-friendly line）和缓存厌恶行（cache-averse line）。它的主要思想是通过优先驱逐缓存厌恶行，来留下更多的空间给缓存友好行，因此缓存友好行的优先级要高于缓存厌恶行。然后才在缓存友好行间进行排序，通常是基于临时性（recency）的。
 
 基于分类的策略在很多地方都被认为是最好的，因为①它们可以可以利用过去的长期历史行为在未来做出更明智的决策，②并且它们还能适应各种不同的缓存访问模式（access pattern）。我们将在4.2节（Section 4.2）中讨论这些策略。
 
-**基于重用距离的策略（Reuse Distance-Based Policies）**
+<strong>基于重用距离的策略（Reuse Distance-Based Policies）</strong>
 
 基于重用距离的策略能够预测传入（缓存中的）行的具体重用距离信息。并且超出预期重用距离未收到命中的行将被逐出缓存。
 
@@ -115,7 +115,7 @@ source_url: https://zhuanlan.zhihu.com/p/387985644
 - 粒度（Granularity）：在插入的时，缓存行时以什么粒度进行区分的？是所有缓存行都一视同仁，还是根据历史信息给它们分配不同的优先级？
 - 历史（History）：替换策略在决策时利用了哪些，多少历史信息？
 - 访问模式（Access Patterns）：替换策略对某些访问模式的针对性如何？它对访问模式的变化，或不同访问模式的混合是否、有多敏感？
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_0b7bb6cd157e.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_0b7bb6cd157e.jpg)
 
 图2.2：缓存替换策略的一种分类法。图2.2完整地总结了我们的分类法，并显示了不同类别的替换策略是如何处理这些设计因素的。总的来说，图中越靠右的策略，所对应的粒度就越细，所使用的历史记录也更长，能够适应的访问模式也更广泛。
 

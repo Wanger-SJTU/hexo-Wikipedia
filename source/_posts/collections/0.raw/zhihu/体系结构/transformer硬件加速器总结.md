@@ -25,13 +25,13 @@ source_url: https://zhuanlan.zhihu.com/p/633571685
 
 **
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_b91792c4b1b3.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_b91792c4b1b3.jpg)
 
 #### 计算步骤
 
 - 获取输入句子的每一个单词的表示向量 X，X由单词的 Embedding（Embedding指从原始数据提取出来的Feature） 和单词位置的 Embedding 相加得到。
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_d1824a46ea07.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_d1824a46ea07.jpg)
 
 单词Embedding：Word2Vec、Glove 等算法预训练得到，也可以在 Transformer 中训练得到。位置Embedding：pos表示位置，d表示维度PE（pos，2i）=sin（pos/10000^(2i/d) )PE（pos，2i+1）=cos（pos/10000^(2i/d) )
 
@@ -40,7 +40,7 @@ source_url: https://zhuanlan.zhihu.com/p/633571685
 -  将 Encoder 输出的编码信息矩阵 C传递到 Decoder 中，Decoder 依次会根据当前翻译过的单词 1~ i 翻译下一个单词 i+1。在使用的过程中，翻译到单词 i+1 的时候需要通过 Mask (掩盖) 操作遮盖住 i+1 之后的单词。
  
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_64c3a309f9ee.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_64c3a309f9ee.jpg)
 
 #### 自注意力机制
 
@@ -50,7 +50,7 @@ Add：残差连接，防止网络退化
 
 Norm：对每一层的激活值进行归一化
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_b2d7e77c06f1.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_b2d7e77c06f1.jpg)
 
 #### 多头注意力机制
 
@@ -60,13 +60,13 @@ dmodel：设定的维度，512
 
 Wq：dmodel，dmodel / num_head
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_26be50220452.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_26be50220452.jpg)
 
 #### FFN前馈层
 
 两个Linear层，一个ReLU层
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_734a27a3166e.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_734a27a3166e.jpg)
 
 #### 主要计算总结
 
@@ -75,7 +75,7 @@ Wq：dmodel，dmodel / num_head
 - scaled softmax
 - LayerNorm
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_21737e171edc.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_21737e171edc.jpg)
 
 ### Hardware Accelerator for Multi-Head Attention and Position-Wise Feed-Forward in the Transformer
 
@@ -94,7 +94,7 @@ Wq：dmodel，dmodel / num_head
 -  softmax：代数变换，硬件实现参照一篇APCCAS论文
  
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_a47ce993f21f.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_a47ce993f21f.jpg)
 
 实验结果：
 
@@ -115,7 +115,7 @@ Motivation**:
  
 主要方法是基于贪心的候选搜索
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_6a1f34e2eb35.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_6a1f34e2eb35.jpg)
 
 K和Q对应元素相乘，每次迭代选取最大值和最小值，并累积在对应行。经过M次选择后，仍为正值的结果为候选项，计算对应行的K和Q的score。其他被剪枝。
 
@@ -125,7 +125,7 @@ K和Q对应元素相乘，每次迭代选取最大值和最小值，并累积在
 
 将权重转换为块循环矩阵形式（block circulant），使用FFT的乘法方式替代矩阵向量乘法：16倍权重压缩比
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_4153249c95fe.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_4153249c95fe.jpg)
 
 PE：
 
@@ -143,11 +143,11 @@ PE：
 - 不同剪枝策略：0-0.9 每0.1增加剪枝率  ；从0.9到1每0.2增加剪枝率 ；    设置块大小为16和4
 列平衡的剪枝：
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_710122e0e1ad.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_710122e0e1ad.jpg)
 
 存储格式：
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_caa6fbe3a1b6.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_caa6fbe3a1b6.jpg)
 
 ### SpAtten: Efficient Sparse Attention Architecture with Cascade Token and Head Pruning
 
@@ -162,7 +162,7 @@ PE：
 - 渐进式量化：对一小部分token主导的分布进行充分量化，对扁平化的保守量化
 - top-k引擎：具有O(n)个时间复杂度，以有效地支持动态token和head选择
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_ff28e8c1663c.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_ff28e8c1663c.jpg)
 
 实验设置：
 
@@ -184,7 +184,7 @@ PE：
 - 统一的计算模式
 将MAC计算转换为element-wise向量乘法和加法；将多个操作打包一个具有该计算模式的FPGA DSP
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_9e105d5d8515.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_9e105d5d8515.jpg)
 
 压缩算法：LayerNorm中的γ作为显著性因子
 
@@ -202,7 +202,7 @@ PE：
 
 未使用算法层面剪枝，对硬件设计做了更多优化
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_73eb1ebf82bd.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_73eb1ebf82bd.jpg)
 
 step1：DDR控制器将DDR数据读取到位宽转换Bram缓存组
 
@@ -225,7 +225,7 @@ step7：合并结果并输出至DDR
 - FPGA感知的混合ViT量化算法，可以充分利用异构FPGA资源，同时最大限度保持精度
 - 利用FPGA资源建模的自动ViT加速框架，自动寻找目标FPS的量化比特位宽和混合比率的最佳组合
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_04925dfa9bd4.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_04925dfa9bd4.jpg)
 
 量化方案
 
@@ -247,7 +247,7 @@ step7：合并结果并输出至DDR
 
 >  L. Lu *et al.*, “Sanger: A Co-Design Framework for Enabling Sparse Attention using Reconfigurable Architecture,” in *MICRO-54: 54th Annual IEEE/ACM International Symposium on Microarchitecture*, Virtual Event Greece: ACM, Oct. 2021, pp. 977–991. doi: 10..3480125.
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_62c299fb83ce.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_62c299fb83ce.jpg)
 
 静态稀疏性：预先决定的，独立于数据；通常采用粗粒度结构，删掉整个块或行；
 
@@ -265,7 +265,7 @@ step7：合并结果并输出至DDR
 
 **
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_c9a7a113c86c.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_c9a7a113c86c.jpg)
 
 1.预测注意力矩阵采用对称线性量化，并在训练中模拟量化，减少误差
 
@@ -278,7 +278,7 @@ step7：合并结果并输出至DDR
 - dense数据流
 **
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_1a7e87d35619.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_1a7e87d35619.jpg)
 
 ​   step1：计算Q和K矩阵乘。Q的一行映射水平PE，K的一行映射垂直PE。PE内累积部分和。
 
@@ -291,7 +291,7 @@ step7：合并结果并输出至DDR
 - sparse数据流
 插入bubble进行延迟
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_57941b4318d9.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_57941b4318d9.jpg)
 
 ​   
 
@@ -299,7 +299,7 @@ step7：合并结果并输出至DDR
 
 ### 总结
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_34c093158fba.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_34c093158fba.jpg)
 
 对计算进行简单分类：
 

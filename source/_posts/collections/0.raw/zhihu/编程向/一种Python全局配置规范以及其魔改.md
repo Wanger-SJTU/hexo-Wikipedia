@@ -27,7 +27,7 @@ source_url: https://zhuanlan.zhihu.com/p/31669135
 
 通过模块配置全局变量的试例如下，在configs.py中定义CONFIG_A和CONFIG_B。在user.py中用import导入。
 
-![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_ecc1aceb75e9.jpg)
+![](/images/collections/0.raw/zhihu/%E7%BC%96%E7%A8%8B%E5%90%91/asset/img_ecc1aceb75e9.jpg)
 
 这个其实是Python中的基本操作了，本来是没啥好讲的，不过在这篇文章最后我展示了一种根据json配置的动态模块，供大家参考。
 
@@ -163,7 +163,7 @@ def a()
 
 其实就是通过setattr这个常用的给对象动态的添加功能的函数，d.tiems()是一个从json文件中读取的字典对象。
 
-**0x04 动态模块的优势**
+<strong>0x04 动态模块的优势</strong>
 
 现在，一个配置模块的方案就成了导入configs模块，调用update_config_by_name函数，即动态修改函数，并按照相应的json文件修改模块的值。
 

@@ -378,31 +378,31 @@ PCPDCP阶段PrefillDecodeQuery 数量O(S)每请求通常 1KV 数量O(S)O(T)，�
 11. 怎么选
 可以按以下顺序决策：
 
-- **模型权重单卡放不下**
+- <strong>模型权重单卡放不下</strong>
  
 - 单机高速互联优先 TP。
 - 跨节点或 TP collective 太贵，增加 PP。
 - MoE 专家权重太大，使用 EP。
 
-- **模型能放下，但需要吞吐**
+- <strong>模型能放下，但需要吞吐</strong>
  
 - 优先普通 DP。
 
-- **MoE + MLA/MQA，TP 导致 KV 重复**
+- <strong>MoE + MLA/MQA，TP 导致 KV 重复</strong>
  
 - DP-attention + EP。
 
-- **单条超长 prompt，prefill TTFT 高**
+- <strong>单条超长 prompt，prefill TTFT 高</strong>
  
 - PCP 或 chunked PP。
 - PCP 切 sequence，适合 Attention 主导。
 - PP 切 layer，适合权重/层数大、跨节点网络一般。
 
-- **长上下文 decode，KV 容量或 HBM 带宽成为瓶颈**
+- <strong>长上下文 decode，KV 容量或 HBM 带宽成为瓶颈</strong>
  
 - DCP。
 
-- **网络拓扑原则**
+- <strong>网络拓扑原则</strong>
  
 - TP、DCP、EP A2A 放在 NVLink/NVSwitch 域内。
 - PP 由于通信频率低，更适合跨节点。

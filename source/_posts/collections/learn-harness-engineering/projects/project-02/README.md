@@ -19,8 +19,8 @@ Demonstrate how repository readability and explicit continuity artifacts reduce 
 
 | Directory | Meaning |
 |------|------|
-| `starter/` | **Starting point**: based on the P1 solution, with document import, detail view, and persistence still to implement. The harness is weak: AGENTS.md is minimal and there is no session handoff. |
-| `solution/` | **Reference implementation**: all new features are implemented, with complete workspace documentation (ARCHITECTURE.md, PRODUCT.md, session-handoff.md). |
+| `starter/` | <strong>Starting point</strong>: based on the P1 solution, with document import, detail view, and persistence still to implement. The harness is weak: AGENTS.md is minimal and there is no session handoff. |
+| `solution/` | <strong>Reference implementation</strong>: all new features are implemented, with complete workspace documentation (ARCHITECTURE.md, PRODUCT.md, session-handoff.md). |
 
 ## How to Use
 

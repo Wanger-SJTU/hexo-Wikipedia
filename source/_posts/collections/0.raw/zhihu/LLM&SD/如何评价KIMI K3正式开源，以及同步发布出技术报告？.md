@@ -15,10 +15,10 @@ source_url: https://www.zhihu.com/question/2065214142915654338/answer/2065751772
 ---
 
 
-**导读**
+<strong>导读</strong>
  这篇教程解读 X 用户 ali（ @waterloo_intern）的长文 [《22580: From GPT2 to Kimi3, Explained》](https://link.zhihu.com/?target=https%3A//x.com/waterloo_intern/article/2081762065392541951)——一篇获得 1.15 万点赞、2000 转发、460 万浏览量的技术文章。原文作者 ali 在 baseten 做推理引擎研究，他用代码驱动的叙事方式，把从 GPT-2（2019，124M 参数）到 Kimi K3（2026，2.8 万亿参数）这条演化路径上的每一步架构变化，都用可运行的 PyTorch 片段讲透了。
  “22580”是全文的第一个钩子：一个 Kimi K3 模型里能塞下 22,580 个 GPT-2。七年放大 22,580 倍——但这不仅仅是规模，每一步架构变化都在解决一个具体问题。这篇教程模仿 Hands-On 系列的风格，带你从代码层面理解每一步“为什么改”以及“怎么改”。
- **贯穿全文的主题**（原文最后一段的原话）：一个固定容量的联想记忆需要一个淘汰策略，因为纯粹的加法操作一旦到达容量上限就会产生干扰。为此，学习型的选择性机制——门控、路由或衰减——是必要的，而注意力是最有效的选择性读取机制。
+ <strong>贯穿全文的主题</strong>（原文最后一段的原话）：一个固定容量的联想记忆需要一个淘汰策略，因为纯粹的加法操作一旦到达容量上限就会产生干扰。为此，学习型的选择性机制——门控、路由或衰减——是必要的，而注意力是最有效的选择性读取机制。
 第一章 · GPT-2：一切的起点
 
 1.1 一个 GPT-2 长什么样
@@ -78,13 +78,13 @@ return y
 ![](https://www.zhihu.com/equation?tex=-%5C%5Cinfty)，保证只看过去；`softmax` 把分数归一化成权重；最后 `att @ v` 用权重对 Value 加权求和。这就是自注意力的全部。
 
 1.4 KV 缓存：推理效率的第一个瓶颈
-原文在讲完注意力后，话锋一转，抛出了整个系列文章的**核心问题**。
+原文在讲完注意力后，话锋一转，抛出了整个系列文章的<strong>核心问题</strong>。
 
-生成模式下，模型逐词输出。每生成一个新词，都要重新跑一遍前向传播。但前面的词的 K 和 V 不会变——如果每步都重算，就是浪费。解法是把它们**缓存**起来：
+生成模式下，模型逐词输出。每生成一个新词，都要重新跑一遍前向传播。但前面的词的 K 和 V 不会变——如果每步都重算，就是浪费。解法是把它们<strong>缓存</strong>起来：
 
 This is an inefficiency of decoder-only generation: the model computes representations for every input position, but each decode step consumes only the final position’s logits. Without caching, much of that work would be repeated for the next token.KV 缓存的观察很直接：把生成的新 token 追加到输入后，模型本该重新计算所有之前 token 的投影。存储它们的 key 和 value 向量就能避免这种冗余。
 
-这个存储就是 KV 缓存。它保留前 N-1 个 token 的向量，而且可能变得大到形成**内存带宽瓶颈**。
+这个存储就是 KV 缓存。它保留前 N-1 个 token 的向量，而且可能变得大到形成<strong>内存带宽瓶颈</strong>。
 
 原文给出了带 KV 缓存的注意力实现：
 
@@ -120,10 +120,10 @@ def forward(self, x, mask=None, past_kv=None):
     o_proj = self.o_proj(o)
     past_kv = (k, v)
     return o_proj, past_kv
-注意 `torch.cat((k_past, k), dim=2)` 这行——每次解码新 token 时，把新的 K、V 追加到缓存末尾。缓存随序列长度**线性增长**，复杂度是 
+注意 `torch.cat((k_past, k), dim=2)` 这行——每次解码新 token 时，把新的 K、V 追加到缓存末尾。缓存随序列长度<strong>线性增长</strong>，复杂度是 
 ![](https://www.zhihu.com/equation?tex=O%3C%21--MATH_PH_4--%3E)。每个解码步骤要从 HBM（显存）读两次 N 维向量、写两次 1 维向量，而 KV 缓存随序列长度线性膨胀。
 
-这就是后面所有架构创新的出发点：**能不能让缓存不增长？**
+这就是后面所有架构创新的出发点：<strong>能不能让缓存不增长？</strong>
 
 ![](https://pica.zhimg.com/v2-e82ba404973cf121bcb94726317071f5_r.jpg?source=2c26e567)
 
@@ -142,7 +142,7 @@ n_embd: int = 768
 标准 softmax 注意力的核心操作是 
 ![](https://www.zhihu.com/equation?tex=q+%5C%5Ccdot+k) 之后再做 softmax，这让每个 query 都和每个 key 耦合在一起。你不能提前把一部分结果“折叠”掉——必须等所有 QK 对的分数都算出来才能 softmax。
 
-线性注意力的想法是：**不做 softmax，改用一个特征函数分别处理 q 和 k**，让乘积变得可以重新结合。这样，不断增长的 K 和 V 向量序列就能被折叠进一个**固定大小的 
+线性注意力的想法是：<strong>不做 softmax，改用一个特征函数分别处理 q 和 k</strong>，让乘积变得可以重新结合。这样，不断增长的 K 和 V 向量序列就能被折叠进一个**固定大小的 
 ![](https://www.zhihu.com/equation?tex=D+%5C%5Ctimes+D) 状态矩阵**里。
 
 2.2 动手：线性注意力的实现
@@ -175,16 +175,16 @@ def forward(self, x, mask=None, cache=None):
     cache = (S, z)
 
     return o_proj, cache
-和第一章的 KV 缓存对比，最关键的变化在缓存部分。标准注意力的缓存是 `(k, v)`——随序列增长的一堆向量。线性注意力的缓存是 `(S, z)`——两个固定大小的矩阵和向量，**不管序列多长都不增长**。
+和第一章的 KV 缓存对比，最关键的变化在缓存部分。标准注意力的缓存是 `(k, v)`——随序列增长的一堆向量。线性注意力的缓存是 `(S, z)`——两个固定大小的矩阵和向量，<strong>不管序列多长都不增长</strong>。
 
 `S = S + k @ v` 是一个外积累加：每个新 token 的 key 和 value 做外积，加到状态矩阵 S 上。读取时 `o = q @ S`，用 query 去状态里检索。`z` 记录所有 key 的累加，用来做归一化。
 
 2.3 注意力的三步拆解
 原文在这里做了一个精妙的总结——所有注意力变体，本质上都做三件事：
 
-- **让 QK 分数非负**。线性注意力用 ELU+1，softmax 用指数函数。
-- **除以总和**（归一化）。
-- **对 Value 加权求和**。线性注意力保留了注意力的基本契约，但用表达能力较弱的特征函数替代了 softmax 的指数函数。这个近似会损失一些精度，但换来了固定大小的状态——缓存不再随序列增长。
+- <strong>让 QK 分数非负</strong>。线性注意力用 ELU+1，softmax 用指数函数。
+- <strong>除以总和</strong>（归一化）。
+- <strong>对 Value 加权求和</strong>。线性注意力保留了注意力的基本契约，但用表达能力较弱的特征函数替代了 softmax 的指数函数。这个近似会损失一些精度，但换来了固定大小的状态——缓存不再随序列增长。
 
 ![](https://picx.zhimg.com/v2-b8d5ddf1e7191aaf33e56a095aa79400_r.jpg?source=2c26e567)
 
@@ -192,9 +192,9 @@ def forward(self, x, mask=None, cache=None):
 但这里有一个根本性的问题。
 
 线性注意力的状态 S 是一个 
-![](https://www.zhihu.com/equation?tex=D+%5C%5Ctimes+D) 矩阵。序列有 100 万个 token 时，所有 token 的 key-value 关联都被压缩进这同一个矩阵里。当序列长度远大于 D 时（这正是线性注意力有吸引力的场景），状态就**超容量**了。
+![](https://www.zhihu.com/equation?tex=D+%5C%5Ctimes+D) 矩阵。序列有 100 万个 token 时，所有 token 的 key-value 关联都被压缩进这同一个矩阵里。当序列长度远大于 D 时（这正是线性注意力有吸引力的场景），状态就<strong>超容量</strong>了。
 
-问题在于更新方式是**纯加法**：`S = S + k @ v`。新信息不断叠加，旧信息无法离开。就像一个白板，你只能往上写新内容，永远不擦——写到一定程度，所有内容都糊在一起，谁都读不清楚。
+问题在于更新方式是<strong>纯加法</strong>：`S = S + k @ v`。新信息不断叠加，旧信息无法离开。就像一个白板，你只能往上写新内容，永远不擦——写到一定程度，所有内容都糊在一起，谁都读不清楚。
 
 原文引用了 Schlag 的论文（Fast Weight Programmers）的原话来描述这个问题：
 
@@ -205,7 +205,7 @@ def forward(self, x, mask=None, cache=None):
 3.1 核心思想：Delta 规则
 线性注意力的更新是 `S = S + kᵀ @ v`——无条件地把新信息加进去。
 
-DeltaNet 的思路是：**在写入之前，先看看这个 key 方向上已经存了什么，只写入“差异”部分**。
+DeltaNet 的思路是：<strong>在写入之前，先看看这个 key 方向上已经存了什么，只写入“差异”部分</strong>。
 
 想象白板上的一个格子。你不是直接往上面写新内容，而是先读一下格子里已有的内容，算出“新内容和旧内容的差异”，只把差异写上去。旧信息被自然替换，新信息被精确写入。
 
@@ -259,7 +259,7 @@ Q 也是一个学习到的“指针”：
 第四章 · DeltaNet 的并行化：最硬核的一节
  原文说“这是全文最难的部分，我花了大约七个小时才建立起可用的理解”，所以会从实现代码出发来讲。
 4.1 问题：Delta 规则是串行的
-上面的 Delta 规则看起来很优雅，但有一个工程问题：**它是逐 token 串行的**。
+上面的 Delta 规则看起来很优雅，但有一个工程问题：<strong>它是逐 token 串行的</strong>。
 
 S = torch.zeros(b, h, dh, dh) if cache is None else cache
 outs = []
@@ -288,7 +288,7 @@ o = torch.cat(outs, dim=2)
 GPU 最擅长的是大规模矩阵乘法，而逐 token 的串行循环完全浪费了这种能力。
 
 4.2 分块：在串行和并行之间找平衡
-解法是**分块（Chunking）**。把序列切成大小为 C 的块，块内做标准注意力（可以并行），块间做递归状态更新（串行但次数少）。
+解法是<strong>分块（Chunking）</strong>。把序列切成大小为 C 的块，块内做标准注意力（可以并行），块间做递归状态更新（串行但次数少）。
 
 S = torch.zeros(b, h, dh, dh) if cache is None else cache
 outs = []
@@ -309,7 +309,7 @@ for i in range(t // C):
     outs.append(o)
 
 o = torch.cat(outs, dim=2)
-原文的解释非常清晰：**块内做 **`q(kᵀv)`**——先算分数，是带 mask 的标准注意力顺序。块间做 **`(kᵀv)q`**——先更新状态再读取，是递归顺序。**
+原文的解释非常清晰：<strong>块内做</strong>`q(kᵀv)`<strong>——先算分数，是带 mask 的标准注意力顺序。块间做</strong>`(kᵀv)q`<strong>——先更新状态再读取，是递归顺序。</strong>
 
 计算量分两部分：固定部分 
 ![](https://www.zhihu.com/equation?tex=2Ld%5E2)（状态更新，与 C 无关）和增长部分 
@@ -323,7 +323,7 @@ o = torch.cat(outs, dim=2)
 4.3 把 Delta 规则也分块化
 纯加法注意力的分块很直接，但 Delta 规则不行，因为每步都需要 `v_old = k_i @ S` 来计算要减去的旧信息。你需要每个 token 的状态才能算出 delta——没法直接并行。
 
-作者的解法是**数学重参数化**。把原来的 Delta 更新：
+作者的解法是<strong>数学重参数化</strong>。把原来的 Delta 更新：
 
 u = v_new - v_old
 S_t = S_{t-1} + Kᵀ @ u
@@ -371,7 +371,7 @@ def chunk_delta_rule_forward(Q, K, V, beta, C):
 第五章 · Gated DeltaNet：让模型学会遗忘
 
 5.1 Delta 规则的局限
-DeltaNet 能精确更新单个关联——但它只能替换有对应替代品的关联。如果模型需要做**上下文切换**（一次性清除一批不再相关的关联），或者需要**整体衰减**记忆来释放容量，Delta 规则做不到。
+DeltaNet 能精确更新单个关联——但它只能替换有对应替代品的关联。如果模型需要做<strong>上下文切换</strong>（一次性清除一批不再相关的关联），或者需要<strong>整体衰减</strong>记忆来释放容量，Delta 规则做不到。
 
 换句话说，Delta 规则能“改”但不能“忘”。
 
@@ -384,7 +384,7 @@ S_new = k @ v
 cache = alpha * S_old + S_new   # 新：旧状态衰减后再加新状态
 这就是 Mamba-2 的贡献：先衰减旧缓存，再以满强度加入新缓存，防止状态无限增长。
 
-但 Mamba 的衰减是**均匀的**——所有 key-value 关联以同一个比例衰减。如果模型只需要遗忘一个特定的关联，所有关联都被等量遗忘。Delta 规则则相反——能更新单个事实，但没法让其他事实衰减。
+但 Mamba 的衰减是<strong>均匀的</strong>——所有 key-value 关联以同一个比例衰减。如果模型只需要遗忘一个特定的关联，所有关联都被等量遗忘。Delta 规则则相反——能更新单个事实，但没法让其他事实衰减。
 
 5.3 Gated Delta 规则：两者结合
 Gated Delta 规则把 Mamba 的门控衰减和 Delta 规则结合在一起。它加了一个参数 
@@ -392,13 +392,13 @@ Gated Delta 规则把 Mamba 的门控衰减和 Delta 规则结合在一起。它
 ![](https://www.zhihu.com/equation?tex=%5C%5Calpha%3D1) 时退化为纯 Delta 规则，
 ![](https://www.zhihu.com/equation?tex=%5C%5Calpha%3D0) 时清空记忆。
 
-实现上用和 DeltaNet 相同的重参数化方法，数学几乎一样，只多了一个**数据相关的标量衰减**。原文指出，
+实现上用和 DeltaNet 相同的重参数化方法，数学几乎一样，只多了一个<strong>数据相关的标量衰减</strong>。原文指出，
 ![](https://www.zhihu.com/equation?tex=%5C%5Cgamma%5Er%2F%5C%5Cgamma%5Ei) 项处理的是累积衰减：在时间步 
 ![](https://www.zhihu.com/equation?tex=x) 写入、在 
 ![](https://www.zhihu.com/equation?tex=x%2Bt) 读取的 token，它的值已经被乘了 
 ![](https://www.zhihu.com/equation?tex=%5C%5Calpha_x+%5C%5Calpha%2A%7Bx%2B1%7D+%5C%5Calpha%2A%7Bx%2B2%7D+%5C%5Ccdots+%5C%5Calpha%5C_%7Bx%2Bt%7D)——这是前缀和计算的乘法类比。
 
- 🎯 **演化逻辑**：线性注意力（只能加）→ DeltaNet（能改不能忘）→ Gated DeltaNet（既能改又能忘）。每一步都补上了上一步缺少的一种”对记忆的操作”。
+ 🎯 <strong>演化逻辑</strong>：线性注意力（只能加）→ DeltaNet（能改不能忘）→ Gated DeltaNet（既能改又能忘）。每一步都补上了上一步缺少的一种”对记忆的操作”。
 
 ![](https://pic1.zhimg.com/v2-06f6805580a4f1647f801e7ad4cb7e2c_r.jpg?source=2c26e567)
 
@@ -408,30 +408,30 @@ Gated Delta 规则把 Mamba 的门控衰减和 Delta 规则结合在一起。它
 Gated DeltaNet 用一个标量 
 ![](https://www.zhihu.com/equation?tex=%5C%5Calpha) 控制整层的衰减。但不同通道（不同维度的特征）可能需要不同的遗忘速度——有些通道存的是长期事实，有些存的是临时上下文。
 
-Kimi Linear 的核心改进：**为每个通道学习一个独立的衰减值**。不再是一个标量 
+Kimi Linear 的核心改进：<strong>为每个通道学习一个独立的衰减值</strong>。不再是一个标量 
 ![](https://www.zhihu.com/equation?tex=%5C%5Calpha)，而是一个向量 
 ![](https://www.zhihu.com/equation?tex=%5C%5Cboldsymbol%7B%5C%5Calpha%7D+%5C%5Cin+%5C%5Cmathbb%7BR%7D%5Ed)。
 
-原文指出，`alpha.reshape(nb, C, d)` 捕捉了论文最重要的贡献：对记忆衰减的**细粒度控制**。KDA 的更新规则和 Gated DeltaNet 类似，但衰减从标量变成了逐通道的向量。
+原文指出，`alpha.reshape(nb, C, d)` 捕捉了论文最重要的贡献：对记忆衰减的<strong>细粒度控制</strong>。KDA 的更新规则和 Gated DeltaNet 类似，但衰减从标量变成了逐通道的向量。
 
 6.2 不只是替换注意力——而是一个混合架构
 把 KDA 放在 DeltaNet Transformer 旁边，Kimi Linear 引入了三个重大变化：
 
-- **混合系统**：交替使用 KDA 层和多头潜注意力（MLA）层。大部分层用高效的 KDA（固定状态），少量层用标准 softmax 注意力（全局检索）。
-- **MoE 替代 MLP**：前馈网络换成混合专家层。
-- **DeltaNet 容量增强**：通过 alpha 投影给 DeltaNet 增加容量。原文在这里强调了一个重要观点：
+- <strong>混合系统</strong>：交替使用 KDA 层和多头潜注意力（MLA）层。大部分层用高效的 KDA（固定状态），少量层用标准 softmax 注意力（全局检索）。
+- <strong>MoE 替代 MLP</strong>：前馈网络换成混合专家层。
+- <strong>DeltaNet 容量增强</strong>：通过 alpha 投影给 DeltaNet 增加容量。原文在这里强调了一个重要观点：
 
  “This is not blind scaling. The additional capacity has a specific mathematical purpose: the per-channel scale gives the model finer control over memory decay.”每一步架构演进增加的容量都有明确的数学目的——不是盲目堆参数，而是在”正确的地方、以系统能利用的形式”增加容量。每个架构都在解决前一个架构的具体限制。
 
 ![](https://picx.zhimg.com/v2-70c19c7675d3746bbd8ac3a8375bdc89_r.jpg?source=2c26e567)
 
 6.3 Kimi Linear 的关键主张
-原文提到，Kimi Linear 引起了关注，核心主张是：**在受控对比中，它超越了全注意力**。作者把它呈现为一个即插即用的架构替代品，质量更好且解码吞吐量最高达 6 倍。
+原文提到，Kimi Linear 引起了关注，核心主张是：<strong>在受控对比中，它超越了全注意力</strong>。作者把它呈现为一个即插即用的架构替代品，质量更好且解码吞吐量最高达 6 倍。
 
 第七章 · Kimi K3：一切汇总
 
 7.1 整体架构
-Kimi K3 的语言骨干和 Kimi Linear 很像。它包含 **23 个四层宏周期**。每个宏周期里，三层用 KDA，第四层用 MLA。第一层用稠密 FFN，其余每层用 Latent MoE。
+Kimi K3 的语言骨干和 Kimi Linear 很像。它包含 <strong>23 个四层宏周期</strong>。每个宏周期里，三层用 KDA，第四层用 MLA。第一层用稠密 FFN，其余每层用 Latent MoE。
 
 原文列出了从 Kimi Linear 到 K3 的变化，看起来不大：
 
@@ -446,7 +446,7 @@ Kimi K3 的语言骨干和 Kimi Linear 很像。它包含 **23 个四层宏周�
 Gated MLA 决定从 MLA 检索到的特征有多少进入残差流——通过一个从输入投影出来的门控做逐元素乘法来实现。
 
 7.3 Latent-space MoE：压缩的专家
-在传统 MoE 中，一个学习到的路由器用点积相似度把每个 token 发送到一部分专家网络。Kimi K3 总共有 **898 个专家**：2 个是共享专家（每个 token 都过），剩下 896 个里路由器为每个 token 选 16 个。
+在传统 MoE 中，一个学习到的路由器用点积相似度把每个 token 发送到一部分专家网络。Kimi K3 总共有 <strong>898 个专家</strong>：2 个是共享专家（每个 token 都过），剩下 896 个里路由器为每个 token 选 16 个。
 
 Kimi K3 还改变了专家的激活方式，用 SiTU 替代 SiLU：
 
@@ -462,8 +462,8 @@ return (situ_a * up).to(x.dtype)
 7.4 剩余的改进
 MLA query LoRA 和输出门控、每 12 层的 Blockwise Attention Residuals。AttnRes 增加约 2% 的推理延迟，但提供两个重要好处：
 
-- **选择性检索早期表示**，缓解残差稀释和隐藏状态增长
-- **1.25 倍的计算优势**原文在这里点出了 AttnRes 和 MLA 的互补关系：KDA 层以恒定大小状态运行，不可避免地丢弃信息；MLA 从 token 上下文中检索，而 AttnRes 从更早的**深度方向**表示中检索。两者从不同方向解决同一个“信息丢失”问题。
+- <strong>选择性检索早期表示</strong>，缓解残差稀释和隐藏状态增长
+- <strong>1.25 倍的计算优势</strong>原文在这里点出了 AttnRes 和 MLA 的互补关系：KDA 层以恒定大小状态运行，不可避免地丢弃信息；MLA 从 token 上下文中检索，而 AttnRes 从更早的<strong>深度方向</strong>表示中检索。两者从不同方向解决同一个“信息丢失”问题。
 
 第八章 · AttnRes：让深层模型选择性回看
 
@@ -478,20 +478,20 @@ MLA query LoRA 和输出门控、每 12 层的 Blockwise Attention Residuals。A
 ![](https://www.zhihu.com/equation?tex=f_j%3C%21--MATH_PH_6--%3E) 是第 
 ![](https://www.zhihu.com/equation?tex=j) 层的输出。
 
-问题是**缺乏选择性访问**。不同类型的层接收相同的聚合状态，即使它们可能受益于不同的加权。而且因为递归是纯加法的，后面的层必须学越来越大的输出才能影响累积的残差——这会破坏训练稳定性。
+问题是<strong>缺乏选择性访问</strong>。不同类型的层接收相同的聚合状态，即使它们可能受益于不同的加权。而且因为递归是纯加法的，后面的层必须学越来越大的输出才能影响累积的残差——这会破坏训练稳定性。
 
 8.2 AttnRes：用注意力做深度方向的检索
-AttnRes 不是把所有前层输出等权相加，而是给每一项乘一个**学习到的权重**：
+AttnRes 不是把所有前层输出等权相加，而是给每一项乘一个<strong>学习到的权重</strong>：
 
 ![](https://www.zhihu.com/equation?tex=%5Ctilde%7Bh%7D_i+%3D+%5Csum_%7Bj%7D+%5Calpha_%7Bij%7D%5C%2C+v_j%2C+%5Cqquad+%5Calpha_%7Bij%7D+%3D+%5Cfrac%7B%5Cexp%28q_i+%5Ccdot+k_j%29%7D%7B%5Csum_%7Bj%27%7D+%5Cexp%28q_i+%5Ccdot+k_%7Bj%27%7D%29%7D)
 
 每个权重 
 ![](https://www.zhihu.com/equation?tex=%5C%5Calpha%5C_%7Bij%7D) 由 query-key 点积算出。query 为每层学习，key 和 value 来自更早的残差流状态。分数归一化后，用它们对历史状态做加权组合。
 
-这本质上是把“注意力”机制用在了**深度方向**而非序列方向——让第 50 层可以“回看”第 10 层的表示，如果第 10 层的表示对当前计算更有用的话。
+这本质上是把“注意力”机制用在了<strong>深度方向</strong>而非序列方向——让第 50 层可以“回看”第 10 层的表示，如果第 10 层的表示对当前计算更有用的话。
 
 8.3 Block 粒度：每 12 层一次
-如果每层都做 AttnRes，训练和推理成本太高。Kimi K3 的做法是**只在固定的块边界**做——每 12 个解码器层之后做一次。在 23 个四层宏周期中，产生 8 个 AttnRes 块。
+如果每层都做 AttnRes，训练和推理成本太高。Kimi K3 的做法是<strong>只在固定的块边界</strong>做——每 12 个解码器层之后做一次。在 23 个四层宏周期中，产生 8 个 AttnRes 块。
 
 核心伪代码非常简洁：
 
@@ -504,16 +504,16 @@ return h
 
 ![](https://pica.zhimg.com/v2-cc4a95b3debf79ba9511c676a903284e_r.jpg?source=2c26e567)
 
- 💡 **AttnRes 的本质**：标准残差连接是”把所有过去加起来”，AttnRes 是”用注意力选择性地把有用的过去加起来”。模型不再只能依赖紧邻的前一层，而是可以选择性地检索任何更早层的输出。
+ 💡 <strong>AttnRes 的本质</strong>：标准残差连接是”把所有过去加起来”，AttnRes 是”用注意力选择性地把有用的过去加起来”。模型不再只能依赖紧邻的前一层，而是可以选择性地检索任何更早层的输出。
 结语 · 一条贯穿始终的主线
 原文的最后两段是整篇文章的点睛之笔：
 
- “The central change is not scale alone. Each architectural step changes what the model stores, how it updates that state, or how it retrieves information that a fixed-size state cannot preserve.”每一步架构变化都不是单纯的规模增长，而是改变了模型**存储什么**、**怎么更新状态**、或**怎么检索固定状态保存不了的信息**。
+ “The central change is not scale alone. Each architectural step changes what the model stores, how it updates that state, or how it retrieves information that a fixed-size state cannot preserve.”每一步架构变化都不是单纯的规模增长，而是改变了模型<strong>存储什么</strong>、<strong>怎么更新状态</strong>、或<strong>怎么检索固定状态保存不了的信息</strong>。
 
- “A fixed-capacity associative memory needs an eviction policy, since a purely additive linear operation eventually adds interference once at capacity. To that end, learned selection — like gating, routing, or decay — is necessary, and attention is the most effective selective-read mechanism.”一个固定容量的联想记忆需要淘汰策略。纯粹的加法操作一旦到达容量上限就会产生干扰。为此，学习型的选择性机制——门控、路由或衰减——是必要的，而**注意力是最有效的选择性读取机制**。
+ “A fixed-capacity associative memory needs an eviction policy, since a purely additive linear operation eventually adds interference once at capacity. To that end, learned selection — like gating, routing, or decay — is necessary, and attention is the most effective selective-read mechanism.”一个固定容量的联想记忆需要淘汰策略。纯粹的加法操作一旦到达容量上限就会产生干扰。为此，学习型的选择性机制——门控、路由或衰减——是必要的，而<strong>注意力是最有效的选择性读取机制</strong>。
 
 回看整条演化路径，每一步都在回答同一个问题的不同侧面：
 
-架构存储什么怎么更新怎么检索淘汰策略GPT-2 MHA全序列 KV（ON 增长）追加Softmax 注意力无（缓存无限增长）线性注意力固定 D×D 状态纯加法 S += kᵀvq @ S无（只加不减）DeltaNet固定 D×D 状态Delta 规则（先读后算差再写）q @ S精确替换（需要对应 key）Gated DeltaNet固定 D×D 状态Delta + 标量衰减q @ S替换 + 均匀衰减KDA固定 D×D 状态Delta + 逐通道衰减q @ S替换 + 逐通道精细衰减Kimi K3KDA 状态 + MLA KV 缓存 + AttnRes上述全部KDA 读取 + MLA softmax + 深度注意力逐通道衰减 + 稀疏路由 + 深度选择性检索Kimi K3 最终组合了四种机制：恒定状态的递归记忆（KDA）、周期性的 softmax 检索（MLA）、稀疏的专家容量（Latent MoE）、以及选择性的深度方向残差访问（AttnRes）。结果是**一个在特定功能角色上花费额外容量的系统**——每多花的一分算力，都有明确的数学目的。
+架构存储什么怎么更新怎么检索淘汰策略GPT-2 MHA全序列 KV（ON 增长）追加Softmax 注意力无（缓存无限增长）线性注意力固定 D×D 状态纯加法 S += kᵀvq @ S无（只加不减）DeltaNet固定 D×D 状态Delta 规则（先读后算差再写）q @ S精确替换（需要对应 key）Gated DeltaNet固定 D×D 状态Delta + 标量衰减q @ S替换 + 均匀衰减KDA固定 D×D 状态Delta + 逐通道衰减q @ S替换 + 逐通道精细衰减Kimi K3KDA 状态 + MLA KV 缓存 + AttnRes上述全部KDA 读取 + MLA softmax + 深度注意力逐通道衰减 + 稀疏路由 + 深度选择性检索Kimi K3 最终组合了四种机制：恒定状态的递归记忆（KDA）、周期性的 softmax 检索（MLA）、稀疏的专家容量（Latent MoE）、以及选择性的深度方向残差访问（AttnRes）。结果是<strong>一个在特定功能角色上花费额外容量的系统</strong>——每多花的一分算力，都有明确的数学目的。
 
 这就是从 GPT-2 到 Kimi K3 的故事。不是 22,580 倍的规模堆砌，而是 22,580 倍背后，每一步都精确地回答了“固定容量的记忆，该怎么管理自己”。

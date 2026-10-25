@@ -73,7 +73,7 @@ HiFi-Codec 的模型结果如下图所示，包括三个主要模块：**
 
 **
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_3cb07e072a40.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_3cb07e072a40.jpg)
 
 模块介绍：**
 
@@ -85,7 +85,7 @@ HiFi-Codec 的模型结果如下图所示，包括三个主要模块：**
 
           为此， 本文提出增加第一层的codebook的数量。具体做法是将latent feature representation z 平均分成若干个组（本文是将其分成两个组：z1, z2），然后使用多个RVQ量化每组的特征，最后将多个RVQ组的输出合并，得到最终的量化结果。整个算法流程如下：
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_82b0eeca0064.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_82b0eeca0064.jpg)
 
 **
 
@@ -95,13 +95,13 @@ HiFi-Codec 的模型结果如下图所示，包括三个主要模块：**
 
 训练loss 有三部分：（1）重构loss，包含时域和频域两部分（2）perceptural loss，通过discriminators实现，（3）GRVQ commitment loss
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_d357e7b5c784.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_d357e7b5c784.jpg)
 
 #### 3. 实验结果
 
 使用speech enhancement 领域中的PESQ和STOI作为评估指标，实验结果如下表
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_046157a028be.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_046157a028be.jpg)
 
 结果结论：
 

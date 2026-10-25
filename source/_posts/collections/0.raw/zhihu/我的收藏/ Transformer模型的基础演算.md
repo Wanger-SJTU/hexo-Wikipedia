@@ -15,15 +15,15 @@ source_url: https://zhuanlan.zhihu.com/p/628820408
 ---
 
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_498bf2050c0a.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_498bf2050c0a.jpg)
 
 **本文主要介绍与Transformer计算和内存使用相关的基本数学知识。
 
 作者 | Quentin Anthony、Stella Biderman、Hailey Schoelkopf**
 
-**OneFlow编译**
+<strong>OneFlow编译</strong>
 
-**翻译 | 贾川、徐佳渝、杨婷**
+<strong>翻译 | 贾川、徐佳渝、杨婷</strong>
 
 **
 
@@ -39,11 +39,11 @@ Transformer语言模型的许多基本重要信息可以通过简单计算得出
 
 Transformer模型的训练成本可通过以下基本公式计算得出：
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_516bdefc1c16.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_516bdefc1c16.jpg)
 
 其中：
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_aa2970333455.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_aa2970333455.jpg)
 
 这些公式由OpenAI的论文[《Scaling Laws for Neural Language Models》](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2001.08361)和DeepMind的论文[《Training Compute-Optimal Large Language Models》](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2203.15556)提出并经实验证实。如需更多信息，请参阅各自论文。
 
@@ -51,7 +51,7 @@ Transformer模型的训练成本可通过以下基本公式计算得出：
 
 值得一提的是C的单位问题。 C是对总计算量的度量，可以用多种单位来表示，例如：
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_cdf80ea5f5c0.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_cdf80ea5f5c0.jpg)
 
 Actual FLOPs是一个值得注意的有用概念。GPU加速器白皮书通常会宣传它们的理论FLOPs，但在实际情况下这些值往往无法实现（特别是在分布式设置下）。下面的“计算成本”部分指出了在分布式训练设置中Actual FLOPs的常见报告值。
 
@@ -76,7 +76,7 @@ Transformer模型通常用GPU-hours或FLOP-seconds来表示计算成本。
 - GPT-NeoX在Normal Attention下实现了150 TFLOP/s/A100，而在Flash Attention下实现了180 FLOP/s/A100。这与其他高度优化的库在规模上是相符的，例如Megatron-DS的报告是在137至163 TFLOP/s/A100之间。
 - 就经验来看，我们应该始终能够达到120 FLOP/s/A100的计算性能。如果计算性能低于115 FLOP/s/A100，那么很可能是模型或硬件配置出了问题。
 - 使用高质量的互连技术（例如 InfiniBand），我们可以在数据并行维度上实现线性或亚线性扩展（sublinear scaling，即增加数据并行度应该近乎线性地增加总吞吐量）。下图展示了在Oak Ridge National Lab的Summit超级计算机上测试GPT-NeoX库的结果。注意：x 轴上是 V100，但文章中大部分数值示例针对的都是A100。
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_553e0618e661.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_553e0618e661.jpg)
 
 ### 内存需求
 
@@ -86,11 +86,11 @@ Transformer模型通常用GPU-hours或FLOP-seconds来表示计算成本。
 
 #### 模型权重
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_528081bc3170.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_528081bc3170.jpg)
 
 大多数Transformer都是以混合精度训练的，不是fp16 + fp32 就是 bf16 + fp32。这减少了训练模型所需的内存量，以及运行推理所需的内存量。我们可以将语言模型从fp32转换为fp16甚至int8，而不会产生实质性的性能损失。这些数字指的是单个参数所需的位（bits）大小。由于一个字节（Byte）有8位，我们把这个数除以8，看看每个参数需要多少字节。
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_b6e3fb47812b.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_b6e3fb47812b.jpg)
 
 这里还有少量的额外开销，但通常与确定GPU所匹配的最大模型无关。根据经验来看，此额外开销≤ 20%。
 
@@ -100,7 +100,7 @@ Transformer模型通常用GPU-hours或FLOP-seconds来表示计算成本。
 
 总的来说，可通过以下公式来“判断一个模型是否适合进行推理”：
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_04f7bbf330c6.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_04f7bbf330c6.jpg)
 
 本文不会探讨这种额外开销的来源，这部分内容将会在其他文章中详细介绍。接下来将继续谈谈模型训练的内存。如果想了解更多关于推理所需的计算，[请查看此前发布的《](https://link.zhihu.com/?target=http%3A//mp.weixin.qq.com/s%3F__biz%3DMzU5ODY2MTk3Nw%3D%3D%26mid%3D2247491309%26idx%3D1%26sn%3D407fefb7ec76a2c9fdfe1ae960f7de4d%26chksm%3Dfe4190dbc93619cd0b9bfecb979e142a125fd8548d323dd9bdc2cbeb619400202e6e1affced0%26scene%3D21%23wechat_redirect)[大型语言模型的推理演算》](https://link.zhihu.com/?target=http%3A//mp.weixin.qq.com/s%3F__biz%3DMzU5ODY2MTk3Nw%3D%3D%26mid%3D2247491309%26idx%3D1%26sn%3D407fefb7ec76a2c9fdfe1ae960f7de4d%26chksm%3Dfe4190dbc93619cd0b9bfecb979e142a125fd8548d323dd9bdc2cbeb619400202e6e1affced0%26scene%3D21%23wechat_redirect)**。
 
@@ -114,11 +114,11 @@ Transformer模型通常用GPU-hours或FLOP-seconds来表示计算成本。
 
 首先，可以在纯fp32或fp16中训练模型：
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_94bd245e4470.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_94bd245e4470.jpg)
 
 除了推理中讨论的常见模型权重数据类型外，训练还引入了混合精度训练，例如AMP。 该技术旨在保持收敛性的同时最大化GPU张量核心的吞吐量。现代深度学习训练领域经常使用混合精度训练，因为：1) fp32训练稳定，但内存额外开销高且不能利用NVIDIA GPU张量核心； 2) fp16训练稳定但难以收敛。有关混合精度训练的更多信息，请阅读tunib-ai的这篇笔记。注意：混合精度需要在内存中存储模型的fp16/bf16和fp32版本，因此需要：
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_2a1a490a7e22.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_2a1a490a7e22.jpg)
 
 再加上在优化器状态中计算的模型副本，大小为(4 bytes/param) • (#params)。
 
@@ -126,35 +126,35 @@ Transformer模型通常用GPU-hours或FLOP-seconds来表示计算成本。
 
 Adam很神奇，但它的内存效率非常低。除了要求拥有模型参数和梯度参数的副本外，还需要额外保留三个梯度参数副本。 所以，
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_2da4ee535e47.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_2da4ee535e47.jpg)
 
 #### 梯度
 
 梯度可以以fp32或fp16存储（注意，梯度数据类型通常与模型数据类型相匹配。因此，在使用fp16混合精度训练时，梯度通常以fp16存储），因此它们对内存额外开销的贡献为：
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_78e4f65fda46.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_78e4f65fda46.jpg)
 
 #### 激活（Activations）和批量大小
 
 对于大型语言模型的训练来说，现代GPU通常受制于内存而非浮点运算。因此，激活重计算（activation recomputation又称checkpointing）是一种非常流行的方法，可以用减少的内存成本换取额外的计算成本。激活重计算的工作原理是重新计算某些层的激活，而不是将它们存储在GPU内存中。内存的减少取决于我们在决定清除哪些层时所作的选择，但Megatron的选择性重计算方案如下图所示：
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_0fb6ea4c288a.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_0fb6ea4c288a.jpg)
 
 其中，红色虚线表示 A100-80GB GPU 的内存容量，“present work”表示应用选择性激活重计算后的内存需求。更多有关信息和下列公式的推导，请参阅[Reducing Activation Recomputation in Large Transformer Models](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2205.05198)。
 
 存储Transformer模型激活所需内存的基本公式如下：
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_50b94d822995.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_50b94d822995.jpg)
 
 此外，所需的额外重计算也取决于方法的选择性，但它受限于完整的额外前向传递。因此，前向传递的更新成本由以下公式给出：
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_3b6697258ead.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_3b6697258ead.jpg)
 
 #### 总训练内存
 
 因此，有关“模型是否适合训练”的较好的启发式答案如下：
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_cc278277c73e.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_cc278277c73e.jpg)
 
 #### 分布式训练
 
@@ -162,11 +162,11 @@ Adam很神奇，但它的内存效率非常低。除了要求拥有模型参数�
 
 优化器的大量内存额外开销是 ZeRO 和 FSDP 等分片优化器的主要动机。这种分片策略将优化器额外开销降低了    No.GPUs倍，这就是给定模型配置可能适合大规模但OOM适合小规模的原因。如果要计算使用分片优化器进行训练所需的内存额外开销，则需要包含下图中的公式。有关分片优化的示例计算，请参见ZeRO论文中的下图（注意，PosPos+g和Pos+g+p通常分别表示为 ZeRO-1、ZeRO-2、ZeRO-3。ZeRO-0 通常意为“ZeRO 禁用”）：
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_40853ca7491d.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_40853ca7491d.jpg)
 
 在本博文中（假定为混合精度和Adam优化器）：
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_9ff13dada81d.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_9ff13dada81d.jpg)
 
 除非应用流水并行和/或张量并行, 否则（DP Degree）就只是（No.GPUs）。相关详细信息，请参阅 分片优化器 + 3D 并行部分。
 
@@ -180,9 +180,9 @@ LLM有3种主要并行方式：
 
 数据并行：**在模型副本（可能是模型并行的副本）之间划分（split）数据 
 
-**流水或张量/模型并行：**这些并行方式将模型的参数划分到GPU之间。此类方案需要大量通信的额外开销，但它们的内存的减少大约为：
+<strong>流水或张量/模型并行：</strong>这些并行方式将模型的参数划分到GPU之间。此类方案需要大量通信的额外开销，但它们的内存的减少大约为：
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_adb453ee937e.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_adb453ee937e.jpg)
 
 **
 
@@ -198,7 +198,7 @@ LLM有3种主要并行方式：
 
 当 ZeRO 与张量和/或流水并行结合时，生成的并行策略会形成如下所示的网格：
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_690e877cf0c6.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_690e877cf0c6.jpg)
 
 一个重要的题外话：数据并行度（DP degree)对于计算训练的全局批量大小至关重要。数据并行度取决于完整模型副本数量：
 
@@ -206,7 +206,7 @@ LLM有3种主要并行方式：
 
 将所有内容放在一起，进行典型的带有激活分区的3D并行ZeRO-1运行：
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_3c149adaed88.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_3c149adaed88.jpg)
 
 ### 总结
 

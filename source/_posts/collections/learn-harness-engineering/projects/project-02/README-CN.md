@@ -19,8 +19,8 @@ categories:
 
 | 目录 | 含义 |
 |------|------|
-| `starter/` | **起点**——基于 P1 solution 的代码，新增文档导入、详情视图、持久化功能待实现。harness 较弱：AGENTS.md 简陋，没有 session-handoff。 |
-| `solution/` | **参考实现**——所有新功能已实现，配备完整的 workspace 文档（ARCHITECTURE.md、PRODUCT.md、session-handoff.md）。 |
+| `starter/` | <strong>起点</strong>——基于 P1 solution 的代码，新增文档导入、详情视图、持久化功能待实现。harness 较弱：AGENTS.md 简陋，没有 session-handoff。 |
+| `solution/` | <strong>参考实现</strong>——所有新功能已实现，配备完整的 workspace 文档（ARCHITECTURE.md、PRODUCT.md、session-handoff.md）。 |
 
 ## 使用方法
 

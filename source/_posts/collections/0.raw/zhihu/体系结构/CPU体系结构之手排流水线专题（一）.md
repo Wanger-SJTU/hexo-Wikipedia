@@ -17,7 +17,7 @@ source_url: https://zhuanlan.zhihu.com/p/66917266
 
 副标题：arm底层汇编优化之---表情逐渐变态
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_6ec7ab6fdcef.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_6ec7ab6fdcef.jpg)
 
 来不及解释了，快上车~关于流水线我打算分三个篇幅来讲，尽量做到系统全面；
 
@@ -47,7 +47,7 @@ source_url: https://zhuanlan.zhihu.com/p/66917266
 
 这篇就专门讲一下流水线相关的东西吧！
 
-**行文安排如下：**
+<strong>行文安排如下：</strong>
 
 1、举个生活中的例子直观认识下流水线；
 
@@ -67,7 +67,7 @@ source_url: https://zhuanlan.zhihu.com/p/66917266
 
 嗯...嗯？嗯！还是换个轻松点的例子吧！
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_47d83a6df469.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_47d83a6df469.jpg)
 
 图片来源百度，侵删。如上图所示，每个成品都是这生产流水线的输出，整个流水线分为好几个部分（这里是4个部分，分别是第一关的烘烤，第二关的加料，第三关的润色，以及最后一关的瞎掰～[可爱脸]），每个成品热狗都是得经过这四个步骤的，因此我们可以得出如下结论（假设每个步骤的时间都是花费10分钟时间）：
 
@@ -77,7 +77,7 @@ source_url: https://zhuanlan.zhihu.com/p/66917266
 
 3、老板一听，眼睛都没抬一下就说，噢！4 stage pipeline；
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_33a632df0542.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_33a632df0542.jpg)
 
 内心os：我卖热狗之前就是程序员，道理我懂，做热狗总共就四步，每个步骤都是独立的，因此第一步做完了就紧接着放下一根热狗，这样四步之后第一根热狗就只做完成了，第二根已完成，第二根完成了，第三个完成了，因此我只要在40分钟之后保证每10分钟就往机器内放入一根生热狗，那么我就可以平均每10分钟就产出一根热狗啦，也就是说之前要40分钟才产出一根热狗，现在我只要10分钟就能产出一根啦！
 
@@ -85,7 +85,7 @@ source_url: https://zhuanlan.zhihu.com/p/66917266
 
 但是呢？你看你们才多少人？总共才4个人啊！
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_68b70d273bae.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_68b70d273bae.jpg)
 
 摔～我这么一顿瞎折腾虽然70分钟就产出了4根热狗（时间比之前的需要4*40mins=160分钟快上了一倍多），但是此时机器里面还有4根热狗在做ing啊，你们总共就买4根，那我剩下的4根怎么办？不新鲜只能扔掉！！！那么我卖四根亏4根，这不白忙活了嘛~
 
@@ -99,15 +99,15 @@ source_url: https://zhuanlan.zhihu.com/p/66917266
 
 衡量流水线性能的主要指标就是吞吐率（TP，Throughput rate）和效率（E，Efficiency）。
 
-#### **1.2.1 吞吐率的定义**
+#### <strong>1.2.1 吞吐率的定义</strong>
 
-吞吐率是指流水线**单位时间内能流出的任务数**或结果数。
+吞吐率是指流水线<strong>单位时间内能流出的任务数</strong>或结果数。
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_ffef7d829bbe.png)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_ffef7d829bbe.png)
 
-公式（1）n为任务数，Tk为这n个任务所花费的总时间。其中k表示流水线划分的段数（stage），也就是流水线的长度呀，下面的例子中是stage=4，当流水线的**每个stage耗时都相等**时，总时间Tk = (k + n - 1)·Δt （Δt为最小时间单位，实际情况下我们一般取1 CPU cycles = 1/f）,*可见只有在n>>k的情况下吞吐才能接近1呀，所以流水线式卖热狗只有在客流量足够大的情况下才有明显收益呀~*
+公式（1）n为任务数，Tk为这n个任务所花费的总时间。其中k表示流水线划分的段数（stage），也就是流水线的长度呀，下面的例子中是stage=4，当流水线的<strong>每个stage耗时都相等</strong>时，总时间Tk = (k + n - 1)·Δt （Δt为最小时间单位，实际情况下我们一般取1 CPU cycles = 1/f）,*可见只有在n>>k的情况下吞吐才能接近1呀，所以流水线式卖热狗只有在客流量足够大的情况下才有明显收益呀~*
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_4cab62ecd0ba.png)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_4cab62ecd0ba.png)
 
 非流水线化处理时比如这是没有流水线的情况，一条指令要4个cycles，每条指令执行完之后才能执行下一条，因此Tp=指令数/总耗时==0.25;
 
@@ -119,7 +119,7 @@ source_url: https://zhuanlan.zhihu.com/p/66917266
 
 分析流水线我们可以从两个角度来分析：
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_8d395ad75848.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_8d395ad75848.jpg)
 
 流水线各段的执行时间相等的吞吐率一是从流水线的输出来看，用k个Δt输出第一个”热狗”(任务结果)，即这k·Δt就是冷启动时间，也叫建立时间，其余的n-1根热狗就是每个Δt输出一根了！因为此时流水线机器转动起来了嘛~
 
@@ -133,11 +133,11 @@ source_url: https://zhuanlan.zhihu.com/p/66917266
 
                                                  TP = n / (n + k - 1)*Δt                         (3)
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_376d13a7dab9.png)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_376d13a7dab9.png)
 
 可见吞吐率最大值就是Δt分之一，实际应用中一般取Δt = 1 cycle,于是就又TPmax =  cycle，去掉单位就是芯片手册中的Execution Throughput啦~
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_bdbc4f3591a1.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_bdbc4f3591a1.jpg)
 
 相对应的这里跑了流水线之后，同样是4条指令，花费的总时间是7cycles，因此按照之前的吞吐计率算公式得出Tp==0.57，较之前的0.25有大幅提升啊！
 
@@ -145,15 +145,15 @@ source_url: https://zhuanlan.zhihu.com/p/66917266
 
 比如这里执行吞吐为1，表达的意思就是说：你的代码写的再好，也最多（因为单发射的嘛~）平均一个CPU cycle跑一条SADD16指令；
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_8c01743927d0.png)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_8c01743927d0.png)
 
 《Cortex-A57 Software Optimization Guide 》这里大致讲下差异及联系，之前公式里面的吞吐率TPmax是用来评估流水线执行的效率的，也就是说主要是架构设计人员关注的参数；而手册里面的这个Execution Throughput参数则主要是给软件开发人员也就是我们这群码农用滴，用来标定你的代码所能达到的性能上限；
 
 这两者之间的联系是啥呢？你看哈，上面我们的流水线在跑稳定后就是一个Δt(大小取1cycle)就输出一个任务，这个单位时间内完成的任务数就是1个，因此吞吐为(cycle)，也就是说当流水线的吞吐率达到最大TPmax时，此时的吞吐率就是数据手册中的Execution Throughput啦。
 
-这里简单延展下就知道，**超标量**流水线的吞吐就是>1的
+这里简单延展下就知道，<strong>超标量</strong>流水线的吞吐就是>1的
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_cc789fbd8b61.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_cc789fbd8b61.jpg)
 
 你看，假如我直接在硬件里面把之前的流水线结构复制一份，那么我现在是不是可以让两个硬件完全并行执行了？！如上图所示，在流水线顺畅流动的情况下单位时间就能完成两个任务，因此最大吞吐就是2啦！
 
@@ -161,32 +161,32 @@ source_url: https://zhuanlan.zhihu.com/p/66917266
 
 下面就是A57芯片的流水线结构，超标量主要就是靠双发来实现的呀~
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_697078c19a36.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_697078c19a36.jpg)
 
 《Cortex-A57 Software Optimization Guide 》你看下面A57芯片手册里面的的VABD指令就是双发射的哟，因为有两个硬件因此就这么任性~
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_ceaa359fe9e1.png)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_ceaa359fe9e1.png)
 
 《Cortex-A57 Software Optimization Guide 》
-#### **1.2.3 流水线各段的执行时间不相等的吞吐率**
+#### <strong>1.2.3 流水线各段的执行时间不相等的吞吐率</strong>
 
 若有一条K段的线性流水线，各段的执行时间不相等，且分别为t1，t2，t3 ... tk，那么从流水线架构设计者的角度来看你的这个流水线存在“性能瓶颈”啊！
 
 比如存在下面这样的4段流水线，在第二段需要耗时3·Δt时间：
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_e49b8d8376a7.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_e49b8d8376a7.jpg)
 
 我们让她在流水线里面给跑起来，其时空图如下：
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_2be56321e9d4.png)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_2be56321e9d4.png)
 
 前面的：
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_88bd576de40c.png)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_88bd576de40c.png)
 
 表示的是第一个任务完成所需要的时间，这里k=4，各段求和时间是6·Δt，在之后就每隔3·Δt就输出一个任务结果；
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_0ef87263677c.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_0ef87263677c.jpg)
 
 因此可以发现这种流水线的性能瓶颈就在耗时最长的一段。
 
@@ -194,7 +194,7 @@ source_url: https://zhuanlan.zhihu.com/p/66917266
 
 流水线的每一段并不是延迟都一定相等的，性能瓶颈是延迟最大的那一段，当然我们总想把每一段都尽量搞到相等，如上面的数学分析一样，这样才是最优的吞吐以及最高的主频，这也就是为什么流水线越做越长的原因之一（但也不是越长越好，比如越长的流水线其分支预测错误导致的惩罚也是成比例增大的），把耗时长的部分分解为更小的块；
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_44712104912b.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_44712104912b.jpg)
 
 你看上面的流水线就是真实的A53流水线结构，其中的Excution阶段SIMD指令是要花费4个cycles的，因此性能瓶颈点肯定在这，于是常规的做法就是把之给划分为更小的粒度了，也就是划分为4个子stage（从应用层我就是这么理解的，要是有专业的CPU设计大大路过，烦请从底层的角度指点一二哈~）。
 
@@ -210,25 +210,25 @@ source_url: https://zhuanlan.zhihu.com/p/66917266
 
 举个例子吧！我们举个极端的例子，场景回到远古时代，最开始单纯为了解决一个简单的任务（比如还是CD时代，从光碟的表面读取出来的电位被送入逻辑电路，逻辑电路解码后就输出音频信号），这个逻辑电路能一次性全部把一大堆解码问题给解决了，配合时钟就能有序输出音频信号啦。(从这里我们可以发现逻辑电路是有延迟的，这个延迟是硬件决定的，因此决定了主频的上限)
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_0d2555751311.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_0d2555751311.jpg)
 
 按照之前理论部分我们来分析就可以发现当这种电路跑起来后，吞吐量为：
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_08e20df23849.png)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_08e20df23849.png)
 
 每秒3.12G条指令。
 
-**Latency**的定义：从头到尾执行一条指令所需要的时间称为延迟latency，上面例子中的latency=320ps。
+<strong>Latency</strong>的定义：从头到尾执行一条指令所需要的时间称为延迟latency，上面例子中的latency=320ps。
 
 后来有人就发现，我们可以把一大块组合逻辑给拆开，就跟我们解耦函数库一样，拆分后产生了一些中间态需要保存，因此我们要额外增加一些流水线寄存器电路，最终效果如下，拆成了三个部分：
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_e8f9d93d0763.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_e8f9d93d0763.jpg)
 
 300ps的逻辑电路拆分成三分，每个部分的延迟是100ps，新增了2个流水线寄存器电路，也就是总的指令延迟是增加了20ps的，也就是说不跑流水线的话，性能是降低了的，那加入跑流水线的话呢？
 
 由于跑了流水线，这里的时钟周期为120ps，按照之前的公式，得到吞吐量为：
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_9f213ef76469.png)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_9f213ef76469.png)
 
 因为一条指令需要3个时钟周期，因此这条流水线的延迟就是3*120ps=360ps；
 
@@ -248,21 +248,21 @@ source_url: https://zhuanlan.zhihu.com/p/66917266
 
 要是你玩过STM32，又看的懂下面的时序图的话，那你就知道为啥不能120ps了呀！直观理解就是：你去搭30mins一班的公交车，你在8:30到车站，车子肯定在8:30~9:00之间来，此时你开了一把王者荣耀王者渡劫局，要是你在30mins内打完则有可能搭上这班车，要是占据焦灼要打30mins以上那么你就肯定搭不上这班车了呀！
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_65949ae90d87.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_65949ae90d87.jpg)
 
 ### 1.3流水线里面的hazard**
 
-**这里大概了解下hazard有哪些，下一章再详细边做实验边讲解啊~~~**
+<strong>这里大概了解下hazard有哪些，下一章再详细边做实验边讲解啊~~~</strong>
 
 WIKI里面是这么讲的：
 
 简单来说就是流水线中的一条指令可能需要另一条指令正在使用的资源
 
-**1、结构冲突：**
+<strong>1、结构冲突：</strong>
 
 Structural hazard，当两个或多个指令同时需要处理器硬件的一部分时，就会发生结构危险。比如争抢LD/ST单元。
 
-**2、数据冲突**（也称为数据依赖）：Data hazard
+<strong>2、数据冲突</strong>（也称为数据依赖）：Data hazard
 
 -    read after write (RAW), a true dependency
 
@@ -272,11 +272,11 @@ Structural hazard，当两个或多个指令同时需要处理器硬件的一部
 
 **
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_f087253e9bac.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_f087253e9bac.jpg)
 
 老规矩，举例子：
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_516b6038a645.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_516b6038a645.jpg)
 
 这里的IPC是少于1的呀！
 
@@ -286,7 +286,7 @@ Structural hazard，当两个或多个指令同时需要处理器硬件的一部
 
 -    解决策略：通常通过向指令中加入气泡（bubbles）的方式使CPI变大。
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_e07db5eb611d.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_e07db5eb611d.jpg)
 
 ### 小结
 

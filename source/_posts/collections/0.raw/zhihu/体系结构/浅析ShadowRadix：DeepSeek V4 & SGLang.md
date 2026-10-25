@@ -17,7 +17,7 @@ source_url: https://zhuanlan.zhihu.com/p/2031708802161046746
 
 当GPT-5.5, Claude Opus 4.7等模型接连登场时，DeepSeek V4的压轴亮相，以其对推理内存和计算的极致优化，或许为这一轮模型大战打响了最后一枪。SGLang对DeepSeek的支持更是其提升真实部署能力的关键。两天前，DeepSeek V4发布。非常激动看到SGLang在发布的Day-0就对DS的新架构和技术进行了支持，具体如下：
 
-![](https://pic1.zhimg.com/v2-435c81c2e84bc8c290b3a553c9948528_r.jpg)对Sparse和RL Training理解尚浅，这篇文章我就简单对**ShadowRadix**进行解析，同时许愿在RadixTree上做的这篇推理加速工作中稿！
+![](https://pic1.zhimg.com/v2-435c81c2e84bc8c290b3a553c9948528_r.jpg)对Sparse和RL Training理解尚浅，这篇文章我就简单对<strong>ShadowRadix</strong>进行解析，同时许愿在RadixTree上做的这篇推理加速工作中稿！
 
 ![](https://pica.zhimg.com/v2-e2304d9d84a3ff7a536ad25b9f75aab4_1440w.jpg)
 DeepSeek V4发布 —— 主流模型大战的最后一枪
@@ -29,16 +29,16 @@ Paper:
 ![](https://pic3.zhimg.com/v2-a8cd77c146e0a699cd8595c1dcf4403c_r.jpg)
 DeepSeek V4 -- 性能跃迁
 
-![](https://pic3.zhimg.com/v2-7d150b3811b32c86faa49e2356adabee_r.jpg)在benchmark上跟御三家分庭抗礼；推理时占用的内存和计算资源大幅下降，带来了上下文窗口的提升，已经**支持1M的context**。实际使用的体验来看，**用户感知的推理速度**也有了提升。
+![](https://pic3.zhimg.com/v2-7d150b3811b32c86faa49e2356adabee_r.jpg)在benchmark上跟御三家分庭抗礼；推理时占用的内存和计算资源大幅下降，带来了上下文窗口的提升，已经<strong>支持1M的context</strong>。实际使用的体验来看，<strong>用户感知的推理速度</strong>也有了提升。
 
 Hybrid Attention Architecture
 DeepSeek V4使用了混合的注意力架构：
 
-**CSA: Compressed Sparse Attention**
+<strong>CSA: Compressed Sparse Attention</strong>
 
-**HCA: Heavily Compressed Attention**
+<strong>HCA: Heavily Compressed Attention</strong>
 
-**SWA: Sliding Window Attention**
+<strong>SWA: Sliding Window Attention</strong>
 
 其中SWA的设计是为了访问block内部的token，解决了两个问题：（1）block内部的token信息丢失（2）block中token互相不可见。
 下面看看CSA和HCA，然后引出正题。
@@ -55,24 +55,24 @@ HCA
 
 ![](https://pic2.zhimg.com/v2-ce274ad630bd03c67858f652d98b9695_r.jpg)Core Architecture of HCA直觉上理解：CSA 是压缩 + 选 top-k ；而HCA 是更强的压缩（m&#39; >> m） 但不做筛选（dense attention）；同样这部分的技术细节也请参考paper。
 
-SWA, CSA, HCA的协同设计实现了面对长上下文，**粗细结合**，“**盲选”和“精筛”结合的design insights**；同时这种架构也天然对KVCache的存储设计提供了耦合的接口。
+SWA, CSA, HCA的协同设计实现了面对长上下文，<strong>粗细结合</strong>，“<strong>盲选”和“精筛”结合的design insights</strong>；同时这种架构也天然对KVCache的存储设计提供了耦合的接口。
 
 DeepSeek V4 KV Cache Storage
 使用GPT-image2画了一张Arch图，感觉不错：
 
-![](https://pica.zhimg.com/v2-56f2b64b6bc1d65e475527090bf96bce_r.jpg)DeepSeek-V4 的 KV cache 分成两类：**State Cache** 和 **Classical KV Cache**。
+![](https://pica.zhimg.com/v2-56f2b64b6bc1d65e475527090bf96bce_r.jpg)DeepSeek-V4 的 KV cache 分成两类：<strong>State Cache</strong> 和 <strong>Classical KV Cache</strong>。
 
 1. State Cache
 State Cache 存储与当前 sequence 状态相关的内容，每个请求分配一个固定大小的 cache block。
 
 主要包含：
 
-- **SWA KV**
+- <strong>SWA KV</strong>
  
 - 存最近 `n_win` 个 token 的未压缩 KV
 - 用于 Sliding Window Attention
 
-- **Uncompressed Tail State**
+- <strong>Uncompressed Tail State</strong>
  
 - 存 CSA / HCA 中尚未形成完整压缩块的尾部 token
 - 这些 token 需要暂存，直到可以执行压缩
@@ -81,15 +81,15 @@ Classical KV Cache 存储已经压缩完成的 CSA / HCA KV entries。
 
 主要包含：
 
-- **CSA KV**
+- <strong>CSA KV</strong>
  
 - 每 `m` 个原始 token 压缩成 1 个 KV entry
 
-- **CSA Indexer KV**
+- <strong>CSA Indexer KV</strong>
  
 - 用于 lightning indexer 计算 top-k 选择
 
-- **HCA KV**
+- <strong>HCA KV</strong>
  
 - 每 `m&#39;` 个原始 token 压缩成 1 个 KV entry
 - 其中 `m&#39; >> m` 
@@ -132,7 +132,7 @@ SGLang 原本的 RadixAttention 很好理解。多个请求如果有相同的前
 这就是 ShadowRadix 出现的背景。
 
 ShadowRadix 的核心思想
-ShadowRadix 最关键的设计是：**radix tree 层面只维护 full-token logical prefix，不直接把异构的物理状态作为 tree key。**
+ShadowRadix 最关键的设计是：<strong>radix tree 层面只维护 full-token logical prefix，不直接把异构的物理状态作为 tree key。</strong>
 
 可以理解成两层：
 

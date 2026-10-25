@@ -25,28 +25,28 @@ RAG主要面临三个方面的挑战：检索质量、增强过程和生成质�
 
 #### 2.1 检索质量
 
-- **语义歧义：**向量表示（例如词嵌入）可能无法捕捉概念之间的细微差别。例如，“苹果”一词可能指的是水果或科技公司。嵌入可能会混淆这些含义，导致不相关的结果。
-- **用户输入变复杂：**与传统关键词或者短语搜索逻辑不太一致，用户输入问题不再是词或者短句，而是转变成自然对话声知识多轮对话数据，问题形式更加多元，紧密关联上下文，输入风格更加口语化。
-- **文档切分：**文档切分主要有两种方式：一种是基于形式的切分，比如利用标点和段落的结束；另一种是基于文档内容的意义进行切分。如何将这些文档块转换成电脑能够理解和比较的形式（即“嵌入”），进而影响这些块与用户搜索内容的匹配程度。
-- **多模内容的提取及表征（例如表格、图表、公式等）：**如何对多模内容进行提取及动态表征，是目前面临的现实问题，尤其是处理那些含糊或负面的查询，对 RAG 系统的性能有显著影响。
+- <strong>语义歧义：</strong>向量表示（例如词嵌入）可能无法捕捉概念之间的细微差别。例如，“苹果”一词可能指的是水果或科技公司。嵌入可能会混淆这些含义，导致不相关的结果。
+- <strong>用户输入变复杂：</strong>与传统关键词或者短语搜索逻辑不太一致，用户输入问题不再是词或者短句，而是转变成自然对话声知识多轮对话数据，问题形式更加多元，紧密关联上下文，输入风格更加口语化。
+- <strong>文档切分：</strong>文档切分主要有两种方式：一种是基于形式的切分，比如利用标点和段落的结束；另一种是基于文档内容的意义进行切分。如何将这些文档块转换成电脑能够理解和比较的形式（即“嵌入”），进而影响这些块与用户搜索内容的匹配程度。
+- <strong>多模内容的提取及表征（例如表格、图表、公式等）：</strong>如何对多模内容进行提取及动态表征，是目前面临的现实问题，尤其是处理那些含糊或负面的查询，对 RAG 系统的性能有显著影响。
 
 #### 2.2 增强过程
 
-- **上下文的集成：**这里的挑战是将检索到的段落的上下文与当前的生成任务顺利地集成。如果做得不好，输出可能会显得脱节或缺乏连贯性。
-- **冗余和重复：**如果多个检索到的段落包含相似的信息，则生成步骤可能会产生重复的内容。
-- **排名和优先级：**确定多个检索到的段落对于生成任务的重要性或相关性可能具有挑战性。增强过程必须适当权衡每个段落的价值。
+- <strong>上下文的集成：</strong>这里的挑战是将检索到的段落的上下文与当前的生成任务顺利地集成。如果做得不好，输出可能会显得脱节或缺乏连贯性。
+- <strong>冗余和重复：</strong>如果多个检索到的段落包含相似的信息，则生成步骤可能会产生重复的内容。
+- <strong>排名和优先级：</strong>确定多个检索到的段落对于生成任务的重要性或相关性可能具有挑战性。增强过程必须适当权衡每个段落的价值。
 
 #### 2.3 生成质量
 
-- **过度依赖检索内容：**生成模型可能过于依赖增强信息，导致幻觉问题突出，而不是增加价值或提供合成。
-- **无关性：**这是另一个令人担忧的问题，即模型生成的答案无法解决查询问题。
-- **毒性或偏见：**这也是另一个问题，即模型生成的答案有害或令人反感。
+- <strong>过度依赖检索内容：</strong>生成模型可能过于依赖增强信息，导致幻觉问题突出，而不是增加价值或提供合成。
+- <strong>无关性：</strong>这是另一个令人担忧的问题，即模型生成的答案无法解决查询问题。
+- <strong>毒性或偏见：</strong>这也是另一个问题，即模型生成的答案有害或令人反感。
 
 ### 3. 整体架构
 
 #### 3.1 产品架构
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_c0a8bbd16229.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_c0a8bbd16229.jpg)
 
 **从图上可以清晰的看出，整个产品架构包含如下四层：
 
@@ -57,13 +57,13 @@ RAG主要面临三个方面的挑战：检索质量、增强过程和生成质�
 
 #### 3.2 技术架构
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_22a2b276037d.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_22a2b276037d.jpg)
 
 为了理解检索增强生成框架，我们将其分为三个主要组成部分：query理解、检索模型和生成模型。
 
 - query理解：该模块旨在对用户的query进行理解或者将用户的query生成结构化的查询，既可以查询结构化的数据库也可以查询非结构化的数据，进而提高召回率。该模块包括四部分，他们分别是query改写，query扩写和意图识别等。**各个模块的介绍我们将在之后的章节进行详细介绍。
-- 检索模型：该模型旨在从给定的文档集或知识库中检索相关信息。 他们通常使用信息检索或语义搜索等技术来根据给定的查询识别最相关的信息。基于检索的模型擅长查找准确且具体的信息，但缺乏生成创意或新颖内容的能力。从技术上来讲， 检索模型主要包括**文档加载、文本转换、Embedding等模块。**我们将在之后的章节中详细介绍。
-- 生成模型：该模型旨在根据给定的Prompt或上下文生成新内容。 目前，生成模型可以生成富有创意且连贯的文本，但它们可能会在事实准确性或与特定上下文的相关性方面遇到困难。在RAG框架中，生成模型主要包括**chat系统（长期记忆和短期记忆）、Prompt优化**等。这些内容在之后的章节中也会介绍。
+- 检索模型：该模型旨在从给定的文档集或知识库中检索相关信息。 他们通常使用信息检索或语义搜索等技术来根据给定的查询识别最相关的信息。基于检索的模型擅长查找准确且具体的信息，但缺乏生成创意或新颖内容的能力。从技术上来讲， 检索模型主要包括<strong>文档加载、文本转换、Embedding等模块。</strong>我们将在之后的章节中详细介绍。
+- 生成模型：该模型旨在根据给定的Prompt或上下文生成新内容。 目前，生成模型可以生成富有创意且连贯的文本，但它们可能会在事实准确性或与特定上下文的相关性方面遇到困难。在RAG框架中，生成模型主要包括<strong>chat系统（长期记忆和短期记忆）、Prompt优化</strong>等。这些内容在之后的章节中也会介绍。
 **总之，检索增强生成结合了检索模型和生成模型优势，克服它们各自的局限性。 在此框架中，基于检索的模型用于根据给定的查询或上下文从知识库或一组文档中检索相关信息。 然后，检索到的信息将用作生成模型的输入或附加上下文。通过整合检索到的信息，生成模型可以利用基于检索的模型的准确性和特异性来生成更相关、更准确的文本。这有助于生成模型立足于现有知识，生成与检索信息一致的文本。
 
 ### 4. Query理解
@@ -91,41 +91,41 @@ RAG主要面临三个方面的挑战：检索质量、增强过程和生成质�
 
 Hypothetical Document Embeddings（HyDE）是一种生成文档嵌入以检索相关文档而不需要实际训练数据的技术。首先，LLM创建一个假设答案来响应query。虽然这个答案反映了与query相关的模式，但它包含的信息可能在事实上并不准确。接下来，query和生成的答案都被转换为嵌入。然后，系统从预定义的数据库中识别并检索在向量空间中最接近这些嵌入的实际文档。
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_74cfb61f71a8.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_74cfb61f71a8.jpg)
 
-**4.2.2 [Rewrite-Retrieve-Read](https://link.zhihu.com/?target=https%3A//arxiv.org/pdf/2305.14283.pdf%3Fref%3Dblog.langchain.dev)**
+<strong>4.2.2 [Rewrite-Retrieve-Read](https://link.zhihu.com/?target=https%3A//arxiv.org/pdf/2305.14283.pdf%3Fref%3Dblog.langchain.dev)</strong>
 
 这项工作引入了一个新的框架--Rewrite-Retrieve-Read，从query改写的角度改进了检索增强方法。之前的研究主要是调整检索器或LLM。与之不同的是，该方法注重query的适应性。因为对于 LLM 来说，原始query并不总是最佳检索结果，尤其是在现实世界中。首先利用LLM 进行改写query，然后进行检索增强。同时，为了进一步提高改写的效果，应用小语言模型（[T5](https://link.zhihu.com/?target=https%3A//arxiv.org/pdf/1910.10683.pdf)）作为可训练的改写器，改写搜索query以满足冻结检索器和 LLM的需要。为了对改写器进行微调，该方法还使用伪数据进行有监督的热身训练。然后，将 "先检索后生成 "管道建模为强化学习环境。通过最大化管道性能的奖励，改写器被进一步训练为策略模型。
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_ad9c6af4db45.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_ad9c6af4db45.jpg)
 
 #### 4.3 Query扩写
 
 该模块主要是为了将复杂问题拆解为子问题。该技术使用分而治之的方法来处理复杂的问题。它首先分析问题，并将其分解为更简单的子问题，每个子问题会从提供部分答案的相关文件检索答案。然后，收集这些中间结果，并将所有部分结果合成为最终响应。
 
-**4.3.1 [Step-Back Prompting](https://link.zhihu.com/?target=https%3A//arxiv.org/pdf/2310.06117.pdf%3Fref%3Dblog.langchain.dev)**
+<strong>4.3.1 [Step-Back Prompting](https://link.zhihu.com/?target=https%3A//arxiv.org/pdf/2310.06117.pdf%3Fref%3Dblog.langchain.dev)</strong>
 
 该工作探索了LLM如何通过抽象和推理两个步骤来处理涉及许多低级细节的复杂任务。第一步先是使用 LLM "后退一步"生成高层次的抽象概念，将推理建立在抽象概念的基础上，以减少在中间推理步骤中出错的概率。这种方法即可以在有检索的情况下使用，也可以在无检索的情况下使用。当在有检索情况下使用时，抽象的概念和原始问题都用来进行检索，然后这两个结果都用来作为LLM响应的基础。
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_76710dfcad39.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_76710dfcad39.jpg)
 
-**4.3.2 [CoVe](https://link.zhihu.com/?target=https%3A//arxiv.org/pdf/2309.11495.pdf)**
+<strong>4.3.2 [CoVe](https://link.zhihu.com/?target=https%3A//arxiv.org/pdf/2309.11495.pdf)</strong>
 
 Chain of Verification (CoVe) 旨在通过系统地验证和完善回答以尽量减少不准确性，从而提高大型语言模型所提供答案的可靠性，特别是在事实性问题和回答场景中。它背后的概念是基于这样一种理念，即大型语言模型（LLM）生成的响应可以用来验证自身。这种自我验证过程可用于评估初始响应的准确性，并使其更加精确。**在RAG系统中，针对用户实际场景中日益复杂的问题，借鉴了 CoVe技术，将复杂 Prompt 拆分为多个独立且能并行检索的搜索友好型query，让LLM对每个子查询进行定向知识库搜索，最终提供更准确详实答案的同时减少幻觉输出。
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_9b2849bf42a2.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_9b2849bf42a2.jpg)
 
 4.3.3 [RAG-Fusion](https://link.zhihu.com/?target=https%3A//github.com/Raudaschl/rag-fusion)**
 
 在这种方法中，原始query经过LLM 生成多个query。然后可以并行执行这些搜索查询，并将检索到的结果一并传递。当一个问题可能依赖于多个子问题时，这种方法就非常有用。RAG-Fusion便是这种方法的代表，它是一种搜索方法，旨在弥合传统搜索范式与人类查询的多面性之间的差距。这种方法先是采用LLM生成多重查询，之后使用倒数排名融合（Reciprocal Rank Fusion，RRF）来重新排序。
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_2c17dbb23b6b.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_2c17dbb23b6b.jpg)
 
-**4.3.4 [ReAct](https://link.zhihu.com/?target=https%3A//arxiv.org/pdf/2210.03629.pdf)**
+<strong>4.3.4 [ReAct](https://link.zhihu.com/?target=https%3A//arxiv.org/pdf/2210.03629.pdf)</strong>
 
 最近，在RAG系统中，使用ReAct思想，将复杂查询分解成更简单的"子查询"，知识库的不同部分可能会围绕整个查询回答不同的 "子查询"。这对组合图尤其有用。在组成图中，一个查询可以路由到多个子索引，每个子索引代表整个知识语料库的一个子集。通过查询分解，我们可以在任何给定的索引中将查询转化为更合适的问题。
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_4e94edddcc73.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_4e94edddcc73.jpg)
 
 **ReAct的模式如上图所示，它是将思维链提示（Chain of Thoughts，简写为CoT）和Action计划生成结合起来，相互补充增强，提升大模型解决问题的能力。其中CoT的Reasoning推理跟踪有助于模型诱导、跟踪和更新行动计划以及处理异常。Action操作允许它与知识库或环境等外部来源接口并收集其他信息。
 
@@ -144,7 +144,7 @@ Chain of Verification (CoVe) 旨在通过系统地验证和完善回答以尽量
 
 #### 5.2 架构
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_c695f37303e4.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_c695f37303e4.jpg)
 
 注：图片来源于langchain。
 #### 5.3 文档加载器
@@ -160,9 +160,9 @@ Chain of Verification (CoVe) 旨在通过系统地验证和完善回答以尽量
 - 将文本分割成语义上有意义的小块（通常是句子）。
 - 开始将这些小块组合成一个大块，直到达到一定的大小（用某个函数来衡量）。
 - 一旦达到一定大小，就将该语块作为自己的文本，然后开始创建有一定重叠的新语块（以保持语块之间的上下文）。
-**5.4.2 常见如下文本转换器类型**
+<strong>5.4.2 常见如下文本转换器类型</strong>
 
-NameSplits OnAdds MetadataDescriptionRecursiveA list of user defined charactersRecursively splits text. Splitting text recursively serves the purpose of trying to keep related pieces of text next to each other. This is the recommended way to start splitting text.HTMLHTML specific characters✅Splits text based on HTML-specific characters. Notably, this adds in relevant information about where that chunk came from (based on the HTML)MarkdownMarkdown specific characters✅Splits text based on Markdown-specific characters. Notably, this adds in relevant information about where that chunk came from (based on the Markdown)CodeCode (Python, JS) specific charactersSplits text based on characters specific to coding languages. 15 different languages are available to choose from.TokenTokensSplits text on tokens. There exist a few different ways to measure tokens.CharacterA user defined characterSplits text based on a user defined character. One of the simpler methods.[Experimental] Semantic ChunkerSentencesFirst splits on sentences. Then combines ones next to each other if they are semantically similar enough. Taken from Greg Kamradt**5.4.3 评估文本转换器**
+NameSplits OnAdds MetadataDescriptionRecursiveA list of user defined charactersRecursively splits text. Splitting text recursively serves the purpose of trying to keep related pieces of text next to each other. This is the recommended way to start splitting text.HTMLHTML specific characters✅Splits text based on HTML-specific characters. Notably, this adds in relevant information about where that chunk came from (based on the HTML)MarkdownMarkdown specific characters✅Splits text based on Markdown-specific characters. Notably, this adds in relevant information about where that chunk came from (based on the Markdown)CodeCode (Python, JS) specific charactersSplits text based on characters specific to coding languages. 15 different languages are available to choose from.TokenTokensSplits text on tokens. There exist a few different ways to measure tokens.CharacterA user defined characterSplits text based on a user defined character. One of the simpler methods.[Experimental] Semantic ChunkerSentencesFirst splits on sentences. Then combines ones next to each other if they are semantically similar enough. Taken from Greg Kamradt<strong>5.4.3 评估文本转换器</strong>
 
 你可以使用 Greg Kamradt 创建的 Chunkviz 工具来评估文本转换器。Chunkviz 是可视化文本转换器工作情况的工具。它可以向你展示文本的分割情况，并帮助你调整分割参数。
 
@@ -176,7 +176,7 @@ NameSplits OnAdds MetadataDescriptionRecursiveA list of user defined charactersR
 
 随着嵌入式的兴起，人们开始需要向量数据库来支持这些嵌入式的高效存储和搜索。存储和搜索非结构化数据的最常见方法之一是嵌入数据并存储由此产生的嵌入向量，然后在查询时嵌入非结构化查询并检索与嵌入查询 "最相似 "的嵌入向量。向量数据库负责存储嵌入数据并执行向量搜索。
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_8da1618676cd.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_8da1618676cd.jpg)
 
 关于向量数据库，这里向大家推荐看一下《大模型引发爆发增长的向量数据库》文章。如果对向量数据库已经有认知了，可以直接跳过本节进行阅读。
 
@@ -189,13 +189,13 @@ NameSplits OnAdds MetadataDescriptionRecursiveA list of user defined charactersR
 
 摘要索引只是将节点存储为顺序链。在后续的检索和生成阶段，可以简单地顺序遍历所有节点，也可以基于关键词进行过滤。
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_b569251ab8cb.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_b569251ab8cb.jpg)
 
-**5.7.2 树索引**
+<strong>5.7.2 树索引</strong>
 
 树索引将一组节点 ( 文本块 ) 构建成具有层级的树状索引结构，其从叶节点 (原始文本块) 向上构建，每个父节点都是子节点的摘要。在检索阶段，既可以从根节点向下进行遍历，也可以直接利用根节点的信息。树索引提供了一种更高效地查询长文本块的方式，它还可以用于从文本的不同部分提取信息。与链式索引不同，树索引无需按顺序查询。
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_f11f13fcdcef.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_f11f13fcdcef.jpg)
 
 **
 
@@ -203,7 +203,7 @@ NameSplits OnAdds MetadataDescriptionRecursiveA list of user defined charactersR
 
 关键词表索引从每个节点中提取关键词，构建了每个关键词到相应节点的多对多映射，意味着每个关键词可能指向多个节点，每个节点也可能包含多个关键词。在检索阶段，可以基于用户查询中的关键词对节点进行筛选。
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_3d2658153ac9.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_3d2658153ac9.jpg)
 
 **
 
@@ -211,9 +211,9 @@ NameSplits OnAdds MetadataDescriptionRecursiveA list of user defined charactersR
 
 向量索引是当前最流行的一种索引方法。这种方法一般利用文本嵌入模型将文本块映射成一个固定长度的向量，然后存储在向量数据库中。检索的时候，对用户查询文本采用同样的Embedding模型映射成向量，然后基于向量相似度计算获取最相似的一个或者多个节点。
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_6b9348a50545.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_6b9348a50545.jpg)
 
-#### **5.8 排序和后处理**
+#### <strong>5.8 排序和后处理</strong>
 
 经过前面的检索过程可能会得到很多相关文档，就需要进行筛选和排序。常用的筛选和排序策略包括：
 
@@ -223,9 +223,9 @@ NameSplits OnAdds MetadataDescriptionRecursiveA list of user defined charactersR
 - 基于时间进行过滤和排序，比如只筛选最新的相关文档
 - 基于时间对相似度进行加权，然后进行排序和筛选
 
-### **6. 生成模型**
+### <strong>6. 生成模型</strong>
 
-#### **6.1 回复生成策略**
+#### <strong>6.1 回复生成策略</strong>
 
 检索模块基于用户查询检索出相关的文本块，回复生成模块让 LLM 利用检索出的相关信息来生成对原始查询的回复。这里给出一些不同的回复生成策略。
 
@@ -236,11 +236,11 @@ NameSplits OnAdds MetadataDescriptionRecursiveA list of user defined charactersR
 
 用于将提示的不同部分组合在一起。您可以使用字符串提示或聊天提示来执行此操作。以这种方式构建提示可以轻松地重用组件。
 
-**6.2.1 字符串提示**
+<strong>6.2.1 字符串提示</strong>
 
 使用字符串提示时，每个模板都会连接在一起。您可以直接使用提示或字符串（列表中的第一个元素必须是提示）。例如，langchain提供的prompttemplate。
 
-**6.2.2 聊天提示**
+<strong>6.2.2 聊天提示</strong>
 
 聊天提示由消息列表组成。纯粹为了开发人员体验，我们添加了一种便捷的方式来创建这些提示。在此管道中，每个新元素都是最终提示中的一条新消息。例如，langchain提供的AIMessage, HumanMessage, SystemMessage。
 
@@ -250,7 +250,7 @@ NameSplits OnAdds MetadataDescriptionRecursiveA list of user defined charactersR
 为了解决上述问题，我们提出了一种基于混合演示检索的上下文学习方法。该方法充分考虑不同检索模型的优劣，提出一种融合算法，通过利用文本检索（例如，BM25和TF-IDF）和语义检索（例如，OpenAI embedding-ada和sentence-bert）进行多路召回，解决单路召回率不高的问题。然而，这带来全新的挑战，即如何将不同的召回结果进行融合。这是由于不同检索算法分数范围不匹配，例如，文本检索分数通常在 0 和某个最大值之间（这具体取决于查询的相关性）；而语义搜索（例如，余弦相似度）生成 0 到 1 之间的分数，这使得直接对召回结果进行排序变得很棘手。因此，我们又提出一种基于倒序排序融合算法（Reciprocal Rank fusion）的重排方法，该算法在不需要调整模型的情况下，利用位置来组合不同检索算法的结果，同时，考虑到大模型对相关信息出现在输入上下文的开头或结尾时，性能往往最高，设计重排算法，从获得高质量的融合结果。
 具体的模型架构如下图所示，它包括检索模块、重排模块和生成模块。 
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_31233063f10c.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_31233063f10c.jpg)
 
 #### 7.1 检索模块
 
@@ -285,7 +285,7 @@ NameSplits OnAdds MetadataDescriptionRecursiveA list of user defined charactersR
 
 直接让模型生成归因信息。可在Prompt 添加类似“每个生成的证据都需在参考信息中进行引用”的话。这种方法最简单，但也对模型的指令遵循能力要求较高，一般会采用GPT-4 回答，或者微调模型让模型学习在生成时附带引用的回答方式。缺点也很明显，极度依赖模型的能力（甚至可能引用也是编的），且针对实际场景中出现的badcase 修复周期长，干预能力弱。
 
-**8.3.2 动态计算**
+<strong>8.3.2 动态计算</strong>
 
 在模型生成的过程中进行引用信息的附加。具体的操作为在流式生成的场景下，对生成的文本进行语义单元的判断（比如句号，换行段落等），当出现一个完整的语义单元时，将该语义单元和参考信息中的每个参考源进行匹配（关键字，embedding等），通过卡阈值的办法找到Top-N 的参考源，从而将参考源进行附加返回。这种方法的实现相比方法一简单了很多，badcase 修复周期也短，但受限于匹配方式和阈值，且存在一个前提假设：模型的生成文本来源于参考信息。
 
@@ -311,11 +311,11 @@ NameSplits OnAdds MetadataDescriptionRecursiveA list of user defined charactersR
 
 这一工作系统地研究了检索增强生成对大型语言模型的影响。它分析了不同大型语言模型在RAG所需的4项基本能力方面的表现，包括噪声鲁棒性、拒答、信息整合和反事实鲁棒性，并建立了检索增强生成基准。此外，现在做RAG都是做的pipeline，涉及到切块、相关性召回、拒答等多个环节，每个环节都可以单独做评测，文中提到的4个能力其实可以影射到每个环节当中。
 
-**9.2.2 RAGAS（[RAGAS: Automated Evaluation of Retrieval Augmented Generation](https://link.zhihu.com/?target=https%3A//arxiv.org/pdf/2309.15217.pdf)）**
+<strong>9.2.2 RAGAS（[RAGAS: Automated Evaluation of Retrieval Augmented Generation](https://link.zhihu.com/?target=https%3A//arxiv.org/pdf/2309.15217.pdf)）</strong>
 
 该工作提出了一种对检索增强生成（RAG）pipeline进行无参考评估的框架。该框架考虑检索系统识别相关和重点上下文段落的能力， LLM以忠实方式利用这些段落的能力，以及生成本身的质量。目前，该方法已经开源，具体可以参见github： [GitHub - exploding gradients/ragas: Evaluation framework for your Retrieval Augmented Generation (RAG) pipelines](https://link.zhihu.com/?target=https%3A//github.com/explodinggradients/ragas)
 
-**9.2.3 Llamalindex-Evaluating**
+<strong>9.2.3 Llamalindex-Evaluating</strong>
 
 LlamaIndex提供了衡量生成结果质量的关键模块。同时，还提供关键模块来衡量检索质量。
 

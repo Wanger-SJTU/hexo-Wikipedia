@@ -22,7 +22,7 @@ Fast LLM Serving with vLLM and PagedAttention_哔哩哔哩_bilibili
 
 本系列将介绍 vLLM 的方方面面：
 
-[![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_c6379eac3cee.png)SayHelloCode：vLLM（一）PagedAttention 算法308 赞同 · 19 评论 文章](https://zhuanlan.zhihu.com/p/680153425)
+[![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_c6379eac3cee.png)SayHelloCode：vLLM（一）PagedAttention 算法308 赞同 · 19 评论 文章](https://zhuanlan.zhihu.com/p/680153425)
 
 [](https://zhuanlan.zhihu.com/p/681716326)
 
@@ -81,7 +81,7 @@ Prompt: 'The future of AI is', Generated text: ' bright, but it’s unclear how 
 
 ### vLLM 架构
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_a61bbd8e2a73.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_a61bbd8e2a73.jpg)
 
 图1：vLLM 架构图，参考自 vLLM 论文图 1 是 vLLM 的架构图，它的核心组件是 LLMEngine 类，外层接口类 LLM 和 AsyncLLMEngine 都是对 LLMEngine 的封装。
 LLMEngine 有两个核心组件，分别是负责请求调度的 Scheduler 和负责模型推理的 Worker，前者从等待队列中选择接下来要处理的请求，后者负责使用模型对被调度的请求进行推理。
@@ -100,7 +100,7 @@ Worker 负责模型的执行。如果模型过大，可以将模型切分到多�
 
 假设模型有 4 层，现在有 4 张卡，可以设置 Tensor Parallel=4（注意：截止 v0.4.0，vLLM 还没有支持 Pipeline Parallel），则将模型每一层切分为 4 份，每张卡存放模型的一部分。
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_ff00e5ace593.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_ff00e5ace593.jpg)
 
 图2：将模型切分为 4 份，每张卡放模型的一部分Worker 的一个核心组件是 CacheEngine，它负责 KV cache 的初始化以及 KV cache 的相关操作。
 
@@ -112,7 +112,7 @@ Worker 负责模型的执行。如果模型过大，可以将模型切分到多�
 
 在初始化阶段，主要初始化 LLMEngine 中的 Scheduler 和 Worker 对象，Scheduler 的初始化主要是块表（block table）的初始化，Worker 的初始化包括模型的初始化以及 KV cache 的初始化，如图 3 所示：
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_d87e6c0bf293.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_d87e6c0bf293.jpg)
 
 图3：初始化 Scheduler 和 Worker
 #### 调度和推理
@@ -123,14 +123,14 @@ Worker 负责模型的执行。如果模型过大，可以将模型切分到多�
 - vLLM 的第一轮处理
 假设 vLLM 在这一轮只能调度两个请求进行处理，那么根据先到先处理的原则，会从 waiting 队列中选择 s0 ("Hello, my name is") 和 s1 ("The future of AI is") 放入到 running 队列。对于 s0，Worker 生成的 token 为 Dustin，对于 s1，Worker 生成的 token 为 bright。同时，Worker 会将计算过程产生的 KV 值存储在 KV cache 中，如图 4 所示：
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_3e147ae06835.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_3e147ae06835.jpg)
 
 图4：vLLM 的第一轮处理
 
 - vLLM 的第二轮处理
 由于 waiting 队列中还有一个请求 s2（The life is)，因此，vLLM 在第二轮只会处理这一个请求，因为前面提到，vLLM 只会处理要么都是填充阶段的请求，要么都是生成阶段的请求。如图 5 所示。
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_fcc3b60a0fa9.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_fcc3b60a0fa9.jpg)
 
 图5：vLLM 的第二轮处理
 

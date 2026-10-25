@@ -23,11 +23,11 @@ source_url: https://zhuanlan.zhihu.com/p/673957960
 
 硬件发展中计算能力的提升要显著快于内存带宽的提升，这使得我们越来越难以充分发挥全部的计算性能，compute bound 通常只出现在计算大规模矩阵乘法时。也正因如此，越来越多的机器学习加速器（GPU、TPU等）都提供了专门用于计算矩阵乘法的计算单元，如 Nvidia GPU 中的 Tensor Core。
 
-![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_38ae33d5c9bd.jpg)
+![](/images/collections/0.raw/zhihu/dl%E8%AE%BA%E6%96%87/asset/img_38ae33d5c9bd.jpg)
 
 Nvidia A100 GPU Specifications从上表可以看出，对于 FP32 而言，如果我们不进行矩阵乘法，我们的计算能力只能达到 19.5TFLOPS 而不是通常声称的 312TFLOPS（即使是 19.5TFLOPS 也是考虑了 FMA 专用硬件，实际计算能力可能只有 9.75TFLOPS）。我们也许会担心这是否会影响其他算子的计算呢？答案是不会。
 
-![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_f427fa843549.jpg)
+![](/images/collections/0.raw/zhihu/dl%E8%AE%BA%E6%96%87/asset/img_f427fa843549.jpg)
 
 Proportions for operator classes in PyTorch从上表可以看出，相较于矩阵乘法运算（Tensor Contraction），非矩阵乘法运算需要的 FLOP 仅为 0.2%，因此对应计算性能相差  并不会产生计算瓶颈。同时我们也注意到，非矩阵乘法运算花费的时间远大于他们对应的计算量，其中原因便是下面要介绍的 Bandwidth Bound。
 

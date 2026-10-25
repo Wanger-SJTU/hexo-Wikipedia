@@ -37,14 +37,14 @@ Die Haupt-Instruktionsdatei. Dies ist das Erste, was der Agent liest, wenn er ei
 Sitzung startet. Sie definiert die Betriebsregeln: was vor dem Schreiben von Code
 zu tun ist, wie gearbeitet wird und wie abgeschlossen wird.
 
-**Verwendung:**
+<strong>Verwendung:</strong>
 
 - In Ihr Projektverzeichnis kopieren
 - Die Start-Workflow-Schritte durch Ihre tatsächlichen Projektpfade und -befehle ersetzen
 - Die Arbeitsregeln an die Konventionen Ihres Teams anpassen
 - Den Abschnitt zur Definition von Fertig beibehalten -- er ist der wichtigste Teil
 
-**Was sie für den Agenten tut:**
+<strong>Was sie für den Agenten tut:</strong>
 
 - Sagt ihm, dass er Fortschritt und Feature-Status lesen soll, bevor er mit der Arbeit beginnt
 - Zwingt ihn, an nur einem Feature gleichzeitig zu arbeiten
@@ -60,7 +60,7 @@ Claudes Instruktionsstil.
 Das Startskript. Führt Abhängigkeitsinstallation, Verifikation und Ausgabe des
 Startbefehls aus -- alles in einem Durchgang.
 
-**Verwendung:**
+<strong>Verwendung:</strong>
 
 - In Ihr Projektverzeichnis kopieren
 - Diese drei Variablen oben bearbeiten:
@@ -69,7 +69,7 @@ Startbefehls aus -- alles in einem Durchgang.
   - `START_CMD` -- Ihr Dev-Server-Startbefehl (z. B. `npm run dev`)
 - Ausführbar machen: `chmod +x init.sh`
 
-**Was es tut:**
+<strong>Was es tut:</strong>
 
 1. Gibt das aktuelle Verzeichnis aus (damit Sie bestätigen können, dass es am richtigen Ort läuft)
 2. Installiert Abhängigkeiten
@@ -84,21 +84,21 @@ korrigieren, bevor er etwas anderes tut.
 Das Fortschrittslog. Jede Sitzung schreibt in diese Datei, und jede neue Sitzung
 liest sie zuerst.
 
-**Verwendung:**
+<strong>Verwendung:</strong>
 
 - In Ihr Projektverzeichnis kopieren
 - Den Abschnitt "Aktueller verifizierter Zustand" mit Ihren Projektinformationen ausfüllen
 - Nach jeder Sitzung den Sitzungs-Eintrag aktualisieren
 
-**Bedeutung der einzelnen Felder:**
+<strong>Bedeutung der einzelnen Felder:</strong>
 
-- **Aktueller verifizierter Zustand** -- die einzige Wahrheitsquelle für den Projektstand
+- <strong>Aktueller verifizierter Zustand</strong> -- die einzige Wahrheitsquelle für den Projektstand
   - `Repository-Root-Verzeichnis` -- wo das Projekt liegt
   - `Standard-Startpfad` -- der Befehl, um das Projekt zu starten
   - `Standard-Verifikationspfad` -- der Befehl, um Tests auszuführen
   - `Höchste Priorität unfertiges Feature` -- woran die nächste Sitzung arbeiten sollte
   - `Aktueller Blocker` -- alles, was feststeckt
-- **Sitzungs-Eintrag** -- ein Eintrag pro Sitzung
+- <strong>Sitzungs-Eintrag</strong> -- ein Eintrag pro Sitzung
   - `Ziel` -- was Sie vorhatten zu tun
   - `Abgeschlossen` -- was tatsächlich erledigt wurde
   - `Verifikation ausgeführt` -- welche Tests ausgeführt wurden
@@ -112,7 +112,7 @@ liest sie zuerst.
 Der Feature-Tracker. Eine maschinenlesbare Liste aller Features, die der Agent
 implementieren muss, zusammen mit Status, Verifikationsschritten und Nachweisen.
 
-**Verwendung:**
+<strong>Verwendung:</strong>
 
 - In Ihr Projektverzeichnis kopieren
 - Die Beispielfeatures durch Ihre eigenen ersetzen
@@ -127,7 +127,7 @@ implementieren muss, zusammen mit Status, Verifikationsschritten und Nachweisen.
   - `evidence` -- dokumentierter Nachweis, dass die Verifikation bestanden hat (vom Agenten ausgefüllt)
   - `notes` -- jeglicher zusätzlicher Kontext
 
-**Statusregeln:**
+<strong>Statusregeln:</strong>
 
 - `not_started` -- noch nicht angefasst
 - `in_progress` -- das aktuell bearbeitete Feature (nur eines gleichzeitig)
@@ -141,18 +141,18 @@ Der Agent sollte zu jedem Zeitpunkt nur ein Feature im Status `in_progress` habe
 Eine kompakte Übergabenotiz zwischen Sitzungen. Verwenden Sie diese, wenn eine
 Sitzung endet und Sie möchten, dass die nächste schnell anknüpfen kann.
 
-**Verwendung:**
+<strong>Verwendung:</strong>
 
 - In Ihr Projektverzeichnis kopieren
 - Am Ende jeder Sitzung ausfüllen (oder den Agenten ausfüllen lassen)
 
-**Was jeder Abschnitt abdeckt:**
+<strong>Was jeder Abschnitt abdeckt:</strong>
 
-- **Aktuell verifiziert** -- was als funktionierend bestätigt ist und welche Verifikation lief
-- **Änderungen dieser Sitzung** -- welcher Code oder welche Infrastruktur sich geändert hat
-- **Noch kaputt oder unverifiziert** -- bekannte Probleme und riskante Bereiche
-- **Nächste beste Aktion** -- was die nächste Sitzung tun sollte und was nicht angefasst werden sollte
-- **Befehle** -- Start-, Verifikations- und Debug-Befehle zur schnellen Referenz
+- <strong>Aktuell verifiziert</strong> -- was als funktionierend bestätigt ist und welche Verifikation lief
+- <strong>Änderungen dieser Sitzung</strong> -- welcher Code oder welche Infrastruktur sich geändert hat
+- <strong>Noch kaputt oder unverifiziert</strong> -- bekannte Probleme und riskante Bereiche
+- <strong>Nächste beste Aktion</strong> -- was die nächste Sitzung tun sollte und was nicht angefasst werden sollte
+- <strong>Befehle</strong> -- Start-, Verifikations- und Debug-Befehle zur schnellen Referenz
 
 Diese Datei ist optional für kleine Sitzungen. Sie wird wichtig, wenn Sitzungen lang
 sind oder das Projekt mehrere aktive Bereiche hat.
@@ -162,13 +162,13 @@ sind oder das Projekt mehrere aktive Bereiche hat.
 Eine Checkliste, die vor dem Beenden jeder Sitzung durchzugehen ist. Stellt sicher,
 dass das Repo in einem guten Zustand ist, damit die nächste Sitzung sauber starten kann.
 
-**Verwendung:**
+<strong>Verwendung:</strong>
 
 - In Ihr Projektverzeichnis kopieren
 - Vor dem Schließen einer Sitzung durchgehen
 - Der Agent sollte diese Punkte auch als Teil seiner Sitzungsabschluss-Routine prüfen
 
-**Was sie prüft:**
+<strong>Was sie prüft:</strong>
 
 - Standard-Start funktioniert noch
 - Standard-Verifikation läuft noch
@@ -183,28 +183,28 @@ Ein Bewertungsbogen zur Überprüfung der Agenten-Ausgabequalität. Verwenden Si
 nach einer Sitzung oder bei Projektmeilensteinen, um zu bewerten, ob die Arbeit den
 Anforderungen entspricht.
 
-**Verwendung:**
+<strong>Verwendung:</strong>
 
 - In Ihr Projektverzeichnis kopieren
 - Nach einer Sitzung (oder mehreren Sitzungen) die Arbeit des Agenten über sechs Dimensionen bewerten
 - Jede Dimension wird mit 0-2 bewertet
 
-**Die sechs Dimensionen:**
+<strong>Die sechs Dimensionen:</strong>
 
-1. **Korrektheit** -- entspricht die Implementierung dem Zielverhalten?
-2. **Verifikation** -- wurden die erforderlichen Prüfungen tatsächlich mit Nachweisen ausgeführt?
-3. **Umfangdisziplin** -- ist der Agent innerhalb des ausgewählten Features geblieben?
-4. **Zuverlässigkeit** -- übersteht das Ergebnis einen Neustart oder erneute Ausführung?
-5. **Wartbarkeit** -- sind Code und Dokumentation klar genug für die nächste Sitzung?
-6. **Übergabebereitschaft** -- kann eine neue Sitzung nur mit Repo-Artefakten fortgesetzt werden?
+1. <strong>Korrektheit</strong> -- entspricht die Implementierung dem Zielverhalten?
+2. <strong>Verifikation</strong> -- wurden die erforderlichen Prüfungen tatsächlich mit Nachweisen ausgeführt?
+3. <strong>Umfangdisziplin</strong> -- ist der Agent innerhalb des ausgewählten Features geblieben?
+4. <strong>Zuverlässigkeit</strong> -- übersteht das Ergebnis einen Neustart oder erneute Ausführung?
+5. <strong>Wartbarkeit</strong> -- sind Code und Dokumentation klar genug für die nächste Sitzung?
+6. <strong>Übergabebereitschaft</strong> -- kann eine neue Sitzung nur mit Repo-Artefakten fortgesetzt werden?
 
-**Schlussfolgerungsoptionen:**
+<strong>Schlussfolgerungsoptionen:</strong>
 
 - Akzeptieren -- erfüllt die Anforderungen
 - Überarbeiten -- benötigt Korrekturen vor der Akzeptanz
 - Blockieren -- grundlegende Probleme, die zuerst gelöst werden müssen
 
-**Wichtig: Der Evaluator muss kalibriert werden.** Im Standardzustand sind Agenten
+<strong>Wichtig: Der Evaluator muss kalibriert werden.</strong> Im Standardzustand sind Agenten
 schlechte Selbstbewerter -- sie identifizieren Probleme und reden sich dann in eine
 Genehmigung. Sie müssen iterieren:
 
@@ -223,7 +223,7 @@ Eine Qualitätsmomentaufnahme, die jede Produktdomäne und jede Architektur-Schi
 Ihrem Projekt bewertet. Verfolgt die Codebasis-Gesundheit über die Zeit, nicht nur
 die Ausgabe einzelner Sitzungen.
 
-**Verwendung:**
+<strong>Verwendung:</strong>
 
 - In Ihr Projektverzeichnis kopieren
 - Vor Beginn einer Sitzung: lesen, um zu verstehen, wo die Codebasis am schwächsten ist
@@ -231,15 +231,15 @@ die Ausgabe einzelner Sitzungen.
 - Über die Zeit: Momentaufnahmen vergleichen, um zu sehen, welche Harness-Änderungen
   die Codebasis-Gesundheit tatsächlich verbessert haben
 
-**Was bewertet wird:**
+<strong>Was bewertet wird:</strong>
 
-- **Produktdomänen** (z. B. Dokumentimport, Q&A-Ablauf, Indexierung): jede Domäne erhält
+- <strong>Produktdomänen</strong> (z. B. Dokumentimport, Q&A-Ablauf, Indexierung): jede Domäne erhält
   eine Note (A-D) für Verifikationsstatus, Agenten-Lesbarkeit, Teststabilität und
   wesentliche Lücken
-- **Architektur-Schichten** (z. B. Hauptprozess, Preload, Renderer, Services): jede
+- <strong>Architektur-Schichten</strong> (z. B. Hauptprozess, Preload, Renderer, Services): jede
   Schicht erhält eine Note für Grenzdurchsetzung und Agenten-Lesbarkeit
 
-**Warum es wichtig ist:**
+<strong>Warum es wichtig ist:</strong>
 
 Die Evaluator-Rubrik bewertet einzelne Agenten-Ausgaben. Das Qualitätsdokument bewertet
 die Codebasis selbst. Sie beantworten unterschiedliche Fragen:
@@ -247,14 +247,14 @@ die Codebasis selbst. Sie beantworten unterschiedliche Fragen:
 - Evaluator-Rubrik: "Hat der Agent in dieser Sitzung gute Arbeit geleistet?"
 - Qualitätsdokument: "Wird das Projekt mit der Zeit stärker oder schwächer?"
 
-**Wann aktualisieren:**
+<strong>Wann aktualisieren:</strong>
 
 - Nach jeder bedeutenden Sitzung
 - Vor Benchmark-Vergleichen
 - Nach Aufräum- oder Vereinfachungsdurchläufen
 - Bei Onboarding eines neuen Agenten oder Modells in das Projekt
 
-**Harness-Vereinfachungs-Bezug:**
+<strong>Harness-Vereinfachungs-Bezug:</strong>
 
 Das Qualitätsdokument unterstützt auch die Harness-Vereinfachung. Jede Harness-Komponente
 codiert eine Annahme darüber, was das Modell nicht kann. Wenn sich Modelle verbessern,

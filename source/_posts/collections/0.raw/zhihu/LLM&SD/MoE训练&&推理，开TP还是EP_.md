@@ -30,18 +30,18 @@ source_url: https://zhuanlan.zhihu.com/p/2026763517529695535
 #### Expert Parallelism (EP)
 
 - 按照expert维度进行切分，把不同的 experts 完整分配到不同 GPU 上（每个 GPU 持有 E/n" role="presentation">E/n  E/n   个完整 experts，其中 E" role="presentation">E  E   为专家总数）。 每个 token 通过 router 选择 top-k 个 experts 后，被 dispatch 到对应 GPU 上完成完整计算，再 combine 回来。 
-- 优点：每个 GPU 上进行完整的大 GEMM，计算效率高；利用 MoE 的稀疏激活特性，**通信量与 k" role="presentation">k  k   强相关。 **
-- 缺点：需要 All-to-All 通信进行 token 路由，**负载均衡依赖 router 设计**。
+- 优点：每个 GPU 上进行完整的大 GEMM，计算效率高；利用 MoE 的稀疏激活特性，<strong>通信量与 k" role="presentation">k  k   强相关。</strong>
+- 缺点：需要 All-to-All 通信进行 token 路由，<strong>负载均衡依赖 router 设计</strong>。
 
 ### 通信量对比：EP 在 top-k 较小时显著占优
 
-通信是 MoE 执行的最大瓶颈。假设 batch 相关 token 数量为 b" role="presentation">b  b  ，序列长度为 s" role="presentation">s  s  ，hidden dimension 为 h" role="presentation">h  h  ，并行度为 n" role="presentation">n  n  ，激活数据规模记为 bsh" role="presentation">bsh  b s h  。则TP和EP的单卡通信量如下（参考OSDI2024  字节跳动Seed团队发表文章**MegaScale-MoE: Large-Scale Communication-Efficient Training of Mixture-of-Experts Models in Production**）：
+通信是 MoE 执行的最大瓶颈。假设 batch 相关 token 数量为 b" role="presentation">b  b  ，序列长度为 s" role="presentation">s  s  ，hidden dimension 为 h" role="presentation">h  h  ，并行度为 n" role="presentation">n  n  ，激活数据规模记为 bsh" role="presentation">bsh  b s h  。则TP和EP的单卡通信量如下（参考OSDI2024  字节跳动Seed团队发表文章<strong>MegaScale-MoE: Large-Scale Communication-Efficient Training of Mixture-of-Experts Models in Production</strong>）：
 
 TP 的通信量：
 
 $$2 \, b s h \, \frac{(n-1)}{n}$$
 
- EP 的通信量（注：EP通信量不好定性分析，与每张卡上的专家数量M有关，M越大，EP通信量越少，M约小EP通信量越大。这里先确定EP通信量的上下界，假定每个GPU上只有一个专家，确定EP通信量的上界，假定每个GPU拥有所有专家，确定EP通信量的下界为0，退化为DP），这里给出EP单卡通信量的上界为（**这也是论文里面写到的，但是论文没强调条件，如果每张卡上的专家不为1，下面公式就可能不对**）：
+ EP 的通信量（注：EP通信量不好定性分析，与每张卡上的专家数量M有关，M越大，EP通信量越少，M约小EP通信量越大。这里先确定EP通信量的上下界，假定每个GPU上只有一个专家，确定EP通信量的上界，假定每个GPU拥有所有专家，确定EP通信量的下界为0，退化为DP），这里给出EP单卡通信量的上界为（<strong>这也是论文里面写到的，但是论文没强调条件，如果每张卡上的专家不为1，下面公式就可能不对</strong>）：
 
 $$2 \frac{k}{n} \times b s h \, \frac{(n-1)}{n}$$
 
@@ -49,23 +49,23 @@ $$2 \frac{k}{n} \times b s h \, \frac{(n-1)}{n}$$
 
 解释：**
 
-- **TP的通信量**
+- <strong>TP的通信量</strong>
 
 - TP需要调用AllReduce，如果采用Ring AllReduce实现AllReduce的方式，用Reduce-Scatter和Allgather实现AllReduce，Reduce-Scatter和Allgather通信量相同，均为 bsh(n-1)/n *，故平均单卡通信量为* 2bsh(n-1)/n 
 - 为什么要除以n? TP切分后，每张卡只处理 totalsize/n 份数据
 - 为什么要乘以 n-1 ?不管Reduce-Scatter还是Allgather，环上每块需要传递 n-1 次
 
-- **EP的通信量**
+- <strong>EP的通信量</strong>
 
-- **All2All通过dispatch和combine完成，dispathe和combine通信量一致**
-- **每张卡初始本地token数 =**   {bsh}  
-$$- **每张卡需要发送的token-expert assignment总数=**  \frac{kbsh}{n}   $$
-- **token-expert assignment 发送到本地的概率=** {1/n} 
-- **token-expert assignment 发送到别的卡的概率(跨卡通信的概率) = **{1-1/n} 
-$$- **dispatch or combine总体通信量= **\frac{k}{n} \times b s h \, \frac{(n-1)}{n} $$
-$$- **总体通信量为=** 2 \frac{k}{n} \times b s h \, \frac{(n-1)}{n} $$
+- <strong>All2All通过dispatch和combine完成，dispathe和combine通信量一致</strong>
+- <strong>每张卡初始本地token数 =</strong>   {bsh}  
+$$- <strong>每张卡需要发送的token-expert assignment总数=</strong>  \frac{kbsh}{n}   $$
+- <strong>token-expert assignment 发送到本地的概率=</strong> {1/n} 
+- <strong>token-expert assignment 发送到别的卡的概率(跨卡通信的概率) =</strong>{1-1/n} 
+$$- <strong>dispatch or combine总体通信量=</strong>\frac{k}{n} \times b s h \, \frac{(n-1)}{n} $$
+$$- <strong>总体通信量为=</strong> 2 \frac{k}{n} \times b s h \, \frac{(n-1)}{n} $$
 
-- **EP通信量的验证：**
+- <strong>EP通信量的验证：</strong>
 
 - n=1时，退化成DP，通信量 = 0，正确（全本地）。
 - n很大时，通信量(只考虑dispatch 或combine，下同) ≈   \frac{kbsh}{n}  ，接近每卡处理的全部token都需要通信（本地概率极低）
@@ -96,6 +96,6 @@ EP：在负载不均衡的情况下，某个 rank 上分配的 token 可能过�
 
 ### EP和TP对比总结
 
-- **通信量**：TP 通信固定且与topk的大小无关；EP的通信量与topk和每张卡上的专家数有关，EP的通信量也与EP的工程实践密切相关，一般而言，在 topk < n，也就是topk < parallel size 的情况下，EP 比 TP 的通信量更小，此时EP更占优。
-- **计算效率**：TP 牺牲 GEMM 性能；EP 充分利用 GPU 计算能力，实际 FLOPs 利用率更高
-- **显存使用**：TP总体显存使用量比较均匀，负载比较均衡。但EP会存在负载不均的问题，很可能出现某个rank上显存OOM进而导致整个程序崩溃的问题。
+- <strong>通信量</strong>：TP 通信固定且与topk的大小无关；EP的通信量与topk和每张卡上的专家数有关，EP的通信量也与EP的工程实践密切相关，一般而言，在 topk < n，也就是topk < parallel size 的情况下，EP 比 TP 的通信量更小，此时EP更占优。
+- <strong>计算效率</strong>：TP 牺牲 GEMM 性能；EP 充分利用 GPU 计算能力，实际 FLOPs 利用率更高
+- <strong>显存使用</strong>：TP总体显存使用量比较均匀，负载比较均衡。但EP会存在负载不均的问题，很可能出现某个rank上显存OOM进而导致整个程序崩溃的问题。

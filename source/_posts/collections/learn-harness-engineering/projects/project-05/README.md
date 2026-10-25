@@ -19,10 +19,10 @@ Measure how role separation (single role, generator plus evaluator, planner plus
 
 | Directory | Meaning |
 |------|------|
-| `starter/` | **Starting point**: based on the P4 solution, with multi-turn QA history still to implement. |
-| `solution/single-role/` | **Variant A**: one agent does all work (planning, implementation, and self-review). Baseline quality. |
-| `solution/gen-eval/` | **Variant B**: generator plus evaluator pattern. Higher quality, with revision evidence. |
-| `solution/plan-gen-eval/` | **Variant C**: planner plus generator plus evaluator. Highest quality, with a sprint contract and scoring criteria. |
+| `starter/` | <strong>Starting point</strong>: based on the P4 solution, with multi-turn QA history still to implement. |
+| `solution/single-role/` | <strong>Variant A</strong>: one agent does all work (planning, implementation, and self-review). Baseline quality. |
+| `solution/gen-eval/` | <strong>Variant B</strong>: generator plus evaluator pattern. Higher quality, with revision evidence. |
+| `solution/plan-gen-eval/` | <strong>Variant C</strong>: planner plus generator plus evaluator. Highest quality, with a sprint contract and scoring criteria. |
 
 ## How to Use
 

@@ -35,19 +35,19 @@ categories:
 
 面向 AI 编程智能体的生产级 harness 工程技能。帮助创建、评估和改进 agent harness 文件（AGENTS.md、功能清单、验证工作流、会话连续性机制）。
 
-- **7 个参考模式**：记忆持久化、技能运行时、上下文工程、工具注册、多智能体协调、生命周期与引导、陷阱
-- **模板**：AGENTS.md/CLAUDE.md、feature-list.json、init.sh、progress.md、session-handoff.md
-- **脚本**：脚手架生成、校验、HTML 评估报告、结构化 benchmark
-- **10 个内置评估测试用例**
+- <strong>7 个参考模式</strong>：记忆持久化、技能运行时、上下文工程、工具注册、多智能体协调、生命周期与引导、陷阱
+- <strong>模板</strong>：AGENTS.md/CLAUDE.md、feature-list.json、init.sh、progress.md、session-handoff.md
+- <strong>脚本</strong>：脚手架生成、校验、HTML 评估报告、结构化 benchmark
+- <strong>10 个内置评估测试用例</strong>
 
 详见 [harness-creator/README.md](harness-creator/README.md)。
 
 ## harness-creator 的开发过程
 
-`harness-creator` 技能基于 **skill-creator** 方法论开发——这是 Anthropic 官方提供的元技能，用于创建、测试和迭代改进 agent 技能。skill-creator 提供了结构化的工作流（起草 → 测试 → 评估 → 迭代），内置评估运行器、评分器和基准查看器。
+`harness-creator` 技能基于 <strong>skill-creator</strong> 方法论开发——这是 Anthropic 官方提供的元技能，用于创建、测试和迭代改进 agent 技能。skill-creator 提供了结构化的工作流（起草 → 测试 → 评估 → 迭代），内置评估运行器、评分器和基准查看器。
 
-- **skill-creator 来源**：[anthropics/skills — skill-creator](https://github.com/anthropics/skills/tree/main/skills/skill-creator)
-- **Anthropic Claude Code 技能文档**：[anthropics/claude-code — plugin-dev/skills](https://github.com/anthropics/claude-code/tree/main/plugins/plugin-dev/skills)
+- <strong>skill-creator 来源</strong>：[anthropics/skills — skill-creator](https://github.com/anthropics/skills/tree/main/skills/skill-creator)
+- <strong>Anthropic Claude Code 技能文档</strong>：[anthropics/claude-code — plugin-dev/skills](https://github.com/anthropics/claude-code/tree/main/plugins/plugin-dev/skills)
 
 ## 目录结构
 
@@ -78,9 +78,9 @@ skills/
 
 每个技能遵循标准结构：
 
-1. **SKILL.md** — 入口文件。包含 YAML frontmatter（name、description，用于触发）和 Markdown 指令。
-2. **references/** — 按需加载到上下文中的补充文档。
-3. **templates/** — 技能为用户生成的起始模板。
+1. <strong>SKILL.md</strong> — 入口文件。包含 YAML frontmatter（name、description，用于触发）和 Markdown 指令。
+2. <strong>references/</strong> — 按需加载到上下文中的补充文档。
+3. <strong>templates/</strong> — 技能为用户生成的起始模板。
 
 技能采用渐进式展开 — agent 首先只看到名称 + 描述，触发后加载完整的 SKILL.md 正文，仅在需要时读取附带的资源文件。
 

@@ -49,9 +49,9 @@ asm volatile ("mov %1, %0\n\t"
 printf("%d\n", dst);
 ```
 
-- 如果指令会改变条件码寄存器，则需要在 `cloberred list` 中添加 **"cc"**。
-- 如果指令修改了内存中的内容，则需要在 `cloberred list` 中添加 **"memory"**，这样的话 GCC 就不会在寄存器中缓存这块内存的值。
-- 如果被影响到的内存没有在输入输出中列出来，也需要加上 **volatile** 关键字。
+- 如果指令会改变条件码寄存器，则需要在 `cloberred list` 中添加 <strong>"cc"</strong>。
+- 如果指令修改了内存中的内容，则需要在 `cloberred list` 中添加 <strong>"memory"</strong>，这样的话 GCC 就不会在寄存器中缓存这块内存的值。
+- 如果被影响到的内存没有在输入输出中列出来，也需要加上 <strong>volatile</strong> 关键字。
 
 - 寄存器操作数约束（"r"）——当操作数使用这种约束的时候，它（操作数）会被存进通用寄存器（Gnenral Purpose Register, GPR）
 ```c

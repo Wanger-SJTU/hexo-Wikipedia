@@ -17,14 +17,14 @@ source_url: https://zhuanlan.zhihu.com/p/2065444514379178422
 
 本文从完整请求数据流出发，说明 vLLM 在不同并行配置下如何放置权重、KV cache 和 token，以及模型 forward、采样、状态迁移和运行时协调中会发生哪些通信。
 
-vLLM变化实在太快，本文的版本基线是 **vLLM v0.26.0**。并行 gate、attention backend、Connector 注册表和运行时限制都可能随版本变化；文中当前版本均指这一基线。
+vLLM变化实在太快，本文的版本基线是 <strong>vLLM v0.26.0</strong>。并行 gate、attention backend、Connector 注册表和运行时限制都可能随版本变化；文中当前版本均指这一基线。
 
 严格地说，PP 的 stage 间激活传输、P/D 分离的 KV cache 迁移、EPLB 的 expert 权重搬运都不是 collective。为了能从部署角度完整定位流量，本文把通信分为四类：
 
-- **模型数据面 collective**：AllReduce、AllGather、ReduceScatter、AllToAll、Broadcast；
-- **模型数据面 P2P**：PP stage 间 hidden states、EPLB/Elastic EP 的 expert 权重；
-- **跨实例状态传输**：P/D 分离、KV offload/persistence 使用的 KV Connector；
-- **控制面通信**：调度 RPC、元数据广播、DP 对齐、barrier、握手和完成通知。
+- <strong>模型数据面 collective</strong>：AllReduce、AllGather、ReduceScatter、AllToAll、Broadcast；
+- <strong>模型数据面 P2P</strong>：PP stage 间 hidden states、EPLB/Elastic EP 的 expert 权重；
+- <strong>跨实例状态传输</strong>：P/D 分离、KV offload/persistence 使用的 KV Connector；
+- <strong>控制面通信</strong>：调度 RPC、元数据广播、DP 对齐、barrier、握手和完成通知。
 0. 先区分通信类型、逻辑阶段与实际 primitive
 `--enable-expert-parallel` 决定 MoE expert 权重采用 TP shard 还是 EP placement，但它不直接决定底层一定执行物理 AllToAll。
 
@@ -43,10 +43,10 @@ SP 路径：              AGV[EP]  dispatch -> local expert compute -> RSV[EP]  
 0.1 稳态数据面、可选状态迁移和控制面
 源码中出现了某个 collective不等于每个 token 都会执行它。本文按触发频率进一步区分：
 
-- **每层或每 step 的稳态数据面**：TP 的 `AR`、MoE dispatch/combine、DCP attention combine、PP activation P2P；
-- **每 step 的小消息协调**：DP token-count/CUDA Graph 对齐、PP sampled-token broadcast；
-- **低频或按需状态迁移**：EPLB expert 重排、Elastic EP 扩缩容、P/D KV transfer、KV offload；
-- **初始化/析构**：process-group 建立、IPC handle/object 收集、buffer reservation、barrier。性能分析时应分别统计这些路径。把初始化 barrier 或 P/D 的 RDMA 流量算进稳态 NCCL collective，会得到错误结论。
+- <strong>每层或每 step 的稳态数据面</strong>：TP 的 `AR`、MoE dispatch/combine、DCP attention combine、PP activation P2P；
+- <strong>每 step 的小消息协调</strong>：DP token-count/CUDA Graph 对齐、PP sampled-token broadcast；
+- <strong>低频或按需状态迁移</strong>：EPLB expert 重排、Elastic EP 扩缩容、P/D KV transfer、KV offload；
+- <strong>初始化/析构</strong>：process-group 建立、IPC handle/object 收集、buffer reservation、barrier。性能分析时应分别统计这些路径。把初始化 barrier 或 P/D 的 RDMA 流量算进稳态 NCCL collective，会得到错误结论。
 
 0.2 vLLM 的通信域
 工作区版本按下面的逻辑维度排列 ranks：
@@ -92,7 +92,7 @@ vLLM 还有一条容易和 PCP、MoE sequence parallel 混淆的 dense TP 编译
 原始：input -> AR[TP] -> RMSNorm -> output
 改写：input -> RS(dim=token)[TP] -> local RMSNorm -> AG(dim=token)[TP] -> output
 
-![](https://pic3.zhimg.com/v2-8e47fe070bdb7146df19f58217357710_r.jpg)图中 `T` 是本 step padding 后的 batched-token 数。以 `TP=4` 为例，在 `RS` 与 `AG` 之间，rank 0～3 分别只持有 `[T/4,H]` 的 token slice，并在本地完成对应的 RMSNorm；`AG` 再恢复下一次 column-parallel GEMM 所需的完整 token 输入。也就是说，**权重继续按普通 TP 切分，只有中间 activation 暂时沿 token 维切分**。
+![](https://pic3.zhimg.com/v2-8e47fe070bdb7146df19f58217357710_r.jpg)图中 `T` 是本 step padding 后的 batched-token 数。以 `TP=4` 为例，在 `RS` 与 `AG` 之间，rank 0～3 分别只持有 `[T/4,H]` 的 token slice，并在本地完成对应的 RMSNorm；`AG` 再恢复下一次 column-parallel GEMM 所需的完整 token 输入。也就是说，<strong>权重继续按普通 TP 切分，只有中间 activation 暂时沿 token 维切分</strong>。
 
 如何开启
 vLLM 中，建议显式同时打开 SP 改写和 GEMM-collective fusion：
@@ -106,7 +106,7 @@ vllm serve MODEL \
       &#34;fuse_gemm_comms&#34;: true
     }
   }&#39;
-`fuse_gemm_comms=true` 会自动令 `enable_sp=true`，示例同时写出两项是为了明确意图。需要注意：尽管本版本默认优化级别是 `-O2`，`IS_DENSE` 当前被硬编码为 `False`，因此 `-O2/-O3` **不会自动打开**这两个 pass，必须像上面一样显式配置。
+`fuse_gemm_comms=true` 会自动令 `enable_sp=true`，示例同时写出两项是为了明确意图。需要注意：尽管本版本默认优化级别是 `-O2`，`IS_DENSE` 当前被硬编码为 `False`，因此 `-O2/-O3` <strong>不会自动打开</strong>这两个 pass，必须像上面一样显式配置。
 
 实际进入优化路径的条件
 条件当前工作区版本的具体判断TPtensor_parallel_size > 1；TP=1 时 vLLM 会关闭 enable_sp 和 fuse_gemm_comms编译模式必须进入 vLLM 的 TorchInductor 编译路径，并满足 full-graph 要求：use_inductor_graph_partition=true，或 splitting_ops=[]；显式开启上述 pass 后，vLLM 会在需要时把 splitting_ops 清空token 阈值只有当前 compiled range 的 batched-token 数达到 sp_min_token_num 才应用；低于阈值仍保留普通 AR[TP]自动阈值未显式设置 sp_min_token_num 时，当前启发式覆盖 CUDA SM90/H100、SM100-family Blackwell 和 XPU；设备与模型未命中对应 policy 时关闭该优化shapetoken 数必须能被 TP 整除；GPU model runner 会把 batched tokens 向上 padding 到 TP 的整数倍计算图模式必须实际匹配 AllReduce -> RMSNorm、AllReduce -> fused_add_RMSNorm，或其支持的静态 FP8 quantization 变体；没有匹配到的层不会改写融合支持fuse_gemm_comms 依赖 CUDA symmetric-memory collective；普通 FP16/BF16 GEMM 有对应模式，scaled-matmul 变体只在模型 dtype 为 BF16 时注册自动阈值统一按下面的公式计算：
@@ -120,7 +120,7 @@ sp_min_token_num =
 优劣分析
 `enable_sp` 单独开启与再开启通信融合的优劣要分开看：
 
-配置优势代价和局限仅 enable_sp：RS -> local RMSNorm -> AG每个 rank 的 RMSNorm 只处理 T/TP tokens，减少重复点计算；RS～AG 区间的 residual/activation 占用约降为原来的 1/TP；为后续 GEMM-collective fusion 创建计算图边界RS+AG 与 ring AllReduce 的总通信量级相同，SP 本身不直接减少通信；拆分、聚合和同步存在额外调度开销，小 batch 可能变慢再开 fuse_gemm_comms：GEMM+RS、AG+GEMM使用 symmetric-memory fused op 按 token chunk 建立通信计算流水，减少独立 kernel launch，并让 GEMM 与通信重叠；这是主要性能收益来源要求 full-graph compilation、CUDA symmetric memory、足够大的 token 数和可匹配的计算图；需要额外通信 workspace，收益对模型形状、TP 大小和 GPU/NVLink 拓扑敏感总体上，这条优化更适合 hidden size 较大、batched-token 数较多且 TP 卡间互联较快的吞吐场景；小 batch decode、互联较弱或无法命中融合模式时，额外 padding、同步和调度成本可能抵消收益。vLLM 的 fusion 设计文档给 `fuse_gemm_comms` 的经验收益是约 **7%～10% E2E**，但这不是保证值，必须针对实际模型和负载做开启/关闭对照测试。
+配置优势代价和局限仅 enable_sp：RS -> local RMSNorm -> AG每个 rank 的 RMSNorm 只处理 T/TP tokens，减少重复点计算；RS～AG 区间的 residual/activation 占用约降为原来的 1/TP；为后续 GEMM-collective fusion 创建计算图边界RS+AG 与 ring AllReduce 的总通信量级相同，SP 本身不直接减少通信；拆分、聚合和同步存在额外调度开销，小 batch 可能变慢再开 fuse_gemm_comms：GEMM+RS、AG+GEMM使用 symmetric-memory fused op 按 token chunk 建立通信计算流水，减少独立 kernel launch，并让 GEMM 与通信重叠；这是主要性能收益来源要求 full-graph compilation、CUDA symmetric memory、足够大的 token 数和可匹配的计算图；需要额外通信 workspace，收益对模型形状、TP 大小和 GPU/NVLink 拓扑敏感总体上，这条优化更适合 hidden size 较大、batched-token 数较多且 TP 卡间互联较快的吞吐场景；小 batch decode、互联较弱或无法命中融合模式时，额外 padding、同步和调度成本可能抵消收益。vLLM 的 fusion 设计文档给 `fuse_gemm_comms` 的经验收益是约 <strong>7%～10% E2E</strong>，但这不是保证值，必须针对实际模型和负载做开启/关闭对照测试。
 
 1.3 Pipeline Parallel
 PP 按层切模型。每个 PP stage 只保存分配给自己的层权重，并只维护这些层对应的 KV cache。以 `PP=2、TP=2` 为例，四个 GPU 的典型分组是：
@@ -139,7 +139,7 @@ PP groups: {GPU0, GPU2}, {GPU1, GPU3}
 - 最后一个 stage 执行 final norm、LMHead 和 sampling。这里的 PP 主数据流是相邻 stage 的 `P2P[PP]`，不是 `AR[PP]`。tensor metadata/object 走 PP CPU group，CUDA tensors 走 PP device group。
 
 1.3.2 TP-aware PP 传输优化
-这是一项 **PP 边界重复数据去除**，与前面的 Dense SP、`fuse_gemm_comms` 无关。当 PP 与 TP 组合时，stage 边界的 hidden tensor 通常已通过 TP collective 在各 TP ranks 上复制；如果每个 rank 都向下一 stage 发送完整 tensor，就会在不同 PP 链路上重复传输相同数据。vLLM 将它改为：
+这是一项 <strong>PP 边界重复数据去除</strong>，与前面的 Dense SP、`fuse_gemm_comms` 无关。当 PP 与 TP 组合时，stage 边界的 hidden tensor 通常已通过 TP collective 在各 TP ranks 上复制；如果每个 rank 都向下一 stage 发送完整 tensor，就会在不同 PP 链路上重复传输相同数据。vLLM 将它改为：
 
 发送端：每个 TP rank 从 replicated tensor 取一段 -> P2P 到下一 stage 的对应 TP rank
 接收端：各 TP rank 收到不同 slice -> AG[TP] 重建完整 tensor
@@ -332,7 +332,7 @@ top-k routing 可能让一个 token fan-out 到多个 expert owners，因此不�
 DP=2, TP=2, EP=TP x DP=4
 每个 DP rank 处理不同请求，每个 DP rank 内部使用 TP 切分 attention。
 
-以下完整流程只适用于 **模型已接入 MoE sequence parallel，且 backend 被 SP gate 支持** 的路径。v0.26.0 的 SP gate 包含：
+以下完整流程只适用于 <strong>模型已接入 MoE sequence parallel，且 backend 被 SP gate 支持</strong> 的路径。v0.26.0 的 SP gate 包含：
 
 allgather_reducescatter
 deepep_high_throughput / deepep_low_latency
@@ -423,8 +423,8 @@ AR[DP] -> 汇总各 rank 的 token count、padding、ubatch decision、cudagraph
 4.2 EPLB：load stats collective 与 expert 权重 P2P
 启用 Expert Parallel Load Balancer 后会增加两种不同通信：
 
-- **统计聚合**：按窗口记录每个 expert 的 token load，通过 `AR[EP]` 得到全局 load；开启 balancedness logging 也会增加这类开销；
-- **权重重排**：计算新的 logical↔physical expert mapping，然后只在需要的 ranks 间搬运 expert weights。权重重排主路径是 P2P，而不是 token dispatch 的 A2A：
+- <strong>统计聚合</strong>：按窗口记录每个 expert 的 token load，通过 `AR[EP]` 得到全局 load；开启 balancedness logging 也会增加这类开销；
+- <strong>权重重排</strong>：计算新的 logical↔physical expert mapping，然后只在需要的 ranks 间搬运 expert weights。权重重排主路径是 P2P，而不是 token dispatch 的 A2A：
 
 torch NCCL isend/irecv
 或 CPU-staged Gloo isend/irecv

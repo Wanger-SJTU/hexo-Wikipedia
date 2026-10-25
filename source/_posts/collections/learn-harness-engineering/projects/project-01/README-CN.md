@@ -19,8 +19,8 @@ categories:
 
 | 目录 | 含义 |
 |------|------|
-| `starter/` | **起点**——只有一个模糊的 `task-prompt.md`，没有 AGENTS.md、没有 feature_list.json。这是你给代理的"弱 harness"版本。 |
-| `solution/` | **参考实现**——相同的应用代码，但配备了完整的 harness 文件（AGENTS.md、feature_list.json、init.sh、claude-progress.md）。这是"显式 harness"版本。 |
+| `starter/` | <strong>起点</strong>——只有一个模糊的 `task-prompt.md`，没有 AGENTS.md、没有 feature_list.json。这是你给代理的"弱 harness"版本。 |
+| `solution/` | <strong>参考实现</strong>——相同的应用代码，但配备了完整的 harness 文件（AGENTS.md、feature_list.json、init.sh、claude-progress.md）。这是"显式 harness"版本。 |
 
 ## 使用方法
 

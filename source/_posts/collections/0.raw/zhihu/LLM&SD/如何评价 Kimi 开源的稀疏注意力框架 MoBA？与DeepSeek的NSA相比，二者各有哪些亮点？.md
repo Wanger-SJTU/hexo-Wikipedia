@@ -17,7 +17,7 @@ source_url: https://www.zhihu.com/question/12696635711/answer/105709816990
 
 应章老师 [@ZHANG Mingxing](https://www.zhihu.com/people/e737640d16feabedfd7fd87e25f4326f)  邀请来答一下之前做MoBA起起伏伏的心路历程，我戏称为三入思过崖。  
 
-**MoBA 的开始**
+<strong>MoBA 的开始</strong>
 
 MoBA这个项目的开始的非常早，在23年5月底月之暗面刚建立不久的时候，入职报到当天就被 Tim [@周昕宇](https://www.zhihu.com/people/0224c265bcb1f3ce5e711352fa64d547) 拉到了小房间里，和裘老师 [@未明秋衣](https://www.zhihu.com/people/c7417dd5ea30f683e2aefac5d3cd7d52) （MoBA idea 的提出者）以及Dylan一起开始搞 Long Context Training。这里首先要感谢一下Tim的耐心和教导，对一个LLM新手给予厚望并乐意培养，研发各种上线模型和模型相关技术的诸位大佬里面，很多人和我一样基本是从零开始接触LLM并提供了大量的高效产出。
 
@@ -33,7 +33,7 @@ MoBA这个项目的开始的非常早，在23年5月底月之暗面刚建立不�
 
 ![](https://picx.zhimg.com/v2-6b273618615a02c9d38fb5b937823a61_r.jpg?source=2c26e567)一个非常简单的MoBA v0.5 的示意图
 
-**一入思过崖**
+<strong>一入思过崖</strong>
 进入思过崖当然是一种戏称，是停下来寻找改进方案的时间，也是深入理解新结构的时间。第一次进思过崖悟道，进去的快，出来的也快。Tim 作为月之暗面点子王掏出了新的改进思路，将MoBA 从串行两层注意力方案改并行的单层注意力方案。MoBA不再增加额外的模型参数，而是利用现有注意力机制参数，同步学习一个序列里面的所有信息，这样就可以尽可能不变动当前结构进行Continue Training。
 
 这个思路我们称之为 MoBA v1。
@@ -42,8 +42,8 @@ MoBA v1实际上是Sparse Attention + Context Parallel的产物，在当时Conte
 
 ![](https://picx.zhimg.com/v2-225ab422cfcb373aafd439aacc5d97cb_r.jpg?source=2c26e567)一个非常简单的MoBA v1 的 示意图
 
-**二入思过崖**
-第二次留在思过崖时间比较长，从23年9月开始，至出思过崖的时候已经到了24年初。但是在思过崖里并不意味着被放弃了，我得以体会到在月之暗面工作的第二大特色，**饱和救援**。
+<strong>二入思过崖</strong>
+第二次留在思过崖时间比较长，从23年9月开始，至出思过崖的时候已经到了24年初。但是在思过崖里并不意味着被放弃了，我得以体会到在月之暗面工作的第二大特色，<strong>饱和救援</strong>。
 
 除了一直就在强力输出的Tim和裘老师，苏神、远哥以及各路大佬都参与进行激烈的讨论，开始拆解并修正MoBA，首先被修正的就是那个简单的Weighted Sum叠加。我们这里尝试过各种和Gate Matrix 相乘相加的叠加搞法之后，Tim从故纸堆里掏出了 [Online Softmax](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/1805.02867)，说这个应该能行。其中最大的一个好处是使用Online Softmax 之后我们可以通过将稀疏度降低至0（全选所有的分块），来和一个数学等价的Full Attention 进行严格对照debug，这解决了大部分实现中遇到的难题。但是上下文拆分在数据并行节点之间的这个设计依然会导致不均衡问题，一个数据sample在数据并行间平铺之后，第一个数据并行 rank上的头部几个 token 会被后续茫茫多的Q发送进行 attend，带来极差的平衡性，进而拖慢加速效率。这个现象也有一个更广为人知的名字 -- [Attention Sink](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2309.17453)。
 
@@ -53,14 +53,14 @@ MoBA v1实际上是Sparse Attention + Context Parallel的产物，在当时Conte
 
 但是最不意外的，只有意外。SFT阶段部分数据带着非常稀疏的loss mask（使得只有1%甚至更少的token 有训练用的梯度），这导致MoBA在大部分sft任务上表现良好，但是越是长文总结类型任务，loss mask 越是稀疏，反应在出来的学习效率越是低下。MoBA在准上线流程中被按下暂停键，第三次进入思过崖。
 
-**三入思过崖**
+<strong>三入思过崖</strong>
 第三次进入思过崖的时候其实最紧张，此时整个项目已经有了巨大的沉没成本，公司付出了大量的计算资源和人力资源，如果端到端最后长文应用场景出现问题，那么前期研究接近于打水漂。幸运的是，由于MoBA本身优秀的数学性质，在新一轮饱和救援的实验ablation中，我们发现去掉loss mask 表现就非常良好，带上loss mask 表现就不尽如人意，进而意识到是带有gradient 的token 在SFT阶段过于稀疏，从而带来的学习效率低下的问题，因此通过将最后几层修改为 full attention 来提高反向传播时带gradient token的密度，改善特定任务的学习效率。后续其它实验证明这种切换并不会显著影响切换回来的Sparse Attention 效果，在1M 长度上和同结构 Full attention 各项指标持平。MoBA再次从思过崖回归，并成功上线服务用户。
 
 最后的最后，感谢各路大神的拔刀相助，感谢公司的大力支持以及巨量显卡。现在我们开放的出来的就是我们在线上用的代码，是一个已经经过了长期验证，因为实际需求砍掉了各种额外设计，保持极简结构但同时具备足够效果的Sparse Attention结构。希望MoBA以及它诞生的CoT能给大家带来一些帮助和价值。
 
-**Report**：[MoBA: Mixture of Block Attention for Long-Context LLMs](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2502.13189)
+<strong>Report</strong>：[MoBA: Mixture of Block Attention for Long-Context LLMs](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2502.13189)
 
-**Code**：[https://github.com/MoonshotAI/MoBA](https://link.zhihu.com/?target=https%3A//github.com/MoonshotAI/MoBA) 
+<strong>Code</strong>：[https://github.com/MoonshotAI/MoBA](https://link.zhihu.com/?target=https%3A//github.com/MoonshotAI/MoBA) 
 
 FAQ
 顺带借地方回答一些这两天频繁被人问到的问题，这两天基本麻烦章老师和苏神当客服回答问题了，实在过意不去，这里提取了几个常见问题一并回答一下。

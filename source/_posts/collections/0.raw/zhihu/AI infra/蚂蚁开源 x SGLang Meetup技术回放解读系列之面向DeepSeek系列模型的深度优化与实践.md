@@ -31,7 +31,7 @@ source_url: https://zhuanlan.zhihu.com/p/2035331396995129665
 
 之前看一些视频分享可能你并不会理解到太多细节，通过Codex+GPT5.5你可以彻底回放这些slides之后的技术细节甚至是代码细节，获取更多的知识来帮助你理解和学习。
 
-**因此，我觉得这种模式是真心推荐给普通开发工程师的，你可以用上面的prompt先提前学一遍你要处理的工作，接下来带着这些已有的context做一些自己的思考和改进。**
+<strong>因此，我觉得这种模式是真心推荐给普通开发工程师的，你可以用上面的prompt先提前学一遍你要处理的工作，接下来带着这些已有的context做一些自己的思考和改进。</strong>
 
 除了这一点之外，我最近也发现Codex GPT5.5在复现论文或者技术博客数据方面也非常强，这个大家自己使用之后应该就能体会到，我尝试复现了一篇 [https://pytorch.org/blog/faster-diffusion-on-blackwell-mxfp8-and-nvfp4-with-diffusers-and-torchao/](https://link.zhihu.com/?target=https%3A//pytorch.org/blog/faster-diffusion-on-blackwell-mxfp8-and-nvfp4-with-diffusers-and-torchao/) 也是直接端到端的完全做出来了，没有任何中间干预。目前block我们的就是GPT5.5实在太贵了。放假的这几天Token快速烧完之后我有了停电的那种无力感，什么都做不动了，甚至没有Agent的辅助很难静心学个新东西，感觉是彻底有点废了。后面打算试一下DeepSeek V4模型看看能不能替换GPT5.5 解决这些需求，有机会也评测一下给大家看看
 
@@ -278,7 +278,7 @@ PR [#10567](https://link.zhihu.com/?target=https%3A//github.com/sgl-project/sgla
 - 优化 FP8 block quant 下 `b_scale` 的读取和计算；
 - 基于 TMA 重构 down projection 的输入 A 和权重 B 访问；
 - 用真实推理过程采集到的 `topk_ids` 做 tuning；
-- up projection 和 down projection 分别加载不同的 tuned config。PR 给出的关键数字是：down projection 的计算利用率从 **45.20% 提升到 81.12%**，8K tokens 场景下 100 次采样的平均延迟从 **2.430ms 降到 1.435ms**。
+- up projection 和 down projection 分别加载不同的 tuned config。PR 给出的关键数字是：down projection 的计算利用率从 <strong>45.20% 提升到 81.12%</strong>，8K tokens 场景下 100 次采样的平均延迟从 <strong>2.430ms 降到 1.435ms</strong>。
 
 真实 topk tuning 的流程也很实用。先在推理过程中存下每层的 `topk_ids`：
 

@@ -23,13 +23,13 @@ $benifit=acceptlen&#x2217;T(fwd1token)&#x2212;T(fwddraftlentokens)&#x2212;DraftM
 
 通俗讲，投机采样的收益上限bs=1 forward accept length次的耗时减去bs=draft length forward 1次的时间，再扣除投机采样的overhead。overhead主要有两方面组成，一个部分是draft length由于猜测准确率有限，往往大于accept length，所以verification有额外开销；第二部分是draft model本身的开销，这部分相对较少。
 
-到MoE推理，Eagle本身还是可以有与Dense相匹配的接受率，但是verification的overhead却大幅提高了，主要在MoE MLP层，每个verification token都需要被路由到TopK个expert上，成TopK倍增加了通信量和Expert计算量。在**已经具备一定decoding batch size的前提**下，有可能投机采样的收益会衰减。
+到MoE推理，Eagle本身还是可以有与Dense相匹配的接受率，但是verification的overhead却大幅提高了，主要在MoE MLP层，每个verification token都需要被路由到TopK个expert上，成TopK倍增加了通信量和Expert计算量。在<strong>已经具备一定decoding batch size的前提</strong>下，有可能投机采样的收益会衰减。
 
 目前我们在实际业务中，就遇到了投机采样在MoE推理时收益不符合预期的难点。在此调研一下业界有没有较好的解决方法。
 
 [MoESD](https://link.zhihu.com/?target=https%3A//arxiv.org/pdf/2505.19645) 对上述问题进行了更细致的建模
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_aa021f5822fe.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_aa021f5822fe.jpg)
 
 证明在中等 batch 下 MoE 比 dense 更能从 speculative decoding 中受益，并给出建模（target-efficiency）来衡量“acceptance rate + 验证成本”对加速的影响，从而帮助选择什么时候/在哪些层做 speculation。讨论了为何高 acceptance rate 仍可能因为验证成本而失速
 

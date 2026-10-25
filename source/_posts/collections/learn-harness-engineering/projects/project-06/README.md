@@ -19,8 +19,8 @@ Capstone project: build and benchmark a complete harness, then run cleanup loops
 
 | Directory | Meaning |
 |------|------|
-| `starter/` | **Starting point**: complete product code, but the harness is intentionally weakened (only basic AGENTS.md, with no feature_list.json, session handoff, or clean-state checklist). |
-| `solution/` | **Reference implementation**: maximum harness, with all artifact files present, high quality-document scores, benchmark scripts, and cleanup scanners. |
+| `starter/` | <strong>Starting point</strong>: complete product code, but the harness is intentionally weakened (only basic AGENTS.md, with no feature_list.json, session handoff, or clean-state checklist). |
+| `solution/` | <strong>Reference implementation</strong>: maximum harness, with all artifact files present, high quality-document scores, benchmark scripts, and cleanup scanners. |
 
 ## How to Use
 

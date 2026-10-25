@@ -19,15 +19,15 @@ source_url: https://zhuanlan.zhihu.com/p/425420889
 
 在Linux 2.6中， ARM架构的板极硬件细节过多地被硬编码在arch/arm/plat-xxx和arch/arm/mach-xxx中，采用设备树后，许多硬件的细节可以直接通过它传递给Linux，而不再需要在内核中进行大量的冗余编码。
 
-### **1. linux设备树中DTS、 DTC和DTB的关系**
+### <strong>1. linux设备树中DTS、 DTC和DTB的关系</strong>
 
 - (1) DTS：.dts文件是设备树的源文件。由于一个SoC可能对应多个设备，这些.dst文件可能包含很多共同的部分，共同的部分一般被提炼为一个 .dtsi 文件，这个文件相当于C语言的头文件。
 - (2) DTC：DTC是将.dts编译为.dtb的工具，相当于gcc。
 - (3) DTB：.dtb文件是 .dts 被 DTC 编译后的二进制格式的设备树文件，它可以被linux内核解析。
 
-### **2. DTS语法**
+### <strong>2. DTS语法</strong>
 
-### **2.1 .dtsi 头文件**
+### <strong>2.1 .dtsi 头文件</strong>
 
 和 C 语言一样，设备树也支持头文件，设备树的头文件扩展名为 .dtsi；同时也可以像C 语言一样包含 .h头文件；例如：（代码来源 linux-4.15/arch/arm/boot/dts/s3c2416.dtsi）
 
@@ -37,26 +37,26 @@ source_url: https://zhuanlan.zhihu.com/p/425420889
 
 注：.dtsi 文件一般用于描述 SOC 的内部外设信息，比如 CPU 架构、主频、外设寄存器地址范围，比如 UART、 IIC 等等。
 
-### **2.2 设备节点**
+### <strong>2.2 设备节点</strong>
 
 在设备树中节点命名格式如下：
 
 `node-name@unit-address
 `
 
-**node-name：**是设备节点的名称，为ASCII字符串，节点名字应该能够清晰的描述出节点的功能，比如“uart1”就表示这个节点是UART1外设；**unit-address：**一般表示设备的地址或寄存器首地址，如果某个节点没有地址或者寄存器的话 “unit-address” 可以不要；注：根节点没有node-name 或者 unit-address，它被定义为 /。
+<strong>node-name：</strong>是设备节点的名称，为ASCII字符串，节点名字应该能够清晰的描述出节点的功能，比如“uart1”就表示这个节点是UART1外设；<strong>unit-address：</strong>一般表示设备的地址或寄存器首地址，如果某个节点没有地址或者寄存器的话 “unit-address” 可以不要；注：根节点没有node-name 或者 unit-address，它被定义为 /。
 
 设备节点的例子如下图：
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_d9b513bec744.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_d9b513bec744.jpg)
 
 **
 
 在上图中：cpu 和 ethernet依靠不同的unit-address 分辨不同的CPU；可见，node-name相同的情况下，可以通过不同的unit-address定义不同的设备节点。**
 
-### **2.2.1 设备节点的标准属性**
+### <strong>2.2.1 设备节点的标准属性</strong>
 
-#### **2.2.1.1 compatible 属性**
+#### <strong>2.2.1.1 compatible 属性</strong>
 
 compatible 属性也叫做 “兼容性” 属性，这是非常重要的一个属性！compatible 属性的值是一个字符串列表， compatible 属性用于将设备和驱动绑定起来。字符串列表用于选择设备所要使用的驱动程序。compatible 属性值的推荐格式：
 
@@ -82,7 +82,7 @@ model 属性值也是一个字符串，一般 model 属性描述设备模块信�
 `model = "Samsung S3C2416 SoC";
 `
 
-#### **2.2.1.3 phandle 属性**
+#### <strong>2.2.1.3 phandle 属性</strong>
 
 phandle属性为devicetree中唯一的节点指定一个数字标识符，节点中的phandle属性，它的取值必须是唯一的(不要跟其他的phandle值一样)，例如：
 
@@ -101,7 +101,7 @@ another-device-node {
 status 属性看名字就知道是和设备状态有关的， status 属性值也是字符串，字符串是设备的状态信息，可选的状态如下表所示：
 
 status值描述
-#### **2.2.1.5 #address-cells 和 #size-cells**
+#### <strong>2.2.1.5 #address-cells 和 #size-cells</strong>
 
 #address-cells 和 #size-cells的值都是无符号 32 位整型，可以用在任何拥有子节点的设备中，用于描述子节点的地址信息。#address-cells 属性值决定了子节点 reg 属性中地址信息所占用的字长(32 位)， #size-cells 属性值决定了子节点 reg 属性中长度信息所占的字长(32 位)。#address-cells 和 #size-cells 表明了子节点应该如何编写 reg 属性值，一般 reg 属性都是和地址有关的内容，和地址相关的信息有两种：起始地址和地址长度，reg 属性的格式一为：
 
@@ -120,7 +120,7 @@ status值描述
 };
 `
 
-#### **2.2.1.6 reg 属性**
+#### <strong>2.2.1.6 reg 属性</strong>
 
 reg 属性的值一般是 (address， length) 对，reg 属性一般用于描述设备地址空间资源信息，一般都是某个外设的寄存器地址范围信息。
 
@@ -161,11 +161,11 @@ reg 属性定义了 serial 设备寄存器的起始地址为 0x4600，寄存器�
 
 经过地址转换， serial 设备可以从 0xe0004600 开始进行读写操作，0xe0004600=0x4600+0xe0000000。
 
-#### **2.2.1.8 name 属性**
+#### <strong>2.2.1.8 name 属性</strong>
 
 name 属性值为字符串， name 属性用于记录节点名字， name 属性已经被弃用，不推荐使用name 属性，一些老的设备树文件可能会使用此属性。
 
-#### **2.2.1.9 device_type 属性**
+#### <strong>2.2.1.9 device_type 属性</strong>
 
 device_type 属性值为字符串， IEEE 1275 会用到此属性，用于描述设备的 FCode，但是设备树没有 FCode，所以此属性也被抛弃了。此属性只能用于 cpu 节点或者 memory 节点。
 
@@ -175,15 +175,15 @@ device_type 属性值为字符串， IEEE 1275 会用到此属性，用于描述
 };
 `
 
-#### **2.2.2 根节点**
+#### <strong>2.2.2 根节点</strong>
 
 每个设备树文件只有一个根节点，其他所有的设备节点都是它的子节点，它的路径是 /。根节点有以下属性：
 
 属性属性值类型描述例如：compatible = "samsung,smdk2440","samsung,s3c24xx" ,内核会优先寻找支持smdk2440的machinedesc结构体，如果找不到才会继续寻找支持s3c24xx的machine_desc结构体(优先选择第一项，然后才是第二项，第三项……)
 
-#### **2.2.3 特殊节点**
+#### <strong>2.2.3 特殊节点</strong>
 
-#### **2.2.3.1 /aliases 子节点**
+#### <strong>2.2.3.1 /aliases 子节点</strong>
 
 aliases 节点的主要功能就是定义别名，定义别名的目的就是为了方便访问节点。
 
@@ -195,7 +195,7 @@ aliases 节点的主要功能就是定义别名，定义别名的目的就是为
 };
 `
 
-#### **2.2.3.2 /memory 子节点**
+#### <strong>2.2.3.2 /memory 子节点</strong>
 
 所有设备树都需要一个memory设备节点，它描述了系统的物理内存布局。如果系统有多个内存块，可以创建多个memory节点，或者可以在单个memory节点的reg属性中指定这些地址范围和内存空间大小。
 
@@ -219,7 +219,7 @@ memory@10000000 {
 };
 `
 
-#### **2.2.3.3 /chosen 子节点**
+#### <strong>2.2.3.3 /chosen 子节点</strong>
 
 chosen 并不是一个真实的设备， chosen 节点主要是为了 uboot 向 Linux 内核传递数据，重点是 bootargs 参数。例如：
 
@@ -290,9 +290,9 @@ cpus节点下有1个或多个cpu子节点, cpu子节点中用reg属性用来标�
 };
 `
 
-#### **2.2.3.5 引用其他节点**
+#### <strong>2.2.3.5 引用其他节点</strong>
 
-#### **2.2.3.5.1 phandle**
+#### <strong>2.2.3.5.1 phandle</strong>
 
 节点中的phandle属性, 它的取值必须是唯一的(不要跟其他的phandle值一样)
 
@@ -306,7 +306,7 @@ another-device-node {
 };
 `
 
-#### **2.2.3.5.2 label**
+#### <strong>2.2.3.5.2 label</strong>
 
 `PIC: pic@10000000 {
     interrupt-controller;
@@ -319,11 +319,11 @@ another-device-node {
 };
 `
 
-#### **2.2.4 DTB格式**
+#### <strong>2.2.4 DTB格式</strong>
 
 .dtb文件是 .dts 被 DTC 编译后的二进制格式的设备树文件，它的文件布局如下：
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_599b14d10023.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_599b14d10023.jpg)
 
 从上图可以看出，DTB文件主要包含四部分内容：struct ftdheader、memory reservation block、structure block、strings block；
 
@@ -375,7 +375,7 @@ structure block是用于描述设备树节点的结构，保存着节点的信�
 - ④ FDT_END (0x00000009)：表示structure block的结束。
 单个节点在structure block的存储格式如下图如所示：(注：子节点的存储格式也是一样)
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_03cb75a626c5.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_03cb75a626c5.jpg)
 
 总结：
 
@@ -385,7 +385,7 @@ structure block是用于描述设备树节点的结构，保存着节点的信�
 - (4) structure block保存节点的信息，节点的结构；
 - (5) strings block保存属性的名字，将属性名字单独作为字符串保存；
 
-#### **2.2.5 DTB文件分析**
+#### <strong>2.2.5 DTB文件分析</strong>
 
 编译生成dtb文件的源设备树jz2440.dts文件如下：
 
@@ -418,7 +418,7 @@ structure block是用于描述设备树节点的结构，保存着节点的信�
 
 jz2440.dtb 文件的内容如下：
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_a9a99056fbf5.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_a9a99056fbf5.jpg)
 
 接下来我们对应上图的编号逐一分析，其中编号①~⑩表示的是fdtheader 结构体的成员信息：
 
@@ -440,12 +440,12 @@ jz2440.dtb 文件的内容如下：
 - ⑰ 表示这个属性的名字在strings block的偏移量是0，找到strings block的地址0x0174的地方，可知这个属性的名字是model；
 - ⑱ 这个model属性的值是"SMDK2440"，加上字符串的结束符NULL，刚好9个字节；
 
-#### **2.2.6 DTB文件结构图**
+#### <strong>2.2.6 DTB文件结构图</strong>
 
 (1) dtb 文件的结构图如下：
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_37c603405303.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_37c603405303.jpg)
 
 Linux设备树语法规范 (2) 设备节点的结构图如下：
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_0ccf8dbf6f2d.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_0ccf8dbf6f2d.jpg)

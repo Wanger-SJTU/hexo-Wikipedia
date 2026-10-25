@@ -15,28 +15,28 @@ source_url: https://zhuanlan.zhihu.com/p/1977884110639890643
 ---
 
 
-深度学习已经进入了**post-attention时代。**随着生成的精度逐渐令人满意，研究者们开始比拼上下文长度和生成效率。
+深度学习已经进入了<strong>post-attention时代。</strong>随着生成的精度逐渐令人满意，研究者们开始比拼上下文长度和生成效率。
 
 让我们思考，当我们回答某个问题需要一本百科全书中的知识，我们会通篇精读吗？当我们欣赏一幅无限细节的画作时，我们会逐个像素观看吗？当然不会，因为人脑的注意力有限，巨量的信息涌入，只会让我们“想不过来”。
 
 我们会先概览全文，定位到关键区域以后，再仔细分析，检索需要的内容。
 
-后注意力时代的**长序列场景**正是要处理这样的巨量信息，传统attention对整个序列做softmax，会导致巨额计算开销和KV Cache储存开销，我们面临着“注意力不够用的问题”。模仿人脑处理方式的稀疏化技术便应运而生。无论是LLM还是DiT，稀疏化几乎是最make sense 且 promising的方案。
+后注意力时代的<strong>长序列场景</strong>正是要处理这样的巨量信息，传统attention对整个序列做softmax，会导致巨额计算开销和KV Cache储存开销，我们面临着“注意力不够用的问题”。模仿人脑处理方式的稀疏化技术便应运而生。无论是LLM还是DiT，稀疏化几乎是最make sense 且 promising的方案。
 
 所以我们今天来学习最新的稀疏化技术。本文将会介绍2025年蓬勃生长的稀疏生态，其中LLM稀疏包括NSA，FlashNSA，MoBA，FlashMobA，DiT稀疏包括DSV，SVG，VSA，SLA，以及通用的稀疏量化策略SpargeAttn。
 
 Preliminary：MHA、MQA、GQA和MLA
- 主要参考：苏剑林：[缓存与效果的极限拉扯：从MHA、MQA、GQA到MLA](https://link.zhihu.com/?target=https%3A//spaces.ac.cn/archives/10091)**MHA**：最传统的多头注意力，定性而言，每一个头代表了一种关注的特征（QKV的表示空间）。从这里也引入了decode阶段的KV Cache，相应地，每一个head都有自己的KV。
+ 主要参考：苏剑林：[缓存与效果的极限拉扯：从MHA、MQA、GQA到MLA](https://link.zhihu.com/?target=https%3A//spaces.ac.cn/archives/10091)<strong>MHA</strong>：最传统的多头注意力，定性而言，每一个头代表了一种关注的特征（QKV的表示空间）。从这里也引入了decode阶段的KV Cache，相应地，每一个head都有自己的KV。
 
-**MQA**：2019年在Fast Transformer Decoding中被提出，看来天下苦KV Cache久矣。简单而言，多头Query共享一个KV。好处是Attention的参数量减少了将近一半（KV的Linear），坏处是精度的下降和FFN中参数量的相应提升。
+<strong>MQA</strong>：2019年在Fast Transformer Decoding中被提出，看来天下苦KV Cache久矣。简单而言，多头Query共享一个KV。好处是Attention的参数量减少了将近一半（KV的Linear），坏处是精度的下降和FFN中参数量的相应提升。
 
-**GQA**：一个折中方案，一组Query共享一个KV。在Llama2/3中被使用，组大小为8。有趣的是，这个参数设置是软硬件codesign的结果。在LLM必须分布式部署的时候，g=8恰恰是最满足张量并行效率的组大小。
+<strong>GQA</strong>：一个折中方案，一组Query共享一个KV。在Llama2/3中被使用，组大小为8。有趣的是，这个参数设置是软硬件codesign的结果。在LLM必须分布式部署的时候，g=8恰恰是最满足张量并行效率的组大小。
 
-**MLA**：在DeepSeek-v2中被使用，从投影的角度压缩了KV，带来了更灵活的显存精度调整，同时通过低秩进一步压缩KV Cache。同时，在压缩的
+<strong>MLA</strong>：在DeepSeek-v2中被使用，从投影的角度压缩了KV，带来了更灵活的显存精度调整，同时通过低秩进一步压缩KV Cache。同时，在压缩的
 ![](https://www.zhihu.com/equation?tex=c_t)序列上，增加部分序列来添加RoPE位置编码。
 
-**稀疏 Attention（Sparse Attention）** 的定义非常直观：**在计算注意力权重时，不再让每个 Token 都与序列中所有的 Token 进行交互，而是根据某种规则，只选择一小部分“重要”的 Token 进行计算。**
-实现稀疏化的最大挑战在于：**我们如何预知哪些 Token 之间是重要的？**
+<strong>稀疏 Attention（Sparse Attention）</strong> 的定义非常直观：<strong>在计算注意力权重时，不再让每个 Token 都与序列中所有的 Token 进行交互，而是根据某种规则，只选择一小部分“重要”的 Token 进行计算。</strong>
+实现稀疏化的最大挑战在于：<strong>我们如何预知哪些 Token 之间是重要的？</strong>
 理想情况下，我们希望只计算那些注意力权重大的点位。但尴尬的是，在不进行全量计算之前，我们很难精确知道哪些位置的权重会大。为了解决这个“先有鸡还是先有蛋”的问题，目前有三种主流方案：
 
 - 先验固定模式 (Fixed/Static Patterns)：基于对语言特性的观察（如局部相关性），人为设定一套固定的计算规则，不随输入内容改变。
@@ -44,7 +44,7 @@ Preliminary：MHA、MQA、GQA和MLA
 - 后训练 (Post-training/Learned Sparsity)：在模型训练完成（或微调阶段）后，通过进一步训练分析模型已有的注意力分布规律来确定稀疏模式。
 方案类型开发工作量理论效果硬件友好度适用场景先验固定低中高预训练长文本模型、端侧轻量化在线预测中中上中动态长度变化大的序列处理训练后预测高极高中下大模型推理加速、KV Cache 压缩
 在我看来，一个好的稀疏策略，一定是既要又要还要的：
-**既要前置工作简单，又要算法一致性高，还要硬件友好。**
+<strong>既要前置工作简单，又要算法一致性高，还要硬件友好。</strong>
 
 NSA：Hardware-Aligned and Natively Trainable Sparse Attention
  25年2月，北大DeepSeek  [https://arxiv.org/abs/2502.11089。](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2502.11089%25E3%2580%2582)这是ACL25的best paper，有趣的是DeepSeek v3.2并没有采用这个架构。
@@ -84,9 +84,9 @@ FSA换了一下，在inner loop去遍历Q，而KV则在outer loop。因为decode
 ![](https://pic3.zhimg.com/v2-7dcb4e01d17b0405864c211e3a87a0cc_r.jpg)
 挑战和方法：FSA难在哪
 
-- 访存不连续：对Query token的访问与KV index直接相关，不连续访存的开销很大。**方法**：使用index tensor去调控数据的搬移，使用两类索引张量：输入索引Ii和输出索引Oi。其中，Ii记录了每个KV块需要处理的query token的索引，Oi则用于管理中间结果的连续存储，他们都是NSA预先计算得到的。理论上说，NSA的定Q访存KV和FSA的定KV访存Q，再做online softmax，所需要的访存量是相同的。
+- 访存不连续：对Query token的访问与KV index直接相关，不连续访存的开销很大。<strong>方法</strong>：使用index tensor去调控数据的搬移，使用两类索引张量：输入索引Ii和输出索引Oi。其中，Ii记录了每个KV块需要处理的query token的索引，Oi则用于管理中间结果的连续存储，他们都是NSA预先计算得到的。理论上说，NSA的定Q访存KV和FSA的定KV访存Q，再做online softmax，所需要的访存量是相同的。
 
-- 一个Query的online softmax结果分散在不同KV 对应的thread block当中。如上图NSA中，需要开辟一个buffer进行结果的累积。**方法**：分离设计了一个专用的reduction kernel在buffer中进行online softmax结果的reduce。分离kernel会带来额外开销，但如图2右边所示，并不高。
+- 一个Query的online softmax结果分散在不同KV 对应的thread block当中。如上图NSA中，需要开辟一个buffer进行结果的累积。<strong>方法</strong>：分离设计了一个专用的reduction kernel在buffer中进行online softmax结果的reduce。分离kernel会带来额外开销，但如图2右边所示，并不高。
 
 Evaluation解读
 尝试解读一下实验结果，直观观察一下NSA和FSA的优势和insight。
@@ -101,7 +101,7 @@ MoBA: Mixture of Block Attention for Long-Context LLMs
  25年2月18日，与NSA同日发布的Kimi工作，一时瑜亮。https://arxiv.org/abs/2502.13189。
 不得不说Kimi还真是跟DeepSeek杠上了，内部是不是有什么通气或者间谍之类的哈哈哈，这两个工作有点太像了。不过有竞争总是好的。Motivation都是一样的，多快好省地扩展上下文长度。MOBA认为现在主流方案就是线性注意力和稀疏注意力，或多或少加入了启发式的偏见，一个典型就是sliding window attention和线性注意力。MOBA则应用MoE的原理，将怎样使用注意力交给模型的梯度下降来决定：以一种更加“客观”的方式实现稀疏注意力，理论上会更加接近最优。
 
-![](https://pic2.zhimg.com/v2-7c860218ddff82ffbbf27d9e86f69bdd_r.jpg)仍然是**选择KV**的核心思想，将KV按照block来分组。每个Q去路由到自己喜欢的KV那里。至于选择，将K按照block压缩，然后通过Q和Compressed_K的矩阵乘运算结果来选择topK。
+![](https://pic2.zhimg.com/v2-7c860218ddff82ffbbf27d9e86f69bdd_r.jpg)仍然是<strong>选择KV</strong>的核心思想，将KV按照block来分组。每个Q去路由到自己喜欢的KV那里。至于选择，将K按照block压缩，然后通过Q和Compressed_K的矩阵乘运算结果来选择topK。
 
 妈呀，除了没有local的sliding window这个先验的设置以外，其他和NSA实在是太像了。因此我们转向两种架构的异同对比，这里参考了知乎文章：[大模型注意力机制革新之战：NSA与MoBA架构深度解析](https://zhuanlan.zhihu.com/p/24766741461)，不过有点像大模型生成的，不知道用的DeepSeek还是Kimi哈哈哈。
 
@@ -116,7 +116,7 @@ FlashMoBA
 算法建模
 从精度上，论文中给出了基于对MoBA做数学建模的结论。这个建模也并不复杂，就是将实际topk作为groundtruth，尽可能提高router的准确率，然后量化分析与之相关的超参数即可，最后得出来两个比较启发式的结论：
 
-- 优化head dimension和block size的比值，这直接关系到router选择的**信噪比**
+- 优化head dimension和block size的比值，这直接关系到router选择的<strong>信噪比</strong>
 - 对key做一个卷积，更好地收集信号。
 算子优化
 MoBA在blocksize不够大的时候，同样遇上了访存密集的问题，此时top-k和gating反而成为了瓶颈。
@@ -173,16 +173,16 @@ VSA：Trainable Video Sparse Attention
 通过在训练过程中引入稀疏来实现关键token的选择，DiT推理当中Full Attention是真正的计算大户，而且Video的attention局部性要更加明显，因此DiT generation相比LLM Decode更加需要稀疏化和高效化。随着NSA和MoBA的出现，这种稀疏架构被应用于DiT几乎是必然，比拼的就是发文速度。不过这一篇文章，确实做得很solid，实验完整，也提供了新颖的观察。
 
 难点和方法
-训练时稀疏的难点，算法上在于**如何准确而先验地寻找关键token**，硬件上在于稀疏化以后如何适配Flash Attention算子。
+训练时稀疏的难点，算法上在于<strong>如何准确而先验地寻找关键token</strong>，硬件上在于稀疏化以后如何适配Flash Attention算子。
 
 ![](https://pic4.zhimg.com/v2-8fff50837ce14efbf7885ab6a16d308f_r.jpg)方法也是同样的：压缩QKV做粗粒度attention进行topK搜索，细粒度分cube KV做稀疏attention。其中，cube size的选择会带来精度和算子效率的tradeoff。与MoBA不同的是，VSA通过gate合并了粗粒度和细粒度输出，作为一个压缩后全局信息的补充。
 
 实验
-**精度优势：** 加速video的工作有很多，大部分是质量换速度，以TeaCache为代表Feature Reuse系列工作以实现简单，效果明显的特点，不知养活了多少研究者。Sparse Attention作为门槛更高的技术，其优势就应该体现在稀疏以后，能够保持甚至提高生成的质量，最不济也应该推进latency-quality的tradeoff边界。从实验上看，VSA能够做到这一点：
+<strong>精度优势：</strong> 加速video的工作有很多，大部分是质量换速度，以TeaCache为代表Feature Reuse系列工作以实现简单，效果明显的特点，不知养活了多少研究者。Sparse Attention作为门槛更高的技术，其优势就应该体现在稀疏以后，能够保持甚至提高生成的质量，最不济也应该推进latency-quality的tradeoff边界。从实验上看，VSA能够做到这一点：
 
 ![](https://pic4.zhimg.com/v2-8fff50837ce14efbf7885ab6a16d308f_r.jpg)在训练精度上的ablation study，反应了VSA中参数选择的逻辑，也证明了稀疏attention的作为更高阶有损加速方案的好处。
 
-**动态策略：**
+<strong>动态策略：</strong>
 
 ![](https://pic2.zhimg.com/v2-f839290f5ef2860d8db55b717ed93bc5_r.jpg)文章认为，将稀疏模式固定的工作注定是次优的，他们提供了在Wan1.3B上的稀疏模式可视化，体现出了attention head的稀疏性会随着生成的内容高度变化，这几乎直接cue的是Song Han的Sparse Video Gen文章，与他们的观察针锋相对。上面的实验并不足以支撑他们“内容相关”的结论，应该给出不同prompt下的同head图案统计分布。
 
@@ -203,11 +203,11 @@ Abstract
 - Contribution：几步微调，将注意力计算降低95%，attention延时提升13.7x，端到端2.2x。
 如何理解“秩”
 
-- **高秩部分（High-rank）：** 极少数权重极大的点位。它们代表了精确的物体结构、运动边界等关键特征。这部分信息是“不可压缩”的，构成了矩阵的主要秩。
-- **低秩部分（Low-rank）：** 剩余的大量微小权重。它们通常代表背景、全局光影等平滑的上下文。这部分信息具有极高的冗余度，可以用低秩矩阵完美近似。这种方案在文本上可能提升有限，但在视频 DiT 中却很有效，因为：
+- <strong>高秩部分（High-rank）：</strong> 极少数权重极大的点位。它们代表了精确的物体结构、运动边界等关键特征。这部分信息是“不可压缩”的，构成了矩阵的主要秩。
+- <strong>低秩部分（Low-rank）：</strong> 剩余的大量微小权重。它们通常代表背景、全局光影等平滑的上下文。这部分信息具有极高的冗余度，可以用低秩矩阵完美近似。这种方案在文本上可能提升有限，但在视频 DiT 中却很有效，因为：
 
-- **时空冗余性（Spatiotemporal Redundancy）：** 视频中相邻帧的背景几乎不变。这意味着在注意力矩阵中，存在大量的低秩背景信息，线性注意力处理这部分信息的性价比极高。
-- **特征稀疏性：** 视频生成的关注点通常集中在少数运动主体上。相比静态图像，视频的注意力分布更加“稀疏且尖锐”，这为高秩/低秩的解耦提供了物理基础。
+- <strong>时空冗余性（Spatiotemporal Redundancy）：</strong> 视频中相邻帧的背景几乎不变。这意味着在注意力矩阵中，存在大量的低秩背景信息，线性注意力处理这部分信息的性价比极高。
+- <strong>特征稀疏性：</strong> 视频生成的关注点通常集中在少数运动主体上。相比静态图像，视频的注意力分布更加“稀疏且尖锐”，这为高秩/低秩的解耦提供了物理基础。
 方法
 与Sparge attention大致相似，只是预测除了稀疏的“要算”和“不用算”以外，还多了一个“辩证地算”（线性）。
 
@@ -242,7 +242,7 @@ Sparge Attention提供了一种通用的算法：选择性压缩QK来构建稀�
 除此以外，还有GPU warp 级别的稀疏online softmax算法 ，这个其实挺直观的。
 
 算子实现
-**将稀疏方法集成到8-bit量化 Sage-Attention framework ：**Sage attention 是对QK做量化但不跳过计算，Sparse策略则判断是否跳过计算。说是正交，其实对性能的影响是叠加的。但是二者的结合实现起来比较简单。
+<strong>将稀疏方法集成到8-bit量化 Sage-Attention framework ：</strong>Sage attention 是对QK做量化但不跳过计算，Sparse策略则判断是否跳过计算。说是正交，其实对性能的影响是叠加的。但是二者的结合实现起来比较简单。
 
 ![](https://pic4.zhimg.com/v2-ff07925d9f577f0bbb06a41fb464d4e1_r.jpg)
 小巧思

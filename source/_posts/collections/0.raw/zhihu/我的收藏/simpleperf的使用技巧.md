@@ -61,11 +61,11 @@ Google最近在simpleperf中增加了对uprobe的支持。 [simpleperf: Add --up
 
 ### 3 使用kprobe跟踪一些内核调用函数
 
-**例子1：跟踪文件打开** 
+<strong>例子1：跟踪文件打开</strong> 
 
 `simpleperf record -a -g --duration 30 -e "kprobes:myprobe" --kprobe "p:myprobe do_sys_open" -o /data/local/tmp/perf.data`
 
-**例子2：可以增加更多条件过滤例子**
+<strong>例子2：可以增加更多条件过滤例子</strong>
 
 `simpleperf record   -e "kprobes:myprobe" --kprobe "p:myprobe system_heap_do_allocate  len=%x1"  --tp-filter "len == 49942528"  --call-graph dwarf -a  -o /data/cam5.data`
 

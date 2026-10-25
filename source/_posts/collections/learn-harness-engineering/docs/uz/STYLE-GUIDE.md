@@ -30,11 +30,11 @@ Ushbu hujjat `docs/uz/` ostidagi barcha tarjimalar uchun majburiy. LQA tekshiruv
 
 ### Qoida
 
-- Unli + apostrof (`oʻ`, `gʻ`) uchun **ʻ** (U+02BB).
-- Undosh + apostrof (so'z ichida `maʼruza`, `sanʼat`, `taʼlim`, `eʼlon`, `sunʼiy`) uchun **ʼ** (U+02BC).
+- Unli + apostrof (`oʻ`, `gʻ`) uchun <strong>ʻ</strong> (U+02BB).
+- Undosh + apostrof (so'z ichida `maʼruza`, `sanʼat`, `taʼlim`, `eʼlon`, `sunʼiy`) uchun <strong>ʼ</strong> (U+02BC).
 - Lotin tirnoqlari `"…"` matn ichida `“…”` (egma) bilan almashtiriladi.
-- HTML atributlaridagi tirnoqlar (`class="card"`) **toʻgʻri** qoldiriladi.
-- Kod bloklari ichida sintaksis tirnoqlari (mermaid `["matn"]`, JSON, va h.k.) **toʻgʻri** qoldiriladi.
+- HTML atributlaridagi tirnoqlar (`class="card"`) <strong>toʻgʻri</strong> qoldiriladi.
+- Kod bloklari ichida sintaksis tirnoqlari (mermaid `["matn"]`, JSON, va h.k.) <strong>toʻgʻri</strong> qoldiriladi.
 
 ### Tipik so'z imlosi xatolari (avto-tekshiriladi)
 
@@ -55,7 +55,7 @@ Ushbu hujjat `docs/uz/` ostidagi barcha tarjimalar uchun majburiy. LQA tekshiruv
 
 `Harness`, `agent`, `prompt`, `repository`, `pull request`, `commit`, `endpoint`, `pipeline`, `runtime`, `context window`, `lint`, `test`, `type check`, `benchmark`, `feature list`, `init`, `Markdown`, `JSON`, `API`, `IPC`, `Electron`, `React`, `TypeScript`, `Codex`, `Claude Code`, `OpenAI`, `Anthropic`.
 
-Bu soʻzlar tarjima qilinmaydi va **kursivga olinmaydi** (matn ichida tabiiy yozilishi).
+Bu soʻzlar tarjima qilinmaydi va <strong>kursivga olinmaydi</strong> (matn ichida tabiiy yozilishi).
 
 ### Standart tarjimalar
 
@@ -79,7 +79,7 @@ Bu soʻzlar tarjima qilinmaydi va **kursivga olinmaydi** (matn ichida tabiiy yoz
 | session | sessiya |
 | ground truth | haqiqiy holat / yagona haqiqat |
 | system of record | yagona haqiqat manbai |
-| template | **andoza** (NOT shablon) |
+| template | <strong>andoza</strong> (NOT shablon) |
 | guide / guideline | yoʻriqnoma |
 | convention | konvensiya |
 | dependency | bogʻliqlik / kutubxona |
@@ -98,12 +98,12 @@ Keyingi joylarda toʻliq inglizcha atama yoki oʻzbekcha tarjima — qaysi biri 
 
 ### Uslub
 
-- **Suhbatdosh, professional ohang.** Akademik quruq emas, lekin xolislik saqlanadi.
-- **Ikkinchi shaxs koʻplik**: "siz qiling", "tekshiring", "yarating" (hurmat shakli).
-- **Bir xil terminologiya** matn boʻyicha. Bir atama uchun bir tarjima.
-- **Faol nisbat** afzal: "agent kod yozadi" — "kod agent tomonidan yoziladi" emas.
-- **Uzun jumlalarni boʻling.** Inglizcha 30+ soʻzli jumlalarni 2-3 ga ajrating.
-- **Kalkani tashlang.** Soʻzma-soʻz emas, maʼno boʻyicha.
+- <strong>Suhbatdosh, professional ohang.</strong> Akademik quruq emas, lekin xolislik saqlanadi.
+- <strong>Ikkinchi shaxs koʻplik</strong>: "siz qiling", "tekshiring", "yarating" (hurmat shakli).
+- <strong>Bir xil terminologiya</strong> matn boʻyicha. Bir atama uchun bir tarjima.
+- <strong>Faol nisbat</strong> afzal: "agent kod yozadi" — "kod agent tomonidan yoziladi" emas.
+- <strong>Uzun jumlalarni boʻling.</strong> Inglizcha 30+ soʻzli jumlalarni 2-3 ga ajrating.
+- <strong>Kalkani tashlang.</strong> Soʻzma-soʻz emas, maʼno boʻyicha.
 
 ### Punktuatsiya
 
@@ -120,13 +120,13 @@ Keyingi joylarda toʻliq inglizcha atama yoki oʻzbekcha tarjima — qaysi biri 
 
 ### Havolalar
 
-- Inglizcha manba sarlavhalari **tarjima qilinadi** (havola matni).
+- Inglizcha manba sarlavhalari <strong>tarjima qilinadi</strong> (havola matni).
 - URL oʻzgarmaydi.
 - Repo ichidagi havolalar `/uz/` ga yoʻnaltiriladi.
 
 ## 4. Saqlanadigan elementlar
 
-Tarjimada **oʻzgarmaydigan** narsalar:
+Tarjimada <strong>oʻzgarmaydigan</strong> narsalar:
 
 - Kod bloklari — har qanday til (`ts`, `python`, `bash`, `mermaid`).
 - HTML teglari va atributlari.

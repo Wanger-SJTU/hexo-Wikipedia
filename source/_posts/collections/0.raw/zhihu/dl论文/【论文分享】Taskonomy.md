@@ -27,7 +27,7 @@ source_url: https://zhuanlan.zhihu.com/p/93036772
 
 	当下，视觉任务主要还是独立训练，各自完成的。但从直观上来看，视觉任务之间应当是有所联系的，比如知道图片中面法向量的方向与判断图片的景深有关系，物体的轮廓抽取会对语义理解有所帮助。因此，本文的意图是探究视觉任务之间的关系，并利用这种关系识别任务之间的冗余，用更低的成本训练新的任务。实验最后表明，用已知的任务关系去训练新的视觉任务模型，可以比从头训练减少约2/3的训练数据。
 
-**一、问题定义：**
+<strong>一、问题定义：</strong>
 目标任务组：T={t1，t2，t3……}
 
 源任务组：S={s1,，s2，s3}
@@ -40,7 +40,7 @@ source_url: https://zhuanlan.zhihu.com/p/93036772
 
        其中，目标任务组是最终需要完成的任务，源任务组指的是可以从头训练的任务组，目标任务可以从已经训练得到的源任务中得到帮助，任务字典包含所有涉及任务。监督预算与成本、算力、时间有关，也可以简单处理为 从头训练的任务数-自训练的任务数。
 
-**二、数据字典**
+<strong>二、数据字典</strong>
       关于上一部分提到的任务字典，在本文的设计中，涵盖了26个视觉领域的常见任务，包括但不限于：2D边缘检测、平面法线、拼图、自动上色、房间布局构建、物体分类、场景预测。
 
        值得注意的是，这26个任务的选取是经过了特别的设计的。任务大体分出了三个层次，从一个卷积核图层就能完成的边缘检测这一类低级的图像特征到探索图像的空间构造这一类高级的图像的特征，再到物体检测、场景判断这一类语义层次更加抽象的图像特征。
@@ -49,20 +49,20 @@ source_url: https://zhuanlan.zhihu.com/p/93036772
 
 ![](https://picx.zhimg.com/v2-180e7948b10fd27a129336ce91fe5553_r.jpg)任务字典提到的部分任务
 
-**三、数据集**
+<strong>三、数据集</strong>
        为了消除由于数据集不同造成的任务关系的偏差，作者为这26个任务建立了一个新的数据集。这个数据集包括4.6M室内图片，每一张图片有这26个任务的所有标签。完整的数据集有11.16TB。
 
 作者公开了一个小sample：[https://github.com/alexsax/taskonomy-sample-model-1](https://link.zhihu.com/?target=https%3A//github.com/alexsax/taskonomy-sample-model-1)
 
         准备每一张图片的labels势必是一个很大的工程。在本文中，对于非语义类标签，作者采用程序自动计算标签；对于语义类标签，作者采用知识提炼，用已有的模型产生相关语义标签。例如：使用resnet-151（Image-Net 中100 类） 产生 sementic objects任务的标签。最后经过人工检测，发现得到的语义标签错误率不超过7%。这被认为足够用来训练对应任务并构建任务空间（毕竟本文针对的是任务之间的关系，而不是某一个任务做到最拔尖）。
 
-**四、实验设计**
+<strong>四、实验设计</strong>
 
 ![](https://pic2.zhimg.com/v2-2a0558483e18654fd36c337d419a6351_r.jpg)
 
        这一部分的四个步骤主要是为了解决最初定义的问题：在有限的监督预算下，最大化目标任务组的模型表现。具体每一步如下：
 
-**1、Task-Specific Modeling**
+<strong>1、Task-Specific Modeling</strong>
 
        首先为每一个任务字典里的任务独立从头监督训练一个模型。为了保证各个模型之间结构的一致性，一律采用encoder-decoder架构。更加具体的描述在补充材料（[http://taskonomy.stanford.edu/taskonomy_supp_CVPR2018.pdf](https://link.zhihu.com/?target=http%3A//taskonomy.stanford.edu/taskonomy_supp_CVPR2018.pdf)）里。
 
@@ -75,7 +75,7 @@ source_url: https://zhuanlan.zhihu.com/p/93036772
 [
 ![](https://pic2.zhimg.com/v2-b45bd96304232f8c7be8b029e54ef295.jpg)https://www.zhihu.com/video/1180942161624846336](https://link.zhihu.com/?target=https%3A//www.zhihu.com/video/1180942161624846336)
 
-**2、Transfer Modeling**
+<strong>2、Transfer Modeling</strong>
 
        得到每个任务的训练模型后，相当于在任务空间得到一堆孤点，接下来要做的是衡量这些孤点之间的距离。
 
@@ -89,7 +89,7 @@ source_url: https://zhuanlan.zhihu.com/p/93036772
 - s训练得到的图像特征更容易转移到t任务。
 ![](https://picx.zhimg.com/v2-445405be1be4834cf48b2fc25c3e6ad1_r.jpg)如上图显示，作者用从头训练模型所需数据量的1/60去做不同的transfer，可以看到Reshade任务迁移到Surface Normal 和2.5D Segmentation 的效果是最好的。
 
-**注：Higher order Transformation**
+<strong>注：Higher order Transformation</strong>
 
  既然可以用一个任务迁到另一个任务，自然而然就会想到，能不能拼接多个任务的特征表示来迁移到新的任务，不同任务之间的特征会不会起到相互补充的效果呢？答案是肯定的，具体例子如下图所示：
 
@@ -103,7 +103,7 @@ source_url: https://zhuanlan.zhihu.com/p/93036772
 
         k:源任务组的任务个数。
 
-**3、Ordinal Normalization**
+<strong>3、Ordinal Normalization</strong>
 
        基于前两步，已经可以得到每一个任务迁移到另一个任务的loss值，但只用loss代表任务之间的可迁移度是不恰当的，因为不同的任务有不同的loss空间。如果用原始loss，任务之间的可迁移矩阵将如下图（左）所示：
 
@@ -131,7 +131,7 @@ source_url: https://zhuanlan.zhihu.com/p/93036772
 
 ![](https://picx.zhimg.com/v2-80b1b92ceb29fb5c5518221447ea47b9_r.jpg)
 
-**4、Computing the Global Taxonomy**
+<strong>4、Computing the Global Taxonomy</strong>
 
       原定义的问题是在监督预算的限制下，最大化目标任务组的表现。步骤4主要是利用步骤3得到的矩阵，来得到最终的训练策略，使用的方法是01整数规划。
 
@@ -194,7 +194,7 @@ b的形状为（|E|+|V|+1，1）。
 
        值得关注的是，在监督预算26，即每一个模型都可以通过全监督训练得到的情况下，依然有边的存在，即依然有任务是通过迁移学习模型表现更好。
 
-**五、实验结果**
+<strong>五、实验结果</strong>
       实验部分，论文写到一共训练26个全监督网络，约3000个迁移网络，用了约50000个GPU工时。这里列两个实验结果。
 
 数据集的使用：120k全监督训练；
@@ -203,7 +203,7 @@ b的形状为（|E|+|V|+1，1）。
 
                         17k test使用。
 
-**1.迁移所得的模型性能评估**
+<strong>1.迁移所得的模型性能评估</strong>
 
 ![](https://pic1.zhimg.com/v2-fb4bf50c02a158d6465975f6ba439342_r.jpg)
 
@@ -217,7 +217,7 @@ Quality：与用120k数据集从头全监督训练一个模型相比，迁移训
 
       从上图中看到，迁移学习得到的收益普遍很大。在监督预算8-15，总体效果与最佳模型相差也不是很远，但从成本来看，可以节约1/2到2/3的训练数据。
 
-**2.新任务的应用**
+<strong>2.新任务的应用</strong>
 
       对其他科研工作来说，最关注的应该是这个工作可以给他们带来什么帮助，比如作者构建的视觉任务空间能不能应用到新的视觉任务。
 
@@ -229,5 +229,5 @@ Quality：与用120k数据集从头全监督训练一个模型相比，迁移训
 
 ![](https://pic3.zhimg.com/v2-9c4f4646019d5708a43d47f61f57a516_r.jpg)       上左图含义和上一个实验相同，上右图与其它经典的特征抽取模型进行对比，结果相差很大，最佳迁移策略训练得到的模型比通用的特征抽取要好很多。说明针对任务选择迁移策略的选择是必要的（这里提出疑问：结果差距这么大似乎没有排除预训练使用数据集不同的影响）。
 
-**六、总结**
+<strong>六、总结</strong>
        这篇任务提出一个新的研究方向，构建任务空间并做了初步探索。其发现问题，思考问题的方法很值得学习。而且如文章结尾所说，这个任务空间能否不局限于视觉，如果可以持续深入下去，也许有更多值得挖掘的地方。

@@ -21,13 +21,13 @@ source_url: https://zhuanlan.zhihu.com/p/2008038879446467609
 
 这句话虽然有趣（自夸一下），但"不喜欢"终究不是论证，此文才是论证。
 
-### **外科手术团队**
+### <strong>外科手术团队</strong>
 
 Fred Brooks在《人月神话》里提出过一个至今没被推翻的模型：外科手术团队。一个主刀医生负责所有关键决策和概念完整性（Conceptual Integrity），麻醉师、护士、助手在各自专业范围内提供支援。
 
 这个模型的关键洞察：主刀不需要懂麻醉，麻醉师不需要会开刀。协作效率来自角色边界清晰、接口协议明确，来自每个人只做自己擅长的事。谁要是觉得主刀医生应该亲自去配麻醉药，那是在害病人。
 
-### **Scrum解决的是人与人的政治问题**
+### <strong>Scrum解决的是人与人的政治问题</strong>
 
 传统Scrum为什么要搞Product Owner、Scrum Master、开发团队三个角色？为什么要搞站会、Sprint Review、回顾会这么多仪式？
 
@@ -37,7 +37,7 @@ Scrum的全套仪式，本质上是一张谈判桌。Sprint Planning是甲乙双
 
 这些都是团队规模放大后的政治问题，不是技术问题。
 
-### **用抗生素治骨折**
+### <strong>用抗生素治骨折</strong>
 
 BMAD（Breakthrough Method for Agile AI Driven Development）做了什么呢？它定义了12个以上的AI agent角色，包括产品经理、架构师、UX专家、Scrum Master、开发者等等，然后让人类用户按照Scrum的流程去和这些agent逐一对齐：先和PM agent确认需求，再和架构师agent确认设计，再让Scrum Master agent拆解任务。
 
@@ -67,7 +67,7 @@ DevOps砍掉了开发和运维之间的组织墙，用CI/CD替代人工交接。
 
 BMAD把这个方向掉了个头。它把人际协作中那张谈判桌，原封不动的搬到了人机协作中。你本来可以在一个prompt里同时讲清产品需求、技术约束和UX原则，现在你要分别和PM agent谈需求、和architect agent谈架构、和UX agent谈交互。你本来只需要对齐一次，现在要对齐三次。对齐成本不仅没有被消除掉，反而被乘以了三。
 
-### **裁剪悖论怎么破**
+### <strong>裁剪悖论怎么破</strong>
 
 群里讨论中，有人说"BMAD可以裁剪着用，用你需要的部分就好了"。胥克谦的反驳一针见血：
 
@@ -85,7 +85,7 @@ BMAD把这个方向掉了个头。它把人际协作中那张谈判桌，原封�
 
 有兴趣辩论这个问题的同好，欢迎在公众号给我留言。尤其欢迎BMAD的深度使用者来打我脸，具体的实践经验比理论分析值钱得多。
 
-**引用来源**
+<strong>引用来源</strong>
 
 - Fred Brooks，《人月神话》，概念完整性与外科手术团队模型
 - BMAD-METHOD：[https://github.com/bmad-code-org/BMAD-METHOD](https://link.zhihu.com/?target=https%3A//github.com/bmad-code-org/BMAD-METHOD)

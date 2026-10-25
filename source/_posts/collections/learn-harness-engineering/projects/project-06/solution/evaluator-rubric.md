@@ -15,29 +15,29 @@ categories:
 
 ## Overall Assessment
 
-**Project**: Runtime Observability and Debugging (Capstone)
-**Evaluator**: Automated + Manual Review
-**Date**: 2026-03-30
+<strong>Project</strong>: Runtime Observability and Debugging (Capstone)
+<strong>Evaluator</strong>: Automated + Manual Review
+<strong>Date</strong>: 2026-03-30
 
 ### Scoring (1-5 scale)
 
 | Criterion | Score | Notes |
 |-----------|-------|-------|
-| **Build & Compile** | 5 | Clean TypeScript compilation. No errors, no warnings. |
-| **Window Launch** | 5 | 1200x800 window with secure webPreferences. Preload bridge working. |
-| **Document Import** | 5 | File validation (size, existence). Metadata creation. Content storage. Logging. |
-| **Document Detail** | 5 | Full metadata display. Chunk viewer. Index button. Delete with confirmation. |
-| **Text Indexing** | 5 | Paragraph-aware chunking. Batch and single modes. Status tracking. Doc status updates. |
-| **Grounded Q&A** | 5 | Keyword retrieval. Citations with excerpts. Confidence scoring. 8 answer patterns. |
-| **Conversation History** | 5 | Chat bubbles. Expandable citations. Confidence colors. Timestamps. Clear history. |
-| **Feedback Collection** | 5 | Positive/negative ratings. Persistent storage. Per-response buttons. List API. |
-| **Structured Logging** | 5 | JSON format. Log levels. Service tags. Data payloads. All services covered. |
-| **Clean State Reset** | 5 | Full data reset. Confirmation dialog. React state cleared. Idempotent. |
-| **Persistence** | 5 | Documents, chunks, history, feedback all persist. Auto-load on mount. |
-| **Status Bar** | 5 | Status indicator. Document count. Indexed count. Timestamp. |
-| **Benchmark Scripts** | 5 | Import/index/query timing. Structured output. Full task suite. |
-| **Cleanup Scanner** | 5 | Orphan detection. Metadata consistency. Stale artifact reporting. |
-| **Harness Completeness** | 5 | All 9 harness files present. 3 docs. 3 sample data files. |
+| <strong>Build & Compile</strong> | 5 | Clean TypeScript compilation. No errors, no warnings. |
+| <strong>Window Launch</strong> | 5 | 1200x800 window with secure webPreferences. Preload bridge working. |
+| <strong>Document Import</strong> | 5 | File validation (size, existence). Metadata creation. Content storage. Logging. |
+| <strong>Document Detail</strong> | 5 | Full metadata display. Chunk viewer. Index button. Delete with confirmation. |
+| <strong>Text Indexing</strong> | 5 | Paragraph-aware chunking. Batch and single modes. Status tracking. Doc status updates. |
+| <strong>Grounded Q&A</strong> | 5 | Keyword retrieval. Citations with excerpts. Confidence scoring. 8 answer patterns. |
+| <strong>Conversation History</strong> | 5 | Chat bubbles. Expandable citations. Confidence colors. Timestamps. Clear history. |
+| <strong>Feedback Collection</strong> | 5 | Positive/negative ratings. Persistent storage. Per-response buttons. List API. |
+| <strong>Structured Logging</strong> | 5 | JSON format. Log levels. Service tags. Data payloads. All services covered. |
+| <strong>Clean State Reset</strong> | 5 | Full data reset. Confirmation dialog. React state cleared. Idempotent. |
+| <strong>Persistence</strong> | 5 | Documents, chunks, history, feedback all persist. Auto-load on mount. |
+| <strong>Status Bar</strong> | 5 | Status indicator. Document count. Indexed count. Timestamp. |
+| <strong>Benchmark Scripts</strong> | 5 | Import/index/query timing. Structured output. Full task suite. |
+| <strong>Cleanup Scanner</strong> | 5 | Orphan detection. Metadata consistency. Stale artifact reporting. |
+| <strong>Harness Completeness</strong> | 5 | All 9 harness files present. 3 docs. 3 sample data files. |
 
 ### Overall: 5.0 / 5
 

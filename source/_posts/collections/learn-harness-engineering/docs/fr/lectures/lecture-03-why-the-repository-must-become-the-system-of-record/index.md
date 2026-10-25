@@ -26,7 +26,7 @@ La question devient donc : allez-vous donner une bonne carte à cet ingénieur ?
 
 ## Ce qui doit figurer sur la carte
 
-OpenAI le formule clairement : **l'information qui n'existe pas dans le repo n'existe pas pour l'agent.** Ils appellent cela le principe "repo as spec" : le dépôt lui-même est le document de spécification ayant la plus haute autorité.
+OpenAI le formule clairement : <strong>l'information qui n'existe pas dans le repo n'existe pas pour l'agent.</strong> Ils appellent cela le principe "repo as spec" : le dépôt lui-même est le document de spécification ayant la plus haute autorité.
 
 La documentation d'Anthropic sur les agents de longue durée dit la même chose : l'état persistant est une condition nécessaire à la continuité des tâches longues. La capacité à récupérer les connaissances entre sessions détermine directement les taux de réussite. Et cet état doit exister dans le dépôt, car c'est le seul stockage stable et accessible dont dispose l'agent.
 
@@ -68,24 +68,24 @@ Si elle ne peut pas répondre, la carte a des zones blanches. Là où la carte e
 
 ## Concepts clés
 
-- **Knowledge Visibility Gap** : proportion du savoir total du projet qui N'EST PAS dans le dépôt. Plus l'écart est grand, plus le taux d'échec de l'agent augmente. Combien de savoir implicite sur ce projet vit dans votre tête ? Comptez tout, puis voyez ce qui est arrivé dans le repo : la différence est votre écart de visibilité.
-- **System of Record** : le dépôt de code comme source autorisée pour les décisions de projet, contraintes d'architecture, état d'exécution et standards de vérification. Le repo a le dernier mot ; rien d'autre ne compte. Comme une carte qui indique "route fermée" : vous n'y allez pas. Mais si cette information n'existe que dans la tête d'une personne, il faut lui demander à chaque fois.
-- **Cold-Start Test** : les cinq questions ci-dessus. Le nombre de réponses indique le degré de complétude de votre carte.
-- **Discovery Cost** : budget de contexte que l'agent brûle pour trouver une information clé dans le dépôt. Plus l'information est cachée, plus le coût de découverte est élevé, et moins il reste de budget pour la tâche réelle. Cacher une information critique dans un README dix niveaux plus bas, c'est comme enfermer l'extincteur dans un coffre au sous-sol : il existe, mais vous ne le trouvez pas quand vous en avez besoin.
-- **Knowledge Decay Rate** : proportion d'entrées de connaissance qui deviennent obsolètes par unité de temps. Une documentation désynchronisée du code est le plus grand ennemi, pire que pas de documentation du tout.
-- **ACID Analogy** : appliquer les principes de transaction de base de données (Atomicity, Consistency, Isolation, Durability) à la gestion d'état des agents. Nous détaillons cela ci-dessous.
+- <strong>Knowledge Visibility Gap</strong> : proportion du savoir total du projet qui N'EST PAS dans le dépôt. Plus l'écart est grand, plus le taux d'échec de l'agent augmente. Combien de savoir implicite sur ce projet vit dans votre tête ? Comptez tout, puis voyez ce qui est arrivé dans le repo : la différence est votre écart de visibilité.
+- <strong>System of Record</strong> : le dépôt de code comme source autorisée pour les décisions de projet, contraintes d'architecture, état d'exécution et standards de vérification. Le repo a le dernier mot ; rien d'autre ne compte. Comme une carte qui indique "route fermée" : vous n'y allez pas. Mais si cette information n'existe que dans la tête d'une personne, il faut lui demander à chaque fois.
+- <strong>Cold-Start Test</strong> : les cinq questions ci-dessus. Le nombre de réponses indique le degré de complétude de votre carte.
+- <strong>Discovery Cost</strong> : budget de contexte que l'agent brûle pour trouver une information clé dans le dépôt. Plus l'information est cachée, plus le coût de découverte est élevé, et moins il reste de budget pour la tâche réelle. Cacher une information critique dans un README dix niveaux plus bas, c'est comme enfermer l'extincteur dans un coffre au sous-sol : il existe, mais vous ne le trouvez pas quand vous en avez besoin.
+- <strong>Knowledge Decay Rate</strong> : proportion d'entrées de connaissance qui deviennent obsolètes par unité de temps. Une documentation désynchronisée du code est le plus grand ennemi, pire que pas de documentation du tout.
+- <strong>ACID Analogy</strong> : appliquer les principes de transaction de base de données (Atomicity, Consistency, Isolation, Durability) à la gestion d'état des agents. Nous détaillons cela ci-dessous.
 
 ## Comment dessiner une bonne carte
 
-**Principe 1 : le savoir vit près du code.** Une règle sur l'authentification des endpoints API doit être à côté du code API, pas enterrée dans un énorme document global. Placez un court document dans chaque répertoire de module expliquant ses responsabilités, interfaces et contraintes particulières. Comme les étiquettes de rayons en bibliothèque : vous voulez des livres d'histoire, vous allez directement au rayon "Histoire". Pas besoin de fouiller toute la bibliothèque.
+<strong>Principe 1 : le savoir vit près du code.</strong> Une règle sur l'authentification des endpoints API doit être à côté du code API, pas enterrée dans un énorme document global. Placez un court document dans chaque répertoire de module expliquant ses responsabilités, interfaces et contraintes particulières. Comme les étiquettes de rayons en bibliothèque : vous voulez des livres d'histoire, vous allez directement au rayon "Histoire". Pas besoin de fouiller toute la bibliothèque.
 
-**Principe 2 : utilisez un fichier d'entrée standardisé.** `AGENTS.md` (ou `CLAUDE.md`) est la page d'accueil de l'agent. Il n'a pas besoin de contenir toute l'information, mais il doit permettre à l'agent de répondre vite à trois questions : "Qu'est-ce que ce projet ?", "Comment l'exécuter ?" et "Comment le vérifier ?". 50-100 lignes suffisent.
+<strong>Principe 2 : utilisez un fichier d'entrée standardisé.</strong> `AGENTS.md` (ou `CLAUDE.md`) est la page d'accueil de l'agent. Il n'a pas besoin de contenir toute l'information, mais il doit permettre à l'agent de répondre vite à trois questions : "Qu'est-ce que ce projet ?", "Comment l'exécuter ?" et "Comment le vérifier ?". 50-100 lignes suffisent.
 
-**Principe 3 : minimal mais complet.** Chaque élément de savoir doit avoir un cas d'usage clair. Si supprimer une règle n'affecte pas la qualité de décision de l'agent, cette règle ne devrait pas exister. Mais chaque question du test de démarrage à froid doit avoir une réponse. C'est un équilibre délicat : ni trop, ni trop peu, juste assez.
+<strong>Principe 3 : minimal mais complet.</strong> Chaque élément de savoir doit avoir un cas d'usage clair. Si supprimer une règle n'affecte pas la qualité de décision de l'agent, cette règle ne devrait pas exister. Mais chaque question du test de démarrage à froid doit avoir une réponse. C'est un équilibre délicat : ni trop, ni trop peu, juste assez.
 
-**Principe 4 : mettez à jour avec le code.** Liez les mises à jour de connaissance aux changements de code. L'approche la plus simple : placer les documents d'architecture dans le répertoire du module correspondant. Quand vous modifiez le code, vous voyez naturellement le document. Après les changements de code, CI peut vous rappeler de vérifier si les docs doivent être mises à jour.
+<strong>Principe 4 : mettez à jour avec le code.</strong> Liez les mises à jour de connaissance aux changements de code. L'approche la plus simple : placer les documents d'architecture dans le répertoire du module correspondant. Quand vous modifiez le code, vous voyez naturellement le document. Après les changements de code, CI peut vous rappeler de vérifier si les docs doivent être mises à jour.
 
-**Structure concrète du repo** :
+<strong>Structure concrète du repo</strong> :
 
 ```
 project/
@@ -106,10 +106,10 @@ project/
 
 Cette analogie vient de la gestion des transactions en base de données. Vous pouvez penser que cela complique les choses, mais elle fournit en réalité un cadre très pratique :
 
-- **Atomicity** : chaque "opération logique" (par exemple "ajouter un nouvel endpoint et mettre à jour les tests") correspond à un commit git. Si elle échoue en cours de route, `git stash` permet de revenir en arrière. Tout ou rien : pas de "à moitié fait".
-- **Consistency** : définissez des prédicats de vérification d'un "état cohérent" : tous les tests passent, le lint ne rapporte aucune erreur. L'agent exécute la vérification après chaque opération ; les états intermédiaires incohérents ne sont pas commités. Comme un virement bancaire : on ne débite pas sans créditer.
-- **Isolation** : quand plusieurs agents travaillent en parallèle, concevez les fichiers d'état pour éviter les conditions de course. Approche simple : chaque agent utilise son propre fichier de progrès, ou des branches git assurent l'isolation. Deux cuisiniers ne peuvent pas assaisonner la même marmite en même temps : qui est responsable si c'est trop salé ?
-- **Durability** : le savoir critique du projet vit dans des fichiers suivis par git. L'état temporaire peut rester en mémoire de session, mais le savoir entre sessions doit être persisté dans des fichiers. Ce qui est dans votre tête ne compte pas ; seul ce qui est écrit compte.
+- <strong>Atomicity</strong> : chaque "opération logique" (par exemple "ajouter un nouvel endpoint et mettre à jour les tests") correspond à un commit git. Si elle échoue en cours de route, `git stash` permet de revenir en arrière. Tout ou rien : pas de "à moitié fait".
+- <strong>Consistency</strong> : définissez des prédicats de vérification d'un "état cohérent" : tous les tests passent, le lint ne rapporte aucune erreur. L'agent exécute la vérification après chaque opération ; les états intermédiaires incohérents ne sont pas commités. Comme un virement bancaire : on ne débite pas sans créditer.
+- <strong>Isolation</strong> : quand plusieurs agents travaillent en parallèle, concevez les fichiers d'état pour éviter les conditions de course. Approche simple : chaque agent utilise son propre fichier de progrès, ou des branches git assurent l'isolation. Deux cuisiniers ne peuvent pas assaisonner la même marmite en même temps : qui est responsable si c'est trop salé ?
+- <strong>Durability</strong> : le savoir critique du projet vit dans des fichiers suivis par git. L'état temporaire peut rester en mémoire de session, mais le savoir entre sessions doit être persisté dans des fichiers. Ce qui est dans votre tête ne compte pas ; seul ce qui est écrit compte.
 
 ## Une vraie histoire de transformation
 
@@ -143,8 +143,8 @@ Après transformation, le même agent pouvait répondre à toutes les questions 
 
 ## Exercices
 
-1. **Test de démarrage à froid** : ouvrez une session d'agent complètement fraîche dans votre projet (aucun contexte verbal, contenu du repo seulement). Posez cinq questions : Qu'est-ce que ce système ? Comment est-il organisé ? Comment l'exécuter ? Comment le vérifier ? Quel est l'avancement actuel ? Notez ce qu'il ne peut pas répondre, puis améliorez le repo jusqu'à ce qu'il puisse.
+1. <strong>Test de démarrage à froid</strong> : ouvrez une session d'agent complètement fraîche dans votre projet (aucun contexte verbal, contenu du repo seulement). Posez cinq questions : Qu'est-ce que ce système ? Comment est-il organisé ? Comment l'exécuter ? Comment le vérifier ? Quel est l'avancement actuel ? Notez ce qu'il ne peut pas répondre, puis améliorez le repo jusqu'à ce qu'il puisse.
 
-2. **Quantification de l'externalisation du savoir** : listez toutes les décisions et contraintes importantes pour le travail de développement dans votre projet. Marquez chacune comme étant dans ou hors du repo. Calculez votre Knowledge Visibility Gap (proportion hors repo). Faites un plan pour le descendre sous 10%.
+2. <strong>Quantification de l'externalisation du savoir</strong> : listez toutes les décisions et contraintes importantes pour le travail de développement dans votre projet. Marquez chacune comme étant dans ou hors du repo. Calculez votre Knowledge Visibility Gap (proportion hors repo). Faites un plan pour le descendre sous 10%.
 
-3. **Évaluation ACID** : évaluez la gestion d'état de votre projet avec l'analogie ACID de cette leçon. Atomicity : les opérations d'agent peuvent-elles être annulées proprement ? Consistency : existe-t-il une vérification d'"état cohérent" ? Isolation : les agents concurrents se marchent-ils dessus ? Durability : tout le savoir intersessions est-il persisté ?
+3. <strong>Évaluation ACID</strong> : évaluez la gestion d'état de votre projet avec l'analogie ACID de cette leçon. Atomicity : les opérations d'agent peuvent-elles être annulées proprement ? Consistency : existe-t-il une vérification d'"état cohérent" ? Isolation : les agents concurrents se marchent-ils dessus ? Durability : tout le savoir intersessions est-il persisté ?

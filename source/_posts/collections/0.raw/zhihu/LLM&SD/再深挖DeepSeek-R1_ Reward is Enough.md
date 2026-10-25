@@ -22,7 +22,7 @@ source_url: https://zhuanlan.zhihu.com/p/20053834500
 
 我们在前日对`DeepSeek-R1`进行了解读，更多关注实现的方法和成效
 
-[![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_1649a72079f6.png)小冬瓜AIGC：【解读】DeepSeek-R1：RL前真的不需要SFT了吗???168 赞同 · 13 评论 文章](https://zhuanlan.zhihu.com/p/19623772462)
+[![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_1649a72079f6.png)小冬瓜AIGC：【解读】DeepSeek-R1：RL前真的不需要SFT了吗???168 赞同 · 13 评论 文章](https://zhuanlan.zhihu.com/p/19623772462)
 
 仔细想来仍有较多值得玩味的地方，我们以端到端视角看`DeepSeek-R1-zero`, 数学推理场景下为什么Reward is Enough。
 
@@ -54,7 +54,7 @@ source_url: https://zhuanlan.zhihu.com/p/20053834500
 
 - 选择题/填空题：特指我们只要答对答案就可以，特点是答案是客观的，无歧义的，答案形式如`` 或 `0.5` ，意义也是准确的，比如你在一个几何题里你用量尺直接得到答案，只要撞对ground truth，也能够得分，这个打分的判别是`Answer-Check` 
 - 解答题：根据题干我们需要有解答过程，推导出正确答案，我们才能拿到分数，那么这里的解答过程Solution，在严格的评判标准里，推导的过程也是要计算分数的。这个打分的判别是`Solution-Answer-Check` 的
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_efba7cc72c66.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_efba7cc72c66.jpg)
 
 DeepSeek-R1-Zero 所训练的数据形式是：Close-form Answer-Check的这种有客观答案的问题我们定义为`close-form`的问题， 当前主流的LLM数学能力评判其实是`Answer-Check`， 就意味着评判LLM的能力不关心解答过程Solution。而主流的数学推理能力需要思维链(Chain-of-thought)生成solution，只是一种提高answer的准确性的手段。
 
@@ -73,7 +73,7 @@ DeepSeek-R1-Zero 所训练的数据形式是：Close-form Answer-Check的这种�
 
 #### 1.2.1 `DeepSeek-R1-Zero`目标
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_48b25155da7c.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_48b25155da7c.jpg)
 
 我们先简要说明`DeepSeek-V3-Base` 到`DeepSeek-R1-Zero` 的RL训练目标
 
@@ -93,13 +93,13 @@ A:  CoT过程不一定是正确的，没有严格要求；未经过指令微调�
 - `GRPO` on-policy采样时相较`PPO`，会Rejection Sampling 出多个output（即`GRPO`是一种探索，或者理解为MC rollout），哪怕探索出的答案都是错的，那么RL训练能抑制这一批推导错误的生成。如果有多个正反馈，那么也能某种程度保证模型输出多样性。手撕GRPO：
 [](https://zhuanlan.zhihu.com/p/20812786520)
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_b9899a93a06a.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_b9899a93a06a.jpg)
 
 所以“Aha Moment”本质是搜索，我们有足量的搜索，一定能顿悟，搜索出错误答案对于RL那就避免这个行为产生，搜索出错误的答案对于训练也是有用的(learning from mistake) 。
 
 在过去我们可以尝试用规则或者模型来控制推理行为：如Self-evaluate、Self-Reflection、Self-Improve等，我们所说RL能激发“Aha-Moment” 指的是我们并没有引入“先验”，就探索到提高准确率对应的推理技巧， 至于是什么推理技巧，我们去讨论并没有实质的意义。
 
-我们再引入新的问题，后续解答：**一定要RL才能激发“Aha-Moment”吗？**
+我们再引入新的问题，后续解答：<strong>一定要RL才能激发“Aha-Moment”吗？</strong>
 
 在“Aha Moment”里我们不能直接量化过程推理能力， 而是通过观测CoT采样 Solution的token 序列长度(test-time computation increases, 产生越长的token需要的计算量越多)来对等判别的
 
@@ -120,7 +120,7 @@ SFTRLMATH-500(pass@1)AIME 2024(pass@1)DeepSeek-V3✅✅90.239.2DeepSeek-R1-Zero�
 
 所以做个不严格的结论：SFT是没问题的，也不存在SFT无用论，数据质量影响可能远大于方法本身。**
 
-**那么训练的数据瓶颈就变为了收集或者合成复杂问题的“Long-CoT” solution，过程中有错误也能接受，毕竟无法让人类手写出600k条高质量的solution**
+<strong>那么训练的数据瓶颈就变为了收集或者合成复杂问题的“Long-CoT” solution，过程中有错误也能接受，毕竟无法让人类手写出600k条高质量的solution</strong>
 
 而`DeepSeek-R1-Zero` 的尝试或者存在的目的，是为了合成高质量的Long-CoT
 
@@ -160,7 +160,7 @@ B. 当模型能够输出可读性好的reasoning数据（合成数据），才�
 
 - 通用的数据部分可能也有较强的推理属性，如代码、谜题、摘要和脑经急转弯等，丰富了推理的模式
 - 格式化组织数据，使得数据表征更高效。
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_002d0374bf9f.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_002d0374bf9f.jpg)
 
 #### 1.2.6 R1 工程部署优势
 
@@ -169,9 +169,9 @@ B. 当模型能够输出可读性好的reasoning数据（合成数据），才�
 
 2. 不用额外的模型， 即可做summarization
 
-**we design a readable pattern** that includes a summary at the end of each response and filters out responses that are not reader-friendly3. 虽然对prompt提示词敏感，但解决问题可以纯zero-shot
+<strong>we design a readable pattern</strong> that includes a summary at the end of each response and filters out responses that are not reader-friendly3. 虽然对prompt提示词敏感，但解决问题可以纯zero-shot
 
-**we recommend users directly describe the problem and specify the output format using a zero-shot** setting for optimal results.
+<strong>we recommend users directly describe the problem and specify the output format using a zero-shot</strong> setting for optimal results.
 #### 1.3 小结
 
 - 从`GRPO`的on-policy采样角度看“Aha-Moment”是合理的，顿悟是探索的结果。
@@ -204,7 +204,7 @@ B. 当模型能够输出可读性好的reasoning数据（合成数据），才�
 
 通过这种端到端思想，就可以提高推理能力，弊端无一例外在于Rationale或CoT里推断的准确性是无法保证的。
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_4171d2f4781e.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_4171d2f4781e.jpg)
 
 #### 2.3 OpenAI强化学习微调ReFT
 
@@ -216,7 +216,7 @@ B. 当模型能够输出可读性好的reasoning数据（合成数据），才�
 
 样例来自OpenAI 12days: Day2 的视频demo ，我们按照`R1-Zero` RL训练需求数据，实际上要的专家级问题可以不用solution但是需要final answer ，仅需final answer “Answer”就可以进行监督，如下例的Correct Answer ： FOXE3
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_a36bebc7481c.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_a36bebc7481c.jpg)
 
 不需要solution，仅需要收集问题和final answer
 ### 3. MCTS Search的挑战
@@ -235,11 +235,11 @@ B. 当模型能够输出可读性好的reasoning数据（合成数据），才�
 
 另外自动化的标注可见方案，标注是建立在一定假设上的统计，而非是确定的正确性判别标签。
 
-title简介Math-Shepherd: Verify and Reinforce LLMs Step-by-step without Human AnnotationsMath-Shepherd: 有较高的标注成本，且标注值为概率，而非准确性。Improve Mathematical Reasoning in Language Models by Automated Process SupervisionOmega-PRM 提出更宽松的假设，进行二分标注相对应的Search方法，实际上PRM的在难度等级5的数学题下，准确率低下。对于难题的解决的矛头仍指向：**如何将推理能力训练到模型本身**
+title简介Math-Shepherd: Verify and Reinforce LLMs Step-by-step without Human AnnotationsMath-Shepherd: 有较高的标注成本，且标注值为概率，而非准确性。Improve Mathematical Reasoning in Language Models by Automated Process SupervisionOmega-PRM 提出更宽松的假设，进行二分标注相对应的Search方法，实际上PRM的在难度等级5的数学题下，准确率低下。对于难题的解决的矛头仍指向：<strong>如何将推理能力训练到模型本身</strong>
 
 ** Scaling LLM Test-Time Compute Optimally can be More Effective than Scaling Model Parameter[](https://zhuanlan.zhihu.com/p/877197813)
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_8155e3b7897f.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_8155e3b7897f.jpg)
 
 PRM-Search类的方法对于数学等级5的难题，聊胜于无PRM无法准确描述环境，那么在难题上的Search就是可有可无, R1的评价是“Limited”
 
@@ -293,7 +293,7 @@ PRM-Search类的方法对于数学等级5的难题，聊胜于无PRM无法准确
 
 [小冬瓜AIGC：【手撕RLHF-LLaMA2】 Reward Model PyTorch实现](https://zhuanlan.zhihu.com/p/679012951)
 
-***《手撕LLM》***系列文章+原创课程：LLM原理涵盖Pretrained/PEFT/RLHF/高性能计算
+*<strong>《手撕LLM》</strong>*系列文章+原创课程：LLM原理涵盖Pretrained/PEFT/RLHF/高性能计算
 [小冬瓜AIGC：【手撕NSA】DeepSeek新作-原生稀疏注意力-超长文(附代码)](https://zhuanlan.zhihu.com/p/24841366485)
 
 [小冬瓜AIGC：【手撕DualPipe】让我们一步步把 MoE EP 通信 "消除"（附代码）](https://zhuanlan.zhihu.com/p/1910995677451912435)

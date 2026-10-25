@@ -22,7 +22,7 @@ Siz agentdan e-tijorat saytini qurishni soʻraysiz. Ishini tugatgandan soʻng, u
 
 Koʻpchilikning nazarida funksiyalar roʻyxati (feature lists) shunchaki eslatma (memo) — esdan chiqarmaslik uchun yoziladi, soʻngra bir chetga yigʻishtirib qoʻyiladi. Lekin harness olamida funksiyalar roʻyxati odamlar uchun eslatma emas — u butun harnessʼning umurtqa pogʻonasidir (backbone). Rejalashtiruvchi (scheduler) qaysi vazifani tanlashda unga suyanadi, tekshiruvchi (verifier) yakunlanganligini baholashda unga suyanadi, topshirish hisobotchisi (handoff reporter) xulosalar yaratishda unga suyanadi. Umurtqani sindirsangiz butun tana falaj boʻladi.
 
-Anthropic ham, OpenAI ham alohida taʼkidlaydi: **artefaktlar tashqariga chiqarilishi (externalized) shart.** Funksiya (feature) holati (state) tuzilmagan suhbat matni ichida emas, balki repodagi mashina oʻqiy oladigan faylda yashashi kerak.
+Anthropic ham, OpenAI ham alohida taʼkidlaydi: <strong>artefaktlar tashqariga chiqarilishi (externalized) shart.</strong> Funksiya (feature) holati (state) tuzilmagan suhbat matni ichida emas, balki repodagi mashina oʻqiy oladigan faylda yashashi kerak.
 
 ## Agentlar “Tugatildi” nimani anglatishini bilmaydi
 
@@ -64,12 +64,12 @@ flowchart LR
 
 ## Asosiy tushunchalar
 
-- **Funksiyalar roʻyxati harness primitivlaridir (primitives)**: Ular shunchaki “ixtiyoriy rejalashtirish vositalari” emas, balki barcha boshqa harness komponentlari tayanadigan bazaviy maʼlumotlar strukturasidir. Maʼlumotlar bazasi jadvali (database table) strukturalariga oʻxshab — siz “asosiy kalitlarni (primary keys) tashlab ketaylik” deya olmaysiz.
-- **Uchlik struktura (Triple structure)**: Har bir funksiya (feature) bandi bu `(xatti-harakat tavsifi, tekshiruv buyrugʻi, joriy holat)` uchligidir. Har qanday elementning yoʻqligi ushbu bandni tugallanmagan (incomplete) qilib qoʻyadi.
-- **Holat mashinasi modeli (State machine model)**: Har bir funksiya bandida toʻrtta holat mavjud — `not_started`, `active`, `blocked`, `passing`. Holat oʻzgarishlari harness tomonidan boshqariladi, agent tomonidan erkin oʻzgartirilmaydi.
-- **Oʻtganlik holati boʻyicha tekshiruv (Pass-state gating)**: Funksiya (feature) `active` dan `passing` ga oʻtishining yagona yoʻli bu — tekshiruv buyrugʻi (verification command) muvaffaqiyatli ishlashidir. Buni orqaga qaytarib boʻlmaydi — bir marta `passing` boʻlgach, orqaga qaytmaydi. Xuddi imtihondan oʻtganingiz kabi, siz uni oʻtdingiz, bahoni orqaga qaytarib oʻzgartira olmaysiz.
-- **Yagona haqiqat manbai (Single source of truth)**: “Nima qilinishi kerakligi” haqidagi barcha maʼlumotlar yagona funksiyalar roʻyxatidan (feature list) olinishi shart. Funksiyalar roʻyxati va suhbat tarixi oʻrtasida hech qanday qarama-qarshiliklar boʻlmasligi kerak.
-- **Orqa bosim (Back-pressure)**: Hali oʻtmagan (not passed) funksiyalarning soni, harness agentga oʻtkazadigan bosimdir. Nol bosim = loyiha tugallandi degani.
+- <strong>Funksiyalar roʻyxati harness primitivlaridir (primitives)</strong>: Ular shunchaki “ixtiyoriy rejalashtirish vositalari” emas, balki barcha boshqa harness komponentlari tayanadigan bazaviy maʼlumotlar strukturasidir. Maʼlumotlar bazasi jadvali (database table) strukturalariga oʻxshab — siz “asosiy kalitlarni (primary keys) tashlab ketaylik” deya olmaysiz.
+- <strong>Uchlik struktura (Triple structure)</strong>: Har bir funksiya (feature) bandi bu `(xatti-harakat tavsifi, tekshiruv buyrugʻi, joriy holat)` uchligidir. Har qanday elementning yoʻqligi ushbu bandni tugallanmagan (incomplete) qilib qoʻyadi.
+- <strong>Holat mashinasi modeli (State machine model)</strong>: Har bir funksiya bandida toʻrtta holat mavjud — `not_started`, `active`, `blocked`, `passing`. Holat oʻzgarishlari harness tomonidan boshqariladi, agent tomonidan erkin oʻzgartirilmaydi.
+- <strong>Oʻtganlik holati boʻyicha tekshiruv (Pass-state gating)</strong>: Funksiya (feature) `active` dan `passing` ga oʻtishining yagona yoʻli bu — tekshiruv buyrugʻi (verification command) muvaffaqiyatli ishlashidir. Buni orqaga qaytarib boʻlmaydi — bir marta `passing` boʻlgach, orqaga qaytmaydi. Xuddi imtihondan oʻtganingiz kabi, siz uni oʻtdingiz, bahoni orqaga qaytarib oʻzgartira olmaysiz.
+- <strong>Yagona haqiqat manbai (Single source of truth)</strong>: “Nima qilinishi kerakligi” haqidagi barcha maʼlumotlar yagona funksiyalar roʻyxatidan (feature list) olinishi shart. Funksiyalar roʻyxati va suhbat tarixi oʻrtasida hech qanday qarama-qarshiliklar boʻlmasligi kerak.
+- <strong>Orqa bosim (Back-pressure)</strong>: Hali oʻtmagan (not passed) funksiyalarning soni, harness agentga oʻtkazadigan bosimdir. Nol bosim = loyiha tugallandi degani.
 
 ## Nega funksiyalar roʻyxatlari “Primitivlar” (Primitives) boʻlishi kerak
 
@@ -77,10 +77,10 @@ Hujjatlar odamlar oʻqishi uchun; primitivlar tizimlar bajarishi uchundir. Hujja
 
 Buni maʼlumotlar bazasi trigger cheklovlari va dastur darajasidagi (application-layer) tekshiruvlarga oʻxshating: birinchisi maʼlumotlar bazasi dvigateli tomonidan amalga oshiriladi, hech qanday SQL uni aylanib oʻtolmaydi; ikkinchisi esa ilova (application) kodining toʻgʻriligiga tayanadi va tasodifan chetlab oʻtilishi mumkin. Funksiyalar roʻyxati harness primitivi sifatida maxsus 4 ta harness komponentiga xizmat qiladi:
 
-1. **Rejalashtiruvchi (Scheduler)**: Holatlarni oʻqiydi, keyingi `not_started` funksiyani (feature) tanlaydi. Zavoddagi ishlab chiqarishni rejalashtirish tizimiga oʻxshaydi.
-2. **Tekshiruvchi (Verifier)**: Tekshiruv buyruqlarini (verification commands) bajaradi, holatni oʻtkazishga ruxsat berish-bermaslikni hal qiladi. Sifat nazoratiga oʻxshaydi.
-3. **Topshirish hisobotchisi (Handoff reporter)**: Funksiyalar roʻyxatidan sessiya topshirish (handoff) xulosalarini avtomatik tarzda yaratadi. Avtomatik smena oʻzgarishi hisobotiga oʻxshaydi.
-4. **Jarayonni kuzatuvchi (Progress tracker)**: Holat taqsimotini hisoblaydi, loyiha salomatligi metrikalarini taqdim etadi. Dashboard kabi.
+1. <strong>Rejalashtiruvchi (Scheduler)</strong>: Holatlarni oʻqiydi, keyingi `not_started` funksiyani (feature) tanlaydi. Zavoddagi ishlab chiqarishni rejalashtirish tizimiga oʻxshaydi.
+2. <strong>Tekshiruvchi (Verifier)</strong>: Tekshiruv buyruqlarini (verification commands) bajaradi, holatni oʻtkazishga ruxsat berish-bermaslikni hal qiladi. Sifat nazoratiga oʻxshaydi.
+3. <strong>Topshirish hisobotchisi (Handoff reporter)</strong>: Funksiyalar roʻyxatidan sessiya topshirish (handoff) xulosalarini avtomatik tarzda yaratadi. Avtomatik smena oʻzgarishi hisobotiga oʻxshaydi.
+4. <strong>Jarayonni kuzatuvchi (Progress tracker)</strong>: Holat taqsimotini hisoblaydi, loyiha salomatligi metrikalarini taqdim etadi. Dashboard kabi.
 
 ## Buni qanday toʻgʻri qilish kerak
 
@@ -120,19 +120,19 @@ Har bir funksiya (feature) bandi “bitta sessiyada tugatilishi mumkin” boʻlg
 
 10 ta funksiyaga ega boʻlgan e-tijorat (e-commerce) platformasi. Taqqoslangan ikkita kuzatish (tracking) yondashuvi:
 
-**Eslatma rejimi (Memo mode)**: Agent hech qanday strukturaga ega boʻlmagan eslatmalardan (unstructured notes) foydalanadi. 3 sessiyadan keyin eslatmalar quyidagi koʻrinishga keladi: “foydalanuvchi auth va mahsulotlar roʻyxati bajarildi, savat asosan tugatildi lekin bugʼlari bor, toʻlovlar (payments) boshlanmadi”. Yangi sessiya holatni tushunib olishi uchun 20 daqiqa kerak boʻladi va oxir-oqibat allaqachon yakunlangan funksiyalarni qaytadan yozib chiqadi. Bu xuddi bozordagi xaridingiz roʻyxatida “sut, non va anavi narsa” deb yozilganiga oʻxshaydi — doʻkonga borgach, baribir nimani olishingiz kerakligini bilmaysiz.
+<strong>Eslatma rejimi (Memo mode)</strong>: Agent hech qanday strukturaga ega boʻlmagan eslatmalardan (unstructured notes) foydalanadi. 3 sessiyadan keyin eslatmalar quyidagi koʻrinishga keladi: “foydalanuvchi auth va mahsulotlar roʻyxati bajarildi, savat asosan tugatildi lekin bugʼlari bor, toʻlovlar (payments) boshlanmadi”. Yangi sessiya holatni tushunib olishi uchun 20 daqiqa kerak boʻladi va oxir-oqibat allaqachon yakunlangan funksiyalarni qaytadan yozib chiqadi. Bu xuddi bozordagi xaridingiz roʻyxatida “sut, non va anavi narsa” deb yozilganiga oʻxshaydi — doʻkonga borgach, baribir nimani olishingiz kerakligini bilmaysiz.
 
-**Umurtqa pogʻona rejimi (Backbone mode)**: Har bir funksiyaning (feature) aniq holati va tekshiruv buyrugʻi (verification command) bor. Yangi sessiya funksiyalar roʻyxatini oʻqiydi va 3 daqiqa ichida hamma narsani tushunib oladi: F01-F05 — `passing`, F06 — `active`, F07-F10 — `not_started`. Ishni toʻgʻridan-toʻgʻri F06 dan boshlaydi, hech qanday ishni boshidan qilmaydi (zero rework).
+<strong>Umurtqa pogʻona rejimi (Backbone mode)</strong>: Har bir funksiyaning (feature) aniq holati va tekshiruv buyrugʻi (verification command) bor. Yangi sessiya funksiyalar roʻyxatini oʻqiydi va 3 daqiqa ichida hamma narsani tushunib oladi: F01-F05 — `passing`, F06 — `active`, F07-F10 — `not_started`. Ishni toʻgʻridan-toʻgʻri F06 dan boshlaydi, hech qanday ishni boshidan qilmaydi (zero rework).
 
 Miqdoriy natija (Quantified result): Strukturalangan funksiyalar roʻyxatidan (structured feature lists) foydalangan loyihalar erkin kuzatish (free-form tracking) tizimidagiga qaraganda 45% ga yuqori funksiyalarni tugallash (feature completion) darajasini koʻrsatdi va hech qanday funksiya takror amalga oshirilmadi.
 
 ## Asosiy xulosalar
 
-- **Funksiyalar roʻyxatlari — bu odamlar uchun eslatma emas, ular harnessʼning umurtqa pogʻonasidir (backbone).** Rejalashtiruvchi, tekshiruvchi va topshirish hisobotchisi barchasi shunga tayanadi.
-- **Har bir funksiya (feature) bandida uchlik (triple) boʻlishi shart**: xatti-harakat (behavior) tavsifi + tekshiruv buyrugʻi (verification command) + joriy holat (current state). Birgina elementning yetishmasligi uni tugallanmagan qilib qoʻyadi — xuddi bir oyogʻi yoʻq uch oyoqli stul kabi.
-- **Holat (State) oʻzgarishlari harness tomonidan boshqariladi** — agent holatlarni oʻzboshimchalik bilan oʻzgartira olmaydi. Tekshiruvdan oʻtish = oldinga oʻtishning yagona yoʻli.
-- **Funksiyalar roʻyxati bu loyihaning yagona haqiqat manbai (single source of truth)** — barcha “nima qilish kerak” maʼlumotlari yagona roʻyxatdan kelib chiqadi.
-- **Darajalanishni (granularity) “bitta sessiyada tugatilishi mumkin” degan qoidaga asosan toʻgʻrilang.**
+- <strong>Funksiyalar roʻyxatlari — bu odamlar uchun eslatma emas, ular harnessʼning umurtqa pogʻonasidir (backbone).</strong> Rejalashtiruvchi, tekshiruvchi va topshirish hisobotchisi barchasi shunga tayanadi.
+- <strong>Har bir funksiya (feature) bandida uchlik (triple) boʻlishi shart</strong>: xatti-harakat (behavior) tavsifi + tekshiruv buyrugʻi (verification command) + joriy holat (current state). Birgina elementning yetishmasligi uni tugallanmagan qilib qoʻyadi — xuddi bir oyogʻi yoʻq uch oyoqli stul kabi.
+- <strong>Holat (State) oʻzgarishlari harness tomonidan boshqariladi</strong> — agent holatlarni oʻzboshimchalik bilan oʻzgartira olmaydi. Tekshiruvdan oʻtish = oldinga oʻtishning yagona yoʻli.
+- <strong>Funksiyalar roʻyxati bu loyihaning yagona haqiqat manbai (single source of truth)</strong> — barcha “nima qilish kerak” maʼlumotlari yagona roʻyxatdan kelib chiqadi.
+- <strong>Darajalanishni (granularity) “bitta sessiyada tugatilishi mumkin” degan qoidaga asosan toʻgʻrilang.</strong>
 
 ## Qoʻshimcha oʻqish uchun
 
@@ -143,8 +143,8 @@ Miqdoriy natija (Quantified result): Strukturalangan funksiyalar roʻyxatidan (s
 
 ## Mashqlar
 
-1. **Funksiyalar roʻyxati dizayni (Feature List Design)**: Minimal funksiyalar roʻyxati JSON sxemasini belgilang. Qatnashishi kerak: id, xatti-harakat (behavior) tavsifi, tekshiruv buyrugʻi (verification command), joriy holat, dalilga (evidence) ishora. Undan foydalanib 5 ta funksiyaga (feature) ega haqiqiy loyihani taʼriflang.
+1. <strong>Funksiyalar roʻyxati dizayni (Feature List Design)</strong>: Minimal funksiyalar roʻyxati JSON sxemasini belgilang. Qatnashishi kerak: id, xatti-harakat (behavior) tavsifi, tekshiruv buyrugʻi (verification command), joriy holat, dalilga (evidence) ishora. Undan foydalanib 5 ta funksiyaga (feature) ega haqiqiy loyihani taʼriflang.
 
-2. **Tekshiruvning qatʼiyligini taqqoslash**: 3 ta funksiyani tanlang va ular uchun ham “yumshoq” (loose) tekshiruv (masalan, “kodda sintaksis xatolari yoʻq”), ham “qatʼiy” (strict) tekshiruv (masalan, “end-to-end test oʻtmoqda”) ishlab chiqing. Har bir yondashuv boʻyicha soxta musbat (false positive) koʻrsatkichini solishtiring.
+2. <strong>Tekshiruvning qatʼiyligini taqqoslash</strong>: 3 ta funksiyani tanlang va ular uchun ham “yumshoq” (loose) tekshiruv (masalan, “kodda sintaksis xatolari yoʻq”), ham “qatʼiy” (strict) tekshiruv (masalan, “end-to-end test oʻtmoqda”) ishlab chiqing. Har bir yondashuv boʻyicha soxta musbat (false positive) koʻrsatkichini solishtiring.
 
-3. **Yagona manba tamoyili (Single Source Principle) auditi**: Mavjud boʻlgan agent loyihasini koʻrib chiqing va funksiyalar roʻyxatiga (feature list) zid boʻlgan skoup (scope) maʼlumotlarini qidiring (suhbatlardagi yashirin talablar, koddagi TODO izohlar va h.k.). Barcha maʼlumotlarni funksiyalar roʻyxatiga birlashtirish rejasini ishlab chiqing.
+3. <strong>Yagona manba tamoyili (Single Source Principle) auditi</strong>: Mavjud boʻlgan agent loyihasini koʻrib chiqing va funksiyalar roʻyxatiga (feature list) zid boʻlgan skoup (scope) maʼlumotlarini qidiring (suhbatlardagi yashirin talablar, koddagi TODO izohlar va h.k.). Barcha maʼlumotlarni funksiyalar roʻyxatiga birlashtirish rejasini ishlab chiqing.

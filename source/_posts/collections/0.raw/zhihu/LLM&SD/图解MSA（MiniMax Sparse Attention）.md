@@ -32,7 +32,7 @@ MSA论文第2小节介绍了一些注意力机制的预备知识，本文我们�
 ![](https://pic4.zhimg.com/v2-72ae9ba6d587d885c512053a03837863_r.jpg)这个公式，以及上图，这里就不展开介绍了。需要提一下的是，公式中，Q、K、V都是由输入矩阵线性变换来的。在推理阶段，K和V是需要缓存起来的，这就是所谓的KV Cache，图中画成了绿色。不难看出，KV Cache需要的存储量和输入序列的长度是成正比的。当输入序列特别长的时候，KV Cache就成了瓶颈。后面要介绍的MQA、GQA等优化，都是在试图减少KV Cache的存储量。
 
 多头注意力
-前面给出的是单个注意力头的计算公式，Transformer论文里推荐**多头注意力**（Multi-Head Attention，简称**MHA**）。其实就是多个注意力头分别算注意力，然后再拼接起来，下面是论文3.2.2小节给出的MHA公式：
+前面给出的是单个注意力头的计算公式，Transformer论文里推荐<strong>多头注意力</strong>（Multi-Head Attention，简称<strong>MHA</strong>）。其实就是多个注意力头分别算注意力，然后再拼接起来，下面是论文3.2.2小节给出的MHA公式：
 
 ![](https://www.zhihu.com/equation?tex=+%5Cbegin%7Baligned%7D+%5Ctext%7BMultiHead%7D%28Q%2C+K%2C+V%29+%26%3D+%5Ctext%7BConcat%7D%28%5Ctext%7Bhead%7D_1%2C%5Cdots%2C%5Ctext%7Bhead%7D_h%29W%5EO+%5C%5C+%5Ctext%7Bwhere+%7D%5C+%5Ctext%7Bhead%7D_i+%26%3D+%5Ctext%7BAttention%7D%28XW_i%5EQ%2C+XW_i%5EK%2C+XW_i%5EV%29+%5Cend%7Baligned%7D+%5Ctag%7BA3.2.2%7D+)
 
@@ -43,39 +43,39 @@ MSA论文第2小节介绍了一些注意力机制的预备知识，本文我们�
 ![](https://www.zhihu.com/equation?tex=+%5Cbegin%7Baligned%7D+%5Calpha_%7Bt%2Ci%7D%5E%7B%28h%29%7D+%26%3D+%5Cfrac%7B%5Ctext%7Bexp%7D%5Cbig%28%5Clangle+q_t%5E%7B%28h%29%7D%2C+k_i%5E%7B%28h%29%7D+%5Crangle+%2F+%5Csqrt%7Bd_h%7D%5Cbig%29%7D%7B%5Csum_%7Bj%5Cle+t%7D%5Ctext%7Bexp%7D%5Cbig%28%5Clangle+q_t%5E%7B%28h%29%7D%2C+k_j%5E%7B%28h%29%7D+%5Crangle+%2F+%5Csqrt%7Bd_h%7D%5Cbig%29%7D%2C+%5C%5C+o_t%5E%7B%28h%29%7D+%26%3D+%5Csum_%7Bi%5Cle+t%7D+%5Calpha_%7Bt%2Ci%7D%5E%7B%28h%29%7D+v_i%5E%7B%28h%29%7D.+%5Cend%7Baligned%7D+%5Ctag%7BM1%7D+)
 
 这个公式和2017年Transformer论文里的公式（1）是一致的，只是把Softmax计算体现出来了。公式里，`t`表示Q的索引，`i`表示K和V的索引， 
-![](https://www.zhihu.com/equation?tex=d_h) 表示注意力头的维度。这个公式比较好理解，其他细节这里就不展开介绍了。在本文中，我们统一用Q、K、V来表示矩阵，用**q**、**k**、**v**来表示向量，和公式保持一致。
+![](https://www.zhihu.com/equation?tex=d_h) 表示注意力头的维度。这个公式比较好理解，其他细节这里就不展开介绍了。在本文中，我们统一用Q、K、V来表示矩阵，用<strong>q</strong>、<strong>k</strong>、<strong>v</strong>来表示向量，和公式保持一致。
 
 多查询注意力
-既然KV Cache是瓶颈，那么就想办法减少需要缓存的KV就行了。最简单的办法就是`h`个Q共用一组KV，这就是**多查询注意力**（Multi-Query Attention，简称**MQA**）提出的优化机制。MQA的基本架构如下图所示：
+既然KV Cache是瓶颈，那么就想办法减少需要缓存的KV就行了。最简单的办法就是`h`个Q共用一组KV，这就是<strong>多查询注意力</strong>（Multi-Query Attention，简称<strong>MQA</strong>）提出的优化机制。MQA的基本架构如下图所示：
 
 ![](https://pic1.zhimg.com/v2-85eaf2dd85e2dbe08d6b07f82f8f906c_r.jpg)这个优化肯定是很有效的，比如说注意力头数`h=64`，由于所有的Q共用一组KV，MQA一下子就让KV Cache的用量变成了标准MHA的1/64。但是压缩得这么狠，想想肯定也是要付出代价的：
 
  Q：简述一下MQA带来的问题。
  AI：一句话概括就是：MQA 用共享 K/V 换取了推理效率，但代价是牺牲了一部分多头注意力的表示能力；GQA 则是在二者之间取得了更好的平衡。
 分组查询注意力
-MQA的问题是压缩得太狠了：不管注意力头数`h`是多少，就共用一组KV。那么一个折中的办法就是：把Q分组，每一组Q共用KV。这就是**分组查询注意力**（Grouped-Query Attention，简称**GQA**）提出的优化机制，如下图所示（两个Q一组）：
+MQA的问题是压缩得太狠了：不管注意力头数`h`是多少，就共用一组KV。那么一个折中的办法就是：把Q分组，每一组Q共用KV。这就是<strong>分组查询注意力</strong>（Grouped-Query Attention，简称<strong>GQA</strong>）提出的优化机制，如下图所示（两个Q一组）：
 
 ![](https://pic4.zhimg.com/v2-abce8353922b045eab5d3eb69e8f3d83_r.jpg)我们假设把每`g`个Q分为一组，那么需要的KV数量就是 
 ![](https://www.zhihu.com/equation?tex=h_%7Bkv%7D%3Dh%2Fg) 。不难看出，GQA对于KV Cache的压缩率就是`1/g`。当`g=1`时，就是标准MHA；当`g=h`时，就是MQA。
 
 稀疏注意力
-不管是标准 MHA 机制，还是 MQA、GQA 优化，每一个 Token 都要和它自身以及前面的所有 Token 计算注意力分数，这种覆盖全部允许位置进行交互的方式叫做**稠密注意力机制**（Dense / Full Attention）。与之相对应的，就是**稀疏注意力机制**（Sparse Attention，本文简称**SA**）。MSA论文2.2小节简要介绍了一种两阶段稀疏注意力机制，也就是公式（2）描述的机制：
+不管是标准 MHA 机制，还是 MQA、GQA 优化，每一个 Token 都要和它自身以及前面的所有 Token 计算注意力分数，这种覆盖全部允许位置进行交互的方式叫做<strong>稠密注意力机制</strong>（Dense / Full Attention）。与之相对应的，就是<strong>稀疏注意力机制</strong>（Sparse Attention，本文简称<strong>SA</strong>）。MSA论文2.2小节简要介绍了一种两阶段稀疏注意力机制，也就是公式（2）描述的机制：
 
 ![](https://www.zhihu.com/equation?tex=+%5Cbegin%7Baligned%7D+%5Cmathcal%7BI%7D_i+%26%3D+%5Ctext%7BIndex%7D_%5Cphi%28q_i%2C+K_%7B%5Cleq+i%7D%29%2C+%5C%5C+%5Cquad+o_i+%26%3D+%5Ctext%7BAttn%7D%5Cbig%28q_i%2C+K%5B%5Cmathcal%7BI%7D_i%5D%2C+V%5B%5Cmathcal%7BI%7D_i%5D%5Cbig%29+%5Cend%7Baligned%7D+%5Ctag%7BM2%7D+)
 
-所谓的两阶段，就是索引+注意力计算。第一阶段，根据某个**q**算出一个索引表（这个表的大小，应该远小于输入序列长度），这个就是上面公式第一行的含义。第二阶段，从索引表里查出对应的**kv**，计算注意力，这就是上面公式里第二行的含义。
+所谓的两阶段，就是索引+注意力计算。第一阶段，根据某个<strong>q</strong>算出一个索引表（这个表的大小，应该远小于输入序列长度），这个就是上面公式第一行的含义。第二阶段，从索引表里查出对应的<strong>kv</strong>，计算注意力，这就是上面公式里第二行的含义。
 
-我们暂时先关注单个注意力头，并且聚焦在最后一个**q**的上面，稀疏注意力机制大致可以画成下面这样。其中深灰色表示我们暂时不关心的计算、浅灰色表示不在索引表内的**kv**、绿色表示在索引表内的**kv**、棕色表示计算出的注意力分数。
+我们暂时先关注单个注意力头，并且聚焦在最后一个<strong>q</strong>的上面，稀疏注意力机制大致可以画成下面这样。其中深灰色表示我们暂时不关心的计算、浅灰色表示不在索引表内的<strong>kv</strong>、绿色表示在索引表内的<strong>kv</strong>、棕色表示计算出的注意力分数。
 
 ![](https://pic2.zhimg.com/v2-ac3a981b847460170dd3e95680a4e74b_r.jpg)
 分块稀疏注意力
-但是上面介绍的SA对于GPU来说并不是很友好（具体可以看MSA论文），于是就有了**分块稀疏注意力机制**（Block Sparse Attention，本文简称BSA）。
+但是上面介绍的SA对于GPU来说并不是很友好（具体可以看MSA论文），于是就有了<strong>分块稀疏注意力机制</strong>（Block Sparse Attention，本文简称BSA）。
 
-BSA和SA基本原理是差不多的，只是我们要把Q和K分块。然后第一阶段算索引的时候，并不是像SA那样给每个**kv**分别算，而是按块来算。然后第二阶段也是按块选出**kv**，然后计算注意力。我们假设每个块里有2个**k**或者**v**，BSA机制可以画成下图这样：
+BSA和SA基本原理是差不多的，只是我们要把Q和K分块。然后第一阶段算索引的时候，并不是像SA那样给每个<strong>kv</strong>分别算，而是按块来算。然后第二阶段也是按块选出<strong>kv</strong>，然后计算注意力。我们假设每个块里有2个<strong>k</strong>或者<strong>v</strong>，BSA机制可以画成下图这样：
 
 ![](https://pica.zhimg.com/v2-9746b482f06f7884ef4994dcee9b7ef2_r.jpg)
 基于GQA的分块稀疏注意力
-不难看出，MQA和GQA致力于减少KV Cache用量，SA和BSA致力于减少注意力计算量。如果把这两种优化结合起来，就能达到同时减少KV Cache用量和注意力计算量的效果，这就是MSA论文2.3小节介绍的**基于GQA的分块稀疏注意力机制**（GQA + BSA = GQA-Based Block Sparse Attention）。
+不难看出，MQA和GQA致力于减少KV Cache用量，SA和BSA致力于减少注意力计算量。如果把这两种优化结合起来，就能达到同时减少KV Cache用量和注意力计算量的效果，这就是MSA论文2.3小节介绍的<strong>基于GQA的分块稀疏注意力机制</strong>（GQA + BSA = GQA-Based Block Sparse Attention）。
 
 我们先来看MSA论文里的公式（3），它的意思是每一个GQA组有其共享的BSA索引表：
 
@@ -95,7 +95,7 @@ BSA和SA基本原理是差不多的，只是我们要把Q和K分块。然后第�
 - 输入序列长度： 
 ![](https://www.zhihu.com/equation?tex=N%3D100) 。
 - 分块大小： 
-![](https://www.zhihu.com/equation?tex=B_k+%3D+16) ，也就是16个**k**或者**v**一个块。
+![](https://www.zhihu.com/equation?tex=B_k+%3D+16) ，也就是16个<strong>k</strong>或者<strong>v</strong>一个块。
 - 分块数量： 
 ![](https://www.zhihu.com/equation?tex=B%3D%5Cleft%5Clceil+N%2FB_k%5Cright%5Crceil+%3D+7) ，共7个块。
 - 分块索引： 
@@ -121,7 +121,7 @@ MiniMax稀疏注意力
 ![](https://www.zhihu.com/equation?tex=Q%5E%7Bidx%7D) 矩阵，它们共享一个 
 ![](https://www.zhihu.com/equation?tex=K%5E%7Bidx%7D) 矩阵。公式（5）的计算过程如下图所示：
 
-![](https://pic4.zhimg.com/v2-e90298996215ef1c44befef35f878b8b_r.jpg)接下来是计算索引表分数，也就是MSA论文里的公式（6）。在这个公式里，下标`i`表示**q**的索引、下标`j`表示**kv**的索引、下标`b`表示BSA分块索引、上标`(r)`表示GQA分组索引。
+![](https://pic4.zhimg.com/v2-e90298996215ef1c44befef35f878b8b_r.jpg)接下来是计算索引表分数，也就是MSA论文里的公式（6）。在这个公式里，下标`i`表示<strong>q</strong>的索引、下标`j`表示<strong>kv</strong>的索引、下标`b`表示BSA分块索引、上标`(r)`表示GQA分组索引。
 
 ![](https://www.zhihu.com/equation?tex=+%5Cbegin%7Baligned%7D+S_%7Bi%2Cj%7D%5E%7Bidx%2C%28r%29%7D+%26%3D+%5Cfrac%7B%5Cbig%28Q%5E%7Bidx%7D%5Cbig%29_i%5E%7B%28r%29%7D+%5Cbig%28K%5E%7Bidx%7D%5Cbig%29_j%5E%5Ctop%7D%7B%5Csqrt%7Bd_%7Bidx%7D%7D%7D%2C+%5C%5C+M_%7Bi%2Cb%7D%5E%7Bidx%2C%28r%29%7D+%26%3D+%5Cmax_%7B%5Csubstack%7Bj%5Cin%5Cmathcal%7BB%7D_b+%5C%5C+j%5Cle+i%7D%7D+S_%7Bi%2Cj%7D%5E%7Bidx%2C%28r%29%7D.+%5Cend%7Baligned%7D+%5Ctag%7BM6%7D+)
 

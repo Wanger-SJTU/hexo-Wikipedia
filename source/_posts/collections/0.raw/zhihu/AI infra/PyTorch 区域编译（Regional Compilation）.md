@@ -21,7 +21,7 @@ source_url: https://zhuanlan.zhihu.com/p/2029894341162992606
 区域编译（Regional Compilation）是 PyTorch 2.x 系列引入的一项编译优化策略，其核心思想是放弃对整个模型进行全局图编译，转而选择性地编译模型中的重复区域（例如 Transformer 块）[1]。通过这种方式，编译器仅需对单个重复单元进行一次图构建与优化，随后在模型整体运行中重用该编译产物，从而显著减小编译图的规模并缩短启动耗时。
 
 1.2 核心痛点：torch.compile 的冷启动问题
-`torch.compile` 作为 PyTorch 2.0 的旗舰特性，通过 TorchDynamo 捕获计算图并利用 TorchInductor 后端生成高效的 Triton 或 C++ 内核，能够显著提升模型的运行时性能。然而，这种全局编译策略在面对大型模型时存在一个显著瓶颈——**冷启动编译时间过长**。
+`torch.compile` 作为 PyTorch 2.0 的旗舰特性，通过 TorchDynamo 捕获计算图并利用 TorchInductor 后端生成高效的 Triton 或 C++ 内核，能够显著提升模型的运行时性能。然而，这种全局编译策略在面对大型模型时存在一个显著瓶颈——<strong>冷启动编译时间过长</strong>。
 
 对于包含数十甚至上百个重复层的现代深度学习模型（如大型语言模型 LLM），全模型编译需要遍历并优化每一层的计算图，即使这些层在结构上完全相同。这导致了以下问题：
 
@@ -34,7 +34,7 @@ source_url: https://zhuanlan.zhihu.com/p/2029894341162992606
 
 1. 全模型编译 (Full Model Compilation)
 
-**逻辑：** 将整个神经网络视为一个不可分割的整体。编译器需要同时处理所有层的算子，建立一个巨大的依赖关系图。
+<strong>逻辑：</strong> 将整个神经网络视为一个不可分割的整体。编译器需要同时处理所有层的算子，建立一个巨大的依赖关系图。
 
 ┌────────────────── 全模型编译 (Full Model Compilation) ──────────────────┐
 │                                                                         │
@@ -53,7 +53,7 @@ source_url: https://zhuanlan.zhihu.com/p/2029894341162992606
 └─────────────────────────────────────────────────────────────────────────┘
 2. 区域编译 (Regional/Modular Compilation)
 
-**逻辑：** 识别模型中的重复结构（如 Transformer 的 Block）。只编译一个“模板”，然后在执行时通过参数映射（Weight Binding）多次调用。
+<strong>逻辑：</strong> 识别模型中的重复结构（如 Transformer 的 Block）。只编译一个“模板”，然后在执行时通过参数映射（Weight Binding）多次调用。
 
 ┌────────────────── 区域编译 (Regional Compilation) ───────────────────┐
 │                                                                      │
@@ -78,9 +78,9 @@ source_url: https://zhuanlan.zhihu.com/p/2029894341162992606
 2.2 编译器如何识别和重用重复结构
 区域编译的重用机制依赖于 TorchDynamo 的图缓存（Graph Cache）功能。当对 `nn.ModuleList` 中的每个层实例分别调用 `torch.compile` 时，编译器会执行以下流程：
 
-- **首次编译**：第一个 `Layer` 实例被执行时，TorchDynamo 捕获其计算图，TorchInductor 生成优化后的内核代码，并将结果缓存。
-- **结构匹配**：后续 `Layer` 实例执行时，TorchDynamo 检测到其计算图结构与缓存中的图完全一致（相同的算子序列、相同的张量形状关系）。
-- **缓存命中**：直接复用已缓存的编译产物，跳过图构建和代码生成阶段。# 伪代码：TorchDynamo 的缓存匹配逻辑
+- <strong>首次编译</strong>：第一个 `Layer` 实例被执行时，TorchDynamo 捕获其计算图，TorchInductor 生成优化后的内核代码，并将结果缓存。
+- <strong>结构匹配</strong>：后续 `Layer` 实例执行时，TorchDynamo 检测到其计算图结构与缓存中的图完全一致（相同的算子序列、相同的张量形状关系）。
+- <strong>缓存命中</strong>：直接复用已缓存的编译产物，跳过图构建和代码生成阶段。# 伪代码：TorchDynamo 的缓存匹配逻辑
 def compile_and_cache(module, input):
     graph_signature = extract_graph_structure(module, input)
     
@@ -107,7 +107,7 @@ torch._dynamo.config.inline_inbuilt_nn_modules = True  # PyTorch 2.4 必须手�
 3.1 最佳适用场景
 区域编译在以下场景中能够发挥最大价值：
 
-**场景一：Transformer 架构模型**
+<strong>场景一：Transformer 架构模型</strong>
 
 Transformer 模型天然具有高度重复的结构特征，包含多个相同的 Encoder/Decoder 层。这使其成为区域编译的理想应用对象。
 
@@ -123,15 +123,15 @@ Transformer 模型天然具有高度重复的结构特征，包含多个相同�
 ├────────────────────────┤
 │      Output Head       │  ← 非重复区域
 └────────────────────────┘
-**场景二：深度卷积网络**
+<strong>场景二：深度卷积网络</strong>
 
 ResNet、DenseNet 等网络中的残差块具有重复结构，同样适合区域编译。
 
-**场景三：循环神经网络**
+<strong>场景三：循环神经网络</strong>
 
 RNN/LSTM/GRU 的循环单元在时间维度上重复执行，可视为特殊的重复区域。
 
-**场景四：开发调试阶段**
+<strong>场景四：开发调试阶段</strong>
 
 当开发者需要频繁修改代码并测试时，区域编译能显著缩短每次迭代的等待时间。
 
@@ -144,19 +144,19 @@ RNN/LSTM/GRU 的循环单元在时间维度上重复执行，可视为特殊的�
 4.2 nn.ModuleList + torch.compile 组合技巧
 区域编译的核心技巧在于将 `torch.compile` 与 `nn.ModuleList` 结合使用。以下是几种常见的组合模式：
 
-**模式一：构造时编译（推荐）**
+<strong>模式一：构造时编译（推荐）</strong>
 
 self.layers = nn.ModuleList([
     torch.compile(Layer()) for _ in range(N)
 ])
-**模式二：延迟编译**
+<strong>模式二：延迟编译</strong>
 
 self.layers = nn.ModuleList([Layer() for _ in range(N)])
 
 # 在训练/推理前统一编译
 for i, layer in enumerate(self.layers):
     self.layers[i] = torch.compile(layer)
-**模式三：条件编译**
+<strong>模式三：条件编译</strong>
 
 def maybe_compile(module, should_compile):
     return torch.compile(module) if should_compile else module
@@ -195,7 +195,7 @@ class Model(torch.nn.Module):
         self.layers = torch.nn.ModuleList([
             torch.compile(Layer()) for _ in range(64)  # ← 编译边界内
         ])
-**应对策略**：
+<strong>应对策略</strong>：
 
 - 将关键的非重复算子也纳入编译范围
 - 或者接受这部分性能损失（通常影响很小）
@@ -215,7 +215,7 @@ torch.compiler.reset()
 
 # 清除 TorchInductor 的内核缓存
 torch._inductor.utils.fresh_inductor_cache()
-**正确的基准测试流程**：
+<strong>正确的基准测试流程</strong>：
 
 def correct_benchmark():
     # 步骤 1：清除所有缓存
@@ -249,7 +249,7 @@ PyTorch 版本区域编译支持状态所需配置< 2.4不支持—2.4支持（�
 
 场景推荐策略理由开发调试阶段区域编译快速迭代，缩短等待时间CI/CD 测试区域编译减少 Pipeline 执行时间生产环境（低延迟优先）全模型编译 + 预热运行时性能最优生产环境（快速扩容优先）区域编译缩短冷启动时间模型服务（混合场景）区域编译 + AOTInductor平衡编译时间与运行时性能区域编译是 PyTorch 2.x 系列针对大型重复结构模型提供的编译优化策略。其核心价值在于通过选择性编译模型中的重复区域，将编译时间从秒级降低到亚秒级，同时保持接近全模型编译的运行时性能。
 
-**核心要点回顾**：
+<strong>核心要点回顾</strong>：
 
 要点内容核心原理编译单个重复单元，利用缓存机制重用编译结果主要收益编译时间提升约 13.5 倍（10.80秒 → 0.80秒）适用场景Transformer、深度卷积网络等包含重复结构的模型实现方式对 nn.ModuleList 中的每个层实例分别调用 torch.compile关键配置PyTorch 2.4 需手动启用 inline_inbuilt_nn_modules主要权衡可能损失部分跨层优化，但影响通常很小最佳实践开发阶段使用区域编译，生产环境根据需求选择区域编译的引入，使得 PyTorch 的 JIT 编译机制在易用性和实用性上迈出了重要一步。对于需要频繁迭代的深度学习开发者而言，这一特性能够显著提升开发体验和工作效率。
 

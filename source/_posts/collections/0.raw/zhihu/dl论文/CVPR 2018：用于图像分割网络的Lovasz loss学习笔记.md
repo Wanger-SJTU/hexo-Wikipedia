@@ -36,7 +36,7 @@ IoU (intersection-over-union，也叫jaccard index)是自然图像分割比赛�
 
 将公式(6)做光滑的延拓不是一件简单的事情，更一般的说，对任意的离散函数找到其光滑的延拓很难。好在作者发现公式(6)是submodular的，
 
-![](https://pic2.zhimg.com/v2-53d682af51bc3e79acee8368e5ea3a11_r.jpg)submodular的函数已经有成熟数学工具可以将其做光滑延拓，而且延拓后的函数总是凸的，这样就大大方便了优化。该数学工具即为**lovasz extension**
+![](https://pic2.zhimg.com/v2-53d682af51bc3e79acee8368e5ea3a11_r.jpg)submodular的函数已经有成熟数学工具可以将其做光滑延拓，而且延拓后的函数总是凸的，这样就大大方便了优化。该数学工具即为<strong>lovasz extension</strong>
 
 ![](https://picx.zhimg.com/v2-8607c8f942ad8d09e7ed0335908a0e6b_r.jpg)注意这时候新函数 
 ![](https://www.zhihu.com/equation?tex=%5Cbar%7B%5CDelta%7D) 的定义域已经从离散的 
@@ -60,7 +60,7 @@ g(m)这里目前还不懂上面是介绍了本文整体的思路，一句话概�
 
 ![](https://pic2.zhimg.com/v2-897d384c45b0046a29c3a9097c4c4771_r.jpg)
 
-**目前对公式(6)中的g理解还不深刻，因此对(10&12)也是一知半解，最近会持续啃这篇paper，等弄懂了再来完善。**
+<strong>目前对公式(6)中的g理解还不深刻，因此对(10&12)也是一知半解，最近会持续啃这篇paper，等弄懂了再来完善。</strong>
 
 几个可能的疑问
 

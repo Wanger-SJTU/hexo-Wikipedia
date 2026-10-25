@@ -64,22 +64,22 @@ OpenAI's Codex harness engineering guide also emphasizes the "repository as oper
 
 ## Core Concepts
 
-- **Initialization Phase**: The first phase in the agent's lifecycle — it only establishes the prerequisites for subsequent implementation, with no feature development. Its output is infrastructure, not business code.
-- **Startup Readiness Checklist**: The conditions under which a project can be unambiguously operated by a fresh agent session: can start, can test, can see progress, can pick up next steps. Four conditions, all required.
-- **From Scratch vs From Template**: Starting from scratch means the agent must infer project structure on its own from an empty directory; starting from a template means infrastructure is already in place. Starting from a template far outperforms starting from scratch.
-- **Always Ready to Hand Off**: The project is in a state at any given moment where a fresh agent can take over. No verbal explanation needed — just looking at the repo contents is enough to continue working.
-- **Time from Start to First Passing Test**: The time from project start until the first feature point passes verification. This is the core metric for measuring initialization efficiency.
-- **Success Rate of Subsequent Sessions**: The proportion of subsequent sessions that can successfully execute tasks without relying on implicit knowledge. This is the best measure of initialization quality.
+- <strong>Initialization Phase</strong>: The first phase in the agent's lifecycle — it only establishes the prerequisites for subsequent implementation, with no feature development. Its output is infrastructure, not business code.
+- <strong>Startup Readiness Checklist</strong>: The conditions under which a project can be unambiguously operated by a fresh agent session: can start, can test, can see progress, can pick up next steps. Four conditions, all required.
+- <strong>From Scratch vs From Template</strong>: Starting from scratch means the agent must infer project structure on its own from an empty directory; starting from a template means infrastructure is already in place. Starting from a template far outperforms starting from scratch.
+- <strong>Always Ready to Hand Off</strong>: The project is in a state at any given moment where a fresh agent can take over. No verbal explanation needed — just looking at the repo contents is enough to continue working.
+- <strong>Time from Start to First Passing Test</strong>: The time from project start until the first feature point passes verification. This is the core metric for measuring initialization efficiency.
+- <strong>Success Rate of Subsequent Sessions</strong>: The proportion of subsequent sessions that can successfully execute tasks without relying on implicit knowledge. This is the best measure of initialization quality.
 
 ## How to Do Initialization Right
 
-**Treat initialization as a dedicated phase.** The first session does only initialization — no business feature code at all. Initialization produces:
+<strong>Treat initialization as a dedicated phase.</strong> The first session does only initialization — no business feature code at all. Initialization produces:
 
-**1. Runnable environment.** The project starts, dependencies are installed, no environment issues.
+<strong>1. Runnable environment.</strong> The project starts, dependencies are installed, no environment issues.
 
-**2. Verifiable test framework.** At least one example test passes, proving the test framework itself is properly configured.
+<strong>2. Verifiable test framework.</strong> At least one example test passes, proving the test framework itself is properly configured.
 
-**3. Startup readiness checklist document.** A clear document telling subsequent sessions:
+<strong>3. Startup readiness checklist document.</strong> A clear document telling subsequent sessions:
 ```markdown
 # Startup Readiness Checklist
 
@@ -102,7 +102,7 @@ OpenAI's Codex harness engineering guide also emphasizes the "repository as oper
 - tests/ — Test files
 ```
 
-**4. Task breakdown.** Split the entire project into an ordered task list, each task with clear acceptance criteria:
+<strong>4. Task breakdown.</strong> Split the entire project into an ordered task list, each task with clear acceptance criteria:
 ```markdown
 # Task Breakdown
 
@@ -120,11 +120,11 @@ OpenAI's Codex harness engineering guide also emphasizes the "repository as oper
 - ...
 ```
 
-**5. Git commit as checkpoint.** After initialization completes, commit a clean checkpoint. All subsequent work starts from this checkpoint.
+<strong>5. Git commit as checkpoint.</strong> After initialization completes, commit a clean checkpoint. All subsequent work starts from this checkpoint.
 
-**Starting from a template**: Don't start from an empty directory. Use a project template (create-react-app, fastapi-template, etc.) to preset standard directory structure, dependency configuration, and test framework. Bake common initialization steps into the template, leaving only project-specific initialization work.
+<strong>Starting from a template</strong>: Don't start from an empty directory. Use a project template (create-react-app, fastapi-template, etc.) to preset standard directory structure, dependency configuration, and test framework. Bake common initialization steps into the template, leaving only project-specific initialization work.
 
-**Initialization completion criteria**: Not "how much code was written," but whether the startup readiness checklist's four conditions are all met: can start, can test, can see progress, can pick up next steps. Use this checklist to validate initialization:
+<strong>Initialization completion criteria</strong>: Not "how much code was written," but whether the startup readiness checklist's four conditions are all met: can start, can test, can see progress, can pick up next steps. Use this checklist to validate initialization:
 
 ```markdown
 ## Initialization Acceptance Checklist
@@ -139,9 +139,9 @@ OpenAI's Codex harness engineering guide also emphasizes the "repository as oper
 
 Two initialization approaches for a React frontend project, compared:
 
-**Mixed approach**: The agent simultaneously created project scaffolding and implemented the first feature in session 1. At session end, the repo had runnable code but no explicit start/test command documentation, no progress tracking file, no task breakdown. Session 2 spent about 20 minutes inferring project structure, test framework, and build process.
+<strong>Mixed approach</strong>: The agent simultaneously created project scaffolding and implemented the first feature in session 1. At session end, the repo had runnable code but no explicit start/test command documentation, no progress tracking file, no task breakdown. Session 2 spent about 20 minutes inferring project structure, test framework, and build process.
 
-**Dedicated initialization**: Session 1 did only initialization — created directory structure from a template, configured the test framework (Vitest + React Testing Library), wrote and verified one example test, created the startup readiness checklist and task breakdown file, committed the initial checkpoint. Session 2's rebuild time was under 3 minutes, and it started working directly from the task list.
+<strong>Dedicated initialization</strong>: Session 1 did only initialization — created directory structure from a template, configured the test framework (Vitest + React Testing Library), wrote and verified one example test, created the startup readiness checklist and task breakdown file, committed the initial checkpoint. Session 2's rebuild time was under 3 minutes, and it started working directly from the task list.
 
 Full project cycle comparison: the mixed approach's total rebuild time (across all sessions) was about 60% more than the dedicated initialization approach. The extra 20 minutes spent on initialization was recovered many times over in subsequent sessions. Invest a bit more time up front to do initialization properly, and subsequent efficiency is actually higher.
 
@@ -163,8 +163,8 @@ Full project cycle comparison: the mixed approach's total rebuild time (across a
 
 ## Exercises
 
-1. **Startup readiness checklist design**: Write a complete startup readiness checklist for a project you're developing. Then open a completely fresh agent session, show it only repo contents (no verbal context at all), and have it try to start the project, run tests, and understand current progress. Record every problem it encounters — each one corresponds to a missing clause in your startup readiness checklist.
+1. <strong>Startup readiness checklist design</strong>: Write a complete startup readiness checklist for a project you're developing. Then open a completely fresh agent session, show it only repo contents (no verbal context at all), and have it try to start the project, run tests, and understand current progress. Record every problem it encounters — each one corresponds to a missing clause in your startup readiness checklist.
 
-2. **Comparison experiment**: Pick a moderately complex new project. Approach A: let the agent initialize and do first implementation simultaneously. Approach B: spend one session on dedicated initialization, start implementation in session 2. After 4 sessions, compare time from start to first passing test, rebuild cost, and feature completion rate.
+2. <strong>Comparison experiment</strong>: Pick a moderately complex new project. Approach A: let the agent initialize and do first implementation simultaneously. Approach B: spend one session on dedicated initialization, start implementation in session 2. After 4 sessions, compare time from start to first passing test, rebuild cost, and feature completion rate.
 
-3. **Initialization acceptance checklist**: Design an initialization acceptance checklist for your project. Have a fresh agent session execute each checklist item and record which pass and which fail. The failing items are where your harness needs strengthening.
+3. <strong>Initialization acceptance checklist</strong>: Design an initialization acceptance checklist for your project. Have a fresh agent session execute each checklist item and record which pass and which fail. The failing items are where your harness needs strengthening.

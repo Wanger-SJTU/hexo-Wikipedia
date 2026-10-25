@@ -15,7 +15,7 @@ source_url: https://zhuanlan.zhihu.com/p/29575167617
 ---
 
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_8a4e6e88c96f.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_8a4e6e88c96f.jpg)
 
 做 seq-wise softmax 典型的数据流是 reduce -> exp2 -> reduce。如果用 SIMD 来描述，做 reduce 的时候 exp2 闲置，做 exp2 的时候 reduce 闲置。Vector chaining 可以改善这种情况， 但是 reduce 没法 chaining，导致利用率还是上不去。是图里第一种情况。
 

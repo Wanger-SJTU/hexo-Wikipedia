@@ -42,7 +42,7 @@ Learn Harness Engineering 是一門專注於 AI 程式設計代理工程實踐�
 
 ## Harness 的核心機制
 
-Harness 的核心在於為模型建立一套閉環的**工作系統**，讓模型更聰明並非其目的。你可以透過下面的簡單圖示理解它的核心運作流：
+Harness 的核心在於為模型建立一套閉環的<strong>工作系統</strong>，讓模型更聰明並非其目的。你可以透過下面的簡單圖示理解它的核心運作流：
 
 ```mermaid
 graph TD

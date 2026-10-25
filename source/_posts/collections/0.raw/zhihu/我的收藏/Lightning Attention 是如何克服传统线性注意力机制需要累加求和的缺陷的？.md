@@ -65,19 +65,19 @@ $\begin{aligned} &&&&\mathbf{o}_t &=   \sum_{j=1}^t \mathbf{v}_j(\mathbf{k}_j^\t
 
 但是如果用这种最基本的循环来训练有非常多的问题。**
 
-第一点，如果使用autograd，那么，每一个时刻的hidden state \mathbf{S}_t 都会被保存下来给反向传播算梯度。保存中间hidden state在之前的RNN训练里面没啥问题，**但是在这里却是一个大问题。**为什么呢？因为传统RNN 每个时刻的hidden state的大小是 \mathcal{O}(d) ，而linear attention每个时刻的hidden state大小是 \mathcal{O}(d^2) ，如果全部存下来需要 \mathcal{O}(Ld^2) ，那是万万不可接受的（你可以想象，输入的QKV才3Ld, 一般d>>3, 那么你基本就显存爆炸寄了不用玩了）
+第一点，如果使用autograd，那么，每一个时刻的hidden state \mathbf{S}_t 都会被保存下来给反向传播算梯度。保存中间hidden state在之前的RNN训练里面没啥问题，<strong>但是在这里却是一个大问题。</strong>为什么呢？因为传统RNN 每个时刻的hidden state的大小是 \mathcal{O}(d) ，而linear attention每个时刻的hidden state大小是 \mathcal{O}(d^2) ，如果全部存下来需要 \mathcal{O}(Ld^2) ，那是万万不可接受的（你可以想象，输入的QKV才3Ld, 一般d>>3, 那么你基本就显存爆炸寄了不用玩了）
 
-[Transformers are RNNs: Fast Autoregressive Transformers with Linear Attention](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2006.16236) 里面提出了一个**memory-efficient 训练的解决方案。**
+[Transformers are RNNs: Fast Autoregressive Transformers with Linear Attention](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2006.16236) 里面提出了一个<strong>memory-efficient 训练的解决方案。</strong>
 
 $在这个方案里， \mathbf{S}_t 在前向传播的过程中是不会被保存的。 由于只有 \mathbf{q}_{t} 的梯度依赖于 \mathbf{S}_t 。那我们索性在backward的时候重新算一遍 \mathbf{S}_t ，但这时的output算的不是 \mathbf{o}_t，而是  \mathbf{dq}_t = \mathbf{S}_t \mathbf{do}_t $
 
 而 \mathbf{k}_t, \mathbf{v}_t 的梯度不依赖于 \mathbf{S}_t ，可以直接通过平常的BPTT来算出来。
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_12dfddbde303.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_12dfddbde303.jpg)
 
 到此为止，memory的问题解决了。
 
-**第二个问题**，循环训练并行度太差了。此外，linear attention的recurrent update全部都是element-wise的操作（外积，点乘，...），根本没有一丁点矩阵乘法的影子，而矩阵乘法在GPU上非常高效（相同数量的FLOPs,在A100上用tensor cores算半精度矩阵乘法的效率是其他操作的16倍，所以现代的算法都是怎么矩阵乘法怎么来，这也是为什么注意力机制最先被提出来，然后直接席卷deep learning，因为它训的快呀。）
+<strong>第二个问题</strong>，循环训练并行度太差了。此外，linear attention的recurrent update全部都是element-wise的操作（外积，点乘，...），根本没有一丁点矩阵乘法的影子，而矩阵乘法在GPU上非常高效（相同数量的FLOPs,在A100上用tensor cores算半精度矩阵乘法的效率是其他操作的16倍，所以现代的算法都是怎么矩阵乘法怎么来，这也是为什么注意力机制最先被提出来，然后直接席卷deep learning，因为它训的快呀。）
 
 在parallel形式中，我们不需要算任何hidden state，只通过Q K V来得到output，但是需要 \mathcal{O}(L^2) 复杂度。在Recurrent形式中，我们需要算每个time step的hidden state，但是只需要 \mathcal{O}(L) 的复杂度。
 
@@ -88,7 +88,7 @@ $在这个方案里， \mathbf{S}_t 在前向传播的过程中是不会被保�
 - 把input序列分成若干个大小为C的等长chunk，只算每个chunk最后的hidden state
 - 在chunk-level的hidden state上进行recurrence
 - 每个chunk通过前一个chunk的last hidden state来aggregate历史信息，在chunk内部则是用一个attention的parallel形式直接得到output，而不是通过当前hidden state来算output。
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_887b3517ae4c.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_887b3517ae4c.jpg)
 
 **
 
@@ -111,29 +111,29 @@ Chunkwise parallel form的核心优势在于：
 - 整体的复杂度是 \mathcal{O}(Ld^2+LCd) 。在C固定的情况下，整体复杂度对sequence length L是线性的。（通常情况下，C取64，128，或者256这三个值来balance整体的计算复杂度和并行度）
 这个过程可以用下图表示：
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_79f9a763a8c8.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_79f9a763a8c8.jpg)
 
 from https://sustcsonglin.github.io/blog/2024/deltanet-2/这样，我们linear attention循环训练的第二个痛点：没有序列上的并行度，以及不能利用tensor core加速的问题也解决啦。
 
 $但是，如果仅仅用pytorch来实现chunkwise算法的话，速度会跟flashattention有一定的差距，这是因为我们没有进行I/O cost的优化。比方说，每次算output的时候， \mathbf{Q}_{[t]} \mathbf{S}_{[t]}^\top + (\mathbf{Q}_{[t]}\mathbf{K}_{[t]}^\top \odot \mathbf{M}) \mathbf{V}_{[t]} 加号两边的 \mathbf{Q}_{[t]} 明显可以复用：只需要load一遍省去重复读取的开销。同时，我们中间的attention矩阵 (\mathbf{Q}_{[t]}\mathbf{K}_{[t]}^\top \odot \mathbf{M}) 也没有必要写到HBM里面去，可以在SRAM里面一次做了。 诸如此类的I/O优化还有很多，在这里我就不一一列举啦。Flashattention的成功正是靠着fused kernel的I/O优化：$
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_263cc0b7a387.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_263cc0b7a387.jpg)
 
 在[Gated Linear Attention Transformers with Hardware-Efficient Training](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2312.06635) 中，我们提到了两种chunkwise linear attention的硬件优化方式：
 
 第一种是
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_e76524891217.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_e76524891217.jpg)
 
 flash linear attention (nonmaterialization version)这个方式总共的I/O读取是最少的，因为每个QKV block都只被读了一次，而hidden state从始至终都没有被在SRAM里面，没有被写到HBM里面一次过。这样，如果batch size和number of head提供的并行度足够大，我们用这种方式来训练linear attention就已经绰绰有余了。
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_49f2e7dc90ee.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_49f2e7dc90ee.jpg)
 
 I/O优化可以有4倍的运行速度的提升。但是呢，在大规模训练里面，batch size往往很小，batch size x num_head 乘起来可能还没有GPU里的Streaming Multiprocessors的数量多，“喂不饱”GPU，并行度没打满。
 
 这就需要我们有sequence dimension上面的并行度（这也是flashattention2的核心思想）。针对这个常见的case（large-scale training几乎单卡的batch size都开不大），我们可以用到另外一种materialize hidden state的形式，可以分为两步：
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_5a24f9de4efd.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_5a24f9de4efd.jpg)
 
 - 第一步：我们只算hidden state，并且materialize chunk-level state。
 - 第二步：我们对于每个chunk来并行计算output，打满并行。
@@ -143,9 +143,9 @@ I/O优化可以有4倍的运行速度的提升。但是呢，在大规模训练�
 
 此外，lightning attention主要是为了[Transnormer](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2307.14995)架构服务的（[retnet](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2307.08621)同期工作，都是linear attention + scalar-valued data-independent decay for each chunk)，所以他们的算法里，还需要把decay的term考虑进去。这个credits公道来讲，是要给retnet的：
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_4656f67fa084.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_4656f67fa084.jpg)
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_dc1144c82144.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_dc1144c82144.jpg)
 
 retnet让很多人第一次注意到chunkwise的形式（包括当时年幼刚踏进序列建模的sonta）而且decay的融入法很有insight，直接启发了mamba2的chunkwise算法（跟retnet的没啥区别，只不过data-indepedent decay变成了data-dependent decay)。GLA则是融入了一些更加fine-grained的decay term，chunkwise算法跟retnet的算法也大差不差。
 

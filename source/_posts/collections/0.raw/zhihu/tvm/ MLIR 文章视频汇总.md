@@ -17,7 +17,7 @@ source_url: https://zhuanlan.zhihu.com/p/141256429
 
 从刚刚接触MLIR的时候开始写文章，已经积累了一些，这篇文章做一个梳理，为自己写起来方便，也为大家读起来方便，之后的文章也会在汇总里持续更新。
 
-### **MLIR入门系列**
+### <strong>MLIR入门系列</strong>
 
 初见MLIR -- [https://zhuanlan.zhihu.com/p/101879367](https://zhuanlan.zhihu.com/p/101879367)
 
@@ -29,7 +29,7 @@ MLIR的生产线--Dialects和他的小伙伴们 -- [https://zhuanlan.zhihu.com/p
 
 MLIR Dialect的零件生产者 – TableGen -- [https://zhuanlan.zhihu.com/p/102727417](https://zhuanlan.zhihu.com/p/102727417)
 
-### **MLIR Toy Tutorial系列**
+### <strong>MLIR Toy Tutorial系列</strong>
 
 MLIR ODS 框架的使用示例 -- 自定义Operation -- [https://zhuanlan.zhihu.com/p/105576276](https://zhuanlan.zhihu.com/p/105576276)
 
@@ -43,7 +43,7 @@ MLIR表达式Lowering到LLVM IR -- [https://zhuanlan.zhihu.com/p/108386819](http
 
 MLIR向源语言添加struct类型 -- [https://zhuanlan.zhihu.com/p/108575517](https://zhuanlan.zhihu.com/p/108575517)
 
-### **MLIR 进阶系列**
+### <strong>MLIR 进阶系列</strong>
 
 MLIR Operation 与 Op -- [https://zhuanlan.zhihu.com/p/135286044](https://zhuanlan.zhihu.com/p/135286044)
 
@@ -63,7 +63,7 @@ MLIR 诊断系统 - Diagnostic & Diagnostic Engine -- [https://zhuanlan.zhihu.co
 
 MLIR 使用 x86 intrinsic -- [https://zhuanlan.zhihu.com/p/373268534](https://zhuanlan.zhihu.com/p/373268534)
 
-### **MLIR Python Bindings系列**
+### <strong>MLIR Python Bindings系列</strong>
 
 MLIR 开放项目 -- python bindings -- [https://zhuanlan.zhihu.com/p/102934213](https://zhuanlan.zhihu.com/p/102934213)
 
@@ -95,11 +95,11 @@ ONNX MLIR 端到端 LeNet 编译流程 -- [https://zhuanlan.zhihu.com/p/34991248
 
 在蜂鸟FPGA评估板上运行MLIR GEMM -- [https://zhuanlan.zhihu.com/p/272179056](https://zhuanlan.zhihu.com/p/272179056)
 
-### **MLIR 论文分析系列**
+### <strong>MLIR 论文分析系列</strong>
 
 MLIR 论文分享 -- 以摩尔定理失效为背景 -- [https://zhuanlan.zhihu.com/p/110345711](https://zhuanlan.zhihu.com/p/110345711)
 
-### **MLIR 相关项目系列**
+### <strong>MLIR 相关项目系列</strong>
 
 MLIR + PlaidML 并行优化 -- [https://zhuanlan.zhihu.com/p/139150163](https://zhuanlan.zhihu.com/p/139150163)
 
@@ -113,7 +113,7 @@ CIRCT llhd-sim工具分析 -- [https://zhuanlan.zhihu.com/p/227963934](https://z
 
 从Phabricator拉取MLIR草稿代码 -- [https://zhuanlan.zhihu.com/p/157554976](https://zhuanlan.zhihu.com/p/157554976)
 
-### **MLIR 视频报告系列**
+### <strong>MLIR 视频报告系列</strong>
 
 MLIR & python binding简介 -- https://www.bilibili.com/video/BV1s7411K7fp
 

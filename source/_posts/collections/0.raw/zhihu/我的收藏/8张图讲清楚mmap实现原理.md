@@ -17,19 +17,19 @@ source_url: https://zhuanlan.zhihu.com/p/676167319
 
 大家好，最近在研究Linux内核以及Linux系统编程的时候，经常会碰到mmap内存映射，mmap函数是实现高性能编程的一个关键点，下面我通过几张图详细介绍一下mmap实现原理。
 
-**（本文以64位CPU为原型讲解）**
+<strong>（本文以64位CPU为原型讲解）</strong>
 
 ### 1.虚拟地址如何映射物理地址？
 
-**要了解mmap实现原理，首先必须了解虚拟地址如何映射物理地址，如果没掌握这个知识点，后续阅读会有很大的困难，切记！**
+<strong>要了解mmap实现原理，首先必须了解虚拟地址如何映射物理地址，如果没掌握这个知识点，后续阅读会有很大的困难，切记！</strong>
 
 虚拟地址映射物理地址采用的是页表机制，64位CPU采用的是4级页表。
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_d7db74e45f5d.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_d7db74e45f5d.jpg)
 
 64位CPU虚拟地址长度为64位，但实际只用48位就已满足虚拟地址映射物理内存的要求，如下图：
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_36c3b5a57515.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_36c3b5a57515.jpg)
 
 64位CPU地址空间可分为三个部分：
 
@@ -45,7 +45,7 @@ source_url: https://zhuanlan.zhihu.com/p/676167319
 - pmd表偏移，二级表，9位
 - ptl表偏移，一级表，9位
 - 物理页偏移，12位
-**问题1：为什么pgd，pud，pmd，ptl表偏移是9位？**
+<strong>问题1：为什么pgd，pud，pmd，ptl表偏移是9位？</strong>
 
 pgd，pud，pmd，ptl表实现原理都相同，我们以pgd来讲解。
 
@@ -53,43 +53,43 @@ pgd，pud，pmd，ptl表实现原理都相同，我们以pgd来讲解。
 
 2的9次方等于512，所以采用9位的表偏移就能索引整张表的表项。
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_fc1b5c25689a.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_fc1b5c25689a.jpg)
 
-**问题2：为什么物理页偏移为12位？**
+<strong>问题2：为什么物理页偏移为12位？</strong>
 
 一个物理页为4KB，物理页访问是单字节访问，2的12次方刚好为4KB，所以物理页偏移为12位。
 
-#### **1.1 虚拟地址映射物理地址过程**
+#### <strong>1.1 虚拟地址映射物理地址过程</strong>
 
 虚拟地址映射物理地址需要依次索引pgd，pud，pmd，ptl表，具体过程如下：
 
-- **步骤1：查询pgd表**
+- <strong>步骤1：查询pgd表</strong>
 查询pgd表，首先需要找到pgd表物理页首地址，pgd表物理页首地址由task_struct->mm_struct->pgd成员保存，每个进程的task_struct->mm_struct->pgd成员数值不同，所以不同的进程即使使用相同的虚拟地址也不会访问相同到物理地址。
 
-通过pgd表首地址+虚拟地址pgd表偏移索引到pgd_t表项完成pgd表查询。**步骤2：查询pud表**
+通过pgd表首地址+虚拟地址pgd表偏移索引到pgd_t表项完成pgd表查询。<strong>步骤2：查询pud表</strong>
 
 pgd_t表项存储的是pud表物理页首地址。
 
 通过pud表首地址+虚拟地址pud表偏移索引到pud_t表项完成pud表查询。
 
-- **步骤3：查询pmd表**
+- <strong>步骤3：查询pmd表</strong>
 pud_t表项存储的是pmd表物理页首地址。
 
 通过pmd表首地址+虚拟地址pmd表偏移索引到pmd_t表项完成pmd表查询。
 
-- **步骤4：查询ptl表**
+- <strong>步骤4：查询ptl表</strong>
 pmd_t表项存储的是ptl表物理页首地址。
 
 通过ptl表首地址+虚拟地址ptl表偏移索引到pte表项完成ptl表查询。
 
-- **步骤5：映射物理地址**
+- <strong>步骤5：映射物理地址</strong>
 pte表项存储的是物理页首地址，pte+虚拟地址物理页偏移就能定位到物理地址。
 
 注意：定位到物理地址后，虚拟地址映射物理地址的过程就已完成。
 
-**思考：64位CPU页表机制需要多少张表？ **
+<strong>思考：64位CPU页表机制需要多少张表？</strong>
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_4c3df561349a.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_4c3df561349a.jpg)
 
 表的数量如下：
 
@@ -119,11 +119,11 @@ pte表项存储的是物理页首地址，pte+虚拟地址物理页偏移就能�
 
 mmap函数是一种内存映射文件的方法，它可以将一个文件或设备映射到进程的地址空间中，使得进程可以像访问内存一样访问文件或设备。
 
-mmap可以分为：**文件映射和匿名映射。**
+mmap可以分为：<strong>文件映射和匿名映射。</strong>
 
 mmap函数主要工作就是创建VMA。
 
-#### **2.1 VMA简介**
+#### <strong>2.1 VMA简介</strong>
 
 VMA（Virtual Memory Area，虚拟内存区域）是Linux内核中用于管理进程虚拟内存的数据结构。每个进程都有一个VMA链表，用于描述进程的虚拟地址空间的不同区域。
 
@@ -131,9 +131,9 @@ VMA包含了一段连续的虚拟地址空间，它定义了该区域的起始�
 
 VMA对应Linux内核struct vm_area_struct对象。
 
-**注意：VMA用于指导虚拟内存映射物理内存，没有VMA指导无法完成虚拟地址和物理地址映射。**
+<strong>注意：VMA用于指导虚拟内存映射物理内存，没有VMA指导无法完成虚拟地址和物理地址映射。</strong>
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_523d1801f02e.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_523d1801f02e.jpg)
 
 struct vm_area_struct结构体主要成员如下：
 
@@ -163,7 +163,7 @@ Linux缺页中断是指当进程访问尚未建立映射关系的虚拟内存时
 
 通过mmap创建VMA后，我们使用VMA内存映射区虚拟地址，但此时虚拟地址不能映射物理地址，原因是映射表还没有动态创建出来。
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_927a7830c7a5.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_927a7830c7a5.jpg)
 
 当缺页中断发生后，中断处理函数会完成虚拟地址至物理地址各映射表创建。
 
@@ -181,7 +181,7 @@ pte该如何创建呢？
 
 文件映射pte指向文件的物理内存页，文件映射需要VMA指向对应的文件，由文件来生成物理页。
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_9f44539728ea.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_9f44539728ea.jpg)
 
 mmap函数实现文件映射时需指定文件fd，文件偏移量，文件映射长度。
 
@@ -193,7 +193,7 @@ mmap函数实现文件映射时需指定文件fd，文件偏移量，文件映�
 
 ### 5.匿名映射
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_b93b8389f2eb.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_b93b8389f2eb.jpg)
 
 匿名映射相对来说比较简单，只要在创建pte的时候，从物理内存中申请一个物理内存页，将物理内存页转换成pte设置进ptl表，就完成匿名映射。
 
@@ -203,4 +203,4 @@ C/C++，Linux Bug修复秘籍，Linux基础，Linux环境编程，Linux网络编
 
 原文地址：[8张图讲清楚mmap实现原理](https://link.zhihu.com/?target=https%3A//mp.weixin.qq.com/s%3F__biz%3DMzkyNDIyNzU4Mg%3D%3D%26mid%3D2247484690%26idx%3D1%26sn%3D32d89f3f42f643b20a1328967bc6d5cc%26chksm%3Dc1d84783f6afce95374224e8bd7e3e6c22bd4ee7e0e09ce0216008e9c2b4a8ece87a1ff5b3c6%23rd)
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_481277797e89.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_481277797e89.jpg)

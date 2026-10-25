@@ -65,7 +65,7 @@ ISA 为编译器提供了“武器库”，但如何组合使用这些武器以�
 
 维基百科上的定义很简单：
 
-**In electronics, computer science and computer engineering, microarchitecture**, also called **computer organization **and sometimes abbreviated as **μarch **or **uarch**, is the way a given instruction set architecture(ISA) is implemented in a particular processor.<span class="wikilink wikilink--missing" title="未导入的页面">1</span>(https://link.zhihu.com/?target=https%3A//en.wikipedia.org/wiki/Microarchitecture%23cite_note-1)微架构（Microarchitecture, uarch）是在特定处理器上，对给定 ISA 的实现方式。即，它是处理器内部的硬件组织方式与实现细节，是在 ISA 规范约束下，为实现指令功能、提升 PPA 而设计的具体硬件架构，包括流水线、执行单元、缓存、调度器、寄存器堆等模块的组织与交互逻辑。
+<strong>In electronics, computer science and computer engineering, microarchitecture</strong>, also called <strong>computer organization</strong>and sometimes abbreviated as <strong>μarch</strong>or <strong>uarch</strong>, is the way a given instruction set architecture(ISA) is implemented in a particular processor.<span class="wikilink wikilink--missing" title="未导入的页面">1</span>(https://link.zhihu.com/?target=https%3A//en.wikipedia.org/wiki/Microarchitecture%23cite_note-1)微架构（Microarchitecture, uarch）是在特定处理器上，对给定 ISA 的实现方式。即，它是处理器内部的硬件组织方式与实现细节，是在 ISA 规范约束下，为实现指令功能、提升 PPA 而设计的具体硬件架构，包括流水线、执行单元、缓存、调度器、寄存器堆等模块的组织与交互逻辑。
 
 微架构必须保证 ISA 规定的功能实现正确，但对实现的方式有绝对的自由度。它与 ISA 的关键区别在于，它是软件不可见的，因为软件无需关心实现方式。这保证了同一份软件能在同一 ISA 的不同微架构实现上正确运行。
 
@@ -133,10 +133,10 @@ ISA 为编译器提供了“武器库”，但如何组合使用这些武器以�
 
 - 软件不可见（注：虽然在功能规范上不可见，但通过侧信道（Side Channel）（如 Spectre/Meltdown 漏洞），恶意软件实际上是可以探测到缓存、分支预测器等微架构状态的。这也是现代微架构设计面临的新挑战。）
 - 优化导向性：微架构状态的唯一目的是提升硬件性能或能效，不影响程序的最终执行结果
-- 设计灵活性**：**同一 ISA 对应的不同微架构，其微架构状态的设计可以完全不同—— 这是微架构的创新空间
-架构状态和微架构状态的关系，可一言以蔽之：**微架构通过维护复杂的“微架构状态”，来加速“架构状态”的合法转移。**
+- 设计灵活性<strong>：</strong>同一 ISA 对应的不同微架构，其微架构状态的设计可以完全不同—— 这是微架构的创新空间
+架构状态和微架构状态的关系，可一言以蔽之：<strong>微架构通过维护复杂的“微架构状态”，来加速“架构状态”的合法转移。</strong>
 
-#### **3.3 对 ISA 和微架构的新认知**
+#### <strong>3.3 对 ISA 和微架构的新认知</strong>
 
 在有限状态机的视角下， ISA 和微架构的联系与区别将变得豁然开朗：
 
@@ -146,4 +146,4 @@ ISA 为编译器提供了“武器库”，但如何组合使用这些武器以�
 
 #### 4 总结
 
-总的来说，ISA 是“做什么”的规范，微架构是“如何做”的工程**。** 两者之间由“架构状态”这一抽象边界清晰地划分开来，而微架构的所有魔法，都发生在边界之内。有了这个基本框架，我们便获得了一把解剖处理器的解剖刀。接下来，是时候深入微架构设计的殿堂了。
+总的来说，ISA 是“做什么”的规范，微架构是“如何做”的工程<strong>。</strong> 两者之间由“架构状态”这一抽象边界清晰地划分开来，而微架构的所有魔法，都发生在边界之内。有了这个基本框架，我们便获得了一把解剖处理器的解剖刀。接下来，是时候深入微架构设计的殿堂了。

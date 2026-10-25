@@ -107,25 +107,25 @@ Ascend950: 2 × 计算 DIE × 16 AI Core = 32 AI Core（CANN Meetup 官方分享
 UB (Unified Buffer): 248 KB per AI Core
 互联：18 × X4 UB 端口，支持 CCU1.0 集合通信加速器`
 
-**参考**：昇腾官方文档 - 基本架构
+<strong>参考</strong>：昇腾官方文档 - 基本架构
 #### 芯片架构代号与产品映射
 
 昇腾芯片采用 NpuArch 来标识微架构代际：
 
-代号NpuArch架构编译宏代表芯片UB 大小A22201DAV_2201Ascend910B192 KBA32201DAV_2201Ascend910_93192 KBA53510DAV_3510Ascend950DT / 950PR248 KB其中 **Ascend950PR**（Prefill）定位中等算力/带宽、低成本，适用于 **LLM 预填充、推荐、多模态**；**Ascend950DT**（Decode）定位高算力/带宽、中等成本，适用于 **LLM 生成（Decode）和训练**。
+代号NpuArch架构编译宏代表芯片UB 大小A22201DAV_2201Ascend910B192 KBA32201DAV_2201Ascend910_93192 KBA53510DAV_3510Ascend950DT / 950PR248 KB其中 <strong>Ascend950PR</strong>（Prefill）定位中等算力/带宽、低成本，适用于 <strong>LLM 预填充、推荐、多模态</strong>；<strong>Ascend950DT</strong>（Decode）定位高算力/带宽、中等成本，适用于 <strong>LLM 生成（Decode）和训练</strong>。
 
-**Chiplet 封装**：Ascend950 采用 **4Die 合封**设计（2× 计算 DIE + 2× IO DIE），相比上一代从 2Die 升级到 4Die。将 Compute 与 IO 进行切割的好处：1) 可控制 Die Size 提升良率；2) IO-Die 与工艺相关度弱，可独立演进。每个计算 DIE 包含 16 个 AI Core，双 DIE 支持 UMA（统一内存访问），提升易用性。
+<strong>Chiplet 封装</strong>：Ascend950 采用 <strong>4Die 合封</strong>设计（2× 计算 DIE + 2× IO DIE），相比上一代从 2Die 升级到 4Die。将 Compute 与 IO 进行切割的好处：1) 可控制 Die Size 提升良率；2) IO-Die 与工艺相关度弱，可独立演进。每个计算 DIE 包含 16 个 AI Core，双 DIE 支持 UMA（统一内存访问），提升易用性。
 
-**参考**：CANN Skills - NPU Arch Guide
+<strong>参考</strong>：CANN Skills - NPU Arch Guide
 #### 关于 UB 大小的两种视角
 
-**不同资料中出现的 UB 大小差异说明**：
+<strong>不同资料中出现的 UB 大小差异说明</strong>：
 
-华为官方 CANN 文档和 Ascend C 编程接口中，UB 大小指的是**每个 AI Vector 子核心（AIV）可用的 Unified Buffer 容量**——910B 为 **192 KB**，950 为 **248 KB**（Skills 仓库数据）。这是 Ascend C 开发者实际面对的编程约束。
+华为官方 CANN 文档和 Ascend C 编程接口中，UB 大小指的是<strong>每个 AI Vector 子核心（AIV）可用的 Unified Buffer 容量</strong>——910B 为 <strong>192 KB</strong>，950 为 <strong>248 KB</strong>（Skills 仓库数据）。这是 Ascend C 开发者实际面对的编程约束。
 
-但从完整的 DaVinci Core **硬件物理架构**角度看，每个 AI Core 实际包含 **AIC（AI Compute）+ AIV（AI Vector）双子单元**（详见下文 3.3 节）。部分社区资料（如知乎分析文章）在描述 UB 时会从整个 DaVinci Core 的视角给出更大的数值（如 910B 写为 2×192 KB），这与 CANN 编程文档的口径并不矛盾，只是量度层面不同。但 AIC 子核心的 UB 具体大小是否与 AIV 完全相同，**目前尚无官方公开文档明确说明**。
+但从完整的 DaVinci Core <strong>硬件物理架构</strong>角度看，每个 AI Core 实际包含 <strong>AIC（AI Compute）+ AIV（AI Vector）双子单元</strong>（详见下文 3.3 节）。部分社区资料（如知乎分析文章）在描述 UB 时会从整个 DaVinci Core 的视角给出更大的数值（如 910B 写为 2×192 KB），这与 CANN 编程文档的口径并不矛盾，只是量度层面不同。但 AIC 子核心的 UB 具体大小是否与 AIV 完全相同，<strong>目前尚无官方公开文档明确说明</strong>。
 
-本文后续所有 UB 大小均以 **Ascend C 编程视角（每 AIV 子核心可用量）** 为准，与华为 CANN 官方文档口径一致。
+本文后续所有 UB 大小均以 <strong>Ascend C 编程视角（每 AIV 子核心可用量）</strong> 为准，与华为 CANN 官方文档口径一致。
 
 #### 3. 核心计算单元深度解剖
 
@@ -163,36 +163,36 @@ UB (Unified Buffer): 248 KB per AI Core
 │  └───────────────────────────────────────────────────┘   │
 └──────────────────────────────────────────────────────────┘`
 
-**H100 SM_90 关键参数**：
+<strong>H100 SM_90 关键参数</strong>：
 
-- **128 FP32 CUDA Cores**（分布在 4 个 Sub-Core 中）
-- **4 个第四代 Tensor Core**（支持 FP8/FP16/BF16/TF32/FP64/INT8）
-- **4 个 Warp Scheduler**（每周期可调度 4 个 Warp）
-- **256 KB** 统一 L1/共享内存 SRAM（共享内存最高可配置至 **228 KB**，剩余分配给 L1 缓存/Texture 缓存）
-- **256 KB** 寄存器文件
-- **新增 TMA**（Tensor Memory Accelerator，异步批量数据搬运）
-**参考**：NVIDIA Hopper Architecture In-Depth
+- <strong>128 FP32 CUDA Cores</strong>（分布在 4 个 Sub-Core 中）
+- <strong>4 个第四代 Tensor Core</strong>（支持 FP8/FP16/BF16/TF32/FP64/INT8）
+- <strong>4 个 Warp Scheduler</strong>（每周期可调度 4 个 Warp）
+- <strong>256 KB</strong> 统一 L1/共享内存 SRAM（共享内存最高可配置至 <strong>228 KB</strong>，剩余分配给 L1 缓存/Texture 缓存）
+- <strong>256 KB</strong> 寄存器文件
+- <strong>新增 TMA</strong>（Tensor Memory Accelerator，异步批量数据搬运）
+<strong>参考</strong>：NVIDIA Hopper Architecture In-Depth
 #### 3.2 昇腾 AI Core (DaVinci arch35) 内部结构
 
 **
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_7bb9884a2bc0.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_7bb9884a2bc0.jpg)
 
 arch35 AI Core 关键参数**：
 
-- **Scalar Unit**：程序流控制，地址计算
-- **Vector Unit**：向量计算，支持 FP32/FP16/BF16/FP8
-- **Cube Unit**：矩阵乘法，支持 FP16/BF16/HF32/FP32/INT8/FP8(E4M3/E5M2)/MXFP8/MXFP4/HiF8
-- **MTE2**：GM → UB 的异步 DMA 搬运引擎
-- **MTE3**：UB → GM 的异步 DMA 搬运引擎
-- **UB (Unified Buffer)**：**248 KB**（相比 910B 的 192 KB 增加 29%）
-- **L1 Buffer**：核内通用数据中转区，主要暂存需要反复使用的数据（Cube 路径：GM → L1 → L0A/L0B）
-- **L0A/L0B/L0C**：Cube Unit 专用寄存器级缓存
-- **arch35 新增数据通路**（来源：CANN Meetup 官方分享）：  
+- <strong>Scalar Unit</strong>：程序流控制，地址计算
+- <strong>Vector Unit</strong>：向量计算，支持 FP32/FP16/BF16/FP8
+- <strong>Cube Unit</strong>：矩阵乘法，支持 FP16/BF16/HF32/FP32/INT8/FP8(E4M3/E5M2)/MXFP8/MXFP4/HiF8
+- <strong>MTE2</strong>：GM → UB 的异步 DMA 搬运引擎
+- <strong>MTE3</strong>：UB → GM 的异步 DMA 搬运引擎
+- <strong>UB (Unified Buffer)</strong>：<strong>248 KB</strong>（相比 910B 的 192 KB 增加 29%）
+- <strong>L1 Buffer</strong>：核内通用数据中转区，主要暂存需要反复使用的数据（Cube 路径：GM → L1 → L0A/L0B）
+- <strong>L0A/L0B/L0C</strong>：Cube Unit 专用寄存器级缓存
+- <strong>arch35 新增数据通路</strong>（来源：CANN Meetup 官方分享）：  
 
-- **L0C → UB**：Cube 计算结果可直接写入 UB，供 Vector 使用（Cube-Vector 融合通路的基础）
-- **UB → L1**：支持 UB 数据回写 L1 进行缓存复用
-- **SSBuf**：CV 之间的消息通路，支持 AIC/AIV 核间同步
+- <strong>L0C → UB</strong>：Cube 计算结果可直接写入 UB，供 Vector 使用（Cube-Vector 融合通路的基础）
+- <strong>UB → L1</strong>：支持 UB 数据回写 L1 进行缓存复用
+- <strong>SSBuf</strong>：CV 之间的消息通路，支持 AIC/AIV 核间同步
 
 **
 
@@ -200,35 +200,35 @@ arch35 AI Core 关键参数**：
 
 #### 3.3 DaVinci Core 的 AIC/AIV 双子单元架构
 
-DaVinci 架构从 910B 起，每个 AI Core 实际上包含两个**协同工作的子核心**：
+DaVinci 架构从 910B 起，每个 AI Core 实际上包含两个<strong>协同工作的子核心</strong>：
 
 **
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_a3808c099a54.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_a3808c099a54.jpg)
 
 AIC（AI Compute 子核心）**：
 
-- 拥有独立的 Scalar、**Cube Unit**、MTE2/MTE3、UB
-- 专门负责**矩阵乘法**（GEMM）路径
-- 数据流：GM → L1 → L0A/L0B → Cube → L0C → Fixpipe → GM 或 **L0C → UB**（950 新增 CV 通路）
-**AIV（AI Vector 子核心）**：
+- 拥有独立的 Scalar、<strong>Cube Unit</strong>、MTE2/MTE3、UB
+- 专门负责<strong>矩阵乘法</strong>（GEMM）路径
+- 数据流：GM → L1 → L0A/L0B → Cube → L0C → Fixpipe → GM 或 <strong>L0C → UB</strong>（950 新增 CV 通路）
+<strong>AIV（AI Vector 子核心）</strong>：
 
-- 拥有独立的 Scalar、**Vector Unit**、MTE2/MTE3、UB
-- 专门负责**向量计算**（Activation、Norm、Element-wise 等）
+- 拥有独立的 Scalar、<strong>Vector Unit</strong>、MTE2/MTE3、UB
+- 专门负责<strong>向量计算</strong>（Activation、Norm、Element-wise 等）
 - 数据流：GM → UB → Vector → UB → GM
-**Fixpipe 后处理单元**：
+<strong>Fixpipe 后处理单元</strong>：
 
 - 位于 Cube Unit 输出端（L0C 之后），是 950 架构的重要新特性
-- 可在 Cube 输出后**直接执行**数据类型转换、Bias 加法、激活函数等操作
-- 支持将 L0C 结果**直接输出到 UB**（L0C → UB 新通路），供 AIV 的 Vector 单元继续处理
-- 支持 **DualDst 模式**：将 L0C 中的 M×N 矩阵按 M 或 N 维度拆分，同时写入两个 AIV 核的 UB
+- 可在 Cube 输出后<strong>直接执行</strong>数据类型转换、Bias 加法、激活函数等操作
+- 支持将 L0C 结果<strong>直接输出到 UB</strong>（L0C → UB 新通路），供 AIV 的 Vector 单元继续处理
+- 支持 <strong>DualDst 模式</strong>：将 L0C 中的 M×N 矩阵按 M 或 N 维度拆分，同时写入两个 AIV 核的 UB
 - 显著提升 Transformer 中 GEMM+Bias+GeLU 等融合算子的效率
-**与 NVIDIA 的对比**：NVIDIA SM 中 Tensor Core 和 CUDA Core 共享同一套 Register File 和 Shared Memory，属于统一架构；昇腾的 AIC/AIV 物理分离，各有独立 UB 和流水线，更像是核内集成了两条专用处理流水线，矩阵路径和向量路径可完全独立调度。
+<strong>与 NVIDIA 的对比</strong>：NVIDIA SM 中 Tensor Core 和 CUDA Core 共享同一套 Register File 和 Shared Memory，属于统一架构；昇腾的 AIC/AIV 物理分离，各有独立 UB 和流水线，更像是核内集成了两条专用处理流水线，矩阵路径和向量路径可完全独立调度。
 #### 3.4 Ascend C 编程与物理架构的映射关系
 
-在 Ascend C 编程中，开发者看到的是**逻辑上的 AI Core**，其映射规则为：
+在 Ascend C 编程中，开发者看到的是<strong>逻辑上的 AI Core</strong>，其映射规则为：
 
-Ascend C 逻辑视角物理硬件说明一个 “AI Core” (Vector 算子)AIV 子核心开发者通过 blockIdx 区分，UB = 192⁄248 KB一个 “AI Core” (Cube 算子)AIC 子核心Cube 路径使用独立的 L0A/L0B/L0CGetBlockNum() 返回值≤ 物理核数 × 2AIC 和 AIV 可分别调度因此，开发者**不需要直接感知** AIC/AIV 的分离——Ascend C 编译器和运行时会自动将 Vector 算子调度到 AIV、Cube 算子调度到 AIC。但理解这一物理架构有助于：
+Ascend C 逻辑视角物理硬件说明一个 “AI Core” (Vector 算子)AIV 子核心开发者通过 blockIdx 区分，UB = 192⁄248 KB一个 “AI Core” (Cube 算子)AIC 子核心Cube 路径使用独立的 L0A/L0B/L0CGetBlockNum() 返回值≤ 物理核数 × 2AIC 和 AIV 可分别调度因此，开发者<strong>不需要直接感知</strong> AIC/AIV 的分离——Ascend C 编译器和运行时会自动将 Vector 算子调度到 AIV、Cube 算子调度到 AIC。但理解这一物理架构有助于：
 
 - 解释为何”同一个 Core”可以同时执行 Cube 和 Vector 算子（实际是双子单元并行）
 - 理解 Fixpipe 为何能在 Cube 输出后直接做后处理（物理上位于 AIC 内部）
@@ -236,7 +236,7 @@ Ascend C 逻辑视角物理硬件说明一个 “AI Core” (Vector 算子)AIV �
 
 #### 3.5 计算单元对比总览
 
-维度NVIDIA SM_90 (H100)昇腾 AI Core (arch35)通用计算128× CUDA Core (FP32/INT32)Vector Unit (SIMD 向量引擎)矩阵加速4× Tensor Core (第四代)Cube Unit (矩阵乘法引擎)特殊函数4× SFU (sin/cos/exp)Scalar Unit 或 Vector 指令流控制4× Warp SchedulerScalar Unit访存单元4× LSU (Load/Store)MTE2 (GM→UB/L1) · MTE1 (L1→L0) · MTE3 (UB→GM) · FixPipe (L0C→GM)**核心差异**：SM_90 的 Tensor Core 和 CUDA Core **共享同一套寄存器和共享内存**（统一架构）；AI Core 的 AIC/AIV **物理分离、各有独立 UB 和流水线**（双子单元并行架构）。详细参数见[第 10 节对比表](https://zhuanlan.zhihu.com/p/2020921487947736363/edit#10-%E7%A1%AC%E4%BB%B6%E5%8F%82%E6%95%B0%E6%A8%AA%E5%90%91%E5%AF%B9%E6%AF%94%E8%A1%A8)。
+维度NVIDIA SM_90 (H100)昇腾 AI Core (arch35)通用计算128× CUDA Core (FP32/INT32)Vector Unit (SIMD 向量引擎)矩阵加速4× Tensor Core (第四代)Cube Unit (矩阵乘法引擎)特殊函数4× SFU (sin/cos/exp)Scalar Unit 或 Vector 指令流控制4× Warp SchedulerScalar Unit访存单元4× LSU (Load/Store)MTE2 (GM→UB/L1) · MTE1 (L1→L0) · MTE3 (UB→GM) · FixPipe (L0C→GM)<strong>核心差异</strong>：SM_90 的 Tensor Core 和 CUDA Core <strong>共享同一套寄存器和共享内存</strong>（统一架构）；AI Core 的 AIC/AIV <strong>物理分离、各有独立 UB 和流水线</strong>（双子单元并行架构）。详细参数见[第 10 节对比表](https://zhuanlan.zhihu.com/p/2020921487947736363/edit#10-%E7%A1%AC%E4%BB%B6%E5%8F%82%E6%95%B0%E6%A8%AA%E5%90%91%E5%AF%B9%E6%AF%94%E8%A1%A8)。
 
 #### 4. 内存层次与数据流对比
 
@@ -244,7 +244,7 @@ Ascend C 逻辑视角物理硬件说明一个 “AI Core” (Vector 算子)AIV �
 
 **
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_dce58cf0ba9a.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_dce58cf0ba9a.jpg)
 
 #### 4.2 L2 Cache 对比
 
@@ -252,16 +252,16 @@ L2 Cache 是连接片上计算核心与片外 HBM 的关键缓存层级，对实
 
 #### NVIDIA H100：大容量硬件管理 L2 Cache
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_a2bb5f1fb207.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_a2bb5f1fb207.jpg)
 
 H100 L2 Cache 特点**：
 
-- **50 MB** 容量（SXM5），PCIe 版也是 50 MB（芯片全规格 60 MB，部分屏蔽）
-- 采用**分区设计**（Partitioned L2）：分为 Near 和 Far 两个分区，访问 Near 分区延迟低，跨分区访问延迟接近翻倍
-- **硬件全自动管理**：对开发者完全透明，所有全局内存访问自动经过 L2
+- <strong>50 MB</strong> 容量（SXM5），PCIe 版也是 50 MB（芯片全规格 60 MB，部分屏蔽）
+- 采用<strong>分区设计</strong>（Partitioned L2）：分为 Near 和 Far 两个分区，访问 Near 分区延迟低，跨分区访问延迟接近翻倍
+- <strong>硬件全自动管理</strong>：对开发者完全透明，所有全局内存访问自动经过 L2
 - L2 带宽远高于 HBM 带宽（~5.5 TB/s vs ~2 TB/s），是隐藏 HBM 延迟的核心机制
-- 支持 **L2 Persistent Cache Control**（CUDA 11.0+，compute capability 8.0+），允许开发者**显式配置 L2 Cache 亲和性**
-**NVIDIA L2 Cache 开发者控制 API**：
+- 支持 <strong>L2 Persistent Cache Control</strong>（CUDA 11.0+，compute capability 8.0+），允许开发者<strong>显式配置 L2 Cache 亲和性</strong>
+<strong>NVIDIA L2 Cache 开发者控制 API</strong>：
 
 `// 1. 预留 L2 Cache 空间给持久化数据
 cudaDeviceProp prop;
@@ -283,22 +283,22 @@ attr.accessPolicyWindow.num_bytes = 0;
 cudaStreamSetAttribute(stream, cudaStreamAttributeAccessPolicyWindow, &attr);
 cudaCtxResetPersistingL2Cache();  // 清除所有持久化缓存行`
 
-**三种访问属性**：
+<strong>三种访问属性</strong>：
 
-属性含义适用场景cudaAccessPropertyPersisting数据优先驻留 L2被多次反复读取的热数据（如权重矩阵）cudaAccessPropertyStreaming数据优先驱逐只访问一次的冷数据（如中间结果）cudaAccessPropertyNormal默认行为（重置）清除之前的持久化设置**参考**：CUDA Programming Guide - L2 Cache Control、Nvidia’s H100: Funny L2, and Tons of Bandwidth - Chips and Cheese
+属性含义适用场景cudaAccessPropertyPersisting数据优先驻留 L2被多次反复读取的热数据（如权重矩阵）cudaAccessPropertyStreaming数据优先驱逐只访问一次的冷数据（如中间结果）cudaAccessPropertyNormal默认行为（重置）清除之前的持久化设置<strong>参考</strong>：CUDA Programming Guide - L2 Cache Control、Nvidia’s H100: Funny L2, and Tons of Bandwidth - Chips and Cheese
 #### 昇腾 Ascend950：L2 Cache 作为 GM 加速层
 
-**昇腾 L2 Cache 特点**：
+<strong>昇腾 L2 Cache 特点</strong>：
 
-- 位于 AI Core **外部**，所有 AI Core **共享**同一个 L2 Cache
-- 所有通过 MTE2/MTE3 搬运单元读写 GM 的数据，**默认被缓存在 L2 Cache 中**
-- L2 Cache 以 **cacheline** 为单位加载数据（arch35 的 cacheline 为 **128 字节**，较前代 512 字节大幅细化，改善离散访问效率）
-- L2 Cache 带宽约 **7 TB/s**（读写混合），远高于 HBM 带宽，是提升算子实际带宽利用率的关键
-- CANN 官方最佳实践建议：**当输入输出数据量超过 L2 Cache 大小时，应在 Tiling 中使能 L2 Cache 切分策略**，确保每轮计算的数据量能被 L2 Cache 容纳
-- 开发者可通过 `SetL2CacheHint` API **显式配置 L2 Cache 亲和性**（详见下文）
-** ⚠️ 关于 192 MB L2 Cache 的可靠性**：华为 CANN 最佳实践文档（CANN 商用版 8..1）中，使用 **“假设，AI 处理器的 L2 Cache 大小为 192MB”** 作为教学示例参数。经核实，这是文档中的**假设性描述**（原文：”假设，AI处理器的L2Cache大小为192MB”），并非对任何具体型号的规格确认。华为在所有公开文档中**均未标注** Ascend 950（Atlas A3）或 910B（Atlas A2）的 L2 Cache 具体容量。192 MB 作为参考值有一定可信度（文档团队不太可能用完全脱离实际的数值做教学示例），但**不能作为官方确认的规格参数**引用。**昇腾 L2 Cache 开发者亲和性控制——`SetL2CacheHint` API**：
+- 位于 AI Core <strong>外部</strong>，所有 AI Core <strong>共享</strong>同一个 L2 Cache
+- 所有通过 MTE2/MTE3 搬运单元读写 GM 的数据，<strong>默认被缓存在 L2 Cache 中</strong>
+- L2 Cache 以 <strong>cacheline</strong> 为单位加载数据（arch35 的 cacheline 为 <strong>128 字节</strong>，较前代 512 字节大幅细化，改善离散访问效率）
+- L2 Cache 带宽约 <strong>7 TB/s</strong>（读写混合），远高于 HBM 带宽，是提升算子实际带宽利用率的关键
+- CANN 官方最佳实践建议：<strong>当输入输出数据量超过 L2 Cache 大小时，应在 Tiling 中使能 L2 Cache 切分策略</strong>，确保每轮计算的数据量能被 L2 Cache 容纳
+- 开发者可通过 `SetL2CacheHint` API <strong>显式配置 L2 Cache 亲和性</strong>（详见下文）
+<strong>⚠️ 关于 192 MB L2 Cache 的可靠性</strong>：华为 CANN 最佳实践文档（CANN 商用版 8..1）中，使用 <strong>“假设，AI 处理器的 L2 Cache 大小为 192MB”</strong> 作为教学示例参数。经核实，这是文档中的<strong>假设性描述</strong>（原文：”假设，AI处理器的L2Cache大小为192MB”），并非对任何具体型号的规格确认。华为在所有公开文档中<strong>均未标注</strong> Ascend 950（Atlas A3）或 910B（Atlas A2）的 L2 Cache 具体容量。192 MB 作为参考值有一定可信度（文档团队不太可能用完全脱离实际的数值做教学示例），但<strong>不能作为官方确认的规格参数</strong>引用。**昇腾 L2 Cache 开发者亲和性控制——`SetL2CacheHint` API**：
 
-开发者可以通过 `GlobalTensor` 提供的 `SetL2CacheHint` 接口，**逐 Tensor 粒度**地控制 L2 Cache 行为，决定哪些数据进入 L2 Cache、哪些绕过（bypass）：
+开发者可以通过 `GlobalTensor` 提供的 `SetL2CacheHint` 接口，<strong>逐 Tensor 粒度</strong>地控制 L2 Cache 行为，决定哪些数据进入 L2 Cache、哪些绕过（bypass）：
 
 `// 昇腾 Ascend C：显式配置 L2 Cache 亲和性
 // 场景：x 需要被 40 个核反复读取，y 和 z 只读写一次
@@ -313,9 +313,9 @@ zGm.SetGlobalBuffer((__gm__ float *)z + blockIdx * TILE_N);
 yGm.SetL2CacheHint(AscendC::CacheMode::CACHE_MODE_DISABLE);
 zGm.SetL2CacheHint(AscendC::CacheMode::CACHE_MODE_DISABLE);`
 
-**两种 CacheMode 说明**：
+<strong>两种 CacheMode 说明</strong>：
 
-CacheMode含义适用场景CACHE_MODE_NORMAL数据经过 L2 Cache（默认）需要被多个核或多次迭代反复读取的热数据CACHE_MODE_DISABLE数据绕过 L2 Cache只访问一次的冷数据，避免其挤占宝贵的 L2 Cache 空间**实战案例——vLLM-Ascend 中的动态 L2 亲和性**：
+CacheMode含义适用场景CACHE_MODE_NORMAL数据经过 L2 Cache（默认）需要被多个核或多次迭代反复读取的热数据CACHE_MODE_DISABLE数据绕过 L2 Cache只访问一次的冷数据，避免其挤占宝贵的 L2 Cache 空间<strong>实战案例——vLLM-Ascend 中的动态 L2 亲和性</strong>：
 
 `// 来自 vLLM-Ascend 项目：Grouped MatMul 算子中的权重矩阵 L2 策略
 weightGM.SetGlobalBuffer(GetTensorAddr(groupIdx, weightTensorPtr) + offset);
@@ -328,7 +328,7 @@ if (mnConfig.blockDimM == 1) {
     weightGM.SetL2CacheHint(CacheMode::CACHE_MODE_NORMAL);
 }`
 
-** 💡 与 NVIDIA 对比**：NVIDIA 的 `cudaAccessPolicyWindow` 是 **Stream 级别**的控制（指定一个连续内存区域 + hitRatio），粒度较粗；昇腾的 `SetL2CacheHint` 是 **Tensor 级别**的控制（每个 GlobalTensor 独立设置），粒度更细。但 NVIDIA 的 API 支持更丰富的策略（如 hitRatio 百分比控制、持久化缓存预留比例），昇腾目前是二元选择（进入/绕过）。**Kernel Launch 中的 `l2ctrl` 参数**：
+<strong>💡 与 NVIDIA 对比</strong>：NVIDIA 的 `cudaAccessPolicyWindow` 是 <strong>Stream 级别</strong>的控制（指定一个连续内存区域 + hitRatio），粒度较粗；昇腾的 `SetL2CacheHint` 是 <strong>Tensor 级别</strong>的控制（每个 GlobalTensor 独立设置），粒度更细。但 NVIDIA 的 API 支持更丰富的策略（如 hitRatio 百分比控制、持久化缓存预留比例），昇腾目前是二元选择（进入/绕过）。**Kernel Launch 中的 `l2ctrl` 参数**：
 
 Ascend C 核函数启动符 `>` 中包含一个 `l2ctrl` 参数，用于 L2 Cache 控制。但根据 CANN 8.5 官方文档，该参数目前为保留参数，暂时设置为固定值 `nullptr`**：
 
@@ -337,41 +337,41 @@ kernel_name>(argument_list);`
 
 这意味着 L2 Cache 的高层控制策略（如全局切分策略）目前主要通过 Tiling 切分 + SetL2CacheHint** 组合实现，而非通过 launch 参数。`l2ctrl` 参数的存在暗示华为未来可能开放更多 L2 Cache 控制能力。
 
-**参考**：昇腾官方文档 - 存储单元、L2 Cache 切分最佳实践、设置合理的 L2 CacheMode
+<strong>参考</strong>：昇腾官方文档 - 存储单元、L2 Cache 切分最佳实践、设置合理的 L2 CacheMode
 #### L2 Cache 对比总表
 
-维度NVIDIA H100 (Hopper)昇腾 Ascend950 (arch35)L2 容量50 MB（官方确认）未官方公开（文档假设 192 MB，可信度中等）L2 带宽~5.5 TB/s (near) / ~3.8 TB/s (跨分区)~7 TB/s (读写混合)管理方式硬件全自动，对开发者透明硬件自动缓存，开发者可通过 Tiling 切分 + CacheMode 优化Cacheline128 字节128 字节（arch35，较前代 512 字节优化）分区设计Near/Far 双分区，跨分区延迟高未公开分区信息亲和性控制 APIcudaAccessPolicyWindow (Stream 级别)SetL2CacheHint (Tensor 级别)控制粒度连续内存区域 + hitRatio 百分比逐 Tensor 二元选择（进入/绕过）控制策略Persisting / Streaming / Normal 三态CACHE_MODE_NORMAL / CACHE_MODE_DISABLE 二态设计哲学透明加速为主，高级用户可微调数据搬运默认受益，鼓励开发者主动优化** 💡 关键洞察**：两者都支持开发者显式控制 L2 Cache 亲和性，但设计理念不同：** 
+维度NVIDIA H100 (Hopper)昇腾 Ascend950 (arch35)L2 容量50 MB（官方确认）未官方公开（文档假设 192 MB，可信度中等）L2 带宽~5.5 TB/s (near) / ~3.8 TB/s (跨分区)~7 TB/s (读写混合)管理方式硬件全自动，对开发者透明硬件自动缓存，开发者可通过 Tiling 切分 + CacheMode 优化Cacheline128 字节128 字节（arch35，较前代 512 字节优化）分区设计Near/Far 双分区，跨分区延迟高未公开分区信息亲和性控制 APIcudaAccessPolicyWindow (Stream 级别)SetL2CacheHint (Tensor 级别)控制粒度连续内存区域 + hitRatio 百分比逐 Tensor 二元选择（进入/绕过）控制策略Persisting / Streaming / Normal 三态CACHE_MODE_NORMAL / CACHE_MODE_DISABLE 二态设计哲学透明加速为主，高级用户可微调数据搬运默认受益，鼓励开发者主动优化<strong>💡 关键洞察</strong>：两者都支持开发者显式控制 L2 Cache 亲和性，但设计理念不同：** 
 
-- NVIDIA**：L2 Cache 默认全自动，开发者通过 `cudaAccessPolicyWindow` 在 Stream 级别”提示”哪些数据应持久化驻留，支持 hitRatio 精细调控，是**锦上添花**的优化手段。
-- **昇腾**：L2 Cache 同样默认自动缓存，但开发者被**强烈建议**通过 `SetL2CacheHint` 将只读一次的冷数据标记为 `CACHE_MODE_DISABLE` 以避免污染 L2，配合 Tiling 切分确保热数据在 L2 中驻留。这更像是**性能必修课**而非可选优化。
+- NVIDIA**：L2 Cache 默认全自动，开发者通过 `cudaAccessPolicyWindow` 在 Stream 级别”提示”哪些数据应持久化驻留，支持 hitRatio 精细调控，是<strong>锦上添花</strong>的优化手段。
+- <strong>昇腾</strong>：L2 Cache 同样默认自动缓存，但开发者被<strong>强烈建议</strong>通过 `SetL2CacheHint` 将只读一次的冷数据标记为 `CACHE_MODE_DISABLE` 以避免污染 L2，配合 Tiling 切分确保热数据在 L2 中驻留。这更像是<strong>性能必修课</strong>而非可选优化。
 **
 
 #### 4.3 数据流模型根本差异
 
 NVIDIA：隐式数据流** — 代码中直接访问全局内存指针，硬件自动完成 L2 → L1 缓存，开发者只需关注线程索引和计算逻辑。
 
-**昇腾：显式数据流** — 开发者手动调用 `DataCopy` 完成三阶段搬运：
+<strong>昇腾：显式数据流</strong> — 开发者手动调用 `DataCopy` 完成三阶段搬运：
 
 - GM → [L2 自动缓存] → UB（MTE2 异步 DMA）
 - UB 上计算（Vector/Cube 指令）
 - UB → [L2 自动缓存] → GM（MTE3 异步 DMA）
-** ⚠️ 关键差异**：NVIDIA 的 shared memory 是**可选优化**（不用也能跑），昇腾的 UB 搬运是**必须的**（不搬数据到 UB 就无法利用 Vector/Cube 加速）。但两者的 L2 Cache 都是自动工作的——NVIDIA 的整个缓存层次对开发者透明，昇腾的 L2 虽自动，但 UB（类似 Shared Memory 的角色）需要显式管理。
+<strong>⚠️ 关键差异</strong>：NVIDIA 的 shared memory 是<strong>可选优化</strong>（不用也能跑），昇腾的 UB 搬运是<strong>必须的</strong>（不搬数据到 UB 就无法利用 Vector/Cube 加速）。但两者的 L2 Cache 都是自动工作的——NVIDIA 的整个缓存层次对开发者透明，昇腾的 L2 虽自动，但 UB（类似 Shared Memory 的角色）需要显式管理。
 #### 5. 编程模型与并行模型对比
 
 #### 5.1 NVIDIA CUDA：SIMT 模型
 
 **
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_ab4fa2fe50a6.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_ab4fa2fe50a6.jpg)
 
 #### 5.2 昇腾 Ascend C：SPMD + SIMD/SIMT 双模型
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_5cecca26fd45.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_5cecca26fd45.jpg)
 
-> SIMD vs SIMT 关键区别**：** 
+> SIMD vs SIMT 关键区别<strong>：</strong> 
 
 - SIMD**：一条指令操作一个向量缓冲区，开发者需显式管理向量宽度、对齐、Tail 处理。
-- **SIMT**：一条指令由多个独立线程执行，开发者像写标量代码，硬件自动并行化。
+- <strong>SIMT</strong>：一条指令由多个独立线程执行，开发者像写标量代码，硬件自动并行化。
 **
 
 #### 5.3 编程模型对比表
@@ -383,14 +383,14 @@ SIMT 硬件实现细节**（来源：CANN Meetup 官方分享）：
 
 950 的 AIV 新增了以下 SIMT 专有硬件组件：
 
-- **4 个 Warp Scheduler**：scheduler_id = warp_id % 4，多线程调度
-- **Divergence Stack**：支持分支调度（类似 NVIDIA 的分支处理机制）
-- **SIMT Register File**：SIMT 专用寄存器堆，线程数与每线程寄存器数的权衡关系：
+- <strong>4 个 Warp Scheduler</strong>：scheduler_id = warp_id % 4，多线程调度
+- <strong>Divergence Stack</strong>：支持分支调度（类似 NVIDIA 的分支处理机制）
+- <strong>SIMT Register File</strong>：SIMT 专用寄存器堆，线程数与每线程寄存器数的权衡关系：
 最大线程数每线程寄存器数20481610243251264
 
-- **DCache**：最大 128KB，直接复用 UB 作为 Cacheline，SIMT 模式下可通过 DCache 直接读写 GM
-- **SIMD/SIMT 共享组件**：ICache（指令缓存）、ALU（计算单元）、UB（SIMT 当 Shared Memory / SIMD 直接操作）、GSU（Gather Scatter Unit）
-** ⚠️ 性能权衡**：SIMD 模式下 UB 访存效率是 SIMT 模式的 **4 倍**（SIMD: 4×x B/s vs SIMT: x B/s），因此规则向量运算仍建议用 SIMD。`// Ascend950 独有：SIMT 编程（类 CUDA 体验）
+- <strong>DCache</strong>：最大 128KB，直接复用 UB 作为 Cacheline，SIMT 模式下可通过 DCache 直接读写 GM
+- <strong>SIMD/SIMT 共享组件</strong>：ICache（指令缓存）、ALU（计算单元）、UB（SIMT 当 Shared Memory / SIMD 直接操作）、GSU（Gather Scatter Unit）
+<strong>⚠️ 性能权衡</strong>：SIMD 模式下 UB 访存效率是 SIMT 模式的 <strong>4 倍</strong>（SIMD: 4×x B/s vs SIMT: x B/s），因此规则向量运算仍建议用 SIMD。`// Ascend950 独有：SIMT 编程（类 CUDA 体验）
 __simt_vf__ __aicore__ LAUNCH_BOUND(512)
 inline void SimtKernel(/* params */) {
     int64_t blockIdx  = Simt::GetBlockIdx();    // 类似 CUDA blockIdx.x
@@ -404,7 +404,7 @@ inline void SimtKernel(/* params */) {
 // 同步：Simt::ThreadBarrier();   // 类似 __syncthreads()
 // 原子：Simt::AtomicAdd(&val, 1); // 类似 atomicAdd()`
 
-CUDA APIAscend950 SIMT API说明threadIdx.xSimt::GetThreadIdx()线程索引blockIdx.xSimt::GetBlockIdx()块索引blockDim.xSimt::GetThreadNum()线程数__syncthreads()Simt::ThreadBarrier()线程同步atomicAdd()Simt::AtomicAdd()原子操作kernel>>()Simt::VF_CALL(Dim3{T})启动** 💡 开发策略**：规则向量运算（Softmax、LayerNorm）用 **SIMD** 获最佳性能；不规则操作或 CUDA 迁移用 **SIMT** 降成本。两种模型可在同一算子中**混合使用**。** 参考**：CANN Skills - NPU Arch Guide, arch35 SIMT 编程
+CUDA APIAscend950 SIMT API说明threadIdx.xSimt::GetThreadIdx()线程索引blockIdx.xSimt::GetBlockIdx()块索引blockDim.xSimt::GetThreadNum()线程数__syncthreads()Simt::ThreadBarrier()线程同步atomicAdd()Simt::AtomicAdd()原子操作kernel>>()Simt::VF_CALL(Dim3{T})启动<strong>💡 开发策略</strong>：规则向量运算（Softmax、LayerNorm）用 <strong>SIMD</strong> 获最佳性能；不规则操作或 CUDA 迁移用 <strong>SIMT</strong> 降成本。两种模型可在同一算子中<strong>混合使用</strong>。<strong>参考</strong>：CANN Skills - NPU Arch Guide, arch35 SIMT 编程
 #### 6. 代码实战：向量加法 (Vector Add)
 
 这是最经典的并行编程入门示例。让我们看看两个平台上实现的差异。
@@ -435,7 +435,7 @@ __global__ void vectorAdd(const float *x, const float *y,
     return 0;
 }`
 
-**CUDA 代码特点**：
+<strong>CUDA 代码特点</strong>：
 
 - 代码简洁，核心逻辑仅 3 行
 - 通过 `threadIdx` / `blockIdx` 自动分配工作
@@ -536,7 +536,7 @@ extern "C" __global__ __aicore__ void vector_add_kernel(
     op.Process();
 }`
 
-**Ascend C 代码特点**：
+<strong>Ascend C 代码特点</strong>：
 
 - 显式三段式流水线（CopyIn → Compute → CopyOut）
 - 手动管理 UB 缓冲区（TQue, Double Buffer）
@@ -546,14 +546,14 @@ extern "C" __global__ __aicore__ void vector_add_kernel(
 
 #### 6.3 代码差异小结
 
-- **CUDA**：~10 行 Kernel，标量线程模型，数据搬运由硬件隐式完成
-- **Ascend C**：~60 行 Kernel，显式三段式流水线（CopyIn → Compute → CopyOut），体现了[第 4.3 节](https://zhuanlan.zhihu.com/p/2020921487947736363/edit#43-%E6%95%B0%E6%8D%AE%E6%B5%81%E6%A8%A1%E5%9E%8B%E6%A0%B9%E6%9C%AC%E5%B7%AE%E5%BC%82)描述的两种数据流模型差异
+- <strong>CUDA</strong>：~10 行 Kernel，标量线程模型，数据搬运由硬件隐式完成
+- <strong>Ascend C</strong>：~60 行 Kernel，显式三段式流水线（CopyIn → Compute → CopyOut），体现了[第 4.3 节](https://zhuanlan.zhihu.com/p/2020921487947736363/edit#43-%E6%95%B0%E6%8D%AE%E6%B5%81%E6%A8%A1%E5%9E%8B%E6%A0%B9%E6%9C%AC%E5%B7%AE%E5%BC%82)描述的两种数据流模型差异
 
 #### 6.4 执行流水线时序对比
 
 **
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_626ba4bcfa8e.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_626ba4bcfa8e.jpg)
 
 #### 7. 代码实战：矩阵乘法思路对比
 
@@ -605,7 +605,7 @@ public:
 
 #### 7.3 矩阵乘法数据流对比
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_01fa7c11bcba.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_01fa7c11bcba.jpg)
 
 #### 8. Ascend950 独有特性解析
 
@@ -614,8 +614,8 @@ public:
 Ascend950 支持直接操作寄存器的编程模式（Regbase 架构），相比上一代的 Membase 架构有三大优势：
 
 - 寄存器内计算**：中间结果无需回写 UB，减少对 Local Buffer 的访问带宽需求
-- **OOO 指令双发**：通过支持乱序执行（Out-of-Order）实现指令双发，提升 Vector 性能
-- **非对齐友好**：便于支持 Local Buffer 非 32B 对齐数据处理
+- <strong>OOO 指令双发</strong>：通过支持乱序执行（Out-of-Order）实现指令双发，提升 Vector 性能
+- <strong>非对齐友好</strong>：便于支持 Local Buffer 非 32B 对齐数据处理
 `// Regbase 编程：直接操作寄存器（仅 arch35）
 // 相比 Membase 编程方式，处理的数据由 block/repeat 参数
 // 换成 for-loop 形式，代码更容易编写和理解
@@ -632,7 +632,7 @@ for (uint16_t i = 0; i (calCount);
     AscendC::Reg::Store(dstPtr + i * oneRepeatSize, vDstReg0, maskReg);
 }`
 
-**适用场景**：量化/反量化算子、动态量化、需要极致性能的热点路径
+<strong>适用场景</strong>：量化/反量化算子、动态量化、需要极致性能的热点路径
 
 #### 8.2 FP8/MxFP4 低精度支持
 
@@ -645,16 +645,16 @@ if constexpr (IsSameType::value) {
     // HiFloat8 处理路径（华为自定义）
 }`
 
-**HiFloat8 格式技术细节**（来源：CANN Meetup 官方分享）：
+<strong>HiFloat8 格式技术细节</strong>（来源：CANN Meetup 官方分享）：
 
-HiFloat8 不是简单的固定阶码/尾数分配，而是采用**变长前缀编码的锥形精度**设计：
+HiFloat8 不是简单的固定阶码/尾数分配，而是采用<strong>变长前缀编码的锥形精度</strong>设计：
 
 - 利用点位域（Dot）变长前缀码指示阶码存储位宽，实现”数值靠近 1 时精度高，远离 1 时精度逐渐降低”的锥形分布
 - 4 个精度区间：高精度区（E=±[0,3]，4-bit 有效位）、中精度区（E=±[4,7]，3-bit）、低精度区（E=±[8,15]，2-bit）、极小值区（E=[-22,-16]，1-bit）
-- 综合阶码范围达到 **[-22, 15] 共 38 个阶码值**，接近 FP16 的 40 个，远超 E4M3 的 18 个和 E5M2 的 32 个
+- 综合阶码范围达到 <strong>[-22, 15] 共 38 个阶码值</strong>，接近 FP16 的 40 个，远超 E4M3 的 18 个和 E5M2 的 32 个
 - 阶码采用原码编码并隐藏 1-bit 固定值不存储，实现无冗余编码
-- 得益于大动态范围，Float16/BFloat16 数据可**直接转换**为 HiF8（Direct Convert），精度损失也相对较小
-** 💡 实战意义**：业界普遍认为 E5M2 精度过低（如 DeepSeek V3 训练只用 E4M3），而 E4M3 仅 18 个二进制指数，需要极端细粒度 Scaling 保精度。HiFloat8 的 38 阶码值使其可以用**更粗粒度的 Scaling**达到同等或更好的精度，降低 Scaling 开销。
+- 得益于大动态范围，Float16/BFloat16 数据可<strong>直接转换</strong>为 HiF8（Direct Convert），精度损失也相对较小
+<strong>💡 实战意义</strong>：业界普遍认为 E5M2 精度过低（如 DeepSeek V3 训练只用 E4M3），而 E4M3 仅 18 个二进制指数，需要极端细粒度 Scaling 保精度。HiFloat8 的 38 阶码值使其可以用<strong>更粗粒度的 Scaling</strong>达到同等或更好的精度，降低 Scaling 开销。
 #### 8.3 arch35 代码目录结构
 
 `operator/
@@ -731,7 +731,7 @@ HiFloat8 不是简单的固定阶码/尾数分配，而是采用**变长前缀�
 
 #### 10. 硬件参数横向对比表
 
-参数NVIDIA H100 (Hopper)华为 Ascend950PR (Atlas 350)华为 Ascend950DT制程TSMC 4N7nm (推测)7nm (推测)晶体管数800 亿未公开未公开核心数132 SM32 AI Core（2× 计算 DIE × 16，CANN Meetup 确认）32 AI CoreFP8 算力~2 PFLOPS- PFLOPS- PFLOPSMxFP4 算力—1.56 PFLOPS- PFLOPS矩阵加速4 Tensor Core/SMCube Unit/CoreCube Unit/Core片上缓存/核256 KB L1/SMEM（SMEM 最高 228 KB）248 KB UB248 KB UBL2 Cache50 MB（双分区设计，带宽 ~5.5 TB/s）未官方公开（文档假设 192 MB，带宽 ~7 TB/s）未官方公开（文档假设 192 MB，带宽 ~7 TB/s）HBM 容量80 GB HBM3112 GB (HiBL 1.0)144 GB (HiZQ 2.0)HBM 带宽3.35 TB/s1.4 TB/s (标卡) / 1.6 TB/s (模组)4 TB/s互联带宽NVLink 900 GB/s—2 TB/s功耗700W (SXM5)600W未公开FP8 支持✅ E4M3 + E5M2✅ E4M3 + E5M2 + HiFloat8✅ E4M3 + E5M2 + HiFloat8MxFP4❌ (Hopper 不支持)✅ MxFP4✅ MxFP4编程语言CUDA C++Ascend C (C++扩展)Ascend C (C++扩展)编程模型SIMTSPMD + SIMD/SIMT 双模型SPMD + SIMD/SIMT 双模型访存颗粒度—128 字节（从 512 字节优化）未公开** ⚠️ 注**：32 AI Core 数量来源于 CANN Meetup 官方分享（每计算 DIE 16 AI Core × 2 计算 DIE），Skills 仓库默认参数显示 64 可能包含 AIC+AIV 双子核心计数。上述加粗参数均来自华为全联接大会 2025（HC2025）及 2026 年 3 月华为中国合作伙伴大会官方发布。
+参数NVIDIA H100 (Hopper)华为 Ascend950PR (Atlas 350)华为 Ascend950DT制程TSMC 4N7nm (推测)7nm (推测)晶体管数800 亿未公开未公开核心数132 SM32 AI Core（2× 计算 DIE × 16，CANN Meetup 确认）32 AI CoreFP8 算力~2 PFLOPS- PFLOPS- PFLOPSMxFP4 算力—1.56 PFLOPS- PFLOPS矩阵加速4 Tensor Core/SMCube Unit/CoreCube Unit/Core片上缓存/核256 KB L1/SMEM（SMEM 最高 228 KB）248 KB UB248 KB UBL2 Cache50 MB（双分区设计，带宽 ~5.5 TB/s）未官方公开（文档假设 192 MB，带宽 ~7 TB/s）未官方公开（文档假设 192 MB，带宽 ~7 TB/s）HBM 容量80 GB HBM3112 GB (HiBL 1.0)144 GB (HiZQ 2.0)HBM 带宽3.35 TB/s1.4 TB/s (标卡) / 1.6 TB/s (模组)4 TB/s互联带宽NVLink 900 GB/s—2 TB/s功耗700W (SXM5)600W未公开FP8 支持✅ E4M3 + E5M2✅ E4M3 + E5M2 + HiFloat8✅ E4M3 + E5M2 + HiFloat8MxFP4❌ (Hopper 不支持)✅ MxFP4✅ MxFP4编程语言CUDA C++Ascend C (C++扩展)Ascend C (C++扩展)编程模型SIMTSPMD + SIMD/SIMT 双模型SPMD + SIMD/SIMT 双模型访存颗粒度—128 字节（从 512 字节优化）未公开<strong>⚠️ 注</strong>：32 AI Core 数量来源于 CANN Meetup 官方分享（每计算 DIE 16 AI Core × 2 计算 DIE），Skills 仓库默认参数显示 64 可能包含 AIC+AIV 双子核心计数。上述加粗参数均来自华为全联接大会 2025（HC2025）及 2026 年 3 月华为中国合作伙伴大会官方发布。
 #### 11. 总结与展望
 
 #### 两种架构的适用场景
@@ -741,17 +741,17 @@ HiFloat8 不是简单的固定阶码/尾数分配，而是采用**变长前缀�
 
 **
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_d7dc4d006f08.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_d7dc4d006f08.jpg)
 
 #### 展望
 
-随着 Ascend950 引入 SIMD/SIMT 双编程模型**和 Regbase 编程，华为正在**融合两种范式的优势**：
+随着 Ascend950 引入 SIMD/SIMT 双编程模型<strong>和 Regbase 编程，华为正在</strong>融合两种范式的优势**：
 
-- **保留** SIMD 显式数据流控制带来的高性能上限（专家级优化路径）
-- **引入** SIMT 类 CUDA 的线程级并行降低开发门槛（CUDA 算子快速迁移路径）
-- **物理分离** AIC/AIV 双子单元 + Fixpipe 后处理，让矩阵和向量路径互不干扰
-- **扩展** FP8/MxFP4 低精度格式支持 LLM 场景
-两种架构的竞争，本质上是 **“易用性”** 与 **“极致性能”** 的权衡博弈，也是 **“软件生态”** 与 **“硬件创新”** 的长期赛跑。
+- <strong>保留</strong> SIMD 显式数据流控制带来的高性能上限（专家级优化路径）
+- <strong>引入</strong> SIMT 类 CUDA 的线程级并行降低开发门槛（CUDA 算子快速迁移路径）
+- <strong>物理分离</strong> AIC/AIV 双子单元 + Fixpipe 后处理，让矩阵和向量路径互不干扰
+- <strong>扩展</strong> FP8/MxFP4 低精度格式支持 LLM 场景
+两种架构的竞争，本质上是 <strong>“易用性”</strong> 与 <strong>“极致性能”</strong> 的权衡博弈，也是 <strong>“软件生态”</strong> 与 <strong>“硬件创新”</strong> 的长期赛跑。
 
 #### 12. 参考资料
 
@@ -784,4 +784,4 @@ HiFloat8 不是简单的固定阶码/尾数分配，而是采用**变长前缀�
 - AscendC vs CUDA - hipudding’s Blog - 编程模型对比
 - 昇腾 AI 生态组件全解析：与英伟达生态的深度对比 - CSDN
 - NVIDIA GPU 流式多处理器详解 - CSDN
-**本文基于公开的官方文档、技术博客和开源代码仓库整理而成。部分 Ascend950 硬件参数尚未公开，标注为”未公开”。如有错误或遗漏，欢迎指正。**** 最后更新** 2026 年 3 月
+<strong>本文基于公开的官方文档、技术博客和开源代码仓库整理而成。部分 Ascend950 硬件参数尚未公开，标注为”未公开”。如有错误或遗漏，欢迎指正。</strong><strong>最后更新</strong> 2026 年 3 月

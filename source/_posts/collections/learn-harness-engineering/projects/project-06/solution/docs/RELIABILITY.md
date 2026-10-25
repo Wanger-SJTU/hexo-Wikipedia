@@ -48,31 +48,31 @@ Every log entry is a single-line JSON object:
 
 ### Service Logging Points
 
-**PersistenceService:**
+<strong>PersistenceService:</strong>
 - Directory initialization
 - File read/write operations (DEBUG)
 - Clean state reset (WARN)
 
-**DocumentService:**
+<strong>DocumentService:</strong>
 - Document import with size and metadata
 - Document deletion with remaining count
 - Document metadata updates
 - File not found errors
 - Size limit violations
 
-**IndexingService:**
+<strong>IndexingService:</strong>
 - Single and batch indexing start
 - Per-document indexing progress
 - Batch completion with throughput metrics
 - Content not found warnings
 
-**QaService:**
+<strong>QaService:</strong>
 - Question processing start
 - Answer generation with confidence and duration
 - Feedback submission
 - History clear
 
-**IPC Handlers:**
+<strong>IPC Handlers:</strong>
 - Every channel invocation (INFO for mutations, DEBUG for reads)
 - All registered channels at startup
 

@@ -15,9 +15,9 @@ categories:
 
 ## Current State
 
-**Last Updated:** YYYY-MM-DD HH:MM
-**Session ID:** [optional]
-**Active Feature:** [feat-XXX - Feature Name]
+<strong>Last Updated:</strong> YYYY-MM-DD HH:MM
+<strong>Session ID:</strong> [optional]
+<strong>Active Feature:</strong> [feat-XXX - Feature Name]
 
 ## Status
 
@@ -44,7 +44,7 @@ categories:
 
 ## Decisions Made
 
-- **[Decision 1]**: [description]
+- <strong>[Decision 1]</strong>: [description]
   - Context: [why this decision was made]
   - Alternatives considered: [what else was discussed]
 

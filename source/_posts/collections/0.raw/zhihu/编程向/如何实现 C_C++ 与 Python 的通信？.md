@@ -353,13 +353,13 @@ BOOL WINAPI DllMain(HINSTANCE hinstDLL,DWORD fdwReason,LPVOID lpReserved) {
 `cl /LD dllmain.c great_module.c -IC:\Python27\include C:\Python27\libs\python27.lib
 `
 
-会得到一个dllmain.dll。我们在Excel里面使用它，没错，传说中的**Excel与Python混合编程**：
+会得到一个dllmain.dll。我们在Excel里面使用它，没错，传说中的<strong>Excel与Python混合编程</strong>：
 
-![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_6c83cbe4b246.jpg)
+![](/images/collections/0.raw/zhihu/%E7%BC%96%E7%A8%8B%E5%90%91/asset/img_6c83cbe4b246.jpg)
 
 参考资料：Cython的官方文档，质量非常高：
 
-Welcome to Cython’s Documentation**4 Python调用C/C++（使用SWIG）**
+Welcome to Cython’s Documentation<strong>4 Python调用C/C++（使用SWIG）</strong>
 
 用C/C++对脚本语言的功能扩展是非常常见的事情，Python也不例外。除了SWIG，市面上还有若干用于Python扩展的工具包，比较知名的还有Boost.Python、SIP等，此外，Cython由于可以直接集成C/C++代码，并方便的生成Python模块，故也可以完成扩展Python的任务。
 
@@ -486,7 +486,7 @@ SWIG的官方文档，质量比较高。
 
 SWIG Users Manual有个对应的中文版官网，很多年没有更新了。
 
-**写在最后：**
+<strong>写在最后：</strong>
 
 由于CPython自身的结构设计合理，使得Python的C/C++扩展非常容易。如果打算快速完成任务，Cython（C/C++调用Python）和SWIG（Python调用C/C++）是很不错的选择。但是，一旦涉及到比较复杂的转换任务，无论是继续使用Cython还是SWIG，仍然需要学习Python源代码。
 

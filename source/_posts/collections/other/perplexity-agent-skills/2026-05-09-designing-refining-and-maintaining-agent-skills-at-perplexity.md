@@ -25,7 +25,7 @@ source_url: https://research.perplexity.ai/articles/designing-refining-and-maint
 
 ## 核心观点
 
-Perplexity 的前沿 Agent 产品建立在模块化的 **Agent Skills** 之上。这些 Skills 包含了驱动 Perplexity Computer 的通用工具，以及金融、法律、医疗等垂直领域的能力。
+Perplexity 的前沿 Agent 产品建立在模块化的 <strong>Agent Skills</strong> 之上。这些 Skills 包含了驱动 Perplexity Computer 的通用工具，以及金融、法律、医疗等垂直领域的能力。
 
 编写高质量 Skill 的直觉和最佳实践，与编写传统软件所需的截然不同。许多编写代码的有用模式，在 Skill 创建中会变成反模式。
 
@@ -33,11 +33,11 @@ Perplexity 的前沿 Agent 产品建立在模块化的 **Agent Skills** 之上�
 
 | Zen of Python | Zen of Skills |
 |---------------|---------------|
-| Simple is better than complex | **A Skill is a folder, not a file. Complexity is the feature.** |
+| Simple is better than complex | <strong>A Skill is a folder, not a file. Complexity is the feature.</strong> |
 | Explicit is better than implicit | Activation is implicit pattern matching |
 | Sparse is better than dense | Context is expensive. Maximum signal per token |
-| Special cases aren't special enough to break the rules | **Gotchas ARE the special cases (they're the highest-value content)** |
-| If the implementation is easy to explain, it may be a good idea | **If it's easy to explain, the model already knows it. Delete it.** |
+| Special cases aren't special enough to break the rules | <strong>Gotchas ARE the special cases (they're the highest-value content)</strong> |
+| If the implementation is easy to explain, it may be a good idea | <strong>If it's easy to explain, the model already knows it. Delete it.</strong> |
 
 ## Skill 是什么？
 
@@ -59,7 +59,7 @@ Skill 不只是单个 `SKILL.md` 文件。一个 Skill 目录可能包含：
 
 `SKILL.md` 的 frontmatter 必须包含 `name` 和 `description`。`description` 是路由触发器，不是内部文档。它的作用是告诉模型"何时加载这个 Skill"。
 
-**常见失败点**：description 不是"这个 Skill 做什么"，而是"何时加载"。应该是"Load when..."而不是"This Skill does"。
+<strong>常见失败点</strong>：description 不是"这个 Skill 做什么"，而是"何时加载"。应该是"Load when..."而不是"This Skill does"。
 
 ### 3. Skill 是可调用的
 
@@ -84,17 +84,17 @@ Computer then strips the frontmatter and the agent thus only sees the body
 
 ## 何时需要 Skill？
 
-**需要 Skill 的情况：**
+<strong>需要 Skill 的情况：</strong>
 - Agent 没有特殊上下文会出错
 - 需要跨运行高度一致的不确定性或非确定性
 - 你的知识持久但不在训练数据中（截止日期、企业工作流、品味判断）
 
-**不需要 Skill 的情况：**
+<strong>不需要 Skill 的情况：</strong>
 - 模型已经知道该怎么做（比如一串 git 命令）
 - 重复系统 prompt 的指令
 - 频繁变化的远程 MCP 端点（会导致 drift）
 
-**每个 Skill 都是一种税。** 问自己："没有这条指令，Agent 会出错吗？"如果不需要，就不能放在那里。
+<strong>每个 Skill 都是一种税。</strong> 问自己："没有这条指令，Agent 会出错吗？"如果不需要，就不能放在那里。
 
 ## 如何构建 Skill
 
@@ -111,7 +111,7 @@ Computer then strips the frontmatter and the agent thus only sees the body
 
 这是最硬的一行。是路由触发器，不是文档。
 
-**好的 description** 说工程师沮丧时会说的话，比如"babysit"、"watch CI"、"make sure this lands"。
+<strong>好的 description</strong> 说工程师沮丧时会说的话，比如"babysit"、"watch CI"、"make sure this lands"。
 
 快速检查清单：
 - 以 "Load when..." 开头
@@ -121,7 +121,7 @@ Computer then strips the frontmatter and the agent thus only sees the body
 
 ### Step 2: 写 Body
 
-跳过显而易见的东西。**不要写一串命令**。
+跳过显而易见的东西。<strong>不要写一串命令</strong>。
 
 不好的写法：
 ```
@@ -164,20 +164,20 @@ Skill 是"几乎是只追加的"：
 ### Eval 套件
 
 Perplexity 运行多种 eval 套件：
-1. **Skill loading evals** — 检查路由的精确率、召回率
-2. **Skill file reads evals** — 检查正确的渐进加载
-3. **End-to-end task evals** — 在完整 agent 循环中用 LLM judge 评分
-4. **跨模型测试** — GPT、Claude Opus、Claude Sonnet 行为不同
+1. <strong>Skill loading evals</strong> — 检查路由的精确率、召回率
+2. <strong>Skill file reads evals</strong> — 检查正确的渐进加载
+3. <strong>End-to-end task evals</strong> — 在完整 agent 循环中用 LLM judge 评分
+4. <strong>跨模型测试</strong> — GPT、Claude Opus、Claude Sonnet 行为不同
 
 ## 关键结论
 
 > "Self-generated Skills provide no benefit on average, showing that models cannot reliably author the procedural knowledge they benefit from consuming."
 
-- **写 evals 先于 Skill**
-- **Description 是最难的部分**："Load when..."（每个词都有成本）
-- **Gotchas 是极高价值的内容**
-- **从薄开始，随着 agent 失败而增长**
-- **注意远距效应**：加新 Skill 可能破坏已有的 Skill（即使没碰它们）
+- <strong>写 evals 先于 Skill</strong>
+- <strong>Description 是最难的部分</strong>："Load when..."（每个词都有成本）
+- <strong>Gotchas 是极高价值的内容</strong>
+- <strong>从薄开始，随着 agent 失败而增长</strong>
+- <strong>注意远距效应</strong>：加新 Skill 可能破坏已有的 Skill（即使没碰它们）
 
 ---
 

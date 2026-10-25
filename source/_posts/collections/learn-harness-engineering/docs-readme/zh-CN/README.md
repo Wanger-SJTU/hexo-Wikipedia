@@ -29,7 +29,7 @@ categories:
 
 # Learn Harness Engineering
 
-> **一门基于项目的课程，教你构建让 AI 编程代理可靠工作的环境、状态管理、验证和控制机制。**
+> <strong>一门基于项目的课程，教你构建让 AI 编程代理可靠工作的环境、状态管理、验证和控制机制。</strong>
 
 Learn Harness Engineering 是一门专注于 AI 编程代理工程化的课程。我们深入研究和综合了业界最先进的 Harness Engineering 理论与实践。我们的核心参考资料包括：
 
@@ -38,7 +38,7 @@ Learn Harness Engineering 是一门专注于 AI 编程代理工程化的课程�
 - [Anthropic: Harness design for long-running application development](https://www.anthropic.com/engineering/harness-design-long-running-apps)
 - [Awesome Harness Engineering](https://github.com/walkinglabs/awesome-harness-engineering)
 
-> **快速开始？** [`skills/harness-creator/`](../../skills/harness-creator/) 技能可以帮助你在几分钟内为自己的项目搭建生产级别的 Harness（AGENTS.md、功能列表、init.sh、验证工作流）。
+> <strong>快速开始？</strong> [`skills/harness-creator/`](../../skills/harness-creator/) 技能可以帮助你在几分钟内为自己的项目搭建生产级别的 Harness（AGENTS.md、功能列表、init.sh、验证工作流）。
 
 ---
 
@@ -85,7 +85,7 @@ Learn Harness Engineering 是一门专注于 AI 编程代理工程化的课程�
 
 ## 模型很聪明，Harness 让它可靠
 
-大多数人都曾付出过惨痛代价才认识到一个残酷的事实：**世界上最强大的模型，如果你不为它构建合适的环境，它在真正的工程任务上依然会失败。**
+大多数人都曾付出过惨痛代价才认识到一个残酷的事实：<strong>世界上最强大的模型，如果你不为它构建合适的环境，它在真正的工程任务上依然会失败。</strong>
 
 你可能亲身经历过。你给 Claude 或 GPT 一个仓库中的任务。开始一切顺利——读文件、写代码、看起来很高效。然后出了问题。它跳过了一个步骤。它破坏了一个测试。它说"完成了"，但实际上什么都不能用。你花在清理上的时间比自己做还多。
 
@@ -95,7 +95,7 @@ Learn Harness Engineering 是一门专注于 AI 编程代理工程化的课程�
 
 OpenAI 在 Codex 上也报告了同样的事情：在一个良好 Harness 的仓库中，同一个模型从"不可靠"变成了"可靠"。这不是边际提升——这是质变。
 
-**这门课程教你如何构建那个环境。**
+<strong>这门课程教你如何构建那个环境。</strong>
 
 ```text
                     HARNESS 模式
@@ -156,17 +156,17 @@ Harness Engineering 是围绕模型构建一个完整的工作环境，使其产
 
 每个子系统各司其职：
 
-- **指令**——告诉代理做什么、按什么顺序、开始前读什么。不是一个巨大的文件，而是一个渐进式披露结构，代理按需导航。
-- **状态**——追踪已完成的工作、正在进行的工作和下一步。持久化到磁盘，使下一次会话可以准确地从上次离开的地方继续。
-- **验证**——只有通过的测试套件才算数。代理不能在没有可运行证据的情况下宣布完成。
-- **范围**——将代理限制在一次只做一个功能。不越界。不同时做三个半成品。不重写功能列表来掩盖未完成的工作。
-- **会话生命周期**——开始时初始化。结束时清理。为下一次会话留下干净的重启路径。
+- <strong>指令</strong>——告诉代理做什么、按什么顺序、开始前读什么。不是一个巨大的文件，而是一个渐进式披露结构，代理按需导航。
+- <strong>状态</strong>——追踪已完成的工作、正在进行的工作和下一步。持久化到磁盘，使下一次会话可以准确地从上次离开的地方继续。
+- <strong>验证</strong>——只有通过的测试套件才算数。代理不能在没有可运行证据的情况下宣布完成。
+- <strong>范围</strong>——将代理限制在一次只做一个功能。不越界。不同时做三个半成品。不重写功能列表来掩盖未完成的工作。
+- <strong>会话生命周期</strong>——开始时初始化。结束时清理。为下一次会话留下干净的重启路径。
 
 ---
 
 ## 为什么会有这门课程
 
-问题不是"模型能不能写代码？"它们能。问题是：**它们能否在没有持续人工监督的情况下，在真实的仓库中、跨多个会话、可靠地完成真正的工程任务？**
+问题不是"模型能不能写代码？"它们能。问题是：<strong>它们能否在没有持续人工监督的情况下，在真实的仓库中、跨多个会话、可靠地完成真正的工程任务？</strong>
 
 目前，答案是：没有 Harness 就不行。
 
@@ -201,13 +201,13 @@ Harness Engineering 是围绕模型构建一个完整的工作环境，使其产
 
 ## 课程内容与文档
 
-完整的课程材料，请访问**[文档网站](https://walkinglabs.github.io/learn-harness-engineering/)**。
+完整的课程材料，请访问<strong>[文档网站](https://walkinglabs.github.io/learn-harness-engineering/)</strong>。
 
 课程分为三个部分：
 
-1. **讲座**：12 个概念单元，讲解 Harness Engineering 背后的理论。
-2. **项目**：6 个动手项目，你将从零构建一个代理工作空间。
-3. **资源库**：可直接使用的模板（`AGENTS.md`、`feature_list.json`、`init.sh` 等），今天就能用在你自己的仓库中。
+1. <strong>讲座</strong>：12 个概念单元，讲解 Harness Engineering 背后的理论。
+2. <strong>项目</strong>：6 个动手项目，你将从零构建一个代理工作空间。
+3. <strong>资源库</strong>：可直接使用的模板（`AGENTS.md`、`feature_list.json`、`init.sh` 等），今天就能用在你自己的仓库中。
 
 ---
 
@@ -233,7 +233,7 @@ Harness Engineering 是围绕模型构建一个完整的工作环境，使其产
 
 ## 毕业项目：一个真实的应用
 
-全部六个课程项目围绕同一个产品展开：**一个基于 Electron 的个人知识库桌面应用**。
+全部六个课程项目围绕同一个产品展开：<strong>一个基于 Electron 的个人知识库桌面应用</strong>。
 
 ```text
     ┌─────────────────────────────────────────────────────┐
@@ -394,7 +394,7 @@ Harness Engineering 是围绕模型构建一个完整的工作环境，使其产
 
 ## 代理会话生命周期
 
-这门课程的核心观点之一：**代理的会话应该遵循结构化的生命周期，而不是放任自流。** 如下所示：
+这门课程的核心观点之一：<strong>代理的会话应该遵循结构化的生命周期，而不是放任自流。</strong> 如下所示：
 
 ```text
     代理会话生命周期
@@ -567,7 +567,7 @@ learn-harness-engineering/
 
 本仓库还包含可复用的 AI 代理技能，你可以直接安装到你的 IDE 或代理工作空间中。
 
-- [**harness-creator**](../../skills/harness-creator/)：一个帮助你在几分钟内为自己的项目搭建生产级别 Harness 的技能。
+- [<strong>harness-creator</strong>](../../skills/harness-creator/)：一个帮助你在几分钟内为自己的项目搭建生产级别 Harness 的技能。
 
 ---
 
@@ -577,7 +577,7 @@ learn-harness-engineering/
 
 [![Hands-on Modern RL](https://img.shields.io/badge/HANDS--ON_MODERN_RL-0052cc?style=for-the-badge)](https://github.com/walkinglabs/hands-on-modern-rl)
 
-**Hands-on Modern RL**：一个开源的动手课程，从基础强化学习概念到 LLM 对齐、RLVR 和高级 Agentic 系统，架起理论与实践的桥梁。
+<strong>Hands-on Modern RL</strong>：一个开源的动手课程，从基础强化学习概念到 LLM 对齐、RLVR 和高级 Agentic 系统，架起理论与实践的桥梁。
 
 ---
 

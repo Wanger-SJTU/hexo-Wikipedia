@@ -19,13 +19,13 @@ source_url: https://zhuanlan.zhihu.com/p/530626092
 
 ### 1. AMOS idea
 
-AMOS这个工作，其实很早就开始做了，我们设计代码生成工作，希望多考虑硬件特点。我发现GPU上新出的Tensor Core是一种新的硬件特性，而且当时TVM这种深度学习编译器对Tensor Core这类特殊指令的支持还比较原始，依靠手写tensorize schedule完成，对于输入的compute也有限制（比如要求卷积的layout是NHWC，batch, channel维度要能整除Tensor Core WMMA接口的问题规模）。所以当时我就想那我做一个允许前面compute更随意、后面tensorize自动化的工作，是不是就兼顾了软件优化和硬件特点呢。**AMOS的idea就是希望能够提供合理的抽象和自动化算法，将多种多样的前端软件映射到后端定制硬件上。**
+AMOS这个工作，其实很早就开始做了，我们设计代码生成工作，希望多考虑硬件特点。我发现GPU上新出的Tensor Core是一种新的硬件特性，而且当时TVM这种深度学习编译器对Tensor Core这类特殊指令的支持还比较原始，依靠手写tensorize schedule完成，对于输入的compute也有限制（比如要求卷积的layout是NHWC，batch, channel维度要能整除Tensor Core WMMA接口的问题规模）。所以当时我就想那我做一个允许前面compute更随意、后面tensorize自动化的工作，是不是就兼顾了软件优化和硬件特点呢。<strong>AMOS的idea就是希望能够提供合理的抽象和自动化算法，将多种多样的前端软件映射到后端定制硬件上。</strong>
 
 ### 2. AMOS实现
 
 在接下来的几天里，我快速熟悉了如何用TVM的tensorize接口使用Tensor Core，并且想到不能只针对Tensor Core一个硬件优化，我还得更通用点，于是把带有特殊指令的其它硬件也一起放进来，初步构思了一个框架
 
-![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_6854ef1e793f.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BC%98%E5%8C%96/asset/img_6854ef1e793f.jpg)
 
 在这个框架里，第一个要解决的问题就是如何从一个比较普通的输入compute里知道哪一部分是可以使用特殊指令的呢，其实这里就是一个匹配问题，比如说给定一个以下的NCHW卷积定义
 

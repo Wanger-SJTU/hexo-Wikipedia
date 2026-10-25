@@ -15,7 +15,7 @@ source_url: https://zhuanlan.zhihu.com/p/1936420864447980897
 ---
 
 
-**bLLC：传统处理器末级缓存的演进与应用**
+<strong>bLLC：传统处理器末级缓存的演进与应用</strong>
 
 在现代计算机体系结构中，缓存系统扮演着至关重要的角色，它在处理器性能优化方面发挥着不可替代的作用。基础末级缓存（Basic Last Level Cache，简称bLLC）作为传统处理器架构中的核心组件，经历了几十年的技术演进，至今仍在各种计算系统中发挥着重要作用。本文将探讨bLLC的技术原理、设计特点、性能表现以及在不同应用场景中的价值。
 
@@ -31,29 +31,29 @@ bLLC的概念在多核处理器时代得到了重要发展。早期的单核处�
 
 现代处理器缓存设计遵循"5:30:200"黄金延迟比例（L1:L3:DRAM），其核心矛盾在于：
 
-- **空间局部性优化**：通过增大bLLC容量（AMD EPYC 9004系列已达384MB）捕获更多工作集
-- **时间局部性补偿**：采用动态分配策略（如Intel CAT技术）为关键线程保留缓存空间
-- **能效比平衡**：台积电N3工艺下SRAM单元漏电功耗占比达42%，需采用体偏置电压调节
-**L1缓存的双通路设计**
+- <strong>空间局部性优化</strong>：通过增大bLLC容量（AMD EPYC 9004系列已达384MB）捕获更多工作集
+- <strong>时间局部性补偿</strong>：采用动态分配策略（如Intel CAT技术）为关键线程保留缓存空间
+- <strong>能效比平衡</strong>：台积电N3工艺下SRAM单元漏电功耗占比达42%，需采用体偏置电压调节
+<strong>L1缓存的双通路设计</strong>
 
-- **虚拟索引物理标记(VIPT)**：解决别名问题（ARMv9采用48-bit地址哈希）
-- **流水线化访问**：Apple M3实现2-cycle负载使用延迟
-- **写入策略**：典型写分配+非写直达组合（写缓冲深度≥16 entries）
-**L2缓存的智能迁移**
+- <strong>虚拟索引物理标记(VIPT)</strong>：解决别名问题（ARMv9采用48-bit地址哈希）
+- <strong>流水线化访问</strong>：Apple M3实现2-cycle负载使用延迟
+- <strong>写入策略</strong>：典型写分配+非写直达组合（写缓冲深度≥16 entries）
+<strong>L2缓存的智能迁移</strong>
 
-- **包含性策略**：AMD采用非严格包含，节省15%硅面积
-- **预取引擎**：IBM POWER10配备8个硬件预取线程
-- **错误保护**：ECC校验位开销从12.5%降至7%（Synopsys ARC HS6x）
-**bLLC的拓扑创新**
+- <strong>包含性策略</strong>：AMD采用非严格包含，节省15%硅面积
+- <strong>预取引擎</strong>：IBM POWER10配备8个硬件预取线程
+- <strong>错误保护</strong>：ECC校验位开销从12.5%降至7%（Synopsys ARC HS6x）
+<strong>bLLC的拓扑创新</strong>
 
 架构特征Intel Sapphire RapidsAMD GenoaAmazon Graviton3容量配置4×1.875MB tiles32MB CCD64MB SLC互联带宽2TB/s Mesh3TB/s IF1.6TB/s NOC一致性协议MESIF+MOESICHI
 ### 缓存一致性协议
 
-#### **协议状态机的工程实现演进**
+#### <strong>协议状态机的工程实现演进</strong>
 
-**基础MESI状态转换**
+<strong>基础MESI状态转换</strong>
 
-- **总线事务类型**（以Intel Xeon Scalable为例）：**
+- <strong>总线事务类型</strong>（以Intel Xeon Scalable为例）：**
 
 - Read-For-Ownership (RFO)：触发M→I状态转换
 - Clean-Evict：处理E→I转换的节能策略
@@ -62,19 +62,19 @@ bLLC的概念在多核处理器时代得到了重要发展。早期的单核处�
 扩展协议对比**
 
 协议变种新增状态典型应用优势场景MESIFForward (F)Intel至强读密集型负载MOESIOwned (O)AMD EPYC混合读写负载MESIF-MMigratory (M)IBM POWER10锁竞争优化Coherence-ExpressTokenAWS Graviton4云原生多租户
-#### **优化技术实践**
+#### <strong>优化技术实践</strong>
 
-**目录协议创新**
+<strong>目录协议创新</strong>
 
-- **两级目录结构**（NVIDIA Grace-Hopper）：
+- <strong>两级目录结构</strong>（NVIDIA Grace-Hopper）：
 
 - 本地CCIX目录：跟踪同一Socket内核心状态
 - 全局NVLink目录：跨GPU-CPU一致性维护
 
-- **概率性目录**（Google TPUv5）：采用Cuckoo Hash减少15%存储开销
-**无锁化设计**
+- <strong>概率性目录</strong>（Google TPUv5）：采用Cuckoo Hash减少15%存储开销
+<strong>无锁化设计</strong>
 
-- **原子操作加速**（ARMv9.2）：**
+- <strong>原子操作加速</strong>（ARMv9.2）：**
 
 - LSE2指令集实现单周期CAS
 - 事务内存（TSX）冲突检测延迟降至8ns
@@ -85,31 +85,31 @@ bLLC的概念在多核处理器时代得到了重要发展。早期的单核处�
 
 bLLC（最后一级缓存）的性能优化核心在于替换策略与预取技术的协同设计，二者共同决定了缓存命中率和内存访问延迟的平衡。当缓存空间饱和时，高效的替换策略可最大限度保留高价值数据；而精准的预取技术则能提前消除访问延迟，形成完整的性能优化闭环。
 
-#### ‌**替换策略的工程实现演进**‌
+#### ‌<strong>替换策略的工程实现演进</strong>‌
 
-**LRU（最近最少使用）**‌
+<strong>LRU（最近最少使用）</strong>‌
 
-- ‌**时序敏感缺陷**‌：仅依赖访问时间戳，忽略访问频率特征。在数据预热场景中，低频但近期访问的冷数据可能长期滞留缓存，阻塞热数据载入。
-- ‌**硬件优化**‌：现代处理器采用分支预测辅助的PLRU（伪LRU），如AMD Zen4使用3-bit二叉树状态机，将存储开销降低至传统LRU的1/61。
+- ‌<strong>时序敏感缺陷</strong>‌：仅依赖访问时间戳，忽略访问频率特征。在数据预热场景中，低频但近期访问的冷数据可能长期滞留缓存，阻塞热数据载入。
+- ‌<strong>硬件优化</strong>‌：现代处理器采用分支预测辅助的PLRU（伪LRU），如AMD Zen4使用3-bit二叉树状态机，将存储开销降低至传统LRU的1/61。
 
-**‌LFU（最不频繁使用）**‌
+<strong>‌LFU（最不频繁使用）</strong>‌
 
-- ‌**时效性缺失**‌：过度关注历史频率，难以及时淘汰"过气热数据"。例如旧热点数据访问计数衰减缓慢，挤占新热点空间。
-- ‌**动态衰减机制**‌：Intel Ice Lake引入指数衰减计数器，每100ms将访问计数减半，确保缓存行价值实时更新。
+- ‌<strong>时效性缺失</strong>‌：过度关注历史频率，难以及时淘汰"过气热数据"。例如旧热点数据访问计数衰减缓慢，挤占新热点空间。
+- ‌<strong>动态衰减机制</strong>‌：Intel Ice Lake引入指数衰减计数器，每100ms将访问计数减半，确保缓存行价值实时更新。
 
-**‌随机替换**‌
+<strong>‌随机替换</strong>‌
 
-- ‌**非确定性优势**‌：通过伪随机数生成器选择替换目标，完全免除历史状态追踪电路。在龙芯3A处理器中，该策略使L1缓存状态寄存器用量减少40%。
-- ‌**冲突规避优化**‌：配合编译器数据布局调整（如矩阵分块参数Kc=256），将缓存冲突概率降低32%。
+- ‌<strong>非确定性优势</strong>‌：通过伪随机数生成器选择替换目标，完全免除历史状态追踪电路。在龙芯3A处理器中，该策略使L1缓存状态寄存器用量减少40%。
+- ‌<strong>冲突规避优化</strong>‌：配合编译器数据布局调整（如矩阵分块参数Kc=256），将缓存冲突概率降低32%。
 
-**‌混合策略创新**‌
+<strong>‌混合策略创新</strong>‌
 
 策略类型核心机制适用场景硬件开销ARC（自适应）动态平衡LRU/LFU队列多模式混合负载高CARF（频率感知）LRU+访问计数阈值筛选流媒体服务器中Hawkeye机器学习预测缓存行价值云计算虚拟机极高
-### **预取技术**
+### <strong>预取技术</strong>
 
 预取技术通过预测程序未来的数据访问需求，提前将数据从主存加载至缓存层级（尤其是bLLC），有效隐藏内存访问延迟并提升系统整体性能。其核心价值在于将计算与数据迁移过程重叠，避免处理器因缓存未命中而停顿。
 
-**顺序预取器（Stream Prefetcher）**
+<strong>顺序预取器（Stream Prefetcher）</strong>
 
 工作原理：检测连续地址访问流（如数组遍历），预取后续N个缓存行（Intel Sapphire Rapids支持最大8行预取）**优化方向：动态调整预取距离（Prefetch Degree），避免跨页预取导致的TLB未命中
 步长预取器（Stride Prefetcher）**
@@ -152,7 +152,7 @@ Cascade Lake的改进：
 - 更好的功耗管理
 Intel的bLLC设计还引入了复杂的snoop filter机制。由于L3缓存的非包含性设计，系统需要维护一个目录来跟踪L2缓存中的数据分布，以避免不必要的内存访问。这个snoop filter增加了设计复杂度，但提高了系统性能。
 
-**AMD Zen架构的bLLC实现**
+<strong>AMD Zen架构的bLLC实现</strong>
 
 AMD在其Zen架构中采用了不同的bLLC设计理念。Zen架构采用了模块化的设计，每个CCX（Core Complex）包含4个或8个CPU核心，共享一个L3缓存。
 
@@ -169,7 +169,7 @@ Milan架构的优化：
 - 改进的一致性协议
 AMD的设计哲学强调模块化和可扩展性。通过CCX的模块化设计，AMD可以灵活地组合不同数量的核心，满足不同市场段的需求。
 
-**ARM处理器的bLLC方案**
+<strong>ARM处理器的bLLC方案</strong>
 
 ARM架构的bLLC设计更多体现在SoC（System-on-Chip）应用中。ARM的big.LITTLE架构采用了异构的缓存配置，不同类型的核心配备不同规模的缓存。
 

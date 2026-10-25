@@ -109,13 +109,13 @@ induction heads这样的“复制”行为被认为是ICL能力的主要来源�
 
 重复的次数越多，越容易重复，越难以打破这个循环，如下图，横轴表示重复次数，纵轴红色表示某个token的概率，蓝色表示最大的概率。
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_cadbca2855b5.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_cadbca2855b5.jpg)
 
 发现三：Sentences with higher initial probabilities usually have a stronger self-reinforcement effect
 
 句子本身概率越大（模型认为越通顺），重复的自我加强效应越强。把重复的句子换成随机token，在不同重复次数下解码token的概率变化如下图，增强的趋势比上图（通顺句子）要弱很多
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_799a9665456a.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_799a9665456a.jpg)
 
 而DITTO的做法简单来说是构造了一些重复句子的训练样本，并在训练时显示加入对重复token的惩罚。
 
@@ -123,14 +123,14 @@ induction heads这样的“复制”行为被认为是ICL能力的主要来源�
 
 - self-reinforcement是LLM的共同属性，多个模型都具有这样的特点
 - self-reinforcement强度随着重复token的距离减小而增强，如下图所示
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_e294f24218fe.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_e294f24218fe.jpg)
 
 - 即使重复的token个数只有1个，这种self-reinforcement也会出现；而随着重复片段的增长，self-reinforcement强度也在提升，如下图所示
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_8404eee14ec7.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_8404eee14ec7.jpg)
 
 而通过计算token重复的次数和token的概率，发现正是预训练next token prediction的任务赋予了模型self-reinforcement的特点。
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_09caf46b851e.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_09caf46b851e.jpg)
 
 模型这种自我加强的作用对我们来说，既有好处又有坏处，可以说令人又爱又恨。
 
@@ -140,7 +140,7 @@ induction heads这样的“复制”行为被认为是ICL能力的主要来源�
 
 为了验证这个假设，对用ICL数据做了实验，如下图。橙色线是对demonstration的问题内容和答案内容进行mask处理，蓝色线是在橙色的基础上进一步把ABCD替换成别的符号，红色线是在橙色线的基础上把“Answer：”替换成相同意思的内容。
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_71137f6c452d.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_71137f6c452d.jpg)
 
 可以看到，如果仅仅对问题和答案内容进行mask，并不影响模型输出ABCD的概率，但是如果把ABCD/“Answer：”这种在demonstration中多次重复的内容替换成意思相近的符号，就会使得模型在答案空间的分布概率降低。
 

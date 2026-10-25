@@ -81,7 +81,7 @@ RLFramework(Verl/Slime) -> [AgentServer  RolloutEngine] => [AsyncBuffer] -> Trai
 
 对于Dynamic MTP，这块之前和MMX合作搞了一些，比较了解，目前最新的进展是说对于多层MTP，实际上现有的Eagle算法并不能直接支持，而是要采用一种叫做Vanilla的变种算法，这一块在SGLang中由liangsheng大佬做了实现 [#15207](https://link.zhihu.com/?target=https%3A//github.com/sgl-project/sglang/pull/15207/)，但是目前是每一层MTP单独跑了一个cuda graph，这里可以优化为多层MTP fuse 到一个cuda graph，这块阿里云的同学在帮忙支持，估计年后不久会有PR。
 
-**Dynamic MTP**：首先我们引入 MTP 进行推理加速，同时为了保证训练过程中维持 draft model 的高接受率，我们通过 Top-K KL Loss 在 RL 过程中持续训练 detached MTP Head，与 RL policy 保持对齐。 **Rollout 侧的 PD 分离**：PD 分离可以消除 MoE 调度中的 PD 干扰，为每个实例提供独立的并行和生成策略，在最大化吞吐量的同时优化长尾样本的延迟，防止极端样本阻塞 FIFO scheduler，并带来较高的 offpolicy。 **全局 L3 KV Cache Pool**：在多轮和超长上下文的 agent 场景下，请求间拥有极高的共享前缀比例，但是局部的 kv cache 受容量限制，无法达到满意的 prefix cache 命中率，甚至在 RL batch size 极大的情况下，会发生大量由于驱逐导致的重计算，因此需要支持全局的 L3 KV cache。同时，Forge 还通过 scheduler cost-aware 的调度机制，权衡排队延迟和缓存传输时间来动态路由请求，在不使实例超载的前提下最大化缓存局部性。
+<strong>Dynamic MTP</strong>：首先我们引入 MTP 进行推理加速，同时为了保证训练过程中维持 draft model 的高接受率，我们通过 Top-K KL Loss 在 RL 过程中持续训练 detached MTP Head，与 RL policy 保持对齐。 <strong>Rollout 侧的 PD 分离</strong>：PD 分离可以消除 MoE 调度中的 PD 干扰，为每个实例提供独立的并行和生成策略，在最大化吞吐量的同时优化长尾样本的延迟，防止极端样本阻塞 FIFO scheduler，并带来较高的 offpolicy。 <strong>全局 L3 KV Cache Pool</strong>：在多轮和超长上下文的 agent 场景下，请求间拥有极高的共享前缀比例，但是局部的 kv cache 受容量限制，无法达到满意的 prefix cache 命中率，甚至在 RL batch size 极大的情况下，会发生大量由于驱逐导致的重计算，因此需要支持全局的 L3 KV cache。同时，Forge 还通过 scheduler cost-aware 的调度机制，权衡排队延迟和缓存传输时间来动态路由请求，在不使实例超载的前提下最大化缓存局部性。
 #### 复杂Reward函数
 
 由于Agentic RL基本都是multi-turns的调用，因此只对最终结果做奖励(Sparse Reward)容易让模型养成偷工减料的习惯，因此需要设计一种dense reward机制来对每一轮的调用都进行打分
@@ -91,7 +91,7 @@ RLFramework(Verl/Slime) -> [AgentServer  RolloutEngine] => [AsyncBuffer] -> Trai
 mmx的原文如下，讲的也比较直白
 
 **为了解决超长轨迹的信用分配问题并确保稳定，我们设计了一个由三部分组成的复合奖励
-1. 过程奖励（Process Reward）**：监督 agent 的中间行为（如惩罚语言混合或特定工具调用错误），提供密集反馈，而不只依赖最终结果。**2. 任务完成时间奖励**：将相对完成时间作为奖励信号。因为真实延迟不仅取决于 Token 生成，还受工具执行和子 Agent 调用影响，这能激励 Agent 主动利用并行策略、选择最短的执行路径来加速任务。**3. 用于降低方差的后续奖励（Reward-to-Go）**：长周期任务的稀疏奖励容易引发高梯度方差。我们使用 Reward-to-Go 来标准化回报，大幅提高了信用分配的精度，稳定了优化过程。
+1. 过程奖励（Process Reward）<strong>：监督 agent 的中间行为（如惩罚语言混合或特定工具调用错误），提供密集反馈，而不只依赖最终结果。</strong>2. 任务完成时间奖励<strong>：将相对完成时间作为奖励信号。因为真实延迟不仅取决于 Token 生成，还受工具执行和子 Agent 调用影响，这能激励 Agent 主动利用并行策略、选择最短的执行路径来加速任务。</strong>3. 用于降低方差的后续奖励（Reward-to-Go）**：长周期任务的稀疏奖励容易引发高梯度方差。我们使用 Reward-to-Go 来标准化回报，大幅提高了信用分配的精度，稳定了优化过程。
 ### ROLL
 
 原文为：苦涩的教训！ROLL团队分享：Agentic RL 训练中的实践经验
@@ -123,14 +123,14 @@ mmx的原文如下，讲的也比较直白
 
 #### 训练数据处理
 
-这部分说的是数据处理的问题，即Roll团队发现有大量的测试数据存在**false positive（伪阳性）**的问题：要么数据不完整，要么就是本身就是个错误数据
+这部分说的是数据处理的问题，即Roll团队发现有大量的测试数据存在<strong>false positive（伪阳性）</strong>的问题：要么数据不完整，要么就是本身就是个错误数据
 
 因此在洗数据的时候就引入了一个LLM-as-judge验证模块，让多个LML审查每一组测试数据，只有对于通过验证的实例才会进入RL训练池
 
 具体来说会做两种检查
 
-- **Ground-truth 验证**：如果golden solution无法通过全部测试，则丢弃该实例。
-- **No-op 验证**：如果在不执行任何有效操作的情况下也能通过测试，则丢弃该实例。
+- <strong>Ground-truth 验证</strong>：如果golden solution无法通过全部测试，则丢弃该实例。
+- <strong>No-op 验证</strong>：如果在不执行任何有效操作的情况下也能通过测试，则丢弃该实例。
 
 #### Chunked MDP
 
@@ -152,7 +152,7 @@ ThunderAgent解决问题的思路非常直观：遇事不决加一层，ThunderA
 
 对于目前AgentServer与Rollout，基本上都是每轮的交互看作是独立的推理任务，这样的坏处是无法实时追踪每个Agent任务的实时状态(例如已经用了多少Token)
 
-**例如：**一个编码智能体（SWE-Agent）正在修复 GitHub 上的 Bug，其交互流程大概如下
+<strong>例如：</strong>一个编码智能体（SWE-Agent）正在修复 GitHub 上的 Bug，其交互流程大概如下
 
 `传统请求感知系统（SGLang）：
 ┌─────────────────────────────────────────────────────┐
@@ -225,7 +225,7 @@ Group → req1 → chunk1(8K) → chunk2(8K) → chunk3(8K) → ...
 
 #### Context-Aware Scheduling (上下文感知调度)
 
-要解决负载不均衡的问题，本质上还是要知道哪些Request是长尾Request，也就是最好能知道Response的长度，因此有个很直观的想法是对于GRPO任务  优先选第一条Request作为 **speculative request **来优先调度  调度完成后以**speculative request **的长度作为组内response长度的估计  按照长任务优先的策略调度剩余的请求
+要解决负载不均衡的问题，本质上还是要知道哪些Request是长尾Request，也就是最好能知道Response的长度，因此有个很直观的想法是对于GRPO任务  优先选第一条Request作为 <strong>speculative request</strong>来优先调度  调度完成后以<strong>speculative request</strong>的长度作为组内response长度的估计  按照长任务优先的策略调度剩余的请求
 
 大致流程为
 

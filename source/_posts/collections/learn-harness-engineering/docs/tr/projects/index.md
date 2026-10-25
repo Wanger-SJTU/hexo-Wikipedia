@@ -19,12 +19,12 @@ Burası Learn Harness Engineering'in uygulamalı bölümüdür. Yalnızca dersle
 
 Bu kurs, sıfırdan güvenilir bir ajan çalışma ortamı kurmayı öğreten 6 ilerlemeli, uygulamalı proje içerir:
 
-1. **Yalnızca prompt vs. önce kurallar (Prompt-Only vs. Rules-First)**: Bir ajanın yalnızca prompt ile mi yoksa temel bir harness ile mi daha iyi performans gösterdiğini karşılaştırın.
-2. **Ajanın okuyabildiği çalışma alanı (Agent-Readable Workspace)**: Deponuzu yapay zeka dostu olacak şekilde nasıl yapılandıracağınızı ve devir mekanizmalarını nasıl kuracağınızı öğrenin.
-3. **Çok oturumlu süreklilik (Multi-Session Continuity)**: Durum dosyalarını ve başlatma betiklerini, ajanınızın oturumlar arasında çalışmasını kesintisiz biçimde sürdürebileceği şekilde tasarlayın.
-4. **Çalışma zamanı geri bildirimi ve kapsam kontrolü (Runtime Feedback and Scope Control)**: Ajanın kendi kodunu test edip yürütme sırasında hataları düzeltmesini sağlayan araçları devreye alın.
-5. **Öz-doğrulama ve rol ayrımı (Self-Verification and Role Separation)**: Halüsinasyonları ve erken zafer ilanlarını önlemek için bağımsız bir inceleme mekanizması kurun.
-6. **Eksiksiz harness (bitirme projesi) (Complete Harness — Capstone)**: Son, gözlemlenebilir, uçtan uca bir ajan çalışma ortamını bir araya getirin.
+1. <strong>Yalnızca prompt vs. önce kurallar (Prompt-Only vs. Rules-First)</strong>: Bir ajanın yalnızca prompt ile mi yoksa temel bir harness ile mi daha iyi performans gösterdiğini karşılaştırın.
+2. <strong>Ajanın okuyabildiği çalışma alanı (Agent-Readable Workspace)</strong>: Deponuzu yapay zeka dostu olacak şekilde nasıl yapılandıracağınızı ve devir mekanizmalarını nasıl kuracağınızı öğrenin.
+3. <strong>Çok oturumlu süreklilik (Multi-Session Continuity)</strong>: Durum dosyalarını ve başlatma betiklerini, ajanınızın oturumlar arasında çalışmasını kesintisiz biçimde sürdürebileceği şekilde tasarlayın.
+4. <strong>Çalışma zamanı geri bildirimi ve kapsam kontrolü (Runtime Feedback and Scope Control)</strong>: Ajanın kendi kodunu test edip yürütme sırasında hataları düzeltmesini sağlayan araçları devreye alın.
+5. <strong>Öz-doğrulama ve rol ayrımı (Self-Verification and Role Separation)</strong>: Halüsinasyonları ve erken zafer ilanlarını önlemek için bağımsız bir inceleme mekanizması kurun.
+6. <strong>Eksiksiz harness (bitirme projesi) (Complete Harness — Capstone)</strong>: Son, gözlemlenebilir, uçtan uca bir ajan çalışma ortamını bir araya getirin.
 
 ## Nasıl İlerlenir
 

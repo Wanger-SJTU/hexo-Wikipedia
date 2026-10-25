@@ -69,7 +69,7 @@ v2论文：[Lightning Attention-2: A Free Lunch for Handling Unlimited Sequence 
 
 然后在实现线性注意力的路上，还有一个问题，自回归训练时我们还要考虑加入casual mask后怎么办，这也是Lightning Attention要解决的一个问题。
 
-**要解决什么问题**
+<strong>要解决什么问题</strong>
 线性注意力面临三个问题：1）效果较差，这个就不用多说了。 2.1）训练速度慢：GPU访存速度也是一个瓶颈，这个在Lightning Attention-1已经解决了。 2.2）训练速度慢：由于更新状态矩阵 
 ![](https://www.zhihu.com/equation?tex=S) 需要使用累积求和操作（cumsum），而这个操作在因果场景中使它无法并行训练。其实这个问题在《[Transformer Quality in Linear Time](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2202.10447)》这篇论文就已经被提出来了，而且那时候作者也已经提出了解决方案，我猜Lightning Attention-v2应该就是借鉴了里面的解决方案。
 
@@ -106,13 +106,13 @@ NSA，全称是Native Sparse Attention，名字里的原生意思就是说：NSA
 
 为了解决上面的问题，NSA从算法设计与核优化两方面入手。 
 
-**算法设计**
+<strong>算法设计</strong>
 
 在介绍 NSA 算法设计之前，我们先想一下我们的阅读习惯是怎样的：给你一本书，翻到某一页，让你介绍其中一个专有名词的概念，你会从第一页第一个字开始，逐字逐句认真读到最后吗？肯定不会，你的大脑大概率会这么做：
 
-**1.略读：** 对大部分无关紧要的章节，你会快速阅读，只保留一个模糊的印象，知道这部分大概是在讲什么。
-**2.精读：** 当略读时你突然看到与问题相关的关键词时，你会集中注意力，逐字逐句地分析这一段。
-**3.当下：** 这个专有名词前面的上文大概率与这个问题有关，这部分你也需要仔细看。
+<strong>1.略读：</strong> 对大部分无关紧要的章节，你会快速阅读，只保留一个模糊的印象，知道这部分大概是在讲什么。
+<strong>2.精读：</strong> 当略读时你突然看到与问题相关的关键词时，你会集中注意力，逐字逐句地分析这一段。
+<strong>3.当下：</strong> 这个专有名词前面的上文大概率与这个问题有关，这部分你也需要仔细看。
 1和2组合起来的目的就是为了找到与当前位置比较遥远的重要信息，对应attention map上非对角线附近的高分数位置，3的目的就是找到当前位置比较临近的重要信息，对应attention map上对角线附近的高分数位置。
 
 同理，NSA 也是通过这3步来计算稀疏注意力，如下图所示：
@@ -120,7 +120,7 @@ NSA，全称是Native Sparse Attention，名字里的原生意思就是说：NSA
 ![](https://pic1.zhimg.com/v2-9aa9db259a43877a20c85380a15802e6_r.jpg)NSA首先将 
 ![](https://www.zhihu.com/equation?tex=k_%7B%3At%7D%2C+v_%7B%3At%7D) 原始token序列分割成一个个block块，然后执行三条分支的稀疏注意力计算，最后汇总输出，具体来说：
 
-**(1) Compression：粗看**
+<strong>(1) Compression：粗看</strong>
 
 这一步NSA先使用MLP把每个block压缩成1个compressed token，而每个block里面其实是有多个（比如 
 ![](https://www.zhihu.com/equation?tex=l%3D32) ）token的，表示为 
@@ -133,7 +133,7 @@ NSA，全称是Native Sparse Attention，名字里的原生意思就是说：NSA
 对应论文里的Fig2，每8个蓝色小方块组成一个block，总共有4个block，压缩后得到了4个compressed token，对应图中蓝色深浅不一的矩形块，然后用橙色方块 
 ![](https://www.zhihu.com/equation?tex=q_t) 去跟compressed tokens计算，得到4个重要性分数，对应图中绿色深浅不一的的矩形块。
 
-**(2) Selection：挑着看**
+<strong>(2) Selection：挑着看</strong>
 
 利用上面计算得到的重要性分数，NSA会选出 Top-K 个它认为最重要的block的索引，然后用这些索引去原始序列中找到对应block里的原始token。接着将这几个block里的原始token concat起来，去和
 ![](https://www.zhihu.com/equation?tex=q_t) 做attention。
@@ -143,7 +143,7 @@ NSA，全称是Native Sparse Attention，名字里的原生意思就是说：NSA
 对应论文里的Fig2，NSA挑出Top-2个最重要的block索引：1和3，然后找到1号block和3号block，把它们里面的原始token concat起来，去和 
 ![](https://www.zhihu.com/equation?tex=q_t) 做attention。2号和4号block里的原始token则被忽略掉了。
 
-**3)Sliding：盯着眼前看**
+<strong>3)Sliding：盯着眼前看</strong>
 
 我们肯定不能舍近求远，光顾着找远处的重要信息，不用说也知道，当前位置 
 ![](https://www.zhihu.com/equation?tex=t) 前面的几百个（比如512）的token也是非常重要的信息。 这个窗口的截取的位置可以表示为 
@@ -153,7 +153,7 @@ NSA，全称是Native Sparse Attention，名字里的原生意思就是说：NSA
 
 对应论文里的Fig2，NSA挑出了当前位置前面的6个原始token，去参与注意力计算。
 
-**Gated Output**
+<strong>Gated Output</strong>
 
 上面三步会用 
 ![](https://www.zhihu.com/equation?tex=Q) 和稀疏的KV（ 
@@ -166,7 +166,7 @@ NSA，全称是Native Sparse Attention，名字里的原生意思就是说：NSA
 ![](https://www.zhihu.com/equation?tex=g%5E%5Cmathrm%7Bslc%7D) 和 
 ![](https://www.zhihu.com/equation?tex=g%5E%5Cmathrm%7Bwin%7D) 是通过 MLP 和 sigmoid 激活从输入特征 Q 生成的，所以这一步也是可训练学习的。
 
-**Kernel Design**
+<strong>Kernel Design</strong>
 
 为了在训练和预填充期间实现 FlashAttention 级别的加速，NSA团队用 Triton 上实现了硬件对齐的稀疏注意力内核。鉴于 MHA 是内存密集型且解码效率低下，团队专注于具有共享 KV cache的 GQA 和 MQA。虽然第1个分支的压缩和第3个分支的滑动窗口的注意力计算很容易与现有的 FlashAttention-2 内核兼容，但NSA的第2个分支-选择机制，如果遵循 FlashAttention 将时间连续的Query块加载到 SRAM 中，则会导致内存访问效率低下，因为块内的Query可能需要不连续的 KV 块。为了解决这个问题，NSA的关键优化在于不同的Query分组策略：对于Query序列上的每个位置，我们将 GQA 组内的所有Query头（它们共享相同的稀疏 KV 块）加载到 SRAM 中。下面的图 3 说明了NSA的前向传播实现：
 
@@ -256,7 +256,7 @@ MiniCPM-SALA是面壁智能在2026年2月开源的一款9B大语言模型，它�
 
 3.本文提出了一种针对混合架构模型的高效训练策略，叫Transformer-to-hybrid，这种方法不是从头开始训练混合架构模型，而是把预训练的标准注意力模型权重转换到混合架构模型上，从而规避了冷启动训练的低效率，将总训练预算减少到大约 25%。
 
-**模型架构**
+<strong>模型架构</strong>
 
 MiniCPM-SALA架构图：
 
@@ -268,7 +268,7 @@ HyPE (Hybrid Positional Encoding): MiniCPM-SALA将旋转位置嵌入 (RoPE)应�
 
 Output gates: 此外，我们在每个注意力块（稀疏和线性）之后放置一个输出门。这么做是因为有论文证明说输出门可以有效缓解attention sink等问题。
 
-**模型训练**
+<strong>模型训练</strong>
 
 MiniCPM-SALA 的训练由五个阶段组成，如表 1 所示
 
@@ -284,7 +284,7 @@ Long-Decay Training第四阶段，长衰减，逐渐将上下文长度从 4K 扩
 
 Supervised Fine-Tuning该阶段的SFT语料库由高质量的推理密集型数据组成，涵盖代码、数学、知识、函数调用和一般对话。此外，我们还专门合成了长上下文数据，以提高扩展序列中信息检索和跨文档理解的精度。
 
-**我的其他文章**：
+<strong>我的其他文章</strong>：
 
 [加速扩散模型生成的算法：Rectified Flow和PeRFlow](https://zhuanlan.zhihu.com/p/715104559)
 

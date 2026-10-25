@@ -57,11 +57,11 @@ Adapter允许插入NOP Flit来保证这一点(这些Flit绕过TX Retry Buffer，
 链路初始化stage3: Adapter初始化
 当RDI状态转移到Active时表明阶段2完成。当阶段2完成时，Adapter需要遵循一系列顺序步骤以确定Local Capabilities、完成参数交换、把FDI状态机跳到Active。
 
-**Part 1：Determine Local Capabilities**
+<strong>Part 1：Determine Local Capabilities</strong>
 
 Adapter需要决定物理层的训练结果，并且决定是否需要重传以适配当前的传输速度与配置。如果Adapter能够支持重传功能，则其需要在参数交换中告知对方链路终端。对于UCIe Retimer，Adapter需要决定Retimer Receiver Buffer的Credit。每个credit对应主带上的256B数据。
 
-**Part 2 : Parameter Exchange with remote Link Partner**
+<strong>Part 2 : Parameter Exchange with remote Link Partner</strong>
 
 capabilities需要在链路partner之间进行协商。这些特性会通过边带消息传输到远端链路partner。
 
@@ -69,7 +69,7 @@ capabilities需要在链路partner之间进行协商。这些特性会通过边�
 
 参数交换或链路状态机转换的8ms超时被视为UIE，Adapter必须将RDI置于LinkError状态。UCIe Retimer必须确保在与package内的UCIe die响应/启动参数交换之前，与远程Retimer伙伴(并与自己的能力合并)解决能力发布。当解决正在进行时，它们必须每隔4毫秒发送一次相应的stall消息，以确保其package中的UCIe die上没有超时。
 
-**Part 3 : FDI bring up**
+<strong>Part 3 : FDI bring up</strong>
 
 当参数交换成功完成后，Adapter需要把结果通过FDI反映到协议层，并继续执行FDI的bring up流程。当FDI处于Active状态时，链路初始化的Stage 3就结束了，Flit传输就可以开始了。当同一个Adapter上使能了多个stack，每个stack可以在不同的时间完成FDI bring up流程。
 
@@ -78,12 +78,12 @@ FDI上的数据宽度是UCIe栈运行频率的函数，也是UCIe物理链路上
 3. 操作格式
 当涉及到CRC计算时，提供了Flit到CRC消息的字节映射(CRC消息是CRC计算逻辑的128B输入)。
 
-**Raw Format for all protocols**
-Raw格式只能用于不需要Adapter重试支持的场景。如果CXL或PCIe协议协商了Raw Format，则Adapter将数据从协议层传输到物理层，无需修改。图3-12显示了一个在FDI和RDI的64B数据路径的示例。这在参数协商期间被标识为**Format 1**。
+<strong>Raw Format for all protocols</strong>
+Raw格式只能用于不需要Adapter重试支持的场景。如果CXL或PCIe协议协商了Raw Format，则Adapter将数据从协议层传输到物理层，无需修改。图3-12显示了一个在FDI和RDI的64B数据路径的示例。这在参数协商期间被标识为<strong>Format 1</strong>。
 
 ![](https://pic3.zhimg.com/v2-2aafd50cf5a70b537aa0e0e85477a804_r.jpg)
 68B Flit Format
-此Flit格式在UCIe上标识为**Format 2**。当支持CXL 68B Flit Mode协议或PCIe Non-Flit Mode协议时，必须支持此格式。68B Flit格式支持对于流协议是可选的。
+此Flit格式在UCIe上标识为<strong>Format 2</strong>。当支持CXL 68B Flit Mode协议或PCIe Non-Flit Mode协议时，必须支持此格式。68B Flit格式支持对于流协议是可选的。
 
 协议层发送64B的协议信息。Adapter添加两个字节的Flit Header前缀和两个字节的CRC后缀。表3-3给出了当需要从Adapter重试时，format 2的Flit Header格式。如果不需要retry，则Flit Header格式如表3-2。
 
@@ -173,9 +173,9 @@ RDI状态机(SM)用于抽象上层的物理层状态。Adapter数据路径和RDI
 
 Power management状态进入顺序如下：
 
-- **协议层PM进入请求**：FDI在基于链路空闲时间的接口上为PM进入请求定义了一个通用flow。当需要支持PM时，所有使用UCIe的协议都必须遵循该流程。对于CXL协议，D2D Adapter实现了ARB/MUX功能，并遵循CXL规范中定义的握手(对应于CXL 256B Flit Mode，因为所有ALMP也通过UCIe中的重试缓冲区)。甚至CXL 68B Flit Mode over UCIe使用CXL 256B Flit Mode ALMP格式和流(但Flit被截断为64B，两个字节的Flit Header和两个字节的CRC由Adapter添加以使68B Flit)。对于UCIe Flit Mode下的PCIe协议，不使用PM DLLP握手。协议层根据链路空闲时间在FDI上请求PM入口。
-- **Adapter链路状态机PM进入**：PM转换通过边带与远程链路伙伴进行协调。Adapter在两个协议栈之间进行多路复用的场景中，每个栈的链路状态机必须独立地转换到PM。
-- **RDI上的PM entry**：一旦Adapter的所有LSM都处于PM状态，Adapter就会启动RDI上的PM entry。
+- <strong>协议层PM进入请求</strong>：FDI在基于链路空闲时间的接口上为PM进入请求定义了一个通用flow。当需要支持PM时，所有使用UCIe的协议都必须遵循该流程。对于CXL协议，D2D Adapter实现了ARB/MUX功能，并遵循CXL规范中定义的握手(对应于CXL 256B Flit Mode，因为所有ALMP也通过UCIe中的重试缓冲区)。甚至CXL 68B Flit Mode over UCIe使用CXL 256B Flit Mode ALMP格式和流(但Flit被截断为64B，两个字节的Flit Header和两个字节的CRC由Adapter添加以使68B Flit)。对于UCIe Flit Mode下的PCIe协议，不使用PM DLLP握手。协议层根据链路空闲时间在FDI上请求PM入口。
+- <strong>Adapter链路状态机PM进入</strong>：PM转换通过边带与远程链路伙伴进行协调。Adapter在两个协议栈之间进行多路复用的场景中，每个栈的链路状态机必须独立地转换到PM。
+- <strong>RDI上的PM entry</strong>：一旦Adapter的所有LSM都处于PM状态，Adapter就会启动RDI上的PM entry。
 - 物理层移动到更深的PM状态，并采取必要的操作进行电源管理。注意，边带链接必须保持Active状态，因为边带链接用于启动PM退出。
 ![](https://pic4.zhimg.com/v2-05b21e8d5641bfb4ae0034df974c5e65_r.jpg)PM退出遵循唤醒的相反顺序，如下所述：
 

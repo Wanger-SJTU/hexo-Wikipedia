@@ -21,10 +21,10 @@ Một kỹ năng xây dựng harness cấp độ thực tế (production-grade) 
 
 ### Chức năng
 
-- **Tạo harness từ đầu** — AGENTS.md, danh sách tính năng, luồng công việc xác minh
-- **Cải thiện các harness hiện có** — Đánh giá năm hệ thống phụ với các cải tiến được ưu tiên
-- **Thiết kế tính liên tục của phiên** — Lưu trữ bộ nhớ, theo dõi tiến độ, thủ tục bàn giao
-- **Áp dụng các mẫu production** — Bộ nhớ, kỹ thuật ngữ cảnh, an toàn công cụ, điều phối đa agent
+- <strong>Tạo harness từ đầu</strong> — AGENTS.md, danh sách tính năng, luồng công việc xác minh
+- <strong>Cải thiện các harness hiện có</strong> — Đánh giá năm hệ thống phụ với các cải tiến được ưu tiên
+- <strong>Thiết kế tính liên tục của phiên</strong> — Lưu trữ bộ nhớ, theo dõi tiến độ, thủ tục bàn giao
+- <strong>Áp dụng các mẫu production</strong> — Bộ nhớ, kỹ thuật ngữ cảnh, an toàn công cụ, điều phối đa agent
 
 ### Bắt đầu Nhanh
 
@@ -66,7 +66,7 @@ Kỹ năng này cũng bao gồm các script Node.js thuần cho scaffold, xác t
 
 ### Kỹ năng này được Xây dựng như thế nào
 
-`harness-creator` được phát triển bằng phương pháp **skill-creator** — kỹ năng meta (meta-skill) chính thức của Anthropic để tạo, thử nghiệm và cải thiện lặp đi lặp lại các kỹ năng của agent. skill-creator cung cấp một luồng công việc có cấu trúc (bản nháp → thử nghiệm → đánh giá → lặp lại) được tích hợp sẵn các công cụ chạy đánh giá (eval runners), máy chấm điểm (graders) và trình xem điểm chuẩn (benchmark viewer).
+`harness-creator` được phát triển bằng phương pháp <strong>skill-creator</strong> — kỹ năng meta (meta-skill) chính thức của Anthropic để tạo, thử nghiệm và cải thiện lặp đi lặp lại các kỹ năng của agent. skill-creator cung cấp một luồng công việc có cấu trúc (bản nháp → thử nghiệm → đánh giá → lặp lại) được tích hợp sẵn các công cụ chạy đánh giá (eval runners), máy chấm điểm (graders) và trình xem điểm chuẩn (benchmark viewer).
 
-- **Mã nguồn skill-creator**: [anthropics/skills — skill-creator](https://github.com/anthropics/skills/tree/main/skills/skill-creator)
-- **Tài liệu kỹ năng Claude Code**: [anthropics/claude-code — plugin-dev/skills](https://github.com/anthropics/claude-code/tree/main/plugins/plugin-dev/skills)
+- <strong>Mã nguồn skill-creator</strong>: [anthropics/skills — skill-creator](https://github.com/anthropics/skills/tree/main/skills/skill-creator)
+- <strong>Tài liệu kỹ năng Claude Code</strong>: [anthropics/claude-code — plugin-dev/skills](https://github.com/anthropics/claude-code/tree/main/plugins/plugin-dev/skills)

@@ -64,22 +64,22 @@ OpenAI'nin Codex harness mühendisliği kılavuzu da "operasyonel kayıt olarak 
 
 ## Temel kavramlar
 
-- **Başlatma aşaması**: Ajan yaşam döngüsünün ilk aşaması — özellik uygulaması yok, yalnızca tüm sonraki uygulama aşamaları için ön koşulları kurmak. Çıktı kod değildir, altyapıdır.
-- **Bootstrap sözleşmesi**: Bir projenin yeni bir ajan oturumu tarafından belirsizlik olmadan işletilebileceği koşullar — başlayabilir, test edebilir, ilerlemeyi görebilir, sonraki adımları devralabilir. Dört koşul, hepsi zorunlu.
-- **Soğuk başlatma vs Sıcak başlatma**: Soğuk başlatma boş bir dizinden ajanın proje yapısını tahmin etmek zorunda olduğu yerdir; sıcak başlatma altyapının zaten yerinde olduğu bir şablon veya mevcut projeden gelir. Sıcak başlatma soğuk başlatmadan çok daha iyi performans gösterir — çorak bir araziden başlamak yerine su ve elektriği olan bir sahada işe başlamak gibi.
-- **Devir hazırlığı**: Proje herhangi bir anda yeni bir ajanın devralabileceği bir durumdadır. Sözlü açıklama gerektirmez — yalnızca depo içerikleri.
-- **İlk doğrulamaya kadar geçen süre**: Proje başlangıcından ilk özellik noktası doğrulamayı geçene kadar geçen süre. Bu, başlatma verimliliğini ölçmenin temel metriğidir.
-- **Aşağı yönlü kullanılabilirlik**: Başlatma kalitesinin en iyi ölçüsü — örtük bilgiye güvenmeden görevleri başarılı bir şekilde yürütebilen sonraki oturumların oranı.
+- <strong>Başlatma aşaması</strong>: Ajan yaşam döngüsünün ilk aşaması — özellik uygulaması yok, yalnızca tüm sonraki uygulama aşamaları için ön koşulları kurmak. Çıktı kod değildir, altyapıdır.
+- <strong>Bootstrap sözleşmesi</strong>: Bir projenin yeni bir ajan oturumu tarafından belirsizlik olmadan işletilebileceği koşullar — başlayabilir, test edebilir, ilerlemeyi görebilir, sonraki adımları devralabilir. Dört koşul, hepsi zorunlu.
+- <strong>Soğuk başlatma vs Sıcak başlatma</strong>: Soğuk başlatma boş bir dizinden ajanın proje yapısını tahmin etmek zorunda olduğu yerdir; sıcak başlatma altyapının zaten yerinde olduğu bir şablon veya mevcut projeden gelir. Sıcak başlatma soğuk başlatmadan çok daha iyi performans gösterir — çorak bir araziden başlamak yerine su ve elektriği olan bir sahada işe başlamak gibi.
+- <strong>Devir hazırlığı</strong>: Proje herhangi bir anda yeni bir ajanın devralabileceği bir durumdadır. Sözlü açıklama gerektirmez — yalnızca depo içerikleri.
+- <strong>İlk doğrulamaya kadar geçen süre</strong>: Proje başlangıcından ilk özellik noktası doğrulamayı geçene kadar geçen süre. Bu, başlatma verimliliğini ölçmenin temel metriğidir.
+- <strong>Aşağı yönlü kullanılabilirlik</strong>: Başlatma kalitesinin en iyi ölçüsü — örtük bilgiye güvenmeden görevleri başarılı bir şekilde yürütebilen sonraki oturumların oranı.
 
 ## Başlatmayı doğru yapmanın yolu
 
-**Başlatmayı adanmış bir aşama olarak ele alın.** İlk oturum yalnızca başlatma yapar — iş özellik kodu hiç yok. Başlatma şunları üretir:
+<strong>Başlatmayı adanmış bir aşama olarak ele alın.</strong> İlk oturum yalnızca başlatma yapar — iş özellik kodu hiç yok. Başlatma şunları üretir:
 
-**1. Çalışan ortam.** Proje başlar, bağımlılıklar kurulur, ortam sorunu yoktur. Temel döküldü, çatlak yok.
+<strong>1. Çalışan ortam.</strong> Proje başlar, bağımlılıklar kurulur, ortam sorunu yoktur. Temel döküldü, çatlak yok.
 
-**2. Doğrulanabilir test çerçevesi.** En az bir örnek test geçer. Bu, test çerçevesinin kendisinin düzgün yapılandırıldığını kanıtlar — temele bir sütun dikip ağırlık taşıyabileceğini kanıtlamak gibi.
+<strong>2. Doğrulanabilir test çerçevesi.</strong> En az bir örnek test geçer. Bu, test çerçevesinin kendisinin düzgün yapılandırıldığını kanıtlar — temele bir sütun dikip ağırlık taşıyabileceğini kanıtlamak gibi.
 
-**3. Bootstrap sözleşmesi belgesi.** Sonraki oturumlara şunu söyleyen net bir belge:
+<strong>3. Bootstrap sözleşmesi belgesi.</strong> Sonraki oturumlara şunu söyleyen net bir belge:
 ```markdown
 # Başlatma Sözleşmesi
 
@@ -102,7 +102,7 @@ OpenAI'nin Codex harness mühendisliği kılavuzu da "operasyonel kayıt olarak 
 - tests/ — Test dosyaları
 ```
 
-**4. Görev kırılımı.** Tüm projeyi sıralı bir görev listesine bölün, her görev net kabul kriterleriyle:
+<strong>4. Görev kırılımı.</strong> Tüm projeyi sıralı bir görev listesine bölün, her görev net kabul kriterleriyle:
 ```markdown
 # Görev Kırılımı
 
@@ -120,11 +120,11 @@ OpenAI'nin Codex harness mühendisliği kılavuzu da "operasyonel kayıt olarak 
 - ...
 ```
 
-**5. Kontrol noktası olarak git commit.** Başlatma tamamlandıktan sonra temiz bir kontrol noktası commit edin. Sonraki tüm işler bu kontrol noktasından başlar.
+<strong>5. Kontrol noktası olarak git commit.</strong> Başlatma tamamlandıktan sonra temiz bir kontrol noktası commit edin. Sonraki tüm işler bu kontrol noktasından başlar.
 
-**Sıcak başlatma stratejisi**: Boş bir dizinden başlamayın. Standart dizin yapısı, bağımlılık yapılandırması ve test çerçevesini önceden ayarlamak için bir proje şablonu kullanın (create-react-app, fastapi-template, vb.). Yaygın başlatma adımlarını şablona pişirin, yalnızca projeye özgü başlatma işini bırakın. Su ve elektriği olan bir sahada işe başlamak gibi — çorak bir araziden başlamaktan on bin kat daha iyi.
+<strong>Sıcak başlatma stratejisi</strong>: Boş bir dizinden başlamayın. Standart dizin yapısı, bağımlılık yapılandırması ve test çerçevesini önceden ayarlamak için bir proje şablonu kullanın (create-react-app, fastapi-template, vb.). Yaygın başlatma adımlarını şablona pişirin, yalnızca projeye özgü başlatma işini bırakın. Su ve elektriği olan bir sahada işe başlamak gibi — çorak bir araziden başlamaktan on bin kat daha iyi.
 
-**Başlatma tamamlanma kriterleri**: "Ne kadar kod yazıldı" değil, bootstrap sözleşmesinin dört koşulunun karşılanıp karşılanmadığı — başlayabilir, test edebilir, ilerlemeyi görebilir, sonraki adımları devralabilir. Başlatmayı doğrulamak için bu kontrol listesini kullanın:
+<strong>Başlatma tamamlanma kriterleri</strong>: "Ne kadar kod yazıldı" değil, bootstrap sözleşmesinin dört koşulunun karşılanıp karşılanmadığı — başlayabilir, test edebilir, ilerlemeyi görebilir, sonraki adımları devralabilir. Başlatmayı doğrulamak için bu kontrol listesini kullanın:
 
 ```markdown
 ## Başlatma Kabul Kontrol Listesi
@@ -139,9 +139,9 @@ OpenAI'nin Codex harness mühendisliği kılavuzu da "operasyonel kayıt olarak 
 
 Bir React frontend projesi için iki başlatma yaklaşımı:
 
-**Karışık yaklaşım (temeli dökme ve duvarları aynı anda inşa etme)**: Ajan oturum 1'de proje iskeletini oluşturdu ve aynı anda ilk özelliği uyguladı. Oturum sonunda depo çalışan kod içeriyordu ancak: açık başlatma/test komut dokümantasyonu yok, ilerleme takip dosyası yok, görev kırılımı yok. Oturum 2 proje yapısını, test çerçevesini ve yapı sürecini çıkarmak için ~20 dakika harcadı — yeni bir inşaat ekibinin sahaya varması gibi, temelin nereye kadar gittiğini veya tesisat hatlarının nerede olduğunu bilmeden, bulmak için tek tek delikler kazmak zorunda.
+<strong>Karışık yaklaşım (temeli dökme ve duvarları aynı anda inşa etme)</strong>: Ajan oturum 1'de proje iskeletini oluşturdu ve aynı anda ilk özelliği uyguladı. Oturum sonunda depo çalışan kod içeriyordu ancak: açık başlatma/test komut dokümantasyonu yok, ilerleme takip dosyası yok, görev kırılımı yok. Oturum 2 proje yapısını, test çerçevesini ve yapı sürecini çıkarmak için ~20 dakika harcadı — yeni bir inşaat ekibinin sahaya varması gibi, temelin nereye kadar gittiğini veya tesisat hatlarının nerede olduğunu bilmeden, bulmak için tek tek delikler kazmak zorunda.
 
-**Adanmış başlatma (önce temel)**: Oturum 1 yalnızca başlatma yaptı — şablondan dizin yapısı oluşturdu, test çerçevesini (Vitest + React Testing Library) yapılandırdı, bir örnek test yazdı ve doğruladı, bootstrap sözleşmesi belgesini ve görev kırılım dosyasını oluşturdu, ilk kontrol noktasını commit etti. Oturum 2'nin yeniden inşa süresi 3 dakikanın altındaydı ve doğrudan görev listesinden çalışmaya başladı — ekip varır, plana bir göz atar ve tam olarak nereden devam edeceğini bilir.
+<strong>Adanmış başlatma (önce temel)</strong>: Oturum 1 yalnızca başlatma yaptı — şablondan dizin yapısı oluşturdu, test çerçevesini (Vitest + React Testing Library) yapılandırdı, bir örnek test yazdı ve doğruladı, bootstrap sözleşmesi belgesini ve görev kırılım dosyasını oluşturdu, ilk kontrol noktasını commit etti. Oturum 2'nin yeniden inşa süresi 3 dakikanın altındaydı ve doğrudan görev listesinden çalışmaya başladı — ekip varır, plana bir göz atar ve tam olarak nereden devam edeceğini bilir.
 
 Tam proje döngüsü karşılaştırması: karışık yaklaşımın toplam yeniden inşa süresi (tüm oturumlar boyunca) adanmış başlatma yaklaşımından ~%60 daha fazlaydı. Başlatmaya harcanan ekstra 20 dakika sonraki oturumlarda kat kat geri kazanıldı. Sağlam temelin duvarları daha hızlı yükseltmesi gibi — yavaş, hızlıdır.
 
@@ -163,8 +163,8 @@ Tam proje döngüsü karşılaştırması: karışık yaklaşımın toplam yenid
 
 ## Alıştırmalar
 
-1. **Bootstrap sözleşmesi tasarımı**: Geliştirdiğiniz bir proje için eksiksiz bir bootstrap sözleşmesi yazın. Sonra tamamen yeni bir ajan oturumu açın, ona yalnızca depo içeriklerini gösterin (sözlü bağlam yok) ve projeyi başlatmasını, testleri çalıştırmasını ve mevcut ilerlemeyi anlamasını sağlayın. Karşılaştığı her sorunu kaydedin — her biri bootstrap sözleşmenizdeki eksik bir maddeye karşılık gelir.
+1. <strong>Bootstrap sözleşmesi tasarımı</strong>: Geliştirdiğiniz bir proje için eksiksiz bir bootstrap sözleşmesi yazın. Sonra tamamen yeni bir ajan oturumu açın, ona yalnızca depo içeriklerini gösterin (sözlü bağlam yok) ve projeyi başlatmasını, testleri çalıştırmasını ve mevcut ilerlemeyi anlamasını sağlayın. Karşılaştığı her sorunu kaydedin — her biri bootstrap sözleşmenizdeki eksik bir maddeye karşılık gelir.
 
-2. **Karşılaştırma deneyi**: Orta düzey karmaşıklığa sahip yeni bir proje seçin. Yaklaşım A: ajanın başlatma ve ilk uygulamayı aynı anda yapmasına izin verin. Yaklaşım B: adanmış başlatma için bir oturum harcayın, oturum 2'de uygulamaya başlayın. 4 oturumdan sonra karşılaştırın: ilk doğrulamaya kadar geçen süre, yeniden inşa maliyeti, özellik tamamlanma oranı.
+2. <strong>Karşılaştırma deneyi</strong>: Orta düzey karmaşıklığa sahip yeni bir proje seçin. Yaklaşım A: ajanın başlatma ve ilk uygulamayı aynı anda yapmasına izin verin. Yaklaşım B: adanmış başlatma için bir oturum harcayın, oturum 2'de uygulamaya başlayın. 4 oturumdan sonra karşılaştırın: ilk doğrulamaya kadar geçen süre, yeniden inşa maliyeti, özellik tamamlanma oranı.
 
-3. **Başlatma kabul kontrol listesi**: Projeniz için bir başlatma kabul kontrol listesi tasarlayın. Yeni bir ajan oturumunun her kontrol listesi öğesini yürütmesine izin verin ve hangilerinin geçtiğini hangilerinin başarısız olduğunu kaydedin. Başarısız öğeler harness'ınızın güçlendirilmesi gereken yerlerdir.
+3. <strong>Başlatma kabul kontrol listesi</strong>: Projeniz için bir başlatma kabul kontrol listesi tasarlayın. Yeni bir ajan oturumunun her kontrol listesi öğesini yürütmesine izin verin ve hangilerinin geçtiğini hangilerinin başarısız olduğunu kaydedin. Başarısız öğeler harness'ınızın güçlendirilmesi gereken yerlerdir.

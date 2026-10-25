@@ -53,11 +53,11 @@ npm run test:watch       # Vitest watch mode
 ## Architecture
 
 The course revolves around an Electron knowledge-base desktop app that evolves across 6 projects:
-- **Main process** (`src/main/`): Window management, IPC handlers, service initialization
-- **Preload** (`src/preload/`): contextBridge exposing typed API to renderer
-- **Renderer** (`src/renderer/`): React UI with document list, Q&A panel, status bar
-- **Services** (`src/services/`): DocumentService, IndexingService, QaService, PersistenceService
-- **Shared types** (`src/shared/types.ts`): Cross-boundary interfaces and IPC channel constants
+- <strong>Main process</strong> (`src/main/`): Window management, IPC handlers, service initialization
+- <strong>Preload</strong> (`src/preload/`): contextBridge exposing typed API to renderer
+- <strong>Renderer</strong> (`src/renderer/`): React UI with document list, Q&A panel, status bar
+- <strong>Services</strong> (`src/services/`): DocumentService, IndexingService, QaService, PersistenceService
+- <strong>Shared types</strong> (`src/shared/types.ts`): Cross-boundary interfaces and IPC channel constants
 
 Each project's starter/solution is a complete copy of the Electron app at that evolutionary stage. P(N+1) starter is derived from P(N) solution. The shared foundation is in `projects/shared/`.
 

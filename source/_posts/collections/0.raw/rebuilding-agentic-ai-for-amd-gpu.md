@@ -28,7 +28,7 @@ Agentic Coding——即由 Claude Code 等工具驱动的工作负载——在 t
 
 本文描述了 Agentic 工作负载的真实需求、AMD 与 Moonshot AI 共同构建的在 AMD GPU 上服务这些工作负载的端到端解决方案、其核心的 KV Cache 与调度组件——我们的自研 UMBP、使其快速的各项具体优化，以及我们如何验证其正确性。
 
-**TL;DR**
+<strong>TL;DR</strong>
 
 - Agentic Coding 是 Cache 主导且突发的：上下文随轮次线性增长，KV 复用 roofline 极高，轮次在工具调用上等待（因此 p90 端到端延迟，而非 TTFT，才是关键指标），短生命周期的子 Agent 产生 KV Cache 突发。
 - 我们与 Moonshot AI 共同构建了端到端的 Agentic 服务解决方案——Kimi K2.6 on SGLang + MoRI + UMBP + AITER + ROCm，运行于 AMD Instinct™ MI355X。
@@ -50,9 +50,9 @@ Agentic Coding——即由 Claude Code 等工具驱动的工作负载——在 t
 
 由此直接产生两个后果，它们决定了后续的一切。
 
-**首先，正确的延迟指标发生了变化。** 在 Agent 时代，大多数轮次不是在等待人类，而是在等待工具调用，因此 TTFT 与 decode 期间挂钟时间的具体分配远不如聊天时代重要。因此我们优化的目标是 token 吞吐量（tok/s/chip）和每百万 token 的 TCO，以 p90 端到端延迟为约束——而非孤立的 TTFT 或交互性。
+<strong>首先，正确的延迟指标发生了变化。</strong> 在 Agent 时代，大多数轮次不是在等待人类，而是在等待工具调用，因此 TTFT 与 decode 期间挂钟时间的具体分配远不如聊天时代重要。因此我们优化的目标是 token 吞吐量（tok/s/chip）和每百万 token 的 TCO，以 p90 端到端延迟为约束——而非孤立的 TTFT 或交互性。
 
-**其次，KV Cache 卸载成为一等杠杆，而非事后补救。** 一旦工作集超出 HBM，Cache 就会溢出到 CPU DRAM（以及未来的 NVMe），在现实的容量限制下——可用的 KV 卸载受限于每台服务器几 TB 的 CPU DRAM，与使用的 GPU 数量成正比，而这（相当大的）DDR5 成本必须计入 TCO。因此问题不再是是否卸载，而是如何廉价、正确地卸载，并以调度器能够推理的方式进行。
+<strong>其次，KV Cache 卸载成为一等杠杆，而非事后补救。</strong> 一旦工作集超出 HBM，Cache 就会溢出到 CPU DRAM（以及未来的 NVMe），在现实的容量限制下——可用的 KV 卸载受限于每台服务器几 TB 的 CPU DRAM，与使用的 GPU 数量成正比，而这（相当大的）DDR5 成本必须计入 TCO。因此问题不再是是否卸载，而是如何廉价、正确地卸载，并以调度器能够推理的方式进行。
 
 最后一点是关键。当一个前缀从每个引擎的 HBM 中淘汰但仍存在于某处——某个节点的主机 DRAM 上，另一个节点的 SSD 上——它所代表的价值只有在系统能找到它并以比重算更快的速度获取它时才能实现。在聊天时代的栈中，调度器对此完全盲目：KV 卸载后端是被动的字节存储，关于 Cache 存放在哪里、热度如何、获取成本多少——这些信息对最需要它的那一层完全不可见。
 
@@ -72,9 +72,9 @@ AMD 与 Moonshot AI 没有选择将 Cache 硬塞到现有的聊天服务器上�
 
 架构分为三层：
 
-- **基准测试客户端（左上）**。许多并发的 Kimi Code CLI 会话，由我们基于 ProgramBench 派生的 Agentic 工作负载驱动，产生真实的 Agentic Coding 流量以及我们关心的指标——TTFT、TPOT、JCT（作业/任务完成时间）、APS、TPS——并向调度器打开会话。
-- **调度器（中间）**。整个栈的大脑。它融合四个职责：工作负载 SLO 预测（延迟预测加成本模型）、自动 Cache 管理（Cache 感知调度、prefetch、TTL 和上下文级别的驱逐、路径搜索）、自动 PD（XpYd prefill/decode 比例、跨 PP/TP/DP/EP 的自动并行、扩缩容、动态路由），以及为所有上述提供数据的指标中心——SLO/SLA、KV Cache 使用量、Cache 命中率、加载延迟、节点/GPU 利用率、网络和工作负载。
-- **统一内存与带宽池（底部）**。KV 基底——UMBP。Prefill（P）和 Decode（D）节点在多层池（GPU HBM → DRAM → SSD）上解耦，前缀在此被 prefetch、通过 RDMA/XGMI 跨节点迁移、在活跃和去活状态之间交换，因此会话的 KV 无论当前存放在哪里都保持可路由。
+- <strong>基准测试客户端（左上）</strong>。许多并发的 Kimi Code CLI 会话，由我们基于 ProgramBench 派生的 Agentic 工作负载驱动，产生真实的 Agentic Coding 流量以及我们关心的指标——TTFT、TPOT、JCT（作业/任务完成时间）、APS、TPS——并向调度器打开会话。
+- <strong>调度器（中间）</strong>。整个栈的大脑。它融合四个职责：工作负载 SLO 预测（延迟预测加成本模型）、自动 Cache 管理（Cache 感知调度、prefetch、TTL 和上下文级别的驱逐、路径搜索）、自动 PD（XpYd prefill/decode 比例、跨 PP/TP/DP/EP 的自动并行、扩缩容、动态路由），以及为所有上述提供数据的指标中心——SLO/SLA、KV Cache 使用量、Cache 命中率、加载延迟、节点/GPU 利用率、网络和工作负载。
+- <strong>统一内存与带宽池（底部）</strong>。KV 基底——UMBP。Prefill（P）和 Decode（D）节点在多层池（GPU HBM → DRAM → SSD）上解耦，前缀在此被 prefetch、通过 RDMA/XGMI 跨节点迁移、在活跃和去活状态之间交换，因此会话的 KV 无论当前存放在哪里都保持可路由。
 
 这种分层是有意为之的。Agentic 流量的每一项特征都指向同一结论：决定性的资源不是 FLOPs，而是 KV Cache——你能实际捕获多少复用 roofline，Cache 一旦溢出 HBM 后存放在哪里，以及调度器能否比重算更快地路由到它。因此在图 1 中，决定整个解决方案成败的模块是调度器加上统一内存与带宽池——KV Cache 卸载和请求调度。这是我们投入最多的地方，也是我们的自研组件 UMBP 所在的位置。下一节深入介绍它。
 
@@ -92,13 +92,13 @@ UMBP（Unified Memory & Bandwidth Pool，统一内存与带宽池）是 AMD MoRI
 
 它与被动字节存储的区别体现在四个方面——设计的四大支柱。
 
-- **支柱 1——调度器友好，与路由器（mori-sched）协同设计。** UMBP Master 是一个覆盖所有层的集群级 KV 放置目录。除了“谁持有该前缀”，它还暴露每个 Key 的历史访问计数、路由命中计数器、最后访问时间、每节点容量和利用率、访问带宽直方图和 RPC 延迟。路由器可以利用这些信号构建真正的成本模型——路由不是到碰巧持有前缀的节点，而是到能最快服务它的节点。
+- <strong>支柱 1——调度器友好，与路由器（mori-sched）协同设计。</strong> UMBP Master 是一个覆盖所有层的集群级 KV 放置目录。除了“谁持有该前缀”，它还暴露每个 Key 的历史访问计数、路由命中计数器、最后访问时间、每节点容量和利用率、访问带宽直方图和 RPC 延迟。路由器可以利用这些信号构建真正的成本模型——路由不是到碰巧持有前缀的节点，而是到能最快服务它的节点。
 
-- **支柱 2——可定制的 Cache 管理策略。** 卸载（put-routing）、加载（get-routing）、驱逐以及（计划中的）复制是可插拔的策略接口，全部读取相同的丰富指标。Cache 管理成为开发者可调节的接口而非硬编码的 LRU，因此策略可以针对特定 Agentic 工作负载的 revisit 模式进行调优。
+- <strong>支柱 2——可定制的 Cache 管理策略。</strong> 卸载（put-routing）、加载（get-routing）、驱逐以及（计划中的）复制是可插拔的策略接口，全部读取相同的丰富指标。Cache 管理成为开发者可调节的接口而非硬编码的 LRU，因此策略可以针对特定 Agentic 工作负载的 revisit 模式进行调优。
 
-- **支柱 3——Agent 感知提示（WIP）。** TTL、会话固定和优先级提示从服务 API 流经 HiCache 进入 UMBP。Agentic 工作负载通常知道自己的 revisit 模式——子 Agent 的父上下文很快会再次需要——这些提示让工作负载显式地塑造 Cache 保留策略，而非将其留给通用的驱逐启发式。
+- <strong>支柱 3——Agent 感知提示（WIP）。</strong> TTL、会话固定和优先级提示从服务 API 流经 HiCache 进入 UMBP。Agentic 工作负载通常知道自己的 revisit 模式——子 Agent 的父上下文很快会再次需要——这些提示让工作负载显式地塑造 Cache 保留策略，而非将其留给通用的驱逐启发式。
 
-- **支柱 4——与 AMD 硬件的亲和性设计。** 数据平面与 AMD GPU/CPU/NIC 能力协同设计——IBGDA 和 SDMA 传输、GPU-Direct Storage、GPU 发起的 NVMe——因此页在层之间或跨节点移动的成本尽可能低。
+- <strong>支柱 4——与 AMD 硬件的亲和性设计。</strong> 数据平面与 AMD GPU/CPU/NIC 能力协同设计——IBGDA 和 SDMA 传输、GPU-Direct Storage、GPU 发起的 NVMe——因此页在层之间或跨节点移动的成本尽可能低。
 
 ### 闭环
 
@@ -129,9 +129,9 @@ UMBP 建立了 Cache 和路由；一系列全栈优化将这一架构转化为�
 
 在 Agentic 服务中，前缀 Cache 是主导的延迟杠杆：上下文每轮增长并不断被重新进入，因此 KV 复用 roofline 极高，前缀 Cache 命中是常见情况而非例外。一次命中用存储换取计算——前缀的 KV 从卸载位置获取而非重算——这正是压低长会话 TTFT 的手段。但这只有在恢复被隐藏时才有收益：在命中时，KV 位于一层或多层之下（主机 DRAM、本地 UMBP 池或远程节点），必须在引擎能使用之前加载回 HBM。关键路径上的 loadback 仅仅是用一次停顿交换一次重算，因此目标是将 loadback 与模型前向重叠——KV 在需要之前就落到 HBM 中，命中的成本实际上为零。两个机制使这成为可能。
 
-**跨层 Prefetch，包括远程 KV。** 成本模型知道会话前缀存放在哪里并预判其重新进入，因此 UMBP 提前在层级中向上 prefetch KV。来源取决于命中情况：位于本节点低层（本地 L3）的前缀被向上暂存到 HBM；位于另一节点（远程 L3）的前缀通过网络拉取到本地主机层——将远程 KV 缓存到本地，使后续轮次使用内存总线。远程 L3 在持有前缀的节点已饱和时最为关键：调度器将请求路由到负载较低的节点并通过 RDMA 获取前缀，同时避免了该节点负载背后的排队和一次重算，从而降低 TTFT。无论哪种情况，前缀都在引擎需要之前驻留于 HBM。
+<strong>跨层 Prefetch，包括远程 KV。</strong> 成本模型知道会话前缀存放在哪里并预判其重新进入，因此 UMBP 提前在层级中向上 prefetch KV。来源取决于命中情况：位于本节点低层（本地 L3）的前缀被向上暂存到 HBM；位于另一节点（远程 L3）的前缀通过网络拉取到本地主机层——将远程 KV 缓存到本地，使后续轮次使用内存总线。远程 L3 在持有前缀的节点已饱和时最为关键：调度器将请求路由到负载较低的节点并通过 RDMA 获取前缀，同时避免了该节点负载背后的排队和一次重算，从而降低 TTFT。无论哪种情况，前缀都在引擎需要之前驻留于 HBM。
 
-**零 CU 的 Loadback。** 最终的恢复跳——L2→L1（主机 DRAM → HBM）——可以由计算 kernel 或 SDMA 引擎发起。Kernel 拷贝的带宽随 CU 数量扩展，在 32 个 CU 时接近 H2D roofline（~51 GB/s），但消耗了 prefill 需要的 CU。SDMA 拷贝引擎以零 CU 成本完成同样的工作：它达到相同的 H2D roofline 并将这些 CU 归还给 prefill，因此恢复不再与 prefill 争抢计算资源。
+<strong>零 CU 的 Loadback。</strong> 最终的恢复跳——L2→L1（主机 DRAM → HBM）——可以由计算 kernel 或 SDMA 引擎发起。Kernel 拷贝的带宽随 CU 数量扩展，在 32 个 CU 时接近 H2D roofline（~51 GB/s），但消耗了 prefill 需要的 CU。SDMA 拷贝引擎以零 CU 成本完成同样的工作：它达到相同的 H2D roofline 并将这些 CU 归还给 prefill，因此恢复不再与 prefill 争抢计算资源。
 
 恢复管线的每个阶段都运行在其传输介质的硬件 roofline 附近。L2→L1 达到 H2D 带宽（~51 GB/s）。本地 L3→L2 主机内存拷贝，经多线程和非临时（NT）存储指令优化，在 4 线程时达到 ~66 GB/s——高于管线的 H2D 瓶颈需求（~51 GB/s），因此更多线程不产生端到端增益。远程 L3→L2 路径是零拷贝的，聚合工作负载并分发到多个 NIC 和 QP，因此主机 RDMA 在 QP=4 时饱和于接近其有效线速率（~42 GB/s）。
 
@@ -157,11 +157,11 @@ DeltaTok 是 UMBP 家族中面向 Agent 的、AMD Zen 5 加速的 Rust tokenizer
 
 上述优化跨请求复用 KV；基于工具的 Agent 还在单轮内留下了空闲窗口。一轮是一个依赖链——decode 工具调用 → 执行工具 → prefill 下一轮的结果——其中工具间隔（沙箱往返、网页搜索、MCP、子 Agent 调用）通常是最长的段，往往接近一秒，而加速器在其间空闲。这是一个调度问题，不是模型问题：下面的重叠只重新排列调度，不改变输出。
 
-**并发的工具扇出** 将一轮中独立的、无副作用的调用同时派发，将其工具等待从 Σ(tᵢ) 缩短为 max(tᵢ)。
+<strong>并发的工具扇出</strong> 将一轮中独立的、无副作用的调用同时派发，将其工具等待从 Σ(tᵢ) 缩短为 max(tᵢ)。
 
-**流式 mid-decode 派发** 在 decode 期间解析 tool_calls 流，并在其参数闭合的瞬间启动每个调用，因此工具与 decode 尾部重叠而非跟随其后。
+<strong>流式 mid-decode 派发</strong> 在 decode 期间解析 tool_calls 流，并在其参数闭合的瞬间启动每个调用，因此工具与 decode 尾部重叠而非跟随其后。
 
-**跨轮次前缀驻留与 prefill 重叠** 在工具间隔期间保持会话共享的 prompt 前缀驻留——固定住，使竞争无法驱逐下一轮将要复用的 Block——因此该轮只 prefill 新的、依赖工具的后缀，并在前缀上命中 Cache 而非重算。
+<strong>跨轮次前缀驻留与 prefill 重叠</strong> 在工具间隔期间保持会话共享的 prompt 前缀驻留——固定住，使竞争无法驱逐下一轮将要复用的 Block——因此该轮只 prefill 新的、依赖工具的后缀，并在前缀上命中 Cache 而非重算。
 
 这三者都保持语义：只有独立的工具——读取，以及写入不相交状态——被提前或并行派发，而依赖于前序结果或会产生冲突的工具仍然按序串行运行，结果按原始索引重组，因此上下文与串行循环逐位一致。
 
@@ -173,9 +173,9 @@ DeltaTok 是 UMBP 家族中面向 Agent 的、AMD Zen 5 加速的 Rust tokenizer
 
 为了用真正的 Agentic 工作负载驱动系统，我们在 ProgramBench 之上构建了自定义数据集。ProgramBench 是一个净室软件工程基准测试：Agent 只获得一个已编译的可执行文件及其使用文档，必须架构和实现一个完整代码库来复现原始的行为，由 200 个任务中数十万个隐藏的行为测试来评判。这使它成为 Agentic 服务的近理想压力测试——长多轮会话、大量工具使用和深层上下文增长——因此我们采样并改编其任务为可重放的 Agentic Coding trace。
 
-**我们如何生成流量：** 我们用真实的 Kimi CLI 驱动每个 ProgramBench 任务，而非合成的 HTTP 重放器，使用 SwarmPressure——我们自研的将 Agent CLI 指向被测集群的 harness。它为每个任务启动一个隔离的 kimi CLI 容器，用该任务的可执行文件和文档播种，让 Agent 端到端地解决它——阅读文档、编写代码、针对真实构建/测试反馈迭代 compile.sh——针对我们自己的集群而非托管 API。因此上下文增长、工具调用间隔和轮次计数全部来自 Agent 自身的决策，而非脚本化的 trace，这正是使该流量接近真实世界 Agentic 负载的原因。
+<strong>我们如何生成流量：</strong> 我们用真实的 Kimi CLI 驱动每个 ProgramBench 任务，而非合成的 HTTP 重放器，使用 SwarmPressure——我们自研的将 Agent CLI 指向被测集群的 harness。它为每个任务启动一个隔离的 kimi CLI 容器，用该任务的可执行文件和文档播种，让 Agent 端到端地解决它——阅读文档、编写代码、针对真实构建/测试反馈迭代 compile.sh——针对我们自己的集群而非托管 API。因此上下文增长、工具调用间隔和轮次计数全部来自 Agent 自身的决策，而非脚本化的 trace，这正是使该流量接近真实世界 Agentic 负载的原因。
 
-**会话如何轮换：** 真实用户会离开并返回一个 Cache 已变冷的对话，因此一个服务集群始终持有热、温和冷状态的混合——一个整个过程中保持相同会话热的基准测试会报告不切实际的温暖的 Cache。因此我们保持并发数固定，但任何时刻只保留这些会话中的一小部分活跃：每个活跃会话运行一个有限的时间片，然后被驱逐并替换为非活跃池中的一个，让其 KV 像闲置用户的 KV 一样在层间老化，直到稍后被恢复。
+<strong>会话如何轮换：</strong> 真实用户会离开并返回一个 Cache 已变冷的对话，因此一个服务集群始终持有热、温和冷状态的混合——一个整个过程中保持相同会话热的基准测试会报告不切实际的温暖的 Cache。因此我们保持并发数固定，但任何时刻只保留这些会话中的一小部分活跃：每个活跃会话运行一个有限的时间片，然后被驱逐并替换为非活跃池中的一个，让其 KV 像闲置用户的 KV 一样在层间老化，直到稍后被恢复。
 
 运行这些 trace，我们向数据提出的问题是：UMBP 是否将 Agentic 流量使其可用的复用转化为服务收益。以下两个实验回答了该问题的 Cache 行为部分，它们共享一个测量词汇：KV Cache 命中率，拆分为首次调用（会话的冷启动或恢复调用，前缀必须从本地热 Cache 之外获取）和后续调用（一轮的热延续）；TTFT 按其分布拆分（avg/p50/p90/p99）并同样拆分两种调用；以及总 token 吞吐量，报告为相对每个实验仅 L2 基线的提升。
 
@@ -185,7 +185,7 @@ DeltaTok 是 UMBP 家族中面向 Agent 的、AMD Zen 5 加速的 Rust tokenizer
 
 这是在高并发端的一个固定并发快照，此时纯 L2 预算承受最大压力。我们保持工作负载固定，仅在三轮运行中变化 Cache 层配置。
 
-**实验设置：** 三个配置统一固定：Kimi-K2.6-MXFP4 在 1P2D 拓扑上，由 128 个并发的 programbench agentic 会话驱动。每个节点有 8× AMD Instinct™ MI355X、8× AMD Pensando™ Pollara 400G NIC 和总计 1TB DRAM 预算。唯一变量是每个 rank 的 Cache 层配置：
+<strong>实验设置：</strong> 三个配置统一固定：Kimi-K2.6-MXFP4 在 1P2D 拓扑上，由 128 个并发的 programbench agentic 会话驱动。每个节点有 8× AMD Instinct™ MI355X、8× AMD Pensando™ Pollara 400G NIC 和总计 1TB DRAM 预算。唯一变量是每个 rank 的 Cache 层配置：
 
 | 配置 | L2（每 rank） | L3（每 rank） | Loadback prefetch |
 |---|---|---|---|
@@ -193,7 +193,7 @@ DeltaTok 是 UMBP 家族中面向 Agent 的、AMD Zen 5 加速的 Rust tokenizer
 | B — +L3，优化关 | 64 GB | 32 GB | 未应用 |
 | C — +L3，优化开 | 64 GB | 32 GB | 已应用 |
 
-**分析——两个效应叠加：**
+<strong>分析——两个效应叠加：</strong>
 
 将部分 L2 拆分为 L3（A→B）几乎不移动累计命中率（88.5% → 88.3%）但重新分配了 TTFT 曲线。它将首次调用命中率提升 21 个百分点（58.2% → 79.3%），将容量饥饿的冷未命中转化为 L3 命中，因此尾部坍缩（p99 17.3s → 9.9s，p90 7.2s → 4.9s）。中位数上升（p50 2.0s → 2.8s）：L2 从 96 缩小到 64GB，而未优化的恢复还不够快以完全隐藏在前向背后。净效果是，一个小的确定性中位数成本换取了灾难性尾部风险的消除（avg 3.2s → 2.9s）——但吞吐量保持平坦（+0.1%）。
 
@@ -207,26 +207,26 @@ DeltaTok 是 UMBP 家族中面向 Agent 的、AMD Zen 5 加速的 Rust tokenizer
 
 因此容量在这里不是绑定约束。局部性才是。会话在 prefill worker 之间被强制迁移，问题变为前缀一旦与其构建它的 worker 分离是否仍可到达——因为一个 worker 本地的 L2 无论多大，都无法回答一个已迁移的请求。
 
-**实验设置：** Kimi-K2.6-MXFP4 在 2P1D 拓扑上，128 个并发的 programbench agentic 会话，其中 64 个在任何时刻活跃。每个会话固定到一个 prefill worker，全部从 worker 0 开始；一旦会话上下文增长 ≥256 token，该固定轮转到另一个 worker。变量是 Cache 层配置：
+<strong>实验设置：</strong> Kimi-K2.6-MXFP4 在 2P1D 拓扑上，128 个并发的 programbench agentic 会话，其中 64 个在任何时刻活跃。每个会话固定到一个 prefill worker，全部从 worker 0 开始；一旦会话上下文增长 ≥256 token，该固定轮转到另一个 worker。变量是 Cache 层配置：
 
 | 配置 | Prefill L2（每 rank） | Prefill L3（每 rank） | Decode 主机 Cache |
 |---|---|---|---|
 | A — 仅 L2 基线 | 192 GB | — | — |
 | B — +L3 | 160 GB | 32 GB | L2 64 GB + L3 128 GB |
 
-**分析：**
+<strong>分析：</strong>
 
 累计命中率几乎不动——95.0% → 96.6%，1.5 个百分点的增益看起来像噪声。拆分显示了效果实际在哪里。后续调用命中率精确到小数位相同（两者均为 97.4%）——L3 对热延续没有改变任何东西。首次调用命中率移动了 9.5 个百分点（82.2% → 91.7%）：迁移后的轮次开始，在仅 L2 下在其新 worker 上找不到任何东西并重算前缀，改为在可共享的 L3 中找到它。
 
 这种重新分配作用在尾部。TTFT p99 下降 1.6×（11.5s → 7.3s），首次调用 TTFT 下降 12.4%（4.24s → 3.71s），而后续调用 TTFT 持平（1.56s → 1.53s）。总 token 吞吐量上升 4.9%，输出 token 上升 6.5%。
 
-**总结：** 即使 Cache 被慷慨地配置到仅 L2 基线已经健康的程度，迁移仍然打破了会话与持有其前缀的 worker 之间的固定——而 worker 本地的 L2 无论多大都没有答案。从相同的 DRAM 中切出的可共享 L3 捕获了它，将 9.5 个百分点的首次调用命中率增益转化为 1.6× 更小的 TTFT 尾部和 4.9% 更多总 token 吞吐量。累计命中率——大多数基准测试报告的数字——移动了 1.5 个点并隐藏了整个效果。
+<strong>总结：</strong> 即使 Cache 被慷慨地配置到仅 L2 基线已经健康的程度，迁移仍然打破了会话与持有其前缀的 worker 之间的固定——而 worker 本地的 L2 无论多大都没有答案。从相同的 DRAM 中切出的可共享 L3 捕获了它，将 9.5 个百分点的首次调用命中率增益转化为 1.6× 更小的 TTFT 尾部和 4.9% 更多总 token 吞吐量。累计命中率——大多数基准测试报告的数字——移动了 1.5 个点并隐藏了整个效果。
 
 ### 第二部分——通过 Kimi Vendor Verifier（KVV / K2VV）验证准确性
 
 如果重建的工程层悄悄降低了质量，性能就毫无意义。为了排除这一点，我们使用 Kimi Vendor Verifier（KVV）——Moonshot 开源套件，用于验证推理实现的准确性。我们的重建精确改变了工程层——跨层的 KV 卸载、成本模型路由、FP4 量化、投机解码——因此 KVV 是正确的工具。
 
-**K2VV 工具调用——schema 准确性达到与官方 API 的 parity。** 在 K2VV 工具调用套件（非思考模式，官方 K2.6 参考数据集，2000 个请求）上，基线部署已通过及格线，启用约束工具调用解码（xgrammar grammar 后端 + SGLANG_TOOL_STRICT_LEVEL=1）将 JSON-schema 准确性提升至完美的 100%——消除了全部 54 个格式错误参数的情况——同时 trigger-similarity 的 tool_call_f1 保持在官方 ~84% 的水平：
+<strong>K2VV 工具调用——schema 准确性达到与官方 API 的 parity。</strong> 在 K2VV 工具调用套件（非思考模式，官方 K2.6 参考数据集，2000 个请求）上，基线部署已通过及格线，启用约束工具调用解码（xgrammar grammar 后端 + SGLANG_TOOL_STRICT_LEVEL=1）将 JSON-schema 准确性提升至完美的 100%——消除了全部 54 个格式错误参数的情况——同时 trigger-similarity 的 tool_call_f1 保持在官方 ~84% 的水平：
 
 | 运行 | 约束解码 | tool_call_f1 | Schema 准确性 | Schema 错误 |
 |---|---|---|---|---|
@@ -234,7 +234,7 @@ DeltaTok 是 UMBP 家族中面向 Agent 的、AMD Zen 5 加速的 Rust tokenizer
 | B — 约束 | xgrammar + strict=1 | 84.12% | 100.00% (1047/1047) | 0 |
 | 官方 Kimi-K2.6 API | 参考 | ~84.0% | 100% (1012/1012) | 0 |
 
-**KVV 视觉基准测试——多模态路径端到端工作正常：**
+<strong>KVV 视觉基准测试——多模态路径端到端工作正常：</strong>
 
 | 基准测试 | 模式 | 样本数 | 准确性 |
 |---|---|---|---|
@@ -247,9 +247,9 @@ DeltaTok 是 UMBP 家族中面向 Agent 的、AMD Zen 5 加速的 Rust tokenizer
 
 ## 展望
 
-- **为 Kimi K3 协同设计：** 我们的优化焦点转向下一代 Kimi K3。
-- **将 Agentic 服务推向更多引擎——ATOM、SGLang、vLLM：** UMBP 分层 Cache、成本模型路由和 AMD 原生数据移动在设计上是引擎无关的。
-- **完成 UMBP 路线图：** 在调度器侧，将 umbp_cache_aware 从前缀匹配提升到完整成本模型；在存储侧，NVMe 作为第四层和 GPU 发起的 NVMe 访问。
+- <strong>为 Kimi K3 协同设计：</strong> 我们的优化焦点转向下一代 Kimi K3。
+- <strong>将 Agentic 服务推向更多引擎——ATOM、SGLang、vLLM：</strong> UMBP 分层 Cache、成本模型路由和 AMD 原生数据移动在设计上是引擎无关的。
+- <strong>完成 UMBP 路线图：</strong> 在调度器侧，将 umbp_cache_aware 从前缀匹配提升到完整成本模型；在存储侧，NVMe 作为第四层和 GPU 发起的 NVMe 访问。
 
 ## 总结
 

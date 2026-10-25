@@ -39,9 +39,9 @@ source_url: https://zhuanlan.zhihu.com/p/99604481
 
 - 创建一个目录，用于存放输入文件，环境变量`$spec2017_run_dir` 指向该目录。
 - 把`spec17root/benchspec/CPU/502.gcc_r/data/refrate/input` 、`spec17root/benchspec/CPU/500.perlbench_r/data/all/input`等目录下面的文件对应拷贝到`$spec2017_run_dir/gcc`和 `$spec2017_run_dir/perlbench`目录<span class="wikilink wikilink--missing" title="未导入的页面">1</span>(#ref_1) 。行为很简单，一个10行代码的程序就可以做到。最后的组织形式如图：
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_a3c973a6353e.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_a3c973a6353e.jpg)
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_941ed145745d.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_941ed145745d.jpg)
 
 ### 修改配置文件
 

@@ -39,25 +39,25 @@ Mooncake分离式架构动机是Prefill和Decode阶段性质不同，Prefill是�
 
 ### 3 Overview of Mooncake’s Disaggregated Archtecture
 
-如下面Figure 1所示，Mooncake采用了**分离式**架构。这里分离有两层含义：
+如下面Figure 1所示，Mooncake采用了<strong>分离式</strong>架构。这里分离有两层含义：
 
 一是，将Prefill与Decode计算资源分开，这与前人工作无异，如splitwise和distserve等；Prefill阶段优化目标是利用request间存在共同前缀的机会，尽可能复用KVCache，同时满足TTFT（Time To First Token） SLO，最大化MFU（论文中似乎笔误成minimum）和KVCache小于CPU内存限制。Decode优化目标为最大化吞吐，满足TBT（Time between tokens ，Decode阶段两个Token之间的时间）SLO和KVCache小于GPU显存限制。
 
 二是，将KVCache和计算分离开，它将GPU集群的CPU、DRAM、SSD和RDMA资源分组组成Distributed KVCache Pool，KVCache也是分块以Paged方式管理，KVCache Blocks如何在Pool中调度请求和复用KVCache乃本文精髓。
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_d560095ad95e.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_d560095ad95e.jpg)
 
 我们跟随论文的安排，跟Figure 4先走马观花过一遍Mooncake处理一个request的流程。一个request到达（tokenized之后的），调度程序会选择一对Prefill Instance和Decode Instance，模型参数要在两个Instance都有副本，并启动包含四个步骤的工作流程：
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_1a93f0e4ef99.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_1a93f0e4ef99.jpg)
 
-s1）**KVCache Reuse**：Prefill Instance将request分成token blocks，考虑request之间存在共同前缀，需要尽可能将token block调度到Prefix KVCache最长的节点处理，来resuse KVCache。为此作者提出一种以KVCache为中心的调度，将在章节5 KVCache-centric Scheduling中详细介绍。
+s1）<strong>KVCache Reuse</strong>：Prefill Instance将request分成token blocks，考虑request之间存在共同前缀，需要尽可能将token block调度到Prefix KVCache最长的节点处理，来resuse KVCache。为此作者提出一种以KVCache为中心的调度，将在章节5 KVCache-centric Scheduling中详细介绍。
 
-s2）**Incremental Prefill**：使用Prefix Cache，Prefill Instance只需要计算Prefix Cache没覆盖的部分。长序列计算需要多卡并行，用[TeraPipe](https://link.zhihu.com/?target=https%3A//proceedings.mlr.press/v139/li21y.html)方式做流水并行。将在章节5 Implementation of the Prefill Pool中详细介绍。
+s2）<strong>Incremental Prefill</strong>：使用Prefix Cache，Prefill Instance只需要计算Prefix Cache没覆盖的部分。长序列计算需要多卡并行，用[TeraPipe](https://link.zhihu.com/?target=https%3A//proceedings.mlr.press/v139/li21y.html)方式做流水并行。将在章节5 Implementation of the Prefill Pool中详细介绍。
 
-s3）**KVCache Transfer**：和Splitwise一样，分离是设计需要将KVCache从Prefill Instance搬运到Decode Instance。Mooncake通过异步传输，与上述Incremental Prefill步骤重叠，将每个模型层生成的KVCache流式传输到目标Decode Instance的CPU内存，以减少等待时间。
+s3）<strong>KVCache Transfer</strong>：和Splitwise一样，分离是设计需要将KVCache从Prefill Instance搬运到Decode Instance。Mooncake通过异步传输，与上述Incremental Prefill步骤重叠，将每个模型层生成的KVCache流式传输到目标Decode Instance的CPU内存，以减少等待时间。
 
-s4）**Decoding**：在Decoding Instance的CPU DRAM中接收到所有KVCache后，请求Continous Batching处理。
+s4）<strong>Decoding</strong>：在Decoding Instance的CPU DRAM中接收到所有KVCache后，请求Continous Batching处理。
 
 工作流中，s3, s4平平无奇，前人设计如Splitwise、DistServe和vLLM等已经覆盖。s1和s2比较精彩，本文接下来的章节4和章节5来详细介绍。
 
@@ -65,21 +65,21 @@ s4）**Decoding**：在Decoding Instance的CPU DRAM中接收到所有KVCache后�
 
 章明星说原本章叫“Prefill: To Seperate or Not. Is it a Question?” 。这说明分离式设计并不是共识。
 
-Prefill和Decode的计算性质不同，前者吃计算，后者吃带宽。这会带来很多次生影响，比如Batching方式就不同，Prefill不需要batching，Decode需要大Batching。处理Prefill和Decode有**融合派**和**分离派**两大流派。
+Prefill和Decode的计算性质不同，前者吃计算，后者吃带宽。这会带来很多次生影响，比如Batching方式就不同，Prefill不需要batching，Decode需要大Batching。处理Prefill和Decode有<strong>融合派</strong>和<strong>分离派</strong>两大流派。
 
-**融合派：**将Prefill放到Decode step间隙或者和某个Decode step一起推理。2022年OSDI的LLM Continous Batching 开山之作Orca将Prefill和Decode Step融合在一个Batching Step做forward，Orca时代还没有Paged Attention，还需要Selective Batching来将Attention解Batching。2023年vLLM做Batching时，prefill和decoding则是独立forward的，一个Batching step要么处理decoding要么处理prefill。prefill直接调用xformers处理计算密集的prefill attn计算；decoding手写CUDA PA处理访存密集的attn计算。后来，以[Sarathi](https://link.zhihu.com/?target=https%3A//arxiv.org/pdf/2403.02310)和[FastGen](https://link.zhihu.com/?target=https%3A//arxiv.org/pdf/2401.08671)为代表，将prefill序列拆成chunk，chunk prefilling可以插入到decode phase中，甚至和decode step融合。比如，flash attention的*flash_attn_with_kvcache*函数支持q部分有kvcache（decode）部分没有（prefill）。章明星也提到，对于*短的prefill chunk和decode step融合和纯做decode step延迟可能相同*，这相当于prefill白嫖decode没用满的算力。对这段Continous Batching发展历史感兴趣可以读：[方佳瑞：大模型推理核心技术之Continuous Batching和我的WXG往事](https://zhuanlan.zhihu.com/p/676109470)。融合派的缺点是，Prefill和Decode在相同设备上，二者并行度被绑定。如果prompt长度有限，prefill阶段占比很小基本不到10%，所以忍一忍也无所谓。不过，对于长序列当Prefill比例升高，其Prefill并行度不够灵活的缺陷就暴露出来。
+<strong>融合派：</strong>将Prefill放到Decode step间隙或者和某个Decode step一起推理。2022年OSDI的LLM Continous Batching 开山之作Orca将Prefill和Decode Step融合在一个Batching Step做forward，Orca时代还没有Paged Attention，还需要Selective Batching来将Attention解Batching。2023年vLLM做Batching时，prefill和decoding则是独立forward的，一个Batching step要么处理decoding要么处理prefill。prefill直接调用xformers处理计算密集的prefill attn计算；decoding手写CUDA PA处理访存密集的attn计算。后来，以[Sarathi](https://link.zhihu.com/?target=https%3A//arxiv.org/pdf/2403.02310)和[FastGen](https://link.zhihu.com/?target=https%3A//arxiv.org/pdf/2401.08671)为代表，将prefill序列拆成chunk，chunk prefilling可以插入到decode phase中，甚至和decode step融合。比如，flash attention的*flash_attn_with_kvcache*函数支持q部分有kvcache（decode）部分没有（prefill）。章明星也提到，对于*短的prefill chunk和decode step融合和纯做decode step延迟可能相同*，这相当于prefill白嫖decode没用满的算力。对这段Continous Batching发展历史感兴趣可以读：[方佳瑞：大模型推理核心技术之Continuous Batching和我的WXG往事](https://zhuanlan.zhihu.com/p/676109470)。融合派的缺点是，Prefill和Decode在相同设备上，二者并行度被绑定。如果prompt长度有限，prefill阶段占比很小基本不到10%，所以忍一忍也无所谓。不过，对于长序列当Prefill比例升高，其Prefill并行度不够灵活的缺陷就暴露出来。
 
-**分离派：**考虑Prefill/Decode性质差异，人们开始尝试把Prefill和Decode放到不同的设备来分别处理，比如，[Splitwise](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2311.18677)和[DistServe](https://link.zhihu.com/?target=https%3A//arxiv.org/pdf/2401.09670)，Mooncake也是对他们的继承和发展。分离派可以给Prefill和Decode设置不同的并行度，二者有更大的灵活性。许欣然提到分离派*允许整个系统往 “算力/$” 和 “带宽/$” 的两个方向独立发展，对硬件优化也是更友好的*。在机房里，分离派可以用不同GPU混部来降本，比如H800做Prefill，H20做Decode，二者用RDMA互联。分离派遇到的最大挑战是如何在不同设备之间传输KVCache，集群需要高速网络来互联，而网络成本不容小觑。所以，分离派的硬件往往需求很高端，目前得是是A/H卡，硬件成本高且无法Scale也为人诟病。
+<strong>分离派：</strong>考虑Prefill/Decode性质差异，人们开始尝试把Prefill和Decode放到不同的设备来分别处理，比如，[Splitwise](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2311.18677)和[DistServe](https://link.zhihu.com/?target=https%3A//arxiv.org/pdf/2401.09670)，Mooncake也是对他们的继承和发展。分离派可以给Prefill和Decode设置不同的并行度，二者有更大的灵活性。许欣然提到分离派*允许整个系统往 “算力/$” 和 “带宽/$” 的两个方向独立发展，对硬件优化也是更友好的*。在机房里，分离派可以用不同GPU混部来降本，比如H800做Prefill，H20做Decode，二者用RDMA互联。分离派遇到的最大挑战是如何在不同设备之间传输KVCache，集群需要高速网络来互联，而网络成本不容小觑。所以，分离派的硬件往往需求很高端，目前得是是A/H卡，硬件成本高且无法Scale也为人诟病。
 
 分离派一个优势就是Prefill并行度灵活，为了降低长序列Prefill的TTFT，可以分配多卡甚至多机GPU并行处理Prefill，比如长序列我们就多分配一些GPU，短序列少点。如何做Prefill并行？长序列Prefill的batch size是1，没法用数据并行。张量并行性能不满足，它通信量很大无法扩展出节点，而且GQA的head number也限制了它并行度。那是否可以用序列并行（SP）？Ulysses通信量远低于TP，Ring可以和计算重叠，这里也感恩Mooncake引用了我们的最近的工作[USP](https://zhuanlan.zhihu.com/p/698031151)。但是SP推理需要在每个卡上replicate模型参数的，对大模型不利，如果用ZeRO方式shard参数，通信量都增加了很多；而且，SP每层都要通信，占用宝贵的网络带宽，网络带宽还得留着给KVCache送Decode Instance用。
 
 Mooncake为Prefill阶段设计了Chunked Pipeline Parallelism (CPP)  ，其实就是[TeraPipe](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2102.07988)。TeraPipe正是vLLM核心作者Zhuohan Li的2021年的工作，当时是用在流水线训练里，这里只用它的forward过程即可。TeraPipe将模型沿着Layer切分成N个stage，放在不同设备上，将输入沿着序列维度切分成若干chunk。这样就可以在一个推理任务里，不同chunk流水在不同stage上的计算就可以流水起来起来。如下图所示，切分方式看左图，流水方式看右图一个Forward过程即可。
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_d5abd02a4337.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_d5abd02a4337.jpg)
 
 TeraPipe用于训练时不能均分序列，一个token要和之前所有token做计算（因为Causal Attention引起的），位置越靠后计算量越大，均分序列的话Attention计算会负载不均衡，所以越靠后sequence chunk越小才好，所以TeraPipe论文用动态规划来找最佳划分策略。在Mooncake中，章明星说TeraPipe*只有 forward 没有 backword 的话不需要啥动态规划来平衡每个 Chunk 的计算量，只要给每个 Chunk 设置一个最小的值就行*。这点我是有些疑惑的，我觉得forward也需要和训练类似的负载均衡策略，如下图上半部分。对这个问题，我新开了一个文章讨论：[方佳瑞：为Token-level流水并行找PMF：从TeraPipe，Seq1F1B，HPipe到PipeFusion](https://zhuanlan.zhihu.com/p/706475158)
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_2a73e6780e65.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_2a73e6780e65.jpg)
 
 来自TeraPipe论文TeraPipe做推理好处 1）它仅在每个stage的边界处需要跨节点通信，这可以很容易地与计算重叠。这导致更好的MFU并且KVCache传输的网络资源争用更少。2）短和长上下文均适用。原文给了解释原因是bringing no significant overhead for short context prefill and avoiding frequent dynamic adjustment of node partitioning。我理解是：layer分布在不同设备不需要改变，长短上下文都TeraPipe，长文相当于用上了多卡资源，尽管有些气泡，相当于并行加速了，可以满足TTFT。短文本来也不用并行TTFT单GPU也可以满足，因为TeraPipe通信少，所以和一个设备做Prefill时间一样，因此和*单个设备做Prefill比*没有明显开销。
 
@@ -91,9 +91,9 @@ TeraPipe用于训练时不能均分序列，一个token要和之前所有token�
 
 这一节比较晦涩，我理解是在Prefill阶段对KVCache做CPU Offloading（或者传输到Decode Instance？）。这些操作都是异步的，而且是Layer-wise的，也就是一层Prefill一个Layer的KVCache Block算出来，就立刻transfer（发给decode Instance）或dump（cpu offload）来最小化GPU显存占用。
 
-为何着急忙慌赶人家KVCache走呢？我理解是因为Prefill机器比Decode少，因为Prefill负载占LLM推理的比例低，但是Prefill产生的KVCache和Decode消耗KVCache一样多，所以Decode那边为了把硬件榨干，需要让KVCache刚好用满GPU显存，那Prefill显存肯定不够，必须Offload。这也是Mooncake论文Figure 1中之所以写成“Prefill阶段KVCache ![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_654466fd799f.jpg)
+为何着急忙慌赶人家KVCache走呢？我理解是因为Prefill机器比Decode少，因为Prefill负载占LLM推理的比例低，但是Prefill产生的KVCache和Decode消耗KVCache一样多，所以Decode那边为了把硬件榨干，需要让KVCache刚好用满GPU显存，那Prefill显存肯定不够，必须Offload。这也是Mooncake论文Figure 1中之所以写成“Prefill阶段KVCache ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_654466fd799f.jpg)
 
-Splitwise论文Fig 11，Optimize KVCache transformers![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_78c4ca35d70e.jpg)
+Splitwise论文Fig 11，Optimize KVCache transformers![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_78c4ca35d70e.jpg)
 
 Mooncake论文Figure 5
 ### 5 KVCache-centric Scheduling 
@@ -104,7 +104,7 @@ KVCache Pool用Paged方式管理KVCache（本章简称Cache）。如下图所示
 
 Prefill节点接收到一个request，它根据prefix cache ID将前prefix cache从远程CPU内存加载到本地GPU内存，以启动request的prefill计算。如果不存在prefix cache，则需要自己Prefill计算了。这种选择平衡了三个目标：尽可能多地重用KVCache（三板斧中Caching）、平衡不同预填充节点的工作负载，并保证TTFT SLO（三板斧中Scheduling）。
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_9521e3592727.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_9521e3592727.jpg)
 
 #### 5.1 Prefill Global Scheduling 
 
@@ -136,7 +136,7 @@ Prefill节点接收到一个request，它根据prefix cache ID将前prefix cache
 
 本节描述了为Moonshot设计的early rejection policy，应该就是下图氪金之后和Kimi一起登月的背后原理。我没花时间看，就不班门弄斧分析了，但是这一环节对线上服务很重要。当然，作为用户还是希望Kimi不要拒绝服务。
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_d77fea75ffae.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_d77fea75ffae.jpg)
 
 ### 总结
 

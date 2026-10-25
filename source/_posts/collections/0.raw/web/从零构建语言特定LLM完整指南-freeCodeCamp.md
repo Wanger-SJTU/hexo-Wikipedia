@@ -26,19 +26,19 @@ source_url: https://www.freecodecamp.org/news/how-to-build-your-own-language-spe
 
 我们将逐步讲解如何用特定语言（本例中为乌尔都语）创建自己的LLM。这将帮助你理解LLM内部的运作机制。
 
-现代LLM的起源可以追溯到那篇改变一切的论文：[**"Attention Is All You Need"**](https://arxiv.org/abs/1706.03762)。但我们不会迷失在数学公式中（很遗憾，我数学不好），而是通过动手实践来学习。
+现代LLM的起源可以追溯到那篇改变一切的论文：[<strong>"Attention Is All You Need"</strong>](https://arxiv.org/abs/1706.03762)。但我们不会迷失在数学公式中（很遗憾，我数学不好），而是通过动手实践来学习。
 
 ## 这本手册适合谁？
 
 软件工程师、产品负责人，或者任何对LLM工作原理感到好奇的人。如果你有一些机器学习知识会更好，但没有也没关系。我写这篇教程时确保你不需要参考任何外部资料。
 
-学完之后，你将拥有一个**可运行、已部署的乌尔都语LLM聊天机器人**。你也可以按照下面定义的步骤，为自己的母语创建一个。
+学完之后，你将拥有一个<strong>可运行、已部署的乌尔都语LLM聊天机器人</strong>。你也可以按照下面定义的步骤，为自己的母语创建一个。
 
 ## 关于期望的说明：
 
 这里的目标是通过实际操作所有步骤来学习LLM的工作原理。
 
-目标**不是**让你的LLM表现得像ChatGPT。那需要海量数据集、数月的训练时间以及基于人类反馈的强化学习（RLHF）等条件，通过这个教程你会更好地理解这些因素。
+目标<strong>不是</strong>让你的LLM表现得像ChatGPT。那需要海量数据集、数月的训练时间以及基于人类反馈的强化学习（RLHF）等条件，通过这个教程你会更好地理解这些因素。
 
 ## 关于代码的说明：
 
@@ -158,35 +158,35 @@ Gradio（用于聊天UI部署）
 
 Google Colab（免费T4 GPU用于训练）
 
-**注意：** 开始之前，请确保已安装仓库中 `requirements.txt` 文件列出的所有依赖。
+<strong>注意：</strong> 开始之前，请确保已安装仓库中 `requirements.txt` 文件列出的所有依赖。
 
 ## 1. 数据准备
 
-在数据准备阶段，首要步骤是**数据收集**。LLM需要在大量文本数据上进行训练。没有一个地方能获取所有数据，根据你要构建的模型类型，可以从多种来源收集文本：
+在数据准备阶段，首要步骤是<strong>数据收集</strong>。LLM需要在大量文本数据上进行训练。没有一个地方能获取所有数据，根据你要构建的模型类型，可以从多种来源收集文本：
 
-**数字图书馆和档案馆：** [Internet Archive](https://archive.org/) 或 Wikipedia dumps
+<strong>数字图书馆和档案馆：</strong> [Internet Archive](https://archive.org/) 或 Wikipedia dumps
 
-**代码仓库：** GitHub, GitLab（如果你的模型需要理解代码的话很有用）
+<strong>代码仓库：</strong> GitHub, GitLab（如果你的模型需要理解代码的话很有用）
 
-**网页爬取：** 使用自动化脚本爬取网站、博客和论坛
+<strong>网页爬取：</strong> 使用自动化脚本爬取网站、博客和论坛
 
-**学术数据集：** 研究论文、开放获取期刊
+<strong>学术数据集：</strong> 研究论文、开放获取期刊
 
-**现成数据集：** [Hugging Face Datasets](https://huggingface.co/datasets) 和 [Kaggle](https://www.kaggle.com/datasets) 等平台托管了数千个即用型数据集
+<strong>现成数据集：</strong> [Hugging Face Datasets](https://huggingface.co/datasets) 和 [Kaggle](https://www.kaggle.com/datasets) 等平台托管了数千个即用型数据集
 
-在实际操作中，GPT和LLaMA等大规模LLM主要依赖通过自动化流水线从多个来源爬取网页数据。但有一个重要原则需要遵循：**只使用公开可用的开源数据。** 不要爬取私人的或个人用户信息。坚持使用明确公开分享或属于宽松许可协议的数据。
+在实际操作中，GPT和LLaMA等大规模LLM主要依赖通过自动化流水线从多个来源爬取网页数据。但有一个重要原则需要遵循：<strong>只使用公开可用的开源数据。</strong> 不要爬取私人的或个人用户信息。坚持使用明确公开分享或属于宽松许可协议的数据。
 
-**另外，** 请记住这个原则：**垃圾进，垃圾出。** 仅仅获取数据是不够的，数据应该是正确的、干净的、没有噪声的。
+<strong>另外，</strong> 请记住这个原则：<strong>垃圾进，垃圾出。</strong> 仅仅获取数据是不够的，数据应该是正确的、干净的、没有噪声的。
 
-实际操作中，你可以从不同来源收集数据。在我的案例中，我从**Hugging Face**找到了足够好的数据。Hugging Face有[**CulturaX**](https://huggingface.co/datasets/uonlp/CulturaX)多语言数据集。数据集非常大，所以我没有下载全部，只下载了一小部分。
+实际操作中，你可以从不同来源收集数据。在我的案例中，我从<strong>Hugging Face</strong>找到了足够好的数据。Hugging Face有[<strong>CulturaX</strong>](https://huggingface.co/datasets/uonlp/CulturaX)多语言数据集。数据集非常大，所以我没有下载全部，只下载了一小部分。
 
-本教程我选择**Hugging Face**作为数据源。选择它有几个原因。
+本教程我选择<strong>Hugging Face</strong>作为数据源。选择它有几个原因。
 
 首先，既然目标是学习LLM的工作原理，我想把时间花在模型上，而不是写网页爬虫。Hugging Face已经有大量清洗过、结构化的数据集，这省去了很多前期工作。
 
-其次，Hugging Face提供特定语言的数据集。因为我在构建乌尔都语LLM，我特别需要乌尔都语文本，而Hugging Face有[**CulturaX**](https://huggingface.co/datasets/uonlp/CulturaX)，提供包括乌尔都语在内的多语言数据集。数据集非常大，所以我没有下载全部，只下载了一小部分。
+其次，Hugging Face提供特定语言的数据集。因为我在构建乌尔都语LLM，我特别需要乌尔都语文本，而Hugging Face有[<strong>CulturaX</strong>](https://huggingface.co/datasets/uonlp/CulturaX)，提供包括乌尔都语在内的多语言数据集。数据集非常大，所以我没有下载全部，只下载了一小部分。
 
-**重要提示：** 在从Hugging Face下载数据集之前，你需要创建一个账户。然后通过CLI登录，之后才能下载数据集。
+<strong>重要提示：</strong> 在从Hugging Face下载数据集之前，你需要创建一个账户。然后通过CLI登录，之后才能下载数据集。
 
 在下面的脚本中，我们从Hugging Face加载数据集，并将streaming设置为`True`。这样做的好处是我们不需要下载所有数据，只需按`NUM_SAMPLES`定义的块获取样本：
 
@@ -224,13 +224,13 @@ print(raw_texts[0][:500])
 
 ## 数据清洗
 
-仅仅拥有数据不足以开始训练模型。下一步可能是最重要的一步：**数据清洗**。目标是让数据尽可能纯净。
+仅仅拥有数据不足以开始训练模型。下一步可能是最重要的一步：<strong>数据清洗</strong>。目标是让数据尽可能纯净。
 
 因为我构建的是特定语言的乌尔都语LLM，我需要编写清洗逻辑来移除非乌尔都语文本、HTML链接、特殊字符、重复内容和多余空格。所有这些因素都会污染训练数据，可能在训练期间引起问题。
 
 根据数据集类型，需要进行一些特定语言或特定用例的清洗。
 
-你可能不太熟悉的一个步骤是**NFKC Unicode规范化**。这会将看起来相同但以不同Unicode形式存在的文本统一为一种规范形式。
+你可能不太熟悉的一个步骤是<strong>NFKC Unicode规范化</strong>。这会将看起来相同但以不同Unicode形式存在的文本统一为一种规范形式。
 
 你还会看到一些用于只保留乌尔都语文本的正则表达式模式。由于乌尔都语文字基于阿拉伯语，我们使用阿拉伯语Unicode范围。我还移除了原始数据中存在的`//`、`--`和多余空格等残留物。
 
@@ -327,11 +327,11 @@ print(f"\nIs mostly Urdu: {is_mostly_urdu(cleaned)}")
 
 ```
 
-清洗完成后，我将数据存储为两种格式：**文本文件**（用于分词器训练）和**JSONL文件**（用于预训练）。每种格式在后续步骤中都有特定用途。
+清洗完成后，我将数据存储为两种格式：<strong>文本文件</strong>（用于分词器训练）和<strong>JSONL文件</strong>（用于预训练）。每种格式在后续步骤中都有特定用途。
 
 ## 2. 分词（Tokenization）
 
-清洗后的下一步是**分词**。分词将文本转换为数字，并提供将这些数字转换回文本的方法。
+清洗后的下一步是<strong>分词</strong>。分词将文本转换为数字，并提供将这些数字转换回文本的方法。
 
 这是必要的，因为神经网络无法理解文本——它们只能理解数字。所以分词本质上是人类语言和模型能处理的格式之间的翻译层。
 
@@ -379,13 +379,13 @@ print(f"\nIs mostly Urdu: {is_mostly_urdu(cleaned)}")
 
 BPE是行业标准，被GPT、LLaMA和大多数现代LLM使用。以下是它的工作步骤：
 
-**从字符开始：** 词汇表 = 所有个体字符
+<strong>从字符开始：</strong> 词汇表 = 所有个体字符
 
-**计算配对：** 找出最常见的相邻token对
+<strong>计算配对：</strong> 找出最常见的相邻token对
 
-**合并：** 将该配对合并为新token
+<strong>合并：</strong> 将该配对合并为新token
 
-**重复：** 直到词汇表达到目标大小
+<strong>重复：</strong> 直到词汇表达到目标大小
 
 示例：
 
@@ -403,7 +403,7 @@ Result: ار د و   زب ا ن
 
 ## 特殊Token
 
-除了BPE，我们还需要添加一些**特殊Token**。这些token为模型在训练和推理期间提供所需的结构化信息。
+除了BPE，我们还需要添加一些<strong>特殊Token</strong>。这些token为模型在训练和推理期间提供所需的结构化信息。
 
 | Token | 用途 | 为什么需要 |
 |-------|------|-----------|
@@ -418,13 +418,13 @@ Result: ار د و   زب ا ن
 
 ## BPE分词器配置
 
-我将词汇表大小设置为**32K**。这意味着什么？意味着模型的词汇查找表中将有32K个token。
+我将词汇表大小设置为<strong>32K</strong>。这意味着什么？意味着模型的词汇查找表中将有32K个token。
 
 这是语言覆盖率和模型大小之间的良好平衡。如果增加词汇表大小，嵌入层和输出层都会增大，意味着需要训练更多参数。对于一个学习项目来说，32K保持可控。
 
 `MIN_FREQUENCY`设置为2，意味着一个token必须在语料库中至少出现两次才会被包含。这过滤掉了一次性的噪声token，避免浪费词汇表空间。
 
-**参考：** GPT-2使用50K个token的词汇表，LLaMA使用32K。我们选择32K与生产模型保持一致。
+<strong>参考：</strong> GPT-2使用50K个token的词汇表，LLaMA使用32K。我们选择32K与生产模型保持一致。
 
 ```
 VOCAB_SIZE = 32_000  # Number of tokens in our vocabulary
@@ -548,7 +548,7 @@ print("Post-processor configured (auto-adds <bos> and <eos>)")
 
 ```
 
-**注意：** 你可能会想，既然我们已经在`SPECIAL_TOKENS`中定义了`<bos>`和`<eos>`，为什么还需要这一步？`SPECIAL_TOKENS`列表只是为这些token**预留词汇表位置**（分配ID）。后处理告诉分词器在每次编码序列时**自动插入**它们。
+<strong>注意：</strong> 你可能会想，既然我们已经在`SPECIAL_TOKENS`中定义了`<bos>`和`<eos>`，为什么还需要这一步？`SPECIAL_TOKENS`列表只是为这些token<strong>预留词汇表位置</strong>（分配ID）。后处理告诉分词器在每次编码序列时<strong>自动插入</strong>它们。
 
 没有这一步，这些token会存在于词汇表中，但永远不会出现在你的数据中，除非你每次都手动添加。
 
@@ -685,13 +685,13 @@ print(f"    Tokenizer loads correctly!")
 
 ```
 
-保存后，我们就拥有了一个查找表。使用它以及我们的语料库数据，可以执行下一个重要步骤：**预训练**。
+保存后，我们就拥有了一个查找表。使用它以及我们的语料库数据，可以执行下一个重要步骤：<strong>预训练</strong>。
 
 ## 3. 预训练
 
 在这一部分，模型学习语言、语法、模式和词汇。训练完成后，模型能够预测序列中的下一个词，这也是我们开始看到原始数据转化为LLM的地方。
 
-**LLM本质上是下一个词的预测器。** 给定一个词序列，它们预测最可能的下一个词。
+<strong>LLM本质上是下一个词的预测器。</strong> 给定一个词序列，它们预测最可能的下一个词。
 
 通过训练，模型学到：
 
@@ -778,7 +778,7 @@ class UrduLLMConfig:
 
 ## Transformer架构
 
-接下来是训练的主要部分：编写**Transformer架构**。在看代码之前，了解什么是Transformer架构很重要。
+接下来是训练的主要部分：编写<strong>Transformer架构</strong>。在看代码之前，了解什么是Transformer架构很重要。
 
 要深入了解什么是Transformer以及它们与RNN和CNN的区别，我建议阅读这篇文章：[AWS: What is Transformers in Artificial Intelligence](https://aws.amazon.com/what-is/transformers-in-artificial-intelligence/)
 
@@ -786,9 +786,9 @@ class UrduLLMConfig:
 
 "Transformer是一种神经网络架构，将输入序列转换或变换为输出序列。"
 
-原始的Transformer论文同时引入了**编码器**（读取输入）和**解码器**（生成输出）。但像我们这样的GPT风格模型只使用解码器部分。这被称为**仅解码器（decoder-only）**架构。
+原始的Transformer论文同时引入了<strong>编码器</strong>（读取输入）和<strong>解码器</strong>（生成输出）。但像我们这样的GPT风格模型只使用解码器部分。这被称为<strong>仅解码器（decoder-only）</strong>架构。
 
-解码器接收一个token序列，应用[**自注意力**](https://www.ibm.com/think/topics/self-attention)来理解它们之间的关系，并预测下一个token。
+解码器接收一个token序列，应用[<strong>自注意力</strong>](https://www.ibm.com/think/topics/self-attention)来理解它们之间的关系，并预测下一个token。
 
 自注意力是Transformer强大的原因：与按顺序逐个处理token（如RNN）不同，模型同时查看所有之前的token，并确定哪些与当前预测最相关。
 
@@ -971,19 +971,19 @@ class UrduGPT(nn.Module):
 
 想象你在读一个句子。当你看到"اس"（这个）这个词时，你的大脑会回头看，找出"这个"指的是什么。这就是注意力机制。
 
-**Q、K、V**：把它想象成图书馆：
+<strong>Q、K、V</strong>：把它想象成图书馆：
 
-**Query（Q）：** "我在寻找关于X的信息"
+<strong>Query（Q）：</strong> "我在寻找关于X的信息"
 
-**Key（K）：** 每个前面的词举着一个牌子："我有关于Y的信息"
+<strong>Key（K）：</strong> 每个前面的词举着一个牌子："我有关于Y的信息"
 
-**Value（V）：** 该词携带的实际信息
+<strong>Value（V）：</strong> 该词携带的实际信息
 
-**6个头** = 6个不同的"读者"同时阅读同一个句子。一个可能专注于语法，另一个专注于含义，还有一个专注于附近的词，以此类推。
+<strong>6个头</strong> = 6个不同的"读者"同时阅读同一个句子。一个可能专注于语法，另一个专注于含义，还有一个专注于附近的词，以此类推。
 
-**因果掩码** = 一条规则："你只能看在你之前的词，不能看之后的。"（因为在生成时，未来的词还不存在！）
+<strong>因果掩码</strong> = 一条规则："你只能看在你之前的词，不能看之后的。"（因为在生成时，未来的词还不存在！）
 
-**数学原理：** 将Q×K相乘得到"每个词的相关程度？"，然后用这些分数从V中获取最有用的信息。
+<strong>数学原理：</strong> 将Q×K相乘得到"每个词的相关程度？"，然后用这些分数从V中获取最有用的信息。
 
 ## 2. FeedForward："思考步骤"
 
@@ -991,21 +991,21 @@ class UrduGPT(nn.Module):
 
 它就是两层：
 
-**扩展（384 → 1536）：** 给模型更多"脑力空间"来思考
+<strong>扩展（384 → 1536）：</strong> 给模型更多"脑力空间"来思考
 
-**压缩（1536 → 384）：** 将想法压缩回来
+<strong>压缩（1536 → 384）：</strong> 将想法压缩回来
 
-**GELU激活：** 一个过滤器，决定"保留这个想法"或"丢弃它"（平滑地，而不是生硬地）
+<strong>GELU激活：</strong> 一个过滤器，决定"保留这个想法"或"丢弃它"（平滑地，而不是生硬地）
 
 ## 3. TransformerBlock："一轮阅读"
 
 对句子的一个完整阅读和思考过程。
 
-**步骤1：** 查看其他词（注意力）
+<strong>步骤1：</strong> 查看其他词（注意力）
 
-**步骤2：** 思考你看到的内容（前馈）
+<strong>步骤2：</strong> 思考你看到的内容（前馈）
 
-**LayerNorm：** 像在步骤之间重置大脑，使数字不会变得太大或太小。
+<strong>LayerNorm：</strong> 像在步骤之间重置大脑，使数字不会变得太大或太小。
 
 **残差连接（`x + ...`）：** 模型保留原始想法并添加新见解。就像做笔记：你不会擦掉旧笔记，而是添加新笔记。
 
@@ -1015,15 +1015,15 @@ class UrduGPT(nn.Module):
 
 **初始化（`__init__`）：**
 
-**Token嵌入：** 一个巨大的查找表。32,000个乌尔都语词/子词各获得一个包含384个数字的列表，代表其"含义"。
+<strong>Token嵌入：</strong> 一个巨大的查找表。32,000个乌尔都语词/子词各获得一个包含384个数字的列表，代表其"含义"。
 
-**位置嵌入：** 另一个查找表，告诉模型"这个词是第1个，这个是第2个，这个是第3个..."（否则它不会知道词序）。
+<strong>位置嵌入：</strong> 另一个查找表，告诉模型"这个词是第1个，这个是第2个，这个是第3个..."（否则它不会知道词序）。
 
-**6个Transformer块：** 上面描述的6轮阅读。
+<strong>6个Transformer块：</strong> 上面描述的6轮阅读。
 
-**LM头：** 最后，将模型的内部"想法"（384个数字）转换回对32,000个可能下一个词中每个词的分数。
+<strong>LM头：</strong> 最后，将模型的内部"想法"（384个数字）转换回对32,000个可能下一个词中每个词的分数。
 
-**权重绑定：** 输入查找表和输出评分表共享相同的数据。节省内存，实际上效果更好！
+<strong>权重绑定：</strong> 输入查找表和输出评分表共享相同的数据。节省内存，实际上效果更好！
 
 **处理（`forward`）：**
 
@@ -1043,11 +1043,11 @@ class UrduGPT(nn.Module):
 
 获取下一个词的分数
 
-**Temperature：** 控制创造性。低 = 安全/可预测，高 = 大胆/有创意
+<strong>Temperature：</strong> 控制创造性。低 = 安全/可预测，高 = 大胆/有创意
 
-**Top-K：** 只考虑最好的K个选项（忽略其余31,950个不太可能的词）
+<strong>Top-K：</strong> 只考虑最好的K个选项（忽略其余31,950个不太可能的词）
 
-**Top-P（核采样）：** 动态选择累计概率达到阈值的最小token集合
+<strong>Top-P（核采样）：</strong> 动态选择累计概率达到阈值的最小token集合
 
 从剩余选项中随机选一个词
 
@@ -1202,11 +1202,11 @@ optimizer = torch.optim.AdamW(model.parameters(), lr=config.learning_rate, weigh
 
 `AdamW`为每个参数维护两个运行统计量（23M × 2 = 内存中46M个额外值）：
 
-**一阶矩（动量）：** 梯度的指数移动平均。平滑嘈杂的更新，使优化器不会锯齿形摆动。
+<strong>一阶矩（动量）：</strong> 梯度的指数移动平均。平滑嘈杂的更新，使优化器不会锯齿形摆动。
 
-**二阶矩：** 梯度平方的指数移动平均。为每个参数提供自适应学习率（频繁更新的参数获得较小的步长，罕见的获得较大的）。
+<strong>二阶矩：</strong> 梯度平方的指数移动平均。为每个参数提供自适应学习率（频繁更新的参数获得较小的步长，罕见的获得较大的）。
 
-**权重衰减（0.1）：** 每一步，权重乘以`(1 - lr × 0.1)`，略微缩小它们。这是**L2正则化**。它防止任何单个权重增长过大，从而减少过拟合。AdamW中的"W"意味着这种衰减与梯度更新解耦（直接应用于权重，而不是像原始Adam那样混入梯度中）。
+<strong>权重衰减（0.1）：</strong> 每一步，权重乘以`(1 - lr × 0.1)`，略微缩小它们。这是<strong>L2正则化</strong>。它防止任何单个权重增长过大，从而减少过拟合。AdamW中的"W"意味着这种衰减与梯度更新解耦（直接应用于权重，而不是像原始Adam那样混入梯度中）。
 
 ## 2. 学习率调度
 
@@ -1221,13 +1221,13 @@ def get_lr(step):
 
 ```
 
-**预热（前500步）：** 在第0步，权重是随机的，梯度指向半随机方向，所以较大的学习率会导致破坏性的参数更新。通过从0线性提升到3e-4，我们让损失函数的"地形"在做出激进更新之前"稳定下来"。
+<strong>预热（前500步）：</strong> 在第0步，权重是随机的，梯度指向半随机方向，所以较大的学习率会导致破坏性的参数更新。通过从0线性提升到3e-4，我们让损失函数的"地形"在做出激进更新之前"稳定下来"。
 
-**余弦衰减（剩余步数）：** 公式`0.5 × (1 + cos(π × progress))`在progress从0到1时画出一条平滑的S曲线，从1.0到0.0。乘以峰值学习率，得到：
+<strong>余弦衰减（剩余步数）：</strong> 公式`0.5 × (1 + cos(π × progress))`在progress从0到1时画出一条平滑的S曲线，从1.0到0.0。乘以峰值学习率，得到：
 
-**早期：** 较大的学习率——大的参数变化，导致损失快速下降
+<strong>早期：</strong> 较大的学习率——大的参数变化，导致损失快速下降
 
-**后期：** 微小的学习率——小的调整，在不超出局部最小值的情况下进行微调
+<strong>后期：</strong> 微小的学习率——小的调整，在不超出局部最小值的情况下进行微调
 
 ```
 LR:  0 ──ramp──▶ peak ──smooth curve──▶ ~0
@@ -1246,7 +1246,7 @@ best_val_loss = float('inf')                    # Tracks best validation; starts
 
 ## 4. 训练循环
 
-**外层循环：Epoch**
+<strong>外层循环：Epoch</strong>
 
 ```
 for epoch in range(config.max_epochs):
@@ -1256,9 +1256,9 @@ for epoch in range(config.max_epochs):
 
 每个epoch = 完整遍历一次所有训练数据。我们重复`max_epochs`轮。
 
-**内层循环：Batch**
+<strong>内层循环：Batch</strong>
 
-**1. 移动到GPU：**
+<strong>1. 移动到GPU：</strong>
 
 ```
 input_ids, targets = input_ids.to(device), targets.to(device)
@@ -1267,7 +1267,7 @@ input_ids, targets = input_ids.to(device), targets.to(device)
 
 将张量数据从CPU RAM传输到GPU VRAM。Transformer中的矩阵乘法（注意力、FFN）在GPU上运行速度快50–100倍，得益于大规模并行性。
 
-**2. 手动更新学习率：**
+<strong>2. 手动更新学习率：</strong>
 
 ```
 lr = get_lr(global_step)
@@ -1278,7 +1278,7 @@ for g in optimizer.param_groups:
 
 PyTorch的AdamW本身不支持自定义调度，所以我们在每一步手动覆盖学习率。`param_groups`是一个列表（这里只有一个组），每个组可以有自己的学习率/权重衰减。
 
-**3. 前向传播：**
+<strong>3. 前向传播：</strong>
 
 ```
 outputs = model(input_ids, targets)
@@ -1288,7 +1288,7 @@ loss = outputs['loss']
 
 输入token流经：嵌入 → 6个Transformer块 → LM头 → logits。在logits（形状`[batch, seq_len, 32000]`）和目标token ID之间计算交叉熵损失。这个损失衡量模型分配给正确下一个token的负对数概率，在所有位置和批次元素上取平均。
 
-**4. 反向传播 + 更新：**
+<strong>4. 反向传播 + 更新：</strong>
 
 ```
 optimizer.zero_grad()          # Reset all parameter gradients to zero (they accumulate by default)
@@ -1302,11 +1302,11 @@ optimizer.step()               # θ_new = θ_old - lr × adam_adjusted_gradient 
 
 `loss.backward()`：反向传播通过链式法则反向遍历计算图，为每个参数计算∂loss/∂θ。这是与正向传播并列的计算量最大的步骤。
 
-**梯度裁剪：** 计算所有参数梯度拼接成一个向量的L2范数。如果范数超过1.0，每个梯度乘以`1.0/范数`，保持方向但限制幅度。这防止罕见的批次（不寻常的token分布）导致灾难性的巨大更新，使训练不稳定。
+<strong>梯度裁剪：</strong> 计算所有参数梯度拼接成一个向量的L2范数。如果范数超过1.0，每个梯度乘以`1.0/范数`，保持方向但限制幅度。这防止罕见的批次（不寻常的token分布）导致灾难性的巨大更新，使训练不稳定。
 
 `optimizer.step()`：AdamW使用动量、自适应的逐参数学习率和解耦的权重衰减来应用更新规则。
 
-**5. 记录：**
+<strong>5. 记录：</strong>
 
 ```
 epoch_loss += loss.item()      # .item() extracts the Python float from the CUDA tensor (avoids GPU memory leak)
@@ -1349,7 +1349,7 @@ if val_loss < best_val_loss:
 
 `model.state_dict()`返回一个`OrderedDict`，将参数名映射到张量。`torch.save`使用Python的pickle + zip将其序列化到磁盘。我们只在验证损失改善时保存。
 
-这在精神上是**早停（early stopping）**：我们保留泛化效果最好的检查点，不管后续epoch发生什么。
+这在精神上是<strong>早停（early stopping）</strong>：我们保留泛化效果最好的检查点，不管后续epoch发生什么。
 
 ## 总结：6步完成一个Batch
 
@@ -1367,9 +1367,9 @@ AdamW用动量+衰减更新参数 → 实际的学习过程
 
 ## 关键指标
 
-**交叉熵损失**衡量预测概率分布与真实下一个token的距离。一个在32K词汇表上随机猜测的模型损失约为 ln(32000) ≈ 10.4
+<strong>交叉熵损失</strong>衡量预测概率分布与真实下一个token的距离。一个在32K词汇表上随机猜测的模型损失约为 ln(32000) ≈ 10.4
 
-**困惑度 = e^loss**，可以理解为"模型在N个等可能的token之间选择"
+<strong>困惑度 = e^loss</strong>，可以理解为"模型在N个等可能的token之间选择"
 
 PPL 32,000 = 随机猜测
 
@@ -1379,9 +1379,9 @@ PPL 10 = 相当自信的预测
 
 训练完成并将模型保存在Drive中后，下一步是将模型下载到你的本地系统以执行后续步骤。
 
-现在我们有了一个可用的模型，但一个问题出现了：它准备好像我们使用ChatGPT、Claude或Copilot等任何AI工具那样与之对话了吗？答案是**没有**，还没完全准备好。为什么？
+现在我们有了一个可用的模型，但一个问题出现了：它准备好像我们使用ChatGPT、Claude或Copilot等任何AI工具那样与之对话了吗？答案是<strong>没有</strong>，还没完全准备好。为什么？
 
-训练部分完成了，但它不知道如何以对话方式组织或撰写内容，比如回答用户查询。这就是我们所说的**监督微调（SFT）**步骤。
+训练部分完成了，但它不知道如何以对话方式组织或撰写内容，比如回答用户查询。这就是我们所说的<strong>监督微调（SFT）</strong>步骤。
 
 ## 4. 监督微调（SFT）
 
@@ -1400,11 +1400,11 @@ PPL 10 = 相当自信的预测
 
 ```
 
-大约**79个示例**被输入系统并保存为JSONL格式。在实际情况下，你会使用多得多的示例。正如我已经提到的，更多示例会带来更好的结果。
+大约<strong>79个示例</strong>被输入系统并保存为JSONL格式。在实际情况下，你会使用多得多的示例。正如我已经提到的，更多示例会带来更好的结果。
 
 ## 格式化对话数据
 
-下一步是将上面保存的对话格式化以供训练。这是SFT的对话格式化步骤。它将原始对话JSON转换为带有**损失掩码**的token ID序列，使模型只学习生成助手回复。
+下一步是将上面保存的对话格式化以供训练。这是SFT的对话格式化步骤。它将原始对话JSON转换为带有<strong>损失掩码</strong>的token ID序列，使模型只学习生成助手回复。
 
 损失掩码意味着我们有意对输入的某些部分隐藏训练损失。在这种情况下，我们掩码系统提示和用户消息，使模型不会被训练去记忆或复现它们。训练信号仅来自助手的回复，这是教导模型应该生成什么以及何时停止的有用部分。
 
@@ -1441,7 +1441,7 @@ labels:    [-100, -100, -100, -100, -100, ..., -100, -100, -100,    -100,..., -1
 
 ```
 
-**函数内部的逐步过程：**
+<strong>函数内部的逐步过程：</strong>
 
 1. 从BOS开始：
 
@@ -1472,9 +1472,9 @@ if content_ids[-1] == EOS_ID: content_ids = content_ids[:-1]
 
 助手的角色token（`gpt>`）本身被掩码，因为我们不想让模型学习预测它。但实际的回复内容和`<eos>`确实有标签，所以模型学到：
 
-**说什么**（回复内容）
+<strong>说什么</strong>（回复内容）
 
-**何时停止**（预测`<eos>`）
+<strong>何时停止</strong>（预测`<eos>`）
 
 4. 截断和填充：
 
@@ -1582,7 +1582,7 @@ class SFTDataset(Dataset):
 
 这将所有79个格式化的对话包装到PyTorch Dataset中。初始化时，它使用`format_conversation()`预格式化每个对话并存储结果。当DataLoader请求第`idx`个项时，它返回`(input_ids, labels)`张量。
 
-**DataLoader：**
+<strong>DataLoader：</strong>
 
 ```
 sft_loader = DataLoader(sft_dataset, batch_size=4, shuffle=True)
@@ -1708,7 +1708,7 @@ loss = F.cross_entropy(
 
 与预训练的一个关键区别是：在预训练中，我们将targets直接传给`model(input_ids, targets)`，它在所有token上内部计算损失。这里我们手动计算损失，以便使用`ignore_index=-100`来掩码非助手位置。
 
-**偏移：** `logits[:, :-1]`和`labels[:, 1:]`实现下一个token预测。模型在位置`i`的预测与位置`i+1`的实际token进行比较。
+<strong>偏移：</strong> `logits[:, :-1]`和`labels[:, 1:]`实现下一个token预测。模型在位置`i`的预测与位置`i+1`的实际token进行比较。
 
 反向传播 + 更新：
 
@@ -1786,7 +1786,7 @@ def chat(model, tokenizer, user_message: str, system_prompt: str = None,
 
 以下是逐步拆解：
 
-**1. 构建提示：**
+<strong>1. 构建提示：</strong>
 
 ```
 prompt_ids = [BOS_ID, SYSTEM_ID]
@@ -1808,7 +1808,7 @@ prompt_ids.append(ASSISTANT_ID)      # "Now respond..."
 
 模型看到`gpt>`后知道"我现在应该生成回复"，因为在SFT期间，它学到`gpt>`之后的token就是它应该产生的内容。
 
-**2. 自回归生成：**
+<strong>2. 自回归生成：</strong>
 
 ```
 with torch.no_grad():
@@ -1833,7 +1833,7 @@ with torch.no_grad():
 
 `eos_token_id`：当产生`<eos>`时停止生成
 
-**3. 提取和解码：**
+<strong>3. 提取和解码：</strong>
 
 ```
 generated_ids = output_ids[0][len(prompt_ids):].tolist()    # Only the new tokens
@@ -1900,11 +1900,11 @@ if __name__ == "__main__":
 
 `theme=gr.themes.Soft()`提供干净、现代的视觉主题。
 
-**注意：** Hugging Face Spaces将`app.py`作为独立脚本运行，所以仓库中完整的`app.py`将所有内容内联到一个文件中：模型配置、完整的Transformer架构、使用`gc.collect()`进行内存优化的模型加载、`chat()`函数，以及上面的Gradio界面。
+<strong>注意：</strong> Hugging Face Spaces将`app.py`作为独立脚本运行，所以仓库中完整的`app.py`将所有内容内联到一个文件中：模型配置、完整的Transformer架构、使用`gc.collect()`进行内存优化的模型加载、`chat()`函数，以及上面的Gradio界面。
 
 我们不会在这里重复所有这些，因为它们已经在预训练和SFT部分讲过了。
 
-**本地运行：**
+<strong>本地运行：</strong>
 
 ```
 python app.py
@@ -1918,7 +1918,7 @@ python app.py
 
 Hugging Face Spaces为Gradio应用提供免费的CPU托管。
 
-**需要上传的文件：**
+<strong>需要上传的文件：</strong>
 
 ```
 urdu-llm-chat/
@@ -1936,7 +1936,7 @@ urdu-llm-chat/
 
 ```
 
-**工作方式：**
+<strong>工作方式：</strong>
 
 在[huggingface.co](https://huggingface.co)创建免费账户
 
@@ -1950,7 +1950,7 @@ Hugging Face自动安装依赖并运行`app.py`
 
 你的模型上线于`https://huggingface.co/spaces/USERNAME/urdu-llm-chat`
 
-**为什么CPU就够了：** 我们的模型只有23M参数（约90MB）。CPU上的推理不到1秒。服务不需要GPU。
+<strong>为什么CPU就够了：</strong> 我们的模型只有23M参数（约90MB）。CPU上的推理不到1秒。服务不需要GPU。
 
 ## 选项B：本地运行
 
@@ -2126,11 +2126,11 @@ python inference/chat.py
 
 | 阶段 | 描述 |
 |------|------|
-| **阶段1** | 原始乌尔都语文本 → 清洗后的语料库 |
-| **阶段2** | 语料库 → BPE分词器（32K词汇表） |
-| **阶段3** | 分词后的块 → 预训练GPT（23M参数，下一个token预测） |
-| **阶段4** | 对话 → 带损失掩码的SFT → 聊天模型 |
-| **部署** | `app.py` + 模型权重 → Hugging Face Spaces / 本地 |
+| <strong>阶段1</strong> | 原始乌尔都语文本 → 清洗后的语料库 |
+| <strong>阶段2</strong> | 语料库 → BPE分词器（32K词汇表） |
+| <strong>阶段3</strong> | 分词后的块 → 预训练GPT（23M参数，下一个token预测） |
+| <strong>阶段4</strong> | 对话 → 带损失掩码的SFT → 聊天模型 |
+| <strong>部署</strong> | `app.py` + 模型权重 → Hugging Face Spaces / 本地 |
 
 你可以在这里查看已部署的模型：[https://huggingface.co/spaces/Wisamul/urdu_llm](https://huggingface.co/spaces/Wisamul/urdu_llm)
 

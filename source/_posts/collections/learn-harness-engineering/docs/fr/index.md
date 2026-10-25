@@ -42,7 +42,7 @@ Choisissez votre parcours d'apprentissage. Le cours est divisé en leçons théo
 
 ## Le mécanisme central d'un harness
 
-Un harness ne "rend pas le modèle plus intelligent" ; il met en place un **système de travail** en boucle fermée pour le modèle. Le flux central peut être compris avec ce schéma :
+Un harness ne "rend pas le modèle plus intelligent" ; il met en place un <strong>système de travail</strong> en boucle fermée pour le modèle. Le flux central peut être compris avec ce schéma :
 
 ```mermaid
 graph TD

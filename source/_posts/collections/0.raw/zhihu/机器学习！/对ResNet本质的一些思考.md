@@ -27,11 +27,11 @@ source_url: https://zhuanlan.zhihu.com/p/60668529
 
 具体表现出来就是：若是我们对一个feature，先通过一个给定的变换规则T，将它映射到它的embedding space中，再在该embedding space中，利用一个ReLU去处理该feature，最后再把这个feature以同样的变换规则（逆方向）给映射回原始空间，我们会发现，这时，这个feature已经变得连亲妈都不认得了。如图↓
 
-![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_94122c1fb3a0.jpg)
+![](/images/collections/0.raw/zhihu/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%EF%BC%81/asset/img_94122c1fb3a0.jpg)
 
 图片来自《MobileNetV2: Inverted Residuals and Linear Bottlenecks》ReLU这个东西，其实就是一个滤波器，只不过这个滤波器的作用域不是信号处理中的频域，而是特征域。那么滤波器又有什么作用呢？维度压缩，俗话说就是降维啦：如果我们有m个feature被送入ReLU层，过滤剩下n个（n梯度消失，这将导致神经元的权重无法再通过梯度下降法进行更新，这种现象被称为特征退化。所以这个神经元相当于死掉了，丧失了学习能力。我们说，一旦神经元的输出陷入0值，就无法恢复了。
 
-![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_c3fbf86dada0.jpg)
+![](/images/collections/0.raw/zhihu/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%EF%BC%81/asset/img_c3fbf86dada0.jpg)
 
 那么，我们应该怎么去规避数据的坍塌呢？非线性激活层到底是个什么样的东西？
 
@@ -54,7 +54,7 @@ source_url: https://zhuanlan.zhihu.com/p/60668529
 最后是两个小tips：
 
 - 如果一个信息可以完整地流过一个非线性激活层，则这个非线性激活层对于这个信息而言，相当于仅仅作了一个线性激活。
-- **解决由非线性激活导致的反向传播梯度消失的窍门，就是要提高进行非线性激活的信息的冗余度**。
+- <strong>解决由非线性激活导致的反向传播梯度消失的窍门，就是要提高进行非线性激活的信息的冗余度</strong>。
 
 如果您觉得本文对您有所帮助，请高抬贵手点个赞~
 

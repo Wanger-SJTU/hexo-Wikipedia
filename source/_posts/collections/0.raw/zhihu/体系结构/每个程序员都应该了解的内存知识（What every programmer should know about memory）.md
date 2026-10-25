@@ -41,20 +41,20 @@ https://people.freebsd.org/~lstewart/articles/cpumemory.pdf原文作者：Ulrich
 
 - socket（插槽）：固定 CPU 的插座，如下图。一般个人电脑主板上只有一个 socket，服务器主板可能有多个 socket。
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_52cbdf24a49b.png)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_52cbdf24a49b.png)
 
 - processor（处理器）：封装了 core 以及其他电路的物理实体芯片。通常把两个或更多独立 core  封装在一个单一集成电路（IC）中的方案会称为多核心处理器。如图就是 1 个处理器。
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_862f5dda7dea.png)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_862f5dda7dea.png)
 
 - core（核心）：“物理核心”**，多核处理器上的独立处理单元实例。
-- thread（线程）：**“逻辑核心”**，在硬件角度上来说，实际上是添加了计算单元和逻辑单元，但是没有分配缓存和控制器的逻辑核心。这个逻辑核心可以进行独立的计算，但是缓存【无论是指令缓存还是数据缓存】是和“物理核心 core”共享的，也就是说“物理核心”分出了一部分 L1 和 L2 给超线程的逻辑核心。任务管理器里的框框就是 thread。一般来说 1 个 core 有 2 个 thread。<span class="wikilink wikilink--missing" title="未导入的页面">1</span>(#ref_1)
+- thread（线程）：<strong>“逻辑核心”</strong>，在硬件角度上来说，实际上是添加了计算单元和逻辑单元，但是没有分配缓存和控制器的逻辑核心。这个逻辑核心可以进行独立的计算，但是缓存【无论是指令缓存还是数据缓存】是和“物理核心 core”共享的，也就是说“物理核心”分出了一部分 L1 和 L2 给超线程的逻辑核心。任务管理器里的框框就是 thread。一般来说 1 个 core 有 2 个 thread。<span class="wikilink wikilink--missing" title="未导入的页面">1</span>(#ref_1)
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_813238b6d252.png)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_813238b6d252.png)
 
 **
 
-- The following resources are shared between two threads running in the same core**:**
+- The following resources are shared between two threads running in the same core<strong>:</strong>
 
 - Cache
 - Branch prediction resources
@@ -65,7 +65,7 @@ https://people.freebsd.org/~lstewart/articles/cpumemory.pdf原文作者：Ulrich
 
 该部分详细描述了随机存取存储器 (RAM) 的技术细节，包括 SRAM，DRAM 的电路实现，访问时序等细节。对于这些细节，程序员简单了解即可，更值得关注的是 CPU 访问内存，外部设备的模型，即 CPU-总线模型。
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_a71bab74e28e.png)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_a71bab74e28e.png)
 
 如图，是一个典型的南桥，北桥结构。
 
@@ -79,13 +79,13 @@ https://people.freebsd.org/~lstewart/articles/cpumemory.pdf原文作者：Ulrich
 
 #### 共享前端总线 (FSB)，2004 年之前
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_c44cdd46c88c.png)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_c44cdd46c88c.png)
 
 和最初的模型一致，所有处理器共享 FSB 总线连接到南桥；而南桥与内存，外部设备（通过北桥）通信。
 
 #### 双独立总线，大约 2005 年
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_d4dbf803ae67.png)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_d4dbf803ae67.png)
 
 和上一个模型的变化就是，单共享总线变成了双独立总线（DIB）**，其余大致相同。
 
@@ -93,29 +93,29 @@ https://people.freebsd.org/~lstewart/articles/cpumemory.pdf原文作者：Ulrich
 
 **
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_56dbe5b8e18b.png)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_56dbe5b8e18b.png)
 
 Intel 的官方的叫法是 Dedicated High-speed Interconnects（DHSI，专用高速互联）。实际就是每个处理器独占一条 FSB 总线与南桥相连。
 
 #### QPI 时代，2009 年
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_0e496a93d079.png)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_0e496a93d079.png)
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_b612270154a3.png)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_b612270154a3.png)
 
 Intel® QuickPath Interconnect（QPI）技术最早发布于 2009 年 3 月的代号为 Nehalem 的 Xeon 处理器上。可以把 QPI 也理解为一种总线，总线本身怎么变化我们不关心，我们关注的是模型的变化。图二是 X58 平台的结构图，请结合以上两张图进行理解<span class="wikilink wikilink--missing" title="未导入的页面">3</span>(#ref_3)。
 
-最重要的变化是，内存控制器被集成进了 CPU 里，不再由北桥负责**。北桥仅负责 PCI-E 以及和南桥通讯（图二）。而每个 CPU 都有一个内存控制器，都可以独立的访存，互相之间通过 QPI 进行通讯，**架构变成了明显的非统一内存访问架构**（NUMA<span class="wikilink wikilink--missing" title="未导入的页面">4</span>(#ref_4)），这也带来了数据一致性等额外的问题。
+最重要的变化是，内存控制器被集成进了 CPU 里，不再由北桥负责<strong>。北桥仅负责 PCI-E 以及和南桥通讯（图二）。而每个 CPU 都有一个内存控制器，都可以独立的访存，互相之间通过 QPI 进行通讯，</strong>架构变成了明显的非统一内存访问架构**（NUMA<span class="wikilink wikilink--missing" title="未导入的页面">4</span>(#ref_4)），这也带来了数据一致性等额外的问题。
 
 #### 后 QPI 时代，2012 年
 
 **
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_8f9e42444fe9.png)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_8f9e42444fe9.png)
 
 从 E5 处理器开始（Q2'12），又发生了一些变化。
 
-CPU 同时集成内存控制器和 PCI-E 控制器，传统意义的北桥消失**，QPI 只负责 CPU 之间的通信；**芯片组（传统意义的南桥）和 CPU 的通信使用 DMI 总线。
+CPU 同时集成内存控制器和 PCI-E 控制器，传统意义的北桥消失<strong>，QPI 只负责 CPU 之间的通信；</strong>芯片组（传统意义的南桥）和 CPU 的通信使用 DMI 总线。
 
 自 2017 年起，Intel Ultra Path Interconnect (UPI) 代替了 QPI  总线技术<span class="wikilink wikilink--missing" title="未导入的页面">5</span>(#ref_5)。但 CPU-总线模型没有变化。
 
@@ -142,12 +142,12 @@ CPU 同时集成内存控制器和 PCI-E 控制器，传统意义的北桥消失
 
 - 在引入 cache 之后，处理器访问主存首先通过 cache ，而 cache 与主存存取的单位通常为 1 cache line (通常为 64 Bytes)
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_14ea67e1bc3d.png)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_14ea67e1bc3d.png)
 
 - MMU 进行虚拟内存地址映射时，单位为 page （通常为 4 KiB）。例如 `0x10000` 虚拟地址映射到 `0xF0000`, 指的是 `0x10000-0x1FFFF` 这连续的 1 page（假设为 4 KiB）地址空间映射到 `0xF0000-0xFFFFF`。以 page 为单位进行映射，也以 page 为单位进行管理，但 page 的大小是可以设置的。
 最简单的一级页表
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_e8c8d5213bc5.png)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_e8c8d5213bc5.png)
 
 通常，VA 的低位部分作为 offset ，用于在 page 内进行偏移，假设 offset 字段长 n bits，那 1 page 的大小就是 2^n bytes。VA 的高位部分作为索引，用于在页表中确定页表项。页表项说明了 VA 与 PA 的映射关系，以及其他的一些访问权限管理。
 
@@ -161,7 +161,7 @@ CPU 同时集成内存控制器和 PCI-E 控制器，传统意义的北桥消失
 
 下图是，x86-64 平台上 4 级页表的示意图。**
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_693d6b579487.png)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_693d6b579487.png)
 
 如图，VA 被分为六个部分。
 
@@ -184,7 +184,7 @@ CPU 有一个专用的寄存器（x86-64 上为 CR3），保存着最高级（�
 
 下图是 x64 平台，每一级页表项的详细信息。**
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_fe1b7f62e2b3.png)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_fe1b7f62e2b3.png)
 
 #### Huge page
 
@@ -194,11 +194,11 @@ Windows  和 Linux 都允许服务器应用程序建立大页面内存区域。�
 
 在 64 位的 x86-64 中，支持 2MiB（4KB * 2^9= 2MB，PD（2 级页表）跳过 PT（1 级页表） 直接指向 page）和 1GiB（2MB * 2^9 = 1GB，PDPT（3 级页表） 跳过 PD 和 PT（2 级和 1 级页表） 直接指向 page）的 large page<span class="wikilink wikilink--missing" title="未导入的页面">8</span>(#ref_8)。
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_bd9b3df26df1.png)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_bd9b3df26df1.png)
 
 下图<span class="wikilink wikilink--missing" title="未导入的页面">9</span>(#ref_9)，分别是 1 GiB，2 MiB，4 KiB 页表项的 Entry 说明。
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_dd01ac22a45f.png)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_dd01ac22a45f.png)
 
 关于 huge page 的更多资料，可以参考  Java, MySql increased performance with Huge Pages
 
@@ -230,15 +230,15 @@ TLB 也是一块的高速缓存，与常规意义的 Cache 物理实现类似，
 
 虚拟地址转换过程是以 page 为单位的，因此 VA 的低位部分不变成为 PA 的低位部分，VA 的高位部分需要转换成 PA 的高位部分，组合得到 PA。由此产生了4个概念：VPN（virtual page number），PPN（physical page number），VPO（virtual page offset）和 PPO（physical page offset）。
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_1bea11a277ec.png)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_1bea11a277ec.png)
 
 为了在 TLB 中搜索，VPN 部分又被分为两部分 TLB tag 和 TLB Index.
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_c0f4afc7c339.png)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_c0f4afc7c339.png)
 
 使用 TLB Index 部分（不需要存在 TLB 中，就像数组的下标）在 TLB 中索引，使用 TLB Tag 部分比对，以确定是否为对应的 VA 。TLB 中真正缓存的是页表项的内容（Page Table Entry），包括 VA 对应的 PA ，权限控制位，valid 标志等。图源<span class="wikilink wikilink--missing" title="未导入的页面">11</span>(#ref_11)，该图只是简单的说明，并不代表现 X86 TLB entry 内容。
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_81b3691c5f5f.png)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_81b3691c5f5f.png)
 
 #### TLB flush
 
@@ -256,10 +256,10 @@ TLB 也是一块的高速缓存，与常规意义的 Cache 物理实现类似，
 
 - 进程切换频繁，从 A 进程切换成 B 进程时，TLB flush 掉 A 的页表，当又切换回 A 进程时，A 面临一个空的 TLB，这个过程频繁发生，会降低性能
 
-- linux 里采用 PID（Process ID）来区别和管理不同的进程，类似的，我们也可以在 TLB 中加上这样一个 tag，如果虚拟地址的 tag 相同，就再比较这个标识进程的 tag，这样就可以分清了，不会冲突了。在 x86里这叫PCID** （Process Context Identifiers），在 ARM 里这叫**ASID**（Address Space Identifiers）。
+- linux 里采用 PID（Process ID）来区别和管理不同的进程，类似的，我们也可以在 TLB 中加上这样一个 tag，如果虚拟地址的 tag 相同，就再比较这个标识进程的 tag，这样就可以分清了，不会冲突了。在 x86里这叫PCID<strong>（Process Context Identifiers），在 ARM 里这叫</strong>ASID**（Address Space Identifiers）。
 - 那 TLB 在缓存页表 PTE 的时候，怎么知道该 PTE 所属进程的 PCID/ASID 呢？以 intel 的 x64为例，CR3寄存器了存储了当前进程对应的 PCID
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_62d8f95a847f.png)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_62d8f95a847f.png)
 
 **
 
@@ -280,7 +280,7 @@ TLB 也是一块的高速缓存，与常规意义的 Cache 物理实现类似，
 
 Intel 的 TLB 层级及大小具体如下<span class="wikilink wikilink--missing" title="未导入的页面">12</span>(#ref_12)。
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_7d6cb4385a25.png)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_7d6cb4385a25.png)
 
 #### PTI（Page Table Isolation）
 
@@ -323,7 +323,7 @@ PTI通过完全分离用户空间与内核空间页表来解决页表泄露。
 
 在 TLB 那一节我们介绍了，CPU 访问 L1 Cache 的花费大概是 2ns ，L2 Cache 大概是 4ns ，DRAM 大概是 60 ns，访问 Cache 比访问内存快得多。
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_b70caed7fdbb.png)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_b70caed7fdbb.png)
 
 #### Cache 层级
 
@@ -343,25 +343,25 @@ PTI通过完全分离用户空间与内核空间页表来解决页表泄露。
 
 在 Linux 上，可以通过 `dmidecode -t cache` 或 `lscpu` 获取你本机的 Cache 信息。
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_f79a899a4c07.png)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_f79a899a4c07.png)
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_1d257618ec51.png)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_1d257618ec51.png)
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_5b1cf53ad91e.png)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_5b1cf53ad91e.png)
 
 #### Cache 读策略
 
 > http://www.valleytalk.org/wp-content/uploads//CPU-Cache-and-Memory-Ordering.pdf
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_bbe645fcf32a.png)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_bbe645fcf32a.png)
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_c9b61e022a49.png)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_c9b61e022a49.png)
 
 通常来说，L1 ⊂L2 ⊂L3 ⊂main memory
 
 如图，来自 Intel 的 White paper<span class="wikilink wikilink--missing" title="未导入的页面">13</span>(#ref_13)。
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_20134e3de783.png)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_20134e3de783.png)
 
 每个物理核心都包含自己的私有 L1和 L2 缓存。然而，L3 是共享的，可以被系统中的所有内核完全访问和利用。在英特尔 Xeon v3处理器上，L3 是一个 Inclusive 的高速缓存 (一个包容性的高速缓存包括所有存储在低级别的高速缓存中的数据)。如果对数据的请求错过了一个内核的 L1和 L2，那么这个请求就会继续到 L3 去接受服务。如果 L3 hit，那么可能需要窥探 (snooping)以保持与另一个可能拥有该数据的核的一致性。否则，在 L3 miss 的情况下，请求将在内存中得到服务。
 
@@ -372,7 +372,7 @@ L3-last level cache (LLC)
 
 #### Cache 写策略
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_3b12c6265687.png)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_3b12c6265687.png)
 
 通过 `dmidecode -t cache` 命令，同样可以知道本机的 Cache 写策略，我的如下，均为 Write Back 。
 
@@ -430,18 +430,18 @@ Cache Information
 
 直接映射，全相联映射，N-路组相联映射，这三个听起来令人困惑，下面这张图很好的进行了解释。图中右下方的表为 2 路组相联，共有 16 组。
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_4174807c9c18.png)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_4174807c9c18.png)
 
 Cache 是对内存进行的缓存，其单位为 Cache line，1 Cache line 通常为 64 KiB。
 
 - 读 1 字节，但不在 Cache 中 -> 需要从内存中读 1 Cache line.
 - 仅修改了 1 字节，写回内存 -> 需要把 1 Cache line 全部写回（通常如此）
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_88e6c294b5ca.png)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_88e6c294b5ca.png)
 
 如图展示了 Cache 的查找过程。
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_89c3e70ba6ea.png)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_89c3e70ba6ea.png)
 
 VIPT, PIPT
 
@@ -460,18 +460,18 @@ PIPT：Physical Index Physical Tag
 
 在 Cache 中查找需要等到 VA 转化为 PA 之后。
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_2313642e3aa0.png)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_2313642e3aa0.png)
 
 VIPT:：Virtual Index Physical Tag
 虚拟地址做 index，物理地址做 tag。
 
 在 Cache 中查找与 VA 转化为 PA 的过程同时进行，性能有所提升。
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_26de79dfccfe.png)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_26de79dfccfe.png)
 
 Intel 没有公布过他们的实现方法，下图是 ARM 系列的。
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_64a281fce493.png)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_64a281fce493.png)
 
 #### 缓存一致性
 
@@ -499,9 +499,9 @@ Cache 一致性解决了核之间数据可见性以及顺序的问题, 本质上
 
 这两个 buffer 是下图中② out of order engine 中的一部分, 顾名思义就是跟乱序执行有关系.
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_2ebbecb16de4.png)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_2ebbecb16de4.png)
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_a93d12579938.png)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_a93d12579938.png)
 
 数据读取(load buffer)跟不影响数据对外的可见性, 但是 store buffer 会, 数据从 CPU 的 store buffer 出来到 cache, 上其他核就可以看到该数据.
 
@@ -540,7 +540,7 @@ https://blog.csdn.net/wll1228/article/details/107775976
 
 至此，我们可以梳理一下完整的访存过程了（PIPT）。
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_05d843dd3153.png)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_05d843dd3153.png)
 
 ### P4 -  NUMA (non-uniform memory access)
 
@@ -596,7 +596,7 @@ void setbytes(char *p, int c)
 // https://godbolt.org/z/T46z8hnfc
 `
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_969123539adf.png)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_969123539adf.png)
 
 假设指针 p 对齐到正确的地址，对此函数的调用将把 cache line 的所有字节（64B）设置为 c。写合并逻辑将看到四条生成的 `movntdq` 指令，并且只在最后一条指令执行完毕后才发出内存的 write 命令。总之，这个代码序列不仅可以避免在写入 cache line 之前读取 cache line，还避免了用可能不需要的数据污染 cache line。在某些情况下，这会带来巨大的好处。使用这种技术的日常代码的一个例子是 C 运行时中的 `memset` 函数，它应该对大块使用类似上面的代码序列。
 
@@ -615,11 +615,11 @@ Non-temporal 操作约等同于写合并+ no-write-allocate + no-fetch-on-write-
 
 **
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_bea6dcbeba8f.png)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_bea6dcbeba8f.png)
 
 我们测量初始化3000×3000矩阵所需的时间。
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_b580061ffe38.png)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_b580061ffe38.png)
 
 https://quick-bench.com/q/_IyZEMUqWjPXMYtWtdFI_FG4PcA
 
@@ -641,7 +641,7 @@ __m128i _mm_stream_load_si128 (__m128i *p);
 如果内存源是 WC（写组合）内存类型[…]，则使用 Non-temporal hint 将双四字从源操作数（第二个操作数）加载到目标操作数。
 […]处理器不会将数据读取到缓存层次结构中，也不会将相应的 cache line 从内存提取到缓存层次中。
 
-我们应该从这个实验中得到的是，现代 CPU 非常好地优化了未缓存的写**和 **（最近）读访问** ，只要它们是连续的。当处理仅使用一次的大型数据结构时，这些知识非常有用。第二，缓存可以帮助掩盖随机内存访问的部分但不是全部成本。由于 RAM 访问的实现，本例中的随机访问速度慢了 11 倍。在实现更改之前，应尽可能避免随机访问。
+我们应该从这个实验中得到的是，现代 CPU 非常好地优化了未缓存的写<strong>和</strong>（最近）读访问** ，只要它们是连续的。当处理仅使用一次的大型数据结构时，这些知识非常有用。第二，缓存可以帮助掩盖随机内存访问的部分但不是全部成本。由于 RAM 访问的实现，本例中的随机访问速度慢了 11 倍。在实现更改之前，应尽可能避免随机访问。
 
 #### Cache 访问
 
@@ -653,7 +653,7 @@ __m128i _mm_stream_load_si128 (__m128i *p);
 
 使用的示例代码是矩阵乘法。我们使用两个1000×1000 double 方阵。**
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_627e46e75476.png)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_627e46e75476.png)
 
 一个简单的 C 实现可以是这样的:
 
@@ -667,7 +667,7 @@ __m128i _mm_stream_load_si128 (__m128i *p);
 
 有一种可能的补救办法。由于矩阵中的每个元素都被多次访问，因此在使用第二个矩阵 mul2之前，可能需要重新排列（用数学术语“转置”）。
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_49c204c488e4.png)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_49c204c488e4.png)
 
 转置后(传统上用上标‘ T’表示) ，我们现在按顺序迭代两个矩阵。就 C 代码而言，它现在看起来是这样的:
 
@@ -683,7 +683,7 @@ __m128i _mm_stream_load_si128 (__m128i *p);
 
 我们创建一个临时变量来包含转置矩阵。这需要更多的内存，但由于每列1000次非顺序访问更昂贵（至少在现代硬件上如此）。
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_103f42ee64eb.png)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_103f42ee64eb.png)
 
 https://quick-bench.com/q/6AjzV23SWKj5125Z9WulIaEST-Q
 
@@ -718,7 +718,7 @@ for (i = 0; i  N; i += SM)
 
 > 作者这里提到的是 Strict Aliasing Rule，具体可以见 [https://zhuanlan.zhihu.com/p/595286568](https://zhuanlan.zhihu.com/p/595286568)
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_d83f40af5844.png)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_d83f40af5844.png)
 
 https://quick-bench.com/q/mmCA_YqPBiGsE8vY8POpSvYzwCo
 
@@ -732,7 +732,7 @@ https://quick-bench.com/q/mmCA_YqPBiGsE8vY8POpSvYzwCo
 
 事实上，更常见的情况是，数据结构占据一个或多个高速缓存行，且程序运行时在任意时间点只使用其中的几个成员。
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_ac23667dd7fc.png)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_ac23667dd7fc.png)
 
 上图显示了一组基准测试的结果，这个基准使用了目前广泛使用的程序，我们将一个列表中的两个元素值进行相加。第一种情况是两个元素都在同一个缓存行中；另一种情况，一个元素位于列表元素的第一行缓存中，第二个元素位于最后一个缓存行中。该图显示了我们记录下的性能下降程度。
 
@@ -747,7 +747,7 @@ https://quick-bench.com/q/mmCA_YqPBiGsE8vY8POpSvYzwCo
 
 **
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_ebe4d1566087.png)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_ebe4d1566087.png)
 
 上图显示了未对齐内存访问的影响。我们的测试方法是，（顺序或随机）访问内存中的列表数据元素，并增加数据元素的值，先测试列表元素对齐时的性能，再测试列表元素故意不对齐时的性能。该图显示了由于未对齐访问而导致的程序速度下降。对于顺序访问的情况，其影响要比对随机情况的影响更为显着，因为随机访问的内存访问开销太大了，一定程度上掩盖了未对齐访问的开销。在顺序情况下，对于需要使用 L2高速缓存的工作集大小，性能降低了大约300％，这是因为此时 L1缓存的有效性降低了。现在，某些增加操作涉及两条高速缓存行，并且在列表元素上工作通常需要读取两条高速缓存行。L1和 L2之间的连接太拥挤了。
 
@@ -808,7 +808,7 @@ https://quick-bench.com/q/mmCA_YqPBiGsE8vY8POpSvYzwCo
 }
 `
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_99355df16ed0.png)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_99355df16ed0.png)
 
 通常编译器生成代码的顺序与源代码的结构匹配。这意味着首先是代码块 A，然后是条件跳转，如果条件为假，则条件跳转将向前跳转。接下来是为内联的 `inlfct` 函数生成的代码，最后是代码块 C。在着起来很合理的行为含有隐藏的问题。
 
@@ -922,9 +922,9 @@ Intel 在他们的芯片组和 CPU 中增加了技术来缓解这个问题 [dire
 
 直接缓存访问 (DCA) 背后的想法是扩展 NIC 和内存控制器之间的协议。
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_a110beba9e62.png)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_a110beba9e62.png)
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_666d3ed03daa.png)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_666d3ed03daa.png)
 
 第一个图显示了在具有北桥和南桥的常规机器中 DMA 传输的开始。传统的行为是，简单地完成与内存连接的 DMA 传输。
 
@@ -952,7 +952,7 @@ NIC 连接到（或属于）南桥。它启动 DMA 访问，但提供有关应�
 
 但是，这种方法存在一个问题：如果多个线程写入内存位置，则缓存行必须在每个相应核心的 L1d 中处于“E”（exclusive）状态。这意味着会发送大量 RFO 请求，在最坏的情况下，每次写访问都会发送一个请求（MOESI 协议）。所以正常的写入会突然变得非常昂贵。如果使用相同的内存位置，则需要同步（可能通过使用原子操作，这将在下一节中处理）。
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_1217fc9e7615.png)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_1217fc9e7615.png)
 
 上图显示了这种“False sharing”的结果。测试程序创建了一些线程，它们除了递增内存位置（5 亿次）外什么都不做。测量的时间是从程序开始到等待最后一个线程后程序结束。线程固定到各个处理器。该机器有四个 P4 处理器。
 蓝色值表示分配给每个线程的内存分配位于单独的 Cache line 上的运行时间。
@@ -1028,7 +1028,7 @@ NIC 连接到（或属于）南桥。它启动 DMA 访问，但提供有关应�
 
 在 X86 上，普遍可用的原子操作可以分为四类：
 
-- **Bit Test**
+- <strong>Bit Test</strong>
 
 - These operations set or clear a bit atomically and return a status indicating whether the bit was set before or not.
 
@@ -1084,11 +1084,11 @@ CAS 调用的结果表明操作是否成功。如果返回失败（非零值）�
 
 `for (i = 0; i 
 
-**2. Add and Return Old Value**
+<strong>2. Add and Return Old Value</strong>
 
 `for (i = 0; i 
 
-**3. Atomic Replace with New Value**
+<strong>3. Atomic Replace with New Value</strong>
 
 这三者在 x86 和 x86-64 上产生不同的代码，而在其他架构上的代码可能相同。存在巨大的性能差异。下表显示了四个并发线程执行 100 万个增量的时间。该代码使用 gcc 的内置原语 ( _*sync*)。
 
@@ -1118,11 +1118,11 @@ X86 使用 `lock` 前缀使汇编操作具有原子性。
 
 **
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_bddbb43bacf7.png)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_bddbb43bacf7.png)
 
 有一种情况会导致 FSB 的大量使用，那就是当两个线程被安排在不同的处理器（或不共享缓存的内核）上，并且它们使用相同的数据集。上图显示了这样一种情况。核心1和3访问相同的数据（用相同颜色的访问指示器和内存区域来表示）。同样，核心2和4也访问相同的数据。但是这些线程被安排在不同的处理器上。这意味着每个数据集必须从内存中读取两次。
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_614144fa2395.png)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_614144fa2395.png)
 
 在上图中，我们看到了理想状态下的情况。现在使用的总的缓存大小减少了，因为现在核心1和2以及核心3和4在相同的数据上工作。这些数据集只需要从内存中读取一次。
 

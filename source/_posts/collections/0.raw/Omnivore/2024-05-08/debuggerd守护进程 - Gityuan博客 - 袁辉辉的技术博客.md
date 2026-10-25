@@ -1325,7 +1325,7 @@ static void dump_backtrace_and_stack(Backtrace* backtrace, log_t* log) {
 
 ```
 
-**4.4.5.1 输出backtrace信息**
+<strong>4.4.5.1 输出backtrace信息</strong>
 
 \[-> debuggerd/Backtrace.cpp\]
 
@@ -1338,7 +1338,7 @@ void dump_backtrace_to_log(Backtrace* backtrace, log_t* log, const char* prefix)
 
 ```
 
-**4.4.5.2 输出stack信息**
+<strong>4.4.5.2 输出stack信息</strong>
 
 \[-> debuggerd/tombstone.cpp\]
 
@@ -1560,7 +1560,7 @@ static void dump_thread(log_t* log, pid_t pid, pid_t tid, BacktraceMap* map, int
 
 ### 4.7 小节
 
-**engrave\_tombstone**主要输出信息：
+<strong>engrave\_tombstone</strong>主要输出信息：
 
 * dump\_header\_info
 * 主线程dump\_thread 【见小节4.7.1】
@@ -1672,7 +1672,7 @@ stack:
 
 ---
 
-**微信公众号** [ **Gityuan** ](http://gityuan.com/images/about-me/gityuan%5Fweixin%5Flogo.png)   **| 微博** [ **weibo.com/gityuan** ](http://weibo.com/gityuan)   **| 博客** [ **留言区交流** ](http://gityuan.com/talk/)
+<strong>微信公众号</strong> [ <strong>Gityuan</strong> ](http://gityuan.com/images/about-me/gityuan%5Fweixin%5Flogo.png)   <strong>| 微博</strong> [ <strong>weibo.com/gityuan</strong> ](http://weibo.com/gityuan)   <strong>| 博客</strong> [ <strong>留言区交流</strong> ](http://gityuan.com/talk/)
 
 ---
 

@@ -23,24 +23,24 @@ C++ 代码要想写好，关键点并不在于你有多么熟悉 C++ 的语法�
 
 #### 第一本书 《提高 C++  的编程技术》
 
-![](/images/collections/0.raw/zhihu/%25E5%25AD%25A6%25E4%25B9%25A0/asset/img_61c942453a60.jpg)![](/images/collections/0.raw/zhihu/%25E5%25AD%25A6%25E4%25B9%25A0/asset/img_db518c670d01.webp)
+![](/images/collections/0.raw/zhihu/%E5%AD%A6%E4%B9%A0/asset/img_61c942453a60.jpg)![](/images/collections/0.raw/zhihu/%E5%AD%A6%E4%B9%A0/asset/img_db518c670d01.webp)
 
 《提高 C++ 性能的编程技术》详细讨论了临时对象、内存管理、继承、虚函数、内联、引用计数以及 stl 等一切有可能提升 C++ 效率的细节内容。最终，该书将 C++ 性能提升的各种终极利器，完美地呈现在广大读者的面前！渴望突破 C++ 编程瓶颈、大幅提升自我修为的程序设计爱好者，都可以通过此书获益良多。
 
-当然，这本书中介绍的一些优化技巧，新版本的 C++ 编译器已经代开发者所做，但是这本书介绍了其背后的原理和思路。而且最重要的是，**这本书深入到代码层面，也就是说书中介绍的优化技巧和注意事项可以实实在在地指导你写出高效的 C++ 代码。**
+当然，这本书中介绍的一些优化技巧，新版本的 C++ 编译器已经代开发者所做，但是这本书介绍了其背后的原理和思路。而且最重要的是，<strong>这本书深入到代码层面，也就是说书中介绍的优化技巧和注意事项可以实实在在地指导你写出高效的 C++ 代码。</strong>
 
 这本书也是让我理解 C++ 代码该如何优化，思考如何写出高效 C++ 代码的第一本书。网上有同学分享出来了（链接收集于网络，喜欢请购买正版）：
 
 **链接：https://pan.baidu.com/s/1w2B20KHowcNOFcqa-fyoyQ 提取码: iwhs 
 #### 第二本书 《C++性能优化指南》
 
-![](/images/collections/0.raw/zhihu/%25E5%25AD%25A6%25E4%25B9%25A0/asset/img_0f78c7362949.jpg)![](/images/collections/0.raw/zhihu/%25E5%25AD%25A6%25E4%25B9%25A0/asset/img_9810644cfe1b.webp)
+![](/images/collections/0.raw/zhihu/%E5%AD%A6%E4%B9%A0/asset/img_0f78c7362949.jpg)![](/images/collections/0.raw/zhihu/%E5%AD%A6%E4%B9%A0/asset/img_9810644cfe1b.webp)
 
 这本书是一本 C++ 代码优化指南。书中主要内容有：代码优化的意义和总原则，与优化有关的计算机硬件背景知识，能行分析方法及工具，优化字符串的使用，算法、查找和排序等等。
 
 图书目录如下：
 
-![](/images/collections/0.raw/zhihu/%25E5%25AD%25A6%25E4%25B9%25A0/asset/img_12b7d28de3f1.jpg)
+![](/images/collections/0.raw/zhihu/%E5%AD%A6%E4%B9%A0/asset/img_12b7d28de3f1.jpg)
 
 网上有同学分享出来了（链接收集于网络，喜欢请购买正版）：
 
@@ -48,13 +48,13 @@ C++ 代码要想写好，关键点并不在于你有多么熟悉 C++ 的语法�
 
 我目前在大厂做 C++ 开发，我整理了一套 C/C++ 优质学习资料————CppGuide**，内容从 C/C++ 语言、网络编程、操作系统原理到完整的项目源码分析，同时这份资料也包括 C/C++ 学习方法、推荐的阅读书籍、简历指导和求职技巧等。
 
-**需要获取以下资料的同学可以点击这里：**
+<strong>需要获取以下资料的同学可以点击这里：</strong>
 
 [](https://link.zhihu.com/?target=https%3A//mp.weixin.qq.com/s/Oej6y-pYcv20YGo6cCyLwg)
 
-![](/images/collections/0.raw/zhihu/%25E5%25AD%25A6%25E4%25B9%25A0/asset/img_2c65aa91557a.jpg)
+![](/images/collections/0.raw/zhihu/%E5%AD%A6%E4%B9%A0/asset/img_2c65aa91557a.jpg)
 
-![](/images/collections/0.raw/zhihu/%25E5%25AD%25A6%25E4%25B9%25A0/asset/img_03bd84da9b9e.jpg)
+![](/images/collections/0.raw/zhihu/%E5%AD%A6%E4%B9%A0/asset/img_03bd84da9b9e.jpg)
 
 #### 想要还有
 

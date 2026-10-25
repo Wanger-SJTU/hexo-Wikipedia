@@ -13,12 +13,12 @@ categories:
 
 # 论文信息
 
-- **标题**: Dive into Claude Code: The Design Space of Today's and Future AI Agent Systems
-- **作者**: Jiacheng Liu, Xiaohan Zhao, Xinyi Shang, Zhiqiang Shen (VILA Lab, MBZUAI & UCL)
-- **arXiv**: 2604.14228
-- **原文链接**: https://papers.cool/arxiv/2604.14228
-- **代码**: https://github.com/VILA-Lab/Dive-into-Claude-Code
-- **分析版本**: Claude Code v2.1.88
+- <strong>标题</strong>: Dive into Claude Code: The Design Space of Today's and Future AI Agent Systems
+- <strong>作者</strong>: Jiacheng Liu, Xiaohan Zhao, Xinyi Shang, Zhiqiang Shen (VILA Lab, MBZUAI & UCL)
+- <strong>arXiv</strong>: 2604.14228
+- <strong>原文链接</strong>: https://papers.cool/arxiv/2604.14228
+- <strong>代码</strong>: https://github.com/VILA-Lab/Dive-into-Claude-Code
+- <strong>分析版本</strong>: Claude Code v2.1.88
 
 ---
 
@@ -30,7 +30,7 @@ categories:
 
 ### 核心发现
 
-研究识别出驱动架构的**五大人类价值**，通过**十三条设计原则**追溯到具体的实现选择。系统核心是一个简单的 while 循环（调用模型→运行工具→重复），但大部分代码围绕这个循环构建：七种模式的权限系统、五层上下文压缩管线、四种扩展机制、子代理委派机制和追加式会话存储。
+研究识别出驱动架构的<strong>五大人类价值</strong>，通过<strong>十三条设计原则</strong>追溯到具体的实现选择。系统核心是一个简单的 while 循环（调用模型→运行工具→重复），但大部分代码围绕这个循环构建：七种模式的权限系统、五层上下文压缩管线、四种扩展机制、子代理委派机制和追加式会话存储。
 
 ---
 
@@ -38,13 +38,13 @@ categories:
 
 AI 辅助软件开发已经从自动补全（GitHub Copilot）→ IDE 集成助手（Cursor）→ 完全自主的 Agent 系统（Claude Code）演进。
 
-Anthropic 对 132 名工程师和研究员的内部调查显示：约 **27% 的 Claude Code 辅助任务是在没有工具的情况下根本不会尝试的工作**，说明该架构带来了质变性的新工作流，而不仅仅是加速现有流程。
+Anthropic 对 132 名工程师和研究员的内部调查显示：约 <strong>27% 的 Claude Code 辅助任务是在没有工具的情况下根本不会尝试的工作</strong>，说明该架构带来了质变性的新工作流，而不仅仅是加速现有流程。
 
 ### 论文三大贡献
 
-1. **设计空间分析**：识别重复性设计问题，通过 7 组件高层结构和 5 层子系统架构分析 Claude Code 的回答
-2. **与 OpenClaw 的架构对比**：在六个设计维度上比较，展示不同部署上下文下的不同答案
-3. **未来 Agent 系统的开放方向**：识别六个开放设计方向
+1. <strong>设计空间分析</strong>：识别重复性设计问题，通过 7 组件高层结构和 5 层子系统架构分析 Claude Code 的回答
+2. <strong>与 OpenClaw 的架构对比</strong>：在六个设计维度上比较，展示不同部署上下文下的不同答案
+3. <strong>未来 Agent 系统的开放方向</strong>：识别六个开放设计方向
 
 ---
 
@@ -54,7 +54,7 @@ Anthropic 对 132 名工程师和研究员的内部调查显示：约 **27% 的 
 
 #### 1. 人类决策权威（Human Decision Authority）
 
-人类保留对系统行为的最终决策权。当 Anthropic 发现用户**批准 93% 的权限提示**时，他们没有加更多警告，而是重构了问题：定义边界（沙箱、自动模式分类器），让 Agent 在边界内自由工作。
+人类保留对系统行为的最终决策权。当 Anthropic 发现用户<strong>批准 93% 的权限提示</strong>时，他们没有加更多警告，而是重构了问题：定义边界（沙箱、自动模式分类器），让 Agent 在边界内自由工作。
 
 #### 2. 安全、隐私与保障（Safety, Security, and Privacy）
 
@@ -108,17 +108,17 @@ while (true) {
 }
 ```
 
-社区分析估计：只有约 **1.6% 的代码库是 AI 决策逻辑**，其余 98.4% 是操作基础设施。
+社区分析估计：只有约 <strong>1.6% 的代码库是 AI 决策逻辑</strong>，其余 98.4% 是操作基础设施。
 
 ### 七组件架构
 
-1. **用户**：提交提示、批准权限、审查输出
-2. **接口**：交互式 CLI、无头 CLI、Agent SDK、IDE/桌面/浏览器（所有接口汇入同一个循环）
-3. **Agent 循环**：模型调用→工具分发→结果收集
-4. **权限系统**：拒绝优先规则评估 + 自动模式 ML 分类器
-5. **工具**：最多 54 个内置工具（19 无条件 + 35 条件）+ MCP 工具
-6. **状态与持久化**：JSONL 会话转录（仅追加）
-7. **执行环境**：Shell 执行（可选沙箱）、文件系统、Web、MCP
+1. <strong>用户</strong>：提交提示、批准权限、审查输出
+2. <strong>接口</strong>：交互式 CLI、无头 CLI、Agent SDK、IDE/桌面/浏览器（所有接口汇入同一个循环）
+3. <strong>Agent 循环</strong>：模型调用→工具分发→结果收集
+4. <strong>权限系统</strong>：拒绝优先规则评估 + 自动模式 ML 分类器
+5. <strong>工具</strong>：最多 54 个内置工具（19 无条件 + 35 条件）+ MCP 工具
+6. <strong>状态与持久化</strong>：JSONL 会话转录（仅追加）
+7. <strong>执行环境</strong>：Shell 执行（可选沙箱）、文件系统、Web、MCP
 
 ### 五层子系统
 
@@ -137,15 +137,15 @@ while (true) {
 ### 查询管线
 
 每个 turn 的固定流程：
-1. **设置解析**：解构不可变参数
-2. **可变状态初始化**：单个 State 对象
-3. **上下文组装**：从上次压缩边界获取消息
-4. **Pre-model 上下文整形器**：五个整形器顺序执行
-5. **模型调用**：流式响应
-6. **工具使用分发**：并发读、串行写
-7. **权限门**：每个工具请求通过权限系统
-8. **工具执行和结果收集**
-9. **停止条件**：无工具使用 = turn 完成
+1. <strong>设置解析</strong>：解构不可变参数
+2. <strong>可变状态初始化</strong>：单个 State 对象
+3. <strong>上下文组装</strong>：从上次压缩边界获取消息
+4. <strong>Pre-model 上下文整形器</strong>：五个整形器顺序执行
+5. <strong>模型调用</strong>：流式响应
+6. <strong>工具使用分发</strong>：并发读、串行写
+7. <strong>权限门</strong>：每个工具请求通过权限系统
+8. <strong>工具执行和结果收集</strong>
+9. <strong>停止条件</strong>：无工具使用 = turn 完成
 
 ### 五层上下文压缩管线
 
@@ -185,17 +185,17 @@ while (true) {
 
 ### 授权管线
 
-1. **预过滤**：全面拒绝的工具从模型视图中移除
-2. **PreToolUse Hook**：可拒绝/修改请求
-3. **规则评估**：拒绝优先
-4. **权限处理器**：协调器/群集工作器/推测分类器/交互式
-5. **Shell 沙箱**：独立的文件系统和网络隔离
+1. <strong>预过滤</strong>：全面拒绝的工具从模型视图中移除
+2. <strong>PreToolUse Hook</strong>：可拒绝/修改请求
+3. <strong>规则评估</strong>：拒绝优先
+4. <strong>权限处理器</strong>：协调器/群集工作器/推测分类器/交互式
+5. <strong>Shell 沙箱</strong>：独立的文件系统和网络隔离
 
 ### 自动模式分类器
 
 使用 ML 模型评估工具安全性，产生允许/拒绝/请求人工批准。
 
-**关键发现**：安全研究人员发现，超过 50 个子命令的命令会回退到单一通用批准提示，因为逐子命令解析会导致 UI 冻结——展示了纵深防御在层共享故障模式时可能退化。
+<strong>关键发现</strong>：安全研究人员发现，超过 50 个子命令的命令会回退到单一通用批准提示，因为逐子命令解析会导致 UI 冻结——展示了纵深防御在层共享故障模式时可能退化。
 
 ---
 
@@ -205,10 +205,10 @@ while (true) {
 
 | 机制 | 作用 | 上下文成本 |
 |------|------|-----------|
-| **MCP 服务器** | 外部工具集成 | 初始仅加载名称 |
-| **插件** | npm 安装的组件包 | 按需加载和缓存 |
-| **技能** | 目录化领域特定行为 | 引用时加载 |
-| **Hook** | 工具执行生命周期拦截 | 不增加上下文内容 |
+| <strong>MCP 服务器</strong> | 外部工具集成 | 初始仅加载名称 |
+| <strong>插件</strong> | npm 安装的组件包 | 按需加载和缓存 |
+| <strong>技能</strong> | 目录化领域特定行为 | 引用时加载 |
+| <strong>Hook</strong> | 工具执行生命周期拦截 | 不增加上下文内容 |
 
 27 种 Hook 事件类型，其中 5 种与安全直接相关。
 
@@ -257,29 +257,29 @@ while (true) {
 
 | 维度 | Claude Code | OpenClaw |
 |------|------------|----------|
-| **部署上下文** | 专用编码 Agent | 多通道个人助手网关 |
-| **安全架构** | 逐操作安全评估 + 纵深防御 | 周界级访问控制 |
-| **执行模型** | 单一 CLI 循环 | 网关控制面内的嵌入运行时 |
-| **上下文管理** | 上下文窗口压缩管线 | 会话限制 + 外部存储 |
-| **扩展性** | 多种专门机制 | 统一扩展 API |
-| **扩展表面** | 上下文窗口扩展 | 网关级能力注册 |
+| <strong>部署上下文</strong> | 专用编码 Agent | 多通道个人助手网关 |
+| <strong>安全架构</strong> | 逐操作安全评估 + 纵深防御 | 周界级访问控制 |
+| <strong>执行模型</strong> | 单一 CLI 循环 | 网关控制面内的嵌入运行时 |
+| <strong>上下文管理</strong> | 上下文窗口压缩管线 | 会话限制 + 外部存储 |
+| <strong>扩展性</strong> | 多种专门机制 | 统一扩展 API |
+| <strong>扩展表面</strong> | 上下文窗口扩展 | 网关级能力注册 |
 
-**核心洞察**：相同的重复性设计问题在不同部署上下文中产生不同的架构答案。
+<strong>核心洞察</strong>：相同的重复性设计问题在不同部署上下文中产生不同的架构答案。
 
 ---
 
 ## 11. 六个未来开放方向
 
-1. **可观测性-评估差距**：受控环境 vs 真实使用
-2. **跨会话持久性**：长期状态和关系维护
-3. **Harness 边界演化**：模型改进时操作 Harness 如何适应
-4. **时间跨度扩展**：长期任务和依赖处理
-5. **治理**：负责任的 AI Agent 开发框架
-6. **评估视角**：系统是否支持长期人类能力提升
+1. <strong>可观测性-评估差距</strong>：受控环境 vs 真实使用
+2. <strong>跨会话持久性</strong>：长期状态和关系维护
+3. <strong>Harness 边界演化</strong>：模型改进时操作 Harness 如何适应
+4. <strong>时间跨度扩展</strong>：长期任务和依赖处理
+5. <strong>治理</strong>：负责任的 AI Agent 开发框架
+6. <strong>评估视角</strong>：系统是否支持长期人类能力提升
 
 ### 评估性视角
 
-研究揭示了一个开放问题：虽然 Claude Code 大幅放大了程序员的短期能力，但**缺乏明确支持长期人类提升、更深入理解和持续代码库一致性的机制**。
+研究揭示了一个开放问题：虽然 Claude Code 大幅放大了程序员的短期能力，但<strong>缺乏明确支持长期人类提升、更深入理解和持续代码库一致性的机制</strong>。
 
 Anthropic 自己的研究记录了"监督悖论"——过度依赖 AI 有萎缩监督所需技能的风险。独立研究发现，AI 辅助条件下的开发者在理解测试中得分低 17%。
 
@@ -287,15 +287,15 @@ Anthropic 自己的研究记录了"监督悖论"——过度依赖 AI 有萎缩�
 
 ## 核心启示
 
-1. **Agent ≠ 模型**：只有 1.6% 的代码是 AI 决策逻辑，98.4% 是操作基础设施
-2. **简单循环 + 丰富环境 > 复杂编排**：不做显式规划图，而是提供丰富的操作环境
-3. **拒绝优先 > 允许优先**：安全默认值 + 渐进信任
-4. **上下文是瓶颈**：五层压缩管线反映了对有限上下文窗口的深刻理解
-5. **部署上下文决定架构**：同样的问题，不同的答案
+1. <strong>Agent ≠ 模型</strong>：只有 1.6% 的代码是 AI 决策逻辑，98.4% 是操作基础设施
+2. <strong>简单循环 + 丰富环境 > 复杂编排</strong>：不做显式规划图，而是提供丰富的操作环境
+3. <strong>拒绝优先 > 允许优先</strong>：安全默认值 + 渐进信任
+4. <strong>上下文是瓶颈</strong>：五层压缩管线反映了对有限上下文窗口的深刻理解
+5. <strong>部署上下文决定架构</strong>：同样的问题，不同的答案
 
 ---
 
-> **论文**: Liu, J., Zhao, X., Shang, X., & Shen, Z. (2026). *Dive into Claude Code: The Design Space of Today's and Future AI Agent Systems*. arXiv:2604.14228.
+> <strong>论文</strong>: Liu, J., Zhao, X., Shang, X., & Shen, Z. (2026). *Dive into Claude Code: The Design Space of Today's and Future AI Agent Systems*. arXiv:2604.14228.
 > 
-> **arXiv**: https://arxiv.org/abs/2604.14228
-> **代码**: https://github.com/VILA-Lab/Dive-into-Claude-Code
+> <strong>arXiv</strong>: https://arxiv.org/abs/2604.14228
+> <strong>代码</strong>: https://github.com/VILA-Lab/Dive-into-Claude-Code

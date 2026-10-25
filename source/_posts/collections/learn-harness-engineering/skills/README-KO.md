@@ -37,21 +37,21 @@ categories:
 
 AI 코딩 에이전트를 위한 프로덕션 하네스 엔지니어링 스킬입니다. 에이전트 하네스 파일(AGENTS.md, 기능 목록, 검증 워크플로우, 세션 연속성(session continuity) 메커니즘)을 생성하고 평가하며 개선하는 데 도움을 줍니다.
 
-- **7가지 참고 패턴**: 메모리 영속성(Memory Persistence), 스킬 런타임(Skill Runtime), 컨텍스트 엔지니어링(Context Engineering), 도구 레지스트리(Tool Registry), 다중 에이전트 조율(Multi-Agent Coordination), 라이프사이클 및 부트스트랩(Lifecycle & Bootstrap), Gotchas
-- **템플릿**: AGENTS.md/CLAUDE.md, feature-list.json, init.sh, progress.md, session-handoff.md
-- **스크립트**: scaffold, 검증, HTML 평가 리포트, 구조적 benchmark
-- **10개의 내장 평가(eval) 테스트 케이스**
+- <strong>7가지 참고 패턴</strong>: 메모리 영속성(Memory Persistence), 스킬 런타임(Skill Runtime), 컨텍스트 엔지니어링(Context Engineering), 도구 레지스트리(Tool Registry), 다중 에이전트 조율(Multi-Agent Coordination), 라이프사이클 및 부트스트랩(Lifecycle & Bootstrap), Gotchas
+- <strong>템플릿</strong>: AGENTS.md/CLAUDE.md, feature-list.json, init.sh, progress.md, session-handoff.md
+- <strong>스크립트</strong>: scaffold, 검증, HTML 평가 리포트, 구조적 benchmark
+- <strong>10개의 내장 평가(eval) 테스트 케이스</strong>
 
 전체 문서는 [harness-creator/README.md](harness-creator/README.md)를 참조하십시오.
 
 ## harness-creator 구축 방법
 
-`harness-creator` 스킬은 **skill-creator** 방법론을 사용하여 개발되었습니다. skill-creator는 에이전트 스킬을 생성하고 테스트하고 반복하기 위한 Anthropic의 공식 메타 스킬입니다. skill-creator는 내장된 평가 실행기, 채점기, 벤치마크 뷰어를 갖춘 구조화된 워크플로우(초안 → 테스트 → 평가 → 반복)를 제공합니다.
+`harness-creator` 스킬은 <strong>skill-creator</strong> 방법론을 사용하여 개발되었습니다. skill-creator는 에이전트 스킬을 생성하고 테스트하고 반복하기 위한 Anthropic의 공식 메타 스킬입니다. skill-creator는 내장된 평가 실행기, 채점기, 벤치마크 뷰어를 갖춘 구조화된 워크플로우(초안 → 테스트 → 평가 → 반복)를 제공합니다.
 
 이처럼 스킬 자체를 스킬로 만드는 접근 방식은 하네스 엔지니어링의 재귀적 특성을 보여줍니다. 에이전트를 위한 도구를 에이전트가 검증하는 구조입니다.
 
-- **skill-creator 소스**: [anthropics/skills — skill-creator](https://github.com/anthropics/skills/tree/main/skills/skill-creator)
-- **Anthropic Claude Code 스킬 문서**: [anthropics/claude-code — plugin-dev/skills](https://github.com/anthropics/claude-code/tree/main/plugins/plugin-dev/skills)
+- <strong>skill-creator 소스</strong>: [anthropics/skills — skill-creator](https://github.com/anthropics/skills/tree/main/skills/skill-creator)
+- <strong>Anthropic Claude Code 스킬 문서</strong>: [anthropics/claude-code — plugin-dev/skills](https://github.com/anthropics/claude-code/tree/main/plugins/plugin-dev/skills)
 
 ## 디렉터리 구조
 
@@ -83,9 +83,9 @@ skills/
 
 각 스킬은 표준 구조를 따릅니다.
 
-1. **SKILL.md** — 진입점. YAML 프론트매터(frontmatter)(이름, 트리거를 위한 설명)와 에이전트를 위한 마크다운 지시사항이 포함됩니다.
-2. **references/** — 필요에 따라 컨텍스트로 로드되는 추가 문서.
-3. **templates/** — 스킬이 사용자를 위해 생성할 수 있는 시작 템플릿.
+1. <strong>SKILL.md</strong> — 진입점. YAML 프론트매터(frontmatter)(이름, 트리거를 위한 설명)와 에이전트를 위한 마크다운 지시사항이 포함됩니다.
+2. <strong>references/</strong> — 필요에 따라 컨텍스트로 로드되는 추가 문서.
+3. <strong>templates/</strong> — 스킬이 사용자를 위해 생성할 수 있는 시작 템플릿.
 
 스킬은 점진적 공개(progressive disclosure)를 사용합니다. 에이전트는 처음에 이름과 설명만 보고, 트리거되면 전체 SKILL.md 본문을 로드하며, 필요할 때만 번들된 리소스를 읽습니다.
 

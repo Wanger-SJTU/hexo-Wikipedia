@@ -52,10 +52,10 @@ This is the capstone project combining all features from the Learn Harness Engin
 
 ### Main Process (`src/main/`)
 
-- **Window management**: Creates `BrowserWindow` instances with secure web preferences.
-- **IPC registration**: Maps 14 IPC channel names to service methods via `registerIpcHandlers()`.
-- **Service initialization**: Constructs all services with dependency injection.
-- **Logging**: Logs application lifecycle events (ready, shutdown).
+- <strong>Window management</strong>: Creates `BrowserWindow` instances with secure web preferences.
+- <strong>IPC registration</strong>: Maps 14 IPC channel names to service methods via `registerIpcHandlers()`.
+- <strong>Service initialization</strong>: Constructs all services with dependency injection.
+- <strong>Logging</strong>: Logs application lifecycle events (ready, shutdown).
 
 ### Preload (`src/preload/`)
 
@@ -215,7 +215,7 @@ All log entries follow this JSON structure:
 ```
 
 Log levels:
-- **DEBUG**: Routine data access (listing, reading files, chunk retrieval)
-- **INFO**: Significant events (import, indexing, Q&A, feedback, reset)
-- **WARN**: Missing but non-critical data (skipped documents, content not found)
-- **ERROR**: Failures (file not found, parse errors)
+- <strong>DEBUG</strong>: Routine data access (listing, reading files, chunk retrieval)
+- <strong>INFO</strong>: Significant events (import, indexing, Q&A, feedback, reset)
+- <strong>WARN</strong>: Missing but non-critical data (skipped documents, content not found)
+- <strong>ERROR</strong>: Failures (file not found, parse errors)

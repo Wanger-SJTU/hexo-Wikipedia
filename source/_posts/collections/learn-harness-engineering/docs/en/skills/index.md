@@ -21,10 +21,10 @@ A production-grade harness engineering skill for AI coding agents. It helps you 
 
 ### What It Does
 
-- **Create harnesses from scratch** — AGENTS.md, feature lists, verification workflows
-- **Improve existing harnesses** — Five-subsystem assessment with prioritized improvements
-- **Design session continuity** — Memory persistence, progress tracking, handoff procedures
-- **Apply production patterns** — Memory, context engineering, tool safety, multi-agent coordination
+- <strong>Create harnesses from scratch</strong> — AGENTS.md, feature lists, verification workflows
+- <strong>Improve existing harnesses</strong> — Five-subsystem assessment with prioritized improvements
+- <strong>Design session continuity</strong> — Memory persistence, progress tracking, handoff procedures
+- <strong>Apply production patterns</strong> — Memory, context engineering, tool safety, multi-agent coordination
 
 ### Quick Start
 
@@ -66,7 +66,7 @@ The skill also includes plain Node.js scripts for scaffolding, validation, HTML 
 
 ### How This Skill Was Built
 
-`harness-creator` was developed using the **skill-creator** methodology — Anthropic's official meta-skill for creating, testing, and iterating on agent skills. The skill-creator provides a structured workflow (draft → test → evaluate → iterate) with built-in eval runners, graders, and a benchmark viewer.
+`harness-creator` was developed using the <strong>skill-creator</strong> methodology — Anthropic's official meta-skill for creating, testing, and iterating on agent skills. The skill-creator provides a structured workflow (draft → test → evaluate → iterate) with built-in eval runners, graders, and a benchmark viewer.
 
-- **skill-creator source**: [anthropics/skills — skill-creator](https://github.com/anthropics/skills/tree/main/skills/skill-creator)
-- **Claude Code skills docs**: [anthropics/claude-code — plugin-dev/skills](https://github.com/anthropics/claude-code/tree/main/plugins/plugin-dev/skills)
+- <strong>skill-creator source</strong>: [anthropics/skills — skill-creator](https://github.com/anthropics/skills/tree/main/skills/skill-creator)
+- <strong>Claude Code skills docs</strong>: [anthropics/claude-code — plugin-dev/skills](https://github.com/anthropics/claude-code/tree/main/plugins/plugin-dev/skills)

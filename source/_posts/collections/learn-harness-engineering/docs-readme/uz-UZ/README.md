@@ -29,7 +29,7 @@ categories:
 
 # Learn Harness Engineering
 
-> **Muhitlar, holat boshqaruvi, tekshiruv va nazorat mexanizmlarini qurishga bagʻishlangan, KI kod yozuvchi agentlarini ishonchli qiladigan loyihaga asoslangan kurs.**
+> <strong>Muhitlar, holat boshqaruvi, tekshiruv va nazorat mexanizmlarini qurishga bagʻishlangan, KI kod yozuvchi agentlarini ishonchli qiladigan loyihaga asoslangan kurs.</strong>
 
 Learn Harness Engineering — KI kod yozuvchi agentlarini ishlab chiqishga bagʻishlangan kurs. Biz sanoatdagi Harness Engineering sohasining eng ilgʻor nazariya va amaliyotlarini chuqur oʻrganib, sintez qildik. Asosiy manbalarimiz:
 
@@ -38,7 +38,7 @@ Learn Harness Engineering — KI kod yozuvchi agentlarini ishlab chiqishga bagʻ
 - [Anthropic: Harness design for long-running application development](https://www.anthropic.com/engineering/harness-design-long-running-apps)
 - [Awesome Harness Engineering](https://github.com/walkinglabs/awesome-harness-engineering)
 
-> **Tezkor boshlash?** [`skills/harness-creator/`](../../skills/harness-creator/) skillʼi sizga oʻz loyihangiz uchun daqiqalar ichida ishlab chiqarish darajasidagi harness (AGENTS.md, funksiya roʻyxatlari, init.sh, tekshiruv oqimlari) yaratishga yordam beradi.
+> <strong>Tezkor boshlash?</strong> [`skills/harness-creator/`](../../skills/harness-creator/) skillʼi sizga oʻz loyihangiz uchun daqiqalar ichida ishlab chiqarish darajasidagi harness (AGENTS.md, funksiya roʻyxatlari, init.sh, tekshiruv oqimlari) yaratishga yordam beradi.
 
 ---
 
@@ -85,7 +85,7 @@ Repozitoriyada endi kurs materiallari uchun PDF yaratish pipelineʼi mavjud.
 
 ## Model aqlli, harness uni ishonchli qiladi
 
-Aksariyat odamlar ogʻir yoʻl bilan oʻrganadigan bitta qatʼiy haqiqat bor: **Dunyodagi eng kuchli model haqiqiy muhandislik vazifalarida, agar siz unga mos muhit yaratmasangiz, baribir muvaffaqiyatsiz boʻladi.**
+Aksariyat odamlar ogʻir yoʻl bilan oʻrganadigan bitta qatʼiy haqiqat bor: <strong>Dunyodagi eng kuchli model haqiqiy muhandislik vazifalarida, agar siz unga mos muhit yaratmasangiz, baribir muvaffaqiyatsiz boʻladi.</strong>
 
 Siz buni ehtimol oʻzingiz ham boshdan kechirgansiz. Claude yoki GPTʼga oʻz repozitoriyoringizda vazifa bersangiz. U yaxshi boshlanadi — fayllarni oʻqiydi, kod yozadi, samarali koʻrinadi. Keyin nimadir notoʻgʻri ketadi. Bir qadamni oʻtkazib yuboradi. Testni buzadi. "Tayyor" deydi, lekin hech narsa haqiqatan ishlamaydi. Oʻzingiz qilgandan koʻra koʻproq vaqtni tuzatishga sarflaysiz.
 
@@ -95,7 +95,7 @@ Dalillar aniq. Anthropic nazorat qilingan tajriba oʻtkazdi: bir xil model (Opus
 
 OpenAI Codex bilan xuddi shu haqida xabar berdi: yaxshi harnesslangan repozitoriyada bir xil model "ishonchsiz"dan "ishonchli"ga oʻtadi. Bu marginal yaxshilanish emas — sifat sakrashi.
 
-**Ushbu kurs sizga shu muhitni qanday qurishni oʻrgatadi.**
+<strong>Ushbu kurs sizga shu muhitni qanday qurishni oʻrgatadi.</strong>
 
 ```text
                     HARNESS NAMUNASI
@@ -156,17 +156,17 @@ Harnessʼning beshta quyi tizimi bor:
 
 Har bir quyi tizimning oʻz vazifasi bor:
 
-- **Koʻrsatmalar (Instructions)** — Agentga nima qilish kerak, qanday tartibda va boshlashdan oldin nima oʻqish kerakligini aytish. Bu bitta ulkan fayl emas; agent ehtiyojiga qarab navigatsiya qiladigan progressiv ochilish strukturasi.
-- **Holat (State)** — Nima qilingan, nima bajarilayotgan va keyin nima turib qolganini kuzatish. Diskda saqlanadi, shunda keyingi sessiya aynan oldingi toʻxtagan joydan davom etadi.
-- **Tekshiruv (Verification)** — Faqat mavjud test toʻplami dalil sifatida hisoblanadi. Agent bajariluvchi dalilsiz muvaffaqiyat haqida xabar bera olmaydi.
-- **Doira (Scope)** — Agentni bir vaqtning oʻzida faqat bitta funksiyaga cheklash. Haddan oshmaslik. Uchta narsani yarim-yorti tugatmaslik. Tugallanmagan ishni yashirish uchun funksiya roʻyxatini qayta yozmaslik.
-- **Sessiya hayot sikli (Session Lifecycle)** — Boshida ishga tushirish. Oxirida tozalash. Keyingi sessiya uchun toza qayta boshlash yoʻlini qoldirish.
+- <strong>Koʻrsatmalar (Instructions)</strong> — Agentga nima qilish kerak, qanday tartibda va boshlashdan oldin nima oʻqish kerakligini aytish. Bu bitta ulkan fayl emas; agent ehtiyojiga qarab navigatsiya qiladigan progressiv ochilish strukturasi.
+- <strong>Holat (State)</strong> — Nima qilingan, nima bajarilayotgan va keyin nima turib qolganini kuzatish. Diskda saqlanadi, shunda keyingi sessiya aynan oldingi toʻxtagan joydan davom etadi.
+- <strong>Tekshiruv (Verification)</strong> — Faqat mavjud test toʻplami dalil sifatida hisoblanadi. Agent bajariluvchi dalilsiz muvaffaqiyat haqida xabar bera olmaydi.
+- <strong>Doira (Scope)</strong> — Agentni bir vaqtning oʻzida faqat bitta funksiyaga cheklash. Haddan oshmaslik. Uchta narsani yarim-yorti tugatmaslik. Tugallanmagan ishni yashirish uchun funksiya roʻyxatini qayta yozmaslik.
+- <strong>Sessiya hayot sikli (Session Lifecycle)</strong> — Boshida ishga tushirish. Oxirida tozalash. Keyingi sessiya uchun toza qayta boshlash yoʻlini qoldirish.
 
 ---
 
 ## Bu kurs nega mavjud
 
-Savol "Model lar kod yozoladimi?" emas. Yozoladi. Haqiqiy savol: **Ular haqiqiy repozitoriyalarda, bir nechta sessiyalar davomida, doimiy inson nazoratisiz haqiqiy muhandislik vazifalarini ishonchli bajara oladimi?**
+Savol "Model lar kod yozoladimi?" emas. Yozoladi. Haqiqiy savol: <strong>Ular haqiqiy repozitoriyalarda, bir nechta sessiyalar davomida, doimiy inson nazoratisiz haqiqiy muhandislik vazifalarini ishonchli bajara oladimi?</strong>
 
 Hozircha javob: harnessʼsiz — yoʻq.
 
@@ -202,13 +202,13 @@ Bu kursni qiziqtiradigan haqiqiy savollar:
 
 ## Kurs oʻquv dasturi va hujjatlari
 
-Toʻliq kurs materiallarini **[hujjatlar saytida](https://walkinglabs.github.io/learn-harness-engineering/)** topishingiz mumkin.
+Toʻliq kurs materiallarini <strong>[hujjatlar saytida](https://walkinglabs.github.io/learn-harness-engineering/)</strong> topishingiz mumkin.
 
 Oʻquv dasturi uch qismdan iborat:
 
-1. **Maʼruzalar**: Harness Engineering ortidagi nazariyani tushuntiruvchi 12 konseptual blok.
-2. **Loyihalar**: Agent asosidagi ish muhitini noldan quradigan 6 ta amaliy loyiha.
-3. **Andozalar kutubxonasi**: Bugunoq oʻz repozitoriyalaringizda ishlatish uchun nusxalashga tayyor andozalar (`AGENTS.md`, `feature_list.json`, `init.sh` va h.k.).
+1. <strong>Maʼruzalar</strong>: Harness Engineering ortidagi nazariyani tushuntiruvchi 12 konseptual blok.
+2. <strong>Loyihalar</strong>: Agent asosidagi ish muhitini noldan quradigan 6 ta amaliy loyiha.
+3. <strong>Andozalar kutubxonasi</strong>: Bugunoq oʻz repozitoriyalaringizda ishlatish uchun nusxalashga tayyor andozalar (`AGENTS.md`, `feature_list.json`, `init.sh` va h.k.).
 
 ---
 
@@ -234,7 +234,7 @@ Boshlangʻich andozalarni [andozalar kutubxonasidan](https://walkinglabs.github.
 
 ## Yakuniy loyiha: Haqiqiy ilova
 
-Oltita kurs loyihasi bir xil mahsulot atrofida qurilgan: **Electron asosidagi shaxsiy bilim bazasi uchun desktop ilova**.
+Oltita kurs loyihasi bir xil mahsulot atrofida qurilgan: <strong>Electron asosidagi shaxsiy bilim bazasi uchun desktop ilova</strong>.
 
 ```text
     ┌─────────────────────────────────────────────────────┐
@@ -397,7 +397,7 @@ Agar parallel oʻqisangiz, har bir bosqich taxminan bir hafta davom etadi. Agar 
 
 ## Agent sessiyasi hayot sikli
 
-Ushbu kursning asosiy gʻoyalaridan biri: **Agent sessiyasi tuzilgan hayot sikliga amal qilishi kerak, emas xohlagancha ishlashiga.** Bu quyidagicha koʻrinadi:
+Ushbu kursning asosiy gʻoyalaridan biri: <strong>Agent sessiyasi tuzilgan hayot sikliga amal qilishi kerak, emas xohlagancha ishlashiga.</strong> Bu quyidagicha koʻrinadi:
 
 ```text
     AGENT SESSIYA HAYOT SIKLI
@@ -570,7 +570,7 @@ learn-harness-engineering/
 
 Ushbu repozitoriy, shuningdek, toʻgʻridan-toʻgʻri IDE yoki agent ish muhitiga oʻrnatishingiz mumkin boʻlgan qayta ishlatiladigan KI agent skillʼlarini oʻz ichiga oladi.
 
-- [**harness-creator**](../../skills/harness-creator/): Oʻz loyihangiz uchun daqiqalar ichida ishlab chiqarish darajasidagi harness yaratishga yordam beradigan skill.
+- [<strong>harness-creator</strong>](../../skills/harness-creator/): Oʻz loyihangiz uchun daqiqalar ichida ishlab chiqarish darajasidagi harness yaratishga yordam beradigan skill.
 
 ---
 
@@ -580,7 +580,7 @@ Bizning jamoamiz yana boshqa kurslar ham yaratdi! Ularni koʻrib chiqing:
 
 [![Hands-on Modern RL](https://img.shields.io/badge/HANDS--ON_MODERN_RL-0052cc?style=for-the-badge)](https://github.com/walkinglabs/hands-on-modern-rl)
 
-**Hands-on Modern RL**: Asosiy RL konsepsiyalaridan LLM alignment, RLVR va ilgʻor agent tizimlarigacha boʻlgan masofani bridjlash uchun ochiq manbali amaliy oʻquv dasturi.
+<strong>Hands-on Modern RL</strong>: Asosiy RL konsepsiyalaridan LLM alignment, RLVR va ilgʻor agent tizimlarigacha boʻlgan masofani bridjlash uchun ochiq manbali amaliy oʻquv dasturi.
 
 ---
 

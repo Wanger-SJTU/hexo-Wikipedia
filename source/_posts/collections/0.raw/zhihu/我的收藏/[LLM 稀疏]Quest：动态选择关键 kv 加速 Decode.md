@@ -31,7 +31,7 @@ github：[https://github.com/mit-han-lab/Quest](https://link.zhihu.com/?target=h
 
 Quest 这篇论文与streaming llm 以及之前 Diffusion 优化中列过的 Sparse VideoGen、[radial-attention](https://link.zhihu.com/?target=https%3A//github.com/mit-han-lab/radial-attention) 稀疏加速、[smoothquant](https://link.zhihu.com/?target=https%3A//github.com/mit-han-lab/smoothquant)、[svdquant](https://link.zhihu.com/?target=https%3A//github.com/nunchaku-tech/nunchaku) 量化加速，还有做自驾同学不会陌生的[bevfusion](https://link.zhihu.com/?target=https%3A//github.com/mit-han-lab/bevfusion) ，都来自 [mit-han-lab](https://link.zhihu.com/?target=https%3A//github.com/mit-han-lab)。
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_5c3bde6c10e5.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_5c3bde6c10e5.jpg)
 
 > 看 github主页还发现有一篇 x-attention，也是做block sparse attention 的，还是同时兼容 llm 和 diffusion 视频生成...有点夸张哦。
 
@@ -60,7 +60,7 @@ LLM 在推理阶段，根据计算特性的不同，可以明确地分为 Prefil
 
 Quest 作者进行了 profiling 分析，如图3所示，除了模型的前两层，仅需要不到10%的token就可以达到相似的准确性。这表明对剩余的token执行注意力计算是不必要的。
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_267209c9e4ea.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_267209c9e4ea.jpg)
 
 Quest进一步观察到，token的关键性与当前 query 高度相关。例如图2 对于不同的 query，kv 的关键性是动态变化的，对于 “A is B. C is D. A is” 这个 case：
 
@@ -68,7 +68,7 @@ Quest进一步观察到，token的关键性与当前 query 高度相关。例如
 - 然而，当被“is” query时，token “B”却获得了很高的注意力分数，因为它对于生成正确答案“B”是关键的。
 这明确展示了 token 的关键性与当前查询 token 紧密相关。所以需要一种动态且高效的方法来确定KV缓存的哪些部分需要被关注。
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_2dd4c79129fe.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_2dd4c79129fe.jpg)
 
 Quest 提出了一种查询感知的关键性估算算法，不会丢弃 KV 缓存，而是根据当前的查询动态地选择 KV 缓存中关键的部分来执行自注意力。
 
@@ -80,7 +80,7 @@ Quest 提出了一种查询感知的关键性估算算法，不会丢弃 KV 缓�
 
 Quest 算法的工作流程主要分为两个阶段：
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_5571f2f87339.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_5571f2f87339.jpg)
 
 - 阶段 1：估计关键Page (Estimate Critical Pages)
 
@@ -97,7 +97,7 @@ Quest 算法的工作流程主要分为两个阶段：
 
 伪代码如下：
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_88c7fe0508ca.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_88c7fe0508ca.jpg)
 
 - 阶段 2：执行稀疏注意力 (Compute Sparse Attention)
 
@@ -122,26 +122,26 @@ Quest 不再需要加载整个 KV 缓存，而是仅加载所需数据的一小�
 
 ### 实验
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_fb13dc9a203c.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_fb13dc9a203c.jpg)
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_7cb704c2f2c1.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_7cb704c2f2c1.jpg)
 
 精度大幅优于其他稀疏方法，而且很多数据集比 Full 还好。
 
 > 我记得CNN 的剪枝方法很多就可以做到在评测集效果更好，不过个人对 LLM 稀疏的实际用户体验持怀疑态度。而且 LongChat-v1.5-7b这个模型在 Qasper这些数据集 上 full 的精度本身就比较低了
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_30a061cf377c.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_30a061cf377c.jpg)
 
 性能
 
 - 如图 8a 所示，随着序列长度的增加，关键性估计的相对延迟降低至 FlashInfer 的 1/Page Size。
 - 如图 8b 所示，在给定的 token budget 下，其延迟是基本恒定的，与总序列长度无关，在 budget 未满的情况下，和 Flashinfer kernel 的 latency 曲线基本重合（说明 append kv + metadata 的实现没有引入太多性能开销）。
 - 如图 9 所示，关键性估计+ top-k 选择的 kernel 耗时占比比较小
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_39458bf36d23.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_39458bf36d23.jpg)
 
 作者还列了一个在相同精度约束下的耗时对比：
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_2c9c6fe1fe02.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_2c9c6fe1fe02.jpg)
 
 ### 代码实现
 
@@ -361,13 +361,13 @@ attn_output = self.o_proj(attn_output)`
 
 作者在代码里插入了 nvtx，用 nsys 看起来执行逻辑和耗时都挺明确，不过不同 kernel 间存在不少执行 bubble，细节上还是有优化空间的。
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_ad5e30781f59.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_ad5e30781f59.jpg)
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_b7d68b958df3.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_b7d68b958df3.jpg)
 
 Sparse 层内 Attetnion 计算的流程：
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_a3c9a7bdb91d.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_a3c9a7bdb91d.jpg)
 
 ### Kernel 实现
 
@@ -377,9 +377,9 @@ Sparse 层内 Attetnion 计算的流程：
 
 核心的Prefill/decode kernel 以及 append_kv 等是基于 Flashinfer 的修改的，此外对于estimate 和 top-k，也都做了 cuda 版本的实现。
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_53e833ff5f50.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_53e833ff5f50.jpg)
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_8037a12708ba.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_8037a12708ba.jpg)
 
 不过和同样用 flashinfer 做稀疏的 Radial Attention 不同，因为 Quest 默认是按 Page 来选择重要 token，所以没办法用 BlockSparse 那个 flashinfer 的 kernel 去做，而是通过 metadata 去选择kv 的加载。
 

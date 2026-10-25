@@ -52,7 +52,7 @@ Omnivore 通过 [obsidian-omnivore](https://github.com/omnivore-app/obsidian-omn
 2. 注册一个 [Omnivore 帐户](https://omnivore.app/)。
 3. 转到 [Omnivore](https://omnivore.app/settings/api) 并创建一个 API 密钥
 4. 在 Obsidian 中打开 Omnivore 插件设置，添加您的API密钥。
-5. 通过打开快捷键面板 (Ctrl + P 或 CMD + P)。输入 Omnivore 并选择 **Omnivore: Sync** 选项，以运行 Omnivore 同步。
+5. 通过打开快捷键面板 (Ctrl + P 或 CMD + P)。输入 Omnivore 并选择 <strong>Omnivore: Sync</strong> 选项，以运行 Omnivore 同步。
 
 ## 自定义从 Omnivore 同步到 Obsidian 的数据 
 
@@ -270,11 +270,11 @@ date_published: {{{datePublished}}}
 
 ## 将所有文章同步到一个笔记中 
 
-默认情况下，Omnivore 会将文章同步到 Obsidian 的独立文件中。 如果你想把所有的文章都同步到一个笔记中，你可以在插件设置中打开 **Is Single File** 选项，并使用一个固定的 **Filename** 。
+默认情况下，Omnivore 会将文章同步到 Obsidian 的独立文件中。 如果你想把所有的文章都同步到一个笔记中，你可以在插件设置中打开 <strong>Is Single File</strong> 选项，并使用一个固定的 <strong>Filename</strong> 。
 
 ## 预定的同步 
 
-默认情况下，Omnivore 不会自动同步你的数据。你可以通过在 **Frequency** （频率）设置中输入数字来启用预定同步。例如，如果你输入 `60`，Omnivore 将每60分钟同步你的数据，你可以通过输入 `0` 随时关闭它。
+默认情况下，Omnivore 不会自动同步你的数据。你可以通过在 <strong>Frequency</strong> （频率）设置中输入数字来启用预定同步。例如，如果你输入 `60`，Omnivore 将每60分钟同步你的数据，你可以通过输入 `0` 随时关闭它。
 
 ---
 

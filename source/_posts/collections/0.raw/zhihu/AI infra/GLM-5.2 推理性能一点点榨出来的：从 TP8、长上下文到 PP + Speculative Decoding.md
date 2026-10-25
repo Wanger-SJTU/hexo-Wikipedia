@@ -18,15 +18,15 @@ source_url: https://zhuanlan.zhihu.com/p/2071678642959258406
 我最近是怎么把 GLM-5.2 推理性能一点点榨出来的：从 TP8、长上下文到 PP + Speculative Decoding
 最近一段时间，我主要在折腾 GLM-5.2 的推理优化。
 
-环境比较有意思：**单机 8×H200 PCIe，没有 NVLink**。
+环境比较有意思：<strong>单机 8×H200 PCIe，没有 NVLink</strong>。
 
 这和很多公开 benchmark 使用的 H100/H200 SXM + NVLink 环境差别很大。模型能跑起来并不难，真正困难的是：
 
-**GPU 利用率看起来不低，但生成速度就是上不去。**一开始我也把主要注意力放在 GEMM、FP8、Attention Kernel 上。后来实际用 Nsight Systems、NCCL trace 和服务端 metrics 一层层拆下来之后，发现问题远不只是“算子够不够快”。
+<strong>GPU 利用率看起来不低，但生成速度就是上不去。</strong>一开始我也把主要注意力放在 GEMM、FP8、Attention Kernel 上。后来实际用 Nsight Systems、NCCL trace 和服务端 metrics 一层层拆下来之后，发现问题远不只是“算子够不够快”。
 
 GLM-5.2 这种超大 MoE 模型的推理性能，本质上是：
 
-**计算 + GPU 间通信 + KV Cache + 调度 + Speculative Decoding + CUDA launch overhead**
+<strong>计算 + GPU 间通信 + KV Cache + 调度 + Speculative Decoding + CUDA launch overhead</strong>
 
 共同决定的。
 
@@ -65,7 +65,7 @@ AllGather / ReduceScatter
 GEMM
  ↓
 AllReduce
-也就是说，**TP 通信直接插在计算关键路径里面。**
+也就是说，<strong>TP 通信直接插在计算关键路径里面。</strong>
 
 模型有几十层，这种延迟会不断累积。
 
@@ -106,7 +106,7 @@ GPU 4 5 6 7
    └── PP Stage 1
 每个 stage 内只做 TP4。
 
-这么做最大的收益不是减少模型计算量，而是减少 **TP collective 的规模以及通信参与 GPU 数量**。
+这么做最大的收益不是减少模型计算量，而是减少 <strong>TP collective 的规模以及通信参与 GPU 数量</strong>。
 
 对于没有 NVLink 的 PCIe 机器，这一点尤其重要。
 
@@ -123,7 +123,7 @@ Stage 1 内 TP4
 
 这是一个非常重要的经验：
 
-**GPU 越多，不代表 TP 开得越大越快。**尤其是 PCIe-only 节点。
+<strong>GPU 越多，不代表 TP 开得越大越快。</strong>尤其是 PCIe-only 节点。
 
 在这种机器上，PP 有时候比继续提高 TP 更有价值。
 
@@ -140,7 +140,7 @@ context-length = 524288
 
 KV Cache 显存够不够？这当然重要，但实际线上还有另一个问题：
 
-**Prefill 会霸占整个调度器。**
+<strong>Prefill 会霸占整个调度器。</strong>
 
 比如一个 100K+ token 请求进来，如果一次性做完整 prefill：
 
@@ -151,7 +151,7 @@ KV Cache 显存够不够？这当然重要，但实际线上还有另一个问�
 长时间占用 GPU
 这时候后面的 decode 请求就会被堵住。
 
-所以我后来把重点放到了 **Chunked Prefill**。
+所以我后来把重点放到了 <strong>Chunked Prefill</strong>。
 
 例如：
 
@@ -226,11 +226,11 @@ KV Cache 压力上升
 → P99 latency 爆炸
 所以后来我的调优目标不再是：
 
-**把 GPU 塞到 100%。**
+<strong>把 GPU 塞到 100%。</strong>
 
 而是：
 
-**让每个 decoding step 尽可能稳定。**
+<strong>让每个 decoding step 尽可能稳定。</strong>
 
 五、Speculative Decoding：不是 draft 越多越好
 GLM-5.2 上我也花了不少时间折腾 Speculative Decoding。
@@ -277,7 +277,7 @@ Verify
 Scheduler
 所以最后我越来越倾向于：
 
-**先提高 acceptance rate，再增加 speculative depth。**而不是简单把 draft token 数量拉满。
+<strong>先提高 acceptance rate，再增加 speculative depth。</strong>而不是简单把 draft token 数量拉满。
 
 六、为了 PP + Spec，我甚至改了 SGLang
 后来这部分已经不只是“调启动参数”了。
@@ -460,7 +460,7 @@ Prefill + Decode 全 Graph
 → Nsight + NCCL + Scheduler 联合分析
 最终目的其实只有一个：
 
-**减少 decoding critical path 上那些 GPU 没有真正产生 token 的时间。**这也是为什么有时候一个优化：
+<strong>减少 decoding critical path 上那些 GPU 没有真正产生 token 的时间。</strong>这也是为什么有时候一个优化：
 
 Tensor Core utilization 没变化
 甚至：
@@ -479,16 +479,16 @@ pipeline bubble
 
 最近也正在继续研究两个方向。
 
-一个是 **NCCL 2.30 hierarchical zero-SM All2All**，看看能不能进一步减少 MoE communication kernel 和计算 kernel 抢 SM 的问题。
+一个是 <strong>NCCL 2.30 hierarchical zero-SM All2All</strong>，看看能不能进一步减少 MoE communication kernel 和计算 kernel 抢 SM 的问题。
 
-另一个是 Hopper 上的 **Programmatic Dependent Launch（PDL）**，尝试把相邻 decode kernel 之间的 launch gap 继续压缩。
+另一个是 Hopper 上的 <strong>Programmatic Dependent Launch（PDL）</strong>，尝试把相邻 decode kernel 之间的 launch gap 继续压缩。
 
 对于现在这些几百 B、甚至 T 级别的 MoE 模型，我越来越觉得：
 
-**下一阶段的大模型推理优化，竞争的已经不只是 FLOPS，而是谁能把整个 GPU execution timeline 填得更满。**
+<strong>下一阶段的大模型推理优化，竞争的已经不只是 FLOPS，而是谁能把整个 GPU execution timeline 填得更满。</strong>
 
 算子要快。
 
 但更重要的是——
 
-**算子之间，不要有洞。**
+<strong>算子之间，不要有洞。</strong>

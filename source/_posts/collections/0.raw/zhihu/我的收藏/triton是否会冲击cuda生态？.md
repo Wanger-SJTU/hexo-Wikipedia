@@ -17,21 +17,21 @@ source_url: https://www.zhihu.com/question/1919763006750975400/answer/1921121681
 
 ​目录
 
-**冲击 **的意思是强烈影响、干扰、甚至动摇原有状态，可以看到CUDA从C/C++到拥抱Python了。另外冲击**不是取代**，硬件的秘密掌握在vendor手里，但是OpenAI利用Triton开源开了个窗口。顺便说一下Triton的核心开发者并不多，这是开源社区的力量。我幻想有一天硬件也能借助开源社区共同进步，具备研发实力的公司在 Triton 基础上进行扩展和定制，同样是非常有价值的。
+<strong>冲击</strong>的意思是强烈影响、干扰、甚至动摇原有状态，可以看到CUDA从C/C++到拥抱Python了。另外冲击<strong>不是取代</strong>，硬件的秘密掌握在vendor手里，但是OpenAI利用Triton开源开了个窗口。顺便说一下Triton的核心开发者并不多，这是开源社区的力量。我幻想有一天硬件也能借助开源社区共同进步，具备研发实力的公司在 Triton 基础上进行扩展和定制，同样是非常有价值的。
 
 作为一个Triton开发者+用户的角度来看，我认为是现在进行时。开发者层面我给Triton接入了一个backend，给upstream修复过bug；用户层面我写了四五十个Triton算子，进行过算子调优，诚然大多数情况是autotune和新feature的功劳。我有近3年编译器开发的经验，2023年5月我了解到Triton并开始关注，在此我写下我的看法。我去年的时候写了一篇Triton的执行流程分析文章，帮你揭秘下部分Triton源码，感兴趣可以去看看。
 
 [](https://zhuanlan.zhihu.com/p/712640431)
 
-**2025.7.5更**
+<strong>2025.7.5更</strong>
 
 meta针对Triton再联合自己的Pytorch自研芯片MTIA的软件栈
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_d2431dbe05f5.jpg)![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_70577daad25b.webp)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_d2431dbe05f5.jpg)![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_70577daad25b.webp)
 
 还看到了一个来自于HSBC estimates, TrendForce的报告介绍了这些大厂在卷芯片，当然这些主要是内部使用的，部分信息对的上，但不全对也。不过Triton坚持自己的编程模型在商业逻辑上能解释得通了。
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_78c8220d5aaf.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_78c8220d5aaf.jpg)
 
 ### 一、性能对比
 
@@ -41,7 +41,7 @@ meta针对Triton再联合自己的Pytorch自研芯片MTIA的软件栈
 
 我们以flash_attention，head=128，batch=32 为例
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_0a28a2e3c7f2.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_0a28a2e3c7f2.jpg)
 
 aten：原始 PyTorch 实现，最慢，超大规模下会 OOM。
 
@@ -51,15 +51,15 @@ sdpa：torch.nn.functional.scaled_dot_product_attention（现代版本 PyTorch �
 
 head=48，batch=4的数据
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_1c332de476f2.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_1c332de476f2.jpg)
 
 详细数据表
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_fc6d199dd943.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_fc6d199dd943.jpg)
 
 朋友在h100的详细数据表，flash_v3快起来了。还是得靠头部算子工程师
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_d25ca823a1a3.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_d25ca823a1a3.jpg)
 
 在一些不常见or旧卡上Triton的性能比较exciting非常正常，毕竟不是每个算子工程师都非常了解Nvidia的架构。来做这件一件事商业价值不高，直接用编译器工程师的优化经验吧。
 
@@ -69,9 +69,9 @@ Triton作者Tillet关于其设计的论文发表在MAPL2019，其设计了多层
 
 在Triton代码的编写中我们更关心一个Block，用户不需要感知shared memory。Triton借助Layout设计以及Pass优化，能够减轻用户写kernel的负担，也能保证一定的性能，关于Triton和CUDA的对比如下图所示，来源[Pytorch2023会议](https://link.zhihu.com/?target=https%3A//static.sched.com/hosted_files/pytorch2023/2c/Triton_compiler.pdf)
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_43a53a2289c2.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_43a53a2289c2.jpg)
 
-**一句话解释** 关注影响性能的核心，避免过度关注硬件spec，让编译器去解决它能处理的abstract部分。
+<strong>一句话解释</strong> 关注影响性能的核心，避免过度关注硬件spec，让编译器去解决它能处理的abstract部分。
 
 ### 三、Triton的优点
 
@@ -89,7 +89,7 @@ Triton的初衷是要中立的算子编译器，其中有[nvidia](https://link.z
 
 #### 4、AI辅助
 
-由于**抽象层级**比较高，简单的kernel AI直接能写，复杂的Kernel也能给你很好的提示。比困在CUDA里的感觉好很多，你关心的tile是核心的，虽然不一定是全局最优解。AI帮忙debug调优的水平也很高。
+由于<strong>抽象层级</strong>比较高，简单的kernel AI直接能写，复杂的Kernel也能给你很好的提示。比困在CUDA里的感觉好很多，你关心的tile是核心的，虽然不一定是全局最优解。AI帮忙debug调优的水平也很高。
 
 ### 四、一些思考和缺点
 
@@ -115,23 +115,23 @@ Triton现在不太好debug，而且为了中立感知不到其他warp，会带�
 
 Triton upstream想到的办法是Gluon，使用其来进行内存，layout，调度等细粒度控制，本质是写Triton GPU IR。[https://github.com/triton-lang/triton/tree/main/python/tutorials/gluon](https://link.zhihu.com/?target=https%3A//github.com/triton-lang/triton/tree/main/python/tutorials/gluon)  这是官方的tutorials
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_a311c67c516f.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_a311c67c516f.jpg)
 
 #### 2、向上追求抽象/性能
 
-NPU/DSA的粒度相比GPGPU要更粗，造一整套工具链轮子和打磨多年CUDA的竞争是非常难的，也可以直接在Triton上做适配。[microsoft/triton-shared](https://link.zhihu.com/?target=https%3A//github.com/microsoft/triton-shared) 最先对lower到linalg这个层级的dialect做了探索，拿到了不错的效果，后续的很多项目都基于此做了实现。另外当前Triton的Op定义对于这种粗粒度的硬件是**远远不够**的，[python/triton/language/standard.py](https://link.zhihu.com/?target=https%3A//github.com/triton-lang/triton/blob/main/python/triton/language/standard.py) 文件里我们可以看到有些函数如sigmoid是直接用的数学实现，这些在NPU/DSA往往有自己的lower路径，另外硬件可能提供了更多的函数抽象需要在Triton这边扩展。抽象`High-level Op`比提供`Low-level op`影响相对小一点，毕竟NPU/DSA声量也不够大，基本还在手搓算子甚至是IR。AI后时代可能就是`High-level` 的 比拼，我在去年9月也提出过一个观点“其他家在变成nv的形状，nv在变得像DSA”。
+NPU/DSA的粒度相比GPGPU要更粗，造一整套工具链轮子和打磨多年CUDA的竞争是非常难的，也可以直接在Triton上做适配。[microsoft/triton-shared](https://link.zhihu.com/?target=https%3A//github.com/microsoft/triton-shared) 最先对lower到linalg这个层级的dialect做了探索，拿到了不错的效果，后续的很多项目都基于此做了实现。另外当前Triton的Op定义对于这种粗粒度的硬件是<strong>远远不够</strong>的，[python/triton/language/standard.py](https://link.zhihu.com/?target=https%3A//github.com/triton-lang/triton/blob/main/python/triton/language/standard.py) 文件里我们可以看到有些函数如sigmoid是直接用的数学实现，这些在NPU/DSA往往有自己的lower路径，另外硬件可能提供了更多的函数抽象需要在Triton这边扩展。抽象`High-level Op`比提供`Low-level op`影响相对小一点，毕竟NPU/DSA声量也不够大，基本还在手搓算子甚至是IR。AI后时代可能就是`High-level` 的 比拼，我在去年9月也提出过一个观点“其他家在变成nv的形状，nv在变得像DSA”。
 
 #### 3、Nvidia的行动
 
 受到Triton的冲击后，Nvidia在拥抱Python，[CUDA: New Features and Beyond](https://link.zhihu.com/?target=https%3A//www.nvidia.com/en-us/on-demand/session/gtc25-s72383)。最近也是release了CuTeDSL，以CuTe抽象为中心，kernel在thread级别，性能会更好。暴露了一些接口，但是写kernel负担依旧很重。更值得算法工程师和普通开发者期待的是cuTile，是对标Triton的，期待vendor大力出奇迹。
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_8bf4f7d8189f.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_8bf4f7d8189f.jpg)
 
 ### 六、Pythonic is future!
 
-浙江每年能产出5w个**高考生**会写Python，大多数大学工科的编程语言也都换成了**Python**。Python势不可挡，别哪天成为**CS/SW/EE**的第一门编程课了。
+浙江每年能产出5w个<strong>高考生</strong>会写Python，大多数大学工科的编程语言也都换成了<strong>Python</strong>。Python势不可挡，别哪天成为<strong>CS/SW/EE</strong>的第一门编程课了。
 
-**Pythonic is future!** 也许未来已来，让我们拭目以待。 
+<strong>Pythonic is future!</strong> 也许未来已来，让我们拭目以待。 
 
 我的其他相关文章
 

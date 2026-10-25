@@ -63,12 +63,12 @@ flowchart LR
 
 ## Asosiy tushunchalar
 
-- **Kontekst oynalari cheklangan**: Qanday oyna oʻlchami daʼvo qilinmasin (128K, 200K, 1M), uzoq davom etadigan vazifalar oxir-oqibat ularni yeb tugatadi. Tugagandan soʻng, zichlash (maʼlumot yoʻqotish) yoki qayta ishga tushirish (yangi sessiya) talab qilinadi. Ikkalasida ham nimanidir yoʻqotasiz.
-- **Uzluksizlik artefaktlari (Continuity artifacts)**: Yangi sessiyaga oxirgi sessiya toʻxtagan joydan hech qanday noaniqliksiz davom ettirish imkonini beruvchi doimiy saqlangan holat fayllari. Asosiy shakli: jarayon jurnali + tekshiruv qaydnomasi + keyingi qadamlar. Oʻsha ustaning kundaligi kabi.
-- **Tiklash narxi (Rebuild cost)**: Yangi sessiyaning bajariladigan holatga kelishi uchun kerak boʻladigan vaqt. Yaxshi harnessʼlar tiklash narxini 15 daqiqadan 3 daqiqagacha qisqartirishi mumkin.
-- **Siljish (Drift)**: Agentʼning tushunchasi va kod repozitoriysining haqiqiy holati oʻrtasidagi farq. Har bir sessiya chegarasi siljishni keltirib chiqaradi; nazoratsiz u tobora ortib boradi.
-- **Kontekst xavotiri (Context anxiety)**: Anthropic tomonidan kuzatilgan hodisa — agentlar idrok qilinayotgan kontekst chegaralariga yaqinlashganda erta yakunlash xatti-harakatlarini namoyish etadilar, maʼlumot yoʻqotilishining oldini olish uchun vazifalarni erta yakunlaydilar. Bu asossiz resurs xavotiridir.
-- **Zichlash va qayta ishga tushirish (Compaction vs reset)**: Zichlash joriy sessiya ichidagi kontekstni xulosalaydi (“nima” saqlanadi, lekin “nega” yoʻqolishi mumkin); qayta ishga tushirish esa doimiy saqlangan holatdan tiklanadigan yangi sessiyani ochadi (toza, lekin artefaktlarning toʻliqligiga bogʻliq).
+- <strong>Kontekst oynalari cheklangan</strong>: Qanday oyna oʻlchami daʼvo qilinmasin (128K, 200K, 1M), uzoq davom etadigan vazifalar oxir-oqibat ularni yeb tugatadi. Tugagandan soʻng, zichlash (maʼlumot yoʻqotish) yoki qayta ishga tushirish (yangi sessiya) talab qilinadi. Ikkalasida ham nimanidir yoʻqotasiz.
+- <strong>Uzluksizlik artefaktlari (Continuity artifacts)</strong>: Yangi sessiyaga oxirgi sessiya toʻxtagan joydan hech qanday noaniqliksiz davom ettirish imkonini beruvchi doimiy saqlangan holat fayllari. Asosiy shakli: jarayon jurnali + tekshiruv qaydnomasi + keyingi qadamlar. Oʻsha ustaning kundaligi kabi.
+- <strong>Tiklash narxi (Rebuild cost)</strong>: Yangi sessiyaning bajariladigan holatga kelishi uchun kerak boʻladigan vaqt. Yaxshi harnessʼlar tiklash narxini 15 daqiqadan 3 daqiqagacha qisqartirishi mumkin.
+- <strong>Siljish (Drift)</strong>: Agentʼning tushunchasi va kod repozitoriysining haqiqiy holati oʻrtasidagi farq. Har bir sessiya chegarasi siljishni keltirib chiqaradi; nazoratsiz u tobora ortib boradi.
+- <strong>Kontekst xavotiri (Context anxiety)</strong>: Anthropic tomonidan kuzatilgan hodisa — agentlar idrok qilinayotgan kontekst chegaralariga yaqinlashganda erta yakunlash xatti-harakatlarini namoyish etadilar, maʼlumot yoʻqotilishining oldini olish uchun vazifalarni erta yakunlaydilar. Bu asossiz resurs xavotiridir.
+- <strong>Zichlash va qayta ishga tushirish (Compaction vs reset)</strong>: Zichlash joriy sessiya ichidagi kontekstni xulosalaydi (“nima” saqlanadi, lekin “nega” yoʻqolishi mumkin); qayta ishga tushirish esa doimiy saqlangan holatdan tiklanadigan yangi sessiyani ochadi (toza, lekin artefaktlarning toʻliqligiga bogʻliq).
 
 ## Uzluksizlik buzilganda nima sodir boʻladi
 
@@ -84,9 +84,9 @@ OpenAI va Anthropic ikkalasi ham oʻz hujjatlarida holatni tizimli saqlash (stru
 
 ## Amneziyali usta uchun kundalik
 
-Asosiy yondashuv: **Agentʼga xotirasini yoʻqotadigan iqtidorli muhandis sifatida munosabatda boʻling.** Ishini yakunlashidan (“clock out”) oldin u muhim maʼlumotlarni yozib qoldirishi kerak, shunda keyingi “smenadagi” agent ishni tezda davom ettira oladi.
+Asosiy yondashuv: <strong>Agentʼga xotirasini yoʻqotadigan iqtidorli muhandis sifatida munosabatda boʻling.</strong> Ishini yakunlashidan (“clock out”) oldin u muhim maʼlumotlarni yozib qoldirishi kerak, shunda keyingi “smenadagi” agent ishni tezda davom ettira oladi.
 
-**1-vosita: Jarayon fayli (PROGRESS.md).** Eng asosiy uzluksizlik artefakti — kundalikning oʻzagi:
+<strong>1-vosita: Jarayon fayli (PROGRESS.md).</strong> Eng asosiy uzluksizlik artefakti — kundalikning oʻzagi:
 
 ```markdown
 # Loyiha jarayoni
@@ -114,7 +114,7 @@ Asosiy yondashuv: **Agentʼga xotirasini yoʻqotadigan iqtidorli muhandis sifati
 3. API hujjatlarini yangilash
 ```
 
-**2-vosita: Qarorlar jurnali (DECISIONS.md).** Muhim dizayn qarorlari va ularning sabablarini yozib boring. Batafsil dizayn hujjatlariga hojat yoʻq — shunchaki “qanday qaror, nega, qachon” — kundalikdagi eslatmalar (memos) kabi:
+<strong>2-vosita: Qarorlar jurnali (DECISIONS.md).</strong> Muhim dizayn qarorlari va ularning sabablarini yozib boring. Batafsil dizayn hujjatlariga hojat yoʻq — shunchaki “qanday qaror, nega, qachon” — kundalikdagi eslatmalar (memos) kabi:
 
 ```markdown
 # Dizayn qarorlari
@@ -125,9 +125,9 @@ Asosiy yondashuv: **Agentʼga xotirasini yoʻqotadigan iqtidorli muhandis sifati
 - Cheklov: Keshning yashash vaqti (TTL) 5 daqiqa, yozish vaqtida faol bekor qilish (invalidation)
 ```
 
-**3-vosita: Checkpoint sifatida Git commitʼlar.** Har bir butun ishni tugatgandan soʻng commit qiling. Commit xabarlari nima qilingani va nega qilinganini tushuntirishi kerak. Bular bepul, avtomatik versiyalanadigan holat snapshotʼlari.
+<strong>3-vosita: Checkpoint sifatida Git commitʼlar.</strong> Har bir butun ishni tugatgandan soʻng commit qiling. Commit xabarlari nima qilingani va nega qilinganini tushuntirishi kerak. Bular bepul, avtomatik versiyalanadigan holat snapshotʼlari.
 
-**4-vosita: init.sh yoki harness inisializatsiya jarayoni.** `AGENTS.md` faylida “ishni boshlash” va “ishni tugatish” tartiblarini aniq koʻrsating:
+<strong>4-vosita: init.sh yoki harness inisializatsiya jarayoni.</strong> `AGENTS.md` faylida “ishni boshlash” va “ishni tugatish” tartiblarini aniq koʻrsating:
 
 ```markdown
 ## Sessiya boshlanganda (clock in)
@@ -142,7 +142,7 @@ Asosiy yondashuv: **Agentʼga xotirasini yoʻqotadigan iqtidorli muhandis sifati
 3. Barcha tugatilgan ishlarni commit qilish
 ```
 
-**Aralash strategiya (Mixed strategy)**: Hamma vazifa ham kontekstni qayta oʻrnatishni (reset) talab qilavermaydi. Qisqa vazifalar (30 daqiqadan kam) bitta sessiya ichida yakunlanishi mumkin. Uzoq davom etadigan vazifalar uzluksizlik uchun jarayon fayllari (progress files) va qaror jurnallaridan foydalanishi shart. Qaror mezoni: agar vazifa oynaning 60% dan koʻprogʻini talab qilsa, topshirishga (handoff) tayyorgarlik koʻrishni boshlang.
+<strong>Aralash strategiya (Mixed strategy)</strong>: Hamma vazifa ham kontekstni qayta oʻrnatishni (reset) talab qilavermaydi. Qisqa vazifalar (30 daqiqadan kam) bitta sessiya ichida yakunlanishi mumkin. Uzoq davom etadigan vazifalar uzluksizlik uchun jarayon fayllari (progress files) va qaror jurnallaridan foydalanishi shart. Qaror mezoni: agar vazifa oynaning 60% dan koʻprogʻini talab qilsa, topshirishga (handoff) tayyorgarlik koʻrishni boshlang.
 
 ### Kontekst xavotirini (Context Anxiety) chuqurroq oʻrganish
 
@@ -150,11 +150,11 @@ Anthropicʼning 2026-yil mart oyidagi tadqiqotlari kontekst xavotirining oʻziga
 
 Buni hal qilishning ikkita strategiyasi bor:
 
-**Zichlash (Compaction)**: Bitta sessiya ichida oldingi suhbatni qisqacha xulosalash. Afzalligi: uzluksizlikni saqlaydi, agent “nima”ligini koʻra oladi. Kamchiligi: xulosalarda koʻpincha “nega” yoʻqoladi — nima uchun A oʻrniga B tanlangani, nima uchun aynan bitta optimallashtirish tashlab ketilgani. Eng yomoni shundaki, zichlash kontekst xavotirini yoʻqotmaydi — agent qachonlardir kontekst katta boʻlganini biladi va ruhiy jihatdan baribir vazifani tezroq yopishga harakat qiladi.
+<strong>Zichlash (Compaction)</strong>: Bitta sessiya ichida oldingi suhbatni qisqacha xulosalash. Afzalligi: uzluksizlikni saqlaydi, agent “nima”ligini koʻra oladi. Kamchiligi: xulosalarda koʻpincha “nega” yoʻqoladi — nima uchun A oʻrniga B tanlangani, nima uchun aynan bitta optimallashtirish tashlab ketilgani. Eng yomoni shundaki, zichlash kontekst xavotirini yoʻqotmaydi — agent qachonlardir kontekst katta boʻlganini biladi va ruhiy jihatdan baribir vazifani tezroq yopishga harakat qiladi.
 
-**Kontekstni qayta ishga tushirish (Context reset)**: Kontekstni butunlay tozalash, yangi sessiya ochish, doimiy saqlangan artefaktlardan tiklash. Afzalligi: toza mental holat — yangi sessiyada “vaqtim tugab qolyapti” degan xavotir yoʻq. Kamchiligi: topshirish artefaktlarining (handoff artifacts) toʻliqligiga bogʻliq. Agar kundalikda muhim maʼlumot yetishmasa, yangi sessiya notoʻgʻri yoʻnalishda ketib, vaqtni behuda sarflashi mumkin.
+<strong>Kontekstni qayta ishga tushirish (Context reset)</strong>: Kontekstni butunlay tozalash, yangi sessiya ochish, doimiy saqlangan artefaktlardan tiklash. Afzalligi: toza mental holat — yangi sessiyada “vaqtim tugab qolyapti” degan xavotir yoʻq. Kamchiligi: topshirish artefaktlarining (handoff artifacts) toʻliqligiga bogʻliq. Agar kundalikda muhim maʼlumot yetishmasa, yangi sessiya notoʻgʻri yoʻnalishda ketib, vaqtni behuda sarflashi mumkin.
 
-Anthropicʼning real maʼlumotlari: Sonnet 4.5 uchun kontekst xavotiri shu qadar jiddiyki, faqat zichlash yetarli emas — kontekstni qayta ishga tushirish (context reset) harness dizaynining muhim qismiga aylanadi. Ammo Opus 4.5 uchun bu xatti-harakat ancha kamaygan, va zichlash resetʼlarga tayanmasdan kontekstni boshqara oladi. Bu shuni anglatadiki: **harness dizayni maqsadli modelni chuqur tushunishga tayanishi kerak, hammabop (one-size-fits-all) andozaga emas.**
+Anthropicʼning real maʼlumotlari: Sonnet 4.5 uchun kontekst xavotiri shu qadar jiddiyki, faqat zichlash yetarli emas — kontekstni qayta ishga tushirish (context reset) harness dizaynining muhim qismiga aylanadi. Ammo Opus 4.5 uchun bu xatti-harakat ancha kamaygan, va zichlash resetʼlarga tayanmasdan kontekstni boshqara oladi. Bu shuni anglatadiki: <strong>harness dizayni maqsadli modelni chuqur tushunishga tayanishi kerak, hammabop (one-size-fits-all) andozaga emas.</strong>
 
 > Manba: [Anthropic: Uzoq vaqt ishlovchi dasturlar uchun harness dizayni (Harness design for long-running application development)](https://www.anthropic.com/engineering/harness-design-long-running-apps)
 
@@ -162,9 +162,9 @@ Anthropicʼning real maʼlumotlari: Sonnet 4.5 uchun kontekst xavotiri shu qadar
 
 Agentʼga foydalanuvchi autentifikatsiyasiga ega blog tizimini yaratish topshirildi — 12 ta funksionallik (feature point), bajarish uchun 5 ta sessiya hisoblangan.
 
-**Kundaliksiz boshlangʻich holat**: 1-sessiya foydalanuvchi modeli va asosiy routeʼlarni amalga oshirdi. 2-sessiya auth middlewareʼning interfeys shartnomasi (contract) esdan chiqqan holatda boshlandi va oldingi dizayn maqsadini taxmin qilish uchun ~15 daqiqa sarfladi. 3-sessiyaga kelib, toʻplangan siljish (drift) agentʼni allaqachon tugatilgan funksiyalarni qaytadan yaratishga olib keldi. 5-sessiyaga kelib, repoda juda koʻp ortiqcha kodlar bor edi, lekin asosiy auth funksiyasi haligacha E2E testlaridan (end-to-end tests) oʻtmagan edi. 12 ta funksionallikdan faqat 7 tasi tugallandi, shundan 3 tasida yashirin toʻgʻrilik muammolari mavjud edi. Xuddi kundalik tutmaydigan ustaga oʻxshaydi — beshinchi kunga kelib, qurilish maydonchasida betartiblik, baʼzi devorlar ikki marta qurilgan, qurilishi kerak boʻlganlari esa umuman boshlanmagan.
+<strong>Kundaliksiz boshlangʻich holat</strong>: 1-sessiya foydalanuvchi modeli va asosiy routeʼlarni amalga oshirdi. 2-sessiya auth middlewareʼning interfeys shartnomasi (contract) esdan chiqqan holatda boshlandi va oldingi dizayn maqsadini taxmin qilish uchun ~15 daqiqa sarfladi. 3-sessiyaga kelib, toʻplangan siljish (drift) agentʼni allaqachon tugatilgan funksiyalarni qaytadan yaratishga olib keldi. 5-sessiyaga kelib, repoda juda koʻp ortiqcha kodlar bor edi, lekin asosiy auth funksiyasi haligacha E2E testlaridan (end-to-end tests) oʻtmagan edi. 12 ta funksionallikdan faqat 7 tasi tugallandi, shundan 3 tasida yashirin toʻgʻrilik muammolari mavjud edi. Xuddi kundalik tutmaydigan ustaga oʻxshaydi — beshinchi kunga kelib, qurilish maydonchasida betartiblik, baʼzi devorlar ikki marta qurilgan, qurilishi kerak boʻlganlari esa umuman boshlanmagan.
 
-**Kundalik bilan holat**: Jarayon fayllari, qarorlar jurnallari, tekshiruv (verification) qaydlari va git checkpointʼlaridan foydalanilgan. Holat haqidagi hisobot har bir sessiya oxirida avtomatik ravishda yangilanadi. 2-sessiyani tiklash narxi (rebuild cost) ~3 daqiqaga tushdi. 5-sessiyaga kelib, barcha 12 ta funksionallik tugallandi va tekshirildi.
+<strong>Kundalik bilan holat</strong>: Jarayon fayllari, qarorlar jurnallari, tekshiruv (verification) qaydlari va git checkpointʼlaridan foydalanilgan. Holat haqidagi hisobot har bir sessiya oxirida avtomatik ravishda yangilanadi. 2-sessiyani tiklash narxi (rebuild cost) ~3 daqiqaga tushdi. 5-sessiyaga kelib, barcha 12 ta funksionallik tugallandi va tekshirildi.
 
 Miqdoriy taqqoslash: tiklash vaqti ~78% ga qisqardi, funksiyalarning tugallanish darajasi 58% dan 100% ga koʻtarildi, yashirin nuqsonlar darajasi 43% dan 8% gacha pasaydi. Usta hamon amneziyaga chalingan, ammo kundaligi tufayli har bir kun noldan emas, balki kecha toʻxtagan joyidan boshlanadi.
 
@@ -186,8 +186,8 @@ Miqdoriy taqqoslash: tiklash vaqti ~78% ga qisqardi, funksiyalarning tugallanish
 
 ## Mashqlar
 
-1. **Uzluksizlik yoʻqolishini oʻlchash**: Kamida 3 ta sessiyani talab qiladigan ishlab chiqish vazifasini tanlang. Hech qanday uzluksizlik artefaktlarini bermasdan, har bir sessiya boshida agent “oʻtgan safar nima boʻlganini” tushunish uchun qancha kontekst sarflashini yozib boring. Har bir sessiyadan soʻng jarayon faylini (progress file) yarating va keyingi sessiya ishni shu yerdan boshlashiga imkon bering. Jarayon fayllari boʻlgan va boʻlmagan holatdagi tiklash narxlarini solishtiring.
+1. <strong>Uzluksizlik yoʻqolishini oʻlchash</strong>: Kamida 3 ta sessiyani talab qiladigan ishlab chiqish vazifasini tanlang. Hech qanday uzluksizlik artefaktlarini bermasdan, har bir sessiya boshida agent “oʻtgan safar nima boʻlganini” tushunish uchun qancha kontekst sarflashini yozib boring. Har bir sessiyadan soʻng jarayon faylini (progress file) yarating va keyingi sessiya ishni shu yerdan boshlashiga imkon bering. Jarayon fayllari boʻlgan va boʻlmagan holatdagi tiklash narxlarini solishtiring.
 
-2. **Topshirish (handoff) andozasi dizayni**: Toʻrtta maydonga (field) ega minimal topshirish andozasini (handoff template) tuzing: repo holati (commit hash), runtime holati (testlardan oʻtish koʻrsatkichi), toʻsiqlar (blockers), keyingi qadamlar. Faqat shu andozadan foydalangan holda mutlaqo yangi agent sessiyasi loyiha holatini tiklashiga imkon bering. Tiklash paytida duch kelingan noaniqliklarni qayd eting, andozani yaxshilash uchun buni takrorlang.
+2. <strong>Topshirish (handoff) andozasi dizayni</strong>: Toʻrtta maydonga (field) ega minimal topshirish andozasini (handoff template) tuzing: repo holati (commit hash), runtime holati (testlardan oʻtish koʻrsatkichi), toʻsiqlar (blockers), keyingi qadamlar. Faqat shu andozadan foydalangan holda mutlaqo yangi agent sessiyasi loyiha holatini tiklashiga imkon bering. Tiklash paytida duch kelingan noaniqliklarni qayd eting, andozani yaxshilash uchun buni takrorlang.
 
-3. **Aralash strategiya tajribasi**: 5 sessiyali rivojlanish vazifasida uchta strategiyani solishtiring: (a) har safar yangi sessiyalar + jarayon fayllaridan boshlash, (b) imkon qadar bitta sessiyada koʻproq ish qilish (kontekstni zichlash), (c) aralash strategiya (sessiya ichida qisqa vazifalar, sessiyalar orasida uzun vazifalar + jarayon fayllari). Tiklash vaqtini, xususiyatlarning bajarilish darajasini va qarorlar izchilligini solishtiring.
+3. <strong>Aralash strategiya tajribasi</strong>: 5 sessiyali rivojlanish vazifasida uchta strategiyani solishtiring: (a) har safar yangi sessiyalar + jarayon fayllaridan boshlash, (b) imkon qadar bitta sessiyada koʻproq ish qilish (kontekstni zichlash), (c) aralash strategiya (sessiya ichida qisqa vazifalar, sessiyalar orasida uzun vazifalar + jarayon fayllari). Tiklash vaqtini, xususiyatlarning bajarilish darajasini va qarorlar izchilligini solishtiring.

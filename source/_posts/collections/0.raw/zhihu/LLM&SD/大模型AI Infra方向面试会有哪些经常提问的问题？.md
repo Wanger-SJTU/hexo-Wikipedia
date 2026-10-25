@@ -32,13 +32,13 @@ source_url: https://www.zhihu.com/question/1916645420085514580/answer/2010266450
 - 框架开发工程师：“计算机基础，常见模型，模型推理，推理框架”相关知识。）
 
 计算机基础
-**主要知识点：**
+<strong>主要知识点：</strong>
 
 - C/C++：运行时多态，函数与类模板，函数重载，内存泄露的场景，内存的栈/堆/静态存储区，inline函数与宏，常见关键字（static/const/explicit），智能指针，STL相关（vector/map），Lambda表达式，常见模式设计（模板模式，单例模式）。
 
 - 数据结构：栈，队列，常见排序算法，二叉树，链表（环形，反转，合并，相交），图，哈希。
 
-- 操作系统与硬件相关：线程与进程相关（线程安全，线程共享，锁，信号量，条件变量，OpenMP使用），内存的页管理，调度算法，流水线原理，Cache机制，中断等。**比如常见面试题：**
+- 操作系统与硬件相关：线程与进程相关（线程安全，线程共享，锁，信号量，条件变量，OpenMP使用），内存的页管理，调度算法，流水线原理，Cache机制，中断等。<strong>比如常见面试题：</strong>
 
 - 虚函数表和虚函数指针的作用？
 
@@ -79,7 +79,7 @@ source_url: https://www.zhihu.com/question/1916645420085514580/answer/2010266450
 无论是机器学习时代，CNN时代，还LLM时代，AI落地的工程化核心思想都来源于计算机基础。
 
 CUDA优化
-**比如常见面试题：**
+<strong>比如常见面试题：</strong>
 
 - shared memory的优化原理，与使用场景。
 
@@ -93,7 +93,7 @@ CUDA优化
 
 - bank冲突，以及如何优化。
 算子及算子优化
-**比如常见面试题：**
+<strong>比如常见面试题：</strong>
 
 - flash attention的实现原理，flash-attention-v1/v2以及flash-decoding的区别
 
@@ -105,7 +105,7 @@ CUDA优化
 
 - Sample的主要算法：topK，topP，beam search，argmax，温度的作用。
 通信相关
-**比如常见面试题：**
+<strong>比如常见面试题：</strong>
 
 - 常见通信原语：比如all2all，allreduce，allgather等的作用与流程上的区别。
 
@@ -115,7 +115,7 @@ CUDA优化
 
 - 通信库的使用：MPI，NCCL，NIXL，还有Ray分布式框架，比如使用上的一些经验。
 常见模型
-**比如常见面试题：**
+<strong>比如常见面试题：</strong>
 
 - mha/mqa/gqa/mla的区别，其中mla是mha的低秩，mla的attentio可以转成mqa。
 
@@ -127,7 +127,7 @@ CUDA优化
 
 - 另外一些经典模型：llama，mixtral-8x7B，mistral，gemma，phi等的模型特点。
 模型推理
-**比如常见面试题：**
+<strong>比如常见面试题：</strong>
 
 - 模型并行：tp/ep/pp/sp并行，比如megatron-lm论文中gqa的attention如何实现。
 
@@ -139,7 +139,7 @@ CUDA优化
 
 - 底层优化库或编程模型：flash infer，triton，tilelang。
 大模型推理框架
-**主要知识点：**
+<strong>主要知识点：</strong>
 
 - 调度优化：continous batching，chunked Prefill，radix attention，prefix cache，kvcache offload等。
 
@@ -147,7 +147,7 @@ CUDA优化
 
 - 框架本身一些概念：算子融合，显存复用，模型权重切分，基于pytorch的图表达等。
 
-- vllm框架与sglang框架的代码，比如他们的调度器如何实现，prefix cache实现上的区别等。**常见面试题：**
+- vllm框架与sglang框架的代码，比如他们的调度器如何实现，prefix cache实现上的区别等。<strong>常见面试题：</strong>
 
 - continous batching与传统的静态批处理的区别，他解决的是什么问题。
 
@@ -163,4 +163,4 @@ CUDA优化
 
 - 投机采样的核心原理是什么，为什么能提升推理速度。
 
-- 模型权重在TP/EP/PP不同分布式方案下如何切分？**以了解概念为主，经典的技术像paged attention，flash attention，tp并行了解原始论文，了解开源框架具体实现，多实践多调试。**
+- 模型权重在TP/EP/PP不同分布式方案下如何切分？<strong>以了解概念为主，经典的技术像paged attention，flash attention，tp并行了解原始论文，了解开源框架具体实现，多实践多调试。</strong>

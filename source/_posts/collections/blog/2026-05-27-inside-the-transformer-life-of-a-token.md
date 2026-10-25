@@ -26,7 +26,7 @@ In this post, I'll do a deep dive into the internals of a modern dense transform
 
 As a running example, I'll use the exact architecture of [Rnj 1.5](https://huggingface.co/EssentialAI/rnj-1.5-instruct) - a model I worked on with my team at Ashish Vaswani's AI Lab (Essential AI Labs).
 
-> **The team behind Rnj-1.5:**
+> <strong>The team behind Rnj-1.5:</strong>
 > Rnj 1.5 could not have happened without an amazing group of people (sorted alphabetically):
 > Code pod: Adarsh Chaluvaraju, Devaansh Gupta, Yash Jain, Somanshu Singla, Saurabh Srivastava (tech lead), Anil Thomas
 > STEM pod: Aleksa Gordić (tech lead), Michael Pust, Tim Romanski, Ali Shehper, Kurt Smith (tech lead), Ameya Velingker
@@ -75,7 +75,7 @@ Alongside the tokens, we construct two supporting structures:
 
 This is the preprocessing stage.
 
-> **Side note:**
+> <strong>Side note:</strong>
 > For efficiency reasons, the data is chunked ahead of time, before training starts, and the data loader feeds these preprocessed structures directly into the training loop. At that point, we never deal with raw strings. The (Spark) data pipelines and the data loader could easily be separate blog posts.
 
 Next, we use the input tokens to index into the embedding table.
@@ -86,7 +86,7 @@ This indexing operation converts our sequence of integers into a sequence of 16 
 
 ![Figure 2: Embedding stage](/images/collections/blog/asset/flow_pro.png)
 
-> **Side note:**
+> <strong>Side note:</strong>
 > Special tokens don't naturally appear during tokenization - no text maps to token IDs >= 128,000. They're injected during training (and later used at inference) to improve performance (e.g. FIM, repo packing, etc.) or to enforce specific behaviors (e.g. end of generation / turn, tool calls).
 
 Let's dig into FIM <span class="wikilink wikilink--missing" title="未导入的页面">3</span>(https://arxiv.org/abs/2207.14255) (fill-in-the-middle) special tokens.
@@ -113,7 +113,7 @@ At a high level, the block consists of four RMSNorm submodules, an MLP, an atten
 
 Importantly, all submodules operate on individual vectors, except for attention.
 
-> **Additional context:**
+> <strong>Additional context:</strong>
 > In practice, you'll find many variations of the transformer block. Design choices include the placement, type and number of normalization layers, the exact MLP structure (gated vs. non-gated, the choice of gating function, etc.), residual connections structure (identity, Attention Residuals <span class="wikilink wikilink--missing" title="未导入的页面">4</span>(https://arxiv.org/abs/2603.15031), etc.), and especially the attention module.
 > Broadly, attention mechanisms are either quadratic (e.g. MLA <span class="wikilink wikilink--missing" title="未导入的页面">5</span>(https://arxiv.org/abs/2405.04434), scaled dot-product attn, etc.) or linear (e.g. Kimi Linear <span class="wikilink wikilink--missing" title="未导入的页面">6</span>(https://arxiv.org/abs/2510.26692)) in sequence length, each with trade-offs between modeling capacity (especially at long context) and efficiency.
 
@@ -250,7 +250,7 @@ We've explored YaRN and attention in depth, and derived some of the most importa
 
 In upcoming posts, I'll dig deeper into MoE, Muon (the optimizer <span class="wikilink wikilink--missing" title="未导入的页面">12</span>(https://kellerjordan.github.io/posts/muon/)), and several architectural innovations such as MLA (DeepSeek), MTP (multi-token prediction), and DSA (sparse attention <span class="wikilink wikilink--missing" title="未导入的页面">13</span>(https://arxiv.org/abs/2512.02556)).
 
-> **Get in touch:**
+> <strong>Get in touch:</strong>
 > If you spot any errors in the post, please DM me - feel free to drop me a message on [X](https://x.com/gordic_aleksa) or [LinkedIn](https://www.linkedin.com/in/aleksagordic/) or via [anon feedback](https://docs.google.com/forms/d/1z1fEirrN2xtGxAsJvptpM7yV4ByT5SF25S-XiMPrXNA/edit).
 
 ## References
@@ -271,4 +271,4 @@ In upcoming posts, I'll dig deeper into MoE, Muon (the optimizer <span class="wi
 
 ---
 
-**原文链接**: [Inside the Transformer: The Life of a Token](https://www.aleksagordic.com/blog/transformer)
+<strong>原文链接</strong>: [Inside the Transformer: The Life of a Token](https://www.aleksagordic.com/blog/transformer)

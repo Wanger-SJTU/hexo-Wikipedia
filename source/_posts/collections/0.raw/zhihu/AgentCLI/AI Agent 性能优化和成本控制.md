@@ -30,25 +30,25 @@ source_url: https://zhuanlan.zhihu.com/p/2009938845945328180
 
 #### 1.1 成本构成
 
-**典型 AI Agent 的成本：**
+<strong>典型 AI Agent 的成本：</strong>
 
-成本项占比月费用（示例）LLM API 调用70%700 |**| **向量数据库** | 15% | 150服务器/云服务10%100 |
-| **其他（监控、存储）** | 5% | 50总计100%**1000** |
+成本项占比月费用（示例）LLM API 调用70%700 |<strong>|</strong>向量数据库** | 15% | 150服务器/云服务10%100 |
+| <strong>其他（监控、存储）</strong> | 5% | 50总计100%<strong>1000</strong> |
 
-**优化后：**
+<strong>优化后：</strong>
 
 | 成本项 | 占比 | 月费用（优化后） | 节省 |
 |-------|------|----------------|------|
-| **LLM API 调用** | 40% | 40向量数据库20%20 | -87% |
-| **服务器/云服务** | 30% | 30其他10%10 | -80% |
-| **总计** | 100% | **100**
+| <strong>LLM API 调用</strong> | 40% | 40向量数据库20%20 | -87% |
+| <strong>服务器/云服务</strong> | 30% | 30其他10%10 | -80% |
+| <strong>总计</strong> | 100% | <strong>100</strong>
 ### 二、降低 LLM API 成本
 
 #### 2.1 模型选择策略
 
 不同模型的成本对比：**
 
-模型输入价格输出价格适用场景GPT-4 Turbo0.K | 0.K复杂推理、关键任务GPT-3.5 Turbo0.K | 0.K简单对话、常规任务Claude 3 Haiku0.K | 0.K快速响应、大量请求本地模型（Llama）0 | 0隐私敏感、高频调用**策略：根据任务复杂度选择模型**
+模型输入价格输出价格适用场景GPT-4 Turbo0.K | 0.K复杂推理、关键任务GPT-3.5 Turbo0.K | 0.K简单对话、常规任务Claude 3 Haiku0.K | 0.K快速响应、大量请求本地模型（Llama）0 | 0隐私敏感、高频调用<strong>策略：根据任务复杂度选择模型</strong>
 
 `class SmartModelSelector:
     def __init__(self):
@@ -88,11 +88,11 @@ model = selector.select_model(task)  # 返回 "claude-3-haiku"
 
 cost = selector.estimate_cost(model, 100, 200)  # 约 $0.00028`
 
-**节省效果：** 70-90%
+<strong>节省效果：</strong> 70-90%
 
 #### 2.2 Prompt 优化
 
-**❌ 低效 Prompt（浪费 token）：**
+<strong>❌ 低效 Prompt（浪费 token）：</strong>
 
 `prompt = """
 你是一个非常智能的助手，拥有丰富的知识和经验。
@@ -107,7 +107,7 @@ cost = selector.estimate_cost(model, 100, 200)  # 约 $0.00028`
 """
 # Token 数：约 600`
 
-**✅ 高效 Prompt（节省 token）：**
+<strong>✅ 高效 Prompt（节省 token）：</strong>
 
 `prompt = """
 你是天气助手。简洁回答。
@@ -116,14 +116,14 @@ cost = selector.estimate_cost(model, 100, 200)  # 约 $0.00028`
 """
 # Token 数：约 30`
 
-**节省效果：** 95%
+<strong>节省效果：</strong> 95%
 
-**Prompt 优化技巧：**
+<strong>Prompt 优化技巧：</strong>
 
-- **删除废话** — 直接说重点
-- **使用缩写** — “请” → “pls”（英文场景）
-- **结构化输出** — 用 JSON 代替长文本
-- **Few-shot 精简** — 只给 1-2 个示例
+- <strong>删除废话</strong> — 直接说重点
+- <strong>使用缩写</strong> — “请” → “pls”（英文场景）
+- <strong>结构化输出</strong> — 用 JSON 代替长文本
+- <strong>Few-shot 精简</strong> — 只给 1-2 个示例
 `# 优化前
 prompt = "请帮我分析这封邮件的情绪，并告诉我是积极的、消极的还是中性的。"
 
@@ -132,7 +132,7 @@ prompt = "情绪分析（积极/消极/中性）："`
 
 #### 2.3 缓存策略
 
-**三级缓存架构：**
+<strong>三级缓存架构：</strong>
 
 `import redis
 import hashlib
@@ -197,20 +197,20 @@ def call_llm_with_cache(prompt: str, model: str) -> str:
     
     return response`
 
-**节省效果：** 50-80%（取决于重复率）
+<strong>节省效果：</strong> 50-80%（取决于重复率）
 
 #### 2.4 流式响应
 
-**❌ 非流式（用户等待时间长）：**
+<strong>❌ 非流式（用户等待时间长）：</strong>
 
 `response = llm.invoke(prompt)  # 等待 10 秒
 print(response)  # 一次性输出`
 
-**✅ 流式（用户体验好）：**
+<strong>✅ 流式（用户体验好）：</strong>
 
 `print(chunk, end="", flush=True)  # 逐字输出`
 
-**优势：**
+<strong>优势：</strong>
 
 - 用户感知响应更快
 - 可以提前终止（节省成本）
@@ -218,13 +218,13 @@ print(response)  # 一次性输出`
 
 #### 2.5 批量处理
 
-**❌ 逐个处理（慢 + 贵）：**
+<strong>❌ 逐个处理（慢 + 贵）：</strong>
 
 `for email in emails:
     response = llm.invoke(f"分析邮件：{email}")
     # 10 封邮件 = 10 次 API 调用`
 
-**✅ 批量处理（快 + 便宜）：**
+<strong>✅ 批量处理（快 + 便宜）：</strong>
 
 `batch_prompt = "分析以下邮件：\n\n"
 for i, email in enumerate(emails, 1):
@@ -233,30 +233,30 @@ for i, email in enumerate(emails, 1):
 response = llm.invoke(batch_prompt)
 # 10 封邮件 = 1 次 API 调用`
 
-**节省效果：** 90%
+<strong>节省效果：</strong> 90%
 
 ### 三、向量数据库优化
 
 #### 3.1 选择合适的向量数据库
 
-数据库适用场景成本**C小型项目（免费Pinecone中型项目（10万-100万）$70/月起Weaviate大型项目（> 100万）自托管免费Qdrant高性能需求自托管免费**推荐：**
+数据库适用场景成本<strong>C小型项目（免费Pinecone中型项目（10万-100万）$70/月起Weaviate大型项目（> 100万）自托管免费Qdrant高性能需求自托管免费</strong>推荐：**
 
 - 开发/小项目 → Chroma（免费）
 - 生产环境 → Qdrant 自托管（免费 + 高性能）
 
 #### 3.2 向量维度优化
 
-**❌ 高维度（慢 + 贵）：**
+<strong>❌ 高维度（慢 + 贵）：</strong>
 
 `embeddings = OpenAIEmbeddings(model="text-embedding-3-large")
 # 维度：3072，存储成本高`
 
-**✅ 低维度（快 + 便宜）：**
+<strong>✅ 低维度（快 + 便宜）：</strong>
 
 `embeddings = OpenAIEmbeddings(model="text-embedding-3-small")
 # 维度：1536，存储成本降低 50%`
 
-**性能对比：**
+<strong>性能对比：</strong>
 
 - 检索速度：提升 2-3 倍
 - 存储成本：降低 50%
@@ -266,7 +266,7 @@ response = llm.invoke(batch_prompt)
 
 #### 4.1 异步处理
 
-**❌ 同步（慢）：**
+<strong>❌ 同步（慢）：</strong>
 
 `def process_emails(emails):
     results = []
@@ -277,7 +277,7 @@ response = llm.invoke(batch_prompt)
 
 # 10 封邮件 = 100 秒`
 
-**✅ 异步（快）：**
+<strong>✅ 异步（快）：</strong>
 
 `import asyncio
 
@@ -288,7 +288,7 @@ async def process_emails_async(emails):
 
 # 10 封邮件 = 10 秒`
 
-**性能提升：** 10 倍
+<strong>性能提升：</strong> 10 倍
 
 #### 4.2 连接池
 
@@ -437,9 +437,9 @@ def call_llm_with_tracking(prompt: str, model: str) -> str:
 
 #### 6.1 优化前
 
-**场景：** 智能客服系统，每天处理 10000 次对话
+<strong>场景：</strong> 智能客服系统，每天处理 10000 次对话
 
-**成本分析：**
+<strong>成本分析：</strong>
 
 `模型：GPT-4 Turbo
 平均输入：500 tokens
@@ -450,7 +450,7 @@ def call_llm_with_tracking(prompt: str, model: str) -> str:
 
 #### 6.2 优化方案
 
-**1. 模型分级（节省 70%）**
+<strong>1. 模型分级（节省 70%）</strong>
 
 `# 简单问题用 GPT-3.5
 # 复杂问题用 GPT-4
@@ -459,14 +459,14 @@ def call_llm_with_tracking(prompt: str, model: str) -> str:
 复杂问题（20%）：2000 次 * $0.014 = $28
 每日成本：$36（节省 74%）`
 
-**2. 缓存（节省 50%）**
+<strong>2. 缓存（节省 50%）</strong>
 
 `# 重复问题命中缓存
 缓存命中率：50%
 实际调用：5000 次
 每日成本：$18（再节省 50%）`
 
-**3. Prompt 优化（节省 30%）**
+<strong>3. Prompt 优化（节省 30%）</strong>
 
 `# 精简 Prompt
 平均输入：300 tokens（-40%）
@@ -474,14 +474,14 @@ def call_llm_with_tracking(prompt: str, model: str) -> str:
 单次成本：$0.009
 每日成本：$12.6（再节省 30%）`
 
-**4. 批量处理（节省 20%）**
+<strong>4. 批量处理（节省 20%）</strong>
 
 `# 批量处理相似问题
 每日成本：$10（再节省 20%）`
 
 #### 6.3 优化后
 
-**最终成本：**
+<strong>最终成本：</strong>
 
 `每日成本：$10
 每月成本：$300
@@ -517,15 +517,15 @@ def call_llm_with_tracking(prompt: str, model: str) -> str:
 
 #### 8.1 关键要点
 
-- **模型选择是最大的成本因素** — 根据任务选择合适的模型
-- **缓存能节省 50-80% 成本** — 实现三级缓存
-- **Prompt 优化立竿见影** — 删除废话，精简表达
-- **批量处理提升效率** — 减少 API 调用次数
-- **监控是持续优化的基础** — 追踪成本和性能
+- <strong>模型选择是最大的成本因素</strong> — 根据任务选择合适的模型
+- <strong>缓存能节省 50-80% 成本</strong> — 实现三级缓存
+- <strong>Prompt 优化立竿见影</strong> — 删除废话，精简表达
+- <strong>批量处理提升效率</strong> — 减少 API 调用次数
+- <strong>监控是持续优化的基础</strong> — 追踪成本和性能
 
 #### 8.2 优化效果
 
-**典型优化路径：**
+<strong>典型优化路径：</strong>
 
 `初始成本：$4200/月
 ↓ 模型分级（-70%）
@@ -543,21 +543,21 @@ $300/月
 
 #### 8.3 下一步
 
-- 🔄 **持续监控** — 每周查看成本报告
-- 📊 **A/B 测试** — 测试不同优化方案
-- 🤖 **自动化** — 自动选择最优策略
-- 📚 **学习** — 关注最新的优化技巧
+- 🔄 <strong>持续监控</strong> — 每周查看成本报告
+- 📊 <strong>A/B 测试</strong> — 测试不同优化方案
+- 🤖 <strong>自动化</strong> — 自动选择最优策略
+- 📚 <strong>学习</strong> — 关注最新的优化技巧
 
 ### 九、常见问题
 
-**Q1: 使用 GPT-3.5 会影响质量吗？**
+<strong>Q1: 使用 GPT-3.5 会影响质量吗？</strong>
 
 A: 对于简单任务（查询、分类、简单对话），GPT-3.5 和 GPT-4 的差异很小（ 100万次/月）
 - 对隐私要求高
 - 有 GPU 资源
 那么本地模型（Llama 3）是很好的选择，成本几乎为 0。
 
-**Q4: 如何平衡成本和性能？**
+<strong>Q4: 如何平衡成本和性能？</strong>
 
 A: 使用智能路由：
 
@@ -565,6 +565,6 @@ A: 使用智能路由：
 - 中等任务 → GPT-4 Turbo
 - 复杂任务 → GPT-4
 - 高频任务 → 本地模型
-**关注我，获取更多 AI 开发干货！** 🚀
+<strong>关注我，获取更多 AI 开发干货！</strong> 🚀
 
 *如果觉得有帮助，欢迎点赞、收藏、转发！* ❤️

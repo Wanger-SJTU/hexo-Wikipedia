@@ -17,11 +17,11 @@ source_url: https://zhuanlan.zhihu.com/p/2023356213597929481
 
 ### 概述
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_c1686edcf34c.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_c1686edcf34c.jpg)
 
-Pipleline一览![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_4c8b01e5a869.jpg)
+Pipleline一览![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_4c8b01e5a869.jpg)
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_1e8422659052.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_1e8422659052.jpg)
 
 本文分析 SM100 (Blackwell 架构) Flash Attention kernel 的执行流程，实现在我的课程专用repo [https://github.com/deciding/cutex](https://link.zhihu.com/?target=https%3A//github.com/deciding/cutex) 里。为了方便大家测试自己玩 我把原先3000多行的代码简化了一下放到`flash_fwd_sm100_simple.py` 中，虽然也有2000行但是里面有大量注释，配合本文食用应该还是挺清晰的。
 
@@ -78,13 +78,13 @@ split P也是一个很自然想到的点。毕竟mma一次发4个instruction，�
 
 #### 关键参数
 
-参数默认值描述m_block_size128Q block sizen_block_size128K/V block sizeq_stage2最内层循环 Q 的 stage 数 (double-buffering)kv_stage6最内层循环 KV 的 stage 数 (double-buffering)is_persistentTruePersistent schedulinguse_2cta_instrsTrue使用 2-CTA MMA 指令**优化点**
+参数默认值描述m_block_size128Q block sizen_block_size128K/V block sizeq_stage2最内层循环 Q 的 stage 数 (double-buffering)kv_stage6最内层循环 KV 的 stage 数 (double-buffering)is_persistentTruePersistent schedulinguse_2cta_instrsTrue使用 2-CTA MMA 指令<strong>优化点</strong>
 
 - 为什么使用 2 个 q_stages？因为 2 个 Q 没有 softmax stats 依赖，所以 O rescale 可以从关键路径中隔离出来
 
 #### 2. Warp Specialization
 
-Kernel 使用 **16 个 warp per CTA**，每个 warp 分配特定角色：
+Kernel 使用 <strong>16 个 warp per CTA</strong>，每个 warp 分配特定角色：
 
 Warp(s)角色功能14LoadTMA 加载 Q, K, V 从 GMEM 到 SMEM12MMAGEMM 操作 (Q×K 和 P×V)0-3Softmax0Stage 0 的 softmax 计算4-7Softmax1Stage 1 的 softmax 计算8-11Correction重缩放累积的 O，写入 sO13Epilogue从 SMEM 拷贝 O 到 GMEM15Empty填充 warp (无工作)
 #### 3. Memory Hierarchy
@@ -98,7 +98,7 @@ sK_layout: ((64,16), 1, (4,2), 6)
 sV_layout: ((64,16), 1, 8, 6)
 sO_layout: ((8,16), (64,2), (1,2))`
 
-**Inner Shape 解读：**
+<strong>Inner Shape 解读：</strong>
 
 TensorShape含义sQ((128,16), 1, (4,2), 2)(atom_m=128, atom_k=16) × num_tiles_m=1 × (num_tiles_k=4×2) × q_stage=2sK((64,16), 1, (4,2), 6)(atom_n=64, atom_k=16) × num_tiles_n=1 × (num_tiles_k=4×2) × kv_stage=6sV((64,16), 1, 8, 6)(atom_n=64, atom_d=16) × num_tiles_n=1 × num_tiles_d=8 × kv_stage=6sO((8,16), (64,2), (1,2))(atom_m=8, count_m=16) × (atom_n=64, count_n=2) × (1, q_stage=2)注意：对于 sO，smem atom 是 `K_SW128` (K-major with 128-bit swizzle)，形状为 (8, 64)：
 
@@ -107,13 +107,13 @@ TensorShape含义sQ((128,16), 1, (4,2), 2)(atom_m=128, atom_k=16) × num_tiles_m
 
 #### 为什么 sQ (128) vs sK (64)？
 
-使用 **cta_group_size = 2** (2 CTA MMA instruction)，MMA tile shape 是 (256, 128, 16)。M 和 N 维度都除以 cta_group_size 得到每个 CTA 的 shared memory 分配：
+使用 <strong>cta_group_size = 2</strong> (2 CTA MMA instruction)，MMA tile shape 是 (256, 128, 16)。M 和 N 维度都除以 cta_group_size 得到每个 CTA 的 shared memory 分配：
 
 所以：
 
 - sQ 得到 128 = m_block_size / 2
 - sK 得到 64 = n_block_size / 2
-**sK vs sV**:
+<strong>sK vs sV</strong>:
 
 - sK 有 inner stride `(64,1)` → K-major layout (seq_k 是连续的)
 - sV 有 inner stride `(1,64)` → V 被转置 (head_dim 是连续的)
@@ -197,7 +197,7 @@ for k_block in range(n_block_min, n_block_max):
     # 发起 TMA 加载
     if k_block 
 
-**Pipeline 管理:**
+<strong>Pipeline 管理:</strong>
 
 - `pipeline_q`: 协调 Q 加载，在 producer (load warp) 和 consumer (MMA warp) 之间
 - `pipeline_kv`: 协调 K/V 加载，在 producer 和 consumer 之间
@@ -246,7 +246,7 @@ Epilogue
 5. 通知 O[stage] 已就绪供 O 最终 rescale 使用 (pipeline_o_acc)
 6. 释放 V[0] (advance pipeline_kv consumer)`
 
-**关键优化：** `split_P_arrive` 特性允许部分 P 发送给 GEMM_PV，同时 softmax 仍在计算其余部分，实现计算重叠。
+<strong>关键优化：</strong> `split_P_arrive` 特性允许部分 P 发送给 GEMM_PV，同时 softmax 仍在计算其余部分，实现计算重叠。
 
 #### 4.4 Softmax 操作 (Warps 0-7)
 
@@ -306,7 +306,7 @@ Epilogue
 所有 work tile 完成后
 1. pipeline_sm_stats.producer_tail`
 
-**优化点**:
+<strong>优化点</strong>:
 
 - 将 softmax stats 保存为每个线程的一行，避免 warp 同步
 - scale threshold
@@ -347,7 +347,7 @@ Epilogue
 Epilogue work_tile
 1. pipeline_o_epi.producer_tail`
 
-**优化点**
+<strong>优化点</strong>
 
 - rescale threshold 非常激进，在我的情况下从未触发recale=True
 
@@ -403,7 +403,7 @@ Epilogue warp 将最终输出写入 global memory:
 │                                                                         │
 └─────────────────────────────────────────────────────────────────────────┘`
 
-**问题**：
+<strong>问题</strong>：
 
 - 当前版本的 flash-attention 自定义 PipelineAsync 有一个 producer_commit 的 bug (它使用 AsyncLoad 逻辑)，所以每个 producer_commit 必须用 sm_stats_barrier.arrive 替换
 - pipeline_s_p_o 让 mma 和 softmax 都是 producer 和 consumer：
@@ -486,15 +486,15 @@ MMA       ░░░░░░░░░░░░░│██████│██�
 
 SOFT  │░░░░░░│█████████████│█████████████│█████████████│█████████████│`
 
-**优化点** 为什么 split P 有助于关键路径？ 我怀疑 tcgen05 mma issue 需要很长的 ALU 执行时间。
+<strong>优化点</strong> 为什么 split P 有助于关键路径？ 我怀疑 tcgen05 mma issue 需要很长的 ALU 执行时间。
 
 贴个图方便手机端的同学观看
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_149e212f871b.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_149e212f871b.jpg)
 
-为什么Correction Warps有用![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_1a74515ea813.jpg)
+为什么Correction Warps有用![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_1a74515ea813.jpg)
 
-为什么2 q_tages有用![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_97567b76c518.jpg)
+为什么2 q_tages有用![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_97567b76c518.jpg)
 
 为什么split P有用
 #### 8. TMEM Layout

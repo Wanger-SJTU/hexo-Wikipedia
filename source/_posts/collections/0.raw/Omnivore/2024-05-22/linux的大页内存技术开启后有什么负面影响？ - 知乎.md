@@ -27,11 +27,11 @@ linux支持大页内存技术hugepage，可以减少TLB miss，但是我想知�
 
 关注者
 
-**25**
+<strong>25</strong>
 
 被浏览
 
-**12,925**
+<strong>12,925</strong>
 
 创建时间：2016-12-09 15:45:46
 
@@ -74,7 +74,7 @@ TLB 是每个核中一种快速但有限的缓存，用于内存地址的虚拟�
 大页面可用于代码或数据。如果工作负载有大量数据，则最好尝试使用大型数据页面。大型内存应用程序（如关系数据库系统（例如 MySQL、PostgreSQL、Oracle 等）和配置了大型堆区域的 Java 应用程序经常受益于使用大页面。但是，与许多其他功能一样，大页面并不适合每个应用程序。只想分配一个字节数据的应用程序最好使用 4k 页面而不是大页面;这样，内存的使用效率就会更高。  
 在 Linux 操作系统上，有两种在应用程序中使用大页面的方法：显式和透明大页面。
 
-**显式大页**  
+<strong>显式大页</strong>  
 显式大页以系统内存的机制提供，作为大页面文件系统（hugetlbfs），应用程序可以使用系统调用（例如mmap）访问它。可以通过 cat /proc/meminfo 检查系统上正确配置的大页面并查看HugePages\_Total条目。可以在启动时或运行时保留大页面。在系统启动时预留是否选择的权利。可以使用[libhugetlbfs库](https://github.com/libhugetlbfs/libhugetlbfs)，该库允许覆盖现有动态链接的可执行文件使用的malloc 调用，从而在大页面(EHP) 之上分配内存。不幸的是，此项目已不再维护。它不需要用户修改代码或重新链接二进制文件。他们只需用预先填充命令行即可使用它。
 
 ```ini
@@ -88,7 +88,7 @@ HUGETLB_MORECORE=yes <your app command line> ，
 * MMAP 使用已挂载的 HugetLBFS 文件系统中的文件（[参考代码](https://elixir.bootlin.com/linux/latest/source/tools/testing/selftests/vm/hugepage-mmap.c)）。
 * SHMGET 使用 SHM\_HUGETLB 标志（[参考代码](https://elixir.bootlin.com/linux/latest/source/tools/testing/selftests/vm/hugepage-shm.c)）。
 
-**透明大页(THP)**
+<strong>透明大页(THP)</strong>
 
 Linux 还提供透明 Hugepage 支持（THP），它可以自动管理大页面，并且对应用程序透明。在 Linux 下，可以启用 THP。当需要大块内存时，它会动态切换到大页面。THP功能有两种操作模式：系统范围和进程范围。当在系统范围内启用 THP 时，内核会尝试将大页面分配给任何进程，因此不需要手动保留大页面。如果进程都启用了 THP，则内核仅将大页面分配给调用 madvise 系统调用的单个进程的内存区域。您可以通过以下方式检查系统中是否启用了 THP：
 
@@ -121,7 +121,7 @@ always [madvise] never
 
 云计算、云原生、边缘计算、5G 网络、云网融合。
 
-## **大页内存**
+## <strong>大页内存</strong>
 
 页式内存管理技术将虚拟内存和物理内存切换为大小相同的若干个页，并通过 MMU 和页表进行转换。
 
@@ -145,11 +145,11 @@ $ getconf PAGE_SIZE
 
 值得注意的是，即便是在高性能场景中也并非页面越大越好，因为大页太大也会降低页内地址检索的速度。所以最佳的性能搭配，往往需要大量的测试来取得性能的曲线峰值。
 
-## **Linux 的大页内存**
+## <strong>Linux 的大页内存</strong>
 
 自 Linux Kernel 2.6 起，引入了 Huge pages 的概念，目的是通过使用大页内存来支持高性能处理场景。常见的 Huge pages 有 2MB 和 1GB 这 2 种规格，2MB 适合用于 GB 级别的内存，而 1GB 则适合用于 TB 级别的内存。
 
-## **大页内存的实现原理**
+## <strong>大页内存的实现原理</strong>
 
 为了能以最小的代价来实现 Huge pages，Linux 引入了 hugetlb 和 hugetlbfs 这 2 个概念。
 
@@ -160,11 +160,11 @@ hugetlbfs 的主要作用是使得 Application 可以根据自身需要灵活地
 
 在 TLB 中存储的 hugetlb 指向一个个 hugepages，Kernel 可以通过 hugetlb entries 来分配相应的 hugepages。这些被分配的 hugepages 再以 hugetlbfs 内存文件系统的形式提供给 Application 使用。
 
-* **Regular Page 的分配流程**：当一个 Application 请求内存时，它需要访问 PageTable 去调用一个实际的物理内存地址，继而获得内存空间。
+* <strong>Regular Page 的分配流程</strong>：当一个 Application 请求内存时，它需要访问 PageTable 去调用一个实际的物理内存地址，继而获得内存空间。
 
 ![](https://proxy-prod.omnivore-image-cache.app/604x0,s6ZLV5mN-FRaPVOEBAGGb-dVut2kR2xplchk9y85yDIQ/https://picx.zhimg.com/50/v2-0174c8f76737b3f0c2af2c4b2a86aebf_720w.jpg?source=1def8aca)
 
-* **Huge Page 的分配流程**：当系统配置了 Huge pages 后，Application 依然是通过普通的 PageTable 来获取到实际的物理内存地址。但不同的是，在 Process PageTable 和 System PageTable 第增加了 Hugepage（HPage）属性。当 Application 需要使用 Huge pages 时，只需要声明 Hugepage 属性，让系统分配 PageTable 中的 Huge pages 条目即可实现。
+* <strong>Huge Page 的分配流程</strong>：当系统配置了 Huge pages 后，Application 依然是通过普通的 PageTable 来获取到实际的物理内存地址。但不同的是，在 Process PageTable 和 System PageTable 第增加了 Hugepage（HPage）属性。当 Application 需要使用 Huge pages 时，只需要声明 Hugepage 属性，让系统分配 PageTable 中的 Huge pages 条目即可实现。
 
 ![](https://proxy-prod.omnivore-image-cache.app/604x0,sQ46McwI-_6HiGT-_y5y1rcrG2fx4MlaNtTr_tnXOuCY/https://picx.zhimg.com/50/v2-3a01664a90b26ff8935cd93594707be5_720w.jpg?source=1def8aca)
 
@@ -177,17 +177,17 @@ hugetlbfs 的主要作用是使得 Application 可以根据自身需要灵活地
 
 此外，使用 Huge pages 还能减少系统管理和 CPU 访问内存页的时间（扩大了 TLB 快页表查询的内存地址范围）。合理设置大页面能减少内存操作的负担，减少访问页表造成性能瓶颈的可能性，从而提升系统性能。由此，如果你的系统空间非常大时，可以考虑启用大页内存。
 
-## **大页内存的配置使用**
+## <strong>大页内存的配置使用</strong>
 
 大页面配置需要连续的内存空间，因此在开机时就分配是最可靠的设置方式。配置大页面有 3 个关键参数：
 
-1. **hugepages** ：在内核中定义了开机启动时就分配的永久大页面的数量。默认为 0，即不分配。只有当系统有足够的连续可用页时，分配才会成功。由该参数保留的页不能用于其他用途。
-2. **hugepagesz**：在内核中定义了开机启动时分配的大页面的大小。可选值为 2MB 和 1GB 。默认是 2MB 。
-3. **default\_hugepagesz**：在内核中定义了开机启动时分配的大页面的默认大小。
+1. <strong>hugepages</strong> ：在内核中定义了开机启动时就分配的永久大页面的数量。默认为 0，即不分配。只有当系统有足够的连续可用页时，分配才会成功。由该参数保留的页不能用于其他用途。
+2. <strong>hugepagesz</strong>：在内核中定义了开机启动时分配的大页面的大小。可选值为 2MB 和 1GB 。默认是 2MB 。
+3. <strong>default\_hugepagesz</strong>：在内核中定义了开机启动时分配的大页面的默认大小。
 
 另外，值的注意的是，在开启大页内存的环境中，通常也会习惯性的关闭 Swap 交换分区，因为这两者间是矛盾的关系。
 
-* **Step 1**. 查看 Linux 操作系统是否启动了大页内存，如果 HugePages\_Total 为 0，意味着 Linux 没有设置或没有启用 Huge pages。
+* <strong>Step 1</strong>. 查看 Linux 操作系统是否启动了大页内存，如果 HugePages\_Total 为 0，意味着 Linux 没有设置或没有启用 Huge pages。
 
 ```dts
 $ grep -i HugePages_Total /proc/meminfo
@@ -195,7 +195,7 @@ HugePages_Total:       0
 
 ```
 
-* **Step 2**. 查看是否挂载了 hugetlbfs
+* <strong>Step 2</strong>. 查看是否挂载了 hugetlbfs
 
 ```routeros
 $ mount | grep hugetlbfs
@@ -203,7 +203,7 @@ hugetlbfs on /dev/hugepages type hugetlbfs (rw,relatime)
 
 ```
 
-* **Step 3**. 如果没有挂载则手动挂载
+* <strong>Step 3</strong>. 如果没有挂载则手动挂载
 
 ```awk
 $ mkdir /mnt/huge_1GB
@@ -214,7 +214,7 @@ nodev /mnt/huge_1GB hugetlbfs pagesize=1GB 0 0
 
 ```
 
-* **Step 4**. 修改 grub2，例如为系统配置 10 个 1GB 的大页面
+* <strong>Step 4</strong>. 修改 grub2，例如为系统配置 10 个 1GB 的大页面
 
 ```routeros
 $ vim /etc/grub2.cfg
@@ -224,9 +224,9 @@ default_hugepagesz=1G hugepagesz=1G hugepages=10
 
 ```
 
-**NOTE**：配置大页面后，系统在开机启动时会首选尝试在内存中找到并预留连续的大小为 `hugepages * hugepagesz` 的内存空间。如果内存空间不满足，则启动会报错 `Kernel Panic, Out of Memory` 等错误。
+<strong>NOTE</strong>：配置大页面后，系统在开机启动时会首选尝试在内存中找到并预留连续的大小为 `hugepages * hugepagesz` 的内存空间。如果内存空间不满足，则启动会报错 `Kernel Panic, Out of Memory` 等错误。
 
-* **Step 5**. 重启系统，查看更详细的大页内存信息
+* <strong>Step 5</strong>. 重启系统，查看更详细的大页内存信息
 
 ```yaml
 $ cat /proc/meminfo | grep -i Huge
@@ -241,7 +241,7 @@ Hugepagesize:       1048576 kB     # 每个大页面的 Size，与 HugePages_Tot
 
 如果大页面的 Size 一致，则可以通过 `/proc/meminfo` 中的 `Hugepagesize` 和 `HugePages_Total` 计算出大页面所占内存空间的大小。这部分空间会被算到已用的内存空间里，即使还未真正被使用。因此，用户可能观察到下面现象：使用 `free` 命令查看已用内存很大，但 `top` 或者 `ps` 中看到 `%mem` 的使用总量加起来却很少。
 
-* **Step 6**. 如果上述输出看见 Hugepagesize 已经设置成 1GB，但 HugePages\_Total 还是为 0，那么需要修改内核参数设定大页面的数量
+* <strong>Step 6</strong>. 如果上述输出看见 Hugepagesize 已经设置成 1GB，但 HugePages\_Total 还是为 0，那么需要修改内核参数设定大页面的数量
 
 ```elixir
 $ sysctl -w vm.nr_hugepages=10
@@ -252,14 +252,14 @@ $ sysctl -p
 
 ```
 
-**NOTE**：一般情况下，配置的大页面可能主要供特定的应用程序或服务使用，其他进程是无法共享这部分空间的（如 Oracle SGA）。请根据系统物理内存和应用需求来设置合适的大小，避免大页面使用的浪费；以及造成其他进程因竞争剩余可用内存而出现内存溢出的错误，进而导致系统崩溃的现象。默认的，当存在大页面时，会在应用进程或者内核进程申请大页内存的时候，优先为它们分配大页面，大页面不足以分配时，才会分配传统的 4KB 页面。查看哪个程序在使用大页内存：
+<strong>NOTE</strong>：一般情况下，配置的大页面可能主要供特定的应用程序或服务使用，其他进程是无法共享这部分空间的（如 Oracle SGA）。请根据系统物理内存和应用需求来设置合适的大小，避免大页面使用的浪费；以及造成其他进程因竞争剩余可用内存而出现内存溢出的错误，进而导致系统崩溃的现象。默认的，当存在大页面时，会在应用进程或者内核进程申请大页内存的时候，优先为它们分配大页面，大页面不足以分配时，才会分配传统的 4KB 页面。查看哪个程序在使用大页内存：
 
 ```tcl
 grep -e AnonHugePages /proc/*/smaps | awk '{if(2>4)print0}' | awk -F "/" '{print0;system("ps−fp"3)}'
 
 ```
 
-## **大页面对内存的影响**
+## <strong>大页面对内存的影响</strong>
 
 需要注意的是，为大页面分配的内存空间会被计算到已用内存空间中，即使它们还未真正被使用。因此，你可能观察到这种现象：使用 free 命令查看已用内存很大，但 top 或者 ps 指令中看到 %MEM 的使用总量加起来却很少。
 
@@ -285,7 +285,7 @@ Swap:             3           0           3
 
 这种情况说明了一个问题：如果盲目的去提高大页内存空间的占比，就很可能会出现胖的胖死，饿的饿死的问题。导致大页内存空间的浪费，因为普通程序是未必能够使用大页内存的。
 
-## **THP 透明巨型页**
+## <strong>THP 透明巨型页</strong>
 
 Transparent Huge pages（THP，透明大页）从 RHEL 6 开始引入。由于传统的 Huge pages 很难手动的管理，对于程序而言，可能需要修改很多的代码才能有效的使用。THP 的引入就是为了便于系统管理员和开发人员使用大页内存。
 
@@ -293,7 +293,7 @@ THP 是一个抽象层，能够自动创建、管理和使用传统大页。操�
 
 Huge pages 和 Transparent Huge pages 在大页内存的使用方式上存在区别，前者是预分配的方式，而后者则是动态分配的方式，显然后者更适合程序使用。需要注意的是，THP 虽然方便，但在某些场景种仍然会建议我们关闭，这个需要结合实际应用场景慎重考虑。
 
-**手动关闭 THP**：
+<strong>手动关闭 THP</strong>：
 
 ```elixir
 $ echo never > /sys/kernel/mm/transparent_hugepage/enabled 
@@ -308,7 +308,7 @@ $ cat /sys/kernel/mm/transparent_hugepage/enabled
 
 ```
 
-**永久关闭 THP**：
+<strong>永久关闭 THP</strong>：
 
 ```makefile
 vim /etc/grub2.cfg
@@ -318,15 +318,15 @@ transparent_hugepage=never
 
 ```
 
-**\- END -**
+<strong>\- END -</strong>
 
 _关于 “云物互联” 微信公众号：_
 
 _欢迎关注 “云物互联” 微信公众号，我们专注于云计算、云原生、SDN/NFV、边缘计算及 5G 网络技术的发展及应用。热爱开源，拥抱开源！_
 
-**技术即沟通**
+<strong>技术即沟通</strong>
 
-**化云为雨，落地成林**
+<strong>化云为雨，落地成林</strong>
 
 展开阅读全文​
 

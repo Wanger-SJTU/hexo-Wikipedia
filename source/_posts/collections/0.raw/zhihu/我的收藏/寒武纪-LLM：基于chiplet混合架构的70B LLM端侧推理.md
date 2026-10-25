@@ -41,7 +41,7 @@ source_url: https://zhuanlan.zhihu.com/p/1940510069310621270
 - 单batch下使得该程序为memory-bound，如下图1(a)展示了算数强度信息，可以看到单batch INT8量化下的LLM计算强度只有2，远低于其他AI算法像DLRM/BERT/VGG
 - 并且比典型硬件发挥算力所需计算强度低100倍以上，这会导致硬件利用率极低
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_25b271dc6fd7.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_25b271dc6fd7.jpg)
 
 为了解决以上问题，有一些研究试图将参数放置到基于flash的SSD中，但是现有的硬件存在两个问题：
 
@@ -94,7 +94,7 @@ Flash是一种高密度、非易失性存储介质，可为手机提供超过1TB
 
 - 读操作在page层面执行；
 - 写操作在block级别执行，写操作所需时间比读长1-2个数量级。
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_f862e289a1cb.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_f862e289a1cb.jpg)
 
 为了克服flash的带宽瓶颈，ISC技术有两种实现方式：
 
@@ -114,13 +114,13 @@ Flash是一种高密度、非易失性存储介质，可为手机提供超过1TB
 
 计算强度为算法计算量与访存量之比，单batch INT8量化表现出的计算强度约为2，非常之低。 下图3(a)显示了不同模型的计算强度，此时decode阶段的算数强度仅为2，比prefill和其他模型低几个数量级。为了解决该问题，Cambricon-LLM利用on-die处理来最小化数据传输量，将roofline从A点挪到B点。
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_c8bc9208e19a.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_c8bc9208e19a.jpg)
 
 #### 3.2 为什么是Flash
 
 考虑到大模型参数，Flash的高存储密度可以为LLM推理提供高存储空间。如下表所示，Flash的存储密度远高于DRAM，这使得Flash称为在端侧空间受限约束下存储大模型的首选。
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_a8687daa7d80.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_a8687daa7d80.jpg)
 
 而Flash的2个主要缺点：
 
@@ -167,7 +167,7 @@ Flash的高错误率，主要是因为电子从浮栅场效应管的泄露，会
 
 - 因为需要DRAM的参与
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_842b9810107a.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_842b9810107a.jpg)
 
 #### 4.2 Flash die的设计
 
@@ -192,7 +192,7 @@ Slice Control的引入是为了最大化Flash channel的利用率，核心目标
 
 具体的，假设1个channel连接1个chip，1个die包含个plane并共享1和compute core，下图6展示了3种Slice control策略下的流水线
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_5831a7e13b2c.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_5831a7e13b2c.jpg)
 
 ### 5. 硬件感知tiling
 
@@ -205,7 +205,7 @@ Slice Control的引入是为了最大化Flash channel的利用率，核心目标
 
 如图7(a)所示，整个权重矩阵会被切分为更小的tile，每个tile由flash中的所有计算核协同完成，对应单个Read-Compute指令。
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_250adf55410e.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_250adf55410e.jpg)
 
 以简单的2channel Flash设计为例（每个channel对应4个计算core）。为了充分利用计算资源，每个tile会被均匀地分布到所有8个计算和，每个处理1个atomic tile。
 
@@ -247,7 +247,7 @@ Flash上的执行时间主要取决于read-compute请求，NPU上的执行时间
 
 - 为了不影响其他正常值，还存储前1%分界线作为阈值，译码时，如果有任何未标记的值超过阈值，则将其归零；
 - 对于每个被保护的值，其地址和数据的两个副本一起存储，其中每个地址都配有5-bit私有的纠错码；
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_6951079a29c1.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_6951079a29c1.jpg)
 
 ### 7. 试验设置
 
@@ -257,7 +257,7 @@ Flash上的执行时间主要取决于read-compute请求，NPU上的执行时间
 
 3者的试验配置如下表2所示，其中Cambricon-LLM使用SSDsim模拟Flash，额外的C代码模拟NPU。Flexgen则部署在服务器上。MLC-LLM部署在手机上。
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_27b6135bf68a.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_27b6135bf68a.jpg)
 
 #### 7.2 基准
 
@@ -267,7 +267,7 @@ Flash上的执行时间主要取决于read-compute请求，NPU上的执行时间
 
 使用verilog开发了Cambricon-LLM，并基于TSMC 65nm进行了DC综合，结果如表4所示，其主要开销是buffer。
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_08c88360ddec.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_08c88360ddec.jpg)
 
 ### 8. 试验结果
 
@@ -277,13 +277,13 @@ Flash上的执行时间主要取决于read-compute请求，NPU上的执行时间
 
 图(b)中MLC-LLM将所有权重放在DRAM中，所以最多只能支持7B参数。
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_a42689d8fffa.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_a42689d8fffa.jpg)
 
 #### 8.2 4-bit量化下的性能
 
 使用4-bit用于量化weight，16-bit用于量化激活(W4A16)。下图11则展示了其与W8A8之间的性能差异，在S/L配置上平均可以获得85.3%和47.9%的性能提升。
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_63722efd8b53.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_63722efd8b53.jpg)
 
 #### 8.3 消融实验
 
@@ -291,21 +291,21 @@ Flash上的执行时间主要取决于read-compute请求，NPU上的执行时间
 
 消融slicing技术之后在S配置下的结果如下图12所示，表示其可以提高1.6~1.8倍的性能，带宽利用率提高了31.6~41.4%。
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_e63bc7d2045e.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_e63bc7d2045e.jpg)
 
 消融tiling技术之后的在S配置下的结果如下图14所示，结果表明tiling可以提高推理速度1.3~1.4倍，channel利用率提高76.2~88.9%。
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_c4150f0b1830.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_c4150f0b1830.jpg)
 
 此外还对不同tiling方案的性能进行了分析，如下图13，可以看到256*2048的方式性能最好，比128*4096提高17.5%，比4096*128提高24.7%。
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_03a3e9829315.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_03a3e9829315.jpg)
 
 #### 8.4 On-die 纠错机制
 
 如下图10所示，分别在HellaSwag、ARC、WinoGrande三个数据集上对对纠错机制进行了测试。没有纠错机制是从10^{-5}就开始下降，有纠错机制时，则恶意容忍到10^{-4}以下。
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_5bf04b87e3ad.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_5bf04b87e3ad.jpg)
 
 #### 8.5 可扩展性研究
 
@@ -314,16 +314,16 @@ Flash上的执行时间主要取决于read-compute请求，NPU上的执行时间
 - decode速度一开始随chip数增加而线性增加，之后放缓，这是因为chip过多时，weight无法有效的分布在所有chip上。
 - 随着chip数量增加，channel利用率明显降低，这是因为Flash上算力增加，所以分配给NPU的算力降低，进而所需带宽降低
 - 性能一开始随channel数增加而线性增加，而利用率则缓慢下降
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_20c5429669c0.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_20c5429669c0.jpg)
 
 #### 8.6 数据传输和功耗
 
 评估了各种模型下Cambricon-LLM-S和Flexgen-SSD推理时一个token所需数据传输量和功耗。结果如下图16所示，可以看到Flexgen-SSD所需数据量要多9.7~11.6倍，而功耗Cambricon-LLM-S也仅有Flexgen-SSD的67%。
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_dece87fa3bcc.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_dece87fa3bcc.jpg)
 
 #### 8.7 成本分析
 
 对于70B参数的LLM来说，其需要80GB空间存储weight。而Cambricon-LLM可以使用相对便宜的Flash来存储，与典型的DRAM存储硬件结构相比的成本如下表5，可以节省超过2/3的成本。
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_1f96d6885498.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_1f96d6885498.jpg)

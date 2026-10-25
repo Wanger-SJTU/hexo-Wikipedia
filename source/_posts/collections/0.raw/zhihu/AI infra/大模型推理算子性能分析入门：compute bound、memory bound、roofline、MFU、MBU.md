@@ -20,7 +20,7 @@ source_url: https://zhuanlan.zhihu.com/p/2066036349120123080
 
 先给大局观：
 
-- 计算强度和 roofline 给了我们“纸上谈兵”地评估算子性能的能力，它让我们可以在算子实现出来之前就评估整体的性能、ROI 等数据，也可以给最终算子的性能做一个预期。但是一定要记住，**“勿以辩说为必然”**，这些工具都只是某种评估或者计算，最终的实际效果要去看实现的最终情况。
+- 计算强度和 roofline 给了我们“纸上谈兵”地评估算子性能的能力，它让我们可以在算子实现出来之前就评估整体的性能、ROI 等数据，也可以给最终算子的性能做一个预期。但是一定要记住，<strong>“勿以辩说为必然”</strong>，这些工具都只是某种评估或者计算，最终的实际效果要去看实现的最终情况。
 - 而 MFU、MBU 则是在算子实现后我们关注的指标，它定义了算子的性能，帮助我们给出性能优化的思路。本文对于 MFU 和 MBU 的介绍会很少，主要聚焦 roofline。
 从算子 bound 在哪到计算强度和 roofline
  和 roofline model 原始论文《Roofline: An Insightful Visual Performance Model for Floating-Point Programs and Multicore Architectures》相比，笔者会采用一种循序渐进的方式推导出 roofline 的定义，所以直到本章节最后我们才会引出什么是 roofline，请读者稍安勿躁。

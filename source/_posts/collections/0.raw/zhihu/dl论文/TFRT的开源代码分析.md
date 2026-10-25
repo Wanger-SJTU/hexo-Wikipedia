@@ -28,16 +28,16 @@ TFRT是一个新的TensorFlow运行时。它的目标是提供一个统一的、
 
 整体流程：**
 
-![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_b6d3971d1d07.jpg)
+![](/images/collections/0.raw/zhihu/dl%E8%AE%BA%E6%96%87/asset/img_b6d3971d1d07.jpg)
 
 [https://github.com/tensorflow/runtime/blob/master/documents/img/TFRT_overview.svg](https://link.zhihu.com/?target=https%3A//github.com/tensorflow/runtime/blob/master/documents/img/TFRT_overview.svg)
 
 - 用户传入用high-level TensorFlow APIs创建的TF Graph。
 - MLIR-based graph compiler优化TF Graph并下降（lower）为BEF（Binary Executable Format）。
 - Eager模式直接调用Kernel，不需要转换为BEF。
-**BEF转换流程：**
+<strong>BEF转换流程：</strong>
 
-![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_2ddaf2673032.jpg)
+![](/images/collections/0.raw/zhihu/dl%E8%AE%BA%E6%96%87/asset/img_2ddaf2673032.jpg)
 
 **[https://github.com/tensorflow/runtime/blob/master/documents/img/BEF_conversion.svg](https://link.zhihu.com/?target=https%3A//github.com/tensorflow/runtime/blob/master/documents/img/BEF_conversion.svg)
 
@@ -53,7 +53,7 @@ TFRT是一个新的TensorFlow运行时。它的目标是提供一个统一的、
 
 TFRT的整体架构：**
 
-![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_409cf321c9b1.jpg)
+![](/images/collections/0.raw/zhihu/dl%E8%AE%BA%E6%96%87/asset/img_409cf321c9b1.jpg)
 
 TFRT包含Distributed Runtime、Host Runtime和Device Runtime。
 
@@ -162,7 +162,7 @@ AsyncValue的生命周期通过引用计数管理，方便在多个消费者中�
 
 #### Class Hierarchy
 
-![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_6dfb5a20b98c.jpg)
+![](/images/collections/0.raw/zhihu/dl%E8%AE%BA%E6%96%87/asset/img_6dfb5a20b98c.jpg)
 
 [https://github.com/tensorflow/runtime/raw/master/documents/img/async-values.svg](https://link.zhihu.com/?target=https%3A//github.com/tensorflow/runtime/raw/master/documents/img/async-values.svg)                              
 

@@ -165,7 +165,7 @@ grep 检索工具将对话轮次和提取的时间事件从每个问题的文件
 
 表~\ref{} 报告了总体准确率（$\ldots\%$ 子集上的 Chronos 处理会话 JSON，完整每个问题的 haystack）。列交叉对比了仅 grep 与仅向量检索与内联与程序化工具传递（第~\ref{} 节）。在内联传递下，词汇搜索普遍比密集检索更强：内联 grep 在每个框架-模型对上都超过内联向量。最大差距是 Chronos 与 Gemini 3.1 Flash-Lite（86.2\% vs 62.9\%）；最小差距是 Claude Code 与 Claude Opus 4.6（76.7\% vs 75.0\%）。在 Chronos 上，内联 grep 范围为 83.6\%--93.1\%，而内联向量为 62.9\%--83.6\%。相同的 Claude Opus 4.6 主干在 Chronos 上达到 93.1\%，在 Codex 上达到 75.9\%，改变框架与在固定框架内交换检索器大约引入相同的准确率变化。Codex 与 GPT-5.4 与最强的 Chronos 内联 grep 持平（93.1\%）；仅改变传递方法后，准确率降至 55.2\%。程序化传递重新安排了比较：程序化向量在十个框架-模型对中的五个上超过程序化 grep（Chronos 与 Claude Opus 4.6；Claude Code 与 Claude Opus 4.6；Codex 与 GPT-5.4；Gemini CLI 与 Gemini 3.1 Flash-Lite；Gemini CLI 与 Gemini 3.1 Pro），而程序化 grep 在其他 Chronos 主干和 Claude Code 与 Claude Haiku 4.5 上保持较高。最剧烈的下降是 Codex 与 GPT-5.4，从 93.1\% 降至 55.2\%。其他显著差距包括 Claude Haiku 4.5 在 Claude Code 上（55.2\% vs 44.0\%）。完整数值网格见表~\ref{}。
 
-**表 1：实验一准确率表格**
+<strong>表 1：实验一准确率表格</strong>
 
 | 模型 | 框架 | 内联 grep | 内联向量 | 程序化 grep | 程序化向量 |
 |------|------|-----------|----------|--------------|------------|
@@ -204,7 +204,7 @@ Chronos 框架（仅 grep、程序化工具调用方法、完整 haystack）的�
 
 表~\ref{} 和表~\ref{} 配对了仅 grep 和仅向量总体准确率（$\ldots\%$）。Chronos 使用仅 grep 或仅向量检索框架；Claude Code 和 Gemini CLI 使用 bash 搜索相同的语料库。Codex 向量行仅在 full 处完整；中间配置待定。Grep 准确率不是单调的：Chronos Opus 升至 90.5\ 在 s5 处，Chronos grep 跨度为 83.2\%--89.7\%。向量轨迹在不同配置处达到峰值：Chronos Opus 在 s10 处最高（94.8\%），而 Chronos Haiku 在 full 处最高（87.9\%）。检索器排序取决于框架：Claude Code 在我们报告的每个配置上都偏向 grep 为 Opus 和 Haiku，Gemini CLI Pro 在整个过程中偏向向量，而 Chronos 显示随着更多会话被包括而发生交叉（例如，Opus 在 s5--s20 和 full 处向量领先，但在倒数第二个限制处 grep 领先：85.3\% vs 87.9\%）。在 Chronos 的 full 处，Gemini 3.1 Pro 是一个后期反转的例子：grep 达到 86.6\%，但向量达到 91.4\%。对于 Flash-Lite，Chronos 在整个网格中 grep 和向量之间显示出混合交叉，而两个 Gemini CLI Flash-Lite 轨迹相对于 Opus 保持相对平坦。完整网格见表~\ref{} 和表~\ref{}。
 
-**表 2：实验二 grep 准确率（会话扩展）**
+<strong>表 2：实验二 grep 准确率（会话扩展）</strong>
 
 | 模型 | 框架 | s5 | s10 | s20 | s30 | full |
 |------|------|-----|-----|-----|-----|------|
@@ -218,7 +218,7 @@ Chronos 框架（仅 grep、程序化工具调用方法、完整 haystack）的�
 | Gemini 3.1 Flash-Lite | Chronos | 88.8 | 89.2 | 90.0 | 84.8 | 89.2 |
 |  | Gemini CLI | 70.4 | 70.7 | 71.3 | 67.2 | 70.7 |
 
-**表 3：实验二向量准确率（会话扩展）**
+<strong>表 3：实验二向量准确率（会话扩展）</strong>
 
 | 模型 | 框架 | s5 | s10 | s20 | s30 | full |
 |------|------|-----|-----|-----|-----|------|
@@ -254,7 +254,7 @@ Chronos 框架（仅 grep、程序化工具调用方法、完整 haystack）的�
 
 表~\ref{} 报告了在 Chronos 框架下、仅 grep 检索、内联工具调用方法和完整 haystack（$n=116$）下，每个推理模型按 LongMemEval-S 类别的准确率。评分器：GPT-4o。
 
-**表 4：按类别准确率**
+<strong>表 4：按类别准确率</strong>
 
 | 模型 | KU | MS | SS-A | SS-P | SS-U | TR |
 |------|-----|-----|------|------|------|-----|

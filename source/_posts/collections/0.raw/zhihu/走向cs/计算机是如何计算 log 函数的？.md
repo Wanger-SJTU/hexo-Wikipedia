@@ -122,7 +122,7 @@ static double zero   =  0.0;
 
 然后很容易发现规律： \ln x = \ln [2^k \times (1+f)] = k\ln 2 + \ln (1+f) ，其中 k\ln2 口算都能算出来，我们来进一步关注 \ln (1+f) 的计算。
 
-**2. 计算 1+f 的对数值**
+<strong>2. 计算 1+f 的对数值</strong>
 
 将第一步的 (1+f) 进行计算，其结果因范围控制得比较小，所以很容易近似到一个很精确的值。计算方法：
 
@@ -210,9 +210,9 @@ $$\ln(x) = k\ln 2 + \ln (1+f) = k\ln2 + f - {ff\over2}  + s(\frac{ff}{2}+R(z)) $
 
 算法还是同C一样的，这次看完相信大家一定能手写了！
 
-[所属专栏 · 2021-03-20 04:03 更新](https://zhuanlan.zhihu.com/suneo)[![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_c958578de470.jpg)小亦日記
+[所属专栏 · 2021-03-20 04:03 更新](https://zhuanlan.zhihu.com/suneo)[![](/images/collections/0.raw/zhihu/%E8%B5%B0%E5%90%91cs/asset/img_c958578de470.jpg)小亦日記
 
-![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_5b1631aae11b.jpg)dadada
+![](/images/collections/0.raw/zhihu/%E8%B5%B0%E5%90%91cs/asset/img_5b1631aae11b.jpg)dadada
 
 18 篇内容 · 8054 赞同
 

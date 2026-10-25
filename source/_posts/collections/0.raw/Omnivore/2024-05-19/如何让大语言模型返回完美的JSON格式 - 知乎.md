@@ -37,12 +37,12 @@ id: 0b967466-4751-4669-a3f8-665c73e41212
 
 让我们首先回顾一下大语言模型生成响应的基本流程。设想我们有一个大型语言模型，表示为 LLM({\\bf s},\\theta) ，其中 \\theta 表示模型的参数， 而 {\\bf s} 是模型接受的token序列。token词汇表我们记作 \\mathcal {V} 。
 
-**接收提示并生成响应**
+<strong>接收提示并生成响应</strong>
 
-1. **接收提示**：首先，语言模型接收一个提示 {\\bf p} （即一系列token）。基于这个提示，模型预测下一个token出现的概率分布 {\\bf P} 。
-2. **预测与采样**：根据预测的概率分布，模型进行采样以确定下一个token，记为 s\_1 。
-3. **迭代过程**：随后，语言模型将接收到的提示 {\\bf p} 和已生成的token序列 s\_1 作为输入，继续预测下一个token的概率分布，并采样得到新的token s\_2 。
-4. **生成结束**：这个过程会持续进行，直到模型采样到一个表示结束的token（例如 `<|endoftext|>`），或者达到预设的生成token数量上限。
+1. <strong>接收提示</strong>：首先，语言模型接收一个提示 {\\bf p} （即一系列token）。基于这个提示，模型预测下一个token出现的概率分布 {\\bf P} 。
+2. <strong>预测与采样</strong>：根据预测的概率分布，模型进行采样以确定下一个token，记为 s\_1 。
+3. <strong>迭代过程</strong>：随后，语言模型将接收到的提示 {\\bf p} 和已生成的token序列 s\_1 作为输入，继续预测下一个token的概率分布，并采样得到新的token s\_2 。
+4. <strong>生成结束</strong>：这个过程会持续进行，直到模型采样到一个表示结束的token（例如 `<|endoftext|>`），或者达到预设的生成token数量上限。
 
 下面是整个过程的伪代码：
 
@@ -73,7 +73,7 @@ id: 0b967466-4751-4669-a3f8-665c73e41212
 
 因此，上一小节的伪代码的第4行和第5行可以进一步的优化成下面的样子：
 
-\\begin{aligned} {\\bf P} &\\leftarrow LLM({\\bf s},\\theta) \\\\ {\\widetilde{\\bf P}} &\\leftarrow m({\\bf s})\\odot{\\bf P} \\\\ s &\\sim {\\widetilde{\\bf P}} \\end{aligned} \\tag{1} \\odot 表示Hadamard积，指逐元素相乘， m({\\bf s}) 是一个**掩盖函数**，被掩盖的token会被置为0，不被掩盖的会被置为1。
+\\begin{aligned} {\\bf P} &\\leftarrow LLM({\\bf s},\\theta) \\\\ {\\widetilde{\\bf P}} &\\leftarrow m({\\bf s})\\odot{\\bf P} \\\\ s &\\sim {\\widetilde{\\bf P}} \\end{aligned} \\tag{1} \\odot 表示Hadamard积，指逐元素相乘， m({\\bf s}) 是一个<strong>掩盖函数</strong>，被掩盖的token会被置为0，不被掩盖的会被置为1。
 
 发现了吗？这里的掩盖函数 m({\\bf s}) 和 {\\bf s} 有关，换句话说，掩盖的token是可以随着 {\\bf s} 不断变化的！正是这个性质使得我们可以让大语言模型按照我们的指导和要求去生成响应。
 
@@ -105,7 +105,7 @@ id: 0b967466-4751-4669-a3f8-665c73e41212
 
 接下来，我们以这个正则表达式为例，研究如何去设计掩盖函数 m({\\bf s}) 。
 
-实际上，我们有一个非常简单和直观的思路。遍历整个token词汇表 {\\mathcal{V}} 中的每个token，查看这个token和已生成的响应 {\\bf c} 是否**部分匹配**正则表达式。如果不匹配，就掩盖这个token，反之则不掩盖这个token。
+实际上，我们有一个非常简单和直观的思路。遍历整个token词汇表 {\\mathcal{V}} 中的每个token，查看这个token和已生成的响应 {\\bf c} 是否<strong>部分匹配</strong>正则表达式。如果不匹配，就掩盖这个token，反之则不掩盖这个token。
 
 下面是用Python实现的核心逻辑。
 
@@ -134,9 +134,9 @@ for token in V:
 
 ##  4\. 如何进行加速
 
-在论文《Efficient Guided Generation for Large Language Models》中，作者们提出了一种创新的加速策略。要深入理解这一策略的核心思想，我们必须首先认识到正则表达式在本质上与**有限状态机**（Finite State Machine, FSM）是等价的。
+在论文《Efficient Guided Generation for Large Language Models》中，作者们提出了一种创新的加速策略。要深入理解这一策略的核心思想，我们必须首先认识到正则表达式在本质上与<strong>有限状态机</strong>（Finite State Machine, FSM）是等价的。
 
-**有限状态机**是一种简洁而强大的计算模型，它由**状态集**和**字符集**构成。该模型从某个**初始状态**出发，每次接收一个字符输入，根据**预设的转换规则**，转移到下一个状态。在新的状态中，它再次接收字符输入，并继续按照规则进行状态转移，这个过程不断重复。通过这种方式，有限状态机能够高效地处理和识别字符串模式。
+<strong>有限状态机</strong>是一种简洁而强大的计算模型，它由<strong>状态集</strong>和<strong>字符集</strong>构成。该模型从某个<strong>初始状态</strong>出发，每次接收一个字符输入，根据<strong>预设的转换规则</strong>，转移到下一个状态。在新的状态中，它再次接收字符输入，并继续按照规则进行状态转移，这个过程不断重复。通过这种方式，有限状态机能够高效地处理和识别字符串模式。
 
 我们仍然以前面的正则表达式为例，利用下面的Python代码，我们可以得到和`[0-9]+\.[0-9]+`等价的有限状态机。
 

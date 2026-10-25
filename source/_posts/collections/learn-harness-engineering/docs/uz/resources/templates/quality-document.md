@@ -15,14 +15,14 @@ categories:
 
 Har bir mahsulot domeni (product domain) va arxitektura qatlamining sifat koʻrinishi (snapshot). Agentlar ham, odamlar ham kod bazasining qayeri kuchli va qayeri zaifligini tezda bilib olish uchun ushbu hujjatdan foydalanishlari mumkin.
 
-**Yangilash chastotasi:** Har bir muhim sessiyadan soʻng yoki ishning yangi bosqichini boshlashdan oldin.
+<strong>Yangilash chastotasi:</strong> Har bir muhim sessiyadan soʻng yoki ishning yangi bosqichini boshlashdan oldin.
 
-**Baholash shkalasi:**
+<strong>Baholash shkalasi:</strong>
 
-- **A**: Barcha tekshiruvlar (verification) oʻtadi, toza arxitektura, agent tushuna oladi, testlar barqaror
-- **B**: Tekshiruvlar oʻtadi, asosan toza, tushunarlilik yoki test qamrovida kichik boʻshliqlar bor
-- **C**: Qisman ishlaydi, maʼlum boʻshliqlar mavjud, kodning baʼzi qismlarini agentlar tushunishi qiyin
-- **D**: Ishlamayapti yoki katta strukturaviy muammolar bor
+- <strong>A</strong>: Barcha tekshiruvlar (verification) oʻtadi, toza arxitektura, agent tushuna oladi, testlar barqaror
+- <strong>B</strong>: Tekshiruvlar oʻtadi, asosan toza, tushunarlilik yoki test qamrovida kichik boʻshliqlar bor
+- <strong>C</strong>: Qisman ishlaydi, maʼlum boʻshliqlar mavjud, kodning baʼzi qismlarini agentlar tushunishi qiyin
+- <strong>D</strong>: Ishlamayapti yoki katta strukturaviy muammolar bor
 
 ---
 

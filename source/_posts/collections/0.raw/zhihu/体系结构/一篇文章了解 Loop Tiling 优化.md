@@ -33,9 +33,9 @@ Loop Tiling，是优化循环的一种非常重要的策略。而在深度学习
 
 ### Loop Tiling
 
-Loop Tiling 的目的是 **确保一个 Cache Line 在被用过以后，后面再用的时候其仍然在 cache 中，没有被 evict**。
+Loop Tiling 的目的是 <strong>确保一个 Cache Line 在被用过以后，后面再用的时候其仍然在 cache 中，没有被 evict</strong>。
 
-实现思路是：**当一个数组总的数据量无法 fit in cache时，把总数据分成一个个 tile 去访问，令每个 tile 都可以 fit in the Cache**
+实现思路是：<strong>当一个数组总的数据量无法 fit in cache时，把总数据分成一个个 tile 去访问，令每个 tile 都可以 fit in the Cache</strong>
 
 而具体做法就是：**把一层内层循环分成 outer loop * inner loop。然后把 outer loop 移到更外层去，从而确保 inner loop 一定能 fit in cache**。
 
@@ -65,7 +65,7 @@ for j_o in range(0, M, T):
 #  - B[]: T/b * 1 * M/T = M/b
 # 总的 cache miss 数就是 N/b*M/T+M/b，与前面的相比大约少了 T 倍的 cache miss			`
 
-注意这样变化的，会导致 `i in range(0, N)` 变成内层循环，**对于 A[] 来说，其 cache miss 反而增加了**。这种变换被称为「strip-mine-and -interchange」
+注意这样变化的，会导致 `i in range(0, N)` 变成内层循环，<strong>对于 A[] 来说，其 cache miss 反而增加了</strong>。这种变换被称为「strip-mine-and -interchange」
 
 同样，因为变换后循环 `i` 从最外层循环变成了内层循环，所以当 `j_o=0,1...` 时，其也会被重复访问，也可以 tile，结果如下
 
@@ -125,7 +125,7 @@ for i_o in range(0, N, T_i):
 
 - 因为其下层循环时 `j_o` 度过了从 `0..N` 的大层循环时，且 `N` 非常大，所以此时必然出现 cache miss
 - 即 `k_o=0` 时存在 cache 里的 `C[i_i][j_i]` ，在 `k_o=T_k` 时必然已经被 evict 了**
-- 因此，我们可以用**更大的缓存**再对下一层循环 `j_o` 进行 tile
+- 因此，我们可以用<strong>更大的缓存</strong>再对下一层循环 `j_o` 进行 tile
 
 `for j_oo in range(0, N, T2_j):
   for i_o in range(0, N, T_i):
@@ -151,7 +151,7 @@ for i_o in range(0, N, T_i):
 
 - 若有，则 tile 第 `L+1` 层循环。
 
-都做完之后，再分析 **基于新循环是否仍然有可 tile 的部分**
+都做完之后，再分析 <strong>基于新循环是否仍然有可 tile 的部分</strong>
 
 ### Refer
 

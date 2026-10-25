@@ -31,11 +31,11 @@ Part2: [相机图像信号处理流程（ISP） - 知乎 (zhihu.com)](https://zh
 
 ISP流程中AI可以取得比较好效果的环节：
 
-![](/images/collections/0.raw/zhihu/ISP%2526%25E8%25AE%25A1%25E7%25AE%2597%25E6%2591%2584%25E5%25BD%25B1/asset/img_f7a58da06dc6.jpg)
+![](/images/collections/0.raw/zhihu/ISP%26%E8%AE%A1%E7%AE%97%E6%91%84%E5%BD%B1/asset/img_f7a58da06dc6.jpg)
 
 ### 3.1 超分辨率（Super-resolution）
 
-![](/images/collections/0.raw/zhihu/ISP%2526%25E8%25AE%25A1%25E7%25AE%2597%25E6%2591%2584%25E5%25BD%25B1/asset/img_5a6015fd7652.jpg)
+![](/images/collections/0.raw/zhihu/ISP%26%E8%AE%A1%E7%AE%97%E6%91%84%E5%BD%B1/asset/img_5a6015fd7652.jpg)
 
 #### 基于ML方法
 
@@ -47,93 +47,93 @@ ISP流程中AI可以取得比较好效果的环节：
 - 支持向量机
 早期的一个机器学习的方法；
 
-![](/images/collections/0.raw/zhihu/ISP%2526%25E8%25AE%25A1%25E7%25AE%2597%25E6%2591%2584%25E5%25BD%25B1/asset/img_61b916dad95f.jpg)
+![](/images/collections/0.raw/zhihu/ISP%26%E8%AE%A1%E7%AE%97%E6%91%84%E5%BD%B1/asset/img_61b916dad95f.jpg)
 
 DL的方法开始使用：
 
 #### 基于CNN的方法
 
-![](/images/collections/0.raw/zhihu/ISP%2526%25E8%25AE%25A1%25E7%25AE%2597%25E6%2591%2584%25E5%25BD%25B1/asset/img_b8c79927f0f6.jpg)
+![](/images/collections/0.raw/zhihu/ISP%26%E8%AE%A1%E7%AE%97%E6%91%84%E5%BD%B1/asset/img_b8c79927f0f6.jpg)
 
 更深层的网络：
 
-![](/images/collections/0.raw/zhihu/ISP%2526%25E8%25AE%25A1%25E7%25AE%2597%25E6%2591%2584%25E5%25BD%25B1/asset/img_dbdf0fdd27ad.jpg)
+![](/images/collections/0.raw/zhihu/ISP%26%E8%AE%A1%E7%AE%97%E6%91%84%E5%BD%B1/asset/img_dbdf0fdd27ad.jpg)
 
-![](/images/collections/0.raw/zhihu/ISP%2526%25E8%25AE%25A1%25E7%25AE%2597%25E6%2591%2584%25E5%25BD%25B1/asset/img_3930f0000436.jpg)
+![](/images/collections/0.raw/zhihu/ISP%26%E8%AE%A1%E7%AE%97%E6%91%84%E5%BD%B1/asset/img_3930f0000436.jpg)
 
 #### 基于GAN的方法
 
-![](/images/collections/0.raw/zhihu/ISP%2526%25E8%25AE%25A1%25E7%25AE%2597%25E6%2591%2584%25E5%25BD%25B1/asset/img_efeb3773efef.jpg)
+![](/images/collections/0.raw/zhihu/ISP%26%E8%AE%A1%E7%AE%97%E6%91%84%E5%BD%B1/asset/img_efeb3773efef.jpg)
 
-![](/images/collections/0.raw/zhihu/ISP%2526%25E8%25AE%25A1%25E7%25AE%2597%25E6%2591%2584%25E5%25BD%25B1/asset/img_f2a3812c8d19.jpg)
+![](/images/collections/0.raw/zhihu/ISP%26%E8%AE%A1%E7%AE%97%E6%91%84%E5%BD%B1/asset/img_f2a3812c8d19.jpg)
 
 ### 3.2 白平衡（illumination estimation）
 
-![](/images/collections/0.raw/zhihu/ISP%2526%25E8%25AE%25A1%25E7%25AE%2597%25E6%2591%2584%25E5%25BD%25B1/asset/img_dd6b100a70e2.jpg)
+![](/images/collections/0.raw/zhihu/ISP%26%E8%AE%A1%E7%AE%97%E6%91%84%E5%BD%B1/asset/img_dd6b100a70e2.jpg)
 
 白平衡问题本质上是给定一个图片，去估计环境光照以及传感器对于当时的环境光照的响应。
 
 #### 基于ML的方法
 
-![](/images/collections/0.raw/zhihu/ISP%2526%25E8%25AE%25A1%25E7%25AE%2597%25E6%2591%2584%25E5%25BD%25B1/asset/img_263e7096ae42.jpg)
+![](/images/collections/0.raw/zhihu/ISP%26%E8%AE%A1%E7%AE%97%E6%91%84%E5%BD%B1/asset/img_263e7096ae42.jpg)
 
 #### 基于DL方法
 
 这个方法的思路应该是训练网络去估计图片中最可能是中性灰度的区域以及这些区域中像素对应的置信度，然后进行加权平均去估计最终的结果。
 
-![](/images/collections/0.raw/zhihu/ISP%2526%25E8%25AE%25A1%25E7%25AE%2597%25E6%2591%2584%25E5%25BD%25B1/asset/img_4cc35f3ce213.jpg)
+![](/images/collections/0.raw/zhihu/ISP%26%E8%AE%A1%E7%AE%97%E6%91%84%E5%BD%B1/asset/img_4cc35f3ce213.jpg)
 
 还提到一篇基于两个相机去做白平衡的，最终取得很好的效果，而且网络也比较轻量级
 
-![](/images/collections/0.raw/zhihu/ISP%2526%25E8%25AE%25A1%25E7%25AE%2597%25E6%2591%2584%25E5%25BD%25B1/asset/img_cac390790bea.jpg)
+![](/images/collections/0.raw/zhihu/ISP%26%E8%AE%A1%E7%AE%97%E6%91%84%E5%BD%B1/asset/img_cac390790bea.jpg)
 
 ### 3.3 去马赛克（Demosaicing）
 
 主要任务就是估计某个采集了单一颜色光强度的传感器的剩下两个通道的强度值，来得到每个像素都有3通道的最终图片。
 
-![](/images/collections/0.raw/zhihu/ISP%2526%25E8%25AE%25A1%25E7%25AE%2597%25E6%2591%2584%25E5%25BD%25B1/asset/img_16c182905151.jpg)
+![](/images/collections/0.raw/zhihu/ISP%26%E8%AE%A1%E7%AE%97%E6%91%84%E5%BD%B1/asset/img_16c182905151.jpg)
 
 #### 基于DL的方法
 
-![](/images/collections/0.raw/zhihu/ISP%2526%25E8%25AE%25A1%25E7%25AE%2597%25E6%2591%2584%25E5%25BD%25B1/asset/img_2f9d709e02a1.jpg)
+![](/images/collections/0.raw/zhihu/ISP%26%E8%AE%A1%E7%AE%97%E6%91%84%E5%BD%B1/asset/img_2f9d709e02a1.jpg)
 
 这篇里面网络结构和超分的网络比较类似，同时可以直接100%人为的合成数据。
 
-![](/images/collections/0.raw/zhihu/ISP%2526%25E8%25AE%25A1%25E7%25AE%2597%25E6%2591%2584%25E5%25BD%25B1/asset/img_887f0c09b8a1.jpg)
+![](/images/collections/0.raw/zhihu/ISP%26%E8%AE%A1%E7%AE%97%E6%91%84%E5%BD%B1/asset/img_887f0c09b8a1.jpg)
 
 这个文章里基于两个原因，提出了后面的网络：
 
 - 高频区域（即细节变化比较多的区域）更难进行去马赛克
 - 拜尔阵列排布中，绿色像素所占的比例更多
-![](/images/collections/0.raw/zhihu/ISP%2526%25E8%25AE%25A1%25E7%25AE%2597%25E6%2591%2584%25E5%25BD%25B1/asset/img_0bcd481b2a2f.jpg)
+![](/images/collections/0.raw/zhihu/ISP%26%E8%AE%A1%E7%AE%97%E6%91%84%E5%BD%B1/asset/img_0bcd481b2a2f.jpg)
 
 大概思路是先将GG通道（因为G通道采样率是RG两倍）与Noise通道拿出来，输入到RRDB网络中，然后上采样，先得到一个预估的G map，然后与main reconstruction branch提取到的特征做一个fusion，然后输入到最后一部分网络中得到恢复结果。
 
 效果：
 
-![](/images/collections/0.raw/zhihu/ISP%2526%25E8%25AE%25A1%25E7%25AE%2597%25E6%2591%2584%25E5%25BD%25B1/asset/img_f87dccc041d8.jpg)
+![](/images/collections/0.raw/zhihu/ISP%26%E8%AE%A1%E7%AE%97%E6%91%84%E5%BD%B1/asset/img_f87dccc041d8.jpg)
 
 ### 3.4 降噪（Noise reduction）
 
 07年提出的一种基于非局部均值的方法效果很好，但是很慢
 
-![](/images/collections/0.raw/zhihu/ISP%2526%25E8%25AE%25A1%25E7%25AE%2597%25E6%2591%2584%25E5%25BD%25B1/asset/img_68ff08470730.jpg)
+![](/images/collections/0.raw/zhihu/ISP%26%E8%AE%A1%E7%AE%97%E6%91%84%E5%BD%B1/asset/img_68ff08470730.jpg)
 
 思路是对于需要去噪的R区域，在全图寻找相似的区域，然后去做均值后去修补R区域
 
 #### 基于DL的方法
 
-![](/images/collections/0.raw/zhihu/ISP%2526%25E8%25AE%25A1%25E7%25AE%2597%25E6%2591%2584%25E5%25BD%25B1/asset/img_b5e4d7d0af67.jpg)
+![](/images/collections/0.raw/zhihu/ISP%26%E8%AE%A1%E7%AE%97%E6%91%84%E5%BD%B1/asset/img_b5e4d7d0af67.jpg)
 
 网络在现在看来比较常规，比较值得提的是其最终是去预测噪声而不是直接得到降噪后的图像
 
 结果：
 
-![](/images/collections/0.raw/zhihu/ISP%2526%25E8%25AE%25A1%25E7%25AE%2597%25E6%2591%2584%25E5%25BD%25B1/asset/img_6ecc03536d20.jpg)
+![](/images/collections/0.raw/zhihu/ISP%26%E8%AE%A1%E7%AE%97%E6%91%84%E5%BD%B1/asset/img_6ecc03536d20.jpg)
 
 20年的NTIRE降噪榜单：
 
-![](/images/collections/0.raw/zhihu/ISP%2526%25E8%25AE%25A1%25E7%25AE%2597%25E6%2591%2584%25E5%25BD%25B1/asset/img_1b4cc50ec15d.jpg)
+![](/images/collections/0.raw/zhihu/ISP%26%E8%AE%A1%E7%AE%97%E6%91%84%E5%BD%B1/asset/img_1b4cc50ec15d.jpg)
 
 ### 3.5 基于多帧（multi-frame）去替代传统ISP
 
@@ -142,11 +142,11 @@ DL的方法开始使用：
 - 目前主要用在暗光增强和HDR
 - 很多ISP也开始支持多帧渲染
 - 超分辨率也可以做，但是文章省略
-![](/images/collections/0.raw/zhihu/ISP%2526%25E8%25AE%25A1%25E7%25AE%2597%25E6%2591%2584%25E5%25BD%25B1/asset/img_958001c12231.jpg)
+![](/images/collections/0.raw/zhihu/ISP%26%E8%AE%A1%E7%AE%97%E6%91%84%E5%BD%B1/asset/img_958001c12231.jpg)
 
 #### 暗光增强
 
-![](/images/collections/0.raw/zhihu/ISP%2526%25E8%25AE%25A1%25E7%25AE%2597%25E6%2591%2584%25E5%25BD%25B1/asset/img_ddc901f17ab0.jpg)
+![](/images/collections/0.raw/zhihu/ISP%26%E8%AE%A1%E7%AE%97%E6%91%84%E5%BD%B1/asset/img_ddc901f17ab0.jpg)
 
 这里提到暗光增强本质上是一个降噪问题，我的理解是其实靠提高ISO本身就可以放大采集到的信号，只不过噪声也会随之增大，如果解决了这个过程中的噪声，其实也就可以对暗光环境进行增强。
 
@@ -154,45 +154,45 @@ DL的方法开始使用：
 
 早期三星的SAIT提出了很多方法，比如Laplacian金字塔、全局对齐、局部融合、多时融合等方法
 
-![](/images/collections/0.raw/zhihu/ISP%2526%25E8%25AE%25A1%25E7%25AE%2597%25E6%2591%2584%25E5%25BD%25B1/asset/img_8d5f0b1d2fe9.jpg)
+![](/images/collections/0.raw/zhihu/ISP%26%E8%AE%A1%E7%AE%97%E6%91%84%E5%BD%B1/asset/img_8d5f0b1d2fe9.jpg)
 
 Hassinoff et al SIGGRAPH'16 (Google) 提出基于双边滤波的方法，且直接在Bayer/原图上进行。 同时文章提到降噪与融合也可上采样到更多位宽（10bit to 12 bit ）。
 
-![](/images/collections/0.raw/zhihu/ISP%2526%25E8%25AE%25A1%25E7%25AE%2597%25E6%2591%2584%25E5%25BD%25B1/asset/img_9d3cba679f39.jpg)
+![](/images/collections/0.raw/zhihu/ISP%26%E8%AE%A1%E7%AE%97%E6%91%84%E5%BD%B1/asset/img_9d3cba679f39.jpg)
 
 这篇文章提出一个多尺度的encoder-decoder结构，将多帧Raw格式图像分别输入给不同的Encoder，这些Encoder提取不同尺度的特征后最终通过 D_S 直接输出增强后的图像且格式直接为sRGB。
 
-![](/images/collections/0.raw/zhihu/ISP%2526%25E8%25AE%25A1%25E7%25AE%2597%25E6%2591%2584%25E5%25BD%25B1/asset/img_0e79d25610c5.jpg)
+![](/images/collections/0.raw/zhihu/ISP%26%E8%AE%A1%E7%AE%97%E6%91%84%E5%BD%B1/asset/img_0e79d25610c5.jpg)
 
-![](/images/collections/0.raw/zhihu/ISP%2526%25E8%25AE%25A1%25E7%25AE%2597%25E6%2591%2584%25E5%25BD%25B1/asset/img_cd1aca212f90.jpg)
+![](/images/collections/0.raw/zhihu/ISP%26%E8%AE%A1%E7%AE%97%E6%91%84%E5%BD%B1/asset/img_cd1aca212f90.jpg)
 
 大名鼎鼎的Google pixel,同样也针对Raw格式图像，结合多帧图像以及相机的抖动信息去马赛克和超分：
 
-![](/images/collections/0.raw/zhihu/ISP%2526%25E8%25AE%25A1%25E7%25AE%2597%25E6%2591%2584%25E5%25BD%25B1/asset/img_83edd6053199.jpg)
+![](/images/collections/0.raw/zhihu/ISP%26%E8%AE%A1%E7%AE%97%E6%91%84%E5%BD%B1/asset/img_83edd6053199.jpg)
 
 同时通过分析抖动数据，可以恢复拜尔阵列，也就是demosaicing
 
-![](/images/collections/0.raw/zhihu/ISP%2526%25E8%25AE%25A1%25E7%25AE%2597%25E6%2591%2584%25E5%25BD%25B1/asset/img_6a98e294982f.jpg)
+![](/images/collections/0.raw/zhihu/ISP%26%E8%AE%A1%E7%AE%97%E6%91%84%E5%BD%B1/asset/img_6a98e294982f.jpg)
 
 #### HDR(High dynamic range)
 
 通过多帧不同曝光下的照片进行融合，恢复更多高光和暗部的信息。
 
-![](/images/collections/0.raw/zhihu/ISP%2526%25E8%25AE%25A1%25E7%25AE%2597%25E6%2591%2584%25E5%25BD%25B1/asset/img_6e05ddef2c8b.jpg)
+![](/images/collections/0.raw/zhihu/ISP%26%E8%AE%A1%E7%AE%97%E6%91%84%E5%BD%B1/asset/img_6e05ddef2c8b.jpg)
 
 图像曝光融合（Exposure fusion）：
 
-![](/images/collections/0.raw/zhihu/ISP%2526%25E8%25AE%25A1%25E7%25AE%2597%25E6%2591%2584%25E5%25BD%25B1/asset/img_294c40c2f155.jpg)
+![](/images/collections/0.raw/zhihu/ISP%26%E8%AE%A1%E7%AE%97%E6%91%84%E5%BD%B1/asset/img_294c40c2f155.jpg)
 
 得到不同曝光图像的拉普拉斯金字塔，然后以对比度和饱和度作为指导信息去确定融合的权重，因为在过曝和死黑的区域的像素值接近0和255，梯度很小比较平滑，而饱和度同样是接近于0的。
 
 效果:
 
-![](/images/collections/0.raw/zhihu/ISP%2526%25E8%25AE%25A1%25E7%25AE%2597%25E6%2591%2584%25E5%25BD%25B1/asset/img_37bb786cc61f.jpg)
+![](/images/collections/0.raw/zhihu/ISP%26%E8%AE%A1%E7%AE%97%E6%91%84%E5%BD%B1/asset/img_37bb786cc61f.jpg)
 
 Kalantari and Ramanoorthi SIGGRAPH'17:
 
-![](/images/collections/0.raw/zhihu/ISP%2526%25E8%25AE%25A1%25E7%25AE%2597%25E6%2591%2584%25E5%25BD%25B1/asset/img_7eb09f22742b.jpg)
+![](/images/collections/0.raw/zhihu/ISP%26%E8%AE%A1%E7%AE%97%E6%91%84%E5%BD%B1/asset/img_7eb09f22742b.jpg)
 
 提出三种思路：
 
@@ -201,55 +201,55 @@ Kalantari and Ramanoorthi SIGGRAPH'17:
 - 第三种在第二种的基础上还得到了对齐和不对齐的区域，融合过程中对齐进行考虑
 结果发现第二种效果最好，在多帧间有小范围移动时候第三种最好。
 
-![](/images/collections/0.raw/zhihu/ISP%2526%25E8%25AE%25A1%25E7%25AE%2597%25E6%2591%2584%25E5%25BD%25B1/asset/img_9a5080148e2d.jpg)
+![](/images/collections/0.raw/zhihu/ISP%26%E8%AE%A1%E7%AE%97%E6%91%84%E5%BD%B1/asset/img_9a5080148e2d.jpg)
 
 ### 4. 直接用End-to-End的端到端网络代替传统ISP
 
-![](/images/collections/0.raw/zhihu/ISP%2526%25E8%25AE%25A1%25E7%25AE%2597%25E6%2591%2584%25E5%25BD%25B1/asset/img_05b8e8160be0.jpg)
+![](/images/collections/0.raw/zhihu/ISP%26%E8%AE%A1%E7%AE%97%E6%91%84%E5%BD%B1/asset/img_05b8e8160be0.jpg)
 
 ### 4.1 One stage DNN 网络
 
-![](/images/collections/0.raw/zhihu/ISP%2526%25E8%25AE%25A1%25E7%25AE%2597%25E6%2591%2584%25E5%25BD%25B1/asset/img_bfc54d0dd30e.jpg)
+![](/images/collections/0.raw/zhihu/ISP%26%E8%AE%A1%E7%AE%97%E6%91%84%E5%BD%B1/asset/img_bfc54d0dd30e.jpg)
 
 发布于CVPR'17，这篇文章想做的是将sRGB图像反向渲染，得到原始的RAW图像，解决了ISP辐射标定过程中的场景场景依赖问题。
 
 但是这个网络也可以反向使用，输入Raw得到sRGB图像。（但是由于主要关注radiometric calibration问题常常被忽略。
 
-![](/images/collections/0.raw/zhihu/ISP%2526%25E8%25AE%25A1%25E7%25AE%2597%25E6%2591%2584%25E5%25BD%25B1/asset/img_d6c9770153ce.jpg)
+![](/images/collections/0.raw/zhihu/ISP%26%E8%AE%A1%E7%AE%97%E6%91%84%E5%BD%B1/asset/img_d6c9770153ce.jpg)
 
 这个方法应该是一块一块的去处理输出的，而不是对整个图像直接处理，有一个可学习的直方图映射模块，而且是需要对每个相机进行训练的。
 
 效果：
 
-![](/images/collections/0.raw/zhihu/ISP%2526%25E8%25AE%25A1%25E7%25AE%2597%25E6%2591%2584%25E5%25BD%25B1/asset/img_aa4832618075.jpg)
+![](/images/collections/0.raw/zhihu/ISP%26%E8%AE%A1%E7%AE%97%E6%91%84%E5%BD%B1/asset/img_aa4832618075.jpg)
 
 CVPRW'19：
 
-![](/images/collections/0.raw/zhihu/ISP%2526%25E8%25AE%25A1%25E7%25AE%2597%25E6%2591%2584%25E5%25BD%25B1/asset/img_5c6afe9975c6.jpg)
+![](/images/collections/0.raw/zhihu/ISP%26%E8%AE%A1%E7%AE%97%E6%91%84%E5%BD%B1/asset/img_5c6afe9975c6.jpg)
 
 文章提出U-net结构的网络去代替整个ISP流程，效果还是非常好的。
 
-![](/images/collections/0.raw/zhihu/ISP%2526%25E8%25AE%25A1%25E7%25AE%2597%25E6%2591%2584%25E5%25BD%25B1/asset/img_aac1fc925730.jpg)
+![](/images/collections/0.raw/zhihu/ISP%26%E8%AE%A1%E7%AE%97%E6%91%84%E5%BD%B1/asset/img_aac1fc925730.jpg)
 
 CVPR 2018："Learning to see in the dark“
 
 一篇详细解读：[Learning to See in the Dark-笔记 - 知乎 (zhihu.com)](https://zhuanlan.zhihu.com/p/150658047)
 
-![](/images/collections/0.raw/zhihu/ISP%2526%25E8%25AE%25A1%25E7%25AE%2597%25E6%2591%2584%25E5%25BD%25B1/asset/img_ededfe316025.jpg)
+![](/images/collections/0.raw/zhihu/ISP%26%E8%AE%A1%E7%AE%97%E6%91%84%E5%BD%B1/asset/img_ededfe316025.jpg)
 
 短曝光会很多噪声，而长曝光容易导致模糊，这篇文章使用短曝光的图片以及对应的长曝光的图片（无抖动模糊）制作了一个数据集，网络也是一个基于U-net的结构。
 
-![](/images/collections/0.raw/zhihu/ISP%2526%25E8%25AE%25A1%25E7%25AE%2597%25E6%2591%2584%25E5%25BD%25B1/asset/img_85852ebdfb71.jpg)
+![](/images/collections/0.raw/zhihu/ISP%26%E8%AE%A1%E7%AE%97%E6%91%84%E5%BD%B1/asset/img_85852ebdfb71.jpg)
 
 文章里也提到了，比起网络结构更关键的是数据集的制作设计部分。
 
-![](/images/collections/0.raw/zhihu/ISP%2526%25E8%25AE%25A1%25E7%25AE%2597%25E6%2591%2584%25E5%25BD%25B1/asset/img_27e447d5ad21.jpg)
+![](/images/collections/0.raw/zhihu/ISP%26%E8%AE%A1%E7%AE%97%E6%91%84%E5%BD%B1/asset/img_27e447d5ad21.jpg)
 
 Arxv 2021：CRISPnet
 
-![](/images/collections/0.raw/zhihu/ISP%2526%25E8%25AE%25A1%25E7%25AE%2597%25E6%2591%2584%25E5%25BD%25B1/asset/img_e3be205a80b5.jpg)
+![](/images/collections/0.raw/zhihu/ISP%26%E8%AE%A1%E7%AE%97%E6%91%84%E5%BD%B1/asset/img_e3be205a80b5.jpg)
 
-![](/images/collections/0.raw/zhihu/ISP%2526%25E8%25AE%25A1%25E7%25AE%2597%25E6%2591%2584%25E5%25BD%25B1/asset/img_7b3844116a26.jpg)
+![](/images/collections/0.raw/zhihu/ISP%26%E8%AE%A1%E7%AE%97%E6%91%84%E5%BD%B1/asset/img_7b3844116a26.jpg)
 
 简单看了下原文：[2203.10562.pdf (arxiv.org)](https://link.zhihu.com/?target=https%3A//arxiv.org/pdf/2203.10562.pdf)
 
@@ -262,7 +262,7 @@ Arxv 2021：CRISPnet
 - 主干网络是先将图片分区后一个patch一个patch输入、恢复的，所以缺少全局信息，Global Semantics Branch 就是先把图片下采样到更小的尺寸，提取全局特征信息。
 效果：
 
-![](/images/collections/0.raw/zhihu/ISP%2526%25E8%25AE%25A1%25E7%25AE%2597%25E6%2591%2584%25E5%25BD%25B1/asset/img_e9ed3e968f4b.jpg)
+![](/images/collections/0.raw/zhihu/ISP%26%E8%AE%A1%E7%AE%97%E6%91%84%E5%BD%B1/asset/img_e9ed3e968f4b.jpg)
 
 ### 4.2 Two stage DNN网络
 
@@ -270,31 +270,31 @@ CameraNet：
 
 结构就是个常见Encoder-Decoder 结构，同尺度特征之间引入通道
 
-![](/images/collections/0.raw/zhihu/ISP%2526%25E8%25AE%25A1%25E7%25AE%2597%25E6%2591%2584%25E5%25BD%25B1/asset/img_0c02582e4aee.jpg)
+![](/images/collections/0.raw/zhihu/ISP%26%E8%AE%A1%E7%AE%97%E6%91%84%E5%BD%B1/asset/img_0c02582e4aee.jpg)
 
 效果：看起来要比One Stage的好不少
 
-![](/images/collections/0.raw/zhihu/ISP%2526%25E8%25AE%25A1%25E7%25AE%2597%25E6%2591%2584%25E5%25BD%25B1/asset/img_f52b5151a688.jpg)
+![](/images/collections/0.raw/zhihu/ISP%26%E8%AE%A1%E7%AE%97%E6%91%84%E5%BD%B1/asset/img_f52b5151a688.jpg)
 
 ### 4.3 Three Stage DNN 网络
 
-![](/images/collections/0.raw/zhihu/ISP%2526%25E8%25AE%25A1%25E7%25AE%2597%25E6%2591%2584%25E5%25BD%25B1/asset/img_5a29c4a23598.jpg)
+![](/images/collections/0.raw/zhihu/ISP%26%E8%AE%A1%E7%AE%97%E6%91%84%E5%BD%B1/asset/img_5a29c4a23598.jpg)
 
 2022 夜间摄影挑战赛冠军，冠军来自小米团队：FlexISP
 
-![](/images/collections/0.raw/zhihu/ISP%2526%25E8%25AE%25A1%25E7%25AE%2597%25E6%2591%2584%25E5%25BD%25B1/asset/img_87aec35a1209.jpg)
+![](/images/collections/0.raw/zhihu/ISP%26%E8%AE%A1%E7%AE%97%E6%91%84%E5%BD%B1/asset/img_87aec35a1209.jpg)
 
 第一个阶段降噪，第二个阶段进行自动白平衡，第三个阶段将Raw格式转化为sRGB
 
-![](/images/collections/0.raw/zhihu/ISP%2526%25E8%25AE%25A1%25E7%25AE%2597%25E6%2591%2584%25E5%25BD%25B1/asset/img_9a202538ec9f.jpg)
+![](/images/collections/0.raw/zhihu/ISP%26%E8%AE%A1%E7%AE%97%E6%91%84%E5%BD%B1/asset/img_9a202538ec9f.jpg)
 
 效果：
 
-![](/images/collections/0.raw/zhihu/ISP%2526%25E8%25AE%25A1%25E7%25AE%2597%25E6%2591%2584%25E5%25BD%25B1/asset/img_855914ceb474.jpg)
+![](/images/collections/0.raw/zhihu/ISP%26%E8%AE%A1%E7%AE%97%E6%91%84%E5%BD%B1/asset/img_855914ceb474.jpg)
 
 #### Raw格式提取为比特流（Raw to bit）
 
-![](/images/collections/0.raw/zhihu/ISP%2526%25E8%25AE%25A1%25E7%25AE%2597%25E6%2591%2584%25E5%25BD%25B1/asset/img_f1f2aee08805.jpg)
+![](/images/collections/0.raw/zhihu/ISP%26%E8%AE%A1%E7%AE%97%E6%91%84%E5%BD%B1/asset/img_f1f2aee08805.jpg)
 
 ECCV 2022的文章，原文：[[2208.07639] RAWtoBit: A Fully End-to-end Camera ISP Network (arxiv.org)](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2208.07639)
 
@@ -302,7 +302,7 @@ ECCV 2022的文章，原文：[[2208.07639] RAWtoBit: A Fully End-to-end Camera 
 
 此外文章还展示了知识蒸馏技术在这个bit压缩编码过程中是最佳的策略。
 
-![](/images/collections/0.raw/zhihu/ISP%2526%25E8%25AE%25A1%25E7%25AE%2597%25E6%2591%2584%25E5%25BD%25B1/asset/img_04df7b52631a.jpg)
+![](/images/collections/0.raw/zhihu/ISP%26%E8%AE%A1%E7%AE%97%E6%91%84%E5%BD%B1/asset/img_04df7b52631a.jpg)
 
 ### 基于DNN的ISP方法的关键点和挑战
 
@@ -317,11 +317,11 @@ ECCV 2022的文章，原文：[[2208.07639] RAWtoBit: A Fully End-to-end Camera 
 
 - 这算是DL 方法的老问题了，就是可解释性与调整性差
 - 传统的ISP中，当我们想实现某一方向或者功能的调整，可以直接去调整对应的环节。而对于深度学习的方法，往往只能调整数据，可调整性很差。
-![](/images/collections/0.raw/zhihu/ISP%2526%25E8%25AE%25A1%25E7%25AE%2597%25E6%2591%2584%25E5%25BD%25B1/asset/img_fb4d1735d162.jpg)
+![](/images/collections/0.raw/zhihu/ISP%26%E8%AE%A1%E7%AE%97%E6%91%84%E5%BD%B1/asset/img_fb4d1735d162.jpg)
 
 - 在传统的ISP流程中，调整ISP流程中的参数来获得预期的效果
 - 而基于DL的方法中通过调整网络来达到目的，究竟哪种更优其实现在还很难下定论。
-![](/images/collections/0.raw/zhihu/ISP%2526%25E8%25AE%25A1%25E7%25AE%2597%25E6%2591%2584%25E5%25BD%25B1/asset/img_ee6b2f97f768.jpg)
+![](/images/collections/0.raw/zhihu/ISP%26%E8%AE%A1%E7%AE%97%E6%91%84%E5%BD%B1/asset/img_ee6b2f97f768.jpg)
 
 两百多页终于看完，对于很多CV研究者，在研究过程中明确自己所使用的色彩空间，声明自己使用的色彩空间是很重要的。（例如python 、matlab的很多API中其实默认的色彩空间是NTSC,而很多研究者根本没有意识到这一点，甚至使用了错误的公式）
 

@@ -44,14 +44,14 @@ let b = 2;
 
 我们看一下典型的四个负载
 
-**coding** 来自 HumanEval，prompt 例子如下
+<strong>coding</strong> 来自 HumanEval，prompt 例子如下
 
  Complete the body of this Python function. Output only the function. def has_close_elements(numbers: List[float], threshold: float) -> bool: …（含 docstring + doctest，OpenAI 代码补全标配）
- Write a Python function is_prime(n) that returns True if n is a prime number and False otherwise.**math** 来自 GSM8K
+ Write a Python function is_prime(n) that returns True if n is a prime number and False otherwise.<strong>math</strong> 来自 GSM8K
 
- Natalia sold clips to 48 of her friends in April, and then she sold half as many clips in May. How many clips did Natalia sell altogether in April and May?**prose** 来源：r/WritingPrompts。刻意避开名著，让模型自由进行创作
+ Natalia sold clips to 48 of her friends in April, and then she sold half as many clips in May. How many clips did Natalia sell altogether in April and May?<strong>prose</strong> 来源：r/WritingPrompts。刻意避开名著，让模型自由进行创作
 
- Write a short story based on this writing prompt: You are the last human alive on Earth. Suddenly, you hear a knock on the door.**chat** 来源：MT-Bench Q81 + Alpaca 首条指令
+ Write a short story based on this writing prompt: You are the last human alive on Earth. Suddenly, you hear a knock on the door.<strong>chat</strong> 来源：MT-Bench Q81 + Alpaca 首条指令
 
  Compose an engaging travel blog post about a recent trip to Hawaii, highlighting cultural experiences and must-see attractions.之后我们让 Qwen3 4B 贪心生成，每生成一个 token 时，我们记录全词表的 logits，并计算熵。
 
@@ -61,15 +61,15 @@ let b = 2;
 
 模型的回复是这样的
 
-Natalia sold clips to **48 friends** in **April**.
+Natalia sold clips to <strong>48 friends</strong> in <strong>April</strong>.
 
-In **May**, she sold **half as many** clips as in April:
+In <strong>May</strong>, she sold <strong>half as many</strong> clips as in April:
 
 $$
 \frac{48}{2} = 24
 $$
 
-So, in **May**, she sold **24 clips**.
+So, in <strong>May</strong>, she sold <strong>24 clips</strong>.
 
 Now, add the number of clips sold in both months:
 
@@ -77,7 +77,7 @@ $$
 48 + 24 = 72
 $$
 
-**Answer:** Natalia sold **72 clips** altogether in April and May.
+<strong>Answer:</strong> Natalia sold <strong>72 clips</strong> altogether in April and May.
 我们摘出第一句 “Natalia sold clips to 48 friends in April.”，逐个 token 按生成顺序看它的熵（H 越大越犹豫，p1 是 top-1 概率）：
 
 &#39;N&#39;        H=0.244 p1=0.946   # 要不要先复述题面
@@ -111,7 +111,7 @@ $$
 我们先从贪心解码说起，也就是采样永远选择概率最大的那个 token。
 
 贪心的验证很简单也很确定：target model 
-![](https://www.zhihu.com/equation?tex=M) 全程取 argmax，所以存在一条**唯一确定**的“标准答案”序列——就是 
+![](https://www.zhihu.com/equation?tex=M) 全程取 argmax，所以存在一条<strong>唯一确定</strong>的“标准答案”序列——就是 
 ![](https://www.zhihu.com/equation?tex=M) 自己一步步贪心吐出来的那串 token。spec decode 在 greedy 下的“无损”，就是输出和这条标准序列逐 token 完全一致，只是 
 ![](https://www.zhihu.com/equation?tex=M) 的 forward 次数变少了。
 
@@ -122,14 +122,14 @@ $$
 ![](https://www.zhihu.com/equation?tex=d_1%2C%5Cdots%2Cd_%5Cgamma)，这是 
 ![](https://www.zhihu.com/equation?tex=%5Cgamma) 次小模型 forward，代价很小。verify 阶段，把 
 ![](https://www.zhihu.com/equation?tex=%5Bx_%7B1%3At%7D%2C+d_1%2C+%5Cdots%2C+d_%5Cgamma%5D) 整条喂进 
-![](https://www.zhihu.com/equation?tex=M)，**只跑一次 forward**。
+![](https://www.zhihu.com/equation?tex=M)，<strong>只跑一次 forward</strong>。
 
 为什么一次 forward 就能拿到多个位置的 verify 呢？我们利用了 causal mask 机制。causal mask 规定位置 
 ![](https://www.zhihu.com/equation?tex=i) 只能看 
 ![](https://www.zhihu.com/equation?tex=1..i)，看不到未来——技术上是把 attention 矩阵指向未来的权重压成 
 ![](https://www.zhihu.com/equation?tex=-%5Cinfty)（softmax 后为 0）。
 
-所以我们可以把多个 draft token 一起塞进去。每个位置的输出都只依赖它自己和左边的 token；有了 mask，每个 token 的计算和正常 decode 时没有差别。比如 draft 了 4 个 token，这次 forward 就像在序列维度上并行处理 5 个 decode 位置。换句话说，这一次 forward 在序列维度上**并行**地、互相隔离地算出了 
+所以我们可以把多个 draft token 一起塞进去。每个位置的输出都只依赖它自己和左边的 token；有了 mask，每个 token 的计算和正常 decode 时没有差别。比如 draft 了 4 个 token，这次 forward 就像在序列维度上并行处理 5 个 decode 位置。换句话说，这一次 forward 在序列维度上<strong>并行</strong>地、互相隔离地算出了 
 ![](https://www.zhihu.com/equation?tex=%5Cgamma%2B1) 个分布——每个 draft token 所在位置的 hidden state 都在预测它的下一个 token：
 
 喂进去:   x_{1:t}   d1    d2    d3    d4
@@ -137,7 +137,7 @@ $$
 预测下一位: p0     p1    p2    p3    p4      ← 一次 forward，5 个分布
 关键在于 
 ![](https://www.zhihu.com/equation?tex=p_i+%3D+M%28%5Ccdot+%5Cmid+x_%7B1%3At%7D%2C+d_1..d_i%29) 是 
-![](https://www.zhihu.com/equation?tex=M) **真实的**条件分布，没有任何损失。mask 让 
+![](https://www.zhihu.com/equation?tex=M) <strong>真实的</strong>条件分布，没有任何损失。mask 让 
 ![](https://www.zhihu.com/equation?tex=p_i) 只 attend 到 
 ![](https://www.zhihu.com/equation?tex=x) 和 
 ![](https://www.zhihu.com/equation?tex=d_1..d_i)，所以它就等于“假如 
@@ -150,9 +150,9 @@ $$
 ![](https://www.zhihu.com/equation?tex=M) 的贪心续写真值是 `let` `␣a` `␣=` `␣1` `;`，draft（
 ![](https://www.zhihu.com/equation?tex=%5Cgamma%3D4)）猜了 `let` `␣a` `␣=` `␣2`。
 
-`let ␣a ␣=` 三个全中，到 `␣2` 发现不对，因为模型选择了 1，没有选择 2，于是接受前 3 个，再把 `␣1` 当作额外的奖励（因为已经 forward 出来，是对的选择），所以这一轮吐出 `let ␣a ␣= ␣1`，**4 个 token / 1 次 forward**。
+`let ␣a ␣=` 三个全中，到 `␣2` 发现不对，因为模型选择了 1，没有选择 2，于是接受前 3 个，再把 `␣1` 当作额外的奖励（因为已经 forward 出来，是对的选择），所以这一轮吐出 `let ␣a ␣= ␣1`，<strong>4 个 token / 1 次 forward</strong>。
 
-所以，**验证的正确性和 draft 怎么来的完全无关。** 
+所以，<strong>验证的正确性和 draft 怎么来的完全无关。</strong> 
 ![](https://www.zhihu.com/equation?tex=d_1..d_%5Cgamma) 是小模型贪心、小模型采样、n-gram 抄上文，还是随机 token，都不影响输出正确性，只影响接受率 
 ![](https://www.zhihu.com/equation?tex=%5Calpha)。
 
@@ -189,9 +189,9 @@ draft 提得比主模型想要的少（
 
 ![](https://www.zhihu.com/equation?tex=+%5Cunderbrace%7B%5Cmin%28p%2Cq%29%7D_%7B%5Ctext%7B%E9%87%8D%E5%8F%A0%7D%7D+%2B+%5Cunderbrace%7B%28p-q%29_%2B%7D_%7B%5Ctext%7B%E7%BC%BA%E5%8F%A3%7D%7D+%3D+p+)
 
-- **重叠** 
+- <strong>重叠</strong> 
 ![](https://www.zhihu.com/equation?tex=%5Cmin%28p%2C+q%29)：取两者里小的那个，也就是机器供得上、我也正好要的部分。
-- **缺口** 
+- <strong>缺口</strong> 
 ![](https://www.zhihu.com/equation?tex=%28p+-+q%29_%2B)：下标 `+` 的意思是负数归零，也就是我还想要、但机器没堆够的部分。为什么一定成立？
 
 - **机器堆得不够（

@@ -57,7 +57,7 @@ tensor([[[[ 5.,  6., 10., 12.],
           [15., 18., 20., 24.],
           [21., 24., 28., 32.]]]])`
 
-**case 2: stride = 1, pad = 1**
+<strong>case 2: stride = 1, pad = 1</strong>
 
 令输入  X = \left (  \begin{matrix} 1 & 2 & 3\\ 4 & 5 & 6\\ 7 & 8 & 9\end{matrix} \right ) ,  卷积核 W = \left (  \begin{matrix} 10 & 11 & 12 \\ 13 & 14 & 15 \\ 16 & 17 & 18\end{matrix} \right ) , 根据公式计算可得out_*w = out_*h =3：
 
@@ -82,7 +82,7 @@ tensor([[[[134., 245., 198.],
 
 caffe中计算deconvolution的方法是gemm+col2im,  这个方法实际当中被广泛采用来计算conv_transpose，下面做一下简要分析。
 
-![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_00972d5116d6.jpg)
+![](/images/collections/0.raw/zhihu/dl%E8%AE%BA%E6%96%87/asset/img_00972d5116d6.jpg)
 
 gemm+col2im计算conv_transpose假设输入feature_map的layout是C*H*W(假设batch=1), filter layout是K*C*R*R,  对输入进行gemm后得到的中间结果layout是K*R*R*H*W (对gemm而言，M' = KRR, K'= C, N'=H*), 先做gemm可以把C这一维进行累加削除,  然后做col2im得到最后计算结果的layout是K*H'*W'(H'和W'是对应输出的宽高)，实际上这里的col2im通过累加的方式把KRR这一维降维到K, 对H'*W'这一维可以根据公式得到输入输出宽高的对应关系。
 
@@ -223,17 +223,17 @@ void conv_transpose_depthwisefloat>(const float* dst,
 
 第二个问题是版本一的代码中src表示输出，dst表示输入，output_w/output_h表示实际输入宽高，ih/iw表示遍历实际输出宽高的index,  oh/ow表示遍历实际输入宽高的index，这样命名的原因是conv_transpose是普通convolution的反向操作且这样可以和其他框架保持一致，相当于已知普通convolution的输出结果去求输入。下面来简单描述下conv_transpose的原理。
 
-假设conv_transpose的参数是f3s1p1, w_in=h_in=w_out=h_out=4, 通过追溯conv_transpose计算得到的输出最左上角的数据点来说明conv_transpose的计算原理，注意4张图中橙色虚线表示在当前kx/ky下根据当前conv_transpose的输入找到需要计算得到的输出区域，每张图最左边最外面一圈数据点表示虚拟出来的pad数据点，紫色实线框表示正向卷积操作对应的部分。假设存在一个正向卷积核，conv_transpose计算输出4x4的左上角的这个点参与了正向卷积4个输出点的计算（conv_transpose计算输入左上角的4个点），所以实际上当进行conv_transpose计算把正向卷积输出作为输入时，需要使用这4个点的数据和相应conv_transpose卷积核的乘累加结果来“***还原***”出左上角那个点的数据。
+假设conv_transpose的参数是f3s1p1, w_in=h_in=w_out=h_out=4, 通过追溯conv_transpose计算得到的输出最左上角的数据点来说明conv_transpose的计算原理，注意4张图中橙色虚线表示在当前kx/ky下根据当前conv_transpose的输入找到需要计算得到的输出区域，每张图最左边最外面一圈数据点表示虚拟出来的pad数据点，紫色实线框表示正向卷积操作对应的部分。假设存在一个正向卷积核，conv_transpose计算输出4x4的左上角的这个点参与了正向卷积4个输出点的计算（conv_transpose计算输入左上角的4个点），所以实际上当进行conv_transpose计算把正向卷积输出作为输入时，需要使用这4个点的数据和相应conv_transpose卷积核的乘累加结果来“*<strong>还原</strong>*”出左上角那个点的数据。
 
 理解了这4张图的含义才真正理解了conv_transpose的真正内涵，同时也说明了一个问题：用直接法计算conv_transpose时必须从输入出发来计算输出，这与常规卷积从输出出发来找输入完成计算是恰恰相反的(从输出每个点出发来找到输入的kernel_w*kernel_h个点，做乘累加得到输出点的计算结果)！而做conv_transpose如果硬要从输出出发来找输入，必须把卷积核旋转90度，才能一一对应做乘累加，这又回到了最开始陈述的那个问题，可能需要进行插0操作不可取。
 
-![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_b14dbdab6c90.jpg)
+![](/images/collections/0.raw/zhihu/dl%E8%AE%BA%E6%96%87/asset/img_b14dbdab6c90.jpg)
 
-kx=0,ky=0时的反卷积计算示意图![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_8c7849ff7131.jpg)
+kx=0,ky=0时的反卷积计算示意图![](/images/collections/0.raw/zhihu/dl%E8%AE%BA%E6%96%87/asset/img_8c7849ff7131.jpg)
 
-kx=0, ky=1时反卷积计算示意图![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_119c40fb96a1.jpg)
+kx=0, ky=1时反卷积计算示意图![](/images/collections/0.raw/zhihu/dl%E8%AE%BA%E6%96%87/asset/img_119c40fb96a1.jpg)
 
-kx=1,ky=0时反卷积计算示意图![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_d57d8adf59d3.jpg)
+kx=1,ky=0时反卷积计算示意图![](/images/collections/0.raw/zhihu/dl%E8%AE%BA%E6%96%87/asset/img_d57d8adf59d3.jpg)
 
 kx=1,ky=1时反卷积计算示意图第二版代码：
 
@@ -356,7 +356,7 @@ void conv_transpose_depthwisefloat>(const float* dst,
 }
 `
 
-在第三版伪SIMD代码中，笔者给出了在w方向一次计算4个float数据的形式，在这一版代码中暴露了一个问题：在把4个计算数据store到data_im相应位置时4个数据间隔为stride_w，我们知道neon SIMD中进行load/store操作间隔最多为4(ld1/ld2/ld3/ld4/st1/st2/st3/st4), 这是SIMD与SIMT(cuda)软件编程层面非常大的一个区别，由于cuda使用SIMT架构，可以通过thread_id*offset的方式来处理多thread等间隔读/写操作时的问题(不考虑合并访问带来的效率问题)， 但arm neon采用SIMD结构， ***multiple data在load/store存储时必须要绑定在一起***。为此，需要按stride=1和stride=2分别进行特化，实现特化版本，下面以stride=1来给出第四个版本的优化：
+在第三版伪SIMD代码中，笔者给出了在w方向一次计算4个float数据的形式，在这一版代码中暴露了一个问题：在把4个计算数据store到data_im相应位置时4个数据间隔为stride_w，我们知道neon SIMD中进行load/store操作间隔最多为4(ld1/ld2/ld3/ld4/st1/st2/st3/st4), 这是SIMD与SIMT(cuda)软件编程层面非常大的一个区别，由于cuda使用SIMT架构，可以通过thread_id*offset的方式来处理多thread等间隔读/写操作时的问题(不考虑合并访问带来的效率问题)， 但arm neon采用SIMD结构， *<strong>multiple data在load/store存储时必须要绑定在一起</strong>*。为此，需要按stride=1和stride=2分别进行特化，实现特化版本，下面以stride=1来给出第四个版本的优化：
 
 * 第四版代码：*
 
@@ -574,7 +574,7 @@ void conv_transpose_depthwise_s1float>(const float* dst,
 }
 `
 
-第5版代码与第4版代码相比做的优化处理是在output_h方向上每次计算两行，用在output_w方向上使用的消除if-else技巧来消除output_h方向上的if-else， 但仅仅这样是不够的，笔者申请了一块地址空间zero_ptr作为在output_h方向上处理数据的读写缓冲区，由于pad的影响并且不同channel之间的数据是连续存储的，所以对channel(i)的边界读写操作很容易落到channel(i-1)和channel(i+1)的区域内，为此第5版代码中的**boundary_y0**和**boundary_y1**是处理当前两行标志是否越界的mask， 如果越界则对当前行的读/写操作都挪到**zero_ptr**这个缓存buffer里，这也是做优化处理边界情况经常使用的一种处理越界访问的技巧。
+第5版代码与第4版代码相比做的优化处理是在output_h方向上每次计算两行，用在output_w方向上使用的消除if-else技巧来消除output_h方向上的if-else， 但仅仅这样是不够的，笔者申请了一块地址空间zero_ptr作为在output_h方向上处理数据的读写缓冲区，由于pad的影响并且不同channel之间的数据是连续存储的，所以对channel(i)的边界读写操作很容易落到channel(i-1)和channel(i+1)的区域内，为此第5版代码中的<strong>boundary_y0</strong>和<strong>boundary_y1</strong>是处理当前两行标志是否越界的mask， 如果越界则对当前行的读/写操作都挪到<strong>zero_ptr</strong>这个缓存buffer里，这也是做优化处理边界情况经常使用的一种处理越界访问的技巧。
 
 `bool boundary_y0 = ((ih >= 0) && (ih  height)) && (oh  output_h);
 bool boundary_y1 = ((ih + 1) >= 0) && ((ih + 1)  height) && ((oh + 1)  output_h);
@@ -732,7 +732,7 @@ void conv_transpose_depthwise_s1float>(const float* dst,
 }
 `
 
-此外， 第6版代码在第5版代码基础上对变量名做了一些改动，并减少了一些不必要的boundary_x和boundary_y的“与操作”，优化了性能(这一块也有不小的提升)，这一优化的出发点在于笔者合理的使用了**zero_ptr**这个处理边界case的读写缓冲区.
+此外， 第6版代码在第5版代码基础上对变量名做了一些改动，并减少了一些不必要的boundary_x和boundary_y的“与操作”，优化了性能(这一块也有不小的提升)，这一优化的出发点在于笔者合理的使用了<strong>zero_ptr</strong>这个处理边界case的读写缓冲区.
 
 下面给出一个简单的性能对比：
 

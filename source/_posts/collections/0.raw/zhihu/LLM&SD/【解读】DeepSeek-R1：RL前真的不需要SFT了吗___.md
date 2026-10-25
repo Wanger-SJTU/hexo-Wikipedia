@@ -33,7 +33,7 @@ source_url: https://zhuanlan.zhihu.com/p/19623772462
 - DeepSeek-R1-Distill：基于Qwen和Llama作为Base从R1数据蒸馏成小模型
 整体流程为
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_f831ec5d7b4d.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_f831ec5d7b4d.jpg)
 
 ### 导读问题
 
@@ -50,9 +50,9 @@ source_url: https://zhuanlan.zhihu.com/p/19623772462
 
 #### 1.1 简介
 
->  However, these works heavily depended on supervised data, which are time-intensive to gather. In this section, we explore the potential of LLMs to develop reasoning capabilities without any supervised data**, focusing on their self-evolution through a pure **reinforcement learning** process.
+>  However, these works heavily depended on supervised data, which are time-intensive to gather. In this section, we explore the potential of LLMs to develop reasoning capabilities without any supervised data<strong>, focusing on their self-evolution through a pure</strong>reinforcement learning** process.
 
-Zero来自Alpha Zero，**特指无需人类数据**，即可从零实现模型自我迭代。
+Zero来自Alpha Zero，<strong>特指无需人类数据</strong>，即可从零实现模型自我迭代。
 
 Deepseek-V3-base模型不做SFT就可以RL训练，“问题是RL的数据和reward如何获得？”
 
@@ -66,7 +66,7 @@ Deepseek-V3-base模型不做SFT就可以RL训练，“问题是RL的数据和rew
 
 (3) 对于有多个奖励，做归一化，体现相对性。
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_9e6d9df827fd.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_9e6d9df827fd.jpg)
 
 好处：1.不需要Value Model，2. 优势估计是无偏的
 
@@ -74,7 +74,7 @@ Deepseek-V3-base模型不做SFT就可以RL训练，“问题是RL的数据和rew
 
 以下为提示词模版，可以见到有特定的标签如`` 和``
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_39a781a2ada0.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_39a781a2ada0.jpg)
 
 在RL训练时，可以仅收集数学题和正确答案(作为Label)，不需要解答（RL训练过程可以在线采样）
 
@@ -91,17 +91,17 @@ Deepseek-V3-base模型不做SFT就可以RL训练，“问题是RL的数据和rew
 
 不需要训练奖励模型，因为容易reward hacking**
 
-** We do not apply the outcome or process neural reward model in developing DeepSeek-R1-Zero, because we find that the neural reward model may suffer from reward hacking** in the large-scale reinforcement learning process另外：要求模型在线采样的数据必须有`` 和``标签, 也作为格式奖励。
+<strong>We do not apply the outcome or process neural reward model in developing DeepSeek-R1-Zero, because we find that the neural reward model may suffer from reward hacking</strong> in the large-scale reinforcement learning process另外：要求模型在线采样的数据必须有`` 和``标签, 也作为格式奖励。
 
 #### 1.5 R1 效果分析
 
 性能比肩DeepSeek-R1-Zero
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_73dfc936971a.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_73dfc936971a.jpg)
 
 在RL训练过程的在线采样中，可见输出长度逐渐增加，越来越多的CoT解答，另外自发的产生自省、revisits和revaluate行为
 
-** Behaviors such as reflection—where the model revisits and reevaluates its previous steps—and the exploration of alternative approaches to problem-solving arise spontaneously![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_19063320d6a5.jpg)
+** Behaviors such as reflection—where the model revisits and reevaluates its previous steps—and the exploration of alternative approaches to problem-solving arise spontaneously![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_19063320d6a5.jpg)
 
 意味着不需要人为的数据教授模型CoT** ，模型通过规则奖励和人工数据，就能产生思维类风格的输出。
 
@@ -109,7 +109,7 @@ Deepseek-V3-base模型不做SFT就可以RL训练，“问题是RL的数据和rew
 
 将RL过程中的Checkpoint 进行采样生成，发现一些有趣的“自言自语”式的文本，而这些思考的文本，是模型自己的采样输出。
 
-** It underscores the power and beauty of reinforcement learning: rather than explicitly teaching the model on how to solve a problem, we simply provide it with the right incentives, and it autonomously develops advanced problem-solving strategies![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_950ba598bc72.jpg)
+** It underscores the power and beauty of reinforcement learning: rather than explicitly teaching the model on how to solve a problem, we simply provide it with the right incentives, and it autonomously develops advanced problem-solving strategies![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_950ba598bc72.jpg)
 
 #### 1.7 `DeepSeek-R1-Zero`弊端
 
@@ -131,7 +131,7 @@ How can we train a user-friendly model that not only produces clear and coherent
 - 如何能够产生简洁的CoT和保持通用能力？
 我们根据原文实现重绘流程图帮助理解
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_af74368970f3.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_af74368970f3.jpg)
 
 #### 2.1 Cold Start
 
@@ -143,19 +143,19 @@ How can we train a user-friendly model that not only produces clear and coherent
 
 冷启动数据收集, 从DeepSeek-R1-Zero few-shot prompt 采样再人工后处理修改千条数据。
 
->  few-shot prompting with a long CoT as an example, directly prompting models to generate detailed answers with reflection and verification, gathering DeepSeek-R1-Zero** outputs in a readable format, and refining the results through **post-processing by human annotators.**
+>  few-shot prompting with a long CoT as an example, directly prompting models to generate detailed answers with reflection and verification, gathering DeepSeek-R1-Zero<strong>outputs in a readable format, and refining the results through</strong>post-processing by human annotators.**
 
 为了解决Deepseek-R1-Zero问题，那么收集cold-start保证回答模式“可阅读性”和“总结”性非常有必要
 
 - 增加`` 特殊token
-- 增加` ` 提高阅读性，所以**R1并不需要额外的摘要模型**
+- 增加` ` 提高阅读性，所以<strong>R1并不需要额外的摘要模型</strong>
 ** we design a readable pattern that includes a summary at the end of each response and filters out responses that are not reader-friendly. Here, we define the output format as |special_token||special_token| ``, where the reasoning process is the CoT for the query, and the summary is used to summarize the reasoning results.
  
 #### 2.2  Reasoning-oriented Reinforcement Learning**
 
 在Cold-start SFT后，进入到类似`Deepseek-R1-Zero` 类的RL训练，不同的是增加“语言一致性奖励”, 减轻输出混合。
 
-**To mitigate the issue of language mixing, we introduce a language consistency reward** during RL training, which is calculated as the proportion of target language words in the CoT
+<strong>To mitigate the issue of language mixing, we introduce a language consistency reward</strong> during RL training, which is calculated as the proportion of target language words in the CoT
 #### 2.3 Rejection Sampling and Supervised Fine-Tuning
 
 是否仍需要CoT, 为了提高通用能力，仍需要收集数据做SFT
@@ -169,30 +169,30 @@ Reasoning Data：**
 - 过滤long-cot里的混合语种、难于阅读和代码块的数据
 总共收集600K
 
-**Non-Reasoning data**
+<strong>Non-Reasoning data</strong>
 
 收集常规的指令数据200K，另外由于存在回答模式切换场景，可以用提示词工程来判别是否进入到reasoning模式：
 
-** we call DeepSeek-V3 to generate a potential chain-of-thought before answering the question by prompting. However, for simpler queries, such as “hello” we do not provide a CoT in response.混合数据有800K对Base 模型做SFT, 注意，阶段1和2的训练过程，只是为了给真正的R1模型训练收集数据，真正微调的仍是DeepSeek-V3-Base**，而非训练阶段1和2的中间模型
+<strong>we call DeepSeek-V3 to generate a potential chain-of-thought before answering the question by prompting. However, for simpler queries, such as “hello” we do not provide a CoT in response.混合数据有800K对Base 模型做SFT, 注意，阶段1和2的训练过程，只是为了给真正的R1模型训练收集数据，真正微调的仍是DeepSeek-V3-Base</strong>，而非训练阶段1和2的中间模型
 
-** We fine-tune DeepSeek-V3-Base** for two epochs using the above curated dataset of about 800k samples.
-#### **2.4. Reinforcement Learning for all Scenarios**
+<strong>We fine-tune DeepSeek-V3-Base</strong> for two epochs using the above curated dataset of about 800k samples.
+#### <strong>2.4. Reinforcement Learning for all Scenarios</strong>
 
 最后真正的通用RL训练, 混合了rule-based reward和preference reward。在GRPO算法里可以采样group回复
 
 但是没有透露这两种reward如何混合？
 
-** For reasoning data, we adhere to the methodology outlined in DeepSeek-R1-Zero, which utilizes rule-based rewards to guide the learning process in math, code, and logical reasoning domains. For general data, we resort to reward models to capture human preferences in complex and nuanced scenarios.**所以Preference Leanring 仍是需要的。
+<strong>For reasoning data, we adhere to the methodology outlined in DeepSeek-R1-Zero, which utilizes rule-based rewards to guide the learning process in math, code, and logical reasoning domains. For general data, we resort to reward models to capture human preferences in complex and nuanced scenarios.</strong>所以Preference Leanring 仍是需要的。
 
 ### 3. 蒸馏
 
 先说方法，基于dense模型从R1蒸馏，8B左右效果就已经很好，纯sft蒸馏。
 
-** For distilled models, we apply only SFT and do not include an RL stage, even though incorporating RL could substantially boost model performance.![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_cfe2e4569501.jpg)
+** For distilled models, we apply only SFT and do not include an RL stage, even though incorporating RL could substantially boost model performance.![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_cfe2e4569501.jpg)
 
 问题：从零R1训练小模型 VS 蒸馏R1到小模型，哪个推理能力更强
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_2b578d8cc525.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_2b578d8cc525.jpg)
 
 记住结论：
 
@@ -219,7 +219,7 @@ Reasoning Data：**
 
 - LLM比象棋搜索空间大太多
 - MCTS价值影响模型生成质量（不如纯CoT采样）
-** First,unlike chess, where the search space is relatively well-defined, token generation presents an exponentially** larger search space. To address this, we set a maximum extension limit for each node, but this can lead to the model getting stuck in local optima.** Second, the value model directly influences the quality of generation** since it guides each step of the search process.** MCTS仍有非常大的挑战，并不能否定这一条路
+<strong>First,unlike chess, where the search space is relatively well-defined, token generation presents an exponentially</strong> larger search space. To address this, we set a maximum extension limit for each node, but this can lead to the model getting stuck in local optima.<strong>Second, the value model directly influences the quality of generation</strong> since it guides each step of the search process.** MCTS仍有非常大的挑战，并不能否定这一条路
 
 >  In conclusion, while MCTS can improve performance during inference when paired with a pre-trained value model, iteratively boosting model performance through self-search remains a significant challenge.**
 
@@ -267,7 +267,7 @@ Reasoning Data：**
 
 [小冬瓜AIGC：【手撕RLHF-LLaMA2】 Reward Model PyTorch实现](https://zhuanlan.zhihu.com/p/679012951)
 
-***《手撕LLM》***系列文章+原创课程：LLM原理涵盖Pretrained/PEFT/RLHF/高性能计算
+*<strong>《手撕LLM》</strong>*系列文章+原创课程：LLM原理涵盖Pretrained/PEFT/RLHF/高性能计算
 [小冬瓜AIGC：【手撕NSA】DeepSeek新作-原生稀疏注意力-超长文(附代码)](https://zhuanlan.zhihu.com/p/24841366485)
 
 [小冬瓜AIGC：【手撕DualPipe】让我们一步步把 MoE EP 通信 "消除"（附代码）](https://zhuanlan.zhihu.com/p/1910995677451912435)

@@ -25,9 +25,9 @@ source_url: https://www.zhihu.com/question/666819229/answer/13711170384
 - sqlite_orm: [https://github.com/fnc12/sqlite_orm](https://link.zhihu.com/?target=https%3A//github.com/fnc12/sqlite_orm) - Sqlite的C++ ORM封装，代码行数3000左右。
 - chromium：[https://github.com/chromium/chromium](https://link.zhihu.com/?target=https%3A//github.com/chromium/chromium)
 - google浏览器源码仓库，包括edge等很多浏览器和应用都会基于chromium二次开发，阅读它的代码后，也改变了我的部分编程习惯。
-- **fmtlib：[https://github.com/fmtlib/fmt](https://link.zhihu.com/?target=https%3A//github.com/fmtlib/fmt)**
+- <strong>fmtlib：[https://github.com/fmtlib/fmt](https://link.zhihu.com/?target=https%3A//github.com/fmtlib/fmt)</strong>
 
-- **现代化、快速的 C++ 格式化库，方便易用的** **API且高效，不使用C++20可以使用这个库做format。**
+- <strong>现代化、快速的 C++ 格式化库，方便易用的</strong> <strong>API且高效，不使用C++20可以使用这个库做format。</strong>
 
 - godot engine: [https://github.com/godotengine/godot](https://link.zhihu.com/?target=https%3A//github.com/godotengine/godot)
 
@@ -41,11 +41,11 @@ source_url: https://www.zhihu.com/question/666819229/answer/13711170384
 
 - 现在最热门的C++日志库，支持多种输出格式和级别，有header only和compile source两种模式，源码还简单易学，关注我，后面我出一期spdlog的源码分析文章。
 
-- **abseil：[https://github.com/abseil/abseil-cpp](https://link.zhihu.com/?target=https%3A//github.com/abseil/abseil-cpp)**
+- <strong>abseil：[https://github.com/abseil/abseil-cpp](https://link.zhihu.com/?target=https%3A//github.com/abseil/abseil-cpp)</strong>
 
-- **Google内部的C++轮子库，各种基础能力都包含，值得学习。abseil还有个官方网站：[https://abseil.io/](https://link.zhihu.com/?target=https%3A//abseil.io/)**
+- <strong>Google内部的C++轮子库，各种基础能力都包含，值得学习。abseil还有个官方网站：[https://abseil.io/](https://link.zhihu.com/?target=https%3A//abseil.io/)</strong>
 
-- **folly：[GitHub - facebook/folly: An open-source C++ library developed and used at Facebook.](https://link.zhihu.com/?target=https%3A//github.com/facebook/folly)**
+- <strong>folly：[GitHub - facebook/folly: An open-source C++ library developed and used at Facebook.](https://link.zhihu.com/?target=https%3A//github.com/facebook/folly)</strong>
 
 - Facebook内部的轮子库，线程池、内存池、异步IO、executor等，应有尽有。
 
@@ -56,14 +56,14 @@ source_url: https://www.zhihu.com/question/666819229/answer/13711170384
 再推荐15个小巧的C语言开源项目：
 
 - [stb](https://link.zhihu.com/?target=https%3A//github.com/nothings/stb)：简单的 C 库集合，C语言的轮子库，提供了很多实用的工具函数和数据结构。代码行数5000行左右，star数21.5k。**
-- **[cJSON](https://link.zhihu.com/?target=https%3A//github.com/DaveGamble/cJSON)：一个小型的** **JSON 解析器和生成器，可以用于C 语言中处理 JSON 数据，估计C语言开发很多人都会用这个Json库。代码行数1500行左右，star数8.6k。**
+- <strong>[cJSON](https://link.zhihu.com/?target=https%3A//github.com/DaveGamble/cJSON)：一个小型的</strong> <strong>JSON 解析器和生成器，可以用于C 语言中处理 JSON 数据，估计C语言开发很多人都会用这个Json库。代码行数1500行左右，star数8.6k。</strong>
 - [nanopb](https://link.zhihu.com/?target=https%3A//github.com/nanopb/nanopb)：一个小型的 Protocol Buf库，适用于嵌入式设备和内存受限环境。代码行数5000左右，star数3.4k。
 - [miniz](https://link.zhihu.com/?target=https%3A//github.com/richgel999/miniz)：一个小型的 ZIP 文件压缩和解压库，可以在内存中处理数据。代码行数1600行左右，star数1.7k。
 - [linenoise](https://link.zhihu.com/?target=https%3A//github.com/antirez/linenoise)：一个小型的 readline 替代品，可以用于终端程序的交互式输入，Redis和MongoDB中都有使用。代码行数850左右，star数3.2k。
 - [picohttpparser](https://link.zhihu.com/?target=https%3A//github.com/h2o/picohttpparser)：一个小型的 HTTP 解析器，适用于 C 语言。代码行数500行左右，star数1.6k。
 - [log.c](https://link.zhihu.com/?target=https%3A//github.com/rxi/log.c)：一个小型的日志库，支持多种日志级别和输出格式。代码行数200行左右，star数1.8k。
 - [sokol](https://link.zhihu.com/?target=https%3A//github.com/floooh/sokol)：一个跨平台的轻量级图形 API，可以方便地创建 OpenGL 和 Metal 应用程序。代码行数上万了，star数4.4k。[kilo](https://link.zhihu.com/?target=https%3A//github.com/antirez/kilo)：一个小巧的文本编辑器，可以在终端中运行，并且支持基本的编辑操作。代码行数1000行左右，star数5.9k。
-- **[libuv](https://link.zhihu.com/?target=https%3A//github.com/libuv/libuv)：一个跨平台异步 I/O 库，常用于** **Node.js** **的底层实现。这个库很火。代码行数过万，但是还是推荐，值得学习，star数21.2k。**
+- <strong>[libuv](https://link.zhihu.com/?target=https%3A//github.com/libuv/libuv)：一个跨平台异步 I/O 库，常用于</strong> <strong>Node.js</strong> <strong>的底层实现。这个库很火。代码行数过万，但是还是推荐，值得学习，star数21.2k。</strong>
 - [inih](https://link.zhihu.com/?target=https%3A//github.com/benhoyt/inih)：一个小型的 INI 配置文件解析器，可以用于读取和修改 INI 文件格式的配置文件。代码行数800行左右，star数2k。
 - [uthash](https://link.zhihu.com/?target=https%3A//github.com/troydhanson/uthash)：一个小型的哈希表实现库，可以用于 C 语言中的任何类型。代码行数1200行左右，star数3.4k。
 - [picotcp](https://link.zhihu.com/?target=https%3A//github.com/tass-belgium/picotcp)：一个小型的 TCP/IP 协议栈。代码行数4000行左右，star数995。
@@ -74,7 +74,7 @@ source_url: https://www.zhihu.com/question/666819229/answer/13711170384
 **作者：程序喵
 CPP学习网站：[程序喵/cpp-learning](https://link.zhihu.com/?target=https%3A//gitee.com/chengxumiaodaren/cpp-learning)这个网站也收录了各个方向的C++库，强烈推荐
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_0aea8ee23eff.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_0aea8ee23eff.jpg)
 
 网站地址：
 

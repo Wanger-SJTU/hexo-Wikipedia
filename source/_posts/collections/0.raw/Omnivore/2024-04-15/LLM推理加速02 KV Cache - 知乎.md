@@ -35,7 +35,7 @@ LLM推理加速topic以下几部分组成
 > LLM推理加速06 attention设计-SWA和GQA  
 > LLM推理加速07 解码算法
 
-**相关参数**
+<strong>相关参数</strong>
 
 * `bs`：数据批大小
 * `prompt_len`: 输入的prompt长度
@@ -48,37 +48,37 @@ LLM推理加速topic以下几部分组成
 
 ## 1.1 传统生成解码
 
-**问题**：传统的注意力attention计算，存在大量计算冗余。
+<strong>问题</strong>：传统的注意力attention计算，存在大量计算冗余。
 
-**解决办法**：KV-Cache
+<strong>解决办法</strong>：KV-Cache
 
 ### 1.1.1 冗余1 ：Attention计算
 
-**结论**：decoder-only模型结构中，在生成第i个token时，只需要第i个token的注意力`Ai`。
+<strong>结论</strong>：decoder-only模型结构中，在生成第i个token时，只需要第i个token的注意力`Ai`。
 
-**原因**：因为前面(i-1)个token已经生成了。如下图所示：
+<strong>原因</strong>：因为前面(i-1)个token已经生成了。如下图所示：
 
 ![](https://proxy-prod.omnivore-image-cache.app/2670x1118,srHup89-8MPlxQkFnfbq4pYvipmqr8s282wHROlTfkeQ/https://pic2.zhimg.com/v2-38ebc941beaf262773c2613897ae8cd1_b.jpg)
 
 ### 1.1.2 冗余2：QKV计算
 
-**结论**：计算第i个token注意力`Ai`，只需要当前时刻的`Qi`和所有时刻的`KV`。
+<strong>结论</strong>：计算第i个token注意力`Ai`，只需要当前时刻的`Qi`和所有时刻的`KV`。
 
-**原因**：在`decoder only`架构中，`token`逐个生成，注意力权重矩阵为下三角矩阵（即生成第`i`个token，只能依赖于前`i-1`个token）。如下图所示：
+<strong>原因</strong>：在`decoder only`架构中，`token`逐个生成，注意力权重矩阵为下三角矩阵（即生成第`i`个token，只能依赖于前`i-1`个token）。如下图所示：
 
 ![](https://proxy-prod.omnivore-image-cache.app/2544x1396,s9d4OeXMCCJG4XOocEb6wrzYby9qLDKCdm-U7wb64gc0/https://pic3.zhimg.com/v2-71f2516ae419a209e1d024c6d6f1b2f2_b.jpg)
 
 ## 1.2 基于kv-cache的生成解码
 
-`kv-cache`：**用空间换时间**。为了避免每次生成token时重新计算`key`、`value`向量。利用预先计算好的`key`值和`value`值，可以节省大量计算时间，但是会占用一定的存储空间。
+`kv-cache`：<strong>用空间换时间</strong>。为了避免每次生成token时重新计算`key`、`value`向量。利用预先计算好的`key`值和`value`值，可以节省大量计算时间，但是会占用一定的存储空间。
 
 ### 1.2.1 原理
 
 由两个阶段构成：
 
-（1）**预填充阶段prefill**：计算输入prompt文本X的`key`和`value`，并保存为`key cache`和`value cache`。 
+（1）<strong>预填充阶段prefill</strong>：计算输入prompt文本X的`key`和`value`，并保存为`key cache`和`value cache`。 
 
-（2）**解码阶段decode**：token逐一生成，并更新`kv-cache`。利用`Qi`计算第`i`个token的注意力权重`Ai`
+（2）<strong>解码阶段decode</strong>：token逐一生成，并更新`kv-cache`。利用`Qi`计算第`i`个token的注意力权重`Ai`
 
 ![](https://proxy-prod.omnivore-image-cache.app/3024x1364,s2X2VmtDEPn0-NUAUpl2fthu9Cv3kyQhzUjX5S0YVpQI/https://pic2.zhimg.com/v2-dafc2f54404ab4c26c495b4a437ae4d1_b.jpg)
 
@@ -89,7 +89,7 @@ LLM推理加速topic以下几部分组成
 * 计算attention时，计算量减少。
 * 计算QKV时，计算量减少。
 
-**结论**：文本长度越长，减少的计算量越明显。
+<strong>结论</strong>：文本长度越长，减少的计算量越明显。
 
 ![](https://proxy-prod.omnivore-image-cache.app/783x295,s6hjSwJjQ9g0c8yJkUoW4h4eXj_LK7kqq5qU02_ro4Ls/https://pic1.zhimg.com/v2-2d540106e55abc42d919c2b4549cac5c_b.jpg)
 
@@ -104,7 +104,7 @@ LLM推理加速topic以下几部分组成
 `2*bs*seq_len*hidden_size*layer_num*k_bits`   
 \= `2*bs*seq_len*head_dim*head_num*layer_num*k_bits`
 
-**实验结论**：随着**文本长度seq\_len**、**批处理bs**的增加，kv cache显存占用显著增加。
+<strong>实验结论</strong>：随着<strong>文本长度seq\_len</strong>、<strong>批处理bs</strong>的增加，kv cache显存占用显著增加。
 
 ![](https://proxy-prod.omnivore-image-cache.app/715x607,sUzpqELywGKzNDU2-IZytfrS1xUxrltltZKZhYnR4JlA/https://pic3.zhimg.com/v2-39224ca38049091258b81e242d31eefe_b.jpg)
 
@@ -221,11 +221,11 @@ step2:生成的token: tensor([46])
 
 ## 2、推理优化方向
 
-在模型推理中，处于访存受限的状态（见“LLM推理加速03 性能指标”）。而显存占用由模型参数+kv cache两部分组成。故LLM推理的主要优化方向：**减少KV cache显存占用**。
+在模型推理中，处于访存受限的状态（见“LLM推理加速03 性能指标”）。而显存占用由模型参数+kv cache两部分组成。故LLM推理的主要优化方向：<strong>减少KV cache显存占用</strong>。
 
 根据前文分析，`kv cache`占用的显存大小（字节）： `2*bs*seq_len*head_dim*head_num*layer_num*k_bits`
 
-**LLM推理加速的优化方向**：
+<strong>LLM推理加速的优化方向</strong>：
 
 * **减少`seq_len`长度**：SWA（Sliding window attention），减少了注意力的长度。见“LLM推理加速06 attention设计-SWA和GQA”
 * **减少`head_num`个数**：MQA（multi-query attention)、GQA（Grouped-query attention），减少kv cache的head个数。见“LLM推理加速06 attention设计-SWA和GQA”

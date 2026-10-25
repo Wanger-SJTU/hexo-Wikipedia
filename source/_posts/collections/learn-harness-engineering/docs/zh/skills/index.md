@@ -21,10 +21,10 @@ categories:
 
 ### 它能做什么
 
-- **从零创建 harness** — AGENTS.md、功能清单、验证工作流
-- **改进已有 harness** — 五子系统评分 + 优先级改进建议
-- **设计会话连续性** — 记忆持久化、进度跟踪、交接机制
-- **应用生产级模式** — 记忆、上下文工程、工具安全、多智能体协调
+- <strong>从零创建 harness</strong> — AGENTS.md、功能清单、验证工作流
+- <strong>改进已有 harness</strong> — 五子系统评分 + 优先级改进建议
+- <strong>设计会话连续性</strong> — 记忆持久化、进度跟踪、交接机制
+- <strong>应用生产级模式</strong> — 记忆、上下文工程、工具安全、多智能体协调
 
 ### 快速开始
 
@@ -66,7 +66,7 @@ npx skills add walkinglabs/learn-harness-engineering --skill harness-creator
 
 ### 开发过程
 
-`harness-creator` 基于 **skill-creator** 方法论开发——这是 Anthropic 官方提供的元技能，用于创建、测试和迭代改进 agent 技能。skill-creator 提供了结构化的工作流（起草 → 测试 → 评估 → 迭代），内置评估运行器、评分器和基准查看器。
+`harness-creator` 基于 <strong>skill-creator</strong> 方法论开发——这是 Anthropic 官方提供的元技能，用于创建、测试和迭代改进 agent 技能。skill-creator 提供了结构化的工作流（起草 → 测试 → 评估 → 迭代），内置评估运行器、评分器和基准查看器。
 
-- **skill-creator 来源**：[anthropics/skills — skill-creator](https://github.com/anthropics/skills/tree/main/skills/skill-creator)
-- **Claude Code 技能文档**：[anthropics/claude-code — plugin-dev/skills](https://github.com/anthropics/claude-code/tree/main/plugins/plugin-dev/skills)
+- <strong>skill-creator 来源</strong>：[anthropics/skills — skill-creator](https://github.com/anthropics/skills/tree/main/skills/skill-creator)
+- <strong>Claude Code 技能文档</strong>：[anthropics/claude-code — plugin-dev/skills](https://github.com/anthropics/claude-code/tree/main/plugins/plugin-dev/skills)

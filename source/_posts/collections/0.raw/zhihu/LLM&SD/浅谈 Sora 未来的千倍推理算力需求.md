@@ -15,10 +15,10 @@ source_url: https://zhuanlan.zhihu.com/p/683636677
 ---
 
 
-**观点：**
+<strong>观点：</strong>
 
 - Sora 的训练算力需求大概率是 GPT-4 的  左右
-- Sora 的推理算力需求是 GPT-4 的** 1000 倍 **以上（这么看来 2 万亿美元市值的 NVIDIA 仍然不是高点）
+- Sora 的推理算力需求是 GPT-4 的<strong>1000 倍</strong>以上（这么看来 2 万亿美元市值的 NVIDIA 仍然不是高点）
 
 - 预计单台 8xA100 机器生成 1min video 需要推理 3h 以上
 - 预计单台 8xH100 机器生成 1min video 需要推理 31min 以上
@@ -45,7 +45,7 @@ source_url: https://zhuanlan.zhihu.com/p/683636677
 
 首先估算 GPT-4 的算力需求， 根据 OpenAI 的 Paper： [Scaling Laws for Neural Language Models](https://link.zhihu.com/?target=https%3A//arxiv.org/pdf/2001.08361.pdf) , 训练 Transformer 模型的理论计算量为 FLOPs ≈ 6*ND ***。其中， N 为模型参数量大小， D 为训练数据量大小：
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_8ff94f59cbf8.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_8ff94f59cbf8.jpg)
 
 LLM 每 token 需要的计算量是 6 倍的模型大小基于一些"众所周知"的消息：
 
@@ -68,25 +68,25 @@ GPT-4 是 2022 年上半年训练的，据说 OpenAI 使用了 25000 张 A100。
 
 根据 OpenAI 的技术报告： Video generation models as world simulators ，Sora 是一个 Diffusion Model， 且应该使用的是 Diffusion Transformer** （DiT）作为主干模型网络。 虽然 Diffusion Transformer 和 LLM 的 Autoregression Model 架构不同， 但均为 Transformer 架构： 
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_075173a05eac.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_075173a05eac.jpg)
 
 Diffusion Transformer 架构且训练时，巨量的数据会随机分布在 T = [0, 1000] 的时间步上，以至于 DiT 的训练计算量估计 和 GPT 的训练计算量估计可以使用相同的公式。（Video Encoder/Decoder 的计算量相比 DiT 可以忽略不计）
 
-**Sora 的模型多大呢？ ** 
+<strong>Sora 的模型多大呢？</strong> 
 
 目前大家猜测的出入很大， 从 3B 到 60B 都有。  我们折中一下，假设为 20B 的模型大小。
 
-**Sora 训练的数据量有多少呢？  **
+<strong>Sora 训练的数据量有多少呢？</strong>
 
-这个猜测的范围就更大了。  一个可供对比的数据量是：  每分钟上传至 YouTube 的视频是 500h 的量级。 则**近五年的 YouTube 上的视频数据总量为： 13亿 小时 =  788亿 分钟 **。由于 Diffusion 模型训练 text to video 需要高质量的标注视频，因此我们可以估计 Sora 训练的视频量级为** 1亿 分钟 **左右。
+这个猜测的范围就更大了。  一个可供对比的数据量是：  每分钟上传至 YouTube 的视频是 500h 的量级。 则<strong>近五年的 YouTube 上的视频数据总量为： 13亿 小时 =  788亿 分钟</strong>。由于 Diffusion 模型训练 text to video 需要高质量的标注视频，因此我们可以估计 Sora 训练的视频量级为<strong>1亿 分钟</strong>左右。
 
-**一分钟的高清视频等价于多少 Token？**
+<strong>一分钟的高清视频等价于多少 Token？</strong>
 
-目前有一个比较准确的估计， **一分钟视频约为 1M tokens 。   **
+目前有一个比较准确的估计， <strong>一分钟视频约为 1M tokens 。</strong>
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_efefbd0420d9.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_efefbd0420d9.jpg)
 
-Sora 的 Video Encoder 部分参考 Diffusion Transformer， 256x256 的图片会被划分为 32x32 个 patch。 我们假设 1920x1080 分辨率的高清图像经过下采样得到 512x256 大小的图片，假设一个 patch 为 8x8 的像素块，则得到 64x32 大小的 patch 矩阵， **一张图片则约为： 64x32=2048 个 patch**。 高清视频 1s 约为 30 帧以上，但实际训练和推理也会做压缩，我们估计压缩后 **1s 约为 9 帧。 **则一分钟共 540 帧。 一分钟的视频一共有：  
+Sora 的 Video Encoder 部分参考 Diffusion Transformer， 256x256 的图片会被划分为 32x32 个 patch。 我们假设 1920x1080 分辨率的高清图像经过下采样得到 512x256 大小的图片，假设一个 patch 为 8x8 的像素块，则得到 64x32 大小的 patch 矩阵， <strong>一张图片则约为： 64x32=2048 个 patch</strong>。 高清视频 1s 约为 30 帧以上，但实际训练和推理也会做压缩，我们估计压缩后 <strong>1s 约为 9 帧。</strong>则一分钟共 540 帧。 一分钟的视频一共有：  
 
 1min Video = 64*32*60*9=1.1M patches 
 
@@ -100,7 +100,7 @@ $**注： 先前计算 Sora 的 FLOPs 仍使用了 6ND 的公式，但是这个�
 
 $C_{(fw+bw)/token} = 6N+6n_{layer}n_{ctx}d_{attn} = 6 (12n_{layer}d_{model}^{2} + n_{layer}n_{ctx}d_{attn}) \approx6(12n_{layer}d_{model}^{2} + 12n_{layer}*14d_{model}*d_{model}) = 6(N+14N) = 90N $
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_1455f55f8440.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_1455f55f8440.jpg)
 
 context length 很大时，Attention 部分的计算不能忽略因此，如果 Sora 全量数据训练都是 1M seq length，则 Sora 的训练成本需要增加 15 倍。**如果 Sora 是先训练一个 32k/64k 的模型，最后再 Continue Training 1M 的模型，则 Sora 的训练成本跟之前预估的接近。
 
@@ -111,16 +111,16 @@ FLOPs = 6*N*D = 6 * 20 * 10^{9}*10^{14}=1.2*10^{25}
 相比于 GPT-4 训练所需算力的 4.8 * 10^25 FLOPs，seq len = 32k 的 Sora 训练所需算力 1.2 * 10^25 FLOPs 是 GPT-4 的 。**由于 GPT-4 的成本是 25000 张 A100 训练了 6 个月，因此 Sora 只需要 6000 张 A100 训练 6 个月。
 
 **如果 Sora 全量训练全部是用的 1M 的 seq length，则训练成本会超过 GPT-4： FLOPs = 90ND = 90 * 20 * 10^{9}*10^{14}=1.8*10^{26}     约为 GPT-4 的 4 倍**。
-### **测算 Sora 的推理算力需求**
+### <strong>测算 Sora 的推理算力需求</strong>
 
 我们假设：
 
 - 用户 Query 调用一次 GPT-4 的 token 开销为 1k tokens （比较准确，实际上会比这个还多一些， OpenAI 的 system prompt 就已经大几百个 token 了）。 阅读一个千字的文章，人肉眼看需要将近一分钟。
 - 用户 Query 调用一次 Sora 生成一分钟的视频的 token 开销为 1M tokens （比较准确，推导过程见训练部分的 patch 数量估计）
-- Sora 全面开放访问后，用户**调用 Sora 的次数跟调用 GPT-4 的次数一样**。 （这个不准确。 但**我猜测 Sora 实际的调用需求会远超 GPT-4**， 按照用户想法实时生成高清视频对于多巴胺的满足感要超过文本 QA，就像 **看抖音的次数远超看知乎的次数**）
+- Sora 全面开放访问后，用户<strong>调用 Sora 的次数跟调用 GPT-4 的次数一样</strong>。 （这个不准确。 但<strong>我猜测 Sora 实际的调用需求会远超 GPT-4</strong>， 按照用户想法实时生成高清视频对于多巴胺的满足感要超过文本 QA，就像 <strong>看抖音的次数远超看知乎的次数</strong>）
 同时我们又在训练部分估计了： GPT-4 是一个 400B 激活参数量的大模型，Sora 是一个 20B 参数量的大模型。 
 
-Diffusion Transformer 在推理时的逻辑 和 LLM 不一样，虽然都是 Transformer 架构， Diffusion 需要基于一个随机的 noise latent 矩阵按照 **多个时间步迭代生成，**每一步都在迭代细化 latent （图像/视频）。 在一开始的 Stable Diffusion 推理时是 50 个 step， 后来经过算法优化可以做到 20 个 step，当然也有极限的 1 step 生成的研究（step 越少，图像的效果越差）。 我们假设 Sora 在实际推理时，需要 20 个 step 生成视频。
+Diffusion Transformer 在推理时的逻辑 和 LLM 不一样，虽然都是 Transformer 架构， Diffusion 需要基于一个随机的 noise latent 矩阵按照 <strong>多个时间步迭代生成，</strong>每一步都在迭代细化 latent （图像/视频）。 在一开始的 Stable Diffusion 推理时是 50 个 step， 后来经过算法优化可以做到 20 个 step，当然也有极限的 1 step 生成的研究（step 越少，图像的效果越差）。 我们假设 Sora 在实际推理时，需要 20 个 step 生成视频。
 
 $**注： 先前计算 Sora 的 FLOPs 使用的是 C_{forward/token}=2N 的公式，但是这个在 1M 的 seq len 下不适用。这里更新一下。参考 Sora 训练部分的估算 n_{ctx} / 12 = 1M / 12 \approx 14 * 6144=14d_{model} ， 一次 Sora 前向的成本是： $
 
@@ -134,15 +134,15 @@ GPT-4 推理 1k token 的成本仍可以按照 一次前向： C_{GPT-forward/to
 - 推理一个 1min video （1M tokens ） Sora 的计算成本是：  FLOPs = 30 * 20B * 1M * 20 = 12000000T
 则得出结论： Sora 推理 1min video 的理论计算量 是 GPT-4 推理 1k token 的理论计算量的 15000 倍。**
 
-**注： 访存开销的量化分析挪到了文末。但是推理需求的计算不能只考虑理论计算量。 GPT（所有 LLM）是 Decoder-Only Transformer 架构，通过 Auto Regression 的方式预测下一个 token，是一个完全的 Memory bound 场景，一般实际推理时的 GPU 算力利用率很低，5% 左右。 而 Sora 的 DiT 是一个 Encoder-Only Transformer 架构，推理时会输出全部长度的 token，一次性生成全部长度的 token，对 Memory 的访存次数要远小于 GPT，是一个 Compute Bound 场景，**我们假设 Sora 的推理利用率是 50%**。**不过 Sora 是否是一次性生成 1M token 超长序列是存疑的，我们假设他的 seq len 就是完整的 1M，而非多段（每段大概 5 s，相邻两段有 overlap 的视频帧）顺序生成后拼接得到完整视频。
+<strong>注： 访存开销的量化分析挪到了文末。但是推理需求的计算不能只考虑理论计算量。 GPT（所有 LLM）是 Decoder-Only Transformer 架构，通过 Auto Regression 的方式预测下一个 token，是一个完全的 Memory bound 场景，一般实际推理时的 GPU 算力利用率很低，5% 左右。 而 Sora 的 DiT 是一个 Encoder-Only Transformer 架构，推理时会输出全部长度的 token，一次性生成全部长度的 token，对 Memory 的访存次数要远小于 GPT，是一个 Compute Bound 场景，</strong>我们假设 Sora 的推理利用率是 50%<strong>。</strong>不过 Sora 是否是一次性生成 1M token 超长序列是存疑的，我们假设他的 seq len 就是完整的 1M，而非多段（每段大概 5 s，相邻两段有 overlap 的视频帧）顺序生成后拼接得到完整视频。
 
 因此 Sora 推理所需的实际算力需求估计：
 
 $$\frac{Sora-InferenceCost}{GPT-InferenceCost} = \frac{C_{Sora} / MFU_{Sora}}{C_{GPT}/MFU_{GPT}} = \frac{30N_{Sora}D_{video}T / 0.5}{2N_{GPT}D_{text} / 0.05} = \frac{30 * 20B * 1M * 20 / 0.5}{2 * 400B * 1k / 0.05} = 1500 $$
 
-**Sora 推理 1min video 对于实际算力的需求是 GPT-4 推理 1k token 的 1500 倍。**
+<strong>Sora 推理 1min video 对于实际算力的需求是 GPT-4 推理 1k token 的 1500 倍。</strong>
 
-#### **Sora 生成 1min video 需要多久？**
+#### <strong>Sora 生成 1min video 需要多久？</strong>
 
 我们假设一台 8xA100 机器生成 Sora 1min video，A100 的单卡算力是 312TFLOPs ，根据之前推导的各项参数，可以推导出来 8xA100 机器需要生成的时间：
 
@@ -162,24 +162,24 @@ $$Duration = \frac{C_{Sora}}{8C_{H100}MFU} = \frac{30N*D*T}{8*1979T*0.4} = \frac
 
 剩下的需要搞定 Sora 的算法 和 数据。 
 
-- 从 Sora 的技术报告上来看， Diffusion Transformer 不是一个新概念，之前在做文生视频的团队也是类似 Diffusion 的路线，只是 **视频的长度差了好几倍、视频的精细化效果和一镜到底的场景变换连续性上存在明显差距。**
+- 从 Sora 的技术报告上来看， Diffusion Transformer 不是一个新概念，之前在做文生视频的团队也是类似 Diffusion 的路线，只是 <strong>视频的长度差了好几倍、视频的精细化效果和一镜到底的场景变换连续性上存在明显差距。</strong>
 
 - 因此复现 Sora 从算法研究上需要深挖 OpenAI 没有公开的细节
 - 除了 Diffusion 路线，也可以探索 Auto Regression 的 Transformer 路线
 - Infra 需要支持 1M context length 训练
 
-- 数据角度， 1 亿（**0.1B**）分钟的 video 并不算多。 YouTube 上每分钟上传的视频有 500h，近五年上传的视频总量有 1.3B 小时，即 **78.8B** 分钟。 实际被用作训练的数据仅占全网总量的千分之一左右。 但 Diffusion Model 训练依赖很高质量的有标数据，因此需要对 1亿分钟的高质量 video 均做非常详尽、准确的 caption。 目前 OpenAI 依赖的是 GPT-4V 的标注能力。 所以数据上的瓶颈其实是**高质量的 Video Caption Model。**
-也可能存在一种前提：  **训练好一个 Sora 水平的视频大模型，依赖一个 GPT-4V 水平的多模态大模型提供全量标注。**
+- 数据角度， 1 亿（<strong>0.1B</strong>）分钟的 video 并不算多。 YouTube 上每分钟上传的视频有 500h，近五年上传的视频总量有 1.3B 小时，即 <strong>78.8B</strong> 分钟。 实际被用作训练的数据仅占全网总量的千分之一左右。 但 Diffusion Model 训练依赖很高质量的有标数据，因此需要对 1亿分钟的高质量 video 均做非常详尽、准确的 caption。 目前 OpenAI 依赖的是 GPT-4V 的标注能力。 所以数据上的瓶颈其实是<strong>高质量的 Video Caption Model。</strong>
+也可能存在一种前提：  <strong>训练好一个 Sora 水平的视频大模型，依赖一个 GPT-4V 水平的多模态大模型提供全量标注。</strong>
 
 ### 国产芯片发展机遇
 
-其实是 Groq 芯片的成功营销带来的启发，纯 SRAM 方案可能不是一个好方案，但是 Groq 找准了 Decoder-Only Transformer Model Inference 的痛点： Memory Bound ，所以 Groq 用了 14nm 设计了一个只有 188TFLOPs 的芯片，另一个更为熟知的是 Google TPU 直到 v5e 版本也只有 197 TFLOPs （对比之下，昇腾 910B 都有 376TFLOPs， 7nm+）。 因此，**一个高制程、高算力的芯片，在大模型推理时是发挥不出来它的算力能力的。**更具有性价比的设计是： **中制程、中算力、大显存 的推理芯片。**
+其实是 Groq 芯片的成功营销带来的启发，纯 SRAM 方案可能不是一个好方案，但是 Groq 找准了 Decoder-Only Transformer Model Inference 的痛点： Memory Bound ，所以 Groq 用了 14nm 设计了一个只有 188TFLOPs 的芯片，另一个更为熟知的是 Google TPU 直到 v5e 版本也只有 197 TFLOPs （对比之下，昇腾 910B 都有 376TFLOPs， 7nm+）。 因此，<strong>一个高制程、高算力的芯片，在大模型推理时是发挥不出来它的算力能力的。</strong>更具有性价比的设计是： <strong>中制程、中算力、大显存 的推理芯片。</strong>
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_ca0f0078773d.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_ca0f0078773d.jpg)
 
 Grop Card 规格， 14nm 188TFLOPs虽然 NVIDIA H100 已经是 4nm 工艺。但我们做推理完全用不到这么高的制程，14nm 的芯片 做到 180TFLOPs 对于 LLM 的推理来说完全够用。
 
-存储方面，还是尽可能增大显存大小，比如到 144G，可以堆叠 HBM。虽然国内目前没法量产 HBM，但是 **三星的 HBM 不在禁售名单里，可以采购。**另外就算不用 HBM，用国产的 GDDR6 存储也可以（NVIDIA 的 L20 推理卡就是 GDDR6）。
+存储方面，还是尽可能增大显存大小，比如到 144G，可以堆叠 HBM。虽然国内目前没法量产 HBM，但是 <strong>三星的 HBM 不在禁售名单里，可以采购。</strong>另外就算不用 HBM，用国产的 GDDR6 存储也可以（NVIDIA 的 L20 推理卡就是 GDDR6）。
 
 因此我们国产芯片如果要做专用于 LLM 推理的芯片的话，目前的工艺技术不仅满足需求，还可以通过量产将 NVIDIA 的芯片价格打下来。随着大模型的应用深入，推理算力的需求将远超训练算力的需求，大模型推理可能会迎来类似曾经国产光伏倾销世界的时代。
 
@@ -187,7 +187,7 @@ Grop Card 规格， 14nm 188TFLOPs虽然 NVIDIA H100 已经是 4nm 工艺。但�
 
 当然未来的 LLM 推理可能由于 HBM 的近存计算（Processing in Memory）落地而发生巨变。包含 KVCache 的 Attention Inference 是大内存，小计算的 GEMV 向量矩阵乘，如果在内存上可以用很小的计算代价原地计算，则不需要占用宝贵的访存带宽，期待 HBM-PIM 会让 LLM 推理性能再翻一个台阶，很大程度上缓解内存墙的问题。
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_c31b48decce3.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_c31b48decce3.jpg)
 
 三星推出的 PIM 技术> 参考： Samsung Processing in Memory Technology at Hot Chips 2023
 

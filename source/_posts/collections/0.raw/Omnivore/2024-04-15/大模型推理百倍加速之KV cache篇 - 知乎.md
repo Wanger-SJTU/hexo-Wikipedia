@@ -36,9 +36,9 @@ id: 1dfb7c7e-bcb2-4071-b0d8-417c674f99e3
 
   
 参考上图，随着 batch size 和 长度的增大，KV cache 占用的显存开销快速增大，甚至会超过模型本身。从LLM的趋势上而讲，主要有三个方面来说明kv cache优化的必要性：  
-**1、总体趋势上LLM 的窗口长度在不断增大，因此就出现一组主要矛盾，即：对不断增长的 LLM 的窗口长度的需要与有限的 GPU 显存之间的矛盾。因此优化 KV cache 非常必要。**  
-**OpenAI API场景，API最烧钱的是输入而非输出，输入包括prefill prompt 和conversation，长度动辄数十K token。虽说每输入token比每输出token便宜，但能够降低kv重新计算的开销，无论是硬件资源门槛，还是模型推理降本，都有着极为积极的作用。**  
-**2、对于消费级显卡这种性价比较高的显卡而言，显存容量相对较小，KV cache从一定程度上降低了模型的batch size，因而KV cache优化在工程落地中更显重要。**  
+<strong>1、总体趋势上LLM 的窗口长度在不断增大，因此就出现一组主要矛盾，即：对不断增长的 LLM 的窗口长度的需要与有限的 GPU 显存之间的矛盾。因此优化 KV cache 非常必要。</strong>  
+<strong>OpenAI API场景，API最烧钱的是输入而非输出，输入包括prefill prompt 和conversation，长度动辄数十K token。虽说每输入token比每输出token便宜，但能够降低kv重新计算的开销，无论是硬件资源门槛，还是模型推理降本，都有着极为积极的作用。</strong>  
+<strong>2、对于消费级显卡这种性价比较高的显卡而言，显存容量相对较小，KV cache从一定程度上降低了模型的batch size，因而KV cache优化在工程落地中更显重要。</strong>  
 
 | 框架  | 模型         | input/output | 机器配置        | tokens/s | 最佳batch\_size | gpu/cpu负载     |
 | --- | ---------- | ------------ | ----------- | -------- | ------------- | ------------- |
@@ -47,7 +47,7 @@ id: 1dfb7c7e-bcb2-4071-b0d8-417c674f99e3
 
   
 从上表能够看出，类似4090等消费级显卡，其主要的瓶颈时batch\_size，而影响batch\_size的主要因素就是显存容量，而KV cache在推理过程中占用大量的显存。如果能通过KV cache降低显存占用，从一定程度上就能提升消费级显卡的性价比，带来非常高的商业收益。  
-**3、sora/sd3等文生视频或者文生图的模型，纷纷放弃u-net架构，转而支持DIF（diffusion _transformer）架构。对此类AIGC模型而言， KV cache同样能起到类似LLM上的加速效果。_**  
+<strong>3、sora/sd3等文生视频或者文生图的模型，纷纷放弃u-net架构，转而支持DIF（diffusion _transformer）架构。对此类AIGC模型而言， KV cache同样能起到类似LLM上的加速效果。_</strong>  
 根据资料，Sora类训练任务的特点是模型本体不大（10B以下），但是由于视频复杂性带来的序列长度特别长（接近1000kpatches的长度），可以对模型推理进行简易测算：  
 
 * 按照batch size = 1 进行测算，kv cache和模型权重对显卡占比能达到10:1（例如4090的24G显存，2G分给模型，22G分给kv cache）左右，这个场景的显存分配占比与LLM差异性还是非常的大。
@@ -63,13 +63,13 @@ _KV cache的作用_
  paki：What is the apples？  
  llama：Apples are a boring fruit.  
 假设上述对话中，paki是自然人并输入prompt（What is the apples？），llama是模型并返回result（Apples are a boring fruit）。如果对上述对话的模型推理流程进行分析，实际上需要将推理步骤分成两个阶段，即prefill和decode。  
-**prefill阶段：输入为Q，即‘What is the apples？’，返回了第一个token，即‘Apples’，同时初始化了kv cache。**  
-**decode阶段：输入为单个词或者说q，通过自回归的方式，生成‘Apples are a boring fruit’这个句子。需要注意的是，decode计算的过程中，q的长度为1，即当前词，返回下一个词，例如通过‘Apples’生成‘are’，同时更新kv cache。**
+<strong>prefill阶段：输入为Q，即‘What is the apples？’，返回了第一个token，即‘Apples’，同时初始化了kv cache。</strong>  
+<strong>decode阶段：输入为单个词或者说q，通过自回归的方式，生成‘Apples are a boring fruit’这个句子。需要注意的是，decode计算的过程中，q的长度为1，即当前词，返回下一个词，例如通过‘Apples’生成‘are’，同时更新kv cache。</strong>
 
 ![](https://proxy-prod.omnivore-image-cache.app/3332x1314,sZ8Pms0EUOoufFJW55v1V_wAmMx29TokAXJqjVss69wk/https://pic3.zhimg.com/v2-dfef5acaad81b6897681c50bf1c85172_b.jpg)
 
-如上图所示，**kv cache是attention计算中的全量kv 缓存，主要作用在decode阶段，目的是将输入Q优化成输入q。**  
-我们举例说明，**假设通过decode阶段通过自回归生成‘**Apples are a boring fruit’这句话，当生成到‘fruit’这个词的时候，如果没有KV cache，输入为Q（‘Apples are a boring’），进行attention计算。反之，如果有了kv cache之后，输入只需要q（‘boring’这个词），即可完成attention计算。  
+如上图所示，<strong>kv cache是attention计算中的全量kv 缓存，主要作用在decode阶段，目的是将输入Q优化成输入q。</strong>  
+我们举例说明，<strong>假设通过decode阶段通过自回归生成‘</strong>Apples are a boring fruit’这句话，当生成到‘fruit’这个词的时候，如果没有KV cache，输入为Q（‘Apples are a boring’），进行attention计算。反之，如果有了kv cache之后，输入只需要q（‘boring’这个词），即可完成attention计算。  
 为什么会这样，主要跟下一个token的生成给当前token的q和全量KV有关，具体attention的计算公式不再粘贴。  
 从这里也能看出，为什么 KV cache那么吃显存，其实主要因为随着seq长度变长和batch size增大，KV cache需要存储历史全量KV，从而跟着增大。  
 那就有这么一个思路，KV cacha本质上是attention计算中的一部分，如果对其进行压缩或者优化，是不是能起到推理的加速效果？  
@@ -138,7 +138,7 @@ Sparse--稀疏化
 目前基于Sparse对kv cache压缩的方法在学术上有较多的进展，但在主流的推理框架上，例如TGI/vLLM等框架，尚未得到有效支持。主要介绍H2O、SubGen、LESS三个项目，来对KV cache稀疏化方案做个总体介绍。
 
   
-**H2O**  
+<strong>H2O</strong>  
 简要介绍：基于attention的观察，即在计算attention分数时，一小部分token贡献了大部分价值。我们将这些token称为重击者(H2 )。通过全面的调查，我们发现H2的出现是自然的，并且与文本中标记的频繁共现密切相关，（ ii ）删除它们会导致性能显着下降。基于这些见解，我们提出了 Heavy Hitter Oracle (H 2 O)，这是一种 KV 缓存驱逐策略（贪婪算法），可动态保持最近token和 H2 token的平衡。我们使用 OPT、LLaMA 和 GPT-NeoX 在各种任务中验证了算法的准确性。我们采用20%重量级的 H2O实施方案，在 OPT-6.7B 和 OPT- 上，与三个领先的推理系统 DeepSpeed Zero-Inference、Hugging Face Accelerate 和 FlexGen 相比，吞吐量提高了高达29 倍、 29 倍和3 倍。  
 H2O对比StreamingLLM而言，从一种的window方法演进成一种基于H2和最新token的驱逐策略，模型性能更加优秀，具体参考如下数据：  
 
@@ -158,7 +158,7 @@ Generation throughput and latency on an A100 GPU. In the sequence length row, we
 
 综合来看，H2O是一种相对高效的KV cache压缩框架，值得进行深入研究。
 
-**SubGen**  
+<strong>SubGen</strong>  
 SubGen是一种为 KV cache开发的高效压缩技术。经验证据表明，attention模块中的关键嵌入存在显著的聚类趋势。基于这一关键见解，设计了一种具有亚线性复杂度的新颖缓存方法，对关键标记采用在线聚类并对值进行在线_ℓ_ (2)采样。  
 如下图所示，使用 MT Bench 数据集从 Llama-2-7B收集key和value嵌入，同时模型生成 1024 个标记的序列。然后，使用 t-SNE \[ 24 \] 跨各个层和头可视化嵌入，通过贪婪 k 中心算法 识别聚类中心点,根据观察结果表明，与所有随机选择的层和头的value嵌入相比，key嵌入（第一行）表现出更高程度的可聚类性。
 
@@ -172,10 +172,10 @@ A t-SNE plot of cached keys (first row) and values (second row) embeddings over 
 
 Results on accuracy of line retrieval from LongEval \[13\] dataset with context length 5k-9k. Under the sublinear budgets on cache size, the proposed algorithm based on k-center algorithm outperforms other methods over all sequence lengths.
 
-同时，根据SubGen的实验数据，可以观测到随着seq的长度变长，基于稀疏的Sink、H2O、SUBGEN等方法，都呈现出效果逐渐下降的趋势，**这主要因为对于稀疏缓存策略，随着序列长度的增加，会保存一小部分 KV 对，因此会省略更多信息**。
+同时，根据SubGen的实验数据，可以观测到随着seq的长度变长，基于稀疏的Sink、H2O、SUBGEN等方法，都呈现出效果逐渐下降的趋势，<strong>这主要因为对于稀疏缓存策略，随着序列长度的增加，会保存一小部分 KV 对，因此会省略更多信息</strong>。
 
   
-**LESS**  
+<strong>LESS</strong>  
 LESS（Low-rank Embedding Sidekick with Sparse policy）来学习原始注意力输出和稀疏策略近似的注意力输出之间的残差，通过将稀疏策略丢弃的信息累积到恒定大小的低等级缓存或状态中来实现此目的，从而允许查询仍然访问信息以恢复注意力图中先前省略的区域。  
 
 ![](https://proxy-prod.omnivore-image-cache.app/780x516,sAYL9xAMFSs-PyU3H1Yt8ymzJgNlyxkglhIzxvFZMR7s/https://pic3.zhimg.com/v2-0aa34b47e4b4c895463ca640ab7878be_b.jpg)
@@ -224,7 +224,7 @@ Average batch size and number of iterations for different models
 Share--KV cache共享
 
   
-MQA/GQA同属于基于attention变体的KV cache共享方法，相当于不同的注意力头或者同一组的注意力头共享一个K和V的集合，因为只单独保留了一份查询参数。因此K和V的矩阵仅有一份，这大幅度减少了显存占用，使其更高效。除了共享attention这种思路之外，还有其它的共享思路，我们当中重点说一下**FlashInfer和Hydragen**。  
+MQA/GQA同属于基于attention变体的KV cache共享方法，相当于不同的注意力头或者同一组的注意力头共享一个K和V的集合，因为只单独保留了一份查询参数。因此K和V的矩阵仅有一份，这大幅度减少了显存占用，使其更高效。除了共享attention这种思路之外，还有其它的共享思路，我们当中重点说一下<strong>FlashInfer和Hydragen</strong>。  
 FlashInfer（Cascade Inference）提出Recursive Attention的方法，也就是采用multi-query attention计算共享部分的doc kv，采用single-query attention计算分开部分的kv1和kv2。简单来说，我们有三个子任务，分别计算Attn(\[q1, q2\], doc kv)，Attn(q1, kv1)，和Attn(q2, kv2)。最后，采取类似于FlashDecoding的方式将中间结果进行合并。  
 
 ![](https://proxy-prod.omnivore-image-cache.app/1921x1191,sojXLH2LjMTsD4oE74h_mExHmN6Zw4_nebKvuE01szhY/https://pic1.zhimg.com/v2-51d2eb2a7d170f4cd609530d198d2af8_b.jpg)

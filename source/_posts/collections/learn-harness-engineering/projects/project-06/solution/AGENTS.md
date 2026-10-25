@@ -17,7 +17,7 @@ categories:
 
 Before writing any code, complete these steps in order:
 
-1. **Read this file completely.** It defines the boundaries and conventions for this project.
+1. <strong>Read this file completely.</strong> It defines the boundaries and conventions for this project.
 2. **Read `CLAUDE.md`** for the quick reference if using Claude Code.
 3. **Read `docs/ARCHITECTURE.md`** to understand the full Electron layer structure and data flow.
 4. **Read `docs/PRODUCT.md`** to understand the complete feature requirements.
@@ -27,7 +27,7 @@ Before writing any code, complete these steps in order:
 
 ## Project Context
 
-This is the **capstone project** for the Learn Harness Engineering course. It combines all features from Projects 01-05 into a single complete product:
+This is the <strong>capstone project</strong> for the Learn Harness Engineering course. It combines all features from Projects 01-05 into a single complete product:
 
 - Document import with validation
 - Text indexing with progress tracking

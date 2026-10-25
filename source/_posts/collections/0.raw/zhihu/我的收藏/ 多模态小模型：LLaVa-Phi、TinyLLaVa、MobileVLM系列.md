@@ -27,7 +27,7 @@ source_url: https://zhuanlan.zhihu.com/p/689321748
 
 本文提出了LLaVa-Phi，一种轻量级的多模态大模型，部分性能指标上达到LLaVa-1.5-7B模型。其模型架构和LLaVa相似，一个visual encoder+projector+LLM，主要差别为其LLM采用了轻量级的Phi-2 (2.7B) [1]。训练数据与LLaVa无异，也是采用预训练+指令微调的方式，在8张a100下，分别需要消耗1.5小时和8小时。
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_08fe9bdac59b.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_08fe9bdac59b.jpg)
 
 [1] Textbooks are all you need ii: phi-1.5 technical report.
 
@@ -48,7 +48,7 @@ source_url: https://zhuanlan.zhihu.com/p/689321748
 - 在训练方式上，预训练时微调visual encoder会取得更好的效果。
 总而言之，轻量级多模态大模型，用更强的backbone、更多的训练参数、更高质量的训练数据，就可以取得更好的效果，感觉这个结论是显而易见的，缺少insight。做这种消融所需要的计算资源也比较多。 表3展示了TinyLLaVa与其他MLLM的对比结果。
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_e57b4d4519ea.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_e57b4d4519ea.jpg)
 
 ### MobileVLM系列
 
@@ -64,11 +64,11 @@ MobileVLM包括v1和v2版本，由美团提出。
 
 - 在LLM encoder上，论文对LLaMa进行了缩放，训练出了MobileLLaMa，包括1.4B和2.7B模型。
 - 在projector上，提出了Lightweight Downsample Projector (LDP)。它相对于MLP，会通过下采样降低Token数量，提升模型效率，同时为了增强局部性，使用了深度卷积和逐点卷积。
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_04fe3d8e6359.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_04fe3d8e6359.jpg)
 
 在多模态预训练时，和llava类似，采用两阶段的训练。在8张a100下，1.7B的模型需要5小时，3B的模型需要8小时，所需要的训练资源不算多。表4展示了一些性能对比。
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_21634e42ef8e.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_21634e42ef8e.jpg)
 
 #### MobileVLMv2
 
@@ -77,8 +77,8 @@ MobileVLM包括v1和v2版本，由美团提出。
 - projector上，改变了下采样方式，采用平均池化，如图2所示。
 - 训练策略上，在两阶段的训练上都放开了projector和LLM。
 - 训练数据上，在第一阶段使用ShareGPT4v做预训练；第二阶段使用多个任务的数据集（如caption数据集、VQA数据集和指令微调数据集）进行联合训练。
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_b2f4992847e6.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_b2f4992847e6.jpg)
 
 所设计的MobileVLMv2，相较于v1版本在多个数据集上均有提升，其3B版本在部分指标上与LLaVa-1.5-7B相当。
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_8a270e09cbda.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_8a270e09cbda.jpg)

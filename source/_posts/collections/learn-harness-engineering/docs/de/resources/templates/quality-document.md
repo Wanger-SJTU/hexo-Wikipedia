@@ -15,14 +15,14 @@ categories:
 
 Eine Qualitätsmomentaufnahme für jede Produktdomäne und Architekturschicht. Sowohl Agenten als auch Menschen können dieses Dokument nutzen, um schnell zu verstehen, wo die Codebasis stark ist und wo sie Arbeit braucht.
 
-**Aktualisierungskadenz:** Nach jeder signifikanten Session oder vor dem Start einer neuen Arbeitsphase.
+<strong>Aktualisierungskadenz:</strong> Nach jeder signifikanten Session oder vor dem Start einer neuen Arbeitsphase.
 
-**Benotungsskala:**
+<strong>Benotungsskala:</strong>
 
-- **A**: Alle Verifikationen bestanden, saubere Architektur, agentenlesbar, stabile Tests
-- **B**: Verifikationen bestanden, größtenteils sauber, kleinere Lücken in Lesbarkeit oder Testabdeckung
-- **C**: Teils funktionierend, bekannte Lücken, einige Code-Bereiche schwer für Agenten zu verstehen
-- **D**: Nicht funktionierend oder größere strukturelle Probleme
+- <strong>A</strong>: Alle Verifikationen bestanden, saubere Architektur, agentenlesbar, stabile Tests
+- <strong>B</strong>: Verifikationen bestanden, größtenteils sauber, kleinere Lücken in Lesbarkeit oder Testabdeckung
+- <strong>C</strong>: Teils funktionierend, bekannte Lücken, einige Code-Bereiche schwer für Agenten zu verstehen
+- <strong>D</strong>: Nicht funktionierend oder größere strukturelle Probleme
 
 ---
 

@@ -20,7 +20,7 @@ source_url: https://zhuanlan.zhihu.com/p/1965867186716407094
 
 Flash Attention降低时空复杂度原理
 我自己的理解是通过将 
-![](https://www.zhihu.com/equation?tex=QK%5ET) 这个大矩阵**分块**，一方面降低了空间复杂度，另一方面可以让torch从GPU的 
+![](https://www.zhihu.com/equation?tex=QK%5ET) 这个大矩阵<strong>分块</strong>，一方面降低了空间复杂度，另一方面可以让torch从GPU的 
 ![](https://www.zhihu.com/equation?tex=HBM%EF%BC%88High+Bandwidth+Memory%EF%BC%89) 进入到 
 ![](https://www.zhihu.com/equation?tex=SRAM%EF%BC%88Static+Random-Access+Memory%EF%BC%89) ，众所周知SRAM具有更快的访问速度和更低的延迟，同时可以降低HBM的访问量，达到提升速度的效果
 

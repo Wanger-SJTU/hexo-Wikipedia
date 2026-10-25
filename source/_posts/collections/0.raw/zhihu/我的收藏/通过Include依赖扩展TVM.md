@@ -44,7 +44,7 @@ if with_zeros:
 
 对于这个场景，我心里一直有一个理想的方案，那就是维持一套核心的核心的TVM代码，大家通过引入tvm的方式来扩展TVM的功能，并且这种扩展是不需要被合并到TVM的上游代码中，如图：
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_aaf1162befd0.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_aaf1162befd0.jpg)
 
 例如用户写了一个TensorIR的算子表达式，我们可以使用TVM自己的Tunner去对算子进行调优，也可以使用我们自己的第三方的框架进行调优，例如用户获得了一个整个模型的Relax计算图，我们可以使用TVM自己的Pass进行优化，也可以使用用户自己实现的Pass，例如Welder进行优化，大家相互分隔开，互不影响。但是为什么现在这种硬基于tvm开发的方法行不通呢？例如我之前想在MLC-LLM的基础上引入Welder的优化:
 
@@ -61,11 +61,11 @@ relax_mod = welder.tune(relax_mod)
 
 在TVM社区里的[Phasing out Legacy Components](https://link.zhihu.com/?target=https%3A//discuss.tvm.apache.org/t/phasing-out-legacy-components/17703),tianqi对这个问题的看法是: 开发者应该避免在不同项目中直接修改 TVM 的源码，而是要确保所有下游项目（如 ProjectA 和 ProjectB）依赖于同一个核心 TVM 库。这样一来，大家可以在同一个 TVM 版本的基础上进行扩展，而不会因为各自的修改而导致兼容性问题。为此，他建议重构项目的组织方式，像 [MLC-LLM](https://link.zhihu.com/?target=https%3A//github.com/mlc-ai/mlc-llm) 那样，将自定义的 Pass 和优化功能作为独立模块附加在 TVM 上，而不是直接对 TVM 做内联修改。这种做法能够通过模块化的方式来提升开发的灵活性和可维护性。未来，随着上游 API 逐渐变得更加模块化，社区希望不同项目能够更自然地基于相同的核心 TVM 进行各种变换和优化，从而在整个生态中形成更加有机的协作。
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_24867c94e0c0.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_24867c94e0c0.jpg)
 
 因此，我在这里学习了一下MLC-LLM的项目结构，并且借鉴和简化了一下，把一个基于TVM实现的小项目使用这种方式分离成一个单独的小项目: [LeiWang1999/TVM.CMakeExtend](https://link.zhihu.com/?target=https%3A//github.com/LeiWang1999/TVM.CMakeExtend).
 
-#### **一种解决方案：通过CMake模块化构建TVM扩展**
+#### <strong>一种解决方案：通过CMake模块化构建TVM扩展</strong>
 
 基于之前讨论的种种痛点，本文接下来介绍[LeiWang1999/TVM.CMakeExtend]里的CMake的构建方式，可以作为TVM模块化开发的参考方案。具体来说，我们将TVM视为一个独立的子模块，并且引入自定义的扩展逻辑，如TileLang（这里是一个示例的扩展模块），通过CMake的模块管理能力，将这些扩展与核心的TVM库解耦，从而实现灵活的功能组合与模块管理。
 
@@ -158,7 +158,7 @@ target_link_libraries(tilelang PUBLIC tvm_runtime)`
 
 通过生成共享库 tilelang 以及静态库 tilelang_static，用户可以根据需要灵活地选择不同的链接方式（静态链接或动态链接），并且 tilelang 模块会自动依赖 tvm_runtime，保证在编译时能够正确地找到相关符号和依赖项。
 
-#### **在cpp通过TVM的核心API编写自己的扩展模块**
+#### <strong>在cpp通过TVM的核心API编写自己的扩展模块</strong>
 
 在[src](https://link.zhihu.com/?target=https%3A//github.com/LeiWang1999/TVM.CMakeExtend/tree/main/src)下面, 我放置了对tvm扩展的例子，包括优化的pass，新的codegen等，在自己写的代码中，我们引入TVM的头文件，编写自己的Pass:
 
@@ -185,11 +185,11 @@ TVM_REGISTER_GLOBAL("tl.transform.Simplify").set_body_typed(Simplify);
 
 这样在python端就可以通过`tvm.tl.transform.Simplify`来调用这个pass优化tensorir的语法树了。
 
-#### **在项目init的时候为TVM扩展模块动态查找与加载自定义库文件**
+#### <strong>在项目init的时候为TVM扩展模块动态查找与加载自定义库文件</strong>
 
 在基于 TVM 的扩展模块中，我们经常需要将自定义的动态链接库（DLL）或共享库（如 .so、.dll 或 .dylib）与现有的 TVM 运行时进行集成。这种情况下，一个有效的全局入口点机制能够帮助我们动态查找这些库文件，并确保它们能够被正确加载到系统中。这篇博客将详细讲解一个典型的库查找与加载的实现——包括路径的动态定位、多平台的兼容处理、以及如何优雅地处理环境变量，确保我们在复杂的开发环境中能够稳定地找到所需的库文件，在这个例子中，做这段时期的代码是[libinfo.py](https://link.zhihu.com/?target=https%3A//github.com/LeiWang1999/TVM.CMakeExtend/blob/tilelang/python/tilelang/libinfo.py), 这段代码的核心功能是实现自定义库(如刚刚编译出来的本项目的libxxx.so)的自动查找与路径定位，当然也是大部分借鉴自[MLC-LLM](https://link.zhihu.com/?target=https%3A//github.com/mlc-ai/mlc-llm)，供大家一起讨论。
 
-**Note: 这里load lib的过程要发生在import tvm之前, 因为实际的全局函数的注册过程发生在tvm的import的时候，这个时候lib必须已经被load进来了，否则自己写的全局函数就无法被tvm的import过程注册到tvm的全局函数表中。**
+<strong>Note: 这里load lib的过程要发生在import tvm之前, 因为实际的全局函数的注册过程发生在tvm的import的时候，这个时候lib必须已经被load进来了，否则自己写的全局函数就无法被tvm的import过程注册到tvm的全局函数表中。</strong>
 
 例如，直接`import tvm`:
 
@@ -238,6 +238,6 @@ import tvm as tvm
 
 所以在之前的例子上, 我们使用了`from bitblas import tvm as tvm`来确保我们的tvm的python接口和我们link的lib是一致的，不过这个是为了谨慎，一般而言应该不需要。
 
-#### **总结**
+#### <strong>总结</strong>
 
 本文介绍了一种基于 CMake 的模块化开发方案，例子参考[LeiWang1999/TVM.CMakeExtend](https://link.zhihu.com/?target=https%3A//github.com/LeiWang1999/TVM.CMakeExtend)，用于构建 TVM 的扩展模块，帮助和我一样基于TVM开发项目的同学们一点小启发。通过将 TVM 核心库与自定义扩展模块相分离，我们不仅能够更加灵活地管理和组合功能，还避免了直接修改 TVM 源码所带来的种种问题。试想一下，当我们安装基于 TVM 的项目时，不需要单独编译一份 TVM，只需通过 `pip install apache-tvm` 安装最上游版本的 TVM，然后再使用 `pip install xxx` 安装自己的扩展模块。从源码安装时，也无需构建完整的 TVM 代码，只需先用 `pip install apache-tvm` 下载最新的 TVM 发行版，扩展模块的库文件就能自动链接到已安装的 TVM 包中，大家如果都这么做，tvm的体验应该会变得美好一些 (

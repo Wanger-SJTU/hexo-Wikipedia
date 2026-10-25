@@ -17,9 +17,9 @@ source_url: https://zhuanlan.zhihu.com/p/442930482
 
 本篇是通用矩阵乘法（GEMM）优化的第二部分，主要来说说具体的代码，并做一个详细的解析。第一部分主要是讲了一些原理，如果没有看过的读者可以去看看，链接在下面。
 
-[![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_962e5d5cffb7.jpg)深入浅出GPU优化系列：GEMM优化（一）1408 赞同 · 109 评论 文章](https://zhuanlan.zhihu.com/p/435908830)
+[![](/images/collections/0.raw/zhihu/%E4%BC%98%E5%8C%96/asset/img_962e5d5cffb7.jpg)深入浅出GPU优化系列：GEMM优化（一）1408 赞同 · 109 评论 文章](https://zhuanlan.zhihu.com/p/435908830)
 
-这篇文章的主要目的是让读者尽可能地理解GEMM优化的技巧，所以代码尽可能地**通俗易懂**。在兼顾易读性的同时，代码有**不错的性能表现**，在1024-4096的矩阵上平均能够达到**cublas 91%**的性能表现。
+这篇文章的主要目的是让读者尽可能地理解GEMM优化的技巧，所以代码尽可能地<strong>通俗易懂</strong>。在兼顾易读性的同时，代码有<strong>不错的性能表现</strong>，在1024-4096的矩阵上平均能够达到<strong>cublas 91%</strong>的性能表现。
 
 本篇文章主要分四部分进行讲述。第一部分是GEMM算法的概述，先让大家大概地了解代码在做什么事情。第二部分就是详细的代码解析，带着大家一行一行地来看。第三部分是实验结果，主要是和cublas的对比。第四部分是总结。
 
@@ -29,25 +29,25 @@ source_url: https://zhuanlan.zhihu.com/p/442930482
 
 #### 1.1不采用数据预取
 
-首先，我们先明确一下GEMM中的具体参数，也就是[GEMM优化（一）](https://zhuanlan.zhihu.com/p/435908830)中提到的bm、bn、bk、rm、rn。取bm=128,bn=128,bk=8,rm=8,rn=8。当这几个参数选定之后先来直观地感受一下这几个参数意义，假定给了三个矩阵，A，B，C，其维度都是2048×2048。要求解C=A×B。那么我们需要开启（）×（）=**256个block**，每个block里面有（）×（）=**256个线程**，每个线程需要负责计算C矩阵中8×8=64个元素的结果，每个block负责256×64=16384个元素的结果。对这几个数字的计算还不是很清楚的同学可以再看一下GEMM优化（一）来复习一下。**后面章节的所有内容都是默认这几个参数。**
+首先，我们先明确一下GEMM中的具体参数，也就是[GEMM优化（一）](https://zhuanlan.zhihu.com/p/435908830)中提到的bm、bn、bk、rm、rn。取bm=128,bn=128,bk=8,rm=8,rn=8。当这几个参数选定之后先来直观地感受一下这几个参数意义，假定给了三个矩阵，A，B，C，其维度都是2048×2048。要求解C=A×B。那么我们需要开启（）×（）=<strong>256个block</strong>，每个block里面有（）×（）=<strong>256个线程</strong>，每个线程需要负责计算C矩阵中8×8=64个元素的结果，每个block负责256×64=16384个元素的结果。对这几个数字的计算还不是很清楚的同学可以再看一下GEMM优化（一）来复习一下。<strong>后面章节的所有内容都是默认这几个参数。</strong>
 
-明确了上面的参数之后，我们来仔细地观察其中一个block的计算逻辑。对于这个block而言，它需要进行=256次迭代，我们先把这个迭代称为**大迭代**，每一次大迭代都需要把A里面128×8=1024个元素和B里面8×128=1024个元素先放到shared memory中。然后这个block中的256个线程把结果计算出来。计算完之后，再进入下一次大迭代。不断重复该过程，直至这个block负责的16384个元素的结果被求解出。大迭代示意图如下：
+明确了上面的参数之后，我们来仔细地观察其中一个block的计算逻辑。对于这个block而言，它需要进行=256次迭代，我们先把这个迭代称为<strong>大迭代</strong>，每一次大迭代都需要把A里面128×8=1024个元素和B里面8×128=1024个元素先放到shared memory中。然后这个block中的256个线程把结果计算出来。计算完之后，再进入下一次大迭代。不断重复该过程，直至这个block负责的16384个元素的结果被求解出。大迭代示意图如下：
 
-![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_8c34b530cc4e.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BC%98%E5%8C%96/asset/img_8c34b530cc4e.jpg)
 
-随后再具体看看每一个大迭代中，block中的线程的计算逻辑。在进行一个大迭代时，shared memory中有128×8=1024个A矩阵元素和8×128=1024个B矩阵元素。随后，每个线程需要进行8次迭代，我们把这个迭代成为**小迭代**。bk=8，所以有8次小迭代。每一次小迭代中，每个线程需要从shared memory中拿到A矩阵的一小列和B矩阵的一小行，即8个A的元素和8个B的元素。线程将这8+8=16个元素放置在寄存器中。每个线程需要负责8×8=64个元素的计算，一共会产生64条FFMA指令。小迭代示意图如下：
+随后再具体看看每一个大迭代中，block中的线程的计算逻辑。在进行一个大迭代时，shared memory中有128×8=1024个A矩阵元素和8×128=1024个B矩阵元素。随后，每个线程需要进行8次迭代，我们把这个迭代成为<strong>小迭代</strong>。bk=8，所以有8次小迭代。每一次小迭代中，每个线程需要从shared memory中拿到A矩阵的一小列和B矩阵的一小行，即8个A的元素和8个B的元素。线程将这8+8=16个元素放置在寄存器中。每个线程需要负责8×8=64个元素的计算，一共会产生64条FFMA指令。小迭代示意图如下：
 
-![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_f99760180680.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BC%98%E5%8C%96/asset/img_f99760180680.jpg)
 
-以上就是不采用数据预取的GEMM算法计算逻辑。总的来说，**对于一个block而言，有256个大迭代，每个大迭代中又有8个小迭代**。这是后续内容的基础，如果还是不太清楚的话，可以再仔细看看，把这个过程完全搞清楚后，我们再继续接下来的内容，即采用数据预取后的GEMM算法计算逻辑。
+以上就是不采用数据预取的GEMM算法计算逻辑。总的来说，<strong>对于一个block而言，有256个大迭代，每个大迭代中又有8个小迭代</strong>。这是后续内容的基础，如果还是不太清楚的话，可以再仔细看看，把这个过程完全搞清楚后，我们再继续接下来的内容，即采用数据预取后的GEMM算法计算逻辑。
 
 #### 1.2采用数据预取
 
 采用数据预取的GEMM计算流程稍有差异。这个差异主要是体现在两个方面，第一个是开启的shared memory和寄存器数量，第二个是需要提前将一些数据放置到shared memory和寄存器中。下面来仔细说说这个流程。
 
-为了实现数据预取，**需要开启两倍的shared memory和寄存器**。当然也可以将原来shared memory切分成两块，也就是将bm×bk和bk×bn的矩阵一分为二。以A中的小矩阵而言，变成了两个bm×bk/2。然后大迭代次数由原来的256变成了512。很多地方把这个技术叫做**双缓冲**，我感觉跟预取是同一个事情。无非是针对参数bk的大小换不同说法。所以在这里统一叫做数据预取。废话说得有点多。总之，我们还是开启两倍的shared memory和寄存器数据。在一个block中，原来在shared memory中需要存储的数据是bm×bk+bk×bn。现在变成了bm×bk×2+bk×bn×2。在一个thread中，为了存储A和B的数据，原来需要使用rm+rn个寄存器，现在需要使用2×(rm+rn)个寄存器。为了后续方便介绍，我们用**read SM**和**write SM**代表用来读写的两块共享内存，并用**read REG**和**write REG**来表示用来读写的两块寄存器。
+为了实现数据预取，<strong>需要开启两倍的shared memory和寄存器</strong>。当然也可以将原来shared memory切分成两块，也就是将bm×bk和bk×bn的矩阵一分为二。以A中的小矩阵而言，变成了两个bm×bk/2。然后大迭代次数由原来的256变成了512。很多地方把这个技术叫做<strong>双缓冲</strong>，我感觉跟预取是同一个事情。无非是针对参数bk的大小换不同说法。所以在这里统一叫做数据预取。废话说得有点多。总之，我们还是开启两倍的shared memory和寄存器数据。在一个block中，原来在shared memory中需要存储的数据是bm×bk+bk×bn。现在变成了bm×bk×2+bk×bn×2。在一个thread中，为了存储A和B的数据，原来需要使用rm+rn个寄存器，现在需要使用2×(rm+rn)个寄存器。为了后续方便介绍，我们用<strong>read SM</strong>和<strong>write SM</strong>代表用来读写的两块共享内存，并用<strong>read REG</strong>和<strong>write REG</strong>来表示用来读写的两块寄存器。
 
-把共享内存和寄存器的事情说明白之后，我们来看看具体的计算逻辑。在执行256次大迭代之前，我们需要提前将第0次大迭代的数据存到write SM中，并且将第0次小迭代的数据存到write REG中。在完成这一个预取过程之后，我们再来仔细地看看第0个大迭代。需要注意的是，**上一轮大迭代的write SM就是这一轮迭代的read SM。上一轮小迭代的write REG就是这一轮迭代的read REG**。所以在进行第0个大迭代时，上面write SM就变成了read SM。然后我们首先需要将下一轮大迭代的数据存到write SM中。由于从global memory中取数的时钟周期非常多。所以在等待数据取回的同时，对read SM中的数据进行计算。也就是我们在等待的同时，需要开启8次小迭代来进行计算。而小迭代中也存在着读写分离，在对read REG进行计算之前，需要先执行write REG的操作，通过这种方式来**掩盖访存的latency**。所以整体的计算逻辑如下：
+把共享内存和寄存器的事情说明白之后，我们来看看具体的计算逻辑。在执行256次大迭代之前，我们需要提前将第0次大迭代的数据存到write SM中，并且将第0次小迭代的数据存到write REG中。在完成这一个预取过程之后，我们再来仔细地看看第0个大迭代。需要注意的是，<strong>上一轮大迭代的write SM就是这一轮迭代的read SM。上一轮小迭代的write REG就是这一轮迭代的read REG</strong>。所以在进行第0个大迭代时，上面write SM就变成了read SM。然后我们首先需要将下一轮大迭代的数据存到write SM中。由于从global memory中取数的时钟周期非常多。所以在等待数据取回的同时，对read SM中的数据进行计算。也就是我们在等待的同时，需要开启8次小迭代来进行计算。而小迭代中也存在着读写分离，在对read REG进行计算之前，需要先执行write REG的操作，通过这种方式来<strong>掩盖访存的latency</strong>。所以整体的计算逻辑如下：
 
 `for k in 256 big_loop:
 	prefetch next loop data to write_SM
@@ -56,7 +56,7 @@ source_url: https://zhuanlan.zhihu.com/p/442930482
 		prefecth next loop data to write_REG
 		compute in read_REG`
 
-![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_53d55c302b6f.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BC%98%E5%8C%96/asset/img_53d55c302b6f.jpg)
 
 以上就是采用数据预取的GEMM计算流程。其核心思想就是提前将下一轮迭代所需要的数据取出然后放置到更近的存储中，然后通过pipline的形式来减少访存的latency。
 
@@ -66,11 +66,11 @@ source_url: https://zhuanlan.zhihu.com/p/442930482
 
 #### 2.1参数说明
 
-首先需要说明的是**模板参数**，这也是后续**对GEMM性能进行调参的最主要参数**，往往不同的参数选择对最终的GEMM性能影响极大。后面的实验会展示在不同的参数下的性能比较。前三个参数，BLOCK_SIZE_M、BLOCK_SIZE_K、BLOCK_SIZE_N分别代表上文中的**bm、bk、bn**。中间两个参数，THREAD_SIZE_Y、THREAD_SIZE_X代表上文中的**rm、rn**。最后的参数ENABLE_DOUBLE_BUFFER代表是否采用双缓冲，即是否采用数据预取，在这里，我们只讨论采用数据预取，即开启双缓冲的情况。
+首先需要说明的是<strong>模板参数</strong>，这也是后续<strong>对GEMM性能进行调参的最主要参数</strong>，往往不同的参数选择对最终的GEMM性能影响极大。后面的实验会展示在不同的参数下的性能比较。前三个参数，BLOCK_SIZE_M、BLOCK_SIZE_K、BLOCK_SIZE_N分别代表上文中的<strong>bm、bk、bn</strong>。中间两个参数，THREAD_SIZE_Y、THREAD_SIZE_X代表上文中的<strong>rm、rn</strong>。最后的参数ENABLE_DOUBLE_BUFFER代表是否采用双缓冲，即是否采用数据预取，在这里，我们只讨论采用数据预取，即开启双缓冲的情况。
 
 `template `
 
-接下来是**线程类的参数**。整个计算流程需要开启256个block，这256个block按照二维形态排布。而一个block中开启了256个线程，这256个线程按照二维形态进行排布。**bx**代表横向的block坐标，**by**代表竖向的block坐标。而**tx**代表横向的线程坐标，**ty**代表竖向的线程坐标。这是CUDA的基础内容，看不明白的同学可以找一些博客多理解一下，务必搞清楚。**THREAD_X_PER_BLOCK**代表在一个block中有多少个横向的线程，在这里等于16。**THREAD_Y_PER_BLOCK**代表在一个block中有多少个竖向的线程，在这里等于16。**THREAD_NUM_PER_BLOCK**代表在一个block中有多少个线程，在这里等于256。**tid**则代表当前线程在这256个线程中的id号。
+接下来是<strong>线程类的参数</strong>。整个计算流程需要开启256个block，这256个block按照二维形态排布。而一个block中开启了256个线程，这256个线程按照二维形态进行排布。<strong>bx</strong>代表横向的block坐标，<strong>by</strong>代表竖向的block坐标。而<strong>tx</strong>代表横向的线程坐标，<strong>ty</strong>代表竖向的线程坐标。这是CUDA的基础内容，看不明白的同学可以找一些博客多理解一下，务必搞清楚。<strong>THREAD_X_PER_BLOCK</strong>代表在一个block中有多少个横向的线程，在这里等于16。<strong>THREAD_Y_PER_BLOCK</strong>代表在一个block中有多少个竖向的线程，在这里等于16。<strong>THREAD_NUM_PER_BLOCK</strong>代表在一个block中有多少个线程，在这里等于256。<strong>tid</strong>则代表当前线程在这256个线程中的id号。
 
 `    // Block index
     int bx = blockIdx.x;
@@ -88,7 +88,7 @@ source_url: https://zhuanlan.zhihu.com/p/442930482
     // thread id in cur Block
     const int tid = ty * THREAD_X_PER_BLOCK + tx;`
 
-随后说明开启的**shared memory和register**数量。**As**代表为了存储A矩阵中的数据所需要开启的shared memory。在一轮迭代中需要使用bm×bk的数据，为了加快后续的访存，所以需要进行一次转置。并且为了预取，开了两倍的大小，一半用来读数据，一半用来写数据。所以一共需要2×BLOCK_SIZE_K×BLOCK_SIZE_M的空间。而**Bs**同理，但是载入数据时并不需要转置。**accum**用来临时存储C的计算结果。**frag_a**用来加载**As**中的**rm**个数据，为了预取也开启了双倍的空间。**frag_b**同理。**ldg_num_a**稍微有点费解，需要解释一下。为了将global memory的数据块搬运到shared memory中，需要先经过寄存器。也就是说，这个数据搬运过程其实是global memory->register->shared memory。所以为了临时存储A中的数据，需要开启一定量的寄存器。在一次大迭代中，我们总共需要搬运**BLOCK_SIZE_M × BLOCK_SIZE_K**个float数据，然后一个block中有**THREAD_NUM_PER_BLOCK**个线程，采用float4进行取数，即一个线程一次取4个数。则一共需要BLOCK_SIZE_M × BLOCK_SIZE_K/(THREAD_NUM_PER_BLOCK×4)次搬运就能把所有的数搬运到寄存器上。这个搬运次数用**ldg_num_a**表示。为了存储BLOCK_SIZE_M * BLOCK_SIZE_K的数据块，每个线程需要额外开启**ldg_a_reg**个寄存器进行存储。
+随后说明开启的<strong>shared memory和register</strong>数量。<strong>As</strong>代表为了存储A矩阵中的数据所需要开启的shared memory。在一轮迭代中需要使用bm×bk的数据，为了加快后续的访存，所以需要进行一次转置。并且为了预取，开了两倍的大小，一半用来读数据，一半用来写数据。所以一共需要2×BLOCK_SIZE_K×BLOCK_SIZE_M的空间。而<strong>Bs</strong>同理，但是载入数据时并不需要转置。<strong>accum</strong>用来临时存储C的计算结果。<strong>frag_a</strong>用来加载<strong>As</strong>中的<strong>rm</strong>个数据，为了预取也开启了双倍的空间。<strong>frag_b</strong>同理。<strong>ldg_num_a</strong>稍微有点费解，需要解释一下。为了将global memory的数据块搬运到shared memory中，需要先经过寄存器。也就是说，这个数据搬运过程其实是global memory->register->shared memory。所以为了临时存储A中的数据，需要开启一定量的寄存器。在一次大迭代中，我们总共需要搬运<strong>BLOCK_SIZE_M × BLOCK_SIZE_K</strong>个float数据，然后一个block中有<strong>THREAD_NUM_PER_BLOCK</strong>个线程，采用float4进行取数，即一个线程一次取4个数。则一共需要BLOCK_SIZE_M × BLOCK_SIZE_K/(THREAD_NUM_PER_BLOCK×4)次搬运就能把所有的数搬运到寄存器上。这个搬运次数用<strong>ldg_num_a</strong>表示。为了存储BLOCK_SIZE_M * BLOCK_SIZE_K的数据块，每个线程需要额外开启<strong>ldg_a_reg</strong>个寄存器进行存储。
 
 `// shared memory
     __shared__ float As[2][BLOCK_SIZE_K][BLOCK_SIZE_M];
@@ -104,9 +104,9 @@ source_url: https://zhuanlan.zhihu.com/p/442930482
     float ldg_a_reg[4*ldg_num_a];
     float ldg_b_reg[4*ldg_num_b];`
 
-最后需要说明的参数是在global->shared memory阶段用到。我们开启了256个线程，在一次大迭代中需要将128×8个元素搬运到shared memory中。我们用下面的参数说明了这个搬运的逻辑。**A_TILE_THREAD_PER_ROW**代表把搬运一行数据需要使用多少个线程，为了搬运A的一行，需要使用2个线程。**A_TILE_ROW_START**代表在这个维度为bm×bk的数据块中，当前线程需要搬运的数据的竖向坐标，而**A_TILE_COL**代表需要搬运的数据的横向坐标。对3号线程而言，由于它要搬运（1，1）号数据块中的4个元素。所以，A_TILE_ROW_START是1，A_TILE_COL是4。**A_TILE_ROW_STRIDE**代表在进行多次搬运时需要跨越的行。假设As是一块256×8的数据块（这个设置跟前面不一样），256个线程进行搬运，一次搬运4个数，所以要搬运两次。对于3号线程而言，分别搬运下图中的绿色数据块。
+最后需要说明的参数是在global->shared memory阶段用到。我们开启了256个线程，在一次大迭代中需要将128×8个元素搬运到shared memory中。我们用下面的参数说明了这个搬运的逻辑。<strong>A_TILE_THREAD_PER_ROW</strong>代表把搬运一行数据需要使用多少个线程，为了搬运A的一行，需要使用2个线程。<strong>A_TILE_ROW_START</strong>代表在这个维度为bm×bk的数据块中，当前线程需要搬运的数据的竖向坐标，而<strong>A_TILE_COL</strong>代表需要搬运的数据的横向坐标。对3号线程而言，由于它要搬运（1，1）号数据块中的4个元素。所以，A_TILE_ROW_START是1，A_TILE_COL是4。<strong>A_TILE_ROW_STRIDE</strong>代表在进行多次搬运时需要跨越的行。假设As是一块256×8的数据块（这个设置跟前面不一样），256个线程进行搬运，一次搬运4个数，所以要搬运两次。对于3号线程而言，分别搬运下图中的绿色数据块。
 
-![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_aa45cf5258ab.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BC%98%E5%8C%96/asset/img_aa45cf5258ab.jpg)
 
 `// threads number in one row
     const int A_TILE_THREAD_PER_ROW = BLOCK_SIZE_K / 4;
@@ -130,13 +130,13 @@ source_url: https://zhuanlan.zhihu.com/p/442930482
 `#define OFFSET(row, col, ld) ((row) * (ld) + (col))
 #define FETCH_FLOAT4(pointer) (reinterpret_cast(&(pointer))[0])`
 
-迭代前预取数据分为**两个部分**，**第一个部分**是将第一个大迭代的数据从global 预取到shared memroy中。**第二个部分**是将shared memory上的数据预取到寄存器中。先来看看**第一个部分**。这里面分别是将第一个大迭代中需要的A、B数据预取到shared memroy中。对于A矩阵而言，这个for循环代表着block中的线程需要搬运多少次才能将globa中的数据放到shared memory中。由于A需要先进行一次转置，所以先将数据先放置在寄存器中。数据按行取，然后按列存。对于B矩阵而言，数据不用转置，直接按行取，按行存。当然，这个过程中间也要经过寄存器，但是没有写出来的必要了。
+迭代前预取数据分为<strong>两个部分</strong>，<strong>第一个部分</strong>是将第一个大迭代的数据从global 预取到shared memroy中。<strong>第二个部分</strong>是将shared memory上的数据预取到寄存器中。先来看看<strong>第一个部分</strong>。这里面分别是将第一个大迭代中需要的A、B数据预取到shared memroy中。对于A矩阵而言，这个for循环代表着block中的线程需要搬运多少次才能将globa中的数据放到shared memory中。由于A需要先进行一次转置，所以先将数据先放置在寄存器中。数据按行取，然后按列存。对于B矩阵而言，数据不用转置，直接按行取，按行存。当然，这个过程中间也要经过寄存器，但是没有写出来的必要了。
 
 `// load A from global memory to shared memory
     #pragma unroll
     for ( int i = 0 ; i 
 
-然后就是**第二个部分**。将shared memory中的数据存到寄存器中。一共需要取THREAD_SIZE_Y个数，每次取4个数。这个倒没有什么好说的。
+然后就是<strong>第二个部分</strong>。将shared memory中的数据存到寄存器中。一共需要取THREAD_SIZE_Y个数，每次取4个数。这个倒没有什么好说的。
 
 `// load A from shared memory to register
     #pragma unroll
@@ -144,7 +144,7 @@ source_url: https://zhuanlan.zhihu.com/p/442930482
 
 #### 2.3大迭代逻辑
 
-在完成上一步后，我们要进入到**大迭代**中，按照前面的参数，我们需要**进行256个大迭代**。先忽略这个迭代里面的具体代码，看看这个框架，如下所示。首先要说的是**write_stage_idx**这个参数。之前定义了__shared__ float As[2][BLOCK_SIZE_K][BLOCK_SIZE_M]。为了读写分离，给As开了两块空间。如果write_stage_idx=1，就对As[1]空间进行写操作，对As[0]空间进行读操作。因为我们之前将数据预取到了As[0]这个空间里，所以在第一个大迭代时，对As[0]进行读操作，对As[1]进行写操作，所以write_stage_idx=1。再来看看**tile_idx**这个参数，这个代表大迭代时，在A矩阵的列号。每一次大迭代要读取BLOCK_SIZE_K列，直到完成大迭代，即tile_idx=K为止。再看看循环里面的load_stage_idx，这个和write_stage_idx对应，两者保持二进制位相反即可。
+在完成上一步后，我们要进入到<strong>大迭代</strong>中，按照前面的参数，我们需要<strong>进行256个大迭代</strong>。先忽略这个迭代里面的具体代码，看看这个框架，如下所示。首先要说的是<strong>write_stage_idx</strong>这个参数。之前定义了__shared__ float As[2][BLOCK_SIZE_K][BLOCK_SIZE_M]。为了读写分离，给As开了两块空间。如果write_stage_idx=1，就对As[1]空间进行写操作，对As[0]空间进行读操作。因为我们之前将数据预取到了As[0]这个空间里，所以在第一个大迭代时，对As[0]进行读操作，对As[1]进行写操作，所以write_stage_idx=1。再来看看<strong>tile_idx</strong>这个参数，这个代表大迭代时，在A矩阵的列号。每一次大迭代要读取BLOCK_SIZE_K列，直到完成大迭代，即tile_idx=K为止。再看看循环里面的load_stage_idx，这个和write_stage_idx对应，两者保持二进制位相反即可。
 
 `int write_stage_idx = 1;
 int tile_idx = 0;
@@ -162,7 +162,7 @@ do{
 // load next tile from global mem
 if(tile_idx
 
-随后进入到小迭代的计算逻辑之中，**load_stage_idx**参数代表需要从As的哪个空间进行读数。然后是**BLOCK_SIZE_K-1**次小迭代。按照前面的参数配置，即需要在这里完成**7次小迭代**。由于在小迭代中也采用了双缓冲的方式，需要将下一轮小迭代的数据提前写入到寄存器中，这个过程需要对shared memory访存，会稍微慢点。与此同时，线程需要计算更新**THREAD_SIZE_X x THREAD_SIZE_Y=8×8=64**个C矩阵元素的结果。
+随后进入到小迭代的计算逻辑之中，<strong>load_stage_idx</strong>参数代表需要从As的哪个空间进行读数。然后是<strong>BLOCK_SIZE_K-1</strong>次小迭代。按照前面的参数配置，即需要在这里完成<strong>7次小迭代</strong>。由于在小迭代中也采用了双缓冲的方式，需要将下一轮小迭代的数据提前写入到寄存器中，这个过程需要对shared memory访存，会稍微慢点。与此同时，线程需要计算更新<strong>THREAD_SIZE_X x THREAD_SIZE_Y=8×8=64</strong>个C矩阵元素的结果。
 
 `int load_stage_idx = write_stage_idx ^ 1;
 #pragma unroll
@@ -189,11 +189,11 @@ for(int j=0; jBLOCK_SIZE_K-1; ++j){
 }
 `
 
-而后需要将存储在**临时寄存器**的数据搬运到shared memory中。由于A矩阵需要经过一次转置，所以和B矩阵有一点不一样。
+而后需要将存储在<strong>临时寄存器</strong>的数据搬运到shared memory中。由于A矩阵需要经过一次转置，所以和B矩阵有一点不一样。
 
 `if(tile_idx 
 
-最后完成**寄存器的预取**，并将**最后一个小迭代完成**。
+最后完成<strong>寄存器的预取</strong>，并将<strong>最后一个小迭代完成</strong>。
 
 `// load A from shared memory to register
 #pragma unroll
@@ -209,13 +209,13 @@ for (int thread_y = 0; thread_y
 
 ### 三、实验
 
-针对GEMM性能优化，我做了一些实验，主要是想要说明这么两个问题：**1.在不采用任何汇编的情况**下，手写CUDA代码会比cublas差多少？**2.bm、bn、bk、rm、rn等相关参数对GEMM的性能表现**有多大影响？
+针对GEMM性能优化，我做了一些实验，主要是想要说明这么两个问题：<strong>1.在不采用任何汇编的情况</strong>下，手写CUDA代码会比cublas差多少？<strong>2.bm、bn、bk、rm、rn等相关参数对GEMM的性能表现</strong>有多大影响？
 
-**针对第一个问题**，固定了bm、bn、bk、rm、rn的取值为64、8、64、8、8。在V100上测试了不同维度的矩阵（设置M=N=K），并且对比了cublas，其性能结果如下图。横坐标是矩阵维度，纵坐标是GFLOPS。可以在图中看出，在大维度的矩阵下，我们手写的Sgemm大概能达到平均14TFLOPS，**性能表现达到cublas的 91%**。V100的单精度峰值性能是15.7TFLOPS，在**完全不使用汇编，并且有着较好的代码可读性的同时**，我们手写的Sgemm大概能达到**90%**的单精度峰值效率。当然，**如果不考虑代码可读性的话，这个性能可以进一步提高**。github上有一些代码，比如[Yujia Zhai](https://link.zhihu.com/?target=https%3A//github.com/yzhaiustc)同学的[sgemm](https://link.zhihu.com/?target=https%3A//github.com/yzhaiustc/Optimizing-SGEMM-on-NVIDIA-Turing-GPUs)。纯手写的CUDA能够达到cublas的**96.8%**。在这里可以得出结论，其实也是想消除大家的一个误解。**很多人觉得只有写汇编才能写出高性能的代码**。其实并不是这样，**性能优化中最重要的是并行算法和优化策略，单纯地将代码写成汇编并不会有多少性能提升。**
+<strong>针对第一个问题</strong>，固定了bm、bn、bk、rm、rn的取值为64、8、64、8、8。在V100上测试了不同维度的矩阵（设置M=N=K），并且对比了cublas，其性能结果如下图。横坐标是矩阵维度，纵坐标是GFLOPS。可以在图中看出，在大维度的矩阵下，我们手写的Sgemm大概能达到平均14TFLOPS，<strong>性能表现达到cublas的 91%</strong>。V100的单精度峰值性能是15.7TFLOPS，在<strong>完全不使用汇编，并且有着较好的代码可读性的同时</strong>，我们手写的Sgemm大概能达到<strong>90%</strong>的单精度峰值效率。当然，<strong>如果不考虑代码可读性的话，这个性能可以进一步提高</strong>。github上有一些代码，比如[Yujia Zhai](https://link.zhihu.com/?target=https%3A//github.com/yzhaiustc)同学的[sgemm](https://link.zhihu.com/?target=https%3A//github.com/yzhaiustc/Optimizing-SGEMM-on-NVIDIA-Turing-GPUs)。纯手写的CUDA能够达到cublas的<strong>96.8%</strong>。在这里可以得出结论，其实也是想消除大家的一个误解。<strong>很多人觉得只有写汇编才能写出高性能的代码</strong>。其实并不是这样，<strong>性能优化中最重要的是并行算法和优化策略，单纯地将代码写成汇编并不会有多少性能提升。</strong>
 
-![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_59ead940cd15.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BC%98%E5%8C%96/asset/img_59ead940cd15.jpg)
 
-**针对第二个问题**，测试了在不同参数下的GEMM性能表现。主要就是在不同模板参数下的性能表现，结果如下表。其矩阵维度:M=N=K=4096。前五列对应的是参数设置，第六列是在V100的GFLOPS，第七列是和cublas的比较。可以从中看出，不同的参数性能差异巨大，同样的代码，最差的配置是56.2%，最好的配置是93.5%。针对不同shape，也会有不同的参数配置，这个需要大量的调优工作。
+<strong>针对第二个问题</strong>，测试了在不同参数下的GEMM性能表现。主要就是在不同模板参数下的性能表现，结果如下表。其矩阵维度:M=N=K=4096。前五列对应的是参数设置，第六列是在V100的GFLOPS，第七列是和cublas的比较。可以从中看出，不同的参数性能差异巨大，同样的代码，最差的配置是56.2%，最好的配置是93.5%。针对不同shape，也会有不同的参数配置，这个需要大量的调优工作。
 
 bmbkbnrmrnMyGEMMMyGEMM/cublas6416644413036.286.0%6432644411738.877.5%644648813065.686.2%648648813463.988.9%6416648812682.883.7%643264888517.4356.2%128161288813506.889.1%12881288814167.193.5%最后代码链接在下方：
 
@@ -223,9 +223,9 @@ bmbkbnrmrnMyGEMMMyGEMM/cublas6416644413036.286.0%6432644411738.877.5%64464881306
 
 ### 四、总结
 
-在本篇文章里，我们实现了[GEMM（一）](https://zhuanlan.zhihu.com/p/435908830)所列举的三种优化技巧，主要是**做好分块和数据预取**。在不使用任何汇编的情况下，并且保持较好的代码可读性同时，我们手写的Sgemm平均性能能够达到cublas的91%，单精度浮点效率接近90%。文章中对每一行代码进行了详细的解析，希望大家能够通过本文深入地了解GEMM在GPU上的优化技巧。
+在本篇文章里，我们实现了[GEMM（一）](https://zhuanlan.zhihu.com/p/435908830)所列举的三种优化技巧，主要是<strong>做好分块和数据预取</strong>。在不使用任何汇编的情况下，并且保持较好的代码可读性同时，我们手写的Sgemm平均性能能够达到cublas的91%，单精度浮点效率接近90%。文章中对每一行代码进行了详细的解析，希望大家能够通过本文深入地了解GEMM在GPU上的优化技巧。
 
-最后，感谢大家看到这里。**关于GPU优化系列，还会持续更新**。将在下一篇文章，即GEMM（三）聊一聊怎么通过汇编器对GEMM进行最后的调优，以达到极致的性能。文章链接见下方。
+最后，感谢大家看到这里。<strong>关于GPU优化系列，还会持续更新</strong>。将在下一篇文章，即GEMM（三）聊一聊怎么通过汇编器对GEMM进行最后的调优，以达到极致的性能。文章链接见下方。
 
 [](https://zhuanlan.zhihu.com/p/481600052)
 

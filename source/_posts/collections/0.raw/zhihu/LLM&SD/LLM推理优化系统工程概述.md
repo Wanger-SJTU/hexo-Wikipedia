@@ -17,7 +17,7 @@ source_url: https://zhuanlan.zhihu.com/p/680635901
 
 最近看了CMU Catalyst团队23年底出的一篇总结LLM推理加速的综述文章[Towards Efficient Generative Large Language Model Serving: A Survey from Algorithms to Systems](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2312.15234)，覆盖面还是挺广的，文章从算法和系统工程两个大的视角出发对业界现有工作进行了归纳和总结，最后还提出了对未来发展方向的几点预测。本文主要对系统工程和市面上已有的推理框架进行一些讲解，算是查漏补缺吧，算法部分可以看[Hsword：大模型如何高效部署？CMU最新万字综述纵览LLM推理MLSys优化技术](https://zhuanlan.zhihu.com/p/677635306)这篇文章，讲的很详细了。
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_0821dc912210.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_0821dc912210.jpg)
 
 推理加速技术分类**
 
@@ -30,7 +30,7 @@ source_url: https://zhuanlan.zhihu.com/p/680635901
 量化已经不是什么新技术了，通过使用更少的位表示数值来显著地减少内存消耗，加速在硬件平台上的推理过程。传统的量化方法分为Quantization-Aware Training (QAT) 和 Post-Training Quantization (PTQ)，可以简单通过是否需要重新训练来进行区分，经过这些年的发展围绕QAT和PTQ也衍生了很多经典算法，如下图所示，而在LLM时代，PTQ和QAT又焕发出新的活力，成为模型压缩的一大重要技术。
  
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_19f4fa5d04ab.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_19f4fa5d04ab.jpg)
 
 PTQ主要是对模型权重值和激活值进行INT8/INT4量化，[A Comprehensive Study on Post-Training Quantization for Large Language Models](https://link.zhihu.com/?target=https%3A//arxiv.org/pdf/2303.08302v2.pdf)这篇文章是LLM PTQ的一篇综述文章，介绍对比了RTN、GPTQ、ZQ-Global、ZQ-Local这些算法，其中[GPTQ](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2210.17323)、[SmoothQuant](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2211.10438)算法影响力都不小，都可以展开看一看。因为权重和激活值的不同属性有多种精度组合，如W8A16(权重INT8+激活值FP16或BF16)、W4A16、W8A8、W4A4，分别有很多文章来介绍这些类型的量化技术。当然这也是需要硬件来支持，N厂的Ampere架构支持了INT8和INT4的tensor core，Hopper架构支持了FP8的tensor core， 其实也进一步说明了这方面的需求非常旺盛，得到了硬件厂商的肯定。
 
@@ -48,7 +48,7 @@ QAT一般效果是更好的，但是它需要重训模型所以成本会大一�
 
 此外不同的并行性技术会引入不同程度的通信开销和计算延迟。为了实现最佳性能和资源利用率，分布式训练中的自动并行性已受到广泛研究，像 AlpaServe, FlexFlow-Serve, SpotServe已经实现了一些自动化策略，有时间可以去实践一下。
 
-**非集中式推理**
+<strong>非集中式推理</strong>
 
 非集中式处理方法主要是利用一些非中心化的节点来处理数据进行推理，这个方法面向的场景是计算资源是物理隔离的通过Internet互联的，可以充分利用一些消费级GPU的计算资源，同样也有很多挑战，比如设备的异构特性、有限的计算存储容量、低带宽的网络、容错性、隐私保护等等，目前业界比较成熟的这类系统就是[Petals](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2209.01188)。
 
@@ -72,25 +72,25 @@ QAT一般效果是更好的，但是它需要重训模型所以成本会大一�
 
 内核融合是一个广泛使用的内核优化手段，可以减少内核launch和访存开销，一些推理引擎像FasterTransformer、LightSeq、ByteTransformer都用到了内核融合的技术。常规做法是把相同shape的GEMM进行融合、addBias和其他非GEMM层(残差、LN、Relu)融合、通过CUTLASS将GEMM和一些激活层融合等等。
 
-**定制Attention**
+<strong>定制Attention</strong>
 
 由于attention是transformer-base模型中核心模块，会有很多对它进行优化的成果，比如像融合的MHA kernel。LLM 推理分为prefill和decode阶段，prefill阶段并行地接收prompt，decode阶段逐步迭代生成token。针对prefill阶段，[xFormers](https://link.zhihu.com/?target=https%3A//github.com/facebookresearch/xformers)沿用online softmax思想使用CUTLASS来进行整个attention计算。而decode阶段主流的加速方法就是基于KVCache的FlashDecoding和[FlashDecoding++](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2311.01282)，他们都起到提升GPU利用率、降低访存的作用。
 
-**采样优化**
+<strong>采样优化</strong>
 
 采样算法的选择会极大地影响LLM的生成质量。并行采样技术已被广泛使用，如beamSearch，通过在每次迭代中维护固定数量的最高得分的序列，解码近似最优序列。各种随机采样技术（例如，top-k，top-p ，温度控制）也层出不穷，通过引入随机性以获得多样化的输出。然而，它们仍然面临着一些实际系统挑战。一个是由冗余的KVCache增加的内存压力，另一个是由于LLM巨大词汇量引起的采样效率问题。[LightSeq](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2010.13887)提供了一种高效的分层实现，将词汇表分成 组，使用几个GPU指令在每个组内检索候选者，然后对这些候选者进行重新排名以获得前 个token。
 
-**变长序列优化**
+<strong>变长序列优化</strong>
 
 LLM推理的另一个独特挑战在于，序列的输入长度和输出长度都可以变化，而后者是事先未知的。通常使用批处理的方式来处理请求，然而当一批序列具有可变的输入长度时，还需要使用Padding填充手段，而这会浪费计算和内存资源。为了缓解这些低效情况，[Packing](https://link.zhihu.com/?target=https%3A//github.com/bytedance/effective_transformer)是常用的手段。Packing 将序列存储在连续的内存空间中，无需填充，由于attention计算无法通过连续空间进行，所以在注意力计算之前需要unPacking，在[ByteTransformer](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2210.03052)中有关于Packing和unPacking的详细应用。
 
-**自动编译优化**
+<strong>自动编译优化</strong>
 
 大多数现有的LLM推理系统使用NVIDIA 提供的函数库作为其后端，例如cuBLAS、cuDNN和CUTLASS，这些库提供了优化的内核实现。为了进一步提高推理效率，他们还针对NVIDIA GPU上的特定LLM操作（例如，注意力）手动优化内核。尽管有这些工作，使用自动化DNN编译器的趋势仍然存在，例如TVM（即Unity、Relax和TensorIR）、MLIR、JAX、OpenAI Triton、TASO 和TorchInductor。编译方法可以帮助发现潜在的更高效的运算符实现，更重要的是可以促进适应其他硬件平台，包括移动设备和边缘设备、CPU、DL加速器和其他类型的GPU（例如，AMD GPU和Apple M2 Ultra）。
 
 ### 推理框架
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_1ac0a47a3cfd.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_1ac0a47a3cfd.jpg)
 
 从并行计算支持方法、迭代粒度、attention kernel实现方案和优先级支持几个维度对常见推理框架进行了对比。然后每家因为出生不同都有一些自身特性。
 

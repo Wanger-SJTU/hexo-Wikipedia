@@ -69,7 +69,7 @@ $m_t=\mu*m_{t-1}+g_t$
 
 \Delta{\theta_t}=-\eta*m_t所以，加上nesterov项后，梯度在大的跳跃后，进行计算对当前梯度进行校正。如下图： 
 
-![](/images/collections/0.raw/zhihu/%25E5%25AD%25A6%25E4%25B9%25A0/asset/img_79aaf6e55181.png)
+![](/images/collections/0.raw/zhihu/%E5%AD%A6%E4%B9%A0/asset/img_79aaf6e55181.png)
 
  momentum首先计算一个梯度(短的蓝色向量)，然后在加速更新梯度的方向进行一个大的跳跃(长的蓝色向量)，nesterov项首先在之前加速的梯度方向进行一个大的跳跃(棕色向量)，计算梯度然后进行校正(绿色梯向量) 
 
@@ -88,7 +88,7 @@ $$\Delta{\theta_t}=-\frac{\eta}{\sqrt{n_t+\epsilon}}*g_t此处，对g_t从1到t�
 - 前期g_t较小的时候， regularizer较大，能够放大梯度 
 - 后期g_t较大的时候，regularizer较小，能够约束梯度 
 - 适合处理稀疏梯度 
-**缺点：**
+<strong>缺点：</strong>
 
 - 由公式可以看出，仍依赖于人工设置一个全局学习率 
 - \eta设置过大的话，会使regularizer过于敏感，对梯度的调节太大 
@@ -192,11 +192,11 @@ $$\hat{n_t}=\frac{n_t}{1-\nu^t}\bar{m_t}=(1-\mu_t)*\hat{g_t}+\mu_{t+1}*\hat{m_t}
 
  最后展示两张可厉害的图，一切尽在图中啊，上面的都没啥用了... ... 
 
-![](/images/collections/0.raw/zhihu/%25E5%25AD%25A6%25E4%25B9%25A0/asset/img_1b28a615b72c.jpg)
+![](/images/collections/0.raw/zhihu/%E5%AD%A6%E4%B9%A0/asset/img_1b28a615b72c.jpg)
 
 损失平面等高线 
 
-![](/images/collections/0.raw/zhihu/%25E5%25AD%25A6%25E4%25B9%25A0/asset/img_e6a2ff37c1ba.jpg)
+![](/images/collections/0.raw/zhihu/%E5%AD%A6%E4%B9%A0/asset/img_e6a2ff37c1ba.jpg)
 
 在鞍点处的比较
 

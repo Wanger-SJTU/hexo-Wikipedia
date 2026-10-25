@@ -25,15 +25,15 @@ source_url: https://zhuanlan.zhihu.com/p/2026410347519583363
 
 最经典最全面的RDMA专栏毋庸置疑
 
-[![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_795177c96010.jpg)RDMA杂谈Savir 的专栏26 篇内容 · 6610 赞同 · 1453 订阅](https://www.zhihu.com/column/c_1231181516811390976)
+[![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_795177c96010.jpg)RDMA杂谈Savir 的专栏26 篇内容 · 6610 赞同 · 1453 订阅](https://www.zhihu.com/column/c_1231181516811390976)
 
   涵盖RDMA/CPU/分布式，帮助理解RDMA具体应用场景
 
-[![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_43e03fe87da5.jpg)RDMA & 高速网络进击的Bruce 的专栏7 篇内容 · 1061 赞同 · 135 订阅](https://www.zhihu.com/column/c_1710765963216084992)
+[![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_43e03fe87da5.jpg)RDMA & 高速网络进击的Bruce 的专栏7 篇内容 · 1061 赞同 · 135 订阅](https://www.zhihu.com/column/c_1710765963216084992)
 
 讨论各类技术的设计思想，这里面对RDMA context的存在理由的讨论文章我很喜欢
 
-[![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_b0847ef338e2.jpg)设计思想fan wang 的专栏24 篇内容 · 470 赞同 · 29 订阅](https://www.zhihu.com/column/c_1763644615318777857)
+[![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_b0847ef338e2.jpg)设计思想fan wang 的专栏24 篇内容 · 470 赞同 · 29 订阅](https://www.zhihu.com/column/c_1763644615318777857)
 
 内容丰富，更新快，适合追踪技术热点
 
@@ -300,7 +300,7 @@ client （内存访问端）代码
 
 到这里，我们再用一张图总结使用 RDMA 和使用 TCP/IP 进行跨主机内存访问的程序实现步骤
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_218c835cdec1.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_218c835cdec1.jpg)
 
 从上图中可以看到，RDMA 与TCP/IP 的不同主要体现在
 
@@ -323,7 +323,7 @@ client （内存访问端）代码
 
 下图展示一次数据传输中（比如 client 调用 send/ibv_post_send 发送数据，server 调用 recv/ibv_post_recv 接收数据），负责处理数据的软件，数据的物理位置搬移和过程中具体负责搬移数据的物理主体，来看一下RDMA使用内核旁路/零拷贝/CPU卸载和直接内存访问四项核心技术，具体解决了哪些问题
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_fcb5678f751b.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_fcb5678f751b.jpg)
 
 - 零拷贝/内核旁路优势体现：
 TCP/IP 传递数据采用系统调用 send/recv，其相比于使用零拷贝的 ibv_post_send，代价主要体现在上下文切换，这包含了
@@ -335,7 +335,7 @@ TCP/IP 传递数据采用系统调用 send/recv，其相比于使用零拷贝的
 
 [](https://zhuanlan.zhihu.com/p/2025137203928396831)
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_e02a3d79bbd1.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_e02a3d79bbd1.jpg)
 
 而 RDMA 调用 ibv_post_send 时，是完全不涉及上下文切换，我们以使用 mlx5 网卡的 rdma 为例，当调用 ibv_post_send 时，最终 driver 会调用 atomic_store_explicit函数（用户态函数），通过 MMIO 向网卡中的寄存器写数据（即敲 doorbell），网卡收到 doorbell 后，网卡 RDMA 会从主机内存中搬移数据出来。从上面对比图可以看到，这个过程完全不涉及上下文切换和数据搬移，因此CPU资源也大幅度减少,相应的处理时间差距接近一个数量级
 

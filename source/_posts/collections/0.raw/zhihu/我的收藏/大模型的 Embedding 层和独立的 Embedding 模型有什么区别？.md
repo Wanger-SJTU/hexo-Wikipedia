@@ -19,9 +19,9 @@ source_url: https://www.zhihu.com/question/663835334/answer/1937600628709896563
 
 因为提出这个问题最好的时机是2020年，那个时候OAI路线Decoder-only的「大模型」才发展到GPT-2，和Encoder-Only 以及Encoder-Decoder模型相比，在参数上还没有天壤之别。这个时候问区别会更加的有意义，因为两者的Embedding用途确实有显著的不同；而在2025年这个时间节点上，即便是RAG也基本上不再使用Word2Vec，FastText和GloVe这样的词向量模型了，专门用来生产embedding的模型也已经被各种大模型屠榜了。
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_60e5745f7294.jpg)![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_96e87be754a0.webp)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_60e5745f7294.jpg)![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_96e87be754a0.webp)
 
-不过我也无意用上面这个表格直接论证问题不成立回答完毕，因为我知道题主想问什么，**那就是专门用来生产embedding的模型，是不是和直接用来predict next token的模型有区别？如果有，是什么区别？**
+不过我也无意用上面这个表格直接论证问题不成立回答完毕，因为我知道题主想问什么，<strong>那就是专门用来生产embedding的模型，是不是和直接用来predict next token的模型有区别？如果有，是什么区别？</strong>
 
 因为embedding是人类无法直接理解的，所以专门用来生产embedding的模型其产出本来也不是给人看的，一般是用来计算向量之间相似度的。那么这个需求就意味着模型需要在两个维度上提高：
 
@@ -32,17 +32,17 @@ source_url: https://www.zhihu.com/question/663835334/answer/1937600628709896563
 
 在小参数时代，Encoder的双向自注意力是比Decoder的单向自注意力在对句子的表达上有显著优势的。从下面这个图就能看出来，BERT 110M个参数的效果，就超过了 GPT 1.3B 个参数的效果。表面上看双向注意力的CLS对应位置的输出（第一个token）和单向注意力的SEP对应位置的输出（最后一个token）都浓缩了所有的信息，但是效果明显是第一个要好的多。
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_268defdbbab5.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_268defdbbab5.jpg)
 
 这也给了当时Google坚守Encoder的信心，因为Google是做搜索的，搜索的后台有大量需要进行相似度计算匹配的东西。从Google的角度，显然Encoder是更像智能的未来。
 
 但是后来，单向注意力越做越大，到现在已经基本上对冲掉了同样参数下双向模型更高效的优势。因为双向模型要做大，比单向要难很多。双向注意力矩阵在多次相乘之后，就很难满足满秩条件：
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_94d99fba06d5.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_94d99fba06d5.jpg)
 
 每次注意力机制都是进行一个加权，做太多次就会导致每个词对其他词的注意力权重差不多。但是单向注意力因为有因果掩码(causal mask)，是一个三角矩阵，那么无论怎么乘，都是满秩的矩阵。
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_6bcacff0ac84.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_6bcacff0ac84.jpg)
 
 三十年河东，三十年河西，当年的障碍成为了如今的优势。
 
@@ -70,11 +70,11 @@ source_url: https://www.zhihu.com/question/663835334/answer/1937600628709896563
 
 还没有人送礼物，鼓励一下作者吧
 
-[所属专栏 · 2026-02-12 00:52 更新](https://zhuanlan.zhihu.com/c_1897361938603825066)[![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_d05fb41d1e7a.jpg)人工智能和因果推断
+[所属专栏 · 2026-02-12 00:52 更新](https://zhuanlan.zhihu.com/c_1897361938603825066)[![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_d05fb41d1e7a.jpg)人工智能和因果推断
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_c33504836986.jpg)司马懿
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_c33504836986.jpg)司马懿
 
-​![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_95331d4912d4.png)新知答主
+​![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_95331d4912d4.png)新知答主
 
 13 篇内容 · 6588 赞同
 

@@ -492,7 +492,7 @@ memory.swap.max
 
 high，low，max，min 的关系：
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_9aa29d06ec0b.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_9aa29d06ec0b.jpg)
 
 - memory.stat：只读，存在非 root cgroup 中。包含不同类型内存的详细信息，以及内存管理系统的状态和事件信息。单位都是 bytes。如果某个条目没有 node 级别的统计，使用 npn（non-per-node）标记，不会出现在`memory.numa_stat`文件中。
 
@@ -714,7 +714,7 @@ PID: 746644
 
 进程由于触发 OOM 被 kill：
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_d460dc04167e.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_d460dc04167e.jpg)
 
 Kernel 日志：
 

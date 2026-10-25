@@ -31,11 +31,11 @@ source_url: https://zhuanlan.zhihu.com/p/24638786450
 
 cache的出现引入了coherency的问题，主要包括两种解决方案：基于广播和基于directory。下图是基于shared bus和广播实现的L2 LLC，当在L1 miss后则向总线发起请求，此时所有core和L2都可以监听总线从而解决一致性问题。
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_b1ac2485b556.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_b1ac2485b556.jpg)
 
 对于core数较少的情况，上述的方案可基本满足，随着core继续增多，则需要使用directory协议来减少Bus上的流量。如下图所示，其需要一个更加灵活的非广播互联总线，同时在L2处增加Directory来记录每个core中cache line的状态，在适当的时候由L2发起snoop来无效掉对应的cache line。
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_f87cb6c02b11.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_f87cb6c02b11.jpg)
 
 Shared cache的优势：
 
@@ -51,25 +51,25 @@ Shared cache的劣势：
 
 此时每个core将携带私有的unified L2 Cache，同时将一致性问题下移到下一级Cache处理。其优缺点也很明显，这里不再赘述。以下图private L2 Cache和directory 一致性协议为例，重点说明这种情况下的一致性问题解决需要更长的时间，一方面是因为增加了L2进行look-up的延迟，另一方面是L2的容量更大，也导致其Directory需要查找的范围更大，从而增加延迟。
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_c6acce0d8c5c.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_c6acce0d8c5c.jpg)
 
 具体的Shared Cache和Private Cache对比如下表。
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_16f13835cc58.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_16f13835cc58.jpg)
 
 另外，未来的处理器形态还可能结合Private cache和Shared cache，如下图。现在主流的CPU和GPU已经都是用了类似的cache hierarchy。
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_da94c9236c5b.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_da94c9236c5b.jpg)
 
 #### 1.2 Centralized vs. Distributed Shared Caches
 
 Centralized Cache的可以包含多个Bnak，且其controller的功能也分布在各个Bank，但它们在Chip上都占据连续的面积。其layout示意图如下图，因为Bank之间距离相对比较近，所以跨bank间的数据移动相对简单。
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_81049c77e49f.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_81049c77e49f.jpg)
 
 另一种扩展形式则是Distributed Shared L2 Cache，尽管L2仍在逻辑上共享资源，但是在物理上被分布在不同的Tile。这种组织形式可以允许仅设计单个Tile并例化多份，具有更低的设计/验证成本。下图则显示了两种不同的物理布局，右边是3D结构。
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_33053f539604.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_33053f539604.jpg)
 
 在中等规模core时，centralized L2是一个合理的选择，但是随着core的增加，散热和互联限制centralised cache的使用。此时使用distributed cache可以帮助core能更快的访问L2并降低互联的负担，但需要特别注意数据管理。
 
@@ -77,7 +77,7 @@ Centralized Cache的可以包含多个Bnak，且其controller的功能也分布�
 
 目前为止的大多数设计都采用Uniform Cache Access(UCA)架构来简化对应的指令调度逻辑，但是随着Cache容量和Bank数量增加，Non-Uniform Cache Access(NUCA)是一个趋势。 UCA通常使用H-tree拓扑来连接Bank到controller，如下图。
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_ad5f4f127cd2.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_ad5f4f127cd2.jpg)
 
 对于L2这类的LLC来说，core的pipeline调度不需要利用预期的L2访问Latency，所以其可以是NUCA架构，而提供部分数据以更低Latency的代价是更加复杂的network，可能是mesh类，且需要复杂的router设计和路由算法。一个示例的NUCA架构如下图。需要重点考虑的问题包括：
 
@@ -88,7 +88,7 @@ Centralized Cache的可以包含多个Bnak，且其controller的功能也分布�
 - Static-NUCA(S-NUCA)：不支持cache line的移动
 - Dynamic-NUCA(D-NUCA)：支持cache line的移动
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_08f4a865e273.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_08f4a865e273.jpg)
 
 #### 1.4 Inclusion
 
@@ -194,7 +194,7 @@ Private cache可以使一个core最常使用的数据位于其距离最近的cac
 
 简单cache的组织方式如下图所示，包含一个单独的Tag Array和一个Data Array，根据输入的地址进行译码激活一整个line，经放大器放大后将Tag中的值与地址再进行比较以确定具体命中哪一部分，从而确认是都hit以及读/写数据。其中cache的访问延迟主要是decoder、wordline、bitline和output bus组成。
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_ce35fde3f53c.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_ce35fde3f53c.jpg)
 
 4.1.2 Cache互联
 
@@ -238,19 +238,19 @@ Private cache可以使一个core最常使用的数据位于其距离最近的cac
 
 早期的研究都假设了简单的Noc模型，认为每个router只会引入1 cycle延迟并忽略noc的功耗，这时的结果显示将cache分为64-256bank是最优的。随着意识到noc的重要性，考虑noc的延时和功耗后普遍认为分为少数几个bank是更优的，下图是一个trade-off。
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_ced25fd0474b.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_ced25fd0474b.jpg)
 
  使用CATI6.5 对128MB L2-cache和16个core的仿真，结果是32bank最优，下边两图分别是此时的hit latency和功耗饼状图。  
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_e20c1d91af65.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_e20c1d91af65.jpg)
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_3a6a03cc6276.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_3a6a03cc6276.jpg)
 
 4.2.2 UCA Caches
 
 下图是UCA架构使用CACTI在32nm节点下不同组件的功耗占比，可以看到H-tree网路是最大的瓶颈。
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_9c380a24c124.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_9c380a24c124.jpg)
 
 #### 4.3 用于大型Cache的网络架构创新
 
@@ -285,4 +285,4 @@ soft error指由于粒子撞击等造成错误，hard error指由于V_{th}衰减
 - 3T1D RAM，在DRAM基础上，改善速度问题
 - embedded DRAM，IBM提出。
 - 最后是一些RAM技术的性能对比
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_f93075571827.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_f93075571827.jpg)

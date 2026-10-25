@@ -84,7 +84,7 @@ PCIE子系统
 - Protocol
 - Network
 - Link
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_044e93f6b4e7.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_044e93f6b4e7.jpg)
 
  Layers of the CHI architecture> Communication granularity：通讯颗粒度
 Transaction：传输
@@ -129,29 +129,29 @@ Flit：切片
 
 #### 1.2拓扑结构**
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_6cc924465775.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_6cc924465775.jpg)
 
 CHI-Topology
 
-- **CROSSBAR**，这种结构相对简单，互连部分延时小，多用于数量不多的组件互连，缺点是如果互连组件太多，这种结构的内部走线会非常多，不利于物理实现，比较常见的crossbar类型IP如ARM公司的NIC-400；从图可以看出 CROSSBAR是没有ROUNTER的.
-- **RING**，折中考虑了互连组件数量和延时，有利于中等规模的SoC设计，比较常见的ring类型IP如ARM公司的CCN；
-- **MESH**，这种拓朴结构可以提供更大的带宽，而且是可以模块化，通过增加网格的行或列来增加更多的节点，ARM的CMN-600就是基于mesh的互连IP。
+- <strong>CROSSBAR</strong>，这种结构相对简单，互连部分延时小，多用于数量不多的组件互连，缺点是如果互连组件太多，这种结构的内部走线会非常多，不利于物理实现，比较常见的crossbar类型IP如ARM公司的NIC-400；从图可以看出 CROSSBAR是没有ROUNTER的.
+- <strong>RING</strong>，折中考虑了互连组件数量和延时，有利于中等规模的SoC设计，比较常见的ring类型IP如ARM公司的CCN；
+- <strong>MESH</strong>，这种拓朴结构可以提供更大的带宽，而且是可以模块化，通过增加网格的行或列来增加更多的节点，ARM的CMN-600就是基于mesh的互连IP。
 
 #### 1.3 术语解释
 
-**Master/Requester**:读写请求发起方，即主端
+<strong>Master/Requester</strong>:读写请求发起方，即主端
 
-**Subordinate/Slave**:读写请求接收方，即从端
+<strong>Subordinate/Slave</strong>:读写请求接收方，即从端
 
-**Transaction：**一个单独的操作，比如读或写内存。
+<strong>Transaction：</strong>一个单独的操作，比如读或写内存。
 
-**Message：**协议层术语，用于定义两个组件之间交换信息的粒度，如Request/Data response/Snoop request，一个数据响应message可能由多个packets组成。
+<strong>Message：</strong>协议层术语，用于定义两个组件之间交换信息的粒度，如Request/Data response/Snoop request，一个数据响应message可能由多个packets组成。
 
-**Packet：**是互连端点间的传输粒度，一个message可能由一个或多个packets组成，每个packet包含有源和目的节点的ID来保证在interconnect上独立路由。
+<strong>Packet：</strong>是互连端点间的传输粒度，一个message可能由一个或多个packets组成，每个packet包含有源和目的节点的ID来保证在interconnect上独立路由。
 
-**Flit**是最小流控单位，一个packet可以由一个或多个flits组成，对于同一个packet的所有flits在互连（interconnect，简称ICN）上传输必须遵循同样的路径。
+<strong>Flit</strong>是最小流控单位，一个packet可以由一个或多个flits组成，对于同一个packet的所有flits在互连（interconnect，简称ICN）上传输必须遵循同样的路径。
 
-**Phit**是物理层传输单位，一个flit可以由一个或多个phits组成。phit定义为两相邻网络设备之间的一个传输。
+<strong>Phit</strong>是物理层传输单位，一个flit可以由一个或多个phits组成。phit定义为两相邻网络设备之间的一个传输。
 
 **待补充
 #### 1.4 传输分类
@@ -247,7 +247,7 @@ Snoop
 
 #### 1.4.2传输种类列表
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_dfd681c78a91.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_dfd681c78a91.jpg)
 
 #### 1.5 一致性总览（Coherence overview）
 
@@ -257,7 +257,7 @@ Snoop
 - 如果两个组件往相同地址的memory发起写操作，这些操作可以被所有的组件以相同的顺序观察到，那么这个memory区域就是一致性的；
 图1所示为包含三个master组件的一致性系统，每个master组件包含一份loacl cache和一致性协议节点。CHI协议允许memory数据存放在一处或多处master cache当中。
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_eb84a4c6f3c3.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_eb84a4c6f3c3.jpg)
 
 coherence协议确保所有 master 在任何给定地址位置都观察到正确的数据值，它强制执行在任何位置出现 stores 时，不存在超过一个副本(*注：即MESI中的M，或者说MOESI中的O，这也是为什么cacheline中没有O时，代表着cache内的数据一定与主存一致，因为没人修改过它或者说修改已被推入主存*)。每次存储到某个位置后，其他主机可以为自己的本地缓存获得数据的新副本，从而允许存在多个缓存副本。After each store to a location, other masters can obtain a new copy of the data for their own local cache, to permit multiple cached copies to exist
 
@@ -273,9 +273,9 @@ CHI协议允许（不强求）主存的数据不是实时更新，只有在所�
 
 为了使得一个组件在访问cache line时，可以确定是否该执行某操作，CHI协议定义了cache state。每个cache state基于如下的cache line特性：
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_123886099c67.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_123886099c67.jpg)
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_443ea24d675c.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_443ea24d675c.jpg)
 
 > 协议节点访问cacheline后所需要执行的动作是根据cacheline state决定的，CHI协议规定的每个cacheline状态如下，一个cache允许只实现如下这些cache state的子集：
     I：Invalid，该cache line不存在于当前cache中(present in the cache)，即cache中没有目标数据使cacheline有效；
@@ -296,9 +296,9 @@ UDP态的获得：UDP态获得的前提是当前cacheline为UCE态，然后Reque
 
 先考虑cacheline是否是valid or invalid的，再考虑是否是unique or shared，之后再分别考虑dirty or clean;
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_c55be9b5460d.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_c55be9b5460d.jpg)
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_599fc181c173.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_599fc181c173.jpg)
 
 不过要特殊注意理解UCE和UDP；**
 
@@ -308,25 +308,25 @@ UDP态的获得：UDP态获得的前提是当前cacheline为UCE态，然后Reque
 
 RN**（Request Node）产生协议transaction给互连，包含读和写。
 
-- **RN-F**，（Fully coherent Request Node，全一致性请求节点）：包含硬件一致性cache；允许产生所有协议定义的transactions；支持所有的snoop transactions。
-- **RN-D**，（IO coherent Request Node with DVM support，支持DVM的IO一致性请求节点）：不包含硬件一致性cache；可以接收DVM操作；可以产生协议定义的部分transactions。
-- **RN-I**，（IO coherent Request Node，IO一致性请求节点）：不包含硬件一致性cache；不能接受DVM操作；可以产生协议定义的部分transactions；不要求具有snoop功能。
+- <strong>RN-F</strong>，（Fully coherent Request Node，全一致性请求节点）：包含硬件一致性cache；允许产生所有协议定义的transactions；支持所有的snoop transactions。
+- <strong>RN-D</strong>，（IO coherent Request Node with DVM support，支持DVM的IO一致性请求节点）：不包含硬件一致性cache；可以接收DVM操作；可以产生协议定义的部分transactions。
+- <strong>RN-I</strong>，（IO coherent Request Node，IO一致性请求节点）：不包含硬件一致性cache；不能接受DVM操作；可以产生协议定义的部分transactions；不要求具有snoop功能。
 **
 
 HN** (Home Node)用于组件内接收来自RN的协议transaction，（完成相应的一致性操作并返回一个响应）
 
-- **HN-F**，（Fully coherent Home Node，全一致性主节点）：用于接收除了DVM操作所有的请求操作：包括一个PoC（Point of Coherence）点，通过监听RN-Fs，管理各Master一致性，完成所有的snoop响应后，发送一个响应给发出请求的RN；最好是一个PoS（Point of Serialization）点，用于管理多个memory请求的顺序。可能包含目录或监听过滤，以此来减少冗余的snoop请求。
-- **HN-I**，（Non-coherent Home Node，非一致性主节点）：处理有限的一部分协议定义的Request：不包含PoC点，也不具备处理snoop请求；最好是一个PoS点，管理访问IO 子系统的请求顺序。
-- **MN**，（Miscellaneous Node，混合节点）：用于接收来自RN发送的DVM操作，完成相应的操作，并返回一个响应。
+- <strong>HN-F</strong>，（Fully coherent Home Node，全一致性主节点）：用于接收除了DVM操作所有的请求操作：包括一个PoC（Point of Coherence）点，通过监听RN-Fs，管理各Master一致性，完成所有的snoop响应后，发送一个响应给发出请求的RN；最好是一个PoS（Point of Serialization）点，用于管理多个memory请求的顺序。可能包含目录或监听过滤，以此来减少冗余的snoop请求。
+- <strong>HN-I</strong>，（Non-coherent Home Node，非一致性主节点）：处理有限的一部分协议定义的Request：不包含PoC点，也不具备处理snoop请求；最好是一个PoS点，管理访问IO 子系统的请求顺序。
+- <strong>MN</strong>，（Miscellaneous Node，混合节点）：用于接收来自RN发送的DVM操作，完成相应的操作，并返回一个响应。
 **
 
 SN**（Subordinate Node）用于接收来自HN的请求，完成相应的操作,并返回一个响应。
 
-- **SN-F**：(Subordinate/slave Node type FOR Normal memory)（还记得ARM中的normal memory是啥不？）的从节点，可以处理Non-snoop读写请求、atomic请求、以及这些命令的其它形式、CMO（Cache Maintenance Operation）请求。
-- **SN-I**：Subordinate/slave Node type For peripheral or normal memory的从节点，可以处理Non-snoop读写、atomic操作、以及这些命令的其它形式、CMO请求。
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_eff9bc839f71.jpg)
+- <strong>SN-F</strong>：(Subordinate/slave Node type FOR Normal memory)（还记得ARM中的normal memory是啥不？）的从节点，可以处理Non-snoop读写请求、atomic请求、以及这些命令的其它形式、CMO（Cache Maintenance Operation）请求。
+- <strong>SN-I</strong>：Subordinate/slave Node type For peripheral or normal memory的从节点，可以处理Non-snoop读写、atomic操作、以及这些命令的其它形式、CMO请求。
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_eff9bc839f71.jpg)
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_186f4ea74151.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_186f4ea74151.jpg)
 
 #### 1.7 读数据源
 
@@ -335,7 +335,7 @@ SN**（Subordinate Node）用于接收来自HN的请求，完成相应的操作,
 - Cache within ICN
 - Slave Node
 - Peer RN-F
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_ebea357a1376.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_ebea357a1376.jpg)
 
 对于RN-F或SN返回的读数据，可以发送给HN，HN再转发数据给原始的Requester；也可以直接跳过HN，返回数据给原始Requester，这样可以减少读数据的latency。有以下两种直接返回数据方式：
 

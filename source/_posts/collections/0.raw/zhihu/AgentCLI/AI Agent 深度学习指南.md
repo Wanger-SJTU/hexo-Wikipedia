@@ -67,7 +67,7 @@ Agent = LLM + 工具调用 + 循环
 - 模型看到了工具的 description，知道有哪些能力可用
 - 模型根据用户问题和已有的工具结果，判断还需不需要调工具
 - 如果不需要了，就直接生成文字回答
-**没有任何魔法。**
+<strong>没有任何魔法。</strong>
 
 ### 2. 手写 Agent 循环（不用 SDK）
 
@@ -161,21 +161,21 @@ async function runAgent(userMessage: string, maxSteps = 10) {
 
 运行这段代码，你会清楚看到：
 
-- **每次 LLM 调用的输入**是整个 messages 数组（包括之前的工具调用和结果）
-- **模型的”记忆”**就是这个数组，没有任何其他状态
-- **SDK 做的事情**就是帮你管理这个数组 + 执行这个循环
+- <strong>每次 LLM 调用的输入</strong>是整个 messages 数组（包括之前的工具调用和结果）
+- <strong>模型的”记忆”</strong>就是这个数组，没有任何其他状态
+- <strong>SDK 做的事情</strong>就是帮你管理这个数组 + 执行这个循环
 
 #### 2.2 动手练习
 
-**练习 1：** 运行上面的代码，在每次 `callLLM` 前打印完整的 `messages` 数组，观察它是如何增长的。
+<strong>练习 1：</strong> 运行上面的代码，在每次 `callLLM` 前打印完整的 `messages` 数组，观察它是如何增长的。
 
-**练习 2：** 故意把某个工具的 `description` 写得很模糊，观察模型是否还能正确选择工具。
+<strong>练习 2：</strong> 故意把某个工具的 `description` 写得很模糊，观察模型是否还能正确选择工具。
 
-**练习 3：** 把 `maxSteps` 设为 1，观察模型在只能执行一步时会怎么做。
+<strong>练习 3：</strong> 把 `maxSteps` 设为 1，观察模型在只能执行一步时会怎么做。
 
 ### 3. Prompt Engineering for Agents
 
-普通聊天的 prompt engineering 和 agent 场景有本质区别。聊天只需要模型回答好，agent 还需要模型**正确地选择和调用工具**。
+普通聊天的 prompt engineering 和 agent 场景有本质区别。聊天只需要模型回答好，agent 还需要模型<strong>正确地选择和调用工具</strong>。
 
 #### 3.1 System Prompt 的要素
 
@@ -217,7 +217,7 @@ async function runAgent(userMessage: string, maxSteps = 10) {
 
 #### 4.1 好工具 vs 差工具
 
-**差的设计：**
+<strong>差的设计：</strong>
 
 `tool({
   description: "数据库操作",  // 太模糊，模型不知道什么时候该用
@@ -226,7 +226,7 @@ async function runAgent(userMessage: string, maxSteps = 10) {
   }),
 })`
 
-**好的设计：**
+<strong>好的设计：</strong>
 
 `tool({
   description: "根据用户ID查询用户信息，返回姓名、邮箱、注册时间",
@@ -237,7 +237,7 @@ async function runAgent(userMessage: string, maxSteps = 10) {
 
 #### 4.2 工具设计原则
 
-**原则 1：单一职责**
+<strong>原则 1：单一职责</strong>
 
 `❌ processData(action: "create" | "read" | "update" | "delete", ...)
 ✅ createUser(name, email)
@@ -245,17 +245,17 @@ async function runAgent(userMessage: string, maxSteps = 10) {
 ✅ updateUser(userId, fields)
 ✅ deleteUser(userId)`
 
-**原则 2：description 是给模型看的文档**
+<strong>原则 2：description 是给模型看的文档</strong>
 
 - 说明什么时候应该用这个工具
 - 说明输入参数的含义和格式
 - 说明返回值包含什么信息
-**原则 3：参数设计要降低模型犯错概率**
+<strong>原则 3：参数设计要降低模型犯错概率</strong>
 
 `❌ date: z.string()  // 模型可能给出 "明天"、"2024-01-01"、"Jan 1" 等各种格式
 ✅ year: z.number(), month: z.number(), day: z.number()  // 结构化，不容易出错`
 
-**原则 4：返回值要有足够的上下文**
+<strong>原则 4：返回值要有足够的上下文</strong>
 
 `// 差：模型不知道单位，可能误解
 ❌ return { temp: 5 }
@@ -270,7 +270,7 @@ async function runAgent(userMessage: string, maxSteps = 10) {
 
 #### 5.1 ReAct (Reasoning + Acting)
 
-**论文：** *ReAct: Synergizing Reasoning and Acting in Language Models* (2022)
+<strong>论文：</strong> *ReAct: Synergizing Reasoning and Acting in Language Models* (2022)
 
 这是当前 agent 工具调用模式的理论基础。
 
@@ -289,7 +289,7 @@ Observation: {temp: 8, condition: "小雨"}
 Thought: 北京 5°C，东京 8°C，东京更热。我有足够信息了。
 Answer: 东京（8°C）比北京（5°C）更热，温差 3°C。`
 
-**为什么重要：** 目前所有主流 agent 框架的工具调用循环，本质上都是 ReAct 模式的实现。
+<strong>为什么重要：</strong> 目前所有主流 agent 框架的工具调用循环，本质上都是 ReAct 模式的实现。
 
 #### 5.2 Plan-and-Execute
 
@@ -309,7 +309,7 @@ Execute:
   Step 2: search("Vue 核心特点 2024") → ...
   ...`
 
-**适用场景：** 复杂任务、多步骤任务、需要全局规划的任务。
+<strong>适用场景：</strong> 复杂任务、多步骤任务、需要全局规划的任务。
 
 #### 5.3 Reflexion（自我反思）
 
@@ -581,27 +581,27 @@ async function runEval(testCases: TestCase[]) {
 
 #### 项目 1：个人知识库问答 Agent
 
-**做什么：** 读取本地 Markdown 文件，用 RAG 回答关于这些文件的问题。
+<strong>做什么：</strong> 读取本地 Markdown 文件，用 RAG 回答关于这些文件的问题。
 
-**你会学到：**
+<strong>你会学到：</strong>
 
 - 文本分割 (chunking)
 - 向量嵌入 (embedding)
 - 相似度搜索
 - 如何把检索结果融入 prompt
-**技术栈建议：** AI SDK + 本地向量库（如 `vectra` 或 `orama`）
+<strong>技术栈建议：</strong> AI SDK + 本地向量库（如 `vectra` 或 `orama`）
 
 #### 项目 2：命令行编程助手
 
-**做什么：** 一个能读写文件、执行命令的 CLI agent（类似简化版 Claude Code）。
+<strong>做什么：</strong> 一个能读写文件、执行命令的 CLI agent（类似简化版 Claude Code）。
 
-**你会学到：**
+<strong>你会学到：</strong>
 
 - 危险操作的权限控制（不能让 agent 随便 rm -rf）
 - 文件系统工具的设计
 - 命令执行的沙箱
 - 错误恢复
-**工具示例：**
+<strong>工具示例：</strong>
 
 `readFile(path) → 读文件
 writeFile(path, content) → 写文件
@@ -610,23 +610,23 @@ listFiles(dir) → 列目录`
 
 #### 项目 3：多 Agent 研究助手
 
-**做什么：** 给定一个主题，自动搜索、阅读、总结、生成研究报告。
+<strong>做什么：</strong> 给定一个主题，自动搜索、阅读、总结、生成研究报告。
 
-**你会学到：**
+<strong>你会学到：</strong>
 
 - 多 agent 编排
 - 真实 API 调用（搜索引擎 API）
 - 长文本处理
 - 输出结构化
-**架构：**
+<strong>架构：</strong>
 
 `Planner → [Searcher, Searcher, Searcher] (并行) → Synthesizer → Writer`
 
 #### 项目 4：自我改进的代码生成 Agent
 
-**做什么：** 给需求 → 生成代码 → 运行测试 → 如果失败则分析错误 → 修改代码 → 重试。
+<strong>做什么：</strong> 给需求 → 生成代码 → 运行测试 → 如果失败则分析错误 → 修改代码 → 重试。
 
-**你会学到：**
+<strong>你会学到：</strong>
 
 - Reflexion 模式
 - 代码执行沙箱
@@ -657,4 +657,4 @@ Prompt 工程     → 决定 agent 稳定性
 可靠性工程       → 从 demo 到生产
 评估体系        → 量化改进方向`
 
-最重要的一条建议：**做一个解决你自己真实需求的 agent。** 在 demo 里一切都很美好，只有真实场景才会暴露真正的挑战。
+最重要的一条建议：<strong>做一个解决你自己真实需求的 agent。</strong> 在 demo 里一切都很美好，只有真实场景才会暴露真正的挑战。

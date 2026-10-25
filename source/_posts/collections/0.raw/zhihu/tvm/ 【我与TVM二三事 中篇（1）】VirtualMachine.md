@@ -51,11 +51,11 @@ source_url: https://zhuanlan.zhihu.com/p/457693496
       3.3.2.1 InvokePacked/InvokeGlobal/ReadRegister/…(根据指令进行处理)
       3.3.2.2 pc++ && goto main_loop(指令记数++，处理下一条指令)`
 
-### **Step1 解析**
+### <strong>Step1 解析</strong>
 
 这部分不再梳理，见[【我与TVM二三事 前篇（1）】relay parse](https://zhuanlan.zhihu.com/p/457039705)
 
-### **Step2 relay.vm.compile**
+### <strong>Step2 relay.vm.compile</strong>
 
 基本流程和relay.build过程类似，也包含了优化，lower，codegen过程。
 
@@ -72,7 +72,7 @@ source_url: https://zhuanlan.zhihu.com/p/457693496
 
 和BuildRelya过程很相似（可以参考[【我与TVM二三事 前篇（3）】relay optimize](https://zhuanlan.zhihu.com/p/457134643)，[【我与TVM二三事 前篇（9）】relay codegen](https://zhuanlan.zhihu.com/p/457407600)，[【我与TVM二三事 前篇（11）】tvm build](https://zhuanlan.zhihu.com/p/457510267)），接下来按步骤梳理一下。
 
-#### **Step2.1 VMCompiler.lower**
+#### <strong>Step2.1 VMCompiler.lower</strong>
 
 调用入口函数 @ tvm/src/relay/backend/vm/http://compiler.cc
 
@@ -99,7 +99,7 @@ source_url: https://zhuanlan.zhihu.com/p/457693496
 }
 `
 
-#### **Step2.1.1 VMCompiler::OptimizeModule**
+#### <strong>Step2.1.1 VMCompiler::OptimizeModule</strong>
 
 首先进行的依然是优化过程： @ tvm/src/relay/backend/vm/http://compiler.cc
 
@@ -116,9 +116,9 @@ source_url: https://zhuanlan.zhihu.com/p/457693496
 
 流程和relay.optimize一样，同样找几个有代表性的Pass进行梳理
 
-#### **Step2.1.1.1 ToANormalForm**
+#### <strong>Step2.1.1.1 ToANormalForm</strong>
 
-这个Pass的调用流程在[【我与TVM二三事 前篇（3）】relay optimize](https://zhuanlan.zhihu.com/p/457134643) ： **Step 3.2.2 ToANormalForm**中梳理过，主要就是修改赋值格式。在relay中没有用作IR的优化所以没有可视化效果，在此填一下坑。
+这个Pass的调用流程在[【我与TVM二三事 前篇（3）】relay optimize](https://zhuanlan.zhihu.com/p/457134643) ： <strong>Step 3.2.2 ToANormalForm</strong>中梳理过，主要就是修改赋值格式。在relay中没有用作IR的优化所以没有可视化效果，在此填一下坑。
 
 ![](/images/collections/0.raw/zhihu/tvm/asset/img_6a9a51501a96.jpg)
 
@@ -130,7 +130,7 @@ source_url: https://zhuanlan.zhihu.com/p/457693496
 
 基本作用是把拓扑结构换成了类似assign的结构，将函数、入参和出参都使用var进行绑定，不改变计算逻辑。例如图中绿色和红色部分代表不同的function，可以发现function内部逻辑不变，只有functions之间的链接发生了改变。
 
-#### **Step2.1.1.2 InlinePrimitives**
+#### <strong>Step2.1.1.2 InlinePrimitives</strong>
 
 `调用流程：
 1 PrimitiveInliner::Inline()
@@ -199,7 +199,7 @@ struct PrimitiveInliner : ExprMutator {
 
 访问到Let节点时会保存var:value的关系。访问Call节点时如果发现op是一个var节点，并且有保存在var_map中的信息，就直接删除var节点和value节点，链接function节点。
 
-#### **Step2.1.1.3 MemoryOpt**
+#### <strong>Step2.1.1.3 MemoryOpt</strong>
 
 `调用流程：
 1 transform::ManifestAlloc
@@ -221,7 +221,7 @@ struct PrimitiveInliner : ExprMutator {
 
 优化后Relay对应结构Netron查看完整结构：[https://github.com/Archermmt/tvm_walk_through/blob/master/adv_virtualmachine/visualizes/memory_opt.prototxt](https://link.zhihu.com/?target=https%3A//github.com/Archermmt/tvm_walk_through/blob/master/adv_virtualmachine/visualizes/memory_opt.prototxt)
 
-修改直观上很像GraphExecutor::CreateTVMOp过程（参考[【我与TVM二三事 前篇（12）】graph_executor](https://zhuanlan.zhihu.com/p/457515395)： **Step2.1.2.2 CreateTVMOp**），把每个function变成一个packed func，不过这个Pass核心是为了memeory的管理，增加的节点是为了更好的管理内存，而packed func刚好很适合把内存部分和function部分分开，所以效果上看起来很相似。
+修改直观上很像GraphExecutor::CreateTVMOp过程（参考[【我与TVM二三事 前篇（12）】graph_executor](https://zhuanlan.zhihu.com/p/457515395)： <strong>Step2.1.2.2 CreateTVMOp</strong>），把每个function变成一个packed func，不过这个Pass核心是为了memeory的管理，增加的节点是为了更好的管理内存，而packed func刚好很适合把内存部分和function部分分开，所以效果上看起来很相似。
 
 @ tvm/src/relay/backend/vm/http://compiler.cc
 
@@ -262,7 +262,7 @@ struct PrimitiveInliner : ExprMutator {
 
 分成两部分，ContextAnalysis进行检查，DialectRewriter对func进行修改。
 
-#### **Step2.1.1.3.1 ContextAnalysis**
+#### <strong>Step2.1.1.3.1 ContextAnalysis</strong>
 
 首先通过ContextAnalysis判断节点和设备的绑定情况。
 
@@ -326,7 +326,7 @@ class ContextAnalyzer : public MixedModeVisitor {
 }
 `
 
-#### **Step2.1.1.3.2 DialectRewriter::Rewrite**
+#### <strong>Step2.1.1.3.2 DialectRewriter::Rewrite</strong>
 
 配合设备的绑定情况对整个计算图进行遍历修改
 
@@ -369,7 +369,7 @@ class ContextAnalyzer : public MixedModeVisitor {
 
 MakeStaticAllocation对输出进行Malloc操作，添加AllocStorage和AllocTensor节点，inputs和outputs都被包裹成Tuple之后，连同op一起包裹成InvokeTVMOp。
 
-#### **Step2.1.2 VMCompiler::AnalyzeContext**
+#### <strong>Step2.1.2 VMCompiler::AnalyzeContext</strong>
 
 @ tvm/src/relay/backend/vm/http://compiler.cc
 
@@ -392,7 +392,7 @@ MakeStaticAllocation对输出进行Malloc操作，添加AllocStorage和AllocTens
 
 核心过程是AnalyzeContext，在Step2.1.1.3.1 ContextAnalysis中梳理过，得到的是每个计算节点和device的绑定关系，本demo使用了kDLCPU作为device，所以expr_device_map为空。
 
-#### **Step2.1.3 VMFunctionCompiler::Compile**
+#### <strong>Step2.1.3 VMFunctionCompiler::Compile</strong>
 
 对于每个function，使用VMFunctionCompiler进行编译
 
@@ -464,7 +464,7 @@ void EmitInvokeTVMOp(const Function& func, const Expr& inputs, const Expr& outpu
 }
 `
 
-到此，发现核心依然是调用engine_->lower生成Stmt结构，然后记录到context_中，即调用CompileEngineImpl::Lower，此过程梳理见[【我与TVM二三事 前篇（9）】relay codegen](https://zhuanlan.zhihu.com/p/457407600): **Step 2.2.2 tvm::lower**。VisitExpr每个过程需要和内存交互的地方都会使用Emit生成指令，并收集到instructions_中，形式如：
+到此，发现核心依然是调用engine_->lower生成Stmt结构，然后记录到context_中，即调用CompileEngineImpl::Lower，此过程梳理见[【我与TVM二三事 前篇（9）】relay codegen](https://zhuanlan.zhihu.com/p/457407600): <strong>Step 2.2.2 tvm::lower</strong>。VisitExpr每个过程需要和内存交互的地方都会使用Emit生成指令，并收集到instructions_中，形式如：
 
 `load_const $1 Const[0]
 alloc_storage $2 $1 64 float32 1
@@ -474,7 +474,7 @@ invoke_packed PackedFunc[0] (in: $0, out: $4)`
 
 也就是指令集的一种抽象。最后通过VMFunction记录指令集，为后面的过程作准备
 
-#### **Step2.2 VMCompiler.codegen**
+#### <strong>Step2.2 VMCompiler.codegen</strong>
 
 Step2.1 VMCompiler.lower过程为每个全局函数生成了VMFunction，接下来使用得到的函数进行代码生成。
 
@@ -499,11 +499,11 @@ Step2.1 VMCompiler.lower过程为每个全局函数生成了VMFunction，接下�
 
 由于没有指定kCompiler处理的函数，所以ext_mods为空，lib为tvm::build得到的llvm结构，codegen::CreateMetadataModule没有任何操作。
 
-### **Step3 VirtualMachine**
+### <strong>Step3 VirtualMachine</strong>
 
 得到lowered代码之后，接下来构建VirtualMachine并进行推理，这部分可以分成初始化、绑定入参、执行三个部分。
 
-#### **Step3.1 VirtualMachine.__init__**
+#### <strong>Step3.1 VirtualMachine.__init__</strong>
 
 @ tvm/python/tvm/runtime/vm.py
 
@@ -519,7 +519,7 @@ Step2.1 VMCompiler.lower过程为每个全局函数生成了VMFunction，接下�
 
 首先使用vm_load_executable函数构建_exec，然后调用_setup_device初始化设备。
 
-#### **Step3.1.1** **VirtualMachine::LoadExecutable**
+#### <strong>Step3.1.1</strong> <strong>VirtualMachine::LoadExecutable</strong>
 
 根据函数调用会调用到Executable::GetFunction
 
@@ -553,7 +553,7 @@ Step2.1 VMCompiler.lower过程为每个全局函数生成了VMFunction，接下�
 
 逻辑比较简洁，就是填充packed_funcs_。
 
-#### **Step3.1.2 VirtualMachine._setup_device**
+#### <strong>Step3.1.2 VirtualMachine._setup_device</strong>
 
 @ tvm/python/tvm/runtime/vm.py
 
@@ -607,7 +607,7 @@ void VirtualMachine::Init(const std::vectorDevice>& devs, const std::vectorAlloc
 
 初始化devices_和allocators_，用于记录每个device对应的设备类型和内存分配器。
 
-#### **Step3.2 VirtualMachine.set_input**
+#### <strong>Step3.2 VirtualMachine.set_input</strong>
 
 @ tvm/python/tvm/runtime/vm.py
 
@@ -627,7 +627,7 @@ void VirtualMachine::Init(const std::vectorDevice>& devs, const std::vectorAlloc
             ...
         self._set_input(func_name, *cargs)`
 
-#### **Step3.2.1 Executable.get_function_params**
+#### <strong>Step3.2.1 Executable.get_function_params</strong>
 
 @ tvm/python/tvm/runtime/vm.py
 
@@ -681,7 +681,7 @@ std::string Executable::GetFunctionParameterName(std::string func_name, uint32_t
 
 获取入参名字列表。
 
-#### **Step3.2.2 VirtualMachine._set_input**
+#### <strong>Step3.2.2 VirtualMachine._set_input</strong>
 
 通过参数列表将kwargs和args变成list of tvm.ndarray，就得到了合适的入参数据，接下来进行参数的绑定。
 
@@ -711,7 +711,7 @@ std::string Executable::GetFunctionParameterName(std::string func_name, uint32_t
 
 拷贝入参数据，填充inputs_
 
-#### **Step3.3 VirtualMachine.run**
+#### <strong>Step3.3 VirtualMachine.run</strong>
 
 @ tvm/python/tvm/runtime/vm.py
 
@@ -750,7 +750,7 @@ ObjectRef VirtualMachine::Invoke(const VMFunction& func, const std::vectorObject
 
 分成两步，InvokeGlobal准备环境和RunLoop执行指令
 
-#### **Step3.3.1** **VirtualMachine::InvokeGlobal**
+#### <strong>Step3.3.1</strong> <strong>VirtualMachine::InvokeGlobal</strong>
 
 @ tvm/src/runtime/vm/http://vm.cc
 
@@ -777,7 +777,7 @@ inline void VirtualMachine::WriteRegister(Index r, const ObjectRef& val) {
 
 PushFrame用于将当前的code_入栈保存，WriteRegister则将inputs信息写入当前frame的register_file对应位置。注意此处一个frame中code_和register_file对应的不是一个func，code_对应的是上个func的指令信息，frame入栈之后才会更新code_为当前func的指令信息。
 
-#### **Step3.3.2 VirtualMachine::RunLoop**
+#### <strong>Step3.3.2 VirtualMachine::RunLoop</strong>
 
 @ tvm/src/runtime/vm/http://vm.cc
 
@@ -847,7 +847,7 @@ void VirtualMachine::InvokePacked(Index packed_index, const PackedFunc& func, In
 
 RunLoop的基本过程就是模拟寄存器处理数据的过程，再把结果写回寄存器的过程，逻辑和代码风格都十分像指令集书写的时候的格式，其中InvokePacked的处理依然是调用被包裹成PackedFunc的llvm结构。
 
-### **总结**
+### <strong>总结</strong>
 
 与GraphExecutor相比，VirtualMachine链路更短一些，对PackedFunc的包装在compile阶段就完成，运行阶段直接按照func生成的指令集顺序执行，不过计算内核的实现依然是tvm::build得到的可执行内核。VirtualMachine的使用过程如下
 

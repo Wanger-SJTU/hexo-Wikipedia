@@ -262,7 +262,7 @@ ax.view_init(azim=30)
 X = np.arange(0, 3, 0.001)
 Y = np.arange(0, 3, 0.001)
 X, Y = np.meshgrid(X, Y)
-Z = np.exp(-X**2)*np.log(1 + Y**2) + (1 - np.exp(-X**2))*np.log((1 + Y**2) / (Y**2+0.01))
+Z = np.exp(-X**2)*np.log(1 + Y<strong>2) + (1 - np.exp(-X</strong>2))*np.log((1 + Y<strong>2) / (Y</strong>2+0.01))
 
 # Plot the surface.
 surf = ax.plot_surface(X, Y, Z, cmap=cm.coolwarm,linewidth=0, antialiased=False)

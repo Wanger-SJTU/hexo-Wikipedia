@@ -20,7 +20,7 @@ categories:
 
 You ask an agent to implement a "password reset" feature. It modifies the database schema, writes the API endpoint, adds the email template, runs the unit tests (all pass), and then confidently tells you "it's done." But when you actually try to run it—the password reset link can't be sent because the email service config is missing; the database migration fails halfway through, leaving the schema in an inconsistent state; and the end-to-end flow hasn't been executed even once.
 
-This isn't an isolated incident. The classic 2017 ICML paper by Guo et al. proved: **modern neural networks are systematically overconfident**—the confidence reported by models is significantly higher than their actual accuracy. AI coding agents are no different. They "feel" done, but in reality they're far from it. Your harness must replace the agent's "feelings" with externalized, execution-based verification.
+This isn't an isolated incident. The classic 2017 ICML paper by Guo et al. proved: <strong>modern neural networks are systematically overconfident</strong>—the confidence reported by models is significantly higher than their actual accuracy. AI coding agents are no different. They "feel" done, but in reality they're far from it. Your harness must replace the agent's "feelings" with externalized, execution-based verification.
 
 ## The Slippery Slope
 
@@ -47,22 +47,22 @@ flowchart LR
 
 ## Core Concepts
 
-- **Premature Completion Declaration**: The agent asserts the task is complete, but unmet correctness specifications remain. The core problem is that the agent judges based on local, code-level confidence, while system-level correctness requires global verification.
-- **Confidence Calibration Bias**: A systematic gap between the agent's self-reported completion confidence and the actual completion quality. For complex multi-file tasks, this bias is significantly positive—the agent is consistently more confident than its actual performance warrants.
-- **Termination Criteria**: A clear, executable set of judgment conditions defined in the harness. The agent must satisfy all conditions before declaring completion. "Done" shifts from a subjective judgment to an objective determination.
-- **Verification-Validation Dual Gate**: The first layer (verification) checks whether the code correctly implements the specified behavior; the second layer (validation) checks whether system-level behavior meets end-to-end requirements. Both must pass before the task is considered complete.
-- **Runtime Feedback Signals**: Logs, process states, and health checks from program execution—these form the objective basis for the harness to judge completion quality.
-- **Completion Priority Constraint**: First verify functional correctness, then address performance, and finally handle style. No refactoring is allowed until core functionality has been verified.
+- <strong>Premature Completion Declaration</strong>: The agent asserts the task is complete, but unmet correctness specifications remain. The core problem is that the agent judges based on local, code-level confidence, while system-level correctness requires global verification.
+- <strong>Confidence Calibration Bias</strong>: A systematic gap between the agent's self-reported completion confidence and the actual completion quality. For complex multi-file tasks, this bias is significantly positive—the agent is consistently more confident than its actual performance warrants.
+- <strong>Termination Criteria</strong>: A clear, executable set of judgment conditions defined in the harness. The agent must satisfy all conditions before declaring completion. "Done" shifts from a subjective judgment to an objective determination.
+- <strong>Verification-Validation Dual Gate</strong>: The first layer (verification) checks whether the code correctly implements the specified behavior; the second layer (validation) checks whether system-level behavior meets end-to-end requirements. Both must pass before the task is considered complete.
+- <strong>Runtime Feedback Signals</strong>: Logs, process states, and health checks from program execution—these form the objective basis for the harness to judge completion quality.
+- <strong>Completion Priority Constraint</strong>: First verify functional correctness, then address performance, and finally handle style. No refactoring is allowed until core functionality has been verified.
 
 ## Passing Unit Tests ≠ Task Complete
 
 This is the most common trap, and the most dangerous one. The agent writes code, runs unit tests, sees all greens, and says "done." But the design philosophy of unit tests—isolating the tested unit and mocking dependencies—is precisely what makes them incapable of detecting cross-component issues:
 
-**Interface Mismatch**: The renderer passes a relative file path to the preload script, but the preload script expects an absolute path. Their respective unit tests both use mocks and both pass. The issue only surfaces during end-to-end testing.
+<strong>Interface Mismatch</strong>: The renderer passes a relative file path to the preload script, but the preload script expects an absolute path. Their respective unit tests both use mocks and both pass. The issue only surfaces during end-to-end testing.
 
-**State Propagation Errors**: A database migration changes the table schema, but the ORM's caching layer still holds cache entries for the old schema. Unit tests run in a fresh mock environment every time, so this kind of cross-layer state inconsistency never surfaces.
+<strong>State Propagation Errors</strong>: A database migration changes the table schema, but the ORM's caching layer still holds cache entries for the old schema. Unit tests run in a fresh mock environment every time, so this kind of cross-layer state inconsistency never surfaces.
 
-**Environment Dependency**: Code behaves correctly in the test environment (where everything is mocked) but fails in the real environment due to configuration differences, network latency, or service unavailability.
+<strong>Environment Dependency</strong>: Code behaves correctly in the test environment (where everything is mocked) but fails in the real environment due to configuration differences, network latency, or service unavailability.
 
 ### "Refactoring While We're at It" is Poison to Completion Judgment
 
@@ -70,11 +70,11 @@ Claude Code has a common behavioral pattern: it starts refactoring code, optimiz
 
 ### Systematic Bias in Self-Evaluation
 
-Anthropic discovered a deeper failure pattern in their 2026 research: **when an agent is asked to evaluate its own work, it systematically provides overly positive assessments—even when a human observer would judge the quality as clearly substandard.**
+Anthropic discovered a deeper failure pattern in their 2026 research: <strong>when an agent is asked to evaluate its own work, it systematically provides overly positive assessments—even when a human observer would judge the quality as clearly substandard.</strong>
 
 This problem is especially severe on subjective tasks (such as design aesthetics). Whether a "layout is polished" is a judgment call, and the agent reliably skews positive. Even on tasks with verifiable outcomes, the agent's poor judgment degrades its performance.
 
-The solution isn't to make the agent "more objective." The same model both generates and evaluates, so it is inherently inclined to be generous with itself. **The solution is to separate the "worker" from the "checker."**
+The solution isn't to make the agent "more objective." The same model both generates and evaluates, so it is inherently inclined to be generous with itself. <strong>The solution is to separate the "worker" from the "checker."</strong>
 
 An independent evaluation agent, specifically tuned to be "nitpicky," is far more effective than having the generating agent evaluate itself. Anthropic's experimental data:
 
@@ -106,13 +106,13 @@ The completion judgment should not be made by the agent itself. The harness inde
 
 ### 2. Build a Three-Layer Termination Validation
 
-- **Layer 1: Syntax and Static Analysis**. Lowest cost, least information, but must pass. This is the bare minimum—you need to spell the words correctly before reading further.
-- **Layer 2: Runtime Behavior Verification**. Test execution, application startup checks, critical path validation. This is the core evidence of completion—not just written, but runnable.
-- **Layer 3: System-Level Confirmation**. End-to-end testing, integration validation, user scenario simulation. The last line of defense against premature declarations—not just runnable, but correct.
+- <strong>Layer 1: Syntax and Static Analysis</strong>. Lowest cost, least information, but must pass. This is the bare minimum—you need to spell the words correctly before reading further.
+- <strong>Layer 2: Runtime Behavior Verification</strong>. Test execution, application startup checks, critical path validation. This is the core evidence of completion—not just written, but runnable.
+- <strong>Layer 3: System-Level Confirmation</strong>. End-to-end testing, integration validation, user scenario simulation. The last line of defense against premature declarations—not just runnable, but correct.
 
 ### 3. Provide Actionable Error Feedback to the Agent
 
-OpenAI introduced a particularly effective pattern in their Codex practice: **error messages written for agents should include repair instructions**. Don't just tell the agent "it's wrong"—point out exactly what's wrong and how to fix it. Don't use `"Test failed"`, use `"Test failed: POST /api/reset-password returned 500. Check that the email service config exists in environment variables. The template file should be at templates/reset-email.html."` This kind of specific, actionable feedback lets the agent self-correct without human intervention.
+OpenAI introduced a particularly effective pattern in their Codex practice: <strong>error messages written for agents should include repair instructions</strong>. Don't just tell the agent "it's wrong"—point out exactly what's wrong and how to fix it. Don't use `"Test failed"`, use `"Test failed: POST /api/reset-password returned 500. Check that the email service config exists in environment variables. The template file should be at templates/reset-email.html."` This kind of specific, actionable feedback lets the agent self-correct without human intervention.
 
 ### 4. Capture Runtime Signals
 
@@ -124,21 +124,21 @@ Effective runtime signals include:
 
 ## Real-World Case
 
-**Task**: Implement user password reset functionality. Involves database operations, email sending, and API endpoint modifications.
+<strong>Task</strong>: Implement user password reset functionality. Involves database operations, email sending, and API endpoint modifications.
 
-**Premature hand-in path**: The agent modifies the database schema, writes the API endpoint, adds the email template, runs unit tests (all pass), and declares completion. It looks like a lot was done, but the critical steps were all skipped.
+<strong>Premature hand-in path</strong>: The agent modifies the database schema, writes the API endpoint, adds the email template, runs unit tests (all pass), and declares completion. It looks like a lot was done, but the critical steps were all skipped.
 
-**Actual omissions**: (1) End-to-end flow untested—the actual sending and verification of the reset link was never confirmed. (2) Database migration failed after partial execution, leaving the schema inconsistent. (3) Email service configuration was missing in the target environment.
+<strong>Actual omissions</strong>: (1) End-to-end flow untested—the actual sending and verification of the reset link was never confirmed. (2) Database migration failed after partial execution, leaving the schema inconsistent. (3) Email service configuration was missing in the target environment.
 
-**Harness intervention**: Termination validation is enforced—(1) start the full application to verify the reset endpoint is accessible; (2) execute the complete reset flow; (3) verify database state consistency. All defects were discovered within the session, saving 5-10x the cost of post-hoc fixes.
+<strong>Harness intervention</strong>: Termination validation is enforced—(1) start the full application to verify the reset endpoint is accessible; (2) execute the complete reset flow; (3) verify database state consistency. All defects were discovered within the session, saving 5-10x the cost of post-hoc fixes.
 
 ## Key Takeaways
 
-- **Agents are systematically overconfident**—confidence calibration bias is an objective reality. Code being written doesn't mean it was written correctly.
-- **Completion judgment must be externalized**—the harness verifies independently. Don't trust the agent's "feelings."
-- **All three layers of validation are essential**: syntax passes, behavior passes, system passes—layer by layer, no shortcuts.
-- **Error messages should include specific repair steps**, enabling the agent to self-correct rather than just telling it "it's wrong."
-- **No refactoring until core functionality is verified**—the completion priority constraint is the key to preventing premature optimization.
+- <strong>Agents are systematically overconfident</strong>—confidence calibration bias is an objective reality. Code being written doesn't mean it was written correctly.
+- <strong>Completion judgment must be externalized</strong>—the harness verifies independently. Don't trust the agent's "feelings."
+- <strong>All three layers of validation are essential</strong>: syntax passes, behavior passes, system passes—layer by layer, no shortcuts.
+- <strong>Error messages should include specific repair steps</strong>, enabling the agent to self-correct rather than just telling it "it's wrong."
+- <strong>No refactoring until core functionality is verified</strong>—the completion priority constraint is the key to preventing premature optimization.
 
 ## Further Reading
 
@@ -149,8 +149,8 @@ Effective runtime signals include:
 
 ## Exercises
 
-1. **Termination Validation Function Design**: Design a complete termination validation for a task involving database migration and API modifications. List the required runtime signals and the pass/fail criteria for each. Run it on a real task and record which hidden issues it discovers.
+1. <strong>Termination Validation Function Design</strong>: Design a complete termination validation for a task involving database migration and API modifications. List the required runtime signals and the pass/fail criteria for each. Run it on a real task and record which hidden issues it discovers.
 
-2. **Calibration Bias Measurement**: Select 10 coding tasks of different types. Record the agent's self-reported completion confidence versus the actual completion quality. Calculate the bias and analyze its relationship with task complexity.
+2. <strong>Calibration Bias Measurement</strong>: Select 10 coding tasks of different types. Record the agent's self-reported completion confidence versus the actual completion quality. Calculate the bias and analyze its relationship with task complexity.
 
-3. **Multi-Layer Defense Experiment**: Run three configurations on the same set of tasks: (a) static analysis only, (b) add unit testing, (c) full three-layer validation. Compare the proportion of premature completion declarations and the number of uncaught defects.
+3. <strong>Multi-Layer Defense Experiment</strong>: Run three configurations on the same set of tasks: (a) static analysis only, (b) add unit testing, (c) full three-layer validation. Compare the proportion of premature completion declarations and the number of uncaught defects.

@@ -22,11 +22,11 @@ categories:
     - 高达 85% 的模型参数在推理阶段是上下文稀疏的，对于特定的输入，只有一小部分注意力头和前馈网络中的参数对模型输出有显著影响
     - MLP 层上的平均稀疏性则发现超过95%的MLP参数都可以不参与推理
     ![alt text](/images/collections/assets/image-3.png)
-3. LLM in a Flash 的论文通过实验表明，激活函数由 Silu 转换为 Relu时， 实际中间的激活稀疏度很高 **大于 90%** 
+3. LLM in a Flash 的论文通过实验表明，激活函数由 Silu 转换为 Relu时， 实际中间的激活稀疏度很高 <strong>大于 90%</strong> 
 	> Using active neurons of predictor would require about 10% of the DRAM memory capacity on average
 	
-    - FFN部分，只有**非稀疏段**根据需要动态加载到RAM中
-    - ReLU激活函数自然会在FFN的中间输出中引起 **超过90%** 的稀疏性
+    - FFN部分，只有<strong>非稀疏段</strong>根据需要动态加载到RAM中
+    - ReLU激活函数自然会在FFN的中间输出中引起 <strong>超过90%</strong> 的稀疏性
     - low rank predictor 来识别由ReLU 输出为零的元素；预测器只需要当前层的注意力模块输出，而不需要前一层的FFN模块
     - 滑动窗口技术来管理冷热神经元，出发点时相近的神经元具有相似的激活分布。
     - predictor 在OPT 6.7B模型中平均实现 5% 的假阴性 和 7% 的假阳性，但是对最终结果影响不那么大，各种参数几乎不下降（如果准确率更低一点影响多大）
@@ -44,7 +44,7 @@ categories:
 
 # 问题
 
-- 如何快速识别出哪些模型参数是**必要的**
+- 如何快速识别出哪些模型参数是<strong>必要的</strong>
 - 如何加快由Flash memory到DRAM的传输效率
 
 # 介绍
@@ -56,11 +56,11 @@ powerinfer2 可以说是为了
 ## Prefill
 
 Prefill 的处理比较简单，是大多数都会考虑到的思路，降低内存占用就要逐层计算，逐层加载。
-![Pasted image 20240730221237.png](/images/collections/assets/Pasted%2520image%252020240730221237.png)
+![Pasted image 20240730221237.png](/images/collections/assets/Pasted%20image%2020240730221237.png)
 这里有一个CPU的大核负责加载，四个线程负责反量化，NPU负责计算。
 ## Decoding
 下面来到本文的重头戏，Decode优化。
-![Pasted image 20240802221541.png](/images/collections/assets/Pasted%2520image%252020240802221541.png)
+![Pasted image 20240802221541.png](/images/collections/assets/Pasted%20image%2020240802221541.png)
 
 
 

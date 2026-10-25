@@ -49,8 +49,8 @@ CMU 论文《Better Harnesses, Smaller Models: Building 90% Cheaper Agents via A
 
 ## 关键结论
 
-- **任务越标准化，适配效果越好**（强负相关）
-- **模型底子越好，适配收益越大**
+- <strong>任务越标准化，适配效果越好</strong>（强负相关）
+- <strong>模型底子越好，适配收益越大</strong>
 - 成功适配 81% 聚焦于指令理解偏差和知识缺失
 - 适配方案高度"模型专属"，一模一策
 - 所有成功案例均未采用子智能体编排

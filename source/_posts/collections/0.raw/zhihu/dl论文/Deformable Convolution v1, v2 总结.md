@@ -122,9 +122,9 @@ conv 和 fc layer 一开始是 zero weights.  fc layer 的 learning rate 是该�
 
 为了分析 network 的 receptive field, 作者用了三个指标：
 
-- **Effective receptive fields**: 它是看在原始 image 上，对每个 pixel 的扰动会对 node response 产生多大影响。
-- **Effective sampling / bin locations：** 看对 sampling location 的扰动，能对 response 有多大影响。
-- **Error-bounded saliency regions: ** 能让 node 保持同样 response 的最小区域。在附录里，作者给了详细的介绍。在 figure(1) 中，就可以看出他们的不同。这个[回答](https://www.zhihu.com/question/303900394)中也说明了其它 paper 发现了同样的问题。
+- <strong>Effective receptive fields</strong>: 它是看在原始 image 上，对每个 pixel 的扰动会对 node response 产生多大影响。
+- <strong>Effective sampling / bin locations：</strong> 看对 sampling location 的扰动，能对 response 有多大影响。
+- <strong>Error-bounded saliency regions:</strong> 能让 node 保持同样 response 的最小区域。在附录里，作者给了详细的介绍。在 figure(1) 中，就可以看出他们的不同。这个[回答](https://www.zhihu.com/question/303900394)中也说明了其它 paper 发现了同样的问题。
 
 2. Controbution & Details
 

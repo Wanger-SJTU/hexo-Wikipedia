@@ -64,7 +64,7 @@ NDP 近数据计算：高并行度，高带宽。（如果有机会值得详细�
 #### 2.1 DRAM vs. SRAM
 
 - DRAM 相比 SRAM：高密度，低成本
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_f9701f8f540f.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_f9701f8f540f.jpg)
 
 - DRAM 需要 refresh，因为电容会泄漏
 
@@ -81,7 +81,7 @@ NDP 近数据计算：高并行度，高带宽。（如果有机会值得详细�
 
 #### 2.4 DIMMs, Ranks, Banks, Mats
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_2086c58d0566.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_2086c58d0566.jpg)
 
 - DIMM 包含 2 rank（如图显示 1 个 rank）
 - rank 包含 （如图）8 bank
@@ -95,7 +95,7 @@ NDP 近数据计算：高并行度，高带宽。（如果有机会值得详细�
 
 #### 2.5 Row Buffers
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_e318f349c06c.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_e318f349c06c.jpg)
 
 - Row Activation 通过 Row Address Strobe (RAS)，13ns
 - Column Address Strobe (CAS) 选择数据到 row buffer, 13ns
@@ -144,21 +144,21 @@ mats 的组织和能耗，不太懂
 - 通知 refresh
 可以定义一个 batch window，在里面施加一些调度策略：
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_649360eaf907.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_649360eaf907.jpg)
 
 - 利用 row buffer hit 重排请求
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_e83753ddfec8.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_e83753ddfec8.jpg)
 
 - 按照 core 维度定义优先级，并且重排
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_fd8922c5d3ce.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_fd8922c5d3ce.jpg)
 
 - 分辨混部计算负载类型，对于 non-intensive 并且 vulnerable 提升服务优先级；intensive 就轮流给 quota。这样保证了响应时间和带宽的公平性。
 
 #### 2.9 DRAM Timing Parameters
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_82800227d10b.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_82800227d10b.jpg)
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_6047964ab569.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_6047964ab569.jpg)
 
 > Print out Table 2.1 as a handy cheat sheet. Feel free to casually mention tFAW at the next grad student party to establish your very coveted social status as a DRAM guru.
 
@@ -170,18 +170,18 @@ mats 的组织和能耗，不太懂
 
 #### 3.1 Basic DDR3/DDR4 Channels and DIMMs
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_d62c2aab184a.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_d62c2aab184a.jpg)
 
 - channel 更高频率导致更少的 DIMM pre channel（为什么），导致带宽和容量的增长无法同时兼顾
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_b5e3c8285b6e.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_b5e3c8285b6e.jpg)
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_54ec1153afe8.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_54ec1153afe8.jpg)
 
 #### 3.2 DDR Deviations for Higher Capacity and Bandwidth
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_233884176579.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_233884176579.jpg)
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_65407788e2d3.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_65407788e2d3.jpg)
 
 #### 4 Memory Scheduling
 
@@ -197,19 +197,19 @@ DRAM ctrl 清楚 bank 的状态，将内存读写请求分解成对应 bank 操�
 
 根据带宽份额的边际效用自适应调节，保证整体服务质量。
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_649360eaf907.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_649360eaf907.jpg)
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_e83753ddfec8.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_e83753ddfec8.jpg)
 
 - 定义一个 batch window，优先执行这一批
 - 利用 row buffer hit 重排请求
 - 考虑 thread rank 优先级，请求 age
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_fd8922c5d3ce.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_fd8922c5d3ce.jpg)
 
 - 将计算负载分类为延迟敏感和带宽敏感
 - 延迟敏感的优先级高
 - 带宽敏感按照 nice 分配带宽份额
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_3981e03fa971.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_3981e03fa971.jpg)
 
 - 分两组
 
@@ -243,7 +243,7 @@ DRAM ctrl 清楚 bank 的状态，将内存读写请求分解成对应 bank 操�
 
 - 考虑 prefetch 和 demand fetch 的服务质量
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_d9d8a22e2ad7.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_d9d8a22e2ad7.jpg)
 
 - addr mapping & prefetch
 
@@ -289,11 +289,11 @@ DRAM ctrl 清楚 bank 的状态，将内存读写请求分解成对应 bank 操�
 
 #### 5.2.1 IBM MXT
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_62e971d1aa48.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_62e971d1aa48.jpg)
 
 #### 5.2.2 Ekman and Stenstrom
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_97aa47946928.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_97aa47946928.jpg)
 
 #### 5.2.3 Linearly Compressed Pages (LCP)
 
@@ -305,9 +305,9 @@ DRAM ctrl 清楚 bank 的状态，将内存读写请求分解成对应 bank 操�
 
 #### 5.2.6 Active Memory Expansion in the IBM Power Processors
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_4ed49fff4126.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_4ed49fff4126.jpg)
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_b61d0d233ac1.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_b61d0d233ac1.jpg)
 
 - memory 分为 2 个池：压缩，未压缩
 - 目标：提高容量
@@ -329,7 +329,7 @@ DRAM march 比较神秘，不为圈外人理解。。
 
 #### 6.1 Basics of DRAM Chip Microarchitecture
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_01035c13053a.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_01035c13053a.jpg)
 
 - RAS (row address strobe)
 
@@ -354,7 +354,7 @@ DRAM march 比较神秘，不为圈外人理解。。
 
 - 不同 subarray 分别执行 activate/precharge
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_d37e6121bccd.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_d37e6121bccd.jpg)
 
 - 可变延迟
 
@@ -383,9 +383,9 @@ interconnection 影响带宽，延迟，容量。
 
 #### 7.1.3 Discussion
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_5eac62ca83e7.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_5eac62ca83e7.jpg)
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_c08a9270ac57.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_c08a9270ac57.jpg)
 
 #### 7.2 Memory Interconnect Innovations
 
@@ -475,7 +475,7 @@ DDR 标准要求每个单元 64ms 内刷新，指令间隔 7.8us
 - 服务不可用时间占比：tRFC/tREFI
 
 - DRAM ctrl 只下发指令，DRAM chip 自己管理 refresh
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_4dd212dd6925.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_4dd212dd6925.jpg)
 
 #### 9.2 Refresh Innovations
 
@@ -528,7 +528,7 @@ DDR 标准要求每个单元 64ms 内刷新，指令间隔 7.8us
 #### 10.2 In-Situ Implementations
 
 - 宏观上看，从存储到计算的数据链路宽度越来越窄
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_d12e87643036.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_d12e87643036.jpg)
 
 - 电流模拟值转换为数值
 
@@ -591,9 +591,9 @@ DDR 标准要求每个单元 64ms 内刷新，指令间隔 7.8us
 - （这里可能有些讲究）
 - 重排请求，并且隐藏调度信息
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_fc31ec37090b.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_fc31ec37090b.jpg)
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_397b4e878c32.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_397b4e878c32.jpg)
 
 - 访问分区，每一轮调度一个租户只能访问某个指定分区，各租户隔离，下一轮调度分区轮换
 
@@ -606,7 +606,7 @@ DDR 标准要求每个单元 64ms 内刷新，指令间隔 7.8us
 - temporal/spatial locality
 - page 分布
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_b9f5a2495dda.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_b9f5a2495dda.jpg)
 
 - 感觉有点像 shrubs tree root set 和 VSA 那一套逻辑
 
@@ -617,13 +617,13 @@ DDR 标准要求每个单元 64ms 内刷新，指令间隔 7.8us
 - 读数据带上 MAC 和 addr 校验，重放攻击
 - Intel SGX
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_52233e41c6a7.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_52233e41c6a7.jpg)
 
 - 读取数据时带上整条链路校验
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_25106639ec3f.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_25106639ec3f.jpg)
 
 - Intel SGX 看不懂
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_4035799e10de.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_4035799e10de.jpg)
 
 - 看不懂
 

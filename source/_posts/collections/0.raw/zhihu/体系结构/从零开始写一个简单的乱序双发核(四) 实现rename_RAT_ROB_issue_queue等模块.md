@@ -33,7 +33,7 @@ source_url: https://zhuanlan.zhihu.com/p/23898837254
 
 我们都知道依赖项问题一共有3种，WAW/WAR/RAW，我们也都知道只有RAW才是真的依赖项，后面两种都只是恰巧寄存器序号相同，并不是真的逻辑上指令之间有依赖关系，所以对于后两种问题，我们可以通过改变寄存器序号来解决这个问题，具体看下图：
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_5deedd03bf94.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_5deedd03bf94.jpg)
 
 因此就引出了物理寄存器的概念，也就是说是架构寄存器为32的情况下，咱们可以让core中实际上用于充当寄存器的物理器件个数大于32，这样就能够让同一个序号的架构寄存器通过重命名，被不同的opcode写回不同的物理位置。这就是rename模块要做的事情，做依赖项检查，与进行重命名。
 
@@ -55,7 +55,7 @@ source_url: https://zhuanlan.zhihu.com/p/23898837254
 
 如下图所示：
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_5612c3872151.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_5612c3872151.jpg)
 
 严格从功能分类上来说，服务于乱序功能的还有rob和busy_table，不过这俩放在ISU中讲。
 
@@ -85,7 +85,7 @@ source_url: https://zhuanlan.zhihu.com/p/23898837254
 
 如下图所示：
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_44e96f9f6517.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_44e96f9f6517.jpg)
 
 ### 三、IRU内部模块介绍
 
@@ -124,7 +124,7 @@ assign waw_hazard = instr0_lrd_valid && instr1_lrd_valid &&
 
 重命名的过程可以看下面这个图的左半边 (右半边的commit下一篇会讲)
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_cb5eb7450551.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_cb5eb7450551.jpg)
 
 ### 四、ISU内部模块介绍
 
@@ -156,7 +156,7 @@ rob其实说穿了也不复杂，本质就是一个circular queue，每次dispat
 
  ROB一个简单的示意图如下，图中rollback和walk暂时可以不用管，下一篇讲重定向的时候会讲的。
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_f9da282448b8.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_f9da282448b8.jpg)
 
 #### 3．Issue queue
 
@@ -207,7 +207,7 @@ module age_deq_policy_ooo (
 
 总结一下，issue queue有一个入队口，一个出队口，2个writeback写口，一个flush口。一个大致的示意图如下所示：
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_d3b9e06e2a0f.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_d3b9e06e2a0f.jpg)
 
 #### 4．Busy_table
 

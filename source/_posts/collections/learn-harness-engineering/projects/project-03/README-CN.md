@@ -19,8 +19,8 @@ categories:
 
 | 目录 | 含义 |
 |------|------|
-| `starter/` | **起点**——基于 P2 solution，文档分块、元数据提取、索引状态、带引用问答待实现。它有 starter 版 `feature_list.json`，但缺少完整的重启/交接 harness（`init.sh`、`session-handoff.md`、`claude-progress.md`、clean-state checklist）。 |
-| `solution/` | **参考实现**——所有功能已实现，AGENTS.md 包含"一次一个功能"策略，并补齐重启/连续性产物。 |
+| `starter/` | <strong>起点</strong>——基于 P2 solution，文档分块、元数据提取、索引状态、带引用问答待实现。它有 starter 版 `feature_list.json`，但缺少完整的重启/交接 harness（`init.sh`、`session-handoff.md`、`claude-progress.md`、clean-state checklist）。 |
+| `solution/` | <strong>参考实现</strong>——所有功能已实现，AGENTS.md 包含"一次一个功能"策略，并补齐重启/连续性产物。 |
 
 ## 使用方法
 

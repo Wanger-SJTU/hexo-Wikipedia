@@ -92,7 +92,7 @@ source_url: https://zhuanlan.zhihu.com/p/20812786520
 
 GRPO优化算法概述如下，GRPO优化过程仅需要加载两个模型，一个是目标优化模型，一个是ref模型。由于有规则reward的判别，并不需要reward model。（如果判别是由奖励模型，那么仍需要，比如用GRPO做RLHF需要peference reward model）
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_b9899a93a06a.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_b9899a93a06a.jpg)
 
 $$\mathcal{L}_{\text{GRPO}}(\theta) = - \frac{1}{G} \sum_{i=1}^G \frac{1}{|o_i|} \sum_{t=1}^{|o_i|} \left[ \min \left( \frac{\pi_\theta(o_{i,t} \mid q, o_{i,\text{\mathbb{D}_{\text{KL}}\left[\pi_\theta \|\pi_{\text{ref}}\right] = \frac{\pi_{\text{ref}}(o_{i,t} \mid q, o_{i,\text{\hat{A}_{i,t} = \frac{r_i - \text{mean}(\mathbf{r})}{\text{std}(\mathbf{r})}  \\$$
 
@@ -431,7 +431,7 @@ bias/truestdev/trueK102K20.251.73K301.7
 
 我在[X-R1](https://link.zhihu.com/?target=https%3A//github.com/dhcode-cpp/X-R1)上测试是可行的，对比有KL和无KL的版本，无KL竟然高了10个点左右
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_0f59fb58796c.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_0f59fb58796c.jpg)
 
 #### 4.6 KL项分析
 
@@ -664,7 +664,7 @@ git: openai/simple-evals
 
 [小冬瓜AIGC：【手撕RLHF-LLaMA2】 Reward Model PyTorch实现](https://zhuanlan.zhihu.com/p/679012951)
 
-***《手撕LLM》***系列文章+原创课程：LLM原理涵盖Pretrained/PEFT/RLHF/高性能计算
+*<strong>《手撕LLM》</strong>*系列文章+原创课程：LLM原理涵盖Pretrained/PEFT/RLHF/高性能计算
 [小冬瓜AIGC：【手撕NSA】DeepSeek新作-原生稀疏注意力-超长文(附代码)](https://zhuanlan.zhihu.com/p/24841366485)
 
 [小冬瓜AIGC：【手撕DualPipe】让我们一步步把 MoE EP 通信 "消除"（附代码）](https://zhuanlan.zhihu.com/p/1910995677451912435)

@@ -21,11 +21,11 @@ Android性能知识版图中图形框架和概念是必须学习和了解的，�
 
 Android图形系统是一个复杂的系统。相关组件模块横跨软件全栈，如示意图
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_861c193938ce.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_861c193938ce.jpg)
 
 运行结构又涉及到多个进程/线程进行协同：
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_436814ab2a8d.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_436814ab2a8d.jpg)
 
 ### 2 重要概念
 
@@ -33,18 +33,18 @@ Android图形系统是一个复杂的系统。相关组件模块横跨软件全�
 
 - TE信号：硬件刷图的断点，从一个TE到下一个TE刷好一张图
 - Vsync：统一系统绘制与显示节奏（Apps和SurfaceFlinger）， 表示的是什么时间开始做事（绘制/合成）节拍器
-- **Fence:  **表示什么时间事情做完了
+- <strong>Fence:</strong>表示什么时间事情做完了
 - 屏幕刷新率：硬件的概念，指屏幕这个硬件刷新画面的频率。如：60Hz 刷新率：这个屏幕在 1 秒内，会刷新显示内容 60 
 - FPS （  Frame Per Second ）是由软件系统决定，是每秒产生画面的个数。如：60FPS 指的是每秒产生 60 个画面。如：60 fps 的系统 , 1s 内需要生成 60 个可供显示的 Frame , 也就是说绘制一帧需要 16.67ms (  ) , 才会不掉帧 ( FrameMiss ).
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_2ef6aa9c90ae.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_2ef6aa9c90ae.jpg)
 
 来自OPPO一文搞定Android VSync机制来龙去脉**
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_96940d9c0501.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_96940d9c0501.jpg)
 
 一文搞定Android VSync机制来龙去脉
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_eea2aeede288.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_eea2aeede288.jpg)
 
 一文搞定Android VSync机制来龙去脉
 
@@ -65,7 +65,7 @@ Buffer：应用绘制图像所使用一块内存；Surfaceflinger对应Layer，�
 
 BufferQueue：
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_9f5f92ce2049.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_9f5f92ce2049.jpg)
 
 - https://source.android.com/docs/core/graphics/arch-bq-gralloc?hl=zh-cn
 - https://source.android.com/docs/core/graphics/sync
@@ -77,11 +77,11 @@ BufferQueue：
 - [Android渲染系列之如何渲染UI](https://link.zhihu.com/?target=https%3A//mp.weixin.qq.com/s/cHI1lN0L6_PIlc4Qg3j1qA)
 - understanding-canvas-and-surface-concepts/4577249#4577249
 - Android绘制流程 -- View、Window、SurfaceFlinger
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_8c2e0e687b05.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_8c2e0e687b05.jpg)
 
 #### 2.4 Choreographer**
 
-**frameworks/base/core/java/android/view/Choreographer.java**
+<strong>frameworks/base/core/java/android/view/Choreographer.java</strong>
 
 ` /**
  * Coordinates the timing of animations, input and drawing.

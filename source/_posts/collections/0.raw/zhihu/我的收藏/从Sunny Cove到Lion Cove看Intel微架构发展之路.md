@@ -15,15 +15,15 @@ source_url: https://zhuanlan.zhihu.com/p/9153350232
 ---
 
 
-**导言**
+<strong>导言</strong>
 
 `Intel`一直被冠以“牙膏厂”的称号，和`AMD`相比`Intel`基本是每年推出一款微架构设计，平均2年左右会有一次相对大的改进，进步节奏差不多，考虑到`Intel`对自己微架构细节讳莫如深，外界仅从软件测试去了解它设计的改进，尽管我觉得公布一些设计的细节有利于市场的正反馈，像`ARM/AMD`都是如此，但`Intel`的具备自己的营销策略。有一种说法，`Intel`快要完蛋，核的设计能力掉出一线，我觉得这种说法过于夸张，也并不觉得`Intel`现在的艰难是核设计落后导致的。虽然自从苹果放弃`Intel`后，牙膏厂过的就不那么顺利，但其核的设计能力依然处在一线水平。本文汇总`2019-2024`年`Intel`的微架构，宏观探讨其发展。（图片来自网络）
 
-### **横向对比**
+### <strong>横向对比</strong>
 
 我们横向比较`Intel` 2024年的旗舰核于其它主流厂商的一些参数，今年`ARM/Apple/高通/AMD`发布的旗舰核取指带宽都是`64Byte`，而`Intel`则是`128Byte`。`Decode`宽度基本都在`8-10`，`ARM`和`Apple`参数好点，`Intel`和`AMD` `Decode`宽度一致是`8`，`Issue`宽度，`Intel`是`18`，`AMD`是`16`，`Retire`宽度`Intel`是`12`，`AMD`是`8`。今年的核`Intel`放弃了以前相对保守的策略，这一代的微架构改变是比较大的，尽管不清楚一些细节，但设计水准依然处在一线。
 
-### **纵向对比**
+### <strong>纵向对比</strong>
 
 `Intel`虽然是每年都推出新的微架构设计，但平均两年多时间核才会有一次相对大的改进，和其它厂商的更新节奏差不多，但稍慢。
 
@@ -43,7 +43,7 @@ source_url: https://zhuanlan.zhihu.com/p/9153350232
 
 下图是`Intel`性能核的一些重要参数供大家参考，从各项数据来看，2024年的`Intel`的核没有挤牙膏，但实际市场反馈不完全是由核决定的。 
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_4b34118cb147.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_4b34118cb147.jpg)
 
 **
 
@@ -51,7 +51,7 @@ source_url: https://zhuanlan.zhihu.com/p/9153350232
 
 2019年 
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_5fa3a6e9268c.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_5fa3a6e9268c.jpg)
 
 **
 
@@ -59,7 +59,7 @@ source_url: https://zhuanlan.zhihu.com/p/9153350232
 
 2020年 
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_bc820eb2ba1e.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_bc820eb2ba1e.jpg)
 
 **
 
@@ -67,7 +67,7 @@ source_url: https://zhuanlan.zhihu.com/p/9153350232
 
 2021年 
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_7689f202514b.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_7689f202514b.jpg)
 
 **
 
@@ -75,7 +75,7 @@ source_url: https://zhuanlan.zhihu.com/p/9153350232
 
 2022年 
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_9c252085e2df.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_9c252085e2df.jpg)
 
 **
 
@@ -83,7 +83,7 @@ source_url: https://zhuanlan.zhihu.com/p/9153350232
 
 2023年 
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_542419368069.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_542419368069.jpg)
 
 **
 
@@ -91,7 +91,7 @@ source_url: https://zhuanlan.zhihu.com/p/9153350232
 
 2024年 
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_e14a490ce8d4.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_e14a490ce8d4.jpg)
 
 **
 

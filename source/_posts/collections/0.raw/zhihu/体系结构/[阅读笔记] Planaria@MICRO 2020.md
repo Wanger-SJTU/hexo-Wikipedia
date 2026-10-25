@@ -31,47 +31,47 @@ DNN在云端的服务部署已经是众多商业巨头的业务内容之一了�
 
 ### 2. 动态架构分解
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_8e7664111543.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_8e7664111543.jpg)
 
 该图展示了可分解架构的理想情况：根据到达的任务的需求动态分割加速器给不同的任务，满足所有任务的QoS要求。为了引出动态可分解架构，作者首先介绍了常规的systolic array加速器结构（如TPU）。以往的加速器往往都只有一个巨大的systolic array（monolithic systolic array）。如下图所示，这种加速器把权重（weight）事先存放在阵列内的存储中，然后通过multi-bank bufffer进行输入数据的存储，将数据流入systolic array，将结果流出systolic array，在最后结合一个SIMD处理单元完成一些收尾算子的计算（比如batch norm, ReLU）。
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_725ca1f956fd.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_725ca1f956fd.jpg)
 
 这种架构被作者成为是固定方向的（uni-directional），数据流动的方向是确定的。不过在DNN网络中不同层的形状区别是比较大的，一个固定的大阵列不能适应不同层的动态需求，总是会有一些部分是浪费的（比如矩阵乘法的权重矩阵有一个维度特别大，另一个维度特别小，就不能铺满整个阵列了）。这种时候要是我们能把大阵列切成多个小的独立阵列就可以解决这个问题，比如下图就是可能的分解/重组方法
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_68594c078eab.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_68594c078eab.jpg)
 
 除了计算阵列，片上存储也需要适应可分解的特性，这里主要考虑input buffer和output buffer，因为weight buffer本来就是分布在array内的，天然可分解。下图展示了memory buffer的不同的分解可能性
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_dbf780e11e2b.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_dbf780e11e2b.jpg)
 
 为了支持这种分解，需要重新组织片上存储的分布方式，不能只把存储放在加速器阵列整体的一侧（因为这样会导致很多远端连线，极大增加了实现难度，如果不连线的话，就无法做到充分利用计算资源，这两种不好的情况如下图所示）。
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_8f16d495a6a5.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_8f16d495a6a5.jpg)
 
 基于以上的讨论，作者提出一种叫做Fission Pod的结构作为加速器设计的基本单元，它如下图所示
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_9b02a91c2e5f.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_9b02a91c2e5f.jpg)
 
 其中每个子阵列内部的PE是可以灵活控制数据流向的（全向流动，omni-directional），其结构如下图，可以通过一些额外的控制位操控每个PE到底是读左边还是右边/上边还是下边的数据。
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_d8b9ee9cc526.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_d8b9ee9cc526.jpg)
 
 利用这样的Fission Pod，就可以搭建Planaria的架构了，如下图
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_86e78186a10e.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_86e78186a10e.jpg)
 
 可以看到子阵列还是用两个正交的ring bus连接起来的，分别用来传input和partial sum。
 
 ### 3. 编译和调度
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_cf4550d70c8e.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_cf4550d70c8e.jpg)
 
 对于编译部分，我比较关心，仔细看文章的介绍，逐字逐句地理解的话，意思是DNN因为模型基本固定，所以可以precompile，然后因为这个Planaria架构可以配置使用多少子阵列，所以每个DNN的会有多个版本的编译结果，根据使用的子阵列数目可以有16种版本，然后编译器还会生成16种不同的配置（这里的配置应该是配置片上开关寄存器的，因为当一个网络可以用多个子阵列，不同层如何用这些阵列还是需要配置的，但是为什么也是16种我不太清楚，可能是人工设计的16种情况），然后对于每个层，在给定的子阵列使用情况下，从可选的配置中选择最优的版本，如上图左侧所示。等到运行时调度就可以直接用precompile的结果。
 
 对于运行时调度，契机有两个：一是有新的任务加到队列里了，二是先前的任务有结束的了，这两种情况都会触发重新schdule。整个schedule算法如下，这个算法的细节应该是写错了不少地方，比如estimates是个dict，在第26行应该是estimates[task]，不过这种细节bug太多了，我就不一一指出，只看整体思路了。思路比较简单，通过启发式地算一些分值决定task的资源分配。
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_7821b8e2d9cd.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_7821b8e2d9cd.jpg)
 
 整体看来这个编译和调度还是非常直接的，毕竟整篇文章的重点不在软件部分。
 
@@ -79,7 +79,7 @@ DNN在云端的服务部署已经是众多商业巨头的业务内容之一了�
 
 实验里对比了四种度量：Throughput, SLA Satisfaction Rate, Fairness, Energy。这些度量在不同的场景下有不同的定义，作者主要是按照先前工作PREMA的定义和MLPerf的定义做的。
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_0858b3952233.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_0858b3952233.jpg)
 
 经过评论区id NoName的同学指正，我找到了这篇文章的开源地址
 

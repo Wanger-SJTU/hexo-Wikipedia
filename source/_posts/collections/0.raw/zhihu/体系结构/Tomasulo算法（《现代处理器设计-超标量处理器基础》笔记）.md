@@ -19,15 +19,15 @@ Tomasulo是在IBM 中最先使用的一种超标量流水线动态调度算法�
 
 现代处理器都基于这一算法进行指令的动态调度。
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_79d94e53fc04.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_79d94e53fc04.jpg)
 
-#### **1. Tomasulo算法的执行步骤**
+#### <strong>1. Tomasulo算法的执行步骤</strong>
 
 Tomasulo算法在指令各个执行步骤中所进行的操作下表所示：
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_cf6ffe1a81cc.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_cf6ffe1a81cc.jpg)
 
-#### **2. Tomasulo算法和硬件推测**
+#### <strong>2. Tomasulo算法和硬件推测</strong>
 
 程序中的分支指令会限制流水线的并行水平，因此需要进行分支的预测，并基于预测结果进行动态调度。在这样的情形下处理器就需要具备处理在预测出错情况下撤销后续控制相关指令的能力。
 
@@ -35,7 +35,7 @@ Tomasulo算法在指令各个执行步骤中所进行的操作下表所示：
 
 为此需要在处理器中增加一个重排序缓冲区(ROB)，用于保存已经执行完成，待提交的指令。
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_b1809d89e599.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_b1809d89e599.jpg)
 
 基于该设计，指令执行时涉及以下4个步骤：
 
@@ -49,13 +49,13 @@ Tomasulo算法在指令各个执行步骤中所进行的操作下表所示：
 
 考虑如下一个例子：
 
-i: DIV   **F0**, F1, F2
+i: DIV   <strong>F0</strong>, F1, F2
 
-i+1: MUL  F3, **F0**, F2
+i+1: MUL  F3, <strong>F0</strong>, F2
 
-i+2: ADD  **F0**, F1, F2
+i+2: ADD  <strong>F0</strong>, F1, F2
 
-i+3: MUL  F3, **F0**, F2
+i+3: MUL  F3, <strong>F0</strong>, F2
 
 如上的指令片段，指令i+1依赖指令i的结果；指令i+3依赖指令i+2的结果。但是指令i+2和指令i之间没有依赖关系，两者存在WAW的冒险。
 
@@ -67,42 +67,42 @@ i+3: MUL  F3, **F0**, F2
 
 如下是动态流水线的初始状态，所有的指令一次进入指令队列进行排队，同时浮点寄存器的值初始化为初始值。此时ROB是空的。
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_d0795a6c109f.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_d0795a6c109f.jpg)
 
 p1：指令i发射，DIV指令被写入乘法保留站(在该位置可以乱序发射执行)；同时在ROB(reorder buffer)中标记指令i的处理结果保存在f0中，此时div计算未完成，所以结果是空的。另外在浮点寄存器中置标记，f0的寄存器最新值在ROB的位置1中(后续的指令如果依赖f0的值都可以从ROB位置1中去取)
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_b9dbc1f4aa1d.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_b9dbc1f4aa1d.jpg)
 
 p2：指令i+1发射，该指令还是加入到乘法保留站，需要注意该指令依赖F0的值，所以去查浮点寄存器看到当前f0的最新值在ROB位置1，但是ROB位置1中f0的值还未出结果，所以乘法保留站中指令i+1对应f0的操作数位置置空，并置标记该操作数从ROB位置1获取，指令被挂起，不能执行。指令i+1中ROB和浮点寄存器相关的操作同上。
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_daad618015af.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_daad618015af.jpg)
 
 p3：指令i+2发射，add指令被加到加法保留站，同时该指令的操作数都已经具备，可以立即执行；指令的操作结果记入到ROB的位置3；同时结果会对浮点寄存器F0进行刷新，所以浮点寄存器F0位置更新标记3，表示最新结果需要从ROB位置3获取。
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_df8676d1eb3e.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_df8676d1eb3e.jpg)
 
 p4：指令i+3发射，添加到乘法保留站中，同时该指令操作数F0未就绪，结果需要从ROB位置3获取，指令置相应的标记，并进行等待。
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_fc3c979ca82f.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_fc3c979ca82f.jpg)
 
 P5：ADD指令的执行速度较快，提前于DIV指令完成，结果写回到ROB中。需要注意此时要保证按序提交，由于指令i还没有完成，所以ADD指令虽然已经执行完，但还是不能提交。对于指令i+3依赖ADD的结果F0，此时就可以直接从ROB中读取F0的结果开始处理。
 
-**注意**：可以看到指令i+3先于指令i+1开始执行，这体现了乱序执行；指令i+2已经完成，但等待指令i，不立即提交，这体现了按序完成。
+<strong>注意</strong>：可以看到指令i+3先于指令i+1开始执行，这体现了乱序执行；指令i+2已经完成，但等待指令i，不立即提交，这体现了按序完成。
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_d9e2cfb04e83.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_d9e2cfb04e83.jpg)
 
 P6：DIV指令终于执行完成了，结果写回到ROB的位置1，此时指令i+1的操作依赖DIV处理的结果F0，此时就可以开始执行了。
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_b5a3dfc251ef.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_b5a3dfc251ef.jpg)
 
 P7：指令i是当前第一条指令，完成了之后就可以立即提交了。但是指令i+2还是不能提交，因为指令i+1还没有完成。指令i+3的MUL操作完成，结果更新到ROB中。
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_e3a13f87aaff.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_e3a13f87aaff.jpg)
 
 P8：指令i+1的MUL操作也完成了，结果写回到ROB中。
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_9f6d96bc871a.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_9f6d96bc871a.jpg)
 
 P9：此时指令i+1已结完成，前面没有等的指令了，所以指令i+1的结果提交，同时指令i+2和指令i+3也已经完成，都可以提交了。
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_fc97813258be.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_fc97813258be.jpg)

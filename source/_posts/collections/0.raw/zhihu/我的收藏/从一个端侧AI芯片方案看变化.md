@@ -17,7 +17,7 @@ source_url: https://zhuanlan.zhihu.com/p/1926315882587596008
 
 今年上半年去听一个生成式 AI 会议的时候，看到了一个和我方向相关且很有意思的方案。最近我又看到了给我推送了这个会议的内容，感觉很有缘分，就想分享出来一起学习新技术。先看PPT上内容：
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_57b9d37217b8.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_57b9d37217b8.jpg)
 
 3D DRAM近存虽然视频的分辨率太差（我还专门花了笔巨款买了大会员，4K分辨率毫无改善），但是我们还是可以看出这是一个非常激进且富有想象力的方案。我把核心的一些feature抄写出来：
 
@@ -39,7 +39,7 @@ source_url: https://zhuanlan.zhihu.com/p/1926315882587596008
 
 WoW通常是wafer还没有切割成独立die，就对准和混合键合，可以把pitch做的更小，例如下面的TSV pitchHBM pitch一般40-50um，HBM4宣传PIM方案，看起来是一个低成本，成熟工艺上的方案。
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_d4997ad7c3b1.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_d4997ad7c3b1.jpg)
 
 端侧AI方案先快速浏览一遍他的PIM(Processing in Memory)架构，受限于分辨率太差，我把一些核心feature摘抄出来。
 
@@ -57,7 +57,7 @@ WoW通常是wafer还没有切割成独立die，就对准和混合键合，可以
 
 我突然看到了一张高清版的图，和上面这个PIM方案有着99%的相似，所以发上来把细节看仔细一点。
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_00f26ae0e4b8.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_00f26ae0e4b8.jpg)
 
 SK hynix AiM方案当然大家不要把注意力放在上一张图logo消失的事实上，可能是他们截图的时候手抖了，也不要真的去较真引用的问题，不要在意这点小细节，还是要把关注点放在核心技术上。
 

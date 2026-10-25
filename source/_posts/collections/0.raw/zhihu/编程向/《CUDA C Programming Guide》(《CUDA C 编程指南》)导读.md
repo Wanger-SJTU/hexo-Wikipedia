@@ -33,7 +33,7 @@ source_url: https://zhuanlan.zhihu.com/p/53773183
 
 GPU是能够高度并行化、具有很多处理器核心的器件，具有很强的计算能力和内存带宽。下图是CPU和GPU在浮点运算上的性能对比发展趋势。
 
-![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_b25e1212d4b3.jpg)
+![](/images/collections/0.raw/zhihu/%E7%BC%96%E7%A8%8B%E5%90%91/asset/img_b25e1212d4b3.jpg)
 
 NVIDIA GPU和 Intel CPU 浮点计算能力对比**
 
@@ -41,7 +41,7 @@ NVIDIA GPU和 Intel CPU 浮点计算能力对比**
 
 如下图所示，CPU仅仅具有有限的核心数量。相比于GPU，CPU的核心属于“少而精”的存在，核心数虽然很少，但是每个核心的性能很强，适合处理具有很多分支的复杂的逻辑。近些年来，CPU中集成了一些并行指令集，如SSE、AVX等，其中AVX可以同时处理256位(32个字节)，可以大大加速并行计算。但是相比于GPU，还是小巫见大巫。
 
-![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_972fee87c4d7.jpg)
+![](/images/collections/0.raw/zhihu/%E7%BC%96%E7%A8%8B%E5%90%91/asset/img_972fee87c4d7.jpg)
 
 CPU 与 GPU 内部结构对比
 
@@ -59,7 +59,7 @@ CUDA(Compute Unified Device Architecture)，是NVIDIA推出的通用并行计算
 
 CUDA还支持C++/Python等更高级的语言编程；此外，NVIDIA还提供了CuDNN、TensorRT、NPP等更高级的库函数。
 
-![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_676f07e48f38.jpg)
+![](/images/collections/0.raw/zhihu/%E7%BC%96%E7%A8%8B%E5%90%91/asset/img_676f07e48f38.jpg)
 
 各代显卡、CUDA、上层库之间的关系
 
@@ -69,7 +69,7 @@ CUDA还支持C++/Python等更高级的语言编程；此外，NVIDIA还提供了
 
 CUDA的编程模型，使得同一个CUDA程序，可以在不同的显卡上运行。
 
-![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_5cfbbf104c7e.jpg)
+![](/images/collections/0.raw/zhihu/%E7%BC%96%E7%A8%8B%E5%90%91/asset/img_5cfbbf104c7e.jpg)
 
 CUDA编程模型
 
@@ -89,7 +89,7 @@ CUDA编程模型
 
 CUDA编程是一个多线程编程，数个线程(Thread)组成一个线程块(Block)，所有线程块组成一个线程网格(Grid)，如下图所示：
 
-![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_c7d7beb43631.jpg)
+![](/images/collections/0.raw/zhihu/%E7%BC%96%E7%A8%8B%E5%90%91/asset/img_c7d7beb43631.jpg)
 
 CUDA线程层级
 
@@ -105,7 +105,7 @@ CUDA线程层级
 
 ### 2.1 内核函数(Kernels)
 
-内核函数是CUDA 每个线程** 执行的函数。CUDA使用扩展的C语言编写内核函数，关键字为**global**。内核函数返回值只能是void。
+内核函数是CUDA 每个线程<strong>执行的函数。CUDA使用扩展的C语言编写内核函数，关键字为</strong>global**。内核函数返回值只能是void。
 
 下面是一段简单的内核函数，用于求两个数组的和：
 
@@ -164,24 +164,24 @@ int main()
 
 同CPU一样，GPU也有不同层级的内存。越靠近核心的内存速度越快，但容量越小；反之，越远离核心的内存速度越慢，但容量较大。
 
-![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_aa8a1ad0df2e.jpg)
+![](/images/collections/0.raw/zhihu/%E7%BC%96%E7%A8%8B%E5%90%91/asset/img_aa8a1ad0df2e.jpg)
 
 CUDA内存层级
 
 上图是NVIDIA设备的硬件示意图。
 
 - 最上方是主机端内存(host memory)，指的就是我们常说的内存。一般主机端内存通过PCI-E总线与设备端内存交换数据。数据交换的速度等于PCI-E总线的速度。
-- 全局内存(global memory)** 、常量内存(constant memory)、纹理内存(texture memory)、本地内存(local memory)。都位于GPU板上，但不在片内。因此速度相对片内内存较慢。** 常量内存和纹理内存对于GPU来说是只读的。  
+- 全局内存(global memory)<strong>、常量内存(constant memory)、纹理内存(texture memory)、本地内存(local memory)。都位于GPU板上，但不在片内。因此速度相对片内内存较慢。</strong> 常量内存和纹理内存对于GPU来说是只读的。  
 - GPU上有 L2 cache和 L1 cahce。其中L2 cache为所有流处理器簇(SM)共享，而L1 cache为每个SM内部共享。这里的cache和CPU的cache一样，程序员无法对cache显式操纵。
 - 纹理缓存和常量缓存在SM内部共享，在早期1.x计算能力的时代，这两种缓存是片上唯一的缓存，十分宝贵。而当Fermi架构出现后，普通的全局内存也具有了缓存，因此就不那么突出了。
 - 共享内存(shared memory, SMEM)** 具有和L1缓存同样的速度，且可以被程序员显式操纵，因此经常被用作存放一些需要反复使用的数据。共享内存只能在SM内共享，且对于CUDA编程模型来说，即使线程块被调度到了同一个SM内也无法互相访问。
-- GPU的**寄存器(registers)** 和CPU不一样，其空间非常巨大，以至于可以为每一个线程分配一块独立的寄存器空间。因此，不像CPU那样切换进程时需要保存上下文，GPU只需要修改一下寄存器空间的指针即可继续运行。所以巨大的寄存器空间，使得GPU上线程切换成为了一个几乎无消耗的操作。** 不过有一点需要注意，寄存器的空间不是无限大的。如果线程数过多，或一个线程使用的寄存器数量太多，多出来的数据会被保存到缓慢的本地内存上，影响程序速度，需要注意。
+- GPU的<strong>寄存器(registers)</strong> 和CPU不一样，其空间非常巨大，以至于可以为每一个线程分配一块独立的寄存器空间。因此，不像CPU那样切换进程时需要保存上下文，GPU只需要修改一下寄存器空间的指针即可继续运行。所以巨大的寄存器空间，使得GPU上线程切换成为了一个几乎无消耗的操作。** 不过有一点需要注意，寄存器的空间不是无限大的。如果线程数过多，或一个线程使用的寄存器数量太多，多出来的数据会被保存到缓慢的本地内存上，影响程序速度，需要注意。
 这里想强调一下共享内存。
  共享内存在物理上是一个个存储体组成的。如果在访问时没有出现冲突，则可以实现高速的访问。但如果出现了冲突(如对某一个存储体的原子操作)，则不仅仅当前线程束会发生串行化，*而且会导致其他线程束无法被调度(存疑，待考证)*。
 
 以上是从硬件的角度解读了一下GPU的内存层级。从编程角度来看，CUDA的线程网格、线程块、线程与各个内存见的关系如下图：
 
-![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_e829f87440f0.jpg)
+![](/images/collections/0.raw/zhihu/%E7%BC%96%E7%A8%8B%E5%90%91/asset/img_e829f87440f0.jpg)
 
 线程层级与内存层级对应图
 
@@ -194,7 +194,7 @@ CUDA内存层级
 
 一种最简单的CPU/GPU混合编程如下图所示：
 
-![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_260083eb5aba.jpg)
+![](/images/collections/0.raw/zhihu/%E7%BC%96%E7%A8%8B%E5%90%91/asset/img_260083eb5aba.jpg)
 
 CPU/GPU混合编程
 
@@ -214,7 +214,7 @@ CPU和GPU的内存是独立的。因此在运行内核函数前，主机端需�
 
 计算能力为X.Y，其中主版本号X代表架构，各个架构如下表：
 
-![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_d5a5722a7a4e.png)
+![](/images/collections/0.raw/zhihu/%E7%BC%96%E7%A8%8B%E5%90%91/asset/img_d5a5722a7a4e.png)
 
 版本号与架构名称在CUDA的书籍文档中，我们经常能看到"1.x"、"5.x"等这样的字眼，代表第1代/第5代架构，也就是Tesla/Maxwell架构。
 
@@ -321,7 +321,7 @@ int main(void)
 
 这里我对比了CUDA、CPU、OPENCV三种实现方式的执行时间：
 
-![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_732aff8d11ae.jpg)
+![](/images/collections/0.raw/zhihu/%E7%BC%96%E7%A8%8B%E5%90%91/asset/img_732aff8d11ae.jpg)
 
 CUDA、CPU、OPENCV执行时间对比速度：CUDA>OPENCV>CPU。其中OPENCV快于CPU的主要原因是OPENCV调用了并行运算指令，但慢于CUDA。
 
@@ -648,7 +648,7 @@ for (int i = 0; i  2; ++i)
 ### 3.2.5.5.3 显式同步(Explicit Synchronization)
 
 可以使用如下函数进行显式同步：
- *`cudaDeviceSynchronize()`：直到所有线程**向设备端的**所有流**的**所有已送入指令**完成，才会退出阻塞。 * `cudaStreamSynchronize()`：直到**指定流**的**之前所有已送入指令**完成，才会退出阻塞。此函数可以用作同步指定流，而其他流可以不受干扰地继续运行。  *`cudaStreamWaitEvent()`：需要stream和event作为输入参数。在调用该函数之后的命令，需要等待该函数等待的事件(Event)发生后，才能执行。如果stream指定为0，则对于向所有stream加入的命令来说，只要加在了该函数之后，都会阻塞直到等待的时间发生方可执行。 *(不知道我理解的对不对：如果是Event->内核1->WaitEvent->内核2，则内核1不用等到Event发生就可以执行，而内核2必须等到Event发生才能执行。还是说内核1其实只有等待Event发生后才会执行？) (如果多个线程向同一个流压入了任务，然后线程0调用了cudaStreamWaitEvent()，则线程1会不会被阻塞？线程1压入的任务会不会被阻塞？)  `cudaStreamQuery()`：查询流内所有压入的指令(preceding commands)是否全部完成。
+ *`cudaDeviceSynchronize()`：直到所有线程<strong>向设备端的</strong>所有流<strong>的</strong>所有已送入指令**完成，才会退出阻塞。 * `cudaStreamSynchronize()`：直到<strong>指定流</strong>的<strong>之前所有已送入指令</strong>完成，才会退出阻塞。此函数可以用作同步指定流，而其他流可以不受干扰地继续运行。  *`cudaStreamWaitEvent()`：需要stream和event作为输入参数。在调用该函数之后的命令，需要等待该函数等待的事件(Event)发生后，才能执行。如果stream指定为0，则对于向所有stream加入的命令来说，只要加在了该函数之后，都会阻塞直到等待的时间发生方可执行。 *(不知道我理解的对不对：如果是Event->内核1->WaitEvent->内核2，则内核1不用等到Event发生就可以执行，而内核2必须等到Event发生才能执行。还是说内核1其实只有等待Event发生后才会执行？) (如果多个线程向同一个流压入了任务，然后线程0调用了cudaStreamWaitEvent()，则线程1会不会被阻塞？线程1压入的任务会不会被阻塞？)  `cudaStreamQuery()`：查询流内所有压入的指令(preceding commands)是否全部完成。
 
 注意，同步函数慎用，因为有可能会产生速度的下降。
 
@@ -773,12 +773,12 @@ MyKernel100, 64, 0, s1>>>(); // Launch kernel on device 1 in s1
 MyKernel100, 64, 0, s0>>>(); // Launch kernel on device 1 in s0
 `
 
-- **内存拷贝**(will success)：如果对一个不属于当前设备的流进行内存拷贝工作，内存拷贝会成功。
-- **cudaEventRecord()**(will fail)：必须现将设备上下文切换过去，再向流压入事件。
-- **cudaEventElapsedTime()**(will fail)：计算时间差前，必须先切换设备。
-- **cudaEventSynchronize() and cudaEventQuery()**(will success)：即使处于不同的设备，事件同步和事件查询依然有效。
-- **cudaStreamWaitEvent()**(will success)：比较特殊，即使函数输入的流和事件不在同一个设备上，也能成功执行。也就是说，可以让流等待另一个设备上(当然当前设备也可以)的事件。这个函数可以用作多个设备间的同步。
-另外需要注意，**每个设备都有自己的默认流**。因此在没有指定流的情况下，向不同设备分派的任务，实际上是压入了各个设备的默认流，他们之间是并行执行的。
+- <strong>内存拷贝</strong>(will success)：如果对一个不属于当前设备的流进行内存拷贝工作，内存拷贝会成功。
+- <strong>cudaEventRecord()</strong>(will fail)：必须现将设备上下文切换过去，再向流压入事件。
+- <strong>cudaEventElapsedTime()</strong>(will fail)：计算时间差前，必须先切换设备。
+- <strong>cudaEventSynchronize() and cudaEventQuery()</strong>(will success)：即使处于不同的设备，事件同步和事件查询依然有效。
+- <strong>cudaStreamWaitEvent()</strong>(will success)：比较特殊，即使函数输入的流和事件不在同一个设备上，也能成功执行。也就是说，可以让流等待另一个设备上(当然当前设备也可以)的事件。这个函数可以用作多个设备间的同步。
+另外需要注意，<strong>每个设备都有自己的默认流</strong>。因此在没有指定流的情况下，向不同设备分派的任务，实际上是压入了各个设备的默认流，他们之间是并行执行的。
 
 ### 3.2.6.4 (设备间)对等内存访问(Peer-to-Peer Memory Access)
 
@@ -853,7 +853,7 @@ MyKernel1000, 128>>>(p1);        // Launch Kernel on Device 1
 
 该变量不会被直接调用，但可以被`cudaPeekAtLastError()`和`cudaGetLastError()`访问到。不同的是，`cudaGetLastError()`在返回这一变量的同时，会把它重置为`cudaSuccess`。
 
-内核函数不会返回值，因此只能通过`cudaPeekAtLastError()`或`cudaGetLastError()`来知悉调用内核**是否有错误。** 当然，为了排除错误出现在调用内核之前就有错误，可以先检验之前的错误变量是否为`cudaSuccess`。
+内核函数不会返回值，因此只能通过`cudaPeekAtLastError()`或`cudaGetLastError()`来知悉调用内核<strong>是否有错误。</strong> 当然，为了排除错误出现在调用内核之前就有错误，可以先检验之前的错误变量是否为`cudaSuccess`。
 
 另外需要注意的是，`cudaStreamQuery()`和`cudaEventQuery()`这类函数，有可能会返回`cudaErrorNotReady`。但这不被认为是错误，因此不会被`cudaPeekAtLastError()`和`cudaGetLastError()`捕获到。
 
@@ -877,7 +877,7 @@ CUDA driver API的版本定义在驱动的头文件中的`CUDA_VERSION`宏内。
 
 CUDA driver API不是向前兼容的。也就是说，针对新版本的CUDA driver API编译的程序、插件、库，并不能在旧版本的驱动上运行。
 
-![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_3084800acb16.jpg)
+![](/images/collections/0.raw/zhihu/%E7%BC%96%E7%A8%8B%E5%90%91/asset/img_3084800acb16.jpg)
 
 CUDA Driver API 兼容性
 
@@ -923,7 +923,7 @@ GPU会将一些内存专门分配给primary surface，用于刷新显示设备�
 
 下图是一款比较老旧的显卡(G80/GT200)的硬件结构图：
 
-![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_6320aaca3e09.jpg)
+![](/images/collections/0.raw/zhihu/%E7%BC%96%E7%A8%8B%E5%90%91/asset/img_6320aaca3e09.jpg)
 
 NVIDIA显卡硬件结构
 
@@ -932,7 +932,7 @@ NVIDIA显卡硬件结构
 
 流处理器簇(SM)内部结构如下图所示：
 
-![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_4ed5c8fee4b7.jpg)
+![](/images/collections/0.raw/zhihu/%E7%BC%96%E7%A8%8B%E5%90%91/asset/img_4ed5c8fee4b7.jpg)
 
 SM内部结构
 
@@ -957,7 +957,7 @@ SM由一系列流处理器(Streaming Processor，SP)、寄存器文件(Register 
 线程束调度**** 当线程块被调度到SM上后，具体调度到哪个SP上运行，是由SM内部的调度器执行的。
  NVIDIA GPU在逻辑上以32个线程(线程束)，作为最小调度单位。但实际上在硬件方面，是以半个线程束(16个线程)调度的。只不过调度器在调度了前半个线程束后，会立刻调度后半个线程束。调度过程如下图所示(计算能力2.0平台)：
 
-![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_ccde51c873fa.jpg)
+![](/images/collections/0.raw/zhihu/%E7%BC%96%E7%A8%8B%E5%90%91/asset/img_ccde51c873fa.jpg)
 
 CUDA线程束调度
 

@@ -65,9 +65,9 @@ categories:
 
 切到 `p04-improved` 分支。在启动 agent 之前，先在仓库里准备好：
 
-- **运行时日志**：对照 solution 的 `src/services/logger.ts`，启动、导入、索引、问答失败路径都有结构化日志。
-- **架构约束**：对照 solution 的 `AGENTS.md`、[`projects/project-04/solution/docs/ARCHITECTURE.md`](https://github.com/walkinglabs/learn-harness-engineering/blob/main/projects/project-04/solution/docs/ARCHITECTURE.md) 和 [`projects/project-04/solution/scripts/check-architecture.sh`](https://github.com/walkinglabs/learn-harness-engineering/blob/main/projects/project-04/solution/scripts/check-architecture.sh)，明确 Electron 四层边界（main / preload / renderer / services）。
-- **干净状态要求**：最终交付前必须能干净重启。
+- <strong>运行时日志</strong>：对照 solution 的 `src/services/logger.ts`，启动、导入、索引、问答失败路径都有结构化日志。
+- <strong>架构约束</strong>：对照 solution 的 `AGENTS.md`、[`projects/project-04/solution/docs/ARCHITECTURE.md`](https://github.com/walkinglabs/learn-harness-engineering/blob/main/projects/project-04/solution/docs/ARCHITECTURE.md) 和 [`projects/project-04/solution/scripts/check-architecture.sh`](https://github.com/walkinglabs/learn-harness-engineering/blob/main/projects/project-04/solution/scripts/check-architecture.sh)，明确 Electron 四层边界（main / preload / renderer / services）。
+- <strong>干净状态要求</strong>：最终交付前必须能干净重启。
 
 然后启动 agent：
 

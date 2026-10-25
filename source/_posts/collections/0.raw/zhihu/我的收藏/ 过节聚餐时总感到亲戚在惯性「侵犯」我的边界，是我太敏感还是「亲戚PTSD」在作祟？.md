@@ -17,7 +17,7 @@ source_url: https://www.zhihu.com/question/621684259/answer/3234807746
 
 吴咏炜、微调 等 1.了
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_f7fba74f3712.jpg)![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_a7e7b8f96ca7.webp)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_f7fba74f3712.jpg)![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_a7e7b8f96ca7.webp)
 
 你可能误会了。
 
@@ -71,7 +71,7 @@ source_url: https://www.zhihu.com/question/621684259/answer/3234807746
 
 对方问你问题，其实是想你问他们问题。**
 
-**对方不问你问题，其实是想你主动说近况。**
+<strong>对方不问你问题，其实是想你主动说近况。</strong>
 
 这两招非常好用。
 
@@ -131,7 +131,7 @@ You just don't understand.是解说男女沟通的名作，你看了它，你完
 
 例如你分享大学毕业后面试的经验，这就是一些很好的分享话题。
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_9ef741c6e9c6.jpg)派熊2
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_9ef741c6e9c6.jpg)派熊2
 
 138 次咨询5.0
 

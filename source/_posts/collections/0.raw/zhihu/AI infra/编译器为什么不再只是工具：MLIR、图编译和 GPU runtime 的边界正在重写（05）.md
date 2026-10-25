@@ -17,7 +17,7 @@ source_url: https://zhuanlan.zhihu.com/p/2025935949230618433
 
 在传统软件里，编译器更像构建阶段工具：源码进来，二进制出去，任务完成。但在 AI 系统里，这个边界越来越站不住。图编译、MLIR、多层 IR、GPU lowering、layout、buffer planning 这些东西，已经不只是在“翻译程序”，而是在提前定义运行时将面对什么样的资源现实。
 
-**先说结论**
+<strong>先说结论</strong>
 
 - AI compiler 首先处理的不是指令，而是结构：图边界、shape、layout、buffer 生命周期和并行形态。
 - 编译器和 runtime 的关系正在从“前后阶段”变成“相互约束”。

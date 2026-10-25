@@ -27,15 +27,15 @@ $$KL[P(X)||Q(X)]=∑x∈X[P(x)logP(x)Q(x)]=Ex∼P(x)[logP(x)Q(x)]KL\left[ P\left
 
 　　KL散度的典型应用场景如下：假设某优化问题中, P(X)" role="presentation">P(X)P\left( X \right) 是真实分布（true distribution）， Q\left( X \right) 是一个用于拟合 P(X)" role="presentation">P(X)P\left( X \right) 的近似分布（approximate distribution），我们尝试通过修改 Q\left( X \right) 使得二者间的KL\left[ P\left( X \right)  || Q \left( X \right) \right] 尽可能小来实现用 Q(X)" role="presentation">Q(X)Q\left( X \right) 拟合 P\left( X \right) ，如下图所示（参考文献[4]）。
 
-![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_c871b04d7f50.jpg)
+![](/images/collections/0.raw/zhihu/dl%E8%AE%BA%E6%96%87/asset/img_c871b04d7f50.jpg)
 
-　　在上面的概率拟合应用场景下， KL\left[ P\left( X \right)  || Q \left( X \right) \right] 也被称为**前向KL散度**（forward Kullback-Leibler Divergence），将 KL\left[ Q \left( X \right)  || P \left( X \right) \right] 称为**反向KL散度**（reverse Kullback-Leibler Divergence）。
+　　在上面的概率拟合应用场景下， KL\left[ P\left( X \right)  || Q \left( X \right) \right] 也被称为<strong>前向KL散度</strong>（forward Kullback-Leibler Divergence），将 KL\left[ Q \left( X \right)  || P \left( X \right) \right] 称为<strong>反向KL散度</strong>（reverse Kullback-Leibler Divergence）。
 
 　　这里需要注意的是，只有在概率拟合的应用场景下（也就是确定了真实分布和拟合分布两个角色之后），前向KL散度 KL\left[ P || Q \right] 和反向KL散度 KL\left[ Q || P \right] 的定义才是有意义的，否则二者只是相同公式改变正负号、并交换 P 和 Q 符号表示之后的平凡结果。
 
 ### 　　2、两类KL散度拟合效果的定性分析
 
-**　　极小化前向KL代价下的拟合行为特性：寻找均值（Mean-Seeking Behaviour）**
+<strong>极小化前向KL代价下的拟合行为特性：寻找均值（Mean-Seeking Behaviour）</strong>
 
 　　前向KL的计算式中， P\left( x \right) 和 Q\left( x \right) 在每个样本点 x 上的差异程度被 P\left( x \right) 加权平均，我们基于此对前向KL的特性进行分析。
 
@@ -43,17 +43,17 @@ $$KL[P(X)||Q(X)]=∑x∈X[P(x)logP(x)Q(x)]=Ex∼P(x)[logP(x)Q(x)]KL\left[ P\left
 
 ***Wherever *P\left( \cdot \right) *has high probability, *Q\left( \cdot \right) *must also have high probability.*　　下图展示了使用前向KL散度代价拟合一个多峰（实际上是双峰）分布的效果示意图（参考文献[4]）。
 
-![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_5e7e22960f58.jpg)
+![](/images/collections/0.raw/zhihu/dl%E8%AE%BA%E6%96%87/asset/img_5e7e22960f58.jpg)
 
 图中绿色曲线代表拟合分布Q，蓝色曲线是目标分布P　　前向KL散度的这种特性一般也被称为 *zero avoiding***，原因是它倾向于避免在任何 0">P\left( x \right)>0 的位置 x 使得 Q\left( x \right)=0 （参考文献[4]）。
 
-**　　极小化反向KL代价下的拟合行为特性：搜寻模态（Mode-Seeking Behaviour）**
+<strong>极小化反向KL代价下的拟合行为特性：搜寻模态（Mode-Seeking Behaviour）</strong>
 
 　　在反向KL中，差异加权求和时的权重系数是 Q\left( x \right) 。此时， P\left( x \right) 在子集 \left\{ x|Q\left( x \right)=0 \right\} 的取值不影响反向KL值的计算，而当 0">Q\left( x \right)>0 时， Q\left( x \right) 与 P\left( x \right) 的差异需要尽可能小以使得反向KL值尽可能小。上述分析结论总结如下（参考文献[4]）：
 
 ***Wherever *Q\left( \cdot \right)* has high probability, *P\left( \cdot \right)* must also have high probability.*　　下图展示了使用前向反向KL散度代价拟合一个多峰（实际是双峰）分布的效果示意图（参考文献[4]）。
 
-![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_693c42ca1db8.jpg)
+![](/images/collections/0.raw/zhihu/dl%E8%AE%BA%E6%96%87/asset/img_693c42ca1db8.jpg)
 
 图中绿色曲线代表拟合分布Q，蓝色曲线是目标分布P　　关于在前向KL拟合特性分析中，为什么说当 P\left( x \right) 近似为0时，无论 Q\left( x \right) 的取值如何（即使绝对值非常大）,一般都不会对前向KL散度计算产生影响的原因定性的论述如下。
 
@@ -73,7 +73,7 @@ $$\lim_{x \rightarrow 0}{xlnx}=\lim_{n \rightarrow \infty}{\frac{1}{n}ln\frac{1}
 
 　　前向KL和反向KL拟合效果的二维多峰（实际上是双峰 P ）分布情况示例（参考文献[1]）：
 
-![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_51f9646c9125.jpg)
+![](/images/collections/0.raw/zhihu/dl%E8%AE%BA%E6%96%87/asset/img_51f9646c9125.jpg)
 
 图中蓝色等值线表示目标分布P，红色等值线代表拟合结果Q　　上面图中蓝色的轮廓线代表一个有两个高斯分布组成双峰分布 P\left(X \right) ，红色的轮廓线是使用单一高斯分布在最小化KL散度意义下对 P\left( X \right) 进行拟合得到的最佳结果。其中图(a)是拟合代价选择前向KL散度 KL\left( P||Q \right) 时的拟合效果，图(b)时拟合代价选择反向KL散度 KL\left( Q||P \right) 时的拟合效果，图(c)和图(b)使用相同的代价但展示的是到达反向KL散度代价的另外一个局部极小值点的效果。
 
@@ -81,11 +81,11 @@ $$\lim_{x \rightarrow 0}{xlnx}=\lim_{n \rightarrow \infty}{\frac{1}{n}ln\frac{1}
 
 　　$考虑到需要用人工设计的近似分布 Q_{\theta}\left( X \right) 来拟合真实分布 P\left( X \right) ，这里下标 \theta 强调 Q 是一个受到参数 \theta 控制的分布。例如： Q 是正态分布 N\left( \mu, \sigma^{2} \right) ， P 是正态分布 N\left( \mu_{0}, \sigma_{0}^{2} \right) ，现在希望用 Q 来拟合 P ，其中 Q 的均值和方差 \left\{ \mu, \sigma^{2} \right\} 就是拟合过程中可以调整的参数 \theta 。于是基于前向KL和反向KL代价的分布拟合问题分别转化为以下两个优化问题（参考文献[4]）：$
 
-$**　　命题1**. 极小化前向KL：\arg min_{\theta} KL\left( P||Q_{\theta} \right) 等价于对参数 \theta 的极大似然估计。$
+$<strong>命题1</strong>. 极小化前向KL：\arg min_{\theta} KL\left( P||Q_{\theta} \right) 等价于对参数 \theta 的极大似然估计。$
 
-$**　　命题2**. 极小化反向KL： \arg min_{\theta} KL\left( Q_{\theta}||P \right) 相当于在要求 Q_{\theta} 在拟合 P 的同时尽可能保持单一模态。$
+$<strong>命题2</strong>. 极小化反向KL： \arg min_{\theta} KL\left( Q_{\theta}||P \right) 相当于在要求 Q_{\theta} 在拟合 P 的同时尽可能保持单一模态。$
 
-　　首先，**证明命题一**，过程如下：
+　　首先，<strong>证明命题一</strong>，过程如下：
 
 $arg\ min_{\theta} \ KL\left( P|| Q \right) $
 
@@ -103,7 +103,7 @@ $\approx arg\ max_{\theta} \ E_{X\sim P_{data}} \left[ log \ Q_{\theta} \left( X
 
 　　综上命题1成立。
 
-　　其次，**证明命题2，**推导如下：
+　　其次，<strong>证明命题2，</strong>推导如下：
 
 $arg\ min_{\theta} \ KL\left( Q|| P \right) = arg\ min_{\theta}\left( E_{X\sim Q_{\theta}} \left[ -log \ P \left( X \right) \right] + H\left( Q_{\theta} \left( X \right) \right) \right)  $
 
@@ -119,11 +119,11 @@ $E_{X\sim Q_{\theta}} \left[ -log \ P \left( X \right) \right] + H\left( Q_{\the
 
 　　前面两节介绍了概率分布拟合意义下的两种不同类型KL散度的概念和特性，接下来的问题是：哪种KL散度更好？用一句老生常谈的话回答，就是“取决于具体问题”。就像第二节中所介绍的，两种KL散度各具特性，所以这个问题的答案取决于选择那种KL散度更适合所要解决的问题。
 
-**　　前向KL散度的应用场景**
+<strong>前向KL散度的应用场景</strong>
 
 　　在监督学习领域，常常隐含使用前向KL作为训练代价（参考文献[4]），这是因为前面提到的前向KL散度代价与极大似然估计的等价性，这里不再重复说明。
 
-**　　反向KL散度的应用场景**
+<strong>反向KL散度的应用场景</strong>
 
 　　在贝叶斯推理（Bayesian Inference）相关领域，特别是变分贝叶斯（Variational Bayes），反向KL被广泛使用。此外变分自编码机（VAE, Variational Autoencoder）的推导过程中也用到了反向KL（参考文献[2]），强化学习（参考文献[4]）中也用到了反向KL。
 
@@ -135,7 +135,7 @@ $E_{X\sim Q_{\theta}} \left[ -log \ P \left( X \right) \right] + H\left( Q_{\the
 
 　　考虑有两个样本分布 P 和 Q 如下：
 
-![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_9a409bccf97c.jpg)
+![](/images/collections/0.raw/zhihu/dl%E8%AE%BA%E6%96%87/asset/img_9a409bccf97c.jpg)
 
 　　由于 P 和 Q 中都在某个取值上概率为0，因此直接计算前向KL散度和反向KL散度
 
@@ -147,7 +147,7 @@ $$KL_{backward} \left( Q||P \right)=\sum_{i=1}^{4}{\left[ Q\left( x_i \right)log
 
 　　引入一个微小常量 \varepsilon ，例如： \varepsilon=10^{-3} ，然后定义平滑的分布 P^{'} 和 Q^{'} 如下：
 
-![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_7630a8985619.jpg)
+![](/images/collections/0.raw/zhihu/dl%E8%AE%BA%E6%96%87/asset/img_7630a8985619.jpg)
 
 　　分别用 KL_{forward}\left( P^{'}||Q^{'} \right) 和 KL_{backward}\left( P^{'}||Q^{'} \right) 作为 KL_{forward}\left( P||Q \right) 和 KL_{backward}\left( Q||P \right) 的替代，这样正向KL和反向KL就都变得可以计算了。
 

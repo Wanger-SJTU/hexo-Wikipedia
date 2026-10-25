@@ -15,14 +15,14 @@ categories:
 
 Her ürün alanı ve mimari katman için bir kalite anlık görüntüsü. Hem ajanlar hem de insanlar bu belgeyi, kod tabanının nerede güçlü ve nerede geliştirilmesi gerektiğini hızlıca anlamak için kullanabilir.
 
-**Güncelleme sıklığı:** Her önemli oturumdan sonra veya yeni bir iş aşamasına başlamadan önce.
+<strong>Güncelleme sıklığı:</strong> Her önemli oturumdan sonra veya yeni bir iş aşamasına başlamadan önce.
 
-**Notlandırma ölçeği:**
+<strong>Notlandırma ölçeği:</strong>
 
-- **A**: Tüm doğrulama geçiyor, temiz mimari, ajan tarafından okunabilir, kararlı testler
-- **B**: Doğrulama geçiyor, çoğunlukla temiz, okunabilirlik veya test kapsamında küçük boşluklar
-- **C**: Kısmen çalışıyor, bilinen boşluklar, bazı kod alanları ajanların anlaması zor
-- **D**: Çalışmıyor veya büyük yapısal sorunlar var
+- <strong>A</strong>: Tüm doğrulama geçiyor, temiz mimari, ajan tarafından okunabilir, kararlı testler
+- <strong>B</strong>: Doğrulama geçiyor, çoğunlukla temiz, okunabilirlik veya test kapsamında küçük boşluklar
+- <strong>C</strong>: Kısmen çalışıyor, bilinen boşluklar, bazı kod alanları ajanların anlaması zor
+- <strong>D</strong>: Çalışmıyor veya büyük yapısal sorunlar var
 
 ---
 

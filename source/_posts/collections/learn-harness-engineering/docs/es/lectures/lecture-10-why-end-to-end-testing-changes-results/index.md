@@ -22,27 +22,27 @@ Le pides al agent que añada una funcionalidad de exportación de archivos a una
 
 Es como un ensayo de coro—cada parte vocal suena perfecta cuando se canta individualmente, pero cuando cantan juntos, las sopranos van medio tiempo más rápido que los bajos, y el acompañamiento está un semitono desfasado de la melodía principal. Cada parte es "correcta" por sí sola, pero el conjunto está desafinado.
 
-La Pirámide de Testing de Google nos dice: un gran número de pruebas unitarias son la base, pero si te detienes ahí, perderás sistemáticamente los problemas de interacción entre componentes. Para los agentes de codificación con IA, este problema es aún más grave—los agentes tienden a ejecutar solo las pruebas más rápidas y luego declarar la finalización. **Solo las pruebas end-to-end pueden demostrar que no existen defectos a nivel de sistema.**
+La Pirámide de Testing de Google nos dice: un gran número de pruebas unitarias son la base, pero si te detienes ahí, perderás sistemáticamente los problemas de interacción entre componentes. Para los agentes de codificación con IA, este problema es aún más grave—los agentes tienden a ejecutar solo las pruebas más rápidas y luego declarar la finalización. <strong>Solo las pruebas end-to-end pueden demostrar que no existen defectos a nivel de sistema.</strong>
 
 ## Los puntos ciegos de las pruebas unitarias
 
 La filosofía de diseño de las pruebas unitarias es el aislamiento—mockear dependencias y enfocarse únicamente en la unidad bajo prueba. Esta filosofía hace que las pruebas unitarias sean rápidas y precisas, pero también crea puntos ciegos sistemáticos. Es como hacer que cada parte vocal practique con auriculares durante un ensayo de coro—suena bien para ellos, pero los problemas solo emergen cuando se unen:
 
-**Incompatibilidad de interfaces**: La ruta de archivo pasada por el proceso de render al preload script es una ruta relativa, pero el preload script espera una ruta absoluta. Sus respectivas pruebas unitarias usaron mocks y pasaron. El problema solo se descubre cuando se ejecuta el flujo end-to-end—como dos partes vocales practicando independientemente y sintiéndose bien, solo para darse cuenta durante el conjunto que una canta en compás de 4/4 y la otra en 3/4.
+<strong>Incompatibilidad de interfaces</strong>: La ruta de archivo pasada por el proceso de render al preload script es una ruta relativa, pero el preload script espera una ruta absoluta. Sus respectivas pruebas unitarias usaron mocks y pasaron. El problema solo se descubre cuando se ejecuta el flujo end-to-end—como dos partes vocales practicando independientemente y sintiéndose bien, solo para darse cuenta durante el conjunto que una canta en compás de 4/4 y la otra en 3/4.
 
-**Errores de propagación de estado**: Una migración de base de datos cambia el esquema de la tabla, pero la capa de caché del ORM todavía mantiene entradas de caché para el esquema anterior. Las pruebas unitarias proporcionan un entorno mock completamente nuevo cada vez, lo cual no expondrá esta inconsistencia de estado entre capas. Es como cambiar la letra de una canción, pero alguien todavía canta la versión antigua.
+<strong>Errores de propagación de estado</strong>: Una migración de base de datos cambia el esquema de la tabla, pero la capa de caché del ORM todavía mantiene entradas de caché para el esquema anterior. Las pruebas unitarias proporcionan un entorno mock completamente nuevo cada vez, lo cual no expondrá esta inconsistencia de estado entre capas. Es como cambiar la letra de una canción, pero alguien todavía canta la versión antigua.
 
-**Problemas de ciclo de vida de recursos**: La adquisición y liberación de file handles, conexiones de base de datos y sockets de red abarcan múltiples componentes. Las pruebas unitarias crean y destruyen recursos independientes para cada prueba, sin exponer la contención de recursos o las fugas. Es como cada parte vocal tomando turnos para usar los micrófonos durante el ensayo, pero cuando todos suben al escenario juntos, no hay suficientes micrófonos.
+<strong>Problemas de ciclo de vida de recursos</strong>: La adquisición y liberación de file handles, conexiones de base de datos y sockets de red abarcan múltiples componentes. Las pruebas unitarias crean y destruyen recursos independientes para cada prueba, sin exponer la contención de recursos o las fugas. Es como cada parte vocal tomando turnos para usar los micrófonos durante el ensayo, pero cuando todos suben al escenario juntos, no hay suficientes micrófonos.
 
-**Dependencia del entorno**: El código se comporta correctamente en el entorno de prueba (donde todo está mockeado) pero falla en el entorno real debido a diferencias de configuración, latencia de red o indisponibilidad del servicio. Como cantar perfectamente en la sala de ensayo, pero encontrar retroalimentación acústica e interferencia del viento en un festival al aire libre.
+<strong>Dependencia del entorno</strong>: El código se comporta correctamente en el entorno de prueba (donde todo está mockeado) pero falla en el entorno real debido a diferencias de configuración, latencia de red o indisponibilidad del servicio. Como cantar perfectamente en la sala de ensayo, pero encontrar retroalimentación acústica e interferencia del viento en un festival al aire libre.
 
 ## Las pruebas end-to-end no solo cambian los resultados, cambian el comportamiento
 
 Esto es algo que muchas personas no logran comprender: cuando un agent sabe que su trabajo será sometido a pruebas end-to-end, su comportamiento de codificación cambia.
 
-1. **Considerar las interacciones entre componentes**: Mientras escribe código, pensará en "cómo se conecta esta interfaz con el upstream", en lugar de enfocarse solo en una única función. Así como saber que eventualmente cantarán juntos, prestarás atención a las otras partes vocales durante la práctica.
-2. **Respetar los límites de la arquitectura**: En sistemas con restricciones arquitectónicas, las pruebas end-to-end obligan al agent a adherirse a las reglas de límites. Como una partitura marcada con "crescendo aquí", tienes que seguirla.
-3. **Manejar rutas de error**: Las pruebas end-to-end generalmente incluyen escenarios de falla, obligando al agent a considerar el manejo de excepciones. Es como simular "qué pasaría si el micrófono muriera repentinamente" durante el ensayo, para que sepas qué hacer.
+1. <strong>Considerar las interacciones entre componentes</strong>: Mientras escribe código, pensará en "cómo se conecta esta interfaz con el upstream", en lugar de enfocarse solo en una única función. Así como saber que eventualmente cantarán juntos, prestarás atención a las otras partes vocales durante la práctica.
+2. <strong>Respetar los límites de la arquitectura</strong>: En sistemas con restricciones arquitectónicas, las pruebas end-to-end obligan al agent a adherirse a las reglas de límites. Como una partitura marcada con "crescendo aquí", tienes que seguirla.
+3. <strong>Manejar rutas de error</strong>: Las pruebas end-to-end generalmente incluyen escenarios de falla, obligando al agent a considerar el manejo de excepciones. Es como simular "qué pasaría si el micrófono muriera repentinamente" durante el ensayo, para que sepas qué hacer.
 
 ## Pirámide de testing y promoción de retroalimentación de revisiones
 
@@ -70,15 +70,15 @@ flowchart LR
     Harness --> Stronger["Will fail immediately next time"]
 ```
 
-En las prácticas de ingeniería de Codex, OpenAI enfatiza: **los mensajes de error escritos para agentes deben incluir instrucciones de corrección.** No simplemente escribas `"Direct filesystem access in renderer"`; escribe `"Direct filesystem access in renderer. All file operations must go through the preload bridge. Move this call to preload/file-ops.ts and invoke it via window.api."` Esto convierte las reglas arquitectónicas en un bucle de autocorrección. Como un director de coro que no solo dice "cantaste mal eso", sino que dice "estuviste medio tiempo rápido aquí, escucha el ritmo de los altos, y entra en el compás 32."
+En las prácticas de ingeniería de Codex, OpenAI enfatiza: <strong>los mensajes de error escritos para agentes deben incluir instrucciones de corrección.</strong> No simplemente escribas `"Direct filesystem access in renderer"`; escribe `"Direct filesystem access in renderer. All file operations must go through the preload bridge. Move this call to preload/file-ops.ts and invoke it via window.api."` Esto convierte las reglas arquitectónicas en un bucle de autocorrección. Como un director de coro que no solo dice "cantaste mal eso", sino que dice "estuviste medio tiempo rápido aquí, escucha el ritmo de los altos, y entra en el compás 32."
 
 ## Conceptos clave
 
-- **Defectos en los límites de componentes**: El componente A y B pasan sus pruebas unitarias, pero su interacción produce un comportamiento incorrecto. Este es el tipo de problema que las pruebas end-to-end detectan mejor—como partes del coro que son individualmente correctas pero desafinadas juntas.
-- **Gradiente de adecuación de pruebas**: Defectos detectados por pruebas unitarias <= defectos detectados por pruebas de integración <= defectos detectados por pruebas end-to-end. Cada capa superior aumenta la capacidad de detección.
-- **Reglas de cumplimiento de límites arquitectónicos**: Convertir reglas de documentos de arquitectura (como "el proceso de render no puede acceder al sistema de archivos directamente") en verificaciones ejecutables y automatizadas. De "escritas en papel" a "ejecutándose en CI."
-- **Promoción de retroalimentación de revisiones**: Convertir comentarios repetidos de revisiones de código en pruebas automatizadas. Cada vez que se encuentra un problema recurrente, añadir una regla, y el harness automáticamente se fortalece. Como un director que convierte los errores comunes de ensayo en ejercicios de calentamiento—la próxima vez que se cometa el mismo error, el ejercicio mismo lo expone sin que el director necesite decir nada.
-- **Mensajes de error orientados al agent**: Los mensajes de falla no deberían solo indicar "qué salió mal", sino también decirle al agent exactamente cómo solucionarlo. Esto convierte las fallas de pruebas en bucles de retroalimentación autocorrectivos.
+- <strong>Defectos en los límites de componentes</strong>: El componente A y B pasan sus pruebas unitarias, pero su interacción produce un comportamiento incorrecto. Este es el tipo de problema que las pruebas end-to-end detectan mejor—como partes del coro que son individualmente correctas pero desafinadas juntas.
+- <strong>Gradiente de adecuación de pruebas</strong>: Defectos detectados por pruebas unitarias <= defectos detectados por pruebas de integración <= defectos detectados por pruebas end-to-end. Cada capa superior aumenta la capacidad de detección.
+- <strong>Reglas de cumplimiento de límites arquitectónicos</strong>: Convertir reglas de documentos de arquitectura (como "el proceso de render no puede acceder al sistema de archivos directamente") en verificaciones ejecutables y automatizadas. De "escritas en papel" a "ejecutándose en CI."
+- <strong>Promoción de retroalimentación de revisiones</strong>: Convertir comentarios repetidos de revisiones de código en pruebas automatizadas. Cada vez que se encuentra un problema recurrente, añadir una regla, y el harness automáticamente se fortalece. Como un director que convierte los errores comunes de ensayo en ejercicios de calentamiento—la próxima vez que se cometa el mismo error, el ejercicio mismo lo expone sin que el director necesite decir nada.
+- <strong>Mensajes de error orientados al agent</strong>: Los mensajes de falla no deberían solo indicar "qué salió mal", sino también decirle al agent exactamente cómo solucionarlo. Esto convierte las fallas de pruebas en bucles de retroalimentación autocorrectivos.
 
 ## Cómo hacerlo
 
@@ -86,11 +86,11 @@ En las prácticas de ingeniería de Codex, OpenAI enfatiza: **los mensajes de er
 
 El prerrequisito para las pruebas end-to-end son límites de sistema claros. Si la arquitectura es un plato de espaguetis, las pruebas end-to-end solo probarán "este plato de espaguetis funciona", no te dirán dónde se violaron las intenciones de diseño. Es como un coro que ni siquiera se ha dividido en partes vocales—por mucho que ensayen, no sonará bien.
 
-La experiencia de OpenAI: **para bases de código generadas por agentes, las restricciones arquitectónicas deben ser prerrequisitos tempranos establecidos desde el primer día, no algo a considerar cuando el equipo crezca.** La razón es simple—los agentes copiarán los patrones existentes en el repositorio, incluso si esos patrones son desiguales o subóptimos. Sin restricciones arquitectónicas, el agent introducirá más desviaciones en cada sesión.
+La experiencia de OpenAI: <strong>para bases de código generadas por agentes, las restricciones arquitectónicas deben ser prerrequisitos tempranos establecidos desde el primer día, no algo a considerar cuando el equipo crezca.</strong> La razón es simple—los agentes copiarán los patrones existentes en el repositorio, incluso si esos patrones son desiguales o subóptimos. Sin restricciones arquitectónicas, el agent introducirá más desviaciones en cada sesión.
 
 OpenAI adoptó una "Arquitectura de Dominio en Capas"—cada dominio de negocio se divide en capas fijas: Types → Config → Repo → Service → Runtime → UI. Las dependencias fluyen estrictamente hacia adelante, y las preocupaciones entre dominios entran a través de interfaces de Providers explícitas. Cualquier otra dependencia está prohibida y se cumple mecánicamente mediante linting personalizado.
 
-Principio clave: **Impedir invariantes, no microgestionar la implementación.** Por ejemplo, requerir "los datos se analizan en el límite", pero no dictar qué biblioteca usar. Los mensajes de error deben incluir instrucciones de corrección—no solo decir "violación", sino decirle al agent exactamente cómo cambiarlo.
+Principio clave: <strong>Impedir invariantes, no microgestionar la implementación.</strong> Por ejemplo, requerir "los datos se analizan en el límite", pero no dictar qué biblioteca usar. Los mensajes de error deben incluir instrucciones de corrección—no solo decir "violación", sino decirle al agent exactamente cómo cambiarlo.
 
 > Fuente: [OpenAI: Harness engineering: leveraging Codex in an agent-first world](https://openai.com/index/harness-engineering/)
 
@@ -131,11 +131,11 @@ Cada vez que se encuentre un nuevo tipo de error del agent durante una revisión
 
 ## Caso del mundo real
 
-**Tarea**: Implementar una funcionalidad de exportación de archivos en una aplicación Electron. Involucra la UI del proceso de render, el proxy del sistema de archivos del preload script y la transformación de datos de la capa de servicio.
+<strong>Tarea</strong>: Implementar una funcionalidad de exportación de archivos en una aplicación Electron. Involucra la UI del proceso de render, el proxy del sistema de archivos del preload script y la transformación de datos de la capa de servicio.
 
-**Cantando las partes individualmente (Pruebas unitarias pasaron)**: Pruebas del componente de render (pasaron, operaciones de archivo mockeadas), pruebas del preload script (pasaron, sistema de archivos mockeado), pruebas de la capa de servicio (pasaron, fuente de datos mockeada). El agent declara la finalización.
+<strong>Cantando las partes individualmente (Pruebas unitarias pasaron)</strong>: Pruebas del componente de render (pasaron, operaciones de archivo mockeadas), pruebas del preload script (pasaron, sistema de archivos mockeado), pruebas de la capa de servicio (pasaron, fuente de datos mockeada). El agent declara la finalización.
 
-**Cantando juntos (Defectos revelados por las pruebas end-to-end)**:
+<strong>Cantando juntos (Defectos revelados por las pruebas end-to-end)</strong>:
 
 | Defect | Description | Unit Test | E2E |
 |--------|-------------|-----------|-----|
@@ -149,11 +149,11 @@ Los 5 defectos fueron detectados por las pruebas end-to-end, mientras que las pr
 
 ## Ideas clave
 
-- **Las pruebas unitarias son sistemáticamente ciegas a los defectos en los límites de componentes**—su diseño de aislamiento es precisamente lo que les impide detectar problemas de interacción. Que todos canten correctamente no significa que el coro no esté desafinado.
-- **Las pruebas end-to-end no solo detectan defectos, cambian el comportamiento de codificación del agent**—haciéndolo enfocarse más en la integración y los límites.
-- **Las reglas arquitectónicas deben ser ejecutables**—no escritas en un documento esperando ser leídas, sino verificadas automáticamente en cada commit.
-- **Los mensajes de error deben estar diseñados para los agentes**—incluyendo pasos específicos sobre "cómo solucionarlo" para formar un bucle autocorrectivo.
-- **La promoción de retroalimentación de revisiones hace que el harness se fortalezca automáticamente**—cada categoría de defecto capturado se convierte en una línea de defensa permanente.
+- <strong>Las pruebas unitarias son sistemáticamente ciegas a los defectos en los límites de componentes</strong>—su diseño de aislamiento es precisamente lo que les impide detectar problemas de interacción. Que todos canten correctamente no significa que el coro no esté desafinado.
+- <strong>Las pruebas end-to-end no solo detectan defectos, cambian el comportamiento de codificación del agent</strong>—haciéndolo enfocarse más en la integración y los límites.
+- <strong>Las reglas arquitectónicas deben ser ejecutables</strong>—no escritas en un documento esperando ser leídas, sino verificadas automáticamente en cada commit.
+- <strong>Los mensajes de error deben estar diseñados para los agentes</strong>—incluyendo pasos específicos sobre "cómo solucionarlo" para formar un bucle autocorrectivo.
+- <strong>La promoción de retroalimentación de revisiones hace que el harness se fortalezca automáticamente</strong>—cada categoría de defecto capturado se convierte en una línea de defensa permanente.
 
 ## Lecturas adicionales
 
@@ -164,8 +164,8 @@ Los 5 defectos fueron detectados por las pruebas end-to-end, mientras que las pr
 
 ## Ejercicios
 
-1. **Detección de defectos entre componentes**: Elige una tarea de modificación que involucre al menos tres componentes. Primero, ejecuta solo pruebas unitarias y registra los resultados, luego ejecuta pruebas end-to-end. Analiza a qué tipo de problema de interacción entre capas pertenece cada defecto adicional descubierto.
+1. <strong>Detección de defectos entre componentes</strong>: Elige una tarea de modificación que involucre al menos tres componentes. Primero, ejecuta solo pruebas unitarias y registra los resultados, luego ejecuta pruebas end-to-end. Analiza a qué tipo de problema de interacción entre capas pertenece cada defecto adicional descubierto.
 
-2. **Automatización de reglas arquitectónicas**: Elige una restricción arquitectónica de tu proyecto y conviértela en una verificación ejecutable (con un mensaje de error orientado al agent). Intégrala en el harness y verifica su efectividad con una tarea de referencia.
+2. <strong>Automatización de reglas arquitectónicas</strong>: Elige una restricción arquitectónica de tu proyecto y conviértela en una verificación ejecutable (con un mensaje de error orientado al agent). Intégrala en el harness y verifica su efectividad con una tarea de referencia.
 
-3. **Promoción de retroalimentación de revisiones**: Encuentra un tipo de comentario recurrente en tu historial de revisiones de código y conviértelo en una verificación automatizada usando el proceso de cinco pasos. Compara la frecuencia del problema antes y después de la promoción.
+3. <strong>Promoción de retroalimentación de revisiones</strong>: Encuentra un tipo de comentario recurrente en tu historial de revisiones de código y conviértelo en una verificación automatizada usando el proceso de cinco pasos. Compara la frecuencia del problema antes y después de la promoción.

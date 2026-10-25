@@ -25,7 +25,7 @@ source_url: https://zhuanlan.zhihu.com/p/1961543955842830601
 
 如下图所示，一个warp需要执行R3 = R1 + R2的操作，但是R1的数据迟迟不来，那么就会经过一段漫长的时间等待，如果直到HBM（GPU中的内存条）中才读出数据，那么warp就一直闲着没事干！
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_96d12a3c09f1.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_96d12a3c09f1.jpg)
 
 ### 解决方法
 
@@ -47,7 +47,7 @@ source_url: https://zhuanlan.zhihu.com/p/1961543955842830601
 
 假设李华正在写英语作业，但是遇到了一个单词不认识，李华让小明帮他去图书馆中找英语字典。在小明没找到之前，李华无法继续写英语作业。如果这时李华一直等着小明把英语字典找到才开始继续写英语作业，时间就浪费了。如下图所示：
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_ba66c58da7da.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_ba66c58da7da.jpg)
 
 如果这样的话，在小明去找英文字典的这一段时间里，其实李华是在摸鱼的，闲着没事干，这样对他完成DDL不利，所以李华决定采取两种策略来解决这一问题。
 
@@ -61,7 +61,7 @@ source_url: https://zhuanlan.zhihu.com/p/1961543955842830601
 
 #### 书上原图
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_39df6efdf171.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_39df6efdf171.jpg)
 
 #### 解释
 
@@ -71,7 +71,7 @@ source_url: https://zhuanlan.zhihu.com/p/1961543955842830601
 
 在右上图中可以看到，GPU在执行指令B的时候遇到了和李华一样的情况，他算着算着发现需要去内存中找数据才能进行接下来的计算操作。如下图中我画橙色×的部分所示。在橙色×对应的这段时间内，GPU就是在摸鱼。
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_a849e5d12909.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_a849e5d12909.jpg)
 
 所以可以考虑采取和李华一样的策略，在遇到访存阶段的时候，计算单元开始为下一条已经准备好的指令工作。就像李华可以在派小明去书架上找英语字典的时候开始做数学作业。在图中也可以看到GPU在原来画橙色×的时候执行了指令C，没让计算单元闲着没事做。
 
@@ -79,13 +79,13 @@ source_url: https://zhuanlan.zhihu.com/p/1961543955842830601
 
 #### 书上原图
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_bb651082ab17.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_bb651082ab17.jpg)
 
 #### 解释
 
 在一个SM中，一堆warp是共用一个寄存器文件的，如下图所示。就像李华要写英语作业，数学作业，物理作业一样，由多个作业要写，但是桌子的空间是有限的。假如桌子上有5本书，4本是英语书，1本是数学书，那么李华肯定就是要先写玩英语作业，再写数学作业，最后写物理作业划算。下图中的warp调度器用来规划GPU应该执行哪个warp。
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_36118b2250ef.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_36118b2250ef.jpg)
 
 GPU去缓存里面找数据，就相当于李华在桌子上放的材料。GPU会维持一个warp的缓存命中情况得分表，如果一个warp一直都能命中缓存，那么他的得分就会很低，相反，如果一个warp一直都无法命中数据，那么他的得分就很高。
 
@@ -93,6 +93,6 @@ GPU去缓存里面找数据，就相当于李华在桌子上放的材料。GPU�
 
 在下图中，wave scheduler相当于李华的决策大脑，根据不同任务的得分来判断接下来应该做哪个任务，victim Tags记录了执行每个warp的时候被替换出去的缓存的数量，locality scoring system根据victim Tags记录了执行每个warp的时候被替换出去的缓存的数量对每个warp进行打分，执行某个warp的时候被替换出去的缓存数量越高那么这个warp的得分也越高，执行的优先级越低。
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_9b098c5cf9a9.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_9b098c5cf9a9.jpg)
 
 以上就是本篇文章的全部内容，介绍了GPU中计算与访存的斗争，以及两种解决方法。大家有疑问或者指正的地方欢迎在评论区讨论。

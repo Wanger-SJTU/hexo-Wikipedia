@@ -32,7 +32,7 @@ Anthropic realizó un experimento controlado. Mismo prompt ("construye un creado
 
 No cambiaron el modelo. Opus 4.5 seguía siendo Opus 4.5. Lo que cambió fue el equipo de monta.
 
-El artículo de OpenAI sobre harness engineering lo dice con claridad: Codex en un repositorio bien harnessed pasa de "poco fiable" a "fiable". Fíjate en el lenguaje: no es "un poco mejor", sino un cambio cualitativo. Como un caballo pura sangre: puedes montarlo sin equipo de monta adecuado, pero no llegarás lejos, no irás rápido y caerte no será una sorpresa. El harness es ese conjunto completo de equipo: **todo lo que existe en la infraestructura de ingeniería fuera de los pesos del modelo.**
+El artículo de OpenAI sobre harness engineering lo dice con claridad: Codex en un repositorio bien harnessed pasa de "poco fiable" a "fiable". Fíjate en el lenguaje: no es "un poco mejor", sino un cambio cualitativo. Como un caballo pura sangre: puedes montarlo sin equipo de monta adecuado, pero no llegarás lejos, no irás rápido y caerte no será una sorpresa. El harness es ese conjunto completo de equipo: <strong>todo lo que existe en la infraestructura de ingeniería fuera de los pesos del modelo.</strong>
 
 ## Dónde se atascan realmente los agentes
 
@@ -52,22 +52,22 @@ Las tareas largas que cruzan sesiones son aún peores: los descubrimientos de la
 
 Con estos escenarios en mente, estos conceptos ya no son jerga:
 
-- **Brecha de capacidad**: la distancia enorme entre el rendimiento del modelo en benchmarks y su rendimiento en tareas reales. Un 50-60% en SWE-bench Verified significa que casi la mitad de los issues reales no se resuelven.
-- **Harness**: todo lo que está fuera del modelo: instrucciones, herramientas, entorno, gestión de estado y feedback de verificación. Si no son pesos del modelo, es harness. Es el "equipo de monta" del que hablamos.
-- **Fallo inducido por harness**: el modelo tiene capacidad suficiente, pero el entorno de ejecución tiene defectos estructurales. El experimento controlado de Anthropic ya lo demostró.
-- **Brecha de verificación**: la diferencia entre la confianza del agente en su salida y la corrección real. El agente dice "terminé" cuando no terminó. Es el modo de fallo más común.
-- **Bucle diagnóstico**: ejecutar, observar el fallo, atribuirlo a una capa concreta del harness, corregir esa capa y volver a ejecutar. Es la metodología central del harness engineering.
-- **Definition of Done**: conjunto de condiciones verificables por máquina: tests pasan, lint limpio, type checks pasan. Sin una definición explícita, el agente inventará la suya.
+- <strong>Brecha de capacidad</strong>: la distancia enorme entre el rendimiento del modelo en benchmarks y su rendimiento en tareas reales. Un 50-60% en SWE-bench Verified significa que casi la mitad de los issues reales no se resuelven.
+- <strong>Harness</strong>: todo lo que está fuera del modelo: instrucciones, herramientas, entorno, gestión de estado y feedback de verificación. Si no son pesos del modelo, es harness. Es el "equipo de monta" del que hablamos.
+- <strong>Fallo inducido por harness</strong>: el modelo tiene capacidad suficiente, pero el entorno de ejecución tiene defectos estructurales. El experimento controlado de Anthropic ya lo demostró.
+- <strong>Brecha de verificación</strong>: la diferencia entre la confianza del agente en su salida y la corrección real. El agente dice "terminé" cuando no terminó. Es el modo de fallo más común.
+- <strong>Bucle diagnóstico</strong>: ejecutar, observar el fallo, atribuirlo a una capa concreta del harness, corregir esa capa y volver a ejecutar. Es la metodología central del harness engineering.
+- <strong>Definition of Done</strong>: conjunto de condiciones verificables por máquina: tests pasan, lint limpio, type checks pasan. Sin una definición explícita, el agente inventará la suya.
 
 ## Cuando algo falla, arregla primero el harness
 
-Principio central: **cuando algo falla, no cambies primero el modelo; revisa el harness.** Si el mismo modelo funciona en tareas similares y bien estructuradas, asume que es un problema de harness. Es como un coche que se detiene: no sospechas inmediatamente del motor; primero miras si tiene gasolina.
+Principio central: <strong>cuando algo falla, no cambies primero el modelo; revisa el harness.</strong> Si el mismo modelo funciona en tareas similares y bien estructuradas, asume que es un problema de harness. Es como un coche que se detiene: no sospechas inmediatamente del motor; primero miras si tiene gasolina.
 
 Pasos concretos:
 
-**Atribuye cada fallo a una capa específica.** No digas simplemente "el modelo es malo". Pregunta: ¿la tarea era poco clara?, ¿faltaba contexto?, ¿no había métodos de verificación? Mapea cada fallo a una de las cinco capas: especificación de tarea, provisión de contexto, entorno de ejecución, feedback de verificación y gestión de estado. Estas son capas diagnósticas prácticas, no los seis términos del glosario anterior. Si construyes este hábito, verás cada vez menos "el modelo no es suficiente" en tus registros.
+<strong>Atribuye cada fallo a una capa específica.</strong> No digas simplemente "el modelo es malo". Pregunta: ¿la tarea era poco clara?, ¿faltaba contexto?, ¿no había métodos de verificación? Mapea cada fallo a una de las cinco capas: especificación de tarea, provisión de contexto, entorno de ejecución, feedback de verificación y gestión de estado. Estas son capas diagnósticas prácticas, no los seis términos del glosario anterior. Si construyes este hábito, verás cada vez menos "el modelo no es suficiente" en tus registros.
 
-**Escribe una Definition of Done explícita para cada tarea.** No digas "añade búsqueda". Di:
+<strong>Escribe una Definition of Done explícita para cada tarea.</strong> No digas "añade búsqueda". Di:
 ```
 Completion criteria:
 - New endpoint GET /api/search?q=xxx
@@ -77,21 +77,21 @@ Completion criteria:
 - Type checking passes (mypy --strict)
 ```
 
-**Crea un archivo AGENTS.md.** Ponlo en la raíz del repositorio para decirle al agente el stack técnico, las convenciones arquitectónicas y los comandos de verificación. Es el primer paso del harness engineering y uno de los de mayor retorno. Un solo `AGENTS.md` puede ser más efectivo que actualizar a un modelo más caro; no es broma.
+<strong>Crea un archivo AGENTS.md.</strong> Ponlo en la raíz del repositorio para decirle al agente el stack técnico, las convenciones arquitectónicas y los comandos de verificación. Es el primer paso del harness engineering y uno de los de mayor retorno. Un solo `AGENTS.md` puede ser más efectivo que actualizar a un modelo más caro; no es broma.
 
-**Construye un bucle diagnóstico.** No trates los fallos como "el modelo volvió a equivocarse". Trátalos como señales de que tu harness tiene un defecto. En cada fallo, identifica la capa, corrígela y evita repetir ese modo de fallo. Tras unas rondas, tu harness se fortalece y el rendimiento del agente se estabiliza. Como reparar carreteras: cada bache que tapas hace más suave el siguiente tramo.
+<strong>Construye un bucle diagnóstico.</strong> No trates los fallos como "el modelo volvió a equivocarse". Trátalos como señales de que tu harness tiene un defecto. En cada fallo, identifica la capa, corrígela y evita repetir ese modo de fallo. Tras unas rondas, tu harness se fortalece y el rendimiento del agente se estabiliza. Como reparar carreteras: cada bache que tapas hace más suave el siguiente tramo.
 
-**Cuantifica las mejoras.** Mantén un registro sencillo: si cada tarea tuvo éxito o falló, y qué capa causó el fallo. Después de unas rondas verás cuál capa es el cuello de botella; enfoca ahí tu energía.
+<strong>Cuantifica las mejoras.</strong> Mantén un registro sencillo: si cada tarea tuvo éxito o falló, y qué capa causó el fallo. Después de unas rondas verás cuál capa es el cuello de botella; enfoca ahí tu energía.
 
 ## El experimento del millón de líneas
 
 OpenAI realizó en 2025 un experimento agresivo: usar Codex para construir un producto interno completo desde un repositorio git vacío. Cinco meses después, el repositorio tenía alrededor de un millón de líneas de código: lógica de aplicación, infraestructura, tooling, documentación y herramientas internas de desarrollo, todo generado por agentes. Tres ingenieros dirigieron Codex, abriendo y fusionando unas 1.500 PRs, con una media de 3,5 PRs por persona al día.
 
-La restricción clave: **los humanos nunca escriben código directamente.** No era un truco; estaba diseñado para obligar al equipo a descubrir qué cambia cuando el trabajo principal del ingeniero deja de ser escribir código y pasa a ser diseñar entornos, expresar intención y construir bucles de feedback.
+La restricción clave: <strong>los humanos nunca escriben código directamente.</strong> No era un truco; estaba diseñado para obligar al equipo a descubrir qué cambia cuando el trabajo principal del ingeniero deja de ser escribir código y pasa a ser diseñar entornos, expresar intención y construir bucles de feedback.
 
 El progreso inicial fue más lento de lo esperado. No porque Codex no pudiera, sino porque el entorno no estaba completo: al agente le faltaban herramientas, abstracciones y estructuras internas para avanzar hacia objetivos de alto nivel. El trabajo de los ingenieros se convirtió en descomponer metas grandes en bloques pequeños — diseño, código, revisión, test — dejar que el agente los ensamblara y luego usar esos bloques para desbloquear tareas más complejas. Cuando algo fallaba, la solución casi nunca era "intenta más fuerte"; era "qué capacidad le falta al agente, y cómo la hacemos comprensible y ejecutable".
 
-Este experimento demuestra directamente la tesis central de la lección: **el mismo modelo produce resultados fundamentalmente distintos en un entorno desnudo y en uno con harness completo.** El modelo no cambió. El entorno sí.
+Este experimento demuestra directamente la tesis central de la lección: <strong>el mismo modelo produce resultados fundamentalmente distintos en un entorno desnudo y en uno con harness completo.</strong> El modelo no cambió. El entorno sí.
 
 > Fuente: [OpenAI: Harness engineering: leveraging Codex in an agent-first world](https://openai.com/index/harness-engineering/)
 
@@ -123,8 +123,8 @@ No cambiaron el modelo. Cambiaron el harness.
 
 ## Ejercicios
 
-1. **Experimento comparativo**: elige un codebase que conozcas bien y una modificación no trivial. Primero ejecuta el agente sin soporte de harness y registra fallos. Luego añade un `AGENTS.md` con comandos de verificación explícitos y ejecuta de nuevo con el mismo agente. Compara resultados atribuyendo cada fallo a una de las cinco capas.
+1. <strong>Experimento comparativo</strong>: elige un codebase que conozcas bien y una modificación no trivial. Primero ejecuta el agente sin soporte de harness y registra fallos. Luego añade un `AGENTS.md` con comandos de verificación explícitos y ejecuta de nuevo con el mismo agente. Compara resultados atribuyendo cada fallo a una de las cinco capas.
 
-2. **Medición de la brecha de verificación**: elige 5 tareas de programación. Después de cada una, registra si el agente afirma haber terminado y verifica la corrección real con tests independientes. Calcula la proporción de veces que el agente dice que terminó cuando en realidad no terminó. Esa es tu brecha de verificación.
+2. <strong>Medición de la brecha de verificación</strong>: elige 5 tareas de programación. Después de cada una, registra si el agente afirma haber terminado y verifica la corrección real con tests independientes. Calcula la proporción de veces que el agente dice que terminó cuando en realidad no terminó. Esa es tu brecha de verificación.
 
-3. **Práctica de bucle diagnóstico**: encuentra una tarea donde el agente falle repetidamente en tu proyecto. Ejecuta una vez y registra el fallo. Atribúyelo a una de las cinco capas. Corrige esa capa y ejecuta de nuevo. Repite de tres a cinco rondas, registrando las mejoras.
+3. <strong>Práctica de bucle diagnóstico</strong>: encuentra una tarea donde el agente falle repetidamente en tu proyecto. Ejecuta una vez y registra el fallo. Atribúyelo a una de las cinco capas. Corrige esa capa y ejecuta de nuevo. Repite de tres a cinco rondas, registrando las mejoras.

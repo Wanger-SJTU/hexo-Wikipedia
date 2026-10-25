@@ -26,14 +26,14 @@ Manifold-Constrained Hyper-Connections (mHC) 是 Deepseek 在 Deepseek v4 中实
 
 - 用 [mhc-lite repo](https://github.com/Realmbird/mhc-lite-Dolma-781M) 训练了 mHC、mHC-lite 和非 mHC 模型（781M 参数）
 - mHC 模型中 attention head 的形状和层位置会改变
-- **Previous-token heads 在 mHC 模型中表现出高垂直性/峰度（kurtosis），变成了 attention sinks**
+- <strong>Previous-token heads 在 mHC 模型中表现出高垂直性/峰度（kurtosis），变成了 attention sinks</strong>
 - Induction heads 和 prev-token heads 在 mHC 模型中出现在更早的层
 - Duplicate heads 出现在更晚的层
 - mHC 的残差流 1,2,3 在最后一层输出相同的 top-1 token，而 mHC-lite 的各残差流输出不同 token（sofa, floor, end）
 - mHC 模型在更早的层就能预测某些 token（如 "same"）
-- **mHC 模型中存在 3 角色甚至 4 角色的 attention head（如 mHC L7h15 是 4 角色 head）**
+- <strong>mHC 模型中存在 3 角色甚至 4 角色的 attention head（如 mHC L7h15 是 4 角色 head）</strong>
 - 对于 mHC 模型，prev-token heads 无法用对角条纹检测，需要 ablation 和 path patching
-- **mHC 模型中 prev-token heads 的行为类似于 receiver heads，表现为高 kurtosis**
+- <strong>mHC 模型中 prev-token heads 的行为类似于 receiver heads，表现为高 kurtosis</strong>
 
 ## 实验设置
 
@@ -53,26 +53,26 @@ Manifold-Constrained Hyper-Connections (mHC) 是 Deepseek 在 Deepseek v4 中实
 
 ### Logit Lens
 
-- **mHC 在 L22 达到最终 top-1 准确率的 90%**（非 mHC: L31，mHC-lite: L35）
+- <strong>mHC 在 L22 达到最终 top-1 准确率的 90%</strong>（非 mHC: L31，mHC-lite: L35）
 - KL(lens || final) 在 mHC 中 L24 就降到 0.5 以下（残差模型: L34）
 - 三种模型在 L35 都收敛到 ~38.2% top-1
 
 ### Attention Heads
 
-- **Induction heads 和 prev-token heads 在 mHC 模型中出现在更早的层**
-- **Duplicate heads 出现在更晚的层**
+- <strong>Induction heads 和 prev-token heads 在 mHC 模型中出现在更早的层</strong>
+- <strong>Duplicate heads 出现在更晚的层</strong>
 - mHC 模型中存在 3+ 角色的 attention head（mHC L7h15 是 4 角色）
 - mHC-lite L8h16 是唯一的 3 角色 head
-- **对于 mHC 模型，prev-token heads 需要用高 kurtosis 而不是对角条纹来检测**
+- <strong>对于 mHC 模型，prev-token heads 需要用高 kurtosis 而不是对角条纹来检测</strong>
 - mHC-lite 中 prev-token heads 的检测方法与 mHC 不同
 
 ## 核心发现
 
-1. **Previous-token heads 在 mHC 模型中变成了 attention sinks**：它们的行为从正常的 prev-token pattern 变成了 receiver heads，表现为高 kurtosis 分数
+1. <strong>Previous-token heads 在 mHC 模型中变成了 attention sinks</strong>：它们的行为从正常的 prev-token pattern 变成了 receiver heads，表现为高 kurtosis 分数
 
-2. **残差流行为差异**：mHC 的残差流 1,2,3 都预测相同的 token（floor），而 mHC-lite 的各残差流预测不同 token——获取双随机矩阵的方法影响了残差流的工作方式
+2. <strong>残差流行为差异</strong>：mHC 的残差流 1,2,3 都预测相同的 token（floor），而 mHC-lite 的各残差流预测不同 token——获取双随机矩阵的方法影响了残差流的工作方式
 
-3. **多层角色 attention head**：mHC 模型中存在 attention head 同时扮演 3-4 个角色，这在非 mHC 模型中不存在
+3. <strong>多层角色 attention head</strong>：mHC 模型中存在 attention head 同时扮演 3-4 个角色，这在非 mHC 模型中不存在
 
 ## 未来工作
 

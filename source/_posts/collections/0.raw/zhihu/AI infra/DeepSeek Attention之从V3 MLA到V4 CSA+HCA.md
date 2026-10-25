@@ -51,7 +51,7 @@ V3 MLA=>V4 CSA+HCA
 ![](https://www.zhihu.com/equation?tex=%5Codot)）再求和得到下式（公式12），这里的加数非常有意思，左加数的mi 和 m(i+1)-1这两个下标定义了当前压缩块 i所对应的原始 Token 区间，右加数的m(i-1) 和 mi-1这两个下标定义了上一个压缩块 i-1所对应的原始 Token 区间，一杂交起来，让相邻的压缩块之间产生了平滑的过渡，避免了硬切分带来的边界信息丢失： 
 ![](https://www.zhihu.com/equation?tex=C_i%5E%7BComp%7D+%3D+%5Csum_%7Bj%3Dmi%7D%5E%7Bm%28i%2B1%29-1%7D+S_%7Ba%2Cj%7D+%5Codot+C_%7Ba%2Cj%7D+%2B+%5Csum_%7Bj%3Dm%28i-1%29%7D%5E%7Bmi-1%7D+S_%7Bb%2Cj%7D+%5Codot+C_%7Bb%2Cj%7D)
 ![](https://pic2.zhimg.com/v2-a0e94631b7e1bcb4ce9ca1c357e5ceb7_r.jpg)论文图3这一步将 KV Cache 的物理长度缩短为原来的 
-![](https://www.zhihu.com/equation?tex=%5Cfrac%7B1%7D%7Bm%7D)，对应论文图 3 中间的 **Token-Level Compressor**。
+![](https://www.zhihu.com/equation?tex=%5Cfrac%7B1%7D%7Bm%7D)，对应论文图 3 中间的 <strong>Token-Level Compressor</strong>。
 
 2. 压缩完之后，序列依然很长，为了进一步榨干，CSA 引入Lightning Indexer 来挑选最相关的KV块。 首先，通过对 Query state 
 ![](https://www.zhihu.com/equation?tex=h_t) 进行低秩投影, 先降维到潜向量 
@@ -90,7 +90,7 @@ DeepSeek-V4 将这套混合架构（CSA + HCA）在 Transformer 的不同层交�
 ![](https://www.zhihu.com/equation?tex=%5Cfrac%7B1%7D%7Bm%7D) 和 
 ![](https://www.zhihu.com/equation?tex=%5Cfrac%7B1%7D%7Bm%27%7D) 的极致物理压缩，辅以 BF16+FP8 的混合存储，V4-Pro 的 KV Cache 直接缩小到了前代的 10%（Flash 版本为 7%）。相比业界主流的 GQA 架构，显存消耗只有其约 2%。  且以往由于显存爆炸，跑满 1M 上下文需要惊人的多卡集群成本。CSA 和 HCA 架构使得 KV Cache 瘦身十倍以上，使得 100万 Token 的推理变得可以常态化、低成本地部署。这也呼应了论文首页摘要的主图
 
-**DSV4-Pro和DSV4-Flash是如何交替CSA和HCA**
+<strong>DSV4-Pro和DSV4-Flash是如何交替CSA和HCA</strong>
 
 - 以包含 61 层的 DeepSeek-V4-Pro 为例，前 2 层使用 HCA 来对输入进行快速的特征提取与重度压缩；而在随后的几十层中，CSA 和 HCA 采用交替（Interleaved）的方式一层层排布（例如：第 3 层 CSA，第 4 层 HCA，第 5 层 CSA……）。
 - 在参数更少的 V4-Flash 中，前 2 层使用纯 SWA（滑动窗口注意力），后续层同样交替使用 CSA 和 HCA。

@@ -37,7 +37,7 @@ Lasso方法最早由Robert  Tibshiran于1996年提出，文章发表在“统计
 ![](https://www.zhihu.com/equation?tex=%5Csigma%5E2) 为误差的方差。
 
 估计参数向量 
-![](https://www.zhihu.com/equation?tex=%5Cbeta) 的基本方法是**最小二乘法**，其思想是使得误差向量 
+![](https://www.zhihu.com/equation?tex=%5Cbeta) 的基本方法是<strong>最小二乘法</strong>，其思想是使得误差向量 
 ![](https://www.zhihu.com/equation?tex=%5Cepsilon%3Dy-%5Cboldsymbol%7BX%7D%5Cbeta) 尽可能的小（这样我们损失的样本信息就尽可能的少），也就是使
 
 ![](https://www.zhihu.com/equation?tex=+~~~~~~~~~~~~~~~~~~Q%28%5Cbeta%29%3D%7C%7C%5Cepsilon%7C%7C%5E2%3D%7C%7Cy-%5Cboldsymbol%7BX%7D%5Cbeta%7C%7C%5E2%3D%28y-%5Cboldsymbol%7BX%7D%5Cbeta%29%27%28y-%5Cboldsymbol%7BX%7D%5Cbeta%29+) 
@@ -53,10 +53,10 @@ Lasso方法最早由Robert  Tibshiran于1996年提出，文章发表在“统计
 ![](https://www.zhihu.com/equation?tex=%5Chat%7B%5Cbeta%7D) 是 
 ![](https://www.zhihu.com/equation?tex=%5Cbeta) 的无偏估计，称 
 ![](https://www.zhihu.com/equation?tex=%5Chat%7B%5Cbeta%7D) 为 
-![](https://www.zhihu.com/equation?tex=%5Cbeta) 的**最小二乘估计**，最小二乘估计有很多优良的性质，在此不再赘述。但是，若 
+![](https://www.zhihu.com/equation?tex=%5Cbeta) 的<strong>最小二乘估计</strong>，最小二乘估计有很多优良的性质，在此不再赘述。但是，若 
 ![](https://www.zhihu.com/equation?tex=rank%28%5Cboldsymbol%7BX%7D%29%3Cp) ，不满秩，那这时候就不存在 
 ![](https://www.zhihu.com/equation?tex=%5Cbeta) 的无偏估计，称 
-![](https://www.zhihu.com/equation?tex=%5Cbeta) 是不可估的。不满秩的原因之一就是变量间存在线性关系，在计量经济学上成为共线性，因此计量的实证分析大都要做一些检验，抛开不表。为了解决这一问题，就有了**岭回归（Ridge Regression）**方法，简单来说，岭回归就是在前面最小化目标函数 
+![](https://www.zhihu.com/equation?tex=%5Cbeta) 是不可估的。不满秩的原因之一就是变量间存在线性关系，在计量经济学上成为共线性，因此计量的实证分析大都要做一些检验，抛开不表。为了解决这一问题，就有了<strong>岭回归（Ridge Regression）</strong>方法，简单来说，岭回归就是在前面最小化目标函数 
 ![](https://www.zhihu.com/equation?tex=Q%28%5Cbeta%29) 的后面加了一个2-范数的平方（范数接下来会讲）：
 
 ![](https://www.zhihu.com/equation?tex=Q%28%5Cbeta%29%3D%7C%7Cy-%5Cboldsymbol%7BX%7D%5Cbeta%7C%7C%5E2%2B%5Clambda%7C%7C%5Cbeta%7C%7C%5E2_2%5C%5C+%5Cstackrel%7B%7D%7B%5CLongleftrightarrow%7D~~%5Carg%5Cmin%7C%7Cy-%5Cboldsymbol%7BX%7D%5Cbeta%7C%7C%5E2~~~s.t.~%5Csum%5Cbeta%5E2_j%5Cleq+s) 
@@ -77,31 +77,31 @@ Lasso方法最早由Robert  Tibshiran于1996年提出，文章发表在“统计
 0.2 范数（norm）
 
 向量的范数
-**向量的 1-范数**： 
+<strong>向量的 1-范数</strong>： 
 ![](https://www.zhihu.com/equation?tex=%7C%7CX%7C%7C_1%3D%5Csum%5En_%7Bi%3D1%7D%7Cx_i%7C) 向量内各元素的绝对值之和
 
-**向量的 2-范数**： 
+<strong>向量的 2-范数</strong>： 
 ![](https://www.zhihu.com/equation?tex=%7C%7CX%7C%7C_2%3D%28%5Csum%5En_%7Bi%3D1%7Dx%5E2_i%29%5E%7B%5Cfrac%7B1%7D%7B2%7D%7D%3D%5Csqrt%7B%5Csum%5En_%7Bi%3D1%7Dx%5E2_i%7D)  元素的平方和再开平方，一般就直接写 
 ![](https://www.zhihu.com/equation?tex=%7C%7CX%7C%7C) 不加下标了。
 
-**向量的 p-范数**： 
+<strong>向量的 p-范数</strong>： 
 ![](https://www.zhihu.com/equation?tex=%7C%7CX%7C%7C_p%3D%28%5Csum%5En_%7Bi%3D1%7D%7Cx_i%7C%5Ep%29%5E%7B%5Cfrac%7B1%7D%7Bp%7D%7D) 
 
-**向量的无穷范数**： 
+<strong>向量的无穷范数</strong>： 
 ![](https://www.zhihu.com/equation?tex=%7C%7CX%7C%7C_%7B%5Cinfty%7D%3D%5Cmax%5Climits_%7B1%5Cleq+i%5Cleq+n%7D%7Cx_i%7C) 
 
 矩阵的范数
-**矩阵的 1-范数**： 
-![](https://www.zhihu.com/equation?tex=%7C%7CA%7C%7C_1%3D%5Cmax%5Climits_%7BX%5Cnot%3D0%7D%5Cfrac%7B%7C%7CAX%7C%7C_1%7D%7B%7C%7CX%7C%7C_1%7D%3D%5Cmax%5Climits_%7B1%5Cleq+j%5Cleq+n%7D%5Csum%5En_%7Bi%3D1%7D%7Ca_%7Bij%7D%7C)  矩阵的每一**列**上的元素绝对值先求和，再从中取个最大的（列和最大）
+<strong>矩阵的 1-范数</strong>： 
+![](https://www.zhihu.com/equation?tex=%7C%7CA%7C%7C_1%3D%5Cmax%5Climits_%7BX%5Cnot%3D0%7D%5Cfrac%7B%7C%7CAX%7C%7C_1%7D%7B%7C%7CX%7C%7C_1%7D%3D%5Cmax%5Climits_%7B1%5Cleq+j%5Cleq+n%7D%5Csum%5En_%7Bi%3D1%7D%7Ca_%7Bij%7D%7C)  矩阵的每一<strong>列</strong>上的元素绝对值先求和，再从中取个最大的（列和最大）
 
-**矩阵的 2-范数**： 
+<strong>矩阵的 2-范数</strong>： 
 ![](https://www.zhihu.com/equation?tex=%7C%7CA%7C%7C_2%3D%5Cmax%5Climits_%7BX%5Cnot%3D0%7D%5Cfrac%7B%7C%7CAX%7C%7C_2%7D%7B%7C%7CX%7C%7C_2%7D%3D%5Csqrt%7B%5Clambda_%7Bmax%7D%28A%5ETA%29%7D%3D%5Csqrt%7B%5Cmax%5Climits_%7B1%5Cleq+i%5Cleq+n%7D%7C%5Clambda_i%7C%7D) 其中 
 ![](https://www.zhihu.com/equation?tex=%5Clambda_i) 为 
 ![](https://www.zhihu.com/equation?tex=A%5E%7BT%7DA) 的特征值，2-范数即为矩阵 
 ![](https://www.zhihu.com/equation?tex=A%5E%7BT%7DA+) 的最大特征值开平方。
 
-**矩阵的无穷范数**： 
-![](https://www.zhihu.com/equation?tex=%7C%7CA%7C%7C_%7B%5Cinfty%7D%3D%5Cmax%5Climits_%7BX%5Cnot%3D0%7D%5Cfrac%7B%7C%7CAX%7C%7C_%7B%5Cinfty%7D%7D%7B%7C%7CX%7C%7C_%7B%5Cinfty%7D%7D%3D%5Cmax%5Climits_%7B1%5Cleq+i%5Cleq+n%7D%5Csum%5En_%7Bj%3D1%7D%7Ca_%7Bij%7D%7C)  矩阵的每一**行**上的元素绝对值先求和，再从中取最大的（行和最大）。**但还有一种情况**，在很多的统计论文中，更常用的是把矩阵的无穷范数定义为矩阵中最大的元素： 
+<strong>矩阵的无穷范数</strong>： 
+![](https://www.zhihu.com/equation?tex=%7C%7CA%7C%7C_%7B%5Cinfty%7D%3D%5Cmax%5Climits_%7BX%5Cnot%3D0%7D%5Cfrac%7B%7C%7CAX%7C%7C_%7B%5Cinfty%7D%7D%7B%7C%7CX%7C%7C_%7B%5Cinfty%7D%7D%3D%5Cmax%5Climits_%7B1%5Cleq+i%5Cleq+n%7D%5Csum%5En_%7Bj%3D1%7D%7Ca_%7Bij%7D%7C)  矩阵的每一<strong>行</strong>上的元素绝对值先求和，再从中取最大的（行和最大）。<strong>但还有一种情况</strong>，在很多的统计论文中，更常用的是把矩阵的无穷范数定义为矩阵中最大的元素： 
 ![](https://www.zhihu.com/equation?tex=%7C%7CX%7C%7C_%7B%5Cinfty%7D%3D%5Cmax%5Climits_%7Bi%2Cj%7DX_%7Bij%7D) 
 
  这里只是借机会都给大家列出来了，本文并不需要用到这么多种范数。
@@ -111,17 +111,17 @@ Lasso方法最早由Robert  Tibshiran于1996年提出，文章发表在“统计
 
 ![](https://www.zhihu.com/equation?tex=Q%28%5Cbeta%29%3D%7C%7Cy-%5Cboldsymbol%7BX%7D%5Cbeta%7C%7C%5E2%2B%5Clambda%7C%7C%5Cbeta%7C%7C_1%5C%5C+%5Cstackrel%7B+%7D%7B%5CLongleftrightarrow%7D~~%5Carg%5Cmin%7C%7Cy-%5Cboldsymbol%7BX%7D%5Cbeta%7C%7C%5E2~~~s.t.~%5Csum%7C%5Cbeta_j%7C%5Cleq+s) 
 
-**Lasso的提出在岭回归之后，为啥加1-范数的Lasso没有加2-范数的岭回归早？**
+<strong>Lasso的提出在岭回归之后，为啥加1-范数的Lasso没有加2-范数的岭回归早？</strong>
 
 可能是因为1-范数作为绝对值之和不方便求导吧（个人猜测），因为做理论统计的学者提出一个新方法，不光要说明这个方法好，还要说明为啥好、哪里好。
 
-**为什么至今Lasso仍长青不老？**
+<strong>为什么至今Lasso仍长青不老？</strong>
 
-因为它可以解决现在高维数据一个普遍问题——**稀疏性**。高维数据即 
+因为它可以解决现在高维数据一个普遍问题——<strong>稀疏性</strong>。高维数据即 
 ![](https://www.zhihu.com/equation?tex=p%3En) 的情况（超高维是 
 ![](https://www.zhihu.com/equation?tex=p%5Cgg+n) ，这里不讨论），现在随着数据采集能力的提高，变量（也叫特征）数采集的多，但是其中可能有很多特征是不重要的，系数很小，如果用岭回归，可能这个不重要的变量也给你估出来了，而且可能还不小，而用Lasso方法，就可以把这些不重要变量的系数压缩为0，既实现了较为准确的参数估计，也实现了变量选择（降维）。
 
-**那为什么Lasso可以估计出系数为0？**
+<strong>那为什么Lasso可以估计出系数为0？</strong>
 
 我们以Tibshiran在文章中举的 
 ![](https://www.zhihu.com/equation?tex=p%3D2+) 的例子来讲（我这相当于把他文章的2.3节翻译给大家了）
@@ -149,7 +149,7 @@ Lasso方法最早由Robert  Tibshiran于1996年提出，文章发表在“统计
 ![](https://www.zhihu.com/equation?tex=%5Chat%7B%5Cbeta%7D) 有差距。
 
 2. Lasso 最优解
-Lasso因为其约束条件（也有叫损失函数的）不是连续可导的，因此常规的解法如梯度下降法、牛顿法、就没法用了。接下来会介绍两种常用的方法：**坐标轴下降法**与**最小角回归法**。
+Lasso因为其约束条件（也有叫损失函数的）不是连续可导的，因此常规的解法如梯度下降法、牛顿法、就没法用了。接下来会介绍两种常用的方法：<strong>坐标轴下降法</strong>与<strong>最小角回归法</strong>。
 
 2.1 坐标轴下降法
 坐标轴下降法是一种迭代算法，与梯度下降法利用目标函数的导数来确定搜索方向不同，坐标轴下降法是在当前坐标轴上搜索函数最小值，不需要求目标函数的导数。
@@ -195,10 +195,10 @@ Lasso因为其约束条件（也有叫损失函数的）不是连续可导的，
 ![](https://www.zhihu.com/equation?tex=k-1) 次迭代都变化极小，说明结果已收敛，迭代结束，否则继续迭代。你可能会有疑问，我最后得到的 
 ![](https://www.zhihu.com/equation?tex=%5Ctheta%5E%7B%28k%29%7D_j) 只是局部（因为固定了其余 
 ![](https://www.zhihu.com/equation?tex=p-1) 个）最优解啊，为什么 
-![](https://www.zhihu.com/equation?tex=%5Cboldsymbol%7B%5Ctheta%7D%5E%7B%28k%29%7D%3D%28%5Ctheta%5E%7B%28k%29%7D_1%2C%5Ctheta%5E%7B%28k%29%7D_2%2C...%2C%5Ctheta%5E%7B%28k%29%7D_p%29) 就是全局最优解了？ 这是**凸优化问题的一个基本性质——任意局部最优解也是全局最优解**。感兴趣的同学可以参考Stephen_Boyd的《convex optimization》第4.2.2节，清华大学出版社有中译本。
+![](https://www.zhihu.com/equation?tex=%5Cboldsymbol%7B%5Ctheta%7D%5E%7B%28k%29%7D%3D%28%5Ctheta%5E%7B%28k%29%7D_1%2C%5Ctheta%5E%7B%28k%29%7D_2%2C...%2C%5Ctheta%5E%7B%28k%29%7D_p%29) 就是全局最优解了？ 这是<strong>凸优化问题的一个基本性质——任意局部最优解也是全局最优解</strong>。感兴趣的同学可以参考Stephen_Boyd的《convex optimization》第4.2.2节，清华大学出版社有中译本。
 
 2.2 最小角回归法（Least Angle Regression）
-最小角回归法（LARS）是Bradley Efron于2004年的论文《Least Angle Regression》中提出的一种算法。该算法与经典向前选择（classic Forward Selection）算法接近，我们先简单介绍一下**向前选择算法**，以2维为例： 
+最小角回归法（LARS）是Bradley Efron于2004年的论文《Least Angle Regression》中提出的一种算法。该算法与经典向前选择（classic Forward Selection）算法接近，我们先简单介绍一下<strong>向前选择算法</strong>，以2维为例： 
 ![](https://www.zhihu.com/equation?tex=y%3D%5Cbeta_1x_1%2B%5Cbeta_2x_2) ,为了估计出 
 ![](https://www.zhihu.com/equation?tex=%5Cbeta_1%2C%5Cbeta_2) ，我们先将 
 ![](https://www.zhihu.com/equation?tex=y) 往与其最接近（相关性最大）的 

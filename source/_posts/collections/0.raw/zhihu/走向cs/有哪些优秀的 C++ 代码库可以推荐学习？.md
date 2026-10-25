@@ -15,38 +15,38 @@ source_url: https://www.zhihu.com/question/281276664/answer/907647528
 ---
 
 
-[coost-A tiny boost library in C++11](https://link.zhihu.com/?target=https%3A//github.com/idealvin/coost)**[coost](https://link.zhihu.com/?target=https%3A//github.com/idealvin/coost)** 是一个**兼具性能与易用性**的跨平台 C++ 基础库，其目标是打造一把 C++ 开发神器，让 C++ 编程变得简单、轻松、愉快。
+[coost-A tiny boost library in C++11](https://link.zhihu.com/?target=https%3A//github.com/idealvin/coost)<strong>[coost](https://link.zhihu.com/?target=https%3A//github.com/idealvin/coost)</strong> 是一个<strong>兼具性能与易用性</strong>的跨平台 C++ 基础库，其目标是打造一把 C++ 开发神器，让 C++ 编程变得简单、轻松、愉快。
 
-coost 原名为 co，后改为 cocoyaxi，前者过短，后者过长，取中庸之道，又改为 coost。它曾被称为小型 [boost](https://link.zhihu.com/?target=https%3A//www.boost.org/) 库，与 boost 相比，coost 小而精美，在 **linux 与 mac 上编译出来的静态库仅 1M 左右大小**，却包含了不少强大的功能：
+coost 原名为 co，后改为 cocoyaxi，前者过短，后者过长，取中庸之道，又改为 coost。它曾被称为小型 [boost](https://link.zhihu.com/?target=https%3A//www.boost.org/) 库，与 boost 相比，coost 小而精美，在 <strong>linux 与 mac 上编译出来的静态库仅 1M 左右大小</strong>，却包含了不少强大的功能：
 
 - 命令行与配置文件解析(flag)
-- **高性能日志库(log)**
+- <strong>高性能日志库(log)</strong>
 - 单元测试框架(unitest)
-- **go-style 协程**
+- <strong>go-style 协程</strong>
 - 基于协程的网络编程框架
 - 高效 JSON 库
-- **基于 JSON 的 RPC 框架**
+- <strong>基于 JSON 的 RPC 框架</strong>
 - 原子操作(atomic)
-- **高效字符流(fastream)**
+- <strong>高效字符流(fastream)</strong>
 - 高效字符串(fastring)
 - 字符串操作(str)
 - 时间库(time)
 - 线程库(thread)
 - 定时任务调度器
-- **面向玄学编程**
+- <strong>面向玄学编程</strong>
 - LruMap
 - hash 库
 - path 库
 - 文件系统操作(fs)
 - 系统操作(os)
-- **高性能内存分配器**
+- <strong>高性能内存分配器</strong>
 coost 的发展历程
 
-- **2013-2015** 年，[Alvin(idealvin)](https://link.zhihu.com/?target=https%3A//github.com/idealvin) 在使用 google gflags、glog、gtest 等时，感到有些繁琐，就自己动手实现了相应的功能，即现今 coost 中的 **flag、log、unitest** 等组件。
-- **2015-2018** 年，Alvin 将自研的这套基础库引入实际项目中，供自己与同事使用，大幅度提升了 C++ 开发效率，coost 也得以经受工业项目的检验，并在实践中不断完善、扩充新的功能。
-- **2019** 年，Alvin 实现了**类似 goroutine 的协程机制**，以及基于协程的网络编程框架，之后**将项目命名为 co，在** **[github](https://link.zhihu.com/?target=https%3A//github.com/idealvin/coost)** **上发布 1.0 版本**。
-- **2020-2021** 年，完善 hook 机制、协程同步机制，增加 golang 中的 channel、defer 等特性，**发布 2.x 版本**。在此期间，**码友们提供了很多宝贵的改进意见，并帮忙完善了** **[xmake](https://link.zhihu.com/?target=https%3A//github.com/xmake-io/xmake)、cmake 编译脚本以及 coost 中的很多功能**。
-- **2022** 年，新增**内存分配器**、提升整体性能，对 flag、log、JSON、RPC、fastring、fastream 等很多组件做出了重大改进，并**将项目更名为 coost，发布 3.0 版本**。
+- <strong>2013-2015</strong> 年，[Alvin(idealvin)](https://link.zhihu.com/?target=https%3A//github.com/idealvin) 在使用 google gflags、glog、gtest 等时，感到有些繁琐，就自己动手实现了相应的功能，即现今 coost 中的 <strong>flag、log、unitest</strong> 等组件。
+- <strong>2015-2018</strong> 年，Alvin 将自研的这套基础库引入实际项目中，供自己与同事使用，大幅度提升了 C++ 开发效率，coost 也得以经受工业项目的检验，并在实践中不断完善、扩充新的功能。
+- <strong>2019</strong> 年，Alvin 实现了<strong>类似 goroutine 的协程机制</strong>，以及基于协程的网络编程框架，之后<strong>将项目命名为 co，在</strong> <strong>[github](https://link.zhihu.com/?target=https%3A//github.com/idealvin/coost)</strong> <strong>上发布 1.0 版本</strong>。
+- <strong>2020-2021</strong> 年，完善 hook 机制、协程同步机制，增加 golang 中的 channel、defer 等特性，<strong>发布 2.x 版本</strong>。在此期间，<strong>码友们提供了很多宝贵的改进意见，并帮忙完善了</strong> <strong>[xmake](https://link.zhihu.com/?target=https%3A//github.com/xmake-io/xmake)、cmake 编译脚本以及 coost 中的很多功能</strong>。
+- <strong>2022</strong> 年，新增<strong>内存分配器</strong>、提升整体性能，对 flag、log、JSON、RPC、fastring、fastream 等很多组件做出了重大改进，并<strong>将项目更名为 coost，发布 3.0 版本</strong>。
 快速上手
 
 编译
@@ -97,7 +97,7 @@ DEF_main(argc, argv) {
 co/flag
 [co/flag](https://link.zhihu.com/?target=https%3A//idealvin.gitee.io/cn/co/flag/) 是一个简单易用的命令行参数与配置文件解析库，cocoyaxi 中的一些组件会用它定义配置项。
 
-co/flag 为每个配置项提供一个默认值，在没有配置参数的情况下，程序可以按默认配置运行。用户也可以从**命令行或配置文件**传入配置参数，在需要配置文件时，可以执行 `./exe -mkconf` **自动生成配置文件**。
+co/flag 为每个配置项提供一个默认值，在没有配置参数的情况下，程序可以按默认配置运行。用户也可以从<strong>命令行或配置文件</strong>传入配置参数，在需要配置文件时，可以执行 `./exe -mkconf` <strong>自动生成配置文件</strong>。
 
 // xx.cc
 #include &#34;co/flag.h&#34;
@@ -133,7 +133,7 @@ int main(int argc, char** argv) {
 co/log
 [co/log](https://link.zhihu.com/?target=https%3A//idealvin.gitee.io/cn/co/log/) 是一个高性能的本地日志系统，cocoyaxi 中的一些组件会用它打印日志。
 
-co/log 将日志分为 debug, info, warning, error, fatal 5 个级别，**打印 fatal 级别的日志会终止程序的运行**。用户可以像下面这样打印不同级别的日志：
+co/log 将日志分为 debug, info, warning, error, fatal 5 个级别，<strong>打印 fatal 级别的日志会终止程序的运行</strong>。用户可以像下面这样打印不同级别的日志：
 
 DLOG << &#34;hello &#34; << 23;  // debug
 LOG << &#34;hello &#34; << 23;   // info
@@ -249,9 +249,9 @@ DEF_main(argc, argv) {
     return 0;
 }
 
-**channel 的读写操作必须在协程中进行**，因此上述代码中用 `DEF_main` 定义 main 函数，让 main 函数中的代码也运行在协程中。
+<strong>channel 的读写操作必须在协程中进行</strong>，因此上述代码中用 `DEF_main` 定义 main 函数，让 main 函数中的代码也运行在协程中。
 
-代码中的 channel 对象在栈上，而 cocoyaxi 采用的是共享栈实现方式，一个协程栈上的数据可能被其他协程覆盖，**协程间一般不能直接通过栈上的数据通信**，因此代码中的 lambda 采用了**按值捕获**的方式，将 channel 拷贝了一份，传递到新建的协程中。channel 的拷贝操作只是将内部引用计数加 1，几乎不会对性能造成影响。
+代码中的 channel 对象在栈上，而 cocoyaxi 采用的是共享栈实现方式，一个协程栈上的数据可能被其他协程覆盖，<strong>协程间一般不能直接通过栈上的数据通信</strong>，因此代码中的 lambda 采用了<strong>按值捕获</strong>的方式，将 channel 拷贝了一份，传递到新建的协程中。channel 的拷贝操作只是将内部引用计数加 1，几乎不会对性能造成影响。
 
 创建 channel 时可以像下面这样加上超时时间：
 
@@ -259,7 +259,7 @@ co::Chan<int> ch(8, 1000);
 
 channel 读写操作结束后，可以调用 `co::timeout()` 判断是否超时，这种方式比 golang 中基于 select 的实现方式更简单。
 
-cocoyaxi 中的 channel 基于内存拷贝实现，传递的数据类型可以是内置类型、指针类型，或者**拷贝操作具有简单的内存拷贝语义的结构体类型**。像 `std::string` 或 STL 中的容器类型，拷贝操作不是简单的内存拷贝，一般不能直接在 channel 中传递，详情见 [co::Chan 参考文档](https://link.zhihu.com/?target=https%3A//idealvin.gitee.io/cn/co/coroutine/%23channelcochan)。
+cocoyaxi 中的 channel 基于内存拷贝实现，传递的数据类型可以是内置类型、指针类型，或者<strong>拷贝操作具有简单的内存拷贝语义的结构体类型</strong>。像 `std::string` 或 STL 中的容器类型，拷贝操作不是简单的内存拷贝，一般不能直接在 channel 中传递，详情见 [co::Chan 参考文档](https://link.zhihu.com/?target=https%3A//idealvin.gitee.io/cn/co/coroutine/%23channelcochan)。
 
 waitgroup
 [co::WaitGroup](https://link.zhihu.com/?target=https%3A//idealvin.gitee.io/cn/co/coroutine/%23waitgroupcowaitgroup)，类似于 golang 中的 `sync.WaitGroup`，可用于等待协程或线程的退出。
@@ -286,7 +286,7 @@ DEF_main(argc, argv) {
 网络编程
 cocoyaxi 提供了一套协程化的 [socket API](https://link.zhihu.com/?target=https%3A//idealvin.gitee.io/cn/co/coroutine/%23%25E5%258D%258F%25E7%25A8%258B%25E5%258C%2596%25E7%259A%2584-socket-api)，它们大部分形式上与原生的 socket API 基本一致，熟悉 socket 编程的用户，可以轻松的用同步的方式写出高性能的网络程序。另外，cocoyaxi 也实现了更高层的网络编程组件，包括 [TCP](https://link.zhihu.com/?target=https%3A//idealvin.gitee.io/cn/co/net/tcp/)、[HTTP](https://link.zhihu.com/?target=https%3A//idealvin.gitee.io/cn/co/net/http/) 以及基于 [JSON](https://link.zhihu.com/?target=https%3A//idealvin.gitee.io/cn/co/json/) 的 [RPC](https://link.zhihu.com/?target=https%3A//idealvin.gitee.io/cn/co/net/rpc/) 框架，它们兼容 IPv6，同时支持 SSL，用起来比 socket API 更方便。这里只简单的展示一下 HTTP 的用法，其余的可以查看参考文档。
 
-**静态 web server**
+<strong>静态 web server</strong>
 
 #include &#34;co/flag.h&#34;
 #include &#34;co/log.h&#34;
@@ -303,7 +303,7 @@ int main(int argc, char** argv) {
     return 0;
 }
 
-**HTTP server**
+<strong>HTTP server</strong>
 
 http::Server serv;
 
@@ -325,7 +325,7 @@ serv.on_req(
 serv.start(&#34;0.0.0.0&#34;, 80);                                    // http
 serv.start(&#34;0.0.0.0&#34;, 443, &#34;privkey.pem&#34;, &#34;certificate.pem&#34;); // https
 
-**HTTP client**
+<strong>HTTP client</strong>
 
 void f() {
     http::Client c(&#34;https://github.com&#34;);

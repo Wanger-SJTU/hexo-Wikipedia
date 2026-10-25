@@ -51,7 +51,7 @@ source_url: https://www.zhihu.com/question/635395282/answer/3372320028
 ![](https://www.zhihu.com/equation?tex=concat) 的操作。
 
 对于 
-![](https://www.zhihu.com/equation?tex=Ring-AV) **：** 
+![](https://www.zhihu.com/equation?tex=Ring-AV) <strong>：</strong> 
 ![](https://www.zhihu.com/equation?tex=%5BB%2CZ%2C%5Cfrac%7BL%7D%7BN%7D%2CL%5D%28reduce-scatter%29+%5Ctimes+%5BB%2CZ%2C%5Cfrac%7BL%7D%7BN%7D%2CA%5D+%5Crightarrow+%5BB%2CZ%2C%5Cfrac%7BL%7D%7BN%7D%2CA%5D) ，
 
 需要完整对 
@@ -64,7 +64,7 @@ source_url: https://www.zhihu.com/question/635395282/answer/3372320028
 4.2 LongLLaMA (Focused Transformer)
 LongLLaMA 通过引入 Focused Transformer（FOT）方法，在保持性能的同时，将 LLaMA 的上下文长度扩展到100k！在长文本的情况下，除了第一节所研究的显存和计算量的问题外，这篇论文还提出了一个分心问题（Distraction Issue），即随着文本长度的增加，其中相关的 tokens 对不相关 tokens 的比例会减少，从而导致与不相关 value 相关的 key 和与相关 value 相关的 key 发生重叠，致使模型需要额外区分不同语义的 key 。
 
-为此文章提出了 **Focused Transformer**（FOT）解决方案，其中主要使用了 Memory Attention Layers 以及 CrossBatch 技术，在 Inference 的过程中，绿色的 Memory Attention Layers 使用 kNN 对外部的 Memory 进行查询，从而有效延长了上下文长度，而 Memory Attention Layers 则主要使用 CrossBatch 进行训练。
+为此文章提出了 <strong>Focused Transformer</strong>（FOT）解决方案，其中主要使用了 Memory Attention Layers 以及 CrossBatch 技术，在 Inference 的过程中，绿色的 Memory Attention Layers 使用 kNN 对外部的 Memory 进行查询，从而有效延长了上下文长度，而 Memory Attention Layers 则主要使用 CrossBatch 进行训练。
 
 ![](https://picx.zhimg.com/v2-c37988cdcbd7814362c6815038c960b8_r.jpg?source=2c26e567)具体而言，Memory Attention Layers 中的每个 query 在 
 ![](https://www.zhihu.com/equation?tex=+%5Cin++) 中会关注局部的上下文以及 Memory 中使用 kNN 计算出的最匹配的 

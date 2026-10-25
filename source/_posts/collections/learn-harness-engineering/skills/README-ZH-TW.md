@@ -35,24 +35,24 @@ categories:
 
 面向 AI 編程 agent 的生產級 harness engineering 技能。它協助建立、評估與改進 agent harness 檔案，例如 AGENTS.md、功能清單、驗證工作流與跨會話延續機制。
 
-- **7 個參考模式**：記憶持久化、技能執行期、上下文工程、工具註冊、多 agent 協調、生命週期與啟動、常見陷阱
-- **範本**：AGENTS.md/CLAUDE.md、feature-list.json、init.sh、progress.md、session-handoff.md
-- **腳本**：腳手架生成、校驗、HTML 評估報告、結構化 benchmark
-- **10 個內建 eval 測試案例**
+- <strong>7 個參考模式</strong>：記憶持久化、技能執行期、上下文工程、工具註冊、多 agent 協調、生命週期與啟動、常見陷阱
+- <strong>範本</strong>：AGENTS.md/CLAUDE.md、feature-list.json、init.sh、progress.md、session-handoff.md
+- <strong>腳本</strong>：腳手架生成、校驗、HTML 評估報告、結構化 benchmark
+- <strong>10 個內建 eval 測試案例</strong>
 
 完整文件請見 [harness-creator/README.md](harness-creator/README.md)。
 
 ## harness-creator 的建立方式
 
-`harness-creator` 使用 **skill-creator** 方法論建立。這是 Anthropic 用於建立、測試與迭代 agent skills 的官方 meta-skill，提供 draft → test → evaluate → iterate 的結構化流程。
+`harness-creator` 使用 <strong>skill-creator</strong> 方法論建立。這是 Anthropic 用於建立、測試與迭代 agent skills 的官方 meta-skill，提供 draft → test → evaluate → iterate 的結構化流程。
 
 ## 技能如何運作
 
 每個技能遵循標準結構：
 
-1. **SKILL.md** — 入口檔案，包含 YAML frontmatter 與給 agent 的 Markdown 指令。
-2. **references/** — 需要時載入上下文的補充文件。
-3. **templates/** — 技能可產生的起始範本。
+1. <strong>SKILL.md</strong> — 入口檔案，包含 YAML frontmatter 與給 agent 的 Markdown 指令。
+2. <strong>references/</strong> — 需要時載入上下文的補充文件。
+3. <strong>templates/</strong> — 技能可產生的起始範本。
 
 技能採用 progressive disclosure：agent 一開始只看到名稱與描述，觸發後才載入完整 SKILL.md，並只在必要時讀取附帶資源。
 

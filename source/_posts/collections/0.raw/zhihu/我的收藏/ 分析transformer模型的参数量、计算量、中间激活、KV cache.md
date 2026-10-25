@@ -21,7 +21,7 @@ source_url: https://zhuanlan.zhihu.com/p/624740065
 
 现在业界的大语言模型都是基于transformer模型的，模型结构主要有两大类：encoder-decoder（代表模型是T5）和decoder-only，具体的，decoder-only结构又可以分为Causal LM（代表模型是GPT系列）和Prefix LM（代表模型是GLM）。归因于GPT系列取得的巨大成功，大多数的主流大语言模型都采用Causal LM结构。因此，针对decoder-only框架，为了更好地理解训练训练大语言模型的显存效率和计算效率，本文分析采用decoder-only框架transformer模型的模型参数量、计算量、中间激活值、KV cache。
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_b5aa8211143e.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_b5aa8211143e.jpg)
 
 为了方便分析，先定义好一些数学符号。记transformer模型的层数为 l" role="presentation">ll ，隐藏层维度为 h" role="presentation">hh ，注意力头数为 a" role="presentation">aa 。词表大小为 V" role="presentation">VV ，训练数据的批次大小为 b" role="presentation">bb ，序列长度为 s" role="presentation">ss 。
 
@@ -35,30 +35,30 @@ MLP块由2个线性层组成，一般地，第一个线性层是先将维度从 
 
 self-attention块和MLP块各有一个layer normalization，包含了2个可训练模型参数：缩放参数 \gamma 和平移参数 \beta ，形状都是 [h] 。2个layer normalization的参数量为 4h 。
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_f2f2e1a2154e.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_f2f2e1a2154e.jpg)
 
-总的，**每个transformer层的参数量**为 12h^2+13h 。
+总的，<strong>每个transformer层的参数量</strong>为 12h^2+13h 。
 
 除此之外，词嵌入矩阵的参数量也较多，词向量维度通常等于隐藏层维度 h ，词嵌入矩阵的参数量为 Vh 。最后的输出层的权重矩阵通常与词嵌入矩阵是参数共享的。
 
 关于位置编码，如果采用可训练式的位置编码，会有一些可训练模型参数，数量比较少。如果采用相对位置编码，例如RoPE和ALiBi，则不包含可训练的模型参数。我们忽略这部分参数。
 
-综上， **l 层transformer模型的可训练模型参数量为** l(12h^2+13h)+Vh 。当隐藏维度 h 较大时，可以忽略一次项，**模型参数量近似为** 12lh^2 。
+综上， <strong>l 层transformer模型的可训练模型参数量为</strong> l(12h^2+13h)+Vh 。当隐藏维度 h 较大时，可以忽略一次项，<strong>模型参数量近似为</strong> 12lh^2 。
 
 接下来，我们估计不同版本LLaMA模型的参数量。
 
 实际参数量隐藏维度h层数l12lh^26.7B4096326,442,450,94413.0B51204012,582,912,00032.5B66566031,897,681,92065.2B81928064,424,509,440
 #### 2.1 训练过程中的显存占用分析
 
-在训练神经网络的过程中，占用显存的大头主要分为四部分：**模型参数、前向计算过程中产生的中间激活、后向传递计算得到的梯度、优化器状态**。这里着重分析参数、梯度和优化器状态的显存占用，中间激活的显存占用后面会详细介绍。训练大模型时通常会采用AdamW优化器，并用混合精度训练来加速训练，基于这个前提分析显存占用。
+在训练神经网络的过程中，占用显存的大头主要分为四部分：<strong>模型参数、前向计算过程中产生的中间激活、后向传递计算得到的梯度、优化器状态</strong>。这里着重分析参数、梯度和优化器状态的显存占用，中间激活的显存占用后面会详细介绍。训练大模型时通常会采用AdamW优化器，并用混合精度训练来加速训练，基于这个前提分析显存占用。
 
-在一次训练迭代中，每个可训练模型参数都会对应1个梯度，并对应2个优化器状态（Adam优化器梯度的一阶动量和二阶动量）。设模型参数量为 \Phi ，那么梯度的元素数量为 \Phi ，AdamW优化器的元素数量为 2\Phi 。float16数据类型的元素占2个bytes，float32数据类型的元素占4个bytes。在混合精度训练中，会使用float16的模型参数进行前向传递和后向传递，计算得到float16的梯度；在优化器更新模型参数时，会使用float32的优化器状态、float32的梯度、float32的模型参数来更新模型参数。因此，对于每个可训练模型参数，占用了 (2+4) + (2+4)+(4+4)=20bytes 。使用AdamW优化器和混合精度训练来训练参数量为 \Phi 的大模型，**模型参数、梯度和优化器状态占用的显存大小为** 20\Phi \space bytes 。
+在一次训练迭代中，每个可训练模型参数都会对应1个梯度，并对应2个优化器状态（Adam优化器梯度的一阶动量和二阶动量）。设模型参数量为 \Phi ，那么梯度的元素数量为 \Phi ，AdamW优化器的元素数量为 2\Phi 。float16数据类型的元素占2个bytes，float32数据类型的元素占4个bytes。在混合精度训练中，会使用float16的模型参数进行前向传递和后向传递，计算得到float16的梯度；在优化器更新模型参数时，会使用float32的优化器状态、float32的梯度、float32的模型参数来更新模型参数。因此，对于每个可训练模型参数，占用了 (2+4) + (2+4)+(4+4)=20bytes 。使用AdamW优化器和混合精度训练来训练参数量为 \Phi 的大模型，<strong>模型参数、梯度和优化器状态占用的显存大小为</strong> 20\Phi \space bytes 。
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_41adb57ea504.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_41adb57ea504.jpg)
 
-#### **2.2 推理过程中的显存占用分析**
+#### <strong>2.2 推理过程中的显存占用分析</strong>
 
-在神经网络的推理阶段，没有优化器状态和梯度，也不需要保存中间激活。**少了梯度、优化器状态、中间激活，模型推理阶段占用的显存要远小于训练阶段**。模型推理阶段，占用显存的大头主要是模型参数，如果使用float16来进行推理，**推理阶段模型参数占用的显存大概是** 2\Phi\space bytes 。如果使用KV cache来加速推理过程，**KV cache也需要占用显存**，KV cache占用的显存下文会详细介绍。此外，输入数据也需要放到GPU上，还有一些中间结果（推理过程中的中间结果用完会尽快释放掉），不过这部分占用的显存是很小的，可以忽略。
+在神经网络的推理阶段，没有优化器状态和梯度，也不需要保存中间激活。<strong>少了梯度、优化器状态、中间激活，模型推理阶段占用的显存要远小于训练阶段</strong>。模型推理阶段，占用显存的大头主要是模型参数，如果使用float16来进行推理，<strong>推理阶段模型参数占用的显存大概是</strong> 2\Phi\space bytes 。如果使用KV cache来加速推理过程，<strong>KV cache也需要占用显存</strong>，KV cache占用的显存下文会详细介绍。此外，输入数据也需要放到GPU上，还有一些中间结果（推理过程中的中间结果用完会尽快释放掉），不过这部分占用的显存是很小的，可以忽略。
 
 ### 3. 计算量FLOPs估计
 
@@ -76,7 +76,7 @@ $2. QK^{T} 矩阵乘法的输入和输出形状为 [b, head\_num, s,per\_head\_h
 
 4. attention后的线性映射，矩阵乘法的输入和输出形状为 [b,s,h]\times[h,h]\rightarrow [b,s,h] 。计算量为 2bsh^2 。
 
-**接下来分析MLP块的计算，计算公式如下**：
+<strong>接下来分析MLP块的计算，计算公式如下</strong>：
 
 x=f_{gelu}(x_{out}W_1)W_2+x_{out}\\
 
@@ -84,49 +84,49 @@ x=f_{gelu}(x_{out}W_1)W_2+x_{out}\\
 
 2. 第二个线性层，矩阵乘法的输入和输出形状为 [b,s,4h]\times[4h,h]\rightarrow[b,s,h] 。计算量为 8bsh^2 。
 
-将上述计算量相加，得到**每个transformer层的计算量大约为** 24bsh^2+4bs^2h 。
+将上述计算量相加，得到<strong>每个transformer层的计算量大约为</strong> 24bsh^2+4bs^2h 。
 
 此外，另一个计算量的大头是logits的计算，将隐藏向量映射为词表大小。矩阵乘法的输入和输出形状为 [b,s,h]\times[h,V]\rightarrow [b,s,V] ，计算量为 2bshV 。
 
-因此，对于一个 l 层的transformer模型，输入数据形状为 [b,s] 的情况下，**一次训练迭代的计算量为 **l*(24bsh^2+4bs^2h)+2bshV 。
+因此，对于一个 l 层的transformer模型，输入数据形状为 [b,s] 的情况下，<strong>一次训练迭代的计算量为</strong>l*(24bsh^2+4bs^2h)+2bshV 。
 
 #### 3.1 计算量与参数量的关联 
 
-当隐藏维度 h 比较大，且远大于序列长度 s 时，我们可以忽略一次项，计算量可以近似为 24bsh^2*l 。前面提到当模型参数量为 12lh^2 ，输入的tokens数为 bs ，存在等式 \frac{24bsh^2l}{12h^2\times bs}=2 。我们可以近似认为：**在一次前向传递中，对于每个token，每个模型参数，需要进行2次浮点数运算**，即一次乘法法运算和一次加法运算。
+当隐藏维度 h 比较大，且远大于序列长度 s 时，我们可以忽略一次项，计算量可以近似为 24bsh^2*l 。前面提到当模型参数量为 12lh^2 ，输入的tokens数为 bs ，存在等式 \frac{24bsh^2l}{12h^2\times bs}=2 。我们可以近似认为：<strong>在一次前向传递中，对于每个token，每个模型参数，需要进行2次浮点数运算</strong>，即一次乘法法运算和一次加法运算。
 
-一次训练迭代包含了前向传递和后向传递，**后向传递的计算量是前向传递的2倍**。因此，前向传递 + 后向传递的系数 =1+2=3 。一次训练迭代中，对于每个token，每个模型参数，需要进行 2*3=6 次浮点数运算。
+一次训练迭代包含了前向传递和后向传递，<strong>后向传递的计算量是前向传递的2倍</strong>。因此，前向传递 + 后向传递的系数 =1+2=3 。一次训练迭代中，对于每个token，每个模型参数，需要进行 2*3=6 次浮点数运算。
 
 接下来，我们可以估计训练GPT3-175B所需要的计算量。对于GPT3，每个token，每个参数进行了6次浮点数运算，再乘以参数量和总tokens数就得到了总的计算量。GPT3的模型参数量为 174600M ，训练数据量为 300B  tokens。
 
 $$6 \times 174600 \times 10^{6} \times 300 \times 10^{9} = 3.1428 \times 10^{23} flops\\$$
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_135f31ea9a61.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_135f31ea9a61.jpg)
 
 #### 3.2 训练时间估计
 
-模型参数量和训练总tokens数决定了训练transformer模型需要的计算量。给定硬件GPU类型的情况下，可以估计所需要的训练时间。给定计算量，训练时间（也就是GPU算完这么多flops的计算时间）不仅跟GPU类型有关，还与GPU利用率有关。计算端到端训练的GPU利用率时，不仅要考虑前向传递和后向传递的计算时间，还要**考虑CPU加载数据、优化器更新、多卡通信和记录日志的时间。一般来讲，**GPU利用率一般在 0.3\sim0.55 之间**。
+模型参数量和训练总tokens数决定了训练transformer模型需要的计算量。给定硬件GPU类型的情况下，可以估计所需要的训练时间。给定计算量，训练时间（也就是GPU算完这么多flops的计算时间）不仅跟GPU类型有关，还与GPU利用率有关。计算端到端训练的GPU利用率时，不仅要考虑前向传递和后向传递的计算时间，还要<strong>考虑CPU加载数据、优化器更新、多卡通信和记录日志的时间。一般来讲，</strong>GPU利用率一般在 0.3\sim0.55 之间**。
 
-上文讲到一次前向传递中，对于每个token，每个模型参数，进行2次浮点数计算。使用激活重计算技术来减少中间激活显存（下文会详细介绍）需要进行一次额外的前向传递，因此前向传递 + 后向传递 + 激活重计算的系数=1+2+1=4。使用**激活重计算**的一次训练迭代中，对于每个token，每个模型参数，需要进行 2*4=8 次浮点数运算。**在给定训练tokens数、硬件环境配置的情况下，训练transformer模型的计算时间为**：
+上文讲到一次前向传递中，对于每个token，每个模型参数，进行2次浮点数计算。使用激活重计算技术来减少中间激活显存（下文会详细介绍）需要进行一次额外的前向传递，因此前向传递 + 后向传递 + 激活重计算的系数=1+2+1=4。使用<strong>激活重计算</strong>的一次训练迭代中，对于每个token，每个模型参数，需要进行 2*4=8 次浮点数运算。<strong>在给定训练tokens数、硬件环境配置的情况下，训练transformer模型的计算时间为</strong>：
 
 $$训练时间\approx \frac{8\times tokens数\times 模型参数量}{GPU数\times GPU峰值flops\times GPU利用率}\\$$
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_356ba09ae483.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_356ba09ae483.jpg)
 
-$$以GPT3-175B为例，在1024张40GB显存的A100上，在300B tokens的数据上训练175B参数量的GPT3。40GB显存A100的峰值性能为312TFLOPS，设GPU利用率为0.45，则**所需要的训练时间为34天，这与[7]中的训练时间是对得上的**。 \frac{8\times(300 \times 10^9) \times (175 \times 10^9)}{1024\times (312\times 10^{12})\times 0.45}\approx 2921340 \space seconds\approx 34 days\\$$
+$$以GPT3-175B为例，在1024张40GB显存的A100上，在300B tokens的数据上训练175B参数量的GPT3。40GB显存A100的峰值性能为312TFLOPS，设GPU利用率为0.45，则<strong>所需要的训练时间为34天，这与[7]中的训练时间是对得上的</strong>。 \frac{8\times(300 \times 10^9) \times (175 \times 10^9)}{1024\times (312\times 10^{12})\times 0.45}\approx 2921340 \space seconds\approx 34 days\\$$
 
-$$以LLaMA-65B为例，在2048张80GB显存的A100上，在1.4TB tokens的数据上训练了65B参数量的模型。80GB显存A100的峰值性能为624TFLOPS，设GPU利用率为0.3，则**所需要的训练时间为21天，这与[4]中的实际训练时间是对得上的**。 \frac{8\times (1.4\times 10^{12})\times(65\times 10^9)}{2048\times (624\times 10^{12})\times 0.3}\approx 1898871\space seconds\approx 21 days\\$$
+$$以LLaMA-65B为例，在2048张80GB显存的A100上，在1.4TB tokens的数据上训练了65B参数量的模型。80GB显存A100的峰值性能为624TFLOPS，设GPU利用率为0.3，则<strong>所需要的训练时间为21天，这与[4]中的实际训练时间是对得上的</strong>。 \frac{8\times (1.4\times 10^{12})\times(65\times 10^9)}{2048\times (624\times 10^{12})\times 0.3}\approx 1898871\space seconds\approx 21 days\\$$
 
 ### 4. 中间激活值分析
 
-除了模型参数、梯度、优化器状态外，占用显存的大头就是前向传递过程中计算得到的中间激活值了，需要保存中间激活以便在后向传递计算梯度时使用。这里的激活（activations）指的是：**前向传递过程中计算得到的，并在后向传递过程中需要用到的所有张量**。这里的激活不包含模型参数和优化器状态，但包含了dropout操作需要用到的mask矩阵。
+除了模型参数、梯度、优化器状态外，占用显存的大头就是前向传递过程中计算得到的中间激活值了，需要保存中间激活以便在后向传递计算梯度时使用。这里的激活（activations）指的是：<strong>前向传递过程中计算得到的，并在后向传递过程中需要用到的所有张量</strong>。这里的激活不包含模型参数和优化器状态，但包含了dropout操作需要用到的mask矩阵。
 
 在分析中间激活的显存占用时，只考虑激活占用显存的大头，忽略掉一些小的buffers。比如，对于layer normalization，计算梯度时需要用到层的输入、输入的均值 \mu 和方差 \sigma^2 。输入包含了 bsh 个元素，而输入的均值和方差分别包含了 bs 个元素。由于 h 通常是比较大的（千数量级），有 bsh\gg bs 。因此，对于layer normalization，中间激活近似估计为 bsh ，而不是 bsh + 2bs 。
 
-大模型在训练过程中通常采用混合精度训练，中间激活值一般是float16或者bfloat16数据类型的。在分析中间激活的显存占用时，**假设中间激活值是以float16或bfloat16数据格式来保存的，每个元素占了2个bytes。唯一例外的是，dropout操作的mask矩阵，每个元素只占1个bytes**。在下面的分析中，单位是bytes，而不是元素个数。
+大模型在训练过程中通常采用混合精度训练，中间激活值一般是float16或者bfloat16数据类型的。在分析中间激活的显存占用时，<strong>假设中间激活值是以float16或bfloat16数据格式来保存的，每个元素占了2个bytes。唯一例外的是，dropout操作的mask矩阵，每个元素只占1个bytes</strong>。在下面的分析中，单位是bytes，而不是元素个数。
 
 每个transformer层包含了一个self-attention块和MLP块，并分别对应了一个layer normalization连接。
 
-**先分析self-attention块的中间激活**。self-attention块的计算公式如下：
+<strong>先分析self-attention块的中间激活</strong>。self-attention块的计算公式如下：
 
 Q=xW_Q,K=xW_K,V=xW_V\\
 
@@ -152,7 +152,7 @@ QK^T 的形状为： [b,head\_num,s,s] ，元素个数为 bs^2a ，占用显存�
 
 因此，将上述中间激活相加得到，self-attention块的中间激活占用显存大小为 11bsh+5bs^2a 。
 
-接下来**看MLP块的中间激活。MLP块的计算公式如下**： x=f_{gelu}(x_{out}W_1)W_2+x_{out}\\
+接下来<strong>看MLP块的中间激活。MLP块的计算公式如下</strong>： x=f_{gelu}(x_{out}W_1)W_2+x_{out}\\
 
 1. 第一个线性层需要保存其输入，占用显存大小为 2bsh 。
 
@@ -166,11 +166,11 @@ QK^T 的形状为： [b,head\_num,s,s] ，元素个数为 bs^2a ，占用显存�
 
 另外，self-attention块和MLP块分别对应了一个layer normalization。每个layer norm需要保存其输入，大小为 2bsh 。2个layer norm需要保存的中间激活为 4bsh 。
 
-综上，**每个transformer层需要保存的中间激活占用显存大小为** 34bsh+5bs^2a 。对于 l 层transformer模型，还有embedding层、最后的输出层。embedding层不需要中间激活。总的而言，当隐藏维度 h 比较大，层数 l 较深时，这部分的中间激活是很少的，可以忽略。因此，**对于 l 层transformer模型，中间激活占用的显存大小可以近似为 **(34bsh+5bs^2a)*l 。
+综上，<strong>每个transformer层需要保存的中间激活占用显存大小为</strong> 34bsh+5bs^2a 。对于 l 层transformer模型，还有embedding层、最后的输出层。embedding层不需要中间激活。总的而言，当隐藏维度 h 比较大，层数 l 较深时，这部分的中间激活是很少的，可以忽略。因此，<strong>对于 l 层transformer模型，中间激活占用的显存大小可以近似为</strong>(34bsh+5bs^2a)*l 。
 
 #### 4.1 对比中间激活与模型参数的显存大小
 
-在一次训练迭代中，模型参数（或梯度）占用的显存大小只与模型参数量和参数数据类型有关，与输入数据的大小是没有关系的。优化器状态占用的显存大小也是一样，与优化器类型有关，与模型参数量有关，但与输入数据的大小无关。而**中间激活值与输入数据的大小（批次大小 b 和序列长度 s ）是成正相关的**，随着批次大小 b 和序列长度 s 的增大，中间激活占用的显存会同步增大。当我们训练神经网络遇到显存不足OOM（Out Of Memory）问题时，通常会尝试减小批次大小来避免显存不足的问题，这种方式减少的其实是中间激活占用的显存，而不是模型参数、梯度和优化器的显存。
+在一次训练迭代中，模型参数（或梯度）占用的显存大小只与模型参数量和参数数据类型有关，与输入数据的大小是没有关系的。优化器状态占用的显存大小也是一样，与优化器类型有关，与模型参数量有关，但与输入数据的大小无关。而<strong>中间激活值与输入数据的大小（批次大小 b 和序列长度 s ）是成正相关的</strong>，随着批次大小 b 和序列长度 s 的增大，中间激活占用的显存会同步增大。当我们训练神经网络遇到显存不足OOM（Out Of Memory）问题时，通常会尝试减小批次大小来避免显存不足的问题，这种方式减少的其实是中间激活占用的显存，而不是模型参数、梯度和优化器的显存。
 
 以GPT3-175B为例，我们来直观地对比下模型参数与中间激活的显存大小。GPT3的模型配置如下。我们假设采用混合精度训练，模型参数和中间激活都采用float16数据类型，每个元素占2个bytes。
 
@@ -184,19 +184,19 @@ GPT3的序列长度 s 为 2048 。对比不同的批次大小 b 占用的中间�
 
 当 b=128 时，中间激活占用显存为 (34bsh+5bs^2a)*l=35,253,091,565,568bytes\approx35.3TB ，大约是模型参数显存的101倍。
 
-可以看到随着批次大小 b 的增大，中间激活占用的显存远远超过了模型参数显存。通常会采用**激活重计算**技术来减少中间激活，理论上可以将中间激活显存从 O(n) 减少到 O(\sqrt{n}) ，代价是增加了一次额外前向计算的时间，本质上是“时间换空间”。
+可以看到随着批次大小 b 的增大，中间激活占用的显存远远超过了模型参数显存。通常会采用<strong>激活重计算</strong>技术来减少中间激活，理论上可以将中间激活显存从 O(n) 减少到 O(\sqrt{n}) ，代价是增加了一次额外前向计算的时间，本质上是“时间换空间”。
 
 ### 5. KV cache
 
 在推断阶段，transformer模型加速推断的一个常用策略就是使用 KV cache。一个典型的大模型生成式推断包含了两个阶段：
 
-1. **预填充阶段**：输入一个prompt序列，为每个transformer层生成 key cache和value cache（KV cache）。
+1. <strong>预填充阶段</strong>：输入一个prompt序列，为每个transformer层生成 key cache和value cache（KV cache）。
 
-2. **解码阶段**：使用并更新KV cache，一个接一个地生成词，当前生成的词依赖于之前已经生成的词。
+2. <strong>解码阶段</strong>：使用并更新KV cache，一个接一个地生成词，当前生成的词依赖于之前已经生成的词。
 
 $第 i 个transformer层的权重矩阵为 W^i_Q,W^i_K,W^i_V,W^i_O,W^i_1,W^i_2 。其中，self-attention块的4个权重矩阵 W^i_Q,W^i_K,W^i_V,W^i_O\in R^{h\times h} ，并且MLP块的2个权重矩阵 W^i_1\in R^{h\times 4h},W^i_2\in R^{4h\times h} 。$
 
-**预填充阶段**
+<strong>预填充阶段</strong>
 
 $假设第 i 个transformer层的输入为 x^i ，self-attention块的key、value、query和output表示为 x^i_K,x^i_V,x^i_Q,x^i_{out} ，其中， x^i_K,x^i_V,x^i_Q,x^i_{out}\in R^{b\times s\times h} 。$
 
@@ -208,7 +208,7 @@ $$x^{i}_{K} = x^{i} \cdot W^{i}_{K}\\x^{i}_{V} = x^{i} \cdot W^{i}_{V}\\$$
 
 $$x^{i}_{Q} = x^{i} \cdot W^{i}_{Q}\\x^{i}_{out} = softmax(\frac{x^{i}_{Q} {x^{i}_{K}}^{T}}{\sqrt{h}})  \cdot x^{i}_{V} \cdot W^{i}_{O} + x^{i}\\x^{i+1} = f_{gelu}(x^{i}_{out}\cdot W_1) \cdot W_2 + x^{i}_{out}\\$$
 
-**解码阶段**
+<strong>解码阶段</strong>
 
 给定当前生成词在第 i  个transformer层的向量表示为 t^{i}\in R^{b\times 1\times h} 。推断计算分两部分：更新KV cache和计算第 i 个transformer层的输出。
 
@@ -226,7 +226,7 @@ $$t^{i}_{out} = softmax(\frac{{t^{i}_{Q}x^{i}_{K}}^{T}}{\sqrt{h}}) \cdot x^{i}_{
 
 #### 5.1 KV cache的显存占用分析
 
-假设输入序列的长度为 s ，输出序列的长度为 n ，以float16来保存KV cache，那么**KV cache的峰值显存占用大小为** b(s+n)h * l * 2 * 2=4blh(s+n) 。这里第一个2表示K/V cache，第二个2表示float16占2个bytes。
+假设输入序列的长度为 s ，输出序列的长度为 n ，以float16来保存KV cache，那么<strong>KV cache的峰值显存占用大小为</strong> b(s+n)h * l * 2 * 2=4blh(s+n) 。这里第一个2表示K/V cache，第二个2表示float16占2个bytes。
 
 以GPT3为例，对比KV cache与模型参数占用显存的大小。GPT3模型占用显存大小为350GB。假设批次大小 b=64 ，输入序列长度 s=512 ，输出序列长度 n=32 ，则KV cache占用显存为 4blh(s+n)=164,282,499,072bytes\approx 164GB ，大约是模型参数显存的0.5倍。
 

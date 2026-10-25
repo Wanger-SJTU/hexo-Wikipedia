@@ -21,9 +21,9 @@ Without persistent memory, an agent loses all user preferences, project context,
 
 ### Separate layers by scope and durability
 
-- **Instruction memory** (human-curated, version-controlled): AGENTS.md, CLAUDE.md, project conventions
-- **Auto-memory** (agent-written, persistent): Progress logs, session handoffs, discovered patterns
-- **Session extraction** (background-derived): Automatic transcript analysis at session end
+- <strong>Instruction memory</strong> (human-curated, version-controlled): AGENTS.md, CLAUDE.md, project conventions
+- <strong>Auto-memory</strong> (agent-written, persistent): Progress logs, session handoffs, discovered patterns
+- <strong>Session extraction</strong> (background-derived): Automatic transcript analysis at session end
 
 ### Two-step save invariant
 
@@ -45,8 +45,8 @@ Organization-wide → User-level → Project-level → Local override
 
 ### The index is bounded always-on context; topic files are on-demand detail
 
-- **Index**: Hard-capped at ~200 lines / 25KB, one line per entry
-- **Topic files**: Unlimited detail, loaded on demand
+- <strong>Index</strong>: Hard-capped at ~200 lines / 25KB, one line per entry
+- <strong>Topic files</strong>: Unlimited detail, loaded on demand
 
 ## When To Use
 
@@ -66,20 +66,20 @@ Organization-wide → User-level → Project-level → Local override
 
 ## Implementation Patterns
 
-1. **Define memory directory** idempotently at startup (e.g., `.claude/memory/`)
-2. **Create index file** with hard caps enforced at read time
-3. **Implement two-step save**: topic file first, then index update
-4. **Fire background extraction** only after final response with no pending tool calls
-5. **Enforce mutual exclusion**: if main agent wrote to memory, skip extraction that turn
-6. **Build review mechanism** for cross-layer promotion proposals
+1. <strong>Define memory directory</strong> idempotently at startup (e.g., `.claude/memory/`)
+2. <strong>Create index file</strong> with hard caps enforced at read time
+3. <strong>Implement two-step save</strong>: topic file first, then index update
+4. <strong>Fire background extraction</strong> only after final response with no pending tool calls
+5. <strong>Enforce mutual exclusion</strong>: if main agent wrote to memory, skip extraction that turn
+6. <strong>Build review mechanism</strong> for cross-layer promotion proposals
 
 ## Gotchas
 
-1. **Index truncation is silent until it fires** — keep entries short
-2. **Priority ordering is counterintuitive** — local beats project beats user beats org
-3. **Extraction timing creates a race window** — user can start next turn before extraction completes
-4. **Derivable content doesn't belong in memory** — architecture and code patterns are re-derivable from the codebase
-5. **Orphaned topic files accumulate** — periodic cleanup recommended
+1. <strong>Index truncation is silent until it fires</strong> — keep entries short
+2. <strong>Priority ordering is counterintuitive</strong> — local beats project beats user beats org
+3. <strong>Extraction timing creates a race window</strong> — user can start next turn before extraction completes
+4. <strong>Derivable content doesn't belong in memory</strong> — architecture and code patterns are re-derivable from the codebase
+5. <strong>Orphaned topic files accumulate</strong> — periodic cleanup recommended
 
 ## Related Patterns
 

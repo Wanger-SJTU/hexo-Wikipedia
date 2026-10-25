@@ -31,24 +31,24 @@ source_url: https://zhuanlan.zhihu.com/p/644541524
 
 ***the generated content that is nonsensical or unfaithful to the provided source content*什么是Faithfulness and Factualness：**
 
-- **Faithfulness**：是否遵循input content；
-- **Factualness**：是否符合世界知识；
+- <strong>Faithfulness</strong>：是否遵循input content；
+- <strong>Factualness</strong>：是否符合世界知识；
 ***Joshua Maynez, Shashi Narayan, Bernd Bohnet, and Ryan McDonald. 2020. On faithfulness and factuality in abstractive summarization. In Proceedings of the 58th Annual Meeting of the Association for Computational Linguistics.*针对不同任务，幻觉的定义也可能出现差异：**
 
-- **数据源（source）不一致**：
+- <strong>数据源（source）不一致</strong>：
 
 - 例如：摘要的数据源是document，data-to-text的数据源是data table，对话的数据源是对话历史，而开放域对话的数据源可以是世界知识。
 
-- **容忍幻觉的程度不一致**：
+- <strong>容忍幻觉的程度不一致</strong>：
 
 - 在摘要、data-to-text任务中，非常看重response的Faithfulness，因此这些任务对幻觉的容忍程度很低；
 - 而像开发域对话任务中，只需要response符合事实即可，容忍程度较高；
 
-**在传统任务里，幻觉大都是指的是Faithfulness：**
+<strong>在传统任务里，幻觉大都是指的是Faithfulness：</strong>
 
-- **Intrinsic Hallucination（信息冲突）**: LMs在生成回复时，与输入信息产生了冲突，例如摘要问题里，abstract和document的信息不一致。
-- **Extrinsic Hallucination（无中生有）:** LMs在生成回复时，输出一些并没有体现在输入中的额外信息，比如邮箱地址、电话号码、住址，并且难以验证其真假。（PS: 按照此定义，Extrinsic Hallucination有可能是真的信息，只是需要外部信息源进行认证）
-**而面向LLMs，我们通常考虑的幻觉则是Factualness：**
+- <strong>Intrinsic Hallucination（信息冲突）</strong>: LMs在生成回复时，与输入信息产生了冲突，例如摘要问题里，abstract和document的信息不一致。
+- <strong>Extrinsic Hallucination（无中生有）:</strong> LMs在生成回复时，输出一些并没有体现在输入中的额外信息，比如邮箱地址、电话号码、住址，并且难以验证其真假。（PS: 按照此定义，Extrinsic Hallucination有可能是真的信息，只是需要外部信息源进行认证）
+<strong>而面向LLMs，我们通常考虑的幻觉则是Factualness：</strong>
 
 - 因为我们应用LLM的形式是open-domain Chat，而不是局限于特定任务，所以数据源可以看做任意的世界知识。LLMs如果生成了不在input source里的额外信息，但是符合事实的，这种情况也可能是对我们有帮助的。
 
@@ -69,8 +69,8 @@ source_url: https://zhuanlan.zhihu.com/p/644541524
 
 即使有了高质量训练数据，LLMs仍然可能表现出幻觉现象。
 
-- **模型结构**：如果是较弱的backbone（比如RNN）可能导致比较严重的幻觉问题，但在LLMs时代应该不太可能存在这一问题；
-- **解码算法**：研究表明，如果使用不确定性较高的采样算法（e.g.，top-p）会诱导LMs出现更严重的幻觉问题。甚至可以故意在解码算法中加入一些随机性，进一步让LMs胡编乱造（可以用该方法生成一些negative samples）
+- <strong>模型结构</strong>：如果是较弱的backbone（比如RNN）可能导致比较严重的幻觉问题，但在LLMs时代应该不太可能存在这一问题；
+- <strong>解码算法</strong>：研究表明，如果使用不确定性较高的采样算法（e.g.，top-p）会诱导LMs出现更严重的幻觉问题。甚至可以故意在解码算法中加入一些随机性，进一步让LMs胡编乱造（可以用该方法生成一些negative samples）
 ***Nayeon Lee, Wei Ping, Peng Xu, Mostofa Patwary, Mohammad Shoeybi, and Bryan Catanzaro. 2022. Factuality enhanced language models for open-ended text generation. arXiv preprint arXiv:2206.04624 (2022).*
 
 - 暴露偏差**：训练和测试阶段不匹配的exposure bias问题可能导致LLMs出现幻觉，特别是生成long-form response的时候。
@@ -89,21 +89,21 @@ source_url: https://zhuanlan.zhihu.com/p/644541524
 Reference-based的指标有两类：
 
 - 基于Source Information和Target Reference**：利用一些统计学指标，比如ROUGE、BLEU来评估输出结果和Source/Target信息的重叠度。
-- **基于Source Information**：由于NLG任务里，Target输出往往是多种多样的，因此许多工作只基于Source信息进行幻觉的评估。比如Knowledge F1。
+- <strong>基于Source Information</strong>：由于NLG任务里，Target输出往往是多种多样的，因此许多工作只基于Source信息进行幻觉的评估。比如Knowledge F1。
 *基于Reference的评价指标，基本上只能评价Faithfulness，而无法评价Factualness，因此通常不适用于LLMs。*
 
-#### **Reference-Free**
+#### <strong>Reference-Free</strong>
 
-- **基于IE**：将知识限定于可以用三元组形式表示的关系和事件，基于额外的IE模型进行抽取，接着使用额外模型进行验证。
+- <strong>基于IE</strong>：将知识限定于可以用三元组形式表示的关系和事件，基于额外的IE模型进行抽取，接着使用额外模型进行验证。
 
-- **缺点：**
+- <strong>缺点：</strong>
 
 - 可能存在IE模型的错误传播问题。
 - 知识被限定在三元组形式。
 
-- **基于QA**：第一步先基于LM生成的回复，使用一个QG(question generation)模型生成一系列QA pairs；第二步给定Source Information，让QA模型对上一步生成的Question进行回复；第三步则是通过对比第一步的answers和第二步的answers，计算匹配指标，衡量模型的幻觉问题；
+- <strong>基于QA</strong>：第一步先基于LM生成的回复，使用一个QG(question generation)模型生成一系列QA pairs；第二步给定Source Information，让QA模型对上一步生成的Question进行回复；第三步则是通过对比第一步的answers和第二步的answers，计算匹配指标，衡量模型的幻觉问题；
 
-- **缺点**：
+- <strong>缺点</strong>：
 
 - 同样存在QA/QG模型的错误传播问题。
 - 难以评估Factualness，因为上述第二步里面，Source Information不可能包含全部的世界知识，因此对于一些问题难以生成可靠的回复。
@@ -112,7 +112,7 @@ Reference-based的指标有两类：
 
 - 基于NLI**：基于NLI的方法通过NLI模型评估是否Source Information可以蕴含Generated Text，从而评估是否出现了幻觉现象。
 
-- **缺点**：
+- <strong>缺点</strong>：
 
 - Off-the-shelf NLI模型用于核查事实效果不是很好；
 
@@ -136,20 +136,20 @@ Reference-based的指标有两类：
 
 #### 基于数据的工作
 
-**构建高质量数据集**
+<strong>构建高质量数据集</strong>
 
-- **人工标注**
+- <strong>人工标注</strong>
 
-- **训练数据**：LLM上不可行，只适用于task-specific的幻觉问题
-- **评测数据**：构建细粒度的幻觉评估benchmark用于分析幻觉的严重程度和原因
+- <strong>训练数据</strong>：LLM上不可行，只适用于task-specific的幻觉问题
+- <strong>评测数据</strong>：构建细粒度的幻觉评估benchmark用于分析幻觉的严重程度和原因
 
 ***Saadia Gabriel, Asli Celikyilmaz, Rahul Jha, Yejin Choi, and Jianfeng Gao. 2021. GO FIGURE: A meta evaluation of factuality in summarization. In Findings of the Association for Computational Linguistics: ACL-IJCNLP 2021. Association for Computational Linguistics, 478–487.*
 *Or Honovich, Leshem Choshen, Roee Aharoni, Ella Neeman, Idan Szpektor, and Omri Abend. 2021. Q2: Evaluating factual consistency in knowledge-grounded dialogues via question generation and question answering. In Proceedings of the 2021 Conference on Empirical Methods in Natural Language Processing. 7856–7870*
 
 - 自动筛选**：
 
-- 利用**模型筛选**出可能导致幻觉的数据并剔除；
-- 预训练时给更faithful的**数据加权**（wiki vs. fake news），或者不使用可靠来源的数据（比如只选用经过人工审查的数据源，如wiki或者教科书，预训练）
+- 利用<strong>模型筛选</strong>出可能导致幻觉的数据并剔除；
+- 预训练时给更faithful的<strong>数据加权</strong>（wiki vs. fake news），或者不使用可靠来源的数据（比如只选用经过人工审查的数据源，如wiki或者教科书，预训练）
 
 **
 
@@ -160,13 +160,13 @@ Reference-based的指标有两类：
 模型结构**
 
 - 模型结构层面的工作往往focus在设计更能充分编码利用source information的方法，比如融入一些人类偏置，如GNN网络。
-- 或者在解码时减少模型的**生成随机性**，因为diversity和Faithfulness往往是一个trade-off的关系，减少diversity/randomness可以变相提升Faithfulness/Factuality。
+- 或者在解码时减少模型的<strong>生成随机性</strong>，因为diversity和Faithfulness往往是一个trade-off的关系，减少diversity/randomness可以变相提升Faithfulness/Factuality。
 ***Nayeon Lee, Wei Ping, Peng Xu, Mostofa Patwary, Mohammad Shoeybi, and Bryan Catanzaro. 2022. Factuality enhanced language models for open-ended text generation. arXiv preprint arXiv:2206.04624 (2022).*
 
 - 检索增强**被证明可以显著减少幻觉问题，e.g., llama-index。
 ***Peng, Baolin, Michel Galley, Pengcheng He, Hao Cheng, Yujia Xie, Yu Hu, Qiuyuan Huang et al. "Check your facts and try again: Improving large language models with external knowledge and automated feedback."arXiv preprint arXiv:2302.12813(2023).*训练方式**
 
-- **可控文本生成**：将幻觉的程度作为一个可控的属性，利用可控文本生成技术进行控制。
+- <strong>可控文本生成</strong>：将幻觉的程度作为一个可控的属性，利用可控文本生成技术进行控制。
 ***Hannah Rashkin, David Reitter, Gaurav Singh Tomar, and Dipanjan Das. 2021. Increasing faithfulness in knowledgegrounded dialogue with controllable features. In Proceedings of the 59th Annual Meeting of the Association for Computational Linguistics and the 11th International Joint Conference on Natural Language Processing. 704–718.*
 *Zeqiu Wu, Michel Galley, Chris Brockett, Yizhe Zhang, Xiang Gao, Chris Quirk, Rik Koncel-Kedziorski, et al. 2021. A controllable model of grounded response generation. In Proceedings of the AAAI Conference on Artificial Intelligence. 14085–14093.*
 
@@ -178,7 +178,7 @@ Reference-based的指标有两类：
 *Mohsen Mesgar, Edwin Simpson, and Iryna Gurevych. 2021. Improving factual consistency between a response and persona facts. In Proceedings of the 16th Conference of the European Chapter of the Association for Computational Linguistics. 549–562.*
 
 - 多任务学习**: 通过设计合适的额外任务，可以达到减轻幻觉的效果。
-- **后处理**：设计一个小模型专门用于fix幻觉错误。
+- <strong>后处理</strong>：设计一个小模型专门用于fix幻觉错误。
 ***Sihao Chen, Fan Zhang, Kazoo Sone, and Dan Roth. 2021. Improving faithfulness in abstractive summarization with contrast candidate generation and selection. In Proceedings of the 2021 Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies (NAACL-HLT’21). 5935–5941.*
 ### 可能的后续方向
 
@@ -195,7 +195,7 @@ Reference-based的指标有两类：
 - 主观/客观幻觉
 - 幻觉可能和时间（temporal）有关
 
-- **知识的定义和诱导**：
+- <strong>知识的定义和诱导</strong>：
 
 - 怎么知道模型是否具备某一类知识，只是没有调用好？
 - 知识的定义：
@@ -203,7 +203,7 @@ Reference-based的指标有两类：
 - 传统工作大都将wikipedia视作知识库，但它仅仅是世界知识的很小一部分
 - 如果将整个互联网当做世界知识，又不可避免的会有虚假信息的问题
 
-- **幻觉消除：**
+- <strong>幻觉消除：</strong>
 
 - 检索增强：互联网/外挂知识库(llama Index)
 - 强化学习（RLHF）
@@ -216,7 +216,7 @@ Reference-based的指标有两类：
 
 #### 幻觉评估
 
-**TruthfulQA**
+<strong>TruthfulQA</strong>
 
 **
 
@@ -244,13 +244,13 @@ HaluEval benchmark**
 - knowledge-grounded dialogue：extrinsic-soft, extrinsic-hard, and extrinsic-grouped
 - text summarization： factual, non-factual, and intrinsic
 
-- **幻觉评估**：
+- <strong>幻觉评估</strong>：
 
 - Chatgpt倾向于在回复中生成无法被验证的内容（幻觉），占比约11.4%
 - 当前强大的LLM，如Chatgpt，都很难精准检测出文本中出现的幻觉问题
 - 通过提供外部知识和增加推理步数，能够提升LLM检测幻觉的能力
 
-**ChatGPT/GPT4生成不真实回复的评估、机理**
+<strong>ChatGPT/GPT4生成不真实回复的评估、机理</strong>
 
 **
 
@@ -258,13 +258,13 @@ HaluEval benchmark**
 
 对LLM生成的不符合事实的错误的类型进行分类和统计：
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_a64e44ac7443.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_a64e44ac7443.jpg)
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_f842558d3cd2.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_f842558d3cd2.jpg)
 
 定义了三个能力，可能导致幻觉的：
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_cb51d2c30a9e.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_cb51d2c30a9e.jpg)
 
 - 知识记忆
 - 知识调用
@@ -299,7 +299,7 @@ Retrieval有助于显著减少LLM的幻觉现象。
 - 模型容量和评估效果并不完全正相关
 - 使用额外的其他任务训练，可以提升automatic attribution evaluation的能力（QA/NLI/FC）
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_92ba64946ce2.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_92ba64946ce2.jpg)
 
 - 后一个工作
 
@@ -312,7 +312,7 @@ Retrieval有助于显著减少LLM的幻觉现象。
 - parametric memory：模型内部的知识
 - counter-memeory：与模型内部知识相反的内容
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_5873247f8736.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_5873247f8736.jpg)
 
 - 当只有一个单一的知识源时：
 
@@ -333,7 +333,7 @@ LLM幻觉的滚雪球现象**
 
 本文作者认为：LLM出现幻觉现象，很多情况下并不是因为它们缺少对应的知识，而仅仅是在调用知识的过程中出错。他们发现：LLMs如果在回复一开始做出了错误的判断，那么它们随后会给出错误的解释（幻觉）。他们称这一现象为幻觉的滚雪球现象。但是，当仅给定错误的解释时，LLMs往往可以成功判断它是不正确的。这证明LLMs其实具备相应的知识，只是被早期的错误断言给误导了。
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_e83e4ba7ae97.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_e83e4ba7ae97.jpg)
 
 作者也探索了一些缓解幻觉滚雪球问题的方法：
 
@@ -350,7 +350,7 @@ LLM幻觉的原子粒度评估**
 
 将LLM生成的内容（本文选用的内容是人物简介）分解为多个原子事实（instructGPT分解，人类校对），评估生成事实的精确度：
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_d91794301c0a.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_d91794301c0a.jpg)
 
 人工标注常用LLMs的原子事实精确度后，发现：
 
@@ -364,13 +364,13 @@ LLM幻觉的原子粒度评估**
 - 更大的LLM能够更好地评估。
 最后，作者基于自动指标，评估了现阶段LLM的原子事实性：
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_2725c3042949.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_2725c3042949.jpg)
 
 有一些有趣的发现：比如Dolly模型经常频繁提及Databricks公司，导致事实错误（因为dolly的训练语料是databricks公司员工手写的）
 
 最后作者研究了自动利用LLMs修复事实错误的可能性，发现在原子粒度纠正以及提供检索信息，能显著提高纠正的效果。
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_a01181793483.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_a01181793483.jpg)
 
 除了模型生成事实的精确度外，还应该考虑召回度（即内容中的原子事实信息尽可能多），否则LLMs可能走捷径，生成一些无意义的废话。
 
@@ -439,7 +439,7 @@ LLM幻觉的原子粒度评估**
 
 本质上，该系统是一个检索知识->生成回复->评估的反复迭代/决策的过程，能够通过外部知识库和检查模块，显著提升生成的各维度效果，包括事实性。
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_59e4a2c521dd.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_59e4a2c521dd.jpg)
 
 零资源黑盒LLM幻觉检测**
 
@@ -463,7 +463,7 @@ ETH-Zurich也有一篇类似的工作，着重关注LLM生成回复中的自相�
 
 [](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2305.07982)
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_81c8fed2eb7d.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_81c8fed2eb7d.jpg)
 
 提出了一个五步的零资源事实错误纠正流水线：
 
@@ -480,7 +480,7 @@ ETH-Zurich也有一篇类似的工作，着重关注LLM生成回复中的自相�
 
 MSRA的工作，本文允许LLM在自我检查答案正确性的过程中调用外部工具，比如知识库、搜索引擎和维基百科，从而缓解事实性和幻觉问题。
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_e92a923544b7.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_e92a923544b7.jpg)
 
 通过推理时干预诱导LLM生成符合事实的答案**
 
@@ -493,7 +493,7 @@ MSRA的工作，本文允许LLM在自我检查答案正确性的过程中调用�
 作者假设：LLMs know more than they say，LLM内部存在着隐藏的、可解释的结构，这些结构和事实性息息相关，因此可以通过干预：
 
 - 作者探索了LLM的生成回复准确率（直接回答问题）和Probe准确率（用一个linear classifier基于中间状态选择回答）的关系，发现LLM很多情况下知道知识，但无法正确生成回复。
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_1d900ffe09c2.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_1d900ffe09c2.jpg)
 
 - ITI方法选择和事实知识紧密相关的head，进行干预，让激活值移动到truthful相关的方向，实验表明能够有效提升回复的事实性。
 训练小模型后处理幻觉问题**
@@ -502,7 +502,7 @@ MSRA的工作，本文允许LLM在自我检查答案正确性的过程中调用�
 
 [](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2305.14908)
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_153314f449ea.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_153314f449ea.jpg)
 
 Google的工作，核心思想是用LLM自动对一个正确样本生成幻觉样本，组成平行语料，训练一个T5学会降噪：
 
@@ -517,7 +517,7 @@ Google的工作，核心思想是用LLM自动对一个正确样本生成幻觉�
 
 MIT&Google，利用多个智能体（LLM）相互辩论来解决事实性问题，相当于是一种变相的self-verify。
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_b07f53ee91f0.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_b07f53ee91f0.jpg)
 
 人在回路的幻觉消除**
 
@@ -525,6 +525,6 @@ MIT&Google，利用多个智能体（LLM）相互辩论来解决事实性问题�
 
 本文提出基于人机交互，让LLM获得更好的知识-问题对齐，从而提升回复的事实性，减轻幻觉。
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_9d2f6682c043.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_9d2f6682c043.jpg)
 
 原文链接： [不关岳岳的事：大模型的幻觉问题调研: LLM Hallucination Survey](https://zhuanlan.zhihu.com/p/642648601)

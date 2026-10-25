@@ -11,7 +11,7 @@ categories:
   - 文档
 ---
 
-[English](./README.md) · **한국어**
+[English](./README.md) · <strong>한국어</strong>
 
 # 프로젝트 02: 에이전트 가독형 워크스페이스
 
@@ -23,8 +23,8 @@ categories:
 
 | 디렉터리 | 의미 |
 |----------|------|
-| `starter/` | **시작점** — P1 풀이(solution) 기반 코드로, 문서 가져오기(import), 상세 보기, 영속성(persistence) 기능이 구현 대기 중입니다. 하네스가 약합니다. AGENTS.md가 단순하고 세션 핸드오프(session-handoff)가 없습니다. |
-| `solution/` | **참고 구현** — 모든 새 기능이 구현되어 있으며 완전한 워크스페이스 문서(ARCHITECTURE.md, PRODUCT.md, session-handoff.md)를 갖추고 있습니다. |
+| `starter/` | <strong>시작점</strong> — P1 풀이(solution) 기반 코드로, 문서 가져오기(import), 상세 보기, 영속성(persistence) 기능이 구현 대기 중입니다. 하네스가 약합니다. AGENTS.md가 단순하고 세션 핸드오프(session-handoff)가 없습니다. |
+| `solution/` | <strong>참고 구현</strong> — 모든 새 기능이 구현되어 있으며 완전한 워크스페이스 문서(ARCHITECTURE.md, PRODUCT.md, session-handoff.md)를 갖추고 있습니다. |
 
 ## 사용 방법
 

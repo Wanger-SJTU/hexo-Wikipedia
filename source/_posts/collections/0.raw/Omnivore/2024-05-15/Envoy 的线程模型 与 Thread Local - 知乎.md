@@ -29,10 +29,10 @@ World War II in Europe 1939\~1941
 
 内容简介：本文尝试以具体示例说明 Envoy 的线程模型 与 Thread Local 实现。
 
-> 摘录说明： 本文摘自一本我在写作中的开源书[《Istio & Envoy 内幕》](https://istio-insider.mygraphql.com/zh%5FCN/latest/index.html) 中 [线程模型](https://istio-insider.mygraphql.com/zh-cn/latest/ch2-envoy/arch/thread-model/thread-model.html) 一节。**如果你发现转载图片不清，请回到原书。**   
+> 摘录说明： 本文摘自一本我在写作中的开源书[《Istio & Envoy 内幕》](https://istio-insider.mygraphql.com/zh%5FCN/latest/index.html) 中 [线程模型](https://istio-insider.mygraphql.com/zh-cn/latest/ch2-envoy/arch/thread-model/thread-model.html) 一节。<strong>如果你发现转载图片不清，请回到原书。</strong>   
 > 关于本文封面：World War II in Europe 1939\~1941 World War II is a significant event where the Allied and Axis powers fought on global scale affecting many parts of the world. World War II explains the current conditions of many countries today economically, politically, and socially.
 
-## **线程模型**
+## <strong>线程模型</strong>
 
 如果给你一个开源中间件，要你分析其实现，那么，你会从什么地方入手？回答可能是：
 
@@ -55,7 +55,7 @@ World War II in Europe 1939\~1941
 * Upstream Cluster 的 endpoints 、健康状态……
 * 各种监控统计指标
 
-### **线程概述**
+### <strong>线程概述</strong>
 
 ![](https://proxy-prod.omnivore-image-cache.app/677x562,s6Itc2C0XA7hMRohJ2j1CdXrEfoUzEF7MjUf9SwKg4Wg/https://pic1.zhimg.com/v2-1ebd406c803e9a3c2c17bf43bf87710c_b.jpg)
 
@@ -105,7 +105,7 @@ _图: ThreadLocal Classes_ _[用 Draw.io 打开](https://app.diagrams.net/?ui=sk
 3. main 线程感知到一个 Cluster 被删除时，通知各个 worker 线程的 `ThreadLocalClusterManagerImpl` 删除这个 Cluster
 4. worker 线程上的 `TCPProxy` 尝试连接一个 `OnDemand Cluster(未知的 cluster）` 时，获取线程本地的 `ThreadLocalClusterManagerImpl`
 
-### **Ref**
+### <strong>Ref</strong>
 
 * [Envoy threading model - Matt Klein](https://blog.envoyproxy.io/envoy-threading-model-a8d44b922310)
 

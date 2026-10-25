@@ -15,15 +15,15 @@ source_url: https://zhuanlan.zhihu.com/p/93658728
 ---
 
 
-**码字不易，欢迎给个赞！**
+<strong>码字不易，欢迎给个赞！</strong>
 
-**欢迎交流与转载，文章会同步发布在公众号：机器学习算法工程师(Jeemy110)**
+<strong>欢迎交流与转载，文章会同步发布在公众号：机器学习算法工程师(Jeemy110)</strong>
 
-训练目标检测模型的一个难点是样本不均衡，特别是正负样本比例严重失衡。目前解决这类问题主要是两种方案（见综述**[Imbalance Problems in Object Detection: A Review](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/1909.00169)**）：一是hard sampling方法，从所有样本中选择一定量的正样本和负样本，只有被选择的样本才计算loss，一般会倾向选择一些难负例样本，比如**[OHEM](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/1604.03540)**；另外一类方法是soft sampling方法，选择所有样本计算loss，但是不同的样本赋给不同的权重值，比如**[focal loss](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/1708.02002)**。这些基于采样的策略虽然有效，但是需要超参数调节。这里，我们介绍的论文是**[Is Sampling Heuristics Necessary in Training Deep Object Detectors?](https://link.zhihu.com/?target=https%3A//arxiv.org/pdf/1909.04868.pdf)**，论文提出了一种无采样方案，此方案与前面两种方法的对比如下： 
+训练目标检测模型的一个难点是样本不均衡，特别是正负样本比例严重失衡。目前解决这类问题主要是两种方案（见综述<strong>[Imbalance Problems in Object Detection: A Review](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/1909.00169)</strong>）：一是hard sampling方法，从所有样本中选择一定量的正样本和负样本，只有被选择的样本才计算loss，一般会倾向选择一些难负例样本，比如<strong>[OHEM](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/1604.03540)</strong>；另外一类方法是soft sampling方法，选择所有样本计算loss，但是不同的样本赋给不同的权重值，比如<strong>[focal loss](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/1708.02002)</strong>。这些基于采样的策略虽然有效，但是需要超参数调节。这里，我们介绍的论文是<strong>[Is Sampling Heuristics Necessary in Training Deep Object Detectors?](https://link.zhihu.com/?target=https%3A//arxiv.org/pdf/1909.04868.pdf)</strong>，论文提出了一种无采样方案，此方案与前面两种方法的对比如下： 
 
 ![](https://pic4.zhimg.com/v2-55b22e443c60da70993b537f2544bbdf_r.jpg) 图1 三类方法对比无采样方法使用所有的样本进行训练，下面我们具体来看它如何训练出比较好的检测效果，它的策略非常简单。
 
-**从RetinaNet和Focal loss说起**
+<strong>从RetinaNet和Focal loss说起</strong>
 RetinaNet是目前比较好的one-stage目标检测算法，它采用focal loss来解决正负样本不均衡问题。这里我们探讨focal loss对RetinaNet的影响。我们将采用focal loss的算法称为RetinaNet-FL，而简单采用标准交叉熵的算法称为RetinaNet-None。两种loss的计算如下所示： 
 
 ![](https://picx.zhimg.com/v2-424425b0896cb0e3a8fbe412204e9597_r.jpg)
@@ -51,7 +51,7 @@ RetinaNet中采用的
 
 这说明只要适当调整模型的初始化以及loss，采用普通交叉熵是可以达到与focal loss类似的效果的。这是此论文最重要的发现，据此给出了无采样的训练机制，主要包括三点，让我们一一道来。
 
-**最优bias初始化**
+<strong>最优bias初始化</strong>
 前面已经说到，分类分支的初始化对模型训练很关键，这里我们理论分析最优的
 ![](https://www.zhihu.com/equation?tex=%5Cpi)如何确定。假定数据集中共有
 ![](https://www.zhihu.com/equation?tex=C)个类别，样本量为
@@ -87,7 +87,7 @@ RetinaNet中采用的
 按照上面参数计算，最优的
 ![](https://www.zhihu.com/equation?tex=%5Cpi)为1.113e-5，和我们的实验值是吻合的。
 
-**Guided Loss**
+<strong>Guided Loss</strong>
 前面实验的另外一个结论是要降低分类loss，但是降低比例很难确定。但是对于回归loss，其只计算正样本，不会受到正负样本不平衡的影响，所以我们可以通过回归loss来确定分类loss的调整比例：
 
 ![](https://www.zhihu.com/equation?tex=r%3D%5Cfrac%7Bw%5E%7Breg%7DL%5E%7Breg%7D%7D%7BL%5E%7Bcls%7D%7D+%5C%5C)
@@ -102,14 +102,14 @@ RetinaNet中采用的
 ![](https://www.zhihu.com/equation?tex=L%5E%7Breg%7D)来引导
 ![](https://www.zhihu.com/equation?tex=L%5E%7Bcls%7D)，以希望分类loss可以和回归loss维持相同的水平，这在论文中称为guided loss。值得注意的是，我们虽然在训练过程中实时确定r，但是这一过程是不经过BP的，所以这一机制没有带来任何负担，也不引入新的超参数。
 
-**类别自适应阈值**
+<strong>类别自适应阈值</strong>
 前面已经提到，RetinaNet-None会出现置信度偏移现象，我们可以采用较低的阈值来进一步提升模型效果，但是其实对每个类别，我们可以采用不同的过滤阈值。这里提出一种基于训练样本的类别自适应阈值（class-adaptive threshold）： 
 
 ![](https://pic3.zhimg.com/v2-3d0d630492e3b2bb0c53d9c4c6bc6080_1440w.jpg)
 
 其中第一项是正样本在负样本所占的比例，而第二项是各个类别在所有类中的所占比例。
 
-**实验效果**
+<strong>实验效果</strong>
 首先，要说明的是上面所提出的3种机制对大部分目标检测算法都是适用的，包括基于anchor的one-satge和two-stage方法，以及无anchor的目标检测方法。论文中选取了YOLOv3，RetinaNet，FoveaBox（无anchor），Faster R-CNN以及Cascade R-CNN进行实验，来测试所提出的无采样方法的效果，如下表所示： 
 
 ![](https://pic1.zhimg.com/v2-50b1c157b81a1eb690a942ae2a553982_r.jpg)
@@ -124,10 +124,10 @@ RetinaNet中采用的
 
 ![](https://pic3.zhimg.com/v2-3d9a29d134aa910feccb2cfda37321f8_r.jpg) 这里可以看到只要有了guided loss，第一策略对最终模型效果的影响是微乎其微的。这也很容易理解，最早的实验我们发现最重要的是要降低分类loss，两个策略可以起到同样的效果。不过从收敛曲线上可以看到，加入第一策略，收敛速度稍微更快一些，所以还是推荐加入第一策略。
 
-**小结**
+<strong>小结</strong>
 正负样本不平衡一直以来是目标检测中比较头疼的问题，这篇论文的主要贡献是分析了这个问题对训练的影响，并给出了可以解决该问题的无采样方法，思路还是非常清晰的，看起来也是行之有效。
 
-**参考**
+<strong>参考</strong>
 
 - [Is Sampling Heuristics Necessary in Training Deep Object Detectors?](https://link.zhihu.com/?target=https%3A//arxiv.org/pdf/1909.04868.pdf)
 - [Imbalance Problems in Object Detection: A Review](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/1909.00169)

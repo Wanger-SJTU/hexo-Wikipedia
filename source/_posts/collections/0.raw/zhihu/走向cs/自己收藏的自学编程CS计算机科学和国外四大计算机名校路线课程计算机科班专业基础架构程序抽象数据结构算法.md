@@ -32,24 +32,24 @@ source_url: https://zhuanlan.zhihu.com/p/320063653
 
 ——##——很多内容都更新到上面清爽版链接了。这篇有些内容没更新。
 
-![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_413f11b9bc7b.jpg)
+![](/images/collections/0.raw/zhihu/%E8%B5%B0%E5%90%91cs/asset/img_413f11b9bc7b.jpg)
 
-- **启**
+- <strong>启</strong>
 
 - 提示：英文文章阅读有困难，可借用谷歌翻译或者彩云小译。
 - #
 - #
 
-- **本文参考材料**：
+- <strong>本文参考材料</strong>：
 
-- **计算机科学：**
+- <strong>计算机科学：</strong>
 
 - Teach Yourself Computer Science 自学计算机科学 ⭐⭐
 - Teach Yourself Programming in Ten Years 用十年自学编程⭐⭐
 - #
 - #
 
-- **自学者：**
+- <strong>自学者：</strong>
 
 - 成为自学成才的开发者的阴暗面 
 - [如何自学计算机编程？ - glashutte的回答](https://www.zhihu.com/question/28354731/answer/138578609) 
@@ -57,7 +57,7 @@ source_url: https://zhuanlan.zhihu.com/p/320063653
 - #
 - #
 
-- **技术债（Technical Debt）：**
+- <strong>技术债（Technical Debt）：</strong>
 
 - [自问自答：零基础自学编程，耗时3-6个月能否入门编程并找到一份编程相关工作？](https://www.zhihu.com/question/42167600/answer/1950014478) 
 
@@ -68,29 +68,29 @@ source_url: https://zhuanlan.zhihu.com/p/320063653
 - #
 - #
 
-- **文章末尾 :**
+- <strong>文章末尾 :</strong>
 
-- **美国大学CS课程路线⭐**
+- <strong>美国大学CS课程路线⭐</strong>
 - 大学课程安排普遍Python入门--数据结构和算法--计算机架构--计算机网络--操作系统
 - 推荐课程路线CS61A - 61B -61C，推荐原因已在本文阐述。
 - #
 - #
 
-- **计算机历史：**
+- <strong>计算机历史：</strong>
 
 - [静源：电脑__计算机__历史](https://zhuanlan.zhihu.com/p/378532571) 
 
 - ##
 - ##
 
-- Reddit 从零学编程 常见问题**大全 **（超适合零基础）⭐⭐
+- Reddit 从零学编程 常见问题<strong>大全</strong>（超适合零基础）⭐⭐
 
 - ##
 - ##
 
-- **CS相关⭐**
+- <strong>CS相关⭐</strong>
 
-- **CS专栏 **EECS 村委会-CS SE EE MIS专业分会|一亩三分地 ⭐
+- <strong>CS专栏</strong>EECS 村委会-CS SE EE MIS专业分会|一亩三分地 ⭐
 - 1亩3分地---介绍和点评你上过的公开课 （国外公开课建议上这个论坛）
 - 上海交通大学 18 级计算机系第一名「迟先生」----CS自救指北
 - [Badger4us：编程入门指南 v1.5](https://zhuanlan.zhihu.com/p/19959253) 
@@ -99,7 +99,7 @@ source_url: https://zhuanlan.zhihu.com/p/320063653
 
 ### 自学路线：
 
-**简略版**
+<strong>简略版</strong>
 
 `1、程序抽象：伯克利CS61A   
 ----（偏重：软件）（语言：Python Scheme SQL）（教材《SICP》Python版）
@@ -123,9 +123,9 @@ source_url: https://zhuanlan.zhihu.com/p/320063653
 6、操作系统：《操作系统导论Operating Systems: Threee Easy Pieces》
 ----相关课程看详细版 和 文末CS课程索引`
 
-**详细版**
+<strong>详细版</strong>
 
-- **①入门**（可跳过进入②）
+- <strong>①入门</strong>（可跳过进入②）
 
 - 哈佛大学CS50  ⭐⭐
 - 或者  斯坦福大学CS101
@@ -136,10 +136,10 @@ source_url: https://zhuanlan.zhihu.com/p/320063653
 - ##
 - ##
 
-- **②程序抽象   //课程对应SICP ⭐**
+- <strong>②程序抽象   //课程对应SICP ⭐</strong>
 
 - //《SICP》也就是《计算机程序的构造与解释》这本书，Python版SICP
-- ①伯克利CS 61A √⭐⭐Python   **偏重：软件**
+- ①伯克利CS 61A √⭐⭐Python   <strong>偏重：软件</strong>
 
 - 或者斯坦福CS106A 
 - 或者麻省理工大学6.00.1
@@ -152,17 +152,17 @@ source_url: https://zhuanlan.zhihu.com/p/320063653
 - [雨巷：CS61A 通关感想](https://zhuanlan.zhihu.com/p/150348216)
 - [Recap 课程回顾 | 18fa CS 61A](https://link.zhihu.com/?target=https%3A//mp.weixin.qq.com/s/sSdQpPwRrGGjodndCbafQg)
 - [学习经验__CS61A __学习相关资料SICP In Python](https://zhuanlan.zhihu.com/p/362371923) ⭐
-- [学习经验__CS61A__Scheme is a Dialect of Lisp](https://zhuanlan.zhihu.com/p/381109940)** ⭐**
-- [编程入门教程太多，怎么选择课程并判断优缺点？以CS61A为范本](https://zhuanlan.zhihu.com/p/371647463)** ⭐**
-- [[持续更新] 那些年, 我在伯克利CS上过的神课](https://link.zhihu.com/?target=http%3A//yc.eethu.cn/%3F/article/12)** ⭐**
+- [学习经验__CS61A__Scheme is a Dialect of Lisp](https://zhuanlan.zhihu.com/p/381109940)<strong>⭐</strong>
+- [编程入门教程太多，怎么选择课程并判断优缺点？以CS61A为范本](https://zhuanlan.zhihu.com/p/371647463)<strong>⭐</strong>
+- [[持续更新] 那些年, 我在伯克利CS上过的神课](https://link.zhihu.com/?target=http%3A//yc.eethu.cn/%3F/article/12)<strong>⭐</strong>
 - 为什么SICP很重要？ 
-- SICP-JS版**:**https://source-academy.github.io/sicp/ 
+- SICP-JS版<strong>:</strong>https://source-academy.github.io/sicp/ 
 - SICP in Python 中文版 
 - ##
 
 - 课程介绍
 
-- CS 61A 专注于**抽象的概念，允许程序员以适合问题的方式思考**，而不是由计算机硬件决定的低级操作.在 cs61a 中，我们感兴趣的是**教你如何编程**，而不是如何使用一种特定的编程语言。我们考虑了一系列控制程序复杂性的技术，如函数式编程、抽象化编程和面向对象程序设计编程。61A 主要使用 **Python 3编程语言**。在本课程的后半部分，我们还将使用另外两种语言: **Scheme 编程语言和 SQL 语言**。掌握一门特定的编程语言是 cs61a 的一个非常有用的**副作用**。然而，我们的目标不是指定你在未来的努力中使用什么语言。相反，我们希望一旦你学会了编程中涉及的概念，你会发现学习一门新的编程语言只是几天的工作。
+- CS 61A 专注于<strong>抽象的概念，允许程序员以适合问题的方式思考</strong>，而不是由计算机硬件决定的低级操作.在 cs61a 中，我们感兴趣的是<strong>教你如何编程</strong>，而不是如何使用一种特定的编程语言。我们考虑了一系列控制程序复杂性的技术，如函数式编程、抽象化编程和面向对象程序设计编程。61A 主要使用 <strong>Python 3编程语言</strong>。在本课程的后半部分，我们还将使用另外两种语言: <strong>Scheme 编程语言和 SQL 语言</strong>。掌握一门特定的编程语言是 cs61a 的一个非常有用的<strong>副作用</strong>。然而，我们的目标不是指定你在未来的努力中使用什么语言。相反，我们希望一旦你学会了编程中涉及的概念，你会发现学习一门新的编程语言只是几天的工作。
 - CS61A教科书作者：John DeNero
 - 他于2010年获得了斯坦福大学的哲学硕士学位以及加州大学伯克利分校的电气工程和计算机科学博士学位。在成为教授之前，约翰是Google的高级研究科学家，主要从事Google Translate和自然语言处理。
 - 2015年CS 61A荣登 美国最好的五门计算机科学课程（彭博社）
@@ -170,9 +170,9 @@ source_url: https://zhuanlan.zhihu.com/p/320063653
 - ##
 - ##
 
-- **②计算机架构入门**（可跳过进入CSAPP,但不建议，对硬件和软件有帮助,重点很有趣）
+- <strong>②计算机架构入门</strong>（可跳过进入CSAPP,但不建议，对硬件和软件有帮助,重点很有趣）
 
-- ③Amazon《计算机系统要素》2021版⭐⭐    **偏重：硬件 + 软件**
+- ③Amazon《计算机系统要素》2021版⭐⭐    <strong>偏重：硬件 + 软件</strong>
 
 - 官网也叫nand2tetris，或者叫从与非门到俄罗斯方块
 - coursera上免费，建议cs61a和《系统要素》同步进行，为后面课程打下基础。
@@ -186,7 +186,7 @@ source_url: https://zhuanlan.zhihu.com/p/320063653
 
 - 课程介绍：
 
-- **cs61a讲的是程序的抽象，《系统要素》讲的是计算机架构自底向上的抽象。两门课可以达到相辅相成的效果。**两门课都没有学习前提要求，很适合。这门课属于比较基础，比较全面的课程，对细节没有过多的涉及。它的特色在于将计算机基础串联了起来。解开了底层的神秘面纱。
+- <strong>cs61a讲的是程序的抽象，《系统要素》讲的是计算机架构自底向上的抽象。两门课可以达到相辅相成的效果。</strong>两门课都没有学习前提要求，很适合。这门课属于比较基础，比较全面的课程，对细节没有过多的涉及。它的特色在于将计算机基础串联了起来。解开了底层的神秘面纱。
 - 这门课对于后面CSAPP课程有很大帮助。可以当作CSAPP先修课。
 - 理解计算机如何工作的最好方法是从头开始构建一个计算机，这本教科书引导学习者通过12章和项目逐步构建一个简单但强大的计算机系统的硬件平台和软件层次。在此过程中，学员可以获得硬件、架构、操作系统、编程语言、编译器、数据结构和算法以及软件工程方面的实际知识。使用这种建设性的方法，这本书向学习者介绍了一个重要的计算机科学知识体系，并演示了如何理论和应用技术教授其他计算机科学课程，以适应整体图景。
 - 教授学生如何从一个最基础的nand 逻辑闸开始，一路往上建构出所有基础元件，像是and, or, xor, not, MUX, DMUX, Adder, Memory 等等，接着建构出CPU 与整台电脑，然后再学习如何在建构出这台电脑上的『组译器、编译器、作业系统』等等，最后在这个具备软硬体的电脑上写一个小型的方块游戏。
@@ -195,11 +195,11 @@ source_url: https://zhuanlan.zhihu.com/p/320063653
 - ##
 - ##
 
-- **③数据结构和算法⭐**
+- <strong>③数据结构和算法⭐</strong>
 
-- ①伯克利cs61b **■**⭐⭐Java  **偏重：软件**
+- ①伯克利cs61b <strong>■</strong>⭐⭐Java  <strong>偏重：软件</strong>
 
-- //看网上评论，**据说 **刷完cs61b基本就可以leetcode刷题了。
+- //看网上评论，<strong>据说</strong>刷完cs61b基本就可以leetcode刷题了。
 
 - 或者斯坦福cs106b 
 - 或者CSE 373  《The Algorithm Design Manual》 
@@ -218,10 +218,10 @@ source_url: https://zhuanlan.zhihu.com/p/320063653
 - ##
 - ##
 
-- **④计算机架构、程序员的视角   //课程对应《CSAPP》⭐**
+- <strong>④计算机架构、程序员的视角   //课程对应《CSAPP》⭐</strong>
 
-- 51-213用的是《深入理解计算机系统》CSAPP这本书   **偏重：硬件 + 软件**
-- 61C用的是《计算机组成与设计RISC-V版》**偏重：硬件 + 软件**
+- 51-213用的是《深入理解计算机系统》CSAPP这本书   <strong>偏重：硬件 + 软件</strong>
+- 61C用的是《计算机组成与设计RISC-V版》<strong>偏重：硬件 + 软件</strong>
 - 两门课程C语言教材《*The C Programming Language*》必备
 - 伯克利CS61C⭐⭐
 
@@ -248,7 +248,7 @@ source_url: https://zhuanlan.zhihu.com/p/320063653
 - CSAPP是计算机架构导论，对后面学习操作系统有非常大的帮助。
 
 - ##
-- **④计算机网络：自顶向下方法 ⭐**
+- <strong>④计算机网络：自顶向下方法 ⭐</strong>
 
 - 书官网《计算机网络：自顶向下方法Computer Networking: a Top Down Approach》
 - 斯坦福 CS144
@@ -267,7 +267,7 @@ source_url: https://zhuanlan.zhihu.com/p/320063653
 - ##
 - ##
 
-- **⑤CSAPP➡深入OS 操作系统**
+- <strong>⑤CSAPP➡深入OS 操作系统</strong>
 
 - 书籍在线官网《Operating Systems: Three Easy Pieces》
 - 伯克利 cs162
@@ -282,21 +282,21 @@ source_url: https://zhuanlan.zhihu.com/p/320063653
 
 - ##
 
-- **⑥算法**
+- <strong>⑥算法</strong>
 
 - 伯克利cs170
 - 算法设计手册书和课程 
 - ##
 - ##
 
-- **⑥数据库**
+- <strong>⑥数据库</strong>
 
 - 伯克利CS186
 - the databases “Red Book”
 - ##
 - ##
 
-- **⑥分布式系统**
+- <strong>⑥分布式系统</strong>
 
 - *书*Designing Data-Intensive Applications. 
 - 书Distributed Systems, 3rd Edition.
@@ -305,7 +305,7 @@ source_url: https://zhuanlan.zhihu.com/p/320063653
 - ##
 - ##
 
-- ⑥**AI/ML/Graphics**
+- ⑥<strong>AI/ML/Graphics</strong>
 
 - AI 
 
@@ -323,12 +323,12 @@ source_url: https://zhuanlan.zhihu.com/p/320063653
 - ##
 - ##
 
-- ⑦**其他资料自行摸索，谷歌搜索技巧，GitHub搜索技巧**
+- ⑦<strong>其他资料自行摸索，谷歌搜索技巧，GitHub搜索技巧</strong>
 
 - ##
 - ##
 
-- Teach Yourself Computer Science**高亮笔记（机翻）**
+- Teach Yourself Computer Science<strong>高亮笔记（机翻）</strong>
 
 - 我们认为你是一个自学成才的软件工程师，训练营的毕业生或者早熟的高中生，或者是一个希望通过自学来补充正规教育的大学生。
 - ##
@@ -337,20 +337,20 @@ source_url: https://zhuanlan.zhihu.com/p/320063653
 - 首先学习数学可以帮助你更深入地分析和理解你的算法，但首先学习算法将为离散数学提供更大的动力和背景。
 - ##
 - 因此，我们建议的顺序基本上是帮助你刚刚开始...
-- 我们认为最重要的“先决条件”是: 在操作系统或数据库之前的**计算机体系结构**，以及在分布式系统之前的**网络和操作系统**。
+- 我们认为最重要的“先决条件”是: 在操作系统或数据库之前的<strong>计算机体系结构</strong>，以及在分布式系统之前的<strong>网络和操作系统</strong>。
 - ##
 - This guide was originally written byOz NovaandMyles Byrne, with 2020 updates by Oz.
 - 本指南最初由 Oz Nova 和 Myles Byrne 撰写，2020年更新由 Oz 完成。
 - ##
 - ##
 
-- **全栈Full Stack ⭐**
+- <strong>全栈Full Stack ⭐</strong>
 
 - 计算机基础、计算机科学CS⭐
 
 - 程序抽象-数据结构和算法-计算机架构-计算机网络-操作系统
 
-- **前端**
+- <strong>前端</strong>
 
 - 文档
 
@@ -380,7 +380,7 @@ source_url: https://zhuanlan.zhihu.com/p/320063653
 
 - [Become-A-Full-Stack-Web-Developer](https://link.zhihu.com/?target=https%3A//github.com/bmorelli25/Become-A-Full-Stack-Web-Developer)
 
-- **后端**
+- <strong>后端</strong>
 
 - 后端基础（理论+实践）
 
@@ -399,9 +399,9 @@ source_url: https://zhuanlan.zhihu.com/p/320063653
 - ##
 - ##
 
-- **其他收藏资源**
+- <strong>其他收藏资源</strong>
 
-- **计算机教育研究论文：**
+- <strong>计算机教育研究论文：</strong>
 
 - 中美计算机专业研究生课程体系比较研究 
 - 美国计算机教育发展模式研究
@@ -409,7 +409,7 @@ source_url: https://zhuanlan.zhihu.com/p/320063653
 - #
 - #
 
-- **计算机科学资源（合集大全，精挑细选）：**
+- <strong>计算机科学资源（合集大全，精挑细选）：</strong>
 
 - 这是1000个 YouTube 视频中的整个计算机科学课程 
 - [GitHub -OSSU](https://link.zhihu.com/?target=https%3A//github.com/ossu/computer-science) 
@@ -427,7 +427,7 @@ source_url: https://zhuanlan.zhihu.com/p/320063653
 - #
 - #
 
-- **相关经验：**
+- <strong>相关经验：</strong>
 
 - [大学计算机系最努力的同学都是如何学习的？](https://www.zhihu.com/question/270352528/answer/381073769)  ⭐
 - 【求职大助攻】给北美转CS同学几点小建议 ⭐
@@ -440,7 +440,7 @@ source_url: https://zhuanlan.zhihu.com/p/320063653
 - ##
 - ##
 
-- **前端**
+- <strong>前端</strong>
 
 - 练习FreeCodeCamp中文版FreeCodeCamp 建议英文版
 - 文档阅读JavaScript核心概念指南--小册 | MDN ⭐
@@ -459,7 +459,7 @@ source_url: https://zhuanlan.zhihu.com/p/320063653
 
 - ##
 
-- **Python**
+- <strong>Python</strong>
 
 - BeginnersGuide/Programmers - Python Wiki 
 - BeginnersGuide - Python Wiki 
@@ -476,7 +476,7 @@ source_url: https://zhuanlan.zhihu.com/p/320063653
 - ##
 - ##
 
-- **英语**
+- <strong>英语</strong>
 
 - Chrome插件-沙拉查词 ⭐
 - 彩云小译---中英对照 ⭐
@@ -500,7 +500,7 @@ source_url: https://zhuanlan.zhihu.com/p/320063653
 - ##
 - ##
 
-- **数学**
+- <strong>数学</strong>
 
 - 哔哩哔哩-3Blue1Brown  ⭐⭐
 
@@ -545,27 +545,27 @@ source_url: https://zhuanlan.zhihu.com/p/320063653
 
 ### 上面内容 · 补充细节描述
 
-**本文作者起初制作的图，仅作参考![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_d83a5061cb8f.jpg)
+**本文作者起初制作的图，仅作参考![](/images/collections/0.raw/zhihu/%E8%B5%B0%E5%90%91cs/asset/img_d83a5061cb8f.jpg)
 
 > 《计算机系统要素》nand2tetris教学路线图
 
-![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_ea5832187f25.jpg)
+![](/images/collections/0.raw/zhihu/%E8%B5%B0%E5%90%91cs/asset/img_ea5832187f25.jpg)
 
-![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_8d5c72381d47.jpg)
+![](/images/collections/0.raw/zhihu/%E8%B5%B0%E5%90%91cs/asset/img_8d5c72381d47.jpg)
 
 > Berkeley课程路线图（大图点击链接）⭐⭐**
 
-![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_0df3160b9022.jpg)
+![](/images/collections/0.raw/zhihu/%E8%B5%B0%E5%90%91cs/asset/img_0df3160b9022.jpg)
 
 ### 英语
 
-![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_e6be9912b30f.jpg)
+![](/images/collections/0.raw/zhihu/%E8%B5%B0%E5%90%91cs/asset/img_e6be9912b30f.jpg)
 
-### **如何看英文文档**
+### <strong>如何看英文文档</strong>
 
-### **彩云小译-中英对照-中文字转换颜色和加粗**
+### <strong>彩云小译-中英对照-中文字转换颜色和加粗</strong>
 
-**F12开发者工具---Sources面板---Snippets**`document.querySelectorAll(".cyxy-trs-target").forEach(item => {
+<strong>F12开发者工具---Sources面板---Snippets</strong>`document.querySelectorAll(".cyxy-trs-target").forEach(item => {
     //颜色
     item.style.color = "rgb(236 57 0)";
     //加粗
@@ -577,7 +577,7 @@ source_url: https://zhuanlan.zhihu.com/p/320063653
 
 ### SICP
 
-- **2020**伯克利CS 61A---------对应SICP----------Brian Harvey’s Berkeley CS 61A 
+- <strong>2020</strong>伯克利CS 61A---------对应SICP----------Brian Harvey’s Berkeley CS 61A 
 - 学习CS61A的前提:
 -  数学1A 被列为 CS 61A 的共同要求。(也就是说，可以同时执行)数学10A 或数学16A 也可以。在不知道或不学习微积分的情况下学习 CS 61A 是可能的; 所有旧的微积分的例子已经在这些年里被移除了。然而，学习微积分是复习算术和代数的一个很好的方法，这两门课程经常出现在 cs61a 课程中。
 - CS 61A 没有正式的编程先决条件，但它不是所有学生的正确的第一门课程。许多 CS 61A 的学生有丰富的编程经验，包括之前的课程。一些学生在没有任何编程经验的情况下参加了这门课程，但是他们通常必须更加努力地学习来掌握这些材料，也许仅仅是因为他们在编程方面缺乏实践经验。
@@ -595,10 +595,10 @@ source_url: https://zhuanlan.zhihu.com/p/320063653
 - ##
 - 15-----613: Introduction to Computer Systems (ICS)---15-213 计算机系统简介 
 
-- **这是 ICS + 课程，CS: APP 文本的主要灵感来源**
-- **学习前提：15-122**
+- <strong>这是 ICS + 课程，CS: APP 文本的主要灵感来源</strong>
+- <strong>学习前提：15-122</strong>
 - 摘要：1998年秋季，我们引进了一个新的本科生CMU的课程名为“计算机系统简介”（ICS）。 以来然后，每学期向400名学生提供ICS，大多数是计算机科学和计算机工程专业的大二学生。 ICS是CMU有史以来收视率最高的二年级CS课程，学生对上学期的平均评价为4.77 / 5.0，中位数为5.0 / 5.0。 它也已成为大多数高层的先决条件CS和ECE中的系统课程。
-- **ICS的成功促使我们写了一本教材，《计算机系统:《程序员的视角》(CSAPP)，现在是普利蒂斯霍尔出版社出版的第三版。**
+- <strong>ICS的成功促使我们写了一本教材，《计算机系统:《程序员的视角》(CSAPP)，现在是普利蒂斯霍尔出版社出版的第三版。</strong>
 
 ### 计算机网络：自顶向下方法
 
@@ -628,7 +628,7 @@ source_url: https://zhuanlan.zhihu.com/p/320063653
 - CS COURSE MAP
 - 加州大学伯克利分校（UCB）计算机学生的课程安排
 - [[持续更新] 那些年, 我在伯克利CS上过的神课](https://link.zhihu.com/?target=http%3A//yc.eethu.cn/%3F/article/12)
-![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_37ade752e2d0.jpg)
+![](/images/collections/0.raw/zhihu/%E8%B5%B0%E5%90%91cs/asset/img_37ade752e2d0.jpg)
 
 ### 斯坦福计算机科学计划 
 
@@ -637,14 +637,14 @@ source_url: https://zhuanlan.zhihu.com/p/320063653
 - Stanford斯坦福--计算机科学官网 
 - CMU计算机科学计划
 - 计算机科学附加专业(2017年入学前)
-![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_3fe5d97161f1.jpg)
+![](/images/collections/0.raw/zhihu/%E8%B5%B0%E5%90%91cs/asset/img_3fe5d97161f1.jpg)
 
 - CS106A 是编程和计算机科学的第一门课程，为那些没有任何经验的人开设。CS106B 是第二门课程，为那些懂得基本编程的人讲授更高级的编程和计算机科学。
 - CS106A 为以前没有编过程序的人介绍了代码和计算机编程。**
 
 - 我们将涵盖 Python 中基本编程的所有重要主题: 类型、数字、字符串、函数、线性集合、字典、逻辑、分解、良好的编程风格、整个程序结构、文本、文件处理、调试和性能。我们还将介绍一些将来可能需要的更高级的主题，包括 lambdas、 comprehension、 modules 和 Jupyter 笔记本。
 
-- **CS106B 编程抽象是我们编程序列入门课程的第二门课程。**
+- <strong>CS106B 编程抽象是我们编程序列入门课程的第二门课程。</strong>
 
 - 前提条件 CS106A 为 Python 的编程方法和问题解决奠定了坚实的基础。有了这些，CS106B 会让你熟悉 C++程式语言，并介绍先进的编程技术，如递归，算法分析，抽象化，探索经典的数据结构和算法，并给你实践应用这些工具来解决复杂的问题。
 -  C + + 基础
@@ -655,30 +655,30 @@ source_url: https://zhuanlan.zhihu.com/p/320063653
 -  链接数据结构
 -  高级算法
 
-- **CS107是斯坦福编程序列入门课程的第三门课程**。
+- <strong>CS107是斯坦福编程序列入门课程的第三门课程</strong>。
 
 - CS106课程为您提供了编程方法论和抽象方面的坚实基础，CS107以此为基础建立并扩展了您的编程经验和技术的广度和深度。本课程将从 c 语言到微处理器来解开机器的神秘面纱。随着对计算机系统如何执行程序和操作数据的完全理解，你将成为一个更高效的程序员，尤其是在处理调试、性能、内存和健壮性等问题时。课程包括: c 语言，数据表示，机器级代码，计算机算法，代码编译的元素，内存和运行时性能的优化，内存的组织和管理。
 - CS107的先决条件是 CS106B/x (或同等学历)。你应该具备使用递归、动态数据结构(指针、链表、树、图)、抽象化、经典数据结构(列表、堆栈、队列、集合、映射)和标准算法(搜索、排序、散列)的实用 c/c + + 技能。您应该了解良好的工程和设计的内在价值，并且期望生成分解良好、可读的代码。如果你需要帮助来决定你的正确位置与我们谈话。
 
-- **CS107和 CS110都是 b & o 教科书《CSAPP》的子集**
-- **Computer Systems: A Programmer's Perspective 计算机系统: 程序员的视角 by Bryant and O'Hallaron, **either the 2nd or 3rd edition
+- <strong>CS107和 CS110都是 b & o 教科书《CSAPP》的子集</strong>
+- <strong>Computer Systems: A Programmer's Perspective 计算机系统: 程序员的视角 by Bryant and O'Hallaron,</strong>either the 2nd or 3rd edition
 
 ### CMU卡内基梅隆大学  计算机科学
 
-![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_61a425fb1bf9.jpg)
+![](/images/collections/0.raw/zhihu/%E8%B5%B0%E5%90%91cs/asset/img_61a425fb1bf9.jpg)
 
 ### MIT OpenCourseWare (OCW)
 
 > 这个想法很简单: 把我们所有的课程材料都发布到网上，让每个人都能广泛地获得。”麻省理工学院工程学院教授 Dick k.p. Yue 麻省理工学院 MIT开放课程是一个基于网络的出版物，几乎涵盖了麻省理工学院的所有课程内容。开放式课程对全世界开放，并且是麻省理工学院的永久活动。 通过开放式课程，教育工作者改进课程和课程，使学校更加有效; 学生找到额外的资源来帮助他们成功; 独立学习者丰富他们的生活，并使用内容来应对我们世界上最困难的挑战，包括可持续发展、气候变化和根除癌症。
 
 - 麻省理工MIT计算机科学与工程
-![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_a12db92ef810.jpg)
+![](/images/collections/0.raw/zhihu/%E8%B5%B0%E5%90%91cs/asset/img_a12db92ef810.jpg)
 
 ### 康奈尔大学
 
 - CS课程索引
 
-![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_f74b684b7baf.jpg)
+![](/images/collections/0.raw/zhihu/%E8%B5%B0%E5%90%91cs/asset/img_f74b684b7baf.jpg)
 
 ### 普林斯顿
 

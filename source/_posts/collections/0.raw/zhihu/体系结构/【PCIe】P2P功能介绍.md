@@ -89,7 +89,7 @@ static int pci_bridge_has_acs_redir(struct pci_dev *pdev)
 }
 
 ![](https://pic2.zhimg.com/v2-6c0fbdb9197fea5f4795cd06e697b20b_r.jpg)
-![](https://picx.zhimg.com/v2-a4a41f2ea37cff659f03bf3e7af83b6d_r.jpg)**ref:**
+![](https://picx.zhimg.com/v2-a4a41f2ea37cff659f03bf3e7af83b6d_r.jpg)<strong>ref:</strong>
 
 p2p功能开启，以及白名单
 

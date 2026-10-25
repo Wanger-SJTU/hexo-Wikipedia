@@ -17,12 +17,12 @@ source_url: https://zhuanlan.zhihu.com/p/656990524
 
 #### 先说结论：
 
-**做所有的工作之前，想好如何评估结果、制定好北极星指标至关重要!!! Ragas（[RAGAS: Automated Evaluation of Retrieval Augmented Generation](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2309.15217)）  把  RAG  系统的评估指标拆分为三个维度如下，这可不是 Benz 的标...**
+<strong>做所有的工作之前，想好如何评估结果、制定好北极星指标至关重要!!! Ragas（[RAGAS: Automated Evaluation of Retrieval Augmented Generation](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2309.15217)）  把  RAG  系统的评估指标拆分为三个维度如下，这可不是 Benz 的标...</strong>
 
-- **实时性（faith fullness）**
-- **答案相关性（answer relevance）**
-- **上下文相关性（context relevance，又细分为 Precision 和  Recall，所以可以看到有些类似的框架引入了 F1  指标）**
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_eb48cf5e6ca2.jpg)
+- <strong>实时性（faith fullness）</strong>
+- <strong>答案相关性（answer relevance）</strong>
+- <strong>上下文相关性（context relevance，又细分为 Precision 和  Recall，所以可以看到有些类似的框架引入了 F1  指标）</strong>
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_eb48cf5e6ca2.jpg)
 
 图一：Ragas  针对  RAG  系统的三个评估维度**
 
@@ -33,9 +33,9 @@ source_url: https://zhuanlan.zhihu.com/p/656990524
 #### 影响 RAG  系统性能的四个方面：
 
 - 位置偏见：** LLMs 有可能对文本中特定位置的内容给予更高的关注，比如位于段落开头和结尾的内容更容易被采纳。
-- **偏爱整数：**LLMs 更偏爱含有整数的答案，即便该答案不一定更合适也是一样爱。另外，某些特定的数字也可能成为 LLMs 的喜好，其它上下文相同的情况下，LLMs 可能会更倾向于选择「**自己喜欢的数字**」（又是人教的？**比如我们不喜欢 4、不喜欢 13，这些「臭毛病」可能也被 LLMs  学去了**...）。
-- **偏爱自己生成的内容**：LLMs  倾向于选择符合自己生成风格的内容，如果同时有两份针对同一问题的答案，前者是 LLMs  生成，后者是人类生成，即便后者跟问题更加符合，LLMs 也会倾向于选择前者（**其实也好理解，因为人类作为一个群体，也选择了更加符合其「族群」风格的，后者**）。
-- **生成结果的随机性**：这点比较好理解，即便每次输入的内容都一样，LLMs  的每次的输出也不相同，这给建立一个统一的，关于输出的评价量化指标带来了不小的麻烦。
+- <strong>偏爱整数：</strong>LLMs 更偏爱含有整数的答案，即便该答案不一定更合适也是一样爱。另外，某些特定的数字也可能成为 LLMs 的喜好，其它上下文相同的情况下，LLMs 可能会更倾向于选择「<strong>自己喜欢的数字</strong>」（又是人教的？<strong>比如我们不喜欢 4、不喜欢 13，这些「臭毛病」可能也被 LLMs  学去了</strong>...）。
+- <strong>偏爱自己生成的内容</strong>：LLMs  倾向于选择符合自己生成风格的内容，如果同时有两份针对同一问题的答案，前者是 LLMs  生成，后者是人类生成，即便后者跟问题更加符合，LLMs 也会倾向于选择前者（<strong>其实也好理解，因为人类作为一个群体，也选择了更加符合其「族群」风格的，后者</strong>）。
+- <strong>生成结果的随机性</strong>：这点比较好理解，即便每次输入的内容都一样，LLMs  的每次的输出也不相同，这给建立一个统一的，关于输出的评价量化指标带来了不小的麻烦。
 
 #### 来具体看下  Ragas  的工作：
 
@@ -44,7 +44,7 @@ source_url: https://zhuanlan.zhihu.com/p/656990524
 - 通过量化北极星指标来指导迭代工作，避免在错误的方向上浪费时间。
 - 通过监控迭代工作中的中间生成数据，获得新的优化方向，或者针对已有数据新的洞察，为下一步工作设计新实验提供思路。
 
-- 主要做法是**通过自己构建一个小的数据集，通过人工介入标注的方式确定实时性、答案相关性、上下文相关性三个维度的标准基线，来对生成的文本进行打分评估**。这里需要引起注意的是，**且不管从这三个维度评估是否全面、准确，引入经验丰富的人工介入标注，行程基线标准是最值得借鉴的思路**。
+- 主要做法是<strong>通过自己构建一个小的数据集，通过人工介入标注的方式确定实时性、答案相关性、上下文相关性三个维度的标准基线，来对生成的文本进行打分评估</strong>。这里需要引起注意的是，<strong>且不管从这三个维度评估是否全面、准确，引入经验丰富的人工介入标注，行程基线标准是最值得借鉴的思路</strong>。
 - 代码公开到了  github： [GitHub - explodinggradients/ragas: Evaluation framework for your Retrieval Augmented Generation (RAG) pipelines](https://link.zhihu.com/?target=https%3A//github.com/explodinggradients/ragas)
 - 对主流的工具，比如 LangChain 和 LLama-Index 提供了内置支持。
 
@@ -89,7 +89,7 @@ result["result"]`
 
 结果还成：
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_65de9e308b6e.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_65de9e308b6e.jpg)
 
 图一：qa retrieval  结果 测试
 
@@ -165,7 +165,7 @@ print("evaluating...")
 r = faithfulness_chain.evaluate(examples, predictions)
 r`
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_32d115f16b5c.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_32d115f16b5c.jpg)
 
 图二：batch  操作到这里，ragas 的评测就完成了，如果对 langsmith 不感兴趣可以就此打住...
 
@@ -230,24 +230,24 @@ result = run_on_dataset(
 
 执行到这里，创建好的  dataset、生成的结果都已经乖乖上传到了 smith.langchain.com:
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_57a61886041c.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_57a61886041c.jpg)
 
-图三：smith  帅帅的后台![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_605204a29543.jpg)
+图三：smith  帅帅的后台![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_605204a29543.jpg)
 
-图四：三个维度、四个指标![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_3ecfa101fa09.jpg)
+图四：三个维度、四个指标![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_3ecfa101fa09.jpg)
 
 图五：langsmith  的好处就是啥啥都留下来了...正如开始我们提到的，针对 LLMs  生成的内容进行检测评估至关重要！尽早发现冗余、无关的信息并在送入 LLMs 之前把这些信息过滤掉不仅影响到 token  的消耗（经费在燃烧）；也关系到整个  RAG 系统的效率和质量。
 
 最终，我们要算一个单一指标，ragas  里面采用的是「调和平均数」（the harmonic mean），奇怪的是 RagasEvaluatorChain 返回的结果里面并没有这个值，不过没关系我们可以调用  statistics  的 harmonic_mean 方法自己算一个
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_6e7ff8d8aab4.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_6e7ff8d8aab4.jpg)
 
 图六：RagasEvaluatorChain 里面记录的  project  名字有了上面这个名字就可以去  smith.langchain.com 里面找到对应的结果，如下：
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_ec2c01e83ac8.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_ec2c01e83ac8.jpg)
 
 图七：RagasEvaluatorChain 返回的四个指标自己算一下调和平均数：
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_6bd7a5f14bad.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_6bd7a5f14bad.jpg)
 
-图八： 最终的单一指标**至此！终于！可以拿着一个谁都容易理解的指标去找老板加薪了！！！**
+图八： 最终的单一指标<strong>至此！终于！可以拿着一个谁都容易理解的指标去找老板加薪了！！！</strong>

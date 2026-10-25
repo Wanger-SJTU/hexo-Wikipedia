@@ -19,7 +19,7 @@ source_url: https://zhuanlan.zhihu.com/p/2012287560865576638
 
 RDMA 技术中， QP（ queue pair）作为 RDMA 通信的基本单元，可以在两个节点之间进行直接内存访问，实现零拷贝的数据传输和低延迟的交互。如图 1 所示， QP 通常包含三种工作队列：发送队列（ send queue， SQ）、接收队 列（ receive queue， RQ）、完成队列（ complete queue， CQ）。 SQ 用于存储发送方的数据和命令信息， RQ 用于存储接收方的数据和命令信息， CQ 用于存储数据传输完成的相关信息，可以多个 SQ 或多个 RQ 共用一个 CQ。
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_6f91236c1450.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_6f91236c1450.jpg)
 
 图 1 RDMA 的工作队列工作队列分别由内存中的多个非连续的区域组成，每个区域按顺序存储着应用层给硬件下发的工作任务（ work queue entry， WQE）， WQE 中包含两端数据交互的一些信息，具体如图 2 所示。应用层通过门铃机制通知 RDMA 网卡有新的 WQE 存放在工作队列中。
 
@@ -27,7 +27,7 @@ RDMA 技术中， QP（ queue pair）作为 RDMA 通信的基本单元，可以�
 
 RDMA 技术的通信模型如图 3 所示。纵向上划分为控制通路、数据通路。控制通路需要进入内核态，准备通信所需的各种资源，需要 CPU 的参与，一般在链路建立时使用。控制通路通过发送 RDMA Send-Recv 命令，创建和配置RDMA 通信的基本元素，如 QP、 CQ 等。数据通路专门负责数据的收发，因为已通过控制通路获取到了通信所需要的基本元素，如虚拟地址 VA、远端的 Rkey 等，此时进行数据通信不需要 CPU 介入，可以直接对远端内存进行操作。
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_4909df4f7ac1.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_4909df4f7ac1.jpg)
 
 图 3 RDMA 技术的通信模型
 #### 2.1 RDMA Send-Recv操作流程
@@ -56,7 +56,7 @@ RDMA 通信模型中，控制通路进行 RDMA Send-Recv 操作的流程如图 4
 
 （ 11）远端应用层收到接收到新数据的指示。
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_439443792d29.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_439443792d29.jpg)
 
 图 4 RDMA Send-Recv 操作流程
 #### 2.2 RDMA Write操作流程
@@ -79,7 +79,7 @@ RDMA 通信模型中，数据通路进行 RDMA Write 操作的流程如图 5 所
 
 （ 8）本地应用层收到命令处理完成的指示。
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_da554f5f2bbb.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_da554f5f2bbb.jpg)
 
 图 5 RDMA Write 操作流程**
 
@@ -103,7 +103,7 @@ RDMA 通信模型中，数据通路进行 RDMA Read 操作的流程如图 6 所�
 
 （ 8）本地应用层收到命令处理完成的指示。
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_d6e77014065c.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_d6e77014065c.jpg)
 
 图 6 RDMA Read 操作流程
 ### 3. RDMA Atomic操作
@@ -121,11 +121,11 @@ RDMA 通信模型中，数据通路进行 RDMA Read 操作的流程如图 6 所�
 2. 将读取的 64 bit 数据，返回请求端；
 3. 将读取的 64 bit 数据，加上操作数 2，重新写入远端 VA 地址对应的内存。以 Fetch and Add 的 atomic 操作为例， 一 次正常的RDMA atomic操作的交互，如图7所示。
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_1f02d99d3911.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_1f02d99d3911.jpg)
 
 图 7 正常的 RDMA atomic（FAA）操作以 Fetch and Add 的 atomic 操作为例，一次带有重传的RDMA atomic 操作的交互，如图 8 所示
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_98c23f4cc301.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_98c23f4cc301.jpg)
 
 图 8 重传的 RDMA atomic（FAA）操作
 #### 3.1 RDMA原子操作 
@@ -141,7 +141,7 @@ RDMA 通信模型中，数据通路进行 RDMA Read 操作的流程如图 6 所�
 
 参考：RDMA Aware Networks Programming User Manual
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_2ed39d1acbb7.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_2ed39d1acbb7.jpg)
 
 RDMA（Remote Direct Memory Access）中，`FETCH_AND_ADD`和`CMP_AND_SWAP`是两种原子操作，它们通常用于分布式系统中的并发控制，能够直接在远程节点的内存上执行原子性操作。它们是RDMA协议（如InfiniBand、RoCE）支持的操作码（opcode）的一部分，专门设计用于跨节点的数据一致性和并发控制。
 
@@ -150,9 +150,9 @@ RDMA（Remote Direct Memory Access）中，`FETCH_AND_ADD`和`CMP_AND_SWAP`是�
 `FETCH_AND_ADD`是一种原子递增操作，它的执行方式如下：
 
 - 操作流程**：从远程内存位置读取一个值，将其增加指定的增量，然后将结果写回同一个位置。
-- **返回值**：在RDMA操作完成后，返回操作前的原始值。
-- **典型用途**：该操作常用于实现计数器（如共享计数器、信号量等），保证在多节点环境下的同步递增。例如，一个分布式应用中，各节点可以用`FETCH_AND_ADD`操作来安全地更新全局计数器，避免数据竞争。
-**示例**：假设远程内存位置的值为10，并执行`FETCH_AND_ADD`操作，增量为2。
+- <strong>返回值</strong>：在RDMA操作完成后，返回操作前的原始值。
+- <strong>典型用途</strong>：该操作常用于实现计数器（如共享计数器、信号量等），保证在多节点环境下的同步递增。例如，一个分布式应用中，各节点可以用`FETCH_AND_ADD`操作来安全地更新全局计数器，避免数据竞争。
+<strong>示例</strong>：假设远程内存位置的值为10，并执行`FETCH_AND_ADD`操作，增量为2。
 
 - 操作结果：远程内存值变为12。
 - 返回结果：返回操作前的原始值10。
@@ -161,10 +161,10 @@ RDMA（Remote Direct Memory Access）中，`FETCH_AND_ADD`和`CMP_AND_SWAP`是�
 
 `CMP_AND_SWAP`（比较并交换）是一种更复杂的原子操作，执行过程如下：
 
-- **操作流程**：从远程内存位置读取一个值，将其与给定的“比较值”进行比较。如果远程内存中的值等于“比较值”，则将该值替换为新值；否则不做任何修改。
-- **返回值**：在RDMA操作完成后，返回操作前的原始值。
-- **典型用途**：该操作常用于实现分布式锁和并发控制。例如，可以用`CMP_AND_SWAP`来实现一个简单的锁，确保在多节点下某个操作只有一个节点能够成功修改共享变量。
-**示例**：假设远程内存位置的值为10，并执行`CMP_AND_SWAP`操作，比较值为10，新值为20。
+- <strong>操作流程</strong>：从远程内存位置读取一个值，将其与给定的“比较值”进行比较。如果远程内存中的值等于“比较值”，则将该值替换为新值；否则不做任何修改。
+- <strong>返回值</strong>：在RDMA操作完成后，返回操作前的原始值。
+- <strong>典型用途</strong>：该操作常用于实现分布式锁和并发控制。例如，可以用`CMP_AND_SWAP`来实现一个简单的锁，确保在多节点下某个操作只有一个节点能够成功修改共享变量。
+<strong>示例</strong>：假设远程内存位置的值为10，并执行`CMP_AND_SWAP`操作，比较值为10，新值为20。
 
 - 操作结果：因为远程值等于10，因此成功将值替换为20。
 - 返回结果：返回操作前的原始值10。
@@ -178,9 +178,9 @@ RDMA（Remote Direct Memory Access）中，`FETCH_AND_ADD`和`CMP_AND_SWAP`是�
 
 ### 4. RDMA Atomic使用场景
 
-- **共享内存区域**：通常，`FETCH_AND_ADD` 和 `CMP_AND_SWAP` 用于操作共享的、已注册的内存区域，这些内存区域可能用于实现全局计数器、分布式锁、状态机等。通过 RDMA，远程节点可以直接对这些共享内存区域进行并发操作。
-- **跨节点数据一致性**：通过这些原子操作，可以确保多个节点对共享内存区域的并发修改是安全的。例如，多个节点可能同时尝试更新一个全局计数器或尝试获取同一个锁，`FETCH_AND_ADD` 和 `CMP_AND_SWAP` 可以保证操作的原子性，避免数据竞争。
-***举例***
+- <strong>共享内存区域</strong>：通常，`FETCH_AND_ADD` 和 `CMP_AND_SWAP` 用于操作共享的、已注册的内存区域，这些内存区域可能用于实现全局计数器、分布式锁、状态机等。通过 RDMA，远程节点可以直接对这些共享内存区域进行并发操作。
+- <strong>跨节点数据一致性</strong>：通过这些原子操作，可以确保多个节点对共享内存区域的并发修改是安全的。例如，多个节点可能同时尝试更新一个全局计数器或尝试获取同一个锁，`FETCH_AND_ADD` 和 `CMP_AND_SWAP` 可以保证操作的原子性，避免数据竞争。
+*<strong>举例</strong>*
 
 假设有一个共享内存区域用于存储一个计数器，`ib_reg_mr` 注册了这块内存区域，允许远程节点进行操作：
 
@@ -194,53 +194,53 @@ RDMA（Remote Direct Memory Access）中，`FETCH_AND_ADD`和`CMP_AND_SWAP`是�
 
 #### 4.1 `FETCH_AND_ADD`（获取并增加）**
 
-**用途：**
+<strong>用途：</strong>
 
-- **分布式计数器和指标收集**：
+- <strong>分布式计数器和指标收集</strong>：
 
 - 通过 `FETCH_AND_ADD`，多个节点可以安全地对一个全局计数器进行递增或累加，而不会发生数据竞争。它广泛应用于分布式系统中的统计和计数。
 - 例如，分布式日志系统中，每个节点可能都会记录请求的处理次数，`FETCH_AND_ADD`可以用于将每个节点的计数值原子性地累加到全局计数器中。
 
-- **并发请求处理**：
+- <strong>并发请求处理</strong>：
 
 - 在一些高并发系统中，例如负载均衡器或请求计数系统中，`FETCH_AND_ADD` 可以用于追踪并发请求的数量，并确保计数的正确性，而不需要使用全局锁。
 - 例如，某个节点可以对访问次数进行递增，而其他节点可以同时执行相同的操作，确保不会因多线程竞争而出现错误。
 
-- **分布式信号量**：
+- <strong>分布式信号量</strong>：
 
 - `FETCH_AND_ADD` 可用于实现分布式信号量控制机制，通过对一个共享计数器递增和递减，多个进程或节点可以协调访问共享资源的权利。
 
-**示例：**
+<strong>示例：</strong>
 
 假设多个节点访问一个共享资源，并且每次访问后都需要递增计数器（例如：对API请求次数的统计）。每个节点可以通过 `FETCH_AND_ADD` 操作递增计数器，从而实现高效的并发计数。
 
-#### 4.2 `CMP_AND_SWAP`**（比较并交换）**
+#### 4.2 `CMP_AND_SWAP`<strong>（比较并交换）</strong>
 
-**用途：**
+<strong>用途：</strong>
 
-- **分布式锁和同步**：
+- <strong>分布式锁和同步</strong>：
 
 - `CMP_AND_SWAP` 是实现分布式锁的重要工具。多个节点可以尝试通过 `CMP_AND_SWAP` 来争夺一个共享的锁变量。如果当前锁变量的值与预期值匹配（即锁没有被占用），则成功地修改该变量，从而获得锁。
 - 这种方式比传统的锁机制（如互斥量）更高效，因为它不需要中心化的协调，可以在硬件层面进行处理，减少了延迟。
 
-- **乐观并发控制**：
+- <strong>乐观并发控制</strong>：
 
 - 在一些分布式数据库和事务系统中，`CMP_AND_SWAP` 可以用于乐观并发控制（OCC）。在提交事务时，`CMP_AND_SWAP` 可用于检查数据是否在此期间被修改。如果没有被修改，则执行更新操作，否则重新尝试。
 - 这种方式避免了传统锁机制带来的锁竞争，提高了系统的并发能力和性能。
 
-- **状态机管理**：
+- <strong>状态机管理</strong>：
 
 - 在分布式系统中，`CMP_AND_SWAP` 可以用来实现分布式状态机的同步。例如，一个节点可以通过 `CMP_AND_SWAP` 来确保它在某个共享状态变量上修改状态是原子的。只有当状态变量未被其他节点修改时，当前节点才会成功更新状态。
 
-- **事务性操作**：
+- <strong>事务性操作</strong>：
 
 - `CMP_AND_SWAP` 用于实现原子性操作，确保某些操作在满足特定条件时成功执行，从而保证数据的一致性和正确性。例如，`CMP_AND_SWAP` 在分布式缓存中可能用于确保某个值的原子更新，避免多个节点并发修改相同数据导致冲突。
 
-**示例：**假设有多个节点在进行分布式锁操作。每个节点检查锁变量，如果锁是空闲的，则通过 `CMP_AND_SWAP` 原子地设置锁变量的值，这样就获得了锁的所有权。
+<strong>示例：</strong>假设有多个节点在进行分布式锁操作。每个节点检查锁变量，如果锁是空闲的，则通过 `CMP_AND_SWAP` 原子地设置锁变量的值，这样就获得了锁的所有权。
 
-#### 4.3 **这两种操作的组合应用**
+#### 4.3 <strong>这两种操作的组合应用</strong>
 
 `FETCH_AND_ADD` 和 `CMP_AND_SWAP` 结合使用，可以实现复杂的分布式同步协议：
 
-- **一致性协议**：通过 `CMP_AND_SWAP` 和 `FETCH_AND_ADD` 的组合，可以实现一致性协议（如 Paxos 或 Raft）的优化。例如，节点可以利用 `FETCH_AND_ADD` 来累加日志条目的编号，使用 `CMP_AND_SWAP` 来原子地交换日志条目或状态。
-- **协同计算和资源调度**：在一些计算集群或分布式计算环境中，节点之间可以通过这两种操作来调度计算资源，确保任务分配的原子性和一致性。
+- <strong>一致性协议</strong>：通过 `CMP_AND_SWAP` 和 `FETCH_AND_ADD` 的组合，可以实现一致性协议（如 Paxos 或 Raft）的优化。例如，节点可以利用 `FETCH_AND_ADD` 来累加日志条目的编号，使用 `CMP_AND_SWAP` 来原子地交换日志条目或状态。
+- <strong>协同计算和资源调度</strong>：在一些计算集群或分布式计算环境中，节点之间可以通过这两种操作来调度计算资源，确保任务分配的原子性和一致性。

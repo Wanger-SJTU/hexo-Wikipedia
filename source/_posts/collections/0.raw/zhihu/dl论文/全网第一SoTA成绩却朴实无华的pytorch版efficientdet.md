@@ -15,7 +15,7 @@ source_url: https://zhuanlan.zhihu.com/p/129016081
 ---
 
 
-**太长不看版：我，在清明假期，三天，实现了pytorch版的efficientdet D0到D7，迁移weights，稍微finetune了一下，是全网第一个跑出了接近论文的成绩的pytorch版，处理速度还比原版快。现在提供pretrained的weights。感兴趣的小伙伴可以去watch、star、fork三连我的repo。**
+<strong>太长不看版：我，在清明假期，三天，实现了pytorch版的efficientdet D0到D7，迁移weights，稍微finetune了一下，是全网第一个跑出了接近论文的成绩的pytorch版，处理速度还比原版快。现在提供pretrained的weights。感兴趣的小伙伴可以去watch、star、fork三连我的repo。</strong>
 
 [https://github.com/zylo117/Yet-Another-EfficientDet-Pytorch](https://link.zhihu.com/?target=https%3A//github.com/zylo117/Yet-Another-EfficientDet-Pytorch)先附上我的测试成绩：
 
@@ -27,9 +27,9 @@ source_url: https://zhuanlan.zhihu.com/p/129016081
 
 看完本文，你会知道：
 
-- **为什么之前都没有人复现efficientdet的成绩？**
-- **高star的efficientdet之间的差异？**
-- **那么多个民间efficientdet，我应该用哪个？**众所周知，图像分类任务最强的CNN是efficientnet[1]，而屠榜目标检测的网络则是基于efficientnet[2]的。
+- <strong>为什么之前都没有人复现efficientdet的成绩？</strong>
+- <strong>高star的efficientdet之间的差异？</strong>
+- <strong>那么多个民间efficientdet，我应该用哪个？</strong>众所周知，图像分类任务最强的CNN是efficientnet[1]，而屠榜目标检测的网络则是基于efficientnet[2]的。
 
 大家不妨去paperwithcode看看排行榜，看看efficientdet是怎么屠榜的。
 
@@ -46,18 +46,18 @@ source_url: https://zhuanlan.zhihu.com/p/129016081
 
 这是什么玩意？这也能有1k star？我当时还没有搞清楚efficientdet，我承认，不过后来自己实现了之后，发现这个repo有这样的问题。
 
-**因为efficientdet的特性之一是BiFPN，它会融合backbone输出的任意相邻两层的feature，但是由于有两层尺寸的宽高是不同的，所以会进行upsample或者pooling来保证它们宽高一致。而这个作者，他没有意识到，他不知道从backbone抽哪些feature出来，他觉得是backbone有问题，改了人家的stride，随便挑了几层，去强迫backbone输出他想要的尺寸。。。可以参考下面两个链接，一个是官方参数，一个是他魔改的参数，stride被错误地改了，s11改成了s22。**
+<strong>因为efficientdet的特性之一是BiFPN，它会融合backbone输出的任意相邻两层的feature，但是由于有两层尺寸的宽高是不同的，所以会进行upsample或者pooling来保证它们宽高一致。而这个作者，他没有意识到，他不知道从backbone抽哪些feature出来，他觉得是backbone有问题，改了人家的stride，随便挑了几层，去强迫backbone输出他想要的尺寸。。。可以参考下面两个链接，一个是官方参数，一个是他魔改的参数，stride被错误地改了，s11改成了s22。</strong>
 
 [https://github.com/google/automl/blob/master/efficientdet/backbone/efficientnet_builder.py#L172](https://link.zhihu.com/?target=https%3A//github.com/google/automl/blob/master/efficientdet/backbone/efficientnet_builder.py%23L172)[https://github.com/toandaominh1997/EfficientDet.Pytorch/blob/master/models/utils.py](https://link.zhihu.com/?target=https%3A//github.com/toandaominh1997/EfficientDet.Pytorch/blob/master/models/utils.py)问题来了，我们炼金术师都知道，改了网络结构，pretrained权值基本就废了，所以他也发现了，发现训练不下去了，怕丢人，就训练了个上古数据集VOC2007敷衍一下，拿个62的mAP，知道VOC2007才 62意味着什么吗？连YOLO v1都不如！要知道efficientdet-D0就是为了干掉YOLO v3去的啊！
 
 [Papers with Code - PASCAL VOC 2007 Leaderboard | Papers with Code](https://link.zhihu.com/?target=https%3A//paperswithcode.com/sota/object-detection-on-pascal-voc-2007)
 ![](https://pic2.zhimg.com/v2-249cc992041aed91ea30e3270b43a807_r.jpg)最底下的YOLO v1都比你强！
 
-最搞笑的是，这个作者回答了几个问题后发现搞不定，现在已经**你给路达哟**了。
+最搞笑的是，这个作者回答了几个问题后发现搞不定，现在已经<strong>你给路达哟</strong>了。
 
 但是他的repo真的一无是处吗？也不是，他奠定了efficientdet的基础要素，后来的人每一个人的代码里面都能看到他的影子。
 
-**只不过说明了，不仅是他，社区中都没有人训练出论文的成绩。说明论文中的确有很多没有提及到的细节，所以大家容易误解。**
+<strong>只不过说明了，不仅是他，社区中都没有人训练出论文的成绩。说明论文中的确有很多没有提及到的细节，所以大家容易误解。</strong>
 
 好，我找了另一个efficientdet，这个。这个赞才不到前者一半。
 
@@ -69,19 +69,19 @@ source_url: https://zhuanlan.zhihu.com/p/129016081
 
 所以我冲了，马上clone下来跑，成绩果然不错，训练个D2出来看看！
 
-**1周过去了。。。**
+<strong>1周过去了。。。</strong>
 
-**2周过去了。。。**
+<strong>2周过去了。。。</strong>
 
-**3周过去了。。。**
+<strong>3周过去了。。。</strong>
 
-**。。。**
+<strong>。。。</strong>
 
-**6周过去了。。。**
+<strong>6周过去了。。。</strong>
 
-**7周过去了。。。**
+<strong>7周过去了。。。</strong>
 
-**泷泽萝拉哒！！！！**
+<strong>泷泽萝拉哒！！！！</strong>
 
 没用没用没用没用没用没用没用没用没用
 
@@ -98,7 +98,7 @@ source_url: https://zhuanlan.zhihu.com/p/129016081
 
 5. 这个是最严重的问题了，和上一个人一样，他的backbone feature抽头抽错了，他抽的是stride为2的那一层，但是错了，应该抽stride为2的上一层的结果，以及backbone的最后一层。什么影响呢？原版是想把stride2卷积降维后的feature进行特征提取，然后作为输出。而这个版本的作者，则是把stride2卷积降维的当成结果直接输出了，还没有提取特征呢！所以特征提取能力上也会大打折扣。
 
-6. Conv和pooling，没有用到same padding。**你的下一句话就是！这个也有影响？**对！当然有影响！
+6. Conv和pooling，没有用到same padding。<strong>你的下一句话就是！这个也有影响？</strong>对！当然有影响！
 
 先不说前后尺寸差异的问题，只讨论两种paddin值上的差异。
 

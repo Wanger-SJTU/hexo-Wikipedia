@@ -59,7 +59,7 @@ Zartbot详细列举了Nvidia GPU的Memory Model，其实就是告诉你，好的
 
 算了，画了一张图。
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_0ca9dcae7e6f.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_0ca9dcae7e6f.jpg)
 
  1、如果你强调Load/Store是指令的同步行为，必须按照指令顺序执行要等load完成后data inside reg才执行下一条指令，那么你属于体系结构中最原教旨主义的Load/Store定义 ：）
 
@@ -77,9 +77,9 @@ Zartbot详细列举了Nvidia GPU的Memory Model，其实就是告诉你，好的
 
 那么软件的视角上，只有调用instruction中的ld、st指令，并且操作的一方是Reg一方是Mem，才算Load/Store。**
 
-**但是在硬件的视角，严格定义上的Load/Store，是指相比Message，把Transaction、Transport都合为一体，简化为具有耦合关系的rd req ->re dat或者wr req -> wr rsp，高效直接一次性完成整个信息交互的行为。作为硬件公司，我们号称支持Load/Store时，是基于一个硬件系统上支持了这种行为的运行，即使软件的同学认为GPU TMA不是ld/st的指令，但这和软件换做用SM就直接运行的ld/st指令在硬件上的需求是一样的，硬件特性支持的是底线，而不是某种行为。**
+<strong>但是在硬件的视角，严格定义上的Load/Store，是指相比Message，把Transaction、Transport都合为一体，简化为具有耦合关系的rd req ->re dat或者wr req -> wr rsp，高效直接一次性完成整个信息交互的行为。作为硬件公司，我们号称支持Load/Store时，是基于一个硬件系统上支持了这种行为的运行，即使软件的同学认为GPU TMA不是ld/st的指令，但这和软件换做用SM就直接运行的ld/st指令在硬件上的需求是一样的，硬件特性支持的是底线，而不是某种行为。</strong>
 
-**所以，无论是网党还是计党在说一个Scale-UP协议支持跨节点load/store，都应该算是硬件公司提供的面对客户的能力（吹牛逼的界面），并不妨碍源头客户是否采用CPU LSU or GPU TMA or SoC SDMA or NIC RDMA。**
+<strong>所以，无论是网党还是计党在说一个Scale-UP协议支持跨节点load/store，都应该算是硬件公司提供的面对客户的能力（吹牛逼的界面），并不妨碍源头客户是否采用CPU LSU or GPU TMA or SoC SDMA or NIC RDMA。</strong>
 
 **
 
@@ -87,13 +87,13 @@ Zartbot详细列举了Nvidia GPU的Memory Model，其实就是告诉你，好的
 
 不打哑谜，讲答案。
 
-**内存语义其实是程序员基于内存的特征表达的一系列语义，是一种语言的表达方式（就像英语、汉语），也是现今的程序员所编程的即Program的主要语法，与此对照的包括IO语义、Storage语义等等。**
+<strong>内存语义其实是程序员基于内存的特征表达的一系列语义，是一种语言的表达方式（就像英语、汉语），也是现今的程序员所编程的即Program的主要语法，与此对照的包括IO语义、Storage语义等等。</strong>
 
-**内存的特征包括体系结构定义下各ISA有细微差异但总体一致的Attribute、Coherency、Consistency、Single/Multi-Copy Atomicity.....etc，而所谓的差异，包括最前面提到的不同ISA下不同的Ordering等特征，大多数时候被某些显性的Instruction描述或compiler处理掉，最终体现为对全世界的软件人员都相对一致的特征。**
+<strong>内存的特征包括体系结构定义下各ISA有细微差异但总体一致的Attribute、Coherency、Consistency、Single/Multi-Copy Atomicity.....etc，而所谓的差异，包括最前面提到的不同ISA下不同的Ordering等特征，大多数时候被某些显性的Instruction描述或compiler处理掉，最终体现为对全世界的软件人员都相对一致的特征。</strong>
 
-**因为内存语义的高效性，软件基于这一堆的特征表达了非常丰富的应用语义，并最后呈现为微信啊、淘宝之类应用。**
+<strong>因为内存语义的高效性，软件基于这一堆的特征表达了非常丰富的应用语义，并最后呈现为微信啊、淘宝之类应用。</strong>
 
-**而所谓支持内存语义，实际上是指程序员基于内存语义来表达的这些程序代码，能够在跨Scale-Up的设备之间，以性能有一定程度保障下运行（关键就是这个一定的度！！）。也就是和尚去了日本，也得是和尚（虽然能结婚，有些纯度的差异）。**
+<strong>而所谓支持内存语义，实际上是指程序员基于内存语义来表达的这些程序代码，能够在跨Scale-Up的设备之间，以性能有一定程度保障下运行（关键就是这个一定的度！！）。也就是和尚去了日本，也得是和尚（虽然能结婚，有些纯度的差异）。</strong>
 
 跨机是一定有损的，所以如果一定要强调支持内存语义就是一行代码不改，那是不讲道理 ：）
 
@@ -103,7 +103,7 @@ Zartbot详细列举了Nvidia GPU的Memory Model，其实就是告诉你，好的
 
 然后再看行为。
 
-- 最初的，如果某些业务，例如Dense大模型的训练，程序员使用内存语义时更多是基于生产者-消费者的表达方式时，是比较容易被Send、Recv这类与网络Message行为亲和力更好的语义高效表达的，所以如果只是针对这一类场景适配，Scale-up支持内存语义是可以不需要load/store的，Google只支持高性能的RDMA，也可以号称支持内存语义即如此 ：） 也就是和尚可以不是光头，带发的和尚看着很糙。但也可以说这种Scale-up系统实现了**Coarse Memory Semantics**。
+- 最初的，如果某些业务，例如Dense大模型的训练，程序员使用内存语义时更多是基于生产者-消费者的表达方式时，是比较容易被Send、Recv这类与网络Message行为亲和力更好的语义高效表达的，所以如果只是针对这一类场景适配，Scale-up支持内存语义是可以不需要load/store的，Google只支持高性能的RDMA，也可以号称支持内存语义即如此 ：） 也就是和尚可以不是光头，带发的和尚看着很糙。但也可以说这种Scale-up系统实现了<strong>Coarse Memory Semantics</strong>。
 **
 
 - 所以这涉及的就是一个度的问题，当出现MoE这类模型推理甚至推荐之类的网络，就需要相对小粒度的数据交互，额，例如软件直接跨机获取内存什么的，使用LSU/TMA会比RDMA更加高效，而这种小颗粒的语义即使是TMA在软件看做是DMA，但在Scale-up的接口上也会体现为Load/Store，所以，出于需要尽可能支持更大范围的内存语义的程序在Scale-up系统上能运行，Scale-up系统最好支持这种行为上更高效，甚至从网络视角把transaction和transport都揉为一体的Load/Store的直接传输，这是ualink/nvlink等ScaleUp系统所谓支持内存语义都是指Load/store的原因，即为了保证一定的道德底线，和尚还是都搞成光头比较好。也可以说，支持Load/Store的Scale-Up，算得上实现了Native Memory Semantics，这里加一个Native表达大家的道德底线 ：）**
@@ -115,10 +115,10 @@ Zartbot详细列举了Nvidia GPU的Memory Model，其实就是告诉你，好的
 - 此外，内存语义也并不是说要完全照搬片上总线（noc）的行为，毕竟系统拉远之后，物理特征和本地是有区别的，所以这里会增加有非常多体系结构研究的空间，即软件在本地内存语义的某种高效表达，例如某些read、lock、modify、unlock行为，甚至更复杂且可抽象的表达，在Scale-up拉远时若直接表现为某些req-rsp的频繁交互，那即使是load/store，性能也会非常低，所以在scale-up接口侧是可以归纳并新增一些macro operator（大多数时候携带更多信息的大颗粒load/store）来高效表达的。其实这个和CPU内部做macro instruction是一样的道理，额，也就是和尚吃不了肉，但可以用豆腐来做鱼香肉丝一样 ：） Characteristics Memory Semantics，入乡随俗了，这协议才算得上开枝散叶。**
 总结一下：）
 
-**支持内存语义其实是指软件基于内存语义所表达出的丰富的软件行为，能够尽可能多且最低损耗地在Scale-Up系统上运行。**
+<strong>支持内存语义其实是指软件基于内存语义所表达出的丰富的软件行为，能够尽可能多且最低损耗地在Scale-Up系统上运行。</strong>
 
-**所以一个Scale-Up协议支持load/store这种原生内存访问行为是为了如上的“尽可能多“和“最低损耗”的达成，这是个度的概念，你可以无脑定个70%，或者换句话说，Load/Store更倾向于是Native内存语义的表达。**
+<strong>所以一个Scale-Up协议支持load/store这种原生内存访问行为是为了如上的“尽可能多“和“最低损耗”的达成，这是个度的概念，你可以无脑定个70%，或者换句话说，Load/Store更倾向于是Native内存语义的表达。</strong>
 
-**为了保证更丰富和机制的内存语义在Scale-Up系统上无损的传递，一个好的Scale-Up协议应当不仅仅是Load/Store，还需要定制若干Macro行为来让某些更复杂内存语义在跨机时的高效表达，这是下一个哑谜，也是Ualink/Nvlink还没有做到的事情。**
+<strong>为了保证更丰富和机制的内存语义在Scale-Up系统上无损的传递，一个好的Scale-Up协议应当不仅仅是Load/Store，还需要定制若干Macro行为来让某些更复杂内存语义在跨机时的高效表达，这是下一个哑谜，也是Ualink/Nvlink还没有做到的事情。</strong>
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_5f35098c0b7c.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_5f35098c0b7c.jpg)

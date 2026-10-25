@@ -23,23 +23,23 @@ source_url: https://zhuanlan.zhihu.com/p/686225377
 
 ### 算法流程
 
-MHA的基础概念就不介绍了，针对于QKV的Tensor表示(batch_size, head_num, seq_len, hidden_dim)很容易在batch_size和head_num维度上进行并行，毕竟他们之间毫无依赖。FlashAttention V2将seq_len维度也进行了并行化，于是整个算法实现的并行性又得到了进一步提高，所以总的并行维度是**(batch_size, head_num, seq_len)**，老规矩还是上图吧。
+MHA的基础概念就不介绍了，针对于QKV的Tensor表示(batch_size, head_num, seq_len, hidden_dim)很容易在batch_size和head_num维度上进行并行，毕竟他们之间毫无依赖。FlashAttention V2将seq_len维度也进行了并行化，于是整个算法实现的并行性又得到了进一步提高，所以总的并行维度是<strong>(batch_size, head_num, seq_len)</strong>，老规矩还是上图吧。
 
 在batch_size和head_num并行化后，每个ThreadBlock应该要处理计算的逻辑如下图所示：
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_93678ea9a7c2.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_93678ea9a7c2.jpg)
 
 基础的attention计算流程FlashAttention在seq_len也并行化后，每个ThreadBlock需要处理计算的逻辑如下图所示，其中kBlockM是seq_len_q中分块后的其中一块。
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_44dea1ac7600.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_44dea1ac7600.jpg)
 
-FlashAttention中每个threadBlock需要处理的逻辑基于上图逻辑，在ThreadBlock内部针对需要计算的逻辑进行了多轮迭代，就是将seq_len_k的维度进行了拆分(**FlashDecoding中将这一维度也拆到了不同ThreadBlock中进行计算，而这里是在同一个ThreadBlock中通过for循环来计算，不拆的原因是这里并行度够大了**)，逐步计算一小块的结果不断累积到最后的output中，如下图所示。这里其实每一轮迭代都能输出完整shape的output，只不过迭代过程中的output是中间结果，只有到最后一轮迭代累积后才会输出真正的output。
+FlashAttention中每个threadBlock需要处理的逻辑基于上图逻辑，在ThreadBlock内部针对需要计算的逻辑进行了多轮迭代，就是将seq_len_k的维度进行了拆分(<strong>FlashDecoding中将这一维度也拆到了不同ThreadBlock中进行计算，而这里是在同一个ThreadBlock中通过for循环来计算，不拆的原因是这里并行度够大了</strong>)，逐步计算一小块的结果不断累积到最后的output中，如下图所示。这里其实每一轮迭代都能输出完整shape的output，只不过迭代过程中的output是中间结果，只有到最后一轮迭代累积后才会输出真正的output。
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_a0e7708e6acb.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_a0e7708e6acb.jpg)
 
-FlashAttention一个ThreadBlock里每次迭代需要处理的逻辑最后整个执行过程就是paper中的下图流程，**外层for循环在不同的ThreadBlock间并行执行(即每一个Qi在不同ThreadBlock中计算)，内层for循环在ThreadBlock内部串行执行**(如上图所示)。
+FlashAttention一个ThreadBlock里每次迭代需要处理的逻辑最后整个执行过程就是paper中的下图流程，<strong>外层for循环在不同的ThreadBlock间并行执行(即每一个Qi在不同ThreadBlock中计算)，内层for循环在ThreadBlock内部串行执行</strong>(如上图所示)。
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_53ff01685383.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_53ff01685383.jpg)
 
 ### 代码详解
 
@@ -124,7 +124,7 @@ inline __device__ void compute_attn_1rowblock(const Params &params, const int bi
 
 #### 2. early exit处理
 
-接着是early exit的处理，在对QK矩阵进行block分块后，对于某些block其实是不需要处理的。例如在window attention、causal mask等场景存在n_block_max ![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_4c34e926f742.jpg)
+接着是early exit的处理，在对QK矩阵进行block分块后，对于某些block其实是不需要处理的。例如在window attention、causal mask等场景存在n_block_max ![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_4c34e926f742.jpg)
 
 其中n_block_min和n_block_max的计算逻辑如下，
 
@@ -397,7 +397,7 @@ __forceinline__ __device__ void copy(TiledCopy tiled_copy, TensorEngine0, Layout
 
 接下来进入到计算的主体，代码中拆成2个连续的循环，前一个循环处理有mask的block，后一个循环处理无mask的block。如下图简单例子所示，对于左下角block不需要mask(全部需要计算)，右下角block需要mask（部分参与计算）。
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_784cd699fb9d.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_784cd699fb9d.jpg)
 
 首先介绍第一个循环，后一个循环流程差不太多，有些细节区别。循环里基本上就是QKVPS和output的相关计算，也就是P=Q*K，S=softmax(mask(P)), O=P*V，注释中有详细介绍。
 
@@ -507,7 +507,7 @@ __forceinline__ __device__ void copy(TiledCopy tiled_copy, TensorEngine0, Layout
 
 softmax的实现中对算法的校准部分进行了诠释，这里再贴下算法图，可以对着注释看。
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_c90e8a4e47e4.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_c90e8a4e47e4.jpg)
 
 `template int kNRows>
 struct Softmax {
@@ -678,7 +678,7 @@ mask部分的逻辑，这里要结合cute的拆分逻辑来看，四层for循环
 
 这块的代码其实和上个循环差不多，注意下最后单独对全局进行了数据校准，对应paper里这个部分。
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_72d0e7ef84b5.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_72d0e7ef84b5.jpg)
 
 `    // These are the iterations where we don't need masking on S
     for (; n_block >= n_block_min; --n_block) {

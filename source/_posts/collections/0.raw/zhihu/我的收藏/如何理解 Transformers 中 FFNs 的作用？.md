@@ -41,9 +41,9 @@ Transformers 原始论文中的解释： FNN 可以看作用 1x1 的卷积核来
 
 ### 最基本的答案：模型设计的角度
 
-虽然 Transformers 论文的名字叫《Attention is All your Need》，但是实际上， **FFN and ResNet are also your need**.
+虽然 Transformers 论文的名字叫《Attention is All your Need》，但是实际上， <strong>FFN and ResNet are also your need</strong>.
 
-研究人员发现 FFN 和 ResNet 的 Skip Connection 无论去掉哪一个，模型都会变得不可用，具体可以看《One Wide Feedforward Is All You Need》 这篇论文。所以说 **Attention, FFN, ResNet 可以认为是 Transformers 架构的三驾马车，缺一不可** 。
+研究人员发现 FFN 和 ResNet 的 Skip Connection 无论去掉哪一个，模型都会变得不可用，具体可以看《One Wide Feedforward Is All You Need》 这篇论文。所以说 <strong>Attention, FFN, ResNet 可以认为是 Transformers 架构的三驾马车，缺一不可</strong> 。
 
 FFN 设计的初衷，其实就是为模型引入非线性变换。那接着问，attention 中也有 softmax，也是非线性，那 FFN 还是必须的么？ 大多数人开始产生自我怀疑，开始从别的角度回答 FFN 的作用。就比如用Transformers 原始论文中的解释： FNN 可以看作用 1x1 的卷积核来进行特征的升维和降维。
 
@@ -79,7 +79,7 @@ Attention, FFN, ResNet 缺一不可但却可能是各司其职，我个人的观
 
 看下图大概就知道了，我们期望表示 token 的向量，相似的要相近，不相似的要远，而且最好是均匀的分布在整个空间中，比如下图所示。但是 Transformers 会存在 各向异性的问题，也就是所有的 token 都挤到一个很窄的锥形区域了。
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_9348316e8736.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_9348316e8736.jpg)
 
 回到论文，论文将 FFN 和 ResNet 去掉之后做了一些消融实验，证明了 FFN 和 ResNet 是 Transformers 中的必备组件，这两个可以大大的缓解 token uniformity 或者 各向异性的问题。
 
@@ -107,13 +107,13 @@ FFN 的公式为，
 
 这里 f 是 ReLU 激活函数，可以看出两个结构的唯一区别就是一个是才用 softmax 进行归一化，另一个则采用 ReLU 进行筛选。本质上都差不多。
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_35e697bb9fd0.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_35e697bb9fd0.jpg)
 
 通过一些实验也确实证明了上面结论，也就是 FFN 确实将一些 pattern 或者知识记忆和存储起来了。
 
 这就很有意思，从这个角度来说，Attention 是对短期的信息进行提取，而 FFN 则对整个训练样本进行信息提取和记忆。这也就能解释为什么一个有限的窗口甚至对语料进行了暴力截断，模型也能记住语料库中的信息。**
 
-《Knowledge Neurons in Pretrained Transformers》这一篇就更有意思，在上一篇的基础上，**对 Transformers 进行了前额叶切除手术，擎天柱瑟瑟发抖**。
+《Knowledge Neurons in Pretrained Transformers》这一篇就更有意思，在上一篇的基础上，<strong>对 Transformers 进行了前额叶切除手术，擎天柱瑟瑟发抖</strong>。
 
 研究人员先是定位到对某些事实或者知识影响较大的神经元，然后神经元内的数值进行增强或者抑制，发现 Transformers 对这些事实或者知识的回答效果也会变好或者变差。如果将这个神经元删掉，也就是值全部置0，则 Transformers 完全忘记了这些知识，更神奇的是，对于其他的知识则影响不大。
 

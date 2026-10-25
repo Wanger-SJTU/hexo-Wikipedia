@@ -35,24 +35,24 @@ Dieses Verzeichnis enthält wiederverwendbare AI agent skills für das Projekt L
 
 Production-orientierter Harness-Engineering-Skill für AI coding agents. Er hilft beim Erstellen, Bewerten und Verbessern von Agent-Harness-Dateien wie AGENTS.md, Feature-Listen, Verification Workflows und Mechanismen für Session Continuity.
 
-- **7 Referenzmuster**: Memory Persistence, Skill Runtime, Context Engineering, Tool Registry, Multi-Agent Coordination, Lifecycle & Bootstrap, Gotchas
-- **Templates**: AGENTS.md/CLAUDE.md, feature-list.json, init.sh, progress.md, session-handoff.md
-- **Scripts**: Scaffold, Validierung, HTML-Assessment und struktureller Benchmark
-- **10 integrierte Eval-Testfälle**
+- <strong>7 Referenzmuster</strong>: Memory Persistence, Skill Runtime, Context Engineering, Tool Registry, Multi-Agent Coordination, Lifecycle & Bootstrap, Gotchas
+- <strong>Templates</strong>: AGENTS.md/CLAUDE.md, feature-list.json, init.sh, progress.md, session-handoff.md
+- <strong>Scripts</strong>: Scaffold, Validierung, HTML-Assessment und struktureller Benchmark
+- <strong>10 integrierte Eval-Testfälle</strong>
 
 Siehe [harness-creator/README.md](harness-creator/README.md) für die vollständige Dokumentation.
 
 ## Wie harness-creator erstellt wurde
 
-`harness-creator` wurde mit der **skill-creator**-Methodik entwickelt, Anthropic's offiziellem meta-skill zum Erstellen, Testen und Iterieren von Agent Skills im Ablauf draft → test → evaluate → iterate.
+`harness-creator` wurde mit der <strong>skill-creator</strong>-Methodik entwickelt, Anthropic's offiziellem meta-skill zum Erstellen, Testen und Iterieren von Agent Skills im Ablauf draft → test → evaluate → iterate.
 
 ## Wie Skills funktionieren
 
 Jeder skill folgt einer Standardstruktur:
 
-1. **SKILL.md** — Einstiegspunkt mit YAML frontmatter und Markdown-Anweisungen für den Agent.
-2. **references/** — Zusätzliche Dokumentation, die bei Bedarf in den Kontext geladen wird.
-3. **templates/** — Startvorlagen, die der skill erzeugen kann.
+1. <strong>SKILL.md</strong> — Einstiegspunkt mit YAML frontmatter und Markdown-Anweisungen für den Agent.
+2. <strong>references/</strong> — Zusätzliche Dokumentation, die bei Bedarf in den Kontext geladen wird.
+3. <strong>templates/</strong> — Startvorlagen, die der skill erzeugen kann.
 
 Skills verwenden progressive disclosure: Der Agent sieht zunächst nur Name und Beschreibung, lädt bei Auslösung die vollständige SKILL.md und liest gebündelte Ressourcen nur bei Bedarf.
 

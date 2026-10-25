@@ -17,7 +17,7 @@ source_url: https://zhuanlan.zhihu.com/p/1942160792649721494
 
 在上一篇[文章](https://zhuanlan.zhihu.com/p/1942003084193694560)中，我们谈到了，无论是对于MHA还是MLA来说，如果在decode中使用矩阵吸收（或者我自己更喜欢的称呼：矩阵连乘计算顺序优化）来做性能加速，就会发现一个问题，那就是v_proj和o_proj是两个连续的线性操作，二者之间没有非线性操作。正是因为这个，理论上这两个矩阵可以吸收成为一个矩阵，虽然从工程性能的角度这样做并不划算。这个问题还困扰了我挺久的，因为两个可以学习的参数居然能直接吸收到一起，这个听上去不太合理，因此我之前一直好奇qkv的结果是不是应该加一个类似激活函数之类的非线性操作，最近看到了[文章](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2505.06708)，解答了我的疑问，作者在qkv的计算结果和o-proj之间加了一个gate操作，实现了非线性，而且取得了效果提升。
 
-下面说**FFN层一个类似困扰了我很久的地方**：FFN层可以实现一种特殊形式的up_proj和down_proj的权重矩阵吸收操作。
+下面说<strong>FFN层一个类似困扰了我很久的地方</strong>：FFN层可以实现一种特殊形式的up_proj和down_proj的权重矩阵吸收操作。
 
 在FFN层，对于hidden_states输入来说，先经过一个up_proj和gate_proj，然后将二者的结果做elementwise乘法，得到的immediate tensor再执行一次down_proj。对应如下的计算：
 

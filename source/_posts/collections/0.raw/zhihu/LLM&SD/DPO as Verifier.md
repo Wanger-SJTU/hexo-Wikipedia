@@ -19,7 +19,7 @@ source_url: https://zhuanlan.zhihu.com/p/682365020
 
 ### V-STaR
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_06e80a3d8e2e.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_06e80a3d8e2e.jpg)
 
 V-STaR是google近期提出的一个self-play的方法。其核心流程如上图所示：
 
@@ -30,7 +30,7 @@ $$本文的一个亮点是使用DPO产出的policy，作为一个verifier: log&#
 
 除了self-play本身取得较好的效果外，本文额外验证（也是笔者之前想做但拖着一直未动手的实验）了DPO在数学/code上的可行性：
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_e4a9ca165e03.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_e4a9ca165e03.jpg)
 
 从Figure7中可以看到，在gsm8k（相对简单的数学数据集上），当我们使用DPO后，pass@1的效果存在很大的degradation（即使仅迭代了2k-steps）。相比之下，DPO在通用场景取得了很多LLM-Leadboard上排名较为靠前的结果。也测向说明，DPO等方法在一些数学、code场景，对模型性能存在负向增强的效果。而在这些场景，token-level的对齐方法如PPO等则更为适用。
 

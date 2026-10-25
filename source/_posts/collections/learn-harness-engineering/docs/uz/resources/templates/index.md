@@ -32,14 +32,14 @@ Qolgan fayllarni loyihangiz kattalashgani sari qoʻshib borishingiz mumkin.
 
 Asosiy (root) yoʻriqnoma fayli. Bu agent sessiya boshlaganda eng birinchi oʻqiydigan narsadir. U ishlash qoidalarini belgilaydi: kod yozishdan oldin nima qilish kerak, qanday ishlash kerak va ishni qanday tugatish kerak.
 
-**Qanday foydalanish kerak:**
+<strong>Qanday foydalanish kerak:</strong>
 
 - Loyihangizning root katalogiga koʻchiring
 - Ishga tushirish (startup) qadamlarini oʻz loyihangizdagi haqiqiy yoʻllar va buyruqlar bilan almashtiring
 - Ish qoidalarini jamoangizning konvensiyalariga moslab tahrirlang
 - “Tugatilganlik taʼrifi” (definition of done) boʻlimini saqlab qoling — bu eng muhim qismdir
 
-**U agent uchun nima qiladi:**
+<strong>U agent uchun nima qiladi:</strong>
 
 - Ish boshlashdan oldin jarayon va funksiya holatini oʻqishini aytadi
 - Bir vaqtning oʻzida faqat bitta funksiya ustida ishlashga majbur qiladi
@@ -52,7 +52,7 @@ Codex yoki boshqa agentlar uchun `AGENTS.md` ishlating. Agar Claude Code bilan i
 
 Ishga tushirish skripti. Bogʻliqliklarni (dependencies) oʻrnatish, tekshirish va ishga tushirish buyrugʻini koʻrsatish — barchasi bitta urinishda.
 
-**Qanday foydalanish kerak:**
+<strong>Qanday foydalanish kerak:</strong>
 
 - Loyihangizning root katalogiga koʻchiring
 - Tepadagi ushbu uchta oʻzgaruvchini tahrirlang:
@@ -61,7 +61,7 @@ Ishga tushirish skripti. Bogʻliqliklarni (dependencies) oʻrnatish, tekshirish 
   - `START_CMD` — dev serverni ishga tushirish buyrugʻingiz (masalan, `npm run dev`)
 - Faylni bajariladigan qiling: `chmod +x init.sh`
 
-**U nima qiladi:**
+<strong>U nima qiladi:</strong>
 
 1. Joriy katalogni koʻrsatadi (agent toʻgʻri joyda ishlayotganini tasdiqlashi uchun)
 2. Bogʻliqliklarni oʻrnatadi
@@ -74,21 +74,21 @@ Agar tekshiruv yiqilsa, agent boshqa hech narsa qilishdan oldin toʻxtab, bazavi
 
 Jarayon jurnali. Har bir sessiya ushbu faylga yozib qoldiradi va har bir yangi sessiya eng avval aynan shuni oʻqiydi.
 
-**Qanday foydalanish kerak:**
+<strong>Qanday foydalanish kerak:</strong>
 
 - Loyihangizning root katalogiga koʻchiring
 - “Joriy Tasdiqlangan Holat” (Current Verified State) boʻlimini loyihangiz haqidagi maʼlumotlar bilan toʻldiring
 - Har bir sessiyadan soʻng, sessiya yozuvini (session record) yangilang
 
-**Har bir maydon (field) nima anglatadi:**
+<strong>Har bir maydon (field) nima anglatadi:</strong>
 
-- **Current Verified State** — loyiha qayerda ekanligining yagona haqiqat manbai (single source of truth)
+- <strong>Current Verified State</strong> — loyiha qayerda ekanligining yagona haqiqat manbai (single source of truth)
   - `Repository root directory` — loyiha qayerda joylashgani
   - `Standard startup path` — loyihani ishga tushirish buyrugʻi
   - `Standard verification path` — testlarni ishga tushirish buyrugʻi
   - `Highest priority unfinished feature` — keyingi sessiya nima ustida ishlashi kerakligi
   - `Current blocker` — ishlarga toʻsqinlik qilayotgan narsalar
-- **Session Record** — har bir sessiya uchun bitta yozuv
+- <strong>Session Record</strong> — har bir sessiya uchun bitta yozuv
   - `Goal` — nima qilishni rejalashtirgan edingiz
   - `Completed` — aslida nimalar qilindi
   - `Verification run` — qanday testlar ishga tushirildi
@@ -101,7 +101,7 @@ Jarayon jurnali. Har bir sessiya ushbu faylga yozib qoldiradi va har bir yangi s
 
 Funksiyalar (Feature) trekkeri. Agent amalga oshirishi kerak boʻlgan har bir funksiyaning mashina oʻqiy oladigan (machine-readable) roʻyxati, uning holati, tekshirish qadamlari va dalillari bilan.
 
-**Qanday foydalanish kerak:**
+<strong>Qanday foydalanish kerak:</strong>
 
 - Loyihangizning root katalogiga koʻchiring
 - Namunaviy funksiyalarni (features) oʻzingizniki bilan almashtiring
@@ -116,7 +116,7 @@ Funksiyalar (Feature) trekkeri. Agent amalga oshirishi kerak boʻlgan har bir fu
   - `evidence` — tekshiruvdan oʻtganining qayd etilgan dalili (agent tomonidan toʻldiriladi)
   - `notes` — boshqa ixtiyoriy kontekstlar
 
-**Holat (Status) qoidalari:**
+<strong>Holat (Status) qoidalari:</strong>
 
 - `not_started` — hali tegib koʻrilmagan
 - `in_progress` — ayni vaqtda ustida ishlanayotgan bitta funksiya (bir vaqtda faqat bitta)
@@ -129,18 +129,18 @@ Agent har qanday vaqtda `in_progress` holatida faqat bitta funksiyaga ega boʻli
 
 Sessiyalar oʻrtasida qisqacha topshirish (handoff) eslatmasi. Bir sessiya tugagach, keyingisi tezroq oʻrganib ishlashi uchun foydalaniladi.
 
-**Qanday foydalanish kerak:**
+<strong>Qanday foydalanish kerak:</strong>
 
 - Loyihangizning root katalogiga koʻchiring
 - Uni har bir sessiya oxirida toʻldiring (yoki agentga toʻldirtiring)
 
-**Har bir boʻlim nimani qamrab oladi:**
+<strong>Har bir boʻlim nimani qamrab oladi:</strong>
 
-- **Currently verified** — nimalar ishlayotgani tasdiqlangan va qanday tekshiruvlar ishga tushirilgan
-- **Changes this session** — qanday kod yoki infratuzilma oʻzgardi
-- **Still broken or unverified** — maʼlum boʻlgan muammolar va xavfli joylar
-- **Next best action** — keyingi sessiya nima qilishi kerak va nimalarga tegmasligi kerak
-- **Commands** — ishga tushirish, tekshirish va tezkor qidiruv uchun debug buyruqlari
+- <strong>Currently verified</strong> — nimalar ishlayotgani tasdiqlangan va qanday tekshiruvlar ishga tushirilgan
+- <strong>Changes this session</strong> — qanday kod yoki infratuzilma oʻzgardi
+- <strong>Still broken or unverified</strong> — maʼlum boʻlgan muammolar va xavfli joylar
+- <strong>Next best action</strong> — keyingi sessiya nima qilishi kerak va nimalarga tegmasligi kerak
+- <strong>Commands</strong> — ishga tushirish, tekshirish va tezkor qidiruv uchun debug buyruqlari
 
 Kichik sessiyalar uchun bu fayl ixtiyoriy. Ammo sessiyalar uzoq davom etganda yoki loyihada bir nechta faol joylar boʻlganda muhim hisoblanadi.
 
@@ -148,13 +148,13 @@ Kichik sessiyalar uchun bu fayl ixtiyoriy. Ammo sessiyalar uzoq davom etganda yo
 
 Har bir sessiyani yakunlashdan oldin tekshiriladigan nazorat roʻyxati (checklist). Repo keyingi sessiya toza holatda boshlanishi uchun yaxshi holatda qolishini taʼminlaydi.
 
-**Qanday foydalanish kerak:**
+<strong>Qanday foydalanish kerak:</strong>
 
 - Loyihangizning root katalogiga koʻchiring
 - Sessiyani yopishdan oldin buni birma-bir oʻqib tekshiring
 - Agent ham bularni sessiyani yakunlash rutinasi sifatida tekshirishi kerak
 
-**U nimani tekshiradi:**
+<strong>U nimani tekshiradi:</strong>
 
 - Standart startup hali ham ishlayapti
 - Standart tekshiruv (verification) hali ham ishlayapti
@@ -167,28 +167,28 @@ Har bir sessiyani yakunlashdan oldin tekshiriladigan nazorat roʻyxati (checklis
 
 Agent natijalari sifatini tekshirish (review) uchun baholash qogʻozi (scorecard). Buni sessiyadan soʻng yoki loyiha bosqichlarida ish sifati talabga javob berish-bermasligini baholash uchun foydalaning.
 
-**Qanday foydalanish kerak:**
+<strong>Qanday foydalanish kerak:</strong>
 
 - Loyihangizning root katalogiga koʻchiring
 - Sessiyadan soʻng (yoki bir nechta sessiyadan keyin) agentning ishini 6 ta oʻlcham boʻyicha baholang
 - Har bir oʻlchamga 0-2 gacha ball qoʻyiladi
 
-**Olti oʻlcham (dimensions):**
+<strong>Olti oʻlcham (dimensions):</strong>
 
-1. **Toʻgʻrilik (Correctness)** — qilingan ish maqsad qilingan xatti-harakatlarga (behavior) mos keladimi?
-2. **Tekshiruv (Verification)** — talab qilingan tekshiruvlar haqiqatda bajarilgan va dalili bormi?
-3. **Skoup intizomi (Scope discipline)** — agent tanlangan funksiya chegarasidan chiqmadimi?
-4. **Ishonchlilik (Reliability)** — natija restart yoki qayta ishga tushirilganda (re-run) ham ishlaydimi?
-5. **Davomiylilik qulayligi (Maintainability)** — kod va hujjatlar keyingi sessiya uchun yetarlicha tushunarlimi?
-6. **Topshirishga tayyorlik (Handoff readiness)** — yangi sessiya faqat repodagi artefaktlardan foydalanib davom eta oladimi?
+1. <strong>Toʻgʻrilik (Correctness)</strong> — qilingan ish maqsad qilingan xatti-harakatlarga (behavior) mos keladimi?
+2. <strong>Tekshiruv (Verification)</strong> — talab qilingan tekshiruvlar haqiqatda bajarilgan va dalili bormi?
+3. <strong>Skoup intizomi (Scope discipline)</strong> — agent tanlangan funksiya chegarasidan chiqmadimi?
+4. <strong>Ishonchlilik (Reliability)</strong> — natija restart yoki qayta ishga tushirilganda (re-run) ham ishlaydimi?
+5. <strong>Davomiylilik qulayligi (Maintainability)</strong> — kod va hujjatlar keyingi sessiya uchun yetarlicha tushunarlimi?
+6. <strong>Topshirishga tayyorlik (Handoff readiness)</strong> — yangi sessiya faqat repodagi artefaktlardan foydalanib davom eta oladimi?
 
-**Xulosa variantlari:**
+<strong>Xulosa variantlari:</strong>
 
 - Qabul qilish (Accept) — talabga javob beradi
 - Qayta koʻrish (Revise) — qabul qilishdan oldin tuzatishlar kiritish kerak
 - Toʻxtatish (Block) — avvalo asosiy muammolarni hal qilish kerak
 
-**Muhim: baholovchi sozlashga muhtoj.** Avvalboshdan, agentlar oʻz-oʻzini baholashda noʻnoq (poor self-judges) — ular muammolarni koʻradi va baribir oʻzlarini-oʻzlari maqullab qabul qilishga koʻndirishadi. Siz buning ustida takror va takror ishlashingiz kerak:
+<strong>Muhim: baholovchi sozlashga muhtoj.</strong> Avvalboshdan, agentlar oʻz-oʻzini baholashda noʻnoq (poor self-judges) — ular muammolarni koʻradi va baribir oʻzlarini-oʻzlari maqullab qabul qilishga koʻndirishadi. Siz buning ustida takror va takror ishlashingiz kerak:
 
 1. Baholovchini (evaluator) tugatilgan bitta sprint ustida ishga tushiring.
 2. Uning ballarini oʻzingizning shaxsiy (insoniy) bahoingiz bilan solishtiring.
@@ -202,33 +202,33 @@ Agent natijalari sifatini tekshirish (review) uchun baholash qogʻozi (scorecard
 
 Sizning loyihangizdagi har bir mahsulot domeni va arxitektura qatlamini baholaydigan sifat koʻrinishi (quality snapshot). Faqatgina alohida sessiya natijasini emas, balki vaqt oʻtishi bilan butun kod bazasi salomatligini kuzatib boradi.
 
-**Qanday foydalanish kerak:**
+<strong>Qanday foydalanish kerak:</strong>
 
 - Loyihangizning root katalogiga koʻchiring
 - Sessiya boshlashdan oldin: kod bazasining qaysi joyi eng zaif ekanligini tushunish uchun uni oʻqib chiqing
 - Sessiya oxirida: nima oʻzgarganiga qarab baholarni yangilang
 - Vaqt oʻtishi bilan: harnessʼdagi qanday oʻzgarishlar kod salomatligini haqiqatda yaxshilaganini koʻrish uchun snapshotʼlarni solishtiring
 
-**U nimani baholaydi:**
+<strong>U nimani baholaydi:</strong>
 
-- **Mahsulot domenlari (Product domains)** (masalan, hujjatni import qilish, Q&A oqimi, indekslash): har bir domen tekshiruv (verification) holati, agent tushuna olishi, test barqarorligi va asosiy boʻshliqlar (gaps) boʻyicha baho (A-D) oladi
-- **Arxitektura qatlamlari (Architectural layers)** (masalan, main process, preload, renderer, xizmatlar): har bir qatlam chegara (boundary) qoidalariga rioya etishi va agent tushuna olishi boʻyicha baho oladi
+- <strong>Mahsulot domenlari (Product domains)</strong> (masalan, hujjatni import qilish, Q&A oqimi, indekslash): har bir domen tekshiruv (verification) holati, agent tushuna olishi, test barqarorligi va asosiy boʻshliqlar (gaps) boʻyicha baho (A-D) oladi
+- <strong>Arxitektura qatlamlari (Architectural layers)</strong> (masalan, main process, preload, renderer, xizmatlar): har bir qatlam chegara (boundary) qoidalariga rioya etishi va agent tushuna olishi boʻyicha baho oladi
 
-**Nima uchun bu muhim:**
+<strong>Nima uchun bu muhim:</strong>
 
 Baholovchi rubrika (evaluator rubric) alohida agent natijalarini baholaydi. Sifat hujjati (quality document) esa butun kod bazasining oʻzini baholaydi. Ular turli xil savollarga javob beradi:
 
 - Baholovchi rubrika: “Agent shu sessiyada yaxshi ish qildimi?”
 - Sifat hujjati: “Loyiha vaqt oʻtishi bilan kuchayib boryaptimi yoki zaiflashyaptimi?”
 
-**Qachon yangilash kerak:**
+<strong>Qachon yangilash kerak:</strong>
 
 - Har bir muhim sessiyadan keyin
 - Benchmarklarni taqqoslashdan oldin
 - Tozalash (cleanup) yoki soddalashtirish jarayonidan keyin
 - Loyihaga yangi agent yoki modelni moslashtirayotganda (onboarding)
 
-**Harnessni soddalashtirishga aloqadorligi:**
+<strong>Harnessni soddalashtirishga aloqadorligi:</strong>
 
 Sifat hujjati shuningdek harnessni soddalashtirishni qoʻllab-quvvatlaydi. Har bir harness komponenti model nimalarni mustaqil bajara olmasligi haqidagi taxminlarga asoslanadi. Modellar takomillashgani sari bu taxminlar eskiradi. Biror komponentga ehtiyoj qolgan-qolmaganini tekshirish uchun:
 

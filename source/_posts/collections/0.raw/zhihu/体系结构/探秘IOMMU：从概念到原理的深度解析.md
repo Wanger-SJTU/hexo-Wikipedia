@@ -39,21 +39,21 @@ Solaris 在 SPARC 平台上对 IOMMU 的支持，便是很好的例证。早期 
 
 后来走有了IOMMU，这个问题就迎刃而解了。在设备做DMA访问内存的时候，系统返回给设备驱动的不再是物理地址，而是虚拟地址，这个地址一般叫IOVA，设备访问内存时，由IOMMU来将这个虚拟地址转换为物理地址。但是当iommu bypass的时候，设备也可以直接使用物理地址来进行dma。
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_ce75cc0857e3.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_ce75cc0857e3.jpg)
 
 看到这里大家会看到，这怎么这么像MMU呢？是的，两者都是可以把虚拟地址翻译为物理地址，MMU是将CPU发出的虚拟地址通过页表翻译为物理地址，IOMMU是将设备发出的虚拟地址IOVA通过页表翻译为物理地址。
 
 上面就是IOMMU的一个基本功能:DMA Remapping。IOMMU还有其他的一些功能，例如Interrupt Remapping等。
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_13e44b392a5c.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_13e44b392a5c.jpg)
 
 ### 三、IOMMU 的底层原理
 
 IOMMU的核心思想是将物理内存划分为多个区域，每个区域都有一个唯一的ID。这些区域可以是连续的，也可以是不连续的。当CPU需要访问某个内存区域时，IOMMU会将该请求转换为一个虚拟地址，然后将这个虚拟地址与对应的物理地址进行映射。这样，IOMMU是DMA直接内存访问，即设备与内存直接通信，而无需经过CPU。
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_da6efb4af54f.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_da6efb4af54f.jpg)
 
-**IOMMU的主要组成部分包括：**
+<strong>IOMMU的主要组成部分包括：</strong>
 
 - MMU（Memory Management Unit）：负责将物理内存映射到虚拟地址空间。MMU通常包含一个硬件缓存，用于存储虚拟地址到物理地址的映射关系。此外，MMU还可以实现一些高级功能，如内存保护和地址转换。
 - IOMMU软件模块：负责管理IOMMU的设置和配置。这通常包括创建和管理内存区域，以及处理来自操作系统的内存访问请求。
@@ -104,7 +104,7 @@ IOMMU 可以将非连续的物理内存映射为设备看起来连续的内存�
 
 由于intel 的iommu 实现得比arm smmv3复杂得多，里面概念也多，所以针对intel 实现的iommu 案例的初始化部分进行一些讲解，本文针对4.19内核。
 
-**Intel IOMMU的初始化函数在哪调用的呢？**
+<strong>Intel IOMMU的初始化函数在哪调用的呢？</strong>
 
 它的初始化函数是：
 
@@ -117,7 +117,7 @@ IOMMU 可以将非连续的物理内存映射为设备看起来连续的内存�
 	/* VT-d is required for a TXT/tboot launch, so enforce that */
 	force_on = tboot_force_iommu();`
 
-**那这个函数是在常见的模块初始化里面调用的么？**
+<strong>那这个函数是在常见的模块初始化里面调用的么？</strong>
 
 事实上，它的调用链是这样的：
 
@@ -142,7 +142,7 @@ IOMMU 可以将非连续的物理内存映射为设备看起来连续的内存�
 
 #ifdef CONFIG_X86
 	if (!ret)
-		**x86_init.iommu.iommu_init = intel_iommu_init;//caq:pci_iommu_init 会统一执行iommu_init**
+		<strong>x86_init.iommu.iommu_init = intel_iommu_init;//caq:pci_iommu_init 会统一执行iommu_init</strong>
 #endif
 
 	if (dmar_tbl) {
@@ -154,7 +154,7 @@ IOMMU 可以将非连续的物理内存映射为设备看起来连续的内存�
 	return ret ? ret : 1;
 }`
 
-**在 detect_intel_iommu 函数中，有一个关键行：**
+<strong>在 detect_intel_iommu 函数中，有一个关键行：</strong>
 
 x86_init.iommu.iommu_init = intel_iommu_init;//caq:pci_iommu_init 会统一执行iommu_init**然后在 pci_iommu_init 会统一执行 iommu_init 。如下：
 
@@ -162,7 +162,7 @@ x86_init.iommu.iommu_init = intel_iommu_init;//caq:pci_iommu_init 会统一执�
 {
 	struct iommu_table_entry *p;
 
-	**x86_init.iommu.iommu_init();//caq:执行前面 detect_intel_iommu 里面对 x86_init.iommu 赋值的指针。**
+	<strong>x86_init.iommu.iommu_init();//caq:执行前面 detect_intel_iommu 里面对 x86_init.iommu 赋值的指针。</strong>
 
 	for (p = __iommu_table; p flags & IOMMU_DETECTED) && p->late_init)
 			p->late_init();
@@ -235,7 +235,7 @@ dmar_find_matched_drhd_unit(struct pci_dev *dev)//caq:pci设备找归属的drhd_
 				    struct acpi_dmar_hardware_unit,
 				    header);
 
-		if (dmaru->**include_all **&&
+		if (dmaru-><strong>include_all</strong>&&
 		    drhd->segment == pci_domain_nr(dev->bus))//caq:include_all是segment内的，不是整个系统的
 			goto out;
 
@@ -431,7 +431,7 @@ ffff8d1240072fc0
   segment = 0
   devices_cnt = 8
   include_all = 0 '\000'
-  **ignored = 1** '\001'//caq:虽然 devices_cnt  不为0，但是依然被ignored。
+  <strong>ignored = 1</strong> '\001'//caq:虽然 devices_cnt  不为0，但是依然被ignored。
 ffff8d1240078360
   segment = 0
   devices_cnt = 0
@@ -443,4 +443,4 @@ angus@jm212:/sys/class/iommu$ pwd
 angus@jm212:/sys/class/iommu$ ls
 dmar4  dmar5  dmar7`
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_5f5aeb4e2a42.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_5f5aeb4e2a42.jpg)

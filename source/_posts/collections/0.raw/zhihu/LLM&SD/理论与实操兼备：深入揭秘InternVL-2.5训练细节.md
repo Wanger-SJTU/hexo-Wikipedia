@@ -17,11 +17,11 @@ source_url: https://zhuanlan.zhihu.com/p/14527170215
 
 ### 1 前言
 
-最近书生（internVL）2.5发布了一系列模型，包含78B、38B、8B等多种不同size的多模态模型，恰逢工作单位在清华大学开设了一个workshop，有幸听到通讯作者代季峰教授做了一个关于**多模态导向与设计训练**的分享，收益匪浅。由于之前做过关于internVL-2的微调，在OCR相关能力上表现非常不错。于是便萌生了写一篇对InternVL-2.5详细剖许的文章（如果后续有时间也会补一篇代码层面的剖析）。
+最近书生（internVL）2.5发布了一系列模型，包含78B、38B、8B等多种不同size的多模态模型，恰逢工作单位在清华大学开设了一个workshop，有幸听到通讯作者代季峰教授做了一个关于<strong>多模态导向与设计训练</strong>的分享，收益匪浅。由于之前做过关于internVL-2的微调，在OCR相关能力上表现非常不错。于是便萌生了写一篇对InternVL-2.5详细剖许的文章（如果后续有时间也会补一篇代码层面的剖析）。
 
-Technical Report：**Expanding Performance Boundaries of Open-Source Multimodal Models with Model, Data, and Test-Time Scaling**
+Technical Report：<strong>Expanding Performance Boundaries of Open-Source Multimodal Models with Model, Data, and Test-Time Scaling</strong>
 
-[![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_cbfe7191992e.jpg)Expanding Performance Boundaries of Open-Source Multimodal Models with Model, Data, and Test-Time Scalingarxiv.org/abs/2412.05271](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2412.05271)
+[![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_cbfe7191992e.jpg)Expanding Performance Boundaries of Open-Source Multimodal Models with Model, Data, and Test-Time Scalingarxiv.org/abs/2412.05271](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2412.05271)
 
 Huggingface模型权重下载页：
 
@@ -39,34 +39,34 @@ Github:
 
 ### 2 Model Architecture
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_754ffd4f603c.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_754ffd4f603c.jpg)
 
-InternVL-2.5模型框架在模型框架上，InternVL-2.5仍然遵循：**ViT-MLP-LLM**这种MLLM的经典桥接式框架。但是组件做了细微的更改：
+InternVL-2.5模型框架在模型框架上，InternVL-2.5仍然遵循：<strong>ViT-MLP-LLM</strong>这种MLLM的经典桥接式框架。但是组件做了细微的更改：
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_451041a2d27e.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_451041a2d27e.jpg)
 
 InternVL系列各模型组件概览
-#### **2.1 视觉编码器ViT**
+#### <strong>2.1 视觉编码器ViT</strong>
 
-InternVL-2.5系列包含了两种参数大小的ViT：**InternViT-6B** 和** InternViT-300M**，这两种大小的ViT适用于不同size的MLLM，小于8B的MLLM（1B、2B、4B、8B）**InternViT-300M**，而大于8B的MLLM（26B、38B、78B、pro）统一使用**InternViT-6B**。
+InternVL-2.5系列包含了两种参数大小的ViT：<strong>InternViT-6B</strong> 和<strong>InternViT-300M</strong>，这两种大小的ViT适用于不同size的MLLM，小于8B的MLLM（1B、2B、4B、8B）<strong>InternViT-300M</strong>，而大于8B的MLLM（26B、38B、78B、pro）统一使用<strong>InternViT-6B</strong>。
 
-**InternViT-6B**: 架构基于vanilla ViT，对QK-Norm以及RMSNorm进行了少量改动。ViT原本有48层，由于最后3层过于专注于clip的目标损失函数（contrastive loss），这最后三层优先考虑全局对齐导致部分细节信息丢失，所以最后三层被移除后用作MLLM的视觉编码器。最终，InternViT-6B-448px-V2.5包含45个layer，参数量为5.5B。
+<strong>InternViT-6B</strong>: 架构基于vanilla ViT，对QK-Norm以及RMSNorm进行了少量改动。ViT原本有48层，由于最后3层过于专注于clip的目标损失函数（contrastive loss），这最后三层优先考虑全局对齐导致部分细节信息丢失，所以最后三层被移除后用作MLLM的视觉编码器。最终，InternViT-6B-448px-V2.5包含45个layer，参数量为5.5B。
 
-**InternViT-300M**: 由InternViT-6B蒸馏而来，知识蒸馏训练细节详见原文在此不过度展开。
+<strong>InternViT-300M</strong>: 由InternViT-6B蒸馏而来，知识蒸馏训练细节详见原文在此不过度展开。
 
-#### **2.2 大语言模型LLM**
+#### <strong>2.2 大语言模型LLM</strong>
 
 相较于InternVL-2，InternVL-2.5采用了更多样且先进的LLM，包含：InternLM 2.5系列和Qwen 2.5系列等。
 
 ### 3 训练策略
 
-#### 3.1 **Dynamic High-Resolution for Multimodal Data**
+#### 3.1 <strong>Dynamic High-Resolution for Multimodal Data</strong>
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_4771a5beb4a0.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_4771a5beb4a0.jpg)
 
 动态分辨率方案基于上文，由于ViT支持的分辨率是448\times448，即所有的图像在进入ViT之前都需要去resize成448\times448的放图。若是一张输入图像不是方图或分辨率过高（例如报纸、财报），这种resize会导致图片中的严重变形失真或是信息模糊，从而影响MLLM的训练。
 
-为了解决这类难题，U-reader提出了一种动态分辨率切片方案，通俗一点来说就是将原图切成固定分辩率的子图，i.e. 448 \times 448，然后将若干子图和resize过后的原图一起送入ViT转化成视觉特征。通常，我们称被切分后的子图为**tile**，而被resized过后的原图为**thumbnail**。本质上，动态分辨率方案增加了视觉信息的token数。分享一下代季峰教授在workshop时的一个观点：
+为了解决这类难题，U-reader提出了一种动态分辨率切片方案，通俗一点来说就是将原图切成固定分辩率的子图，i.e. 448 \times 448，然后将若干子图和resize过后的原图一起送入ViT转化成视觉特征。通常，我们称被切分后的子图为<strong>tile</strong>，而被resized过后的原图为<strong>thumbnail</strong>。本质上，动态分辨率方案增加了视觉信息的token数。分享一下代季峰教授在workshop时的一个观点：
 
 **高分辨率只是一个工程化的问题，不本质。通过切子图实现高分辨率对模型训练的上限不会有太大影响。关于分辨率的争论才CV发展的历史中比比皆是，不看好分辨率相关的突破会是下一个通往AGI的breakthrough。动态分辨率最核心的点就是切图的准则，即给定一张任意分辨率的图片并且子图tile的分辨率已经固定，该将图片resize到什么分辨率从而可以切成固定的tiles？
 
@@ -154,24 +154,24 @@ def dynamic_preprocess(image, min_num=1, max_num=6, image_size=448, use_thumbnai
 
 #### 3.2 Single Model Training Pipeline
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_4fc49c72afa6.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_4fc49c72afa6.jpg)
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_75e13c059c79.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_75e13c059c79.jpg)
 
-训练细节InternVL-2.5的训练分为三个阶段，stage 1、stage 1.5（optional）和stage 2。stage 1和stage 1.5可以理解为预训练阶段**，而stage 2可以理解为**指令微调阶段**。
+训练细节InternVL-2.5的训练分为三个阶段，stage 1、stage 1.5（optional）和stage 2。stage 1和stage 1.5可以理解为预训练阶段<strong>，而stage 2可以理解为</strong>指令微调阶段**。
 
-- **Stage 1 - MLP Warmup（预训练）：**
+- <strong>Stage 1 - MLP Warmup（预训练）：</strong>
 
 - MLP (Multilayer perceptron) 是modality interface（模态融合层）的一种。通常，modality interface将经过encoder的视听特征visual features (audio features)与linguistic features进行融合。一般是在token层面，即可以理解为将这些非语言学特征经过modality interface转化成与linguistic token相等价的token即可输入进LLM实现多模态理解。
 - 这个阶段旨在先对MLP进行专项训练，使得模态融合到达一个可以接受的地步。该阶段仅MLP的参数被训练，其他component都被冻结。
 - 由训练细节观察可知，stage 1的学习率相对于stage 1.5与stage 2都要高，目的是为了加速收敛。除了26B和8B的模型包含stage 1.5，其余size的模型的预训练仅包含stage 1。通常在token-level，预训练的数据要多于质量微调数据。
 
-- **Stage 1.5 - ViT Incremental Learning （预训练可选）**：
+- <strong>Stage 1.5 - ViT Incremental Learning （预训练可选）</strong>：
 
 - stage 1.5选择训练ViT与MLP，这个阶段主要训练了web-scale datasets中缺少的领域数据，例如：多语言OCR数据、数学图表数据。这一阶段的目的是为了提高MLP + ViT这个组合处理特定领域视觉信息的能力。据我猜测，只所以没有普及这个stage 1.5是其提升的效果并不稳定（并不是对每个size的模型都有明显提升）。并且，如果一个size的模型没有进行stage 1.5，那么并不代表其缺少一些预训练领域数据（前文提到的多语言OCR数据等），只不过没有从stage 1中拆分出来。
-- 由于是接着一阶段的模型续训，于是必须要考虑到**灾难性遗忘的问题**（catastrophic forgetting），这也是持续学习（continue learning）领域中最关键的核心问题，在不更改模型架构的情况下，最常见的做法是data replay，即将上一阶段训练的数据采样一定的比例，与这一阶段新加入的数据进行混训，通常采用一个更小的学习率。
+- 由于是接着一阶段的模型续训，于是必须要考虑到<strong>灾难性遗忘的问题</strong>（catastrophic forgetting），这也是持续学习（continue learning）领域中最关键的核心问题，在不更改模型架构的情况下，最常见的做法是data replay，即将上一阶段训练的数据采样一定的比例，与这一阶段新加入的数据进行混训，通常采用一个更小的学习率。
 
-- **Stage 2 - Full Model Instruction Tuning（指令微调）：**
+- <strong>Stage 2 - Full Model Instruction Tuning（指令微调）：</strong>
 
 - 在该阶段，所有component参数都被放开 - LLM、ViT、MLP。在这个阶段特别强调数据的高质量，稍有一些低质量数据都会对该阶段的性能产生负面影响。
 - 采用了简单的学习率设置方式，所有component的学习率保持一致。
@@ -179,7 +179,7 @@ def dynamic_preprocess(image, min_num=1, max_num=6, image_size=448, use_thumbnai
 
 #### 3.3 Progressive Scaling Strategy
 
-**现象：当一个LLM与ViT一同训练时，ViT encode的视觉特征也很容易被另外的LLM所理解。**
+<strong>现象：当一个LLM与ViT一同训练时，ViT encode的视觉特征也很容易被另外的LLM所理解。</strong>
 
 基于这个现象，InternVL团队采用不同大小的LLM去与ViT对齐训练：
 
@@ -187,7 +187,7 @@ def dynamic_preprocess(image, min_num=1, max_num=6, image_size=448, use_thumbnai
 - 再将小参数量的LLM替换成大参数量的LLM。
 结果：与千问72b训了1.4 trillion tokens相比，InternVL2.5-78B只训了120 billions。大概用了不到其十分之一的计算资源，即可媲美千问72b的性能。
 
-**同时代教授也分享到，因为书生是一个偏公益研究的机构，所以没有那么多训练资源。**
+<strong>同时代教授也分享到，因为书生是一个偏公益研究的机构，所以没有那么多训练资源。</strong>
 
 可能这就是激发出这样高效训练策略的核心原因吧。
 
@@ -195,7 +195,7 @@ def dynamic_preprocess(image, min_num=1, max_num=6, image_size=448, use_thumbnai
 
 文章介绍了几个可以提高benchmark得分和用户体验的小tricks。
 
-- **数据增强 - Random JPEG Compression**：随机将图片进行压缩。quality level在75%到100%之间。
+- <strong>数据增强 - Random JPEG Compression</strong>：随机将图片进行压缩。quality level在75%到100%之间。
 `def simulate_jpeg_degradation(quality):
     def jpeg_degrade(img):
         with io.BytesIO() as output:
@@ -210,9 +210,9 @@ qualities = list(range(75, 101))
 jpeg_degrade_functions = {quality: simulate_jpeg_degradation(quality) for quality in qualities}
 `
 
-2. **Loss Reweighting**
+2. <strong>Loss Reweighting</strong>
 
-**背景：**动态拼接是一种常用的提升训练效率的方法，在小于max token per sequence的情况下，将多条sample的tokens拼接到一条sequence中进行训练。于是，计算loss可以选择两种策略：token average和sample average
+<strong>背景：</strong>动态拼接是一种常用的提升训练效率的方法，在小于max token per sequence的情况下，将多条sample的tokens拼接到一条sequence中进行训练。于是，计算loss可以选择两种策略：token average和sample average
 
 文中先阐述了一下关于loss，token average和sample average的区别。
 
@@ -224,16 +224,16 @@ $$\mathcal{L}=\frac{w_i}{\sum_j w_j} \cdot \mathcal{L}_i, \quad w_i= \begin{case
 - w_i 为当前token的loss weight.
 假设将两个样本拼接成一个序列，表示为 [1, 1, 1, 2, 2]（其中数字代表数据索引，用于区分样本），即第一个样本包含3个token，第二个样本包含2个token。
 
-**Token averaging**：将拼接后的序列视为一个新的样本，该样本共有5个token。在计算最终的损失时，每个token对损失的权重相同。因此，未拼接前的样本对损失的影响不同，包含token越多的样本对损失的影响越大。
+<strong>Token averaging</strong>：将拼接后的序列视为一个新的样本，该样本共有5个token。在计算最终的损失时，每个token对损失的权重相同。因此，未拼接前的样本对损失的影响不同，包含token越多的样本对损失的影响越大。
 
-**Sample averaging**：每个token对loss的权重由其原始sample的数量决定。这样，每个样本对最终损失的贡献相同，无论其包含的token数量多少，从而确保每个样本在模型训练中的影响均等。
+<strong>Sample averaging</strong>：每个token对loss的权重由其原始sample的数量决定。这样，每个样本对最终损失的贡献相同，无论其包含的token数量多少，从而确保每个样本在模型训练中的影响均等。
 
-使用**token averaging**时，每个token对最终损失的贡献相等，这可能导致梯度偏向包含更多tokens的回答，从而降低基准性能。相比之下，**sample averaging**确保每个样本对损失的贡献相等，但可能使模型偏向较短的回答，进而影响用户体验。
+使用<strong>token averaging</strong>时，每个token对最终损失的贡献相等，这可能导致梯度偏向包含更多tokens的回答，从而降低基准性能。相比之下，<strong>sample averaging</strong>确保每个样本对损失的贡献相等，但可能使模型偏向较短的回答，进而影响用户体验。
 
 为了平衡回答长度（避免出现过长或者过短的回答），InternVL对于token的权重进行了一个中和（reweighting）。
 
 $$- square averaging：将每个token i 的权重设置为 w_i= \frac{1}{x^{0.5}} 。$$
-**可能因为我在国外呆了5年的中文表述不太好，所以将相关代码贴出来以供理解 (详细代码可看github)：**
+<strong>可能因为我在国外呆了5年的中文表述不太好，所以将相关代码贴出来以供理解 (详细代码可看github)：</strong>
 
 `# internvl_chat/internvl/train/internvl_chat_finetune.py
 def len2weight(x, loss_reduction):
@@ -336,17 +336,17 @@ if labels is not None and loss_weight is not None:
 
 #### 4.1 Dataset Configuration
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_a95effa12365.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_a95effa12365.jpg)
 
 不同数据集的configuration
 
 - Data Augmentation**：前文提到的JPEG compression。
-- **Max Tile Number**：动态分辨率方案切分子图（tiles）的最大数量。
-- **Repeat Factor**：单一dataset的迭代轮数。**对于一个特定的dataset，internVL的训练过程之中最多将其迭代4轮**。
+- <strong>Max Tile Number</strong>：动态分辨率方案切分子图（tiles）的最大数量。
+- <strong>Repeat Factor</strong>：单一dataset的迭代轮数。<strong>对于一个特定的dataset，internVL的训练过程之中最多将其迭代4轮</strong>。
 
 #### 4.2 Multimodal Data Packing
 
-数据拼接方案，通过将多个样本拼接成长序列来减少填充，从而最大化模型输入序列容量的利用率。一般而言，我们通常考虑max token per sequence即可，因为视觉信息通过ViT+MLP已经转化成了visual token。但是，internVL的训练代码对其进行了更细的限定：同时限定**语言学信息：max linguistic token per sequence**以及**视觉信息：max tiles per sequence**。在implementation层面，是先判断是否满足**max tiles per sequence**再判断是否满足**max linguistic token per sequence**。
+数据拼接方案，通过将多个样本拼接成长序列来减少填充，从而最大化模型输入序列容量的利用率。一般而言，我们通常考虑max token per sequence即可，因为视觉信息通过ViT+MLP已经转化成了visual token。但是，internVL的训练代码对其进行了更细的限定：同时限定<strong>语言学信息：max linguistic token per sequence</strong>以及<strong>视觉信息：max tiles per sequence</strong>。在implementation层面，是先判断是否满足<strong>max tiles per sequence</strong>再判断是否满足<strong>max linguistic token per sequence</strong>。
 
 `# internvl_chat/internvl/train/dataset_packed.py ->PackedDataset.find_buffer
 def find_buffer(self, buffer_list, new_sample):

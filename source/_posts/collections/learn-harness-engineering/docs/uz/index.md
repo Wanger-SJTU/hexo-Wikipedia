@@ -43,7 +43,7 @@ Oʻqish yoʻlingizni tanlang. Kurs uch qismdan iborat: nazariy maʼruzalar, amal
 
 ## Harnessʼning asosiy mexanizmi
 
-Harness modelni “aqlliroq qilmaydi”; aksincha, model uchun yopiq sikldagi **ishchi tizim** oʻrnatadi. Uning ishlash jarayonini quyidagi sodda diagramma orqali tushunish mumkin:
+Harness modelni “aqlliroq qilmaydi”; aksincha, model uchun yopiq sikldagi <strong>ishchi tizim</strong> oʻrnatadi. Uning ishlash jarayonini quyidagi sodda diagramma orqali tushunish mumkin:
 
 ```mermaid
 graph TD

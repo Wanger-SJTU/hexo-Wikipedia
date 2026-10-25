@@ -17,23 +17,23 @@ categories:
 
 ## MLX特性
 
-- **Familiar APIs**: MLX的python API 设计基本上与numpy和Pytorch对齐，基础的数据结构array设置可以隐式的转换为numpy的 Array。高层次的API mlx.nn 和mlx.optimizers则基本与pytorch对齐，使用方式也基本一致。C++ 的API与python基本一致。 这对算法开发人员来说上手的成本较低，历史代码也比较好迁移和继承。
+- <strong>Familiar APIs</strong>: MLX的python API 设计基本上与numpy和Pytorch对齐，基础的数据结构array设置可以隐式的转换为numpy的 Array。高层次的API mlx.nn 和mlx.optimizers则基本与pytorch对齐，使用方式也基本一致。C++ 的API与python基本一致。 这对算法开发人员来说上手的成本较低，历史代码也比较好迁移和继承。
 ```python
 import mlx.nn as nn
 import mlx.core as np
 ```
 
 
-- **Composable function transformations**:  JAX 
+- <strong>Composable function transformations</strong>:  JAX 
 - MLX has composable function transformations for automatic differentiation, automatic vectorization, and computation graph optimization.
     
-- **Lazy computation**: 延迟计算，每部分的计算结果都是按需求值，也包括内存申请。
+- <strong>Lazy computation</strong>: 延迟计算，每部分的计算结果都是按需求值，也包括内存申请。
     
-- **Dynamic graph construction**: 动态图构建，函数输入shape发生变化时，并不会触发编译，debug也很简单符合直觉。
+- <strong>Dynamic graph construction</strong>: 动态图构建，函数输入shape发生变化时，并不会触发编译，debug也很简单符合直觉。
 
-- **Multi-device**: 多IP计算支持。当前支持CPU、GPU。因为ANE在Apple内部处于闭源的工具链，在这一现状没变化时，不会支持ANE。ref：[link](https://github.com/ml-explore/mlx/issues/18#issuecomment-1846492294)
+- <strong>Multi-device</strong>: 多IP计算支持。当前支持CPU、GPU。因为ANE在Apple内部处于闭源的工具链，在这一现状没变化时，不会支持ANE。ref：[link](https://github.com/ml-explore/mlx/issues/18#issuecomment-1846492294)
     
-- **Unified memory**: 最大的特点在于统一的内存模型，MLX 中的在共享内存上分配，跨IP计算时无需拷贝移动数据。
+- <strong>Unified memory</strong>: 最大的特点在于统一的内存模型，MLX 中的在共享内存上分配，跨IP计算时无需拷贝移动数据。
 
 ##  为什么还需要一个MLX
 
@@ -58,9 +58,9 @@ https://github.com/ml-explore/mlx/issues/12
 M2 Max
 
 FP16 10 token/s
-![Pasted image 20231213220124.png](/images/collections/assets/Pasted%2520image%252020231213220124.png)
+![Pasted image 20231213220124.png](/images/collections/assets/Pasted%20image%2020231213220124.png)
 
-![Pasted image 20231213220841.png](/images/collections/assets/Pasted%2520image%252020231213220841.png)
+![Pasted image 20231213220841.png](/images/collections/assets/Pasted%20image%2020231213220841.png)
 
 ## 可能的 Roadmap
 1. 有微调模型诉求的非算法人员。 比如lora、大模型的

@@ -26,7 +26,7 @@ categories:
 
 ----
 
-**Class Activation Mapping**
+<strong>Class Activation Mapping</strong>
 
 在传统的CNN分类任务中，最后的通常为全连接层，而FC全连接层是无法得到显著性图的。在论文中使用了GAP（global average pooling）来代替FC。
 
@@ -42,7 +42,7 @@ $$
 P_{c} = \frac{exp(s_{c} )}{\sum_{c}^{}{}exp(s_{c}) }
 $$
 
-**怎么通过GAP，来生成CAM**
+<strong>怎么通过GAP，来生成CAM</strong>
 
 通过上面的公式，我们可以将 $s_{c}$ 展开，如下所示：
 

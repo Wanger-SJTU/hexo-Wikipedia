@@ -35,24 +35,24 @@ Thu muc nay chua cac AI agent skills co the tai su dung cho du an Learn Harness 
 
 Skill harness engineering cap production cho AI coding agents. Skill nay giup tao, danh gia va cai thien cac file harness cua agent, gom AGENTS.md, danh sach tinh nang, verification workflows va co che tiep noi phien lam viec.
 
-- **7 mau tham chieu**: Memory Persistence, Skill Runtime, Context Engineering, Tool Registry, Multi-Agent Coordination, Lifecycle & Bootstrap, Gotchas
-- **Templates**: AGENTS.md/CLAUDE.md, feature-list.json, init.sh, progress.md, session-handoff.md
-- **Scripts**: scaffold, validate, bao cao HTML, structural benchmark
-- **10 eval test case tich hop**
+- <strong>7 mau tham chieu</strong>: Memory Persistence, Skill Runtime, Context Engineering, Tool Registry, Multi-Agent Coordination, Lifecycle & Bootstrap, Gotchas
+- <strong>Templates</strong>: AGENTS.md/CLAUDE.md, feature-list.json, init.sh, progress.md, session-handoff.md
+- <strong>Scripts</strong>: scaffold, validate, bao cao HTML, structural benchmark
+- <strong>10 eval test case tich hop</strong>
 
 Xem tai lieu day du tai [harness-creator/README.md](harness-creator/README.md).
 
 ## Cach harness-creator duoc tao
 
-`harness-creator` duoc phat trien bang phuong phap **skill-creator**, meta-skill chinh thuc cua Anthropic de tao, kiem thu va lap lai viec cai thien agent skills theo luong draft → test → evaluate → iterate.
+`harness-creator` duoc phat trien bang phuong phap <strong>skill-creator</strong>, meta-skill chinh thuc cua Anthropic de tao, kiem thu va lap lai viec cai thien agent skills theo luong draft → test → evaluate → iterate.
 
 ## Skills hoat dong nhu the nao
 
 Moi skill co cau truc chuan:
 
-1. **SKILL.md** — Diem vao, gom YAML frontmatter va huong dan Markdown cho agent.
-2. **references/** — Tai lieu bo sung duoc nap vao context khi can.
-3. **templates/** — Template khoi dau ma skill co the tao.
+1. <strong>SKILL.md</strong> — Diem vao, gom YAML frontmatter va huong dan Markdown cho agent.
+2. <strong>references/</strong> — Tai lieu bo sung duoc nap vao context khi can.
+3. <strong>templates/</strong> — Template khoi dau ma skill co the tao.
 
 Skills dung progressive disclosure: agent ban dau chi thay ten va mo ta, sau do nap SKILL.md khi duoc kich hoat va chi doc tai nguyen kem theo khi can thiet.
 

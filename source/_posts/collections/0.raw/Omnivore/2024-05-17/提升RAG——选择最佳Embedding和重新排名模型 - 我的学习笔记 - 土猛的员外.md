@@ -23,7 +23,7 @@ id: a96641a9-f185-4170-bade-080bd880dbe2
 
 
 
-在构建检索增强生成(RAG)管道时，一个关键组件是**Retriver**。我们有各种各样的Embedding模型可供选择，包括OpenAI、CohereAI和开源的Sentence-Transformers。此外，CohereAI和Sentence-Transformers也提供了一些重新排序器。
+在构建检索增强生成(RAG)管道时，一个关键组件是<strong>Retriver</strong>。我们有各种各样的Embedding模型可供选择，包括OpenAI、CohereAI和开源的Sentence-Transformers。此外，CohereAI和Sentence-Transformers也提供了一些重新排序器。
 
 但是有了这些选项，我们如何确定最佳组合以获得一流的检索性能呢？我们如何知道哪种Embedding模型最适合我们的数据?或者哪个重新排名对我们的结果提升最大?
 
@@ -33,13 +33,13 @@ id: a96641a9-f185-4170-bade-080bd880dbe2
 
 ## [](#理解检索评价中的度量标准 "理解检索评价中的度量标准")理解检索评价中的度量标准
 
-为了衡量我们的检索系统的有效性，我们主要依赖于两个被广泛接受的指标:**命中率**和\*\*平均倒数排名(MRR)\*\*。让我们深入研究这些指标，了解它们的重要性以及它们是如何运作的。
+为了衡量我们的检索系统的有效性，我们主要依赖于两个被广泛接受的指标:<strong>命中率</strong>和\*\*平均倒数排名(MRR)\*\*。让我们深入研究这些指标，了解它们的重要性以及它们是如何运作的。
 
-**命中率:**
+<strong>命中率:</strong>
 
 Hit rate计算在前k个检索文档中找到正确答案的查询比例。简单来说，它是关于我们的系统在前几次猜测中正确的频率。
 
-**平均倒数排名(MRR):**
+<strong>平均倒数排名(MRR):</strong>
 
 对于每个查询，MRR通过查看排名最高的相关文档的排名来评估系统的准确性。具体来说，它是所有查询中这些秩的倒数的平均值。因此，如果第一个相关文档是顶部结果，则倒数排名为1;如果是第二个，倒数是1/2，以此类推。
 
@@ -122,7 +122,7 @@ qa_dataset = generate_question_context_pairs(
 
 我们对各种Embedding模型和重新排序器进行了测试。以下是我们考虑的模型:
 
-**向量模型**:
+<strong>向量模型</strong>:
 
 * [OpenAI Embedding](https://platform.openai.com/docs/guides/embeddings)
 * [Voyage Embedding](https://www.voyageai.com/)
@@ -130,7 +130,7 @@ qa_dataset = generate_question_context_pairs(
 * [Jina Embeddings](https://huggingface.co/jinaai/jina-embeddings-v2-small-en)
 * [BAAI/bge-large-en](https://huggingface.co/BAAI/bge-large-en)
 
-**Rerank模型**:
+<strong>Rerank模型</strong>:
 
 * [CohereAI](https://txt.cohere.com/rerank/)
 * [bge-reranker-base](https://huggingface.co/BAAI/bge-reranker-base)
@@ -144,26 +144,26 @@ qa_dataset = generate_question_context_pairs(
 
 ## [](#分析 "分析:")分析:
 
-* **OpenAI**:表现出顶级的性能，特别是`cohererank`(0.926966命中率，0.865262 MRR)和`big-reranker-large`(0.910112命中率，0.853993 MRR)，表明与重排名工具的兼容性很强。
-* **big-large**:在重新排序器上有了显著的改进，`CohereRerank`的结果最好(0.865169命中率，0.805618 MRR)。
-* **llm-embedder**：从重新排名中受益匪浅，特别是`CohereRerank `(0.887640命中率，0.825843 MRR)，它提供了实质性的性能提升。
+* <strong>OpenAI</strong>:表现出顶级的性能，特别是`cohererank`(0.926966命中率，0.865262 MRR)和`big-reranker-large`(0.910112命中率，0.853993 MRR)，表明与重排名工具的兼容性很强。
+* <strong>big-large</strong>:在重新排序器上有了显著的改进，`CohereRerank`的结果最好(0.865169命中率，0.805618 MRR)。
+* <strong>llm-embedder</strong>：从重新排名中受益匪浅，特别是`CohereRerank `(0.887640命中率，0.825843 MRR)，它提供了实质性的性能提升。
 * \*\*coherhere \*\*: coherhere最新的v3.0Embeddings优于v2.0，并且通过集成本地CohereRerank，显着提高了其指标，拥有0.876404命中率和0.832584 MRR。
-* **Voyage**:具有较强的初始性能，并被`cohererank `(0.915730命中率，0.847940 MRR)进一步放大，表明对重新排名的响应性较高。
-* **JinaAI**:虽然起点较低，但`big -rerank -large`的收益显著(命中率0.601124,MRR 0.578652)，表明重新排名显著提升了它的性能。其性能不佳的一个潜在原因可能是Embedding针对8K上下文长度进行了优化。
+* <strong>Voyage</strong>:具有较强的初始性能，并被`cohererank `(0.915730命中率，0.847940 MRR)进一步放大，表明对重新排名的响应性较高。
+* <strong>JinaAI</strong>:虽然起点较低，但`big -rerank -large`的收益显著(命中率0.601124,MRR 0.578652)，表明重新排名显著提升了它的性能。其性能不佳的一个潜在原因可能是Embedding针对8K上下文长度进行了优化。
 
-## [](#重新排名的影响 "重新排名的影响:")**重新排名的影响**:
+## [](#重新排名的影响 "重新排名的影响:")<strong>重新排名的影响</strong>:
 
 * \*\*WithoutReranker \*\*:为每个Embedding提供基准性能。
-* **bge-rerrank-base**:通常可以提高Embeddings的命中率和MRR。
-* **bge-rerank-large**:此rerank通常为Embeddings提供最高或接近最高的MRR。对于一些Embeddings，它的性能可以与` cohererank`相媲美或超过。
+* <strong>bge-rerrank-base</strong>:通常可以提高Embeddings的命中率和MRR。
+* <strong>bge-rerank-large</strong>:此rerank通常为Embeddings提供最高或接近最高的MRR。对于一些Embeddings，它的性能可以与` cohererank`相媲美或超过。
 * \*\*Cohererank \*\*:始终如一地提高所有Embeddings的性能，通常提供最好或接近最好的结果。
 
-## [](#重新排序的必要性 "重新排序的必要性:")**重新排序的必要性**:
+## [](#重新排序的必要性 "重新排序的必要性:")<strong>重新排序的必要性</strong>:
 
 * 数据清楚地表明重新排名在优化搜索结果中的重要性。几乎所有的Embeddings都受益于重新排序，显示出更高的命中率和mrr
 * 重新排序器，特别是`CohereRerank`，已经证明了它们将平均表现的Embedding转化为具有竞争力的能力，正如JinaAI所看到的那样。
 
-## [](#整体优势 "整体优势:")**整体优势**:
+## [](#整体优势 "整体优势:")<strong>整体优势</strong>:
 
 * 当考虑到命中率和MRR时，`OpenAI + CohereRerank`和`Voyage + big-reranker-large`的组合成为最热门的竞争者。
 * 然而，`cohererank/big-reranker-large` reranker在各种Embeddings中所带来的持续改善，使它们成为提高搜索质量的突出选择，无论使用的Embedding是什么。
@@ -174,9 +174,9 @@ qa_dataset = generate_question_context_pairs(
 
 在这篇博文中，我们演示了如何使用各种Embeddings和重新排序器来评估和提高检索器的性能。以下是我们的最终结论。
 
-* **Embeddings**:`OpenAI`和` Voyage`Embeddings，特别是当与`CohereRerank/big-reranker-large` reranker配对时，为命中率和MRR设定了黄金标准。
-* **重排器**:重排器的影响，特别是`cohererank/big-reanker-large`，怎么强调都不为过。它们在提高许多Embeddings的MRR方面发挥了关键作用，显示了它们在使搜索结果更好方面的重要性。
-* **基础是关键**:为初始搜索选择正确的Embedding是至关重要的;如果基本搜索结果不好，即使是最好的重新排名器也帮不上什么忙。
+* <strong>Embeddings</strong>:`OpenAI`和` Voyage`Embeddings，特别是当与`CohereRerank/big-reranker-large` reranker配对时，为命中率和MRR设定了黄金标准。
+* <strong>重排器</strong>:重排器的影响，特别是`cohererank/big-reanker-large`，怎么强调都不为过。它们在提高许多Embeddings的MRR方面发挥了关键作用，显示了它们在使搜索结果更好方面的重要性。
+* <strong>基础是关键</strong>:为初始搜索选择正确的Embedding是至关重要的;如果基本搜索结果不好，即使是最好的重新排名器也帮不上什么忙。
 * \*\*一起工作:\*\*为了获得最好的寻回犬，找到Embeddings和重新排序的正确组合是很重要的。这项研究表明，仔细测试并找到最佳配对是多么重要。
 
 原文：<https://blog.llamaindex.ai/boosting-rag-picking-the-best-embedding-reranker-models-42d079022e83>

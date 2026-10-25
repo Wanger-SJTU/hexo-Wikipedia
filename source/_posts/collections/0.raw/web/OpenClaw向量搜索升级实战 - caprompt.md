@@ -25,7 +25,7 @@ categories:
 
 ## 问题根因
 
-向量搜索配置了 `vector.enabled: true`，模型 `nomic-embed-text` 也拉取了，但 **OpenClaw 启动时 Ollama 没在跑**。向量搜索静默降级到纯文本搜索，没有任何报错。
+向量搜索配置了 `vector.enabled: true`，模型 `nomic-embed-text` 也拉取了，但 <strong>OpenClaw 启动时 Ollama 没在跑</strong>。向量搜索静默降级到纯文本搜索，没有任何报错。
 
 ## 升级前后对比
 
@@ -88,10 +88,10 @@ openclaw gateway restart
 
 ## 为什么选 nomic-embed-text
 
-- **隐私第一**：数据不离开本机
-- **274 MB 零门槛**：不需要 GPU、不需要 Python
-- **8K 上下文**：能处理整篇笔记
-- **中英混合友好**：混合场景表现稳定
+- <strong>隐私第一</strong>：数据不离开本机
+- <strong>274 MB 零门槛</strong>：不需要 GPU、不需要 Python
+- <strong>8K 上下文</strong>：能处理整篇笔记
+- <strong>中英混合友好</strong>：混合场景表现稳定
 
 ## 踩坑记录
 

@@ -29,7 +29,7 @@ categories:
 
 # Learn Harness Engineering
 
-> **Un curso basado en proyectos sobre cómo construir el entorno, la gestión de estado, la verificación y los mecanismos de control que hacen que los agentes de codificación de IA funcionen de forma fiable.**
+> <strong>Un curso basado en proyectos sobre cómo construir el entorno, la gestión de estado, la verificación y los mecanismos de control que hacen que los agentes de codificación de IA funcionen de forma fiable.</strong>
 
 Learn Harness Engineering es un curso dedicado a la ingeniería de agentes de codificación de IA. Hemos estudiado y sintetizado en profundidad las teorías y prácticas más avanzadas de Harness Engineering en la industria. Nuestras referencias principales incluyen:
 
@@ -38,7 +38,7 @@ Learn Harness Engineering es un curso dedicado a la ingeniería de agentes de co
 - [Anthropic: Harness design for long-running application development](https://www.anthropic.com/engineering/harness-design-long-running-apps)
 - [Awesome Harness Engineering](https://github.com/walkinglabs/awesome-harness-engineering)
 
-> **Inicio rápido?** La skill [`skills/harness-creator/`](../../skills/harness-creator/) puede ayudarte a generar un harness de nivel productivo (AGENTS.md, listas de funcionalidades, init.sh, flujos de verificación) para tu propio proyecto en cuestión de minutos.
+> <strong>Inicio rápido?</strong> La skill [`skills/harness-creator/`](../../skills/harness-creator/) puede ayudarte a generar un harness de nivel productivo (AGENTS.md, listas de funcionalidades, init.sh, flujos de verificación) para tu propio proyecto en cuestión de minutos.
 
 ---
 
@@ -85,7 +85,7 @@ El repositorio ahora incluye un pipeline de construcción en PDF para el conteni
 
 ## El modelo es inteligente, el harness lo hace fiable
 
-Hay una verdad difícil que la mayoría de las personas aprenden por las malas: **el modelo más potente del mundo seguirá fallando en tareas de ingeniería reales si no construyes un entorno adecuado a su alrededor.**
+Hay una verdad difícil que la mayoría de las personas aprenden por las malas: <strong>el modelo más potente del mundo seguirá fallando en tareas de ingeniería reales si no construyes un entorno adecuado a su alrededor.</strong>
 
 Probablemente ya lo hayas visto. Le das una tarea a Claude o GPT en tu repositorio. Comienza bien: lee archivos, escribe código, parece productivo. Luego algo sale mal. Omite un paso. Rompe un test. Dice "listo" pero nada funciona realmente. Pasas más tiempo arreglando las cosas que si lo hubieras hecho tú mismo.
 
@@ -95,7 +95,7 @@ La evidencia es clara. Anthropic realizó un experimento controlado: mismo model
 
 OpenAI reportó lo mismo con Codex: en un repositorio bien equipado con un harness, el mismo modelo pasa de "poco fiable" a "fiable". No una mejora marginal, sino un cambio cualitativo.
 
-**Este curso te enseña cómo construir ese entorno.**
+<strong>Este curso te enseña cómo construir ese entorno.</strong>
 
 ```text
                     EL PATRÓN DEL HARNESS
@@ -156,17 +156,17 @@ Un harness tiene cinco subsistemas:
 
 Cada subsistema tiene una única responsabilidad:
 
-- **Instructions** — Le dicen al agente qué hacer, en qué orden y qué leer antes de comenzar. No un archivo gigante; una estructura de divulgación progresiva que el agente navega según lo necesite.
-- **State** — Rastrea qué se ha hecho, qué está en progreso y qué sigue. Se persiste en disco para que la siguiente sesión continúe exactamente donde la anterior se quedó.
-- **Verification** — Solo un conjunto de tests que pasan cuenta como evidencia. El agente no puede declarar victoria sin pruebas ejecutables.
-- **Scope** — Limita al agente a una funcionalidad a la vez. Sin excederse. Sin dejar tres cosas a medias. Sin reescribir la lista de funcionalidades para ocultar trabajo inacabado.
-- **Session Lifecycle** — Inicializar al inicio. Limpiar al final. Dejar una ruta de reinicio limpia para la siguiente sesión.
+- <strong>Instructions</strong> — Le dicen al agente qué hacer, en qué orden y qué leer antes de comenzar. No un archivo gigante; una estructura de divulgación progresiva que el agente navega según lo necesite.
+- <strong>State</strong> — Rastrea qué se ha hecho, qué está en progreso y qué sigue. Se persiste en disco para que la siguiente sesión continúe exactamente donde la anterior se quedó.
+- <strong>Verification</strong> — Solo un conjunto de tests que pasan cuenta como evidencia. El agente no puede declarar victoria sin pruebas ejecutables.
+- <strong>Scope</strong> — Limita al agente a una funcionalidad a la vez. Sin excederse. Sin dejar tres cosas a medias. Sin reescribir la lista de funcionalidades para ocultar trabajo inacabado.
+- <strong>Session Lifecycle</strong> — Inicializar al inicio. Limpiar al final. Dejar una ruta de reinicio limpia para la siguiente sesión.
 
 ---
 
 ## Por qué existe este curso
 
-La pregunta no es "pueden los modelos escribir código?" Pueden. La pregunta es: **pueden completar de forma fiable tareas de ingeniería reales dentro de repositorios reales, a lo largo de múltiples sesiones, sin supervisión humana constante?**
+La pregunta no es "pueden los modelos escribir código?" Pueden. La pregunta es: <strong>pueden completar de forma fiable tareas de ingeniería reales dentro de repositorios reales, a lo largo de múltiples sesiones, sin supervisión humana constante?</strong>
 
 En este momento, la respuesta es: no sin un harness.
 
@@ -202,13 +202,13 @@ Las preguntas que realmente importan en este curso:
 
 ## Plan de Estudios y Documentación del Curso
 
-Para ver todos los materiales del curso, visita el **[Sitio de Documentación](https://walkinglabs.github.io/learn-harness-engineering/)**.
+Para ver todos los materiales del curso, visita el <strong>[Sitio de Documentación](https://walkinglabs.github.io/learn-harness-engineering/)</strong>.
 
 El plan de estudios se divide en tres partes:
 
-1. **Clases**: 12 unidades conceptuales que explican la teoría detrás de Harness Engineering.
-2. **Proyectos**: 6 proyectos prácticos donde construyes un espacio de trabajo para agentes desde cero.
-3. **Biblioteca de Recursos**: Plantillas listas para copiar (`AGENTS.md`, `feature_list.json`, `init.sh`, etc.) para usar en tus propios repositorios hoy mismo.
+1. <strong>Clases</strong>: 12 unidades conceptuales que explican la teoría detrás de Harness Engineering.
+2. <strong>Proyectos</strong>: 6 proyectos prácticos donde construyes un espacio de trabajo para agentes desde cero.
+3. <strong>Biblioteca de Recursos</strong>: Plantillas listas para copiar (`AGENTS.md`, `feature_list.json`, `init.sh`, etc.) para usar en tus propios repositorios hoy mismo.
 
 ---
 
@@ -234,7 +234,7 @@ Obtén las plantillas iniciales de la [Biblioteca de Recursos](https://walkingla
 
 ## Proyecto Final: Una aplicación real
 
-Los seis proyectos del curso giran en torno al mismo producto: **una aplicación de escritorio de base de conocimiento personal basada en Electron**.
+Los seis proyectos del curso giran en torno al mismo producto: <strong>una aplicación de escritorio de base de conocimiento personal basada en Electron</strong>.
 
 ```text
     ┌─────────────────────────────────────────────────────┐
@@ -401,7 +401,7 @@ Cada fase toma aproximadamente una semana si lo haces a tiempo parcial. Si quier
 
 ## El Ciclo de Vida de la Sesión del Agente
 
-Una de las ideas centrales de este curso: **la sesión del agente debe seguir un ciclo de vida estructurado, no un libre intercambio.** Así es como se ve:
+Una de las ideas centrales de este curso: <strong>la sesión del agente debe seguir un ciclo de vida estructurado, no un libre intercambio.</strong> Así es como se ve:
 
 ```text
     CICLO DE VIDA DE LA SESIÓN DEL AGENTE
@@ -574,7 +574,7 @@ learn-harness-engineering/
 
 Este repositorio también incluye skills reutilizables para agentes de IA que puedes instalar directamente en tu IDE o espacio de trabajo del agente.
 
-- [**harness-creator**](../../skills/harness-creator/): Un skill que te ayuda a generar un harness de nivel productivo para tu propio proyecto en cuestión de minutos.
+- [<strong>harness-creator</strong>](../../skills/harness-creator/): Un skill que te ayuda a generar un harness de nivel productivo para tu propio proyecto en cuestión de minutos.
 
 ---
 
@@ -584,7 +584,7 @@ Nuestro equipo también ha creado otros cursos! Échales un vistazo:
 
 [![Hands-on Modern RL](https://img.shields.io/badge/HANDS--ON_MODERN_RL-0052cc?style=for-the-badge)](https://github.com/walkinglabs/hands-on-modern-rl)
 
-**Hands-on Modern RL**: Un plan de estudios práctico y de código abierto que cierra la brecha entre los conceptos básicos de RL y la alineación de LLMs, RLVR y sistemas Agentic avanzados.
+<strong>Hands-on Modern RL</strong>: Un plan de estudios práctico y de código abierto que cierra la brecha entre los conceptos básicos de RL y la alineación de LLMs, RLVR y sistemas Agentic avanzados.
 
 ---
 

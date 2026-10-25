@@ -17,7 +17,7 @@ source_url: https://zhuanlan.zhihu.com/p/1927141897853465859
 
 ### 摘要
 
-在大型语言模型（LLMs）的推理阶段，长上下文会导致GPU显存中KV Cache占用过大。传统方法通过丢弃不重要的token来缓解这一问题，但本文提出的 **OmniKV** 摒弃了这种“丢弃”策略，提出了一种无token丢弃且无需训练的推理方法。OmniKV利用了层间注意力相似性（Inter-Layer Attention Similarity）这一创新性洞察，实现了在不损失性能的前提下，推理速度提升1.68倍，并将KV Cache显存占用显著降低了75%。
+在大型语言模型（LLMs）的推理阶段，长上下文会导致GPU显存中KV Cache占用过大。传统方法通过丢弃不重要的token来缓解这一问题，但本文提出的 <strong>OmniKV</strong> 摒弃了这种“丢弃”策略，提出了一种无token丢弃且无需训练的推理方法。OmniKV利用了层间注意力相似性（Inter-Layer Attention Similarity）这一创新性洞察，实现了在不损失性能的前提下，推理速度提升1.68倍，并将KV Cache显存占用显著降低了75%。
 
 #### 背景与动机
 
@@ -29,13 +29,13 @@ source_url: https://zhuanlan.zhihu.com/p/1927141897853465859
 
 OmniKV的设计基于以下三个关键洞察：
 
-- **层内注意力稀疏性 (Intra-Layer Attention Sparsity)**：LLMs层内的注意力矩阵本身就存在稀疏性，这意味着LLMs可以通过关注一小部分token来产生几乎相同的输出。
-- **层间注意力相似性 (Inter-Layer Attention Similarity)**：一个固定子集的token在特定层中获得显著关注后，在后续层中仍能保持其重要性。这种现象揭示了不同层之间稀疏模式的高度相似性，因此OmniKV只需在少量“过滤层”上计算完全注意力，即可获取后续层的稀疏模式。
-- **token间注意力可变性 (Inter-Token Attention Variability)**：重要的token在LLMs的生成过程中是动态变化的，特别是在多任务或多步推理场景（如思维链CoT）中。基于此，OmniKV保留了所有KV Cache以确保性能不受影响。
+- <strong>层内注意力稀疏性 (Intra-Layer Attention Sparsity)</strong>：LLMs层内的注意力矩阵本身就存在稀疏性，这意味着LLMs可以通过关注一小部分token来产生几乎相同的输出。
+- <strong>层间注意力相似性 (Inter-Layer Attention Similarity)</strong>：一个固定子集的token在特定层中获得显著关注后，在后续层中仍能保持其重要性。这种现象揭示了不同层之间稀疏模式的高度相似性，因此OmniKV只需在少量“过滤层”上计算完全注意力，即可获取后续层的稀疏模式。
+- <strong>token间注意力可变性 (Inter-Token Attention Variability)</strong>：重要的token在LLMs的生成过程中是动态变化的，特别是在多任务或多步推理场景（如思维链CoT）中。基于此，OmniKV保留了所有KV Cache以确保性能不受影响。
 
 #### 技术路线
 
-OmniKV是一个无token丢弃、无需训练的推理方法，包含两个核心模块：**上下文银行 (Context Bank)** 和 **上下文选择器 (Context Selector)**。整个推理过程分为预填充（Prefill）和解码（Decode）两个阶段。
+OmniKV是一个无token丢弃、无需训练的推理方法，包含两个核心模块：<strong>上下文银行 (Context Bank)</strong> 和 <strong>上下文选择器 (Context Selector)</strong>。整个推理过程分为预填充（Prefill）和解码（Decode）两个阶段。
 
 #### 1. 预填充阶段 (Prefill Stage)
 
@@ -67,11 +67,11 @@ $最后，利用 `topk` 操作从分数向量 S_i 中识别出重要的token集�
 
 OmniKV在Llama-3-8B-262K、Yi-9B-200K和Llama-3.1-70B-Instruct等LLMs上进行了广泛实验。主要优势包括：
 
-- **性能无损加速**：在长文本场景下，推理效率提升1.7倍，且不损失模型性能。
-- **显著降低显存占用**：与Offloading技术高度兼容，可将KV Cache显存占用显著降低高达75%。
-- **扩展上下文长度**：使用单个A100 GPU，将Llama-3-8B的最大上下文长度从128K扩展到450K。
-- **多步推理场景优势**：在思维链（Chain-of-Thoughts）等多步推理场景中表现出特别的优势。
-- **降低计算和数据传输成本**：通过动态选择和打包加载，减少了计算量和CPU与GPU之间的数据传输量。
+- <strong>性能无损加速</strong>：在长文本场景下，推理效率提升1.7倍，且不损失模型性能。
+- <strong>显著降低显存占用</strong>：与Offloading技术高度兼容，可将KV Cache显存占用显著降低高达75%。
+- <strong>扩展上下文长度</strong>：使用单个A100 GPU，将Llama-3-8B的最大上下文长度从128K扩展到450K。
+- <strong>多步推理场景优势</strong>：在思维链（Chain-of-Thoughts）等多步推理场景中表现出特别的优势。
+- <strong>降低计算和数据传输成本</strong>：通过动态选择和打包加载，减少了计算量和CPU与GPU之间的数据传输量。
 
 #### 结论
 

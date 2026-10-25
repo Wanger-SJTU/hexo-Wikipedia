@@ -31,7 +31,7 @@ source_url: https://zhuanlan.zhihu.com/p/100252944
 
 我通常直接使用 SGD+Cosine退火，使用Cosine退火而不是多步衰减是因为懒得调参，效果也相差不大。
 
-当你的半监督模型需要**稀疏地**更新样本的时候，例如CCL[6]，可以尝试 Adam 优化器，或许会有更好的效果。
+当你的半监督模型需要<strong>稀疏地</strong>更新样本的时候，例如CCL[6]，可以尝试 Adam 优化器，或许会有更好的效果。
 
 很多情况下，例如样本量比较少（250个有标签样本的Cifar10实验时），我都建议尝试学习率warmup策略，可能会有奇效（e.g. PI model）。学习率warmup策略会使得模型稳定收敛到不错的性能。
 
@@ -49,12 +49,12 @@ source_url: https://zhuanlan.zhihu.com/p/100252944
 ![](https://www.zhihu.com/equation?tex=X_%7Busp%7D) 为输入 
 ![](https://www.zhihu.com/equation?tex=L_%7Busp%7D) 的数据。
 
-- **方式v1**：
+- <strong>方式v1</strong>：
 ![](https://www.zhihu.com/equation?tex=X_%7Busp%7D) 中有标签数据和无标签数据按固定比例混合输入。即 
 ![](https://www.zhihu.com/equation?tex=X_%7Busp%7D%3DConcat%28X_l%2C+X_u%29) ，其中 
 ![](https://www.zhihu.com/equation?tex=X_l%2C+X_u) 为batch中的有标签数据和无标签数据。
 
-- **方式v2：**
+- <strong>方式v2：</strong>
 ![](https://www.zhihu.com/equation?tex=X_%7Busp%7D%3DRandomSubset%28Dataset%29) ，即 
 ![](https://www.zhihu.com/equation?tex=X_%7Busp%7D) 为整个数据集的随机采样，因此不能保证有标签数据和无标签数据的比例，甚至会出现没有有标签数据的情况。
 

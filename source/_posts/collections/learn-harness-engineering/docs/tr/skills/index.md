@@ -21,10 +21,10 @@ Yapay zeka kod yazma ajanları için üretim seviyesinde bir harness mühendisli
 
 ### Ne işe yarar
 
-- **Sıfırdan harness oluşturma** — AGENTS.md, özellik listeleri, doğrulama akışları
-- **Var olan harness'ları geliştirme** — Beş alt sistem üzerinden öncelikli iyileştirme değerlendirmesi
-- **Oturum sürekliliği tasarımı** — Bellek kalıcılığı, ilerleme takibi, devir prosedürleri
-- **Üretim desenleri uygulama** — Bellek, bağlam mühendisliği, araç güvenliği, çoklu-ajan koordinasyonu
+- <strong>Sıfırdan harness oluşturma</strong> — AGENTS.md, özellik listeleri, doğrulama akışları
+- <strong>Var olan harness'ları geliştirme</strong> — Beş alt sistem üzerinden öncelikli iyileştirme değerlendirmesi
+- <strong>Oturum sürekliliği tasarımı</strong> — Bellek kalıcılığı, ilerleme takibi, devir prosedürleri
+- <strong>Üretim desenleri uygulama</strong> — Bellek, bağlam mühendisliği, araç güvenliği, çoklu-ajan koordinasyonu
 
 ### Hızlı başlangıç
 
@@ -66,7 +66,7 @@ Yetenek ayrıca scaffold, doğrulama, HTML değerlendirme raporu ve yapısal ben
 
 ### Bu yetenek nasıl geliştirildi
 
-`harness-creator`, **skill-creator** metodolojisi ile geliştirildi — Anthropic'in ajan yetenekleri oluşturmak, test etmek ve iyileştirmek için resmî meta yeteneği. skill-creator; yapılandırılmış bir akış (taslak → test → değerlendir → iyileştir) ile gömülü eval çalıştırıcıları, değerlendiriciler ve bir benchmark görüntüleyici sunar.
+`harness-creator`, <strong>skill-creator</strong> metodolojisi ile geliştirildi — Anthropic'in ajan yetenekleri oluşturmak, test etmek ve iyileştirmek için resmî meta yeteneği. skill-creator; yapılandırılmış bir akış (taslak → test → değerlendir → iyileştir) ile gömülü eval çalıştırıcıları, değerlendiriciler ve bir benchmark görüntüleyici sunar.
 
-- **skill-creator kaynağı**: [anthropics/skills — skill-creator](https://github.com/anthropics/skills/tree/main/skills/skill-creator)
-- **Claude Code skills belgeleri**: [anthropics/claude-code — plugin-dev/skills](https://github.com/anthropics/claude-code/tree/main/plugins/plugin-dev/skills)
+- <strong>skill-creator kaynağı</strong>: [anthropics/skills — skill-creator](https://github.com/anthropics/skills/tree/main/skills/skill-creator)
+- <strong>Claude Code skills belgeleri</strong>: [anthropics/claude-code — plugin-dev/skills](https://github.com/anthropics/claude-code/tree/main/plugins/plugin-dev/skills)

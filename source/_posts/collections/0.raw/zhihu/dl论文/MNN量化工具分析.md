@@ -15,25 +15,25 @@ source_url: https://zhuanlan.zhihu.com/p/153562409
 ---
 
 
-**MNN量化工具分析**
+<strong>MNN量化工具分析</strong>
 MNN提供了对模型进行量化版本的转化，相应的代码在tools/quantization目录下。
 
-**量化工具使用方法**
+<strong>量化工具使用方法</strong>
 
-**编译量化工具**
+<strong>编译量化工具</strong>
  cd MNN
  mkdir build
  cd build
  cmake -DMNN_BUILD_QUANTOOLS=ON ..
  make -j4
 
-**工具使用**
+<strong>工具使用</strong>
  ./quantized.out origin.mnn quan.mnn preprocessConfig.json
 
 - 第一个参数为原始模型文件路径，即待量化的浮点模型
 - 第二个参数为目标模型文件路径，即量化后的模型
 - 第三个参数为预处理的配置项，参考json配置
-**Json 配置**
+<strong>Json 配置</strong>
 预处理配置文件格式如下：
 
  {
@@ -57,40 +57,40 @@ MNN提供了对模型进行量化版本的转化，相应的代码在tools/quant
  }
  ​
 
-**format**
+<strong>format</strong>
 图片统一按RGBA读取，然后转换到`format`指定格式，可选：&#34;RGB&#34;, &#34;BGR&#34;, &#34;RGBA&#34;, &#34;GRAY&#34;。
 
-**mean, normal**
+<strong>mean, normal</strong>
 模型预处理需要的`mean,normal`, 数据按此公式填写：​
 
-**width, height**
+<strong>width, height</strong>
 模型输入的宽高
 
-**path**
+<strong>path</strong>
 存放校正特征量化系数的图片目录
 
-**used_image_num**
+<strong>used_image_num</strong>
 用于指定使用上述目录下多少张图片进行校正，默认使用`path`下全部图片
 
 注意：请确保图片经过上述步骤处理之后的数据是输入到模型input接口的数据
 
-**feature_quantize_method**
+<strong>feature_quantize_method</strong>
 指定计算特征量化系数的方法，可选：
 
 - &#34;KL&#34;: 使用KL散度进行特征量化系数的校正，一般需要100 ~ 1000张图片
 - &#34;ADMM&#34;: 使用ADMM（Alternating Direction Method of Multipliers）方法进行特征量化系数的校正，一般需要一个batch的数据默认：&#34;KL&#34;
-**weight_quantize_method**
+<strong>weight_quantize_method</strong>
 指定权值量化方法，可选：
 
 - &#34;MAX_ABS&#34;: 使用权值的绝对值的最大值进行对称量化
 - &#34;ADMM&#34;: 使用ADMM方法进行权值量化默认：&#34;MAX_ABS&#34;上述特征量化方法和权值量化方法可进行多次测试，择优使用。
 
-**量化模型的使用**
+<strong>量化模型的使用</strong>
 和浮点模型同样使用方法，输入输出仍然为浮点类型
 
-**源码分析**
+<strong>源码分析</strong>
 
-**入口主函数**
+<strong>入口主函数</strong>
 主函数main在quantized.cpp文件里
 
  int main(int argc, const char* argv[]) {
@@ -137,7 +137,7 @@ MNN提供了对模型进行量化版本的转化，相应的代码在tools/quant
      }
  }
 
-**Calibration类**
+<strong>Calibration类</strong>
 其声明在Calibration.hpp， 这个类是包含了一张图在量化过程中所需要的全部数据和操作， 理解了它，就理解了整个量化。
 
  class Calibration {
@@ -191,7 +191,7 @@ MNN提供了对模型进行量化版本的转化，相应的代码在tools/quant
      void _insertDequantize();
  };
 
-**构造函数**
+<strong>构造函数</strong>
 
 - 对配置文件json进行解析，得到参数。 解析json引用了三方库rapidjson
 - 生成ImageProcess::config和ImageProcess对象（用于把image转成tensor）
@@ -247,7 +247,7 @@ MNN提供了对模型进行量化版本的转化，相应的代码在tools/quant
 
 这3个步骤里， 解析json和 ImageProcess比较明确，不用在细分。下面看看创建session和统计tensor的过程。
 
-**_initMNNSession函数**
+<strong>_initMNNSession函数</strong>
  void Calibration::_initMNNSession(const uint8_t* modelBuffer, const int bufferSize, const int channels) {
      _interpreter.reset(MNN::Interpreter::createFromBuffer(modelBuffer, bufferSize));
      // 根据原始模型数据，创建解释器Interpreter和session， 这部分在推理过程看过
@@ -285,7 +285,7 @@ MNN提供了对模型进行量化版本的转化，相应的代码在tools/quant
      _interpreter->releaseModel();
  }
 
-**_initMaps函数**
+<strong>_initMaps函数</strong>
  void Calibration::_initMaps() {
      _featureInfo.clear(); // 清空各个数据
      _opInfo.clear();
@@ -342,7 +342,7 @@ MNN提供了对模型进行量化版本的转化，相应的代码在tools/quant
      }
  }
 
-**理解TensorStatistic对象**
+<strong>理解TensorStatistic对象</strong>
 由于在Calibration实例里有个map包含了
 
  std::map<const MNN::Tensor*, std::shared_ptr<TensorStatistic>> _featureInfo;
@@ -379,7 +379,7 @@ MNN提供了对模型进行量化版本的转化，相应的代码在tools/quant
      GET_THRESHOLD_METHOD mThresholdMethod = THRESHOLD_KL;
  };
 
-**执行量化的过程**
+<strong>执行量化的过程</strong>
 执行量化的函数是Calibration::runQuantizeModel
 
  void Calibration::runQuantizeModel() {
@@ -400,7 +400,7 @@ MNN提供了对模型进行量化版本的转化，相应的代码在tools/quant
 - 对每一个tensor做TensorStatistic::finishAndCompute， 计算出一个scale值
 - _updateScale()进行op量化;
 - _insertDequantize()插入反量化;
-**理解KL散度计算过程**
+<strong>理解KL散度计算过程</strong>
  void Calibration::_computeFeatureScaleKL() {
      _computeFeatureMapsRange(); // 计算 feature map里的数据范围
      _collectFeatureMapsDistribution(); // 计算feature map里的数据分布
@@ -413,7 +413,7 @@ MNN提供了对模型进行量化版本的转化，相应的代码在tools/quant
      //_featureInfo.clear();//No need now
  }
 
-**计算featuremap的数据范围**
+<strong>计算featuremap的数据范围</strong>
 这个函数_computeFeatureMapsRange的作用就是，用指定的图片集合做为模型输入，做推理， 在推理过程中，每一个op的计算前后分别统计tensor的每一个channel上featuremap的最大值最小值， 更新到该tensor关联的TensorStatistic对象实例里
 
  void Calibration::_computeFeatureMapsRange() {
@@ -453,7 +453,7 @@ MNN提供了对模型进行量化版本的转化，相应的代码在tools/quant
      MNN_PRINT(&#34;\n&#34;);
  }
 
-**计算featuremap的数据分布**
+<strong>计算featuremap的数据分布</strong>
 该函数_collectFeatureMapsDistribution的作用是 计算每个tensor的 数据分布情况
 
  void Calibration::_collectFeatureMapsDistribution() {
@@ -556,7 +556,7 @@ MNN提供了对模型进行量化版本的转化，相应的代码在tools/quant
      }
  }
 
-**计算缩放参数TensorStatistic::finishAndCompute**
+<strong>计算缩放参数TensorStatistic::finishAndCompute</strong>
 这个函数作用是 计算出从浮点数到定点数的缩放参数
 
  std::vector<float> TensorStatistic::finishAndCompute() {
@@ -685,7 +685,7 @@ MNN提供了对模型进行量化版本的转化，相应的代码在tools/quant
      return threshold;
  }
 
-**op的量化_updateScale**
+<strong>op的量化_updateScale</strong>
 该函数完成的事情：对于图里的conv/Eltwise的op计算其定点版本的参数（权重，bias等），替代浮点版本参数
 
 也就是完成了 可量化op的转化
@@ -770,7 +770,7 @@ MNN提供了对模型进行量化版本的转化，相应的代码在tools/quant
      }
  }
 
-**添加反量化_insertDequantize**
+<strong>添加反量化_insertDequantize</strong>
 这个函数作用是：添加反量化操作。 因为量化op输出是整数， 但是以量化op输出为输入的下一个op是浮点，需要是浮点版本输出，所以需要反量化的过程.
 
  void Calibration::_insertDequantize() {
@@ -909,6 +909,6 @@ MNN提供了对模型进行量化版本的转化，相应的代码在tools/quant
 - 如果该op的输出tensor是 给到量化op的， 那么需要在输出tensor后面加 量化
 
 - 对于该图的输出tensor，后面加反量化， 确保输出结果是浮点的
-**总结**
+<strong>总结</strong>
 
 ![](https://pic4.zhimg.com/v2-f9207b4649fe261d783c37c9f01eb53f_r.jpg)

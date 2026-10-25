@@ -27,11 +27,11 @@ intel vtune ,arm streamline,perf,bcc,ebpf,pmu-tool,toplvel，simpleperf,bandw…
 
 关注者
 
-**10**
+<strong>10</strong>
 
 被浏览
 
-**2,435**
+<strong>2,435</strong>
 
 chip 也关注了该问题![chip](https://proxy-prod.omnivore-image-cache.app/0x0,sedzy3Ffbz2aLay89PR0q3OxxM8Clx8iMITBrqO1Gun4/https://picx.zhimg.com/v2-a10266505845532a4b89ef9f407f374a_l.jpg?source=c8b7c179)
 
@@ -65,7 +65,7 @@ PMU的使用通常需要配合特定的软件和工具。这些工具能够配�
 
 ### _微架构调优方法_
 
-英特尔 VTune™ Profiler 提供一种微架构探索分析类型，该分析类型经过预配置，可收集自上而下表征中定义的事件，从英特尔微架构代号 Ivy Bridge 开始。微架构探索还收集计算许多其他有用性能指标所需的事件。微架构探索结果显示在分层列中以加强表征的自上而下的性质。**“摘要**”（Summary） 窗口显示整个应用程序的每个类别中管道槽的百分比。您可以通过多种方式探索结果。浏览结果的最常见方法是在函数级别查看指标。
+英特尔 VTune™ Profiler 提供一种微架构探索分析类型，该分析类型经过预配置，可收集自上而下表征中定义的事件，从英特尔微架构代号 Ivy Bridge 开始。微架构探索还收集计算许多其他有用性能指标所需的事件。微架构探索结果显示在分层列中以加强表征的自上而下的性质。<strong>“摘要</strong>”（Summary） 窗口显示整个应用程序的每个类别中管道槽的百分比。您可以通过多种方式探索结果。浏览结果的最常见方法是在函数级别查看指标。
 
 ![](https://proxy-prod.omnivore-image-cache.app/697x214,sJSqPCPuhaRDuXpTNVgGpW_D8pYXNTMNMp3ThekQl8N0/https://picx.zhimg.com/50/v2-ec633fa1998f3f47e6385dcf76a4d02b_720w.jpg?source=2c26e567)
 
@@ -177,7 +177,7 @@ Intel OneAPI basekit 提供的 Vtune 可以帮助查看 Kernel 具体的运行�
 
 本文主要简要介绍如何使用 Vtune dump 当前运行在 Intel GPU 上的算子是否存在 SLM bank conflict。Vtune 目前提供了查看 Kernel 事件的状态，但效果不如 nvprof，nsight 直观，但是定位问题基本够了。
 
-## **安装环境：**
+## <strong>安装环境：</strong>
 
  首先你得有一台 Intel 的独立显卡（哈哈哈，是不是压根没听过\~\~\~），然后安装 Vtune。Vtune 建议直接使用 oneapi 中的。
 
@@ -185,11 +185,11 @@ Install [Intel® oneAPI Base Toolkit](https://www.intel.cn/content/www/cn/zh/dev
 
  如果你有使用 Vtune 的需求，想必环境啥的都 Ok 了吧。
 
-## **Analyze XVE Stalls**
+## <strong>Analyze XVE Stalls</strong>
 
- 可以通过 dump XVE stalls 来分析bank conflict。**目前该功能只适用于 Intel MAX 系列 GPU.** 
+ 可以通过 dump XVE stalls 来分析bank conflict。<strong>目前该功能只适用于 Intel MAX 系列 GPU.</strong> 
 
-### **overview 分析**
+### <strong>overview 分析</strong>
 
 如果怀疑 Intel GPU 未被充分利用，我们可以使用 Vtune 来获取 Xe Vector Engines (XVEs) 执行 kernel 的具体状态 ，从而来探究 GPU stack 中某些部分出现停滞或空闲行为的原因。当一个 Kernel code 比较复杂并难以分析的时候， 最好的方式就是实际 Vtune 抓 log 看看情况。
 
@@ -214,7 +214,7 @@ vtune -collect gpu-hotspots -knob characterization-mode=overview -r ~/output ./w
 
 ![](https://proxy-prod.omnivore-image-cache.app/1449x0,sVhgqnxSA4UpwxDbjfMw2FnYGzQrgPTk6xctxElVzcwk/https://pica.zhimg.com/50/v2-91dc20ed9d3b92f7faae4565b37d2de6_720w.jpg?source=1def8aca)
 
-### **GPU stalled 分析**
+### <strong>GPU stalled 分析</strong>
 
 ```gradle
 vtune -collect gpu-hotspots -knob profiling-mode=source-analysis -knob source-analysis=stall-sampling -r ~/output-stall ./workload
@@ -222,13 +222,13 @@ vtune -collect gpu-hotspots -knob profiling-mode=source-analysis -knob source-an
 
 将 output-stall 导入 vtune-gui，通过 vtune 我们可以切换到图形视图以查看停滞次数的分布。
 
-**_Make sure to select the Computing Task/Function grouping in the Graphics view to locate the stalls for each computing task._**
+<strong>_Make sure to select the Computing Task/Function grouping in the Graphics view to locate the stalls for each computing task._</strong>
 
 ![](https://proxy-prod.omnivore-image-cache.app/1458x0,sR7NtL23l2K4oUy-Vq8d05QDfXeRPdjamM5zjZzVAilg/https://pica.zhimg.com/50/v2-c8736a649203980de6c406f58fa48cde_720w.jpg?source=1def8aca)
 
 可以看到具体 GPU 上 launch kernel 的 stall 状态，从上图可以看到 compute\_sp\_v8 等算子存在少量的 bank conflict，但是整体比例不是很高。
 
-其中 Pipe 的比例越高，其 SLM bank conflict 的情况越明显。除了 SLM bank conflict 导致的 gpu stall， Vtune 还列出了其他几类情况 **_There may be several possible reasons for a stall in your Xe Vector Engine (XVE). The following table describes these reasons:_**
+其中 Pipe 的比例越高，其 SLM bank conflict 的情况越明显。除了 SLM bank conflict 导致的 gpu stall， Vtune 还列出了其他几类情况 <strong>_There may be several possible reasons for a stall in your Xe Vector Engine (XVE). The following table describes these reasons:_</strong>
 
 | Reason for XVE Stall | Explanation                                                                                                                                                                                                       |
 | -------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |

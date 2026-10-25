@@ -23,7 +23,7 @@ source_url: https://zhuanlan.zhihu.com/p/191393788
 
 这里和后续的改进会放到这个项目：
 
-[![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_e5ca62d61e36.jpg)BlinkDL/minGPT-tunedgithub.com/BlinkDL/minGPT-tuned](https://link.zhihu.com/?target=https%3A//github.com/BlinkDL/minGPT-tuned)
+[![](/images/collections/0.raw/zhihu/dl%E8%AE%BA%E6%96%87/asset/img_e5ca62d61e36.jpg)BlinkDL/minGPT-tunedgithub.com/BlinkDL/minGPT-tuned](https://link.zhihu.com/?target=https%3A//github.com/BlinkDL/minGPT-tuned)
 
 ### 改进一：不妨称为 "Time-weighting"
 
@@ -45,7 +45,7 @@ att = self.attn_drop(att) # 这是原始代码`
 
 下图是典型的训练出的 time_weighting，很光滑：
 
-![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_de27ad0facb2.jpg)
+![](/images/collections/0.raw/zhihu/dl%E8%AE%BA%E6%96%87/asset/img_de27ad0facb2.jpg)
 
 右边的凸起是 local context 效应，左边的凸起是 global context 效应。有趣的是中间略低，说明在距离20个字左右时，写作者会避免累赘重复。
 
@@ -59,11 +59,11 @@ att = self.attn_drop(att) # 这是原始代码`
 
 我认为，自注意力机制，其实在做三种事情：
 
-**第一，把 global context 加到每个字上。**
+<strong>第一，把 global context 加到每个字上。</strong>
 
-**第二，让每个字的意图逐渐统一。**
+<strong>第二，让每个字的意图逐渐统一。</strong>
 
-**第三，重复之前出现过的字组合。**例如，如果最近出现了AB，我们在再遇到A时，下一个字是B的概率显然在Bayesian意义上更大了。这是一种常见的语言现象，对应语言的长程关联中的 burst 性质。
+<strong>第三，重复之前出现过的字组合。</strong>例如，如果最近出现了AB，我们在再遇到A时，下一个字是B的概率显然在Bayesian意义上更大了。这是一种常见的语言现象，对应语言的长程关联中的 burst 性质。
 
 然而，如果仔细观察目前的自注意力模块的设计，会发现，它并不擅长直接完成任务三，而是只能用拐弯抹角的方法完成。这会降低学习效率，网络还可能会用过拟合的错误方式完成此任务。
 
@@ -88,7 +88,7 @@ v = self.value(x).view(B, T, self.n_head, C // self.n_head).transpose(1, 2) # �
 
 Perplexity 曲线，训练更快，最终效果更好：
 
-![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_6fd0a9b860a9.jpg)
+![](/images/collections/0.raw/zhihu/dl%E8%AE%BA%E6%96%87/asset/img_6fd0a9b860a9.jpg)
 
 欢迎关注项目：
 

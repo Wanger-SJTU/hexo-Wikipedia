@@ -33,7 +33,7 @@ Here, let's discuss the release version or the installed package at first. The p
 
 **
 
-![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_36faf2bab129.jpg)
+![](/images/collections/0.raw/zhihu/%E8%B5%B0%E5%90%91cs/asset/img_36faf2bab129.jpg)
 
 #### nn
 
@@ -85,19 +85,19 @@ All kinds of utility codes are located here. This includes dataset related code 
 
 In mathematics, a tensor** is an algebraic object that describes a linear mapping from one set of algebraic objects to another. Objects that tensors may map between include, but are not limited to, vectors and scalars, and, recursively, even other tensors. The tensor is the central data structure in PyTorch.  It's an n-dimensional data structure containing some sort of scalar type, e.g., floats, ints, et cetera. We can think of a tensor as consisting of some data, and then some metadata describing the size of the tensor, the type of the elements in contains (dtype), what device the tensor lives on (CPU memory,  CUDA memory) 
 
-![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_708d8059507b.jpg)
+![](/images/collections/0.raw/zhihu/%E8%B5%B0%E5%90%91cs/asset/img_708d8059507b.jpg)
 
 What is tensorHow Tensor organizes
 
 TH library is responsible for the computation, storage and memory management of Tensor. It divides the "Tensor" into two separate parts: Storage and Access/View. 
 
-Storage: **THStorage**. It manages the way of storing the Tensor.
+Storage: <strong>THStorage</strong>. It manages the way of storing the Tensor.
 
-Access: **THTensor**. It provides access to the user.
+Access: <strong>THTensor</strong>. It provides access to the user.
 
 **
 
-![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_24e855bbb861.jpg)
+![](/images/collections/0.raw/zhihu/%E8%B5%B0%E5%90%91cs/asset/img_24e855bbb861.jpg)
 
 #### Data Storage
 
@@ -134,11 +134,11 @@ Access: **THTensor**. It provides access to the user.
 } THTensor;
 `
 
-- **nDimension**: The number of dimensions
-- **size**: It contains the length information of all dimensions.
-- **refcount**: Reference count 
-- **storage**: Pointer of this data structure
-- **stride**: The size of each dimension.
+- <strong>nDimension</strong>: The number of dimensions
+- <strong>size</strong>: It contains the length information of all dimensions.
+- <strong>refcount</strong>: Reference count 
+- <strong>storage</strong>: Pointer of this data structure
+- <strong>stride</strong>: The size of each dimension.
 
 #### Memory Allocator
 
@@ -185,7 +185,7 @@ It is hard and not straightforward enough to understand stride and storage offse
 
 A tensor is a mathematical concept. But to represent it on our computers, we have to define some sort of physical representation for them. The most common representation is to lay out each element of the tensor contiguously in memory (that's where the term contiguous comes from), writing out each row to memory.
 
-![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_d80e0c0fbf78.jpg)
+![](/images/collections/0.raw/zhihu/%E8%B5%B0%E5%90%91cs/asset/img_d80e0c0fbf78.jpg)
 
 Please notice the relationship of sizes and strides. If we get a tensor with a size of (D,H,W) and this tensor is directly defined by users rather than a slice or result of some operation, the stride of it will be (H*W, W, 1). You can compare and draw a conclusion yourself. Each stride element in a certain dimension will be the product of all the following dimensions, and the stride of the last dimension will be 1. 
 
@@ -193,11 +193,11 @@ Physically, stride means how many blocks of memory computer need to skip to get 
 
 In the example image above, I've specified that the tensor contains 32-bit integers, so you can see that each integer lies in a physical address, each offset four bytes from each other. To remember what the actual dimensions of the tensor are, we have to also record what the sizes are as extra metadata. 
 
-![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_0077afd02dfa.jpg)
+![](/images/collections/0.raw/zhihu/%E8%B5%B0%E5%90%91cs/asset/img_0077afd02dfa.jpg)
 
 Then comes the memory offset. What does this mean? As we have mentioned before, tensor storage may support multiple tensor views, and if we sliced the first N elements, then we will start from the N+1 memory position. The following examples will give a further explanation.
 
-![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_e9f6b23482dc.jpg)
+![](/images/collections/0.raw/zhihu/%E8%B5%B0%E5%90%91cs/asset/img_e9f6b23482dc.jpg)
 
 You can see in the left example, we start at the third element block, so that means we skip two-block, and here the offset is 2. Because of the slice, the two-dimensional tensor becomes one-dimensional tensor, and conjoint elements are continuous in physical storage, this means the strides is [1]. Size is the number of elements in this case and it is 2. 
 
@@ -209,13 +209,13 @@ What's more, if you still find it somehow difficult to understand, you may try t
 
 As we know, although in Python, you can use any type of data as you wish, as the interpreter will take care of the rest of the things. However, since the basic kernels are written in C/C++, functions from Python need to be dispatched into the same functions with different input and device types. To a C/C++ functions, a certain function cannot take in `int` and `float` Tensor as the same `X` at the same time, they need separate implementation.
 
-![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_b6c96f8ca79d.jpg)
+![](/images/collections/0.raw/zhihu/%E8%B5%B0%E5%90%91cs/asset/img_b6c96f8ca79d.jpg)
 
 #### How to dispatch
 
 As we discussed above, the basic C/C++ implementation needs to dispatch according to data and device type. But in code, how to actually do this work?
 
-![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_853e060765bc.jpg)
+![](/images/collections/0.raw/zhihu/%E8%B5%B0%E5%90%91cs/asset/img_853e060765bc.jpg)
 
 There are basically three methods.
 
@@ -393,7 +393,7 @@ We will only trace here and this shows a representative example of how PyTorch i
 
 Autograd is a method that supports automatic computation of gradient which will be used in the backpropagation. Autograd depends directly on the computational graph. The computational graph is used for defining the pipeline of a model. It combines functions with variables and shows how they connect to each other.
 
-![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_2b7999a1576b.jpg)
+![](/images/collections/0.raw/zhihu/%E8%B5%B0%E5%90%91cs/asset/img_2b7999a1576b.jpg)
 
 A directed graph with the following property:
 
@@ -408,15 +408,15 @@ Pytorch, on the other hand, utilizes a dynamic graph. The structure of the graph
 
 Here is an example of the inner code of autograd. 
 
-![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_b03642d27914.jpg)
+![](/images/collections/0.raw/zhihu/%E8%B5%B0%E5%90%91cs/asset/img_b03642d27914.jpg)
 
 Here we will elaborate on these parameters which get involved in this process.
 
-- Data**: It’s the data a variable is holding. ** 
-- requires_grad**: This member, if true starts tracking all the operation history and forms a backward graph for gradient calculation. ** 
-- grad:** grad holds the value of gradient. If requires_grad is False it will hold a None value. Even if requires_grad is True, it will hold a None value unless .backward() function is called from some other node.** 
-- grad_fn:** This is the backward function used to calculate the gradient.** 
-- is_leaf**: A node is leaf if :** 
+- Data<strong>: It’s the data a variable is holding.</strong> 
+- requires_grad<strong>: This member, if true starts tracking all the operation history and forms a backward graph for gradient calculation.</strong> 
+- grad:<strong>grad holds the value of gradient. If requires_grad is False it will hold a None value. Even if requires_grad is True, it will hold a None value unless .backward() function is called from some other node.</strong> 
+- grad_fn:<strong>This is the backward function used to calculate the gradient.</strong> 
+- is_leaf<strong>: A node is leaf if :</strong> 
 -  It was initialized explicitly by some function like x = torch.tensor(1.0) or x = torch.randn(1, 1) (basically all the tensor initializing methods discussed at the beginning of this post).
  
 -  It is created after operations on tensors which all have requires_grad = False.
@@ -424,27 +424,27 @@ Here we will elaborate on these parameters which get involved in this process.
 -  It is created by calling .detach() method on some tensor.
  
 
-![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_44522fdf6202.jpg)
+![](/images/collections/0.raw/zhihu/%E8%B5%B0%E5%90%91cs/asset/img_44522fdf6202.jpg)
 
 ### Pytorch Source Code Composition
 
 Since different data type, different devices are supported, and python code call C/C++ based code, the source code structure is not easy to understand. Here is the most important parts in the root directory.
 
-![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_10c6dcda94d3.jpg)
+![](/images/collections/0.raw/zhihu/%E8%B5%B0%E5%90%91cs/asset/img_10c6dcda94d3.jpg)
 
 And provide a more detailed directory comment as well as explanation below.
 
-![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_1ed45ec64332.jpg)
+![](/images/collections/0.raw/zhihu/%E8%B5%B0%E5%90%91cs/asset/img_1ed45ec64332.jpg)
 
 #### Explanation of crucial folders
 
 #### C10
 
-C**affe **Ten**sor Library: Most basic tensor library. Codes here can be deployed to mobile devices as well as servers. It contains the core abstractions of PyTorch, including the actual implementations of the Tensor and Storage data structures.
+C<strong>affe</strong>Ten**sor Library: Most basic tensor library. Codes here can be deployed to mobile devices as well as servers. It contains the core abstractions of PyTorch, including the actual implementations of the Tensor and Storage data structures.
 
 #### ATen
 
-**A** **TEN**sor library for C++11, the C++ tensor library for Pytorch. It is a C++ library that implements the **operations** of Tensors. If you're looking for where some kernel code lives, chances are it's in ATen. ATen itself bifurcates into two neighborhoods of operators: the "native" operators, which are modern, C++ implementations of operators, and the "legacy" operators (TH, THC, THNN, THCUNN), which are legacy, C implementations. The legacy operators are the bad part of town; try not to spend too much time there if you can. 
+<strong>A</strong> <strong>TEN</strong>sor library for C++11, the C++ tensor library for Pytorch. It is a C++ library that implements the <strong>operations</strong> of Tensors. If you're looking for where some kernel code lives, chances are it's in ATen. ATen itself bifurcates into two neighborhoods of operators: the "native" operators, which are modern, C++ implementations of operators, and the "legacy" operators (TH, THC, THNN, THCUNN), which are legacy, C implementations. The legacy operators are the bad part of town; try not to spend too much time there if you can. 
 
 #### Caffe2
 
@@ -462,7 +462,7 @@ The C++ code that implements what you might call the frontend of PyTorch. In mor
 
 **
 
-![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_89009a0ebd6c.jpg)
+![](/images/collections/0.raw/zhihu/%E8%B5%B0%E5%90%91cs/asset/img_89009a0ebd6c.jpg)
 
 ### Basic Condition of Memory Management in Pytorch
 
@@ -551,11 +551,11 @@ function.c**
     }
 }`
 
-**Compile**
+<strong>Compile</strong>
 
 `gcc -fPIC -shared -o libfun.so function.c`
 
-**function.py**
+<strong>function.py</strong>
 
 `import ctypes 
 NUM = 16      

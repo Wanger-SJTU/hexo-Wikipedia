@@ -29,7 +29,7 @@ categories:
 
 # Learn Harness Engineering
 
-> **Un cours basé sur des projets consacré à la construction de l'environnement, de la gestion d'état, de la vérification et des mécanismes de contrôle qui permettent aux agents de codage IA de fonctionner de manière fiable.**
+> <strong>Un cours basé sur des projets consacré à la construction de l'environnement, de la gestion d'état, de la vérification et des mécanismes de contrôle qui permettent aux agents de codage IA de fonctionner de manière fiable.</strong>
 
 Learn Harness Engineering est un cours dédié à l'ingénierie des agents de codage IA. Nous avons étudié et synthétisé en profondeur les théories et pratiques les plus avancées en matière de Harness Engineering dans l'industrie. Nos références principales incluent :
 
@@ -38,7 +38,7 @@ Learn Harness Engineering est un cours dédié à l'ingénierie des agents de co
 - [Anthropic : Harness design for long-running application development](https://www.anthropic.com/engineering/harness-design-long-running-apps)
 - [Awesome Harness Engineering](https://github.com/walkinglabs/awesome-harness-engineering)
 
-> **Démarrage rapide ?** Le skill [`skills/harness-creator/`](../../skills/harness-creator/) peut vous aider à générer un harness de niveau production (AGENTS.md, listes de fonctionnalités, init.sh, flux de vérification) pour votre propre projet en quelques minutes.
+> <strong>Démarrage rapide ?</strong> Le skill [`skills/harness-creator/`](../../skills/harness-creator/) peut vous aider à générer un harness de niveau production (AGENTS.md, listes de fonctionnalités, init.sh, flux de vérification) pour votre propre projet en quelques minutes.
 
 ---
 
@@ -85,7 +85,7 @@ Le dépôt inclut désormais un pipeline de génération de PDF pour le contenu 
 
 ## Le modèle est intelligent, le harness le rend fiable
 
-Il y a une dure vérité que la plupart des gens apprennent à leurs dépens : **le modèle le plus puissant au monde échouera toujours sur de vraies tâches d'ingénierie si vous ne construisez pas un environnement approprié autour de lui.**
+Il y a une dure vérité que la plupart des gens apprennent à leurs dépens : <strong>le modèle le plus puissant au monde échouera toujours sur de vraies tâches d'ingénierie si vous ne construisez pas un environnement approprié autour de lui.</strong>
 
 Vous l'avez probablement constaté vous-même. Vous donnez une tâche à Claude ou GPT dans votre dépôt. Cela commence bien -- il lit des fichiers, écrit du code, semble productif. Puis quelque chose tourne mal. Il saute une étape. Il casse un test. Il dit « terminé » mais rien ne fonctionne vraiment. Vous passez plus de temps à corriger qu si vous l'aviez fait vous-même.
 
@@ -95,7 +95,7 @@ Les preuves sont claires. Anthropic a mené une expérience contrôlée : même 
 
 OpenAI a rapporté la même chose avec Codex : dans un dépôt bien équipé d'un harness, le même modèle passe de « peu fiable » à « fiable ». Pas une amélioration marginale -- un changement qualitatif.
 
-**Ce cours vous apprend à construire cet environnement.**
+<strong>Ce cours vous apprend à construire cet environnement.</strong>
 
 ```text
                     LE MODÈLE HARNESS
@@ -156,17 +156,17 @@ Un harness comporte cinq sous-systèmes :
 
 Chaque sous-système a une seule responsabilité :
 
-- **Instructions** -- Indiquent à l'agent ce qu'il doit faire, dans quel ordre, et ce qu'il doit lire avant de commencer. Pas un fichier gigantesque ; une structure à divulgation progressive que l'agent navigue selon ses besoins.
-- **State** -- Suivi de ce qui a été fait, de ce qui est en cours et de ce qui reste à faire. Les données sont persistées sur disque pour que la prochaine session reprenne exactement là où la précédente s'est arrêtée.
-- **Verification** -- Seul un jeu de tests qui passe constitue une preuve. L'agent ne peut pas déclarer victoire sans une preuve exécutable.
-- **Scope** -- Limite l'agent à une seule fonctionnalité à la fois. Pas de surcharge. Pas de trois choses à moitié terminées. Pas de réécriture de la liste de fonctionnalités pour masquer le travail inachevé.
-- **Session Lifecycle** -- Initialisation au démarrage. Nettoyage à la fin. Laisser un chemin de redémarrage propre pour la prochaine session.
+- <strong>Instructions</strong> -- Indiquent à l'agent ce qu'il doit faire, dans quel ordre, et ce qu'il doit lire avant de commencer. Pas un fichier gigantesque ; une structure à divulgation progressive que l'agent navigue selon ses besoins.
+- <strong>State</strong> -- Suivi de ce qui a été fait, de ce qui est en cours et de ce qui reste à faire. Les données sont persistées sur disque pour que la prochaine session reprenne exactement là où la précédente s'est arrêtée.
+- <strong>Verification</strong> -- Seul un jeu de tests qui passe constitue une preuve. L'agent ne peut pas déclarer victoire sans une preuve exécutable.
+- <strong>Scope</strong> -- Limite l'agent à une seule fonctionnalité à la fois. Pas de surcharge. Pas de trois choses à moitié terminées. Pas de réécriture de la liste de fonctionnalités pour masquer le travail inachevé.
+- <strong>Session Lifecycle</strong> -- Initialisation au démarrage. Nettoyage à la fin. Laisser un chemin de redémarrage propre pour la prochaine session.
 
 ---
 
 ## Pourquoi ce cours existe
 
-La question n'est pas « les modèles peuvent-ils écrire du code ? » Ils le peuvent. La question est : **peuvent-ils accomplir de manière fiable de vraies tâches d'ingénierie dans de vrais dépôts, sur plusieurs sessions, sans supervision humaine constante ?**
+La question n'est pas « les modèles peuvent-ils écrire du code ? » Ils le peuvent. La question est : <strong>peuvent-ils accomplir de manière fiable de vraies tâches d'ingénierie dans de vrais dépôts, sur plusieurs sessions, sans supervision humaine constante ?</strong>
 
 Pour l'instant, la réponse est : pas sans un harness.
 
@@ -202,13 +202,13 @@ Les questions auxquelles ce cours s'intéresse réellement :
 
 ## Programme d'Études et Documentation
 
-Pour l'ensemble des matériaux du cours, veuillez visiter le **[Site de Documentation](https://walkinglabs.github.io/learn-harness-engineering/)**.
+Pour l'ensemble des matériaux du cours, veuillez visiter le <strong>[Site de Documentation](https://walkinglabs.github.io/learn-harness-engineering/)</strong>.
 
 Le programme est divisé en trois parties :
 
-1. **Cours magistraux** : 12 unités conceptuelles expliquant la théorie derrière le Harness Engineering.
-2. **Projets** : 6 projets pratiques où vous construisez un espace de travail agentique à partir de zéro.
-3. **Bibliothèque de Ressources** : Des modèles prêts à copier (`AGENTS.md`, `feature_list.json`, `init.sh`, etc.) à utiliser dans vos propres dépôts dès aujourd'hui.
+1. <strong>Cours magistraux</strong> : 12 unités conceptuelles expliquant la théorie derrière le Harness Engineering.
+2. <strong>Projets</strong> : 6 projets pratiques où vous construisez un espace de travail agentique à partir de zéro.
+3. <strong>Bibliothèque de Ressources</strong> : Des modèles prêts à copier (`AGENTS.md`, `feature_list.json`, `init.sh`, etc.) à utiliser dans vos propres dépôts dès aujourd'hui.
 
 ---
 
@@ -234,7 +234,7 @@ Récupérez les modèles de démarrage depuis la [Bibliothèque de Ressources](h
 
 ## Projet Final : Une véritable application
 
-Les six projets du cours gravitent autour du même produit : **une application de bureau de base de connaissances personnelle basée sur Electron**.
+Les six projets du cours gravitent autour du même produit : <strong>une application de bureau de base de connaissances personnelle basée sur Electron</strong>.
 
 ```text
     ┌─────────────────────────────────────────────────────┐
@@ -397,7 +397,7 @@ Chaque phase prend environ une semaine si vous suivez le cours à temps partiel.
 
 ## Le Cycle de Vie de la Session de l'Agent
 
-L'une des idées centrales de ce cours : **la session de l'agent doit suivre un cycle de vie structuré, pas être laissée au hasard.** Voici à quoi cela ressemble :
+L'une des idées centrales de ce cours : <strong>la session de l'agent doit suivre un cycle de vie structuré, pas être laissée au hasard.</strong> Voici à quoi cela ressemble :
 
 ```text
     CYCLE DE VIE DE LA SESSION DE L'AGENT
@@ -568,7 +568,7 @@ learn-harness-engineering/
 
 Ce dépôt inclut également des skills réutilisables pour agents IA que vous pouvez installer directement dans votre IDE ou espace de travail agentique.
 
-- [**harness-creator**](../../skills/harness-creator/) : Un skill qui vous aide à générer un harness de niveau production pour votre propre projet en quelques minutes.
+- [<strong>harness-creator</strong>](../../skills/harness-creator/) : Un skill qui vous aide à générer un harness de niveau production pour votre propre projet en quelques minutes.
 
 ---
 
@@ -578,7 +578,7 @@ Notre équipe a également créé d'autres cours ! Découvrez-les :
 
 [![Hands-on Modern RL](https://img.shields.io/badge/HANDS--ON_MODERN_RL-0052cc?style=for-the-badge)](https://github.com/walkinglabs/hands-on-modern-rl)
 
-**Hands-on Modern RL** : Un programme pratique et open source qui comble le fossé entre les concepts de base de l'apprentissage par renforcement et l'alignement des LLM, le RLVR et les systèmes agentiques avancés.
+<strong>Hands-on Modern RL</strong> : Un programme pratique et open source qui comble le fossé entre les concepts de base de l'apprentissage par renforcement et l'alignement des LLM, le RLVR et les systèmes agentiques avancés.
 
 ---
 

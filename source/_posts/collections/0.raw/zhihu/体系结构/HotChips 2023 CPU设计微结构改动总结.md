@@ -35,9 +35,9 @@ core流水线前端的改进：
 
 注意：mop Cache在X3,N2中还有，但是到了X4，N3中被去掉的：**
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_d15324b1692e.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_d15324b1692e.jpg)
 
-ARM X4去掉了Mop Cache![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_ddd2d067d7c2.jpg)
+ARM X4去掉了Mop Cache![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_ddd2d067d7c2.jpg)
 
 5. Malloc后的memset操作会把cacheline memset为0, 自动detect这种streaming write 写操作，对于这类store miss，不在L1和L2 cache中allocate, 避免污染cache, 直接写回memory或者SLC
 
@@ -79,11 +79,11 @@ ARM X4去掉了Mop Cache![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7
 
 ### Ventana V1
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_74361b53f872.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_74361b53f872.jpg)
 
 Veyron V1 流水线框图1. Icache 512KB, **dcache: 64KB, private L2 512KB
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_adfbb72c4d8a.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_adfbb72c4d8a.jpg)
 
 **
 
@@ -95,15 +95,15 @@ Veyron V1 流水线框图1. Icache 512KB, **dcache: 64KB, private L2 512KB
 
 5. Fetch最多64B/cycle, 流水线中运行的是fused或者unfused ops，即decode后只存在uop，uop可能是fused也可能是unfused指令
 
-6. 所有整形执行单元都是对称的: 即每个cycle可以任意执行以下四个ops: reg/load/store/branch。**注意这里可以同时执行4个load或者4个store指令，这个是非常激进的，每个pipe都是可以同时支持load/store的，猜测load优先级比store高，或者的load比store高**
+6. 所有整形执行单元都是对称的: 即每个cycle可以任意执行以下四个ops: reg/load/store/branch。<strong>注意这里可以同时执行4个load或者4个store指令，这个是非常激进的，每个pipe都是可以同时支持load/store的，猜测load优先级比store高，或者的load比store高</strong>
 
 7. Mul/div/pcnt/clmul/csr通过共享执行单元
 
-**8.** **Scheduler window: 128 entry，相比而言算很大的。**
+<strong>8.</strong> <strong>Scheduler window: 128 entry，相比而言算很大的。</strong>
 
-**9.** **LUI指令消除，这类指令的处理类似于ARM的mov x1, x2，通过rename stage就可以搞定，直接标记为写回等待提交即可，不需要真正进入执行单元**
+<strong>9.</strong> <strong>LUI指令消除，这类指令的处理类似于ARM的mov x1, x2，通过rename stage就可以搞定，直接标记为写回等待提交即可，不需要真正进入执行单元</strong>
 
-**10.** **分开Icache/Dcache，L0 I cache buffer + L2 512KB Icache, ** **L1D 64KB, L2D 512KB, 分开后的好处是可以单独针对I/D的power/latency等定向优化，对于footprint大的负载还能做到性能隔离互不影响**
+<strong>10.</strong> <strong>分开Icache/Dcache，L0 I cache buffer + L2 512KB Icache,</strong> <strong>L1D 64KB, L2D 512KB, 分开后的好处是可以单独针对I/D的power/latency等定向优化，对于footprint大的负载还能做到性能隔离互不影响</strong>
 
 11. 4cycle load to use latency，没什么特殊
 
@@ -117,7 +117,7 @@ Veyron V1 流水线框图1. Icache 512KB, **dcache: 64KB, private L2 512KB
 
     b) 紧耦合低延迟的L1D、L2cache
 
-    c) **L1D：VIVT. **DCache miss后访问DTLB，硬件处理同义问题，对于多对一的读可以共存，常见的L1D一般是VIPT。
+    c) <strong>L1D：VIVT.</strong>DCache miss后访问DTLB，硬件处理同义问题，对于多对一的读可以共存，常见的L1D一般是VIPT。
 
     d) Inclusive write through L2：写回的L2比较常见，写穿的比较少见。
 
@@ -129,9 +129,9 @@ Veyron V1 流水线框图1. Icache 512KB, **dcache: 64KB, private L2 512KB
 
 15. L3是L2的victim cache，non-inclusve， NINE
 
-**16.** **为什么8-wide的流水线只有4个int执行单元? 答：考虑到Flexibility, 后端瓶颈主要来源于memory, 其他执行单元多了也没用(https://chipsandcheese.com/2023//hot-chips-2023-ventanas-unconventional-veyron-v1/)**
+<strong>16.</strong> <strong>为什么8-wide的流水线只有4个int执行单元? 答：考虑到Flexibility, 后端瓶颈主要来源于memory, 其他执行单元多了也没用(https://chipsandcheese.com/2023//hot-chips-2023-ventanas-unconventional-veyron-v1/)</strong>
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_ed6ee2ff1561.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_ed6ee2ff1561.jpg)
 
 SandyBridge的端口利用率
 ### Intel Xeon E-core(Sierra Forest)
@@ -148,9 +148,9 @@ SandyBridge的端口利用率
 
 ### P870 RISC-V
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_52d071312f99.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_52d071312f99.jpg)
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_3f0ea1b894ef.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_3f0ea1b894ef.jpg)
 
 1. BP3和译码做到一起：猜测应该是Decode bypass，也就是microOp Cache hit时，不需要decode直接进入rename
 

@@ -20,8 +20,8 @@ verification gates improve delivery accuracy across restarts.
 
 | Directory | Meaning |
 |------|------|
-| `starter/` | **Starting point**: based on the P2 solution, with document chunking, metadata extraction, index status, and grounded QA still to implement. It has a starter `feature_list.json`, but lacks the full restart harness (`init.sh`, `session-handoff.md`, `claude-progress.md`, clean-state checklist). |
-| `solution/` | **Reference implementation**: all features are implemented. AGENTS.md includes the "one feature at a time" strategy, and the repo adds restart/continuity artifacts (`init.sh`, `session-handoff.md`, `claude-progress.md`, `clean-state-checklist.md`). |
+| `starter/` | <strong>Starting point</strong>: based on the P2 solution, with document chunking, metadata extraction, index status, and grounded QA still to implement. It has a starter `feature_list.json`, but lacks the full restart harness (`init.sh`, `session-handoff.md`, `claude-progress.md`, clean-state checklist). |
+| `solution/` | <strong>Reference implementation</strong>: all features are implemented. AGENTS.md includes the "one feature at a time" strategy, and the repo adds restart/continuity artifacts (`init.sh`, `session-handoff.md`, `claude-progress.md`, `clean-state-checklist.md`). |
 
 ## How to Use
 

@@ -25,7 +25,7 @@ source_url: https://zhuanlan.zhihu.com/p/2045187571597174770
 
 预测开销-准确性
 
-**Taming Latency-Memory Trade-Off in MoE-Based LLM Serving via Fine-Grained Expert Offloading（Eurosys26）**
+<strong>Taming Latency-Memory Trade-Off in MoE-Based LLM Serving via Fine-Grained Expert Offloading（Eurosys26）</strong>
 已有方法是请求级做预测（coarsed grained）。比如MoE-infinity。本文是layer级做预测（fine-grained）。预测准确性如下图所示
 
 ![](https://picx.zhimg.com/v2-4f0bf0979f887a35c12331abd0aac4d5_r.jpg)
@@ -39,7 +39,7 @@ source_url: https://zhuanlan.zhihu.com/p/2045187571597174770
 - 没有讨论自己的trade-off啊。比如预测开销（时间开销，计算资源开销等）和准确性的关系。那要是开销允许无限大的话，我能不能引入几百B的大模型来做每一步的预测？准确性是不是爆表了。
 - 实验是6个3090
 
-**Fate: Fast Edge Inference of Mixture-of-Experts Models via Cross-Layer Gate（WWW26）**
+<strong>Fate: Fast Edge Inference of Mixture-of-Experts Models via Cross-Layer Gate（WWW26）</strong>
 最主要的创新就是用相邻层的hidden state差不多这一特性，直接用这一层的hidden来预测下一层的routing（注意routing本身也有权重的）
 
 其次是，区分了decoding和prefill。prefill更看重所有token都最喜欢的专家是谁，毕竟token多。decoding更看重单个token马上要算哪些专家，毕竟就一个token。所以预测器结构稍有不同。
@@ -52,7 +52,7 @@ source_url: https://zhuanlan.zhihu.com/p/2045187571597174770
 
 实验在1个3090上跑的。
 
-**CommitMoE: Efficient Fallback-Free MoE Inference with Offloading Under GPU Memory Constraints(AAAI26)**
+<strong>CommitMoE: Efficient Fallback-Free MoE Inference with Offloading Under GPU Memory Constraints(AAAI26)</strong>
 
 ![](https://pic1.zhimg.com/v2-f30bca7f0acdde621f7d6949ffc8cb02_r.jpg)有点绷不住啊。。拿4090跑MoE，是要打入PC市场吗，那只有加密需求内部部署才用得到吧，但是为什么不搞个小集群呢。感觉市场好小啊，不是很有趣啊。。。commitmoe是有损的方法！意思是，如果我们预测错了再回去cpu重新搬运的开销太大了。如果说，预测的置信度比较低，那我们将错就错也行。举例：
 

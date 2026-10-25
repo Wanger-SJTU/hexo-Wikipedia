@@ -27,19 +27,19 @@ id: 5c7a8ead-8eb1-455e-9d83-73b0df1e1223
 
 GPT族：Byte-Pair Encoding (BPE)
 
-泻药。**分词**和**嵌入**一直是LM被忽略的一部分。随着各大框架如HF的不断完善，大家对tokenization和embedding的重视程度越来越低，到现在初学者大概只能停留在调用`tokenizer.encode`这样的程度了。
+泻药。<strong>分词</strong>和<strong>嵌入</strong>一直是LM被忽略的一部分。随着各大框架如HF的不断完善，大家对tokenization和embedding的重视程度越来越低，到现在初学者大概只能停留在调用`tokenizer.encode`这样的程度了。
 
 这在实践中是很危险的，比如你要调用ChatGPT的接口，但是经常发现输出被截断了，原因可能就是你输入的句子太长了。你计算句子长度是直接用空格分词，而ChatGPT是用不同的分词法（BPE分词法）。又如你不清楚T5的tokenizer的运作机理，输入数据中存在一些特殊token如'{}'，但不知道T5使用的SentencePiece tokenizer不原生支持这些token，因此发现自己生成的结果有问题，都是<unk>。这些问题听上去比较低级，但是debug起来往往是最秃头的。为了解决这些疑惑，本文会提供一份详细的关于分词和嵌入的答卷。
 
 如果大家用过huggingface，对tokenizer肯定不会陌生。在使用模型前，都需要将sequence过一遍tokenizer，进去的是word序列（句子），出来的是number序列。但是，HF的tokenizer到底在做什么？事实上，tokenizer总体上做三件事情：
 
-1. 分词。tokenizer将字符串**分为一些sub-word token string**，再将token string映射到id，并保留来回映射的mapping。从string映射到id为tokenizer encode过程，从id映射回token为tokenizer decode过程。映射方法有多种，例如BERT用的是WordPiece，GPT-2和RoBERTa用的是BPE等等，后面会详细介绍。
-2. 扩展词汇表。部分tokenizer会用一种统一的方法**将训练语料出现的且词汇表中本来没有的token加入词汇表。**对于不支持的tokenizer，用户也可以手动添加。
-3. **识别并处理特殊token**。特殊token包括\[MASK\], <|im\_start|>, <sos>, <s>等等。tokenizer会将它们加入词汇表中，并且保证它们在模型中不被切成sub-word，而是完整保留。
+1. 分词。tokenizer将字符串<strong>分为一些sub-word token string</strong>，再将token string映射到id，并保留来回映射的mapping。从string映射到id为tokenizer encode过程，从id映射回token为tokenizer decode过程。映射方法有多种，例如BERT用的是WordPiece，GPT-2和RoBERTa用的是BPE等等，后面会详细介绍。
+2. 扩展词汇表。部分tokenizer会用一种统一的方法<strong>将训练语料出现的且词汇表中本来没有的token加入词汇表。</strong>对于不支持的tokenizer，用户也可以手动添加。
+3. <strong>识别并处理特殊token</strong>。特殊token包括\[MASK\], <|im\_start|>, <sos>, <s>等等。tokenizer会将它们加入词汇表中，并且保证它们在模型中不被切成sub-word，而是完整保留。
 
 ### 分词粒度
 
-我们首先来看一下几种不同的分词粒度。最直观的分词是单词分词法（word base）。**单词分词法**将一个**word**作为最小元，也就是根据空格或者标点分词。拿[大模型中的分词器tokenizer](https://zhuanlan.zhihu.com/p/620508648)一文中的例子来说，Today is Sunday用word-base来进行分词会变成\['Today', 'is', 'Sunday'\]。最详尽的分词是**单字分词法**（character-base）。单字分词法会穷举所有出现的**字符**，所以是最完整的。在上面的例子中，单字分词法会生成\['T', 'o', 'd', ..., 'a', 'y'\]。另外还有一种最常用的、介于两种方法之间的分词法叫**子词分词法**，会把上面的句子分成**最小可分**的子词\['To', 'day', 'is', 'S', 'un', 'day'\]。子词分词法有很多不同取得最小可分子词的方法，例如BPE（Byte-Pair Encoding，字节对编码法），WordPiece，SentencePiece，Unigram等等。接下来我们具体看看各大主流模型用的是什么分词法。
+我们首先来看一下几种不同的分词粒度。最直观的分词是单词分词法（word base）。<strong>单词分词法</strong>将一个<strong>word</strong>作为最小元，也就是根据空格或者标点分词。拿[大模型中的分词器tokenizer](https://zhuanlan.zhihu.com/p/620508648)一文中的例子来说，Today is Sunday用word-base来进行分词会变成\['Today', 'is', 'Sunday'\]。最详尽的分词是<strong>单字分词法</strong>（character-base）。单字分词法会穷举所有出现的<strong>字符</strong>，所以是最完整的。在上面的例子中，单字分词法会生成\['T', 'o', 'd', ..., 'a', 'y'\]。另外还有一种最常用的、介于两种方法之间的分词法叫<strong>子词分词法</strong>，会把上面的句子分成<strong>最小可分</strong>的子词\['To', 'day', 'is', 'S', 'un', 'day'\]。子词分词法有很多不同取得最小可分子词的方法，例如BPE（Byte-Pair Encoding，字节对编码法），WordPiece，SentencePiece，Unigram等等。接下来我们具体看看各大主流模型用的是什么分词法。
 
 ### GPT族：Byte-Pair Encoding (BPE)
 
@@ -71,13 +71,13 @@ GPT族：Byte-Pair Encoding (BPE)
 "mountain</w>" -> ["moun", "tain</w>"]
 ```
 
-注意，在上述算法执行后，如果句子中仍然有子字符串没被替换但所有subword都已迭代完毕，则将剩余的子词替换为特殊token，如<unk> 。从这里大家也可以发现了，**原则上<unk>这个token出现的越少越好**，所以我们也往往用<unk>的数量来评价一个tokenizer的好坏程度，这个token出现的越少，tokenizer的效果往往越好。
+注意，在上述算法执行后，如果句子中仍然有子字符串没被替换但所有subword都已迭代完毕，则将剩余的子词替换为特殊token，如<unk> 。从这里大家也可以发现了，<strong>原则上<unk>这个token出现的越少越好</strong>，所以我们也往往用<unk>的数量来评价一个tokenizer的好坏程度，这个token出现的越少，tokenizer的效果往往越好。
 
-管中窥豹，根据BPE算法，我们可以发现，tokenizer基本上是无法并行的，因为存在大量if-else的branch。学过GPU Programming的同学应该知道，conditional branch越多，GPU提供的加速越有限，有时候还会造成负加速，因为数据传输有很大开销。**这就是为什么在tokenizing的时候，我们看到GPU util都是0。**
+管中窥豹，根据BPE算法，我们可以发现，tokenizer基本上是无法并行的，因为存在大量if-else的branch。学过GPU Programming的同学应该知道，conditional branch越多，GPU提供的加速越有限，有时候还会造成负加速，因为数据传输有很大开销。<strong>这就是为什么在tokenizing的时候，我们看到GPU util都是0。</strong>
 
 ### BERT族：Word-Piece
 
-Word-Piece和BPE非常相似，BPE使用**出现最频繁的组合**构造子词词表，而Wordpiece使用**出现概率最大的组合**构造子词词表。换句话说，WordPiece每次选择合并的两个子词，通常在语料中以**相邻方式**同时出现。比如说 P(ed) 的概率比P(e) + P(d)单独出现的概率更大（可能比他们具有最大的互信息值），也就是两个子词在语言模型上具有较强的关联性。这个时候，Word-Piece会将它们组合成一个子词。
+Word-Piece和BPE非常相似，BPE使用<strong>出现最频繁的组合</strong>构造子词词表，而Wordpiece使用<strong>出现概率最大的组合</strong>构造子词词表。换句话说，WordPiece每次选择合并的两个子词，通常在语料中以<strong>相邻方式</strong>同时出现。比如说 P(ed) 的概率比P(e) + P(d)单独出现的概率更大（可能比他们具有最大的互信息值），也就是两个子词在语言模型上具有较强的关联性。这个时候，Word-Piece会将它们组合成一个子词。
 
 有关BERT的tokenizer还有一个重点：BERT在使用Word-Piece时加入了一些特殊的token，例如\[CLS\]和\[SEP\]。我们可以自己试一下：
 
@@ -174,7 +174,7 @@ model.resize_token_embeddings(len(tokenizer))
 
 ## Embedding Layer
 
-tokenize完的下一步就是将token的one-hot编码转换成更dense的embedding编码。在ELMo之前的模型中，embedding模型很多是单独训练的，而ELMo之后则爆发了直接将embedding层和上面的语言模型层共同训练的浪潮（ELMo的全名就是**Embeddings from Language Model**）。不管是哪种方法，Embedding层的形状都是一样的。我们举个例子来看看embedding层是怎么工作的。在huggingface中，seq2seq模型往往是这样调用的：
+tokenize完的下一步就是将token的one-hot编码转换成更dense的embedding编码。在ELMo之前的模型中，embedding模型很多是单独训练的，而ELMo之后则爆发了直接将embedding层和上面的语言模型层共同训练的浪潮（ELMo的全名就是<strong>Embeddings from Language Model</strong>）。不管是哪种方法，Embedding层的形状都是一样的。我们举个例子来看看embedding层是怎么工作的。在huggingface中，seq2seq模型往往是这样调用的：
 
 ```routeros
 input_ids = tokenizer.encode('Hello World!', return_tensors='pt')
@@ -195,11 +195,11 @@ tokenizer.decode(output[0])
 
 ### 理解Embedding矩阵
 
-**Embedding矩阵的本质就是一个查找表**。由于输入向量是one-hot的，**embedding矩阵中有且仅有一行被激活**。行间互不干扰。这是什么意思呢？如下图所示，假设词汇表一共有6个词，则one-hot表示的长度为6。现在我们有三个单词组成一个句子，则输入矩阵的形状为 (3,6)(3, 6) 。然后我们学出来一个embedding矩阵，根据上面的推导，如果我们的embedding size为4，则embedding矩阵的形状应该为 (6,4)(6, 4) 。这样乘出来的输出矩阵的形状应为 (3,4)(3, 4) 。
+<strong>Embedding矩阵的本质就是一个查找表</strong>。由于输入向量是one-hot的，<strong>embedding矩阵中有且仅有一行被激活</strong>。行间互不干扰。这是什么意思呢？如下图所示，假设词汇表一共有6个词，则one-hot表示的长度为6。现在我们有三个单词组成一个句子，则输入矩阵的形状为 (3,6)(3, 6) 。然后我们学出来一个embedding矩阵，根据上面的推导，如果我们的embedding size为4，则embedding矩阵的形状应该为 (6,4)(6, 4) 。这样乘出来的输出矩阵的形状应为 (3,4)(3, 4) 。
 
 ![](https://proxy-prod.omnivore-image-cache.app/1386x456,s7KroGDV5EKExoA4rQvtOzAmHbEVn0kfpjCuZNosRaJQ/https://pic2.zhimg.com/v2-8ea0bcceba39f32e1b5c43d50ad2fb7d_b.jpg)
 
-我在图中用不同颜色标明了三个subword embedding分别的计算过程。对于第一个单词'I'，假设其one-hot编码为 \[0,0,1,0,0,0\]\[0, 0, 1, 0, 0, 0\] ，将其与embedding矩阵相乘，相当于**取出**embedding矩阵的第3行（index为2）。同理，对于单词'love'，相当于**取出**embedding矩阵的第二行（index为1）。这样一来大家就理解了，embedding矩阵的本质是一个**查找表**，每个单词会定位这个表中的某一行，而这一行就是这个单词学习到的在嵌入空间的语义。
+我在图中用不同颜色标明了三个subword embedding分别的计算过程。对于第一个单词'I'，假设其one-hot编码为 \[0,0,1,0,0,0\]\[0, 0, 1, 0, 0, 0\] ，将其与embedding矩阵相乘，相当于<strong>取出</strong>embedding矩阵的第3行（index为2）。同理，对于单词'love'，相当于<strong>取出</strong>embedding矩阵的第二行（index为1）。这样一来大家就理解了，embedding矩阵的本质是一个<strong>查找表</strong>，每个单词会定位这个表中的某一行，而这一行就是这个单词学习到的在嵌入空间的语义。
 
 发布于 2023-05-26 16:18・IP 属地浙江 ，编辑于 2023-07-23 11:29・IP 属地浙江
 

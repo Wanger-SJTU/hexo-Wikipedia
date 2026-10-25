@@ -38,13 +38,13 @@ DDR的bank，die，rank，channel需要在软件中配置，特别在一个平�
 
 如下图DDR的结构：
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_4d7bf51dca90.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_4d7bf51dca90.jpg)
 
 图1从图1中可知，这个DDR芯片有2个Die，2个channel, 但是看不出有多少个Rank，有个方法就是看片选 CS的PIN的命名，如上图，有CS0_A,CS0_B,两个片选PIN，CS0_A中的0表示Rank的编号，A表示channel的编号。所以，这个DDR只有0号Rank，1个Rank。
 
 比较复杂DDR的结构如下图：
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_25b9d415f95e.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_25b9d415f95e.jpg)
 
 图2从图2中可知，这个DDR芯片有8个Die，有A,B,C,D,4个channel,  通过看片选 CS的PIN的命名：
 

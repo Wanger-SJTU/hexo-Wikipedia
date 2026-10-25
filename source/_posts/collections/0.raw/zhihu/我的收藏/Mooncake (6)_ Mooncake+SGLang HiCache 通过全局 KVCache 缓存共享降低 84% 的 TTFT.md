@@ -30,7 +30,7 @@ source_url: https://zhuanlan.zhihu.com/p/1959366095443064318
 
 HiCache 通过引入 HiRadixTree 作为页表，来统一引用 GPU 显存和 CPU 内存中的 KV Cache。同时，Cache Controller 负责自动管理跨层级的数据加载与回写，包括远程 KV Cache 的读取与写入。借助这一机制，HiCache 将 GPU、CPU、SSD 的“闲置”存储空间充分利用，并依赖 Mooncake、3FS、NIXL 等分布式存储系统来实现全局 KV Cache 的存储与调度。在保障读取性能的前提下，KV Cache 的可用容量得到了大幅提升。**
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_e6987ada4852.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_e6987ada4852.jpg)
 
 上图展示了我们在 8 卡 H800 服务器上进行多轮对话测试的实验结果。其中 GPU only、+L2、+Mooncake 分别对应 KVCache 缓存仅包含 GPU VRAM 作为 L1、包含 L1 + 本地 CPU DRAM 作为 L2、以及包含 L1+L2+ 全局的 Mooncake Store  的三种情况。结果清晰表明：通过扩展容量提升缓存命中率对 prefill 性能有显著提升，具体来说
 
@@ -43,15 +43,15 @@ HiCache 通过引入 HiRadixTree 作为页表，来统一引用 GPU 显存和 CP
 
 HiCache 的工作流程主要涉及两个关键操作：预取和写回。当系统收到新的请求时，会首先在本地的 L1 和 L2 中查找匹配的 KV Cache。对于本地未命中的部分，则会尝试从 L3 中预取。在预取结束后，将所有 KV Cache 加载到 GPU 中进行计算。在 Prefill 计算结束后，则会考虑将新的数据存入 L2 或 L3。
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_3978c6b30256.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_3978c6b30256.jpg)
 
 数据预取：**预取采用了多线程、异步计算的方式提高预取效率。线程 `prefetch_thread_func` 会不断从 `prefetch_queue` 中取出可能需要预取操作的 Prefill 请求，并查询 L3 得到 C2，若 C2 超过阈值，则会放入等待预取的 `prefetch_buffer`。同时，`prefetch_io_aux_func` 线程会不断从 `prefetch_buffer` 中取出预取请求，并提交 L3 的后端执行。对于需要预取的数据，Mooncake 会通过 RDMA，并行地从多个远程存储节点中读取数据。这个设计让数据预取可以高效快速地完成。**
 
 在具体实现过程中，预取操作面临一个时间不确定性的挑战**。预取完成时间取决于多种因素，如网络状况、存储后端的负载、数据大小（由模型、参数、需要预取的 token 数量等确定）等，很难准确预测。如果等待时间过长，会导致 prefill 计算延迟显著增加，影响整体推理性能；如果等待时间太短，预取操作可能还没完成就被终止，导致无法利用预取的结果，浪费了预取的开销。因此，HiCache 这里实现的一个重要的创新是提供了三种不同的预取停止策略来应对不同的场景需求：
 
-- **best_effort**：尽力而为模式，GPU 可以执行 prefill 计算时即立刻终止，不会有任何等待时间，适合对延迟极其敏感的场景。
-- **wait_complete**：等待完成模式，必须等待所有预取操作完成，适合对缓存命中率要求极高的场景。
-- **timeout**：超时模式，在指定时间后或完成时终止，平衡了延迟和缓存命中率的需求。
+- <strong>best_effort</strong>：尽力而为模式，GPU 可以执行 prefill 计算时即立刻终止，不会有任何等待时间，适合对延迟极其敏感的场景。
+- <strong>wait_complete</strong>：等待完成模式，必须等待所有预取操作完成，适合对缓存命中率要求极高的场景。
+- <strong>timeout</strong>：超时模式，在指定时间后或完成时终止，平衡了延迟和缓存命中率的需求。
 在预取停止后，已经预取完成的数据（上图中的 C2a 部分）会连同本地的数据（上图中的 C1 部分）一起被用于本次的 Prefill 计算。**我们发现，在实际部署中，`timeout` 策略可能相对来说更为实用。一方面，预取延迟不确定；另一方面，预取截止时间受到 SLO（服务级别目标）的约束。因此，允许用户灵活配置预取超时参数，并根据每个请求的预取 token 数量动态确定超时值，具有很高的实用价值。为此，HiCache 引入了 2 个配置参数来支持精细地控制预取超时条件：
 
 - `prefetch_timeout_base`：基础超时时间，表示与 token 数量无关的开销（如调度和同步）；
@@ -62,9 +62,9 @@ HiCache 的工作流程主要涉及两个关键操作：预取和写回。当系
 
 数据写回：**数据写回机制负责将频繁访问的 KV Cache 从 L1 逐步写回到 L2 和 L3，实现更为长期和大容量的存储，以及跨实例的缓存共享。HiCache 支持三种写入策略：
 
-- **write_through**：每次访问都立即写回到下一层。在带宽允许的情况下，这种策略提供了最强的缓存收益。
-- **write_through_selective**：访问频率达到阈值后才写回到下一层。这种策略只备份热点数据，减少 I/O 负载。
-- **write_back**：在被上一层 evict 时才写回到下一层。这个策略可以有效缓解存储压力，适合存储容量有限但需要最大化内存利用率的场景。
+- <strong>write_through</strong>：每次访问都立即写回到下一层。在带宽允许的情况下，这种策略提供了最强的缓存收益。
+- <strong>write_through_selective</strong>：访问频率达到阈值后才写回到下一层。这种策略只备份热点数据，减少 I/O 负载。
+- <strong>write_back</strong>：在被上一层 evict 时才写回到下一层。这个策略可以有效缓解存储压力，适合存储容量有限但需要最大化内存利用率的场景。
 用户可根据具体的系统配置、使用场景和性能需求选择最适合的写回策略。**
 
 ### 进一步优化
@@ -73,15 +73,15 @@ HiCache 的工作流程主要涉及两个关键操作：预取和写回。当系
 
 - HiCache 支持数据从 L2 内存到 L3 后端时，直接传入内存地址和大小；
 - Mooncake 对上提供了零拷贝的读写接口，支持从 L2 到 RDMA 传输之间完全的零拷贝。预取的时候，可从远端内存通过 RDMA 直接将数据读入 L2 目标内存；写回时，可将 L2 的数据通过 RDMA 直接写入到远端的目标地址，从而实现了整个数据传输过程完全的零拷贝。
-**数据的"整存整取"**：在我们的测试中发现，读写数据的粒度对性能的影响很大。如果每个 token 的每一层 KV 都是一个单独的对象，假设层数为 61，一次性读写的 token 数量为 2048，则会对应约 12.5 万个对象。大量的小对象会极大降低传输效率，增大 L3 的元数据管理负担。为此，HiCache L3 采用 Page 为粒度存储和读写 KV Cache。如果 page size 等于 64，则 2048 个 token 只对应了 32 个对象，对象数量相比于 naive 的方法减少了 3904 倍，相对的，每个对象的大小也增大了 3904 倍。**同时，对于 KV Cache 的数据组织方式，在已有的 `layer first` 的基础上，蚂蚁的 @驰骋翰海
+<strong>数据的"整存整取"</strong>：在我们的测试中发现，读写数据的粒度对性能的影响很大。如果每个 token 的每一层 KV 都是一个单独的对象，假设层数为 61，一次性读写的 token 数量为 2048，则会对应约 12.5 万个对象。大量的小对象会极大降低传输效率，增大 L3 的元数据管理负担。为此，HiCache L3 采用 Page 为粒度存储和读写 KV Cache。如果 page size 等于 64，则 2048 个 token 只对应了 32 个对象，对象数量相比于 naive 的方法减少了 3904 倍，相对的，每个对象的大小也增大了 3904 倍。**同时，对于 KV Cache 的数据组织方式，在已有的 `layer first` 的基础上，蚂蚁的 @驰骋翰海
 
  同学通过 [PR8651](https://link.zhihu.com/?target=https%3A//github.com/sgl-project/sglang/pull/8651)和 [PR10060](https://link.zhihu.com/?target=https%3A//github.com/sgl-project/sglang/pull/10060) 在 HiCache 中支持了 `page first` 和 `page first direct` 的布局。在使用 `page first` 或 `page first direct` 的情况下，同一个 page 的所有 KV Cache 数据都放在连续的内存里，可以直接作为一个完整的对象通过零拷贝的方式传递给 L3。
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_0cadfcd4e6c7.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_0cadfcd4e6c7.jpg)
 
 但由于 GPU 中 KV 的计算是按层进行的，所以 GPU 中天然是 `layer first` 的。而将 `page first` 的 L2 数据传入 `layer first` 的 GPU 时，只能以一个 token 的一个 layer 为粒度传。`page first direct` 则改善了这个问题，在此布局下，L2 到 GPU 的传输可以将一个 page 的一个 layer 聚合到一起。
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_988c45d705f2.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_988c45d705f2.jpg)
 
 更进一步，Mooncake 支持高效的批量读写，并能够利用 RDMA 对一个 batch 的数据通过多个网卡并行地同多个远程节点进行数据传输。在 HiCache 中，目前经验性地将 batch size 的上限设置为 128 个 page，超过该值则会被拆分为多个 batch。这是一种权衡：一方面，通过批量并行传输可以提升 I/O 效率；另一方面，分批完成则能保证在 `best_effort` 或 `timeout` 设置触发终止时，至少已完成的 batch 数据能够被利用上。
 
@@ -93,4 +93,4 @@ MLA 的写回优化**：对于 MHA（Multi-Head Attention）模型，在多 TP �
 
 不同 TP Size 的实例共享 KV Cache**：在大规模部署中，特别是在异构环境中，集群内可能存在不同 TP size 的 SGLang 实例。当前的 HiCache 实现存在一个限制：当 TP size 大于 1 时，每个 token 的 KV Cache 会被拆分到不同的 rank 中，每个 rank 只存储 1/tp_size 的数据。这意味着在 L3 存储中，同一个 token 的 KV cache 会以 tp_size 个不同的对象形式存储。这种设计导致了一个重要问题：即使不同 TP size 的实例处理相同的模型和相同的前缀，由于 KV Cache 的拆分粒度不同，它们无法共享 L3 存储中的 KV Cache 数据。下一步我们会实现 KV Cache 数据的动态重组，在零拷贝的前提下，实现不同 TP size 配置的 KV Cache 的数据共享。
 
-**前缀感知的 Eviction**：当前 HiCache 的 eviction 策略在不同层级采用了不同的策略。在 L1 和 L2 层级，系统会从 HiRadixTree 的叶子节点开始 eviction，这种设计避免了在前缀上出现空洞，确保缓存的前缀完整性。然而，L3 存储后端目前缺乏前缀信息，只能采用传统的 LRU 等算法进行对象级别的 eviction，这可能导致重要的前缀数据被误删。但是，L3 只从叶子删除也有缺陷，因为热点数据可能在 L1 和 L2 里已有保留，L3 再重复存储也可能造成空间浪费。因此我们后续会考虑将 HiRadixTree 的前缀信息传递到 L3 存储后端，使其能够同时基于数据访问信息和前缀信息做出决策。
+<strong>前缀感知的 Eviction</strong>：当前 HiCache 的 eviction 策略在不同层级采用了不同的策略。在 L1 和 L2 层级，系统会从 HiRadixTree 的叶子节点开始 eviction，这种设计避免了在前缀上出现空洞，确保缓存的前缀完整性。然而，L3 存储后端目前缺乏前缀信息，只能采用传统的 LRU 等算法进行对象级别的 eviction，这可能导致重要的前缀数据被误删。但是，L3 只从叶子删除也有缺陷，因为热点数据可能在 L1 和 L2 里已有保留，L3 再重复存储也可能造成空间浪费。因此我们后续会考虑将 HiRadixTree 的前缀信息传递到 L3 存储后端，使其能够同时基于数据访问信息和前缀信息做出决策。

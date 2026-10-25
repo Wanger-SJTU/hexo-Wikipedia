@@ -63,12 +63,12 @@ flowchart LR
 
 ## Concepts clés
 
-- **Les fenêtres de contexte sont finies** : Quelle que soit la taille de fenêtre annoncée (128K, 200K, 1M), les tâches longues finiront par les épuiser. Après épuisement, soit la compaction (perte d'informations) soit la réinitialisation (nouvelle session) est nécessaire. Les deux perdent quelque chose.
-- **Artefacts de continuité** : Fichiers d'état persistés qui permettent à une nouvelle session de reprendre sans ambiguïté là où la précédente s'est arrêtée. La forme de base : journal de progression + enregistrement de vérification + actions suivantes. Le journal de l'artisan.
-- **Coût de reconstruction** : Le temps nécessaire à une nouvelle session pour atteindre un état exécutable. Les bons harness peuvent comprimer le coût de reconstruction de 15 minutes à 3 minutes.
-- **Dérive** : L'écart entre la compréhension de l'agent et l'état réel du dépôt de code. Chaque frontière de session introduit de la dérive ; sans contrôle, elle se cumule.
-- **Anxiété de contexte** : Un phénomène observé par Anthropic — les agents présentent un comportement de convergence prématurée à l'approche des limites de contexte perçues, terminant les tâches prématurément pour éviter la perte d'informations. C'est une anxiété irrationnelle face aux ressources.
-- **Compaction vs réinitialisation** : La compaction résume le contexte au sein de la même session (conserve le « quoi », peut perdre le « pourquoi ») ; la réinitialisation ouvre une nouvelle session reconstruisant à partir de l'état persisté (propre mais dépend de l'exhaustivité des artefacts).
+- <strong>Les fenêtres de contexte sont finies</strong> : Quelle que soit la taille de fenêtre annoncée (128K, 200K, 1M), les tâches longues finiront par les épuiser. Après épuisement, soit la compaction (perte d'informations) soit la réinitialisation (nouvelle session) est nécessaire. Les deux perdent quelque chose.
+- <strong>Artefacts de continuité</strong> : Fichiers d'état persistés qui permettent à une nouvelle session de reprendre sans ambiguïté là où la précédente s'est arrêtée. La forme de base : journal de progression + enregistrement de vérification + actions suivantes. Le journal de l'artisan.
+- <strong>Coût de reconstruction</strong> : Le temps nécessaire à une nouvelle session pour atteindre un état exécutable. Les bons harness peuvent comprimer le coût de reconstruction de 15 minutes à 3 minutes.
+- <strong>Dérive</strong> : L'écart entre la compréhension de l'agent et l'état réel du dépôt de code. Chaque frontière de session introduit de la dérive ; sans contrôle, elle se cumule.
+- <strong>Anxiété de contexte</strong> : Un phénomène observé par Anthropic — les agents présentent un comportement de convergence prématurée à l'approche des limites de contexte perçues, terminant les tâches prématurément pour éviter la perte d'informations. C'est une anxiété irrationnelle face aux ressources.
+- <strong>Compaction vs réinitialisation</strong> : La compaction résume le contexte au sein de la même session (conserve le « quoi », peut perdre le « pourquoi ») ; la réinitialisation ouvre une nouvelle session reconstruisant à partir de l'état persisté (propre mais dépend de l'exhaustivité des artefacts).
 
 ## Ce qui se passe quand la continuité se brise
 
@@ -84,9 +84,9 @@ OpenAI et Anthropic soulignent tous deux la persistance structurée de l'état d
 
 ## Un journal pour l'artisan amnésique
 
-Approche fondamentale : **Traitez l'agent comme un brillant ingénieur atteint d'amnésie.** Avant qu'il ne « termine sa journée », il doit noter les informations critiques pour que l'agent du « poste » suivant puisse prendre le relais rapidement.
+Approche fondamentale : <strong>Traitez l'agent comme un brillant ingénieur atteint d'amnésie.</strong> Avant qu'il ne « termine sa journée », il doit noter les informations critiques pour que l'agent du « poste » suivant puisse prendre le relais rapidement.
 
-**Outil 1 : Fichier de progression (PROGRESS.md).** L'artefact de continuité le plus basique — le cœur du journal :
+<strong>Outil 1 : Fichier de progression (PROGRESS.md).</strong> L'artefact de continuité le plus basique — le cœur du journal :
 
 ```markdown
 # Project Progress
@@ -114,7 +114,7 @@ Approche fondamentale : **Traitez l'agent comme un brillant ingénieur atteint d
 3. Update API documentation
 ```
 
-**Outil 2 : Journal des décisions (DECISIONS.md).** Enregistrez les décisions de conception importantes et leurs raisons. Pas besoin de documents de conception détaillés — juste « quelle décision, pourquoi, quand » — les mémos du journal :
+<strong>Outil 2 : Journal des décisions (DECISIONS.md).</strong> Enregistrez les décisions de conception importantes et leurs raisons. Pas besoin de documents de conception détaillés — juste « quelle décision, pourquoi, quand » — les mémos du journal :
 
 ```markdown
 # Design Decisions
@@ -125,9 +125,9 @@ Approche fondamentale : **Traitez l'agent comme un brillant ingénieur atteint d
 - Constraint: Cache TTL of 5 minutes, active invalidation on write
 ```
 
-**Outil 3 : Commits git comme points de contrôle.** Commitez après avoir terminé chaque unité de travail atomique. Les messages de commit devraient expliquer ce qui a été fait et pourquoi. Ce sont des instantanés d'état gratuits et automatiquement versionnés.
+<strong>Outil 3 : Commits git comme points de contrôle.</strong> Commitez après avoir terminé chaque unité de travail atomique. Les messages de commit devraient expliquer ce qui a été fait et pourquoi. Ce sont des instantanés d'état gratuits et automatiquement versionnés.
 
-**Outil 4 : init.sh ou flux d'initialisation du harness.** Spécifiez dans `AGENTS.md` les routines de « prise de poste » et de « fin de service » :
+<strong>Outil 4 : init.sh ou flux d'initialisation du harness.</strong> Spécifiez dans `AGENTS.md` les routines de « prise de poste » et de « fin de service » :
 
 ```markdown
 ## At session start (clock in)
@@ -142,7 +142,7 @@ Approche fondamentale : **Traitez l'agent comme un brillant ingénieur atteint d
 3. Commit all completed work
 ```
 
-**Stratégie mixte** : Toutes les tâches n'ont pas besoin d'une réinitialisation de contexte. Les tâches courtes (moins de 30 minutes) peuvent se terminer en une seule session. Les tâches longues (s'étalant sur plusieurs sessions) doivent utiliser des fichiers de progression et des journaux de décisions pour la continuité. Critère de décision : si une tâche nécessite plus de 60 % de la fenêtre, commencez à préparer la passation.
+<strong>Stratégie mixte</strong> : Toutes les tâches n'ont pas besoin d'une réinitialisation de contexte. Les tâches courtes (moins de 30 minutes) peuvent se terminer en une seule session. Les tâches longues (s'étalant sur plusieurs sessions) doivent utiliser des fichiers de progression et des journaux de décisions pour la continuité. Critère de décision : si une tâche nécessite plus de 60 % de la fenêtre, commencez à préparer la passation.
 
 ### Plongée approfondie sur l'anxiété de contexte
 
@@ -150,11 +150,11 @@ La recherche de mars 2026 d'Anthropic a révélé plus en détail les manifestat
 
 Deux stratégies y remédient :
 
-**Compaction** : Résumer la conversation antérieure au sein de la même session. Avantage : maintient la continuité, l'agent peut voir le « quoi ». Inconvénient : le « pourquoi » est souvent perdu dans les résumés — pourquoi l'option B a été choisie plutôt que A, pourquoi une optimisation particulière a été écartée. Plus critiques encore, la compaction n'élimine pas l'anxiété de contexte — l'agent sait que le contexte a déjà été volumineux, et psychologiquement a toujours tendance à se précipiter vers la clôture.
+<strong>Compaction</strong> : Résumer la conversation antérieure au sein de la même session. Avantage : maintient la continuité, l'agent peut voir le « quoi ». Inconvénient : le « pourquoi » est souvent perdu dans les résumés — pourquoi l'option B a été choisie plutôt que A, pourquoi une optimisation particulière a été écartée. Plus critiques encore, la compaction n'élimine pas l'anxiété de contexte — l'agent sait que le contexte a déjà été volumineux, et psychologiquement a toujours tendance à se précipiter vers la clôture.
 
-**Réinitialisation de contexte** : Effacement complet du contexte, ouverture d'une nouvelle session, reconstruction à partir des artefacts persistés. Avantage : état mental propre — la nouvelle session n'a pas d'anxiété de « je manque de temps ». Inconvénient : dépend de l'exhaustivité des artefacts de passation. Si le journal manque d'informations critiques, la nouvelle session peut perdre du temps dans une mauvaise direction.
+<strong>Réinitialisation de contexte</strong> : Effacement complet du contexte, ouverture d'une nouvelle session, reconstruction à partir des artefacts persistés. Avantage : état mental propre — la nouvelle session n'a pas d'anxiété de « je manque de temps ». Inconvénient : dépend de l'exhaustivité des artefacts de passation. Si le journal manque d'informations critiques, la nouvelle session peut perdre du temps dans une mauvaise direction.
 
-Les données réelles d'Anthropic : pour Sonnet 4.5, l'anxiété de contexte est suffisamment sévère pour que la compaction seule ne suffise pas — la réinitialisation de contexte devient un composant critique de la conception du harness. Mais pour Opus 4.5, ce comportement est grandement réduit, et la compaction peut gérer le contexte sans recourir aux réinitialisations. Cela signifie : **la conception du harness nécessite une compréhension spécifique du modèle cible, pas un modèle universel unique.**
+Les données réelles d'Anthropic : pour Sonnet 4.5, l'anxiété de contexte est suffisamment sévère pour que la compaction seule ne suffise pas — la réinitialisation de contexte devient un composant critique de la conception du harness. Mais pour Opus 4.5, ce comportement est grandement réduit, et la compaction peut gérer le contexte sans recourir aux réinitialisations. Cela signifie : <strong>la conception du harness nécessite une compréhension spécifique du modèle cible, pas un modèle universel unique.</strong>
 
 > Source : [Anthropic: Harness design for long-running application development](https://www.anthropic.com/engineering/harness-design-long-running-apps)
 
@@ -162,9 +162,9 @@ Les données réelles d'Anthropic : pour Sonnet 4.5, l'anxiété de contexte est
 
 Un agent a été chargé d'implémenter un système de blog avec authentification utilisateur — 12 points de fonctionnalité, estimation de 5 sessions nécessaires.
 
-**Baseline sans le journal** : La session 1 a implémenté le modèle utilisateur et les routes de base. La session 2 a démarré sans que l'agent se souvienne du contrat d'interface du middleware d'authentification, passant ~15 minutes à déduire l'intention de conception précédente. Dès la session 3, la dérive accumulée a poussé l'agent à réimplémenter des fonctionnalités déjà complétées. À la session 5, le repo contenait beaucoup de code redondant mais la fonctionnalité d'authentification principale n'avait toujours pas passé les tests de bout en bout. Seulement 7 des 12 points de fonctionnalité complétés, dont 3 avec des problèmes de correction cachés. Comme l'artisan qui n'écrit jamais dans son journal — au cinquième jour, le chantier est chaotique, certains murs construits deux fois, d'autres qui auraient dû l'être ne sont même pas commencés.
+<strong>Baseline sans le journal</strong> : La session 1 a implémenté le modèle utilisateur et les routes de base. La session 2 a démarré sans que l'agent se souvienne du contrat d'interface du middleware d'authentification, passant ~15 minutes à déduire l'intention de conception précédente. Dès la session 3, la dérive accumulée a poussé l'agent à réimplémenter des fonctionnalités déjà complétées. À la session 5, le repo contenait beaucoup de code redondant mais la fonctionnalité d'authentification principale n'avait toujours pas passé les tests de bout en bout. Seulement 7 des 12 points de fonctionnalité complétés, dont 3 avec des problèmes de correction cachés. Comme l'artisan qui n'écrit jamais dans son journal — au cinquième jour, le chantier est chaotique, certains murs construits deux fois, d'autres qui auraient dû l'être ne sont même pas commencés.
 
-**Avec le journal** : Utilisation de fichiers de progression, journaux de décisions, enregistrements de vérification et points de contrôle git. Le rapport d'état mis à jour automatiquement à la fin de chaque session. Le coût de reconstruction de la session 2 est tombé à ~3 minutes. À la session 5, les 12 points de fonctionnalité étaient complétés et vérifiés.
+<strong>Avec le journal</strong> : Utilisation de fichiers de progression, journaux de décisions, enregistrements de vérification et points de contrôle git. Le rapport d'état mis à jour automatiquement à la fin de chaque session. Le coût de reconstruction de la session 2 est tombé à ~3 minutes. À la session 5, les 12 points de fonctionnalité étaient complétés et vérifiés.
 
 Comparaison quantitative : temps de reconstruction réduit de ~78 %, taux de complétion des fonctionnalités de 58 % à 100 %, taux de défauts cachés de 43 % à 8 %. L'artisan est toujours amnésique, mais avec le journal, chaque jour commence là où celui d'hier s'est arrêté, pas à zéro.
 
@@ -186,8 +186,8 @@ Comparaison quantitative : temps de reconstruction réduit de ~78 %, taux de com
 
 ## Exercices
 
-1. **Mesure de la perte de continuité** : Choisissez une tâche de développement nécessitant au moins 3 sessions. Sans fournir aucun artefact de continuité, enregistrez au début de chaque session combien de contexte l'agent dépense à « comprendre ce qui s'est passé la dernière fois ». Après chaque session, créez un fichier de progression et laissez la session suivante démarrer à partir de celui-ci. Comparez les coûts de reconstruction avec et sans fichiers de progression.
+1. <strong>Mesure de la perte de continuité</strong> : Choisissez une tâche de développement nécessitant au moins 3 sessions. Sans fournir aucun artefact de continuité, enregistrez au début de chaque session combien de contexte l'agent dépense à « comprendre ce qui s'est passé la dernière fois ». Après chaque session, créez un fichier de progression et laissez la session suivante démarrer à partir de celui-ci. Comparez les coûts de reconstruction avec et sans fichiers de progression.
 
-2. **Conception d'un modèle de passation** : Concevez un modèle de passation minimal avec quatre champs : état du repo (hash de commit), état d'exécution (taux de réussite des tests), bloqueurs, actions suivantes. Laissez une toute nouvelle session d'agent restaurer l'état du projet en utilisant uniquement ce modèle. Enregistrez les ambiguïtés rencontrées lors de la restauration, itérez pour améliorer le modèle.
+2. <strong>Conception d'un modèle de passation</strong> : Concevez un modèle de passation minimal avec quatre champs : état du repo (hash de commit), état d'exécution (taux de réussite des tests), bloqueurs, actions suivantes. Laissez une toute nouvelle session d'agent restaurer l'état du projet en utilisant uniquement ce modèle. Enregistrez les ambiguïtés rencontrées lors de la restauration, itérez pour améliorer le modèle.
 
-3. **Expérience de stratégie mixte** : Dans une tâche de développement en 5 sessions, comparez trois stratégies : (a) toujours démarrer de nouvelles sessions + fichiers de progression, (b) faire le maximum possible en une seule session (compaction de contexte), (c) stratégie mixte (tâches courtes en session, tâches longues sur plusieurs sessions + fichiers de progression). Comparez le temps de reconstruction, le taux de complétion des fonctionnalités et la cohérence des décisions.
+3. <strong>Expérience de stratégie mixte</strong> : Dans une tâche de développement en 5 sessions, comparez trois stratégies : (a) toujours démarrer de nouvelles sessions + fichiers de progression, (b) faire le maximum possible en une seule session (compaction de contexte), (c) stratégie mixte (tâches courtes en session, tâches longues sur plusieurs sessions + fichiers de progression). Comparez le temps de reconstruction, le taux de complétion des fonctionnalités et la cohérence des décisions.

@@ -21,10 +21,10 @@ Production-grade скил по harness-инжинирингу для AI-аген
 
 ### Что он делает
 
-- **Создаёт harness с нуля** — AGENTS.md, списки фич, флоу верификации
-- **Улучшает существующие harness** — оценка по пяти подсистемам с приоритизированными улучшениями
-- **Проектирует непрерывность сессий** — персистентность памяти, отслеживание прогресса, процедуры handoff
-- **Применяет production-паттерны** — память, контекст-инжиниринг, безопасность инструментов, координация мульти-агентов
+- <strong>Создаёт harness с нуля</strong> — AGENTS.md, списки фич, флоу верификации
+- <strong>Улучшает существующие harness</strong> — оценка по пяти подсистемам с приоритизированными улучшениями
+- <strong>Проектирует непрерывность сессий</strong> — персистентность памяти, отслеживание прогресса, процедуры handoff
+- <strong>Применяет production-паттерны</strong> — память, контекст-инжиниринг, безопасность инструментов, координация мульти-агентов
 
 ### Быстрый старт
 
@@ -66,7 +66,7 @@ npx skills add walkinglabs/learn-harness-engineering --skill harness-creator
 
 ### Как был построен этот скил
 
-`harness-creator` был разработан с использованием методологии **skill-creator** — официальной мета-скила Anthropic для создания, тестирования и итерации над скилами агентов. skill-creator предоставляет структурированный воркфлоу (draft → test → evaluate → iterate) со встроенными eval-runner'ами, грейдерами и средством просмотра бенчмарков.
+`harness-creator` был разработан с использованием методологии <strong>skill-creator</strong> — официальной мета-скила Anthropic для создания, тестирования и итерации над скилами агентов. skill-creator предоставляет структурированный воркфлоу (draft → test → evaluate → iterate) со встроенными eval-runner'ами, грейдерами и средством просмотра бенчмарков.
 
-- **Исходник skill-creator**: [anthropics/skills — skill-creator](https://github.com/anthropics/skills/tree/main/skills/skill-creator)
-- **Документация по скилам Claude Code**: [anthropics/claude-code — plugin-dev/skills](https://github.com/anthropics/claude-code/tree/main/plugins/plugin-dev/skills)
+- <strong>Исходник skill-creator</strong>: [anthropics/skills — skill-creator](https://github.com/anthropics/skills/tree/main/skills/skill-creator)
+- <strong>Документация по скилам Claude Code</strong>: [anthropics/claude-code — plugin-dev/skills](https://github.com/anthropics/claude-code/tree/main/plugins/plugin-dev/skills)

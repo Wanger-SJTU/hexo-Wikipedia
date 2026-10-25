@@ -23,11 +23,11 @@ source_url: https://zhuanlan.zhihu.com/p/354995641
 
 - 控制流。如RNN、LSTM网络；
 - 动态数据的网络结构。如Tree-Structured LSTM补齐了LSTM对树形结构处理的不足，支持每个输入单元依赖多个其他单元的隐层输出
-![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_cee624151462.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BC%98%E5%8C%96/asset/img_cee624151462.jpg)
 
 - 动态shape算子。如BERT网络相比于LSTM在时序上处理，将数据进行了空间上的扩展处理，从而引入了维度不确定的Tensor。还有Wide&amp;Deep、AutoML等也会引入动态shape的算子。
 
-![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_2b4590cf7f85.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BC%98%E5%8C%96/asset/img_2b4590cf7f85.jpg)
 
 支持动态图的框架天生自带对动态网络的支持，奈何性能太差。而支持静态图的框架大多通过将动态模型转换成静态模型来实现优化复用，提升性能的同时不可避免的带来了复杂度提高和灵活性降低的问题。Nimble在TVM基础上提出了一套高性能、可移植的编译优化系统，支持动态网络在不同平台下的执行，其核心技术点如下：
 
@@ -68,11 +68,11 @@ typeIs Data Dependentelemwise_shape_funcNono_data_full_shape_funcYesfull_shape_f
 
 转换前：
 
-![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_d570c27ffb40.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BC%98%E5%8C%96/asset/img_d570c27ffb40.jpg)
 
 转换后：
 
-![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_13177a4ac234.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BC%98%E5%8C%96/asset/img_13177a4ac234.jpg)
 
 基于显式的内存操作IR实现内存聚合等复用优化。
 
@@ -118,11 +118,11 @@ tiling factor = 8
 
 论文给出了LSTM、Tree-LSTM、BERT三个网络分别在Intel Skylake CPU，Nvidia Tesla T4 GPU，ARM Cortex A72 CPU平台上与PyTroch、TensorFlow、MXNet的推理性能对比测试结果。结果显示Nimble相比其他框架在不同平台上都有显著的性能提升，最大实现了20x的性能优化。
 
-![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_36a47579add0.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BC%98%E5%8C%96/asset/img_36a47579add0.jpg)
 
-![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_9d91e519fdeb.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BC%98%E5%8C%96/asset/img_9d91e519fdeb.jpg)
 
-![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_888b7799cce2.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BC%98%E5%8C%96/asset/img_888b7799cce2.jpg)
 
 论文同时也分析了支持动态模型带来的额外开销：
 

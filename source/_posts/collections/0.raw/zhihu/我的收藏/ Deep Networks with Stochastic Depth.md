@@ -51,13 +51,13 @@ $（Note：原文是 Hl=id(Hl&#x2212;1)" role="presentation">Hl=id(Hl−1)H_{l}=
 
 $$pl=1&#x2212;lL(1&#x2212;pL)" role="presentation">pl=1−lL(1−pL)p_{l}=1-\frac{l}{L}(1-p_{L}) $$
 
-**预测时：**
+<strong>预测时：</strong>
 
 ResNet的block被定义为
 
 $HlTest=ReLU(plfl(Hl&#x2212;1Test)+id(Hl&#x2212;1Test))" role="presentation">HlTest=ReLU(plfl(Hl−1Test)+id(Hl−1Test))H^{Test}_{l}=ReLU(p_{l}f_{l}(H^{Test}_{l-1})+id(H^{Test}_{l-1})) $
 
-即**每个block的概率变成了这个block的残差的权重**
+即<strong>每个block的概率变成了这个block的残差的权重</strong>
 
 **
 
@@ -65,7 +65,7 @@ $HlTest=ReLU(plfl(Hl&#x2212;1Test)+id(Hl&#x2212;1Test))" role="presentation">HlT
 
 另外一个让我印象深刻的点是，这种引入随机变量的设计有效的克服了过拟合使模型有了更好的泛化能力**。作者的解释是，不激活一部分block事实上实现了一种隐性的模型融合（Implicit model ensemble），由于训练时模型的深度随机，预测时模型的深度确定，事实上是在测试时把不同深度的模型融合了起来。我自己的想法是，在深度确定时，信息随着网络一层层被提取被过滤，当信息到达网络的高层时已经不是非常informative了，高层网络面对这样的信息难以得到有效的训练。不激活一部分block，使得高层的block能接收到更多来自底层的信息，能得到更加充分的训练，因而模型有了更好的表达能力。在预测时，深度确定并且给各个block加权，也事实上是一种模型融合。
 
-另外一种解释，这种引入随机变量的设计是**把Dropout应用到了整个网络**。我觉得说的很有道理。
+另外一种解释，这种引入随机变量的设计是<strong>把Dropout应用到了整个网络</strong>。我觉得说的很有道理。
 
 **
 

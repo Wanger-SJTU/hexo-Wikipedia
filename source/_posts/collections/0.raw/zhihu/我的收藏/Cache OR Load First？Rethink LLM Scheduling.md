@@ -43,7 +43,7 @@ Analysis of existing schedulers
 
 其中：
 
--  c_i：请求在实例 i上能够命中的 **local KV 长度或比例**； 
+-  c_i：请求在实例 i上能够命中的 <strong>local KV 长度或比例</strong>； 
 -  l_i​：实例 iii 当前的负载； 
 -  f(c_i,l_i)：把 KV locality 和 load 组合起来的评分函数。 换句话说，现有 scheduler 都在回答：
 
@@ -140,7 +140,7 @@ SMETRIC 的出发点是：在 agent workload 中，一个 session 的多轮请�
 
 后续请求通常会携带此前的完整对话历史，因此它能够复用前几轮请求留下的 KV Cache。只要这部分 KV 仍然保存在原实例的 GPU 上，cache-aware scheduler 就会持续把该 session 的请求送回同一个实例。
 
-论文的 trace 结果验证了这种 **session stickiness**。在 BAILIAN 的 KV-aware 策略下，
+论文的 trace 结果验证了这种 <strong>session stickiness</strong>。在 BAILIAN 的 KV-aware 策略下，
 ![](https://www.zhihu.com/equation?tex=96.6%25) 的后续请求都会回到处理 first-turn 的实例；而在纯负载均衡策略下，这一比例只有 
 ![](https://www.zhihu.com/equation?tex=4.0%25)。
 

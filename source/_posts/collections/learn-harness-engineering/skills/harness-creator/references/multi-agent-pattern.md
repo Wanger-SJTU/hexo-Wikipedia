@@ -16,9 +16,9 @@ categories:
 ## Problem
 
 Single agents hit limits:
-- **Context limits** — Can't hold full research + implementation in one session
-- **Specialization** — Need separate researchers, implementers, reviewers
-- **Parallelism** — Want to explore multiple approaches simultaneously
+- <strong>Context limits</strong> — Can't hold full research + implementation in one session
+- <strong>Specialization</strong> — Need separate researchers, implementers, reviewers
+- <strong>Parallelism</strong> — Want to explore multiple approaches simultaneously
 
 But multi-agent systems introduce chaos:
 - Workers duplicate each other's research
@@ -29,10 +29,10 @@ But multi-agent systems introduce chaos:
 
 ### The Coordinator Must Synthesize, Not Delegate Understanding
 
-**Anti-pattern:**
+<strong>Anti-pattern:</strong>
 > "Based on your findings, fix the authentication system."
 
-**Pattern:**
+<strong>Pattern:</strong>
 > "Research identified 3 auth flows: login, logout, token refresh. Implement ONLY the token refresh handler using the JWT strategy documented in [research output]. Return: implementation diff + test results."
 
 The coordinator (orchestrator) adds value by digesting worker results into precise specs before dispatching implementation.
@@ -41,9 +41,9 @@ The coordinator (orchestrator) adds value by digesting worker results into preci
 
 | Pattern | Context Sharing | Best For | Constraints |
 |---------|----------------|----------|-------------|
-| **Coordinator** | None — workers start fresh | Complex multi-phase tasks (research → synthesize → implement → verify) | Slowest but safest |
-| **Fork** | Full — child inherits parent history | Quick parallel splits sharing loaded context | **Single-level only** — recursive forks multiply context cost |
-| **Swarm** | Peer-to-peer via shared task list | Long-running independent workstreams | **Flat roster** — teammates can't spawn other teammates |
+| <strong>Coordinator</strong> | None — workers start fresh | Complex multi-phase tasks (research → synthesize → implement → verify) | Slowest but safest |
+| <strong>Fork</strong> | Full — child inherits parent history | Quick parallel splits sharing loaded context | <strong>Single-level only</strong> — recursive forks multiply context cost |
+| <strong>Swarm</strong> | Peer-to-peer via shared task list | Long-running independent workstreams | <strong>Flat roster</strong> — teammates can't spawn other teammates |
 
 ### Results Arrive Asynchronously; Fire-and-Forget Registration Returns ID Immediately
 
@@ -70,9 +70,9 @@ const taskId = await coordinator.spawn({
 
 | Pattern | Speed | Safety | Context Cost |
 |---------|-------|--------|--------------|
-| **Coordinator** | Slowest | Safest | Lowest (zero inheritance) |
-| **Fork** | Fastest | Medium | Highest (full inheritance) |
-| **Swarm** | Medium | Medium | Medium (shared state only) |
+| <strong>Coordinator</strong> | Slowest | Safest | Lowest (zero inheritance) |
+| <strong>Fork</strong> | Fastest | Medium | Highest (full inheritance) |
+| <strong>Swarm</strong> | Medium | Medium | Medium (shared state only) |
 
 ## Implementation Patterns
 
@@ -150,11 +150,11 @@ await swarm.dispatch({
 
 ## Gotchas
 
-1. **Fork children must not fork** — Recursive guard preserves single-level invariant. Keep fork tool in child's pool (for prompt cache sharing) but block at call time.
-2. **Coordinator workers start with zero context** — Only explicit prompt is passed. Don't assume child sees parent's accumulated research.
-3. **Swarm teammates cannot spawn other teammates** — Roster is flat to prevent uncontrolled growth.
-4. **Write self-contained prompts** — "Based on your findings" is an anti-pattern. Coordinator must digest first.
-5. **Filter each worker's tool set** — Researcher doesn't need write; implementer doesn't need broad search.
+1. <strong>Fork children must not fork</strong> — Recursive guard preserves single-level invariant. Keep fork tool in child's pool (for prompt cache sharing) but block at call time.
+2. <strong>Coordinator workers start with zero context</strong> — Only explicit prompt is passed. Don't assume child sees parent's accumulated research.
+3. <strong>Swarm teammates cannot spawn other teammates</strong> — Roster is flat to prevent uncontrolled growth.
+4. <strong>Write self-contained prompts</strong> — "Based on your findings" is an anti-pattern. Coordinator must digest first.
+5. <strong>Filter each worker's tool set</strong> — Researcher doesn't need write; implementer doesn't need broad search.
 
 ## Related Patterns
 

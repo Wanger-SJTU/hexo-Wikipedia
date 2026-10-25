@@ -56,7 +56,7 @@ token_ids 就是我们上面讲的：这一个节点对应的 token ids。extra_
 
 page_aligned() 是把自己按照页面大小裁剪一下，毕竟只有完整的一页才能用做 cache。举个例子，当前的 token ids 是 [22, 11, 4, 56, 3]。paged size = 2，那么我们只取 [22, 11, 4, 56] 缓存。
 
-**match() 是核心的函数**，它的作用是比较最长公共前缀。令 a=RadixKey([1, 2, 3, 4, 5])，b=RadixKey([1, 2, 3, 9])，则 a.match(b) = 3。使用“二分比较”的算法，比较的还是 O(n) 个 token，但是相较于循环查询 python 循环次数从 O(n) 变为了 O(log n)。
+<strong>match() 是核心的函数</strong>，它的作用是比较最长公共前缀。令 a=RadixKey([1, 2, 3, 4, 5])，b=RadixKey([1, 2, 3, 9])，则 a.match(b) = 3。使用“二分比较”的算法，比较的还是 O(n) 个 token，但是相较于循环查询 python 循环次数从 O(n) 变为了 O(log n)。
 
 child_key() 为了找路径用的。比如当前进入父节点 token 都对上了。现在要选进入到父节点的哪个子节点时，取出第一块（由 page size 决定块大小）和请求的第一块比较。
 
@@ -402,7 +402,7 @@ root
 In Architecture
 当前的 Qwen3.5-0.8B 模型使用的是 HybridLinearAttnBackend 的后端，内部 full attn 使用的是 FlashInferAttnBackend，linear attn 用的是 GDNAttnBackend。
 
-当 Request 到来时存在等待队列里，[在 Scheduler 调度的 get_next_batch_to_run() 函数中从等待队列中被调度](https://zhuanlan.zhihu.com/p/2061009711907057681)。在其内部调用 get_new_batch_prefill -> _get_new_batch_prefill_raw -> req.init_next_round_input(self.tree_cache)。在 init_next_round_input() 里的`match_prefix`只是**查询**——它只负责在 Radix Tree 中找到已经缓存(已经被写入`token_to_kv_pool`且未被驱逐)的那部分前缀，并把命中的物理槽位号写入`req.prefix_indices`。 
+当 Request 到来时存在等待队列里，[在 Scheduler 调度的 get_next_batch_to_run() 函数中从等待队列中被调度](https://zhuanlan.zhihu.com/p/2061009711907057681)。在其内部调用 get_new_batch_prefill -> _get_new_batch_prefill_raw -> req.init_next_round_input(self.tree_cache)。在 init_next_round_input() 里的`match_prefix`只是<strong>查询</strong>——它只负责在 Radix Tree 中找到已经缓存(已经被写入`token_to_kv_pool`且未被驱逐)的那部分前缀，并把命中的物理槽位号写入`req.prefix_indices`。 
 
     def init_next_round_input(
         self,

@@ -25,7 +25,7 @@ categories:
 
 以下就是泄露的原始草稿全文，来自公开存档并经过多方验证：
 
-**Claude Mythos**
+<strong>Claude Mythos</strong>
 
 We have finished training a new AI model: Claude Mythos. It's by far the most powerful AI model we've ever developed.
 
@@ -41,7 +41,7 @@ Mythos is also a large compute-intensive model. It’s very expensive for us to 
 
 For those reasons we’re taking a slower more gradual approach to releasing Mythos than we have with our other models. We’re beginning with a small number of early-access customers who will explore the model’s cybersecurity applications and report back what they find.
 
-**A head start for cybersecurity**
+<strong>A head start for cybersecurity</strong>
 
 We have written several times in recent months about the rapid progress in AI models’ cybersecurity skills skills that can be used for good or for ill. We’ve documented the ways in which models can be used to rapidly discover vulnerabilities in codebases we’ve also shown how they’re already being used to commit large-scale cyberattacks.
 
@@ -49,17 +49,17 @@ Although Mythos is currently far ahead of any other AI model in cyber capabiliti
 
 That’s why our release plan for Mythos focuses on cyber defenders: we’re releasing it in early access to organizations giving them a head start in improving the robustness of their codebases against the impending wave of AI-driven exploits.
 
-**Pre-release safety testing**
+<strong>Pre-release safety testing</strong>
 
 As with all of our models we have tested Claude Mythos on a very wide variety of safety and capability evaluations.
 
-**Expanding the release**
+<strong>Expanding the release</strong>
 
 We’ll be slowly expanding access to Claude Mythos to more customers using the Claude API over the coming weeks. Since we’re particularly interested in cybersecurity uses that’s where we aim to expand the EAP initially.
 
 这份草稿把Anthropic的真实意图写得清清楚楚。他们没有急着把最强模型推向市场，而是选择先把重点放在网络安全防御上。
 
-**为什么Anthropic要坚持防御优先**
+<strong>为什么Anthropic要坚持防御优先</strong>
 
 草稿里专门用一整节解释了原因。他们最近几个月已经多次公开讨论过AI在网络安全上的快速进步。这些能力既能用来保护系统，也能用来发动攻击。他们自己做过实验，证明现有模型已经能快速扫描代码找出漏洞，甚至被用来发起大规模真实攻击。
 
@@ -69,7 +69,7 @@ Mythos把这种能力推到了新高度。它目前在网络攻防上领先其�
 
 社区里很多人立刻注意到了其中的讽刺。X平台和Reddit上到处有人说，最擅长网络安全的模型却因为自家配置错误把三千份文件全敞开了。但更多声音认为，这正是Anthropic负责任的地方。他们没有像其他公司那样快速广发测试，而是先武装防御方再慢慢放开。这种做法和OpenAI、Google的激进路线形成了鲜明对比，也给整个行业立了一个新标杆。
 
-**AI从人人可用走向少数人专享**
+<strong>AI从人人可用走向少数人专享</strong>
 
 草稿里最直白的一句是Mythos是算力密集型模型，对他们来说服务成本很高，对客户来说使用成本也会很高。他们正在努力优化效率，但短期内不会大规模开放。
 
@@ -83,7 +83,7 @@ Mythos把这种能力推到了新高度。它目前在网络攻防上领先其�
 
 社区讨论里这个话题热度最高。分析师在X上估算Mythos定价可能达到每百万token上百美元。开发者感慨说，智能本身不再稀缺，稀缺的是获取最强智能的通道。Reddit创业板块的帖子直言，所有AI创业idea都得重新算预算，小公司很可能直接出局。乐观的人觉得很快会有蒸馏版降价，但主流观点是2026到2027年这段时间，普通人要抓紧现在还能低成本使用的窗口。
 
-**AI军备竞赛进入新阶段**
+<strong>AI军备竞赛进入新阶段</strong>
 
 Mythos不是一次孤立的泄露，而是2026年AI发展转折的缩影。行业从单纯堆算力进入后Scaling时代，安全、成本和发布节奏成为新的博弈焦点。Anthropic这次展示的负责任形象，也可能是为他们即将到来的IPO铺路。
 

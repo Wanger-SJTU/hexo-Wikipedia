@@ -31,24 +31,24 @@ Cache一般由集成在CPU内部的SRAM（Static Random Access Memory）和Tag�
 
 ### 2， 框架
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_ed8f5915bce1.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_ed8f5915bce1.jpg)
 
 arm64体系结构处理器框架如上图是一个经典ARM64体系结构处理器系统，其中包含了多级的cache。一个cluster CPU族包含了两个CPU内核，每个CPU都有自己的L1 cache及L2 cache，其中L1 cache分了L1I（Level 1 Instruction）、L1D（Level 1 Data）两种。不同CPU共享L3 cache，L3 cache位于cluster内。Cluster通过BUS与DDR、EMMC、SSD等建立连接，这样CPU就可以访问到EMMC、SSD中的数据。在程序执行时，会先将程序及数据，从SSD或者EMMC加载到内存中，然后将内存中的数据，加载到共享的 L3 Cache 中，再加载到每个核心独有的 L2 Cache，最后才进入到最快的 L1 Cache，之后才会被 CPU 读取。
 
 在系统设计时，需要在cache的性能和成本（芯片面积）之间做tradeoff，由于程序运行遵循着局部性原理，因此现在CPU都采用了多级cache设计方案。越靠近CPU的cache，速度越快，成本越高，容量越小，越远离CPU的存储模块，速度越慢，成本越低、容量越大。不同存储器的访问速度、成本对比如下图：
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_c755c7c36459.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_c755c7c36459.jpg)
 
 不同存储器成本、性能对比
 #### 2.1 cache和MMU的关系
 
 Cache和MMU基本上都是一起使用的，会同时开启或同时关闭。因为MMU页表中的entry属性，控制着内存的权限和cache缓存的策略。CPU在访问DDR的时候用的地址是虚拟地址（Virtual Address，VA），经过MMU将VA映射成物理地址（Physucal Address，PA），然后使用物理地址查询高速缓存，这种高速缓存称为物理高速缓存。物理高速缓存在的缺点主要是，CPU查询TLB或MMU后才能访问cache，增加了流水线的延时。物理高速缓存的工作流程如下：
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_9c21fd56b464.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_9c21fd56b464.jpg)
 
 物理高速缓存的工作流程 CPU使用虚拟地址寻址高速缓存，这种高速缓存称为虚拟高速缓存。CPU在寻址时，先把虚拟地址发送到高速缓存，若在高速缓存里找到所需数据，就不再访问TLB和DDR。虚拟高速缓存的工作流程如下：
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_09d38f3ec7de.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_09d38f3ec7de.jpg)
 
 虚拟高速缓存的工作流程
 #### 2.2 L1、L2、L3 cache
@@ -65,7 +65,7 @@ L1、L2、L3 cache的区别是什么呢？L1是为了更快的速度访问，而
 
 对于L2、L3一般比L1要大，但是比DDR还是小了很多，L2、L3是不是可以做的更大？其实这跟上面讲述的L1不能做的太大的原因类似，主要是成本、面积、速度限制了L2、L3不能做的太大。L2、L3也是基于SRAM实现的，一个存储单元需要6个晶体管，再加上tag电路，至少需要几十个晶体管，另外命中率并不是随着L2、L3的增加一直大幅度增加的。命中率和各级cache大小的关系如下：
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_c0676228a0d9.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_c0676228a0d9.jpg)
 
 命中率和cache大小关系 为方便分析，我们假设L1维持在50%~60%的命中率（实际上95%左右）。从图中可以看出，随着L2容量的快速增加，开始时整体命中率也会快速提高，这表明提高L2容量，对提升整体命中率效用很明显。但随后L2的命中率，在容量增加到64KB后，随着容量增加，命中率增长趋缓，而整体命中率也同时趋缓。增加同样的晶体管，而受益却越来越少，个人理解这跟运行程序的访存特点有关，就是说当访存的频次、大小等确定后，开始L2容量增加，整体命中率也会增加，但是一旦达到一个临界点后，就算再增加容量，命中率的提升也是很有限的。因此再做CPU cache大小设计的时候，一定要建立在业务访存特点的基础之上，不然要么造成成本浪费，要么造成性能不足。
 
@@ -111,7 +111,7 @@ NINE（non-inclusive non-exclusive）Policy：CPU对数据A进行读取操作时
 
 Cache的存储部分是由SRAM实现的，cache的存储单元就是SRAM的存储单元，SRAM存储单元由6个三极管组成，如下图所示：
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_3132053ce2a8.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_3132053ce2a8.jpg)
 
 SRAM的存储单元写入“1”的过程如下（写入数据“0”的过程类似）：
 
@@ -139,7 +139,7 @@ CPU访问DDR前，都会先对cache进行操作，无论对Cache数据检查、�
 
 直接相联映射的策略：在内存块和缓存块之间建立起固定的映射关系，一个内存块总是映射到同一个缓存块上。直接映射是三种映射方式中最简单的。 我们通过以下图来了解直接相联映射，其中cache块跟内存块大小相等，大小为cache line。
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_162722a9a936.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_162722a9a936.jpg)
 
 直接相联映射具体方式如下：
 
@@ -154,7 +154,7 @@ CPU访问DDR前，都会先对cache进行操作，无论对Cache数据检查、�
 - 问题2，块冲突率高：直接映射会频繁出现块冲突，影响缓存命中率。
 为了改进直接相联映射的缺点，全相联映射的策略是：允许内存块映射到任何一个Cache块上。这种方式能够充分利用 Cache 的空间，块冲突率也更低，但是所需要的电路结构物更复杂，成本更高。
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_cca9e6a9446e.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_cca9e6a9446e.jpg)
 
 全相联映射具体方式如下：
 
@@ -165,14 +165,14 @@ CPU访问DDR前，都会先对cache进行操作，无论对Cache数据检查、�
 
 组相联映射结合了直接相联映射和全相联映射的优点，组相联映射的策略是：将Cache分为多组，每个内存块固定映射到一个分组中，又允许映射到组内的任意Cache块。显然，组相联的分组为1时，就等于全相联映射，而分组等于Cache块个数时，就等于直接映射。
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_d7a27f256b50.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_d7a27f256b50.jpg)
 
 组相联映射
 #### 3.3 cache的基本结构
 
  Cache的基本结构如下图所示：
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_b995524d5b95.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_b995524d5b95.jpg)
 
 cache的基本结构
 
@@ -202,7 +202,7 @@ CPU输出的虚拟地址会同时发送到TLB和高速缓存。TLB是一个用�
 
 同时，处理器通过高速缓存编码地址的索引（index）域，可以很快找到高速缓存行对应的组。但是这里的高速缓存行中的数据，不一定是处理器所需要的，因此有必要进行一些检查，将高速缓存行中存放的标记域和通过虚实地址转换得到的物理地址的标记域进行比较，如果相同并且状态位匹配，就会发生高速缓存命中，处理器通过字节选择与对齐（byte select and align）部件，就可以获取所需要的数据。如果发生高速缓存未命中，处理器需要用物理地址进一步访问主存储器，来获得最终的数据，数据也会填充到相应的高速缓存行中。
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_23211d9d30c5.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_23211d9d30c5.jpg)
 
 VIPT高速缓存体系结构
 #### 3.5 cache的替换策略

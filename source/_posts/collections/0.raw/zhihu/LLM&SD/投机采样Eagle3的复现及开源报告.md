@@ -27,29 +27,29 @@ source_url: https://zhuanlan.zhihu.com/p/1923763301432662012
 
 注意：我是在全英文语料上进行训练的，所以这个提升效果是在英文语料上的
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_af377a146230.jpg)00:10
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_af377a146230.jpg)00:10
 
 在使用sglang框架上qwen3在eagle3的推理效果
 
 ### qwen3_eagle3在代码生成的加速效果特别卓越
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_42470aca11d3.jpg)00:15
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_42470aca11d3.jpg)00:15
 
 代码加速生成能力演示
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_e9d78099448a.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_e9d78099448a.jpg)
 
 sglang使用egale的后台接受长度平均是5到6，tps可以到接近500
 
 ### 已经被官方合并进去Readme中
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_2d6ce82420f6.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_2d6ce82420f6.jpg)
 
 ### 模型代码已经被sglang官方合并
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_9f5ff99cdefa.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_9f5ff99cdefa.jpg)
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_175417ee8219.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_175417ee8219.jpg)
 
 ### qwen3的eagle3下载地址：
 
@@ -85,7 +85,7 @@ pip install -r requirements.txt
 
 我选择的训练数据是官方论文中使用的ultrachat_200k
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_5a26de3e836b.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_5a26de3e836b.jpg)
 
 训练的数据格式上面的图是我生成出来的数据，总计生成了大概60万条对话数据
 
@@ -577,15 +577,15 @@ EAGLE/eagle/traineagle3/cnets.py
 
 修改如下
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_370d8f9ef1f0.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_370d8f9ef1f0.jpg)
 
 2.cnets.py的加载target模型方式修改
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_40718a1d50c3.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_40718a1d50c3.jpg)
 
 修改ds_config.json 把fp16改为bfl16
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_883013558d31.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_883013558d31.jpg)
 
 ### 开启训练
 

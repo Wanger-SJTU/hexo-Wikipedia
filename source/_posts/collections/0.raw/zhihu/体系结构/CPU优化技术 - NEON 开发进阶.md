@@ -15,7 +15,7 @@ source_url: https://zhuanlan.zhihu.com/p/479398400
 ---
 
 
-***版权声明 ©*** ***本文首发于知乎专栏：移动端算法优化*** ***本专栏「移动端算法优化」所有文章著作权归作者所有。*** ***允许个人直接分享本专栏文章到个人微博、朋友圈。但媒体（包括但不限于网站、微信公众号、微博营销号）转载需事先征得专栏同意。转载需在正文开头显著位置注明出处，给出原始链接，注明「发表于知乎专栏《移动端算法优化》」，并不得进行任何形式的修改演绎。*** 
+*<strong>版权声明 ©</strong>* *<strong>本文首发于知乎专栏：移动端算法优化</strong>* *<strong>本专栏「移动端算法优化」所有文章著作权归作者所有。</strong>* *<strong>允许个人直接分享本专栏文章到个人微博、朋友圈。但媒体（包括但不限于网站、微信公众号、微博营销号）转载需事先征得专栏同意。转载需在正文开头显著位置注明出处，给出原始链接，注明「发表于知乎专栏《移动端算法优化》」，并不得进行任何形式的修改演绎。</strong>* 
 
 ### 一、概述 
 
@@ -29,7 +29,7 @@ source_url: https://zhuanlan.zhihu.com/p/479398400
 
 **向量化就是使用SIMD指令同时对多个数据进行处理，达到提升程序性能的目的。 我们以数据加法为例，标量和向量处理的对比图如下。对于无符号16位类型的加法运算，普通的标量加法需要进行8次的计算量，使用向量加法指令一次就可以完成。
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_a68adf31f47e.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_a68adf31f47e.jpg)
 
 相比于标量编程，向量化编程对于初学者来说有一定的难度： 
 
@@ -41,7 +41,7 @@ source_url: https://zhuanlan.zhihu.com/p/479398400
 
  这是一个UV通道下采样代码，输入是u8类型的数据，通过邻近的4个像素求平均，输出u8类型的数据，达到下采样的目的。我们假定每行数据长度是16的整数倍。算法的示意图和参考代码如下所示。
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_2e8ea280fdae.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_2e8ea280fdae.jpg)
 
 C代码实现：
 
@@ -73,21 +73,21 @@ C代码实现：
 `// 每次有16个数据输出
 for (i = 0; i 
 
-**2.2.2 数据类型的选择**
+<strong>2.2.2 数据类型的选择</strong>
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_1941a224fb1f.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_1941a224fb1f.jpg)
 
-**2.2.3 指令的选择**
+<strong>2.2.3 指令的选择</strong>
 
 输入数据加载：UV通道的数据是交织的，使用vld2指令可以实现解交织。
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_a7837fe4fef2.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_a7837fe4fef2.jpg)
 
-数据累加：水平方向两两相加（vpaddl），然后竖直方向相加（vadd），结果除以4（vshrn）![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_a81277880b91.jpg)
+数据累加：水平方向两两相加（vpaddl），然后竖直方向相加（vadd），结果除以4（vshrn）![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_a81277880b91.jpg)
 
-数据存储：输出数据是UV格式，需要使用vst2指令进行交织存储![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_6f42f4b785b2.jpg)
+数据存储：输出数据是UV格式，需要使用vst2指令进行交织存储![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_6f42f4b785b2.jpg)
 
-**2.2.4 代码实现**
+<strong>2.2.4 代码实现</strong>
 
 `//使用intrinsic需要包含的头文件
 #include 
@@ -120,17 +120,17 @@ void DownscaleUvNeon(uint8_t *src, uint8_t *dst, int32_t src_width, int32_t src_
 
 接着上面的实例，内层循环每次计算16个结果，当输出图像宽度不是16整数倍的时候，我们需要考虑结尾如何高效的编写。“NEON Programmer's Guide”中给出了几种推荐写法，下面逐一介绍一下。
 
-**2.3.1 Extend arrays with padding**
+<strong>2.3.1 Extend arrays with padding</strong>
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_c7faad404197.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_c7faad404197.jpg)
 
 这个方法比较好理解，每行数据长度不是向量长度整数倍我们可以提前将数据补齐到需要的长度，这样处理时候就方便了。这个方法的使用是要分情况的。
 
 - 如果需要自己申请内存，复制来扩展边界，这并不是一种高效的方法。 
 - 如果外部数据先要经过其他的处理（例如rgb2yuv），我们可以考虑将前一级的输出保存成需要的长度，这样后面的uv下采样就可以得到扩展的内存了。
-**2.3.2 Overlap data elements**
+<strong>2.3.2 Overlap data elements</strong>
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_f716eaadc34a.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_f716eaadc34a.jpg)
 
 这种做法是在处理尾部数据的时候，从后往前提取一个向量的数据进行计算，这样会出现一部分数据重复计算。接着2.2.4节的示例，这种方法的实现代码如下：
 
@@ -168,13 +168,13 @@ void DownscaleUvNeon(uint8_t *src, uint8_t *dst, int32_t src_width, int32_t src_
 
 以上这种方法我们平时用的比较多，不仅可以处理剩余元素，而且可以保持向量处理的高效性。
 
-**2.3.3 Process leftovers as single elements**
+<strong>2.3.3 Process leftovers as single elements</strong>
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_b6a11bad7e59.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_b6a11bad7e59.jpg)
 
 这种做法利用NEON向量可以只加载/存储一个元素的功能，虽然使用向量指令，但是每个结果独立计算和存储。这是一种很不推荐的方法。每次的向量计算只使用一个元素，浪费了计算资源（NEON指令相比于标量指令的执行周期要长，各指令执行时间可以参考文献[2]）。
 
-**2.3.4 标量处理剩余部分**
+<strong>2.3.4 标量处理剩余部分</strong>
 
 剩余部分直接采用标量来处理，这种是最简单的方法，也是最常用的方法，每行的剩余元素可以简单的用标量处理，因为绝大部分都是向量计算，剩余元素所占比例非常小，因此使用标量不会对性能产生太明显的影响。
 
@@ -189,7 +189,7 @@ void DownscaleUvNeon(uint8_t *src, uint8_t *dst, int32_t src_width, int32_t src_
 
     for (int32_t j = 0; j 
 
-### **三、边界处理方法**
+### <strong>三、边界处理方法</strong>
 
 在许多图像处理算法中，经常会遇到需要处理边界的情况。例如灰度图的3x3高斯滤波，为了计算边界附近点的输出，需要在原图的上下左右各填充1个像素的padding。 
 
@@ -197,7 +197,7 @@ void DownscaleUvNeon(uint8_t *src, uint8_t *dst, int32_t src_width, int32_t src_
 
 但是通用方法不一定是最优的方法，内存申请和填充会增加大量的额外时间，对提升算法性能很不利。我们可以充分利用NEON指令在几乎不增加时间空间开销的前提下完成一些特殊的边界处理。
 
-#### **3.1 常量填充**
+#### <strong>3.1 常量填充</strong>
 
 常量填充就是在有效数据块的上下左右添加常量边界值，完成数据的扩充。例如3x3高斯滤波计算需要在上下左右添加1个常量边界值进行计算。 
 
@@ -205,7 +205,7 @@ void DownscaleUvNeon(uint8_t *src, uint8_t *dst, int32_t src_width, int32_t src_
 
 左右边界填充也需要用到dup来的向量v8_const_pad，使用vext来组建新的向量，示意图及参考代码如下。
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_2397f69cd8c1.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_2397f69cd8c1.jpg)
 
 `//dup指令生成pading向量
 uint8x16_t v8_const_pad = vdupq_n_u8(pad_val);
@@ -226,7 +226,7 @@ uint8x16_t v8_next_row_data = vextq_u8(v8_const_pad, v8_tmp_data, 15); `
 
 - 上下边界的方法一样，我们可以使用vld加载第0行或者最后一行的数据即可。 
 - 左右边界的方法一样，对于左边界，我们可以使用VLD1_DUP指令提取边界数据，然后使用vext来组建新的向量，参考代码如下。
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_e089ccb03480.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_e089ccb03480.jpg)
 
 `//提取0行padding数据
 uint8x16_t v8_dup_pad = vld1q_dup_u8(pt_row0);
@@ -248,7 +248,7 @@ uint8x16_t v8_next_row_data = vextq_u8(v8_dup_pad, v8_tmp_data, 15);`
 
 上下边界的方法一样，我们需要根据反射类型，将padding行的数据向量赋值为相应行的数据向量即可。左右边界的方法一样，对于左边界，我们可以使用VLD1指令提取边界数据，然后使用vrev来翻转向量内部元素最后使用vext来组建新的向量。
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_4e3a8c684516.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_4e3a8c684516.jpg)
 
 参考代码：
 
@@ -309,7 +309,7 @@ Gaussian3x3RowCalcu实现
 
  左边界处理：
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_dd7882331c58.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_dd7882331c58.jpg)
 
 `static inline int32_t Gaussian3x3RowCalcu(const uint8_t *src0, const uint8_t *src1, const uint8_t *src2, uint8_t *dst, int32_t width)
 {
@@ -352,7 +352,7 @@ Gaussian3x3RowCalcu实现
 
 第二部分for循环是计算中间部分数据的结果，先做竖直方向的累加，再做水平方向的累加，每次计算8个输出结果。各向量的数据含义及计算方法（for循环第一次计算）见下图。
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_53a1863854be.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_53a1863854be.jpg)
 
 最后一次的向量计算单独处理，为了防止提取下一组数据时越界。
 
@@ -377,7 +377,7 @@ Gaussian3x3RowCalcu实现
 
 下图是我们在高通骁龙888平台上的运行结果，可以看到使用NEON优化之后运行时间从15.53ms(图像尺寸4095x2161)下降到了3.22ms，性能有了4倍多的提升。感兴趣的读者可以自己运行下结果。
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_2e216640b717.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_2e216640b717.jpg)
 
 运行结果
 #### 4.4 工程代码
@@ -390,10 +390,10 @@ Gaussian3x3RowCalcu实现
 
 - NEON Programmer's Guide 
 - Cortex-A72 Software Optimization Guide
-**未完待续。。。**
+<strong>未完待续。。。</strong>
 
 [](https://zhuanlan.zhihu.com/p/473724533)
 
-**沟通交流群**
+<strong>沟通交流群</strong>
 
 https://weixin.qq.com/g/AQYAAFHbnG4ywFxoz9OFPGeXrHxGfoEvb09Jr4ZsARm-jfnjTXmEFaVD5m7yg3rl (二维码自动识别)

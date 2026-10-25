@@ -40,7 +40,7 @@ source_url: https://zhuanlan.zhihu.com/p/2059328957376377036
 - 放进去以后，每个新 token 还能不能便宜地生成；
 - 训练时，模型能不能真的学会使用这么长的上下文；
 - 服务时，KV cache、通信和调度能不能撑住；
-- Agent 场景里，工具结果、历史 reasoning 和用户状态能不能被稳定管理。V4 报告给了一个关键效率对比：在 1M token 场景下，V4-Pro 相比 DeepSeek-V3.2 的单 token 推理 FLOPs 约为 **27%**，KV cache 约为 **10%**；V4-Flash 进一步降到约 **10% FLOPs** 和 **7% KV cache**。
+- Agent 场景里，工具结果、历史 reasoning 和用户状态能不能被稳定管理。V4 报告给了一个关键效率对比：在 1M token 场景下，V4-Pro 相比 DeepSeek-V3.2 的单 token 推理 FLOPs 约为 <strong>27%</strong>，KV cache 约为 <strong>10%</strong>；V4-Flash 进一步降到约 <strong>10% FLOPs</strong> 和 <strong>7% KV cache</strong>。
 
 ![](https://pic4.zhimg.com/v2-b984bf2e63de1b3732779716405f2c55_r.jpg)PPT 长上下文效率结果图中把 V4-Pro、V4-Flash 与 V3.2 在 1M context 下的单 token FLOPs 和 KV cache 做对比。重点是：V4 没有只追更大窗口，而是把每个 token 的增量推理成本显著压低。
 
@@ -139,8 +139,8 @@ V4 使用 hybrid Newton-Schulz 来做近似正交化：前 8 步快速把奇异�
 
 稳定性部分，报告把问题主要归因于 MoE outlier 和 routing 放大效应，并给出两类经验方案：
 
-- **Anticipatory Routing**：用历史参数提前计算 routing indices，在 loss spike 出现时触发短 rollback 并启用该模式，从而打断 routing 和 outlier 之间的恶性循环；
-- **SwiGLU Clamping**：对 SwiGLU linear 分支 clamp 到 `[-10, 10]`，gate 分支上限为 10，用数值范围控制抑制异常值。这些方法有效，但理论机制仍不完整。很多大模型训练的稳定性技巧，本质上仍带有经验工程成分：它们能处理某些 loss spike，但对不稳定性的完整机制解释还不充分。
+- <strong>Anticipatory Routing</strong>：用历史参数提前计算 routing indices，在 loss spike 出现时触发短 rollback 并启用该模式，从而打断 routing 和 outlier 之间的恶性循环；
+- <strong>SwiGLU Clamping</strong>：对 SwiGLU linear 分支 clamp 到 `[-10, 10]`，gate 分支上限为 10，用数值范围控制抑制异常值。这些方法有效，但理论机制仍不完整。很多大模型训练的稳定性技巧，本质上仍带有经验工程成分：它们能处理某些 loss spike，但对不稳定性的完整机制解释还不充分。
 
 6. MoE：通信优化 与 kernel fuse
 MoE 的纸面效率很好看：每个 token 只激活少数专家，所以激活参数远小于总参数。但到了训练和推理系统里，还要处理另一个成本：专家分布在不同设备上，token 要 dispatch 到对应专家，算完还要 combine。
@@ -153,11 +153,11 @@ V4 的做法是设计 fused mega-kernel，把 Dispatch、Linear-1、SwiGLU/FP8 c
 
 报告里还提到几个底层方向：
 
-- **TileLang**：用于快速开发 fused kernels，连接原型迭代和底层性能优化；
-- **Host Codegen**：把 Python host-side overhead 降到微秒级以下；
-- **batch-invariant / deterministic kernels**：保证训练、后训练、推理之间 bitwise 对齐，方便复现 loss spike 和 debug；
-- **FP4 QAT**：用于 MoE expert weights 和 CSA indexer QK path；
-- **index score 低精度化**：从 FP32 到 BF16 可以加速 top-k selector，同时保持较高 KV entry recall。这些内容偏底层，但都和端到端可用性有关。CSA/HCA 和 MoE 这种复杂机制能不能落地，很大程度取决于 kernel、编译、量化、缓存和调度是否配套。
+- <strong>TileLang</strong>：用于快速开发 fused kernels，连接原型迭代和底层性能优化；
+- <strong>Host Codegen</strong>：把 Python host-side overhead 降到微秒级以下；
+- <strong>batch-invariant / deterministic kernels</strong>：保证训练、后训练、推理之间 bitwise 对齐，方便复现 loss spike 和 debug；
+- <strong>FP4 QAT</strong>：用于 MoE expert weights 和 CSA indexer QK path；
+- <strong>index score 低精度化</strong>：从 FP32 到 BF16 可以加速 top-k selector，同时保持较高 KV entry recall。这些内容偏底层，但都和端到端可用性有关。CSA/HCA 和 MoE 这种复杂机制能不能落地，很大程度取决于 kernel、编译、量化、缓存和调度是否配套。
 
 7. 后训练策略与产品链路
 V4 后训练保留了 V3.2 管线基础，但核心变化是用 On-Policy Distillation，简称 OPD，替代 mixed RL。

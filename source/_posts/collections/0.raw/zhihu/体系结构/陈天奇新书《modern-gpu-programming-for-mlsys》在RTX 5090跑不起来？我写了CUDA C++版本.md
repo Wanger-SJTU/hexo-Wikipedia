@@ -358,7 +358,7 @@ cuBLAS 比本 kernel 快 5.5×，主要差距来自：
 
 5. 总结
 
-- **TIRx 0.25 只支持 SM100（B100/B200）**，原因是 `Tx.gemm_async` 的唯一调度实现（tcgen05）依赖 TMEM 和 warpgroup，这两者 RTX 5090（SM120）都不具备。
-- **SM120 的 Tensor Core 硬件是完好的**，通过 `wmma::mma_sync`（HMMA 路径）可以正确调用，只是 TIRx 还没有对接。
-- **本 CUDA C++ kernel 作为过渡方案**，在 RTX 5090 上实现了 32 TFLOPS 的 FP16 GEMM 性能，正确性验证通过（max_error = 0）。
-- **给 TIRx 贡献 SM120 dispatch** 是可行的长期方向，需要参考 `tcgen05.py`（1052 行）的实现模式，在 TVM lowering pipeline 中新增 HMMA 代码生成路径。
+- <strong>TIRx 0.25 只支持 SM100（B100/B200）</strong>，原因是 `Tx.gemm_async` 的唯一调度实现（tcgen05）依赖 TMEM 和 warpgroup，这两者 RTX 5090（SM120）都不具备。
+- <strong>SM120 的 Tensor Core 硬件是完好的</strong>，通过 `wmma::mma_sync`（HMMA 路径）可以正确调用，只是 TIRx 还没有对接。
+- <strong>本 CUDA C++ kernel 作为过渡方案</strong>，在 RTX 5090 上实现了 32 TFLOPS 的 FP16 GEMM 性能，正确性验证通过（max_error = 0）。
+- <strong>给 TIRx 贡献 SM120 dispatch</strong> 是可行的长期方向，需要参考 `tcgen05.py`（1052 行）的实现模式，在 TVM lowering pipeline 中新增 HMMA 代码生成路径。

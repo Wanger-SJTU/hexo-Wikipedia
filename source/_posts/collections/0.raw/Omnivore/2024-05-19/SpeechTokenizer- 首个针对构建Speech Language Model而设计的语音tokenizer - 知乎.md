@@ -31,9 +31,9 @@ id: dded644a-5084-4a1a-a783-e22ec90d7c77
 
 基于这两种token，目前已有的speech LM建模范式大致可分为三类：
 
-1. **Semantic language models:** 基于semantic token的自回归模型，常外接一个unit-vocoder来恢复语音，比如SpeechGPT\[6\]。这类模型虽然可以完成一些语音内容相关的任务，但是它们产生的音质比较一般，并且无法完成一些副语言学相关的任务，比如音色转换等。
-2. **Acoustic language models:** 基于acoustic token的speech LM，比如VALL-E\[7\]。这类模型产生的语音音质比较好，并且可以较好地完成一些比如zero-shot TTS的任务，但是会存在内容不准确的问题。
-3. **Hierarchical speech language models:** 这类模型由Semantic language models和Acoustic language models 级联而成，既可以产生比较精确的内容，也可以产生较好的音质，比如AudioPaLM\[8\]。但是这类模型，建模阶段太多，较为复杂，需要两种tokenizer的参与；而且在semantic token和acoustic token之间其实存在有很大的信息冗余，会带来一些不必要的建模难度。
+1. <strong>Semantic language models:</strong> 基于semantic token的自回归模型，常外接一个unit-vocoder来恢复语音，比如SpeechGPT\[6\]。这类模型虽然可以完成一些语音内容相关的任务，但是它们产生的音质比较一般，并且无法完成一些副语言学相关的任务，比如音色转换等。
+2. <strong>Acoustic language models:</strong> 基于acoustic token的speech LM，比如VALL-E\[7\]。这类模型产生的语音音质比较好，并且可以较好地完成一些比如zero-shot TTS的任务，但是会存在内容不准确的问题。
+3. <strong>Hierarchical speech language models:</strong> 这类模型由Semantic language models和Acoustic language models 级联而成，既可以产生比较精确的内容，也可以产生较好的音质，比如AudioPaLM\[8\]。但是这类模型，建模阶段太多，较为复杂，需要两种tokenizer的参与；而且在semantic token和acoustic token之间其实存在有很大的信息冗余，会带来一些不必要的建模难度。
 
 因此，如果想要打造好的speech LM，需要有一个理想的speech tokens，它应该具有以下两个特征：
 

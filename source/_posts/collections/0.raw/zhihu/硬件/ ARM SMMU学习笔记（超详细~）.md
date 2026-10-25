@@ -21,11 +21,11 @@ SMMU（system mmu),是I/O device与总线之间的地址转换桥。
 
 它在系统的位置如下图：
 
-![](/images/collections/0.raw/zhihu/%25E7%25A1%25AC%25E4%25BB%25B6/asset/img_f889bf6a706f.jpg)
+![](/images/collections/0.raw/zhihu/%E7%A1%AC%E4%BB%B6/asset/img_f889bf6a706f.jpg)
 
 它与mmu的功能类似，可以实现地址转换，内存属性转换，权限检查等功能。
 
-**好文推荐：**
+<strong>好文推荐：</strong>
 
 [字节终面：CPU 是如何读写内存的？](https://zhuanlan.zhihu.com/p/522038503)
 
@@ -57,7 +57,7 @@ DMA：（(Direct Memory Access），直接内存存取, 是一种外部设备不
 
 虚拟化：在虚拟化场景， 所有的VM都运行在中间层hypervisor上，每一个VM独立运行自己的OS（guest OS）,Hypervisor完成硬件资源的共享, 隔离和切换。
 
-![](/images/collections/0.raw/zhihu/%25E7%25A1%25AC%25E4%25BB%25B6/asset/img_06d12c6d04ae.jpg)
+![](/images/collections/0.raw/zhihu/%E7%A1%AC%E4%BB%B6/asset/img_06d12c6d04ae.jpg)
 
 但对于Hypervisor + GuestOS的虚拟化系统来说, guest VM使用的物理地址是GPA, 看到的内存并非实际的物理地址(也就是HPA)，因此Guest OS无法正常的将连续的物理地址分给硬件。
 
@@ -67,7 +67,7 @@ DMA：（(Direct Memory Access），直接内存存取, 是一种外部设备不
 
 *[VA：虚拟地址；IPA: 中间物理地址；PA：物理地址]
 
-![](/images/collections/0.raw/zhihu/%25E7%25A1%25AC%25E4%25BB%25B6/asset/img_6f25ec737ff0.jpg)
+![](/images/collections/0.raw/zhihu/%E7%A1%AC%E4%BB%B6/asset/img_6f25ec737ff0.jpg)
 
 ### 3. SMMU常用概念
 
@@ -83,13 +83,13 @@ CD Context Descriptor, 是一个特定格式的数据结构，包含了指向sta
 
 【文章福利**】小编推荐自己的Linux内核技术交流群:【891587639】整理了一些个人觉得比较好的学习书籍、视频资料共享在群文件里面，有需要的可以自行添加哦！！！
 
-![](/images/collections/0.raw/zhihu/%25E7%25A1%25AC%25E4%25BB%25B6/asset/img_a041a705367f.jpg)
+![](/images/collections/0.raw/zhihu/%E7%A1%AC%E4%BB%B6/asset/img_a041a705367f.jpg)
 
-![](/images/collections/0.raw/zhihu/%25E7%25A1%25AC%25E4%25BB%25B6/asset/img_e1fee1d3c356.jpg)
+![](/images/collections/0.raw/zhihu/%E7%A1%AC%E4%BB%B6/asset/img_e1fee1d3c356.jpg)
 
-**学习直通车：**
+<strong>学习直通车：</strong>
 
-**内核资料直通车：**
+<strong>内核资料直通车：</strong>
 
 ### 4. SMMU数据结构查找
 
@@ -103,7 +103,7 @@ Stream table有两种格式，一种是Linear Stream Table, 一种是2-level Str
 
 1. Linear Stream Table
 
-![](/images/collections/0.raw/zhihu/%25E7%25A1%25AC%25E4%25BB%25B6/asset/img_eaf600541663.jpg)
+![](/images/collections/0.raw/zhihu/%E7%A1%AC%E4%BB%B6/asset/img_eaf600541663.jpg)
 
 Linear Stream Table是将整个stream table在内存中线性展开成一个数组， 用Stream Id作为索引进行查找.
 
@@ -111,7 +111,7 @@ Linear Stream Table 实现简单，只需要一次索引，速度快；但是平
 
 2. 2-level Stream Table
 
-![](/images/collections/0.raw/zhihu/%25E7%25A1%25AC%25E4%25BB%25B6/asset/img_eb341c03f41f.jpg)
+![](/images/collections/0.raw/zhihu/%E7%A1%AC%E4%BB%B6/asset/img_eb341c03f41f.jpg)
 
 2-level Stream Table， 顾名思义，就是包含2级table, 第一级table， 即STD，包含了指向二级STE的基地址STD。第二级STE是Linear stream Table. 2-level Stream Table的优点是更加节省内存。
 
@@ -119,7 +119,7 @@ SMMU根据寄存器配置的STRTAB_BASE地址找到STE， STRTAB_BASE定义了ST
 
 最终找到的STE如下所示，表中的信息包含属性相关信息， 翻译模式信息（是否 stream bypass, 若否，选择stage1, stage2或者stage1 + stage2翻译模式）。
 
-![](/images/collections/0.raw/zhihu/%25E7%25A1%25AC%25E4%25BB%25B6/asset/img_93fc590ca1cb.jpg)
+![](/images/collections/0.raw/zhihu/%E7%A1%AC%E4%BB%B6/asset/img_93fc590ca1cb.jpg)
 
 找到STE后可以进一步开始S1翻译或S2翻译.
 
@@ -129,11 +129,11 @@ CD包含了指向stage1地址翻译表的基地址指针.
 
 如下图所示， STE指明了CD数据结构在DDR中的基地址S1ContextPTR, SSID(substream id)指明了CD数据结构的偏移，如果SMMU选择进行linear, 则使用S1ContextPTR + 64 * ssid 找到CD。如果SMMU选择2-level, 则使用ssid进行二级查找获得CD（与上节STE的方式一致）。
 
-![](/images/collections/0.raw/zhihu/%25E7%25A1%25AC%25E4%25BB%25B6/asset/img_ed8b647506ad.jpg)
+![](/images/collections/0.raw/zhihu/%E7%A1%AC%E4%BB%B6/asset/img_ed8b647506ad.jpg)
 
 最终找到的CD如下所示：
 
-![](/images/collections/0.raw/zhihu/%25E7%25A1%25AC%25E4%25BB%25B6/asset/img_34e13d6a8d89.jpg)
+![](/images/collections/0.raw/zhihu/%E7%A1%AC%E4%BB%B6/asset/img_34e13d6a8d89.jpg)
 
 表中信息包含memory属性，翻译控制信息，异常控制信息以及Page table walk(PTW)的起始地址TTB0, TTB1， 找到TTBx后，就可以PTW了。
 
@@ -141,7 +141,7 @@ CD包含了指向stage1地址翻译表的基地址指针.
 
 #### 5.1 单stage的地址转换：
 
-![](/images/collections/0.raw/zhihu/%25E7%25A1%25AC%25E4%25BB%25B6/asset/img_a4f7afb288b2.jpg)
+![](/images/collections/0.raw/zhihu/%E7%A1%AC%E4%BB%B6/asset/img_a4f7afb288b2.jpg)
 
 TTB 和 VA[47:39]组成获取Level0页表的地址PA；
 
@@ -157,7 +157,7 @@ level3页表中的output address和va[12:0]组成获取组后的钻换地址
 
 #### 5.2 stage1+stage2的地址转换：
 
-![](/images/collections/0.raw/zhihu/%25E7%25A1%25AC%25E4%25BB%25B6/asset/img_0016dc1442b7.jpg)
+![](/images/collections/0.raw/zhihu/%E7%A1%AC%E4%BB%B6/asset/img_0016dc1442b7.jpg)
 
 在使能SMMU两阶段地址翻译的情况下，stage1负责将设备DMA请求发出的VA翻译为IPA并作为stage2的输入， stage2则利用stage1输出的IPA再次进行翻译得到PA，从而DMA请求正确地访问到Guest的要操作的地址空间上。
 
@@ -183,6 +183,6 @@ Command queue用于软件与SMMU的硬件交互，软件写命令到command queu
 
 Event Queue用于SMMU发生软件配置错误的状态信息记录，SMMU将配置错误信息写到Event queue中，软件通过读取Event queue获得配置错误信息并进行配置错误处理。
 
-![](/images/collections/0.raw/zhihu/%25E7%25A1%25AC%25E4%25BB%25B6/asset/img_5d8159177c72.jpg)
+![](/images/collections/0.raw/zhihu/%E7%A1%AC%E4%BB%B6/asset/img_5d8159177c72.jpg)
 
-![](/images/collections/0.raw/zhihu/%25E7%25A1%25AC%25E4%25BB%25B6/asset/img_a3889a1b2fc2.jpg)
+![](/images/collections/0.raw/zhihu/%E7%A1%AC%E4%BB%B6/asset/img_a3889a1b2fc2.jpg)

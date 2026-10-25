@@ -19,7 +19,7 @@ source_url: https://zhuanlan.zhihu.com/p/690052715
 
 问题来了！！！官方文档中，只介绍了每个 thread 访问 4 byte（即 32bit）时的 broadcast 机制和 bank conflict 情形。可以看这里：（Compute Capability 5.x 到 9.x 都是一样的设计）
 
-[Shared Memory Architecture](https://link.zhihu.com/?target=https%3A//docs.nvidia.com/cuda/cuda-c-programming-guide/index.html%3Fhighlight%3Dclock%23shared-memory-5-x)但是，**对于使用  LDS.64 或 LDS.128 指令时的情况（即每个 thread 访问超过 4 个 bytes），却很难找到官方文档**。生气 && 难过！！
+[Shared Memory Architecture](https://link.zhihu.com/?target=https%3A//docs.nvidia.com/cuda/cuda-c-programming-guide/index.html%3Fhighlight%3Dclock%23shared-memory-5-x)但是，<strong>对于使用  LDS.64 或 LDS.128 指令时的情况（即每个 thread 访问超过 4 个 bytes），却很难找到官方文档</strong>。生气 && 难过！！
 
 于是，我大量查阅了网上的博客、问答等，以及使用 Nsight Compute 进行大量测试，总结出了使用这两个指令时的访存特点（memory transaction 数量、什么时候会出现 bank conflict 等）。
 
@@ -29,9 +29,9 @@ source_url: https://zhuanlan.zhihu.com/p/690052715
 
 ![](https://pic2.zhimg.com/v2-553c1d60862cefdb3d88908173c17917_r.jpg)
 
-注意：**对于 shared memory，我们分析时，一般都是关注单个 warp 内的情况**～～～
+注意：<strong>对于 shared memory，我们分析时，一般都是关注单个 warp 内的情况</strong>～～～
 
-**测试环境**：
+<strong>测试环境</strong>：
 
 A100，Compute Capability 8.x
 
@@ -42,7 +42,7 @@ A100，Compute Capability 8.x
 
 所以 shared memory 在每个 cycle 的 bandwidth 为 32 * 32 bits = 32 * 4 bytes = 128 bytes。
 
-**那么关键就来了！！每次 memory transaction 最多访问 128 bytes 的数据**。（这个数据是决定了 LDS.64 和 LDS.128 的访存特点）
+<strong>那么关键就来了！！每次 memory transaction 最多访问 128 bytes 的数据</strong>。（这个数据是决定了 LDS.64 和 LDS.128 的访存特点）
 
 初次接触的同学，可以看看 YouTube 上的这个视频：
 
@@ -53,19 +53,19 @@ A100，Compute Capability 8.x
 - 当多个 thread 访问同一个 bank 内的同一个 word，就会触发 broadcast 机制。这个 word 会同时发给对应的 thread；
 - 当多个 thread 访问同一个 bank 内的不同 word 时，就会产生 bank conflict。于是请求会被拆分成多次 memory transaction，串行地被发射（issue）出去执行。（比如 2-way bank conflict，就拆分成 2 次 transaction）
 
-小结一下，**单次请求中，warp 内 32 个 thread，每个访问 4 bytes，那么总的数据需求就是最多 128 bytes。只要不产生 bank conflict，一次 memory transaction 就够了**。**取回来 128 bytes 的数据，warp 内怎么分都可以**。
+小结一下，<strong>单次请求中，warp 内 32 个 thread，每个访问 4 bytes，那么总的数据需求就是最多 128 bytes。只要不产生 bank conflict，一次 memory transaction 就够了</strong>。<strong>取回来 128 bytes 的数据，warp 内怎么分都可以</strong>。
 
 2、64 位宽的访存指令
 使用 LDS.64 指令（或者通过 float2、uint2 等类型）取数据时，每个 thread 请求 64 bits（即 8 bytes）数据，那么每 16 个 thread 就需要请求 128 bytes 的数据。
 
 所以 CUDA 会默认将一个 warp 拆分为两个 half warp，每个 half warp 产生一次 memory transaction。即一共两次 transaction。
 
-**只有以下两个条件之一满足时，这两个 half warp 的访问才会合并成一次 memory transaction**：
+<strong>只有以下两个条件之一满足时，这两个 half warp 的访问才会合并成一次 memory transaction</strong>：
 
 - 对于 Warp 内所有活跃的第 i 号线程，第 i xor 1 号线程不活跃或者访存地址和其一致；(i.e. T0==T1, T2==T3, T4==T5, T6==T7, T8 == T9, ......, T30 == T31, etc.)
 - 对于 Warp 内所有活跃的第 i 号线程，第 i xor 2 号线程不活跃或者访存地址和其一致；(i.e. T0==T2, T1==T3, T4==T6, T5==T7 etc.)（活跃是指有访存需求）
 
-**为什么呢？？**
+<strong>为什么呢？？</strong>
 
 简单理解一下，当上面两种情况发生时，硬件就可以判断（具体是硬件还是编译器的功劳，我也不确定，先归给硬件吧），单个 half warp 内，最多需要 64 bytes 的数据，那么两个 half warp 就可以合并起来，通过一次 memory transaction，拿回 128 bytes 的数据。然后线程之间怎么分都可以（broadcast 机制）。
 
@@ -76,15 +76,15 @@ A100，Compute Capability 8.x
 Case 1
 每个线程依次访问连续的 uint2。即第 tid 个线程，访问第 tid 个 uint2。
 
-这时，并没有触发合并的条件，每个 half warp 分别执行一次 memory transaction，**一共两次**。也没有产生 bank conflict。
+这时，并没有触发合并的条件，每个 half warp 分别执行一次 memory transaction，<strong>一共两次</strong>。也没有产生 bank conflict。
 
 看下第一个 half warp 访问的数据位置：（第一行中的 32 个 word，黄色部分）
 
 ![](https://picx.zhimg.com/v2-ad56619bdac19b3a749aecd50b6b5985_r.jpg)上半部分的 Bank 表示数据排列，每个格子表示 1 个 word；下半部分表示线程排列；第二个 half warp 则是访问第二行的 32 个 word。
 
-**注意！！**
+<strong>注意！！</strong>
 
-**其实 bank conflict 是针对单次 memory transaction 而言的。如果单次 memory transaction 需要访问的 128 bytes 中有多个 word 属于同一个 bank，就产生了 bank conflict，从而需要拆分为多次 transaction**。
+<strong>其实 bank conflict 是针对单次 memory transaction 而言的。如果单次 memory transaction 需要访问的 128 bytes 中有多个 word 属于同一个 bank，就产生了 bank conflict，从而需要拆分为多次 transaction</strong>。
 
 比如这里，第一次访问了 0 - 31 个 word，第二次访问了 32 - 63 个 word，每次 transaction 内部并没有 bank conflict。
 
@@ -131,7 +131,7 @@ __global__ void smem_2(uint32_t *a) {
 
 所以，CUDA 会默认把每个 half warp 进一步切分成两个 quarter warp，每个包含 8 个 thread。每个 quarter warp 产生一次 memory transaction。所以每个 warp 每次请求，默认会有 4 次 memory transaction。（没有 bank conflict 的情况下）。
 
-类似 64 位宽的情况，**当满足特定条件时，一个 half warp 内的两个 quarter warp 的访存请求会合并为 1 次 memory transaction。但是两个 half warp 不会再进一步合并了**。（划重点！！！）
+类似 64 位宽的情况，<strong>当满足特定条件时，一个 half warp 内的两个 quarter warp 的访存请求会合并为 1 次 memory transaction。但是两个 half warp 不会再进一步合并了</strong>。（划重点！！！）
 
 具体条件和 64 位宽一样：
 
@@ -263,7 +263,7 @@ __global__ void smem_5(uint32_t *a) {
 
 但是，当 GPU 满流水运行时（计算时间可以比较好地掩盖访存延迟），2 次和 4 次 transaction 造成的整体 kernel 性能差异就比较大了。（比如 GEMM 中，对 warp 内的线程进行适当的排列，可以有 13% 左右的提升，参考这篇论文第 3.1.4 节：[https://arxiv.org/pdf/2305.01024.pdf](https://link.zhihu.com/?target=https%3A//arxiv.org/pdf/2305.01024.pdf) ）
 
-**说明 1：30 - 40 个 cycle 怎么算出来的？**
+<strong>说明 1：30 - 40 个 cycle 怎么算出来的？</strong>
 
 以 A100 为例，网上的测评给出的访问 shared memory 的 latency 大概是 22.4 ns，GPU 时钟频率是 1.5GHz，算下来单次访问就是 22.4 / (1 / 1.5GHz) = 33.6 cycle。
 
@@ -282,9 +282,9 @@ __global__ void smem_5(uint32_t *a) {
 
 ![](https://pica.zhimg.com/v2-486197770b73806a7f07b449922f2d1c_r.jpg)
 
-**如果哪里写的不对，请大家指正～～**
+<strong>如果哪里写的不对，请大家指正～～</strong>
 
-**Reference**
+<strong>Reference</strong>
 
 [1] [https://code.hitori.moe/post/cuda-shared-memory-access-mechanism-with-vectorized-instructions/](https://link.zhihu.com/?target=https%3A//code.hitori.moe/post/cuda-shared-memory-access-mechanism-with-vectorized-instructions/)
 

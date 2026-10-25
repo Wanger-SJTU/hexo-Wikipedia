@@ -22,16 +22,16 @@ categories:
 
 Sizning agentingiz tushdan keyin ishlaydi, 20 ta faylni oʻzgartiradi, kodni commit qiladi va sessiya tugaydi. Keyingi agent sessiyasi ish boshlaydi va birdan shularni aniqlaydi: build yiqilyapti (broken), testlar qizil (yiqilgan), vaqtinchalik debug fayllar sochilib yotibdi, funksiyalar roʻyxati yangilanmagan va ishlarning qay holatdaligi butunlay noaniq. Yangi sessiya birinchi 30 daqiqasini faqatgina “oʻtgan sessiya oʻzi nima qilgandi” degan narsani tushunishga sarflaydi.
 
-OpenAI ham, Anthropic ham buni ochiqchasiga aytadi: **uzoq muddatli ishonchlilik faqatgina bir martalik ishning muvaffaqiyatiga emas, balki operatsion tartib-intizomga bogʻliqdir.** Sessiya yakunidagi holat (state) sifati bevosita keyingi sessiyaning samaradorligini belgilaydi. Buni Gitʼning eng yaxshi amaliyotlari kabi tasavvur qiling — har bir commit yaxlit, kompilyatsiya qilinadigan oʻzgarish boʻlishi kerak, chala yozilgan kodlar yigʻindisi emas.
+OpenAI ham, Anthropic ham buni ochiqchasiga aytadi: <strong>uzoq muddatli ishonchlilik faqatgina bir martalik ishning muvaffaqiyatiga emas, balki operatsion tartib-intizomga bogʻliqdir.</strong> Sessiya yakunidagi holat (state) sifati bevosita keyingi sessiyaning samaradorligini belgilaydi. Buni Gitʼning eng yaxshi amaliyotlari kabi tasavvur qiling — har bir commit yaxlit, kompilyatsiya qilinadigan oʻzgarish boʻlishi kerak, chala yozilgan kodlar yigʻindisi emas.
 
 ## Asosiy tushunchalar
 
-- **Toza holat (Clean state)**: Tizim sessiya oxirida beshta shartni qanoatlantirishi kerak — build oʻtadi, testlar oʻtadi, bajarilgan jarayon qayd etilgan, eskirgan artefaktlar qolmagan, ishga tushirish (startup) yoʻli ochiq. Ulardan birortasi boʻlmasa, sessiya “tugatildi” hisoblanmaydi.
-- **Sessiya yaxlitligi (Session integrity)**: Maʼlumotlar bazasi tranzaksiyalariga oʻxshaydi — yo oʻzgarishni toʻliq saqlang (commit) va toza holat qoldiring, yoki oxirgi muvofiq holatga (consistent state) qayting (roll back). Boshqa chorasi yoʻq.
-- **Sifat hujjati (Quality document)**: Har bir modulning sifat reytingini doimiy ravishda qayd etib boruvchi faol artefakt. Bu bir martalik baholash emas, balki kod bazasining (codebase) vaqt oʻtishi bilan kuchayib borayotgani yoki zaiflashayotganini koʻrsatuvchi trekkerdir.
-- **Tozalash sikli (Cleanup loop)**: Kod bazasidagi entropiyani tizimli ravishda kamaytirishga qaratilgan muntazam texnik xizmat koʻrsatish sessiyasi. Favqulodda yamoq qoʻyish emas, balki odatiy operatsiyalar (routine operations).
-- **Harnessni soddalashtirish (Harness simplification)**: Model qobiliyatlari oshgani sari, endi keragi yoʻq boʻlgan harness komponentlarini davriy ravishda olib tashlash. Bugun muhim boʻlgan cheklov uch oydan soʻng ortiqcha yukka aylanishi mumkin.
-- **Idempotent tozalash (Idempotent cleanup)**: Tozalash operatsiyalari necha marta ishga tushishidan qatʼi nazar, bir xil natija berishi kerak. Bu xatolik/qayta urinish (failure-retry) ssenariylarida ham tozalashning xavfsiz boʻlib qolishini taʼminlaydi.
+- <strong>Toza holat (Clean state)</strong>: Tizim sessiya oxirida beshta shartni qanoatlantirishi kerak — build oʻtadi, testlar oʻtadi, bajarilgan jarayon qayd etilgan, eskirgan artefaktlar qolmagan, ishga tushirish (startup) yoʻli ochiq. Ulardan birortasi boʻlmasa, sessiya “tugatildi” hisoblanmaydi.
+- <strong>Sessiya yaxlitligi (Session integrity)</strong>: Maʼlumotlar bazasi tranzaksiyalariga oʻxshaydi — yo oʻzgarishni toʻliq saqlang (commit) va toza holat qoldiring, yoki oxirgi muvofiq holatga (consistent state) qayting (roll back). Boshqa chorasi yoʻq.
+- <strong>Sifat hujjati (Quality document)</strong>: Har bir modulning sifat reytingini doimiy ravishda qayd etib boruvchi faol artefakt. Bu bir martalik baholash emas, balki kod bazasining (codebase) vaqt oʻtishi bilan kuchayib borayotgani yoki zaiflashayotganini koʻrsatuvchi trekkerdir.
+- <strong>Tozalash sikli (Cleanup loop)</strong>: Kod bazasidagi entropiyani tizimli ravishda kamaytirishga qaratilgan muntazam texnik xizmat koʻrsatish sessiyasi. Favqulodda yamoq qoʻyish emas, balki odatiy operatsiyalar (routine operations).
+- <strong>Harnessni soddalashtirish (Harness simplification)</strong>: Model qobiliyatlari oshgani sari, endi keragi yoʻq boʻlgan harness komponentlarini davriy ravishda olib tashlash. Bugun muhim boʻlgan cheklov uch oydan soʻng ortiqcha yukka aylanishi mumkin.
+- <strong>Idempotent tozalash (Idempotent cleanup)</strong>: Tozalash operatsiyalari necha marta ishga tushishidan qatʼi nazar, bir xil natija berishi kerak. Bu xatolik/qayta urinish (failure-retry) ssenariylarida ham tozalashning xavfsiz boʻlib qolishini taʼminlaydi.
 
 ## Toza holatning besh oʻlchami
 
@@ -85,15 +85,15 @@ Xuddi shu loyiha tozalash strategiyasi bilan:
 
 Toza holat bu shunchaki “kod kompilyatsiya boʻladi” degani emas. U beshta oʻlchamni birgalikda baholaydi:
 
-**Build oʻlchami**: Kod xatosiz build boʻladimi? Bu eng asosiysi — keyingi sessiya ishni build xatolarini tuzatishdan boshlamasligi kerak.
+<strong>Build oʻlchami</strong>: Kod xatosiz build boʻladimi? Bu eng asosiysi — keyingi sessiya ishni build xatolarini tuzatishdan boshlamasligi kerak.
 
-**Test oʻlchami**: Barcha testlar oʻtmoqdami? Sessiyadan oldin mavjud boʻlgan testlar ham — bu sessiya mavjud funksiyani (functionality) buzmaslikka masʼuldir. Va u faqat “mening kompyuterimda ishlayapti” boʻlib qolmay, CIʼda ham tekshirilishi shart.
+<strong>Test oʻlchami</strong>: Barcha testlar oʻtmoqdami? Sessiyadan oldin mavjud boʻlgan testlar ham — bu sessiya mavjud funksiyani (functionality) buzmaslikka masʼuldir. Va u faqat “mening kompyuterimda ishlayapti” boʻlib qolmay, CIʼda ham tekshirilishi shart.
 
-**Jarayon (Progress) oʻlchami**: Joriy ishning jarayoni mashina oʻqiy oladigan artefaktga yozilganmi? Oʻzining qabul qilish shartlariga (passing criteria) ega tugatilgan sub-vazifalar, jarayonda boʻlgan lekin tugallanmaganlarining joriy holati va hali boshlanmaganlari kiritilishi kerak. Yaxshi jarayon qaydlari yangi sessiya ishga tushgandagi diagnostika vaqtini 60-80% gacha kamaytiradi.
+<strong>Jarayon (Progress) oʻlchami</strong>: Joriy ishning jarayoni mashina oʻqiy oladigan artefaktga yozilganmi? Oʻzining qabul qilish shartlariga (passing criteria) ega tugatilgan sub-vazifalar, jarayonda boʻlgan lekin tugallanmaganlarining joriy holati va hali boshlanmaganlari kiritilishi kerak. Yaxshi jarayon qaydlari yangi sessiya ishga tushgandagi diagnostika vaqtini 60-80% gacha kamaytiradi.
 
-**Artefakt oʻlchami**: Eskirgan yoki noaniq vaqtinchalik artefaktlar qolmadimi? Debug loglari, vaqtinchalik fayllar, izoh qilib qoldirilgan kodlar (commented-out code), TODO eslatmalari — bularning barchasi keyingi sessiya uchun bilish kerak boʻlgan kognitiv yukni (cognitive load) oshiradi.
+<strong>Artefakt oʻlchami</strong>: Eskirgan yoki noaniq vaqtinchalik artefaktlar qolmadimi? Debug loglari, vaqtinchalik fayllar, izoh qilib qoldirilgan kodlar (commented-out code), TODO eslatmalari — bularning barchasi keyingi sessiya uchun bilish kerak boʻlgan kognitiv yukni (cognitive load) oshiradi.
 
-**Startup oʻlchami**: Standart ishga tushirish (startup) yoʻli ochiqmi? Keyingi sessiya inson aralashuvisiz ishni boshlay oladimi? Muhitni ishga tushirish, kod bazasini yuklash, kontekstni tushunib olish, vazifani tanlash — bu yoʻllar buzilgan boʻlmasligi kerak.
+<strong>Startup oʻlchami</strong>: Standart ishga tushirish (startup) yoʻli ochiqmi? Keyingi sessiya inson aralashuvisiz ishni boshlay oladimi? Muhitni ishga tushirish, kod bazasini yuklash, kontekstni tushunib olish, vazifani tanlash — bu yoʻllar buzilgan boʻlmasligi kerak.
 
 ### “Keyinroq tozalab qoʻyaman” degani — hech qachon tozalab qoʻymayman degani
 
@@ -105,7 +105,7 @@ Eng yomoni, har bir sessiyaning oʻz vazifasi (task objectives) bor. Yangi sessi
 
 ### 1. Toza holatni yakunlash talabi sifatida qoʻyish
 
-Harnessʼda buni aniq belgilang: **sessiyani yakunlash = vazifa tekshiruvdan oʻtdi (passes verification) VA toza holat tekshiruvidan (clean state check) oʻtdi.** Bulardan birortasini bajarmaslik, sessiya tugallanmadi deganidir. CLAUDE.md fayliga shunday yozing:
+Harnessʼda buni aniq belgilang: <strong>sessiyani yakunlash = vazifa tekshiruvdan oʻtdi (passes verification) VA toza holat tekshiruvidan (clean state check) oʻtdi.</strong> Bulardan birortasini bajarmaslik, sessiya tugallanmadi deganidir. CLAUDE.md fayliga shunday yozing:
 
 ```
 ## Sessiyadan chiqish tekshiruvi (Session Exit Checklist)
@@ -120,9 +120,9 @@ Harnessʼda buni aniq belgilang: **sessiyani yakunlash = vazifa tekshiruvdan oʻ
 
 Ikkita tozalash rejimini birlashtiring:
 
-**Zudlik bilan tozalash (Immediate cleanup - har bir sessiya oxirida)**: Sessiya davomida yaratilgan vaqtinchalik artefaktlarni tozalash, funksiyalar roʻyxati holatini yangilash, build va testlar oʻtishini taʼminlash. Bu “havolalarni hisoblash” (reference counting) kabi tozalashdir.
+<strong>Zudlik bilan tozalash (Immediate cleanup - har bir sessiya oxirida)</strong>: Sessiya davomida yaratilgan vaqtinchalik artefaktlarni tozalash, funksiyalar roʻyxati holatini yangilash, build va testlar oʻtishini taʼminlash. Bu “havolalarni hisoblash” (reference counting) kabi tozalashdir.
 
-**Vaqti-vaqti bilan tozalash (Periodic cleanup - haftalik)**: Tizimni toʻliq skanerdan oʻtkazish — toʻplanib qolgan strukturaviy muammolarni hal qilish, sifat hujjatlarini yangilash, qoidadan ogʻishlarni (drift) aniqlash uchun benchmark testlarini oʻtkazish. Bu “treysing” (tracing) kabi tozalashdir.
+<strong>Vaqti-vaqti bilan tozalash (Periodic cleanup - haftalik)</strong>: Tizimni toʻliq skanerdan oʻtkazish — toʻplanib qolgan strukturaviy muammolarni hal qilish, sifat hujjatlarini yangilash, qoidadan ogʻishlarni (drift) aniqlash uchun benchmark testlarini oʻtkazish. Bu “treysing” (tracing) kabi tozalashdir.
 
 ### 3. Sifat hujjatini (Quality Document) olib boring
 
@@ -150,7 +150,7 @@ Yangi sessiyalar ushbu hujjatni oʻqib chiqib, ustuvorlik nimaga qaratilishini d
 
 ### 4. Vaqti-vaqti bilan Harnessʼni soddalashtiring
 
-Anthropicʼdan muhim tushuncha: **har bir harness komponenti agent biror ishni mustaqil va ishonchli bajara olmagani uchungina mavjuddir. Ammo modellar takomillashgani sari, bu taxminlar oʻz eskiradi.** Uch oy oldin zarur boʻlgan cheklov, bugun shunchaki ortiqcha yukka aylanishi mumkin.
+Anthropicʼdan muhim tushuncha: <strong>har bir harness komponenti agent biror ishni mustaqil va ishonchli bajara olmagani uchungina mavjuddir. Ammo modellar takomillashgani sari, bu taxminlar oʻz eskiradi.</strong> Uch oy oldin zarur boʻlgan cheklov, bugun shunchaki ortiqcha yukka aylanishi mumkin.
 
 Tavsiya etiladigan amaliyot: Har oyda bitta harness komponentini tanlang, uni vaqtinchalik oʻchirib qoʻying va benchmark testlarini oʻtkazing. Agar natijalar yomonlashmasa, uni butunlay olib tashlang. Agar yomonlashsa, uni qaytadan yoqing yoki yengilroq alternativa bilan almashtiring.
 
@@ -169,19 +169,19 @@ npm run test  # Tozalash hech narsani buzmaganini tasdiqlash
 
 Ikkita yondashuv bilan 12 hafta davomida agentlar yordamida ishlab chiqilgan Electron ilovasi (app):
 
-**Tozalash strategiyasisiz** (nazorat guruhi - control group): 12-haftada, build oʻtish darajasi 68%, test oʻtish darajasi 61%, yangi sessiyani boshlash vaqti 60+ daq, eskirgan artefaktlar 103 ta.
+<strong>Tozalash strategiyasisiz</strong> (nazorat guruhi - control group): 12-haftada, build oʻtish darajasi 68%, test oʻtish darajasi 61%, yangi sessiyani boshlash vaqti 60+ daq, eskirgan artefaktlar 103 ta.
 
-**Tozalash strategiyasi bilan** (tajriba guruhi - experimental group): Har bir sessiya yakunida toʻliq toza-holat tekshiruvi (clean-state check) + haftalik tozalash sikli (weekly cleanup loop). 12-haftada, build oʻtish darajasi 97%, test oʻtish darajasi 95%, yangi sessiyani boshlash vaqti 9 daq, eskirgan artefaktlar 11 ta.
+<strong>Tozalash strategiyasi bilan</strong> (tajriba guruhi - experimental group): Har bir sessiya yakunida toʻliq toza-holat tekshiruvi (clean-state check) + haftalik tozalash sikli (weekly cleanup loop). 12-haftada, build oʻtish darajasi 97%, test oʻtish darajasi 95%, yangi sessiyani boshlash vaqti 9 daq, eskirgan artefaktlar 11 ta.
 
 12-haftaga kelib, tajriba guruhining build oʻtish darajasi 29 foiz punkti yuqori, test oʻtish darajasi 34 foiz punkti yuqori va yangi sessiyani boshlash vaqti 85% ga qisqa.
 
 ## Asosiy xulosalar
 
-- **Toza holat — bu sessiyani tugatish uchun muhim va zarur shartdir** — bu ixtiyoriy “uy tozalash” (housekeeping) ishi emas, balki “bajarilganlik mezonlari (definition of done)”ning bir qismidir.
-- **Barcha besh oʻlcham talab qilinadi** — build, testlar, jarayon (progress), artefaktlar, ishga tushirish (startup) — har biri alohida ochiq holda tekshirilishi kerak.
-- **Sifat hujjatlari orqali kod bazasining salomatligini kuzatish imkoni tugʻiladi** — siz faqat aynan nima yomonlashayotganini bilsangizgina uni tuzata olasiz.
-- **Harnessʼni vaqti-vaqti bilan soddalashtiring** — model qobiliyatlari yaxshilanib borgani sari, keraksiz cheklovlarni olib tashlang.
-- **“Keyinroq tozalab qoʻyaman” = Hech qachon tozalab qoʻymayman degani** — entropiyaning oʻsishi standart jarayondir; faqat faol tozalash qilinishigina unga qarshi tura oladi.
+- <strong>Toza holat — bu sessiyani tugatish uchun muhim va zarur shartdir</strong> — bu ixtiyoriy “uy tozalash” (housekeeping) ishi emas, balki “bajarilganlik mezonlari (definition of done)”ning bir qismidir.
+- <strong>Barcha besh oʻlcham talab qilinadi</strong> — build, testlar, jarayon (progress), artefaktlar, ishga tushirish (startup) — har biri alohida ochiq holda tekshirilishi kerak.
+- <strong>Sifat hujjatlari orqali kod bazasining salomatligini kuzatish imkoni tugʻiladi</strong> — siz faqat aynan nima yomonlashayotganini bilsangizgina uni tuzata olasiz.
+- <strong>Harnessʼni vaqti-vaqti bilan soddalashtiring</strong> — model qobiliyatlari yaxshilanib borgani sari, keraksiz cheklovlarni olib tashlang.
+- <strong>“Keyinroq tozalab qoʻyaman” = Hech qachon tozalab qoʻymayman degani</strong> — entropiyaning oʻsishi standart jarayondir; faqat faol tozalash qilinishigina unga qarshi tura oladi.
 
 ## Qoʻshimcha oʻqish uchun
 
@@ -192,8 +192,8 @@ Ikkita yondashuv bilan 12 hafta davomida agentlar yordamida ishlab chiqilgan Ele
 
 ## Mashqlar
 
-1. **Toza Holat (Clean State) Tekshiruv roʻyxati**: Barcha besh oʻlchamni oʻz ichiga oladigan kod bazangiz uchun sessiyadan chiqish tekshiruvi roʻyxatini loyihalang. Buni ketma-ket 5 ta sessiya davomida qoʻllang va har bir oʻlcham boʻyicha buzilishlarni qayd qilib boring.
+1. <strong>Toza Holat (Clean State) Tekshiruv roʻyxati</strong>: Barcha besh oʻlchamni oʻz ichiga oladigan kod bazangiz uchun sessiyadan chiqish tekshiruvi roʻyxatini loyihalang. Buni ketma-ket 5 ta sessiya davomida qoʻllang va har bir oʻlcham boʻyicha buzilishlarni qayd qilib boring.
 
-2. **Benchmark Taqqoslash**: Bir xil vazifalar roʻyxatini 2 ta turli harness variantida (toza holat talablari bor/yoʻq boʻlgan holda) foydalaning. Tugallanish darajasini, takroriy urinishlar sonini (retry count) va xatoliklar chetlab oʻtish darajasini (defect escape rate) solishtiring.
+2. <strong>Benchmark Taqqoslash</strong>: Bir xil vazifalar roʻyxatini 2 ta turli harness variantida (toza holat talablari bor/yoʻq boʻlgan holda) foydalaning. Tugallanish darajasini, takroriy urinishlar sonini (retry count) va xatoliklar chetlab oʻtish darajasini (defect escape rate) solishtiring.
 
-3. **Harnessni Soddalashtirish Amaliyoti**: Bitta harness komponentini tanlang, uni vaqtinchalik oʻchirib qoʻying va benchmark vazifalarini ishlating. Uni bor va yoʻq boʻlgan holatdagi natijalarni solishtiring. Qoldirishni, olib tashlashni yoki almashtirishni hal qiling.
+3. <strong>Harnessni Soddalashtirish Amaliyoti</strong>: Bitta harness komponentini tanlang, uni vaqtinchalik oʻchirib qoʻying va benchmark vazifalarini ishlating. Uni bor va yoʻq boʻlgan holatdagi natijalarni solishtiring. Qoldirishni, olib tashlashni yoki almashtirishni hal qiling.

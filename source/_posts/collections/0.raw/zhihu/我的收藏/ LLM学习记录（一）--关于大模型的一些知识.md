@@ -82,7 +82,7 @@ conda是个好东西，建议用conda构建环境，也可以用来快速安装c
 
 7B量级下，cpu推理速度约10token/s，单卡A6000和8核AMD的推理速度通常为 10:1。<span class="wikilink wikilink--missing" title="未导入的页面">5</span>(#ref_5)
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_e1aca769b545.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_e1aca769b545.jpg)
 
 推理速度对比4. 能否用4 * v100 32G训练vicuna 65b？
 
@@ -150,7 +150,7 @@ rank 8 target_module query_key_value条件下，大约15M。
 
 SFT的重点在于激发大模型的能力，SFT的数据量一般也就是万恶之源alpaca数据集的52k量级，相比于预训练的数据还是太少了。如果抱着灌注领域知识而不是激发能力的想法，去做SFT的话，可能确实容易把LLM弄傻。
 
-**新版答案：**<span class="wikilink wikilink--missing" title="未导入的页面">3</span>(#ref_3)
+<strong>新版答案：</strong><span class="wikilink wikilink--missing" title="未导入的页面">3</span>(#ref_3)
 
 > 指令微调是为了增强（或解锁）大语言模型的能力。
 

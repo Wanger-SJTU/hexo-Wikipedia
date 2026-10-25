@@ -19,23 +19,23 @@ source_url: https://zhuanlan.zhihu.com/p/541457462
 
 之所以搞的这么漫长，一方面是我做学术的经验尚浅，一开始摸不着门道；另一方面是这个领域有很多历史遗留问题我花了挺多时间搞明白，于是我想写篇文章帮助未来者少走弯路。
 
-**首先声明，我的观点也可能是片面的或不准确的，读者需要自行甄别。**
+<strong>首先声明，我的观点也可能是片面的或不准确的，读者需要自行甄别。</strong>
 
 #### 模型测速
 
 目前 CVPR19 - DAIN 还是一个十分流行的算法（目前在 GitHub 有 7K star），然而它的速度离实时处理高清 (1080p) 视频差了一个数量级不止，我们工作的初衷是想做一个跑的快的插帧应用。我们的论文前两次投稿被喷的很惨，原因是我们引用了 DAIN 的主表的 runtime，只是验证了一下 ICCV17 - SepConv 就以为我们差不多对上了。这个表格也被一些论文继承，比如 ECCV20 - BMBC，ICCV21 - ABME。
 
-![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_6b07b2f70363.jpg)
+![](/images/collections/0.raw/zhihu/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%EF%BC%81/asset/img_6b07b2f70363.jpg)
 
-DAIN 的主表![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_46c069bbc133.jpg)
+DAIN 的主表![](/images/collections/0.raw/zhihu/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%EF%BC%81/asset/img_46c069bbc133.jpg)
 
-BMBC 的主表![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_d2e2ef5aff87.jpg)
+BMBC 的主表![](/images/collections/0.raw/zhihu/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%EF%BC%81/asset/img_d2e2ef5aff87.jpg)
 
-ABME 的主表然而我后来知道，这些 runtime 是直接从 Middlebury 官网 摘抄的，而这些数字是在不同的软硬件平台报告的且没有经过第三方验证。**严谨地来说，它们之间不能互相比较**。甚至一些 paper 在正文里说自己是在统一硬件上测速但是报告了摘抄的结果，这个坑务必小心。同时 BMBC 和 ABME 报告的 runtime 我也不能准确复现。
+ABME 的主表然而我后来知道，这些 runtime 是直接从 Middlebury 官网 摘抄的，而这些数字是在不同的软硬件平台报告的且没有经过第三方验证。<strong>严谨地来说，它们之间不能互相比较</strong>。甚至一些 paper 在正文里说自己是在统一硬件上测速但是报告了摘抄的结果，这个坑务必小心。同时 BMBC 和 ABME 报告的 runtime 我也不能准确复现。
 
 runtime 测试其实是一件很重要的事情，有一篇大佬的文章 FLAVR，被 CVPR21 接收但是后来发现把 runtime 测错了两个数量级，导致文章核心贡献不成立，之后撤稿重投了几次看起来都没中。[https://github.com/tarun005/FLAVR/issues/14](https://link.zhihu.com/?target=https%3A//github.com/tarun005/FLAVR/issues/14)
 
-![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_c16d77e30292.jpg)
+![](/images/collections/0.raw/zhihu/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%EF%BC%81/asset/img_c16d77e30292.jpg)
 
 RIFE 提供的测速报告（其中一些方法是重新在 Vimeo90K 训练的）我激进地认为，报告性能质量的时候不带 runtime 是耍流氓。因为在大部分任务上，总可以通过调大模型来获得更好的性能，可以看我们绘制的速度 - 质量表。RIFE 最终也是把主表分成两栏以后，才让审稿人看明白我们的性能是有一定先进性的。
 
@@ -119,4 +119,4 @@ XVFI: [XVFI: eXtreme Video Frame Interpolation](https://link.zhihu.com/?target=h
 
 RIFE: [Real-Time Intermediate Flow Estimation for Video Frame Interpolation](https://link.zhihu.com/?target=https%3A//arxiv.org/pdf/2011.06294.pdf)
 
-**祝愿社区更进一步，也祝愿未来者相关研究顺利！**
+<strong>祝愿社区更进一步，也祝愿未来者相关研究顺利！</strong>

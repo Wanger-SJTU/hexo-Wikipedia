@@ -11,7 +11,7 @@ categories:
   - 文档
 ---
 
-[English](./README.md) · **한국어**
+[English](./README.md) · <strong>한국어</strong>
 
 # 프로젝트 05: 평가기 루프와 3역할 업그레이드
 
@@ -23,10 +23,10 @@ categories:
 
 | 디렉터리 | 의미 |
 |----------|------|
-| `starter/` | **시작점** — P4 풀이(solution) 기반으로, 다중 턴 문답 이력 기능이 구현 대기 중입니다. |
-| `solution/single-role/` | **변체 A** — 단일 에이전트가 모든 작업(계획 + 구현 + 자체 검토)을 수행합니다. 기본 품질. |
-| `solution/gen-eval/` | **변체 B** — 생성기(generator) + 평가기(evaluator) 패턴. 수정 증거가 있으며 더 높은 품질. |
-| `solution/plan-gen-eval/` | **변체 C** — 계획기(planner) + 생성기 + 평가기. 스프린트 계약(sprint contract)과 채점 기준(rubric)이 있는 최고 품질. |
+| `starter/` | <strong>시작점</strong> — P4 풀이(solution) 기반으로, 다중 턴 문답 이력 기능이 구현 대기 중입니다. |
+| `solution/single-role/` | <strong>변체 A</strong> — 단일 에이전트가 모든 작업(계획 + 구현 + 자체 검토)을 수행합니다. 기본 품질. |
+| `solution/gen-eval/` | <strong>변체 B</strong> — 생성기(generator) + 평가기(evaluator) 패턴. 수정 증거가 있으며 더 높은 품질. |
+| `solution/plan-gen-eval/` | <strong>변체 C</strong> — 계획기(planner) + 생성기 + 평가기. 스프린트 계약(sprint contract)과 채점 기준(rubric)이 있는 최고 품질. |
 
 ## 사용 방법
 

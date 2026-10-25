@@ -54,7 +54,7 @@ ct-ng build`
 
 这里之所以不用确定vs code server的路径是因为确定了也没用。用新版本的vs code连接远程服务器时，它会自动下载server端，但是一旦运行失败，vscode会“优雅”退出，把server端删个精光。
 
-**这里有第二个坑**，vscode官方推荐的pathelf版本是0.18，但是！这个版本会导致出错，可能是因为centos7太老了，新版本反而支持的不好，我用的是0.15版本。根据[安装说明](https://link.zhihu.com/?target=https%3A//github.com/NixOS/patchelf)，安装好patchelf即可。
+<strong>这里有第二个坑</strong>，vscode官方推荐的pathelf版本是0.18，但是！这个版本会导致出错，可能是因为centos7太老了，新版本反而支持的不好，我用的是0.15版本。根据[安装说明](https://link.zhihu.com/?target=https%3A//github.com/NixOS/patchelf)，安装好patchelf即可。
 
 #### \enclose{horizontalstrike}{\text{ 第三步：使用 patchelf 修改 node} } 
 
@@ -68,9 +68,9 @@ ct-ng build`
 - 创建三个环境变量（可以放在~/.bashrc中）:**
 
 - VSCODE_SERVER_CUSTOM_GLIBC_LINKER** path to the dynamic linker in the sysroot (used for `--set-interpreter` option with [patchelf](https://link.zhihu.com/?target=https%3A//github.com/NixOS/patchelf))
-- **VSCODE_SERVER_CUSTOM_GLIBC_PATH** path to the library locations in the sysroot (used as `--set-rpath` option with [patchelf](https://link.zhihu.com/?target=https%3A//github.com/NixOS/patchelf))
-- **VSCODE_SERVER_PATCHELF_PATH** path to the [patchelf](https://link.zhihu.com/?target=https%3A//github.com/NixOS/patchelf) binary on the remote host
-**这里有第三个坑**，就是patchelf --set-rpath是不会优先去指定的目录找链接库的，所以还是会调用系统的glibc，导致出错。解决方案是加上--force-rpath参数，但是我们是通过环境变量让vscode自己patch的，它patch的时候不会加这个参数，所以我们只能自己写一个脚本来骗过它。创建fake-patchelf文件
+- <strong>VSCODE_SERVER_CUSTOM_GLIBC_PATH</strong> path to the library locations in the sysroot (used as `--set-rpath` option with [patchelf](https://link.zhihu.com/?target=https%3A//github.com/NixOS/patchelf))
+- <strong>VSCODE_SERVER_PATCHELF_PATH</strong> path to the [patchelf](https://link.zhihu.com/?target=https%3A//github.com/NixOS/patchelf) binary on the remote host
+<strong>这里有第三个坑</strong>，就是patchelf --set-rpath是不会优先去指定的目录找链接库的，所以还是会调用系统的glibc，导致出错。解决方案是加上--force-rpath参数，但是我们是通过环境变量让vscode自己patch的，它patch的时候不会加这个参数，所以我们只能自己写一个脚本来骗过它。创建fake-patchelf文件
 
 `#!/bin/bash
 # 这个脚本替代 VS Code 的 patchelf，自动加上 --force-rpath
@@ -98,6 +98,6 @@ export VSCODE_SERVER_CUSTOM_GLIBC_LINKER="$HOME/local/x86_64-linux-gnu/x86_64-li
 
 此时用新版本的vscode连接，应该就能成功了。
 
-**过程中的坑：**
+<strong>过程中的坑：</strong>
 
 - Centos7中自带的make版本是3.8，不满足glibc2.28的最低编译要求，所以要升级到4.0以上，但是很坑的是如果你升的太新（make 4.4），编译过程会卡死，我降级到4.1版本顺利通过。（用crosstool编译工具链的话不用管这个）

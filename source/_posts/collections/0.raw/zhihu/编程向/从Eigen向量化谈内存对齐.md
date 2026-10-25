@@ -356,7 +356,7 @@ int main() {
 
 在Eigen官方文档中有这么一页内容
 
-![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_304d37bbaa96.jpg)
+![](/images/collections/0.raw/zhihu/%E7%BC%96%E7%A8%8B%E5%90%91/asset/img_304d37bbaa96.jpg)
 
 有没有觉得似曾相识？Eigen对该问题的解决方案与我们不谋而合。这当然不是巧合，事实上，本文的灵感正是来源于Eigen。但Eigen只告诉了我们应该怎么做，没有详细讲解其原理。本文则从问题的提出，到具体的解决方案，一一剖析，希望可以给大家一些更深的理解。
 
@@ -368,7 +368,7 @@ int main() {
 
 本文用到的所有示例代码已上传GitHub：[jingedawang/AlignmentExample](https://link.zhihu.com/?target=https%3A//github.com/jingedawang/AlignmentExample)。
 
-![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_bb8dcac46bda.jpg)王金戈
+![](/images/collections/0.raw/zhihu/%E7%BC%96%E7%A8%8B%E5%90%91/asset/img_bb8dcac46bda.jpg)王金戈
 
 25 次咨询5.0
 

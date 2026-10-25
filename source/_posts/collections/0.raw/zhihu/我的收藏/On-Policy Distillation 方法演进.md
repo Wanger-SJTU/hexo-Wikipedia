@@ -34,20 +34,20 @@ source_url: https://zhuanlan.zhihu.com/p/2062918960367120976
 
 它同时具有两种性质：
 
-- **On-policy**：监督发生在学生自己会访问的状态上，减轻训练—推理分布错位。
-- **Dense supervision**：教师逐 token 给信号，比 RLVR 的序列级 0/1 reward 更容易做细粒度信用分配。这也是 OPD 相对 SFT 和 RLVR 的核心位置：
+- <strong>On-policy</strong>：监督发生在学生自己会访问的状态上，减轻训练—推理分布错位。
+- <strong>Dense supervision</strong>：教师逐 token 给信号，比 RLVR 的序列级 0/1 reward 更容易做细粒度信用分配。这也是 OPD 相对 SFT 和 RLVR 的核心位置：
 
 方法轨迹由谁生成反馈粒度主要优势主要缺陷SFT / off-policy KD教师或静态数据token-level稳定、工程简单exposure bias，难学会从自身错误恢复RLVR / GRPO学生sequence-level目标直接与最终正确性一致奖励稀疏、全错组无梯度、token 信用粗糙Vanilla OPD学生token-levelon-policy 且反馈密集，样本效率高默认教师在所有学生状态、所有 token 上都可靠后续所有OPD 改进工作，基本都在修正最后一个假设。
 
 2. 一个统一分析框架
 OPD 相关论文的主要模块：
 
-- **轨迹来源**：学生在线采样、教师 prefix + 学生续写，还是离线缓存轨迹。
-- **教师来源**：外部白盒模型、黑盒 API、同模型 self-teacher，还是不同上下文下的同一模型。
-- **教师可见信息**：与学生同信息、正确答案、成功 rollout、环境反馈、检索技能或精简上下文。
-- **反馈形式**：full-vocab logits、sampled-token log-ratio、rubric reward、文字反馈或 verifier reward。
-- **路由粒度**：trajectory、step、token，或者 teacher signal 的正负极性。
-- **优化作用**：教师决定更新方向、只决定更新幅度，还是仅作为辅助正则项。
+- <strong>轨迹来源</strong>：学生在线采样、教师 prefix + 学生续写，还是离线缓存轨迹。
+- <strong>教师来源</strong>：外部白盒模型、黑盒 API、同模型 self-teacher，还是不同上下文下的同一模型。
+- <strong>教师可见信息</strong>：与学生同信息、正确答案、成功 rollout、环境反馈、检索技能或精简上下文。
+- <strong>反馈形式</strong>：full-vocab logits、sampled-token log-ratio、rubric reward、文字反馈或 verifier reward。
+- <strong>路由粒度</strong>：trajectory、step、token，或者 teacher signal 的正负极性。
+- <strong>优化作用</strong>：教师决定更新方向、只决定更新幅度，还是仅作为辅助正则项。
 3. 第一条主线：让 OPD 的目标更稳定、更符合最终结果
 
 3.1 GKD 与 MiniLLM：确立 on-policy + reverse KL
@@ -60,7 +60,7 @@ AOPD 观察到标准 policy-gradient 式 OPD 在不同 advantage 区域的统计
 
 - 正 advantage 区域具有较可信的成功信号，适合继续做 RL exploitation；
 - 零 advantage 区域梯度消失；
-- 负 advantage 区域的策略梯度方差大，容易把整条失败轨迹粗暴压低。因此，AOPD 在正 advantage 样本上保留 policy gradient，在非正 advantage 区域改为局部散度最小化。论文报告在强、弱初始化下相对标准 OPD 的平均提升分别为 4.09 和 8.34 个点。它的本质是：**环境结果较好时强化当前策略，结果不可靠时让教师负责纠偏。**
+- 负 advantage 区域的策略梯度方差大，容易把整条失败轨迹粗暴压低。因此，AOPD 在正 advantage 样本上保留 policy gradient，在非正 advantage 区域改为局部散度最小化。论文报告在强、弱初始化下相对标准 OPD 的平均提升分别为 4.09 和 8.34 个点。它的本质是：<strong>环境结果较好时强化当前策略，结果不可靠时让教师负责纠偏。</strong>
 
 3.3 Uni-OPD：用 outcome 约束 token-level 分数
 Vanilla OPD 默认“逐 token 更像教师”与“最终答案更正确”方向一致，但两者并不必然等价。错误轨迹可能因为语言模式接近教师而得到更高的累计蒸馏回报。
@@ -71,7 +71,7 @@ Uni-OPD 定义轨迹级蒸馏回报：
 
 并要求正确轨迹的分数至少比错误轨迹高一个 margin。若不满足，就对正确轨迹进行 outcome-guided margin calibration。同时，它从学生侧加入离线难度均衡和在线正确率均衡，使 rollout 覆盖更有信息量的状态。
 
-这一工作指出：**token-level teacher signal 需要由 trajectory-level outcome 做全局校准。**
+这一工作指出：<strong>token-level teacher signal 需要由 trajectory-level outcome 做全局校准。</strong>
 
 3.4 TrOPD：在可信区和 outlier 区使用不同散度
 TrOPD 针对 sampled reverse-KL 的数值问题定义 token 级信任区域：
@@ -90,7 +90,7 @@ Unmasking OPD 不直接提出一个固定 loss，而是构造理想梯度：最�
 - 教师信号在失败轨迹上通常比成功轨迹上更有用；
 - 成功轨迹中，学生本来已经具备有效策略，教师信号更容易成为噪声；
 - 最佳 teacher/context 取决于学生容量和任务，不存在统一最优配置；
-- “更强的教师”不一定“更可理解”，小模型有时从同分布 self-teacher 学得更好。这为 SRPO、SOD、RLRT 等路由思想提供了统一解释：**监督密度不是越高越好，关键是有效梯度密度。**
+- “更强的教师”不一定“更可理解”，小模型有时从同分布 self-teacher 学得更好。这为 SRPO、SOD、RLRT 等路由思想提供了统一解释：<strong>监督密度不是越高越好，关键是有效梯度密度。</strong>
 
 4. 第二条主线：重新定义教师及其可见信息
 
@@ -103,15 +103,15 @@ Self-Distilled Reasoner 将一份模型实例化为两个条件分布：
 
 OPSD 相比 GRPO 有 4–8 倍 token efficiency，并发现：当 teacher 与 student 共享参数、没有容量差时，forward KL 反而可能比 reverse KL 更稳定；逐 token clipping 能抑制标点和连接词等高散度风格 token。
 
-OPSD 的意义不只是省掉外部教师，而是将“教师”解释为：**同一个模型在更充分信息条件下的后验分布。**
+OPSD 的意义不只是省掉外部教师，而是将“教师”解释为：<strong>同一个模型在更充分信息条件下的后验分布。</strong>
 
 4.2 Many Faces 与 RLSD：privileged information 不是总能被内化
 OPSD 的关键风险是训练时 teacher 看得到 (z)，部署时 student 看不到。Many Faces of OPD 将 PI 分成两类：
 
-- **Shared-rule PI**：系统提示词、价值偏好、风格规范等跨样本共享的潜在规则。对不同 PI 条件分布取边际后，仍可能得到可学习的公共规律。
-- **Instance-specific PI**：某一道题的标准答案、某份特定文档、某条独有推理轨迹。不同样本的条件分布被边际化后，容易互相抵消或让 student 学到“参考答案似乎存在”的虚假相关性。RLSD 从信息论角度给出更强的诊断：当 teacher 的预测依赖 student 永远不可见的 PI 时，逐样本分布匹配存在不可消除的 mutual-information gap。早期有效信号占主导，模型快速上升；后期有益项减弱，PI 相关的逐样本噪声开始积累，表现为答案泄漏、KL 停滞和性能下降。
+- <strong>Shared-rule PI</strong>：系统提示词、价值偏好、风格规范等跨样本共享的潜在规则。对不同 PI 条件分布取边际后，仍可能得到可学习的公共规律。
+- <strong>Instance-specific PI</strong>：某一道题的标准答案、某份特定文档、某条独有推理轨迹。不同样本的条件分布被边际化后，容易互相抵消或让 student 学到“参考答案似乎存在”的虚假相关性。RLSD 从信息论角度给出更强的诊断：当 teacher 的预测依赖 student 永远不可见的 PI 时，逐样本分布匹配存在不可消除的 mutual-information gap。早期有效信号占主导，模型快速上升；后期有益项减弱，PI 相关的逐样本噪声开始积累，表现为答案泄漏、KL 停滞和性能下降。
 
-因此，自蒸馏不应只问“有没有正确答案”，而应先问：**这份 PI 表示可跨样本内化的规律，还是部署时永远不可达的实例状态？**
+因此，自蒸馏不应只问“有没有正确答案”，而应先问：<strong>这份 PI 表示可跨样本内化的规律，还是部署时永远不可达的实例状态？</strong>
 
 4.3 OPSDL：选择学生能理解的 privileged view
 OPSDL 面向长上下文任务。学生在完整长上下文上生成，而 teacher 是同一个模型在抽取后的相关短上下文上的分布。这里 teacher 的优势不是看到答案，而是避开无关信息干扰。
@@ -153,7 +153,7 @@ RLSD 不再让 privileged teacher 成为分布匹配目标，而是计算 token 
 
 环境 advantage 决定更新方向，(q_t) 只决定同一轨迹内不同 token 的相对更新幅度，并通过 clipping 限制极端权重。这样 verifier 保留“最终对错”的决定权，而 teacher 提供细粒度 credit assignment。
 
-这是一个非常重要的结构性改进：**稀疏但可靠的信号负责方向，密集但可能有偏的信号只负责幅度。**
+这是一个非常重要的结构性改进：<strong>稀疏但可靠的信号负责方向，密集但可能有偏的信号只负责幅度。</strong>
 
 5.4 RLRT：成功时反向读取教师信号
 RLRT 进一步指出：在成功 rollout 上，student 选择了 teacher 不偏好的 token，可能恰好说明学生发现了一条非标准但有效的路径。如果仍按 teacher 偏好蒸馏，就会抹掉这种 self-driven exploration。
@@ -180,9 +180,9 @@ RLCSD 发现，teacher 看过正确 hint 后往往写得更短、更直接，导
 
 因此，Agent OPD 有三个额外风险：
 
-- **状态污染**：teacher 被迫在自己从未正常访问的异常环境状态上评分。
-- **误差复利**：当前 action 会改变未来 observation，错误跨 step 或跨 turn 放大。
-- **反馈异质性**：reasoning token、tool schema、tool argument、observation 后恢复 token 的可靠性不同。
+- <strong>状态污染</strong>：teacher 被迫在自己从未正常访问的异常环境状态上评分。
+- <strong>误差复利</strong>：当前 action 会改变未来 observation，错误跨 step 或跨 turn 放大。
+- <strong>反馈异质性</strong>：reasoning token、tool schema、tool argument、observation 后恢复 token 的可靠性不同。
 6.2 SOD：以 step divergence 估计教师可信度
 SOD 依据 tool observation 将轨迹切分为多个 reasoning step，定义第 (k) 步师生差异的轻量代理：
 

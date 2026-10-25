@@ -18,10 +18,10 @@ source_url: https://mp.weixin.qq.com/s/DGrJnqGmkMWxI77mvUMlXg
 ---
 
 
-> **作者**: InfraTech  
-> **原文**: [微信文章](https://mp.weixin.qq.com/s/DGrJnqGmkMWxI77mvUMlXg)  
+> <strong>作者</strong>: InfraTech  
+> <strong>原文</strong>: [微信文章](https://mp.weixin.qq.com/s/DGrJnqGmkMWxI77mvUMlXg)  
 > 
-> **摘要**: V4系列的关键升级集中在CSA/HCA混合注意力与mHC连接机制，目标是在保证能力的同时降低长序列场景下的计算与KV cache开销。本文将以DeepSeek-V4-Pro架构为例，图解V4设计细节。
+> <strong>摘要</strong>: V4系列的关键升级集中在CSA/HCA混合注意力与mHC连接机制，目标是在保证能力的同时降低长序列场景下的计算与KV cache开销。本文将以DeepSeek-V4-Pro架构为例，图解V4设计细节。
 
 ![](/images/collections/wechat/asset/img_00.jpg)
 

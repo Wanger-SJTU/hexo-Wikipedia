@@ -17,7 +17,7 @@ source_url: https://zhuanlan.zhihu.com/p/644383797
 
 #### 基本信息
 
-论文题目：***Roller: Fast and Efficient Tensor Compilation for Deep Learning***
+论文题目：*<strong>Roller: Fast and Efficient Tensor Compilation for Deep Learning</strong>*
 
 发表时间：Jul 2022
 
@@ -35,7 +35,7 @@ rProgram的性能可以通过微性能模型进行评估。因此，Roller可以
 
 #### 章节概述
 
-**第一章节**
+<strong>第一章节</strong>
 
 DNN编译器将一个DNN算子视为张量计算，将其转换为嵌套的多层循环。编译优化技术将循环划分/融合/重排作用到嵌套循环中，在一个大的搜索空间寻找优化的解决方案是一个组合优化问题。当前编译器利用机器学习算法探寻一个优化结果。即使这样，也需要上千的搜索步骤，每个步骤需要在真实的硬件上运行评估。
 
@@ -46,7 +46,7 @@ Roller提出了完全不同的方式解决开销问题。
 - 对齐的管道（算子在Roller中的抽象）的性能是高度可预测的。对齐的管道的关键性能指标可以从硬件规范或微基准测试获取。因此管道模型极大的简化了算子的性能评估。
 基于上述解决方案，Roller提出了rTile。数据处理管道可以被描述成基于rTile的程序，由三个接口构成：Load/Store/Compute。为了构建一个高效的rProgram，Roller使用一种*scale-up-then-scale-out* 的方法。Rolloer先执行放大过程，采用基于递归的rTile构造算法，逐步增大rTile的大小，构造硬件加速器的单个执行单元的饱和运行。然后根据深度学习模型和硬件加速器的计算模式的同质性执行scale-out过程。Roller可以高效的评估rTile的性能。
 
-**第二章节**
+<strong>第二章节</strong>
 
 Roller的研究动机是当前DNN编译器过多的编译时间。当DNN模型包含数百个算子时，其编译过程可能需要数天的时间开销。该开销在不成熟的硬件设备上会增大。
 
@@ -54,11 +54,11 @@ Roller的观察：
 
 - 算子的计算过程可以视为一个数据处理管道。算子的性能取决于在加载-计算-存储管道中移动数据块的速度。以矩阵乘 C = A x B为例，从A，B中加载Tile，计算两个子矩阵的结果，将结果存储回C。
 - 影响管道中所有步骤的性能的关键因素是tile的形状和相应的布局。
-**第三章节**
+<strong>第三章节</strong>
 
 下图展示了Roller的系统概述：
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_422165b9342e.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_422165b9342e.jpg)
 
 **
 
@@ -66,13 +66,13 @@ Roller从张量表达式中提取张量的形状，并利用硬件的相关规�
 
 rTile的数据结构如下：
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_5a6bc2bc6e69.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_5a6bc2bc6e69.jpg)
 
 rTile必须和给定张量表达式中的张量形状和底层硬件特性对齐。（*该部分可以配合CUDA学习笔记来看）*
 
 - 与硬件的执行单元对齐，如NVIDIA中的wrap（32）、TensorCore（16x16x16）
 - 与内存事务对齐，如图5.a所示，避免事务读取数据的浪费
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_c14500b8e5c2.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_c14500b8e5c2.jpg)
 
 - 与内存存储体对齐，如图5.b所示，避免存储体冲突。rTiles通过padding数据避免低效访问。
 - 与张量形状对齐
@@ -82,7 +82,7 @@ Roller可以通过增加rTile的大小来获取更多的数据重用机会。Rol
 
 下图显示了矩阵乘算子rTiles的分层。可以从c中看到L0，L1和L2层的数据移动。
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_a06ad3135594.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_a06ad3135594.jpg)
 
 给定一个数据处理管道，其rProgram的优化目标是最大化管道的吞吐量，该目标可以转换为：
 
@@ -92,7 +92,7 @@ Roller可以通过增加rTile的大小来获取更多的数据重用机会。Rol
 Roller首先使用scale up以满足前两点，之后利用scale out利用多核并行性。
 
 - scale up：Roller从内存结构由顶至下构建不同层次的rTile尺寸，Roller首先进行rTile的初始化，之后迭代扩大rTile的大小，最大程度提升数据重用得分。
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_f071ae88b1e4.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_f071ae88b1e4.jpg)
 
 - scale out：Roller在最底层的内存尺寸上构造单一单元执行的rProgram，并通过将每层的rTile平均分配来将rProgram复制到其他单元。一般会在reduce的轴上分配单元。
 Roller尝试沿着具有最小数据重用得分的轴上收缩rTiles以实现足够的并行度。
@@ -111,20 +111,20 @@ Roller有两个分析器：微性能分析器和内核分析器。
 
 Roller抽象了三层内存结构，L0对应寄存器，L1对应共享内存，L2对应全局内存。
 
-**第五章节**
+<strong>第五章节</strong>
 
 此章节将Roller与最先进的DNN编译器和框架想比较，进行端到端的测验。
 
-**第六章节**
+<strong>第六章节</strong>
 
 Roller以提升数据重用为主要优化目标，并将硬件相关性能优化转换为对齐约束。这种权衡导致了快速编译和高性能的生成内核。
 
 此章节还阐述了一些当前的局限和未来工作。
 
-**第七章节**
+<strong>第七章节</strong>
 
 阐述了相关工作，Roller的rTile抽象补充了Rammer的rTask概念，提供了一种构造rTask的有效方法。
 
-**第八章节**
+<strong>第八章节</strong>
 
 Roller避免使用昂贵的机器学习方法在巨大的搜索空间寻找解决方案，而是使用基于递归构造的算法生成高效的内核，利用rTiles抽象，使用更少的形状对齐硬件特性。构建的程序可以方便的通过微性能模型进行评估。Roller实现了在几秒之内生成高性能内核。

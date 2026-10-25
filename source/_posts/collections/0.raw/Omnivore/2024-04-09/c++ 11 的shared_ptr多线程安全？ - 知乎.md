@@ -27,11 +27,11 @@ id: ee7c123e-d985-4e07-b574-6a02130c79ea
 
 关注者
 
-**233**
+<strong>233</strong>
 
 被浏览
 
-**394,210**
+<strong>394,210</strong>
 
 [![果冻虾仁](https://proxy-prod.omnivore-image-cache.app/0x0,s4d4mCMaI6hCqTd-QhYjni1Bt7urRNLyyzHrbn-LjS6Y/https://picx.zhimg.com/0e8fe57617db5ac2853988be43d990cd_l.jpg?source=2c26e567)](https://www.zhihu.com/people/guodongxiaren)
 
@@ -69,7 +69,7 @@ id: ee7c123e-d985-4e07-b574-6a02130c79ea
 
 先回顾一下线程安全这一概念的定义，以下摘录自维基百科：
 
-> **Thread safety** is a [computer programming](https://link.zhihu.com/?target=https%3A//en.wikipedia.org/wiki/Computer%5Fprogramming) concept applicable to [multi-threaded](https://link.zhihu.com/?target=https%3A//en.wikipedia.org/wiki/Thread%5F%28computing%29) code. Thread-safe code only manipulates shared data structures in a manner that ensures that all threads behave properly and fulfill their design specifications without unintended interaction. There are various strategies for making thread-safe data structures.
+> <strong>Thread safety</strong> is a [computer programming](https://link.zhihu.com/?target=https%3A//en.wikipedia.org/wiki/Computer%5Fprogramming) concept applicable to [multi-threaded](https://link.zhihu.com/?target=https%3A//en.wikipedia.org/wiki/Thread%5F%28computing%29) code. Thread-safe code only manipulates shared data structures in a manner that ensures that all threads behave properly and fulfill their design specifications without unintended interaction. There are various strategies for making thread-safe data structures.
 
 主要表达的就是多线程操作一个共享数据的时候，能够保证所有线程的行为是符合预期的。
 

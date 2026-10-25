@@ -21,17 +21,17 @@ source_url: https://zhuanlan.zhihu.com/p/646948797
 
 Kor是个支持LangChain的文本抽取库，可以把文本抽取成json格式。
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_5cbcacd4f3d9.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_5cbcacd4f3d9.jpg)
 
  这东西的作者居然是MIT物理系毕业的，好吧所以物理系出来都转码是吧。。
 
 今天的笔记打算只讲Kor一个内容。因为我们在Chat凉宫春日中，其实有大量的台词抽取任务。我其实一个月以前就在思考，是不是可以用这个东西批量的金庸小说抽取，但是当时我是在思考骆驼大乱斗的，但是凉宫春日这个中，也一样有类似的任务，而且更简单，我只要抽取dialogue对话，并不需要抽取很精确的技能和招式。
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_c0b6673bbf1b.jpg)00:29
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_c0b6673bbf1b.jpg)00:29
 
  看起来抽取的效果还是非常不错的。顺便一提，其实这个Kor似乎知道的人很少，因为我在github反查代码，只有40个左右的repo使用了kor
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_bb4ee43d22b7.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_bb4ee43d22b7.jpg)
 
  相比于Output Parser，因为后者在吴恩达的langchain笔记中被提到了，所以用的人很多。
 

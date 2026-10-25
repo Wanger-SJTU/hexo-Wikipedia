@@ -11,7 +11,7 @@ categories:
   - 文档
 ---
 
-[English](./README.md) · **한국어**
+[English](./README.md) · <strong>한국어</strong>
 
 # 프로젝트 03: 범위 제어와 근거 기반 검증
 
@@ -23,8 +23,8 @@ categories:
 
 | 디렉터리 | 의미 |
 |----------|------|
-| `starter/` | **시작점** — P2 풀이(solution) 기반으로, 문서 청킹(chunking), 메타데이터 추출, 인덱스 상태, 기본 문답 기능이 구현 대기 중입니다. 한 번에 하나의 기능 전략 제약이 없습니다. |
-| `solution/` | **참고 구현** — 모든 기능이 구현되어 있으며, AGENTS.md에 "한 번에 하나의 기능" 전략이 포함되어 있고, feature_list.json이 실패→통과 전환 과정과 검증 증거를 보여줍니다. |
+| `starter/` | <strong>시작점</strong> — P2 풀이(solution) 기반으로, 문서 청킹(chunking), 메타데이터 추출, 인덱스 상태, 기본 문답 기능이 구현 대기 중입니다. 한 번에 하나의 기능 전략 제약이 없습니다. |
+| `solution/` | <strong>참고 구현</strong> — 모든 기능이 구현되어 있으며, AGENTS.md에 "한 번에 하나의 기능" 전략이 포함되어 있고, feature_list.json이 실패→통과 전환 과정과 검증 증거를 보여줍니다. |
 
 ## 사용 방법
 

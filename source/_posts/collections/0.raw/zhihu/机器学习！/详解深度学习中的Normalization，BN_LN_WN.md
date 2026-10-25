@@ -23,19 +23,19 @@ source_url: https://zhuanlan.zhihu.com/p/33173246
 
 目录：**
 
-**1. 为什么需要 Normalization**
+<strong>1. 为什么需要 Normalization</strong>
 
 ——深度学习中的 Internal Covariate Shift 问题及其影响
 
-**2. Normalization 的通用框架与基本思想**
+<strong>2. Normalization 的通用框架与基本思想</strong>
 
 ——从主流 Normalization 方法中提炼出的抽象框架
 
-**3. 主流 Normalization 方法梳理**
+<strong>3. 主流 Normalization 方法梳理</strong>
 
 ——结合上述框架，将 BatchNorm / LayerNorm / WeightNorm / CosineNorm 对号入座，各种方法之间的异同水落石出。
 
-**4. Normalization 为什么会有效？**
+<strong>4. Normalization 为什么会有效？</strong>
 
 ——从参数和数据的伸缩不变性探讨Normalization有效的深层原因。
 
@@ -109,11 +109,11 @@ $$h=f\left(\bold{g}\cdot\frac{\bold{x}-\bold{\mu}}{\bold{\sigma}}+\bold{b}\right
 
 我们来看看这个公式中的各个参数。
 
-$$（1） \bold{\mu} 是平移参数**（shift parameter）， \bold{\sigma} 是**缩放参数**（scale parameter）。通过这两个参数进行 shift 和 scale 变换： \bold{\hat{x}}=\frac{\bold{x}-\bold{\mu}}{\bold{\sigma}}\\ 得到的数据符合均值为 0、方差为 1 的标准分布。 $$
+$$（1） \bold{\mu} 是平移参数<strong>（shift parameter）， \bold{\sigma} 是</strong>缩放参数**（scale parameter）。通过这两个参数进行 shift 和 scale 变换： \bold{\hat{x}}=\frac{\bold{x}-\bold{\mu}}{\bold{\sigma}}\\ 得到的数据符合均值为 0、方差为 1 的标准分布。 $$
 
 **
 
-（2） \bold{b} 是再平移参数**（re-shift parameter）， \bold{g} 是**再缩放参数**（re-scale parameter）。将 上一步得到的 \bold{\hat{x}} 进一步变换为： \bold{y}=\bold{g}\cdot \bold{\hat{x}} + \bold{b}\\ 
+（2） \bold{b} 是再平移参数<strong>（re-shift parameter）， \bold{g} 是</strong>再缩放参数**（re-scale parameter）。将 上一步得到的 \bold{\hat{x}} 进一步变换为： \bold{y}=\bold{g}\cdot \bold{\hat{x}} + \bold{b}\\ 
 
 最终得到的数据符合均值为  \bold{b} 、方差为 \bold{g}^2 的分布。
 
@@ -165,7 +165,7 @@ $$h=f\left(\bold{g}\cdot\frac{\bold{x}-\bold{\mu}}{\bold{\sigma}}+\bold{b}\right
 
 3.1  Batch Normalization —— 纵向规范化**
 
-![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_062ff59bb019.jpg)
+![](/images/collections/0.raw/zhihu/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%EF%BC%81/asset/img_062ff59bb019.jpg)
 
 Batch Normalization 于2015年由 Google 提出，开 Normalization 之先河。其规范化针对单个神经元进行，利用网络训练时一个 mini-batch 的数据来计算该神经元 x_i 的均值和方差,因而称为 Batch Normalization。
 
@@ -185,7 +185,7 @@ BN 独立地规范化每一个输入维度 x_i ，但规范化的参数是一个
 
 3.2  Layer Normalization —— 横向规范化**
 
-![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_922598eacfc7.jpg)
+![](/images/collections/0.raw/zhihu/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%EF%BC%81/asset/img_922598eacfc7.jpg)
 
 层规范化就是针对 BN 的上述不足而提出的。与 BN 不同，LN 是一种横向的规范化，如图所示。它综合考虑一层所有维度的输入，计算该层的平均输入值和输入方差，然后用同一个规范化操作来转换各个维度的输入。
 
@@ -207,9 +207,9 @@ $$前面我们讲的模型框架 h=f\left(\bold{g}\cdot\frac{\bold{x}-\bold{\mu}
 
 BN 和 LN 均将规范化应用于输入的特征数据 \bold{x} ，而 WN 则另辟蹊径，将规范化应用于线性变换函数的权重 \bold{w} ，这就是 WN 名称的来源。
 
-![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_5413ff74db6b.jpg)
+![](/images/collections/0.raw/zhihu/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%EF%BC%81/asset/img_5413ff74db6b.jpg)
 
-具体而言，WN 提出的方案是，将权重向量 **\bold{w}** 分解为向量方向 **\hat{\bold{v}}** 和向量模 **g** 两部分**：
+具体而言，WN 提出的方案是，将权重向量 <strong>\bold{w}</strong> 分解为向量方向 <strong>\hat{\bold{v}}</strong> 和向量模 <strong>g</strong> 两部分**：
 
 $${\bold{w}} = g\cdot\hat{\bold{v}} = g\cdot\frac{\bold{v}}{\bold{||v||}}\\ $$
 
@@ -285,7 +285,7 @@ CN 通过用余弦计算代替内积计算实现了规范化，但成也萧何�
 
 我们以下面这个简化的神经网络为例来分析。
 
-![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_7b9863348e74.jpg)
+![](/images/collections/0.raw/zhihu/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%EF%BC%81/asset/img_7b9863348e74.jpg)
 
 4.1 Normalization 的权重伸缩不变性**
 
@@ -301,7 +301,7 @@ CN 通过用余弦计算代替内积计算实现了规范化，但成也萧何�
 
 $$Norm(\bold{W'x})=Norm\left(\bold{g}\cdot\frac{\bold{\bold{W'x}}-\bold{\mu'}}{\bold{\sigma'}}+\bold{b}\right)\\=Norm\left(\bold{g}\cdot\frac{\lambda\bold{Wx}-\lambda\bold{\mu}}{\lambda\bold{\sigma}}+\bold{b}\right)\\=Norm\left(\bold{g}\cdot\frac{\bold{Wx}-\bold{\mu}}{\bold{\sigma}}+\bold{b}\right)=Norm(\bold{Wx})\\$$
 
-**权重伸缩不变性可以有效地提高反向传播的效率**。
+<strong>权重伸缩不变性可以有效地提高反向传播的效率</strong>。
 
 由于
 

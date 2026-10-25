@@ -19,7 +19,7 @@ categories:
 
 A curated resource list for learning GPU performance engineering and production inference.
 
-The list is ordered from a single inference request to a single GPU, optimized kernels, inference engines, and distributed systems. Read **Start here** first. After that, use it as a reference.
+The list is ordered from a single inference request to a single GPU, optimized kernels, inference engines, and distributed systems. Read <strong>Start here</strong> first. After that, use it as a reference.
 
 The core list uses original papers, official specifications and documentation, creator repositories, and direct implementation work.
 
@@ -282,7 +282,7 @@ Read each architecture with its ISA or tuning guide. Vendor peak numbers are not
 
 ## Frontier
 
-Verified on **2026-08-23**. This section is kept separate from the core list because the evidence changes quickly.
+Verified on <strong>2026-08-23</strong>. This section is kept separate from the core list because the evidence changes quickly.
 
 ### AI-generated kernels
 

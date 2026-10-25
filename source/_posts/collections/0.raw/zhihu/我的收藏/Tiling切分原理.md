@@ -15,15 +15,15 @@ source_url: https://zhuanlan.zhihu.com/p/685761148
 ---
 
 
-**Tiling的基本概念**
+<strong>Tiling的基本概念</strong>
 
 由于大多数情况下，Ai core的Local Memory的存储容量，无法完整的容纳下算子的输入与输出，因此需要先搬运一部分输入进行计算然后搬出，再搬运下一部分输入进行计算，直到得到完整的最终结果，这个数据切分、分块计算的过程称之为Tiling。根据算子的shape等信息来确定数据切分算法相关参数（比如每次搬运的块大小，以及总共循环多少次）的计算程序，称之为Tiling实现。Tiling实现完成后，获取到的Tiling切分算法相关参数，会传递给kernel侧，用于指导并行数据的切分。
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_aed562cd09c5.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_aed562cd09c5.jpg)
 
 从上图可以看出，切分可分为核间切分和核内切分两块内容。核间切分是将数据分配给NPU的多个Aicore，也就是上图第二行中核1数据、核2数据等；分配到某个核计算的数据，也需要分批处理，这就是核内切分，如上图中的tiling块1、tiling块2等。
 
-**设计约束与策略**
+<strong>设计约束与策略</strong>
 
 1、由于AICore里Unified buffer上的物理限制，要求数据存储必须保持32Byte对齐。
 
@@ -41,7 +41,7 @@ source_url: https://zhuanlan.zhihu.com/p/685761148
 
 4、减少kernel的标量运算量。合理设计Tilingdata（切分参数），尽量不让kernel侧进行除法、求余运算，少用乘法运算。
 
-**Ascend C 实现逻辑**
+<strong>Ascend C 实现逻辑</strong>
 
 首先，我们需要调用Ascend C “Host侧实现API”中的“PlatformAscendC类”的有关函数，获取与“Host侧的Tiling函数”有关的硬件平台的信息。常用的有获取当前硬件平台的类型，可用的Vector和Cube核心数，以及ub的存储容量等。
 
@@ -83,7 +83,7 @@ tailNum：分配到较少数据量的核心数；tailLength：每核分到的数
 
         Double buffer的处理，是将输入数据分成大小相等的两块，充分利用Aicore，数据搬入、计算、数据搬出并行特性实现。因此要求外部数据需要可以分成偶数块。为了简化处理，我们约束Unified Buffer可容纳的输入向量长度满足是最小分块的偶数，如果不是，则减1，这样就可以保证一套代码兼容开启或不开启double buffer功能了。Double buffer开启与否的差异还在于Kernel侧数据和数据搬出，不开启double buffer时，只需要对最后一个分块的起始地址做处理；开启double buffer后，因为数据块编程原来的一半，所以需要对最后两个分块的起始地址做处理。
 
-**结果验证**
+<strong>结果验证</strong>
 
 验证硬件平台选择“Atlas 训练系列产品”，AiCore中的向量计算单元为32个；自定义算子为sinh；数据类型为float16；为了方便计算，ub能容纳的输入向量数定义为：128字节，即4个最小分配单元，每个最小分配单元16个float16，每次可容纳64个float16。由于double buffer开启是在kernel侧，无法从打屏，下述情况均在double buffer开启和不开启两种情况下测试。开启和不开启double buffer，需要修改kernel侧代码，并重新编译算子工程，并部署。
 
@@ -91,26 +91,26 @@ tailNum：分配到较少数据量的核心数；tailLength：每核分到的数
 
 1）核间均分、核内均分——输入向量shape为96*2048
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_6c00640a0e65.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_6c00640a0e65.jpg)
 
 2）核间均分，核内不均分——输入向量shape为32*80
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_e87a64a30a01.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_e87a64a30a01.jpg)
 
 3）核间不均分，核内都均分——输入向量shape为31*64+48
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_d46c6776e7c3.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_d46c6776e7c3.jpg)
 
 4）核间不均分，核内有不均分的情形——输入向量shape为1*96+31*80
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_ffa47bc1db23.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_ffa47bc1db23.jpg)
 
 2、输入向量不满足32字节对齐的情况——输入向量shape为32*64-3
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_63ae1a45af43.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_63ae1a45af43.jpg)
 
 3、输入数据量较少时——分配到若干核，输入向量shape为1*48，8*64
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_90a3a5d3e73c.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_90a3a5d3e73c.jpg)
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_e4b749a9e113.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_e4b749a9e113.jpg)

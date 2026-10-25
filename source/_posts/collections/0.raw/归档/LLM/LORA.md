@@ -17,7 +17,7 @@ categories:
 - code: [github](https://github.com/microsoft/LoRA)
 
 ## 什么是LoRA
-LoRA，英文全称**Lo**w-**R**ank **A**daptation of Large Language Models，直译为大语言模型的低阶适应，是一种PEFT（参数高效性微调方法），这是微软的研究人员为了解决大语言模型微调而开发的一项技术。当然除了LoRA，参数高效性微调方法中实现最简单的方法还是Prompt tuning，固定模型前馈层参数，仅仅更新部分embedding参数即可实现低成本微调大模型，建议可从<span class="wikilink wikilink--missing" title="未导入的页面">Prompt tuning</span>开始学起。
+LoRA，英文全称<strong>Lo</strong>w-<strong>R</strong>ank <strong>A</strong>daptation of Large Language Models，直译为大语言模型的低阶适应，是一种PEFT（参数高效性微调方法），这是微软的研究人员为了解决大语言模型微调而开发的一项技术。当然除了LoRA，参数高效性微调方法中实现最简单的方法还是Prompt tuning，固定模型前馈层参数，仅仅更新部分embedding参数即可实现低成本微调大模型，建议可从<span class="wikilink wikilink--missing" title="未导入的页面">Prompt tuning</span>开始学起。
 
 LoRA的基本原理是冻结预训练好的模型权重参数，在冻结原模型参数的情况下，通过往模型中加入额外的网络层，并只训练这些新增的网络层参数。由于这些新增参数数量较少，这样不仅 finetune 的成本显著下降，还能获得和全模型微调类似的效果
 

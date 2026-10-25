@@ -15,9 +15,9 @@ RAG 的愿景上来看，还是很性感很美好的。
 - 从用户的视角来看，数据给你了，那我就可以随便向你发问
 - 从业务的视角来看，RAG 就像积木一样，把不同模块放一起拼凑一下，哎，这个流程就跑通了；
 - 从芯片平台的视角来看，特别是NN 平台的视角来看，你看，检索需要模型吧、查找需要优化吧、最后的大模型是不是也离不开我，看起来我上我也行了。
-**但是当真正的demo做出来了，一系列的问题就出来了。**
+<strong>但是当真正的demo做出来了，一系列的问题就出来了。</strong>
 
-就简单的Naive RAG 来说，跑通很容易，有好的结果很难。很容易就变成**garbage in garbage out**。 很多人可能会认为RAG 是LLM甚至MLLM发掘出来、可以适用的新场景，单就RAG的pipeline来看，更像是IR（information retrieve）的在LLM的延伸。这就和jiayangqing之前说的:
+就简单的Naive RAG 来说，跑通很容易，有好的结果很难。很容易就变成<strong>garbage in garbage out</strong>。 很多人可能会认为RAG 是LLM甚至MLLM发掘出来、可以适用的新场景，单就RAG的pipeline来看，更像是IR（information retrieve）的在LLM的延伸。这就和jiayangqing之前说的:
 
 > RAG 表面上看是G，实际上是R
 

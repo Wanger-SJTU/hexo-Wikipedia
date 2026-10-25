@@ -95,7 +95,7 @@ Github: https://github.com/Di-viner/LLM-Robustness-to-Irrelevant-Information
 
 ## 结论实验
 
-评估了LLMs在面对三个不同语义相关性级别的答案无关片段时的表现，如下表所示，随着片段的相关性增高，不同模型的效果均有所下降，对于干扰后生成的答案的信心更足。**闭源模型的效果远好于开源模型**。
+评估了LLMs在面对三个不同语义相关性级别的答案无关片段时的表现，如下表所示，随着片段的相关性增高，不同模型的效果均有所下降，对于干扰后生成的答案的信心更足。<strong>闭源模型的效果远好于开源模型</strong>。
 
 ![](https://proxy-prod.omnivore-image-cache.app/1246x454,stRBdNFW2_WG9xshVnAeCELVIjgkUydW3YtkRvcBLabo/https://pic4.zhimg.com/v2-5573254c06833b6763cb69c747d59a5f_b.jpg)
 
@@ -125,7 +125,7 @@ PS：对于自由式问题由于没有约束，答案较为散乱，不易评估
 
 我们的口号是“生命不止，学习不停”！
 
-**往期回顾**
+<strong>往期回顾</strong>
 
 [刘聪NLP：Qwen1.5开源32B模型-将开源进行到底](https://zhuanlan.zhihu.com/p/690973779)
 

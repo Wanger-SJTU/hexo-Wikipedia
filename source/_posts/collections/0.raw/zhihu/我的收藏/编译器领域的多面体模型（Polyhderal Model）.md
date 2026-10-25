@@ -15,7 +15,7 @@ source_url: https://zhuanlan.zhihu.com/p/310142893
 ---
 
 
-**这篇文章中的图片全是我之前在一本书中摘录的，但是因为我个人习惯不好，现在不知道出处了。如果有人知道请告诉我，我好给那些图片加上reference**
+<strong>这篇文章中的图片全是我之前在一本书中摘录的，但是因为我个人习惯不好，现在不知道出处了。如果有人知道请告诉我，我好给那些图片加上reference</strong>
 
 前几周发文章给自己挖了个坑，说要写一下编译领域非常神奇的多面体模型(Polyhedral Model)，但实际上我之前接触的也很少，只是当时给组里写深度学习编译器的时候调研过一阵子。当时还是2019年3月份，很少有中文的多面体模型或者区间分析的资料，没办法自己啃了啃大部头的论文。
 
@@ -23,7 +23,7 @@ source_url: https://zhuanlan.zhihu.com/p/310142893
 
 [深度学习编译器有哪些有价值的研究方向和参考文献？](https://www.zhihu.com/question/338039895/answer/839949892)上面链接就是他的回答，写的很不错了，不过我翻了翻笔记有一些其他的例子里面没有提到，我这里也相当于做个补充，可以让大家更好地了解什么是多面体优化
 
-**基本概念**
+<strong>基本概念</strong>
 
 多面体模型最关注的（可能也是唯一关注的）就是循环的优化。因此对于多面体模型，它只会把一段段程序当成一堆嵌套循环，至于循环里面的内容他是不大关心的。因此在整个框架中，重要的概念只有4个：Domain，instance，dependency和schedule
 
@@ -47,13 +47,13 @@ source_url: https://zhuanlan.zhihu.com/p/310142893
 
 ![](https://pic2.zhimg.com/v2-d842501bdc838185f71f5a9e9c0ac61b_r.jpg)和Domain的定义类似，dependency也可以用一个仿射变换的不等式表达
 
-**dependency是两个Stmt之间的，不是instance之间**
+<strong>dependency是两个Stmt之间的，不是instance之间</strong>
 
-**多面体优化**
+<strong>多面体优化</strong>
 
 当我们把程序（源代码）转换成多面体模型（就是把Domain，dependency这些信息提取出来）后，我们可以通过数学上的分析将代码做优化。整个多面体优化有各种各样的研究针对于运用这些数据提升代码性能。本文只是一个最基础的概述，自然不能覆盖到所有的。因此这里面只举两个最基础的例子
 
-**（1）发掘并行**
+<strong>（1）发掘并行</strong>
 
 第一个例子摘自 [@要术甲杰](https://www.zhihu.com/people/f3edc0b3c8221a4fa224169746ae9ed0) 的文章
 
@@ -69,7 +69,7 @@ source_url: https://zhuanlan.zhihu.com/p/310142893
 
 ![](https://pica.zhimg.com/v2-0f047be867d3db1c5a0b4da862bc48e2_r.jpg)
 
-**（2）增加连续性**
+<strong>（2）增加连续性</strong>
 
 熟悉cache的同学都知道连续性的重要。在这里可以把连续性分成四类：
 
@@ -102,7 +102,7 @@ for i in range(N):
 
 如果某两个迭代(向量i1与向量i2)访问同样的元素，而且i1和i2之间只有一维差1（即同时满足上面两个条件，假设是3重循环），那么这就是一个self-temporal的例子
 
-进一步做数学变换，我们发现**如果矩阵F的零空间里面存在只有一个1，剩下都是0的向量（实在抱歉我忘了他的学名是什么了），那么就说明我们可以通过仿射变换得到self-temporal**
+进一步做数学变换，我们发现<strong>如果矩阵F的零空间里面存在只有一个1，剩下都是0的向量（实在抱歉我忘了他的学名是什么了），那么就说明我们可以通过仿射变换得到self-temporal</strong>
 
 ![](https://www.zhihu.com/equation?tex=F%28%5Cvec+%7Bi1%7D+-++%5Cvec+%7Bi2%7D+%29+%3D+0) 
 
@@ -110,7 +110,7 @@ for i in range(N):
 
 ![](https://pica.zhimg.com/v2-c70a808a795a87e528dcd2cbb2af40d2_r.jpg)假设我们按照i,j,k的顺序列的话，那么F就是
 
-![](https://pic3.zhimg.com/v2-016c7efab4181d11a665bf601b893bd8_1440w.jpg)它的一个零向量就是<0,0,1>，我们发现这个向量正好就是只有一个1的向量，也就是说**当只在K一维做变化，两次迭代访问的是同一块内存，因此考虑把k作为最后一个循环**
+![](https://pic3.zhimg.com/v2-016c7efab4181d11a665bf601b893bd8_1440w.jpg)它的一个零向量就是<0,0,1>，我们发现这个向量正好就是只有一个1的向量，也就是说<strong>当只在K一维做变化，两次迭代访问的是同一块内存，因此考虑把k作为最后一个循环</strong>
 
 ![](https://pic2.zhimg.com/v2-4db2dd186481fe40c63edf5601a4e20b_r.jpg)所以我们就直接把k拿到最里面，这样访存就快了很多
 
@@ -132,7 +132,7 @@ for i in range(N):
 
 ![](https://www.zhihu.com/equation?tex=%5Cleft%5B+%5Cbegin%7Bmatrix%7D++++1+%26+0+%5C%5C++++0+%26+1+++%5Cend%7Bmatrix%7D+%5Cright%5D+%5C+%5Cleft%5B+%5Cbegin%7Bmatrix%7D++++i1%5C%5C++++j1+++%5Cend%7Bmatrix%7D+%5Cright%5D+%5C++%2B+%5Cleft%5B+%5Cbegin%7Bmatrix%7D++++0+%5C%5C++++0+++%5Cend%7Bmatrix%7D+%5Cright%5D+%5C++%3D+%5Cleft%5B+%5Cbegin%7Bmatrix%7D++++1+%26+0+%5C%5C++++0+%26+1+++%5Cend%7Bmatrix%7D+%5Cright%5D+%5C+%5Cleft%5B+%5Cbegin%7Bmatrix%7D++++i2+%5C%5C++++j2+++%5Cend%7Bmatrix%7D+%5Cright%5D+%5C++%2B+%5Cleft%5B+%5Cbegin%7Bmatrix%7D++++1+%5C%5C++++0+++%5Cend%7Bmatrix%7D+%5Cright%5D+%5C+) 
 
-**解出来发现当i1=i2+1, j1=j2的时候，他们会访问一样的位置，也就是如果i1比i2少一轮，他们就可以同时在一次迭代访问相同的位置了**
+<strong>解出来发现当i1=i2+1, j1=j2的时候，他们会访问一样的位置，也就是如果i1比i2少一轮，他们就可以同时在一次迭代访问相同的位置了</strong>
 
 上面说的有点抽象，实际上如果我们做下面的一个变化呢，就可以得到group-spatial
 
@@ -147,10 +147,10 @@ for i in range(1, N):
 ![](https://pic4.zhimg.com/v2-c404393cda17acf815d31eb38232bf89_r.jpg)
 ![](https://pic2.zhimg.com/v2-be3a51ca6d1ed7d54085ba911d6101d1_r.jpg)上面是几个仿射变换以及对应的代码变换的例子。
 
-**呼，累死我了，最后再打两个广告：**
+<strong>呼，累死我了，最后再打两个广告：</strong>
 
-**如果你对我今天介绍的方向感兴趣，可以考虑加入上海交通大学清源实验室一起搞事情！（作者目前就在这里当RA）。**
+<strong>如果你对我今天介绍的方向感兴趣，可以考虑加入上海交通大学清源实验室一起搞事情！（作者目前就在这里当RA）。</strong>
 
-**老板是徐宁仪(Michael Xu)。小组专注于解决在超算，边缘计算及传感器等领域面临的挑战。组内的技术栈比较全面(系统，体系结构，硬件，算法，HPC)。目前在招PostDoc researchers, tenure track assistant/associate Professors, Master/Ph.D student and visiting researchers(是的没看错，几乎所有的position都有)。有意向的同学可以发简历给我，或者直接联系老板 xuningyi@sjtu.edu.cn。我个人反正非常期待你的加入，咱们可以深入交流一下**
+<strong>老板是徐宁仪(Michael Xu)。小组专注于解决在超算，边缘计算及传感器等领域面临的挑战。组内的技术栈比较全面(系统，体系结构，硬件，算法，HPC)。目前在招PostDoc researchers, tenure track assistant/associate Professors, Master/Ph.D student and visiting researchers(是的没看错，几乎所有的position都有)。有意向的同学可以发简历给我，或者直接联系老板 xuningyi@sjtu.edu.cn。我个人反正非常期待你的加入，咱们可以深入交流一下</strong>
 
 [上海交通大学清源研究院](https://link.zhihu.com/?target=https%3A//mp.weixin.qq.com/s%3F__biz%3DMzU3MjEzOTU2Mg%3D%3D%26mid%3D2247483912%26idx%3D1%26sn%3D3e16637ca81266335c277af52d6fff9d%26chksm%3Dfcd4334dcba3ba5b50b0976850d85f38c12b38c21fc54db88aba25e2e262f2dba1b205321ebb%26mpshare%3D1%26scene%3D1%26srcid%3D1124HnUognIbMD4pUS6rjzv8%26sharer_sharetime%3D1606217565755%26sharer_shareid%3D871ef9b6b4ecdcfb086ad4485a1d2054%26exportkey%3DAQ%252FOH%252F%252BRk6mLmGLJfYAIhDk%253D%26pass_ticket%3DZraprnTYe2hksCIKd5JJtH7U65AtW6b4AdGYDXyrwoRvoTfLp0%252BVOHgZVGjI0p%252FP%26wx_header%3D0%23rd)

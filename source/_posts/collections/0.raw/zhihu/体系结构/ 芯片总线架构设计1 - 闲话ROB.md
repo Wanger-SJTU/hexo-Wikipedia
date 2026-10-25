@@ -46,6 +46,6 @@ source_url: https://zhuanlan.zhihu.com/p/1892792634080225212
 
 一般而言，最常规的做法是在地址交织发生的地方插入ROB，譬如DDR Controller的入口，不过此时会引入总线保序的问题，同一个ID同时把多笔传输发给不同的slave时不保序就有死锁的可能。所以更有效的做法是在master侧插入ROB，此时整个总线就都没有了保序需求，能够实现性能和PPA的最优解，这也是最近常提的全乱序总线的要求来源。
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_64fcdcbb4eda.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_64fcdcbb4eda.jpg)
 
 常规的ROB插入点，在总线Slave侧

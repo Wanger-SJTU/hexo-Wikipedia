@@ -17,11 +17,11 @@ source_url: https://zhuanlan.zhihu.com/p/369780094
 
 【GiantPandaCV导语】本文作为从零开始学深度学习编译器的番外篇，介绍了一下深度学习框架的Data Flow和Control Flow，并基于TensorFlow解释了TensorFlow是如何在静态图中实现Control Flow的。而对于动态图来说，是支持在Python层直接写Control Flow的，最后基于Pytorch介绍了如何将Python层的Control Flow导出到TorchScript模型以及ONNX模型。
 
-### **0x0. 前言**
+### <strong>0x0. 前言</strong>
 
 本来是想在讲TVM Relay的时候提一下DataFlow和ControlFlow的，但是担心读者看到解析代码的文章打开就关了，所以这里用一篇简短的文章来介绍一下深度学习框架中的DataFlow和ControlFlow。
 
-### **0x1. DataFlow**
+### <strong>0x1. DataFlow</strong>
 
 我记得我接触的第一个深度学习框架是TensorFlow1.x，本科毕业设计也是基于TensorFlow完成的，因此这里我将以TensorFlow1.x为例介绍一下DataFlow。
 
@@ -72,13 +72,13 @@ print(cal(a, b, c))
 
 **
 
-![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_0cadca5c5754.jpg)
+![](/images/collections/0.raw/zhihu/%E8%B5%B0%E5%90%91cs/asset/img_0cadca5c5754.jpg)
 
 上面tensorflow程序对应的数据流图 我们回看一下Python的实现，实际上在执行`res = (a + b) * c`这行代码时，已经计算出了`res`的值，因为Python这种过程语言的数学计算是由代码驱动的。而TensorFlow不一样，它首先构造了数据流图，然后对这个计算流图进行绑定数据，让这个数据在这个图里面流起来，这是显示调用`sess.run`来获得输出的。
 
 像TensorFlow这种基于数据流图（DataFlow）进行计算的深度学习框架不少，比如早期的Theano，2020年开源的国内深度学习框架OneFlow**，PaddlePaddle1.x 初级版本都是基于数据流图的。当然更多人将其称为静态图。
 
-### **0x2. Control Flow**
+### <strong>0x2. Control Flow</strong>
 
 这一节我将结合TensorFlow1.x的Control Flow来为大家解析一下Control Flow的难点以及TensorFlow的一些解决方案。这里的内容理解主要基于这篇博客(https://www.altoros.com/blog/logical-graphs-native-control-flow-operations-in-tensorflow/)，感兴趣的同学可以去查看原文。
 
@@ -86,15 +86,15 @@ print(cal(a, b, c))
 
 **
 
-![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_a58613525431.jpg)
+![](/images/collections/0.raw/zhihu/%E8%B5%B0%E5%90%91cs/asset/img_a58613525431.jpg)
 
 一个Control Flow的例子 然后要实现这个控制流，最Naive的方式在是Python端写If/Else语句，即Python端的Control Flow，然后在不同条件下使用session.run()来求取不同分支的值。对于TensorFlow来说，大概是这样：
 
-![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_39669ef97b88.jpg)
+![](/images/collections/0.raw/zhihu/%E8%B5%B0%E5%90%91cs/asset/img_39669ef97b88.jpg)
 
 这里获取A的值只是将其反馈回来 然后这个Python层的Control Flow并不会在计算图中被表示出来，即：
 
-![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_9b4d593fdbfd.jpg)
+![](/images/collections/0.raw/zhihu/%E8%B5%B0%E5%90%91cs/asset/img_9b4d593fdbfd.jpg)
 
 黄色部分在计算图中实际上是被删掉了，因为早期的TensorFlow无法表示这种控制逻辑 我们可以看到上面的实现是比较烂的，这是因为我们使用`sess.run`对A进行求值之后，没做任何修改又放回了原始的计算图，而TensorFlow 计算图与 Python 交换数据频繁时会严重拖慢运算速度。除了性能的问题，在Python层做Control Flow，你会发现在计算图中并没有表示 Python 逻辑，如果你将 graph 导出，实际上是看不到这些 if/else 语句的，因此网络结构信息会丢失。
 
@@ -102,7 +102,7 @@ print(cal(a, b, c))
 
 Pytorch官方文档指出当我们导出ONNX的时候如果想导出Python层的控制流到计算图中就需要包一层`@jit.script`
 
-![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_32f9a44b1b3e.jpg)
+![](/images/collections/0.raw/zhihu/%E8%B5%B0%E5%90%91cs/asset/img_32f9a44b1b3e.jpg)
 
 大概就是如果想在Pytorch里面导出含有Python层控制流的模型时导出ONNX会丢失控制流，如果需要保留建议导出TorchScript模型或者使用基于script模型的导出方式 像Pytorch这种动态图框架可以方便的使用Python层的Control Flow，但TensorFlow在1.x时代为了解决这个问题是花费了不少努力的，即TensorFlow1.x的原生控制流。
 
@@ -112,31 +112,31 @@ TensorFlow提供了几个运算符用于原生控制流，如下：
 
 **
 
-![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_2d050e08ba01.jpg)
+![](/images/collections/0.raw/zhihu/%E8%B5%B0%E5%90%91cs/asset/img_2d050e08ba01.jpg)
 
 TensorFlow提供了几个运算符用于原生控制流 那么使用这些原生控制流好处是什么呢？
 
 - 高效**。TensorFlow 计算图与 Python 交换数据比较慢，计算图如果是端到端的，才能将数据传输开销降到最低，运行速度更快。
-- **灵活**。静态计算图可以使用动态模块加强，计算图逻辑是自包含的。Pytorch目前比TensorFlow更受欢迎的主要原因就是前者为动态计算图，可以在运行时修改计算图。TensorFlow 利用控制流可以在一个静态定义的计算图中实现类似动态计算图的功能。
-- **兼容**。通过 TensorBoard 调试和检查计算图，无缝通过 TensorFlow Serving 部署，也可以利用自动微分，队列和流水线机制。
+- <strong>灵活</strong>。静态计算图可以使用动态模块加强，计算图逻辑是自包含的。Pytorch目前比TensorFlow更受欢迎的主要原因就是前者为动态计算图，可以在运行时修改计算图。TensorFlow 利用控制流可以在一个静态定义的计算图中实现类似动态计算图的功能。
+- <strong>兼容</strong>。通过 TensorBoard 调试和检查计算图，无缝通过 TensorFlow Serving 部署，也可以利用自动微分，队列和流水线机制。
 
-### **控制依赖**
+### <strong>控制依赖</strong>
 
-TensorFlow会记录每一个运算符的依赖，然后基于依赖进行调度计算。也就是说一个运算符当且仅当它的依赖都完成之后才会执行一次。任何两个完成依赖的运算符可以以任意顺序进行。但这种设定可能会引发**竞争**，比如：
+TensorFlow会记录每一个运算符的依赖，然后基于依赖进行调度计算。也就是说一个运算符当且仅当它的依赖都完成之后才会执行一次。任何两个完成依赖的运算符可以以任意顺序进行。但这种设定可能会引发<strong>竞争</strong>，比如：
 
 **
 
-![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_094509d85796.jpg)
+![](/images/collections/0.raw/zhihu/%E8%B5%B0%E5%90%91cs/asset/img_094509d85796.jpg)
 
 控制依赖引发竞争 其中 var 为一个变量，在对 bot 求值时，var 本身自增 2，然后将自增后的值返回。这时 top 语句执行顺序就会对 out 结果产生不同影响，结果不可预知。
 
 为了解决这个问题，开发者可以人为的加入bot和top的依赖关系，让指定运算符先完成，如下图所示： 
 
-![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_df3649ac141a.jpg)
+![](/images/collections/0.raw/zhihu/%E8%B5%B0%E5%90%91cs/asset/img_df3649ac141a.jpg)
 
 人为的加入bot和top的依赖关系，让指定运算符先完成 这里表示的就是如果我们需要保证读取的值是最新的，就需要新增下图中虚线箭头表示的依赖关系，即下图中上方蓝色圆圈依赖下方蓝色圆圈的运算完成，才能进行计算。
 
-![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_8bbfd679e2f5.jpg)
+![](/images/collections/0.raw/zhihu/%E8%B5%B0%E5%90%91cs/asset/img_8bbfd679e2f5.jpg)
 
 加入依赖关系之后，计算图长这样
 ### 条件分支**
@@ -145,15 +145,15 @@ TensorFlow会记录每一个运算符的依赖，然后基于依赖进行调度�
 
 **
 
-![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_5c844d1b32b9.jpg)
+![](/images/collections/0.raw/zhihu/%E8%B5%B0%E5%90%91cs/asset/img_5c844d1b32b9.jpg)
 
-TensorFlow提供了两个条件控制OP，即tf.cond和tf.case 下面的代码中，利用了tf.cond实现条件分支，在 a ![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_1a8fd7197bf1.jpg)
+TensorFlow提供了两个条件控制OP，即tf.cond和tf.case 下面的代码中，利用了tf.cond实现条件分支，在 a ![](/images/collections/0.raw/zhihu/%E8%B5%B0%E5%90%91cs/asset/img_1a8fd7197bf1.jpg)
 
-使用tf.cond实现条件分支 上面这段代码等价于：`tf.cond(a ![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_e9257ad13a13.jpg)
+使用tf.cond实现条件分支 上面这段代码等价于：`tf.cond(a ![](/images/collections/0.raw/zhihu/%E8%B5%B0%E5%90%91cs/asset/img_e9257ad13a13.jpg)
 
 带有条件控制流的计算图 当并列的分支比较多时，我们可以使用tf.case来处理，例如：
 
-![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_51e95658fbd2.jpg)
+![](/images/collections/0.raw/zhihu/%E8%B5%B0%E5%90%91cs/asset/img_51e95658fbd2.jpg)
 
 并列的条件分支&amp;gt;2个时，使用tf.case来控制
 ### 循环**
@@ -162,11 +162,11 @@ TensorFlow提供了`tf.while_loop`来构造循环块，感觉和RNN类似的结�
 
 **
 
-![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_145eed38eebd.jpg)
+![](/images/collections/0.raw/zhihu/%E8%B5%B0%E5%90%91cs/asset/img_145eed38eebd.jpg)
 
 tf.while_loop可以实现循环控制流解决RNN这种计算图结构的控制逻辑 下面的代码实现了一个基础的循环例子，即循环100次。
 
-![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_8f9e8153466e.jpg)
+![](/images/collections/0.raw/zhihu/%E8%B5%B0%E5%90%91cs/asset/img_8f9e8153466e.jpg)
 
 使用tf.while_loop在静态图中实现循环控制流总的来说，TensorFlow应该是首个将Control Flow引入到计算图中的深度学习框架，而不是像动态图框架那样直接在Python层去做Control Flow，这方面必须给予一定的尊重。即使Pytorch目前在学术界已经比TensorFlow更加流行，但基于TensorFlow演化的各种工业级项目仍然发挥着作用。
 
@@ -269,7 +269,7 @@ torch.onnx.export(model, (dummy_input, loop_count), 'loop.onnx', verbose=True)
 
 **
 
-![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_ff819af355e1.jpg)
+![](/images/collections/0.raw/zhihu/%E8%B5%B0%E5%90%91cs/asset/img_ff819af355e1.jpg)
 
 可以看到直接导出Module，Python层的控制逻辑被丢掉（即for循环被完全展开），这是因为Pytorch在导出ONNX的时候默认使用了tracing机制 而当我们使用script模式时，导出的ONNX就会保留Python层的Control Flow并将其转换成ONNX中的Loop OP。示例代码以及Netron可视化结果如下：
 
@@ -293,14 +293,14 @@ torch.onnx.export(model, (dummy_input, loop_count), 'loop.onnx', verbose=True,
                   input_names=['input_data', 'loop_range'])
 `
 
-![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_6950845efe05.jpg)
+![](/images/collections/0.raw/zhihu/%E8%B5%B0%E5%90%91cs/asset/img_6950845efe05.jpg)
 
 Pytorch模型中在Python层定义的Control Flow被保留下来了
 ### 0x4. 总结**
 
 这篇文章介绍了一下深度学习中的Data Flow和Control Flow，然后介绍了一下将Pytorch模型转为TorchScript的两种模式，并探索了要将Pytorch的Python层的Control Flow转换为ONNX应该怎么做。
 
-### **0x5. 参考**
+### <strong>0x5. 参考</strong>
 
 - https://blog.csdn.net/lvxingzhe123456/article/details/82597095
 - https://www.altoros.com/blog/logical-graphs-native-control-flow-operations-in-tensorflow/
@@ -313,4 +313,4 @@ https://u.wechat.com/MPWFDnmCPu6zgf5YUtdpT_U (二维码自动识别)
 
 为了方便读者获取资料以及我们公众号的作者发布一些Github工程的更新，我们成立了一个QQ群，二维码如下，感兴趣可以加入。
 
-![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_63ef780f4bcb.jpg)
+![](/images/collections/0.raw/zhihu/%E8%B5%B0%E5%90%91cs/asset/img_63ef780f4bcb.jpg)

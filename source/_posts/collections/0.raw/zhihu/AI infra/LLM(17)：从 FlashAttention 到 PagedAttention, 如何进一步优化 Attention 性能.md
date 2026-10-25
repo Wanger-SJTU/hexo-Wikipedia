@@ -22,26 +22,26 @@ source_url: https://zhuanlan.zhihu.com/p/638468472
 
 以 A100 (40GB HBM) 为例，下面显示其内存层次结构的粗略图。SRAM内存分布在108个流式多处理器(SMs)上，每个处理器192KB。片上SRAM比HBM快得多，但比HBM小得多，在计算方面，使用Tensor Core的BFLOAT16 的理论峰值吞吐量为 312 TFLOPS。GPU 的典型操作方式是使用大量的线程来执行一个操作，这个操作被称为内核。输入从HBM加载到寄存器和SRAM，并在计算后写回HBM。
 
-![](https://pic1.zhimg.com/v2-38840cb168ef0be1afc3850fb3932dfc_1440w.jpg)算法对于内存带宽的需求通常使用 **计算强度** (arithmetic intensity) 来表示，单位是 OPs/byte。意思是在算法中平均每读入单位数据，能支持多少次运算操作。它有助于理解操作的瓶颈，即计算约束(Compute-bound)或带宽约束(Bandwidth-bound, or Memory-bound)。
+![](https://pic1.zhimg.com/v2-38840cb168ef0be1afc3850fb3932dfc_1440w.jpg)算法对于内存带宽的需求通常使用 <strong>计算强度</strong> (arithmetic intensity) 来表示，单位是 OPs/byte。意思是在算法中平均每读入单位数据，能支持多少次运算操作。它有助于理解操作的瓶颈，即计算约束(Compute-bound)或带宽约束(Bandwidth-bound, or Memory-bound)。
 
-- **算力** 
-![](https://www.zhihu.com/equation?tex=%5Cpi) ：也称为计算平台的**性能上限**，指的是一个计算平台倾尽全力每秒钟所能完成的浮点运算数。单位是 `FLOPS` or `FLOP/s`。
-- **带宽** 
-![](https://www.zhihu.com/equation?tex=%5Cbeta+) ：也即计算平台的**带宽上限**，指的是一个计算平台倾尽全力每秒所能完成的内存交换量。单位是`Byte/s`。
-- **计算强度上限** **
-![](https://www.zhihu.com/equation?tex=I_%7Bmax%7D+%3D+%5Cfrac%7B%5Cpi%7D%7B%5Cbeta%7D+)** ：两个指标相除即可得到计算平台的**计算强度上限**。它描述的是在这个计算平台上，单位内存交换最多用来进行多少次计算。单位是`FLOPs/Byte`。
+- <strong>算力</strong> 
+![](https://www.zhihu.com/equation?tex=%5Cpi) ：也称为计算平台的<strong>性能上限</strong>，指的是一个计算平台倾尽全力每秒钟所能完成的浮点运算数。单位是 `FLOPS` or `FLOP/s`。
+- <strong>带宽</strong> 
+![](https://www.zhihu.com/equation?tex=%5Cbeta+) ：也即计算平台的<strong>带宽上限</strong>，指的是一个计算平台倾尽全力每秒所能完成的内存交换量。单位是`Byte/s`。
+- <strong>计算强度上限</strong> **
+![](https://www.zhihu.com/equation?tex=I_%7Bmax%7D+%3D+%5Cfrac%7B%5Cpi%7D%7B%5Cbeta%7D+)<strong>：两个指标相除即可得到计算平台的</strong>计算强度上限**。它描述的是在这个计算平台上，单位内存交换最多用来进行多少次计算。单位是`FLOPs/Byte`。
 - **模型的理论性能 
-![](https://www.zhihu.com/equation?tex=P)：**我们最关心的指标，即模型**在计算平台上所能达到的每秒浮点运算次数（理论值）**。单位是`FLOPS`or`FLOP/s`。如下图所示，Roof-line 描述了**模型在一个计算平台的限制下，到底能达到多快的浮点计算速度**，即**算力**决定“屋顶”的高度（绿色线段），**带宽**决定“房檐”的斜率（红色线段）。
+![](https://www.zhihu.com/equation?tex=P)：<strong>我们最关心的指标，即模型</strong>在计算平台上所能达到的每秒浮点运算次数（理论值）**。单位是`FLOPS`or`FLOP/s`。如下图所示，Roof-line 描述了<strong>模型在一个计算平台的限制下，到底能达到多快的浮点计算速度</strong>，即<strong>算力</strong>决定“屋顶”的高度（绿色线段），<strong>带宽</strong>决定“房檐”的斜率（红色线段）。
 
 ![](https://pica.zhimg.com/v2-5e0342538c21a35d7aba472e22a5b468_r.jpg)Roof-line 划分出的两个瓶颈区域，即
 
 ![](https://www.zhihu.com/equation?tex=%5Cquad%5Cquad%5Cquad+%5Cquad%5Cquad%5Cquad+P+%3D+%5Cbegin%7Bcases%7D+%5Cbeta+%5Ccdot+I%2C+%26+~+when+~~+I+%3C+I_%7Bmax%7D+%5Cquad+%7B%5Ccolor%7Bred%7D%7B%5Ctextbf%7BMemory+Bound%7D%7D%7D%5C%5C%5B2ex%5D+%5Cpi%2C+%26+~+when+~~+I+%5Cgeqslant+I_%7Bmax%7D+%5Cquad+%7B%5Ccolor%7Bgreen%7D%7B%5Ctextbf%7BCompute+Bound%7D%7D%7D+%5Cend%7Bcases%7D+%5Cquad%5Cquad%5Cquad+%5Cquad%5Cquad%5Cquad+)
 
-- **计算约束**——此时HBM访问所花费的时间相对较低，不管模型的计算强度 
+- <strong>计算约束</strong>——此时HBM访问所花费的时间相对较低，不管模型的计算强度 
 ![](https://www.zhihu.com/equation?tex=I) 有多大，它的理论性能 
 ![](https://www.zhihu.com/equation?tex=P) 最大只能等于计算平台的算力
 ![](https://www.zhihu.com/equation?tex=%5Cpi)。例如，具有较大内维数的矩阵乘法和具有大量通道的卷积。
-- **带宽约束**——当模型的计算强度 
+- <strong>带宽约束</strong>——当模型的计算强度 
 ![](https://www.zhihu.com/equation?tex=I) 小于计算平台的计算强度上限 
 ![](https://www.zhihu.com/equation?tex=I_%7Bmax%7D) 时，由于此时模型位于“房檐”区间，因此模型理论性能 
 ![](https://www.zhihu.com/equation?tex=P) 的大小完全由计算平台的带宽上限 
@@ -66,22 +66,22 @@ source_url: https://zhuanlan.zhihu.com/p/638468472
 ![](https://www.zhihu.com/equation?tex=%5Cmathbf%7BS%7D) 的 scale, mask 和 softmax 操作，对 
 ![](https://www.zhihu.com/equation?tex=%5Cmathbf%7BP%7D) 的 dropout 操作。下图算法展示了 HBM 与 SRAM 之间的数据传输过程。
 
-![](https://pic4.zhimg.com/v2-d80d34acc622ae03950cdb25d31fa665_r.jpg)**1.2.1 FlashAttention 的优化思路**
+![](https://pic4.zhimg.com/v2-d80d34acc622ae03950cdb25d31fa665_r.jpg)<strong>1.2.1 FlashAttention 的优化思路</strong>
 
 从上面的分析可以看出，
 ![](https://www.zhihu.com/equation?tex=O%28N%5E2%29)复杂度的矩阵对HBM及其重复读写是一个主要瓶颈。要解决这个问题，需要做两件主要的事情：
 
 - 在不访问整个输入的情况下计算 softmax
-- 不为反向传播存储大的中间 attention 矩阵为此 FlashAttention 提出了两种方法来分布解决上述问题：**tiling 和 recomputation**。
+- 不为反向传播存储大的中间 attention 矩阵为此 FlashAttention 提出了两种方法来分布解决上述问题：<strong>tiling 和 recomputation</strong>。
 
 - tiling - 注意力计算被重新构造，将输入分割成块，并通过在输入块上进行多次传递来递增地执行softmax操作。
 - recomputation - 存储来自前向的 softmax 归一化因子，以便在反向中快速重新计算芯片上的 attention，这比从HBM读取中间矩阵的标准注意力方法更快。由于重新计算，这确实导致FLOPs增加，但是由于大量减少HBM访问，FlashAttention运行速度更快(在GPT-2上高达7.6倍)。下面将详细推导 FlashAttention 的细节。
 
 该算法背后的主要思想是分割输入，将它们从慢速HBM加载到快速SRAM，然后计算这些块的 attention 输出。在将每个块的输出相加之前，将其按正确的归一化因子进行缩放，从而得到正确的结果。
 
-下面将分别讨论 **tiling** 和 **recomputation **的正确性：
+下面将分别讨论 <strong>tiling</strong> 和 <strong>recomputation</strong>的正确性：
 
-**1.2.2 Tiling 与前向计算**
+<strong>1.2.2 Tiling 与前向计算</strong>
 
 上述算法中除了线性操作和 elementwise 外，分块计算注意力的关键部分是 softmax 的分块计算。向量的 softmax 可以计算为
 
@@ -139,7 +139,7 @@ softmax 的分块计算解决后，实际上其他部分的分块计算就简单
 
 其核心思想仍是使用分块的计算更新迭代以得到全局的结果。那么至此我们厘清了前向计算的整个过程，接下来我们将考虑反向计算的过程。
 
-![](https://pic4.zhimg.com/v2-cdde694230620937cfa09039d40ea009_r.jpg)**1.2.3 Recomputation 与 反向计算**
+![](https://pic4.zhimg.com/v2-cdde694230620937cfa09039d40ea009_r.jpg)<strong>1.2.3 Recomputation 与 反向计算</strong>
 
 FlashAttention 的 向后传递需要 
 ![](https://www.zhihu.com/equation?tex=+%5Cmathbf%7BS%7D) 和 
@@ -178,7 +178,7 @@ FlashAttention 的 向后传递需要
 ![](https://www.zhihu.com/equation?tex=%5Ctext+d+%5Cmathbf+V_j%3D%5Cmathbf%28P%5E%5Ctop%29_j%5Ctextbf+d%5Cmathbf+O%3D%5Csum%5Climits_i%5Cmathbf+%28P%5E%5Ctop%29_%7Bji%7D%5Ctext+d+%5Cmathbf+O_i%3D%5Csum%5Climits_i%5Cmathbf++P_%7Bij%7D%5E%5Ctop%5Ctext+d+%5Cmathbf+O_i+%5C%5C)
 
 ![](https://www.zhihu.com/equation?tex=%5Cmathbf+P) 矩阵的大小是 
-![](https://www.zhihu.com/equation?tex=O%28N%5E2%29) 量级，为了减小内存的消耗，**FlashAttention在反向传播时重新计算** **
+![](https://www.zhihu.com/equation?tex=O%28N%5E2%29) 量级，为了减小内存的消耗，<strong>FlashAttention在反向传播时重新计算</strong> **
 ![](https://www.zhihu.com/equation?tex=%5Cmathbf+P)** **而非在前向传播时保存：**
 
 ![](https://www.zhihu.com/equation?tex=%5Cmathbf+P_%7Bij%7D+%3D+%28%5Ctext+%7BSoftmax%7D%28%5Cmathbf+S%29%29_%7Bij%7D%3D%5Cfrac%7Be%5E%7B%5Cmathbf+S_%7Bij%7D-%5Cdelta%5E%5Ctop%28%7B%5Cmathbf+S_i%5E%7B%5Ctext%7Bmax%7D%7D%5Ctext+%7B%2C+%7D++C_N+%29%7D%7D%7D%7B%5Cdelta%5E%5Ctop%28%5Cmathbf+S_i%5E%7B%5Ctext%7Bsum%7D%7D%5Ctext%7B%2C++%7DC_N%29%7D%5C%5C)
@@ -287,7 +287,7 @@ vLLM 主要用于快速 LLM 推理和服务，其核心是 PagedAttention，这�
 vLLM 具有诸多特点，其快速体现在:
 
 - 最好的服务吞吐性能
-- 使用 **PagedAttention **优化 KV cache 内存管理
+- 使用 <strong>PagedAttention</strong>优化 KV cache 内存管理
 - 动态 batch
 - 优化的 CUDA kernels其易用性体现在:
 
@@ -295,7 +295,7 @@ vLLM 具有诸多特点，其快速体现在:
 - 高吞吐量服务与各种 decoder 算法，包括并行采样、beam search 等
 - 张量并行(TP)以支持分布式推理
 - 流输出
-- 兼容 OpenAI 的 API 服务**PagedAttention：如何解决 GPU 显存瓶颈**
+- 兼容 OpenAI 的 API 服务<strong>PagedAttention：如何解决 GPU 显存瓶颈</strong>
 
 该研究发现，在 vLLM 库中 LLM 服务的性能受到内存瓶颈的影响。在自回归 decoder 中，所有输入到 LLM 的 token 会产生注意力 key 和 value 的张量，这些张量保存在 GPU 显存中以生成下一个 token。这些缓存 key 和 value 的张量通常被称为 KV cache，其具有以下特点： 
 
@@ -315,7 +315,7 @@ PagedAttention 还有另一个关键优势 —— 高效的内存共享。例如
 PageAttention 成为了 vLLM 背后的核心技术。vLLM 是 LLM 推理和服务引擎，为各种具有高性能和易用界面的模型提供支持。
 
 3.2 vLLM 及 PagedAttention 实践
-**3.2.1 核心模块解读及单元测试**
+<strong>3.2.1 核心模块解读及单元测试</strong>
 
 vLLM 的核心是 PagedAttention ，而 PagedAttention 核心则是 `attention_ops.single_query_cached_kv_attention` op，下面首先了解该 op 的使用方法并验证其正确性，完整代码参见[vllm/tests/kernels/test_attention.py](https://link.zhihu.com/?target=https%3A//github.com/vllm-project/vllm/blob/665c48963be11b2e5cb7209cd25f884129e5c284/tests/kernels/test_attention.py%23L8) 。
 
@@ -378,7 +378,7 @@ def run_single_query_cached_kv_attention(
     )
     # NOTE(woosuk): Due to the difference in the data types the two implementations use for attention softmax logits and accumulation there is a small difference in the final outputs. We should use a relaxed tolerance for the test.
     assert torch.allclose(output, ref_output, atol=1e-3, rtol=1e-5)
-**3.2.2 本地性能分析与对比**
+<strong>3.2.2 本地性能分析与对比</strong>
 
 首先需要熟悉一下 vllm 运行完整大模型的方法，下面是一个极简版的运行 LLaMA-13B 模型的例子：
 
@@ -426,7 +426,7 @@ python3 benchmarks/benchmark_throughput.py --dataset benchmarks/ShareGPT_V3_unfi
 python3 benchmark_throughput.py -tp 4 --dataset ShareGPT_V3_unfiltered_cleaned_split.json 
 结果如下所示，TP 从 1 到 4 的过程中 Throughput 逐渐增大，这是因为 TP 加快了推理速度，当 TP 为 8 时性能反而下降，这是因为卡间通信的成本增加超过了 TP 的性能增益。
 
-![](https://picx.zhimg.com/v2-6b465b380ec85b647294449c53f2a05f_r.jpg)**3.2.3 服务端测评**
+![](https://picx.zhimg.com/v2-6b465b380ec85b647294449c53f2a05f_r.jpg)<strong>3.2.3 服务端测评</strong>
 
 在使用 vLLM 进行在线服务时，可以通过以下命令启动一个兼容 OpenAI API 的服务器。
 

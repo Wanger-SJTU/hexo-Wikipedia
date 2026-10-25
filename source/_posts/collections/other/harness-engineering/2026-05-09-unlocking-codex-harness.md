@@ -40,9 +40,9 @@ Codex CLI 始于 TUI（终端用户界面），意味着 Codex 通过终端访�
 
 首先，让我们放大看看 Codex harness 的内部结构，以及 Codex App Server 如何向客户端暴露它。在我们之前的 Codex [博客](/index/unrolling-the-codex-agent-loop/)中，我们分解了协调用户、模型和工具之间交互的核心 agent 循环。这是 Codex harness 的核心逻辑，但完整的 agent 体验还有更多：
 
-1. **Thread 生命周期和持久化**。Thread 是用户和 agent 之间的 Codex 对话。Codex 创建、恢复、分叉和归档 threads，并持久化事件历史，以便客户端可以重新连接并呈现一致的时间线。
-2. **配置和认证**。Codex 加载配置、管理默认值，并运行"用 ChatGPT 登录"等认证流程，包括凭证状态。
-3. **工具执行和扩展**。Codex 在沙箱中执行 shell/文件工具，并连接 MCP servers 和 skills 等集成，以便它们可以在一致的政策模型下参与 agent 循环。
+1. <strong>Thread 生命周期和持久化</strong>。Thread 是用户和 agent 之间的 Codex 对话。Codex 创建、恢复、分叉和归档 threads，并持久化事件历史，以便客户端可以重新连接并呈现一致的时间线。
+2. <strong>配置和认证</strong>。Codex 加载配置、管理默认值，并运行"用 ChatGPT 登录"等认证流程，包括凭证状态。
+3. <strong>工具执行和扩展</strong>。Codex 在沙箱中执行 shell/文件工具，并连接 MCP servers 和 skills 等集成，以便它们可以在一致的政策模型下参与 agent 循环。
 
 我们这里提到的所有 agent 逻辑，包括核心 agent 循环，都住在 Codex CLI 代码库的一个叫做"[Codex core](https://github.com/openai/codex/tree/main/codex-rs/core)"的部分。Codex core 既是一个所有 agent 代码所在的库，也是一个可以启动来运行 agent 循环和管理一个 Codex thread（对话）持久化的运行时。
 
@@ -58,16 +58,16 @@ App Server 既是客户端和服务器之间的 JSON-RPC 协议，也是一个�
 
 接下来，我们将分解对话原语——App Server 协议的构建块。为 agent 循环设计 API 很棘手，因为用户/agent 的交互不是简单的请求/响应。一个用户请求可以展开成一个结构化的动作序列，客户端需要忠实地表示：用户的输入、agent 的增量进度、沿途产生的 artifacts（例如 diffs）。为了让这种交互流易于集成并在 UI 间有弹性，我们确定了三个核心原语，边界和生命周期清晰：
 
-1. **Item**：Item 是 Codex 中输入/输出的原子单元。Item 是类型化的（例如用户消息、agent 消息、工具执行、批准请求、diff），每个都有明确的生命周期：
+1. <strong>Item</strong>：Item 是 Codex 中输入/输出的原子单元。Item 是类型化的（例如用户消息、agent 消息、工具执行、批准请求、diff），每个都有明确的生命周期：
    - `item/started` 当 item 开始时
    - 可选的 `item/*/delta` 事件随着内容流入（对于流式 item 类型）
    - `item/completed` 当 item 最终确定其最终 payload 时
    
    这个生命周期让客户端可以在 started 时立即开始渲染，在 delta 上流式传输增量更新，并在 completed 时最终确定。
 
-2. **Turn**：Turn 是由用户输入发起的一个单位 agent 工作。它在客户端提交输入时开始（例如"运行测试并总结失败"），在 agent 完成产生该输入的输出时结束。一个 Turn 包含代表沿途的中间步骤和产生的输出的 item 序列。
+2. <strong>Turn</strong>：Turn 是由用户输入发起的一个单位 agent 工作。它在客户端提交输入时开始（例如"运行测试并总结失败"），在 agent 完成产生该输入的输出时结束。一个 Turn 包含代表沿途的中间步骤和产生的输出的 item 序列。
 
-3. **Thread**：Thread 是一个持久的容器，用于用户和 agent 之间的持续 Codex 会话。它包含多个 Turns。Threads 可以被创建、恢复、分叉和归档。Thread 历史被持久化，以便客户端可以重新连接并呈现一致的时间线。
+3. <strong>Thread</strong>：Thread 是一个持久的容器，用于用户和 agent 之间的持续 Codex 会话。它包含多个 Turns。Threads 可以被创建、恢复、分叉和归档。Thread 历史被持久化，以便客户端可以重新连接并呈现一致的时间线。
 
 现在，我们来看一个客户端和 agent 之间的简化对话，其中对话由原语表示：
 
@@ -111,15 +111,15 @@ Codex Web 使用 Codex harness，但在容器环境中运行它。一个 worker 
 
 Codex App Server 将是我们维护的头等集成方法，但也有其他功能更有限的其他方法。默认情况下，我们建议客户端使用 Codex App Server 与 Codex 集成，但值得看看不同的集成方法并了解它们的优缺点。以下是驱动 Codex 的最常见方式以及每种方式何时适合：
 
-**[MCP Server](https://developers.openai.com/codex/guides/agents-sdk/)**：运行 `codex mcp-server` 并从任何支持 stdio servers 的 MCP 客户端连接。如果你已经有了一个基于 MCP 的工作流并想将 Codex 作为一个可调用工具，这是一个很好的选择。缺点是你只能获得 MCP 暴露的内容，所以依赖更丰富的会话语义的 Codex 特定交互（例如 diff 更新）可能无法干净地通过 MCP 端点映射。
+<strong>[MCP Server](https://developers.openai.com/codex/guides/agents-sdk/)</strong>：运行 `codex mcp-server` 并从任何支持 stdio servers 的 MCP 客户端连接。如果你已经有了一个基于 MCP 的工作流并想将 Codex 作为一个可调用工具，这是一个很好的选择。缺点是你只能获得 MCP 暴露的内容，所以依赖更丰富的会话语义的 Codex 特定交互（例如 diff 更新）可能无法干净地通过 MCP 端点映射。
 
-**[其他生态协议](https://openai.com/index/open-source-codex-orchestration-symphony/)**：一些生态系统提供了一个可移植接口，可以针对多个模型提供者和运行时。如果你想要一个协调多个 agent 的抽象，这可能是一个很好的选择。代价是这些协议通常会在能力交集上收敛，这使得更丰富的交互更难表示，特别是当提供者特定的工具和会话语义很重要时。这个领域发展很快，我们预计随着我们弄清楚代表真实世界 agent 工作流的最佳原语，会出现更多通用标准（[skills](https://agentskills.io/home) 是一个很好的例子）。
+<strong>[其他生态协议](https://openai.com/index/open-source-codex-orchestration-symphony/)</strong>：一些生态系统提供了一个可移植接口，可以针对多个模型提供者和运行时。如果你想要一个协调多个 agent 的抽象，这可能是一个很好的选择。代价是这些协议通常会在能力交集上收敛，这使得更丰富的交互更难表示，特别是当提供者特定的工具和会话语义很重要时。这个领域发展很快，我们预计随着我们弄清楚代表真实世界 agent 工作流的最佳原语，会出现更多通用标准（[skills](https://agentskills.io/home) 是一个很好的例子）。
 
-**App Server**：当你想要将完整的 Codex harness 暴露为一个稳定的、对 UI 友好的事件流时选择 App Server。你既得到了 agent 循环的全部功能，也得到了其他支持功能，如用 ChatGPT 登录、模型发现和配置管理。主要成本是集成工作，因为你需要在你的语言中构建客户端 JSON-RPC 绑定。然而在实践中，如果你提供 JSON schema 和文档，Codex 能够完成很多繁重的工作。与我们合作的许多团队能够使用 Codex 快速实现一个工作集成。
+<strong>App Server</strong>：当你想要将完整的 Codex harness 暴露为一个稳定的、对 UI 友好的事件流时选择 App Server。你既得到了 agent 循环的全部功能，也得到了其他支持功能，如用 ChatGPT 登录、模型发现和配置管理。主要成本是集成工作，因为你需要在你的语言中构建客户端 JSON-RPC 绑定。然而在实践中，如果你提供 JSON schema 和文档，Codex 能够完成很多繁重的工作。与我们合作的许多团队能够使用 Codex 快速实现一个工作集成。
 
-**CLI 非交互模式**：用于一次性任务和 CI 运行的轻量级、可脚本化的 CLI 模式。当你想要一个单一命令运行完成、非交互式流式传输结构化输出用于日志，并以明确的成功或失败信号退出时，这是一个很好的选择。
+<strong>CLI 非交互模式</strong>：用于一次性任务和 CI 运行的轻量级、可脚本化的 CLI 模式。当你想要一个单一命令运行完成、非交互式流式传输结构化输出用于日志，并以明确的成功或失败信号退出时，这是一个很好的选择。
 
-**Agents SDK**：一个 TypeScript 库，用于在你自己应用内部从程序上控制本地 Codex agent。当你想要一个用于服务器端工具和工作流的原生库接口而不构建单独的 JSON-RPC 客户端时，这是最好的。因为它比 App Server 更早发布，目前支持更少的语言和更小的 surface area。如果有开发者兴趣，我们可能会添加额外的 SDK 来包装 App Server 协议，这样团队可以覆盖更多的 harness surface，而不需要编写 JSON-RPC 绑定。
+<strong>Agents SDK</strong>：一个 TypeScript 库，用于在你自己应用内部从程序上控制本地 Codex agent。当你想要一个用于服务器端工具和工作流的原生库接口而不构建单独的 JSON-RPC 客户端时，这是最好的。因为它比 App Server 更早发布，目前支持更少的语言和更小的 surface area。如果有开发者兴趣，我们可能会添加额外的 SDK 来包装 App Server 协议，这样团队可以覆盖更多的 harness surface，而不需要编写 JSON-RPC 绑定。
 
 ## 总结
 

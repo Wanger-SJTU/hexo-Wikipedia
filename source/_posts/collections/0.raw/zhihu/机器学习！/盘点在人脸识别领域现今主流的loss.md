@@ -23,15 +23,15 @@ source_url: https://zhuanlan.zhihu.com/p/64314762
 
 首先，故事的开始，要从模型如何要做分类讲起：
 
-**original softmax：**
+<strong>original softmax：</strong>
 
 首先咱们给出一个相当普通的网络图片，仅当事例：
 
-![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_ae20830946a6.jpg)
+![](/images/collections/0.raw/zhihu/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%EF%BC%81/asset/img_ae20830946a6.jpg)
 
 在上图中，分类的最后一层叫做softmax层，其输出是每一类的概率。数学表达为：
 
-![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_c52a7d472125.jpg)
+![](/images/collections/0.raw/zhihu/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%EF%BC%81/asset/img_c52a7d472125.jpg)
 
 这里的X是倒数第二层神经元输出的值，我们叫embedding feature. W为倒数第二层和倒数第一层之间的权重值。换言之最后一层神经元利用倒数第二层提取到的特征来做分类（classification）。
 
@@ -43,7 +43,7 @@ W^TX+b
 
 那么得到了概率，我们如何去优化网络呢？这里面我们最常用的就是最普通的cross-entropy loss（交叉熵损失），交叉熵损失函数大家也很熟悉了，这里再啰嗦两句，因为这对之后我们的推导相当重要：
 
-![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_541a42058d71.jpg)
+![](/images/collections/0.raw/zhihu/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%EF%BC%81/asset/img_541a42058d71.jpg)
 
 这式子咱们定性理解一下，假如说我们图片数字是0，最后一层第一个神经元代表了该图片是0的概率，假如输出为0.8，我们希望它输出是1，所有这其中的损失可以用交叉熵来衡量：
 
@@ -51,7 +51,7 @@ W^TX+b
 
 好了，开胃菜结束，正餐正式开始：
 
-**ArcFace Loss**
+<strong>ArcFace Loss</strong>
 
 下面，咱们首先介绍的是目前效果最好的一种loss改进，arcFace loss：
 
@@ -71,11 +71,11 @@ $$s*cos(\theta) = s*\frac{W}{|W|} *\frac{X}{|X|} $$
 
 从：
 
-![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_3e69a40f4f3b.jpg)
+![](/images/collections/0.raw/zhihu/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%EF%BC%81/asset/img_3e69a40f4f3b.jpg)
 
 由于b = 0， W和X被归一化并且乘上系数s，上式 变为：
 
-![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_1ee67d586c5c.jpg)
+![](/images/collections/0.raw/zhihu/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%EF%BC%81/asset/img_1ee67d586c5c.jpg)
 
 上面两式在b=0，并完成归一化后完全等价。
 
@@ -83,7 +83,7 @@ $$s*cos(\theta) = s*\frac{W}{|W|} *\frac{X}{|X|} $$
 
 最后一步：我们在 \theta  上加上一个常数m，于是此时式子变为：
 
-![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_756c9b8e1797.png)
+![](/images/collections/0.raw/zhihu/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%EF%BC%81/asset/img_756c9b8e1797.png)
 
 这就是我们的arcface loss。
 
@@ -91,13 +91,13 @@ $$s*cos(\theta) = s*\frac{W}{|W|} *\frac{X}{|X|} $$
 
 一幅图可以清晰解惑：
 
-![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_a7dfd07c5065.jpg)
+![](/images/collections/0.raw/zhihu/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%EF%BC%81/asset/img_a7dfd07c5065.jpg)
 
 **可以看到，m就意味着类别之间的那个距离。添加了参数m，会有两个好处，扩大了类间距，缩小了类内距。从而使分类的效果更好。
 
 下面，我们看下原论文上面的使用arcface loss的flow chart：
 
-![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_190f0d6f4234.jpg)
+![](/images/collections/0.raw/zhihu/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%EF%BC%81/asset/img_190f0d6f4234.jpg)
 
 从这张图上我们可以清晰看到作者将x和w归一化后相乘得到 cos \theta ，之后求arccos得到角度 \theta ,再加上m得到扩大的角度边界，之后再求cos，然后走交叉熵损失，就得到了arcface loss啦。
 
@@ -107,11 +107,11 @@ $$s*cos(\theta) = s*\frac{W}{|W|} *\frac{X}{|X|} $$
 
 Cosine Face loss：**
 
-![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_3ee219e920a8.jpg)
+![](/images/collections/0.raw/zhihu/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%EF%BC%81/asset/img_3ee219e920a8.jpg)
 
 对比一下arcface loss：
 
-![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_756c9b8e1797.png)
+![](/images/collections/0.raw/zhihu/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%EF%BC%81/asset/img_756c9b8e1797.png)
 
 我觉得多余的解释都是徒劳的，，，其实m就是从cos里面换到了cos外面对吧
 
@@ -119,17 +119,17 @@ Cosine Face loss：**
 
 好下面进入第四个loss，
 
-**SphereFace loss：**
+<strong>SphereFace loss：</strong>
 
 废话不多说，咱们直接看loss的形式：
 
-![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_c0681b617ce8.png)
+![](/images/collections/0.raw/zhihu/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%EF%BC%81/asset/img_c0681b617ce8.png)
 
 相信大家已经看出来了，这个相比于上面，其实就是多保留了 |X| 这一项，没有什么特别新鲜的。其实就是scalar s变成了变动的，从而使效果更好。
 
 那么现在咱们吧上述四个loss放在一块，看一下分类边界的区别：
 
-![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_f8d8e84c007e.jpg)
+![](/images/collections/0.raw/zhihu/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%EF%BC%81/asset/img_f8d8e84c007e.jpg)
 
 我们发现，除了原始的softmax以外，这三个loss都是为了缩小类内距，扩大类间距从而实现的效果提升。
 
@@ -139,17 +139,17 @@ Center loss
 
 在交叉熵损失以外，该论文作者引入了center 的含义，和借由center所产生的损失：
 
-![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_3202cabd787d.jpg)
+![](/images/collections/0.raw/zhihu/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%EF%BC%81/asset/img_3202cabd787d.jpg)
 
 这就是center-loss的一部分，我们观察这个公式， c_{y_i} 实际上就是 y_i 类的所有数据的center，换言之就是所有属于这类数据特征的平均值。让这个损失最小实际上就是减少类内距。
 
 所以center loss的总体公式就是 交叉熵损失+中心损失：
 
-![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_9d013efda67d.jpg)
+![](/images/collections/0.raw/zhihu/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%EF%BC%81/asset/img_9d013efda67d.jpg)
 
 这里用 \lambda 来控制两种损失的比例，同样我们来看效果图：
 
-![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_1cba9f1642cd.jpg)
+![](/images/collections/0.raw/zhihu/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%EF%BC%81/asset/img_1cba9f1642cd.jpg)
 
 随着比例越高，center聚合的效果越明显对吧～
 

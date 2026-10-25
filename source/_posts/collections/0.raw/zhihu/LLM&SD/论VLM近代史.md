@@ -25,15 +25,15 @@ source_url: https://zhuanlan.zhihu.com/p/1941628951534470646
 
 更新记录：
 
-**20250827 更新Seed1.5-VL**
+<strong>20250827 更新Seed1.5-VL</strong>
 
-**20250828 更新GLM及CogVLM**
+<strong>20250828 更新GLM及CogVLM</strong>
 
-**20250911 更新MIMO-VL**
+<strong>20250911 更新MIMO-VL</strong>
 
-**20250920 更新ERINE-4.5**
+<strong>20250920 更新ERINE-4.5</strong>
 
-**20251007 更新Qwen3-VL**
+<strong>20251007 更新Qwen3-VL</strong>
 
 第一阶段：Old模型探路
 
@@ -150,7 +150,7 @@ Project Link：[GitHub - OpenGVLab/InternVL: [CVPR 2024 Oral] InternVL Family: A
 
 InternVL系列作为较为初代能够给大部分研究者部署和微调训练的VLM（至少本人一开始就是用InternVL做一些toy项目玩），在使用上体验感还是不错的。
 
-**InternVL-1.0**
+<strong>InternVL-1.0</strong>
 
 InternVL-1.0和BLIP2算是几乎同期的工作，Link：[[2312.14238] InternVL: Scaling up Vision Foundation Models and Aligning for Generic Visual-Linguistic Tasks](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2312.14238)
 
@@ -162,7 +162,7 @@ InternVL-1.0在做的事情在标题就说清楚了：扩展视觉基础模型�
 
 ![](https://pic1.zhimg.com/v2-5de2582307ac356abe0bd40706550430_r.jpg)InternVL1.0的训练思路第一步是用vision encoder和llama-7b用CLIP的架构去做对比损失训练vision encoder让他有初步的语义理解能力（粗粒度），这个时候可以做zero-shot的图像分类和图文检索，和CLIP能做的任务是一样的。
 
-第二步将训练好的vision encoder冻结，把图像的vision token输入到Qllama结构里面，这个Qllama也是llama改进而来的，**QLLaMA 是在预先训练的多语言 LLaMA 的基础上开发的、并新增了 96 个可学习查询层和交叉关注层（原文），训练的时候Qllama冻结，只训练CrossAttention，这一部分其实就是为了研究空间对齐**。具体的训练可以参考上面写的BLIP2，没有什么大区别，只是把Q-former换成了Qllama后，原本llama带有的caption能力是能够让整个流程完成caption任务的。这一部分训练出来能够实现的功能是：
+第二步将训练好的vision encoder冻结，把图像的vision token输入到Qllama结构里面，这个Qllama也是llama改进而来的，<strong>QLLaMA 是在预先训练的多语言 LLaMA 的基础上开发的、并新增了 96 个可学习查询层和交叉关注层（原文），训练的时候Qllama冻结，只训练CrossAttention，这一部分其实就是为了研究空间对齐</strong>。具体的训练可以参考上面写的BLIP2，没有什么大区别，只是把Q-former换成了Qllama后，原本llama带有的caption能力是能够让整个流程完成caption任务的。这一部分训练出来能够实现的功能是：
 
 输入：图片
 输出：图片的caption
@@ -174,7 +174,7 @@ Vicuna接受的输入：图片+图片caption+Text（可选Text）
 输出：答案/对话/...
 整个InternVL-1.0的训练过程逐步递进，任务从简单到复杂，并且整个训练过程相对“安全”，对齐也做了两次，当然训练成本也相对较大。
 
-**InternVL-1.1**
+<strong>InternVL-1.1</strong>
 
 1.1版本相对1.0，把Qllama取消了，换成了LLaVa一样的MLP（这里进化路线就基本一样了）
 
@@ -207,7 +207,7 @@ def pixel_shuffle(self, x, scale_factor=0.5):
 
 后面还有1.2版本，我个人认为没有太大声音，所以1.2我直接跳过了，有兴趣可自行查阅官方blog，Link：[InternVL 1.2: Scaling up LLM to 34B](https://link.zhihu.com/?target=https%3A//internvl.github.io/blog/2024-02-21-InternVL-1.2/)
 
-**InternVL1.5**
+<strong>InternVL1.5</strong>
 
 Link：[2404.16821](https://link.zhihu.com/?target=https%3A//arxiv.org/pdf/2404.16821)
 
@@ -217,7 +217,7 @@ Link：[2404.16821](https://link.zhihu.com/?target=https%3A//arxiv.org/pdf/2404.
 
 最后是训练阶段，和之前版本一样两个训练阶段：第一阶段训vision encoder+mlp，第二阶段全参SFT（v1.2就改成这样了）
 
-**InternVL-2.0**
+<strong>InternVL-2.0</strong>
 
 Link：[InternVL2](https://link.zhihu.com/?target=https%3A//internvl.github.io/blog/2024-07-02-InternVL-2.0/)
 
@@ -227,7 +227,7 @@ InternVL-2.0把模型的scaling range扩大了，从1B到108B的模型基本能�
 
 ![](https://pic2.zhimg.com/v2-f1ebf53324fb74b76a632f7f2daca603_r.jpg)InternVL-2.0训练阶段依旧两段式：第一阶段直接scaling数据之后在1.5版本上只训练MLP，第二阶段收集了各种高质量双语数据在一阶段基础上进行全参SFT。
 
-**InternVL-2.5**
+<strong>InternVL-2.5</strong>
 
 Link：[2412.05271](https://link.zhihu.com/?target=https%3A//arxiv.org/pdf/2412.05271)
 
@@ -277,13 +277,13 @@ token数量10，每个token的loss为1.5
 
 个人认为数据collection和filter就不需要讲了，follow一下最新版本的比较好。
 
-**InternVL-3**
+<strong>InternVL-3</strong>
 
 Link：[2504.10479](https://link.zhihu.com/?target=https%3A//arxiv.org/pdf/2504.10479)。四月的新模型
 
 InternVL-3的结构和2.5几乎一样，vision encoder仍然采用了300M和6B两个参数级。LLM则采用了Qwen2.5和 InternLM3-8B，其中只有9B的模型用的InternLM3-8B，其他都是Qwen。
 
-此外采用了**V2PE**的位置编码，V2PE可以扩大vision token的外推能力，让mllm有更长的上下文。讲下这个V2PE，假如有一个sample为 
+此外采用了<strong>V2PE</strong>的位置编码，V2PE可以扩大vision token的外推能力，让mllm有更长的上下文。讲下这个V2PE，假如有一个sample为 
 ![](https://www.zhihu.com/equation?tex=X%3D%28x_%7B1%7D%2C...%2Cx_%7Bn%7D%29)，在vlm里面这个 
 ![](https://www.zhihu.com/equation?tex=X) 输入肯定是text or vision token的混合，正常来说PE编码就是如下：
 
@@ -293,9 +293,9 @@ InternVL-3的结构和2.5几乎一样，vision encoder仍然采用了300M和6B�
 ![](https://www.zhihu.com/equation?tex=%5Cdelta) 来加到index上，这个 
 ![](https://www.zhihu.com/equation?tex=%5Cdelta) 是从下面的值里面随便选的。
 
-![](https://picx.zhimg.com/v2-bb16835bc228a99311cfc88cc8a4c3a3_r.jpg)vision token的smaller index**训练流程的优化**：InternVL-3直接采用交叉的多模态数据+纯文本数据（纯文本数据的加入是为了缓解多模态数据中短回答带来的问题）进行全参的微调，论文里说的是为了让模型直接适应多模态的各种任务，像之前使用的多阶段pretrain其实是将任务分离开始，一步一步从简单任务到复杂任务调整。而InternVL-3直接在2.5的基础上用多模态数据进行全参微调，直接力大砖飞了。
+![](https://picx.zhimg.com/v2-bb16835bc228a99311cfc88cc8a4c3a3_r.jpg)vision token的smaller index<strong>训练流程的优化</strong>：InternVL-3直接采用交叉的多模态数据+纯文本数据（纯文本数据的加入是为了缓解多模态数据中短回答带来的问题）进行全参的微调，论文里说的是为了让模型直接适应多模态的各种任务，像之前使用的多阶段pretrain其实是将任务分离开始，一步一步从简单任务到复杂任务调整。而InternVL-3直接在2.5的基础上用多模态数据进行全参微调，直接力大砖飞了。
 
-**Post-Training**：SFT+MPO，InternVL-3用上RL了。第一阶段是SFT，这里没什么好说的，直接上原文描述，就是上了更多样化+更精细的数据。
+<strong>Post-Training</strong>：SFT+MPO，InternVL-3用上RL了。第一阶段是SFT，这里没什么好说的，直接上原文描述，就是上了更多样化+更精细的数据。
 
 SFT 阶段与 InternVL2.5 相比，InternVL3 中 SFT 阶段的主要进步在于使用了更高质量和更多样化的训练数据。具体来说，我们进一步扩展了工具使用、三维场景理解、图形用户界面操作、长上下文任务以及其他任务的训练样本、
 GUI 操作、长语境任务、视频理解、科学图表、创意写作和多模态推理。
@@ -320,9 +320,9 @@ MPO（Mixed Preference Optimization）：提出的前提是一个普遍比较认
 
 至于剩下的生成loss，就是单纯的NTP loss了，最基础的loss，没什么好说的。MPO的整体目标大概就是这样。所以MPO究极目的就是：假如前面的token预测得不好，通过DPO和BCO loss的打分和偏好，可以在预测中减少累计误差。
 
-**Test-Time Scaling：**推理的时候采用VisualPRM去对多个推理结果打分，最终输出一个好的结果。这个VisualPRM是专门针对回答去训练的，用的VisualPRM400K的数据以及上面训练流程训好的InternVL-3的回答去训这个模型。然后推理的时候实际上会生成N个回答，通过这个模型去确定到底该输出哪个回答。
+<strong>Test-Time Scaling：</strong>推理的时候采用VisualPRM去对多个推理结果打分，最终输出一个好的结果。这个VisualPRM是专门针对回答去训练的，用的VisualPRM400K的数据以及上面训练流程训好的InternVL-3的回答去训这个模型。然后推理的时候实际上会生成N个回答，通过这个模型去确定到底该输出哪个回答。
 
-**InternVL-3.5**
+<strong>InternVL-3.5</strong>
 
 Link：[InternVL3.5: Advancing Open-Source Multimodal Models in Versatility, Reasoning, and Efficiency](https://link.zhihu.com/?target=https%3A//arxiv.org/pdf/2508.18265)
 
@@ -334,9 +334,9 @@ Link：[InternVL3.5: Advancing Open-Source Multimodal Models in Versatility, Rea
 
 ![](https://pica.zhimg.com/v2-3b67ec859635df49a3b5d6dc47bbd934_r.jpg)InternVL-3.5模型结构除了之前版本的老几样，把MLP的名字换成了Vision-Language Connect，其实就是分成了两个版本，第一个版本和以前一样是MLP，这个整体就是InternVL-3.5，第二个版本是采用了一个Visual Resolution Router，叫做InternVL-3.5-Flash。这个router的作用就是对每一个Patch出来的token（本来是1024个，经过pixel shuffle变成256个）进行一次语义丰富度的判断，确定一个最佳压缩率，语义丰富的压缩率低，不丰富的使劲压缩，然后用这个压缩率再对这个patch进行一次pixel shuffle，声称是又减少了50%的token，并且保持了几乎100%的性能。
 
-**Pretrain**：扩展了数据量，照样NTP loss训。
+<strong>Pretrain</strong>：扩展了数据量，照样NTP loss训。
 
-**Post-Training**：分了三个阶段，如下
+<strong>Post-Training</strong>：分了三个阶段，如下
 
 ![](https://pic4.zhimg.com/v2-a57b35970c50d2a6918b701d8470dfa7_r.jpg)InternVL-3.5的三阶段post-trainingSFT就是更多样化更好的数据去训，没啥好说的。RL部分变成了Cascade的RL，主要用了MPO和GSPO去做。MPO是offline的RL，就是我们在3.0讲的内容，没有变化，可以跳回去看，offline RL可以快速收敛，先获得一个初始性能。接下来是online RL的GSPO，GSPO是Qwen在7月提出来的RL算法，这里不讲特别多细节，只讲个大概，主攻post-training的同学可以查看：[Group Sequence Policy Optimization](https://link.zhihu.com/?target=https%3A//arxiv.org/pdf/2507.18071)。
 
@@ -346,18 +346,18 @@ ps：reward hacking就是模型倾向于输出一个过程不一定对但结果�
 
 然后在MPO的基础上训GSPO，会保证模型会有一定的高质量回答，避免回答集体摆烂的情况。个人认为MPO是核心，GSPO在这里面算是一个点缀（毕竟要跟热点）。
 
-**Visual Consistency Learning：**这一阶段是为了训Flash版本的InternVL-3.5。它们额外引入了一个reference model来训，整体训练目标如下：
+<strong>Visual Consistency Learning：</strong>这一阶段是为了训Flash版本的InternVL-3.5。它们额外引入了一个reference model来训，整体训练目标如下：
 
 ![](https://pica.zhimg.com/v2-ee93df4e61c303079a0495e56b2ba424_r.jpg)Visual Consistency Learning loss其中reference model是冻结的，并且压缩率一直保持1/4。而policy model是更新的，压缩率是随机从1/16和1/4中选一个，这就意味着reference model一直都是用256个vision token，而policy model可能会出现64个token。那么这个训练目标就很好理解了，我要让policy model和reference model的差距缩小，让64 token和256 token的对比越来越接近，从而让64 token的Flash版本性能接近256 token，整个过程就是一个蒸馏。
 
-**Router training：**这部分是去训router，这个router是一个二分类器，输出结果决定这个patch以高或者低分辨率压缩。
+<strong>Router training：</strong>这部分是去训router，这个router是一个二分类器，输出结果决定这个patch以高或者低分辨率压缩。
 
 ![](https://pic4.zhimg.com/v2-289c4581408f48c98ab3251607d25db5_r.jpg)Router training先计算一个比率 
 ![](https://www.zhihu.com/equation?tex=r_%7Bi%7D) ，这个算出来的值域是0-1，代表着压缩token的代价，越高则代表代价越大，这个patch就越不该被压缩。然后有一个动态阈值 
 ![](https://www.zhihu.com/equation?tex=%5Ctau) ，这个基于历史 
 ![](https://www.zhihu.com/equation?tex=r_%7Bi%7D) 值的滑动窗口，取第k百分位数来动态获得的。如果大于这个阈值那就给这个patch的router标签赋为1，代表不该被压缩，反之为0，代表该被压缩。然后训这个router就是把其他所有的参数都冻结，只训练这个部分，通过二分类的交叉熵loss去训就ok。由于这是个二分类器，基本不占参数和计算量，所以靠这个决定压缩可以明显提升推理速度。
 
-**Test-Time Scaling：**在之前的基础上强制开启了Deep Thinking模式，强制生成CoT回答，必须一步一步获得。Deep Thinking的同时去获得Best-of-N的回答，然后用VisualPRM-v1.1去判断最优回答。这部分和3.0的区别也不太大。
+<strong>Test-Time Scaling：</strong>在之前的基础上强制开启了Deep Thinking模式，强制生成CoT回答，必须一步一步获得。Deep Thinking的同时去获得Best-of-N的回答，然后用VisualPRM-v1.1去判断最优回答。这部分和3.0的区别也不太大。
 
 其余内容是关于推理和训练优化，这部分我不太懂，所以就不解读以免造成误解了。
 
@@ -368,7 +368,7 @@ ps：reward hacking就是模型倾向于输出一个过程不一定对但结果�
 Qwen-VL系列（阿里-通义）
 看完了InternVL系列，该讲讲Qwen-VL了，毕竟InternVL从老早开始就开始用Qwen当LM了，但是Qwen-VL更新速度反而还没InternVL快，很疑惑到底是在憋大的还是一直没训出好东西来。还是比较期待Qwen-VL3的。
 
-**初代Qwen-VL**
+<strong>初代Qwen-VL</strong>
 
 Link：[arxiv.org/pdf/2308.12966](https://link.zhihu.com/?target=https%3A//arxiv.org/pdf/2308.12966)
 
@@ -378,7 +378,7 @@ Link：[arxiv.org/pdf/2308.12966](https://link.zhihu.com/?target=https%3A//arxiv
 
 初代的Qwen-VL没有特别多内容可说，主要是作为初步尝试。后续更新了Qwen-VL-Max和Plus版本，应该还是对数据做了scaling。
 
-**Qwen2-VL**
+<strong>Qwen2-VL</strong>
 
 Link：[2409.12191](https://link.zhihu.com/?target=https%3A//arxiv.org/pdf/2409.12191)
 
@@ -386,25 +386,25 @@ Link：[2409.12191](https://link.zhihu.com/?target=https%3A//arxiv.org/pdf/2409.
 
 ![](https://pic4.zhimg.com/v2-38e6d9062d25307fd6c6cd94c53c0d5f_r.jpg)Qwen2-VL结构LM采用了Qwen2，Vision encoder采用了600M左右的ViT，这个ViT是支持image和video的输入的。此外和初代不同，Qwen2-VL支持任意分辨率，就是因为提出的Native Resolution input。这个的作用就是保持图像原本的分辨率，然后还是按照14的大小去分patch进而压成token，为了适应token数量的变化，ViT的PE被改成了2D-RoPE，能够适应token数量变化带来的外推问题并且对patch相对位置关系更加敏感。当然，为了限制token数量过大，Qwen2-VL会对图文交织数据的vision token进行打包和截断，限制最大token数量，并且后接了一个MLP将相邻的2×2个token压缩成1个，进一步减少显存占用。
 
-**M-RoPE：**为了适应多模态输入，Qwen2-VL还引入了M-RoPE对所有模态的token都采用这一套RoPE策略，这里不要和上面说的2D-RoPE搞混了，M-RoPE是送入LM的时候用的，而2D-RoPE只是vision encoder采用。直接用他的原图进行讲解：
+<strong>M-RoPE：</strong>为了适应多模态输入，Qwen2-VL还引入了M-RoPE对所有模态的token都采用这一套RoPE策略，这里不要和上面说的2D-RoPE搞混了，M-RoPE是送入LM的时候用的，而2D-RoPE只是vision encoder采用。直接用他的原图进行讲解：
 
 ![](https://pic4.zhimg.com/v2-b0078d904f14c8b2700fb781ca7a0fbf_r.jpg)M-RoPE示意图很简单，M-RoPE把所有模态的数据都看作有3个维度，T H W，对于单张图片来说T的index是不动的，H W随着位置变化会变二维index；对于视频的话，每一帧的T的index是往后递增的；对于文本来说，默认T H W都是相等的，就如同图中的This 和Video，This的index是 
 ![](https://www.zhihu.com/equation?tex=%284%2C4%2C4%29) ，既然T H W都一样的话，那下一个单词Video就是所有维度往后加1，变成 
 ![](https://www.zhihu.com/equation?tex=%285%2C5%2C5%29) 。通过把所有模态都统一到一种维度上赋index后，在PE上就可以统一编码了。
 
-**统一了image和video的理解：**简而言之，Qwen2-VL是将image和video都当作video去处理。先说video，为了尽可能保持连续性，所有的视频都是每一秒采样2帧，30s的视频就会有60帧的信息，所以就排除了fps的影响。当然时长长的视频采样出来的帧就会变多，为了平等对待大部分的视频，Qwen2-VL对时长比较长的视频的分辨率进行了下采样，短视频就保持原本分辨率，每个视频token数量都严格限制在16384之内。并且Video是带有时间信息的，所以ViT其实是用的3D-Conv，在时间上也做了卷积，能够更多地保持时空关系。
+<strong>统一了image和video的理解：</strong>简而言之，Qwen2-VL是将image和video都当作video去处理。先说video，为了尽可能保持连续性，所有的视频都是每一秒采样2帧，30s的视频就会有60帧的信息，所以就排除了fps的影响。当然时长长的视频采样出来的帧就会变多，为了平等对待大部分的视频，Qwen2-VL对时长比较长的视频的分辨率进行了下采样，短视频就保持原本分辨率，每个视频token数量都严格限制在16384之内。并且Video是带有时间信息的，所以ViT其实是用的3D-Conv，在时间上也做了卷积，能够更多地保持时空关系。
 
 好了现在来说图像，因为都当作video处理，其实Qwen2-VL就直接把图像repeat了一次，把它当作1s的视频去做的。这样处理也能适应3D-conv了，可以用image和video对ViT进行统一训练。
 
-**训练阶段：**和Qwen-VL一模一样。
+<strong>训练阶段：</strong>和Qwen-VL一模一样。
 
-**数据格式：**ChatML的指令跟随数据集（Openai同款）
+<strong>数据格式：</strong>ChatML的指令跟随数据集（Openai同款）
 
 ![](https://pica.zhimg.com/v2-19a99e529274da162468d6255e74df6e_r.jpg)ChatML格式数据集用<|im_start|>和<|im_end|>来标记语句段的结束，用<|vision_start|>和<|vision_end|>来为image输入占位。
 
 对于Grounding任务，所有的坐标在尽量保证原生分辨率的前提下被放到0-1000之内。
 
-**Qwen2.5-VL**
+<strong>Qwen2.5-VL</strong>
 
 Link：[[2502.13923] Qwen2.5-VL Technical Report](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2502.13923)
 
@@ -412,13 +412,13 @@ Qwen2.5-VL实际上也没有特别多的改进，结构如下：
 
 ![](https://pica.zhimg.com/v2-ac9540d5093a4beddf160d017411dffe_r.jpg)Qwen2.5-VL结构LM部分更新到Qwen2.5，然后Vision Encoder依旧保持2里面的原生分辨率（其实也不原生，会放缩到14和28的倍数以方便送到ViT里面去），2D-RoPE依旧使用，里面的大部分Block被改成了Window Attention（ViT办成了大半个Swin）。然后MLP还是用来压缩token的，对应原图位置的2×2位置的token被压缩成一个token，但其实channel数量也是增加了的（为了防止信息丢失太多），如下图
 
-![](https://pica.zhimg.com/v2-f45e6cdb7bd9a1900b0f086c20052090_r.jpg)MLP的通道变化**动态FPS+绝对时间编码叠加M-RoPE：**在2的讲解中我们提到2是每秒采2帧去处理视频，但是总不可能所有的视频都是这样做，如果本身的fps较大，那么丢失的信息就特别多。2.5在此基础上提出了动态FPS联合时间维度的绝对PE去优化这个问题。2.5抛弃了用帧去确定index的方式，而是用绝对时间的文本时间戳去确定index，也就是第一秒的index是1，第二秒的index是2这种概念。那么这个时候FPS的选取就可以变成动态的了，因为人的直觉就是一个动作从第几秒开始做，所以这样做的好处是，不管fps是多少，模型都能知道第几秒是什么内容，只需要把帧和绝对时间对齐即可。
+![](https://pica.zhimg.com/v2-f45e6cdb7bd9a1900b0f086c20052090_r.jpg)MLP的通道变化<strong>动态FPS+绝对时间编码叠加M-RoPE：</strong>在2的讲解中我们提到2是每秒采2帧去处理视频，但是总不可能所有的视频都是这样做，如果本身的fps较大，那么丢失的信息就特别多。2.5在此基础上提出了动态FPS联合时间维度的绝对PE去优化这个问题。2.5抛弃了用帧去确定index的方式，而是用绝对时间的文本时间戳去确定index，也就是第一秒的index是1，第二秒的index是2这种概念。那么这个时候FPS的选取就可以变成动态的了，因为人的直觉就是一个动作从第几秒开始做，所以这样做的好处是，不管fps是多少，模型都能知道第几秒是什么内容，只需要把帧和绝对时间对齐即可。
 
-**Qwen3-VL**
+<strong>Qwen3-VL</strong>
 
 经过大半年的沉淀，Qwen3-vl在今年的云栖大会上进行了开源，目前是有235B-A22B的instruct版本和thinking版本，在2.5-VL的基础上进行了一些结构上的调整，如下：
 
-![](https://pic4.zhimg.com/v2-caf2f3021f28dd435487a4053025e797_r.jpg)Qwen3-VL结构第一个改进点是改进了M-RoPE的实现，改成了**MRoPE-Interleave**，这个方案与今年的一篇video-generation的论文非常相似（Lumos-1），link：[https://arxiv.org/abs/2507.08801](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2507.08801)。有兴趣可以详细看看。
+![](https://pic4.zhimg.com/v2-caf2f3021f28dd435487a4053025e797_r.jpg)Qwen3-VL结构第一个改进点是改进了M-RoPE的实现，改成了<strong>MRoPE-Interleave</strong>，这个方案与今年的一篇video-generation的论文非常相似（Lumos-1），link：[https://arxiv.org/abs/2507.08801](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2507.08801)。有兴趣可以详细看看。
 
 原本的M-RoPE在twh三个维度上按顺序来划分，举个例子，假如有128维，t分64维，w32维，h32维，RoPE是按照维度index来给基频的，在前面的维度旋转基频越高代表周期越短，这一部分也就是高频部分，在这里t信息只用高频分量来编码就会导致高频分量周期短，容易出现周期性重复，导致远距离的时间位置编码变得相似，进一步恶化了长时间间隔之间帧的识别。
 
@@ -475,7 +475,7 @@ def _deepstack_process(self, hidden_states, visual_pos_masks, visual_embeds):
 Qwen3-VL在大部分的视觉任务上都取得了很高的成绩，并且纯文本能力也基本对标Qwen3-235B-A22B-2507。更多的训练细节会在技术报告公开后继续解读。
 
 Seed1.5-VL系列（字节-Seed）
-**20250827更新**
+<strong>20250827更新</strong>
 
 宏大的技术报告，77页，Link：[Seed1.5-VL Technical Report](https://link.zhihu.com/?target=https%3A//arxiv.org/pdf/2505.07062)。
 
@@ -487,15 +487,15 @@ Seed-ViT：先把Qwen2-VL和InternVL-2.5喷了一遍，说他们用的ViT是在�
 
 Seed-ViT的训练分为3个阶段，
 
-![](https://pic2.zhimg.com/v2-48951a84b35475f5ec9519f3a2701d35_r.jpg)Seed-ViT的训练流程**第一阶段Masked Image Modeling（MIM）**：用2D-RoPE的ViT训练，整个过程类似自监督MAE+蒸馏的方式。把Seed-ViT当作student，EVA02-CLIP-E当作teacher。student的image patch随机屏蔽75%，然后将student屏蔽位置的特征和teacher对应位置的特征输出做一个余弦相似度loss，整个任务当成重建任务进行。
+![](https://pic2.zhimg.com/v2-48951a84b35475f5ec9519f3a2701d35_r.jpg)Seed-ViT的训练流程<strong>第一阶段Masked Image Modeling（MIM）</strong>：用2D-RoPE的ViT训练，整个过程类似自监督MAE+蒸馏的方式。把Seed-ViT当作student，EVA02-CLIP-E当作teacher。student的image patch随机屏蔽75%，然后将student屏蔽位置的特征和teacher对应位置的特征输出做一个余弦相似度loss，整个任务当成重建任务进行。
 
-**第二阶段Native-Resolution Contrastive Learning**：采用EVA02-CLIP-E的文本编码器，整个过程当作CLIP训。loss是SigLip loss+Superclass loss。为什么联合使用也很简单，我这里就不细讲SigLip loss了，就把他当作对比损失的优化版（更稳定，bs能开更高）就行，那么Superclass loss解决的问题是：谁像谁。顾名思义，SigLip的对比损失只让模型知道cat是cat，dog是dog，但是不能让模型知道cat和dog都是animal。superclass loss的引入就是为了构建多层次的语义标签，让模型知道cat不仅是cat，还是animal，还可以是其他类别的一个子类。具体实现可以参考原论文，也是字节提出来的：[2411.03313](https://link.zhihu.com/?target=https%3A//arxiv.org/pdf/2411.03313)。后续会再详细解释一下superclass loss。
+<strong>第二阶段Native-Resolution Contrastive Learning</strong>：采用EVA02-CLIP-E的文本编码器，整个过程当作CLIP训。loss是SigLip loss+Superclass loss。为什么联合使用也很简单，我这里就不细讲SigLip loss了，就把他当作对比损失的优化版（更稳定，bs能开更高）就行，那么Superclass loss解决的问题是：谁像谁。顾名思义，SigLip的对比损失只让模型知道cat是cat，dog是dog，但是不能让模型知道cat和dog都是animal。superclass loss的引入就是为了构建多层次的语义标签，让模型知道cat不仅是cat，还是animal，还可以是其他类别的一个子类。具体实现可以参考原论文，也是字节提出来的：[2411.03313](https://link.zhihu.com/?target=https%3A//arxiv.org/pdf/2411.03313)。后续会再详细解释一下superclass loss。
 
-**第三阶段Omni-modal Pre-training：**这部分是全模态训练，加了audio。整个过程是MiCo的训练框架，ViT 对video和audio编码，而单独的text encoder则处理caption，最后进行对齐。
+<strong>第三阶段Omni-modal Pre-training：</strong>这部分是全模态训练，加了audio。整个过程是MiCo的训练框架，ViT 对video和audio编码，而单独的text encoder则处理caption，最后进行对齐。
 
 整个训练阶段最重要的其实是第二阶段，第二阶段用了91.2%的token去训练，为了让这个ViT获得更强的base能力。
 
-接下来是视频encode，对于video数据采用了**Dynamic Frame-Resolution Sampling**。其实这点很像Qwen2.5-VL的处理方式。对于不同的任务比如视频理解，fps就等于1去采样视频；对于动作识别这种需要一些动态信息的就让fps=2；高动态的任务就用fps=5。采样出帧后，会对所有的帧前面加一个文本时间戳，如下
+接下来是视频encode，对于video数据采用了<strong>Dynamic Frame-Resolution Sampling</strong>。其实这点很像Qwen2.5-VL的处理方式。对于不同的任务比如视频理解，fps就等于1去采样视频；对于动作识别这种需要一些动态信息的就让fps=2；高动态的任务就用fps=5。采样出帧后，会对所有的帧前面加一个文本时间戳，如下
 
 ![](https://pic1.zhimg.com/v2-2cf9c1ebf42d96589cbcc2bd0556a998_r.jpg)帧前加文本时间戳上面的例子是fps=1的时候，fps=2的时候每帧的时间戳间隔就变成0.5 second，以此类推，fps=5间隔就是0.2 second，这样做也是为了让模型理解绝对时间的概念，比如动作识别，让他知道第几秒做了什么动作，如果只用帧index是完全不可能实现这个任务的。
 
@@ -505,10 +505,10 @@ Seed-ViT的训练分为3个阶段，
 
 Post-Training阶段：Seed1.5-VL在post-training上做了比较多的尝试
 
-![](https://pic3.zhimg.com/v2-84594abcd08358cc32bd9053d892f2a0_r.jpg)post-training pipeline**SFT阶段：**收集数据就为了两个目的，第一是指令跟随，用指令跟随数据去训以生成简要、准确的回答，用的数据并不是很多，但是经过了大量的清洗并保证了每个任务的数据分布尽量均衡。第二是LongCoT（Thinking）数据收集，通过prompt engineering和rejection sampling来收集这类数据。这个数据处理pipeline我个人觉得应该讲一下。指令跟随数据集怎么来的？
+![](https://pic3.zhimg.com/v2-84594abcd08358cc32bd9053d892f2a0_r.jpg)post-training pipeline<strong>SFT阶段：</strong>收集数据就为了两个目的，第一是指令跟随，用指令跟随数据去训以生成简要、准确的回答，用的数据并不是很多，但是经过了大量的清洗并保证了每个任务的数据分布尽量均衡。第二是LongCoT（Thinking）数据收集，通过prompt engineering和rejection sampling来收集这类数据。这个数据处理pipeline我个人觉得应该讲一下。指令跟随数据集怎么来的？
 
-- **第一步**，爬+筛+人工标-->13000条高质量，覆盖各种任务的指令跟随数据集，然后用这个13000条微调第一版模型，让他具备完成各任务的能力。
-- **第二步**，从开源的150w里筛3w，怎么筛？先用image-text embedding model对所有数据进行任务语义上的聚类，把他们聚类到不同任务上，区分任务类别，然后针对数据的长尾分布进行降采样，保证质量，数量不用太在乎。然后用第一步调出来的模型对这个降采样之后的子集进行多轮的回答生成（叫roll-outs，后面都用这个词方便表达），生成的回答一方面用LLM-as-a-Judge进行评估，评估内容大概就是  **这个回答是否正确？为什么 ，**然后输出带解释的评分，提升筛选可信度，同时用一个reward model去判断最符合人类偏好的回答。最后选出了3w对数据。实际整个过程就是rejection sampling的自动化版。我们在第二步提到了用一个reward model去判断最符合人类偏好的回答，这个reward model也是一个vlm，他页用初步STF之后的model去初始化。正常大部分使用的reward model是给回答输出一个标量打分，这种方式很显然是缺乏上下文的理解的，所以Seed1.5-VL使用的reward model是直接让模型输出一个特殊的token来表示偏好选择，类似我问他A和B哪个回答好，他回答“Answer A is better.”这种偏好决策更加自然，也更符合llm的自回归方式。这个reward model的数据收集方式也比较多样：
+- <strong>第一步</strong>，爬+筛+人工标-->13000条高质量，覆盖各种任务的指令跟随数据集，然后用这个13000条微调第一版模型，让他具备完成各任务的能力。
+- <strong>第二步</strong>，从开源的150w里筛3w，怎么筛？先用image-text embedding model对所有数据进行任务语义上的聚类，把他们聚类到不同任务上，区分任务类别，然后针对数据的长尾分布进行降采样，保证质量，数量不用太在乎。然后用第一步调出来的模型对这个降采样之后的子集进行多轮的回答生成（叫roll-outs，后面都用这个词方便表达），生成的回答一方面用LLM-as-a-Judge进行评估，评估内容大概就是  <strong>这个回答是否正确？为什么 ，</strong>然后输出带解释的评分，提升筛选可信度，同时用一个reward model去判断最符合人类偏好的回答。最后选出了3w对数据。实际整个过程就是rejection sampling的自动化版。我们在第二步提到了用一个reward model去判断最符合人类偏好的回答，这个reward model也是一个vlm，他页用初步STF之后的model去初始化。正常大部分使用的reward model是给回答输出一个标量打分，这种方式很显然是缺乏上下文的理解的，所以Seed1.5-VL使用的reward model是直接让模型输出一个特殊的token来表示偏好选择，类似我问他A和B哪个回答好，他回答“Answer A is better.”这种偏好决策更加自然，也更符合llm的自回归方式。这个reward model的数据收集方式也比较多样：
 
 人工标注：
 
@@ -517,22 +517,22 @@ Post-Training阶段：Seed1.5-VL在post-training上做了比较多的尝试
 - 排序可以通过其他模型加速，给人工提供参考排序后直接上手标注合成数据：
 
 - 选择具有明确 ground-truth的任务，比如数学题、OCR 识别等，要求输出按照指定的格式比如Final Answer: [答案]；对每个prompt，让模型生成K个回答然后用其他vlm去判断各个回答的好坏；这个好坏用了一个简单的list-wise偏好判别：（1）正确格式+答案正确（优秀）（2）正确格式+答案错误（中等）（3）错误格式+答案错误（差）；对于caption类任务，就用人类和模型打的caption作为正负对以减少幻觉；最后通过Preference Strength去refine，让模型不止知道好和坏，还要知道好了多少，坏了多少
-- 这里Seed1.5-VL提出了一个观点，为什么不修改正确回答或者drop掉一些属性去做负样本，给的理由是这样模型不是在学“什么是好回答“，而是在学“哪个是人工改过的”。其实也很好理解，你单纯从一个回答去删一些东西，其他部分其实没怎么改动，多样性非常匮乏，而模型很容易过拟合这种模式，导致它只学会了很浅显的内容表示，而不是本质上有语义区别的问答对。**RLHF阶段：**Seed1.5-VL是用PPO训的（嗯。。财大气粗），RLHF这部分训练所用的prompt来自之前构建的偏好数据集，为了保证这个部分的任务也能比较全面并且均衡的覆盖，他们先训了一个tagging model首对prompt进行能力分类，并且加了分层采样平衡各类任务分布，之后生成多个候选回答并基于奖励模型的评分方差过滤掉区分度低的prompt，保留能有效激发奖励差异的高质量提示；在训练初期对reward和KL散度快速上升的简单prompt进行降采样，防止模型过拟合于简单任务。
+- 这里Seed1.5-VL提出了一个观点，为什么不修改正确回答或者drop掉一些属性去做负样本，给的理由是这样模型不是在学“什么是好回答“，而是在学“哪个是人工改过的”。其实也很好理解，你单纯从一个回答去删一些东西，其他部分其实没怎么改动，多样性非常匮乏，而模型很容易过拟合这种模式，导致它只学会了很浅显的内容表示，而不是本质上有语义区别的问答对。<strong>RLHF阶段：</strong>Seed1.5-VL是用PPO训的（嗯。。财大气粗），RLHF这部分训练所用的prompt来自之前构建的偏好数据集，为了保证这个部分的任务也能比较全面并且均衡的覆盖，他们先训了一个tagging model首对prompt进行能力分类，并且加了分层采样平衡各类任务分布，之后生成多个候选回答并基于奖励模型的评分方差过滤掉区分度低的prompt，保留能有效激发奖励差异的高质量提示；在训练初期对reward和KL散度快速上升的简单prompt进行降采样，防止模型过拟合于简单任务。
 
-**Reinforcement Learning with Verifiable Rewards（RLVR）阶段：**这个环节是对于需要精确答案的领域进行确定性的reward给定，暂时忽略掉。待我仔细阅读后更新。
+<strong>Reinforcement Learning with Verifiable Rewards（RLVR）阶段：</strong>这个环节是对于需要精确答案的领域进行确定性的reward给定，暂时忽略掉。待我仔细阅读后更新。
 
-**Hybird RL：**Seed1.5-VL采用基于PPO衍生了一个混合强化学习框架，融合 RLHF 与 RLVR 两种范式。大致分为几个部分：（1）格式reward：训练中采用预定义格式 `<think>{thought}</think>{solution}` 并对不符合格式响应给予0奖励或惩罚；（2）混合reward：在训练的每个epoch都对通用和需要verify的prompt进行shuffle，对思考进行截断，都只关注结果，忽略思考过程带来的reward，这样关注结果不关注过程的方式可以让思考过程更多样化（有可能过程错，结果对，不过这部分在前面数据过滤部分进行了严格的筛选，概率比较低）；（3）共享critic：reward model和verifier都共用一个critic，因为两边的reward实际上都是在[0,1]的区间，所以可以共用一个critic来计算value。（4）PPO的KL惩罚系数：通用prompt的问题采用小KL系数（具体参数报告有）以减少reward hacking，而需要verify的问题不加惩罚提供更多可能性。（5）不同prompt的roll-outs不同：难度更高的问题采样次数更多，简单问题更少。
+<strong>Hybird RL：</strong>Seed1.5-VL采用基于PPO衍生了一个混合强化学习框架，融合 RLHF 与 RLVR 两种范式。大致分为几个部分：（1）格式reward：训练中采用预定义格式 `<think>{thought}</think>{solution}` 并对不符合格式响应给予0奖励或惩罚；（2）混合reward：在训练的每个epoch都对通用和需要verify的prompt进行shuffle，对思考进行截断，都只关注结果，忽略思考过程带来的reward，这样关注结果不关注过程的方式可以让思考过程更多样化（有可能过程错，结果对，不过这部分在前面数据过滤部分进行了严格的筛选，概率比较低）；（3）共享critic：reward model和verifier都共用一个critic，因为两边的reward实际上都是在[0,1]的区间，所以可以共用一个critic来计算value。（4）PPO的KL惩罚系数：通用prompt的问题采用小KL系数（具体参数报告有）以减少reward hacking，而需要verify的问题不加惩罚提供更多可能性。（5）不同prompt的roll-outs不同：难度更高的问题采样次数更多，简单问题更少。
 
-说了这么多，其实这个流程就是**“RL → 收集优质回答 → 更新SFT模型 → 再RL”**的过程。先用冷启动（少量的LongCoT数据+in-context prompting生成的少部分可用LongCoT数据）微调一下SFT模型。然后就送到PPO里面训一版有LongCoT能力的模型，针对这个模型，在一些很难的，模型回答很边界的问题上进行挑选，用现在最强的RL模型去获得这些问题正确的回答，并且CoT也要正确。把这些数据筛选（去除重复思考）后加入新一轮训练去训第二版RL模型，以此类推。这整个过程就是**self-improvement**的范式**。**
+说了这么多，其实这个流程就是<strong>“RL → 收集优质回答 → 更新SFT模型 → 再RL”</strong>的过程。先用冷启动（少量的LongCoT数据+in-context prompting生成的少部分可用LongCoT数据）微调一下SFT模型。然后就送到PPO里面训一版有LongCoT能力的模型，针对这个模型，在一些很难的，模型回答很边界的问题上进行挑选，用现在最强的RL模型去获得这些问题正确的回答，并且CoT也要正确。把这些数据筛选（去除重复思考）后加入新一轮训练去训第二版RL模型，以此类推。这整个过程就是<strong>self-improvement</strong>的范式<strong>。</strong>
 
 Infra就不讲了，不是特别懂这部分。
 
 不得不说Seed1.5-VL在训练上有非常多的trick，并且在数据清洗和标注上都花了很大的功夫。这些工程上的细节很值得我们学习。截至现在Seed1.5-VL貌似也还是VLM榜单第一。
 
 GLM及CogVLM系列（智谱）
-**20250828更新**
+<strong>20250828更新</strong>
 
-**CogVLM**
+<strong>CogVLM</strong>
 
 Link：[[2311.03079] CogVLM: Visual Expert for Pretrained Language Models](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2311.03079)
 
@@ -548,12 +548,12 @@ CogVLM第一代是23年的工作，整个模型结构也是LLaVa类似的ViT-MLP
 
 ![](https://pic4.zhimg.com/v2-350408b1c54cd12f0a99d6365e9bb4c7_r.jpg)额外的vision block，只处理image token就直接外接一个q、k、v的Linear和FFN，Attention是不变的，其实就是把image token做了二次语义对齐。这里linear和FFN的初始化方式就是直接从LLM的原始权重初始化，这进一步说明了原本模型就是有处理vision token的能力的。Attn的casual mask也照样用在vision token上（作者也做了实验，说明保持LLM原生的结构效果会更好）。不得不说智谱的模型还都喜欢用这种类似于MMDiT的架构去做。。。
 
-**训练阶段：**
+<strong>训练阶段：</strong>
 
 - 预训练：预训练有两个stage，第一个stage是用1.5B的图文对去训练获得模型的caption能力，NTP loss为主。第二个stage是用很简单的grounding数据（问题+直接回答坐标）去训练，并且也是用NTP loss。整个预训练比较粗糙，不过早期模型基本都这样。模型在这个阶段获得图文检索和简单grounding的能力。
 - 对齐：其实就是指令跟随数据的Finetune，CogVLM训练了两个专有的模型一个是CogVLM-Chat专注对话VQA任务，一个是CogVLM-Grounding专注grounding任务。CogVLM-Chat用上了当时大部分的多轮对话数据集包括LLaVa-Instruct，并且修正了里面的一些错误。CogVLM-Grounding加入了四种类型的grounding数据集：（1）caption内每个名词都有对应bbox的（2）bbox内内容都用对应text的（3）text内容都和bbox对应的（4）VQA问答形式的grounding数据，还有少部分是CoT的。从附录披露的训练细节来看，pretraining和finetune基本都是按照23年那种正常流程训得，主要还是数据的作用。
 
-**CogVLM2及GLM-4V**
+<strong>CogVLM2及GLM-4V</strong>
 
 Link：[arxiv.org/pdf/2408.16500](https://link.zhihu.com/?target=https%3A//arxiv.org/pdf/2408.16500)
 
@@ -561,16 +561,16 @@ CogVLM2和GLM-4V是一起发布的，并且放在同一个报告里，区别就�
 
 ![](https://pic3.zhimg.com/v2-872829a089d9f7f72c2ce48ea63c884c_r.jpg)CogVLM FamilyViT-MLP-LLM的范式，已经说烂了。相比第一代来说，CogVLM2的也加上了对patch的2×2+SwiGLU的卷积层去减少token数量；此外LLM换成了LLaMa3-8b。结构上就没变化了。
 
-**训练阶段：**
+<strong>训练阶段：</strong>
 
 - pretraining阶段：好了，把自己在第一代用的LAION喷了一遍说人家质量太低，所以开发了Iterative Refinement的pipeline去过滤数据（先用public dataset训一个，然后用这个模型打标，再人工修正）；其他数据就是合成数据，高质量合成，用GLIPv2去搞grounding数据，反正就是疯狂自动打标再疯狂洗，把数据量和质量都scaling上去。pretraining阶段用了三种方式去训练：（1）渐进式解冻：先训练Crossattention之类的外部组件（CogAgent），后面再解冻vision encoder和visual expert。就是保证先对齐，再细化vision token的表达，这在其他厂的VL里也很常见。（2）一开始就解冻全部参数，这个的前提是数据必须是混合的，这个和（1）是不冲突的，但这种训练是特别吃数据质量的，基本上每个batch都有纯text数据和img-text的成对数据，不然很容易出现灾难性遗忘（3）分辨率递增，这个也是大家都惯用的思路，先在低分辨率图像上训，再提高token数量在高分辨率图像上训
-- Post-Training阶段：scaling了大量的VQA数据，并且发现简短回答是会影响模型性能的（可能不是因为短回答本身，而是因为短回答太多，因为之前我微调很多VLM都发现如果数据在很多维度上都属于长尾分布的话，训出来的模型很容易被拉偏为那种模式的回答），所以在简短回答的前面都加了 **&#34;Short Answer&#34; **这个前缀表达；此外还自己标注了300K的图文数据，还有50K的偏好数据。post-training有两个阶段，第一阶段用全量VQA数据+300K自标注数据去SFT，第二阶段用高质量VQA子集+50K偏好数据去模拟人类偏好去SFT。SFT的训练中都是全参训得，其中vision encoder的lr是其他部分lr的十分之一。**额外版本：**
+- Post-Training阶段：scaling了大量的VQA数据，并且发现简短回答是会影响模型性能的（可能不是因为短回答本身，而是因为短回答太多，因为之前我微调很多VLM都发现如果数据在很多维度上都属于长尾分布的话，训出来的模型很容易被拉偏为那种模式的回答），所以在简短回答的前面都加了 <strong>&#34;Short Answer&#34;</strong>这个前缀表达；此外还自己标注了300K的图文数据，还有50K的偏好数据。post-training有两个阶段，第一阶段用全量VQA数据+300K自标注数据去SFT，第二阶段用高质量VQA子集+50K偏好数据去模拟人类偏好去SFT。SFT的训练中都是全参训得，其中vision encoder的lr是其他部分lr的十分之一。<strong>额外版本：</strong>
 
 CogVLM2还额外训了CogVLM2-Video版本，支持video understanding，实在224分辨率的base CogVLM2上训的，每个视频采了24帧去做理解，数据分为videoQA数据+videoGrounding数据（Grounding数据是通过采帧Grounding+GPT-4o过滤场景变化小的数据获得的），先训QA，lr为4e-6，后训Grounding，lr为1e-6。这个lr很保险，也是智谱一贯风格。
 
 至于GLM-4V就不讲了，除了加了中文语料其他和CogVLM2是一样的。
 
-**GLM-4.1V-Thinking及GLM-4.5V**
+<strong>GLM-4.1V-Thinking及GLM-4.5V</strong>
 
 Link：[[2507.01006] GLM-4.5V and GLM-4.1V-Thinking: Towards Versatile Multimodal Reasoning with Scalable Reinforcement Learning](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2507.01006)
 
@@ -586,16 +586,16 @@ LLM部分也跟Qwen一样用了M-RoPE，不过GLM叫3D-RoPE，改了个名。
 
 接下来是训练阶段：
 
-- **Pretraining：**这个data pipeline比起CogVLM2可谓是超大号升级，这里我就简略写一下有哪些。（1）img-caption数据：根据分辨率、clip-score、去长尾分布（参考metaCLIP思路）、caption重写提高信息密度；（2）img-text交错数据，网页+电子书，主要排除广告、clip-score筛图文不想关、优先保留信息密度大的图表类信息；（3）OCR；（4）Grounding数据，还是CogVLM2思路，也补充了很多生成数据；（5）视频数据：学术、内部、网页；（6）指令跟随数据：先构建任务层级标签然后均匀采样、复杂场景的合成数据（长文档理解之类）、数据污染检查（多少会有点污染，人工+自动化查）；预训练有两个阶段：第一阶段多模态预训练，除了视频数据全部shuffle，按8k上下文训，第二阶段长上下文训练，32k的上下文，然后加入视频、高分辨率图像、长交错数据去拉大上下文，不过这个上下文长度比起其他厂略少了一点。
+- <strong>Pretraining：</strong>这个data pipeline比起CogVLM2可谓是超大号升级，这里我就简略写一下有哪些。（1）img-caption数据：根据分辨率、clip-score、去长尾分布（参考metaCLIP思路）、caption重写提高信息密度；（2）img-text交错数据，网页+电子书，主要排除广告、clip-score筛图文不想关、优先保留信息密度大的图表类信息；（3）OCR；（4）Grounding数据，还是CogVLM2思路，也补充了很多生成数据；（5）视频数据：学术、内部、网页；（6）指令跟随数据：先构建任务层级标签然后均匀采样、复杂场景的合成数据（长文档理解之类）、数据污染检查（多少会有点污染，人工+自动化查）；预训练有两个阶段：第一阶段多模态预训练，除了视频数据全部shuffle，按8k上下文训，第二阶段长上下文训练，32k的上下文，然后加入视频、高分辨率图像、长交错数据去拉大上下文，不过这个上下文长度比起其他厂略少了一点。
 
-- **SFT：**这个阶段是比较重要的，因为cold-start SFT的效果是非常影响Thinking模式下的效果的，并且如果cold-start数据差，会导致训练崩溃或者RL越训越崩。这个阶段是先自己构建了长CoT语料库，包括需要verify的任务和比较简单的指令跟随任务，主要是为了让模型把已经有的视觉-语言理解对齐到有效的长思考模型以及严格的回答风格，并且为后面RL提供好的basemodel。具体的回答风格如下：
+- <strong>SFT：</strong>这个阶段是比较重要的，因为cold-start SFT的效果是非常影响Thinking模式下的效果的，并且如果cold-start数据差，会导致训练崩溃或者RL越训越崩。这个阶段是先自己构建了长CoT语料库，包括需要verify的任务和比较简单的指令跟随任务，主要是为了让模型把已经有的视觉-语言理解对齐到有效的长思考模型以及严格的回答风格，并且为后面RL提供好的basemodel。具体的回答风格如下：
 ![](https://pic1.zhimg.com/v2-18e981072ef8ed8125436d80d71065d0_r.jpg)Thinking模式的回答风格其中think里面放思考内容，answer里面放简介回答。
 
 经过一次cold-start后为RL提供basemodel，然后RL训出来的ckpt又提供了rejection sampling的素材，用这些素材进行best-of-N的数据筛选，再人工筛，出来的高质量数据又可以作为cold-start的数据进行SFT，所以SFT和RL是一种迭代更新的策略。
 
 对于GLM-4.1-Thinking来说只能支持thinking模式，而GLM-4.5V是都支持，所以SFT的时候把CoT数据和非CoT数据都加入进行混合训练，非思考模式的数据只需要加一个<nothink>的token就行了，然后模型的回答think部分给空就行。
 
-- **RL：**和Seed1.5-VL差不多的流程都是RLVR+RLHF，但是细节上出入较大。整体的RL算法用的GRPO，具体细节就不太详细讲了，大概从数据、reward设计、training方面写下大概在做啥：数据：先把所有任务拆成可以verify的子问题，把选择题改成填空题（更符合自回归的逻辑），用离线pass@k+人工标注给每题打1-5级难度；训练时实时统计模型在各子域的答对率，把难度分布作为在线监控指标，每 50 步按“过易、适中、过难”重新分配采样权重，确保始终喂给模型最能产生梯度的样本。
+- <strong>RL：</strong>和Seed1.5-VL差不多的流程都是RLVR+RLHF，但是细节上出入较大。整体的RL算法用的GRPO，具体细节就不太详细讲了，大概从数据、reward设计、training方面写下大概在做啥：数据：先把所有任务拆成可以verify的子问题，把选择题改成填空题（更符合自回归的逻辑），用离线pass@k+人工标注给每题打1-5级难度；训练时实时统计模型在各子域的答对率，把难度分布作为在线监控指标，每 50 步按“过易、适中、过难”重新分配采样权重，确保始终喂给模型最能产生梯度的样本。
 
 reward：建立双层的verifier。底层共享函数统一做格式检查、答案抽取（<|begin_of_box|>…<|end_of_box|>之间抽取）和精确匹配，如果匹配不上；上层按域插入定制模块——数学用 SymPy 数值容差，物理/化学再判定单位，图表先数值后语义，OCR 用编辑距离，Grounding用IoU，GUI 用动作+IoU双指标。为防止reward hacking，任何回答如果混语言、重复、空 box 或被检测到万金油答案（如“指出0-10 间的某个整数”回答“接近光的速度”）直接给0分；非verify任务在出现box标记也惩罚。
 
@@ -608,7 +608,7 @@ ps：pass@k就是在训之前就离线完成的sample难度评估，让一个模
 总的来说，从CogVLM到GLM-4.5V，智谱的思路就是在稳中求进步，相比与力大砖飞的思路，更适合大部分人学习。（没有贬低力大砖飞的意思，有这个资源可以做，只要能训出来好模型就行。）
 
 MIMO-VL（小米）
-**20250911更新，休息了一阵，继续更新，大家久等了**
+<strong>20250911更新，休息了一阵，继续更新，大家久等了</strong>
 
 Link：[[2506.03569] MiMo-VL Technical Report](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2506.03569)
 
@@ -741,15 +741,15 @@ def render_frame_timestamp(frame, timestamp, font_rate=0.1):
 
 对齐各模态之后，3D-RoPE发力，具体参考QwenVL的M-RoPE，几乎没区别。
 
-进入**预训练阶段**，数据构建每个厂都有自己的一套pipeline，就不细讲了，量大+均衡+干净是最终目的。预训练主要分了三个部分：
+进入<strong>预训练阶段</strong>，数据构建每个厂都有自己的一套pipeline，就不细讲了，量大+均衡+干净是最终目的。预训练主要分了三个部分：
 
-![](https://pic3.zhimg.com/v2-419745fb41a422a905365995f7a3b1f2_r.jpg)三阶段pretraining**stage1**是主要用于训练LLM，首先是以8k的上下文对大量文本数据进行训练（这里的报告文字写的8K上下文，但是表里是4K上下文，应该是作者的笔误），然后把上下文提升到32K，rope的频率 
+![](https://pic3.zhimg.com/v2-419745fb41a422a905365995f7a3b1f2_r.jpg)三阶段pretraining<strong>stage1</strong>是主要用于训练LLM，首先是以8k的上下文对大量文本数据进行训练（这里的报告文字写的8K上下文，但是表里是4K上下文，应该是作者的笔误），然后把上下文提升到32K，rope的频率 
 ![](https://www.zhihu.com/equation?tex=%5Ctheta) 从10k提升到160k，目的是为了防止上下文长度增加导致原本的rope出现周期性重复。最后再从32K的上下文扩充到128k的上下文，rope的频率 
 ![](https://www.zhihu.com/equation?tex=%5Ctheta) 从160k提升到500k。
 
-**stage2**主要是训视觉表征，采用了三阶段渐进式对齐策略，首先预训练视觉编码器（配合小语言模型，利用大量图文对学习丰富视觉表征），接着进行视觉预对齐（冻结LLM与ViT，仅训练从头初始化的Adapter、由文本专家剪枝而来的视觉专家及路由模块，实现视觉模块与语言主干的无缝衔接）；最后进入视觉融合阶段（解冻视觉编码器，并对高质量图文对如标题、替代文本进行上采样，强化视觉与语言表征的空间对齐）。
+<strong>stage2</strong>主要是训视觉表征，采用了三阶段渐进式对齐策略，首先预训练视觉编码器（配合小语言模型，利用大量图文对学习丰富视觉表征），接着进行视觉预对齐（冻结LLM与ViT，仅训练从头初始化的Adapter、由文本专家剪枝而来的视觉专家及路由模块，实现视觉模块与语言主干的无缝衔接）；最后进入视觉融合阶段（解冻视觉编码器，并对高质量图文对如标题、替代文本进行上采样，强化视觉与语言表征的空间对齐）。
 
-**stage3**就是直接训full model，实现多模态对齐。首先在8K上下文下进行full tuning，加强模态对齐，然后将上下文扩展至128K上下文，在保持多模态理解能力的同时，让模型能够处理超长视频、复杂图文文档、跨模态长程推理等长上下文任务。
+<strong>stage3</strong>就是直接训full model，实现多模态对齐。首先在8K上下文下进行full tuning，加强模态对齐，然后将上下文扩展至128K上下文，在保持多模态理解能力的同时，让模型能够处理超长视频、复杂图文文档、跨模态长程推理等长上下文任务。
 
 预训练出现的问题：
 
@@ -776,7 +776,7 @@ erine4.5引入了几个改进来解决上面两个问题。
 
 ERINE-4.5还做了一个关于EMA的实验以论证EMA与学习率衰减的等效性，这个有时间就放在最后面再讲。
 
-**Post-training阶段**：这里我只讲VLM的post-training，LLM部分的话有空再讲一下。VLM的post-training遵从下面的pipeline：
+<strong>Post-training阶段</strong>：这里我只讲VLM的post-training，LLM部分的话有空再讲一下。VLM的post-training遵从下面的pipeline：
 
 ![](https://picx.zhimg.com/v2-947c25071502654e67b6b6db9759e2a9_r.jpg)VLM的post-training pipeline第一步主要是要构建数据，文心团队是发现经过CPT阶段的VLM在一些难度较高的视觉任务例如拼图测试、几何题、图表解读等表现很差，根本原因还是预训练的数据太粗糙，很少密集且精确的caption，所以数据的构建核心要点一直就是要让VLM能够获得图像细粒度结构的感知能力。也是可控合成+数据重标注来进行高质量数据筛选，其中重标注还设计了一个约束，就是获得的caption必须能够让llm给出正确答案，不然不能算是高质量caption（那其实这一步就很吃LLM的推理能力，同时也可能卡死VLM对于复杂视觉问题处理的上限，有待验证）。此外还过滤掉了直接OCR可以获得答案的那种数据。
 

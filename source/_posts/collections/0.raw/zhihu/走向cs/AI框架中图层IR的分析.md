@@ -15,7 +15,7 @@ source_url: https://zhuanlan.zhihu.com/p/263420069
 ---
 
 
-**AI框架图层IR的分析**
+<strong>AI框架图层IR的分析</strong>
 
 前段时间一直忙于HC大会和MindSpore1.0的版本准备，国庆期间终于有点时间来交作业了，本文是AI框架分析专栏的第二篇，总体目录参见：
 
@@ -31,7 +31,7 @@ AI框架本质的作用在于把一个把用户的模型表达翻译到可执行
 
 在开始之前，我想先介绍一些背景知识—通用的编译器IR的分类以及各自特点
 
-### **业界IR的介绍**
+### <strong>业界IR的介绍</strong>
 
 参考[1]，IR根据其组织结构，可以分为：
 
@@ -56,7 +56,7 @@ LLVM IR是一个典型的混合IR，它包含了两个层次（CFG+BB）：
 
 Sea of Nodes IR（by Cliff Click）是一种典型的图IR，参考[2]，在这种IR中，简化了CFG图中BB+SSA指令的两层结构，去除了BB，剩下只包含指令的一层结构。它通过引入了特殊的REGION、IF、PROJECTION指令，将BB块中的全序指令放松为显式的数据依赖和控制依赖，并且对控制依赖和数据依赖采用相同的表示方式和处理方式，这样就简化了IR的分析和变换。如下为一个简单的IR示例：
 
-![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_ba59ab51687e.jpg)
+![](/images/collections/0.raw/zhihu/%E8%B5%B0%E5%90%91cs/asset/img_ba59ab51687e.jpg)
 
 在这个示例中，方框为图的节点，表示SSA指令，箭头为图的边；实心箭头表示控制依赖；空心箭头表示数据依赖。从这个示例中可以看到此IR中显式的包含了use-def依赖，不需要进行额外的计算。
 
@@ -64,7 +64,7 @@ Sea of Nodes IR（by Cliff Click）是一种典型的图IR，参考[2]，在这�
 
 在Parse的时候，由于还没有程序的全部信息，所以只可做局部的优化，如窥孔优化（例：常量折叠，Identity-function）。通过设计合适的类及继承体系，可以使用简单的算法实现peephole优化：
 
-![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_6cc24c53b89d.jpg)
+![](/images/collections/0.raw/zhihu/%E8%B5%B0%E5%90%91cs/asset/img_6cc24c53b89d.jpg)
 
  对于全局优化，比如Sparse Conditional Constant Propagation（SCCP），也可以很简单的实现；首先是基于图中显式的use-def计算出def-use chains，然后可以很容易的实现SCCP。具体可以参考论文。
 
@@ -128,7 +128,7 @@ prodprimes(i, h)`
 
 虽然CPS非常一致和强大，但是它的一个很大问题是难以阅读。所以出现了A-norm Form（ANF）形式。ANF形式直接对Direct Style的源码进行转换，不需要经过CPS形式。参考[4]
 
-![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_f5aed091975e.jpg)
+![](/images/collections/0.raw/zhihu/%E8%B5%B0%E5%90%91cs/asset/img_f5aed091975e.jpg)
 
 ANF形式将表达式划分为两类：原子表达式和复合表达式，原子表达式表示一个常数值或一个变量或一个原语或一个匿名函数；复合表达式由多个原子表达式复合组成，可以看成是一个匿名函数或原语函数调用，组合的第一个输入是调用的函数，其余输入是调用的参数。一个复合表达式要么被let-bound到一个变量，要么只能出现在最后的位置。可以看到，ANF形式通过let-bound，显式表达了中间值和控制流及求值顺序。
 
@@ -213,27 +213,27 @@ AI的计算涉及大量的Tensor运算，对编译器来说就是Loop优化（�
 
 对于BB块内的普通代码（非phi，非branch），借助链式法则，可以按照反向的顺序生成AD代码。
 
-![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_1a2f6813d3f7.jpg)
+![](/images/collections/0.raw/zhihu/%E8%B5%B0%E5%90%91cs/asset/img_1a2f6813d3f7.jpg)
 
 将上述的表达式表示为SSA后，并插入J及计算AD，可以得到如下图表示的伪SSA代码：
 
-![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_345a6ea51329.jpg)
+![](/images/collections/0.raw/zhihu/%E8%B5%B0%E5%90%91cs/asset/img_345a6ea51329.jpg)
 
 上图中的 %6 这里节点称为“alpha node”，对应的是Primal中的节点%6，也就是上面一排的B3，“/”operation的反向函数。
 
 对于CFG间的控制流，需要对控制流进行反向分析，并在Primal CFG中插入适当的哑phi节点来记录和回放控制流。例如这一段计算power的代码：
 
-![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_1bb8441c25da.jpg)
+![](/images/collections/0.raw/zhihu/%E8%B5%B0%E5%90%91cs/asset/img_1bb8441c25da.jpg)
 
  对应的 Primal CFG中，插入了 %1 phi节点作为哑phi节点来记录控制流。然后在AD CFG中使用此 %1 来进行控制（%1记录通过入栈控制流，然后在AD CFG中通过出栈来回放控制流）。
 
 *注：AD CFG中的 block #1中goto #4，感觉应该是goto #2；block #2中goto #2，应该是goto #1。*
 
-![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_73cfec6897e3.jpg)
+![](/images/collections/0.raw/zhihu/%E8%B5%B0%E5%90%91cs/asset/img_73cfec6897e3.jpg)
 
 通过后续的代码优化，AD的Power代码类似如下的伪代码：
 
-![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_3fbfd72010b8.jpg)
+![](/images/collections/0.raw/zhihu/%E8%B5%B0%E5%90%91cs/asset/img_3fbfd72010b8.jpg)
 
 可以看出，CFG+BB的自动微分最终是通过迭代的方式来实现的，带Scope的SSA形式需要解决边界传递的问题对自动微分还是会带来一些处理上的麻烦。
 
@@ -364,7 +364,7 @@ def test_f(x, y):
 
 对应的MindIR为ir.dot：
 
-![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_0c83c126cbb1.jpg)
+![](/images/collections/0.raw/zhihu/%E8%B5%B0%E5%90%91cs/asset/img_0c83c126cbb1.jpg)
 
 在MindIR中，一个函数图（FuncGraph）表示一个普通函数的定义，函数图一般由ParameterNode、ValueNode和CNode组成有向无环图，可以清晰地表达出从参数到返回值的计算过程。在上图中可以看出，python代码中两个函数test_f和func转换成了两个函数图，其参数x和y转换为函数图的ParameterNode，每一个表达式转换为一个CNode。CNode的第一个输入链接着调用的函数，例如图中的add、func、return。值得注意的是这些节点均是ValueNode，因为它们被理解为常数函数值。CNode的其他输入链接这调用的参数，参数值可以来自于ParameterNode、ValueNode和其他CNode。
 
@@ -391,7 +391,7 @@ def hof(x):
 
 **
 
-![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_6d30163c2e90.jpg)
+![](/images/collections/0.raw/zhihu/%E8%B5%B0%E5%90%91cs/asset/img_6d30163c2e90.jpg)
 
 在实际网络训练脚本中，自动求导泛函GradOperation和优化器中常用到的Partial和HyperMap都是典型的高阶函数。高阶语义极大地提升了MindSpore表达的灵活性和简洁性。
 
@@ -409,7 +409,7 @@ def fibonacci(n):
 
 **
 
-![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_b237979530dc.jpg)
+![](/images/collections/0.raw/zhihu/%E8%B5%B0%E5%90%91cs/asset/img_b237979530dc.jpg)
 
 其中fibonacci是顶层函数图，在顶层中有两个函数图被switch选择调用。✓fibonacci是第一个if的True分支，✗fibonacci是第一个if的False分支。在✗fibonacci中被调用的✓✗fibonacci是elif的True分支，✗✗fibonacci是elif的False分支。这里需要理解的关键是在MindIR中，条件跳转和递归是以高阶控制流的形式表达的。例如，✓fibonacci和✗fibonacci是作为switch算子的参数传入，switch根据条件参数选择哪一个函数作为返回值。因此，switch是把输入的函数当成普通的值做了一个二元选择操作，并没有调用，而真正的函数调用是在紧随switch后的CNode上完成。
 
@@ -436,7 +436,7 @@ def ms_closure():
 
 **
 
-![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_7b416e9d8fc7.jpg)
+![](/images/collections/0.raw/zhihu/%E8%B5%B0%E5%90%91cs/asset/img_7b416e9d8fc7.jpg)
 
 在例子中，a和b是自由变量，因为func_inner中变量a和b是引用的其父图func_outer中定义的参数。变量closure是一个闭包，它是函数func_inner与其上下文func_outer(1, 2)的结合。因此，out1的结果是4，因为其等价于1+2+1，out2的结果是5，因为其等价于1+2+2。
 
@@ -466,4 +466,4 @@ GitHub-[https://github.com/mindspore-ai/mindspore](https://link.zhihu.com/?targe
 - [6] 《Don't Unroll Adjoint: Differentiating SSA-Form Programs》
 - [7]  https://www.mindspore.cn/doc/note/zh-CN/master/design/mindspore/mindir.html
 
-![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_2efb75de7cb1.jpg)
+![](/images/collections/0.raw/zhihu/%E8%B5%B0%E5%90%91cs/asset/img_2efb75de7cb1.jpg)

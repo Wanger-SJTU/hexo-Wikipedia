@@ -33,7 +33,7 @@ Sunny Cove之前的microarchitecture的平均访问时间约为6.5 cycle（之�
 
 在系统启动过程中，仅在很早期启动阶段CPU处于实模式，开启paging之后，CPU接受的load/store指令对应的地址均为虚拟地址（更准确的说是线性地址，x64之后segment基本不怎么用了），在访问L1 cache的时候还需要经过虚拟地址VA到物理地址PA的转换。现代CPU通常采用virtual index physical tag的L1结构（L1-D和L1-I类似，TLB也区分iTLB和dTLB）。这种L1的结构一大好处就是可以在index cache set的时候同时访问TLB（相当于隐藏了部分L1访问延时），一个x64下的L1访问示意图如下所示。（这里不在详细介绍set-associative cache的具体结构）
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_eab256f6dafd.jpg)![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_8dee3a60f6cd.webp)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_eab256f6dafd.jpg)![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_8dee3a60f6cd.webp)
 
 对于4KB大小的page，共有12bit page offset，其中低6bit为cacheline offset（64B cacheline size），剩余6bit作为L1 index bits，这也就意味着L1只能限制于64个cache set。对于32KB L1-D，也就意味着其每个set对应8 way（32KB/ = 8）。Sunny Cove的48KB L1-D对应每个set 12 way。由上图可以看出，L1访问延时的关键路径为TLB访问以及TLB hit之后对相应L1 cache set的TAG matching，由于cache set是简单的lookup，我们可以认为在TLB查询结束得到PPN的时候立即可以进行TAG matching。（TLB也是一个小的set-associatative cache，也需要进行TAG matching因此访问时间要长于L1 set lookup）。因此，TLB的查询时间和L1的associativity（即图中的TAG matching）决定了L1的访问延时。
 

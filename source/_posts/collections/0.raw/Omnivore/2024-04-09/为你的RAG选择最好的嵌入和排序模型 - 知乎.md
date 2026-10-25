@@ -39,27 +39,27 @@ id: 4fea7b3b-1612-41f0-8ab1-e87f0189ce01
 
 ## 理解检索评估中的指标
 
-为了评估我们检索系统的准确性，我们主要依靠两个广泛应用的指标：**命中率（Hit Rate）和平均倒数排名（MRR）**。 让我们深入研究这些指标，以了解它们的重要性以及它们的运作方式。
+为了评估我们检索系统的准确性，我们主要依靠两个广泛应用的指标：<strong>命中率（Hit Rate）和平均倒数排名（MRR）</strong>。 让我们深入研究这些指标，以了解它们的重要性以及它们的运作方式。
 
-**Hit Rate:**
+<strong>Hit Rate:</strong>
 
 Hit Rate计算在前 k 个检索到的文档中找到正确答案的比例。
 
-**平均倒数排名 (MRR)：**
+<strong>平均倒数排名 (MRR)：</strong>
 
 对于每个查询，MRR 通过查看排名最高的相关文档的排名来评估系统的准确性。 具体来说，它是所有查询中这些排名的倒数的平均值。 因此，如果第一个相关文档是最高结果，则倒数排名为 1； 如果是第二，则倒数排名为1/2，以此类推。
 
-**现在我们已经熟悉了评价的指标，是时候深入实验了。** 
+<strong>现在我们已经熟悉了评价的指标，是时候深入实验了。</strong> 
 
-## **生成评测数据的代码**
+## <strong>生成评测数据的代码</strong>
 
-**设置环境：**
+<strong>设置环境：</strong>
 
 ```mipsasm
 !pip install llama-index sentence-transformers cohere anthropic voyageai protobuf pypdf
 ```
 
-**设置keys：**
+<strong>设置keys：</strong>
 
 ```ini
 openai_api_key = 'YOUR OPENAI API KEY'
@@ -68,9 +68,9 @@ anthropic_api_key = 'YOUR ANTHROPIC API KEY'
 openai.api_key = openai_api_key
 ```
 
-**下载数据：**
+<strong>下载数据：</strong>
 
-**我们将使用 Llama2 的paper进行此实验。 让我们下载论文。**
+<strong>我们将使用 Llama2 的paper进行此实验。 让我们下载论文。</strong>
 
 ```dockerfile
 !wget --user-agent "Mozilla" "https://arxiv.org/pdf/2307.09288.pdf" -O "llama2.pdf"
@@ -78,7 +78,7 @@ openai.api_key = openai_api_key
 
 ```
 
-**加载数据：**
+<strong>加载数据：</strong>
 
 让我们加载数据。 我们将使用从开始到 36 页进行实验，不包括目录、参考文献和附录。
 
@@ -92,7 +92,7 @@ nodes = node_parser.get_nodes_from_documents(documents)
 ```
 
   
-**生成问题-内容对：**
+<strong>生成问题-内容对：</strong>
 
 为了评测不同模型的性能，我们构造了一个问题-上下文对的数据集。 该数据集可以看作是我们数据中的一组问题及其相应的上下文。 为了消除嵌入（OpenAI / CohereAI）和Reranker（CohereAI）评估的偏差，我们使用Anthropic LLM来生成问题上下文对。
 
@@ -124,7 +124,7 @@ qa_dataset = generate_question_context_pairs(
 )
 ```
 
-**清理数据集：**
+<strong>清理数据集：</strong>
 
 ```routeros
 # function to clean the dataset
@@ -216,7 +216,7 @@ class CustomRetriever(BaseRetriever):
 custom_retriever = CustomRetriever(vector_retriever)
 ```
 
-**评估：**
+<strong>评估：</strong>
 
 ```makefile
 retriever_evaluator = RetrieverEvaluator.from_metric_names(
@@ -229,7 +229,7 @@ eval_results = await retriever_evaluator.aevaluate_dataset(qa_dataset)
 
 我们测试了各种嵌入模型和重新排序器。 以下是我们测试的模型：
 
-**Embedding Models**:
+<strong>Embedding Models</strong>:
 
 * [OpenAI Embedding](https://platform.openai.com/docs/guides/embeddings)
 * [Voyage Embedding](https://www.voyageai.com/)
@@ -237,7 +237,7 @@ eval_results = await retriever_evaluator.aevaluate_dataset(qa_dataset)
 * [Jina Embeddings](https://huggingface.co/jinaai/jina-embeddings-v2-small-en)
 * [BAAI/bge-large-en](https://huggingface.co/BAAI/bge-large-en)
 
-**Rerankers**:
+<strong>Rerankers</strong>:
 
 * [CohereAI](https://txt.cohere.com/rerank/)
 * [bge-reranker-base](https://huggingface.co/BAAI/bge-reranker-base)
@@ -265,7 +265,7 @@ Voyage：具有强大的初始性能，并被 CohereRerank 进一步放大（0.9
 
 JinaAI：虽然从较低的基数开始，但 bge-reranker-large 取得了显着的收益（0.601124 命中率，0.578652 MRR），这表明重新排名显着提高了其性能。 其性能不佳的一个潜在原因可能是嵌入针对 8K 上下文长度进行了优化。
 
-**重新排序的影响：**
+<strong>重新排序的影响：</strong>
 
 WithoutReranker：这提供了每个嵌入的基线性能。
 
@@ -275,13 +275,13 @@ bge-reranker-large：此重新排序器经常为嵌入提供最高或接近最�
 
 CohereRerank：持续增强所有嵌入的性能，通常提供最佳或接近最佳的结果。
 
-**重新排序的必要性：**
+<strong>重新排序的必要性：</strong>
 
 这些数据清楚地表明了重新排名器在优化搜索结果方面的重要性。 几乎所有嵌入都受益于重新排名，显示出命中率和 MRR 的提高。
 
 重新排序器，尤其是 CohereRerank，已经证明了它们能够将表现一般的嵌入转变为具有竞争力的嵌入，正如 JinaAI 所看到的那样。
 
-**综合优势：**
+<strong>综合优势：</strong>
 
 当同时考虑命中率和 MRR 时，OpenAI + CohereRerank 和 Voyage + bge-reranker-large 的组合成为顶级竞争者。
 
@@ -293,13 +293,13 @@ CohereRerank：持续增强所有嵌入的性能，通常提供最佳或接近�
 
 在这篇博文中，我们演示了如何使用各种嵌入和重新排序来评估和增强检索器的性能。 以下是我们的最终结论。
 
-**嵌入**：OpenAI 和 Voyage 嵌入，尤其是与 CohereRerank/bge-reranker-large 重新排序器配合使用时，为命中率和 MRR 设定了黄金标准。
+<strong>嵌入</strong>：OpenAI 和 Voyage 嵌入，尤其是与 CohereRerank/bge-reranker-large 重新排序器配合使用时，为命中率和 MRR 设定了黄金标准。
 
-**重排序器**：重排序器（尤其是 CohereRerank/bge-reranker-large）的影响力怎么强调都不为过。 它们在提高许多嵌入的 MRR 方面发挥着关键作用，显示了它们在改善搜索结果方面的重要性。
+<strong>重排序器</strong>：重排序器（尤其是 CohereRerank/bge-reranker-large）的影响力怎么强调都不为过。 它们在提高许多嵌入的 MRR 方面发挥着关键作用，显示了它们在改善搜索结果方面的重要性。
 
-**基础是关键**：为初始搜索选择正确的嵌入至关重要； 如果基本搜索结果不好，即使是最好的重新排名器也无济于事。
+<strong>基础是关键</strong>：为初始搜索选择正确的嵌入至关重要； 如果基本搜索结果不好，即使是最好的重新排名器也无济于事。
 
-**合作**：为了充分利用检索器，找到嵌入和重新排序的正确组合非常重要。 这项研究表明仔细测试并找到最佳配对是多么重要。
+<strong>合作</strong>：为了充分利用检索器，找到嵌入和重新排序的正确组合非常重要。 这项研究表明仔细测试并找到最佳配对是多么重要。
 
 翻译自：<https://blog.llamaindex.ai/boosting-rag-picking-the-best-embedding-reranker-models-42d079022e83>
 

@@ -74,13 +74,13 @@ m\=6n\=7LCS(X,Y)\=6Rlcs\=LCS(X,Y)m\=66\=1.0plcs\=LCS(X,Y)n\=67≈0.86Flcs\=(1+β
 
 先举一个例子，下面三句话中，XX是reference，Y1，Y2Y\_1，Y\_2是hypothesis：
 
-> XX：\[ _**A**_ _**B**_ _**C**_ _**D**_ E F G \] 
+> XX：\[ _<strong>A</strong>_ _<strong>B</strong>_ _<strong>C</strong>_ _<strong>D</strong>_ E F G \] 
 > 
-> Y1Y\_1：\[ _**A**_ _**B**_ _**C**_ _**D**_ H I K \] 
+> Y1Y\_1：\[ _<strong>A</strong>_ _<strong>B</strong>_ _<strong>C</strong>_ _<strong>D</strong>_ H I K \] 
 > 
-> Y2Y\_2：\[ _**A**_ H _**B**_ K _**C**_ I _**D**_ \]
+> Y2Y\_2：\[ _<strong>A</strong>_ H _<strong>B</strong>_ K _<strong>C</strong>_ I _<strong>D</strong>_ \]
 
-我看可以看到三个例子，用Rouge-L去计算的时候，他们都有相同的最长公共子序列 _**A**_、_**B**_、_**C**_、_**D**_。这个例子中它们有相同的ROUGE—L分。但是这种情况下，应该是Y1Y\_1要好于Y2Y\_2的，因为Y1Y\_1有更多的连续匹配。Rouge-W就是所做的工作就是给连续的匹配给到更多的权重，让连续匹配的比非连续匹配的有更高的分数。论文中给出的计算公式是：
+我看可以看到三个例子，用Rouge-L去计算的时候，他们都有相同的最长公共子序列 _<strong>A</strong>_、_<strong>B</strong>_、_<strong>C</strong>_、_<strong>D</strong>_。这个例子中它们有相同的ROUGE—L分。但是这种情况下，应该是Y1Y\_1要好于Y2Y\_2的，因为Y1Y\_1有更多的连续匹配。Rouge-W就是所做的工作就是给连续的匹配给到更多的权重，让连续匹配的比非连续匹配的有更高的分数。论文中给出的计算公式是：
 
 Rwlcs\=f−1(WLCS(X,Y)f(m))pwlcs\=f−1(WLCS(X,Y)f(n))Fwlcs\=(1+β2)RwlcsPwlcsRwlcs+β2Pwlcs\\begin{gather\*} R\_{wlcs} =f^{-1}\\Bigg(\\frac {WLCS(X,Y)}{f(m)}\\Bigg) \\\\ p\_{wlcs} =f^{-1}\\Bigg(\\frac {WLCS(X,Y)}{f(n)} \\Bigg)\\\\ F\_{wlcs} =\\frac {(1+\\beta^2)R\_{wlcs}P\_{wlcs}}{R\_{wlcs}+\\beta^2P\_{wlcs}} \\end{gather\*}
 

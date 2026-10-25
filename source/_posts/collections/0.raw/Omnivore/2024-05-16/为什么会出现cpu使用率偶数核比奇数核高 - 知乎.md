@@ -37,11 +37,11 @@ id: bfa252f0-6eee-457e-8a0f-4ca51a3753bd
 
 内核会根据物理拓扑结构建立对应层次的调度域,调度域schedule domain分为三个层次,从低到高依次为SMT domain,MC domain和NUMA domain，SMT即为simultaneous multi-threading,一个物理core的所有超线程在一个SMT domain中，如上图所示一个SMT domain包含一个物理core的两个超线程。MC为 multi-core，同一个NUMA node的所有物理核中的超线程都在一个MC调度域内。NUMA domain包含SoC的所有超线程，如上图1所示包含两个NUMA NODE的所有超线程。
 
-**第一层sd (SMT domain):**如上图1所示每个core包含两个2个超线程构成了 SMT 域, 物理core的一对超线程共享了 L1 与 L2。
+<strong>第一层sd (SMT domain):</strong>如上图1所示每个core包含两个2个超线程构成了 SMT 域, 物理core的一对超线程共享了 L1 与 L2。
 
-**第二层sd (MC domain):**如上图1所示NUMA NODE0中core0 与 core1以及core(n)，他们位于同一个 SOCKET属于同一个 MC 域，共享 LLC。
+<strong>第二层sd (MC domain):</strong>如上图1所示NUMA NODE0中core0 与 core1以及core(n)，他们位于同一个 SOCKET属于同一个 MC 域，共享 LLC。
 
-**第三层sd (NUMA domain):**如上图1所示的 NUMA NODE0和 NUMA NODE1，属于一个NUMA domain，每个NUMA NODE会有自己的LLC。内核会根据物理拓扑结构建立对应层次的调度域sched\_domain，然后在每层调度域上再建立相应的调度组sched\_group。
+<strong>第三层sd (NUMA domain):</strong>如上图1所示的 NUMA NODE0和 NUMA NODE1，属于一个NUMA domain，每个NUMA NODE会有自己的LLC。内核会根据物理拓扑结构建立对应层次的调度域sched\_domain，然后在每层调度域上再建立相应的调度组sched\_group。
 
 以一个124个vcpu双NUMA且开启超线程的主机为例来介绍说明内核sched\_domain和sched\_group关系。
 
@@ -860,5 +860,5 @@ stress-ng --cpu 4 --cpu-load=60
 
 参考：[github.com/gatieme/L...](https://github.com/gatieme/LDD-LinuxDeviceDrivers/blob/master/study/kernel/00-DESCRIPTION/SCHEDULER.md)
 
-**欢迎点赞分享，搜索关注【鹅厂架构师】公众号，一起探索更多业界领先产品技术。**
+<strong>欢迎点赞分享，搜索关注【鹅厂架构师】公众号，一起探索更多业界领先产品技术。</strong>
 

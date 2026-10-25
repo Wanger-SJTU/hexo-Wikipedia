@@ -35,7 +35,7 @@ source_url: https://zhuanlan.zhihu.com/p/99766566
 
 这篇文章用实验得出了这个结论：
 
-**位置信息是zero-padding透露的。**
+<strong>位置信息是zero-padding透露的。</strong>
 
 足够大的网络（多层或者大kernel）可以把padding透露的边界信息扩散出去，得到粗糙的全局位置信息。
 

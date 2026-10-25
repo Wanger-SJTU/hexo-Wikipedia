@@ -15,9 +15,9 @@ source_url: https://zhuanlan.zhihu.com/p/647580415
 ---
 
 
-**h2o项目简介**
+<strong>h2o项目简介</strong>
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_05846e28a2a9.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_05846e28a2a9.jpg)
 
 查询和总结您的文档，或者只是使用 h2oGPT（一个 Apache V2 开源项目）与本地私有 GPT LLM 聊天。**
 项目地址****
@@ -46,18 +46,18 @@ https://gpt.h2o.ai/
 - 符合 OpenAI 标准的 Python 客户端 API，用于客户端-服务器控制
 - 使用奖励模型评估绩效
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_5fa7b34ca3e6.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_5fa7b34ca3e6.jpg)
 
 各类模型和数据集下载地址
 
 [https://huggingface.co/h2oai](https://link.zhihu.com/?target=https%3A//huggingface.co/h2oai)
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_5e6e00836ebf.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_5e6e00836ebf.jpg)
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_5e6e00836ebf.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_5e6e00836ebf.jpg)
 
 测评
 
-上传文件这里注意可以上传本地的常见的各种类型的文件。![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_e5436a2e5614.jpg)
+上传文件这里注意可以上传本地的常见的各种类型的文件。![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_e5436a2e5614.jpg)
 
 支持的本机数据类型****
 .pdf：便携式文档格式（PDF），
@@ -105,27 +105,27 @@ https://gpt.h2o.ai/
 .jpeg：JPEG 图像（可选）。
 
 生成回答，可以看到提问问题后，多个模型同时回答，用户可以选择一个自己感觉比较合理的回答。
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_4dd4da98008d.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_4dd4da98008d.jpg)
 
 文档管理****可以查看和管理自己上传的文档。
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_73facb12f924.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_73facb12f924.jpg)
 
 聊天记录管理：**
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_7f3dadf6f282.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_7f3dadf6f282.jpg)
 
 自定义输出配置
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_742ab4f97078.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_742ab4f97078.jpg)
 
 部署
 
 1：下载 Visual Studio 2022
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_29c61cec9818.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_29c61cec9818.jpg)
 
 2：下载 MinGW 安装程序
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_ba8dfd06ac9a.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_ba8dfd06ac9a.jpg)
 
 3：下载并安装Miniconda
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_fe5309e73a08.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_fe5309e73a08.jpg)
 
 4：安装依赖
  # Required for Doc Q/A: LangChain:
@@ -140,7 +140,7 @@ https://gpt.h2o.ai/
  python -m nltk.downloader all
 
 5：可选配置
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_b74997ff6e8d.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_b74997ff6e8d.jpg)
 
 6：运行
 
@@ -149,7 +149,7 @@ For document Q/A with UI using LLaMa.cpp-based model on CPU or GPU:
 Click Download Wizard Model and place file in h2oGPT directory.
 
 python generate.py --base_model='llama' --prompt_type=wizard2 --score_model=None --langchain_mode='UserData' --user_path=user_path
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_5059bca6e5c9.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_5059bca6e5c9.jpg)
 
 7：使用和分享
 
@@ -191,7 +191,7 @@ To create a public link, set `share=True` in `launch()`.
 在nvidia-smi或其他一些 GPU 监视器程序中，您应该看到python.exe在（计算）模式下使用 GPUC并使用 GPU 资源。
 
 3090Ti 的 i9 上，每秒大约获得 5 个令牌。
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_4e6cb1de36e8.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_4e6cb1de36e8.jpg)
 
 如果您有多个 GPU，最好通过执行以下操作来指定使用快速 GPU（例如，如果设备 0 是最快且内存最大的 GPU）。
 

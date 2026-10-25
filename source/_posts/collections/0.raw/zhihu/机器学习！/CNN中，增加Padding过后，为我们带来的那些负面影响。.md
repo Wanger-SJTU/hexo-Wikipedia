@@ -15,7 +15,7 @@ source_url: https://zhuanlan.zhihu.com/p/66289618
 ---
 
 
-![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_1f9eefbc95de.jpg)
+![](/images/collections/0.raw/zhihu/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%EF%BC%81/asset/img_1f9eefbc95de.jpg)
 
 如上图所示:
 

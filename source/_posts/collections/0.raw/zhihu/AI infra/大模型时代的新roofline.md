@@ -17,13 +17,13 @@ source_url: https://zhuanlan.zhihu.com/p/2029981166191780212
 
 最近大模型推理需求已经到了爆炸式增长阶段，推理infra的重要性不言而喻，memory bound、compute bound的分析也让现在infra层面乐此不彼地折腾各种PD分离、AF分离的各种异构方案，芯片层面同样乐此不彼地折腾prefill芯片、attention芯片和ffn芯片。不过memory bound、compute bound的划分实际上还是经典计算访存比的roofline视角划分。
 
-**今天其实还有一个日渐变得重要的视角，是显存的容量带宽比。**
+<strong>今天其实还有一个日渐变得重要的视角，是显存的容量带宽比。</strong>
 
 memory bound通常指的是memory bandwidth bound，与之对应的是memory capacity bound。只是在大模型之前的整个计算机发展历史上，memory capacity bound几乎不会发生。过去这么多年一直都处于内存假设无限大，影响性能的往往是访存带宽和计算性能，因此经典的roofline都是讨论计算访存比。大模型实在是有史以来第一个顶着显存容量极限来发展的应用，实际上bandwidth bound和capacity bound在今天的大模型推理系统里起着结构性的作用。
 
 大模型推理系统由于涉及权重和kvcache两部分容量需求巨大的组成部分，而这两部分存储在推理计算的过程中又要被大量读取，而推理decode又是对计算时间及其苛刻的要求。因此在有限的时间内，存多少读多少就变得至关重要。
 
-**大模型的稀疏化和slo诉求会深刻影响应用的固有容量带宽比**
+<strong>大模型的稀疏化和slo诉求会深刻影响应用的固有容量带宽比</strong>
 
 无论权重还是kvcache，在特定场景下，如果存1份，稀疏读是n，读1/n，每秒钟需要读取m次，那么必要的带宽就是m/n。如果单个设备容量虽然大，能存的下，但带宽不足，也就不能在slo时间内读完，此时只能少存点，把其他部分存到其他设备上，利用多卡加起来更高的带宽来满足slo的要求，此时就是容量过剩，bandwidth bound。反过来，如果存储容量太小导致需要多卡分布式存放，此时整个系统被动享有多张卡加起来更高的带宽，此时带宽过剩，capacity bound，如果每张卡容量大一点，就可以少用几张卡，仍然能达成slo要求。因此在给定稀疏度和slo要求的情况下，应用的容量带宽比需求属于固有属性。
 
@@ -31,13 +31,13 @@ memory bound通常指的是memory bandwidth bound，与之对应的是memory cap
 
 而带宽容量比是存储介质的固有属性，一个内存基本颗粒具有多大的容量和多少带宽通常是固定的，和roofline类似，只要对比显存的带宽容量比，和应用固有的带宽容量比（姑且叫做访存强度，参考计算访存比的计算强度）进行对比，即可得到第一性原理的capacity bound还是bandwidth bound的结论。
 
-**容量带宽比的选择深刻影响着今天推理系统的成本**
+<strong>容量带宽比的选择深刻影响着今天推理系统的成本</strong>
 
 在大模型这种贴着显存容量极限的应用下，今天memory的成本已经成为任何一个大模型计算系统成本结构中绝对意义上的大头。而memory选型众多，无数ai芯片公司也正是在算各种$/GB或者$/GBps来精挑细选最具性价比的方案。而存储行业的基本规律显然是要容量性价比就没有带宽性价比，反过来要带宽性价比也就没有容量性价比。
 
 原因很简单，同时具有容量性价比和带宽性价比的存储介质会淘汰掉所有同时不如它的容量性价比和带宽性价比的介质，剩下的一定要么容量性价比更高，要么带宽性价比更高因此，把$/token推导成单一的$/GBps或者$/GB都是片面的，因为有容量带宽比的roofline。$/GBps最优往往直接撞上capacity bound，导致有效带宽锐减，从而造成有效的$/GBps急剧降低。
 
-**今天数据中心的agentic推理已经逐渐滑向严重的memory capacity bound**
+<strong>今天数据中心的agentic推理已经逐渐滑向严重的memory capacity bound</strong>
 
 去年deepseek震撼的DeepEP实现了token成本的大幅度下降，把大模型ffn推向了计算bound，在集群层面实现了很高的均摊单卡并发。
 
@@ -47,7 +47,7 @@ memory bound通常指的是memory bandwidth bound，与之对应的是memory cap
 
 例如deepseek v3.2和glm5.x使用的dsa（稀疏attention），用1/10大小的稠密index cache辅助kvcache做到几乎稀疏到可以忽略不计的固定2k的稀疏度，如果把index cache和kvcache放在一起看，差不多就是1/10的稀疏度，如果把index cache和kvcache分开看，index cache仍然是稠密的，而kvcache的稀疏度已经到了访存强度可以把PCIe offload作为一个选项的临界点。
 
-**最合适的带宽容量比是什么？**
+<strong>最合适的带宽容量比是什么？</strong>
 
 这个事情没有一个终极答案，但大的趋势可以从几个第一性原理的需求推出。
 

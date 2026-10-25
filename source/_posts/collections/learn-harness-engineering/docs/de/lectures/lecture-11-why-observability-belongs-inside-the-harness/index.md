@@ -22,16 +22,16 @@ categories:
 
 Du bittest einen Agenten, ein Feature zu implementieren. Er läuft 20 Minuten, ändert viele Dateien und sagt dann: "fertig, aber zwei Tests schlagen fehl." Du fragst, warum sie fehlschlagen: "nicht sicher, vielleicht ein Timing-Problem." Du fragst, welche kritischen Pfade geändert wurden: "ich schaue in den Code..."
 
-Das liegt nicht an fehlender Agentenfähigkeit. Dein harness stellt nicht genug Beobachtbarkeit bereit. **Ohne Beobachtbarkeit treffen Agenten Entscheidungen unter Unsicherheit, Bewertungen werden subjektiv, und retries werden blindes Herumprobieren.** OpenAI und Anthropic definieren Zuverlässigkeit als Evidenzproblem: Der harness muss Runtime-Verhalten und Bewertungssignale in einer Form offenlegen, die die nächste Entscheidung leitet.
+Das liegt nicht an fehlender Agentenfähigkeit. Dein harness stellt nicht genug Beobachtbarkeit bereit. <strong>Ohne Beobachtbarkeit treffen Agenten Entscheidungen unter Unsicherheit, Bewertungen werden subjektiv, und retries werden blindes Herumprobieren.</strong> OpenAI und Anthropic definieren Zuverlässigkeit als Evidenzproblem: Der harness muss Runtime-Verhalten und Bewertungssignale in einer Form offenlegen, die die nächste Entscheidung leitet.
 
 ## Zentrale Konzepte
 
-- **Runtime-Beobachtbarkeit**: Systemsignale wie Logs, Traces, Prozessereignisse und Health Checks. Beantwortet "was hat das System getan".
-- **Prozess-Beobachtbarkeit**: Sichtbarkeit in Entscheidungsartefakte des harness, etwa Pläne, Bewertungsrubriken und Akzeptanzkriterien. Beantwortet "warum sollte diese Änderung akzeptiert werden".
-- **Task trace**: Vollständiger Entscheidungsweg vom Start bis zur Fertigstellung, analog zu Request-Tracing in verteilten Systemen.
-- **Sprint contract**: Kurzfristige Vereinbarung vor dem Coding, die Scope, Verifikationsstandards und Ausschlüsse festlegt.
-- **Evaluator-Rubrik**: Wandelt Qualitätsbewertung von subjektivem Urteil in evidenzbasierte strukturierte Bewertung um.
-- **Geschichtete Beobachtbarkeit**: System- und Prozess-Beobachtbarkeit werden gemeinsam entworfen und verstärken sich gegenseitig.
+- <strong>Runtime-Beobachtbarkeit</strong>: Systemsignale wie Logs, Traces, Prozessereignisse und Health Checks. Beantwortet "was hat das System getan".
+- <strong>Prozess-Beobachtbarkeit</strong>: Sichtbarkeit in Entscheidungsartefakte des harness, etwa Pläne, Bewertungsrubriken und Akzeptanzkriterien. Beantwortet "warum sollte diese Änderung akzeptiert werden".
+- <strong>Task trace</strong>: Vollständiger Entscheidungsweg vom Start bis zur Fertigstellung, analog zu Request-Tracing in verteilten Systemen.
+- <strong>Sprint contract</strong>: Kurzfristige Vereinbarung vor dem Coding, die Scope, Verifikationsstandards und Ausschlüsse festlegt.
+- <strong>Evaluator-Rubrik</strong>: Wandelt Qualitätsbewertung von subjektivem Urteil in evidenzbasierte strukturierte Bewertung um.
+- <strong>Geschichtete Beobachtbarkeit</strong>: System- und Prozess-Beobachtbarkeit werden gemeinsam entworfen und verstärken sich gegenseitig.
 
 ## Geschichtete Beobachtbarkeit
 
@@ -51,21 +51,21 @@ flowchart LR
 
 Wenn einem harness Beobachtbarkeit fehlt, treten vier Problemtypen systematisch auf:
 
-**"Korrekt" lässt sich nicht von "sieht korrekt aus" unterscheiden**: Eine Funktion kann im Code-Review perfekt wirken. Zur Laufzeit erzeugt aber ein Edge-Case-Fehler falsche Ergebnisse. Nur Runtime-Traces zeigen, dass der tatsächliche Ausführungspfad von der Erwartung abweicht.
+<strong>"Korrekt" lässt sich nicht von "sieht korrekt aus" unterscheiden</strong>: Eine Funktion kann im Code-Review perfekt wirken. Zur Laufzeit erzeugt aber ein Edge-Case-Fehler falsche Ergebnisse. Nur Runtime-Traces zeigen, dass der tatsächliche Ausführungspfad von der Erwartung abweicht.
 
-**Bewertung wird Mystik**: Ohne Rubriken und Akzeptanzkriterien verlassen sich Evaluatoren, ob Mensch oder Agent, auf implizite Annahmen. Dieselbe Ausgabe kann stark unterschiedlich bewertet werden. Qualitätsbewertung wird nicht reproduzierbar.
+<strong>Bewertung wird Mystik</strong>: Ohne Rubriken und Akzeptanzkriterien verlassen sich Evaluatoren, ob Mensch oder Agent, auf implizite Annahmen. Dieselbe Ausgabe kann stark unterschiedlich bewertet werden. Qualitätsbewertung wird nicht reproduzierbar.
 
-**Retries werden blinde Vermutungen**: Wenn der Agent nicht weiß, warum etwas fehlschlägt, ist die Retry-Richtung zufällig. Er kann irrelevante Codepfade reparieren, während die eigentliche Ursache unberührt bleibt. Jeder blinde retry kostet Tokens und Zeit.
+<strong>Retries werden blinde Vermutungen</strong>: Wenn der Agent nicht weiß, warum etwas fehlschlägt, ist die Retry-Richtung zufällig. Er kann irrelevante Codepfade reparieren, während die eigentliche Ursache unberührt bleibt. Jeder blinde retry kostet Tokens und Zeit.
 
-**Informationsklippe beim Handoff**: Wenn unvollständige Arbeit an die nächste Session übergeben wird, muss die neue Session ohne Beobachtbarkeit den Systemzustand von Grund auf diagnostizieren. Anthropic beobachtet, dass diese redundante Diagnose 30-50 % der Sessionzeit verbrauchen kann.
+<strong>Informationsklippe beim Handoff</strong>: Wenn unvollständige Arbeit an die nächste Session übergeben wird, muss die neue Session ohne Beobachtbarkeit den Systemzustand von Grund auf diagnostizieren. Anthropic beobachtet, dass diese redundante Diagnose 30-50 % der Sessionzeit verbrauchen kann.
 
 ### Ein realistisches Claude-Code-Szenario
 
 Stell dir einen harness mit planner-generator-evaluator-Workflow vor, der "Dark Mode zur App hinzufügen" ausführt.
 
-**Ohne Beobachtbarkeit**: Der planner liefert eine vage Beschreibung. Der generator implementiert Dark Mode auf dieser Basis, trifft aber die impliziten Erwartungen nicht. Der evaluator lehnt nach eigenen impliziten Standards ab, kann aber nicht konkret sagen, was falsch ist. Der generator versucht blind erneut. Der Zyklus wiederholt sich 3-4 Mal, dauert etwa 45 Minuten und liefert ein kaum akzeptables Ergebnis.
+<strong>Ohne Beobachtbarkeit</strong>: Der planner liefert eine vage Beschreibung. Der generator implementiert Dark Mode auf dieser Basis, trifft aber die impliziten Erwartungen nicht. Der evaluator lehnt nach eigenen impliziten Standards ab, kann aber nicht konkret sagen, was falsch ist. Der generator versucht blind erneut. Der Zyklus wiederholt sich 3-4 Mal, dauert etwa 45 Minuten und liefert ein kaum akzeptables Ergebnis.
 
-**Mit vollständiger Beobachtbarkeit**: Der planner liefert einen sprint contract mit zu ändernden Komponenten, Verifikationsstandards und Ausschlüssen. Der generator implementiert gemäß Vertrag. Runtime-Beobachtbarkeit zeichnet das Laden und Anwenden der Styles jeder Komponente auf. Der evaluator bewertet Dimension für Dimension anhand einer Rubrik und konkreter Evidenz. Eine Iteration liefert ein hochwertiges Ergebnis in etwa 15 Minuten.
+<strong>Mit vollständiger Beobachtbarkeit</strong>: Der planner liefert einen sprint contract mit zu ändernden Komponenten, Verifikationsstandards und Ausschlüssen. Der generator implementiert gemäß Vertrag. Runtime-Beobachtbarkeit zeichnet das Laden und Anwenden der Styles jeder Komponente auf. Der evaluator bewertet Dimension für Dimension anhand einer Rubrik und konkreter Evidenz. Eine Iteration liefert ein hochwertiges Ergebnis in etwa 15 Minuten.
 
 3x Effizienzunterschied. Die einzige Änderung ist Beobachtbarkeit.
 
@@ -83,11 +83,11 @@ Vielleicht denkst du: "Kann der Agent nicht einfach eigene Logs ausgeben?" Die P
 
 Verlass dich nicht darauf, dass der Agent eigene Logs ausgibt. Der harness sollte diese Signale automatisch sammeln:
 
-- **Anwendungslebenszyklus**: Startup, ready, running, shutdown
-- **Featurepfad-Ausführung**: Kritische Pfade mit Einstiegspunkten, Checkpoints und Ausgängen
-- **Datenfluss**: Datenbewegungen zwischen Komponenten
-- **Ressourcennutzung**: Abnormale Muster, etwa stetig wachsender Speicher
-- **Fehler und Ausnahmen**: Vollständiger Kontext, nicht nur Fehlermeldungen
+- <strong>Anwendungslebenszyklus</strong>: Startup, ready, running, shutdown
+- <strong>Featurepfad-Ausführung</strong>: Kritische Pfade mit Einstiegspunkten, Checkpoints und Ausgängen
+- <strong>Datenfluss</strong>: Datenbewegungen zwischen Komponenten
+- <strong>Ressourcennutzung</strong>: Abnormale Muster, etwa stetig wachsender Speicher
+- <strong>Fehler und Ausnahmen</strong>: Vollständiger Kontext, nicht nur Fehlermeldungen
 
 ### 2. Sprint contracts implementieren
 
@@ -133,9 +133,9 @@ Erzeuge einen trace für jede harness-Session, einen span für jede Aufgabe und 
 
 Ein harness mit planner-generator-evaluator-Workflow führt "Dark Mode Support hinzufügen" aus:
 
-**Nicht beobachtbare Version**: 3-4 blinde retry-Runden, 45 Minuten, kaum akzeptables Ergebnis. Der evaluator sagt "fühlt sich nicht richtig an", kann aber nicht konkret werden. Der generator verschwendet Zeit in falschen Richtungen.
+<strong>Nicht beobachtbare Version</strong>: 3-4 blinde retry-Runden, 45 Minuten, kaum akzeptables Ergebnis. Der evaluator sagt "fühlt sich nicht richtig an", kann aber nicht konkret werden. Der generator verschwendet Zeit in falschen Richtungen.
 
-**Voll beobachtbare Version**:
+<strong>Voll beobachtbare Version</strong>:
 - Sprint contract klärt Scope, Standards und Ausschlüsse
 - Runtime-Traces zeichnen das Laden der Styles jeder Komponente auf
 - Bewertungsrubrik liefert strukturierte Bewertung pro Dimension
@@ -145,11 +145,11 @@ Ein harness mit planner-generator-evaluator-Workflow führt "Dark Mode Support h
 
 ## Wichtigste Erkenntnisse
 
-- **Beobachtbarkeit ist eine Architektur-Eigenschaft des harness**, keine nachträglich hinzugefügte Funktion.
-- **Beide Beobachtbarkeitsschichten sind wesentlich**: Runtime-Signale erklären "was passiert ist", Prozessartefakte erklären "warum es so gemacht wurde".
-- **Sprint contracts richten früh aus** und verhindern vorhersehbare Ablehnungen durch evaluator.
-- **Rubriken machen Bewertung reproduzierbar**, sodass verschiedene Evaluatoren ähnliche Scores liefern.
-- **Fehlende Beobachtbarkeit verschwendet 30-50 % der Sessionzeit für redundante Diagnose.**
+- <strong>Beobachtbarkeit ist eine Architektur-Eigenschaft des harness</strong>, keine nachträglich hinzugefügte Funktion.
+- <strong>Beide Beobachtbarkeitsschichten sind wesentlich</strong>: Runtime-Signale erklären "was passiert ist", Prozessartefakte erklären "warum es so gemacht wurde".
+- <strong>Sprint contracts richten früh aus</strong> und verhindern vorhersehbare Ablehnungen durch evaluator.
+- <strong>Rubriken machen Bewertung reproduzierbar</strong>, sodass verschiedene Evaluatoren ähnliche Scores liefern.
+- <strong>Fehlende Beobachtbarkeit verschwendet 30-50 % der Sessionzeit für redundante Diagnose.</strong>
 
 ## Weiterführende Literatur
 
@@ -160,8 +160,8 @@ Ein harness mit planner-generator-evaluator-Workflow führt "Dark Mode Support h
 
 ## Übungen
 
-1. **Observability-Gap-Analyse**: Prüfe deinen aktuellen harness auf System- und Prozess-Beobachtbarkeit. Finde Systemzustände, die mit bestehenden Signalen nicht unterscheidbar sind, und schlage Ergänzungen vor.
+1. <strong>Observability-Gap-Analyse</strong>: Prüfe deinen aktuellen harness auf System- und Prozess-Beobachtbarkeit. Finde Systemzustände, die mit bestehenden Signalen nicht unterscheidbar sind, und schlage Ergänzungen vor.
 
-2. **Sprint-contract-Praxis**: Schreibe einen sprint contract für eine reale Aufgabe. Lass den Agenten danach arbeiten und vergleiche Effizienz und Qualität mit und ohne Vertrag.
+2. <strong>Sprint-contract-Praxis</strong>: Schreibe einen sprint contract für eine reale Aufgabe. Lass den Agenten danach arbeiten und vergleiche Effizienz und Qualität mit und ohne Vertrag.
 
-3. **Task-trace-Konstruktion**: Zeichne jeden Schritt eines Agenten während einer vollständigen Coding-Aufgabe auf. Annotiere mit OpenTelemetry-Konventionen und analysiere Informationsengpässe.
+3. <strong>Task-trace-Konstruktion</strong>: Zeichne jeden Schritt eines Agenten während einer vollständigen Coding-Aufgabe auf. Annotiere mit OpenTelemetry-Konventionen und analysiere Informationsengpässe.

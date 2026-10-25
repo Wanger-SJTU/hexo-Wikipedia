@@ -19,7 +19,7 @@ tags:
 
 # Everyone Should Know SIMD
 
-**By Mitchell Hashimoto**
+<strong>By Mitchell Hashimoto</strong>
 
 SIMD has a reputation for being complex. I've met many very good software engineers who dismiss it as something too complex to learn or a niche optimization meant for only the highest-performance software, not useful in everyday programming.
 
@@ -53,23 +53,23 @@ The only real requirement for this to pay off is that you need to be regularly p
 
 The common "process N values at a time" SIMD code follows the same five steps:
 
-1. **Broadcast any constants** you need and initialize vector accumulators, if any.
-2. **Loop over input** one vector-width chunk at a time.
-3. **Perform the comparison or arithmetic** across all lanes in parallel.
-4. **Reduce or store** the vector result as needed.
-5. **Handle the remaining elements** with a scalar tail. A scalar tail is just your normal loop from before vectorizing, but it only processes the remainder that doesn't fit into a full vector.
+1. <strong>Broadcast any constants</strong> you need and initialize vector accumulators, if any.
+2. <strong>Loop over input</strong> one vector-width chunk at a time.
+3. <strong>Perform the comparison or arithmetic</strong> across all lanes in parallel.
+4. <strong>Reduce or store</strong> the vector result as needed.
+5. <strong>Handle the remaining elements</strong> with a scalar tail. A scalar tail is just your normal loop from before vectorizing, but it only processes the remainder that doesn't fit into a full vector.
 
 ## A Real Example (Ghostty)
 
 A slice of decoded codepoints, consuming until we see a value at or below 0xF (a C0 control character). Terminals are mostly plain characters to be printed, so we try to batch all those together.
 
-**Scalar loop (one line):**
+<strong>Scalar loop (one line):</strong>
 
 ```zig
 while (end < cps.len and cps[end] > 0xF) end += 1;
 ```
 
-**Generic vector version (12 lines):**
+<strong>Generic vector version (12 lines):</strong>
 
 ```zig
 if (simd.lanes(u32)) |lanes| {
@@ -88,11 +88,11 @@ while (end < cps.len and cps[end] > 0xF) end += 1;
 ```
 
 This can improve the loop's throughput by up to:
-- **4x** with ARM NEON (including Apple Silicon)
-- **8x** with AVX2 (most modern x86 CPUs)
-- **16x** with AVX-512 (some Intel CPUs and AMD Zen 4+)
+- <strong>4x</strong> with ARM NEON (including Apple Silicon)
+- <strong>8x</strong> with AVX2 (most modern x86 CPUs)
+- <strong>16x</strong> with AVX-512 (some Intel CPUs and AMD Zen 4+)
 
-In real-world end-to-end throughput from terminal program to finalized terminal state on an AVX2 Intel desktop, this was more like a **5x speedup**.
+In real-world end-to-end throughput from terminal program to finalized terminal state on an AVX2 Intel desktop, this was more like a <strong>5x speedup</strong>.
 
 ### Step 1: Broadcast Constants
 

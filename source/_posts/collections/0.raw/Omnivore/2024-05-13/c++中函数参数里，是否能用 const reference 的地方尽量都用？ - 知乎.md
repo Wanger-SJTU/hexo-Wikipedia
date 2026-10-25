@@ -27,11 +27,11 @@ id: 6296b55f-25fc-4612-b14d-f58f8cc00cc6
 
 关注者
 
-**186**
+<strong>186</strong>
 
 被浏览
 
-**109,216**
+<strong>109,216</strong>
 
 他们也关注了该问题![0.382](https://proxy-prod.omnivore-image-cache.app/0x0,s3GZkGXVvmUx8DJ0sIX48H-XCPsIMc6nuMRER6ASjQ8Q/https://picx.zhimg.com/v2-ea3874aaa51001bf8bc7debbcee51e38_l.jpg?source=c8b7c179)![吴咏炜](https://proxy-prod.omnivore-image-cache.app/0x0,swgbeq7Yr0dkTXqkoA8F1O-U1vVdNNzEfNuGWitER4b8/https://picx.zhimg.com/85eb412dc28d07bf8d46b44cacb002be_l.jpg?source=32738c0c)
 
@@ -99,7 +99,7 @@ Herb Sutter, “Back to the Basics! Essentials of Modern C++ Style” (CppCon 20
 
 [发布于 2023-04-07 09:27 ，编辑于 2023-04-07 09:33](https://www.zhihu.com/question/594059514/answer/2972162847)
 
-在 const reference 替代值的情况下，如果不考虑性能，可以尽量都用。考虑性能的话，**部分情况**使用值传递性能更高。因此建议采用值传递。
+在 const reference 替代值的情况下，如果不考虑性能，可以尽量都用。考虑性能的话，<strong>部分情况</strong>使用值传递性能更高。因此建议采用值传递。
 
 为什么对于小数据来说，应该用值传递呢？因为值传递可以全部塞进寄存器，而引用传递意味着必然有一次无法优化掉的内存访问寻址，对于现代CPU以及现代编译器来说，能全进寄存器的操作肯定是最高效率。
 
@@ -274,7 +274,7 @@ ack:
 
 ---
 
-还需特别提到的是，需要小心判断函数是否**可以**（不是**适合**）使用引用传参。经典的例子如下
+还需特别提到的是，需要小心判断函数是否<strong>可以</strong>（不是<strong>适合</strong>）使用引用传参。经典的例子如下
 
 ```arduino
 void foo() {

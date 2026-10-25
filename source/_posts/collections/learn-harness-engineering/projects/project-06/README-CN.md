@@ -19,8 +19,8 @@ categories:
 
 | 目录 | 含义 |
 |------|------|
-| `starter/` | **起点**——完整的产品代码，但 harness 被刻意削弱（只有基础 AGENTS.md，没有 feature_list.json、session-handoff、clean-state-checklist）。 |
-| `solution/` | **参考实现**——最大 harness：所有产物文件齐全，质量文档评分高，包含基准测试脚本和清理扫描器。 |
+| `starter/` | <strong>起点</strong>——完整的产品代码，但 harness 被刻意削弱（只有基础 AGENTS.md，没有 feature_list.json、session-handoff、clean-state-checklist）。 |
+| `solution/` | <strong>参考实现</strong>——最大 harness：所有产物文件齐全，质量文档评分高，包含基准测试脚本和清理扫描器。 |
 
 ## 使用方法
 

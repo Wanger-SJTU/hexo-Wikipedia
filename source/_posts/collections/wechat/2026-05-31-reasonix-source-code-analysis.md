@@ -25,13 +25,13 @@ source_url: https://github.com/esengine/DeepSeek-Reasonix
 
 ## 1. 项目概况
 
-**Reasonix**（`esengine/DeepSeek-Reasonix`）是一个 DeepSeek 原生的终端 AI coding agent，TypeScript 实现，MIT 协议，GitHub 14.5k stars，2026-04-21 创建，43天不到即成为顶级 Agent 框架。
+<strong>Reasonix</strong>（`esengine/DeepSeek-Reasonix`）是一个 DeepSeek 原生的终端 AI coding agent，TypeScript 实现，MIT 协议，GitHub 14.5k stars，2026-04-21 创建，43天不到即成为顶级 Agent 框架。
 
-核心卖点只有一个：**prefix-cache 命中率**。实测 4.35 亿 input tokens，99.82% cache hit，同样工作量无缓存要 $61，实际只花了 $12。
+核心卖点只有一个：<strong>prefix-cache 命中率</strong>。实测 4.35 亿 input tokens，99.82% cache hit，同样工作量无缓存要 $61，实际只花了 $12。
 
 ## 2. 为什么缓存命中率如此重要
 
-DeepSeek 的自动 prefix caching 机制有个苛刻条件：**必须是精确的字节前缀匹配**。也就是说，如果上一轮请求的前 N 个字节和这一轮的前 N 个字节完全一致，这 N 个字节对应的 tokens 就只收 10% 的价格。
+DeepSeek 的自动 prefix caching 机制有个苛刻条件：<strong>必须是精确的字节前缀匹配</strong>。也就是说，如果上一轮请求的前 N 个字节和这一轮的前 N 个字节完全一致，这 N 个字节对应的 tokens 就只收 10% 的价格。
 
 大多数 Agent 框架的问题在于：它们在每轮对话中会重排、重写、注入时间戳，导致实际的 cache hit rate 只有不到 20%。Reasonix 的整个架构就是为了让这个命中率逼近 100%。
 
@@ -64,7 +64,7 @@ Reasonix 把 LLM 的上下文严格分成三个区域：
 
 ### 3.2 Append-Only Log（只追加日志）
 
-这是最精妙的设计。所有的 assistant 回复、tool 调用结果，都是**纯追加**的，永远不会重写。这意味着第 N 轮请求的前缀天然就是第 N-1 轮请求的超集——已有的前缀自动保持稳定。
+这是最精妙的设计。所有的 assistant 回复、tool 调用结果，都是<strong>纯追加</strong>的，永远不会重写。这意味着第 N 轮请求的前缀天然就是第 N-1 轮请求的超集——已有的前缀自动保持稳定。
 
 源码中的保证机制：
 - `AppendOnlyLog` 类只暴露 `append()` 方法，没有 `rewrite()` 或 `delete()`
@@ -74,7 +74,7 @@ Reasonix 把 LLM 的上下文严格分成三个区域：
 
 ### 3.3 Volatile Scratch（易失草稿区）
 
-模型在思考过程中产生的中间状态（R1 reasoning_content、临时计划）放在 Scratch 区，**不会发送给 API**。只有经过 distill 处理后的信息才会被 fold 到 Log 中。
+模型在思考过程中产生的中间状态（R1 reasoning_content、临时计划）放在 Scratch 区，<strong>不会发送给 API</strong>。只有经过 distill 处理后的信息才会被 fold 到 Log 中。
 
 这就是为什么 Reasonix 可以在 thinking 模式下保持缓存稳定——reasoning tokens 虽然很长，但它们不进入上下文，不影响前缀匹配。
 
@@ -154,10 +154,10 @@ readonly parallelSafe: boolean; // default false
 
 每个会话保存为 JSONL 文件。恢复时的关键设计：
 
-1. **Heal-on-load**：加载历史消息时自动修复过大的 tool result（避免下次请求 400）
-2. **Stats carry-forward**：恢复会话后，累计成本、token 计数从 meta 文件继续
-3. **Reasoning retention**：thinking 模式的 `reasoning_content` 在 tool-call turn 中保留（用于 repair），在纯文本 turn 中丢弃（节省 tokens）
-4. **Session archive**：`/new` 命令清空内存但归档磁盘，保持 session name 不变以维持前缀缓存热度
+1. <strong>Heal-on-load</strong>：加载历史消息时自动修复过大的 tool result（避免下次请求 400）
+2. <strong>Stats carry-forward</strong>：恢复会话后，累计成本、token 计数从 meta 文件继续
+3. <strong>Reasoning retention</strong>：thinking 模式的 `reasoning_content` 在 tool-call turn 中保留（用于 repair），在纯文本 turn 中丢弃（节省 tokens）
+4. <strong>Session archive</strong>：`/new` 命令清空内存但归档磁盘，保持 session name 不变以维持前缀缓存热度
 
 ## 8. Desktop 端现状与 PR 方向
 
@@ -169,25 +169,25 @@ readonly parallelSafe: boolean; // default false
 
 基于源码分析，以下是几个有价值 PR 方向：
 
-1. **文件差异可视化** — 目前 Desktop 右侧面板只显示 agent 读过的文件列表，可以增加 diff viewer，展示 SEARCH/REPLACE 的预览和 `/apply` 后的实际变更
-2. **会话管理增强** — 目前 session 只有 JSONL 格式，Desktop 可以添加 session 列表视图、搜索、标签
-3. **MCP Server 可视化配置** — 现在配置 MCP 需要手动编辑 JSON，可以做成 GUI 表单
-4. **Memory 浏览器** — `~/.reasonix/memory/` 的 `remember`/`recall_memory` 数据可视化
-5. **Cost 分析面板** — 利用已有的 `SessionStats` 和 `cacheDiagnostics` 数据，做按时间/按工具的成本分解图表
+1. <strong>文件差异可视化</strong> — 目前 Desktop 右侧面板只显示 agent 读过的文件列表，可以增加 diff viewer，展示 SEARCH/REPLACE 的预览和 `/apply` 后的实际变更
+2. <strong>会话管理增强</strong> — 目前 session 只有 JSONL 格式，Desktop 可以添加 session 列表视图、搜索、标签
+3. <strong>MCP Server 可视化配置</strong> — 现在配置 MCP 需要手动编辑 JSON，可以做成 GUI 表单
+4. <strong>Memory 浏览器</strong> — `~/.reasonix/memory/` 的 `remember`/`recall_memory` 数据可视化
+5. <strong>Cost 分析面板</strong> — 利用已有的 `SessionStats` 和 `cacheDiagnostics` 数据，做按时间/按工具的成本分解图表
 
 ## 9. 源码质量观察
 
 几个印象深刻的工程实践：
 
-- **单文件大小控制严格**：最大模块 `App.tsx` 2K 行（从 2931 行重构下来的），每个 slash handler ≤200 行
-- **四层修复管道可组合**：flatten → scavenge → truncation → storm，每个 pass 独立可测
-- **Cache diagnostic 闭环**：每轮都记录 prefix hash、cache hit/miss tokens，用于 debug cache miss 的根因
-- **Heal-on-load 防御性编程**：加载 session 时主动修复可能导致下次 400 的过大 payload
-- **Storm breaker 的 read-after-write 豁免**：`read → edit → verify` 不会被误判为重复调用
+- <strong>单文件大小控制严格</strong>：最大模块 `App.tsx` 2K 行（从 2931 行重构下来的），每个 slash handler ≤200 行
+- <strong>四层修复管道可组合</strong>：flatten → scavenge → truncation → storm，每个 pass 独立可测
+- <strong>Cache diagnostic 闭环</strong>：每轮都记录 prefix hash、cache hit/miss tokens，用于 debug cache miss 的根因
+- <strong>Heal-on-load 防御性编程</strong>：加载 session 时主动修复可能导致下次 400 的过大 payload
+- <strong>Storm breaker 的 read-after-write 豁免</strong>：`read → edit → verify` 不会被误判为重复调用
 
 ## 10. 总结
 
-Reasonix 的核心 insight 很简单：**如果你能保证发送给 API 的请求前缀字节级稳定，DeepSeek 就帮你省 90% 的输入成本**。
+Reasonix 的核心 insight 很简单：<strong>如果你能保证发送给 API 的请求前缀字节级稳定，DeepSeek 就帮你省 90% 的输入成本</strong>。
 
 但实现这个"简单"的 insight 需要在整个 agent loop 的每一层做取舍：
 - 前缀锁死 → system prompt 不能动态变化

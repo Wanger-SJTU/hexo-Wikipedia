@@ -23,7 +23,7 @@ void f(Ts&&... args) {
     auto v_ = (g(args),...); // 折叠表达式
 }
 
-关键在于**逗号**的区别，多了一个逗号(op)变成了**折叠表达式**：最终结果为**一个值**。而没有逗号则是**参数包展开**，结果是**多个值**。
+关键在于<strong>逗号</strong>的区别，多了一个逗号(op)变成了<strong>折叠表达式</strong>：最终结果为<strong>一个值</strong>。而没有逗号则是<strong>参数包展开</strong>，结果是<strong>多个值</strong>。
 
 你那个例子中的`disjunction_v`使用参数包展开形式。
 

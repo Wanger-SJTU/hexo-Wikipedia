@@ -25,13 +25,13 @@ source_url: https://zhuanlan.zhihu.com/p/700569722
 
 PagedAttention速度慢于FlashAttention
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_85364863fbb6.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_85364863fbb6.jpg)
 
 在小数据量时，PagedAttention慢的更多，猜测是由于cache命中率高，连续内存读取效率更高？数据量更大时，PagedAttention的性能开销被高计算量所覆盖。
 
 从vllm代码中可看出，在prefill阶段使用的是FlashAttention，而在decoder阶段使用PagedAttention。原因就在于
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_d01d72f4a787.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_d01d72f4a787.jpg)
 
 vllm代码 PagedAttention改进：使用连续内存。**
 
@@ -53,7 +53,7 @@ vAttention优化 —— 将KV缓存存储在连续虚拟内存中而无需提前
 
 观察2：KV缓存不需要高内存分配带宽。跨所有层的单个令牌的内存占用通常是几十到几百兆字节的内存，每次迭代运行10s—100s毫秒，这意味着请求每秒最多需要几兆字节的内存。虽然令牌管理提高了系统吞吐量，但每秒生成的令牌数量在超过特定的批量大小后会趋于稳定（图6a）。这意味着存储器分配带宽要求在大批量时也饱和（例如，Yi34B为128）。对于我们研究的所有模型，我们观察到最高的内存分配速率最多为每秒600 MB（图6c）。
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_f6e178bd8649.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_f6e178bd8649.jpg)
 
 #### 1、预留虚拟内存
 
@@ -65,20 +65,20 @@ vAttention优化 —— 将KV缓存存储在连续虚拟内存中而无需提前
 
 Attention每次优先分配一个物理内存页面，并且仅当请求已使用完其先前分配的所有物理内存页面时，再分配新的物理内存，并映射到虚拟内存中。
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_de9792d71d44.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_de9792d71d44.jpg)
 
 #### 3、利用low-level CUDA支持
 
 cudaMalloc同时分配虚拟内存和物理内存。最近的CUDA版本为程序员提供了对虚拟和物理内存的细粒度控制。在vAttention中利用这些底层API。
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_4fe9315148dd.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_4fe9315148dd.jpg)
 
 #### 
 4、拓展pytorch接口
 
 通过torch.empty等API分配的张量带有预分配的物理内存。这是因为PyTorch缓存分配器使用cudaMalloc接口来分配GPU内存（虚拟和物理）。
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_7dccebb08533.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_7dccebb08533.jpg)
 
 依靠CUDA的低级API支持，我们扩展了PyTorch缓存分配器，允许应用程序为张量保留虚拟内存缓冲区，而无需提前提交物理内存。
 
@@ -92,7 +92,7 @@ cudaMalloc同时分配虚拟内存和物理内存。最近的CUDA版本为程序
 
 根据Schedue调度请求，得到request_id。在模型处理之前，需要确保相应的虚拟内存都存在映射的物理内存。在预填充阶段，需要分配指定数量的cache内存。而在decoder阶段，每次只需要一个长度的kvcache。
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_9886de658b58.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_9886de658b58.jpg)
 
 当推理完成时，释放request_id对应内存。
 
@@ -108,7 +108,7 @@ cudaMalloc同时分配虚拟内存和物理内存。最近的CUDA版本为程序
 
 由于迭代延迟通常在10s—100s毫秒的范围内，因此后台线程在开始执行之前有足够的时间为迭代准备物理内存映射。
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_b2b6b0e58959.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_b2b6b0e58959.jpg)
 
 如图显示了按需同步分配物理内存（当我们的后台线程、延迟回收和急切分配优化都被禁用时）可以在64KB的页面大小下增加多达15%的开销。较大的页面大小可以分摊分配成本，并将开销降低到3%（256KB和2MB页面大小）。
 
@@ -116,20 +116,20 @@ cudaMalloc同时分配虚拟内存和物理内存。最近的CUDA版本为程序
 
 ### 性能评估
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_3dd3348053f1.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_3dd3348053f1.jpg)
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_757cf743d1d7.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_757cf743d1d7.jpg)
 
 吞吐量和TTFT均有提高
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_b10808aba592.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_b10808aba592.jpg)
 
 vLLM在块大小为16的情况下表现最好，因为其注意力内核在较小的块大小下更有效。
 FlashAttention的GPU内核比vLLM内核的最佳版本（Yi-6 B，16* 16 K）快2.85倍。然而，较小的块增加了CPU开销，例如，块大小为16的FlashAttention比块大小为128的更差。
 
 每次分配的size越小，内存浪费的空间越小。
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_284d90dc90e2.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_284d90dc90e2.jpg)
 
 ### 
 总结

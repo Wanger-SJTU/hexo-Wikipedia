@@ -38,19 +38,19 @@ https://github.com/mlc-ai/mlc-llm
 - create_softmax_func
 - create_metadata_func
 
-**encoding_func**
+<strong>encoding_func</strong>
 这对应了上图中的prefill过程，在每次用户输入后调用。由于用户输入的不确定性，所以这个过程基本上都是动态shape的，很难确定到底输入是多大，也不适合搜索调优。
 
-**decoding_func**
+<strong>decoding_func</strong>
 这是上图中decode过程的一部分，因为这个过程是token by token的，在计算过程中大部分的计算是固定shape的。
 
-**create kv cache func**
+<strong>create kv cache func</strong>
 这里是直接调用的`relax.vm`中的函数，创建的是kv cache的存储相关。
 
-**create softmax func**
+<strong>create softmax func</strong>
 这个也是解码过程的一部分，确切的说是采样过程中计算的一部分
 
-** create_metadata_func **
+<strong>create_metadata_func</strong>
 模型的meta信息，比如`model_name`、`stop_tokens`等
 
 

@@ -32,9 +32,9 @@ tvm 的guide地址：https://docs.tvm.ai/api/python/schedule.html
 
 理解schedule本质上是一次理解计算机系统结构、loop optimization和多线程编程的过程，因此文会依次介绍。
 
-### **1. 存储层次相关schedule**
+### <strong>1. 存储层次相关schedule</strong>
 
-**cache_read(tensor, scope, readers)**
+<strong>cache_read(tensor, scope, readers)</strong>
 
 `produce B {
   for (i, 0, 1024) {
@@ -65,7 +65,7 @@ produce B {
 }
 `
 
-**cache_read将tensor读入指定存储层次scope的cache，这个设计的意义在于显式利用现有计算设备的on-chip memory hierarchy。这个例子中，会先将A的数据load到shared memory中，然后计算B。在这里，我们需要引入一个stage的概念，一个op对应一个stage，也就是通过cache_read会新增一个stage。cache_write(tensor, scope)**
+<strong>cache_read将tensor读入指定存储层次scope的cache，这个设计的意义在于显式利用现有计算设备的on-chip memory hierarchy。这个例子中，会先将A的数据load到shared memory中，然后计算B。在这里，我们需要引入一个stage的概念，一个op对应一个stage，也就是通过cache_read会新增一个stage。cache_write(tensor, scope)</strong>
 
 `produce B {
   for (i, 0, 1024) {
@@ -94,7 +94,7 @@ produce B {
 }
 `
 
-**cache_write和cache_read对应，是先在shared memory中存放计算结果，最后将结果写回到global memory。当然在真实的场景中，我们往往是会将结果先放着register中，最后写回。set_scope**
+<strong>cache_write和cache_read对应，是先在shared memory中存放计算结果，最后将结果写回到global memory。当然在真实的场景中，我们往往是会将结果先放着register中，最后写回。set_scope</strong>
 
 `// attr [B] storage_scope = "global"
 allocate B[float32 * 1024]
@@ -130,7 +130,7 @@ produce C {
 }
 `
 
-**set_scope指定stage计算结果所在的存储层次，为tensor选择最优的存储位置，适用于设置线程间的共享内存。事实上，set_scope是cache_read的子操作。storage_align**
+<strong>set_scope指定stage计算结果所在的存储层次，为tensor选择最优的存储位置，适用于设置线程间的共享内存。事实上，set_scope是cache_read的子操作。storage_align</strong>
 
 `// attr [A.shared] storage_scope = "shared"
 allocate A.shared[float32 * 1048576]
@@ -170,7 +170,7 @@ produce B {
 }
 `
 
-**storage_align把stage对应的存储空间以factor为单位、以offset为偏置重新对齐，以避免GPU共享访问时的bank conflict，关于bank conflict可以参考<span class="wikilink wikilink--missing" title="未导入的页面">2</span>(#ref_2)。compute_at**
+<strong>storage_align把stage对应的存储空间以factor为单位、以offset为偏置重新对齐，以避免GPU共享访问时的bank conflict，关于bank conflict可以参考<span class="wikilink wikilink--missing" title="未导入的页面">2</span>(#ref_2)。compute_at</strong>
 
 `// attr [B.rf] storage_scope = "global"
 allocate B.rf[float32 * 32]
@@ -210,7 +210,7 @@ produce B {
 }
 `
 
-**compute_at将当前的stage附着到目标stage的指定iter方向上，同时与目标stage采用相同的并行方式，在其内部完成当前stage的计算。往往compute_at会与cache_read和cache_write一起使用。compute_inline**
+<strong>compute_at将当前的stage附着到目标stage的指定iter方向上，同时与目标stage采用相同的并行方式，在其内部完成当前stage的计算。往往compute_at会与cache_read和cache_write一起使用。compute_inline</strong>
 
 `// attr [Apad] storage_scope = "global"
 allocate Apad[float32 * 1056784]
@@ -249,7 +249,7 @@ produce B {
 }
 `
 
-**compute_inline把独立的计算操作转化成内联函数形式，在使用到原计算结果时再调用内联函数完成运算，通过compute_inline来减少一个stage。compute_root**
+<strong>compute_inline把独立的计算操作转化成内联函数形式，在使用到原计算结果时再调用内联函数完成运算，通过compute_inline来减少一个stage。compute_root</strong>
 
 `produce B {
   // attr [iter_var(threadIdx.x, , threadIdx.x)] thread_extent = 32
@@ -312,7 +312,7 @@ produce B {
 }
 `
 
-**fuse用于融合两个iter，将两层循环合并到一层，其返回值为iter类型，可以多次合并。split**
+<strong>fuse用于融合两个iter，将两层循环合并到一层，其返回值为iter类型，可以多次合并。split</strong>
 
 `produce B {
   B[0] = 0f
@@ -332,7 +332,7 @@ produce B {
 }
 `
 
-**split是fuse的反操作，把iter以factor为间隔分离成outer与inner两层迭代，增加循环层数，用于将循环操作分割为更小的子任务。事实上，以CUDA为例，gridDim和blockDim都可以最多是三维，所以通过split可以产生新的维度用于绑定到grid和block上<span class="wikilink wikilink--missing" title="未导入的页面">3</span>(#ref_3)。reorder**
+<strong>split是fuse的反操作，把iter以factor为间隔分离成outer与inner两层迭代，增加循环层数，用于将循环操作分割为更小的子任务。事实上，以CUDA为例，gridDim和blockDim都可以最多是三维，所以通过split可以产生新的维度用于绑定到grid和block上<span class="wikilink wikilink--missing" title="未导入的页面">3</span>(#ref_3)。reorder</strong>
 
 `produce C {
   for (i.outer, 0, 32) {
@@ -360,7 +360,7 @@ produce C {
 }
 `
 
-**reorder用于重置循环iter的内外顺序，根据局部性原理，最大化利用cache中的现有数据，减少反复载入载出的情况。注意，这里到底怎样的顺序是最优化的是一个很有趣的问题。以矩阵乘法为例，M, N, K三维，往往是将K放在最外层可以最大程度利用局部性。这个具体例子，具体探究。tile**
+<strong>reorder用于重置循环iter的内外顺序，根据局部性原理，最大化利用cache中的现有数据，减少反复载入载出的情况。注意，这里到底怎样的顺序是最优化的是一个很有趣的问题。以矩阵乘法为例，M, N, K三维，往往是将K放在最外层可以最大程度利用局部性。这个具体例子，具体探究。tile</strong>
 
 `produce C {
   for (i, 0, 1024) {
@@ -390,7 +390,7 @@ produce C {
 }
 `
 
-**tile将stage的两个维度按照各自的factor拆分，并以固定顺序依次返回两个outer和两个inner的iter，从而增加循环层数，形成更小的计算任务。事实上，tile是可以由split和reorder来实现的，tile是矩阵乘法和卷积计算的重要schedule。unroll**
+<strong>tile将stage的两个维度按照各自的factor拆分，并以固定顺序依次返回两个outer和两个inner的iter，从而增加循环层数，形成更小的计算任务。事实上，tile是可以由split和reorder来实现的，tile是矩阵乘法和卷积计算的重要schedule。unroll</strong>
 
 `produce C {
   for (i.outer, 0, 256) {
@@ -424,7 +424,7 @@ produce C {
 **unroll是一种常见的循环优化方法，减分支预测失败减少，如果循环体内语句没有数据相关，增加了并发执行的机会，也有利于指令流水线的调度<span class="wikilink wikilink--missing" title="未导入的页面">4</span>(#ref_4)。
 ### 3. 多线程并行优化**
 
-**vectorize**
+<strong>vectorize</strong>
 
 `produce C {
   for (x.outer, 0, 32) {
@@ -450,7 +450,7 @@ produce C {
 }
 `
 
-**vectorize把iter方向上的循环迭代替换成ramp，从而通过SIMD指令实现数据的批量计算，并且只有在数据size为常数、且分割的iter为2的幂（即满足SIMD的计算数量）时才会发生替换，否则vectorize没有效果，是SIMD计算设备的常用schedule。bind**
+<strong>vectorize把iter方向上的循环迭代替换成ramp，从而通过SIMD指令实现数据的批量计算，并且只有在数据size为常数、且分割的iter为2的幂（即满足SIMD的计算数量）时才会发生替换，否则vectorize没有效果，是SIMD计算设备的常用schedule。bind</strong>
 
 `produce B {
   B[0] = 0f
@@ -473,7 +473,7 @@ produce B {
 }
 `
 
-**bind将iter绑定到block或thread的index上，从而把循环的任务分配到线程，实现并行化计算，这是针对CUDA后端最核心的部分。parallel**
+<strong>bind将iter绑定到block或thread的index上，从而把循环的任务分配到线程，实现并行化计算，这是针对CUDA后端最核心的部分。parallel</strong>
 
 `produce B {
   for (i, 0, 1024) {
@@ -525,7 +525,7 @@ produce B {
 }
 `
 
-**pragma用于添加编译注释，使编译器遵循pragma的要求，实现unroll, vectorize等调度功能。事实上一个新的优化规则，都可以看做是一种gragma，也被称作directive<span class="wikilink wikilink--missing" title="未导入的页面">5</span>(#ref_5)。prefetch**
+<strong>pragma用于添加编译注释，使编译器遵循pragma的要求，实现unroll, vectorize等调度功能。事实上一个新的优化规则，都可以看做是一种gragma，也被称作directive<span class="wikilink wikilink--missing" title="未导入的页面">5</span>(#ref_5)。prefetch</strong>
 
 `produce B {
   for (i, 0, 1024) {
@@ -552,7 +552,7 @@ produce B {
 }
 `
 
-**prefetch利用数据的空间局部性，用于使得前一个iter的计算与后一个iter的访存overlap起来，以提高访存和计算的并行度，减少耗时。本质上是软件流水线的概念，不是硬件prefetch。tensorize**
+<strong>prefetch利用数据的空间局部性，用于使得前一个iter的计算与后一个iter的访存overlap起来，以提高访存和计算的并行度，减少耗时。本质上是软件流水线的概念，不是硬件prefetch。tensorize</strong>
 
 `produce C {
   for (i, 0, 1024) {
@@ -577,7 +577,7 @@ produce C {
 }
 `
 
-**tensorize将计算作为整体，编译为一个tensor_intrin函数中。这是因为很多计算属于常用计算，针对这些计算已经有了很好的built-in的schedule，通过tensorize可以直接调用这些内置的intrinsic，其实这也就是intrinsic在计算机科学中的本意<span class="wikilink wikilink--missing" title="未导入的页面">6</span>(#ref_6)。rfactor(tensor, axis, factor_axis=0)**
+<strong>tensorize将计算作为整体，编译为一个tensor_intrin函数中。这是因为很多计算属于常用计算，针对这些计算已经有了很好的built-in的schedule，通过tensorize可以直接调用这些内置的intrinsic，其实这也就是intrinsic在计算机科学中的本意<span class="wikilink wikilink--missing" title="未导入的页面">6</span>(#ref_6)。rfactor(tensor, axis, factor_axis=0)</strong>
 
 `produce B {
   B[0] = 0f
@@ -607,7 +607,7 @@ produce B {
 }
 `
 
-**rfactor对原tensor在axis方向以factor_axis为间隔做reduction操作。set_store_predicate**
+<strong>rfactor对原tensor在axis方向以factor_axis为间隔做reduction操作。set_store_predicate</strong>
 
 `// attr [B.rf] storage_scope = "global"
 allocate B.rf[float32 * 1]
@@ -643,7 +643,7 @@ produce B {
 }
 `
 
-**set_store_predicate设置了store的条件，适用于在多线程调度中预防写操作之间的冲突。create_group(outputs, inputs, include_inputs=False)**
+<strong>set_store_predicate设置了store的条件，适用于在多线程调度中预防写操作之间的冲突。create_group(outputs, inputs, include_inputs=False)</strong>
 
 `// attr [D] storage_scope = "global"
 allocate D[float32 * 1048576]

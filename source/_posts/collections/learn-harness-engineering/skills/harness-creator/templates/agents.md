@@ -19,22 +19,22 @@ categories:
 
 Before writing code:
 
-1. **Confirm working directory** with `pwd`
-2. **Read this file** completely
-3. **Read project docs if present** (`docs/ARCHITECTURE.md`, `docs/PRODUCT.md`, README, or equivalent)
+1. <strong>Confirm working directory</strong> with `pwd`
+2. <strong>Read this file</strong> completely
+3. <strong>Read project docs if present</strong> (`docs/ARCHITECTURE.md`, `docs/PRODUCT.md`, README, or equivalent)
 4. **Run `./init.sh`** to verify environment is healthy
 5. **Read `feature_list.json`** to see current feature state
-6. **Review recent commits** with `git log --oneline -5`
+6. <strong>Review recent commits</strong> with `git log --oneline -5`
 
 If baseline verification is failing, repair that first before adding new scope.
 
 ## Working Rules
 
-- **One feature at a time**: Pick exactly one unfinished feature from `feature_list.json`
-- **Verification required**: Don't claim done without running verification commands
-- **Update artifacts**: Before ending session, update `progress.md` and `feature_list.json`
-- **Stay in scope**: Don't modify files unrelated to the current feature
-- **Leave clean state**: Next session must be able to run `./init.sh` immediately
+- <strong>One feature at a time</strong>: Pick exactly one unfinished feature from `feature_list.json`
+- <strong>Verification required</strong>: Don't claim done without running verification commands
+- <strong>Update artifacts</strong>: Before ending session, update `progress.md` and `feature_list.json`
+- <strong>Stay in scope</strong>: Don't modify files unrelated to the current feature
+- <strong>Leave clean state</strong>: Next session must be able to run `./init.sh` immediately
 
 ## Required Artifacts
 
@@ -75,7 +75,7 @@ Required checks:
 ## Escalation
 
 If you encounter:
-- **Architecture decisions**: Consult project architecture docs if present, otherwise ask user
-- **Unclear requirements**: Check product/requirements docs if present, otherwise ask user
-- **Repeated test failures**: Update progress, flag for human review
-- **Scope ambiguity**: Re-read `feature_list.json` for definition of done
+- <strong>Architecture decisions</strong>: Consult project architecture docs if present, otherwise ask user
+- <strong>Unclear requirements</strong>: Check product/requirements docs if present, otherwise ask user
+- <strong>Repeated test failures</strong>: Update progress, flag for human review
+- <strong>Scope ambiguity</strong>: Re-read `feature_list.json` for definition of done

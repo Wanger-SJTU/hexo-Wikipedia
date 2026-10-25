@@ -66,9 +66,9 @@ A(thread_m_blocks*16,thread_k_blocks*16)*B(thread_k_blocks*16,thread_n_blocks*16
 
 其中运算最多的是thread_m_blocks=4,thread_k_blocks=4,thread_k_blocks=16的情况。
 
-**为什么这么要有TILE的概念？**
+<strong>为什么这么要有TILE的概念？</strong>
 
-**个人理解：核心是在IO读取和计算之间的一种平衡，这种调度目前IO处理非常有优势。**
+<strong>个人理解：核心是在IO读取和计算之间的一种平衡，这种调度目前IO处理非常有优势。</strong>
 
 #### 2.2.1 m方向的切片
 
@@ -226,17 +226,17 @@ B矩阵的存储是int4(小写)，只是INT4的。
 
 这里的内存排布，才是最复杂的。**
 
-**复杂的有两点：**
+<strong>复杂的有两点：</strong>
 
 - **B矩阵是按照SUB_TILE即16*16的顺序排布的。而不是按行排布的。**
-- **B矩阵内部为了方便一次读取，在WEIGHT记录过程中，要适配mma的指令，内部还有重排。**
-**对应官方说明：**
+- <strong>B矩阵内部为了方便一次读取，在WEIGHT记录过程中，要适配mma的指令，内部还有重排。</strong>
+<strong>对应官方说明：</strong>
 
 · We carefully order dequantization and tensor core instructions to ensure that both GPU pipelines are well saturated and do not bottleneck each other.
 
 · In general, both quantized weights and group scales are reshuffled offline, into a layout that gives ideal access patterns during execution, allowing for instance directly dequantizing weights into tensor core organization.
 
-**这部分先看SUB_TILE的排布**
+<strong>这部分先看SUB_TILE的排布</strong>
 
 这里需要简单阅读一下AUTOAWQ中MARLIN的实现：
 
@@ -307,7 +307,7 @@ ldmatrix.sync.aligned.m8n8.x4.shared.b16 指令来实现。
 
 该指令也需要传入32个行首地址。
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_c14e77bf3906.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_c14e77bf3906.jpg)
 
 至于这4个8*8的顺序是这样的：
 
@@ -343,7 +343,7 @@ thread_k_blocks/b_sh_wr_iters = threads/8/thread_n_blocks
 
 因此x = thread_n_blocks/4
 
-**这就是thread_n_blocks/4的由来。**
+<strong>这就是thread_n_blocks/4的由来。</strong>
 
 因此A矩阵，在LDMATRIX后，有重复矩阵。
 
@@ -351,7 +351,7 @@ thread_k_blocks/b_sh_wr_iters = threads/8/thread_n_blocks
 
 - 实际上的GLOBAL IO没有变化，还是GLOBAL->SHARED的大小
 - 运算并没有变多，B矩阵一直在变化，所以不会有重复计算。
-**简单来说就是为了配平IO,和MMA操作，做的妖操作。**
+<strong>简单来说就是为了配平IO,和MMA操作，做的妖操作。</strong>
 
 **
 
@@ -419,7 +419,7 @@ B矩阵的读取指令在vllm库中为了支持H100，稍有修改，建议参�
 
 前面提到了A矩阵，thread 0-32,下面来看B矩阵
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_ca531c2431bf.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_ca531c2431bf.jpg)
 
 B矩阵的偏移如上图所示。
 
@@ -508,7 +508,7 @@ PERM1.
 
 最后看一下C矩阵的排布：
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_fa7bb6412df3.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_fa7bb6412df3.jpg)
 
 在计算块内部，会在DIM_K进行迭代，会将结果放在frag_c的寄存器中。
 
@@ -534,7 +534,7 @@ SM内部在TILE迭代时，对应块得乘加和都是放在frag_c中的（m,n�
 
 因此在mma的计算过程中SM就已经做了tile层面的归约操作。**
 
-### **五、归约**
+### <strong>五、归约</strong>
 
 这里的归约特指计算块迭代完成或者是换(m,n)的情况。部分迭代和tile的归约，在mma中就已经完成。
 

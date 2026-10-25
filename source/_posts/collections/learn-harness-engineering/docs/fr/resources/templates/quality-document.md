@@ -17,15 +17,15 @@ Un instantané qualité pour chaque domaine produit et couche architecturale. Le
 et les humains peuvent utiliser ce document pour comprendre rapidement où le codebase
 est solide et où il a besoin de travail.
 
-**Cadence de mise à jour :** Après chaque session significative, ou avant de commencer
+<strong>Cadence de mise à jour :</strong> Après chaque session significative, ou avant de commencer
 une nouvelle phase de travail.
 
-**Échelle de notation :**
+<strong>Échelle de notation :</strong>
 
-- **A** : Toutes les vérifications réussies, architecture propre, lisible par l'agent, tests stables
-- **B** : Vérifications réussies, principalement propre, lacunes mineures en lisibilité ou en couverture de tests
-- **C** : Partiellement fonctionnel, lacunes connues, certaines zones de code difficiles à comprendre pour les agents
-- **D** : Non fonctionnel, ou problèmes structurels majeurs
+- <strong>A</strong> : Toutes les vérifications réussies, architecture propre, lisible par l'agent, tests stables
+- <strong>B</strong> : Vérifications réussies, principalement propre, lacunes mineures en lisibilité ou en couverture de tests
+- <strong>C</strong> : Partiellement fonctionnel, lacunes connues, certaines zones de code difficiles à comprendre pour les agents
+- <strong>D</strong> : Non fonctionnel, ou problèmes structurels majeurs
 
 ---
 

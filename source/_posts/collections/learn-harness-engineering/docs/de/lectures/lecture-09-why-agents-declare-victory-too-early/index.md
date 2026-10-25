@@ -22,7 +22,7 @@ Sie bitten einen Agenten, eine „Passwort zurücksetzen"-Funktion zu implementi
 
 Dieses Gefühl sollte nicht un vertraut sein — es ist, als würde man das gesamte Klausurheft ausfüllen, zuversichtlich als Erster abgeben und dann durchfallen, wenn die Noten kommen. Nur weil das Heft voll ist, heißt das nicht, dass die Antworten richtig sind.
 
-Dies ist kein Einzelfall. Das klassische ICML-Papier von Guo et al. (2017) hat bewiesen: **Moderne neuronale Netze sind systematisch über confident** — die von Modellen berichtete Zuversicht ist deutlich höher als ihre tatsächliche Genauigkeit. Dasselbe gilt für KI-Coding-Agenten: Sie „fühlen", dass sie fertig sind, aber in Wirklichkeit sind sie weit davon entfernt. Ihr Harness muss die „Gefühle" des Agenten durch externalisierte, ausführungsbasierte Verifikation ersetzen.
+Dies ist kein Einzelfall. Das klassische ICML-Papier von Guo et al. (2017) hat bewiesen: <strong>Moderne neuronale Netze sind systematisch über confident</strong> — die von Modellen berichtete Zuversicht ist deutlich höher als ihre tatsächliche Genauigkeit. Dasselbe gilt für KI-Coding-Agenten: Sie „fühlen", dass sie fertig sind, aber in Wirklichkeit sind sie weit davon entfernt. Ihr Harness muss die „Gefühle" des Agenten durch externalisierte, ausführungsbasierte Verifikation ersetzen.
 
 ## Die rutschige Abwärtsspirale
 
@@ -49,22 +49,22 @@ flowchart LR
 
 ## Zentrale Konzepte
 
-- **Voreilige Fertigstellungsmeldung**: Der Agent behauptet, die Aufgabe sei abgeschlossen, aber es existieren noch immer nicht erfüllte Korrektheitsspezifikationen. Das Kernproblem: Der Agent urteilt auf Basis lokaler Zuversicht auf Code-Ebene, während systemweite Korrektheit globale Verifikation erfordert.
-- **Confidence-Calibration-Bias**: Die systematische Lücke zwischen der selbst berichteten Zuversicht des Agenten bezüglich der Fertigstellung und der tatsächlichen Qualitäts der Fertigstellung. Bei komplexen Multi-Datei-Aufgaben ist dieser Bias signifikant positiv — der Agent ist immer zuversichtlicher, als er tatsächlich leistet. Wie ein Student, der seine Klausurnote nach der Prüfung immer überschätzt.
-- **Terminierungskriterien**: Eine klare, ausführbare Menge von Beurteilungsbedingungen, die im Harness definiert sind. Der Agent muss alle Bedingungen erfüllen, bevor er die Fertigstellung meldet. „Fertig" wandelt sich von einem subjektiven Urteil zu einer objektiven Feststellung.
-- **Verifikation-Validierung-Doppeltor**: Die erste Verifikationsschicht prüft „hat der Code das spezifizierte Verhalten korrekt implementiert"; die zweite Validierungsschicht prüft „entspricht das Systemverhalten den End-to-End-Anforderungen". Beide müssen bestanden werden, um als vollständig zu gelten.
-- **Laufzeit-Feedback-Signale**: Logs, Prozesszustände und Health-Checks aus der Programmausführung. Dies ist die objektive Grundlage für den Harness, um die Qualität der Fertigstellung zu beurteilen.
-- **Abschlussprioritäts-Einschränkung**: Zuerst funktionale Korrektheit verifizieren, dann Performance behandeln und schließlich Stil ansprechen. Refactoring ist verboten, bis die Kernfunktionalität verifiziert ist.
+- <strong>Voreilige Fertigstellungsmeldung</strong>: Der Agent behauptet, die Aufgabe sei abgeschlossen, aber es existieren noch immer nicht erfüllte Korrektheitsspezifikationen. Das Kernproblem: Der Agent urteilt auf Basis lokaler Zuversicht auf Code-Ebene, während systemweite Korrektheit globale Verifikation erfordert.
+- <strong>Confidence-Calibration-Bias</strong>: Die systematische Lücke zwischen der selbst berichteten Zuversicht des Agenten bezüglich der Fertigstellung und der tatsächlichen Qualitäts der Fertigstellung. Bei komplexen Multi-Datei-Aufgaben ist dieser Bias signifikant positiv — der Agent ist immer zuversichtlicher, als er tatsächlich leistet. Wie ein Student, der seine Klausurnote nach der Prüfung immer überschätzt.
+- <strong>Terminierungskriterien</strong>: Eine klare, ausführbare Menge von Beurteilungsbedingungen, die im Harness definiert sind. Der Agent muss alle Bedingungen erfüllen, bevor er die Fertigstellung meldet. „Fertig" wandelt sich von einem subjektiven Urteil zu einer objektiven Feststellung.
+- <strong>Verifikation-Validierung-Doppeltor</strong>: Die erste Verifikationsschicht prüft „hat der Code das spezifizierte Verhalten korrekt implementiert"; die zweite Validierungsschicht prüft „entspricht das Systemverhalten den End-to-End-Anforderungen". Beide müssen bestanden werden, um als vollständig zu gelten.
+- <strong>Laufzeit-Feedback-Signale</strong>: Logs, Prozesszustände und Health-Checks aus der Programmausführung. Dies ist die objektive Grundlage für den Harness, um die Qualität der Fertigstellung zu beurteilen.
+- <strong>Abschlussprioritäts-Einschränkung</strong>: Zuerst funktionale Korrektheit verifizieren, dann Performance behandeln und schließlich Stil ansprechen. Refactoring ist verboten, bis die Kernfunktionalität verifiziert ist.
 
 ## Bestandene Unit-Tests ≠ Aufgabe erledigt
 
 Das ist die häufigste Falle und die gefährlichste. Der Agent hat den Code geschrieben, die Unit-Tests ausgeführt, alles grün bekommen und „fertig" gesagt. Aber die Entwurfsphilosophie von Unit-Tests — Isolierung der getesteten Einheit und Mocking von Abhängigkeiten — ist genau das, was sie unfähig macht, komponentenübergreifende Probleme zu erkennen:
 
-**Schnittstellen-Inkonsistenz**: Der vom Render-Prozess an das Preload-Skript übergebene Dateipfad ist ein relativer Pfad, aber das Preload-Skript erwartet einen absoluten Pfad. Ihre jeweiligen Unit-Tests haben beide Mocks verwendet und bestanden. Das Problem wird erst beim End-to-End-Testing entdeckt. Wie Musiker in einer Band, die jeweils für sich perfekt proben, nur um beim Zusammenspiel festzustellen, dass sie in verschiedenen Tonarten spielen.
+<strong>Schnittstellen-Inkonsistenz</strong>: Der vom Render-Prozess an das Preload-Skript übergebene Dateipfad ist ein relativer Pfad, aber das Preload-Skript erwartet einen absoluten Pfad. Ihre jeweiligen Unit-Tests haben beide Mocks verwendet und bestanden. Das Problem wird erst beim End-to-End-Testing entdeckt. Wie Musiker in einer Band, die jeweils für sich perfekt proben, nur um beim Zusammenspiel festzustellen, dass sie in verschiedenen Tonarten spielen.
 
-**Zustandspropagationsfehler**: Eine Datenbankmigration ändert das Tabellenschema, aber die ORM-Zwischenspeicher schicht enthält noch Cache-Einträge für das alte Schema. Unit-Tests stellen jedes Mal eine frische Mock-Umgebung bereit, was diese schichtenübergreifende Zustandsinkonsistenz nicht aufdeckt.
+<strong>Zustandspropagationsfehler</strong>: Eine Datenbankmigration ändert das Tabellenschema, aber die ORM-Zwischenspeicher schicht enthält noch Cache-Einträge für das alte Schema. Unit-Tests stellen jedes Mal eine frische Mock-Umgebung bereit, was diese schichtenübergreifende Zustandsinkonsistenz nicht aufdeckt.
 
-**Umgebungsabhängigkeit**: Der Code verhält sich in der Testumgebung korrekt (wo alles gemockt ist), scheitert aber in der realen Umgebung aufgrund von Konfigurationsunterschieden, Netzwerklatenz oder Dienstverfügbarkeit. Wie man im Probenraum perfekt singt, aber auf der Bühne mit Audioequipment-Problemen kämpft.
+<strong>Umgebungsabhängigkeit</strong>: Der Code verhält sich in der Testumgebung korrekt (wo alles gemockt ist), scheitert aber in der realen Umgebung aufgrund von Konfigurationsunterschieden, Netzwerklatenz oder Dienstverfügbarkeit. Wie man im Probenraum perfekt singt, aber auf der Bühne mit Audioequipment-Problemen kämpft.
 
 ### „Beim Refactoring gleich mit erledigen" ist Gift für die Abschlussbeurteilung
 
@@ -72,11 +72,11 @@ Claude Code zeigt ein häufiges Verhaltensmuster: Es beginnt mit dem Refactoring
 
 ### Systematischer Bias bei der Selbstevaluation
 
-Anthropic entdeckte 2026 in seiner Forschung ein tieferes Fehlermuster: **Wenn ein Agent gebeten wird, seine eigene Arbeit zu evaluieren, liefert er systematisch zu positive Bewertungen — selbst wenn ein menschlicher Beobachter die Qualität als eindeutig mangelhaft betrachten würde.** Das ist, als würde man einen Studenten bitten, seine eigene Klausur zu benoten — er wird bei seinen eigenen Antworten immer besonders nachsichtig sein.
+Anthropic entdeckte 2026 in seiner Forschung ein tieferes Fehlermuster: <strong>Wenn ein Agent gebeten wird, seine eigene Arbeit zu evaluieren, liefert er systematisch zu positive Bewertungen — selbst wenn ein menschlicher Beobachter die Qualität als eindeutig mangelhaft betrachten würde.</strong> Das ist, als würde man einen Studenten bitten, seine eigene Klausur zu benoten — er wird bei seinen eigenen Antworten immer besonders nachsichtig sein.
 
 Dieses Problem ist besonders gravierend bei subjektiven Aufgaben (wie Design-Ästhetik) — ob ein „Layout exquisit" ist, ist eine Frage der Beurteilung, und der Agent neigt zuverlässig zu positiven Bewertungen. Selbst bei Aufgaben mit überprüfbaren Ergebnissen kann die Leistung des Agenten durch schlechtes Urteilsvermögen beeinträchtigt werden.
 
-Die Lösung besteht nicht darin, den Agenten „objektiver" zu machen — dasselbe Modell, das generiert und evaluiert, begünstigt von Natur aus Nachsicht gegenüber sich selbst. **Die Lösung ist die Trennung von „Arbeiter" und „Prüfer".** Wie ein Student seine eigene Klausur nicht benoten sollte — man braucht einen unabhängigen Korrektor.
+Die Lösung besteht nicht darin, den Agenten „objektiver" zu machen — dasselbe Modell, das generiert und evaluiert, begünstigt von Natur aus Nachsicht gegenüber sich selbst. <strong>Die Lösung ist die Trennung von „Arbeiter" und „Prüfer".</strong> Wie ein Student seine eigene Klausur nicht benoten sollte — man braucht einen unabhängigen Korrektor.
 
 Ein unabhängiger evaluierender Agent, der speziell darauf abgestimmt ist, „pingelig" zu sein, ist weitaus effektiver, als den generierenden Agenten sich selbst evaluieren zu lassen. Experimentelle Daten von Anthropic:
 
@@ -108,13 +108,13 @@ Die Abschlussbeurteilung sollte nicht vom Agenten selbst vorgenommen werden. Der
 
 ### 2. Eine Drei-Schichten-Terminierungsvalidierung aufbauen
 
-- **Schicht 1: Syntax und statische Analyse**. Geringste Kosten, wenigste Informationen, aber muss bestanden werden. Das ist die Mindestprüfung — man muss die Wörter erst einmal richtig schreiben, bevor wir uns etwas anderes ansehen.
-- **Schicht 2: Laufzeitverhaltens-Verifikation**. Testausführung, App-Startup-Checks, Validierung kritischer Pfade. Dies ist der zentrale Beweis für die Fertigstellung. Es reicht nicht, es nur zu schreiben; es muss laufen.
-- **Schicht 3: Systemebene-Bestätigung**. End-to-End-Testing, Integrationsvalidierung, Nutzer szenario-Simulation. Die letzte Verteidigungslinie gegen voreilige Meldungen. Es reicht nicht zu laufen; es muss korrekt laufen.
+- <strong>Schicht 1: Syntax und statische Analyse</strong>. Geringste Kosten, wenigste Informationen, aber muss bestanden werden. Das ist die Mindestprüfung — man muss die Wörter erst einmal richtig schreiben, bevor wir uns etwas anderes ansehen.
+- <strong>Schicht 2: Laufzeitverhaltens-Verifikation</strong>. Testausführung, App-Startup-Checks, Validierung kritischer Pfade. Dies ist der zentrale Beweis für die Fertigstellung. Es reicht nicht, es nur zu schreiben; es muss laufen.
+- <strong>Schicht 3: Systemebene-Bestätigung</strong>. End-to-End-Testing, Integrationsvalidierung, Nutzer szenario-Simulation. Die letzte Verteidigungslinie gegen voreilige Meldungen. Es reicht nicht zu laufen; es muss korrekt laufen.
 
 ### 3. Gute „Rotstift-Korrekturen" für Agenten entwerfen
 
-OpenAI hat während seiner Codex-Praxis ein besonders wirksames Muster eingeführt: **Fehlermeldungen für Agenten sollten Korrekturanweisungen enthalten**. Nicht nur ein großes rotes Kreuz wie ein fauler Korrektor ziehen; wie ein guter Lehrer an den Rand schreiben „So sollten Sie das ändern". Nicht `"Test failed"` verwenden, sondern `"Test failed: POST /api/reset-password returned 500. Check that the email service config exists in environment variables. The template file should be at templates/reset-email.html."` Dieses spezifische, umsetzbare Feedback ermöglicht dem Agenten, sich ohne menschliches Eingreifen selbst zu korrigieren.
+OpenAI hat während seiner Codex-Praxis ein besonders wirksames Muster eingeführt: <strong>Fehlermeldungen für Agenten sollten Korrekturanweisungen enthalten</strong>. Nicht nur ein großes rotes Kreuz wie ein fauler Korrektor ziehen; wie ein guter Lehrer an den Rand schreiben „So sollten Sie das ändern". Nicht `"Test failed"` verwenden, sondern `"Test failed: POST /api/reset-password returned 500. Check that the email service config exists in environment variables. The template file should be at templates/reset-email.html."` Dieses spezifische, umsetzbare Feedback ermöglicht dem Agenten, sich ohne menschliches Eingreifen selbst zu korrigieren.
 
 ### 4. Laufzeit-Signale erfassen
 
@@ -126,21 +126,21 @@ Wirksame Laufzeit-Signale umfassen:
 
 ## Fallbeispiel aus der Praxis
 
-**Aufgabe**: Passwort-Zurücksetzen-Funktionalität für Benutzer implementieren. Umfasst Datenbankoperationen, E-Mail-Versand und API-Endpunkt-Änderungen.
+<strong>Aufgabe</strong>: Passwort-Zurücksetzen-Funktionalität für Benutzer implementieren. Umfasst Datenbankoperationen, E-Mail-Versand und API-Endpunkt-Änderungen.
 
-**Voreiliger Abgabeweg**: Agent ändert Datenbankschema, schreibt API-Endpunkt, fügt E-Mail-Vorlage hinzu, führt Unit-Tests durch (bestanden) und meldet Fertigstellung. Das Klausurheft ist komplett ausgefüllt.
+<strong>Voreiliger Abgabeweg</strong>: Agent ändert Datenbankschema, schreibt API-Endpunkt, fügt E-Mail-Vorlage hinzu, führt Unit-Tests durch (bestanden) und meldet Fertigstellung. Das Klausurheft ist komplett ausgefüllt.
 
-**Tatsächliche Punkteabzüge**: (1) End-to-End-Ablauf ungetestet — das tatsächliche Senden und Verifizieren des Zurücksetzungslinks wurde nie bestätigt. (2) Datenbankmigration scheiterte nach teilweiser Ausführung, was eine Schemainkonsistenz verursachte. (3) E-Mail-Service-Konfiguration fehlte in der Zielumgebung.
+<strong>Tatsächliche Punkteabzüge</strong>: (1) End-to-End-Ablauf ungetestet — das tatsächliche Senden und Verifizieren des Zurücksetzungslinks wurde nie bestätigt. (2) Datenbankmigration scheiterte nach teilweiser Ausführung, was eine Schemainkonsistenz verursachte. (3) E-Mail-Service-Konfiguration fehlte in der Zielumgebung.
 
-**Harness-Intervention**: Terminierungsvalidierung erzwungen — (1) Vollständige App starten, um die Erreichbarkeit des Reset-Endpunkts zu verifizieren; (2) Den vollständigen Reset-Flow ausführen; (3) Datenbankzustandskonsistenz verifizieren. Alle Defekte wurden innerhalb der Session gefunden, was 5-10x der Kosten für spätere Reparaturen einsparte. Der unabhängige Korrektor fand die echten Probleme.
+<strong>Harness-Intervention</strong>: Terminierungsvalidierung erzwungen — (1) Vollständige App starten, um die Erreichbarkeit des Reset-Endpunkts zu verifizieren; (2) Den vollständigen Reset-Flow ausführen; (3) Datenbankzustandskonsistenz verifizieren. Alle Defekte wurden innerhalb der Session gefunden, was 5-10x der Kosten für spätere Reparaturen einsparte. Der unabhängige Korrektor fand die echten Probleme.
 
 ## Wichtigste Erkenntnisse
 
-- **Agenten sind systematisch über confident** — der Confidence-Calibration-Bias ist eine objektive Realität. Das Klausurheft ausgefüllt zu haben bedeutet nicht, dass man alles richtig gemacht hat.
-- **Die Abschlussbeurteilung muss externalisiert werden** — der Harness verifiziert unabhängig; vertrauen Sie nicht den „Gefühlen" des Agenten. Studenten können ihre eigenen Klausuren nicht benoten.
-- **Alle drei Validierungsschichten sind unerlässlich** — Syntax bestanden, Verhalten bestanden, System bestanden, Schicht für Schicht fortschreitend.
-- **Fehlermeldungen sollten wie die Rotstift-Korrektur eines guten Lehrers sein** — spezifische Korrekturschritte enthalten, damit der Agent sich selbst korrigieren kann.
-- **Kein Refactoring, bis die Kernfunktionalität verifiziert ist** — die Abschlussprioritäts-Einschränkung ist der Schlüssel zur Verhinderung vorzeitiger Optimierung.
+- <strong>Agenten sind systematisch über confident</strong> — der Confidence-Calibration-Bias ist eine objektive Realität. Das Klausurheft ausgefüllt zu haben bedeutet nicht, dass man alles richtig gemacht hat.
+- <strong>Die Abschlussbeurteilung muss externalisiert werden</strong> — der Harness verifiziert unabhängig; vertrauen Sie nicht den „Gefühlen" des Agenten. Studenten können ihre eigenen Klausuren nicht benoten.
+- <strong>Alle drei Validierungsschichten sind unerlässlich</strong> — Syntax bestanden, Verhalten bestanden, System bestanden, Schicht für Schicht fortschreitend.
+- <strong>Fehlermeldungen sollten wie die Rotstift-Korrektur eines guten Lehrers sein</strong> — spezifische Korrekturschritte enthalten, damit der Agent sich selbst korrigieren kann.
+- <strong>Kein Refactoring, bis die Kernfunktionalität verifiziert ist</strong> — die Abschlussprioritäts-Einschränkung ist der Schlüssel zur Verhinderung vorzeitiger Optimierung.
 
 ## Weiterführende Literatur
 
@@ -151,8 +151,8 @@ Wirksame Laufzeit-Signale umfassen:
 
 ## Übungen
 
-1. **Terminierungsvalidierungs-Funktion entwerfen**: Entwerfen Sie eine vollständige Terminierungsvalidierung für eine Aufgabe, die eine Datenbankmigration und API-Änderung umfasst. Listen Sie die erforderlichen Laufzeit-Signale und die Bestehens-/Durchfall-Kriterien für jedes Signal auf. Führen Sie es mit einer realen Aufgabe durch und dokumentieren Sie, welche verborgenen Probleme es findet.
+1. <strong>Terminierungsvalidierungs-Funktion entwerfen</strong>: Entwerfen Sie eine vollständige Terminierungsvalidierung für eine Aufgabe, die eine Datenbankmigration und API-Änderung umfasst. Listen Sie die erforderlichen Laufzeit-Signale und die Bestehens-/Durchfall-Kriterien für jedes Signal auf. Führen Sie es mit einer realen Aufgabe durch und dokumentieren Sie, welche verborgenen Probleme es findet.
 
-2. **Calibration-Bias-Messung**: Wählen Sie 10 verschiedene Arten von Codierungsaufgaben und dokumentieren Sie die selbst berichtete Abschlusszuversicht des Agenten versus die tatsächliche Qualität des Abschlusses. Berechnen Sie den Bias-Wert und analysieren Sie seine Beziehung zur Aufgabenkomplexität.
+2. <strong>Calibration-Bias-Messung</strong>: Wählen Sie 10 verschiedene Arten von Codierungsaufgaben und dokumentieren Sie die selbst berichtete Abschlusszuversicht des Agenten versus die tatsächliche Qualität des Abschlusses. Berechnen Sie den Bias-Wert und analysieren Sie seine Beziehung zur Aufgabenkomplexität.
 
-3. **Mehrschichtige-Verteidigung-Experiment**: Führen Sie drei Konfigurationen mit demselben Aufgabensatz durch — (a) nur statische Analyse, (b) zusätzlich Unit-Testing, (c) vollständige Drei-Schichten-Validierung. Vergleichen Sie den Anteil voreiliger Fertigstellungsmeldungen und die Anzahl unentdeckter Defekte.
+3. <strong>Mehrschichtige-Verteidigung-Experiment</strong>: Führen Sie drei Konfigurationen mit demselben Aufgabensatz durch — (a) nur statische Analyse, (b) zusätzlich Unit-Testing, (c) vollständige Drei-Schichten-Validierung. Vergleichen Sie den Anteil voreiliger Fertigstellungsmeldungen und die Anzahl unentdeckter Defekte.

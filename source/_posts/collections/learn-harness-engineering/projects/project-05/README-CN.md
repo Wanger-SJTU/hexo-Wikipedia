@@ -19,10 +19,10 @@ categories:
 
 | 目录 | 含义 |
 |------|------|
-| `starter/` | **起点**——基于 P4 solution，新增多轮问答历史功能待实现。 |
-| `solution/single-role/` | **变体 A**——一个代理完成所有工作（规划 + 实现 + 自我评审）。基础质量。 |
-| `solution/gen-eval/` | **变体 B**——生成器 + 评估器模式。较高质量，有修订证据。 |
-| `solution/plan-gen-eval/` | **变体 C**——计划器 + 生成器 + 评估器。最高质量，有冲刺合约和评分标准。 |
+| `starter/` | <strong>起点</strong>——基于 P4 solution，新增多轮问答历史功能待实现。 |
+| `solution/single-role/` | <strong>变体 A</strong>——一个代理完成所有工作（规划 + 实现 + 自我评审）。基础质量。 |
+| `solution/gen-eval/` | <strong>变体 B</strong>——生成器 + 评估器模式。较高质量，有修订证据。 |
+| `solution/plan-gen-eval/` | <strong>变体 C</strong>——计划器 + 生成器 + 评估器。最高质量，有冲刺合约和评分标准。 |
 
 ## 使用方法
 

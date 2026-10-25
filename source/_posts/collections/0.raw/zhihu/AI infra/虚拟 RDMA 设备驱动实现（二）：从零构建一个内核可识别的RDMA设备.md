@@ -15,7 +15,7 @@ source_url: https://zhuanlan.zhihu.com/p/1917713484306686209
 ---
 
 
-**引言**
+<strong>引言</strong>
 
 在 [《虚拟 RDMA 设备驱动实现（一）：环境配置与Linux内核模块初探》](https://link.zhihu.com/?target=https%3A//mp.weixin.qq.com/s%3F__biz%3DMzkwNTMzOTE2MA%3D%3D%26mid%3D2247487214%26idx%3D1%26sn%3D6b297124823c8f2297227c64bc052106%26scene%3D21%23wechat_redirect) 中，我们已经完成了内核驱动开发所需的基础设施构建。通过部署一个标准化的虚拟化开发环境，并实践了 out-of-tree 内核模块的完整生命周期，我们确立了在内核空间执行自定义代码的基本能力。
 
@@ -23,7 +23,7 @@ source_url: https://zhuanlan.zhihu.com/p/1917713484306686209
 
 本文的核心目标，是将上述理论知识付诸实践，编写一个名为 urdma 的最小化虚拟 RDMA 驱动。我们将通过内核自身的接口（如 sysfs 文件系统和 rdma link show 工具）来验证我们的设备是否已成功注册。
 
-**勘误**
+<strong>勘误</strong>
 
 在上一篇文章的 2.3.2 节（启动 QEMU 虚拟机） 中，用于配置 9P 共享文件夹的参数存在错误。
 
@@ -34,10 +34,10 @@ source_url: https://zhuanlan.zhihu.com/p/1917713484306686209
 
 security_model=passthrough 可能会导致虚拟机内无法读写共享文件夹的内容。
 
-**04、Linux RDMA 子系统核心概念**
+<strong>04、Linux RDMA 子系统核心概念</strong>
 在之前的文章中，我们学习了 Linux 内核模块的基础知识。现在，我们将深入探讨 RDMA 的部分，特别是 Linux 内核中 RDMA 子系统（也常被称为 InfiniBand 子系统或 Verbs 子系统）的核心概念和架构。这个子系统为各种 RDMA 硬件（如 InfiniBand HCA、支持 RoCE 或 iWARP 的网卡）提供了一个统一的编程接口。
 
-**4.1 RDMA 硬件抽象：HCA (Host Channel Adapter)**
+<strong>4.1 RDMA 硬件抽象：HCA (Host Channel Adapter)</strong>
 
 在 RDMA 的语境中，执行 RDMA 操作的网络接口卡通常被称为 HCA (Host Channel Adapter)。可以将其视为一种智能网卡，它能够直接处理 RDMA 协议，执行内存注册、数据传输调度、完成通知等任务，从而减轻 CPU 的负担。
 
@@ -48,7 +48,7 @@ security_model=passthrough 可能会导致虚拟机内无法读写共享文件�
 - RoCE (RDMA over Converged Ethernet) NICs: 在以太网链路层或 IP 层之上运行 RDMA。
 - iWARP (Internet Wide Area RDMA Protocol) NICs: 在 TCP/IP 之上运行 RDMA。Linux RDMA 子系统的目标之一就是为这些不同类型的 HCA 提供一个统一的驱动模型和用户接口。在内核中，每个物理 HCA 设备通常由一个 struct ib_device 结构体来表示。
 
-**4.2 Verbs API：RDMA 操作的基石**
+<strong>4.2 Verbs API：RDMA 操作的基石</strong>
 
 Verbs API 是 RDMA 编程的核心。它是一组定义了如何与 RDMA 硬件交互的函数和数据结构（Verbs 指的是操作，如 post send, poll cq 等）。应用程序（无论是用户态还是内核态）通过 Verbs API 来分配和管理 RDMA 资源，并发起 RDMA 操作。
 
@@ -56,7 +56,7 @@ Verbs API 的设计是硬件无关的，这意味着理论上，使用 Verbs 编
 
 以下是 Verbs API 中一些最核心的资源对象：
 
-**4.2.1 保护域 (Protection Domain - PD)**
+<strong>4.2.1 保护域 (Protection Domain - PD)</strong>
 
 概念： 保护域 (内核中的struct ib_pd) 是一个资源隔离的容器。所有其他的 RDMA 资源，如内存区域 (MR)、完成队列 (CQ)、队列对 (QP) 等，都必须与一个 PD 相关联。
 
@@ -65,13 +65,13 @@ Verbs API 的设计是硬件无关的，这意味着理论上，使用 Verbs 编
 操作：
 
 - ib_alloc_pd(): 分配一个 PD。
-- ib_dealloc_pd(): 释放一个 PD。**4.2.2 内存区域 (Memory Region - MR)**
+- ib_dealloc_pd(): 释放一个 PD。<strong>4.2.2 内存区域 (Memory Region - MR)</strong>
 
 概念： 内存区域 (内核中的struct ib_mr) 代表一块被注册用于 RDMA 操作的内存缓冲区。由于 HCA 需要直接访问这块内存（绕过 CPU 和操作系统内存管理），这块内存必须被固定 (pin)在物理内存中，以防止被交换到磁盘，并且其物理地址必须对 HCA 可见。
 
 目的： MR 将应用程序的虚拟地址空间中的内存块映射给 HCA，并授予 HCA 对这块内存的读/写访问权限。MR 还包含访问权限（本地写、远程读、远程写、原子操作等）。
 
-**关键属性：**
+<strong>关键属性：</strong>
 
 lkey (local key): 用于本地 HCA 访问该 MR。
 
@@ -83,7 +83,7 @@ rkey (remote key): 用于远程 HCA 访问该 MR (建立连接后将 rkey 告知
 - ib_reg_user_mr(): 为用户空间的虚拟地址范围注册一个 MR 。
 - ib_dereg_mr(): 注销一个 MR。
 
-**4.2.3 完成队列 (Completion Queue - CQ)**
+<strong>4.2.3 完成队列 (Completion Queue - CQ)</strong>
 
 概念： 完成队列 (内核中的struct ib_cq) 用于接收 RDMA 操作完成的通知。当一个发送或接收操作（或其他 RDMA 操作）完成时，HCA 会在该操作关联的 CQ 中放置一个完成队列项 (Completion Queue Entry - CQE)。
 
@@ -94,7 +94,7 @@ rkey (remote key): 用于远程 HCA 访问该 MR (建立连接后将 rkey 告知
 - ib_create_cq(): 创建一个 CQ。
 - ib_destroy_cq(): 销毁一个 CQ。
 - ib_poll_cq(): 轮询 CQ 以获取已完成的 CQE。
-- ib_req_notify_cq(): 请求在 CQ 上有新的 CQE 到达时产生一个中断或事件。**4.2.4 Queue Pair - QP**
+- ib_req_notify_cq(): 请求在 CQ 上有新的 CQE 到达时产生一个中断或事件。<strong>4.2.4 Queue Pair - QP</strong>
 
 概念： Queue Pair (内核中的struct ib_qp) 是 RDMA 通信的核心引擎。顾名思义，它包含一对工作队列：
 
@@ -115,7 +115,7 @@ QP 类型：
 - ib_post_send(): 向 QP 的发送队列提交一个发送工作请求。
 - ib_post_recv(): 向 QP 的接收队列提交一个接收工作请求。这些是 Verbs API 中最基础和最常用的对象。一个典型的 RDMA 应用流程要创建和配置这些对象后才能开始数据传输。
 
-**4.3 内核 RDMA 架构概览**
+<strong>4.3 内核 RDMA 架构概览</strong>
 
 Linux 内核中的 RDMA 子系统是一个分层架构，旨在将硬件细节与上层应用和协议分离开来。
 
@@ -154,11 +154,11 @@ Linux 内核中的 RDMA 子系统是一个分层架构，旨在将硬件细节�
 - ib_uverbs (User Verbs): 这是内核 RDMA 子系统暴露给用户空间的关键接口。它通常实现为一个字符设备（如 /dev/infiniband/uverbs0, /dev/infiniband/uverbs1 等，每个 RDMA 设备对应一个）。用户空间的 libibverbs 通过对此设备文件执行 ioctl 系统调用来请求内核分配 RDMA 资源、提交工作请求等。ib_uverbs 会将这些请求转换为对 ib_core 或具体硬件驱动的调用。
 - ib_core: 这是内核当中 RDMA 子系统的核心。它定义了核心的数据结构（如 struct ib_device, struct ib_qp 等）、Verbs API 的内核态实现框架、设备注册和管理机制等。硬件驱动则会向 ib_core 注册自己的实现。
 - Hardware Driver Layer: 这一层包含了特定 RDMA 硬件的驱动程序（例如 Mellanox 的 mlx5_core，Intel 的 i40iw，Chelsio 的 cxgb4，以及软件实现的 rxe - SoftRoCE）。这些驱动程序实现了 ib_core 定义的硬件操作函数（通过函数指针表），并负责与物理硬件交互。本文的目标就是编写这样一个（尽管是虚拟的）驱动程序。
-- RDMA Hardware (HCAs): 物理的 RDMA 网卡。**4.4 关键内核数据结构简介**
+- RDMA Hardware (HCAs): 物理的 RDMA 网卡。<strong>4.4 关键内核数据结构简介</strong>
 
 在编写 RDMA 内核驱动时，我们会频繁接触到 ib_core 定义的一些关键数据结构：
 
-**4.4.1 struct ib_device (RDMA 设备描述)**
+<strong>4.4.1 struct ib_device (RDMA 设备描述)</strong>
 
 定义于 <rdma/ib_verbs.h>。
 
@@ -176,7 +176,7 @@ Linux 内核中的 RDMA 子系统是一个分层架构，旨在将硬件细节�
 - port_data: 指向一个 struct ib_port_data 数组，每个元素对应一个物理端口的数据。
 - attrs: 一个内嵌的 struct ib_device_attr 结构，用于缓存设备属性。
 
-**4.4.2 struct ib_device_ops (设备操作函数表)**
+<strong>4.4.2 struct ib_device_ops (设备操作函数表)</strong>
 
 定义于 <rdma/ib_verbs.h>。
 
@@ -198,27 +198,27 @@ Linux 内核中的 RDMA 子系统是一个分层架构，旨在将硬件细节�
 - 对象大小成员: 结构体末尾有一系列通过 DECLARE_RDMA_OBJ_SIZE 宏声明的成员，这些 size_t 类型的成员用于告知 ib_core 驱动程序为相应 RDMA 对象（如 AH, CQ, PD 等）定义的包装结构体的大小。驱动程序在初始化其ib_device_ops 实例时，会使用 INIT_RDMA_OBJ_SIZE(ib_pd, struct urdma_pd, ibpd) 宏来填充这些字段。这使得 ib_core 在分配这些对象（例如，当用户空间请求创建一个 PD 时）时，能够分配足够的内存以容纳驱动的私有数据。
 - 以及其他众多 Verbs 操作对应的函数指针。
 
-**4.4.3 驱动如何与 ib_core 交互**
+<strong>4.4.3 驱动如何与 ib_core 交互</strong>
 
 一个典型的 RDMA 驱动与 ib_core 的基本交互流程如下：
 
-**1. 模块加载时：**
+<strong>1. 模块加载时：</strong>
 
 - 驱动程序（例如在其模块初始化函数中，或 PCI 驱动的 probe 函数中）决定创建一个 RDMA 功能单元。
 - 调用 ib_alloc_device 来分配一个包含 struct ib_device 的自定义设备结构体。
 - 驱动程序填充 struct ib_device 的各种属性（如 node_type, phys_port_cnt 等）。
 - 驱动程序定义一个 static const struct ib_device_ops my_ops = { .owner = THIS_MODULE, .uverbs_abi_ver = X, /* ...其他函数指针和大小字段... */ };。
 - 调用 ib_set_device_ops 将 my_ops 的内容复制到 dev->ops 中。
-- 调用 ib_register_device 将初始化好的 ib_device 注册到 ib_core。**2. 运行时：**
+- 调用 ib_register_device 将初始化好的 ib_device 注册到 ib_core。<strong>2. 运行时：</strong>
 
 当用户空间应用程序通过 libibverbs 请求 RDMA 操作时，ib_core 或 ib_uverbs 会查找对应的 ib_device，并调用其 ops 结构中相应的函数指针，从而执行到驱动程序实现的代码。
 
-**3. 模块卸载时：**
+<strong>3. 模块卸载时：</strong>
 
 - 驱动程序需要调用 ib_unregister_device 来从 ib_core 注销设备。
 - 之后，驱动程序应调用 ib_dealloc_device 来释放之前通过 ib_alloc_device() 分配的内存。理解这些核心概念和数据结构，是编写 RDMA 内核驱动程序的第一步。在下一章中，我们将开始动手，尝试编写一个最简单的 RDMA 内核驱动，它能够注册一个虚拟的 ib_device 并被 Linux 内核的 RDMA 子系统所识别。
 
-**05、编写一个最小化的 RDMA 内核驱动**
+<strong>05、编写一个最小化的 RDMA 内核驱动</strong>
 在理解了 Linux 内核模块和 RDMA 子系统的核心概念之后，我们终于可以开始动手编写一个 RDMA 内核驱动了。本章的目标是创建一个“最小可行产品” (Minimum Viable Product, MVP)：一个能够成功加载到内核，注册一个（或多个）虚拟 RDMA 设备的驱动程序。
 
 我们将构建一个名为 urdma 的驱动程序，它代表一个用户空间可访问的虚拟 RDMA 设备。这个驱动将为我们后续探索更复杂的 RDMA 功能提供一个基础框架。
@@ -230,7 +230,7 @@ Linux 内核中的 RDMA 子系统是一个分层架构，旨在将硬件细节�
 - 实现 ib_device_ops 中的必要回调函数（即使是空实现或最小实现）。
 - 分配、初始化并注册 ib_device 实例。
 
-**5.1 目标：让内核 RDMA 子系统识别我们的虚拟设备**
+<strong>5.1 目标：让内核 RDMA 子系统识别我们的虚拟设备</strong>
 
 对于这个最小化的 urdma 驱动，我们的首要目标不是实现完整的数据传输功能，而是将它成功加载到内核，正确地创建并注册struct ib_device 实例，从而让这个虚拟的 RDMA 设备能够被 Linux 内核的 RDMA 子系统本身所识别和管理。
 
@@ -239,7 +239,7 @@ Linux 内核中的 RDMA 子系统是一个分层架构，旨在将硬件细节�
 - 内核提供的 RDMA 工具rdma link show应该能够枚举出我们注册的虚拟 RDMA 设备及其端口。
 - 注册成功后，这些虚拟设备应该在 sysfs文件系统中的 /sys/class/infiniband/ 目录下创建对应的条目（例如 urdma0, urdma1）。
 
-**5.2 驱动核心数据结构 (urdma.h)**
+<strong>5.2 驱动核心数据结构 (urdma.h)</strong>
 
 首先，我们定义驱动所需的核心数据结构。这些结构将保存在一个头文件 urdma.h 中，以便在驱动的各个部分共享。
 
@@ -287,7 +287,7 @@ struct urdma_ucontext {
 - to_udev(): 这是一个实用宏，用于从 ib_core 传递过来的 struct ib_device * 指针安全地转换回我们自定义的 struct urdma_dev * 指针。
 - struct urdma_pd, struct urdma_cq, struct urdma_qp, struct urdma_ucontext: 这些是对应标准 Verbs 对象的包装结构。这种模式为将来扩展驱动功能（例如，为每个对象存储额外的私有数据）提供了便利，同时保持了与 ib_core 的兼容性。
 
-**5.3 模块初始化与退出 (urdma_main.c)**
+<strong>5.3 模块初始化与退出 (urdma_main.c)</strong>
 
 驱动的主逻辑，包括模块的加载和卸载，将放在一个名为 urdma_main.c 的文件中。
 
@@ -385,19 +385,19 @@ module_init(urdma_init_module);
 module_exit(urdma_exit_module);
 
 // ib_device_ops 和 urdma_register_device 的定义将在后文给出
-**初始化流程 (urdma_init_module)：**
+<strong>初始化流程 (urdma_init_module)：</strong>
 
-**1. 创建设备:**
+<strong>1. 创建设备:</strong>
 
 - urdma_alloc_device(i): 调用 ib_alloc_device(urdma_dev, ibdev) 来分配一个 urdma_dev 结构体。ib_alloc_device 是 ib_core 提供的标准函数，它会为包含 ib_device 的自定义结构分配内存并进行基础初始化。我们为设备的 GID (Global Identifier) 成员赋予了固定的值，这个值是从 rxe 设备获取到的示例值。
-- urdma_register_device(urdma_devs[i]): 此函数（稍后定义）将负责填充 urdma_devs[i]->ibdev 的其余字段，并调用 ib_register_device() 将其注册到 ib_core。**2. 错误处理 (err_cleanup): **如果在初始化过程中发生错误，此标签下的代码负责回滚操作，即注销并释放所有已经成功创建的设备。
+- urdma_register_device(urdma_devs[i]): 此函数（稍后定义）将负责填充 urdma_devs[i]->ibdev 的其余字段，并调用 ib_register_device() 将其注册到 ib_core。<strong>2. 错误处理 (err_cleanup):</strong>如果在初始化过程中发生错误，此标签下的代码负责回滚操作，即注销并释放所有已经成功创建的设备。
 
-**退出流程 (urdma_exit_module)：**
+<strong>退出流程 (urdma_exit_module)：</strong>
 
-**1. 循环清理设备:**
+<strong>1. 循环清理设备:</strong>
 
 - ib_unregister_device(&urdma_devs[i]->ibdev): 从 ib_core 注销设备。
-- urdma_dealloc_device(urdma_devs[i]): 调用 ib_dealloc_device() 释放设备结构占用的内存。**5.4 定义和实现 ib_device_ops**
+- urdma_dealloc_device(urdma_devs[i]): 调用 ib_dealloc_device() 释放设备结构占用的内存。<strong>5.4 定义和实现 ib_device_ops</strong>
 
 struct ib_device_ops 是一个包含大量函数指针的结构体，它定义了驱动程序如何响应来自 ib_core 的各种 verbs 操作请求。对于我们的最小化驱动，许多这些函数可以只是存根 (stub) 实现。
 
@@ -499,7 +499,7 @@ static const struct ib_device_ops urdma_device_ops = {
 - INIT_RDMA_OBJ_SIZE Macros: 如 INIT_RDMA_OBJ_SIZE(ib_pd, urdma_pd, ibpd)，这些宏告知 ib_core 如何为该驱动分配和管理自定义的 Verbs 对象（如 urdma_pd），确保内存大小和成员偏移正确，如果不进行大小的设置或者设置了错误的大小，很有可能会导致系统崩溃。
 - alloc_ucontext / dealloc_ucontext: 这两个函数对于用户空间通过 ibv_open_device() 和 ibv_close_device() 使用设备至关重要。
 - Stub Implementations: 对于许多其他的 Verbs 操作（如 create_qp, post_send 等），在最小化驱动中，它们可以简单地返回成功 (0)、不支持操作 (-EOPNOTSUPP 或 -ENOSYS)，或者仅打印一条调试信息。
-- MR (Memory Region) Ops: get_dma_mr 和 reg_user_mr 至少需要分配一个 struct ib_mr（或其包装结构）并返回，返回空指针会导致错误。dereg_mr 则负责释放。**5.5 注册 struct ib_device**
+- MR (Memory Region) Ops: get_dma_mr 和 reg_user_mr 至少需要分配一个 struct ib_mr（或其包装结构）并返回，返回空指针会导致错误。dereg_mr 则负责释放。<strong>5.5 注册 struct ib_device</strong>
 
 urdma_register_device 函数负责在 ib_alloc_device 之后，进一步初始化 ib_device 结构并最终调用 ib_register_device() 将其注册到内核 RDMA 子系统。
 
@@ -535,7 +535,7 @@ static int urdma_register_device(struct urdma_dev *urdma)
 - dev->phys_port_cnt: 物理端口数量。
 - ib_set_device_ops(dev, &urdma_device_ops): 至关重要，将实现的 ops 函数表关联到此 ib_device。
 
-**5.6 编译、加载模块，并验证**
+<strong>5.6 编译、加载模块，并验证</strong>
 
 完成上述代码后，就可以编译、加载并测试我们的最小化 RDMA 驱动了。
 
@@ -600,7 +600,7 @@ link urdma1/1 state ACTIVE physical_state LINK_UP
 
 如果以上步骤都能成功执行并看到预期的输出，那么恭喜你！你已经成功地创建了一个能被 Linux 内核 RDMA 子系统识别的虚拟 RDMA 设备驱动。这为后续实现更具体的 Verbs 功能以及与用户空间的交互打下了最根本的基础。
 
-**06、总结**
+<strong>06、总结</strong>
 至此，我们已经成功地完成了一个重要的里程碑：从零开始构建并运行了一个最小化的 Linux RDMA 内核驱动程序。我们经历了从理解内核模块基础、掌握 RDMA 子系统核心概念，到亲手编写代码定义驱动结构、实现关键的 ib_device_ops 回调以及注册虚拟 RDMA设备的全过程。
 
 通过编译、加载我们的 urdma 模块，并使用 rdma link show 验证，我们证明了即使是一个功能上极简的驱动，也能够正确地融入 Linux RDMA 生态系统，被内核识别并与用户空间应用进行初步交互。
@@ -609,27 +609,27 @@ link urdma1/1 state ACTIVE physical_state LINK_UP
 
 在之后的文章中，我们将进入用户空间，通过为 rdma-core 添加一个 urdma provider，使 rdma-core 能够通过 uverbs 接口（/dev/infiniband/uverbsX）与我们的内核驱动进行通信。有兴趣的读者可以继续关注之后的文章。
 
-**07、往期推荐**
+<strong>07、往期推荐</strong>
 [虚拟 RDMA 设备驱动实现（一）：环境配置与Linux内核模块初探](https://link.zhihu.com/?target=https%3A//mp.weixin.qq.com/s%3F__biz%3DMzkwNTMzOTE2MA%3D%3D%26mid%3D2247487214%26idx%3D1%26sn%3D6b297124823c8f2297227c64bc052106%26scene%3D21%23wechat_redirect)
 
 [blue-rdma 设计介绍 （二）—— 软硬件架构](https://link.zhihu.com/?target=https%3A//mp.weixin.qq.com/s%3F__biz%3DMzkwNTMzOTE2MA%3D%3D%26mid%3D2247487203%26idx%3D1%26sn%3D20fe27423d1286a18af6858f53195c88%26scene%3D21%23wechat_redirect)
 
-![](https://pica.zhimg.com/v2-289aec2250cabd88e5e992ab909a57de_1440w.jpg)**达坦科技始**终致力于打造高性能**AI+Cloud基础设施平台**，积极推动AI应用的落地。达坦科技通过**软硬件深度融合**的方式，提供**AI推理引擎和高性能网络**，为AI应用提供**弹性、便利、经济**的基础设施服务，以此满足不同行业客户对AI+Cloud的需求。
+![](https://pica.zhimg.com/v2-289aec2250cabd88e5e992ab909a57de_1440w.jpg)<strong>达坦科技始</strong>终致力于打造高性能<strong>AI+Cloud基础设施平台</strong>，积极推动AI应用的落地。达坦科技通过<strong>软硬件深度融合</strong>的方式，提供<strong>AI推理引擎和高性能网络</strong>，为AI应用提供<strong>弹性、便利、经济</strong>的基础设施服务，以此满足不同行业客户对AI+Cloud的需求。
 
-**公众号**：达坦科技DatenLord
+<strong>公众号</strong>：达坦科技DatenLord
 
-**DatenLord官网**：
+<strong>DatenLord官网</strong>：
 
 [https://datenlord.github.io/zh-cn/](https://link.zhihu.com/?target=https%3A//datenlord.github.io/zh-cn/)
 
-**知乎账号：**
+<strong>知乎账号：</strong>
 
 [https://www.zhihu.com/org/da-tan-ke-ji](https://www.zhihu.com/org/da-tan-ke-ji)
 
-**B站**：
+<strong>B站</strong>：
 
 [https://space.bilibili.com/2017027518](https://link.zhihu.com/?target=https%3A//space.bilibili.com/2017027518)
 
-**邮箱：**info@datenlord.com
+<strong>邮箱：</strong>info@datenlord.com
 
-如果您有兴趣加入**达坦科技Rust前沿技术交流群、硬件敏捷开发和验证方法学讨论群或blue-rdma**交流群，请添加小助手微信：DatenLord_Tech
+如果您有兴趣加入<strong>达坦科技Rust前沿技术交流群、硬件敏捷开发和验证方法学讨论群或blue-rdma</strong>交流群，请添加小助手微信：DatenLord_Tech

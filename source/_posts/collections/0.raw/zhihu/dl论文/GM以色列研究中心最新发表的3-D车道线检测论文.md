@@ -17,7 +17,7 @@ source_url: https://zhuanlan.zhihu.com/p/133623737
 
 2020年3月11日GM以色列研发中心在arXiv上传论文“Semi-Local 3D Lane Detection and Uncertainty Estimation”。
 
-![](https://pica.zhimg.com/v2-8813283703b9842a9ce53ded9931c384_r.jpg)**摘要**：本文提出了一种基于相机的新型DNN方法，用于带不确定性估计的3D车道线检测。该方法基于半局部BEV（鸟瞰视角）的网格表示形式，其将车道线分解为简单车道线段。该方法结合了线段学习的参数化模型和聚类线段成为全车道线的深度特征嵌入。这种结合可以将该方法推广到复杂的车道拓扑结构、曲率和曲面几何。此外，该方法是第一个为车道线检测任务提供基于学习估计不确定性的方法。
+![](https://pica.zhimg.com/v2-8813283703b9842a9ce53ded9931c384_r.jpg)<strong>摘要</strong>：本文提出了一种基于相机的新型DNN方法，用于带不确定性估计的3D车道线检测。该方法基于半局部BEV（鸟瞰视角）的网格表示形式，其将车道线分解为简单车道线段。该方法结合了线段学习的参数化模型和聚类线段成为全车道线的深度特征嵌入。这种结合可以将该方法推广到复杂的车道拓扑结构、曲率和曲面几何。此外，该方法是第一个为车道线检测任务提供基于学习估计不确定性的方法。
 
 如图是有不确定性估计网络的基于摄像机3-D车道线检测示意图。该方法适用于“鸟瞰视角（Bird Eye View）”透视图，该视图被栅格化为粗网格。 输出所有网格的参数化3-D曲线表示，然后处理形成整个3-D车道曲线以及检测的不确定性估计。
 
@@ -53,7 +53,7 @@ source_url: https://zhuanlan.zhihu.com/p/133623737
 ![](https://pic4.zhimg.com/v2-600381c5273d062bd9b6e8ad7cb4fd55_r.jpg)
 ![](https://pica.zhimg.com/v2-00c8c06851ed1870c02313b571f1fa26_r.jpg)注明：同时，大家也可以参考百度阿波罗发表的3D车道线检测文章【2】。
 
-**参考文献**
+<strong>参考文献</strong>
 
 - Garnett, N., Cohen, R., Pe’er, T., Lahav, R., Levi, D. ”3D-lanenet: end-to-end 3d multiple lane detection“，ICCV 2019.
 - Y Guo et al., &#34;Gen-LaneNet: A Generalized and Scalable Approach for 3D Lane Detection&#34;, arXiv 2003.10656, March 24, 2020.

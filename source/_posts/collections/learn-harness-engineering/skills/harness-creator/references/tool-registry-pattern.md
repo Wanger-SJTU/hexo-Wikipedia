@@ -21,13 +21,13 @@ Agents need tools (shell, file edit, search, etc.) to be productive. But unbound
 - Race conditions from concurrent tool calls
 - Silent policy violations from misconfigured permissions
 
-The solution is a **fail-closed registry** with explicit concurrency classification and a multi-source permission pipeline.
+The solution is a <strong>fail-closed registry</strong> with explicit concurrency classification and a multi-source permission pipeline.
 
 ## Golden Rules
 
 ### Default to Fail-Closed
 
-Tools are **non-concurrent** and **non-read-only** unless explicitly marked safe. This prevents:
+Tools are <strong>non-concurrent</strong> and <strong>non-read-only</strong> unless explicitly marked safe. This prevents:
 - Accidental parallel execution of state-mutating operations
 - Silent data corruption from concurrent writes
 
@@ -51,12 +51,12 @@ The runtime partitions a batch of tool calls into consecutive groups: safe calls
 
 ### Permission Pipeline has Side Effects
 
-The permission evaluator is **stateful** — it:
+The permission evaluator is <strong>stateful</strong> — it:
 - Tracks denials (for audit and rate limiting)
 - Transforms modes (e.g., auto → ask after denial)
 - Updates session state as a side effect
 
-**Strict priority order:**
+<strong>Strict priority order:</strong>
 ```
 Policy (org-wide) → User settings → Project rules → Local overrides → Session grants
 ```
@@ -166,11 +166,11 @@ protected_commands:
 
 ## Gotchas
 
-1. **Most async work skips "pending" state** — work units register directly as "running"
-2. **Permission evaluation has side effects** — don't cache results across calls
-3. **Concurrency classification requires analyzing inputs**, not just tool name
-4. **The default permission for tools is "allow"** — tools without custom logic delegate to rule-based system
-5. **Eviction requires notification** — terminal work units only GC-eligible after parent notified
+1. <strong>Most async work skips "pending" state</strong> — work units register directly as "running"
+2. <strong>Permission evaluation has side effects</strong> — don't cache results across calls
+3. <strong>Concurrency classification requires analyzing inputs</strong>, not just tool name
+4. <strong>The default permission for tools is "allow"</strong> — tools without custom logic delegate to rule-based system
+5. <strong>Eviction requires notification</strong> — terminal work units only GC-eligible after parent notified
 
 ## Related Patterns
 

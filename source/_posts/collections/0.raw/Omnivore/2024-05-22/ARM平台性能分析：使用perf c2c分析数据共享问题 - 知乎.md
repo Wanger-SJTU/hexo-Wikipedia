@@ -72,7 +72,7 @@ perf c2c 工具报告提供以下信息，这些信息可以帮助识别伪共�
 
 为了演示如何在 SPE 支持的基于 Aarch64 的平台上使用 perf c2c 进行伪共享分析，这里使用了 github 存储库中的示例代码：https://github.com/joemario/perf-c2c-usage\-files/blob/master/false\_sharing\_example.c
 
-**2.2.1 代码介绍**
+<strong>2.2.1 代码介绍</strong>
 
 如果存在多个线程，则 false\_sharing\_example.c 中的代码会根据不同 NUMA 节点上的用户输入创建多个线程。所有这些线程都访问如图2所示定义的相同数据结构 buf。在 buf 定义中有一个名为 NO\_FALSE\_SHARING 检查的宏。当 NO\_FALSE\_SHARING 未定义时，pad 字段的大小为 1 字节（在 Arm64 上为 8 个字节），强制锁定和读取器字段位于同一缓存行中。但是，当定义 NO\_FALSE\_SHARING 宏时，pad的大小为 5 个字长，它将锁和读取器字段存储在不同的缓存行中。
 
@@ -86,7 +86,7 @@ perf c2c 工具报告提供以下信息，这些信息可以帮助识别伪共�
 
 当使用 NO\_FALSE\_SHARING undefined 编译 false\_sharing\_example.c 时，在同一缓存行中访问不同数据元素的线程之间会发生共享伪共享情况。可以使用 perf c2c 工具检测它，如下面运行测试所示。
 
-**2.2.2 运行测试** 
+<strong>2.2.2 运行测试</strong> 
 
 为了在实验中多次运行程序，稍微修改了原始 false\_sharing\_example.c 以运行更多迭代，如下所示：
 
@@ -113,11 +113,11 @@ $ perf c2c record -- ./false_sharing 1
 $ perf c2c report --stdio
 ```
 
-**2.2.3 perf c2c 输出**
+<strong>2.2.3 perf c2c 输出</strong>
 
 使用 Linux perf report 实用程序来查看 perf c2c 分析，它提供了三个输出部分。我们首先讨论如何使用 perf c2c 输出，然后仔细查看源代码与 perf c2c 输出的伪共享检测。
 
-**2.2.4 Perf c2c - 输出部分1**
+<strong>2.2.4 Perf c2c - 输出部分1</strong>
 
 下图显示了 perf c2c 执行详细信息。perf c2c 输出显示了使用包含以下筛选器的命令为此分析执行的arm\_spe\_0分析：
 
@@ -129,13 +129,13 @@ perf c2c 工具依赖于 SPE 数据源信息中的对端侦听指示来检测线
 
 ![](https://proxy-prod.omnivore-image-cache.app/1186x366,s3HRpXasa9LxELmKkPysUxVYqXbgFTYs6ujWjGuSy2M4/https://pic2.zhimg.com/v2-5f138377cd82a6d6c59dba9cbfd2ca4d_b.jpg)
 
-**2.2.5 Perf c2c - 输出部分2**
+<strong>2.2.5 Perf c2c - 输出部分2</strong>
 
 下图的显示了共享数据缓存行表，其中列出了检测到 SNOOP（可能的伪共享）的所有缓存行。缓存行按 Peer Snoop 百分比值进行排序。
 
 ![](https://proxy-prod.omnivore-image-cache.app/1197x388,sDJzT-dpvQERDqghbLYFsJdpHlS5vNc-RqNnJWJ7j_z4/https://pic1.zhimg.com/v2-cd805609d529e0f7def09a64c764c5dc_b.jpg)
 
-**2.2.6 Perf c2c - 输出部分3**
+<strong>2.2.6 Perf c2c - 输出部分3</strong>
 
 下图显示了共享缓存行分布表情况。这为检测到 SNOOP 的每个缓存行提供了详细信息。对于像 0xaaaab26320c0 这样具有最高侦听命中百分比的缓存行，它会在此缓存行中提供由不同线程访问的偏移量。这里还提供了线程的代码地址，可以找到对应的源代码以进行检查。
 
@@ -151,13 +151,13 @@ Peer Snoop分为两种类型：
 * Node是指 CPU 插槽。由于测试平台只有一个 CPU 插槽，因此这里只能看到本地 SNOOP 节点 0。
 * Offset显示缓存行内访问的数据偏移量。
 
-**2.2.7 使用 perf c2c 输出进行代码分析**
+<strong>2.2.7 使用 perf c2c 输出进行代码分析</strong>
 
 在上段输出部分3的“共享缓存行分布表”示例输出中，缓存行地址 0xaaaab26320c0 指向 false\_sharing\_example.c 中的第175行，这是触发大量本地到对端侦听的代码。这表示可能存在缓存行伪共享，可以通过访问缓存行偏移量进行检查以确认。可以对缓存行地址0xaaaab2632080进行类似的观察分析。
 
 如上示例输出信息，源文件 false\_sharing\_example.c 中的第 175 行读取 buf2 的 reader1 字段，而第 166 行设置 buf2 的 lock1 字段。如前所述，这两行代码由不同内核上的不同线程执行，这些线程访问同一缓存行中的不同字段。因此这是一个伪共享案例，perf c2c 通过详细的缓存访问数据完美地指出了这一点。
 
-**2.2.8 解决问题后重新运行**
+<strong>2.2.8 解决问题后重新运行</strong>
 
 要解决此缓存错误共享情况，最简单的方法是确保锁定和读取器字段位于不同的缓存行中。如源代码图中 buf 结构的定义所示，如果定义了 NO\_FALSE\_SHARING 宏，它会添加 5 个长，总共 40 个字节，作为将读取器字段存储在不同缓存行中的字段的填充，因为缓存行大小通常为 64 个字节。
 

@@ -70,7 +70,7 @@ int main() {
 
  和 @法号桑菜
 
- 都提到用模板的黑魔法，这类方法的核心是，**模板显式实例化会忽略成员访问说明符，不会执行访问控制检查**。
+ 都提到用模板的黑魔法，这类方法的核心是，<strong>模板显式实例化会忽略成员访问说明符，不会执行访问控制检查</strong>。
 
 > 6. The usual access checking rules do not apply to names in a declaration of an explicit instantiation or explicit specialization, with the exception of names appearing in a function body, default argument, base-clause, member-specification, enumerator-list, or static data member or variable template initializer. [Note: In particular, the template arguments and names used in the function declarator (including parameter types, return types and exception specifications) may be private types or objects that would normally not be accessible.] -- C++ Draft International Standard (isocpp.org), §13.9 [temp.spec]
 

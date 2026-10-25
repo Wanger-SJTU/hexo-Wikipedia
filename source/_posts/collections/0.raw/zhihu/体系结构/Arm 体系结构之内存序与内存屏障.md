@@ -15,7 +15,7 @@ source_url: https://zhuanlan.zhihu.com/p/678584093
 ---
 
 
-**欢迎关注我的公众号：窗有老梅**
+<strong>欢迎关注我的公众号：窗有老梅</strong>
 
 ### 0. 目录
 
@@ -103,7 +103,7 @@ x86 架构相关的内存序及内存屏障知识，参阅《Intel SDM 之 Memor
 
 系统中所有未标记为 faulting 的地址都会被赋予一个 memory type。memory type 用来从 high level 角度描述处理器与地址区域的交互行为。Armv8-A 和 Armv9-A 架构下有两种 memory types：Normal memory 和 Device memory。
 
-**注意：Armv6 和 Armv7 下还有第三种 memory type：Strongly Ordered。在 Armv8 下，该类型对应 Device-nGnRnE。**
+<strong>注意：Armv6 和 Armv7 下还有第三种 memory type：Strongly Ordered。在 Armv8 下，该类型对应 Device-nGnRnE。</strong>
 
 ### 3.2 Normal memory
 
@@ -113,7 +113,7 @@ Normal 是系统中最常见的 memory type，如下图：
 
 **
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_c5b395bf525e.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_c5b395bf525e.jpg)
 
 图 1：normal type
 
@@ -127,7 +127,7 @@ Normal 是系统中最常见的 memory type，如下图：
 
 Device memory type 是用来描述外设的。外设寄存器通常称为 Memory-Mapped I/O(MMIO)。下图是一个示例地址映射下被标记为 Device 的内存区域：
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_899939b1a51c.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_899939b1a51c.jpg)
 
 图 2：memory mapped device type
 
@@ -143,7 +143,7 @@ Device type 的内存区域上不允许做数据的投机读。处理器只能�
 
 不应该把指令放在 Device 区域。推荐的做法是总是将 Device 区域标记为不可执行，否则处理器可能会从该区域做指令预取，进而会在 FIFOs 这类“读敏感”设备上搞出问题。
 
-**注意：这里有一个容易被忽略的微妙区别。将一个区域标记为 Device，只会阻止对其进行数据的投机读。将一个区域标记为 non-executable，会阻止指令预取。这意味着，如果要阻止对一个区域的一切投机访问，需要将其同时标记为 Device 和 non-executable。**
+<strong>注意：这里有一个容易被忽略的微妙区别。将一个区域标记为 Device，只会阻止对其进行数据的投机读。将一个区域标记为 non-executable，会阻止指令预取。这意味着，如果要阻止对一个区域的一切投机访问，需要将其同时标记为 Device 和 non-executable。</strong>
 
 #### 3.3.1 Device type 的 sub-types（子类型）
 
@@ -166,7 +166,7 @@ Device 后面的字母表达的是属性的组合：
 - Device-nGnRnE。不允许 gathering、re-ordering 以及 early write acknowledgement。
 上面已经讲过 re-ordering 的工作原理，但尚未涉及 gathering 或 early write acknowledgement。gathering 可以将对同一地址的多个内存访问合并为一个 bus transaction，如此实现对访问的优化。early write acknowledgement 表示是否允许内存系统在一个 buffer 达到 core 和外设之间的 bus 上时，就发出 write acknowledgement，这样即使外设尚未收到此 write 操作，其他 PEs 也可以观测到此 write 操作。
 
-**注意：Normal Non-cacheable 以及 Device-GRE 看起来是一回事，实则不是。Normal Non-cacheable 允许数据的投机访问，而 Device-GRE 不然。**
+<strong>注意：Normal Non-cacheable 以及 Device-GRE 看起来是一回事，实则不是。Normal Non-cacheable 允许数据的投机访问，而 Device-GRE 不然。</strong>
 
 #### 3.3.2 处理器真的会在不同 type 上有不同行为？
 
@@ -174,7 +174,7 @@ memory type 描述了一个地址的可允许行为（译者：“行为”指�
 
 **
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_e9a0e4361baf.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_e9a0e4361baf.jpg)
 
 图 3：device type
 
@@ -196,7 +196,7 @@ Armv8-A 是个弱内存序体系结构，其所支持的内存访问，不会强
 - 跨越一个外设的 Device-nR 访问。
 内存乱序可以让处理器运行地更快，如下图所示：
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_3399da806148.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_3399da806148.jpg)
 
 图 4：内存序示例
 
@@ -205,7 +205,7 @@ Armv8-A 是个弱内存序体系结构，其所支持的内存访问，不会强
 - 第一条指令，Access 1，对外部内存的 write 进入 write buffer。此指令后面是两条 program order 的 read。
 - 第一个 read，Access 2，未命中 cache。
 - 第二个 read，Access 3，命中 cache。
-这两个 read 都可以在 Access 1 的 write buffer 完成 write 之前完成。支持 Hit-Under-Miss 的缓存系统，支持命中 cache 的 load 操作（比如 Access 3），可以在程序中更早的未命中 cache 的 load 操作（比如 Access 2）之前**完成。（译者：这很 make sense，命中 cache 的 load 与未命中 cache 的 load，二者之间并无数据上的冲突，乱序是安全的，有点类似《Intel SDM 之 Memory Ordering》"3. Intel Pentium 及 Intel 486 处理器上的内存序[8.2.1]" 中的**白嫖乱序**）。
+这两个 read 都可以在 Access 1 的 write buffer 完成 write 之前完成。支持 Hit-Under-Miss 的缓存系统，支持命中 cache 的 load 操作（比如 Access 3），可以在程序中更早的未命中 cache 的 load 操作（比如 Access 2）之前<strong>完成。（译者：这很 make sense，命中 cache 的 load 与未命中 cache 的 load，二者之间并无数据上的冲突，乱序是安全的，有点类似《Intel SDM 之 Memory Ordering》"3. Intel Pentium 及 Intel 486 处理器上的内存序[8.2.1]" 中的</strong>白嫖乱序**）。
 
 ### 4.1 乱序的限制
 
@@ -213,7 +213,7 @@ Armv8-A 是个弱内存序体系结构，其所支持的内存访问，不会强
 
 **
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_dfceca95f275.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_dfceca95f275.jpg)
 
 图 5：示例内存乱序限制的代码序列
 
@@ -263,7 +263,7 @@ Armv8-A Architecture Reference Manual 使用“观察者”（译者：因为 ob
 
 一个 Observer，指的是一个 Processor Element(PE)，或系统中的其他部件，这些部件可以从内存中 read，或向内存中 write，典型如外设。Observers 可以对内存访问进行观察。内存屏障可以指定哪些 observers 可以在何时观察到这些内存访问。
 
-**译者：这里值得再次重点注解一下，observe（观察）一词我个人觉得其实是比较蛋疼的，叫“perceive（感知）”可能会更容易让人理解。所谓的“观察到”一个内存被更新，指的就是对于这个 Observer 来说，其“感知到”该内存被更新了，也就是在该 Observer 对此内存发起 read 或 write 时，它已明确知晓此内存处最新的值。原文中还用了“visible（可见）”一词，所谓“visible”，就是“可被观察到的”。**
+<strong>译者：这里值得再次重点注解一下，observe（观察）一词我个人觉得其实是比较蛋疼的，叫“perceive（感知）”可能会更容易让人理解。所谓的“观察到”一个内存被更新，指的就是对于这个 Observer 来说，其“感知到”该内存被更新了，也就是在该 Observer 对此内存发起 read 或 write 时，它已明确知晓此内存处最新的值。原文中还用了“visible（可见）”一词，所谓“visible”，就是“可被观察到的”。</strong>
 
 一个内存 write 在到达内存系统中的某个点时，将变的“可见（visible）”。当 write 可见时，其对于内存屏障指令所指定 Shareability domain 上的所有 Observers 来说是一致的（译者：就是大家看到的值一定是相同的）。假设一个 PE 对一个内存地址进行 write，如果其他 PE 在读相同地址时可以观察到更新后的值，则此 write 操作是“可被观察到的”。举例来说，如果内存是 Normal cacheable 的，则 write 操作会在到达 Shareability domain 的 coherent data caches（译者：这么多定语，简单理解为 cache 即可）时，成为“可被观察到的”。
 
@@ -273,7 +273,7 @@ Armv8-A 内存模型被描述为 Other-multi-copy atomic。在一个 Other-multi
 
 ### 7. 数据内存屏障（data memory barriers）
 
-Data Memory Barrier(DMB) 用于防止指定的 explicit 数据访问会跨越屏障指令乱序。program order 上在 DMB **之前** 的所有 explicit 数据 load 或 store 指令，会在 program order 上该 DMB **之后**的数据访问**之前**被指定 Shareability domain 中的所有 Observers 观察到。
+Data Memory Barrier(DMB) 用于防止指定的 explicit 数据访问会跨越屏障指令乱序。program order 上在 DMB <strong>之前</strong> 的所有 explicit 数据 load 或 store 指令，会在 program order 上该 DMB <strong>之后</strong>的数据访问<strong>之前</strong>被指定 Shareability domain 中的所有 Observers 观察到。
 
 DMB 指令接受一个参数，该参数指明所需保序的 explicit 访问所属的 types，以及 Shareability domain 中保序所需面向的 Observers。相关讨论在下文 "10. 内存屏障范围的限制"。
 
@@ -300,20 +300,20 @@ X1X30x00x00x10x00x10x1表 2
 
 - 使用一个 DMB 可以在访问之间创建一个顺序。Armv8-A Architecture Reference Manual 将此顺序称为 Barrier-ordered-before。
 - 对于 DMB 来说，data cache maintenance operations（译者：就是 data invalidation 之类的那些指令）被视作 explicit 数据访问指令，其遵循 DMB 的内存序限制。
-**注意：如果要用 DMB 指令来对 cache maintenance 指令进行保序，必须指定一个同时包含 loads 和 stores 的参数。**
+<strong>注意：如果要用 DMB 指令来对 cache maintenance 指令进行保序，必须指定一个同时包含 loads 和 stores 的参数。</strong>
 
 - DMB 无法保证访问出现的时机。DMB 保证当访问真正发生时，会采用屏障和其参数所定义的顺序限制。DMB 允许 PE 在 explicit 数据等待完成期间继续执行。
-- DMB 不会阻止后续 explicit 数据 read 操作被投机执行。如果投机执行了一个 read，core 必须丢弃寄存器中的投机数据（译者：这有点类似分支预测失败了要 flush 流水线。这里表达的是，DMB 只会保证数据被“被观察到”时的顺序，而不保证微架构层面的执行顺序，比如 DMB 后面的数据可能会被投机读之类的）。在前面的所有 explicit 数据访问被观察到**之后**，core 必须重新执行这个 load（译者：因为投机错了呗）。
+- DMB 不会阻止后续 explicit 数据 read 操作被投机执行。如果投机执行了一个 read，core 必须丢弃寄存器中的投机数据（译者：这有点类似分支预测失败了要 flush 流水线。这里表达的是，DMB 只会保证数据被“被观察到”时的顺序，而不保证微架构层面的执行顺序，比如 DMB 后面的数据可能会被投机读之类的）。在前面的所有 explicit 数据访问被观察到<strong>之后</strong>，core 必须重新执行这个 load（译者：因为投机错了呗）。
 
 ### 8. 内存同步屏障（data synchronization barriers）
 
-DSB 内存屏障用于确保在此 DSB **之前**的内存访问，必须在 DSB 指令执行完成**之前**完成。正因如此，其是一个比 DMB 约束更强的内存屏障。由指定参数的 DMB 所带来的保序，相同参数的 DSB 也可以做到。
+DSB 内存屏障用于确保在此 DSB <strong>之前</strong>的内存访问，必须在 DSB 指令执行完成<strong>之前</strong>完成。正因如此，其是一个比 DMB 约束更强的内存屏障。由指定参数的 DMB 所带来的保序，相同参数的 DSB 也可以做到。
 
 一个 PE 所执行的 DSB 会在如下情况执行完成：
 
-- program order 上，在 DSB **之前**的所有指定访问类型的 explicit 内存访问都已完成，指定 Shareability domain 中的其他 Observers 皆可观察到。
-- 如果 DSB 中所指定的参数是 reads 和 writes，则由 PE 在 DSB **之前**发起的所有 cache maintenance 指令以及所有 TLB maintenance 指令都已完成（对于指定 Shareability domain 来说）。
-同样的，program order 上 DSB 指令**之后**的指令，都无法在 DSB 指令完成**之前**，对系统状态产生任何更改，或是发挥其任意部分功能（译者：原文比较蛋疼，其实就是想表达“压根没有一丁点被执行到的可能”）。DSB 无法阻止对指令的预取和解码。
+- program order 上，在 DSB <strong>之前</strong>的所有指定访问类型的 explicit 内存访问都已完成，指定 Shareability domain 中的其他 Observers 皆可观察到。
+- 如果 DSB 中所指定的参数是 reads 和 writes，则由 PE 在 DSB <strong>之前</strong>发起的所有 cache maintenance 指令以及所有 TLB maintenance 指令都已完成（对于指定 Shareability domain 来说）。
+同样的，program order 上 DSB 指令<strong>之后</strong>的指令，都无法在 DSB 指令完成<strong>之前</strong>，对系统状态产生任何更改，或是发挥其任意部分功能（译者：原文比较蛋疼，其实就是想表达“压根没有一丁点被执行到的可能”）。DSB 无法阻止对指令的预取和解码。
 
 下面的代码展示 DSB 所带来的保序效果：
 
@@ -322,11 +322,11 @@ DSB
 ADD X1, X2, X3   ; Must NOT be executed before the first STR completes.
 STR X4, [X5]     ; Must NOT be executed until the first STR completes.`
 
-上面代码中的 DSB，可以确保第二条 STR 以及 ADD 指令不会在第一个 STR 以及 DSB 执行完成**之前**执行。
+上面代码中的 DSB，可以确保第二条 STR 以及 ADD 指令不会在第一个 STR 以及 DSB 执行完成<strong>之前</strong>执行。
 
 ### 9. 一次访问何时被认为是“已完成”？
 
-上一节中提到，DSB 可以强制**之前**的由 DSB 参数所指定的内存访问先完成（译者：原文对 DSB 指令使用的描述动词是 "retire"）。那么一次内存访问到底何时才被视为“已完成”？
+上一节中提到，DSB 可以强制<strong>之前</strong>的由 DSB 参数所指定的内存访问先完成（译者：原文对 DSB 指令使用的描述动词是 "retire"）。那么一次内存访问到底何时才被视为“已完成”？
 
 read 的完成解释起来要比 write 的完成要简单一些。这是因为，一次 read 的完成点是所读数据被返回到 PE 的 architectural 通用寄存器中。
 
@@ -343,7 +343,7 @@ DMB 和 DSB 内存屏障指令都需要一个参数，来指明内存屏障所�
 
 该对内存屏障影响范围进行指定的能力，在内存屏障效果优化时会很有用。有些场景下，一个屏障的全量保序约束会太过严格（译者：开销会比较大）。如果限制一个屏障所能影响的内存访问以及 Observers 范围，会带来微架构层面的优化，进而减少内存屏障对性能的影响。
 
-**注意：Armv8-A AArch64 体系结构要求在使用 DSB 或 DMB 时必须显式定义参数。此约束与之前的版本不同，之前的版本在不指定明确参数的情况下会使用默认选项 SY。**
+<strong>注意：Armv8-A AArch64 体系结构要求在使用 DSB 或 DMB 时必须显式定义参数。此约束与之前的版本不同，之前的版本在不指定明确参数的情况下会使用默认选项 SY。</strong>
 
 下表是 DSB 和 DMB 的合法参数：
 
@@ -360,7 +360,7 @@ STR #1, [X1]
 DMB ISHST
 STR #1, [X3]`
 
-如果 PE0 和 PE1 不属于同一 Shareable domain，那么架构上是允许 PE1 在观察到 X1 地址处内存被更新**之前先**观察到 X3 地址处内存被更新的。另外，所有 PEs（包括 PE0）会观察到 X4 的 load 相对 X1 和 X3 的 write 是乱序的。
+如果 PE0 和 PE1 不属于同一 Shareable domain，那么架构上是允许 PE1 在观察到 X1 地址处内存被更新<strong>之前先</strong>观察到 X3 地址处内存被更新的。另外，所有 PEs（包括 PE0）会观察到 X4 的 load 相对 X1 和 X3 的 write 是乱序的。
 
 这种对保序范围的缩小，会减少在 Observers 之间保序时的系统开销。
 
@@ -384,9 +384,9 @@ IC IVAU, X0 ; despite address dependency.`
 DSB ISH
 IC IVAU, X0 ; despite address dependency.`
 
-该例子中，数据 cache clean(DC CVAU) 会在指令 cache invalidate(IC IVAU) 执行**之前**完成。DC CVAU 保证了在执行 invalidate 之前，新的数据总是对指令 cache 可见。
+该例子中，数据 cache clean(DC CVAU) 会在指令 cache invalidate(IC IVAU) 执行<strong>之前</strong>完成。DC CVAU 保证了在执行 invalidate 之前，新的数据总是对指令 cache 可见。
 
-**注意：这里需要 DSB 是因为 DMB 只会影响数据访问，也就是只能影响到数据 cache maintenance 指令，而无法影响到 cache invalidate 指令。**
+<strong>注意：这里需要 DSB 是因为 DMB 只会影响数据访问，也就是只能影响到数据 cache maintenance 指令，而无法影响到 cache invalidate 指令。</strong>
 
 ### 12. load-acquire 与 store-release 指令
 
@@ -394,7 +394,7 @@ Armv8-A AArch64 提供了一组面向 loads 的带有 Acquire 语义的指令，
 
 这些新的 load 和 store 指令包含了隐晦的屏障语义，有点类似单向屏障。这些指令相对 DMB 或 DSB 来说保序语义更弱，因为它们会影响内存屏障指令两侧的指定 explicit 内存访问的顺序。Load-Acquire 和 Store-Release 指令所引入的弱保序能力支持在微架构层面的优化，从而降低显式内存屏障所带来的性能影响。如果内存序可以通过 Load-Acquire 或 Store-Release 完成，则更推荐使用这些指令而不是 DMB。
 
-Shareability domain 定义了这些指令保序所能影响的 Observers 范围。Load-Acquire 和 Store-Release 所影响的 Shareability domain，就是该指令所访问的地址的 Shareability domain（译者：load-acquire 和 store-release 没法像 DMB、DSB 那样通过参数指定所要影响的 Shareability domain，只能是其访问的地址属于什么 Shareability domain 就是哪个 Shareability domain）。举个例子，如果 PE0 和 PE1 不在同一个 Inner Shareable domain 中，那么下面的代码中，如果 X3 是 Inner Shareable 的，则架构上会允许 PE1 在观察到 X1 地址处内存被更新**之前**观察到 X3 地址处内存被更新：
+Shareability domain 定义了这些指令保序所能影响的 Observers 范围。Load-Acquire 和 Store-Release 所影响的 Shareability domain，就是该指令所访问的地址的 Shareability domain（译者：load-acquire 和 store-release 没法像 DMB、DSB 那样通过参数指定所要影响的 Shareability domain，只能是其访问的地址属于什么 Shareability domain 就是哪个 Shareability domain）。举个例子，如果 PE0 和 PE1 不在同一个 Inner Shareable domain 中，那么下面的代码中，如果 X3 是 Inner Shareable 的，则架构上会允许 PE1 在观察到 X1 地址处内存被更新<strong>之前</strong>观察到 X3 地址处内存被更新：
 
 `PE0
 
@@ -414,13 +414,13 @@ LDAXP x0, x1  [0x10]`
 
 Load-Acquire LDAR 指令的保序规则如下：
 
-- 所有 LDAR **之后**的 explicit 内存访问，会在 LDAR **之后**被观察到。
-- 所有 LDAR** 之前**的 explicit 内存访问不受影响，可以无视 LDAR 而乱序。
+- 所有 LDAR <strong>之后</strong>的 explicit 内存访问，会在 LDAR <strong>之后</strong>被观察到。
+- 所有 LDAR<strong>之前</strong>的 explicit 内存访问不受影响，可以无视 LDAR 而乱序。
 下图展示了具体的保序规则：
 
 **
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_81c95ea340d0.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_81c95ea340d0.jpg)
 
 图 6：LDAR 保序规则
 
@@ -428,13 +428,13 @@ Load-Acquire LDAR 指令的保序规则如下：
 
 Store-Release STLR 指令的保序规则如下：
 
-- 所有 STLR 之前**的 explicit 内存访问，会在 STLR **之前**被观察到。
-- 所有 STLR **之后**的 explicit 内存访问不受影响，可以无视 STLR 而乱序。
+- 所有 STLR 之前<strong>的 explicit 内存访问，会在 STLR</strong>之前**被观察到。
+- 所有 STLR <strong>之后</strong>的 explicit 内存访问不受影响，可以无视 STLR 而乱序。
 下图展示了具体的保序规则：
 
 **
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_fad1b9203757.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_fad1b9203757.jpg)
 
 图 7：STLR 保序规则
 
@@ -451,17 +451,17 @@ X1X30x00x00x10x00x10x1表 4
 
 Load-Acquire 和 Store-Release 指令可以作为一个 pair 组合来对代码临界区进行保护。这些指令的组合使用，可以确保代码临界区内的访问不会被乱序到临界区之外。代码临界区之外的访问（译者：这里原文应该是笔误了，原文是 accesses inside the critical code section）不受影响，可以被乱序，如下图所示：
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_fd50968398eb.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_fd50968398eb.jpg)
 
 图 8：使用 LDAR-STLR pair 保护一个代码临界区
 
 ### 12.4 sequentially consistent
 
-acquire/release 操作使用 sequentially consistent 模型。意思是，当一个 Load-Acquire 在 program order 上位于一个 Store-Release 之后**时，则由 Store-Release 指令所发起的内存访问，将**先于** Load-Acquire 指令所发起的内存访问被观察到。下图展示了这种保序约束：
+acquire/release 操作使用 sequentially consistent 模型。意思是，当一个 Load-Acquire 在 program order 上位于一个 Store-Release 之后<strong>时，则由 Store-Release 指令所发起的内存访问，将</strong>先于** Load-Acquire 指令所发起的内存访问被观察到。下图展示了这种保序约束：
 
 **
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_935aa7d0be59.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_935aa7d0be59.jpg)
 
 图 9：sequentially consistent 保序要求
 
@@ -469,7 +469,7 @@ acquire/release 操作使用 sequentially consistent 模型。意思是，当一
 
 Armv8.3-A 还提供了 Load-AcquirePC 指令。Load-AcquirePC 和 Store-Release 的组合使用，可以支持更弱的 Release Consistency processor consistent(RCpc) 模型，如下图所示：
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_1fa5f2050341.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_1fa5f2050341.jpg)
 
 图 10：Load-AcquirePC 指令
 
@@ -483,7 +483,7 @@ LORegions 可以避免在等待一个内存访问（针对内存映射中的任�
 
 **
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_74d11496e954.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_74d11496e954.jpg)
 
 图 11：使用 LORegions 的多 socket 系统
 
@@ -510,11 +510,11 @@ MSR  LOREA_EL1, x2
 MSR  LORC_EL1, x3
 ISB`
 
-下图中，只有对相同 LORegion 中地址（由 LDLAR 或 STLLR 指令指定）的访问才会受影响，对 LORegion 之外的内存访问不受影响。举例来说，对 C 的 store 会先于** LDLAR 被观察到。如果软件使用了一个 LDAR，则对 C 的 store 会在 LDAR **之后**被观察到，如图中所示：
+下图中，只有对相同 LORegion 中地址（由 LDLAR 或 STLLR 指令指定）的访问才会受影响，对 LORegion 之外的内存访问不受影响。举例来说，对 C 的 store 会先于<strong>LDLAR 被观察到。如果软件使用了一个 LDAR，则对 C 的 store 会在 LDAR</strong>之后**被观察到，如图中所示：
 
 **
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_ddd0e028761a.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_ddd0e028761a.jpg)
 
 图 12：LORegion 内存访问示例
 
@@ -532,15 +532,15 @@ Arm 体系结构下 PE 的上下文包括 caches、TLBs 以及系统寄存器的
 - 触发异常（译者：takes an exception，这里的 take 应该翻译为“触发”还是“处理”，笔者拿不准）。
 - 从一个异常中返回。
 - 从 Debug 状态中退出。
-**注意：Arm 处理器实现，允许只要 PE 不发出上下文同步事件，就始终不为后续的执行更新它们的上下文。**
+<strong>注意：Arm 处理器实现，允许只要 PE 不发出上下文同步事件，就始终不为后续的执行更新它们的上下文。</strong>
 
 执行一个上下文同步事件可以确保：
 
-- 所有在上下文同步事件执行时间点上 pending 的 umasked 中断，都可以在上下文同步事件后的第一条指令**之前**被处理。
-- program order 上，任意位于一个可以触发上下文同步事件指令**之后**的指令，在上下文同步事件发生**之前**，皆不能发挥其任意部分功能（（译者：其实就是想表达“压根没有一丁点被执行到的可能”））。
-- 在上下文同步事件**之前**的所有系统寄存器 writes，都会影响 program order 上位于触发上下文同步事件的指令**之后**的所有指令（译者：因为根据定义，对系统寄存器的 write 就是一种上下文变更，而上下文变更在上下文同步事件之后就会生效，所以会影响到后续指令。下面两条同理）。
-- 所有对页表的已完成变更，如果其 entries 在变更**之前**，不允许缓存在一个 TLB 中，会影响所有在 program order 上位于触发上下文同步事件指令**之后**的指令预取。
-- 所有在上下文同步事件**之前**完成的 TLBs、指令 cache 以及 AArch32 状态下的分支预测 invalidation，会影响所有在 program order 上位于触发上下文同步事件指令**之后**的指令。
+- 所有在上下文同步事件执行时间点上 pending 的 umasked 中断，都可以在上下文同步事件后的第一条指令<strong>之前</strong>被处理。
+- program order 上，任意位于一个可以触发上下文同步事件指令<strong>之后</strong>的指令，在上下文同步事件发生<strong>之前</strong>，皆不能发挥其任意部分功能（（译者：其实就是想表达“压根没有一丁点被执行到的可能”））。
+- 在上下文同步事件<strong>之前</strong>的所有系统寄存器 writes，都会影响 program order 上位于触发上下文同步事件的指令<strong>之后</strong>的所有指令（译者：因为根据定义，对系统寄存器的 write 就是一种上下文变更，而上下文变更在上下文同步事件之后就会生效，所以会影响到后续指令。下面两条同理）。
+- 所有对页表的已完成变更，如果其 entries 在变更<strong>之前</strong>，不允许缓存在一个 TLB 中，会影响所有在 program order 上位于触发上下文同步事件指令<strong>之后</strong>的指令预取。
+- 所有在上下文同步事件<strong>之前</strong>完成的 TLBs、指令 cache 以及 AArch32 状态下的分支预测 invalidation，会影响所有在 program order 上位于触发上下文同步事件指令<strong>之后</strong>的指令。
 
 ### 13.1 使用示例
 

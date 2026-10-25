@@ -16,9 +16,9 @@ categories:
 ## Problem
 
 Agents fail when context is managed poorly:
-- **Too much context** → Session startup is slow, token costs explode, model gets lost in details
-- **Too little context** → Agent makes wrong assumptions, reinvents wheels, violates conventions
-- **Wrong context** → Agent focuses on low-level details, misses architectural constraints
+- <strong>Too much context</strong> → Session startup is slow, token costs explode, model gets lost in details
+- <strong>Too little context</strong> → Agent makes wrong assumptions, reinvents wheels, violates conventions
+- <strong>Wrong context</strong> → Agent focuses on low-level details, misses architectural constraints
 
 Context is not a dump. It's a budget that must be managed with explicit operations.
 
@@ -28,10 +28,10 @@ Context is not a dump. It's a budget that must be managed with explicit operatio
 
 Every token in the window should earn its place through one of four operations:
 
-1. **SELECT** — Load context just-in-time, not all-at-once
-2. **WRITE** — Agent writes back to persistent storage (memory, state, rules)
-3. **COMPRESS** — Reactive compaction of older turns mid-session
-4. **ISOLATE** — Delegated work must not pollute parent context
+1. <strong>SELECT</strong> — Load context just-in-time, not all-at-once
+2. <strong>WRITE</strong> — Agent writes back to persistent storage (memory, state, rules)
+3. <strong>COMPRESS</strong> — Reactive compaction of older turns mid-session
+4. <strong>ISOLATE</strong> — Delegated work must not pollute parent context
 
 ### Progressive Disclosure
 
@@ -50,7 +50,7 @@ Tier 3: Resources (loaded on demand)
 
 ### Memoize Expensive Builders, Invalidate Explicitly
 
-Context builders (e.g., "load all recent git commits") should be memoized to avoid redundant work, but **must** be invalidated at known mutation points — not reactively. Every mutation point must clear its corresponding cache.
+Context builders (e.g., "load all recent git commits") should be memoized to avoid redundant work, but <strong>must</strong> be invalidated at known mutation points — not reactively. Every mutation point must clear its corresponding cache.
 
 ## When To Use
 
@@ -86,7 +86,7 @@ Context builders (e.g., "load all recent git commits") should be memoized to avo
 - API reference: Read when calling external services
 ```
 
-**Key moves:**
+<strong>Key moves:</strong>
 - Audit current context cost per turn
 - Apply hard caps to every variable-length block
 - Add truncation recovery pointers ("call list_files for full output")
@@ -95,10 +95,10 @@ Context builders (e.g., "load all recent git commits") should be memoized to avo
 
 Long sessions exhaust the window. Reactive compaction:
 
-1. **Trigger**: Context usage exceeds threshold (e.g., 80%)
-2. **Summarize**: Older turns (first 50% by token count)
-3. **Preserve**: Recent context (last 20% of turns)
-4. **Label**: Mark snapshot as "compacted at turn N"
+1. <strong>Trigger</strong>: Context usage exceeds threshold (e.g., 80%)
+2. <strong>Summarize</strong>: Older turns (first 50% by token count)
+3. <strong>Preserve</strong>: Recent context (last 20% of turns)
+4. <strong>Label</strong>: Mark snapshot as "compacted at turn N"
 
 ```markdown
 ## Session Summary (Turns 1-15, compacted)
@@ -118,18 +118,18 @@ Delegated work must not pollute parent context:
 
 | Pattern | Context Sharing | Best For |
 |---|---|---|
-| **Coordinator** (zero inheritance) | None — workers start fresh | Complex multi-phase tasks |
-| **Fork** (full inheritance) | Full — single-level only | Quick parallel splits |
-| **Swarm** (peer-to-peer) | Shared task list | Long-running independent work |
+| <strong>Coordinator</strong> (zero inheritance) | None — workers start fresh | Complex multi-phase tasks |
+| <strong>Fork</strong> (full inheritance) | Full — single-level only | Quick parallel splits |
+| <strong>Swarm</strong> (peer-to-peer) | Shared task list | Long-running independent work |
 
-**Key constraint**: Fork is single-level only — recursive forks multiply context cost exponentially.
+<strong>Key constraint</strong>: Fork is single-level only — recursive forks multiply context cost exponentially.
 
 ## Gotchas
 
-1. **Most async work skips "pending" state** — work units register directly as "running"
-2. **Context builders are memoized but manually invalidated** — add invalidation or face staleness
-3. **Truncation is silent until it fires** — hard caps enforced at read time
-4. **Isolation boundary must be enforced at call time** — don't just remove tools from prompt
+1. <strong>Most async work skips "pending" state</strong> — work units register directly as "running"
+2. <strong>Context builders are memoized but manually invalidated</strong> — add invalidation or face staleness
+3. <strong>Truncation is silent until it fires</strong> — hard caps enforced at read time
+4. <strong>Isolation boundary must be enforced at call time</strong> — don't just remove tools from prompt
 
 ## Related Patterns
 

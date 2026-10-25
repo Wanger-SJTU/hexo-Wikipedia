@@ -22,7 +22,7 @@ You ask an agent to build an e-commerce site. After it finishes, it tells you "d
 
 Feature lists, in many people's eyes, are just a memo — write things down so you don't forget, then toss them aside. But in the harness world, a feature list isn't a memo for humans. It's the foundational structure the entire harness is built on. The scheduler relies on it to pick tasks, the verifier relies on it to judge completion, and the handoff reporter relies on it to generate summaries. Without it, these components have no shared consensus to depend on.
 
-Both Anthropic and OpenAI emphasize: **artifacts must be externalized.** Feature state must live in a machine-readable file in the repo, not in unstructured conversation text.
+Both Anthropic and OpenAI emphasize: <strong>artifacts must be externalized.</strong> Feature state must live in a machine-readable file in the repo, not in unstructured conversation text.
 
 ## Agents Don't Know What "Done" Means
 
@@ -67,12 +67,12 @@ flowchart LR
 
 ## Core Concepts
 
-- **Feature lists are harness primitives**: Not "optional planning tools," but foundational data structures that all other harness components depend on. The scheduler, verifier, and handoff reporter all need to read the feature list to function.
-- **Triple structure**: Each feature item contains three elements: `(behavior description, verification command, current state)`. The behavior tells the agent what to do, the verification tells it what counts as done, and the state tells it where things stand. Missing any element makes the item incomplete.
-- **State machine model**: Each feature item has four states — `not_started`, `active`, `blocked`, `passing`. State transitions are controlled by the harness, not freely changed by the agent.
-- **Pass-state gating**: The only way a feature moves from `active` to `passing` is by the verification command executing successfully. This transition is irreversible — once `passing`, it can't go back.
-- **Single source of truth**: All information about "what needs to be done" must derive from one feature list. No contradictions between the feature list and conversation history.
-- **Back-pressure**: The number of features that haven't passed yet is the pressure the harness exerts on the agent. Zero pressure = project complete.
+- <strong>Feature lists are harness primitives</strong>: Not "optional planning tools," but foundational data structures that all other harness components depend on. The scheduler, verifier, and handoff reporter all need to read the feature list to function.
+- <strong>Triple structure</strong>: Each feature item contains three elements: `(behavior description, verification command, current state)`. The behavior tells the agent what to do, the verification tells it what counts as done, and the state tells it where things stand. Missing any element makes the item incomplete.
+- <strong>State machine model</strong>: Each feature item has four states — `not_started`, `active`, `blocked`, `passing`. State transitions are controlled by the harness, not freely changed by the agent.
+- <strong>Pass-state gating</strong>: The only way a feature moves from `active` to `passing` is by the verification command executing successfully. This transition is irreversible — once `passing`, it can't go back.
+- <strong>Single source of truth</strong>: All information about "what needs to be done" must derive from one feature list. No contradictions between the feature list and conversation history.
+- <strong>Back-pressure</strong>: The number of features that haven't passed yet is the pressure the harness exerts on the agent. Zero pressure = project complete.
 
 ## Why Feature Lists Must Be "Primitives"
 
@@ -82,10 +82,10 @@ Think of it like database trigger constraints versus application-layer checks: t
 
 Specifically, the feature list serves four harness components:
 
-1. **Scheduler**: Reads states, picks the next `not_started` feature.
-2. **Verifier**: Executes verification commands, decides whether to allow state transitions.
-3. **Handoff reporter**: Automatically generates session handoff summaries from the feature list.
-4. **Progress tracker**: Tallies state distribution, provides project health metrics.
+1. <strong>Scheduler</strong>: Reads states, picks the next `not_started` feature.
+2. <strong>Verifier</strong>: Executes verification commands, decides whether to allow state transitions.
+3. <strong>Handoff reporter</strong>: Automatically generates session handoff summaries from the feature list.
+4. <strong>Progress tracker</strong>: Tallies state distribution, provides project health metrics.
 
 ## How to Do It
 
@@ -125,19 +125,19 @@ Each feature item should be scoped to "completable in one session." Too broad an
 
 An e-commerce platform with 10 features. Two tracking approaches compared:
 
-**Memo mode**: The agent uses unstructured notes to track progress. After 3 sessions, the notes become "did user auth and product list, shopping cart mostly done but has bugs, payments not started." A new session needs 20 minutes to infer state, and ultimately re-implements completed features.
+<strong>Memo mode</strong>: The agent uses unstructured notes to track progress. After 3 sessions, the notes become "did user auth and product list, shopping cart mostly done but has bugs, payments not started." A new session needs 20 minutes to infer state, and ultimately re-implements completed features.
 
-**Structured mode**: Every feature has a clear state and verification command. A new session reads the feature list and in 3 minutes knows: F01-F05 are `passing`, F06 is `active` (in progress), F07-F10 are `not_started`. It picks up directly from F06, with zero rework.
+<strong>Structured mode</strong>: Every feature has a clear state and verification command. A new session reads the feature list and in 3 minutes knows: F01-F05 are `passing`, F06 is `active` (in progress), F07-F10 are `not_started`. It picks up directly from F06, with zero rework.
 
 Quantified result: projects using structured feature lists show 45% higher feature completion rate than free-form tracking, with zero duplicate implementations.
 
 ## Key Takeaways
 
-- **Feature lists are the harness's foundational structure**, not memos for humans. The scheduler, verifier, and handoff reporter all depend on them.
-- **Every feature item must have the triple**: behavior description + verification command + current state. Missing one element makes it incomplete.
-- **State transitions are controlled by the harness** — the agent can't change states on its own. Passing verification is the only upgrade path.
-- **The feature list is the project's single source of truth** — all "what to do" information derives from it.
-- **Calibrate granularity to "completable in one session."** Too broad and it won't finish; too narrow and you can't manage it.
+- <strong>Feature lists are the harness's foundational structure</strong>, not memos for humans. The scheduler, verifier, and handoff reporter all depend on them.
+- <strong>Every feature item must have the triple</strong>: behavior description + verification command + current state. Missing one element makes it incomplete.
+- <strong>State transitions are controlled by the harness</strong> — the agent can't change states on its own. Passing verification is the only upgrade path.
+- <strong>The feature list is the project's single source of truth</strong> — all "what to do" information derives from it.
+- <strong>Calibrate granularity to "completable in one session."</strong> Too broad and it won't finish; too narrow and you can't manage it.
 
 ## Further Reading
 
@@ -148,8 +148,8 @@ Quantified result: projects using structured feature lists show 45% higher featu
 
 ## Exercises
 
-1. **Feature List Design**: Define a minimal feature list JSON schema. Include: id, behavior description, verification command, current state, evidence reference. Use it to describe a real project with 5 features.
+1. <strong>Feature List Design</strong>: Define a minimal feature list JSON schema. Include: id, behavior description, verification command, current state, evidence reference. Use it to describe a real project with 5 features.
 
-2. **Verification Strictness Comparison**: Pick 3 features and design both a "loose" verification (e.g., "code has no syntax errors") and a "strict" verification (e.g., "end-to-end test passes"). Compare false positive rates under each approach.
+2. <strong>Verification Strictness Comparison</strong>: Pick 3 features and design both a "loose" verification (e.g., "code has no syntax errors") and a "strict" verification (e.g., "end-to-end test passes"). Compare false positive rates under each approach.
 
-3. **Single Source Principle Audit**: Review an existing agent project and check for scope information that contradicts the feature list (implicit requirements in conversations, TODO comments in code, etc.). Design a plan to unify all information into the feature list.
+3. <strong>Single Source Principle Audit</strong>: Review an existing agent project and check for scope information that contradicts the feature list (implicit requirements in conversations, TODO comments in code, etc.). Design a plan to unify all information into the feature list.

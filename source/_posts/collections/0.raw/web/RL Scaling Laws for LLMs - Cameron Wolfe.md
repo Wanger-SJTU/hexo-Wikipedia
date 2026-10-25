@@ -28,28 +28,28 @@ categories:
 
 ### 幂律关系
 
-预训练缩放定律基于**逆幂律**：`y = a × (1/x)^p`
+预训练缩放定律基于<strong>逆幂律</strong>：`y = a × (1/x)^p`
 
 两个关键量：
-- **x**：计算量 C = 6 × N × D（N=参数量，D=token数）
-- **y**：测试损失（交叉熵损失）
+- <strong>x</strong>：计算量 C = 6 × N × D（N=参数量，D=token数）
+- <strong>y</strong>：测试损失（交叉熵损失）
 
 ### 核心论文
 
-1. **Neural Scaling Laws [Kaplan et al., 2020]**
+1. <strong>Neural Scaling Laws [Kaplan et al., 2020]</strong>
    - 发现性能随模型参数、数据量、计算量平滑提升
-   - 在计算受限时，**大模型 + 少数据**（不完全收敛）效果最好
+   - 在计算受限时，<strong>大模型 + 少数据</strong>（不完全收敛）效果最好
 
-2. **Chinchilla [Hoffmann et al., 2022]**
-   - 模型参数和数据量应**等比例增加**
-   - 之前的大多数模型都**训练不足**
+2. <strong>Chinchilla [Hoffmann et al., 2022]</strong>
+   - 模型参数和数据量应<strong>等比例增加</strong>
+   - 之前的大多数模型都<strong>训练不足</strong>
 
 ## RL 基础：GRPO 算法
 
 Group Relative Policy Optimization（GRPO）是目前推理模型 RL 训练的主流算法（DeepSeek-R1 使用）。
 
 ### 与 PPO 的区别
-- **去掉价值模型**：用组内奖励统计量估计优势函数
+- <strong>去掉价值模型</strong>：用组内奖励统计量估计优势函数
 - 优势计算：`A_i = (r_i - mean) / std`
 - 减少 GPU 显存和计算开销
 
@@ -57,17 +57,17 @@ Group Relative Policy Optimization（GRPO）是目前推理模型 RL 训练的�
 
 | 变体 | 核心改进 | 解决问题 |
 |------|---------|---------|
-| **GSPO** | 序列级重要性比率 | token级比率方差过高 |
-| **DAPO** | clip higher + 动态采样 + token级loss聚合 | 熵崩溃 + 训练噪声 |
-| **Dr. GRPO** | 固定MAX_TOKENS除法 + 去除std | 响应长度偏差 + 问题难度偏差 |
-| **TIS** | 截断重要性采样校正引擎差异 | 推理/训练引擎概率不匹配 |
-| **CISPO** | 修改裁剪方式，保留所有token梯度贡献 | 重要推理token被clip后丢失 |
+| <strong>GSPO</strong> | 序列级重要性比率 | token级比率方差过高 |
+| <strong>DAPO</strong> | clip higher + 动态采样 + token级loss聚合 | 熵崩溃 + 训练噪声 |
+| <strong>Dr. GRPO</strong> | 固定MAX_TOKENS除法 + 去除std | 响应长度偏差 + 问题难度偏差 |
+| <strong>TIS</strong> | 截断重要性采样校正引擎差异 | 推理/训练引擎概率不匹配 |
+| <strong>CISPO</strong> | 修改裁剪方式，保留所有token梯度贡献 | 重要推理token被clip后丢失 |
 
 ## RL 缩放定律研究
 
 ### 论文1: The Art of Scaling RL Compute [ScaleRL]
 
-**缩放模型**：S 形曲线（Sigmoidal）
+<strong>缩放模型</strong>：S 形曲线（Sigmoidal）
 
 ```
 Reward Gain = A / [1 + (C_mid/C)^B]
@@ -77,12 +77,12 @@ Reward Gain = A / [1 + (C_mid/C)^B]
 - B：计算效率指数
 - C_mid：达到中点的计算量
 
-**ScaleRL 配方**：
+<strong>ScaleRL 配方</strong>：
 - CISPO loss + PipelineRL（异步RL）+ 全精度LM head
 - 过滤零方差 prompt + 移除通过率>90%的 prompt
 - DAPO 风格 loss 聚合
 
-**关键发现**：
+<strong>关键发现</strong>：
 - 异步 RL（PipelineRL）效率更高，但需限制异步度（K=8）
 - 更长上下文初期慢但最终性能更高
 - 大 batch 提升渐近性能
@@ -90,7 +90,7 @@ Reward Gain = A / [1 + (C_mid/C)^B]
 
 ### 论文2: Scaling Behaviors of LLM RL Post-Training
 
-**缩放模型**：对数-线性幂律
+<strong>缩放模型</strong>：对数-线性幂律
 
 ```
 L(N, X) = a × K(N)^(-1) × X^(-α)
@@ -101,19 +101,19 @@ L(N, X) = a × K(N)^(-1) × X^(-α)
 - X：计算量或数据量
 - K(N)：学习效率（随模型增大饱和）
 
-**关键发现**：
-- **模型间外推**：小模型（0.5B-32B）可预测大模型（72B）表现
-- **模型内外推**：早期训练轨迹可预测完整训练结果
+<strong>关键发现</strong>：
+- <strong>模型间外推</strong>：小模型（0.5B-32B）可预测大模型（72B）表现
+- <strong>模型内外推</strong>：早期训练轨迹可预测完整训练结果
 - 32B 在低计算预算下优于 72B（学习效率饱和导致）
 - 数据量固定时，大模型样本效率始终更好
-- RL 训练对**数据复用**惊人地鲁棒（τ=25 才显著退化）
+- RL 训练对<strong>数据复用</strong>惊人地鲁棒（τ=25 才显著退化）
 
 ### 论文3: Optimally Scaling Sampling Compute
 
-**核心问题**：如何分配采样计算（B_p × n × M）？
+<strong>核心问题</strong>：如何分配采样计算（B_p × n × M）？
 
-**关键发现**：
-- **增加每个 prompt 的 rollout 数 n** 比增加训练步数更有效
+<strong>关键发现</strong>：
+- <strong>增加每个 prompt 的 rollout 数 n</strong> 比增加训练步数更有效
 - n 的最优值随计算预算增加而增加，最终饱和
 - 难题的最优 n 更小
 - B_p 对性能影响适中，主要影响训练稳定性
@@ -121,7 +121,7 @@ L(N, X) = a × K(N)^(-1) × X^(-α)
   - 简单题：熵奖励 + KL 散度
   - 难题：无正则化
 
-**实用建议**：
+<strong>实用建议</strong>：
 1. 低计算预算下 sweep B_p 和 n
 2. 拟合缩放律推断最优 n
 3. 选最小稳定 B_p
@@ -138,7 +138,7 @@ L(N, X) = a × K(N)^(-1) × X^(-α)
 
 ## 实用建议总结
 
-1. RL 缩放行为在给定设置下**可预测**
+1. RL 缩放行为在给定设置下<strong>可预测</strong>
 2. 早期训练阶段可用于判断配置可行性
 3. 设计决策影响不同：效率 vs 渐近性能
 4. 大模型总是更好，但计算受限时小模型可能更优

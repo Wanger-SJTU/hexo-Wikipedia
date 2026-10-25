@@ -29,7 +29,7 @@ categories:
 
 # Learn Harness Engineering
 
-> **AI 코딩 에이전트가 안정적으로 작동하도록 만드는 환경, 상태 관리, 검증 및 제어 메커니즘을 구축하는 프로젝트 기반 강좌입니다.**
+> <strong>AI 코딩 에이전트가 안정적으로 작동하도록 만드는 환경, 상태 관리, 검증 및 제어 메커니즘을 구축하는 프로젝트 기반 강좌입니다.</strong>
 
 Learn Harness Engineering은 AI 코딩 에이전트의 엔지니어링에 집중하는 강좌입니다. 업계에서 가장 선진적인 Harness Engineering 이론과 실무를 심층적으로 연구하고 종합했습니다. 핵심 참고 자료는 다음과 같습니다:
 
@@ -38,7 +38,7 @@ Learn Harness Engineering은 AI 코딩 에이전트의 엔지니어링에 집중
 - [Anthropic: Harness design for long-running application development](https://www.anthropic.com/engineering/harness-design-long-running-apps)
 - [Awesome Harness Engineering](https://github.com/walkinglabs/awesome-harness-engineering)
 
-> **빠른 시작?** [`skills/harness-creator/`](../../skills/harness-creator/) 스킬을 사용하면 몇 분 만에 여러분의 프로젝트에 프로덕션급 하니스(AGENTS.md, 기능 목록, init.sh, 검증 워크플로우)를 스캐폴딩할 수 있습니다.
+> <strong>빠른 시작?</strong> [`skills/harness-creator/`](../../skills/harness-creator/) 스킬을 사용하면 몇 분 만에 여러분의 프로젝트에 프로덕션급 하니스(AGENTS.md, 기능 목록, init.sh, 검증 워크플로우)를 스캐폴딩할 수 있습니다.
 
 ---
 
@@ -85,7 +85,7 @@ Learn Harness Engineering은 AI 코딩 에이전트의 엔지니어링에 집중
 
 ## 모델은 똑똑하고, 하니스가 안정성을 만듭니다
 
-대부분의 사람들이 어려운 방식으로 깨닫는 뼈아픈 사실이 있습니다: **세계에서 가장 강력한 모델이라도 주변에 적절한 환경을 구축하지 않으면 실제 엔지니어링 작업에서 여전히 실패합니다.**
+대부분의 사람들이 어려운 방식으로 깨닫는 뼈아픈 사실이 있습니다: <strong>세계에서 가장 강력한 모델이라도 주변에 적절한 환경을 구축하지 않으면 실제 엔지니어링 작업에서 여전히 실패합니다.</strong>
 
 직접 겪어보셨을 것입니다. 여러분의 저장소에서 Claude나 GPT에 작업을 맡깁니다. 처음에는 잘 진행됩니다 — 파일을 읽고, 코드를 작성하고, 생산적으로 보입니다. 그러다 무언가 잘못됩니다. 단계를 건너뜁니다. 테스트를 망가뜨립니다. "완료"라고 말하지만 실제로는 아무것도 작동하지 않습니다. 직접 했더라면 더 빨랐을 작업을 수정하는 데 더 많은 시간을 쓰게 됩니다.
 
@@ -95,7 +95,7 @@ Learn Harness Engineering은 AI 코딩 에이전트의 엔지니어링에 집중
 
 OpenAI도 Codex에서 동일한 결과를 보고했습니다: 잘 구축된 하니스가 있는 저장소에서는 동일한 모델이 "불안정"에서 "안정적"으로 변합니다. 미미한 개선이 아닌 질적인 전환입니다.
 
-**이 강좌는 그 환경을 구축하는 방법을 가르칩니다.**
+<strong>이 강좌는 그 환경을 구축하는 방법을 가르칩니다.</strong>
 
 ```text
                     하니스 패턴
@@ -156,17 +156,17 @@ Harness engineering은 모델 주변에 안정적인 결과를 생성하는 완�
 
 각 하위 시스템은 하나의 역할을 담당합니다:
 
-- **지시 사항(Instructions)** — 에이전트에게 무엇을, 어떤 순서로, 시작하기 전에 무엇을 읽어야 하는지 알려줍니다. 거대한 단일 파일이 아닌, 에이전트가 필요에 따라 탐색하는 점진적 공개 구조입니다.
-- **상태(State)** — 완료된 작업, 진행 중인 작업, 다음 작업을 추적합니다. 디스크에 영속화되어 다음 세션이 정확히 이전 세션이 중단된 지점에서 이어집니다.
-- **검증(Verification)** — 통과하는 테스트 스위트만 증거로 인정됩니다. 에이전트는 실행 가능한 증명 없이 완료를 선언할 수 없습니다.
-- **범위(Scope)** — 에이전트를 한 번에 하나의 기능으로 제한합니다. 과도한 작업 금지. 세 가지를 반쯤 완성하는 것 금지. 미완료 작업을 숨기기 위해 기능 목록을 재작성하는 것 금지.
-- **세션 수명 주기(Session Lifecycle)** — 시작할 때 초기화. 끝날 때 정리. 다음 세션을 위한 깔끔한 재시작 경로를 남깁니다.
+- <strong>지시 사항(Instructions)</strong> — 에이전트에게 무엇을, 어떤 순서로, 시작하기 전에 무엇을 읽어야 하는지 알려줍니다. 거대한 단일 파일이 아닌, 에이전트가 필요에 따라 탐색하는 점진적 공개 구조입니다.
+- <strong>상태(State)</strong> — 완료된 작업, 진행 중인 작업, 다음 작업을 추적합니다. 디스크에 영속화되어 다음 세션이 정확히 이전 세션이 중단된 지점에서 이어집니다.
+- <strong>검증(Verification)</strong> — 통과하는 테스트 스위트만 증거로 인정됩니다. 에이전트는 실행 가능한 증명 없이 완료를 선언할 수 없습니다.
+- <strong>범위(Scope)</strong> — 에이전트를 한 번에 하나의 기능으로 제한합니다. 과도한 작업 금지. 세 가지를 반쯤 완성하는 것 금지. 미완료 작업을 숨기기 위해 기능 목록을 재작성하는 것 금지.
+- <strong>세션 수명 주기(Session Lifecycle)</strong> — 시작할 때 초기화. 끝날 때 정리. 다음 세션을 위한 깔끔한 재시작 경로를 남깁니다.
 
 ---
 
 ## 이 강좌가 존재하는 이유
 
-질문은 "모델이 코드를 작성할 수 있는가?"가 아닙니다. 작성할 수 있습니다. 진짜 질문은: **실제 저장소 내에서 여러 세션에 걸쳐 지속적인 인간 감독 없이 실제 엔지니어링 작업을 안정적으로 완료할 수 있는가?**입니다.
+질문은 "모델이 코드를 작성할 수 있는가?"가 아닙니다. 작성할 수 있습니다. 진짜 질문은: <strong>실제 저장소 내에서 여러 세션에 걸쳐 지속적인 인간 감독 없이 실제 엔지니어링 작업을 안정적으로 완료할 수 있는가?</strong>입니다.
 
 현재 답은: 하니스 없이는 불가능합니다.
 
@@ -202,13 +202,13 @@ Harness engineering은 모델 주변에 안정적인 결과를 생성하는 완�
 
 ## 강의 과정 및 문서
 
-전체 강의 자료는 **[문서 웹사이트](https://walkinglabs.github.io/learn-harness-engineering/)**를 방문하세요.
+전체 강의 자료는 <strong>[문서 웹사이트](https://walkinglabs.github.io/learn-harness-engineering/)</strong>를 방문하세요.
 
 과정은 세 부분으로 나뉩니다:
 
-1. **강의(Lectures)**: Harness engineering 이론을 설명하는 12개의 개념적 단원.
-2. **프로젝트(Projects)**: 처음부터 에이전트 작업 공간을 구축하는 6개의 실습 프로젝트.
-3. **리소스 라이브러리**: 여러분의 저장소에 오늘 바로 사용할 수 있는 복사 가능 템플릿(`AGENTS.md`, `feature_list.json`, `init.sh` 등).
+1. <strong>강의(Lectures)</strong>: Harness engineering 이론을 설명하는 12개의 개념적 단원.
+2. <strong>프로젝트(Projects)</strong>: 처음부터 에이전트 작업 공간을 구축하는 6개의 실습 프로젝트.
+3. <strong>리소스 라이브러리</strong>: 여러분의 저장소에 오늘 바로 사용할 수 있는 복사 가능 템플릿(`AGENTS.md`, `feature_list.json`, `init.sh` 등).
 
 ---
 
@@ -234,7 +234,7 @@ Harness engineering은 모델 주변에 안정적인 결과를 생성하는 완�
 
 ## 캡스톤 프로젝트: 실제 앱
 
-6개의 강좌 프로젝트는 모두 동일한 제품을 중심으로 전개됩니다: **Electron 기반 개인 지식 베이스 데스크톱 앱**.
+6개의 강좌 프로젝트는 모두 동일한 제품을 중심으로 전개됩니다: <strong>Electron 기반 개인 지식 베이스 데스크톱 앱</strong>.
 
 ```text
     ┌─────────────────────────────────────────────────────┐
@@ -394,7 +394,7 @@ Harness engineering은 모델 주변에 안정적인 결과를 생성하는 완�
 
 ## 에이전트 세션 수명 주기
 
-이 강좌의 핵심 아이디어 중 하나: **에이전트의 세션은 자유 방임이 아닌 구조화된 수명 주기를 따라야 합니다.** 그 모습은 다음과 같습니다:
+이 강좌의 핵심 아이디어 중 하나: <strong>에이전트의 세션은 자유 방임이 아닌 구조화된 수명 주기를 따라야 합니다.</strong> 그 모습은 다음과 같습니다:
 
 ```text
     에이전트 세션 수명 주기
@@ -567,7 +567,7 @@ learn-harness-engineering/
 
 이 저장소에는 IDE나 에이전트 작업 공간에 직접 설치할 수 있는 재사용 가능한 AI 에이전트 스킬도 포함되어 있습니다.
 
-- [**harness-creator**](../../skills/harness-creator/): 몇 분 만에 여러분의 프로젝트에 프로덕션급 하니스를 스캐폴딩하는 스킬.
+- [<strong>harness-creator</strong>](../../skills/harness-creator/): 몇 분 만에 여러분의 프로젝트에 프로덕션급 하니스를 스캐폴딩하는 스킬.
 
 ---
 
@@ -577,7 +577,7 @@ learn-harness-engineering/
 
 [![Hands-on Modern RL](https://img.shields.io/badge/HANDS--ON_MODERN_RL-0052cc?style=for-the-badge)](https://github.com/walkinglabs/hands-on-modern-rl)
 
-**Hands-on Modern RL**: 기본 RL 개념부터 LLM 정렬, RLVR, 고급 에이전트 시스템까지 이어지는 오픈소스 실습 커리큘럼.
+<strong>Hands-on Modern RL</strong>: 기본 RL 개념부터 LLM 정렬, RLVR, 고급 에이전트 시스템까지 이어지는 오픈소스 실습 커리큘럼.
 
 ---
 

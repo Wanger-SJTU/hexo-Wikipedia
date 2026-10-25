@@ -17,28 +17,28 @@ source_url: https://zhuanlan.zhihu.com/p/682286231
 
 在C++/Rust中，在访问一个原子变量时，无论读写，都要求传入一个叫做`memory_order` 的枚举变量，这些变量有什么用？它们是如何影响我们程序的正确性和性能的？我们要如何选择合适的`memory_order`? 本文以最常见的x86系统为例，从体系结构说起，理解不同memory order背后CPU的不同操作。
 
-**阅读前置要求: 了解经典5级流水线的基本概念，知道每一步在做什么，明白流水线对性能的提升，了解cache的基本原理，了解缓存一致性协议MESI。 另外，不要把本文当做教程，因为不可能把各方面细节都讲清楚，可以当做一个引子，对感兴趣的部分还是要多读原文。**
+<strong>阅读前置要求: 了解经典5级流水线的基本概念，知道每一步在做什么，明白流水线对性能的提升，了解cache的基本原理，了解缓存一致性协议MESI。 另外，不要把本文当做教程，因为不可能把各方面细节都讲清楚，可以当做一个引子，对感兴趣的部分还是要多读原文。</strong>
 
 ### 1. 经典5级流水线<span class="wikilink wikilink--missing" title="未导入的页面">1</span>(#ref_1) 
 
-![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_11bcdab34774.jpg)
+![](/images/collections/0.raw/zhihu/%E7%BC%96%E7%A8%8B%E5%90%91/asset/img_11bcdab34774.jpg)
 
 经典5级流水线CPU将指令执行分解成5个部分，分别是IF 取指令，ID 译码，EX 执行，MEM 访问内存和WB 写回，由于默认大家已经了解经典的5级流水线CPU，这里不再介绍每一步的意义。
 
 #### 1.1 Data hazard
 
-- **True dependence: read-after-write (RAW)**
-![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_1a73dd7e6506.jpg)
+- <strong>True dependence: read-after-write (RAW)</strong>
+![](/images/collections/0.raw/zhihu/%E7%BC%96%E7%A8%8B%E5%90%91/asset/img_1a73dd7e6506.jpg)
 
 RAW流水线中常见的data hazard，由于第一条指令更新R1要在第5个时钟周期才完成，而第二条指令需要在第3个时钟周期就需要知道R1更新后的值，因此第二条指令必须阻塞等待，否则第二条指令读到的就是旧的R1值，使程序结果错误。这种对同一个寄存器先写后读的情况就称为RAW(read-after-write)，也叫true dependency，表示两条指令有依赖关系。在某些场景下，可以通过bypassing或者叫forwarding的方式来避免等待，但这只是属于优化，不过多关注。
 
-- **Anti dependence: write-after-read (WAR)**
-![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_43a3ef312342.jpg)
+- <strong>Anti dependence: write-after-read (WAR)</strong>
+![](/images/collections/0.raw/zhihu/%E7%BC%96%E7%A8%8B%E5%90%91/asset/img_43a3ef312342.jpg)
 
 WAR对同一个寄存器，第一条指令读它，第二条指令写它，这种场景就是WAR(write-after-read)，也叫anti dependence。幸运的是，在5级流水线中，因为WB阶段在最后，所以第1条指令读到的R2值，肯定是第二条指令更新R2前的旧值，也就不存在data hazard。
 
-- **Output dependence: write-after-write (WAW)**
-![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_dc237ed9bc86.jpg)
+- <strong>Output dependence: write-after-write (WAW)</strong>
+![](/images/collections/0.raw/zhihu/%E7%BC%96%E7%A8%8B%E5%90%91/asset/img_dc237ed9bc86.jpg)
 
 WAW对同一个寄存器，第一条指令写它，第二条指令也写它，这种场景就是WAW(write-after-write)，也叫output dependence。和WAR的分析类似，第二条指令更新R1一定在第一条指令更新R1之后，也就是说R1最后的值一定是第二条指令决定的，不会反转顺序造成结果错误。
 
@@ -54,7 +54,7 @@ WAW对同一个寄存器，第一条指令写它，第二条指令也写它，�
 
 ### 2. 超标量处理器<span class="wikilink wikilink--missing" title="未导入的页面">2</span>(#ref_2) 
 
-![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_33aedf661467.jpg)
+![](/images/collections/0.raw/zhihu/%E7%BC%96%E7%A8%8B%E5%90%91/asset/img_33aedf661467.jpg)
 
 superscalar processor实际上，在EX阶段，不同指令需要的硬件单元和时间都是不一样的，比如计算整数的硬件可能无法计算浮点数，且除法运算会比加法慢得多。如果还像5级流水线那样统一EX的周期，且一次只允许一条指令在EX阶段，那么处理器性能会有显著瓶颈。比如假设第一条指令是浮点数乘法，需要EX 7个单位时间，那么第二条的整数加法就需要一直等待浮点数乘法结束后才能执行，而实际上完全可以在执行浮点数乘法的时候同时执行整数加法。
 
@@ -64,27 +64,27 @@ ILP理论上有多种实现方式，工程师们可以发挥自己的聪明才�
 
 这里我们讲述一个现代主流的实现，in-order fetch/decode, out-of-order execution, in-order commit的处理器. 简单说，就是这个处理器仍然按顺序读取指令，按顺序解码指令，但在解码后可能会乱序执行指令(即先解码的指令后执行，后解码的指令先执行)，最后通过某种机制再按顺序提交(commit)这些指令的最终结果，从而修改处理器的状态。
 
-![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_4276a835a472.jpg)
+![](/images/collections/0.raw/zhihu/%E7%BC%96%E7%A8%8B%E5%90%91/asset/img_4276a835a472.jpg)
 
 顺序取指，乱序执行，顺序提交整体结构如上图，下面依次分析
 
 - Instruction Fetching**
 超标量处理器一次可以取多条指令，但我们这里并不关心，因为这只关乎性能，取指令本身还是顺序的。
 
-- **Instruction Decoding**
+- <strong>Instruction Decoding</strong>
 对于简单的RISC来说，译码比较简单。但是对于CISC，比如x86来说，译码会比较麻烦。因为一条x86指令可能被翻译成连续几条微指令( \mu\ operation )，而x86处理器实际也是在执行微指令。一个例子是x86底层实现仍然是Load/Store architecture。
 
 decoding阶段会识别指令类型，读取需要的操作数，但是操作数可能因为data hazard还不可用，这个时候不等待，指令直接进入dispatch阶段，这时候仍然是顺序的。
 
-- **Instruction Dispatching**
+- <strong>Instruction Dispatching</strong>
 指令从decoding阶段进来，就要准备执行了，dispatching阶段就是根据指令类型，将指令分配到合适的功能硬件(function unit)中。比如将浮点数运算指令分配到浮点数硬件中，将整数运算指令分配到整数硬件中。
 
 但是这时候可能指令需要的操作数还在计算中，因此必须等待，指令停留的位置就叫做reservation stations(RS)。指令会在RS中等待需要的操作数，当所有操作数都准备就绪后，指令被分配进对应的function unit开始执行。这个时候，指令就并不是按顺序进入下一阶段了，顺序在前的指令可能由于等待操作数而后执行。
 
-- **Instruction Execution**
+- <strong>Instruction Execution</strong>
 执行指令，多个指令可以在不同的function unit中同时执行，且它们执行所需的时间也可以不同。另外，读取内存也是在EX阶段，而不是单独的MEM阶段，至于写内存，则在下一个阶段。
 
-- **Instruction Completion and Retiring**
+- <strong>Instruction Completion and Retiring</strong>
 指令执行完成(finish)后，不会像5级流水线那样立即将结果写入寄存器，而是将指令和指令结果放入reorder buffer(ROB)，然后按指令原来的顺序依次commit指令，即将指令的结果更新到处理器的状态中。比如有两条指令，第一条是浮点数乘法，第二条是整数加法，显然第二条指令先执行完并进入ROB，但此时它不会去更新处理器中的整数寄存器，而是等待第一条浮点数指令完成进入ROB，且第一条指令更新完浮点数寄存器后(commit)，再更新第二条指令的目的寄存器。指令commit并离开ROB时，被认为是*completed*
 
 这样，虽然指令的执行是乱序的，但指令真正"有效果"是顺序的。
@@ -93,7 +93,7 @@ decoding阶段会识别指令类型，读取需要的操作数，但是操作数
 
 我们可以总结指令的一生： *fetch, decode, dispatch, issue, execute, finish, complete, and retire.  *其中issue是进入function unit开始执行的时刻，finish是离开function unit的时刻。
 
-- **总结超标量处理器**
+- <strong>总结超标量处理器</strong>
 超标量处理器实现了指令的并行，让处理器性能更进一步。
 
 同时也了解了我们常说的"CPU乱序执行"到底是怎么一回事（上面的讲述的处理器结构和Intel P6是比较相似的），CPU的乱序执行并不是一顿乱跑，而只是根据依赖关系优先计算出了某些指令的结果，最后修改处理器状态仍然是顺序的，保证了计算结果的正确性。
@@ -134,15 +134,15 @@ L2: r2 = x;`
 
 在多核系统中，我们无法确认核1和核2中的指令哪个先执行哪个后执行。有可能核1的指令全部执行完后再执行核2，也可能核2的指令全部完成后再执行核1，也可能交替执行，所以最终可能的结果不唯一。我们不能说哪个结果更好，只能说某个结果是否合理，是否有可能出现。
 
-我们先前假设了这个多核处理器是没有任何优化的，所有指令依次执行，没有交替。我们说满足这个特征的处理器是符合sequential consistency(**SC**)的。SC简单理解就是没有任何优化的交替顺序执行。回到上面的例子，分析哪些结果是符合SC的，哪些不是。
+我们先前假设了这个多核处理器是没有任何优化的，所有指令依次执行，没有交替。我们说满足这个特征的处理器是符合sequential consistency(<strong>SC</strong>)的。SC简单理解就是没有任何优化的交替顺序执行。回到上面的例子，分析哪些结果是符合SC的，哪些不是。
 
-![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_5fb5082c693e.jpg)
+![](/images/collections/0.raw/zhihu/%E7%BC%96%E7%A8%8B%E5%90%91/asset/img_5fb5082c693e.jpg)
 
 4种可能的执行结果，前3种是符合SC的上面前3种执行结果是符合SC的，比较容易理解。第4种不是，因为S2最先执行，L1最后执行，那么L1读y值应该是NEW而不是0，因此是不满足SC的。
 
 下面对SC做更正式的定义
 
-我们首先定义  是**每个核的**程序顺序(program order),  表示**全局的**访问内存的顺序(memory order)。根据上面例子，有 S1  ，因为按照程序顺序，S1指令是在L1指令的前面。再以上图(a)的情况为例，有 S1  ，因为S1比S2先访问内存，即使S1和S2不在同一个核中，但因为访问同一个内存系统，因此也能区分出memory order，但我们无法区分它们的program order。
+我们首先定义  是<strong>每个核的</strong>程序顺序(program order),  表示<strong>全局的</strong>访问内存的顺序(memory order)。根据上面例子，有 S1  ，因为按照程序顺序，S1指令是在L1指令的前面。再以上图(a)的情况为例，有 S1  ，因为S1比S2先访问内存，即使S1和S2不在同一个核中，但因为访问同一个内存系统，因此也能区分出memory order，但我们无法区分它们的program order。
 
 下面给出正式定义
 
@@ -156,7 +156,7 @@ L2: r2 = x;`
 
 比对这两个要求和我们设想的无任何优化的多核处理器，发现后者是满足SC的。实际上，即使是经典5级流水线，也是满足SC的，因为每个核本身可以看成是顺序执行的。
 
-**SC的原子操作(RMW)**
+<strong>SC的原子操作(RMW)</strong>
 
 这里的原子操作主要指先读后写这类的RMW操作，因为只读/只写本来就可以看成是原子的。SC的原子操作很容易实现，一种最简单的方法是锁定整个内存系统，只允许当前原子操作执行，只不过性能不好。
 
@@ -179,21 +179,21 @@ TSO模型因为引入了write buffer，会产生一些反直觉的结果，但�
 
 2. 每一个Load指令，读到的值要么是相同位置最后一次Store指令写入的值(和SC相同，从cache中读)，要么是从本地write buffer中读(Store指令还没有发送给cache)。
 
-![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_e710416bfae0.jpg)
+![](/images/collections/0.raw/zhihu/%E7%BC%96%E7%A8%8B%E5%90%91/asset/img_e710416bfae0.jpg)
 
 TSO允许，SC不允许再重新分析上面不符合SC的结果，有了write buffer以后，S2将写操作放进write buffer，然后L2读r2为0。接着S1执行写操作，也将其放进自己的write buffer，然后执行L1. 而此时S2可能还在write buffer中，没有真正更新cache，因此L1读到的还是0. 最后时刻，S1和S2离开write buffer，此时x, y都是新值，但之前r1, r2读到的都是0，这就是TSO带来的反直觉的结果。
 
-**TSO的原子操作(RMW)**
+<strong>TSO的原子操作(RMW)</strong>
 
 由于有了write buffer，不能再像SC那样简单锁住整个系统后单独执行指令。假设我们这样实现了，原子操作的store部分就比write buffer中的store操作先更新内存，违反了Store -> Store约束。所以，RMW操作需要先清空本地write buffer，再执行原子操作的Load和Store部分。
 
-**TSO fence**
+<strong>TSO fence</strong>
 
 因为TSO没有了Store -> Load约束，但有时候程序员想避免一些反直觉的情况，于是有了fence指令来进行干涉。
 
 fence本身是保证program order在fence之前的指令，其memory order先于，program order在fence之后的指令。对于TSO来说，因为只缺Store -> Load约束，所以fence本质是不让load指令从write buffer中通过bypassing读值。因此fence一种简单的实现就是排空write buffer，并且在fence指令commit之前，不允许后续的Load指令执行。
 
-![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_c65c12319dbb.jpg)
+![](/images/collections/0.raw/zhihu/%E7%BC%96%E7%A8%8B%E5%90%91/asset/img_c65c12319dbb.jpg)
 
 有了fence以后，上面的例子不再可能出现r1 = r2 = 0的情况，因为fence强制清空write buffer。
 
@@ -205,17 +205,17 @@ fence本身是保证program order在fence之前的指令，其memory order先于
 
 终于从硬件来到语言层面，了解了硬件工作原理后，再来理解C++ 的memory_order就要容易得多。C++是可以运行在不同硬件平台的，不同平台有不同的一致性模型，我们这里只描述其在x86系统下的实现。
 
-首先，我们要理解为什么需要memory_order，虽然memory_order是和原子变量，原子操作联系在一起的，但实际上memory_order和"原子"本身没有任何关系，选择memory_order是**为了同步**，而不是原子操作。无论哪种memory_order，其操作本身都是原子化的。
+首先，我们要理解为什么需要memory_order，虽然memory_order是和原子变量，原子操作联系在一起的，但实际上memory_order和"原子"本身没有任何关系，选择memory_order是<strong>为了同步</strong>，而不是原子操作。无论哪种memory_order，其操作本身都是原子化的。
 
-- **memory_order_relaxed**
+- <strong>memory_order_relaxed</strong>
 C++对memory_order_relaxed没有任何同步要求，只要求操作本身是原子的。回顾我们在TSO中讲解RMW操作的实现，原子操作会清空write buffer，因此即使选择memory_order_relaxed，x86实际上是有一定同步机制的。这也是为什么x86被认为是强一致性模型，因为其实现中默认会有同步机制。
 
 relaxed一般用于计数，因为不需要同步，只需要保证计数正确。
 
-- **memory_order_consume**
+- <strong>memory_order_consume</strong>
 官方都不推荐使用了，不需要了解，在Rust中也没有consume这个选项。
 
-- **memory_order_acquire/memory_order_release/memory_order_acq_rel**
+- <strong>memory_order_acquire/memory_order_release/memory_order_acq_rel</strong>
 acquire用于Load操作，release用于Store操作，acq_rel用于RMW操作。C++要求，如果一个标记了acquire的Load操作，读到的是一个标记了release的Store操作的值，那么要保证Store之前的所有写操作对Load之后的所有指令可见。
 
 相当于说一个线程的Store(a, release)指令和另一个线程的Load(a, acquire)指令建立了同步关系，Load指令之后的指令能看到Store之前的其他store指令的效果。比如
@@ -239,7 +239,7 @@ if (a.load(acquire) == 1) {
 
 一般来说Mutex实现就可以用release/acquire，当获取锁后，可以读到释放锁之前对内存的修改。
 
-- **memory_order_seq_cst**
+- <strong>memory_order_seq_cst</strong>
 C++20对seq_cst进行了一波大更新，严格说明比较复杂，但主要是针对其他平台的，对x86来说简单理解即可。这里只大概介绍。
 
 对于Load操作，相当于acquire; 对于Store操作，相当于release; 对于RMW操作，相当于acq_rel。此外，还要求所有标记为seq_cst的操作，有一个统一的全局顺序。

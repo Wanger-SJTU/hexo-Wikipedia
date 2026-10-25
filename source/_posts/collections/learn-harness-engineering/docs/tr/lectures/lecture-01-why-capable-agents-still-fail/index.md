@@ -32,7 +32,7 @@ Anthropic kontrollü bir deney yaptı. Aynı prompt ("2B retro oyun yapımcısı
 
 Modeli değiştirmediler. Opus 4.5 yine Opus 4.5'ti. Değişen şey koşum takımıydı.
 
-OpenAI'nin 2025 harness mühendisliği makalesi bunu açıkça söylüyor: iyi bir harness'a sahip bir depoda Codex "güvenilmez"den "güvenilir"e geçiyor. İfadeye dikkat edin — "biraz daha iyi" değil, niteliksel bir sıçrama. Tıpkı safkan bir at gibi: doğru koşum takımı olmadan binebilirsiniz ama uzağa gidemezsiniz, hızlı gidemezsiniz, düşmek de sürpriz olmaz. Harness işte o tam koşum takımıdır — **model ağırlıkları dışındaki tüm mühendislik altyapısı.**
+OpenAI'nin 2025 harness mühendisliği makalesi bunu açıkça söylüyor: iyi bir harness'a sahip bir depoda Codex "güvenilmez"den "güvenilir"e geçiyor. İfadeye dikkat edin — "biraz daha iyi" değil, niteliksel bir sıçrama. Tıpkı safkan bir at gibi: doğru koşum takımı olmadan binebilirsiniz ama uzağa gidemezsiniz, hızlı gidemezsiniz, düşmek de sürpriz olmaz. Harness işte o tam koşum takımıdır — <strong>model ağırlıkları dışındaki tüm mühendislik altyapısı.</strong>
 
 ## Ajanlar gerçekte nerede takılıyor
 
@@ -52,22 +52,22 @@ Birden fazla oturuma yayılan uzun görevler daha da kötüdür — önceki otur
 
 Bu senaryolar göz önünde bulundurulduğunda bu kavramlar artık sadece jargon değil:
 
-- **Yetenek farkı (Capability Gap)**: Modelin benchmark performansı ile gerçek görev performansı arasındaki büyük uçurum. SWE-bench Verified üzerindeki %50-60 başarı oranı, gerçek sorunların neredeyse yarısının çözülemediği anlamına gelir.
-- **Harness**: Modelin dışındaki her şey — talimatlar, araçlar, ortam, durum yönetimi, doğrulama geri bildirimi. Eğer model ağırlığı değilse, harness'tır. "Koşum takımı" diye andığımız şey.
-- **Harness kaynaklı başarısızlık (Harness-Induced Failure)**: Modelin yeterli yeteneği vardır ama yürütme ortamı yapısal kusurlara sahiptir. Anthropic'in kontrollü deneyi bunu zaten kanıtladı.
-- **Doğrulama farkı (Verification Gap)**: Ajanın çıktısına olan güveni ile gerçek doğruluk arasındaki fark. Ajan iş bitmemişken "bitirdim" diyor — bu en yaygın başarısızlık modu.
-- **Tanılayıcı döngü (Diagnostic Loop)**: Yürüt, başarısızlığı gözlemle, belirli bir harness katmanına ata, o katmanı düzelt, yeniden yürüt. Bu, harness mühendisliğinin temel metodolojisidir.
-- **Bitirme tanımı (Definition of Done)**: Makine tarafından doğrulanabilir bir dizi koşul — testler geçer, lint temizdir, tip kontrolleri geçer. Açık bir bitirme tanımı olmadan ajan kendi tanımını uyduracaktır.
+- <strong>Yetenek farkı (Capability Gap)</strong>: Modelin benchmark performansı ile gerçek görev performansı arasındaki büyük uçurum. SWE-bench Verified üzerindeki %50-60 başarı oranı, gerçek sorunların neredeyse yarısının çözülemediği anlamına gelir.
+- <strong>Harness</strong>: Modelin dışındaki her şey — talimatlar, araçlar, ortam, durum yönetimi, doğrulama geri bildirimi. Eğer model ağırlığı değilse, harness'tır. "Koşum takımı" diye andığımız şey.
+- <strong>Harness kaynaklı başarısızlık (Harness-Induced Failure)</strong>: Modelin yeterli yeteneği vardır ama yürütme ortamı yapısal kusurlara sahiptir. Anthropic'in kontrollü deneyi bunu zaten kanıtladı.
+- <strong>Doğrulama farkı (Verification Gap)</strong>: Ajanın çıktısına olan güveni ile gerçek doğruluk arasındaki fark. Ajan iş bitmemişken "bitirdim" diyor — bu en yaygın başarısızlık modu.
+- <strong>Tanılayıcı döngü (Diagnostic Loop)</strong>: Yürüt, başarısızlığı gözlemle, belirli bir harness katmanına ata, o katmanı düzelt, yeniden yürüt. Bu, harness mühendisliğinin temel metodolojisidir.
+- <strong>Bitirme tanımı (Definition of Done)</strong>: Makine tarafından doğrulanabilir bir dizi koşul — testler geçer, lint temizdir, tip kontrolleri geçer. Açık bir bitirme tanımı olmadan ajan kendi tanımını uyduracaktır.
 
 ## Bir şey ters gittiğinde önce harness'ı düzeltin
 
-Temel ilke: **Bir şey ters gittiğinde önce modeli değiştirmeyin — harness'ı kontrol edin.** Aynı model benzer, iyi yapılandırılmış görevlerde başarılı oluyorsa, sorunun harness'ta olduğunu varsayın. Bir arabanın bozulması gibi — hemen motoru suçlamazsınız. Önce yakıtı bitmiş mi diye bakarsınız.
+Temel ilke: <strong>Bir şey ters gittiğinde önce modeli değiştirmeyin — harness'ı kontrol edin.</strong> Aynı model benzer, iyi yapılandırılmış görevlerde başarılı oluyorsa, sorunun harness'ta olduğunu varsayın. Bir arabanın bozulması gibi — hemen motoru suçlamazsınız. Önce yakıtı bitmiş mi diye bakarsınız.
 
 Somut adımlar:
 
-**Her başarısızlığı belirli bir katmana atfedin.** Sadece "model berbat" demeyin. Sorun: Görev belirsiz miydi? Bağlam yetersiz miydi? Doğrulama yöntemleri yok muydu? Her başarısızlığı beş başarısızlık katmanından birine eşleyin: görev belirleme, bağlam sağlama, yürütme ortamı, doğrulama geri bildirimi ve durum yönetimi. Bunlar pratik tanı katmanlarıdır, yukarıdaki altı sözlük terimi değildir. Bu alışkanlığı kazanın ve "model yeterince iyi değil" ifadesinin günlüklerinizde gittikçe azaldığını göreceksiniz.
+<strong>Her başarısızlığı belirli bir katmana atfedin.</strong> Sadece "model berbat" demeyin. Sorun: Görev belirsiz miydi? Bağlam yetersiz miydi? Doğrulama yöntemleri yok muydu? Her başarısızlığı beş başarısızlık katmanından birine eşleyin: görev belirleme, bağlam sağlama, yürütme ortamı, doğrulama geri bildirimi ve durum yönetimi. Bunlar pratik tanı katmanlarıdır, yukarıdaki altı sözlük terimi değildir. Bu alışkanlığı kazanın ve "model yeterince iyi değil" ifadesinin günlüklerinizde gittikçe azaldığını göreceksiniz.
 
-**Her görev için açık bir Bitirme Tanımı yazın.** "Bir arama özelliği ekle" demeyin. Şunu söyleyin:
+<strong>Her görev için açık bir Bitirme Tanımı yazın.</strong> "Bir arama özelliği ekle" demeyin. Şunu söyleyin:
 ```
 Tamamlanma kriterleri:
 - Yeni uç nokta GET /api/search?q=xxx
@@ -77,21 +77,21 @@ Tamamlanma kriterleri:
 - Tip kontrolü geçer (mypy --strict)
 ```
 
-**Bir AGENTS.md dosyası oluşturun.** Depo köküne koyarak ajana projenin teknoloji yığınını, mimari kurallarını ve doğrulama komutlarını söyleyin. Bu harness mühendisliğinin ilk adımı ve atabileceğiniz en yüksek getirili adımdır. Bir `AGENTS.md` dosyası daha pahalı bir modele yükseltmekten daha etkili olabilir — şaka yapmıyorum.
+<strong>Bir AGENTS.md dosyası oluşturun.</strong> Depo köküne koyarak ajana projenin teknoloji yığınını, mimari kurallarını ve doğrulama komutlarını söyleyin. Bu harness mühendisliğinin ilk adımı ve atabileceğiniz en yüksek getirili adımdır. Bir `AGENTS.md` dosyası daha pahalı bir modele yükseltmekten daha etkili olabilir — şaka yapmıyorum.
 
-**Bir tanılayıcı döngü kurun.** Başarısızlıkları "model yine aptallık yapıyor" olarak değil, harness'ınızın bir kusuru olduğunun sinyali olarak ele alın. Her başarısızlıkta katmanı belirleyin, düzeltin, bir daha bu şekilde başarısız olmasın. Birkaç turdan sonra harness'ınız güçlenir ve ajan performansı sabitlenir. Yol tamiri gibi — kapattığınız her çukur bir sonraki bölümü daha pürüzsüz yapar.
+<strong>Bir tanılayıcı döngü kurun.</strong> Başarısızlıkları "model yine aptallık yapıyor" olarak değil, harness'ınızın bir kusuru olduğunun sinyali olarak ele alın. Her başarısızlıkta katmanı belirleyin, düzeltin, bir daha bu şekilde başarısız olmasın. Birkaç turdan sonra harness'ınız güçlenir ve ajan performansı sabitlenir. Yol tamiri gibi — kapattığınız her çukur bir sonraki bölümü daha pürüzsüz yapar.
 
-**İyileştirmeleri ölçün.** Basit bir günlük tutun: her görev başarılı mı oldu başarısız mı, hangi katman başarısızlığa neden oldu. Birkaç turdan sonra hangi katmanın darboğaz olduğunu göreceksiniz — enerjinizi oraya odaklayın.
+<strong>İyileştirmeleri ölçün.</strong> Basit bir günlük tutun: her görev başarılı mı oldu başarısız mı, hangi katman başarısızlığa neden oldu. Birkaç turdan sonra hangi katmanın darboğaz olduğunu göreceksiniz — enerjinizi oraya odaklayın.
 
 ## Milyon satırlık deney
 
 OpenAI 2025'te iddialı bir deney yaptı: boş bir git deposundan tam bir iç ürün geliştirmek için Codex kullanın. Beş ay sonra depo yaklaşık bir milyon satır kod içeriyordu — uygulama mantığı, altyapı, araçlar, dokümantasyon, dahili geliştirici araçları — hepsi ajan tarafından üretilmişti. Üç mühendis Codex'i yönetti, yaklaşık 1.500 PR açıp birleştirdi. Kişi başına günde ortalama 3,5 PR.
 
-Temel kısıt: **insanlar asla doğrudan kod yazmadı.** Bu bir gösteri değildi — mühendisin birincil işi artık kod yazmak değil, ortamları tasarlamak, niyeti ifade etmek ve geri bildirim döngüleri kurmak olduğunda neyin değiştiğini takımın anlamasını zorlamak için tasarlanmıştı.
+Temel kısıt: <strong>insanlar asla doğrudan kod yazmadı.</strong> Bu bir gösteri değildi — mühendisin birincil işi artık kod yazmak değil, ortamları tasarlamak, niyeti ifade etmek ve geri bildirim döngüleri kurmak olduğunda neyin değiştiğini takımın anlamasını zorlamak için tasarlanmıştı.
 
 Erken ilerleme beklenenden daha yavaştı. Codex yetersiz olduğu için değil, ortam yeterince eksiksiz olmadığı için — ajanın üst düzey hedefleri ilerletmek için gerekli araçlardan, soyutlamalardan ve dahili yapılardan yoksun olmasıydı. Mühendislerin işi şuna dönüştü: büyük hedefleri küçük yapı taşlarına bölmek (tasarım, kod, inceleme, test), ajanın bunları birleştirmesine izin vermek, ardından bu blokları daha karmaşık görevleri açmak için kullanmak. Bir şey başarısız olduğunda, düzeltme neredeyse hiçbir zaman "daha fazla dene" değildi — "ajanın hangi yetenekten yoksun olduğu ve bunu hem anlaşılır hem de yürütülebilir kılmak için ne yapabiliriz?" idi.
 
-Bu deney bu dersin temel tezini doğrudan kanıtlıyor: **aynı model çıplak bir ortamda ve eksiksiz bir harness ile temelden farklı çıktı üretir.** Model değişmedi. Ortam değişti.
+Bu deney bu dersin temel tezini doğrudan kanıtlıyor: <strong>aynı model çıplak bir ortamda ve eksiksiz bir harness ile temelden farklı çıktı üretir.</strong> Model değişmedi. Ortam değişti.
 
 > Kaynak: [OpenAI: Harness engineering: leveraging Codex in an agent-first world](https://openai.com/index/harness-engineering/)
 
@@ -123,8 +123,8 @@ Modeli değiştirmediler. Harness'ı değiştirdiler.
 
 ## Alıştırmalar
 
-1. **Karşılaştırma deneyi**: İyi tanıdığınız bir kod tabanı ve önemsiz olmayan bir değişiklik görevi seçin. Önce ajanı harness desteği olmadan çalıştırın ve başarısızlıkları kaydedin. Sonra açık doğrulama komutları içeren bir `AGENTS.md` ekleyin ve aynı ajanla tekrar çalıştırın. Sonuçları karşılaştırın, her başarısızlığı beş savunma katmanından birine atfedin.
+1. <strong>Karşılaştırma deneyi</strong>: İyi tanıdığınız bir kod tabanı ve önemsiz olmayan bir değişiklik görevi seçin. Önce ajanı harness desteği olmadan çalıştırın ve başarısızlıkları kaydedin. Sonra açık doğrulama komutları içeren bir `AGENTS.md` ekleyin ve aynı ajanla tekrar çalıştırın. Sonuçları karşılaştırın, her başarısızlığı beş savunma katmanından birine atfedin.
 
-2. **Doğrulama farkı ölçümü**: 5 kod yazma görevi seçin. Her görevden sonra ajanın tamamlandığını iddia edip etmediğini kaydedin, ardından bağımsız testlerle gerçek doğruluğu doğrulayın. Ajanın aslında bitmemişken bittiğini iddia etme oranını hesaplayın — bu sizin doğrulama farkınızdır. Sonra düşünün: hangi doğrulama komutları bu oranı azaltırdı?
+2. <strong>Doğrulama farkı ölçümü</strong>: 5 kod yazma görevi seçin. Her görevden sonra ajanın tamamlandığını iddia edip etmediğini kaydedin, ardından bağımsız testlerle gerçek doğruluğu doğrulayın. Ajanın aslında bitmemişken bittiğini iddia etme oranını hesaplayın — bu sizin doğrulama farkınızdır. Sonra düşünün: hangi doğrulama komutları bu oranı azaltırdı?
 
-3. **Tanılayıcı döngü pratiği**: Projenizde ajanın tekrar tekrar başarısız olduğu bir görev bulun. Bir kez çalıştırın, başarısızlığı kaydedin. Beş katmandan birine atfedin. O katmanı düzeltin. Tekrar çalıştırın. Her seferinde iyileştirmeleri kaydederek üç ila beş tur tekrarlayın.
+3. <strong>Tanılayıcı döngü pratiği</strong>: Projenizde ajanın tekrar tekrar başarısız olduğu bir görev bulun. Bir kez çalıştırın, başarısızlığı kaydedin. Beş katmandan birine atfedin. O katmanı düzeltin. Tekrar çalıştırın. Her seferinde iyileştirmeleri kaydederek üç ila beş tur tekrarlayın.

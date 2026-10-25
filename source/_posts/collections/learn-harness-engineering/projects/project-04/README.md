@@ -19,8 +19,8 @@ Introduce runtime observability and structural boundary checks while debugging a
 
 | Directory | Meaning |
 |------|------|
-| `starter/` | **Starting point**: based on the P3 solution, with logging and structural boundary features still to implement. `IndexingService` contains a hidden seeded bug: files longer than 1000 characters can produce empty chunks. There is no architecture-check script and no final clean-state checklist. |
-| `solution/` | **Reference implementation**: structured logging module, architecture boundary-check script, and the seeded bug fixed. |
+| `starter/` | <strong>Starting point</strong>: based on the P3 solution, with logging and structural boundary features still to implement. `IndexingService` contains a hidden seeded bug: files longer than 1000 characters can produce empty chunks. There is no architecture-check script and no final clean-state checklist. |
+| `solution/` | <strong>Reference implementation</strong>: structured logging module, architecture boundary-check script, and the seeded bug fixed. |
 
 ## How to Use
 

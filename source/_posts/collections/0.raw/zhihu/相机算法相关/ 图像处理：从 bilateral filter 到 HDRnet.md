@@ -39,7 +39,7 @@ Durand 在 2006 年提出了近似加速算法（参见：https://dspace.mit.edu
 
 下图大致描绘了算法思路：
 
-![](/images/collections/0.raw/zhihu/%25E7%259B%25B8%25E6%259C%25BA%25E7%25AE%2597%25E6%25B3%2595%25E7%259B%25B8%25E5%2585%25B3/asset/img_8b81bbaa34b1.jpg)
+![](/images/collections/0.raw/zhihu/%E7%9B%B8%E6%9C%BA%E7%AE%97%E6%B3%95%E7%9B%B8%E5%85%B3/asset/img_8b81bbaa34b1.jpg)
 
 核心的思想有三个：
 
@@ -54,11 +54,11 @@ Durand 在 2006 年提出了近似加速算法（参见：https://dspace.mit.edu
 
 在这个工作中，将之前提出的 fast approximate 算法中的核心思想提炼出来，总结成一个新的数据结构 bilateral grid，并且发现很多操作都可以归纳到这个框架内。普通的 bilateral filter 如下图所示：
 
-![](/images/collections/0.raw/zhihu/%25E7%259B%25B8%25E6%259C%25BA%25E7%25AE%2597%25E6%25B3%2595%25E7%259B%25B8%25E5%2585%25B3/asset/img_e6decf7ce0ab.jpg)
+![](/images/collections/0.raw/zhihu/%E7%9B%B8%E6%9C%BA%E7%AE%97%E6%B3%95%E7%9B%B8%E5%85%B3/asset/img_e6decf7ce0ab.jpg)
 
 利用这个数据结构还可以做很多其他的工作比如 local histogram equalization，如下图所示：
 
-![](/images/collections/0.raw/zhihu/%25E7%259B%25B8%25E6%259C%25BA%25E7%25AE%2597%25E6%25B3%2595%25E7%259B%25B8%25E5%2585%25B3/asset/img_8b136ca9bb15.jpg)
+![](/images/collections/0.raw/zhihu/%E7%9B%B8%E6%9C%BA%E7%AE%97%E6%B3%95%E7%9B%B8%E5%85%B3/asset/img_8b136ca9bb15.jpg)
 
 可以看到对之前工作中核心思想的继承和发展。
 
@@ -88,7 +88,7 @@ HDRnet 可以说是沿着 bilateral filter 这个思路的集大成者了。综�
 
 这里沿用文章中的一幅图解释一下他的核心思想：
 
-![](/images/collections/0.raw/zhihu/%25E7%259B%25B8%25E6%259C%25BA%25E7%25AE%2597%25E6%25B3%2595%25E7%259B%25B8%25E5%2585%25B3/asset/img_d143a5a048e8.jpg)
+![](/images/collections/0.raw/zhihu/%E7%9B%B8%E6%9C%BA%E7%AE%97%E6%B3%95%E7%9B%B8%E5%85%B3/asset/img_d143a5a048e8.jpg)
 
 这里重点在右上角黄色背景的这个模块，利用神经网络提取出一系列特征，包括「低级特征」、「局部特征」和「全局特征」。所有特征综合起来，得到一系列特征图。从这些特征图，进一步得到每一张特征图对应的局部线性变换（参见上一小节），并利用 bilateral grid 存下这些线性变换的系数；注意，这里的系数对应的是 downsample 后的小图。
 

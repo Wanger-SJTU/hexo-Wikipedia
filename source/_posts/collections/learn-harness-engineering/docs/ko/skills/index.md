@@ -21,10 +21,10 @@ AI 코딩 에이전트를 위한 프로덕션(production) 등급의 하네스 �
 
 ### 기능 (What It Does)
 
-- **처음부터 하네스 생성** — AGENTS.md, 기능 목록(feature list), 검증(verification) 워크플로우
-- **기존 하네스 개선** — 다섯 가지 서브시스템 평가와 우선순위화된 개선 사항
-- **세션 연속성(continuity) 설계** — 메모리(memory) 영속화, 진행 추적, 핸드오프(handoff) 절차
-- **프로덕션 패턴 적용** — 메모리, 컨텍스트 엔지니어링(context engineering), 도구 안전성, 멀티 에이전트(multi-agent) 조율
+- <strong>처음부터 하네스 생성</strong> — AGENTS.md, 기능 목록(feature list), 검증(verification) 워크플로우
+- <strong>기존 하네스 개선</strong> — 다섯 가지 서브시스템 평가와 우선순위화된 개선 사항
+- <strong>세션 연속성(continuity) 설계</strong> — 메모리(memory) 영속화, 진행 추적, 핸드오프(handoff) 절차
+- <strong>프로덕션 패턴 적용</strong> — 메모리, 컨텍스트 엔지니어링(context engineering), 도구 안전성, 멀티 에이전트(multi-agent) 조율
 
 ### 빠른 시작 (Quick Start)
 
@@ -66,7 +66,7 @@ Claude Code와 함께 사용하려면 `harness-creator/` 디렉터리를 프로�
 
 ### 이 스킬이 만들어진 방법 (How This Skill Was Built)
 
-`harness-creator`는 **skill-creator** 방법론을 사용하여 개발되었습니다. 이는 에이전트 스킬을 생성·테스트·반복하기 위한 Anthropic의 공식 메타 스킬입니다. skill-creator는 구조화된 워크플로우(draft → test → evaluate → iterate)를 내장된 평가 러너(eval runner), 채점기(grader), 벤치마크 뷰어(benchmark viewer)와 함께 제공합니다.
+`harness-creator`는 <strong>skill-creator</strong> 방법론을 사용하여 개발되었습니다. 이는 에이전트 스킬을 생성·테스트·반복하기 위한 Anthropic의 공식 메타 스킬입니다. skill-creator는 구조화된 워크플로우(draft → test → evaluate → iterate)를 내장된 평가 러너(eval runner), 채점기(grader), 벤치마크 뷰어(benchmark viewer)와 함께 제공합니다.
 
-- **skill-creator 소스**: [anthropics/skills — skill-creator](https://github.com/anthropics/skills/tree/main/skills/skill-creator)
-- **Claude Code 스킬 문서**: [anthropics/claude-code — plugin-dev/skills](https://github.com/anthropics/claude-code/tree/main/plugins/plugin-dev/skills)
+- <strong>skill-creator 소스</strong>: [anthropics/skills — skill-creator](https://github.com/anthropics/skills/tree/main/skills/skill-creator)
+- <strong>Claude Code 스킬 문서</strong>: [anthropics/claude-code — plugin-dev/skills](https://github.com/anthropics/claude-code/tree/main/plugins/plugin-dev/skills)

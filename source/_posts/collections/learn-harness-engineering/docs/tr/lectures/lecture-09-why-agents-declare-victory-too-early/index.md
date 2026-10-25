@@ -22,7 +22,7 @@ Bir ajandan "şifre sıfırlama" özelliğini uygulamasını istiyorsunuz. Verit
 
 Bu his size yabancı gelmemeli — tüm sınav kâğıdını doldurmak, güvenle ilk teslim etmek, ardından notlar geldiğinde başarısız olmak gibi. Kâğıdın dolu olması cevapların doğru olduğu anlamına gelmez.
 
-Bu izole bir vaka değildir. Guo ve diğerlerinin 2017 ICML klasik makalesi şunu kanıtladı: **modern sinir ağları sistematik olarak aşırı güvenlidir** — modellerin bildirdiği güven gerçek doğruluklarından önemli ölçüde daha yüksektir. Aynı şey AI kod yazma ajanları için de geçerlidir: "hissederler" bittiler ama gerçekte çok uzaklar. Harness'ınız ajanın "hislerini" dışsallaştırılmış, yürütmeye dayalı doğrulamayla değiştirmelidir.
+Bu izole bir vaka değildir. Guo ve diğerlerinin 2017 ICML klasik makalesi şunu kanıtladı: <strong>modern sinir ağları sistematik olarak aşırı güvenlidir</strong> — modellerin bildirdiği güven gerçek doğruluklarından önemli ölçüde daha yüksektir. Aynı şey AI kod yazma ajanları için de geçerlidir: "hissederler" bittiler ama gerçekte çok uzaklar. Harness'ınız ajanın "hislerini" dışsallaştırılmış, yürütmeye dayalı doğrulamayla değiştirmelidir.
 
 ## Kaygan zemin
 
@@ -49,22 +49,22 @@ flowchart LR
 
 ## Temel kavramlar
 
-- **Erken tamamlanma ilanı**: Ajan görevin tamamlandığını iddia eder, ancak karşılanmamış doğruluk spesifikasyonları hâlâ vardır. Temel sorun: ajan kod düzeyindeki yerel güvene dayalı karar verir, sistem düzeyindeki doğruluk ise küresel doğrulama gerektirir.
-- **Güven kalibrasyon önyargısı**: Ajanın kendi bildirdiği tamamlanma güveni ile gerçek tamamlanma kalitesi arasındaki sistematik fark. Karmaşık çok dosyalı görevler için bu önyargı önemli ölçüde pozitiftir — ajan her zaman gerçekte performans gösterdiğinden daha güvenlidir. Sınavdan sonra her zaman puanlarını fazla tahmin eden bir öğrenci gibi.
-- **Sonlandırma kriterleri**: Harness'ta tanımlanan açık, yürütülebilir bir yargı koşulları kümesi. Ajan tamamlanmayı ilan etmeden önce tüm koşulları karşılamalıdır. "Tamam" öznel bir yargıdan nesnel bir karara dönüşür.
-- **Doğrulama-onaylama çift kapısı**: İlk doğrulama katmanı "kod belirtilen davranışı doğru şekilde uyguladı mı" kontrol eder; ikinci onaylama katmanı "sistem düzeyindeki davranış uçtan uca gereksinimleri karşılıyor mu" kontrol eder. Tamamlanmış sayılmak için her ikisi de geçmelidir.
-- **Runtime geri bildirim sinyalleri**: Program yürütmesinden günlükler, süreç durumları ve sağlık kontrolleri. Bu, harness'ın tamamlanma kalitesini değerlendirmesi için nesnel temeldir.
-- **Tamamlanma öncelik kısıtı**: Önce işlevsel doğruluğu doğrulayın, sonra performansı ele alın ve son olarak stili ele alın. Çekirdek işlevsellik doğrulanana kadar yeniden yapılandırma yasaktır.
+- <strong>Erken tamamlanma ilanı</strong>: Ajan görevin tamamlandığını iddia eder, ancak karşılanmamış doğruluk spesifikasyonları hâlâ vardır. Temel sorun: ajan kod düzeyindeki yerel güvene dayalı karar verir, sistem düzeyindeki doğruluk ise küresel doğrulama gerektirir.
+- <strong>Güven kalibrasyon önyargısı</strong>: Ajanın kendi bildirdiği tamamlanma güveni ile gerçek tamamlanma kalitesi arasındaki sistematik fark. Karmaşık çok dosyalı görevler için bu önyargı önemli ölçüde pozitiftir — ajan her zaman gerçekte performans gösterdiğinden daha güvenlidir. Sınavdan sonra her zaman puanlarını fazla tahmin eden bir öğrenci gibi.
+- <strong>Sonlandırma kriterleri</strong>: Harness'ta tanımlanan açık, yürütülebilir bir yargı koşulları kümesi. Ajan tamamlanmayı ilan etmeden önce tüm koşulları karşılamalıdır. "Tamam" öznel bir yargıdan nesnel bir karara dönüşür.
+- <strong>Doğrulama-onaylama çift kapısı</strong>: İlk doğrulama katmanı "kod belirtilen davranışı doğru şekilde uyguladı mı" kontrol eder; ikinci onaylama katmanı "sistem düzeyindeki davranış uçtan uca gereksinimleri karşılıyor mu" kontrol eder. Tamamlanmış sayılmak için her ikisi de geçmelidir.
+- <strong>Runtime geri bildirim sinyalleri</strong>: Program yürütmesinden günlükler, süreç durumları ve sağlık kontrolleri. Bu, harness'ın tamamlanma kalitesini değerlendirmesi için nesnel temeldir.
+- <strong>Tamamlanma öncelik kısıtı</strong>: Önce işlevsel doğruluğu doğrulayın, sonra performansı ele alın ve son olarak stili ele alın. Çekirdek işlevsellik doğrulanana kadar yeniden yapılandırma yasaktır.
 
 ## Birim testleri geçmek ≠ görev tamamlandı
 
 Bu en yaygın tuzaktır ve en tehlikelisidir. Ajan kodu yazdı, birim testlerini çalıştırdı, hepsi yeşil aldı ve "tamam" dedi. Ancak birim testlerinin tasarım felsefesi — test edilen birimi izole etmek ve bağımlılıkları mocklamak — tam olarak bileşenler arası sorunları tespit etmesini imkansız kılan şeydir:
 
-**Arayüz uyumsuzluğu**: Render sürecinin preload betiğine ilettiği dosya yolu göreli bir yoldur, ancak preload betiği mutlak bir yol bekler. Kendi birim testleri mock kullandı ve geçti. Sorun yalnızca uçtan uca testler sırasında keşfedilir. Bir koroda her müzisyenin kendi başına mükemmel pratik yapması, birlikte çaldıklarında farklı tonlarda olduklarını fark etmesi gibi.
+<strong>Arayüz uyumsuzluğu</strong>: Render sürecinin preload betiğine ilettiği dosya yolu göreli bir yoldur, ancak preload betiği mutlak bir yol bekler. Kendi birim testleri mock kullandı ve geçti. Sorun yalnızca uçtan uca testler sırasında keşfedilir. Bir koroda her müzisyenin kendi başına mükemmel pratik yapması, birlikte çaldıklarında farklı tonlarda olduklarını fark etmesi gibi.
 
-**Durum yayma hataları**: Bir veritabanı geçişi tablo şemasını değiştirir, ancak ORM önbellekleme katmanı eski şema için önbellek girişlerini hâlâ tutar. Birim testleri her seferinde taze bir mock ortam sağlar, bu da bu katmanlar arası durum tutarsızlığını ortaya çıkarmaz.
+<strong>Durum yayma hataları</strong>: Bir veritabanı geçişi tablo şemasını değiştirir, ancak ORM önbellekleme katmanı eski şema için önbellek girişlerini hâlâ tutar. Birim testleri her seferinde taze bir mock ortam sağlar, bu da bu katmanlar arası durum tutarsızlığını ortaya çıkarmaz.
 
-**Ortam bağımlılığı**: Kod test ortamında (her şeyin mocklandığı yerde) doğru davranır ancak yapılandırma farklılıkları, ağ gecikmesi veya servis kullanılamazlığı nedeniyle gerçek ortamda başarısız olur. Prova odasında mükemmel söylemek gibi ama sahnede ses ekipmanı sorunlarıyla karşılaşmak.
+<strong>Ortam bağımlılığı</strong>: Kod test ortamında (her şeyin mocklandığı yerde) doğru davranır ancak yapılandırma farklılıkları, ağ gecikmesi veya servis kullanılamazlığı nedeniyle gerçek ortamda başarısız olur. Prova odasında mükemmel söylemek gibi ama sahnede ses ekipmanı sorunlarıyla karşılaşmak.
 
 ### "Bu arada yeniden yapılandıralım" tamamlanma yargısı için zehirdir
 
@@ -72,11 +72,11 @@ Claude Code'un yaygın bir davranış kalıbı vardır: çekirdek işlevsellik d
 
 ### Öz-değerlendirmedeki sistematik önyargı
 
-Anthropic 2026 araştırmalarında daha derin bir başarısızlık kalıbı keşfetti: **bir ajandan kendi işini değerlendirmesi istendiğinde, bir insan gözlemcinin kaliteyi açıkça düşük göreceği durumlarda bile sistematik olarak aşırı pozitif değerlendirmeler verir.** Bu, bir öğrenciden kendi sınavını notlandırmasını istemek gibidir — kendi cevaplarına her zaman özellikle hoşgörülü davranırlar.
+Anthropic 2026 araştırmalarında daha derin bir başarısızlık kalıbı keşfetti: <strong>bir ajandan kendi işini değerlendirmesi istendiğinde, bir insan gözlemcinin kaliteyi açıkça düşük göreceği durumlarda bile sistematik olarak aşırı pozitif değerlendirmeler verir.</strong> Bu, bir öğrenciden kendi sınavını notlandırmasını istemek gibidir — kendi cevaplarına her zaman özellikle hoşgörülü davranırlar.
 
 Bu sorun öznel görevlerde (tasarım estetiği gibi) özellikle şiddetlidir — bir "düzen zarif" yargısı bir takdir konusudur ve ajan güvenilir şekilde pozitife meyleder. Doğrulanabilir sonuçları olan görevlerde bile, ajanın performansı kötü yargı tarafından engellenebilir.
 
-Çözüm ajanı "daha objektif" yapmak değildir — aynı modelin üretip değerlendirmesi doğal olarak kendine cömert davranmaya yatkındır. **Çözüm "çalışanı" "kontrol edenden" ayırmaktır.** Tıpkı bir öğrencinin kendi sınavını notlandırmaması gerektiği gibi — bağımsız bir notlayıcıya ihtiyacınız vardır.
+Çözüm ajanı "daha objektif" yapmak değildir — aynı modelin üretip değerlendirmesi doğal olarak kendine cömert davranmaya yatkındır. <strong>Çözüm "çalışanı" "kontrol edenden" ayırmaktır.</strong> Tıpkı bir öğrencinin kendi sınavını notlandırmaması gerektiği gibi — bağımsız bir notlayıcıya ihtiyacınız vardır.
 
 Özellikle "titiz" olacak şekilde ayarlanmış bağımsız bir değerlendirici ajan, üreten ajanın kendi kendini değerlendirmesinden çok daha etkilidir. Anthropic'in deneysel verileri:
 
@@ -108,13 +108,13 @@ Tamamlanma yargısı ajanın kendisi tarafından yapılmamalıdır. Harness sonl
 
 ### 2. Üç katmanlı sonlandırma doğrulaması inşa edin
 
-- **Katman 1: Sözdizimi ve statik analiz**. En düşük maliyet, en az bilgi, ama geçmeli. Bu minimum kontroldür — başka bir şeye bakmadan önce kelimeleri doğru yazmalısınız.
-- **Katman 2: Runtime davranış doğrulaması**. Test yürütme, uygulama başlatma kontrolleri, kritik yol doğrulaması. Bu tamamlanmanın temel kanıtıdır. Sadece yazmak yeterli değildir; çalışmalıdır.
-- **Katman 3: Sistem düzeyinde onay**. Uçtan uca test, entegrasyon doğrulaması, kullanıcı senaryosu simülasyonu. Erken ilanlara karşı son savunma hattı. Sadece çalışmak yeterli değildir; doğru çalışmalıdır.
+- <strong>Katman 1: Sözdizimi ve statik analiz</strong>. En düşük maliyet, en az bilgi, ama geçmeli. Bu minimum kontroldür — başka bir şeye bakmadan önce kelimeleri doğru yazmalısınız.
+- <strong>Katman 2: Runtime davranış doğrulaması</strong>. Test yürütme, uygulama başlatma kontrolleri, kritik yol doğrulaması. Bu tamamlanmanın temel kanıtıdır. Sadece yazmak yeterli değildir; çalışmalıdır.
+- <strong>Katman 3: Sistem düzeyinde onay</strong>. Uçtan uca test, entegrasyon doğrulaması, kullanıcı senaryosu simülasyonu. Erken ilanlara karşı son savunma hattı. Sadece çalışmak yeterli değildir; doğru çalışmalıdır.
 
 ### 3. Ajanlar için iyi "kırmızı kalem işaretlemeleri" tasarlayın
 
-OpenAI, Codex pratiği sırasında özellikle etkili bir kalıp tanıttı: **ajanlar için hata mesajları düzeltme talimatlarını içermelidir**. Tembel bir notlayıcı gibi sadece büyük bir kırmızı çarpı çizmeyin; iyi bir öğretmen gibi olun ve kenara "işte bunu şu şekilde değiştirmelisin" yazın. `"Test başarısız"` kullanmayın, `"Test başarısız: POST /api/reset-password 500 döndü. Ortam değişkenlerinde e-posta servis yapılandırmasının var olduğunu kontrol edin. Şablon dosyası templates/reset-email.html konumunda olmalıdır."` kullanın. Bu spesifik, eyleme dönüştürülebilir geri bildirim, ajanın insan müdahalesi olmadan kendini düzeltmesine olanak tanır.
+OpenAI, Codex pratiği sırasında özellikle etkili bir kalıp tanıttı: <strong>ajanlar için hata mesajları düzeltme talimatlarını içermelidir</strong>. Tembel bir notlayıcı gibi sadece büyük bir kırmızı çarpı çizmeyin; iyi bir öğretmen gibi olun ve kenara "işte bunu şu şekilde değiştirmelisin" yazın. `"Test başarısız"` kullanmayın, `"Test başarısız: POST /api/reset-password 500 döndü. Ortam değişkenlerinde e-posta servis yapılandırmasının var olduğunu kontrol edin. Şablon dosyası templates/reset-email.html konumunda olmalıdır."` kullanın. Bu spesifik, eyleme dönüştürülebilir geri bildirim, ajanın insan müdahalesi olmadan kendini düzeltmesine olanak tanır.
 
 ### 4. Runtime sinyallerini yakalayın
 
@@ -126,21 +126,21 @@ Etkili runtime sinyalleri şunları içerir:
 
 ## Gerçek dünya örneği
 
-**Görev**: Kullanıcı şifre sıfırlama işlevini uygulayın. Veritabanı işlemlerini, e-posta göndermeyi ve API uç nokta değişikliklerini içerir.
+<strong>Görev</strong>: Kullanıcı şifre sıfırlama işlevini uygulayın. Veritabanı işlemlerini, e-posta göndermeyi ve API uç nokta değişikliklerini içerir.
 
-**Erken teslim yolu**: Ajan veritabanı şemasını değiştirir, API uç noktasını yazar, e-posta şablonunu ekler, birim testleri çalıştırır (geçer) ve tamamlandığını ilan eder. Sınav kâğıdı tamamen dolduruldu.
+<strong>Erken teslim yolu</strong>: Ajan veritabanı şemasını değiştirir, API uç noktasını yazar, e-posta şablonunu ekler, birim testleri çalıştırır (geçer) ve tamamlandığını ilan eder. Sınav kâğıdı tamamen dolduruldu.
 
-**Gerçek puan düşürmeleri**: (1) Uçtan uca akış test edilmedi — sıfırlama bağlantısının gerçek gönderimi ve doğrulanması hiçbir zaman onaylanmadı. (2) Veritabanı geçişi kısmi yürütmeden sonra başarısız oldu, şema tutarsızlığına neden oldu. (3) Hedef ortamda e-posta servis yapılandırması eksikti.
+<strong>Gerçek puan düşürmeleri</strong>: (1) Uçtan uca akış test edilmedi — sıfırlama bağlantısının gerçek gönderimi ve doğrulanması hiçbir zaman onaylanmadı. (2) Veritabanı geçişi kısmi yürütmeden sonra başarısız oldu, şema tutarsızlığına neden oldu. (3) Hedef ortamda e-posta servis yapılandırması eksikti.
 
-**Harness müdahalesi**: Sonlandırma doğrulaması zorlandı — (1) Sıfırlama uç noktası erişilebilirliğini doğrulamak için tam uygulamayı başlatın; (2) Tam sıfırlama akışını yürütün; (3) Veritabanı durumu tutarlılığını doğrulayın. Tüm kusurlar oturum içinde bulundu, sonraki düzeltmelerin maliyetinin 5-10 katından tasarruf edildi. Bağımsız notlayıcı gerçek sorunları buldu.
+<strong>Harness müdahalesi</strong>: Sonlandırma doğrulaması zorlandı — (1) Sıfırlama uç noktası erişilebilirliğini doğrulamak için tam uygulamayı başlatın; (2) Tam sıfırlama akışını yürütün; (3) Veritabanı durumu tutarlılığını doğrulayın. Tüm kusurlar oturum içinde bulundu, sonraki düzeltmelerin maliyetinin 5-10 katından tasarruf edildi. Bağımsız notlayıcı gerçek sorunları buldu.
 
 ## Önemli çıkarımlar
 
-- **Ajanlar sistematik olarak aşırı güvenlidir** — güven kalibrasyon önyargısı nesnel bir gerçektir. Sınav kâğıdını doldurmak doğru yaptığınız anlamına gelmez.
-- **Tamamlanma yargısı dışsallaştırılmalıdır** — harness bağımsız olarak doğrular; ajanın "hislerine" güvenmeyin. Öğrenciler kendi sınavlarını notlandıramaz.
-- **Üç katmanın hepsi gereklidir** — sözdizimi geçer, davranış geçer, sistem geçer, katman katman ilerler.
-- **Hata mesajları iyi bir öğretmenin kırmızı kalem işaretlemesi gibi olmalıdır** — ajanın kendini düzeltebilmesi için spesifik düzeltme adımlarını içerin.
-- **Çekirdek işlevsellik doğrulanana kadar yeniden yapılandırma yok** — tamamlanma öncelik kısıtı erken optimizasyonu önlemenin anahtarıdır.
+- <strong>Ajanlar sistematik olarak aşırı güvenlidir</strong> — güven kalibrasyon önyargısı nesnel bir gerçektir. Sınav kâğıdını doldurmak doğru yaptığınız anlamına gelmez.
+- <strong>Tamamlanma yargısı dışsallaştırılmalıdır</strong> — harness bağımsız olarak doğrular; ajanın "hislerine" güvenmeyin. Öğrenciler kendi sınavlarını notlandıramaz.
+- <strong>Üç katmanın hepsi gereklidir</strong> — sözdizimi geçer, davranış geçer, sistem geçer, katman katman ilerler.
+- <strong>Hata mesajları iyi bir öğretmenin kırmızı kalem işaretlemesi gibi olmalıdır</strong> — ajanın kendini düzeltebilmesi için spesifik düzeltme adımlarını içerin.
+- <strong>Çekirdek işlevsellik doğrulanana kadar yeniden yapılandırma yok</strong> — tamamlanma öncelik kısıtı erken optimizasyonu önlemenin anahtarıdır.
 
 ## Daha fazla okuma
 
@@ -151,8 +151,8 @@ Etkili runtime sinyalleri şunları içerir:
 
 ## Alıştırmalar
 
-1. **Sonlandırma doğrulama fonksiyonu tasarımı**: Veritabanı geçişi ve API değişikliği içeren bir görev için eksiksiz bir sonlandırma doğrulaması tasarlayın. Gerekli runtime sinyallerini ve her sinyal için geçer/başarısız kriterlerini listeleyin. Gerçek bir görevde çalıştırın ve ne tür gizli sorunlar bulduğunu kaydedin.
+1. <strong>Sonlandırma doğrulama fonksiyonu tasarımı</strong>: Veritabanı geçişi ve API değişikliği içeren bir görev için eksiksiz bir sonlandırma doğrulaması tasarlayın. Gerekli runtime sinyallerini ve her sinyal için geçer/başarısız kriterlerini listeleyin. Gerçek bir görevde çalıştırın ve ne tür gizli sorunlar bulduğunu kaydedin.
 
-2. **Kalibrasyon önyargısı ölçümü**: 10 farklı tür kod yazma görevi seçin ve ajanın kendi bildirdiği tamamlanma güveni ile gerçek tamamlanma kalitesini kaydedin. Önyargı değerini hesaplayın ve görev karmaşıklığıyla ilişkisini analiz edin.
+2. <strong>Kalibrasyon önyargısı ölçümü</strong>: 10 farklı tür kod yazma görevi seçin ve ajanın kendi bildirdiği tamamlanma güveni ile gerçek tamamlanma kalitesini kaydedin. Önyargı değerini hesaplayın ve görev karmaşıklığıyla ilişkisini analiz edin.
 
-3. **Çok katmanlı savunma deneyi**: Aynı görev kümesinde üç yapılandırma çalıştırın — (a) yalnızca statik analiz, (b) birim testi ekleyin, (c) tam üç katmanlı doğrulama. Erken tamamlanma ilanlarının oranını ve yakalanmamış kusurların sayısını karşılaştırın.
+3. <strong>Çok katmanlı savunma deneyi</strong>: Aynı görev kümesinde üç yapılandırma çalıştırın — (a) yalnızca statik analiz, (b) birim testi ekleyin, (c) tam üç katmanlı doğrulama. Erken tamamlanma ilanlarının oranını ve yakalanmamış kusurların sayısını karşılaştırın.

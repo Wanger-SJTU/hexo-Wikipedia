@@ -15,19 +15,19 @@ source_url: https://www.zhihu.com/question/34574154/answer/1612013803
 ---
 
 
-**在腾讯做Linux C++ 后台开发的来回答下, 去年校招我主要是投的后台开发方向，本身语言也是 C++，走的是 Linux C/C++后台开发方向，拿到过百度、腾讯、字节等大厂offer。**
+<strong>在腾讯做Linux C++ 后台开发的来回答下, 去年校招我主要是投的后台开发方向，本身语言也是 C++，走的是 Linux C/C++后台开发方向，拿到过百度、腾讯、字节等大厂offer。</strong>
 
 同时，据我所知，一般毕业两三年的社招考察内容和校招也挺接近的，只不过会更加关注你的项目经历和系统设计方面。
 
-**这篇文章很干货，记得点赞后，收藏噢~，可以作为面试复习的索引**
+<strong>这篇文章很干货，记得点赞后，收藏噢~，可以作为面试复习的索引</strong>
 
-**--update--**
+<strong>--update--</strong>
 
 ![](https://pic1.zhimg.com/v2-03251cab1c14252e939af4799fba149e_r.jpg?source=2c26e567)最近已经把 C++ 面试常考的问题以及学习路线等都整理到网站了：
 
 [C/C++后台开发面试重点知识](https://link.zhihu.com/?target=https%3A//csguide.cn/cpp/)首先，C++岗位的面试肯定不止只是单独考察你语言本身的，同时其它知识也是考察的重点，比如网络、系统编程、分布式理论、数据库。
 
-**尤其是算法，现在大厂面试算法是必考的，在这里也送大家一本帮助我拿到BAT 等一线大厂 offer 的算法笔记，是一位阿里大神写的，对于算法薄弱或者需要提高的同学都十分受用，算法一定是计算机学习的重中之重：**
+<strong>尤其是算法，现在大厂面试算法是必考的，在这里也送大家一本帮助我拿到BAT 等一线大厂 offer 的算法笔记，是一位阿里大神写的，对于算法薄弱或者需要提高的同学都十分受用，算法一定是计算机学习的重中之重：</strong>
 
 [阿里大神的leetcode刷题笔记，看完秒杀80%的题目](https://link.zhihu.com/?target=https%3A//mp.weixin.qq.com/s/vSGzpEPZCTunsczuIcsjWQ)在这，顺便分享一份大学期间自己整理的电子书库，绝不是在网上那种打包下载的，而是自己需要学到某个方向知识的时候，去网上挨个找的，最后汇总而成。
 
@@ -35,11 +35,11 @@ source_url: https://www.zhihu.com/question/34574154/answer/1612013803
 
 ![](https://pic1.zhimg.com/50/v2-d7a9537446e8aafeb0c5feb8cce72fc5_720w.jpg?source=2c26e567)
 
-**我整理的这些书大家可以在这里获取，对于学习计算机的同学帮助非常大，且十分系统**：
+<strong>我整理的这些书大家可以在这里获取，对于学习计算机的同学帮助非常大，且十分系统</strong>：
 
 书单：[书单推荐，少即是多（含下载方式）](https://link.zhihu.com/?target=http%3A//mp.weixin.qq.com/s%3F__biz%3DMzg4NjUxMzg5MA%3D%3D%26mid%3D100000686%26idx%3D1%26sn%3Daaf4a33db6e08f9be085c0c57f14fb3a%26chksm%3D4f99ca2378ee43350e13cba18595a432a0e87ddc2a8aa8457eed8d1712fb45deb1295546d834%23rd)
 
-**C++语言知识**
+<strong>C++语言知识</strong>
 这里首先说下语言基础知识，一些关键字和实现原理等：
 
 - 指针、引用、数组、内存
@@ -61,9 +61,9 @@ source_url: https://www.zhihu.com/question/34574154/answer/1612013803
 - C++ 内存管理，堆、栈、指针、野指针、内存泄露等
 - 内联函数、宏定义区别等可以通过看这些书去学习：
 
-- **《C++ Primer》**，这本书是基础，需要重点看前几部分。
-- **Effective 系列：《Effective C++》、《More Effective C++》、《Effective STL》**，这部分是提高C++编码能力
-- **《STL 源码剖析》和《深度探索 C++ 对象模型》**，这是了解STL容器底层实现和对象模型，面试常考**视频推荐：**
+- <strong>《C++ Primer》</strong>，这本书是基础，需要重点看前几部分。
+- <strong>Effective 系列：《Effective C++》、《More Effective C++》、《Effective STL》</strong>，这部分是提高C++编码能力
+- <strong>《STL 源码剖析》和《深度探索 C++ 对象模型》</strong>，这是了解STL容器底层实现和对象模型，面试常考<strong>视频推荐：</strong>
 
 可以在 B 站搜索「候捷 C++」，主要有以下几个系列视频：
 
@@ -88,8 +88,8 @@ source_url: https://www.zhihu.com/question/34574154/answer/1612013803
 
 [C++必读书籍推荐| 附下载方式](https://link.zhihu.com/?target=https%3A//mp.weixin.qq.com/s/93U9-BFqZD5aSjDqzZ7uYw)
 
-**计算机基础知识：**
-**计算机网络**：
+<strong>计算机基础知识：</strong>
+<strong>计算机网络</strong>：
 
 需要掌握的网络协议和知识：
 
@@ -110,13 +110,13 @@ source_url: https://www.zhihu.com/question/34574154/answer/1612013803
 - 快速重传、慢启动等
  
 - TCP重发机制，Nagle算法
- **学习过程中也要多思考为什么要这么设计，这里列几个问题：**
+ <strong>学习过程中也要多思考为什么要这么设计，这里列几个问题：</strong>
 
 - TCP 如何实现可靠传输的（画外音：如何基于 UDP 实现可靠传输
 - 第二次和第三次之间的等待是什么
 - TCP 连接建立为什么不是两次握手（画外音：三次握手的充分必要性说明
 - TIME_WAIT 的存在解决了什么问题，等待时间为什么是 2 MSL
-- 为什么不是四次握手**常见端口与服务：**
+- 为什么不是四次握手<strong>常见端口与服务：</strong>
 
 21 : FTP - 文件传输协议 - TCP
 
@@ -128,14 +128,14 @@ source_url: https://www.zhihu.com/question/34574154/answer/1612013803
 
 53 : DNS - 域名系统 - UDP
 
-**最后别忘了自己复述一遍那被问烂了、写烂了的问题：**
+<strong>最后别忘了自己复述一遍那被问烂了、写烂了的问题：</strong>
 
-- **从 URL 输入到页面展现到底发生什么？**HTTP 和 HTTPS：
+- <strong>从 URL 输入到页面展现到底发生什么？</strong>HTTP 和 HTTPS：
 
 - HTTP中GET/POST的区别
 - 常见的状态码：1XX、2XX、3XX、4XX
 - HTTP/HTTPS的区别，证书、数字签名等原理
-- COOKIE/SESSION的区别**但是计网中还是有一些有意思的问题，如果你没思考过，也许回答不出来。**
+- COOKIE/SESSION的区别<strong>但是计网中还是有一些有意思的问题，如果你没思考过，也许回答不出来。</strong>
 
 比如：
 
@@ -150,7 +150,7 @@ source_url: https://www.zhihu.com/question/34574154/answer/1612013803
 - 《计算机网络：自顶向下方法》
 - 《TCP/IP详解卷1：协议》
 - 《图解HTTP》
-**操作系统知识**
+<strong>操作系统知识</strong>
 一些复习的思路：
 
 - 操作系统由哪些构成
@@ -173,7 +173,7 @@ source_url: https://www.zhihu.com/question/34574154/answer/1612013803
 - 《操作系统—精髓与设计原理》
 - 《Linux内核设计与实现》
 - 《深入理解计算机系统》
-**网络编程和服务器开发**
+<strong>网络编程和服务器开发</strong>
 重点知识：
 
 Linux 下网络编程核心的包括网络 IO 和系统编程两个部分：
@@ -206,12 +206,12 @@ HTTP 服务器，熟悉http协议的解析和网络编程
 - 同步互斥的介绍
 - 使用RAII手法封装互斥器(pthrea_mutex_t)、 条件变量(pthread_cond_t)等线程同步互斥机制，使用RAII管理文件描述符等资源
 - 使用shared_ptr、weak_ptr管理指针，防止内存泄漏
-**系统知识**
+<strong>系统知识</strong>
 推荐书籍：
 
 - 《深入理解计算机系统》
 - 《程序员自我修养》
-**算法于数据结构**
+<strong>算法于数据结构</strong>
 重点数据结构：
 
 - 线性表、数组、链表
@@ -233,7 +233,7 @@ HTTP 服务器，熟悉http协议的解析和网络编程
 
 - leetcode
 - 牛客网
-**数据库**
+<strong>数据库</strong>
 数据库首先要学会 SQL 的使用，这里推荐《MySQL必知必会》。
 
 数据库原理方面可以看看《数据库系统概念》，这本书挺厚的，包含了从 SQL 到数据库设计再到数据库原理、分布式数据库都有，可以挑着看，比如关系模型、数据库设计（三大范式）、数据磁盘存储和组织方式、索引、并发控制等。
@@ -262,7 +262,7 @@ HTTP 服务器，熟悉http协议的解析和网络编程
 
 这部分我是会不断把它完善的，当成自己的小电子书库，不多，但贵在精。
 
-![](https://pic1.zhimg.com/50/v2-d7a9537446e8aafeb0c5feb8cce72fc5_720w.jpg?source=2c26e567)**我整理的这些书大家可以在这里获取，对于学习计算机的同学帮助非常大，且十分系统**：
+![](https://pic1.zhimg.com/50/v2-d7a9537446e8aafeb0c5feb8cce72fc5_720w.jpg?source=2c26e567)<strong>我整理的这些书大家可以在这里获取，对于学习计算机的同学帮助非常大，且十分系统</strong>：
 
 书单：[书单推荐，少即是多（含下载方式）](https://link.zhihu.com/?target=http%3A//mp.weixin.qq.com/s%3F__biz%3DMzg4NjUxMzg5MA%3D%3D%26mid%3D100000686%26idx%3D1%26sn%3Daaf4a33db6e08f9be085c0c57f14fb3a%26chksm%3D4f99ca2378ee43350e13cba18595a432a0e87ddc2a8aa8457eed8d1712fb45deb1295546d834%23rd)
 
@@ -274,4 +274,4 @@ HTTP 服务器，熟悉http协议的解析和网络编程
 
 链接： [万字长文 | 这可能是东半球最保姆级的后台服务器开发学习路线](https://link.zhihu.com/?target=https%3A//mp.weixin.qq.com/s/7xANFCFUd528Lch3lqcbRg)
 
-**觉得不错，收藏的时候也顺便点个赞呗~ 笔芯~~**
+<strong>觉得不错，收藏的时候也顺便点个赞呗~ 笔芯~~</strong>

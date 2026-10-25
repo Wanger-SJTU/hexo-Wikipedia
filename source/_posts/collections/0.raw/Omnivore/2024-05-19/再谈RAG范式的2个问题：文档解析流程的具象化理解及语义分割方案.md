@@ -37,25 +37,25 @@ id: ae58d270-a08f-40fa-9265-1cca07f744bc
 
 《A Method for Parsing and Vectorization of Semi-structuredData used in Retrieval Augmented Generation》（https://arxiv.org/pdf/2405.03989）这个实验报告其中提到的针对半结构化文本的具象化理解，可以看看，加深印象。
 
-**1、整个的实现流程**
+<strong>1、整个的实现流程</strong>
 
 ![图片](https://proxy-prod.omnivore-image-cache.app/0x0,sbfH_PgqAet1ri9NEOMy0jtJN1OO6XQYTQcilqTFRVGY/https://mmbiz.qpic.cn/sz_mmbiz_png/fUBU1yiaEmJiaO1P5S08qk3tNpGkqchmULBeQRqkHibTJACPdCvHu3eb6QVDeazxSUMHMSLQiavEicdFxoBnwdicqaTg/640?wx_fmt=png&from=appmsg)
 
 在解析过程中，利用目标检测系统detectron2(https://unstructured-io.github.io/unstructured/platform.html)，将`.docx`文件划分为多个元素，包括标题、文本、图像、表格、页眉和页脚。细化过程只保留了四个核心元素：“标题”、“文本”、“图像”和“表格”，对于“Table”元素，核心文本信息保留在元素的“text属性”中。
 
-**2、关于图表部分的处理**
+<strong>2、关于图表部分的处理</strong>
 
 对于“图像”元素，利用“gpt-4-vision-preview”API，生成特定查询，提示GPT提供图像的详细文本描述，取代图像最初占据的位置。
 
 ![图片](https://proxy-prod.omnivore-image-cache.app/0x0,swtIFFAb0_9KZw0IET0dYPTwn4dRHhbdUD7190EraarA/https://mmbiz.qpic.cn/sz_mmbiz_png/fUBU1yiaEmJiaO1P5S08qk3tNpGkqchmULzcauEdM2wYEAEbDiaauibtK0qY9Mqf6icj1XwThkLia9lG1KGyIDSCAq0Q/640?wx_fmt=png&from=appmsg)
 
-**3、关于表格部分的处理**
+<strong>3、关于表格部分的处理</strong>
 
 为了表格的格式保真度，存储了其HTML表示，可以具象化如下：
 
 ![图片](https://proxy-prod.omnivore-image-cache.app/0x0,sl5CalpnTIfrtt_eOAPsGR6_LsM5WA5ZLqMrEenF41YY/https://mmbiz.qpic.cn/sz_mmbiz_png/fUBU1yiaEmJiaO1P5S08qk3tNpGkqchmULWpBWGeS9wcsbfVFlxbKjQAiaSIWKNbPgJ23NVxgO6gYBRVXTaxoHwUA/640?wx_fmt=png&from=appmsg)
 
-**这类数据也可以转成html格式进行渲染**
+<strong>这类数据也可以转成html格式进行渲染</strong>
 
 ![图片](https://proxy-prod.omnivore-image-cache.app/0x0,slJDHtDlM0H8gLjxXGiQ4Uc7rBhcE6SeCkzLoMuZZXFA/https://mmbiz.qpic.cn/sz_mmbiz_png/fUBU1yiaEmJiaO1P5S08qk3tNpGkqchmULovN0SicgIjo059ADDEcoIKicuiayOgdghrUMB3HJEHBlCwScU6RoAwNSA/640?wx_fmt=png&from=appmsg)
 
@@ -112,5 +112,5 @@ print(result[OutputKeys.TEXT])
 
 老刘说NLP，将定期发布语言资源、工程实践、技术总结等内容，欢迎关注。
 
-**对于想加入更优质的知识图谱、事件图谱、大模型AIGC实践、相关分享的，可关注公众号，在后台菜单栏中点击会员社区->会员入群加入。**
+<strong>对于想加入更优质的知识图谱、事件图谱、大模型AIGC实践、相关分享的，可关注公众号，在后台菜单栏中点击会员社区->会员入群加入。</strong>
 

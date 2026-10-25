@@ -73,17 +73,17 @@ vaddsd xmm0, xmm1, xmm2  ; 新的3操作数，非破坏操作
 
 amd zen5解决了这个狗屎intel问题，只有 a和b俩状态了，没有拉胯的c状态，因为v版本的它直接分了2个128的微操作:
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_2f9f4ae122d5.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_2f9f4ae122d5.jpg)
 
 更完~
 
 ——
 
-**还有中断问题：**
+<strong>还有中断问题：</strong>
 
 传统中断处理程序只保存XMM寄存器（低128位），不保存YMM高128位，导致状态C转换（拆分保存数据）
 
-**使用 ： XSAVE/XRESTORE 来解决**
+<strong>使用 ： XSAVE/XRESTORE 来解决</strong>
 
 ** xsaves [mem]  ; 保存所有向量寄存器（包括YMM/ZMM）
  ; 执行YMM指令。。。
@@ -111,9 +111,9 @@ INTEL应该是6代后就优化了部分问题.(AVX512后又跑出来一些问题
 
 对齐主要还是指令缓存要必须对齐，除了刚才前面说的外，其他地方编译器会对齐这些.
 
-### **SIMD预热问题**
+### <strong>SIMD预热问题</strong>
 
-**CPU的256位执行单元高128位 **在闲置时会被关闭，省电，再次启用时需要“热机”，会短暂的有性能下降.
+<strong>CPU的256位执行单元高128位</strong>在闲置时会被关闭，省电，再次启用时需要“热机”，会短暂的有性能下降.
 
 关闭到启用延迟约14微秒，期间执行256位指令时，CPU会用低128位单元分两次处理 :因为高128位去要启用.
 
@@ -168,9 +168,9 @@ C/cpp语言也同理，比如循环体内塞满一堆这种AVX...
 
 如果你在热点代码中使用AVX之类的时候就要注意这些，消耗很大.因为超限也会触发状态转换/模式切换.
 
-由于当前这是在OC模式,**OC模式(op cache)就是解码后的缓存,如果发生转态转换(模式切换)，延迟（10个内）不仅仅是**流水线停顿,还会有：**重新解码，分支路径反复切换等惩罚。
+由于当前这是在OC模式,<strong>OC模式(op cache)就是解码后的缓存,如果发生转态转换(模式切换)，延迟（10个内）不仅仅是</strong>流水线停顿,还会有：**重新解码，分支路径反复切换等惩罚。
 
-**正确用法:**
+<strong>正确用法:</strong>
 
  VPADDQ YMM0, YMM1, YMM2 
  ADD RAX, RBX                                   ;    非AVX指令，和前面分隔，绕开条目限制.  
@@ -197,9 +197,9 @@ C/cpp语言也同理，比如循环体内塞满一堆这种AVX...
 
 拿AVX512举例:
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_11c98a081e41.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_11c98a081e41.jpg)
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_63d6cbe3e11c.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_63d6cbe3e11c.jpg)
 
 AVX2也同理.
 
@@ -219,11 +219,11 @@ AVX2也同理.
 
 对比c标准库结果:
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_a22e3e5fd9f6.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_a22e3e5fd9f6.jpg)
 
 为了场景公平，c代码给了一个结果变量来影响编译器。 
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_a1a50258b64d.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_a1a50258b64d.jpg)
 
 但这个说明不了什么(场景简单)，也没有利用avx，差距不是很大(10-20提升)。但本文主要说的是avx2以上的各种问题。空了
 

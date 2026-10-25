@@ -54,9 +54,9 @@ source_url: https://zhuanlan.zhihu.com/p/23506400985
 ![](https://picx.zhimg.com/v2-91bb442aac13fc260e922df069a0fd01_r.jpg)
 ![](https://pic1.zhimg.com/v2-122395d2db4159cf69e20582af1812b8_r.jpg)
 ![](https://pic2.zhimg.com/v2-98f214b4eeb99bff4fabc928446419a1_r.jpg)
-![](https://pic2.zhimg.com/v2-b3be7a105b48547ddb0e437cee772799_r.jpg)NVIDIA DGX H800 连接了 8 个 SXM5 H800，通过 4 个 NVLink 交换芯片，每个 GPU的带宽为 400 GB/s（**Nvidia H800，这是被US制裁之后的产品，把Nvlink的带宽从900GBps裁剪到400GBps**），总双向带宽超过 3.2 TB/s。每个 H800 SXM GPU 也通过 PCIe 连接到 CPU，因此 8 个 GPU 中的任何一个计算的数据都可以转发回 CPU。这也是为什么DeepSeek放弃TP选择了MoE。
+![](https://pic2.zhimg.com/v2-b3be7a105b48547ddb0e437cee772799_r.jpg)NVIDIA DGX H800 连接了 8 个 SXM5 H800，通过 4 个 NVLink 交换芯片，每个 GPU的带宽为 400 GB/s（<strong>Nvidia H800，这是被US制裁之后的产品，把Nvlink的带宽从900GBps裁剪到400GBps</strong>），总双向带宽超过 3.2 TB/s。每个 H800 SXM GPU 也通过 PCIe 连接到 CPU，因此 8 个 GPU 中的任何一个计算的数据都可以转发回 CPU。这也是为什么DeepSeek放弃TP选择了MoE。
 
-并且因为H800裁剪了带宽，但没裁剪TensorCore，所以在做Attention计算的时候，可以用闲置的TensorCore Matrix算力去置换带宽，把算力和带宽都用满。在**DeepSeek-V3**论文中，使用英伟达的H800 GPU训练DeepSeek-V3时，他们针对自己的需求把132个流式多处理器（SMs）中的**20个修改成负责服务器间的通信，而不是计算任务**。变相绕过了硬件对通信速度的限制。
+并且因为H800裁剪了带宽，但没裁剪TensorCore，所以在做Attention计算的时候，可以用闲置的TensorCore Matrix算力去置换带宽，把算力和带宽都用满。在<strong>DeepSeek-V3</strong>论文中，使用英伟达的H800 GPU训练DeepSeek-V3时，他们针对自己的需求把132个流式多处理器（SMs）中的<strong>20个修改成负责服务器间的通信，而不是计算任务</strong>。变相绕过了硬件对通信速度的限制。
 
 ![](https://picx.zhimg.com/v2-c6c2d49de7826a69d1a148b9e42797b7_r.jpg)[cuda的发展历史和作用_cuda历史-CSDN博客](https://link.zhihu.com/?target=https%3A//blog.csdn.net/qq_52964132/article/details/141182090)
 
@@ -182,17 +182,17 @@ UM block : 1个UM block最多由512个连续的页面组成，也就是4KB*512=2
 - 并将页面传输到GPU（步骤6）。
 - 当传输完成时，UM块的故障页面被映射到GPU（步骤7）。
 - 这个过程重复，直到所有的故障UM块都被处理（步骤8）。
-- 最后，NVIDIA驱动程序向GPU发送一个重播信号，故障处理器完成处理（步骤9）。DeepUM**修改了一个最初用于缓存行预取的相关预取技术来预取 GPU 页面**。来隐藏页面传输的开销。这种技术是完全自动的，对用户是透明的。
+- 最后，NVIDIA驱动程序向GPU发送一个重播信号，故障处理器完成处理（步骤9）。DeepUM<strong>修改了一个最初用于缓存行预取的相关预取技术来预取 GPU 页面</strong>。来隐藏页面传输的开销。这种技术是完全自动的，对用户是透明的。
 
-此外，文章还提出了**两种优化技术**，以尽量减少 GPU 错误处理的时间。
+此外，文章还提出了<strong>两种优化技术</strong>，以尽量减少 GPU 错误处理的时间。
 
-一种是基于相关表信息的页面**预先驱逐**。当 GPU 内存被过度订阅时，页面驱逐会增加页面错误处理时间，因为页面驱逐逻辑位于页面错误处理例程的关键路径上。
+一种是基于相关表信息的页面<strong>预先驱逐</strong>。当 GPU 内存被过度订阅时，页面驱逐会增加页面错误处理时间，因为页面驱逐逻辑位于页面错误处理例程的关键路径上。
 
 另一种优化是在页面驱逐受害者预计不再被 PyTorch 使用时，使 GPU 内存中的页面失效。这种优化删除了 CPU 和 GPU 之间不必要的内存流量。
 
 ![](https://pic3.zhimg.com/v2-b45bb68b30e6834745724ea089a831b0_r.jpg)DeepUM的整体架构DeepUM由两部分组成：DeepUM Runtime和DeepUM Driver
 
-**DeepUM runtime**
+<strong>DeepUM runtime</strong>
 
 DeepUM runtime为CUDA内存分配函数提供封装函数，来把所有GPU内存分配请求转换为UM分配请求。通过在UM空间里面分配GPU内存对象，实现对GPU内存的超额分配。此外，DeepUM runtime为CUDA核函数启动命令和其他CUDA库函数（比如cuDNN cuBLAS）提供了封装函数。
 
@@ -214,7 +214,7 @@ prefetching thread : prefetching thread查找相关表并根据出现异常的�
 
 migration thread : 在CPU和GPU之间迁移UM block。fault queue的优先级高于prefetch queue，因此当fault queue空时，才会处理prefetch queue。
 
-**原始的相关预取 (Correlation Prefetching)**
+<strong>原始的相关预取 (Correlation Prefetching)</strong>
 
 基于对的相关预取（pair-based correlation prefetching）在相关表中记录了miss addrssed的序列。当miss时，会查询相关表，预取所有和miss address相关的address。
 
@@ -226,7 +226,7 @@ migration thread : 在CPU和GPU之间迁移UM block。fault queue的优先级高
 
 这两种类型的表都是单级 (          = 1)，因为预取线程执行链式操作。此外，由于 DNN 工作负载的特性，没有必要维护多个级别。
 
-**注意：DeepUM中的相关预取是以UM block为单位的！**而不是cache line或者page！
+<strong>注意：DeepUM中的相关预取是以UM block为单位的！</strong>而不是cache line或者page！
 
 执行 ID 相关表（简称执行表）:
 
@@ -305,9 +305,9 @@ Unified Memory has three basic requirements:
 
 Grace Hopper系统使用两个不同的页表：一个全局页表和一个GPU专用页表。选择用于内存分配的页表取决于使用的特定程序级API。
 
-**一个集成的系统页表。**Grace Hopper 系统引入了一个位于 CPU 内存中的系统范围页表。操作系统直接访问这个页表，创建并管理页表项（PTE）。SMMU 使用这个页表为 CPU（在用户应用程序需要时）和 GPU（通过 NVLink-C2C 互连请求时）提供虚拟到物理地址转换。系统范围页表中的内存页面可以物理上存在于 CPU 或 GPU 的内存中，并且它们使用系统页面大小，该页面大小由操作系统定义并受 CPU 架构能力的限制。当使用 Grace 处理器时，页面大小为 4KB 或 64KB。
+<strong>一个集成的系统页表。</strong>Grace Hopper 系统引入了一个位于 CPU 内存中的系统范围页表。操作系统直接访问这个页表，创建并管理页表项（PTE）。SMMU 使用这个页表为 CPU（在用户应用程序需要时）和 GPU（通过 NVLink-C2C 互连请求时）提供虚拟到物理地址转换。系统范围页表中的内存页面可以物理上存在于 CPU 或 GPU 的内存中，并且它们使用系统页面大小，该页面大小由操作系统定义并受 CPU 架构能力的限制。当使用 Grace 处理器时，页面大小为 4KB 或 64KB。
 
-**GPU专用页表。**Grace Hopper 系统保留了NVIDIAGPU 早期版本中的本地 GPU 页表。该页表位于 GPU 内存中，只能由 GPU 访问，并在托管内存的物理位置在 GPU 上时存储与cudaMalloc分配和 cudaMallocManaged 分配相对应的虚拟到物理地址映射。此页表使用的页面大小为 2MB
+<strong>GPU专用页表。</strong>Grace Hopper 系统保留了NVIDIAGPU 早期版本中的本地 GPU 页表。该页表位于 GPU 内存中，只能由 GPU 访问，并在托管内存的物理位置在 GPU 上时存储与cudaMalloc分配和 cudaMallocManaged 分配相对应的虚拟到物理地址映射。此页表使用的页面大小为 2MB
 
 ![](https://pic1.zhimg.com/v2-d754ebfb0cb7a4dc8ca54ec7eeb396ea_1440w.jpg)在数据位于 CPU 内存的情况下，当 GPU 的高速缓存中保存有虚拟到物理地址的映射时，在 Grace Hopper 系统上访问一个虚拟地址位置的工作流程：
 
@@ -420,4 +420,4 @@ Grace Hopper系统使用两个不同的页表：一个全局页表和一个GPU�
 - [G10: Enabling An Efficient Unified GPU Memory and Storage Architecture with Smart Tensor Migrations](https://link.zhihu.com/?target=https%3A//arxiv.org/html/2310.09443)
 - OC-DNN: Exploiting Advanced Unified Memory Capabilities in CUDA 9 and Volta GPUs for Out-of-Core DNN Training
 - DeepUM: Tensor Migration and Prefetching in Unified Memory
-- 《**PTX与CUDA：性能、兼容与生态——**赵家程 中科院计算所 处理器芯片全国重点实验室 中科加禾》
+- 《<strong>PTX与CUDA：性能、兼容与生态——</strong>赵家程 中科院计算所 处理器芯片全国重点实验室 中科加禾》

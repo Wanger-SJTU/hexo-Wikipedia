@@ -15,9 +15,9 @@ source_url: https://zhuanlan.zhihu.com/p/443026261
 ---
 
 
-**撰文 | 郭冉、姚迟、郑泽康、柳俊丞**
+<strong>撰文 | 郭冉、姚迟、郑泽康、柳俊丞</strong>
 
-2020 年末，OneFlow 发布了《**[OneFlow性能优化分享：如何实现一个高效的 Softmax CUDA kernel？](https://zhuanlan.zhihu.com/p/341059988)**》，其中介绍了 OneFlow 深度优化后的 Softmax，尤其对很多框架没有考虑的 half 类型做了充分优化，使得性能大幅超过了 cuDNN 的实现。
+2020 年末，OneFlow 发布了《<strong>[OneFlow性能优化分享：如何实现一个高效的 Softmax CUDA kernel？](https://zhuanlan.zhihu.com/p/341059988)</strong>》，其中介绍了 OneFlow 深度优化后的 Softmax，尤其对很多框架没有考虑的 half 类型做了充分优化，使得性能大幅超过了 cuDNN 的实现。
 
 今天，奉上另一个重要算子 LayerNorm 的性能优化实践技术分享。
 
@@ -35,11 +35,11 @@ NVIDIA Apex 中实现了高效的 fused LayerNorm Kernel 来扩展 PyTorch 算�
 
 **
 
-![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_6acfd4c274c1.jpg)
+![](/images/collections/0.raw/zhihu/dl%E8%AE%BA%E6%96%87/asset/img_6acfd4c274c1.jpg)
 
 我们将时间换算成访存带宽，结果如下，纵轴为 Kernel 达到的有效带宽(越高越好)：
 
-![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_02fa203ccbca.jpg)
+![](/images/collections/0.raw/zhihu/dl%E8%AE%BA%E6%96%87/asset/img_02fa203ccbca.jpg)
 
 其中测试环境为 NVIDIA A100-PCIE-40GB GPU，数据类型为 `half`， `Shape =(49152， num_cols)`，我们将最后一维动态变化，测试了从32到32768不同大小的 LayerNorm Kernel，可以看到在所有情况下，OneFlow 的 Kernel 执行时间和有效访存带宽都优于 Apex 的实现。
 
@@ -49,7 +49,7 @@ PyTorch 的 LayerNorm 暂时不支持 half 类型，因此我们用 float类型�
 
 横轴为 `num_cols` 大小，纵轴为 Kernel 执行需要的时间(越低越好)：
 
-![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_5b5026f924c2.jpg)
+![](/images/collections/0.raw/zhihu/dl%E8%AE%BA%E6%96%87/asset/img_5b5026f924c2.jpg)
 
 可以看到，在各组对比实验中，OneFlow 的性能也是最优的。
 
@@ -69,13 +69,13 @@ LayerNorm 是语言模型中常用的操作之一，其 CUDA Kernel 实现的高
 
 第三个参数 `elementwise_affine` 代表是否要对 normalize 的结果做变换，即 normalize 的结果乘 `gamma`，加 `beta`。若 `elementwise_affine=True`，就多了两个模型参数 `gamma` 和`beta`，形状为 `normalized_shape`。
 
-![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_141a0e7520f5.jpg)
+![](/images/collections/0.raw/zhihu/dl%E8%AE%BA%E6%96%87/asset/img_141a0e7520f5.jpg)
 
 例如对于输入 `x` 形状为 `(N, C, H, W)`， `normalized_shape` 为 `(H, W)` 的情况，可以理解为输入 `x` 为 `(N*C, H*W)`，在 `N*C` 个行上，每行有 `H*W` 个元素，对每行的元素求均值和方差，得到 `N*C` 个 `mean` 和 `inv_variance`，再对输入按如下 LayerNorm 的计算公式计算得到 `y`。若 `elementwise_affine=True` ，则有 `H*W` 个 `gamma` 和 `beta`，对每行 `H*W` 个的元素做变换。
 
-![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_5da2fea720ab.jpg)
+![](/images/collections/0.raw/zhihu/dl%E8%AE%BA%E6%96%87/asset/img_5da2fea720ab.jpg)
 
-![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_acd42ae41345.jpg)
+![](/images/collections/0.raw/zhihu/dl%E8%AE%BA%E6%96%87/asset/img_acd42ae41345.jpg)
 
 #### LayerNorm 中求方差的方法
 
@@ -84,21 +84,21 @@ LayerNorm 是语言模型中常用的操作之一，其 CUDA Kernel 实现的高
 - two-pass方法
 使用的公式是：
 
-![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_ddd4c7029532.jpg)
+![](/images/collections/0.raw/zhihu/dl%E8%AE%BA%E6%96%87/asset/img_ddd4c7029532.jpg)
 
 two-pass 是指这种方法需要遍历两遍数据，第一遍累加 `x` 得到均值，第二遍用上面公式计算得到方差。这种方法在 `n` 比较小时仍然是数值稳定的。
 
 - naive方法
 使用的公式是：
 
-![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_a7ef2c98e49c.jpg)
+![](/images/collections/0.raw/zhihu/dl%E8%AE%BA%E6%96%87/asset/img_a7ef2c98e49c.jpg)
 
 这种方法是一种 single pass 方法，在计算方差时只需要遍历一遍数据累加 `x` 的平方及累加 `x`，最后按上述公式计算得到方差。这种方法只需要遍历一遍数据，相比 two-pass 的算法，更容易达到好的性能，但是上面的 Wiki 参考链接中介绍由于 SumSquare 和 (Sum×Sum)/n 可能非常接近，可能会导致计算结果损失精度较大，因此这种方法不建议在实践中使用。
 
 - Welford 算法
 使用的公式是：
 
-![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_d01bffe152f6.jpg)
+![](/images/collections/0.raw/zhihu/dl%E8%AE%BA%E6%96%87/asset/img_d01bffe152f6.jpg)
 
 Welford 算法也是一种 single pass 方法，且数值稳定性很好，因此现在很多框架都采用这种方法。本文的代码中采用的也是 Welford 方法。
 
@@ -112,13 +112,13 @@ Welford 算法也是一种 single pass 方法，且数值稳定性很好，因�
 
 #### *1.`num_cols Warp 为单位处理一行或两行，将输入 `x` 存储到寄存器中。
 
-![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_9794aec9a284.jpg)
+![](/images/collections/0.raw/zhihu/dl%E8%AE%BA%E6%96%87/asset/img_9794aec9a284.jpg)
 
 硬件上并行执行的32个线程称之为一个 Warp，同一个 Warp 的32个 thread 执行同一条指令， Warp是 GPU 调度执行的基本单元。线程块和元素的对应关系如上图所示，每个 Warp 的 threads 处理一行元素，每个 block 有 `block_size / warp_size` 个 Warp，每个 block 处理 `block_size / warp_size` 行元素。
 
 具体的处理流程是，如下图所示，每行有 `num_cols` 个元素，每个 warp 处理一行，因此每个线程需要处理 `num_cols / warp_size` 个元素，每个线程读取自己需要处理的元素存储到寄存器中，并用 Welford 算法计算好均值和方差后，Warp 中的所有线程执行一次 WelfordWarpAllReduce，这样每个线程上就得到了正确的均值和方差参与后续计算。
 
-![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_3149ee72e9a7.jpg)
+![](/images/collections/0.raw/zhihu/dl%E8%AE%BA%E6%96%87/asset/img_3149ee72e9a7.jpg)
 
 WelfordWarpAllReduce 由 WelfordWarpReduce 和 Broadcast 操作完成，WelfordWarpReduce 借助 Warp 级别同步原语 `__shfl_down_sync` 实现，Broadcast操作借助 `__shfl_sync` 实现，代码如下：
 
@@ -145,7 +145,7 @@ __inline__ __device__ void WelfordWarpAllReduce(T thread_mean, T thread_m2, T th
   *count = __shfl_sync(0xffffffff, *count, 0, thread_group_width);
 }`
 
-在这里有个模板参数 `thread_group_width`，当 `num_cols > pack_size * WarpSize` 时，`thread_group_width` 为 `WarpSize`。当 `num_cols` 太小，即 `num_cols![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_581f0515ea81.jpg)
+在这里有个模板参数 `thread_group_width`，当 `num_cols > pack_size * WarpSize` 时，`thread_group_width` 为 `WarpSize`。当 `num_cols` 太小，即 `num_cols![](/images/collections/0.raw/zhihu/dl%E8%AE%BA%E6%96%87/asset/img_581f0515ea81.jpg)
 
 将 `pack_size` 个元素 pack 成更大的数据类型读入，但是 `x` 还要参与计算。因此我们定义一个`union` 结构的 Pack 类型，storage 用于从 Global Memory中读写，做计算时用 `elem[i]` 取每个元素参与计算，Pack 类型定义如下:
 
@@ -194,11 +194,11 @@ LayerNormWarpImpl 的实现的模板参数的意义分别如下：
 
 对于 `num_cols > 1024` 的情况，每个 block 处理一行元素，将输入 `x` 存储到 Shared Memory中。
 
-![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_fffc173c84fe.jpg)
+![](/images/collections/0.raw/zhihu/dl%E8%AE%BA%E6%96%87/asset/img_fffc173c84fe.jpg)
 
 具体的处理流程是，如下图所示，每行有 `num_cols` 个元素，每个 block 处理一行，因此每个线程需要处理 `num_cols / block_size` 个元素，每个线程读取自己需要处理的元素存储到 Shared Memory 中，并用 Welford 算法计算好均值和方差后，block 中的所有线程执行一次WelfordBlockAllReduce，这样每个线程上就得到了正确的均值和方差参与后续计算。
 
-![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_d363d555c15e.jpg)
+![](/images/collections/0.raw/zhihu/dl%E8%AE%BA%E6%96%87/asset/img_d363d555c15e.jpg)
 
 WelfordBlockAllReduce 是借助 WelfordWarpReduce 操作完成的，具体逻辑是，一个 Block 中最多有32个 Warp，对所有的 Warp 先执行一次 WelfordWarpReduce，执行完后，每个 warp 中的第一个线程，即 `lane_id=0` 的线程上得到当前 WelfordWarpReduce 的结果，再将每个 Warp 的第一个线程的结果拷贝到一块 Shared Memory buffer 中，再用第一个 Warp 的32个线程执行一次 WelfordWarpReduce，此时第一个 Warp 中的 `lane_id=0` 的线程上得到的就是 block 中所有线程reduce 的结果。再借助 Shared Memory，将该结果 broadcast 到 block 中的所有线程上，即完成了 WelfordBlockAllReduce 的操作。
 

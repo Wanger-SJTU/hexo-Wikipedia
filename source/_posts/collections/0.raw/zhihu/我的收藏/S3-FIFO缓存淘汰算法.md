@@ -20,9 +20,9 @@ source_url: https://zhuanlan.zhihu.com/p/1956103700922762926
 
 ### 概述**
 
-S3-FIFO缓存淘汰算法全称为**S**imple, **S**calable eviction algorithm with **three** **S**tatic FIFO queues，出自论文[《FIFO Queues are All You Need for Cache Eviction》](https://link.zhihu.com/?target=https%3A//dl.acm.org/doi/pdf/10.1145/3600006.3613147)，算法极其简单高效且容易理解。本文将对设计动机、算法的原理和性能做进行介绍。
+S3-FIFO缓存淘汰算法全称为<strong>S</strong>imple, <strong>S</strong>calable eviction algorithm with <strong>three</strong> <strong>S</strong>tatic FIFO queues，出自论文[《FIFO Queues are All You Need for Cache Eviction》](https://link.zhihu.com/?target=https%3A//dl.acm.org/doi/pdf/10.1145/3600006.3613147)，算法极其简单高效且容易理解。本文将对设计动机、算法的原理和性能做进行介绍。
 
-#### **背景和设计动机**
+#### <strong>背景和设计动机</strong>
 
 在传统缓存淘汰算法（如 LRU、LFU、2Q、TinyLFU 等）中，往往每次命中或访问都要更新元数据（如把条目移到队列头、调整链表或优先级）。这样做：
 
@@ -34,7 +34,7 @@ S3-FIFO缓存淘汰算法全称为**S**imple, **S**calable eviction algorithm wi
 
 ### S3-FIFO算法原理**
 
-#### **S3-FIFO 的结构：三队列**
+#### <strong>S3-FIFO 的结构：三队列</strong>
 
 S3-FIFO 使用 三个静态 FIFO 队列（不需要在命中时调整链表顺序）：
 
@@ -55,14 +55,14 @@ S3-FIFO 使用 三个静态 FIFO 队列（不需要在命中时调整链表顺�
 
 Ghost 队列的作用是：当一个对象在被驱逐后又被访问时，从 G 队列中检测到，就把这个对象提升到 M 队列，认为它可能是热点对象。
 
-#### **缓存访问与更新流程**
+#### <strong>缓存访问与更新流程</strong>
 
-下面分情况说明对象访问、插入、淘汰的流程。**访问缓存**
+下面分情况说明对象访问、插入、淘汰的流程。<strong>访问缓存</strong>
 
 - 当数据被访问（查询）时，如果它在 M 或 S 中，则视为命中。在命中时，S3-FIFO 会据此更新对象的一个称作freq的小位（2 bit）来记录访问次数状态（最大值上限）。
 - 如果在 G 中（幽灵队列），表示这是曾被淘汰过但又被访问的对象（即“回归”），此时不算命中（因为数据已不在缓存中），但会把这个对象重新插入到 M 队列，以表示它可能是热点对象。
 - 如果既不在 S、M 也不在 G，则这是全新对象。
-**更新缓存****当一个新对象要被缓存：
+<strong>更新缓存</strong>**当一个新对象要被缓存：
 
 - 首先检查 G 队列：若之前该对象在 G 中（即曾被淘汰过），则此时将它插入 M 队列（因为它显示出“二次访问”的潜力）。
 - 否则（未在 G 中），将该对象插入 S 队列，初始freq=0 。
@@ -77,12 +77,12 @@ Ghost 队列的作用是：当一个对象在被驱逐后又被访问时，从 G
 - 被淘汰的对象其 key 会被加入 G，以便未来可被检测到是否再次访问。
 下面是S3-FIFO的缓存访问和更新示例：
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_99abca42ae55.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_99abca42ae55.jpg)
 
 S3-FIFO性能****S3-FIFO由于其简洁设计和低成本的操作开销，性能上表现优异，下面是翻译自项目首页（[https://s3fifo.com/）的两句话：](https://link.zhihu.com/?target=https%3A//s3fifo.com/%25EF%25BC%2589%25E7%259A%2584%25E4%25B8%25A4%25E5%258F%25A5%25E8%25AF%259D%25EF%25BC%259A)
 
 - S3-FIFO 的未命中率比 LRU 低达 72%。**
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_73ca8dd02d4a.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_73ca8dd02d4a.jpg)
 
-- **S3-FIFO 将 LRU 缓存大小减少 46%，并将吞吐量提升 6 倍。**
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_833378e03f65.jpg)
+- <strong>S3-FIFO 将 LRU 缓存大小减少 46%，并将吞吐量提升 6 倍。</strong>
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_833378e03f65.jpg)

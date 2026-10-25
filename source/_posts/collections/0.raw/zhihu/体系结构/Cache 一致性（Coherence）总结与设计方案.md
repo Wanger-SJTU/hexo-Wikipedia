@@ -19,7 +19,7 @@ source_url: https://zhuanlan.zhihu.com/p/681522097
 
 什么是cache的coherence问题？
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_499ac2a989e6.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_499ac2a989e6.jpg)
 
 coherence从何而来cache一致性问题的产生，往往来源于三个方面：
 
@@ -42,9 +42,9 @@ DMA操作会绕过host，直接从外部memory想main memory中搬运数据。�
 
 （1）Write update（写更新）
 
-Host #1发生的修改，广播到总线上，host #2-#3看到后，发现内部L0C存有该地址数据，也要修改。即使host #1发生的修改，并未更新到main meory，也要做上述一致性处理**。（所以下图中用虚线表示更新到main memory）。**显然：该机制下，总线负载太重，不常用。
+Host #1发生的修改，广播到总线上，host #2-#3看到后，发现内部L0C存有该地址数据，也要修改。即使host #1发生的修改，并未更新到main meory，也要做上述一致性处理<strong>。（所以下图中用虚线表示更新到main memory）。</strong>显然：该机制下，总线负载太重，不常用。
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_fe2a4f233096.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_fe2a4f233096.jpg)
 
 bus snoop（2）Write invalidate（写无效）
 
@@ -69,7 +69,7 @@ Host #1发生的修改，广播到总线上，host #2-#3看到后，发现内部
 M001000，说明该data在host #3中被modify
 由此，可以将BUS Snooping中的全局广播，转为定向广播。**
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_6c402d689d64.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_6c402d689d64.jpg)
 
 全映射目录目录占据cacheline的比例为：N/C。  假设C是这个cacheline的总size
 
@@ -77,7 +77,7 @@ M001000，说明该data在host #3中被modify
 
 全映射目录中，有多少个host，就需要多少bit的位向量标识。**而有限目录的基本思想就是，不管系统大小如何，位向量标识是固定的，设为P个。则对一个cacheline而言，只记录P个host的情况，P自然是小于N的，那这里就不能用1bit来指向具体哪个host了，要直接使用host的idex。
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_34710cb62122.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_34710cb62122.jpg)
 
 有限目录图中M是对N的对数编码位宽。则目录占据cacheline的比例为：log2（N）*P / C。  假设C是这个cacheline的总size。
 所以控制P的大小，可以让有限目录耗费的空间降低。但是会引入新的问题，那就是：超过P个host，存了该addr的data，怎么办？（目录项溢出）
@@ -89,7 +89,7 @@ M001000，说明该data在host #3中被modify
 不同host的cache，如果拥有同一个addr的data，则纳入链表中。
 一个单向链表如下所示：
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_542df5e6bcf1.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_542df5e6bcf1.jpg)
 
 单链表示意显然：基于单向链表找到保留同数据块的host，是要将整个建立起来的链表进行遍历。
 
@@ -99,16 +99,16 @@ M001000，说明该data在host #3中被modify
     M：modified，只被当前cache所有，且是dirty的；E：exclusive，只被当前cache所有，且是clean的；
     S：shared，在其他cache也存在，且是clean的；I：invalid，将该cacheline置invalid，不能再产生影响
 
-  祭出一张famous表格**：**  一个addr的data，存于两个host的私有cache中，纵列是#0 cache、横列是#1 cache。
+  祭出一张famous表格<strong>：</strong>  一个addr的data，存于两个host的私有cache中，纵列是#0 cache、横列是#1 cache。
   假设在#0中，addr存放的cacheline标记M，那么在#1中就不能是M、E、S，只能标记为I。
 
 MESIM×××√E×××√S××√√I√√√√基于这样的状态耦合关系，自然想到的实现方式就是FSM：基于不同的event，决定状态跳转，同时基于上述的耦合关系，向总线广播相应信息。
 
 盗图2张
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_99f7a14048c0.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_99f7a14048c0.jpg)
 
-状态跳转![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_f8f0b0ebabb6.jpg)
+状态跳转![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_f8f0b0ebabb6.jpg)
 
 状态跳转举一个例子：
 Host #0的L0C中，一个对应addr为0xFF40的cacheline 处于shared 状态，host #0对它的访问是写hit，则：
@@ -130,7 +130,7 @@ Host #0的L0C中，一个对应addr为0xFF40的cacheline 处于shared 状态，h
 众说纷纭……这里以arm为base：
 ① O（owned）位。Shared Dirty，描述一个cache line为dirty，并且存在于多个cache中。一个 Owned 状态的cache line保存着 最新的 而且 正确的（new and correct） 的数据。只有一个core的cache 可以将数据保存为 Owned 状态，其他core 为 shared 状态。O cacheline 必须响应该data的snoop 请求。**
 
-② S（shared）位，该cacheline数据在多个host中存在，**data可以是dirty的：如果dirty，则存在另一个O的host cacheline，最终更新到main memory也是由这个O 负责。如果都没O，那就是clean的。**
+② S（shared）位，该cacheline数据在多个host中存在，<strong>data可以是dirty的：如果dirty，则存在另一个O的host cacheline，最终更新到main memory也是由这个O 负责。如果都没O，那就是clean的。</strong>
 
 引入原因：**在原本的MESI协议中，对于dirty的data，其他host如果想获取，只能先把dirty data写回main memory，其他host再读取。这样比较慢。而O态的引入，允许直接share dirty data，及O态的host直接把dirty的data，传给其他share的host。
 
@@ -138,11 +138,11 @@ Host #0的L0C中，一个对应addr为0xFF40的cacheline 处于shared 状态，h
 
 MOESIM××××√O×××√√E××××√S×√×√√I√√√√√盗图一张，MOESI协议下，状态之间的跳转。（ARM中采用）
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_45042b45cc9a.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_45042b45cc9a.jpg)
 
 状态跳转比对着理解：Probe前缀代表其他host的动作
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_b807f6dc57e4.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_b807f6dc57e4.jpg)
 
 状态跳转标记为S的cacheline中data，应该是和O cacheline的data保持一致。
 

@@ -106,11 +106,11 @@ andrej-karpathy-skills
 
 Behavioral guidelines to reduce common LLM coding mistakes. Merge with project-specific instructions as needed.
 
-**Tradeoff:** These guidelines bias toward caution over speed. For trivial tasks, use judgment.
+<strong>Tradeoff:</strong> These guidelines bias toward caution over speed. For trivial tasks, use judgment.
 
 ## 1. Think Before Coding
 
-**Don't assume. Don't hide confusion. Surface tradeoffs.**
+<strong>Don't assume. Don't hide confusion. Surface tradeoffs.</strong>
 
 Before implementing:
 - State your assumptions explicitly. If uncertain, ask.
@@ -120,7 +120,7 @@ Before implementing:
 
 ## 2. Simplicity First
 
-**Minimum code that solves the problem. Nothing speculative.**
+<strong>Minimum code that solves the problem. Nothing speculative.</strong>
 
 - No features beyond what was asked.
 - No abstractions for single-use code.
@@ -132,7 +132,7 @@ Ask yourself: "Would a senior engineer say this is overcomplicated?" If yes, sim
 
 ## 3. Surgical Changes
 
-**Touch only what you must. Clean up only your own mess.**
+<strong>Touch only what you must. Clean up only your own mess.</strong>
 
 When editing existing code:
 - Don't "improve" adjacent code, comments, or formatting.
@@ -148,7 +148,7 @@ The test: Every changed line should trace directly to the user's request.
 
 ## 4. Goal-Driven Execution
 
-**Define success criteria. Loop until verified.**
+<strong>Define success criteria. Loop until verified.</strong>
 
 Transform tasks into verifiable goals:
 - "Add validation" → "Write tests for invalid inputs, then make them pass"
@@ -166,7 +166,7 @@ Strong success criteria let you loop independently. Weak criteria ("make it work
 
 ---
 
-**These guidelines are working if:** fewer unnecessary changes in diffs, fewer rewrites due to overcomplication, and clarifying questions come before implementation rather than after mistakes.
+<strong>These guidelines are working if:</strong> fewer unnecessary changes in diffs, fewer rewrites due to overcomplication, and clarifying questions come before implementation rather than after mistakes.
 
 codex 避免黑话
 请始终遵守以下回复协议。

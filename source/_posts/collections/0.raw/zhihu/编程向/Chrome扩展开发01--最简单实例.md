@@ -19,11 +19,11 @@ source_url: https://zhuanlan.zhihu.com/p/27863494
 
 （1）Json数据格式。这个大家应该不会陌生，在Python中经常会用到这种数据格式，也有相应的模块用来处理Json数据。Json有两种数据结构，一种是key:value键值对，另外一种是value的有序集合。例如：
 
-![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_1817cd4fe2b7.png)
+![](/images/collections/0.raw/zhihu/%E7%BC%96%E7%A8%8B%E5%90%91/asset/img_1817cd4fe2b7.png)
 
 （2）DOM，即文档对象模型。我们主要了解HTML文档中的DOM：
 
-![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_043a0e288f10.png)
+![](/images/collections/0.raw/zhihu/%E7%BC%96%E7%A8%8B%E5%90%91/asset/img_043a0e288f10.png)
 
 在JavaScript中，有相应的函数用于获取或者设置DOM相关信息。
 
@@ -33,7 +33,7 @@ source_url: https://zhuanlan.zhihu.com/p/27863494
 
 CSS的选择器基本分为三种：tagName，.className和#id。
 
-![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_c1e68969d7c1.png)
+![](/images/collections/0.raw/zhihu/%E7%BC%96%E7%A8%8B%E5%90%91/asset/img_c1e68969d7c1.png)
 
 下边我们开始一步步编写自己的Chrome扩展程序：一个显示时钟的小扩展。
 
@@ -41,7 +41,7 @@ CSS的选择器基本分为三种：tagName，.className和#id。
 
 manifest.json文件可以理解为一个配置文件，Chrome浏览器在加载扩展时，需要读取该文件中的内容，从而找到图标地址、HTML文件、Js文件、权限信息等等一些设置。这里我们直接使用书籍作者给出的文件示例：
 
-![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_8104a64c1db5.png)
+![](/images/collections/0.raw/zhihu/%E7%BC%96%E7%A8%8B%E5%90%91/asset/img_8104a64c1db5.png)
 
 （1）manifest_version必须填写2
 
@@ -51,37 +51,37 @@ manifest.json文件可以理解为一个配置文件，Chrome浏览器在加载�
 
 （4）我们需要新建一个images文件夹，并放入一些图标文件。
 
-**第二步：编写popup.html文件**
+<strong>第二步：编写popup.html文件</strong>
 
 该文件为我们点击浏览器右上角扩展图标时弹出的页面内容，即显示时间的页面。如下：
 
-![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_1f85f35fb04c.png)
+![](/images/collections/0.raw/zhihu/%E7%BC%96%E7%A8%8B%E5%90%91/asset/img_1f85f35fb04c.png)
 
 很简单，就是声明一个div，用来展示时间。同时指定js文件地址。
 
-**第三步：编写Js文件**
+<strong>第三步：编写Js文件</strong>
 
 Js文件的作用是获取时间，并展示在DOM节点上。内容如下：
 
-![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_5e831942a000.png)
+![](/images/collections/0.raw/zhihu/%E7%BC%96%E7%A8%8B%E5%90%91/asset/img_5e831942a000.png)
 
-**第四步：加载扩展程序**
+<strong>第四步：加载扩展程序</strong>
 
 经过上述3步之后，我们应该能得到一个文件夹：
 
-![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_fca982e51e23.png)
+![](/images/collections/0.raw/zhihu/%E7%BC%96%E7%A8%8B%E5%90%91/asset/img_fca982e51e23.png)
 
 打开Chrome浏览器，打开“扩展程序”：
 
-![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_1ff073bcf054.png)
+![](/images/collections/0.raw/zhihu/%E7%BC%96%E7%A8%8B%E5%90%91/asset/img_1ff073bcf054.png)
 
 选中页面最上方“开发者模式”：
 
-![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_4a5644f2b97e.png)
+![](/images/collections/0.raw/zhihu/%E7%BC%96%E7%A8%8B%E5%90%91/asset/img_4a5644f2b97e.png)
 
 然后将文件夹拖到Chrome浏览器--扩展程序页面，即可加载我们自己编写的程序。此时在浏览器右上角会出现一个小图标，点击图标，即可出现我们想要的结果：
 
-![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_5ed597e146e7.png)
+![](/images/collections/0.raw/zhihu/%E7%BC%96%E7%A8%8B%E5%90%91/asset/img_5ed597e146e7.png)
 
 是不是特别简单！如果你本身具有HTML、CSS、JavaScript的经验，那就更简单了。
 

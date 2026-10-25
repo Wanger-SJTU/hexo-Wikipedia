@@ -82,7 +82,7 @@ Hermes 自带的 Kanban 是所有 Hermes Profiles 共享的任务板。我的 `c
 
 ![](https://pic4.zhimg.com/v2-bb1904e421e1d1ba2102a960862cce19_1440w.jpg)
 小结
-所以，Hermes 里的多 Agent 协作，关键是要**把接力点想清楚**。
+所以，Hermes 里的多 Agent 协作，关键是要<strong>把接力点想清楚</strong>。
 
 不管是 `scribe` 和 `video-learner` 通过飞书文档传递，还是 `captain` 往 Kanban 丢卡片、分配任务，`firstmate` 拾取实现，本质都是一回事：
 

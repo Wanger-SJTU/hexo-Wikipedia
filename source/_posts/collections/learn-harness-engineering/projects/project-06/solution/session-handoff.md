@@ -17,13 +17,13 @@ categories:
 
 ### What Was Accomplished
 
-1. **Structured Logging** -- Implemented full JSON logging module:
+1. <strong>Structured Logging</strong> -- Implemented full JSON logging module:
    - `logger.ts` with Logger, ServiceLogger, and LogLevel enum
    - Singleton `logger` instance with `forService()` factory
    - All 5 services emit structured JSON with timestamp, level, service, message, data
    - IPC handlers log every channel invocation
 
-2. **Feedback Collection** -- Complete feedback pipeline:
+2. <strong>Feedback Collection</strong> -- Complete feedback pipeline:
    - `FeedbackEntry` type in shared/types.ts
    - `QaService.submitFeedback()` and `getFeedback()` methods
    - `feedback:submit` and `feedback:list` IPC channels
@@ -31,7 +31,7 @@ categories:
    - ConversationHistory shows thumbs up/down buttons
    - App.tsx shows feedback buttons on latest response
 
-3. **Conversation History** -- Full chat-style component:
+3. <strong>Conversation History</strong> -- Full chat-style component:
    - Chat bubbles with distinct user/assistant styling
    - Expandable citations with toggle button
    - Confidence indicator with color coding
@@ -39,17 +39,17 @@ categories:
    - Clear history with confirmation dialog
    - Feedback buttons on each assistant response
 
-4. **Clean State Reset** -- Complete data reset:
+4. <strong>Clean State Reset</strong> -- Complete data reset:
    - `app:reset` IPC channel
    - `PersistenceService.resetAll()` removes and recreates data directory
    - App.tsx Reset button with confirmation dialog
    - React state cleared after reset
 
-5. **Benchmark Scripts** -- Performance measurement:
+5. <strong>Benchmark Scripts</strong> -- Performance measurement:
    - `scripts/benchmark.sh` with import, index, query, and verify tasks
    - `scripts/cleanup-scanner.sh` for stale artifact detection
 
-6. **Complete Harness** -- All files:
+6. <strong>Complete Harness</strong> -- All files:
    - AGENTS.md, CLAUDE.md, feature_list.json (15 features, all pass)
    - init.sh, session-handoff.md, clean-state-checklist.md
    - evaluator-rubric.md, quality-document.md

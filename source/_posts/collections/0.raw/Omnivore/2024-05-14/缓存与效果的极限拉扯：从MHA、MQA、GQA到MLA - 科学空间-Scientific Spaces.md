@@ -23,13 +23,13 @@ id: 952a5671-4744-42ce-b2ff-e22d2ba62ec2
 
 
 
-前几天，幻方发布的[DeepSeek-V2](https://papers.cool/arxiv/2405.04434)引起了大家的热烈讨论。首先，最让人哗然的是1块钱100万token的价格，普遍比现有的各种竞品API便宜了两个数量级，以至于有人调侃“这个价格哪怕它输出乱码，我也会认为这个乱码是一种艺术”；其次，从模型的技术报告看，如此便宜的价格背后的关键技术之一是它新提出的MLA（**M**ulti-head **L**atent **A**ttention），这是对GQA的改进，据说能比GQA更省更好，也引起了读者的广泛关注。
+前几天，幻方发布的[DeepSeek-V2](https://papers.cool/arxiv/2405.04434)引起了大家的热烈讨论。首先，最让人哗然的是1块钱100万token的价格，普遍比现有的各种竞品API便宜了两个数量级，以至于有人调侃“这个价格哪怕它输出乱码，我也会认为这个乱码是一种艺术”；其次，从模型的技术报告看，如此便宜的价格背后的关键技术之一是它新提出的MLA（<strong>M</strong>ulti-head <strong>L</strong>atent <strong>A</strong>ttention），这是对GQA的改进，据说能比GQA更省更好，也引起了读者的广泛关注。
 
 接下来，本文将跟大家一起梳理一下从MHA、MQA、GQA到MLA的演变历程，并着重介绍一下MLA的设计思路。
 
 ## MHA[ #](#MHA)
 
-MHA（**M**ulti-**H**ead **A**ttention），也就是多头注意力，是开山之作[《Attention is all you need》](https://kexue.fm/archives/4765)所提出的一种Attention形式，可以说它是当前主流LLM的基础工作。在数学上，多头注意力MHA等价于多个独立的单头注意力的拼接，假设输入的（行）向量序列为x1,x2,⋯,xl，其中xi∈Rd，那么MHA可以形式地记为  
+MHA（<strong>M</strong>ulti-<strong>H</strong>ead <strong>A</strong>ttention），也就是多头注意力，是开山之作[《Attention is all you need》](https://kexue.fm/archives/4765)所提出的一种Attention形式，可以说它是当前主流LLM的基础工作。在数学上，多头注意力MHA等价于多个独立的单头注意力的拼接，假设输入的（行）向量序列为x1,x2,⋯,xl，其中xi∈Rd，那么MHA可以形式地记为  
 
 (1)ot\=\[ot(1),ot(2),⋯,ot(h)\]ot(s)\=Attention(qt(s),k≤t(s),v≤t(s))≜∑i≤texp⁡(qt(s)ki(s)⊤)vi(s)∑i≤texp⁡(qt(s)ki(s)⊤)qi(s)\=xiWq(s)∈Rdk,Wq(s)∈Rd×dkki(s)\=xiWk(s)∈Rdk,Wk(s)∈Rd×dkvi(s)\=xiWv(s)∈Rdv,Wv(s)∈Rd×dv
 
@@ -53,7 +53,7 @@ MHA（**M**ulti-**H**ead **A**ttention），也就是多头注意力，是开山
 
 ## MQA[ #](#MQA)
 
-MQA，即“**M**ulti-**Q**uery **A**ttention”，是减少KV Cache的一次非常朴素的尝试，首次提出自[《Fast Transformer Decoding: One Write-Head is All You Need》](https://papers.cool/arxiv/1911.02150)，这已经是2019年的论文了，这也意味着早在LLM火热之前，减少KV Cache就已经是研究人员非常关注的一个课题了。
+MQA，即“<strong>M</strong>ulti-<strong>Q</strong>uery <strong>A</strong>ttention”，是减少KV Cache的一次非常朴素的尝试，首次提出自[《Fast Transformer Decoding: One Write-Head is All You Need》](https://papers.cool/arxiv/1911.02150)，这已经是2019年的论文了，这也意味着早在LLM火热之前，减少KV Cache就已经是研究人员非常关注的一个课题了。
 
 MQA的思路很简单，直接让所有Attention Head共享同一个K、V，用公式来说，就是取消MHA所有的k,v的上标(s)：  
 
@@ -65,7 +65,7 @@ MQA的思路很简单，直接让所有Attention Head共享同一个K、V，用�
 
 ## GQA[ #](#GQA)
 
-然而，也有人担心MQA对KV Cache的压缩太严重，以至于会影响模型的学习效率以及最终效果。为此，一个MHA与MQA之间的过渡版本GQA（**G**rouped-**Q**uery **A**ttention）应运而生，出自论文[《GQA: Training Generalized Multi-Query Transformer Models from Multi-Head Checkpoints》](https://papers.cool/arxiv/2305.13245)，是去年的工作。
+然而，也有人担心MQA对KV Cache的压缩太严重，以至于会影响模型的学习效率以及最终效果。为此，一个MHA与MQA之间的过渡版本GQA（<strong>G</strong>rouped-<strong>Q</strong>uery <strong>A</strong>ttention）应运而生，出自论文[《GQA: Training Generalized Multi-Query Transformer Models from Multi-Head Checkpoints》](https://papers.cool/arxiv/2305.13245)，是去年的工作。
 
 事后看来，GQA的思想也很朴素，它就是将所有Head分为g个组（g可以整除h），每组共享同一对K、V，用数学公式表示为  
 
@@ -77,7 +77,7 @@ MQA的思路很简单，直接让所有Attention Head共享同一个K、V，用�
 
 ## MLA[ #](#MLA)
 
-有了MHA、MQA、GQA的铺垫，我们理解MLA（**M**ulti-head **L**atent **A**ttention）就相对容易一些了。DeepSeek-V2的技术报告里是从低秩投影的角度引入MLA的，以至于有部分读者提出“为什么LoRA提出这么久了，直到MLA才提出对KV Cache低秩分解的做法”之类的疑问。
+有了MHA、MQA、GQA的铺垫，我们理解MLA（<strong>M</strong>ulti-head <strong>L</strong>atent <strong>A</strong>ttention）就相对容易一些了。DeepSeek-V2的技术报告里是从低秩投影的角度引入MLA的，以至于有部分读者提出“为什么LoRA提出这么久了，直到MLA才提出对KV Cache低秩分解的做法”之类的疑问。
 
 然而，笔者认为低秩投影这个角度并不贴近本质，因为要说低秩投影的话，事实上只要我们将GQA的所有K、V叠在一起，就会发现GQA也相当于在做低秩投影：  
 
@@ -151,15 +151,15 @@ GQA在投影之后做了什么呢？首先它将向量对半分为两份分别�
 
 本文简单概述了多头注意力的演变历程，特别是从MHA向MQA、GQA，最终到MLA的变化理念，最后详细展开了对MLA的介绍。在本文中，MLA被视为GQA的一般化，它用投影矩阵的方式替代了GQA的分割、重复，并引入了一个恒等变换技巧来可以进一步压缩KV Cache，同时采用了一种混合方法来兼容RoPE。总的来说，MLA称得上是一种非常实用的注意力变体。
 
-_**转载到请包括本文地址：**<https://kexue.fm/archives/10091>_
+_<strong>转载到请包括本文地址：</strong><https://kexue.fm/archives/10091>_
 
-_**更详细的转载事宜请参考：**_[《科学空间FAQ》](https://kexue.fm/archives/6508#%E6%96%87%E7%AB%A0%E5%A6%82%E4%BD%95%E8%BD%AC%E8%BD%BD/%E5%BC%95%E7%94%A8 "《科学空间FAQ》")
+_<strong>更详细的转载事宜请参考：</strong>_[《科学空间FAQ》](https://kexue.fm/archives/6508#%E6%96%87%E7%AB%A0%E5%A6%82%E4%BD%95%E8%BD%AC%E8%BD%BD/%E5%BC%95%E7%94%A8 "《科学空间FAQ》")
 
-**如果您还有什么疑惑或建议，欢迎在下方评论区继续讨论。**
+<strong>如果您还有什么疑惑或建议，欢迎在下方评论区继续讨论。</strong>
 
-**如果您觉得本文还不错，欢迎[分享](#share)/[打赏](#pay)本文。打赏并非要从中获得收益，而是希望知道科学空间获得了多少读者的真心关注。当然，如果你无视它，也不会影响你的阅读。再次表示欢迎和感谢！**
+<strong>如果您觉得本文还不错，欢迎[分享](#share)/[打赏](#pay)本文。打赏并非要从中获得收益，而是希望知道科学空间获得了多少读者的真心关注。当然，如果你无视它，也不会影响你的阅读。再次表示欢迎和感谢！</strong>
 
-**如果您需要引用本文，请参考：**
+<strong>如果您需要引用本文，请参考：</strong>
 
 苏剑林. (May. 13, 2024). 《缓存与效果的极限拉扯：从MHA、MQA、GQA到MLA 》\[Blog post\]. Retrieved from <https://kexue.fm/archives/10091>
 

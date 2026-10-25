@@ -25,9 +25,9 @@ source_url: https://zhuanlan.zhihu.com/p/22881223
 
 这是我为了从 web 开发者（自学、非计算机科学学位）蜕变至 Google 软件工程师所制定的计划，其内容历时数月。
 
-![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_2c0a3fa9da13.jpg)
+![](/images/collections/0.raw/zhihu/%E8%B5%B0%E5%90%91cs/asset/img_2c0a3fa9da13.jpg)
 
-这一长列表是从 **Google 的指导笔记** 中萃取出来并进行扩展。因此，有些事情你必须去了解一下。我在列表的底部添加了一些额外项，用于解决面试中可能会出现的问题。这些额外项大部分是来自于 Steve Yegge 的“得到在 Google 工作的机会”。而在 Google 指导笔记的逐字间，它们有时也会被反映出来。
+这一长列表是从 <strong>Google 的指导笔记</strong> 中萃取出来并进行扩展。因此，有些事情你必须去了解一下。我在列表的底部添加了一些额外项，用于解决面试中可能会出现的问题。这些额外项大部分是来自于 Steve Yegge 的“得到在 Google 工作的机会”。而在 Google 指导笔记的逐字间，它们有时也会被反映出来。
 
 ### 为何要用到它？
 
@@ -50,7 +50,7 @@ source_url: https://zhuanlan.zhihu.com/p/22881223
 
 把一个（或两个）印有“[future Googler](https://link.zhihu.com/?target=https%3A//github.com/jwasham/google-interview-university/blob/master/extras/future-googler.pdf)”的图案打印出来，并用你誓要成功的眼神盯着它。
 
-![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_f350c63e65c1.png)
+![](/images/collections/0.raw/zhihu/%E8%B5%B0%E5%90%91cs/asset/img_f350c63e65c1.png)
 
 ### 我得到了工作吗？
 
@@ -71,7 +71,7 @@ source_url: https://zhuanlan.zhihu.com/p/22881223
 - Twitter: @StartupNextDoor
 - Google+: +Googleyasheck
 - LinkedIn: johnawasham
-![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_c4a9823dc3e0.png)
+![](/images/collections/0.raw/zhihu/%E8%B5%B0%E5%90%91cs/asset/img_c4a9823dc3e0.png)
 
 ### 不要自以为自己足够聪明
 
@@ -181,7 +181,7 @@ source_url: https://zhuanlan.zhihu.com/p/22881223
 
 - [抽认卡页面的代码仓库](https://link.zhihu.com/?target=https%3A//github.com/jwasham/computer-science-flash-cards)
 - [我的抽认卡数据库](https://link.zhihu.com/?target=https%3A//github.com/jwasham/computer-science-flash-cards/blob/master/cards-jwasham.db)：有一点需要记住的是，我做事有点过头，以至于把卡片都覆盖到所有的东西上。从汇编语言和 Python 的细枝末节，乃至到机器学习和统计都被覆盖到卡片上。而这种做法，对于 Google 的要求来说，却是多余。
-**在抽认卡上做笔记：** 若你第一次发现你知道问题的答案时，先不要急着把其标注成“已懂”。你需要做的，是去查看一下是否有同样的抽认卡，并在你真正懂得如何解决问题之前，多问自己几次。重复地问答可帮助您深刻记住该知识点。
+<strong>在抽认卡上做笔记：</strong> 若你第一次发现你知道问题的答案时，先不要急着把其标注成“已懂”。你需要做的，是去查看一下是否有同样的抽认卡，并在你真正懂得如何解决问题之前，多问自己几次。重复地问答可帮助您深刻记住该知识点。
 
 #### 3. 回顾，回顾，回顾
 
@@ -234,19 +234,19 @@ Python ——  使用内建的数据类型（为了持续练习 Python），并�
 
 ### 必备知识
 
-- [ ] **计算机是如何处理一段程序：**
+- [ ] <strong>计算机是如何处理一段程序：</strong>
 
 [ ] CPU 是如何执行代码（视频）
 - [ ] 机器码指令（视频）
 
-- [ ] **编译器**
+- [ ] <strong>编译器</strong>
 
 [ ] 编译器是如何在 ~1 分钟内工作（视频）
 - [ ] Hardvard CS50 —— 编译器（视频）
 - [ ] C++（视频）
 - [ ] 掌握编译器的优化（C++）（视频）
 
-- [ ] **浮点数是如何存储的：**
+- [ ] <strong>浮点数是如何存储的：</strong>
 
 [ ] 简单的 8-bit：浮点数的表达形式　—— 1（视频 —— 在计算上有一个错误 —— 详情请查看视频的介绍）
 - [ ] 32 bit：IEEE754 32-bit 浮点二进制（视频）
@@ -591,7 +591,7 @@ MIT（视频）
 - 我希望能阅读到更多关于 B 树的资料，因为它也被广泛地应用到大型的数据库当中。
 - [ ] 自平衡二叉查找树
 
-- [ ] **AVL 树**
+- [ ] <strong>AVL 树</strong>
 
 实际中：我能告诉你的是，该种树并无太多的用途，但我能看到有用的地方在哪里：AVL 树是另一种平衡查找树结构。其可支持时间复杂度为 O(log n) 的查询、插入及删除。它比红黑树严格意义上更为平衡，从而导致插入和删除更慢，但遍历却更快。正因如此，才彰显其结构的魅力。只需要构建一次，就可以在不重新构造的情况下读取，适合于实现诸如语言字典（或程序字典，如一个汇编程序或解释程序的操作码）。
 - [ ] MIT AVL 树 / AVL 树的排序（视频）
@@ -599,7 +599,7 @@ MIT（视频）
 - [ ] AVL 树的实现（视频）
 - [ ] 分离与合并
 
-- [ ] **伸展树**
+- [ ] <strong>伸展树</strong>
 
 实际中：伸展树一般用于缓存、内存分配者、路由器、垃圾回收者、数据压缩、ropes（字符串的一种替代品，用于存储长串的文本字符）、Windows NT（虚拟内存、网络及文件系统）等的实现。
 - [ ] CS 61B：伸展树（Splay trees）（视频）
@@ -607,7 +607,7 @@ MIT（视频）
 该教程会过于学术，但请观看到最后的10分钟以确保掌握。
 - 视频
 
-- [ ] **2-3查找树**
+- [ ] <strong>2-3查找树</strong>
 
 实际中：2-3树的元素插入非常快速，但却有着查询慢的代价（因为相比较 AVL 树来说，其高度更高）。
 - 你会很少用到2-3树。这是因为，其实现过程中涉及到不同类型的节点。因此，人们更多地会选择红黑树。
@@ -615,14 +615,14 @@ MIT（视频）
 - [ ] 2-3树的二元观点
 - [ ] 2-3树（学生叙述）（视频）
 
-- [ ] **2-3-4树 (亦称2-4树)**
+- [ ] <strong>2-3-4树 (亦称2-4树)</strong>
 
-实际中：对于每一棵2-4树，都有着对应的红黑树来存储同样顺序的数据元素。在2-4树上进行插入及删除操作等同于在红黑树上进行颜色翻转及轮换。这使得2-4树成为一种用于掌握红黑树背后逻辑的重要工具。这就是为什么许多算法引导文章都会在介绍红黑树之前，先介绍2-4树，尽管**2-4树在实际中并不经常使用**。
+实际中：对于每一棵2-4树，都有着对应的红黑树来存储同样顺序的数据元素。在2-4树上进行插入及删除操作等同于在红黑树上进行颜色翻转及轮换。这使得2-4树成为一种用于掌握红黑树背后逻辑的重要工具。这就是为什么许多算法引导文章都会在介绍红黑树之前，先介绍2-4树，尽管<strong>2-4树在实际中并不经常使用</strong>。
 - [ ] CS 61B Lecture 26：平衡查找树（视频）
 - [ ] 自底向上的2-4树（视频）
 - [ ] 自顶向下的2-4树（视频）
 
-- [ ] **B 树**
+- [ ] <strong>B 树</strong>
 
 有趣的是：为啥叫 B 仍然是一个神秘。因为 B 可代表波音（Boeing）、平衡（Balanced）或 Bayer（联合创造者）
 - 实际中：B 树会被广泛适用于数据库中，而现代大多数的文件系统都会使用到这种树（或变种)。除了运用在数据库中，B 树也会被用于文件系统以快速访问一个文件的任意块。但存在着一个基本的问题，那就是如何将文件块 i 转换成一个硬盘块（或一个柱面-磁头-扇区）上的地址。
@@ -634,7 +634,7 @@ MIT（视频）
 覆盖有高速缓存参数无关型（cache-oblivious）B 树和非常有趣的数据结构
 - 头37分钟讲述的很专业，或许可以跳过（B 指块的大小、即缓存行的大小）
 
-- [ ] **红黑树**
+- [ ] <strong>红黑树</strong>
 
 实际中：红黑树提供了在最坏情况下插入操作、删除操作和查找操作的时间保证。这些时间值的保障不仅对时间敏感型应用有用，例如实时应用，还对在其他数据结构中块的构建非常有用，而这些数据结构都提供了最坏情况下的保障；例如，许多用于计算几何学的数据结构都可以基于红黑树，而目前 Linux 系统所采用的完全公平调度器（the Completely Fair Scheduler）也使用到了该种树。在 Java 8中，红黑树也被用于存储哈希列表集合中相同的数据，而不是使用链表及哈希码。
 - [ ] Aduni —— 算法 —— 课程4（该链接直接跳到开始部分）（视频）
@@ -957,7 +957,7 @@ Yegge 的注意事项:
 - 权衡和折衷
 - 性能分析和优化
 
-- [ ] **从这里开始**: HiredInTech：系统设计
+- [ ] <strong>从这里开始</strong>: HiredInTech：系统设计
 - [ ] 该如何为技术面试里设计方面的问题做准备?
 - [ ] 在系统设计面试前必须知道的 8 件事
 - [ ] 算法设计
@@ -1212,7 +1212,7 @@ Videos
 
 #### Google Coaching 里提到的
 
-**阅读并做练习:**
+<strong>阅读并做练习:</strong>
 
 - [ ] 算法设计手册 (Skiena)
 
@@ -1229,10 +1229,10 @@ Algorithm Design Manual
 read and do exercises from the books below. Then move to coding challenges (further down below)
 一旦你理解了每日计划里的所有内容，就去读上面所列的书并完成练习，然后开始读下面所列的书并做练习，之后就可以开始实战写代码了（本文再往后的部分）
 
-**首先阅读:**
+<strong>首先阅读:</strong>
 
 - [ ] Programming Interviews Exposed: Secrets to Landing Your Next Job, 2nd Edition
-**然后阅读 (这本获得了很多推荐， 但是不在 Google coaching 的文档里):**
+<strong>然后阅读 (这本获得了很多推荐， 但是不在 Google coaching 的文档里):</strong>
 
 - [ ] Cracking the Coding Interview, 6th Edition
 如果你看到有人在看 “The Google Resume”, 实际上它和 “Cracking the Coding Interview” 是同一个作者写的，而且后者是升级版。
@@ -1717,7 +1717,7 @@ Combination of a binary search tree and a heap
 `我为前面提到的某些主题增加了一些额外的内容，之所以没有直接添加到前面，是因为这样很容易导致某个主题内容过多。毕竟你想在本世纪找到一份工作，对吧？
 `
 
-- [ ] **动态规划的更多内容** (视频)
+- [ ] <strong>动态规划的更多内容</strong> (视频)
 
 [ ] 6.006: 动态规划 I: 斐波那契数列, 最短路径
 - [ ] 6.006: 动态规划 II: 文本匹配, 二十一点/黑杰克
@@ -1727,12 +1727,12 @@ Combination of a binary search tree and a heap
 - [ ] 6.046: 动态规划: 所有点对最短路径
 - [ ] 6.046: 动态规划: 更多示例
 
-- [ ] **图形处理进阶** (视频)
+- [ ] <strong>图形处理进阶</strong> (视频)
 
 [ ] 异步分布式算法: 对称性破缺，最小生成树
 - [ ] 异步分布式算法: 最小生成树
 
-- [ ] MIT **概率论** (mathy, and go slowly, which is good for mathy things) (视频):
+- [ ] MIT <strong>概率论</strong> (mathy, and go slowly, which is good for mathy things) (视频):
 
 [ ] MIT 6.042J - 概率论概述
 - [ ] MIT 6.042J - 条件概率 Probability

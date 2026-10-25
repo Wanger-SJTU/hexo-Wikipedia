@@ -23,18 +23,18 @@ UWA视频地址, 2021年Unity开放日就讲过了 文章地址, 视频地址.
 
 括号()内的话都是我自己想的.
 
-### **1. 光源**
+### <strong>1. 光源</strong>
 
 目标是手机同屏32盏点光, PC 128盏点光.
 
-#### **1.1 Tile-based Light Culling**
+#### <strong>1.1 Tile-based Light Culling</strong>
 
 - 相关文章, COD Tile Culling
 - 先基于tile进行一次culling, 再在Z上进行一次culling
 - 在Compute Shader上完成
 - (现在好像很多在研游戏都已经用了这套技术在手机上)
 
-#### **1.2 Light Barrier**
+#### <strong>1.2 Light Barrier</strong>
 
 - 遮挡剔除, 视椎体裁剪
 - 比如 给点光加一个范围**
@@ -44,32 +44,32 @@ UWA视频地址, 2021年Unity开放日就讲过了 文章地址, 视频地址.
 - 同时可以让Tile Light Culling 更加精确
 - (其实Light Layer上也可以解决漏光)
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_26b679435596.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_26b679435596.jpg)
 
 #### 1.3 Light Num**
 
 - 检测屏幕物体接受光源的数量
 - 如果是深红色则说明超标了
 - (有点类似于OverDraw的感觉)
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_d6ab64ab8724.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_d6ab64ab8724.jpg)
 
-### **2. GI**
+### <strong>2. GI</strong>
 
-#### **2.1 一般**
+#### <strong>2.1 一般</strong>
 
 - 一般手游静态光用UV2去烘焙Lightmap
 - 动态物体用Light Probe(光照探针)
 - (Lightmap占用硬盘和内存压力比较大)
 - (其实Lightmap是可以realtime的, 大佬秀技)
 
-#### **2.2 Irradiance Volume**
+#### <strong>2.2 Irradiance Volume</strong>
 
 - 相关文章
 - 储存每一块区域的光照信息
 - 他们游戏就是用的这套
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_5ad102798659.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_5ad102798659.jpg)
 
-#### **2.3 储存详细**
+#### <strong>2.3 储存详细</strong>
 
 - 用2阶球谐, 1阶段存 Color(3Byte), 2阶只存亮度(3Byte)
 - 存Sky Visbility(1Byte), 存Light Mask(1Byte)
@@ -78,22 +78,22 @@ UWA视频地址, 2021年Unity开放日就讲过了 文章地址, 视频地址.
 
 - 为了压缩数据
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_bcbcafd22df4.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_bcbcafd22df4.jpg)
 
 - Sky Visbility?
 
 - 有点类似于长距离AO, AO分为长距离AO和短距离AO
 - 下图GI AO 即 Sky Visbility, 可以看到往内部区域走会逐渐变暗
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_97acdac333af.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_97acdac333af.jpg)
 
 - 计算公式?**
 
 - 间接光 = GIIndirectSH(烘焙) * LightIntensity(美术调节) + GISkyVisibility(烘焙) * SkySH(美术调节)
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_2879ff2d7f76.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_2879ff2d7f76.jpg)
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_1c5be1d80d2c.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_1c5be1d80d2c.jpg)
 
 - Light Mask?
 
@@ -101,11 +101,11 @@ UWA视频地址, 2021年Unity开放日就讲过了 文章地址, 视频地址.
 - 当白天变成晚上时, 区域的光照贡献主要是附加光, 则亮度不怎么会产生变化
 - 如冰柱的主要贡献是平行光, 白天还好, 但是晚上冰柱周围都变暗了, 冰柱没有变暗会很诡异
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_eeff54dc95e4.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_eeff54dc95e4.jpg)
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_f0b44dcf8c21.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_f0b44dcf8c21.jpg)
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_c4b186f29c08.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_c4b186f29c08.jpg)
 
 #### 2.4 Streaming**
 
@@ -115,7 +115,7 @@ UWA视频地址, 2021年Unity开放日就讲过了 文章地址, 视频地址.
 - 分帧数, 切片更新, 当角色到边缘的时候发起加载和upload
 - 相关文章
 
-#### **2.5 Baker Tools**
+#### <strong>2.5 Baker Tools</strong>
 
 - (他们自己写了一个工具可以烘焙选定区域)
 - 根据NavMesh和碰撞体自动摆放区域, 溢出无效的probes
@@ -125,9 +125,9 @@ UWA视频地址, 2021年Unity开放日就讲过了 文章地址, 视频地址.
 
 - 因为3D Texture覆盖范围比较小 远处就需要2D 做弥补
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_61b40705bc70.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_61b40705bc70.jpg)
 
-#### **2.5 耗时**
+#### <strong>2.5 耗时</strong>
 
 - 范围: 256m * 256m * 200m
 - 3D Texture: 2 * RGBA8 128 * 128 * 100
@@ -136,19 +136,19 @@ UWA视频地址, 2021年Unity开放日就讲过了 文章地址, 视频地址.
 - 内存: 2~4MB
 - 包体占用: 2MB~9MB / 1KM
 
-#### **2.6 其它**
+#### <strong>2.6 其它</strong>
 
 - 3D Virtual Texture (没有细说)
 
 - 当巨高的场景, 可以用做数据整合, 使其规则化
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_75cc96bd03c7.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_75cc96bd03c7.jpg)
 
 - Lightmap VS Irradiance Volume
 Lightmap VolumeIrradiance Volume静态物体两者都可需要UV2不用UV2更大的包体和内存占用包体和内存小可扩展性强大数据要自定义效果更好漏光兼容度更好是用Compute Shader 和 3D Texutre烘焙慢烘焙更快离线烘焙可以实时GI
-### **3. Dynamic GI**
+### <strong>3. Dynamic GI</strong>
 
-#### **3.1 以往的技术**
+#### <strong>3.1 以往的技术</strong>
 
 - Radiosity
 
@@ -181,7 +181,7 @@ Lightmap VolumeIrradiance Volume静态物体两者都可需要UV2不用UV2更大
 - (RTX)
 - ...
 
-#### **3.2 Lux**
+#### <strong>3.2 Lux</strong>
 
 他们自己取名, 跟Lumen名字类似.
 
@@ -203,65 +203,65 @@ LPV需要用RSM来考虑遮挡关系, 但是这里没有用到RSM. 所以引入�
 
 间接光SH也差不多, 就是多考虑了方向性. 比如L1在靠近L0反向的颜色为黑色.
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_cde080db0e6d.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_cde080db0e6d.jpg)
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_1fa52eec1357.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_1fa52eec1357.jpg)
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_526291135d0d.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_526291135d0d.jpg)
 
-**迭代叠加越加越亮?**
+<strong>迭代叠加越加越亮?</strong>
 
 雅克比迭代, 每次计算完当前全部迭代之后带入下一次迭代. 高斯赛德尔, 如果计算的时候有值已经算出来了, 则带入公式加速求解速度.
 
 比如Pixel Shader 对于两张RT的pingpong, 就是雅克比. 但是他们这里用Compute Shader, 如果是高斯赛德尔迭代, 就需要很处理Barrier和数据一致性, 比较繁琐性能也不好. 所以这里就很随意如果数据更新了就用新的, 没有更新就用旧的.
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_2dd937374298.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_2dd937374298.jpg)
 
-**迭代反射?**
+<strong>迭代反射?</strong>
 
 用迭代近似处理多次反射. 比如下面的L3是不连通的, 因此会反射一定的irrdiance, 计算的时候就会考虑一定的从下往上的加成.
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_e41b12e23377.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_e41b12e23377.jpg)
 
-**耗时?**
+<strong>耗时?</strong>
 
 初始化需要24ms. loading的时候做完, 玩家修改建筑的时候局部更新. 更新的时 平均CPU耗时0.5ms.
 
-**光照注入?**
+<strong>光照注入?</strong>
 
 怎么知道哪些probe受到哪些光影响? 在CPU 做 Lighting Culling, 因为屏幕上的probe其实是非常少的.
 
 关于光照的遮挡. 在Propagate Buffer中用Raycast的时候顺便记录了六个方向的深度值. 这样只考虑probe和光源的距离就好了. 对于每个光源只考虑周围的八个probe, 别的位置都不计算.
 
-#### **3.3 效果**
+#### <strong>3.3 效果</strong>
 
 比平行光 Diffuse效果要好, 而且效率也会高点. 不过高光部分效果不太行, 平行光是GGX, 而Lux高光效果会变散.
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_009e8066d0c1.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_009e8066d0c1.jpg)
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_62a7b761d4cb.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_62a7b761d4cb.jpg)
 
-#### **3.4 漏光**
+#### <strong>3.4 漏光</strong>
 
 大体上是不会漏光的, 但是采样时插值还是会漏光. 比如下图墙角处, 蓝绿色插值就会出现漏光.
 
 (后面一篇文章也会快速讲一个这个)
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_06582e019f49.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_06582e019f49.jpg)
 
 一种是区分室内室外做两套probe. 对于规则物体的demo效果比较好, 但是实际上房子不太规则, 所以没有采样.
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_37d971734b7e.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_37d971734b7e.jpg)
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_78d0372afe6f.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_78d0372afe6f.jpg)
 
 COD用四面体. probe储存四面体中一个点到对面三角面的每个点的深度, 然后做深度对比.
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_97b193220a88.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_97b193220a88.jpg)
 
 DDGI. 每个probe对应一个2D的八面体深度贴图, 八个点的距离, 距离平方, 然后用切比雪夫不等式做一个概率估计. 不用线性插值, 而且自己还可以做权重处理. 但是需要的数据量太多了. 每个probe需要16*16个Bytes来记录深度.
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_bf80a0aff8c5.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_bf80a0aff8c5.jpg)
 
 Lux.
 
@@ -275,9 +275,9 @@ Lux.
 
 因为球谐的形状比较圆, 但是球面高斯比较符合墙角的形状.
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_0a4e39089a17.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_0a4e39089a17.jpg)
 
-#### **3.5 性能**
+#### <strong>3.5 性能</strong>
 
 - Iphone13
 - 地图大小120m * 120m * 40m.
@@ -285,7 +285,7 @@ Lux.
 - Relighting阶段. 硬件三线性插值0.5ms. 防漏光需要自己采样八次计算插值做比较 耗时1.5ms.
 - 防漏光是可选的, 并且可以降低分辨率继续减少消耗.
 
-#### **3.6 缺点**
+#### <strong>3.6 缺点</strong>
 
 - 高光效果
 - 附加光的形状

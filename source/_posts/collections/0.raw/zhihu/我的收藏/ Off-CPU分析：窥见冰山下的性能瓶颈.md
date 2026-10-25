@@ -27,7 +27,7 @@ source_url: https://zhuanlan.zhihu.com/p/645283689
 - `Off-CPU`分析：考虑因为`I/O`、锁、计数器、换页等事件阻塞的时间
 `Off-CPU`分析是一种研究`Off-CPU`时间开销、执行上下文等内容的性能分析方法。和`CPU Profiling`不同，`Off-CPU`不关注运行在`CPU`上的进程，它更关注那些被阻塞的进程。如下图所示，很多种原因都会让进程/线程进入到阻塞状态，可能是进程自身的磁盘`I/O`、网络`I/O`等；也可能是因为别的进程导致的上下文切换：总之，这些都会引入延时。
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_d33a3693334d.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_d33a3693334d.jpg)
 
 线程状态 https://www.brendangregg.com/offcpuanalysis.html
 
@@ -45,7 +45,7 @@ source_url: https://zhuanlan.zhihu.com/p/645283689
 
 考虑如下的调用关系：
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_cdad9fb0e307.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_cdad9fb0e307.jpg)
 
 A call B
 
@@ -53,7 +53,7 @@ A call B
 
 #### 应用追踪
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_7a60929eb26a.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_7a60929eb26a.jpg)
 
 Application Tracing
 
@@ -63,7 +63,7 @@ Application Tracing
 
 #### Off-CPU追踪
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_dd26c054a02b.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_dd26c054a02b.jpg)
 
 Off-CPU Tracing
 
@@ -71,7 +71,7 @@ Off-CPU Tracing
 
 #### Off-CPU Sampling
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_cb34343cbee9.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_cb34343cbee9.jpg)
 
 Off-CPU Sampling
 
@@ -170,7 +170,7 @@ on tracer exit:
 
 简单来说，就是当上下文切换发生时，对于被切换走的进程`A`，记录它在当前时间进入了`sleep`；而对于切换进来的进程`B`，则基于`sleeptime`这个`map`去寻找`B`被切换走的时间，从而计算差值。如下图所示：
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_7cfed0d2838d.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_7cfed0d2838d.jpg)
 
 Off-CPU时间计算
 
@@ -235,7 +235,7 @@ git clone https://github.com/brendangregg/FlameGraph
 
 生成的火焰图如图所示：
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_245f45adce88.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_245f45adce88.jpg)
 
 Off-CPU火焰图
 

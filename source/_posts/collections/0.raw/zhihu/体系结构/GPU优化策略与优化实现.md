@@ -15,86 +15,86 @@ source_url: https://zhuanlan.zhihu.com/p/419868175
 ---
 
 
-**[GPU的硬件特性及优化原则](https://link.zhihu.com/?target=http%3A//mp.weixin.qq.com/s%3F__biz%3DMzIzOTc4NDA4NQ%3D%3D%26mid%3D2247485951%26idx%3D1%26sn%3D3e7d1cadb0245843308cc3eeb7782b9a%26chksm%3De9259005de521913de160965f0438519bfe720a535e73af3f4443278696f15974f14489ba04e%26scene%3D21%23wechat_redirect)**
+<strong>[GPU的硬件特性及优化原则](https://link.zhihu.com/?target=http%3A//mp.weixin.qq.com/s%3F__biz%3DMzIzOTc4NDA4NQ%3D%3D%26mid%3D2247485951%26idx%3D1%26sn%3D3e7d1cadb0245843308cc3eeb7782b9a%26chksm%3De9259005de521913de160965f0438519bfe720a535e73af3f4443278696f15974f14489ba04e%26scene%3D21%23wechat_redirect)</strong>
 
-**GPU优化策略**
+<strong>GPU优化策略</strong>
 
-**级联访存**
+<strong>级联访存</strong>
 
-**Global memory：**将线程组织称为可以一次性访问一个warp中内容的形式
+<strong>Global memory：</strong>将线程组织称为可以一次性访问一个warp中内容的形式
 
-**共享内存**
+<strong>共享内存</strong>
 
-**Shared memory：**减少bank conflict来加快对shared memory的访问
+<strong>Shared memory：</strong>减少bank conflict来加快对shared memory的访问
 
-**重组线程**
+<strong>重组线程</strong>
 
 将各个分支中的线程进行重组，让同一个warp中的线程尽量地走同一个分支
 
-**指令流水线**
+<strong>指令流水线</strong>
 
 对指令进行分类，分析每一类指令的吞吐量，减少混合指令
 
-**指令调度**
+<strong>指令调度</strong>
 
 将长延迟的指令插入到与该指令独立的计算密集点处，使用计算来隐藏延迟（一般为访存造成的延迟）
 
-**GPU优化实现**
+<strong>GPU优化实现</strong>
 
 **
 
 《实战》**
 
-** CGMA：**compute to global memory access
+<strong>CGMA：</strong>compute to global memory access
 
-**计算：**浮点数操作/访存操作，能够比较准确地体现kernel的性能，在访存性能一定的时候，通过提高CGMA的值可以使得浮点操作的性能大幅提升（浮点操作的峰值性能远远超过访存的峰值带宽）
+<strong>计算：</strong>浮点数操作/访存操作，能够比较准确地体现kernel的性能，在访存性能一定的时候，通过提高CGMA的值可以使得浮点操作的性能大幅提升（浮点操作的峰值性能远远超过访存的峰值带宽）
 
-**例子：**CGMA=1.0，则浮点操作的性能最好的时候也就跟访存性能一致，而G80的global memory的带宽为86.4GB/s，但是其浮点计算的峰值性能却为367Gflops，这样，性能将被访存速度所约束。
+<strong>例子：</strong>CGMA=1.0，则浮点操作的性能最好的时候也就跟访存性能一致，而G80的global memory的带宽为86.4GB/s，但是其浮点计算的峰值性能却为367Gflops，这样，性能将被访存速度所约束。
 
-**减少global memory的流量**
+<strong>减少global memory的流量</strong>
 
 将具有局部重用性的数据块加载到每个block中的shared memory中，减少对global memory的频繁访问，提高读取数据的性能。**
 
 例子：**矩阵乘法的分块实现，利用shared memory来存储每一小块所需的数据及结果。
 
-**存储器的使用需要谨慎**
+<strong>存储器的使用需要谨慎</strong>
 
 如果每个线程使用得存储器过多，将会直接导致每个SM上可以驻留的线程数减少，造成并行度不足的问题**
 
 例子：**G80中每个SM有8K的寄存器，16K的shared memory，如果每个块分配的shared memory超过了2K，则SM中驻留的块将无法达到全部的8个，降低并行度，寄存器也是同样的道理
 
-**Warp divergence的问题**
+<strong>Warp divergence的问题</strong>
 
  一个warp中的线程存在分支的时候，会造成串行执行不同分支，降低性能，可以通过调整线程执行内容来减少warp中存在的分支，提高性能**
 
-例子：**tid % 2造成了每个warp中都有分支，换成了tid 例子：**矩阵的行优先转换成列优先，可以一次性读取连续的单元，提高效率；如果warp访问的是global memory中的连续单元，则该访问将会被合并成一次性访问
+例子：<strong>tid % 2造成了每个warp中都有分支，换成了tid 例子：</strong>矩阵的行优先转换成列优先，可以一次性读取连续的单元，提高效率；如果warp访问的是global memory中的连续单元，则该访问将会被合并成一次性访问
 
-**SM资源的动态划分（分块大小的策略）**
+<strong>SM资源的动态划分（分块大小的策略）</strong>
 
 GT200中，每个SM最多驻留1024个线程，8个块，可以划分为4*256，也可以划分成8*128，但是后者更能充分地利用线程槽和块槽，效率将会更高。**
 
 寄存器数目可能造成的性能悬崖：GT200种每个SM有8192个寄存器，对于16*16的线程块，如果每个线程用到的寄存器为10个，那么可以容纳3个块，如果每个线程用到的寄存器为11个，则只能容纳2个块，这种情况可能极大地降低并行度，造成性能退化。
 
-说明：**上面描述的情况也不一定降低性能，如果一个寄存器能够使得独立的浮点操作数大幅提高，那么，就算少了一个块，也能够有充分的warp来隐藏延迟**
+说明：<strong>上面描述的情况也不一定降低性能，如果一个寄存器能够使得独立的浮点操作数大幅提高，那么，就算少了一个块，也能够有充分的warp来隐藏延迟</strong>
 
 问题：**寄存器溢出是在寄存器不够用的情况下出现的，按照上面的说法，寄存器如果不够用，会减少块的个数来避免这个问题，那么什么时候将会溢出？另一方面，寄存器溢出会造成对local memory的访问，降低性能，但是没有想象中的低，因为Fermi已经为local memory提供了缓冲
 
-**数据预取**
+<strong>数据预取</strong>
 
 当所有的线程都在等待存储器访问结果的时候，延迟将没有办法被隐藏，这个时候，可以调整处理过程为：使用当前元素时，预取下一个元素，隐藏延迟（书中观点是：在读取global memory到shared memory中的这个过程中间，插入了独立的计算指令，有效地隐藏延迟）。**
 
 例子：**将原来读取global memory到shared memory的过程拆分成global memory到register，再从register到shared memory，这样，从global memory读取下一块到register的时候，就可以同时计算当前块，隐藏延迟了。
 
-**混合指令的消除**
+<strong>混合指令的消除</strong>
 
 对于循环，往往混合了多种指令：取址，分支，计数，运算，而指令的混合将会降低执行效率，可以通过消除这种混合来提高指令的执行效率。**
 
 例子：**将循环次数不多的循环体直接展开称为长的表达式，消除指令的混合。
 
-**线程粒度调整**
+<strong>线程粒度调整</strong>
 
 提高线程的粒度有时候能够降低访存的次数，因为其提高了数据的重用性，当然，期间不可避免地用到了更多的寄存器和shared memory**
 
 例子：**矩阵分块乘法中，每个块计算C的几个块，可以减少对输入矩阵的加载，但是，使用更多的register和shared memory可能降低性能
 
-**总结：**调整好块的大小是最重要的，其次考虑数据预取和指令展开，最后调整线程粒度，找到最好的平衡点
+<strong>总结：</strong>调整好块的大小是最重要的，其次考虑数据预取和指令展开，最后调整线程粒度，找到最好的平衡点

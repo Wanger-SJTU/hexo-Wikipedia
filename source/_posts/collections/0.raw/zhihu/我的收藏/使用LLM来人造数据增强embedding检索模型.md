@@ -33,7 +33,7 @@ query和doc一般是异构的，因此，通过LLM为doc人造一个query，充�
 
 **
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_0058f7433d81.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_0058f7433d81.jpg)
 
 主要工作：**
 
@@ -41,11 +41,11 @@ query和doc一般是异构的，因此，通过LLM为doc人造一个query，充�
 
 **
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_f68b498aa55b.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_f68b498aa55b.jpg)
 
 生成人造query和title的prompt如下：
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_580228625d0b.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_580228625d0b.jpg)
 
 ### doc-level embedding框架：
 
@@ -53,13 +53,13 @@ query和doc一般是异构的，因此，通过LLM为doc人造一个query，充�
 
 其中如下图所示，人造query以及chunk有多个，而title只有一个。作者认为：这样可以从不同的角度来表示doc的语义。有利于检索。
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_b66dcfe06394.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_b66dcfe06394.jpg)
 
 #### 双塔模型的应用：
 
 本质上就是在这种框架下，如何计算query和doc的相似度。
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_555d1d301ed8.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_555d1d301ed8.jpg)
 
 s是相似度函数，一般为余弦相似度。
 
@@ -73,21 +73,21 @@ w_f是0-1之间的权重参数，代表不同表示的重要性。
 
 其中synthetic queries和chunk有多个，title只有一个：
 
-**有多个的也会有多个embedding，因此作者的做法是把多个synthetic queries(chunk)先抽取固定维度的向量，然后再进行一个mean poolling。再来和query计算相似度。**
+<strong>有多个的也会有多个embedding，因此作者的做法是把多个synthetic queries(chunk)先抽取固定维度的向量，然后再进行一个mean poolling。再来和query计算相似度。</strong>
 
 **
 
 另外，因此相似度函数(点积和余弦相似度是线性的，因此，上述的公式可以被简化为：**
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_ed31d8b7ca6e.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_ed31d8b7ca6e.jpg)
 
-**因此，每个chunk有自己的一个embedding即可，同时，也可以用ANN搜索。**
+<strong>因此，每个chunk有自己的一个embedding即可，同时，也可以用ANN搜索。</strong>
 
-#### **colbert模型的应用：**
+#### <strong>colbert模型的应用：</strong>
 
-**作者认为，因为colbert是token级别的计算相似度(query的一个token的embedding，会去和doc所有token的embedding去计算相似度，然后取最大)，因此将doc的不同表示**synthetic queries, title and chunk，拼接起来就行。他们会参与query与doc的计算。**
+<strong>作者认为，因为colbert是token级别的计算相似度(query的一个token的embedding，会去和doc所有token的embedding去计算相似度，然后取最大)，因此将doc的不同表示</strong>synthetic queries, title and chunk，拼接起来就行。他们会参与query与doc的计算。**
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_b7751b3c29cc.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_b7751b3c29cc.jpg)
 
 ### 实验：
 
@@ -107,13 +107,13 @@ chunk_size=64
 
 主要实验：**
 
-**双塔：**
+<strong>双塔：</strong>
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_ca508f264d3b.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_ca508f264d3b.jpg)
 
-**迟交互：**
+<strong>迟交互：</strong>
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_bda9061a7166.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_bda9061a7166.jpg)
 
 实验结论：使用这种doc-levl embedding框架，相比原来的结果，都有较大提升。
 
@@ -123,9 +123,9 @@ chunk_size=64
 
 只使用doc的一种表示，并且权重设置为1。
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_bd6eae543ba5.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_bd6eae543ba5.jpg)
 
-实验结论：**大多数情况下，人造query带来的提升比其他两种大，另外，合并三种不同的doc表示的提升一般最大。**
+实验结论：<strong>大多数情况下，人造query带来的提升比其他两种大，另外，合并三种不同的doc表示的提升一般最大。</strong>
 
 **
 
@@ -137,15 +137,15 @@ chunk_size=64
 
 For each query (or batch of queries), it is necessary to re-compute the embedding for all doc contexts to identify the top negative examples. These doc context embedding cannot be pre-calculated due to the continuous updating of the model parameters during training, which correspondingly alters the doc context embedding. To address this issue, we can periodically pre-calculate and update the top negative samples for multiple training batches simultaneously.
 
-**Loss Function：**
+<strong>Loss Function：</strong>
 
 **
 
 作者认为，二分类的交叉熵loss不适合检索的排序任务，因为其主要是做分类，最大化query和正例的分值，以及最小化query和负例的分值。**
 
-**检索的排序任务，主要关注的是相对的序以及正例和负例之间的差距。因此，他们采用了**margin ranking loss。
+<strong>检索的排序任务，主要关注的是相对的序以及正例和负例之间的差距。因此，他们采用了</strong>margin ranking loss。
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_1f452423032c.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_1f452423032c.jpg)
 
 作者的实验展示，这种margin loss优于交叉熵loss，再具体数据的微调中。
 
@@ -157,7 +157,7 @@ For each query (or batch of queries), it is necessary to re-compute the embeddin
 
 广告时间：**
 
-**笔者发起了一个RAG检索模型的开源项目。欢迎大家给个star。**
+<strong>笔者发起了一个RAG检索模型的开源项目。欢迎大家给个star。</strong>
 
 传送门：[GitHub - NLPJCL/RAG-Retrieval: Unify Efficient Fine-tuning of  RAG Retrieval, including Embedding, ColBERT,Cross Encoder](https://link.zhihu.com/?target=https%3A//github.com/NLPJCL/RAG-Retrieval)
 

@@ -15,13 +15,13 @@ source_url: https://mp.weixin.qq.com/s/I3ijRMTp1Kz_iK7xqDJOkw
 ---
 
 
-关键词：**Mega MoE**、***FP4 Indexer***、动态 Swap A/B、PDL（Programmatic Dependent Launch）、JIT 编译优化
+关键词：<strong>Mega MoE</strong>、*<strong>FP4 Indexer</strong>*、动态 Swap A/B、PDL（Programmatic Dependent Launch）、JIT 编译优化
 
 从 GEMM 库到统一 LLM 计算原语平台。DeepGEMM 自 2025 年初发布以来，一直是 DeepSeek 团队面向 NVIDIA GPU（SM90/SM100）的高性能 Tensor Core 内核库。
 
 然而，本次 PR #304 标志着 DeepGEMM 从一个"干净高效的 GEMM 库"向"现代大语言模型统一计算原语平台"的质变——README 的自我定位**已从 "a library designed for clean and efficient GEMMs" 更新为 *"a unified, high-performance tensor core kernel library that brings together the key computation primitives of modern large language models"。***
-![image](/images/collections/0.raw/wechat/asset/DeepGEMM-304%25E6%25B5%2585%25E6%259E%2590Mega-MoEFP4-Indexer-%25E4%25B8%258E%25E5%2585%25A8%25E9%259D%25A2%25E6%259E%25B6%25E6%259E%2584%25E5%258D%2587%25E7%25BA%25A7_001.png)- 
-**[Public release 26/04] Introducing Mega MoE, FP4 Indexer and other features/fixes**
+![image](/images/collections/0.raw/wechat/asset/DeepGEMM-304%E6%B5%85%E6%9E%90Mega-MoEFP4-Indexer-%E4%B8%8E%E5%85%A8%E9%9D%A2%E6%9E%B6%E6%9E%84%E5%8D%87%E7%BA%A7_001.png)- 
+<strong>[Public release 26/04] Introducing Mega MoE, FP4 Indexer and other features/fixes</strong>
 
 - 
 Mega MoE is still under development and optimizations, stay tuned and optimization ideas are welcome!
@@ -45,7 +45,7 @@ https://github.com/deepseek-ai/DeepGEMM/pull/304
 - 
 [微秒级决策，近最优性能！AMD 提出 tritonBLAS：告别耗时参数搜索，用“数学”算出最快矩阵乘法](https://mp.weixin.qq.com/s?__biz=MjM5NDczOTA4NQ==&mid=2447896258&idx=1&sn=fcd4a9bd2843b8eac7ebd0f84092336a&scene=21#wechat_redirect)
 
-这次发布由 9 位贡献者协作完成，涉及 109 个文件、12000+ 行新增代码，核心变化可归纳为三大方向：**Mega MoE 融合 kernel**、**FP4 Indexer（MQA logits）**，以及**全面的 GEMM 启发式重构与工程优化**。本文将逐一解析。
+这次发布由 9 位贡献者协作完成，涉及 109 个文件、12000+ 行新增代码，核心变化可归纳为三大方向：<strong>Mega MoE 融合 kernel</strong>、<strong>FP4 Indexer（MQA logits）</strong>，以及<strong>全面的 GEMM 启发式重构与工程优化</strong>。本文将逐一解析。
 
 ## unsetunset本文目录unsetunset
 - 
@@ -105,7 +105,7 @@ https://github.com/deepseek-ai/DeepGEMM/pull/304
 - 
 总结
 
-![image](/images/collections/0.raw/wechat/asset/DeepGEMM-304%25E6%25B5%2585%25E6%259E%2590Mega-MoEFP4-Indexer-%25E4%25B8%258E%25E5%2585%25A8%25E9%259D%25A2%25E6%259E%25B6%25E6%259E%2584%25E5%258D%2587%25E7%25BA%25A7_000.png)
+![image](/images/collections/0.raw/wechat/asset/DeepGEMM-304%E6%B5%85%E6%9E%90Mega-MoEFP4-Indexer-%E4%B8%8E%E5%85%A8%E9%9D%A2%E6%9E%B6%E6%9E%84%E5%8D%87%E7%BA%A7_000.png)
 
 交流加群请在 NeuralTalk 公众号后台回复：加群
 
@@ -113,13 +113,13 @@ https://github.com/deepseek-ai/DeepGEMM/pull/304
 
 ### 1.1 问题本质：MoE 推理的 NVLink 通信瓶颈
 
-在 Expert Parallelism（EP）模式下，MoE 层的执行包含五个串行步骤：**dispatch → linear1 (FP8×FP4) → SwiGLU → linear2 (FP8×FP4) → combine**。
+在 Expert Parallelism（EP）模式下，MoE 层的执行包含五个串行步骤：<strong>dispatch → linear1 (FP8×FP4) → SwiGLU → linear2 (FP8×FP4) → combine</strong>。
 
 其中 dispatch 和 combine 涉及跨节点 NVLink 通信，传统做法是将通信与计算分为独立 kernel 串行执行，NVLink 带宽利用率低，SM 在等待通信时空转。
 
 ### 1.2 解决方案：五阶段融合 + 通信/计算重叠
 
-Mega MoE 的核心创新是将上述五步**融合进单个 mega-kernel**，在 kernel 内部实现 NVLink 通信与 Tensor Core 计算的流水线重叠。这一设计依赖以下关键技术：
+Mega MoE 的核心创新是将上述五步<strong>融合进单个 mega-kernel</strong>，在 kernel 内部实现 NVLink 通信与 Tensor Core 计算的流水线重叠。这一设计依赖以下关键技术：
 
 #### 关键技术 1：对称内存（Symmetric Memory）架构
 
@@ -145,13 +145,13 @@ struct SymBuffer {
 
 从 csrc/jit_kernels/heuristics/mega_moe.hpp 中可以看到，Mega MoE kernel 内部将线程划分为三个角色：
 - 
-**Dispatch 线程组（128 threads）**：负责 NVLink 通信，执行跨 rank 的 token 分发与收集
+<strong>Dispatch 线程组（128 threads）</strong>：负责 NVLink 通信，执行跨 rank 的 token 分发与收集
 
 - 
-**Non-epilogue 线程组（128 threads）**：驱动 TMA 加载和 UMMA（Tensor Core）计算主循环
+<strong>Non-epilogue 线程组（128 threads）</strong>：驱动 TMA 加载和 UMMA（Tensor Core）计算主循环
 
 - 
-**Epilogue 线程组（256 threads）**：执行 SwiGLU 激活、FP8 量化与 TMA 输出写回
+<strong>Epilogue 线程组（256 threads）</strong>：执行 SwiGLU 激活、FP8 量化与 TMA 输出写回
 
 const int num_dispatch_threads = 128;
 const int num_non_epilogue_threads = 128;
@@ -159,7 +159,7 @@ const int num_epilogue_threads = 256;
 
 #### 关键技术 3：Wave 级专家调度
 
-为了平衡负载，Mega MoE 引入 num_experts_per_wave 的概念——**每个"wave"处理一批专家，通过启发式计算（考虑不均衡因子 kImbalanceFactor = 2）选择合适的 wave 大小，确保所有 SM 都有足够的 block 可执行：**
+为了平衡负载，Mega MoE 引入 num_experts_per_wave 的概念——<strong>每个"wave"处理一批专家，通过启发式计算（考虑不均衡因子 kImbalanceFactor = 2）选择合适的 wave 大小，确保所有 SM 都有足够的 block 可执行：</strong>
 
 // csrc/jit_kernels/heuristics/mega_moe.hpp#L83-L110
 static int get_num_experts_per_wave_for_mega_moe(...) {
@@ -197,13 +197,13 @@ CUTLASS_DEVICE void nvlink_barrier(...) {
 
 ### 1.3 Buffer 布局设计
 
-csrc/apis/mega.hpp 中的 get_symm_buffer_size_for_mega_moe 精心设计了对称内存中各区域的排列：**Workspace → Input(x, x_sf, topk_idx, topk_weights) → L1 pool(acts, sf, weights) → L2 pool(acts, sf) → Combine buffer(BF16)。**所有 buffer 在地址空间中连续排列，SF buffer 按照 UTCCP 128 元素粒度对齐。
+csrc/apis/mega.hpp 中的 get_symm_buffer_size_for_mega_moe 精心设计了对称内存中各区域的排列：<strong>Workspace → Input(x, x_sf, topk_idx, topk_weights) → L1 pool(acts, sf, weights) → L2 pool(acts, sf) → Combine buffer(BF16)。</strong>所有 buffer 在地址空间中连续排列，SF buffer 按照 UTCCP 128 元素粒度对齐。
 
 ## unsetunset二、FP4 Indexer：低精度 MQA Logits 计算unsetunset
 
 ### 2.1 问题背景
 
-DeepSeek v3.2 的 lightning indexer 使用 weighted ReLU MQA logits 进行评分计算。此前仅支持 FP8 精度，本次发布新增了 **FP4 精度支持**（仅 SM100/Blackwell），并扩展了更大的 MTP（Multi-Token Prediction）支持。
+DeepSeek v3.2 的 lightning indexer 使用 weighted ReLU MQA logits 进行评分计算。此前仅支持 FP8 精度，本次发布新增了 <strong>FP4 精度支持</strong>（仅 SM100/Blackwell），并扩展了更大的 MTP（Multi-Token Prediction）支持。
 
 ### 2.2 关键实现
 
@@ -269,7 +269,7 @@ struct GemmConfig {
 
 ### 4.2 SM90 引入 L1/L2 带宽建模
 
-SM90 的配置选择从"波数最小化"升级为基于 **L1/L2 带宽建模的 cycle 估计**：
+SM90 的配置选择从"波数最小化"升级为基于 <strong>L1/L2 带宽建模的 cycle 估计</strong>：
 
 // csrc/jit_kernels/heuristics/sm90.hpp#L159-L176
 const int l2_bandwidth_per_cycle = std::min(64. * desc.num_sms, 8e6 / 1.3e3);
@@ -297,13 +297,13 @@ if (enable_pdl) {
 
 ### 5.2 JIT 编译加速与分布式文件系统修复
 - 
-**增量哈希**：新增 IncludeParser（csrc/jit/include_parser.hpp），只对 #include <deep_gemm/*> 依赖树做递归哈希，替代原来对所有头文件内容的全量哈希，大幅减少缓存 key 计算开销。
+<strong>增量哈希</strong>：新增 IncludeParser（csrc/jit/include_parser.hpp），只对 #include <deep_gemm/*> 依赖树做递归哈希，替代原来对所有头文件内容的全量哈希，大幅减少缓存 key 计算开销。
 
 - 
-**原子目录重命名**：编译产物先写入临时目录，最后通过 std::filesystem::rename 原子替换，彻底解决分布式文件系统（如 NFS/Lustre）上多进程竞争导致的 JIT 缓存损坏问题。同时在写入后调用 fsync 确保数据持久化。
+<strong>原子目录重命名</strong>：编译产物先写入临时目录，最后通过 std::filesystem::rename 原子替换，彻底解决分布式文件系统（如 NFS/Lustre）上多进程竞争导致的 JIT 缓存损坏问题。同时在写入后调用 fsync 确保数据持久化。
 
 - 
-**损坏检测**：加载 CUBIN 时通过 cuLibraryGetKernelCount 验证 kernel 数量必须为 1，否则提示用户清除缓存目录。
+<strong>损坏检测</strong>：加载 CUBIN 时通过 cuLibraryGetKernelCount 验证 kernel 数量必须为 1，否则提示用户清除缓存目录。
 
 ### 5.3 FP8 × FP4 GEMM
 
@@ -311,22 +311,22 @@ if (enable_pdl) {
 
 ### 5.4 C++20 标准升级
 
-项目从 C++17 升级至 **C++20**（CMakeLists.txt 中 CMAKE_CXX_STANDARD 20），以支持 std::variant、designated initializers 等现代特性。
+项目从 C++17 升级至 <strong>C++20</strong>（CMakeLists.txt 中 CMAKE_CXX_STANDARD 20），以支持 std::variant、designated initializers 等现代特性。
 
 ## unsetunset总结unsetunset
 
 PR #304 是 DeepGEMM 迄今为止最大的一次公开发布。其核心价值在于：
 - 
-**Mega MoE 是业界首个将 EP dispatch/linear1/SwiGLU/linear2/combine 五步融合为单一 kernel 的开源实现**，通过对称内存 + 三角色线程分工 + NVLink barrier 实现了通信与计算的深度重叠。
+<strong>Mega MoE 是业界首个将 EP dispatch/linear1/SwiGLU/linear2/combine 五步融合为单一 kernel 的开源实现</strong>，通过对称内存 + 三角色线程分工 + NVLink barrier 实现了通信与计算的深度重叠。
 
 - 
-**动态 Swap A/B** 解决了 SM100 上 MoE GEMM multicast 受限的痛点，是一个看似简单却效果显著的工程优化。
+<strong>动态 Swap A/B</strong> 解决了 SM100 上 MoE GEMM multicast 受限的痛点，是一个看似简单却效果显著的工程优化。
 
 - 
-**启发式系统的结构化重构**为后续支持更多硬件架构和更精细的自动调优奠定了基础。
+<strong>启发式系统的结构化重构</strong>为后续支持更多硬件架构和更精细的自动调优奠定了基础。
 
 - 
-**JIT 编译的分布式文件系统修复**解决了大规模训练/推理集群中的实际部署痛点。
+<strong>JIT 编译的分布式文件系统修复</strong>解决了大规模训练/推理集群中的实际部署痛点。
 
 正如 PR 描述中所说："Mega MoE is still under development and optimizations, stay tuned"——这只是开始。
 

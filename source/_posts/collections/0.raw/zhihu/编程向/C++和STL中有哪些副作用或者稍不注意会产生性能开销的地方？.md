@@ -19,9 +19,9 @@ source_url: https://www.zhihu.com/question/355171938/answer/2173582004
 
 ​目录
 
-**先谈一谈开销，再谈一谈其他的容易踩坑的地方**
+<strong>先谈一谈开销，再谈一谈其他的容易踩坑的地方</strong>
 
-### **C++和STL中常被忽略的开销**
+### <strong>C++和STL中常被忽略的开销</strong>
 
 #### STL容器的clear的时间复杂度不是O(1)
 
@@ -42,7 +42,7 @@ This may be optimized to*constant complexity*fortrivially-destructible types(suc
 
 #### auto替代手写类型
 
-这个其他答主也讲到了，比如在基于范围的循环中使用auto&，如下这个例子其出自**《Effictive Modern C++》**的条款5（那个答主可能也是参考的这个条款）。
+这个其他答主也讲到了，比如在基于范围的循环中使用auto&，如下这个例子其出自<strong>《Effictive Modern C++》</strong>的条款5（那个答主可能也是参考的这个条款）。
 
 `std::unordered_mapstd::string, int> m;
 for (const std::pairstd::string, int>& p: m) {
@@ -166,7 +166,7 @@ p4 = p1;
 
 裸指针可以随意修改指向，可以随意赋值。其开销可以忽略不计。然而shared_ptr则不然。
 
-**当然我这里要讲的并不是shared_ptr这个对象复制的开销。**这个开销很小。shared_ptr一般实现中里面就是存了两个指针成员，shared_ptr对象的size也就是普通指针的2倍而已。复制开销也不大。
+<strong>当然我这里要讲的并不是shared_ptr这个对象复制的开销。</strong>这个开销很小。shared_ptr一般实现中里面就是存了两个指针成员，shared_ptr对象的size也就是普通指针的2倍而已。复制开销也不大。
 
 我这里说的是，当一个已经存在的shared_ptr修改指向的时候：
 
@@ -181,9 +181,9 @@ p4 = p1;
 
 对于大对象的析构，我们要慎之又慎。大内存释放有时不仅是耗时问题，而且会让CPU IDLE下降。影响服务的整体性能（同期的其他请求处理耗时也增加了）。根据业务需要，有时我们不需要真的析构掉这个对象，只需要clear掉它（内存不释放），后续再复用该对象。也就是类似“对象池”的思想。避免对象创建和析构的开销。又或者我们需要搞一个独立的线程，想办法把这些需要析构的大对象，在不影响服务请求处理耗时的独立线程中，进行定期清理。等等。
 
-### **STL中容易踩坑的副作用（持续补充……）**
+### <strong>STL中容易踩坑的副作用（持续补充……）</strong>
 
-#### **clear()不会清空vector的内存**
+#### <strong>clear()不会清空vector的内存</strong>
 
 尽管clear()会调用vector中元素的析构函数，但是并不会释放掉元素所占用的内存。这并不难理解，因为在vector为空的时候，我们也可以用reserver()函数来预分配内存。所以vector所占的内存并不会随着元素的释放而释放。如果你想在vector生命周期结束之前及时释放掉vector的内存，请：
 
@@ -266,13 +266,13 @@ p4 = p1;
 
 送礼物
 
-![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_105d2f56fe9c.jpg)
+![](/images/collections/0.raw/zhihu/%E7%BC%96%E7%A8%8B%E5%90%91/asset/img_105d2f56fe9c.jpg)
 
 1 人已送礼物
 
-[所属专栏 · 2022-11-06 11:18 更新](https://zhuanlan.zhihu.com/c_1572544730096689152)[![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_44fa8ba141a5.jpg)一鳞半爪
+[所属专栏 · 2022-11-06 11:18 更新](https://zhuanlan.zhihu.com/c_1572544730096689152)[![](/images/collections/0.raw/zhihu/%E7%BC%96%E7%A8%8B%E5%90%91/asset/img_44fa8ba141a5.jpg)一鳞半爪
 
-![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_dd0ccf0ca408.jpg)果冻虾仁
+![](/images/collections/0.raw/zhihu/%E7%BC%96%E7%A8%8B%E5%90%91/asset/img_dd0ccf0ca408.jpg)果冻虾仁
 
 87 篇内容 · 19117 赞同
 

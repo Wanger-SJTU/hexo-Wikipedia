@@ -25,7 +25,7 @@ CLIP 是OpenAI 在2021年初的一篇工作：[Learning Transferable Visual Mode
 
 其实，预训练网络的输入是文字与图片的配对，每一张图片都配有一小句解释性的文字。将文字和图片分别通过一个编码器，得到向量表示。这里的文本编码器就是 Transformer；而图片编码器既可以是 Resnet，也可以是 Vision transformer，作者对这两种结构都进行了考察。
 
-![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_9145da14aae3.jpg)
+![](/images/collections/0.raw/zhihu/dl%E8%AE%BA%E6%96%87/asset/img_9145da14aae3.jpg)
 
 预训练网络结构假设现在分别得到了 N 个图片和 N 个文本的编码。接下来，我们需要对它们进行对比学习（contrastive learning）。对比学习需要一些正样本和负样本。在这里，配对的句子和文本就是一对正样本（也就是对角线上的）；反之，不配对的就是负样本（对角线之外的）。预训练网络的目标，就是最大化正样本对的余弦相似度，并最小化负样本的余弦相似度。
 
@@ -37,13 +37,13 @@ CLIP 是OpenAI 在2021年初的一篇工作：[Learning Transferable Visual Mode
 
 作者提到，相比于单纯地给定分类标签，给定一个句子的分类效果更好。比如一种句子模板 `A photo of a ...`，后面填入分类标签。这种句子模板叫做 `prompt`（提示）。这也很好理解：预训练时模型看到的大多是句子，如果在推理时突然变成单词，效果肯定会下降。作者还说，句子模板的选择很有讲究，还专门讨论了`prompt engineering`，测试了好多种类的句子模板。 
 
-![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_16bd81a44a1a.jpg)
+![](/images/collections/0.raw/zhihu/dl%E8%AE%BA%E6%96%87/asset/img_16bd81a44a1a.jpg)
 
 推理过程中最关键的一点，在于我们有很高的自由度去设置“多项选择题”。从前的分类网络的类别数量是固定的，一般最后一层是跟着 softmax 的全连接层；如果要更改类别数量，就要更换最后一层；并且预测的内容是固定的，不能超过训练集的类别范围。
 
-但对于 CLIP 来说，提供给网络的分类标签不仅数量不固定，内容也是自由的。如果提供两个标签，那就是一个二分类问题；如果提供1000个标签，那就是1000分类问题。标签内容可以是常规的分类标签，也可以是一些冷门的分类标签。我认为这是 **CLIP 的一大主要贡献——摆脱了事先定好的分类标签**。
+但对于 CLIP 来说，提供给网络的分类标签不仅数量不固定，内容也是自由的。如果提供两个标签，那就是一个二分类问题；如果提供1000个标签，那就是1000分类问题。标签内容可以是常规的分类标签，也可以是一些冷门的分类标签。我认为这是 <strong>CLIP 的一大主要贡献——摆脱了事先定好的分类标签</strong>。
 
-![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_0517e65d1974.jpg)
+![](/images/collections/0.raw/zhihu/dl%E8%AE%BA%E6%96%87/asset/img_0517e65d1974.jpg)
 
 CLIP 的官方博客 上举了一个例子，说明 CLIP 迁移能力的强大。尽管 Resnet101 在 Imagenet 上的准确度很高，但如果迁移到其他数据集上，它对于香蕉的识别准确度就大幅下降。但反观 CLIP，它可以识别动漫里的、表情包里的、素描画里的各种类型的香蕉，迁移能力很强。
 
@@ -59,7 +59,7 @@ CLIP 的官方博客 上举了一个例子，说明 CLIP 迁移能力的强大�
 
 这引发了一些人关于算力垄断的担忧。之前谷歌的工作——[Vision Transformer](https://link.zhihu.com/?target=https%3A//arxiv.org/pdf/2010.11929.pdf) 之所以能取得成功，强大的算力是不可缺少的条件：如果用一个TPU v3 核跑模型，需要2500天。没有几家团队有能力部署这种规模的算力。来看看 [Vision Transformer](https://link.zhihu.com/?target=https%3A//arxiv.org/pdf/2010.11929.pdf) 这篇论文里的原话吧：
 
-**Most related to ours is the model of Cordonnier et al. (2020), which extracts patches of size 2 × 2 from the input image and applies full self-attention on top. This model is very similar to ViT, but our work goes further to demonstrate that large scale pre-training makes vanilla transformers competitive with (or even better than) state-of-the-art CNNs**. 你的模型效果不好，很有可能不是方法不行，而是数据不够多、模型不够大啊！
+<strong>Most related to ours is the model of Cordonnier et al. (2020), which extracts patches of size 2 × 2 from the input image and applies full self-attention on top. This model is very similar to ViT, but our work goes further to demonstrate that large scale pre-training makes vanilla transformers competitive with (or even better than) state-of-the-art CNNs</strong>. 你的模型效果不好，很有可能不是方法不行，而是数据不够多、模型不够大啊！
 
 ### 模型局限性
 

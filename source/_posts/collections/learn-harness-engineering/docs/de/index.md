@@ -42,7 +42,7 @@ Wähle deinen Lernpfad. Der Kurs besteht aus theoretischen Lektionen, praktische
 
 ## Der Kernmechanismus eines Harness
 
-Ein harness "macht das Modell nicht klüger"; er schafft ein geschlossenes **Arbeitssystem** für das Modell. Der Kernablauf lässt sich mit diesem Diagramm verstehen:
+Ein harness "macht das Modell nicht klüger"; er schafft ein geschlossenes <strong>Arbeitssystem</strong> für das Modell. Der Kernablauf lässt sich mit diesem Diagramm verstehen:
 
 ```mermaid
 graph TD

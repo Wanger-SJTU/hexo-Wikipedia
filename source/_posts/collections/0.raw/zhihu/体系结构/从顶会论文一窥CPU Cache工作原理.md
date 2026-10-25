@@ -23,17 +23,17 @@ source_url: https://zhuanlan.zhihu.com/p/688153204
 
 首先来明确一下Cache是什么，本文中的Cache指的是CPU高速缓存**，是用于减少处理器访问内存所需平均时间的部件。在金字塔式存储体系中它位于自顶向下的第二层，仅次于CPU寄存器。其容量远小于内存，但速度却可以接近处理器的频率。
 
-其实在遥远的PC-AT/XT和286时代，CPU是没有Cache，直接访问内存的。那后来为什么要在CPU寄存器和内存之间设置一个CPU缓存呢？这是因为**CPU访问寄存器和内存的延迟差距太大了**。
+其实在遥远的PC-AT/XT和286时代，CPU是没有Cache，直接访问内存的。那后来为什么要在CPU寄存器和内存之间设置一个CPU缓存呢？这是因为<strong>CPU访问寄存器和内存的延迟差距太大了</strong>。
 
 **
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_cced5d2d85ea.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_cced5d2d85ea.jpg)
 
-可以看到，访问寄存器的延迟约为0.3ns**，而访问内存的延迟为**62.9ns** [2]，两者之间差了数百倍，如果在Cache中没有我们想要的数据，那么CPU就需要等待漫长的load操作将数据从内存copy到Cache中。因此后来引入了多级Cache，等级越高，速度越慢，容量越大。在3级Cache的缓冲下，相邻Cache之间和Cache与memory之间的延迟差距也越来越小。让我们来看一下一个真实的案例——ARMv8-A架构的Cortex-A53处理器的Cache组织方式[3]（Switch上的SoC——Tegra X1里就是四个Cortex-A57核心和四个Cortex-A53核心）。
+可以看到，访问寄存器的延迟约为0.3ns<strong>，而访问内存的延迟为</strong>62.9ns** [2]，两者之间差了数百倍，如果在Cache中没有我们想要的数据，那么CPU就需要等待漫长的load操作将数据从内存copy到Cache中。因此后来引入了多级Cache，等级越高，速度越慢，容量越大。在3级Cache的缓冲下，相邻Cache之间和Cache与memory之间的延迟差距也越来越小。让我们来看一下一个真实的案例——ARMv8-A架构的Cortex-A53处理器的Cache组织方式[3]（Switch上的SoC——Tegra X1里就是四个Cortex-A57核心和四个Cortex-A53核心）。
 
 **
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_d1b55aebfcd6.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_d1b55aebfcd6.jpg)
 
 Cortex-A53 通常采用两级或多级Cache来实现，即小型 L1 指令缓存(instruction Cache)和数据缓存(data Cache)以及较大的统一 L2 缓存，该缓存在集群(cluster)中的多个内核(core)之间共享。此外，还可以有一个外部 L3 缓存在集群之间共享。CPU每个core都有一个私有的L1 Cache。一个cluster内的所有core共享一个L2 Cache，L2 Cache不区分指令和数据，都可以缓存。所有cluster之间共享L3 Cache。L3 Cache通过总线和主存相连。
 
@@ -54,11 +54,11 @@ Cortex-A53 通常采用两级或多级Cache来实现，即小型 L1 指令缓存
 - 1MB=2^20B L1 Cache
 - cache line大小为64B
 
-最早的时候Cache使用一种叫做direct mapping的组织方式。在这种模式下，64位地址被分为3个部分。首先，L1 Cache中一共有1MB/64B=2^20B/2^6B=2^14个cache line，因此我们需要14位 Index** 来标记是哪一个cache line。找到了cache line之后，需要6位 **Offset** 来在64B的cache line中找出是哪一个Byte，还剩下64-6-14也就是44位我们将其作为标记位（**tag**）。可能有聪明的同学已经想到了，我们只需要两个部分也就是Index和Offset就可以定位Cache中一个cache line中的某一个字节了呀，为什么还要设置tag呢？
+最早的时候Cache使用一种叫做direct mapping的组织方式。在这种模式下，64位地址被分为3个部分。首先，L1 Cache中一共有1MB/64B=2^20B/2^6B=2^14个cache line，因此我们需要14位 Index<strong>来标记是哪一个cache line。找到了cache line之后，需要6位</strong>Offset<strong>来在64B的cache line中找出是哪一个Byte，还剩下64-6-14也就是44位我们将其作为标记位（</strong>tag**）。可能有聪明的同学已经想到了，我们只需要两个部分也就是Index和Offset就可以定位Cache中一个cache line中的某一个字节了呀，为什么还要设置tag呢？
 
 这是因为我们刚才一直讨论的是地址，这64位地址不仅仅是用来在Cache中寻找cache line的，它同时也是内存中的一个字节的唯一标识，也就是说，后14+6=20位相同但前44位不同的地址，尽管他们指向了Cache中同一条cache line中的同一个字节，但是它们标识的是内存中的不同位置！因此CPU拿着一条地址在Cache中寻找数据的时候需要tag来标识我们正在寻找的数据究竟是不是正确的，相应地，每条cache line中也必须包含tag。
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_46b0d52ae447.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_46b0d52ae447.jpg)
 
 那这种方式有没有什么问题呢？设想一下如果我们需要并行访问内存的多处区域，如果这些区域正好包含了Index相同的内存地址，那么就会频繁地发生冲突，因为它们都要用到Cache中的同一条cache line，从而降低性能。这种现象叫做缓存颠簸（cache thrashing）
 
@@ -66,7 +66,7 @@ Cortex-A53 通常采用两级或多级Cache来实现，即小型 L1 指令缓存
 
 答案是有的，现在的Cache普遍采用一种叫做Set Associative的方式进行组织，简单来说 n-way associative 就是把Cache进行了分组，使得每个组（Set）里面有n个cache line，这样在遇到Index相同但是tag不同的情况时就可以在一个组中同时存n个cache line，比如2-way associative就是下面这种形式，下面我们假设CPU为4-way associative
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_b667c1967f61.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_b667c1967f61.jpg)
 
 那我们现在看看在set associative的情况下如何寻找cache line，在L1 Cache中一共有2^14个cache line，而又因为是4-way associative，因此一共有2^^2=2^12个组，也就是说我们需要12位Index来找到是哪个组。同时我们同样需要6位Offset来在64B的cache line中找出是哪一个Byte。
 
@@ -76,7 +76,7 @@ CPU在访问Cache时，先根据index找到set，然后将组内的所有cache l
 
 对比一下direct mapping和set associative，我们可以发现其实direct mapping也可以看做成set associative中set大小为1的情况。那有大胆的同学可能会想，如果把set大小增大，变成整个Cache会怎么样呢？这种情况我们就称为fully associative。
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_732a59d1d2c6.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_732a59d1d2c6.jpg)
 
 在fully associative的情况下，因为整个Cache就是一个组，那么我们就不需要Index来寻找是哪个set了，因此地址只剩下了tag和offset。因为在访问Cache时高速缓存电路必须并行匹配许多tag，想要构造又大又快的fully associative cache是十分困难且昂贵的。因此fully associative cache只适合做小容量的cache，如TLB（又是一个坑）。
 

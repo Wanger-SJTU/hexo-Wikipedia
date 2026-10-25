@@ -15,9 +15,9 @@ source_url: https://zhuanlan.zhihu.com/p/646752343
 ---
 
 
-众所周知，传统的 C++ 的常量表达式求值既不依赖也不改变程序全局的状态。对于任意相同的输入，它的输出结果总是相同的，被认为是**纯函数式 (purely functional)** 的。**模板元编程 (Template Meta Programming)** 作为常量求值的一个子集，也应该遵守这个规则。
+众所周知，传统的 C++ 的常量表达式求值既不依赖也不改变程序全局的状态。对于任意相同的输入，它的输出结果总是相同的，被认为是<strong>纯函数式 (purely functional)</strong> 的。<strong>模板元编程 (Template Meta Programming)</strong> 作为常量求值的一个子集，也应该遵守这个规则。
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_69b9431686b7.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_69b9431686b7.jpg)
 
 但事实真的如此吗？在不违背 C++ 标准的情况下，下面的代码可能通过编译吗？
 
@@ -34,7 +34,7 @@ constexpr auto c = next();
 static_assert(a == 0 && b == 1 && c == 2);
 `
 
-每次常量求值得到的结果不同，说明求值改变了全局的状态。这种有状态的元编程，就叫做状态元编程。如果再与模板联系起来，就叫做 **Stateful Template Meta Programming(STMP)**。
+每次常量求值得到的结果不同，说明求值改变了全局的状态。这种有状态的元编程，就叫做状态元编程。如果再与模板联系起来，就叫做 <strong>Stateful Template Meta Programming(STMP)</strong>。
 
 其实借助一些编译器内置的宏，我们是可以实现这样的效果的，比如
 
@@ -62,9 +62,9 @@ static_assert(a == 0 && b == 1 && c == 2);
 
 ### observable state
 
-在改变之前，我们首先得能在编译期观测到全局状态的变化。由于 C++ 支持**向前声明 (forward declaration)**，而一个 `struct` 在看到 definition 之前被认为是**不完整类型 (incomplete type)**，即类的完整性在不同的上下文中是不同的。
+在改变之前，我们首先得能在编译期观测到全局状态的变化。由于 C++ 支持<strong>向前声明 (forward declaration)</strong>，而一个 `struct` 在看到 definition 之前被认为是<strong>不完整类型 (incomplete type)</strong>，即类的完整性在不同的上下文中是不同的。
 
-而 C++ 标准规定 `sizeof` 只能对完整类型使用（毕竟不完整类型没有定义无法计算 `size`）。如果对不完整类型使用会导致编译错误，并且这个错误不是一个**硬错误 (hard error)**，所以可以利用 `SFINAE` 或 `requires` 来捕获到这个错误。于是我们就能通过如下的方式检测类的完整性
+而 C++ 标准规定 `sizeof` 只能对完整类型使用（毕竟不完整类型没有定义无法计算 `size`）。如果对不完整类型使用会导致编译错误，并且这个错误不是一个<strong>硬错误 (hard error)</strong>，所以可以利用 `SFINAE` 或 `requires` 来捕获到这个错误。于是我们就能通过如下的方式检测类的完整性
 
 `template typename T>
 constexpr inline bool is_complete_v = requires { sizeof(T); };
@@ -118,7 +118,7 @@ static_assert(is_complete_vX, 1>);
 
 每次都手动填入一个不同的参数是很麻烦的，有没有什么办法能自动填入呢？
 
-注意到如果用 lambda 表达式作为 **Non Type Template Parameter(NTTP)** 默认模板参数，则该模板每次实例化的时候都是不同的类型
+注意到如果用 lambda 表达式作为 <strong>Non Type Template Parameter(NTTP)</strong> 默认模板参数，则该模板每次实例化的时候都是不同的类型
 
 `#include 
 
@@ -193,7 +193,7 @@ struct Y {
 int x = foo(X{});
 `
 
-上面的代码三大编译器都可以编译通过，并且完全符合 C++ 标准。这就给了我们操作的空间，我们可以在实例化类模板的同时实例化其内部定义的友元函数，从而给其他位置的函数声明添加定义。这种技术也被叫做**友元注入 (friend injection)**。
+上面的代码三大编译器都可以编译通过，并且完全符合 C++ 标准。这就给了我们操作的空间，我们可以在实例化类模板的同时实例化其内部定义的友元函数，从而给其他位置的函数声明添加定义。这种技术也被叫做<strong>友元注入 (friend injection)</strong>。
 
 `auto foo(auto);
 
@@ -283,11 +283,11 @@ int main() {
 
 首先要明确一个观点：类的访问权限说明符 `private`, `public`, `protected` 仅仅只作用于编译期的检查。如果能通过某种手段绕过这个编译期检查，那完全就可以合法的访问类的任意成员。
 
-那么存在这样的方法吗？有的：**模板显式实例化的时候会忽略类作用域的访问权限：**
+那么存在这样的方法吗？有的：<strong>模板显式实例化的时候会忽略类作用域的访问权限：</strong>
 
 > The C++11/14 standards state the following in note 14.7.2/12 [temp.explicit]: The usual access checking rules do not apply to names used to specify explicit instantiations. [ Note: In particular, the template arguments and names used in the function declarator (including parameter types, return types and exception speciﬁcations) may be private types or objects which would normally not be accessible and the template may be a member template or member function which would not normally be accessible. — end note ]
 
-也就是说在模板**显式实例化 (explicit instantiate)** 的时候，我们可以直接访问类的私有成员。
+也就是说在模板<strong>显式实例化 (explicit instantiate)</strong> 的时候，我们可以直接访问类的私有成员。
 
 `#include 
 

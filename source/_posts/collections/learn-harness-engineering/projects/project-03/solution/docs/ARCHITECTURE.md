@@ -48,9 +48,9 @@ The Knowledge Base is an Electron desktop application built with TypeScript and 
 
 ### Main Process (`src/main/`)
 
-- **Window management**: Creates `BrowserWindow` instances with secure web preferences.
-- **IPC registration**: Maps IPC channel names to service methods via `registerIpcHandlers()`.
-- **Service initialization**: Constructs all services with dependency injection. The `IndexingService` is shared between `ipc-handlers` and `QaService` so that Q&A can retrieve chunks.
+- <strong>Window management</strong>: Creates `BrowserWindow` instances with secure web preferences.
+- <strong>IPC registration</strong>: Maps IPC channel names to service methods via `registerIpcHandlers()`.
+- <strong>Service initialization</strong>: Constructs all services with dependency injection. The `IndexingService` is shared between `ipc-handlers` and `QaService` so that Q&A can retrieve chunks.
 
 ### Preload (`src/preload/`)
 

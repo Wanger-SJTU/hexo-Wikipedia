@@ -37,14 +37,14 @@ Le fichier d'instructions racine. C'est la première chose que l'agent lit lorsq
 démarre une session. Il définit les règles de fonctionnement : quoi faire avant
 d'écrire du code, comment travailler et comment conclure.
 
-**Comment l'utiliser :**
+<strong>Comment l'utiliser :</strong>
 
 - Copiez à la racine de votre projet
 - Remplacez les étapes du flux de démarrage par vos chemins et commandes réels
 - Ajustez les règles de travail pour correspondre aux conventions de votre équipe
 - Conservez la section de définition du « fini » — c'est la partie la plus importante
 
-**Ce qu'il fait pour l'agent :**
+<strong>Ce qu'il fait pour l'agent :</strong>
 
 - Lui dit de lire la progression et l'état des fonctionnalités avant de commencer le travail
 - Le force à travailler sur une seule fonctionnalité à la fois
@@ -60,7 +60,7 @@ style d'instructions de Claude.
 Le script de démarrage. Exécute l'installation des dépendances, la vérification
 et affiche la commande de lancement — le tout en une seule fois.
 
-**Comment l'utiliser :**
+<strong>Comment l'utiliser :</strong>
 
 - Copiez à la racine de votre projet
 - Modifiez ces trois variables en haut :
@@ -69,7 +69,7 @@ et affiche la commande de lancement — le tout en une seule fois.
   - `START_CMD` — votre commande de lancement du serveur de développement (par ex. `npm run dev`)
 - Rendez-le exécutable : `chmod +x init.sh`
 
-**Ce qu'il fait :**
+<strong>Ce qu'il fait :</strong>
 
 1. Affiche le répertoire courant (pour confirmer qu'il s'exécute au bon endroit)
 2. Installe les dépendances
@@ -84,21 +84,21 @@ de faire quoi que ce soit d'autre.
 Le journal de progression. Chaque session écrit dans ce fichier, et chaque nouvelle
 session le lit en premier.
 
-**Comment l'utiliser :**
+<strong>Comment l'utiliser :</strong>
 
 - Copiez à la racine de votre projet
 - Remplissez la section « État vérifié actuel » avec les informations de votre projet
 - Après chaque session, mettez à jour l'enregistrement de session
 
-**Signification de chaque champ :**
+<strong>Signification de chaque champ :</strong>
 
-- **État vérifié actuel** — l'unique source de vérité sur l'état du projet
+- <strong>État vérifié actuel</strong> — l'unique source de vérité sur l'état du projet
   - `Racine du dépôt` — où se trouve le projet
   - `Chemin de démarrage standard` — la commande pour lancer le projet
   - `Chemin de vérification standard` — la commande pour exécuter les tests
   - `Fonctionnalité inachevée la plus prioritaire` — sur quoi la prochaine session devrait travailler
   - `Obstacle actuel` — tout ce qui est bloqué
-- **Enregistrement de session** — une entrée par session
+- <strong>Enregistrement de session</strong> — une entrée par session
   - `Objectif` — ce que vous aviez prévu de faire
   - `Terminé` — ce qui a réellement été accompli
   - `Vérification exécutée` — quels tests ont été lancés
@@ -112,7 +112,7 @@ session le lit en premier.
 Le suivi des fonctionnalités. Une liste lisible par machine de chaque fonctionnalité
 que l'agent doit implémenter, avec son statut, ses étapes de vérification et ses preuves.
 
-**Comment l'utiliser :**
+<strong>Comment l'utiliser :</strong>
 
 - Copiez à la racine de votre projet
 - Remplacez les exemples de fonctionnalités par les vôtres
@@ -127,7 +127,7 @@ que l'agent doit implémenter, avec son statut, ses étapes de vérification et 
   - `evidence` — preuves enregistrées que la vérification a réussi (remplies par l'agent)
   - `notes` — tout contexte supplémentaire
 
-**Règles de statut :**
+<strong>Règles de statut :</strong>
 
 - `not_started` — n'a pas été touché
 - `in_progress` — la fonctionnalité en cours de travail (une seule à la fois)
@@ -141,18 +141,18 @@ L'agent ne doit avoir qu'une seule fonctionnalité en `in_progress` à tout mome
 Une note de passation compacte entre les sessions. Utilisez-la lorsqu'une session se
 termine et que vous souhaitez que la prochaine reprenne rapidement.
 
-**Comment l'utiliser :**
+<strong>Comment l'utiliser :</strong>
 
 - Copiez à la racine de votre projet
 - Remplissez-la à la fin de chaque session (ou demandez à l'agent de la remplir)
 
-**Ce que chaque section couvre :**
+<strong>Ce que chaque section couvre :</strong>
 
-- **Actuellement vérifié** — ce qui est confirmé fonctionnel et quelle vérification a été exécutée
-- **Changements cette session** — quel code ou infrastructure a changé
-- **Encore cassé ou non vérifié** — problèmes connus et zones à risque
-- **Meilleure prochaine action** — ce que la prochaine session doit faire, et ce qu'il ne faut pas toucher
-- **Commandes** — démarrage, vérification et commandes de débogage pour référence rapide
+- <strong>Actuellement vérifié</strong> — ce qui est confirmé fonctionnel et quelle vérification a été exécutée
+- <strong>Changements cette session</strong> — quel code ou infrastructure a changé
+- <strong>Encore cassé ou non vérifié</strong> — problèmes connus et zones à risque
+- <strong>Meilleure prochaine action</strong> — ce que la prochaine session doit faire, et ce qu'il ne faut pas toucher
+- <strong>Commandes</strong> — démarrage, vérification et commandes de débogage pour référence rapide
 
 Ce fichier est optionnel pour les petites sessions. Il devient important lorsque les
 sessions sont longues ou lorsque le projet a plusieurs zones actives.
@@ -162,13 +162,13 @@ sessions sont longues ou lorsque le projet a plusieurs zones actives.
 Une liste de contrôle à passer avant de terminer chaque session. S'assure que le dépôt
 est dans un bon état pour que la prochaine session puisse démarrer proprement.
 
-**Comment l'utiliser :**
+<strong>Comment l'utiliser :</strong>
 
 - Copiez à la racine de votre projet
 - Passez-la en revue avant de fermer une session
 - L'agent doit également vérifier ces éléments dans le cadre de sa routine de fin de session
 
-**Ce qu'elle vérifie :**
+<strong>Ce qu'elle vérifie :</strong>
 
 - Le démarrage standard fonctionne toujours
 - La vérification standard s'exécute toujours
@@ -182,28 +182,28 @@ est dans un bon état pour que la prochaine session puisse démarrer proprement.
 Une fiche d'évaluation pour la qualité des résultats de l'agent. Utilisez-la après
 une session ou à des jalons du projet pour évaluer si le travail atteint le niveau requis.
 
-**Comment l'utiliser :**
+<strong>Comment l'utiliser :</strong>
 
 - Copiez à la racine de votre projet
 - Après une session (ou un ensemble de sessions), notez le travail de l'agent sur six dimensions
 - Chaque dimension est notée de 0 à 2
 
-**Les six dimensions :**
+<strong>Les six dimensions :</strong>
 
-1. **Correction** — l'implémentation correspond-elle au comportement cible ?
-2. **Vérification** — les vérifications requises ont-elles réellement été exécutées, avec des preuves ?
-3. **Discipline de périmètre** — l'agent est-il resté dans la fonctionnalité sélectionnée ?
-4. **Fiabilité** — le résultat survit-il à un redémarrage ou à une relance ?
-5. **Maintenabilité** — le code et la documentation sont-ils suffisamment clairs pour la prochaine session ?
-6. **Préparation à la passation** — une nouvelle session peut-elle continuer en utilisant uniquement les artefacts du dépôt ?
+1. <strong>Correction</strong> — l'implémentation correspond-elle au comportement cible ?
+2. <strong>Vérification</strong> — les vérifications requises ont-elles réellement été exécutées, avec des preuves ?
+3. <strong>Discipline de périmètre</strong> — l'agent est-il resté dans la fonctionnalité sélectionnée ?
+4. <strong>Fiabilité</strong> — le résultat survit-il à un redémarrage ou à une relance ?
+5. <strong>Maintenabilité</strong> — le code et la documentation sont-ils suffisamment clairs pour la prochaine session ?
+6. <strong>Préparation à la passation</strong> — une nouvelle session peut-elle continuer en utilisant uniquement les artefacts du dépôt ?
 
-**Options de verdict :**
+<strong>Options de verdict :</strong>
 
 - Accepter — atteint le niveau requis
 - Réviser — nécessite des correctifs avant acceptation
 - Bloquer — problèmes fondamentaux à résoudre en premier
 
-**Important : l'évaluateur nécessite un réglage.** Tel quel, les agents sont de mauvais
+<strong>Important : l'évaluateur nécessite un réglage.</strong> Tel quel, les agents sont de mauvais
 juges d'eux-mêmes — ils identifient des problèmes puis se convainquent d'approuver.
 Vous devrez itérer :
 
@@ -222,7 +222,7 @@ Un instantané qualité qui note chaque domaine produit et couche architecturale
 projet. Suit la santé du codebase au fil du temps, pas seulement les résultats de
 sessions individuelles.
 
-**Comment l'utiliser :**
+<strong>Comment l'utiliser :</strong>
 
 - Copiez à la racine de votre projet
 - Avant de démarrer une session : lisez-le pour comprendre où le codebase est le plus faible
@@ -230,15 +230,15 @@ sessions individuelles.
 - Au fil du temps : comparez les instantanés pour voir quels changements de harnais ont
   réellement amélioré la santé du codebase
 
-**Ce qu'il évalue :**
+<strong>Ce qu'il évalue :</strong>
 
-- **Domaines produit** (par ex., import de documents, flux Q&R, indexation) : chaque domaine
+- <strong>Domaines produit</strong> (par ex., import de documents, flux Q&R, indexation) : chaque domaine
   reçoit une note (A-D) selon l'état de vérification, la lisibilité agent, la stabilité des
   tests et les lacunes principales
-- **Couches architecturales** (par ex., main process, preload, renderer, services) : chaque
+- <strong>Couches architecturales</strong> (par ex., main process, preload, renderer, services) : chaque
   couche reçoit une note pour l'application des limites et la lisibilité agent
 
-**Pourquoi c'est important :**
+<strong>Pourquoi c'est important :</strong>
 
 La grille d'évaluation note les résultats individuels de l'agent. Le document qualité note
 le codebase lui-même. Ils répondent à des questions différentes :
@@ -246,14 +246,14 @@ le codebase lui-même. Ils répondent à des questions différentes :
 - Grille d'évaluation : « L'agent a-t-il fait du bon travail cette session ? »
 - Document qualité : « Le projet devient-il plus fort ou plus faible au fil du temps ? »
 
-**Quand mettre à jour :**
+<strong>Quand mettre à jour :</strong>
 
 - Après chaque session significative
 - Avant les comparaisons de benchmarks
 - Après les passes de nettoyage ou de simplification
 - Lors de l'intégration d'un nouvel agent ou modèle au projet
 
-**Lien avec la simplification du harnais :**
+<strong>Lien avec la simplification du harnais :</strong>
 
 Le document qualité soutient également la simplification du harnais. Chaque composant de
 harnais encode une hypothèse sur ce que le modèle ne peut pas faire. À mesure que les

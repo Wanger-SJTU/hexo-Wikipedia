@@ -21,15 +21,15 @@ source_url: https://zhuanlan.zhihu.com/p/2009941050500880179
 
 目前，在第三方投机推理算法中，EAGLE-3 备受关注。我曾在此前的文章中对其进行过复现（详见链接）。
 
-[![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_5eac9d797c4a.jpg)投机采样Eagle3的复现及开源报告147 赞同 · 223 评论 文章](https://zhuanlan.zhihu.com/p/1923763301432662012)
+[![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_5eac9d797c4a.jpg)投机采样Eagle3的复现及开源报告147 赞同 · 223 评论 文章](https://zhuanlan.zhihu.com/p/1923763301432662012)
 
 EAGLE-3 这类方案的核心逻辑在于：通过训练一个轻量级的 Draft 模型（草稿模型）预测候选 Token，再交由目标大模型进行并行验证，从而在保证输出质量的前提下大幅提升推理效率。
 
 尽管 EAGLE-3 表现出色，但在实际生产环境中仍面临两大局限：
 
-- **架构层面的自回归瓶颈**：EAGLE-3 本质上仍未脱离自回归生成的范式。这意味着 Draft 模型在生成候选 Token 时依然存在串行依赖。
-- **高并发下的性能衰减**：在 Batch Size 增加（通常超过 8）的高并发场景下，EAGLE-3 的性能会出现急剧下滑。这是由于投机推理带来的额外验证开销与显存占用，导致系统从计算受限转为访存受限，其吞吐表现甚至会低于不使用任何加速策略的原生推理。
-针对上述瓶颈，**dFlash** 应运而生。它引入了 **dLLM**模块作为 Draft 模型，巧妙地融合了两种范式的长处：一方面保留了自回归（AR）模型生成的语义强度，另一方面利用扩散模型（Diffusion）高度可并行化的特性，克服了串行生成的效率陷阱。这种结合成功打破了原有“模型准确度”与“生成速度”之间的权衡，规避了传统自回归 Draft 模型在长序列生成上的迟滞。
+- <strong>架构层面的自回归瓶颈</strong>：EAGLE-3 本质上仍未脱离自回归生成的范式。这意味着 Draft 模型在生成候选 Token 时依然存在串行依赖。
+- <strong>高并发下的性能衰减</strong>：在 Batch Size 增加（通常超过 8）的高并发场景下，EAGLE-3 的性能会出现急剧下滑。这是由于投机推理带来的额外验证开销与显存占用，导致系统从计算受限转为访存受限，其吞吐表现甚至会低于不使用任何加速策略的原生推理。
+针对上述瓶颈，<strong>dFlash</strong> 应运而生。它引入了 <strong>dLLM</strong>模块作为 Draft 模型，巧妙地融合了两种范式的长处：一方面保留了自回归（AR）模型生成的语义强度，另一方面利用扩散模型（Diffusion）高度可并行化的特性，克服了串行生成的效率陷阱。这种结合成功打破了原有“模型准确度”与“生成速度”之间的权衡，规避了传统自回归 Draft 模型在长序列生成上的迟滞。
 
 [](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2602.06036)
 
@@ -39,12 +39,12 @@ EAGLE-3 这类方案的核心逻辑在于：通过训练一个轻量级的 Draft
 
 在dflash之前，就有工作尝试将dllm作为draft模型，但是他们的工作存在以下的不足之处：
 
-- **推理成本高昂**：之前的 DiffuSpec 和 SpecDiff-2 等方法，其 Draft 模型参数量往往高达 7B。如此巨大的显存占用与计算开销，使得 Draft 模型本身就成了沉重的资源负载，在实际推理服务中不仅成本昂贵，也抵消了加速带来的收益。
-- **draft模型和target模型对齐难**：draft模型与target模型的输出分布难实现精准对齐。这种推理能力的代差导致采样接受率极低，最终使得整体加速效果大幅缩水。
+- <strong>推理成本高昂</strong>：之前的 DiffuSpec 和 SpecDiff-2 等方法，其 Draft 模型参数量往往高达 7B。如此巨大的显存占用与计算开销，使得 Draft 模型本身就成了沉重的资源负载，在实际推理服务中不仅成本昂贵，也抵消了加速带来的收益。
+- <strong>draft模型和target模型对齐难</strong>：draft模型与target模型的输出分布难实现精准对齐。这种推理能力的代差导致采样接受率极低，最终使得整体加速效果大幅缩水。
 
 #### dflash的优化
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_897b4425ddde.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_897b4425ddde.jpg)
 
 dflash的架构图上图为dflash的架构图，从图中可以看到dflash的推理的实现流程。
 
@@ -52,7 +52,7 @@ dFlash 首先通过target模型完成 Prefill 并生成首个起始 Token。随�
 
 **
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_9a1c868bae30.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_9a1c868bae30.jpg)
 
 dflash训练的注意力mask图既然我们现在有了dflash的推理过程了，那么训练过程怎么搞。
 
@@ -62,9 +62,9 @@ dflash训练的注意力mask图既然我们现在有了dflash的推理过程了�
 
 #### Dflash的官方效果
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_4e69432e1657.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_4e69432e1657.jpg)
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_3ea1ed224b6d.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_3ea1ed224b6d.jpg)
 
 从上面的图表可以看到，Dflash的效果还是非常地炸裂的。比baseline提升了4到6倍，然后比eagle3也提升1到2倍。（不过这个效果eagle3的作者也有在跟dflash的作者在argue中，详情可以看dflash的github仓库的issue）
 
@@ -124,7 +124,7 @@ python scripts/regenerate_train_data.py \
 
 #### 训练效果
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_6ac72a9e2a80.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_6ac72a9e2a80.jpg)
 
 训练的log(借用别人的)
 #### 部署dflash
@@ -141,11 +141,11 @@ pip install git+https://github.com/sgl-project/sglang.git@refs/pull/16818/head#s
 python -m sglang.launch_server     --model-path Qwen/Qwen3-8B     --speculative-algorithm DFLASH     --speculative-draft-model-path Tengyunw/Qwen3-8B-DFlash     --tp-size 1     --dtype bfloat16     --attention-backend fa3     --mem-fraction-static 0.75     --trust-remote-code
 `
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_65c1fc46c783.jpg)00:16
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_65c1fc46c783.jpg)00:16
 
 dflash效果演示
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_dfc62fbebd94.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_dfc62fbebd94.jpg)
 
 sglang 后台
 #### 压测效果
@@ -200,6 +200,6 @@ conc1481632value5.7145.6695.6755.6885.702从压测结果可以看到，dlfash的
 
 然而，作为一项前沿技术，dFlash 仍存在优化的空间：
 
-- **训练成本与资源开销**：其训练密集度显著高于 EAGLE-3。在实际测试中，使用 H800 需耗时 12 小时，即便是 B300 也需要 4 至 5 小时的训练周期，这为快速迭代带来了一定的算力门槛。
-- **社区复现的性能缺口**：目前社区开源实现的效率约仅能达到官方报告的 80% 左右，这可能与训练数据的规模及覆盖度尚未完全对齐有关。
-纵观全局，随着 Agent 等复杂应用场景的爆发，行业对大模型实时生成的性能要求将持续攀升。dFlash 作为一个在**算法范式层面**解决推理性能问题的卓越范例，我相信未来肯定会越来越多这种工作的出现。
+- <strong>训练成本与资源开销</strong>：其训练密集度显著高于 EAGLE-3。在实际测试中，使用 H800 需耗时 12 小时，即便是 B300 也需要 4 至 5 小时的训练周期，这为快速迭代带来了一定的算力门槛。
+- <strong>社区复现的性能缺口</strong>：目前社区开源实现的效率约仅能达到官方报告的 80% 左右，这可能与训练数据的规模及覆盖度尚未完全对齐有关。
+纵观全局，随着 Agent 等复杂应用场景的爆发，行业对大模型实时生成的性能要求将持续攀升。dFlash 作为一个在<strong>算法范式层面</strong>解决推理性能问题的卓越范例，我相信未来肯定会越来越多这种工作的出现。

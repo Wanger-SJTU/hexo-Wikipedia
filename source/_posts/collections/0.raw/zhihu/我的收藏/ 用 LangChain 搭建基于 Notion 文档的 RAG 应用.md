@@ -19,11 +19,11 @@ source_url: https://zhuanlan.zhihu.com/p/669896230
 
 在整个过程中，我们会将 LangChain 作为框架，Milvus 作为相似性搜索引擎，用二者搭建一个基本的检索增强生成（RAG）应用。在之前的文章中，我们已经介绍过 LangChain 中的“自查询”（Self-querying）。本质上，LangChain 中的自查询功能就是构建一个基本的 RAG 架构，如图所示：
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_2cf4cda15a93.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_2cf4cda15a93.jpg)
 
-在 LangChain 中处理 Notion 文档共包含三个步骤：获取、存储和查询文档。获取是指获取 Notion 文档并将内容加载到内存中。存储步骤包括启动向量数据库（Milvus）、将文档转化为向量、将文档向量存储至向量数据库中。查询部分包括针对 Notion 文档进行提问。本文将带大家一一拆解这三个步骤，代码请参考 **colab notebook**。
+在 LangChain 中处理 Notion 文档共包含三个步骤：获取、存储和查询文档。获取是指获取 Notion 文档并将内容加载到内存中。存储步骤包括启动向量数据库（Milvus）、将文档转化为向量、将文档向量存储至向量数据库中。查询部分包括针对 Notion 文档进行提问。本文将带大家一一拆解这三个步骤，代码请参考 <strong>colab notebook</strong>。
 
-### **01.获取 Notion 文档**
+### <strong>01.获取 Notion 文档</strong>
 
 用 LangChain 的 NotionDirectoryLoader将文档加载到内存中。我们提供文档的路径并调用load 函数来获取 Notion 文档。加载完毕后，可以得到 Notion 文档的 Markdown 文件。本例中我们以一个 Markdown 文件示意。
 
@@ -57,9 +57,9 @@ all_splits
 
 下图展示了部分分割的 document 对象，其中包含了页面内容和元数据。元数据显示了内容是从哪个章节中提取出来的。
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_56ac37d12461.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_56ac37d12461.jpg)
 
-### **02.存储 Notion 文档**
+### <strong>02.存储 Notion 文档</strong>
 
 所有文档加载和分割完毕后，就需要存储这些文档块。首先，在 notebook 中直接运行向量数据库 Milvus Lite，随后导入所需的 LangChain 模块——Milvus 和 OpenAI Embeddings。
 
@@ -76,7 +76,7 @@ vectordb = Milvus.from_documents(documents=all_splits,
     collection_name="EngineeringNotionDoc")
 `
 
-### **03.查询 Notion 文档**
+### <strong>03.查询 Notion 文档</strong>
 
 现在可以开始查询文档了。开始前，我们需要从 LangChain 中再导入三个模块：
 
@@ -109,7 +109,7 @@ retriever.get_relevant_documents("What makes a distinguished engineer?")
 
 响应如下图所示。我们获得了与提问在语义上最相似的文档片段。但不难发现，其回答也仅仅只是语义上相似，并非完全正确。
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_4c6667e1bd3d.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_4c6667e1bd3d.jpg)
 
 本教程介绍了如何加载并解析 Notion 文档，并搭建一个基本的 RAG 应用查询 Notion 文档。我们使用到了 LangChain 作为框架，Milvus 作为向量数据库用于相似性搜索。如果想要进行深入的探索，建议大家调整分块大小和重叠等参数，检查不同的参数值是如何影响查询结果的。
 

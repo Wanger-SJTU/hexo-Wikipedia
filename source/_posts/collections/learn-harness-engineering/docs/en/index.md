@@ -42,7 +42,7 @@ Choose your learning path to get started. The course is divided into theoretical
 
 ## The Core Mechanism of a Harness
 
-A harness doesn't "make the model smarter"; rather, it establishes a closed-loop **working system** for the model. You can understand its core workflow through this simple diagram:
+A harness doesn't "make the model smarter"; rather, it establishes a closed-loop <strong>working system</strong> for the model. You can understand its core workflow through this simple diagram:
 
 ```mermaid
 graph TD

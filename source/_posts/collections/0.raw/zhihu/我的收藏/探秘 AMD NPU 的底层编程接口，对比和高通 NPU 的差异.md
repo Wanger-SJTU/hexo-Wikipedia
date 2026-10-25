@@ -15,9 +15,9 @@ source_url: https://zhuanlan.zhihu.com/p/2020396235404617501
 ---
 
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_8a3f4eeeac82.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_8a3f4eeeac82.jpg)
 
-AMD NPU 是所有民用 NPU 里最开放的。相比 Intel NPU 那种只能给个计算图的黑盒。AMD NPU告诉你了，它是一块拥有独立处理器核心、512-bit 向量单元、硬件乘累加引擎的**空间计算阵列**。而且，它的工具链是完全开源的。
+AMD NPU 是所有民用 NPU 里最开放的。相比 Intel NPU 那种只能给个计算图的黑盒。AMD NPU告诉你了，它是一块拥有独立处理器核心、512-bit 向量单元、硬件乘累加引擎的<strong>空间计算阵列</strong>。而且，它的工具链是完全开源的。
 
 本文基于一台搭载 Ryzen 7 7840S（XDNA1, Phoenix）的联想笔记本上的实际实验。我们会从 `lspci` 一路深入到反汇编出来的 VLIW 机器码，最后对比 XDNA2（Strix Point）的架构升级。
 
@@ -56,9 +56,9 @@ NPU 以 PCI 设备的形式挂在系统总线上。内核驱动 `amdxdna`（Linu
 
 #### 架构：一个 2D 处理器阵列
 
-AMD 把这块 NPU 叫做 **XDNA**，但它的真名是 **AI Engine (AIE)**，技术源自 Xilinx（2022 年被 AMD 收购）的 Versal FPGA 产品线。
+AMD 把这块 NPU 叫做 <strong>XDNA</strong>，但它的真名是 <strong>AI Engine (AIE)</strong>，技术源自 Xilinx（2022 年被 AMD 收购）的 Versal FPGA 产品线。
 
-它不是 GPU 那种 SIMT 架构，也不是 Google TPU 那种脉动阵列。它是一个 **2D 空间计算阵列**——一组独立的处理器 tile 排列在二维网格上，通过片上网络连接。
+它不是 GPU 那种 SIMT 架构，也不是 Google TPU 那种脉动阵列。它是一个 <strong>2D 空间计算阵列</strong>——一组独立的处理器 tile 排列在二维网格上，通过片上网络连接。
 
 Phoenix NPU 的 `6x5` 拓扑实际上是 6 行 × 5 列（含一个隐藏的第 0 列），可用的是 4 列：
 
@@ -78,19 +78,19 @@ Row 0   │  Shim  │  Shim  │  Shim  │  Shim  │  ← 接口 tile
 
 三种 tile 各司其职：
 
-**计算 Tile**（4 行 × 4 列 = 16 个）：每个都是一个独立的处理器，有自己的程序存储器、数据暂存器和向量单元。这是干活的地方。
+<strong>计算 Tile</strong>（4 行 × 4 列 = 16 个）：每个都是一个独立的处理器，有自己的程序存储器、数据暂存器和向量单元。这是干活的地方。
 
-**内存 Tile**（1 行 × 4 个）：L2 级别的 SRAM。每个 512 KB，共 2 MB。内含 6 个 DMA 引擎，支持 4D 地址生成——意味着它能自动做矩阵转置、零填充、跨步访问，全部硬件完成。
+<strong>内存 Tile</strong>（1 行 × 4 个）：L2 级别的 SRAM。每个 512 KB，共 2 MB。内含 6 个 DMA 引擎，支持 4D 地址生成——意味着它能自动做矩阵转置、零填充、跨步访问，全部硬件完成。
 
-**Shim Tile**（1 行 × 4 个）：接口层。负责 NPU 与主机 DDR 之间的数据搬运。通过 DMA 引擎把数据从 DDR 搬进内存 tile，再从内存 tile 分发到计算 tile。
+<strong>Shim Tile</strong>（1 行 × 4 个）：接口层。负责 NPU 与主机 DDR 之间的数据搬运。通过 DMA 引擎把数据从 DDR 搬进内存 tile，再从内存 tile 分发到计算 tile。
 
 #### 计算 Tile：裸机 VLIW 处理器
 
-每个计算 tile 本质上是一个**微型裸机处理器**：
+每个计算 tile 本质上是一个<strong>微型裸机处理器</strong>：
 
 资源规格程序存储器16 KB（最多 1024 条 128-bit 指令）L1 数据暂存器64 KB SRAM标量寄存器32 × 32-bit向量寄存器16 × 512-bit累加器寄存器8 × 768-bit硬件锁64 个这里没有操作系统。没有中断控制器。没有 MMU。没有缓存（L1 是显式管理的暂存器）。程序被加载到 16 KB 程序存储器后，核心就开始从地址 0 执行，一直跑到 `done` 指令为止。
 
-处理器架构是 **VLIW（Very Long Instruction Word）**，每条指令最宽 128 bit，可以编码最多 6 个并行操作：
+处理器架构是 <strong>VLIW（Very Long Instruction Word）</strong>，每条指令最宽 128 bit，可以编码最多 6 个并行操作：
 
 `128-bit 指令字:
 ┌──────────┬──────────┬──────────┬──────────┬──────────┬──────────┐
@@ -98,15 +98,15 @@ Row 0   │  Shim  │  Shim  │  Shim  │  Shim  │  ← 接口 tile
 │  (nopb)  │  (nopa)  │  (nops)  │  (nopx)  │  (nopm)  │  (nopv)  │
 └──────────┴──────────┴──────────┴──────────┴──────────┴──────────┘`
 
-最关键的特性：**暴露流水线（exposed pipeline）**。加载指令发出后，数据不会立刻可用——硬件不会自动 stall。编译器必须在加载和使用之间静态插入正确数量的 nop（或其他不冲突的指令）。如果你插少了 nop，读到的是旧值，不是错误。这和 x86/ARM 的乱序执行完全相反。
+最关键的特性：<strong>暴露流水线（exposed pipeline）</strong>。加载指令发出后，数据不会立刻可用——硬件不会自动 stall。编译器必须在加载和使用之间静态插入正确数量的 nop（或其他不冲突的指令）。如果你插少了 nop，读到的是旧值，不是错误。这和 x86/ARM 的乱序执行完全相反。
 
 #### MAC 单元：NPU 的心脏
 
-每个计算 tile 的核心是一个 **512-bit 向量 MAC 单元**：
+每个计算 tile 的核心是一个 <strong>512-bit 向量 MAC 单元</strong>：
 
-数据类型每周期乘累加次数INT4 × INT8512INT8 × INT8256INT16 × INT1664INT32 × INT3216BF16 × BF1612816 个 tile 合计：256 × 16 = 4096 INT8 MAC/周期。以 ~1.25 GHz 平均频率计算，约 **10 TOPS (INT8)**。
+数据类型每周期乘累加次数INT4 × INT8512INT8 × INT8256INT16 × INT1664INT32 × INT3216BF16 × BF1612816 个 tile 合计：256 × 16 = 4096 INT8 MAC/周期。以 ~1.25 GHz 平均频率计算，约 <strong>10 TOPS (INT8)</strong>。
 
-这不是一个矩阵乘法加速器——每个 tile 是一个**通用处理器加上一个强大的 MAC 单元**。
+这不是一个矩阵乘法加速器——每个 tile 是一个<strong>通用处理器加上一个强大的 MAC 单元</strong>。
 
 #### 指令集：从 C++ 到 128-bit VLIW
 
@@ -114,7 +114,7 @@ Row 0   │  Shim  │  Shim  │  Shim  │  Shim  │  ← 接口 tile
 
 AMD 没有发布传统意义上的 ISA 参考手册（没有像 ARM Architecture Reference Manual 那样的文档）。但指令集信息分散在几个公开来源中：
 
-来源内容获取方式AM020 架构手册 [http://docs.amd.com/r/en-US/am020-versal-aie-ml](https://link.zhihu.com/?target=http%3A//docs.amd.com/r/en-US/am020-versal-aie-ml)寄存器文件、功能单元、数据通路描述免费下载UG1079 内核编程指南 [http://docs.amd.com/r/en-US/ug1079-ai-engine-kernel-coding](https://link.zhihu.com/?target=http%3A//docs.amd.com/r/en-US/ug1079-ai-engine-kernel-coding)intrinsic 到硬件的映射免费下载Xilinx/llvm-aie [http://github.com/Xilinx/llvm-aie](https://link.zhihu.com/?target=http%3A//github.com/Xilinx/llvm-aie)完整的二进制编码（TableGen .td 文件）Apache 2.0 开源llvm-objdump -d 输出实际反汇编上面的工具即可换句话说：**所有信息都能获取，但要你自己拼**。架构手册告诉你有什么功能单元，LLVM 源码告诉你每条指令怎么编码，objdump 告诉你编译器实际生成了什么。
+来源内容获取方式AM020 架构手册 [http://docs.amd.com/r/en-US/am020-versal-aie-ml](https://link.zhihu.com/?target=http%3A//docs.amd.com/r/en-US/am020-versal-aie-ml)寄存器文件、功能单元、数据通路描述免费下载UG1079 内核编程指南 [http://docs.amd.com/r/en-US/ug1079-ai-engine-kernel-coding](https://link.zhihu.com/?target=http%3A//docs.amd.com/r/en-US/ug1079-ai-engine-kernel-coding)intrinsic 到硬件的映射免费下载Xilinx/llvm-aie [http://github.com/Xilinx/llvm-aie](https://link.zhihu.com/?target=http%3A//github.com/Xilinx/llvm-aie)完整的二进制编码（TableGen .td 文件）Apache 2.0 开源llvm-objdump -d 输出实际反汇编上面的工具即可换句话说：<strong>所有信息都能获取，但要你自己拼</strong>。架构手册告诉你有什么功能单元，LLVM 源码告诉你每条指令怎么编码，objdump 告诉你编译器实际生成了什么。
 
 #### 指令格式
 
@@ -153,12 +153,12 @@ movxm   le, #0x270            ; le(loop end) = 循环体结束地址
 ; === 循环体：每次处理 1 个 int32 ===
 lshl    r2, r1, r0            ; r2 = i 
 
-**关键观察**：
+<strong>关键观察</strong>：
 
-- `add.nc lc, r0, #0` / `movxm ls` / `movxm le` — **零开销硬件循环**。硬件用三个专用寄存器（lc/ls/le）实现循环，不需要比较和跳转指令。`lc` 每次递减，到 0 时退出。循环回跳完全由硬件完成，不消耗任何周期。
+- `add.nc lc, r0, #0` / `movxm ls` / `movxm le` — <strong>零开销硬件循环</strong>。硬件用三个专用寄存器（lc/ls/le）实现循环，不需要比较和跳转指令。`lc` 每次递减，到 0 时退出。循环回跳完全由硬件完成，不消耗任何周期。
 - 5 个 `nop` — 暴露流水线的代价。`lda` 到数据可用需要 7 个周期，编译器必须显式填充。这些 nop 不是”浪费”——它们是 ISA 设计的核心特征。
 - `lshl` + `mov dj0` — 地址计算用了两条指令。`dj0` 是专用的地址偏移寄存器，和地址指针 `p0` 组合使用。这种分离设计允许地址计算和数据访问在不同功能单元并行执行。
-**编译后 .text 段大小：736 字节**（16 KB 程序存储器的 4.5%）。
+<strong>编译后 .text 段大小：736 字节</strong>（16 KB 程序存储器的 4.5%）。
 
 #### 实验 2：向量 intrinsic——512-bit SIMD
 
@@ -194,13 +194,13 @@ vst  wh4, [p2, #0x20]         ; 向量存储高半                        ← 25
 vst  wl4, [p2, #0x0]          ; 向量存储低半                        ← 256-bit
 add  r1, r1, #0x10            ; i += 16`
 
-**关键观察**：
+<strong>关键观察</strong>：
 
-- `vbcst.32 x0, r2` — **向量广播**。把标量值复制到 512-bit 向量寄存器的全部 16 个 lane。这对应 `aie::add(v, (int32_t)1)` 中隐含的标量到向量提升。
+- `vbcst.32 x0, r2` — <strong>向量广播</strong>。把标量值复制到 512-bit 向量寄存器的全部 16 个 lane。这对应 `aie::add(v, (int32_t)1)` 中隐含的标量到向量提升。
 - `vlda wl2` / `vlda wh2` — 向量加载分两次。L1 数据端口宽度是 256-bit，所以 512-bit 向量要用两拍加载（低半 `wl` + 高半 `wh`）。这是硬件限制，不是编译器选择。
 - `vadd.32 x4, x0, x2` — 一条指令完成 16 个 int32 加法。`x4`、`x0`、`x2` 都是 512-bit 向量寄存器。`.32` 后缀表示按 32-bit 元素粒度操作。
 - 循环步长从 1 变成了 16（`add r1, r1, #0x10`）。
-**编译后 .text 段大小：752 字节**（只比标量版多 16 字节！向量指令密度非常高）。
+<strong>编译后 .text 段大小：752 字节</strong>（只比标量版多 16 字节！向量指令密度非常高）。
 
 #### 实验 3：硬件 MAC——NPU 的核心计算原语
 
@@ -243,23 +243,23 @@ vmac   cm3, cm2, x10, x2, r6   ; 乘累加 #4
 vst.srs.s32.s64  bmh3, s0, [p2, #0x20]  ; acc64 → int32 + 存储 (高半)
 vst.srs.s32.s64  bml3, s0, [p2, #0x0]   ; acc64 → int32 + 存储 (低半)`
 
-**关键观察**：
+<strong>关键观察</strong>：
 
 - **为什么一个 `aie::mul(v, f)` 变成了 4 步 vmul/vmac？**
 因为 MAC 单元的物理数据通路无法在一拍内完成 16 个 int32×int32 乘法。编译器把它拆成了 4 步，交替处理偶数位和奇数位元素。`vshuffle` 负责把数据重排成 MAC 单元期望的格式。这是编译器对硬件微架构的深度理解——用户写 `aie::mul`，编译器知道该拆成几步、怎么排数据。
 
-- **VLIW 并行执行**：
+- <strong>VLIW 并行执行</strong>：
 `vshuffle  x10, x6, x0, r3   ; 向量重排单元
    vmac   cm1, cm0, x8, x2, r2  ; MAC 单元`
 
 这两条在同一个 128-bit VLIW 指令字中，使用不同的功能单元，在同一个周期执行。
 
 - **`cm0`-`cm3` 是 768-bit 累加器寄存器**：比 512-bit 向量寄存器更宽，专门用于防止乘累加溢出（16 个 64-bit 累加器 = 1024-bit，打包在 768-bit 物理寄存器中）。
-- **`vst.srs.s32.s64`**——三个操作合一：** 
+- **`vst.srs.s32.s64`<strong>——三个操作合一：</strong> 
 
 - S**hift: 右移（由 `s0` 寄存器指定移位量）
-- **R**ound: 舍入
-- **S**aturate: 饱和（64-bit → 32-bit，防止截断溢出）
+- <strong>R</strong>ound: 舍入
+- <strong>S</strong>aturate: 饱和（64-bit → 32-bit，防止截断溢出）
 **
 
 这条指令直接从累加器读数据、截断、存储到内存，一拍完成。
@@ -271,7 +271,7 @@ vst.srs.s32.s64  bml3, s0, [p2, #0x0]   ; acc64 → int32 + 存储 (低半)`
 实验 1 (标量)实验 2 (向量)实验 3 (MAC)加载lda (32-bit)vlda wl/wh (2×256-bit)vlda wl/wh (2×256-bit)计算add r2, r2, #1vadd.32 x4, x0, x2vmul + 3×vmac存储st (32-bit)vst wl/wh (2×256-bit)vst.srs.s32.s64每次处理1 个 int3216 个 int3216 个 int32 × int32使用的硬件标量 ALU向量 ALUMAC 引擎 + 累加器.text 大小736 B752 B1392 B
 #### 数据搬运：DMA 和硬件锁
 
-NPU 上的数据搬运全部由 DMA 硬件完成，和计算完全解耦。这是空间计算架构的核心设计：**计算和通信并行**。
+NPU 上的数据搬运全部由 DMA 硬件完成，和计算完全解耦。这是空间计算架构的核心设计：<strong>计算和通信并行</strong>。
 
 #### 三级存储层次
 
@@ -304,7 +304,7 @@ jl   #add_one_scalar  ; 调用内核
 rel  #0x30, r17    ; release lock #48, value = 1  (通知)
 rel  #0x33, r17    ; release lock #51, value = 1  (通知)`
 
-`acq`（acquire）和 `rel`（release）是 tile 与 DMA 之间**唯一的同步原语**。没有中断，没有轮询，没有信号量——就是硬件锁。当锁不满足条件时，核心**阻塞**在 `acq` 指令上，硬件停止取指，直到 DMA 改变锁状态。
+`acq`（acquire）和 `rel`（release）是 tile 与 DMA 之间<strong>唯一的同步原语</strong>。没有中断，没有轮询，没有信号量——就是硬件锁。当锁不满足条件时，核心<strong>阻塞</strong>在 `acq` 指令上，硬件停止取指，直到 DMA 改变锁状态。
 
 #### 双缓冲
 
@@ -380,8 +380,8 @@ Peano 编译器（`clang --target=aie2-none-unknown-elf`）把 C++ 内核编译�
 
 最终的 XCLBIN 包含：
 
-- **Overlay**：ELF 二进制 + 流交换路由配置
-- **Ctrlcode**：DMA 命令序列（`XAIE_IO_BLOCKWRITE` 等），由 ERT 微控制器执行
+- <strong>Overlay</strong>：ELF 二进制 + 流交换路由配置
+- <strong>Ctrlcode</strong>：DMA 命令序列（`XAIE_IO_BLOCKWRITE` 等），由 ERT 微控制器执行
 
 #### 内核驱动：/dev/accel/accel0
 
@@ -471,11 +471,11 @@ DMA 配置不是直接写寄存器，而是打包成 ctrlcode——一系列事�
 
 #### XDNA2：从 10 TOPS 到 50 TOPS
 
-本文的实验都在 XDNA1（Phoenix, Ryzen 7040/8040）上完成。2024 年底 AMD 发布了 **XDNA2**（Strix Point, Ryzen AI 300），算力从 10 TOPS 跳到 50 TOPS——5 倍提升。这不是简单的堆核，而是三个维度同时翻倍。
+本文的实验都在 XDNA1（Phoenix, Ryzen 7040/8040）上完成。2024 年底 AMD 发布了 <strong>XDNA2</strong>（Strix Point, Ryzen AI 300），算力从 10 TOPS 跳到 50 TOPS——5 倍提升。这不是简单的堆核，而是三个维度同时翻倍。
 
 #### 三个乘法因子
 
-维度XDNA1 (Phoenix)XDNA2 (Strix Point)倍数计算 tile 数量16 (4列×4行)32 (8列×4行)2×INT8 MAC/周期/tile2565122×时钟频率~1.0 GHz~1.8 GHz~1.8×16 × 256 × 1.0G = 8.2 TOPS → 32 × 512 × 1.8G ≈ **59 TOPS**（理论峰值，标称 50 TOPS）。
+维度XDNA1 (Phoenix)XDNA2 (Strix Point)倍数计算 tile 数量16 (4列×4行)32 (8列×4行)2×INT8 MAC/周期/tile2565122×时钟频率~1.0 GHz~1.8 GHz~1.8×16 × 256 × 1.0G = 8.2 TOPS → 32 × 512 × 1.8G ≈ <strong>59 TOPS</strong>（理论峰值，标称 50 TOPS）。
 
 #### 阵列拓扑对比
 
@@ -509,7 +509,7 @@ Row 0   │  D   │  D   │  D   │  D   │  D   │  D   │  D   │  D   
 
 #### AIE2P：不只是更多更快
 
-XDNA2 的计算 tile 从 AIE2 升级到 **AIE2P**（AI Engine 2 Plus）。除了 MAC 吞吐翻倍，还有几个质的变化：
+XDNA2 的计算 tile 从 AIE2 升级到 <strong>AIE2P</strong>（AI Engine 2 Plus）。除了 MAC 吞吐翻倍，还有几个质的变化：
 
 #### 1. Block Floating Point（BFP16）
 
@@ -518,7 +518,7 @@ XDNA2 的计算 tile 从 AIE2 升级到 **AIE2P**（AI Engine 2 Plus）。除了
 `传统 FP16:  每个元素 16 bit（1 sign + 5 exp + 10 mantissa）
 BFP16:      32 个元素共享 1 个 8-bit 指数 + 每个元素 8-bit 尾数`
 
-32 个元素共享一个指数，每个元素只需 8 bit 尾数。存储密度接近 INT8，但精度接近 FP16。关键优势：**不需要重新训练模型**——直接把 FP16 权重转成 BFP16 格式，精度损失极小，吞吐量却和 INT8 一样。
+32 个元素共享一个指数，每个元素只需 8 bit 尾数。存储密度接近 INT8，但精度接近 FP16。关键优势：<strong>不需要重新训练模型</strong>——直接把 FP16 权重转成 BFP16 格式，精度损失极小，吞吐量却和 INT8 一样。
 
 在指令级别，这体现为新的 MAC 配置：
 
@@ -544,7 +544,7 @@ AIE2P: tanh(x) → 单条 aievec.tanh 指令 → 硬件单元直接计算`
 
 #### 4. 动态空间分区
 
-XDNA1 的 NPU 基本上是一整块给一个任务用。XDNA2 支持最多 **8 个并发隔离空间流（spatial streams）**。8 列可以动态划分，比如：
+XDNA1 的 NPU 基本上是一整块给一个任务用。XDNA2 支持最多 <strong>8 个并发隔离空间流（spatial streams）</strong>。8 列可以动态划分，比如：
 
 `┌──Col 0-1──┬──Col 2-5──┬──Col 6-7──┐
 │ 视频通话   │ LLM 推理   │ 背景降噪  │   3 个任务同时跑
@@ -590,17 +590,17 @@ AMD 和 Qualcomm 是目前仅有的两家向开发者暴露底层可编程性的
 
 #### 架构对比：空间计算 vs VLIW DSP
 
-**AMD XDNA** 是**空间计算阵列**——一个 2D 的 tile 网格，每个 tile 是独立的处理器，tile 之间通过片上网络通信。数据在 tile 之间”流动”，计算分布在空间上。
+<strong>AMD XDNA</strong> 是<strong>空间计算阵列</strong>——一个 2D 的 tile 网格，每个 tile 是独立的处理器，tile 之间通过片上网络通信。数据在 tile 之间”流动”，计算分布在空间上。
 
-**Qualcomm Hexagon** 是传统的 **VLIW DSP + 专用加速器**。它有三个协同工作的功能单元：
+<strong>Qualcomm Hexagon</strong> 是传统的 <strong>VLIW DSP + 专用加速器</strong>。它有三个协同工作的功能单元：
 
-单元宽度职责标量核32-bit控制流、地址计算HVX (Hexagon Vector eXtensions)128 字节 (1024-bit)向量运算：dequant、ReLU、softmax、RMSNormHMX (Hexagon Matrix eXtensions)32×32 tile矩阵乘法：GEMM、attention注意 HVX 的向量宽度是 **1024-bit**（128 字节），是 AMD AIE2 的 512-bit 的两倍。一条 HVX 指令可以同时处理 64 个 FP16 或 128 个 INT8。
+单元宽度职责标量核32-bit控制流、地址计算HVX (Hexagon Vector eXtensions)128 字节 (1024-bit)向量运算：dequant、ReLU、softmax、RMSNormHMX (Hexagon Matrix eXtensions)32×32 tile矩阵乘法：GEMM、attention注意 HVX 的向量宽度是 <strong>1024-bit</strong>（128 字节），是 AMD AIE2 的 512-bit 的两倍。一条 HVX 指令可以同时处理 64 个 FP16 或 128 个 INT8。
 
 #### 编程模型对比
 
-AMD 的编程模型是**空间 + 数据流**：你要想好数据怎么在 tile 之间搬运，用 ObjectFifo 定义 DMA 通道，用硬件锁做同步。计算和数据搬运是两个独立的关注点。
+AMD 的编程模型是<strong>空间 + 数据流</strong>：你要想好数据怎么在 tile 之间搬运，用 ObjectFifo 定义 DMA 通道，用硬件锁做同步。计算和数据搬运是两个独立的关注点。
 
-Qualcomm 的编程模型是**传统 DSP + 显式 scratchpad**：
+Qualcomm 的编程模型是<strong>传统 DSP + 显式 scratchpad</strong>：
 
 `// Hexagon: 标准 C + intrinsic，跟写 CPU SIMD 差不多
 HVX_VectorPair wp = Q6_Wh_vunpack_Vb(v_i8);        // int8 → int16 (HVX)
@@ -618,7 +618,7 @@ Hexagon 的编程体验更接近传统 SIMD 编程（SSE/NEON），学习曲线�
 
 #### 内存层次对比
 
-AMD XDNA (AIE2)Qualcomm Hexagon (v75)L1 (每 tile/核)64 KB scratchpad共享 L1 cache片上高速内存2 MB (Memory Tile, 4×512KB)8 MB (VTCM, 1 周期延迟)L2 Cache无（靠 Memory Tile）有 L2 cacheDDR 带宽通过 Shim Tile DMA通过 UDMA 异步搬运Hexagon 的 **VTCM（Vector Tightly Coupled Memory）** 是关键优势——8MB 的 1 周期延迟 scratchpad，远大于 AMD 的 2MB Memory Tile。HMX 矩阵乘法**只能**从 VTCM 读取数据，所有数据必须先从 DDR 搬到 VTCM。
+AMD XDNA (AIE2)Qualcomm Hexagon (v75)L1 (每 tile/核)64 KB scratchpad共享 L1 cache片上高速内存2 MB (Memory Tile, 4×512KB)8 MB (VTCM, 1 周期延迟)L2 Cache无（靠 Memory Tile）有 L2 cacheDDR 带宽通过 Shim Tile DMA通过 UDMA 异步搬运Hexagon 的 <strong>VTCM（Vector Tightly Coupled Memory）</strong> 是关键优势——8MB 的 1 周期延迟 scratchpad，远大于 AMD 的 2MB Memory Tile。HMX 矩阵乘法<strong>只能</strong>从 VTCM 读取数据，所有数据必须先从 DDR 搬到 VTCM。
 
 两者都需要显式管理数据搬运，但方式不同：
 
@@ -633,7 +633,7 @@ of_in.release(1)           # rel 指令：通知 DMA 可以搬下一块`
 
 #### HMX 矩阵乘法 vs AIE MAC 单元
 
-HMX 的使用方式很特别——**必须用内联汇编**，因为 activation 和 weight 加载必须在同一个 VLIW packet 中：
+HMX 的使用方式很特别——<strong>必须用内联汇编</strong>，因为 activation 和 weight 加载必须在同一个 VLIW packet 中：
 
 `// Hexagon HMX: 内联汇编是唯一途径
 asm volatile("mxclracc.hf" ::: "memory");                       // 清零累加器
@@ -654,7 +654,7 @@ aie::store_v(out, acc.to_vector());            // 存储（带饱和）`
 
 两者都有数据布局限制，但 Hexagon 的问题更突出：
 
-HMX 要求数据按 **AH（Activation-Hexagon）** 和 **WH（Weight-Hexagon）** 格式排列——这是专为 32×32 MAC 阵列设计的 tile 内部重排。每次矩阵乘前都要做布局转换：
+HMX 要求数据按 <strong>AH（Activation-Hexagon）</strong> 和 <strong>WH（Weight-Hexagon）</strong> 格式排列——这是专为 32×32 MAC 阵列设计的 tile 内部重排。每次矩阵乘前都要做布局转换：
 
 `// Hexagon: 必须转换为 HMX 专用布局
 hexkl_micro_hmx_rm_to_ah_f16(vtcm, dst, src);   // row-major → AH
@@ -679,9 +679,9 @@ AMD 上的对应模式是：多个 compute tile 并行处理不同的算子，�
 
 #### 工具链和生态对比
 
-AMD XDNAQualcomm Hexagon编译器Peano (LLVM fork, 开源)hexagon-clang (LLVM fork, 闭源)SDKmlir-aie (开源, pip install)Hexagon SDK 6.4 (需注册, ~10GB)向量 intrinsicaie_api/aie.hpp (开源)hvx_hexagon_protos.h (SDK 内)矩阵加速C++ intrinsic (aie::mul)内联汇编 / HexKL 库内核驱动amdxdna (主线 Linux, 开源)厂商闭源 (Android 内核树)模拟器无（需要真硬件）hexagon-sim (可在 x86 上模拟)调试有限（硬件 trace）hexagon-gdb (完整调试器)运行时XRT (开源)FastRPC / dspqueue (部分开源)高层框架ONNX RT / Vitis AIQNN / Genie SDKHexagon 的**模拟器和调试器**是巨大优势——不需要真机就能开发和调试 HVX/HMX 代码。AMD 没有模拟器，必须有 NPU 硬件才能运行。
+AMD XDNAQualcomm Hexagon编译器Peano (LLVM fork, 开源)hexagon-clang (LLVM fork, 闭源)SDKmlir-aie (开源, pip install)Hexagon SDK 6.4 (需注册, ~10GB)向量 intrinsicaie_api/aie.hpp (开源)hvx_hexagon_protos.h (SDK 内)矩阵加速C++ intrinsic (aie::mul)内联汇编 / HexKL 库内核驱动amdxdna (主线 Linux, 开源)厂商闭源 (Android 内核树)模拟器无（需要真硬件）hexagon-sim (可在 x86 上模拟)调试有限（硬件 trace）hexagon-gdb (完整调试器)运行时XRT (开源)FastRPC / dspqueue (部分开源)高层框架ONNX RT / Vitis AIQNN / Genie SDKHexagon 的<strong>模拟器和调试器</strong>是巨大优势——不需要真机就能开发和调试 HVX/HMX 代码。AMD 没有模拟器，必须有 NPU 硬件才能运行。
 
-但 AMD 在**开源透明度**上完胜：内核驱动、编译器、运行时全开源。Hexagon 的 SDK 和编译器是闭源的，内核驱动也不在主线 Linux 中。
+但 AMD 在<strong>开源透明度</strong>上完胜：内核驱动、编译器、运行时全开源。Hexagon 的 SDK 和编译器是闭源的，内核驱动也不在主线 Linux 中。
 
 #### 综合对比表
 
@@ -690,11 +690,11 @@ AMD XDNA1AMD XDNA2Qualcomm Hexagon v75Intel NPUApple ANE架构空间计算阵列
 
 取决于你要做什么：
 
-- **想学习 NPU 底层原理、做学术研究**：AMD XDNA。全栈开源，从 Python 到机器指令都能看到，适合理解空间计算、数据流、VLIW 等概念
-- **想在手机上部署 LLM 推理**：Qualcomm Hexagon。骁龙平台占有率高，QNN/Genie SDK 成熟，模拟器方便调试
-- **想写高性能自定义算子**：两者都可以。AMD 用 IRON + C++ intrinsic，Qualcomm 用 HVX intrinsic + HexKL。Hexagon 的编程模型更传统，AMD 的空间编程更有挑战但也更有潜力（天然并行）
-- **关心开源生态**：AMD 完胜。Hexagon SDK 需要注册下载，编译器闭源，内核驱动不在主线
-两者是目前消费级 NPU 中仅有的可以做**指令级编程**的平台。Intel NPU 和 Apple ANE 对开发者来说基本是黑盒——只能通过框架 API 使用，无法触及底层。
+- <strong>想学习 NPU 底层原理、做学术研究</strong>：AMD XDNA。全栈开源，从 Python 到机器指令都能看到，适合理解空间计算、数据流、VLIW 等概念
+- <strong>想在手机上部署 LLM 推理</strong>：Qualcomm Hexagon。骁龙平台占有率高，QNN/Genie SDK 成熟，模拟器方便调试
+- <strong>想写高性能自定义算子</strong>：两者都可以。AMD 用 IRON + C++ intrinsic，Qualcomm 用 HVX intrinsic + HexKL。Hexagon 的编程模型更传统，AMD 的空间编程更有挑战但也更有潜力（天然并行）
+- <strong>关心开源生态</strong>：AMD 完胜。Hexagon SDK 需要注册下载，编译器闭源，内核驱动不在主线
+两者是目前消费级 NPU 中仅有的可以做<strong>指令级编程</strong>的平台。Intel NPU 和 Apple ANE 对开发者来说基本是黑盒——只能通过框架 API 使用，无法触及底层。
 
 XDNA2 在保持同样编程模型的基础上，通过翻倍 tile 数量、翻倍单 tile MAC 吞吐、提升频率，实现了 5× 的性能跳跃。更重要的是 BFP16 和 MX 格式的引入——这代表了一种趋势：未来的 AI 硬件不只是”更多 INT8 TOPS”，而是用更聪明的数值格式在精度和吞吐之间找到更好的平衡。
 

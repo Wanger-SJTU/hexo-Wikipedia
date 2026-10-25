@@ -17,7 +17,7 @@ source_url: https://zhuanlan.zhihu.com/p/699576174
 
 Kimi是国产大模型中最会营销的，他们在面对国外大模型时采取了扬长避短的方式，规避自己的推理能力，极力宣传自己的“长长长长长”。
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_417bd7e08b61.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_417bd7e08b61.jpg)
 
 3月份的时候，Kimi有铺天盖地的PR文，全部指向“长文本”。该指向性营销显然给其他大模型造成了危机，随后3月22日通义千问就对外开放了“1000万字长文本”。文心一言宣布开放200万-500万字的长文本。
 
@@ -33,11 +33,11 @@ Defined variable X2=X1.
 ....
 Defined variable X3=X2.`
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_4edb7716cf22.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_4edb7716cf22.jpg)
 
-开头![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_78ec2b41c2a7.jpg)
+开头![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_78ec2b41c2a7.jpg)
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_23cd1ecd272c.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_23cd1ecd272c.jpg)
 
 中间然后将文件上传到Kimi中进行询问。
 
@@ -45,13 +45,13 @@ Defined variable X3=X2.`
 
 `Based on the the file uploaded, find all variables that are assiged to 200232.`
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_3ac1b13ca5c7.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_3ac1b13ca5c7.jpg)
 
 Kimi只找到了其中1个，没有找到X2，X3。
 
 然后第二个问题，Does X3 equal to 200232?
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_ba15b29f3d06.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_ba15b29f3d06.jpg)
 
 Kimi这次查找到了关于X3的内容，但是依然没有查找到X2的内容，所以无法推断出来X3=200232。
 
@@ -59,7 +59,7 @@ Kimi这次查找到了关于X3的内容，但是依然没有查找到X2的内容
 
 最后1个问题，为了排除Kimi本身是推理能力不行，而无法推断出X3=200232，有针对性的把上面三句话放到一句里。
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_da29d7c64544.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_da29d7c64544.jpg)
 
 Kimi很好的答对了问题。
 

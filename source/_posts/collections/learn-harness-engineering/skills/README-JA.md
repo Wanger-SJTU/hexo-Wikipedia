@@ -35,24 +35,24 @@ categories:
 
 AI コーディング agent 向けの本番品質 harness engineering skill です。AGENTS.md、機能リスト、検証ワークフロー、セッション継続メカニズムなどの agent harness ファイルの作成、評価、改善を支援します。
 
-- **7 つの参照パターン**：Memory Persistence、Skill Runtime、Context Engineering、Tool Registry、Multi-Agent Coordination、Lifecycle & Bootstrap、Gotchas
-- **テンプレート**：AGENTS.md/CLAUDE.md、feature-list.json、init.sh、progress.md、session-handoff.md
-- **スクリプト**：scaffold、検証、HTML 評価レポート、構造 benchmark
-- **10 個の組み込み eval テストケース**
+- <strong>7 つの参照パターン</strong>：Memory Persistence、Skill Runtime、Context Engineering、Tool Registry、Multi-Agent Coordination、Lifecycle & Bootstrap、Gotchas
+- <strong>テンプレート</strong>：AGENTS.md/CLAUDE.md、feature-list.json、init.sh、progress.md、session-handoff.md
+- <strong>スクリプト</strong>：scaffold、検証、HTML 評価レポート、構造 benchmark
+- <strong>10 個の組み込み eval テストケース</strong>
 
 詳細は [harness-creator/README.md](harness-creator/README.md) を参照してください。
 
 ## harness-creator の作成方法
 
-`harness-creator` は **skill-creator** 方法論で作られました。これは Anthropic の公式 meta-skill で、agent skills を draft → test → evaluate → iterate の流れで作成、テスト、改善するためのものです。
+`harness-creator` は <strong>skill-creator</strong> 方法論で作られました。これは Anthropic の公式 meta-skill で、agent skills を draft → test → evaluate → iterate の流れで作成、テスト、改善するためのものです。
 
 ## Skills の仕組み
 
 各 skill は標準構造に従います。
 
-1. **SKILL.md** — エントリーポイント。YAML frontmatter と agent への Markdown 指示を含みます。
-2. **references/** — 必要に応じてコンテキストに読み込む追加ドキュメント。
-3. **templates/** — skill が生成できる開始テンプレート。
+1. <strong>SKILL.md</strong> — エントリーポイント。YAML frontmatter と agent への Markdown 指示を含みます。
+2. <strong>references/</strong> — 必要に応じてコンテキストに読み込む追加ドキュメント。
+3. <strong>templates/</strong> — skill が生成できる開始テンプレート。
 
 Skills は progressive disclosure を使います。agent は最初に名前と説明だけを見て、トリガーされたときに SKILL.md 全体を読み込み、必要な場合だけ同梱リソースを読みます。
 

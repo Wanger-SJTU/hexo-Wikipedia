@@ -15,7 +15,7 @@ source_url: https://zhuanlan.zhihu.com/p/16921952423
 ---
 
 
-![](/images/collections/0.raw/zhihu/AI%2520infra/asset/img_4f8d390d7193.jpg)
+![](/images/collections/0.raw/zhihu/AI%20infra/asset/img_4f8d390d7193.jpg)
 
 1、MMU关闭时cache的缓存策略是怎样的？
 

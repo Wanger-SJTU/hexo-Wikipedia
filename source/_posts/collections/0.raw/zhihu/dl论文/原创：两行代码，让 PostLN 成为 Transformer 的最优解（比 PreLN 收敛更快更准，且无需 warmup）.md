@@ -17,7 +17,7 @@ source_url: https://zhuanlan.zhihu.com/p/466943663
 
 我发现，PostLN 的初始收敛困难，不是中间层的梯度问题，而是最初的嵌入层的梯度问题。通过两行代码，可以让 PostLN 的初始收敛从蓝线变成绿线，比 PreLN 收敛快得多：
 
-![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_991083f035e9.jpg)
+![](/images/collections/0.raw/zhihu/dl%E8%AE%BA%E6%96%87/asset/img_991083f035e9.jpg)
 
 具体原因是，如果你 print 嵌入层，会发现，它在每步的移动大致是 lr 的程度，而它的初始值通常是 std=0.02 的正态分布，因此，网络需要很多步才能跳出初始的噪音嵌入，也容易被卡住。
 
@@ -35,9 +35,9 @@ if isinstance(module, (nn.Embedding)):
 
 然后优化器一步就可以跳出初始的噪音嵌入，立即走上正轨（虽然值也只改变一点，但是方向明显变化）。
 
-我也测试过后续和最终收敛。对于各种 transformer 架构，调整嵌入层初始化后，PostLN 永远比 PreLN 强。**最终如果炼到 2.x 的 loss 可以差 0.05~0.1（中文字符语言模型）。**
+我也测试过后续和最终收敛。对于各种 transformer 架构，调整嵌入层初始化后，PostLN 永远比 PreLN 强。<strong>最终如果炼到 2.x 的 loss 可以差 0.05~0.1（中文字符语言模型）。</strong>
 
-**代码：**
+<strong>代码：</strong>
 
 [](https://link.zhihu.com/?target=https%3A//github.com/BlinkDL/SmallInitEmb)
 
@@ -54,8 +54,8 @@ x = self.ln2(x)
 x = x + self.ffn(x)
 (there will be another layernorm after the final ffn)`
 
-**另外，这个方法对于 PreLN 也有效，只需在使用 stdev=1e-5 初始化的 emb 之后加上 LayerNorm（请试试 FixedNorm/ScaleNorm/RMSNorm/... 有时效果更好）。**
+<strong>另外，这个方法对于 PreLN 也有效，只需在使用 stdev=1e-5 初始化的 emb 之后加上 LayerNorm（请试试 FixedNorm/ScaleNorm/RMSNorm/... 有时效果更好）。</strong>
 
-**如果用可训练的绝对位置编码，那么把绝对位置编码也加上 LayerNorm/FixedNorm/ScaleNorm/RMSNorm/... 然后再相加。可以自己试试哪种 Norm 效果最好。**
+<strong>如果用可训练的绝对位置编码，那么把绝对位置编码也加上 LayerNorm/FixedNorm/ScaleNorm/RMSNorm/... 然后再相加。可以自己试试哪种 Norm 效果最好。</strong>
 
 补充：一个正常的语言模型，应该在几分钟内收敛到 2gram 的水准（也就是对齐嵌入层和输出层），也就是 loss 应该很快降到 4.x。如果 loss 在 5 以上，说明头尾的 matrix 都没有对齐。嵌入层的准确度，对于初始的收敛，非常关键。

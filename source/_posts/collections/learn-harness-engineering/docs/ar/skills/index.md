@@ -21,10 +21,10 @@ categories:
 
 ### ماذا تفعل
 
-- **إنشاء harnesses من الصفر** — AGENTS.md، قوائم ميزات، workflows للتحقق
-- **تحسين harnesses موجودة** — تقييم للأنظمة الفرعية الخمسة مع تحسينات ذات أولوية
-- **تصميم استمرارية الجلسات** — ذاكرة دائمة، تتبع التقدم، وإجراءات handoff
-- **تطبيق أنماط إنتاجية** — الذاكرة، context engineering، أمان الأدوات، والتنسيق متعدد الوكلاء
+- <strong>إنشاء harnesses من الصفر</strong> — AGENTS.md، قوائم ميزات، workflows للتحقق
+- <strong>تحسين harnesses موجودة</strong> — تقييم للأنظمة الفرعية الخمسة مع تحسينات ذات أولوية
+- <strong>تصميم استمرارية الجلسات</strong> — ذاكرة دائمة، تتبع التقدم، وإجراءات handoff
+- <strong>تطبيق أنماط إنتاجية</strong> — الذاكرة، context engineering، أمان الأدوات، والتنسيق متعدد الوكلاء
 
 ### بداية سريعة
 
@@ -66,7 +66,7 @@ npx skills add walkinglabs/learn-harness-engineering --skill harness-creator
 
 ### كيف بُنيت هذه المهارة
 
-طُورت `harness-creator` باستخدام منهجية **skill-creator**، وهي meta-skill الرسمية من Anthropic لإنشاء مهارات الوكلاء واختبارها وتحسينها تكراريًا. توفر skill-creator workflow منظمًا: مسودة → اختبار → تقييم → تكرار، مع مشغلات eval ومصححات وواجهة benchmark.
+طُورت `harness-creator` باستخدام منهجية <strong>skill-creator</strong>، وهي meta-skill الرسمية من Anthropic لإنشاء مهارات الوكلاء واختبارها وتحسينها تكراريًا. توفر skill-creator workflow منظمًا: مسودة → اختبار → تقييم → تكرار، مع مشغلات eval ومصححات وواجهة benchmark.
 
-- **مصدر skill-creator**: [anthropics/skills — skill-creator](https://github.com/anthropics/skills/tree/main/skills/skill-creator)
-- **وثائق مهارات Claude Code**: [anthropics/claude-code — plugin-dev/skills](https://github.com/anthropics/claude-code/tree/main/plugins/plugin-dev/skills)
+- <strong>مصدر skill-creator</strong>: [anthropics/skills — skill-creator](https://github.com/anthropics/skills/tree/main/skills/skill-creator)
+- <strong>وثائق مهارات Claude Code</strong>: [anthropics/claude-code — plugin-dev/skills](https://github.com/anthropics/claude-code/tree/main/plugins/plugin-dev/skills)

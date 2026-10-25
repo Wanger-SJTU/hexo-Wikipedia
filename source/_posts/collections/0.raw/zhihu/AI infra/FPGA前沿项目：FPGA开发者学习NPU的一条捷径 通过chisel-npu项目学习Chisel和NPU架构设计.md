@@ -162,7 +162,7 @@ end // initial
 endmodule
 上面是自动生成的verilog代码，大家可以对比看一下。
 
-学习Chisel代码可以使用这个**开源学习平台，Chisel-Bootcamp**：
+学习Chisel代码可以使用这个<strong>开源学习平台，Chisel-Bootcamp</strong>：
 
 [https://blog.csdn.net/u010170039/article/details/137940850?utm_medium=distribute.pc_relevant.none-task-blog-2~default~baidujs_baidulandingword~default-2-137940850-blog-139451444.235^v43^pc_blog_bottom_relevance_base7&spm=1001.2101.3001.4242.2&utm_relevant_index=5](https://link.zhihu.com/?target=https%3A//blog.csdn.net/u010170039/article/details/137940850%3Futm_medium%3Ddistribute.pc_relevant.none-task-blog-2~default~baidujs_baidulandingword~default-2-137940850-blog-139451444.235%255Ev43%255Epc_blog_bottom_relevance_base7%26spm%3D1001.2101.3001.4242.2%26utm_relevant_index%3D5)直接clone这个项目。没有jupyter基础稍微了解，或者安装anaconda自己就会带。做AI的可能没人不知道Jupyter吧。
 

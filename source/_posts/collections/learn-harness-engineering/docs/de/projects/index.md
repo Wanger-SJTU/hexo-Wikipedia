@@ -19,12 +19,12 @@ Dies ist der praktische Teil von Learn Harness Engineering. Die Lektionen zu les
 
 Der Kurs enthält 6 aufeinander aufbauende Praxisprojekte, die zeigen, wie man eine zuverlässige agentische Arbeitsumgebung von Grund auf baut:
 
-1. **Nur Prompt vs Regeln zuerst**: Vergleiche, wie ein Agent nur mit Prompt und mit einfachem harness arbeitet.
-2. **Agent-lesbarer Workspace**: Lerne, ein Repository KI-freundlich zu strukturieren und Handoff-Mechanismen einzurichten.
-3. **Kontinuität über Sessions**: Entwirf Zustandsdateien und Initialisierungsskripte, damit der Agent über Sessions hinweg nahtlos weiterarbeiten kann.
-4. **Runtime-Feedback und Scope-Kontrolle**: Führe Werkzeuge ein, mit denen der Agent seinen eigenen Code testen und Fehler während der Ausführung korrigieren kann.
-5. **Selbstverifikation und Rollentrennung**: Baue einen unabhängigen Review-Mechanismus, um Halluzinationen und zu frühe Erfolgsmeldungen zu vermeiden.
-6. **Vollständiger harness (Capstone)**: Setze eine finale, beobachtbare, end-to-end agentische Arbeitsumgebung zusammen.
+1. <strong>Nur Prompt vs Regeln zuerst</strong>: Vergleiche, wie ein Agent nur mit Prompt und mit einfachem harness arbeitet.
+2. <strong>Agent-lesbarer Workspace</strong>: Lerne, ein Repository KI-freundlich zu strukturieren und Handoff-Mechanismen einzurichten.
+3. <strong>Kontinuität über Sessions</strong>: Entwirf Zustandsdateien und Initialisierungsskripte, damit der Agent über Sessions hinweg nahtlos weiterarbeiten kann.
+4. <strong>Runtime-Feedback und Scope-Kontrolle</strong>: Führe Werkzeuge ein, mit denen der Agent seinen eigenen Code testen und Fehler während der Ausführung korrigieren kann.
+5. <strong>Selbstverifikation und Rollentrennung</strong>: Baue einen unabhängigen Review-Mechanismus, um Halluzinationen und zu frühe Erfolgsmeldungen zu vermeiden.
+6. <strong>Vollständiger harness (Capstone)</strong>: Setze eine finale, beobachtbare, end-to-end agentische Arbeitsumgebung zusammen.
 
 ## Vorgehen
 

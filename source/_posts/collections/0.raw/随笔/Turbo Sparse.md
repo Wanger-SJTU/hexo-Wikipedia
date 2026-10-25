@@ -30,11 +30,11 @@ class FeedForward(nn.Module):
 | ShiftedReLULlama-7B | 71%      |
 
 论文统计首层transformer block FFN层的稀疏性质，原生FFN的稀疏性仅有40%，激活函数由silu替换为Relu后可以达到67%，而ShiftedReLU可进一步提高到71%。
-从FFN层的计算上来看，表面上是Gate部分作为门控控制了计算的稀疏性，**实际上Up、Gate共同控制了计算的稀疏性**，所以很自然的就引出了**drelu**的方案
+从FFN层的计算上来看，表面上是Gate部分作为门控控制了计算的稀疏性，<strong>实际上Up、Gate共同控制了计算的稀疏性</strong>，所以很自然的就引出了<strong>drelu</strong>的方案
 $$
 \text{Combined dReLU} (x) := max(0, xW_{gate} ) \odot max(0, xW_{up} )
 $$
-![Pasted image 20240810223409.png](/images/collections/assets/Pasted%2520image%252020240810223409.png)
+![Pasted image 20240810223409.png](/images/collections/assets/Pasted%20image%2020240810223409.png)
 从训练过程上来看，替换以后收敛性没有影响，结果的评价指标上也没有太大影响。
 
 下一步就是进一步评价下修改以后得稀疏度了。这里没有直接用两个mask的交集，而是按照topk的方法做了评测
@@ -45,9 +45,9 @@ $$
 $$
 		\text{Gated-MLP}(x) := (\text{Combined}(x) ∗ \text{Mask}(x))W_{down}
 $$
-![Pasted image 20240810224217.png](/images/collections/assets/Pasted%2520image%252020240810224217.png)
-显然效果显著。不影响模型表现的情况下，稀疏到达到了80%，而牺牲一定精度的条件下可以到达**90%**
+![Pasted image 20240810224217.png](/images/collections/assets/Pasted%20image%2020240810224217.png)
+显然效果显著。不影响模型表现的情况下，稀疏到达到了80%，而牺牲一定精度的条件下可以到达<strong>90%</strong>
 
 ## Sparsity of Sparsifi ed Models
 
-![Pasted image 20240810224413.png](/images/collections/assets/Pasted%2520image%252020240810224413.png)
+![Pasted image 20240810224413.png](/images/collections/assets/Pasted%20image%2020240810224413.png)

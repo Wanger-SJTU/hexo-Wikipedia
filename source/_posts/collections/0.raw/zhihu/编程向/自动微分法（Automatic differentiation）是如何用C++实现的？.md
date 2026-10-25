@@ -21,21 +21,21 @@ source_url: https://www.zhihu.com/question/48356514/answer/123290631
 
 - - - - - - - - - - - - - - - - - - - - - - - - 2016年10月6日 更新 - - - - - - - - - - - - - - - - - - - - - - - - 
 
-实现 AD 有两种方式，**函数重载**与**代码生成**。两种方式的原理都一样，**链式法则**。
+实现 AD 有两种方式，<strong>函数重载</strong>与<strong>代码生成</strong>。两种方式的原理都一样，<strong>链式法则</strong>。
 
-不难想象，任何计算都可以由第1步到第k步的**序列形式**，其中第 i 步计算的输入，在之前的 i-1 步中已经计算（例如编译器生成的汇编指令**序列**）。因此，任何计算都可以看作形式如下图左侧的**复合函数**。微积分中的**链式法则**告诉我们，符合函数的导数可写作下图右侧的形式（假设每一步都可导）。请注意**偏导数**和**全导数**的区别。
+不难想象，任何计算都可以由第1步到第k步的<strong>序列形式</strong>，其中第 i 步计算的输入，在之前的 i-1 步中已经计算（例如编译器生成的汇编指令<strong>序列</strong>）。因此，任何计算都可以看作形式如下图左侧的<strong>复合函数</strong>。微积分中的<strong>链式法则</strong>告诉我们，符合函数的导数可写作下图右侧的形式（假设每一步都可导）。请注意<strong>偏导数</strong>和<strong>全导数</strong>的区别。
 
-**图一**
+<strong>图一</strong>
 
-![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_18018a571aa9.jpg)![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_47dea8e2ee17.webp)
+![](/images/collections/0.raw/zhihu/%E7%BC%96%E7%A8%8B%E5%90%91/asset/img_18018a571aa9.jpg)![](/images/collections/0.raw/zhihu/%E7%BC%96%E7%A8%8B%E5%90%91/asset/img_47dea8e2ee17.webp)
 
 自动微分的第一个难点就在这，微积分中的链式法则。大家在课堂上学的链式法则的示例通常只有两到三个函数，而自动微分面对的计算，有无数个函数。许多人不习惯在这样大的规模上应用链式法则。不过一旦习惯，就会发现自动微分的原理十分简单。
 
 如果上述内容过于抽象，请参看下面这个例子以后再看一遍。
 
-**图二**
+<strong>图二</strong>
 
-![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_43bc951ca4c4.jpg)![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_2d4e6a9f7615.webp)
+![](/images/collections/0.raw/zhihu/%E7%BC%96%E7%A8%8B%E5%90%91/asset/img_43bc951ca4c4.jpg)![](/images/collections/0.raw/zhihu/%E7%BC%96%E7%A8%8B%E5%90%91/asset/img_2d4e6a9f7615.webp)
 
 在上图中，顶部方程是二维旋转。输入 x 有三个变量，旋转角度及二维坐标。输出 z 有两个变量，即旋转后的二维坐标。上图列表第二列是该计算的序列形式，第一列是每一步对应的表达式，第三列是对应的链式法则（请对比图一）。
 
@@ -43,9 +43,9 @@ source_url: https://www.zhihu.com/question/48356514/answer/123290631
 
 如果把计算的序列形式及其导数计算每个步骤的依赖关系表示成图
 
-**图三**
+<strong>图三</strong>
 
-![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_75a588d4d9f6.jpg)
+![](/images/collections/0.raw/zhihu/%E7%BC%96%E7%A8%8B%E5%90%91/asset/img_75a588d4d9f6.jpg)
 
 不难发现，两张图是等价的。也就是说，计算序列形式的每一步都与其导数计算的步骤有一一对应的关系。源程序怎么算，其导数就可以怎么算（从顺序上来说）。
 
@@ -55,8 +55,8 @@ source_url: https://www.zhihu.com/question/48356514/answer/123290631
 
 - 用户提供图二第二列序列形式的源代码，按顺序生成第三列的微分计算。此种方法的特点是，读一行源代码，生成一行微分计算，因此可以动态生成。**若源代码这一行在做乘法，那么就依据乘法法则生成该步的微分计算。若源代码这一行是三角函数 cos(x)，那么它对应的微分计算就是 -sin(x)，以此类推。每一步计算的偏导数都根据链式法则组合，得出该步骤的全导数。
 该种方法的常见手段是函数重载**。优点是简单直接，缺点是动态生成成本较高。
-- 用户提供源代码，在编译时生成图三左侧的程序结构图，并生成图三右侧对应的微分程序。**该种方法的常见手段是编译时的代码生成**（比如用 flex-bison 做词法、语法分析）。优点是静态生成效率高，一次生成，多次使用。缺点是编译原理有门槛，非计算机专业望而却步。
-力求简单，下面给出以函数重载实现的简单示例 SAD - Simple Automatic Differentiation。请对照**图二**中的列表阅读。
+- 用户提供源代码，在编译时生成图三左侧的程序结构图，并生成图三右侧对应的微分程序。<strong>该种方法的常见手段是编译时的代码生成</strong>（比如用 flex-bison 做词法、语法分析）。优点是静态生成效率高，一次生成，多次使用。缺点是编译原理有门槛，非计算机专业望而却步。
+力求简单，下面给出以函数重载实现的简单示例 SAD - Simple Automatic Differentiation。请对照<strong>图二</strong>中的列表阅读。
 
 main 函数中对应图二表中第二列，2D 旋转的计算。ADV 里重载的 +, -, *, sin, cos 不仅完成本来的计算，还负责图二表中第三列导数的计算。
 
@@ -156,7 +156,7 @@ int main()
 
 运行结果：
 
-![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_aa1be7729dda.jpg)
+![](/images/collections/0.raw/zhihu/%E7%BC%96%E7%A8%8B%E5%90%91/asset/img_aa1be7729dda.jpg)
 
 矢量 [2,1] 被旋转 180° ， 变为 [-2,-1]。关于角度的导数为 [-1,2]。
 
@@ -182,7 +182,7 @@ The Art of Differentiating Computer Programs
 
 刚才是科普，下面给出自动微分的张量公式，及其对应的，便于编程实现的矩阵公式。
 
-图一的**计算序列**可以记作如下形式
+图一的<strong>计算序列</strong>可以记作如下形式
 
 \begin{eqnarray*}
 y^{1} &=&f^{1}\left( x\right)  \\
@@ -198,13 +198,13 @@ Tangent space)的矢量，对偶空间 (
 
 Dual space)的矢量。
 
-其中切空间的**基**\left\{ \dfrac{\partial }{\partial x^{i}} \right\} 是关于坐标系的偏导算符
+其中切空间的<strong>基</strong>\left\{ \dfrac{\partial }{\partial x^{i}} \right\} 是关于坐标系的偏导算符
 
-对偶空间的**基**是关于坐标系的微分\left\{ dx^i \right\} 
+对偶空间的<strong>基</strong>是关于坐标系的微分\left\{ dx^i \right\} 
 
-从切矢量出发 我们可以得到自动微分的正序模式 (**forward mode**)
+从切矢量出发 我们可以得到自动微分的正序模式 (<strong>forward mode</strong>)
 
-从对偶矢量出发 我们可以得到自动微分的逆序模式 (**reverse mode**)
+从对偶矢量出发 我们可以得到自动微分的逆序模式 (<strong>reverse mode</strong>)
 
 任意切矢量 \dfrac{d}{ds}=\dfrac{dx^{i}}{ds}\dfrac{%
 \partial }{\partial x^{i}} 的定义是其对应的方向导数算符

@@ -100,15 +100,15 @@ vmull_u8作用是：第一个参数的每个字节都与第二个参数的每个
 
 vmlal.u8 does the same thing as vmull.u8 but also adds the content of another register to the result.
 
-**vmlal_u8在vmull_u8的基础上再加上第一个参数的值**
+<strong>vmlal_u8在vmull_u8的基础上再加上第一个参数的值</strong>
 
 So we end up with just three instructions for weighted average of eight pixels. Nice.
 
-**三个指令就实现了我们要的求加权平均值操作**
+<strong>三个指令就实现了我们要的求加权平均值操作</strong>
 
 Now it’s time to undo the scaling of the weight factors. To do so I shift each 16 bit result to the right by 8 bits. This equals to a division by 256. ARM NEON has lots of instructions to do the shift, but also a “narrow” variant exists. This one does two things at once: It does the shift and afterwards converts the 16 bit integers back to 8 bit by removing all the high-bytes from the result. We get back from the 128 bit register pair to a single 64 bit register.
 
-**vshrn_n_u16的作用是将第一个参数，即128位寄存器每16位右移第二个参数位，并将最终的结果存到一个64位寄存器里****
+<strong>vshrn_n_u16的作用是将第一个参数，即128位寄存器每16位右移第二个参数位，并将最终的结果存到一个64位寄存器里</strong>**
 
     result = vshrn_n_u16 (temp, 8);
 
@@ -214,7 +214,7 @@ http://gcc.gnu.org/onlinedocs/gcc/ARM-NEON-Intrinsics.html
 
 本文介绍了arm-linux编译器针对ARM处理器NEON的内建Intrinsics指令的介绍，当-mfpu=neon编译选项使能时就可以在C/C++代码内使用ARM的SIMD指令了，包括加法、乘法、比较、移位、绝对值 、极大极小极值运算、保存和加载指令等。**
 
-**有些指令看名字并不是很理解，下面的代码能帮助你理解其中的作用**
+<strong>有些指令看名字并不是很理解，下面的代码能帮助你理解其中的作用</strong>
 
 `#ifndef __ARM_NEON__  
 #error You must enable NEON instructions (e.g. -mfloat-abi=softfp -mfpu=neon) to use arm_neon.h  
@@ -228,7 +228,7 @@ http://gcc.gnu.org/onlinedocs/gcc/ARM-NEON-Intrinsics.html
 (4)、窄指令：四字向量操作数执行运算，并生成双字向量结果，所生成的元素一般是操作数元素宽度的一半； 
 (5)、饱和指令：当超过数据类型指定的范围则自动限制在该范围内。*/  
   
-/******************************************************Addition*************************/  
+/****************************************************<strong>Addition</strong>***********************/  
 /*--1、Vector add(正常指令): vadd -> ri = ai + bi; r, a, b have equal lane sizes--*/  
 int8x8_t vadd_s8 (int8x8_t __a, int8x8_t __b);//_mm_add_epi8  
 int16x4_t vadd_s16 (int16x4_t __a, int16x4_t __b);//_mm_add_epi16  
@@ -326,7 +326,7 @@ int32x2_t vraddhn_s64 (int64x2_t __a, int64x2_t __b)
 uint8x8_t vraddhn_u16 (uint16x8_t __a, uint16x8_t __b)  
 uint16x4_t vraddhn_u32 (uint32x4_t __a, uint32x4_t __b)  
 uint32x2_t vraddhn_u64 (uint64x2_t __a, uint64x2_t __b);  
-/*******************************************Multiplication******************************/  
+/*****************************************<strong>Multiplication</strong>****************************/  
 /*--1、Vector multiply(正常指令): vmul -> ri = ai * bi;--*/  
 int8x8_t vmul_s8 (int8x8_t __a, int8x8_t __b);  
 int16x4_t vmul_s16 (int16x4_t __a, int16x4_t __b);//_mm_mullo_epi16  
@@ -432,7 +432,7 @@ float32x4_t vfmaq_f32 (float32x4_t __a, float32x4_t __b, float32x4_t __c);
 The result of the multiply is not rounded before the subtraction--*/  
 float32x2_t vfms_f32 (float32x2_t __a, float32x2_t __b, float32x2_t __c);  
 float32x4_t vfmsq_f32 (float32x4_t __a, float32x4_t __b, float32x4_t __c);  
-/******************************************************Round to integral****************/  
+/****************************************************<strong>Round to integral</strong>**************/  
 /*--1、to nearest, ties to even--*/  
 float32x2_t vrndn_f32 (float32x2_t __a);  
 float32x4_t vrndqn_f32 (float32x4_t __a);  
@@ -448,7 +448,7 @@ float32x4_t vrndqm_f32 (float32x4_t __a);
 /*--5、towards 0--*/  
 float32x2_t vrnd_f32 (float32x2_t __a);  
 float32x4_t vrndq_f32 (float32x4_t __a);  
-/**********************************************Subtraction******************************/  
+/********************************************<strong>Subtraction</strong>****************************/  
 /*--1、Vector subtract(正常指令):vsub -> ri = ai - bi;--*/  
 int8x8_t vsub_s8 (int8x8_t __a, int8x8_t __b);//_mm_sub_epi8  
 int16x4_t vsub_s16 (int16x4_t __a, int16x4_t __b);//_mm_sub_epi16  
@@ -530,7 +530,7 @@ int32x2_t vrsubhn_s64 (int64x2_t __a, int64x2_t __b)
 uint8x8_t vrsubhn_u16 (uint16x8_t __a, uint16x8_t __b);  
 uint16x4_t vrsubhn_u32 (uint32x4_t __a, uint32x4_t __b);  
 uint32x2_t vrsubhn_u64 (uint64x2_t __a, uint64x2_t __b);  
-/******************************************************Comparison***********************/  
+/****************************************************<strong>Comparison</strong>*********************/  
 /*--1、Vector compare equal(正常指令): vceq -> ri = ai == bi ? 1...1 : 0...0;  
 If they are equal, the corresponding element in the destination vector is set to all ones. 
 Otherwise, it is set to all zeros--*/  
@@ -645,7 +645,7 @@ corresponding element of a second vector.If it is less than it, the correspondin
 element in the destination vector is set to all ones. Otherwise,it is set to all zeros--*/  
 uint32x2_t vcalt_f32 (float32x2_t __a, float32x2_t __b);  
 uint32x4_t vcaltq_f32 (float32x4_t __a, float32x4_t __b);  
-/**********************************************Vector test bits*************************/  
+/********************************************<strong>Vector test bits</strong>***********************/  
 /*--正常指令，vtst -> ri = (ai & bi != 0) ? 1...1:0...0; 
 bitwise logical ANDs each element in a vector with the corresponding element of a second  
 vector.If the result is not zero, the corresponding element in the destination vector  
@@ -664,7 +664,7 @@ uint8x16_t vtstq_u8 (uint8x16_t __a, uint8x16_t __b);
 uint16x8_t vtstq_u16 (uint16x8_t __a, uint16x8_t __b);  
 uint32x4_t vtstq_u32 (uint32x4_t __a, uint32x4_t __b);  
 uint8x16_t vtstq_p8 (poly8x16_t __a, poly8x16_t __b);  
-/**********************************************Absolute difference**********************/  
+/********************************************<strong>Absolute difference</strong>********************/  
 /*--1、Absolute difference between the arguments(正常指令): vabd -> ri = |ai - bi|; 
 returns the absolute values of the results--*/  
 int8x8_t vabd_s8 (int8x8_t __a, int8x8_t __b);  
@@ -710,7 +710,7 @@ int64x2_t vabal_s32 (int64x2_t __a, int32x2_t __b, int32x2_t __c);
 uint16x8_t vabal_u8 (uint16x8_t __a, uint8x8_t __b, uint8x8_t __c);  
 uint32x4_t vabal_u16 (uint32x4_t __a, uint16x4_t __b, uint16x4_t __c);  
 uint64x2_t vabal_u32 (uint64x2_t __a, uint32x2_t __b, uint32x2_t __c);  
-/***********************************************Max*************************************/  
+/*********************************************<strong>Max</strong>***********************************/  
 /*--正常指令, vmax -> ri = ai >= bi ? ai : bi; returns the larger of each pair--*/  
 int8x8_t vmax_s8 (int8x8_t __a, int8x8_t __b);//_mm_max_epi8  
 int16x4_t vmax_s16 (int16x4_t __a, int16x4_t __b);//_mm_max_epi16  
@@ -726,7 +726,7 @@ float32x4_t vmaxq_f32 (float32x4_t __a, float32x4_t __b);//_mm_max_ps
 uint8x16_t vmaxq_u8 (uint8x16_t __a, uint8x16_t __b);//_mm_max_epu8  
 uint16x8_t vmaxq_u16 (uint16x8_t __a, uint16x8_t __b);//_mm_max_epu16  
 uint32x4_t vmaxq_u32 (uint32x4_t __a, uint32x4_t __b);//_mm_max_epu32  
-/****************************************************Min********************************/  
+/**************************************************<strong>Min</strong>******************************/  
 /*--正常指令, vmin -> ri = ai >= bi ? bi : ai; returns the smaller of each pair--*/  
 int8x8_t vmin_s8 (int8x8_t __a, int8x8_t __b);//_mm_min_epi8  
 int16x4_t vmin_s16 (int16x4_t __a, int16x4_t __b);//_mm_min_epi16  
@@ -742,7 +742,7 @@ float32x4_t vminq_f32 (float32x4_t __a, float32x4_t __b);//_mm_min_ps
 uint8x16_t vminq_u8 (uint8x16_t __a, uint8x16_t __b);//_mm_min_epu8  
 uint16x8_t vminq_u16 (uint16x8_t __a, uint16x8_t __b);//_mm_min_epu16  
 uint32x4_t vminq_u32 (uint32x4_t __a, uint32x4_t __b);//_mm_min_epu32  
-/*******************************************Pairwise addition***************************/  
+/*****************************************<strong>Pairwise addition</strong>*************************/  
 /*--1、Pairwise add(正常指令):  
 vpadd -> r0 = a0 + a1, ..., r3 = a6 + a7, r4 = b0 + b1, ..., r7 = b6 + b7 
 adds adjacent pairs of elements of two vectors,  
@@ -787,7 +787,7 @@ int64x2_t vpadalq_s32 (int64x2_t __a, int32x4_t __b);
 uint16x8_t vpadalq_u8 (uint16x8_t __a, uint8x16_t __b);  
 uint32x4_t vpadalq_u16 (uint32x4_t __a, uint16x8_t __b);  
 uint64x2_t vpadalq_u32 (uint64x2_t __a, uint32x4_t __b);  
-/**********************************************Folding maximum**************************/  
+/********************************************<strong>Folding maximum</strong>************************/  
 /*--饱和指令, vpmax -> vpmax r0 = a0 >= a1 ? a0 : a1, ..., r4 = b0 >= b1 ? b0 : b1, ...; 
 compares adjacent pairs of elements, and copies the larger of each pair into the  
 destination vector.The maximums from each pair of the first input vector are stored in  
@@ -800,7 +800,7 @@ float32x2_t vpmax_f32 (float32x2_t __a, float32x2_t __b);
 uint8x8_t vpmax_u8 (uint8x8_t __a, uint8x8_t __b);  
 uint16x4_t vpmax_u16 (uint16x4_t __a, uint16x4_t __b);  
 uint32x2_t vpmax_u32 (uint32x2_t __a, uint32x2_t __b);  
-/***************************************************Folding minimum*********************/  
+/*************************************************<strong>Folding minimum</strong>*******************/  
 /*--饱和指令, vpmin -> r0 = a0 >= a1 ? a1 : a0, ..., r4 = b0 >= b1 ? b1 : b0, ...; 
 compares adjacent pairs of elements, and copies the smaller of each pair into the  
 destination vector.The minimums from each pair of the first input vector are stored in  
@@ -813,7 +813,7 @@ float32x2_t vpmin_f32 (float32x2_t __a, float32x2_t __b);
 uint8x8_t vpmin_u8 (uint8x8_t __a, uint8x8_t __b);  
 uint16x4_t vpmin_u16 (uint16x4_t __a, uint16x4_t __b);  
 uint32x2_t vpmin_u32 (uint32x2_t __a, uint32x2_t __b);  
-/***************************************************Reciprocal**************************/  
+/*************************************************<strong>Reciprocal</strong>************************/  
 /*--1、饱和指令, Newton-Raphson iteration(牛顿 - 拉夫逊迭代) 
 performs a Newton-Raphson step for finding the reciprocal. It multiplies the elements of 
 one vector by the corresponding elements of another vector, subtracts each of the results 
@@ -826,7 +826,7 @@ subtracts each of the results from 3, divides these results by two, and places
 the final results into the elements of the destination vector--*/  
 float32x2_t vrsqrts_f32 (float32x2_t __a, float32x2_t __b);  
 float32x4_t vrsqrtsq_f32 (float32x4_t __a, float32x4_t __b);  
-/************************************************Shifts by signed variable**************/  
+/**********************************************<strong>Shifts by signed variable</strong>************/  
 /*--1、Vector shift left(饱和指令): vshl -> ri = ai left shifts each element in a vector by an amount specified in the corresponding element  
 in the second input vector. The shift amount is the signed integer value of the least  
 significant byte of the element in the second input vector. The bits shifted out of each 
@@ -909,7 +909,7 @@ uint8x16_t vqrshlq_u8 (uint8x16_t __a, int8x16_t __b);
 uint16x8_t vqrshlq_u16 (uint16x8_t __a, int16x8_t __b);  
 uint32x4_t vqrshlq_u32 (uint32x4_t __a, int32x4_t __b);  
 uint64x2_t vqrshlq_u64 (uint64x2_t __a, int64x2_t __b);  
-/****************************************Shifts by a constant***************************/  
+/**************************************<strong>Shifts by a constant</strong>*************************/  
 /*--1、Vector shift right by constant: vshr -> ri = ai >> b;The results are truncated. 
 right shifts each element in a vector by an immediate value,  
 and places the results in the destination vector.--*/  
@@ -1098,7 +1098,7 @@ int64x2_t vshll_n_s32 (int32x2_t __a, const int __b);
 uint16x8_t vshll_n_u8 (uint8x8_t __a, const int __b);  
 uint32x4_t vshll_n_u16 (uint16x4_t __a, const int __b);  
 uint64x2_t vshll_n_u32 (uint32x2_t __a, const int __b);  
-/********************************************Shifts with insert*************************/  
+/******************************************<strong>Shifts with insert</strong>***********************/  
 /*--1、Vector shift right and insert: vsri -> ; The two most significant bits in the  
 destination vector are unchanged. right shifts each element in the second input vector  
 by an immediate value, and inserts the results in the destination vector. It does not  
@@ -1151,7 +1151,7 @@ uint32x4_t vsliq_n_u32 (uint32x4_t __a, uint32x4_t __b, const int __c);
 uint64x2_t vsliq_n_u64 (uint64x2_t __a, uint64x2_t __b, const int __c);  
 poly8x16_t vsliq_n_p8 (poly8x16_t __a, poly8x16_t __b, const int __c);  
 poly16x8_t vsliq_n_p16 (poly16x8_t __a, poly16x8_t __b, const int __c);  
-/*****************************************Absolute value********************************/  
+/***************************************<strong>Absolute value</strong>******************************/  
 /*--1、Absolute(正常指令): vabs -> ri = |ai|; 
 returns the absolute value of each element in a vector.--*/  
 int8x8_t vabs_s8 (int8x8_t __a);//_mm_abs_epi8  
@@ -1171,7 +1171,7 @@ int32x2_t vqabs_s32 (int32x2_t __a);
 int8x16_t vqabsq_s8 (int8x16_t __a);  
 int16x8_t vqabsq_s16 (int16x8_t __a);  
 int32x4_t vqabsq_s32 (int32x4_t __a);  
-/***************************************************Negation****************************/  
+/*************************************************<strong>Negation</strong>**************************/  
 /*--1、Negate(正常指令): vneg -> ri = -ai; negates each element in a vector.--*/  
 int8x8_t vneg_s8 (int8x8_t __a);  
 int16x4_t vneg_s16 (int16x4_t __a);  
@@ -1190,7 +1190,7 @@ int32x2_t vqneg_s32 (int32x2_t __a);
 int8x16_t vqnegq_s8 (int8x16_t __a);  
 int16x8_t vqnegq_s16 (int16x8_t __a);  
 int32x4_t vqnegq_s32 (int32x4_t __a);  
-/********************************************Logical operations*************************/  
+/******************************************<strong>Logical operations</strong>***********************/  
 /*--1、Bitwise not(正常指令): vmvn -> ri = ~ai;  
 performs a bitwise inversion of each element from the input vector.--*/  
 int8x8_t vmvn_s8 (int8x8_t __a);  
@@ -1299,7 +1299,7 @@ uint8x16_t vornq_u8 (uint8x16_t __a, uint8x16_t __b);
 uint16x8_t vornq_u16 (uint16x8_t __a, uint16x8_t __b);  
 uint32x4_t vornq_u32 (uint32x4_t __a, uint32x4_t __b);  
 uint64x2_t vornq_u64 (uint64x2_t __a, uint64x2_t __b);  
-/****************************************Count leading sign bits************************/  
+/**************************************<strong>Count leading sign bits</strong>**********************/  
 /*--正常指令, vcls -> ; counts the number of consecutive bits, starting from the most  
 significant bit,that are the same as the most significant bit, in each element in a  
 vector, and places the count in the result vector.--*/  
@@ -1309,7 +1309,7 @@ int32x2_t vcls_s32 (int32x2_t __a);
 int8x16_t vclsq_s8 (int8x16_t __a);  
 int16x8_t vclsq_s16 (int16x8_t __a);  
 int32x4_t vclsq_s32 (int32x4_t __a);  
-/*******************************************Count leading zeros*************************/  
+/*****************************************<strong>Count leading zeros</strong>***********************/  
 /*--正常指令, vclz -> ; counts the number of consecutive zeros, starting from the most 
 significant bit, in each element in a vector, and places the count in result vector.--*/  
 int8x8_t vclz_s8 (int8x8_t __a);  
@@ -1324,7 +1324,7 @@ int32x4_t vclzq_s32 (int32x4_t __a);
 uint8x16_t vclzq_u8 (uint8x16_t __a);  
 uint16x8_t vclzq_u16 (uint16x8_t __a);  
 uint32x4_t vclzq_u32 (uint32x4_t __a);  
-/*******************************************Count number of set bits********************/  
+/*****************************************<strong>Count number of set bits</strong>******************/  
 /*--正常指令, vcnt -> counts the number of bits that are one in each element in a vector,  
 and places the count in the result vector.--*/  
 int8x8_t vcnt_s8 (int8x8_t __a);  
@@ -1333,21 +1333,21 @@ poly8x8_t vcnt_p8 (poly8x8_t __a);
 int8x16_t vcntq_s8 (int8x16_t __a);  
 uint8x16_t vcntq_u8 (uint8x16_t __a);  
 poly8x16_t vcntq_p8 (poly8x16_t __a);  
-/*****************************************Reciprocal estimate***************************/  
+/***************************************<strong>Reciprocal estimate</strong>*************************/  
 /*--正常指令, vrecpe -> ; finds an approximate reciprocal of each element in a vector,  
 and places it in the result vector.--*/  
 float32x2_t vrecpe_f32 (float32x2_t __a);  
 uint32x2_t vrecpe_u32 (uint32x2_t __a);  
 float32x4_t vrecpeq_f32 (float32x4_t __a);  
 uint32x4_t vrecpeq_u32 (uint32x4_t __a);  
-/****************************************Reciprocal square-root estimate****************/  
+/**************************************<strong>Reciprocal square-root estimate</strong>**************/  
 /*--正常指令, vrsqrte -> ; finds an approximate reciprocal square root of each element 
 in a vector, and places it in the return vector.--*/  
 float32x2_t vrsqrte_f32 (float32x2_t __a);  
 uint32x2_t vrsqrte_u32 (uint32x2_t __a);  
 float32x4_t vrsqrteq_f32 (float32x4_t __a);  
 uint32x4_t vrsqrteq_u32 (uint32x4_t __a);  
-/*******************************************Get lanes from a vector*********************/  
+/*****************************************<strong>Get lanes from a vector</strong>*******************/  
 /*--vmov -> r = a[b]; returns the value from the specified lane of a vector. 
 Extract lanes from a vector and put into a register.  
 These intrinsics extract a single lane (element) from a vector.--*/  
@@ -1373,7 +1373,7 @@ poly8_t vgetq_lane_p8 (poly8x16_t __a, const int __b);//_mm_extract_epi8
 poly16_t vgetq_lane_p16 (poly16x8_t __a, const int __b);//_mm_extract_epi16  
 int64_t vgetq_lane_s64 (int64x2_t __a, const int __b);//_mm_extract_epi64  
 uint64_t vgetq_lane_u64 (uint64x2_t __a, const int __b);//_mm_extract_epi64  
-/*********************************************Set lanes in a vector********************/  
+/*******************************************<strong>Set lanes in a vector</strong>******************/  
 /*--vmov -> ; sets the value of the specified lane of a vector. It returns the vector  
 with the new value.Load a single lane of a vector from a literal. These intrinsics set  
 a single lane (element) within a vector.--*/  
@@ -1399,7 +1399,7 @@ poly8x16_t vsetq_lane_p8 (poly8_t __a, poly8x16_t __b, const int __c);
 poly16x8_t vsetq_lane_p16 (poly16_t __a, poly16x8_t __b, const int __c);  
 int64x2_t vsetq_lane_s64 (int64_t __a, int64x2_t __b, const int __c);  
 uint64x2_t vsetq_lane_u64 (uint64_t __a, uint64x2_t __b, const int __c);  
-/****************************************Create vector from literal bit pattern*********/  
+/**************************************<strong>Create vector from literal bit pattern</strong>*******/  
 /*--vmov -> ; creates a vector from a 64-bit pattern.  
 Initialize a vector from a literal bit pattern.--*/  
 int8x8_t vcreate_s8 (uint64_t __a);//_mm_loadl_epi64  
@@ -1413,7 +1413,7 @@ uint32x2_t vcreate_u32 (uint64_t __a);//_mm_loadl_epi64
 uint64x1_t vcreate_u64 (uint64_t __a);//_mm_loadl_epi64  
 poly8x8_t vcreate_p8 (uint64_t __a);//_mm_loadl_epi64  
 poly16x4_t vcreate_p16 (uint64_t __a);//_mm_loadl_epi64  
-/*****************************************Set all lanes to the same value***************/  
+/***************************************<strong>Set all lanes to the same value</strong>*************/  
 /*--1、Load all lanes of vector to the same literal value: vdup/vmov -> ri = a;  
 duplicates a scalar into every element of the destination vector.  
 Load all lanes of vector to the same literal value--*/  
@@ -1486,7 +1486,7 @@ poly8x16_t vdupq_lane_p8 (poly8x8_t __a, const int __b);
 poly16x8_t vdupq_lane_p16 (poly16x4_t __a, const int __b);  
 int64x2_t vdupq_lane_s64 (int64x1_t __a, const int __b);//_mm_unpacklo_epi64  
 uint64x2_t vdupq_lane_u64 (uint64x1_t __a, const int __b);//_mm_unpacklo_epi64  
-/********************************************Combining vectors**************************/  
+/******************************************<strong>Combining vectors</strong>************************/  
 /*--长指令, -> r0 = a0, ..., r7 = a7, r8 = b0, ..., r15 = b7; 
 joins two 64-bit vectors into a single 128-bit vector.  
 The output vector contains twice the number of elements as each input vector.  
@@ -1502,7 +1502,7 @@ uint32x4_t vcombine_u32 (uint32x2_t __a, uint32x2_t __b);//_mm_unpacklo_epi64
 uint64x2_t vcombine_u64 (uint64x1_t __a, uint64x1_t __b);//_mm_unpacklo_epi64  
 poly8x16_t vcombine_p8 (poly8x8_t __a, poly8x8_t __b);//_mm_unpacklo_epi64  
 poly16x8_t vcombine_p16 (poly16x4_t __a, poly16x4_t __b);//_mm_unpacklo_epi64  
-/***************************************Splitting vectors*******************************/  
+/*************************************<strong>Splitting vectors</strong>*****************************/  
 /*--1、窄指令, -> ri = a(i+4); returns the higher half of the 128-bit input vector. The 
 output is a 64-bit vector that has half the number of elements as the input vector.--*/  
 int8x8_t vget_high_s8 (int8x16_t __a);//_mm_unpackhi_epi64  
@@ -1529,7 +1529,7 @@ poly8x8_t vget_low_p8 (poly8x16_t __a);
 poly16x4_t vget_low_p16 (poly16x8_t __a);  
 int64x1_t vget_low_s64 (int64x2_t __a);  
 uint64x1_t vget_low_u64 (uint64x2_t __a);  
-/****************************************************Conversions************************/  
+/**************************************************<strong>Conversions</strong>**********************/  
 /*--1、Convert from float: vcvt ->, convert from floating-point to integer.--*/  
 int32x2_t vcvt_s32_f32 (float32x2_t __a);  
 uint32x2_t vcvt_u32_f32 (float32x2_t __a);  
@@ -1551,7 +1551,7 @@ float32x4_t vcvtq_n_f32_u32 (uint32x4_t __a, const int __b);
 /*--3、between single-precision and double-precision numbers: vcvt ->--*/  
 float16x4_t vcvt_f16_f32(float32x4_t a);  
 float32x4_t vcvt_f32_f16(float16x4_t a);  
-/*************************************************Move**********************************/  
+/***********************************************<strong>Move</strong>********************************/  
 /*--1、Vector narrow integer(窄指令): vmovn -> ri = ai[0...8]; copies the least  
 significant half of each element of a quadword vector into  
 the corresponding elements of a doubleword vector.--*/  
@@ -1589,7 +1589,7 @@ The elements in the operand are signed and the elements in the result are unsign
 uint8x8_t vqmovun_s16 (int16x8_t __a);//_mm_packus_epi16  
 uint16x4_t vqmovun_s32 (int32x4_t __a);//_mm_packus_epi32  
 uint32x2_t vqmovun_s64 (int64x2_t __a);  
-/******************************************************Table lookup*********************/  
+/****************************************************<strong>Table lookup</strong>*******************/  
 /*--1、Table lookup: vtbl -> uses byte indexes in a control vector to look up byte  
 values in a table and generate a new vector. Indexes out of range return 0.  
 The table is in Vector1 and uses one(or two or three or four)D registers.--*/  
@@ -1621,7 +1621,7 @@ poly8x8_t vtbx3_p8 (poly8x8_t __a, poly8x8x3_t __b, uint8x8_t __c);
 int8x8_t vtbx4_s8 (int8x8_t __a, int8x8x4_t __b, int8x8_t __c);  
 uint8x8_t vtbx4_u8 (uint8x8_t __a, uint8x8x4_t __b, uint8x8_t __c);  
 poly8x8_t vtbx4_p8 (poly8x8_t __a, poly8x8x4_t __b, uint8x8_t __c);  
-/***************************************Multiply, scalar, lane**************************/  
+/*************************************<strong>Multiply, scalar, lane</strong>************************/  
 /*--1、Vector multiply by scalar: vmul -> ri = ai * b;  
 multiplies each element in a vector by a scalar,  
 and places the results in the destination vector.--*/  
@@ -1830,7 +1830,7 @@ third vector.If any of the results overflow,
 they are saturated and the sticky QC flag is set.--*/  
 int32x4_t vqdmlsl_lane_s16 (int32x4_t __a, int16x4_t __b, int16x4_t __c, const int __d);  
 int64x2_t vqdmlsl_lane_s32 (int64x2_t __a, int32x2_t __b, int32x2_t __c, const int __d);  
-/*****************************************************Vector extract********************/  
+/***************************************************<strong>Vector extract</strong>******************/  
 /*--Vector extract: vext -> extracts n elements from the lower end of the second operand 
 vector and the remaining elements from the higher end of the first, and combines them to 
 form the result vector. The elements from the second operand are placed in the most  
@@ -1859,7 +1859,7 @@ uint32x4_t vextq_u32 (uint32x4_t __a, uint32x4_t __b, const int __c);//_mm_align
 uint64x2_t vextq_u64 (uint64x2_t __a, uint64x2_t __b, const int __c);//_mm_alignr_epi8  
 poly8x16_t vextq_p8 (poly8x16_t __a, poly8x16_t __b, const int __c);//_mm_alignr_epi8  
 poly16x8_t vextq_p16 (poly16x8_t __a, poly16x8_t __b, const int __c);//_mm_alignr_epi8  
-/****************************************************Reverse elements*******************/  
+/**************************************************<strong>Reverse elements</strong>*****************/  
 /*--1、Reverse vector elements (swap endianness): vrev64 -> reverses the order of 8-bit,  
 16-bit, or 32-bit elements within each doubleword of the vector,  
 and places the result in the corresponding destination vector.--*/  
@@ -1905,7 +1905,7 @@ poly8x8_t vrev16_p8 (poly8x8_t __a);
 int8x16_t vrev16q_s8 (int8x16_t __a);  
 uint8x16_t vrev16q_u8 (uint8x16_t __a);  
 poly8x16_t vrev16q_p8 (poly8x16_t __a);  
-/**********************************************************Bitwise Select***************/  
+/********************************************************<strong>Bitwise Select</strong>*************/  
 /*--Bitwise Select: vbsl -> selects each bit for the destination from the first operand  
 if the corresponding bit of the destination is 1,  
 or from the second operand if the corresponding bit of the destination is 0.--*/  
@@ -1931,7 +1931,7 @@ uint32x4_t vbslq_u32 (uint32x4_t __a, uint32x4_t __b, uint32x4_t __c);
 uint64x2_t vbslq_u64 (uint64x2_t __a, uint64x2_t __b, uint64x2_t __c);  
 poly8x16_t vbslq_p8 (uint8x16_t __a, poly8x16_t __b, poly8x16_t __c);  
 poly16x8_t vbslq_p16 (uint16x8_t __a, poly16x8_t __b, poly16x8_t __c);  
-/************************************Transposition operations***************************/  
+/**********************************<strong>Transposition operations</strong>*************************/  
 /*--1、Transpose elements: vtrn -> treats the elements of its input vectors as elements 
 of 2 x 2 matrices, and transposes the matrices. Essentially, it exchanges the elements  
 with odd indices from Vector1 with the elements with even indices from Vector2.--*/  
@@ -1994,7 +1994,7 @@ uint16x8x2_t vuzpq_u16 (uint16x8_t __a, uint16x8_t __b);
 uint32x4x2_t vuzpq_u32 (uint32x4_t __a, uint32x4_t __b);  
 poly8x16x2_t vuzpq_p8 (poly8x16_t __a, poly8x16_t __b);  
 poly16x8x2_t vuzpq_p16 (poly16x8_t __a, poly16x8_t __b);  
-/*********************************************************Load**************************/  
+/*******************************************************<strong>Load</strong>************************/  
 /*--1、Load a single vector from memory: vld1 -> loads a vector from memory.--*/  
 int8x8_t vld1_s8 (const int8_t * __a);  
 int16x4_t vld1_s16 (const int16_t * __a);  
@@ -2259,7 +2259,7 @@ poly8x8x4_t vld4_dup_p8 (const poly8_t * __a);
 poly16x4x4_t vld4_dup_p16 (const poly16_t * __a);  
 int64x1x4_t vld4_dup_s64 (const int64_t * __a);  
 uint64x1x4_t vld4_dup_u64 (const uint64_t * __a);  
-/*****************************************************Store*****************************/  
+/***************************************************<strong>Store</strong>***************************/  
 /*--1、Store a single vector into memory: vst1 -> stores a vector into memory.--*/  
 void vst1_s8 (int8_t * __a, int8x8_t __b);  
 void vst1_s16 (int16_t * __a, int16x4_t __b);  
@@ -2428,7 +2428,7 @@ void vst4q_lane_f32 (float32_t * __a, float32x4x4_t __b, const int __c);
 void vst4q_lane_u16 (uint16_t * __a, uint16x8x4_t __b, const int __c);  
 void vst4q_lane_u32 (uint32_t * __a, uint32x4x4_t __b, const int __c);  
 void vst4q_lane_p16 (poly16_t * __a, poly16x8x4_t __b, const int __c);  
-/*********************************Reinterpret casts(type conversion)********************/  
+/*******************************<strong>Reinterpret casts(type conversion)</strong>******************/  
 /*--convert between types: vreinterpret -> treats a vector as having a different  
 datatype, without changing its value.--*/  
 poly8x8_t vreinterpret_p8_s8 (int8x8_t __a);  

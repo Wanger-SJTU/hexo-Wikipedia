@@ -22,7 +22,7 @@ Bạn yêu cầu một agent xây dựng một trang web thương mại điện 
 
 Feature list, theo mắt nhiều người, chỉ là một ghi chú nhắc nhở — viết mọi thứ xuống để không quên, sau đó để sang một bên. Nhưng trong thế giới harness, feature list không phải là ghi chú cho con người — nó là xương sống của toàn bộ harness. Bộ lập lịch phụ thuộc vào nó để chọn tác vụ, bộ xác minh phụ thuộc vào nó để đánh giá hoàn thành, trình báo cáo bàn giao phụ thuộc vào nó để tạo tóm tắt. Phá vỡ xương sống và toàn bộ cơ thể bị tê liệt.
 
-Cả Anthropic và OpenAI đều nhấn mạnh: **các artifact phải được ngoại hóa.** Trạng thái tính năng phải sống trong một tệp có thể đọc bởi máy trong repo, không phải trong văn bản hội thoại không có cấu trúc.
+Cả Anthropic và OpenAI đều nhấn mạnh: <strong>các artifact phải được ngoại hóa.</strong> Trạng thái tính năng phải sống trong một tệp có thể đọc bởi máy trong repo, không phải trong văn bản hội thoại không có cấu trúc.
 
 ## Agent Không Biết "Xong" Có nghĩa là Gì
 
@@ -64,12 +64,12 @@ flowchart LR
 
 ## Các Khái niệm Cốt lõi
 
-- **Feature list là nguyên lý cơ bản của harness**: Không phải "công cụ lập kế hoạch tùy chọn," mà là cấu trúc dữ liệu nền tảng mà tất cả các thành phần harness khác phụ thuộc vào. Giống như cấu trúc bảng cơ sở dữ liệu — bạn không thể nói "hãy bỏ qua khóa chính."
-- **Cấu trúc ba yếu tố**: Mỗi mục tính năng là một bộ ba `(mô tả hành vi, lệnh xác minh, trạng thái hiện tại)`. Thiếu bất kỳ yếu tố nào làm cho mục không đầy đủ.
-- **Mô hình máy trạng thái**: Mỗi mục tính năng có bốn trạng thái — `not_started`, `active`, `blocked`, `passing`. Chuyển đổi trạng thái được kiểm soát bởi harness, không được thay đổi tự do bởi agent.
-- **Gating trạng thái vượt qua (Pass-state gating)**: Cách duy nhất một tính năng chuyển từ `active` sang `passing` là thực thi thành công lệnh xác minh. Điều này không thể đảo ngược — một khi `passing`, nó không thể quay lại. Giống như vượt qua bài thi có nghĩa là bạn đã qua, bạn không thể hồi tố thay đổi điểm.
-- **Nguồn sự thật duy nhất**: Tất cả thông tin về "những gì cần làm" phải bắt nguồn từ một feature list. Không có mâu thuẫn giữa feature list và lịch sử hội thoại.
-- **Áp lực ngược (Back-pressure)**: Số lượng tính năng chưa vượt qua là áp lực mà harness tác dụng lên agent. Áp lực bằng không = dự án hoàn thành.
+- <strong>Feature list là nguyên lý cơ bản của harness</strong>: Không phải "công cụ lập kế hoạch tùy chọn," mà là cấu trúc dữ liệu nền tảng mà tất cả các thành phần harness khác phụ thuộc vào. Giống như cấu trúc bảng cơ sở dữ liệu — bạn không thể nói "hãy bỏ qua khóa chính."
+- <strong>Cấu trúc ba yếu tố</strong>: Mỗi mục tính năng là một bộ ba `(mô tả hành vi, lệnh xác minh, trạng thái hiện tại)`. Thiếu bất kỳ yếu tố nào làm cho mục không đầy đủ.
+- <strong>Mô hình máy trạng thái</strong>: Mỗi mục tính năng có bốn trạng thái — `not_started`, `active`, `blocked`, `passing`. Chuyển đổi trạng thái được kiểm soát bởi harness, không được thay đổi tự do bởi agent.
+- <strong>Gating trạng thái vượt qua (Pass-state gating)</strong>: Cách duy nhất một tính năng chuyển từ `active` sang `passing` là thực thi thành công lệnh xác minh. Điều này không thể đảo ngược — một khi `passing`, nó không thể quay lại. Giống như vượt qua bài thi có nghĩa là bạn đã qua, bạn không thể hồi tố thay đổi điểm.
+- <strong>Nguồn sự thật duy nhất</strong>: Tất cả thông tin về "những gì cần làm" phải bắt nguồn từ một feature list. Không có mâu thuẫn giữa feature list và lịch sử hội thoại.
+- <strong>Áp lực ngược (Back-pressure)</strong>: Số lượng tính năng chưa vượt qua là áp lực mà harness tác dụng lên agent. Áp lực bằng không = dự án hoàn thành.
 
 ## Tại sao Feature List Phải là "Nguyên lý Cơ bản"
 
@@ -77,10 +77,10 @@ Tài liệu là để con người đọc; nguyên lý cơ bản là để hệ 
 
 Nghĩ về nó như ràng buộc trigger cơ sở dữ liệu vs. kiểm tra lớp ứng dụng: cái trước được thực thi bởi engine cơ sở dữ liệu, không có SQL nào có thể bỏ qua nó; cái sau phụ thuộc vào tính đúng đắn của mã ứng dụng và có thể vô tình bị vượt qua. Feature list như nguyên lý cơ bản harness phục vụ bốn thành phần harness cụ thể:
 
-1. **Bộ lập lịch (Scheduler)**: Đọc trạng thái, chọn tính năng `not_started` tiếp theo. Giống như hệ thống lập kế hoạch sản xuất nhà máy.
-2. **Bộ xác minh (Verifier)**: Thực thi lệnh xác minh, quyết định có cho phép chuyển đổi trạng thái không. Giống như kiểm tra chất lượng.
-3. **Trình báo cáo bàn giao (Handoff Reporter)**: Tự động tạo tóm tắt bàn giao phiên từ feature list. Giống như báo cáo ca tự động.
-4. **Trình theo dõi tiến độ (Progress Tracker)**: Đếm phân phối trạng thái, cung cấp số liệu sức khỏe dự án. Giống như dashboard.
+1. <strong>Bộ lập lịch (Scheduler)</strong>: Đọc trạng thái, chọn tính năng `not_started` tiếp theo. Giống như hệ thống lập kế hoạch sản xuất nhà máy.
+2. <strong>Bộ xác minh (Verifier)</strong>: Thực thi lệnh xác minh, quyết định có cho phép chuyển đổi trạng thái không. Giống như kiểm tra chất lượng.
+3. <strong>Trình báo cáo bàn giao (Handoff Reporter)</strong>: Tự động tạo tóm tắt bàn giao phiên từ feature list. Giống như báo cáo ca tự động.
+4. <strong>Trình theo dõi tiến độ (Progress Tracker)</strong>: Đếm phân phối trạng thái, cung cấp số liệu sức khỏe dự án. Giống như dashboard.
 
 ## Cách Làm Đúng
 
@@ -120,19 +120,19 @@ Mỗi mục tính năng phải có phạm vi "có thể hoàn thành trong một
 
 Một nền tảng thương mại điện tử với 10 tính năng. Hai cách tiếp cận theo dõi được so sánh:
 
-**Chế độ ghi chú nhắc nhở**: Agent sử dụng ghi chú không có cấu trúc. Sau 3 phiên, ghi chú trở thành "đã làm xác thực người dùng và danh sách sản phẩm, giỏ hàng hầu như xong nhưng có lỗi, thanh toán chưa bắt đầu." Phiên mới cần 20 phút để suy ra trạng thái, cuối cùng triển khai lại các tính năng đã hoàn thành. Giống như danh sách mua sắm của bạn nói "sữa, bánh mì và cái đó" — ở cửa hàng, bạn vẫn không biết mua gì.
+<strong>Chế độ ghi chú nhắc nhở</strong>: Agent sử dụng ghi chú không có cấu trúc. Sau 3 phiên, ghi chú trở thành "đã làm xác thực người dùng và danh sách sản phẩm, giỏ hàng hầu như xong nhưng có lỗi, thanh toán chưa bắt đầu." Phiên mới cần 20 phút để suy ra trạng thái, cuối cùng triển khai lại các tính năng đã hoàn thành. Giống như danh sách mua sắm của bạn nói "sữa, bánh mì và cái đó" — ở cửa hàng, bạn vẫn không biết mua gì.
 
-**Chế độ xương sống**: Mỗi tính năng có trạng thái và lệnh xác minh rõ ràng. Phiên mới đọc feature list và trong 3 phút biết: F01-F05 là `passing`, F06 là `active`, F07-F10 là `not_started`. Tiếp tục từ F06 trực tiếp, không có làm lại nào.
+<strong>Chế độ xương sống</strong>: Mỗi tính năng có trạng thái và lệnh xác minh rõ ràng. Phiên mới đọc feature list và trong 3 phút biết: F01-F05 là `passing`, F06 là `active`, F07-F10 là `not_started`. Tiếp tục từ F06 trực tiếp, không có làm lại nào.
 
 Kết quả định lượng: các dự án sử dụng feature list có cấu trúc cho thấy tỷ lệ hoàn thành tính năng cao hơn 45% so với theo dõi tự do, với zero triển khai trùng lặp.
 
 ## Những Điểm chính cần Nhớ
 
-- **Feature list là xương sống của harness**, không phải ghi chú cho con người. Bộ lập lịch, bộ xác minh và trình báo cáo bàn giao đều phụ thuộc vào chúng.
-- **Mỗi mục tính năng phải có bộ ba**: mô tả hành vi + lệnh xác minh + trạng thái hiện tại. Thiếu một yếu tố thì không đầy đủ — giống như ghế ba chân thiếu một chân.
-- **Chuyển đổi trạng thái được kiểm soát bởi harness** — agent không thể tự mình thay đổi trạng thái. Vượt qua xác minh = con đường nâng cấp duy nhất.
-- **Feature list là nguồn sự thật duy nhất của dự án** — tất cả thông tin "phải làm gì" đều bắt nguồn từ một danh sách.
-- **Hiệu chỉnh độ hạt thành "có thể hoàn thành trong một phiên."**
+- <strong>Feature list là xương sống của harness</strong>, không phải ghi chú cho con người. Bộ lập lịch, bộ xác minh và trình báo cáo bàn giao đều phụ thuộc vào chúng.
+- <strong>Mỗi mục tính năng phải có bộ ba</strong>: mô tả hành vi + lệnh xác minh + trạng thái hiện tại. Thiếu một yếu tố thì không đầy đủ — giống như ghế ba chân thiếu một chân.
+- <strong>Chuyển đổi trạng thái được kiểm soát bởi harness</strong> — agent không thể tự mình thay đổi trạng thái. Vượt qua xác minh = con đường nâng cấp duy nhất.
+- <strong>Feature list là nguồn sự thật duy nhất của dự án</strong> — tất cả thông tin "phải làm gì" đều bắt nguồn từ một danh sách.
+- <strong>Hiệu chỉnh độ hạt thành "có thể hoàn thành trong một phiên."</strong>
 
 ## Đọc thêm
 
@@ -143,8 +143,8 @@ Kết quả định lượng: các dự án sử dụng feature list có cấu t
 
 ## Bài tập
 
-1. **Thiết kế Feature List**: Định nghĩa một JSON schema feature list tối giản. Bao gồm: id, mô tả hành vi, lệnh xác minh, trạng thái hiện tại, tham chiếu bằng chứng. Sử dụng nó để mô tả một dự án thực tế với 5 tính năng.
+1. <strong>Thiết kế Feature List</strong>: Định nghĩa một JSON schema feature list tối giản. Bao gồm: id, mô tả hành vi, lệnh xác minh, trạng thái hiện tại, tham chiếu bằng chứng. Sử dụng nó để mô tả một dự án thực tế với 5 tính năng.
 
-2. **So sánh Độ khắt khe Xác minh**: Chọn 3 tính năng và thiết kế cả xác minh "lỏng" (ví dụ: "mã không có lỗi cú pháp") và xác minh "nghiêm" (ví dụ: "test end-to-end vượt qua"). So sánh tỷ lệ dương tính giả dưới mỗi cách tiếp cận.
+2. <strong>So sánh Độ khắt khe Xác minh</strong>: Chọn 3 tính năng và thiết kế cả xác minh "lỏng" (ví dụ: "mã không có lỗi cú pháp") và xác minh "nghiêm" (ví dụ: "test end-to-end vượt qua"). So sánh tỷ lệ dương tính giả dưới mỗi cách tiếp cận.
 
-3. **Kiểm toán Nguyên tắc Nguồn duy nhất**: Xem xét một dự án agent hiện có và kiểm tra thông tin phạm vi mâu thuẫn với feature list (yêu cầu ẩn trong hội thoại, chú thích TODO trong mã, v.v.). Thiết kế kế hoạch để hợp nhất tất cả thông tin vào feature list.
+3. <strong>Kiểm toán Nguyên tắc Nguồn duy nhất</strong>: Xem xét một dự án agent hiện có và kiểm tra thông tin phạm vi mâu thuẫn với feature list (yêu cầu ẩn trong hội thoại, chú thích TODO trong mã, v.v.). Thiết kế kế hoạch để hợp nhất tất cả thông tin vào feature list.

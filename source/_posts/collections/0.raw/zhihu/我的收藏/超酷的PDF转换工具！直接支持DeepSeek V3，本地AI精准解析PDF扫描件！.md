@@ -21,9 +21,9 @@ source_url: https://zhuanlan.zhihu.com/p/1888535695993308115
 
 更别提那些包含数学公式、表格和复杂排版的书籍，转换起来更是噩梦。
 
-今天介绍一款开源的 PDF 处理工具：**PDF Craft**，专注于将扫描书籍的 PDF 文件转化为 Markdown 或 EPUB 格式。
+今天介绍一款开源的 PDF 处理工具：<strong>PDF Craft</strong>，专注于将扫描书籍的 PDF 文件转化为 Markdown 或 EPUB 格式。
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_9c62f74cb90f.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_9c62f74cb90f.jpg)
 
 它基于本地 AI 模型运行核心功能，同时支持远程调用 LLM（如 DeepSeek V3）处理复杂任务。PDF Craft 的设计目标是“高效、精准、隐私友好”，通过智能算法和 LLM 技术，不仅提取文本，还能重构书籍结构，保留图表和公式。
 
@@ -31,13 +31,13 @@ source_url: https://zhuanlan.zhihu.com/p/1888535695993308115
 
 本地模式利用 DocLayout-YOLO 和 OnnxOCR 等技术实现完全离线转换，而远程模式通过 LLM 增强了对大部头书籍的处理能力，为用户提供更优质的电子书转换体验。
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_22ba6636da73.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_22ba6636da73.jpg)
 
 #### 核心功能
 
 相比传统的 OCR 或 PDF 解析工具，PDF Craft 具备多个独特亮点：
 
-- **本地 AI 驱动，无需联网，保护隐私****
+- <strong>本地 AI 驱动，无需联网，保护隐私</strong>**
 - Markdown & EPUB 输出，兼容性强****
 - 智能清理页眉、页脚、页码、脚注****
 - 公式、图表智能处理****
@@ -73,7 +73,7 @@ with MarkDownWriter(markdown_path, "images", "utf-8") as md:
 
 转化效果如下：
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_cedc78803bb3.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_cedc78803bb3.jpg)
 
 ② PDF 转化为 EPUB
 
@@ -120,7 +120,7 @@ generate_epub_file(
 
 转化效果如下：
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_dd3abdbe771b.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_dd3abdbe771b.jpg)
 
 #### 写在最后
 

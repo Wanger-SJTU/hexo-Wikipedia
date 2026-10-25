@@ -19,17 +19,17 @@ source_url: https://www.zhihu.com/question/31211585/answer/640501555
 
 假设你已经读懂了 SVM 的原理，并了解公式怎么推导出来的，比如到这里：
 
-![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_166337efbfaf.jpg)![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_de05f7d268aa.webp)
+![](/images/collections/0.raw/zhihu/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%EF%BC%81/asset/img_166337efbfaf.jpg)![](/images/collections/0.raw/zhihu/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%EF%BC%81/asset/img_de05f7d268aa.webp)
 
 SVM 的问题就变成：求解一系列满足约束的 alpha 值，使得上面那个函数可以取到最小值。然后记录下这些非零的 alpha 值和对应样本中的 x 值和 y 值，就完成学习了，然后预测的时候用：
 
-![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_bfe5de0dc194.jpg)![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_639c80f5b013.webp)
+![](/images/collections/0.raw/zhihu/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%EF%BC%81/asset/img_bfe5de0dc194.jpg)![](/images/collections/0.raw/zhihu/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%EF%BC%81/asset/img_639c80f5b013.webp)
 
 上面的公式计算出 f(x) ，如果返回值 > 0 那么是 +1 类别，否则是 -1 类别，先把这一步怎么来的，为什么这么来找篇文章读懂，不然你会做的一头雾水。
 
 那么剩下的 SVM 实现问题就是如何求解这个函数的极值。方法有很多，我们先找个起点，比如 Platt 的 SMO 算法，它后面有伪代码描述怎么快速求解 SVM 的各个系数。
 
-**第一步：实现传统的 SMO 算法**
+<strong>第一步：实现传统的 SMO 算法</strong>
 
 现在大部分的 SVM 开源实现，源头都是 platt 的 smo 算法，读完他的文章和推导，然后照着伪代码写就行了，核心代码没几行：
 
@@ -67,7 +67,7 @@ procedure takeStep(i1,i2)
 
 核心代码很紧凑，就是给定两个 ai, aj 然后迭代出新的 ai, aj 出来，还有一层循环会不停的选择最需要被优化的系数 ai, aj，然后调用这个函数。如何更新权重和 b 变量（threshold）文章里面都有说，再多调试一下，可以用 python 先调试过了，再换成 C/C++，保证得到一个正确可用的 svm 程序，这是后面的基础。
 
-**第二步：实现核函数缓存**
+<strong>第二步：实现核函数缓存</strong>
 
 观察下上面的伪代码，开销最大的就是计算核函数 K(xi, xj)，有些计算又反复用到，一个 100 个样本的数据集求解，假设总共要调用核函数 20 万次，但是 xi, xj 的组和只有 100x100=1万种，有缓存的话你的效率可以提升 20 倍.
 
@@ -75,7 +75,7 @@ procedure takeStep(i1,i2)
 
 有了这个核函数缓存，你的 svm 求解程序能瞬间快几十倍。
 
-**第三步：优化误差值求解**
+<strong>第三步：优化误差值求解</strong>
 
 注意看上面的伪代码，里面需要计算一个估计值和真实值的误差 Ei 和 Ej，他们的求解方法是：
 
@@ -85,7 +85,7 @@ procedure takeStep(i1,i2)
 
 platt 的文章建议是做一个 E 函数的缓存，方便后面选择 i, j 时比较，我看到很多入门版本 svm 实现都是这么搞得。其实这是有问题的，后面我们会说到。最好的方式是定义一个 g(x) 令其等于：
 
-![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_2661f084b417.jpg)
+![](/images/collections/0.raw/zhihu/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%EF%BC%81/asset/img_2661f084b417.jpg)
 
 也就是 f(x) 公式除了 b 以外前面那一坨最费时的计算，那么我们随时可以计算误差：
 
@@ -102,7 +102,7 @@ G[k] += delta_alpha_i * Kik * y[i] + delta_alpha_j * Kjk * y[j];
 
 这其实是很直白的一种优化方式，我查了一下，有人专门发论文就讲了个类似的方法。
 
-**第四步：实现冷热数据分离**
+<strong>第四步：实现冷热数据分离</strong>
 
 Platt 的文章里也证明过一旦某个 alpha 出于边界（0 或者 C）的时候，就很不容易变动，而且伪代码里也是优先再工作集里寻找 > 0 and Ensemble**
 
@@ -114,7 +114,7 @@ Platt 的文章里也证明过一旦某个 alpha 出于边界（0 或者 C）的
 
 实现到这一步你就得到了功能上和性能上同 libsvm 类似的东西，接下来我们继续优化。
 
-**第六步：继续优化核函数计算**
+<strong>第六步：继续优化核函数计算</strong>
 
 核函数缓存非常消耗内存，libsvm 数学上已经没得挑了，但是工程方面还有很大改进余地，比如它的核缓存实现。
 
@@ -122,7 +122,7 @@ Platt 的文章里也证明过一旦某个 alpha 出于边界（0 或者 C）的
 
 针对核函数的计算和存储有很多优化方式，比如有人对 NxN 的核函数矩阵进行采样，只计算有限的几个核函数，然后通过插值的方式求解出中间的值。还有人用 float 存储核函数值，又降低了一倍空间需求。
 
-**第七步：支持稀疏向量和非稀疏向量**
+<strong>第七步：支持稀疏向量和非稀疏向量</strong>
 
 对于高维样本，比如文字这些，可能有上千维，每个样本的非零特征可能就那么几个，所以稀疏向量会比较高效，libsvm 也是用的稀疏向量。
 
@@ -132,7 +132,7 @@ Platt 的文章里也证明过一旦某个 alpha 出于边界（0 或者 C）的
 
 所以最好的方式是同时支持稀疏和非稀疏，兼顾时间和空间效率，对不同的数据选择最适合的方式。
 
-**第八步：针对线性核进行优化**
+<strong>第八步：针对线性核进行优化</strong>
 
 传统的 SMO 方法，是 SVM 的通用求解方法，然而针对线性核，就是：
 
@@ -146,7 +146,7 @@ Platt 的文章里也证明过一旦某个 alpha 出于边界（0 或者 C）的
 
 或许哪天出个数学家又找到一种更好的方法，可以用类似 pegasos 的方式求解非线性核，那么 SVM 就能有比较大的进展了。
 
-**后话**
+<strong>后话</strong>
 
 上面八条，你如果实现前三条，基本就能深入理解 SVM 的原理了，如果实现一大半，就可以得到一个类似 libsvm 的东西，全部实现，你就能得到一个比 libsvm 更好用的 svm 库了。
 

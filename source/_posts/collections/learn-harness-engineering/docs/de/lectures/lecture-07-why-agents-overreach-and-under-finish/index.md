@@ -65,12 +65,12 @@ flowchart TB
 
 ## Zentrale Konzepte
 
-- **Overreach**: Der Agent aktiviert in einer einzelnen Session mehr Aufgaben als optimal. Es ist quantifizierbar — 5 Features mit 0 bestandenen End-to-End-Tests ist Overreach.
-- **Under-finish**: Das Verhältnis von Aufgaben, die End-to-End-Verifizierung bestehen, zu allen aktivierten Aufgaben, fällt unter den Schwellenwert. Geschriebener Code, aber keine bestandenen Tests, ist Under-finish.
-- **WIP-Limit (Work-in-Progress-Limit)**: Aus der Kanban-Methodik. Kernidee: Begrenzen Sie, wie viele Aufgaben gleichzeitig in Bearbeitung sind. Für Agenten ist WIP=1 die sicherste Standardeinstellung — erst eins beenden, dann das nächste beginnen. Wie an einem Buffet — nicht den Teller überladen, erst einen Teller essen, dann zum nächsten gehen.
-- **Abschluss-Evidenz**: Die verifizierbare Bedingung, die eine Aufgabe erfüllen muss, um von „in Bearbeitung" auf „erledigt" zu wechseln. Ohne dies substituieren Agenten „der Code sieht gut aus" durch „das Verhalten besteht die Tests."
-- **Scope Surface**: Eine DAG-Struktur, bei der jeder Knoten eine Arbeitseinheit und die Kanten Abhängigkeiten sind. Zustände sind auf vier beschränkt: not_started, active, blocked, passing.
-- **Abschluss-Druck**: Die einschränkende Kraft, die das harness durch WIP-Limits und Abschluss-Evidenz-Anforderungen ausübt und den Agenten zwingt, die aktuelle Aufgabe abzuschließen, bevor eine neue begonnen wird.
+- <strong>Overreach</strong>: Der Agent aktiviert in einer einzelnen Session mehr Aufgaben als optimal. Es ist quantifizierbar — 5 Features mit 0 bestandenen End-to-End-Tests ist Overreach.
+- <strong>Under-finish</strong>: Das Verhältnis von Aufgaben, die End-to-End-Verifizierung bestehen, zu allen aktivierten Aufgaben, fällt unter den Schwellenwert. Geschriebener Code, aber keine bestandenen Tests, ist Under-finish.
+- <strong>WIP-Limit (Work-in-Progress-Limit)</strong>: Aus der Kanban-Methodik. Kernidee: Begrenzen Sie, wie viele Aufgaben gleichzeitig in Bearbeitung sind. Für Agenten ist WIP=1 die sicherste Standardeinstellung — erst eins beenden, dann das nächste beginnen. Wie an einem Buffet — nicht den Teller überladen, erst einen Teller essen, dann zum nächsten gehen.
+- <strong>Abschluss-Evidenz</strong>: Die verifizierbare Bedingung, die eine Aufgabe erfüllen muss, um von „in Bearbeitung" auf „erledigt" zu wechseln. Ohne dies substituieren Agenten „der Code sieht gut aus" durch „das Verhalten besteht die Tests."
+- <strong>Scope Surface</strong>: Eine DAG-Struktur, bei der jeder Knoten eine Arbeitseinheit und die Kanten Abhängigkeiten sind. Zustände sind auf vier beschränkt: not_started, active, blocked, passing.
+- <strong>Abschluss-Druck</strong>: Die einschränkende Kraft, die das harness durch WIP-Limits und Abschluss-Evidenz-Anforderungen ausübt und den Agenten zwingt, die aktuelle Aufgabe abzuschließen, bevor eine neue begonnen wird.
 
 ## Overreach und Under-finish sind symbiotisch
 
@@ -84,7 +84,7 @@ Dies ist auch in der menschlichen Welt ein altes Problem — Steve McConnell dok
 
 ### 1. WIP=1 erzwingen
 
-Das ist die direkteste und wirksamste Methode. Sagen Sie dem Agenten in Ihrem harness explizit: **zu jedem Zeitpunkt ist nur eine Aufgabe im Status „active" erlaubt.** In Claude Codes `CLAUDE.md` oder Codex' `AGENTS.md` schreiben Sie:
+Das ist die direkteste und wirksamste Methode. Sagen Sie dem Agenten in Ihrem harness explizit: <strong>zu jedem Zeitpunkt ist nur eine Aufgabe im Status „active" erlaubt.</strong> In Claude Codes `CLAUDE.md` oder Codex' `AGENTS.md` schreiben Sie:
 
 ```
 ## Work Rules
@@ -117,19 +117,19 @@ Das harness sollte kontinuierlich VCR (Verified Completion Rate) = verifizierte 
 
 Ein REST-API-Projekt mit 8 Features, zwei Strategien im Vergleich:
 
-**Buffet-Modus (uneingeschränkt)**: Der Agent aktiviert 5 Features gleichzeitig in Session 1. Produziert ~800 Zeilen über 12 Dateien. End-to-End-Test-Bestehensrate: 20% — nur Benutzerregistrierung funktioniert. Die anderen 4 Features: Datenbankschema erstellt, aber Validierungslogik fehlt, Routen definiert, aber falsches Antwortformat. Wie jemand, der sechs Gerichte gleichzeitig kocht, nur eines ist kaum essbar. Ende Session 3 sind nur 3 von 8 Features abgeschlossen.
+<strong>Buffet-Modus (uneingeschränkt)</strong>: Der Agent aktiviert 5 Features gleichzeitig in Session 1. Produziert ~800 Zeilen über 12 Dateien. End-to-End-Test-Bestehensrate: 20% — nur Benutzerregistrierung funktioniert. Die anderen 4 Features: Datenbankschema erstellt, aber Validierungslogik fehlt, Routen definiert, aber falsches Antwortformat. Wie jemand, der sechs Gerichte gleichzeitig kocht, nur eines ist kaum essbar. Ende Session 3 sind nur 3 von 8 Features abgeschlossen.
 
-**Ein-Teller-Modus (WIP=1)**: Der Agent arbeitet in Session 1 nur an der Benutzerregistrierung. Produziert ~200 Zeilen über 4 Dateien. End-to-End-Tests: 100% bestanden. Committet eine saubere, verifizierte Implementierung. Ende Session 4 sind 7 von 8 Features abgeschlossen (das 8. blockiert durch eine externe Abhängigkeit).
+<strong>Ein-Teller-Modus (WIP=1)</strong>: Der Agent arbeitet in Session 1 nur an der Benutzerregistrierung. Produziert ~200 Zeilen über 4 Dateien. End-to-End-Tests: 100% bestanden. Committet eine saubere, verifizierte Implementierung. Ende Session 4 sind 7 von 8 Features abgeschlossen (das 8. blockiert durch eine externe Abhängigkeit).
 
 Ergebnis: weniger Gesamtcodes (800 vs. 1200 Zeilen), aber mehr wirksamer Code. Abschlussrate: 87,5% vs. 37,5%. Einen Bissen nach dem anderen, und man isst tatsächlich mehr.
 
 ## Wichtigste Erkenntnisse
 
-- **WIP=1 ist die sichere Standardeinstellung für Agenten-harnesses** — erst eines beenden, dann das nächste beginnen; nicht versuchen zu parallelisieren. Man wird nicht in einem Biss dick.
-- **Abschluss-Evidenz muss ausführbar sein** — „der Code sieht gut aus" zählt nicht; „curl liefert 201" schon.
-- **Die Scope Surface muss als Datei externalisiert werden** — nicht nur im Gespräch erwähnt, sondern in einem maschinenlesbaren Format im Repo dokumentiert.
-- **Overreach und Under-finish sind symbiotisch** — die Lösung des einen löst das andere.
-- **„Weniger tun, aber beenden" schlägt immer „mehr tun, aber halbfertig lassen"** — Agenten-Codezeilen und Feature-Abschlussrate sind negativ korreliert. Qualität schlägt immer Quantität.
+- <strong>WIP=1 ist die sichere Standardeinstellung für Agenten-harnesses</strong> — erst eines beenden, dann das nächste beginnen; nicht versuchen zu parallelisieren. Man wird nicht in einem Biss dick.
+- <strong>Abschluss-Evidenz muss ausführbar sein</strong> — „der Code sieht gut aus" zählt nicht; „curl liefert 201" schon.
+- <strong>Die Scope Surface muss als Datei externalisiert werden</strong> — nicht nur im Gespräch erwähnt, sondern in einem maschinenlesbaren Format im Repo dokumentiert.
+- <strong>Overreach und Under-finish sind symbiotisch</strong> — die Lösung des einen löst das andere.
+- <strong>„Weniger tun, aber beenden" schlägt immer „mehr tun, aber halbfertig lassen"</strong> — Agenten-Codezeilen und Feature-Abschlussrate sind negativ korreliert. Qualität schlägt immer Quantität.
 
 ## Weiterführende Literatur
 
@@ -140,8 +140,8 @@ Ergebnis: weniger Gesamtcodes (800 vs. 1200 Zeilen), aber mehr wirksamer Code. A
 
 ## Übungen
 
-1. **Aufgaben-Atomisierung**: Wählen Sie eine breite Anforderung (z. B. „implementiere ein Benutzerverwaltungssystem") und brechen Sie sie in mindestens 5 atomare Arbeitseinheiten auf. Geben Sie für jede Einheit an: (a) eine einzelne Verhaltensbeschreibung, (b) einen ausführbaren Verifizierungsbefehl, (c) Abhängigkeiten. Prüfen Sie, ob die Zerlegung der WIP=1-Einschränkung genügt.
+1. <strong>Aufgaben-Atomisierung</strong>: Wählen Sie eine breite Anforderung (z. B. „implementiere ein Benutzerverwaltungssystem") und brechen Sie sie in mindestens 5 atomare Arbeitseinheiten auf. Geben Sie für jede Einheit an: (a) eine einzelne Verhaltensbeschreibung, (b) einen ausführbaren Verifizierungsbefehl, (c) Abhängigkeiten. Prüfen Sie, ob die Zerlegung der WIP=1-Einschränkung genügt.
 
-2. **Vergleichsexperiment**: Führen Sie dasselbe Projekt zweimal aus — einmal ohne Einschränkungen, einmal mit erzwungenem WIP=1. Vergleichen Sie: verifizierte Abschlussrate, Gesamtcodeszeilen, effektives Code-Verhältnis.
+2. <strong>Vergleichsexperiment</strong>: Führen Sie dasselbe Projekt zweimal aus — einmal ohne Einschränkungen, einmal mit erzwungenem WIP=1. Vergleichen Sie: verifizierte Abschlussrate, Gesamtcodeszeilen, effektives Code-Verhältnis.
 
-3. **Abschluss-Evidenz-Audit**: Überprüfen Sie die Ausgabe eines recenten Agenten-Laufs und klassifizieren Sie jede Code-Änderung als „abgeschlossenes Verhalten", „unvollständiges Verhalten" oder „Gerüstbau". Fügen Sie fehlende Verifizierungsbefehle für jedes unvollständige Verhalten hinzu.
+3. <strong>Abschluss-Evidenz-Audit</strong>: Überprüfen Sie die Ausgabe eines recenten Agenten-Laufs und klassifizieren Sie jede Code-Änderung als „abgeschlossenes Verhalten", „unvollständiges Verhalten" oder „Gerüstbau". Fügen Sie fehlende Verifizierungsbefehle für jedes unvollständige Verhalten hinzu.

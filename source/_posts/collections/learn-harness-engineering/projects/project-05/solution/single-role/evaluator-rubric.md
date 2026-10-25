@@ -15,21 +15,21 @@ categories:
 
 ## Component: ConversationHistory
 
-**Evaluator:** Self (single agent performed generation and evaluation)
-**Date:** 2026-03-30
+<strong>Evaluator:</strong> Self (single agent performed generation and evaluation)
+<strong>Date:</strong> 2026-03-30
 
 ### Scoring (1-5 scale)
 
 | Criterion | Score | Notes |
 |-----------|-------|-------|
-| **Functional completeness** | 2 | Displays history but truncates answers at 100 chars. No way to see full answer. |
-| **Visual design** | 2 | Basic list layout. No chat bubble styling. Does not distinguish user/assistant visually. |
-| **Timestamps** | 2 | Shows timestamp but in long format. No time-only compact view. |
-| **Citation display** | 1 | Citations are not shown at all. The component ignores citation data. |
-| **Interactivity** | 1 | No interactivity. Cannot click items, expand citations, or ask follow-ups. |
-| **Edge cases** | 2 | Handles empty state. Does not handle very long questions or answers gracefully. |
-| **Accessibility** | 1 | No keyboard navigation. No screen reader considerations. |
-| **Code quality** | 2 | Component is simple but has inline styles scattered throughout. No reuse. |
+| <strong>Functional completeness</strong> | 2 | Displays history but truncates answers at 100 chars. No way to see full answer. |
+| <strong>Visual design</strong> | 2 | Basic list layout. No chat bubble styling. Does not distinguish user/assistant visually. |
+| <strong>Timestamps</strong> | 2 | Shows timestamp but in long format. No time-only compact view. |
+| <strong>Citation display</strong> | 1 | Citations are not shown at all. The component ignores citation data. |
+| <strong>Interactivity</strong> | 1 | No interactivity. Cannot click items, expand citations, or ask follow-ups. |
+| <strong>Edge cases</strong> | 2 | Handles empty state. Does not handle very long questions or answers gracefully. |
+| <strong>Accessibility</strong> | 1 | No keyboard navigation. No screen reader considerations. |
+| <strong>Code quality</strong> | 2 | Component is simple but has inline styles scattered throughout. No reuse. |
 
 ### Overall: 1.6 / 5
 

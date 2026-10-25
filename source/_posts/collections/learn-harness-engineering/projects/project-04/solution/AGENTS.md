@@ -56,9 +56,9 @@ When debugging, check logs for:
 
 The following layer boundaries are enforced by `scripts/check-architecture.sh`:
 
-- **Renderer** must not import `fs`, `path`, or any Node.js core modules.
-- **Services** must not import Electron IPC or renderer-specific modules.
-- **Preload** must only expose the typed API via contextBridge.
+- <strong>Renderer</strong> must not import `fs`, `path`, or any Node.js core modules.
+- <strong>Services</strong> must not import Electron IPC or renderer-specific modules.
+- <strong>Preload</strong> must only expose the typed API via contextBridge.
 
 Run `bash scripts/check-architecture.sh` before committing.
 

@@ -17,7 +17,7 @@ source_url: https://zhuanlan.zhihu.com/p/718486708
 
 年初的时候，我尝试去结合了 ring attention 和 flash attention，并设计了 zigzag ring attention：
 
-[![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_ee29cf6568d2.png)朱小霖：ring attention + flash attention：超长上下文之路1314 赞同 · 118 评论 文章](https://zhuanlan.zhihu.com/p/683714620)
+[![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_ee29cf6568d2.png)朱小霖：ring attention + flash attention：超长上下文之路1314 赞同 · 118 评论 文章](https://zhuanlan.zhihu.com/p/683714620)
 
 理论上来看，zigzag ring attention 基本做到了线性扩展 context length 的最优解，即：
 
@@ -26,21 +26,21 @@ source_url: https://zhuanlan.zhihu.com/p/718486708
 - 通信可以和计算 overlap。
 然而，当我去把 zigzag ring attention 和 flash attention 结合的时候，遇到了如下的现实问题：
 
-- **精度损失**
+- <strong>精度损失</strong>
 
 - 因为 ring attention 需要对在 flash attention 的输出进行迭代计算，我们要把 flash attention 输出的 bf16 结果相加。而 bf16 作为一种有效位数极少的数据格式，随便就能搞出来一个 1e-3 级别的误差。
 - 更麻烦的是，让 flash attention 返回 fp32 结果这件事对 flash attention 的源码改动会比较大。
 
-- **varlen 版本又难用，又慢**
+- <strong>varlen 版本又难用，又慢</strong>
 
 - 这是因为我们需要把 varlen 数据中的每一条都拆分为 2 * world_size 份，使得每条数据都需要 padding，rotary embedding 也需要针对性做改变；而速度上，这种拆分会增加一些拷贝，而且由于序列变短了，kernel 并行度会降低，效率也降低了。
 
-- **通信上大量使用 p2p，而不是更高效的集合通信**
+- <strong>通信上大量使用 p2p，而不是更高效的集合通信</strong>
 那么有什么办法能适当地牺牲一些理论性能，而优化上述的几个问题呢？
 
 我发现 llama3 团队在[技术报告](https://link.zhihu.com/?target=https%3A//arxiv.org/pdf/2407.21783)中提出了这样的方案：
 
-***Different from existing CP implementations that overlap communication and computation in a ring-like structure (Liu et al., 2023a), our CP implementation adopts an*** ***all-gather based method where we first all-gather the key (K) and value (V) tensors, and then compute attention output for the local query (Q) tensor chunk.** Although the all-gather communication latency is exposed in the critical path, we still adopt this approach for two main reasons: (1) it is easier and more flexible to support different types of attention masks in all-gather based CP attention, such as the document mask; and (2) the exposed all-gather latency is small as the communicated K and V tensors are much smaller than Q tensor due to the use of GQA (Ainslie et al., 2023).*简单来说，就是先 all gather 一下 kv，然后让每张卡上自己的 q 和全部的 kv 做计算。这样很显然解决了 p2p 通信不如 cc 的问题，而且因为只会调用一次计算 kernel 了，也就基本解决了精度问题。但是因为要 all gather 所有的 kv，所以显存占用会多一些。
+*<strong>Different from existing CP implementations that overlap communication and computation in a ring-like structure (Liu et al., 2023a), our CP implementation adopts an</strong>* *<strong>all-gather based method where we first all-gather the key (K) and value (V) tensors, and then compute attention output for the local query (Q) tensor chunk.</strong> Although the all-gather communication latency is exposed in the critical path, we still adopt this approach for two main reasons: (1) it is easier and more flexible to support different types of attention masks in all-gather based CP attention, such as the document mask; and (2) the exposed all-gather latency is small as the communicated K and V tensors are much smaller than Q tensor due to the use of GQA (Ainslie et al., 2023).*简单来说，就是先 all gather 一下 kv，然后让每张卡上自己的 q 和全部的 kv 做计算。这样很显然解决了 p2p 通信不如 cc 的问题，而且因为只会调用一次计算 kernel 了，也就基本解决了精度问题。但是因为要 all gather 所有的 kv，所以显存占用会多一些。
 
 那么我们是否可以适当优化这个方案，一方面尽量降低一些显存占用，另一方面让它适配 flash attention 的 varlen 接口，从而解决 ring attention 与 varlen 的错配问题呢？
 
@@ -52,7 +52,7 @@ source_url: https://zhuanlan.zhihu.com/p/718486708
 
 具体来说，当我们直接去切分全部数据的时候，可能会遇到如下的 3 种情况：
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_038ecb0a3b51.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_038ecb0a3b51.jpg)
 
 - 如果只留下了 q 的前半部分，如左图的 q0~q2，那么只需要匹配等长的前半段 k，即 k0~k2；
 - 如果只留下了 q 的后半部分，如中图的 q3~q4，那么需要匹配全部的 k，即 k0~k4；

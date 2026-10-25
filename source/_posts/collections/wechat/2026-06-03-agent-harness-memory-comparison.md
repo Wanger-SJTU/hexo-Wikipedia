@@ -13,9 +13,9 @@ categories:
 
 # 主流Agent Harness实现对比——Memory篇
 
-**原始链接**: https://mp.weixin.qq.com/s/qhwEhvE3IJqwYO088zfoYA
+<strong>原始链接</strong>: https://mp.weixin.qq.com/s/qhwEhvE3IJqwYO088zfoYA
 
-**首发时间**: 2026-06-03
+<strong>首发时间</strong>: 2026-06-03
 
 ---
 
@@ -76,16 +76,16 @@ Memory的读写都是有额外成本的，而且不同方案的成本也有明�
 目前Claude Code的记忆是保存在$HOME目录下的，不是在项目目录中，在迁移机器时候需要注意。Memory的组织方式为一个MEMORY.md索引文件+多个item记忆md文件，目前从结果来看每个item记忆文件的内容比较长。
 
 Claude Code的Memory有两层scope：
-- **private**：仅在与当前用户的对话之间持续存在
-- **team**：由所有在该项目目录中工作的用户共享并共同贡献
+- <strong>private</strong>：仅在与当前用户的对话之间持续存在
+- <strong>team</strong>：由所有在该项目目录中工作的用户共享并共同贡献
 
 ### 4.1、Memory的快速写入
 
 Memory条目有多种类型：
-- **user（始终 private）**：关于用户的角色、目标、职责和知识
-- **feedback（默认 private）**：用户给的关于如何开展工作的指导
-- **project（强烈倾向 team）**：无法从代码或git历史推导的项目信息
-- **reference（通常 team）**：指向外部系统中信息所在位置的指针
+- <strong>user（始终 private）</strong>：关于用户的角色、目标、职责和知识
+- <strong>feedback（默认 private）</strong>：用户给的关于如何开展工作的指导
+- <strong>project（强烈倾向 team）</strong>：无法从代码或git历史推导的项目信息
+- <strong>reference（通常 team）</strong>：指向外部系统中信息所在位置的指针
 
 写入时机有2个：主Session中模型主动更新，以及对话round结束后产生fork session自动提取。这两种方式之间做了互斥处理。
 
@@ -142,7 +142,7 @@ OpenClaw目前有2套Memory方案：RAG Memory（默认）和LLM wiki（默认�
 
 ### 7.1、RAG Memory
 
-默认方案套了2层Memory设计，大量依赖RAG做效果。每日有日记式Memory + SQLite索引。挖掘整合方案由心跳触发，分light/REM/deep三阶段，但**没有使用LLM**，主要是文本切分chunk、关键词匹配和文本相似度计算。实现质量较差。额外生成DREAMS.md（第一人称散文体日记，不作为Memory召回源）。
+默认方案套了2层Memory设计，大量依赖RAG做效果。每日有日记式Memory + SQLite索引。挖掘整合方案由心跳触发，分light/REM/deep三阶段，但<strong>没有使用LLM</strong>，主要是文本切分chunk、关键词匹配和文本相似度计算。实现质量较差。额外生成DREAMS.md（第一人称散文体日记，不作为Memory召回源）。
 
 ### 7.2、memory-wiki
 
@@ -150,4 +150,4 @@ OpenClaw目前有2套Memory方案：RAG Memory（默认）和LLM wiki（默认�
 
 ---
 
-**交流与合作**: 请加微信，联系方式见专栏简介
+<strong>交流与合作</strong>: 请加微信，联系方式见专栏简介

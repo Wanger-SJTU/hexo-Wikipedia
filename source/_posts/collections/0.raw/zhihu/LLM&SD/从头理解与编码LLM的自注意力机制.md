@@ -15,7 +15,7 @@ source_url: https://zhuanlan.zhihu.com/p/682016587
 ---
 
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_9fac1bf80714.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_9fac1bf80714.jpg)
 
 **
 
@@ -27,9 +27,9 @@ source_url: https://zhuanlan.zhihu.com/p/682016587
 
 来源 | Ahead of AI**
 
-**OneFlow编译**
+<strong>OneFlow编译</strong>
 
-**翻译｜杨婷、宛子琳**
+<strong>翻译｜杨婷、宛子琳</strong>
 
 **
 
@@ -39,17 +39,17 @@ source_url: https://zhuanlan.zhihu.com/p/682016587
 
 自最初的Transformer论文“Attention Is All You Need”发表以来，自注意力（self-attention）成为了许多SOTA深度学习模型的基石，特别是在自然语言处理（NLP）领域。目前，自注意力机制的应用十分广泛，因此理解其工作原理至关重要。
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_ec0dee114bfa.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_ec0dee114bfa.jpg)
 
 原始Transformer架构，来自https://arxiv.org/abs/1706.03762深度学习中的“注意力”概念源于改进循环神经网络（RNN）使其能够处理较长序列或句子，例如，将句子从一种语言翻译成另一种语言。我们通常不会选择逐字翻译，因为这种方式忽略了每种语言特有的复杂语法结构和惯用表达，会导致翻译不准确或无意义。
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_de0307787e7d.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_de0307787e7d.jpg)
 
 错误的逐字翻译（上）与正确的翻译（下）为克服上述问题，引入了注意力机制，允许模型在每个时间步都能够访问所有序列元素。注意力机制的关键在于选择性地确定在特定上下文中哪些词语是最重要的。2017年，Transformer架构引入了独立的自注意力机制，它彻底消除了对循环神经网络（RNN）等传统结构的依赖。
 
 （简洁起见，我将简要讨论背景动机部分，将文章重点放在自注意力机制的技术细节上，以便可以专注于代码实现。）
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_a43ec0e4ea91.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_a43ec0e4ea91.jpg)
 
 “Attention is All You Need”论文 (https://arxiv.org/abs/1706.03762) 的可视化图，展示了单词“making”在输入序列中通过注意力权重对其他单词的依赖或关注程度（颜色浓度与注意力权重值成正比）。我们可以将自注意力视为一种机制，通过包含输入上下文的信息来增强输入embedding（嵌入）的信息内容。换句话说，自注意力机制使模型能够衡量输入序列中不同元素的重要性，并动态调整它们对输出的影响。对于语言处理任务而言，自注意力机制的重要性尤为突出。因为在自然语言中，一个词的含义可能会随句子或文档的上下文而发生变化。
 
@@ -136,7 +136,7 @@ torch.Size([6, 3])`
 
 索引i指的是输入序列中的词元索引位置，该序列的长度为T。
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_5e2c1ce7c042.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_5e2c1ce7c042.jpg)
 
 通过输入x和权重W计算查询、键和值向量。
 
@@ -170,7 +170,7 @@ W_value = torch.nn.Parameter(torch.rand(d, d_v))`
 
 现在，我们来计算第二个输入元素的注意力向量，其中第二个输入元素充当查询：
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_00b416938897.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_00b416938897.jpg)
 
 接下来我们重点关注第二个输入x(2)
 
@@ -210,7 +210,7 @@ values.shape: torch.Size([6, 4])`
 
 现在我们已经计算得到了所有必要的键和值，可以继续下一步，计算未归一化的注意力权重ω（omega），如下图所示：
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_a6ccc8122586.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_a6ccc8122586.jpg)
 
 计算未归一化的注意力权重ω(omega)如上图所示，我们将ωi,j计算为查询序列和键序列之间的点积，即*ωi*,*j=q(i)k(j)*。
 
@@ -242,7 +242,7 @@ print(omega_2)`
 
 自注意力机制的下一步操作是通过应用softmax函数，将未归一化的注意力权重*ω*归一化，得到标准化的注意力权重*α*（alpha）。此外，在通过softmax函数进行归一化之前，还需要使用1/√{*dk*}来对ω进行缩放，具体如下所示：
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_bbc22024179f.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_bbc22024179f.jpg)
 
 计算归一化注意力权重α
 
@@ -263,7 +263,7 @@ print(attention_weights_2)`
 
 自注意力机制的最后一步是计算上下文向量z(2)，它是原始查询输入x(2)的注意力加权（attention-weighted）版，通过注意力权重将所有其他输入元素作为其上下文：
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_4dbb73030068.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_4dbb73030068.jpg)
 
 注意力权重特定于某个输入元素。在这里，我们选择输入元素x(2)。在代码中，如下所示：
 
@@ -342,19 +342,19 @@ print(sa(embedded_sentence))`
 
 在本文一开始的顶部图表中（为了方便在下文再次展示），可以看到Transformer使用了一个名为"多头注意力（multi-head attention）"的模块。
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_620a78b9befc.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_620a78b9befc.jpg)
 
 原始Transformer架构中的多头注意力模块，来https://arxiv.org/abs/1706.03762。这个“多头”注意力模块与我们上面介绍的自注意力机制（缩放点积注意力）有何关联呢？
 
 在缩放点积注意力中，输入序列通过表示查询（query）、键（key）和值（value）的三个矩阵进行转换。在多头注意力的上下文中，这三个矩阵可以被看作单个注意力头。下图总结了我们之前讨论并实现的这个单一注意力头：
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_2ebe5860b9b4.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_2ebe5860b9b4.jpg)
 
 之前实现的自注意机制总结
 
 顾名思义，多头注意力包括多个这样的头，每个头由查询、键和值矩阵组成。这个概念类似于卷积神经网络中使用多个卷积核，产生具有多个输出通道的特征图（map）。
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_75d792ee38cb.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_75d792ee38cb.jpg)
 
 多头注意力：有多个头的自注意力机制
 
@@ -447,13 +447,13 @@ context_vecs.shape: torch.Size([6, 4])`
 
 因为维度有时会难以跟踪，下图总结了我们目前为止涵盖的所有内容，该图描述了单个注意力头的各种张量大小。
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_39505f6dd489.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_39505f6dd489.jpg)
 
 先前实现的自注意力机制的另一张图侧重于矩阵维度
 
 以上插图对应于Transformer中使用的自注意力机制。我们尚未讨论交叉注意力（cross-attention），这是注意力机制的一种特殊变体。
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_21f794c65e05.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_21f794c65e05.jpg)
 
 *什么是交叉注意力，它与自注意力有何区别？*
 
@@ -463,7 +463,7 @@ context_vecs.shape: torch.Size([6, 4])`
 
 下图阐释了什么是交叉注意力。如果我们设置x_1 = x_2，就相当于自注意力。
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_86521b7df702.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_86521b7df702.jpg)
 
 （注意：查询通常来自解码器，而键和值通常来自编码器。）
 
@@ -543,7 +543,7 @@ Output shape: torch.Size([6, 4])`
 
 另一个使用交叉注意力的热门模型是Stable Diffusion。Stable Diffusion在U-Net模型中使用交叉注意力，在这个模型中，生成的图像和用于条件控制的文本提示之间存在交互，其原始论文（“High-Resolution Image Synthesis with Latent Diffusion Models”）详细介绍了Stable Diffusion模型，后来被Stability AI采用，实现了如今热门的Stable Diffusion模型。
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_97ed2477158d.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_97ed2477158d.jpg)
 
 ### 9 因果自注意力机制**
 
@@ -551,7 +551,7 @@ Output shape: torch.Size([6, 4])`
 
 本节，我们将先前讨论过的自注意力机制调整为了因果自注意力机制，特别是用于生成文本的类似GPT（解码器风格）的LLM。这种因果自注意力机制通常也被称为“掩码自注意力（masked self-attention）”。在原始Transformer架构中，它对应“掩码多头注意力”模块。为简单起见，本节只讨论单个注意力头，但相同的概念也适用于多个注意力头。
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_825d22608905.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_825d22608905.jpg)
 
 原始Transformer架构中的因果自注意力模块（来自“Attention Is All You Need”论文，https://arxiv.org/abs/1706.03762）
 
@@ -559,7 +559,7 @@ Output shape: torch.Size([6, 4])`
 
 下图展示了对注意力权重应用因果掩码以隐藏输入文本中的未来词元。
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_27c3f4de9012.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_27c3f4de9012.jpg)
 
 我们将使用前一节中的未加权注意力分数和注意力权重，说明和实现因果自注意力。首先，我们快速回顾一下前一节中自注意力机制部分的注意力分数的计算：
 
@@ -628,7 +628,7 @@ print(attn_weights)`
 
 如下图所示，对对角线以上的注意力权重矩阵应用掩码，以掩码处理所有未来词元，是实现上述设置最简单的方法。这样，“未来（future）”单词在创建上下文向量时将不被包括在内，这些向量是根据输入的加权和创建的。
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_70c06d3e4ca1.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_70c06d3e4ca1.jpg)
 
 上图表示应该被掩码处理的对角线上方的注意力权重
 
@@ -694,11 +694,11 @@ print(masked_simple_norm)`
 
 在上述编写的因果自注意力过程中，我们首先计算注意力得分，然后计算注意力权重，掩码处理对角线以上的注意力权重，最后重新归一化注意力权重。步骤总结如下：
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_b7e15959eb0e.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_b7e15959eb0e.jpg)
 
 先前实现的因果自注意力过程或者，有一种更有效的方法可以达到相同结果。在这种方法中，我们得到注意力得分，并在将值输入softmax函数以计算注意力权重前，将对角线以上的值替换为负无穷。这一过程总结如下：
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_8dbe65a33b7e.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_8dbe65a33b7e.jpg)
 
 实现因果自注意力是另一种更高效的替代方法
 
@@ -757,15 +757,15 @@ print(attn_weights)`
 
 【语言大模型推理最高加速11倍】**SiliconLLM是由硅基流动开发的高效、易用、可扩展的LLM推理加速引擎，旨在为用户提供开箱即用的推理加速能力，显著降低大模型部署成本，加速生成式AI产品落地。（技术合作、交流请添加微信：SiliconFlow01）
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_c9141417be70.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_c9141417be70.jpg)
 
 SiliconLLM的吞吐最高提升近4倍，时延最高降低近4倍**
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_3a3b5a31a22b.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_3a3b5a31a22b.jpg)
 
 数据中心+PCIe：SiliconLLM的吞吐最高提升近5倍；消费卡场景：SiliconLLM的吞吐最高提升近3倍
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_4c8913c74ae6.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_4c8913c74ae6.jpg)
 
 System Prompt场景：SiliconLLM的吞吐最高提升11倍；MoE模型：推理 SiliconLLM的吞吐最高提升近10倍
 

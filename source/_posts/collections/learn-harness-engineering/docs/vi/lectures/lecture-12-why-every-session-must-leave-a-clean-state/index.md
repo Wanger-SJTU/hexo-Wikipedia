@@ -22,16 +22,16 @@ categories:
 
 Agent của bạn chạy cả buổi chiều, sửa đổi 20 tệp, commit mã, phiên kết thúc. Phiên agent tiếp theo bắt đầu và ngay lập tức phát hiện: build bị hỏng, test đang đỏ, các tệp debug tạm thời ở khắp nơi, feature list không được cập nhật, và tiến độ hoàn toàn không rõ ràng. Phiên mới dành 30 phút đầu tiên chỉ để tìm hiểu "phiên cuối thực sự đã làm gì."
 
-Cả OpenAI và Anthropic đều nói rõ ràng: **độ tin cậy dài hạn phụ thuộc vào kỷ luật vận hành, không chỉ là thành công một lần chạy.** Chất lượng trạng thái khi thoát phiên trực tiếp xác định hiệu quả của phiên tiếp theo. Hãy nghĩ về nó giống như các thực hành tốt nhất của Git — mỗi commit nên là một thay đổi nguyên tử, có thể biên dịch, không phải một đống mã làm dở.
+Cả OpenAI và Anthropic đều nói rõ ràng: <strong>độ tin cậy dài hạn phụ thuộc vào kỷ luật vận hành, không chỉ là thành công một lần chạy.</strong> Chất lượng trạng thái khi thoát phiên trực tiếp xác định hiệu quả của phiên tiếp theo. Hãy nghĩ về nó giống như các thực hành tốt nhất của Git — mỗi commit nên là một thay đổi nguyên tử, có thể biên dịch, không phải một đống mã làm dở.
 
 ## Các Khái niệm Cốt lõi
 
-- **Trạng thái sạch (Clean state)**: Hệ thống thỏa mãn năm điều kiện khi thoát phiên — build vượt qua, test vượt qua, tiến độ được ghi lại, không có artifact lỗi thời, đường dẫn khởi động khả dụng. Thiếu bất kỳ cái nào có nghĩa là phiên không "xong."
-- **Tính toàn vẹn phiên (Session Integrity)**: Tương tự như giao dịch cơ sở dữ liệu — hoặc commit đầy đủ và để lại trạng thái sạch, hoặc rollback về trạng thái nhất quán cuối cùng. Không có lựa chọn trung gian.
-- **Tài liệu chất lượng (Quality Document)**: Một artifact đang hoạt động liên tục ghi lại xếp loại chất lượng cho mỗi module. Không phải đánh giá một lần, mà là tracker cho thấy liệu codebase có đang trở nên mạnh hơn hay yếu hơn theo thời gian.
-- **Vòng lặp dọn dẹp (Cleanup Loop)**: Một phiên bảo trì thường xuyên nhằm giảm entropy có hệ thống trong codebase. Không phải sửa chữa khẩn cấp, mà là vận hành thường xuyên.
-- **Đơn giản hóa harness (Harness Simplification)**: Khi năng lực mô hình cải thiện, định kỳ xóa các thành phần harness không còn cần thiết. Một ràng buộc cần thiết ngày hôm nay có thể là overhead không cần thiết ba tháng sau.
-- **Dọn dẹp Idempotent**: Các hoạt động dọn dẹp tạo ra cùng kết quả bất kể chúng chạy bao nhiêu lần. Đảm bảo dọn dẹp vẫn an toàn ngay cả trong các kịch bản thất bại-thử lại.
+- <strong>Trạng thái sạch (Clean state)</strong>: Hệ thống thỏa mãn năm điều kiện khi thoát phiên — build vượt qua, test vượt qua, tiến độ được ghi lại, không có artifact lỗi thời, đường dẫn khởi động khả dụng. Thiếu bất kỳ cái nào có nghĩa là phiên không "xong."
+- <strong>Tính toàn vẹn phiên (Session Integrity)</strong>: Tương tự như giao dịch cơ sở dữ liệu — hoặc commit đầy đủ và để lại trạng thái sạch, hoặc rollback về trạng thái nhất quán cuối cùng. Không có lựa chọn trung gian.
+- <strong>Tài liệu chất lượng (Quality Document)</strong>: Một artifact đang hoạt động liên tục ghi lại xếp loại chất lượng cho mỗi module. Không phải đánh giá một lần, mà là tracker cho thấy liệu codebase có đang trở nên mạnh hơn hay yếu hơn theo thời gian.
+- <strong>Vòng lặp dọn dẹp (Cleanup Loop)</strong>: Một phiên bảo trì thường xuyên nhằm giảm entropy có hệ thống trong codebase. Không phải sửa chữa khẩn cấp, mà là vận hành thường xuyên.
+- <strong>Đơn giản hóa harness (Harness Simplification)</strong>: Khi năng lực mô hình cải thiện, định kỳ xóa các thành phần harness không còn cần thiết. Một ràng buộc cần thiết ngày hôm nay có thể là overhead không cần thiết ba tháng sau.
+- <strong>Dọn dẹp Idempotent</strong>: Các hoạt động dọn dẹp tạo ra cùng kết quả bất kể chúng chạy bao nhiêu lần. Đảm bảo dọn dẹp vẫn an toàn ngay cả trong các kịch bản thất bại-thử lại.
 
 ## Năm Chiều của Trạng thái Sạch
 
@@ -85,15 +85,15 @@ Sau 12 tuần: tỷ lệ vượt qua build khác nhau 29 điểm phần trăm, t
 
 Trạng thái sạch không chỉ là "mã được biên dịch." Đó là năm chiều được đánh giá cùng nhau:
 
-**Chiều Build**: Mã có build không có lỗi không? Đây là cơ bản nhất — phiên tiếp theo không nên phải sửa lỗi build trước tiên.
+<strong>Chiều Build</strong>: Mã có build không có lỗi không? Đây là cơ bản nhất — phiên tiếp theo không nên phải sửa lỗi build trước tiên.
 
-**Chiều Test**: Tất cả test có vượt qua không? Bao gồm cả test tồn tại trước phiên — phiên có trách nhiệm không làm hỏng chức năng hiện có. Và nó phải được xác minh trong CI, không chỉ "hoạt động trên máy của tôi."
+<strong>Chiều Test</strong>: Tất cả test có vượt qua không? Bao gồm cả test tồn tại trước phiên — phiên có trách nhiệm không làm hỏng chức năng hiện có. Và nó phải được xác minh trong CI, không chỉ "hoạt động trên máy của tôi."
 
-**Chiều Tiến độ**: Tiến độ hiện tại có được ghi lại trong một artifact có thể đọc bởi máy không? Các subtask đã hoàn thành với tiêu chí vượt qua của chúng, các subtask đang tiến hành nhưng chưa hoàn thành với trạng thái hiện tại, các subtask chưa bắt đầu. Bản ghi tiến độ tốt giảm 60-80% thời gian chẩn đoán khởi động phiên.
+<strong>Chiều Tiến độ</strong>: Tiến độ hiện tại có được ghi lại trong một artifact có thể đọc bởi máy không? Các subtask đã hoàn thành với tiêu chí vượt qua của chúng, các subtask đang tiến hành nhưng chưa hoàn thành với trạng thái hiện tại, các subtask chưa bắt đầu. Bản ghi tiến độ tốt giảm 60-80% thời gian chẩn đoán khởi động phiên.
 
-**Chiều Artifact**: Có các artifact tạm thời hoặc mơ hồ lỗi thời không? Debug log, tệp tạm, mã bị comment out, marker TODO — tất cả những thứ này tăng tải nhận thức cho phiên tiếp theo.
+<strong>Chiều Artifact</strong>: Có các artifact tạm thời hoặc mơ hồ lỗi thời không? Debug log, tệp tạm, mã bị comment out, marker TODO — tất cả những thứ này tăng tải nhận thức cho phiên tiếp theo.
 
-**Chiều Khởi động**: Đường dẫn khởi động chuẩn có khả dụng không? Phiên tiếp theo có thể bắt đầu làm việc mà không cần can thiệp thủ công không? Khởi tạo môi trường, tải codebase, thu thập ngữ cảnh, lựa chọn tác vụ — các đường dẫn này không được bị hỏng.
+<strong>Chiều Khởi động</strong>: Đường dẫn khởi động chuẩn có khả dụng không? Phiên tiếp theo có thể bắt đầu làm việc mà không cần can thiệp thủ công không? Khởi tạo môi trường, tải codebase, thu thập ngữ cảnh, lựa chọn tác vụ — các đường dẫn này không được bị hỏng.
 
 ### "Dọn dẹp sau" Có nghĩa là Không bao giờ Dọn dẹp
 
@@ -105,7 +105,7 @@ Tệ hơn, mỗi phiên có mục tiêu tác vụ riêng của mình. Phiên m�
 
 ### 1. Trạng thái Sạch như Yêu cầu Hoàn thành
 
-Định nghĩa rõ ràng trong harness: **hoàn thành phiên = tác vụ vượt qua xác minh VÀ kiểm tra trạng thái sạch vượt qua.** Thiếu bất kỳ cái nào có nghĩa là phiên không hoàn thành. Viết trong CLAUDE.md:
+Định nghĩa rõ ràng trong harness: <strong>hoàn thành phiên = tác vụ vượt qua xác minh VÀ kiểm tra trạng thái sạch vượt qua.</strong> Thiếu bất kỳ cái nào có nghĩa là phiên không hoàn thành. Viết trong CLAUDE.md:
 
 ```
 ## Danh sách Kiểm tra Thoát Phiên
@@ -120,9 +120,9 @@ Tệ hơn, mỗi phiên có mục tiêu tác vụ riêng của mình. Phiên m�
 
 Kết hợp hai chế độ dọn dẹp:
 
-**Dọn dẹp tức thì (ở cuối mỗi phiên)**: Dọn dẹp các artifact tạm thời được tạo trong phiên, cập nhật trạng thái feature list, đảm bảo build và test vượt qua. Đây là dọn dẹp "tính tham chiếu."
+<strong>Dọn dẹp tức thì (ở cuối mỗi phiên)</strong>: Dọn dẹp các artifact tạm thời được tạo trong phiên, cập nhật trạng thái feature list, đảm bảo build và test vượt qua. Đây là dọn dẹp "tính tham chiếu."
 
-**Dọn dẹp định kỳ (hàng tuần)**: Quét toàn hệ thống — xử lý các vấn đề cấu trúc tích lũy, cập nhật tài liệu chất lượng, chạy test benchmark để phát hiện trôi dạt. Đây là dọn dẹp "tracing."
+<strong>Dọn dẹp định kỳ (hàng tuần)</strong>: Quét toàn hệ thống — xử lý các vấn đề cấu trúc tích lũy, cập nhật tài liệu chất lượng, chạy test benchmark để phát hiện trôi dạt. Đây là dọn dẹp "tracing."
 
 ### 3. Duy trì Tài liệu Chất lượng
 
@@ -150,7 +150,7 @@ Các phiên mới đọc tài liệu này và biết ngay nơi ưu tiên. Sửa 
 
 ### 4. Định kỳ Đơn giản hóa Harness
 
-Một hiểu biết quan trọng từ Anthropic: **mỗi thành phần harness tồn tại vì mô hình không thể thực hiện điều gì đó một cách đáng tin cậy. Nhưng khi các mô hình cải thiện, các giả định này trở nên lỗi thời.** Một ràng buộc cần thiết ba tháng trước có thể là overhead không cần thiết ngày hôm nay.
+Một hiểu biết quan trọng từ Anthropic: <strong>mỗi thành phần harness tồn tại vì mô hình không thể thực hiện điều gì đó một cách đáng tin cậy. Nhưng khi các mô hình cải thiện, các giả định này trở nên lỗi thời.</strong> Một ràng buộc cần thiết ba tháng trước có thể là overhead không cần thiết ngày hôm nay.
 
 Thực hành được khuyến nghị: Mỗi tháng, chọn một thành phần harness, tạm thời vô hiệu hóa nó, và chạy các tác vụ benchmark. Nếu kết quả không giảm sút, hãy xóa vĩnh viễn. Nếu có, hãy khôi phục hoặc thay thế bằng một thay thế nhẹ hơn.
 
@@ -169,19 +169,19 @@ npm run test  # Xác minh dọn dẹp không làm hỏng gì
 
 Một ứng dụng Electron được phát triển với agent trong 12 tuần, so sánh hai cách tiếp cận:
 
-**Không có chiến lược dọn dẹp** (nhóm kiểm soát): Tuần 12, tỷ lệ vượt qua build 68%, tỷ lệ vượt qua test 61%, khởi động phiên mới 60+ phút, artifact lỗi thời 103.
+<strong>Không có chiến lược dọn dẹp</strong> (nhóm kiểm soát): Tuần 12, tỷ lệ vượt qua build 68%, tỷ lệ vượt qua test 61%, khởi động phiên mới 60+ phút, artifact lỗi thời 103.
 
-**Với chiến lược dọn dẹp** (nhóm thực nghiệm): Kiểm tra trạng thái sạch đầy đủ ở cuối mỗi phiên + vòng lặp dọn dẹp hàng tuần. Tuần 12, tỷ lệ vượt qua build 97%, tỷ lệ vượt qua test 95%, khởi động phiên mới 9 phút, artifact lỗi thời 11.
+<strong>Với chiến lược dọn dẹp</strong> (nhóm thực nghiệm): Kiểm tra trạng thái sạch đầy đủ ở cuối mỗi phiên + vòng lặp dọn dẹp hàng tuần. Tuần 12, tỷ lệ vượt qua build 97%, tỷ lệ vượt qua test 95%, khởi động phiên mới 9 phút, artifact lỗi thời 11.
 
 Đến tuần 12, tỷ lệ vượt qua build của nhóm thực nghiệm cao hơn 29 điểm phần trăm, tỷ lệ vượt qua test cao hơn 34 điểm, và thời gian khởi động phiên mới thấp hơn 85%.
 
 ## Những Điểm chính cần Nhớ
 
-- **Trạng thái sạch là điều kiện cần thiết cho hoàn thành phiên** — không phải dọn dẹp tùy chọn, mà là một phần của "định nghĩa hoàn thành."
-- **Tất cả năm chiều đều bắt buộc** — build, test, tiến độ, artifact, khởi động — mỗi cái phải được kiểm tra rõ ràng.
-- **Tài liệu chất lượng làm cho sức khỏe codebase có thể theo dõi** — bạn chỉ có thể sửa những gì bạn biết đang suy giảm.
-- **Định kỳ đơn giản hóa harness** — khi năng lực mô hình cải thiện, hãy xóa các ràng buộc không còn cần thiết.
-- **"Dọn dẹp sau" bằng với không bao giờ dọn dẹp** — tăng trưởng entropy là mặc định; chỉ có dọn dẹp chủ động mới chống lại nó.
+- <strong>Trạng thái sạch là điều kiện cần thiết cho hoàn thành phiên</strong> — không phải dọn dẹp tùy chọn, mà là một phần của "định nghĩa hoàn thành."
+- <strong>Tất cả năm chiều đều bắt buộc</strong> — build, test, tiến độ, artifact, khởi động — mỗi cái phải được kiểm tra rõ ràng.
+- <strong>Tài liệu chất lượng làm cho sức khỏe codebase có thể theo dõi</strong> — bạn chỉ có thể sửa những gì bạn biết đang suy giảm.
+- <strong>Định kỳ đơn giản hóa harness</strong> — khi năng lực mô hình cải thiện, hãy xóa các ràng buộc không còn cần thiết.
+- <strong>"Dọn dẹp sau" bằng với không bao giờ dọn dẹp</strong> — tăng trưởng entropy là mặc định; chỉ có dọn dẹp chủ động mới chống lại nó.
 
 ## Đọc thêm
 
@@ -192,8 +192,8 @@ Một ứng dụng Electron được phát triển với agent trong 12 tuần, 
 
 ## Bài tập
 
-1. **Danh sách Kiểm tra Trạng thái Sạch**: Thiết kế một danh sách kiểm tra thoát phiên cho codebase của bạn bao phủ tất cả năm chiều. Áp dụng nó qua 5 phiên liên tiếp và ghi lại vi phạm theo từng chiều.
+1. <strong>Danh sách Kiểm tra Trạng thái Sạch</strong>: Thiết kế một danh sách kiểm tra thoát phiên cho codebase của bạn bao phủ tất cả năm chiều. Áp dụng nó qua 5 phiên liên tiếp và ghi lại vi phạm theo từng chiều.
 
-2. **So sánh Benchmark**: Sử dụng một bộ tác vụ cố định với hai biến thể harness (có/không có yêu cầu trạng thái sạch). So sánh tỷ lệ hoàn thành, số lần thử lại và tỷ lệ thoát lỗi.
+2. <strong>So sánh Benchmark</strong>: Sử dụng một bộ tác vụ cố định với hai biến thể harness (có/không có yêu cầu trạng thái sạch). So sánh tỷ lệ hoàn thành, số lần thử lại và tỷ lệ thoát lỗi.
 
-3. **Thực hành Đơn giản hóa Harness**: Chọn một thành phần harness, tạm thời vô hiệu hóa nó, và chạy các tác vụ benchmark. So sánh kết quả có và không có nó. Quyết định có giữ, xóa hay thay thế.
+3. <strong>Thực hành Đơn giản hóa Harness</strong>: Chọn một thành phần harness, tạm thời vô hiệu hóa nó, và chạy các tác vụ benchmark. So sánh kết quả có và không có nó. Quyết định có giữ, xóa hay thay thế.

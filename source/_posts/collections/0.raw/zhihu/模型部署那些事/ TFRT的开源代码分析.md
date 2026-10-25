@@ -28,16 +28,16 @@ TFRT是一个新的TensorFlow运行时。它的目标是提供一个统一的、
 
 整体流程：**
 
-![](/images/collections/0.raw/zhihu/%25E6%25A8%25A1%25E5%259E%258B%25E9%2583%25A8%25E7%25BD%25B2%25E9%2582%25A3%25E4%25BA%259B%25E4%25BA%258B/asset/img_b6d3971d1d07.jpg)
+![](/images/collections/0.raw/zhihu/%E6%A8%A1%E5%9E%8B%E9%83%A8%E7%BD%B2%E9%82%A3%E4%BA%9B%E4%BA%8B/asset/img_b6d3971d1d07.jpg)
 
 [https://github.com/tensorflow/runtime/blob/master/documents/img/TFRT_overview.svg](https://link.zhihu.com/?target=https%3A//github.com/tensorflow/runtime/blob/master/documents/img/TFRT_overview.svg)
 
 - 用户传入用high-level TensorFlow APIs创建的TF Graph。
 - MLIR-based graph compiler优化TF Graph并下降（lower）为BEF（Binary Executable Format）。
 - Eager模式直接调用Kernel，不需要转换为BEF。
-**BEF转换流程：**
+<strong>BEF转换流程：</strong>
 
-![](/images/collections/0.raw/zhihu/%25E6%25A8%25A1%25E5%259E%258B%25E9%2583%25A8%25E7%25BD%25B2%25E9%2582%25A3%25E4%25BA%259B%25E4%25BA%258B/asset/img_2ddaf2673032.jpg)
+![](/images/collections/0.raw/zhihu/%E6%A8%A1%E5%9E%8B%E9%83%A8%E7%BD%B2%E9%82%A3%E4%BA%9B%E4%BA%8B/asset/img_2ddaf2673032.jpg)
 
 **[https://github.com/tensorflow/runtime/blob/master/documents/img/BEF_conversion.svg](https://link.zhihu.com/?target=https%3A//github.com/tensorflow/runtime/blob/master/documents/img/BEF_conversion.svg)
 
@@ -53,7 +53,7 @@ TFRT是一个新的TensorFlow运行时。它的目标是提供一个统一的、
 
 TFRT的整体架构：**
 
-![](/images/collections/0.raw/zhihu/%25E6%25A8%25A1%25E5%259E%258B%25E9%2583%25A8%25E7%25BD%25B2%25E9%2582%25A3%25E4%25BA%259B%25E4%25BA%258B/asset/img_409cf321c9b1.jpg)
+![](/images/collections/0.raw/zhihu/%E6%A8%A1%E5%9E%8B%E9%83%A8%E7%BD%B2%E9%82%A3%E4%BA%9B%E4%BA%8B/asset/img_409cf321c9b1.jpg)
 
 TFRT包含Distributed Runtime、Host Runtime和Device Runtime。
 
@@ -162,7 +162,7 @@ AsyncValue的生命周期通过引用计数管理，方便在多个消费者中�
 
 #### Class Hierarchy
 
-![](/images/collections/0.raw/zhihu/%25E6%25A8%25A1%25E5%259E%258B%25E9%2583%25A8%25E7%25BD%25B2%25E9%2582%25A3%25E4%25BA%259B%25E4%25BA%258B/asset/img_6dfb5a20b98c.jpg)
+![](/images/collections/0.raw/zhihu/%E6%A8%A1%E5%9E%8B%E9%83%A8%E7%BD%B2%E9%82%A3%E4%BA%9B%E4%BA%8B/asset/img_6dfb5a20b98c.jpg)
 
 [https://github.com/tensorflow/runtime/raw/master/documents/img/async-values.svg](https://link.zhihu.com/?target=https%3A//github.com/tensorflow/runtime/raw/master/documents/img/async-values.svg)                              
 

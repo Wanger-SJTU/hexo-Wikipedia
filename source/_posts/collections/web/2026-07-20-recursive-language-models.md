@@ -38,7 +38,7 @@ Let's say we have a very long document with 1 million tokens, and we want to ask
 When we put a lot of text into a language model, the following issues arise:
 
 - The model has a context window limit. It cannot accept too many tokens at once.
-- The quality of the answer goes down as the context gets longer. The model gets confused with too much information and misses important details in the middle. This is called **context rot**.
+- The quality of the answer goes down as the context gets longer. The model gets confused with too much information and misses important details in the middle. This is called <strong>context rot</strong>.
 - The cost of running the model goes up.
 - The speed of the model goes down.
 
@@ -61,7 +61,7 @@ The loop runs as:
 3. The list is sent back to the model. The model now sees only the short answers, not the full transcript
 4. The model reads the list and returns the final answer
 
-The full transcript is **never** sent to the main model. Only the variable name `context` is sent in the prompt, not its actual content. This is what keeps the main model's context small even when the input is huge.
+The full transcript is <strong>never</strong> sent to the main model. Only the variable name `context` is sent in the prompt, not its actual content. This is what keeps the main model's context small even when the input is huge.
 
 ## Why RLMs work better
 
@@ -80,7 +80,7 @@ This is just like a tree. The top of the tree handles the big problem. The leave
 
 In simple chunking, we fix the chunk size beforehand. We send each chunk to the model, get an answer, and combine the answers. The split is fixed.
 
-In an RLM, the **model itself** decides how to split the input and what to ask for each piece. The model can change its strategy based on the question. The RLM is more like a human reader who skims, jumps, reads carefully, and decides on the fly.
+In an RLM, the <strong>model itself</strong> decides how to split the input and what to ask for each piece. The model can change its strategy based on the question. The RLM is more like a human reader who skims, jumps, reads carefully, and decides on the fly.
 
 ## Advantages of RLMs
 

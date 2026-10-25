@@ -49,31 +49,31 @@ clang -target aarch64-linux-android21 1.cpp -o demo
 
 `
 
-#### **编译（生成汇编文件）**
+#### <strong>编译（生成汇编文件）</strong>
 
 `clang -target arm-linux-android21eabi -S demo.i -o demo.s
 
 `
 
-#### **汇编（生成未资源重定位的二进制文件）**
+#### <strong>汇编（生成未资源重定位的二进制文件）</strong>
 
 `clang -target arm-linux-android21eabi -S demo.s -o demo.o
 
 `
 
-#### **链接（生成可执行文件）**
+#### <strong>链接（生成可执行文件）</strong>
 
 `clang -target arm-linux-android21eabi -S demo.o -o demo
 
 `
 
-### **clang编译thumb架构的文件**
+### <strong>clang编译thumb架构的文件</strong>
 
 `clang -target arm-linux-android21 -S -mthumb demo.c -o demo.s
 
 `
 
-#### **针对于ARM与thumb的区别**
+#### <strong>针对于ARM与thumb的区别</strong>
 
 **
 
@@ -101,9 +101,9 @@ ARM共有37个寄存器，都是32位长度的寄存器（具体可以看后面�
 
  37个寄存器中其中前31个（0~30）是通用寄存器（模式不同，使用的时候有所区别），最后2个(31,32)是专用寄存器（sp 寄存器和 pc 寄存器)。5个固定用作5种异常模式下的SPSR。
 
-◆CPSR**：当前程序**状态寄存器**，通常不直接操作，除非进行异常处理或任务切换。
+◆CPSR<strong>：当前程序</strong>状态寄存器**，通常不直接操作，除非进行异常处理或任务切换。
 
-◆**SPSR**：在异常处理中使用，**保存异常发生时的CPSR值**。
+◆<strong>SPSR</strong>：在异常处理中使用，<strong>保存异常发生时的CPSR值</strong>。
 
 **
 
@@ -119,9 +119,9 @@ R0-R12：通用目的寄存器**
 
 ◆R0-R3** 通常用作指令操作数，传递函数参数和返回值。
 
-◆**R4-R11** 通常用作局部变量存储，称为"callee-saved"寄存器，函数使用前需保存值，返回前需恢复。
+◆<strong>R4-R11</strong> 通常用作局部变量存储，称为"callee-saved"寄存器，函数使用前需保存值，返回前需恢复。
 
-◆**R12** 有时称为Intra-Procedure-call scratch register（IP），在某函数调用约定中用作临时存储。FP：栈帧基址寄存器，即R12
+◆<strong>R12</strong> 有时称为Intra-Procedure-call scratch register（IP），在某函数调用约定中用作临时存储。FP：栈帧基址寄存器，即R12
 
 **
 
@@ -157,9 +157,9 @@ CPSR寄存器包含当前程序状态信息，包括：
 
 ◆条件标志位**：零标志(Z)，负标志(N)，进位标志(C)，溢出标志(V)，通常在算术或逻辑操作后自动设置，用于条件分支指令。
 
-◆**控制位**：中断禁用位(I)和快速中断禁用位(F)，用于控制中断使能状态。
+◆<strong>控制位</strong>：中断禁用位(I)和快速中断禁用位(F)，用于控制中断使能状态。
 
-◆**模式位**：指示当前CPU操作模式，如用户模式、系统模式、中断模式等。
+◆<strong>模式位</strong>：指示当前CPU操作模式，如用户模式、系统模式、中断模式等。
 
 **
 
@@ -171,13 +171,13 @@ CPSR寄存器包含当前程序状态信息，包括：
 
 ### 关于ARM-V8架构**
 
-#### **通用寄存器**
+#### <strong>通用寄存器</strong>
 
 **
 
 Arm-v8架构有31个通用寄存器X0-X30 (64位长），而Arm-v7架构仅有16个通用寄存器R0-R15（32位长）。
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_4604a76dc9ec.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_4604a76dc9ec.jpg)
 
 #### 
 
@@ -187,9 +187,9 @@ Arm-v8架构有31个通用寄存器X0-X30 (64位长），而Arm-v7架构仅有16
 
 ◆X8：间接结果寄存器。用来保存间接结果的地址。
 
-◆子程序内部调用寄存器，ip寄存器（I**ntra-**P**rocedure-Call Temporary Registers），IP0与IP1，可被Veneers（实现Arm/Thumb状态切换）。或是用于在子程序调用前，作为存储中间值的临时寄存器。使用时不需要保存。
+◆子程序内部调用寄存器，ip寄存器（I<strong>ntra-</strong>P**rocedure-Call Temporary Registers），IP0与IP1，可被Veneers（实现Arm/Thumb状态切换）。或是用于在子程序调用前，作为存储中间值的临时寄存器。使用时不需要保存。
 
-◆x18：平台寄存器（**P**latform **R**egister），用于保存当前所用的平台的ABI=
+◆x18：平台寄存器（<strong>P</strong>latform <strong>R</strong>egister），用于保存当前所用的平台的ABI=
 
 ◆x29：帧指针寄存器（FP），用于连接栈帧，使用时必须保存。
 
@@ -211,7 +211,7 @@ Arm-v8架构有31个通用寄存器X0-X30 (64位长），而Arm-v7架构仅有16
 
 栈帧指针寄存器**:32位，使用 WSP 来引用，64位，使用 SP 来引用。
 
-**零寄存器**:32位，使用 WZR 来引用，64位，使用 ZR 来引用。
+<strong>零寄存器</strong>:32位，使用 WZR 来引用，64位，使用 ZR 来引用。
 
 **
 
@@ -219,33 +219,33 @@ Arm-v8架构有31个通用寄存器X0-X30 (64位长），而Arm-v7架构仅有16
 
 ARM处理器几种工作模式`
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_9bfc9c41f269.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_9bfc9c41f269.jpg)
 
 #### 用户模式 (User Mode):**
 
 正常程序执行的默认模式。
 
-#### **快速中断模式 (FIQ Mode)**
+#### <strong>快速中断模式 (FIQ Mode)</strong>
 
 用于处理快速中断请求，有额外的寄存器以减少中断服务例程的执行时间。
 
-#### **普通中断模式 (IRQ Mode)**
+#### <strong>普通中断模式 (IRQ Mode)</strong>
 
 用于处理普通的中断请求。
 
-#### **管理模式 (Supervisor Mode)**
+#### <strong>管理模式 (Supervisor Mode)</strong>
 
 用于操作系统的内核级别操作，通常在系统启动或系统调用时进入。
 
-#### **未定义模式 (Undefined Mode)**
+#### <strong>未定义模式 (Undefined Mode)</strong>
 
 当执行了未定义的指令时进入此模式。在异常或中断发生时，处理器会自动切换到相应的模式，并使用该模式下的寄存器集。
 
-#### **中止模式 (Abort Mode)**
+#### <strong>中止模式 (Abort Mode)</strong>
 
 当发生数据或指令预取中止时进入此模式。
 
-#### **系统模式 (System Mode)**
+#### <strong>系统模式 (System Mode)</strong>
 
 用于运行操作系统的内核代码，与用户模式共享相同的寄存器。
 
@@ -259,15 +259,15 @@ ARM 架构下常见的函数调用约定有两种：
 
 AAPCS**（ARM Architecture Procedure Call Standard）
 
-**AAPCS-VFP**（ARM Architecture Procedure Call Standard with the Vector Floating-Point extension）
+<strong>AAPCS-VFP</strong>（ARM Architecture Procedure Call Standard with the Vector Floating-Point extension）
 
-### **AAPCS：**
+### <strong>AAPCS：</strong>
 
 **
 
 AAPCS 是 ARM 架构的默认函数调用约定，适用于大多数 ARM 架构的编译器和操作系统。它定义了函数参数的传递方式、栈的使用规则以及寄存器的分配方式。
 
-◆参数传递：函数的前几个参数（通常是 R0、R1、R2、R3）通过寄存器传递**，而剩余的参数通过栈传递。参数的传递顺序是**从左到右**。◆栈的使用：栈用于保存局部变量、临时变量和函数调用过程中的状态。**栈的增长方向是从高地址向低地址。**◆寄存器的分配：除了用于参数传递的寄存器，还有一些寄存器被用作临时寄存器或保存特定的值，如栈指针（SP）、链接寄存器（LR）和程序计数器（PC）等。◆堆栈的管理由**被调用的函数负责**。具体来说，堆栈的管理包括参数的压栈、局部变量的分配和释放、以及函数调用过程中的保存和恢复寄存器等。
+◆参数传递：函数的前几个参数（通常是 R0、R1、R2、R3）通过寄存器传递<strong>，而剩余的参数通过栈传递。参数的传递顺序是</strong>从左到右<strong>。◆栈的使用：栈用于保存局部变量、临时变量和函数调用过程中的状态。</strong>栈的增长方向是从高地址向低地址。<strong>◆寄存器的分配：除了用于参数传递的寄存器，还有一些寄存器被用作临时寄存器或保存特定的值，如栈指针（SP）、链接寄存器（LR）和程序计数器（PC）等。◆堆栈的管理由</strong>被调用的函数负责**。具体来说，堆栈的管理包括参数的压栈、局部变量的分配和释放、以及函数调用过程中的保存和恢复寄存器等。
 
 **
 
@@ -285,7 +285,7 @@ AAPCS-VFP 是在 AAPCS 的基础上添加了向量浮点扩展（Vector Floating
 
 ### ARM中的寻址方式：**
 
-#### **寄存器寻址**
+#### <strong>寄存器寻址</strong>
 
 **
 
@@ -325,7 +325,7 @@ AAPCS-VFP 是在 AAPCS 的基础上添加了向量浮点扩展（Vector Floating
 
 `
 
-#### **基址变址寻址**
+#### <strong>基址变址寻址</strong>
 
 **
 
@@ -335,7 +335,7 @@ AAPCS-VFP 是在 AAPCS 的基础上添加了向量浮点扩展（Vector Floating
 
 `
 
-#### **多寄存器寻址**
+#### <strong>多寄存器寻址</strong>
 
 **
 
@@ -368,7 +368,7 @@ flag:
 
 ### 汇编常用的指令**
 
-### **跳转指令**
+### <strong>跳转指令</strong>
 
 **
 
@@ -450,7 +450,7 @@ BIC**：与非 , 可以实现的 Bit Clear的功能
 
 `
 
-### **乘法指令：**
+### <strong>乘法指令：</strong>
 
 **
 
@@ -536,7 +536,7 @@ RRX**：扩展的循环右移指令，将寄存器中的值向右移动一位，
 
 `
 
-### **内存访问指令：**
+### <strong>内存访问指令：</strong>
 
 #### **
 
@@ -584,7 +584,7 @@ stm  // 批量处理
 
 `
 
-### **比较寄存器指令**
+### <strong>比较寄存器指令</strong>
 
 **
 
@@ -618,17 +618,17 @@ BNE label     ; 如果 r4 的值与 0x80 异或后不为零，则跳转到 label
 
 ### 比较值指令**
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_1ddfdc969949.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_1ddfdc969949.jpg)
 
-### **堆栈的指令组合后缀**
+### <strong>堆栈的指令组合后缀</strong>
 
-#### **四种栈的类型：**
+#### <strong>四种栈的类型：</strong>
 
-**空栈**：栈指针指向空位，每次存入时可以直接存入然后栈指针移动一格；而取出时需要先移动一格才能取出。**满栈**：栈指针指向栈中最后一格数据，每次存入时需要先移动栈指针一格再存入；取出时可以直接取出，然后再移动栈指针。**增栈**:栈指针移动时向地址增加的方向移动的栈。**减栈**:栈指针移动时向地址减小的方向移动的栈。
+<strong>空栈</strong>：栈指针指向空位，每次存入时可以直接存入然后栈指针移动一格；而取出时需要先移动一格才能取出。<strong>满栈</strong>：栈指针指向栈中最后一格数据，每次存入时需要先移动栈指针一格再存入；取出时可以直接取出，然后再移动栈指针。<strong>增栈</strong>:栈指针移动时向地址增加的方向移动的栈。<strong>减栈</strong>:栈指针移动时向地址减小的方向移动的栈。
 
-#### **针对此衍生出了8种后缀：**
+#### <strong>针对此衍生出了8种后缀：</strong>
 
-**ia（increase after**:先传输，再地址+4**ib（increase before**: 先地址+4，再传输**da（decrease after**: 先传输，再地址-4**db（decrease befor**: 先地址-4，再传输fd（full decrease）:满递减堆栈ed（empty decrease）:空递减堆栈fa：满递增堆栈ea：空递增堆栈
+<strong>ia（increase after</strong>:先传输，再地址+4<strong>ib（increase before</strong>: 先地址+4，再传输<strong>da（decrease after</strong>: 先传输，再地址-4<strong>db（decrease befor</strong>: 先地址-4，再传输fd（full decrease）:满递减堆栈ed（empty decrease）:空递减堆栈fa：满递增堆栈ea：空递增堆栈
 
 **
 

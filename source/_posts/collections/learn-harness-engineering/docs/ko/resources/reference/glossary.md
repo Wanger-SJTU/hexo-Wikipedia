@@ -18,11 +18,11 @@ categories:
 
 ## 표기 규칙 (Convention)
 
-- **첫 등장 형식**: 본문에서 처음 나오는 전문 용어는 `한국어(English)` 형태로 병기합니다. 예: `하네스(harness)`, `에이전트(agent)`.
-- **두 번째 이후**: 한국어만 사용하되, 문맥상 모호하면 다시 영어를 병기할 수 있습니다.
-- **고유명사·도구명**: `Claude Code`, `Codex`, `VitePress`, `GitHub Actions` 등은 영어 그대로 둡니다.
-- **시스템 토큰**: `BLOCKING`, `HARD`, `[CP]`, `@plan-writer`, `Skill("...")` 등 코드·프롬프트에서 의미를 갖는 토큰은 번역하지 않습니다.
-- **명령어·파일 경로**: `npm run docs:build`, `docs/.vitepress/config.mts` 등은 영어로 유지합니다.
+- <strong>첫 등장 형식</strong>: 본문에서 처음 나오는 전문 용어는 `한국어(English)` 형태로 병기합니다. 예: `하네스(harness)`, `에이전트(agent)`.
+- <strong>두 번째 이후</strong>: 한국어만 사용하되, 문맥상 모호하면 다시 영어를 병기할 수 있습니다.
+- <strong>고유명사·도구명</strong>: `Claude Code`, `Codex`, `VitePress`, `GitHub Actions` 등은 영어 그대로 둡니다.
+- <strong>시스템 토큰</strong>: `BLOCKING`, `HARD`, `[CP]`, `@plan-writer`, `Skill("...")` 등 코드·프롬프트에서 의미를 갖는 토큰은 번역하지 않습니다.
+- <strong>명령어·파일 경로</strong>: `npm run docs:build`, `docs/.vitepress/config.mts` 등은 영어로 유지합니다.
 
 ## 핵심 개념 (Core Concepts)
 

@@ -47,7 +47,7 @@ Self-Attention 计算可以被总结为（这里忽略 heads 和 batchs，因为
 ![](https://www.zhihu.com/equation?tex=A)矩阵在全局Safe Softmax内存中。相反我们融合整个计算在单个内核中。这需要我们设计一个谨慎管理片山内存的算法，因为 NVIDIA 的 GPU 共享内存是很小的。
 
 对于经典算法如矩阵乘，tiling 被用来确保片上内存不会超过硬件限制。图中展示了一个例子。在 kernel 执行期间，仅有 
-![](https://www.zhihu.com/equation?tex=3T%5E2) 的元素被存储在片上，无论矩阵形状如何。这个分片方法是有效的，因为**加法满足结合律**，这使得我们可以将整个矩阵乘法**分解**为多个分块矩阵乘法的**和**。
+![](https://www.zhihu.com/equation?tex=3T%5E2) 的元素被存储在片上，无论矩阵形状如何。这个分片方法是有效的，因为<strong>加法满足结合律</strong>，这使得我们可以将整个矩阵乘法<strong>分解</strong>为多个分块矩阵乘法的<strong>和</strong>。
 
 ![](https://picx.zhimg.com/v2-b8109ba10cca0c5b6a850b5677b62129_r.jpg)
 
@@ -63,7 +63,7 @@ Self-Attention 计算可以被总结为（这里忽略 heads 和 batchs，因为
 ![](https://www.zhihu.com/equation?tex=C)的片上数据写回主存中，然后移动到下一个分块上继续计算，
 ![](https://www.zhihu.com/equation?tex=%5Bi%2C+j%5D)所有分块都计算完成后，此分块的最终结果也就算是得到了。
 
-然而，自注意力机制中包含了 **softmax 算子**，而它**不具备直接的结合律**，这使得我们难以像图 1 那样简单地对自注意力进行分块计算。那么，是否存在一种方法能让 softmax 满足结合律呢？
+然而，自注意力机制中包含了 <strong>softmax 算子</strong>，而它<strong>不具备直接的结合律</strong>，这使得我们难以像图 1 那样简单地对自注意力进行分块计算。那么，是否存在一种方法能让 softmax 满足结合律呢？
 
 Safe Softmax
 首先让我们回想下 softmax 运算，下面是 softmax 计算通用公式。 

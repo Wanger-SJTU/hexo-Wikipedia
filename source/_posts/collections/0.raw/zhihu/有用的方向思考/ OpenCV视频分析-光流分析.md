@@ -21,18 +21,18 @@ source_url: https://zhuanlan.zhihu.com/p/69999853
 
 如下图所示，是一个球在连续的5帧图像中的运动,箭头显示其位移矢量.
 
-![](/images/collections/0.raw/zhihu/%25E6%259C%2589%25E7%2594%25A8%25E7%259A%2584%25E6%2596%25B9%25E5%2590%2591%25E6%2580%259D%25E8%2580%2583/asset/img_8556adf3706f.jpg)
+![](/images/collections/0.raw/zhihu/%E6%9C%89%E7%94%A8%E7%9A%84%E6%96%B9%E5%90%91%E6%80%9D%E8%80%83/asset/img_8556adf3706f.jpg)
 
-位移矢量**光流有很多应用场景如下：**
+位移矢量<strong>光流有很多应用场景如下：</strong>
 
 - 运动恢复结构
 - 视频压缩
 - 视频防抖动等
-**光流法的工作原理基于如下假设：**
+<strong>光流法的工作原理基于如下假设：</strong>
 
-- 连续的两帧图像之间，**目标像素灰度值不变**。
-- 相邻的像素之间有**相似的运动**。
-**数学原理**
+- 连续的两帧图像之间，<strong>目标像素灰度值不变</strong>。
+- 相邻的像素之间有<strong>相似的运动</strong>。
+<strong>数学原理</strong>
 
 ✔️  第一帧的像素 I(x,y,t)" role="presentation">I(x,y,t)I(x,y,t) ，表示在 t 时刻的像素值，那么经过 dt" role="presentation">dtd_t 时间后，像素在下一帧移动的距离为 (dx,dy)" role="presentation">(dx,dy)(d_x,d_y) 。基于像素相同，亮度不变，可得：
 
@@ -54,7 +54,7 @@ f_{x} u+f_{y} v+f_{t}=0
 
 **
 
-![](/images/collections/0.raw/zhihu/%25E6%259C%2589%25E7%2594%25A8%25E7%259A%2584%25E6%2596%25B9%25E5%2590%2591%25E6%2580%259D%25E8%2580%2583/asset/img_cbd7ebb78b86.jpg)
+![](/images/collections/0.raw/zhihu/%E6%9C%89%E7%94%A8%E7%9A%84%E6%96%B9%E5%90%91%E6%80%9D%E8%80%83/asset/img_cbd7ebb78b86.jpg)
 
 ✔️ 为了求解未知的 u, v ，采用Lucas-Kanada 方法解决,这个算法最早是有Bruce D. Lucas and Takeo Kanade两位作者提出来的，所以又被称为KLT。
 
@@ -96,7 +96,7 @@ KLT算法工作有三个假设前提条件：
 - err--> 向量中的每个特征对应的错误率.
 实现原理：** - 在第一帧图像中检测Shi-Tomasi角点， - 使用LK算法来迭代的跟踪这些特征点。迭代的方式就是不断向cv2.calcOpticalFlowPyrLK()中传入上一帧图片的特征点以及当前帧的图片。 - 函数会返回当前帧的点，这些点带有状态1或者0，如果在当前帧找到了上一帧中的点，那么这个点的状态就是1，否则就是0。
 
-**实现流程：**
+<strong>实现流程：</strong>
 
 - 加载视频。
 - 调用`cv2.GoodFeaturesToTrack` 函数寻找兴趣点（关键点）。
@@ -106,7 +106,7 @@ KLT算法工作有三个假设前提条件：
 
 ### 示例代码
 
-**1. 删除静止点的光流分析：**
+<strong>1. 删除静止点的光流分析：</strong>
 
 `import numpy as np
 import cv2 as cv
@@ -184,9 +184,9 @@ while True:
 cv.destroyAllWindows()
 cap.release()`
 
-![](/images/collections/0.raw/zhihu/%25E6%259C%2589%25E7%2594%25A8%25E7%259A%2584%25E6%2596%25B9%25E5%2590%2591%25E6%2580%259D%25E8%2580%2583/asset/img_a5fce382d542.jpg)
+![](/images/collections/0.raw/zhihu/%E6%9C%89%E7%94%A8%E7%9A%84%E6%96%B9%E5%90%91%E6%80%9D%E8%80%83/asset/img_a5fce382d542.jpg)
 
-输出**2. 反向检测的光流分析：**
+输出<strong>2. 反向检测的光流分析：</strong>
 
 `import numpy as np
 import cv2 as cv
@@ -285,11 +285,11 @@ while True:
 cv.destroyAllWindows()
 cap.release()`
 
-![](/images/collections/0.raw/zhihu/%25E6%259C%2589%25E7%2594%25A8%25E7%259A%2584%25E6%2596%25B9%25E5%2590%2591%25E6%2580%259D%25E8%2580%2583/asset/img_9fb360f7790c.jpg)
+![](/images/collections/0.raw/zhihu/%E6%9C%89%E7%94%A8%E7%9A%84%E6%96%B9%E5%90%91%E6%80%9D%E8%80%83/asset/img_9fb360f7790c.jpg)
 
 输出
 
-![](/images/collections/0.raw/zhihu/%25E6%259C%2589%25E7%2594%25A8%25E7%259A%2584%25E6%2596%25B9%25E5%2590%2591%25E6%2580%259D%25E8%2580%2583/asset/img_da73182c73fb.jpg)00:05
+![](/images/collections/0.raw/zhihu/%E6%9C%89%E7%94%A8%E7%9A%84%E6%96%B9%E5%90%91%E6%80%9D%E8%80%83/asset/img_da73182c73fb.jpg)00:05
 
 光流分析
 
@@ -361,9 +361,9 @@ while(1):
 cap.release()
 cv.destroyAllWindows()`
 
-![](/images/collections/0.raw/zhihu/%25E6%259C%2589%25E7%2594%25A8%25E7%259A%2584%25E6%2596%25B9%25E5%2590%2591%25E6%2580%259D%25E8%2580%2583/asset/img_d8bd6c0f3eae.jpg)
+![](/images/collections/0.raw/zhihu/%E6%9C%89%E7%94%A8%E7%9A%84%E6%96%B9%E5%90%91%E6%80%9D%E8%80%83/asset/img_d8bd6c0f3eae.jpg)
 
-原图![](/images/collections/0.raw/zhihu/%25E6%259C%2589%25E7%2594%25A8%25E7%259A%2584%25E6%2596%25B9%25E5%2590%2591%25E6%2580%259D%25E8%2580%2583/asset/img_19e44ba6974b.jpg)
+原图![](/images/collections/0.raw/zhihu/%E6%9C%89%E7%94%A8%E7%9A%84%E6%96%B9%E5%90%91%E6%80%9D%E8%80%83/asset/img_19e44ba6974b.jpg)
 
 稠密------------------------------------------可爱の分割线------------------------------------------
 

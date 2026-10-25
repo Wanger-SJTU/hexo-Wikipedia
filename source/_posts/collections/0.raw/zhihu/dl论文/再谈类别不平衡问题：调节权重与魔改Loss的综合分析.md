@@ -15,21 +15,21 @@ source_url: https://zhuanlan.zhihu.com/p/242763826
 ---
 
 
-**作者 | 苏剑林**
+<strong>作者 | 苏剑林</strong>
 
-**单位 | 追一科技**
+<strong>单位 | 追一科技</strong>
 
-**研究方向 | NLP、神经网络**
+<strong>研究方向 | NLP、神经网络</strong>
 
-类别不平衡问题，也称为长尾分布问题，在之前的文章里已经有好几次相关讨论了，比如**[从loss的硬截断、软化到focal loss](https://link.zhihu.com/?target=https%3A//kexue.fm/archives/4733)**、**[将“softmax+交叉熵”推广到多标签分类问题](https://link.zhihu.com/?target=http%3A//mp.weixin.qq.com/s%3F__biz%3DMzIwMTc4ODE0Mw%3D%3D%26mid%3D2247505145%26idx%3D1%26sn%3D42467a5475b64d3031a46594261600d2%26chksm%3D96ea0b79a19d826fb7e040968bbe928daf528d38e63d916b05cbc60a5d350755e619abc2aff8%23rd)**、**[通过互信息思想来缓解类别不平衡问题](https://link.zhihu.com/?target=http%3A//mp.weixin.qq.com/s%3F__biz%3DMzIwMTc4ODE0Mw%3D%3D%26mid%3D2247509465%26idx%3D2%26sn%3D1a637068c358970af1ba1bfd1e4b0536%26chksm%3D96ea7a59a19df34f0734d645ba02e33f3df5ac7be442dac471b4799569140c0d0d7d10f27fb9%23rd)**。对于缓解类别不平衡，比较基本的方法就是调节样本权重，看起来“高端”一点的方法则是各种魔改loss了（比如Focal Loss、Dice Loss、Logits Adjustment等），本文希望比较系统地理解它们之间的联系。
+类别不平衡问题，也称为长尾分布问题，在之前的文章里已经有好几次相关讨论了，比如<strong>[从loss的硬截断、软化到focal loss](https://link.zhihu.com/?target=https%3A//kexue.fm/archives/4733)</strong>、<strong>[将“softmax+交叉熵”推广到多标签分类问题](https://link.zhihu.com/?target=http%3A//mp.weixin.qq.com/s%3F__biz%3DMzIwMTc4ODE0Mw%3D%3D%26mid%3D2247505145%26idx%3D1%26sn%3D42467a5475b64d3031a46594261600d2%26chksm%3D96ea0b79a19d826fb7e040968bbe928daf528d38e63d916b05cbc60a5d350755e619abc2aff8%23rd)</strong>、<strong>[通过互信息思想来缓解类别不平衡问题](https://link.zhihu.com/?target=http%3A//mp.weixin.qq.com/s%3F__biz%3DMzIwMTc4ODE0Mw%3D%3D%26mid%3D2247509465%26idx%3D2%26sn%3D1a637068c358970af1ba1bfd1e4b0536%26chksm%3D96ea7a59a19df34f0734d645ba02e33f3df5ac7be442dac471b4799569140c0d0d7d10f27fb9%23rd)</strong>。对于缓解类别不平衡，比较基本的方法就是调节样本权重，看起来“高端”一点的方法则是各种魔改loss了（比如Focal Loss、Dice Loss、Logits Adjustment等），本文希望比较系统地理解它们之间的联系。
 
 ![](https://pic2.zhimg.com/v2-4f3fff9f5dee061409e21141d68ea32b_r.jpg)
-**从光滑准确率到交叉熵**
+<strong>从光滑准确率到交叉熵</strong>
 这里的分析主要以sigmoid的2分类为主，但多数结论可以平行推广到softmax的多分类。设x为输入，
 ![](https://www.zhihu.com/equation?tex=y%5Cin%5C%7B0%2C1%5C%7D) 为目标，
 ![](https://www.zhihu.com/equation?tex=p_%7B%5Ctheta%7D%28x%29+%5Cin+%5B0%2C+1%5D) 为模型。理想情况下，当然是要评测什么指标，我们就去优化那个指标。对于分类问题来说，最朴素的指标当然就是准确率，但准确率并没有办法提供有效的梯度，所以不能直接来训练。
 
-为此，我们一个光滑化的指标。从之前的文章**[函数光滑化杂谈：不可导函数的可导逼近](https://link.zhihu.com/?target=https%3A//kexue.fm/archives/6620)**，准确率的光滑化近似是：
+为此，我们一个光滑化的指标。从之前的文章<strong>[函数光滑化杂谈：不可导函数的可导逼近](https://link.zhihu.com/?target=https%3A//kexue.fm/archives/6620)</strong>，准确率的光滑化近似是：
 
 ![](https://www.zhihu.com/equation?tex=%5Cbegin%7Bequation%7D%5Ctext%7Bsmooth_accuracy%7D%3D%5Cmathbb%7BE%7D_%7B%28x%2Cy%29%5Csim%5Cmathcal%7BD%7D%7D%5Cbig%5By+p_%7B%5Ctheta%7D%28x%29+%2B+%281+-+y%29%281+-+p_%7B%5Ctheta%7D%28x%29%29%5Cbig%5D%5Cend%7Bequation%7D+%5C%5C)
 
@@ -47,7 +47,7 @@ source_url: https://zhuanlan.zhihu.com/p/242763826
 ![](https://www.zhihu.com/equation?tex=p_%7B%5Ctheta%7D%28x%29%3D%5Csigma%28z_%7B%5Ctheta%7D%28x%29%29)，其中 
 ![](https://www.zhihu.com/equation?tex=%5Csigma%28t%29%3D%5Cfrac%7B1%7D%7B1%2Be%5E%7B-t%7D%7D)，它的导数 
 ![](https://www.zhihu.com/equation?tex=%5Csigma%27%28t%29%3D%5Csigma%28t%29%281+-+%5Csigma%28t%29%29)，而 
-![](https://www.zhihu.com/equation?tex=z_%7B%5Ctheta%7D%28x%29) 就是我们通常称的“**logits**”。
+![](https://www.zhihu.com/equation?tex=z_%7B%5Ctheta%7D%28x%29) 就是我们通常称的“<strong>logits</strong>”。
 
 假设y是1，那么对应的 
 ![](https://www.zhihu.com/equation?tex=-%5Ctext%7Bsmooth_accuracy%7D) 就是 
@@ -69,15 +69,15 @@ source_url: https://zhuanlan.zhihu.com/p/242763826
 刚好把梯度里边带来负面作用的 
 ![](https://www.zhihu.com/equation?tex=p_%7B%5Ctheta%7D%28x%29) 因子去掉了，因此优化效率更高，最终效果也好些。上述分析针对的是y=1，如果y=0，那么结论也是一样的。
 
-**从光滑F1到加权交叉熵**
+<strong>从光滑F1到加权交叉熵</strong>
 从这个过程中，我们可以感觉到，对loss的各种魔改，本质上来说都只是在调整梯度，得到更合理的梯度，我们就能实现更有效的优化，得到更好的模型。此外，我们再思考上述转换过程，本来近似目标的梯度是 
 ![](https://www.zhihu.com/equation?tex=-%5Cnabla_%7B%5Ctheta%7Dp_%7B%5Ctheta%7D%28x%29)，结果 
 ![](https://www.zhihu.com/equation?tex=-%5Cnabla_%7B%5Ctheta%7D%5Clog+p_%7B%5Ctheta%7D%28x%29) 效果更好。
 
 如果我们不去仔细分析背后的原因，直接把 
-![](https://www.zhihu.com/equation?tex=p%5Cto+%5Clog+p) 当作一个“**公理**”来使用，那能否成立呢？会不会带来一些有意思的结果呢？
+![](https://www.zhihu.com/equation?tex=p%5Cto+%5Clog+p) 当作一个“<strong>公理</strong>”来使用，那能否成立呢？会不会带来一些有意思的结果呢？
 
-举个例子，当负样本远远多于正样本时，我们的评测指标通常都不再是准确率了（不然直接全部输出0准确率就很高了），我们通常关心正类的F1，而F1的直接优化也是不容易的，所以我们也需要一个光滑版，文章**[函数光滑化杂谈：不可导函数的可导逼近](https://link.zhihu.com/?target=https%3A//kexue.fm/archives/6620)**同样也给出了结果：
+举个例子，当负样本远远多于正样本时，我们的评测指标通常都不再是准确率了（不然直接全部输出0准确率就很高了），我们通常关心正类的F1，而F1的直接优化也是不容易的，所以我们也需要一个光滑版，文章<strong>[函数光滑化杂谈：不可导函数的可导逼近](https://link.zhihu.com/?target=https%3A//kexue.fm/archives/6620)</strong>同样也给出了结果：
 
 ![](https://www.zhihu.com/equation?tex=%5Cbegin%7Bequation%7D%5Ctext%7Bsmooth_f1%7D%3D%5Cfrac%7B2+%5Cmathbb%7BE%7D_%7B%28x%2Cy%29%5Csim%5Cmathcal%7BD%7D%7D%5Cbig%5By+p_%7B%5Ctheta%7D%28x%29%5Cbig%5D%7D%7B%5Cmathbb%7BE%7D_%7B%28x%2Cy%29%5Csim%5Cmathcal%7BD%7D%7D%5Cbig%5By+%2B+p_%7B%5Ctheta%7D%28x%29%5Cbig%5D%7D%5Cend%7Bequation%7D+%5C%5C)
 
@@ -106,7 +106,7 @@ source_url: https://zhuanlan.zhihu.com/p/242763826
 ![](https://www.zhihu.com/equation?tex=y-%5Ctext%7Bsmooth_f1%7D) 调节正样本的交叉熵，用 
 ![](https://www.zhihu.com/equation?tex=%5Ctext%7Bsmooth_f1%7D) 调节负样本的交叉熵。一开始F1值会比较小，所以模型集中精力在优化正样本，后期F1比较大后，模型反而集中精力在优化负样本了，这其实正体现了F1指标的特殊性：对于F1来说，既要尽可能挖掘出正样本，但是负样本也不能错得太多，所以不大适合设置固定不变的调节因子，而是需要动态的调节。
 
-**从扩大边界到Logits调整**
+<strong>从扩大边界到Logits调整</strong>
 其实无论评测指标是什么，我们肯定都是希望每一个样本都尽可能预测对。问题在于，样本数目比较少的类别，因为学习得不够充分，所以泛化性能不会太好。
 
 让我们从几何角度来思考这个问题。理想情况下，在编码空间里边，每一类样本都占据着自己的一个“地盘”，不同类的“地盘”是互不相交的。样本数目较少的类别泛化性能不大好，主要就体现为其类别所占据的“地盘”比较小，而且往往还会受到类别数目较多的样本的“打压”，因此“生存”几乎都成了问题，更不用说照顾到训练集没有出现过的新样本了。
@@ -138,7 +138,7 @@ source_url: https://zhuanlan.zhihu.com/p/242763826
 
 可以看到，这其实就相当于am-softmax、circle loss等带有margin的softmax变种，具体形式其实不重要，只需要为类别小的类设置更大的margin就好（样本少的类别每个样本都更“能打”）。那怎么设计每个类的margin呢？
 
-之前的文章**[通过互信息思想来缓解类别不平衡问题](https://link.zhihu.com/?target=http%3A//mp.weixin.qq.com/s%3F__biz%3DMzIwMTc4ODE0Mw%3D%3D%26mid%3D2247509465%26idx%3D2%26sn%3D1a637068c358970af1ba1bfd1e4b0536%26chksm%3D96ea7a59a19df34f0734d645ba02e33f3df5ac7be442dac471b4799569140c0d0d7d10f27fb9%23rd)**就提供了一个方案：
+之前的文章<strong>[通过互信息思想来缓解类别不平衡问题](https://link.zhihu.com/?target=http%3A//mp.weixin.qq.com/s%3F__biz%3DMzIwMTc4ODE0Mw%3D%3D%26mid%3D2247509465%26idx%3D2%26sn%3D1a637068c358970af1ba1bfd1e4b0536%26chksm%3D96ea7a59a19df34f0734d645ba02e33f3df5ac7be442dac471b4799569140c0d0d7d10f27fb9%23rd)</strong>就提供了一个方案：
 ![](https://www.zhihu.com/equation?tex=m_y%3D-%5Ctau%5Clog+p%28y%29)，这里的p(y)是先验分布，那么就有：
 
 ![](https://www.zhihu.com/equation?tex=%5Cbegin%7Bequation%7D-%5Clog%5Cfrac%7Be%5E%7B%5Clangle+f_%7B%5Ctheta%7D%28x%29%2C+u_y%5Crangle+%2B+%5Ctau+%5Clog+p%28y%29%7D%7D%7B%5Csum%5Climits_%7Bi%7D+e%5E%7B%5Clangle+f_%7B%5Ctheta%7D%28x%29%2C+u_i%5Crangle+%2B+%5Ctau+%5Clog+p%28i%29%7D%7D%5Cend%7Bequation%7D+%5C%5C)
@@ -147,26 +147,26 @@ source_url: https://zhuanlan.zhihu.com/p/242763826
 ![](https://www.zhihu.com/equation?tex=%5Clog) 之后调整，而logit adjustment则是在 
 ![](https://www.zhihu.com/equation?tex=%5Clog) 之前调整。
 
-**感觉上可以小结一下了**
+<strong>感觉上可以小结一下了</strong>
 本文就类别不平衡现象及其对策做了一些思考，主要是希望通过一些相对直观的引导，来揭示一些魔改loss的思路，从中我们也可以发现，其实这些方案本质上都算是在调节样本权重或者类权重。本文的分析思路相对来说比较散漫，基本上是笔者的头脑风暴内容，如果错漏之处，请读者见谅并指出。
 
-**#投 稿 通 道#**
+<strong>#投 稿 通 道#</strong>
 
-如何才能让更多的优质内容以更短路径到达读者群体，缩短读者寻找优质内容的成本呢？ **答案就是：你不认识的人。**
+如何才能让更多的优质内容以更短路径到达读者群体，缩短读者寻找优质内容的成本呢？ <strong>答案就是：你不认识的人。</strong>
 
 总有一些你不认识的人，知道你想知道的东西。PaperWeekly 或许可以成为一座桥梁，促使不同背景、不同方向的学者和学术灵感相互碰撞，迸发出更多的可能性。
 
-PaperWeekly 鼓励高校实验室或个人，在我们的平台上分享各类优质内容，可以是**最新论文解读**，也可以是**学习心得**或**技术干货**。我们的目的只有一个，让知识真正流动起来。
+PaperWeekly 鼓励高校实验室或个人，在我们的平台上分享各类优质内容，可以是<strong>最新论文解读</strong>，也可以是<strong>学习心得</strong>或<strong>技术干货</strong>。我们的目的只有一个，让知识真正流动起来。
 
-**来稿标准：**
+<strong>来稿标准：</strong>
 
-• 稿件确系个人**原创作品**，来稿需注明作者个人信息（姓名+学校/工作单位+学历/职位+研究方向）
+• 稿件确系个人<strong>原创作品</strong>，来稿需注明作者个人信息（姓名+学校/工作单位+学历/职位+研究方向）
 
 • 如果文章并非首发，请在投稿时提醒并附上所有已发布链接
 
 • PaperWeekly 默认每篇文章都是首发，均会添加“原创”标志
 
-**投稿方式：**
+<strong>投稿方式：</strong>
 
 • 方法一：在PaperWeekly知乎专栏页面点击“投稿”，即可递交文章
 
@@ -174,11 +174,11 @@ PaperWeekly 鼓励高校实验室或个人，在我们的平台上分享各类�
 
 • 请留下即时联系方式（微信或手机），以便我们在编辑发布时和作者沟通
 
-**关于PaperWeekly**
-PaperWeekly 是一个推荐、解读、讨论、报道人工智能前沿论文成果的学术平台。如果你研究或从事 AI 领域，欢迎在公众号后台点击**「交流群」**，小助手将把你带入 PaperWeekly 的交流群里。
+<strong>关于PaperWeekly</strong>
+PaperWeekly 是一个推荐、解读、讨论、报道人工智能前沿论文成果的学术平台。如果你研究或从事 AI 领域，欢迎在公众号后台点击<strong>「交流群」</strong>，小助手将把你带入 PaperWeekly 的交流群里。
 
-**加入社区：**[http://paperweek.ly](https://link.zhihu.com/?target=http%3A//paperweek.ly/)
+<strong>加入社区：</strong>[http://paperweek.ly](https://link.zhihu.com/?target=http%3A//paperweek.ly/)
 
-**微信公众号：PaperWeekly**
+<strong>微信公众号：PaperWeekly</strong>
 
-**新浪微博：@PaperWeekly**
+<strong>新浪微博：@PaperWeekly</strong>

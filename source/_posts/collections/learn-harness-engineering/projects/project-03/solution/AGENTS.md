@@ -17,7 +17,7 @@ categories:
 
 Before writing any code, complete these steps in order:
 
-1. **Read this file completely.** It defines the boundaries and conventions for this project.
+1. <strong>Read this file completely.</strong> It defines the boundaries and conventions for this project.
 2. **Read `docs/ARCHITECTURE.md`** to understand the Electron layer structure, chunking, and Q&A flow.
 3. **Read `docs/PRODUCT.md`** to understand the feature requirements.
 4. **Run `npm install && npm run check`** to verify the project builds cleanly.
@@ -25,16 +25,16 @@ Before writing any code, complete these steps in order:
 
 ## One-Feature-at-a-Time Policy
 
-**This is the core discipline of Project 03.**
+<strong>This is the core discipline of Project 03.</strong>
 
 When implementing features, you MUST follow this workflow:
 
-1. **Pick exactly one feature** from `feature_list.json` with status `"not-started"`.
-2. **Implement only that feature.** Do not touch code unrelated to the chosen feature.
-3. **Verify the feature works** by running `npm run check` and testing the behavior.
+1. <strong>Pick exactly one feature</strong> from `feature_list.json` with status `"not-started"`.
+2. <strong>Implement only that feature.</strong> Do not touch code unrelated to the chosen feature.
+3. <strong>Verify the feature works</strong> by running `npm run check` and testing the behavior.
 4. **Update `feature_list.json`** -- set the feature status to `"pass"` and add evidence.
-5. **Commit the change** with a message referencing the feature ID.
-6. **Only then** move to the next feature.
+5. <strong>Commit the change</strong> with a message referencing the feature ID.
+6. <strong>Only then</strong> move to the next feature.
 
 Violating this policy -- implementing multiple features in a single pass, or editing files outside the scope of the current feature -- is the most common cause of bugs and regression in this project.
 

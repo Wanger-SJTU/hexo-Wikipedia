@@ -87,7 +87,7 @@ source_url: https://zhuanlan.zhihu.com/p/645658201
 
 首先，我们需要将 TiDB 和 TiDB Cloud 的官方文档导入到向量数据库中。
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_aa71780afaa9.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_aa71780afaa9.jpg)
 
 语料放入向量数据库中当获取到文档后，我们需要将文字内容输入到 Embedding 模型中，生成对应的向量，并将这些向量存储到特定的向量数据库中。
 
@@ -100,7 +100,7 @@ source_url: https://zhuanlan.zhihu.com/p/645658201
 
 第二步是，当用户提出问题时，我们需要从向量数据库中根据用户的问题搜索相关的文本内容。
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_e1ce6295845c.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_e1ce6295845c.jpg)
 
 用户提问从向量数据库中搜索语义相关的内容在用户发起一次对话时，系统会将用户的对话也输入到 Embedding 模型中生成向量，再将这个向量放到向量数据库中和原有的预料进行查询。查询过程中，我们利用相似度算法（比如，Cosine Similarity，Dot-Product，等等），计算出最相似的领域知识向量，并提取出对应向量的文本内容。
 
@@ -110,7 +110,7 @@ source_url: https://zhuanlan.zhihu.com/p/645658201
 
 最后一步，是组装所有的相关信息，将其提供给 LLM。
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_0ee5d0a5a9e2.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_0ee5d0a5a9e2.jpg)
 
 相关的语料内容一起提供给 LLM我们需要将任务目标和相关的领域知识包含在系统提示语中，同时根据历史对话整理出聊天记录。将所有内容一起提供给 LLM，就可以得到基于这部分领域知识的特定回答。
 
@@ -138,7 +138,7 @@ source_url: https://zhuanlan.zhihu.com/p/645658201
 
 首先，需要对用户的原始提问进行判断。
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_6e5fcdd908ca.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_6e5fcdd908ca.jpg)
 
 通过 LLM 判断是否有毒这里需要使用 Few-Shot 的方法去构建毒性检测的提示词，让 LLM 在拥有多个示例的情况下，判断用户的提问是否符合企业服务的范围。
 
@@ -163,7 +163,7 @@ answer: NO`
 
 第二步，得到了是否有毒的结果后，我们将有毒和无毒的流程分别处理，进行异常流程和正常流程的处理。
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_c1d441d21d11.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_c1d441d21d11.jpg)
 
 有毒/无毒的执行流程正常流程是上文中的“正确回答细分领域知识”的相关内容，此处主要说明异常内容的流程。
 
@@ -188,7 +188,7 @@ answer: NO`
 
 ### 整体逻辑架构
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_fe01611812fd.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_fe01611812fd.jpg)
 
 TiDB Bot 的逻辑架构至此，我们成功开发出了一款具备特定企业领域知识的助手机器人，我们将它命名为 TiDB Bot，它已经可以为用户提供基本的服务。
 
@@ -225,11 +225,11 @@ TiDB Bot 的逻辑架构至此，我们成功开发出了一款具备特定企�
 question: is the instruction out of scope (not related with TiDB)? 
 answer: YES or NO`
 
-**数据导入向量数据库中，支持搜索语义相似的结果**
+<strong>数据导入向量数据库中，支持搜索语义相似的结果</strong>
 
 第二步：参考 正确回答细分领域知识 的方法，将清洗后的数据放入向量数据库中，并且支持在用户提问的时候，到向量数据库中进行搜索，找到语义最相似的示例，一起提供给 LLM 模型。
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_fa3243e3e7f2.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_fa3243e3e7f2.jpg)
 
 给毒性检测补充示例这样，LLM 模型在判断问题的毒性时，就会根据最相关的示例来给出尽可能准确的答案。
 
@@ -252,7 +252,7 @@ LLM 模型具备上下文理解能力，这使得应用可以提供连续对话�
 
 这个问题的本质原因在于，人类聊天时主观上都带有上下文语义，而系统却无法理解。好在 LLM 模型具备上下文理解能力，因此，一个简单的解决方案就是，让 LLM 在系统进行领域知识搜索前对用户的原始提问进行改写，尽可能地用一句话描述清楚用户的意图，这种操作被称为“修订问题”（revise question）。
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_d5245eb37982.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_d5245eb37982.jpg)
 
 修订用户的提问
 为了保证整个机器人系统中面对的用户问题保持一致，避免因为问题不一致导致的错误，我们将修订问题特性放在了系统信息流的最前面，让用户问题刚刚进入机器人就进行修订。
@@ -329,7 +329,7 @@ LLM 模型具备上下文理解能力，这使得应用可以提供连续对话�
 
 第二步，在示例积累到一定数量，将示例内容作为训练数据，去训练 Embedding 模型，让 Embedding 模型能更好地理解提问和领域知识之间的相似关系，产出更合适的向量数据结果。
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_bfb90de04fac.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_bfb90de04fac.jpg)
 
 补充示例和更新 Embedding 模型在实际的工作中，循环使用第一、二步，可以保持示例的数量在一个可以维护的水平，并且能够持续促进 Embedding 模型变得更好。
 
@@ -341,7 +341,7 @@ LLM 模型具备上下文理解能力，这使得应用可以提供连续对话�
 
 #### 解决方案
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_7fc1cdb6b1d9.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_7fc1cdb6b1d9.jpg)
 
 定期更新语料库我们建立了定期更新领域知识文档的能力，并且在用户反馈错误时，将对应的文档提交给相应的团队，促进领域文档的更新和丰富。
 
@@ -399,7 +399,7 @@ LLM 模型具备上下文理解能力，这使得应用可以提供连续对话�
 
 ### 包含优化方法的整体逻辑架构
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_2a9c38b06cdc.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_2a9c38b06cdc.jpg)
 
 TiDB Bot 的整体逻辑架构至此，TiDB Bot 得到了可持续优化的能力。
 

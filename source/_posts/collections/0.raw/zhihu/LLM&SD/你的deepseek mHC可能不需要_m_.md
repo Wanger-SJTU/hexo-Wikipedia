@@ -20,7 +20,7 @@ categories:
 ![](https://www.zhihu.com/equation?tex=H%5E%7Bres%7D) 非要不可吗？
 我们发现，直接换成identity效果明显就更好, 
 ![](https://www.zhihu.com/equation?tex=H%5E%7Bres%7D%3DI) 就行哈哈!
-![](https://pic3.zhimg.com/v2-a11731a3dfe22054067127149f6b4674_r.jpg)qwen1.7B from scratch, 150B tokens,部分曲线截图**目前结论是Identity HC > mHC > mHC lite > mHC orthogonal(例如cayley正交)。**实验在qwen3 1.7B和8B dense上完成， 150B tokens, 希望没有megatron coding bug的问题(
+![](https://pic3.zhimg.com/v2-a11731a3dfe22054067127149f6b4674_r.jpg)qwen1.7B from scratch, 150B tokens,部分曲线截图<strong>目前结论是Identity HC > mHC > mHC lite > mHC orthogonal(例如cayley正交)。</strong>实验在qwen3 1.7B和8B dense上完成， 150B tokens, 希望没有megatron coding bug的问题(
 
 单位阵(对角线为1)，其实也是行列和各自为1，谱范数为1，完全norm preserving, 是最简单的“manifold constraint”。直观上，单位阵hres，意思是各个residual流都保留自己的信息，不与其他流交换。实际实验里，我们观察到原版mhc自己学出来的hres大概就是这个pattern:、
 
@@ -28,7 +28,7 @@ categories:
 - 累积乘积（depth≥10）：坍缩为全 0.25 矩阵（均匀混合矩阵
 ![](https://pic3.zhimg.com/v2-cd9cac191974716ddc47937f86034382_r.jpg)多层hres累积也就是说，SK 学到的单层 hres 可能更接近单位阵一些，但多层连乘后就变成了全 0.25 矩阵。
 
-这背后的数学原因是：当双随机矩阵满足一致正性条件（即所有元素有正的下界 δ > 0）时，其 Dobrushin 遍历系数 τ(P) ≤ 1 - dδ < 1，连乘的遍历系数以几何速率衰减 τ(A_n) ≤ (1 - dδ)^n → 0，迫使所有行趋于一致，最终收敛到均匀矩阵 (1/d)·**11**^T。（严格证明可参考 Dobrushin 遍历系数的次乘性；需要注意的是，如果矩阵序列是纯置换矩阵或可约的，则不满足一致正性条件，不会坍缩——但 Sinkhorn 输出的矩阵通常是严格正的，满足此条件。）
+这背后的数学原因是：当双随机矩阵满足一致正性条件（即所有元素有正的下界 δ > 0）时，其 Dobrushin 遍历系数 τ(P) ≤ 1 - dδ < 1，连乘的遍历系数以几何速率衰减 τ(A_n) ≤ (1 - dδ)^n → 0，迫使所有行趋于一致，最终收敛到均匀矩阵 (1/d)·<strong>11</strong>^T。（严格证明可参考 Dobrushin 遍历系数的次乘性；需要注意的是，如果矩阵序列是纯置换矩阵或可约的，则不满足一致正性条件，不会坍缩——但 Sinkhorn 输出的矩阵通常是严格正的，满足此条件。）
 
 我们直接设成Identity，把他自己学到的单层行为固定下来(接近置换)，但消除了双随机累乘坍缩rank1均匀混合的弊端。
 
@@ -60,15 +60,15 @@ Hyper-Connections（HC）将残差流从 1 条扩展为 n 条（默认n=4），�
 
 ![](https://pica.zhimg.com/v2-8d668abf4fee3ab9888fa1170359e296_r.jpg)mHC核心计算过程，清晰简洁论文里sk迭代看起来还是蛮贵的。关键问题是：H_res 到底有多重要？
 
-**实际上， **
-![](https://www.zhihu.com/equation?tex=%5Cphi)** 才是跨流信息混合的关键。**
+<strong>实际上，</strong>
+![](https://www.zhihu.com/equation?tex=%5Cphi)<strong>才是跨流信息混合的关键。</strong>
 
 它是先把n条残差流flatten ( 
 ![](https://www.zhihu.com/equation?tex=nC) )，然后全部投影到( 
 ![](https://www.zhihu.com/equation?tex=n%5E2%2B2n) = 24 )的 
 ![](https://www.zhihu.com/equation?tex=H) 融合矩阵里，随后再拆分出hpre, hpost, hres (4, 4, 4*4)矩阵
 
-即使 H_res = I ，ϕ生成的 h_pre 也是**input-dependent**的
+即使 H_res = I ，ϕ生成的 h_pre 也是<strong>input-dependent</strong>的
 
 输入: x_l = [s, b, n*C]  （4 条流 flatten）
 
@@ -102,7 +102,7 @@ Step 5: 恒等残差 + 动态写回
 
 ![](https://www.zhihu.com/equation?tex=%5Csigma_%7B%5Cmin%7D+%5Csim+0.49%5E%7B56%7D+%5Capprox+10%5E%7B-17%7D)
 
-实测值为 **9.2 × 10⁻¹⁸**——与估计吻合。这意味着浅层信号经过 56 个 HC 模块后，除均值方向外信号很可能衰减没了。不过这也未尝不是一件好事(
+实测值为 <strong>9.2 × 10⁻¹⁸</strong>——与估计吻合。这意味着浅层信号经过 56 个 HC 模块后，除均值方向外信号很可能衰减没了。不过这也未尝不是一件好事(
 
 也可以看本文第一张累积Hres图：10 层之后，4 条流的信息完全坍缩为均值0.25 ——混合最终变成了同质化。
 

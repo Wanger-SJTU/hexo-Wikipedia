@@ -22,7 +22,7 @@ Vous demandez à un agent de construire un site e-commerce. Une fois terminé, i
 
 Aux yeux de beaucoup de gens, les listes de fonctionnalités ne sont qu'un mémo : on note les choses pour ne pas oublier, puis on les met de côté. Mais dans le monde du harness, une liste de fonctionnalités n'est pas un mémo pour humains : c'est la colonne vertébrale de tout le harness. Le scheduler s'en sert pour choisir les tâches, le verifier pour juger l'achèvement, le handoff reporter pour générer les résumés. Si la colonne vertébrale casse, tout le corps est paralysé.
 
-Anthropic et OpenAI insistent tous deux : **les artefacts doivent être externalisés.** L'état des fonctionnalités doit vivre dans un fichier lisible par machine dans le repo, pas dans du texte de conversation non structuré.
+Anthropic et OpenAI insistent tous deux : <strong>les artefacts doivent être externalisés.</strong> L'état des fonctionnalités doit vivre dans un fichier lisible par machine dans le repo, pas dans du texte de conversation non structuré.
 
 ## Les agents ne savent pas ce que "done" signifie
 
@@ -65,12 +65,12 @@ flowchart LR
 
 ## Concepts clés
 
-- **Les listes de fonctionnalités sont des primitives de harness** : pas des "outils de planification optionnels", mais des structures de données fondatrices dont dépendent tous les autres composants du harness. Comme les structures de tables en base de données : on ne peut pas dire "sautons les clés primaires".
-- **Structure triple** : chaque item de fonctionnalité est un triplet `(description de comportement, commande de vérification, état actuel)`. Si un élément manque, l'item est incomplet.
-- **Modèle de machine d'état** : chaque item a quatre états : `not_started`, `active`, `blocked`, `passing`. Les transitions d'état sont contrôlées par le harness, pas librement modifiées par l'agent.
-- **Pass-state gating** : le seul moyen de passer de `active` à `passing` est que la commande de vérification réussisse. C'est irréversible : une fois `passing`, on ne revient pas en arrière. Comme un examen réussi : vous l'avez réussi, on ne change pas rétroactivement la note.
-- **Single source of truth** : toute information sur "ce qu'il faut faire" doit dériver d'une seule liste de fonctionnalités. Pas de contradictions entre la liste et l'historique de conversation.
-- **Back-pressure** : le nombre de fonctionnalités qui ne sont pas encore passées est la pression que le harness exerce sur l'agent. Pression zéro = projet terminé.
+- <strong>Les listes de fonctionnalités sont des primitives de harness</strong> : pas des "outils de planification optionnels", mais des structures de données fondatrices dont dépendent tous les autres composants du harness. Comme les structures de tables en base de données : on ne peut pas dire "sautons les clés primaires".
+- <strong>Structure triple</strong> : chaque item de fonctionnalité est un triplet `(description de comportement, commande de vérification, état actuel)`. Si un élément manque, l'item est incomplet.
+- <strong>Modèle de machine d'état</strong> : chaque item a quatre états : `not_started`, `active`, `blocked`, `passing`. Les transitions d'état sont contrôlées par le harness, pas librement modifiées par l'agent.
+- <strong>Pass-state gating</strong> : le seul moyen de passer de `active` à `passing` est que la commande de vérification réussisse. C'est irréversible : une fois `passing`, on ne revient pas en arrière. Comme un examen réussi : vous l'avez réussi, on ne change pas rétroactivement la note.
+- <strong>Single source of truth</strong> : toute information sur "ce qu'il faut faire" doit dériver d'une seule liste de fonctionnalités. Pas de contradictions entre la liste et l'historique de conversation.
+- <strong>Back-pressure</strong> : le nombre de fonctionnalités qui ne sont pas encore passées est la pression que le harness exerce sur l'agent. Pression zéro = projet terminé.
 
 ## Pourquoi les listes de fonctionnalités doivent être des "primitives"
 
@@ -78,10 +78,10 @@ Les documents sont faits pour être lus par des humains ; les primitives sont fa
 
 Pensez à la différence entre les contraintes de trigger en base de données et les checks côté application : les premières sont imposées par le moteur de base de données, aucun SQL ne peut les éviter ; les secondes dépendent de la correction du code applicatif et peuvent être contournées par accident. Comme primitive du harness, la liste de fonctionnalités sert quatre composants :
 
-1. **Scheduler** : lit les états et choisit la prochaine fonctionnalité `not_started`. Comme un système de planification de production d'usine.
-2. **Verifier** : exécute les commandes de vérification et décide d'autoriser ou non les transitions d'état. Comme une inspection qualité.
-3. **Handoff reporter** : génère automatiquement des résumés de passation de session depuis la liste de fonctionnalités. Comme un rapport automatique de changement d'équipe.
-4. **Progress tracker** : agrège la distribution des états et fournit des métriques de santé du projet. Comme un tableau de bord.
+1. <strong>Scheduler</strong> : lit les états et choisit la prochaine fonctionnalité `not_started`. Comme un système de planification de production d'usine.
+2. <strong>Verifier</strong> : exécute les commandes de vérification et décide d'autoriser ou non les transitions d'état. Comme une inspection qualité.
+3. <strong>Handoff reporter</strong> : génère automatiquement des résumés de passation de session depuis la liste de fonctionnalités. Comme un rapport automatique de changement d'équipe.
+4. <strong>Progress tracker</strong> : agrège la distribution des états et fournit des métriques de santé du projet. Comme un tableau de bord.
 
 ## Comment bien faire
 
@@ -121,19 +121,19 @@ Chaque item de fonctionnalité doit être dimensionné pour être "terminable en
 
 Une plateforme e-commerce avec 10 fonctionnalités. Deux approches de suivi ont été comparées :
 
-**Mode mémo** : l'agent utilise des notes non structurées. Après 3 sessions, les notes deviennent "user auth et product list faits, shopping cart presque terminé mais avec bugs, payments pas commencé". La nouvelle session a besoin de 20 minutes pour inférer l'état et finit par réimplémenter des fonctionnalités déjà terminées. Comme une liste de courses qui dit "lait, pain, et ce truc" : au magasin, vous ne savez toujours pas quoi acheter.
+<strong>Mode mémo</strong> : l'agent utilise des notes non structurées. Après 3 sessions, les notes deviennent "user auth et product list faits, shopping cart presque terminé mais avec bugs, payments pas commencé". La nouvelle session a besoin de 20 minutes pour inférer l'état et finit par réimplémenter des fonctionnalités déjà terminées. Comme une liste de courses qui dit "lait, pain, et ce truc" : au magasin, vous ne savez toujours pas quoi acheter.
 
-**Mode colonne vertébrale** : chaque fonctionnalité a un état clair et une commande de vérification. La nouvelle session lit la liste et sait en 3 minutes : F01-F05 sont `passing`, F06 est `active`, F07-F10 sont `not_started`. Elle reprend directement à F06, sans retravail.
+<strong>Mode colonne vertébrale</strong> : chaque fonctionnalité a un état clair et une commande de vérification. La nouvelle session lit la liste et sait en 3 minutes : F01-F05 sont `passing`, F06 est `active`, F07-F10 sont `not_started`. Elle reprend directement à F06, sans retravail.
 
 Résultat quantifié : les projets utilisant des listes de fonctionnalités structurées affichent un taux d'achèvement 45% supérieur au suivi libre, avec zéro implémentation dupliquée.
 
 ## Points clés
 
-- **Les listes de fonctionnalités sont la colonne vertébrale du harness**, pas des mémos pour humains. Scheduler, verifier et handoff reporter en dépendent tous.
-- **Chaque item doit avoir le triplet** : description de comportement + commande de vérification + état actuel. S'il manque un élément, il est incomplet, comme un tabouret à trois pieds auquel il manque un pied.
-- **Les transitions d'état sont contrôlées par le harness** : l'agent ne peut pas changer les états seul. Réussir la vérification est le seul chemin de promotion.
-- **La liste de fonctionnalités est la single source of truth du projet** : toutes les informations "quoi faire" dérivent d'une seule liste.
-- **Calibrez la granularité sur "terminable en une session".**
+- <strong>Les listes de fonctionnalités sont la colonne vertébrale du harness</strong>, pas des mémos pour humains. Scheduler, verifier et handoff reporter en dépendent tous.
+- <strong>Chaque item doit avoir le triplet</strong> : description de comportement + commande de vérification + état actuel. S'il manque un élément, il est incomplet, comme un tabouret à trois pieds auquel il manque un pied.
+- <strong>Les transitions d'état sont contrôlées par le harness</strong> : l'agent ne peut pas changer les états seul. Réussir la vérification est le seul chemin de promotion.
+- <strong>La liste de fonctionnalités est la single source of truth du projet</strong> : toutes les informations "quoi faire" dérivent d'une seule liste.
+- <strong>Calibrez la granularité sur "terminable en une session".</strong>
 
 ## Pour aller plus loin
 
@@ -144,8 +144,8 @@ Résultat quantifié : les projets utilisant des listes de fonctionnalités stru
 
 ## Exercices
 
-1. **Design de liste de fonctionnalités** : définissez un schéma JSON minimal. Incluez : id, description de comportement, commande de vérification, état actuel, référence de preuve. Utilisez-le pour décrire un vrai projet avec 5 fonctionnalités.
+1. <strong>Design de liste de fonctionnalités</strong> : définissez un schéma JSON minimal. Incluez : id, description de comportement, commande de vérification, état actuel, référence de preuve. Utilisez-le pour décrire un vrai projet avec 5 fonctionnalités.
 
-2. **Comparaison de rigueur de vérification** : choisissez 3 fonctionnalités et concevez une vérification "souple" (par exemple "le code n'a pas d'erreurs de syntaxe") et une vérification "stricte" (par exemple "le test end-to-end passe"). Comparez le taux de faux positifs.
+2. <strong>Comparaison de rigueur de vérification</strong> : choisissez 3 fonctionnalités et concevez une vérification "souple" (par exemple "le code n'a pas d'erreurs de syntaxe") et une vérification "stricte" (par exemple "le test end-to-end passe"). Comparez le taux de faux positifs.
 
-3. **Audit du principe single source** : examinez un projet agentique existant et cherchez les informations de portée qui contredisent la liste de fonctionnalités (exigences implicites dans les conversations, commentaires TODO dans le code, etc.). Concevez un plan pour unifier toute l'information dans la liste.
+3. <strong>Audit du principe single source</strong> : examinez un projet agentique existant et cherchez les informations de portée qui contredisent la liste de fonctionnalités (exigences implicites dans les conversations, commentaires TODO dans le code, etc.). Concevez un plan pour unifier toute l'information dans la liste.

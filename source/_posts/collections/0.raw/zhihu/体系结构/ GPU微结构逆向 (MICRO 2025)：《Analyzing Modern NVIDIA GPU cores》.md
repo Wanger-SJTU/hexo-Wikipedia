@@ -27,7 +27,7 @@ source_url: https://zhuanlan.zhihu.com/p/1929593678864847592
 
 目前，关于GPU硬件架构的研究基本基于Accel-Sim/GPGPU-Sim展开，GPGPU-Sim中SM（Stream Multiprocessor）结构如下图所示。每个SM包含四个Sub-core（或Processing Block），可视作一个顺序的SIMT处理器核，这四个Sub-core共享L1 Cache和Shared Memory。
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_3d9ffb9c1253.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_3d9ffb9c1253.jpg)
 
 每个Sub-core有自己的取指、译码、发射、执行部件，指令的完整处理过程以warp（一般为32线程）为粒度。发射（Issue）阶段是从多个warp的指令buffer中选择一个warp的下一条指令发射的过程，在GPGPU-Sim中实现了Scoreboard来解决相关，对每个warp标记其未提交指令对寄存器的读写请求，以此确定下一条指令是否可以发射，RAW/WAW用于处理写后读/写后写相关，WAR（原文图中应该是画错了）用于处理读后写相关。当多个warp都存在可发射的指令时，按照GTO调度策略选择一个warp发射。GTO（greedy then oldest）的意思是，如果当前warp一直没有被阻塞，那么就一直发当前warp，直到当前warp被阻塞时换成最老的那个warp。另外，还有一种调度策略叫LRR（loose round robin），即宽松的（跳过阻塞的）轮询策略，这种策略感觉对线程块同步barrier比较友好。
 
@@ -41,7 +41,7 @@ Accel-Sim中的架构基本反应了Tesla架构的特性，并包含Sub-cores（
 
 例如下图是测试寄存器堆读冲突的microbenchmark，（因为寄存器堆只有2个bank，所以）修改R_X和R_Y会得到不同的时钟周期（奇数+奇数=5cycles，奇数+偶数=6cycles，偶数+偶数=7cycles）
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_a0c5056458fb.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_a0c5056458fb.jpg)
 
 ### 三、现代NVIDIA GPU中的控制位
 
@@ -51,19 +51,19 @@ NVIDIA GPU中很早就不用那种传统的scoreboard根据寄存器读写相关
 
 NVIDIA GPU中的控制位是用于控制指令是否可以发射的，控制位中包含两类信息，一类控制固定延迟指令，另一类控制可变延迟指令。CUDA Core指令和Tensor Core指令是固定延迟指令，SFU指令和访存指令是可变延迟指令。
 
-**stall counter控制位和yield控制位**：用于控制固定延迟指令的下一条指令什么时候可以发射，stall相当于是一个计数器，递减为0后这个warp的下一条指令才可以发射；yield用于指示硬件下个周期不可以发射相同这个warp的下一条指令。
+<strong>stall counter控制位和yield控制位</strong>：用于控制固定延迟指令的下一条指令什么时候可以发射，stall相当于是一个计数器，递减为0后这个warp的下一条指令才可以发射；yield用于指示硬件下个周期不可以发射相同这个warp的下一条指令。
 
-**dependence counter控制位**（有些地方也称其为scoreboard，但是与GPGPU-Sim中的scoreboard不同）：用于处理生产者-消费者依赖关系，生产者指令会标记某个指定的dependence counter（或者叫read/write dependency barrier，一共有6个，SB[0] ~ SB[5]），消费者指令会依赖某些dependence counter（也就是下图中的dependence counters mask），只有当生产者完成后消费者的指令才能继续发射。
+<strong>dependence counter控制位</strong>（有些地方也称其为scoreboard，但是与GPGPU-Sim中的scoreboard不同）：用于处理生产者-消费者依赖关系，生产者指令会标记某个指定的dependence counter（或者叫read/write dependency barrier，一共有6个，SB[0] ~ SB[5]），消费者指令会依赖某些dependence counter（也就是下图中的dependence counters mask），只有当生产者完成后消费者的指令才能继续发射。
 
 需要注意的是，dependence counter的递增发生在发射的后一拍，所以如果下一条指令就是消费者，生产者必须将stall counter设置为2，即下一拍不能发射消费者指令，等到下下拍再做判断。
 
 以下图为例，0x80指令与0x50指令和0x60指令存在写后读相关（R5和R7寄存器），0x80指令与0x60和0x70指令存在读后写相关（R2寄存器），因此0x50和0x60指令将SB[3]递增，0x60和0x70指令将SB[0]递增，0x80指令的dependence counters mask为6'b001001，也就是0x80指令需要等待SB[3]和SB[0]清零，也就是0xx60完成R5和R7寄存器写回、0xx70完成R2寄存器读取后才能发射。
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_2442c2047201.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_2442c2047201.jpg)
 
 此外，DEPBAR指令也可以用于检查特定的dependence counters是否已经递减到某个值，与AMD GPU中的waitcnt指令类似。
 
-**reuse mask控制位**：指示是否缓存regfile的读取内容，当临近指令访问相同寄存器时可以减少对物理寄存器堆的读取。
+<strong>reuse mask控制位</strong>：指示是否缓存regfile的读取内容，当临近指令访问相同寄存器时可以减少对物理寄存器堆的读取。
 
 ### 四、GPU核微结构
 
@@ -71,11 +71,11 @@ NVIDIA GPU中的控制位是用于控制指令是否可以发射的，控制位�
 
 （文章中这一部分的很多结论都不完善，只能说大致对得上。。）
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_3f781ee28769.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_3f781ee28769.jpg)
 
 #### 4.1 Issue Scheduler
 
-**指令可以发射的前提条件：**
+<strong>指令可以发射的前提条件：</strong>
 
 第一个条件，显而易见，warp对应的指令缓冲区中存在有效指令。
 
@@ -87,7 +87,7 @@ NVIDIA GPU中的控制位是用于控制指令是否可以发射的，控制位�
 
 寄存器读端口的可用性比较复杂，这篇文章最终也没有给出跟实际运行结果完全匹配的解释，只是给出了大致符合的一个猜想。这个猜想是：在issue阶段和读寄存器阶段还有两个阶段，分别称为control和allocate，control阶段是在控制位部分就提到的issue之后1拍才会更新dependency counters；allocate阶段则是真正检查寄存器读端口冲突，直到没有其它寄存器读端口冲突后才会继续到读寄存器阶段。
 
-**warp scheduler：**
+<strong>warp scheduler：</strong>
 
 这篇文章对warp调度的逆向仍然不充分，只给出了同一thread block内部不同warp的调度，是greedy then youngest（是youngest！不是GTO！这里存疑，肯定不可能让新的warp优先执行啊。。。但是同一thread block内的不同warp本身都是一起调度到SM执行的，本身就没有old还是young的区别）
 
@@ -99,7 +99,7 @@ NVIDIA GPU中的控制位是用于控制指令是否可以发射的，控制位�
 
 #### 4.3 寄存器堆
 
-**一共有7类寄存器**：
+<strong>一共有7类寄存器</strong>：
 
 - Regular（我们在CUDA编程中最常说的寄存器，也就是向量寄存器堆）：按照32 threads * 32 bits也就是128B组织，分为两个bank（奇数一个bank偶数一个bank）在Ampere架构中，每个subcore中有512个向量寄存器，每个warp最多可以用255个向量寄存器（nvcc编译时--ptxas-options=-v看到的每个kernel使用的寄存器数目就是这个向量寄存器）
 - Uniform（就是标量寄存器）：每个warp有64个32bit标量寄存器，是32个线程共享的
@@ -108,7 +108,7 @@ NVIDIA GPU中的控制位是用于控制指令是否可以发射的，控制位�
 - SB寄存器：就是控制位那里设置的denpendency counters
 - B寄存器：有16个B寄存器管理控制流重汇聚
 - 特殊寄存器：例如id相关的，blockid、threadid、smid等等
-**寄存器读取策略**：
+<strong>寄存器读取策略</strong>：
 
 遗憾的是，这篇文章再一次没有给出确切的能与硬件行为匹配的寄存器读取策略。（既然作者from Spain，忍不住吐槽一句，这篇文章最关键的逆向部分，竟然warp scheduler、frontend、register file全都没有给出与硬件一致的确切机制。。。好奇这篇文章最后会被什么会议接收，作者肯定想对标Accel-Sim投ISCA和MICRO的，但是。。。要不还是ISPASS吧）
 
@@ -120,13 +120,13 @@ NVIDIA GPU中的控制位是用于控制指令是否可以发射的，控制位�
 
 关于寄存器的写回端口，文章实验结果是每拍只能写回128B也就是一个寄存器，当一条固定延迟指令和一条load指令同时得到结果时，固定延迟指令的写回优先级更高，load指令就会延迟一拍写回。另外固定延迟指令的计算结果会做前递，不会导致后续指令因为RAW而阻塞。
 
-**Register File Cache**
+<strong>Register File Cache</strong>
 
 每个regfile bank各有一个cache entry，每个entry中包含三个1024bit项分别对应三个源操作数，总共6 * 128B的register file cache。
 
 如果指令中对某个源操作数设置了reuse位，那么该操作数会被存放在regfile cache中。后续的指令如果来自同一warp，请求读取相同id的寄存器，且寄存器在指令中的位置（三个源操作数）与之前cache的都相同，则会从regfile cache中读取而不会真正读取regfile。如果有读取请求到达了相同的regfile bank和寄存器位置时，regfile cache的值将变得不可用（被无效掉），在下面的example/4中可以看到，example4的第三条指令是R2 miss的。
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_290790b8dede.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_290790b8dede.jpg)
 
 到这里文章中关于寄存器堆的部分就讲完了。如果真的是这样的，那么改变了我原本对regfile cache的认知，原本我以为regfile cache很大程度上是用来减少regfile的bank冲突（毕竟是3源操作数、2bank而不是4bank）来提高性能的，按照这篇文章的说法，regfile cache主要还是用来减少寄存器堆读取来节省功耗的？（存疑，有空自己再测一下）
 
@@ -134,11 +134,11 @@ NVIDIA GPU中的控制位是用于控制指令是否可以发射的，控制位�
 
 访存请求前半段在subcore的memory unit中分别处理，后半段则是四个subcore共享，因为它们共享L1 DCache和Shared Memory。这篇文章测试了load/store的队列项数、每个subcore向shared memory发出请求的速率、以及不同访存请求的延迟。
 
-**访存吞吐：**
+<strong>访存吞吐：</strong>
 
 下表是测试连续的访存指令，每一条访存指令被issue的周期：
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_369316ba87d8.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_369316ba87d8.jpg)
 
 观察这张表中的数据可以得到三个结论：
 
@@ -147,11 +147,11 @@ NVIDIA GPU中的控制位是用于控制指令是否可以发射的，控制位�
 - subcore中memory unit的队列长度估计为4项。
 （想问的一个问题是，为什么L1D和shared memory的吞吐会是两拍一条指令啊，这样的话岂不是只有float2和float4对应的64b和128b的LDG/LDS指令才能满吞吐？32b的访存指令上限就只有设计带宽的50%？不合理吧
 
-**访存延迟：**
+<strong>访存延迟：</strong>
 
 下表是文章测试得到的不同访存指令的WAR延迟和RAW/WAW延迟，其中RAW/WAW延迟是我们一般说的访存延迟：
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_c734d4ea579a.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_c734d4ea579a.jpg)
 
 这张表有这样几点观察：
 
@@ -168,25 +168,25 @@ NVIDIA GPU中的控制位是用于控制指令是否可以发射的，控制位�
 
 在下列benchmark上：
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_e86aa5558a0f.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_e86aa5558a0f.jpg)
 
 取得了更精确的模拟结果：
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_d97b4c1ef533.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_d97b4c1ef533.jpg)
 
 文章对测试结果还做了一些敏感性分析：
 
-**指令预取。**简单的stream buffer（4项以上）在GPU中性能几乎可以媲美完美的ICache。使用完美的ICache进行模拟，可以提高模拟速度，但是会在控制流相关的benchmark上（例如dwt2d、lud、nw等）产生显著性能差异。
+<strong>指令预取。</strong>简单的stream buffer（4项以上）在GPU中性能几乎可以媲美完美的ICache。使用完美的ICache进行模拟，可以提高模拟速度，但是会在控制流相关的benchmark上（例如dwt2d、lud、nw等）产生显著性能差异。
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_7c865c645006.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_7c865c645006.jpg)
 
-**寄存器堆结构。**（1R/2R指的是2 bank regfile的每个bank有几个读端口，RFC on/off指的是有没有regfile cache，Ideal指的是假设所有源操作数都可以一拍读出）。对于计算密集型的MaxFlops benchmark，两个读端口有显著性能提升，因为指令可能有三个源操作数，但是两个读端口的话就跟NVIDIA GPU实测对不上了，说明NVIDIA GPU真的是单读端口的2 bank。对于cutlass sgemm benchmark，单读端口关闭regfile cache会产生严重的性能下降，这与程序中35.9%的指令至少有一个操作数使用了regfile cache相匹配。
+<strong>寄存器堆结构。</strong>（1R/2R指的是2 bank regfile的每个bank有几个读端口，RFC on/off指的是有没有regfile cache，Ideal指的是假设所有源操作数都可以一拍读出）。对于计算密集型的MaxFlops benchmark，两个读端口有显著性能提升，因为指令可能有三个源操作数，但是两个读端口的话就跟NVIDIA GPU实测对不上了，说明NVIDIA GPU真的是单读端口的2 bank。对于cutlass sgemm benchmark，单读端口关闭regfile cache会产生严重的性能下降，这与程序中35.9%的指令至少有一个操作数使用了regfile cache相匹配。
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_a4255a19ad55.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_a4255a19ad55.jpg)
 
-**Dependency管理：**基于控制位的dependency管理比传统的scoreboard确实能减少很多硬件开销。（相比这也是NVIDIA这样做的原因吧，虽然给编译器增加了一些设计复杂度）
+<strong>Dependency管理：</strong>基于控制位的dependency管理比传统的scoreboard确实能减少很多硬件开销。（相比这也是NVIDIA这样做的原因吧，虽然给编译器增加了一些设计复杂度）
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_68252c548bd0.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_68252c548bd0.jpg)
 
 ### Reference：
 

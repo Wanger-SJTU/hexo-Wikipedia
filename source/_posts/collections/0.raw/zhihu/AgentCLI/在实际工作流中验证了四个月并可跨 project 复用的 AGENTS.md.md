@@ -16,10 +16,10 @@ source_url: https://zhuanlan.zhihu.com/p/2009629370684306095
 
 
 **# AGENTS.md - Agent Coding Guidelines
-****## 文档写作原则：Self-Contained（自解释）****
-所有文档（PROGRESS.md、STATES.md、EXPERIMENTS.md、TODO.md）必须做到**只读文档就能完全理解****，不依赖对话上下文或任何脑内默认知识。**
+**<strong>## 文档写作原则：Self-Contained（自解释）</strong>**
+所有文档（PROGRESS.md、STATES.md、EXPERIMENTS.md、TODO.md）必须做到<strong>只读文档就能完全理解</strong><strong>，不依赖对话上下文或任何脑内默认知识。</strong>
 核心要求：
-1. **每个方法首次出现时必须解释它是什么、怎么做的****。不能只写"方法 A 效果好"，必须写"方法 A（用因果卷积在 MLP 打分前丰富 token 特征，让 gate 感知邻居信息）效果好"**2. **不要假设读者知道任何缩写****。首次使用缩写时必须给出全称和一句话解释。例如不要写"STE"，要写"STE（Straight-Through Estimator，前向用 hard  掩码，反向用 sigmoid 梯度近似）"**3. **实验结论必须包含足够上下文****。不要写"差距缩小到 0.001"，要写"TopK 自适应选择与 Fixed 周期掩码的质量差距从 0.005 缩小到 0.001（提高 gate 学习率从 0.001 到 0.1）"**4. **数字必须有参照物****。不要写"val_bpb=0.8605"，要写"val_bpb=0.8605（对比：无加速 baseline=0.840，Fixed 周期掩码=0.8605）"**5. **因果链要完整****。不要只记录结论，要记录****为什么****。"TopK 不如 Fixed"不够，要写"TopK 不如 Fixed，因为 TopK 的 think token 48% 紧挨着聚集（间距=1），导致部分 skip token 的信息供给不足（信息瓶颈），而 Fixed 均匀间隔保证每个 think token 只需支撑 2 个 skip token"**6. **docs/STATES.md 顶部维护一个术语表****，所有关键术语集中定义。其他文档开头引用该术语表即可**
+1. <strong>每个方法首次出现时必须解释它是什么、怎么做的</strong><strong>。不能只写"方法 A 效果好"，必须写"方法 A（用因果卷积在 MLP 打分前丰富 token 特征，让 gate 感知邻居信息）效果好"</strong>2. <strong>不要假设读者知道任何缩写</strong><strong>。首次使用缩写时必须给出全称和一句话解释。例如不要写"STE"，要写"STE（Straight-Through Estimator，前向用 hard  掩码，反向用 sigmoid 梯度近似）"</strong>3. <strong>实验结论必须包含足够上下文</strong><strong>。不要写"差距缩小到 0.001"，要写"TopK 自适应选择与 Fixed 周期掩码的质量差距从 0.005 缩小到 0.001（提高 gate 学习率从 0.001 到 0.1）"</strong>4. <strong>数字必须有参照物</strong><strong>。不要写"val_bpb=0.8605"，要写"val_bpb=0.8605（对比：无加速 baseline=0.840，Fixed 周期掩码=0.8605）"</strong>5. <strong>因果链要完整</strong><strong>。不要只记录结论，要记录</strong><strong>为什么</strong><strong>。"TopK 不如 Fixed"不够，要写"TopK 不如 Fixed，因为 TopK 的 think token 48% 紧挨着聚集（间距=1），导致部分 skip token 的信息供给不足（信息瓶颈），而 Fixed 均匀间隔保证每个 think token 只需支撑 2 个 skip token"</strong>6. <strong>docs/STATES.md 顶部维护一个术语表</strong><strong>，所有关键术语集中定义。其他文档开头引用该术语表即可</strong>
 反面例子（禁止）：
 - "V11 实验效果不错" → 什么是 V11？做了什么？效果不错是多少？
 - "提高了 gate LR" → 从多少到多少？为什么要提高？效果改善了多少？
@@ -70,7 +70,7 @@ du -h --max-depth=1 . | sort -hr
 
 有多个相同功能文件的时候 请把错误的冗余的全部都扔进 archive，只保留一个。
 
-当你 1.认为完成了一个**完整****功能的时候并且测试完善整个任务已经被完成（而不是只完成了一部分或者一个阶段还有剩余工作）2.要进行不得已的破坏性改动的时候（务必注意安全和保证所有资源有备份不丢失） 
+当你 1.认为完成了一个<strong>完整</strong>**功能的时候并且测试完善整个任务已经被完成（而不是只完成了一部分或者一个阶段还有剩余工作）2.要进行不得已的破坏性改动的时候（务必注意安全和保证所有资源有备份不丢失） 
 请 
 git add . 
 git commit -m 

@@ -17,7 +17,7 @@ source_url: https://zhuanlan.zhihu.com/p/107096130
 
 经过下面文章的介绍，我们已经知道cache的基本工作原理。
 
-[![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_b9ce2d87f65c.png)smcdef：图说Cache - Cache的基本原理5314 赞同 · 372 评论 文章](https://zhuanlan.zhihu.com/p/102293437)
+[![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_b9ce2d87f65c.png)smcdef：图说Cache - Cache的基本原理5314 赞同 · 372 评论 文章](https://zhuanlan.zhihu.com/p/102293437)
 
 但是，我们一直避开了一个关键问题。我们都知道cache控制器根据地址查找判断是否命中，这里的地址究竟是虚拟地址(virtual address，VA)还是物理地址(physical address，PA)？我们应该清楚CPU发出对某个地址的数据访问，这个地址其实是虚拟地址，虚拟地址经过MMU转换成物理地址，最终从这个物理地址读取数据。因此cache的硬件设计既可以采用虚拟地址也可以采用物理地址甚至是取两者地址部分组合作为查找cache的依据。
 
@@ -25,7 +25,7 @@ source_url: https://zhuanlan.zhihu.com/p/107096130
 
 我们首先介绍的是虚拟高速缓存，这种cache硬件设计简单。在cache诞生之初，大部分的处理器都使用这种方式。虚拟高速缓存以虚拟地址作为查找对象。如下图所示。 
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_fd0dfc3b0cf8.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_fd0dfc3b0cf8.jpg)
 
 虚拟地址直接送到cache控制器，如果cache hit。直接从cache中返回数据给CPU。如果cache miss，则把虚拟地址发往MMU，经过MMU转换成物理地址，根据物理地址从主存(main memory)读取数据。由于我们根据虚拟地址查找高速缓存，所以我们是用虚拟地址中部分位域作为索引(index)，找到对应的的cacheline。然后根据虚拟地址中部分位域作为标记(tag)来判断cache是否命中。因此，我们针对这种index和tag都取自虚拟地址的高速缓存称为虚拟高速缓存，简称VIVT(Virtually Indexed Virtually Tagged)。另外，我们复习下cache控制器查找数据以及判断是否命中的规则：通过index查找对应的cacheline，通过tag判断是否命中cache。 虚拟高速缓存的优点是不需要每次读取或者写入操作的时候把虚拟地址经过MMU转换为物理地址，这在一定的程度上提升了访问cache的速度，毕竟MMU转换虚拟地址需要时间。同时硬件设计也更加简单。但是，正是使用了虚拟地址作为tag，所以引入很多软件使用上的问题。 操作系统在管理高速缓存正确工作的过程中，主要会面临两个问题。歧义(ambiguity)和别名(alias)。为了保证系统的正确工作，操作系统负责避免出现歧义和别名。
 
@@ -39,7 +39,7 @@ source_url: https://zhuanlan.zhihu.com/p/107096130
 
 当不同的虚拟地址映射相同的物理地址，而这些虚拟地址的index不同，此时就发生了别名现象(多个虚拟地址被称为别名)。通俗点来说就是指同一个物理地址的数据被加载到不同的cacheline中就会出现别名现象。 考虑这样的一个例子。虚拟地址0x2000和0x4000都映射到相同的物理地址0x8000。这意味着进程既可以从0x2000读取数据，也能从地址0x4000读取数据。假设系统使用的是直接映射VIVT高速缓存，cache更新策略采用写回机制，并且使用虚拟地址的位作为index。那么虚拟地址0x2000和虚拟地址0x4000的index分别是0x200和0x400。这意味同一个物理地址的数据会加载到不同的cacheline。假设物理地址0x8000存储的数据是0x1234。程序先访问0x2000把数据0x1234加载到第0x200(index)行cacheline中。接着访问0x4000，会将0x1234再一次的加载到第0x400(index)行cacheline中。现在程序将0x2000地址数据修改成0x5678。由于采用的是写回策略，因此修改的数据依然躺在cacheline中。当程序访问0x4000的时候由于cache hit导致读取到旧的数据0x1234。这就造成了数据不一致现象，这不是我们想要的结果。可以选择下面的方法避免这个问题。 
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_2a255f32a185.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_2a255f32a185.jpg)
 
 针对共享数据所在页的映射方式采用nocache映射。例如上面的例子中，0x2000和0x4000映射物理地址0x8000的时候都采用nocache的方式，这样不通过cache的访问，肯定可以避免这种问题。但是这样就损失了cache带来的性能好处。这种方法既适用于不同进程共享数据，也适用于同一个进程共享数据。 如果是不同进程之间共享数据，还可以在进程切换时主动flush cache(使主存储器有效和使高速缓存无效)的方式避免别名现象。但是，如果是同一个进程共享数据该怎么办？除了nocache映射之外，还可以有另一种解决方案。这种方法只针对直接映射高速缓存，并且使用了写分配机制有效。在建立共享数据映射时，保证每次分配的虚拟地址都索引到相同的cacheline。这种方式，后面还会重点说。
 
@@ -47,7 +47,7 @@ source_url: https://zhuanlan.zhihu.com/p/107096130
 
 基于对VIVT高速缓存的认识，我们知道VIVT高速缓存存在歧义和名别两大问题。主要问题原因是：tag取自虚拟地址导致歧义，index取自虚拟地址导致别名。所以，如果想让操作系统少操心，最简单的方法是tag和index都取自物理地址。物理的地址tag部分是独一无二的，因此肯定不会导致歧义。而针对同一个物理地址，index也是唯一的，因此加载到cache中也是唯一的cacheline，所以也不会存在别名。我们称这种cache为物理高速缓存，简称PIPT(Physically Indexed Physically Tagged)。PIPT工作原理如下图所示。 
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_2eab51068383.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_2eab51068383.jpg)
 
 CPU发出的虚拟地址经过MMU转换成物理地址，物理地址发往cache控制器查找确认是否命中cache。虽然PIPT方式在软件层面基本不需要维护，但是硬件设计上比VIVT复杂很多。因此硬件成本也更高。同时，由于虚拟地址每次都要翻译成物理地址，因此在查找性能上没有VIVT方式简洁高效，毕竟PIPT方式需要等待虚拟地址转换物理地址完成后才能去查找cache。顺便提一下，为了加快MMU翻译虚拟地址的速度，硬件上也会加入一块cache，作用是缓存虚拟地址和物理地址的映射关系，这块cache称之为TLB(Translation Lookaside Buffer)。当MMU需要转换虚拟地址时，首先从TLB中查找，如果cache hit，则直接返回物理地址。如果cache miss则需要MMU查找页表。这样就加快了虚拟地址转换物理地址的速度。如果系统采用的PIPT的cache，那么软件层面基本不需要任何的维护就可以避免歧义和别名问题。这是PIPT最大的优点。现在的CPU很多都是采用PIPT高速缓存设计。在Linux内核中，可以看到针对PIPT高速缓存的管理函数都是空函数，无需任何的管理。
 
@@ -55,13 +55,13 @@ CPU发出的虚拟地址经过MMU转换成物理地址，物理地址发往cache
 
 为了提升cache查找性能，我们不想等到虚拟地址转换物理地址完成后才能查找cache。因此，我们可以使用虚拟地址对应的index位查找cache，与此同时(硬件上同时进行)将虚拟地址发到MMU转换成物理地址。当MMU转换完成，同时cache控制器也查找完成，此时比较cacheline对应的tag和物理地址tag域，以此判断是否命中cache。我们称这种高速缓存为VIPT(Virtually Indexed Physically Tagged)。 
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_19526f22ce24.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_19526f22ce24.jpg)
 
 VIPT以物理地址部分位作为tag，因此我们不会存在歧义问题。但是，采用虚拟地址作为index，所以可能依然存在别名问题。是否存在别名问题，需要考虑cache的结构，我们需要分情况考虑。
 
 #### VIPT Cache为什么不存在歧义
 
-在这里重点介绍下为什么VIPT Cache不存在歧义。假设以32位CPU为例，页表映射最小单位是4KB。我们假设虚拟地址位(这是一个有别名问题的VIPT Cache)作为index，于此同时将虚拟地址发送到MMU转换得到物理地址的，这里**我们把作为tag，并不是**。这地方很关键，也就是说VIPT的tag取决于物理页大小的剩余位数，而不是去掉index和offset的剩余位数。物理tag是惟一的，所以不存在歧义。
+在这里重点介绍下为什么VIPT Cache不存在歧义。假设以32位CPU为例，页表映射最小单位是4KB。我们假设虚拟地址位(这是一个有别名问题的VIPT Cache)作为index，于此同时将虚拟地址发送到MMU转换得到物理地址的，这里<strong>我们把作为tag，并不是</strong>。这地方很关键，也就是说VIPT的tag取决于物理页大小的剩余位数，而不是去掉index和offset的剩余位数。物理tag是惟一的，所以不存在歧义。
 
 #### VIPT Cache什么情况不存在别名
 

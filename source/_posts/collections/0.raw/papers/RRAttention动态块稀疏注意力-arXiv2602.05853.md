@@ -15,7 +15,7 @@ source_url: https://arxiv.org/abs/2602.05853
 
 # RRAttention：基于逐头轮询移位的动态块稀疏注意力用于长上下文推理
 
-**作者**：Siran Liu¹'²*, Guoxia Wang¹*, Sa Wang¹'²*, Jinle Zeng¹, HaoYang Xie¹, Siyu Lou¹, JiaBin Yang¹, DianHai Yu¹'², Haifeng Wang¹, Chao Yang²†
+<strong>作者</strong>：Siran Liu¹'²*, Guoxia Wang¹*, Sa Wang¹'²*, Jinle Zeng¹, HaoYang Xie¹, Siyu Lou¹, JiaBin Yang¹, DianHai Yu¹'², Haifeng Wang¹, Chao Yang²†
 
 ¹ 百度公司
 ² 北京大学
@@ -75,7 +75,7 @@ $$B_{ij} = 0, \quad \forall j > i \quad (5)$$
 
 相比之下，动态稀疏注意力方法根据当前输入自适应地确定块选择矩阵 B_dynamic，允许注意力模式灵活调整以更好地适应数据。表 1 总结了现有动态稀疏注意力方法的关键特征。
 
-**表 1：动态稀疏注意力方法比较**
+<strong>表 1：动态稀疏注意力方法比较</strong>
 
 | 方法 | 免预处理 | 全局评估 | 查询独立性 | 模式无关 | Softmax粒度 |
 |------|---------|---------|-----------|---------|------------|
@@ -83,13 +83,13 @@ $$B_{ij} = 0, \quad \forall j > i \quad (5)$$
 | MInference | ✗ | ✗ | ✓ | ✗ | Token级 |
 | FlexPrefill | ✓ | ✗ | ✓ | ✗ | Token级 |
 | XAttention | ✓ | ✓ | ✗ | ✓ | 步长级 |
-| **RRAttention** | **✓** | **✓** | **✓** | **✓** | **步长级** |
+| <strong>RRAttention</strong> | <strong>✓</strong> | <strong>✓</strong> | <strong>✓</strong> | <strong>✓</strong> | <strong>步长级</strong> |
 
-- **免预处理**：指示方法是否需要离线训练或模式搜索。需要预处理的方法（SeerAttention 的蒸馏训练、MInference 的离线模式分配）实现了更好的准确性但限制了部署灵活性，而免预处理方法（FlexPrefill、XAttention）提供了对新模型和任务的即时适用性。
-- **全局评估**：确定重要性估计是否考虑整个查询-键空间。全局方法（SeerAttention、XAttention）更有效地捕获长程依赖但产生更高的计算开销，而仅使用最后查询块的局部方法（MInference、FlexPrefill）更高效但可能遗漏早期位置的重要模式。
-- **查询独立性**：确保每个查询的注意力分布独立计算，不受跨查询干扰。违反此原则的方法（XAttention 跨不同查询的反对角线聚合）可能混合来自不同上下文的注意力分布，而查询独立方法保留了每个查询注意力模式的语义完整性。
-- **模式无关**：反映方法是否在所有注意力头上应用统一策略。模式特定方法（MInference、FlexPrefill）通过针对不同注意力模式定制实现了更好的准确性，但需要额外的模式检测开销。
-- **Softmax 粒度**：显著影响计算效率：块级或步长级聚合（SeerAttention、XAttention）通过降维加速模式发现但可能丢失细粒度信息，而 token 级 softmax（MInference、FlexPrefill）保留了精确的注意力分布但计算复杂度更高。
+- <strong>免预处理</strong>：指示方法是否需要离线训练或模式搜索。需要预处理的方法（SeerAttention 的蒸馏训练、MInference 的离线模式分配）实现了更好的准确性但限制了部署灵活性，而免预处理方法（FlexPrefill、XAttention）提供了对新模型和任务的即时适用性。
+- <strong>全局评估</strong>：确定重要性估计是否考虑整个查询-键空间。全局方法（SeerAttention、XAttention）更有效地捕获长程依赖但产生更高的计算开销，而仅使用最后查询块的局部方法（MInference、FlexPrefill）更高效但可能遗漏早期位置的重要模式。
+- <strong>查询独立性</strong>：确保每个查询的注意力分布独立计算，不受跨查询干扰。违反此原则的方法（XAttention 跨不同查询的反对角线聚合）可能混合来自不同上下文的注意力分布，而查询独立方法保留了每个查询注意力模式的语义完整性。
+- <strong>模式无关</strong>：反映方法是否在所有注意力头上应用统一策略。模式特定方法（MInference、FlexPrefill）通过针对不同注意力模式定制实现了更好的准确性，但需要额外的模式检测开销。
+- <strong>Softmax 粒度</strong>：显著影响计算效率：块级或步长级聚合（SeerAttention、XAttention）通过降维加速模式发现但可能丢失细粒度信息，而 token 级 softmax（MInference、FlexPrefill）保留了精确的注意力分布但计算复杂度更高。
 
 RRAttention 提供了一个平衡的解决方案，结合了现有方法的优势：无需预处理以实现最大灵活性，执行全局评估以全面捕获模式，保持查询独立性以实现准确的注意力计算，应用模式无关策略以实现简洁性，并使用步长级 softmax 以实现计算效率。
 
@@ -137,25 +137,25 @@ $$B^{\text{dynamic}}_{m,n} = \begin{cases} 1, & \text{如果 } n \in \{k : \sum_
 
 $$B_{m,n} = B^{\text{dynamic}}_{m,n} \lor B^{\text{static}}_{m,n} \quad (12)$$
 
-**图 2 说明**：RRAttention 示意图。①、② 和 ③ 代表我们方法的三个阶段。示例展示了步长大小 S=4 和块大小 B=8 的配置。
+<strong>图 2 说明</strong>：RRAttention 示意图。①、② 和 ③ 代表我们方法的三个阶段。示例展示了步长大小 S=4 和块大小 B=8 的配置。
 
 ## 4 实验
 
 ### 4.1 实验设置
 
-**模型**：对于自然语言任务，我们评估了两个突出的长上下文语言模型：(i) Meta-LLaMA-3.1-8B-Instruct，支持高达 128K token 上下文长度；(ii) Qwen2.5-7B-Instruct，通过 YARN 缩放支持高达 128K token 上下文长度。对于视频理解任务，我们评估了 Qwen2-VL-7B-Instruct，一个能够通过多模态注意力处理和理解视频内容的视觉-语言模型。我们在附录 B 中提供了更大规模和多样化架构（如 Yi-9B-200K、Qwen3-30B-A3B）的泛化实验。
+<strong>模型</strong>：对于自然语言任务，我们评估了两个突出的长上下文语言模型：(i) Meta-LLaMA-3.1-8B-Instruct，支持高达 128K token 上下文长度；(ii) Qwen2.5-7B-Instruct，通过 YARN 缩放支持高达 128K token 上下文长度。对于视频理解任务，我们评估了 Qwen2-VL-7B-Instruct，一个能够通过多模态注意力处理和理解视频内容的视觉-语言模型。我们在附录 B 中提供了更大规模和多样化架构（如 Yi-9B-200K、Qwen3-30B-A3B）的泛化实验。
 
-**基线方法**：(i) FlashAttention，作为我们的稠密基线；(ii) FlexPrefill，使用超参数 τ=0.1 和两种阈值设置 γ=0.95 和 γ=0.99；(iii) XAttention，使用块大小 S=8 和两种阈值设置 τ=0.9 和 τ=0.95；(iv) RRAttention，使用与 XAttention 相同的配置。所有稀疏注意力实验专注于预填充阶段。
+<strong>基线方法</strong>：(i) FlashAttention，作为我们的稠密基线；(ii) FlexPrefill，使用超参数 τ=0.1 和两种阈值设置 γ=0.95 和 γ=0.99；(iii) XAttention，使用块大小 S=8 和两种阈值设置 τ=0.9 和 τ=0.95；(iv) RRAttention，使用与 XAttention 相同的配置。所有稀疏注意力实验专注于预填充阶段。
 
-**数据集**：(i) 对于自然语言理解任务，使用 HELMET，一个综合长上下文基准，包括七个任务类别；(ii) 对于视频理解任务，使用 Video-MME，包含 900 个视频和 2700 个多选问答对。
+<strong>数据集</strong>：(i) 对于自然语言理解任务，使用 HELMET，一个综合长上下文基准，包括七个任务类别；(ii) 对于视频理解任务，使用 Video-MME，包含 900 个视频和 2700 个多选问答对。
 
 所有实验在 NVIDIA H100 GPU 上进行。
 
 ### 4.2 主要结果
 
-**HELMET**：表 2 展示了所有 HELMET 任务在 8K 到 128K token 上下文长度的平均性能。
+<strong>HELMET</strong>：表 2 展示了所有 HELMET 任务在 8K 到 128K token 上下文长度的平均性能。
 
-**表 2：HELMET 基准上不同上下文长度的性能比较**
+<strong>表 2：HELMET 基准上不同上下文长度的性能比较</strong>
 
 | 模型 | 方法 | 平均稀疏度(↑) | 8K | 16K | 32K | 64K | 128K | 平均(↑) |
 |------|------|-------------|-----|-----|-----|-----|------|--------|
@@ -165,22 +165,22 @@ $$B_{m,n} = B^{\text{dynamic}}_{m,n} \lor B^{\text{static}}_{m,n} \quad (12)$$
 | | XAttention-0.90 | 59.88% | 59.92 | 57.15 | 55.54 | 53.66 | 47.82 | 54.82 |
 | | XAttention-0.95 | 47.50% | 60.79 | 58.10 | 55.57 | 54.78 | 49.45 | 55.74 |
 | | RRAttention-0.90 | 61.02% | 60.95 | 58.43 | 55.86 | 54.27 | 48.85 | 55.67 |
-| | RRAttention-0.95 | 48.68% | 61.22 | 58.21 | 56.07 | 55.33 | 50.37 | **56.24** |
+| | RRAttention-0.95 | 48.68% | 61.22 | 58.21 | 56.07 | 55.33 | 50.37 | <strong>56.24</strong> |
 | Qwen | FullAttention | - (0%) | 54.75 | 50.66 | 48.40 | 44.98 | 39.59 | 47.68 |
 | | FlexPrefill-0.95 | 63.21% | 44.11 | 40.59 | 40.60 | 36.39 | 29.66 | 38.27 |
 | | FlexPrefill-0.99 | 37.88% | 53.18 | 49.05 | 46.48 | 43.01 | 35.52 | 45.45 |
 | | XAttention-0.90 | 59.15% | 52.53 | 47.72 | 45.72 | 43.35 | 37.04 | 45.27 |
 | | XAttention-0.95 | 47.35% | 53.90 | 49.77 | 46.96 | 44.49 | 38.09 | 46.64 |
 | | RRAttention-0.90 | 59.53% | 53.37 | 49.31 | 47.35 | 44.62 | 38.48 | 46.63 |
-| | RRAttention-0.95 | 47.56% | 54.22 | 50.02 | 47.92 | 45.17 | 38.51 | **47.17** |
+| | RRAttention-0.95 | 47.56% | 54.22 | 50.02 | 47.92 | 45.17 | 38.51 | <strong>47.17</strong> |
 
 RRAttention 在两个模型上始终在所有稀疏注意力方法中实现最高准确性。在保守设置下（τ=0.95 和 γ=0.99），RRAttention 在 Llama 上达到 56.24，而 XAttention 为 55.74，FlexPrefill 为 56.02。在 Qwen 上，RRAttention 达到 47.17，优于 XAttention 的 46.64 和 FlexPrefill 的 45.45。值得注意的是，RRAttention 分别恢复了 Llama 和 Qwen 上 99.7% 和 99.0% 的 FullAttention 性能，同时仅计算约一半的注意力块。
 
 在激进设置下（τ=0.90 和 γ=0.95），RRAttention 的准确性-稀疏度权衡优势更为明显。在 Llama 上，RRAttention 维持 55.67，显著优于 XAttention 的 54.82 和 FlexPrefill 的 52.54。
 
-**Video-MME**：表 3 展示了 Video-MME 基准的结果。在标准 1fps 设置下，RRAttention 在保守和激进配置下始终实现最高的整体准确性，在中等和长视频上优势尤为明显。
+<strong>Video-MME</strong>：表 3 展示了 Video-MME 基准的结果。在标准 1fps 设置下，RRAttention 在保守和激进配置下始终实现最高的整体准确性，在中等和长视频上优势尤为明显。
 
-**表 3：使用 Qwen2-VL-7B-Instruct 在 Video-MME 基准上的性能比较**
+<strong>表 3：使用 Qwen2-VL-7B-Instruct 在 Video-MME 基准上的性能比较</strong>
 
 | FPS | 方法 | 平均稀疏度(↑) | 短 | 中 | 长 | 平均(↑) |
 |-----|------|-------------|-----|-----|-----|--------|
@@ -190,22 +190,22 @@ RRAttention 在两个模型上始终在所有稀疏注意力方法中实现最�
 | | XAttention-0.90 | 49.30% | 71.80 | 62.80 | 55.70 | 63.40 |
 | | XAttention-0.95 | 37.50% | 72.70 | 63.60 | 56.10 | 64.10 |
 | | RRAttention-0.90 | 47.00% | 72.20 | 63.60 | 56.20 | 64.00 |
-| | RRAttention-0.95 | 34.70% | 72.60 | 64.00 | 56.20 | **64.30** |
+| | RRAttention-0.95 | 34.70% | 72.60 | 64.00 | 56.20 | <strong>64.30</strong> |
 | 0.5fps | FullAttention | - (0%) | 72.10 | 68.80 | 62.40 | 67.80 |
 | | FlexPrefill-0.95 | 58.60% | 70.80 | 67.00 | 59.40 | 65.70 |
 | | FlexPrefill-0.99 | 28.80% | 71.70 | 68.40 | 61.90 | 67.30 |
 | | XAttention-0.90 | 51.50% | 72.00 | 68.00 | 61.10 | 67.00 |
 | | XAttention-0.95 | 39.90% | 72.30 | 68.90 | 62.30 | 67.90 |
 | | RRAttention-0.90 | 49.30% | 71.70 | 68.70 | 62.20 | 67.50 |
-| | RRAttention-0.95 | 37.40% | 72.20 | 68.70 | 62.30 | **67.70** |
+| | RRAttention-0.95 | 37.40% | 72.20 | 68.70 | 62.30 | <strong>67.70</strong> |
 
-**运行时效率**：在 128K 上下文长度下，RRAttention 相比 Full Attention 实现了 2.4 倍加速，同时在所有稀疏注意力方法中提供了最快的推理速度。我们的头轮询采样策略结合步长级聚合在 128K token 下将模式发现时间比 XAttention 减少了 18.2%。
+<strong>运行时效率</strong>：在 128K 上下文长度下，RRAttention 相比 Full Attention 实现了 2.4 倍加速，同时在所有稀疏注意力方法中提供了最快的推理速度。我们的头轮询采样策略结合步长级聚合在 128K token 下将模式发现时间比 XAttention 减少了 18.2%。
 
 ### 4.3 消融实验
 
-**最后查询块保护**：将最后查询块保护策略应用于 XAttention 基线产生了适度改进（从 55.74 到 55.92），但 RRAttention 实现了显著更好的性能（56.24），表明通过头轮询策略进行有效的模式发现对整体性能的贡献更为重要。
+<strong>最后查询块保护</strong>：将最后查询块保护策略应用于 XAttention 基线产生了适度改进（从 55.74 到 55.92），但 RRAttention 实现了显著更好的性能（56.24），表明通过头轮询策略进行有效的模式发现对整体性能的贡献更为重要。
 
-**表 5：保护最后查询块的消融实验（HELMET，LLaMA-3.1-8B-Instruct）**
+<strong>表 5：保护最后查询块的消融实验（HELMET，LLaMA-3.1-8B-Instruct）</strong>
 
 | 方法 | 稀疏度 | Sink & Recent 块 | 最后查询块 |
 |------|--------|-----------------|-----------|
@@ -214,20 +214,20 @@ RRAttention 在两个模型上始终在所有稀疏注意力方法中实现最�
 | RRAttention-0.95 | 49.06% | ✓ | ✓ |
 | RRAttention-0.95 | 48.68% | ✗ | ✓ |
 
-**轮询策略**：表 6 比较了无 RR 机制和三种 RR 策略。Head-RR 在大多数上下文长度上始终优于替代方案。
+<strong>轮询策略</strong>：表 6 比较了无 RR 机制和三种 RR 策略。Head-RR 在大多数上下文长度上始终优于替代方案。
 
-**表 6：RR 调度策略的隔离消融实验（HELMET，LLaMA-3.1-8B-Instruct）**
+<strong>表 6：RR 调度策略的隔离消融实验（HELMET，LLaMA-3.1-8B-Instruct）</strong>
 
 | 方法 | 8K | 16K | 32K | 64K | 128K | 平均 |
 |------|-----|-----|-----|-----|------|------|
 | w/o RR | 60.91 | 57.86 | 55.67 | 54.62 | 49.18 | 55.65 |
-| Head-RR | 60.93 | 57.90 | 56.03 | 54.70 | 49.44 | **55.80** |
+| Head-RR | 60.93 | 57.90 | 56.03 | 54.70 | 49.44 | <strong>55.80</strong> |
 | Layer-RR | 60.75 | 57.60 | 55.99 | 54.95 | 48.40 | 55.54 |
 | Hybrid-RR | 60.42 | 57.96 | 56.03 | 54.54 | 49.10 | 55.61 |
 
-**步长大小**：表 4 展示了不同步长对性能的影响。对于 S < 32 的步长配置，RRAttention 维持稳定性能；但在 S=32 时，粗粒度聚合稀释了关键 token 的重要信号。
+<strong>步长大小</strong>：表 4 展示了不同步长对性能的影响。对于 S < 32 的步长配置，RRAttention 维持稳定性能；但在 S=32 时，粗粒度聚合稀释了关键 token 的重要信号。
 
-**表 4：不同步长在 HELMET 上的性能比较（LLaMA-3.1-8B-Instruct）**
+<strong>表 4：不同步长在 HELMET 上的性能比较（LLaMA-3.1-8B-Instruct）</strong>
 
 | 方法 | S=4 分数 | S=4 稀疏度 | S=8 分数 | S=8 稀疏度 | S=16 分数 | S=16 稀疏度 | S=32 分数 | S=32 稀疏度 |
 |------|---------|-----------|---------|-----------|----------|-----------|----------|-----------|
@@ -236,7 +236,7 @@ RRAttention 在两个模型上始终在所有稀疏注意力方法中实现最�
 | XAttention-0.95 | 55.89 | 48.23% | 55.74 | 47.50% | 55.45 | 46.46% | 55.49 | 45.27% |
 | RRAttention-0.95 | 55.85 | 49.03% | 56.24 | 48.68% | 55.91 | 47.96% | 55.62 | 47.78% |
 
-**块选择准确性**：通过与全注意力真实值的事后比较验证了 RRAttention 的重要性估计。RRAttention 实现了更高的精确度和 F1 分数（附录 D 详述），确认了更准确的重要块识别。
+<strong>块选择准确性</strong>：通过与全注意力真实值的事后比较验证了 RRAttention 的重要性估计。RRAttention 实现了更高的精确度和 F1 分数（附录 D 详述），确认了更准确的重要块识别。
 
 ## 5 相关工作
 
@@ -246,9 +246,9 @@ NSA 在训练期间学习稀疏区域，MOBA 使用混合专家进行稀疏计�
 
 ### 5.2 面向推理的稀疏方法
 
-**静态稀疏模式**：BigBird、Longformer、StreamingLLM、TriangleMix 等方法使用预定义模式，但无法适应输入特定特征。
+<strong>静态稀疏模式</strong>：BigBird、Longformer、StreamingLLM、TriangleMix 等方法使用预定义模式，但无法适应输入特定特征。
 
-**动态稀疏模式**：SeerAttention 使用学习的池化进行块选择，MInference 基于离线性能分析分配模式，FlexPrefill 使用散度度量进行模式发现，XAttention 执行反对角线查询采样结合步长聚合。RRAttention 通过头轮询采样解决了这些方法的关键局限性，确保完整的位置覆盖和查询独立性，结合步长级聚合实现计算效率。
+<strong>动态稀疏模式</strong>：SeerAttention 使用学习的池化进行块选择，MInference 基于离线性能分析分配模式，FlexPrefill 使用散度度量进行模式发现，XAttention 执行反对角线查询采样结合步长聚合。RRAttention 通过头轮询采样解决了这些方法的关键局限性，确保完整的位置覆盖和查询独立性，结合步长级聚合实现计算效率。
 
 ### 5.3 长上下文 LLM 推理加速
 
@@ -268,11 +268,11 @@ NSA 在训练期间学习稀疏区域，MOBA 使用混合专家进行稀疏计�
 
 我们在 HELMET 基准的六个主要任务类别上评估了 RRAttention：合成召回（Recall）、检索增强生成（RAG）、多样本上下文学习（ICL）、带引用生成（Cite）、段落重排序（Rerank）和长文档问答（LongQA）。
 
-**全局上下文理解任务**：在合成召回任务上，RRAttention 展现了验证其全局评估能力的卓越性能。在 Llama 激进设置下，RRAttention 在 8K 和 16K 上下文中保持完美准确性 100.0，而 FlexPrefill 分别降至 95.94 和 96.25。在长文档问答中，Qwen 128K 激进设置下，RRAttention 达到 42.15，显著优于 XAttention 的 40.92 和 FlexPrefill 的 20.68。
+<strong>全局上下文理解任务</strong>：在合成召回任务上，RRAttention 展现了验证其全局评估能力的卓越性能。在 Llama 激进设置下，RRAttention 在 8K 和 16K 上下文中保持完美准确性 100.0，而 FlexPrefill 分别降至 95.94 和 96.25。在长文档问答中，Qwen 128K 激进设置下，RRAttention 达到 42.15，显著优于 XAttention 的 40.92 和 FlexPrefill 的 20.68。
 
-**信息检索任务**：在检索增强生成任务中，Qwen 32K 激进设置下，RRAttention 达到 55.92，优于 XAttention 的 55.04 和 FlexPrefill 的 48.33。
+<strong>信息检索任务</strong>：在检索增强生成任务中，Qwen 32K 激进设置下，RRAttention 达到 55.92，优于 XAttention 的 55.04 和 FlexPrefill 的 48.33。
 
-**细粒度归因任务**：引用生成对所有方法最具挑战性，在长上下文下性能大幅下降。段落重排序表现出上下文依赖行为。
+<strong>细粒度归因任务</strong>：引用生成对所有方法最具挑战性，在长上下文下性能大幅下降。段落重排序表现出上下文依赖行为。
 
 ### 附录 B：额外模型实验
 
@@ -292,4 +292,4 @@ RRAttention 在所有六个任务上展示了系统性更高的精确度，改�
 
 ### 附录 F：未来工作
 
-**工程优化**：迁移到 FlashAttention-3 可利用其高级特性。**训练感知稀疏注意力**：在训练阶段纳入稀疏注意力学习可消除模式发现开销。**扩展到解码阶段**：将头轮询采样原则自然扩展到解码阶段以减少 KV cache 内存带宽消耗。
+<strong>工程优化</strong>：迁移到 FlashAttention-3 可利用其高级特性。<strong>训练感知稀疏注意力</strong>：在训练阶段纳入稀疏注意力学习可消除模式发现开销。<strong>扩展到解码阶段</strong>：将头轮询采样原则自然扩展到解码阶段以减少 KV cache 内存带宽消耗。

@@ -19,34 +19,34 @@ News:
 
 [2025.11] 🔥 最近新测了一些sglang+eagle3的结果，大家感兴趣的话可以在 [benchmark](https://link.zhihu.com/?target=https%3A//smart-lty.github.io/nano-PEARL/benchmark.html) 查看！
 
-[https://github.com/smart-lty/nano-PEARL](https://link.zhihu.com/?target=https%3A//github.com/smart-lty/nano-PEARL)**写在前言：**不知道各位在读/审/投稿 Speculative Decoding 相关的文章时，有没有遇到过，或者思考过各种 spec 算法和其他加速技术的结合。反正我之前做 PEARL (parallel speculative decoding) 时，被审稿人追着问了很久的 TP 兼容问题。现在一回想，确实有道理。efficient LLM 是一个完整的领域，不同的加速技术之间如果存在冲突，那它们的贡献自然要 「re-evaluate」. 
+[https://github.com/smart-lty/nano-PEARL](https://link.zhihu.com/?target=https%3A//github.com/smart-lty/nano-PEARL)<strong>写在前言：</strong>不知道各位在读/审/投稿 Speculative Decoding 相关的文章时，有没有遇到过，或者思考过各种 spec 算法和其他加速技术的结合。反正我之前做 PEARL (parallel speculative decoding) 时，被审稿人追着问了很久的 TP 兼容问题。现在一回想，确实有道理。efficient LLM 是一个完整的领域，不同的加速技术之间如果存在冲突，那它们的贡献自然要 「re-evaluate」. 
 
 从 Google 的 ICML oral paper 至今已经两年半的时间了，社区中涌现了非常多的 spec 算法文章，但真正落地了、考虑了和其他各种技术集成的 paper，有几篇呢？我印象里屈指可数：EAGLE 算一篇，PLD 算一篇，Lookahead 算一篇，Medusa 算半篇，最多再加上 DeepSeek 带火的 MTP。扪心自问，光是支持 batch size > 1 的推理这一点，有几篇 paper 能做到呢？从这方面来说，社区对于算法的落地是严重缺少关注的。你的 Spec 算法兼容 TP 吗？兼容 flash attention 吗？兼容 paged attention 吗？兼容这些技术时会不会遇到其他方面的问题？
 
 所以最近我就在思考，我做的 PEARL 和以上技术结合的可能性，由此推出 nano-PEARL
 
-这是一个非常简单、但将 parallel speculative decoding 和 prefix caching, TP, cuda graph,  flash attention, paged attention, batch inference 等等进行了结合的框架级实现。将这些技术全部结合起来，**我们可以用 3 张 H200, 把一个 70B 的 Llama 3.1 模型，在 bs=32 的情况下，跑到 3546.72 tok / s 的吞吐！**
+这是一个非常简单、但将 parallel speculative decoding 和 prefix caching, TP, cuda graph,  flash attention, paged attention, batch inference 等等进行了结合的框架级实现。将这些技术全部结合起来，<strong>我们可以用 3 张 H200, 把一个 70B 的 Llama 3.1 模型，在 bs=32 的情况下，跑到 3546.72 tok / s 的吞吐！</strong>
 
 感谢 nano-vLLM 的杰出仓库，让我能够在短短一个月之内实现各种我想要的 feature 并完成测试。简单做了一个 benchmark 结果可视化的网页，欢迎大家点进来玩！
 
-[nano-PEARL Benchmark Results](https://link.zhihu.com/?target=https%3A//smart-lty.github.io/nano-PEARL/benchmark.html)另一方面，也希望这个框架可以帮助 spec 社区更快、更好地设计和实现各种新颖的 spec 算法，同时，再也不用担心被审稿人问：**你的算法能做 batch 推理吗？能用 TP 吗？**
+[nano-PEARL Benchmark Results](https://link.zhihu.com/?target=https%3A//smart-lty.github.io/nano-PEARL/benchmark.html)另一方面，也希望这个框架可以帮助 spec 社区更快、更好地设计和实现各种新颖的 spec 算法，同时，再也不用担心被审稿人问：<strong>你的算法能做 batch 推理吗？能用 TP 吗？</strong>
 
-**如果你：**
+<strong>如果你：</strong>
 
 - 想要更快的 LLM 推理速度
 - 需要在生产环境部署投机解码
 - 对推理系统优化感兴趣
-- 想要一个可以魔改的 spec 代码库**那么 nano-PEARL 很适合你！**
+- 想要一个可以魔改的 spec 代码库<strong>那么 nano-PEARL 很适合你！</strong>
 
 欢迎大家试用、提 issue、贡献代码。如果觉得有用，给个 ⭐️ 吧！
 
 有任何问题或合作想法，欢迎评论区或私信交流～
 
-**TL;DR**
+<strong>TL;DR</strong>
 
-- nano‑PEARL 是在 **nano‑vLLM** 风格下重写的并行投机解码引擎（单机多卡）。
-- 通过 **Draft‑Target Disaggregation（DT 分离）**、**Pre‑Verify / Post‑Verify** 并行化、以及 **Prefix KV Cache / Paged Attention / FlashAttention / CUDA Graph / Tensor Parallelism / Batch Inference** 等系统优化，显著提升大模型在 **高 batch × 长上下文** 下的实际吞吐。
-- 70B 级模型在 **BS=32** 的 HumanEval 评测上，峰值吞吐 **3546.72 tok/s**，对 vanilla SD 约 **3.06×** 提升（维持无损一致性）。
+- nano‑PEARL 是在 <strong>nano‑vLLM</strong> 风格下重写的并行投机解码引擎（单机多卡）。
+- 通过 <strong>Draft‑Target Disaggregation（DT 分离）</strong>、<strong>Pre‑Verify / Post‑Verify</strong> 并行化、以及 <strong>Prefix KV Cache / Paged Attention / FlashAttention / CUDA Graph / Tensor Parallelism / Batch Inference</strong> 等系统优化，显著提升大模型在 <strong>高 batch × 长上下文</strong> 下的实际吞吐。
+- 70B 级模型在 <strong>BS=32</strong> 的 HumanEval 评测上，峰值吞吐 <strong>3546.72 tok/s</strong>，对 vanilla SD 约 <strong>3.06×</strong> 提升（维持无损一致性）。
 0. Introduction 简单回顾 PEARL
 什么是 PEARL？PEARL: Parallel Speculative Decoding with Adaptive Draft Length 是 ICLR 2025 的一篇中稿文章。它识别了传统 speculative decoding 中的 mutual waiting problem: 即 drafting 阶段 target model 无法利用，verify 阶段 draft model 无法利用，从而提出 parallel speculative decoding, 让大小模型并行推理，以固定的频率进行进程间通信，从而实现更高的加速效果。
 

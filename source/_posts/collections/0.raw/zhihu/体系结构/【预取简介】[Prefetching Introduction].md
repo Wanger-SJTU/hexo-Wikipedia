@@ -19,7 +19,7 @@ source_url: https://zhuanlan.zhihu.com/p/491673969
 
 预取是 CPU 使用的一种技术，在指令或数据实际需要之前，将从其在较慢内存中提取到较快的本地Cache中，从而提高执行性能（因此称为“预取”）。
 
-***Prefetching*** is a technique used by the CPU to boost execution performance by fetching **instructions** or **data** from their original storage in slower memory to a faster local memory before it is actually needed (hence the term 'pre-fetch').
+*<strong>Prefetching</strong>* is a technique used by the CPU to boost execution performance by fetching <strong>instructions</strong> or <strong>data</strong> from their original storage in slower memory to a faster local memory before it is actually needed (hence the term 'pre-fetch').
 
 **
 
@@ -27,7 +27,7 @@ source_url: https://zhuanlan.zhihu.com/p/491673969
 
 首先讲下为什么需要预取，这其实是由处理器和内存之前的性能差异越来越大导致的。从下图可以看出，1985年至2010年间，CPU的性能提升的数千倍，可是内存相关的性能只提升了不到10倍。如果等CPU需要执行相关指令或者需要修改数据的时候再从内存中去读取，那么大部分时间都会花费在等待数据上，这是不可容忍的。这时预取的重要性就体现了，将将要访问的内容提前从内存搬移到Cache中，CPU就可以即时拿到所需的内容，避免了等待。当然，如果预取做得不好，是有可能导致性能下降的，由于Cache的大小是很宝贵的，如果预取判断出错，预取的是无用的数据，然后反而把Cache中后续有可能还会用到的数据给Evict了，那么会增加系统的功耗，减低性能。
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_7f99133d8fa6.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_7f99133d8fa6.jpg)
 
 The growing disparity between processor and memory performance
 #### Prefetching Mechanism
@@ -40,11 +40,11 @@ The growing disparity between processor and memory performance
 
 *Prefetching ***can be accomplished either by hardware or by software.
 
-***Software-based prefetching ***is typically accomplished by having the compiler analyze the code and insert additional "prefetch" instructions in the program during compilation itself.
+*<strong>Software-based prefetching</strong>*is typically accomplished by having the compiler analyze the code and insert additional "prefetch" instructions in the program during compilation itself.
 
-***Hardware-based prefetching ***is typically accomplished by having a dedicated hardware mechanism in the processor that watches the stream of instructions or data being requested by the executing program, recognizes the next few elements that the program might need based on this stream, and prefetches into the processor's cache.
+*<strong>Hardware-based prefetching</strong>*is typically accomplished by having a dedicated hardware mechanism in the processor that watches the stream of instructions or data being requested by the executing program, recognizes the next few elements that the program might need based on this stream, and prefetches into the processor's cache.
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_93bfcc975095.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_93bfcc975095.jpg)
 
 预取的简单分类
 ### Software prefetching 
@@ -53,9 +53,9 @@ The growing disparity between processor and memory performance
 
 一旦我们在程序中插入了相关的预取指令，比如在计算N-2的数据块时便发出对数据块N的预取操作的指令，假设相应数据需要两次计算周期后才可以取得，那么我们在N-1数据块执行结束后便可以拿到数据块N的数据，不需要任何等待便可以立即执行数据库N的计算。引入了预取指令，使得执行单元和相关存取单元马不停蹄地干活，不给一口喘息的计划，最大化地压榨了相关的硬件资源，我想这是追求CPU性能最大化的Geek喜闻乐见的。如图9-4所示，可以发现图9-3中大量的Bubble不见了，相同的时间内的计算量差不多提升了一倍。
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_37ee7e981685.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_37ee7e981685.jpg)
 
-在没有预取的情况下执行矩阵运算![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_d1d6ee8ca5ce.jpg)
+在没有预取的情况下执行矩阵运算![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_d1d6ee8ca5ce.jpg)
 
 在有预取的情况下执行矩阵运算**
 
@@ -69,7 +69,7 @@ The growing disparity between processor and memory performance
 
 §NTA (non-temporal data with respect to all cache levels)—prefetch data into a non-temporal cache structure and into a location close to the processor, minimizing cache pollution.
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_ebaae962e628.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_ebaae962e628.jpg)
 
 不同预取指令的执行效果对比
 ### Hardware prefetching 
@@ -106,13 +106,13 @@ The growing disparity between processor and memory performance
 
 There is typically a trade-off between the aggressiveness of a prefetch strategy and its accuracy; more aggressive prefetching will predict a higher fraction of the addresses actually requested by the processor at the cost of also fetching many more addresses erroneously. 
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_b5f673b17ac7.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_b5f673b17ac7.jpg)
 
 Coverage** measures the fraction of explicit processor requests for which a prefetch is successful (i.e., the fraction of demand misses eliminated by prefetching). 
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_dc177409d425.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_dc177409d425.jpg)
 
-**Accuracy** measures the fraction of accesses issued by the prefetcher that turn out to be useful (i.e., the fraction of correct prefetches over all prefetches). 
+<strong>Accuracy</strong> measures the fraction of accesses issued by the prefetcher that turn out to be useful (i.e., the fraction of correct prefetches over all prefetches). 
 
 **
 
@@ -120,7 +120,7 @@ Many simple prefetchers can improve coverage at the expense of accuracy, whereas
 
 #### Hardware prefetching timeliness
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_3c38036fe781.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_3c38036fe781.jpg)
 
 除了覆盖率和准确率，时效性也是预取很重要的一个指标，哪怕我们对将要预取的数据做出了正确的判断，但是不能在恰当的时间执行相关预取操作，有可能对性能提升毫无帮助，甚至带来性能的下降。比如过早地进行相关预取地址的读取，在数据还未被使用的时候就被别的数据给淹没最终踢出了CPU，那么等真正需要用到的时候还需要重新从内存中读取，除此之外，除了白白耗费了电力做了一次无用功，还可能把其他有效的数据块从CPU中剔除，因为CPU内的存储空间是十分有限的。如果过完地进行预取，可能并不能掩盖所有的内存延迟，执行单元还需要等待一会，不理想的情况下，还可能由于预取增加了内存访问的流量，导致整体的性能下降。
 
@@ -146,15 +146,15 @@ Prefetching too late**
 
 众所周知，CPU需要指令和指令所需的数据才可以运行起来（废话），除了数据需要经过内存访问，所执行的指令也需要通过内存进行访问，所以我们可以看到CPU内有ITLB，DTLB，L1I，L1D来分别服务指令和数据的访问。指令访问内存的模式比较好琢磨，毕竟只有读取没有写入，读取也比较规规矩矩，无法就顺序执行，不开心了就条件判断一下，跳转一下，所以目前CPU的指令预取策略都做得比较成熟，正确率甚至达到了大于99%的水平。相对来说，数据预取就难以摸透了很多，更少规律性地读写操作，当然也意味着对预测策略设计者来说更具有挑战性。
 
-Instruction prefetching **fetches instructions before they need to be executed. The first mainstream microprocessors to use some form of instruction prefetch were the **Intel 8086 **(six bytes) and the Motorola 68000 (four bytes). In recent years, all high-performance processors use prefetching techniques.
+Instruction prefetching <strong>fetches instructions before they need to be executed. The first mainstream microprocessors to use some form of instruction prefetch were the</strong>Intel 8086 **(six bytes) and the Motorola 68000 (four bytes). In recent years, all high-performance processors use prefetching techniques.
 
-**Data prefetching **fetches data before it is needed. Because data access patterns show less regularity than instruction patterns, accurate data prefetching is generally more challenging than instruction prefetching.
+<strong>Data prefetching</strong>fetches data before it is needed. Because data access patterns show less regularity than instruction patterns, accurate data prefetching is generally more challenging than instruction prefetching.
 
 **
 
 The instruction prefetching techniques** include next-line prefetchers, branch-directed prefetching, discontinuity prefetchers, and temporal instruction streaming…
 
-The **data prefetchers **include stride and stream-based data prefetchers, address-correlated prefetching, spatially correlated prefetching, and execution-based prefetching….
+The <strong>data prefetchers</strong>include stride and stream-based data prefetchers, address-correlated prefetching, spatially correlated prefetching, and execution-based prefetching….
 
 **
 
@@ -164,7 +164,7 @@ The **data prefetchers **include stride and stream-based data prefetchers, addre
 
 提到指令预取，我们先来看下指令读取的几种序列，下图中Fecthed Blocks可以理解为Cahc Line，毕竟Cache中的最小单位就是一个Cache Line。先是最简单的顺序读取，a情形就是这种没有分支没有判断的简单程序，只需要按顺序A-B-C-D地读取即可，对预取机制毫无压力。然后是包含判断和循环b情形，多了判断，导致A跳过了B然后在C中连续读取了两次。除此之外，我们的程序中可能还存在函数的调用，c情形就是把函数调用也考虑进去，并且还包含了a,b中两种情形的复杂情况，其实现实中更多是c这种复杂的情形。
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_9ca3c9349eb1.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_9ca3c9349eb1.jpg)
 
  (a) sequential fetch   (b) discontinuity due to an if-statement and a loop   (c) discontinuities due to function calls.  (a) sequential fetch (b) discontinuity due to an if-statement and a loop (c) discontinuities due to function calls. 
 
@@ -178,7 +178,7 @@ An instruction prefetch buffer or stream buffer, a small associative buffer, sto
 
 **
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_3a8ffc2eef5a.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_3a8ffc2eef5a.jpg)
 
 Branch-predictor-directed prefetchers**
 
@@ -190,7 +190,7 @@ Fetch-directed instruction prefetching (FDIP) **is one of the best branch-predic
 
 FDIP decouples the branch predictor from stalls in the L1 instruction fetch unit, introducing the fetch target queue (FTQ) between these two structures. The prefetcher uses the addresses in the FTQ to fetch instruction blocks from the L2 cache and place them in a small, fully associative buffer, overlapping prefetches with other L1 instruction fetches. The buffer is accessed by the instruction fetch unit in parallel with the L1 cache.
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_4661a4620c2e.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_4661a4620c2e.jpg)
 
 **
 
@@ -204,7 +204,7 @@ Discontinuity predictor maintains a table of fetch discontinuities mapping the P
 
 As a next-line instruction prefetcher explores ahead of the fetch unit, it consults the discontinuity table with each block address and, upon a match, prefetches the discontinuous path in addition to the sequential one.
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_37430e7a8638.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_37430e7a8638.jpg)
 
 Temporal instruction fetch streaming (TIFS)**
 
@@ -216,13 +216,13 @@ TIFS is designed to address the lookahead limitations of helper-thread and fetch
 
 L1 instruction cache misses are recorded in an instruction miss log, a circular buffer maintained either in dedicated storage or within the L2 cache.
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_886003a4244b.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_886003a4244b.jpg)
 
 #### Summary of Instruction prefetching 
 
 再看一个对Instruction Prefetching的简单总结，当然这里肯定收录不全，目前肯定还有很多优秀的指令预取机制，但是可以看出一些有效的机制准确率已经高达99%了，最右侧所消耗的硬件资源估计是晶体管数量。如果大家感兴趣进一步了解的话，可以直接Google这几个机制的名字，就可以直接找到相关的论文。
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_906969b64e8e.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_906969b64e8e.jpg)
 
 ### Data prefetching
 
@@ -257,9 +257,9 @@ Stride and stream prefetchers**
 
 **
 
-This reference prediction table is a tagged, set-associative structure that uses the load instruction PC as the lookup key. Each entry holds the last address referenced **by that load and the difference in address between the **last two preceding references**. Whenever the same stride is observed **twice** **consecutively**, the last reference address and stride are used to compute one or more additional addresses for prefetch. Subsequent accesses that continue to match the recorded stride will trigger additional prefetches. 
+This reference prediction table is a tagged, set-associative structure that uses the load instruction PC as the lookup key. Each entry holds the last address referenced <strong>by that load and the difference in address between the</strong>last two preceding references<strong>. Whenever the same stride is observed</strong>twice** **consecutively**, the last reference address and stride are used to compute one or more additional addresses for prefetch. Subsequent accesses that continue to match the recorded stride will trigger additional prefetches. 
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_10121c41b007.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_10121c41b007.jpg)
 
 Baer and Chen&amp;amp;#39;s reference prediction table**
 
@@ -273,7 +273,7 @@ Whereas stride prefetchers are typically ineffective for pointer-based data stru
 
 The Markov prefetcher is organized as an on-chip set-associative table indexed by trigger address. An entry in the table contains the set of successor addresses to prefetch and optional confidence or replacement policy information; four successors is a typical width. 
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_432cd72d1992.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_432cd72d1992.jpg)
 
 Markov prefetcher**
 
@@ -283,9 +283,9 @@ Spatially correlated prefetching **
 
 **
 
-Spatially correlated prefetching mechanisms exploit regularity** and **repetition** in data layout. 
+Spatially correlated prefetching mechanisms exploit regularity<strong>and</strong>repetition** in data layout. 
 
-Spatial correlation arises due to **regularity** in **data structure layouts**, as programs frequently use data structures with fixed layouts in memory (e.g., objects in object-oriented programming language, database records with fixed-size fields, stack frames). Many high-level programming languages align data structures to cache-line and page boundaries, further increasing layout regularity. Strided access patterns are a special case of spatial correlation.
+Spatial correlation arises due to <strong>regularity</strong> in <strong>data structure layouts</strong>, as programs frequently use data structures with fixed layouts in memory (e.g., objects in object-oriented programming language, database records with fixed-size fields, stack frames). Many high-level programming languages align data structures to cache-line and page boundaries, further increasing layout regularity. Strided access patterns are a special case of spatial correlation.
 
 **
 
@@ -297,7 +297,7 @@ DELTA-CORRELATED LOOKUP**
 
 One of the most effective known prefetchers from both a storage efficiency and coverage perspective is the program counter-localized delta-correlating variant of the global history buffer **(GHB PC/DC).
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_33429ee50a80.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_33429ee50a80.jpg)
 
 **
 
@@ -311,15 +311,15 @@ The final category of data prefetcher we briefly address relies neither on repet
 
 The key objective of such prefetchers is to run faster than instruction execution itself, to get ahead of the processor core, **while still using the actual address calculation algorithm to identify prefetch candidates. 
 
-As such, these mechanisms do not rely on repetition at all. Instead, they rely on mechanisms that either summarize address calculation while omitting other aspects of the computation, guess at values directly, or leverage **stall cycles and idle processor resources **to explore ahead of instruction retirement. 
+As such, these mechanisms do not rely on repetition at all. Instead, they rely on mechanisms that either summarize address calculation while omitting other aspects of the computation, guess at values directly, or leverage <strong>stall cycles and idle processor resources</strong>to explore ahead of instruction retirement. 
 
 #### Summary of Data prefetching 
 
 最后我们看下目前几种数据预取策略的总结，可以看到，该表格中最好的预取算法也仅仅达到50%的准确率，当然这是比较老的汇总了，目前估计有更有效的数据预取策略。但是总的来说，由于数据访问的复杂性远大于指令的读取，所以准确率不可能像指令读取那样达到惊人的99%，所以在这上面还有很大的研究价值。
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_0de77e82d961.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_0de77e82d961.jpg)
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_fcf3d6bb2096.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_fcf3d6bb2096.jpg)
 
 以上只是对预取的一个简单的介绍，具体细节大家也可以直接找到相关的Paper深入了解，还有很多优秀的预取策略没有提到，Google上一搜可以找到一大堆，如果想要深入系统地了解硬件预取的话，可以看看A Primer on Hardware Prefetching这本书，网上可以直接找到电子版。
 

@@ -32,14 +32,14 @@ Add the remaining files as your project grows.
 
 The root instruction file. This is the first thing the agent reads when it starts a session. It defines the operating rules: what to do before writing code, how to work, and how to wrap up.
 
-**How to use it:**
+<strong>How to use it:</strong>
 
 - Copy to your project root directory
 - Replace the startup workflow steps with your actual project paths and commands
 - Adjust the working rules to match your team's conventions
 - Keep the definition of done section — it's the most important part
 
-**What it does for the agent:**
+<strong>What it does for the agent:</strong>
 
 - Tells it to read progress and feature state before starting work
 - Forces it to work on one feature at a time
@@ -52,7 +52,7 @@ Use `AGENTS.md` for Codex or other agents. Use `CLAUDE.md` if you're working wit
 
 The startup script. Runs dependency installation, verification, and prints the start command — all in one shot.
 
-**How to use it:**
+<strong>How to use it:</strong>
 
 - Copy to your project root
 - Edit these three variables at the top:
@@ -61,7 +61,7 @@ The startup script. Runs dependency installation, verification, and prints the s
   - `START_CMD` — your dev server start command (e.g. `npm run dev`)
 - Make it executable: `chmod +x init.sh`
 
-**What it does:**
+<strong>What it does:</strong>
 
 1. Prints the current directory (so you can confirm it's running in the right place)
 2. Installs dependencies
@@ -74,21 +74,21 @@ If verification fails, the agent should stop and fix the baseline before doing a
 
 The progress log. Every session writes to this file, and every new session reads it first.
 
-**How to use it:**
+<strong>How to use it:</strong>
 
 - Copy to your project root
 - Fill in the "Current Verified State" section with your project's info
 - After each session, update the session record
 
-**What each field means:**
+<strong>What each field means:</strong>
 
-- **Current Verified State** — the single source of truth for where the project stands
+- <strong>Current Verified State</strong> — the single source of truth for where the project stands
   - `Repository root directory` — where the project lives
   - `Standard startup path` — the command to get the project running
   - `Standard verification path` — the command to run tests
   - `Highest priority unfinished feature` — what the next session should work on
   - `Current blocker` — anything that's stuck
-- **Session Record** — one entry per session
+- <strong>Session Record</strong> — one entry per session
   - `Goal` — what you planned to do
   - `Completed` — what actually got done
   - `Verification run` — what tests were executed
@@ -101,7 +101,7 @@ The progress log. Every session writes to this file, and every new session reads
 
 The feature tracker. A machine-readable list of every feature the agent needs to implement, along with its status, verification steps, and evidence.
 
-**How to use it:**
+<strong>How to use it:</strong>
 
 - Copy to your project root
 - Replace the example features with your own
@@ -116,7 +116,7 @@ The feature tracker. A machine-readable list of every feature the agent needs to
   - `evidence` — recorded proof that verification passed (filled in by the agent)
   - `notes` — any extra context
 
-**Status rules:**
+<strong>Status rules:</strong>
 
 - `not_started` — hasn't been touched
 - `in_progress` — the one feature currently being worked on (only one at a time)
@@ -129,18 +129,18 @@ The agent should only have one feature in `in_progress` at any time.
 
 A compact handoff note between sessions. Use this when a session ends and you want the next one to pick up quickly.
 
-**How to use it:**
+<strong>How to use it:</strong>
 
 - Copy to your project root
 - Fill it out at the end of each session (or have the agent fill it out)
 
-**What each section covers:**
+<strong>What each section covers:</strong>
 
-- **Currently verified** — what's confirmed working and what verification was run
-- **Changes this session** — what code or infrastructure changed
-- **Still broken or unverified** — known issues and risky areas
-- **Next best action** — what the next session should do, and what not to touch
-- **Commands** — startup, verification, and debug commands for quick reference
+- <strong>Currently verified</strong> — what's confirmed working and what verification was run
+- <strong>Changes this session</strong> — what code or infrastructure changed
+- <strong>Still broken or unverified</strong> — known issues and risky areas
+- <strong>Next best action</strong> — what the next session should do, and what not to touch
+- <strong>Commands</strong> — startup, verification, and debug commands for quick reference
 
 This file is optional for small sessions. It becomes important when sessions are long or when the project has multiple active areas.
 
@@ -148,13 +148,13 @@ This file is optional for small sessions. It becomes important when sessions are
 
 A checklist to run through before ending each session. Makes sure the repo is in a good state for the next session to start cleanly.
 
-**How to use it:**
+<strong>How to use it:</strong>
 
 - Copy to your project root
 - Run through it before you close a session
 - The agent should also check these items as part of its end-of-session routine
 
-**What it checks:**
+<strong>What it checks:</strong>
 
 - Standard startup still works
 - Standard verification still runs
@@ -167,28 +167,28 @@ A checklist to run through before ending each session. Makes sure the repo is in
 
 A scorecard for reviewing agent output quality. Use this after a session or at project milestones to evaluate whether the work meets the bar.
 
-**How to use it:**
+<strong>How to use it:</strong>
 
 - Copy to your project root
 - After a session (or a set of sessions), score the agent's work across six dimensions
 - Each dimension is scored 0-2
 
-**The six dimensions:**
+<strong>The six dimensions:</strong>
 
-1. **Correctness** — does the implementation match the target behavior?
-2. **Verification** — were the required checks actually run, with evidence?
-3. **Scope discipline** — did the agent stay within the selected feature?
-4. **Reliability** — does the result survive a restart or re-run?
-5. **Maintainability** — is the code and documentation clear enough for the next session?
-6. **Handoff readiness** — can a new session continue using only repo artifacts?
+1. <strong>Correctness</strong> — does the implementation match the target behavior?
+2. <strong>Verification</strong> — were the required checks actually run, with evidence?
+3. <strong>Scope discipline</strong> — did the agent stay within the selected feature?
+4. <strong>Reliability</strong> — does the result survive a restart or re-run?
+5. <strong>Maintainability</strong> — is the code and documentation clear enough for the next session?
+6. <strong>Handoff readiness</strong> — can a new session continue using only repo artifacts?
 
-**Conclusion options:**
+<strong>Conclusion options:</strong>
 
 - Accept — meets the bar
 - Revise — needs fixes before accepting
 - Block — fundamental issues that need to be resolved first
 
-**Important: the evaluator needs tuning.** Out of the box, agents are poor self-judges — they identify issues then talk themselves into approving. You will need to iterate:
+<strong>Important: the evaluator needs tuning.</strong> Out of the box, agents are poor self-judges — they identify issues then talk themselves into approving. You will need to iterate:
 
 1. Run the evaluator on a completed sprint.
 2. Compare its scores against your own human judgment.
@@ -202,33 +202,33 @@ Plan for 3-5 tuning rounds. Record each change so you can track what improved al
 
 A quality snapshot that grades each product domain and architectural layer in your project. Tracks codebase health over time, not just individual session output.
 
-**How to use it:**
+<strong>How to use it:</strong>
 
 - Copy to your project root
 - Before starting a session: read it to understand where the codebase is weakest
 - After a session: update grades based on what changed
 - Over time: compare snapshots to see which harness changes actually improved codebase health
 
-**What it grades:**
+<strong>What it grades:</strong>
 
-- **Product domains** (e.g., document import, Q&A flow, indexing): each domain gets a grade (A-D) across verification status, agent legibility, test stability, and key gaps
-- **Architectural layers** (e.g., main process, preload, renderer, services): each layer gets a grade for boundary enforcement and agent legibility
+- <strong>Product domains</strong> (e.g., document import, Q&A flow, indexing): each domain gets a grade (A-D) across verification status, agent legibility, test stability, and key gaps
+- <strong>Architectural layers</strong> (e.g., main process, preload, renderer, services): each layer gets a grade for boundary enforcement and agent legibility
 
-**Why it matters:**
+<strong>Why it matters:</strong>
 
 The evaluator rubric scores individual agent outputs. The quality document scores the codebase itself. They answer different questions:
 
 - Evaluator rubric: "Did the agent do good work this session?"
 - Quality document: "Is the project getting stronger or weaker over time?"
 
-**When to update:**
+<strong>When to update:</strong>
 
 - After each significant session
 - Before benchmark comparisons
 - After cleanup or simplification passes
 - When onboarding a new agent or model to the project
 
-**Harness simplification tie-in:**
+<strong>Harness simplification tie-in:</strong>
 
 The quality document also supports harness simplification. Every harness component encodes an assumption about what the model cannot do. As models improve, these assumptions go stale. To check whether a component is still needed:
 

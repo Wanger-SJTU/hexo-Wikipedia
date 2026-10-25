@@ -17,17 +17,17 @@ source_url: https://zhuanlan.zhihu.com/p/38328685
 
 ### 前言
 
-得益于数据量以及算力的提升，**深度学习**技术发展迅猛。我目前所从事的语音识别应用领域也有了很大的发展。但深度学习方法也带来了一些问题，比如计算代价高、难以解释、过拟合等问题。不过该方法在工业界确实就是** Work**。
+得益于数据量以及算力的提升，<strong>深度学习</strong>技术发展迅猛。我目前所从事的语音识别应用领域也有了很大的发展。但深度学习方法也带来了一些问题，比如计算代价高、难以解释、过拟合等问题。不过该方法在工业界确实就是<strong>Work</strong>。
 
 顺应这个潮流，市面上出现很多深度学习的开源框架（Tensorflow、Caffe、Torch、Keras、Theano ...），以及满天飞的深度学习论文。那么，很多人或许会这么想：『实际使用，应该就是训练的时候喂喂数据、产品代码粘贴些开源代码、包装包装就完事了吧？』我个人认为在不考虑功耗、算力、成本的前提下好像是可以这么做。
 
-但是实际工程中，考虑的情况会比较复杂。比如在无硬浮点支持的低功耗嵌入式设备上，那些『深』不可测的模型带来了 『昂贵』 的浮点运算，让开发者总有些力不从心。如果大家都希望好的算法能落地，就不得不考虑其市场价值。要把**高性价比**（Di Cheng Ben）的嵌入式设备卖出去，就要考虑更低的**内存占有**、更少的**功耗开销**、更快的**计算效率**、更好的**识别效果**、以及更成熟（Pian Yi）的**市场售价**。以上应该就是消费者和合作商都比较喜欢的产品了。其中一个让开发者最头疼的事情——耗时和内存占用问题，是不是有什么比较轻便的方法使之得以提升？
+但是实际工程中，考虑的情况会比较复杂。比如在无硬浮点支持的低功耗嵌入式设备上，那些『深』不可测的模型带来了 『昂贵』 的浮点运算，让开发者总有些力不从心。如果大家都希望好的算法能落地，就不得不考虑其市场价值。要把<strong>高性价比</strong>（Di Cheng Ben）的嵌入式设备卖出去，就要考虑更低的<strong>内存占有</strong>、更少的<strong>功耗开销</strong>、更快的<strong>计算效率</strong>、更好的<strong>识别效果</strong>、以及更成熟（Pian Yi）的<strong>市场售价</strong>。以上应该就是消费者和合作商都比较喜欢的产品了。其中一个让开发者最头疼的事情——耗时和内存占用问题，是不是有什么比较轻便的方法使之得以提升？
 
 谈到耗时，我们不得不分析下耗时的原因到底在哪里？深度学习作为一个新的『厂牌』，前身是神经网络，神经网络的框架最常见的几种分别为深度神经网络（DNN）、卷积神经网络（CNN）、递归神经网络（RNN）等。以 DNN 为例，DNN-Wiki 上的解释是这样的：由多重非线性变换构成的多个处理层，对数据进行高层抽象的算法。这里就不详细阐述了，来一张图看看它长是什么样子。
 
-![](/images/collections/0.raw/zhihu/%25E6%25A8%25A1%25E5%259E%258B%25E9%2583%25A8%25E7%25BD%25B2%25E9%2582%25A3%25E4%25BA%259B%25E4%25BA%258B/asset/img_8d00cdf3d903.jpg)
+![](/images/collections/0.raw/zhihu/%E6%A8%A1%E5%9E%8B%E9%83%A8%E7%BD%B2%E9%82%A3%E4%BA%9B%E4%BA%8B/asset/img_8d00cdf3d903.jpg)
 
-DNN 拓扑结构其中多层的非线性转换就是上一层的输出与当前层神经元对应的权重点积（`x*W`），加之偏置（`x*W+b`）和激活处理(`f(x*W+b)`)。其中每个神经元都接收一些输入并做一些**点积**的计算，这是非常耗时的，尤其是在一些不支持硬浮点运算的设备上，DNN 的计算就显得更加疲软。
+DNN 拓扑结构其中多层的非线性转换就是上一层的输出与当前层神经元对应的权重点积（`x*W`），加之偏置（`x*W+b`）和激活处理(`f(x*W+b)`)。其中每个神经元都接收一些输入并做一些<strong>点积</strong>的计算，这是非常耗时的，尤其是在一些不支持硬浮点运算的设备上，DNN 的计算就显得更加疲软。
 
 为此，各大公司以及研究机构想方设法来进行优化，有[模型剪裁](https://link.zhihu.com/?target=https%3A//arxiv.org/pdf/1510.00149.pdf)、Low-Rank 低秩分解、Knowledge  Distillation；也有从算法本身出发优化的[量化方法](https://link.zhihu.com/?target=https%3A//arxiv.org/pdf/1607.04683.pdf)、[定点化计算](https://link.zhihu.com/?target=https%3A//arxiv.org/pdf/1711.07128.pdf)、二/三值化的方法等等，更多的压缩与加速方法可以参考让机器『删繁就简』：深度神经网络加速与压缩。其中，浮点转定点、二值化等方法是试图避免浮点计算耗时而引入的方法，这些方法能加快运算速率，同时减少内存和存储空间的占用，并保证模型的精度损失在可接受的范围内，因此这些方法的应用是有其现实价值的。
 
@@ -109,17 +109,17 @@ def ListQuantRevert(quant_data_list, Q, RQM):
 
 下面两幅图，将原本在浮点分布的正弦曲线**，经过量化和还原得到了另外两条曲线。类似图像上的降采样结果，4 位量化方式还原后的曲线出现了明显的锯齿形状，如下图：
 
-![](/images/collections/0.raw/zhihu/%25E6%25A8%25A1%25E5%259E%258B%25E9%2583%25A8%25E7%25BD%25B2%25E9%2582%25A3%25E4%25BA%259B%25E4%25BA%258B/asset/img_bf75648580eb.jpg)
+![](/images/collections/0.raw/zhihu/%E6%A8%A1%E5%9E%8B%E9%83%A8%E7%BD%B2%E9%82%A3%E4%BA%9B%E4%BA%8B/asset/img_bf75648580eb.jpg)
 
 4位量化曲线然而，8 位量化方式在还原后，其连接曲线与原始曲线几乎重合，如下图：
 
-![](/images/collections/0.raw/zhihu/%25E6%25A8%25A1%25E5%259E%258B%25E9%2583%25A8%25E7%25BD%25B2%25E9%2582%25A3%25E4%25BA%259B%25E4%25BA%258B/asset/img_76b2ef43a93b.jpg)
+![](/images/collections/0.raw/zhihu/%E6%A8%A1%E5%9E%8B%E9%83%A8%E7%BD%B2%E9%82%A3%E4%BA%9B%E4%BA%8B/asset/img_76b2ef43a93b.jpg)
 
 8位量化曲线**
 
 另外，我们看看随机产生的数组，量化数组分布形式与原始分布形式几乎一致，只是取值范围发生了变化，而还原后的点几乎都落在了原始数据的连接线上。
 
-![](/images/collections/0.raw/zhihu/%25E6%25A8%25A1%25E5%259E%258B%25E9%2583%25A8%25E7%25BD%25B2%25E9%2582%25A3%25E4%25BA%259B%25E4%25BA%258B/asset/img_fe435d729620.jpg)
+![](/images/collections/0.raw/zhihu/%E6%A8%A1%E5%9E%8B%E9%83%A8%E7%BD%B2%E9%82%A3%E4%BA%9B%E4%BA%8B/asset/img_fe435d729620.jpg)
 
 随机数的量化实际使用中我发现，ARM CMSIS – Arm Developer 使用的是 `int8_t` 的 SIMD 优化，所以我这里在补充下关于 `uint8_t` 转成 `int8_t` 的量化和反量化代码：
 
@@ -211,7 +211,7 @@ def get_mse(quant_bits=12,
 
     return mean_squared_error`
 
-下面代码是针对不同的**权重取值范围**以及**量化位数**进行绘图描述：
+下面代码是针对不同的<strong>权重取值范围</strong>以及<strong>量化位数</strong>进行绘图描述：
 
 `import numpy as np
 import matplotlib.pyplot as plt
@@ -247,7 +247,7 @@ if __name__ == '__main__':
 
 通过绘图，我们可以观察量化后的误差情况，如下图：
 
-![](/images/collections/0.raw/zhihu/%25E6%25A8%25A1%25E5%259E%258B%25E9%2583%25A8%25E7%25BD%25B2%25E9%2582%25A3%25E4%25BA%259B%25E4%25BA%258B/asset/img_84b14003f251.jpg)
+![](/images/collections/0.raw/zhihu/%E6%A8%A1%E5%9E%8B%E9%83%A8%E7%BD%B2%E9%82%A3%E4%BA%9B%E4%BA%8B/asset/img_84b14003f251.jpg)
 
 点积误差可以看出，在不同的取值范围下，随着量化位数的增加，浮点模型和量化模型点积结果之间的误差也越来越小，在量化位数为 12 bits 时，误差几乎为零。
 
@@ -323,33 +323,33 @@ def DequantizeV2(x, scale, nudged_zero_point):
 
 关于 int8t 的推理过程，还有一个官方博客把推理过程也写出来了 TensorFlow Lite 8-bit quantization specification，细节之处让人不得不佩服谷歌的匠心，除了因式分解后的提前计算，还有将权重的最大最小值强制设计成对称，这样 zero_point 等于零，减少了两次计算，如下图所示。
 
-![](/images/collections/0.raw/zhihu/%25E6%25A8%25A1%25E5%259E%258B%25E9%2583%25A8%25E7%25BD%25B2%25E9%2582%25A3%25E4%25BA%259B%25E4%25BA%258B/asset/img_cb9e4bac346a.jpg)
+![](/images/collections/0.raw/zhihu/%E6%A8%A1%E5%9E%8B%E9%83%A8%E7%BD%B2%E9%82%A3%E4%BA%9B%E4%BA%8B/asset/img_cb9e4bac346a.jpg)
 
 8位量化在采用对称的取值范围可以直接省去一个int8的scale计算关于定点/浮点的点积优化方法，可以看看下面几个开源项目：
 
 - Google 开源的代码 [gemmlowp: a small self-contained low-precision GEMM library](https://link.zhihu.com/?target=https%3A//github.com/google/gemmlowp) ，结合 Tensorflow 的量化模型训练应该能发挥很好的『药效』。Google 很慷慨地公布了几种 GEMM 优化方法，比如基于 NEON / SSE 的 SIMD 指令、并行化运算、Cache 预热等优化方法。该 C++ 代码移植到目前市面上绝大部分的手持设备上应该不成问题。
-- ARM 公司开源项目，针对自家嵌入式设计的词唤醒引擎架构 [ML-KWS-for-MCU](https://link.zhihu.com/?target=https%3A//github.com/ARM-software/ML-KWS-for-MCU) ，里面针对 **DS-CNN** / **DNN** 模型做了大量的定点计算优化工作，另外该项目还开放了基于 Tensorflow 的 8 位量化模型训练工具，移植到嵌入式设备上的底层优化算法库是来自自家的 [CMSIS_5](https://link.zhihu.com/?target=https%3A//github.com/ARM-software/CMSIS_5) 。
+- ARM 公司开源项目，针对自家嵌入式设计的词唤醒引擎架构 [ML-KWS-for-MCU](https://link.zhihu.com/?target=https%3A//github.com/ARM-software/ML-KWS-for-MCU) ，里面针对 <strong>DS-CNN</strong> / <strong>DNN</strong> 模型做了大量的定点计算优化工作，另外该项目还开放了基于 Tensorflow 的 8 位量化模型训练工具，移植到嵌入式设备上的底层优化算法库是来自自家的 [CMSIS_5](https://link.zhihu.com/?target=https%3A//github.com/ARM-software/CMSIS_5) 。
 - 如果 GEMM 优化还没入门，还可以从 OpenBlas 贡献者在 Github 发布的指导文档 [How To Optimize Gemm](https://link.zhihu.com/?target=https%3A//github.com/flame/how-to-optimize-gemm) 开始入手。
 更多针对移动端的开源代码：
 
 FrameworkOrganizerLinkMACEXiaomi[https://github.com/XiaoMi/mace](https://link.zhihu.com/?target=https%3A//github.com/XiaoMi/mace)FeatherCNNTencent[https://github.com/Tencent/FeatherCNN](https://link.zhihu.com/?target=https%3A//github.com/Tencent/FeatherCNN)NCNNTencent[https://github.com/Tencent/ncnn](https://link.zhihu.com/?target=https%3A//github.com/Tencent/ncnn)TFLiteGoogle[https://github.com/tensorflow](https://link.zhihu.com/?target=https%3A//github.com/tensorflow)Caffe2Facebook[https://github.com/caffe2/caffe2](https://link.zhihu.com/?target=https%3A//github.com/caffe2/caffe2)TNNTencent[https://github.com/Tencent/TNN](https://link.zhihu.com/?target=https%3A//github.com/Tencent/TNN)
 ### 优化结果
 
-在展示优化结果前，需要引入语音识别中一项重要的参考指标——**实时比（RTF）**。假设一个 t 时长的音频，引擎处理完这段音频所花费的时间为 p，那么我们认为该引擎的实时比为 p / t。如果在某一平台上统计出来的实时比大于 1，则表面该引擎在该平台下的实时性无法保证。在一些对实时性要求比较高的系统中将无法使用。另外，在一些不支持幷行化处理的设备上，则会因为来不及消化录音缓存，而出现录音丢帧的状况从而导致设备工作异常。因而在保证一定效果的情况，应该让识别引擎的实时比应尽可能的低。
+在展示优化结果前，需要引入语音识别中一项重要的参考指标——<strong>实时比（RTF）</strong>。假设一个 t 时长的音频，引擎处理完这段音频所花费的时间为 p，那么我们认为该引擎的实时比为 p / t。如果在某一平台上统计出来的实时比大于 1，则表面该引擎在该平台下的实时性无法保证。在一些对实时性要求比较高的系统中将无法使用。另外，在一些不支持幷行化处理的设备上，则会因为来不及消化录音缓存，而出现录音丢帧的状况从而导致设备工作异常。因而在保证一定效果的情况，应该让识别引擎的实时比应尽可能的低。
 
 下面两组实验的硬件设备和测试数据均为公司内部资源，详细内容和配置不方便透露。第一组对比数据是在 600Mhz 主频、不支持硬浮点运算的设备中得到的，分别使用了浮点和 12 位量化的多层神经网络模型对相同的音频数据进行识别处理。最终识别结果一致，得分有些许差异。耗时和模型占用情况如下表所示：
 
-![](/images/collections/0.raw/zhihu/%25E6%25A8%25A1%25E5%259E%258B%25E9%2583%25A8%25E7%25BD%25B2%25E9%2582%25A3%25E4%25BA%259B%25E4%25BA%258B/asset/img_8f083a33e031.png)
+![](/images/collections/0.raw/zhihu/%E6%A8%A1%E5%9E%8B%E9%83%A8%E7%BD%B2%E9%82%A3%E4%BA%9B%E4%BA%8B/asset/img_8f083a33e031.png)
 
 耗时和模型占用情况可以看出：在这样的嵌入式设备上，动态量化方法无论是在空间占用还是在运行速率上，优势都比较明显。
 
 另外一方面，量化方法会引入精度损失，这个损失会不会给识别造成不良的后果呢？下面取了一组公司的测试数据集，进行了三组 *Benchmark* 测试，结果如下：
 
-![](/images/collections/0.raw/zhihu/%25E6%25A8%25A1%25E5%259E%258B%25E9%2583%25A8%25E7%25BD%25B2%25E9%2582%25A3%25E4%25BA%259B%25E4%25BA%258B/asset/img_a68ac4e31759.jpg)
+![](/images/collections/0.raw/zhihu/%E6%A8%A1%E5%9E%8B%E9%83%A8%E7%BD%B2%E9%82%A3%E4%BA%9B%E4%BA%8B/asset/img_a68ac4e31759.jpg)
 
 Benchmark 测试另外，我在 WeNet 上提交了一份基于量化感知训练的 Conformer 模型  [[Not for merge] code for static quantization by TeaPoly · Pull Request #874 · wenet-e2e/wenet](https://link.zhihu.com/?target=https%3A//github.com/wenet-e2e/wenet/pull/874)，可供参考，基于 X86 优化的 RTF 和识别如下：
 
-![](/images/collections/0.raw/zhihu/%25E6%25A8%25A1%25E5%259E%258B%25E9%2583%25A8%25E7%25BD%25B2%25E9%2582%25A3%25E4%25BA%259B%25E4%25BA%258B/asset/img_89c8184be9a7.jpg)
+![](/images/collections/0.raw/zhihu/%E6%A8%A1%E5%9E%8B%E9%83%A8%E7%BD%B2%E9%82%A3%E4%BA%9B%E4%BA%8B/asset/img_89c8184be9a7.jpg)
 
 WeNet 下的 AISHELL X86 的量化结果
 ### 致谢

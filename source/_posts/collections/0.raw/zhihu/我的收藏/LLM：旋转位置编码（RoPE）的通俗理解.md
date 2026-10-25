@@ -15,7 +15,7 @@ source_url: https://zhuanlan.zhihu.com/p/690610231
 ---
 
 
-ChatGLM 和 LLaMA 中使用的**旋转位置编码（RoPE）**，原版论文中大段大段的公式推导实在是太绕了，看了脑壳疼。这篇文章我用能理解能记住的方式梳理一下。
+ChatGLM 和 LLaMA 中使用的<strong>旋转位置编码（RoPE）</strong>，原版论文中大段大段的公式推导实在是太绕了，看了脑壳疼。这篇文章我用能理解能记住的方式梳理一下。
 
 我个人觉得关于 RoPE 的核心问题有两个，首先，为什么 LLM 普遍采用这种编码方式而不是其他的，其次，工程上的实现方式和论文公式是否严格一致。如果静下心来读一读，这两个问题都能解答。
 
@@ -27,7 +27,7 @@ HuggingFace实现：[RoFormer](https://link.zhihu.com/?target=https%3A//huggingf
 
 #### 1.1 什么是位置编码（Position Encoding）
 
-预训练语言模型对序列位置的表示，分为两种。第一种是 Bert 使用的 Position Embedding**，这是对位置信息的嵌入表示，将一切参数化，交给模型自动学习。第二种是 Transformer 使用的 **Position Encoding**，即通常所说的“位置编码”。对于序列下标为 k 的 token，在语义向量 x_k 上叠加一个波长为 \frac{2\pi}{k} 正余弦波。k 越大，波长越短，频率越高。具体一点，即在各个维度 t\in[1, \frac{d}{2}] ，分奇偶地加上一个正弦值 \text{sin}(k\theta_t) 或余弦值 \text{cos}(k\theta_t) 。写成公式如下：
+预训练语言模型对序列位置的表示，分为两种。第一种是 Bert 使用的 Position Embedding<strong>，这是对位置信息的嵌入表示，将一切参数化，交给模型自动学习。第二种是 Transformer 使用的</strong>Position Encoding**，即通常所说的“位置编码”。对于序列下标为 k 的 token，在语义向量 x_k 上叠加一个波长为 \frac{2\pi}{k} 正余弦波。k 越大，波长越短，频率越高。具体一点，即在各个维度 t\in[1, \frac{d}{2}] ，分奇偶地加上一个正弦值 \text{sin}(k\theta_t) 或余弦值 \text{cos}(k\theta_t) 。写成公式如下：
 
 $偶数位 ： x_{k,2t}=x_{k,2t}+\text{sin}(k\theta_t) \\ 奇数位 ： x_{k,2t+1}=x_{k,2t+1}+\text{cos}(k\theta_t) \\$
 
@@ -35,11 +35,11 @@ $偶数位 ： x_{k,2t}=x_{k,2t}+\text{sin}(k\theta_t) \\ 奇数位 ： x_{k,2t+
 
 #### 1.2 位置编码（Position Encoding）的优势
 
-由于位置向量是通过三角函数直接计算得到，Position Encoding 相比于 Position Embedding，**不需要额外的模型参数**，而且**具备良好的长度外推性**。想要什么长度位置，就代入公式就能算出来，帮助 LLM 们摆脱了序列长度限制。继承自这一派的位置编码方法，都有这些特点（包括 RoPE）。
+由于位置向量是通过三角函数直接计算得到，Position Encoding 相比于 Position Embedding，<strong>不需要额外的模型参数</strong>，而且<strong>具备良好的长度外推性</strong>。想要什么长度位置，就代入公式就能算出来，帮助 LLM 们摆脱了序列长度限制。继承自这一派的位置编码方法，都有这些特点（包括 RoPE）。
 
 #### 1.2 绝对位置编码 -> 相对位置编码
 
-原版的 Position Encoding 是一种对“绝对位置”的建模。它作用于 embedding 层，直接加在词向量 x 上。在这一层，模型的语义信息还没有开始做交互，无法引入“相对位置”信息。因此，后续的衍生版本将 Position Encoding 移动到了 self-attention 的 q^\textsf{T}k 中（*这里也是唯一能够获取到“相对位置”的地方*）。这样一来，Position Encoding 从原本的“**只在embedding 层计算一次**”，变为“**每个 attention 层计算一次**”。
+原版的 Position Encoding 是一种对“绝对位置”的建模。它作用于 embedding 层，直接加在词向量 x 上。在这一层，模型的语义信息还没有开始做交互，无法引入“相对位置”信息。因此，后续的衍生版本将 Position Encoding 移动到了 self-attention 的 q^\textsf{T}k 中（*这里也是唯一能够获取到“相对位置”的地方*）。这样一来，Position Encoding 从原本的“<strong>只在embedding 层计算一次</strong>”，变为“<strong>每个 attention 层计算一次</strong>”。
 
 ### 2. 旋转位置编码
 
@@ -53,35 +53,35 @@ q_m^\textsf{T}k_n=x_m^\textsf{T}x_n+x_m^\textsf{T}p_{m-n}+p_{m-n}^\textsf{T}x_n 
 
 #### 2.2 旋转位置编码（RoPE）的首要特征
 
-在前述的相对位置编码方案，虽然在理论上是通过“语义向量和位置向量相加（**加性**）”来实现的，但实际计算中是“用「 q^\textsf{T}k 的调整 」代替「 q 和 k 的调整」”，导致 self-attention 的过程也被更改。
+在前述的相对位置编码方案，虽然在理论上是通过“语义向量和位置向量相加（<strong>加性</strong>）”来实现的，但实际计算中是“用「 q^\textsf{T}k 的调整 」代替「 q 和 k 的调整」”，导致 self-attention 的过程也被更改。
 
-相反地，旋转位置编码改用了**“**语义向量和位置向量相乘（**乘性**）**”**，直接进行「 q 和 k 的调整」，保持 self-attention 的过程不变，融和地非常丝滑。**这是 RoPE 和传统方法的最大区别**。
+相反地，旋转位置编码改用了<strong>“</strong>语义向量和位置向量相乘（<strong>乘性</strong>）<strong>”</strong>，直接进行「 q 和 k 的调整」，保持 self-attention 的过程不变，融和地非常丝滑。<strong>这是 RoPE 和传统方法的最大区别</strong>。
 
 #### 2.3 具体计算流程
 
 原版论文中有大段的公式推导，并且套了一个“复变函数”的壳，特别费脑子。这里直接介绍一下实操做法，其实还是挺容易懂的。
 
-**a. 语义向量复数化**
+<strong>a. 语义向量复数化</strong>
 
 $对于语义向量（也就是 q 和 k ） x=[x_1,x_2,...,x_d] ，相邻维度一组，转换成复数形式。即，奇数维度为实部，偶数维度为虚部。对应的通项公式为 x_i^a=(x_{2i-1},x_{2i}),i\in[1,d/2]，整体记为：$
 
 x^a=[x_1+ix_2,x_3+ix_4,...,x_{d-1}+ix_{d}] \\此处的 x_1+ix_2 为复数写法，相当于 (x1,x2) 。
 
-**维度可以进行任意位置的两两组合时，不需要严格执行奇偶交替。简便做法是取前半部分全部为实部分，后半部分全部为虚部。b. 计算各维度的基准旋角**
+<strong>维度可以进行任意位置的两两组合时，不需要严格执行奇偶交替。简便做法是取前半部分全部为实部分，后半部分全部为虚部。b. 计算各维度的基准旋角</strong>
 
 $$和原版 Position Encoding 保持一致，取 \theta_i=10000^{\frac{-2i}{d}},i\in[1,d/2]，得到：$$
 
-$\theta=[\theta_1,\theta_2,...,\theta_{d/2}] \\**c. 对语义向量根据绝对位置进行旋转**$
+$\theta=[\theta_1,\theta_2,...,\theta_{d/2}] \\<strong>c. 对语义向量根据绝对位置进行旋转</strong>$
 
 $对于绝对位置为 m 的语义向量 x_m ，按照 m\theta 进行旋转。即 x_i^b=(x_{2i-1},x_{2i})e^{im\theta} 。$
 
 这里插入一个复变函数小知识。每个复数，都可以在表示成一个横轴为实部、纵轴也虚部的二维平面向量。对复数乘以 e^{i\theta} ，相当于把该向量逆时针旋转角度 \theta 。
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_989fe8b847e0.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_989fe8b847e0.jpg)
 
 这就是“旋转位置编码”这个名字的由来。
 
-**d. 复用原始 self-attention 流程**
+<strong>d. 复用原始 self-attention 流程</strong>
 
 将旋转后的 q_m 和 k_n 代入原始的self-attention就算流程。此时，交互过程变为：
 

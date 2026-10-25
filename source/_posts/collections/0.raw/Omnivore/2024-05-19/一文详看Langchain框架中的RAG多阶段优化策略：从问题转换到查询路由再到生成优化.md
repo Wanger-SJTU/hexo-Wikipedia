@@ -39,7 +39,7 @@ id: c9625c4f-a5eb-498b-9152-800fd7f5f899
 
 ![图片](https://proxy-prod.omnivore-image-cache.app/0x0,s_2_0XfciqBaWUsx6cnGU-ZACSOSYZSC7rMun6KCN8NY/https://mmbiz.qpic.cn/sz_mmbiz_png/fUBU1yiaEmJjk76AhbhArx9TvMIfrGWFGV7Ygq3LepOPGWPrdP5hSxkHjaC6alurPC4oOlicoDHYQ8iaABhDia5Kzg/640?wx_fmt=png&from=appmsg)
 
-**大体可以切分成如下部分：**
+<strong>大体可以切分成如下部分：</strong>
 
 一个是索引Indexing部分：
 
@@ -57,7 +57,7 @@ Query Transformations查询转换侧重于重写和/或修改问题以便检索�
 
 其中重要的流程如下：
 
-**1、Multi Query多查询策略**
+<strong>1、Multi Query多查询策略</strong>
 
 该方法从多个角度重写用户问题，为每个重写的问题检索文档，返回所有查询的唯一文档。在实现上，将一个查询变成多个查询：https://python.langchain.com/docs/modules/data\_connection/retrievers/MultiQueryRetriever
 
@@ -67,7 +67,7 @@ Query Transformations查询转换侧重于重写和/或修改问题以便检索�
 
 ![图片](https://proxy-prod.omnivore-image-cache.app/0x0,sDLqgoKju5gPhkhpgr52kYs6GccRCKjARYWQFoiHVhrU/https://mmbiz.qpic.cn/sz_mmbiz_png/fUBU1yiaEmJjk76AhbhArx9TvMIfrGWFG1icM6Atk8k5uHVpdbaXeyv0EnuX8UWaIKxEQZMYRoJUJH6W4BGMlnew/640?wx_fmt=png&from=appmsg)
 
-**2、RAG-Fusion多查询结果融合策略**
+<strong>2、RAG-Fusion多查询结果融合策略</strong>
 
 从多个角度重写用户问题，检索每个重写问题的文档，并组合多个搜索结果列表的排名，以使用倒数排名融合(RRF)生成单一、统一的排名。其思想在于：将多个召回查询的结果进行合并：https://github.com/langchain-ai/langchain/blob/master/cookbook/rag\_fusion.ipynb?ref=blog.langchain.dev，https://towardsdatascience.com/forget-rag-the-future-is-rag-fusion-1147298d8ad1
 
@@ -77,13 +77,13 @@ Query Transformations查询转换侧重于重写和/或修改问题以便检索�
 
 ![图片](https://proxy-prod.omnivore-image-cache.app/0x0,szureAtLaLHL5QVK37J-sEnRdUPNkKpaTb-v-vcMTZ-s/https://mmbiz.qpic.cn/sz_mmbiz_png/fUBU1yiaEmJjk76AhbhArx9TvMIfrGWFG2QQ08s0n9uPjKwW2e12R6pZBRia1AibNqnGzQRsd1gxDXqAa8CylwLkg/640?wx_fmt=png&from=appmsg)
 
-**3、Decomposition问题分解策略**
+<strong>3、Decomposition问题分解策略</strong>
 
 Decomposition问题分解将一个复杂问题分解成多个子问题，将问题分解为一组子问题/问题，可以按顺序解决（使用第一个问题的答案+检索来回答第二个问题），也可以并行解决（将每个答案合并为最终答案），这个是向下分解，与Multi Query是不同的方案，
 
 ![图片](https://proxy-prod.omnivore-image-cache.app/0x0,syPa7lHIEwRmpQDE9wydTEj-RlJJTXBdR7cxSpaA24sY/https://mmbiz.qpic.cn/sz_mmbiz_png/fUBU1yiaEmJjk76AhbhArx9TvMIfrGWFGSq9rOibdn6ZnqAQnzW8M0mDJ9Hg7xPBe0BzWAmx3aTl2VOxDxiavBkIQ/640?wx_fmt=png&from=appmsg)
 
-**1）Answer recursively迭代式回答**：在问题分解的基础上，逐步迭代出答案，将上一步问题的答案，与下一步骤的答案进行拼接，送入大模型进行问答：https://arxiv.org/pdf/2205.10625.pdf，https://arxiv.org/abs/2212.10509.pdf
+<strong>1）Answer recursively迭代式回答</strong>：在问题分解的基础上，逐步迭代出答案，将上一步问题的答案，与下一步骤的答案进行拼接，送入大模型进行问答：https://arxiv.org/pdf/2205.10625.pdf，https://arxiv.org/abs/2212.10509.pdf
 
 ![图片](https://proxy-prod.omnivore-image-cache.app/0x0,sdNmz-RkNIlQsJUrJEz2pSWRYJA1z47H50PYM3PAJjF4/https://mmbiz.qpic.cn/sz_mmbiz_png/fUBU1yiaEmJjk76AhbhArx9TvMIfrGWFGcNia446I7YmibMd23qrvEzcP9ibQjpSPCzbfKvibyfjghrg4nOovIvxjtw/640?wx_fmt=png&from=appmsg)
 
@@ -91,7 +91,7 @@ Decomposition问题分解将一个复杂问题分解成多个子问题，将问�
 
 ![图片](https://proxy-prod.omnivore-image-cache.app/0x0,sC7Ftckywh_NlkpyCY6uQBIiFS0QXYGxYr9YftvI5H94/https://mmbiz.qpic.cn/sz_mmbiz_png/fUBU1yiaEmJjk76AhbhArx9TvMIfrGWFG7GeyIgEnMmiblw6Bm2IOpLCuIDpEFMcQLiacjh92BGnHFl3qicGL2ZQyg/640?wx_fmt=png&from=appmsg)
 
-**2）Answer individually，当然，也可以让每个subquery分别进行处理**，然后得到答案，然后再拼接成一个QA pairspprompt最终形成答案。
+<strong>2）Answer individually，当然，也可以让每个subquery分别进行处理</strong>，然后得到答案，然后再拼接成一个QA pairspprompt最终形成答案。
 
 ![图片](https://proxy-prod.omnivore-image-cache.app/0x0,sK0v2IGhjlVkfU_5cTgKOX9Hw5YUxxtN52enKJHFSjHs/https://mmbiz.qpic.cn/sz_mmbiz_png/fUBU1yiaEmJjk76AhbhArx9TvMIfrGWFGdrUPbaZOTA3ZPial9IxUY6dUjmGW1G7IsVWL97qqdWwUUXhCIicH9oLQ/640?wx_fmt=png&from=appmsg)
 
@@ -99,7 +99,7 @@ Decomposition问题分解将一个复杂问题分解成多个子问题，将问�
 
 ![图片](https://proxy-prod.omnivore-image-cache.app/0x0,sPFtKIEXLi7Nj6PrIc9S2OaC6ioKGRpinomnR4uVl-C4/https://mmbiz.qpic.cn/sz_mmbiz_png/fUBU1yiaEmJjk76AhbhArx9TvMIfrGWFGpicZnPWBdwIfo11xQJtKG9Fpt7Y03ibLRxFtTJTcfQudacVwVxSbRXwA/640?wx_fmt=png&from=appmsg)
 
-**4、Step Back问答回退策略**
+<strong>4、Step Back问答回退策略</strong>
 
 Step Back问答回退，首先提示LLM提出一个关于高级概念或原则的通用后退问题，并检索有关它们的相关事实，使用此基础来帮助回答用户问题。构成上包括抽象abstracton和推理reasoning两个步骤，来源于工作https://arxiv.org/pdf/2310.06117.pdf，比如给定一个问题，需要提示大模型，找到回答该问题的一个前置问题。
 
@@ -113,7 +113,7 @@ Step Back问答回退，首先提示LLM提出一个关于高级概念或原则�
 
 ![图片](https://proxy-prod.omnivore-image-cache.app/0x0,sWNFukzwb2Q3mobpwumsmmChx8QKyPL8UFYx0ACCWuJg/https://mmbiz.qpic.cn/sz_mmbiz_png/fUBU1yiaEmJjk76AhbhArx9TvMIfrGWFGJzT8ftb85uTWKQSHhBLVxic4nTyoAyrUsVZzhf2FlINWvpy5kGx9q9w/640?wx_fmt=png&from=appmsg)
 
-**5、HyDE混合策略**
+<strong>5、HyDE混合策略</strong>
 
 该策略思想为：LLM将问题转换为回答问题的假设文档。使用嵌入的假设文档检索真实文档，前提是doc-doc相似性搜索可以产生更多相关匹配。由于query与doc之间是不对称检索，因此这个时候，可以先根据query生成一个doc，然后根据doc生成对应的embedding，再跟原先documents进行检索：
 
@@ -157,7 +157,7 @@ RAG Routing路由，主要解决的是从获取query之后，所需要执行的�
 
 ## 四、Query Construction问题构建优化策略
 
-**Query Construction，主要解决的问题是不同检索知识库，如mysql数据库、图数据库GraphDB、向量化数据库vectorDB的查询转换。使用LLM将自然语言转换为其中DSL是一种与给定数据库（SQL、Cypher等）交互所需的领域特定语言**：https://blog.langchain.dev/query-construction/，https://blog.langchain.dev/enhancing-rag-based-applications-accuracy-by-constructing-and-leveraging-knowledge-graphs/![图片](https://proxy-prod.omnivore-image-cache.app/0x0,sLuOjf36zA7j1JKJY4WznvzG4d_CMMtFdyCSqeNyljgo/https://mmbiz.qpic.cn/sz_mmbiz_png/fUBU1yiaEmJjk76AhbhArx9TvMIfrGWFGxlsYjWNicUOIibrpQg9aib7OlHHn0dxLfkYCEzkp4yHOc8k3YqlM8ibywA/640?wx_fmt=png&from=appmsg)
+<strong>Query Construction，主要解决的问题是不同检索知识库，如mysql数据库、图数据库GraphDB、向量化数据库vectorDB的查询转换。使用LLM将自然语言转换为其中DSL是一种与给定数据库（SQL、Cypher等）交互所需的领域特定语言</strong>：https://blog.langchain.dev/query-construction/，https://blog.langchain.dev/enhancing-rag-based-applications-accuracy-by-constructing-and-leveraging-knowledge-graphs/![图片](https://proxy-prod.omnivore-image-cache.app/0x0,sLuOjf36zA7j1JKJY4WznvzG4d_CMMtFdyCSqeNyljgo/https://mmbiz.qpic.cn/sz_mmbiz_png/fUBU1yiaEmJjk76AhbhArx9TvMIfrGWFGxlsYjWNicUOIibrpQg9aib7OlHHn0dxLfkYCEzkp4yHOc8k3YqlM8ibywA/640?wx_fmt=png&from=appmsg)
 
 正在具体实现上，可以查看的方案，可以如下：
 
@@ -171,11 +171,11 @@ Query structuring for metadata filters，基于元数据过滤器的问题构建
 
 ## 五、Indexing不同的索引优化策略
 
-关于文档chunk切分这个事情，索引的组织其实也是一个很有趣的话题，这块在切分上可以做优化，也可以做多种表达方式的索引**multi-representation indexing、特定化的embedding或者层级性的索引**：
+关于文档chunk切分这个事情，索引的组织其实也是一个很有趣的话题，这块在切分上可以做优化，也可以做多种表达方式的索引<strong>multi-representation indexing、特定化的embedding或者层级性的索引</strong>：
 
 ![图片](https://proxy-prod.omnivore-image-cache.app/0x0,sUPaIPq7JLIuTvyXhOPNS9iS8cgArMx_xnZ_6VudnPTk/https://mmbiz.qpic.cn/sz_mmbiz_png/fUBU1yiaEmJjk76AhbhArx9TvMIfrGWFG05eaOtQPFyOspI1laJoUPlLYibQSUyWqW5zL0icXp6HrgAhGnmvdupuw/640?wx_fmt=png&from=appmsg)
 
-例如**Multi-representation Indexing，使用LLM生成针对检索进行优化的文档摘要（“命题”）。嵌入这些摘要以进行相似性搜索，但将完整文档返回给LLM进行生成**:https://blog.langchain.dev/semi-structured-multi-modal-rag/，https://python.langchain.com/docs/modules/data\_connection/retrievers/multi\_vector，https://arxiv.org/abs/2312.06648
+例如<strong>Multi-representation Indexing，使用LLM生成针对检索进行优化的文档摘要（“命题”）。嵌入这些摘要以进行相似性搜索，但将完整文档返回给LLM进行生成</strong>:https://blog.langchain.dev/semi-structured-multi-modal-rag/，https://python.langchain.com/docs/modules/data\_connection/retrievers/multi\_vector，https://arxiv.org/abs/2312.06648
 
 ![图片](https://proxy-prod.omnivore-image-cache.app/0x0,s2pDGrovCQoXg7FsLVV_SbMUulp1kTrMoXpAJFT6QoxU/https://mmbiz.qpic.cn/sz_mmbiz_png/fUBU1yiaEmJjk76AhbhArx9TvMIfrGWFGRxxkxibBeuSwLKPwkA2gFaialOcDt3Ur6UDudtYI2S2kMeJkgvPq0liag/640?wx_fmt=png&from=appmsg)
 
@@ -183,13 +183,13 @@ Query structuring for metadata filters，基于元数据过滤器的问题构建
 
 ![图片](https://proxy-prod.omnivore-image-cache.app/0x0,sTRWVl_osNyPCU5CUS63kYy2axCM77ICgSFfdNVNge9c/https://mmbiz.qpic.cn/sz_mmbiz_png/fUBU1yiaEmJjk76AhbhArx9TvMIfrGWFG92Vu07Im5btH36YWMBbnzutZxBxeXRzuLia9q70dGRYJ4eeefAqCTvw/640?wx_fmt=png&from=appmsg)
 
-**可以通过小的chunk，来实现对父级documents的索引**，查看：https://python.langchain.com/v0.1/docs/modules/data\_connection/retrievers/parent\_document\_retriever/
+<strong>可以通过小的chunk，来实现对父级documents的索引</strong>，查看：https://python.langchain.com/v0.1/docs/modules/data\_connection/retrievers/parent\_document\_retriever/
 
-**此外，也可以进一步来看看关于层级性索引的方案：RAPTOR**，https://arxiv.org/pdf/2401.18059.pdf，对应的代码放在：https://github.com/langchain-ai/langchain/blob/master/cookbook/RAPTOR.ipynb，其思想在于对文档进行生成聚类摘要，然后将设计成层级性。具体实现上，将语料库中的文档聚类，并递归地总结相似的文档。将它们全部编入索引，生成较低级别的文档和摘要，可以检索这些文档和摘要来回答从详细到更高级别的问题。
+<strong>此外，也可以进一步来看看关于层级性索引的方案：RAPTOR</strong>，https://arxiv.org/pdf/2401.18059.pdf，对应的代码放在：https://github.com/langchain-ai/langchain/blob/master/cookbook/RAPTOR.ipynb，其思想在于对文档进行生成聚类摘要，然后将设计成层级性。具体实现上，将语料库中的文档聚类，并递归地总结相似的文档。将它们全部编入索引，生成较低级别的文档和摘要，可以检索这些文档和摘要来回答从详细到更高级别的问题。
 
 ![图片](https://proxy-prod.omnivore-image-cache.app/0x0,sIaZJ_d2e1LlROKac_aRoEjheQAGkW2ziZ-1Gps5ja5g/https://mmbiz.qpic.cn/sz_mmbiz_png/fUBU1yiaEmJjk76AhbhArx9TvMIfrGWFGRK6xIiaCzNicS8cbLfMic4y2kJYdOGjsEGo3gOoHuYibEmIz7vGH2Jkf1g/640?wx_fmt=png&from=appmsg)
 
-**但以上还是停留在文本层级，也可以做token到text级**，这里可以使用ColBERT，为段落中的每个token生成一个受上下文影响的向量，ColBERT同样为查询中的每个token生成向量，然后，每个文档的得分就是每个查询嵌入与任意文档嵌入的最大相似度之和，这块可以看：https://hackernoon.com/how-colbert-helps-developers-overcome-the-limits-of-rag
+<strong>但以上还是停留在文本层级，也可以做token到text级</strong>，这里可以使用ColBERT，为段落中的每个token生成一个受上下文影响的向量，ColBERT同样为查询中的每个token生成向量，然后，每个文档的得分就是每个查询嵌入与任意文档嵌入的最大相似度之和，这块可以看：https://hackernoon.com/how-colbert-helps-developers-overcome-the-limits-of-rag
 
 ![图片](https://proxy-prod.omnivore-image-cache.app/0x0,s6kHJIIT0Ex8idYvOtStH1cA7XQYMGw6HjEUwTjkBZ6Y/https://mmbiz.qpic.cn/sz_mmbiz_png/fUBU1yiaEmJjk76AhbhArx9TvMIfrGWFGxjBmwdJpfbY2ZaPg5oAbMoHWaWGUvkTFjfZP5icpDZib7c2jnzwaaWRg/640?wx_fmt=png&from=appmsg)
 
@@ -201,7 +201,7 @@ Query structuring for metadata filters，基于元数据过滤器的问题构建
 
 具体采用的方案可以如下：
 
-Re-ranking，**这个可以作为rag fusion的替换方案，当做一个过滤筛子进行排序**，示意图如下：
+Re-ranking，<strong>这个可以作为rag fusion的替换方案，当做一个过滤筛子进行排序</strong>，示意图如下：
 
 ![图片](https://proxy-prod.omnivore-image-cache.app/0x0,sXQqMFKYZZfQrWYHkvhvUR6dot4pfg0gTjW8RP8mEgwA/https://mmbiz.qpic.cn/sz_mmbiz_png/fUBU1yiaEmJjk76AhbhArx9TvMIfrGWFG1Xcql8xbhqtdibmnEXcfd9unfP56gz65WDwPTsicnQicZI5rqyYK1H5Aw/640?wx_fmt=png&from=appmsg)
 
@@ -213,15 +213,15 @@ Re-ranking，**这个可以作为rag fusion的替换方案，当做一个过滤�
 
 ![图片](https://proxy-prod.omnivore-image-cache.app/0x0,sKaYbZVlMo4k8leSg4zR_ofrnZwTssCF21VF2E9e9Ifg/https://mmbiz.qpic.cn/sz_mmbiz_png/fUBU1yiaEmJjk76AhbhArx9TvMIfrGWFG8cEkrlCicu5AazDuOCDAcFsJhKsRdoJvv1ibRwoia2BbGPRxqZA8D5JJA/640?wx_fmt=png&from=appmsg)
 
-此外，也可以使用**CRAG（Corrective-RAG，CRAG）**，地址：https://github.com/langchain-ai/langgraph/blob/main/examples/rag/langgraph\_crag.ipynb，https://github.com/langchain-ai/langgraph/blob/main/examples/rag/langgraph\_crag\_mistral.ipynb，https://github.com/langchain-ai/langgraph/blob/main/examples/rag/langgraph\_crag\_local.ipynb，其本质上是一种adaptive-RAG策略，实现方式为**在循环单元测试中自我纠正检索错误，以确定文档相关性并返回到网络搜索**，即纠对检索文档的自我反思/自我评分，主要采用如下步骤：
+此外，也可以使用<strong>CRAG（Corrective-RAG，CRAG）</strong>，地址：https://github.com/langchain-ai/langgraph/blob/main/examples/rag/langgraph\_crag.ipynb，https://github.com/langchain-ai/langgraph/blob/main/examples/rag/langgraph\_crag\_mistral.ipynb，https://github.com/langchain-ai/langgraph/blob/main/examples/rag/langgraph\_crag\_local.ipynb，其本质上是一种adaptive-RAG策略，实现方式为<strong>在循环单元测试中自我纠正检索错误，以确定文档相关性并返回到网络搜索</strong>，即纠对检索文档的自我反思/自我评分，主要采用如下步骤：
 
 ![图片](https://proxy-prod.omnivore-image-cache.app/0x0,scHVMj2IPZqMmHD6YQcOpHKBMmeFwLWjgG9CtIYHj_g0/https://mmbiz.qpic.cn/sz_mmbiz_png/fUBU1yiaEmJjk76AhbhArx9TvMIfrGWFGiay2at8cb6pKchVD9cDuLZKVc9JR3IOGXvSZjI0oh2x1oQ2kc6TU1Ng/640?wx_fmt=png&from=appmsg)
 
-如果至少有一个文档超过了相关性阈值，则进入生成阶段，在生成之前，进行知识细化 将文档划分为**知识条带(knowledge strip)** ， 对每个知识条进行分级，过滤不相关的知识条，如果所有文档都低于相关性阈值，或者分级者不确定，那么框架就会寻找额外的数据源，并使用网络搜索来补充检索。
+如果至少有一个文档超过了相关性阈值，则进入生成阶段，在生成之前，进行知识细化 将文档划分为<strong>知识条带(knowledge strip)</strong> ， 对每个知识条进行分级，过滤不相关的知识条，如果所有文档都低于相关性阈值，或者分级者不确定，那么框架就会寻找额外的数据源，并使用网络搜索来补充检索。
 
 ## 七、生成Generation优化策略
 
-关于生成阶段，大家最常见的，就是Self-RAG(https://arxiv.org/pdf/2310.11511)，对应地址可以参考：https://github.com/langchain-ai/langgraph/tree/main/examples/rag，https://github.com/langchain-ai/langgraph/blob/main/examples/rag/langgraph\_self\_rag\_mistral\_nomic.ipynb，其基本思想在于：**使用循环单元测试自行纠正RAG错误，以检查文档相关性、答案幻觉和答案质量。**
+关于生成阶段，大家最常见的，就是Self-RAG(https://arxiv.org/pdf/2310.11511)，对应地址可以参考：https://github.com/langchain-ai/langgraph/tree/main/examples/rag，https://github.com/langchain-ai/langgraph/blob/main/examples/rag/langgraph\_self\_rag\_mistral\_nomic.ipynb，其基本思想在于：<strong>使用循环单元测试自行纠正RAG错误，以检查文档相关性、答案幻觉和答案质量。</strong>
 
 其实现流程如下：
 
@@ -249,5 +249,5 @@ Re-ranking，**这个可以作为rag fusion的替换方案，当做一个过滤�
 
 老刘说NLP，将定期发布语言资源、工程实践、技术总结等内容，欢迎关注。
 
-**对于想加入更优质的知识图谱、事件图谱、大模型AIGC实践、相关分享的，可关注公众号，在后台菜单栏中点击会员社区->会员入群加入。**
+<strong>对于想加入更优质的知识图谱、事件图谱、大模型AIGC实践、相关分享的，可关注公众号，在后台菜单栏中点击会员社区->会员入群加入。</strong>
 

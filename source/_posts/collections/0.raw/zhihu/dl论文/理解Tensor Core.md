@@ -51,11 +51,11 @@ wmma.store.d.sync.layout.shape.type rd, [pd] {stride};
 
 wmma.mma指令执行warp级别的矩阵乘累加操作。这个指令使用寄存器a、b、c分别保存矩阵A、B、C，计算结果保存在寄存器d中。
 
-每个时钟周期，每个Tensor Core可完成一个4×4矩阵乘累加（MACC，Matrix multiply and Accumulation）计算。其中A、B、C是如下图所示的4×4矩阵。WMMA API暴露给Tensor Core的tile大小（16×16）显然比Tensor Core每次操作的矩阵大小（4×4）更大。因此，每个wmma.mma操作需要**64**个Tensor Core操作才能完成。
+每个时钟周期，每个Tensor Core可完成一个4×4矩阵乘累加（MACC，Matrix multiply and Accumulation）计算。其中A、B、C是如下图所示的4×4矩阵。WMMA API暴露给Tensor Core的tile大小（16×16）显然比Tensor Core每次操作的矩阵大小（4×4）更大。因此，每个wmma.mma操作需要<strong>64</strong>个Tensor Core操作才能完成。
 
 ![](https://pic2.zhimg.com/v2-5ef9c48eef7a227de017ccb8fd82532d_r.jpg)在Tensor Core的MACC操作中，矩阵A的fragment包括8个FP16*2元素（即16个FP16元素），矩阵B的fragment包括另一8个FP16*2元素，以及针对FP16累加的4个FP16*2元素，或针对FP32累加的8个FP32元素。
 
-下图中大矩形1表示操作数矩阵A、B，其中较小的方形表示操作数矩阵中的元素，位于同一行的元素在内存中位置连续。每个threadgroup（warp的32个线程分为8个threadgroup，每个threadgroup包含4个线程）加载一个**4×16**子矩阵，这个子矩阵称为segment（对应大矩阵1中的4个不同色块）。4个segment组成了一个操作数矩阵。
+下图中大矩形1表示操作数矩阵A、B，其中较小的方形表示操作数矩阵中的元素，位于同一行的元素在内存中位置连续。每个threadgroup（warp的32个线程分为8个threadgroup，每个threadgroup包含4个线程）加载一个<strong>4×16</strong>子矩阵，这个子矩阵称为segment（对应大矩阵1中的4个不同色块）。4个segment组成了一个操作数矩阵。
 
 ![](https://pica.zhimg.com/v2-43a8e71c25a4a6ced7a180cffc4e51b6_r.jpg)上图中的矩阵2、3显示了segment中的元素在threadgroup中的各线程间的分布。对于Volta，每个segment由两个不同threadgroup加载，即，A、B矩阵的元素由同一warp中的两个不同线程加载。例如，A矩阵的前四行由threadgroup 0和threadgroup 2加载。
 

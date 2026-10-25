@@ -19,21 +19,21 @@ DeepSeek 的深度强化学算法 GRPO，在LLM领域提升数学推理上的效
 
 最近几天春节，我抽空简单编程对比了一下，GRPO和PPO，在简单控制系统上的效果。（业余玩玩，请勿较真）
 
-**实验环境：**env = gym.make('CartPole-v1', render_mode="rgb_array")  # 越居中不动越稳定
+<strong>实验环境：</strong>env = gym.make('CartPole-v1', render_mode="rgb_array")  # 越居中不动越稳定
 
-**实验结果：**
+<strong>实验结果：</strong>
 
 1)由于GRPO没有Value网络，所以收敛速度非常快，但结果不稳定（只使用了最简单的Reward作为反向传播的计算依据，所以能感受到的实际情况信息太少）
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_14e35c218cf6.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_14e35c218cf6.jpg)
 
 GRPO @CartPole-v12）PPO ，由于有Value网络，包含使用了，详细的被控系统state信息（使用了更丰富的信息来实现反向传播），所以收敛过程虽然有点慢但很稳定，最终效果也比较好
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_9d44d65fab42.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_9d44d65fab42.jpg)
 
 PPO @CartPole-v13）在上述GRPO的程序基础上，我简单改一下，把state中的水平位置信息，加到Reward里面，性能也有明显的提升
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_805af3ff59a5.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_805af3ff59a5.jpg)
 
 GRPO+RS @CartPole-v1**
 

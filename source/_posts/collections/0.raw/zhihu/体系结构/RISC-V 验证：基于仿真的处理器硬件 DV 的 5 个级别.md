@@ -36,10 +36,10 @@ RISC-V 的开放标准 ISA 定义了处理器硬件和将在其上运行的软�
 最终，对所需设计质量的决定是设计过程的一部分，验证成本只是在特性和功能权衡中要考虑的另一个选项——处理器硬件规格或特性列表可以根据对项目的影响进行评估回顾这些关键因素：
 
 - P**：性能（使用新功能实现的改进）
-- **P** : 功率（新功能对功耗的影响）
-- **A**：面积（实现新功能的逻辑门数量对资源的影响）
-- **V**：验证（将新功能验证到所需质量水平的努力）
-RISC-V 正在改变传统的处理器 IP 设计权衡决策，从讨论“ **P** – **P** – **A** ”指标转变为“ **P** – **P** – **A** – **V** ”。仅需要少量门的次要设计特征可能看起来是一个有吸引力的选择，只需基于“ **PPA** ”的评估，因为该特征提供了一些有用的功能，而设计和实施成本似乎只有边际。然而，在考虑 ' **PPAV**, '验证可选功能的成本可能会极大地影响总验证成本、工作量和复杂性。作为一个基本假设，每个可选功能都可以使验证工作范围加倍，以涵盖启用和不启用该选项的所有用例。
+- <strong>P</strong> : 功率（新功能对功耗的影响）
+- <strong>A</strong>：面积（实现新功能的逻辑门数量对资源的影响）
+- <strong>V</strong>：验证（将新功能验证到所需质量水平的努力）
+RISC-V 正在改变传统的处理器 IP 设计权衡决策，从讨论“ <strong>P</strong> – <strong>P</strong> – <strong>A</strong> ”指标转变为“ <strong>P</strong> – <strong>P</strong> – <strong>A</strong> – <strong>V</strong> ”。仅需要少量门的次要设计特征可能看起来是一个有吸引力的选择，只需基于“ <strong>PPA</strong> ”的评估，因为该特征提供了一些有用的功能，而设计和实施成本似乎只有边际。然而，在考虑 ' <strong>PPAV</strong>, '验证可选功能的成本可能会极大地影响总验证成本、工作量和复杂性。作为一个基本假设，每个可选功能都可以使验证工作范围加倍，以涵盖启用和不启用该选项的所有用例。
 
 ### 入门级：阶段 #0
 
@@ -47,7 +47,7 @@ RISC-V 正在改变传统的处理器 IP 设计权衡决策，从讨论“ **P**
 
 ### 简单关卡：阶段 #1
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_d496f49876bc.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_d496f49876bc.jpg)
 
 Fig. 1: Simple log or signature file comparison method with free riscvOVPsim from GitHub.验证处理器的第一步是运行一些测试用例，并将输出与质量参考模型或自测签名进行比较，如图 1 所示。相同的软件输入激励可以在新的 RTL 仿真中运行RISC-V 处理器实现。被测处理器 (DUT) 的 RTL 使用 Verilog 进行仿真，或者使用 SystemVerilog 在验证测试台中进行仿真，并将结果输出保存到日志文件中以供分析。相同的输入也适用于参考模型，输出也保存到文件中。两个文件之间的比较可能会显示一些差异。但是，由于处理器是一个复杂的状态机，因此两个单独的模拟可能无法准确对齐以达到充分的验证目的。
 
@@ -63,7 +63,7 @@ RISC-V 国际架构合规性测试套件配置为具有集成签名的测试，�
 
 ### 跟踪比较：阶段 #2
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_60db9a330bd1.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_60db9a330bd1.jpg)
 
 Fig. 2: The post-simulation trace-compare method with the free riscvOVPsimPlus.一种更复杂的输出比较方法是将比较扩展到完整的指令跟踪级别分析。图 2 所示的流程包括一个测试生成器，用于刺激被测 RTL 和参考模型，并比较输出跟踪日志文件。在此示例中，指令流生成器 (ISG) 是最初由 Google 开发并在 GitHub [2] 上提供的开源 RISCV‑DV。由于纯粹随机的指令序列将包括大量非法和无效的组合，因此 ISG 生成随机指令，但受限于提供合法和有效的指令序列。使用意外序列运行处理器有助于针对极端情况场景，以广泛测试处理器的完整运行范围。
 
@@ -85,7 +85,7 @@ riscvOVPsimPlus 支持所有规范的配置选项和版本参考，以涵盖作�
 
 ### 数据路径锁步比较：阶段 #3
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_6f6343ed4303.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_6f6343ed4303.jpg)
 
 Fig. 3: The data-path lockstep method for step-and-compare verification.为了提供基于比较的流程而没有跟踪比较后处理的缺点和低效，可以在同一 SystemVerilog 测试台中与 RTL DUT 同步模拟参考模型。该流程如图 3 所示。参考模型封装在 SystemVerilog 测试平台中，不仅在发现差异时提供即时指示，还提供用于调查差异的交互式调试环境。处理器验证计划通常侧重于覆盖率的关键指标，但识别和调查差异的效率是选择验证方法的重要因素。
 
@@ -93,7 +93,7 @@ Fig. 3: The data-path lockstep method for step-and-compare verification.为了�
 
 ### 异步锁步比较：阶段 #4
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_cec945b3a3ac.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_cec945b3a3ac.jpg)
 
 RISC-V 正在被一些最复杂的设计项目采用，这些项目具有最先进的处理器架构特性，例如硬件多线程、无序（超标量）、多处理器和异构阵列，以及用于 AI 和 DL 计算引擎的 RISC-V 矢量规范。图 4 所示的异步锁步比较方法充分发挥了复杂处理器的多状态行为，还支持中断和调试模式等异步事件。
 

@@ -17,15 +17,15 @@ source_url: https://zhuanlan.zhihu.com/p/2035084143629955119
 
 最近，在大家持续不断地折腾、打磨、抠性能、熬夜看 profiler 之后，PTO-ISA 在不同场景下都拿到了一些还算漂亮的性能数据。
 
-![](https://pic3.zhimg.com/v2-623d9c05e8b355f8bf3df706c6d35d74_r.jpg)在最新的代码仓里，我们更新了[高性能Flash Attention的PTO C++实现](https://link.zhihu.com/?target=https%3A//github.com/hw-native-sys/pto-isa/tree/main/kernels/manual/common/flash_atten)，这一版的数据，已经可以超过 torch-npu AscendC 手写算子，平均性能大约做到 **1.1 倍**。
+![](https://pic3.zhimg.com/v2-623d9c05e8b355f8bf3df706c6d35d74_r.jpg)在最新的代码仓里，我们更新了[高性能Flash Attention的PTO C++实现](https://link.zhihu.com/?target=https%3A//github.com/hw-native-sys/pto-isa/tree/main/kernels/manual/common/flash_atten)，这一版的数据，已经可以超过 torch-npu AscendC 手写算子，平均性能大约做到 <strong>1.1 倍</strong>。
 
-与此同时，我们又把 Qwen3.5 的整网算子重写了一版，叫做[MegaGDN-PTO](https://link.zhihu.com/?target=https%3A//github.com/huawei-csl/megagdn-pto)，切换到 PTO-ISA 之后，Qwen3.5 在 vllm-ascend 端到端性能提升了大约 **15%**；各个算子相比 Triton 实现，普遍有 **1.5x 到 3x** 左右的提升。
+与此同时，我们又把 Qwen3.5 的整网算子重写了一版，叫做[MegaGDN-PTO](https://link.zhihu.com/?target=https%3A//github.com/huawei-csl/megagdn-pto)，切换到 PTO-ISA 之后，Qwen3.5 在 vllm-ascend 端到端性能提升了大约 <strong>15%</strong>；各个算子相比 Triton 实现，普遍有 <strong>1.5x 到 3x</strong> 左右的提升。
 
 在 GLM5.0 和 DS3 的相关算子里，PTO 在 MLA + Index Prolog、Sparse FA 等场景中的性能，也都超过了 torch-npu，同时超过了同期 Triton 算子。
 
-本文主要从技术底层角度讲解我们是如何做到**用更少的代码行数，实现更高的性能， 个别kernel可超越手写极致性能算子**。当然也会讲一下大家关心的和triton/npu-ir的技术对比。
+本文主要从技术底层角度讲解我们是如何做到<strong>用更少的代码行数，实现更高的性能， 个别kernel可超越手写极致性能算子</strong>。当然也会讲一下大家关心的和triton/npu-ir的技术对比。
 
-![](https://pica.zhimg.com/v2-6aef6854fb010223d7a6ec8ff101a4e2_r.jpg)大家如果感兴趣，可以到pto-isa代码仓clone下来，在昇腾机器实测一下。如果你现在有Ascend950PR和DT，你可以发现，**相同的FA代码，可以在910B和950PR/DT都跑起来**，性能都能超越对应的手写算子。
+![](https://pica.zhimg.com/v2-6aef6854fb010223d7a6ec8ff101a4e2_r.jpg)大家如果感兴趣，可以到pto-isa代码仓clone下来，在昇腾机器实测一下。如果你现在有Ascend950PR和DT，你可以发现，<strong>相同的FA代码，可以在910B和950PR/DT都跑起来</strong>，性能都能超越对应的手写算子。
 
 千问3.5/3.6的整网算子，也比Triton端到端的性能提升了10%-15%左右，性能如下：
 
@@ -34,7 +34,7 @@ source_url: https://zhuanlan.zhihu.com/p/2035084143629955119
 你这不是吹牛吗？易用性和高性能本来就是鱼和熊掌不可兼得
 是的，我们一开始接到的任务，也是以提升易用性为目标，性能能做到手写AscendC的90%就很好了（毕竟Triton-Ascend也是这样要求的）。但是经过调试以后发现，pto-isa的性能在目前测到的shape下性能还可以。
 
-我相信torch npu的同学，按照相同的流水排布，用ascend c重写一遍，也能达到pto相同的性能。但是**获取极致性能的代码效率gap依然存在**。听说当时的FA kernel用了几十个人半年的时间，才把这个性能调到最极致。我们到现在依然没有足够多的人和资源，能够在新的模型百花齐放出来的时候，再组织几个攻关把他们的性能都推到极致。人往高处走，水往低处流，人们总会选择朝着效率更高更便宜的生产工具演进。
+我相信torch npu的同学，按照相同的流水排布，用ascend c重写一遍，也能达到pto相同的性能。但是<strong>获取极致性能的代码效率gap依然存在</strong>。听说当时的FA kernel用了几十个人半年的时间，才把这个性能调到最极致。我们到现在依然没有足够多的人和资源，能够在新的模型百花齐放出来的时候，再组织几个攻关把他们的性能都推到极致。人往高处走，水往低处流，人们总会选择朝着效率更高更便宜的生产工具演进。
 
 当然，我们也会毫无保留的告诉大家，PTO是怎么做到的。NPU生态里面，大家好，百花齐放才是真正的好。无论是triton，npu-ir，pypto，tilelang大家都有存在的意义，能够把这个设计吸取进自己的框架更好。
 
@@ -49,7 +49,7 @@ PTO 的整体设计，基本上参考了 ThunderKittens 的架构。当时 TK �
 
 但 PTO 的重点，并不只是“定义了几条 TileOP 指令”。
 
-每种语言框架其实都会定义自己的 TileOP。理论上大家都差不多，无非是 tile load、store、matmul、reduce 这些操作。真正的差别在于：**TileOP 一旦写成库，就能显著降低编译 Pass 的复杂度。**
+每种语言框架其实都会定义自己的 TileOP。理论上大家都差不多，无非是 tile load、store、matmul、reduce 这些操作。真正的差别在于：<strong>TileOP 一旦写成库，就能显著降低编译 Pass 的复杂度。</strong>
 
 更关键的是，PTO 写的 TileOP，是最懂昇腾硬件脾气的 TileOP。
 
@@ -68,7 +68,7 @@ AI 编译本来就是一个很难的问题。再用一堆互相耦合的 Pass �
 
 PTO ISA 的做法，说白了反而很朴素：
 
-**把性能关键路径写进 C++ 模板库。**
+<strong>把性能关键路径写进 C++ 模板库。</strong>
 
 比如 RowSum，不同 tile shape 对应的几套最佳指令序列，直接用 C++ Template 实现好。Bisheng 编译器通过模板推导，在编译期选择合适版本。
 
@@ -76,11 +76,11 @@ PTO ISA 的做法，说白了反而很朴素：
 
 这就是 PTO 的“夹心饼”结构：
 
-**库里固化硬件经验，编译器负责组合调度；再由库承接底层 TileOP，再由编译器完成整体生成。**
+<strong>库里固化硬件经验，编译器负责组合调度；再由库承接底层 TileOP，再由编译器完成整体生成。</strong>
 
 看起来有点绕，但核心思想很简单：
 
-**以存代算。**
+<strong>以存代算。</strong>
 
 把最懂硬件、最容易反复踩坑、最不适合每次都让 Pass 重新推导的东西，提前沉淀在库里。这样既保留了高性能，又避免了编译 Pass 复杂度失控。
 
@@ -88,12 +88,12 @@ PTO 的关键不在于“我也有 TileOP”。
 
 关键在于：
 
-**这些 TileOP 不是普通积木，而是提前按昇腾硬件纹理打磨过的积木。**
+<strong>这些 TileOP 不是普通积木，而是提前按昇腾硬件纹理打磨过的积木。</strong>
 
 编译器不用每次现场雕刻，只需要把这些积木搭起来。性能来自硬件经验，易用性来自抽象边界，复杂度则被锁在可控范围内。
 
 指令集上带Layout：昇腾原生Layout设计
-PTO 有一个很关键的设计：**把 Layout 当成指令集的一等公民**。
+PTO 有一个很关键的设计：<strong>把 Layout 当成指令集的一等公民</strong>。
 
 这点和 CUTLASS / CuTe 有点像，但在很多指令集里，包括 PTX、TileIR，其实并不常见。而这恰恰是 PTO ISA 获取性能收益的核心之一。
 
@@ -101,7 +101,7 @@ PTO 有一个很关键的设计：**把 Layout 当成指令集的一等公民**�
 
 因为 NPU 不是一块“想怎么写就怎么跑”的通用加速器。里面有大量硬件约束和隐性规则，不是所有人都知道，甚至包括我，也不可能完全掌握每个操作背后的所有坑。
 
-这时候，**Layout + 模板推导**的价值就出来了。
+这时候，<strong>Layout + 模板推导</strong>的价值就出来了。
 
 它可以把我们对硬件的理解固化在库里，通过 Layout 推导和 assert，在编译期就把很多 NPU 的坑绕开。
 
@@ -149,11 +149,11 @@ Fixpipe is pipeline that performing data movement from L0C to other memory hiera
 
 因为汇编虽然贴近底层，但复杂度并没有消失，只是被一股脑怼到了你脸上。底层细节给你了，不代表你吃得下。
 
-**复杂度守恒定律，适用于所有场景。**
+<strong>复杂度守恒定律，适用于所有场景。</strong>
 
 那谁来吃复杂度？
 
-PTO 的答案还是前面说的夹心饼结构：**库—编译—库—编译**。
+PTO 的答案还是前面说的夹心饼结构：<strong>库—编译—库—编译</strong>。
 
 复杂、稳定、硬件相关的东西，固化在库里；灵活、组合、全局相关的东西，交给编译器。用硬件黑话说，库像 DSA，编译像通用 CPU。只有 DSA-CPU-DSA-CPU 这种结构，才能把复杂度分层摊开，而不是一次性砸给某一个人、某一个 Pass、某一个 kernel 作者。
 
@@ -173,13 +173,13 @@ CUBE QxK写出来的是一个一个小分型，VEC Softmax需要多个小分型�
 那PTO原来达到的0.9x怎么获取的呢？具体细节请看[如何用PTO手写极致性能Flash Attention](https://zhuanlan.zhihu.com/p/1988565015914107985)
 
 PTO 库之上的编译器：PTOAS
-PTO 的 TileOP Library 之上，还需要一层很薄的编译器，这就是 **PTOAS**，也就是 **PTO Assembler**。
+PTO 的 TileOP Library 之上，还需要一层很薄的编译器，这就是 <strong>PTOAS</strong>，也就是 <strong>PTO Assembler</strong>。
 
 它的作用很直接：把 PTO 的 TileOP 和 micro op 组合起来，生成一套可以在昇腾达芬奇核上运行的二进制。
 
 PTOAS 要做几件事：在 TileOP 之间分析数据流，插入 `set/wait flag`，执行模板推导，选择最佳的 TileOP shape 实现。我们认为，PTOAS 最合适的实现平台还是 MLIR。原因也简单：PTOAS 本身不复杂，而 MLIR 正好提供了它需要的基础设施。
 
-PTOAS 和 NPU IR 编译器最大的差异，反而在于：**PTOAS 几乎没做太多事。**
+PTOAS 和 NPU IR 编译器最大的差异，反而在于：<strong>PTOAS 几乎没做太多事。</strong>
 
 听起来像偷懒，但这恰恰是它的优点。
 
@@ -199,7 +199,7 @@ PTO Tile Lib 已经把 TileOP 内部的循环、控制流和硬件细节吸收�
 
 所以 PTOAS 的思路很简单：
 
-**库吃掉内部复杂度，编译器只处理外部数据流。**
+<strong>库吃掉内部复杂度，编译器只处理外部数据流。</strong>
 
 我们也把 buffer 管理、地址分配、同步插入做成了可插拔开关。简单场景可以自动化，复杂场景也允许手动接管。
 
@@ -208,11 +208,11 @@ PTO Tile Lib 已经把 TileOP 内部的循环、控制流和硬件细节吸收�
 它不负责重新发明所有优化。 它只负责把已经打磨好的 TileOP，稳稳地拼成能跑、能快、能维护的达芬奇核程序。
 
 夹心饼最上层：PTO-DSL
-前面讲了 PTO 的“奥利奥结构”：**库—编译—库—编译**。
+前面讲了 PTO 的“奥利奥结构”：<strong>库—编译—库—编译</strong>。
 
-如果说底层 TileOP Library 是下面那片饼干，PTOAS 是中间那层夹心，把 TileOP、micro op、同步和数据流黏在一起；那么再往上，就需要一层更容易入口的外壳——这就是 **PTO-DSL**。
+如果说底层 TileOP Library 是下面那片饼干，PTOAS 是中间那层夹心，把 TileOP、micro op、同步和数据流黏在一起；那么再往上，就需要一层更容易入口的外壳——这就是 <strong>PTO-DSL</strong>。
 
-一句话说，**PTO-DSL 是 PTO-ISA 的 Pythonic 前端和 JIT 编译入口**。
+一句话说，<strong>PTO-DSL 是 PTO-ISA 的 Pythonic 前端和 JIT 编译入口</strong>。
 
 它本质上不是 PTO 体系里最硬核的部分，而是一层 Python binding。上层可以换成更多语言，底层仍然生成 PTO-ISA 汇编。它的价值在于：让用户不用一上来就啃 PTO 汇编和 TileOP 细节，而是可以用更顺手的方式表达 kernel，再由下层夹心结构把它翻译成达芬奇核真正能跑的程序。
 
@@ -222,25 +222,25 @@ PTO Tile Lib 已经把 TileOP 内部的循环、控制流和硬件细节吸收�
 
 这也是它和几个相邻框架的区别。
 
-和 **tilelang-ascend** 相比，TileLang 可以把 PTO-ISA 作为 codegen 后端；而 PTO-DSL 暴露得更底层。比如 L2 swizzling，在 TileLang 里可能是一句 `T.use_swizzle`，在 PTO-DSL 里则可以写成用户自定义函数。它不急着替用户做完所有选择，而是给懂 kernel 的人留下调度空间。未来 PTO-DSL 稳定后，也可以像 CuteDSL 之于 TileLang 那样，作为更上层框架的底座。
+和 <strong>tilelang-ascend</strong> 相比，TileLang 可以把 PTO-ISA 作为 codegen 后端；而 PTO-DSL 暴露得更底层。比如 L2 swizzling，在 TileLang 里可能是一句 `T.use_swizzle`，在 PTO-DSL 里则可以写成用户自定义函数。它不急着替用户做完所有选择，而是给懂 kernel 的人留下调度空间。未来 PTO-DSL 稳定后，也可以像 CuteDSL 之于 TileLang 那样，作为更上层框架的底座。
 
-和 **triton-ascend** 相比，两者都会基于 MLIR dialect 做软件流水自动化。但 PTO-DSL 更强调 NPU 原生内存层级，比如 L0、L1、UB。更关键的是，`pto.load / pto.store` 默认映射到昇腾原生高效 DMA 指令；而 `tl.load / tl.store` 更偏 GPU 风格，会尝试做 memory coalescing。一个是从 NPU 的土壤里长出来的，一个是从 GPU 的生态里迁过来的，气质不同。
+和 <strong>triton-ascend</strong> 相比，两者都会基于 MLIR dialect 做软件流水自动化。但 PTO-DSL 更强调 NPU 原生内存层级，比如 L0、L1、UB。更关键的是，`pto.load / pto.store` 默认映射到昇腾原生高效 DMA 指令；而 `tl.load / tl.store` 更偏 GPU 风格，会尝试做 memory coalescing。一个是从 NPU 的土壤里长出来的，一个是从 GPU 的生态里迁过来的，气质不同。
 
-和 **Catlass** 相比，Catlass 更像专家手调模板合集；PTO-DSL 则更接近 Cutlass 里的 CuteDSL 层，提供显式低层 primitive，让用户继续向下控制。
+和 <strong>Catlass</strong> 相比，Catlass 更像专家手调模板合集；PTO-DSL 则更接近 Cutlass 里的 CuteDSL 层，提供显式低层 primitive，让用户继续向下控制。
 
-和 **PyPTO** 相比，PyPTO 是完整的 MPMD 动态运行时栈，也会使用 PTO-ISA 作为底层 primitive。但 PyPTO 的 Tensor API 更接近 PyTorch / JAX；PTO-DSL kernel 仍然是 SPMD 风格，更接近 CuTile / CuteDSL 这一层。
+和 <strong>PyPTO</strong> 相比，PyPTO 是完整的 MPMD 动态运行时栈，也会使用 PTO-ISA 作为底层 primitive。但 PyPTO 的 Tensor API 更接近 PyTorch / JAX；PTO-DSL kernel 仍然是 SPMD 风格，更接近 CuTile / CuteDSL 这一层。
 
 所以，PTO-DSL 在整块“奥利奥”里，不是夹心本身，而是最上面的入口层。
 
-它负责让人好下口；真正决定味道的，还是下面那套 **TileOP Library + PTOAS + TileOP Library + 编译生成** 的夹心结构。
+它负责让人好下口；真正决定味道的，还是下面那套 <strong>TileOP Library + PTOAS + TileOP Library + 编译生成</strong> 的夹心结构。
 
-目前我们基于 PTO-DSL 又写了一层算子库。代码仓里的 **FA Builder**，本质上就是一个 JIT 编译库。用户运行 Python，它就可以根据具体 shape 生成对应的 PTO 文件。
+目前我们基于 PTO-DSL 又写了一层算子库。代码仓里的 <strong>FA Builder</strong>，本质上就是一个 JIT 编译库。用户运行 Python，它就可以根据具体 shape 生成对应的 PTO 文件。
 
 更重要的是，PTO-DSL 集成了 Flash Attention 的 Cost Model。Head 怎么切，SeqNum 怎么切，S0 / S1 怎么定，tile size 选多大，对应哪类硬件资源，这些不是靠拍脑袋，而是由 Cost Model 帮忙收敛。
 
 这就和前面的逻辑扣上了：
 
-**底层库吃硬件复杂度，PTOAS 吃同步和数据流复杂度，PTO-DSL 吃用户表达复杂度，Cost Model 吃 shape 选择复杂度。**
+<strong>底层库吃硬件复杂度，PTOAS 吃同步和数据流复杂度，PTO-DSL 吃用户表达复杂度，Cost Model 吃 shape 选择复杂度。</strong>
 
 每一层都只吃自己该吃的那口，不贪多，不越界。
 
@@ -249,17 +249,17 @@ PTO Tile Lib 已经把 TileOP 内部的循环、控制流和硬件细节吸收�
 结语：超越手写极致性能，为什么可行？
 答案其实不在某一条神奇指令，也不在某一个玄学优化，而在 PTO 对整个 NPU kernel 生产方式的重新拆解。
 
-PTO 做的第一件事，是把 **TileOP 做成最懂昇腾硬件的库**。RowSum 该用什么指令序列，CUBE/VEC 之间该怎么搬，FixPipe 什么时候量化、什么时候转置、什么时候避开 unit flag 的坑，这些不再每次都交给 Pass 去猜，也不再让程序员一遍遍手搓，而是沉淀进模板和库里。
+PTO 做的第一件事，是把 <strong>TileOP 做成最懂昇腾硬件的库</strong>。RowSum 该用什么指令序列，CUBE/VEC 之间该怎么搬，FixPipe 什么时候量化、什么时候转置、什么时候避开 unit flag 的坑，这些不再每次都交给 Pass 去猜，也不再让程序员一遍遍手搓，而是沉淀进模板和库里。
 
-PTO 做的第二件事，是把 **Layout 放到指令集和类型系统里**。昇腾 NPU 的性能，很大一部分不只来自算得快，而来自数据在 CUBE、VEC、UB、L0/L1/L2 之间走得顺。PTO 把 Layout 变成一等公民，让中间结果默认写成硬件最喜欢的样子。Flash Attention 从 0.9x 到 1.1x，最后一公里靠的正是 CUBE—VEC—CUBE—VEC 路上的随路 Layout 变换。
+PTO 做的第二件事，是把 <strong>Layout 放到指令集和类型系统里</strong>。昇腾 NPU 的性能，很大一部分不只来自算得快，而来自数据在 CUBE、VEC、UB、L0/L1/L2 之间走得顺。PTO 把 Layout 变成一等公民，让中间结果默认写成硬件最喜欢的样子。Flash Attention 从 0.9x 到 1.1x，最后一公里靠的正是 CUBE—VEC—CUBE—VEC 路上的随路 Layout 变换。
 
-PTO 做的第三件事，是让 **PTOAS 只做它该做的事**。它不试图成为万能 AI 编译器，不把所有循环、同步、buffer、控制流都摊成一锅粥。TileOP 内部复杂度由库吃掉，PTOAS 只负责外部数据流、set/wait、地址和同步。因为边界清楚，所以它插出来的同步能接近手写，而且维护复杂度没有爆炸。
+PTO 做的第三件事，是让 <strong>PTOAS 只做它该做的事</strong>。它不试图成为万能 AI 编译器，不把所有循环、同步、buffer、控制流都摊成一锅粥。TileOP 内部复杂度由库吃掉，PTOAS 只负责外部数据流、set/wait、地址和同步。因为边界清楚，所以它插出来的同步能接近手写，而且维护复杂度没有爆炸。
 
-PTO 做的第四件事，是用 **PTO-DSL 和 Cost Model 降低入口成本**。用户不必一上来就啃 PTO 汇编，也不必把 Head、SeqNum、S0/S1、tile size 全靠经验猜。PTO-DSL 负责表达，Cost Model 负责收敛，FA Builder 负责按 shape 生成代码。于是，专家经验不再只藏在某个 kernel 里，而是变成可以复用的生成体系。
+PTO 做的第四件事，是用 <strong>PTO-DSL 和 Cost Model 降低入口成本</strong>。用户不必一上来就啃 PTO 汇编，也不必把 Head、SeqNum、S0/S1、tile size 全靠经验猜。PTO-DSL 负责表达，Cost Model 负责收敛，FA Builder 负责按 shape 生成代码。于是，专家经验不再只藏在某个 kernel 里，而是变成可以复用的生成体系。
 
 所以，PTO 这块“奥利奥夹心饼”的核心不是好看，而是每一层都在吃掉一类复杂度：
 
-**TileOP 库吃硬件细节，Layout 系统吃数据分型，PTOAS 吃同步和数据流，PTO-DSL 吃用户表达，Cost Model 吃 shape 选择。**
+<strong>TileOP 库吃硬件细节，Layout 系统吃数据分型，PTOAS 吃同步和数据流，PTO-DSL 吃用户表达，Cost Model 吃 shape 选择。</strong>
 
 这就是 PTO 能做到“代码更少、性能更高”的原因。
 

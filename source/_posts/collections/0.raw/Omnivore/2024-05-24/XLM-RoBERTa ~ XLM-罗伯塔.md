@@ -74,8 +74,8 @@ This tokenizer inherits from [PreTrainedTokenizer](https://huggingface.co/docs/t
 
 Parameters 参数
 
-* [](#transformers.XLMRobertaTokenizer.build%5Finputs%5Fwith%5Fspecial%5Ftokens.token%5Fids%5F0) **token\_ids\_0** (`List[int]`) — List of IDs to which the special tokens will be added.token\_ids\_0 (List\[int\]) — 将添加特殊标记的 ID 列表。
-* [](#transformers.XLMRobertaTokenizer.build%5Finputs%5Fwith%5Fspecial%5Ftokens.token%5Fids%5F1) **token\_ids\_1** (`List[int]`, _optional_) — Optional second list of IDs for sequence pairs.token\_ids\_1 (List\[int\], 可选) — 可选的序列对 ID 的第二个列表。
+* [](#transformers.XLMRobertaTokenizer.build%5Finputs%5Fwith%5Fspecial%5Ftokens.token%5Fids%5F0) <strong>token\_ids\_0</strong> (`List[int]`) — List of IDs to which the special tokens will be added.token\_ids\_0 (List\[int\]) — 将添加特殊标记的 ID 列表。
+* [](#transformers.XLMRobertaTokenizer.build%5Finputs%5Fwith%5Fspecial%5Ftokens.token%5Fids%5F1) <strong>token\_ids\_1</strong> (`List[int]`, _optional_) — Optional second list of IDs for sequence pairs.token\_ids\_1 (List\[int\], 可选) — 可选的序列对 ID 的第二个列表。
 
 Returns退货
 
@@ -96,9 +96,9 @@ Build model inputs from a sequence or a pair of sequence for sequence classifica
 
 Parameters 参数
 
-* [](#transformers.XLMRobertaTokenizer.get%5Fspecial%5Ftokens%5Fmask.token%5Fids%5F0) **token\_ids\_0** (`List[int]`) — List of IDs.token\_ids\_0 (List\[int\]) — ID 列表。
-* [](#transformers.XLMRobertaTokenizer.get%5Fspecial%5Ftokens%5Fmask.token%5Fids%5F1) **token\_ids\_1** (`List[int]`, _optional_) — Optional second list of IDs for sequence pairs.token\_ids\_1 (List\[int\], 可选) — 可选的序列对 ID 的第二个列表。
-* [](#transformers.XLMRobertaTokenizer.get%5Fspecial%5Ftokens%5Fmask.already%5Fhas%5Fspecial%5Ftokens) **already\_has\_special\_tokens** (`bool`, _optional_, defaults to `False`) — Whether or not the token list is already formatted with special tokens for the model.has\_has\_special\_tokens (bool, 可选, 默认为 False) — 标记列表是否已使用模型的特殊标记进行格式化。
+* [](#transformers.XLMRobertaTokenizer.get%5Fspecial%5Ftokens%5Fmask.token%5Fids%5F0) <strong>token\_ids\_0</strong> (`List[int]`) — List of IDs.token\_ids\_0 (List\[int\]) — ID 列表。
+* [](#transformers.XLMRobertaTokenizer.get%5Fspecial%5Ftokens%5Fmask.token%5Fids%5F1) <strong>token\_ids\_1</strong> (`List[int]`, _optional_) — Optional second list of IDs for sequence pairs.token\_ids\_1 (List\[int\], 可选) — 可选的序列对 ID 的第二个列表。
+* [](#transformers.XLMRobertaTokenizer.get%5Fspecial%5Ftokens%5Fmask.already%5Fhas%5Fspecial%5Ftokens) <strong>already\_has\_special\_tokens</strong> (`bool`, _optional_, defaults to `False`) — Whether or not the token list is already formatted with special tokens for the model.has\_has\_special\_tokens (bool, 可选, 默认为 False) — 标记列表是否已使用模型的特殊标记进行格式化。
 
 Returns退货
 
@@ -116,8 +116,8 @@ Retrieve sequence ids from a token list that has no special tokens added. This m
 
 Parameters 参数
 
-* [](#transformers.XLMRobertaTokenizer.create%5Ftoken%5Ftype%5Fids%5Ffrom%5Fsequences.token%5Fids%5F0) **token\_ids\_0** (`List[int]`) — List of IDs.token\_ids\_0 (List\[int\]) — ID 列表。
-* [](#transformers.XLMRobertaTokenizer.create%5Ftoken%5Ftype%5Fids%5Ffrom%5Fsequences.token%5Fids%5F1) **token\_ids\_1** (`List[int]`, _optional_) — Optional second list of IDs for sequence pairs.token\_ids\_1 (List\[int\], 可选) — 可选的序列对 ID 的第二个列表。
+* [](#transformers.XLMRobertaTokenizer.create%5Ftoken%5Ftype%5Fids%5Ffrom%5Fsequences.token%5Fids%5F0) <strong>token\_ids\_0</strong> (`List[int]`) — List of IDs.token\_ids\_0 (List\[int\]) — ID 列表。
+* [](#transformers.XLMRobertaTokenizer.create%5Ftoken%5Ftype%5Fids%5Ffrom%5Fsequences.token%5Fids%5F1) <strong>token\_ids\_1</strong> (`List[int]`, _optional_) — Optional second list of IDs for sequence pairs.token\_ids\_1 (List\[int\], 可选) — 可选的序列对 ID 的第二个列表。
 
 Returns退货
 
@@ -151,8 +151,8 @@ This tokenizer inherits from [PreTrainedTokenizerFast](https://huggingface.co/do
 
 Parameters 参数
 
-* [](#transformers.XLMRobertaTokenizerFast.build%5Finputs%5Fwith%5Fspecial%5Ftokens.token%5Fids%5F0) **token\_ids\_0** (`List[int]`) — List of IDs to which the special tokens will be added.token\_ids\_0 (List\[int\]) — 将添加特殊标记的 ID 列表。
-* [](#transformers.XLMRobertaTokenizerFast.build%5Finputs%5Fwith%5Fspecial%5Ftokens.token%5Fids%5F1) **token\_ids\_1** (`List[int]`, _optional_) — Optional second list of IDs for sequence pairs.token\_ids\_1 (List\[int\], 可选) — 可选的序列对 ID 的第二个列表。
+* [](#transformers.XLMRobertaTokenizerFast.build%5Finputs%5Fwith%5Fspecial%5Ftokens.token%5Fids%5F0) <strong>token\_ids\_0</strong> (`List[int]`) — List of IDs to which the special tokens will be added.token\_ids\_0 (List\[int\]) — 将添加特殊标记的 ID 列表。
+* [](#transformers.XLMRobertaTokenizerFast.build%5Finputs%5Fwith%5Fspecial%5Ftokens.token%5Fids%5F1) <strong>token\_ids\_1</strong> (`List[int]`, _optional_) — Optional second list of IDs for sequence pairs.token\_ids\_1 (List\[int\], 可选) — 可选的序列对 ID 的第二个列表。
 
 Returns退货
 
@@ -173,8 +173,8 @@ Build model inputs from a sequence or a pair of sequence for sequence classifica
 
 Parameters 参数
 
-* [](#transformers.XLMRobertaTokenizerFast.create%5Ftoken%5Ftype%5Fids%5Ffrom%5Fsequences.token%5Fids%5F0) **token\_ids\_0** (`List[int]`) — List of IDs.token\_ids\_0 (List\[int\]) — ID 列表。
-* [](#transformers.XLMRobertaTokenizerFast.create%5Ftoken%5Ftype%5Fids%5Ffrom%5Fsequences.token%5Fids%5F1) **token\_ids\_1** (`List[int]`, _optional_) — Optional second list of IDs for sequence pairs.token\_ids\_1 (List\[int\], 可选) — 可选的序列对 ID 的第二个列表。
+* [](#transformers.XLMRobertaTokenizerFast.create%5Ftoken%5Ftype%5Fids%5Ffrom%5Fsequences.token%5Fids%5F0) <strong>token\_ids\_0</strong> (`List[int]`) — List of IDs.token\_ids\_0 (List\[int\]) — ID 列表。
+* [](#transformers.XLMRobertaTokenizerFast.create%5Ftoken%5Ftype%5Fids%5Ffrom%5Fsequences.token%5Fids%5F1) <strong>token\_ids\_1</strong> (`List[int]`, _optional_) — Optional second list of IDs for sequence pairs.token\_ids\_1 (List\[int\], 可选) — 可选的序列对 ID 的第二个列表。
 
 Returns退货
 
@@ -196,7 +196,7 @@ Hide Pytorch content隐藏 Pytorch 内容
 
 Parameters 参数
 
-* [](#transformers.XLMRobertaModel.config) **config** ([XLMRobertaConfig](https://huggingface.co/docs/transformers/v4.41.2/en/model%5Fdoc/xlm-roberta#transformers.XLMRobertaConfig)) — Model configuration class with all the parameters of the model. Initializing with a config file does not load the weights associated with the model, only the configuration. Check out the [from\_pretrained()](https://huggingface.co/docs/transformers/v4.41.2/en/main%5Fclasses/model#transformers.PreTrainedModel.from%5Fpretrained) method to load the model weights.config (XLMRobertaConfig) — 包含模型所有参数的模型配置类。使用配置文件初始化不会加载与模型关联的权重，仅加载配置。查看 from\_pretrained() 方法来加载模型权重。
+* [](#transformers.XLMRobertaModel.config) <strong>config</strong> ([XLMRobertaConfig](https://huggingface.co/docs/transformers/v4.41.2/en/model%5Fdoc/xlm-roberta#transformers.XLMRobertaConfig)) — Model configuration class with all the parameters of the model. Initializing with a config file does not load the weights associated with the model, only the configuration. Check out the [from\_pretrained()](https://huggingface.co/docs/transformers/v4.41.2/en/main%5Fclasses/model#transformers.PreTrainedModel.from%5Fpretrained) method to load the model weights.config (XLMRobertaConfig) — 包含模型所有参数的模型配置类。使用配置文件初始化不会加载与模型关联的权重，仅加载配置。查看 from\_pretrained() 方法来加载模型权重。
 
 The bare XLM-RoBERTa Model transformer outputting raw hidden-states without any specific head on top.裸露的 XLM-RoBERTa 模型变压器输出原始隐藏状态，顶部没有任何特定的头。
 
@@ -243,7 +243,7 @@ Example:例子：
 
 Parameters 参数
 
-* [](#transformers.XLMRobertaForCausalLM.config) **config** ([XLMRobertaConfig](https://huggingface.co/docs/transformers/v4.41.2/en/model%5Fdoc/xlm-roberta#transformers.XLMRobertaConfig)) — Model configuration class with all the parameters of the model. Initializing with a config file does not load the weights associated with the model, only the configuration. Check out the [from\_pretrained()](https://huggingface.co/docs/transformers/v4.41.2/en/main%5Fclasses/model#transformers.PreTrainedModel.from%5Fpretrained) method to load the model weights.config (XLMRobertaConfig) — 包含模型所有参数的模型配置类。使用配置文件初始化不会加载与模型关联的权重，仅加载配置。查看 from\_pretrained() 方法来加载模型权重。
+* [](#transformers.XLMRobertaForCausalLM.config) <strong>config</strong> ([XLMRobertaConfig](https://huggingface.co/docs/transformers/v4.41.2/en/model%5Fdoc/xlm-roberta#transformers.XLMRobertaConfig)) — Model configuration class with all the parameters of the model. Initializing with a config file does not load the weights associated with the model, only the configuration. Check out the [from\_pretrained()](https://huggingface.co/docs/transformers/v4.41.2/en/main%5Fclasses/model#transformers.PreTrainedModel.from%5Fpretrained) method to load the model weights.config (XLMRobertaConfig) — 包含模型所有参数的模型配置类。使用配置文件初始化不会加载与模型关联的权重，仅加载配置。查看 from\_pretrained() 方法来加载模型权重。
 
 XLM-RoBERTa Model with a `language modeling` head on top for CLM fine-tuning.XLM-RoBERTa 模型，顶部带有语言建模，用于 CLM 微调。
 
@@ -286,7 +286,7 @@ Example:例子：
 
 Parameters 参数
 
-* [](#transformers.XLMRobertaForMaskedLM.config) **config** ([XLMRobertaConfig](https://huggingface.co/docs/transformers/v4.41.2/en/model%5Fdoc/xlm-roberta#transformers.XLMRobertaConfig)) — Model configuration class with all the parameters of the model. Initializing with a config file does not load the weights associated with the model, only the configuration. Check out the [from\_pretrained()](https://huggingface.co/docs/transformers/v4.41.2/en/main%5Fclasses/model#transformers.PreTrainedModel.from%5Fpretrained) method to load the model weights.config (XLMRobertaConfig) — 包含模型所有参数的模型配置类。使用配置文件初始化不会加载与模型关联的权重，仅加载配置。查看 from\_pretrained() 方法来加载模型权重。
+* [](#transformers.XLMRobertaForMaskedLM.config) <strong>config</strong> ([XLMRobertaConfig](https://huggingface.co/docs/transformers/v4.41.2/en/model%5Fdoc/xlm-roberta#transformers.XLMRobertaConfig)) — Model configuration class with all the parameters of the model. Initializing with a config file does not load the weights associated with the model, only the configuration. Check out the [from\_pretrained()](https://huggingface.co/docs/transformers/v4.41.2/en/main%5Fclasses/model#transformers.PreTrainedModel.from%5Fpretrained) method to load the model weights.config (XLMRobertaConfig) — 包含模型所有参数的模型配置类。使用配置文件初始化不会加载与模型关联的权重，仅加载配置。查看 from\_pretrained() 方法来加载模型权重。
 
 XLM-RoBERTa Model with a `language modeling` head on top.XLM-RoBERTa 模型，顶部有语言建模头。
 
@@ -342,7 +342,7 @@ Example:例子：
 
 Parameters 参数
 
-* [](#transformers.XLMRobertaForSequenceClassification.config) **config** ([XLMRobertaConfig](https://huggingface.co/docs/transformers/v4.41.2/en/model%5Fdoc/xlm-roberta#transformers.XLMRobertaConfig)) — Model configuration class with all the parameters of the model. Initializing with a config file does not load the weights associated with the model, only the configuration. Check out the [from\_pretrained()](https://huggingface.co/docs/transformers/v4.41.2/en/main%5Fclasses/model#transformers.PreTrainedModel.from%5Fpretrained) method to load the model weights.config (XLMRobertaConfig) — 包含模型所有参数的模型配置类。使用配置文件初始化不会加载与模型关联的权重，仅加载配置。查看 from\_pretrained() 方法来加载模型权重。
+* [](#transformers.XLMRobertaForSequenceClassification.config) <strong>config</strong> ([XLMRobertaConfig](https://huggingface.co/docs/transformers/v4.41.2/en/model%5Fdoc/xlm-roberta#transformers.XLMRobertaConfig)) — Model configuration class with all the parameters of the model. Initializing with a config file does not load the weights associated with the model, only the configuration. Check out the [from\_pretrained()](https://huggingface.co/docs/transformers/v4.41.2/en/main%5Fclasses/model#transformers.PreTrainedModel.from%5Fpretrained) method to load the model weights.config (XLMRobertaConfig) — 包含模型所有参数的模型配置类。使用配置文件初始化不会加载与模型关联的权重，仅加载配置。查看 from\_pretrained() 方法来加载模型权重。
 
 XLM-RoBERTa Model transformer with a sequence classification/regression head on top (a linear layer on top of the pooled output) e.g. for GLUE tasks.XLM-RoBERTa 模型转换器，顶部有序列分类/回归头（池化输出顶部的线性层），例如用于 GLUE 任务。
 
@@ -422,7 +422,7 @@ Example of multi-label classification:多标签分类示例：
 
 Parameters 参数
 
-* [](#transformers.XLMRobertaForMultipleChoice.config) **config** ([XLMRobertaConfig](https://huggingface.co/docs/transformers/v4.41.2/en/model%5Fdoc/xlm-roberta#transformers.XLMRobertaConfig)) — Model configuration class with all the parameters of the model. Initializing with a config file does not load the weights associated with the model, only the configuration. Check out the [from\_pretrained()](https://huggingface.co/docs/transformers/v4.41.2/en/main%5Fclasses/model#transformers.PreTrainedModel.from%5Fpretrained) method to load the model weights.config (XLMRobertaConfig) — 包含模型所有参数的模型配置类。使用配置文件初始化不会加载与模型关联的权重，仅加载配置。查看 from\_pretrained() 方法来加载模型权重。
+* [](#transformers.XLMRobertaForMultipleChoice.config) <strong>config</strong> ([XLMRobertaConfig](https://huggingface.co/docs/transformers/v4.41.2/en/model%5Fdoc/xlm-roberta#transformers.XLMRobertaConfig)) — Model configuration class with all the parameters of the model. Initializing with a config file does not load the weights associated with the model, only the configuration. Check out the [from\_pretrained()](https://huggingface.co/docs/transformers/v4.41.2/en/main%5Fclasses/model#transformers.PreTrainedModel.from%5Fpretrained) method to load the model weights.config (XLMRobertaConfig) — 包含模型所有参数的模型配置类。使用配置文件初始化不会加载与模型关联的权重，仅加载配置。查看 from\_pretrained() 方法来加载模型权重。
 
 XLM-RoBERTa Model with a multiple choice classification head on top (a linear layer on top of the pooled output and a softmax) e.g. for RocStories/SWAG tasks.XLM-RoBERTa 模型，顶部有一个多项选择分类头（池化输出和 softmax 顶部的线性层），例如用于 RocStories/SWAG 任务。
 
@@ -470,7 +470,7 @@ Example:例子：
 
 Parameters 参数
 
-* [](#transformers.XLMRobertaForTokenClassification.config) **config** ([XLMRobertaConfig](https://huggingface.co/docs/transformers/v4.41.2/en/model%5Fdoc/xlm-roberta#transformers.XLMRobertaConfig)) — Model configuration class with all the parameters of the model. Initializing with a config file does not load the weights associated with the model, only the configuration. Check out the [from\_pretrained()](https://huggingface.co/docs/transformers/v4.41.2/en/main%5Fclasses/model#transformers.PreTrainedModel.from%5Fpretrained) method to load the model weights.config (XLMRobertaConfig) — 包含模型所有参数的模型配置类。使用配置文件初始化不会加载与模型关联的权重，仅加载配置。查看 from\_pretrained() 方法来加载模型权重。
+* [](#transformers.XLMRobertaForTokenClassification.config) <strong>config</strong> ([XLMRobertaConfig](https://huggingface.co/docs/transformers/v4.41.2/en/model%5Fdoc/xlm-roberta#transformers.XLMRobertaConfig)) — Model configuration class with all the parameters of the model. Initializing with a config file does not load the weights associated with the model, only the configuration. Check out the [from\_pretrained()](https://huggingface.co/docs/transformers/v4.41.2/en/main%5Fclasses/model#transformers.PreTrainedModel.from%5Fpretrained) method to load the model weights.config (XLMRobertaConfig) — 包含模型所有参数的模型配置类。使用配置文件初始化不会加载与模型关联的权重，仅加载配置。查看 from\_pretrained() 方法来加载模型权重。
 
 XLM-RoBERTa Model with a token classification head on top (a linear layer on top of the hidden-states output) e.g. for Named-Entity-Recognition (NER) tasks.XLM-RoBERTa 模型，顶部有一个标记分类头（隐藏状态输出顶部的线性层），例如用于命名实体识别 (NER) 任务。
 
@@ -527,7 +527,7 @@ Example:例子：
 
 Parameters 参数
 
-* [](#transformers.XLMRobertaForQuestionAnswering.config) **config** ([XLMRobertaConfig](https://huggingface.co/docs/transformers/v4.41.2/en/model%5Fdoc/xlm-roberta#transformers.XLMRobertaConfig)) — Model configuration class with all the parameters of the model. Initializing with a config file does not load the weights associated with the model, only the configuration. Check out the [from\_pretrained()](https://huggingface.co/docs/transformers/v4.41.2/en/main%5Fclasses/model#transformers.PreTrainedModel.from%5Fpretrained) method to load the model weights.config (XLMRobertaConfig) — 包含模型所有参数的模型配置类。使用配置文件初始化不会加载与模型关联的权重，仅加载配置。查看 from\_pretrained() 方法来加载模型权重。
+* [](#transformers.XLMRobertaForQuestionAnswering.config) <strong>config</strong> ([XLMRobertaConfig](https://huggingface.co/docs/transformers/v4.41.2/en/model%5Fdoc/xlm-roberta#transformers.XLMRobertaConfig)) — Model configuration class with all the parameters of the model. Initializing with a config file does not load the weights associated with the model, only the configuration. Check out the [from\_pretrained()](https://huggingface.co/docs/transformers/v4.41.2/en/main%5Fclasses/model#transformers.PreTrainedModel.from%5Fpretrained) method to load the model weights.config (XLMRobertaConfig) — 包含模型所有参数的模型配置类。使用配置文件初始化不会加载与模型关联的权重，仅加载配置。查看 from\_pretrained() 方法来加载模型权重。
 
 XLM-RoBERTa Model with a span classification head on top for extractive question-answering tasks like SQuAD (a linear layers on top of the hidden-states output to compute `span start logits` and `span end logits`).XLM-RoBERTa 模型，顶部有一个跨度分类头，用于提取问答任务，如 SQuAD（隐藏状态输出顶部的线性层，用于计算跨度起始逻辑和跨度结束逻辑）。
 
@@ -587,7 +587,7 @@ Hide TensorFlow content隐藏 TensorFlow 内容
 
 Parameters 参数
 
-* [](#transformers.TFXLMRobertaModel.config) **config** ([XLMRobertaConfig](https://huggingface.co/docs/transformers/v4.41.2/en/model%5Fdoc/xlm-roberta#transformers.XLMRobertaConfig)) — Model configuration class with all the parameters of the model. Initializing with a config file does not load the weights associated with the model, only the configuration. Check out the [from\_pretrained()](https://huggingface.co/docs/transformers/v4.41.2/en/main%5Fclasses/model#transformers.PreTrainedModel.from%5Fpretrained) method to load the model weights.config (XLMRobertaConfig) — 包含模型所有参数的模型配置类。使用配置文件初始化不会加载与模型关联的权重，仅加载配置。查看 from\_pretrained() 方法来加载模型权重。
+* [](#transformers.TFXLMRobertaModel.config) <strong>config</strong> ([XLMRobertaConfig](https://huggingface.co/docs/transformers/v4.41.2/en/model%5Fdoc/xlm-roberta#transformers.XLMRobertaConfig)) — Model configuration class with all the parameters of the model. Initializing with a config file does not load the weights associated with the model, only the configuration. Check out the [from\_pretrained()](https://huggingface.co/docs/transformers/v4.41.2/en/main%5Fclasses/model#transformers.PreTrainedModel.from%5Fpretrained) method to load the model weights.config (XLMRobertaConfig) — 包含模型所有参数的模型配置类。使用配置文件初始化不会加载与模型关联的权重，仅加载配置。查看 from\_pretrained() 方法来加载模型权重。
 
 The bare XLM RoBERTa Model transformer outputting raw hidden-states without any specific head on top.裸露的 XLM RoBERTa 模型变压器输出原始隐藏状态，顶部没有任何特定的头。
 
@@ -641,7 +641,7 @@ Example:例子：
 
 Parameters 参数
 
-* [](#transformers.TFXLMRobertaForCausalLM.config) **config** ([XLMRobertaConfig](https://huggingface.co/docs/transformers/v4.41.2/en/model%5Fdoc/xlm-roberta#transformers.XLMRobertaConfig)) — Model configuration class with all the parameters of the model. Initializing with a config file does not load the weights associated with the model, only the configuration. Check out the [from\_pretrained()](https://huggingface.co/docs/transformers/v4.41.2/en/main%5Fclasses/model#transformers.PreTrainedModel.from%5Fpretrained) method to load the model weights.config (XLMRobertaConfig) — 包含模型所有参数的模型配置类。使用配置文件初始化不会加载与模型关联的权重，仅加载配置。查看 from\_pretrained() 方法来加载模型权重。
+* [](#transformers.TFXLMRobertaForCausalLM.config) <strong>config</strong> ([XLMRobertaConfig](https://huggingface.co/docs/transformers/v4.41.2/en/model%5Fdoc/xlm-roberta#transformers.XLMRobertaConfig)) — Model configuration class with all the parameters of the model. Initializing with a config file does not load the weights associated with the model, only the configuration. Check out the [from\_pretrained()](https://huggingface.co/docs/transformers/v4.41.2/en/main%5Fclasses/model#transformers.PreTrainedModel.from%5Fpretrained) method to load the model weights.config (XLMRobertaConfig) — 包含模型所有参数的模型配置类。使用配置文件初始化不会加载与模型关联的权重，仅加载配置。查看 from\_pretrained() 方法来加载模型权重。
 
 XLM-RoBERTa Model with a `language modeling` head on top for CLM fine-tuning.XLM-RoBERTa 模型，顶部带有语言建模，用于 CLM 微调。
 
@@ -694,7 +694,7 @@ Example:
 
 Parameters 
 
-* [](#transformers.TFXLMRobertaForMaskedLM.config) **config** ([XLMRobertaConfig](https://huggingface.co/docs/transformers/v4.41.2/en/model%5Fdoc/xlm-roberta#transformers.XLMRobertaConfig)) — Model configuration class with all the parameters of the model. Initializing with a config file does not load the weights associated with the model, only the configuration. Check out the [from\_pretrained()](https://huggingface.co/docs/transformers/v4.41.2/en/main%5Fclasses/model#transformers.PreTrainedModel.from%5Fpretrained) method to load the model weights.
+* [](#transformers.TFXLMRobertaForMaskedLM.config) <strong>config</strong> ([XLMRobertaConfig](https://huggingface.co/docs/transformers/v4.41.2/en/model%5Fdoc/xlm-roberta#transformers.XLMRobertaConfig)) — Model configuration class with all the parameters of the model. Initializing with a config file does not load the weights associated with the model, only the configuration. Check out the [from\_pretrained()](https://huggingface.co/docs/transformers/v4.41.2/en/main%5Fclasses/model#transformers.PreTrainedModel.from%5Fpretrained) method to load the model weights.
 
 XLM RoBERTa Model with a `language modeling` head on top.
 
@@ -762,7 +762,7 @@ Example:
 
 Parameters 
 
-* [](#transformers.TFXLMRobertaForSequenceClassification.config) **config** ([XLMRobertaConfig](https://huggingface.co/docs/transformers/v4.41.2/en/model%5Fdoc/xlm-roberta#transformers.XLMRobertaConfig)) — Model configuration class with all the parameters of the model. Initializing with a config file does not load the weights associated with the model, only the configuration. Check out the [from\_pretrained()](https://huggingface.co/docs/transformers/v4.41.2/en/main%5Fclasses/model#transformers.PreTrainedModel.from%5Fpretrained) method to load the model weights.
+* [](#transformers.TFXLMRobertaForSequenceClassification.config) <strong>config</strong> ([XLMRobertaConfig](https://huggingface.co/docs/transformers/v4.41.2/en/model%5Fdoc/xlm-roberta#transformers.XLMRobertaConfig)) — Model configuration class with all the parameters of the model. Initializing with a config file does not load the weights associated with the model, only the configuration. Check out the [from\_pretrained()](https://huggingface.co/docs/transformers/v4.41.2/en/main%5Fclasses/model#transformers.PreTrainedModel.from%5Fpretrained) method to load the model weights.
 
 XLM RoBERTa Model transformer with a sequence classification/regression head on top (a linear layer on top of the pooled output) e.g. for GLUE tasks.
 
@@ -828,7 +828,7 @@ Example:
 
 Parameters 
 
-* [](#transformers.TFXLMRobertaForMultipleChoice.config) **config** ([XLMRobertaConfig](https://huggingface.co/docs/transformers/v4.41.2/en/model%5Fdoc/xlm-roberta#transformers.XLMRobertaConfig)) — Model configuration class with all the parameters of the model. Initializing with a config file does not load the weights associated with the model, only the configuration. Check out the [from\_pretrained()](https://huggingface.co/docs/transformers/v4.41.2/en/main%5Fclasses/model#transformers.PreTrainedModel.from%5Fpretrained) method to load the model weights.
+* [](#transformers.TFXLMRobertaForMultipleChoice.config) <strong>config</strong> ([XLMRobertaConfig](https://huggingface.co/docs/transformers/v4.41.2/en/model%5Fdoc/xlm-roberta#transformers.XLMRobertaConfig)) — Model configuration class with all the parameters of the model. Initializing with a config file does not load the weights associated with the model, only the configuration. Check out the [from\_pretrained()](https://huggingface.co/docs/transformers/v4.41.2/en/main%5Fclasses/model#transformers.PreTrainedModel.from%5Fpretrained) method to load the model weights.
 
 XLM Roberta Model with a multiple choice classification head on top (a linear layer on top of the pooled output and a softmax) e.g. for RocStories/SWAG tasks.
 
@@ -888,7 +888,7 @@ Example:
 
 Parameters 
 
-* [](#transformers.TFXLMRobertaForTokenClassification.config) **config** ([XLMRobertaConfig](https://huggingface.co/docs/transformers/v4.41.2/en/model%5Fdoc/xlm-roberta#transformers.XLMRobertaConfig)) — Model configuration class with all the parameters of the model. Initializing with a config file does not load the weights associated with the model, only the configuration. Check out the [from\_pretrained()](https://huggingface.co/docs/transformers/v4.41.2/en/main%5Fclasses/model#transformers.PreTrainedModel.from%5Fpretrained) method to load the model weights.
+* [](#transformers.TFXLMRobertaForTokenClassification.config) <strong>config</strong> ([XLMRobertaConfig](https://huggingface.co/docs/transformers/v4.41.2/en/model%5Fdoc/xlm-roberta#transformers.XLMRobertaConfig)) — Model configuration class with all the parameters of the model. Initializing with a config file does not load the weights associated with the model, only the configuration. Check out the [from\_pretrained()](https://huggingface.co/docs/transformers/v4.41.2/en/main%5Fclasses/model#transformers.PreTrainedModel.from%5Fpretrained) method to load the model weights.
 
 XLM RoBERTa Model with a token classification head on top (a linear layer on top of the hidden-states output) e.g. for Named-Entity-Recognition (NER) tasks.
 
@@ -956,7 +956,7 @@ Example:
 
 Parameters 
 
-* [](#transformers.TFXLMRobertaForQuestionAnswering.config) **config** ([XLMRobertaConfig](https://huggingface.co/docs/transformers/v4.41.2/en/model%5Fdoc/xlm-roberta#transformers.XLMRobertaConfig)) — Model configuration class with all the parameters of the model. Initializing with a config file does not load the weights associated with the model, only the configuration. Check out the [from\_pretrained()](https://huggingface.co/docs/transformers/v4.41.2/en/main%5Fclasses/model#transformers.PreTrainedModel.from%5Fpretrained) method to load the model weights.
+* [](#transformers.TFXLMRobertaForQuestionAnswering.config) <strong>config</strong> ([XLMRobertaConfig](https://huggingface.co/docs/transformers/v4.41.2/en/model%5Fdoc/xlm-roberta#transformers.XLMRobertaConfig)) — Model configuration class with all the parameters of the model. Initializing with a config file does not load the weights associated with the model, only the configuration. Check out the [from\_pretrained()](https://huggingface.co/docs/transformers/v4.41.2/en/main%5Fclasses/model#transformers.PreTrainedModel.from%5Fpretrained) method to load the model weights.
 
 XLM RoBERTa Model with a span classification head on top for extractive question-answering tasks like SQuAD (a linear layers on top of the hidden-states output to compute `span start logits` and `span end logits`).
 
@@ -1026,7 +1026,7 @@ Example:
 
 Parameters 
 
-* [](#transformers.FlaxXLMRobertaModel.config) **config** ([XLMRobertaConfig](https://huggingface.co/docs/transformers/v4.41.2/en/model%5Fdoc/xlm-roberta#transformers.XLMRobertaConfig)) — Model configuration class with all the parameters of the model. Initializing with a config file does not load the weights associated with the model, only the configuration. Check out the [from\_pretrained()](https://huggingface.co/docs/transformers/v4.41.2/en/main%5Fclasses/model#transformers.FlaxPreTrainedModel.from%5Fpretrained) method to load the model weights.
+* [](#transformers.FlaxXLMRobertaModel.config) <strong>config</strong> ([XLMRobertaConfig](https://huggingface.co/docs/transformers/v4.41.2/en/model%5Fdoc/xlm-roberta#transformers.XLMRobertaConfig)) — Model configuration class with all the parameters of the model. Initializing with a config file does not load the weights associated with the model, only the configuration. Check out the [from\_pretrained()](https://huggingface.co/docs/transformers/v4.41.2/en/main%5Fclasses/model#transformers.FlaxPreTrainedModel.from%5Fpretrained) method to load the model weights.
 
 The bare XLM RoBERTa Model transformer outputting raw hidden-states without any specific head on top.
 
@@ -1073,7 +1073,7 @@ Example:
 
 Parameters 
 
-* [](#transformers.FlaxXLMRobertaForCausalLM.config) **config** ([XLMRobertaConfig](https://huggingface.co/docs/transformers/v4.41.2/en/model%5Fdoc/xlm-roberta#transformers.XLMRobertaConfig)) — Model configuration class with all the parameters of the model. Initializing with a config file does not load the weights associated with the model, only the configuration. Check out the [from\_pretrained()](https://huggingface.co/docs/transformers/v4.41.2/en/main%5Fclasses/model#transformers.FlaxPreTrainedModel.from%5Fpretrained) method to load the model weights.
+* [](#transformers.FlaxXLMRobertaForCausalLM.config) <strong>config</strong> ([XLMRobertaConfig](https://huggingface.co/docs/transformers/v4.41.2/en/model%5Fdoc/xlm-roberta#transformers.XLMRobertaConfig)) — Model configuration class with all the parameters of the model. Initializing with a config file does not load the weights associated with the model, only the configuration. Check out the [from\_pretrained()](https://huggingface.co/docs/transformers/v4.41.2/en/main%5Fclasses/model#transformers.FlaxPreTrainedModel.from%5Fpretrained) method to load the model weights.
 
 XLM Roberta Model with a language modeling head on top (a linear layer on top of the hidden-states output) e.g for autoregressive tasks.
 
@@ -1121,7 +1121,7 @@ Example:
 
 Parameters 
 
-* [](#transformers.FlaxXLMRobertaForMaskedLM.config) **config** ([XLMRobertaConfig](https://huggingface.co/docs/transformers/v4.41.2/en/model%5Fdoc/xlm-roberta#transformers.XLMRobertaConfig)) — Model configuration class with all the parameters of the model. Initializing with a config file does not load the weights associated with the model, only the configuration. Check out the [from\_pretrained()](https://huggingface.co/docs/transformers/v4.41.2/en/main%5Fclasses/model#transformers.FlaxPreTrainedModel.from%5Fpretrained) method to load the model weights.
+* [](#transformers.FlaxXLMRobertaForMaskedLM.config) <strong>config</strong> ([XLMRobertaConfig](https://huggingface.co/docs/transformers/v4.41.2/en/model%5Fdoc/xlm-roberta#transformers.XLMRobertaConfig)) — Model configuration class with all the parameters of the model. Initializing with a config file does not load the weights associated with the model, only the configuration. Check out the [from\_pretrained()](https://huggingface.co/docs/transformers/v4.41.2/en/main%5Fclasses/model#transformers.FlaxPreTrainedModel.from%5Fpretrained) method to load the model weights.
 
 XLM RoBERTa Model with a `language modeling` head on top.
 
@@ -1168,7 +1168,7 @@ Example:
 
 Parameters 
 
-* [](#transformers.FlaxXLMRobertaForSequenceClassification.config) **config** ([XLMRobertaConfig](https://huggingface.co/docs/transformers/v4.41.2/en/model%5Fdoc/xlm-roberta#transformers.XLMRobertaConfig)) — Model configuration class with all the parameters of the model. Initializing with a config file does not load the weights associated with the model, only the configuration. Check out the [from\_pretrained()](https://huggingface.co/docs/transformers/v4.41.2/en/main%5Fclasses/model#transformers.FlaxPreTrainedModel.from%5Fpretrained) method to load the model weights.
+* [](#transformers.FlaxXLMRobertaForSequenceClassification.config) <strong>config</strong> ([XLMRobertaConfig](https://huggingface.co/docs/transformers/v4.41.2/en/model%5Fdoc/xlm-roberta#transformers.XLMRobertaConfig)) — Model configuration class with all the parameters of the model. Initializing with a config file does not load the weights associated with the model, only the configuration. Check out the [from\_pretrained()](https://huggingface.co/docs/transformers/v4.41.2/en/main%5Fclasses/model#transformers.FlaxPreTrainedModel.from%5Fpretrained) method to load the model weights.
 
 XLM Roberta Model transformer with a sequence classification/regression head on top (a linear layer on top of the pooled output) e.g. for GLUE tasks.
 
@@ -1215,7 +1215,7 @@ Example:
 
 Parameters 
 
-* [](#transformers.FlaxXLMRobertaForMultipleChoice.config) **config** ([XLMRobertaConfig](https://huggingface.co/docs/transformers/v4.41.2/en/model%5Fdoc/xlm-roberta#transformers.XLMRobertaConfig)) — Model configuration class with all the parameters of the model. Initializing with a config file does not load the weights associated with the model, only the configuration. Check out the [from\_pretrained()](https://huggingface.co/docs/transformers/v4.41.2/en/main%5Fclasses/model#transformers.FlaxPreTrainedModel.from%5Fpretrained) method to load the model weights.
+* [](#transformers.FlaxXLMRobertaForMultipleChoice.config) <strong>config</strong> ([XLMRobertaConfig](https://huggingface.co/docs/transformers/v4.41.2/en/model%5Fdoc/xlm-roberta#transformers.XLMRobertaConfig)) — Model configuration class with all the parameters of the model. Initializing with a config file does not load the weights associated with the model, only the configuration. Check out the [from\_pretrained()](https://huggingface.co/docs/transformers/v4.41.2/en/main%5Fclasses/model#transformers.FlaxPreTrainedModel.from%5Fpretrained) method to load the model weights.
 
 XLM Roberta Model with a multiple choice classification head on top (a linear layer on top of the pooled output and a softmax) e.g. for RocStories/SWAG tasks.
 
@@ -1266,7 +1266,7 @@ Example:
 
 Parameters 
 
-* [](#transformers.FlaxXLMRobertaForTokenClassification.config) **config** ([XLMRobertaConfig](https://huggingface.co/docs/transformers/v4.41.2/en/model%5Fdoc/xlm-roberta#transformers.XLMRobertaConfig)) — Model configuration class with all the parameters of the model. Initializing with a config file does not load the weights associated with the model, only the configuration. Check out the [from\_pretrained()](https://huggingface.co/docs/transformers/v4.41.2/en/main%5Fclasses/model#transformers.FlaxPreTrainedModel.from%5Fpretrained) method to load the model weights.
+* [](#transformers.FlaxXLMRobertaForTokenClassification.config) <strong>config</strong> ([XLMRobertaConfig](https://huggingface.co/docs/transformers/v4.41.2/en/model%5Fdoc/xlm-roberta#transformers.XLMRobertaConfig)) — Model configuration class with all the parameters of the model. Initializing with a config file does not load the weights associated with the model, only the configuration. Check out the [from\_pretrained()](https://huggingface.co/docs/transformers/v4.41.2/en/main%5Fclasses/model#transformers.FlaxPreTrainedModel.from%5Fpretrained) method to load the model weights.
 
 XLM Roberta Model with a token classification head on top (a linear layer on top of the hidden-states output) e.g. for Named-Entity-Recognition (NER) tasks.
 
@@ -1313,7 +1313,7 @@ Example:
 
 Parameters 
 
-* [](#transformers.FlaxXLMRobertaForQuestionAnswering.config) **config** ([XLMRobertaConfig](https://huggingface.co/docs/transformers/v4.41.2/en/model%5Fdoc/xlm-roberta#transformers.XLMRobertaConfig)) — Model configuration class with all the parameters of the model. Initializing with a config file does not load the weights associated with the model, only the configuration. Check out the [from\_pretrained()](https://huggingface.co/docs/transformers/v4.41.2/en/main%5Fclasses/model#transformers.FlaxPreTrainedModel.from%5Fpretrained) method to load the model weights.
+* [](#transformers.FlaxXLMRobertaForQuestionAnswering.config) <strong>config</strong> ([XLMRobertaConfig](https://huggingface.co/docs/transformers/v4.41.2/en/model%5Fdoc/xlm-roberta#transformers.XLMRobertaConfig)) — Model configuration class with all the parameters of the model. Initializing with a config file does not load the weights associated with the model, only the configuration. Check out the [from\_pretrained()](https://huggingface.co/docs/transformers/v4.41.2/en/main%5Fclasses/model#transformers.FlaxPreTrainedModel.from%5Fpretrained) method to load the model weights.
 
 XLM Roberta Model with a span classification head on top for extractive question-answering tasks like SQuAD (a linear layers on top of the hidden-states output to compute `span start logits` and `span end logits`).
 

@@ -17,13 +17,13 @@ source_url: https://www.zhihu.com/question/362131975/answer/3297483297
 
 这里是@TopGeeky，持续输出计算机相关优质好文，如果觉得文章对你有用的话，不如点赞、收藏、关注三连；关注不迷路，持续输出优质文章~
 
-**“Attention is all you need”** 初闻这句话的时候，觉得这篇论文太狂了
+<strong>“Attention is all you need”</strong> 初闻这句话的时候，觉得这篇论文太狂了
 
-时隔多年，再回头，不禁为**“Attention is all you need”**拍手叫好。
+时隔多年，再回头，不禁为<strong>“Attention is all you need”</strong>拍手叫好。
 
 注意，这篇文章不是科普文章，而是手把手带你尽可能理解Transformer的整体结构，并理解当时作者构建Transformer的思路和想法，不仅仅能够手写Transformer更多的是理解这个天才一般的想法是如何诞生。
 
-Transformer最早在2017年的[Attention Is All You Need](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/1706.03762)论文中提出，用于解决传统的序列到序列（sequence-to-sequence，Seq2Seq）模型在**处理可变长序列**时遇到的问题。
+Transformer最早在2017年的[Attention Is All You Need](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/1706.03762)论文中提出，用于解决传统的序列到序列（sequence-to-sequence，Seq2Seq）模型在<strong>处理可变长序列</strong>时遇到的问题。
 
 ** 作为Seq2Seq模型，指的是输入一段序列，模型输出也是一段序列，比如最常见的翻译模型，输入一段文本序列，输出一段翻译后的文本序列。
 ### RNN的困境
@@ -31,13 +31,13 @@ Transformer最早在2017年的[Attention Is All You Need](https://link.zhihu.com
 一个新技术尤其是革命性的技术诞生出来，注定是为了解决某项长期存在、难以解决的问题。RNN不可避免的存在这三个问题：
 
 - 传统 RNN 在训练过程中存在梯度消失和梯度爆炸**问题，虽然有 LSTM、GNU 等神经单元和 batch normalization、梯度截断等方法能缓解和解决。
-- 传统 RNN 由于训练过程中一个神经单元的输入依赖上一个神经单元的输出，无法进行**并行化计算**
-- 由于在类似于 seq2seq 等实际场景中，句法/行文风格等差异，导致不同位置对结果贡献会有差异。但是 **RNN 由于是固定权重**，需要较大的成本去适应复杂多变的句法和行文风格。
+- 传统 RNN 由于训练过程中一个神经单元的输入依赖上一个神经单元的输出，无法进行<strong>并行化计算</strong>
+- 由于在类似于 seq2seq 等实际场景中，句法/行文风格等差异，导致不同位置对结果贡献会有差异。但是 <strong>RNN 由于是固定权重</strong>，需要较大的成本去适应复杂多变的句法和行文风格。
 这三点也就导致无法将RNN广泛应用，在这RNN走不出的困境中，诞生出来Transformer模型。
 
 **
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_30a44fc1c479.jpg)![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_636b2d962349.webp)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_30a44fc1c479.jpg)![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_636b2d962349.webp)
 
 RNN基本结构
 
@@ -47,9 +47,9 @@ Transformer模型的核心思想是使用自注意力机制（Self-Attention）�
 
 长期依赖：**自注意力机制允许模型直接考虑序列中任意两个位置之间的关系，因此可以更好地捕捉序列中的长期依赖关系。
 
-**并行计算：**自注意力机制允许模型并行计算，从而加速了模型的训练速度。
+<strong>并行计算：</strong>自注意力机制允许模型并行计算，从而加速了模型的训练速度。
 
-**全局信息：**自注意力机制允许模型在整个序列上进行建模，从而可以更好地捕捉全局信息。
+<strong>全局信息：</strong>自注意力机制允许模型在整个序列上进行建模，从而可以更好地捕捉全局信息。
 
 吹完Transformer现在就开始扒开Transformer的外衣，聊一聊Transformer到底是什么
 
@@ -59,7 +59,7 @@ Transformer模型的核心思想是使用自注意力机制（Self-Attention）�
 
 **
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_b9c26185aab1.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_b9c26185aab1.jpg)
 
 Transformer结构
 
@@ -67,7 +67,7 @@ Transformer结构
 
 前面提到Transformer主要由Encoder和Decoder两部分组成。在Transformer的论文中，Encoder和Decoder均由6个Encoder和Decoder，通常我们称之为Encoder Block。
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_b17b368a237d.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_b17b368a237d.jpg)
 
 Encoder-Decoder模型
 
@@ -77,7 +77,7 @@ Encoder-Decoder模型
 
 Decoder也包含Encoder提到的两层网络，但是在这两层中间还有一层attention层，帮助当前节点获取到当前需要关注的重点内容。
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_a911cca80ab5.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_a911cca80ab5.jpg)
 
 结构拆解
 
@@ -85,7 +85,7 @@ Decoder也包含Encoder提到的两层网络，但是在这两层中间还有一
 
 `Self-Attention` 是 `Transformer`最核心的思想也是必须要理解的难点，这里将会花费大手笔去来详细解释和推导Self- Attention机制的过程。
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_f119727217ff.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_f119727217ff.jpg)
 
 Self Attention机制上面这个公式初看很难理解，也不知道最终的含义代表着什么。接下来紧跟我的思路，聊一聊这个公式的具体含义和过程。
 
@@ -107,13 +107,13 @@ Softmax(XX^T)X
 
 那么矩阵 XX^T 为一个方阵，里面保存了每个向量（单词）于其他向量（单词）进行内积的结果，也就是每个词直接的相关性的值。
 
-**这里也可以将相关性的值称之为词A对词B的关注值的大小**
+<strong>这里也可以将相关性的值称之为词A对词B的关注值的大小</strong>
 
 #### Softmax的妙用
 
 都知道Softmax是一个将数值向量转换为概率分布的函数，将输入的原始数据转化为一个（0，1）之间的数值进行归一化的操作。在自注意力机制上，使用Softmax函数的作用就是将向量与向量之间的相关性通过概率分布的形式表现出来。
 
-**再来回顾一下Attention机制的核心 —— 加权求和**
+<strong>再来回顾一下Attention机制的核心 —— 加权求和</strong>
 
 这里权就是通过Softmax函数归一化的权重，那么归一化后的数据矩阵与最后一个矩阵相乘的含义就呼之欲出啦。
 
@@ -129,11 +129,11 @@ Softmax(XX^T)X
 
 为什么要取QKV这些名字。Q是Query（查询），K是Key（键/钥匙），V是Value（值）。在数据库中，我们希望通过一个查询Q去数据库中找出相应的值V，问题是，直接通过Query去搜索数据库中的V往往效果不好，我们希望每个V都对应一把可以找到它的钥匙K，这个K提取了V的特征，使得它更容易被找到。
 
-因此Self-attention中的QKV思想，另一个层面是想要**构建一个具有全局语义整合功能的数据库**，所得到的最后矩阵就是输入矩阵X注意了上下文信息得到的在隐空间的语义矩阵。
+因此Self-attention中的QKV思想，另一个层面是想要<strong>构建一个具有全局语义整合功能的数据库</strong>，所得到的最后矩阵就是输入矩阵X注意了上下文信息得到的在隐空间的语义矩阵。
 
 **
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_75135f198e36.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_75135f198e36.jpg)
 
 img
 
@@ -179,11 +179,11 @@ class Self_Attention(nn.Module):
 
 对于任何一门语言，单词在句子中的位置以及排列顺序是非常重要的，它们不仅是一个句子的语法结构的组成部分，更是表达语义的重要概念。
 
-** I do not** like the story of the movie, but I **do** like the cast. I **do** like the story of the movie, but I **do not** like the cast.上面两句话所使用的的单词完全一样，但是所表达的句意却截然相反。那么，引入词序信息有助于区别这两句话的意思。
+<strong>I do not</strong> like the story of the movie, but I <strong>do</strong> like the cast. I <strong>do</strong> like the story of the movie, but I <strong>do not</strong> like the cast.上面两句话所使用的的单词完全一样，但是所表达的句意却截然相反。那么，引入词序信息有助于区别这两句话的意思。
 
 相较于天生就包含了词在序列中的位置信息RNN神经网络，Transformer完全采用Attention来训练这就导致词序信息的丢失，就无法知道每个词在句子中的相对和绝对位置。
 
-**因此，有必要把词序信号加到词向量上帮助模型学习这些信息，位置编码（Positional Encoding）就是用来解决这种问题的方法。**
+<strong>因此，有必要把词序信号加到词向量上帮助模型学习这些信息，位置编码（Positional Encoding）就是用来解决这种问题的方法。</strong>
 
 #### 奇思妙想的位置编码
 
@@ -195,9 +195,9 @@ class Self_Attention(nn.Module):
 - 它必须是确定性的。
 Transformer的作者们提出了一个简单但非常创新的位置编码方法，能够满足上述所有的要求。首先，这种编码不是单一的一个数值，而是包含句子中特定位置信息的d维向量（非常像词向量）。第二，这种编码没有整合进模型，而是用这个向量让每个词具有它在句子中的位置的信息。换句话说，通过注入词的顺序信息来增强模型输入。
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_1a383cb320a2.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_1a383cb320a2.jpg)
 
-**关于更多的详细解释可以看看这篇博客：**
+<strong>关于更多的详细解释可以看看这篇博客：</strong>
 
 Transformer Architecture: The Positional Encoding
 

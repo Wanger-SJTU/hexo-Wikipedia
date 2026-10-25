@@ -15,19 +15,19 @@ source_url: https://zhuanlan.zhihu.com/p/405186060
 ---
 
 
-在推荐系统中，向量的最邻近检索是极为关键的一步，特别是在召回流程中。一般常用的如Annoy、faiss都可以满足大部分的需求，今天再来介绍另外一个：**Milvus**
+在推荐系统中，向量的最邻近检索是极为关键的一步，特别是在召回流程中。一般常用的如Annoy、faiss都可以满足大部分的需求，今天再来介绍另外一个：<strong>Milvus</strong>
 
 ### Milvus
 
 Milvus不同于Annoy、faiss这类型的向量检索工具，它更是一款开源向量数据库，赋能 AI 应用和向量相似度搜索。
 
-[![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_b0bf58d8d29a.jpg)Keep Learning：推荐系统的向量检索工具: Annoy & Faiss34 赞同 · 3 评论 文章](https://zhuanlan.zhihu.com/p/402823379)
+[![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_b0bf58d8d29a.jpg)Keep Learning：推荐系统的向量检索工具: Annoy & Faiss34 赞同 · 3 评论 文章](https://zhuanlan.zhihu.com/p/402823379)
 
 ### 涉及的术语
 
-- **Field**：类似表字段，可以是结构化数据，当然还可以是向量；
-- **Entity**：一组Field，类似表的一条数据；
-- **Collection**：一组Entity，类似于表；
+- <strong>Field</strong>：类似表字段，可以是结构化数据，当然还可以是向量；
+- <strong>Entity</strong>：一组Field，类似表的一条数据；
+- <strong>Collection</strong>：一组Entity，类似于表；
 
 ### 亮点
 
@@ -43,7 +43,7 @@ Milvus不同于Annoy、faiss这类型的向量检索工具，它更是一款开�
 
 具官网表明，2.x的稳定版本也即将上线，到时再更新2.X版本投入生产环境。
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_1db6dbc3014a.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_1db6dbc3014a.jpg)
 
 ### Docker安装
 
@@ -57,11 +57,11 @@ Milvus不同于Annoy、faiss这类型的向量检索工具，它更是一款开�
 
 这里介绍docker的安装方式，官方还提供了使用Kubernetes安装
 
-**1、下载docker镜像文件**
+<strong>1、下载docker镜像文件</strong>
 
 `wget https://raw.githubusercontent.com/milvus-io/milvus/ecfebff801291934a3e6c5955e53637b993ab41a/deployments/docker/standalone/docker-compose.yml -O docker-compose.yml`
 
-没办法翻墙的可以自己新建**docker-compose.yml**文件，然后填入以下内容：
+没办法翻墙的可以自己新建<strong>docker-compose.yml</strong>文件，然后填入以下内容：
 
 `version: '3.5'
 
@@ -107,17 +107,17 @@ networks:
   default:
     name: milvus`
 
-**2、拉取镜像并启动**
+<strong>2、拉取镜像并启动</strong>
 
 `docker-compose up -d`
 
 这条是启动命令，第一次运行时需要联网拉取以下三个镜像：
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_7003cf2485e1.png)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_7003cf2485e1.png)
 
 启动的服务默认端口是19530，包括以下三个docker容器：
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_d02687ac7426.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_d02687ac7426.jpg)
 
 ### 分布式版安装
 
@@ -210,7 +210,7 @@ collection还可以将数据存储在不同的分区。默认是有一个"Defaul
 
 目前支持的索引类型包括：
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_3fc281dca044.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_3fc281dca044.jpg)
 
 `def create_index(collection: Collection):
     """
@@ -284,13 +284,13 @@ collection还可以将数据存储在不同的分区。默认是有一个"Defaul
 
 ### 其他SDK
 
-**1.x版本支持：**
+<strong>1.x版本支持：</strong>
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_a58b21f8fc09.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_a58b21f8fc09.jpg)
 
-**2.x版本目前只有python，其他还在开发中**
+<strong>2.x版本目前只有python，其他还在开发中</strong>
 
-### **可视化管理**
+### <strong>可视化管理</strong>
 
 milvus的强大之处，还在于它提供了可视化的管理工具。
 
@@ -298,28 +298,28 @@ milvus的强大之处，还在于它提供了可视化的管理工具。
 
 `docker run -p 8000:3000 -e HOST_URL=http://{ your machine IP }:8000 -e MILVUS_URL={your machine IP}:19530 milvusdb/milvus-insight:latest`
 
-**注意：这里的IP不能写localhost，否则可能会出现连接问题。**
+<strong>注意：这里的IP不能写localhost，否则可能会出现连接问题。</strong>
 
 1、查看load到内存的collection
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_3247d1dae598.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_3247d1dae598.jpg)
 
 2、查看collection的结构和分区，还支持删除和导入操作
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_bfa47e780dff.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_bfa47e780dff.jpg)
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_5565690c0343.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_5565690c0343.jpg)
 
 3、在线向量检索
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_131f34c3ca7f.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_131f34c3ca7f.jpg)
 
 ### 后续功能
 
 其实，到这里，milvus已经足够强大，但他们还在持续支持许多强大的新功能。
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_4b163e888e9f.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_4b163e888e9f.jpg)
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_38862484cc4b.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_38862484cc4b.jpg)
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_d1348598f16f.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_d1348598f16f.jpg)

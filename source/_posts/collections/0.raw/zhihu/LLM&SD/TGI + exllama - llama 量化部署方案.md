@@ -19,7 +19,7 @@ source_url: https://zhuanlan.zhihu.com/p/646716367
 
 在之前的笔记中，我们提到了 TGI 和 vllm 的对比测试，在使用 vllm 和 TGI 对 float16 模型进行部署后，能够在单卡 4090 上达到 3.5+ request/秒的吞吐量：
 
-[![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_3e9c71888d5d.png)Kevin吴嘉文：vllm vs TGI 部署 llama v2 7B 踩坑笔记148 赞同 · 65 评论 文章](https://zhuanlan.zhihu.com/p/645732302)
+[![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_3e9c71888d5d.png)Kevin吴嘉文：vllm vs TGI 部署 llama v2 7B 踩坑笔记148 赞同 · 65 评论 文章](https://zhuanlan.zhihu.com/p/645732302)
 
 就在几天前 TGI 优化了 exllama，基于之前量化 LLaMa 的测试：[Kevin吴嘉文：LLaMa 量化部署](https://zhuanlan.zhihu.com/p/641641929)，exllama 能在控制精度损失的情况下，将模型的推理速度提升，同时减小显存占用要求。以下参考 TGI 的官方手册对采用 AUTOGPTQ 量化后的 LLaMa v2 gptq 权重进行部署:
 
@@ -46,7 +46,7 @@ source_url: https://zhuanlan.zhihu.com/p/646716367
 # 修改以下 pretrained_model_dir 和 quantized_model_dir 选择用 Llama-2-7b-chat-hf 量化
 python basic_usage_wikitext2.py`
 
-当然 TGI 和 GPTQ-for-LLaMa 也提供了 llama 量化脚本，但是对 llama v2 进行 GPTQ 量化时，AUTOGPTQ 的损失总是比较小，**量化后的模型输出也更稳定一些**，原因未知。
+当然 TGI 和 GPTQ-for-LLaMa 也提供了 llama 量化脚本，但是对 llama v2 进行 GPTQ 量化时，AUTOGPTQ 的损失总是比较小，<strong>量化后的模型输出也更稳定一些</strong>，原因未知。
 
 目前 TGI 版本（1.0.0）对本地加载 exllama 模型仍有不少问题，如果遇到了 weight gptq_bits not found 的话，在模型文件夹下加入一个 safetensor，其中储存好 gptq_bits 和 group 就行。具体 exllama 权重加载逻辑可以看 `utils.weight.Weight`。
 
@@ -61,7 +61,7 @@ save_file(tensors, "/home/kevin/models/llama2-7b-chat-gptq-int4/gptq_config.safe
 
 目前 TGI 中对量化权重的处理方法不是很兼容 AUTOGPTQ 等 GPTQ 采用的数据储存方式，但有几个 PR 中已经在对此优化。
 
-### **TGI + EXLLAMA 测试结果**
+### <strong>TGI + EXLLAMA 测试结果</strong>
 
 部署后，发送单一（batch size = 1）的请求进行速度测试：
 

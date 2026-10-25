@@ -80,7 +80,7 @@ memblock构建了内存的物理空间分布, 之后在伙伴系统(buddy system
 
 预申请内存:**** 预申请内存是指在memblock初始化前已经申请的内存，呈现给memblock的是这部分物理内存不存在，比如lk/uboot/bootloader用到的内存。  不同平台这部分的占用大小不尽相同，有的可能为0.  
 
-Q1:** memblock是怎么知道有些内存已经被占用的?** A1:** lk/uboot/bootloade修改DTB中memory节点下的空间区段(reg), kernel中读取这些空间区段(reg),空间区段之间的内存空间就是被预申请已经占用了的.  
+Q1:<strong>memblock是怎么知道有些内存已经被占用的?</strong> A1:** lk/uboot/bootloade修改DTB中memory节点下的空间区段(reg), kernel中读取这些空间区段(reg),空间区段之间的内存空间就是被预申请已经占用了的.  
 
 `//kernel log 中的输出, 代码实现在 mem_init_print_info()
 //关系:2097152K(物理2GB) = 2045952K(memblock管理的内存) + 51200K(预申请内存)
@@ -94,12 +94,12 @@ Q1:** memblock是怎么知道有些内存已经被占用的?** A1:** lk/uboot/bo
 lsg@eebbk:~$adb shell cat /proc/meminfo
 MemTotal:        1983136 kB`
 
-**Q2:** 为什么MemTotal的大小比实际物理内存小?** A2:** 这个部分比实际的物理内存小,就是少了上面说的两个部分:预申请内存和kernel reserved内存. 预申请内存: 这部分的大小可以查看`/d/memblock/memory`相对物理内存空闲的部分.  reserved内存: 这部分大小可以查看`/d/memblock/reserved`的大小,或者kernel log中的大小(上例中63776K)
+<strong>Q2:</strong> 为什么MemTotal的大小比实际物理内存小?<strong>A2:</strong> 这个部分比实际的物理内存小,就是少了上面说的两个部分:预申请内存和kernel reserved内存. 预申请内存: 这部分的大小可以查看`/d/memblock/memory`相对物理内存空闲的部分.  reserved内存: 这部分大小可以查看`/d/memblock/reserved`的大小,或者kernel log中的大小(上例中63776K)
 
-**Q3:** 为什么开机时 `totalram_pages`的大小(上例中1982176K) 和 `totalram_pages`的大小(上例中1983136K) 开机后 不一致呢?** A3:** 这是因为memblock管理的`reserved type`中部分内存在初始化完毕后释放了,添加到了伙伴系统(buddy system)中. 详细代码见`free_initmem()`  比如上面的log, 1982176K + 960K = 1983136K
+<strong>Q3:</strong> 为什么开机时 `totalram_pages`的大小(上例中1982176K) 和 `totalram_pages`的大小(上例中1983136K) 开机后 不一致呢?<strong>A3:</strong> 这是因为memblock管理的`reserved type`中部分内存在初始化完毕后释放了,添加到了伙伴系统(buddy system)中. 详细代码见`free_initmem()`  比如上面的log, 1982176K + 960K = 1983136K
 
 ** [    2.258901] -(2)[1:swapper/0]Freeing unused kernel memory: 960K
- Q4:** kernel代码部分的占用在哪个部分体现?** A4:** 这部分包含 kernel code+rwdata+rodata+init+bss , 在 kernel log中已经输出. 这部分的物理占用计算在reserved部分.详细代码见 `arm64_memblock_init()`. 另外kernel code物理区域也会vmap到虚拟地址空间，其vmap的区间可以看 `/proc/vmallocinfo`中带有`paging_init`的行。
+ Q4:<strong>kernel代码部分的占用在哪个部分体现?</strong> A4:** 这部分包含 kernel code+rwdata+rodata+init+bss , 在 kernel log中已经输出. 这部分的物理占用计算在reserved部分.详细代码见 `arm64_memblock_init()`. 另外kernel code物理区域也会vmap到虚拟地址空间，其vmap的区间可以看 `/proc/vmallocinfo`中带有`paging_init`的行。
 
 #### 1.3 reserved包含哪些
 
@@ -234,7 +234,7 @@ kernel code的占用，包括kernel code+rwdata+rodata+init+bss，都计入了`m
 
 由于这部分默认的关键字为`vmap`, 所以是统计在 `VmallocUsed`中的。
 
-**2、binder** 
+<strong>2、binder</strong> 
 
 Binder的内存分配是用户空间调用`mmap()`, 到kernel中`binder_mmap()`的流程中为用户空间映射分配内存，但是只映射了VMA区间大小的( 比如`BINDER_VM_SIZE`)虚拟地址空间，并没有分配物理页，是等到binder传输需要使用内存时，才在`binder_update_page_range()`中申请物理页。
 
@@ -251,7 +251,7 @@ Pss:                   4 kB`
 
 Android P上binder的内存信息归为`vmalloc`，这就会统计到 `VmallocUsed`中，而在Android P之前版本上，内存信息类型为`ioremap` 。
 
-**3、unpurged vm_area** 
+<strong>3、unpurged vm_area</strong> 
 
 看`s_show()`中的代码，在kernel 4.14上，对于`va->flags`含有`VM_VM_AREA`和`VM_LAZY_FREE`位的，类型标记为`unpurged vm_area`，而只有`VM_VM_AREA`的标记为`vm_map_ram`。
 
@@ -416,7 +416,7 @@ public int getTotalSwappedOutPss() {
 
 `Total PSS by process`下是由大到小显示所有进程的PSS情况。
 
-**2、Total PSS by OOM ADJ**
+<strong>2、Total PSS by OOM ADJ</strong>
 
 `Total PSS by OOM adjustment`下是以进程的`OOM ADJ`值(/proc/pid/oom_score_adj, 范围在[-1000,1000])的区间分类来统计进程的PSS。ADJ的区间与类别对应如下：
 
@@ -437,7 +437,7 @@ public int getTotalSwappedOutPss() {
         ProcessList.CACHED_APP_MIN_ADJ     //ADJ大于此值的为 “Cached"
 };`
 
-**3、Total PSS by category**
+<strong>3、Total PSS by category</strong>
 
 `Total PSS by category`下是以内存占用的类型分类来统计进程的PSS。
 
@@ -445,7 +445,7 @@ public int getTotalSwappedOutPss() {
 
 这里说的是用户态进程的内存占用，其实内核线程也有内存占用，只是Linux/Android并未进行统计，内核线程的内存占用分散在Kernel的各类占用里，比如KernelStack,Slab等 。
 
-**几个概念：** 查看一个进程的内存占用，需要弄清楚以下几个概念： - VSS (Virtual Set Size)   虚拟耗用内存（包含共享库占用的内存，以及分配但未使用内存） - RSS (Resident Set Size)   实际使用物理内存（包含共享库占用的全部内存） - PSS (Proportional Set Size)   实际使用的物理内存（比例分配共享库占用的内存） - USS (Unique Set Size)   进程独自占用的物理内存（不包含共享库占用的内存）
+<strong>几个概念：</strong> 查看一个进程的内存占用，需要弄清楚以下几个概念： - VSS (Virtual Set Size)   虚拟耗用内存（包含共享库占用的内存，以及分配但未使用内存） - RSS (Resident Set Size)   实际使用物理内存（包含共享库占用的全部内存） - PSS (Proportional Set Size)   实际使用的物理内存（比例分配共享库占用的内存） - USS (Unique Set Size)   进程独自占用的物理内存（不包含共享库占用的内存）
 
 一般来说内存占用大小有如下规律：VSS >= RSS >= PSS >= USS
 
@@ -502,7 +502,7 @@ Locked:                0 kB`
 
 `dumpsys meminfo pid` 默认的输出主要有下面两个部分： 1、PSS Summary** - Native Heap   对`nativePss`的展示，还包括堆的情况： Heap Size, Heap Alloc, Heap Free.   调用了 `mallinfo() --> je_mallinfo()`获取navite 堆的信息。 - Dalvik Heap   对`dalvikPss`的展示，还包括堆的情况： Heap Size, Heap Alloc, Heap Free.   调用了`Runtime.totalMemory()` 和 `Runtime.freeMemory()`来获取dalvik 堆 `Heap Size` 和 `Heap Free`的信息。 - Other   对`otherPss`下17个子类型Pss的展示，比如 `Dalvik Other` 对应类型`OTHER_DALVIK_OTHER`， 对于字段全位0的每一展示出来。 - Total   对上面所有部分的相加。
 
-**2、App Summary** - Java Heap:   dalvikPss 和 `OTHER_ART` 类型的PSS中`PrivateDirty` 部分之和。 - Native Heap:   nativePss 中 `PrivateDirty` 部分。 - Code:   `OTHER_SO`,`OTHER_JAR`,`OTHER_APK`,`OTHER_TTF`,`OTHER_DEX`,`OTHER_OAT`类型的PSS中`PrivateDirty` 部分之和。 - Stack:   `OTHER_STACK` 类型的PSS中的 `PrivateDirty` 部分。 - Graphics:   `OTHER_GL_DEV`,`OTHER_GRAPHICS`,`OTHER_GL`类型的PSS中`PrivateDirty` 部分之和。 - Private Other:   见 `Debug.getSummaryPrivateOther()` - System:   见 `Debug.getSummarySystem()`
+<strong>2、App Summary</strong> - Java Heap:   dalvikPss 和 `OTHER_ART` 类型的PSS中`PrivateDirty` 部分之和。 - Native Heap:   nativePss 中 `PrivateDirty` 部分。 - Code:   `OTHER_SO`,`OTHER_JAR`,`OTHER_APK`,`OTHER_TTF`,`OTHER_DEX`,`OTHER_OAT`类型的PSS中`PrivateDirty` 部分之和。 - Stack:   `OTHER_STACK` 类型的PSS中的 `PrivateDirty` 部分。 - Graphics:   `OTHER_GL_DEV`,`OTHER_GRAPHICS`,`OTHER_GL`类型的PSS中`PrivateDirty` 部分之和。 - Private Other:   见 `Debug.getSummaryPrivateOther()` - System:   见 `Debug.getSummarySystem()`
 
 #### 4.2 procrank
 

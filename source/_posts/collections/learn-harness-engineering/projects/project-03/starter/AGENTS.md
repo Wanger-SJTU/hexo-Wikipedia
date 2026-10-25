@@ -37,10 +37,10 @@ categories:
 
 The new features for this project are:
 
-1. **Document Chunking** -- IndexingService splits documents into ~500 char chunks
-2. **Metadata Extraction** -- Extract word count, line count, file type on import
-3. **Indexing Status UI** -- StatusBar shows indexing progress with counts
-4. **Grounded Q&A** -- QaService returns answers with citations and confidence
+1. <strong>Document Chunking</strong> -- IndexingService splits documents into ~500 char chunks
+2. <strong>Metadata Extraction</strong> -- Extract word count, line count, file type on import
+3. <strong>Indexing Status UI</strong> -- StatusBar shows indexing progress with counts
+4. <strong>Grounded Q&A</strong> -- QaService returns answers with citations and confidence
 
 Check `feature_list.json` for current status.
 

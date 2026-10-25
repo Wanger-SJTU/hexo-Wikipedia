@@ -15,7 +15,7 @@ source_url: https://zhuanlan.zhihu.com/p/669825918
 ---
 
 
-**原理：**
+<strong>原理：</strong>
 
           将经过SFT后的模型本身作为奖励模型，但是参数不更新；
 
@@ -23,13 +23,13 @@ source_url: https://zhuanlan.zhihu.com/p/669825918
 
           然后经过下面的loss函数去更新policy模型：
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_ea95a1e74e8f.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_ea95a1e74e8f.jpg)
 
-DPO损失函数**loss函数理解：**
+DPO损失函数<strong>loss函数理解：</strong>
 
 DPO算法的目的就是最大化奖励模型，使得奖励模型对chosen和rejected的差值最大，这样模型就可以学到人类偏好。反映到模型中就是：模型更新是最小化loss，根据以上公式，最小化loss等价于最大化以下部分。
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_b5779e265977.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_b5779e265977.jpg)
 
 最大化部分根据对数函数运算，以上公式可以转化为a-b，a和b公式如下：
 
@@ -43,7 +43,7 @@ $b=log(&#x03C0;&#x03B8;(yl|x))&#x2212;log(&#x03C0;ref(yl|x))" role="presentation
 
 模型训练结束后更倾向选择chosen的答案。
 
-**代码：**
+<strong>代码：</strong>
 
 `    def dpo_loss(
         self,
@@ -82,7 +82,7 @@ $b=log(&#x03C0;&#x03B8;(yl|x))&#x2212;log(&#x03C0;ref(yl|x))" role="presentation
 
         return losses, chosen_rewards, rejected_rewards`
 
-**向量形状转化流转换：**
+<strong>向量形状转化流转换：</strong>
 
 `policy_model = llama13b
 ref_model = deepcopy(llama13b).eval()
@@ -97,11 +97,11 @@ return (per_token_logps * loss_mask).sum(-1)  ##([8])
 返回的是每个句子中所有的token的概率之和
 用此chosen概率shape:([4])和rejected概率shape:([4])，送入上面的dpo_loss函数中。用句子token的概率之和衡量模型对句子选择的概率。`
 
-**缺点：**
+<strong>缺点：</strong>
 
 1、由loss函数可知，其只是增加了chosen和rejected之间的差值，但是并未对其本身打分做loss，可能会导致chosen和rejected都很小甚至是负数，但是他们的差距很大。2、由于chosen的结果一般都比rejected的结果更长，所以经过dpo之后，可能会导致输出某些情况下的结果更长，不准确和重复的问题。
 
-**参考文献：**
+<strong>参考文献：</strong>
 
 [消费级显卡搞定RLHF——DPO算法+QLora微调LLM拒绝有害问题回答实战 - 知乎 (zhihu.com)](https://zhuanlan.zhihu.com/p/641620563)
 

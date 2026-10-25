@@ -25,13 +25,13 @@ id: 985088c6-eb83-401d-9339-34154d9be749
 
 ![Author](https://proxy-prod.omnivore-image-cache.app/98x98,snqIUoiEemGzFL7_uV4xwNvAiHxHGJne4hTdJgGUr2_0/https://www.pinecone.io/_next/image/?url=https%3A%2F%2Fcdn.sanity.io%2Fimages%2Fvr8gru94%2Fproduction%2F9f722be20c8f1800c6a43e8bc87256078071d90d-512x512.webp&w=3840&q=100)
 
-In the context of building LLM-related applications, **chunking** is the process of breaking down large pieces of text into smaller segments. It’s an essential technique that helps optimize the relevance of the content we get back from a [vector database ](https://www.pinecone.io/learn/vector-database/)once we use the LLM to embed content. In this blog post, we’ll explore if and how it helps improve efficiency and accuracy in LLM-related applications.
+In the context of building LLM-related applications, <strong>chunking</strong> is the process of breaking down large pieces of text into smaller segments. It’s an essential technique that helps optimize the relevance of the content we get back from a [vector database ](https://www.pinecone.io/learn/vector-database/)once we use the LLM to embed content. In this blog post, we’ll explore if and how it helps improve efficiency and accuracy in LLM-related applications.
 
 As we know, any content that we index in Pinecone needs to be [embedded](https://www.pinecone.io/learn/vector-embeddings-for-developers/) first. The main reason for chunking is to ensure we’re embedding a piece of content with as little noise as possible that is still semantically relevant.
 
 For example, in semantic search, we index a corpus of documents, with each document containing valuable information on a specific topic. By applying an effective chunking strategy, we can ensure our search results accurately capture the essence of the user’s query. If our chunks are too small or too large, it may lead to imprecise search results or missed opportunities to surface relevant content. As a rule of thumb, if the chunk of text makes sense without the surrounding context to a human, it will make sense to the language model as well. Therefore, finding the optimal chunk size for the documents in the corpus is crucial to ensuring that the search results are accurate and relevant.
 
-Another example is conversational agents (which we covered before using Python and Javascript). We use the embedded chunks to build the **context** for the conversational agent based on a knowledge base that **grounds** the agent in trusted information. In this situation, it’s important to make the right choice about our chunking strategy for two reasons: First, it will determine whether the context is actually relevant to our prompt. Second, it will determine whether or not we’ll be able to fit the retrieved text into the context before sending it to an outside model provider (e.g., OpenAI), given the limitations on the number of tokens we can send for each request. In some cases, like when using GPT-4 with a 32k context window, fitting the chunks might not be an issue. Still, we need to be mindful of when we’re using very big chunks, as this may adversely affect the relevancy of the results we get back from Pinecone.
+Another example is conversational agents (which we covered before using Python and Javascript). We use the embedded chunks to build the <strong>context</strong> for the conversational agent based on a knowledge base that <strong>grounds</strong> the agent in trusted information. In this situation, it’s important to make the right choice about our chunking strategy for two reasons: First, it will determine whether the context is actually relevant to our prompt. Second, it will determine whether or not we’ll be able to fit the retrieved text into the context before sending it to an outside model provider (e.g., OpenAI), given the limitations on the number of tokens we can send for each request. In some cases, like when using GPT-4 with a 32k context window, fitting the chunks might not be an issue. Still, we need to be mindful of when we’re using very big chunks, as this may adversely affect the relevancy of the results we get back from Pinecone.
 
 In this post, we’ll explore several chunking methods and discuss the tradeoffs you should think about when choosing a chunking size and method. Finally, we’ll give some recommendations for determining the best chunk size and method that will be appropriate for your application.
 
@@ -45,9 +45,9 @@ Pinecone is the developer-favorite [vector database](https://www.pinecone.io/lea
 
 When we embed our content, we can anticipate distinct behaviors depending on whether the content is short (like sentences) or long (like paragraphs or entire documents).
 
-When a **sentence** is embedded, the resulting vector focuses on the sentence’s specific meaning. The comparison would naturally be done on that level when compared to other sentence embeddings. This also implies that the embedding may miss out on broader contextual information found in a paragraph or document.
+When a <strong>sentence</strong> is embedded, the resulting vector focuses on the sentence’s specific meaning. The comparison would naturally be done on that level when compared to other sentence embeddings. This also implies that the embedding may miss out on broader contextual information found in a paragraph or document.
 
-When a **full paragraph or document** is embedded, the embedding process considers both the overall context and the relationships between the sentences and phrases within the text. This can result in a more comprehensive vector representation that captures the broader meaning and themes of the text. Larger input text sizes, on the other hand, may introduce noise or dilute the significance of individual sentences or phrases, making finding precise matches when querying the index more difficult.
+When a <strong>full paragraph or document</strong> is embedded, the embedding process considers both the overall context and the relationships between the sentences and phrases within the text. This can result in a more comprehensive vector representation that captures the broader meaning and themes of the text. Larger input text sizes, on the other hand, may introduce noise or dilute the significance of individual sentences or phrases, making finding precise matches when querying the index more difficult.
 
 The length of the query also influences how the embeddings relate to one another. A shorter query, such as a single sentence or phrase, will concentrate on specifics and may be better suited for matching against sentence-level embeddings. A longer query that spans more than one sentence or a paragraph may be more in tune with embeddings at the paragraph or document level because it is likely looking for broader context or themes.
 
@@ -57,10 +57,10 @@ The index may also be non-homogeneous and contain embeddings for chunks of _vary
 
 Several variables play a role in determining the best chunking strategy, and these variables vary depending on the use case. Here are some key aspects to keep in mind:
 
-1. **What is the nature of the content being indexed?** Are you working with long documents, such as articles or books, or shorter content, like tweets or instant messages? The answer would dictate both which model would be more suitable for your goal and, consequently, what chunking strategy to apply.
-2. **Which embedding model are you using, and what chunk sizes does it perform optimally on?** For instance, [sentence-transformer](https://huggingface.co/sentence-transformers) models work well on individual sentences, but a model like [text-embedding-ada-002](https://openai.com/blog/new-and-improved-embedding-model) performs better on chunks containing 256 or 512 tokens.
-3. **What are your expectations for the length and complexity of user queries?** Will they be short and specific or long and complex? This may inform the way you choose to chunk your content as well so that there’s a closer correlation between the embedded query and embedded chunks.
-4. **How will the retrieved results be utilized within your specific application?** For example, will they be used for semantic search, question answering, summarization, or other purposes? For example, if your results need to be fed into another LLM with a token limit, you’ll have to take that into consideration and limit the size of the chunks based on the number of chunks you’d like to fit into the request to the LLM.
+1. <strong>What is the nature of the content being indexed?</strong> Are you working with long documents, such as articles or books, or shorter content, like tweets or instant messages? The answer would dictate both which model would be more suitable for your goal and, consequently, what chunking strategy to apply.
+2. <strong>Which embedding model are you using, and what chunk sizes does it perform optimally on?</strong> For instance, [sentence-transformer](https://huggingface.co/sentence-transformers) models work well on individual sentences, but a model like [text-embedding-ada-002](https://openai.com/blog/new-and-improved-embedding-model) performs better on chunks containing 256 or 512 tokens.
+3. <strong>What are your expectations for the length and complexity of user queries?</strong> Will they be short and specific or long and complex? This may inform the way you choose to chunk your content as well so that there’s a closer correlation between the embedded query and embedded chunks.
+4. <strong>How will the retrieved results be utilized within your specific application?</strong> For example, will they be used for semantic search, question answering, summarization, or other purposes? For example, if your results need to be fed into another LLM with a token limit, you’ll have to take that into consideration and limit the size of the chunks based on the number of chunks you’d like to fit into the request to the LLM.
 
 Answering these questions will allow you to develop a chunking strategy that balances performance and accuracy, and this, in turn, will ensure the query results are more relevant.
 
@@ -93,14 +93,14 @@ These are a set of methods for taking advantage of the nature of the content we�
 
 As we mentioned before, many models are optimized for embedding sentence-level content. Naturally, we would use sentence chunking, and there are several approaches and tools available to do this, including:
 
-* **Naive splitting:** The most naive approach would be to split sentences by periods (“.”) and new lines. While this may be fast and simple, this approach would not take into account all possible edge cases. Here’s a very simple example:
+* <strong>Naive splitting:</strong> The most naive approach would be to split sentences by periods (“.”) and new lines. While this may be fast and simple, this approach would not take into account all possible edge cases. Here’s a very simple example:
 
 ```ini
 text = "..." # your text
 docs = text.split(".")
 ```
 
-* [**NLTK**](https://www.nltk.org/): The Natural Language Toolkit (NLTK) is a popular Python library for working with human language data. It provides a sentence tokenizer that can split the text into sentences, helping to create more meaningful chunks. For example, to use NLTK with LangChain, you can do the following:
+* [<strong>NLTK</strong>](https://www.nltk.org/): The Natural Language Toolkit (NLTK) is a popular Python library for working with human language data. It provides a sentence tokenizer that can split the text into sentences, helping to create more meaningful chunks. For example, to use NLTK with LangChain, you can do the following:
 
 ```makefile
 text = "..." # your text
@@ -109,7 +109,7 @@ text_splitter = NLTKTextSplitter()
 docs = text_splitter.split_text(text)
 ```
 
-* [**spaCy**](https://spacy.io/): spaCy is another powerful Python library for NLP tasks. It offers a sophisticated sentence segmentation feature that can efficiently divide the text into separate sentences, enabling better context preservation in the resulting chunks. For example, to use spaCy with LangChain, you can do the following:
+* [<strong>spaCy</strong>](https://spacy.io/): spaCy is another powerful Python library for NLP tasks. It offers a sophisticated sentence segmentation feature that can efficiently divide the text into separate sentences, enabling better context preservation in the resulting chunks. For example, to use spaCy with LangChain, you can do the following:
 
 ```makefile
 text = "..." # your text
@@ -140,7 +140,7 @@ docs = text_splitter.create_documents([text])
 
 Markdown and LaTeX are two examples of structured and formatted content you might run into. In these cases, you can use specialized chunking methods to preserve the original structure of the content during the chunking process.
 
-* [**Markdown**](https://www.markdownguide.org/): Markdown is a lightweight markup language commonly used for formatting text. By recognizing the Markdown syntax (e.g., headings, lists, and code blocks), you can intelligently divide the content based on its structure and hierarchy, resulting in more semantically coherent chunks. For example:
+* [<strong>Markdown</strong>](https://www.markdownguide.org/): Markdown is a lightweight markup language commonly used for formatting text. By recognizing the Markdown syntax (e.g., headings, lists, and code blocks), you can intelligently divide the content based on its structure and hierarchy, resulting in more semantically coherent chunks. For example:
 
 ```makefile
 from langchain.text_splitter import MarkdownTextSplitter
@@ -150,7 +150,7 @@ markdown_splitter = MarkdownTextSplitter(chunk_size=100, chunk_overlap=0)
 docs = markdown_splitter.create_documents([markdown_text])
 ```
 
-* [**LaTex**](https://www.latex-project.org/): LaTeX is a document preparation system and markup language often used for academic papers and technical documents. By parsing the LaTeX commands and environments, you can create chunks that respect the logical organization of the content (e.g., sections, subsections, and equations), leading to more accurate and contextually relevant results. For example:
+* [<strong>LaTex</strong>](https://www.latex-project.org/): LaTeX is a document preparation system and markup language often used for academic papers and technical documents. By parsing the LaTeX commands and environments, you can create chunks that respect the logical organization of the content (e.g., sections, subsections, and equations), leading to more accurate and contextually relevant results. For example:
 
 ```makefile
 from langchain.text_splitter import LatexTextSplitter
@@ -163,9 +163,9 @@ docs = latex_splitter.create_documents([latex_text])
 
 Here are some pointers to help you come up with an optimal chunk size if the common chunking approaches, like fixed chunking, don’t easily apply to your use case.
 
-* **Preprocessing your Data** \- You need to first pre-process your data to ensure quality before determining the best chunk size for your application. For example, if your data has been retrieved from the web, you might need to remove HTML tags or specific elements that just add noise.
-* **Selecting a Range of Chunk Sizes** \- Once your data is preprocessed, the next step is to choose a range of potential chunk sizes to test. As mentioned previously, the choice should take into account the nature of the content (e.g., short messages or lengthy documents), the embedding model you’ll use, and its capabilities (e.g., token limits). The objective is to find a balance between preserving context and maintaining accuracy. Start by exploring a variety of chunk sizes, including smaller chunks (e.g., 128 or 256 tokens) for capturing more granular semantic information and larger chunks (e.g., 512 or 1024 tokens) for retaining more context.
-* **Evaluating the Performance of Each Chunk Size** \- In order to test various chunk sizes, you can either use multiple indices or a single index with multiple [namespaces](https://docs.pinecone.io/docs/namespaces). With a representative dataset, create the embeddings for the chunk sizes you want to test and save them in your index (or indices). You can then run a series of queries for which you can evaluate quality, and compare the performance of the various chunk sizes. This is most likely to be an iterative process, where you test different chunk sizes against different queries until you can determine the best-performing chunk size for your content and expected queries.
+* <strong>Preprocessing your Data</strong> \- You need to first pre-process your data to ensure quality before determining the best chunk size for your application. For example, if your data has been retrieved from the web, you might need to remove HTML tags or specific elements that just add noise.
+* <strong>Selecting a Range of Chunk Sizes</strong> \- Once your data is preprocessed, the next step is to choose a range of potential chunk sizes to test. As mentioned previously, the choice should take into account the nature of the content (e.g., short messages or lengthy documents), the embedding model you’ll use, and its capabilities (e.g., token limits). The objective is to find a balance between preserving context and maintaining accuracy. Start by exploring a variety of chunk sizes, including smaller chunks (e.g., 128 or 256 tokens) for capturing more granular semantic information and larger chunks (e.g., 512 or 1024 tokens) for retaining more context.
+* <strong>Evaluating the Performance of Each Chunk Size</strong> \- In order to test various chunk sizes, you can either use multiple indices or a single index with multiple [namespaces](https://docs.pinecone.io/docs/namespaces). With a representative dataset, create the embeddings for the chunk sizes you want to test and save them in your index (or indices). You can then run a series of queries for which you can evaluate quality, and compare the performance of the various chunk sizes. This is most likely to be an iterative process, where you test different chunk sizes against different queries until you can determine the best-performing chunk size for your content and expected queries.
 
 ## Conclusion
 

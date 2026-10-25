@@ -19,17 +19,17 @@ source_url: https://zhuanlan.zhihu.com/p/66406815
 
 这是一篇anchor free的目标检测的论文，文中指出，使用anchor的缺点在于：1. anchor boxes数量巨大，使得正负例不平衡，一般采取的方法有设置IOU阈值上下限，并给定正负例比例(比如1:3)，或者难负例挖掘；2. 引入了超参数，比如anchor的scale，aspect ratio，确定这些超参数是一个较为复杂的工作。
 
-本文提出一个方法CornerNet，顾名思义就是使用左上角和右下角来预测bbox。如图1所示，输入image经过一个ConvNet（用于生成feature map）后，分上下两支，上面分支module负责预测左上角corner，下面分支module负责预测右下角corner。以上面分支为例，这个module以backbone的输出feature map作为输入，输出是heatmaps，预测某个location是否是左上角。这样上下两个分支分别预测出左上角corners和右下角corners，但是哪个左上角对应哪个右下角呢？从图1中可见，每个分支还为corner生成embedding vector，这个嵌入向量与NLP中的词嵌入向量类似，在NLP中将每个word映射到向量空间某一点。这里类似地，将每个corner映射到向量空间某一点，且如果某个topleft corner与bottomright corner属于同一个目标，那么可以**人为设计**让这两corner在向量空间应该靠的很近，即对应embedding vector 差的L1范数很小，这样在检测阶段，使用一个阈值，当某个tl corner与 br corner的embedding vector的差的L1范数小于这个阈值时，就可以认为tl corner与br norner组成一个 bbox。
+本文提出一个方法CornerNet，顾名思义就是使用左上角和右下角来预测bbox。如图1所示，输入image经过一个ConvNet（用于生成feature map）后，分上下两支，上面分支module负责预测左上角corner，下面分支module负责预测右下角corner。以上面分支为例，这个module以backbone的输出feature map作为输入，输出是heatmaps，预测某个location是否是左上角。这样上下两个分支分别预测出左上角corners和右下角corners，但是哪个左上角对应哪个右下角呢？从图1中可见，每个分支还为corner生成embedding vector，这个嵌入向量与NLP中的词嵌入向量类似，在NLP中将每个word映射到向量空间某一点。这里类似地，将每个corner映射到向量空间某一点，且如果某个topleft corner与bottomright corner属于同一个目标，那么可以<strong>人为设计</strong>让这两corner在向量空间应该靠的很近，即对应embedding vector 差的L1范数很小，这样在检测阶段，使用一个阈值，当某个tl corner与 br corner的embedding vector的差的L1范数小于这个阈值时，就可以认为tl corner与br norner组成一个 bbox。
 
-![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_1cd69f5aa0d4.jpg)
+![](/images/collections/0.raw/zhihu/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%EF%BC%81/asset/img_1cd69f5aa0d4.jpg)
 
 本文另一个创新点是使用了corner pooling，即图1中上下两个分支分别使用了corner pooling，这个layer有助于更好地定位bbox的corner。如图2，一个目标的bbox的corner往往位于目标之外，
 
-![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_85a4e8e05982.jpg)
+![](/images/collections/0.raw/zhihu/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%EF%BC%81/asset/img_85a4e8e05982.jpg)
 
 所以要确定一个location是不是corner，仅凭location附近的局部信息是不够的。作者认为，要确定一个location是不是top-left corner，需要从这个location水平向右看，才能知道是不是目标的topmost边界，同理，从这个location垂直向下看，才能知道是不是目标的leftmost边界。这就是corner pooling层，如图3，以两个feature map作为输入，在每个location位置，从其中一个feature map上max-pool所有位于这个location右边的位置的feature vectors，从另外一个feature map上max-pool所有位于这个location下边的位置的feature vectors，然后将得到的两个vector相加，最终得到这个location的vector，为什么是一个vector呢？因为每个category独立进行，所以是一个vector，其长度为category数量。所有location的vector就组成heatmap。
 
-![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_06f4005fbd23.jpg)
+![](/images/collections/0.raw/zhihu/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%EF%BC%81/asset/img_06f4005fbd23.jpg)
 
 作者还解释了为什么使用检测corner的方法。首先，比起检测bbox的中心，corner仅依赖于object 的两条边，而center则依赖四条边，所以检测corner显得更简单些，并且corner pooling层运用了corner的先验知识（即corner的定义，比如左上角corner是由topmost边界和leftmost边界确定），使得检测更加简单；其次，比起使用region proposal的检测方法，corner在离散化bbox空间更加高效，比如 `(h,w)`的feature map，corner总共有 wh 种可能性，而anchor box则有 [1+2+\cdot \cdot \cdot+(w-1)][1+2+\cdot\cdot\cdot+(h-1)]=\frac {w(w-1) h(h-1)} 4 种可能性，所以可以说使用了 O(wh)  的corners 来表征 O(w^2h^2) 的anchor boxes（之前sota方法中也是固定一组anchor 的scale和aspect ratio，使得每个location有A个anchor，从而降低anchor的可能性到 Awh ，即 O(wh) ）。
 
@@ -38,7 +38,7 @@ source_url: https://zhuanlan.zhihu.com/p/66406815
 - 概述
 简单概括CornerNet就是使用一个卷积网络ConvNet生成两组heat maps来预测不同分类下的corners，其中一组负责预测左上角，另一组负责预测右下角。ConvNet为每个corner预测embedding vector，用于判断某左上角和右下角是否同属一个目标，并且为了使得通过预测左上角和右下角corner得到的bbox更加紧贴目标，ConvNet还预测了corner的location偏差offset。如图4，
 
-![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_85eb8875ee61.jpg)
+![](/images/collections/0.raw/zhihu/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%EF%BC%81/asset/img_85eb8875ee61.jpg)
 
 backbone使用hourglass network，后接两个预测模块（top-left和bottom-right），每个模块有自己的corner pooling层，预测heatmap，embedding和offset三个部分。虽然当前的目标检测方法很多都是对不同scale的目标使用不同scale的feature（FPN），但是本文仅将预测模块应用到hourglass network的输出上。
 
@@ -48,7 +48,7 @@ backbone使用hourglass network，后接两个预测模块（top-left和bottom-r
 
 对于某个corner，仅有一个gt positive location，其他location相对于这个corner均为negative。训练阶段，损失函数中对negative location的惩罚不是一视同仁的，因为即使一对错误的corner检测（左上和右下），如果足够靠近 gt corner locations，那么生成的box与 gt box 有很大的IOU，如图5，
 
-![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_f470d9b0809b.jpg)
+![](/images/collections/0.raw/zhihu/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%EF%BC%81/asset/img_f470d9b0809b.jpg)
 
 所以在以gt corner location为中心的某个圆内，应该降低对negative location的惩罚比较合理，随着negative location远离圆中心，逐渐增大惩罚。记 y_{cij} 为gt heatmap的值，当 (i,j) 位置处是gt corner且对应分类为 c 时， y_{cij}=1 表示positive，其余情况 y_{cij}=0 表示negative，现在既然在gt corner对应分类 c 下对一定几何范围内的negative location 降低惩罚，不如修改 y_{cij} 为
 
@@ -62,7 +62,7 @@ $L_{det} = -\frac 1 N \sum_{c=1}^C \sum_{i=1}^H \sum_{j=1}^W \begin {cases} (1-p
 
 其中N为一个image中object的数量， \alpha, \ \beta 为超参数（分别设置为2和4）控制各项对损失的贡献， p_{cij} 为预测heatmap上的预测值（预测位置 (i,j) 处是分类为 c 的corner的概率）。从上式可见，只对negative positive考虑降低惩罚。
 
-**坐标精度修复**
+<strong>坐标精度修复</strong>
 
 由于下采样，ConvNet的输出分辨率较输入image的小，假设下采样率为 n，image上location (x,y) 映射到heatmap上位置为 (\lfloor \frac x n \rfloor, \ \lfloor \frac y n \rfloor) ，当在heatmap上预测出一个corner后，映射回image时坐标精度有所损失，在小目标的情况下，这将会显著影响IOU。为此作者增加一个坐标偏差的预测，gt 的坐标偏差为
 
@@ -76,7 +76,7 @@ $L_{off}=\frac 1 N \sum_{k=1}^N \sum_{i \in \{x,y\}}\text{SmoothL1Loss}(\mathbf 
 
 x_0=\lfloor (x+\Delta x)n \rfloor , \ y_0=\lfloor(y+\Delta y)n \rfloor 
 
-**Grouping Corners**
+<strong>Grouping Corners</strong>
 
 两组heatmaps中将会分别预测出很多左上角corners和右下角corners，如何确定某个左上角corner和右下角corner（组成一对corners）是否来自同一目标？作者使用embedding方法，为每个corner生成embedding vector，如果一对corners来自于同一目标，那么对应的两个embedding vector应该很接近，一个衡量接近的指标是vector的差的L1范数足够小。
 
@@ -98,7 +98,7 @@ $$L_{pull}=\frac 1 N \sum_{k=1}^N  \frac {(e_{tk}-e_{bk})^2} 2 \\ L_{push}=\frac
 
 测试阶段，假设分别从两组heatmap上得到K个top-left corners和K个bottom-right corners，那么共有 K^2 pairs（一个top-left与一个bottom-right corner组成一个pair），对每个pair计算 |e_{tk}-e_{bj}| ，如果超过一个阈值（0.5），则这个pair将被忽略，即不能得到object box。实际上从源码中可以看出对 K^2 个pair，还有其他一些筛选条件，比如得分（来自于heatmap），坐标值范围检测，pair中top-left与bottom-right两个corner的分类是否一致等。筛选之后还要（对每个分类分别）使用soft nms等方法，才得到最终的检测结果。具体请阅读源码。
 
-**Corner Pooling**
+<strong>Corner Pooling</strong>
 
 Corner Pooling前面已经讨论了，如图3，这里讲下具体的做法，以top-left为例，假设位置 (i,j) 是一个top-left corner，记corner pooling层的输入feature maps分别为 f_t, \ f_l ，feature map的size均为 H \times W ，记 (i,j) 处的feature vector分别为 f_{t_{ij}}, \ f_{l_{ij}} ，首先max-pool位于 (i,j) 到 (i,H) 之间所有location的feature vector，得到 (i,j) 处的响应向量 t_{ij} ，vector长度为分类数量，表示每个分类独立进行，然后max-pool位于 (i,j) 到 (W,j) 之间所有location的feature vector，得到 (i,j) 处的响应向量 l_{ij} ，这就是向右看和向下看，找出最大值，作为当前位置的响应，（对于bottom-right则是类似的，但是方向反过来）
 
@@ -106,15 +106,15 @@ $t_{ij}=\begin{cases} \max (f_{t_{ij}}, t_{(i+1)j})  & i  $
 
 观察上两式，发现这其实是一个递归的计算式，可以反过来计算提高效率，计算过程如图6，
 
-![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_61dd165c6d81.jpg)
+![](/images/collections/0.raw/zhihu/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%EF%BC%81/asset/img_61dd165c6d81.jpg)
 
 Corner Pooling模块（包含了前后的conv+bn+relu等层）如图7所示，
 
-![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_e68b8d958d9c.jpg)
+![](/images/collections/0.raw/zhihu/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%EF%BC%81/asset/img_e68b8d958d9c.jpg)
 
 这个结构就不细说了，直接看论文说明和源码。
 
-**Hourglass Network**
+<strong>Hourglass Network</strong>
 
 CornerNet的backbone使用Hourglass网络，这个网络在人体姿态估计任务中首次被引入。Hourglass网络是全卷积网络，包含一个或多个hourglass模块。
 
@@ -126,7 +126,7 @@ CornerNet的backbone使用Hourglass网络，这个网络在人体姿态估计任
 
 hourglass结构如下图
 
-![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_42c9b9431636.jpg)
+![](/images/collections/0.raw/zhihu/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%EF%BC%81/asset/img_42c9b9431636.jpg)
 
 显然这个结构是嵌套的（总共5层嵌套，第5层嵌套没有`up1`），可以使用递归构造，从上图中可见，`low1`具有下采样率2，而`low3+up2`则具有上采样率2（最近邻插值），所以结构对称，并且经过`low1` ，channel可能会增大，而经过`low3+up2`，channel可能会减小，大概就是这么个过程，如下代码片段（经过简化处理，参考源码）
 
@@ -140,7 +140,7 @@ for i in range(5):
 
 前面讲到 input feature的spatial size为 128 \times 128 ，由于经过hourglass，feature 分辨率保持不变，所以经过backbone后的feature size依然为 128 \times 128 。
 
-**Experiments**
+<strong>Experiments</strong>
 
 为了避免过拟合，采样了随机水平翻转、在image上随机crop（保证crop中心位于 image中心的一定范围内）以及颜色抖动（调整对比度，亮度和饱和度）。
 

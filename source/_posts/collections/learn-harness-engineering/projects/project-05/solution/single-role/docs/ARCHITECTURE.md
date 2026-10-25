@@ -39,12 +39,12 @@ Persistence (Filesystem)
 
 ### Renderer Layer (`src/renderer/`)
 
-**Responsibilities:**
+<strong>Responsibilities:</strong>
 - Render UI components using React
 - Handle user input and display results
 - Communicate with main process exclusively through `window.knowledgeBase` API
 
-**Constraints:**
+<strong>Constraints:</strong>
 - MUST NOT import `fs`, `path`, `os`, `child_process`, or any Node.js core module
 - MUST NOT access Electron APIs directly
 - MUST NOT contain business logic or data transformation beyond display formatting
@@ -52,37 +52,37 @@ Persistence (Filesystem)
 
 ### Preload Layer (`src/preload/`)
 
-**Responsibilities:**
+<strong>Responsibilities:</strong>
 - Expose a typed API to the renderer via `contextBridge.exposeInMainWorld`
 - Map IPC channel names to typed function signatures
 - Act as the security boundary between renderer and main process
 
-**Constraints:**
+<strong>Constraints:</strong>
 - MUST NOT contain business logic
 - MUST NOT import services directly
 - Only uses `ipcRenderer.invoke` for communication
 
 ### Main Process (`src/main/`)
 
-**Responsibilities:**
+<strong>Responsibilities:</strong>
 - Create and manage BrowserWindow instances
 - Register IPC handlers that delegate to services
 - Initialize services and manage their lifecycle
 - Handle application lifecycle events (ready, activate, window-all-closed)
 
-**Constraints:**
+<strong>Constraints:</strong>
 - MUST NOT contain business logic beyond request routing
 - Delegates all work to service classes
 - Does not directly access persistence layer
 
 ### Services Layer (`src/services/`)
 
-**Responsibilities:**
+<strong>Responsibilities:</strong>
 - Implement all business logic (document management, indexing, Q&A)
 - Use `PersistenceService` for all filesystem operations
 - Use `logger` for structured logging
 
-**Constraints:**
+<strong>Constraints:</strong>
 - MUST NOT import Electron APIs (`ipcMain`, `BrowserWindow`, etc.)
 - MUST NOT import React or renderer components
 - All filesystem access goes through `PersistenceService`

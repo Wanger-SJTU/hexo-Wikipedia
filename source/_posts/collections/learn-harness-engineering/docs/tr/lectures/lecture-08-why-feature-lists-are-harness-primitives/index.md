@@ -22,7 +22,7 @@ Bir ajandan bir e-ticaret sitesi inşa etmesini istiyorsunuz. Bitirdikten sonra 
 
 Özellik listeleri, birçok insanın gözünde sadece bir not — unutmamak için bir şeyleri yazıp sonra bir kenara atın. Ancak harness dünyasında bir özellik listesi insanlar için bir not değildir — tüm harness'ın omurgasıdır. Zamanlayıcı görevleri seçmek için ona güvenir, doğrulayıcı tamamlanmaya karar vermek için ona güvenir, devir raportörü özetleri oluşturmak için ona güvenir. Omurgayı kırın, tüm beden felç olur.
 
-Hem Anthropic hem de OpenAI vurgular: **artefaktlar dışsallaştırılmalıdır.** Özellik durumu yapılandırılmamış konuşma metninde değil, depoda makine tarafından okunabilir bir dosyada yaşamalıdır.
+Hem Anthropic hem de OpenAI vurgular: <strong>artefaktlar dışsallaştırılmalıdır.</strong> Özellik durumu yapılandırılmamış konuşma metninde değil, depoda makine tarafından okunabilir bir dosyada yaşamalıdır.
 
 ## Ajanlar "tamam"ın ne anlama geldiğini bilmez
 
@@ -64,12 +64,12 @@ flowchart LR
 
 ## Temel kavramlar
 
-- **Özellik listeleri harness temel yapı taşıdır**: "İsteğe bağlı planlama araçları" değil, diğer tüm harness bileşenlerinin bağlı olduğu temel veri yapılarıdır. Veritabanı tablo yapıları gibi — "birincil anahtarları atlayalım" diyemezsiniz.
-- **Üçlü yapı**: Her özellik öğesi bir `(davranış tanımı, doğrulama komutu, mevcut durum)` üçlüsüdür. Herhangi bir öğenin eksikliği öğeyi eksik yapar.
-- **Durum makinesi modeli**: Her özellik öğesinin dört durumu vardır — `not_started`, `active`, `blocked`, `passing`. Durum geçişleri harness tarafından kontrol edilir, ajan tarafından serbestçe değiştirilmez.
-- **Geçer-durum kapısı**: Bir özelliğin `active`'ten `passing`'e geçmesinin tek yolu doğrulama komutunun başarıyla yürütülmesidir. Bu geri alınamaz — bir kez `passing` olduğunda geri dönemez. Sınavı geçmek, geçtiğiniz anlamına gelir, notu geriye dönük değiştiremezsiniz.
-- **Tek doğruluk kaynağı**: "Yapılması gerekenler" hakkındaki tüm bilgi tek bir özellik listesinden türetilmelidir. Özellik listesi ile konuşma geçmişi arasında çelişkiler olmamalıdır.
-- **Geri basınç (Back-pressure)**: Henüz geçmemiş özelliklerin sayısı harness'ın ajana uyguladığı basınçtır. Sıfır basınç = proje tamamlandı.
+- <strong>Özellik listeleri harness temel yapı taşıdır</strong>: "İsteğe bağlı planlama araçları" değil, diğer tüm harness bileşenlerinin bağlı olduğu temel veri yapılarıdır. Veritabanı tablo yapıları gibi — "birincil anahtarları atlayalım" diyemezsiniz.
+- <strong>Üçlü yapı</strong>: Her özellik öğesi bir `(davranış tanımı, doğrulama komutu, mevcut durum)` üçlüsüdür. Herhangi bir öğenin eksikliği öğeyi eksik yapar.
+- <strong>Durum makinesi modeli</strong>: Her özellik öğesinin dört durumu vardır — `not_started`, `active`, `blocked`, `passing`. Durum geçişleri harness tarafından kontrol edilir, ajan tarafından serbestçe değiştirilmez.
+- <strong>Geçer-durum kapısı</strong>: Bir özelliğin `active`'ten `passing`'e geçmesinin tek yolu doğrulama komutunun başarıyla yürütülmesidir. Bu geri alınamaz — bir kez `passing` olduğunda geri dönemez. Sınavı geçmek, geçtiğiniz anlamına gelir, notu geriye dönük değiştiremezsiniz.
+- <strong>Tek doğruluk kaynağı</strong>: "Yapılması gerekenler" hakkındaki tüm bilgi tek bir özellik listesinden türetilmelidir. Özellik listesi ile konuşma geçmişi arasında çelişkiler olmamalıdır.
+- <strong>Geri basınç (Back-pressure)</strong>: Henüz geçmemiş özelliklerin sayısı harness'ın ajana uyguladığı basınçtır. Sıfır basınç = proje tamamlandı.
 
 ## Özellik listeleri neden "temel yapı taşı" olmalı
 
@@ -77,10 +77,10 @@ Belgeler insanların okuması içindir; temel yapı taşları sistemlerin yürü
 
 Bunu veritabanı tetikleyici kısıtlamalarına karşı uygulama katmanı kontrolleri gibi düşünün: birincisi veritabanı motoru tarafından zorlanır, hiçbir SQL onu atlayamaz; ikincisi uygulama kodu doğruluğuna bağlıdır ve yanlışlıkla atlatılabilir. Harness temel yapı taşı olarak özellik listeleri Spesifik olarak özellik listesi dört harness bileşenine hizmet eder:
 
-1. **Zamanlayıcı**: Durumları okur, sonraki `not_started` özelliği seçer. Bir fabrika üretim planlama sistemi gibi.
-2. **Doğrulayıcı**: Doğrulama komutlarını yürütür, durum geçişlerine izin verip vermeyeceğine karar verir. Kalite denetimi gibi.
-3. **Devir raportörü**: Özellik listesinden otomatik olarak oturum devir özetleri oluşturur. Otomatik bir vardiya değişim raporu gibi.
-4. **İlerleme takipçisi**: Durum dağılımını sayar, proje sağlık metrikleri sağlar. Bir gösterge paneli gibi.
+1. <strong>Zamanlayıcı</strong>: Durumları okur, sonraki `not_started` özelliği seçer. Bir fabrika üretim planlama sistemi gibi.
+2. <strong>Doğrulayıcı</strong>: Doğrulama komutlarını yürütür, durum geçişlerine izin verip vermeyeceğine karar verir. Kalite denetimi gibi.
+3. <strong>Devir raportörü</strong>: Özellik listesinden otomatik olarak oturum devir özetleri oluşturur. Otomatik bir vardiya değişim raporu gibi.
+4. <strong>İlerleme takipçisi</strong>: Durum dağılımını sayar, proje sağlık metrikleri sağlar. Bir gösterge paneli gibi.
 
 ## Doğru nasıl yapılır
 
@@ -120,19 +120,19 @@ Her özellik öğesi "bir oturumda tamamlanabilir" olacak şekilde kapsamlandır
 
 10 özellikli bir e-ticaret platformu. İki takip yaklaşımı karşılaştırıldı:
 
-**Not modu**: Ajan yapılandırılmamış notlar kullanır. 3 oturumdan sonra notlar "kullanıcı kimlik doğrulaması ve ürün listesini yaptım, alışveriş sepeti çoğunlukla tamam ama hataları var, ödemeler başlamadı" hâline gelir. Yeni oturumun durumu çıkarması için 20 dakika gerekir, sonunda tamamlanmış özellikleri yeniden uygular. Alışveriş listenizin "süt, ekmek ve o şey" demesi gibi — markette ne alacağınızı hâlâ bilmezsiniz.
+<strong>Not modu</strong>: Ajan yapılandırılmamış notlar kullanır. 3 oturumdan sonra notlar "kullanıcı kimlik doğrulaması ve ürün listesini yaptım, alışveriş sepeti çoğunlukla tamam ama hataları var, ödemeler başlamadı" hâline gelir. Yeni oturumun durumu çıkarması için 20 dakika gerekir, sonunda tamamlanmış özellikleri yeniden uygular. Alışveriş listenizin "süt, ekmek ve o şey" demesi gibi — markette ne alacağınızı hâlâ bilmezsiniz.
 
-**Omurga modu**: Her özelliğin net bir durumu ve doğrulama komutu vardır. Yeni oturum özellik listesini okur ve 3 dakika içinde bilir: F01-F05 `passing`, F06 `active`, F07-F10 `not_started`. Doğrudan F06'dan devam eder, sıfır yeniden çalışma.
+<strong>Omurga modu</strong>: Her özelliğin net bir durumu ve doğrulama komutu vardır. Yeni oturum özellik listesini okur ve 3 dakika içinde bilir: F01-F05 `passing`, F06 `active`, F07-F10 `not_started`. Doğrudan F06'dan devam eder, sıfır yeniden çalışma.
 
 Nicel sonuç: yapılandırılmış özellik listeleri kullanan projeler serbest formatlı takipten %45 daha yüksek özellik tamamlanma oranı gösterir, sıfır mükerrer uygulama ile.
 
 ## Önemli çıkarımlar
 
-- **Özellik listeleri harness'ın omurgasıdır**, insanlar için not değildir. Zamanlayıcı, doğrulayıcı ve devir raportörü hepsi onlara bağlıdır.
-- **Her özellik öğesi üçlüye sahip olmalıdır**: davranış tanımı + doğrulama komutu + mevcut durum. Bir öğenin eksikliği onu eksik yapar — bir bacağı eksik üç ayaklı tabure gibi.
-- **Durum geçişleri harness tarafından kontrol edilir** — ajan durumları kendi başına değiştiremez. Doğrulamayı geçmek = tek yükseltme yolu.
-- **Özellik listesi projenin tek doğruluk kaynağıdır** — tüm "ne yapılacak" bilgisi tek listeden türetilir.
-- **Ayrıntı düzeyini "bir oturumda tamamlanabilir" olarak kalibre edin.**
+- <strong>Özellik listeleri harness'ın omurgasıdır</strong>, insanlar için not değildir. Zamanlayıcı, doğrulayıcı ve devir raportörü hepsi onlara bağlıdır.
+- <strong>Her özellik öğesi üçlüye sahip olmalıdır</strong>: davranış tanımı + doğrulama komutu + mevcut durum. Bir öğenin eksikliği onu eksik yapar — bir bacağı eksik üç ayaklı tabure gibi.
+- <strong>Durum geçişleri harness tarafından kontrol edilir</strong> — ajan durumları kendi başına değiştiremez. Doğrulamayı geçmek = tek yükseltme yolu.
+- <strong>Özellik listesi projenin tek doğruluk kaynağıdır</strong> — tüm "ne yapılacak" bilgisi tek listeden türetilir.
+- <strong>Ayrıntı düzeyini "bir oturumda tamamlanabilir" olarak kalibre edin.</strong>
 
 ## Daha fazla okuma
 
@@ -143,8 +143,8 @@ Nicel sonuç: yapılandırılmış özellik listeleri kullanan projeler serbest 
 
 ## Alıştırmalar
 
-1. **Özellik listesi tasarımı**: Minimal bir özellik listesi JSON şeması tanımlayın. Şunları içerin: id, davranış tanımı, doğrulama komutu, mevcut durum, kanıt referansı. 5 özelliğe sahip gerçek bir projeyi tanımlamak için kullanın.
+1. <strong>Özellik listesi tasarımı</strong>: Minimal bir özellik listesi JSON şeması tanımlayın. Şunları içerin: id, davranış tanımı, doğrulama komutu, mevcut durum, kanıt referansı. 5 özelliğe sahip gerçek bir projeyi tanımlamak için kullanın.
 
-2. **Doğrulama katılığı karşılaştırması**: 3 özellik seçin ve hem "gevşek" bir doğrulama (örneğin "kodun sözdizimi hataları yok") hem de "katı" bir doğrulama (örneğin "uçtan uca test geçiyor") tasarlayın. Her yaklaşım altında yanlış pozitif oranını karşılaştırın.
+2. <strong>Doğrulama katılığı karşılaştırması</strong>: 3 özellik seçin ve hem "gevşek" bir doğrulama (örneğin "kodun sözdizimi hataları yok") hem de "katı" bir doğrulama (örneğin "uçtan uca test geçiyor") tasarlayın. Her yaklaşım altında yanlış pozitif oranını karşılaştırın.
 
-3. **Tek kaynak ilkesi denetimi**: Mevcut bir ajan projesini inceleyin ve özellik listesiyle çelişen kapsam bilgisini (konuşmalardaki örtük gereksinimler, koddaki TODO yorumları vb.) kontrol edin. Tüm bilgileri özellik listesinde birleştirmek için bir plan tasarlayın.
+3. <strong>Tek kaynak ilkesi denetimi</strong>: Mevcut bir ajan projesini inceleyin ve özellik listesiyle çelişen kapsam bilgisini (konuşmalardaki örtük gereksinimler, koddaki TODO yorumları vb.) kontrol edin. Tüm bilgileri özellik listesinde birleştirmek için bir plan tasarlayın.

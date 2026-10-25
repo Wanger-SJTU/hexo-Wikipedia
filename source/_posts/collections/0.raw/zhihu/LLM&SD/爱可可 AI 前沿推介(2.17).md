@@ -53,11 +53,11 @@ X Wang, D Zhou
 
 [https://arxiv.org/abs/2402.10200](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2402.10200)
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_890864f8f1d8.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_890864f8f1d8.jpg)
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_02288d74cc8a.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_02288d74cc8a.jpg)
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_ec421e6ad2ae.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_ec421e6ad2ae.jpg)
 
 #### 2、[CL] A Human-Inspired Reading Agent with Gist Memory of Very Long Contexts
 
@@ -86,9 +86,9 @@ K Lee, X Chen, H Furuta, J Canny, I Fischer
 
 [https://arxiv.org/abs/2402.09727](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2402.09727)
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_d3ddf1fcb8a4.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_d3ddf1fcb8a4.jpg)
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_40d6e14a203d.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_40d6e14a203d.jpg)
 
 #### 3、[CL] Generative Representational Instruction Tuning
 
@@ -118,11 +118,11 @@ N Muennighoff, H Su, L Wang, N Yang, F Wei, T Yu, A Singh, D Kiela
 
 [https://arxiv.org/abs/2402.09906](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2402.09906)
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_0eabe0f0fd88.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_0eabe0f0fd88.jpg)
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_c5abc75ca71a.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_c5abc75ca71a.jpg)
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_c8420d34db17.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_c8420d34db17.jpg)
 
 #### 4、[LG] DoRA: Weight-Decomposed Low-Rank Adaptation
 
@@ -150,11 +150,11 @@ DoRA：权重分解低秩自适应
 
 [https://arxiv.org/abs/2402.09353](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2402.09353)
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_e2738e7a0e5f.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_e2738e7a0e5f.jpg)
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_f59114a94f10.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_f59114a94f10.jpg)
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_c9b16d40054a.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_c9b16d40054a.jpg)
 
 #### 5、[CL] How to Train Data-Efficient LLMs
 
@@ -183,11 +183,11 @@ LLM数据高效预训练方法
 
 [https://arxiv.org/abs/2402.09668](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2402.09668)
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_40289c5e319a.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_40289c5e319a.jpg)
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_1fc7fc1ada08.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_1fc7fc1ada08.jpg)
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_b5f243c5ae69.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_b5f243c5ae69.jpg)
 
 #### 另外几篇值得关注的论文
 
@@ -196,42 +196,42 @@ LLM数据高效预训练方法
 [https://arxiv.org/abs/2402.10171](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2402.10171)
 研究了将语言模型上下文长度扩展到128K的连续预训练方法，重点在于数据工程。本文认为长上下文建模，特别是在任意输入位置利用信息的能力，主要已经通过大规模预训练获得，并且这种能力可以通过轻量的连续预训练在训练期间看到的上下文长度显著超过训练期间看到的上下文长度(如4K到128K)的适当数据混合上进一步扩展。研究了连续预训练所需的数据的数量和质量：(1)对于数量，本文表明5亿到50亿个标记足以使模型在128K的上下文中从任何位置检索信息；(2)对于质量，结果同样强调了领域平衡和长度上采样。通过对这些数据进行连续预训练，可以有效且经济地将语言模型的上下文长度扩展到128K，超过了强大的开源长上下文模型，并接近GPT-4 128K等前沿模型的性能。
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_8b12ae20116d.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_8b12ae20116d.jpg)
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_6f8eb04f87c0.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_6f8eb04f87c0.jpg)
 
 #### [CL]  OpenMathInstruct-1: A 1.8 Million Math Instruction Tuning Dataset
 
 [https://arxiv.org/abs/2402.10176](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2402.10176)
 OpenMathInstruct-1是一个包含180万个问题-解决方案对的数学指令数据集，通过生成流行的数学推理基准问题的代码解释器解决方案来构建。该数据集填补了闭源和开源语言模型之间的差距，并取得了竞争性的性能。OpenMathInstruct-1比现有数据集大4倍，并以宽松的许可证发布。通过精调模型的性能证明了数据集的质量。本文还讨论了训练数据的合成和使用少样本提示来提高覆盖范围的方法。本文公开发布了代码、模型和数据集，以支持开源工作的发展。
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_c2c8d91a6186.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_c2c8d91a6186.jpg)
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_8dce4a86a436.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_8dce4a86a436.jpg)
 
 #### [LG] Self-Play Fine-Tuning of Diffusion Models for Text-to-Image Generation
 
 [https://arxiv.org/abs/2402.10210](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2402.10210)
 介绍了一种名为SPIN-Diffusion的自弈微调算法，用于扩展扩散模型。通过与早期模型竞争，促进了迭代的自我改进过程。与传统的监督微调和强化学习策略相比，该方法显著改善了模型性能和对齐性。实验结果表明，SPIN-Diffusion在人类偏好对齐和视觉吸引力方面优于现有的监督微调方法，使用更少的数据即可超越基于强化学习的方法。
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_af673242138a.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_af673242138a.jpg)
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_feaea310ff3f.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_feaea310ff3f.jpg)
 
 #### [LG] BitDelta: Your Fine-Tune May Only Be Worth One Bit
 
 [https://arxiv.org/abs/2402.10193](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2402.10193)
 BitDelta是一种能够将微调模型的权重压缩到1bit的简单方法，不仅揭示了微调过程中添加信息的潜在冗余性，还对微调模型的服务和存储具有重要影响。通过使用高精度基础模型和多个1bit的增量，BitDelta大幅减少了GPU内存需求，提高了多用户设置下的生成延迟。通过对Llama-2和Mistral模型系列进行实验证明，BitDelta在所有测试设置中都显示出最小的性能下降。这一发现打破了以往对微调模型信息增量的认知。
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_7c971bcf6ccd.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_7c971bcf6ccd.jpg)
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_610391445288.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_610391445288.jpg)
 
 #### [LG] Hierarchical State Space Models for Continuous Sequence-to-Sequence Modeling
 
 [https://arxiv.org/abs/2402.10211](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2402.10211)
 Hierarchical State Space Models (HiSS)提出一种用于连续序列预测的新技术。HiSS利用堆叠的结构化状态空间模型来创建时间层次结构，在真实世界的传感器数据集上的性能比最先进的序列模型提高了至少23%。这种方法在处理非线性传感器、外部变量和数据相关漂移方面尤为有效。HiSS还展示了对较小数据集的高效扩展性，并与现有的数据过滤技术兼容。发布了CSP-Bench，一个用于处理真实世界传感器数据的连续序列预测的基准数据集，并提供了代码、数据集和视频供进一步探索。
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_3dace1606eba.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_3dace1606eba.jpg)
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_ef8cd17fe1ba.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_ef8cd17fe1ba.jpg)

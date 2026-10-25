@@ -33,7 +33,7 @@ word embeding 有很多种表示方法，在前DL时代就有很多方法，在N
 
 在这里输入要转换的内容假设有一个语料库C，其中有D个文档：{d1, d2, …, dD}，C中一共有N个word。这N个word构成了原始输入的dictionary，我们据此可以生成一个矩阵M，其规模是$D \times N$
 
-![Pasted image 20240602220627.png](/images/collections/assets/Pasted%2520image%252020240602220627.png)
+![Pasted image 20240602220627.png](/images/collections/assets/Pasted%20image%2020240602220627.png)
 
 - TF-IDF 
 上面的count word的方法总体来说还是有点太机械，对不同文档的适用性不是很强。于是就有了基于文档词频的方法。
@@ -96,26 +96,26 @@ Word2Vec的缺点可能包括：
 - 模型可能无法捕捉到所有类型的语义关系，特别是一些复杂的、依赖上下文的语义。
 
 
-词的表示中如果蕴含了上下文信息，那么将会更加接近自然语言的本质；并且，由于相似的词有相似的表示方法，甚至可以进行一些运算，例如：**人类-男人=女人**。但是，上述讨论中，有一个很大的缺陷，那就是词的向量表示维度过大，一个词要用大量其余的词来表示，为后续运算带来了很大的麻烦。因此，我们需要找到一种更好的表示方法，这种方法需要满足如下两点要求：
+词的表示中如果蕴含了上下文信息，那么将会更加接近自然语言的本质；并且，由于相似的词有相似的表示方法，甚至可以进行一些运算，例如：<strong>人类-男人=女人</strong>。但是，上述讨论中，有一个很大的缺陷，那就是词的向量表示维度过大，一个词要用大量其余的词来表示，为后续运算带来了很大的麻烦。因此，我们需要找到一种更好的表示方法，这种方法需要满足如下两点要求：
 
-- **携带上下文信息**
-- **词的表示是稠密的**
+- <strong>携带上下文信息</strong>
+- <strong>词的表示是稠密的</strong>
 
-事实证明，通过神经网络来进行建模，可以满足这两点要求。主流的建模方法又有两种：**CBOW**和**Skip – Gram**，下面分别介绍其思想。
+事实证明，通过神经网络来进行建模，可以满足这两点要求。主流的建模方法又有两种：<strong>CBOW</strong>和<strong>Skip – Gram</strong>，下面分别介绍其思想。
 
 ### 2.2.1 CBOW（continues bag of words）
 
-**CBOW**的全称是**continuous bag of words**。其本质是通过**context**来预测**word**。  
+<strong>CBOW</strong>的全称是<strong>continuous bag of words</strong>。其本质是通过<strong>context</strong>来预测<strong>word</strong>。  
 
 ![](//upload-images.jianshu.io/upload_images/1635417-2c8fb2b4b8c1e003.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/286/format/webp)
 
 CBOW语料库
 
   
-如上图所示，首先语料库内的每个**word**都可以用**one-hot**的方式编码。假设选取**Context Window**为**2**，那么模型中的一对**input**和**target**就是：
+如上图所示，首先语料库内的每个<strong>word</strong>都可以用<strong>one-hot</strong>的方式编码。假设选取<strong>Context Window</strong>为<strong>2</strong>，那么模型中的一对<strong>input</strong>和<strong>target</strong>就是：
 
-- **input**：**He**和**is**的**one-hot**编码
-- **target**：**a**的**one-hot**编码
+- <strong>input</strong>：<strong>He</strong>和<strong>is</strong>的<strong>one-hot</strong>编码
+- <strong>target</strong>：<strong>a</strong>的<strong>one-hot</strong>编码
 
 接着通过一个浅层神经网络来拟合该结果，如下图所示：
 
@@ -125,11 +125,11 @@ CBOW.png
 
 过程简单介绍如下（实际算法会用到哈夫曼编码等降维技巧，这里仅以理解为目的简介基本原理）：
 
-1. 输入为**C**个**V**维的**vector**。其中**C**为上下文窗口的大小，**V**为原始编码空间的规模。例如，示例中的**C=2**，**V=4**.两个**vector**分别为**4**维的**He**和**is**的**one-hot**编码形式；
-2. 激活函数相当简单，在输入层和隐藏层之间，每个**input vector**分别乘以一个**VxN**维度的矩阵，得到后的向量各个维度做平均，得到隐藏层的权重。隐藏层乘以一个**NxV**维度的矩阵，得到**output layer**的权重；
-3. 隐藏层的维度设置为理想中压缩后的词向量维度。示例中假设我们想把原始的**4**维的原始**one-hot**编码维度压缩到**2**维，那么**N=2**；
-4. 输出层是一个**softmax**层，用于组合输出概率。所谓的**损失函数**，就是这个**output**和**target**之间的的差（**output**的**V**维向量和**input vector**的**one-hot**编码向量的差），该神经网络的目的就是最小化这个**loss**；
-5. 优化结束后，隐藏层的**N**维向量就可以作为**Word-Embedding**的结果。
+1. 输入为<strong>C</strong>个<strong>V</strong>维的<strong>vector</strong>。其中<strong>C</strong>为上下文窗口的大小，<strong>V</strong>为原始编码空间的规模。例如，示例中的<strong>C=2</strong>，<strong>V=4</strong>.两个<strong>vector</strong>分别为<strong>4</strong>维的<strong>He</strong>和<strong>is</strong>的<strong>one-hot</strong>编码形式；
+2. 激活函数相当简单，在输入层和隐藏层之间，每个<strong>input vector</strong>分别乘以一个<strong>VxN</strong>维度的矩阵，得到后的向量各个维度做平均，得到隐藏层的权重。隐藏层乘以一个<strong>NxV</strong>维度的矩阵，得到<strong>output layer</strong>的权重；
+3. 隐藏层的维度设置为理想中压缩后的词向量维度。示例中假设我们想把原始的<strong>4</strong>维的原始<strong>one-hot</strong>编码维度压缩到<strong>2</strong>维，那么<strong>N=2</strong>；
+4. 输出层是一个<strong>softmax</strong>层，用于组合输出概率。所谓的<strong>损失函数</strong>，就是这个<strong>output</strong>和<strong>target</strong>之间的的差（<strong>output</strong>的<strong>V</strong>维向量和<strong>input vector</strong>的<strong>one-hot</strong>编码向量的差），该神经网络的目的就是最小化这个<strong>loss</strong>；
+5. 优化结束后，隐藏层的<strong>N</strong>维向量就可以作为<strong>Word-Embedding</strong>的结果。
 
 如此一来，便得到了既携带上下文信息，又经过压缩的稠密词向量。
 

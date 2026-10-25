@@ -23,7 +23,7 @@ source_url: https://www.zhihu.com/question/30643044/answer/222274170
 
 如果我们已经定好了一个阈值，超过此阈值定义为坏用户（1），低于此阈值定义为好用户（0），就可以计算出混淆矩阵（Confusion matrix）。
 
-![](/images/collections/0.raw/zhihu/%25E5%25AD%25A6%25E4%25B9%25A0/asset/img_3c325d107fcd.jpg)![](/images/collections/0.raw/zhihu/%25E5%25AD%25A6%25E4%25B9%25A0/asset/img_360b9e83d677.webp)
+![](/images/collections/0.raw/zhihu/%E5%AD%A6%E4%B9%A0/asset/img_3c325d107fcd.jpg)![](/images/collections/0.raw/zhihu/%E5%AD%A6%E4%B9%A0/asset/img_360b9e83d677.webp)
 
 根据混淆矩阵我们可以得到TP,FN,FP,TN四个值，TP即为预测正确的坏用户的个数，FN为预测错误（预测为好用户）的坏用户个数，根据这四个值即可计算精确率、召回率和F1。
 
@@ -39,7 +39,7 @@ F1值是精确率和召回率的调和均值，即F1=2PR/(P+R)，相当于精确
 
 对于每个混淆矩阵，我们计算两个指标TPR（True positive rate）和FPR（False positive rate），TPR=TP/(TP+FN)=Recall，TPR就是召回率。FPR=FP/(FP+TN)，FPR即为实际为好人的人中，预测为坏人的人占比。我们以FPR为x轴，TPR为y轴画图，就得到了ROC曲线。
 
-![](/images/collections/0.raw/zhihu/%25E5%25AD%25A6%25E4%25B9%25A0/asset/img_799e3e1176ea.jpg)![](/images/collections/0.raw/zhihu/%25E5%25AD%25A6%25E4%25B9%25A0/asset/img_ce467f4c0449.webp)
+![](/images/collections/0.raw/zhihu/%E5%AD%A6%E4%B9%A0/asset/img_799e3e1176ea.jpg)![](/images/collections/0.raw/zhihu/%E5%AD%A6%E4%B9%A0/asset/img_ce467f4c0449.webp)
 
 在画ROC曲线的过程中，若有一个阈值，高于此阈值的均为坏人，低于此阈值的均为好人，则认为此模型已完美的区分开好坏用户。此时坏用户的预测准确率（TPR）为1，同时好用户的预测错误率（FPR）为0，ROC曲线经过（0,1）点。
 
@@ -65,7 +65,7 @@ AUC（Area Under Curve）的值为ROC曲线下面的面积，若如上所述模�
 
 当然，PR曲线（Precision-Recall curve）和ROC曲线类似，ROC曲线是FPR和TPR的点连成的线，PR曲线是准确率和召回率的点连成的线，如下图所示。
 
-![](/images/collections/0.raw/zhihu/%25E5%25AD%25A6%25E4%25B9%25A0/asset/img_1aee09242eb2.jpg)
+![](/images/collections/0.raw/zhihu/%E5%AD%A6%E4%B9%A0/asset/img_1aee09242eb2.jpg)
 
 我们又知道，Recall=TPR，因此PRC的横坐标为ROC的纵坐标。
 

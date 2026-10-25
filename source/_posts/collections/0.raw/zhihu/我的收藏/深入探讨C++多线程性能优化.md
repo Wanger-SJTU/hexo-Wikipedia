@@ -71,7 +71,7 @@ BENCHMARK_MAIN();
 
 跑出来的结果如下：
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_bf7d64933625.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_bf7d64933625.jpg)
 
 将任务切分成多个片段并交由多线程执行后，整体性能不仅没有提升，反而下降了，且性能与线程数成反比。那么，问题来了：导致这种结果的原因是什么？如何才能实现合理的并行执行，从而降低CPU的执行时间？在接下来的部分，笔者将为你揭示答案。
 
@@ -87,7 +87,7 @@ Lock Contention对应使用锁来处理多线程同步问题的场景，而Cache
 
 在多线程环境中，多个线程同时尝试获取同一个锁（Lock）时，会发生竞争现象，这就是所谓的锁竞争（Lock Contention）。锁竞争会导致线程或进程被阻塞，等待锁被释放，从而影响系统的性能和响应时间。大多数情况下，开发人员会选择使用锁来解决线程间的同步问题，因此锁竞争问题也变得广为人知且容易理解。由于锁的存在，位于临界区的代码在同一时刻只能由一个线程执行。因此，优化的思路就是尽量避免多个线程同时访问同一资源。常见的优化方向有两种：
 
-**1.减少临界区大小：临界区越小，这段代码的执行时间就越短，从而在整体程序运行时间中所占的比例也越小，冲突也就越少。** **2.对共享资源进行分桶操作：每个线程只会在某个桶上访问资源，理想情况下，每个线程都会访问不同的桶，这样就不会有冲突。**
+<strong>1.减少临界区大小：临界区越小，这段代码的执行时间就越短，从而在整体程序运行时间中所占的比例也越小，冲突也就越少。</strong> <strong>2.对共享资源进行分桶操作：每个线程只会在某个桶上访问资源，理想情况下，每个线程都会访问不同的桶，这样就不会有冲突。</strong>
 
 减少临界区大小需要开发者对自己的代码进行仔细思考，将不必要的操作放在临界区外，例如一些初始化和内存分配操作。
 
@@ -101,7 +101,7 @@ Lock Contention对应使用锁来处理多线程同步问题的场景，而Cache
 
 由此引申出两个严重影响性能的现象：
 
-**1.Cache Ping-Pong。** **2.False Sharing。**
+<strong>1.Cache Ping-Pong。</strong> <strong>2.False Sharing。</strong>
 
 #### Cache Ping-Pong
 
@@ -151,7 +151,7 @@ BENCHMARK_REGISTER_F(MyBenchmark, MultiThreadedWork)->Threads(8);
 BENCHMARK_MAIN();
 `
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_46e693c0c07a.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_46e693c0c07a.jpg)
 
 #### False Sharing
 
@@ -208,7 +208,7 @@ BENCHMARK_REGISTER_F(MyBenchmark, MultiThreadedWork)->Threads(8);
 BENCHMARK_MAIN();
 `
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_53b17c606f2f.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_53b17c606f2f.jpg)
 
 可以看到，尽管不同线程没有使用同一个变量，但由于 sums 里面的元素共享同一个缓存行（Cache Line），同样会导致性能急剧下降。
 
@@ -268,7 +268,7 @@ BENCHMARK_REGISTER_F(MyBenchmark, MultiThreadedWork)->Threads(8);
 BENCHMARK_MAIN();
 `
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_eda41320c0ae.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_eda41320c0ae.jpg)
 
 #### Lock VS Atomic
 
@@ -409,7 +409,7 @@ BENCHMARK_MAIN();
 
 benchmark结果：
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_10e71a41a81f.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_10e71a41a81f.jpg)
 
 第二个benchmark是对比竞争激烈时的性能，代码如下：
 
@@ -490,7 +490,7 @@ BENCHMARK_MAIN();
 
 benchmark结果：
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_b0751ef3a51f.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_b0751ef3a51f.jpg)
 
 可以看到，无论是哪一种情况，std::mutex 的性能都更优。当然，这个测试结果可能会因不同的操作系统而有所不同，但至少可以得出一个结论：这两者的性能是一个量级的，并不存在 atomic 一定比 std::mutex 更快的说法。这其实是因为现代 C++ 中的 std::mutex 实现已经高度优化，其实现与上面的自旋锁（SpinLock）非常相似，在低竞争的情况下并不会陷入内核态。
 
@@ -573,7 +573,7 @@ BENCHMARK_MAIN();
 
 benchmark结果：
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_52c6ee2cd734.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_52c6ee2cd734.jpg)
 
 case 2如下:
 
@@ -650,7 +650,7 @@ BENCHMARK_MAIN();
 
 benchmark结果：
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_33de9273b366.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_33de9273b366.jpg)
 
 接下来结合这两个优点来看，链式数据结构的场景非常适合使用 atomic 变量。
 
@@ -682,19 +682,19 @@ benchmark结果：
 
 首先，每个线程维护自己的线程变量：
 
-**1.active：标记该线程是否正在读数据。** **2.epoch：标记该线程当前的版本。**
+<strong>1.active：标记该线程是否正在读数据。</strong> <strong>2.epoch：标记该线程当前的版本。</strong>
 
 全局维护变量：
 
-**1.global_epoch：全局最新的版本。** **2.retire_list：等待释放的节点。**
+<strong>1.global_epoch：全局最新的版本。</strong> <strong>2.retire_list：等待释放的节点。</strong>
 
 读操作：
 
-**1.首先把线程 active 标记为 true，表示正在读数据。** **2.然后把 global_epoch 赋值给 epoch，记录当前正在读的版本。** **3.如果线程需要删除节点，则把节点放到全局的 retire_list 末尾。** **4.结束读后，将 active 标记为 false。**
+<strong>1.首先把线程 active 标记为 true，表示正在读数据。</strong> <strong>2.然后把 global_epoch 赋值给 epoch，记录当前正在读的版本。</strong> <strong>3.如果线程需要删除节点，则把节点放到全局的 retire_list 末尾。</strong> <strong>4.结束读后，将 active 标记为 false。</strong>
 
 写操作：
 
-**1.如果要删除节点，则把节点放到全局的 retire_list 末尾，并且尝试增加版本。** **2.增加版本时检查所有线程的状态，当所有线程满足 epoch 等于当前版本 e 或者 active 为 false 时，进行版本 e = e + 1 操作。** **3.清空 e-2 版本的 retire_list。**
+<strong>1.如果要删除节点，则把节点放到全局的 retire_list 末尾，并且尝试增加版本。</strong> <strong>2.增加版本时检查所有线程的状态，当所有线程满足 epoch 等于当前版本 e 或者 active 为 false 时，进行版本 e = e + 1 操作。</strong> <strong>3.清空 e-2 版本的 retire_list。</strong>
 
 这里给出一个简单的实现，代码如下：
 
@@ -967,4 +967,4 @@ BENCHMARK_MAIN();
 
 benchmark结果：
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_dfa1224865a7.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_dfa1224865a7.jpg)

@@ -26,7 +26,7 @@ Die Frage lautet also: Gibst du diesem Engineer eine gute Karte?
 
 ## Was auf die Karte gehört
 
-OpenAI formuliert es sehr direkt: **Information, die nicht im Repo existiert, existiert für den Agenten nicht.** Sie nennen das das Prinzip "repo as spec" - das Repository selbst ist das Spezifikationsdokument mit der höchsten Autorität.
+OpenAI formuliert es sehr direkt: <strong>Information, die nicht im Repo existiert, existiert für den Agenten nicht.</strong> Sie nennen das das Prinzip "repo as spec" - das Repository selbst ist das Spezifikationsdokument mit der höchsten Autorität.
 
 Anthropics Dokumentation zu lang laufenden Agenten sagt dasselbe: Persistenter Zustand ist eine notwendige Bedingung für Kontinuität bei langen Aufgaben. Die Wiederherstellbarkeit von Wissen über Sitzungen hinweg bestimmt direkt die Erfolgsraten. Und dieser Zustand muss im Repository existieren, denn das ist der einzige stabile, zugängliche Speicher, den der Agent hat.
 
@@ -68,24 +68,24 @@ Wenn sie das nicht beantworten kann, hat die Karte weiße Flecken. Wo die Karte 
 
 ## Zentrale Konzepte
 
-- **Knowledge Visibility Gap**: Der Anteil des gesamten Projektwissens, der NICHT im Repository steht. Je größer die Lücke, desto höher die Fehlerrate des Agenten. Wie viel implizites Wissen über dieses Projekt lebt in deinem Kopf? Zähle alles und schau dann, wie viel davon im Repo angekommen ist. Die Differenz ist deine Sichtbarkeitslücke.
-- **System of Record**: Das Code-Repository als autoritative Quelle für Projektentscheidungen, Architekturconstraints, Ausführungszustand und Verifikationsstandards. Das Repo hat das letzte Wort; nichts anderes zählt. Wie eine Karte mit "Straße gesperrt": Du fährst diese Straße nicht. Wenn diese Information aber nur im Kopf einer Person existiert, musst du jedes Mal fragen.
-- **Cold-Start Test**: Die fünf Fragen oben. Wie viele beantwortet werden können, zeigt, wie vollständig deine Karte ist.
-- **Discovery Cost**: Wie viel Kontextbudget der Agent verbrennt, um eine zentrale Information im Repo zu finden. Je versteckter die Information, desto höher die Discovery Cost und desto weniger Budget bleibt für die eigentliche Aufgabe. Kritische Information in einer README zehn Verzeichnisebenen tief zu verstecken ist wie den Feuerlöscher in einem Tresor im Keller einzuschließen: Er existiert, aber du findest ihn nicht, wenn du ihn brauchst.
-- **Knowledge Decay Rate**: Der Anteil der Wissenseinträge, der pro Zeiteinheit veraltet. Dokumentation, die nicht mehr mit dem Code synchron ist, ist der größte Feind - schlimmer als gar keine Dokumentation.
-- **ACID Analogy**: Datenbank-Transaktionsprinzipien (Atomicity, Consistency, Isolation, Durability) auf Agentenzustandsverwaltung anwenden. Unten wird das ausgeführt.
+- <strong>Knowledge Visibility Gap</strong>: Der Anteil des gesamten Projektwissens, der NICHT im Repository steht. Je größer die Lücke, desto höher die Fehlerrate des Agenten. Wie viel implizites Wissen über dieses Projekt lebt in deinem Kopf? Zähle alles und schau dann, wie viel davon im Repo angekommen ist. Die Differenz ist deine Sichtbarkeitslücke.
+- <strong>System of Record</strong>: Das Code-Repository als autoritative Quelle für Projektentscheidungen, Architekturconstraints, Ausführungszustand und Verifikationsstandards. Das Repo hat das letzte Wort; nichts anderes zählt. Wie eine Karte mit "Straße gesperrt": Du fährst diese Straße nicht. Wenn diese Information aber nur im Kopf einer Person existiert, musst du jedes Mal fragen.
+- <strong>Cold-Start Test</strong>: Die fünf Fragen oben. Wie viele beantwortet werden können, zeigt, wie vollständig deine Karte ist.
+- <strong>Discovery Cost</strong>: Wie viel Kontextbudget der Agent verbrennt, um eine zentrale Information im Repo zu finden. Je versteckter die Information, desto höher die Discovery Cost und desto weniger Budget bleibt für die eigentliche Aufgabe. Kritische Information in einer README zehn Verzeichnisebenen tief zu verstecken ist wie den Feuerlöscher in einem Tresor im Keller einzuschließen: Er existiert, aber du findest ihn nicht, wenn du ihn brauchst.
+- <strong>Knowledge Decay Rate</strong>: Der Anteil der Wissenseinträge, der pro Zeiteinheit veraltet. Dokumentation, die nicht mehr mit dem Code synchron ist, ist der größte Feind - schlimmer als gar keine Dokumentation.
+- <strong>ACID Analogy</strong>: Datenbank-Transaktionsprinzipien (Atomicity, Consistency, Isolation, Durability) auf Agentenzustandsverwaltung anwenden. Unten wird das ausgeführt.
 
 ## Wie man eine gute Karte zeichnet
 
-**Prinzip 1: Wissen lebt neben dem Code.** Eine Regel zur Authentifizierung von API-Endpunkten gehört neben den API-Code, nicht in ein riesiges globales Dokument. Lege in jedem Modulverzeichnis ein kurzes Dokument ab, das Verantwortlichkeiten, Schnittstellen und besondere Constraints des Moduls erklärt. Wie Regalbeschriftungen in einer Bibliothek: Wenn du Geschichtsbücher willst, gehst du direkt zum Regal "History". Du musst nicht die ganze Bibliothek durchsuchen.
+<strong>Prinzip 1: Wissen lebt neben dem Code.</strong> Eine Regel zur Authentifizierung von API-Endpunkten gehört neben den API-Code, nicht in ein riesiges globales Dokument. Lege in jedem Modulverzeichnis ein kurzes Dokument ab, das Verantwortlichkeiten, Schnittstellen und besondere Constraints des Moduls erklärt. Wie Regalbeschriftungen in einer Bibliothek: Wenn du Geschichtsbücher willst, gehst du direkt zum Regal "History". Du musst nicht die ganze Bibliothek durchsuchen.
 
-**Prinzip 2: Nutze eine standardisierte Einstiegsdatei.** `AGENTS.md` (oder `CLAUDE.md`) ist die Landing Page des Agenten. Sie muss nicht alle Informationen enthalten, aber sie muss dem Agenten erlauben, drei Fragen schnell zu beantworten: "Was ist dieses Projekt?", "Wie führe ich es aus?" und "Wie verifiziere ich es?" 50-100 Zeilen reichen.
+<strong>Prinzip 2: Nutze eine standardisierte Einstiegsdatei.</strong> `AGENTS.md` (oder `CLAUDE.md`) ist die Landing Page des Agenten. Sie muss nicht alle Informationen enthalten, aber sie muss dem Agenten erlauben, drei Fragen schnell zu beantworten: "Was ist dieses Projekt?", "Wie führe ich es aus?" und "Wie verifiziere ich es?" 50-100 Zeilen reichen.
 
-**Prinzip 3: Minimal, aber vollständig.** Jedes Wissensstück sollte einen klaren Use Case haben. Wenn das Entfernen einer Regel die Entscheidungsqualität des Agenten nicht beeinträchtigt, sollte diese Regel nicht existieren. Aber jede Frage aus dem Cold-Start-Test muss eine Antwort haben. Das ist ein feines Gleichgewicht: nicht zu viel, nicht zu wenig, genau genug.
+<strong>Prinzip 3: Minimal, aber vollständig.</strong> Jedes Wissensstück sollte einen klaren Use Case haben. Wenn das Entfernen einer Regel die Entscheidungsqualität des Agenten nicht beeinträchtigt, sollte diese Regel nicht existieren. Aber jede Frage aus dem Cold-Start-Test muss eine Antwort haben. Das ist ein feines Gleichgewicht: nicht zu viel, nicht zu wenig, genau genug.
 
-**Prinzip 4: Mit Code aktualisieren.** Kopple Wissensupdates an Codeänderungen. Der einfachste Ansatz: Architekturdocs im entsprechenden Modulverzeichnis ablegen. Wenn du Code änderst, siehst du das Dokument natürlich. Nach Codeänderungen kann CI daran erinnern zu prüfen, ob die Docs aktualisiert werden müssen.
+<strong>Prinzip 4: Mit Code aktualisieren.</strong> Kopple Wissensupdates an Codeänderungen. Der einfachste Ansatz: Architekturdocs im entsprechenden Modulverzeichnis ablegen. Wenn du Code änderst, siehst du das Dokument natürlich. Nach Codeänderungen kann CI daran erinnern zu prüfen, ob die Docs aktualisiert werden müssen.
 
-**Konkrete Repo-Struktur**:
+<strong>Konkrete Repo-Struktur</strong>:
 
 ```
 project/
@@ -106,10 +106,10 @@ project/
 
 Diese Analogie stammt aus dem Datenbank-Transaktionsmanagement. Du könntest denken, dass das überkompliziert ist, aber tatsächlich gibt es dir einen sehr praktischen Rahmen:
 
-- **Atomicity**: Jede "logische Operation" (z. B. "neuen Endpoint hinzufügen und Tests aktualisieren") bekommt einen git commit. Wenn sie auf halbem Weg scheitert, mit `git stash` zurückrollen. Alles oder nichts - kein "halb fertig".
-- **Consistency**: Definiere Verifikationsprädikate für einen "konsistenten Zustand": alle Tests grün, Lint meldet null Fehler. Der Agent führt nach jeder Operation Verifikation aus; inkonsistente Zwischenzustände werden nicht committed. Wie bei einer Banküberweisung: Du kannst nicht abbuchen, ohne gutzuschreiben.
-- **Isolation**: Wenn mehrere Agenten gleichzeitig arbeiten, entwirf Zustandsdateien so, dass Race Conditions vermieden werden. Einfacher Ansatz: Jeder Agent nutzt seine eigene Progress-Datei, oder git branches sorgen für Isolation. Zwei Köche können nicht gleichzeitig denselben Topf würzen - wer ist verantwortlich, wenn er versalzen ist?
-- **Durability**: Kritisches Projektwissen lebt in git-getrackten Dateien. Temporärer Zustand kann im Sitzungspeicher bleiben, aber sitzungsübergreifendes Wissen muss in Dateien persistiert werden. Was in deinem Kopf ist, zählt nicht - nur was auf Papier steht, zählt.
+- <strong>Atomicity</strong>: Jede "logische Operation" (z. B. "neuen Endpoint hinzufügen und Tests aktualisieren") bekommt einen git commit. Wenn sie auf halbem Weg scheitert, mit `git stash` zurückrollen. Alles oder nichts - kein "halb fertig".
+- <strong>Consistency</strong>: Definiere Verifikationsprädikate für einen "konsistenten Zustand": alle Tests grün, Lint meldet null Fehler. Der Agent führt nach jeder Operation Verifikation aus; inkonsistente Zwischenzustände werden nicht committed. Wie bei einer Banküberweisung: Du kannst nicht abbuchen, ohne gutzuschreiben.
+- <strong>Isolation</strong>: Wenn mehrere Agenten gleichzeitig arbeiten, entwirf Zustandsdateien so, dass Race Conditions vermieden werden. Einfacher Ansatz: Jeder Agent nutzt seine eigene Progress-Datei, oder git branches sorgen für Isolation. Zwei Köche können nicht gleichzeitig denselben Topf würzen - wer ist verantwortlich, wenn er versalzen ist?
+- <strong>Durability</strong>: Kritisches Projektwissen lebt in git-getrackten Dateien. Temporärer Zustand kann im Sitzungspeicher bleiben, aber sitzungsübergreifendes Wissen muss in Dateien persistiert werden. Was in deinem Kopf ist, zählt nicht - nur was auf Papier steht, zählt.
 
 ## Eine echte Transformationsgeschichte
 
@@ -143,8 +143,8 @@ Nach der Transformation konnte derselbe Agent beim Cold Start alle zentralen Pro
 
 ## Übungen
 
-1. **Cold-Start-Test**: Öffne in deinem Projekt eine komplett frische Agentensitzung (kein verbaler Kontext, nur Repo-Inhalte). Stelle fünf Fragen: Was ist dieses System? Wie ist es organisiert? Wie führe ich es aus? Wie verifiziere ich es? Was ist der aktuelle Fortschritt? Notiere, was nicht beantwortet werden kann, und verbessere das Repo, bis es geht.
+1. <strong>Cold-Start-Test</strong>: Öffne in deinem Projekt eine komplett frische Agentensitzung (kein verbaler Kontext, nur Repo-Inhalte). Stelle fünf Fragen: Was ist dieses System? Wie ist es organisiert? Wie führe ich es aus? Wie verifiziere ich es? Was ist der aktuelle Fortschritt? Notiere, was nicht beantwortet werden kann, und verbessere das Repo, bis es geht.
 
-2. **Quantifizierung der Wissensexternalisierung**: Liste alle Entscheidungen und Constraints auf, die für Entwicklungsarbeit in deinem Projekt wichtig sind. Markiere jedes Element als innerhalb oder außerhalb des Repos. Berechne deine Knowledge Visibility Gap (Anteil außerhalb des Repos). Erstelle einen Plan, um sie unter 10% zu bringen.
+2. <strong>Quantifizierung der Wissensexternalisierung</strong>: Liste alle Entscheidungen und Constraints auf, die für Entwicklungsarbeit in deinem Projekt wichtig sind. Markiere jedes Element als innerhalb oder außerhalb des Repos. Berechne deine Knowledge Visibility Gap (Anteil außerhalb des Repos). Erstelle einen Plan, um sie unter 10% zu bringen.
 
-3. **ACID-Bewertung**: Bewerte die Zustandsverwaltung deines Projekts anhand der ACID-Analogie dieser Lektion. Atomicity - Können Agentenoperationen sauber zurückgerollt werden? Consistency - Gibt es Verifikation eines "konsistenten Zustands"? Isolation - Treten sich parallele Agenten gegenseitig auf die Füße? Durability - Ist alles sitzungsübergreifende Wissen persistiert?
+3. <strong>ACID-Bewertung</strong>: Bewerte die Zustandsverwaltung deines Projekts anhand der ACID-Analogie dieser Lektion. Atomicity - Können Agentenoperationen sauber zurückgerollt werden? Consistency - Gibt es Verifikation eines "konsistenten Zustands"? Isolation - Treten sich parallele Agenten gegenseitig auf die Füße? Durability - Ist alles sitzungsübergreifende Wissen persistiert?

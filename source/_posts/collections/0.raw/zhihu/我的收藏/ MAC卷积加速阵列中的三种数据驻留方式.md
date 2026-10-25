@@ -17,7 +17,7 @@ source_url: https://zhuanlan.zhihu.com/p/694361559
 
 > 如果对卷积运算规则不清楚，可以参考：
 
-[![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_33e8cb2f894b.png)ic打工机器：卷积运算扫盲学习-硬件基础5 赞同 · 0 评论 文章](https://zhuanlan.zhihu.com/p/694356231)
+[![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_33e8cb2f894b.png)ic打工机器：卷积运算扫盲学习-硬件基础5 赞同 · 0 评论 文章](https://zhuanlan.zhihu.com/p/694356231)
 
 > 主要介绍卷积加速阵列中的三种数据驻留方式，理解比较浅，欢迎探讨
 知乎排版不美观，可以阅读个人飞书：
@@ -26,7 +26,7 @@ https://vv4vfmb5mk.feishu.cn/docx/GLZydDSP3oGIQexFJqdcfOxGnfb?from=from_copylink
 
 ### 卷积运算过程
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_571f0ca9082a.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_571f0ca9082a.jpg)
 
 图中，
 
@@ -50,7 +50,7 @@ for (n=0; n
 
 给出三个点的计算过程方便下面的理解：不妨设 C = N = M = 1，weight的Size为3x3，也就是 KL[1,1,3,3]，OF[1,1,R,S] 计算三个点：O11，O21和O12：
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_46ea4a05ef91.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_46ea4a05ef91.jpg)
 
 需要注意上面三个点的运算中，weight完全相同，feature存在重叠部分，且没有Padding、Stride时，每一个点的Feature Out计算需要用到维度+2的Input Map。
 计算过程如下：
@@ -93,9 +93,9 @@ OF[0,0,1,0] = KL[0,0,0,0] * IF[0,0,1,0] # k=0,q=0
 
 Output Stantionary中，Output点的部分和在MAC阵列中驻留，一个输出点的卷积计算完成后Psum的值就是计算结果Feature out的点。Feature in和Weight在MAC阵列中打拍传递，但是Feature in和Weight的复用程度不同。
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_d12817062e89.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_d12817062e89.jpg)
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_2f637e1326fd.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_2f637e1326fd.jpg)
 
 OS的特点：
 
@@ -107,9 +107,9 @@ OS的特点：
 
 Weight Stantionary中，Weight数据在MAC阵列中驻留，需要在计算开始前把kernel群中的一个Weight的所有数据填充到MAC阵列计算单元上。启动计算后，Psum纵向传递，最后得到的Psum就是Feature out的一个点。
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_3ca4fcc859d0.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_3ca4fcc859d0.jpg)
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_ebc278df0750.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_ebc278df0750.jpg)
 
 WS的特点：
 
@@ -121,9 +121,9 @@ WS的特点：
 
 Input Stantionary中，Feature in数据在MAC阵列中驻留，计算开始前需要先把用到的Feature in数据加载进阵列，能加载Feature in的点的数量与硬件阵列的单元数量相关。启动计算后与WS比较像，Psum在阵列中传递，走完每一列的单元后，得到一个点的Feature out。Weight在计算过程中需要纵向和横向传递，具有空间和时间上的复用性。
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_453ee11b1b9f.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_453ee11b1b9f.jpg)
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_4f68766bde3a.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_4f68766bde3a.jpg)
 
 IS的特点：
 

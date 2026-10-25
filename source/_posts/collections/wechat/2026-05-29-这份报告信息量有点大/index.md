@@ -18,19 +18,19 @@ categories:
 > 抓取时间：2026-05-29
 
 
-![图表](/images/collections/wechat/2026-05-29-%25E8%25BF%2599%25E4%25BB%25BD%25E6%258A%25A5%25E5%2591%258A%25E4%25BF%25A1%25E6%2581%25AF%25E9%2587%258F%25E6%259C%2589%25E7%2582%25B9%25E5%25A4%25A7/asset/img_01.png)
+![图表](/images/collections/wechat/2026-05-29-%E8%BF%99%E4%BB%BD%E6%8A%A5%E5%91%8A%E4%BF%A1%E6%81%AF%E9%87%8F%E6%9C%89%E7%82%B9%E5%A4%A7/asset/img_01.png)
 
 
 早上刷了份最新调查报告，来自厦大，调查时间点在一季度末，有效问卷是14967份，然后根据七普数据加权——
 
 
-![图表](/images/collections/wechat/2026-05-29-%25E8%25BF%2599%25E4%25BB%25BD%25E6%258A%25A5%25E5%2591%258A%25E4%25BF%25A1%25E6%2581%25AF%25E9%2587%258F%25E6%259C%2589%25E7%2582%25B9%25E5%25A4%25A7/asset/img_02.png)
+![图表](/images/collections/wechat/2026-05-29-%E8%BF%99%E4%BB%BD%E6%8A%A5%E5%91%8A%E4%BF%A1%E6%81%AF%E9%87%8F%E6%9C%89%E7%82%B9%E5%A4%A7/asset/img_02.png)
 
 
 好，略作整理，最近一年一线城市的人均年收入（工资收入平均占63%）——
 
 
-![图表](/images/collections/wechat/2026-05-29-%25E8%25BF%2599%25E4%25BB%25BD%25E6%258A%25A5%25E5%2591%258A%25E4%25BF%25A1%25E6%2581%25AF%25E9%2587%258F%25E6%259C%2589%25E7%2582%25B9%25E5%25A4%25A7/asset/img_03.png)
+![图表](/images/collections/wechat/2026-05-29-%E8%BF%99%E4%BB%BD%E6%8A%A5%E5%91%8A%E4%BF%A1%E6%81%AF%E9%87%8F%E6%9C%89%E7%82%B9%E5%A4%A7/asset/img_03.png)
 
 
 如图，35岁以下和60岁以上总体是下行的，而36-59岁保持相对稳定（同比）。
@@ -38,7 +38,7 @@ categories:
 然后看调查画像——
 
 
-![图表](/images/collections/wechat/2026-05-29-%25E8%25BF%2599%25E4%25BB%25BD%25E6%258A%25A5%25E5%2591%258A%25E4%25BF%25A1%25E6%2581%25AF%25E9%2587%258F%25E6%259C%2589%25E7%2582%25B9%25E5%25A4%25A7/asset/img_04.png)
+![图表](/images/collections/wechat/2026-05-29-%E8%BF%99%E4%BB%BD%E6%8A%A5%E5%91%8A%E4%BF%A1%E6%81%AF%E9%87%8F%E6%9C%89%E7%82%B9%E5%A4%A7/asset/img_04.png)
 
 
 可以看到，随着年收入往上走，专业技术人员的比例越来越大，普通职员的比例越来越小，说明一技之长依然吃香。
@@ -50,7 +50,7 @@ categories:
 持有房产数量分布上——
 
 
-![图表](/images/collections/wechat/2026-05-29-%25E8%25BF%2599%25E4%25BB%25BD%25E6%258A%25A5%25E5%2591%258A%25E4%25BF%25A1%25E6%2581%25AF%25E9%2587%258F%25E6%259C%2589%25E7%2582%25B9%25E5%25A4%25A7/asset/img_05.png)
+![图表](/images/collections/wechat/2026-05-29-%E8%BF%99%E4%BB%BD%E6%8A%A5%E5%91%8A%E4%BF%A1%E6%81%AF%E9%87%8F%E6%9C%89%E7%82%B9%E5%A4%A7/asset/img_05.png)
 
 
 持有3套、4套的比例下降了，莫不是趁势出手，而吸纳进去的并不是无房刚需，而是第2套。
@@ -62,7 +62,7 @@ categories:
 进一步，报告解释了risk on的相关性，就是收入——
 
 
-![图表](/images/collections/wechat/2026-05-29-%25E8%25BF%2599%25E4%25BB%25BD%25E6%258A%25A5%25E5%2591%258A%25E4%25BF%25A1%25E6%2581%25AF%25E9%2587%258F%25E6%259C%2589%25E7%2582%25B9%25E5%25A4%25A7/asset/img_06.png)
+![图表](/images/collections/wechat/2026-05-29-%E8%BF%99%E4%BB%BD%E6%8A%A5%E5%91%8A%E4%BF%A1%E6%81%AF%E9%87%8F%E6%9C%89%E7%82%B9%E5%A4%A7/asset/img_06.png)
 
 
 即，调查中购买股票、理财产品的家庭收入明显高于不购买的。一季度是这个比值是近2倍。
@@ -72,7 +72,7 @@ categories:
 另一个与收入相关的，家庭负债——
 
 
-![图表](/images/collections/wechat/2026-05-29-%25E8%25BF%2599%25E4%25BB%25BD%25E6%258A%25A5%25E5%2591%258A%25E4%25BF%25A1%25E6%2581%25AF%25E9%2587%258F%25E6%259C%2589%25E7%2582%25B9%25E5%25A4%25A7/asset/img_07.png)
+![图表](/images/collections/wechat/2026-05-29-%E8%BF%99%E4%BB%BD%E6%8A%A5%E5%91%8A%E4%BF%A1%E6%81%AF%E9%87%8F%E6%9C%89%E7%82%B9%E5%A4%A7/asset/img_07.png)
 
 
 调查显示无负债家庭的比例在抬升，预期影响举债意愿。
@@ -80,7 +80,7 @@ categories:
 也同时削弱消费意愿——
 
 
-![图表](/images/collections/wechat/2026-05-29-%25E8%25BF%2599%25E4%25BB%25BD%25E6%258A%25A5%25E5%2591%258A%25E4%25BF%25A1%25E6%2581%25AF%25E9%2587%258F%25E6%259C%2589%25E7%2582%25B9%25E5%25A4%25A7/asset/img_08.png)
+![图表](/images/collections/wechat/2026-05-29-%E8%BF%99%E4%BB%BD%E6%8A%A5%E5%91%8A%E4%BF%A1%E6%81%AF%E9%87%8F%E6%9C%89%E7%82%B9%E5%A4%A7/asset/img_08.png)
 
 
 调查发现各层级城市的消费全部往下走。
@@ -100,13 +100,13 @@ categories:
 总的居民消费预期还是偏于谨慎——
 
 
-![图表](/images/collections/wechat/2026-05-29-%25E8%25BF%2599%25E4%25BB%25BD%25E6%258A%25A5%25E5%2591%258A%25E4%25BF%25A1%25E6%2581%25AF%25E9%2587%258F%25E6%259C%2589%25E7%2582%25B9%25E5%25A4%25A7/asset/img_09.png)
+![图表](/images/collections/wechat/2026-05-29-%E8%BF%99%E4%BB%BD%E6%8A%A5%E5%91%8A%E4%BF%A1%E6%81%AF%E9%87%8F%E6%9C%89%E7%82%B9%E5%A4%A7/asset/img_09.png)
 
 
 报告还细化了到底是谁在谨慎——
 
 
-![图表](/images/collections/wechat/2026-05-29-%25E8%25BF%2599%25E4%25BB%25BD%25E6%258A%25A5%25E5%2591%258A%25E4%25BF%25A1%25E6%2581%25AF%25E9%2587%258F%25E6%259C%2589%25E7%2582%25B9%25E5%25A4%25A7/asset/img_10.png)
+![图表](/images/collections/wechat/2026-05-29-%E8%BF%99%E4%BB%BD%E6%8A%A5%E5%91%8A%E4%BF%A1%E6%81%AF%E9%87%8F%E6%9C%89%E7%82%B9%E5%A4%A7/asset/img_10.png)
 
 
 有工作、短期失业的都在谨慎，反而是失业超过3个月的有点活开了。
@@ -140,7 +140,7 @@ categories:
 那么社保缴纳情况如何——
 
 
-![图表](/images/collections/wechat/2026-05-29-%25E8%25BF%2599%25E4%25BB%25BD%25E6%258A%25A5%25E5%2591%258A%25E4%25BF%25A1%25E6%2581%25AF%25E9%2587%258F%25E6%259C%2589%25E7%2582%25B9%25E5%25A4%25A7/asset/img_11.png)
+![图表](/images/collections/wechat/2026-05-29-%E8%BF%99%E4%BB%BD%E6%8A%A5%E5%91%8A%E4%BF%A1%E6%81%AF%E9%87%8F%E6%9C%89%E7%82%B9%E5%A4%A7/asset/img_11.png)
 
 
 最近一波社保补缴会不会影响到本就脆弱的就业市场？等待时间观察。
@@ -160,7 +160,7 @@ categories:
 最终建立自己的魔镜体系
 
 
-![图表](/images/collections/wechat/2026-05-29-%25E8%25BF%2599%25E4%25BB%25BD%25E6%258A%25A5%25E5%2591%258A%25E4%25BF%25A1%25E6%2581%25AF%25E9%2587%258F%25E6%259C%2589%25E7%2582%25B9%25E5%25A4%25A7/asset/img_12.jpeg)
+![图表](/images/collections/wechat/2026-05-29-%E8%BF%99%E4%BB%BD%E6%8A%A5%E5%91%8A%E4%BF%A1%E6%81%AF%E9%87%8F%E6%9C%89%E7%82%B9%E5%A4%A7/asset/img_12.jpeg)
 
 
 加
@@ -168,10 +168,10 @@ categories:
 入星球如有技术问题，参考下方——
 
 
-![图表](/images/collections/wechat/2026-05-29-%25E8%25BF%2599%25E4%25BB%25BD%25E6%258A%25A5%25E5%2591%258A%25E4%25BF%25A1%25E6%2581%25AF%25E9%2587%258F%25E6%259C%2589%25E7%2582%25B9%25E5%25A4%25A7/asset/img_13.png)
+![图表](/images/collections/wechat/2026-05-29-%E8%BF%99%E4%BB%BD%E6%8A%A5%E5%91%8A%E4%BF%A1%E6%81%AF%E9%87%8F%E6%9C%89%E7%82%B9%E5%A4%A7/asset/img_13.png)
 
 
-![图片](/images/collections/wechat/2026-05-29-%25E8%25BF%2599%25E4%25BB%25BD%25E6%258A%25A5%25E5%2591%258A%25E4%25BF%25A1%25E6%2581%25AF%25E9%2587%258F%25E6%259C%2589%25E7%2582%25B9%25E5%25A4%25A7/asset/img_25.jpeg)
+![图片](/images/collections/wechat/2026-05-29-%E8%BF%99%E4%BB%BD%E6%8A%A5%E5%91%8A%E4%BF%A1%E6%81%AF%E9%87%8F%E6%9C%89%E7%82%B9%E5%A4%A7/asset/img_25.jpeg)
 
 
-![图片](/images/collections/wechat/2026-05-29-%25E8%25BF%2599%25E4%25BB%25BD%25E6%258A%25A5%25E5%2591%258A%25E4%25BF%25A1%25E6%2581%25AF%25E9%2587%258F%25E6%259C%2589%25E7%2582%25B9%25E5%25A4%25A7/asset/img_26.jpeg)
+![图片](/images/collections/wechat/2026-05-29-%E8%BF%99%E4%BB%BD%E6%8A%A5%E5%91%8A%E4%BF%A1%E6%81%AF%E9%87%8F%E6%9C%89%E7%82%B9%E5%A4%A7/asset/img_26.jpeg)

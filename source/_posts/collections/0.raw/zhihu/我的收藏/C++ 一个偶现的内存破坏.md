@@ -15,7 +15,7 @@ source_url: https://zhuanlan.zhihu.com/p/578290634
 ---
 
 
-**原文：[《C++ 一个偶现的内存破坏》](https://link.zhihu.com/?target=https%3A//bot-man-jl.github.io/articles/%3Fpost%3D2022/Cpp-Memory-Occasionally-Corruption)，公众号 BOTManJL**~http://weixin.qq.com/r/zigHAh3EUtUuKFlhb31K (二维码自动识别)
+<strong>原文：[《C++ 一个偶现的内存破坏》](https://link.zhihu.com/?target=https%3A//bot-man-jl.github.io/articles/%3Fpost%3D2022/Cpp-Memory-Occasionally-Corruption)，公众号 BOTManJL</strong>~http://weixin.qq.com/r/zigHAh3EUtUuKFlhb31K (二维码自动识别)
 
 **不要忽视告警和潜在问题。本文介绍了一个典型的 C++ 内存破坏问题的分析方法，主要使用了 反汇编、STL 源码分析、AddressSanitizer (Asan) 等技术手段。
 
@@ -34,7 +34,7 @@ if (reader.ReadInt32(&payload)) {
 }
 `
 
-下面这段代码读取 `payload1`/`payload2` 的 **结果错误**：
+下面这段代码读取 `payload1`/`payload2` 的 <strong>结果错误</strong>：
 
 `BufferReader reader(response.buffer().data());
 int32_t payload1 = 0, payload2 = 0;
@@ -89,27 +89,27 @@ class Response {
 };
 `
 
-**看到这里，你找到答案了吗？** 
+<strong>看到这里，你找到答案了吗？</strong> 
 
-   （**建议先思考上文的代码，再往下看**）   
+   （<strong>建议先思考上文的代码，再往下看</strong>）   
 
-如果往 `Response` 写入从 1 到 4 个 `int32_t` 数值，再用 `BufferReader` 逐个读取并输出（**本文代码均使用 clang 编译、libc++ 的 STL 实现**，[在线运行](https://link.zhihu.com/?target=https%3A//godbolt.org/z/zzjz7YKsW)）：
+如果往 `Response` 写入从 1 到 4 个 `int32_t` 数值，再用 `BufferReader` 逐个读取并输出（<strong>本文代码均使用 clang 编译、libc++ 的 STL 实现</strong>，[在线运行](https://link.zhihu.com/?target=https%3A//godbolt.org/z/zzjz7YKsW)）：
 
 `41
 41, 42
 0, 28098576, 0
 0, 37052432, 0, 44`
 
-- 在包含 1 或 2 个 `int32_t` 的情况下，读取结果 **总是正确的**
-- 在包含超过 3 个 `int32_t` 的情况下，读取出的前 3 个数值 **往往是错误的**（期望是 `41, 42, 43`），有时候输出结果均为 `Invalid`（认为 Buffer 读完了）
+- 在包含 1 或 2 个 `int32_t` 的情况下，读取结果 <strong>总是正确的</strong>
+- 在包含超过 3 个 `int32_t` 的情况下，读取出的前 3 个数值 <strong>往往是错误的</strong>（期望是 `41, 42, 43`），有时候输出结果均为 `Invalid`（认为 Buffer 读完了）
 
 ### 猜想
 
 如果仔细阅读 `BufferReader` 和 `Response` 的源码，很容易发现：
 
-- 由于 `response.buffer()` 的返回值类型是 `std::string` 值，而在 `reader` 构造时直接使用了该 **临时对象** 的 `.data()` 指针
-- 在 `response.buffer()` 的返回值离开作用域后，该对象的 `.data()` 指针变为 **野指针**
-- 而 `BufferReader::ReadInt32()` 读取了上述 **已释放的内存**，结果可能错误
+- 由于 `response.buffer()` 的返回值类型是 `std::string` 值，而在 `reader` 构造时直接使用了该 <strong>临时对象</strong> 的 `.data()` 指针
+- 在 `response.buffer()` 的返回值离开作用域后，该对象的 `.data()` 指针变为 <strong>野指针</strong>
+- 而 `BufferReader::ReadInt32()` 读取了上述 <strong>已释放的内存</strong>，结果可能错误
 类似的写法还有（从调用代码来看，问题更隐晦一些）：
 
 `BufferReader::BufferReader(const std::string& buffer)
@@ -125,9 +125,9 @@ BufferReader reader(response.buffer());
 
 ### 分析
 
-首先，从 **反汇编代码** 可以看出：
+首先，从 <strong>反汇编代码</strong> 可以看出：
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_e4cf1c846e7f.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_e4cf1c846e7f.jpg)
 
 - 一行 `BufferReader reader(response.buffer().data());` 对应了 4 个函数调用
 
@@ -175,13 +175,13 @@ struct __rep {
 
 - `response.buffer()` 返回值的临时变量 采用 `__short` 模式存储，字符串数据存放在栈上对象的内部
 - 因为 `std::string` 的析构函数 不会主动清空字符串数据，而且 该临时变量对应的栈内存 不会被其他变量覆盖
-- 所以结果 **总是正确的**
+- 所以结果 <strong>总是正确的</strong>
 
 - 在包含超过 3 个 `int32_t` 的情况下
 
 - `response.buffer()` 返回值的临时变量 采用 `__long` 模式存储，字符串数据存放在堆内存上
 - 因为在 `std::string` 的析构函数 释放这块堆内存后，这块内存有可能被重新申请，从而使得其内容可能被修改
-- 所以结果 **往往是错误的**
+- 所以结果 <strong>往往是错误的</strong>
 
 ### 检查
 
@@ -203,7 +203,7 @@ Address 0x7ffd7bc8d2d4 is located in stack of thread T0 at offset 180 in frame
     [96, 120) 'reader' (line 56)
     [160, 192) 'ref.tmp' (line 56) 
 
-- 在调用 `Foo(1)` 时，出现 **使用超出作用域的栈变量** `stack-use-after-scope` 错误
+- 在调用 `Foo(1)` 时，出现 <strong>使用超出作用域的栈变量</strong> `stack-use-after-scope` 错误
 - 代码 `*reinterpret_cast(payload_ + read_index_)` 试图访问 `ref.tmp` 中的内存
 - 而 `ref.tmp` 对应的是 `response.buffer()` 返回值拷贝构造的临时变量，此时已离开其作用域
 接着，把 `Foo(3)` 改到最前面调用，再重新使用 Asan 编译、运行上述代码（[在线运行](https://link.zhihu.com/?target=https%3A//godbolt.org/z/zsYjr13nj)）：
@@ -227,7 +227,7 @@ previously allocated by thread T0 here:
     #0 0x50b0f8 in operator new(unsigned long) /root/llvm-project/compiler-rt/lib/asan/asan_new_delete.cpp:95
     #1 0x7f718285936e in void std::__cxx11::basic_string, std::allocator >::_M_construct(char*, char*, std::forward_iterator_tag) (/opt/compiler-explorer/gcc-11.2.0/lib64/libstdc++.so.6+0x14736e) (BuildId: ef355c62d82db886df570d5b383c6f4f094d40c1)`
 
-- 和上次不同，本次出现的是 **使用已释放的堆变量** `heap-use-after-free` 错误
+- 和上次不同，本次出现的是 <strong>使用已释放的堆变量</strong> `heap-use-after-free` 错误
 - 代码 `*reinterpret_cast(payload_ + read_index_)` 试图访问 `response.buffer()` 返回值拷贝构造时申请的堆内存
 - 而在 `response.buffer()` 返回值的临时变量析构时，这块堆内存已被释放
 **虽然 clang [支持在编译时检查 std::string 内部指针的生命周期问题](https://link.zhihu.com/?target=%3Ccode%3Ehttps%3A//cla%3C/code%3Eng.llvm.org/docs/analyzer/checkers.html%23cplusplus-innerpointer-c)（[在线运行](https://link.zhihu.com/?target=https%3A//godbolt.org/z/zYsdMnava)）：

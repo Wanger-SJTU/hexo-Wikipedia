@@ -23,8 +23,8 @@ id: e73dcc67-8164-4272-afed-448f7ff1d6c9
 
 
 
- 前面几篇文章介绍了最基本的**RAG**实现，也了解了RAG的基本原理。最基本的RAG 流程为用户Query问题，RAG应用在向量库查询出Context，然后将Query与 Context喂到LLM，LLM生成满足Query的Response答案。  
- 从这里可以存在三元组： **Query、Context 和 Response**，如要想进一步提升RAG的性能还可在Context(上下文)上做文章，目前得到的Context很可能与Query(问题)之间的相关度不高，通过**Rerank**可以对Context进行评分排序，去掉分数较低相关度较低的数据从而避免其对上下文信息的污染。下图为基本的RAG流程图；
+ 前面几篇文章介绍了最基本的<strong>RAG</strong>实现，也了解了RAG的基本原理。最基本的RAG 流程为用户Query问题，RAG应用在向量库查询出Context，然后将Query与 Context喂到LLM，LLM生成满足Query的Response答案。  
+ 从这里可以存在三元组： <strong>Query、Context 和 Response</strong>，如要想进一步提升RAG的性能还可在Context(上下文)上做文章，目前得到的Context很可能与Query(问题)之间的相关度不高，通过<strong>Rerank</strong>可以对Context进行评分排序，去掉分数较低相关度较低的数据从而避免其对上下文信息的污染。下图为基本的RAG流程图；
 
 ![](https://proxy-prod.omnivore-image-cache.app/0x0,sqLHWw3JVs1Oq7XUJRhkCYMmYBAvU15GeMZXgmUIwbOg/https://img2024.cnblogs.com/blog/84976/202404/84976-20240414164104680-203925307.png)
 

@@ -21,7 +21,7 @@ source_url: https://zhuanlan.zhihu.com/p/109338369
 
 在平常的使用中，我们一般通过对PyTorch提供的算子进行组合即可完成我们期望的功能，对于这些提供的算子，PyTorch已经提供了前向和反向的计算方法，因此如果我们网络是通过PyTorch已有的算子搭建而成的，就不需要自己再实现其反向的过程，因为这一过程将由PyTorch的自动微分引擎替我们完成。为了实现上述的目的，PyTorch引入了计算图的概念。计算图是一个有向图，它的节点为已经实现的算子或者数据（叶子结点），箭头的方向表示数据流动的方向，从输入节点指向输出节点。假设我们想实现函数L(x)=mean(sin(x1*x2+x2))，翻译成计算图为：
 
-![](/images/collections/0.raw/zhihu/%25E5%2586%258D%25E5%2585%25A5%25E9%2597%25A8%25E7%25B3%25BB%25E5%2588%2597/asset/img_ca6805ad0a3f.png)
+![](/images/collections/0.raw/zhihu/%E5%86%8D%E5%85%A5%E9%97%A8%E7%B3%BB%E5%88%97/asset/img_ca6805ad0a3f.png)
 
 从下往上即为前向传播的过程，如果想要计算L相对于x1和x2的梯度则可以从上往下进行求导，上述过程用PyTorch实现为：
 
@@ -495,7 +495,7 @@ struct Edge {
 
 ### Engine
 
-目前我们已经介绍了Variable，AutogradMeta，Node，Edge几种建立计算图需要用到的数据结构。本节将正式介绍PyTorch的自动微分引擎是如何进行工作的。当我们在python中通过`L.backward()`进行反向传播时，在python中最后调用的方式是pytorch/torch/autograd/**init**.py中的`Variable._execution_engine.run_backward(tensors, grad_tensors, retain_graph, create_graph, allow_unreachable=True)`。`Variable._execution_engine.run_backward`在后端c++中对应的代码为pytorch/torch/csrc/autograd/python_engine.cpp中的THPEngine_run_backward。THPEngine_run_backward方法的代码比较长，为此我们将按照其功能分成几部分来讲解。首先代码的第一部分对输入的参数进行解析，初始化相关的变量：
+目前我们已经介绍了Variable，AutogradMeta，Node，Edge几种建立计算图需要用到的数据结构。本节将正式介绍PyTorch的自动微分引擎是如何进行工作的。当我们在python中通过`L.backward()`进行反向传播时，在python中最后调用的方式是pytorch/torch/autograd/<strong>init</strong>.py中的`Variable._execution_engine.run_backward(tensors, grad_tensors, retain_graph, create_graph, allow_unreachable=True)`。`Variable._execution_engine.run_backward`在后端c++中对应的代码为pytorch/torch/csrc/autograd/python_engine.cpp中的THPEngine_run_backward。THPEngine_run_backward方法的代码比较长，为此我们将按照其功能分成几部分来讲解。首先代码的第一部分对输入的参数进行解析，初始化相关的变量：
 
 `HANDLE_TH_ERRORS
   _maybe_reinitialize_engine_after_fork();

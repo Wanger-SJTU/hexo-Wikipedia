@@ -19,7 +19,7 @@ source_url: https://zhuanlan.zhihu.com/p/434081696
 
 C++程序默认的内存管理（new，delete，malloc，free）会频繁地在堆上分配和释放内存，导致性能的损失，产生大量的内存碎片，降低内存的利用率。默认的内存管理因为被设计的比较通用，所以在性能上并不能做到极致。
 
-因此，很多时候需要根据业务需求设计专用内存管理器，便于针对特定数据结构和使用场合的内存管理，**比如：内存池。**
+因此，很多时候需要根据业务需求设计专用内存管理器，便于针对特定数据结构和使用场合的内存管理，<strong>比如：内存池。</strong>
 
 ### 二，内存池原理
 
@@ -27,26 +27,26 @@ C++程序默认的内存管理（new，delete，malloc，free）会频繁地在�
 
 ### 三，内存池设计
 
-**算法原理：**
+<strong>算法原理：</strong>
 
 - 预申请一个内存区chunk，将内存中按照对象大小划分成多个内存块block
 - 维持一个空闲内存块链表，通过指针相连，标记头指针为第一个空闲块
 - 每次新申请一个对象的空间，则将该内存块从空闲链表中去除，更新空闲链表头指针
 - 每次释放一个对象的空间，则重新将该内存块加到空闲链表头
 - 如果一个内存区占满了，则新开辟一个内存区，维持一个内存区的链表，同指针相连，头指针指向最新的内存区，新的内存块从该区内重新划分和申请
-**如图所示：**
+<strong>如图所示：</strong>
 
-![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_60d7850adbcf.jpg)
+![](/images/collections/0.raw/zhihu/%E8%B5%B0%E5%90%91cs/asset/img_60d7850adbcf.jpg)
 
-![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_775e5e275ebe.jpg)
+![](/images/collections/0.raw/zhihu/%E8%B5%B0%E5%90%91cs/asset/img_775e5e275ebe.jpg)
 
-![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_87e64a2ea52a.jpg)
+![](/images/collections/0.raw/zhihu/%E8%B5%B0%E5%90%91cs/asset/img_87e64a2ea52a.jpg)
 
-**【文章福利**】小编推荐自己的Linux内核技术交流群:【**865977150**】整理了一些个人觉得比较好的学习书籍、视频资料共享在群文件里面，有需要的可以自行添加哦！！！前100名进群领取，额外赠送一份价值**699的内核资料包**（含视频教程、电子书、实战项目及代码)
+<strong>【文章福利</strong>】小编推荐自己的Linux内核技术交流群:【<strong>865977150</strong>】整理了一些个人觉得比较好的学习书籍、视频资料共享在群文件里面，有需要的可以自行添加哦！！！前100名进群领取，额外赠送一份价值<strong>699的内核资料包</strong>（含视频教程、电子书、实战项目及代码)
 
-![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_40740d8f402e.jpg)
+![](/images/collections/0.raw/zhihu/%E8%B5%B0%E5%90%91cs/asset/img_40740d8f402e.jpg)
 
-**内存池实现**
+<strong>内存池实现</strong>
 
 memory_pool.hpp
 
@@ -176,7 +176,7 @@ private:
 #endif // !_MEMORY_POOL_H_
 `
 
-**运行结果：**
+<strong>运行结果：</strong>
 
 `p1 00000174BEDE0440 1
 p2 00000174BEDE0450 2
@@ -192,4 +192,4 @@ p6 00000174BEDD5320 6
 
 - 在内存分配和释放的环节需要加锁来保证线程安全
 - 还没有实现对象数组的分配和释放
-![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_48efc3975032.png)
+![](/images/collections/0.raw/zhihu/%E8%B5%B0%E5%90%91cs/asset/img_48efc3975032.png)

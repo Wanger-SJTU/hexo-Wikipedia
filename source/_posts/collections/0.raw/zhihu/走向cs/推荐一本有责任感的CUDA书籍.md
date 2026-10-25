@@ -23,7 +23,7 @@ source_url: https://zhuanlan.zhihu.com/p/342934660
 
 这次终于可以跟大家推荐一本：
 
-![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_7502306bfe58.jpg)
+![](/images/collections/0.raw/zhihu/%E8%B5%B0%E5%90%91cs/asset/img_7502306bfe58.jpg)
 
 樊哲勇博士在写书的过程中也经常在我们的QQ技术群里回答大家的CUDA编程问题，我们也算是亲历了樊博士写书的整个过程。樊博士写书的第一版手稿我们也全部阅读过，并提供了很多修改意见。
 
@@ -31,7 +31,7 @@ source_url: https://zhuanlan.zhihu.com/p/342934660
 
 终于等到书出版的这一天了！
 
-![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_0f88b8cf4d5d.jpg)
+![](/images/collections/0.raw/zhihu/%E8%B5%B0%E5%90%91cs/asset/img_0f88b8cf4d5d.jpg)
 
 目   录
 

@@ -65,12 +65,12 @@ flowchart TB
 
 ## Các Khái niệm Cốt lõi
 
-- **Vượt phạm vi (Overreach)**: Agent kích hoạt nhiều tác vụ hơn mức tối ưu trong một phiên. Có thể định lượng được — làm 5 tính năng với 0 cái vượt qua end-to-end là vượt phạm vi.
-- **Dưới mức hoàn thành (Under-finish)**: Tỷ lệ tác vụ vượt qua xác minh end-to-end, trong tổng số tác vụ được kích hoạt, giảm xuống dưới ngưỡng. Mã được viết nhưng test không vượt qua là dưới mức hoàn thành.
-- **Giới hạn WIP (Work-in-Progress Limit)**: Từ phương pháp Kanban. Ý tưởng cốt lõi: giới hạn số lượng tác vụ đang tiến hành cùng một lúc. Đối với agent, WIP=1 là giá trị mặc định an toàn nhất — hoàn thành một cái trước khi bắt đầu cái tiếp theo. Giống như buffet — đừng chồng đĩa, hoàn thành một đĩa rồi quay lại lấy thêm.
-- **Bằng chứng Hoàn thành (Completion Evidence)**: Điều kiện có thể xác minh mà một tác vụ phải thỏa mãn để chuyển từ "đang thực hiện" sang "xong." Không có điều này, agent thay thế "mã trông có vẻ ổn" cho "hành vi vượt qua test."
-- **Bề mặt Phạm vi (Scope Surface)**: Cấu trúc DAG nơi mỗi nút là một đơn vị công việc và cạnh là các phụ thuộc. Trạng thái giới hạn ở bốn: not_started, active, blocked, passing.
-- **Áp lực Hoàn thành (Completion Pressure)**: Lực ràng buộc mà harness tác dụng thông qua giới hạn WIP và yêu cầu bằng chứng hoàn thành, buộc agent hoàn thành tác vụ hiện tại trước khi bắt đầu một cái mới.
+- <strong>Vượt phạm vi (Overreach)</strong>: Agent kích hoạt nhiều tác vụ hơn mức tối ưu trong một phiên. Có thể định lượng được — làm 5 tính năng với 0 cái vượt qua end-to-end là vượt phạm vi.
+- <strong>Dưới mức hoàn thành (Under-finish)</strong>: Tỷ lệ tác vụ vượt qua xác minh end-to-end, trong tổng số tác vụ được kích hoạt, giảm xuống dưới ngưỡng. Mã được viết nhưng test không vượt qua là dưới mức hoàn thành.
+- <strong>Giới hạn WIP (Work-in-Progress Limit)</strong>: Từ phương pháp Kanban. Ý tưởng cốt lõi: giới hạn số lượng tác vụ đang tiến hành cùng một lúc. Đối với agent, WIP=1 là giá trị mặc định an toàn nhất — hoàn thành một cái trước khi bắt đầu cái tiếp theo. Giống như buffet — đừng chồng đĩa, hoàn thành một đĩa rồi quay lại lấy thêm.
+- <strong>Bằng chứng Hoàn thành (Completion Evidence)</strong>: Điều kiện có thể xác minh mà một tác vụ phải thỏa mãn để chuyển từ "đang thực hiện" sang "xong." Không có điều này, agent thay thế "mã trông có vẻ ổn" cho "hành vi vượt qua test."
+- <strong>Bề mặt Phạm vi (Scope Surface)</strong>: Cấu trúc DAG nơi mỗi nút là một đơn vị công việc và cạnh là các phụ thuộc. Trạng thái giới hạn ở bốn: not_started, active, blocked, passing.
+- <strong>Áp lực Hoàn thành (Completion Pressure)</strong>: Lực ràng buộc mà harness tác dụng thông qua giới hạn WIP và yêu cầu bằng chứng hoàn thành, buộc agent hoàn thành tác vụ hiện tại trước khi bắt đầu một cái mới.
 
 ## Vượt Phạm vi và Dưới mức Hoàn thành là Cộng sinh
 
@@ -84,7 +84,7 @@ Theo thuật ngữ Kanban: Định luật Little cho chúng ta biết L = lambda
 
 ### 1. Thực thi WIP=1
 
-Đây là phương pháp trực tiếp và hiệu quả nhất. Trong harness của bạn, hãy nói rõ ràng với agent: **chỉ một tác vụ được phép ở trạng thái "active" tại bất kỳ thời điểm nào.** Trong CLAUDE.md của Claude Code hoặc AGENTS.md của Codex, hãy viết:
+Đây là phương pháp trực tiếp và hiệu quả nhất. Trong harness của bạn, hãy nói rõ ràng với agent: <strong>chỉ một tác vụ được phép ở trạng thái "active" tại bất kỳ thời điểm nào.</strong> Trong CLAUDE.md của Claude Code hoặc AGENTS.md của Codex, hãy viết:
 
 ```
 ## Quy tắc Làm việc
@@ -117,19 +117,19 @@ Harness nên liên tục theo dõi VCR (Verified Completion Rate) = tác vụ đ
 
 Một dự án REST API với 8 tính năng, hai chiến lược được so sánh:
 
-**Chế độ buffet (không có ràng buộc)**: Agent kích hoạt 5 tính năng đồng thời trong phiên 1. Tạo ra ~800 dòng trên 12 tệp. Tỷ lệ vượt qua test end-to-end: 20% — chỉ đăng ký người dùng hoạt động. 4 tính năng còn lại: database schema được tạo nhưng thiếu logic xác thực, route được định nghĩa nhưng trả về định dạng phản hồi sai. Giống như ai đó nấu sáu món cùng một lúc, chỉ có một món tạm ăn được. Đến cuối phiên 3, chỉ 3 trong 8 tính năng hoàn thành.
+<strong>Chế độ buffet (không có ràng buộc)</strong>: Agent kích hoạt 5 tính năng đồng thời trong phiên 1. Tạo ra ~800 dòng trên 12 tệp. Tỷ lệ vượt qua test end-to-end: 20% — chỉ đăng ký người dùng hoạt động. 4 tính năng còn lại: database schema được tạo nhưng thiếu logic xác thực, route được định nghĩa nhưng trả về định dạng phản hồi sai. Giống như ai đó nấu sáu món cùng một lúc, chỉ có một món tạm ăn được. Đến cuối phiên 3, chỉ 3 trong 8 tính năng hoàn thành.
 
-**Chế độ một đĩa (WIP=1)**: Agent chỉ làm việc trên đăng ký người dùng trong phiên 1. Tạo ra ~200 dòng trên 4 tệp. Test end-to-end: 100% vượt qua. Commit một triển khai sạch, đã xác minh. Đến cuối phiên 4, 7 trong 8 tính năng hoàn thành (cái thứ 8 bị chặn bởi phụ thuộc bên ngoài).
+<strong>Chế độ một đĩa (WIP=1)</strong>: Agent chỉ làm việc trên đăng ký người dùng trong phiên 1. Tạo ra ~200 dòng trên 4 tệp. Test end-to-end: 100% vượt qua. Commit một triển khai sạch, đã xác minh. Đến cuối phiên 4, 7 trong 8 tính năng hoàn thành (cái thứ 8 bị chặn bởi phụ thuộc bên ngoài).
 
 Kết quả: tổng mã ít hơn (800 vs 1200 dòng) nhưng mã hiệu quả hơn. Tỷ lệ hoàn thành: 87.5% vs 37.5%. Ăn từng miếng một, và bạn thực sự ăn được nhiều hơn.
 
 ## Những Điểm chính cần Nhớ
 
-- **WIP=1 là cài đặt an toàn mặc định cho harness agent** — hoàn thành một cái, rồi bắt đầu cái tiếp theo; đừng cố song song hóa. Bạn không thể béo lên trong một bữa ăn.
-- **Bằng chứng hoàn thành phải có thể thực thi** — "mã trông có vẻ ổn" không tính; "curl trả về 201" mới tính.
-- **Bề mặt phạm vi phải được ngoại hóa như một tệp** — không chỉ đề cập trong hội thoại, mà được ghi lại ở định dạng có thể đọc bởi máy trong repo.
-- **Vượt phạm vi và dưới mức hoàn thành là cộng sinh** — giải quyết một cái giải quyết cái kia.
-- **"Làm ít nhưng hoàn thành" luôn tốt hơn "làm nhiều nhưng để lại một nửa"** — dòng mã agent và tỷ lệ hoàn thành tính năng tương quan âm. Chất lượng luôn tốt hơn số lượng.
+- <strong>WIP=1 là cài đặt an toàn mặc định cho harness agent</strong> — hoàn thành một cái, rồi bắt đầu cái tiếp theo; đừng cố song song hóa. Bạn không thể béo lên trong một bữa ăn.
+- <strong>Bằng chứng hoàn thành phải có thể thực thi</strong> — "mã trông có vẻ ổn" không tính; "curl trả về 201" mới tính.
+- <strong>Bề mặt phạm vi phải được ngoại hóa như một tệp</strong> — không chỉ đề cập trong hội thoại, mà được ghi lại ở định dạng có thể đọc bởi máy trong repo.
+- <strong>Vượt phạm vi và dưới mức hoàn thành là cộng sinh</strong> — giải quyết một cái giải quyết cái kia.
+- <strong>"Làm ít nhưng hoàn thành" luôn tốt hơn "làm nhiều nhưng để lại một nửa"</strong> — dòng mã agent và tỷ lệ hoàn thành tính năng tương quan âm. Chất lượng luôn tốt hơn số lượng.
 
 ## Đọc thêm
 
@@ -140,8 +140,8 @@ Kết quả: tổng mã ít hơn (800 vs 1200 dòng) nhưng mã hiệu quả hơ
 
 ## Bài tập
 
-1. **Nguyên tử hóa tác vụ**: Chọn một yêu cầu rộng (ví dụ: "triển khai hệ thống quản lý người dùng") và chia thành ít nhất 5 đơn vị công việc nguyên tử. Cho mỗi đơn vị, chỉ định: (a) mô tả hành vi đơn, (b) lệnh xác minh có thể thực thi, (c) các phụ thuộc. Kiểm tra liệu việc phân chia có thỏa mãn ràng buộc WIP=1 không.
+1. <strong>Nguyên tử hóa tác vụ</strong>: Chọn một yêu cầu rộng (ví dụ: "triển khai hệ thống quản lý người dùng") và chia thành ít nhất 5 đơn vị công việc nguyên tử. Cho mỗi đơn vị, chỉ định: (a) mô tả hành vi đơn, (b) lệnh xác minh có thể thực thi, (c) các phụ thuộc. Kiểm tra liệu việc phân chia có thỏa mãn ràng buộc WIP=1 không.
 
-2. **Thí nghiệm So sánh**: Chạy cùng dự án hai lần — một lần không có ràng buộc, một lần với WIP=1 được thực thi. So sánh: tỷ lệ hoàn thành đã xác minh, tổng số dòng mã, tỷ lệ mã hiệu quả.
+2. <strong>Thí nghiệm So sánh</strong>: Chạy cùng dự án hai lần — một lần không có ràng buộc, một lần với WIP=1 được thực thi. So sánh: tỷ lệ hoàn thành đã xác minh, tổng số dòng mã, tỷ lệ mã hiệu quả.
 
-3. **Kiểm toán Bằng chứng Hoàn thành**: Xem xét kết quả của một lần chạy agent gần đây, phân loại từng thay đổi mã là "hành vi đã hoàn thành," "hành vi chưa hoàn thành" hoặc "scaffolding." Thêm các lệnh xác minh còn thiếu cho mỗi hành vi chưa hoàn thành.
+3. <strong>Kiểm toán Bằng chứng Hoàn thành</strong>: Xem xét kết quả của một lần chạy agent gần đây, phân loại từng thay đổi mã là "hành vi đã hoàn thành," "hành vi chưa hoàn thành" hoặc "scaffolding." Thêm các lệnh xác minh còn thiếu cho mỗi hành vi chưa hoàn thành.

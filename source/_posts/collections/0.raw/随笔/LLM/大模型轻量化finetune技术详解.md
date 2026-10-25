@@ -15,7 +15,7 @@ https://zhuanlan.zhihu.com/p/624275968
 
 大模型太大，占用的资源非常多。而且GPT系列也不开源。所以从算法和算力角度来说，想搭建chatGPT的能力，除了土豪大公司，对很多组织都是很困难的。为了低成本完成本地调优，完成了很多替代方案。
 
-**Alpaca**
+<strong>Alpaca</strong>
 Alpaca就是对于llama的finetune，它在一个7B的llama模型上，用52K的数据进行了训练，代码和数据和模型都是开源的，并且在测试中达到了类似OpenAI发布的语言模型的能力（text-davinci-003）。训练这个模型使用了4个80G A100。
 
 ## 数据集生成(self-instruct)

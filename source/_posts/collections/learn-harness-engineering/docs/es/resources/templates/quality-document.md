@@ -15,14 +15,14 @@ categories:
 
 Una instantánea de calidad para cada dominio de producto y capa arquitectónica. Tanto agentes como humanos pueden usar este documento para entender rápidamente dónde el código base es fuerte y dónde necesita trabajo.
 
-**Cadencia de actualización:** Después de cada sesión significativa, o antes de comenzar una nueva fase de trabajo.
+<strong>Cadencia de actualización:</strong> Después de cada sesión significativa, o antes de comenzar una nueva fase de trabajo.
 
-**Escala de calificación:**
+<strong>Escala de calificación:</strong>
 
-- **A**: Toda la verificación pasando, arquitectura limpia, legible para agentes, tests estables
-- **B**: Verificación pasando, mayormente limpio, brechas menores en legibilidad o cobertura de tests
-- **C**: Parcialmente funcionando, brechas conocidas, algunas áreas de código difíciles de entender para los agentes
-- **D**: No funcionando, o problemas estructurales importantes
+- <strong>A</strong>: Toda la verificación pasando, arquitectura limpia, legible para agentes, tests estables
+- <strong>B</strong>: Verificación pasando, mayormente limpio, brechas menores en legibilidad o cobertura de tests
+- <strong>C</strong>: Parcialmente funcionando, brechas conocidas, algunas áreas de código difíciles de entender para los agentes
+- <strong>D</strong>: No funcionando, o problemas estructurales importantes
 
 ---
 

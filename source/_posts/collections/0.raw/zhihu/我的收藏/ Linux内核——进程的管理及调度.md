@@ -56,7 +56,7 @@ task_struct中的state描述进程的当前状态。进程的状态一共有5种
 
 进程的各个状态之间的转化构成了进程的整个生命周期，
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_acf1ba5efde4.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_acf1ba5efde4.jpg)
 
 #### 进程的创建
 
@@ -232,4 +232,4 @@ Linux的调度程序为堆成多处理系统的每个处理器准备了单独的
 
 原文地址：进程的管理与调度 - 圈点 - 内核技术中文网 - 构建全国最权威的内核技术交流分享论坛（版权归原文作者所有，侵权联系删除）
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_e605158412b6.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_e605158412b6.jpg)

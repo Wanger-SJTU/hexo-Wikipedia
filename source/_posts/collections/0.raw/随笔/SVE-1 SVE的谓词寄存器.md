@@ -14,7 +14,7 @@ categories:
 #sve 
 
 ## 谓词寄存器
-![Pasted image 20230715163356.png](/images/collections/assets/Pasted%2520image%252020230715163356.png)
+![Pasted image 20230715163356.png](/images/collections/assets/Pasted%20image%2020230715163356.png)
 
 - 谓词寄存器的长度是SVE 向量寄存器的1/8，正好对应了最小位宽时的uint8的数目。
 - 谓词寄存器的1bit 对应了向量寄存器的1 Byte

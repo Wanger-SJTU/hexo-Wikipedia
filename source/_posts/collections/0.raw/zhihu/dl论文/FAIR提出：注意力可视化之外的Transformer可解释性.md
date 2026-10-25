@@ -17,9 +17,9 @@ source_url: https://zhuanlan.zhihu.com/p/338156132
 
 本文提出了一种计算Transformers网络相关性的新方法，其基于深度泰勒分解原理分配局部相关性，然后将其传播到各层。实验证明了相对于现有可解释性方法的明显优势，代码现已开源！
 
-**注：文末附【Transformer】学习交流群**
+<strong>注：文末附【Transformer】学习交流群</strong>
 
-**Transformer Interpretability Beyond Attention Visualization**
+<strong>Transformer Interpretability Beyond Attention Visualization</strong>
 
 ![](https://pic2.zhimg.com/v2-d613cf822a0b4ca6275f02e6d884bacf_r.jpg)作者单位：Facebook（FAIR）
 代码：[hila-chefer/Transformer-Explainability](https://link.zhihu.com/?target=https%3A//github.com/hila-chefer/Transformer-Explainability)
@@ -33,7 +33,7 @@ source_url: https://zhuanlan.zhihu.com/p/338156132
 - [北大和港中文提出ACT：自适应聚类Transformer的端到端目标检测](https://zhuanlan.zhihu.com/p/336385944)
 - [420 FPS！LSTR：基于Transformer的端到端实时车道线检测，代码已开源！](https://zhuanlan.zhihu.com/p/331892664)为了可视化导致某种分类的图像部分，现有方法要么依赖于获得的注意力图（attention maps），要么采用沿注意力图的启发式传播（heuristic propagation）。
 
-在这项工作中，我们提出了一种计算Transformers网络相关性（relevancy）的新颖方法。该方法基于**深度泰勒分解（Taylor decomposition）**原理分配局部相关性，然后将这些相关性分数传播到各层。这种传播涉及注意力层和跳跃连接，这挑战了现有方法。我们的解决方案基于一种特定的方式，该方式被证明可以保持各层之间的整体相关性。
+在这项工作中，我们提出了一种计算Transformers网络相关性（relevancy）的新颖方法。该方法基于<strong>深度泰勒分解（Taylor decomposition）</strong>原理分配局部相关性，然后将这些相关性分数传播到各层。这种传播涉及注意力层和跳跃连接，这挑战了现有方法。我们的解决方案基于一种特定的方式，该方式被证明可以保持各层之间的整体相关性。
 
 内容较为硬核，这里直接搬原文（建议这块直接看论文，信息量有点大，而且要有Transformer相关基础知识比较好）
 
@@ -51,9 +51,9 @@ source_url: https://zhuanlan.zhihu.com/p/338156132
 
 ![](https://pic1.zhimg.com/v2-ffe548b2cf2e70783a3dd2dc29d62208_r.jpg)
 CVer-Transformer交流群
-已建立CVer-Transformer微信交流群！想要进Transformer学习交流群的同学，可以直接加微信号：**CVer5555**。加的时候备注一下：Transformer**+学校+昵称**，即可。然后就可以拉你进群了。
+已建立CVer-Transformer微信交流群！想要进Transformer学习交流群的同学，可以直接加微信号：<strong>CVer5555</strong>。加的时候备注一下：Transformer<strong>+学校+昵称</strong>，即可。然后就可以拉你进群了。
 
-**强烈推荐大家关注**[CVer知乎](https://www.zhihu.com/people/cver-38)**账号和**[CVer](https://link.zhihu.com/?target=https%3A//mp.weixin.qq.com/s/moRNkCaBDtYZgXwaZDXBwA)**微信公众号，可以快速了解到最新优质的CV论文。**
+<strong>强烈推荐大家关注</strong>[CVer知乎](https://www.zhihu.com/people/cver-38)<strong>账号和</strong>[CVer](https://link.zhihu.com/?target=https%3A//mp.weixin.qq.com/s/moRNkCaBDtYZgXwaZDXBwA)<strong>微信公众号，可以快速了解到最新优质的CV论文。</strong>
 
 推荐阅读
 [清华大学提出PCT：Point Cloud Transformer](https://zhuanlan.zhihu.com/p/337824728)

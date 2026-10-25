@@ -68,7 +68,7 @@ self.p_conv和self.m_conv输入通道由我们自己设置，self.p_conv输出�
 ![](https://picx.zhimg.com/v2-2690d02e31c792ea4c21d41fc5341159_r.jpg)双线性插值算法示意图获取4个点的坐标后根据上图公式可以计算出像素值前面的系数(即 
 ![](https://www.zhihu.com/equation?tex=%5Cfrac%7B%28x_0-x%29%28y_0-y%29%7D%7B%28x_1-x_0%29%28y_1-y_0%29%7D) 这部分)，代码中这4个系数分别为g_lt,g_rb,g_lb,g_rt。现在只获取了坐标值，我们最终木的是获取相应坐标上的值，这里我们通过self._get_x_q()获取相应值。
 
-![](https://pica.zhimg.com/v2-a4cbb480f534c371d22d491d8eb6fe98_r.jpg)通过坐标获取相应值输入x是我们最早输入的数据x，q则是我们的坐标信息。首先我们获取q的相关尺寸信息(b,h,w,2N)，再获取x的w保存在padding_w中，将x(b,c,h,w)通过view变成(b,c,h*w)。这样子就把x的坐标信息压缩在了最后一个维度(h*w)，这样做的目的是为了使用tensor.gather()通过坐标来获取相应值。**(这里注意下q的h,w和x的h,w不一定相同，比如stride不为1的时候)**
+![](https://pica.zhimg.com/v2-a4cbb480f534c371d22d491d8eb6fe98_r.jpg)通过坐标获取相应值输入x是我们最早输入的数据x，q则是我们的坐标信息。首先我们获取q的相关尺寸信息(b,h,w,2N)，再获取x的w保存在padding_w中，将x(b,c,h,w)通过view变成(b,c,h*w)。这样子就把x的坐标信息压缩在了最后一个维度(h*w)，这样做的目的是为了使用tensor.gather()通过坐标来获取相应值。<strong>(这里注意下q的h,w和x的h,w不一定相同，比如stride不为1的时候)</strong>
 
 同样地，由于(h,w)被压缩成了(h*w)所以在这个维度上，每过w个元素，就代表了一行，所以我们的坐标index=offset_x*w+offset_y(这样就能在h*w上找到(h,w)的相应坐标)同时再把偏移expand()到每一个通道最后返回x_offset(b,c,h,w,N)。(最后输出x_offset的h,w指的是x的h,w而不是q的)
 
@@ -81,7 +81,7 @@ self.p_conv和self.m_conv输入通道由我们自己设置，self.p_conv输出�
 ![](https://pic3.zhimg.com/v2-f8a8aa7b50126ba8d307b214bc1b3192_r.jpg)上述reshape操作的实际意义左图为卷积操作，第一次卷积时涉及9个元素的运算，右图把这个9个元素单独保存下来。这就是这个reshape函数的实际意义，把每一次卷积操作的所需要的数据信息单独保存(N=ks*ks)，当把最后一个维度(N)的信息通过这种方式保留到(h,w)这两个维度上后，自然就扩大了ks倍。(右图开始的3*3块储存第一次卷积所需的数据，后面的3*3块储存第二次卷积所需的数据)
 
 到这一步我们做的就是对输入数据x进行可变卷积，并且把每次卷积所需的数据单独作为一个小块保留得到了一张大的feature map(b,c,ks*h,ks*w)，**如同上图右边的大feature map，此时reshape出的这张大feature map上的每个ks*ks的小块代表的就是公式(2)中求和的元素** 
-![](https://www.zhihu.com/equation?tex=x%28p_0%2Bp_n%2B%5CDelta+p_n%29) **！！**最后再过一个普通卷积层以ks为stride这样得出的最终输出size为(b,c,h,w)，**最后一个卷积层的操作后，所有操作就与与公式(2) 
+![](https://www.zhihu.com/equation?tex=x%28p_0%2Bp_n%2B%5CDelta+p_n%29) <strong>！！</strong>最后再过一个普通卷积层以ks为stride这样得出的最终输出size为(b,c,h,w)，**最后一个卷积层的操作后，所有操作就与与公式(2) 
 ![](https://www.zhihu.com/equation?tex=%5Csum_%7Bn%5Csubset+R%7D%7Bx%28p_0%2Bp_n%2B%5CDelta+p_n%29%7D) 完全符合！**这样可变卷积所有操作就完成了。
 
 至于那个modulation只是对每个元素加了偏置而已并不是很难理解，这里不展开讲

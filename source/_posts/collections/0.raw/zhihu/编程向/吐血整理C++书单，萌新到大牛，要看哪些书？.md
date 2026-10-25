@@ -23,19 +23,19 @@ source_url: https://zhuanlan.zhihu.com/p/76369741
 
 #### 技术书阅读方法论
 
-**一.速读一遍（最好在1~2天内完成）**
+<strong>一.速读一遍（最好在1~2天内完成）</strong>
 
 人的大脑记忆力有限，在一天内快速看完一本书会在大脑里留下深刻印象，对于之后复习以及总结都会有特别好的作用。
 
 对于每一章的知识，先阅读标题，弄懂大概讲的是什么主题，再去快速看一遍，不懂也没有关系，但是一定要在不懂的地方做个记号，什么记号无所谓，但是要让自己后面再看的时候有个提醒的作用，看看第二次看有没有懂了些。
 
-**二.精读一遍（在2周内看完）**
+<strong>二.精读一遍（在2周内看完）</strong>
 
 有了前面速读的感觉，第二次看会有慢慢深刻了思想和意识的作用，具体为什么不要问我，去问30年后的神经大脑专家，现在人类可能还没有总结出为什么大脑对记忆的完全方法论，但是，就像我们专业程序员，打代码都是先实践，然后就渐渐懂了过程，慢慢懂了原理，所以第二遍读的时候稍微慢下来，2周内搞定。
 
 记住一句话：每看完一个章节后，总结一下这个章节讲了啥。很关键。
 
-**三.实践（在整个过程中都要）**
+<strong>三.实践（在整个过程中都要）</strong>
 
 实践的时候，要注意不用都去实践，最好看着书，敲下代码，把重点的内容敲一遍有个肌肉记忆就很不错了。
 
@@ -43,7 +43,7 @@ source_url: https://zhuanlan.zhihu.com/p/76369741
 
 #### 书单目录总结
 
-**零.手册类：**
+<strong>零.手册类：</strong>
 
 - 《C++程序设计语言(The C++ Programming Language)》
 - 《C++标准程序库(C++ Standard Library Tutorial and Reference) 》
@@ -51,7 +51,7 @@ source_url: https://zhuanlan.zhihu.com/p/76369741
 - 《The C++ Standard (INCITS/ISO/IEC 14882-2011)》
 - 《Overview of the New C++ (C++) 》
 - 《The Standard C Library》
-**一.初级入门系列：**
+<strong>一.初级入门系列：</strong>
 
 - 《C++ Primer》
 - 《Accelerated C++》
@@ -62,7 +62,7 @@ source_url: https://zhuanlan.zhihu.com/p/76369741
 - 《Visual.C++.2008入门经典》
 - 《面向对象程序设计—C++语言描述》
 - 《数据结构(C++语言版)第三版_邓俊辉》
-**二.实用系列：**
+<strong>二.实用系列：</strong>
 
 - 《Effective C++ 》
 - 《Effective STL》
@@ -70,7 +70,7 @@ source_url: https://zhuanlan.zhihu.com/p/76369741
 - 《设计模式：可复用面向对象软件的基础》
 - 《HeadFirst设计模式》
 - 《大话设计模式》
-**三.中级进阶系列：**
+<strong>三.中级进阶系列：</strong>
 
 - 《More Effective C++ 》
 - 《Exceptional C++ 》
@@ -81,7 +81,7 @@ source_url: https://zhuanlan.zhihu.com/p/76369741
 - 《Beyond the C++ Standard Library(Boost)》
 - 《C和C++安全编码》
 - 《深入理解C++11》
-**四.高级成神系列：**
+<strong>四.高级成神系列：</strong>
 
 - 《C++设计新思维-泛型编程与设计模式之应用(Modern C++ Design ) 》
 - 《C++模板元编程(C++ Template Metaprogramming)》
@@ -92,25 +92,25 @@ source_url: https://zhuanlan.zhihu.com/p/76369741
 
 #### 推荐几本经典书籍
 
-**《C++ Primer 第五版》**
+<strong>《C++ Primer 第五版》</strong>
 
 C++语法太过繁杂，很多语法特性一辈子也用不上。对于初学者来说，学完前7章就能写简单的程序。
 
-**《大话数据结构》**
+<strong>《大话数据结构》</strong>
 
 这实在是一本对新手非常友好的书，暂时先看完前5章就够了。此时应该多做一些练习，可以是简单的小软件或小游戏。
 
-**《C++ Primer 第五版》**
+<strong>《C++ Primer 第五版》</strong>
 
 没错还是这本书，之前7章学了基础语法。现在继续学习8~12章，涵盖了标准库常用组件的基本用法。想完整学习标准库的同学可以在未来深入阅读《C++标准程序库:自修教程与参考手册》。
 
-**进阶学习：**
+<strong>进阶学习：</strong>
 
 此时可以选择性地把《C++ Primer 第五版》剩下的部分看完，第15章面向对象是重要内容，需要认真研究。
 
 此时也可以把《大话数据结构》看完，或换一本正经的深入讲解算法的书，比如《算法导论》。
 
-**《Effective C++》、《C++编程规范》**
+<strong>《Effective C++》、《C++编程规范》</strong>
 
 C++给了程序员过高的自由度，这反而不是一件好事，这两本书告诉你使用C++哪些做法是正确的，哪些是错误的，C++进阶必读。还有一本补充读物《More Effective C++》可选读。
 
@@ -120,22 +120,22 @@ C++给了程序员过高的自由度，这反而不是一件好事，这两本�
 
 #### 文章福利
 
-对于自己找不到视频、书籍资源的读者，可以加小编的**C语言/C++交流群：967051845！**整理了一些个人觉得比较好的学习书籍、视频资料共享在群文件里面，有需要的可以自行添加哦！~
+对于自己找不到视频、书籍资源的读者，可以加小编的<strong>C语言/C++交流群：967051845！</strong>整理了一些个人觉得比较好的学习书籍、视频资料共享在群文件里面，有需要的可以自行添加哦！~
 
-**VS编译器，图形库**
+<strong>VS编译器，图形库</strong>
 
-![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_b6b076c24b18.jpg)
+![](/images/collections/0.raw/zhihu/%E7%BC%96%E7%A8%8B%E5%90%91/asset/img_b6b076c24b18.jpg)
 
-**C语言相关电子书**
+<strong>C语言相关电子书</strong>
 
-![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_c7074fc07eb2.jpg)
+![](/images/collections/0.raw/zhihu/%E7%BC%96%E7%A8%8B%E5%90%91/asset/img_c7074fc07eb2.jpg)
 
-**C/C++基础视频及笔记**
+<strong>C/C++基础视频及笔记</strong>
 
-![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_cf41c95e5750.jpg)
+![](/images/collections/0.raw/zhihu/%E7%BC%96%E7%A8%8B%E5%90%91/asset/img_cf41c95e5750.jpg)
 
-**C/C++项目实战**
+<strong>C/C++项目实战</strong>
 
-![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_b7d3202d791e.jpg)
+![](/images/collections/0.raw/zhihu/%E7%BC%96%E7%A8%8B%E5%90%91/asset/img_b7d3202d791e.jpg)
 
-**日积月累，终有所成！！！**
+<strong>日积月累，终有所成！！！</strong>

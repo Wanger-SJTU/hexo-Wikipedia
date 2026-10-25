@@ -22,16 +22,16 @@ categories:
 
 Ajanınız tüm öğleden sonra çalışıyor, 20 dosyayı değiştiriyor, kodu commit ediyor, oturum sona eriyor. Sonraki ajan oturumu başlıyor ve hemen şunları keşfediyor: yapı bozuk, testler kırmızı, geçici hata ayıklama dosyaları her yerde, özellik listesi güncellenmemiş ve ilerleme tamamen belirsiz. Yeni oturum ilk 30 dakikasını sadece "geçen oturum aslında ne yaptı" çözmek için harcıyor.
 
-Hem OpenAI hem de Anthropic açıkça belirtiyor: **uzun vadeli güvenilirlik yalnızca tek koşum başarısına değil, operasyonel disipline bağlıdır.** Oturum çıkışındaki durumun kalitesi bir sonraki oturumun verimliliğini doğrudan belirler. Bunu Git en iyi uygulamaları gibi düşünün — her commit, yarı tamamlanmış kod yığını değil, atomik, derlenebilir bir değişiklik olmalıdır.
+Hem OpenAI hem de Anthropic açıkça belirtiyor: <strong>uzun vadeli güvenilirlik yalnızca tek koşum başarısına değil, operasyonel disipline bağlıdır.</strong> Oturum çıkışındaki durumun kalitesi bir sonraki oturumun verimliliğini doğrudan belirler. Bunu Git en iyi uygulamaları gibi düşünün — her commit, yarı tamamlanmış kod yığını değil, atomik, derlenebilir bir değişiklik olmalıdır.
 
 ## Temel kavramlar
 
-- **Temiz durum**: Sistem oturum sonunda beş koşulu karşılar — yapı geçer, testler geçer, ilerleme kaydedilir, bayatlamış artefakt yoktur, başlatma yolu mevcuttur. Herhangi birinin eksik olması oturumun "tamam" olmadığı anlamına gelir.
-- **Oturum bütünlüğü**: Veritabanı işlemlerine benzer — ya tamamen commit edin ve temiz bir durum bırakın ya da son tutarlı duruma geri alın. Orta yol yok.
-- **Kalite belgesi**: Her modül için kalite derecelerini sürekli kaydeden aktif bir artefakt. Bir kerelik değerlendirme değil, kod tabanının zamanla daha güçlü mü yoksa daha zayıf mı hâle geldiğini gösteren bir takipçi.
-- **Temizleme döngüsü**: Kod tabanındaki entropiyi sistematik olarak azaltmayı amaçlayan düzenli bir bakım oturumu. Acil bir düzeltme değil, rutin operasyonlar.
-- **Harness sadeleştirmesi**: Model yetenekleri geliştikçe artık gerekli olmayan harness bileşenlerini periyodik olarak kaldırın. Bugün vazgeçilmez olan bir kısıt üç ay sonra gereksiz bir yük olabilir.
-- **İdempotent temizleme**: Temizleme işlemleri kaç kez çalıştırıldığına bakılmaksızın aynı sonucu üretir. Başarısızlık-yeniden deneme senaryolarında bile temizlemenin güvenli kalmasını sağlar.
+- <strong>Temiz durum</strong>: Sistem oturum sonunda beş koşulu karşılar — yapı geçer, testler geçer, ilerleme kaydedilir, bayatlamış artefakt yoktur, başlatma yolu mevcuttur. Herhangi birinin eksik olması oturumun "tamam" olmadığı anlamına gelir.
+- <strong>Oturum bütünlüğü</strong>: Veritabanı işlemlerine benzer — ya tamamen commit edin ve temiz bir durum bırakın ya da son tutarlı duruma geri alın. Orta yol yok.
+- <strong>Kalite belgesi</strong>: Her modül için kalite derecelerini sürekli kaydeden aktif bir artefakt. Bir kerelik değerlendirme değil, kod tabanının zamanla daha güçlü mü yoksa daha zayıf mı hâle geldiğini gösteren bir takipçi.
+- <strong>Temizleme döngüsü</strong>: Kod tabanındaki entropiyi sistematik olarak azaltmayı amaçlayan düzenli bir bakım oturumu. Acil bir düzeltme değil, rutin operasyonlar.
+- <strong>Harness sadeleştirmesi</strong>: Model yetenekleri geliştikçe artık gerekli olmayan harness bileşenlerini periyodik olarak kaldırın. Bugün vazgeçilmez olan bir kısıt üç ay sonra gereksiz bir yük olabilir.
+- <strong>İdempotent temizleme</strong>: Temizleme işlemleri kaç kez çalıştırıldığına bakılmaksızın aynı sonucu üretir. Başarısızlık-yeniden deneme senaryolarında bile temizlemenin güvenli kalmasını sağlar.
 
 ## Temiz durumun beş boyutu
 
@@ -85,15 +85,15 @@ Aynı proje bir temizleme stratejisiyle:
 
 Temiz durum yalnızca "kod derler" değildir. Birlikte değerlendirilen beş boyuttur:
 
-**Yapı boyutu**: Kod hatasız derlenir mi? Bu en temeldir — sonraki oturumun önce yapı hatalarını düzeltmek zorunda kalmaması gerekir.
+<strong>Yapı boyutu</strong>: Kod hatasız derlenir mi? Bu en temeldir — sonraki oturumun önce yapı hatalarını düzeltmek zorunda kalmaması gerekir.
 
-**Test boyutu**: Tüm testler geçer mi? Oturum öncesi var olan testler dahil — oturum mevcut işlevselliği bozmamaktan sorumludur. Ve "benim makinemde çalışıyor" yerine CI'de doğrulanmalıdır.
+<strong>Test boyutu</strong>: Tüm testler geçer mi? Oturum öncesi var olan testler dahil — oturum mevcut işlevselliği bozmamaktan sorumludur. Ve "benim makinemde çalışıyor" yerine CI'de doğrulanmalıdır.
 
-**İlerleme boyutu**: Mevcut ilerleme makine tarafından okunabilir bir artefakta kaydedilmiş mi? Tamamlanan alt görevler geçme kriterleriyle, devam eden ancak tamamlanmayan alt görevler mevcut durumla, henüz başlamamış alt görevler. İyi ilerleme kayıtları oturum başlatma tanı süresini %60-80 azaltır.
+<strong>İlerleme boyutu</strong>: Mevcut ilerleme makine tarafından okunabilir bir artefakta kaydedilmiş mi? Tamamlanan alt görevler geçme kriterleriyle, devam eden ancak tamamlanmayan alt görevler mevcut durumla, henüz başlamamış alt görevler. İyi ilerleme kayıtları oturum başlatma tanı süresini %60-80 azaltır.
 
-**Artefakt boyutu**: Bayatlamış veya belirsiz geçici artefaktlar var mı? Hata ayıklama günlükleri, geçici dosyalar, yorum satırı yapılmış kod, TODO işaretleri — bunların hepsi bir sonraki oturum için bilişsel yükü artırır.
+<strong>Artefakt boyutu</strong>: Bayatlamış veya belirsiz geçici artefaktlar var mı? Hata ayıklama günlükleri, geçici dosyalar, yorum satırı yapılmış kod, TODO işaretleri — bunların hepsi bir sonraki oturum için bilişsel yükü artırır.
 
-**Başlatma boyutu**: Standart başlatma yolu mevcut mu? Sonraki oturum manuel müdahale olmadan çalışmaya başlayabilir mi? Ortam başlatma, kod tabanı yükleme, bağlam edinme, görev seçimi — bu yollar bozulmamalıdır.
+<strong>Başlatma boyutu</strong>: Standart başlatma yolu mevcut mu? Sonraki oturum manuel müdahale olmadan çalışmaya başlayabilir mi? Ortam başlatma, kod tabanı yükleme, bağlam edinme, görev seçimi — bu yollar bozulmamalıdır.
 
 ### "Sonra temizleriz" hiç temizlemeyeceğiz demektir
 
@@ -105,7 +105,7 @@ Daha kötüsü, her oturumun kendi görev hedefleri vardır. Yeni oturum yeni i�
 
 ### 1. Temiz durum tamamlanma gereksinimi olarak
 
-Harness'ta açıkça tanımlayın: **oturum tamamlanması = görev doğrulamayı geçer VE temiz durum kontrolü geçer.** Herhangi birinin eksikliği oturumun tamamlanmadığı anlamına gelir. CLAUDE.md'ye yazın:
+Harness'ta açıkça tanımlayın: <strong>oturum tamamlanması = görev doğrulamayı geçer VE temiz durum kontrolü geçer.</strong> Herhangi birinin eksikliği oturumun tamamlanmadığı anlamına gelir. CLAUDE.md'ye yazın:
 
 ```
 ## Oturum Çıkış Kontrol Listesi
@@ -120,9 +120,9 @@ Harness'ta açıkça tanımlayın: **oturum tamamlanması = görev doğrulamayı
 
 İki temizleme modunu birleştirin:
 
-**Anında temizleme (her oturum sonunda)**: Oturum sırasında oluşturulan geçici artefaktları temizleyin, özellik listesi durumunu güncelleyin, yapı ve testlerin geçtiğinden emin olun. Bu "referans sayma" temizliğidir.
+<strong>Anında temizleme (her oturum sonunda)</strong>: Oturum sırasında oluşturulan geçici artefaktları temizleyin, özellik listesi durumunu güncelleyin, yapı ve testlerin geçtiğinden emin olun. Bu "referans sayma" temizliğidir.
 
-**Periyodik temizleme (haftalık)**: Tam sistem taraması — birikmiş yapısal sorunları ele alın, kalite belgelerini güncelleyin, sürüklenmeyi tespit etmek için karşılaştırma testleri çalıştırın. Bu "iz sürme" temizliğidir.
+<strong>Periyodik temizleme (haftalık)</strong>: Tam sistem taraması — birikmiş yapısal sorunları ele alın, kalite belgelerini güncelleyin, sürüklenmeyi tespit etmek için karşılaştırma testleri çalıştırın. Bu "iz sürme" temizliğidir.
 
 ### 3. Bir kalite belgesi tutun
 
@@ -150,7 +150,7 @@ Yeni oturumlar bu belgeyi okur ve hemen nereye öncelik vereceğini bilir. En d�
 
 ### 4. Harness'ı periyodik olarak sadeleştirin
 
-Anthropic'ten önemli bir içgörü: **her harness bileşeni vardır çünkü model bir şeyi kendi başına güvenilir şekilde yapamaz. Ancak modeller geliştikçe bu varsayımlar bayatlar.** Üç ay önce vazgeçilmez olan bir kısıt bugün gereksiz bir yük olabilir.
+Anthropic'ten önemli bir içgörü: <strong>her harness bileşeni vardır çünkü model bir şeyi kendi başına güvenilir şekilde yapamaz. Ancak modeller geliştikçe bu varsayımlar bayatlar.</strong> Üç ay önce vazgeçilmez olan bir kısıt bugün gereksiz bir yük olabilir.
 
 Önerilen uygulama: Her ay bir harness bileşenini seçin, geçici olarak devre dışı bırakın ve karşılaştırma görevlerini çalıştırın. Sonuçlar bozulmazsa, kalıcı olarak kaldırın. Bozulursa, geri yükleyin veya daha hafif bir alternatifle değiştirin.
 
@@ -169,19 +169,19 @@ npm run test  # Temizliğin bir şey bozmadığını doğrula
 
 12 hafta boyunca ajanlarla geliştirilen bir Electron uygulaması, iki yaklaşımın karşılaştırması:
 
-**Temizleme stratejisi olmadan** (kontrol grubu): Hafta 12, yapı geçme oranı %68, test geçme oranı %61, yeni oturum başlatma 60+ dk, bayatlamış artefaktlar 103.
+<strong>Temizleme stratejisi olmadan</strong> (kontrol grubu): Hafta 12, yapı geçme oranı %68, test geçme oranı %61, yeni oturum başlatma 60+ dk, bayatlamış artefaktlar 103.
 
-**Temizleme stratejisiyle** (deneysel grup): Her oturum sonunda tam temiz durum kontrolü + haftalık temizleme döngüsü. Hafta 12, yapı geçme oranı %97, test geçme oranı %95, yeni oturum başlatma 9 dk, bayatlamış artefaktlar 11.
+<strong>Temizleme stratejisiyle</strong> (deneysel grup): Her oturum sonunda tam temiz durum kontrolü + haftalık temizleme döngüsü. Hafta 12, yapı geçme oranı %97, test geçme oranı %95, yeni oturum başlatma 9 dk, bayatlamış artefaktlar 11.
 
 12 haftaya kadar, deneysel grubun yapı geçme oranı 29 puan, test geçme oranı 34 puan daha yüksek ve yeni oturum başlatma süresi %85 daha düşüktür.
 
 ## Önemli çıkarımlar
 
-- **Temiz durum oturum tamamlanması için gerekli bir koşuldur** — isteğe bağlı ev temizliği değil, "bitirme tanımının" bir parçası.
-- **Beş boyutun hepsi gereklidir** — yapı, testler, ilerleme, artefaktlar, başlatma — her biri açıkça kontrol edilmelidir.
-- **Kalite belgeleri kod tabanı sağlığını izlenebilir kılar** — yalnızca bozulduğunu bildiğinizi düzeltebilirsiniz.
-- **Harness'ı periyodik olarak sadeleştirin** — model yetenekleri geliştikçe artık gerekli olmayan kısıtlamaları kaldırın.
-- **"Sonra temizleriz" hiç temizlememeye eşittir** — entropi büyümesi varsayılandır; yalnızca aktif temizleme buna karşı koyar.
+- <strong>Temiz durum oturum tamamlanması için gerekli bir koşuldur</strong> — isteğe bağlı ev temizliği değil, "bitirme tanımının" bir parçası.
+- <strong>Beş boyutun hepsi gereklidir</strong> — yapı, testler, ilerleme, artefaktlar, başlatma — her biri açıkça kontrol edilmelidir.
+- <strong>Kalite belgeleri kod tabanı sağlığını izlenebilir kılar</strong> — yalnızca bozulduğunu bildiğinizi düzeltebilirsiniz.
+- <strong>Harness'ı periyodik olarak sadeleştirin</strong> — model yetenekleri geliştikçe artık gerekli olmayan kısıtlamaları kaldırın.
+- <strong>"Sonra temizleriz" hiç temizlememeye eşittir</strong> — entropi büyümesi varsayılandır; yalnızca aktif temizleme buna karşı koyar.
 
 ## Daha fazla okuma
 
@@ -192,8 +192,8 @@ npm run test  # Temizliğin bir şey bozmadığını doğrula
 
 ## Alıştırmalar
 
-1. **Temiz durum kontrol listesi**: Kod tabanınız için beş boyutu kapsayan bir oturum çıkış kontrol listesi tasarlayın. 5 ardışık oturumda uygulayın ve boyut başına ihlalleri kaydedin.
+1. <strong>Temiz durum kontrol listesi</strong>: Kod tabanınız için beş boyutu kapsayan bir oturum çıkış kontrol listesi tasarlayın. 5 ardışık oturumda uygulayın ve boyut başına ihlalleri kaydedin.
 
-2. **Karşılaştırma**: İki harness varyantıyla sabit bir görev kümesi kullanın (temiz durum gereksinimleriyle/olmadan). Tamamlanma oranını, yeniden deneme sayısını ve kusur kaçış oranını karşılaştırın.
+2. <strong>Karşılaştırma</strong>: İki harness varyantıyla sabit bir görev kümesi kullanın (temiz durum gereksinimleriyle/olmadan). Tamamlanma oranını, yeniden deneme sayısını ve kusur kaçış oranını karşılaştırın.
 
-3. **Harness sadeleştirme pratiği**: Bir harness bileşenini seçin, geçici olarak devre dışı bırakın ve karşılaştırma görevlerini çalıştırın. Sonuçları onunla ve onsuz karşılaştırın. Tutmaya, kaldırmaya veya değiştirmeye karar verin.
+3. <strong>Harness sadeleştirme pratiği</strong>: Bir harness bileşenini seçin, geçici olarak devre dışı bırakın ve karşılaştırma görevlerini çalıştırın. Sonuçları onunla ve onsuz karşılaştırın. Tutmaya, kaldırmaya veya değiştirmeye karar verin.

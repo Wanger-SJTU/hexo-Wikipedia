@@ -17,15 +17,15 @@ source_url: https://zhuanlan.zhihu.com/p/494347227
 
 前段时间做了点用TVM对深度模型进行优化的事情。最近很空，因为觉得TVM比较有趣，就研究了一下TVM对GEMM的优化，并和BLIS库的实现进行了对比，记录如下。
 
-#### **1. GEMM在CPU上的优化**
+#### <strong>1. GEMM在CPU上的优化</strong>
 
-        GEMM是指General Matrix Multiply，C=alpha**AB+beta**C，是神经网络中的核心运算。因为其计算的规律性，通过一定的技巧，在现代架构的CPU上可以得到比较好的优化。
+        GEMM是指General Matrix Multiply，C=alpha<strong>AB+beta</strong>C，是神经网络中的核心运算。因为其计算的规律性，通过一定的技巧，在现代架构的CPU上可以得到比较好的优化。
 
         BLAS的计算库（MKL、penBLAS、BLIS等）一般对GEMM的计算进行手工优化。TVM、MLIR、Halide等则是将中间语言表示的GEMM运算编译生成执行的机器码来计算。
 
         本文对BLIS手工优化的GEMM计算代码和TVM编译生成的计算代码进行了对比分析。
 
-#### **2. 相关代码及性能测试**
+#### <strong>2. 相关代码及性能测试</strong>
 
 [matmul_perf_test](https://link.zhihu.com/?target=https%3A//github.com/billmuch/matmul_perf_test)分别使用BLIS库和TVM进行1024x1024x1024的单精度（float32）和双精度（float64）矩阵乘法运算，并统计了单线程和多线程下的计算时间。
 
@@ -49,9 +49,9 @@ source_url: https://zhuanlan.zhihu.com/p/494347227
 
         测试结果：
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_4b57e3d1baaa.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_4b57e3d1baaa.jpg)
 
-Numpy（MKL），TVM和BLIS进行1024x1024x1024的单精度矩阵乘法的性能测试![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_9a9f2192556f.jpg)
+Numpy（MKL），TVM和BLIS进行1024x1024x1024的单精度矩阵乘法的性能测试![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_9a9f2192556f.jpg)
 
 Numpy（MKL），TVM和BLIS进行1024x1024x1024的双精度矩阵乘法的性能测试        说明：
 
@@ -65,7 +65,7 @@ Numpy（MKL），TVM和BLIS进行1024x1024x1024的双精度矩阵乘法的性能
 
             * numpy使用后端MKL支持的conda中的numpy binary进行同样的矩阵运算
 
-#### **3. 使用TVM生成GEMM计算代码并对参数调优（TVM对GEMM的编译及优化）**
+#### <strong>3. 使用TVM生成GEMM计算代码并对参数调优（TVM对GEMM的编译及优化）</strong>
 
         TVM官方How To Guids里面的How to optimize GEMM on CPU介绍了如何优化CPU上进行的GEMM运算。
 
@@ -87,7 +87,7 @@ Numpy（MKL），TVM和BLIS进行1024x1024x1024的双精度矩阵乘法的性能
 
 下图对比了auto scheduler调优方案生成的IR（[tvm_autoscheduler_tune.py](https://link.zhihu.com/?target=https%3A//github.com/billmuch/matmul_perf_test/blob/main/tvm_autoscheduler_tune.py)），与How to例子代码提供的固定方案和参数生成的IR（[tvm_without_tune.py](https://link.zhihu.com/?target=https%3A//github.com/billmuch/matmul_perf_test/blob/main/tvm_without_tune.py)）。
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_9be4b0100cf7.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_9be4b0100cf7.jpg)
 
 Auto Scheduler调优IR和TVM How to中的IR对比        因为上述三份TVM对应的代码使用的优化方案基本相同，而autoscheduler的结果有最优的速度，所以后续会拿autoscheduler调优的方案和参数与BLIS的实现进行对比。
 
@@ -132,31 +132,31 @@ Auto Scheduler调优IR和TVM How to中的IR对比        因为上述三份TVM�
 
         项目中的[blis.cpp](https://link.zhihu.com/?target=https%3A//github.com/billmuch/matmul_perf_test/blob/main/blis.cpp)使用BLIS库做C+=AB的运算。参考介绍BLIS GEMM算法的[tutorial](https://link.zhihu.com/?target=https%3A//github.com/flame/blislab/blob/master/tutorial.pdf)，BLIS的计算方式如下图：
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_c5ab6671c8c3.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_c5ab6671c8c3.jpg)
 
-#### **5. **TVM和BLIS**分块及计算路径的对比**
+#### <strong>5.</strong>TVM和BLIS<strong>分块及计算路径的对比</strong>
 
-**         BLIS分块**
+<strong>BLIS分块</strong>
 
          参考BLIS [tutorial](https://link.zhihu.com/?target=https%3A//github.com/flame/blislab/blob/master/tutorial.pdf)和BLIS代码，BLIS分块方式和计算路径如下图示：
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_5c46383de1fc.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_5c46383de1fc.jpg)
 
           BLIS（单线程）将C矩阵分成多个Cb(144 x 1024)的block（还有一些剩余的m != 144的块），A分成多个Ab(144 x 256)block，B分成多个Bb(256 x 1024)的block，按照需要将Ab的多个block与对应的不同的Bb相乘，将结果加回对应的Cb中。
 
           对其中的每一个Cb += Ab x Bb，后续会将Cb分为许多更小的Cr(6 x 16)的小块，对每一个Cr和对应的Ar和Br中的每一个k，使用Cr(6 x 16) += Ar(6 x 1) * Br(1 x 16)的kernel进行计算。
 
-**          TVM分块**
+<strong>TVM分块</strong>
 
           根据TVM auto scheduler生成的IR，搜索出的算法计算路径如下图示：
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_50a847c00c8e.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_50a847c00c8e.jpg)
 
           TVM将C矩阵分成多个Cb(512 x 128)的block，A分成多个Ab(512 x 1024)block，B分成多个Bb(1024 x 128)的block，按照需要将Ab的多个block与对应的不同的Bb相乘，将结果加回对应的Cb中。
 
           对其中的每一个Cb += Ab x Bb，将Cb分为许多更小的Cr(4 x 16)的小块，对每一个Cr和对应的Ar和Br中的每一个k，使用Cr(4 x 16) += Ar(4 x 1) * Br(1 x 16)的kernel进行计算。        
 
-#### **6. TVM和BLIS kernel计算方式**
+#### <strong>6. TVM和BLIS kernel计算方式</strong>
 
  BLIS将需要计算的矩阵按照前述方式分成大块后，在我的机器上将每块再次分成多个6x16小块，并调用手工优化的内核对每个小块进行计算。核心计算代码如下：
 
@@ -284,13 +284,13 @@ Auto Scheduler调优IR和TVM How to中的IR对比        因为上述三份TVM�
 
         如下图示：
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_0dd90a4a246f.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_0dd90a4a246f.jpg)
 
-BLIS Kernel做如下计算![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_02049ac2f63f.jpg)
+BLIS Kernel做如下计算![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_02049ac2f63f.jpg)
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_0572e3683700.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_0572e3683700.jpg)
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_08b952bb4b1f.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_08b952bb4b1f.jpg)
 
         TVM auto scheduler生成的kernel对应的汇编代码如下：
 
@@ -319,43 +319,43 @@ BLIS Kernel做如下计算![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25
 
         如下图示：
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_c3f425a937ad.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_c3f425a937ad.jpg)
 
-TVM Kernel做如下计算![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_75979ddd67a7.jpg)
+TVM Kernel做如下计算![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_75979ddd67a7.jpg)
 
 TVM kernel计算步骤
-#### **7. **TVM和BLIS的**Pack和Write Back Cache**
+#### <strong>7.</strong>TVM和BLIS的<strong>Pack和Write Back Cache</strong>
 
-**        TVM**
+<strong>TVM</strong>
 
         TVM在所有计算开始前，将原先行主序1024x1024的B矩阵重排成每1024x16一组的行主序的小矩阵连续存放，称为B_Pack：
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_ee0e55e48bbf.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_ee0e55e48bbf.jpg)
 
         TVM IR声明了一个4x16大小的连续内存，作为C Write Back Cache使用。在kernel计算每个C(4x16)的块时，将C数据放到这部分连续的内存中。但是因为最终的优化算法将C(4x16)的数据常驻寄存器，并且将K从0到1024一次性计算完成（代表C(4x16)的数据一次性全部计算完成，不用重复加载），所以这部分C Write Back Cache并没有增加收益。
 
-**        BLIS**
+<strong>BLIS</strong>
 
         参考介绍BLIS的[tutorial](https://link.zhihu.com/?target=https%3A//github.com/flame/blislab/blob/master/tutorial.pdf)和BLIS代码，BLIS在loop 4中对B的一条Bp（256x1024）做了pack，pack的方式和TVM中一样，将Bp中的数据按照每16列一组的方式重排。BLIS还在loop 3中对A的每一块Ab（144x256）做了非常精细的重排，让Ab中的所有数据按照在kernel中的访问顺序顺序排列。（对于6x16的kernel，Ab的pack顺序是每6行为一组，按照列顺序重排，排完一组再排下6行）如下图：
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_cfde0acf8ac5.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_cfde0acf8ac5.jpg)
 
-#### **8. **TVM和BLIS的**多线程**
+#### <strong>8.</strong>TVM和BLIS的<strong>多线程</strong>
 
-**        TVM**
+<strong>TVM</strong>
 
         跟据TVM IR的代码，TVM在最外层循环可以将计算划分到16个线程中计算。运行后观察，没有看到有cpu迁移现象，应该在代码中做了绑核。代码根据TVM_NUM_THREADS生成一个或多个线程进行计算。
 
-**        BLIS**
+<strong>BLIS</strong>
 
         根据BLIS的[Multithreading](https://link.zhihu.com/?target=https%3A//github.com/flame/blis/blob/master/docs/Multithreading.md)文档，BLIS会根据问题的大小（M、N和K的大小）和可用线程数，在5层loop其中的4层中，将问题分解到多个线程中计算。BLIS库可以使用pthread或者openmp，我本地编译时指定使用openmp。调试观察到，设置的可用线程数（BLIS_NUM_THREADS）也会影响blocking时的分块大小。设置环境变量可控制绑核。
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_59a270d34c38.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_59a270d34c38.jpg)
 
 BLIS 影响线程的环境变量
-#### **9. 单精度GEMM时，TVM与BLIS的对比**
+#### <strong>9. 单精度GEMM时，TVM与BLIS的对比</strong>
 
-- **        计算kernel的对比：**
+- <strong>计算kernel的对比：</strong>
                 对比两部分kernel的代码可以看出：
 
                  1. BLIS的6x16的kernel用满了16个ymm寄存器，TVM的4x16的kernel使用了11个。BLIS的核更充分的利用了硬件资源；
@@ -364,7 +364,7 @@ BLIS 影响线程的环境变量
 
                  3. BLIS代码在进行一段数据计算前，会提前调用prefetch加载下一阶段计算要使用的数据到L1Cache中，可以使数据加载更少的stall CPU。（prefetch指令可能会失效，硬件会使用预设的prefetch策略预加载数据）
 
-- **分块方式对比：**
+- <strong>分块方式对比：</strong>
 
 - BLIS的分块和计算：
                 单线程的时候，BLIS将乘法先分成大的block mc(144 x 1024) += ac(144 x 256) * bc(256 x 1024)，在计算大block的乘法时，再把三个块进一步分成小的block乘法 mr(6 x 16) += ar(6 x 256) * br (256  x 16)解决。
@@ -433,14 +433,14 @@ blis_float32tvm_float32dTLB-loads199,895,991168,586,332dTLB-load-misses4,610,995
 
                 3. TVM的Write Cache for C block因为c的数据常驻寄存器，似乎是无效的优化。
 
-- **        线程策略对比：**
+- <strong>线程策略对比：</strong>
                 TVM在最外层循环对数据分块使用多线程计算。BLIS使用了更为精致的线程划分策略：可以在5层循环的1，2，3，5层中对划分的块用多线程计算。并且可以根据计算规模大小（MKN大小）和可用线程多少动态决定在哪些层的划分块那里使用多线程计算。
 
                 TVM代码已经绑核，BLIS需要设置环境变量绑核。
 
                 论文Anatomy of High-Performance Many-Threaded Matrix Multiplication对在什么维度做多线程调用做了讨论。
 
-#### **10. 对比小结**
+#### <strong>10. 对比小结</strong>
 
          通过对比可以看出，对于类似GEMM的计算，TVM可以自动搜索出性能还不错的计算方式和参数。
 

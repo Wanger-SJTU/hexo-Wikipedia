@@ -17,11 +17,11 @@ source_url: https://zhuanlan.zhihu.com/p/16594218518
 
 这篇文章想来探索Megatron中实现计算通信overlap的方法。
 
-**具体来说，Megatron的dp、tp和pp部分，都有可以做overlap的地方，本文探索的是tp部分（更准确地说是megatron sp-tp）。做这个探索的主要目的是：了解在哪些位置有做overlap的潜能，以及当前一些可行的实现思路。**
+<strong>具体来说，Megatron的dp、tp和pp部分，都有可以做overlap的地方，本文探索的是tp部分（更准确地说是megatron sp-tp）。做这个探索的主要目的是：了解在哪些位置有做overlap的潜能，以及当前一些可行的实现思路。</strong>
 
 最后，特别感谢overlap大师，megatron特级学者：[浴火而王](https://www.zhihu.com/people/yu-huo-er-wang) 为本文提供的各类参考资料。
 
-**【历史文章汇总】**
+<strong>【历史文章汇总】</strong>
 
 [猛猿：【必看】历史技术文章导航](https://zhuanlan.zhihu.com/p/654910335)
 
@@ -30,14 +30,14 @@ source_url: https://zhuanlan.zhihu.com/p/16594218518
 我们说的tp，是指“开启megatron sp做了activation显存优化”的tp，下图绘制了在megatron sp中单卡上Attn + MLP的运作流程（更多详细解读请参见[这里](https://zhuanlan.zhihu.com/p/4083427292)）
 
 ![](https://picx.zhimg.com/v2-e31f24f0e6229bcfc7f1985871d385af_r.jpg)
-由此我们知道，在megatron sp中，tp部分的通讯被拆成若干个`all-gather`和`reduce-scatter`，在下文中我们会用`AG`和`RS`来简称它。**现在我们对tp中的fwd和bwd过程再做一个重新绘制，更清晰地展示通信步骤（绿色）和计算步骤（蓝色）：**
+由此我们知道，在megatron sp中，tp部分的通讯被拆成若干个`all-gather`和`reduce-scatter`，在下文中我们会用`AG`和`RS`来简称它。<strong>现在我们对tp中的fwd和bwd过程再做一个重新绘制，更清晰地展示通信步骤（绿色）和计算步骤（蓝色）：</strong>
 
 ![](https://pic2.zhimg.com/v2-17665dfea6253f68ee593da838727517_r.jpg)
-**图中的红/黄框则分别展示了计算和通信之间的依赖关系，具体来说：**
+<strong>图中的红/黄框则分别展示了计算和通信之间的依赖关系，具体来说：</strong>
 
 - 红色：通信和相关的计算有依赖关系，需要串行。但是可以通过优化使得计算通信能overlap。
 - 黄色：通信和相关的计算没有依赖关系，可以并行。dgrad表示算的是input grad；wgrad表示算的是weight grad。
-**在Megatron-LM中，以下参数将控制是否开启红/黄框中的计算通信overlap:**
+<strong>在Megatron-LM中，以下参数将控制是否开启红/黄框中的计算通信overlap:</strong>
 
 - `tp_comm_overlap_ag`：开启红框中ag相关的overlap
 - `tp_comm_overlap_rs`：开启红框中rs相关的overlap
@@ -64,7 +64,7 @@ source_url: https://zhuanlan.zhihu.com/p/16594218518
 - 在朴素的all-gather中，我们先对输入A矩阵做all-gather，之后两张卡上的数据都变成[A0, A1]
 - 然后再各自个和B矩阵（fc1）相乘，得到最终的结果。不难发现，这里我们需要先等输入数据A到齐，然后才可以开始计算，也就是没有实现任何的计算通信overlap。
 
-**针对这张图，我们额外说明一点：例如[A0, A1]这样的形式，不代表A一定就是按照列切割的，只代表我们以分块的视角看待A。而Enisum可理解为一种自适应式的矩阵乘。因此我们要根据实际应用的场景来理解这张图，后文同理。**
+<strong>针对这张图，我们额外说明一点：例如[A0, A1]这样的形式，不代表A一定就是按照列切割的，只代表我们以分块的视角看待A。而Enisum可理解为一种自适应式的矩阵乘。因此我们要根据实际应用的场景来理解这张图，后文同理。</strong>
 
 2.2 all-gather overlap p2p
 
@@ -77,7 +77,7 @@ source_url: https://zhuanlan.zhihu.com/p/16594218518
 - 在gpu0上，我们先把A0发送到gpu1，于此同时开始做gemm(A0, B0)，以便得到C00，实现计算通讯overlap
 - 在gpu1上，我们先把A1发送到gpu0，于此同时开始做gemm(A1, B1)，以便得到C11，实现计算通讯overlap
 - 等gpu0计算完C00，并收到A1后，它就可以继续gemm(A1, B0)，以便得到C10；gpu1也是同理
-- **在overlap下，我们无需等到输入数据all-gather到齐后再进行计算，这样就可以减少整体的运行时间。**
+- <strong>在overlap下，我们无需等到输入数据all-gather到齐后再进行计算，这样就可以减少整体的运行时间。</strong>
 以上展示了2卡情况下的all-gather overlap，在多卡情况下也是同理，整体流程如下图所示：
 
 ![](https://pic3.zhimg.com/v2-d1c758db0a74fc7bcb4a276ea511deca_r.jpg)
@@ -108,7 +108,7 @@ source_url: https://zhuanlan.zhihu.com/p/16594218518
 - gpu0上，C0 = C00 + C01
 - gpu1上，C1 = C10 + C11
 - 同样，在朴素reduce-scatter中，我们也需要等到[C00, C10]和[C01, C11]这个结果计算出来后，再做reduce-scatter，即计算通信没有overlap
-**针对这张图，我们额外说明一点：之所以要修改原始图片中的[A0, A1]，是因为在tp mlp的fc2中，每张卡上的输入是不一样的，所以这里特别针对这个场景做了修改。**
+<strong>针对这张图，我们额外说明一点：之所以要修改原始图片中的[A0, A1]，是因为在tp mlp的fc2中，每张卡上的输入是不一样的，所以这里特别针对这个场景做了修改。</strong>
 
 3.2 reduce-scatter overlap p2p
 
@@ -116,9 +116,9 @@ source_url: https://zhuanlan.zhihu.com/p/16594218518
 上图直接理解起来可能会有点头晕，我们不妨从一个更形象的视角理解一下：
 
 - 还是和all-gather overlap一样，这里采用的是p2p ring exchange的通信方式。
-- **在初始阶段，每个 gpu_i 都会发送出一个“碗C_i”，这个“碗C_i”的意思是，请把和我（gpu_i）相关的计算结果装在这个碗里。**
-- **那么接下来，哪个gpu接收到这个碗C_i，它就要负责计算和这个 C_i 相关的结果，并把结果更新在 C_i里**
-- **假设我们共有 n 块gpu，那么 n-1 轮后，C_i又流转回 gpu_i 手里，这时轮到gpu_i做和C_i相关的计算，这次计算结束后，就得到了最终的C_i**
+- <strong>在初始阶段，每个 gpu_i 都会发送出一个“碗C_i”，这个“碗C_i”的意思是，请把和我（gpu_i）相关的计算结果装在这个碗里。</strong>
+- <strong>那么接下来，哪个gpu接收到这个碗C_i，它就要负责计算和这个 C_i 相关的结果，并把结果更新在 C_i里</strong>
+- <strong>假设我们共有 n 块gpu，那么 n-1 轮后，C_i又流转回 gpu_i 手里，这时轮到gpu_i做和C_i相关的计算，这次计算结束后，就得到了最终的C_i</strong>
 基于此解读以上2卡的情况就不难了。那我们顺水推舟到多卡的情况：
 
 ![](https://pic1.zhimg.com/v2-ad907e2636cebd4ac273e6e8c7613806_r.jpg)
@@ -140,7 +140,7 @@ source_url: https://zhuanlan.zhihu.com/p/16594218518
 相关的代码实践可以参考[这里](https://link.zhihu.com/?target=https%3A//github.com/NVIDIA/TransformerEngine/blob/c9ea6be92948e1ec553037f1a04900617b9f7f6b/transformer_engine/common/comm_gemm_overlap/comm_gemm_overlap.cpp%23L924)。注意代码里的A=weight, B=input。这个过程理解起来有点绕，大家可以多体会
 
 3.3 reduce-scatter overlap pipeline chunk
-对于像fc2这种需要对输出结果做reduce-scatter的情况，**除了p2p形式的overlap，megatron还提供了另外一种overlap的方法：pipeline chunk**。
+对于像fc2这种需要对输出结果做reduce-scatter的情况，<strong>除了p2p形式的overlap，megatron还提供了另外一种overlap的方法：pipeline chunk</strong>。
 
 ![](https://pica.zhimg.com/v2-3a841733a0f4b7c3a6e5137bab3f9628_1440w.jpg)
 Pipeline chunk的思想是：假设原来是做完gemm(A, B)后再对结果reduce-scatter，那么现在我可以把矩阵（比如A）拆分成若干chunk，每次等gemm(chunk_i, B)的结果出来后，把这个结果发出去做reduce-scatter的同时，再继续做下一个chunk的计算，以此实现overlap。当然chunk的数量也不能太多（也就是不能把矩阵切得太小），否则反而会降低整体性能。在代码中默认chunk数量 = 4 （_num_splits = 4）。
@@ -156,7 +156,7 @@ Pipeline chunk的思想是：假设原来是做完gemm(A, B)后再对结果reduc
 ![](https://pic1.zhimg.com/v2-6d5ac693e4356188346b9390f0fb31ae_r.jpg)
 之所以 fc1_dgrad和 AG 可以并行操作，是因为当前进程上做 fc1_dgrad只依赖上层传导过来的链式结果和fc1_weight。但是计算 fc1_wgrad却要依赖 AG 后的完整data（input activation）。fc1_dgrad 和 fc1_wgrad 计算完毕之后，前者做 RS 后继续向下层传导，后者用于更新 fc1_weight。
 
-在[代码](https://link.zhihu.com/?target=https%3A//github.com/NVIDIA/TransformerEngine/blob/c9ea6be92948e1ec553037f1a04900617b9f7f6b/transformer_engine/common/comm_gemm_overlap/comm_gemm_overlap.cpp%23L171)中，管黄框中的overlap叫**bulk overlap**，**并通过设置主流(stream_main)和通信流(stream_comm)来实现这个overlap**，我们直接来看代码细节：
+在[代码](https://link.zhihu.com/?target=https%3A//github.com/NVIDIA/TransformerEngine/blob/c9ea6be92948e1ec553037f1a04900617b9f7f6b/transformer_engine/common/comm_gemm_overlap/comm_gemm_overlap.cpp%23L171)中，管黄框中的overlap叫<strong>bulk overlap</strong>，<strong>并通过设置主流(stream_main)和通信流(stream_comm)来实现这个overlap</strong>，我们直接来看代码细节：
 
 /*
 ** Bulk GEMM + COMM
@@ -223,13 +223,13 @@ fc1_wgrad 和 RS 的overlap也是用这个函数实现的，这里不再赘述�
 
 本文第一节中，展示了在megatron sp-tp中，一个decoder layer做fwd和bwd时需要做的计算与通信，其中：
 
-**对于红框部分，理论上计算和通信是有串行依赖的关系，但是可以通过一些优化办法做成overlap**。具体来说TE实现了以下2种办法，它们本质上都是通过把计算拆分成更小的若干算子，从而实现边算边通信的目的：
+<strong>对于红框部分，理论上计算和通信是有串行依赖的关系，但是可以通过一些优化办法做成overlap</strong>。具体来说TE实现了以下2种办法，它们本质上都是通过把计算拆分成更小的若干算子，从而实现边算边通信的目的：
 
-- **串行场景下的overlap方法一：p2p ring exchange，参见2.1(2), 2.2(2)**
-- **串行场景下的overlap方法二：pipeline chunk，参见2.2(3)**
-**对于黄框部分，理论上计算和通信没有依赖关系，所以天然可以做成overlap**。TE提供了一种bulk overlap的方法，通过设置计算流和通信流，完成两者间的交叠：
+- <strong>串行场景下的overlap方法一：p2p ring exchange，参见2.1(2), 2.2(2)</strong>
+- <strong>串行场景下的overlap方法二：pipeline chunk，参见2.2(3)</strong>
+<strong>对于黄框部分，理论上计算和通信没有依赖关系，所以天然可以做成overlap</strong>。TE提供了一种bulk overlap的方法，通过设置计算流和通信流，完成两者间的交叠：
 
-- **并行场景下的overlap方法：bulk overlap，参见第四节**
+- <strong>并行场景下的overlap方法：bulk overlap，参见第四节</strong>
 
 六、参考
 

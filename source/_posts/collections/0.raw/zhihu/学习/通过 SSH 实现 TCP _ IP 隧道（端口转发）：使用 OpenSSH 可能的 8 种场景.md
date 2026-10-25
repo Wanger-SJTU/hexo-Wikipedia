@@ -31,7 +31,7 @@ source_url: https://zhuanlan.zhihu.com/p/30000490
 
 **
 
-![](/images/collections/0.raw/zhihu/%25E5%25AD%25A6%25E4%25B9%25A0/asset/img_7097735bc54a.jpg)
+![](/images/collections/0.raw/zhihu/%E5%AD%A6%E4%B9%A0/asset/img_7097735bc54a.jpg)
 
 *SSH tunnels: no tunnel*
 
@@ -39,7 +39,7 @@ source_url: https://zhuanlan.zhihu.com/p/30000490
 
 **在 externo1 节点访问由 interno1 节点提供的 TCP 服务（本地端口转发 / 绑定地址 = localhost / 主机 = localhost ）externo1 节点可以通过 OpenSSH 连接到 interno1 节点，之后我们想通过其访问运行在 5900 端口上的 VNC 服务。
 
-![](/images/collections/0.raw/zhihu/%25E5%25AD%25A6%25E4%25B9%25A0/asset/img_a0aee9b14993.jpg)
+![](/images/collections/0.raw/zhihu/%E5%AD%A6%E4%B9%A0/asset/img_a0aee9b14993.jpg)
 
 *SSH Tunnels: Scenario 1*
 
@@ -66,7 +66,7 @@ Tcp 0 0 127.0.0.1:7900 0.0.0.0:*  LISTEN
 
 **在 externo2 节点上访问由 interno1 节点提供的 TCP 服务（本地端口转发 / 绑定地址 = 0.0.0.0 / 主机 = localhost）这次的场景跟方案 1 的场景的类似，但是我们这次想从 externo2 节点来连接到 interno1 上的 VNC 服务：
 
-![](/images/collections/0.raw/zhihu/%25E5%25AD%25A6%25E4%25B9%25A0/asset/img_508801de3474.jpg)
+![](/images/collections/0.raw/zhihu/%E5%AD%A6%E4%B9%A0/asset/img_508801de3474.jpg)
 
 *SSH Tunnels: Scenario 2*
 
@@ -112,7 +112,7 @@ Tcp 0 0 192.168.24.80:7900 0.0.0.0:* LISTEN
 
 **在 interno1 上访问由 externo1 提供的 TCP 服务（远程端口转发 / 绑定地址 = localhost / 主机 = localhost）在场景 1 中 SSH 服务器与 TCP 服务（VNC）提供者在同一个节点上。现在我们想在 SSH 客户端所在的节点上，提供一个 TCP 服务（VNC）供 SSH 服务端来访问：
 
-![](/images/collections/0.raw/zhihu/%25E5%25AD%25A6%25E4%25B9%25A0/asset/img_1ae1cae87b34.jpg)
+![](/images/collections/0.raw/zhihu/%E5%AD%A6%E4%B9%A0/asset/img_1ae1cae87b34.jpg)
 
 *SSH Tunnels: Scenario 3*
 
@@ -139,7 +139,7 @@ Tcp 0 0 127.0.0.1:7900 0.0.0.0:* LISTEN
 
 **interno2 使用 externo1 上提供的 TCP 服务（远端端口转发 / 绑定地址 = 0.0.0.0 / 主机 = localhost）与场景 3 类似，但是现在我们尝试指定允许访问转发端口的 IP（就像场景 2 中做的一样）为 0.0.0.0，这样其他节点也可以访问 VNC 服务：
 
-![](/images/collections/0.raw/zhihu/%25E5%25AD%25A6%25E4%25B9%25A0/asset/img_cc75038affa0.jpg)
+![](/images/collections/0.raw/zhihu/%E5%AD%A6%E4%B9%A0/asset/img_cc75038affa0.jpg)
 
 *SSH Tunnels: Scenario 4*
 
@@ -181,7 +181,7 @@ Tcp 0 0 0.0.0.0:7900 0.0.0.0:* LISTEN
 
 **在 externo1 上使用由 interno2 提供的 TCP 服务（本地端口转发 / 绑定地址 localhost / 主机 = interno2 ）
 
-![](/images/collections/0.raw/zhihu/%25E5%25AD%25A6%25E4%25B9%25A0/asset/img_90dab5a8e84a.jpg)
+![](/images/collections/0.raw/zhihu/%E5%AD%A6%E4%B9%A0/asset/img_90dab5a8e84a.jpg)
 
 *SSH Tunnels: Scenario 5*
 
@@ -197,7 +197,7 @@ Tcp 0 0 0.0.0.0:7900 0.0.0.0:* LISTEN
 
 **在 interno1 上使用由 externo2 提供的 TCP 服务（远程端口转发 / 绑定地址 = localhost / host = externo2）
 
-![](/images/collections/0.raw/zhihu/%25E5%25AD%25A6%25E4%25B9%25A0/asset/img_3582df7d6878.jpg)
+![](/images/collections/0.raw/zhihu/%E5%AD%A6%E4%B9%A0/asset/img_3582df7d6878.jpg)
 
 *SSH Tunnels: Scenario 6*
 
@@ -213,7 +213,7 @@ Tcp 0 0 0.0.0.0:7900 0.0.0.0:* LISTEN
 
 **在 externo2 上使用由 interno2 提供的 TCP 服务（本地端口转发 / 绑定地址 = 0.0.0.0 / 主机 = interno2）
 
-![](/images/collections/0.raw/zhihu/%25E5%25AD%25A6%25E4%25B9%25A0/asset/img_697a0f5c246e.jpg)
+![](/images/collections/0.raw/zhihu/%E5%AD%A6%E4%B9%A0/asset/img_697a0f5c246e.jpg)
 
 *SSH Tunnels: Scenario 7*
 
@@ -233,7 +233,7 @@ Tcp 0 0 0.0.0.0:7900 0.0.0.0:* LISTEN
 
 > 在 interno2 上使用由 externo2 提供的 TCP 服务（远程端口转发 / 绑定地址 = 0.0.0.0 / 主机 = externo2）
 
-![](/images/collections/0.raw/zhihu/%25E5%25AD%25A6%25E4%25B9%25A0/asset/img_acabfd955202.jpg)
+![](/images/collections/0.raw/zhihu/%E5%AD%A6%E4%B9%A0/asset/img_acabfd955202.jpg)
 
 *SSH Tunnels: Scenario 8*
 

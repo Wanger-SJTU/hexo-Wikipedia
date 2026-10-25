@@ -21,7 +21,7 @@ source_url: https://zhuanlan.zhihu.com/p/416289479
 
 先回顾一下线程安全这一概念的定义，以下摘录自维基百科：
 
-**Thread safety **is a computer programming concept applicable to multi-threaded code. Thread-safe code only manipulates shared data structures in a manner that ensures that all threads behave properly and fulfill their design specifications without unintended interaction. There are various strategies for making thread-safe data structures.主要表达的就是多线程操作一个共享数据的时候，能够保证所有线程的行为是符合预期的。
+<strong>Thread safety</strong>is a computer programming concept applicable to multi-threaded code. Thread-safe code only manipulates shared data structures in a manner that ensures that all threads behave properly and fulfill their design specifications without unintended interaction. There are various strategies for making thread-safe data structures.主要表达的就是多线程操作一个共享数据的时候，能够保证所有线程的行为是符合预期的。
 
 一般而言线程不安全的行为大多数出现了data race导致的，比如你调用了某个系统函数，而这个函数内部其实用到了静态变量，那么多线程执行该函数的时候，就会触发data race，造成结果不符合预期，严重的时候，甚至会导致core dump。
 

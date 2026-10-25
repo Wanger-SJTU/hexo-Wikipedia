@@ -70,7 +70,7 @@ source_url: https://mp.weixin.qq.com/s/HtqtOyKKDpoBu4bQqpgPew
 
 在长上下文高效注意力领域，近期业界也提出了多项优秀方案，如 DeepSeek 发布的稀疏注意力（DSA）和 Kimi 提出的 KDA。但与这些方法相比，LCA 在技术设计上具有三个关键差异点：
 
-**对比维度****DeepSeek DSA / Kimi KDA****LCA（本文方法）**参数开销需引入额外门控/路由模块零额外参数，完全复用原有投影矩阵训练依赖通常需从头预训练或大规模持续训练仅需 1000 步轻量微调，快速适配预训练模型集成方式需修改模型架构或训练流程即插即用，直接替换现有 MLA/GQA 注意力层
+<strong>对比维度</strong><strong>DeepSeek DSA / Kimi KDA</strong><strong>LCA（本文方法）</strong>参数开销需引入额外门控/路由模块零额外参数，完全复用原有投影矩阵训练依赖通常需从头预训练或大规模持续训练仅需 1000 步轻量微调，快速适配预训练模型集成方式需修改模型架构或训练流程即插即用，直接替换现有 MLA/GQA 注意力层
 #### 
 
 #### 三、LCA：智能压缩的新思路

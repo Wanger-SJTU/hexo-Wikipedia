@@ -21,10 +21,10 @@ AI kod yozuvchi agentlari uchun ishlab chiqarish darajasidagi (production-grade)
 
 ### U nima qiladi (What It Does)
 
-- **Harnessʼlarni noldan yaratish** — AGENTS.md, funksiyalar roʻyxati (feature lists), tekshiruv jarayonlari (verification workflows)
-- **Mavjud harnessʼlarni yaxshilash** — Eng muhim oʻzgarishlarni belgilagan holda besh quyi tizim boʻyicha baholash
-- **Sessiya uzluksizligini (Session continuity) loyihalash** — Xotirani saqlab qolish (Memory persistence), jarayonni kuzatish (progress tracking), topshirish jarayonlari (handoff procedures)
-- **Ishlab chiqarish andozalarini qoʻllash** — Xotira, kontekst muhandisligi, vositalar xavfsizligi, koʻp agentli muvofiqlashtirish
+- <strong>Harnessʼlarni noldan yaratish</strong> — AGENTS.md, funksiyalar roʻyxati (feature lists), tekshiruv jarayonlari (verification workflows)
+- <strong>Mavjud harnessʼlarni yaxshilash</strong> — Eng muhim oʻzgarishlarni belgilagan holda besh quyi tizim boʻyicha baholash
+- <strong>Sessiya uzluksizligini (Session continuity) loyihalash</strong> — Xotirani saqlab qolish (Memory persistence), jarayonni kuzatish (progress tracking), topshirish jarayonlari (handoff procedures)
+- <strong>Ishlab chiqarish andozalarini qoʻllash</strong> — Xotira, kontekst muhandisligi, vositalar xavfsizligi, koʻp agentli muvofiqlashtirish
 
 ### Tez boshlash (Quick Start)
 
@@ -66,7 +66,7 @@ Koʻnikma scaffold, tekshirish, HTML baholash hisoboti va strukturaviy benchmark
 
 ### Ushbu koʻnikma qanday yaratilgan (How This Skill Was Built)
 
-`harness-creator`, agent koʻnikmalarini (skills) yaratish, test qilish va iteratsiya qilish uchun Anthropicʼning rasmiy meta-koʻnikmasi boʻlgan **skill-creator** metodologiyasidan foydalanib ishlab chiqilgan. skill-creator oʻzida oʻrnatilgan eval ishga tushiruvchilar (eval runners), baholovchilar (graders) va benchmark koʻruvchisi (benchmark viewer) bilan tuzilmali jarayonni (qoralama → test → baholash → iteratsiya) taqdim etadi.
+`harness-creator`, agent koʻnikmalarini (skills) yaratish, test qilish va iteratsiya qilish uchun Anthropicʼning rasmiy meta-koʻnikmasi boʻlgan <strong>skill-creator</strong> metodologiyasidan foydalanib ishlab chiqilgan. skill-creator oʻzida oʻrnatilgan eval ishga tushiruvchilar (eval runners), baholovchilar (graders) va benchmark koʻruvchisi (benchmark viewer) bilan tuzilmali jarayonni (qoralama → test → baholash → iteratsiya) taqdim etadi.
 
-- **skill-creator manbasi**: [anthropics/skills — skill-creator](https://github.com/anthropics/skills/tree/main/skills/skill-creator)
-- **Claude Code skills hujjatlari**: [anthropics/claude-code — plugin-dev/skills](https://github.com/anthropics/claude-code/tree/main/plugins/plugin-dev/skills)
+- <strong>skill-creator manbasi</strong>: [anthropics/skills — skill-creator](https://github.com/anthropics/skills/tree/main/skills/skill-creator)
+- <strong>Claude Code skills hujjatlari</strong>: [anthropics/claude-code — plugin-dev/skills](https://github.com/anthropics/claude-code/tree/main/plugins/plugin-dev/skills)

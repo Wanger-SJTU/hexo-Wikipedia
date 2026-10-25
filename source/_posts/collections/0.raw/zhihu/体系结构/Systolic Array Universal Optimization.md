@@ -24,21 +24,21 @@ SA 的优化有几个大方向：
 - 如何增强对新兴算子的支持（Transformer）稀疏相关 SA 优化见 [龙云李：Sparse AI Accelerator(review)](https://zhuanlan.zhihu.com/p/1908533318879777525)
 
 1. SIGMA
-SA 在计算 **Dense Regular **的时候性能高，在 Dense Irregular 和 Sparse Irregular 的时候性能低。SIGMA 进行 **PE 重排**来提高效率。
+SA 在计算 <strong>Dense Regular</strong>的时候性能高，在 Dense Irregular 和 Sparse Irregular 的时候性能低。SIGMA 进行 <strong>PE 重排</strong>来提高效率。
 
-![](https://pica.zhimg.com/v2-75208eb452349e83e60520ae79e0e2ae_r.jpg)SA 擅长 Dense RegularSIGMA 使用动态重组 DPE 的方式来避免 SA 不灵活的缺点。多个 DPE 可以共同构成一个 DPU，执行一个 GEMM 任务，而 SIGMA 可以动态构成多个 DPU 从而执行多个 GEMM 任务，通过 NoC 连接并路由。稀疏格式为 bitmap。可惜本文没有讲其 **NoC 实现**。
+![](https://pica.zhimg.com/v2-75208eb452349e83e60520ae79e0e2ae_r.jpg)SA 擅长 Dense RegularSIGMA 使用动态重组 DPE 的方式来避免 SA 不灵活的缺点。多个 DPE 可以共同构成一个 DPU，执行一个 GEMM 任务，而 SIGMA 可以动态构成多个 DPU 从而执行多个 GEMM 任务，通过 NoC 连接并路由。稀疏格式为 bitmap。可惜本文没有讲其 <strong>NoC 实现</strong>。
 
-![](https://pic1.zhimg.com/v2-5c5b2e2046d8ef706156129b92ad05ea_r.jpg)动态 PE 重组和任务分配使用 **Benes **交换网络进行数据从 source 到乘法器的路由。Benes 是节点少，无阻塞，可多播广播的交换网络。
+![](https://pic1.zhimg.com/v2-5c5b2e2046d8ef706156129b92ad05ea_r.jpg)动态 PE 重组和任务分配使用 <strong>Benes</strong>交换网络进行数据从 source 到乘法器的路由。Benes 是节点少，无阻塞，可多播广播的交换网络。
 
-![](https://picx.zhimg.com/v2-af89932be670cde1706090bae7b340f7_r.jpg)Benes 交换网络这样的方式就导致一个问题：固定的满二叉树 Adder Tree 会造成功能错误，因此本文提出 **FAN 拓扑的加法树**。路由算法就是根据 vecid 决定是相加还是 bypass 而已。因此图中的加法器都兼具有路由功能。
+![](https://picx.zhimg.com/v2-af89932be670cde1706090bae7b340f7_r.jpg)Benes 交换网络这样的方式就导致一个问题：固定的满二叉树 Adder Tree 会造成功能错误，因此本文提出 <strong>FAN 拓扑的加法树</strong>。路由算法就是根据 vecid 决定是相加还是 bypass 而已。因此图中的加法器都兼具有路由功能。
 
 ![](https://pic1.zhimg.com/v2-3e856bd8168e777e5dc23ff0f0a285ae_r.jpg)FAN 拓扑及拓扑生成算法
 2. AI-MT
-AI-MT 指出在 SA 中，**如果 SA 执行的是 CONV 运算，那么其访存资源(带宽)闲置**。**如果执行的是 FC 运算，那么其计算资源闲置**。这由算子的**访存密集型**和**计算密集型**特性决定。因此 AI-MT 借用 CPU 中 **Multi-task** 的概念进行优化。虽然 AI-MT 面向 CNN，但在 LLM 特别是有 CONV 算子的 LLM 中同样有参考价值。
+AI-MT 指出在 SA 中，<strong>如果 SA 执行的是 CONV 运算，那么其访存资源(带宽)闲置</strong>。<strong>如果执行的是 FC 运算，那么其计算资源闲置</strong>。这由算子的<strong>访存密集型</strong>和<strong>计算密集型</strong>特性决定。因此 AI-MT 借用 CPU 中 <strong>Multi-task</strong> 的概念进行优化。虽然 AI-MT 面向 CNN，但在 LLM 特别是有 CONV 算子的 LLM 中同样有参考价值。
 
-MB 为访存任务，CB 为计算任务。通过 **tiling **和多 **layer **交错执行可以同时利用**访存资源**和**计算资源**，缩短**计算时间**。
+MB 为访存任务，CB 为计算任务。通过 <strong>tiling</strong>和多 <strong>layer</strong>交错执行可以同时利用<strong>访存资源</strong>和<strong>计算资源</strong>，缩短<strong>计算时间</strong>。
 
-![](https://pic4.zhimg.com/v2-0b3aedcfdf5306ef95e695ab980e85bd_r.jpg)tiling 和 multi-layer不同 layer 的 CB MB 时间是**编译时确定**。AI-MT 利用**记分牌**负责调度。其存储块的管理使用的是**硬件链表**，这种技术在**交换机**中比较常见。
+![](https://pic4.zhimg.com/v2-0b3aedcfdf5306ef95e695ab980e85bd_r.jpg)tiling 和 multi-layer不同 layer 的 CB MB 时间是<strong>编译时确定</strong>。AI-MT 利用<strong>记分牌</strong>负责调度。其存储块的管理使用的是<strong>硬件链表</strong>，这种技术在<strong>交换机</strong>中比较常见。
 
 ![](https://pic4.zhimg.com/v2-63d3857fd2e124ff6749467ece2d0941_r.jpg)
 ![](https://picx.zhimg.com/v2-ede60c7eef3bfc5a42a4cc471bcc5f6f_r.jpg)编译时确定 layer 的 MB 时间和 CB 时间

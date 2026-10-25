@@ -42,7 +42,7 @@ Başlamak için öğrenme yolunuzu seçin. Kurs üç bölümden oluşur: teorik 
 
 ## Harness'ın temel mekanizması
 
-Harness modeli "daha akıllı yapmaz"; modelin etrafına kapalı döngülü bir **çalışma sistemi** kurar. Temel iş akışını şu basit şema üzerinden anlayabilirsiniz:
+Harness modeli "daha akıllı yapmaz"; modelin etrafına kapalı döngülü bir <strong>çalışma sistemi</strong> kurar. Temel iş akışını şu basit şema üzerinden anlayabilirsiniz:
 
 ```mermaid
 graph TD

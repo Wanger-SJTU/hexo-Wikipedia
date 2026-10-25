@@ -25,7 +25,7 @@ VanillaRNN" role="presentation" style="font-size: 100%; display: inline-block; p
 
  Vanilla RNN 的主体结构： 
 
-![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_3dba349790a3.jpg)
+![](/images/collections/0.raw/zhihu/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%EF%BC%81/asset/img_3dba349790a3.jpg)
 
 Vanilla RNN
 
@@ -43,13 +43,13 @@ $其中  \textbf{W}_{hx} \in \mathbb{R}^{h \times x}, \; \textbf{W}_{hh} \in \ma
 
 和普通的全连接层相比，RNN 除了输入 \textbf{x}_t 外，还有输入隐藏层上一节点 \mathbf{h}_{t-1} ，RNN 每一层的输出就是这两个输入用矩阵 \textbf{W}_{hx} ， \textbf{W}_{hh} 和激活函数进行组合的结果。从 (2a) 式可以看出 \textbf{x}_t 和 \mathbf{h}_{t-1}  都是与 \textbf{h}_t 全连接的，下图形象展示了各个时间节点 RNN 隐藏层记忆的变化。随着时间流逝，最初的蓝色结点保留地越来越少，这意味着 RNN 对于长时记忆的困难。
 
-![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_d18ac886a280.jpg)
+![](/images/collections/0.raw/zhihu/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%EF%BC%81/asset/img_d18ac886a280.jpg)
 
 ### Vanishing & Exploding Gradient Problems
 
 RNN 对于长时记忆的困难主要来源于梯度爆炸 / 消失问题，下面进行说明。RNN 中 Loss 的计算图示例： 
 
-![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_dbc7eb5567f2.jpg)
+![](/images/collections/0.raw/zhihu/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%EF%BC%81/asset/img_dbc7eb5567f2.jpg)
 
 $总的 Loss 是每个 time step 的加和 ： \mathcal{\large{L}} (\hat{\textbf{y}}, \textbf{y}) = \sum_{t = 1}^{T} \mathcal{ \large{L} }(\hat{\textbf{y}_t}, \textbf{y}_{t}) $
 
@@ -73,13 +73,13 @@ $\mathbf{W}^t = (\mathbf{V} \, \text{diag}(\boldsymbol{\lambda}) \, \mathbf{V}^{
 
 下左图显示一个 time step 中 tanh 函数的计算结果，右图显示整个神经网络的计算结果，可以清楚地看到哪个区域最容易产生梯度爆炸/消失问题。
 
-![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_28d57ce5591c.jpg)
+![](/images/collections/0.raw/zhihu/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%EF%BC%81/asset/img_28d57ce5591c.jpg)
 
 ### 梯度爆炸的解决办法：
 
 (1)  Truncated Backpropagation through time**：每次只 BP 固定的 time step 数，类似于 mini-batch SGD。缺点是丧失了长距离记忆的能力。
 
-![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_f901f9ce4114.jpg)
+![](/images/collections/0.raw/zhihu/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%EF%BC%81/asset/img_f901f9ce4114.jpg)
 
 **
 
@@ -87,7 +87,7 @@ $\mathbf{W}^t = (\mathbf{V} \, \text{diag}(\boldsymbol{\lambda}) \, \mathbf{V}^{
 
 $$\text{if} \quad \lVert \textbf{g} \rVert \ge \text{threshold} \\[1ex] \textbf{g} \leftarrow \frac{\text{threshold}}{\lVert \textbf{g} \rVert} \textbf{g} $$
 
-![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_363518242ff7.jpg)
+![](/images/collections/0.raw/zhihu/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%EF%BC%81/asset/img_363518242ff7.jpg)
 
 **
 
@@ -95,21 +95,21 @@ $$\text{if} \quad \lVert \textbf{g} \rVert \ge \text{threshold} \\[1ex] \textbf{
 
 (1)**  使用 LSTM、GRU等升级版 RNN，使用各种 gates 控制信息的流通。
 
-**(2)**  在这篇论文 ([https://arxiv.org/pdf/1602.06662.pdf](https://link.zhihu.com/?target=https%3A//arxiv.org/pdf/1602.06662.pdf)) 中提出将权重矩阵 \textbf{W}  初始化为正交矩阵。正交矩阵有如下性质： A^T A =A A^T =  I, \; A^T = A^{-1} ， 正交矩阵的特征值的绝对值为 \text{1} 。证明如下，  对矩阵 A 有： 
+<strong>(2)</strong>  在这篇论文 ([https://arxiv.org/pdf/1602.06662.pdf](https://link.zhihu.com/?target=https%3A//arxiv.org/pdf/1602.06662.pdf)) 中提出将权重矩阵 \textbf{W}  初始化为正交矩阵。正交矩阵有如下性质： A^T A =A A^T =  I, \; A^T = A^{-1} ， 正交矩阵的特征值的绝对值为 \text{1} 。证明如下，  对矩阵 A 有： 
 
 $\begin{align*} & A \mathbf{v} = \lambda \mathbf{v} \\[1ex]  ||A \mathbf{v}||^2& = (A \mathbf{v})^\text{T} (A \mathbf{v}) \\ &= \mathbf{v}^\text{T}A ^{\text{T}}A \mathbf{v} \\ & = \mathbf{v}^{\text{T}}\mathbf{v} \\ & = ||\mathbf{v}||^2 \\ & = |\lambda|^2 ||\mathbf{v}||^2 \end{align*} \\ $
 
 由于 \mathbf{v} 为特征向量， \mathbf{v} \neq 0 ，所以 |\lambda| = 1 ，这样连乘之后 \lambda^t 不会出现越来越小的情况。
 
-**(3)** 反转输入序列。像在机器翻译中使用 seq2seq 模型，若使用正常序列输入，则输入序列的第一个词和输出序列的第一个词相距较远，难以学到长期依赖。将输入序列反向后，输入序列的第一个词就会和输出序列的第一个词非常接近，二者的相互关系也就比较容易学习了。这样模型可以先学前几个词的短期依赖，再学后面词的长期依赖关系。见下图正常输入顺序是  |\text{ABC}| ，反向是 |\text{CBA}| ，则 \text{A} 与第一个输出词 \text{W} 接近：
+<strong>(3)</strong> 反转输入序列。像在机器翻译中使用 seq2seq 模型，若使用正常序列输入，则输入序列的第一个词和输出序列的第一个词相距较远，难以学到长期依赖。将输入序列反向后，输入序列的第一个词就会和输出序列的第一个词非常接近，二者的相互关系也就比较容易学习了。这样模型可以先学前几个词的短期依赖，再学后面词的长期依赖关系。见下图正常输入顺序是  |\text{ABC}| ，反向是 |\text{CBA}| ，则 \text{A} 与第一个输出词 \text{W} 接近：
 
-![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_7d9c67431c85.jpg)
+![](/images/collections/0.raw/zhihu/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%EF%BC%81/asset/img_7d9c67431c85.jpg)
 
 ### \Large\cal{LSTM} \\ 
 
 虽然 Vanilla RNN 理论上可以建立长时间间隔状态之间的依赖关系，但由于梯度爆炸或消失问题，实际上只能学到短期依赖关系。为了学到长期依赖关系，LSTM 中引入了门控机制来控制信息的累计速度，包括有选择地加入新的信息，并有选择地遗忘之前累计的信息，整个 LSTM 单元结构如下图所示：
 
-![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_7f1362551ab9.jpg)
+![](/images/collections/0.raw/zhihu/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%EF%BC%81/asset/img_7f1362551ab9.jpg)
 
 LSTM
 
@@ -142,13 +142,13 @@ $\begin{align*} \text{input gate}&: \quad  \textbf{i}_t = \sigma(\textbf{W}_i\te
 
 注意 input gate 和 forget gate 连接的是 \textbf{c}_{t-1} ，而 output gate 连接的是 \textbf{c}_t 。下图来自 *[《LSTM: A Search Space Odyssey》](https://link.zhihu.com/?target=https%3A//arxiv.org/pdf/1503.04069.pdf)*，标注了 peephole 连接的样貌。
 
-![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_632d51bd628e.jpg)
+![](/images/collections/0.raw/zhihu/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%EF%BC%81/asset/img_632d51bd628e.jpg)
 
 ### \Large\cal{GRU} \\ 
 
 相比于 Vanilla RNN (每个 time step 有一个输入 \textbf{x}_t )，从上面的 (1) \sim (4) 式可以看出 一个 LSTM 单元有四个输入 (如下图，不考虑 peephole) ，因而参数是 Vanilla RNN 的四倍，带来的结果是训练起来很慢，因而在2014年 Cho 等人提出了 *[GRU](https://link.zhihu.com/?target=https%3A//arxiv.org/pdf/1409.1259.pdf)* ，对 LSTM 进行了简化，在不影响效果的前提下加快了训练速度。
 
-![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_93b885150a8c.jpg)
+![](/images/collections/0.raw/zhihu/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%EF%BC%81/asset/img_93b885150a8c.jpg)
 
 \large\scr{LSTM:} 
 
@@ -156,7 +156,7 @@ $\normalsize \begin{align} \text{input gate}&: \quad  \textbf{i}_t = \sigma(\tex
 
 在式 (5)​ 中 forget gate 和 input gate 是互补关系，因而比较冗余，GRU 将其合并为一个 update gate。同时 GRU 也不引入额外的记忆单元 (LSTM 中的 \textbf{c}​ ) ，而是直接在当前状态  \textbf{h}_t​  和历史状态 \textbf{h}_{t-1}​ 之间建立线性依赖关系。
 
-![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_cf5068daa5d5.jpg)
+![](/images/collections/0.raw/zhihu/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%EF%BC%81/asset/img_cf5068daa5d5.jpg)
 
 \large\scr{GRU:} 
 
@@ -170,6 +170,6 @@ $\begin{align*}  \tilde{\textbf{c}}_t &= \text{tanh}(\textbf{W}_c\textbf{x}_t + 
 
 最后是 cs224n 中提出的 RNN 训练 tips：
 
-![](/images/collections/0.raw/zhihu/%25E6%259C%25BA%25E5%2599%25A8%25E5%25AD%25A6%25E4%25B9%25A0%25EF%25BC%2581/asset/img_d7a9ed303aaf.jpg)
+![](/images/collections/0.raw/zhihu/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%EF%BC%81/asset/img_d7a9ed303aaf.jpg)
 
 /

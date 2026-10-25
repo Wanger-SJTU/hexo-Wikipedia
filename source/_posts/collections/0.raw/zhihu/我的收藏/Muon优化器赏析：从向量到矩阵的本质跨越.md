@@ -17,7 +17,7 @@ source_url: https://zhuanlan.zhihu.com/p/13401683661
 
 最佳排版请看原博客：
 
-[![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_2887ae46a951.jpg)Muon优化器赏析：从向量到矩阵的本质跨越 - 科学空间|Scientific Spaceskexue.fm/archives/10592](https://link.zhihu.com/?target=https%3A//kexue.fm/archives/10592)
+[![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_2887ae46a951.jpg)Muon优化器赏析：从向量到矩阵的本质跨越 - 科学空间|Scientific Spaceskexue.fm/archives/10592](https://link.zhihu.com/?target=https%3A//kexue.fm/archives/10592)
 
 随着LLM时代的到来，学术界对于优化器的研究热情似乎有所减退。这主要是因为目前主流的AdamW已经能够满足大多数需求，而如果对优化器“大动干戈”，那么需要巨大的验证成本。因此，当前优化器的变化，多数都只是工业界根据自己的训练经验来对AdamW打的一些小补丁。
 
@@ -25,7 +25,7 @@ source_url: https://zhuanlan.zhihu.com/p/13401683661
 
 **
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_c0e67332f7cb.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_c0e67332f7cb.jpg)
 
 ### 算法初探
 
@@ -94,7 +94,7 @@ $$\boldsymbol{X}_{t+1} = \frac{15}{8}\boldsymbol{X}_t - \frac{5}{4}\boldsymbol{X
 
 然而，查看Muon的官方代码我们就会发现，它里边的Newton-schulz迭代确实是这个形式，但三个系数却是(3.4445, -4.7750,  2.0315)，而且作者没有给出数学推导，只有一段语焉不详的注释： 
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_4c20ed176e07.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_4c20ed176e07.jpg)
 
 ### 收敛加速
 
@@ -136,13 +136,13 @@ for _ in tqdm(range(1000), ncols=0, desc='SVD'):
     key, subkey = jax.random.split(key)
     M = jax.random.normal(subkey, shape=(n, m))
     S = jnp.linalg.svd(M, full_matrices=False)[1]
-    data = jnp.concatenate([data, S / (S**2).sum()**0.5])
+    data = jnp.concatenate([data, S / (S<strong>2).sum()</strong>0.5])
 
 @jax.jit
 def f(w, x):
     k, x1, x2 = w
     for _ in range(T):
-        x = x + k * x * (x**2 - x1**2) * (x**2 - x2**2)
+        x = x + k * x * (x<strong>2 - x1</strong>2) * (x<strong>2 - x2</strong>2)
     return ((x - 1)**2).mean()
 
 f_grad = jax.grad(f)
@@ -152,7 +152,7 @@ for _ in tqdm(range(100000), ncols=0, desc='SGD'):
     w = w - 0.01 * u
 
 k, x1, x2 = w
-a, b, c = 1 + k * x1**2 * x2**2, -k * (x1**2 + x2**2), k
+a, b, c = 1 + k * x1**2 * x2**2, -k * (x1<strong>2 + x2</strong>2), k
 print(f'{n} & {m} & {T} & {k:.3f} & {x1:.3f} & {x2:.3f} & {a:.3f} & {b:.3f} & {c:.3f} & {f(w, data):.5f}')`
 
 ### 一些思考

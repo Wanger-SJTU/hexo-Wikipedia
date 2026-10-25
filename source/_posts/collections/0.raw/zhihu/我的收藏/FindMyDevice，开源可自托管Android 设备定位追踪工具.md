@@ -28,7 +28,7 @@ FindMyDevice (FMD) 的主要功能如下：
 - 让设备响铃
 - 使用设备的相机拍照以查看周围环境
 - 将设备恢复出厂设置
-项目地址**：**[https://gitlab.com/Nulide/findmydevice](https://link.zhihu.com/?target=https%3A//gitlab.com/Nulide/findmydevice)
+项目地址<strong>：</strong>[https://gitlab.com/Nulide/findmydevice](https://link.zhihu.com/?target=https%3A//gitlab.com/Nulide/findmydevice)
 
 F-Droid：[https://f-droid.org/packages/de.nulide.findmydevice/](https://link.zhihu.com/?target=https%3A//f-droid.org/packages/de.nulide.findmydevice/)
 

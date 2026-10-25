@@ -244,7 +244,7 @@ struct st {                                                                   \
 #define EAT(...)
 `
 
-同样的例子，`STRIP((double) x)`会展开成`EAT(double) x`，而`EAT(double)`得到空结果，所以最终结果是`return (obj.x);`，这样就能通过`value()`函数拿到成员字段的**引用**。
+同样的例子，`STRIP((double) x)`会展开成`EAT(double) x`，而`EAT(double)`得到空结果，所以最终结果是`return (obj.x);`，这样就能通过`value()`函数拿到成员字段的<strong>引用</strong>。
 
 而最后一个`STRING(STRIP(arg))`就比较简单了，通过`STRING`得到对应参数字符串，宏的基本用法了：
 

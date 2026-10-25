@@ -25,7 +25,7 @@ source_url: https://www.zhihu.com/question/401612303/answer/62608123515
 
 让我们从第一个问题开始。  这个问题出现在2020年计算机科学论文中。  
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_df41afdfe547.jpg)![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_b74b84c3bfb3.webp)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_df41afdfe547.jpg)![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_b74b84c3bfb3.webp)
 
 一个直接映射的缓存内存为1兆字节，有一个256字节的块大小。  
 
@@ -37,7 +37,7 @@ source_url: https://www.zhihu.com/question/401612303/answer/62608123515
 
 现在256不过是2的8次方，8不过是2的3次方，因此结果将是2的5次方。  现在问题本身提到了直接映射缓存，因此我们知道它是一个逐级组织。  另外，缓存的命中率为94%，访问时间为3纳秒。  
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_1416dd156bcb.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_1416dd156bcb.jpg)
 
 因此，h（命中率）将是0.94，t（访问时间），即缓存的访问时间，将是3纳秒。  现在TMM（主内存访问时间）或主内存访问时间已在问题中提到，每个块的第一个字需要20纳秒，其余的每个字需要5纳秒。  
 
@@ -49,7 +49,7 @@ source_url: https://www.zhihu.com/question/401612303/answer/62608123515
 
 现在将178乘以0.06，我们得到10.68，因此最终的结果是13.5纳秒，这是我们问题的答案。  所以在这个问题中，我们见证了两个不同概念的融合，一个是直接内存映射，另一个是内存接口。  
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_512f151bcb2f.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_512f151bcb2f.jpg)
 
 那么现在我们将进入下一个问题。
 
@@ -61,7 +61,7 @@ source_url: https://www.zhihu.com/question/401612303/answer/62608123515
 
 这个问题是在2015年GATE计算机科学论文中提出的。  
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_0d667a03f9b2.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_0d667a03f9b2.jpg)
 
 现在主内存大小给出为2的20次方字节，因此物理地址位数将是20。  现在块大小给出为16字节，可以转换为2的4次方字节。  因此，块偏移将是4位。  现在问题中提到缓存有2的12次方行。  因此，行号位数将是12。  
 
@@ -69,7 +69,7 @@ source_url: https://www.zhihu.com/question/401612303/answer/62608123515
 
 12位将用作行号，其余的将用作标签位，可以计算为20减去12加上4，即20减去16，即4位。  所以4位将被用作标签位。  这是整个PA位分割。  
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_ce329d35ddf2.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_ce329d35ddf2.jpg)
 
 所以从20位物理地址中，4位将被用作标签号，12位用于行号，4位剩余的有效位将被用作块或行偏移。  
 
@@ -81,7 +81,7 @@ source_url: https://www.zhihu.com/question/401612303/answer/62608123515
 
 2在二进制中是0010，0是0000，1在二进制中是0001，F在十进制中是15，因此在二进制中是1111。  
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_83abde5ff7a2.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_83abde5ff7a2.jpg)
 
 现在从PA分割我们知道，最高有效4位将被用作标签位，因此E是标签位，类似地，12行号位不过是201F。  
 
@@ -91,7 +91,7 @@ source_url: https://www.zhihu.com/question/401612303/answer/62608123515
 
 在这个问题中，我们不得不使用直接内存映射概念来找出PA分割，之后在寻找解决方案的过程中也测试了数字系统的知识。  
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_303d9e3ab40b.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_303d9e3ab40b.jpg)
 
 现在让我们进入下一个问题。
 
@@ -101,7 +101,7 @@ source_url: https://www.zhihu.com/question/401612303/answer/62608123515
 
 现在他们问我们关于标签字段。  
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_a05bd4da3c10.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_a05bd4da3c10.jpg)
 
 那么，我们来试着解决它。  
 
@@ -111,7 +111,7 @@ source_url: https://www.zhihu.com/question/401612303/answer/62608123515
 
 所以18位将被用于标签字段。  这是答案。
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_920d09c2f3cc.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_920d09c2f3cc.jpg)
 
 ### 缓存控制器的元数据存储需求计算
 
@@ -123,7 +123,7 @@ source_url: https://www.zhihu.com/question/401612303/answer/62608123515
 
 缓存控制器需要多少内存来存储元数据，即缓存的标签？  
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_ab293b9facd5.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_ab293b9facd5.jpg)
 
 现在我们来试着解决它。  
 
@@ -141,7 +141,7 @@ source_url: https://www.zhihu.com/question/401612303/answer/62608123515
 
 所以19位将被用于标签。  
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_ca0f683c46f9.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_ca0f683c46f9.jpg)
 
 现在缓存控制器不过是标签目录，每个标签目录条目有一个有效位，一个修改位，以及识别映射到缓存中的内存块所需的位数，不过是标签位。  
 
@@ -149,7 +149,7 @@ source_url: https://www.zhihu.com/question/401612303/answer/62608123515
 
 因此，标签目录大小不过是21乘以2的8次方，因为有2的8次方缓存行，每个标签目录条目有21位大小，不过是21乘以256，因为2的8次方不过是256，结果为5376。  
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_480ebffbfbcc.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_480ebffbfbcc.jpg)
 
 所以这是缓存控制器或标签目录需要的内存大小，以存储元数据或缓存的标签。  
 

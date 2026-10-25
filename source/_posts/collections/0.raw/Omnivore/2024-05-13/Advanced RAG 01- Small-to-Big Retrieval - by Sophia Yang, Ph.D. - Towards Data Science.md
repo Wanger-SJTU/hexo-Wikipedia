@@ -24,12 +24,12 @@ categories:
 
 RAG (Retrieval-Augmented Generation) systems retrieve relevant information from a given knowledge base, thereby allowing it to generate factual, contextually relevant, and domain-specific information. However, RAG faces a lot of challenges when it comes to effectively retrieving relevant information and generating high-quality responses. In this series of blog posts/videos, I will walk through advanced RAG techniques aiming at optimizing the RAG workflow and addressing the challenges in naive RAG systems.
 
-The first technique is called **small-to-big retrieval**. In basic RAG pipelines, we embed a big text chunk for retrieval, and this exact same text chunk is used for synthesis. But sometimes embedding/retrieving big text chunks can feel suboptimal. There might be a lot of filler text in a big text chunk that hides the semantic representation, leading to worse retrieval. What if we could embed/retrieve based on smaller, more targeted chunks, but still have enough context for the LLM to synthesize a response? Specifically, decoupling text chunks used for retrieval vs. the text chunks used for synthesis could be advantageous. Using smaller text chunks enhances the accuracy of retrieval, while larger text chunks offer more contextual information. The concept behind small-to-big retrieval is to use smaller text chunks during the retrieval process and subsequently provide the larger text chunk to which the retrieved text belongs to the large language model.
+The first technique is called <strong>small-to-big retrieval</strong>. In basic RAG pipelines, we embed a big text chunk for retrieval, and this exact same text chunk is used for synthesis. But sometimes embedding/retrieving big text chunks can feel suboptimal. There might be a lot of filler text in a big text chunk that hides the semantic representation, leading to worse retrieval. What if we could embed/retrieve based on smaller, more targeted chunks, but still have enough context for the LLM to synthesize a response? Specifically, decoupling text chunks used for retrieval vs. the text chunks used for synthesis could be advantageous. Using smaller text chunks enhances the accuracy of retrieval, while larger text chunks offer more contextual information. The concept behind small-to-big retrieval is to use smaller text chunks during the retrieval process and subsequently provide the larger text chunk to which the retrieved text belongs to the large language model.
 
 There are two primary techniques:
 
-1. **Smaller Child Chunks Referring to Bigger Parent Chunks**: Fetch smaller chunks during retrieval first, then reference the parent IDs, and return the bigger chunks.
-2. **Sentence Window Retrieval:** Fetch a single sentence during retrieval and return a window of text around the sentence.
+1. <strong>Smaller Child Chunks Referring to Bigger Parent Chunks</strong>: Fetch smaller chunks during retrieval first, then reference the parent IDs, and return the bigger chunks.
+2. <strong>Sentence Window Retrieval:</strong> Fetch a single sentence during retrieval and return a window of text around the sentence.
 
 In this blog post, we will dive into the implementations of these two methods in LlamaIndex. Why am I not doing it in LangChain? Because there are already lots of resources out there on advanced RAG with LangChain. I’d rather not duplicate the effort. Also, I use both LangChain and LlamaIndex. It’s best to understand more tools and use them flexibly.
 
@@ -39,7 +39,7 @@ You can find all the code in this [notebook](https://colab.research.google.com/g
 
 Let’s start with a basic RAG implementation with 4 simple steps:
 
-**Step 1\. Loading Documents**
+<strong>Step 1\. Loading Documents</strong>
 
 We use a PDFReader to load a PDF file, and combine each page of the document into one Document object.
 
@@ -48,7 +48,7 @@ docs0 = loader.load_data(file=Path("llama2.pdf"))
 doc_text = "\n\n".join([d.get_content() for d in docs0])  
 docs = [Document(text=doc_text)]
 
-**Step 2\. Parsing Documents into Text Chunks (Nodes)**
+<strong>Step 2\. Parsing Documents into Text Chunks (Nodes)</strong>
 
 Then we split the document into text chunks, which are called “Nodes” in LlamaIndex, where we define the chuck size as 1024\. The default node IDs are random text strings, we can then format our node ID to follow a certain format.
 
@@ -57,7 +57,7 @@ base_nodes = node_parser.get_nodes_from_documents(docs)
 for idx, node in enumerate(base_nodes):  
 node.id_ = f"node-{idx}"
 
-**Step 3\. Select Embedding Model and LLM**
+<strong>Step 3\. Select Embedding Model and LLM</strong>
 
 We need to define two models:
 
@@ -70,7 +70,7 @@ embed_model = resolve_embed_model(“local:BAAI/bge-small-en”)
 llm = OpenAI(model="gpt-3.5-turbo")  
 service_context = ServiceContext.from_defaults(llm=llm, embed_model=embed_model)
 
-**Step 4\. Create Index, retriever, and query engine**
+<strong>Step 4\. Create Index, retriever, and query engine</strong>
 
 Index, retriever, and query engine are three basic components for asking questions about your data or documents:
 
@@ -98,7 +98,7 @@ print(str(response))
 
 In the previous section, we used a fixed chunk size of 1024 for both retrieval and synthesis. In this section, we are going to explore how to use smaller child chunks for retrieval and refer to bigger parent chunks for synthesis. The first step is to create smaller child chunks:
 
-**Step 1: Create Smaller Child Chunks**
+<strong>Step 1: Create Smaller Child Chunks</strong>
 
 For each of the text chunks with chunk size 1024, we create even smaller text chunks:
 
@@ -131,7 +131,7 @@ When we take a look at all the text chunks \`all\_nodes\_dict\`, we can see many
 
 ![](https://proxy-prod.omnivore-image-cache.app/700x316,stvbRaExGBJv2CNXOH_fiWEl1FBebHFSOwvP7qj-g1w8/https://miro.medium.com/v2/resize:fit:875/0*lM9jaUT8iNWMthjn)
 
-**Step 2: Create Index, retriever, and query engine**
+<strong>Step 2: Create Index, retriever, and query engine</strong>
 
 * Index: Create vector embeddings of all the text chunks.
 
@@ -139,7 +139,7 @@ vector_index_chunk = VectorStoreIndex(
     all_nodes, service_context=service_context  
 )
 
-* Retriever: the key here is to use a **RecursiveRetriever** to traverse node relationships and fetch nodes based on “references”. This retriever will recursively explore links from nodes to other retrievers/query engines. For any retrieved nodes, if any of the nodes are IndexNodes, then it will explore the linked retriever/query engine and query that.
+* Retriever: the key here is to use a <strong>RecursiveRetriever</strong> to traverse node relationships and fetch nodes based on “references”. This retriever will recursively explore links from nodes to other retrievers/query engines. For any retrieved nodes, if any of the nodes are IndexNodes, then it will explore the linked retriever/query engine and query that.
 
 vector_retriever_chunk = vector_index_chunk.as_retriever(similarity_top_k=2)  
 retriever_chunk = RecursiveRetriever(  
@@ -171,7 +171,7 @@ To achieve an even more fine-grained retrieval, instead of using smaller child c
 
 In this case, single sentences will be similar to the “child” chunk concept we mentioned in method 1\. The sentence “window” (5 sentences on either side of the original sentence) will be similar to the “parent” chunk concept. In other words, we use the single sentences during retrieval and pass the retrieved sentence with the sentence window to the LLM.
 
-**Step 1: Create sentence window node parser**
+<strong>Step 1: Create sentence window node parser</strong>
 
   
 node_parser = SentenceWindowNodeParser.from_defaults(  
@@ -182,7 +182,7 @@ node_parser = SentenceWindowNodeParser.from_defaults(
 sentence_nodes = node_parser.get_nodes_from_documents(docs)  
 sentence_index = VectorStoreIndex(sentence_nodes, service_context=service_context)
 
-**Step 2: Create query engine**
+<strong>Step 2: Create query engine</strong>
 
 When we create the query engine, we can replace the sentence with the sentence window using the MetadataReplacementPostProcessor, so that the window of the sentences get sent to the LLM.
 
@@ -206,7 +206,7 @@ Here you can see the actual sentence retrieved and the window of the sentence, w
 
 ![](https://proxy-prod.omnivore-image-cache.app/700x288,sWlvBquxrjKjsmxOhTJy8JSwxVJOM3CTnv8trLY-3Q_M/https://miro.medium.com/v2/resize:fit:875/0*SNakisDYccy2EaXu)
 
-## **Conclusion**
+## <strong>Conclusion</strong>
 
 In this blog, we explored how to use small-to-big retrieval to improve RAG, focusing on the Child-Parent RecursiveRetriever and Sentence Window Retrieval with LlamaIndex. In future blog posts, we will dive deeper into other tricks and tips. Stay tuned for more on this exciting journey into advanced RAG techniques!
 

@@ -17,10 +17,10 @@ source_url: https://zhuanlan.zhihu.com/p/659770503
 
 在 Transformer 的 Encoder-base 的模型（如 BERT系列）中，推理和训练过程保持了高度的统一性（差异仅仅在于是否存在反向过程）。而在 Decoder-base 的生成式模型（如 GPT系列）中，推理和训练存在相当大的差异性，主要体现在推理过程具有以下3点特征：
 
-- **自回归**
-- **两阶段**（prefill+decode）
-- **KV cache**
-以上三点实际上也是相辅相成、不可分割的，其中**自回归**的生成模式是根本原因，**两阶段**是外在的体现形式，**KV cache** 是优化手段。
+- <strong>自回归</strong>
+- <strong>两阶段</strong>（prefill+decode）
+- <strong>KV cache</strong>
+以上三点实际上也是相辅相成、不可分割的，其中<strong>自回归</strong>的生成模式是根本原因，<strong>两阶段</strong>是外在的体现形式，<strong>KV cache</strong> 是优化手段。
 
 下面将通过梳理整个推理过程，来理解 KV cache 的作用及优化方法。
 
@@ -28,7 +28,7 @@ source_url: https://zhuanlan.zhihu.com/p/659770503
 
 $以典型的 GPT2 结构为例。假设第 i" role="presentation">ii 层 Decoder 的权重矩阵为 WQi,WKi,WVi,WOi,Wupi,Wdowni" role="presentation">WQi,WKi,WVi,WOi,Wupi,WdowniW^i_Q,W^i_K,W^i_V,W^i_O,W^i_{up},W^i_{down}。其中，self-attention块的4个权重矩阵WQi,WKi,WVi,WOi&#x2208;Rh&#x00D7;h" role="presentation">WQi,WKi,WVi,WOi∈Rh×hW^i_Q,W^i_K,W^i_V,W^i_O\in \mathbb{R}^{h\times h}，并且MLP块的2个权重矩阵Wupi&#x2208;Rh&#x00D7;4h,Wdowni&#x2208;R4h&#x00D7;h" role="presentation">Wupi∈Rh×4h,Wdowni∈R4h×hW^i_{up}\in \mathbb{R}^{h\times 4h},W^i_{down}\in \mathbb{R}^{4h\times h}。$
 
-#### **第一阶段（prefill）：**
+#### <strong>第一阶段（prefill）：</strong>
 
 $假设第 i" role="presentation">ii 层的输入为 xi&#x2208;Rb&#x00D7;s&#x00D7;h" role="presentation">xi∈Rb×s×hx^i \in \mathbb{R}^{b\times s\times h} ，self-attention块的key、value、query和output表示为 xKi,xVi,xQi&#x2208;Rb&#x00D7;s&#x00D7;h" role="presentation">xKi,xVi,xQi∈Rb×s×hx^i_K,x^i_V,x^i_Q \in \mathbb{R}^{b\times s\times h} 。$
 
@@ -40,10 +40,10 @@ $x^{i}_{K} = x^{i} \cdot W^{i}_{K} \in \mathbb{R}^{b\times s\times h} \\x^{i}_{V
 
 $$x^{i}_{Q} = x^{i} \cdot W^{i}_{Q}  \in \mathbb{R}^{b\times s\times h}\\x^{i}_{out} = softmax(\frac{x^{i}_{Q} {x^{i}_{K}}^{T}}{\sqrt{h}})  \cdot x^{i}_{V} \cdot W^{i}_{O} + x^{i} \in \mathbb{R}^{b\times s\times h}\\x^{i+1} = f_{gelu}(x^{i}_{out}\cdot W_{up}) \cdot W_{down} + x^{i}_{out} \in \mathbb{R}^{b\times s\times h} \\$$
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_6906deb9655c.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_6906deb9655c.jpg)
 
 KV cache 作用过程
-#### **第二阶段（decode）：**
+#### <strong>第二阶段（decode）：</strong>
 
 $给定当前生成词在第 i  层的向量表示为 t^{i}\in \mathbb{R}^{b\times 1\times h} 。推断计算分两部分：更新KV cache和计算第 i 层的输出。$
 
@@ -59,18 +59,18 @@ $$t^{i}_{Q} = t_{i} \cdot W^{i}_{Q}\in \mathbb{R}^{b\times 1\times h}\\$$
 
 $$t^{i}_{out} = softmax(\frac{{t^{i}_{Q}x^{i}_{K}}^{T}}{\sqrt{h}}) \cdot x^{i}_{V} \cdot W^{i}_{O} + t^{i}\in \mathbb{R}^{b\times 1\times h}\\t^{i+1} = f_{gelu}(t^{i}_{out}\cdot W_{up}) \cdot W_{down} + t^{i}_{out}\in \mathbb{R}^{b\times 1\times h}\\$$
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_5fe4b807c8bf.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_5fe4b807c8bf.jpg)
 
 without cache vs with cache
-#### **KV cache的显存占用分析**
+#### <strong>KV cache的显存占用分析</strong>
 
-假设输入序列的长度为 s ，输出序列的长度为 n ，以 FP16 来保存KV cache，那么**KV cache的峰值显存占用大小为** b(s+n)h * l * 2 * 2=4blh(s+n) 。这里第一个2表示K/V cache，第二个2表示 FP16 占2个bytes。
+假设输入序列的长度为 s ，输出序列的长度为 n ，以 FP16 来保存KV cache，那么<strong>KV cache的峰值显存占用大小为</strong> b(s+n)h * l * 2 * 2=4blh(s+n) 。这里第一个2表示K/V cache，第二个2表示 FP16 占2个bytes。
 
 以 GPT3 (175B) 为例，对比 KV cache 与模型参数占用显存的大小。GPT3 模型weight占用显存大小为350GB (FP16)，层数 l 为96，维度 h 为12888。
 
 batch sizes+nKV cache(GB)KV cache/weight4409675.50.221640963020.8664409612083.45可见随着 batch size 和 长度的增大，KV cache 占用的显存开销快速增大，甚至会超过模型本身。
 
-而 LLM 的窗口长度也在不断增大，因此就出现一组主要矛盾，即：**对不断增长的 LLM 的窗口长度的需要与有限的 GPU 显存之间的矛盾。**因此优化 KV cache 就显得非常必要。
+而 LLM 的窗口长度也在不断增大，因此就出现一组主要矛盾，即：<strong>对不断增长的 LLM 的窗口长度的需要与有限的 GPU 显存之间的矛盾。</strong>因此优化 KV cache 就显得非常必要。
 
 ### 二、KV cache 优化的典型方法
 
@@ -97,11 +97,11 @@ query, key, value = qkv.split(
     dim=2
 )`
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_c4fceb370466.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_c4fceb370466.jpg)
 
 MHA v.s. GQA v.s. MQAGQA（Grouped Query Attention，分组查询注意力）是一种介于多头注意力和 MQA 之间的折中方案。它将查询头（Query Heads）分组，并在每组中共享一个键头（Key Head）和一个值头（Value Head）。表达能力与推理速度：GQA既保留了多头注意力的一定表达能力，又通过减少内存访问压力来加速推理速度。
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_f56ef95d2a18.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_f56ef95d2a18.jpg)
 
 MHA, GQA, MQA 性能比较
 #### 2.2 窗口优化
@@ -112,11 +112,11 @@ KV cache 的作用是计算 attention，当推理时的文本长度 T 大于训�
 
 2）KV 重计算（图 c），该方法需要每次计算都重新计算长度为L的 KV cache，由于重计算的存在，其精度可以保证，但是性能损失比较大；
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_a59d66c6a9c9.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_a59d66c6a9c9.jpg)
 
 3）箭型 attention 窗口，在 [LM-Infinit](https://link.zhihu.com/?target=https%3A//arxiv.org/pdf/2308.16137.pdf) 中就已经被提出了，其基本原理和 [StreamingLLM](https://link.zhihu.com/?target=https%3A//arxiv.org/pdf/2309.17453.pdf) 是一致的。
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_72d3bb740ffc.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_72d3bb740ffc.jpg)
 
 #### 2.3 量化与稀疏
 
@@ -124,19 +124,19 @@ KV cache 的作用是计算 attention，当推理时的文本长度 T 大于训�
 
 当前主流推理框架都在逐步支持 KV cache 量化，一个典型的案例是 [lmdeploy](https://link.zhihu.com/?target=https%3A//github.com/InternLM/lmdeploy)，下图展示了其在 [TurboMind](https://link.zhihu.com/?target=https%3A//github.com/InternLM/lmdeploy%23turbomind) 框架下  KV INT8 的支持情况。
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_0dcb03133b4b.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_0dcb03133b4b.jpg)
 
 lmdeploy 的推理特性稀疏的方法也比较简单，其做法无外乎以下几种方式：
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_52bfbc88a925.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_52bfbc88a925.jpg)
 
 这里最值得一提的是 [H2O](https://link.zhihu.com/?target=https%3A//browse.arxiv.org/pdf/2306.14048.pdf)。简单来说就是通过动态的评价方式来判断需要保留和废弃的KV值，其评估的算法如下所示：
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_2fb09a398e2f.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_2fb09a398e2f.jpg)
 
 结果显示，在 KV cache 稀疏到只有原来的 20% 时仍然可以保持很高的精度。
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_c7ff4c97da5f.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_c7ff4c97da5f.jpg)
 
 #### 2.4 存储与计算优化
 
@@ -149,7 +149,7 @@ FlashDecoding 是在 FlashAttention 的基础上针对 inference 的优化主要
 - 长文本下将KV分成更小且方便并行的chunk
 - 对每个chunk的KV，Q和他们进行之前一样的FlashAttention获取这个chunk的结果
 - 对每个chunk的结果进行reduce
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_baa3175729c0.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_baa3175729c0.jpg)
 
 ### 三、StreamingLLM：简洁高效的“无限长度”
 
@@ -161,15 +161,15 @@ StreamingLLM 的基本思想同样是来源于上述的窗口思想，其最大�
 
 多个研究都发现，self-attention 的注意力比较集中于头部和尾部，对文本中段的注意力相对较弱，如下图所示：
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_1a707d61c92f.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_1a707d61c92f.jpg)
 
 绘制出 self-attention 的热力图也能看到这一点，由此当文本长度超过额定长度时，头部的 token 就会被遗弃掉，这就会在 softmax 阶段产生很大的问题。
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_e3371642e9df.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_e3371642e9df.jpg)
 
 具体来说就是在 x_1 较大的情况下，如果删除 e^{x_1} 会很大程度影响 softmax 输出结果的分布。
 
-$$\operatorname{SoftMax}(x)_i=\frac{e^{x_i}}{e^{x_1}+\sum_{j=2}^N e^{x_j}}, \quad x_1 \gg x_j, j \in 2, \ldots, N \\ e^{x_1} 会很大的原因并非是 token 决定的，而是其**起始位置**决定的，这也是论文中即使使用  4"\n"  精度仍然较高的原因。** $$
+$$\operatorname{SoftMax}(x)_i=\frac{e^{x_i}}{e^{x_1}+\sum_{j=2}^N e^{x_j}}, \quad x_1 \gg x_j, j \in 2, \ldots, N \\ e^{x_1} 会很大的原因并非是 token 决定的，而是其<strong>起始位置</strong>决定的，这也是论文中即使使用  4"\n"  精度仍然较高的原因。** $$
 实际上这一发现也在Attention Is Off By One中被详细讨论过，并提出要用 softmax1 替代 softmax 。
 
 #### 3.2 “无限长度”是如何做到的？
@@ -188,9 +188,9 @@ $$\operatorname{SoftMax}(x)_i=\frac{e^{x_i}}{e^{x_1}+\sum_{j=2}^N e^{x_j}}, \qua
     for x in history[::-1]:
         if tokenizer(prompt + history_text + x, return_tensors="pt")["input_ids"].size(-1) 
 
-实际上这就是典型的**滑动窗口**的做法，滑窗 l 的存在保证了 GPU 的显存不会溢出，但是由于上节的讨论，会存在精度损失。
+实际上这就是典型的<strong>滑动窗口</strong>的做法，滑窗 l 的存在保证了 GPU 的显存不会溢出，但是由于上节的讨论，会存在精度损失。
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_b9b002d8c0a8.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_b9b002d8c0a8.jpg)
 
 而 StreamingLLM 的做法可以理解为将滑窗 l 分为固定部分加上滑动部分，即： [4, l-4] ，那么需要  GPU 的显存的上限就是确定的，即可保证长度的“无限”增加。
 

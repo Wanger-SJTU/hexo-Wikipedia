@@ -118,8 +118,8 @@ func(x,y,b)=input_a(k,y,b)*Br(k,x,b)`
 以下是抽象出来的3个data transform op：
 
 - ReorderOP**：将一个input第一维和第二维数据排布交换的操作。其实现方法是定义一个新的函数，令reorder_func(x,y,...) = input(y,x,...)。
-- **InterleaveOP**：将一个input第一维每m个数据划分。其实现方法是定义一个新的函数，令interleave_func(x,y,xo,...) = input(xo*m+x,y,...)。
-**SplitYOP**:将一个input第二维每m个数据划分。其实现方法是定义一个新的函数，令splity_func(x,y,yo,...) = input(x,yo*m+y,...)。**
+- <strong>InterleaveOP</strong>：将一个input第一维每m个数据划分。其实现方法是定义一个新的函数，令interleave_func(x,y,xo,...) = input(xo*m+x,y,...)。
+<strong>SplitYOP</strong>:将一个input第二维每m个数据划分。其实现方法是定义一个新的函数，令splity_func(x,y,yo,...) = input(x,yo*m+y,...)。**
 AutoDataTransform的cost model**
 
 cost model设计的基本原理就是，选择合适的数据排布，使得在计算过程中，数据的读取是流畅的连续的，减少cache miss。**根据优化经验，几种数据重新排布的方法可以提高优化后的执行速度，为了表征这些排布的效果，cost model的设计定义了两类cost：分别为reorder cost和use_distance cost。
@@ -129,14 +129,14 @@ reorder cost****对于一个这样的表达式：
 
 在x和y维度上input和func的数据读取顺序发生了不一致，这种不一致在y很大时会导致cache miss率增大，其cache miss的程度可以用来衡量这种数据排布的cost。
 
-由于当y较大时，对于此运算，发生cache miss的次数为循环次数（即cache几乎没有命中过），故次数为x**y**z*b。
+由于当y较大时，对于此运算，发生cache miss的次数为循环次数（即cache几乎没有命中过），故次数为x<strong>y</strong>z*b。
 
 对于上述表达式，如果我们增加一个定义：
 
 `Reorder(x,y,z) = input(y,x,z)
 func(x,y,z,b) = Reorder(x,y,z)*b`
 
-可以看到，结果一样，func(x,y,z,b)这个表达式没有发生cache miss，只有上面的Reorder(x,y,z)发生了cache miss，其miss次数为x**y**z，可以看到，miss次数减少了b倍。所以我们定义reorder cost为发生数据读取顺序不一致的表达式的数据总量。
+可以看到，结果一样，func(x,y,z,b)这个表达式没有发生cache miss，只有上面的Reorder(x,y,z)发生了cache miss，其miss次数为x<strong>y</strong>z，可以看到，miss次数减少了b倍。所以我们定义reorder cost为发生数据读取顺序不一致的表达式的数据总量。
 
 需要注意的是，这个cost并不是线性的，因为它需要x,y维度的大小来计算，当x*y在cache大小内时，此时cache中并不会完全miss，而对于cpu来说，有L1，L2,L3三层cache，每层大小不同，因此这个cost函数是阶梯上升的。具体参数设置可以从DataTransform.h中的compute_order_cost函数中获取。
 

@@ -23,7 +23,7 @@ source_url: https://www.zhihu.com/question/341843217/answer/1981537479
 
 绕了一大圈，回到题主的问题，在假设以上解释是对的情况下，我们可以得出resnet相比vgg其实将注意力放在了更多这种细小的feature上面，所以才会获得更高的正确率。而题主所提到的perceptual loss其实是来源于风格迁移，风格迁移领域中，使用resnet计算perceptual loss几乎无法获得比较好的效果，因为resnet相较于vgg关注的更多是人眼不可见的feature。
 
-**但是**！重点来了，有人做过实验（可以查下robust resnet style transfer），使用对抗训练后的resnet进行风格迁移，会获得跟vgg一致的效果，这与前面的假设吻合，因为对抗训练就是使网络更多的关注“第一个feature”，即人眼更多关注的feature，忽略掉那些在人眼看来“脆弱的”、类似于噪声的feature。
+<strong>但是</strong>！重点来了，有人做过实验（可以查下robust resnet style transfer），使用对抗训练后的resnet进行风格迁移，会获得跟vgg一致的效果，这与前面的假设吻合，因为对抗训练就是使网络更多的关注“第一个feature”，即人眼更多关注的feature，忽略掉那些在人眼看来“脆弱的”、类似于噪声的feature。
 
 以上内容是我根据提到的一些其他人的工作串联起来的解释，现在不做style transfer了，不知道有没有更合理的解释。
 

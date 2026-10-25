@@ -27,7 +27,7 @@ LLM（大型语言模型）中的 Attention 机制中的 KV Cache（键值缓存
 
 - Attention的第i个输出只和第 i 个query有关，和其他query无关，所以query完全没有必要缓存，每次预测 Oi" role="presentation">OiO_i 时只要计算最新的 Oi" role="presentation">OiO_i 即可，其他的丢弃即可
 - Attention的输出O_i的计算和完整的K和V有关，而K、V的历史值只和历史的O有关，和当前的O无关。那么就可以通过缓存历史的K、V，而避免重复计算历史K、V
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_6e5c26066f94.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_6e5c26066f94.jpg)
 
 因此，当预测 今天天气真 → 好 时，使用kv cache后流程如下：
 
@@ -96,7 +96,7 @@ $$O_i = Attention(Q_i,K,V) = softmax(\frac{Q_iK^T}{\sqrt{d_k}})V\\$$
 
 下图展示了大模型中MHA、MQA、GQA之间的区别
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_cf11c44845e8.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_cf11c44845e8.jpg)
 
 - multi-head attention: 不共享任何head
 - multi-query attention：共享所有的KV head，经过小批量训练后，仍然会导致精度损失
@@ -107,13 +107,13 @@ $$O_i = Attention(Q_i,K,V) = softmax(\frac{Q_iK^T}{\sqrt{d_k}})V\\$$
 
 Longformer提出了利用滑动窗口约束attention的上下文范围，从而达到提升上下文长度的目的。
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_a9e57b44777e.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_a9e57b44777e.jpg)
 
 由于SWA通过滑动窗口的技巧，约束了上下文的长度而不再是全局，KV Cache也会被限制到固定长度，而不再是全局。最终实现了减小KV Cache的目的
 
 LM-Infinite同样是利用滑动窗口的原理，通过GLM + 窗口约束的方式实现限制KV Cache显存占用上限
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_65381a7347be.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_65381a7347be.jpg)
 
 #### 4.3 量化和稀疏
 
@@ -124,11 +124,11 @@ LM-Infinite同样是利用滑动窗口的原理，通过GLM + 窗口约束的方
 PageAttention是在vLLM 中提出的KV Cache优化方法，它将在操作系统的虚拟内存中分页的经典思想引入到 LLM 服务中。在无需任何模型架构修改的情况下，可以做到比 HuggingFace Transformers 提供高达 24 倍的 Throughput。下面是实现流程：
 
 - 内存分区：主要受到操作系统虚拟内存和分页思想启发的注意力算法。具体来说，PagedAttention 将每个序列的 KV cache 划分为块，每个块包含固定数量 token 的键和值。PagedAtention的KV cache显存管理主要分为逻辑内存区和物理内存区：
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_4573d6bb3d83.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_4573d6bb3d83.jpg)
 
 2. 内存共享
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_5ec7a27ab85b.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_5ec7a27ab85b.jpg)
 
 由于是通过逻辑内存的key对物理内存区进行查询动作，因此多个不同的序列可以进行内存共享：
 

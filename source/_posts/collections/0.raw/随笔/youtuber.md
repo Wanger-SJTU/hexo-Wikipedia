@@ -47,7 +47,7 @@ categories:
 ❯ Ruby on Rails ➟ GorailsTV  
 ❯ HTML/CSS ➟ Kevin Powell
 
-                             -- **DSA** --
+                             -- <strong>DSA</strong> --
 
 ❯ mycodeschool  
 ❯ Abdul Bari  
@@ -55,7 +55,7 @@ categories:
 ❯ Jenny's Lectures CS IT  
 ❯ CodeWithHarry
 
-                           -- **Full Stack** --
+                           -- <strong>Full Stack</strong> --
 
 ❯ Traversy Media  
 ❯ NetNinja  
@@ -66,7 +66,7 @@ categories:
    ➟ developedbyed  
    ➟ DesignCourse
 
-                        -- **DevOps** --
+                        -- <strong>DevOps</strong> --
 
 ❯ GIT ➟ The Modern Coder  
 ❯ Linux ➟ Learn Linux TV  
@@ -78,7 +78,7 @@ categories:
 ❯ Selenium ➟ edureka!  
 ❯ Playwright ➟ Jaydeep Karale
 
-                   -- **Cloud Computing** --
+                   -- <strong>Cloud Computing</strong> --
 
 ❯ AWS ➟ amazonwebservices  
 ❯ Azure ➟ Adam Marczak  
@@ -89,7 +89,7 @@ categories:
 ❯ Chef ➟ simplilearn  
 ❯ Ansible ➟ Learn Linux TV
 
-                      -- **Data Science** --
+                      -- <strong>Data Science</strong> --
 
 ❯ Mathematics  
   ➟ 3Blue1Brown  
@@ -105,13 +105,13 @@ categories:
 ❯ Tableau ➟ Tableau Tim  
 ❯ PowerBI ➟ Guy in a Cube
 
-                           -- **Free Education** --
+                           -- <strong>Free Education</strong> --
 
   ➟ freecodecamp  
   ➟ Simplilearn  
   ➟ edureka!
 
-                             -- **Most Valuable** --
+                             -- <strong>Most Valuable</strong> --
 
    ➟ TechWithTim  
    ➟ programmingwithmosh  

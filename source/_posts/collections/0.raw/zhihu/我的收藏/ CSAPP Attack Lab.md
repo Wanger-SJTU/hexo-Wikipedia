@@ -26,7 +26,7 @@ source_url: https://zhuanlan.zhihu.com/p/454224518
 
 ### 准备
 
-和其他Lab一样，先要上官网下载资源。在开始之前，先阅读`handout`和CSAPP书3.10节有关内容，弄清楚**代码注入**`code injection`和**面向返回**`return oriented programming`两种攻击方式。
+和其他Lab一样，先要上官网下载资源。在开始之前，先阅读`handout`和CSAPP书3.10节有关内容，弄清楚<strong>代码注入</strong>`code injection`和<strong>面向返回</strong>`return oriented programming`两种攻击方式。
 
 除此之外，还需要安装好`objdump`反汇编工具。
 
@@ -232,7 +232,7 @@ PASS: Would have posted the following:
 
 ### 面向返回编程ROP
 
-现代操作系统和编译器都采用了栈随机机制，不能很容易获得栈的地址。这次执行获得了栈的地址，下一次栈就不在这个位置了。即便能确定栈的地址，这些地址上的数据也被标为**不可执行**，不能直接注入再使用。
+现代操作系统和编译器都采用了栈随机机制，不能很容易获得栈的地址。这次执行获得了栈的地址，下一次栈就不在这个位置了。即便能确定栈的地址，这些地址上的数据也被标为<strong>不可执行</strong>，不能直接注入再使用。
 
 `Phase 4`和`5`带我们看另一种机制，也就是`Return Oriented Programming`。
 

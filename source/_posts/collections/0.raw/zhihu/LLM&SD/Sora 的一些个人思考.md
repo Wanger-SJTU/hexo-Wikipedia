@@ -45,13 +45,13 @@ Sora是一个基于语言模型范式的视频模型
 
 ### 这就是*语言模型范式***
 
-语言模型范式就是一种**根据上一个“token”， 推测下一个“token”，然后不断往下去“扯犊子”**并最终形成一个篇章的行为模式。
+语言模型范式就是一种<strong>根据上一个“token”， 推测下一个“token”，然后不断往下去“扯犊子”</strong>并最终形成一个篇章的行为模式。
 
 ### 回到视频
 
-回到我们前面说的 Sora是一个**基于语言模型范式的视频模型 **这件事。
+回到我们前面说的 Sora是一个<strong>基于语言模型范式的视频模型</strong>这件事。
 
-那么这里Sora做了**第一件什么核心**的事情，真正能把视频生成任务，装进“语言模型”这碟醋里呢？
+那么这里Sora做了<strong>第一件什么核心</strong>的事情，真正能把视频生成任务，装进“语言模型”这碟醋里呢？
 
 已知当前像素：推测下一个像素？
 
@@ -63,23 +63,23 @@ Sora是一个基于语言模型范式的视频模型
 
 这就是在技术文档中提到的概念：SpaceTime latent patch（时轮碎块, 我这个翻译是不是有点信达雅）
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_c8a542a4fe1e.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_c8a542a4fe1e.jpg)
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_f2a5a9f9fcdd.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_f2a5a9f9fcdd.jpg)
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_aff331dda19b.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_aff331dda19b.jpg)
 
 ### 那么, 套用 语言模型 这个盒子:
 
-这视频生成中最重要的**一个拼图**就是: **已知当前“时轮碎块” ：推测下一个“时轮碎块”** 
+这视频生成中最重要的<strong>一个拼图</strong>就是: <strong>已知当前“时轮碎块” ：推测下一个“时轮碎块”</strong> 
 
-**token = spaceTime latent patch** “时轮碎块” 
+<strong>token = spaceTime latent patch</strong> “时轮碎块” 
 
 更重要的是, 这个推测的结果还是隐空间, “latent Space”,   最终的当前帧画面, 是通过decoder对于推测出的latent Space解码来得到的.
 
 而这种 “时轮碎块” 最大的好处, 是可以兼容所有的数据素材:  一个静态图像不过是时间=0的一个时轮碎块, 不同的像素尺寸, 不同的时间长短, 都是不同大小的 “时轮碎块” 而已. 
 
-于是乎这就构成了整个生成任务中第二个核心: 通过 时轮碎块 和大语言模型的 “扯淡” 能力构成在 **时间轴上连续的** 隐空间 (latent space), 然后通过单帧画面的 Decoder 来构造出** 空间上连续** 的画面. 
+于是乎这就构成了整个生成任务中第二个核心: 通过 时轮碎块 和大语言模型的 “扯淡” 能力构成在 <strong>时间轴上连续的</strong> 隐空间 (latent space), 然后通过单帧画面的 Decoder 来构造出<strong>空间上连续</strong> 的画面. 
 
 ### Diffusion model起到了什么重要作用
 
@@ -103,4 +103,4 @@ Sora是一个基于语言模型范式的视频模型
 
 比如下面这个画面:
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_a4ed8d5b4d44.jpg)00:07
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_a4ed8d5b4d44.jpg)00:07

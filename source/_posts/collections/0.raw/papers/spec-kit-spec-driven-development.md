@@ -27,11 +27,11 @@ source_url: https://github.com/github/spec-kit
 
 ## 核心概念：规格驱动开发（Spec-Driven Development）
 
-**Spec Kit** 是 GitHub 开源的工具包，核心理念一句话：**规格说明成为可执行的东西，代码从"主导"变成"服从"**。
+<strong>Spec Kit</strong> 是 GitHub 开源的工具包，核心理念一句话：<strong>规格说明成为可执行的东西，代码从"主导"变成"服从"</strong>。
 
 几十年来，软件工程的权力结构是这样的：代码为王，规格说明只是" scaffolding"——搭完就扔。PRD 是为了引导开发，设计文档是为了告知实现，架构图是为了可视化结构。但这些都是代码的从属品。代码即真理，其他不过是美好的愿望。
 
-**规格驱动开发（SDD）把这个权力结构彻底反转**：规格说明不再服务于代码，代码服务于规格说明。
+<strong>规格驱动开发（SDD）把这个权力结构彻底反转</strong>：规格说明不再服务于代码，代码服务于规格说明。
 
 PRD 不是实现的指南，而是生成实现的源头。技术方案不是告知编码的文档，而是精确生成代码的定义。这不是对软件开发方式的渐进改进，而是对"什么驱动开发"的根本反思。
 
@@ -41,11 +41,11 @@ PRD 不是实现的指南，而是生成实现的源头。技术方案不是告�
 
 三个趋势叠加：
 
-1. **AI 能力跨越了临界点**：自然语言规格说明现在可以可靠地生成可工作代码。这不是替代开发者，而是通过自动化"规格→实现"的机械翻译来放大他们的效能。
+1. <strong>AI 能力跨越了临界点</strong>：自然语言规格说明现在可以可靠地生成可工作代码。这不是替代开发者，而是通过自动化"规格→实现"的机械翻译来放大他们的效能。
 
-2. **软件复杂度指数增长**：现代系统集成数十个服务、框架和依赖。传统手动流程根本无法保持所有部分与原始意图对齐。SDD 通过规格驱动的生成提供了系统性对齐。
+2. <strong>软件复杂度指数增长</strong>：现代系统集成数十个服务、框架和依赖。传统手动流程根本无法保持所有部分与原始意图对齐。SDD 通过规格驱动的生成提供了系统性对齐。
 
-3. **变化速度前所未有**：需求变化比以往任何时候都快。Pivot 不再是例外——而是常态。SDD 把需求变更从障碍变成正常的工作流程。改 PRD 中的核心需求，受影响的技术决策自动标记。
+3. <strong>变化速度前所未有</strong>：需求变化比以往任何时候都快。Pivot 不再是例外——而是常态。SDD 把需求变更从障碍变成正常的工作流程。改 PRD 中的核心需求，受影响的技术决策自动标记。
 
 ## SDD 工作流：6 步从想法到代码
 
@@ -74,7 +74,7 @@ specify init . --integration copilot
 
 ### 第 3 步：创建规格说明
 
-用 `/speckit.specify` 命令描述你要构建的内容。**聚焦"是什么"和"为什么"，而非技术栈**：
+用 `/speckit.specify` 命令描述你要构建的内容。<strong>聚焦"是什么"和"为什么"，而非技术栈</strong>：
 
 ```bash
 /speckit.specify Build an application that can help me organize my photos in separate photo albums. Albums are grouped by date and can be re-organized by dragging and dropping on the main page. Albums are never in other nested albums. Within each album, photos are previewed in a tile-like interface.
@@ -130,7 +130,7 @@ specify init . --integration copilot
 | 手动搭建项目结构（30 分钟）| 自动创建分支和目录结构 |
 | 编写技术规格（3-4 小时）| 自动生成技术方案 + API 契约 |
 | 创建测试计划（2 小时）| 规格说明中已包含测试场景 |
-| **总计：~12 小时文档工作** | **总计：~15 分钟** |
+| <strong>总计：~12 小时文档工作</strong> | <strong>总计：~15 分钟</strong> |
 
 15 分钟内你就有了：
 - 包含用户故事和验收标准的完整功能规格说明
@@ -141,7 +141,7 @@ specify init . --integration copilot
 
 ## 模板的约束力：如何强迫 LLM 输出高质量规格
 
-Spec Kit 的真正力量不只是自动化，而是**模板如何引导 LLM 行为**。
+Spec Kit 的真正力量不只是自动化，而是<strong>模板如何引导 LLM 行为</strong>。
 
 ### 1. 防止过早的实现细节
 
@@ -210,38 +210,38 @@ Spec Kit 的真正力量不只是自动化，而是**模板如何引导 LLM 行�
 
 | 扩展 | 用途 | 类型 |
 |---|---|---|
-| **MAQA** | 多 Agent + QA 协调工作流，并行基于 worktree 的实现 | 流程 |
-| **Jira Integration** | 从 spec-kit 规格创建 Jira Epic、Story 和 Issue | 集成 |
-| **Azure DevOps Integration** | 同步用户故事和任务到 Azure DevOps 工作项 | 集成 |
-| **CI Guard** | CI/CD 中的规格合规门控，验证规格存在、检查漂移、阻止合并缺口 | 流程 |
-| **Fix Findings** | 自动分析-修复-再分析循环，直到规格问题清零 | 代码 |
-| **Checkpoint Extension** | 在实现过程中间提交变更，避免最终只有一个巨大提交 | 代码 |
-| **Fleet Orchestrator** | 在所有 SpecKit 阶段通过人工门控编排完整功能生命周期 | 流程 |
-| **Memory MD** | 仓库原生的 Markdown 记忆，捕获持久决策、bug 和项目上下文 | 文档 |
-| **Cost Tracker** | 跨 SDD 工作流追踪真实 LLM 美元成本，按功能预算、按集成对比 | 可视化 |
-| **Architect Impact Previewer** | 在实现前预测架构影响、复杂度和风险 | 可视化 |
+| <strong>MAQA</strong> | 多 Agent + QA 协调工作流，并行基于 worktree 的实现 | 流程 |
+| <strong>Jira Integration</strong> | 从 spec-kit 规格创建 Jira Epic、Story 和 Issue | 集成 |
+| <strong>Azure DevOps Integration</strong> | 同步用户故事和任务到 Azure DevOps 工作项 | 集成 |
+| <strong>CI Guard</strong> | CI/CD 中的规格合规门控，验证规格存在、检查漂移、阻止合并缺口 | 流程 |
+| <strong>Fix Findings</strong> | 自动分析-修复-再分析循环，直到规格问题清零 | 代码 |
+| <strong>Checkpoint Extension</strong> | 在实现过程中间提交变更，避免最终只有一个巨大提交 | 代码 |
+| <strong>Fleet Orchestrator</strong> | 在所有 SpecKit 阶段通过人工门控编排完整功能生命周期 | 流程 |
+| <strong>Memory MD</strong> | 仓库原生的 Markdown 记忆，捕获持久决策、bug 和项目上下文 | 文档 |
+| <strong>Cost Tracker</strong> | 跨 SDD 工作流追踪真实 LLM 美元成本，按功能预算、按集成对比 | 可视化 |
+| <strong>Architect Impact Previewer</strong> | 在实现前预测架构影响、复杂度和风险 | 可视化 |
 
 ## 支持的 AI Coding Agent 集成
 
-- **GitHub Copilot**（自然支持）
-- **Claude Code**（通过 `/speckit.*` 斜杠命令）
-- **OpenAI Codex CLI**（通过 `$speckit-*` 命令）
+- <strong>GitHub Copilot</strong>（自然支持）
+- <strong>Claude Code</strong>（通过 `/speckit.*` 斜杠命令）
+- <strong>OpenAI Codex CLI</strong>（通过 `$speckit-*` 命令）
 - 其他兼容 MCP 的 Agent
 
 ## 核心理念总结
 
-> **规格即通用语言**：规格说明成为主要产物，代码成为其在特定语言和框架中的表达。维护软件即演进规格。
+> <strong>规格即通用语言</strong>：规格说明成为主要产物，代码成为其在特定语言和框架中的表达。维护软件即演进规格。
 
-> **可执行规格**：规格说明必须足够精确、完整和无歧义，以生成可工作的系统。这消除了意图和实现之间的鸿沟。
+> <strong>可执行规格</strong>：规格说明必须足够精确、完整和无歧义，以生成可工作的系统。这消除了意图和实现之间的鸿沟。
 
-> **持续精炼**：一致性验证持续进行，而非一次性门控。AI 持续分析规格中的歧义、矛盾和缺口。
+> <strong>持续精炼</strong>：一致性验证持续进行，而非一次性门控。AI 持续分析规格中的歧义、矛盾和缺口。
 
-> **研究驱动的上下文**：研究 Agent 在规格过程中收集关键上下文——调查技术选项、性能影响和组织约束。
+> <strong>研究驱动的上下文</strong>：研究 Agent 在规格过程中收集关键上下文——调查技术选项、性能影响和组织约束。
 
-> **双向反馈**：生产现实告知规格演进。指标、故障和运维学习成为规格精炼的输入。
+> <strong>双向反馈</strong>：生产现实告知规格演进。指标、故障和运维学习成为规格精炼的输入。
 
 ---
 
-一句话总结：**Spec Kit 让"先想清楚再写代码"从情怀变成工程实践**。当你用自然语言描述清楚需求之后，AI 会帮你生成规格、方案、任务清单，最后直接生成代码。你做的更多是审查和决策，而非打字。
+一句话总结：<strong>Spec Kit 让"先想清楚再写代码"从情怀变成工程实践</strong>。当你用自然语言描述清楚需求之后，AI 会帮你生成规格、方案、任务清单，最后直接生成代码。你做的更多是审查和决策，而非打字。
 
 链接：[github/spec-kit](https://github.com/github/spec-kit) | [文档](https://github.github.io/spec-kit/) | [视频介绍](https://www.youtube.com/watch?v=a9eR1xsfvHg)

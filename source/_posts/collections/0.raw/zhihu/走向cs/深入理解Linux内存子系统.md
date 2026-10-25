@@ -15,13 +15,13 @@ source_url: https://zhuanlan.zhihu.com/p/525373501
 ---
 
 
-### **一、走进 linux 内存**
+### <strong>一、走进 linux 内存</strong>
 
 **
 
 1、内存是什么？
 
-![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_113019df1f87.jpg)
+![](/images/collections/0.raw/zhihu/%E8%B5%B0%E5%90%91cs/asset/img_113019df1f87.jpg)
 
 1)内存又称主存，是 CPU 能直接寻址的存储空间，由半导体器件制成；2)内存的特点是存取速率快，断电一般不保存数据，非持久化设备；
 
@@ -51,15 +51,15 @@ source_url: https://zhuanlan.zhihu.com/p/525373501
 
 1)暂时存放 cpu 的运算数据2)硬盘等外部存储器交换的数据3)保障 cpu 计算的稳定性和高性能
 
-![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_688349c6f980.jpg)
+![](/images/collections/0.raw/zhihu/%E8%B5%B0%E5%90%91cs/asset/img_688349c6f980.jpg)
 
-### **二、 linux 内存地址空间**
+### <strong>二、 linux 内存地址空间</strong>
 
 **
 
 1、linux 内存地址空间 Linux 内存管理全貌
 
-![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_e00f0be79d1c.jpg)
+![](/images/collections/0.raw/zhihu/%E8%B5%B0%E5%90%91cs/asset/img_e00f0be79d1c.jpg)
 
 2、内存地址——用户态&内核态
 
@@ -68,14 +68,14 @@ source_url: https://zhuanlan.zhihu.com/p/525373501
 - 用户态切换到内核态的 3 种方式：系统调用、异常、外设中断
 - 区别：每个进程都有完全属于自己的，独立的，不被干扰的内存空间；用户态的程序就不能随意操作内核地址空间，具有一定的安全保护作用；内核态线程共享内核地址空间；
 
-![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_d26e912f1760.jpg)
+![](/images/collections/0.raw/zhihu/%E8%B5%B0%E5%90%91cs/asset/img_d26e912f1760.jpg)
 
 3、内存地址——MMU 地址转换
 
 - MMU 是一种硬件电路，它包含两个部件，一个是分段部件，一个是分页部件
 - 分段机制把一个逻辑地址转换为线性地址
 - 分页机制把一个线性地址转换为物理地址
-![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_c7c8a33a852d.jpg)
+![](/images/collections/0.raw/zhihu/%E8%B5%B0%E5%90%91cs/asset/img_c7c8a33a852d.jpg)
 
 4、内存地址——分段机制
 
@@ -90,28 +90,28 @@ source_url: https://zhuanlan.zhihu.com/p/525373501
 - 逻辑地址的段寄存器中的值提供段描述符，然后从段描述符中得到段基址和段界限，然后加上逻辑地址的偏移量，就得到了线性地址
 - 
 
-![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_1cc7bfe9cd1c.jpg)
+![](/images/collections/0.raw/zhihu/%E8%B5%B0%E5%90%91cs/asset/img_1cc7bfe9cd1c.jpg)
 
 5、内存地址——分页机制（32 位）
 
 - 分页机制是在分段机制之后进行的，它进一步将线性地址转换为物理地址
 - 10 位页目录，10 位页表项， 12 位页偏移地址
 - 单页的大小为 4KB
-![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_7af5aea62722.jpg)
+![](/images/collections/0.raw/zhihu/%E8%B5%B0%E5%90%91cs/asset/img_7af5aea62722.jpg)
 
 【文章福利**】小编推荐自己的Linux内核技术交流群:【891587639】整理了一些个人觉得比较好的学习书籍、视频资料共享在群文件里面，有需要的可以自行添加哦！！！前100名进群领取，额外赠送大厂面试题。
 
-![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_a041a705367f.jpg)
+![](/images/collections/0.raw/zhihu/%E8%B5%B0%E5%90%91cs/asset/img_a041a705367f.jpg)
 
-![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_e1fee1d3c356.jpg)
+![](/images/collections/0.raw/zhihu/%E8%B5%B0%E5%90%91cs/asset/img_e1fee1d3c356.jpg)
 
-**学习直通车：**
+<strong>学习直通车：</strong>
 
-**内核资料直通车：**
+<strong>内核资料直通车：</strong>
 
 6、用户态地址空间
 
-![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_5f555215e980.jpg)
+![](/images/collections/0.raw/zhihu/%E8%B5%B0%E5%90%91cs/asset/img_5f555215e980.jpg)
 
 - text：代码段可执行代码、字符串字面值、只读变量
 - data：数据段，映射程序中已经初始化的全局变量
@@ -121,7 +121,7 @@ source_url: https://zhuanlan.zhihu.com/p/525373501
 - stack：用户进程栈**
 7、内核态地址空间
 
-![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_e6fefb5ee31f.jpg)
+![](/images/collections/0.raw/zhihu/%E8%B5%B0%E5%90%91cs/asset/img_e6fefb5ee31f.jpg)
 
 - 直接映射区：线性空间中从 3G 开始最大 896M 的区间，为直接内存映射区
 - 动态内存映射区：该区域由内核函数 vmalloc 来分配
@@ -132,7 +132,7 @@ source_url: https://zhuanlan.zhihu.com/p/525373501
 
 - 用户进程通常情况只能访问用户空间的虚拟地址，不能访问内核空间虚拟地址
 - 内核空间是由内核负责映射，不会跟着进程变化；内核空间地址有自己对应的页表，用户进程各自有不同额页表
-![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_f320e660a61b.jpg)
+![](/images/collections/0.raw/zhihu/%E8%B5%B0%E5%90%91cs/asset/img_f320e660a61b.jpg)
 
 ### 三、 Linux 内存分配算法**
 
@@ -140,7 +140,7 @@ source_url: https://zhuanlan.zhihu.com/p/525373501
 
 内存管理算法——对讨厌自己管理内存的人来说是天赐的礼物
 
-![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_a2dc344dcbbc.jpg)
+![](/images/collections/0.raw/zhihu/%E8%B5%B0%E5%90%91cs/asset/img_a2dc344dcbbc.jpg)
 
 1、内存碎片
 
@@ -171,7 +171,7 @@ source_url: https://zhuanlan.zhihu.com/p/525373501
 
 - 外部碎片指的是还没有被分配出去（不属于任何进程），但由于太小了无法分配给申请内存空间的新进程的内存空闲区域3)    组织结构
 - 把所有的空闲页分组为 11 个块链表，每个块链表分别包含大小为 1，2，4，8，16，32，64，128，256，512 和 1024 个连续页框的页块。最大可以申请 1024 个连续页，对应 4MB 大小的连续内存
-![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_43fa33e4af29.jpg)
+![](/images/collections/0.raw/zhihu/%E8%B5%B0%E5%90%91cs/asset/img_43fa33e4af29.jpg)
 
 3、伙伴系统算法——申请和回收
 
@@ -186,10 +186,10 @@ source_url: https://zhuanlan.zhihu.com/p/525373501
 
 - 释放 2^i 个页块存储空间，查找 2^i 个页块对应的块链表，是否有与其物理地址是连续的页块，如果没有，则无需合并
 
-![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_f86b61c2923c.jpg)
+![](/images/collections/0.raw/zhihu/%E8%B5%B0%E5%90%91cs/asset/img_f86b61c2923c.jpg)
 
 - 如果有，则合并成 2^（i 1）的页块，以此类推，继续查找下一级块链接，直到不能合并为止
-![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_53180e157a10.jpg)
+![](/images/collections/0.raw/zhihu/%E8%B5%B0%E5%90%91cs/asset/img_53180e157a10.jpg)
 
 3)    条件
 
@@ -244,7 +244,7 @@ source_url: https://zhuanlan.zhihu.com/p/525373501
 - 由于对象是从 slab 中分配和释放的，因此单个 slab 可以在 slab 列表之间进行移动
 - slabs_empty 列表中的 slab 是进行回收（reaping）的主要备选对象
 - slab 还支持通用对象的初始化，从而避免了为同一目而对一个对象重复进行初始化
-![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_f053c4c708f3.jpg)
+![](/images/collections/0.raw/zhihu/%E8%B5%B0%E5%90%91cs/asset/img_f053c4c708f3.jpg)
 
 8、slab 高速缓存
 
@@ -274,13 +274,13 @@ source_url: https://zhuanlan.zhihu.com/p/525373501
 - mempool_alloc 分配函数获得该对象
 - mempool_free 释放一个对象
 - mempool_destroy 销毁内存池
-![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_8b163ba8d061.jpg)
+![](/images/collections/0.raw/zhihu/%E8%B5%B0%E5%90%91cs/asset/img_8b163ba8d061.jpg)
 
 10、用户态内存池
 
 1)    C++ 实例
 
-![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_d6be6d41733a.jpg)
+![](/images/collections/0.raw/zhihu/%E8%B5%B0%E5%90%91cs/asset/img_d6be6d41733a.jpg)
 
 11、DMA 内存
 
@@ -299,7 +299,7 @@ source_url: https://zhuanlan.zhihu.com/p/525373501
 - DACK：DMA 响应信号。是 DMA 控制器向提出 DMA 请求的外设表示已收到请求和正进行处理的信号
 - HRQ：DMA 控制器向 CPU 发出的信号，要求接管总线的请求信号。
 - HLDA：CPU 向 DMA 控制器发出的信号，允许接管总线的应答信号：
-![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_55f084d026f3.jpg)
+![](/images/collections/0.raw/zhihu/%E8%B5%B0%E5%90%91cs/asset/img_55f084d026f3.jpg)
 
 ### 四、 内存使用场景**
 
@@ -338,24 +338,24 @@ a)     如果当前连续内存块足够 realloc 的话，只是将 p 所指向�
 4、malloc 申请内存
 
 - 调用malloc函数时，它沿 free_chuck_list 连接表寻找一个大到足以满足用户请求所需要的内存块
-![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_987c82b6cdb7.jpg)
+![](/images/collections/0.raw/zhihu/%E8%B5%B0%E5%90%91cs/asset/img_987c82b6cdb7.jpg)
 
 - free_chuck_list 连接表的主要工作是维护一个空闲的堆空间缓冲区链表
 - 如果空间缓冲区链表没有找到对应的节点，需要通过系统调用 sys_brk 延伸进程的栈空间
-![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_53426499538e.jpg)
+![](/images/collections/0.raw/zhihu/%E8%B5%B0%E5%90%91cs/asset/img_53426499538e.jpg)
 
 5、缺页异常
 
 - 通过 get_free_pages 申请一个或多个物理页面，换算 addr 在进程 pdg 映射中所在的 pte 地址，将 addr 对应的 pte 设置为物理页面的首地址
 - 系统调用：Brk—申请内存小于等于 128kb，do_map—申请内存大于 128kb
-![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_cf22a3e9eee0.jpg)
+![](/images/collections/0.raw/zhihu/%E8%B5%B0%E5%90%91cs/asset/img_cf22a3e9eee0.jpg)
 
 6、用户进程访问内存分析
 
 - 用户态进程独占虚拟地址空间，两个进程的虚拟地址可相同
 - 在访问用户态虚拟地址空间时，如果没有映射物理地址，通过系统调用发出缺页异常
 - 缺页异常陷入内核，分配物理地址空间，与用户态虚拟地址建立映射
-![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_e0e1e39514b8.jpg)
+![](/images/collections/0.raw/zhihu/%E8%B5%B0%E5%90%91cs/asset/img_e0e1e39514b8.jpg)
 
 7、共享内存
 
@@ -364,7 +364,7 @@ a)     如果当前连续内存块足够 realloc 的话，只是将 p 所指向�
 - 它允许多个不相关的进程去访问同一部分逻辑内存
 - 两个运行中的进程之间传输数据，共享内存将是一种效率极高的解决方案
 - 两个运行中的进程共享数据，是进程间通信的高效方法，可有效减少数据拷贝的次数
-![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_1e20064f0e90.jpg)
+![](/images/collections/0.raw/zhihu/%E8%B5%B0%E5%90%91cs/asset/img_1e20064f0e90.jpg)
 
 2)  shm 接口
 
@@ -380,7 +380,7 @@ a)     如果当前连续内存块足够 realloc 的话，只是将 p 所指向�
 
 - 在类的构造函数和析构函数中没有匹配地调用 new 和 delete 函数
 
-![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_2c1b1d070c71.jpg)
+![](/images/collections/0.raw/zhihu/%E8%B5%B0%E5%90%91cs/asset/img_2c1b1d070c71.jpg)
 
 - 没有正确地清除嵌套的对象指针
 - 没有将基类的析构函数定义为虚函数
@@ -413,30 +413,30 @@ a)     如果当前连续内存块足够 realloc 的话，只是将 p 所指向�
 
 错误示例：删除当前迭代器，迭代器会失效 
 
-![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_3e4008bf4f6d.jpg)
+![](/images/collections/0.raw/zhihu/%E8%B5%B0%E5%90%91cs/asset/img_3e4008bf4f6d.jpg)
 
 正确示例：迭代器 erase 时，需保存下一个迭代器
 
-![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_3417230d1125.jpg)
+![](/images/collections/0.raw/zhihu/%E8%B5%B0%E5%90%91cs/asset/img_3417230d1125.jpg)
 
 5、C++ 11 智能指针
 
 - auto_ptr 替换为 unique_ptr
 
-![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_0376832a1fe3.jpg)
+![](/images/collections/0.raw/zhihu/%E8%B5%B0%E5%90%91cs/asset/img_0376832a1fe3.jpg)
 
 - 使用make_shared 初始化一个 shared_ptr
-![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_c459d8507ce0.jpg)
+![](/images/collections/0.raw/zhihu/%E8%B5%B0%E5%90%91cs/asset/img_c459d8507ce0.jpg)
 
 - weak_ptr 智能指针助手
 
 （1）原理分析：
 
-![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_cf4797a04323.jpg)
+![](/images/collections/0.raw/zhihu/%E8%B5%B0%E5%90%91cs/asset/img_cf4797a04323.jpg)
 
 （2）数据结构：
 
-![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_6c0fda441421.jpg)
+![](/images/collections/0.raw/zhihu/%E8%B5%B0%E5%90%91cs/asset/img_6c0fda441421.jpg)
 
 （3）使用方法：
 
@@ -502,18 +502,18 @@ DirectMap2M:     5967872 kB
 DirectMap1G:     3145728 kB`
 
 - 查询内存总使用率：free
-![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_27775cda29c1.png)
+![](/images/collections/0.raw/zhihu/%E8%B5%B0%E5%90%91cs/asset/img_27775cda29c1.png)
 
 - 查询进程 cpu 和内存使用占比：top
 
-![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_8efe7618abe3.jpg)
+![](/images/collections/0.raw/zhihu/%E8%B5%B0%E5%90%91cs/asset/img_8efe7618abe3.jpg)
 
 - 虚拟内存统计：vmstat
-![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_2b8a1319346b.png)
+![](/images/collections/0.raw/zhihu/%E8%B5%B0%E5%90%91cs/asset/img_2b8a1319346b.png)
 
 - 进程消耗内存占比和排序：ps aux –sort -rss
 
-![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_b74d7bbf1725.jpg)
+![](/images/collections/0.raw/zhihu/%E8%B5%B0%E5%90%91cs/asset/img_b74d7bbf1725.jpg)
 
 - 查看伙伴系统信息
     当前系统的buddy状态可以通过 `cat /proc/buddyinfo` 命令查看
@@ -553,4 +553,4 @@ echo 2 > /proc/sys/vm/drop_caches
 echo 3 >/proc/sys/vm/drop_cache
 原文：https://cloud.tencent.com/developer/article/10056`
 
-![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_0fec43b81fe3.jpg)
+![](/images/collections/0.raw/zhihu/%E8%B5%B0%E5%90%91cs/asset/img_0fec43b81fe3.jpg)

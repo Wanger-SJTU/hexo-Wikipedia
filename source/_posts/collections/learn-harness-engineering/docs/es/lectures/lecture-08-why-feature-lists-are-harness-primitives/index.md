@@ -22,7 +22,7 @@ Pides a un agente que construya un sitio de e-commerce. Cuando termina, te dice 
 
 Para muchas personas, las listas de funciones son solo una nota: escribes cosas para no olvidarlas y luego las dejas de lado. Pero en el mundo del harness, una lista de funciones no es una nota para humanos: es la columna vertebral de todo el harness. El scheduler depende de ella para elegir tareas, el verifier para juzgar la finalización y el handoff reporter para generar resúmenes. Si rompes la columna, todo el cuerpo queda paralizado.
 
-Anthropic y OpenAI enfatizan lo mismo: **los artefactos deben externalizarse.** El estado de las funciones debe vivir en un archivo machine-readable dentro del repo, no en texto de conversación sin estructura.
+Anthropic y OpenAI enfatizan lo mismo: <strong>los artefactos deben externalizarse.</strong> El estado de las funciones debe vivir en un archivo machine-readable dentro del repo, no en texto de conversación sin estructura.
 
 ## Los agentes no saben qué significa "done"
 
@@ -65,12 +65,12 @@ flowchart LR
 
 ## Conceptos clave
 
-- **Las listas de funciones son primitives del harness**: No son "herramientas opcionales de planificación", sino estructuras de datos fundacionales de las que dependen los demás componentes del harness. Como las estructuras de tablas en una base de datos: no puedes decir "omitamos las primary keys".
-- **Estructura triple**: Cada función es una triple `(descripción de comportamiento, comando de verificación, estado actual)`. Si falta cualquier elemento, el item está incompleto.
-- **Modelo de máquina de estados**: Cada función tiene cuatro estados: `not_started`, `active`, `blocked`, `passing`. Las transiciones de estado las controla el harness, no las cambia libremente el agente.
-- **Pass-state gating**: La única forma de pasar de `active` a `passing` es que el comando de verificación se ejecute con éxito. Esto es irreversible: una vez `passing`, no vuelve atrás. Como aprobar un examen: aprobaste, no puedes cambiar la nota retroactivamente.
-- **Single source of truth**: Toda la información sobre "qué hay que hacer" debe derivarse de una sola lista de funciones. Sin contradicciones entre la lista y el historial de conversación.
-- **Back-pressure**: El número de funciones que aún no han pasado es la presión que el harness ejerce sobre el agente. Presión cero = proyecto completo.
+- <strong>Las listas de funciones son primitives del harness</strong>: No son "herramientas opcionales de planificación", sino estructuras de datos fundacionales de las que dependen los demás componentes del harness. Como las estructuras de tablas en una base de datos: no puedes decir "omitamos las primary keys".
+- <strong>Estructura triple</strong>: Cada función es una triple `(descripción de comportamiento, comando de verificación, estado actual)`. Si falta cualquier elemento, el item está incompleto.
+- <strong>Modelo de máquina de estados</strong>: Cada función tiene cuatro estados: `not_started`, `active`, `blocked`, `passing`. Las transiciones de estado las controla el harness, no las cambia libremente el agente.
+- <strong>Pass-state gating</strong>: La única forma de pasar de `active` a `passing` es que el comando de verificación se ejecute con éxito. Esto es irreversible: una vez `passing`, no vuelve atrás. Como aprobar un examen: aprobaste, no puedes cambiar la nota retroactivamente.
+- <strong>Single source of truth</strong>: Toda la información sobre "qué hay que hacer" debe derivarse de una sola lista de funciones. Sin contradicciones entre la lista y el historial de conversación.
+- <strong>Back-pressure</strong>: El número de funciones que aún no han pasado es la presión que el harness ejerce sobre el agente. Presión cero = proyecto completo.
 
 ## Por qué las listas de funciones deben ser "primitives"
 
@@ -78,10 +78,10 @@ Los documentos son para que los lean humanos; los primitives son para que los ej
 
 Piensa en restricciones de triggers de base de datos frente a checks en la capa de aplicación: las primeras las impone el motor de base de datos, ningún SQL puede saltarlas; las segundas dependen de la corrección del código de aplicación y pueden omitirse por accidente. Como primitive del harness, la lista de funciones sirve a cuatro componentes:
 
-1. **Scheduler**: Lee estados y elige la siguiente función `not_started`. Como un sistema de planificación de producción en fábrica.
-2. **Verifier**: Ejecuta comandos de verificación y decide si permite transiciones de estado. Como inspección de calidad.
-3. **Handoff reporter**: Genera automáticamente resúmenes de traspaso de sesión desde la lista. Como un reporte automático de cambio de turno.
-4. **Progress tracker**: Cuenta la distribución de estados y ofrece métricas de salud del proyecto. Como un dashboard.
+1. <strong>Scheduler</strong>: Lee estados y elige la siguiente función `not_started`. Como un sistema de planificación de producción en fábrica.
+2. <strong>Verifier</strong>: Ejecuta comandos de verificación y decide si permite transiciones de estado. Como inspección de calidad.
+3. <strong>Handoff reporter</strong>: Genera automáticamente resúmenes de traspaso de sesión desde la lista. Como un reporte automático de cambio de turno.
+4. <strong>Progress tracker</strong>: Cuenta la distribución de estados y ofrece métricas de salud del proyecto. Como un dashboard.
 
 ## Cómo hacerlo bien
 
@@ -121,19 +121,19 @@ Cada función debe tener alcance "completable en una sesión". Si es demasiado a
 
 Una plataforma e-commerce con 10 funciones. Se compararon dos enfoques de seguimiento:
 
-**Modo memo**: El agente usa notas sin estructura. Después de 3 sesiones, las notas quedan como "hice user auth y product list, shopping cart casi listo pero con bugs, payments sin empezar". La nueva sesión necesita 20 minutos para inferir estado y acaba reimplementando funciones ya completadas. Como una lista de compras que dice "leche, pan y esa cosa": en la tienda sigues sin saber qué comprar.
+<strong>Modo memo</strong>: El agente usa notas sin estructura. Después de 3 sesiones, las notas quedan como "hice user auth y product list, shopping cart casi listo pero con bugs, payments sin empezar". La nueva sesión necesita 20 minutos para inferir estado y acaba reimplementando funciones ya completadas. Como una lista de compras que dice "leche, pan y esa cosa": en la tienda sigues sin saber qué comprar.
 
-**Modo columna vertebral**: Cada función tiene estado claro y comando de verificación. La nueva sesión lee la lista y en 3 minutos sabe: F01-F05 están `passing`, F06 está `active`, F07-F10 están `not_started`. Continúa directamente desde F06, sin retrabajo.
+<strong>Modo columna vertebral</strong>: Cada función tiene estado claro y comando de verificación. La nueva sesión lee la lista y en 3 minutos sabe: F01-F05 están `passing`, F06 está `active`, F07-F10 están `not_started`. Continúa directamente desde F06, sin retrabajo.
 
 Resultado cuantificado: los proyectos que usan listas de funciones estructuradas muestran una tasa de finalización de funciones 45% mayor que el seguimiento libre, con cero implementaciones duplicadas.
 
 ## Ideas clave
 
-- **Las listas de funciones son la columna vertebral del harness**, no notas para humanos. Scheduler, verifier y handoff reporter dependen de ellas.
-- **Cada función debe tener la triple**: descripción de comportamiento + comando de verificación + estado actual. Si falta un elemento, está incompleta, como un taburete de tres patas al que le falta una.
-- **Las transiciones de estado las controla el harness**: el agente no puede cambiar estados por su cuenta. Pasar verificación es el único camino de promoción.
-- **La lista de funciones es el single source of truth del proyecto**: toda la información de "qué hacer" deriva de una lista.
-- **Calibra la granularidad a "completable en una sesión".**
+- <strong>Las listas de funciones son la columna vertebral del harness</strong>, no notas para humanos. Scheduler, verifier y handoff reporter dependen de ellas.
+- <strong>Cada función debe tener la triple</strong>: descripción de comportamiento + comando de verificación + estado actual. Si falta un elemento, está incompleta, como un taburete de tres patas al que le falta una.
+- <strong>Las transiciones de estado las controla el harness</strong>: el agente no puede cambiar estados por su cuenta. Pasar verificación es el único camino de promoción.
+- <strong>La lista de funciones es el single source of truth del proyecto</strong>: toda la información de "qué hacer" deriva de una lista.
+- <strong>Calibra la granularidad a "completable en una sesión".</strong>
 
 ## Lecturas adicionales
 
@@ -144,8 +144,8 @@ Resultado cuantificado: los proyectos que usan listas de funciones estructuradas
 
 ## Ejercicios
 
-1. **Diseño de lista de funciones**: Define un esquema JSON mínimo. Incluye id, descripción de comportamiento, comando de verificación, estado actual y referencia de evidencia. Úsalo para describir un proyecto real con 5 funciones.
+1. <strong>Diseño de lista de funciones</strong>: Define un esquema JSON mínimo. Incluye id, descripción de comportamiento, comando de verificación, estado actual y referencia de evidencia. Úsalo para describir un proyecto real con 5 funciones.
 
-2. **Comparación de estricticidad de verificación**: Elige 3 funciones y diseña una verificación "laxa" (por ejemplo, "el código no tiene errores de sintaxis") y una "estricta" (por ejemplo, "el test end-to-end pasa"). Compara la tasa de falsos positivos.
+2. <strong>Comparación de estricticidad de verificación</strong>: Elige 3 funciones y diseña una verificación "laxa" (por ejemplo, "el código no tiene errores de sintaxis") y una "estricta" (por ejemplo, "el test end-to-end pasa"). Compara la tasa de falsos positivos.
 
-3. **Auditoría del principio single source**: Revisa un proyecto con agentes y busca información de alcance que contradiga la lista de funciones (requisitos implícitos en conversaciones, comentarios TODO en código, etc.). Diseña un plan para unificar toda la información en la lista.
+3. <strong>Auditoría del principio single source</strong>: Revisa un proyecto con agentes y busca información de alcance que contradiga la lista de funciones (requisitos implícitos en conversaciones, comentarios TODO en código, etc.). Diseña un plan para unificar toda la información en la lista.

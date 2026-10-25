@@ -17,7 +17,7 @@ source_url: https://zhuanlan.zhihu.com/p/9616453650
 
 一些Pytorch内存管理基础：略，类似操作系统。
 
-#### **可分页内存（Pageable Memory）vs **固定内存（Pinned Memory）
+#### <strong>可分页内存（Pageable Memory）vs</strong>固定内存（Pinned Memory）
 
 与分页内存相对，ram与disk一起构成虚拟内存，目的是为了让程序可以在更大的、大于ram的内存上运行，，但是频繁的页面换入换出会拖慢访问速度，因此就有了pinned memory，顾名思义，就是被固定在ram里的内存，不支持换入换出，pinned memory访问速度更快，但内存有限，因此需要小心使用。
 
@@ -30,7 +30,7 @@ print(f"RAM - Total: {virtual_mem.total / 1024**3:.2f} GB, "
               f"Buffers: {virtual_mem.buffers / 1024**3:.2f} GB, "
               f"Cached: {virtual_mem.cached / 1024**3:.2f} GB")`
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_d7b1ccafc24d.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_d7b1ccafc24d.jpg)
 
 CUDA是如何将一个tensor从CPU复制到GPU的？
 
@@ -38,11 +38,11 @@ CUDA是如何将一个tensor从CPU复制到GPU的？
 
 #### `[pin_memory()](https://link.zhihu.com/?target=https%3A//pytorch.org/docs/stable/generated/torch.Tensor.pin_memory.html%23torch.Tensor.pin_memory)`，`[to()](https://link.zhihu.com/?target=https%3A//pytorch.org/docs/stable/generated/torch.Tensor.to.html%23torch.Tensor.to)`，`non_blocking=True` 
 
-- to() 阻塞式**PyTorch 中，调用 `to()` 方法时，默认non_blocking = False,内部会在每一个`cudaMemcpyAsync`（异步复制）之后，再调用一个 `cudaStreamSynchronize`，这会强制主线程等待当前传输操作完成，这种模式下，`to()` 是阻塞的**，即主线程在数据传输完成之前不能继续其他任务。**
+- to() 阻塞式**PyTorch 中，调用 `to()` 方法时，默认non_blocking = False,内部会在每一个`cudaMemcpyAsync`（异步复制）之后，再调用一个 `cudaStreamSynchronize`，这会强制主线程等待当前传输操作完成，这种模式下，`to()` 是阻塞的<strong>，即主线程在数据传输完成之前不能继续其他任务。</strong>
 - non_blocking=True 非阻塞式 
 调用这个的话，cudaStreamSynchronize不会被触发，主线程不会等待一个tensor传输完成，而是可以同时执行多个传输操作。
 因此non_blocking=True要比默认的False快一些（0.76提速）
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_d449f5ae5cda.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_d449f5ae5cda.jpg)
 
 - pin_memory()阻塞式
 pin_memory(）虽然是将tensor从CPU的固定内存（RAM）移动到GPU，加快了这个移动速度，但pin_memory本身是阻塞main进程的！这也是为什么，如果直接调用pin_memory反而会拖慢性能！让我们看一组实验数据：
@@ -52,7 +52,7 @@ pageable_tensor = torch.randn(1_000_000)
 # A tensor in page-locked (pinned) memory
 pinned_tensor = torch.randn(1_000_000, pin_memory=True)`
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_6ad7c59ac642.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_6ad7c59ac642.jpg)
 
 基准是pageable_tensor.to(device),也就是将tensor从分页内存移动到GPU上。
 
@@ -62,15 +62,15 @@ pinned_tensor = torch.randn(1_000_000, pin_memory=True)`
 
 to()+non_blocking=True：****由堆栈可看到，调用cudaMemcpyAsync之后不会调用cudaStreamSynchronize
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_5fac128a20cd.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_5fac128a20cd.jpg)
 
 如上图，main调用玩aten::to之后，调用cudaMemcpyAsync，Synchronize之后再进行计算操作，通信与计算不重叠。并且可看到cpu移动到gpu是pageable-&gt;Devicepinned=True+ non_blocking=True + multiple cuda streams：**
 
 数据拷贝stream13和计算stream7在不同cuda流中进行并且能够重叠。
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_d5d487850952.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_d5d487850952.jpg)
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_66c2ad6a9bee.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_66c2ad6a9bee.jpg)
 
 显然pinned+non-blocking是最快的，原理上面已说明。
 

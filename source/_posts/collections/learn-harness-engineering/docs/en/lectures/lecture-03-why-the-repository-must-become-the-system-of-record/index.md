@@ -26,7 +26,7 @@ So the real question is: are you going to give it a map that's good enough?
 
 ## What Belongs on the Map
 
-OpenAI states this plainly in their harness engineering article: **information that doesn't exist in the repo, doesn't exist for the agent.** They call this the "repo as spec" principle — the repository itself is the highest-authority specification document.
+OpenAI states this plainly in their harness engineering article: <strong>information that doesn't exist in the repo, doesn't exist for the agent.</strong> They call this the "repo as spec" principle — the repository itself is the highest-authority specification document.
 
 Anthropic's long-running agents documentation echoes a similar point: persistent state is a necessary condition for long-task continuity, and cross-session knowledge recoverability directly determines task success rates. And this state must exist in the repository — because that's the only stable, reliably accessible storage the agent has.
 
@@ -68,24 +68,24 @@ If it can't answer, the map has blank spots. Where the map is blank, the agent h
 
 ## Core Concepts
 
-- **Knowledge Visibility Gap**: The proportion of total project knowledge that's NOT in the repository. The bigger the gap, the higher the agent's failure rate. You can estimate it like this: count all the implicit knowledge about this project that lives in people's heads, then see how much of it actually made it into the repo. The difference is your visibility gap.
-- **System of Record**: The code repository as the authoritative source for project decisions, architecture constraints, execution state, and verification standards. The repo has the final say — nowhere else counts. If the information "this road is closed" only lives in Old Zhang's head, then every single time you have to ask Old Zhang. Write it in the repo, and nobody has to ask.
-- **Fresh Session Test**: The five questions from the previous section. How many the agent can answer is how complete your map is.
-- **Discovery Cost**: How much context budget the agent burns to find a single key piece of information in the repo. The more hidden the information, the higher the discovery cost, and the less budget remains for the actual task. Critical information should be placed where the agent sees it first — not buried ten directory levels deep.
-- **Knowledge Decay Rate**: The proportion of knowledge entries in the repo that become stale per unit of time. Documentation drifting out of sync with code is the biggest enemy — worse than no documentation at all is documentation that's out of date.
-- **ACID Analogy**: Applying database transaction principles (Atomicity, Consistency, Isolation, Durability) to agent state management. We'll expand on this below.
+- <strong>Knowledge Visibility Gap</strong>: The proportion of total project knowledge that's NOT in the repository. The bigger the gap, the higher the agent's failure rate. You can estimate it like this: count all the implicit knowledge about this project that lives in people's heads, then see how much of it actually made it into the repo. The difference is your visibility gap.
+- <strong>System of Record</strong>: The code repository as the authoritative source for project decisions, architecture constraints, execution state, and verification standards. The repo has the final say — nowhere else counts. If the information "this road is closed" only lives in Old Zhang's head, then every single time you have to ask Old Zhang. Write it in the repo, and nobody has to ask.
+- <strong>Fresh Session Test</strong>: The five questions from the previous section. How many the agent can answer is how complete your map is.
+- <strong>Discovery Cost</strong>: How much context budget the agent burns to find a single key piece of information in the repo. The more hidden the information, the higher the discovery cost, and the less budget remains for the actual task. Critical information should be placed where the agent sees it first — not buried ten directory levels deep.
+- <strong>Knowledge Decay Rate</strong>: The proportion of knowledge entries in the repo that become stale per unit of time. Documentation drifting out of sync with code is the biggest enemy — worse than no documentation at all is documentation that's out of date.
+- <strong>ACID Analogy</strong>: Applying database transaction principles (Atomicity, Consistency, Isolation, Durability) to agent state management. We'll expand on this below.
 
 ## How to Draw a Good Map
 
-**Principle 1: Knowledge lives next to code.** A rule about API endpoint authentication belongs next to the API code, not buried in a giant global document. Put a short doc in each module directory explaining that module's responsibilities, interfaces, and special constraints. The module directory itself is a natural index — when the agent reaches the code, it also reaches the constraints, no searching required.
+<strong>Principle 1: Knowledge lives next to code.</strong> A rule about API endpoint authentication belongs next to the API code, not buried in a giant global document. Put a short doc in each module directory explaining that module's responsibilities, interfaces, and special constraints. The module directory itself is a natural index — when the agent reaches the code, it also reaches the constraints, no searching required.
 
-**Principle 2: Use a standardized entry file.** `AGENTS.md` (or `CLAUDE.md`) is the agent's "landing page." It doesn't need to contain all information, but it must let the agent quickly answer three questions: "What is this project," "How do I run it," and "How do I verify it." 50–100 lines is enough.
+<strong>Principle 2: Use a standardized entry file.</strong> `AGENTS.md` (or `CLAUDE.md`) is the agent's "landing page." It doesn't need to contain all information, but it must let the agent quickly answer three questions: "What is this project," "How do I run it," and "How do I verify it." 50–100 lines is enough.
 
-**Principle 3: Minimal but complete.** Every piece of knowledge should have a clear use case. If removing a rule doesn't affect the agent's decision quality, that rule shouldn't exist. But every question from the fresh session test must have an answer. This is an ongoing balance to maintain — not too much, not too little, just enough.
+<strong>Principle 3: Minimal but complete.</strong> Every piece of knowledge should have a clear use case. If removing a rule doesn't affect the agent's decision quality, that rule shouldn't exist. But every question from the fresh session test must have an answer. This is an ongoing balance to maintain — not too much, not too little, just enough.
 
-**Principle 4: Update with code.** Bind knowledge updates to code changes. The simplest approach: put architecture docs in the corresponding module directory. When you modify code, you naturally notice the doc. After code changes, CI can remind you to check whether the docs need updating.
+<strong>Principle 4: Update with code.</strong> Bind knowledge updates to code changes. The simplest approach: put architecture docs in the corresponding module directory. When you modify code, you naturally notice the doc. After code changes, CI can remind you to check whether the docs need updating.
 
-**Concrete repo structure**:
+<strong>Concrete repo structure</strong>:
 
 ```
 project/
@@ -106,10 +106,10 @@ project/
 
 This analogy comes from database transaction management. You might feel like this is overcomplicating things, but it actually provides a very practical framework:
 
-- **Atomicity**: Each "logical operation" (e.g., "add new endpoint and update tests") gets one git commit. If it fails midway, `git stash` to roll back. All or nothing — no "half done."
-- **Consistency**: Define "consistent state" verification predicates — all tests pass, lint reports zero errors. The agent runs verification after each operation; inconsistent intermediate states should not be committed. After an operation, the system should be in a verifiably correct state.
-- **Isolation**: When multiple agents work concurrently, design state files to avoid race conditions. Simple approach: each agent uses its own progress file, or use git branches for isolation. Concurrent writes to the same file are a common source of trouble.
-- **Durability**: Critical project knowledge lives in git-tracked files. Temporary state can stay in session memory, but knowledge that must survive across sessions has to be written to files. What's in your head doesn't count — only what's written down counts.
+- <strong>Atomicity</strong>: Each "logical operation" (e.g., "add new endpoint and update tests") gets one git commit. If it fails midway, `git stash` to roll back. All or nothing — no "half done."
+- <strong>Consistency</strong>: Define "consistent state" verification predicates — all tests pass, lint reports zero errors. The agent runs verification after each operation; inconsistent intermediate states should not be committed. After an operation, the system should be in a verifiably correct state.
+- <strong>Isolation</strong>: When multiple agents work concurrently, design state files to avoid race conditions. Simple approach: each agent uses its own progress file, or use git branches for isolation. Concurrent writes to the same file are a common source of trouble.
+- <strong>Durability</strong>: Critical project knowledge lives in git-tracked files. Temporary state can stay in session memory, but knowledge that must survive across sessions has to be written to files. What's in your head doesn't count — only what's written down counts.
 
 ## A Real Transformation Story
 
@@ -143,8 +143,8 @@ After transformation: the same agent could answer all key project questions on a
 
 ## Exercises
 
-1. **Fresh session test**: Open a completely fresh agent session in your project (provide no verbal context whatsoever), let it see only the repository contents, then ask it five questions: What is this system? How is it organized? How do I run it? How do I verify it? What's the current progress? Record which ones it can't answer, then improve the repo until it can answer all of them.
+1. <strong>Fresh session test</strong>: Open a completely fresh agent session in your project (provide no verbal context whatsoever), let it see only the repository contents, then ask it five questions: What is this system? How is it organized? How do I run it? How do I verify it? What's the current progress? Record which ones it can't answer, then improve the repo until it can answer all of them.
 
-2. **Knowledge externalization quantification**: List all decisions and constraints important to development work in your project. Mark each item as inside or outside the repo. Calculate your knowledge visibility gap (the proportion of items outside the repo). Make a plan to bring the gap below 10%.
+2. <strong>Knowledge externalization quantification</strong>: List all decisions and constraints important to development work in your project. Mark each item as inside or outside the repo. Calculate your knowledge visibility gap (the proportion of items outside the repo). Make a plan to bring the gap below 10%.
 
-3. **ACID assessment**: Evaluate your project's state management using this lecture's ACID analogy. Atomicity — can agent operations be cleanly rolled back? Consistency — does the repo have "consistent state" verification? Isolation — do multiple concurrent agents step on each other's toes? Durability — is all cross-session knowledge properly persisted?
+3. <strong>ACID assessment</strong>: Evaluate your project's state management using this lecture's ACID analogy. Atomicity — can agent operations be cleanly rolled back? Consistency — does the repo have "consistent state" verification? Isolation — do multiple concurrent agents step on each other's toes? Durability — is all cross-session knowledge properly persisted?

@@ -21,7 +21,7 @@ categories:
 在这样固定输入输出的情况下所有与计算优化的信息都是已知的，可以最大程度上优化推理表现，去做一些内存复用、算子优化策略。
 
 但在很多业务场景下，还是希望支持动态尺寸的输入输出。
-![Pasted image 20240519221617.png](/images/collections/assets/Pasted%2520image%252020240519221617.png)
+![Pasted image 20240519221617.png](/images/collections/assets/Pasted%20image%2020240519221617.png)
 
 这里引用一下的论文_arxiv 2403.00176的图。大概包括以下的情况
 1. 输入shape影响输出的值， 比如shape算子
@@ -30,9 +30,9 @@ categories:
 4. 决定了执行情况，这里大多是控制流算子
 
 
-![Pasted image 20240517221547.png](/images/collections/assets/Pasted%2520image%252020240517221547.png)
+![Pasted image 20240517221547.png](/images/collections/assets/Pasted%20image%2020240517221547.png)
 
-![Pasted image 20240524220701.png](/images/collections/assets/Pasted%2520image%252020240524220701.png)
+![Pasted image 20240524220701.png](/images/collections/assets/Pasted%20image%2020240524220701.png)
 
 ### 支持动态shape挑战：
 静态Shape的场景是一个确定的优化问题，在端侧设备上主要的优化目标也是减少推理延迟和降低内存需求。
@@ -40,11 +40,11 @@ categories:
 1. 模型推理的内存（显存）占用预估
 2. 算子实现的执行优化
 按实际模型推理的流程拆解一下：
-**软件实现层面**
+<strong>软件实现层面</strong>
 1. 模型动态infershape开销消减
 2. 动态内存申请开销消减
 3. 算子动态模板匹配
-**硬件层面**
+<strong>硬件层面</strong>
 1. 引入更多的跳转指令，分支预测能力需求大大提高，指令流水中空泡增加，效率降低
 2. 向量化、Tensor化机会减少，引入更多的scalar运算
 3. 数据排布？

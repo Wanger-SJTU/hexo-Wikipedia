@@ -17,7 +17,7 @@ source_url: https://zhuanlan.zhihu.com/p/170610480
 
 ISDA：隐式语义数据增广新方法，涨点明显！可提高分类、目标检测、实例分割等任务性能，代码现已开源！
 
-**Regularizing Deep Networks with Semantic Data Augmentation**
+<strong>Regularizing Deep Networks with Semantic Data Augmentation</strong>
 
 作者单位：清华大学&北京航空航天大学
 代码：[https://github.com/blackfeather-wang/ISDA-for-Deep-Networks](https://link.zhihu.com/?target=https%3A//github.com/blackfeather-wang/ISDA-for-Deep-Networks)
@@ -44,7 +44,7 @@ ISDA
 ![](https://pic1.zhimg.com/v2-cd19833eab67d4223ffced4b2769cafe_r.jpg)
 下载
 链接：[https://pan.baidu.com/s/1OUe59W0FboaeY343y8t1pQ](https://link.zhihu.com/?target=https%3A//pan.baidu.com/s/1OUe59W0FboaeY343y8t1pQ) 
-提取码：kxt6**强烈推荐大家关注[计算机视觉论文速递](https://zhuanlan.zhihu.com/c_172507674)知乎专栏和[CVer](https://link.zhihu.com/?target=https%3A//mp.weixin.qq.com/s/moRNkCaBDtYZgXwaZDXBwA)微信公众号，可以快速了解到最新优质的CV论文。**
+提取码：kxt6<strong>强烈推荐大家关注[计算机视觉论文速递](https://zhuanlan.zhihu.com/c_172507674)知乎专栏和[CVer](https://link.zhihu.com/?target=https%3A//mp.weixin.qq.com/s/moRNkCaBDtYZgXwaZDXBwA)微信公众号，可以快速了解到最新优质的CV论文。</strong>
 
 推荐阅读
 [使用深度神经网络从Noisy Labels中学习：全面调研](https://zhuanlan.zhihu.com/p/161822079)

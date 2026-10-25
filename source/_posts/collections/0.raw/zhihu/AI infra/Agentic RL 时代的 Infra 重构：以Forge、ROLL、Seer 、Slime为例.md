@@ -95,23 +95,23 @@ Forge 的核心设计并不复杂，但非常有代表性。为了实现真正�
 
 如图，这套系统由三个核心模块组成。
 
-**第一层是 Agent。**
+<strong>第一层是 Agent。</strong>
 
 这一层抽象了通用 Agent，包括白盒和黑盒架构以及它们运行的环境。Forge 给它的定义非常关键：Agent 是一个纯粹的 Trajectory Producer。它负责协调环境交互，使 Agent 专注于自己的业务逻辑，比如 context management 和复杂环境交互，而不需要关心底层训练和推理细节。
 
-**第二层是中间件抽象层。**
+<strong>第二层是中间件抽象层。</strong>
 
 这一层物理上把 Agent 侧和训练 / 推理引擎隔离开来，主要包含：
 
 - Gateway Server：标准化通信网关，处理 Agent 与 LLM 的交互请求；
-- Data Pool：异步收集 trajectory 和 process signal 的分布式数据存储。**第三层是训练与推理引擎。**
+- Data Pool：异步收集 trajectory 和 process signal 的分布式数据存储。<strong>第三层是训练与推理引擎。</strong>
 
 包括：
 
 - Rollout Engine：专门做高吞吐 token 生成；
 - Train Engine：从 Data Pool 拉数据并更新模型。Forge 这个设计的重点不在模块名，而在它对”白盒 Agent 和黑盒 Agent 的同时支持”。
 
-**为什么要同时支持白盒和黑盒？**
+<strong>为什么要同时支持白盒和黑盒？</strong>
 
 因为真实世界里的 Agent，既有你可以充分控制、分析和增强的白盒 Agent，也有你只能通过外部接口接入的黑盒 Agent。
 
@@ -277,7 +277,7 @@ Seer 的意义恰恰在于它代表了另一种答案：
 - 长度相似性；
 - 局部 token pattern 相似性。前者决定了调度器其实可以更早预测一组请求会不会成为长尾；后者则意味着同组 response 之间存在可复用的局部生成模式，不应该完全当成彼此独立的序列去处理。围绕这两个观察，Seer 做了三件事。
 
-**第一，Divided Rollout。**
+<strong>第一，Divided Rollout。</strong>
 
 传统做法里，一个 group 往往被当成一个整体调度单元：同一 prompt 的多条 response 被打包送到同一实例，然后一路生成到结束。这种方式实现简单，但一旦组内出现极长 response，问题会立刻暴露出来：短样本会被长样本拖住，单机负载会失衡，KV cache 也容易在局部迅速膨胀。
 
@@ -286,7 +286,7 @@ Seer 的做法是把这个粗粒度单元继续拆开。先把 group 拆成单�
 - 实例间负载更均衡。长组不会因为整体绑定在某一台机器上，而把该实例长时间拖死。
 - 实例内显存压力更平滑。chunk 更短，KV cache 的增长更可控，也更不容易因为局部峰值而触发频繁 preemption。更关键的是，一旦配合全局 KV cache pool，chunk 还可以在实例之间迁移，而不必每次都重新做 prefill。也就是说，Seer 并不是简单把长序列切碎，而是把”切碎”真正变成一种可调度、可迁移的系统能力。
 
-**第二，Context-Aware Scheduling。**
+<strong>第二，Context-Aware Scheduling。</strong>
 
 这是 Seer 里非常关键的一点。传统调度策略无论是 FIFO、shortest-first 还是简单的 longest-first，本质上都只把请求当成彼此独立的对象处理，很少利用请求之间的结构关系。但在 GRPO 场景里，同组 response 并不是独立同分布的：它们来自同一个 prompt，长度往往高度相关。
 
@@ -296,7 +296,7 @@ Seer 就利用了这一点。它会先让每组中的一个 speculative request 
 
 当然，这种调度只有在 Divided Rollout 的前提下才真正有意义。因为如果一个 group 仍然被当成整体执行，调度器即使知道它偏长，也很难细致调整组内各条 response 的推进顺序。正是因为 Seer 先把 group 拆成更细粒度的 request，甚至进一步拆成 chunk，Context-Aware Scheduling 才能真正把”提前识别长尾”转化为”更早铺开长尾”。
 
-**第三，Adaptive Grouped Speculative Decoding。**
+<strong>第三，Adaptive Grouped Speculative Decoding。</strong>
 
 Seer 的第三个优化点是把推理加速也做成 group-aware 的。传统 speculative decoding 在 RL 场景里有两个明显问题：
 
@@ -408,11 +408,11 @@ Forge 在博客里明确指出，复杂 Agent 任务常常包含上千步 trajec
 
 因此，Forge 设计了三类复合奖励。
 
-**（1）过程奖励（Process Reward）：** 监督 agent 的中间行为（如惩罚语言混合或特定工具调用错误），提供密集反馈，而不只依赖最终结果。
+<strong>（1）过程奖励（Process Reward）：</strong> 监督 agent 的中间行为（如惩罚语言混合或特定工具调用错误），提供密集反馈，而不只依赖最终结果。
 
-**（2）任务完成时间奖励：** 将相对完成时间作为奖励信号。因为真实延迟不仅取决于 Token 生成，还受工具执行和子 Agent 调用影响，这能激励 Agent 主动利用并行策略、选择最短的执行路径来加速任务。
+<strong>（2）任务完成时间奖励：</strong> 将相对完成时间作为奖励信号。因为真实延迟不仅取决于 Token 生成，还受工具执行和子 Agent 调用影响，这能激励 Agent 主动利用并行策略、选择最短的执行路径来加速任务。
 
-**（3）用于降低方差的后续奖励（Reward-to-Go）：** 长周期任务的稀疏奖励容易引发高梯度方差。Forge使用 Reward-to-Go 来标准化回报，大幅提高了信用分配的精度，稳定了优化过程。
+<strong>（3）用于降低方差的后续奖励（Reward-to-Go）：</strong> 长周期任务的稀疏奖励容易引发高梯度方差。Forge使用 Reward-to-Go 来标准化回报，大幅提高了信用分配的精度，稳定了优化过程。
 
 公式：
 ![](https://www.zhihu.com/equation?tex=G_t+%3D+%5Csum_%7Bk%3Dt%7D%5E%7BT%7D+%5Cgamma%5E%7Bk-t%7D+r_k)
@@ -489,15 +489,15 @@ ROLL 博客里给出的典型坏行为包括：
 
 因此，ROLL 对环境做了非常严格的处理：
 
-**第一，rollout 前主动清理环境初始化和 Agent 安装过程中留下的中间文件。**
+<strong>第一，rollout 前主动清理环境初始化和 Agent 安装过程中留下的中间文件。</strong>
 
 也就是说，环境不是”起起来就算了”，而是要在正式 rollout 之前做一次清场，保证模型进入时看到的是一个干净、受控的初始状态。
 
-**第二，训练阶段严格隔离测试相关文件。**
+<strong>第二，训练阶段严格隔离测试相关文件。</strong>
 
 测试文件不会以普通环境资源的形式暴露给 agent，避免模型围绕测试结构去学习 shortcut。
 
-**第三，测试文件只在最终评估阶段上传。**
+<strong>第三，测试文件只在最终评估阶段上传。</strong>
 
 也就是说，训练期间 agent 所看到的是任务环境，而不是决定 reward 的完整测试逻辑；真正的测试只在最终验证时注入。
 
@@ -518,15 +518,15 @@ ROLL 博客明确提到，他们在早期合成实例中观察到 false positive
 
 因此，ROLL 在实例进入 RL 训练池之前加入了多层验证机制。
 
-**第一层是 LLM-as-judge 验证。**
+<strong>第一层是 LLM-as-judge 验证。</strong>
 
 多个 LLM 协同检查 instruction-test 对，识别高 false-positive 风险。例如测试是否只检查表面结果，而没有验证真正的执行路径、状态变化或中间约束。
 
-**第二层是 Ground-truth 验证。**
+<strong>第二层是 Ground-truth 验证。</strong>
 
 如果 golden solution 自己都通不过测试，这个实例直接丢弃。因为这说明测试脚本或环境根本不可靠。
 
-**第三层是 No-op 验证。**
+<strong>第三层是 No-op 验证。</strong>
 
 如果几乎不做任何有效操作也能通过测试，这个实例直接丢弃。因为这意味着 reward 已经丧失了区分有效行为和无效行为的能力。
 

@@ -20,15 +20,15 @@ source_url: https://zhuanlan.zhihu.com/p/2051636583225468285
 0. 开篇
 看 FlashAttention 的时候，很多人第一反应是：它是不是用了某种近似 attention？
 
-答案显然是否定的。FlashAttention 的结果仍然是精确 attention。它真正厉害的地方在于：**不显式保存完整的 **
-![](https://www.zhihu.com/equation?tex=N+%5Ctimes+N)** attention matrix，也能在分块计算中得到和标准 softmax 等价的结果。**
+答案显然是否定的。FlashAttention 的结果仍然是精确 attention。它真正厉害的地方在于：<strong>不显式保存完整的</strong>
+![](https://www.zhihu.com/equation?tex=N+%5Ctimes+N)<strong>attention matrix，也能在分块计算中得到和标准 softmax 等价的结果。</strong>
 
 这里的关键就是 Online Softmax，这篇文章先讨论一下整个计算流程，后续文章再具体探讨 设计 NPU 时怎么把它跑满。顺便也解释一下 FlashAttention-3 早期算法伪代码截图里第 21 行的一个容易误导的地方。
 
 ![](https://pica.zhimg.com/v2-a065f0ebbde3e17c02b89e5772d8f884_r.jpg)FlashAttention-3 Algorithm 1 截图，注意第 21 行的缩放项这个错误困扰了我几个小时，和自己推导结果不一致，翻遍了 arxiv 和 tri dao 的网站发现 FA2-3 均出现该错误。最终在 [猛猿](https://www.zhihu.com/people/lemonround) 大佬这里找到了答案，证明确实是作者笔误或是其他原因：
 
-**可能在有些朋友下载的 V2 论文中，第十行这里 O 前面的因子项是** 
-![](https://www.zhihu.com/equation?tex=diag%28...%29%5E%7B-1%7D) **，这个公式应该是错误的**（大家动手推一下就可知，初次看到时让我困扰了很久）。在作者个人主页的[论文链接](https://link.zhihu.com/?target=https%3A//tridao.me/publications/flash2/flash2.pdf)中，这个 typo 已经被修正。[图解大模型计算加速系列：Flash Attention V2，从原理到并行计算](https://zhuanlan.zhihu.com/p/691067658)
+<strong>可能在有些朋友下载的 V2 论文中，第十行这里 O 前面的因子项是</strong> 
+![](https://www.zhihu.com/equation?tex=diag%28...%29%5E%7B-1%7D) <strong>，这个公式应该是错误的</strong>（大家动手推一下就可知，初次看到时让我困扰了很久）。在作者个人主页的[论文链接](https://link.zhihu.com/?target=https%3A//tridao.me/publications/flash2/flash2.pdf)中，这个 typo 已经被修正。[图解大模型计算加速系列：Flash Attention V2，从原理到并行计算](https://zhuanlan.zhihu.com/p/691067658)
 1.标准 Attention 公式
 标准 attention 可以写成：
 
@@ -62,9 +62,9 @@ source_url: https://zhuanlan.zhihu.com/p/2051636583225468285
 ![](https://www.zhihu.com/equation?tex=P)，中间矩阵都是 
 ![](https://www.zhihu.com/equation?tex=N+%5Ctimes+N)。序列长度一大，显存占用和 HBM 读写都会非常重。
 
-FlashAttention 的思路是：**把 **
-![](https://www.zhihu.com/equation?tex=Q%2FK%2FV)** 分块搬到片上 SRAM/SMEM，边算边更新 softmax 的中间统计量，不把完整 **
-![](https://www.zhihu.com/equation?tex=S%2FP)** 写回片外内存。**FlashAttention 的 Online Softmax 就是在分块过程中动态维护这个 局部最大值。
+FlashAttention 的思路是：<strong>把</strong>
+![](https://www.zhihu.com/equation?tex=Q%2FK%2FV)<strong>分块搬到片上 SRAM/SMEM，边算边更新 softmax 的中间统计量，不把完整</strong>
+![](https://www.zhihu.com/equation?tex=S%2FP)<strong>写回片外内存。</strong>FlashAttention 的 Online Softmax 就是在分块过程中动态维护这个 局部最大值。
 
 2.  FA3 的算法及工程计算步骤
 

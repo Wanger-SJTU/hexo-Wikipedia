@@ -15,7 +15,7 @@ source_url: https://zhuanlan.zhihu.com/p/1911805939247486365
 ---
 
 
-**导语：** 知识图谱作为一种强大的信息表示方式，通过实体（节点）和关系（边）展现了信息间的内在联系，其清晰的结构化优势远超非结构化文本。然而，从海量非结构化文本中构建知识图谱，传统方法往往面临挑战。本文将深入探讨如何利用大语言模型（LLM）的强大能力，构建一套自动化流程，将原始文本转化为交互式知识图谱网页。
+<strong>导语：</strong> 知识图谱作为一种强大的信息表示方式，通过实体（节点）和关系（边）展现了信息间的内在联系，其清晰的结构化优势远超非结构化文本。然而，从海量非结构化文本中构建知识图谱，传统方法往往面临挑战。本文将深入探讨如何利用大语言模型（LLM）的强大能力，构建一套自动化流程，将原始文本转化为交互式知识图谱网页。
 
 #### 传统构建知识图谱的痛点
 
@@ -23,34 +23,34 @@ source_url: https://zhuanlan.zhihu.com/p/1911805939247486365
 
 #### LLM：知识图谱构建的变革者
 
-大语言模型（LLM）以其卓越的文本理解和生成能力，为知识图谱的自动化构建带来了全新的可能性。LLM能够理解自由形式的文本，并输出结构化的信息，这使得它们成为自动化知识图谱构建流程中的理想选择。本文将详细介绍一个实践项目，旨在利用LLM的能力，将非结构化文本转化为可交互的知识图谱网页。该项目的全部代码已开源，并位于**AI-Knowledge-Graph**项目仓库中。
+大语言模型（LLM）以其卓越的文本理解和生成能力，为知识图谱的自动化构建带来了全新的可能性。LLM能够理解自由形式的文本，并输出结构化的信息，这使得它们成为自动化知识图谱构建流程中的理想选择。本文将详细介绍一个实践项目，旨在利用LLM的能力，将非结构化文本转化为可交互的知识图谱网页。该项目的全部代码已开源，并位于<strong>AI-Knowledge-Graph</strong>项目仓库中。
 
 #### 项目示例：将复杂文本结构化呈现
 
 为了直观展示该项目的能力，我们来看一个简单的例子。当输入以下非结构化文本时：
 
-**“Henry, a talented musician from Canada, originally trained as a classical pianist under renowned conductor Maria Rodriguez. Henry later formed a rock band called The Maple Leaves with his sister Lucy, who studied music composition at the University of Toronto. The Maple Leaves released their debut album, Polar Lights, on August 12, 2020, earning critical acclaim for blending classical and rock influences. Lucy also pursued environmental activism and joined Clean Earth as a regional ambassador, where she campaigned for stricter wildlife protection laws. Henry was inspired by Lucy’s passion for charity work, so he started volunteering at local animal shelters in his hometown. Although Henry and Lucy initially struggled with creative differences, they eventually found harmony in combining Lucy’s classical compositions with Henry’s rock guitar riffs. The Maple Leaves toured across Europe in 2021, performing sold-out shows in major cities like Paris, Berlin, and Rome. During the tour, Henry developed a keen interest in international cuisine and collaborated with local chefs to film a short documentary on regional cooking techniques.”AI-Knowledge-Graph**工具将利用您配置的LLM，从上述文本中提取知识，并生成一个类似下图所示的交互式知识图谱HTML文件：
+<strong>“Henry, a talented musician from Canada, originally trained as a classical pianist under renowned conductor Maria Rodriguez. Henry later formed a rock band called The Maple Leaves with his sister Lucy, who studied music composition at the University of Toronto. The Maple Leaves released their debut album, Polar Lights, on August 12, 2020, earning critical acclaim for blending classical and rock influences. Lucy also pursued environmental activism and joined Clean Earth as a regional ambassador, where she campaigned for stricter wildlife protection laws. Henry was inspired by Lucy’s passion for charity work, so he started volunteering at local animal shelters in his hometown. Although Henry and Lucy initially struggled with creative differences, they eventually found harmony in combining Lucy’s classical compositions with Henry’s rock guitar riffs. The Maple Leaves toured across Europe in 2021, performing sold-out shows in major cities like Paris, Berlin, and Rome. During the tour, Henry developed a keen interest in international cuisine and collaborated with local chefs to film a short documentary on regional cooking techniques.”AI-Knowledge-Graph</strong>工具将利用您配置的LLM，从上述文本中提取知识，并生成一个类似下图所示的交互式知识图谱HTML文件：
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_501210cfc2a1.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_501210cfc2a1.jpg)
 
 #### 高度抽象的工作原理
 
 该项目的高层工作流程可以概括为以下几个关键步骤：
 
-- **文本分块（Text Chunking）：** 自动将大型文档分割成易于处理的文本块。
-- **知识提取（Knowledge Extraction）：** LLM从每个文本块中识别并提取主语-谓语-宾语（SPO）三元组（即事实）。
-- **实体标准化（Entity Standardization）：** 将指代同一实体的不同表述（如“AI”和“人工智能”）统一为单一名称。
-- **关系推理（Relationship Inference）：** 通过简单的逻辑规则（如传递性）和LLM的推理能力，推断出额外的关系，以连接不相连的子图。
-- **交互式可视化（Interactive Visualization）：** 将生成的知识图谱以交互式网络的形式在浏览器中展示。
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_34d706985442.jpg)
+- <strong>文本分块（Text Chunking）：</strong> 自动将大型文档分割成易于处理的文本块。
+- <strong>知识提取（Knowledge Extraction）：</strong> LLM从每个文本块中识别并提取主语-谓语-宾语（SPO）三元组（即事实）。
+- <strong>实体标准化（Entity Standardization）：</strong> 将指代同一实体的不同表述（如“AI”和“人工智能”）统一为单一名称。
+- <strong>关系推理（Relationship Inference）：</strong> 通过简单的逻辑规则（如传递性）和LLM的推理能力，推断出额外的关系，以连接不相连的子图。
+- <strong>交互式可视化（Interactive Visualization）：</strong> 将生成的知识图谱以交互式网络的形式在浏览器中展示。
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_34d706985442.jpg)
 
 #### 详细解析：每一步的精妙之处
 
-**文本分块**
+<strong>文本分块</strong>
 
 由于LLM存在上下文窗口限制，以及本地系统的内存限制，为了处理大型文档，该工具会自动将文本分割成块（例如，每块500个词，并带有一定重叠）。重叠有助于保持边界句子的上下文连贯性。每个文本块随后会被发送给LLM，并附带一个指令，要求其提取SPO三元组。
 
-**LLM驱动的知识提取**
+<strong>LLM驱动的知识提取</strong>
 
 对于每个文本块，该工具会要求LLM输出一个JSON数组，其中包含三元组以及信息提取自哪个文本块。示例如下：
 
@@ -81,20 +81,20 @@ source_url: https://zhuanlan.zhihu.com/p/1911805939247486365
 
 提取完成后，您经常会发现同一实体的多种变体（例如，“AI”、“A.I.”、“artificial intelligence”）。为了避免节点碎片化或重复，该工具提供了实体标准化步骤。
 
-- **基本规范化：** 小写化、去除空格等操作会合并明显的重复项。
-- **标准化（可选）：** 启用此功能后，LLM会聚类不同的提及，这些提及可能指代同一实体。例如，“New York”、“NYC”和“New York City”会成为一个规范节点；“United States”、“U.S.”和“USA”会成为另一个。
+- <strong>基本规范化：</strong> 小写化、去除空格等操作会合并明显的重复项。
+- <strong>标准化（可选）：</strong> 启用此功能后，LLM会聚类不同的提及，这些提及可能指代同一实体。例如，“New York”、“NYC”和“New York City”会成为一个规范节点；“United States”、“U.S.”和“USA”会成为另一个。
 这能显著提高图谱的连贯性，通常建议启用。如果您需要严格的原始提取结果，可以在配置文件中禁用此功能。
 
 #### 推理隐藏连接以丰富图谱
 
 即使对文本进行了彻底阅读，也可能无法捕捉到所有隐含的关系。该工具通过两种方式解决这个问题：
 
-- **基于规则的推理：** 
+- <strong>基于规则的推理：</strong> 
 
-- **传递性关系：** 如果A促成了B，且B推动了C，系统可以推断A影响了C。
-- **词汇相似性：** 名称相似的实体可能会通过一个通用的“相关于”关系连接起来。
+- <strong>传递性关系：</strong> 如果A促成了B，且B推动了C，系统可以推断A影响了C。
+- <strong>词汇相似性：</strong> 名称相似的实体可能会通过一个通用的“相关于”关系连接起来。
 
-- **LLM辅助推理：** 
+- <strong>LLM辅助推理：</strong> 
 
 - 该工具可以提示LLM提出连接原本不相连的子图的链接。例如，如果一个集群是关于工业革命的，另一个是关于AI的，LLM可能会推断出历史或概念上的联系（“AI是始于工业革命的技术创新的产物”）。
 
@@ -119,13 +119,13 @@ source_url: https://zhuanlan.zhihu.com/p/1911805939247486365
 
 如果所有选项都启用，共有四个提示词会发送给LLM。初始的主语-谓语-宾语（SPO）知识提取是其中之一。
 
-**提取系统提示词：**
+<strong>提取系统提示词：</strong>
 
 `您是一个专注于知识提取和知识图谱生成的高级AI系统。
 您的专长包括识别文本中一致的实体引用和有意义的关系。
 关键指令：所有关系（谓语）必须最多3个词。理想情况下是1-2个词。这是硬性限制。`
 
-**提取用户提示词：**
+<strong>提取用户提示词：</strong>
 
 `您的任务：阅读以下文本（由三反引号分隔），并识别每个句子中的所有主语-谓语-宾语（S-P-O）关系。然后生成一个包含对象的JSON数组，每个对象代表一个三元组。
 
@@ -159,31 +159,31 @@ source_url: https://zhuanlan.zhihu.com/p/1911805939247486365
 
 #### 交互式图谱可视化
 
-有了全面的SPO三元组列表（原始加推断），该工具使用**PyVis**（Vis.js的Python接口）生成交互式HTML可视化。在浏览器中打开生成的文件，您将看到：
+有了全面的SPO三元组列表（原始加推断），该工具使用<strong>PyVis</strong>（Vis.js的Python接口）生成交互式HTML可视化。在浏览器中打开生成的文件，您将看到：
 
-- **颜色编码的社区：** 同一集群中的节点共享相同的颜色。集群通常对应文本中的子主题或主题。
-- **按重要性调整节点大小：** 连接多（或中心性高）的节点会显得更大。
-- **边样式：** 实线表示来自文本的关系，虚线表示推断关系。
-- **交互式控件：** 平移、缩放、拖动节点、切换物理效果、切换亮/暗模式，以及过滤视图。
+- <strong>颜色编码的社区：</strong> 同一集群中的节点共享相同的颜色。集群通常对应文本中的子主题或主题。
+- <strong>按重要性调整节点大小：</strong> 连接多（或中心性高）的节点会显得更大。
+- <strong>边样式：</strong> 实线表示来自文本的关系，虚线表示推断关系。
+- <strong>交互式控件：</strong> 平移、缩放、拖动节点、切换物理效果、切换亮/暗模式，以及过滤视图。
 这使得以视觉吸引人的格式探索关系变得非常容易。
 
 #### 程序流程概览
 
 以下是该程序的基本流程（代码仓库的`README.md`中有更详细的程序流程图）：
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_9dc547f6d068.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_9dc547f6d068.jpg)
 
 #### 如何安装AI-Knowledge-Graph
 
 要在您的计算机上运行此工具，您需要满足以下要求：
 
-**要求：**
+<strong>要求：</strong>
 
 - 可运行的计算机（Windows、Linux或macOS）。
 - 已安装Python（3.12或更高版本），推荐使用`uv`。
 - 访问兼容OpenAI API的端点（Ollama、LiteLLM、LM Studio、OpenAI订阅等）。
 - Git，用于克隆代码仓库。
-**下载和安装依赖项：**
+<strong>下载和安装依赖项：</strong>
 
 将仓库克隆到您要运行的系统上，并切换到该目录：
 
@@ -198,9 +198,9 @@ cd ai-knowledge-graph`
 
 `pip install -r requirements.txt`
 
-**配置AI-Knowledge-Graph**
+<strong>配置AI-Knowledge-Graph</strong>
 
-编辑`config.toml`文件以适应您的情况。您可以在此处配置LLM模型、端点（URL）、最大上下文窗口长度和LLM的温度。在下面的示例中，我使用Google的开源**Gemma 3**模型，该模型通过Ollama托管在我的本地计算机上。您还可以在此处调整文档分块大小和重叠量，以及是否启用实体标准化和关系推理：
+编辑`config.toml`文件以适应您的情况。您可以在此处配置LLM模型、端点（URL）、最大上下文窗口长度和LLM的温度。在下面的示例中，我使用Google的开源<strong>Gemma 3</strong>模型，该模型通过Ollama托管在我的本地计算机上。您还可以在此处调整文档分块大小和重叠量，以及是否启用实体标准化和关系推理：
 
 `[llm]
 model = "gemma3"
@@ -225,11 +225,11 @@ apply_transitive = true     # 是否应用传递性推理规则
 [visualization]
 edge_smooth = false # 边缘线是否平滑（true或false）`
 
-**注意：** 对于本地LLM的使用，您可以使用Ollama或LM Studio API端点；对于访问任何商业LLM提供商（AWS Bedrock、Azure、Anthropic、OpenAI等），可以使用LiteLLM。如果您需要有关运行Ollama本地或LiteLLM访问其他LLM服务的帮助，请参阅我之前的文章：《LLM零到英雄：Ollama实践指南》或《使用LiteLLM Proxy集中管理多个AI服务》。
+<strong>注意：</strong> 对于本地LLM的使用，您可以使用Ollama或LM Studio API端点；对于访问任何商业LLM提供商（AWS Bedrock、Azure、Anthropic、OpenAI等），可以使用LiteLLM。如果您需要有关运行Ollama本地或LiteLLM访问其他LLM服务的帮助，请参阅我之前的文章：《LLM零到英雄：Ollama实践指南》或《使用LiteLLM Proxy集中管理多个AI服务》。
 
 #### 构建您的第一个知识图谱
 
-现在您已经安装并配置好**AI-Knowledge-Graph**，并指向您的LLM，您就可以开始创建您的第一个知识图谱了。获取一个您想构建知识图谱的纯文本文件（目前仅支持文本文件）。
+现在您已经安装并配置好<strong>AI-Knowledge-Graph</strong>，并指向您的LLM，您就可以开始创建您的第一个知识图谱了。获取一个您想构建知识图谱的纯文本文件（目前仅支持文本文件）。
 
 接下来，您需要运行`generate-graph.py`脚本。以下是该脚本的帮助信息：
 
@@ -323,8 +323,8 @@ file:///Users/robertm/mycode/ai-knowledge-graph/mydocument.html`
 
 您可以使用页面顶部的菜单展开控制面板，调整布局物理效果、隐藏或显示节点/边标签、查看图谱统计信息或选择/过滤节点和边。还有暗黑模式可供选择，如下图所示：
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_5870029b356a.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_5870029b356a.jpg)
 
 #### 实验与优化：探索最佳实践
 
-**重要提示：** 尝试不同的分块大小/重叠量和LLM模型至关重要，这将显著影响结果。我通常将重叠量设置为分块大小的10%。较小的文档分块大小（100-200个词）似乎能够提取更多的关系，但这可能会导致在跨越小块的概念/社区之间关系较少。您需要通过实验找到合适的分块大小和模型。我也相信，通过调整提示词，还有大量的优化空间。
+<strong>重要提示：</strong> 尝试不同的分块大小/重叠量和LLM模型至关重要，这将显著影响结果。我通常将重叠量设置为分块大小的10%。较小的文档分块大小（100-200个词）似乎能够提取更多的关系，但这可能会导致在跨越小块的概念/社区之间关系较少。您需要通过实验找到合适的分块大小和模型。我也相信，通过调整提示词，还有大量的优化空间。

@@ -61,12 +61,12 @@ flowchart LR
 
 ## Core Concepts
 
-- **Context windows are finite**: No matter what window size is claimed (128K, 200K, 1M), long tasks will eventually exhaust them. After exhaustion, either compaction (losing information) or reset (starting a new session) is required — both lose something.
-- **State persistence files**: Persisted state files that let a new session unambiguously resume where the last one left off. The most basic form includes progress logs, verification records, and next actions.
-- **Rebuild cost**: The time a new session needs to reach an executable state. A good harness can compress rebuild cost from 15 minutes to 3 minutes.
-- **Drift**: The gap between the agent's understanding and the actual state of the code repository. Every session boundary introduces drift; without control, it compounds session after session.
-- **Context anxiety**: A phenomenon observed by Anthropic — agents exhibit rushed finish behavior when approaching context limits, ending tasks early to avoid information loss. At its core, it's an irrational resource anxiety.
-- **Compaction vs. reset**: Compaction summarizes context within the same session (keeps "what," may lose "why"); reset opens a new session rebuilding from persisted state (clean but depends on artifact completeness).
+- <strong>Context windows are finite</strong>: No matter what window size is claimed (128K, 200K, 1M), long tasks will eventually exhaust them. After exhaustion, either compaction (losing information) or reset (starting a new session) is required — both lose something.
+- <strong>State persistence files</strong>: Persisted state files that let a new session unambiguously resume where the last one left off. The most basic form includes progress logs, verification records, and next actions.
+- <strong>Rebuild cost</strong>: The time a new session needs to reach an executable state. A good harness can compress rebuild cost from 15 minutes to 3 minutes.
+- <strong>Drift</strong>: The gap between the agent's understanding and the actual state of the code repository. Every session boundary introduces drift; without control, it compounds session after session.
+- <strong>Context anxiety</strong>: A phenomenon observed by Anthropic — agents exhibit rushed finish behavior when approaching context limits, ending tasks early to avoid information loss. At its core, it's an irrational resource anxiety.
+- <strong>Compaction vs. reset</strong>: Compaction summarizes context within the same session (keeps "what," may lose "why"); reset opens a new session rebuilding from persisted state (clean but depends on artifact completeness).
 
 ## What Happens When Continuity Breaks
 
@@ -82,9 +82,9 @@ Both OpenAI and Anthropic emphasize structured state persistence in their docume
 
 ## Practical Approaches to State Persistence
 
-Core approach: **Treat the agent like an engineer whose short-term memory gets wiped at every session.** Before it "clocks out," it must write down critical information so the next "shift" agent can pick up quickly.
+Core approach: <strong>Treat the agent like an engineer whose short-term memory gets wiped at every session.</strong> Before it "clocks out," it must write down critical information so the next "shift" agent can pick up quickly.
 
-**Tool 1: Progress file (PROGRESS.md).** The most basic state persistence file:
+<strong>Tool 1: Progress file (PROGRESS.md).</strong> The most basic state persistence file:
 
 ```markdown
 # Project Progress
@@ -112,7 +112,7 @@ Core approach: **Treat the agent like an engineer whose short-term memory gets w
 3. Update API documentation
 ```
 
-**Tool 2: Decision log (DECISIONS.md).** Record important design decisions and reasons. No need for detailed design documents — just "what decision, why, when":
+<strong>Tool 2: Decision log (DECISIONS.md).</strong> Record important design decisions and reasons. No need for detailed design documents — just "what decision, why, when":
 
 ```markdown
 # Design Decisions
@@ -123,9 +123,9 @@ Core approach: **Treat the agent like an engineer whose short-term memory gets w
 - Constraint: Cache TTL of 5 minutes, active invalidation on write
 ```
 
-**Tool 3: Git commits as checkpoints.** Commit after completing each atomic unit of work. Commit messages should explain what was done and why. These are free, automatically versioned state snapshots.
+<strong>Tool 3: Git commits as checkpoints.</strong> Commit after completing each atomic unit of work. Commit messages should explain what was done and why. These are free, automatically versioned state snapshots.
 
-**Tool 4: init.sh or harness initialization flow.** Specify in `AGENTS.md` the "clock-in" and "clock-out" routines:
+<strong>Tool 4: init.sh or harness initialization flow.</strong> Specify in `AGENTS.md` the "clock-in" and "clock-out" routines:
 
 ```markdown
 ## At session start (clock in)
@@ -140,7 +140,7 @@ Core approach: **Treat the agent like an engineer whose short-term memory gets w
 3. Commit all completed work
 ```
 
-**Mixed strategy**: Not every task needs a context reset. Short tasks (under 30 minutes) can complete within one session. Long tasks (spanning sessions) must use progress files and decision logs for continuity. Decision criterion: if a task needs more than 60% of the window, start preparing the handoff.
+<strong>Mixed strategy</strong>: Not every task needs a context reset. Short tasks (under 30 minutes) can complete within one session. Long tasks (spanning sessions) must use progress files and decision logs for continuity. Decision criterion: if a task needs more than 60% of the window, start preparing the handoff.
 
 ### A Deeper Look at Context Anxiety
 
@@ -148,11 +148,11 @@ Anthropic's March 2026 research further revealed the specific manifestations of 
 
 Two strategies address this:
 
-**Compaction**: Summarizing early conversation within the same session. Advantage: maintains continuity, the agent can see "what." Disadvantage: "why" is often lost in summaries — why option B was chosen over A, why a particular optimization was skipped. More critically, compaction doesn't eliminate context anxiety — the agent knows context was once large, and psychologically still tends to rush to finish.
+<strong>Compaction</strong>: Summarizing early conversation within the same session. Advantage: maintains continuity, the agent can see "what." Disadvantage: "why" is often lost in summaries — why option B was chosen over A, why a particular optimization was skipped. More critically, compaction doesn't eliminate context anxiety — the agent knows context was once large, and psychologically still tends to rush to finish.
 
-**Context reset**: Completely clearing context, opening a new session, rebuilding from persisted artifacts. Advantage: clean mental state — the new session has no "I'm running out of time" anxiety. Disadvantage: depends on the completeness of handoff artifacts. If the progress file is missing critical information, the new session may waste time going in the wrong direction.
+<strong>Context reset</strong>: Completely clearing context, opening a new session, rebuilding from persisted artifacts. Advantage: clean mental state — the new session has no "I'm running out of time" anxiety. Disadvantage: depends on the completeness of handoff artifacts. If the progress file is missing critical information, the new session may waste time going in the wrong direction.
 
-Anthropic's actual data: for Sonnet 4.5, context anxiety is severe enough that compaction alone isn't sufficient — context reset becomes a critical component of harness design. But for Opus 4.5, this behavior is greatly diminished, and compaction can manage context without relying on resets. This means: **harness design needs specific understanding of the target model, not a one-size-fits-all template.**
+Anthropic's actual data: for Sonnet 4.5, context anxiety is severe enough that compaction alone isn't sufficient — context reset becomes a critical component of harness design. But for Opus 4.5, this behavior is greatly diminished, and compaction can manage context without relying on resets. This means: <strong>harness design needs specific understanding of the target model, not a one-size-fits-all template.</strong>
 
 > Source: [Anthropic: Harness design for long-running application development](https://www.anthropic.com/engineering/harness-design-long-running-apps)
 
@@ -160,9 +160,9 @@ Anthropic's actual data: for Sonnet 4.5, context anxiety is severe enough that c
 
 An agent was tasked with implementing a blog system with user authentication — 12 feature points, estimated 5 sessions needed.
 
-**Baseline without state persistence files**: Session 1 implemented the user model and basic routes. Session 2 started without the agent remembering the auth middleware's interface contract, spending ~15 minutes inferring the previous design intent. By session 3, accumulated drift caused the agent to start reimplementing already-completed features. By session 5, the repo contained lots of redundant code but the core auth feature still hadn't passed end-to-end tests. Only 7 of 12 feature points completed, 3 with hidden correctness issues.
+<strong>Baseline without state persistence files</strong>: Session 1 implemented the user model and basic routes. Session 2 started without the agent remembering the auth middleware's interface contract, spending ~15 minutes inferring the previous design intent. By session 3, accumulated drift caused the agent to start reimplementing already-completed features. By session 5, the repo contained lots of redundant code but the core auth feature still hadn't passed end-to-end tests. Only 7 of 12 feature points completed, 3 with hidden correctness issues.
 
-**With state persistence files**: Using progress files, decision logs, verification records, and git checkpoints. State report updated automatically at each session end. Session 2's rebuild cost dropped to ~3 minutes. By session 5, all 12 feature points completed and verified.
+<strong>With state persistence files</strong>: Using progress files, decision logs, verification records, and git checkpoints. State report updated automatically at each session end. Session 2's rebuild cost dropped to ~3 minutes. By session 5, all 12 feature points completed and verified.
 
 Quantitative comparison: rebuild time reduced ~78%, feature completion rate from 58% to 100%, hidden defect rate from 43% down to 8%.
 
@@ -184,8 +184,8 @@ Quantitative comparison: rebuild time reduced ~78%, feature completion rate from
 
 ## Exercises
 
-1. **State persistence measurement**: Pick a development task needing at least 3 sessions. Without providing any state persistence files, record at each session start how much context the agent spends "figuring out what happened last time." After each session, create a progress file and let the next session start from it. Compare rebuild costs with and without progress files.
+1. <strong>State persistence measurement</strong>: Pick a development task needing at least 3 sessions. Without providing any state persistence files, record at each session start how much context the agent spends "figuring out what happened last time." After each session, create a progress file and let the next session start from it. Compare rebuild costs with and without progress files.
 
-2. **Handoff template design**: Design a minimal handoff template with four fields: repo state (commit hash), runtime state (test pass rate), blockers, next actions. Let a completely fresh agent session restore project state using only this template. Record ambiguities encountered during restoration, iterate to improve the template.
+2. <strong>Handoff template design</strong>: Design a minimal handoff template with four fields: repo state (commit hash), runtime state (test pass rate), blockers, next actions. Let a completely fresh agent session restore project state using only this template. Record ambiguities encountered during restoration, iterate to improve the template.
 
-3. **Mixed strategy experiment**: In a 5-session development task, compare three strategies: (a) always start fresh sessions + progress files, (b) do as much as possible in one session (context compaction), (c) mixed strategy (short tasks in-session, long tasks across sessions + progress files). Compare rebuild time, feature completion rate, and decision consistency.
+3. <strong>Mixed strategy experiment</strong>: In a 5-session development task, compare three strategies: (a) always start fresh sessions + progress files, (b) do as much as possible in one session (context compaction), (c) mixed strategy (short tasks in-session, long tasks across sessions + progress files). Compare rebuild time, feature completion rate, and decision consistency.

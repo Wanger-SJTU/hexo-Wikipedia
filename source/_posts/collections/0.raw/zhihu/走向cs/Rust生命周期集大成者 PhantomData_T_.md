@@ -17,7 +17,7 @@ source_url: https://zhuanlan.zhihu.com/p/686143745
 
 在Rust中PhantomData出现次数不算稀有，本来以为只是一个简单的占位结构体，没想到越深入越难懂，花了好几天时间才稍稍理解一点。因为我没有任何PL的学术背景(其实是没有任何学术背景，一个小小本科学历)，所以只能从语法规则上尝试理解，如果有错误欢迎大家指出，要是有学术大佬能高屋建瓴地阐述PhantomData的理念和作用就更好了~
 
-**阅读前置要求: 对Rust有基本了解，懂生命周期长短的比较，懂协变，逆变规则**<span class="wikilink wikilink--missing" title="未导入的页面">1</span>(#ref_1) 。
+<strong>阅读前置要求: 对Rust有基本了解，懂生命周期长短的比较，懂协变，逆变规则</strong><span class="wikilink wikilink--missing" title="未导入的页面">1</span>(#ref_1) 。
 
 ### 0. Variance<span class="wikilink wikilink--missing" title="未导入的页面">2</span>(#ref_2) 
 
@@ -46,7 +46,7 @@ struct Item'a> {
 
 接着提出程序员消除这个错误的方法要么是直接删去没有使用的类型参数，要么是插入一个Marker Type，也就是本文讨论的PhantomData。
 
-但是注意，**提议原话说的的是variance is not constrained，并不仅仅是 type or lifetime parameters are not used in the body of the type**。因此当我们用PhantomData来假装使用T的时候，还要考虑T的variance property！而不只是简单插入了一个占位 T 的成员属性。这也是为什么，我们不仅会看见有最常见的`PhantomData`比如像下面这种: 
+但是注意，<strong>提议原话说的的是variance is not constrained，并不仅仅是 type or lifetime parameters are not used in the body of the type</strong>。因此当我们用PhantomData来假装使用T的时候，还要考虑T的variance property！而不只是简单插入了一个占位 T 的成员属性。这也是为什么，我们不仅会看见有最常见的`PhantomData`比如像下面这种: 
 
 `struct CovariantStructT> {
      _field: PhantomDataT>
@@ -102,7 +102,7 @@ PhantomData的规则是，只要 T 实现了上面某个trait，那么 PhantomDa
 
 Rust的特点是宣称无需GC的前提下保证内存安全，其中一种方式就是使用RAII，在创建结构体的时候获取资源，在析构(之后全部称drop)的时候释放资源。而在drop的时候，因为rust允许访问struct所有的成员，因此要保证不能访问到已经无效的数据，这就是drop check。
 
-**为了先体会drop check，可以简单认为，drop check只需要检查实现了drop方法，且其drop方法有类型参数的结构体**(之后会形式化定义)
+<strong>为了先体会drop check，可以简单认为，drop check只需要检查实现了drop方法，且其drop方法有类型参数的结构体</strong>(之后会形式化定义)
 
 在rust中，类型参数不仅仅指其他语言中也常见的`T`，也包括生命周期参数，例子如下
 
@@ -114,7 +114,7 @@ struct Node'a> {
 } 
 `
 
-#### **3.1 带有生命周期标注的drop方法**
+#### <strong>3.1 带有生命周期标注的drop方法</strong>
 
 `// 代码1
 struct Node'a> {
@@ -159,9 +159,9 @@ fn main() {
 
 调换顺序后，编译器知道x比node先drop，也就是说x的生命周期比node更短，因此不满足Node的定义，因此编译失败。这也是drop check的成果，分析出drop函数中还存在资源引用，虽然实际上我们在drop函数中并没有访问i32的引用，但目前的rust编译器还没有智能到那一步，它只会预防我们访问所有可能的引用。
 
-再补充一个概念**，Strictly outlives**
+再补充一个概念<strong>，Strictly outlives</strong>
 
-我们知道，生命周期之间可以判断是否有包含关系，当我们说'a : 'b 的时候，说明 'a 的范围是**大于等于 **'b 的，我们不关心到底是大于还是等于。但是现在引入一个"strictly outlives"的概念，要求一定要大于而不能等于。
+我们知道，生命周期之间可以判断是否有包含关系，当我们说'a : 'b 的时候，说明 'a 的范围是<strong>大于等于</strong>'b 的，我们不关心到底是大于还是等于。但是现在引入一个"strictly outlives"的概念，要求一定要大于而不能等于。
 
 `{
     let a = 1;
@@ -171,7 +171,7 @@ fn main() {
 }
 `
 
-在上面代码中，a的生命周期strictly outlives b和c的生命周期。而b和c的生命周期是相同的，不存在strictly outlives关系。因为rust规定，**在一个let语句中的变量具有相同的生命周期。**所以，同一个结构体中的变量也都有一样的生命周期。
+在上面代码中，a的生命周期strictly outlives b和c的生命周期。而b和c的生命周期是相同的，不存在strictly outlives关系。因为rust规定，<strong>在一个let语句中的变量具有相同的生命周期。</strong>所以，同一个结构体中的变量也都有一样的生命周期。
 
 而在drop check中，就要求这些类型参数Strictly outlives T，例子如下:
 
@@ -195,7 +195,7 @@ fn main() {
 
 在上面的代码中，按照drop order，变量val会先drop，然后才drop变量i，但这段代码仍然无法通过编译，原因就是没有Strictly outlives。
 
-#### **3.2  **带有类型标注的drop方法
+#### <strong>3.2</strong>带有类型标注的drop方法
 
 如果结构体drop函数不再有 'a 这样的生命周期标注，只有表示类型的 T，是否就不存在生命周期的问题了呢，答案显然是No，因为T本身可以是任何类型，包括带生命周期的结构体，所以可能会隐式地包含生命周期的问题。
 
@@ -222,11 +222,11 @@ fn main() {
 
 #### 3.3 不带任何类型参数的drop函数
 
-如果drop函数不带任何类型参数，无论是`` 还是 `` ，那么这个drop函数一定是安全的。因为这个struct中的所有成员一定都属于这个struct。因为没有生命周期标注`` 意味着不会有任何引用，没有`` 也排除了隐含引用的可能。所以**不会有drop check**。
+如果drop函数不带任何类型参数，无论是`` 还是 `` ，那么这个drop函数一定是安全的。因为这个struct中的所有成员一定都属于这个struct。因为没有生命周期标注`` 意味着不会有任何引用，没有`` 也排除了隐含引用的可能。所以<strong>不会有drop check</strong>。
 
 #### 3.4 没有drop函数的结构体
 
-如果一个结构体没有drop函数，则能证明在释放它的时候，一定不会访问它的任何成员变量，也就**不需要有drop check**，且我们还能将它的生命周期提前结束，这样更符合直觉一点。比如下面的代码4
+如果一个结构体没有drop函数，则能证明在释放它的时候，一定不会访问它的任何成员变量，也就<strong>不需要有drop check</strong>，且我们还能将它的生命周期提前结束，这样更符合直觉一点。比如下面的代码4
 
 `// 代码4
 struct Node'a> {
@@ -278,9 +278,9 @@ fn main() {
 
 通过上面的例子，大概能体会到drop check的功能，直白说就是检查drop函数中是否可能合法访问结构体的所有成员变量，特别是引用变量。接下来形式化说明，drop check到底是怎么检查代码是否合法的。
 
-但首先引入一个概念: **drop glue**
+但首先引入一个概念: <strong>drop glue</strong>
 
-Drop glue is compiler generated and first calls::drop and then recursively calls the drop glue of any recursively **owned values**. 简单说就是编译器生成的，用于调用drop函数的代码。然而需要注意的是，原文用词是owned values，并不是调用每一个值的drop glue。比如如果 T 有成员 `t1: Vec`  ，那么drop glue会调用t1的 drop 函数。如果 T 有成员 `t2: &mut Vec`，drop glue 则不会调用 `t2.drop()`，因为按照规则 t2 不属于 T 的owned values。具体哪些算owned values，哪些不算，可以查阅rust dev-guide<span class="wikilink wikilink--missing" title="未导入的页面">4</span>(#ref_4)
+Drop glue is compiler generated and first calls::drop and then recursively calls the drop glue of any recursively <strong>owned values</strong>. 简单说就是编译器生成的，用于调用drop函数的代码。然而需要注意的是，原文用词是owned values，并不是调用每一个值的drop glue。比如如果 T 有成员 `t1: Vec`  ，那么drop glue会调用t1的 drop 函数。如果 T 有成员 `t2: &mut Vec`，drop glue 则不会调用 `t2.drop()`，因为按照规则 t2 不属于 T 的owned values。具体哪些算owned values，哪些不算，可以查阅rust dev-guide<span class="wikilink wikilink--missing" title="未导入的页面">4</span>(#ref_4)
 
 接下来继续说明drop check的流程。这里引用Rust doc中drop check<span class="wikilink wikilink--missing" title="未导入的页面">5</span>(#ref_5) 的定义，而不是RFC-0769<span class="wikilink wikilink--missing" title="未导入的页面">6</span>(#ref_6) 中定义，因为 RFC-0769 写于2013年8月，过于古老，和现在的规则虽然精神内核一样，但具体规则已经有所不同。
 
@@ -288,7 +288,7 @@ rust doc关于drop check的检查过程是这样说的
 
 - 如果类型 T 和它的所有 (recursive) fields 都没有实现 Drop trait的话（即 T 没有drop glue），不进行drop check。其中`PhantomData`and`ManuallyDrop`  都被认为是没有实现Drop trait的。
 - 如果 T 实现了Drop trait，那么无论 T 的 type parameter 还是 lifetime parameter都要保证在drop 函数中是有效的(注: 但如果有 #[may_dangle] 修饰<span class="wikilink wikilink--missing" title="未导入的页面">7</span>(#ref_7)，会完全忽略)。
-- 如果 T 有drop glue，那么对 T 递归**包含(own)**的所有的类型 U来说，要保证 U 在 drop 时，所有类型或生命周期都是有效的。(注意，这里和drop glue相同的是都要求包含关系，但drop glue关心的是value，这里关心的是类型)
+- 如果 T 有drop glue，那么对 T 递归<strong>包含(own)</strong>的所有的类型 U来说，要保证 U 在 drop 时，所有类型或生命周期都是有效的。(注意，这里和drop glue相同的是都要求包含关系，但drop glue关心的是value，这里关心的是类型)
 接下来说明如何计算包含(own)关系，这里直接搬运一下(如果你能坚持看到这里，下面这段原文也一定能大概理解)
 
 **The set of owned types is determined by recursively traversing`T`:
@@ -313,7 +313,7 @@ struct UnownedVec {
 
 前面铺垫了那么多，现在思考一下，什么情况需要用到#[may_dangle]，一个例子是Box
 
-![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_093fb6232823.jpg)
+![](/images/collections/0.raw/zhihu/%E8%B5%B0%E5%90%91cs/asset/img_093fb6232823.jpg)
 
 Box&lt;T&gt; 的drop方法用到了#[may_dangle]   为什么呢？让我们尝试自己实现一个简单的MyBox
 

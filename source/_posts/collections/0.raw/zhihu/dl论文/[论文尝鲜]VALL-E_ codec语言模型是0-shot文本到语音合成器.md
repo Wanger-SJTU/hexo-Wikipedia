@@ -19,11 +19,11 @@ source_url: https://zhuanlan.zhihu.com/p/624876242
 
 [https://arxiv.org/pdf/2301.02111.pdf](https://link.zhihu.com/?target=https%3A//arxiv.org/pdf/2301.02111.pdf)
 
-![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_bec7c8ceb77b.jpg)
+![](/images/collections/0.raw/zhihu/dl%E8%AE%BA%E6%96%87/asset/img_bec7c8ceb77b.jpg)
 
 不少作者都认识看到这个Sheng Zhao就想吐，现在还记得，多年前被其卡着要我们check in源代码的丑恶嘴脸。
 
-【追加一下，我当时是**一行自己写的代码都没有checkin到这人单独建立的git branch上**。组里的新来的日本人，倒是把他的代码checkin了。所以说，这人的色厉内荏，对我根本不起作用。】
+【追加一下，我当时是<strong>一行自己写的代码都没有checkin到这人单独建立的git branch上</strong>。组里的新来的日本人，倒是把他的代码checkin了。所以说，这人的色厉内荏，对我根本不起作用。】
 
 以后开会的时候，别被我碰到，肯定找机会找回来场子！当时手腕不够硬，怎么就和这样的货色有交集了？？？
 
@@ -49,7 +49,7 @@ discrete codes derived from an off-the-shelf neural audio codec model
 
 此外，作者们发现，vall-e可以保持（蕴含在acoustic prompt-3秒语音提示，中的）说话人的情感，以及语音学的环境。
 
-![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_ff7b3a999387.jpg)
+![](/images/collections/0.raw/zhihu/dl%E8%AE%BA%E6%96%87/asset/img_ff7b3a999387.jpg)
 
 vall-e的系统框图，包括了7个部分先前工作的流程是：
 
@@ -81,7 +81,7 @@ vall-e的系统框图，包括了7个部分先前工作的流程是：
 
 ### 1 介绍
 
-![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_bd07353eaf74.jpg)
+![](/images/collections/0.raw/zhihu/dl%E8%AE%BA%E6%96%87/asset/img_bd07353eaf74.jpg)
 
 vall-e和已有的架构的对比，算是很好的直接用6万小时的语音，来搞事情了
 
@@ -93,7 +93,7 @@ vall-e和已有的架构的对比，算是很好的直接用6万小时的语音�
 
 如下图所示：
 
-![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_3682288378d3.jpg)
+![](/images/collections/0.raw/zhihu/dl%E8%AE%BA%E6%96%87/asset/img_3682288378d3.jpg)
 
 如果追加文本控制指令（文本序列），会更有意思一些，不然直接把text for synthesis的部分，追加上文本控制？至少，你需要告诉系统，你是想搞tts，是想搞语音编辑，语音歌唱？等等。。。还是想搞其他的什么任务。。。• 我们通过利用大量的半监督数据在说话人维度中构建了一个通用的 TTS 系统，这表明对于 TTS 而言，简单的放大半监督数据被低估了。
 
@@ -117,7 +117,7 @@ vall-e和已有的架构的对比，算是很好的直接用6万小时的语音�
 
 ### 3 背景-语音量化
 
-![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_53aecd630ca7.jpg)
+![](/images/collections/0.raw/zhihu/dl%E8%AE%BA%E6%96%87/asset/img_53aecd630ca7.jpg)
 
 大概搞懂一点意思了，这不就是类似vqvae在图片那边的使用吗。。。另外wav2vec中也用到了codebook量化codebook，其他如hubert里面也有通过聚类的方法来搞这个事情仔细看看上面的图。
 
@@ -137,9 +137,9 @@ speech-to-speech翻译里面的 unit to unit翻译的常规操作而已。
 
 D = {xi, yi}**
 
-其中，**y是一个语音样本；**
+其中，<strong>y是一个语音样本；</strong>
 
-**x={x0, ..., xL}是长度为L+1（？你是不是想说是L?）的音素转录序列；**
+<strong>x={x0, ..., xL}是长度为L+1（？你是不是想说是L?）的音素转录序列；</strong>
 
 使用预训练好的neural codec model来对y进行编码：
 
@@ -147,7 +147,7 @@ D = {xi, yi}**
 
 $Encodec(y) = C^{[T\times 8]} 【如果把这里的8，泛化为使用的codebook的数量，感觉更High-level一些，即T * B, where B = 8】$
 
-这里，C是一个（**二维的，这个词有误导性，matrix本来就是两个维度的）acoustic code matrix**，矩阵；
+这里，C是一个（<strong>二维的，这个词有误导性，matrix本来就是两个维度的）acoustic code matrix</strong>，矩阵；
 
 T是下采样的utterance length，是从L+1 -> T过来的（可以参考unsupervised ASR里面的常规操作，有个nearby segment merging的操作，类似的效果了）。
 
@@ -185,13 +185,13 @@ c[:, j]表示的是，来自第j个codebook的code sequence。。。j={1, ..., 8
 
 #### 训练
 
-![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_98c8f93f3a62.jpg)
+![](/images/collections/0.raw/zhihu/dl%E8%AE%BA%E6%96%87/asset/img_98c8f93f3a62.jpg)
 
 先是搞第一个量化器c[:, 1]，对应第一个codebook。非自回归。然后是第2-8个codebook，都是自回归的。上面的这个设计，是一趟自回归，后面是7趟非自回归。这个背后的motivation，需要好好讲明白。。。
 
 下面具体看一下：
 
-![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_3805213813a2.jpg)
+![](/images/collections/0.raw/zhihu/dl%E8%AE%BA%E6%96%87/asset/img_3805213813a2.jpg)
 
 一个自回归，后面是逐次搞了从1-&gt;2, 2-&gt;3, 3-&gt;4, 4-&gt;5, 5-&gt;6, 6-&gt;7, 7-&gt;8的七次非自回归。上面的图，没有啥难度。
 
@@ -201,7 +201,7 @@ g2p，代表的是从字形到phoneme的操作，有开源的代码：
 
 然后上面的公式二，也没有啥可说的。
 
-![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_1da2d12656fc.jpg)
+![](/images/collections/0.raw/zhihu/dl%E8%AE%BA%E6%96%87/asset/img_1da2d12656fc.jpg)
 
 合并起来之后，看。
 
@@ -217,7 +217,7 @@ g2p，代表的是从字形到phoneme的操作，有开源的代码：
 
 简单理解，和a b c -> a b c 没啥区别。就是序列长度不变了。学习的中间的类似self-attention的多层decoder模块。
 
-![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_96a93a20ca4f.jpg)
+![](/images/collections/0.raw/zhihu/dl%E8%AE%BA%E6%96%87/asset/img_96a93a20ca4f.jpg)
 
 如果是选择codebook中的index的话，一般softmax无法直接传递，需要用一些平滑策略来搞。
 
@@ -225,11 +225,11 @@ g2p，代表的是从字形到phoneme的操作，有开源的代码：
 
 这个重点看一下：
 
-上下文学习（in context learning）是基于文本的语言模型的一项令人惊讶的能力，它能够预测未见输入（unseen inputs，例如，在本文中，代表，之前没有见到过的speaker的语音prompt）的标签**，**而无需额外的参数更新**。
+上下文学习（in context learning）是基于文本的语言模型的一项令人惊讶的能力，它能够预测未见输入（unseen inputs，例如，在本文中，代表，之前没有见到过的speaker的语音prompt）的标签<strong>，</strong>而无需额外的参数更新**。
 
  对于 TTS，如果该模型
 
-**无需微调即可为未知的说话人合成高质量的语音，则该模型被认为具有上下文学习能力**。【亮点！】
+<strong>无需微调即可为未知的说话人合成高质量的语音，则该模型被认为具有上下文学习能力</strong>。【亮点！】
 
 **
 
@@ -241,8 +241,8 @@ g2p，代表的是从字形到phoneme的操作，有开源的代码：
 
 我们首先将文本转换为音素序列**，并将登记的录音编码为声学矩阵，形成：
 
-- **音素提示，和**
-**2. 声学提示**。 
+- <strong>音素提示，和</strong>
+<strong>2. 声学提示</strong>。 
 
 **
 
@@ -269,7 +269,7 @@ VALL-E：**我们的主要兴趣是为未知说话者生成给定的（语音序
 - 一个文本句子 textual prompt、
 - 一段已登记的语音（acoustic prompt）及
 - 其相应的转录（可以得到“转录音素”）（acoustic prompt的对应的文本序列）。 
-我们将“已登记语音”的“转录音素”添加到给定句子的音素序列中作为“音素提示”，并使用注册语音的第一层声学标记 c[:;1] 作为**声学前缀**。 
+我们将“已登记语音”的“转录音素”添加到给定句子的音素序列中作为“音素提示”，并使用注册语音的第一层声学标记 c[:;1] 作为<strong>声学前缀</strong>。 
 
 通过“音素提示”和“声学前缀”，VALL-E 为给定的文本，生成“声学标记”，从而最后可以，克隆该说话者的声音。
 
@@ -281,13 +281,13 @@ VALL-E-continual：**在此设置中，我们使用整个转录和话语的前 3
 
 ### 5 实验
 
-![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_3b62b194174b.jpg)
+![](/images/collections/0.raw/zhihu/dl%E8%AE%BA%E6%96%87/asset/img_3b62b194174b.jpg)
 
 按照asr的wer来衡量准确率了
 
 下面是tts的效果（特别是未知说话人的）：
 
-![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_9e7d55f5e608.jpg)
+![](/images/collections/0.raw/zhihu/dl%E8%AE%BA%E6%96%87/asset/img_9e7d55f5e608.jpg)
 
 效果很不错，比yourtts好很多了
 
@@ -300,6 +300,6 @@ VALL-E-continual：**在此设置中，我们使用整个转录和话语的前 3
 - prompt是多模态的，有语音，有音素的，整体还是有意思的。
 希望以后看到更多类似的工作了。特别是多模态的，以及基于文本可控的“多任务”的，“多模态”，“多语言”的。感觉这个文章的确是很好的把chatgpt的那种in context learning，以及大模型预训练的思想，引入了语音的多个任务了。**
 
-**未来可期！**
+<strong>未来可期！</strong>
 
 收工。

@@ -15,7 +15,7 @@ source_url: https://zhuanlan.zhihu.com/p/1930280222068053288
 ---
 
 
-**1 大模型RL框架的进化之路**
+<strong>1 大模型RL框架的进化之路</strong>
 
 2024年O1路线发现之前，主流的有监督的机器学习，是让学生去学习一个问题的标准答案，根据loss更新模型参数。
 训练流程相对简单，pytorch和tensorflow基于此做了各种训练的加速。
@@ -26,29 +26,29 @@ RL算法也一直在更新，从dpo到ppo，再到现在的grpo/rloo/reinforce++
 如果说SFT是呆板的学习标准答案，那么RL是给定题目后，让学生自己寻找答案，给学生的解题打分，最后学生根据打分结果来学习。
 所以，RL框架就分成了三大块，细节可以参看mengyuan的文章——[图解大模型RLHF系列之：人人都能看懂的PPO原理与源码解读](https://zhuanlan.zhihu.com/p/677607581)
  
-**a) 学生自己寻找答案**
+<strong>a) 学生自己寻找答案</strong>
 就是大家天天说的rollout
-**b) 给学生答案打分**
+<strong>b) 给学生答案打分</strong>
 理论上给学生批改作业没那么容易，特别我们现在需要学生做的任务越来越难。但现在大家都在卷数学，物理，代码，这些方向根据结果+规则判断对错是可行的，也就是rule-based。
 以及，大家发现训练一个小的reward 模型（例如7B）好像也能用。
 导致学生找到答案后，判断答案的成本并不高。所以，这块不怎么被重视，甚至有人直接合并到rollout里了。
 但随着agent出来后，特别开始涉及到商业领域，例如我在做的电商领域，就没那么简单了，未来这块可能还会有很大的变化。
-**c) 学生根据打分来学习**
+<strong>c) 学生根据打分来学习</strong>
 训练模块，基于传统的训练框架，改改loss function就行。
 
 所以，现在的RL训练框架，整体分成两块，训练和rollout。
  
 那么问题就来了，假如你来设计这个rl框架，你会碰到这些挑战。
-**挑战一，rollout和训练两个模块的管理**
+<strong>挑战一，rollout和训练两个模块的管理</strong>
 RL现在的共识是on policy效果好，rollout和训练必须顺序执行。
 但现在模型越来越大，多卡是必然的，如何管理资源？
 rollout是内存消耗型，因为要做kv cache，特别现在cot越来越长了，训练则是计算密集型。
 这俩现在都分别做了非常做的复杂的性能优化，如何对这两者做好资源管理？两者的参数同步如何优化？
-**挑战二，底层框架**
+<strong>挑战二，底层框架</strong>
 训练框架有很多，megatron，fsdp，deepspeed，差异还不小。
 推理引擎vllm和sglang，你用那个？
 不同的训练框架搭配不同的推理引擎，仅仅是参数更新这块，逻辑代码都不一样。。
-**挑战三，异步问题**
+<strong>挑战三，异步问题</strong>
 rollout批次执行的，但同批次差异巨大，特别agent时代这个差异更是大的离谱。
  
 最近在做技术选型，带着团队的小朋友 [@和光同尘](https://www.zhihu.com/people/f364685b6537fa2b4db2f66275ac5616) 一起花时间把roll/slime/verl/openrlhf的源码框架都过了一轮。
@@ -61,9 +61,9 @@ rollout批次执行的，但同批次差异巨大，特别agent时代这个差�
 重点感谢这篇文章，对我帮助非常大
 [从零开始的verl框架解析](https://zhuanlan.zhihu.com/p/30876678559)
 
-**2 性能的挑战**
+<strong>2 性能的挑战</strong>
 
-**2.1 原始版本**
+<strong>2.1 原始版本</strong>
 我们回顾下三个阶段。
 
 学生自己寻找答案，在agent之前，就是模型推理。
@@ -74,7 +74,7 @@ rollout批次执行的，但同批次差异巨大，特别agent时代这个差�
 这个逻辑，基于sft框架是能搞的，只不过之前只用初始化一个模型，现在要初始化多个罢了。很多rl框架一开始都是这样。
 但很快，我们会发现速度非常非常慢，那么问题来了，我们要如何优化它？
 
-**2.2 内存的优化**
+<strong>2.2 内存的优化</strong>
 [【通俗易读】LLM训练-从显存占用分析到DeepSpeed ZeRO 三阶段解读](https://zhuanlan.zhihu.com/p/694880795)
 参考上面的文章。
 训练过程中占用的显存有四种，模型训练参数，梯度占用，优化器占用，激活值占用。
@@ -89,7 +89,7 @@ TP/PP从头到尾都只存模型的一部份，计算的时候使用的切分后
 
 ![](https://picx.zhimg.com/v2-72b85d2868126f48efe30fd413d14e7f_r.jpg)因为all gather的存在，理论上dp就是上限要比tp/pp差。
 
-**2.3 推理的速度** 
+<strong>2.3 推理的速度</strong> 
 可以参考我的vllm，sglang，kv cache源码系列。现在的推理引擎，仅仅逻辑层kv cache的复用，就有非常多的点优化，更不用说底层算子的优化。
 [从零开始设计SGLang的KV Cache](https://zhuanlan.zhihu.com/p/31160183506)
 但使用推理引擎带来的问题就是，学生学习完毕后，需要把新的参数更新过去。但参数的更新耗时，对比于推理引擎提升的推理速度来看，百倍的提升，是完全可以接受的。
@@ -99,9 +99,9 @@ TP/PP从头到尾都只存模型的一部份，计算的时候使用的切分后
 我们把训练框架和推理引擎拼接起来，做个新的rl框架，性能就有巨大的提升。
 那么新的问题来了，如何拼接？
 
-**3 训练框架和推理引擎的拼接**
+<strong>3 训练框架和推理引擎的拼接</strong>
 
-**3.1 SPMD和MPMD**
+<strong>3.1 SPMD和MPMD</strong>
 SPMD（Single Program, Multiple Data），MPMD（Multiple Programs, Multiple Data），或者可以称之为single controller vs multi controller。
 single controller，worker可以执行不同的程序（MPMD），需要一个老板来控制，不然就乱掉了。
 multi controller，每个worker都执行相同的程序(SPMD)，好处是不需要老板。但没有老板就代表各个worker在各种情况下，需要仔细考虑各种corner case，不然会乱跑。
@@ -113,12 +113,12 @@ DeepSpeed和Megatron等主流的训练框架都属于SPMD，所有进程执行�
 
 我们带着疑问去看代码，看slime和roll是如何做的。
 
-**3.2 slime的做法**
+<strong>3.2 slime的做法</strong>
 
 [https://github.com/THUDM/slime](https://link.zhihu.com/?target=https%3A//github.com/THUDM/slime)
 slime只定义了两个worker，RayTrainGroup 和RolloutGroup，训练框架和推理引擎。
 
-**3.2.1 数据的传输**
+<strong>3.2.1 数据的传输</strong>
 
 slime单独定义了一个buffer类，专门用来做推理引擎和训练模块的数据传输中间件。数据都放到buffer里（甚至可以写入到磁盘），通过rollout id来指定。
 并且buffer类的数据处理函数，rollout/eval function都是通过命令行参数指定，带来了极大的自由度。
@@ -161,7 +161,7 @@ def process_rollout_data(rollout_id, args, data_buffer):
         self.rollout = rollout
         ray.get([actor.set_data_buffer.remote(rollout.data_buffer) for actor in self._actor_handlers])
 
-**3.2.2 模型的传输**
+<strong>3.2.2 模型的传输</strong>
 把actor的配置传给rollout，让rollout引擎在需要的时候正确的同步参数。
 
     def async_init_weight_update_connections(self, rollout):
@@ -197,7 +197,7 @@ def process_rollout_data(rollout_id, args, data_buffer):
 看到这里，我们发现好像纠结什么single controller，multi controller并不重要。这些逻辑直接硬编码，好像也能支持？问题在哪？
 暂且不急，我们再看看roll。
 
-**3.3** **roll的做法**
+<strong>3.3</strong> <strong>roll的做法</strong>
 roll通过cluster的方式，定义了多个角色。
 
        self.actor_train: Any = Cluster(
@@ -227,14 +227,14 @@ roll通过cluster的方式，定义了多个角色。
  )
 分的比slime更细，好处是跟算法侧的认知比较一致，都是用cluster封装好了，毕竟算法是不知道训练框架和推理引擎有这么大的区别。
 
-**3.3.1 数据的传输**
+<strong>3.3.1 数据的传输</strong>
 类似megatron，可以按照domain分开来采样，在pipeline.py文件定义好。	如果懒得写data generator，roll这个就很省心了。
 重点讨论一下reward，理想情况下，我们肯定是期望有一个统一的reward模型，但现在统一的reward比较难训，并且看起来会持续很长一段时间。
 我们退而求其次，不同的domain用不同的reward来打分，代码/数学/物理/写作等各一个，最后做聚合。
 roll细化到，不同domain，不同batch，不同query上都可以做自定义配置。
 [https://github.com/alibaba/ROLL/blob/9b85e63ad4c715aa6602ba2a43657e25217c7732/examples/qwen2.5-7B-rlvr_megatron/rlvr_config.yaml#L176-L252](https://link.zhihu.com/?target=https%3A//github.com/alibaba/ROLL/blob/9b85e63ad4c715aa6602ba2a43657e25217c7732/examples/qwen2.5-7B-rlvr_megatron/rlvr_config.yaml%23L176-L252)
 
-**3.3.2 模型的传输	**
+<strong>3.3.2 模型的传输</strong>
 
     def model_update(self, tgt_workers, broadcast_tgt_devices, p2p_tgt_devices):
         comm_plan = self.model_update_comm_plan[self.worker.rank_info.pp_rank]
@@ -286,7 +286,7 @@ roll细化到，不同domain，不同batch，不同query上都可以做自定义
 但我们刚刚的讨论，都是如果这些role在同一个机器上，硬编码会很简单？
 那么如果不在同一个机器会怎么样？
 
-**3.4 colocate和ray**
+<strong>3.4 colocate和ray</strong>
 
 把actor/ref/reward/critic模型都放一张卡上就是colocate。
 但正如上文所说，7B模型训练单卡都塞不下，1000B的模型下半年预计也会开源好几个，并行带来的开销是很夸张的。
@@ -299,18 +299,18 @@ ray能支持更加复杂的分布式计算的框架，不用我们过多的操�
 
 我们对比下slime/verl/roll/openrlhf四个框架的colocate和非colocate实现。
  
-**3.4.1 slime**
+<strong>3.4.1 slime</strong>
 只有俩worker，训练和推理，RayTrainGroup 和RolloutGroup
 colocate是训练和推理分开部署，那么非colocate的情况下，只需要处理分布式通信来同步参数。
 这种拆分，抽象易于理解，跟上文讨论的训练和推理是一致的。
 只需要在训练的时参数配置colocate，就会自动在所有重要环节执行。
 
-**3.4.2 roll**
+<strong>3.4.2 roll</strong>
 非colocate的话，roll支持各种细粒度的worker指定在不同的显卡的部署，并且还能按轮次去配置，如果不指定的话，ray也会自动帮你部署。
 RL资源消耗这么大，细粒度的显卡配置，更有助于显卡资源的高效利用，但对算法侧的资源调度能力要求也更高了。
 很明显，这个逻辑用ray来管理更合适。
 
-**3.4.3 verl**
+<strong>3.4.3 verl</strong>
  ActorRolloutRefWorker这个类设计的有点问题，已经在改了。
 
 ![](https://pic3.zhimg.com/v2-85a933be1c6bf71ff9fc2c819dda0ffa_r.jpg)
@@ -353,7 +353,7 @@ def create_colocated_worker_cls(class_dict: dict[str, RayClassWithInitArgs]):
 跟别的框架不一样的点，同进程和非同进程。根据verl的反馈，同进程收益是非常大的。
 同进程通信的话，在某些场景下，速度会差十几倍，memory的碎片问题之类的也会造成很大的影响。
  
-**3.4.4 openrlhf**
+<strong>3.4.4 openrlhf</strong>
 Openrlhf支持多种混合部署方式，允许共置 vLLM 引擎、Actor、Reference、Reward 和 Critic 模型节点或是部分混合部署。支持任意方式的混合部署 也支持分开部署异步训练。
  
 
@@ -361,12 +361,12 @@ Openrlhf支持多种混合部署方式，允许共置 vLLM 引擎、Actor、Refe
 不过根据运维侧的反馈，ray设计跟现在prod k8s云原生体系比较违背，落地到prod，管理成本比较高。
 但ray反馈他们也在针对性优化了，例如，ray现在tensor可以直接走nccl了 bypass object store，也可以期待下他们后续的更新。
 
-**3.5 不同的训练框架和推理引擎的连接也不同**
+<strong>3.5 不同的训练框架和推理引擎的连接也不同</strong>
 举个例子，假如vLLM的TP是4，而deepspeed分在了8个GPU，那么就需要做参数的转换才能传输，megatron也类似。
 如果训练框架有俩，推理引擎有俩，那么要适配的不是两种，而是四种方案。
 某位不愿意透露姓名的朋友，曾被这样的bug坑过，导致他们一直以为百张卡内megatron没有fsdp快，并且持续了很长一段时间。
 
-**3.6 代码的解耦**
+<strong>3.6 代码的解耦</strong>
 拿slime来举例子。
 推理引擎分成三层了，顶层-RolloutGroup，中层-RolloutRayActor，底层-SglangEngine。
 
@@ -375,7 +375,7 @@ Openrlhf支持多种混合部署方式，允许共置 vLLM 引擎、Actor、Refe
 现在各大框架基本上都是这么设计了。
 还有一些模块，loss function，打分模块，相对比较简单，就不展开了。
 
-**4 关于Agentic RL**
+<strong>4 关于Agentic RL</strong>
 roll，verl，openrlhf都有了不错的支持。
 roll甚至单独定义了agentic_pipeline.py来方便大家做进一步的自定义，虽然这样会导致代码的逻辑复杂度增加。但weixun反馈，后续等agentic RL稳定下来后，会重新做一版梳理。weixun16年就开始做RL，经验非常丰富，大家可以多去反馈。
 个人认为，未来应该只有agentic RL，现有的rlvr只是其中的一个组成模块。
@@ -385,9 +385,9 @@ roll甚至单独定义了agentic_pipeline.py来方便大家做进一步的自定
 自主agent+沙盒+workflow的混合，agent+rl如何有效的扩大自主agent的范围和边界，等一系列问题，现在并没有一个开源框架能做有效支撑。
 太多的不确定，我的下一篇文章会重点展开讨论。
 
-5** 用哪个RL框架？**
+5<strong>用哪个RL框架？</strong>
 
-**5.1 框架的难点	**
+<strong>5.1 框架的难点</strong>
 如果技术进化速度很快，老的框架往往很快就会被大家遗忘，这的确比较令人尴尬。
 agent方向也是如此，langchain2023年有多火，现在呢？用dify的更多吧。
 原因很简单，老的框架历史包袱太重。
@@ -402,25 +402,25 @@ agent方向也是如此，langchain2023年有多火，现在呢？用dify的更�
 而随着模型不断变大，现在其实就俩选择，彻底自己写一套框架，或者基于megatron做定义。
 前者对团队要求高，后者则是要忍megatron。
 
-5**.2 用哪个？**
+5<strong>.2 用哪个？</strong>
 现在的RL框架，各有各的优点，大家按需自取即可。
- **a] OpenRLHF**
+ <strong>a] OpenRLHF</strong>
 OpenRLHF 是第一个基于 Ray、vLLM、ZeRO-3 和 HuggingFace Transformers 构建的易于使用、高性能的开源 RLHF 框架，旨在使 RLHF 训练变得简单易行。
 很多人发论文都用它。
 [https://github.com/OpenRLHF/OpenRLHF](https://link.zhihu.com/?target=https%3A//github.com/OpenRLHF/OpenRLHF)
-**b] slime**
+<strong>b] slime</strong>
 刚出没有历史包袱，轻装上阵，代码是真的简洁且清晰，有我当年看完vLLM再去看SGlang的快感。
 zilin本身算法认知也很到位，经常跟我们探讨算法细节，对算法侧的痛点是很懂的。例如buffer对数据的处理，很明显就是理解算法侧天天洗数据的痛。
 大规模训练上，在zhipu也经过了验证。
 大家想要去做一些大胆的框架魔改尝试，slime非常值得一试。
 [https://github.com/THUDM/slime](https://link.zhihu.com/?target=https%3A//github.com/THUDM/slime)
-**c] ROLL**
+<strong>c] ROLL</strong>
 数据处理做的蛮精细，分domain采样，训练和评估的异步都做好了。
 agentic和异步是支持的比较完善，weixun从16年就开始做RL，经验非常丰富，ROLL也在这个方向投入了很大的精力去优化。
 agentic一直在更新，下周估计还会放新feature。
 各种角色的显卡配置指定也可以实现非常细致的调配，支持算法做精细化的算法性能调优。agentic RL这块如果你想要深入折腾的话，可以试试。
 [https://github.com/alibaba/ROLL](https://link.zhihu.com/?target=https%3A//github.com/alibaba/ROLL)
- **d] verl**
+ <strong>d] verl</strong>
 据我所知，很多大厂都在用这个，在大规模服务上，它跑起来就是稳且靠谱。
 以及，在大规模集群的显卡性能优化上，是有过非常多的踩坑经验。
 agentic和异步也做了很多的优化和探索，对deepseek v3的支持也很好。
@@ -429,14 +429,14 @@ agentic和异步也做了很多的优化和探索，对deepseek v3的支持也�
  
 至于aReal的异步，我自己都没想清楚，估计年底会再写一些篇做个专门探讨。
 
-6** 结尾**
+6<strong>结尾</strong>
 最近半年，把RL训练框架，agent框架，推理引擎框架都过了一轮。
 代码量，agent > 推理引擎> rl训练框架。
 代码难度，推理引擎>rl训练框架>agent。
 但如果把推理引擎的底层算子抛开，RL训练的框架难度是跟推理引擎持平的。因为RL训练框架的难点在于缝合，很考验框架作者对各种系统，业务的理解。
 
 verl/slime/roll/openRLHF，这几个开源框架各有所长，能看到不少作者都有自己的追求和坚持，社区的积极性又很高。
-**我觉得大家可以很自豪的说，我们中国在开源的RL框架方向，技术和认知，就是世界第一。**
+<strong>我觉得大家可以很自豪的说，我们中国在开源的RL框架方向，技术和认知，就是世界第一。</strong>
 算法上人才差异也没那么大，差的大概就是显卡。
 
 大家还是要有一些家国情怀和自信，而不是单纯copy硅谷to china。不是说，谁离openai/claude近一些，更早的获取一些模型训练上的小道信息，谁就迭代的更快。
@@ -453,7 +453,7 @@ verl/slime/roll/openRLHF，这几个开源框架各有所长，能看到不少�
 加上团队一周只上四天班，除了固定一两天需要集体办公，其它时间自由分配。给了这么高的自由度，对应的是足够高的自驱力，对世界的好奇心，脑子要足够灵光。
 学历什么的我倒不是特别care，年龄我也不是特别care，一些35岁+的候选人，愿意挑战的，我也会给机会。
 
-**7 参考的文章**
+<strong>7 参考的文章</strong>
 [Ray分布式计算框架详解](https://zhuanlan.zhihu.com/p/460600694)
  [图解OpenRLHF中基于Ray的分布式训练流程](https://zhuanlan.zhihu.com/p/12871616401)
 [RLHF Infra --- Verl 学习（五）： Review Verl](https://zhuanlan.zhihu.com/p/1908988252754539515)

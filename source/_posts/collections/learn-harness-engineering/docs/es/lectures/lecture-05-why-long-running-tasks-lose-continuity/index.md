@@ -63,12 +63,12 @@ flowchart LR
 
 ## Conceptos clave
 
-- **Las ventanas de contexto son finitas**: No importa qué tamaño de ventana se reclame (128K, 200K, 1M), las tareas largas eventualmente las agotarán. Tras el agotamiento, se requiere compaction (perdiendo información) o reset (nueva sesión). Ambas pierden algo.
-- **Artefactos de continuidad**: Archivos de estado persistido que permiten a una nueva sesión retomar sin ambigüedad donde la anterior lo dejó. La forma básica: registro de progreso + registro de verificación + próximas acciones. Ese diario del artesano.
-- **Costo de reconstrucción**: El tiempo que una nueva sesión necesita para alcanzar un estado ejecutable. Los buenos harness pueden comprimir el costo de reconstrucción de 15 minutos a 3 minutos.
-- **Deriva (Drift)**: La brecha entre la comprensión del agente y el estado real del repositorio de código. Cada límite de sesión introduce deriva; sin control, se acumula.
-- **Ansiedad de contexto**: Un fenómeno observado por Anthropic — los agentes exhiben un comportamiento de convergencia prematura cuando se acercan a los límites de contexto percibidos, terminando tareas temprano para evitar pérdida de información. Es una ansiedad irracional por los recursos.
-- **Compaction vs reset**: La compaction resume el contexto dentro de la misma sesión (conserva el "qué," puede perder el "por qué"); el reset abre una nueva sesión reconstruyendo desde artefactos persistidos (limpio pero depende de la completitud de los artefactos).
+- <strong>Las ventanas de contexto son finitas</strong>: No importa qué tamaño de ventana se reclame (128K, 200K, 1M), las tareas largas eventualmente las agotarán. Tras el agotamiento, se requiere compaction (perdiendo información) o reset (nueva sesión). Ambas pierden algo.
+- <strong>Artefactos de continuidad</strong>: Archivos de estado persistido que permiten a una nueva sesión retomar sin ambigüedad donde la anterior lo dejó. La forma básica: registro de progreso + registro de verificación + próximas acciones. Ese diario del artesano.
+- <strong>Costo de reconstrucción</strong>: El tiempo que una nueva sesión necesita para alcanzar un estado ejecutable. Los buenos harness pueden comprimir el costo de reconstrucción de 15 minutos a 3 minutos.
+- <strong>Deriva (Drift)</strong>: La brecha entre la comprensión del agente y el estado real del repositorio de código. Cada límite de sesión introduce deriva; sin control, se acumula.
+- <strong>Ansiedad de contexto</strong>: Un fenómeno observado por Anthropic — los agentes exhiben un comportamiento de convergencia prematura cuando se acercan a los límites de contexto percibidos, terminando tareas temprano para evitar pérdida de información. Es una ansiedad irracional por los recursos.
+- <strong>Compaction vs reset</strong>: La compaction resume el contexto dentro de la misma sesión (conserva el "qué," puede perder el "por qué"); el reset abre una nueva sesión reconstruyendo desde artefactos persistidos (limpio pero depende de la completitud de los artefactos).
 
 ## Qué sucede cuando se rompe la continuidad
 
@@ -84,9 +84,9 @@ Tanto OpenAI como Anthropic enfatizan la persistencia estructurada del estado en
 
 ## Un diario para el artesano amnésico
 
-Enfoque central: **Trata al agente como un ingeniero brillante con amnesia.** Antes de que "termine su turno," debe escribir información crítica para que el agente del siguiente "turno" pueda retomar rápidamente.
+Enfoque central: <strong>Trata al agente como un ingeniero brillante con amnesia.</strong> Antes de que "termine su turno," debe escribir información crítica para que el agente del siguiente "turno" pueda retomar rápidamente.
 
-**Herramienta 1: Archivo de progreso (PROGRESS.md).** El artefacto de continuidad más básico — el núcleo del diario:
+<strong>Herramienta 1: Archivo de progreso (PROGRESS.md).</strong> El artefacto de continuidad más básico — el núcleo del diario:
 
 ```markdown
 # Project Progress
@@ -114,7 +114,7 @@ Enfoque central: **Trata al agente como un ingeniero brillante con amnesia.** An
 3. Update API documentation
 ```
 
-**Herramienta 2: Registro de decisiones (DECISIONS.md).** Registra decisiones de diseño importantes y sus razones. No necesitas documentos de diseño detallados — solo "qué decisión, por qué, cuándo" — las notas en el diario:
+<strong>Herramienta 2: Registro de decisiones (DECISIONS.md).</strong> Registra decisiones de diseño importantes y sus razones. No necesitas documentos de diseño detallados — solo "qué decisión, por qué, cuándo" — las notas en el diario:
 
 ```markdown
 # Design Decisions
@@ -125,9 +125,9 @@ Enfoque central: **Trata al agente como un ingeniero brillante con amnesia.** An
 - Constraint: Cache TTL of 5 minutes, active invalidation on write
 ```
 
-**Herramienta 3: Commits de git como puntos de control.** Haz commit después de completar cada unidad atómica de trabajo. Los mensajes de commit deberían explicar qué se hizo y por qué. Estos son snapshots de estado gratuitos y automáticamente versionados.
+<strong>Herramienta 3: Commits de git como puntos de control.</strong> Haz commit después de completar cada unidad atómica de trabajo. Los mensajes de commit deberían explicar qué se hizo y por qué. Estos son snapshots de estado gratuitos y automáticamente versionados.
 
-**Herramienta 4: init.sh o flujo de inicialización del harness.** Especifica en `AGENTS.md` las rutinas de "entrada" y "salida":
+<strong>Herramienta 4: init.sh o flujo de inicialización del harness.</strong> Especifica en `AGENTS.md` las rutinas de "entrada" y "salida":
 
 ```markdown
 ## At session start (clock in)
@@ -142,7 +142,7 @@ Enfoque central: **Trata al agente como un ingeniero brillante con amnesia.** An
 3. Commit all completed work
 ```
 
-**Estrategia mixta**: No todas las tareas necesitan un reset de contexto. Las tareas cortas (menos de 30 minutos) pueden completarse dentro de una sesión. Las tareas largas (que abarcan sesiones) deben usar archivos de progreso y registros de decisiones para la continuidad. Criterio de decisión: si una tarea necesita más del 60% de la ventana, comienza a preparar la entrega.
+<strong>Estrategia mixta</strong>: No todas las tareas necesitan un reset de contexto. Las tareas cortas (menos de 30 minutos) pueden completarse dentro de una sesión. Las tareas largas (que abarcan sesiones) deben usar archivos de progreso y registros de decisiones para la continuidad. Criterio de decisión: si una tarea necesita más del 60% de la ventana, comienza a preparar la entrega.
 
 ### Profundización en la ansiedad de contexto
 
@@ -150,11 +150,11 @@ La investigación de marzo de 2026 de Anthropic reveló además las manifestacio
 
 Dos estrategias abordan esto:
 
-**Compaction**: Resumir la conversación temprana dentro de la misma sesión. Ventaja: mantiene la continuidad, el agente puede ver el "qué." Desventaja: el "por qué" se pierde a menudo en los resúmenes — por qué se eligió la opción B sobre la A, por qué se omitió una optimización particular. Más críticamente, la compaction no elimina la ansiedad de contexto — el agente sabe que el contexto fue grande alguna vez, y psicológicamente todavía tiende a apresurarse hacia el cierre.
+<strong>Compaction</strong>: Resumir la conversación temprana dentro de la misma sesión. Ventaja: mantiene la continuidad, el agente puede ver el "qué." Desventaja: el "por qué" se pierde a menudo en los resúmenes — por qué se eligió la opción B sobre la A, por qué se omitió una optimización particular. Más críticamente, la compaction no elimina la ansiedad de contexto — el agente sabe que el contexto fue grande alguna vez, y psicológicamente todavía tiende a apresurarse hacia el cierre.
 
-**Reset de contexto**: Limpiar completamente el contexto, abrir una nueva sesión, reconstruir desde artefactos persistidos. Ventaja: estado mental limpio — la nueva sesión no tiene la ansiedad de "se me está acabando el tiempo." Desventaja: depende de la completitud de los artefactos de entrega. Si el diario falta información crítica, la nueva sesión puede perder tiempo yendo en la dirección equivocada.
+<strong>Reset de contexto</strong>: Limpiar completamente el contexto, abrir una nueva sesión, reconstruir desde artefactos persistidos. Ventaja: estado mental limpio — la nueva sesión no tiene la ansiedad de "se me está acabando el tiempo." Desventaja: depende de la completitud de los artefactos de entrega. Si el diario falta información crítica, la nueva sesión puede perder tiempo yendo en la dirección equivocada.
 
-Datos reales de Anthropic: para Sonnet 4.5, la ansiedad de contexto es lo suficientemente severa que la compaction por sí sola no es suficiente — el reset de contexto se convierte en un componente crítico del diseño del harness. Pero para Opus 4.5, este comportamiento está muy reducido, y la compaction puede gestionar el contexto sin depender de resets. Esto significa: **el diseño del harness necesita un entendimiento específico del modelo objetivo, no una plantilla de talla única.**
+Datos reales de Anthropic: para Sonnet 4.5, la ansiedad de contexto es lo suficientemente severa que la compaction por sí sola no es suficiente — el reset de contexto se convierte en un componente crítico del diseño del harness. Pero para Opus 4.5, este comportamiento está muy reducido, y la compaction puede gestionar el contexto sin depender de resets. Esto significa: <strong>el diseño del harness necesita un entendimiento específico del modelo objetivo, no una plantilla de talla única.</strong>
 
 > Fuente: [Anthropic: Harness design for long-running application development](https://www.anthropic.com/engineering/harness-design-long-running-apps)
 
@@ -162,9 +162,9 @@ Datos reales de Anthropic: para Sonnet 4.5, la ansiedad de contexto es lo sufici
 
 Un agente fue encargado de implementar un sistema de blog con autenticación de usuarios — 12 puntos de funcionalidad, estimadas 5 sesiones necesarias.
 
-**Línea base sin el diario**: La sesión 1 implementó el modelo de usuario y las rutas básicas. La sesión 2 comenzó sin que el agente recordara el contrato de interfaz del middleware de autenticación, dedicando ~15 minutos a inferir la intención de diseño anterior. Para la sesión 3, la deriva acumulada hizo que el agente comenzara a reimplementar funcionalidades ya completadas. Para la sesión 5, el repositorio contenía mucho código redundante pero la funcionalidad central de autenticación todavía no había pasado las pruebas end-to-end. Solo 7 de 12 puntos de funcionalidad completados, 3 con problemas ocultos de corrección. Como el artesano que nunca escribe en su diario — para el día cinco, el sitio de construcción es un caos, algunas paredes construidas dos veces, algunas que debieron construirse nunca se empezaron.
+<strong>Línea base sin el diario</strong>: La sesión 1 implementó el modelo de usuario y las rutas básicas. La sesión 2 comenzó sin que el agente recordara el contrato de interfaz del middleware de autenticación, dedicando ~15 minutos a inferir la intención de diseño anterior. Para la sesión 3, la deriva acumulada hizo que el agente comenzara a reimplementar funcionalidades ya completadas. Para la sesión 5, el repositorio contenía mucho código redundante pero la funcionalidad central de autenticación todavía no había pasado las pruebas end-to-end. Solo 7 de 12 puntos de funcionalidad completados, 3 con problemas ocultos de corrección. Como el artesano que nunca escribe en su diario — para el día cinco, el sitio de construcción es un caos, algunas paredes construidas dos veces, algunas que debieron construirse nunca se empezaron.
 
-**Con el diario**: Usando archivos de progreso, registros de decisiones, registros de verificación y puntos de control de git. El informe de estado se actualizó automáticamente al final de cada sesión. El costo de reconstrucción de la sesión 2 bajó a ~3 minutos. Para la sesión 5, los 12 puntos de funcionalidad fueron completados y verificados.
+<strong>Con el diario</strong>: Usando archivos de progreso, registros de decisiones, registros de verificación y puntos de control de git. El informe de estado se actualizó automáticamente al final de cada sesión. El costo de reconstrucción de la sesión 2 bajó a ~3 minutos. Para la sesión 5, los 12 puntos de funcionalidad fueron completados y verificados.
 
 Comparación cuantitativa: tiempo de reconstrucción reducido ~78%, tasa de completitud de funcionalidades del 58% al 100%, tasa de defectos ocultos del 43% al 8%. El artesano sigue siendo amnésico, pero con el diario, cada día comienza donde el anterior se detuvo, no desde cero.
 
@@ -186,8 +186,8 @@ Comparación cuantitativa: tiempo de reconstrucción reducido ~78%, tasa de comp
 
 ## Ejercicios
 
-1. **Medición de pérdida de continuidad**: Elige una tarea de desarrollo que necesite al menos 3 sesiones. Sin proporcionar ningún artefacto de continuidad, registra al inicio de cada sesión cuánto contexto gasta el agente en "averiguar qué pasó la última vez." Después de cada sesión, crea un archivo de progreso y deja que la siguiente sesión comience desde él. Compara los costos de reconstrucción con y sin archivos de progreso.
+1. <strong>Medición de pérdida de continuidad</strong>: Elige una tarea de desarrollo que necesite al menos 3 sesiones. Sin proporcionar ningún artefacto de continuidad, registra al inicio de cada sesión cuánto contexto gasta el agente en "averiguar qué pasó la última vez." Después de cada sesión, crea un archivo de progreso y deja que la siguiente sesión comience desde él. Compara los costos de reconstrucción con y sin archivos de progreso.
 
-2. **Diseño de plantilla de entrega**: Diseña una plantilla de entrega mínima con cuatro campos: estado del repositorio (commit hash), estado de ejecución (tasa de aprobación de pruebas), bloqueadores, próximas acciones. Deja que una sesión de agente completamente nueva restaure el estado del proyecto usando solo esta plantilla. Registra las ambigüedades encontradas durante la restauración, itera para mejorar la plantilla.
+2. <strong>Diseño de plantilla de entrega</strong>: Diseña una plantilla de entrega mínima con cuatro campos: estado del repositorio (commit hash), estado de ejecución (tasa de aprobación de pruebas), bloqueadores, próximas acciones. Deja que una sesión de agente completamente nueva restaure el estado del proyecto usando solo esta plantilla. Registra las ambigüedades encontradas durante la restauración, itera para mejorar la plantilla.
 
-3. **Experimento de estrategia mixta**: En una tarea de desarrollo de 5 sesiones, compara tres estrategias: (a) siempre iniciar sesiones nuevas + archivos de progreso, (b) hacer lo más posible en una sesión (compaction de contexto), (c) estrategia mixta (tareas cortas dentro de la sesión, tareas largas entre sesiones + archivos de progreso). Compara tiempo de reconstrucción, tasa de completitud de funcionalidades y consistencia de decisiones.
+3. <strong>Experimento de estrategia mixta</strong>: En una tarea de desarrollo de 5 sesiones, compara tres estrategias: (a) siempre iniciar sesiones nuevas + archivos de progreso, (b) hacer lo más posible en una sesión (compaction de contexto), (c) estrategia mixta (tareas cortas dentro de la sesión, tareas largas entre sesiones + archivos de progreso). Compara tiempo de reconstrucción, tasa de completitud de funcionalidades y consistencia de decisiones.

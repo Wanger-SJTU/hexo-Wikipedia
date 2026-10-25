@@ -11,7 +11,7 @@ categories:
   - 文档
 ---
 
-[English](./README.md) · **한국어**
+[English](./README.md) · <strong>한국어</strong>
 
 # 프로젝트 01: 기준선 대 최소 하네스
 
@@ -23,8 +23,8 @@ categories:
 
 | 디렉터리 | 의미 |
 |----------|------|
-| `starter/` | **시작점** — 모호한 `task-prompt.md` 하나만 있으며 AGENTS.md, feature_list.json이 없습니다. 에이전트에게 제공하는 "약한 하네스" 버전입니다. |
-| `solution/` | **참고 구현** — 동일한 앱 코드이지만 완전한 하네스 파일(AGENTS.md, feature_list.json, init.sh, claude-progress.md)을 갖추고 있습니다. "명시적 하네스" 버전입니다. |
+| `starter/` | <strong>시작점</strong> — 모호한 `task-prompt.md` 하나만 있으며 AGENTS.md, feature_list.json이 없습니다. 에이전트에게 제공하는 "약한 하네스" 버전입니다. |
+| `solution/` | <strong>참고 구현</strong> — 동일한 앱 코드이지만 완전한 하네스 파일(AGENTS.md, feature_list.json, init.sh, claude-progress.md)을 갖추고 있습니다. "명시적 하네스" 버전입니다. |
 
 ## 사용 방법
 

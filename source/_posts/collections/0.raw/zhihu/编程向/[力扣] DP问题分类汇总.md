@@ -27,7 +27,7 @@ source_url: https://zhuanlan.zhihu.com/p/126546914
 - 博弈型DP；
 - 记忆化搜索；
 
-### **1. 线性DP**
+### <strong>1. 线性DP</strong>
 
 最经典单串：
 
@@ -37,7 +37,7 @@ source_url: https://zhuanlan.zhihu.com/p/126546914
 
 1143. 最长公共子序列 (LCS)
 
-**经典问题：**
+<strong>经典问题：</strong>
 
 120. 三角形最小路径和
 
@@ -49,13 +49,13 @@ source_url: https://zhuanlan.zhihu.com/p/126546914
 
 354. 俄罗斯套娃信封问题 (隐晦的LIS)
 
-**打家劫舍系列: (打家劫舍3 是树形DP)**
+<strong>打家劫舍系列: (打家劫舍3 是树形DP)</strong>
 
 198. 打家劫舍 
 
 213. 打家劫舍 II
 
-**股票系列:**
+<strong>股票系列:</strong>
 
 121. 买卖股票的最佳时机 
 
@@ -69,7 +69,7 @@ source_url: https://zhuanlan.zhihu.com/p/126546914
 
 714. 买卖股票的最佳时机含手续费
 
-**字符串匹配系列**
+<strong>字符串匹配系列</strong>
 
 72. 编辑距离
 
@@ -77,7 +77,7 @@ source_url: https://zhuanlan.zhihu.com/p/126546914
 
 10. 正则表达式匹配
 
-### **2. 区间DP**
+### <strong>2. 区间DP</strong>
 
 516. 最长回文子序列 
 
@@ -89,7 +89,7 @@ source_url: https://zhuanlan.zhihu.com/p/126546914
 
 312. 戳气球
 
-### **3. 背包DP**
+### <strong>3. 背包DP</strong>
 
 416. 分割等和子集 (01背包-要求恰好取到背包容量)
 
@@ -101,11 +101,11 @@ source_url: https://zhuanlan.zhihu.com/p/126546914
 
 474. 一和零 (二维费用背包)
 
-### **4. 树形DP**
+### <strong>4. 树形DP</strong>
 
 124. 二叉树中的最大路径和
 
-1245. 树的直径 (**邻接表上的树形DP**)
+1245. 树的直径 (<strong>邻接表上的树形DP</strong>)
 
 543. 二叉树的直径
 
@@ -113,7 +113,7 @@ source_url: https://zhuanlan.zhihu.com/p/126546914
 
 337. 打家劫舍 III
 
-### **5. 状态压缩DP**
+### <strong>5. 状态压缩DP</strong>
 
 464. 我能赢吗
 
@@ -123,7 +123,7 @@ source_url: https://zhuanlan.zhihu.com/p/126546914
 
 1349. 参加考试的最大学生数
 
-### **6. 数位DP**
+### <strong>6. 数位DP</strong>
 
 233. 数字 1 的个数
 
@@ -131,21 +131,21 @@ source_url: https://zhuanlan.zhihu.com/p/126546914
 
 1015. 可被 K 整除的最小整数
 
-### **7. 计数型DP**
+### <strong>7. 计数型DP</strong>
 
-**计数型DP都可以以组合数学的方法写出组合数，然后dp求组合数**
+<strong>计数型DP都可以以组合数学的方法写出组合数，然后dp求组合数</strong>
 
 62. 不同路径
 
 63. 不同路径 II
 
-96. 不同的二叉搜索树 (**卡特兰数**)
+96. 不同的二叉搜索树 (<strong>卡特兰数</strong>)
 
-1259. 不相交的握手 (**卢卡斯定理**求大组合数模质数)
+1259. 不相交的握手 (<strong>卢卡斯定理</strong>求大组合数模质数)
 
-### **8. 递推型DP**
+### <strong>8. 递推型DP</strong>
 
-**所有线性递推关系都可以用矩阵快速幂做，可以O(logN)，最典型是斐波那契数列**
+<strong>所有线性递推关系都可以用矩阵快速幂做，可以O(logN)，最典型是斐波那契数列</strong>
 
 70. 爬楼梯 
 
@@ -157,17 +157,17 @@ source_url: https://zhuanlan.zhihu.com/p/126546914
 
 1137. 第 N 个泰波那契数
 
-### **9. 概率型DP**
+### <strong>9. 概率型DP</strong>
 
-**求概率，求数学期望**
+<strong>求概率，求数学期望</strong>
 
 808. 分汤
 
 837. 新21点
 
-### **10. 博弈型DP**
+### <strong>10. 博弈型DP</strong>
 
-**策梅洛定理，SG定理，minimax**
+<strong>策梅洛定理，SG定理，minimax</strong>
 
 翻转游戏
 
@@ -193,9 +193,9 @@ Nim游戏
 
 1275. 找出井字棋的获胜者
 
-### **11. 记忆化搜索**
+### <strong>11. 记忆化搜索</strong>
 
-**本质是 dfs + 记忆化，用在状态的转移方向不确定的情况**
+<strong>本质是 dfs + 记忆化，用在状态的转移方向不确定的情况</strong>
 
 329. 矩阵中的最长递增路径
 

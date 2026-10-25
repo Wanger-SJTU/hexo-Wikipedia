@@ -20,7 +20,7 @@ source_url: https://zhuanlan.zhihu.com/p/2023791484751679788
 
 在做GUI Agent项目时——让大模型操作电脑界面，完成截图、识别元素、点击按钮——遇到了一个反复出现的问题。
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_59953c3fc1df.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_59953c3fc1df.jpg)
 
 一个简单的登录流程，Skill 写得很清楚：
 
@@ -41,21 +41,21 @@ source_url: https://zhuanlan.zhihu.com/p/2023791484751679788
 
 #### 根本原因：大模型是调度器
 
-现在主流 LLM Agent 框架（OpenClaw、Claude Code、Codex等）的核心设计都一样：**大模型自己决定下一步做什么。**我们给的Skills、Prompts、System Messages本质上都是可选的“**建议**”，不是必需的“**指令**”。
+现在主流 LLM Agent 框架（OpenClaw、Claude Code、Codex等）的核心设计都一样：<strong>大模型自己决定下一步做什么。</strong>我们给的Skills、Prompts、System Messages本质上都是可选的“<strong>建议</strong>”，不是必需的“<strong>指令</strong>”。
 
 简单任务可能感觉不到问题。任务一复杂——多步骤、有分支、需要错误处理——三个问题就暴露了：
 
-**🎰 路径不可控** — 无法强制大模型按特定顺序执行。它可能跳步、重复、自己发明新步骤。
+<strong>🎰 路径不可控</strong> — 无法强制大模型按特定顺序执行。它可能跳步、重复、自己发明新步骤。
 
-**📈 上下文爆炸** — 每轮工具调用都在对话历史里堆积。第10步时大模型在读几十万token的历史，就为了决定下一步点哪。
+<strong>📈 上下文爆炸</strong> — 每轮工具调用都在对话历史里堆积。第10步时大模型在读几十万token的历史，就为了决定下一步点哪。
 
-**🎯 输出不稳定** — 要 JSON 给 markdown，要3步做7步。大模型*理解*指令，但不*执行*指令。
+<strong>🎯 输出不稳定</strong> — 要 JSON 给 markdown，要3步做7步。大模型*理解*指令，但不*执行*指令。
 
 #### 反过来想：为什么大模型要当调度器？
 
 截图是确定性操作，写代码就行。点击是确定性操作，给坐标就行。OCR 调库就行。
 
-**真正需要大模型的，只有推理**——“看这张图，告诉我按钮在哪。”
+<strong>真正需要大模型的，只有推理</strong>——“看这张图，告诉我按钮在哪。”
 
 那为什么不让Python管流程，大模型只在需要推理时介入？
 
@@ -71,9 +71,9 @@ source_url: https://zhuanlan.zhihu.com/p/2023791484751679788
 
 “把 LLM 嵌入函数”这件事，工程实践中很多人在做。DSPy、Marvin、Microsoft Guidance 都有类似思路。
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_aac2a9b5c7bb.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_aac2a9b5c7bb.jpg)
 
-但把它作为一种**编程范式**系统化之后，引出了几个有意思的设计：
+但把它作为一种<strong>编程范式</strong>系统化之后，引出了几个有意思的设计：
 
 #### 1. Docstring = Prompt
 
@@ -118,7 +118,7 @@ fixed = fix(fn=summarize, runtime=runtime, instruction="输出用 markdown 列�
 
 这样的设计实现后显得反而异常优雅。且非常容易适配现有的功能，包括：MCP、Skills和Hooks：
 
-- 这个设计符合Skills的**progressive disclosure**的想法。只有在方法被调用的时候，大模型才会知道这个能力
+- 这个设计符合Skills的<strong>progressive disclosure</strong>的想法。只有在方法被调用的时候，大模型才会知道这个能力
 - 设计的Agentic Functions可以很自然的被别的Agent调用，直接通过命令行或者加入MCP
 - 在Agentic Functions运行过程中，可以很轻松的设置其他监听程序，设置Hooks，进行重试等常规框架难以实现的运行逻辑
 
@@ -126,7 +126,7 @@ fixed = fix(fn=summarize, runtime=runtime, instruction="输出用 markdown 列�
 
 参考实现开源在 GitHub：
 
-🔗 **[github.com/Fzkuji/Agentic-Programming](https://link.zhihu.com/?target=https%3A//github.com/Fzkuji/Agentic-Programming)**
+🔗 <strong>[github.com/Fzkuji/Agentic-Programming](https://link.zhihu.com/?target=https%3A//github.com/Fzkuji/Agentic-Programming)</strong>
 
 161 个测试。内置 Anthropic、OpenAI、Gemini、Claude Code CLI 四个 provider。MIT 许可证。
 

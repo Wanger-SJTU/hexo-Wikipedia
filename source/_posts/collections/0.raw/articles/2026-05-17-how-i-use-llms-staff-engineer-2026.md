@@ -20,7 +20,7 @@ source_url: https://www.seangoedecke.com/how-i-use-llms-in-2026/
 
 # How I use LLMs as a staff engineer in 2026
 
-**作者：Sean Goedecke | 日期：2026-05-17**
+<strong>作者：Sean Goedecke | 日期：2026-05-17</strong>
 
 A bit over a year ago I wrote [How I use LLMs as a staff engineer](https://www.seangoedecke.com/how-i-use-llms/). Here's a brief summary of what I used AI for last year:
 
@@ -67,7 +67,7 @@ I'm still better at it. Just last week I had a tricky bug that took about fourte
 - Setting up my own reproduction of the bug (in parallel with the agents' efforts)
 - Responding to agent sessions with "no, your theory can't be right because of X" (or just killing and restarting the session with that extra hint)
 
-Ultimately an agent was the one to catch the bug. But I still count it as my find, because by that point I had narrowed the search space tightly enough that agent session #14 had a significantly easier problem to solve than agent session #1. In other words, **human expertise still matters a lot for investigating bugs**.
+Ultimately an agent was the one to catch the bug. But I still count it as my find, because by that point I had narrowed the search space tightly enough that agent session #14 had a significantly easier problem to solve than agent session #1. In other words, <strong>human expertise still matters a lot for investigating bugs</strong>.
 
 ---
 
@@ -95,7 +95,7 @@ I'll also task an agent with annoying local setup tasks that involve config wran
 
 ## Summary
 
-The main thing that's changed in the last fifteen months is that **agents are really good now**. They've gone from something I used occasionally and suspiciously to something I use constantly and with light supervision.
+The main thing that's changed in the last fifteen months is that <strong>agents are really good now</strong>. They've gone from something I used occasionally and suspiciously to something I use constantly and with light supervision.
 
 The core of my job is still the same: shipping projects, exercising my judgement, influencing tech company politics. But I now have a much wider net for small pieces of work that I'm willing to take on, which includes basically anything I can hand off to an agent and expect it to get more or less right.
 
@@ -119,14 +119,14 @@ In my view, the current core AI skill is shifting as much work onto AI agents as
 
 ---
 
-**核心 Takeaways：**
+<strong>核心 Takeaways：</strong>
 
-1. **Agent 能力跃升**：从偶尔用、怀疑用 → 经常用、信任用。现在每个代码改动都先让 agent 解决，一轮编辑后基本就能推 PR。
-2. **审稿 30 秒原则**：快速扫 agent 的改动，90% 的情况直接 reject（"这不是我想要的"）。难的任务 reject 五六次才接受一个。
-3. **Bug 调查 14 次 session**：Agent 能解决 80% 的 bug，但人肉缩小搜索空间是关键——session #14 能找到 bug是因为人在前面 13 次里把搜索空间压得足够小。
-4. **自己写 PR 描述**：LLM over-communicate，表达不了"核心想法"。而且手写 PR 描述是向 reviewer 发出信号：我自己审过了。
-5. **测试代码变便宜**：不确定要不要写测试？直接加（只要不是 flaky 的）。
-6. **UI 测试不交给 agent**：agent 对细微的 look-and-feel 不敏感。
-7. **核心 AI 技能**：把尽可能多的工作交给 agent，但别越过那条线。多数人要么 under-utilize（不敢放手）要么 over-utilize（过度信任）。
+1. <strong>Agent 能力跃升</strong>：从偶尔用、怀疑用 → 经常用、信任用。现在每个代码改动都先让 agent 解决，一轮编辑后基本就能推 PR。
+2. <strong>审稿 30 秒原则</strong>：快速扫 agent 的改动，90% 的情况直接 reject（"这不是我想要的"）。难的任务 reject 五六次才接受一个。
+3. <strong>Bug 调查 14 次 session</strong>：Agent 能解决 80% 的 bug，但人肉缩小搜索空间是关键——session #14 能找到 bug是因为人在前面 13 次里把搜索空间压得足够小。
+4. <strong>自己写 PR 描述</strong>：LLM over-communicate，表达不了"核心想法"。而且手写 PR 描述是向 reviewer 发出信号：我自己审过了。
+5. <strong>测试代码变便宜</strong>：不确定要不要写测试？直接加（只要不是 flaky 的）。
+6. <strong>UI 测试不交给 agent</strong>：agent 对细微的 look-and-feel 不敏感。
+7. <strong>核心 AI 技能</strong>：把尽可能多的工作交给 agent，但别越过那条线。多数人要么 under-utilize（不敢放手）要么 over-utilize（过度信任）。
 
 原文：https://www.seangoedecke.com/how-i-use-llms-in-2026/

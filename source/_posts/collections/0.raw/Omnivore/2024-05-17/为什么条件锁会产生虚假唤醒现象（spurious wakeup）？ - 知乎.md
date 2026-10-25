@@ -27,11 +27,11 @@ id: 52106354-ec06-4b85-a252-dab9dab304ed
 
 关注者
 
-**232**
+<strong>232</strong>
 
 被浏览
 
-**167,695**
+<strong>167,695</strong>
 
 他们也关注了该问题![很水](https://proxy-prod.omnivore-image-cache.app/0x0,sFlwq2y0BGw0dhXWUqbRz_SYcNFQFvRU5CMNzmQXAC8k/https://picx.zhimg.com/v2-622bb27f4634e19e47944de98f18bb17_l.jpg?source=c8b7c179)![XZiar](https://proxy-prod.omnivore-image-cache.app/0x0,suqb8gC1bXglQHxboFQGpT-PsOXZb_zwpXLooXoGGfwE/https://pica.zhimg.com/v2-3185693e980c2e65dd4848950d392ddf_l.jpg?source=c8b7c179)![饭小米](https://proxy-prod.omnivore-image-cache.app/0x0,sgEkvi2OTlN5lCvvO8St9qbmNc5X55siPXsexLy1aivs/https://picx.zhimg.com/v2-a4c47ec9e9aab0d2414eb1eb8815d76c_l.jpg?source=c8b7c179)
 
@@ -53,13 +53,13 @@ id: 52106354-ec06-4b85-a252-dab9dab304ed
 
 [发布于 2024-04-25 23:24 ，编辑于 2024-04-26 07:28](https://www.zhihu.com/question/271521213/answer/3478740086)・IP 属地上海
 
-**来看代码，从代码角度来分析就可以知道为什么会出现虚假唤醒问题**。
+<strong>来看代码，从代码角度来分析就可以知道为什么会出现虚假唤醒问题</strong>。
 
-**首先介绍下什么是虚假唤醒？**
+<strong>首先介绍下什么是虚假唤醒？</strong>
 
 之所以称为虚假唤醒，顾名思义，因为线程似乎无缘无故地被唤醒了。当线程在等待一个已发出信号的条件变量时醒来了，却发现不满足它所等待的条件时，就会发生虚假唤醒。
 
-**为什么会出现虚假唤醒？**
+<strong>为什么会出现虚假唤醒？</strong>
 
 虚假唤醒不会无缘无故发生，通常是在多核处理器上才会导致这个问题。
 
@@ -94,18 +94,18 @@ pthread_cond_signal(cond):
 
 ```
 
-**A和C可能会有上面代码中的执行顺序。C本来要唤醒的是B线程，结果却误把A线程也唤醒了。这就是典型的虚假唤醒问题的产生原因。**
+<strong>A和C可能会有上面代码中的执行顺序。C本来要唤醒的是B线程，结果却误把A线程也唤醒了。这就是典型的虚假唤醒问题的产生原因。</strong>
 
 虚假唤醒虽然会发生，但是只会在极端条件下才会发生。
 
-**虚假唤醒的问题虽然可以解决，但是会导致性能下降，为了规避只偶尔出现的边缘条件，而导致的效率损失不太能接受。所以系统实现层面还是做了取舍，优先考虑性能，需要用户在上层来规避虚假唤醒问题。**
+<strong>虚假唤醒的问题虽然可以解决，但是会导致性能下降，为了规避只偶尔出现的边缘条件，而导致的效率损失不太能接受。所以系统实现层面还是做了取舍，优先考虑性能，需要用户在上层来规避虚假唤醒问题。</strong>
 
 参考资料：
 
 1. <https://pubs.opengroup.org/onlinepubs/009604599/functions/pthread%5Fcond%5Fsignal.html>
 2. <https://en.m.wikipedia.org/wiki/Spurious%5Fwakeup>
 
-**我把相当多的C++文章都整理到了[程序喵/cpp-learning](https://gitee.com/chengxumiaodaren/cpp-learning)上，想了解更多C++技术可以到[程序喵/cpp-learning](https://gitee.com/chengxumiaodaren/cpp-learning)来看。**
+<strong>我把相当多的C++文章都整理到了[程序喵/cpp-learning](https://gitee.com/chengxumiaodaren/cpp-learning)上，想了解更多C++技术可以到[程序喵/cpp-learning](https://gitee.com/chengxumiaodaren/cpp-learning)来看。</strong>
 
 ![](https://proxy-prod.omnivore-image-cache.app/702x476,sEUNWTfEpNlNcepOSnNliHGqDLV7XPA6xzDuIBLqoZPc/https://pica.zhimg.com/50/v2-c7d50ddb86614c73aeabc5c9f0dabda2_720w.jpg?source=2c26e567)
 

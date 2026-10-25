@@ -74,14 +74,14 @@ DeepSeekV3的prefill阶段和decode阶段的scheduling会有一点不一样，de
 EPLB
 
 ![](https://picx.zhimg.com/v2-102ec264cc0cce7b1ad1c8c2f6516fc1_r.jpg)
-**Left**：在shared_GPT的数据集上统计出来的数据，在一些层上还算比较均衡，但是在某些层上的expert的work load会相当严重，这样就会有木桶效应，这样就会导致所有的rank在等这个expert所处的rank，出现干瞪眼的情况。
+<strong>Left</strong>：在shared_GPT的数据集上统计出来的数据，在一些层上还算比较均衡，但是在某些层上的expert的work load会相当严重，这样就会有木桶效应，这样就会导致所有的rank在等这个expert所处的rank，出现干瞪眼的情况。
 
-**Right**：可以看出throughput和balancedness是正相关关系，当token embeddings极其不均衡的时候，就可能大部分GPU都处于空闲状态，就一个GPU在忙，其他GPU都在等他，这种情况下GPU的利用率是比较差的，因此Throughput也比较小。
+<strong>Right</strong>：可以看出throughput和balancedness是正相关关系，当token embeddings极其不均衡的时候，就可能大部分GPU都处于空闲状态，就一个GPU在忙，其他GPU都在等他，这种情况下GPU的利用率是比较差的，因此Throughput也比较小。
 
 ![](https://pic2.zhimg.com/v2-d9b62c6b27476a41b48294738fbafa9b_r.jpg)
-**Left：**一般衡量负载均衡度使用max负载/均值负载，其实就是routing的tokens数，上图用的min负载/max负载，理论上均衡的负载是min负载=max负载，他们的Balancedness=1.0，如果使用了EPLB，我们就能把Balancedness拉回来到80%到100%之间。
+<strong>Left：</strong>一般衡量负载均衡度使用max负载/均值负载，其实就是routing的tokens数，上图用的min负载/max负载，理论上均衡的负载是min负载=max负载，他们的Balancedness=1.0，如果使用了EPLB，我们就能把Balancedness拉回来到80%到100%之间。
 
-**Right：**使用eplb的throughput的一些改善实验，数据比较模拟，Prefill阶段使用eplb能达到1.5倍左右的加速，在decode阶段我们能达到2.5倍左右的加速，但是实际情况还是得看实际部署的场景和实际的数据集合。
+<strong>Right：</strong>使用eplb的throughput的一些改善实验，数据比较模拟，Prefill阶段使用eplb能达到1.5倍左右的加速，在decode阶段我们能达到2.5倍左右的加速，但是实际情况还是得看实际部署的场景和实际的数据集合。
 
 MTP
 
@@ -90,8 +90,8 @@ MTP：最大的优势，当我设置next token是2的话，这两个token可以�
 MTP和之前的所有的模式加速手段都是正交的，都可以共同使用用于进行大模型加速推理。
 
 ![](https://pic4.zhimg.com/v2-29cd4f3cee9ae51510a7e4f109a0a8e1_r.jpg)
-**Left**：针对小规模的并行，不开MTP和开MTP的一些性能提升研究，next token应该设置为多少为合理的，整体情况下应该是开3-token MTP性价比是最高的。
-**Right：**针对更大规模的并行，开不开MTP的性能提升的程度研究。
+<strong>Left</strong>：针对小规模的并行，不开MTP和开MTP的一些性能提升研究，next token应该设置为多少为合理的，整体情况下应该是开3-token MTP性价比是最高的。
+<strong>Right：</strong>针对更大规模的并行，开不开MTP的性能提升的程度研究。
 Deployment Configuration
 
 ![](https://picx.zhimg.com/v2-25ea76baab0a1ad7086d31aa49c18869_r.jpg)
@@ -102,11 +102,11 @@ Performance Breakthroughts
 参照SGlang对deepseek部署博客做的性能分析
 
 ![](https://pic3.zhimg.com/v2-0c69aeb45856b330681bff41341f48e0_r.jpg)
-**Left**：prefill用的是4个node，在input是1k，2k，4k的情况下，throughtput分别是5.7万，5.4万，5万的吞吐。
+<strong>Left</strong>：prefill用的是4个node，在input是1k，2k，4k的情况下，throughtput分别是5.7万，5.4万，5万的吞吐。
 跟TP16部署的baseline进行性能对比，有3.3倍的性能提升，这部分性能提升有两点原因：
 
 - 集成了高性能的deepgemm的kernel。
-- 使用了two batch overlap的策略，把通信的开销掩盖，从而得到了很好的性能提升。**Right**：decode用的是9个node，对于2k的input，整个系统是达到了2.2万token的输出，跟tp的baseline进行对比的话是达到了一个5.2倍的提速，折线部分是batch size，上面是large scale的batch size，下面是tp16的batch size，上面的是下面的4倍以上。
+- 使用了two batch overlap的策略，把通信的开销掩盖，从而得到了很好的性能提升。<strong>Right</strong>：decode用的是9个node，对于2k的input，整个系统是达到了2.2万token的输出，跟tp的baseline进行对比的话是达到了一个5.2倍的提速，折线部分是batch size，上面是large scale的batch size，下面是tp16的batch size，上面的是下面的4倍以上。
 
 ![](https://pic4.zhimg.com/v2-3cb0b0bec0724c889ce916f323ef0795_r.jpg)
 

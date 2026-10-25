@@ -19,8 +19,8 @@ categories:
 
 | 目录 | 含义 |
 |------|------|
-| `starter/` | **起点**——基于 P3 solution，新增日志、结构化边界功能待实现。`IndexingService` 中植入了一个隐蔽 bug：超过 1000 字符的文件可能产生无效/空分块。没有架构检查脚本，也没有最终 clean-state checklist。 |
-| `solution/` | **参考实现**——结构化日志模块、架构边界检查脚本、植入 bug 已修复。 |
+| `starter/` | <strong>起点</strong>——基于 P3 solution，新增日志、结构化边界功能待实现。`IndexingService` 中植入了一个隐蔽 bug：超过 1000 字符的文件可能产生无效/空分块。没有架构检查脚本，也没有最终 clean-state checklist。 |
+| `solution/` | <strong>参考实现</strong>——结构化日志模块、架构边界检查脚本、植入 bug 已修复。 |
 
 ## 使用方法
 

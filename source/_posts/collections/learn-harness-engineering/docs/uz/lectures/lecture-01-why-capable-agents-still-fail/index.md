@@ -32,7 +32,7 @@ Anthropic nazorat ostida tajriba oʻtkazdi. Bir xil prompt (“2D retro oʻyinla
 
 Ular modelni oʻzgartirmadi. Opus 4.5 hamon Opus 4.5 edi. Oʻzgargan narsa — ot anjomlari.
 
-OpenAIʼning 2025-yilgi harness engineering maqolasi buni ochiq aytadi: yaxshi tuzilgan harnessʼga ega repozitoriyadagi Codex “ishonchsiz”dan “ishonchli”ga oʻtadi. Eʼtibor bering — “biroz yaxshi” emas, sifat jihatidan tubdan boshqacha. Bu xuddi zotli otga oʻxshaydi: mos ot anjomlarisiz minib boʻladi, lekin uzoqqa bormaysiz, tez ham yura olmaysiz, yiqilishingiz esa hech kimni ajablantirmaydi. Harness — aynan oʻsha toʻliq ot anjomlari; **model ogʻirliklaridan tashqaridagi barcha muhandislik infratuzilmasi.**
+OpenAIʼning 2025-yilgi harness engineering maqolasi buni ochiq aytadi: yaxshi tuzilgan harnessʼga ega repozitoriyadagi Codex “ishonchsiz”dan “ishonchli”ga oʻtadi. Eʼtibor bering — “biroz yaxshi” emas, sifat jihatidan tubdan boshqacha. Bu xuddi zotli otga oʻxshaydi: mos ot anjomlarisiz minib boʻladi, lekin uzoqqa bormaysiz, tez ham yura olmaysiz, yiqilishingiz esa hech kimni ajablantirmaydi. Harness — aynan oʻsha toʻliq ot anjomlari; <strong>model ogʻirliklaridan tashqaridagi barcha muhandislik infratuzilmasi.</strong>
 
 ## Agentlar aslida qayerda tiqilib qoladi
 
@@ -52,22 +52,22 @@ Bir necha sessiyaga choʻzilgan uzun vazifalar yana ham yomonroq — oldingi ses
 
 Bu ssenariylarni nazarda tutsak, quyidagi atamalar endi shunchaki jargon emas — har biri aniq muvaffaqiyatsizlik turini nomlaydi:
 
-- **Capability Gap (Imkoniyatlar tafovuti)**: Modelning benchmark natijalari va haqiqiy vazifalarda koʻrsatadigan natijalari oʻrtasidagi katta tafovut. SWE-bench Verifiedʼda 50–60% muvaffaqiyat darajasi haqiqiy muammolarning deyarli yarmi hal qilinmasligini bildiradi.
-- **Harness**: Modeldan tashqaridagi hamma narsa — yoʻriqnomalar, vositalar, muhit, holat boshqaruvi, tekshiruv qayta aloqasi. Agar bu model ogʻirliklari boʻlmasa — bu harness. Biz “ot anjomlari” deb atayotgan narsamiz.
-- **Harness-Induced Failure (Harness keltirib chiqargan muvaffaqiyatsizlik)**: Modelda yetarli imkoniyat mavjud, ammo bajarilish muhitida strukturaviy nuqsonlar bor. Anthropicʼning nazoratli tajribasi buni allaqachon isbotladi.
-- **Verification Gap (Tekshiruv tafovuti)**: Agentning oʻz natijasiga ishonchi va haqiqiy toʻgʻrilik oʻrtasidagi farq. Agent “men tugatdim” deydi, aslida tugatmagan — bu eng keng tarqalgan muvaffaqiyatsizlik turi.
-- **Diagnostic Loop (Diagnostik sikl)**: Bajarish, muvaffaqiyatsizlikni kuzatish, uni maʼlum bir harness qatlamiga bogʻlash, oʻsha qatlamni tuzatish, qaytadan bajarish. Bu — harness muhandisligining asosiy metodikasi.
-- **Definition of Done (Bajarilganlik mezonlari)**: Mashina tomonidan tekshirilishi mumkin boʻlgan shartlar toʻplami — testlar oʻtadi, lint toza, type check muvaffaqiyatli. Aniq DoD boʻlmasa, agent oʻzicha ixtiro qiladi.
+- <strong>Capability Gap (Imkoniyatlar tafovuti)</strong>: Modelning benchmark natijalari va haqiqiy vazifalarda koʻrsatadigan natijalari oʻrtasidagi katta tafovut. SWE-bench Verifiedʼda 50–60% muvaffaqiyat darajasi haqiqiy muammolarning deyarli yarmi hal qilinmasligini bildiradi.
+- <strong>Harness</strong>: Modeldan tashqaridagi hamma narsa — yoʻriqnomalar, vositalar, muhit, holat boshqaruvi, tekshiruv qayta aloqasi. Agar bu model ogʻirliklari boʻlmasa — bu harness. Biz “ot anjomlari” deb atayotgan narsamiz.
+- <strong>Harness-Induced Failure (Harness keltirib chiqargan muvaffaqiyatsizlik)</strong>: Modelda yetarli imkoniyat mavjud, ammo bajarilish muhitida strukturaviy nuqsonlar bor. Anthropicʼning nazoratli tajribasi buni allaqachon isbotladi.
+- <strong>Verification Gap (Tekshiruv tafovuti)</strong>: Agentning oʻz natijasiga ishonchi va haqiqiy toʻgʻrilik oʻrtasidagi farq. Agent “men tugatdim” deydi, aslida tugatmagan — bu eng keng tarqalgan muvaffaqiyatsizlik turi.
+- <strong>Diagnostic Loop (Diagnostik sikl)</strong>: Bajarish, muvaffaqiyatsizlikni kuzatish, uni maʼlum bir harness qatlamiga bogʻlash, oʻsha qatlamni tuzatish, qaytadan bajarish. Bu — harness muhandisligining asosiy metodikasi.
+- <strong>Definition of Done (Bajarilganlik mezonlari)</strong>: Mashina tomonidan tekshirilishi mumkin boʻlgan shartlar toʻplami — testlar oʻtadi, lint toza, type check muvaffaqiyatli. Aniq DoD boʻlmasa, agent oʻzicha ixtiro qiladi.
 
 ## Yiqilganda — avval harnessʼni tuzating
 
-Asosiy tamoyil: **Yiqilish boʻlganda, modelni almashtirishga shoshilmang — harnessʼni tekshiring.** Agar bir xil model oʻxshash, yaxshi tuzilgan vazifalarda muvaffaqiyat qozonsa — bu harness muammosi deb taxmin qiling. Bu xuddi mashina buzilib qolganga oʻxshaydi — darhol dvigateldan ayb qidirmaysiz. Avval benzin bor-yoʻqligini tekshirasiz.
+Asosiy tamoyil: <strong>Yiqilish boʻlganda, modelni almashtirishga shoshilmang — harnessʼni tekshiring.</strong> Agar bir xil model oʻxshash, yaxshi tuzilgan vazifalarda muvaffaqiyat qozonsa — bu harness muammosi deb taxmin qiling. Bu xuddi mashina buzilib qolganga oʻxshaydi — darhol dvigateldan ayb qidirmaysiz. Avval benzin bor-yoʻqligini tekshirasiz.
 
 Aniq qadamlar:
 
-**Har bir muvaffaqiyatsizlikni aniq qatlamga bogʻlang.** Shunchaki “model yomon” demang. Oʻzingizdan soʻrang: vazifa noaniqmidi? Kontekst yetarli emasmidi? Tekshiruv usullari yoʻqmidi? Har bir muvaffaqiyatsizlikni beshta himoya qatlamidan biriga bogʻlang: vazifa spetsifikatsiyasi, kontekst taʼminoti, bajarilish muhiti, tekshiruv qayta aloqasi, holat boshqaruvi. Bular amaliy diagnostika qatlamlari, yuqoridagi oltita glossariy atamasi emas. Shu odatni shakllantirsangiz, “model yetarli emas” iborasi loglaringizda kamayib boradi.
+<strong>Har bir muvaffaqiyatsizlikni aniq qatlamga bogʻlang.</strong> Shunchaki “model yomon” demang. Oʻzingizdan soʻrang: vazifa noaniqmidi? Kontekst yetarli emasmidi? Tekshiruv usullari yoʻqmidi? Har bir muvaffaqiyatsizlikni beshta himoya qatlamidan biriga bogʻlang: vazifa spetsifikatsiyasi, kontekst taʼminoti, bajarilish muhiti, tekshiruv qayta aloqasi, holat boshqaruvi. Bular amaliy diagnostika qatlamlari, yuqoridagi oltita glossariy atamasi emas. Shu odatni shakllantirsangiz, “model yetarli emas” iborasi loglaringizda kamayib boradi.
 
-**Har bir vazifa uchun aniq Definition of Done (bajarilganlik mezonlari) yozing.** “Qidiruv funksiyasini qoʻsh” demang. Mana shunday yozing:
+<strong>Har bir vazifa uchun aniq Definition of Done (bajarilganlik mezonlari) yozing.</strong> “Qidiruv funksiyasini qoʻsh” demang. Mana shunday yozing:
 
 ```
 Bajarilganlik mezonlari:
@@ -80,19 +80,19 @@ Bajarilganlik mezonlari:
 
 **`AGENTS.md` faylini yarating.** Uni repo ildiziga joylashtiring va agentga loyihaning tech stackʼi, arxitektura konvensiyalari va tekshiruv buyruqlarini ayting. Bu — harness muhandisligidagi birinchi qadam va eng yuqori ROIʼga ega qadam. Bitta `AGENTS.md` fayli qimmatroq modelga oʻtishdan ham samaraliroq boʻlishi mumkin — hazil emas.
 
-**Diagnostik siklni quring.** Muvaffaqiyatsizliklarni “model yana ahmoqlik qildi” deb qaramang. Ularni harnessʼingizda nuqson borligining signali deb qabul qiling. Har bir muvaffaqiyatsizlik uchun qatlamni aniqlang, tuzating, hech qachon shu yoʻl bilan yiqilmang. Bir necha aylanishdan soʻng harnessʼingiz mustahkamlanadi va agent samaradorligi barqarorlashadi. Bu xuddi yoʻl taʼmirlashga oʻxshaydi — har toʻldirilgan chuqur keyingi qismni silliqroq qiladi.
+<strong>Diagnostik siklni quring.</strong> Muvaffaqiyatsizliklarni “model yana ahmoqlik qildi” deb qaramang. Ularni harnessʼingizda nuqson borligining signali deb qabul qiling. Har bir muvaffaqiyatsizlik uchun qatlamni aniqlang, tuzating, hech qachon shu yoʻl bilan yiqilmang. Bir necha aylanishdan soʻng harnessʼingiz mustahkamlanadi va agent samaradorligi barqarorlashadi. Bu xuddi yoʻl taʼmirlashga oʻxshaydi — har toʻldirilgan chuqur keyingi qismni silliqroq qiladi.
 
-**Yaxshilanishlarni oʻlchang.** Oddiy log yuriting: har bir vazifa muvaffaqiyatli boʻldimi yoki yoʻqmi va qaysi qatlam yiqilishga sabab boʻldi. Bir necha aylanishdan soʻng qaysi qatlam toʻsiq ekanini koʻrasiz — diqqatingizni oʻsha yerga jamlang.
+<strong>Yaxshilanishlarni oʻlchang.</strong> Oddiy log yuriting: har bir vazifa muvaffaqiyatli boʻldimi yoki yoʻqmi va qaysi qatlam yiqilishga sabab boʻldi. Bir necha aylanishdan soʻng qaysi qatlam toʻsiq ekanini koʻrasiz — diqqatingizni oʻsha yerga jamlang.
 
 ## Million qatorlik tajriba
 
 OpenAI 2025-yilda jasoratli tajriba oʻtkazdi: boʻsh git repozitoriyasidan boshlab, Codex yordamida butun ichki mahsulotni qurish. Besh oydan soʻng repoda taxminan bir million qator kod paydo boʻldi — ilova mantiqi, infratuzilma, asboblar, hujjatlar, ichki dev vositalar — barchasi agent tomonidan yaratilgan. Uchta muhandis Codexʼni boshqarib, taxminan 1 500 ta PR ochib va birlashtirib bordi. Kuniga har bir kishiga oʻrtacha 3,5 ta PR.
 
-Asosiy cheklov: **odamlar hech qachon kodni toʻgʻridan-toʻgʻri yozmagan.** Bu hiyla emas edi — bu jamoani muhandisning asosiy ishi endi kod yozish emas, balki muhitlarni loyihalash, niyatni ifodalash va qayta aloqa sikllarini qurishga aylanganda nima oʻzgarishini aniqlashga majbur qilish uchun moʻljallangan edi.
+Asosiy cheklov: <strong>odamlar hech qachon kodni toʻgʻridan-toʻgʻri yozmagan.</strong> Bu hiyla emas edi — bu jamoani muhandisning asosiy ishi endi kod yozish emas, balki muhitlarni loyihalash, niyatni ifodalash va qayta aloqa sikllarini qurishga aylanganda nima oʻzgarishini aniqlashga majbur qilish uchun moʻljallangan edi.
 
 Boshlanishdagi rivoj kutilganidan sekinroq boʻldi. Codexning imkoniyati yetmagani uchun emas, balki muhit yetarlicha toʻliq emas edi — agent yuqori darajadagi maqsadlarni oldinga siljitish uchun zarur vositalar, abstraksiyalar va ichki strukturalarni topa olmas edi. Muhandislarning ishi quyidagicha oʻzgardi: katta maqsadlarni kichik qurilish bloklariga (dizayn, kod, koʻrib chiqish, test) boʻlib chiqish, agentga ularni yigʻishga ruxsat berish, soʻng oʻsha bloklardan foydalanib murakkabroq vazifalarni ochish. Biror narsa yiqilganda yechim deyarli hech qachon “yana qattiqroq harakat qil” emas edi — “agentda qaysi imkoniyat yetishmayapti va biz uni qanday qilib tushunarli va bajariladigan qilamiz?” edi.
 
-Bu tajriba mazkur maʼruzaning asosiy tezisini bevosita isbotlaydi: **bir xil model qoʻshimcha tuzilmasiz muhitda va toʻliq harnessʼga ega muhitda tubdan farq qiluvchi natija beradi.** Model oʻzgarmadi. Muhit oʻzgardi.
+Bu tajriba mazkur maʼruzaning asosiy tezisini bevosita isbotlaydi: <strong>bir xil model qoʻshimcha tuzilmasiz muhitda va toʻliq harnessʼga ega muhitda tubdan farq qiluvchi natija beradi.</strong> Model oʻzgarmadi. Muhit oʻzgardi.
 
 > Manba: [OpenAI: Harness engineering — agent ustuvor dunyoda Codexdan foydalanish](https://openai.com/index/harness-engineering/)
 
@@ -124,8 +124,8 @@ Ular modelni oʻzgartirmadi. Ular harnessʼni oʻzgartirdi.
 
 ## Mashqlar
 
-1. **Solishtirish tajribasi**: Oʻzingiz yaxshi biladigan kod bazasini va sezilarli oʻzgartirish vazifasini tanlang. Avval agentni hech qanday harness yordamisiz ishga tushiring va muvaffaqiyatsizliklarni qayd eting. Keyin aniq tekshirish buyruqlari bilan `AGENTS.md` qoʻshing va aynan oʻsha agent bilan qayta ishga tushiring. Natijalarni solishtiring va har bir muvaffaqiyatsizlikni beshta himoya qatlamlaridan biriga bogʻlang.
+1. <strong>Solishtirish tajribasi</strong>: Oʻzingiz yaxshi biladigan kod bazasini va sezilarli oʻzgartirish vazifasini tanlang. Avval agentni hech qanday harness yordamisiz ishga tushiring va muvaffaqiyatsizliklarni qayd eting. Keyin aniq tekshirish buyruqlari bilan `AGENTS.md` qoʻshing va aynan oʻsha agent bilan qayta ishga tushiring. Natijalarni solishtiring va har bir muvaffaqiyatsizlikni beshta himoya qatlamlaridan biriga bogʻlang.
 
-2. **Tekshiruv tafovutini oʻlchash**: 5 ta dasturlash vazifasini tanlang. Har bir vazifadan keyin agent tugatilganini eʼlon qilganmi yoki yoʻqligini yozib oling, soʻng mustaqil testlar orqali haqiqiy toʻgʻrilikni tekshiring. Agent “tayyor” deb aytgan, lekin haqiqatda tugatmagan holatlarning ulushini hisoblang — bu sizning verification gapʼingiz. Soʻng oʻylab koʻring: qaysi tekshirish buyruqlari bu nisbatni kamaytirishi mumkin?
+2. <strong>Tekshiruv tafovutini oʻlchash</strong>: 5 ta dasturlash vazifasini tanlang. Har bir vazifadan keyin agent tugatilganini eʼlon qilganmi yoki yoʻqligini yozib oling, soʻng mustaqil testlar orqali haqiqiy toʻgʻrilikni tekshiring. Agent “tayyor” deb aytgan, lekin haqiqatda tugatmagan holatlarning ulushini hisoblang — bu sizning verification gapʼingiz. Soʻng oʻylab koʻring: qaysi tekshirish buyruqlari bu nisbatni kamaytirishi mumkin?
 
-3. **Diagnostik sikl mashqi**: Oʻz loyihangizda agent qayta-qayta yiqilayotgan vazifani toping. Bir marta ishga tushiring, muvaffaqiyatsizlikni qayd eting. Uni beshta qatlamdan biriga bogʻlang. Oʻsha qatlamni tuzating. Qayta ishga tushiring. Uch-besh marta takrorlang, har safar yaxshilanishlarni qayd eting.
+3. <strong>Diagnostik sikl mashqi</strong>: Oʻz loyihangizda agent qayta-qayta yiqilayotgan vazifani toping. Bir marta ishga tushiring, muvaffaqiyatsizlikni qayd eting. Uni beshta qatlamdan biriga bogʻlang. Oʻsha qatlamni tuzating. Qayta ishga tushiring. Uch-besh marta takrorlang, har safar yaxshilanishlarni qayd eting.

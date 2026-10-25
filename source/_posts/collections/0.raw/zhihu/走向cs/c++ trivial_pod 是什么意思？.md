@@ -17,7 +17,7 @@ source_url: https://www.zhihu.com/question/472942396/answer/2009365067
 
 该问题下有两个回答有瑕疵。
 
-POD类型代表可以直接使用memcpy()直接复制而不会出现任何问题。**POD 只是可以安全使用 memcpy 的充分非必要条件**。其实只要这个类型是 TriviallyCopyable 的，那就能安全地使用 memcpy 去拷贝它。而 POD 是相比 TriviallyCopyable 更加严格的限制，没有必要。
+POD类型代表可以直接使用memcpy()直接复制而不会出现任何问题。<strong>POD 只是可以安全使用 memcpy 的充分非必要条件</strong>。其实只要这个类型是 TriviallyCopyable 的，那就能安全地使用 memcpy 去拷贝它。而 POD 是相比 TriviallyCopyable 更加严格的限制，没有必要。
 
 那具体它们之间是什么关系呢？请听我详细地讲解一遍。
 
@@ -176,15 +176,15 @@ void life_of_an_object
 
 如果 T 类型是平凡析构的，则意味着步骤 3 其实是不需要的——反正 T 类型在析构的时候，什么也没做，不用释放内存，不用 close 文件，不用释放 socket…… 。步骤 3 不做同样也不会对程序的正确性构成任何影响。
 
-**那我们在模板库中，就可以为对应的成员函数为 Trivial 的类型，做单独的特化，从而提高性能。**
+<strong>那我们在模板库中，就可以为对应的成员函数为 Trivial 的类型，做单独的特化，从而提高性能。</strong>
 
 想必读到这里肯定有读者会很不以为然地质问一句：
 
-**它就是一个空的调用，编译器不会优化的吗？**
+<strong>它就是一个空的调用，编译器不会优化的吗？</strong>
 
 诚然，对于这种最简单、最显而易见的情况，哪个编译器做不了优化，哪个是辣鸡。
 
-**但是情况要是复杂一些呢？如果被析构的是一段区间呢？**
+<strong>但是情况要是复杂一些呢？如果被析构的是一段区间呢？</strong>
 
 struct Foo
 {
@@ -222,7 +222,7 @@ clang 11 生成的汇编是这样的：
 所以在先进的 gcc10.1、clang12 中，这些遍历被成功地优化消除：
 
 ![](https://picx.zhimg.com/v2-4fb814a9d4540ff9ea1ca50d65b4f8b9_r.jpg?source=2c26e567)
-![](https://picx.zhimg.com/v2-e59ad2f6e8fed41c199594d4b56502bc_r.jpg?source=2c26e567)但是，gcc10.1 是 2020 年 5 月发布的，clang12 是 2021 年 7 月。**这些优化都只是刚刚取得的成果，而且这些新版的编译器还尚未成为业界的主流**。在早些版本的编译器中，譬如堪称一代经典的 gcc4.8.1，那个 C++11 刚出之时茹毛饮血的年代，是没有这些优化的，那就要靠库作者去人为的提供优化了。
+![](https://picx.zhimg.com/v2-e59ad2f6e8fed41c199594d4b56502bc_r.jpg?source=2c26e567)但是，gcc10.1 是 2020 年 5 月发布的，clang12 是 2021 年 7 月。<strong>这些优化都只是刚刚取得的成果，而且这些新版的编译器还尚未成为业界的主流</strong>。在早些版本的编译器中，譬如堪称一代经典的 gcc4.8.1，那个 C++11 刚出之时茹毛饮血的年代，是没有这些优化的，那就要靠库作者去人为的提供优化了。
 
 我再提供一个我自己库中的例子：
 
@@ -309,7 +309,7 @@ template Foo* myCopy(Foo*, Foo*, Foo*);
 
 ![](https://pic1.zhimg.com/v2-ffe7c767f2d0a75068363d9e40d28a20_r.jpg?source=2c26e567)我们发现，标准库的 std::copy 被成功优化作了对 memmove 的调用，而我们自己写的版本则只是逐个进行拷贝。
 
-我们再把上一例 Foo 中的拷贝赋值函数换成手动的变量赋值，**注意，我们只是做了这一处丝毫没有改变代码意义的变动**，然后再看看有何改变：
+我们再把上一例 Foo 中的拷贝赋值函数换成手动的变量赋值，<strong>注意，我们只是做了这一处丝毫没有改变代码意义的变动</strong>，然后再看看有何改变：
 
 struct Foo
 {
@@ -350,13 +350,13 @@ template Foo* myCopy(Foo*, Foo*, Foo*);
 
 然而，std::copy 内的 memmove 优化没有了。这就是因为 Foo 类在改动之后，不再满足 TriviallyCopyable 的要求了，std::copy 为了保守起见，不能再做这种优化。
 
-而另一个问题，为什么我们写的 myCopy 不能被编译器优化成 memmove？我相信任何有些代码经验的 C 程序猿都可以想明白这个问题。**编译器擅自将 myCopy 翻译成 memmove 是错误的优化！！！在目标区间和源区间有重叠的时候，优化成 memmove 后，算法所执行的结果和优化前可能是不一致的。这里和 C 语言中的 restrict 关键字那讨论的其实是同一个问题。**
+而另一个问题，为什么我们写的 myCopy 不能被编译器优化成 memmove？我相信任何有些代码经验的 C 程序猿都可以想明白这个问题。<strong>编译器擅自将 myCopy 翻译成 memmove 是错误的优化！！！在目标区间和源区间有重叠的时候，优化成 memmove 后，算法所执行的结果和优化前可能是不一致的。这里和 C 语言中的 restrict 关键字那讨论的其实是同一个问题。</strong>
 
 那可能又有人问，为什么 std::copy 可以做这个优化？因为 STL 已经规定了 std::copy 只适合做不重叠的拷贝或者向前拷贝。重叠的向后拷贝应当交给 std::copy_backward。所以 std::copy 可以在自己内部做此优化，而对我们手写的 myCopy 代码，编译器并不能擅自做此优化。
 
-**和上一节中例子不一样，这里就是一例并不能靠指望编译器做优化的例子。**
+<strong>和上一节中例子不一样，这里就是一例并不能靠指望编译器做优化的例子。</strong>
 
-**所以对于满足 TriviallyCopyable 要求的类型，可以安全地使用 C 中 memcpy, memmove 等面向字节操作的函数，以提高程序的性能。**
+<strong>所以对于满足 TriviallyCopyable 要求的类型，可以安全地使用 C 中 memcpy, memmove 等面向字节操作的函数，以提高程序的性能。</strong>
 
 理解了 TriviallyCopyable，TrivialType (平凡类型) 就可以一句话带过了：
 

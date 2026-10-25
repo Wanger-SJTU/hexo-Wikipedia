@@ -63,12 +63,12 @@ flowchart LR
 
 ## Temel kavramlar
 
-- **Bağlam pencereleri sonludur**: Hangi pencere boyutu iddia edilirse edilsin (128K, 200K, 1M), uzun görevler sonunda bunları tüketecektir. Tüketildikten sonra ya sıkıştırma (bilgi kaybı) ya da sıfırlama (yeni oturum) gerekir. Her ikisi de bir şey kaybeder.
-- **Süreklilik artefaktları**: Yeni bir oturumun geçen oturumun bıraktığı yerden net bir şekilde devam etmesini sağlayan kalıcılaştırılmış durum dosyaları. Temel form: ilerleme günlüğü + doğrulama kaydı + sonraki eylemler. O zanaatkârın günlüğü.
-- **Yeniden inşa maliyeti**: Yeni bir oturumun yürütülebilir bir duruma ulaşması için gereken süre. İyi harness'lar yeniden inşa maliyetini 15 dakikadan 3 dakikaya sıkıştırabilir.
-- **Sürüklenme (Drift)**: Ajanın anlayışı ile kod deposunun gerçek durumu arasındaki fark. Her oturum sınırı sürüklenme getirir; kontrol olmadan birikir.
-- **Bağlam kaygısı**: Anthropic tarafından gözlemlenen bir olgu — ajanlar algılanan bağlam sınırlarına yaklaştıklarında bilgi kaybını önlemek için görevleri erken bitirerek erken yakınsama davranışı sergiler. Bu mantıksız bir kaynak kaygısıdır.
-- **Sıkıştırma vs sıfırlama**: Sıkıştırma aynı oturum içinde bağlamı özetler ("neyi" tutar, "neden"i kaybedebilir); sıfırlama kalıcılaştırılmış durumdan yeniden inşa eden yeni bir oturum açar (temiz ama artefakt eksiksizliğine bağımlıdır).
+- <strong>Bağlam pencereleri sonludur</strong>: Hangi pencere boyutu iddia edilirse edilsin (128K, 200K, 1M), uzun görevler sonunda bunları tüketecektir. Tüketildikten sonra ya sıkıştırma (bilgi kaybı) ya da sıfırlama (yeni oturum) gerekir. Her ikisi de bir şey kaybeder.
+- <strong>Süreklilik artefaktları</strong>: Yeni bir oturumun geçen oturumun bıraktığı yerden net bir şekilde devam etmesini sağlayan kalıcılaştırılmış durum dosyaları. Temel form: ilerleme günlüğü + doğrulama kaydı + sonraki eylemler. O zanaatkârın günlüğü.
+- <strong>Yeniden inşa maliyeti</strong>: Yeni bir oturumun yürütülebilir bir duruma ulaşması için gereken süre. İyi harness'lar yeniden inşa maliyetini 15 dakikadan 3 dakikaya sıkıştırabilir.
+- <strong>Sürüklenme (Drift)</strong>: Ajanın anlayışı ile kod deposunun gerçek durumu arasındaki fark. Her oturum sınırı sürüklenme getirir; kontrol olmadan birikir.
+- <strong>Bağlam kaygısı</strong>: Anthropic tarafından gözlemlenen bir olgu — ajanlar algılanan bağlam sınırlarına yaklaştıklarında bilgi kaybını önlemek için görevleri erken bitirerek erken yakınsama davranışı sergiler. Bu mantıksız bir kaynak kaygısıdır.
+- <strong>Sıkıştırma vs sıfırlama</strong>: Sıkıştırma aynı oturum içinde bağlamı özetler ("neyi" tutar, "neden"i kaybedebilir); sıfırlama kalıcılaştırılmış durumdan yeniden inşa eden yeni bir oturum açar (temiz ama artefakt eksiksizliğine bağımlıdır).
 
 ## Süreklilik koptuğunda ne olur
 
@@ -84,9 +84,9 @@ Hem OpenAI hem de Anthropic dokümantasyonlarında yapılandırılmış durum ka
 
 ## Unutkan zanaatkâr için bir günlük
 
-Temel yaklaşım: **Ajanı amnezili harika bir mühendis gibi ele alın.** "İş çıkışı yapmadan" önce, kritik bilgileri yazması gerekir ki bir sonraki "vardiya" ajanı hızla devralabilsin.
+Temel yaklaşım: <strong>Ajanı amnezili harika bir mühendis gibi ele alın.</strong> "İş çıkışı yapmadan" önce, kritik bilgileri yazması gerekir ki bir sonraki "vardiya" ajanı hızla devralabilsin.
 
-**Araç 1: İlerleme dosyası (PROGRESS.md).** En temel süreklilik artefaktı — günlüğün özü:
+<strong>Araç 1: İlerleme dosyası (PROGRESS.md).</strong> En temel süreklilik artefaktı — günlüğün özü:
 
 ```markdown
 # Proje İlerlemesi
@@ -114,7 +114,7 @@ Temel yaklaşım: **Ajanı amnezili harika bir mühendis gibi ele alın.** "İş
 3. API dokümantasyonunu güncelle
 ```
 
-**Araç 2: Karar günlüğü (DECISIONS.md).** Önemli tasarım kararlarını ve nedenlerini kaydedin. Ayrıntılı tasarım belgelerine gerek yok — sadece "hangi karar, neden, ne zaman" — günlükteki notlar:
+<strong>Araç 2: Karar günlüğü (DECISIONS.md).</strong> Önemli tasarım kararlarını ve nedenlerini kaydedin. Ayrıntılı tasarım belgelerine gerek yok — sadece "hangi karar, neden, ne zaman" — günlükteki notlar:
 
 ```markdown
 # Tasarım Kararları
@@ -125,9 +125,9 @@ Temel yaklaşım: **Ajanı amnezili harika bir mühendis gibi ele alın.** "İş
 - Kısıt: 5 dakikalık önbellek TTL, yazmada aktif geçersiz kılma
 ```
 
-**Araç 3: Kontrol noktası olarak git commit'leri.** Her atomik iş birimini tamamladıktan sonra commit edin. Commit mesajları ne yapıldığını ve neden yapıldığını açıklamalıdır. Bunlar ücretsiz, otomatik olarak versiyonlanmış durum anlık görüntüleridir.
+<strong>Araç 3: Kontrol noktası olarak git commit'leri.</strong> Her atomik iş birimini tamamladıktan sonra commit edin. Commit mesajları ne yapıldığını ve neden yapıldığını açıklamalıdır. Bunlar ücretsiz, otomatik olarak versiyonlanmış durum anlık görüntüleridir.
 
-**Araç 4: init.sh veya harness başlatma akışı.** `AGENTS.md`'de "iş başı" ve "iş çıkışı" rutinlerini belirtin:
+<strong>Araç 4: init.sh veya harness başlatma akışı.</strong> `AGENTS.md`'de "iş başı" ve "iş çıkışı" rutinlerini belirtin:
 
 ```markdown
 ## Oturum başlangıcında (iş başı)
@@ -142,7 +142,7 @@ Temel yaklaşım: **Ajanı amnezili harika bir mühendis gibi ele alın.** "İş
 3. Tamamlanmış tüm işleri commit et
 ```
 
-**Karma strateji**: Her görev bir bağlam sıfırlamasına ihtiyaç duymaz. Kısa görevler (30 dakikanın altında) bir oturum içinde tamamlanabilir. Uzun görevler (oturumlara yayılan) süreklilik için ilerleme dosyaları ve karar günlükleri kullanmalıdır. Karar kriteri: bir görev pencerenin %60'ından fazlasına ihtiyaç duyuyorsa devri hazırlamaya başlayın.
+<strong>Karma strateji</strong>: Her görev bir bağlam sıfırlamasına ihtiyaç duymaz. Kısa görevler (30 dakikanın altında) bir oturum içinde tamamlanabilir. Uzun görevler (oturumlara yayılan) süreklilik için ilerleme dosyaları ve karar günlükleri kullanmalıdır. Karar kriteri: bir görev pencerenin %60'ından fazlasına ihtiyaç duyuyorsa devri hazırlamaya başlayın.
 
 ### Bağlam kaygısına derin bakış
 
@@ -150,11 +150,11 @@ Anthropic'in Mart 2026 araştırması bağlam kaygısının spesifik tezahürler
 
 İki strateji bunu ele alır:
 
-**Sıkıştırma**: Aynı oturum içinde erken konuşmayı özetlemek. Avantaj: sürekliliği korur, ajan "neyi" görebilir. Dezavantaj: "neden" genellikle özetlerde kaybolur — A yerine B seçeneği neden seçildi, belirli bir optimizasyon neden atlandı. Daha kritik olarak, sıkıştırma bağlam kaygısını ortadan kaldırmaz — ajan bir zamanlar bağlamın büyük olduğunu bilir ve psikolojik olarak hâlâ kapanışa acele etme eğilimindedir.
+<strong>Sıkıştırma</strong>: Aynı oturum içinde erken konuşmayı özetlemek. Avantaj: sürekliliği korur, ajan "neyi" görebilir. Dezavantaj: "neden" genellikle özetlerde kaybolur — A yerine B seçeneği neden seçildi, belirli bir optimizasyon neden atlandı. Daha kritik olarak, sıkıştırma bağlam kaygısını ortadan kaldırmaz — ajan bir zamanlar bağlamın büyük olduğunu bilir ve psikolojik olarak hâlâ kapanışa acele etme eğilimindedir.
 
-**Bağlam sıfırlaması**: Bağlamı tamamen temizlemek, yeni bir oturum açmak, kalıcılaştırılmış artefaktlardan yeniden inşa etmek. Avantaj: temiz zihinsel durum — yeni oturumun "zamanım tükeniyor" kaygısı yok. Dezavantaj: devir artefaktlarının eksiksizliğine bağımlıdır. Günlük kritik bilgileri kaçırıyorsa, yeni oturum yanlış yöne giderek zaman kaybedebilir.
+<strong>Bağlam sıfırlaması</strong>: Bağlamı tamamen temizlemek, yeni bir oturum açmak, kalıcılaştırılmış artefaktlardan yeniden inşa etmek. Avantaj: temiz zihinsel durum — yeni oturumun "zamanım tükeniyor" kaygısı yok. Dezavantaj: devir artefaktlarının eksiksizliğine bağımlıdır. Günlük kritik bilgileri kaçırıyorsa, yeni oturum yanlış yöne giderek zaman kaybedebilir.
 
-Anthropic'in gerçek verileri: Sonnet 4.5 için bağlam kaygısı tek başına sıkıştırmanın yeterli olmayacak kadar şiddetlidir — bağlam sıfırlaması harness tasarımının kritik bir bileşeni hâline gelir. Ancak Opus 4.5 için bu davranış büyük ölçüde azalır ve sıkıştırma sıfırlamalara güvenmeden bağlamı yönetebilir. Bu şu anlama gelir: **harness tasarımı tek bir kalıp değil, hedef modelin spesifik bir anlayışını gerektirir.**
+Anthropic'in gerçek verileri: Sonnet 4.5 için bağlam kaygısı tek başına sıkıştırmanın yeterli olmayacak kadar şiddetlidir — bağlam sıfırlaması harness tasarımının kritik bir bileşeni hâline gelir. Ancak Opus 4.5 için bu davranış büyük ölçüde azalır ve sıkıştırma sıfırlamalara güvenmeden bağlamı yönetebilir. Bu şu anlama gelir: <strong>harness tasarımı tek bir kalıp değil, hedef modelin spesifik bir anlayışını gerektirir.</strong>
 
 > Kaynak: [Anthropic: Harness design for long-running application development](https://www.anthropic.com/engineering/harness-design-long-running-apps)
 
@@ -162,9 +162,9 @@ Anthropic'in gerçek verileri: Sonnet 4.5 için bağlam kaygısı tek başına s
 
 Bir ajana kullanıcı kimlik doğrulamasıyla birlikte bir blog sistemi uygulama görevi verildi — 12 özellik noktası, tahmini 5 oturum gerekiyor.
 
-**Günlük olmadan başlangıç**: Oturum 1 kullanıcı modelini ve temel rotaları uyguladı. Oturum 2, ajan kimlik doğrulama middleware'inin arayüz sözleşmesini hatırlamadan başladı, önceki tasarım niyetini çıkarmak için ~15 dakika harcadı. Oturum 3'e gelindiğinde, birikmiş sürüklenme ajanın zaten tamamlanmış özellikleri yeniden uygulamaya başlamasına neden oldu. Oturum 5'e gelindiğinde depo birçok gereksiz kod içeriyordu ama temel kimlik doğrulama özelliği hâlâ uçtan uca testleri geçmemişti. 12 özellik noktasından sadece 7'si tamamlandı, 3'ü gizli doğruluk sorunlarına sahipti. Günlüğüne hiç yazmayan zanaatkâr gibi — beşinci güne gelindiğinde inşaat sahası kaos hâlinde, bazı duvarlar iki kez yapılmış, yapılması gereken bazıları hiç başlamamış.
+<strong>Günlük olmadan başlangıç</strong>: Oturum 1 kullanıcı modelini ve temel rotaları uyguladı. Oturum 2, ajan kimlik doğrulama middleware'inin arayüz sözleşmesini hatırlamadan başladı, önceki tasarım niyetini çıkarmak için ~15 dakika harcadı. Oturum 3'e gelindiğinde, birikmiş sürüklenme ajanın zaten tamamlanmış özellikleri yeniden uygulamaya başlamasına neden oldu. Oturum 5'e gelindiğinde depo birçok gereksiz kod içeriyordu ama temel kimlik doğrulama özelliği hâlâ uçtan uca testleri geçmemişti. 12 özellik noktasından sadece 7'si tamamlandı, 3'ü gizli doğruluk sorunlarına sahipti. Günlüğüne hiç yazmayan zanaatkâr gibi — beşinci güne gelindiğinde inşaat sahası kaos hâlinde, bazı duvarlar iki kez yapılmış, yapılması gereken bazıları hiç başlamamış.
 
-**Günlükle**: İlerleme dosyaları, karar günlükleri, doğrulama kayıtları ve git kontrol noktaları kullanılarak. Her oturum sonunda durum raporu otomatik olarak güncellendi. Oturum 2'nin yeniden inşa maliyeti ~3 dakikaya düştü. Oturum 5'e gelindiğinde, 12 özellik noktasının tümü tamamlandı ve doğrulandı.
+<strong>Günlükle</strong>: İlerleme dosyaları, karar günlükleri, doğrulama kayıtları ve git kontrol noktaları kullanılarak. Her oturum sonunda durum raporu otomatik olarak güncellendi. Oturum 2'nin yeniden inşa maliyeti ~3 dakikaya düştü. Oturum 5'e gelindiğinde, 12 özellik noktasının tümü tamamlandı ve doğrulandı.
 
 Nicel karşılaştırma: yeniden inşa süresi ~%78 azaldı, özellik tamamlanma oranı %58'den %100'e çıktı, gizli kusur oranı %43'ten %8'e düştü. Zanaatkâr hâlâ unutkan, ancak günlükle her gün dünden kaldığı yerden başlar, sıfırdan değil.
 
@@ -186,8 +186,8 @@ Nicel karşılaştırma: yeniden inşa süresi ~%78 azaldı, özellik tamamlanma
 
 ## Alıştırmalar
 
-1. **Süreklilik kaybı ölçümü**: En az 3 oturuma ihtiyaç duyan bir geliştirme görevi seçin. Herhangi bir süreklilik artefaktı sağlamadan, her oturum başında ajanın "geçen sefer ne olduğunu çözmek" için ne kadar bağlam harcadığını kaydedin. Her oturumdan sonra bir ilerleme dosyası oluşturun ve sonraki oturumun ondan başlamasına izin verin. İlerleme dosyalarıyla ve olmadan yeniden inşa maliyetlerini karşılaştırın.
+1. <strong>Süreklilik kaybı ölçümü</strong>: En az 3 oturuma ihtiyaç duyan bir geliştirme görevi seçin. Herhangi bir süreklilik artefaktı sağlamadan, her oturum başında ajanın "geçen sefer ne olduğunu çözmek" için ne kadar bağlam harcadığını kaydedin. Her oturumdan sonra bir ilerleme dosyası oluşturun ve sonraki oturumun ondan başlamasına izin verin. İlerleme dosyalarıyla ve olmadan yeniden inşa maliyetlerini karşılaştırın.
 
-2. **Devir şablonu tasarımı**: Dört alana sahip minimal bir devir şablonu tasarlayın: depo durumu (commit hash), runtime durumu (test geçme oranı), engelleyiciler, sonraki eylemler. Tamamen yeni bir ajan oturumunun yalnızca bu şablonu kullanarak proje durumunu geri yüklemesine izin verin. Geri yükleme sırasında karşılaşılan belirsizlikleri kaydedin, şablonu iyileştirmek için iterasyon yapın.
+2. <strong>Devir şablonu tasarımı</strong>: Dört alana sahip minimal bir devir şablonu tasarlayın: depo durumu (commit hash), runtime durumu (test geçme oranı), engelleyiciler, sonraki eylemler. Tamamen yeni bir ajan oturumunun yalnızca bu şablonu kullanarak proje durumunu geri yüklemesine izin verin. Geri yükleme sırasında karşılaşılan belirsizlikleri kaydedin, şablonu iyileştirmek için iterasyon yapın.
 
-3. **Karma strateji deneyi**: 5 oturumluk bir geliştirme görevinde üç stratejiyi karşılaştırın: (a) her zaman yeni oturumlarla başla + ilerleme dosyaları, (b) bir oturumda olabildiğince çok yap (bağlam sıkıştırma), (c) karma strateji (oturum içi kısa görevler, oturumlar arası uzun görevler + ilerleme dosyaları). Yeniden inşa süresini, özellik tamamlanma oranını ve karar tutarlılığını karşılaştırın.
+3. <strong>Karma strateji deneyi</strong>: 5 oturumluk bir geliştirme görevinde üç stratejiyi karşılaştırın: (a) her zaman yeni oturumlarla başla + ilerleme dosyaları, (b) bir oturumda olabildiğince çok yap (bağlam sıkıştırma), (c) karma strateji (oturum içi kısa görevler, oturumlar arası uzun görevler + ilerleme dosyaları). Yeniden inşa süresini, özellik tamamlanma oranını ve karar tutarlılığını karşılaştırın.

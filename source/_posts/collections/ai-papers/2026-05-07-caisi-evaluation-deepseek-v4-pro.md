@@ -19,9 +19,9 @@ source_url: https://www.nist.gov/news-events/news/2026/05/caisi-evaluation-deeps
 ---
 
 
-> **原文**：[CAISI Evaluation of DeepSeek V4 Pro](https://www.nist.gov/news-events/news/2026/05/caisi-evaluation-deepseek-v4-pro)（NIST，2026年5月）
+> <strong>原文</strong>：[CAISI Evaluation of DeepSeek V4 Pro](https://www.nist.gov/news-events/news/2026/05/caisi-evaluation-deepseek-v4-pro)（NIST，2026年5月）
 
-2026年4月，人工智能标准与创新中心（CAISI）对开源权重 AI 模型 DeepSeek V4 Pro（"DeepSeek V4"）进行了评估。CAISI 评估结果表明，DeepSeek V4 的能力落后于前沿水平约 **8个月**（图1）。
+2026年4月，人工智能标准与创新中心（CAISI）对开源权重 AI 模型 DeepSeek V4 Pro（"DeepSeek V4"）进行了评估。CAISI 评估结果表明，DeepSeek V4 的能力落后于前沿水平约 <strong>8个月</strong>（图1）。
 
 ![图1：美国与中国模型能力综合对比](/images/collections/ai-papers/asset/fig1-overall-capability.png)
 
@@ -29,9 +29,9 @@ source_url: https://www.nist.gov/news-events/news/2026/05/caisi-evaluation-deeps
 
 ## 核心发现
 
-- **DeepSeek V4 是 CAISI 迄今评估的最强中国 AI 模型**。CAISI 评估涵盖网络空间安全、软件开发、自然科学、抽象推理和数学五个领域（图2）。
-- DeepSeek V4 在 DeepSeek 自评中的表现**优于**在 CAISI 评估中的表现。据 DeepSeek 数据显示，DeepSeek V4 的能力与约2个月前发布的 Opus 4.6 和 GPT-5.4 相当。然而，CAISI 的评估（包括非公开基准测试）表明，DeepSeek V4 的表现类似于约8个月前发布的 GPT-5（图3）。
-- **DeepSeek V4 比其他同类能力的模型更具成本效益**。与最具成本竞争力的美国参考模型（GPT-5.4 mini）相比，DeepSeek V4 在7项基准测试中的5项上更具成本效益。在7项基准测试中，DeepSeek V4 的成本从比 GPT-5.4 mini 便宜53%到贵41%不等。
+- <strong>DeepSeek V4 是 CAISI 迄今评估的最强中国 AI 模型</strong>。CAISI 评估涵盖网络空间安全、软件开发、自然科学、抽象推理和数学五个领域（图2）。
+- DeepSeek V4 在 DeepSeek 自评中的表现<strong>优于</strong>在 CAISI 评估中的表现。据 DeepSeek 数据显示，DeepSeek V4 的能力与约2个月前发布的 Opus 4.6 和 GPT-5.4 相当。然而，CAISI 的评估（包括非公开基准测试）表明，DeepSeek V4 的表现类似于约8个月前发布的 GPT-5（图3）。
+- <strong>DeepSeek V4 比其他同类能力的模型更具成本效益</strong>。与最具成本竞争力的美国参考模型（GPT-5.4 mini）相比，DeepSeek V4 在7项基准测试中的5项上更具成本效益。在7项基准测试中，DeepSeek V4 的成本从比 GPT-5.4 mini 便宜53%到贵41%不等。
 
 ## 能力评估结果
 
@@ -51,9 +51,9 @@ source_url: https://www.nist.gov/news-events/news/2026/05/caisi-evaluation-deeps
 | 数学 | OTIS-AIME-2025 | 100% | 90% | 92% | 97% |
 | 数学 | PUMaC 2024 | 96% | 93% | 95% | 96% |
 | 数学 | SMT 2025 | 99% | 92% | 94% | 96% |
-| **IRT 估计 Elo** | | **1260 ± 28** | **749 ± 46** | **999 ± 27** | **800 ± 28** |
+| <strong>IRT 估计 Elo</strong> | | <strong>1260 ± 28</strong> | <strong>749 ± 46</strong> | <strong>999 ± 27</strong> | <strong>800 ± 28</strong> |
 
-> **图2**：各能力基准测试的模型性能汇总（越高越好）。
+> <strong>图2</strong>：各能力基准测试的模型性能汇总（越高越好）。
 > 结果显示每个基准测试的准确率（解决的任务百分比）。每个基准测试中表现最好的模型以粗体高亮。IRT 估计的 Elo 不确定性反映95%置信区间。
 > 
 > *CAISI 在 SWE-Bench Verified 上的得分往往低于其他评估机构，可能是因为系统提示、支架和 token 预算的差异。
@@ -91,10 +91,10 @@ DeepSeek V4 在7项 CAISI 基准测试中的5项上比 GPT-5.4 mini 成本更低
 
 本次评估使用了以下基准测试：
 
-- **ARC-AGI-2 半私密**：来自 ARC Prize Foundation 的非公开数据集，用于测量抽象推理。"半私密"意味着这些任务可能已暴露给有限的第三方。
-- **CTF-Archive-Diamond**：CAISI 开发的基准测试，基于285道来自亚利桑那州立大学开发的 pwn.challenge 网络安全平台的高难度 CTF 挑战题。
-- **PortBench**：CAISI 开发的非公开评估，用于评估 AI 模型在给定一种编程语言的参考实现时，将命令行界面（CLI）工具移植到不同编程语言的能力。CAISI 计划未来发布 PortBench 的详细描述。
-- **FrontierScience**：OpenAI 开发的基准测试，通过国际科学奥林匹克竞赛问题和具有代表性的 PhD 级别、开放式问题评估专家级科学推理能力，涵盖物理、化学和生物科学研究中的子任务。
+- <strong>ARC-AGI-2 半私密</strong>：来自 ARC Prize Foundation 的非公开数据集，用于测量抽象推理。"半私密"意味着这些任务可能已暴露给有限的第三方。
+- <strong>CTF-Archive-Diamond</strong>：CAISI 开发的基准测试，基于285道来自亚利桑那州立大学开发的 pwn.challenge 网络安全平台的高难度 CTF 挑战题。
+- <strong>PortBench</strong>：CAISI 开发的非公开评估，用于评估 AI 模型在给定一种编程语言的参考实现时，将命令行界面（CLI）工具移植到不同编程语言的能力。CAISI 计划未来发布 PortBench 的详细描述。
+- <strong>FrontierScience</strong>：OpenAI 开发的基准测试，通过国际科学奥林匹克竞赛问题和具有代表性的 PhD 级别、开放式问题评估专家级科学推理能力，涵盖物理、化学和生物科学研究中的子任务。
 - 其他基准测试的描述见 CAISI 早期《DeepSeek AI 模型评估报告》第3节。
 
 ## 能力滞后的测量方法
@@ -116,4 +116,4 @@ Agent 评估使用 Inspect 内置的 ReAct agent 进行。PortBench 和 CTF-Arch
 
 ---
 
-**原文链接**：[CAISI Evaluation of DeepSeek V4 Pro](https://www.nist.gov/news-events/news/2026/05/caisi-evaluation-deepseek-v4-pro)（NIST）
+<strong>原文链接</strong>：[CAISI Evaluation of DeepSeek V4 Pro](https://www.nist.gov/news-events/news/2026/05/caisi-evaluation-deepseek-v4-pro)（NIST）

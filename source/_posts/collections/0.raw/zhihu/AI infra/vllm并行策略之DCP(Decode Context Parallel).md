@@ -20,8 +20,8 @@ source_url: https://zhuanlan.zhihu.com/p/2020086868914499979
 DCP并行的流程其实可以理解为[Flash Decoding](https://link.zhihu.com/?target=https%3A//crfm.stanford.edu/2023/10/12/flashdecoding.html)的分布式并行，虽然细节上还是有区别的。
 
 ![](https://pic3.zhimg.com/v2-13fcb10493400523013dcfe55cc9b846_r.jpg)图0. Flash Decoding流程
-**概述**
-解码上下文并行 DCP (Decode Context Parallel) 通过**对KVCache在seq_len维度切分**来降低KVCache显存开销。由于decode阶段是memory-bound，因此使用DCP后，单卡KVCache显存会降为原来的1/DCP，读取数据量也会降为原来的1/DCP。在具体计算时，相比于TP通信，DCP会多通信开销。
+<strong>概述</strong>
+解码上下文并行 DCP (Decode Context Parallel) 通过<strong>对KVCache在seq_len维度切分</strong>来降低KVCache显存开销。由于decode阶段是memory-bound，因此使用DCP后，单卡KVCache显存会降为原来的1/DCP，读取数据量也会降为原来的1/DCP。在具体计算时，相比于TP通信，DCP会多通信开销。
 
 目前DCP已经支持MLA/MQA/GQA（理论上MHA不会用到DCP，MHA直接TP切分就可以），也兼容Chunked Prefill和Prefix Cache。
 
@@ -37,10 +37,10 @@ DCP并行的流程其实可以理解为[Flash Decoding](https://link.zhihu.com/?
 
 （c）TP=4：分片数量多于KV heads；GPU 必须复制KV cache，才能为其指定的Q heads提供服务，这再次导致了 DRAM 容量和带宽效率的低下。
 
-（d）**TP+DCP**（TP=4，DCP=2）：Helix 使用 DCP 将KV cache按序列长度 (S) 分片，因此每个 DCP rank仅包含一个切片 (S/2)。通过将 Attention计算时的TP并行度 限制为 K (KV heads大小)，并将剩余的 GPU 分配给DCP，避免了KVCache重复，并形成了**KVCache二维布局：TP/DCP 拆分heads，DCP 拆分sequence**.
+（d）<strong>TP+DCP</strong>（TP=4，DCP=2）：Helix 使用 DCP 将KV cache按序列长度 (S) 分片，因此每个 DCP rank仅包含一个切片 (S/2)。通过将 Attention计算时的TP并行度 限制为 K (KV heads大小)，并将剩余的 GPU 分配给DCP，避免了KVCache重复，并形成了<strong>KVCache二维布局：TP/DCP 拆分heads，DCP 拆分sequence</strong>.
 
 ![](https://picx.zhimg.com/v2-5b03f47050d9aebf1d7828e85c555157_1440w.jpg)图2. TP+DCP时KVCache布局
-**DCP具体使用**
+<strong>DCP具体使用</strong>
 --decode-context-parallel-size x来enable DCP。TP需要被DCP整除。TP world_size不会因 dcp 而改变，它只是复用 TP 组的 GPU，并将一个 TP 组拆分为 tp_size//dcp_size 个 DCP 组。例如：
 
 with -tp 8 -dcp 8 , we use 8 GPUs
@@ -61,18 +61,18 @@ DCP (Decode Context Parallel) 通过对KVCache在seq_len维度切分来降低KVC
 e.g. DCP2, req with prompt_len=5, generation_len=4:
 kvcache store in dcp_rank0: 0, 2, 4, 6, 8 
 kvcache store in dcp_rank1: 1, 3, 5, 7,
-以MLA为例，MLA 是单 head kv cache，纯 TP 会出现 duplicated kvcache 显存浪费。Interleave CP 复用了 TP的 process_group，而未引入独立的 CP process_group, 核心改动是实现kvcache的interleave存储。**Interleave 存储的逻辑: per-request的视角下，token_idx为n的token，其kvcache严格存储到cp_rank等于n%cp_world_size的GPU上。**
+以MLA为例，MLA 是单 head kv cache，纯 TP 会出现 duplicated kvcache 显存浪费。Interleave CP 复用了 TP的 process_group，而未引入独立的 CP process_group, 核心改动是实现kvcache的interleave存储。<strong>Interleave 存储的逻辑: per-request的视角下，token_idx为n的token，其kvcache严格存储到cp_rank等于n%cp_world_size的GPU上。</strong>
 
 我们先来理解下KVcache Interleave存储后的Attention计算。
 
-回顾下 图3左图的**Flash Attention计算**，在Flash Attention2中，将Q, K, V在seq_len维度切分，Outer_loop遍历Q_chunk, inner_loop遍历K_chunk/V_chunk。由于Attention需要计算token和token的相关性，所以在inner_loop遍历获得的结果需要online_softmax更新output。
+回顾下 图3左图的<strong>Flash Attention计算</strong>，在Flash Attention2中，将Q, K, V在seq_len维度切分，Outer_loop遍历Q_chunk, inner_loop遍历K_chunk/V_chunk。由于Attention需要计算token和token的相关性，所以在inner_loop遍历获得的结果需要online_softmax更新output。
 
-而在**Decode阶段使用DCP后**，由于使用KVCache, Q变成q, query_len=1(不考虑投机采样时)，如图3右图所示，假设此时KVCache已经存储了3个token，DCP=2，那么DCP rank0存储了K0和K2, DCP rank1存储了K1 (V同理)。此时计算Attention时：
+而在<strong>Decode阶段使用DCP后</strong>，由于使用KVCache, Q变成q, query_len=1(不考虑投机采样时)，如图3右图所示，假设此时KVCache已经存储了3个token，DCP=2，那么DCP rank0存储了K0和K2, DCP rank1存储了K1 (V同理)。此时计算Attention时：
 
 - DCP rank0上会计算q3和K0, K2, V0, V2的结果得到O0
 - DCP rank0上会计算q3和K1, K3, V1, V3的结果得到O1，其中K3,V3是本次step时加入到KVCache中的
 - 由于得到完整的Attention Score需要K0-K2, V0-V2的所有结果，因此O0和O1也需要online softmax来更新，获得最终的O。
-![](https://picx.zhimg.com/v2-cfd9d3392a5973eba709730f34d13355_r.jpg)图3. Attention计算示意图**通信**
+![](https://picx.zhimg.com/v2-cfd9d3392a5973eba709730f34d13355_r.jpg)图3. Attention计算示意图<strong>通信</strong>
 
 接下来说说计算出O0,O1之后的通信部分。前面提到DCP是需要多余通信的，这是由于上文提到的不同DCP rank得到的output是partial output，需要online_saftmax调整。如果是两个partial output, 我们可以直接用merge_attn_states kernel，通过ouput和lse来更新，其介绍可见[[vLLM实践][算子]📚vLLM算子开发流程: &#34;保姆级&#34;详细记录](https://zhuanlan.zhihu.com/p/1892966682634473987)。
 
@@ -83,7 +83,7 @@ DCP 各个rank上通过自身的KVCache计算出partial output后，会先all-ga
 欸等等，那为什么图4中使用的是reduce-scatter呢？这是由于我们把TP也考虑上去了，下文会说明。
 
 ![](https://pic1.zhimg.com/v2-88dd14a2cb1f8d37e30d9d38e98f9ebe_r.jpg)图4. DCP通信
-**Decode阶段**
+<strong>Decode阶段</strong>
 好的，那我们现在先来总结下DCP的思路，DCP通过将KVCache按seq_len维度拆分，来缓解显存受限或者访存带宽的问题，使得推理时可以放置更长seq_len的request；或者同理在相同seq_len的情况下可以增大bs。但是DCP rank间计算完的output是partial output，需要按照lse更新，这里会引入多卡通信。
 
 现在我们把TP也考虑上，看看情况变成了什么样。先来看看只使用TP时的Attention计算：在sdpa前后的Q/K/V project和O project，分别采用列并行和行并行。由于Attention计算本身的特点，每个head可以独立计算，最后将结果concat起来，因此TP维度一般<num_kv_heads, 并且num_kv_heads能被TP整除。
@@ -97,10 +97,10 @@ DCP 各个rank上通过自身的KVCache计算出partial output后，会先all-ga
 - O project时，采用TP并行(行并行)
 ![](https://pic4.zhimg.com/v2-f90b77efde541a66fc6bac7de3ba6395_r.jpg)图6. Decode阶段使用TP+DCP所以在计算sdpa之前，会有DCP all-gather，num_heads维度上的并行度从TP变成TP/DCP。而在计算完sdpa后num_heads维度上的并行度从TP/DCP变成TP，这也就是为什么上文说到DCP通信时使用reduce-scatter替换all-reduce。
 
-**Prefill阶段**
+<strong>Prefill阶段</strong>
 DCP是针对Decode阶段的优化，那Prefill阶段我们需要做什么呢？第一，我们知道采用DCP后KVCache是interleave存储的，所以在prefill阶段我们需要将KVCache按照这个格式存储。第二，前面说到DCP是支持Chunked Prefill和Prefix Cache的，这也需要Prefill阶段的Attention计算做相应的调整。
 
-**MLA Prefill**
+<strong>MLA Prefill</strong>
 
 Prefill阶段MLA采用非矩阵吸收形式，具体计算时是MHA形式。因此Prefill阶段MLA阶段直接用TP就OK，无需使用DCP （num_kv_heads够给TP拆分）。
 
@@ -110,7 +110,7 @@ Prefill阶段MLA采用非矩阵吸收形式，具体计算时是MHA形式。因�
 
 - KVcache存储需要interleave存储
 - 在计算contex_len部分的attention时，需要对interleave的KVCache进行allgather和reorg
-![](https://pic4.zhimg.com/v2-8f17f5bd40a997aa028aef8396b59973_r.jpg)图7. Prefill阶段MLA的DCP实现**GQA Prefill**
+![](https://pic4.zhimg.com/v2-8f17f5bd40a997aa028aef8396b59973_r.jpg)图7. Prefill阶段MLA的DCP实现<strong>GQA Prefill</strong>
 
 对于GQA而言，prefill阶段和decode阶段的计算流程并没有什么区别（MLA prefill阶段是MHA形式，decode阶段是MQA形式）。其同样也是 计算query_len部分的output和context_len部分的output，然后使用merge_attn_states合并结果。
 

@@ -15,8 +15,8 @@ source_url: https://mp.weixin.qq.com/s/rb9-m1IiuzOdZQfNU1nSIA
 ---
 
 
-> **作者**: BBuf  
-> **原文**: [微信文章](https://mp.weixin.qq.com/s/rb9-m1IiuzOdZQfNU1nSIA)  
+> <strong>作者</strong>: BBuf  
+> <strong>原文</strong>: [微信文章](https://mp.weixin.qq.com/s/rb9-m1IiuzOdZQfNU1nSIA)  
 
 ## 0x0. 背景
 
@@ -38,7 +38,7 @@ FlashInfer 目前维护了三个 SKILL：
 
 ## 问题背景
 
-CUDA 错误（非法内存访问、越界、NaN/Inf 等）经常会直接让程序崩溃，崩溃后没有留下任何调试信息。FlashInfer 的&nbsp;`@flashinfer_api`&nbsp;装饰器的做法是在 API&nbsp;**执行之前**就把输入信息记录下来，这样即使程序崩溃了，也能看到最后一次调用的输入是什么。
+CUDA 错误（非法内存访问、越界、NaN/Inf 等）经常会直接让程序崩溃，崩溃后没有留下任何调试信息。FlashInfer 的&nbsp;`@flashinfer_api`&nbsp;装饰器的做法是在 API&nbsp;<strong>执行之前</strong>就把输入信息记录下来，这样即使程序崩溃了，也能看到最后一次调用的输入是什么。
 
 ## 使用方式
 
@@ -92,10 +92,10 @@ Keyword input arguments:
 
 文档梳理了四类常见 CUDA 错误的排查方法：
 
-- **Illegal Memory Access**：用 Level 3 检查 tensor shape、是否在 CUDA 上、stride 是否合理、是否 contiguous。
-- **NaN/Inf**：用 Level 5 查看&nbsp;`nan_count`、`inf_count`、`min`/`max`&nbsp;是否异常。常见原因包括除零、溢出、未初始化内存。
-- **Out of Memory**：用 Level 3 检查 tensor shape 是否意外过大。
-- **Wrong Dtype**：用 Level 3 直接看 dtype 字段。
+- <strong>Illegal Memory Access</strong>：用 Level 3 检查 tensor shape、是否在 CUDA 上、stride 是否合理、是否 contiguous。
+- <strong>NaN/Inf</strong>：用 Level 5 查看&nbsp;`nan_count`、`inf_count`、`min`/`max`&nbsp;是否异常。常见原因包括除零、溢出、未初始化内存。
+- <strong>Out of Memory</strong>：用 Level 3 检查 tensor shape 是否意外过大。
+- <strong>Wrong Dtype</strong>：用 Level 3 直接看 dtype 字段。
 
 ## 多进程调试
 
@@ -156,10 +156,10 @@ FlashInfer 支持两种计时方式：
 
 输出包含四个关键指标：
 
-- **median time**：kernel 执行时间的中位数（越低越好）
-- **std**：标准差（越低说明越稳定）
-- **achieved tflops**：有效 TFLOPS 吞吐
-- **achieved tb_per_sec**：内存带宽利用率
+- <strong>median time</strong>：kernel 执行时间的中位数（越低越好）
+- <strong>std</strong>：标准差（越低说明越稳定）
+- <strong>achieved tflops</strong>：有效 TFLOPS 吞吐
+- <strong>achieved tb_per_sec</strong>：内存带宽利用率
 
 还支持批量测试，把多组参数写到一个 testlist 文件里一次性跑：
 
@@ -201,7 +201,7 @@ median_time, std_time = bench_gpu_time(
 
 ## Step 1：在 include/ 定义 CUDA Kernel
 
-创建&nbsp;`include/flashinfer/scale.cuh`，要求是**框架无关的**（不依赖 Torch 头文件），使用原始指针和模板来支持多种 dtype：
+创建&nbsp;`include/flashinfer/scale.cuh`，要求是<strong>框架无关的</strong>（不依赖 Torch 头文件），使用原始指针和模板来支持多种 dtype：
 
 `namespace&nbsp;flashinfer {
 
@@ -376,7 +376,7 @@ FlashInfer 的这三个 SKILL 文件把项目中三个最核心的开发场景�
  
  
  
- ![](/images/collections/wechat/2026-07-06-%25E5%25AD%2598%25E5%2582%25A8%25E5%25AF%25A1%25E5%25A4%25B4%25E6%25B8%25B8%25E8%25AF%25B4%25E7%2599%25BD%25E5%25AE%25AB%25E8%2583%258C%25E5%2590%258E%25EF%25BC%259A%25E7%259F%25AD%25E7%25BC%25BA%25E8%25A6%2581%25E6%2589%259B%25E5%2588%25B02027%25EF%25BC%2581/asset/img_3.jpg)
+ ![](/images/collections/wechat/2026-07-06-%E5%AD%98%E5%82%A8%E5%AF%A1%E5%A4%B4%E6%B8%B8%E8%AF%B4%E7%99%BD%E5%AE%AB%E8%83%8C%E5%90%8E%EF%BC%9A%E7%9F%AD%E7%BC%BA%E8%A6%81%E6%89%9B%E5%88%B02027%EF%BC%81/asset/img_3.jpg)
  alt=""
  />
  
@@ -482,7 +482,7 @@ FlashInfer 的这三个 SKILL 文件把项目中三个最核心的开发场景�
  
  
  
- ![](/images/collections/wechat/2026-07-06-%25E5%25AD%2598%25E5%2582%25A8%25E5%25AF%25A1%25E5%25A4%25B4%25E6%25B8%25B8%25E8%25AF%25B4%25E7%2599%25BD%25E5%25AE%25AB%25E8%2583%258C%25E5%2590%258E%25EF%25BC%259A%25E7%259F%25AD%25E7%25BC%25BA%25E8%25A6%2581%25E6%2589%259B%25E5%2588%25B02027%25EF%25BC%2581/asset/img_3.jpg) alt="作者头像">
+ ![](/images/collections/wechat/2026-07-06-%E5%AD%98%E5%82%A8%E5%AF%A1%E5%A4%B4%E6%B8%B8%E8%AF%B4%E7%99%BD%E5%AE%AB%E8%83%8C%E5%90%8E%EF%BC%9A%E7%9F%AD%E7%BC%BA%E8%A6%81%E6%89%9B%E5%88%B02027%EF%BC%81/asset/img_3.jpg) alt="作者头像">
  
  
  

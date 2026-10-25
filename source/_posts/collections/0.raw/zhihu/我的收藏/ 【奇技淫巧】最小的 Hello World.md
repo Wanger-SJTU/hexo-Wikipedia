@@ -63,7 +63,7 @@ int main()
 `$ wc -c hello_world
 16048 hello_world`
 
-你猜怎么着？**编译器比我们聪明多了！**他不需要我们提醒，早就自动帮我们把 `printf` 优化成 `puts` 了！
+你猜怎么着？<strong>编译器比我们聪明多了！</strong>他不需要我们提醒，早就自动帮我们把 `printf` 优化成 `puts` 了！
 
 #### 去除符号表
 

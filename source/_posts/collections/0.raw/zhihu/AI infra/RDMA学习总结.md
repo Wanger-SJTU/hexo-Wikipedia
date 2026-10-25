@@ -74,7 +74,7 @@ QPN，就是每个QP的编号。IB协议中规定用24个bit来表示QPN，QP0,1
 
 ![](https://pic1.zhimg.com/v2-62f578aee30bb5dd47249b9faaa3d7be_r.jpg)数据面接口：
 
-数据面上，一个QP对上层的接口其实只有两种，分别用于向QP中填写发送和接收请求。**这里的“发送”和“接收”并不是指的发送和接收数据，而是指的是一次通信过程的“发起方”（Requestor）和“接收方”（Responser）**。在行为上都是软件向QP中填写一个WQE（对应用层来说叫WR），请求硬件执行一个动作。所以这两种行为都叫做“Post XXX Request”的形式，即下发XXX请求。
+数据面上，一个QP对上层的接口其实只有两种，分别用于向QP中填写发送和接收请求。<strong>这里的“发送”和“接收”并不是指的发送和接收数据，而是指的是一次通信过程的“发起方”（Requestor）和“接收方”（Responser）</strong>。在行为上都是软件向QP中填写一个WQE（对应用层来说叫WR），请求硬件执行一个动作。所以这两种行为都叫做“Post XXX Request”的形式，即下发XXX请求。
 
 完成错误：
 
@@ -104,13 +104,13 @@ Soft-RoCE就是把本来应该卸载到硬件的封包和解析工作，又拿�
 
 如何建立链接?
 
-**“建立连接”指的是两端进行必须的协商和准备工作，掌握了彼此的信息，从而能够互相收发信息**；这里和RC服务中的建立一对一关系是两个概念。UC也需要建立连接。UD和RC服务类型的差异在于，对端的信息不是通过“控制路径”固定填入QPC中的，而是用户在“数据路径”中，也就是在Post Send过程中通过WR指定的。
+<strong>“建立连接”指的是两端进行必须的协商和准备工作，掌握了彼此的信息，从而能够互相收发信息</strong>；这里和RC服务中的建立一对一关系是两个概念。UC也需要建立连接。UD和RC服务类型的差异在于，对端的信息不是通过“控制路径”固定填入QPC中的，而是用户在“数据路径”中，也就是在Post Send过程中通过WR指定的。
 
 对于RC服务来说，QPC中不仅记录着关于本端QP的信息，还记录着跟这个QP对端QP的信息。而QPC中的对端信息，是通过Modify QP的Verbs接口实现的。
 
 对端信息，是在RC的Modify QP或者UD的Post Send之前，通过建链流程获取的。
 
-从**用户接口**来区分，RDMA的应用程序常用的建链方式有基于Socket API和基于CM（Communication Manager/Management）两种。
+从<strong>用户接口</strong>来区分，RDMA的应用程序常用的建链方式有基于Socket API和基于CM（Communication Manager/Management）两种。
 
 通过Socket连接交换信息内容：
 
@@ -134,6 +134,6 @@ CM在作为协议时的全称为Communication Management Protocol，即通信管
 
 ![](https://picx.zhimg.com/v2-c3c5fd0a0034e9b7ab1327a9d7271c27_r.jpg)协议分层：
 
-**对于一般的RDMA网卡来说，上图中Verbs API下面的所有协议层次，都是硬件实现的**。
+<strong>对于一般的RDMA网卡来说，上图中Verbs API下面的所有协议层次，都是硬件实现的</strong>。
 
 ![](https://pic3.zhimg.com/v2-97494745199feaeca0fd51d883fbee38_r.jpg)

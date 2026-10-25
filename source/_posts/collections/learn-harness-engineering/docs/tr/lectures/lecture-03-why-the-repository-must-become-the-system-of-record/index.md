@@ -26,7 +26,7 @@ Yani soru şu: bu mühendise iyi bir harita verecek misiniz?
 
 ## Haritaya neler ait
 
-OpenAI bunu açıkça belirtir: **depoda mevcut olmayan bilgi, ajan için mevcut değildir.** Buna "depo şartnamenin kendisidir" ilkesi diyorlar — deponun kendisi en yetkili spesifikasyon belgesidir.
+OpenAI bunu açıkça belirtir: <strong>depoda mevcut olmayan bilgi, ajan için mevcut değildir.</strong> Buna "depo şartnamenin kendisidir" ilkesi diyorlar — deponun kendisi en yetkili spesifikasyon belgesidir.
 
 Anthropic'in uzun süre çalışan ajanlar dokümantasyonu bunu yankılar: kalıcı durum uzun görevlerin sürekliliği için gerekli bir koşuldur. Oturumlar arası bilgi kurtarılabilirliği görev başarı oranlarını doğrudan belirler. Ve bu durumun depoda olması gerekir — çünkü ajanın sahip olduğu tek kararlı, erişilebilir depolama budur.
 
@@ -68,24 +68,24 @@ Cevap veremiyorsa harita boş noktalara sahiptir. Haritanın boş olduğu yerler
 
 ## Temel kavramlar
 
-- **Bilgi görünürlüğü farkı**: Toplam proje bilgisinin depoda OLMAYAN oranı. Fark ne kadar büyükse ajanın başarısızlık oranı da o kadar yüksek olur. Bu proje hakkında ne kadar örtük bilgi sizin kafanızda? Hepsini sayın, sonra ne kadarının depoya dönüştüğünü görün — fark sizin görünürlük farkınızdır.
-- **Kayıt sistemi**: Proje kararları, mimari kısıtlamalar, yürütme durumu ve doğrulama standartları için yetkili kaynak olarak kod deposu. Depo son sözü söyler, başka hiçbir yer sayılmaz. "Yol kapalı" yazan bir harita gibi — o yola gitmezsiniz. Ama bu bilgi sadece Eski Zhang'ın kafasında varsa, her seferinde Zhang'a sormak zorundasınızdır.
-- **Soğuk başlatma testi**: Yukarıdaki beş soru. Kaç tanesine cevap verebildiği haritanızın ne kadar eksiksiz olduğudur.
-- **Keşif maliyeti**: Ajanın depodaki kilit bir bilgiyi bulmak için yaktığı bağlam bütçesi. Bilgi ne kadar gizliyse keşif maliyeti o kadar yüksek olur ve gerçek görev için kalan bütçe o kadar az olur. Kritik bilgiyi on dizin derinliğindeki bir README'de saklamak yangın söndürücüyü bodrumdaki bir kasaya kilitlemek gibidir — vardır, ama ihtiyacınız olduğunda bulamazsınız.
-- **Bilgi çürüme oranı**: Birim zaman başına bayatlayan bilgi girişlerinin oranı. Dokümantasyonun kodla senkronize olmaması en büyük düşmandır — hiç dokümantasyon olmamasından daha kötü.
-- **ACID benzetmesi**: Veritabanı işlem ilkelerini (Atomicity, Consistency, Isolation, Durability) ajan durum yönetimine uygulamak. Bunu aşağıda genişleteceğiz.
+- <strong>Bilgi görünürlüğü farkı</strong>: Toplam proje bilgisinin depoda OLMAYAN oranı. Fark ne kadar büyükse ajanın başarısızlık oranı da o kadar yüksek olur. Bu proje hakkında ne kadar örtük bilgi sizin kafanızda? Hepsini sayın, sonra ne kadarının depoya dönüştüğünü görün — fark sizin görünürlük farkınızdır.
+- <strong>Kayıt sistemi</strong>: Proje kararları, mimari kısıtlamalar, yürütme durumu ve doğrulama standartları için yetkili kaynak olarak kod deposu. Depo son sözü söyler, başka hiçbir yer sayılmaz. "Yol kapalı" yazan bir harita gibi — o yola gitmezsiniz. Ama bu bilgi sadece Eski Zhang'ın kafasında varsa, her seferinde Zhang'a sormak zorundasınızdır.
+- <strong>Soğuk başlatma testi</strong>: Yukarıdaki beş soru. Kaç tanesine cevap verebildiği haritanızın ne kadar eksiksiz olduğudur.
+- <strong>Keşif maliyeti</strong>: Ajanın depodaki kilit bir bilgiyi bulmak için yaktığı bağlam bütçesi. Bilgi ne kadar gizliyse keşif maliyeti o kadar yüksek olur ve gerçek görev için kalan bütçe o kadar az olur. Kritik bilgiyi on dizin derinliğindeki bir README'de saklamak yangın söndürücüyü bodrumdaki bir kasaya kilitlemek gibidir — vardır, ama ihtiyacınız olduğunda bulamazsınız.
+- <strong>Bilgi çürüme oranı</strong>: Birim zaman başına bayatlayan bilgi girişlerinin oranı. Dokümantasyonun kodla senkronize olmaması en büyük düşmandır — hiç dokümantasyon olmamasından daha kötü.
+- <strong>ACID benzetmesi</strong>: Veritabanı işlem ilkelerini (Atomicity, Consistency, Isolation, Durability) ajan durum yönetimine uygulamak. Bunu aşağıda genişleteceğiz.
 
 ## İyi bir harita nasıl çizilir
 
-**İlke 1: Bilgi kodun yanında yaşar.** API uç noktası kimlik doğrulamasına ilişkin bir kural, devasa bir küresel belgeye gömülmek yerine API kodunun yanına aittir. Her modül dizinine o modülün sorumluluklarını, arayüzlerini ve özel kısıtlamalarını açıklayan kısa bir doküman koyun. Kütüphane rafı etiketleri gibi — tarih kitapları istiyorsanız doğrudan "Tarih" yazan rafa gidin. Tüm kütüphaneyi aramaya gerek yok.
+<strong>İlke 1: Bilgi kodun yanında yaşar.</strong> API uç noktası kimlik doğrulamasına ilişkin bir kural, devasa bir küresel belgeye gömülmek yerine API kodunun yanına aittir. Her modül dizinine o modülün sorumluluklarını, arayüzlerini ve özel kısıtlamalarını açıklayan kısa bir doküman koyun. Kütüphane rafı etiketleri gibi — tarih kitapları istiyorsanız doğrudan "Tarih" yazan rafa gidin. Tüm kütüphaneyi aramaya gerek yok.
 
-**İlke 2: Standartlaştırılmış bir giriş dosyası kullanın.** `AGENTS.md` (veya `CLAUDE.md`) ajanın "açılış sayfasıdır." Tüm bilgileri içermesi gerekmez ama ajanın üç soruya hızla cevap vermesine olanak tanımalıdır: "Bu proje nedir," "Nasıl çalıştırırım" ve "Nasıl doğrularım." 50-100 satır yeterlidir.
+<strong>İlke 2: Standartlaştırılmış bir giriş dosyası kullanın.</strong> `AGENTS.md` (veya `CLAUDE.md`) ajanın "açılış sayfasıdır." Tüm bilgileri içermesi gerekmez ama ajanın üç soruya hızla cevap vermesine olanak tanımalıdır: "Bu proje nedir," "Nasıl çalıştırırım" ve "Nasıl doğrularım." 50-100 satır yeterlidir.
 
-**İlke 3: Minimal ama eksiksiz.** Her bilgi parçasının net bir kullanım durumu olmalıdır. Bir kuralı kaldırmak ajanın karar kalitesini etkilemiyorsa, o kural var olmamalı. Ancak soğuk başlatma testindeki her sorunun bir cevabı olmalıdır. Bu hassas bir dengedir — çok fazla değil, çok az değil, tam olarak yeterli.
+<strong>İlke 3: Minimal ama eksiksiz.</strong> Her bilgi parçasının net bir kullanım durumu olmalıdır. Bir kuralı kaldırmak ajanın karar kalitesini etkilemiyorsa, o kural var olmamalı. Ancak soğuk başlatma testindeki her sorunun bir cevabı olmalıdır. Bu hassas bir dengedir — çok fazla değil, çok az değil, tam olarak yeterli.
 
-**İlke 4: Kod ile güncelleyin.** Bilgi güncellemelerini kod değişikliklerine bağlayın. En basit yaklaşım: mimari dokümanları ilgili modül dizinine koyun. Kodu değiştirdiğinizde dokümanı doğal olarak görürsünüz. Kod değişikliklerinden sonra CI, dokümanların güncellenmesi gerekip gerekmediğini kontrol etmenizi hatırlatabilir.
+<strong>İlke 4: Kod ile güncelleyin.</strong> Bilgi güncellemelerini kod değişikliklerine bağlayın. En basit yaklaşım: mimari dokümanları ilgili modül dizinine koyun. Kodu değiştirdiğinizde dokümanı doğal olarak görürsünüz. Kod değişikliklerinden sonra CI, dokümanların güncellenmesi gerekip gerekmediğini kontrol etmenizi hatırlatabilir.
 
-**Somut depo yapısı**:
+<strong>Somut depo yapısı</strong>:
 
 ```
 project/
@@ -106,10 +106,10 @@ project/
 
 Bu benzetme veritabanı işlem yönetiminden gelir — fazla karmaşıklaştırmak gibi gelebilir ama aslında çok pratik bir çerçeve sunar:
 
-- **Atomicity (Atomik olma)**: Her "mantıksal işlem" (örneğin, "yeni uç nokta ekle ve testleri güncelle") bir git commit alır. Ortada başarısız olursa geri almak için `git stash`. Hep ya da hiç — "yarım yapılmış" olmaz.
-- **Consistency (Tutarlılık)**: "Tutarlı durum" doğrulama yüklemlerini tanımlayın — tüm testler geçer, lint sıfır hata raporlar. Ajan her işlemden sonra doğrulama çalıştırır; tutarsız ara durumlar commit edilmez. Banka havalesi gibi — kredilendirmeden borçlandırma yapamazsınız.
-- **Isolation (İzolasyon)**: Birden fazla ajan eşzamanlı çalıştığında, durum dosyalarını yarış koşullarından kaçınmak için tasarlayın. Basit yaklaşım: her ajan kendi ilerleme dosyasını kullanır veya izolasyon için git dallarını kullanır. İki aşçı aynı tencereye eşzamanlı baharat ekleyemez — aşırı tuzlanırsa kim sorumluluk alır?
-- **Durability (Kalıcılık)**: Kritik proje bilgisi git tarafından izlenen dosyalarda yaşar. Geçici durum oturum belleğinde kalabilir, ancak oturumlar arası bilgi dosyalara kalıcılaştırılmalıdır. Kafanızdaki şey sayılmaz — yalnızca kağıttaki sayılır.
+- <strong>Atomicity (Atomik olma)</strong>: Her "mantıksal işlem" (örneğin, "yeni uç nokta ekle ve testleri güncelle") bir git commit alır. Ortada başarısız olursa geri almak için `git stash`. Hep ya da hiç — "yarım yapılmış" olmaz.
+- <strong>Consistency (Tutarlılık)</strong>: "Tutarlı durum" doğrulama yüklemlerini tanımlayın — tüm testler geçer, lint sıfır hata raporlar. Ajan her işlemden sonra doğrulama çalıştırır; tutarsız ara durumlar commit edilmez. Banka havalesi gibi — kredilendirmeden borçlandırma yapamazsınız.
+- <strong>Isolation (İzolasyon)</strong>: Birden fazla ajan eşzamanlı çalıştığında, durum dosyalarını yarış koşullarından kaçınmak için tasarlayın. Basit yaklaşım: her ajan kendi ilerleme dosyasını kullanır veya izolasyon için git dallarını kullanır. İki aşçı aynı tencereye eşzamanlı baharat ekleyemez — aşırı tuzlanırsa kim sorumluluk alır?
+- <strong>Durability (Kalıcılık)</strong>: Kritik proje bilgisi git tarafından izlenen dosyalarda yaşar. Geçici durum oturum belleğinde kalabilir, ancak oturumlar arası bilgi dosyalara kalıcılaştırılmalıdır. Kafanızdaki şey sayılmaz — yalnızca kağıttaki sayılır.
 
 ## Gerçek bir dönüşüm hikâyesi
 
@@ -143,8 +143,8 @@ Dönüşümden sonra: aynı ajan soğuk başlatmada tüm temel proje sorularına
 
 ## Alıştırmalar
 
-1. **Soğuk başlatma testi**: Projenizde tamamen yeni bir ajan oturumu açın (sözlü bağlam yok, yalnızca depo içerikleri). Ona beş soru sorun: Bu sistem nedir? Nasıl organize edilmiş? Nasıl çalıştırırım? Nasıl doğrularım? Mevcut ilerleme nedir? Cevap veremediklerini kaydedin, ardından cevap verebilene kadar depoyu iyileştirin.
+1. <strong>Soğuk başlatma testi</strong>: Projenizde tamamen yeni bir ajan oturumu açın (sözlü bağlam yok, yalnızca depo içerikleri). Ona beş soru sorun: Bu sistem nedir? Nasıl organize edilmiş? Nasıl çalıştırırım? Nasıl doğrularım? Mevcut ilerleme nedir? Cevap veremediklerini kaydedin, ardından cevap verebilene kadar depoyu iyileştirin.
 
-2. **Bilgi dışsallaştırma ölçümü**: Projenizde geliştirme çalışması için önemli olan tüm kararları ve kısıtlamaları listeleyin. Her birini depo içinde mi yoksa dışında mı olarak işaretleyin. Bilgi görünürlük farkınızı hesaplayın (depo dışı oranı). %10'un altına indirmek için bir plan yapın.
+2. <strong>Bilgi dışsallaştırma ölçümü</strong>: Projenizde geliştirme çalışması için önemli olan tüm kararları ve kısıtlamaları listeleyin. Her birini depo içinde mi yoksa dışında mı olarak işaretleyin. Bilgi görünürlük farkınızı hesaplayın (depo dışı oranı). %10'un altına indirmek için bir plan yapın.
 
-3. **ACID değerlendirmesi**: Bu dersin ACID benzetmesini kullanarak projenizin durum yönetimini değerlendirin. Atomik olma — ajan işlemleri temiz şekilde geri alınabilir mi? Tutarlılık — "tutarlı durum" doğrulaması var mı? İzolasyon — eşzamanlı ajanlar birbirinin ayağına basıyor mu? Kalıcılık — tüm oturumlar arası bilgi kalıcılaştırılmış mı?
+3. <strong>ACID değerlendirmesi</strong>: Bu dersin ACID benzetmesini kullanarak projenizin durum yönetimini değerlendirin. Atomik olma — ajan işlemleri temiz şekilde geri alınabilir mi? Tutarlılık — "tutarlı durum" doğrulaması var mı? İzolasyon — eşzamanlı ajanlar birbirinin ayağına basıyor mu? Kalıcılık — tüm oturumlar arası bilgi kalıcılaştırılmış mı?

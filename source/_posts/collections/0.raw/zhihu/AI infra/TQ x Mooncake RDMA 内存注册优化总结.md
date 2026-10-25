@@ -257,13 +257,13 @@ int RdmaContext::preTouchMemory(void *addr, size_t length) {
 
 这段逻辑复用主业务逻辑完成了内存pretouch，同时规避了在内核态的锁争抢，从而避免了正式注册内存时缺页中断导致的开销。由于我并不太懂RDMA以及操作系统内核，进一步的分析还有望大佬指点~
 
-相关实测性能对比如下，其中no-fault与fault选项的主要区别是**调用register_buffer前，（通过各种方式，不记入总时间）保证内存已处于 resident 状态；**而lazy与touch的区别则主要是有没有通过朴素的单线程memset去进行pre-touch。（AI写的逻辑，这两个开关没有正交，有点绕。。）
+相关实测性能对比如下，其中no-fault与fault选项的主要区别是<strong>调用register_buffer前，（通过各种方式，不记入总时间）保证内存已处于 resident 状态；</strong>而lazy与touch的区别则主要是有没有通过朴素的单线程memset去进行pre-touch。（AI写的逻辑，这两个开关没有正交，有点绕。。）
 
 简而言之：
 
-- **no-fault+lazy**：衡量理想情况下（不存在缺页中断）Mooncake进行register_buffer的时间。
-- **fault+lazy**：衡量最坏情况下（存在大量缺页中断），Mooncake进行register_buffer的时间。本次测试用例未包含 4GB 以上数据，因此未触发 pre-touch 逻辑（后续可补充对比）。
-- **fault+touch**：衡量最坏情况下（存在大量缺页中断）,手动通过单线程memset进行pre-touch后的注册时间。# 通过memset进行touch
+- <strong>no-fault+lazy</strong>：衡量理想情况下（不存在缺页中断）Mooncake进行register_buffer的时间。
+- <strong>fault+lazy</strong>：衡量最坏情况下（存在大量缺页中断），Mooncake进行register_buffer的时间。本次测试用例未包含 4GB 以上数据，因此未触发 pre-touch 逻辑（后续可补充对比）。
+- <strong>fault+touch</strong>：衡量最坏情况下（存在大量缺页中断）,手动通过单线程memset进行pre-touch后的注册时间。# 通过memset进行touch
 LIBC.memset(ctypes.c_void_p(self.ptr), ctypes.c_int(0), ctypes.c_size_t(size))
 
 ![](https://pic2.zhimg.com/v2-fa14ad9007e084f8d4dcc5bd3dd6dce7_r.jpg)从实验结果可以看出，缺页中断对 registration 性能的影响显著。此外，简单的单线程 pre-touch 效果有限；即便排除 pre-touch 自身开销，仅在 registration 阶段，pre-touch 也需在 4MB 以上数据量时方可体现收益。
@@ -271,7 +271,7 @@ LIBC.memset(ctypes.c_void_p(self.ptr), ctypes.c_int(0), ctypes.c_size_t(size))
 如何在TransferQueue中高效注册内存
 Mooncake 作为业界广泛使用的高性能通信库，其内存注册机制已较为完善。那么如何在 TransferQueue 中结合业务特性进一步优化性能？
 
-首先，TransferQueue作为上层RL框架与底层存储传输引擎之间的中间件，肩负着一个“翻译器”的作用：TQ 需将训练数据按行（样本）与列（字段）组织为最小单元，并转换为底层 KV 存储所需的 key-value 形式，这样**上层RL框架就可以实现数据的“零存整取”或“整存零取”，摆脱batch的束缚，实现流式的数据中转**。关于TQ的详细特性介绍可以参考[TransferQueue/tutorial/basic.ipynb at main · Ascend/TransferQueue](https://link.zhihu.com/?target=https%3A//github.com/Ascend/TransferQueue/blob/main/tutorial/basic.ipynb)
+首先，TransferQueue作为上层RL框架与底层存储传输引擎之间的中间件，肩负着一个“翻译器”的作用：TQ 需将训练数据按行（样本）与列（字段）组织为最小单元，并转换为底层 KV 存储所需的 key-value 形式，这样<strong>上层RL框架就可以实现数据的“零存整取”或“整存零取”，摆脱batch的束缚，实现流式的数据中转</strong>。关于TQ的详细特性介绍可以参考[TransferQueue/tutorial/basic.ipynb at main · Ascend/TransferQueue](https://link.zhihu.com/?target=https%3A//github.com/Ascend/TransferQueue/blob/main/tutorial/basic.ipynb)
 
 ![](https://pic4.zhimg.com/v2-fba6fefe2a835132828c3e6657b935df_1440w.jpg)这样把数据粒度拆细会给底层传输传带来不小的挑战，RDMA 倾向于预先注册较大的内存 buffer，让用户直接与 buffer 交互读写，在避免用户态拷贝的同时，一次性发送整块数据以充分利用链路带宽，降低 `register_buffer` 等操作的频率。但在 TQ 的设计中，KV后端看到的是一系列细粒度的 key 和 value，如果真按照这么细的粒度去传输（每个小tensor大约几KB~几百KB），性能肯定是惨不忍睹的。 
 
@@ -282,7 +282,7 @@ Mooncake 作为业界广泛使用的高性能通信库，其内存注册机制�
 
 但这对TQ来说真的是最优解吗？首先，单台机器可能运行多个 TQ client，每个 client 均维护独立 memory buffer，整体内存占用不容忽视。在 RL 场景中，host memory 还需承载模型 offload，资源并不充裕。其次，memory copy 毕竟引入额外开销，对于大量对象，在 Python 侧循环进行 memory copy 亦非高性能方案。
 
-进一步思考，由于TQ在用户侧约定的数据格式是TensorDict，在打包tensor成TensorDict的时候其实已经做了一次批量的torch.stack/torch.nested.as_nested_tensor，**底层数据已经是内存连续的了**，那么我们其实可以利用这一特点，在MooncakeStoreClient里把上层拆分下来的逐tensor指针+size合成大西瓜，**把物理连续的内存重新合并，这样只需要进行一次（或少量几次，由于不同dtype或多个TensorDict keys）register_memory就可以了**，实现了既要（原地注册省内存）又要（降低register开销）。
+进一步思考，由于TQ在用户侧约定的数据格式是TensorDict，在打包tensor成TensorDict的时候其实已经做了一次批量的torch.stack/torch.nested.as_nested_tensor，<strong>底层数据已经是内存连续的了</strong>，那么我们其实可以利用这一特点，在MooncakeStoreClient里把上层拆分下来的逐tensor指针+size合成大西瓜，<strong>把物理连续的内存重新合并，这样只需要进行一次（或少量几次，由于不同dtype或多个TensorDict keys）register_memory就可以了</strong>，实现了既要（原地注册省内存）又要（降低register开销）。
 
 ![](https://pica.zhimg.com/v2-5fc5a6e9b446612e674d89d15f04922e_1440w.jpg)在PR[[perf] Refactor MooncakeStore backend with zero-copy upsert API by 0oshowero0 · Pull Request #77 · Ascend/TransferQueue](https://link.zhihu.com/?target=https%3A//github.com/Ascend/TransferQueue/pull/77)里，我依照上述思路做了实现，在 put 阶段，找到内存连续的 tensor 进行合并，一次性完成 register_memory：
 

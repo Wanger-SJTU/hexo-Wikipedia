@@ -28,24 +28,24 @@ The most common vicious cycle goes like this: the agent makes a mistake, you say
 
 This is a perfectly natural reaction. "Add a rule" every time something goes wrong feels reasonable. But the cumulative effect is disastrous. Let's look at exactly what goes wrong.
 
-**Context budget gets eaten alive.** The agent's context window is finite. Say your agent has a 200K token window (Claude's standard). A bloated instruction file might consume 10-20K tokens. Seems like there's still plenty of headroom? But a complex task might need to read dozens of source files, tool execution output also takes up context, and conversation history keeps accumulating. By the time the agent actually needs to understand the code, the budget is already exhausted.
+<strong>Context budget gets eaten alive.</strong> The agent's context window is finite. Say your agent has a 200K token window (Claude's standard). A bloated instruction file might consume 10-20K tokens. Seems like there's still plenty of headroom? But a complex task might need to read dozens of source files, tool execution output also takes up context, and conversation history keeps accumulating. By the time the agent actually needs to understand the code, the budget is already exhausted.
 
-**Lost in the middle.** The "Lost in the Middle" paper (Liu et al., 2023) clearly demonstrated that LLMs utilize information in the middle of long texts significantly less effectively than at the beginning or end. Your AGENTS.md is 600 lines long, and line 300 says "all database queries must use parameterized queries" — that's a security hard constraint. But it's buried in the middle, and the agent will almost certainly ignore it.
+<strong>Lost in the middle.</strong> The "Lost in the Middle" paper (Liu et al., 2023) clearly demonstrated that LLMs utilize information in the middle of long texts significantly less effectively than at the beginning or end. Your AGENTS.md is 600 lines long, and line 300 says "all database queries must use parameterized queries" — that's a security hard constraint. But it's buried in the middle, and the agent will almost certainly ignore it.
 
-**Priority conflicts.** The file mixes non-negotiable hard constraints ("never use eval()"), important design guidelines ("prefer functional style"), and a specific historical lesson ("fixed a WebSocket memory leak last week, watch for similar patterns"). These three rules have completely different importance levels, but in the file they all look identical. The agent has no reliable signal to distinguish which is a red line and which is merely a suggestion.
+<strong>Priority conflicts.</strong> The file mixes non-negotiable hard constraints ("never use eval()"), important design guidelines ("prefer functional style"), and a specific historical lesson ("fixed a WebSocket memory leak last week, watch for similar patterns"). These three rules have completely different importance levels, but in the file they all look identical. The agent has no reliable signal to distinguish which is a red line and which is merely a suggestion.
 
-**Maintenance decay.** Large files are inherently hard to maintain. Outdated instructions rarely get deleted, because the consequences of deletion are uncertain ("maybe something else depends on this rule?"), but adding new instructions feels cost-free. The result: the file only grows, never shrinks, and the signal-to-noise ratio steadily declines. This is the same problem as technical debt accumulation in software.
+<strong>Maintenance decay.</strong> Large files are inherently hard to maintain. Outdated instructions rarely get deleted, because the consequences of deletion are uncertain ("maybe something else depends on this rule?"), but adding new instructions feels cost-free. The result: the file only grows, never shrinks, and the signal-to-noise ratio steadily declines. This is the same problem as technical debt accumulation in software.
 
-**Contradiction accumulation.** Instructions added at different times start contradicting each other — one says "use TypeScript strict mode," another says "some legacy files are allowed to use any." The agent picks one at random each time.
+<strong>Contradiction accumulation.</strong> Instructions added at different times start contradicting each other — one says "use TypeScript strict mode," another says "some legacy files are allowed to use any." The agent picks one at random each time.
 
 ## Core Concepts
 
-- **Instruction Bloat**: When an instruction file occupies 10-15% of the context window, it starts crowding out budget for code reading and task reasoning. A 600-line `AGENTS.md` might consume 10,000-20,000 tokens — that's 8-15% of a 128K window.
-- **Lost in the Middle**: Information in the middle of long texts is easily overlooked. Liu et al.'s 2023 research showed that LLMs utilize information in the middle of long texts significantly less effectively than information at the beginning or end. A critical constraint buried at line 300 of a 600-line file has a very high probability of being ignored.
-- **Instruction Signal-to-Noise Ratio (SNR)**: The proportion of instructions in a file that are relevant to the current task. Being forced to read 50 lines of deployment instructions during a bug fix — that's low SNR.
-- **Entry File**: A short entry file whose purpose is to guide the agent toward more detailed documentation, rather than containing everything itself. 50-200 lines is sufficient.
-- **Reveal on Demand**: Give overview information first, detailed information when needed. Good harness design is like good UI design — don't dump all options on the user at once.
-- **Can't Tell What Matters**: When all instructions appear in the same format and location, the agent cannot distinguish non-negotiable hard constraints from suggestive soft guidelines.
+- <strong>Instruction Bloat</strong>: When an instruction file occupies 10-15% of the context window, it starts crowding out budget for code reading and task reasoning. A 600-line `AGENTS.md` might consume 10,000-20,000 tokens — that's 8-15% of a 128K window.
+- <strong>Lost in the Middle</strong>: Information in the middle of long texts is easily overlooked. Liu et al.'s 2023 research showed that LLMs utilize information in the middle of long texts significantly less effectively than information at the beginning or end. A critical constraint buried at line 300 of a 600-line file has a very high probability of being ignored.
+- <strong>Instruction Signal-to-Noise Ratio (SNR)</strong>: The proportion of instructions in a file that are relevant to the current task. Being forced to read 50 lines of deployment instructions during a bug fix — that's low SNR.
+- <strong>Entry File</strong>: A short entry file whose purpose is to guide the agent toward more detailed documentation, rather than containing everything itself. 50-200 lines is sufficient.
+- <strong>Reveal on Demand</strong>: Give overview information first, detailed information when needed. Good harness design is like good UI design — don't dump all options on the user at once.
+- <strong>Can't Tell What Matters</strong>: When all instructions appear in the same format and location, the agent cannot distinguish non-negotiable hard constraints from suggestive soft guidelines.
 
 ## Instruction Architecture
 
@@ -138,8 +138,8 @@ After refactoring: success rate on the same task set improved from 45% to 72%. S
 
 ## Exercises
 
-1. **SNR Audit**: Take your current entry instruction file and list all instruction entries. Pick 5 different common task types and mark whether each instruction is relevant to that task. Calculate the SNR for each task type. Instructions that are noise for most tasks should be moved to topic documents.
+1. <strong>SNR Audit</strong>: Take your current entry instruction file and list all instruction entries. Pick 5 different common task types and mark whether each instruction is relevant to that task. Calculate the SNR for each task type. Instructions that are noise for most tasks should be moved to topic documents.
 
-2. **Reveal on Demand Refactor**: If you have an instruction file over 300 lines, split it into: (a) an entry file under 100 lines, (b) 3-5 topic documents. Run the same set of tasks (at least 5) before and after refactoring, and compare success rates.
+2. <strong>Reveal on Demand Refactor</strong>: If you have an instruction file over 300 lines, split it into: (a) an entry file under 100 lines, (b) 3-5 topic documents. Run the same set of tasks (at least 5) before and after refactoring, and compare success rates.
 
-3. **Lost in the Middle Verification**: In a long instruction file, place a critical constraint at the top, middle, and bottom respectively, running the same task set each time (at least 5 runs per position). See if there's a difference in compliance rate. You might be surprised by how strong the position effect is.
+3. <strong>Lost in the Middle Verification</strong>: In a long instruction file, place a critical constraint at the top, middle, and bottom respectively, running the same task set each time (at least 5 runs per position). See if there's a difference in compliance rate. You might be surprised by how strong the position effect is.

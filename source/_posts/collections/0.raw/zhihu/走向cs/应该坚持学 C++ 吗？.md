@@ -25,7 +25,7 @@ C++ 代码要想写好，关键点并不在于你有多么熟悉 C++ 的语法�
 
 ![](https://picx.zhimg.com/v2-bf6bab7f40bd626f25fb7dc248f20394_r.jpg?source=2c26e567)《提高 C++ 性能的编程技术》详细讨论了临时对象、内存管理、继承、虚函数、内联、引用计数以及 stl 等一切有可能提升 C++ 效率的细节内容。最终，该书将 C++ 性能提升的各种终极利器，完美地呈现在广大读者的面前！渴望突破 C++ 编程瓶颈、大幅提升自我修为的程序设计爱好者，都可以通过此书获益良多。
 
-当然，这本书中介绍的一些优化技巧，新版本的 C++ 编译器已经代开发者所做，但是这本书介绍了其背后的原理和思路。而且最重要的是，**这本书深入到代码层面，也就是说书中介绍的优化技巧和注意事项可以实实在在地指导你写出高效的 C++ 代码。**
+当然，这本书中介绍的一些优化技巧，新版本的 C++ 编译器已经代开发者所做，但是这本书介绍了其背后的原理和思路。而且最重要的是，<strong>这本书深入到代码层面，也就是说书中介绍的优化技巧和注意事项可以实实在在地指导你写出高效的 C++ 代码。</strong>
 
 这本书也是让我理解 C++ 代码该如何优化，思考如何写出高效 C++ 代码的第一本书。网上有同学分享出来了（链接收集于网络，喜欢请购买正版）：
 
@@ -40,9 +40,9 @@ C++ 代码要想写好，关键点并不在于你有多么熟悉 C++ 的语法�
 
 网上有同学分享出来了（链接收集于网络，喜欢请购买正版）：
 
-链接：[https://pan.baidu.com/s/1euUDh-UcksiSD9SIDsdOQQ](https://link.zhihu.com/?target=https%3A//pan.baidu.com/s/1euUDh-UcksiSD9SIDsdOQQ) 提取码: qzhz  我目前在大厂做 C++ 开发，我整理了一套 C/C++ 优质学习资料————**CppGuide**，内容从 C/C++ 语言、网络编程、操作系统原理到完整的项目源码分析，同时这份资料也包括 C/C++ 学习方法、推荐的阅读书籍、简历指导和求职技巧等。
+链接：[https://pan.baidu.com/s/1euUDh-UcksiSD9SIDsdOQQ](https://link.zhihu.com/?target=https%3A//pan.baidu.com/s/1euUDh-UcksiSD9SIDsdOQQ) 提取码: qzhz  我目前在大厂做 C++ 开发，我整理了一套 C/C++ 优质学习资料————<strong>CppGuide</strong>，内容从 C/C++ 语言、网络编程、操作系统原理到完整的项目源码分析，同时这份资料也包括 C/C++ 学习方法、推荐的阅读书籍、简历指导和求职技巧等。
 
-**需要获取以下资料的同学可以点击这里：**
+<strong>需要获取以下资料的同学可以点击这里：</strong>
 
 [CppGuide 学习资料](https://link.zhihu.com/?target=https%3A//mp.weixin.qq.com/s/Oej6y-pYcv20YGo6cCyLwg)
 ![](https://picx.zhimg.com/v2-ec1c3777cee535ba9252024256c99a01_r.jpg?source=2c26e567)

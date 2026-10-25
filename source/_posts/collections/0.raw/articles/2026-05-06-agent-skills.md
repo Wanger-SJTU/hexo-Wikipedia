@@ -137,13 +137,13 @@ This third mode is where I'd actually start. Pick the four or five skills closes
 
 A few patterns from the project I'd steal regardless of whether you use AI coding agents at all.
 
-**Anti-rationalization as a team practice.** Write down the lies your team tells itself. "We'll fix the tests after launch." "This change is too small for a design doc." "It's fine, we have monitoring." Pair each with the rebuttal. Put it in your AGENTS.md or your engineering wiki. It will save you arguments and it will catch the next tired Friday-afternoon shortcut.
+<strong>Anti-rationalization as a team practice.</strong> Write down the lies your team tells itself. "We'll fix the tests after launch." "This change is too small for a design doc." "It's fine, we have monitoring." Pair each with the rebuttal. Put it in your AGENTS.md or your engineering wiki. It will save you arguments and it will catch the next tired Friday-afternoon shortcut.
 
-**Process over prose for anything you write internally.** If you find yourself writing a 2,000-word doc titled "how we approach X" you've written reference material. Convert it to a workflow with checkpoints. The doc shrinks to 400 words and people actually run it. This applies as much to onboarding guides and runbooks as it does to agent skills.
+<strong>Process over prose for anything you write internally.</strong> If you find yourself writing a 2,000-word doc titled "how we approach X" you've written reference material. Convert it to a workflow with checkpoints. The doc shrinks to 400 words and people actually run it. This applies as much to onboarding guides and runbooks as it does to agent skills.
 
-**Verification as a hard exit criterion.** Make "produce evidence" the exit step of every task. For agents, for engineers, for yourself. Evidence is whatever proves the work is done: a green test run, a screenshot, a log, a review approval. Without it, the task is not done. "Seems right" never closes the loop.
+<strong>Verification as a hard exit criterion.</strong> Make "produce evidence" the exit step of every task. For agents, for engineers, for yourself. Evidence is whatever proves the work is done: a green test run, a screenshot, a log, a review approval. Without it, the task is not done. "Seems right" never closes the loop.
 
-**Progressive disclosure for any rulebook.** Do not write a 50-page handbook. Write a small router that points to the right small chapter for the situation. This is true for AGENTS.md, for runbooks, for incident playbooks, for anything anyone will read under time pressure.
+<strong>Progressive disclosure for any rulebook.</strong> Do not write a 50-page handbook. Write a small router that points to the right small chapter for the situation. This is true for AGENTS.md, for runbooks, for incident playbooks, for anything anyone will read under time pressure.
 
 Five non-negotiables, lifted from the meta-skill, that I'd put in any AGENTS.md tomorrow:
 

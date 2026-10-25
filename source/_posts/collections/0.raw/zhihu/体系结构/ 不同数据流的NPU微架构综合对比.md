@@ -25,11 +25,11 @@ source_url: https://zhuanlan.zhihu.com/p/1897065837141133197
 
 在OS架构中，每个PE计算的输出结果（部分和）在计算过程中保持在PE内部的寄存器中（即"输出静止"）。输入激活值（A）沿水平方向广播至一行中的所有PE，而权重值（W）则沿垂直方向广播至一列中的所有PE。在每个时钟周期，新的激活值和权重值被送入阵列，其乘积结果累加到对应PE的输出寄存器中。从GEMM的角度理解，OS数据流可以认为是外积的实现方案。
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_aae2c3f441e3.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_aae2c3f441e3.jpg)
 
 相对地，在WS架构中，权重值（W）在计算过程中保持不变，预先加载并存储在各个PE内部的寄存器中（即"权重静止"）。通常，一列PE存储一组权重（例如，对应一个输出通道的卷积核的一部分或全连接层的一行权重），用于和输入激活值（A）进行向量内积运算。输入激活值（A）通常沿水平方向广播，被阵列中不同列的PE（及其存储的权重）复用。计算得到的部分和（Partial Sums）会从PE阵列中移出，并在阵列外部或边缘的累加单元/输出缓冲器（Output Buffer）中进行累加，最终形成输出结果。从GEMM的角度理解，OS数据流可以认为是内积的实现方案。
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_91b98de960de.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_91b98de960de.jpg)
 
 理论上还存在输入静止（Input Stationary, IS）数据流，由于矩阵乘法的对称性，其基本原理与WS类似。然而，在实际神经网络应用中，激活值和权重的数据大小、访问模式和复用特性存在差异，这使得IS和WS在实践中会展现出不同的特性。本文将主要关注OS和WS的对比，暂不深入探讨IS。
 
@@ -65,11 +65,11 @@ MAC阵列的组合逻辑主要由运算单元构成。要比较两者开销，�
 
 基于优先完成部分和累加这一优化目标，我们发现，尽管OS和WS在阵列微架构层面存在显著差异，但在宏观的全局Mapping层面，它们的访存行为可以非常相似，甚至可能完全一致。具体分析如下：
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_e7108bb6d40c.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_e7108bb6d40c.jpg)
 
 对于OS微架构，一个Output tile对应输出特征图上的一个PX*PY的小块。为了而激活值和权重值也同样有tile的概念，Activation tile size = PY*PK，Weight tile size = PK*PX。PK方向是累加方向，在OS架构里，是在时间维度上展开的。为了把output tile累加完成，需要按照图中箭头方向依次加载不同的activation和weight tile，累加在output tile上。当这个Tile计算（累加）完成后，控制器会调度计算下一个Output Tile，可能移动到同一输出特征图的相邻行或列。
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_d98914b9b8ff.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_d98914b9b8ff.jpg)
 
 对于WS微架构，虽然权重在PE内静止，但为了同样达到优先累加部分和的目的，其宏观Mapping策略也可以围绕输出特征图上的Tile进行。WS和OS的tiling策略类似，但是size有所区别，Output Tile size=PM*PX，Activation Tile size=PM*PY，Output Tile size=PY*PX，PY在WS架构里面是PE阵列的高度，也是用来累加的方向。这里，PM的选择是一个关键的设计参数，这也是上文所提到的Output Buffer的深度的大小。较大的PM意味着每个加载的权重集可以用于计算更多的输出元素，提高了权重的复用率，从而降低了对权重加载带宽的需求。然而，较大的PM也可能需要更大的输出缓冲器（如果部分和在外部累加）或者更复杂的控制逻辑，带来面积和复杂度的增加。因此，PM的选择需要在权重复用（降低带宽/功耗）和硬件开销（面积/复杂度）之间进行权衡。
 

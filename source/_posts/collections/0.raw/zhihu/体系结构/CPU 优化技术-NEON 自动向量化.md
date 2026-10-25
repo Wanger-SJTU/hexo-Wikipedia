@@ -15,12 +15,12 @@ source_url: https://zhuanlan.zhihu.com/p/435342281
 ---
 
 
-**版权声明 ©本文首发于知乎专栏：移动端算法优化****本专栏「移动端算法优化」所有文章著作权归作者所有。****允许个人直接分享本专栏文章到个人微博、朋友圈。但媒体（包括但不限于网站、微信公众号、微博营销号）转载需事先征得专栏同意。转载需在正文开头显著位置注明出处，给出原始链接，注明「发表于知乎专栏《移动端算法优化》」，并不得进行任何形式的修改演绎。**
-### **一、概述**
+<strong>版权声明 ©本文首发于知乎专栏：移动端算法优化</strong><strong>本专栏「移动端算法优化」所有文章著作权归作者所有。</strong><strong>允许个人直接分享本专栏文章到个人微博、朋友圈。但媒体（包括但不限于网站、微信公众号、微博营销号）转载需事先征得专栏同意。转载需在正文开头显著位置注明出处，给出原始链接，注明「发表于知乎专栏《移动端算法优化》」，并不得进行任何形式的修改演绎。</strong>
+### <strong>一、概述</strong>
 
 SIMD 作为一种重要的并行化技术，在提升性能的同时也会增加开发的难度。目前大多数编译器都具有自动向量化的功能，将 C/C++ 代码自动替换为 SIMD 指令。
 
-从编译技术上来说，自动向量化一般包含两部分：**循环向量化（Loop vectorization）**和**超字并行向量化（SLP，Superword-Level Parallelism vectorization，又称Basic block vectorization）**。
+从编译技术上来说，自动向量化一般包含两部分：<strong>循环向量化（Loop vectorization）</strong>和<strong>超字并行向量化（SLP，Superword-Level Parallelism vectorization，又称Basic block vectorization）</strong>。
 
 *演示代码：*
 
@@ -34,7 +34,7 @@ SIMD 作为一种重要的并行化技术，在提升性能的同时也会增加
 }
 `
 
-- **循环向量化**：将循环进行展开，增加循环中的执行代码来减少循环次数。如以下代码将循环次数精简到之前的。
+- <strong>循环向量化</strong>：将循环进行展开，增加循环中的执行代码来减少循环次数。如以下代码将循环次数精简到之前的。
 `for (int i = 0; i  (n & ~3); i += 4)
 {
     sum[i]     = a[i    ] + b[i];
@@ -44,18 +44,18 @@ SIMD 作为一种重要的并行化技术，在提升性能的同时也会增加
 }
 `
 
-- **SLP 向量化**：编译器将多个标量运算绑定到一起，使其成为向量运算。下图将四次标量运算替换为一次向量运算。
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_28d3b678904b.jpg)
+- <strong>SLP 向量化</strong>：编译器将多个标量运算绑定到一起，使其成为向量运算。下图将四次标量运算替换为一次向量运算。
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_28d3b678904b.jpg)
 
 SLP 自动向量化接下来介绍如何通过编译器实现自动向量化。
 
-### **二、编译器配置**
+### <strong>二、编译器配置</strong>
 
 目前支持自动向量化的编译器有 Arm Compiler 6、Arm C/C++ Compiler、LLVM-clang 以及 GCC，这几种编译器间的相互关系如下表所示。
 
 Arm Compiler 6需arm授权基于LLVM-clang，针对裸机端的嵌入式开发Arm C/C++ Compiler需arm授权基于LLVM-clang，最初为高性能计算设计，针对linux下的用户应用程序开发LLVM-clang开源基于LLVM架构的C/C++/Objective-C编译器前端GCC开源GNU编译器套件**`自动向量化默认不会被启用，编程人员需要向编译器提供允许自动向量化的“许可证”来对自动向量化功能进行使能`。**
 
-#### **A. Arm Compiler 中使能自动向量化**
+#### <strong>A. Arm Compiler 中使能自动向量化</strong>
 
 `下文中 Arm Compiler 6 与 Arm C/C++ Compiler 使用 armclang 统称`，armclang 使能自动向量化配置信息如下表所示：
 
@@ -84,7 +84,7 @@ set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O2")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O2")
 `
 
-#### **C. GCC 中使能自动向量化**
+#### <strong>C. GCC 中使能自动向量化</strong>
 
 在 gcc 中使能自动向量化配置参数如下：
 
@@ -104,7 +104,7 @@ aarch64-none-linux-gnu-gcc -mcpu=cortex-a53 -ftree-vectorize -O2 main.c`
 
 `此外，gcc 中可以通过 -fopt-info-vec 命令查看自动向量化的详细信息，比如哪些代码实现了向量化，哪些代码没有实现向量化及没有进行向量化的原因。` 
 
-#### **D. 自动向量化实例**
+#### <strong>D. 自动向量化实例</strong>
 
 我们以上节的求和示例代码，来对编译器自动向量化的功能进行演示。编译器以 32 位 arm-gcc 为例：
 
@@ -118,17 +118,17 @@ arm-none-linux-gnueabihf-gcc -mfpu=neon -ftree-vectorize -O2 main.c -o avtest`
 `arm-none-linux-gnueabihf-objdump -d avtest > assemble.txt`
 
 - 反汇编结果对比如下图:
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_bbd81026b844.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_bbd81026b844.jpg)
 
-反汇编代码启用自动向量化之后，编译器通过***矢量化加载*** (**ldr** -> **vld1**）、***求和*** (**add **-> **vadd**)以及***保存*** (**str** -> **vst1**)等指令，将每次循环中处理的数据变为 4 个，循环次数精简为之前的 。
+反汇编代码启用自动向量化之后，编译器通过*<strong>矢量化加载</strong>* (<strong>ldr</strong> -> <strong>vld1</strong>）、*<strong>求和</strong>* (<strong>add</strong>-> <strong>vadd</strong>)以及*<strong>保存</strong>* (<strong>str</strong> -> <strong>vst1</strong>)等指令，将每次循环中处理的数据变为 4 个，循环次数精简为之前的 。
 
-### **三、自动向量化友好型代码**
+### <strong>三、自动向量化友好型代码</strong>
 
 基于一定的编程优化准则，可以更好的协助编译器完成自动向量化的工作，获得理想的性能状态。
 
-#### **A. 避免使用难以向量化的语句**
+#### <strong>A. 避免使用难以向量化的语句</strong>
 
-- **数据依赖**
+- <strong>数据依赖</strong>
 当循环中存在数据依赖时，编译器无法进行向量化。
 
 下述代码中计算 a[i] 时依赖上一次循环的输出，无法被向量化。
@@ -140,7 +140,7 @@ for (int i = 1; i  n; ++i)
 }
 `
 
-- **多级指针**
+- <strong>多级指针</strong>
 编译器无法对间接寻址，多级索引、多级解引用等行为进行向量化，尽量避免使用多级指针。
 
 下述代码通过 `idx` 进行了多级索引，无法被向量化。
@@ -152,7 +152,7 @@ for (int i = 0; i  n; ++i)
 }
 `
 
-- **条件及跳转语句**
+- <strong>条件及跳转语句</strong>
 当循环中存在条件语句或跳转语句时，代码很难被向量化。因此应尽量避免在循环中的使用if、break等语句。当循环中需要调用函数时，尽量使用内联函数进行替换。
 
 下述代码通过调用内联函数 add_single2 避免发生函数跳转。
@@ -172,7 +172,7 @@ void add(const int *a, const int *b, int n, int * restrict sum)
 }
 `
 
-- **长数据类型**
+- <strong>长数据类型</strong>
 neon 对 64 位长数据类型的支持有限，且较小的数据位宽有更高的并行度，应尽量选用较小的数据类型。当程序中存在浮点数据时，指明其数据类型。
 
 下述代码指明1.0是浮点数据，否则编译器会优先将其理解为double。
@@ -186,9 +186,9 @@ for (int i = 0; i  (n & ~3); ++i)
 }
 `
 
-#### **B. 增加自动向量化信息**
+#### <strong>B. 增加自动向量化信息</strong>
 
-- **地址交叠**
+- <strong>地址交叠</strong>
 指针操纵同一片数据区的情况被称为地址交叠。地址交叠会阻止自动向量化操作。
 
 当程序不会发生地址交叠时，用 `restrict` 限定符（C99 引入）在代码中声明指针所指区域是独立的。
@@ -199,7 +199,7 @@ for (int i = 0; i  (n & ~3); ++i)
 void add(const int *a, const int *b, int n, int * restrict sum)
 `
 
-- **数组尺寸**
+- <strong>数组尺寸</strong>
 明确数组尺寸，使其达到向量化处理长度的整数倍。但应注意处理不足向量化部分的剩余数据。
 
 下述代码通过掩码操作表明处理循环次数是 4 的整数倍。
@@ -209,7 +209,7 @@ for (int i = 0; i  (n & ~3); ++i)
 // don't forget to process the remaining data
 `
 
-- **循环展开**
+- <strong>循环展开</strong>
 在一些编译器中可以通过在 `for` 循环之前增加预处理语句告知编译器循环展开级数。
 
 下述代码告知 `armclang` 编译器希望将循环展开 4 次。
@@ -222,7 +222,7 @@ for (int i = 0; i  n; ++i)
 }
 `
 
-- **结构体加载**
+- <strong>结构体加载</strong>
 编译器仅会对每一成员都有操作的结构体加载操作进行自动向量化，可以结合实际需求考虑去除用于结构体对齐的填充数据。
 
 下述代码中删除用于填充结构体的变量 padding 以避免无法向量化。
@@ -248,14 +248,14 @@ for (int i = 0; i  n; ++i)
 };
 `
 
-- **循环构造**
+- <strong>循环构造</strong>
 尽量通过 `// use '// for(int i = 1; i for (int i = 1; i  n + 1; ++i)
 {
     // ...
 }
 `
 
-- **数组索引**
+- <strong>数组索引</strong>
 当对数组进行操作时，使用数组索引替代指针索引。
 
 下述代码通过 `sum[i]` 进行索引，而不是`*(sum + i)`。
@@ -269,7 +269,7 @@ sum[i] = a[i] + b[i];
 
 #### C. 重排数据实现缓存友好**
 
-- **循环合并**
+- <strong>循环合并</strong>
 当数据连续存储在结构体中时，可以进行循环合并操作，即在一个循环内处理临近的数据，提高缓存命中率。
 
 下述代码将 r、g、b 三个通道的处理合并到一个循环中。
@@ -299,17 +299,17 @@ for (...)
 }
 `
 
-### **四、总结**
+### <strong>四、总结</strong>
 
 本章节主要介绍了自动向量化的相关内容，其优缺点对比如下：
 
 优点缺点源代码采用传统 C/C++实现，便于理解源代码可以跨平台，但是依赖编译器无内联汇编或 intrinsic API 调用，可移植性高源代码修改影响优化效果现代编译器具备高级优化能力编译器优化能力有限，难以完整利用硬件特性总之，虽然通过自动向量化技术我们可以在一定程度上降低向量化编程难度，增强代码的可移植性，但是不能完全依赖于编译器，而且有时为了获得更高性能的代码，还是需要通过intrinsic甚至neon汇编进行编程。
 
-**五、参考资料**
+<strong>五、参考资料</strong>
 
 - Automatic vectorization
 - Compiling for Neon with Auto-Vectorization
 - NEON Programmer's Guide
 - Auto-vectorization in GCC
 - Auto-Vectorization in LLVM
-**未完待续。。。**
+<strong>未完待续。。。</strong>

@@ -32,7 +32,7 @@ Anthropic a mené une expérience contrôlée. Même prompt (« construire un é
 
 Ils n'ont pas changé de modèle. Opus 4.5 restait Opus 4.5. Ce qui a changé, c'est le harnachement.
 
-L'article d'OpenAI sur le harness engineering le formule simplement : Codex dans un dépôt bien harnessed passe de « peu fiable » à « fiable ». Pas « un peu mieux », mais un changement qualitatif. Comme un pur-sang : vous pouvez le monter sans harnachement adapté, mais vous n'irez ni loin ni vite, et tomber n'a rien d'étonnant. Le harness est cet ensemble de harnachement : **tout ce qui, dans l'infrastructure d'ingénierie, se trouve hors des poids du modèle.**
+L'article d'OpenAI sur le harness engineering le formule simplement : Codex dans un dépôt bien harnessed passe de « peu fiable » à « fiable ». Pas « un peu mieux », mais un changement qualitatif. Comme un pur-sang : vous pouvez le monter sans harnachement adapté, mais vous n'irez ni loin ni vite, et tomber n'a rien d'étonnant. Le harness est cet ensemble de harnachement : <strong>tout ce qui, dans l'infrastructure d'ingénierie, se trouve hors des poids du modèle.</strong>
 
 ## Où les agents se bloquent vraiment
 
@@ -50,20 +50,20 @@ Les tâches longues sur plusieurs sessions sont encore pires : les découvertes 
 
 ## Concepts clés
 
-- **Écart de capacité** : l'écart entre performance sur benchmark et performance réelle. 50-60 % sur SWE-bench Verified signifie que près de la moitié des vrais problèmes restent non résolus.
-- **Harness** : tout ce qui est hors du modèle — instructions, outils, environnement, gestion d'état, feedback de vérification. Si ce ne sont pas des poids de modèle, c'est du harness.
-- **Échec induit par le harness** : le modèle a la capacité, mais l'environnement d'exécution a des défauts structurels.
-- **Écart de vérification** : différence entre la confiance de l'agent et la correction réelle. L'agent dit « terminé » alors que ce n'est pas terminé.
-- **Boucle de diagnostic** : exécuter, observer l'échec, l'attribuer à une couche du harness, corriger cette couche, réexécuter.
-- **Definition of Done** : ensemble de conditions vérifiables par machine — tests passent, lint propre, types valides. Sans définition explicite, l'agent invente la sienne.
+- <strong>Écart de capacité</strong> : l'écart entre performance sur benchmark et performance réelle. 50-60 % sur SWE-bench Verified signifie que près de la moitié des vrais problèmes restent non résolus.
+- <strong>Harness</strong> : tout ce qui est hors du modèle — instructions, outils, environnement, gestion d'état, feedback de vérification. Si ce ne sont pas des poids de modèle, c'est du harness.
+- <strong>Échec induit par le harness</strong> : le modèle a la capacité, mais l'environnement d'exécution a des défauts structurels.
+- <strong>Écart de vérification</strong> : différence entre la confiance de l'agent et la correction réelle. L'agent dit « terminé » alors que ce n'est pas terminé.
+- <strong>Boucle de diagnostic</strong> : exécuter, observer l'échec, l'attribuer à une couche du harness, corriger cette couche, réexécuter.
+- <strong>Definition of Done</strong> : ensemble de conditions vérifiables par machine — tests passent, lint propre, types valides. Sans définition explicite, l'agent invente la sienne.
 
 ## Quand ça échoue, corriger le harness d'abord
 
-Principe central : **quand ça échoue, ne changez pas d'abord de modèle — vérifiez le harness.** Si le même modèle réussit sur des tâches similaires bien structurées, supposez un problème de harness. Comme une voiture en panne : on vérifie d'abord l'essence avant d'accuser le moteur.
+Principe central : <strong>quand ça échoue, ne changez pas d'abord de modèle — vérifiez le harness.</strong> Si le même modèle réussit sur des tâches similaires bien structurées, supposez un problème de harness. Comme une voiture en panne : on vérifie d'abord l'essence avant d'accuser le moteur.
 
-**Attribuer chaque échec à une couche précise.** Ne dites pas « le modèle est nul ». Demandez : la tâche était-elle floue ? Le contexte insuffisant ? La vérification absente ? Reliez chaque échec à une des cinq couches : spécification, contexte, environnement, feedback de vérification, état. Ce sont des couches de diagnostic pratiques, pas les six termes du glossaire ci-dessus.
+<strong>Attribuer chaque échec à une couche précise.</strong> Ne dites pas « le modèle est nul ». Demandez : la tâche était-elle floue ? Le contexte insuffisant ? La vérification absente ? Reliez chaque échec à une des cinq couches : spécification, contexte, environnement, feedback de vérification, état. Ce sont des couches de diagnostic pratiques, pas les six termes du glossaire ci-dessus.
 
-**Écrire une Definition of Done explicite.**
+<strong>Écrire une Definition of Done explicite.</strong>
 ```
 Completion criteria:
 - New endpoint GET /api/search?q=xxx
@@ -73,21 +73,21 @@ Completion criteria:
 - Type checking passes (mypy --strict)
 ```
 
-**Créer un fichier AGENTS.md.** Placez-le à la racine du dépôt pour décrire stack technique, conventions d'architecture et commandes de vérification. C'est la première étape du harness engineering et souvent celle avec le meilleur retour. Un `AGENTS.md` peut valoir plus qu'un modèle plus cher.
+<strong>Créer un fichier AGENTS.md.</strong> Placez-le à la racine du dépôt pour décrire stack technique, conventions d'architecture et commandes de vérification. C'est la première étape du harness engineering et souvent celle avec le meilleur retour. Un `AGENTS.md` peut valoir plus qu'un modèle plus cher.
 
-**Construire une boucle de diagnostic.** Traitez chaque échec comme un signal de défaut du harness. Identifiez la couche, corrigez-la, puis évitez que ce mode d'échec revienne.
+<strong>Construire une boucle de diagnostic.</strong> Traitez chaque échec comme un signal de défaut du harness. Identifiez la couche, corrigez-la, puis évitez que ce mode d'échec revienne.
 
-**Quantifier les améliorations.** Tenez un journal simple : succès ou échec, couche responsable. Après quelques tours, le goulot d'étranglement devient visible.
+<strong>Quantifier les améliorations.</strong> Tenez un journal simple : succès ou échec, couche responsable. Après quelques tours, le goulot d'étranglement devient visible.
 
 ## L'expérience du million de lignes
 
 OpenAI a mené en 2025 une expérience ambitieuse : utiliser Codex pour construire un produit interne complet depuis un dépôt git vide. Cinq mois plus tard, le dépôt comptait environ un million de lignes — logique applicative, infrastructure, tooling, documentation, outils internes — toutes générées par agents. Trois ingénieurs pilotaient Codex, ouvrant et fusionnant environ 1 500 PRs, soit 3,5 PRs par personne et par jour.
 
-Contrainte clé : **les humains n'écrivent jamais directement le code.** Ce n'était pas un gadget, mais un moyen de forcer l'équipe à comprendre ce qui change quand le travail principal de l'ingénieur n'est plus d'écrire du code, mais de concevoir des environnements, exprimer l'intention et construire des boucles de feedback.
+Contrainte clé : <strong>les humains n'écrivent jamais directement le code.</strong> Ce n'était pas un gadget, mais un moyen de forcer l'équipe à comprendre ce qui change quand le travail principal de l'ingénieur n'est plus d'écrire du code, mais de concevoir des environnements, exprimer l'intention et construire des boucles de feedback.
 
 Au début, la progression était plus lente que prévu. Non pas parce que Codex était incapable, mais parce que l'environnement était incomplet : il manquait outils, abstractions et structures internes. Le travail des ingénieurs est devenu : découper de grands objectifs en petits blocs (design, code, review, test), laisser l'agent les assembler, puis utiliser ces blocs pour débloquer des tâches plus complexes. Quand quelque chose échouait, la correction était rarement « essaie plus fort », mais plutôt « quelle capacité manque à l'agent, et comment la rendre compréhensible et exécutable ? ».
 
-Cette expérience prouve directement la thèse de cette leçon : **le même modèle produit des résultats radicalement différents dans un environnement nu et dans un environnement avec harness complet.** Le modèle n'a pas changé. L'environnement, oui.
+Cette expérience prouve directement la thèse de cette leçon : <strong>le même modèle produit des résultats radicalement différents dans un environnement nu et dans un environnement avec harness complet.</strong> Le modèle n'a pas changé. L'environnement, oui.
 
 > Source : [OpenAI: Harness engineering: leveraging Codex in an agent-first world](https://openai.com/index/harness-engineering/)
 
@@ -119,8 +119,8 @@ Ils n'ont pas changé le modèle. Ils ont changé le harness.
 
 ## Exercices
 
-1. **Expérience comparative** : choisissez un codebase connu et une tâche non triviale. Exécutez d'abord sans harness, puis avec `AGENTS.md` et commandes de vérification explicites. Comparez les échecs par couche.
+1. <strong>Expérience comparative</strong> : choisissez un codebase connu et une tâche non triviale. Exécutez d'abord sans harness, puis avec `AGENTS.md` et commandes de vérification explicites. Comparez les échecs par couche.
 
-2. **Mesure de l'écart de vérification** : choisissez 5 tâches. Notez si l'agent affirme avoir terminé, puis vérifiez indépendamment. Calculez la proportion de faux « terminé ».
+2. <strong>Mesure de l'écart de vérification</strong> : choisissez 5 tâches. Notez si l'agent affirme avoir terminé, puis vérifiez indépendamment. Calculez la proportion de faux « terminé ».
 
-3. **Pratique de boucle diagnostic** : trouvez une tâche où l'agent échoue souvent. Exécutez, attribuez l'échec à une couche, corrigez-la, réexécutez et mesurez l'amélioration.
+3. <strong>Pratique de boucle diagnostic</strong> : trouvez une tâche où l'agent échoue souvent. Exécutez, attribuez l'échec à une couche, corrigez-la, réexécutez et mesurez l'amélioration.

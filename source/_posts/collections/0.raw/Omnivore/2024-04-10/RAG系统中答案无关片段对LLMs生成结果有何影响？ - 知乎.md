@@ -25,11 +25,11 @@ id: f9b8a918-8798-4fbc-aee4-9a3b8489fea4
 
 关注者
 
-**15**
+<strong>15</strong>
 
 被浏览
 
-**990**
+<strong>990</strong>
 
 创建时间：2024-04-08 20:46:28
 
@@ -134,7 +134,7 @@ Github: https://github.com/Di-viner/LLM-Robustness-to-Irrelevant-Information
 
 ## 结论实验
 
-评估了LLMs在面对三个不同语义相关性级别的答案无关片段时的表现，如下表所示，随着片段的相关性增高，不同模型的效果均有所下降，对于干扰后生成的答案的信心更足。**闭源模型的效果远好于开源模型**。
+评估了LLMs在面对三个不同语义相关性级别的答案无关片段时的表现，如下表所示，随着片段的相关性增高，不同模型的效果均有所下降，对于干扰后生成的答案的信心更足。<strong>闭源模型的效果远好于开源模型</strong>。
 
 ![](https://proxy-prod.omnivore-image-cache.app/1246x0,sfNL7ooY_iYDfqZizOKRZNWFGPfZk6hOkx0V58ldtTYk/https://picx.zhimg.com/50/v2-5573254c06833b6763cb69c747d59a5f_720w.jpg?source=1def8aca)
 

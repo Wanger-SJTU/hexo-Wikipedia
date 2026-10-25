@@ -17,7 +17,7 @@ source_url: https://zhuanlan.zhihu.com/p/77834369
 
 转载请私信或邮件（ethanlee@pku.edu.cn）
 
-本文总结近两年语义分割领域对 attention 和“低秩”重建机制的探索，并介绍[笔者](https://link.zhihu.com/?target=https%3A//xialipku.github.io/)被 ICCV 2019 接收为 Oral 的工作：[Expectation-Maximization Attention Networks for Semantic Segmentation](https://link.zhihu.com/?target=https%3A//xialipku.github.io/publication/expectation-maximization-attention-networks-for-semantic-segmentation/)（代码已开源：[https://github.com/XiaLiPKU/EMANet](https://link.zhihu.com/?target=https%3A//github.com/XiaLiPKU/EMANet)）。笔者阅读有限，如有文献遗漏，敬请在知乎补充。注：本文中的 attention 仅指 **self-attention**，不涉及 soft-attention。
+本文总结近两年语义分割领域对 attention 和“低秩”重建机制的探索，并介绍[笔者](https://link.zhihu.com/?target=https%3A//xialipku.github.io/)被 ICCV 2019 接收为 Oral 的工作：[Expectation-Maximization Attention Networks for Semantic Segmentation](https://link.zhihu.com/?target=https%3A//xialipku.github.io/publication/expectation-maximization-attention-networks-for-semantic-segmentation/)（代码已开源：[https://github.com/XiaLiPKU/EMANet](https://link.zhihu.com/?target=https%3A//github.com/XiaLiPKU/EMANet)）。笔者阅读有限，如有文献遗漏，敬请在知乎补充。注：本文中的 attention 仅指 <strong>self-attention</strong>，不涉及 soft-attention。
 
 Attention 机制继在 NLP 领域取得主导地位[1]之后，近两年在 CV 领域也开始独领风骚。率先将之引入的是 Kaiming He 组的 Nonlocal[2]。此后层出不穷的文章，引发了一波研究attention机制的热潮。仅2018年，在语义分割领域就有多篇高影响力文章出炉，如 PSANet[3]，DANet[4]，OCNet[5]，CCNet[6]，以及今年的Local Relation Net[7]。此外，针对 Attention 数学形式的优化，又衍生出A2Net[8]，CGNL[9]。而 A2Net 又开启了本人称之为“低秩”重建的探索，同一时期的SGR[10]，Beyonds Grids[11]，GloRe[12]，LatentGNN[13] 都可以此归类。上述四文皆包含如下三步：1.像素到语义节点映射 2.语义节点间推理 3.节点向像素反映射。其中，step 2的意义尚未有对比实验验证，目前来看，step 1 & 3 构成的对像素特征的低秩重建发挥了关键作用。关于如何映射和反映射，又有了APCNet[14] 和笔者的 EMANet[15] 等相关工作。
 

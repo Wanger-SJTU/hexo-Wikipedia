@@ -17,7 +17,7 @@ categories:
 
 ### Session 1: 2026-03-30 (10:00 - 13:00)
 
-**Goal**: Implement all four P3 features following one-feature-at-a-time policy.
+<strong>Goal</strong>: Implement all four P3 features following one-feature-at-a-time policy.
 
 #### Feature: metadata-extraction (10:00 - 10:45)
 

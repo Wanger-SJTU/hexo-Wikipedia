@@ -68,7 +68,7 @@ FSA: mxActive =         71
 FSA: mxBubble =        206
 FSA: mxInst =          5
 FSA: rawInst =         32
-*** PASSED *** Completed after                 4587 simulation cycles
+*<strong>PASSED</strong>* Completed after                 4587 simulation cycles
 
 3. 波形
 

@@ -15,7 +15,7 @@ source_url: https://zhuanlan.zhihu.com/p/350228423
 ---
 
 
-上个季度工作中需要做通用的句子向量表示，为了保留BERT对句子理解的完整性，同时又要兼顾向量在迁移任务上的泛化能力，使用了Siamese-BERT的结构去做了句子向量化。工作中多种任务数据上验证都比官方BERT、词Word2Vec向量平均要提升明显。后来通过公众号了解到，原来这个思路已经写成了论文**Sentence-BERT: Sentence Embeddings using Siamese BERT-Networks**并发表在了IJCNLP2019。这个思路确实创新型并不是很足，大概是因为这个原因没有发表到三大顶会吧，不过用来做sentence-embedding效果确实是挺不错的，非常实用，原文链接：
+上个季度工作中需要做通用的句子向量表示，为了保留BERT对句子理解的完整性，同时又要兼顾向量在迁移任务上的泛化能力，使用了Siamese-BERT的结构去做了句子向量化。工作中多种任务数据上验证都比官方BERT、词Word2Vec向量平均要提升明显。后来通过公众号了解到，原来这个思路已经写成了论文<strong>Sentence-BERT: Sentence Embeddings using Siamese BERT-Networks</strong>并发表在了IJCNLP2019。这个思路确实创新型并不是很足，大概是因为这个原因没有发表到三大顶会吧，不过用来做sentence-embedding效果确实是挺不错的，非常实用，原文链接：
 
 [https://arxiv.org/pdf/1908.10084.pdfarxiv.org/pdf/1908.10084.pdf](https://link.zhihu.com/?target=https%3A//arxiv.org/pdf/1908.10084.pdf)
 
@@ -29,7 +29,7 @@ source_url: https://zhuanlan.zhihu.com/p/350228423
 
 如下图所示便是论文中使用的两种Siamese结构，整个的结构设计非常的简单，左图为训练模型时的结构，右图为推理时的结构。
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_5f0aaa8e164e.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_5f0aaa8e164e.jpg)
 
 论文中结构图
 #### 1.1 训练阶段
@@ -48,13 +48,13 @@ A和B两个sentence分别进入同一个BERT模型得到各自的poolout向量u,
 
 下图所示即为文中无监督部分的实验结果，可以看出，基于Siamese结构的SBERT在指标上大幅度完胜了其他sentence-embedding方法，证明了用SBERT做通用sentence-embedding的可行性。
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_2cbba9a69f8d.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_2cbba9a69f8d.jpg)
 
 #### 2.2 有监督
 
 有监督部分的实验结果SBERT表现一般，可以看到三种评估方式的两种效果都不如官方BERT模型。对于“有监督”方式的评估，其实可以理解为在具体任务上面“刷指标”，SBERT参与训练的fusion layers并不参与推理，这会造成训练目标和评估目标之间存在一个很大gap，即训练目标是sentence-embedding向量评估目标是相似性，因此具体任务上SBERT表现不如官方BERT还是比较正常的。
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_528ae0ecc0ea.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_528ae0ecc0ea.jpg)
 
 ### 3 总结
 

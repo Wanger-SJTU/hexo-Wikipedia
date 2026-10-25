@@ -32,7 +32,7 @@ source_url: https://zhuanlan.zhihu.com/p/107761106
 
 先讨论 w 和 f ， w(i) 是第 i 个像素点的坐标，乍一看， w(i) 完全可以等于 i 本身，其实没有这么简单。例如一个长度为 3 的 tensor，如果第 i 个像素点的坐标等于 i 本身，那么三个像素点在 tensor 中的位置就如下图中最左边的样子，横线的长度代表一维 tensor 的长度，圆圈代表像素点：
 
-![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_e5403b509c70.jpg)
+![](/images/collections/0.raw/zhihu/dl%E8%AE%BA%E6%96%87/asset/img_e5403b509c70.jpg)
 
 三个像素点没有对称地分布在 tensor 上，而是往左偏了。出于直觉，我们觉得这不是一件特别好的事情。在各种框架中，有两种常见的方法来解决这个问题：
 
@@ -42,7 +42,7 @@ $$一个是选取 w(i)=i+0.5 ，以一个长度为 3 的一维 tensor 为例，�
 
 那如果我们不采用这两种方法，一定要使用“直觉不好”的 asymmetric 方法，究竟会发生什么呢？TensorFlow 1.x 就给我们提供了这样一个反面典型，它在 align_corner=False 时的实现是错的，原因就是使用了上图中错误的 asymmetric 方法，这会导致奇怪的缩放结果，这篇博客 中，作者用 TensorFlow 1.x 训练的超分辨率神经网络总是出现奇怪的问题，最终他发现问题根源是 TensorFlow 错误的 resize 实现，他还给了一个形象的例子：把 16x16 的下图左侧图像缩小到 4x4，本应得到如下图右侧所示的图像，而 TensorFlow 1.x 却给出了下图中间的奇怪结果，图像的对称性被完全破坏了，其中的原因就如上文所述。TensorFlow 1.x 的 resize 结果和其它框架不同的一大原因就是它错误的 resize 实现，好在 TensorFlow 2.x 已经修复了这个问题。
 
-![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_aacba6e5dde0.jpg)
+![](/images/collections/0.raw/zhihu/dl%E8%AE%BA%E6%96%87/asset/img_aacba6e5dde0.jpg)
 
 接下来讨论另外两个函数 g 和 h ，nearest, linear, cubic 这三种常见的 resize 的不同方式，是在 g 和 h 上有所不同。 如上文所述，函数 g(i') 得到离 i' 最近的像素点，nearest 只需要找最近的一个像素点，linear 要找最近的两个（左右各一个），cubic 要找最近的四个（左右各两个）；函数 h(a, r) 是计算这一个/两个/四个像素点的加权平均值，其中权值是由 r 确定的（如上文所述，r 是 i' 距左侧像素点的距离）。对 nearest/linear/cubic 的每一种来说，如何从 r 得到各个像素点的权值都有各自标准的实现，nearest resize 不必说，对于 linear resize，两个像素点的权值是
  \begin{pmatrix} 1 - r \\ r \end{pmatrix} 

@@ -39,31 +39,31 @@ flag 解决的是“某件事完没完”，barrier 解决的是“这一轮能�
 为什么不是 Flag
 先把问题压缩到最小。如果只有一个 producer、一个 consumer，而且只有一笔异步搬运，那么 `flag set/clear` 当然能做同步：producer 把数据写完， `set flag` ，consumer 看到 flag 之后开始读。问题在于， `cp.async` 关心的从来都不是这么小的场景。它天然会落到下面这些问题上：这一轮对应的是哪一轮，不止一个线程会参与，不止一笔异步 transaction 在飞，而且同一个对象要被后续 stage 反复复用。到了这里，单个 flag 很快就不够用了。
 
-最直接的问题就是 **phase 复用**。flag 只有 set 和 clear 两种状态，很难表达“这次看到的 1 到底属于上一轮还是这一轮”。这也是为什么 `US20210124627A1` 从一开始就把同步对象建模成 `phase + count` ，而不是建模成一个 done bit。线程等的不是“某个位等于 1”，而是“我 arrive 时看到的那个 phase 已经翻转了”。
+最直接的问题就是 <strong>phase 复用</strong>。flag 只有 set 和 clear 两种状态，很难表达“这次看到的 1 到底属于上一轮还是这一轮”。这也是为什么 `US20210124627A1` 从一开始就把同步对象建模成 `phase + count` ，而不是建模成一个 done bit。线程等的不是“某个位等于 1”，而是“我 arrive 时看到的那个 phase 已经翻转了”。
 
-再往前一步，`cp.async` 不是一个线程等一笔事务，而是很多线程要对一批事务做**集体等待**。`US20210124627A1` 说得很直白：它和 semaphore/flag 的区别不在于能不能通知，而在于它支持 **N 个线程等待 M 个硬件事务**。flag 更像点对点通知，barrier 更像集体 rendezvous。
+再往前一步，`cp.async` 不是一个线程等一笔事务，而是很多线程要对一批事务做<strong>集体等待</strong>。`US20210124627A1` 说得很直白：它和 semaphore/flag 的区别不在于能不能通知，而在于它支持 <strong>N 个线程等待 M 个硬件事务</strong>。flag 更像点对点通知，barrier 更像集体 rendezvous。
 
-接下来是 **表达力**。`US20230289242A1` 的 transaction barrier 明确同时维护 `arrival count` 和 `transaction count`。这意味着 barrier clear 的条件不是“某个位被置上”，而是“线程 arrival 与 transaction completion 同时满足条件”。单 flag 表达不了这件事，至少很难优雅地表达。最后还有 **内存可见性** 问题。`US20210124627A1` 明确区分了 memory barrier 和 synchronization barrier。如果你走 `flag set/clear` 路线，就不得不自己维护三套约束：数据先写可见，再 set flag；consumer 先看 flag，再读数据；下一轮 clear 不能和上一轮迟到事务互相污染。这会把同步拆成“数据路径 + flag 路径 + fence 路径”三套协议，反而更容易出错。
+接下来是 <strong>表达力</strong>。`US20230289242A1` 的 transaction barrier 明确同时维护 `arrival count` 和 `transaction count`。这意味着 barrier clear 的条件不是“某个位被置上”，而是“线程 arrival 与 transaction completion 同时满足条件”。单 flag 表达不了这件事，至少很难优雅地表达。最后还有 <strong>内存可见性</strong> 问题。`US20210124627A1` 明确区分了 memory barrier 和 synchronization barrier。如果你走 `flag set/clear` 路线，就不得不自己维护三套约束：数据先写可见，再 set flag；consumer 先看 flag，再读数据；下一轮 clear 不能和上一轮迟到事务互相污染。这会把同步拆成“数据路径 + flag 路径 + fence 路径”三套协议，反而更容易出错。
 
-所以，`cp.async` 最后接上 barrier，不是因为 barrier 更“高级”，而是因为 barrier/phase/count 这套模型更自然地表达了异步事务的**批次、可见性和集体等待**。 
+所以，`cp.async` 最后接上 barrier，不是因为 barrier 更“高级”，而是因为 barrier/phase/count 这套模型更自然地表达了异步事务的<strong>批次、可见性和集体等待</strong>。 
 
 - 关键点
 flag 只能表达“有没有完成”，barrier 表达的是“这一轮是否可消费”。如果把这个问题说得再工程一点，flag 方案通常会在四个地方开始变得难看。
 
-- **复用困难**。只要 pipeline 有 stage 复用，单个 flag 很快就会遇到“这次看到的完成到底属于哪一轮”这个问题。
-- **聚合困难**。当多个线程要等待多笔异步 transaction 时，flag 很难自然表达“这一整批事务都满足条件了”。
-- **可见性脆弱**。你不得不自己维护数据写入、flag 更新和消费者读取之间的顺序关系。
-- **轮询开销高**。如果最后还是靠不断检查 flag，那本质上只是换了一种更弱表达力的 polling。
+- <strong>复用困难</strong>。只要 pipeline 有 stage 复用，单个 flag 很快就会遇到“这次看到的完成到底属于哪一轮”这个问题。
+- <strong>聚合困难</strong>。当多个线程要等待多笔异步 transaction 时，flag 很难自然表达“这一整批事务都满足条件了”。
+- <strong>可见性脆弱</strong>。你不得不自己维护数据写入、flag 更新和消费者读取之间的顺序关系。
+- <strong>轮询开销高</strong>。如果最后还是靠不断检查 flag，那本质上只是换了一种更弱表达力的 polling。
 传统原语
 先把几类常见同步机制压成一张表，会比纯文字更容易看清：
 
-原语最擅长解决什么主要问题BSP 命名屏障固定硬件域内的线程同步资源数有限，软件暴露困难，跨 SM / 跨处理器扩展差arrive-wait 屏障producer-consumer 风格的 split 同步常是 memory-backed，对 wait 的实现依赖 polling，shared memory 流量大syncwarpwarp 内线程收敛与局部顺序约束只管 warp 内，不解决跨 warp / 跨 SMCooperative Groups更大范围的软件线程同步依赖 cooperative launch，延迟高，无硬件事务跟踪，无专用等待加速transaction barrier线程 + 异步 transaction 的统一同步需要更复杂的对象状态和更完整的硬件前端第一类是 **BSP 命名屏障**。从 CUDA 和 PTX 的公开语义看，这类 barrier 最擅长的是 CTA 内的线程同步：线程到达、等待、再继续。它的优点是在一个固定硬件域内非常直接；缺点也一样明显：资源数有限，软件暴露困难，producer-consumer 支持不高，跨 SM 或跨处理器扩展也比较别扭。它更像“SM 内固定栏位”，不像一个可以灵活软件管理的同步对象。
+原语最擅长解决什么主要问题BSP 命名屏障固定硬件域内的线程同步资源数有限，软件暴露困难，跨 SM / 跨处理器扩展差arrive-wait 屏障producer-consumer 风格的 split 同步常是 memory-backed，对 wait 的实现依赖 polling，shared memory 流量大syncwarpwarp 内线程收敛与局部顺序约束只管 warp 内，不解决跨 warp / 跨 SMCooperative Groups更大范围的软件线程同步依赖 cooperative launch，延迟高，无硬件事务跟踪，无专用等待加速transaction barrier线程 + 异步 transaction 的统一同步需要更复杂的对象状态和更完整的硬件前端第一类是 <strong>BSP 命名屏障</strong>。从 CUDA 和 PTX 的公开语义看，这类 barrier 最擅长的是 CTA 内的线程同步：线程到达、等待、再继续。它的优点是在一个固定硬件域内非常直接；缺点也一样明显：资源数有限，软件暴露困难，producer-consumer 支持不高，跨 SM 或跨处理器扩展也比较别扭。它更像“SM 内固定栏位”，不像一个可以灵活软件管理的同步对象。
 
-第二类是 **arrive-wait barrier**。它比 BSP named barrier 进了一大步，因为它把同步从单点变成了窗口。线程可以先 `arrive` ，再在稍后真正需要结果的地方 `wait` ，程序因此能在两者之间塞进很多有用工作。它把同步从“线程到了就阻塞”改成“线程先登记，再晚一点决定要不要阻塞”。但它的代价也很明显：这类 barrier 常常是 memory-backed resource，而 wait 常常依赖软件 polling。一旦同步频繁、跨 SM、多对象并行，shared memory 上的 polling 就会带来不小的带宽和延迟成本。
+第二类是 <strong>arrive-wait barrier</strong>。它比 BSP named barrier 进了一大步，因为它把同步从单点变成了窗口。线程可以先 `arrive` ，再在稍后真正需要结果的地方 `wait` ，程序因此能在两者之间塞进很多有用工作。它把同步从“线程到了就阻塞”改成“线程先登记，再晚一点决定要不要阻塞”。但它的代价也很明显：这类 barrier 常常是 memory-backed resource，而 wait 常常依赖软件 polling。一旦同步频繁、跨 SM、多对象并行，shared memory 上的 polling 就会带来不小的带宽和延迟成本。
 
-第三类是 **syncwarp**。CUDA 官方文档对它的定位非常明确：这是 warp 内线程的同步与收敛原语。它解决的是 warp 内顺序约束，不打算解决跨 warp，更不打算解决跨 SM，所以它在 `cp.async` 这种需要跨线程组、跨事务批次协调的场景里，几乎天然不够用。
+第三类是 <strong>syncwarp</strong>。CUDA 官方文档对它的定位非常明确：这是 warp 内线程的同步与收敛原语。它解决的是 warp 内顺序约束，不打算解决跨 warp，更不打算解决跨 SM，所以它在 `cp.async` 这种需要跨线程组、跨事务批次协调的场景里，几乎天然不够用。
 
-第四类是 **Cooperative Groups / grid sync**。CUDA 官方文档同样写得很清楚：它提供更高层的软件分组与 `sync()`，而 `grid.sync()` 这类更大作用域同步还依赖 cooperative launch。它的优点是编程模型更友好，缺点是它本质上还是软件协调，延迟高，也不直接带硬件事务跟踪。它解决的是“更大范围的线程怎么一起同步”，而不是“硬件异步 transaction 怎样作为同步对象的一部分被精确跟踪”。
+第四类是 <strong>Cooperative Groups / grid sync</strong>。CUDA 官方文档同样写得很清楚：它提供更高层的软件分组与 `sync()`，而 `grid.sync()` 这类更大作用域同步还依赖 cooperative launch。它的优点是编程模型更友好，缺点是它本质上还是软件协调，延迟高，也不直接带硬件事务跟踪。它解决的是“更大范围的线程怎么一起同步”，而不是“硬件异步 transaction 怎样作为同步对象的一部分被精确跟踪”。
 
 把这几类放在一起看，一个很自然的结论就是：NVIDIA 后续要找的原语，必须同时满足四件事。它要像软件对象一样灵活，像硬件原语一样高效，能表达 producer-consumer 的 split arrive/wait，还得把硬件事务也放进同一个同步模型。transaction barrier 就是在这个背景下出现的。
 
@@ -72,7 +72,7 @@ flag 只能表达“有没有完成”，barrier 表达的是“这一轮是否�
 wait 的演进
 `US20210124627A1` 给出的第一个关键变化，是把 barrier 拆成 `arrive` 和 `wait`。这件事看起来只是接口拆分，但其实改了同步的时间结构。过去 barrier 是一个瞬时点，现在 barrier 变成了一个从 `arrive` 到 `wait` 的窗口。这个窗口特别适合异步搬运：线程先在某个点登记“这一轮我到了”，然后继续去做别的工作，直到稍后某个真正需要数据的地方再执行 `wait` 。
 
-![](https://pic3.zhimg.com/v2-a11345e23d5ef689a5abf58044dfd976_r.jpg)这张图把这个思想压成了非常直观的形式：上一轮 `Wait` 之后消费旧数据，同时为后续阶段安排新的 `LDGSTS + Arrive`。这时 wait 的语义已经不是“线程到一个点就停住”，而是“检查我 arrive 时看到的 phase 现在有没有翻转”。所以从一开始，wait 就不是在等一个 flag，而是在等一个 **phase 变化**。
+![](https://pic3.zhimg.com/v2-a11345e23d5ef689a5abf58044dfd976_r.jpg)这张图把这个思想压成了非常直观的形式：上一轮 `Wait` 之后消费旧数据，同时为后续阶段安排新的 `LDGSTS + Arrive`。这时 wait 的语义已经不是“线程到一个点就停住”，而是“检查我 arrive 时看到的 phase 现在有没有翻转”。所以从一开始，wait 就不是在等一个 flag，而是在等一个 <strong>phase 变化</strong>。
 
 更重要的是，这套建模已经把 `LDGSTS` 当成可以参与 barrier 的硬件 operator。在这种理解里， `LDGSTS` 的 DMA 路径逻辑上像一个被 fork 出去的小 helper thread：做自己的 load/store/arrive，然后结束。这一步其实已经把 cp.async 式异步数据移动纳入了 barrier 语义。也就是说，wait 等的不再只是线程 arrival，而是“线程 + 某些硬件 operator 的 arrival”。
 
@@ -110,13 +110,13 @@ mbarrier.expect_tx / complete_tx / cp.async.mbarrier.arrive
 硬件实现
 从这些材料能看到，wait 至少有四种实现形态，而且它们不是互斥的，更多像演进关系。
 
-第一种是 **纯软件 polling**。`US20210124627A1` 的 `_wait` 就是最典型例子：反复读取 barrier 的 phase，再和 `arrive` 时拿到的 phase 比较，直到发生 phase change。它的优点是简单，缺点也很明显：不断打 shared memory/backing store，线程在 spin，带宽在流失。
+第一种是 <strong>纯软件 polling</strong>。`US20210124627A1` 的 `_wait` 就是最典型例子：反复读取 barrier 的 phase，再和 `arrive` 时拿到的 phase 比较，直到发生 phase change。它的优点是简单，缺点也很明显：不断打 shared memory/backing store，线程在 spin，带宽在流失。
 
-第二种是 **software polling + backoff / timeout**。`US20240168632A1` 提到 `try_wait_parity`、`maxSleep`、outer retry loop 和 exponential backoff。这类方式不再每拍都读，而是读一读，睡一会，再读。它比纯 polling 好，但本质上仍然还是 polling，只是更节制了。
+第二种是 <strong>software polling + backoff / timeout</strong>。`US20240168632A1` 提到 `try_wait_parity`、`maxSleep`、outer retry loop 和 exponential backoff。这类方式不再每拍都读，而是读一读，睡一会，再读。它比纯 polling 好，但本质上仍然还是 polling，只是更节制了。
 
-第三种是 **event-triggered wait**。这正是 `US20230289242A1` 里 try-wait buffer 的意义。线程执行 wait 时，如果 barrier 还没 clear，就先把等待信息挂到 try-wait buffer 上；barrier clear 之后，由 sync unit 主动唤醒这些线程，这时线程就不需要一直自己反复读 backing store。第四种是 **混合式 wait**。材料里直接给出了三种模式：retry-based、bar-clear-trigger-based、mixed，也就是纯 retry、纯 bar-clear event，以及 retry 与 event 混合。这其实很合理，因为 wait 本身天然就有快路径和慢路径：快路径是我一查 phase 已经翻了，直接过；慢路径是 phase 还没翻，那就继续重试，或者挂入等待结构等唤醒。
+第三种是 <strong>event-triggered wait</strong>。这正是 `US20230289242A1` 里 try-wait buffer 的意义。线程执行 wait 时，如果 barrier 还没 clear，就先把等待信息挂到 try-wait buffer 上；barrier clear 之后，由 sync unit 主动唤醒这些线程，这时线程就不需要一直自己反复读 backing store。第四种是 <strong>混合式 wait</strong>。材料里直接给出了三种模式：retry-based、bar-clear-trigger-based、mixed，也就是纯 retry、纯 bar-clear event，以及 retry 与 event 混合。这其实很合理，因为 wait 本身天然就有快路径和慢路径：快路径是我一查 phase 已经翻了，直接过；慢路径是 phase 还没翻，那就继续重试，或者挂入等待结构等唤醒。
 
-从硬件结构上看， `US20230289242A1` 给得非常具体：有 **barrier datapath** 负责处理 `create`、`arrive`、`wait`、phase flip 和 counter 更新；有 **barrier cache** 缓存 hot barrier state，减少直接打到 backing memory 的次数；有 **try-wait buffer / rendezvous buffer** 保存等待线程的信息，而不是只保存 barrier state；有 **coalescer** 合并 transaction update，避免同步流量把内存系统打穿；还有 **CBU / scoreboard integration**，保证在 divergent waiting、wake-up 和 flush 这些边角场景下仍然保持正确行为。
+从硬件结构上看， `US20230289242A1` 给得非常具体：有 <strong>barrier datapath</strong> 负责处理 `create`、`arrive`、`wait`、phase flip 和 counter 更新；有 <strong>barrier cache</strong> 缓存 hot barrier state，减少直接打到 backing memory 的次数；有 <strong>try-wait buffer / rendezvous buffer</strong> 保存等待线程的信息，而不是只保存 barrier state；有 <strong>coalescer</strong> 合并 transaction update，避免同步流量把内存系统打穿；还有 <strong>CBU / scoreboard integration</strong>，保证在 divergent waiting、wake-up 和 flush 这些边角场景下仍然保持正确行为。
 
 所以，现代 wait 原语的硬件实现，不该再理解成“读一个 bit，判断一下，没变就回去”。更准确的理解是：先检查 barrier state；若满足，直接返回；若不满足，把线程注册进 wait 结构；等 barrier clear 或 timeout/重试条件成立；再由硬件通知或重试返回。这时 wait 的实现对象，也已经不是“flag”，而是一个有 phase、arrival、transaction、lock 和 wakeup 语义的同步对象。
 
@@ -139,13 +139,13 @@ mbarrier.expect_tx / complete_tx / cp.async.mbarrier.arrive
 
 从 `US20210124627A1` 到 `US20230289242A1` 再到 `US20240168632A1` ，wait 原语的演进大致可以压成一句话：它先从“线程到了就阻塞”的 barrier，变成“arrive 之后晚一点再 wait”的 split barrier，再变成“同时跟踪 thread 和 transaction”的 transaction barrier，最后变成由 `SYNCS` 单元加速、由 pipeline / parity / consumer_commit 等软件接口驱动的同步前端。
 
-所以，`cp.async` 最后为什么接 barrier？因为它真正要等的，从来就不是一个位。它要等的是：**这一 phase 对应的线程与异步事务，是否已经一起进入了可消费状态。**
+所以，`cp.async` 最后为什么接 barrier？因为它真正要等的，从来就不是一个位。它要等的是：<strong>这一 phase 对应的线程与异步事务，是否已经一起进入了可消费状态。</strong>
 
 专利列表
 
-- **US20210124627A1**
+- <strong>US20210124627A1</strong>
 主要讲 arrive-wait barrier 的 split 语义、phase / count 模型，以及 `LDGSTS` 参与 barrier 的方式。
-- **US20230289242A1**
+- <strong>US20230289242A1</strong>
 主要讲 transaction barrier、`SYNCS` 单元、barrier cache、try-wait buffer，以及 wait 的硬件实现形态。
-- **US20240168632A1**
+- <strong>US20240168632A1</strong>
 主要讲 manual transaction accounting、tokenless arrive、pipeline API，以及 wait / consumer_commit 这套更高层的软件接口。

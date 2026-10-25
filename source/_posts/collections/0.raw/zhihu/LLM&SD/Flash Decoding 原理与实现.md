@@ -39,7 +39,7 @@ Flash Attention 在训练阶段和推理的预填充（Prefill）阶段表现出
 
 这里复用我在 [Flash Attention 的基本原理](https://zhuanlan.zhihu.com/ml/flash-attention-overview/) 中的图示：
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_29802b914e52.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_29802b914e52.jpg)
 
 在计算时可以将 Q 分为多个块，每个分块由一个线程块（Thread Block）处理，每个 Q 块和所有的 K 和 V 块进行注意力计算，得到该 Q 块对应的输出。这个阶段，GPU 有较多的任务可以执行，计算资源可以被充分利用。
 
@@ -60,11 +60,11 @@ Flash Attention 在训练阶段和推理的预填充（Prefill）阶段表现出
 
 Flash Decoding 的解决方案很直观：既然 Q 维度没有足够的并行度，那就在 KV 维度上引入并行。具体做法是将内层循环对 KV 的遍历拆分为多个独立的并行任务：
 
-- **Split-KV 并行计算**：将 KV Cache 沿序列维度切分为多个块（split），每个块由一个独立的线程块处理。每个线程块独立计算其负责的 KV 块对应的局部注意力结果。
-- **归约（Reduce）**：所有线程块完成计算后，通过一次归约操作将各个局部结果合并为最终的全局注意力输出。
+- <strong>Split-KV 并行计算</strong>：将 KV Cache 沿序列维度切分为多个块（split），每个块由一个独立的线程块处理。每个线程块独立计算其负责的 KV 块对应的局部注意力结果。
+- <strong>归约（Reduce）</strong>：所有线程块完成计算后，通过一次归约操作将各个局部结果合并为最终的全局注意力输出。
 下图展示了 Flash Decoding 的计算流程：
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_464c9635fa06.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_464c9635fa06.jpg)
 
 **
 
@@ -72,7 +72,7 @@ Flash Decoding 的解决方案很直观：既然 Q 维度没有足够的并行�
 
 下面还有一个来自 PyTorch 的博客中的动画示意：
 
-![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_baa3175729c0.jpg)
+![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_baa3175729c0.jpg)
 
 ### Flash Decoding 的计算过程
 
@@ -98,17 +98,17 @@ Flash Decoding 的解决方案很直观：既然 Q 维度没有足够的并行�
 
  $$O^{(k)} = \frac{\sum_i e^{s_i^{(k)}} \cdot v_i^{(k)}}{\sum_i e^{s_i^{(k)}}} $$
 
-**合并多个 KV 块的结果**
+<strong>合并多个 KV 块的结果</strong>
 
 现在考虑合并两个分块的输出，我们记分块 1 的输出为 O^{(1)}，其 softmax 分母中的指数和为 \text{expsum}^{(1)}，分块 2 的输出为 O^{(2)}，其 softmax 分母中的指数和为 \text{expsum}^{(2)}。则合并过程可以分为以下几步：
 
-**第一步：计算全局指数和**
+<strong>第一步：计算全局指数和</strong>
 
 全局指数和为：
 
  \text{expsum}^* = \text{expsum}^{(1)} + \text{expsum}^{(2)} 
 
-**第二步**：修正各块的加权求和
+<strong>第二步</strong>：修正各块的加权求和
 
 将每个分块的输出的分母替换为全局指数和：
 
@@ -116,7 +116,7 @@ Flash Decoding 的解决方案很直观：既然 Q 维度没有足够的并行�
 
  $$O^{(2)}_{\text{new}} = \frac{\text{expsum}^{(2)}}{\text{expsum}^*} O^{(2)} $$
 
-**第三步**：累加各分块的结果
+<strong>第三步</strong>：累加各分块的结果
 
 合并后的输出为：
 

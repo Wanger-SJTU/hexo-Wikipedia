@@ -20,7 +20,7 @@ source_url: https://zhuanlan.zhihu.com/p/11129034854
 1 为什么PCIE需要地址映射？
 每个PCIE设备，都有自己的内部空间，这部分空间若是开放给Host(软件/CPU)来访问，那么Host怎样往这部分空间写入数据或者读数据？
 ---->CPU只能直接访问Host内存(Memory)空间，不对PCIE等外设直接操作，具体再通过RC分忧。
-具体办法就是：CPU如果想访问某个设备的空间，由于它不能亲自跟那些PCIe外设打交道，因此叫RC去办。比如，**如果CPU想读PCIe外设的数据，先叫RC通过TLP把数据从PCIe外设读到Host内存，然后CPU从Host内存读数据；如果CPU要往外设写数据，则先把数据在内存中准备好，然后叫RC通过TLP写入到PCIe设备。**
+具体办法就是：CPU如果想访问某个设备的空间，由于它不能亲自跟那些PCIe外设打交道，因此叫RC去办。比如，<strong>如果CPU想读PCIe外设的数据，先叫RC通过TLP把数据从PCIe外设读到Host内存，然后CPU从Host内存读数据；如果CPU要往外设写数据，则先把数据在内存中准备好，然后叫RC通过TLP写入到PCIe设备。</strong>
 
 最左边虚线的表示CPU要读Endpoint A的数据，RC则通过TLP（经历Switch）数据交互获得数据，并把它写入到系统内存中，然后CPU从内存中读取数据（紫色箭头所示），从而CPU间接完成对PCIe设备数据的读取。
 系统把PCIe设备开放的空间（系统软件可见）映射到内存空间，CPU要访问该PCIe设备空间，只需访问对应的内存空间。RC检查该内存地址，如果发现该内存空间地址是某个PCIe设备空间的映射，就会触发其产生TLP，去访问对应的PCIe设备，读取或者写入PCIe设备。

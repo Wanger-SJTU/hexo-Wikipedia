@@ -17,7 +17,7 @@ source_url: https://zhuanlan.zhihu.com/p/2015743850526844804
 
 ### 个人刚调研 KVCache，基于自己当前理解结合 Codex 生成。如有不足，欢迎指正批评。
 
-**KVCache 组会报告：KVCache 的层次化存储现状和未来**
+<strong>KVCache 组会报告：KVCache 的层次化存储现状和未来</strong>
 
 证据分层：Analytical + Measured
 
@@ -35,7 +35,7 @@ source_url: https://zhuanlan.zhihu.com/p/2015743850526844804
 - 重算不如取回。即便是考虑极慢的跨网络端场景。kvcache 卸载收益上限受限于互联带宽，具体收益下限取决于系统栈优化水平\存储介质延迟。
 - GPU 算力在不断进步，HBM 容量提升较慢。长上下文、agent、多轮对话、编程场景的token需求在不断增加,可能会长时间存在需求/系统之间的gap。
 - 模型架构算法能够有效节省空间和算力，也能减少 kvcache 卸载/加载时的传输量。从仿真建模来看，DSA/CLA 使得 kvcache 传输量减少，反而对于带宽的需求降低。
-- **层次化KVCache卸载能够减少Prefill的计算开销，但“大容量”不再是kvcache层次化存储系统的第一追求，“超高并发与极低延迟”才是。**
+- <strong>层次化KVCache卸载能够减少Prefill的计算开销，但“大容量”不再是kvcache层次化存储系统的第一追求，“超高并发与极低延迟”才是。</strong>
 - 参数设置、模型假设均与 Gemini 讨论得到，个人暂时无法验证。关于卸载到闪存/RemoteBlock 层次的必要性，可能需要更准确实际的参数设置。以上均针对 prefill 阶段，decode 暂未考虑。
 
 #### 2. 我们到底在比较什么
@@ -168,27 +168,27 @@ Qwen3.5-27B 的关键变化不是“没有状态”，而是 token-linear 状态
 - Qwen3.5-27B：约 262,144 tokens
 解读：Hybrid attention 的确显著降低了 token-linear KV 压力，但这并不等价于“不再需要 KVCache”。它更像是把“必须做缓存”的压力从极短上下文推迟到了更长上下文，并把系统设计重点从“能不能放下”逐渐转向“什么 tier 值得放、何时放、如何取”。
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_c4215bc64ab2.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_c4215bc64ab2.jpg)
 
 #### 7. 结果二：MFU=0.4 时，tier break-even 如何分层
 
 在 MFU=0.4、BW_util=0.7 时，tier break-even 的主结论是：
 
-- HBM / CPU DRAM / RDMA Pool / Local SSD 全部在 ![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_ac3a305b53c4.jpg)
+- HBM / CPU DRAM / RDMA Pool / Local SSD 全部在 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_ac3a305b53c4.jpg)
 
 再看 phase diagram。它最直观地告诉我们：在 10+ GB/s 的近端 tier 上，整个展示窗口几乎都在 fetch-wins 区域；真正贴着边界游走的是 sub-GB/s 的 Remote Block 这一层。
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_b85c245c4e5a.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_b85c245c4e5a.jpg)
 
 最后看 storage pyramid。它比折线图更适合组会讲“系统层次 + 调度逻辑”：同一层介质上，两种模型的箭头起点不同，意味着真正需要的是 cost-based scheduler，而不是静态的全局 offload 策略。
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_071601232ce4.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_071601232ce4.jpg)
 
 这里最重要的解释不是“哪条线更高”，而是架构差异如何改变远端慢介质的适用窗口：
 
 - ~~Qwen3.5-27B 的 native max context 是 262K，因此在 Remote Block 这种慢 tier 上仍然有可见收益窗口~~。
 - ~~Qwen3-14B 的 native max context 只有 40K，所以 165.6K 的交点已经落在当前模型支持窗口之外；如果不做 YaRN 或其他长上下文扩展，Remote Block 对它的现实价值非常有限。~~
-- **理论带宽拉满都没什么收益，就不需要想着做卸载了。**
+- <strong>理论带宽拉满都没什么收益，就不需要想着做卸载了。</strong>
 
 #### 8. 结果三：MFU=0.9 时，为什么边界整体右移
 
@@ -201,11 +201,11 @@ Qwen3.5-27B 的关键变化不是“没有状态”，而是 token-linear 状态
 
 这说明 notes/kvcacheProfit.md 里的核心判断是成立的：GPU 越强、prefill 越快，远端慢 tier 越难打赢重算。也就是说，MoE / hybrid 时代不是 KVCache 没价值，而是对慢 tier 的要求更高，对 scheduler 的要求更严。
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_0df3211a057a.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_0df3211a057a.jpg)
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_e39b6eb3886d.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_e39b6eb3886d.jpg)
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_2803ada8f662.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_2803ada8f662.jpg)
 
 和 MFU=0.4 相比，这组三张图共同说明了一件事：不是 tier 层次变了，而是同样一套 tier，在更高的 GPU compute regime 下会变得“更像远端慢存储”。因此系统设计不能只写死一个 break-even，需要把实时 MFU、队列拥塞和上下文长度都放进调度器。
 
@@ -228,9 +228,9 @@ GPUQwen3-14BQwen3.5-27BA100 80GB66.1KH100 80GB282K128.7KH200 141GB282K128.7KB100
 GPUQwen3-14BQwen3.5-27BA100 80GB512K1280KH100 80GB512K1280KH200 141GB902.4K2256KB100 192GB1228.8K3072KB200 192GB1228.8K3072K
 #### 关键结论
 
-- **Remote Block 交点随代际算力线性抬升**：从 Hopper 到 Blackwell，Dense BF16 FLOPS 从 989 增长到 1750⁄2250 TFLOPS，`t_prefill` 缩短，Remote Block 的 break-even 跟着右移——B200 对 Qwen3-14B 的交点推至 684K，对 Qwen3.5-27B 推至 464K。这意味着在 Blackwell 世代，需要更长的上下文才能证明 Remote Block 的取回值得做。
-- **H100 和 H200 的外部 tier 交点几乎重合**：因为两者 dense BF16 FLOPS 相同（同为 989 TFLOPS），`t_prefill` 一样长，所以 Remote Block 的 break-even 近似。H200 相对 H100 的主要优势是本地 HBM 容量（141 GB vs 80 GB），体现为更大的 KV 理论上界（902.4K vs 512K）。
-- **B100 与 B200 都显著提高了外部 tier 门槛**：B100（1750 TFLOPS）和 B200（2250 TFLOPS）将 Remote Block 交点推至 500K–700K 以上。对大多数实际部署（上下文 ![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_a0cb75b67a5e.jpg)
+- <strong>Remote Block 交点随代际算力线性抬升</strong>：从 Hopper 到 Blackwell，Dense BF16 FLOPS 从 989 增长到 1750⁄2250 TFLOPS，`t_prefill` 缩短，Remote Block 的 break-even 跟着右移——B200 对 Qwen3-14B 的交点推至 684K，对 Qwen3.5-27B 推至 464K。这意味着在 Blackwell 世代，需要更长的上下文才能证明 Remote Block 的取回值得做。
+- <strong>H100 和 H200 的外部 tier 交点几乎重合</strong>：因为两者 dense BF16 FLOPS 相同（同为 989 TFLOPS），`t_prefill` 一样长，所以 Remote Block 的 break-even 近似。H200 相对 H100 的主要优势是本地 HBM 容量（141 GB vs 80 GB），体现为更大的 KV 理论上界（902.4K vs 512K）。
+- <strong>B100 与 B200 都显著提高了外部 tier 门槛</strong>：B100（1750 TFLOPS）和 B200（2250 TFLOPS）将 Remote Block 交点推至 500K–700K 以上。对大多数实际部署（上下文 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_a0cb75b67a5e.jpg)
 
 #### MFU=0.9, BW_util=0.6 的统一 tier line plot：A100/H100/B100/B200
 
@@ -248,9 +248,9 @@ HardwareQwen3-14BQwen3.5-27BA100 80GB227.8K83.5KH100 80GB794.5K555.8KB100 192GB>
 - `10 GB/s` 的 Local SSD 依然足够快，但对 Qwen3-14B 的 crossing 也被推高到了 `B100=17.9K`、`B200=32.5K`。这意味着随着 GPU 代际继续上升，原本“闭眼可取”的近端 tier 也开始需要更精细地看上下文长度与模型结构。
 因此，这张新图给 KVcache 的直接启发是：~~未来调度器不能只区分“本地快层 vs 远端慢层”，而要进一步区分“在当前 MFU/BW regime 下，这个 tier 对这个模型、这个上下文长度是否仍值得 fetch”~~。 
 
-**数据中心不太需要卸载到单块闪存，如果闪存阵列随着 PCIe 带宽不断翻倍，可能还有空间。**手机电脑端侧由于算力更低、可能也还有些机会。
+<strong>数据中心不太需要卸载到单块闪存，如果闪存阵列随着 PCIe 带宽不断翻倍，可能还有空间。</strong>手机电脑端侧由于算力更低、可能也还有些机会。
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_663df56b83fa.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_663df56b83fa.jpg)
 
 如果把详细 tier 表展开，会看到和前文一致的结构：这张四硬件对比图里，HBM / CPU DRAM / RDMA / Local SSD 大体仍落在 `@无名
 
@@ -259,22 +259,22 @@ HardwareQwen3-14BQwen3.5-27BA100 80GB227.8K83.5KH100 80GB794.5K555.8KB100 192GB>
 - 忽略了稀疏注意力对于注意力层的优化：重算应该会变快，同时访存成本也会变快。预期读取稀疏缓存的速度也远远高于“用顶级 GPU 重算”**。
 - Qwen3.5不能代表最前沿的模型：
 
-- DeepSeek的潜向量注意力压缩 (MLA - Multi-Head Latent Attention)相比GQA，它不再分别存储庞大的 Key 和 Value 矩阵，而是将它们**压缩成一个极低维度的隐向量（Latent Vector，例如 512 维）**。MLA 将 KV Cache 的体积在 GQA 的基础上**又压缩了 4~8 倍**！这意味着几百万上下文的 KV Cache，可能只有区区几个 GB。当 KV Cache 变得如此之小，**“大容量”不再是存储系统的第一追求，“超高并发与极低延迟”才是**。
+- DeepSeek的潜向量注意力压缩 (MLA - Multi-Head Latent Attention)相比GQA，它不再分别存储庞大的 Key 和 Value 矩阵，而是将它们<strong>压缩成一个极低维度的隐向量（Latent Vector，例如 512 维）</strong>。MLA 将 KV Cache 的体积在 GQA 的基础上<strong>又压缩了 4~8 倍</strong>！这意味着几百万上下文的 KV Cache，可能只有区区几个 GB。当 KV Cache 变得如此之小，<strong>“大容量”不再是存储系统的第一追求，“超高并发与极低延迟”才是</strong>。
 - 还有Chain-of-Thought CoT特性可能会产生大量临时的一次性的思考过程，增加大量kvcache空间。
-- 还有跨层 KV 共享 (Cross-Layer KV Sharing / CLA), **机制原理**：在之前的推导中，我们假设注意力层数 **Lattn=16*Lattn*​=16 层。而 CLA 架构认为，深层的注意力学到的特征和浅层差不多，大家共享同一份 KV Cache 就行了.对存储的暴击**：物理 KV Cache 的层数直接被砍到了 **1 层.**这意味着t_{fetch} 的时间再次暴跌数十倍。
+- 还有跨层 KV 共享 (Cross-Layer KV Sharing / CLA), <strong>机制原理</strong>：在之前的推导中，我们假设注意力层数 **Lattn=16*Lattn*​=16 层。而 CLA 架构认为，深层的注意力学到的特征和浅层差不多，大家共享同一份 KV Cache 就行了.对存储的暴击<strong>：物理 KV Cache 的层数直接被砍到了</strong>1 层.**这意味着t_{fetch} 的时间再次暴跌数十倍。
 
 - 在引入新机制后，我们对 t_{fetch}（取回成本）进行降维打击式的修正：
 
-- **稀疏注意力 (Sparse, 比例为 \rho)**：取回的 Token 数从 s 暴降为 \rho \cdot s（例如 \rho=10\%）。
-$- **潜在注意力压缩 (MLA 压缩比 C_{mla})**：原本 d \cdot n_{kv} 的维度，被压缩为一个 Latent Vector，体积缩小 C_{mla} 倍（例如 C_{mla} \approx 4 \sim 8）。$
-- **跨层 KV 共享 (CLA, 共享因子 L_{share})**：原本需要取回 L_{attn} 层，现在多层共享，实际上只需取回 L_{share} 层（极端情况下 L_{share} = 1）。
+- <strong>稀疏注意力 (Sparse, 比例为 \rho)</strong>：取回的 Token 数从 s 暴降为 \rho \cdot s（例如 \rho=10\%）。
+$- <strong>潜在注意力压缩 (MLA 压缩比 C_{mla})</strong>：原本 d \cdot n_{kv} 的维度，被压缩为一个 Latent Vector，体积缩小 C_{mla} 倍（例如 C_{mla} \approx 4 \sim 8）。$
+- <strong>跨层 KV 共享 (CLA, 共享因子 L_{share})</strong>：原本需要取回 L_{attn} 层，现在多层共享，实际上只需取回 L_{share} 层（极端情况下 L_{share} = 1）。
 
-**全新 t_{fetch} 理论公式：** 
+<strong>全新 t_{fetch} 理论公式：</strong> 
 
  $$t_{fetch\_ultimate} = \frac{4 \cdot (\mathbf{\rho} \cdot s) \cdot \frac{H_{kv\_old}}{\mathbf{C_{mla}}} \cdot \mathbf{L_{share}}}{BW_{util} \cdot Bandwidth_{peak}} $$
 
-一旦引入 Sparse + MLA + CLA，存储端的 I/O 负担将被进一步降低！取回极度压缩的 KV 状态甚至可能连千兆网卡（0.1GB/s）都能满足理论要求。**但是kv容量不断被压缩，同样降低了卸载到更大容量的低级别tier存储的需求。**
+一旦引入 Sparse + MLA + CLA，存储端的 I/O 负担将被进一步降低！取回极度压缩的 KV 状态甚至可能连千兆网卡（0.1GB/s）都能满足理论要求。<strong>但是kv容量不断被压缩，同样降低了卸载到更大容量的低级别tier存储的需求。</strong>
 
 #### 13. 一句话总结：
 
-- **层次化KVCache卸载能够减少Prefill的计算开销，但“大容量”不再是kvcache层次化存储系统的第一追求，“超高并发与极低延迟”才是。**
+- <strong>层次化KVCache卸载能够减少Prefill的计算开销，但“大容量”不再是kvcache层次化存储系统的第一追求，“超高并发与极低延迟”才是。</strong>

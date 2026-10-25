@@ -35,24 +35,24 @@ categories:
 
 Skill لإنتاج harness engineering بجودة إنتاجية لوكلاء البرمجة. تساعد على إنشاء وتقييم وتحسين ملفات harness الخاصة بالوكيل، مثل AGENTS.md وقوائم الميزات وسير عمل التحقق وآليات استمرار الجلسة.
 
-- **7 أنماط مرجعية**: Memory Persistence وSkill Runtime وContext Engineering وTool Registry وMulti-Agent Coordination وLifecycle & Bootstrap وGotchas
-- **قوالب**: AGENTS.md/CLAUDE.md وfeature-list.json وinit.sh وprogress.md وsession-handoff.md
-- **Scripts**: إنشاء scaffold، التحقق، تقرير HTML، وbenchmark بنيوي
-- **10 حالات eval مدمجة**
+- <strong>7 أنماط مرجعية</strong>: Memory Persistence وSkill Runtime وContext Engineering وTool Registry وMulti-Agent Coordination وLifecycle & Bootstrap وGotchas
+- <strong>قوالب</strong>: AGENTS.md/CLAUDE.md وfeature-list.json وinit.sh وprogress.md وsession-handoff.md
+- <strong>Scripts</strong>: إنشاء scaffold، التحقق، تقرير HTML، وbenchmark بنيوي
+- <strong>10 حالات eval مدمجة</strong>
 
 راجع التوثيق الكامل في [harness-creator/README.md](harness-creator/README.md).
 
 ## كيف تم بناء harness-creator
 
-تم تطوير `harness-creator` باستخدام منهجية **skill-creator**، وهي meta-skill رسمية من Anthropic لإنشاء skills للوكلاء واختبارها وتحسينها عبر مسار draft → test → evaluate → iterate.
+تم تطوير `harness-creator` باستخدام منهجية <strong>skill-creator</strong>، وهي meta-skill رسمية من Anthropic لإنشاء skills للوكلاء واختبارها وتحسينها عبر مسار draft → test → evaluate → iterate.
 
 ## كيف تعمل Skills
 
 تتبع كل skill بنية قياسية:
 
-1. **SKILL.md** — نقطة الدخول، وتتضمن YAML frontmatter وتعليمات Markdown للوكيل.
-2. **references/** — مستندات إضافية يتم تحميلها عند الحاجة.
-3. **templates/** — قوالب بداية يمكن أن تولدها skill.
+1. <strong>SKILL.md</strong> — نقطة الدخول، وتتضمن YAML frontmatter وتعليمات Markdown للوكيل.
+2. <strong>references/</strong> — مستندات إضافية يتم تحميلها عند الحاجة.
+3. <strong>templates/</strong> — قوالب بداية يمكن أن تولدها skill.
 
 تستخدم skills أسلوب progressive disclosure: يرى الوكيل الاسم والوصف أولا، ثم يحمّل SKILL.md عند التفعيل، ويقرأ الموارد المرفقة فقط عند الحاجة.
 

@@ -20,7 +20,7 @@ source_url: https://zhuanlan.zhihu.com/p/2044017882586206645
 过去两年，后训练研究真正发生变化的，不是”谁更强”，而是”到底是谁在改模型的策略分布”。
 
  结论：
-**SFT 在改外部数据集上的 token 分布，RL/RLVR 在改学生自己会访问到的 state distribution，OPD/OPSD 则是在 on-policy 状态上挂上更密的 teacher 信号。**
+<strong>SFT 在改外部数据集上的 token 分布，RL/RLVR 在改学生自己会访问到的 state distribution，OPD/OPSD 则是在 on-policy 状态上挂上更密的 teacher 信号。</strong>
 所以这场争论的核心，不是 loss 名字，而是监督落在哪个分布上。
 先把三者放到同一张图里
 
@@ -51,17 +51,17 @@ source_url: https://zhuanlan.zhihu.com/p/2044017882586206645
 
 几个直观观察：
 
-- **SFT 的致命短板是 off-policy**——信号密度最高，但训练和推理的状态分布不匹配
-- **RL/RLVR 的致命短板是信号稀疏**——on-policy 程度最高，但只有标量 reward，没有逐 token 指导
-- **OPD/OPSD 看起来最均衡**——但 2026 年 5 月的两篇论文敲了警钟：多样性可能比 RL 还差
+- <strong>SFT 的致命短板是 off-policy</strong>——信号密度最高，但训练和推理的状态分布不匹配
+- <strong>RL/RLVR 的致命短板是信号稀疏</strong>——on-policy 程度最高，但只有标量 reward，没有逐 token 指导
+- <strong>OPD/OPSD 看起来最均衡</strong>——但 2026 年 5 月的两篇论文敲了警钟：多样性可能比 RL 还差
 核心权衡：密度 x On-Policy x 多样性
 
 ![](https://pic1.zhimg.com/v2-b3894126199a5a2536a55bfaa02834ae_r.jpg)这张图是整篇文章最想传达的信息：
 
-- **SFT**：信号密，但 off-policy → 训练时学的状态，推理时碰不到
-- **RL/RLVR**：on-policy，但信号稀 → 只知道”这条路径好不好”，不知道”哪里好、哪里差”
-- **OPD/OPSD**：密 + on-policy → 看起来最理想，但多样性塌缩是真实风险
-- **Spectrum Tuning** 和 **Entropy-Aware OPD**：开始往右上角（理想区域）挪，但都只走了一步**未来最重要的方向，就是怎么同时拿到密度、on-policy、和多样性。**
+- <strong>SFT</strong>：信号密，但 off-policy → 训练时学的状态，推理时碰不到
+- <strong>RL/RLVR</strong>：on-policy，但信号稀 → 只知道”这条路径好不好”，不知道”哪里好、哪里差”
+- <strong>OPD/OPSD</strong>：密 + on-policy → 看起来最理想，但多样性塌缩是真实风险
+- <strong>Spectrum Tuning</strong> 和 <strong>Entropy-Aware OPD</strong>：开始往右上角（理想区域）挪，但都只走了一步<strong>未来最重要的方向，就是怎么同时拿到密度、on-policy、和多样性。</strong>
 
 这条线的真实结论，已经慢慢收敛成什么样了？
 
@@ -73,13 +73,13 @@ source_url: https://zhuanlan.zhihu.com/p/2044017882586206645
 2. 但 `RLVR` 也不是”只有分布锐化”
 `RLVR Implicitly Incentivizes...` 的意义在于，它提醒我们不能只看最终答案。
 如果加入 `CoT-Pass@K`，RLVR 在正确推理链上的改善会更清楚。
-所以更准确的说法是：**当前 RLVR 往往先改变概率质量分布，再逐步影响推理链质量；但它是否真的”扩展能力边界”，仍然依赖具体算法、训练长度和评估口径。**
+所以更准确的说法是：<strong>当前 RLVR 往往先改变概率质量分布，再逐步影响推理链质量；但它是否真的”扩展能力边界”，仍然依赖具体算法、训练长度和评估口径。</strong>
 
 3. `OPD / OPSD` 的关键，不是 teacher 多强，而是 state 属于谁
 `OPD` 系列论文有一个非常统一的信号：
 只要训练发生在学生自己会访问的状态上，很多”老师与学生差很多”的现象都会被抹平。
 这就是为什么 `OPD` 的学生有时会比 teacher 更稳，甚至在 retention 上超过 teacher。
-换句话说，**teacher 负责给信号，state distribution 负责决定信号打到哪里。**
+换句话说，<strong>teacher 负责给信号，state distribution 负责决定信号打到哪里。</strong>
 
 4. 后训练未来真正的战场，是 `density × unbiasedness × on-policy × diversity`
 现在的各条路线，基本都只占了其中两项：
@@ -90,7 +90,7 @@ source_url: https://zhuanlan.zhihu.com/p/2044017882586206645
 - `Spectrum Tuning` 和 `Whatever Remains...`：开始把 `coverage` 和 `steerability` 当成最重要优化点。
 - `Entropy-Aware OPD` 和 `OVD`：开始从工程上修补高 entropy、显存和对齐成本。后训练的本质，已经从”改 token”变成”改 state distribution”。可以总结为三句话：
 
-- **SFT、RL、OPD 的本质差别，不是”用什么 loss”，而是”监督落在哪个分布上”。**
+- <strong>SFT、RL、OPD 的本质差别，不是”用什么 loss”，而是”监督落在哪个分布上”。</strong>
 
 - **RLVR 当前更像在 base model 支持集内做概率重分配，是否能真正”发现新推理能力”，要看大 `k`、`CoT-Pass@K` 和 diversity。**
 
@@ -114,7 +114,7 @@ source_url: https://zhuanlan.zhihu.com/p/2044017882586206645
 - “On-Policy Self-Distillation with Sampled Demonstrations Reduces Output Diversity.” ICLR 2026 submission. [链接](https://link.zhihu.com/?target=https%3A//openreview.net/forum%3Fid%3DPAz606dOEx)
 - “Rethinking On-Policy Self-Distillation for Thinking Models.” ICLR 2026 submission. [链接](https://link.zhihu.com/?target=https%3A//openreview.net/forum%3Fid%3DVhCJItwQHn)
 - “Rethinking RL for LLM Reasoning: It’s Sparse Policy Selection, Not Capability Learning.” arXiv:2605.06241, 2026. [链接](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2605.06241)
-- “Post-Training is About States, Not Tokens: A State Distribution View of SFT, RL, and On-Policy Distillation.” arXiv:2605.22731, 2026. [链接](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2605.22731)**框架参考（非论文引用）：**
+- “Post-Training is About States, Not Tokens: A State Distribution View of SFT, RL, and On-Policy Distillation.” arXiv:2605.22731, 2026. [链接](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2605.22731)<strong>框架参考（非论文引用）：</strong>
 
 [SFT, RL, and On-Policy Distillation Through a Distributional Lens](https://link.zhihu.com/?target=https%3A//nrehiew.github.io/blog/sft_rl_opd/)
 - [在分布视角下看 SFT / RL / On-Policy Distillation](https://link.zhihu.com/?target=https%3A//syt-nju.github.io/files/visual-reading/post-training-distributional-view/)（NJU 可视化页）

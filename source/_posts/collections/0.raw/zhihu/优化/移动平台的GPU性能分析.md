@@ -28,7 +28,7 @@ source_url: https://zhuanlan.zhihu.com/p/560738175
 各个平台通用的测试工具：
 
 - 腾讯，Perfdog
-![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_a17a7580edc9.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BC%98%E5%8C%96/asset/img_a17a7580edc9.jpg)
 
 Perfdog远不如各个硬件产商的工具强大，但是它在ios平台，也能提供一定的补充作用，例如带宽数据的分析，xcode只能通过截帧的方式获取，通过perfdog工具，可以分析多帧的平均值，这样得到的结果会更加准确。
 
@@ -56,36 +56,36 @@ Mali GPU提供的streamline工具的功能非常强大，文档也较丰富，�
 
 ### 实时开销
 
-任意GPU受限于寄存器等因素，它所能支持的运算力有上限值，这个上限值也就是所能支持的最大线程数，每个线程的执行时间通常是按照时钟数来度量。**任意一个时刻，运行时的总时钟数就代表了当前GPU的总负载，它的数据跟实时开销正相关**。
+任意GPU受限于寄存器等因素，它所能支持的运算力有上限值，这个上限值也就是所能支持的最大线程数，每个线程的执行时间通常是按照时钟数来度量。<strong>任意一个时刻，运行时的总时钟数就代表了当前GPU的总负载，它的数据跟实时开销正相关</strong>。
 
 不同硬件厂商提供的工具对某一时刻的总负载有不同的表示：
 
 - Apple GPU，利用率（Utilization），反映的是实际执行的线程与GPU最大支持的线程的比值；
-![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_68a086399a90.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BC%98%E5%8C%96/asset/img_68a086399a90.jpg)
 
 - Mali GPU，GPU Active Cycles；
 - Adreno GPU，Clocks / Second；
 提交至Mali GPU的任务通过任务管理器（Job Manager）进行调度，里面包括两条完全并行的队列，一条处理非片段管线（例如顶点、tiling等），另一条是处理片段的管线。
 
-![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_f3eb08423720.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BC%98%E5%8C%96/asset/img_f3eb08423720.jpg)
 
 数据处理流的一个切片如下图所示，总的GPU时钟周期不等于Non-Fragment时钟周期和Fragment时钟周期的和，两者之间是存在一定的重叠。
 
-![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_5ab68f67e5e8.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BC%98%E5%8C%96/asset/img_5ab68f67e5e8.jpg)
 
 Non-Fragment时钟周期、Fragment时钟周期与总的时钟周期的比值提供了一种宏观分析游戏性能占用情况的指标，不能简单的根据它们要衡量性能的高低。
 
 Mali GPU Streamline提供的指标:
 
-![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_a7679239bd6d.png)
+![](/images/collections/0.raw/zhihu/%E4%BC%98%E5%8C%96/asset/img_a7679239bd6d.png)
 
 Mali GPU还有一个指标称为吞吐量（Thoughput），表示平均执行一个线程需要的时钟数，是能反映实时开销的。
 
-![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_18d86d9fdfc9.png)
+![](/images/collections/0.raw/zhihu/%E4%BC%98%E5%8C%96/asset/img_18d86d9fdfc9.png)
 
 此外，Mali GPU还提供了一种度量overdraw的指标：片段着色器的线程数 / 像素数，overdraw比较高的情况，还是UI或者特效的渲染。
 
-![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_61750c249846.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BC%98%E5%8C%96/asset/img_61750c249846.jpg)
 
 ### 带宽开销
 
@@ -97,11 +97,11 @@ Mali GPU还有一个指标称为吞吐量（Thoughput），表示平均执行一
 - 写带宽，GPU写数据到系统内存。
 如下图所示，GPU与外部系统内存的交互是需要经过L2缓存的：
 
-![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_45cae222edf2.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BC%98%E5%8C%96/asset/img_45cae222edf2.jpg)
 
 例如Mali GPU的提供的指标，可以看出右边的技术方案的带宽就比左边的要低。
 
-![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_c44d7b4c0082.png)
+![](/images/collections/0.raw/zhihu/%E4%BC%98%E5%8C%96/asset/img_c44d7b4c0082.png)
 
 当得到总的带宽数据后，往往我们想要去分析带宽增加或降低的原因，需要关注哪些指标呢？带宽的来源包括：
 
@@ -121,7 +121,7 @@ Mali GPU：
 - 片段着色器对L2缓存、系统存储的读带带宽；
 - load/store对L2缓存、系统内存的读写带宽；
 - tile buffer的写带宽。
-![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_f10ad2075d3c.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BC%98%E5%8C%96/asset/img_f10ad2075d3c.jpg)
 
 Adreno GPU:
 
@@ -129,13 +129,13 @@ Adreno GPU:
 - L1、L2缓存的贴图命中失效率；
 - 每像素L1缓存的命中失效率；
 - 等等。
-![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_ea6d16bad366.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BC%98%E5%8C%96/asset/img_ea6d16bad366.jpg)
 
 再比如，当我们面对贴图带宽开销较高的情况的时候，我们还需要关注一些不同贴图滤波方式的占比、压缩贴图的占比等：
 
 - 尽可能的压缩贴图，降低存储；
 - 减少使用trilinear等滤波方式；
-![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_7423a5fedbd7.png)
+![](/images/collections/0.raw/zhihu/%E4%BC%98%E5%8C%96/asset/img_7423a5fedbd7.png)
 
 ### ShaderCore性能
 
@@ -148,7 +148,7 @@ Adreno GPU:
 - Hide Surface Hide（Apple的TBDR、Mali的FPK、Adreno的LRZ）；
 - Blend单元；
 - 指令执行的Excuetion Engine单元，执行ALU的关键性单元；
-![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_c0147d15076d.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BC%98%E5%8C%96/asset/img_c0147d15076d.jpg)
 
 任意一个时刻，各个组件会占用一定的时钟周期去执行工作，它的占比称之为占用率（ios上称为limiter Counter），我们是期望能提高shader core的占用率。
 
@@ -158,7 +158,7 @@ Adreno GPU:
 - Varying单元占用率（VS到PS的插值运算）；
 - Texture单元占用率；
 - Load/Store单元占用率；
-![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_900731da2dd3.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BC%98%E5%8C%96/asset/img_900731da2dd3.jpg)
 
 举个应用例子，ALU单元是执行shader指令的关键单元，当一个技术，使得ALU单元的占用率提高了，我们是否能认为该技术提高了GPU的实时开销？
 
@@ -197,17 +197,17 @@ Shader实现是影响性能的重要的因素，一些简单宏观的判断指�
 
 往往移动游戏都会限制一个同屏最大面数，例如规定30w面是上限值。这些面数提交至GPU并不会都被渲染出来，必须经历一系列的剔除（Culling），例如是否在视口（viewport）内，Z方向是否被遮挡，背面剔除等等。
 
-![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_2abce27e88f3.png)
+![](/images/collections/0.raw/zhihu/%E4%BC%98%E5%8C%96/asset/img_2abce27e88f3.png)
 
 Mali GPU的几何裁剪管线streamline支持的一些指标如下所示，并不是说被 剔除的面数越高越好。剔除的面数越多，说明场景的制作存在缺陷；剔除的面 数越少，有可能会有性能瓶颈，这些数据也是要在实际的场景中去权衡判断。
 
-![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_f051f56527f7.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BC%98%E5%8C%96/asset/img_f051f56527f7.jpg)
 
-**顶点数据**
+<strong>顶点数据</strong>
 
 Mali GPU支持一种称为Index-Driven Vertex Shading（IDVS）的处理管线，在IDVS管线中，需要在剔除阶段之前计算顶点的坐标，然后存入顶点缓存中，避免去计算被剔除的顶点。
 
-![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_3e4e10868fb3.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BC%98%E5%8C%96/asset/img_3e4e10868fb3.jpg)
 
 1个三角面片有3个顶点，每个顶点会被多个面共享，这样在渲染三角面片的时候，就存在顶点着色器会多次冗余调用的情况。GPU硬件一般都有支持一个称之为Post-Transform Vertex Cache的内容，就是将计算出来的顶点结果缓存起来，减少冗余计算的问题。这就期望，提交至GPU的Index Buffer索引的顶点有较好的相关性，可以大大提高缓存的命中率。像这种顶点缓存的技术，在不同的硬件平台也是相通的。
 
@@ -217,22 +217,22 @@ Mali GPU的性能指标，如下所示（注意：641 milli-threads = 0.641 thre
 - Varying shading threads，插值单元触发的次数；
 - Position threads/input primitves，平均每个面需要触发的顶点线程数；
 - Varying threads/visible primitives，平均每个可见面需要触发的插值线程数；
-![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_f4b94334b77d.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BC%98%E5%8C%96/asset/img_f4b94334b77d.jpg)
 
 Adreno GPU的性能指标：
 
 - Average Vertices per Polygon
 Apple GPU的性能指标：
 
-![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_f273822a3300.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BC%98%E5%8C%96/asset/img_f273822a3300.jpg)
 
-**Early-ZS**
+<strong>Early-ZS</strong>
 
 Mali Bifrost的一个架构图如下所示，光栅化后的图元需要经历两个阶段：
 
 - Earyly ZS Test
 - FPK组件
-![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_6e829799e2b9.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BC%98%E5%8C%96/asset/img_6e829799e2b9.jpg)
 
 FPK组件是Mali的HSR（Hide Surface Hide）组件，Apple系列称之为TBDR架构，Adreno称之为LRZ。
 
@@ -243,7 +243,7 @@ FPK组件是Mali的HSR（Hide Surface Hide）组件，Apple系列称之为TBDR�
 - 不要在着色器中写gl_FragDepth
 Mali GPU的性能指标如下所示，当然我们期望尽可能的走FPK组件或者Earyly-ZS测试，提前剔除的话，可以减少后续片段着色的运算开销。
 
-![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_11974210ca15.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BC%98%E5%8C%96/asset/img_11974210ca15.jpg)
 
 ### 参考
 

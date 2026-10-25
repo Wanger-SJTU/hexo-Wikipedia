@@ -38,7 +38,7 @@ categories:
   <img src="https://img.shields.io/badge/License-MIT-lightgrey?style=flat-square" alt="MIT License">
 </p>
 
-> **Globe icon** This course is available in **13 languages**: English, 简体中文, 繁體中文, 日本語, 한국어, Español, Français, Русский, Deutsch, العربية, Tiếng Việt, Oʻzbekcha, Türkçe. Choose your language from the badges above.
+> <strong>Globe icon</strong> This course is available in <strong>13 languages</strong>: English, 简体中文, 繁體中文, 日本語, 한국어, Español, Français, Русский, Deutsch, العربية, Tiếng Việt, Oʻzbekcha, Türkçe. Choose your language from the badges above.
 
 Learn Harness Engineering is a course dedicated to the engineering of AI coding agents. We have deeply studied and synthesized the most advanced Harness Engineering theories and practices in the industry. Our core references include:
 
@@ -47,7 +47,7 @@ Learn Harness Engineering is a course dedicated to the engineering of AI coding 
 - [Anthropic: Harness design for long-running application development](https://www.anthropic.com/engineering/harness-design-long-running-apps)
 - [Awesome Harness Engineering](https://github.com/walkinglabs/awesome-harness-engineering)
 
-> **Quick start?** The [`skills/harness-creator/`](./skills/harness-creator/) skill can help you scaffold a production-grade harness (AGENTS.md, feature lists, init.sh, verification workflows) for your own project in minutes.
+> <strong>Quick start?</strong> The [`skills/harness-creator/`](./skills/harness-creator/) skill can help you scaffold a production-grade harness (AGENTS.md, feature lists, init.sh, verification workflows) for your own project in minutes.
 
 ---
 
@@ -94,7 +94,7 @@ The repository now includes a PDF build pipeline for the course content.
 
 ## The Model Is Smart, The Harness Makes It Reliable
 
-There's a hard truth most people learn the hard way: **the strongest model in the world will still fail on real engineering tasks if you don't build a proper environment around it.**
+There's a hard truth most people learn the hard way: <strong>the strongest model in the world will still fail on real engineering tasks if you don't build a proper environment around it.</strong>
 
 You've probably seen this yourself. You give Claude or GPT a task in your repo. It starts well — reads files, writes code, looks productive. Then something goes wrong. It skips a step. It breaks a test. It says "done" but nothing actually works. You spend more time cleaning up than if you'd done it yourself.
 
@@ -104,7 +104,7 @@ The evidence is clear. Anthropic ran a controlled experiment: same model (Opus 4
 
 OpenAI reported the same thing with Codex: in a well-harnessed repository, the same model goes from "unreliable" to "reliable." Not a marginal improvement — a qualitative shift.
 
-**This course teaches you how to build that environment.**
+<strong>This course teaches you how to build that environment.</strong>
 
 ```text
                     THE HARNESS PATTERN
@@ -165,17 +165,17 @@ A harness has five subsystems:
 
 Each subsystem has one job:
 
-- **Instructions** — Tell the agent what to do, in what order, and what to read before starting. Not one giant file; a progressive disclosure structure the agent navigates on demand.
-- **State** — Track what's been done, what's in progress, and what's next. Persisted to disk so the next session picks up exactly where the last one left off.
-- **Verification** — Only a passing test suite counts as evidence. The agent cannot declare victory without runnable proof.
-- **Scope** — Constrain the agent to one feature at a time. No overreach. No half-finishing three things. No rewriting the feature list to hide unfinished work.
-- **Session Lifecycle** — Initialize at the start. Clean up at the end. Leave a clean restart path for the next session.
+- <strong>Instructions</strong> — Tell the agent what to do, in what order, and what to read before starting. Not one giant file; a progressive disclosure structure the agent navigates on demand.
+- <strong>State</strong> — Track what's been done, what's in progress, and what's next. Persisted to disk so the next session picks up exactly where the last one left off.
+- <strong>Verification</strong> — Only a passing test suite counts as evidence. The agent cannot declare victory without runnable proof.
+- <strong>Scope</strong> — Constrain the agent to one feature at a time. No overreach. No half-finishing three things. No rewriting the feature list to hide unfinished work.
+- <strong>Session Lifecycle</strong> — Initialize at the start. Clean up at the end. Leave a clean restart path for the next session.
 
 ---
 
 ## Why This Course Exists
 
-The question isn't "can models write code?" They can. The question is: **can they reliably complete real engineering tasks inside real repositories, over multiple sessions, without constant human supervision?**
+The question isn't "can models write code?" They can. The question is: <strong>can they reliably complete real engineering tasks inside real repositories, over multiple sessions, without constant human supervision?</strong>
 
 Right now, the answer is: not without a harness.
 
@@ -211,13 +211,13 @@ The questions this course actually cares about:
 
 ## Course Curriculum & Documentation
 
-For the full course materials, please visit the **[Documentation Website](https://walkinglabs.github.io/learn-harness-engineering/)**.
+For the full course materials, please visit the <strong>[Documentation Website](https://walkinglabs.github.io/learn-harness-engineering/)</strong>.
 
 The curriculum is divided into three parts:
 
-1. **Lectures**: 12 conceptual units explaining the theory behind harness engineering.
-2. **Projects**: 6 hands-on projects where you build an agentic workspace from scratch.
-3. **Resource Library**: Copy-ready templates (`AGENTS.md`, `feature_list.json`, `init.sh`, etc.) to use in your own repositories today.
+1. <strong>Lectures</strong>: 12 conceptual units explaining the theory behind harness engineering.
+2. <strong>Projects</strong>: 6 hands-on projects where you build an agentic workspace from scratch.
+3. <strong>Resource Library</strong>: Copy-ready templates (`AGENTS.md`, `feature_list.json`, `init.sh`, etc.) to use in your own repositories today.
 
 ---
 
@@ -243,7 +243,7 @@ Grab the starter templates from the [Resource Library](https://walkinglabs.githu
 
 ## Capstone Project: A Real App
 
-All six course projects revolve around the same product: **an Electron-based personal knowledge base desktop app**.
+All six course projects revolve around the same product: <strong>an Electron-based personal knowledge base desktop app</strong>.
 
 ```text
     ┌──────────────────────────────────────────────────────┐
@@ -405,7 +405,7 @@ Each phase takes about a week if you're going part-time. If you want to go faste
 
 ## The Agent Session Lifecycle
 
-One of the core ideas in this course: **the agent's session should follow a structured lifecycle, not a free-for-all.** Here's what that looks like:
+One of the core ideas in this course: <strong>the agent's session should follow a structured lifecycle, not a free-for-all.</strong> Here's what that looks like:
 
 ```text
     AGENT SESSION LIFECYCLE
@@ -578,7 +578,7 @@ learn-harness-engineering/
 
 This repository also includes reusable AI agent skills that you can install directly into your IDE or agent workspace.
 
-- [**harness-creator**](./skills/harness-creator/): A skill that helps you scaffold a production-grade harness for your own project in minutes.
+- [<strong>harness-creator</strong>](./skills/harness-creator/): A skill that helps you scaffold a production-grade harness for your own project in minutes.
 
 ---
 
@@ -588,7 +588,7 @@ Our team has also created other courses! Check them out:
 
 [![Hands-on Modern RL](https://img.shields.io/badge/HANDS--ON_MODERN_RL-0052cc?style=for-the-badge)](https://github.com/walkinglabs/hands-on-modern-rl)
 
-**Hands-on Modern RL**: An open-source, hands-on curriculum bridging the gap from basic RL concepts to LLM alignment, RLVR, and advanced Agentic systems.
+<strong>Hands-on Modern RL</strong>: An open-source, hands-on curriculum bridging the gap from basic RL concepts to LLM alignment, RLVR, and advanced Agentic systems.
 
 ---
 

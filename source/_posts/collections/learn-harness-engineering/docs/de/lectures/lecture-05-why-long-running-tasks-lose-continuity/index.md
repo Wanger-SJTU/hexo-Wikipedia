@@ -63,12 +63,12 @@ flowchart LR
 
 ## Zentrale Konzepte
 
-- **Kontextfenster sind endlich**: Egal welche Fenstergröße behauptet wird (128K, 200K, 1M) — lange Aufgaben werden sie schließlich erschöpfen. Nach der Erschöpfung ist entweder Kompression (Informationsverlust) oder ein Reset (neue Session) erforderlich. Beide verlieren etwas.
-- **Kontinuitäts-Artefakte**: Persistierte Zustandsdateien, die es einer neuen Session ermöglichen, eindeutig dort fortzufahren, wo die letzte aufgehört hat. Die Grundform: Fortschrittsprotokoll + Verifizierungsdatensatz + nächste Aktionen. Das Tagebuch dieses Handwerkers.
-- **Rebuild-Kosten**: Die Zeit, die eine neue Session benötigt, um einen ausführbaren Zustand zu erreichen. Gute harness-Konstruktionen können die Rebuild-Kosten von 15 Minuten auf 3 Minuten komprimieren.
-- **Drift**: Die Lücke zwischen dem Verständnis des Agenten und dem tatsächlichen Zustand des Code-Repositorys. Jede Sitzungsgrenze führt Drift ein; ohne Kontrolle summiert er sich.
-- **Context Anxiety**: Ein von Anthropic beobachtetes Phänomen — Agenten zeigen voreiliges Konvergenzverhalten, wenn sie sich wahrgenommenen Kontextgrenzen nähern, und beenden Aufgaben vorzeitig, um Informationsverlust zu vermeiden. Es ist eine irrationale Ressourcenangst.
-- **Kompression vs. Reset**: Kompression fasst den Kontext innerhalb derselben Session zusammen (behält das „was", verliert möglicherweise das „warum"); Reset öffnet eine neue Session, die aus persistiertem Zustand wieder aufgebaut wird (sauber, aber abhängig von der Vollständigkeit der Artefakte).
+- <strong>Kontextfenster sind endlich</strong>: Egal welche Fenstergröße behauptet wird (128K, 200K, 1M) — lange Aufgaben werden sie schließlich erschöpfen. Nach der Erschöpfung ist entweder Kompression (Informationsverlust) oder ein Reset (neue Session) erforderlich. Beide verlieren etwas.
+- <strong>Kontinuitäts-Artefakte</strong>: Persistierte Zustandsdateien, die es einer neuen Session ermöglichen, eindeutig dort fortzufahren, wo die letzte aufgehört hat. Die Grundform: Fortschrittsprotokoll + Verifizierungsdatensatz + nächste Aktionen. Das Tagebuch dieses Handwerkers.
+- <strong>Rebuild-Kosten</strong>: Die Zeit, die eine neue Session benötigt, um einen ausführbaren Zustand zu erreichen. Gute harness-Konstruktionen können die Rebuild-Kosten von 15 Minuten auf 3 Minuten komprimieren.
+- <strong>Drift</strong>: Die Lücke zwischen dem Verständnis des Agenten und dem tatsächlichen Zustand des Code-Repositorys. Jede Sitzungsgrenze führt Drift ein; ohne Kontrolle summiert er sich.
+- <strong>Context Anxiety</strong>: Ein von Anthropic beobachtetes Phänomen — Agenten zeigen voreiliges Konvergenzverhalten, wenn sie sich wahrgenommenen Kontextgrenzen nähern, und beenden Aufgaben vorzeitig, um Informationsverlust zu vermeiden. Es ist eine irrationale Ressourcenangst.
+- <strong>Kompression vs. Reset</strong>: Kompression fasst den Kontext innerhalb derselben Session zusammen (behält das „was", verliert möglicherweise das „warum"); Reset öffnet eine neue Session, die aus persistiertem Zustand wieder aufgebaut wird (sauber, aber abhängig von der Vollständigkeit der Artefakte).
 
 ## Was passiert, wenn die Kontinuität abbricht
 
@@ -84,9 +84,9 @@ Sowohl OpenAI als auch Anthropic betonen strukturierte Zustandspersistenz in ihr
 
 ## Ein Tagebuch für den amnestischen Handwerker
 
-Kernansatz: **Behandeln Sie den Agenten wie einen brillanten Ingenieur mit Amnesie.** Bevor er „aussticht", muss er kritische Informationen aufschreiben, damit der Agent der nächsten „Schicht" schnell aufsetzen kann.
+Kernansatz: <strong>Behandeln Sie den Agenten wie einen brillanten Ingenieur mit Amnesie.</strong> Bevor er „aussticht", muss er kritische Informationen aufschreiben, damit der Agent der nächsten „Schicht" schnell aufsetzen kann.
 
-**Tool 1: Fortschrittsdatei (PROGRESS.md).** Das grundlegendste Kontinuitäts-Artefakt — der Kern des Tagebuchs:
+<strong>Tool 1: Fortschrittsdatei (PROGRESS.md).</strong> Das grundlegendste Kontinuitäts-Artefakt — der Kern des Tagebuchs:
 
 ```markdown
 # Project Progress
@@ -114,7 +114,7 @@ Kernansatz: **Behandeln Sie den Agenten wie einen brillanten Ingenieur mit Amnes
 3. Update API documentation
 ```
 
-**Tool 2: Entscheidungsprotokoll (DECISIONS.md).** Dokumentiert wichtige Designentscheidungen und deren Gründe. Keine detaillierten Designdokumente nötig — nur „welche Entscheidung, warum, wann" — die Notizen im Tagebuch:
+<strong>Tool 2: Entscheidungsprotokoll (DECISIONS.md).</strong> Dokumentiert wichtige Designentscheidungen und deren Gründe. Keine detaillierten Designdokumente nötig — nur „welche Entscheidung, warum, wann" — die Notizen im Tagebuch:
 
 ```markdown
 # Design Decisions
@@ -125,9 +125,9 @@ Kernansatz: **Behandeln Sie den Agenten wie einen brillanten Ingenieur mit Amnes
 - Constraint: Cache TTL of 5 minutes, active invalidation on write
 ```
 
-**Tool 3: Git-Commits als Kontrollpunkte.** Committen Sie nach Abschluss jeder atomaren Arbeitseinheit. Commit-Nachrichten sollten erklären, was getan wurde und warum. Diese sind kostenlose, automatisch versionierte Zustandsschnappschüsse.
+<strong>Tool 3: Git-Commits als Kontrollpunkte.</strong> Committen Sie nach Abschluss jeder atomaren Arbeitseinheit. Commit-Nachrichten sollten erklären, was getan wurde und warum. Diese sind kostenlose, automatisch versionierte Zustandsschnappschüsse.
 
-**Tool 4: init.sh oder harness-Initialisierungsfluss.** Spezifizieren Sie in `AGENTS.md` die „Einstich"- und „Ausstich"-Routinen:
+<strong>Tool 4: init.sh oder harness-Initialisierungsfluss.</strong> Spezifizieren Sie in `AGENTS.md` die „Einstich"- und „Ausstich"-Routinen:
 
 ```markdown
 ## At session start (clock in)
@@ -142,7 +142,7 @@ Kernansatz: **Behandeln Sie den Agenten wie einen brillanten Ingenieur mit Amnes
 3. Commit all completed work
 ```
 
-**Gemischte Strategie**: Nicht jede Aufgabe benötigt einen Kontext-Reset. Kurze Aufgaben (unter 30 Minuten) können innerhalb einer Session abgeschlossen werden. Lange Aufgaben (sessionübergreifend) müssen Fortschrittsdateien und Entscheidungsprotokolle für die Kontinuität verwenden. Entscheidungsregel: Wenn eine Aufgabe mehr als 60% des Fensters benötigt, beginnen Sie mit der Vorbereitung der Übergabe.
+<strong>Gemischte Strategie</strong>: Nicht jede Aufgabe benötigt einen Kontext-Reset. Kurze Aufgaben (unter 30 Minuten) können innerhalb einer Session abgeschlossen werden. Lange Aufgaben (sessionübergreifend) müssen Fortschrittsdateien und Entscheidungsprotokolle für die Kontinuität verwenden. Entscheidungsregel: Wenn eine Aufgabe mehr als 60% des Fensters benötigt, beginnen Sie mit der Vorbereitung der Übergabe.
 
 ### Tieferer Einblick in Context Anxiety
 
@@ -150,11 +150,11 @@ Anthropics Forschung von März 2026 offenbarte weitere Details zur Context Anxie
 
 Zwei Strategien helfen dagegen:
 
-**Kompression**: Frühzeitige Gesprächszusammenfassung innerhalb derselben Session. Vorteil: erhält Kontinuität, der Agent kann das „was" sehen. Nachteil: das „warum" geht in Zusammenfassungen oft verloren — warum Option B gegenüber A gewählt wurde, warum eine bestimmte Optimierung übersprungen wurde. Kritischer noch: Kompression beseitigt die Context Anxiety nicht — der Agent weiß, dass der Kontext einmal groß war, und neigt psychologisch weiterhin zum voreiligen Abschluss.
+<strong>Kompression</strong>: Frühzeitige Gesprächszusammenfassung innerhalb derselben Session. Vorteil: erhält Kontinuität, der Agent kann das „was" sehen. Nachteil: das „warum" geht in Zusammenfassungen oft verloren — warum Option B gegenüber A gewählt wurde, warum eine bestimmte Optimierung übersprungen wurde. Kritischer noch: Kompression beseitigt die Context Anxiety nicht — der Agent weiß, dass der Kontext einmal groß war, und neigt psychologisch weiterhin zum voreiligen Abschluss.
 
-**Kontext-Reset**: Vollständiges Leeren des Kontexts, Öffnen einer neuen Session, Wiederherstellung aus persistierten Artefakten. Vorteil: sauberer mentaler Zustand — die neue Session hat keine „mir geht die Zeit aus"-Angst. Nachteil: abhängig von der Vollständigkeit der Übergabe-Artefakte. Wenn im Tagebuch kritische Informationen fehlen, kann die neue Session Zeit in die falsche Richtung verschwenden.
+<strong>Kontext-Reset</strong>: Vollständiges Leeren des Kontexts, Öffnen einer neuen Session, Wiederherstellung aus persistierten Artefakten. Vorteil: sauberer mentaler Zustand — die neue Session hat keine „mir geht die Zeit aus"-Angst. Nachteil: abhängig von der Vollständigkeit der Übergabe-Artefakte. Wenn im Tagebuch kritische Informationen fehlen, kann die neue Session Zeit in die falsche Richtung verschwenden.
 
-Anthropics tatsächliche Daten: Bei Sonnet 4.5 ist die Context Anxiety so stark, dass Kompression allein nicht ausreicht — Kontext-Reset wird zu einer kritischen Komponente des harness-Designs. Bei Opus 4.5 ist dieses Verhalten jedoch stark abgeschwächt, und Kompression kann den Kontext verwalten, ohne auf Resets angewiesen zu sein. Das bedeutet: **harness-Design benötigt spezifisches Verständnis des Zielmodells, keine Einheitslösung.**
+Anthropics tatsächliche Daten: Bei Sonnet 4.5 ist die Context Anxiety so stark, dass Kompression allein nicht ausreicht — Kontext-Reset wird zu einer kritischen Komponente des harness-Designs. Bei Opus 4.5 ist dieses Verhalten jedoch stark abgeschwächt, und Kompression kann den Kontext verwalten, ohne auf Resets angewiesen zu sein. Das bedeutet: <strong>harness-Design benötigt spezifisches Verständnis des Zielmodells, keine Einheitslösung.</strong>
 
 > Quelle: [Anthropic: Harness design for long-running application development](https://www.anthropic.com/engineering/harness-design-long-running-apps)
 
@@ -162,9 +162,9 @@ Anthropics tatsächliche Daten: Bei Sonnet 4.5 ist die Context Anxiety so stark,
 
 Ein Agent wurde beauftragt, ein Blog-System mit Benutzerauthentifizierung zu implementieren — 12 Feature-Punkte, geschätzte 5 Sessions nötig.
 
-**Baseline ohne Tagebuch**: Session 1 implementierte das Benutzermodell und grundlegende Routen. Session 2 startete ohne dass sich der Agent an den Interface-Vertrag der Auth-Middleware erinnerte und verbrachte ~15 Minuten damit, die vorherige Designabsicht zu erschließen. In Session 3 führte akkumulierter Drift dazu, dass der Agent bereits abgeschlossene Features neu zu implementieren begann. In Session 5 enthielt das Repo viel redundanten Code, aber das Kern-Auth-Feature hatte die End-to-End-Tests noch nicht bestanden. Nur 7 von 12 Feature-Punkten abgeschlossen, 3 mit versteckten Korrektheitsproblemen. Wie der Handwerker, der nie in sein Tagebuch schreibt — an Tag fünf ist die Baustelle das Chaos, einige Mauern doppelt gebaut, einige, die hätten gebaut werden sollen, nie begonnen.
+<strong>Baseline ohne Tagebuch</strong>: Session 1 implementierte das Benutzermodell und grundlegende Routen. Session 2 startete ohne dass sich der Agent an den Interface-Vertrag der Auth-Middleware erinnerte und verbrachte ~15 Minuten damit, die vorherige Designabsicht zu erschließen. In Session 3 führte akkumulierter Drift dazu, dass der Agent bereits abgeschlossene Features neu zu implementieren begann. In Session 5 enthielt das Repo viel redundanten Code, aber das Kern-Auth-Feature hatte die End-to-End-Tests noch nicht bestanden. Nur 7 von 12 Feature-Punkten abgeschlossen, 3 mit versteckten Korrektheitsproblemen. Wie der Handwerker, der nie in sein Tagebuch schreibt — an Tag fünf ist die Baustelle das Chaos, einige Mauern doppelt gebaut, einige, die hätten gebaut werden sollen, nie begonnen.
 
-**Mit Tagebuch**: Unter Verwendung von Fortschrittsdateien, Entscheidungsprotokollen, Verifizierungsaufzeichnungen und Git-Kontrollpunkten. Zustandsbericht automatisch am Ende jeder Session aktualisiert. Session 2s Rebuild-Kosten fielen auf ~3 Minuten. Bis Session 5 waren alle 12 Feature-Punkte abgeschlossen und verifiziert.
+<strong>Mit Tagebuch</strong>: Unter Verwendung von Fortschrittsdateien, Entscheidungsprotokollen, Verifizierungsaufzeichnungen und Git-Kontrollpunkten. Zustandsbericht automatisch am Ende jeder Session aktualisiert. Session 2s Rebuild-Kosten fielen auf ~3 Minuten. Bis Session 5 waren alle 12 Feature-Punkte abgeschlossen und verifiziert.
 
 Quantitativer Vergleich: Rebuild-Zeit um ~78% reduziert, Feature-Abschlussrate von 58% auf 100%, versteckte Fehlerrate von 43% auf 8%. Der Handwerker ist immer noch amnestisch, aber mit dem Tagebuch beginnt jeder Tag dort, wo der vorherige aufgehört hat — nicht bei null.
 
@@ -186,8 +186,8 @@ Quantitativer Vergleich: Rebuild-Zeit um ~78% reduziert, Feature-Abschlussrate v
 
 ## Übungen
 
-1. **Kontinuitätsverlust-Messung**: Wählen Sie eine Entwicklungsaufgabe, die mindestens 3 Sessions benötigt. Ohne Kontinuitäts-Artefakte anzubieten, notieren Sie zu Beginn jeder Session, wie viel Kontext der Agent darauf verwendet, „herauszufinden, was beim letzten Mal passiert ist." Erstellen Sie nach jeder Session eine Fortschrittsdatei und lassen Sie die nächste Session daraus starten. Vergleichen Sie die Rebuild-Kosten mit und ohne Fortschrittsdateien.
+1. <strong>Kontinuitätsverlust-Messung</strong>: Wählen Sie eine Entwicklungsaufgabe, die mindestens 3 Sessions benötigt. Ohne Kontinuitäts-Artefakte anzubieten, notieren Sie zu Beginn jeder Session, wie viel Kontext der Agent darauf verwendet, „herauszufinden, was beim letzten Mal passiert ist." Erstellen Sie nach jeder Session eine Fortschrittsdatei und lassen Sie die nächste Session daraus starten. Vergleichen Sie die Rebuild-Kosten mit und ohne Fortschrittsdateien.
 
-2. **Übergabe-Vorlage entwerfen**: Entwerfen Sie eine minimale Übergabe-Vorlage mit vier Feldern: Repo-Zustand (Commit-Hash), Laufzeitzustand (Test-Pass-Rate), Blockaden, nächste Aktionen. Lassen Sie eine komplett neue Agenten-Session den Projektzustand nur anhand dieser Vorlage wiederherstellen. Dokumentieren Sie Mehrdeutigkeiten bei der Wiederherstellung und iterieren Sie zur Verbesserung der Vorlage.
+2. <strong>Übergabe-Vorlage entwerfen</strong>: Entwerfen Sie eine minimale Übergabe-Vorlage mit vier Feldern: Repo-Zustand (Commit-Hash), Laufzeitzustand (Test-Pass-Rate), Blockaden, nächste Aktionen. Lassen Sie eine komplett neue Agenten-Session den Projektzustand nur anhand dieser Vorlage wiederherstellen. Dokumentieren Sie Mehrdeutigkeiten bei der Wiederherstellung und iterieren Sie zur Verbesserung der Vorlage.
 
-3. **Gemischte Strategie experimentieren**: In einer 5-Session-Entwicklungsaufgabe vergleichen Sie drei Strategien: (a) immer neue Sessions starten + Fortschrittsdateien, (b) so viel wie möglich in einer Session erledigen (Kontext-Kompression), (c) gemischte Strategie (kurze Aufgaben in der Session, lange Aufgaben sessionübergreifend + Fortschrittsdateien). Vergleichen Sie Rebuild-Zeit, Feature-Abschlussrate und Entscheidungs konsistenz.
+3. <strong>Gemischte Strategie experimentieren</strong>: In einer 5-Session-Entwicklungsaufgabe vergleichen Sie drei Strategien: (a) immer neue Sessions starten + Fortschrittsdateien, (b) so viel wie möglich in einer Session erledigen (Kontext-Kompression), (c) gemischte Strategie (kurze Aufgaben in der Session, lange Aufgaben sessionübergreifend + Fortschrittsdateien). Vergleichen Sie Rebuild-Zeit, Feature-Abschlussrate und Entscheidungs konsistenz.

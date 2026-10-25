@@ -15,30 +15,30 @@ source_url: https://www.zhihu.com/question/7370558713/answer/65109878557
 ---
 
 
-**SageAttention2**
+<strong>SageAttention2</strong>
 
 大模型中，线性层的低比特量化已经逐步落地；然而，对于注意力模块，目前几乎各个模型都还在用高精度（例如FP16或FP32）的注意力运算进行训练和推理。并且，随着大型模型需要处理的序列长度不断增加，Attention（注意力运算）的时间开销逐渐成为主要开销。
 
 此前，清华大学陈键飞团队提出的8-Bit的即插即用Attention（SageAttention），将Attention中的 
 ![](https://www.zhihu.com/equation?tex=QK%5E%5Ctop)量化至INT8，将PV保持为FP16精度并使用FP16精度的矩阵乘法累加器，同时提出Smooth K技术保持了量化Attention的精度。实现了2倍加速于 FlashAttention2，且在各类大模型上均保持了端到端的精度表现。SageAttention已经被业界及社区广泛的使用于各种开源及商业的大模型中，比如CogvideoX，Mochi，Flux，Llama3，Qwen等。
 
-近日，清华大学陈键飞团队进一步提出了4-Bit的即插即用Attention（SageAttention2）。实现了**3**倍以及**4.5**倍相比于FlashAttention2和xformers的**即插即用**的推理加速，且在视频、图像、文本生成等大模型上**均保持了端到端的精度表现**。（注意FlashAttention3只能在Hopper显卡上运行，即使在Hopper显卡(无INT4)上，SageAttention2 8-bit版本也比 FlashAttention3 加速两倍；甚至比 FlashAttention3 的8-bit版本速度略快，更重要的是SageAttn2 8-bit的精度远好于FlashAttention3 的8-bit版本； 除Hopper外的显卡，SageAttn2就更是乱杀） 
+近日，清华大学陈键飞团队进一步提出了4-Bit的即插即用Attention（SageAttention2）。实现了<strong>3</strong>倍以及<strong>4.5</strong>倍相比于FlashAttention2和xformers的<strong>即插即用</strong>的推理加速，且在视频、图像、文本生成等大模型上<strong>均保持了端到端的精度表现</strong>。（注意FlashAttention3只能在Hopper显卡上运行，即使在Hopper显卡(无INT4)上，SageAttention2 8-bit版本也比 FlashAttention3 加速两倍；甚至比 FlashAttention3 的8-bit版本速度略快，更重要的是SageAttn2 8-bit的精度远好于FlashAttention3 的8-bit版本； 除Hopper外的显卡，SageAttn2就更是乱杀） 
 
-![](https://pic1.zhimg.com/v2-ed60c1ab2aa90227b20de4ab0497d905_r.jpg?source=2c26e567)**论文标题：SageAttention2: Efficient Attention with Thorough Outlier Smoothing and Per-thread INT4 Quantization**
+![](https://pic1.zhimg.com/v2-ed60c1ab2aa90227b20de4ab0497d905_r.jpg?source=2c26e567)<strong>论文标题：SageAttention2: Efficient Attention with Thorough Outlier Smoothing and Per-thread INT4 Quantization</strong>
 
-**论文链接：**
+<strong>论文链接：</strong>
 
-[SageAttention2: Efficient Attention with Thorough Outlier Smoothing and Per-thread INT4 Quantization](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2411.10958)**开源代码：**
+[SageAttention2: Efficient Attention with Thorough Outlier Smoothing and Per-thread INT4 Quantization](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2411.10958)<strong>开源代码：</strong>
 
 [GitHub - thu-ml/SageAttention: Quantized Attention that achieves speedups of 2.1-3.1x and 2.7-5.1x compared to FlashAttention2 and xformers, respectively, without lossing end-to-end metrics across various models.](https://link.zhihu.com/?target=https%3A//github.com/thu-ml/SageAttention)
-**即插即用举例**
+<strong>即插即用举例</strong>
 SageAttention2实现了高效的Attention算子，可以实现即插即用的推理加速。即输入任意Q, K, V矩阵，SageAttention2可以快速返回Attention Output (O)。
 
-![](https://picx.zhimg.com/v2-ddcc392b5bfb29d381cfd977f77271fc_r.jpg?source=2c26e567)具体来说，SageAttention2使用起来很方便，克隆仓库（git clone [https://github.com/thu-ml/SageAttention](https://link.zhihu.com/?target=https%3A//github.com/thu-ml/SageAttention)）并执行**python setup.py install**后，只需一行代码便可以得到Attention的输出，可以使用该接口方便地替换任意模型中的Attention函数：
+![](https://picx.zhimg.com/v2-ddcc392b5bfb29d381cfd977f77271fc_r.jpg?source=2c26e567)具体来说，SageAttention2使用起来很方便，克隆仓库（git clone [https://github.com/thu-ml/SageAttention](https://link.zhihu.com/?target=https%3A//github.com/thu-ml/SageAttention)）并执行<strong>python setup.py install</strong>后，只需一行代码便可以得到Attention的输出，可以使用该接口方便地替换任意模型中的Attention函数：
 
 ![](https://pic1.zhimg.com/v2-7006de00ee8d44e4b49c0cde6e86c86d_r.jpg?source=2c26e567)
 
-效果上，以开源视频生成模型CogvideoX-1.5-5B为例，使用SageAttention2可以端到端加速**1.8**倍，且生成的视频无损：
+效果上，以开源视频生成模型CogvideoX-1.5-5B为例，使用SageAttention2可以端到端加速<strong>1.8</strong>倍，且生成的视频无损：
 
 使用全精度Attention (1040秒）：
 
@@ -53,7 +53,7 @@ SageAttention2实现了高效的Attention算子，可以实现即插即用的推
 
 ![](https://pic1.zhimg.com/v2-204150b08260e513119b43ab2a97ca6c_r.jpg?source=2c26e567)
 
-**前言**
+<strong>前言</strong>
 随着大模型需要处理的序列长度越来越长，Attention的速度优化变得越来越重要。下图展示了一个标准的Transformer模型中各运算的时间占比随序列长度的变化：
 
 ![](https://pic1.zhimg.com/v2-086afc36268d77753ae4de77acf937f1_r.jpg?source=2c26e567)
@@ -64,7 +64,7 @@ SageAttention2实现了高效的Attention算子，可以实现即插即用的推
 
 为了克服上述缺点，SageAttention2提出将Q, K量化至INT4，并将P, V量化至FP8来加速Attention。然而，这样做的挑战是很大的。
 
-**4-Bit注意力量化有什么问题？**
+<strong>4-Bit注意力量化有什么问题？</strong>
 研究团队发现直接将注意力运算中的Q, K量化为INT4后将会导致在几乎所有模型和任务上都会得到极差的结果，例如，在CogVideoX文生视频模型中，会得到完全模糊的视频；Llama2-7B进行四选一选择题任务上得到25%的准确率。
 
 ![](https://picx.zhimg.com/v2-7558e7e88bc15efa804258e899222f5f_r.jpg?source=2c26e567)经过仔细分析后，研究团队发现主要是两个原因导致了量化注意力的不准确：
@@ -74,7 +74,7 @@ SageAttention2实现了高效的Attention算子，可以实现即插即用的推
 ![](https://picx.zhimg.com/v2-c790285f5baa159103f0d738af4b00e4_r.jpg?source=2c26e567)（2） 研究团队发现Nvidia的显卡上，FP8的矩阵乘法指令(mma.f32.f8.f8.f32)的乘法累加器并不是官方宣称的FP32精度，而是只有FP22精度，这导致了PV矩阵乘法出现较大的累加误差。 
 
 ![](https://pica.zhimg.com/v2-d0e143740a1209a337dba1f7c65d3c93_r.jpg?source=2c26e567)
-**技术方案**
+<strong>技术方案</strong>
 为了解决上述的两个挑战，研究团队提出了对应的解决办法。
 
 （1） 保留SageAttention中对K进行平滑处理的同时，提出对Q进行平滑处理：Q – mean(Q)。其中mean(Q) 是沿着通道维度的平均值向量。完成该平滑操作后需要在Attention计算过程中将mean(Q)和K^T的向量与矩阵乘法的结果补偿到S中。
@@ -106,7 +106,7 @@ SageAttention2实现了高效的Attention算子，可以实现即插即用的推
 
 ![](https://pic1.zhimg.com/v2-7b6e6d90b89369127257af9c4f951888_r.jpg?source=2c26e567)
 
-**实验效果**
+<strong>实验效果</strong>
 SageAttention实现了底层的GPU CUDA Kernel，在算子速度以及各个模型端到端准确度上都有十分不错的表现。 
 
 具体来说，算子速度相比于FlashAttention2 和 xformers 有大约3倍以及4.5倍的加速，并且可以适用于绝大部分显卡：
@@ -118,28 +118,28 @@ SageAttention实现了底层的GPU CUDA Kernel，在算子速度以及各个模�
 
 ![](https://pica.zhimg.com/v2-d996bec6422c1d211c0cd548158f962c_r.jpg?source=2c26e567)
 
-**各模型在真实场景的端到端精度表现中，在视频、图像、文本生成等大模型上均保持了端到端的精度表现：**
+<strong>各模型在真实场景的端到端精度表现中，在视频、图像、文本生成等大模型上均保持了端到端的精度表现：</strong>
 
 下图是在HunyuanVideo中的可视化实例：
 
 ![](https://picx.zhimg.com/v2-a3d6638dca8f0ca00493421b7f7a261e_r.jpg?source=2c26e567)下图是在Cogvideo中的可视化实例：
 
-![](https://pic1.zhimg.com/v2-3c76265ebf5ee0897d6801613963c9b6_r.jpg?source=2c26e567)SageAttention2(8-bit) 精度上也远比**只能**在 Hopper 显卡上运行的 FlashAttention3(8-bit) **好很多**，速度也略快： 
+![](https://pic1.zhimg.com/v2-3c76265ebf5ee0897d6801613963c9b6_r.jpg?source=2c26e567)SageAttention2(8-bit) 精度上也远比<strong>只能</strong>在 Hopper 显卡上运行的 FlashAttention3(8-bit) <strong>好很多</strong>，速度也略快： 
 
 ![](https://picx.zhimg.com/v2-438c13ece64ef2bf0fa3cc8041553494_r.jpg?source=2c26e567)
 ![](https://picx.zhimg.com/v2-0b58d32b35b9632aa161d06aa8208f0c_r.jpg?source=2c26e567)
-![](https://pic1.zhimg.com/v2-1f8b742a0e932dc487b19f9b617f95d5_r.jpg?source=2c26e567) 下表展示了各个语言、视频、图像生成模型中**SageAttention2的端到端精度表现**：
+![](https://pic1.zhimg.com/v2-1f8b742a0e932dc487b19f9b617f95d5_r.jpg?source=2c26e567) 下表展示了各个语言、视频、图像生成模型中<strong>SageAttention2的端到端精度表现</strong>：
 
 ![](https://picx.zhimg.com/v2-346f454c2aa73dbbb42c6b81a42fb692_r.jpg?source=2c26e567)
 ![](https://picx.zhimg.com/v2-8b1323cc5344046d52d5808128ec66e6_r.jpg?source=2c26e567)
 
-**端到端的速度表现上**，SageAttention2两个Kernel的实现均可以有效的对长序列的模型进行加速，比如可以端到端**1.8**倍加速CogVideoX1.5-5B，其他模型上也均有**1.6**到**1.8**倍的提速：
+<strong>端到端的速度表现上</strong>，SageAttention2两个Kernel的实现均可以有效的对长序列的模型进行加速，比如可以端到端<strong>1.8</strong>倍加速CogVideoX1.5-5B，其他模型上也均有<strong>1.6</strong>到<strong>1.8</strong>倍的提速：
 
 ![](https://picx.zhimg.com/v2-1e4d56594ebc08ba2996825dcfbfd0b6_r.jpg?source=2c26e567)
 
-**再次欢迎并感谢大家使用并引用我们的工作！：**
+<strong>再次欢迎并感谢大家使用并引用我们的工作！：</strong>
 Github:
 [GitHub - thu-ml/SageAttention: Quantized Attention that achieves speedups of 2.1-3.1x and 2.7-5.1x compared to FlashAttention2 and xformers, respectively, without lossing end-to-end metrics across various models.](https://link.zhihu.com/?target=https%3A//github.com/thu-ml/SageAttention)
-**Paper: **
+<strong>Paper:</strong>
 
 [SageAttention2: Efficient Attention with Thorough Outlier Smoothing and Per-thread INT4 Quantization](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2411.10958)

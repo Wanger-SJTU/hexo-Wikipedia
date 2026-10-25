@@ -33,7 +33,7 @@ attention mask不同，prefix LM的prefix部分的token互相能看到，causal 
 
 > the prefill stage which takes a prompt sequence to generate the key-value cache (KV cache) for each transformer layer of the LLM
 
-**prefill phase**
+<strong>prefill phase</strong>
 
 $$
 x^i_K = x^i · w^i_K; x^i_V = x^i · w^i_V

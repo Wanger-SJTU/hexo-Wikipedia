@@ -32,14 +32,14 @@ Projeniz büyüdükçe geri kalan dosyaları ekleyin.
 
 Kök talimat dosyası. Ajan bir oturum başlattığında okuduğu ilk şey budur. Çalışma kurallarını tanımlar: kod yazmadan önce ne yapılmalı, nasıl çalışılmalı ve nasıl tamamlanmalı.
 
-**Nasıl kullanılır:**
+<strong>Nasıl kullanılır:</strong>
 
 - Projenizin kök dizinine kopyalayın
 - Başlatma iş akışı adımlarındaki yolları ve komutları kendi projenizinkilerle değiştirin
 - Çalışma kurallarını ekibinizin alışkanlıklarına uyacak şekilde uyarlayın
 - "Bitti tanımı" bölümünü mutlaka koruyun — en önemli kısım odur
 
-**Ajan için ne işe yarar:**
+<strong>Ajan için ne işe yarar:</strong>
 
 - İşe başlamadan önce ilerleme ve özellik durumunu okumasını söyler
 - Aynı anda yalnızca bir özellik üzerinde çalışmasını sağlar
@@ -52,7 +52,7 @@ Codex veya diğer ajanlar için `AGENTS.md` kullanın. Claude Code ile çalış�
 
 Başlangıç betiği. Bağımlılık kurulumunu, doğrulamayı çalıştırır ve başlatma komutunu yazdırır — hepsi tek seferde.
 
-**Nasıl kullanılır:**
+<strong>Nasıl kullanılır:</strong>
 
 - Projenizin köküne kopyalayın
 - Üstteki şu üç değişkeni düzenleyin:
@@ -61,7 +61,7 @@ Başlangıç betiği. Bağımlılık kurulumunu, doğrulamayı çalıştırır v
   - `START_CMD` — geliştirme sunucusu başlatma komutunuz (örn. `npm run dev`)
 - Çalıştırılabilir hale getirin: `chmod +x init.sh`
 
-**Ne yapar:**
+<strong>Ne yapar:</strong>
 
 1. Geçerli dizini yazdırır (doğru yerde çalıştığından emin olabilesiniz diye)
 2. Bağımlılıkları kurar
@@ -74,21 +74,21 @@ Doğrulama başarısız olursa, ajan başka herhangi bir şey yapmadan önce dur
 
 İlerleme günlüğü. Her oturum bu dosyaya yazar ve her yeni oturum önce onu okur.
 
-**Nasıl kullanılır:**
+<strong>Nasıl kullanılır:</strong>
 
 - Projenizin köküne kopyalayın
 - "Mevcut Doğrulanmış Durum" bölümünü projenizin bilgileriyle doldurun
 - Her oturumdan sonra oturum kaydını güncelleyin
 
-**Her alanın anlamı:**
+<strong>Her alanın anlamı:</strong>
 
-- **Mevcut Doğrulanmış Durum** — projenin nerede olduğunun tek doğru kaynağı
+- <strong>Mevcut Doğrulanmış Durum</strong> — projenin nerede olduğunun tek doğru kaynağı
   - `Repository root directory` — projenin bulunduğu yer
   - `Standard startup path` — projeyi çalıştırmak için kullanılan komut
   - `Standard verification path` — testleri çalıştıran komut
   - `Highest priority unfinished feature` — sıradaki oturumun üzerinde çalışacağı şey
   - `Current blocker` — engellenen herhangi bir şey
-- **Oturum Kaydı** — her oturum için bir giriş
+- <strong>Oturum Kaydı</strong> — her oturum için bir giriş
   - `Goal` — yapmayı planladığınız şey
   - `Completed` — gerçekten yapılan şey
   - `Verification run` — hangi testlerin çalıştırıldığı
@@ -101,7 +101,7 @@ Doğrulama başarısız olursa, ajan başka herhangi bir şey yapmadan önce dur
 
 Özellik takipçisi. Ajanın uygulaması gereken her özelliğin, durumunun, doğrulama adımlarının ve kanıtlarının makine tarafından okunabilir bir listesi.
 
-**Nasıl kullanılır:**
+<strong>Nasıl kullanılır:</strong>
 
 - Projenizin köküne kopyalayın
 - Örnek özellikleri kendi özelliklerinizle değiştirin
@@ -116,7 +116,7 @@ Doğrulama başarısız olursa, ajan başka herhangi bir şey yapmadan önce dur
   - `evidence` — doğrulamanın geçtiğine dair kaydedilmiş kanıt (ajan tarafından doldurulur)
   - `notes` — ek bağlam
 
-**Durum kuralları:**
+<strong>Durum kuralları:</strong>
 
 - `not_started` — henüz dokunulmamış
 - `in_progress` — şu anda üzerinde çalışılan tek özellik (aynı anda yalnızca biri)
@@ -129,18 +129,18 @@ Ajanın aynı anda yalnızca tek bir özelliği `in_progress` durumunda tutması
 
 Oturumlar arasında derli toplu bir devir notu. Bir oturum sona erdiğinde ve bir sonraki oturumun hızlıca devam almasını istediğinizde bunu kullanın.
 
-**Nasıl kullanılır:**
+<strong>Nasıl kullanılır:</strong>
 
 - Projenizin köküne kopyalayın
 - Her oturumun sonunda doldurun (veya ajana doldurtun)
 
-**Her bölümün kapsadığı şey:**
+<strong>Her bölümün kapsadığı şey:</strong>
 
-- **Şu anda doğrulanan** — neyin çalıştığı doğrulandı ve hangi doğrulamanın çalıştırıldığı
-- **Bu oturumdaki değişiklikler** — hangi kod veya altyapının değiştiği
-- **Hâlâ bozuk veya doğrulanmamış** — bilinen sorunlar ve riskli alanlar
-- **Sıradaki en iyi adım** — sıradaki oturumun ne yapması gerektiği ve neye dokunmaması gerektiği
-- **Komutlar** — hızlı başvuru için başlatma, doğrulama ve hata ayıklama komutları
+- <strong>Şu anda doğrulanan</strong> — neyin çalıştığı doğrulandı ve hangi doğrulamanın çalıştırıldığı
+- <strong>Bu oturumdaki değişiklikler</strong> — hangi kod veya altyapının değiştiği
+- <strong>Hâlâ bozuk veya doğrulanmamış</strong> — bilinen sorunlar ve riskli alanlar
+- <strong>Sıradaki en iyi adım</strong> — sıradaki oturumun ne yapması gerektiği ve neye dokunmaması gerektiği
+- <strong>Komutlar</strong> — hızlı başvuru için başlatma, doğrulama ve hata ayıklama komutları
 
 Bu dosya küçük oturumlar için isteğe bağlıdır. Oturumlar uzun olduğunda veya projenin birden fazla aktif alanı olduğunda önem kazanır.
 
@@ -148,13 +148,13 @@ Bu dosya küçük oturumlar için isteğe bağlıdır. Oturumlar uzun olduğunda
 
 Her oturumu bitirmeden önce gözden geçirilecek bir kontrol listesi. Deponun, sıradaki oturumun temiz bir şekilde başlayabileceği iyi bir durumda olduğundan emin olun.
 
-**Nasıl kullanılır:**
+<strong>Nasıl kullanılır:</strong>
 
 - Projenizin köküne kopyalayın
 - Bir oturumu kapatmadan önce listeyi gözden geçirin
 - Ajan da oturum sonu rutininin bir parçası olarak bu maddeleri kontrol etmelidir
 
-**Neleri kontrol eder:**
+<strong>Neleri kontrol eder:</strong>
 
 - Standart başlatma hâlâ çalışıyor mu
 - Standart doğrulama hâlâ çalışıyor mu
@@ -167,28 +167,28 @@ Her oturumu bitirmeden önce gözden geçirilecek bir kontrol listesi. Deponun, 
 
 Ajan çıktısının kalitesini değerlendirmek için bir karne. Bir oturumdan sonra veya proje kilometre taşlarında, işin standardı karşılayıp karşılamadığını değerlendirmek için kullanın.
 
-**Nasıl kullanılır:**
+<strong>Nasıl kullanılır:</strong>
 
 - Projenizin köküne kopyalayın
 - Bir oturumdan (veya bir dizi oturumdan) sonra, ajanın işini altı boyutta puanlayın
 - Her boyut 0-2 arasında puanlanır
 
-**Altı boyut:**
+<strong>Altı boyut:</strong>
 
-1. **Doğruluk** — uygulama hedeflenen davranışla eşleşiyor mu?
-2. **Doğrulama** — gerekli kontroller gerçekten kanıtla birlikte çalıştırıldı mı?
-3. **Kapsam disiplini** — ajan seçilen özelliğin sınırları içinde kaldı mı?
-4. **Güvenilirlik** — sonuç bir yeniden başlatma veya yeniden çalıştırmadan sonra ayakta kalıyor mu?
-5. **Sürdürülebilirlik** — kod ve dokümantasyon sıradaki oturum için yeterince açık mı?
-6. **Devir hazırlığı** — yeni bir oturum yalnızca depo dosyalarını kullanarak devam edebilir mi?
+1. <strong>Doğruluk</strong> — uygulama hedeflenen davranışla eşleşiyor mu?
+2. <strong>Doğrulama</strong> — gerekli kontroller gerçekten kanıtla birlikte çalıştırıldı mı?
+3. <strong>Kapsam disiplini</strong> — ajan seçilen özelliğin sınırları içinde kaldı mı?
+4. <strong>Güvenilirlik</strong> — sonuç bir yeniden başlatma veya yeniden çalıştırmadan sonra ayakta kalıyor mu?
+5. <strong>Sürdürülebilirlik</strong> — kod ve dokümantasyon sıradaki oturum için yeterince açık mı?
+6. <strong>Devir hazırlığı</strong> — yeni bir oturum yalnızca depo dosyalarını kullanarak devam edebilir mi?
 
-**Sonuç seçenekleri:**
+<strong>Sonuç seçenekleri:</strong>
 
 - Kabul — standardı karşılıyor
 - Revize — kabul edilmeden önce düzeltmeler gerektiriyor
 - Engelle — önce çözülmesi gereken temel sorunlar var
 
-**Önemli: değerlendiricinin ayarlanması gerekir.** Hazır halleriyle ajanlar zayıf öz-değerlendiricilerdir — sorunları tespit edip sonra kendilerini onaylamaya ikna ederler. Yinelemeniz gerekir:
+<strong>Önemli: değerlendiricinin ayarlanması gerekir.</strong> Hazır halleriyle ajanlar zayıf öz-değerlendiricilerdir — sorunları tespit edip sonra kendilerini onaylamaya ikna ederler. Yinelemeniz gerekir:
 
 1. Tamamlanmış bir sprint üzerinde değerlendiriciyi çalıştırın.
 2. Puanlarını kendi insan yargınızla karşılaştırın.
@@ -202,33 +202,33 @@ Ajan çıktısının kalitesini değerlendirmek için bir karne. Bir oturumdan s
 
 Projenizdeki her ürün alanına ve mimari katmana not veren bir kalite anlık görüntüsü. Yalnızca tek tek oturum çıktısını değil, kod tabanının zaman içindeki sağlığını izler.
 
-**Nasıl kullanılır:**
+<strong>Nasıl kullanılır:</strong>
 
 - Projenizin köküne kopyalayın
 - Bir oturuma başlamadan önce: kod tabanının nerede en zayıf olduğunu anlamak için okuyun
 - Bir oturumdan sonra: değişikliklere göre notları güncelleyin
 - Zamanla: hangi harness değişikliklerinin kod tabanı sağlığını gerçekten iyileştirdiğini görmek için anlık görüntüleri karşılaştırın
 
-**Neyi puanlar:**
+<strong>Neyi puanlar:</strong>
 
-- **Ürün alanları** (örn. belge içe aktarma, Soru-Cevap akışı, dizinleme): her alan; doğrulama durumu, ajan okunabilirliği, test kararlılığı ve ana boşluklar açısından bir not (A-D) alır
-- **Mimari katmanlar** (örn. main process, preload, renderer, services): her katman, sınır uygulaması ve ajan okunabilirliği için bir not alır
+- <strong>Ürün alanları</strong> (örn. belge içe aktarma, Soru-Cevap akışı, dizinleme): her alan; doğrulama durumu, ajan okunabilirliği, test kararlılığı ve ana boşluklar açısından bir not (A-D) alır
+- <strong>Mimari katmanlar</strong> (örn. main process, preload, renderer, services): her katman, sınır uygulaması ve ajan okunabilirliği için bir not alır
 
-**Neden önemlidir:**
+<strong>Neden önemlidir:</strong>
 
 Değerlendirici rubriği tek tek ajan çıktılarını puanlar. Kalite belgesi ise kod tabanının kendisini puanlar. Farklı soruları yanıtlarlar:
 
 - Değerlendirici rubriği: "Ajan bu oturumda iyi iş çıkardı mı?"
 - Kalite belgesi: "Proje zamanla güçleniyor mu yoksa zayıflıyor mu?"
 
-**Ne zaman güncellenmeli:**
+<strong>Ne zaman güncellenmeli:</strong>
 
 - Her önemli oturumdan sonra
 - Karşılaştırma (benchmark) öncesi
 - Temizlik veya sadeleştirme turlarından sonra
 - Projeye yeni bir ajan veya model dahil edilirken
 
-**Harness sadeleştirme ile bağlantı:**
+<strong>Harness sadeleştirme ile bağlantı:</strong>
 
 Kalite belgesi aynı zamanda harness sadeleştirmeyi de destekler. Her harness bileşeni, modelin yapamadığı bir şeye dair bir varsayımı kodlar. Modeller geliştikçe bu varsayımlar eskir. Bir bileşenin hâlâ gerekli olup olmadığını kontrol etmek için:
 

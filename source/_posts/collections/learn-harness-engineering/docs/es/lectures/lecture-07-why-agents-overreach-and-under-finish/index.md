@@ -65,12 +65,12 @@ flowchart TB
 
 ## Conceptos clave
 
-- **Sobrealcance (Overreach)**: El agente activa más tareas en una sola sesión de lo óptimo. Es cuantificable — hacer 5 funcionalidades con 0 pasando end-to-end es sobrealcance.
-- **Sub-completitud (Under-finish)**: La proporción de tareas que pasan verificación end-to-end, de todas las tareas activadas, cae por debajo del umbral. Código escrito pero pruebas sin pasar es sub-completitud.
-- **Límite WIP (Work-in-Progress Limit)**: De la metodología Kanban. Idea central: limitar cuántas tareas están en progreso a la vez. Para agentes, WIP=1 es el valor predeterminado más seguro — termina una antes de comenzar la siguiente. Como un buffet — no llenes tu plato, termina un plato y luego vuelve por el siguiente.
-- **Evidencia de completitud**: La condición verificable que una tarea debe satisfacer para pasar de "en progreso" a "terminada." Sin esto, los agentes sustituyen "el código se ve bien" por "el comportamiento pasa las pruebas."
-- **Superficie de alcance (Scope Surface)**: Una estructura DAG donde cada nodo es una unidad de trabajo y las aristas son dependencias. Los estados se limitan a cuatro: not_started, active, blocked, passing.
-- **Presión de completitud**: La fuerza restrictiva que el harness ejerce a través de límites WIP y requisitos de evidencia de completitud, forzando al agente a terminar la tarea actual antes de comenzar una nueva.
+- <strong>Sobrealcance (Overreach)</strong>: El agente activa más tareas en una sola sesión de lo óptimo. Es cuantificable — hacer 5 funcionalidades con 0 pasando end-to-end es sobrealcance.
+- <strong>Sub-completitud (Under-finish)</strong>: La proporción de tareas que pasan verificación end-to-end, de todas las tareas activadas, cae por debajo del umbral. Código escrito pero pruebas sin pasar es sub-completitud.
+- <strong>Límite WIP (Work-in-Progress Limit)</strong>: De la metodología Kanban. Idea central: limitar cuántas tareas están en progreso a la vez. Para agentes, WIP=1 es el valor predeterminado más seguro — termina una antes de comenzar la siguiente. Como un buffet — no llenes tu plato, termina un plato y luego vuelve por el siguiente.
+- <strong>Evidencia de completitud</strong>: La condición verificable que una tarea debe satisfacer para pasar de "en progreso" a "terminada." Sin esto, los agentes sustituyen "el código se ve bien" por "el comportamiento pasa las pruebas."
+- <strong>Superficie de alcance (Scope Surface)</strong>: Una estructura DAG donde cada nodo es una unidad de trabajo y las aristas son dependencias. Los estados se limitan a cuatro: not_started, active, blocked, passing.
+- <strong>Presión de completitud</strong>: La fuerza restrictiva que el harness ejerce a través de límites WIP y requisitos de evidencia de completitud, forzando al agente a terminar la tarea actual antes de comenzar una nueva.
 
 ## El sobrealcance y la sub-completitud son simbióticos
 
@@ -84,7 +84,7 @@ Este es un problema antiguo en el mundo humano también — Steve McConnell docu
 
 ### 1. Haz cumplir WIP=1
 
-Este es el método más directo y efectivo. En tu harness, dile al agente explícitamente: **solo una tarea tiene permitido estar en estado "active" en cualquier momento.** En el CLAUDE.md de Claude Code o el AGENTS.md de Codex, escribe:
+Este es el método más directo y efectivo. En tu harness, dile al agente explícitamente: <strong>solo una tarea tiene permitido estar en estado "active" en cualquier momento.</strong> En el CLAUDE.md de Claude Code o el AGENTS.md de Codex, escribe:
 
 ```
 ## Work Rules
@@ -117,19 +117,19 @@ El harness debería rastrear continuamente el VCR (Verified Completion Rate) = t
 
 Un proyecto de API REST con 8 funcionalidades, se compararon dos estrategias:
 
-**Modo buffet (sin restricciones)**: El agente activa 5 funcionalidades simultáneamente en la sesión 1. Produce ~800 líneas en 12 archivos. Tasa de aprobación de pruebas end-to-end: 20% — solo el registro de usuarios funciona. Las otras 4 funcionalidades: esquema de base de datos creado pero falta lógica de validación, rutas definidas pero devolviendo formatos de respuesta incorrectos. Como alguien cocinando seis platos a la vez, solo uno es apenas comestible. Al final de la sesión 3, solo 3 de 8 funcionalidades completadas.
+<strong>Modo buffet (sin restricciones)</strong>: El agente activa 5 funcionalidades simultáneamente en la sesión 1. Produce ~800 líneas en 12 archivos. Tasa de aprobación de pruebas end-to-end: 20% — solo el registro de usuarios funciona. Las otras 4 funcionalidades: esquema de base de datos creado pero falta lógica de validación, rutas definidas pero devolviendo formatos de respuesta incorrectos. Como alguien cocinando seis platos a la vez, solo uno es apenas comestible. Al final de la sesión 3, solo 3 de 8 funcionalidades completadas.
 
-**Modo plato único (WIP=1)**: El agente trabaja solo en el registro de usuarios en la sesión 1. Produce ~200 líneas en 4 archivos. Pruebas end-to-end: 100% pasando. Hace commit de una implementación limpia y verificada. Al final de la sesión 4, 7 de 8 funcionalidades completadas (la 8va bloqueada por una dependencia externa).
+<strong>Modo plato único (WIP=1)</strong>: El agente trabaja solo en el registro de usuarios en la sesión 1. Produce ~200 líneas en 4 archivos. Pruebas end-to-end: 100% pasando. Hace commit de una implementación limpia y verificada. Al final de la sesión 4, 7 de 8 funcionalidades completadas (la 8va bloqueada por una dependencia externa).
 
 Resultado: menos código total (800 vs 1200 líneas) pero más código efectivo. Tasa de completitud: 87.5% vs 37.5%. Toma un bocado a la vez, y realmente comes más.
 
 ## Ideas clave
 
-- **WIP=1 es la configuración predeterminada segura para harness de agentes** — termina una, luego comienza la siguiente; no intentes paralelizar. No te puedes poner gordo en un bocado.
-- **La evidencia de completitud debe ser ejecutable** — "el código se ve bien" no cuenta; "curl devuelve 201" sí.
-- **La superficie de alcance debe externalizarse como archivo** — no solo mencionada en la conversación, sino registrada en un formato legible por máquina en el repositorio.
-- **El sobrealcance y la sub-completitud son simbióticos** — resolver uno resuelve el otro.
-- **"Haz menos pero termina" siempre vence a "haz más pero deja a medias"** — las líneas de código del agente y la tasa de completitud de funcionalidades están negativamente correlacionadas. La calidad siempre vence a la cantidad.
+- <strong>WIP=1 es la configuración predeterminada segura para harness de agentes</strong> — termina una, luego comienza la siguiente; no intentes paralelizar. No te puedes poner gordo en un bocado.
+- <strong>La evidencia de completitud debe ser ejecutable</strong> — "el código se ve bien" no cuenta; "curl devuelve 201" sí.
+- <strong>La superficie de alcance debe externalizarse como archivo</strong> — no solo mencionada en la conversación, sino registrada en un formato legible por máquina en el repositorio.
+- <strong>El sobrealcance y la sub-completitud son simbióticos</strong> — resolver uno resuelve el otro.
+- <strong>"Haz menos pero termina" siempre vence a "haz más pero deja a medias"</strong> — las líneas de código del agente y la tasa de completitud de funcionalidades están negativamente correlacionadas. La calidad siempre vence a la cantidad.
 
 ## Lecturas adicionales
 
@@ -140,8 +140,8 @@ Resultado: menos código total (800 vs 1200 líneas) pero más código efectivo.
 
 ## Ejercicios
 
-1. **Atomización de tareas**: Toma un requisito amplio (por ejemplo, "implementa un sistema de gestión de usuarios") y divídelo en al menos 5 unidades de trabajo atómicas. Para cada unidad, especifica: (a) una descripción de comportamiento única, (b) un comando de verificación ejecutable, (c) dependencias. Verifica si la descomposición satisface la restricción WIP=1.
+1. <strong>Atomización de tareas</strong>: Toma un requisito amplio (por ejemplo, "implementa un sistema de gestión de usuarios") y divídelo en al menos 5 unidades de trabajo atómicas. Para cada unidad, especifica: (a) una descripción de comportamiento única, (b) un comando de verificación ejecutable, (c) dependencias. Verifica si la descomposición satisface la restricción WIP=1.
 
-2. **Experimento comparativo**: Ejecuta el mismo proyecto dos veces — una sin restricciones, otra con WIP=1 impuesto. Compara: tasa de completitud verificada, líneas totales de código, ratio de código efectivo.
+2. <strong>Experimento comparativo</strong>: Ejecuta el mismo proyecto dos veces — una sin restricciones, otra con WIP=1 impuesto. Compara: tasa de completitud verificada, líneas totales de código, ratio de código efectivo.
 
-3. **Auditoría de evidencia de completitud**: Revisa la salida de una ejecución reciente de un agente, clasificando cada cambio de código como "comportamiento completado," "comportamiento incompleto" o "scaffolding." Añade los comandos de verificación faltantes para cada comportamiento incompleto.
+3. <strong>Auditoría de evidencia de completitud</strong>: Revisa la salida de una ejecución reciente de un agente, clasificando cada cambio de código como "comportamiento completado," "comportamiento incompleto" o "scaffolding." Añade los comandos de verificación faltantes para cada comportamiento incompleto.

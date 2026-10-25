@@ -23,7 +23,7 @@ source_url: https://zhuanlan.zhihu.com/p/2019480851155530722
 
 近日，清华大学联合、复旦大学、香港大学等机构，推出了首个基于“Interleaved Reasoning”的通用多模态检索框架 V-Retrver。该框架将传统检索重塑为智能体推理过程，让多模态大模型学会在检索时主动调用视觉工具来验证细节，而非仅凭静态的图像表征进行判断。目前，研究团队已将代码和模型权重开源。
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_c269013dd9bf.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_c269013dd9bf.jpg)
 
 （来源：arXiv）
 
@@ -31,7 +31,7 @@ source_url: https://zhuanlan.zhihu.com/p/2019480851155530722
 
 这种局限在视觉模糊的检索场景中尤为明显。尤其当候选图片在语义上高度相似，仅在细节上存在差异时。比如同样是白色沙发，只是抱枕纹理不同，模型往往无法准确区分。传统方法将视觉输入压缩成固定的特征向量或文本描述，迫使推理过程完全依赖语言来推断视觉差异，结果就是模型只能瞎猜。
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_08262b7e7ca6.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_08262b7e7ca6.jpg)
 
 （来源：论文）
 
@@ -65,7 +65,7 @@ SFT 阶段的训练量需要精心控制。作者指出，这里存在两个极�
 
 第三阶段是证据对齐策略优化（EAPO），这是基于 GRPO 算法的强化学习过程。“我们设计了一个工具调用奖励机制，”作者解释道，“当模型在推理过程中合理调用工具时会获得正向奖励。我们希望模型能够适度使用工具进行验证，而非完全不用或过度依赖。”
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_93a79d060104.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_93a79d060104.jpg)
 
 （来源：论文）
 
@@ -75,7 +75,7 @@ SFT 阶段的训练量需要精心控制。作者指出，这里存在两个极�
 
 在通用多模态检索基准 M-BEIR 上，V-Retrver-7B 取得了 69.7% 的平均召回率，相比此前最强的 U-MARVEL-7B 提升了近 5 个百分点，相对基础的 Qwen2.5-VL-7B 模型则提升了 23%。
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_6ebfa6f4f18d.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_6ebfa6f4f18d.jpg)
 
 （来源：论文）
 
@@ -85,7 +85,7 @@ SFT 阶段的训练量需要精心控制。作者指出，这里存在两个极�
 
 消融实验进一步证实了视觉工具的价值：如果剥夺 V-Retrver 的视觉工具，只让它做纯文本的 CoT 推理，平均性能会从 67.2% 跌至 61.8%。
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_9dbb4334f2aa.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_9dbb4334f2aa.jpg)
 
 （来源：论文）
 

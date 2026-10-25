@@ -15,7 +15,7 @@ source_url: https://www.zhihu.com/question/10951382954/answer/199190421918426333
 ---
 
 
-[![](/images/collections/0.raw/zhihu/LLM%2526SD/asset/img_70b6ccc59f5d.jpg)](//www.zhihu.com/people/bigpunch-46)
+[![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_70b6ccc59f5d.jpg)](//www.zhihu.com/people/bigpunch-46)
 
 [bigpunch](//www.zhihu.com/people/bigpunch-46)
 
@@ -47,7 +47,7 @@ source_url: https://www.zhihu.com/question/10951382954/answer/199190421918426333
 
 小白会说，那我增加并行度。稍微懂点的会说，我看看能不能合并读写。高手会直接说，这是典型的Memory Bound场景，我要看能不能做算子融合，把前后的Element-wise操作跟它融到一起，减少中间数据的读写。或者，能不能用Shfl指令也就是Warp Shuffle指令，在寄存器层面做归约，直接跳过Shared Memory，减少一次访存。
 
-**第二块，我会重点考察线程束Warp和执行模型**
+<strong>第二块，我会重点考察线程束Warp和执行模型</strong>
 
 很多人对CUDA的理解停留在Grid和Block层面。这不够。硬件调度的最小单位是Warp，也就是32个线程。
 
@@ -63,7 +63,7 @@ source_url: https://www.zhihu.com/question/10951382954/answer/199190421918426333
 
 我见过太多人写kernel，为了图省事，把所有变量都放寄存器，结果编译器一看，寄存器溢出了，给你spill到Local Memory里去了，性能直接脚踝斩。你得懂怎么看SASS汇编，怎么看ncu也就是Nsight Compute的报告，发现寄存器压力过大时，知道怎么去控制寄存器使用量，甚至手动控制生命周期。
 
-**第三块，必须聊聊Tensor Core和矩阵乘法**
+<strong>第三块，必须聊聊Tensor Core和矩阵乘法</strong>
 
 到了2024年，你不懂Tensor Core，就别说自己做CUDA优化。
 
@@ -77,7 +77,7 @@ source_url: https://www.zhihu.com/question/10951382954/answer/199190421918426333
 
 我们在优化一个Transformer的Attention算子时，发现用cuBLAS标准库性能不够好，因为输入尺寸比较奇葩，导致Padding浪费了很多计算。这时候如果你懂Tensor Core的底层原理，你就可以手写一个专用的Kernel，利用MMA指令，专门针对这个奇葩尺寸做Tiling，配合Pipeline掩盖读取K和V矩阵的延迟，性能可能直接翻倍。
 
-**第四块，大模型时代的必考题：FlashAttention**
+<strong>第四块，大模型时代的必考题：FlashAttention</strong>
 
 现在搞AI Infra，FlashAttention是绕不过去的大山。我不会让你背公式，但我会问：
 
@@ -91,7 +91,7 @@ FlashAttention到底快在哪里？它是怎么通过分块计算来减少HBM访
 
 如果你能回答出它把更多的非矩阵乘法操作放到了Warps之间去并行，减少了同步开销，或者优化了Warp Partitioning，那你就非常Professional了。
 
-**第五块，工具链和Debug能力**
+<strong>第五块，工具链和Debug能力</strong>
 
 只会写代码不会Debug的人，我是不敢要的。GPU Debug简直是噩梦。
 
@@ -105,9 +105,9 @@ FlashAttention到底快在哪里？它是怎么通过分块计算来减少HBM访
 
 不要告诉我你看运行时间。你要看SOL也就是Speed Of Light指标。Compute SOL是多少，Memory SOL是多少。如果Compute SOL很高，说明计算单元利用率高，大概率是计算密集型；如果Memory SOL高，那是访存密集型。针对不同的瓶颈，优化策略完全相反。
 
-还有一个很重要的点是**Roofline Model**。你得会在脑子里构建这个模型。对于一个特定的Kernel，它的算术强度也就是Arithmetic Intensity是多少？它落在Roofline模型的哪个区域？如果不清楚这个，你的优化就是盲人摸象。
+还有一个很重要的点是<strong>Roofline Model</strong>。你得会在脑子里构建这个模型。对于一个特定的Kernel，它的算术强度也就是Arithmetic Intensity是多少？它落在Roofline模型的哪个区域？如果不清楚这个，你的优化就是盲人摸象。
 
-**第六块，也是最后一块，我会聊聊最新的硬件特性**
+<strong>第六块，也是最后一块，我会聊聊最新的硬件特性</strong>
 
 从Volta到Ampere，再到Hopper，甚至Blackwell，每一代架构都有巨大的变化。
 
@@ -119,9 +119,9 @@ FlashAttention到底快在哪里？它是怎么通过分块计算来减少HBM访
 
 **
 
-除了上面提到的文档和库，我强烈建议关注NVIDIA Developer Blog**。那里面的文章质量极高，往往是某个新特性出来后，官方工程师写的第一手解析。还有就是**GTC的Talk**，每年GTC大会上的那些Deep Dive Session，把PPT下载下来，一页一页啃，比看什么培训班视频强一万倍。
+除了上面提到的文档和库，我强烈建议关注NVIDIA Developer Blog<strong>。那里面的文章质量极高，往往是某个新特性出来后，官方工程师写的第一手解析。还有就是</strong>GTC的Talk**，每年GTC大会上的那些Deep Dive Session，把PPT下载下来，一页一页啃，比看什么培训班视频强一万倍。
 
-另外，GitHub上有一些非常优秀的个人项目，比如**Bierlaire/cuda-tutorial**这种，或者知乎上一些大神写的源码解析，都要多看。
+另外，GitHub上有一些非常优秀的个人项目，比如<strong>Bierlaire/cuda-tutorial</strong>这种，或者知乎上一些大神写的源码解析，都要多看。
 
 所以，如果我是面试官，我看重的不是你能默写多少API，而是：
 

@@ -45,11 +45,11 @@ IBGDA**
 
 - 类似 EP，TP 之类的分布式推理，可以直接在 cuda kernel 完成，而无需回到 CPU 侧调用 nccl 等集合通信库，说白了，它不仅省去了 GPU 和 CPU 之间切换协作的开销，同时给了用户可以自己造轮子的机会。用户可以自己通过 CUDA 编程分配资源，切分数据，来高效的实现集合通信。尤其是 EP 这种动态分布式推理的场景
 - 对于传统搜广推服务，一般特征抽取完成之后，会通过 RPC  / RDMA 获取 sparse embedding，然后拷贝到 pinned memory 上，最后通过 h2d 传输到 GPU 进行 inference：
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_7ae0d6be52f2.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_7ae0d6be52f2.jpg)
 
 在使用 IBGDA 之后，会变成下述场景：
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_7d4e8b2d0746.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_7d4e8b2d0746.jpg)
 
 简单来说，IBGDA 会将获取的 sparse embedding 直接通过网卡写到 GPU 上，省却了 CPU 上多余的拷贝（要拷贝到 pinned memory）和 H2D 的开销，同时因为一切在 CUDA kernel 里进行，你还可以顺便做大量的数据处理（比如 sum pooling），最后同步给 CPU 数据处理完成的信号即可（然后 CPU 就可以 launch cuda stream 进行 inference 了！）
 
@@ -73,6 +73,6 @@ DeepEP**
 
 所以上面四个名词简单的关系就是：
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_8b4955413cd7.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_8b4955413cd7.jpg)
 
 第一篇就解释了下基础的概念，后续会从源码上分析是如何实现的

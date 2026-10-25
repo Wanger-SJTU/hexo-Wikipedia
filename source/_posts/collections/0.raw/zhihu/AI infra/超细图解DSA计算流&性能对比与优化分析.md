@@ -17,18 +17,18 @@ source_url: https://zhuanlan.zhihu.com/p/1963371483985319543
 
 DSA(DeepSeek Sparse Attention)的计算在Prefill、Decode阶段存在差异，本文结合MLA模块绘制了一版DSA的计算流图，同时根据该结构还分析了DSA计算性能情况，包括如下问题：
 
-- **DSA对比MLA算力相差多少，Indexer占比有多大？**
-- **存储/访存的变化如何？**
-- **DSA的KV cache保存如何变化？**
-- **DSA有何不足之处？推理性能如何优化？**
-**1 整体计算流图**
-**MQA模式**
+- <strong>DSA对比MLA算力相差多少，Indexer占比有多大？</strong>
+- <strong>存储/访存的变化如何？</strong>
+- <strong>DSA的KV cache保存如何变化？</strong>
+- <strong>DSA有何不足之处？推理性能如何优化？</strong>
+<strong>1 整体计算流图</strong>
+<strong>MQA模式</strong>
 
-![](https://picx.zhimg.com/v2-8b31070dabb1ffc1a3e8c94e571c1841_r.jpg)Decode数据为例高清图地址：https://github.com/CalvinXKY/InfraTech/tree/main/models/deepseek_v3_2**MHA模式**
+![](https://picx.zhimg.com/v2-8b31070dabb1ffc1a3e8c94e571c1841_r.jpg)Decode数据为例高清图地址：https://github.com/CalvinXKY/InfraTech/tree/main/models/deepseek_v3_2<strong>MHA模式</strong>
 
 ![](https://picx.zhimg.com/v2-97d73d610d0f3ac720b9fe8cc093b4ad_r.jpg)Prefill数据为例高清图地址：https://github.com/CalvinXKY/InfraTech/tree/main/models/deepseek_v3_2
-- 符号含义：**直角长方**形表示计算或者操作；**圆角长方形**表示数据**T(Tensor)**。有矩阵乘的位置标记了**W(Weight)**，满足**Tensor_n = T x W**
-- 注意：图中几处输入的投影计算能够合并，这里分开是为了更清晰的区分。比如MLA的下QKV的下采样可以合并、MLA的Q上采样可与Indexer的Q采样合并。在DeepSeek-V3.2-Exp的技术报告中提到**DSA是基于MQA版MLA的改进**。对于模式的选择问题，prefill在Top-K内用MHA模式、超过Top-K后用MQA模式，decode用MQA模式。DSA[官方示例](https://link.zhihu.com/?target=https%3A//huggingface.co/deepseek-ai/DeepSeek-V3.2-Exp/blob/main/inference/model.py)中prefill采用的MHA模式。考虑到算力特点的介绍，文中prefill用MHA版本、decode用MQA版本。
+- 符号含义：<strong>直角长方</strong>形表示计算或者操作；<strong>圆角长方形</strong>表示数据<strong>T(Tensor)</strong>。有矩阵乘的位置标记了<strong>W(Weight)</strong>，满足<strong>Tensor_n = T x W</strong>
+- 注意：图中几处输入的投影计算能够合并，这里分开是为了更清晰的区分。比如MLA的下QKV的下采样可以合并、MLA的Q上采样可与Indexer的Q采样合并。在DeepSeek-V3.2-Exp的技术报告中提到<strong>DSA是基于MQA版MLA的改进</strong>。对于模式的选择问题，prefill在Top-K内用MHA模式、超过Top-K后用MQA模式，decode用MQA模式。DSA[官方示例](https://link.zhihu.com/?target=https%3A//huggingface.co/deepseek-ai/DeepSeek-V3.2-Exp/blob/main/inference/model.py)中prefill采用的MHA模式。考虑到算力特点的介绍，文中prefill用MHA版本、decode用MQA版本。
 
 DSA的原理可参看：
 
@@ -94,7 +94,7 @@ Prefill阶段，select的位置需要结合attention运算：
 
 方式2：通过Mask修改scores，这种方式比较容易实现，但不会节约计算量，不做展开。
 
-**Decode阶段**：MLA部分的变化主要是，在KV cache拼接后选择topk个序列进入MQA运算，由于seq_len=1，其它参数不变，所以Decode状态下，当序列长度超过topk设定长度时，**MLA部分的计算量不会再增加！**
+<strong>Decode阶段</strong>：MLA部分的变化主要是，在KV cache拼接后选择topk个序列进入MQA运算，由于seq_len=1，其它参数不变，所以Decode状态下，当序列长度超过topk设定长度时，<strong>MLA部分的计算量不会再增加！</strong>
 
 ![](https://pic3.zhimg.com/v2-5a8c36675a510ac5cfd81062c57a0dd8_r.jpg)
 3 性能对比分析&优化
@@ -130,19 +130,19 @@ prefill阶段cache_len为常数，linear(q_linear 、k_linear 、w_linear)与seq
 
 ![](https://picx.zhimg.com/v2-2b0c6e18abda942115a4220f299693b3_r.jpg)结合MLA的公式可以计算出整体的flops的差异：
 
-**Prefill阶段：**DSA模块（MLA部分+Indexer部分）与未稀疏的MLA计算量对比如下，随着序列的长度增加，DSA的算量成倍下降。
+<strong>Prefill阶段：</strong>DSA模块（MLA部分+Indexer部分）与未稀疏的MLA计算量对比如下，随着序列的长度增加，DSA的算量成倍下降。
 
 ![](https://pica.zhimg.com/v2-eaf0294cac437b1cf823fdec92c6d894_r.jpg)进一步，可以拿Indexer计算量与DSA模块（MLA部分+Indexer部分）计算量做个对比。下图中序列长度内，Prefill阶段的Indexer计算量占比不超过20%。
 
-![](https://picx.zhimg.com/v2-f7f2a1232e0811742cc9a08c8a76cbf9_r.jpg)**Decode阶段**：DSA模块（MLA部分+Indexer部分）与未稀疏的MLA计算量对比如下，随着序列的长度增加，DSA基本维持不变，而MLA线性增加。
+![](https://picx.zhimg.com/v2-f7f2a1232e0811742cc9a08c8a76cbf9_r.jpg)<strong>Decode阶段</strong>：DSA模块（MLA部分+Indexer部分）与未稀疏的MLA计算量对比如下，随着序列的长度增加，DSA基本维持不变，而MLA线性增加。
 
 ![](https://pica.zhimg.com/v2-37f9555684859aa4a58e53132bda195c_r.jpg)Decode的Indexer计算量占比也不高，但序列超过Topk时，MLA部分算力需求保持恒定，其flops的增长来自Indexer的计算。
 
 ![](https://pic2.zhimg.com/v2-5fd4339c15f8d9d681cbba33d08287a1_r.jpg)
-**3.2  显存变化**
+<strong>3.2  显存变化</strong>
 从DSA的结构图，显存用量的变化一方面是静态显存和激活值的变化，另一方面是KV cache的变化。
 
-**3.2.1 静态显存与激活值**
+<strong>3.2.1 静态显存与激活值</strong>
 
 MLA部分，静态存储不变，MHA/MQA attention的KV的输入激活值变为之前的topk/seq_len倍；
 
@@ -158,23 +158,23 @@ Indexer部分：静态存储增加线性层权重w、q、k，按照默认参数�
 
 ![](https://www.zhihu.com/equation?tex=Mem_%7Blogits%7D+%3D+4+%2A+64+%2A+128%2A1000+%2A+128+%2A+1000+%2F+%281024%2A1024%2A1024%29+GB) 
 
-大小达到了**3906.25GB**，若用**FP8**格式大小降低到1/4变为约976.6GB(**很显然一张显卡放不下！**)。
+大小达到了<strong>3906.25GB</strong>，若用<strong>FP8</strong>格式大小降低到1/4变为约976.6GB(<strong>很显然一张显卡放不下！</strong>)。
 
-indexer score是求和后的结果，按照量化后为**FP16**格式计算：
+indexer score是求和后的结果，按照量化后为<strong>FP16</strong>格式计算：
 
 ![](https://www.zhihu.com/equation?tex=Mem_%7Bindex+scores%7D+%3D+2+%2A+128%2A1000+%2A+128+%2A+1000+%2F+%281024%2A1024%2A1024%29+GB) 
 
-计算得大小为30.51GB。虽然prefill输入序列长度很少取到128K，但**超长序列情况下**，Indexer激活值需要的存储空间大，影响**不容忽视**！
+计算得大小为30.51GB。虽然prefill输入序列长度很少取到128K，但<strong>超长序列情况下</strong>，Indexer激活值需要的存储空间大，影响<strong>不容忽视</strong>！
 
-**3.2.2 KV cache**
+<strong>3.2.2 KV cache</strong>
 
 - MLA部分：保持不变。
-- Indexer部分：增加k_cache和k_scale保存；KV cache访存：数据量变为之前的topk/seq_len倍；当过了topk拐点后访存大小维持恒定（Decode阶段），所以**访存不再是MLA-Decode的瓶颈；**但KV cache存储空间依然保持线性增长，这点与MLA一致。
+- Indexer部分：增加k_cache和k_scale保存；KV cache访存：数据量变为之前的topk/seq_len倍；当过了topk拐点后访存大小维持恒定（Decode阶段），所以<strong>访存不再是MLA-Decode的瓶颈；</strong>但KV cache存储空间依然保持线性增长，这点与MLA一致。
 
 3.3 推理性能优化思路(浅谈)
-通常情况下，MLA的Prefill阶段的状态是算力受限(compute bound)，Decode是存储受限(memory bound)。**变为DSA后算力和访存问题得到改善，但存储空间问题恶化**。如果采用DSA，这里提几个推理相关的优化思路：
+通常情况下，MLA的Prefill阶段的状态是算力受限(compute bound)，Decode是存储受限(memory bound)。<strong>变为DSA后算力和访存问题得到改善，但存储空间问题恶化</strong>。如果采用DSA，这里提几个推理相关的优化思路：
 
-**算力方面**：DSA算力需求相比之前的MLA有大幅下降，Prefill算力依然保持近似线性增长，Decode变化不大。算力优化主要关注Prefill。
+<strong>算力方面</strong>：DSA算力需求相比之前的MLA有大幅下降，Prefill算力依然保持近似线性增长，Decode变化不大。算力优化主要关注Prefill。
 
 ![](https://pic2.zhimg.com/v2-704d86ed7cb053a5491a6b153fb03b65_r.jpg)计算优化关注的位置：
 
@@ -183,20 +183,20 @@ indexer score是求和后的结果，按照量化后为**FP16**格式计算：
 - MLA的Select操作结合attention运算进行优化；
 - 分布式推理中，Indexer的logits运算采用TP并行(head维度)，后面的sum运算替换成集合通信reduce。
 - qk的量化操作与logits操作合并，减少算子下发次数；
-- Indexer本身的计算量不应该占比超过总体的20%，若超过太多则需要考虑**放弃使用**，否则得不偿失。
-- topk的功能设置开关，当序列长度小于topk时，保持原有MLA的逻辑，**直接去掉Indexer运算**。**显存方面**：主要关注超长序列情况，显存考虑的优化点：
+- Indexer本身的计算量不应该占比超过总体的20%，若超过太多则需要考虑<strong>放弃使用</strong>，否则得不偿失。
+- topk的功能设置开关，当序列长度小于topk时，保持原有MLA的逻辑，<strong>直接去掉Indexer运算</strong>。<strong>显存方面</strong>：主要关注超长序列情况，显存考虑的优化点：
 
 - logits运算按照head分开，即开启TP；
 - index score存储格式选用FP8，或者FP16；
 - 考虑不采用mask传入的方式，因为会构造一个同大小的临时变量；
 - top-k的排序运算采用原地操作。如果有SP采用分散数据的排序，避免gather所有数据的排序。
 - 若采用分布式推理，因Indexer无序列维度的耦合运算，对整体开启SP；
-- 当超长序列场景下引入额外显存太多时，考虑**设置开关**切回普通的MLA模式。
+- 当超长序列场景下引入额外显存太多时，考虑<strong>设置开关</strong>切回普通的MLA模式。
 ![](https://picx.zhimg.com/v2-53e85bce559405281b5f442ae0e836b7_r.jpg)Indexer显存优化的位置点
-**附1：对推理部署影响**
-**KV cache的管理**
+<strong>附1：对推理部署影响</strong>
+<strong>KV cache的管理</strong>
 
-对于推理框架而言KV cache的管理在逻辑层基本上可以保持一致，新增加的Indexer的cache与MLA的KV cache从tokens维度保持一致；主要是物理层空间的处理，需要增加一个额外存储空间。主要考虑修改位置：**KV cache物理显存开辟**、**prefix cache**、**PD分离时KV cache的传递**。
+对于推理框架而言KV cache的管理在逻辑层基本上可以保持一致，新增加的Indexer的cache与MLA的KV cache从tokens维度保持一致；主要是物理层空间的处理，需要增加一个额外存储空间。主要考虑修改位置：<strong>KV cache物理显存开辟</strong>、<strong>prefix cache</strong>、<strong>PD分离时KV cache的传递</strong>。
 
 在vLLM当前的解决方案：对于Indexer的K cache开启单独的一个空间存储，所占的block与MLA的block一一对应。
 
@@ -206,7 +206,7 @@ indexer score是求和后的结果，按照量化后为**FP16**格式计算：
 x_fp8[ :, : block_size * head_dim] = x_scaled.view(num_blocks, block_size * head_dim).view(dtype=torch.uint8) 
 # 接着是scale存储
 x_fp8[ :, block_size * head_dim :] = scales.view(num_blocks, block_size).view(dtype=torch.uint8)
-**新增Indexer相关算子：**
+<strong>新增Indexer相关算子：</strong>
 
 # logits计算kernel
 logits = deep_gemm.fp8_mqa_logits(q_fp8, kv_fp8, weights, ks, ke)
@@ -377,4 +377,4 @@ class MLA(nn.Module):
 
 - [https://github.com/deepseek-ai/DeepSeek-V3.2-Exp/blob/main/DeepSeek_V3_2.pdf](https://link.zhihu.com/?target=https%3A//github.com/deepseek-ai/DeepSeek-V3.2-Exp/blob/main/DeepSeek_V3_2.pdf)
 - [https://huggingface.co/deepseek-ai/DeepSeek-V3.2-Exp/tree/main/inference](https://link.zhihu.com/?target=https%3A//huggingface.co/deepseek-ai/DeepSeek-V3.2-Exp/tree/main/inference)
-- [DeepSeek-V3.2-Exp in vLLM: Fine-Grained Sparse Attention in Action](https://link.zhihu.com/?target=https%3A//blog.vllm.ai/2025/09/29/deepseek-v3-2.html)**文中不足/错误，请留言！ **[@kaiyuan](https://www.zhihu.com/people/da4e6b50eb50d6f120b604f6cf15b33e)** ，欢迎关注**
+- [DeepSeek-V3.2-Exp in vLLM: Fine-Grained Sparse Attention in Action](https://link.zhihu.com/?target=https%3A//blog.vllm.ai/2025/09/29/deepseek-v3-2.html)<strong>文中不足/错误，请留言！</strong>[@kaiyuan](https://www.zhihu.com/people/da4e6b50eb50d6f120b604f6cf15b33e)<strong>，欢迎关注</strong>

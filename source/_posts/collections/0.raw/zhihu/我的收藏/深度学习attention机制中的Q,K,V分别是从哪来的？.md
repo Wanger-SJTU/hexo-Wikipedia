@@ -23,7 +23,7 @@ source_url: https://www.zhihu.com/question/325839123/answer/81065042040
 
 尼尔森研究发现，如果给你一张这个图，你眼睛的重点会呈现F型。
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_3fb70dcd5670.jpg)![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_c48c836671a0.webp)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_3fb70dcd5670.jpg)![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_c48c836671a0.webp)
 
 这就是人类的注意力机制，会让人聚焦在重要的事物上。这是人类利用有限的注意力资源从大量信息中快速筛选出高价值信息的手段，是人类在长期进化中形成的一种生存机制，人类视觉注意力机制极大地提高了视觉信息处理的效率与准确性。
 
@@ -45,7 +45,7 @@ source_url: https://www.zhihu.com/question/325839123/answer/81065042040
 
 将上述的直白理解过程写成数学计算过程，如下图所示：
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_a8a623831ca4.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_a8a623831ca4.jpg)
 
 阶段一，即将Q与K的转置用向量点积来求得相似性（这就是余弦相似性）。
 
@@ -59,7 +59,7 @@ source_url: https://www.zhihu.com/question/325839123/answer/81065042040
 
 Transformer模型大火使得attention备受关注（论文地址 [attention is all you need](https://link.zhihu.com/?target=https%3A//arxiv.org/pdf/1706.03762))，但其实注意力机制是一个通用思想（或者说组件），并不需要依赖特定框架。换言之，并不是只有transformer中才能够使用attention。我们可以用attention机制来优化上面的RNN翻译任务。如下图所示：
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_1815c52188f1.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_1815c52188f1.jpg)
 
 在引入attention机制后：
 
@@ -73,11 +73,11 @@ Transformer模型大火使得attention备受关注（论文地址 [attention is 
 
 把这个过程稍微简化下，避免RNN的整体结构线太多，影响理解。
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_b7ad0d81ee5a.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_b7ad0d81ee5a.jpg)
 
 1、在RNN结构中，所有信息都被编码器压缩到了H隐藏状态中，然后传递给解码器。这显然会丢失很多信息，即使通过LSTM优化了神经元的结构，当句子更长也扛不住。还有串行计算的瓶颈问题。
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_b4047d4ce999.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_b4047d4ce999.jpg)
 
 2、在加入了注意力机制后，有了context vector，相当于在解码的时候会知道原文的词哪个最重要，然后就可以更好解码。
 

@@ -17,19 +17,19 @@ source_url: https://zhuanlan.zhihu.com/p/2001389056492319761
 
 #### 项目概述
 
-`tiny-gpu` 是一个**面向教学的最小化 GPU 硬件实现**，目标是从“架构 → 控制信号 → 指令执行”把 GPU 的关键原理讲清楚。项目资料明确给出其特点包括：**Verilog 文件**、**完整架构与 ISA 说明**、可运行的**矩阵加法/乘法 kernel**，以及支持**内核仿真与执行 trace**（见 `README.md`）。
+`tiny-gpu` 是一个<strong>面向教学的最小化 GPU 硬件实现</strong>，目标是从“架构 → 控制信号 → 指令执行”把 GPU 的关键原理讲清楚。项目资料明确给出其特点包括：<strong>Verilog 文件</strong>、<strong>完整架构与 ISA 说明</strong>、可运行的<strong>矩阵加法/乘法 kernel</strong>，以及支持<strong>内核仿真与执行 trace</strong>（见 `README.md`）。
 
-其使用方式被刻意简化为“单 kernel 模式”：在启动前由外部把 kernel 代码写入**程序内存**、数据写入**数据内存**，再把线程数写入**设备控制寄存器（DCR）**，最后拉高 `start` 触发执行。
+其使用方式被刻意简化为“单 kernel 模式”：在启动前由外部把 kernel 代码写入<strong>程序内存</strong>、数据写入<strong>数据内存</strong>，再把线程数写入<strong>设备控制寄存器（DCR）</strong>，最后拉高 `start` 触发执行。
 
 #### 架构解析（从顶层到线程）
 
 下表按源码模块划分 TinyGPU 的核心组件（文件名来自 `src/`）：
 
-组件主要文件作用（资料/注释中明确的要点）顶层 GPUgpu.sv组织 DCR、Dispatcher、多个 Core，以及程序/数据内存控制器；对外暴露 start/done 与外部内存接口设备控制寄存器dcr.sv本实现里只保存 thread_count（总线程数）线程/块派发dispatch.sv把线程按 block 分组并分发给空闲 core；所有 block 完成后置 doneCore（每次处理一个 block）core.sv每个 core 处理一个 block；包含 fetch/decode 与每线程专属执行资源取指/译码/调度fetcher.sv / decoder.sv / scheduler.sv取 16-bit 指令、译码成控制信号、用状态机串起执行阶段计算与访存alu.sv / lsu.sv每线程一个 ALU/LSU；LSU 以异步请求 + 等待 ready的方式访问全局数据内存寄存器与 PCregisters.sv / pc.sv每线程一个寄存器文件与 PC/NZP（用于分支条件）内存控制器controller.sv在“多个消费者（线程/取指）→ 有限通道外部内存”之间做仲裁/节流/转发Cache（README 标注 WIP）资料明确写为 WIP，不作为当前核心路径依赖**并行粒度与资源组织**是该项目的教学重点：每个 core 一次只处理一个 block；对 block 内每个线程，都配置了**专属的 ALU、LSU、PC、寄存器文件**（这使得 SIMD/SIMT 的“每线程状态”更直观）。
+组件主要文件作用（资料/注释中明确的要点）顶层 GPUgpu.sv组织 DCR、Dispatcher、多个 Core，以及程序/数据内存控制器；对外暴露 start/done 与外部内存接口设备控制寄存器dcr.sv本实现里只保存 thread_count（总线程数）线程/块派发dispatch.sv把线程按 block 分组并分发给空闲 core；所有 block 完成后置 doneCore（每次处理一个 block）core.sv每个 core 处理一个 block；包含 fetch/decode 与每线程专属执行资源取指/译码/调度fetcher.sv / decoder.sv / scheduler.sv取 16-bit 指令、译码成控制信号、用状态机串起执行阶段计算与访存alu.sv / lsu.sv每线程一个 ALU/LSU；LSU 以异步请求 + 等待 ready的方式访问全局数据内存寄存器与 PCregisters.sv / pc.sv每线程一个寄存器文件与 PC/NZP（用于分支条件）内存控制器controller.sv在“多个消费者（线程/取指）→ 有限通道外部内存”之间做仲裁/节流/转发Cache（README 标注 WIP）资料明确写为 WIP，不作为当前核心路径依赖<strong>并行粒度与资源组织</strong>是该项目的教学重点：每个 core 一次只处理一个 block；对 block 内每个线程，都配置了<strong>专属的 ALU、LSU、PC、寄存器文件</strong>（这使得 SIMD/SIMT 的“每线程状态”更直观）。
 
 #### ISA 与执行流程（最关键的“可读性接口”）
 
-资料中明确：程序内存按 **8-bit 地址（256 行）**寻址、每行 **16-bit 指令**；数据内存按 **8-bit 地址（256 行）**寻址、每行 **8-bit 数据**。ISA 为**11 条指令**：`BRnzp, CMP, ADD, SUB, MUL, DIV, LDR, STR, CONST, RET`（外加 `NOP`）。
+资料中明确：程序内存按 <strong>8-bit 地址（256 行）</strong>寻址、每行 <strong>16-bit 指令</strong>；数据内存按 <strong>8-bit 地址（256 行）</strong>寻址、每行 <strong>8-bit 数据</strong>。ISA 为<strong>11 条指令</strong>：`BRnzp, CMP, ADD, SUB, MUL, DIV, LDR, STR, CONST, RET`（外加 `NOP`）。
 
 下面这段译码器定义展示了指令 opcode（便于对照 ISA 图与测试用例中的二进制程序）：
 
@@ -45,7 +45,7 @@ source_url: https://zhuanlan.zhihu.com/p/2001389056492319761
         CONST = 4'b1001,
         RET = 4'b1111;`
 
-执行控制上，Core 被拆成固定阶段：**FETCH → DECODE → REQUEST → WAIT → EXECUTE → UPDATE**。其中最能体现 GPU 难点的是 **WAIT**：`LDR/STR` 通过 LSU 发起异步访问，调度器需要等待所有线程的 LSU 都不再处于请求/等待态，才能进入执行阶段：
+执行控制上，Core 被拆成固定阶段：<strong>FETCH → DECODE → REQUEST → WAIT → EXECUTE → UPDATE</strong>。其中最能体现 GPU 难点的是 <strong>WAIT</strong>：`LDR/STR` 通过 LSU 发起异步访问，调度器需要等待所有线程的 LSU 都不再处于请求/等待态，才能进入执行阶段：
 
 `// SCHEDULER
 // > Manages the entire control flow of a single compute core processing 1 block
@@ -60,51 +60,51 @@ source_url: https://zhuanlan.zhihu.com/p/2001389056492319761
 
 #### 技术重难点分析（以及 TinyGPU 的“教学型取舍”）
 
-- **线程调度（Dispatcher ↔ Core）**：`dispatch.sv` 以 **block** 为单位分发工作，体现了“线程总数 → block 切分 → core 领取”的基本模式，但不引入更复杂的占用率/资源建模（资料未描述此类策略）。
-- **内存访问与延迟处理（LSU + WAIT）**：项目把内存延迟显式暴露为“请求/等待”，用最少状态机解释：为什么 GPU 需要围绕**全局内存带宽与延迟**来设计调度与结构。
-- **控制流与分支**：资料明确说明当前实现**假设线程在每条指令后 PC 收敛**，即不处理真实 GPU 中的**branch divergence**；这让 `BRnzp/CMP/NZP` 的机制更易读，但也点出了真实架构的复杂度来源。
-- **带宽仲裁（Memory Controller）**：顶层把多线程 LSU 访问汇聚到固定通道的外部内存接口，强调“**请求数 > 带宽**时必须仲裁/节流”的现实约束。
-- **Cache 与高级优化**：`README.md` 将 cache 标注为 **WIP**，并在 Advanced Functionality 讨论了 **memory coalescing、pipelining、warp scheduling、barrier/同步、多级 cache/shared memory** 等——作为读者进一步扩展的路线图，而非当前实现的既成事实。
+- <strong>线程调度（Dispatcher ↔ Core）</strong>：`dispatch.sv` 以 <strong>block</strong> 为单位分发工作，体现了“线程总数 → block 切分 → core 领取”的基本模式，但不引入更复杂的占用率/资源建模（资料未描述此类策略）。
+- <strong>内存访问与延迟处理（LSU + WAIT）</strong>：项目把内存延迟显式暴露为“请求/等待”，用最少状态机解释：为什么 GPU 需要围绕<strong>全局内存带宽与延迟</strong>来设计调度与结构。
+- <strong>控制流与分支</strong>：资料明确说明当前实现<strong>假设线程在每条指令后 PC 收敛</strong>，即不处理真实 GPU 中的<strong>branch divergence</strong>；这让 `BRnzp/CMP/NZP` 的机制更易读，但也点出了真实架构的复杂度来源。
+- <strong>带宽仲裁（Memory Controller）</strong>：顶层把多线程 LSU 访问汇聚到固定通道的外部内存接口，强调“<strong>请求数 > 带宽</strong>时必须仲裁/节流”的现实约束。
+- <strong>Cache 与高级优化</strong>：`README.md` 将 cache 标注为 <strong>WIP</strong>，并在 Advanced Functionality 讨论了 <strong>memory coalescing、pipelining、warp scheduling、barrier/同步、多级 cache/shared memory</strong> 等——作为读者进一步扩展的路线图，而非当前实现的既成事实。
 
-### **工程入口-流程**（从“启动一个 kernel”到“所有线程结束”）：
+### <strong>工程入口-流程</strong>（从“启动一个 kernel”到“所有线程结束”）：
 
 - 项目提供基于 `iverilog + cocotb` 的仿真（`make test_matadd`/`make test_matmul`），并生成执行日志与 trace，方便做“功能正确性 + 微架构行为”的联合观察。
 
-下面按 **主机侧准备 → GPU 顶层调度 → Core 内部流水（状态机）→ 访存与回写** 这条链路，把 TinyGPU 的工作流程串起来说明。
+下面按 <strong>主机侧准备 → GPU 顶层调度 → Core 内部流水（状态机）→ 访存与回写</strong> 这条链路，把 TinyGPU 的工作流程串起来说明。
 
 #### 1) 启动前：外部把三件事准备好
 
 TinyGPU 设计成“一次只跑一个 kernel”。启动前需要（对应 `README.md` 的描述）：
 
-- **写程序内存（Program Memory）**：把 kernel 的 16-bit 指令序列写到 0..N 行（8-bit 地址、最多 256 行）。
-- **写数据内存（Data Memory）**：把输入矩阵/向量等数据写到全局数据内存（8-bit 地址、每行 8-bit 数据）。
-- **写设备控制寄存器 DCR**：把本次 kernel 需要启动的 **`thread_count`** 写进去（总线程数）。
-最后将 **`start` 拉高**，GPU 开始运行，直到顶层输出 **`done=1`**。
+- <strong>写程序内存（Program Memory）</strong>：把 kernel 的 16-bit 指令序列写到 0..N 行（8-bit 地址、最多 256 行）。
+- <strong>写数据内存（Data Memory）</strong>：把输入矩阵/向量等数据写到全局数据内存（8-bit 地址、每行 8-bit 数据）。
+- <strong>写设备控制寄存器 DCR</strong>：把本次 kernel 需要启动的 **`thread_count`** 写进去（总线程数）。
+最后将 **`start` 拉高<strong>，GPU 开始运行，直到顶层输出</strong>`done=1`**。
 
 #### 2) 顶层：把 thread 切成 block，并分发到多个 core
 
-顶层 `gpu.sv` 里最关键的组合是：**DCR + Dispatcher + 多个 Core +（程序/数据）内存控制器**。
+顶层 `gpu.sv` 里最关键的组合是：<strong>DCR + Dispatcher + 多个 Core +（程序/数据）内存控制器</strong>。
 
 - **DCR（`dcr.sv`）**：输出 `thread_count`。
 - **Dispatcher（`dispatch.sv`）**：  
 
-- 根据 `THREADS_PER_BLOCK` 把总线程数切成若干个 **block**：**\text{total\_blocks}=\lceil \text{thread\_count}/\text{THREADS\_PER\_BLOCK}\rceil
-- 每个 core 空闲时就分配一个 block：给 core 下发 `block_id`**，以及该 block 实际有效的 **`thread_count`**（最后一个 block 可能不足整块）。
-- core 完成后回报 `core_done`，Dispatcher 统计 `blocks_done`；当 **所有 block 都 done**，顶层 `done` 置 1。
+- 根据 `THREADS_PER_BLOCK` 把总线程数切成若干个 <strong>block</strong>：**\text{total\_blocks}=\lceil \text{thread\_count}/\text{THREADS\_PER\_BLOCK}\rceil
+- 每个 core 空闲时就分配一个 block：给 core 下发 `block_id`<strong>，以及该 block 实际有效的</strong>`thread_count`**（最后一个 block 可能不足整块）。
+- core 完成后回报 `core_done`，Dispatcher 统计 `blocks_done`；当 <strong>所有 block 都 done</strong>，顶层 `done` 置 1。
 
-这一步的教学价值在于：你能清晰看到 **thread → block → core** 的映射关系，而不被更复杂的占用率/warp/多 kernel 并发干扰（这些在资料里被列为后续扩展点）。
+这一步的教学价值在于：你能清晰看到 <strong>thread → block → core</strong> 的映射关系，而不被更复杂的占用率/warp/多 kernel 并发干扰（这些在资料里被列为后续扩展点）。
 
 #### 3) Core 内部：一个“共享控制流”的多线程执行框架
 
-每个 `core.sv` **一次只处理一个 block**。核心思想是：
+每个 `core.sv` <strong>一次只处理一个 block</strong>。核心思想是：
 
-- 一个 core 里有 **1 套取指（Fetcher）+ 1 套译码（Decoder）+ 1 套调度（Scheduler）**
-- 但对 block 内每个线程，都有**专属**的：  
+- 一个 core 里有 <strong>1 套取指（Fetcher）+ 1 套译码（Decoder）+ 1 套调度（Scheduler）</strong>
+- 但对 block 内每个线程，都有<strong>专属</strong>的：  
 
-- **寄存器文件**（`registers.sv`）
-- **ALU**（`alu.sv`）
-- **LSU**（`lsu.sv`）
-- **PC/NZP**（`pc.sv`）
+- <strong>寄存器文件</strong>（`registers.sv`）
+- <strong>ALU</strong>（`alu.sv`）
+- <strong>LSU</strong>（`lsu.sv`）
+- <strong>PC/NZP</strong>（`pc.sv`）
 
 **
 
@@ -114,9 +114,9 @@ TinyGPU 设计成“一次只跑一个 kernel”。启动前需要（对应 `REA
 
 TinyGPU 把每条指令拆成固定阶段（`scheduler.sv`）：
 
-- **FETCH**：Fetcher 从程序内存把 `current_pc` 指向的 16-bit 指令取回（通过程序内存控制器转发到外部通道）。
-- **DECODE**：Decoder 把 opcode/寄存器号/immediate/nzp 等字段拆出来，生成控制信号（如写回、访存使能、ALU 操作选择等）。
-- **REQUEST**：这一拍主要是“发起动作”：  
+- <strong>FETCH</strong>：Fetcher 从程序内存把 `current_pc` 指向的 16-bit 指令取回（通过程序内存控制器转发到外部通道）。
+- <strong>DECODE</strong>：Decoder 把 opcode/寄存器号/immediate/nzp 等字段拆出来，生成控制信号（如写回、访存使能、ALU 操作选择等）。
+- <strong>REQUEST</strong>：这一拍主要是“发起动作”：  
 
 - `registers.sv` 读出本线程的 `rs/rt`
 - 如果是 `LDR/STR`，LSU 进入请求流程，准备对全局数据内存发起访问
@@ -124,15 +124,15 @@ TinyGPU 把每条指令拆成固定阶段（`scheduler.sv`）：
 **
 
 - WAIT**（关键难点）：如果有异步访存，Scheduler 会停在 WAIT，直到需要的 LSU 都不再处于“请求/等待”状态。
-- **EXECUTE**：ALU 计算（ADD/SUB/MUL/DIV），PC 逻辑计算 next_pc（含 BRnzp 判断）。
-- **UPDATE**：写回寄存器、更新 NZP、推进 PC；若指令是 **`RET`**，则该 block 执行结束，core_done 拉高。
+- <strong>EXECUTE</strong>：ALU 计算（ADD/SUB/MUL/DIV），PC 逻辑计算 next_pc（含 BRnzp 判断）。
+- <strong>UPDATE</strong>：写回寄存器、更新 NZP、推进 PC；若指令是 **`RET`**，则该 block 执行结束，core_done 拉高。
 一个直观的“每条指令生命周期”可以理解为：
 
 `FETCH → DECODE → REQUEST → (WAIT 如果有访存) → EXECUTE → UPDATE`
 
 #### 5) 访存与“为什么必须 WAIT”（LSU + 内存控制器）
 
-**LDR/STR 是异步的**，所以需要显式等待：
+<strong>LDR/STR 是异步的</strong>，所以需要显式等待：
 
 - **LSU（`lsu.sv`）**对每线程单独运作：  
 
@@ -142,26 +142,26 @@ TinyGPU 把每条指令拆成固定阶段（`scheduler.sv`）：
 **
 
 - 数据内存控制器（`controller.sv`）**在“很多 LSU 请求”与“有限外部通道（例如 4 通道）”之间做仲裁/节流/转发。
-因此 Scheduler 的 WAIT 阶段本质是在处理一个 GPU 的核心现实：**外部内存带宽/延迟是瓶颈**，硬件必须围绕它组织控制流。
+因此 Scheduler 的 WAIT 阶段本质是在处理一个 GPU 的核心现实：<strong>外部内存带宽/延迟是瓶颈</strong>，硬件必须围绕它组织控制流。
 
 #### 6) 分支与收敛（PC/NZP 的简化假设）
 
-- `CMP` 会把比较结果写入每线程 PC 单元的 **NZP**（负/零/正标志）。
-- `BRnzp` 根据指令携带的 `nzp` 掩码与 NZP 做匹配，决定 **跳转到 immediate** 还是 **PC+1**。
-但 TinyGPU 为了简单明确写了一个限制：**假设所有线程每条指令后都收敛到同一个 PC**（即不实现真实 GPU 的 **branch divergence**）。所以它适合用来讲“分支机制本身”，而不是讲“发散与重汇合的硬件复杂度”。
+- `CMP` 会把比较结果写入每线程 PC 单元的 <strong>NZP</strong>（负/零/正标志）。
+- `BRnzp` 根据指令携带的 `nzp` 掩码与 NZP 做匹配，决定 <strong>跳转到 immediate</strong> 还是 <strong>PC+1</strong>。
+但 TinyGPU 为了简单明确写了一个限制：<strong>假设所有线程每条指令后都收敛到同一个 PC</strong>（即不实现真实 GPU 的 <strong>branch divergence</strong>）。所以它适合用来讲“分支机制本身”，而不是讲“发散与重汇合的硬件复杂度”。
 
 #### 7) 仿真时你能看到什么（为什么它适合教学）
 
 仓库用 `iverilog + cocotb` 做仿真（`make test_matadd` / `make test_matmul`）：
 
-- 测试会把 **程序指令（二进制）**写入程序内存、把输入矩阵写入数据内存、设置线程数并启动。
+- 测试会把 <strong>程序指令（二进制）</strong>写入程序内存、把输入矩阵写入数据内存、设置线程数并启动。
 - 运行过程中会打印每周期 trace（寄存器、PC、状态等），最终检查数据内存中的结果是否符合预期。
 
 ### 工程视角逐步理解 从顶层接口到每拍发生什么
 
 我会把它按“工程实现视角”的链路拆开：先从顶层接口与时序（reset/start/done、内存握手）讲起，再逐级下钻到 Dispatcher 如何切 block、Core 的状态机如何驱动每线程 ALU/LSU/PC/寄存器，最后用 `matadd` 的一两条指令做端到端走读（从指令比特到控制信号再到写回）。接下来先补读 `controller.sv`、`fetcher.sv`、`alu.sv` 以避免任何细节猜测。
 
-下面我按“**硬件工程师拿到 RTL**”的读法来走：先明确模块边界与接口协议，再把一次 kernel 的生命周期按**时钟拍**拆开。所有结论都来自仓库 `README.md` 与 `src/*.sv` 注释/代码；未出现的细节我不会补写。
+下面我按“<strong>硬件工程师拿到 RTL</strong>”的读法来走：先明确模块边界与接口协议，再把一次 kernel 的生命周期按<strong>时钟拍</strong>拆开。所有结论都来自仓库 `README.md` 与 `src/*.sv` 注释/代码；未出现的细节我不会补写。
 
 ### 1) 顶层边界：`gpu.sv` 到底对外暴露了什么？
 
@@ -169,16 +169,16 @@ TinyGPU 把每条指令拆成固定阶段（`scheduler.sv`）：
 
 `gpu.sv` 的端口可以分成三组（见 `gpu.sv` 端口声明）：
 
-- **时钟复位**：`clk`, `reset`
-- **启动/结束握手**：`start` 输入、`done` 输出（单 kernel 模式）
-- **外部内存接口（异步 ready/valid）** 
+- <strong>时钟复位</strong>：`clk`, `reset`
+- <strong>启动/结束握手</strong>：`start` 输入、`done` 输出（单 kernel 模式）
+- <strong>外部内存接口（异步 ready/valid）</strong> 
 
 - 程序内存：`program_mem_read_valid/address` → 外部；外部回 `program_mem_read_ready/data`
 - 数据内存：读 `data_mem_read_valid/address`，写 `data_mem_write_valid/address/data`；外部回对应的 `*_ready`
 
 **
 
-这里的关键点是：TinyGPU 不实现片上 SRAM**，而是假设**外部异步内存**存在，内部通过控制器做多路仲裁（这也是它用来讲清“带宽受限”的工程现实）。
+这里的关键点是：TinyGPU 不实现片上 SRAM<strong>，而是假设</strong>外部异步内存**存在，内部通过控制器做多路仲裁（这也是它用来讲清“带宽受限”的工程现实）。
 
 #### 1.2 DCR：只存 thread_count
 
@@ -193,7 +193,7 @@ TinyGPU 把每条指令拆成固定阶段（`scheduler.sv`）：
 
 ### 2) 外部内存如何被“接入”：`controller.sv` 的通道
 
-`controller.sv` 是 TinyGPU 很“工程”的一块：它把“**很多消费者**”（program 侧是每个 core 的 fetcher；data 侧是每个线程的 LSU）汇聚到“**有限通道**”的外部内存接口。
+`controller.sv` 是 TinyGPU 很“工程”的一块：它把“<strong>很多消费者</strong>”（program 侧是每个 core 的 fetcher；data 侧是每个线程的 LSU）汇聚到“<strong>有限通道</strong>”的外部内存接口。
 
 #### 2.1  ready/valid 协议
 
@@ -207,9 +207,9 @@ TinyGPU 把每条指令拆成固定阶段（`scheduler.sv`）：
 
 每个通道 i 有独立状态 `controller_state[i]`，核心流程在 `controller.sv` 里写得很直白：
 
-- **IDLE**：轮询所有 consumer，找一个 `read_valid` 或 `write_valid`，并用 `channel_serving_consumer` 防止多个通道抢同一个 consumer 的请求
-- **READ_WAITING / WRITE_WAITING**：等待外部 `mem_*_ready[i]`
-- **READ_RELAYING / WRITE_RELAYING**：把 `consumer_*_ready` 拉高，并**等待消费者撤销 valid**（`!consumer_read_valid[...]`）才回到 IDLE
+- <strong>IDLE</strong>：轮询所有 consumer，找一个 `read_valid` 或 `write_valid`，并用 `channel_serving_consumer` 防止多个通道抢同一个 consumer 的请求
+- <strong>READ_WAITING / WRITE_WAITING</strong>：等待外部 `mem_*_ready[i]`
+- <strong>READ_RELAYING / WRITE_RELAYING</strong>：把 `consumer_*_ready` 拉高，并<strong>等待消费者撤销 valid</strong>（`!consumer_read_valid[...]`）才回到 IDLE
 这最后一步非常“工程化”：它让 `ready` 像一个“完成握手的脉冲/保持信号”，直到对方把 `valid` 放下，避免丢应答。
 
 ### 3) 从 thread_count 到 block：`dispatch.sv` 如何驱动多核
@@ -235,8 +235,8 @@ Dispatcher 的职责就是把总线程数切块，并把 block 分配给空闲 c
 
 在 `core.sv` 里可以把 Core 看成两层：
 
-- **上层（共享）**：`fetcher + decoder + scheduler`
-- **下层（按线程复制）**：每线程一个 `alu + lsu + registers + pc`
+- <strong>上层（共享）</strong>：`fetcher + decoder + scheduler`
+- <strong>下层（按线程复制）</strong>：每线程一个 `alu + lsu + registers + pc`
 这一点在 `core.sv` 的 generate 块很明确（每个线程单独例化，并用 `enable(i 
 ### 5) 每条指令到底怎么跑：`scheduler.sv` 驱动 6 个阶段
 
@@ -262,7 +262,7 @@ Scheduler 是整个 Core 的“拍点”（每拍推进哪个阶段）。状态�
 
 - REQUESTING：把 `mem_read_valid` 拉高，并给出 `mem_read_address=rs`
 - WAITING：等待 `mem_read_ready==1`，然后锁存 `mem_read_data` 到 `lsu_out`
-因此 Scheduler 的 WAIT 阶段相当于一个“全线程栅栏”：**所有线程的 LSU 都完成后才进入 EXECUTE/UPDATE**（这是教学化的同步执行模型）。
+因此 Scheduler 的 WAIT 阶段相当于一个“全线程栅栏”：<strong>所有线程的 LSU 都完成后才进入 EXECUTE/UPDATE</strong>（这是教学化的同步执行模型）。
 
 ### 6) 指令编码如何落到硬件控制信号：以 `decoder.sv` 为中心
 
@@ -306,9 +306,9 @@ Scheduler 在 UPDATE 阶段只取 `next_pc[THREADS_PER_BLOCK-1]` 作为 `current
 
 你可以按这个 checklist 去“工程化验证理解”：
 
-- **确认 DCR 写入**：`device_control_write_enable` 拉高一拍，写 `thread_count`
-- **拉高 start**：Dispatcher 开始把 block 派发给 core
-- **观察每个 core**：  
+- <strong>确认 DCR 写入</strong>：`device_control_write_enable` 拉高一拍，写 `thread_count`
+- <strong>拉高 start</strong>：Dispatcher 开始把 block 派发给 core
+- <strong>观察每个 core</strong>：  
 
 - `core_reset` 被拉高/拉低后，`core_start` 拉高
 - `block_id`、`thread_count` 固定在该 block 生命周期
@@ -316,7 +316,7 @@ Scheduler 在 UPDATE 阶段只取 `next_pc[THREADS_PER_BLOCK-1]` 作为 `current
 **
 
 - 观察 Core 状态机**：`IDLE→FETCH→DECODE→REQUEST→WAIT→EXECUTE→UPDATE→...`
-- **观察一次 LDR**：  
+- <strong>观察一次 LDR</strong>：  
 
 - REQUEST：LSU 进入 REQUESTING
 - 下一拍：`mem_read_valid` 拉高，经 `controller.sv` 映射到外部通道

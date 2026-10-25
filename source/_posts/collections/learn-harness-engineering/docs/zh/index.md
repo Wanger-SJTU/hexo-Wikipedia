@@ -42,7 +42,7 @@ Learn Harness Engineering 是一门专注于 AI 编程智能体工程化落地�
 
 ## Harness 的核心机制
 
-Harness 的本质不是“让模型变聪明”，而是给模型建立一套闭环的**工作系统**。你可以通过下面的简单图示理解它的核心运作流：
+Harness 的本质不是“让模型变聪明”，而是给模型建立一套闭环的<strong>工作系统</strong>。你可以通过下面的简单图示理解它的核心运作流：
 
 ```mermaid
 graph TD

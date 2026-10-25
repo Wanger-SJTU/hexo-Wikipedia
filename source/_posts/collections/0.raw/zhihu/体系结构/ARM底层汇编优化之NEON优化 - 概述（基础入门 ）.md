@@ -25,13 +25,13 @@ NEON整体介绍developer.arm.com/technologies/neon
 
 NEON Programmer’s Guide Version: 1.0 – Arm Developerdeveloper.arm.com/docs/den0018/latest
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_e2bdc3290726.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_e2bdc3290726.jpg)
 
 ### 1.1、 NEON整体描述
 
 Arm NEON technology is an advanced SIMD (single instruction multiple data) architecture extension for the Arm Cortex-A series and Cortex-R52 processors.
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_73d52089de0e.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_73d52089de0e.jpg)
 
 NEON technology was introduced to the Armv7-A and Armv7-R profiles. It is also now an extension to the Armv8-A and Armv8-R profiles.
 
@@ -39,9 +39,9 @@ NEON technology is intended to improve the multimedia user experience by acceler
 
 **其他具体的细节，在官网还有很多描述，自己去看嘛（*嘿嘿，其实我就是懒~*）**
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_fb71e68cec33.png)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_fb71e68cec33.png)
 
-伸懒腰一天零十二分钟零4秒~![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_eb6fc3d1c4c1.jpg)
+伸懒腰一天零十二分钟零4秒~![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_eb6fc3d1c4c1.jpg)
 
 舒服了舒服了~接着讲~
 ### 2、继续学习
@@ -58,21 +58,21 @@ NEON是SIMD架构下的一个加速部分，其实本来是给多媒体做的，
 
 于是这NEON就出来了，嗯！就是这么信手拈来、口若悬河~
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_9574cf45dff0.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_9574cf45dff0.jpg)
 
-**详细的教程如下系列：**
+<strong>详细的教程如下系列：</strong>
 
-*安卓开发看这个入手：**ARM NEON programming quick reference**：*
+*安卓开发看这个入手：<strong>ARM NEON programming quick reference</strong>：*
 
-*Coding for NEON - **Part 1: Load and Stores**：*
+*Coding for NEON - <strong>Part 1: Load and Stores</strong>：*
 
-*Coding for NEON - **Part 2: Dealing With Leftovers**：*
+*Coding for NEON - <strong>Part 2: Dealing With Leftovers</strong>：*
 
-*Coding for NEON - **Part 3: Matrix Multiplication**：*
+*Coding for NEON - <strong>Part 3: Matrix Multiplication</strong>：*
 
-*Coding for NEON - **Part 4: Shifting Left and Right**：*
+*Coding for NEON - <strong>Part 4: Shifting Left and Right</strong>：*
 
-*Coding for NEON - **Part 5: Rearranging Vectors**：*
+*Coding for NEON - <strong>Part 5: Rearranging Vectors</strong>：*
 
 #### 2.2、 实例
 
@@ -84,7 +84,7 @@ NEON是SIMD架构下的一个加速部分，其实本来是给多媒体做的，
 
 你看看下面这一篇，就知道什么叫做严谨，什么叫做geek了！**
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_7fb2cc2e8234.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_7fb2cc2e8234.jpg)
 
 **
 
@@ -94,7 +94,7 @@ NEON是SIMD架构下的一个加速部分，其实本来是给多媒体做的，
 
 其中尤其关注的点是：指令流水线排布**
 
--  那指令流水排布跟啥有关？即主要需要注意不要引起**CPU的Hazard**。
+-  那指令流水排布跟啥有关？即主要需要注意不要引起<strong>CPU的Hazard</strong>。
 -  介绍Hazard的连接在这：
 
 **
@@ -107,11 +107,11 @@ Hazard：**
 
 看下面的图（可治陈年老颈椎）：
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_a3191ea3b7f3.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_a3191ea3b7f3.jpg)
 
-你看上面一条指令假设需要花很多个指令周期（NEON指令确实如此），那么就被推入了流水线，并分割为好多的小步骤，其中最后一个步骤就是把数据写回Q0，让当前这条指令的下一句就是先取Q0的值，然后做运算啥的，你从图上看，是不是很有可能上一条指令的Q0还没写进去，我下面的Q0就读出来啦！**因此在微架构里面叫这玩意做：Hazard**。
+你看上面一条指令假设需要花很多个指令周期（NEON指令确实如此），那么就被推入了流水线，并分割为好多的小步骤，其中最后一个步骤就是把数据写回Q0，让当前这条指令的下一句就是先取Q0的值，然后做运算啥的，你从图上看，是不是很有可能上一条指令的Q0还没写进去，我下面的Q0就读出来啦！<strong>因此在微架构里面叫这玩意做：Hazard</strong>。
 
-**当然咯！这种情况肯定是不允许出现的，具体怎么解我不知道，我知道的是，肯定得等Q0写完才能读，因此势必流水线就会被破坏，势必就有资源会被作为牺牲品，因此这就是为什么不提倡上述这种操作方式，再下面的NEON优化部分，我会有更专业的操作来验证。![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_1151873267b5.png)
+**当然咯！这种情况肯定是不允许出现的，具体怎么解我不知道，我知道的是，肯定得等Q0写完才能读，因此势必流水线就会被破坏，势必就有资源会被作为牺牲品，因此这就是为什么不提倡上述这种操作方式，再下面的NEON优化部分，我会有更专业的操作来验证。![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_1151873267b5.png)
 
 老是挖坑~而且还不填~
 
@@ -125,13 +125,13 @@ Hazard：**
 
 看完这些资料，我有一种感觉，就是相信，我的代码将会有一巨型加速挂加身：
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_87bb52097721.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_87bb52097721.jpg)
 
 #### 3.1、Introduction
 
 如其名，就是Neon优化的，讲了一些实践技巧。hin重要啊！我可是看完了，你们可要去看啊~
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_ee18603750e0.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_ee18603750e0.jpg)
 
 #### 3.2、Skill1：Remove data dependencies
 
@@ -161,7 +161,7 @@ C语言实现版本：**
 
 内联汇编实现版本1：**
 
-这里几乎是常规的写法，你看注释那里，可以看到q0是vsub的目的寄存器，马上又是下面vmla的源寄存器了，所以这里是会打断流水线的（粗略解释见上面***Hazard***部分）。
+这里几乎是常规的写法，你看注释那里，可以看到q0是vsub的目的寄存器，马上又是下面vmla的源寄存器了，所以这里是会打断流水线的（粗略解释见上面*<strong>Hazard</strong>*部分）。
 
 `float SumSquareError_NEON1(const float* src_a, const float* src_b, int count)
 {
@@ -279,7 +279,7 @@ C语言实现版本：**
 
 因此避免使用跳转指令是个明智的选择，但是实际过程中总的要分支的吧，怎么整？唯有等效替换，比如用逻辑操作代替分支选择**。
 
-***talk less, show me the code.(亮代码吧！兄嘚~)***
+*<strong>talk less, show me the code.(亮代码吧！兄嘚~)</strong>*
 
 **
 
@@ -332,7 +332,7 @@ VBIT, VBIF, VBSL……
 
 **
 
-小结：**减少分支并不是仅仅对NEON有用，这是一个对所有代码(指令集)都有用的小trick啦~ 甚至连在c语言里面这都是一条很有效的准则：**少用分支**。
+小结：<strong>减少分支并不是仅仅对NEON有用，这是一个对所有代码(指令集)都有用的小trick啦~ 甚至连在c语言里面这都是一条很有效的准则：</strong>少用分支**。
 
 **
 
@@ -374,7 +374,7 @@ Label - is a PC-relative expression.
 *PLD操作的一些特征：***
 
 - 独立于加载/存储的的指令运行（Independent of load and store instruction execution）；
-- 当处理器在持续执行其他指令的时候，预加载是在**后台运行**的；
+- 当处理器在持续执行其他指令的时候，预加载是在<strong>后台运行</strong>的；
 - 偏移量指定为实际情况（The offset is specified to real cases）。
 **
 
@@ -386,7 +386,7 @@ Label - is a PC-relative expression.
 
 基于特定情况下的benchmark and profiling result（基准和分析结果），如下就是一些特定情况下的实践分析。
 
-**Floating-point VMLA/VMLS instruction**
+<strong>Floating-point VMLA/VMLS instruction</strong>
 
 **注意咯：这里的数据仅对Cortex-A9平台有效，对于其他的平台结果就需要重新评估啦！通常，VMUL+VADD/VMUL+VSUB指令能够被VMLA/VMLS指令替换，因为指令数量更少了，更精简了。
 
@@ -396,7 +396,7 @@ Label - is a PC-relative expression.
 
 举个实例：Ne10库中的浮点FIR函数，代码片段如下所述：
 
-**Implementation 1: VMLA**
+<strong>Implementation 1: VMLA</strong>
 
 这里在*VMLA*之间只有一个*VEXT*指令，而*VMLA*则需要9个指令周期的延时（*according to the table of NEON floating-point instructions timing*）
 
@@ -431,7 +431,7 @@ VADD qAcc0, qAcc0, qAcc2
 VADD qAcc0, qAcc0, qAcc3
 `
 
-**小结：**实测第二个版本有更好的性能。
+<strong>小结：</strong>实测第二个版本有更好的性能。
 
 上述仅是代码的一部分，想要详细的代码请看这，Github上Ne10库的源码：
 
@@ -443,7 +443,7 @@ VADD qAcc0, qAcc0, qAcc3
 
 下面是上面提到的，指令周期对照表：
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_7b80e5c5903e.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_7b80e5c5903e.jpg)
 
 优化手段大体总结如下：**
 
@@ -457,38 +457,38 @@ VADD qAcc0, qAcc0, qAcc3
 
 NEON汇编方式跟intrinsics方式对比如下：
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_90951210df81.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_90951210df81.jpg)
 
 我们可以看到是分三个方面进行对比的：
 
-**性能：**
+<strong>性能：</strong>
 
-- **assembly**： 对有经验的开发者来说，针对特定平台的汇编代码总是有最佳的性能表现，
-- **intrinsics**： 然而intrinsics方式则严重依赖于使用的工具链；
-**可移植性：**
+- <strong>assembly</strong>： 对有经验的开发者来说，针对特定平台的汇编代码总是有最佳的性能表现，
+- <strong>intrinsics</strong>： 然而intrinsics方式则严重依赖于使用的工具链；
+<strong>可移植性：</strong>
 
-- **assembly**： 不同的指令集架构（**ISA**: Instruction Set Architecture）有不同的汇编实现；甚至是在同样的指令集架构下，**不同微架构**的汇编代码都可能需要精调来实现理想的性能；
-- **intrinsics**： 编程一次，即可适用于所有的指令集架构，编译器甚至会考虑到不同的微架构来进行性能精调；
-**操作性：**
+- <strong>assembly</strong>： 不同的指令集架构（<strong>ISA</strong>: Instruction Set Architecture）有不同的汇编实现；甚至是在同样的指令集架构下，<strong>不同微架构</strong>的汇编代码都可能需要精调来实现理想的性能；
+- <strong>intrinsics</strong>： 编程一次，即可适用于所有的指令集架构，编译器甚至会考虑到不同的微架构来进行性能精调；
+<strong>操作性：</strong>
 
-- **assembly**： 对比于C来说是很难读写的咯！
-- **intrinsics**： 跟C语言类似，读写容易；
-**小结：**但是现实情况是远比这复杂的，尤其当碰到ARMv7-A/v8-A 跨平台问题时，因此接下来我们针对这给出些栗子来进行分析。
+- <strong>assembly</strong>： 对比于C来说是很难读写的咯！
+- <strong>intrinsics</strong>： 跟C语言类似，读写容易；
+<strong>小结：</strong>但是现实情况是远比这复杂的，尤其当碰到ARMv7-A/v8-A 跨平台问题时，因此接下来我们针对这给出些栗子来进行分析。
 #### 4.2 关于编写代码
 
 对于NEON的初学者，内联函数的方式是比汇编更容易的，但是有经验的开发者（比如我....雾）可能对NEON汇编编程更为熟悉，毕竟我们需要时间去适应内联函数的编码方式啊！！！！
 
 一些在真实开发过程中可能会出现的问，现描述如下：
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_41e20011aaa8.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_41e20011aaa8.jpg)
 
-**Flexibility of instruction**
+<strong>Flexibility of instruction</strong>
 
-使用汇编的方式可能会更灵活，**主要体现在数据的load/store**。
+使用汇编的方式可能会更灵活，<strong>主要体现在数据的load/store</strong>。
 
 **当然这个不足，可以在将来的编译器升级过程中进行解决。有时候，编译器是有能力将两条内联函数指令优化为一条汇编指令的，比如：
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_dc83cfdebe75.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_dc83cfdebe75.jpg)
 
 因此，伴随着ARMv8工具连的升级，有望使得内联函数方式有跟汇编一样的灵活度；
 
@@ -498,7 +498,7 @@ Register allocation**：
 
 使用内联函数方式的好处之一是，你只管定义变量，不用管它的安全性，因为编译器会自动分配寄存器的，这是一个优点，但是有时候也是缺点；
 
-**实践证明：在内联函数编程模式下同时使用太多的NEON寄存器会使得gcc编译器产生寄存器分配异常。当这种情况发生时，许多的数据都被推进栈区（为啥？你心里没点B数么？NEON寄存器总共就这么多，提这么多的要求，消化不下啦，只能放到郊区的内存里面去啦，郊区那么远，你说浪费时间不！！！），这将会极大地降低程序的性能。**
+<strong>实践证明：在内联函数编程模式下同时使用太多的NEON寄存器会使得gcc编译器产生寄存器分配异常。当这种情况发生时，许多的数据都被推进栈区（为啥？你心里没点B数么？NEON寄存器总共就这么多，提这么多的要求，消化不下啦，只能放到郊区的内存里面去啦，郊区那么远，你说浪费时间不！！！），这将会极大地降低程序的性能。</strong>
 
 因此当使用内联函数编程时，得好好考虑这个问题，当出现性能异常的时候，比如C的性能居然比NEON的还要好，这个时候你首先要做的就是反汇编，来确认是不是出现寄存器分配问题了！
 
@@ -516,11 +516,11 @@ Register allocation**：
 
 编译器将会在NEON优化的过程中产生影响，下面这张图描述了NEON实现和优化的通常过程：
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_e3e3822fe95d.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_e3e3822fe95d.jpg)
 
 NEON汇编和内联方式有同样的实现过程，编码-调试-性能测试，但是他们却有不同的优化步骤：
 
-**汇编精调的方法如下**：
+<strong>汇编精调的方法如下</strong>：
 
 - 改变实现方式，比如改变指令、调节并行度；
 - 调整指令序列来减少数据依赖性（上面已经分析过了，就是怕流水线断掉）；
@@ -551,11 +551,11 @@ NEON intrinsics 精调的方法更难哟！**：
 
 许多现已存的NEON汇编代码，仅能在ARMv7-A/ARMv8-A平台下的AArch32模式下运行，假如你想让这些代码在ARMv8-A AArch64模式下运行，你必须重写这些代码**，这需要花费很多的功夫啊！
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_fef61d7ba6e0.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_fef61d7ba6e0.jpg)
 
 在这样的情形下，假如代码是用内联函数方式实现的，它们能够在ARMv8-A AArch64 模式下直接运行。
 
-**跨平台是一个明显的优势**，同时，不同平台你仅仅需要保持一份代码，这大大减少了维护工作。
+<strong>跨平台是一个明显的优势</strong>，同时，不同平台你仅仅需要保持一份代码，这大大减少了维护工作。
 
 然而，由于`ARMv7-A/ARMv8-A`平台不同的硬件资源（Q寄存器数量的差异），有时候即使是使用内联函数，但还是需要两套代码的。
 
@@ -592,7 +592,7 @@ scratch[3].i = scratch_in[3].i * scratch_tw[2].r + scratch_in[3].r * scratch_tw[
 
 - 汇编版本是用于`ARMv7-A/v8-A AAch32`，里面是一个循环内执行`2 radix4 butterflies`;
 - 内联函数版本用于`ARMv8-A AArch64`，里面是一个循环内执行`4 radix4 butterflies`;
-上述实例表明：当维护一份跨平台(`ARMv7-A/v8-A`)的代码时，你需要关注一些**例外情况**。
+上述实例表明：当维护一份跨平台(`ARMv7-A/v8-A`)的代码时，你需要关注一些<strong>例外情况</strong>。
 
 #### 4.5 小结
 
@@ -602,7 +602,7 @@ scratch[3].i = scratch_in[3].i * scratch_tw[2].r + scratch_in[3].r * scratch_tw[
 
 > （嗯，听上去很不错呢!!! 但是我还是选择手写汇编，都到了汇编这一层次了就不差再往前走一点点的~~~吧！）
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_6d934ea34f8a.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_6d934ea34f8a.jpg)
 
 最后关于内联函数总结几点人生经验：
 
@@ -614,20 +614,20 @@ scratch[3].i = scratch_in[3].i * scratch_tw[2].r + scratch_in[3].r * scratch_tw[
 
 哇，啰啰嗦嗦写了这么一大串也不知道你喜不喜欢看，也不知道对不对得起各位看官老爷在这里消费的好几分钟时间~
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_0390a4fdeedf.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_0390a4fdeedf.jpg)
 
 要是万一不喜欢的话，后面我会继续深入讲解诸如指令流水线优化、cache优化、Powerperf等等这一系列干货的哟~
 
 先别说这么多了，来，大哥，我请你按摩、喝冰阔罗~
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_2a416dd4d1d0.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_2a416dd4d1d0.jpg)
 
 什么？你说这些都太小儿科了，你不喜欢？得嘞~您也别着急着走，给您安排的明明白白得~我已经给在座各位去同时预约好几位大佬了，大佬们将会分享专业干货以及实时行业动态哟~比如自带千年魂环特效的低比特量化领域、炼丹领域以及AI行业动态等等~
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_31e95412b930.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_31e95412b930.jpg)
 
 总之，要是喜欢的话点个赞再走哟~听说点个赞再走的跟圈圈虫大佬一样都是人生赢家呀~
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_1a1abc6ab171.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_1a1abc6ab171.jpg)
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_9c74e1ad14cf.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_9c74e1ad14cf.jpg)

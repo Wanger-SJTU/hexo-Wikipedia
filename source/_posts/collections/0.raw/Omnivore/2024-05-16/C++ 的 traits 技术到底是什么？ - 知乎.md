@@ -25,11 +25,11 @@ id: 7952795c-3428-49c8-8c5d-6114fd428fae
 
 关注者
 
-**57**
+<strong>57</strong>
 
 被浏览
 
-**8,182**
+<strong>8,182</strong>
 
 南山烟雨珠江潮也关注了该问题![南山烟雨珠江潮](https://proxy-prod.omnivore-image-cache.app/0x0,spC-eIxEx3V4CuNtN2bpIfjf1pA4H647IcJN9paj6D8A/https://picx.zhimg.com/v2-077465bf7c056f66150270bd3b6391b0_l.jpg?source=c8b7c179)
 
@@ -55,7 +55,7 @@ id: 7952795c-3428-49c8-8c5d-6114fd428fae
 
 ## 什么是 traits？
 
-**Traits** 是一种编程技术，特别适用于 C++ 这样的泛型编程语言。它的核心思想是在编译时收集和封装关于特定类型的各种属性或行为信息，这些信息对于编写泛型代码至关重要，但通常不会直接体现在类型本身的声明中。
+<strong>Traits</strong> 是一种编程技术，特别适用于 C++ 这样的泛型编程语言。它的核心思想是在编译时收集和封装关于特定类型的各种属性或行为信息，这些信息对于编写泛型代码至关重要，但通常不会直接体现在类型本身的声明中。
 
 ## 为什么需要 traits？
 
@@ -103,11 +103,11 @@ C++ 标准库 `<type_traits>` 头文件包含了大量预定义的 traits，涵�
 
 这些 traits 可以分为几大类：
 
-* **类型分类**：如 `std::is_integral<>`、`std::is_floating_point<>`、`std::is_pointer<>` 等，用于判断类型属于哪种类别。
-* **属性检查**：如 `std::is_const<>`、`std::is_volatile<>`、`std::is_trivially_copyable<>` 等，检查类型是否具有特定属性。
-* **类型转换**：如 `std::remove_const<>`、`std::remove_volatile<>`、`std::add_lvalue_reference<>` 等，提供类型修饰符的添加或去除。
-* **算术和位操作**：如 `std::make_signed<>`、`std::make_unsigned<>`、`std::integral_constant<>` 等，用于进行类型相关的算术和位操作。
-* **其他实用 traits**：如 `std::decay<>`、`std::underlying_type<>`、`std::result_of<>` 等，提供特定场景下的类型处理。
+* <strong>类型分类</strong>：如 `std::is_integral<>`、`std::is_floating_point<>`、`std::is_pointer<>` 等，用于判断类型属于哪种类别。
+* <strong>属性检查</strong>：如 `std::is_const<>`、`std::is_volatile<>`、`std::is_trivially_copyable<>` 等，检查类型是否具有特定属性。
+* <strong>类型转换</strong>：如 `std::remove_const<>`、`std::remove_volatile<>`、`std::add_lvalue_reference<>` 等，提供类型修饰符的添加或去除。
+* <strong>算术和位操作</strong>：如 `std::make_signed<>`、`std::make_unsigned<>`、`std::integral_constant<>` 等，用于进行类型相关的算术和位操作。
+* <strong>其他实用 traits</strong>：如 `std::decay<>`、`std::underlying_type<>`、`std::result_of<>` 等，提供特定场景下的类型处理。
 
 ## traits 的应用场景
 
@@ -166,9 +166,9 @@ Over
 
 思考、实践、思考
 
-traits，又被叫做特性萃取技术，说得简单点就是提取“被传进的对象”对应的返回类型，**让同一个接口实现对应的功能**。
+traits，又被叫做特性萃取技术，说得简单点就是提取“被传进的对象”对应的返回类型，<strong>让同一个接口实现对应的功能</strong>。
 
-因为STL的算法和容器是分离的，两者通过迭代器链接。算法的实现并不知道自己被传进来什么。萃取器相当于在接口和实现之间加一层**封装**，来隐藏一些细节并协助调用合适的方法，这需要一些技巧（例如，偏特化）。
+因为STL的算法和容器是分离的，两者通过迭代器链接。算法的实现并不知道自己被传进来什么。萃取器相当于在接口和实现之间加一层<strong>封装</strong>，来隐藏一些细节并协助调用合适的方法，这需要一些技巧（例如，偏特化）。
 
 最后附带一个小小的例子，应该能更好地理解 特性萃取。
 
@@ -178,7 +178,7 @@ traits，又被叫做特性萃取技术，说得简单点就是提取“被传�
 
  让我们一点点抛出问题，然后一点点深入。
 
- 1\. 首先，在算法中运用迭代器时，很可能会用到**其相应型别**（迭代器所指之物的型别）。假设算法中有必要声明一个变量，以“迭代器所指对象的型别”为型别，该**怎么办呢？**
+ 1\. 首先，在算法中运用迭代器时，很可能会用到<strong>其相应型别</strong>（迭代器所指之物的型别）。假设算法中有必要声明一个变量，以“迭代器所指对象的型别”为型别，该<strong>怎么办呢？</strong>
 
  解决方法是：利用function template的参数推导机制。
 
@@ -210,9 +210,9 @@ int main() {
 
 }
 
-这里已经可以看出**封装**的意思了，没有一层impl的封装的话，每次你都要显式地说明迭代器指向对象型别，才能新建tmp变量。加一层封装显得清爽很多。
+这里已经可以看出<strong>封装</strong>的意思了，没有一层impl的封装的话，每次你都要显式地说明迭代器指向对象型别，才能新建tmp变量。加一层封装显得清爽很多。
 
- 迭代器相应型别**不只是**“迭代器所指对象的型别”**一种**而已。根据经验，最常用的相应型别有五种，然而**并非**任何情况下任何一种都可以利用上述的template参数推导机制来取得。
+ 迭代器相应型别<strong>不只是</strong>“迭代器所指对象的型别”<strong>一种</strong>而已。根据经验，最常用的相应型别有五种，然而<strong>并非</strong>任何情况下任何一种都可以利用上述的template参数推导机制来取得。
 
  函数的“template参数推导机制”推导的只是参数，无法推导函数的返回值类型。万一需要推导函数的传回值，就无能为力了。
 
@@ -244,9 +244,9 @@ MyIter<int> ite(new int(8));
 
 cout << func(ite);
 
-看起来不错，但是并不是所有迭代器都是class type，**原生指针就不行！**如果不是class type，就无法为它定义内嵌型别。
+看起来不错，但是并不是所有迭代器都是class type，<strong>原生指针就不行！</strong>如果不是class type，就无法为它定义内嵌型别。
 
- 这时候就需要 **偏特化** 出现。
+ 这时候就需要 <strong>偏特化</strong> 出现。
 
  3\. 偏特化就是在特化的基础上再加一点限制，但它还是特化的template。
 
@@ -312,9 +312,9 @@ void func(Iterator& i) {
 
 }
 
-但这样在执行时期才决定使用哪一个版本，会**影响程序效率**。最好能够在编译期就选择正确的版本。
+但这样在执行时期才决定使用哪一个版本，会<strong>影响程序效率</strong>。最好能够在编译期就选择正确的版本。
 
-**重载**这个函数机制可以达成这个目标。
+<strong>重载</strong>这个函数机制可以达成这个目标。
 
 struct input\_iterator\_tag {};
 

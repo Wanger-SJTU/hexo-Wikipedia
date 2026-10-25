@@ -17,7 +17,7 @@ source_url: https://www.zhihu.com/question/31256995/answer/205081698
 
 识别一台手机是否参加过优惠，本质上是：怎么获取、识别一台终端的唯一识别号。
 
-**1、iOS平台**
+<strong>1、iOS平台</strong>
 
 iOS 7.0以前，可以通过获取MAC、UDID、UUID、OPEN UDID等方式来唯一标识一台终端。
 

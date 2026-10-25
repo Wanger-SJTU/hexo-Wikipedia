@@ -15,7 +15,7 @@ source_url: https://www.zhihu.com/question/451327108/answer/2055761495
 ---
 
 
-**talk is cheap,show me your code!**
+<strong>talk is cheap,show me your code!</strong>
 
 1.即使再到下个世纪,写代码也和所有手艺活一样,是驴是马还是骡,拉出来遛一遛,几斤几两内行的一看就清楚.
 

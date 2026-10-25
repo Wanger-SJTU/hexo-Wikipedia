@@ -42,7 +42,7 @@ Chọn lộ trình học của bạn để bắt đầu. Khóa học được ch
 
 ## Cơ chế cốt lõi của một Harness
 
-Một harness không "làm cho mô hình thông minh hơn"; thay vào đó, nó thiết lập một **hệ thống làm việc** vòng kín cho mô hình. Bạn có thể hiểu quy trình làm việc cốt lõi của nó qua sơ đồ đơn giản này:
+Một harness không "làm cho mô hình thông minh hơn"; thay vào đó, nó thiết lập một <strong>hệ thống làm việc</strong> vòng kín cho mô hình. Bạn có thể hiểu quy trình làm việc cốt lõi của nó qua sơ đồ đơn giản này:
 
 ```mermaid
 graph TD

@@ -22,16 +22,16 @@ categories:
 
 Votre agent travaille tout l'après-midi, modifie 20 fichiers, commite le code, la session se termine. La prochaine session d'agent démarre et découvre immédiatement : le build est cassé, les tests sont rouges, des fichiers de debug temporaires sont partout, la feature list n'a pas été mise à jour, et l'avancement est totalement flou. La nouvelle session passe ses 30 premières minutes juste à comprendre « ce que la session précédente a réellement fait. »
 
-OpenAI et Anthropic le disent clairement : **la fiabilité à long terme dépend de la discipline opérationnelle, pas seulement du succès d'une exécution unique.** La qualité de l'état à la sortie de la session détermine directement l'efficacité de la session suivante. Pensez aux bonnes pratiques Git — chaque commit devrait être un changement atomique et compilable, pas un tas de code à moitié fini.
+OpenAI et Anthropic le disent clairement : <strong>la fiabilité à long terme dépend de la discipline opérationnelle, pas seulement du succès d'une exécution unique.</strong> La qualité de l'état à la sortie de la session détermine directement l'efficacité de la session suivante. Pensez aux bonnes pratiques Git — chaque commit devrait être un changement atomique et compilable, pas un tas de code à moitié fini.
 
 ## Concepts clés
 
-- **État propre (clean state)** : Le système satisfait cinq conditions à la fin de la session — le build passe, les tests passent, l'avancement est enregistré, aucun artefact périmé, le chemin de démarrage est disponible. S'il en manque une seule, la session n'est pas « terminée ».
-- **Intégrité de session** : Analogue aux transactions de base de données — soit on commit entièrement et on laisse un état propre, soit on revient au dernier état cohérent. Pas de terrain d'entente.
-- **Document de qualité** : Un artefact actif qui enregistre en continu les notes de qualité de chaque module. Pas une évaluation ponctuelle, mais un suivi montrant si la base de code se renforce ou s'affaiblit au fil du temps.
-- **Boucle de nettoyage** : Une session de maintenance régulière visant à réduire systématiquement l'entropie dans la base de code. Pas un correctif d'urgence, mais des opérations de routine.
-- **Simplification du harness** : À mesure que les capacités du modèle s'améliorent, retirer périodiquement les composants du harness qui ne sont plus nécessaires. Une contrainte essentielle aujourd'hui peut être une surcharge inutile dans trois mois.
-- **Nettoyage idempotent** : Les opérations de nettoyage produisent le même résultat quel que soit le nombre de fois où elles sont exécutées. Garantit que le nettoyage reste sûr même dans les scénarios de tentative après échec.
+- <strong>État propre (clean state)</strong> : Le système satisfait cinq conditions à la fin de la session — le build passe, les tests passent, l'avancement est enregistré, aucun artefact périmé, le chemin de démarrage est disponible. S'il en manque une seule, la session n'est pas « terminée ».
+- <strong>Intégrité de session</strong> : Analogue aux transactions de base de données — soit on commit entièrement et on laisse un état propre, soit on revient au dernier état cohérent. Pas de terrain d'entente.
+- <strong>Document de qualité</strong> : Un artefact actif qui enregistre en continu les notes de qualité de chaque module. Pas une évaluation ponctuelle, mais un suivi montrant si la base de code se renforce ou s'affaiblit au fil du temps.
+- <strong>Boucle de nettoyage</strong> : Une session de maintenance régulière visant à réduire systématiquement l'entropie dans la base de code. Pas un correctif d'urgence, mais des opérations de routine.
+- <strong>Simplification du harness</strong> : À mesure que les capacités du modèle s'améliorent, retirer périodiquement les composants du harness qui ne sont plus nécessaires. Une contrainte essentielle aujourd'hui peut être une surcharge inutile dans trois mois.
+- <strong>Nettoyage idempotent</strong> : Les opérations de nettoyage produisent le même résultat quel que soit le nombre de fois où elles sont exécutées. Garantit que le nettoyage reste sûr même dans les scénarios de tentative après échec.
 
 ## Cinq dimensions de l'état propre
 
@@ -85,15 +85,15 @@ Après 12 semaines : le taux de réussite du build diffère de 29 points de pour
 
 L'état propre, ce n'est pas juste « le code compile ». C'est cinq dimensions évaluées ensemble :
 
-**Dimension build** : Le code se compile-t-il sans erreurs ? C'est le minimum — la prochaine session ne devrait pas avoir à corriger des erreurs de build en premier.
+<strong>Dimension build</strong> : Le code se compile-t-il sans erreurs ? C'est le minimum — la prochaine session ne devrait pas avoir à corriger des erreurs de build en premier.
 
-**Dimension tests** : Tous les tests passent-ils ? Y compris les tests qui existaient avant la session — la session est responsable de ne pas casser les fonctionnalités existantes. Et cela devrait être vérifié dans le CI, pas juste « ça marche chez moi ».
+<strong>Dimension tests</strong> : Tous les tests passent-ils ? Y compris les tests qui existaient avant la session — la session est responsable de ne pas casser les fonctionnalités existantes. Et cela devrait être vérifié dans le CI, pas juste « ça marche chez moi ».
 
-**Dimension avancement** : L'avancement actuel est-il enregistré dans un artefact lisible par machine ? Sous-tâches terminées avec leurs critères de réussite, sous-tâches en cours mais incomplètes avec leur état actuel, sous-tâches non encore commencées. De bons enregistrements d'avancement réduisent de 60 à 80 % le temps de diagnostic au démarrage d'une session.
+<strong>Dimension avancement</strong> : L'avancement actuel est-il enregistré dans un artefact lisible par machine ? Sous-tâches terminées avec leurs critères de réussite, sous-tâches en cours mais incomplètes avec leur état actuel, sous-tâches non encore commencées. De bons enregistrements d'avancement réduisent de 60 à 80 % le temps de diagnostic au démarrage d'une session.
 
-**Dimension artefacts** : Y a-t-il des artefacts temporaires périmés ou ambigus ? Logs de debug, fichiers temporaires, code commenté, marqueurs TODO — tous ces éléments augmentent la charge cognitive pour la prochaine session.
+<strong>Dimension artefacts</strong> : Y a-t-il des artefacts temporaires périmés ou ambigus ? Logs de debug, fichiers temporaires, code commenté, marqueurs TODO — tous ces éléments augmentent la charge cognitive pour la prochaine session.
 
-**Dimension démarrage** : Le chemin de démarrage standard est-il disponible ? La prochaine session peut-elle commencer à travailler sans intervention manuelle ? Initialisation de l'environnement, chargement de la base de code, acquisition du contexte, sélection de la tâche — ces chemins ne doivent pas être cassés.
+<strong>Dimension démarrage</strong> : Le chemin de démarrage standard est-il disponible ? La prochaine session peut-elle commencer à travailler sans intervention manuelle ? Initialisation de l'environnement, chargement de la base de code, acquisition du contexte, sélection de la tâche — ces chemins ne doivent pas être cassés.
 
 ### « Nettoyer plus tard » signifie ne jamais nettoyer
 
@@ -105,7 +105,7 @@ Pire, chaque session a ses propres objectifs de tâche. La nouvelle session est 
 
 ### 1. L'état propre comme condition d'achèvement
 
-Définissez explicitement dans le harness : **achèvement de la session = la tâche passe la vérification ET la vérification d'état propre passe.** S'il manque l'un ou l'autre, la session n'est pas terminée. Écrivez dans CLAUDE.md :
+Définissez explicitement dans le harness : <strong>achèvement de la session = la tâche passe la vérification ET la vérification d'état propre passe.</strong> S'il manque l'un ou l'autre, la session n'est pas terminée. Écrivez dans CLAUDE.md :
 
 ```
 ## Session Exit Checklist
@@ -120,9 +120,9 @@ Définissez explicitement dans le harness : **achèvement de la session = la tâ
 
 Combinez deux modes de nettoyage :
 
-**Nettoyage immédiat (à la fin de chaque session)** : Nettoyer les artefacts temporaires créés pendant la session, mettre à jour l'état de la feature list, s'assurer que le build et les tests passent. C'est le nettoyage par « comptage de références ».
+<strong>Nettoyage immédiat (à la fin de chaque session)</strong> : Nettoyer les artefacts temporaires créés pendant la session, mettre à jour l'état de la feature list, s'assurer que le build et les tests passent. C'est le nettoyage par « comptage de références ».
 
-**Nettoyage périodique (hebdomadaire)** : Scan complet du système — traiter les problèmes structurels accumulés, mettre à jour les documents de qualité, lancer des tests de référence pour dététecter les dérives. C'est le nettoyage par « traçage ».
+<strong>Nettoyage périodique (hebdomadaire)</strong> : Scan complet du système — traiter les problèmes structurels accumulés, mettre à jour les documents de qualité, lancer des tests de référence pour dététecter les dérives. C'est le nettoyage par « traçage ».
 
 ### 3. Maintenir un document de qualité
 
@@ -150,7 +150,7 @@ Les nouvelles sessions lisent ce document et savent immédiatement où prioriser
 
 ### 4. Simplifier périodiquement le harness
 
-Une insight importante d'Anthropic : **chaque composant du harness existe parce que le modèle ne peut pas faire quelque chose de manière fiable par lui-même. Mais à mesure que les modèles s'améliorent, ces hypothèses deviennent obsolètes.** Une contrainte essentielle il y a trois mois peut être une surcharge inutile aujourd'hui.
+Une insight importante d'Anthropic : <strong>chaque composant du harness existe parce que le modèle ne peut pas faire quelque chose de manière fiable par lui-même. Mais à mesure que les modèles s'améliorent, ces hypothèses deviennent obsolètes.</strong> Une contrainte essentielle il y a trois mois peut être une surcharge inutile aujourd'hui.
 
 Pratique recommandée : Chaque mois, choisissez un composant du harness, désactivez-le temporairement, et lancez des tâches de référence. Si les résultats ne se dégradent pas, retirez-le définitivement. S'ils se dégradent, restaurez-le ou remplacez-le par une alternative plus légère.
 
@@ -169,19 +169,19 @@ npm run test  # Verify cleanup didn't break anything
 
 Une application Electron développée avec des agents sur 12 semaines, comparant deux approches :
 
-**Sans stratégie de nettoyage** (groupe de contrôle) : Semaine 12, taux de réussite du build 68 %, taux de réussite des tests 61 %, démarrage de nouvelle session 60+ min, artefacts périmés 103.
+<strong>Sans stratégie de nettoyage</strong> (groupe de contrôle) : Semaine 12, taux de réussite du build 68 %, taux de réussite des tests 61 %, démarrage de nouvelle session 60+ min, artefacts périmés 103.
 
-**Avec stratégie de nettoyage** (groupe expérimental) : Vérification complète d'état propre à chaque fin de session + boucle de nettoyage hebdomadaire. Semaine 12, taux de réussite du build 97 %, taux de réussite des tests 95 %, démarrage de nouvelle session 9 min, artefacts périmés 11.
+<strong>Avec stratégie de nettoyage</strong> (groupe expérimental) : Vérification complète d'état propre à chaque fin de session + boucle de nettoyage hebdomadaire. Semaine 12, taux de réussite du build 97 %, taux de réussite des tests 95 %, démarrage de nouvelle session 9 min, artefacts périmés 11.
 
 À la semaine 12, le taux de réussite du build du groupe expérimental est de 29 points de pourcentage plus élevé, le taux de réussite des tests de 34 points plus élevé, et le temps de démarrage d'une nouvelle session réduit de 85 %.
 
 ## Points clés
 
-- **L'état propre est une condition nécessaire à l'achèvement de la session** — pas du ménage optionnel, mais partie intégrante de la « définition du fini ».
-- **Les cinq dimensions sont toutes requises** — build, tests, avancement, artefacts, démarrage — chacune doit être vérifiée explicitement.
-- **Les documents de qualité rendent la santé de la base de code traçable** — on ne peut corriger que ce qu'on sait se dégrader.
-- **Simplifier périodiquement le harness** — à mesure que les capacités du modèle s'améliorent, retirer les contraintes devenues inutiles.
-- **« Nettoyer plus tard » équivaut à ne jamais nettoyer** — la croissance de l'entropie est la norme ; seul un nettoyage actif la contrecarre.
+- <strong>L'état propre est une condition nécessaire à l'achèvement de la session</strong> — pas du ménage optionnel, mais partie intégrante de la « définition du fini ».
+- <strong>Les cinq dimensions sont toutes requises</strong> — build, tests, avancement, artefacts, démarrage — chacune doit être vérifiée explicitement.
+- <strong>Les documents de qualité rendent la santé de la base de code traçable</strong> — on ne peut corriger que ce qu'on sait se dégrader.
+- <strong>Simplifier périodiquement le harness</strong> — à mesure que les capacités du modèle s'améliorent, retirer les contraintes devenues inutiles.
+- <strong>« Nettoyer plus tard » équivaut à ne jamais nettoyer</strong> — la croissance de l'entropie est la norme ; seul un nettoyage actif la contrecarre.
 
 ## Pour aller plus loin
 
@@ -192,8 +192,8 @@ Une application Electron développée avec des agents sur 12 semaines, comparant
 
 ## Exercices
 
-1. **Liste de contrôle d'état propre** : Concevez une liste de contrôle de sortie de session pour votre base de code couvrant les cinq dimensions. Appliquez-la sur 5 sessions consécutives et enregistrez les violations par dimension.
+1. <strong>Liste de contrôle d'état propre</strong> : Concevez une liste de contrôle de sortie de session pour votre base de code couvrant les cinq dimensions. Appliquez-la sur 5 sessions consécutives et enregistrez les violations par dimension.
 
-2. **Comparaison de référence** : Utilisez un ensemble de tâches fixe avec deux variantes de harness (avec/sans exigences d'état propre). Comparez le taux de complétion, le nombre de tentatives et le taux de fuite de défauts.
+2. <strong>Comparaison de référence</strong> : Utilisez un ensemble de tâches fixe avec deux variantes de harness (avec/sans exigences d'état propre). Comparez le taux de complétion, le nombre de tentatives et le taux de fuite de défauts.
 
-3. **Pratique de simplification du harness** : Choisissez un composant du harness, désactivez-le temporairement, et lancez des tâches de référence. Comparez les résultats avec et sans celui-ci. Décidez de le conserver, le retirer ou le remplacer.
+3. <strong>Pratique de simplification du harness</strong> : Choisissez un composant du harness, désactivez-le temporairement, et lancez des tâches de référence. Comparez les résultats avec et sans celui-ci. Décidez de le conserver, le retirer ou le remplacer.

@@ -27,23 +27,23 @@ id: 7572f409-cc55-4c91-b526-1767cb8537d9
 
  在检索增强生成（RAG）中，我们经常遇到用户原始查询的问题，如措辞不准确或缺乏语义信息，比如“The NBA champion of 2020 is the Los Angeles Lakers! Tell me what is langchain framework?”这样的查询，如果直接进行搜索，那么LLM可能会给出不正确或无法回答的回答。
 
- 因此，将用户查询的语义空间与文档的语义空间对齐是至关重要的。**查询重写**技术可以有效地解决这一问题，其在RAG中的作用如图1所示：
+ 因此，将用户查询的语义空间与文档的语义空间对齐是至关重要的。<strong>查询重写</strong>技术可以有效地解决这一问题，其在RAG中的作用如图1所示：
 
 ![](https://proxy-prod.omnivore-image-cache.app/1080x680,srXSa7E7tGEIZaSbe0xP2Wjmp9Nyl6WzDpQ41R5BFkyg/https://pic2.zhimg.com/v2-d50c9dda003409c51dcc5f1306913391_b.jpg)
 
- 从RAG流程的角度来看，**查询重写是一种预检索方法**。请注意，此图大致说明了查询重写在RAG中的位置。在下面的部分中，我们将介绍一些重写常见算法的改进过程。
+ 从RAG流程的角度来看，<strong>查询重写是一种预检索方法</strong>。请注意，此图大致说明了查询重写在RAG中的位置。在下面的部分中，我们将介绍一些重写常见算法的改进过程。
 
-**查询重写是对齐查询和文档语义的关键技术。例如：**
+<strong>查询重写是对齐查询和文档语义的关键技术。例如：</strong>
 
-   * **Hypothetical Document Embeddings (HyDE) ：**通过假设文档来对齐查询和文档的语义空间。
-   * **Rewrite-Retrieve-Read：**提出了一个不同于传统的检索和阅读顺序的框架，专注于查询重写。
-   * **Step-Back Prompting：**允许LLM基于高级概念进行抽象推理和检索。
-   * **Query2Doc：**使用LLM的一些提示创建伪文档。然后，它将这些查询与原始查询合并，以构建一个新的查询。
-   * **ITER-RETGEN：**提出了一种将先前生成的结果与先前查询相结合的方法。随后检索相关文档并生成新结果。此过程重复多次以获得最终结果。
+   * <strong>Hypothetical Document Embeddings (HyDE) ：</strong>通过假设文档来对齐查询和文档的语义空间。
+   * <strong>Rewrite-Retrieve-Read：</strong>提出了一个不同于传统的检索和阅读顺序的框架，专注于查询重写。
+   * <strong>Step-Back Prompting：</strong>允许LLM基于高级概念进行抽象推理和检索。
+   * <strong>Query2Doc：</strong>使用LLM的一些提示创建伪文档。然后，它将这些查询与原始查询合并，以构建一个新的查询。
+   * <strong>ITER-RETGEN：</strong>提出了一种将先前生成的结果与先前查询相结合的方法。随后检索相关文档并生成新结果。此过程重复多次以获得最终结果。
 
 让我们深入研究一下这些方法的细节。
 
-## **一、假设文档嵌入（HyDE）**
+## <strong>一、假设文档嵌入（HyDE）</strong>
 
  论文《Precise Zero-Shot Dense Retrieval without Relevance Labels》\[1\]提出了一种基于假设文档嵌入（HyDE）的方法，主要过程如图2所示：
 
@@ -209,7 +209,7 @@ After HyDEQueryTransform:
 After going to RISD, Paul Graham resumed his old life in New York, but now he was rich. He continued his old patterns but with new opportunities, such as being able to easily hail taxis and dine at charming restaurants. He also started to focus more on his painting, experimenting with a new technique. Additionally, he began looking for an apartment to buy and contemplated the idea of building a web app for making web apps, which eventually led him to start a new company called Aspra.
 ```
 
- **embedding\_strs**是一个包含两个元素的列表。第一个是生成的假设文档，第二个是原始查询。它们被组合成一个列表，以便于矢量计算。
+ <strong>embedding\_strs</strong>是一个包含两个元素的列表。第一个是生成的假设文档，第二个是原始查询。它们被组合成一个列表，以便于矢量计算。
 
  在这个例子中，HyDE通过准确地想象Paul Graham在RISD之后所做的事情，显著提高了输出质量（参见假设文档）。这提高了嵌入质量和最终输出。当然，HyDE也有一些失败案例。感兴趣的读者可以访问此网页\[4\]进行测试。
 
@@ -217,7 +217,7 @@ After going to RISD, Paul Graham resumed his old life in New York, but now he wa
 
  总之，虽然HyDE引入了一种新的查询重写方法，但它确实有一些局限性。它不依赖于查询嵌入相似性，而是强调一个文档与另一个文档的相似性。然而，如果语言模型不精通该主题，它可能并不总是产生最佳结果，这可能会导致错误的增加。
 
-## **二、重写-检索-读取**
+## <strong>二、重写-检索-读取</strong>
 
  这个想法来自于论文《Query Rewriting for Retrieval-Augmented Large Language Models》\[5\]。论文认为，在真实世界的场景中，原始查询可能并不总是LLM检索的最佳查询。因此，本文建议我们应该首先使用LLM来重写查询，然后再进行检索和生成答案，而不是直接从原始查询中检索内容并生成答案。论文思路如图4（b）所示：
 
@@ -367,7 +367,7 @@ LangChain is a Python framework designed to help build AI applications powered b
 
 到目前为止，通过重写查询，我们已经成功地获得了正确的答案。
 
-## **三、Step-Back提示**
+## <strong>三、Step-Back提示</strong>
 
  STEP-BACK PROMPING是一种简单的提示技术，使LLM能够从包含特定细节的实例中抽象、提取高级概念和基本原理。其思想是将“step-back问题”定义为从原始问题派生出的更抽象的问题。
 
@@ -385,9 +385,9 @@ LangChain is a Python framework designed to help build AI applications powered b
 
 总之，STEP-BACK PROMPING包括两个基本步骤：
 
-**抽象**：最初，我们提示LLM提出一个关于高级概念或原理的广泛问题，而不是直接响应查询。然后，我们检索关于所述概念或原理的相关事实。
+<strong>抽象</strong>：最初，我们提示LLM提出一个关于高级概念或原理的广泛问题，而不是直接响应查询。然后，我们检索关于所述概念或原理的相关事实。
 
-**推理**：LLM可以根据这些关于高级概念或原理的事实推导出原始问题的答案。我们称之为抽象推理。
+<strong>推理</strong>：LLM可以根据这些关于高级概念或原理的事实推导出原始问题的答案。我们称之为抽象推理。
 
  为了说明step-back提示如何影响上下文检索和预测性能，这里是用Langchain实现的演示代码。
 
@@ -548,7 +548,7 @@ No, ChatGPT was not around while Trump was president. ChatGPT was released to th
 
  正如Edsger W.Dijkstra所说，“抽象的目的不是模糊，而是创造一个新的语义层次，在这个层次上可以绝对精确。”
 
-## **四、Query2doc**
+## <strong>四、Query2doc</strong>
 
  《Query2doc: Query Expansion with Large Language Models》\[6\]提出了Query2doc方法来进行query改写，它使用LLM的一些提示生成伪文档，然后将它们与原始查询组合以创建新的查询，如图6所示：
 
@@ -562,7 +562,7 @@ No, ChatGPT was not around while Trump was president. ChatGPT was released to th
 
  目前，在Langchain或LlamaIndex中未找到query2doc的实现。
 
-## **五、迭代**
+## <strong>五、迭代</strong>
 
  《Enhancing Retrieval-Augmented Large Language Models with Iterative Retrieval-Generation Synergy》\[7\]提出了ITER-RETGEN方法，它使用生成的内容来指导检索。它在检索-读取-检索-读取流中迭代地实现“检索增强的生成”和“生成增强的检索”。
 
@@ -578,7 +578,7 @@ No, ChatGPT was not around while Trump was president. ChatGPT was released to th
 
  与Query2doc类似，目前，在Langchain或LlamaIndex中，尚未找到实现。
 
-## **六、结论**
+## <strong>六、结论</strong>
 
  本文介绍了各种查询重写技术，包括一些技术的代码演示。
 
@@ -588,7 +588,7 @@ No, ChatGPT was not around while Trump was president. ChatGPT was released to th
 
  此外，还有一些方法，如查询路由、将查询分解为多个子问题等，它们不属于查询重写，但它们是预检索方法，这些方法将来将有机会引入。
 
-## **参考文献：**
+## <strong>参考文献：</strong>
 
 \[1\] <https://arxiv.org/pdf/2212.10496.pdf>
 

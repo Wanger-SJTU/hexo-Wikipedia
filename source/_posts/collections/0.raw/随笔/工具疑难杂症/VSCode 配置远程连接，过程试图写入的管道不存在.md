@@ -14,7 +14,7 @@ categories:
 #vscode
 
 # 解决 
-**原因**
+<strong>原因</strong>
 > 本地记录的服务器信息和现有的产生了冲突
 
 解决方法

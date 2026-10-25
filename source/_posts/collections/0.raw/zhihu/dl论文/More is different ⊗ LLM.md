@@ -36,11 +36,11 @@ source_url: https://zhuanlan.zhihu.com/p/617433844
 
 Yann LeCun 被 GPT4 的酸葡萄伤害之后，最近放出来的 PPT 有点极端<span class="wikilink wikilink--missing" title="未导入的页面">6</span>(#ref_6)。抛开措辞不谈，大佬看问题还是很深刻的。典型的自回归语言模型的采样是个离散的随机过程，在极端情况下误差可能会以指数放大。虽然更大的模型也不能解决这个问题，但是更小的误差可以极大地降低发散的速度，而且可以在跑歪之后若无其事地一本道。
 
-![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_e22ad20a037f.jpg)
+![](/images/collections/0.raw/zhihu/dl%E8%AE%BA%E6%96%87/asset/img_e22ad20a037f.jpg)
 
 反动学阀吐槽（我是温和的 Bayesian 修正主义者）今天花了点时间研究语言模型的量化方案，才发现自己比较孤陋寡闻。其实 LLM.int8() 早就实现了误差很小的 8 位量化方案，而且通过 bitsandbytes 库集成到了 huggingface transformers，只需要几行代码就能节省 50% 的显存。
 
-![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_37d39645d651.jpg)
+![](/images/collections/0.raw/zhihu/dl%E8%AE%BA%E6%96%87/asset/img_37d39645d651.jpg)
 
 2208.07339技术细节详见官方 Blog ——
 
@@ -48,7 +48,7 @@ Yann LeCun 被 GPT4 的酸葡萄伤害之后，最近放出来的 PPT 有点极�
 
 而 GPTQ 也并不是新技术，只是在 LLaMA 放出之前并未得到重视，想要用起来也比较麻烦。
 
-![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_86076e24a2dd.jpg)
+![](/images/collections/0.raw/zhihu/dl%E8%AE%BA%E6%96%87/asset/img_86076e24a2dd.jpg)
 
 2210.17323技术细节请参考知乎大佬的专栏文章 ——
 
@@ -66,11 +66,11 @@ Yann LeCun 被 GPT4 的酸葡萄伤害之后，最近放出来的 PPT 有点极�
 
 `torch.backends.cuda.matmul.allow_fp16_reduced_precision_reduction = False`
 
-![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_46c8d998364e.jpg)
+![](/images/collections/0.raw/zhihu/dl%E8%AE%BA%E6%96%87/asset/img_46c8d998364e.jpg)
 
 GPTQ 默认使用单精度进行矩阵计算由于 GPTQ-for-LLaMA 实现了原生的高性能 cuda kernel，使用 GPTQ 量化模型推理时性能和单精度版本几乎没有区别。因为对内存带宽的需求降低了，单 batch 推理时量化后的模型反而会更快。模型越大，GPTQ 量化模型的精度损失越小，对性能的提升越高，感觉就跟免费的午餐一样<span class="wikilink wikilink--missing" title="未导入的页面">10</span>(#ref_10)。
 
-![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_5fd5d6b2563f.jpg)
+![](/images/collections/0.raw/zhihu/dl%E8%AE%BA%E6%96%87/asset/img_5fd5d6b2563f.jpg)
 
 OPT-175B 的加速效果对于没有专业显卡的普通人，GPTQ-for-LLaMA<span class="wikilink wikilink--missing" title="未导入的页面">11</span>(#ref_11) 几乎是本地部署 LLaMA-30B 和 LLaMA-65B 的唯一选择。为了调戏 LLaMA-65B，我最近在严肃地评估是不是要整一块 RTX A6000（或者更大胆一些，RTX 6000 ADA？）<span class="wikilink wikilink--missing" title="未导入的页面">12</span>(#ref_12)。
 
@@ -78,7 +78,7 @@ OPT-175B 的加速效果对于没有专业显卡的普通人，GPTQ-for-LLaMA<sp
 
 GPTQ-for-LLaMA 官方给出的 Wiki2 PPL 如下表。
 
-![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_2a8996da0e9e.jpg)
+![](/images/collections/0.raw/zhihu/dl%E8%AE%BA%E6%96%87/asset/img_2a8996da0e9e.jpg)
 
 请注意 4bit-RTN 的 PPL在 RTX 3090/RTX A6000 级别的显卡上，LLaMA-30B 和 LLaMA-65B 的推理性能几乎完全由模型尺寸和内存带宽决定。换句话说 LLaMA-30B gptq-w8 的性能和 LLaMA-65B gptq-w4 几乎没有区别<span class="wikilink wikilink--missing" title="未导入的页面">13</span>(#ref_13)，所以前者几乎没有存在的意义。我实测了本地模型的 Wiki2 PPL，从这个指标上看 W8G128 和 FP16 几乎没有区别<span class="wikilink wikilink--missing" title="未导入的页面">14</span>(#ref_14)。
 
@@ -88,7 +88,7 @@ GPTQ-for-LLaMA 官方给出的 Wiki2 PPL 如下表。
 
 考虑到大多数人都没有 RTX A6000 的使用经验，特意给大家种个草<span class="wikilink wikilink--missing" title="未导入的页面">16</span>(#ref_16)。
 
-![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_59a719edec03.jpg)
+![](/images/collections/0.raw/zhihu/dl%E8%AE%BA%E6%96%87/asset/img_59a719edec03.jpg)
 
 RTX A6000 datasheet只考虑 RTX 3090、RTX 4090 和 RTX A6000、RTX 6000 ADA。
 
@@ -114,7 +114,7 @@ RTX A6000 datasheet只考虑 RTX 3090、RTX 4090 和 RTX A6000、RTX 6000 ADA。
 
 由于我只有 NUC 12 不想买个大机箱放在客厅，所以只能在 RTX A6000 和 RTX 6000 ADA 里面选。
 
-![](/images/collections/0.raw/zhihu/dl%25E8%25AE%25BA%25E6%2596%2587/asset/img_2d515efbf1e1.jpg)
+![](/images/collections/0.raw/zhihu/dl%E8%AE%BA%E6%96%87/asset/img_2d515efbf1e1.jpg)
 
 NUC 12 实在装不下别的卡
 

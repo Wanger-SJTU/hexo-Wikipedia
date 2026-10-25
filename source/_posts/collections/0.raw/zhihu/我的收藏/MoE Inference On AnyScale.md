@@ -25,7 +25,7 @@ source_url: https://zhuanlan.zhihu.com/p/28680264165
 
 基于此，我们团队致力于开发高效的MoE分布式并行推理框架，以提升EP在实际应用中的可用性。当前，我们已基于SGLang框架实现了支持AlltoAll-based EP版本，并在DeepSeek-R1模型上完成了初步实验验证。实验结果表明，在32卡NVIDIA A100 GPU集群环境下，我们的EP实现相比SGLang框架的原生方案，将DeepSeek-R1模型的推理吞吐量提升了30%以上。这一结果验证了EP的有效性。未来我们将继续通过blog分享研发进展，并开源相关实现，敬请关注。
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_8d6fae6f072c.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_8d6fae6f072c.jpg)
 
 图1 单层MoE的并行策略对比
 #### 为什么传统TP方案难以支撑大规模 MoE 推理？
@@ -46,27 +46,27 @@ EP 方案为大规模 MoE 推理提供了一种全新的并行思路，能够有
 
 EP同时使得每个GPU可以计算不同的input data，而不需要像TP一样在每个GPU上处理相同的token并聚合 activation，EP可以极大的扩展batch size，使得每个专家都能分到足够数量的token，解决memory access的bottleneck。
 
-**DeepSeek 技术报告的启示：**DeepSeek 在其技术报告中也推荐使用基于 Alltoall 操作的 Expert Parallelism 方案在大规模 MoE 模型推理中展现出了显著优势。在 Prefill 阶段，DeepSeek 采用 EP=32 的并行策略，将 256 个专家分散到 32 个 GPU 上，以确保每个 GPU 具有足够大的 batch size，从而提高计算效率。在 Decode 阶段，DeepSeek 采取 EP=320 的并行方式，每个 GPU 仅保留一个专家。通过这种动态分配策略，DeepSeek 能够周期性感知热点专家，并为其分配更多计算资源，从而显著提高了整体 GPU 资源利用率。上述实践也佐证了EP方案对MoE模型推理的重要性。
+<strong>DeepSeek 技术报告的启示：</strong>DeepSeek 在其技术报告中也推荐使用基于 Alltoall 操作的 Expert Parallelism 方案在大规模 MoE 模型推理中展现出了显著优势。在 Prefill 阶段，DeepSeek 采用 EP=32 的并行策略，将 256 个专家分散到 32 个 GPU 上，以确保每个 GPU 具有足够大的 batch size，从而提高计算效率。在 Decode 阶段，DeepSeek 采取 EP=320 的并行方式，每个 GPU 仅保留一个专家。通过这种动态分配策略，DeepSeek 能够周期性感知热点专家，并为其分配更多计算资源，从而显著提高了整体 GPU 资源利用率。上述实践也佐证了EP方案对MoE模型推理的重要性。
 
-**填补开源空白：** DeepSeek虽然在报告中揭示了EP重要性，**但目前开源社区里还缺乏开源的基于All-to-all的EP推理框架**，我们希望能够填补这一空白，并认为EP有望成为未来大规模模型推理的重要方案之一。我们的方案不仅支持A100上BF16和INT8精度，还正在适配H100等新一代硬件平台，具有良好的扩展性。相关结果和代码将很快在后续blog中发布。
+<strong>填补开源空白：</strong> DeepSeek虽然在报告中揭示了EP重要性，<strong>但目前开源社区里还缺乏开源的基于All-to-all的EP推理框架</strong>，我们希望能够填补这一空白，并认为EP有望成为未来大规模模型推理的重要方案之一。我们的方案不仅支持A100上BF16和INT8精度，还正在适配H100等新一代硬件平台，具有良好的扩展性。相关结果和代码将很快在后续blog中发布。
 
 #### DeepSeek R1的推理加速初步结果
 
 我们以SGLang为基础，开发了一个初步的基于All-to-all的EP推理框架原型。并取得了初步成果：
 
-- **Prefill阶段优化：** 我们在Prefill阶段实现了显著的性能提升，为后续的推理优化奠定了坚实基础。具体来说，我们优化了数据加载和预处理流程，并实现了高效的GPU内存管理，从而减少了Prefill阶段的时间开销。
-- **性能提升显著：** 我们的初步测试结果表明，与SGLang基于TP的实现相比，我们的方案在吞吐量上提升了30%。我们的测试使用了32个A100 GPU集群进行测试，以及DeepSeek-R1模型，BF16精度。
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_b8788fc8bd37.jpg)
+- <strong>Prefill阶段优化：</strong> 我们在Prefill阶段实现了显著的性能提升，为后续的推理优化奠定了坚实基础。具体来说，我们优化了数据加载和预处理流程，并实现了高效的GPU内存管理，从而减少了Prefill阶段的时间开销。
+- <strong>性能提升显著：</strong> 我们的初步测试结果表明，与SGLang基于TP的实现相比，我们的方案在吞吐量上提升了30%。我们的测试使用了32个A100 GPU集群进行测试，以及DeepSeek-R1模型，BF16精度。
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_b8788fc8bd37.jpg)
 
 #### 近期的开发计划
 
 EP 方案的潜力远不止于此。不过EP也面临着一系列全新的问题，例如DeepSeek报告中所提到的负载不均衡，需要动态的优化。同时，EP也并不是在任何场合中都是最优的方案，小规模时TP由于更小的通讯开销和GPU计算负载较为均衡，可能为更优的方案。EP和MoE模型的这些问题都对现有的推理系统提出了巨大的挑战。我们将持续探索更高效的MoE推理优化策略，我们目前主要关注以下方向：
 
-**底层通信优化**：我们的框架也集成了 DeepEP 高性能通信库，DeepSeek自研的 DeepEP 高性能通信库针对 Alltoall 操作进行了深度优化。下一步将在更大规模GPU集群下进行验证end-to-end性能，提升 GPU 数据传输效率。
+<strong>底层通信优化</strong>：我们的框架也集成了 DeepEP 高性能通信库，DeepSeek自研的 DeepEP 高性能通信库针对 Alltoall 操作进行了深度优化。下一步将在更大规模GPU集群下进行验证end-to-end性能，提升 GPU 数据传输效率。
 
-**PD分离架构**：我们计划预填充与解码分离，实现并行策略自动优化。目前的优化主要集中在 Prefill 阶段，未来，我们计划将预填充（Prefill）与解码（Decode）阶段分离，针对不同阶段的特点进行自动优化。例如，在 Prefill 阶段，采用更激进的并行策略以最大化吞吐量，而在 Decode 阶段，采用更精细化的策略减少延迟，提高响应速度。
+<strong>PD分离架构</strong>：我们计划预填充与解码分离，实现并行策略自动优化。目前的优化主要集中在 Prefill 阶段，未来，我们计划将预填充（Prefill）与解码（Decode）阶段分离，针对不同阶段的特点进行自动优化。例如，在 Prefill 阶段，采用更激进的并行策略以最大化吞吐量，而在 Decode 阶段，采用更精细化的策略减少延迟，提高响应速度。
 
-**EP的分配和调度**： 我们将基于DeepSeek的EPLB，研究动态专家分配与调度，基于负载情况的动态专家调度策略，为热点专家分配更多资源，提升推理效率，并实现细粒度的专家扩容机制，以适应突发流量。
+<strong>EP的分配和调度</strong>： 我们将基于DeepSeek的EPLB，研究动态专家分配与调度，基于负载情况的动态专家调度策略，为热点专家分配更多资源，提升推理效率，并实现细粒度的专家扩容机制，以适应突发流量。
 
 随着 DeepSeek 等超大规模模型的不断演进，Expert Parallelism 将成为大规模 AI 推理的核心技术之一。我们将持续探索和优化 EP 方案，助力 AI 模型突破性能瓶颈，为更高效、更智能的 AI 计算提供强大支撑。敬请期待我们的后续更新和开源！
 

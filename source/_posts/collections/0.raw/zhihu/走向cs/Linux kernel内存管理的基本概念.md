@@ -15,7 +15,7 @@ source_url: https://zhuanlan.zhihu.com/p/503379456
 ---
 
 
-### **1. 前言**
+### <strong>1. 前言</strong>
 
 内存（memory）在Linux系统中是一种牵涉面极广的资源，上至应用程序、下至kernel和driver，无不为之魂牵梦绕。加上它天然的稀缺性，导致内存管理（Memory Management，简称MM）是linux kernel中非常重要又非常复杂的一个子系统。
 
@@ -25,7 +25,7 @@ source_url: https://zhuanlan.zhihu.com/p/503379456
 
 **
 
-![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_13b82accbf05.jpg)
+![](/images/collections/0.raw/zhihu/%E8%B5%B0%E5%90%91cs/asset/img_13b82accbf05.jpg)
 
 图片1 CPU, Device and Memory
 
@@ -99,7 +99,7 @@ DeviceIOMMU(Optional)--------->Memory
 
 基于上面章节的需求，Linux kernel从虚拟内存（VM）、DMA mapping以及DMA buffer sharing三个角度，对内存进行管理，如下图所示：
 
-![](/images/collections/0.raw/zhihu/%25E8%25B5%25B0%25E5%2590%2591cs/asset/img_9cd2c612c850.jpg)
+![](/images/collections/0.raw/zhihu/%E8%B5%B0%E5%90%91cs/asset/img_9cd2c612c850.jpg)
 
 图片2 VM、DMA mapping和DMA buffer sharing
 

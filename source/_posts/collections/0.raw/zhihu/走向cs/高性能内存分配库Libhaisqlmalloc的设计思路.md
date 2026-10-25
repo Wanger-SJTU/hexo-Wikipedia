@@ -15,9 +15,9 @@ source_url: https://zhuanlan.zhihu.com/p/352938740
 ---
 
 
-**第二章** **软件概述**
+<strong>第二章</strong> <strong>软件概述</strong>
 
-### **1.描述**
+### <strong>1.描述</strong>
 
 Libhaisqlmalloc高性能内存分配库，简称“高性能内存分配库”，是由乌鲁木齐云山云海信息技术有限责任公司开发和发行的内存分配库，是一种新型高性能内存分配库，管理堆内存，主要接口是malloc和free，用于减慢频繁分配、释放内存造成的性能损耗，并且有效地控制内存浪费和内存碎片，更适合大型应用程序的配套使用。
 
@@ -25,19 +25,19 @@ Libhaisqlmalloc高性能内存分配库开发语言是C++,编译链工具是gcc�
 
 第三章  软硬件环境和使用方法**
 
-### **1.运行硬件环境**
+### <strong>1.运行硬件环境</strong>
 
 （1）、内存：512M及以上（建议1G以上）
 
 （2）、CPU：主频1 GMHz以上（建议Intel Core2 以上）
 
-### **2.运行软件环境**
+### <strong>2.运行软件环境</strong>
 
 建议使用：Linux系统4.0 以上64bit版本 x86_64 GNU/Linux
 
 对于低于Linux系统3.X 64bit版本, 可能会存在Hugepage无法使用的问题。 
 
-### **3.使用方法：**
+### <strong>3.使用方法：</strong>
 
 Libhaisqlmalloc 内存分配库的使用有两种方法：
 
@@ -459,9 +459,9 @@ bool_enable_realloc_over_over_2m_force_page_prefault
 
 mallopt int_key=10032
 
-### **第五章  产品介绍和说明**
+### <strong>第五章  产品介绍和说明</strong>
 
-### **1.产品介绍**
+### <strong>1.产品介绍</strong>
 
 (1)libhaisqlmalloc.so
 
@@ -493,7 +493,7 @@ Default:  thread_count 1
 
 为了方便软件工程师和系统管理员使用内存分配库，需要对Libhaisqlmalloc内存分配库的内部实现有细致的理解，因此在后面详细介绍了内存库的各种参数的设计和实现方案。
 
-### **2.性能高的主要原因**
+### <strong>2.性能高的主要原因</strong>
 
     Libhaisqlmalloc高性能内存分配库，用于减慢频繁分配、释放内存造成的性能损耗，并且有效地控制内存碎片。Libhaisqlmalloc采用了新的软件技术，具备极高的性能表现。在Intel CPU 9400F(2.9G默认频率)下测试100万次malloc4KiB平均一次4KiB malloc动作, tcmalloc需要近一千ns, 而Libhaisqlmalloc只要数十ns。
 
@@ -513,7 +513,7 @@ Libhaisqlmalloc内存分配库性能高的主要原因是：
 
 5)Libhaisqlmalloc 库重写了部分常用的std库，提供了更好的性能。
 
-### **3.内存块种类group说明**
+### <strong>3.内存块种类group说明</strong>
 
 Libhaisqlmalloc 库的管理内存范围是：
 
@@ -541,7 +541,7 @@ B)其他8个类型是第二个分组，用于分配128字节以上的情况，�
 
 5)2M以上内存，是大内存，由于默认自动支持Hugepage2M, 2MiB以上均是按照2MiB对齐方式分配的, 使用2MiB对齐的策略，使用系统调用mmap进行分配。在存在Hugepage2M的情况下，优先使用Hugepage2M。大内存的cookie数据结构是一种优化的unordered_map数据结构（开放地址法+线性探测+SSE4.2 crc32c hash算法），用于指针ptr_void与申请内存大小size等cookie数据的关联关系查询，大内存在实际应用中情况比较少，处理并发的代码很简单，直接使用了标准锁std::mutex锁，来处理并发。
 
-### **4.内存地址对齐和默认支持SSE指令集**
+### <strong>4.内存地址对齐和默认支持SSE指令集</strong>
 
 Libhaisqlmalloc库有良好的分配内存地址对齐，默认支持SSE（Single Instruction Multiple Data）单指令多数据技术指令集，方便开发高性能计算密集的高性能用户代码。对于N*16字节( N=任意数）,默认分配的内存地址都是16字节对齐的, 默认支持SSE指令集。（C++委员会建议尽量16字节对齐，以便默认支持SSE指令集）
 
@@ -553,7 +553,7 @@ Libhaisqlmalloc库有良好的分配内存地址对齐，默认支持SSE（Singl
 
 对于N*2MiB字节,分配的内存地址都是2MiB字节对齐的。目前的版本更高支持到2MiB对齐。
 
-### **5.内部碎片**
+### <strong>5.内部碎片</strong>
 
 Libhaisqlmalloc库碎片表现：Libhaisqlmalloc库内部碎片平均浪费小于10%。Libhaisqlmalloc库内部碎片设计要求是32Byte----10KiB的内存分配，内部碎片平均浪费小于10%，碎片浪费率小于20%。在满足这个内部碎片率的前提下才会考虑性能，从多种group方案中选取折中的技术方案。因此，低碎片率是基本要求，其次才是性能。
 
@@ -597,7 +597,7 @@ Libhaisqlmalloc库的Bitmap算法搜索连续bit数越多性能越低，低bit�
 
 测试代码的开头有测试内存分配库内部碎片的情况,  但是实际情况要复杂的多，Linux malloc库虽然内部碎片很低，但是有外部碎片，总体的碎片浪费很严重。
 
-### **6.外部碎片：**
+### <strong>6.外部碎片：</strong>
 
 Libhaisqlmalloc库有很低的外部碎片。Libhaisqlmalloc 库设计思路是优先考虑低外部碎片和低内存浪费的方式，宁可在一些场景下以大幅度牺牲性能表现为代价，来换取低外部碎片和低内存浪费。
 
@@ -641,7 +641,7 @@ Libhaisqlmalloc库有很低的外部碎片。Libhaisqlmalloc 库设计思路是�
 
 8）Libhaisqlmalloc库的低缓存的设计，以大幅度牺牲性能表现为代价来换取低外部碎片和低内存浪费。Libhaisqlmalloc库在各级处理流程中都是尽快释放，不做额外缓存。每级动作流程中如果有大量缓存的话，那么就可以走短流程，实现更高性能，如果没有缓存，就必须要走长流程，向上级申请或者释放内存，减慢了性能，有个别时候会有多级长流程动作，导致性能大幅度下滑。另外一方面，由于Libhaisqlmalloc库的性能很高，每一级的开销也只有大约数十纳秒，即使是多级长流程总体开销也不大。
 
-### **7.2MiB大块内存的统一进程缓存：**
+### <strong>7.2MiB大块内存的统一进程缓存：</strong>
 
 Libhaisqlmalloc库使用了现代C++无锁编程技术解决空闲2MiB大块数据管理问题。
 
@@ -653,7 +653,7 @@ Libhaisqlmalloc库使用了现代C++无锁编程技术解决空闲2MiB大块数�
 
 常规page内存和hugepage2M是2组队列，每个都是多生产者多消费者MPMC无锁队列，容量是4096个指针空间，对应低于8G内存的缓存，可以应对多数内存申请总量的抖动，存储的2MiB大块内存数据对所有线程透明共享， 一般情况下此容量已经足够满足需求，当出现超过队列长度4096的情况出现时，将会直接释放给系统。
 
-### **8.Thread Local算法：**
+### <strong>8.Thread Local算法：</strong>
 
 目前C++ std / boost库以及 Linux pthread库均提供了Thread Local数据结构，这些库接口的Thread Local算法上存在优化空间，并且存在库依赖，因此重新实现了一个高速的没有库依赖条件的Thread Local专用数据结构，有更高的性能（数倍），以及良好的适应性(没有外部依赖)，避免了一些场景下的多个so库初始化顺序的兼容性问题，提高了内存库的兼容性。
 
@@ -773,7 +773,7 @@ HugePages_Surp:        0
 
 Hugepagesize:       2048 kB
 
-### **11.支持物理内存提前分配：**
+### <strong>11.支持物理内存提前分配：</strong>
 
 Libhaisqlmalloc 库中的内存分配的物理地址分配，是可以配置为提前分配的。这样对于一些对性能有要求的场合可以提供更低的推迟，例如量化交易等，实现更高的性能表现。常规库的物理内存只有在内存使用中才能利用缺页中断分配物理内存，其实也是有不小的性能开销的。目前很多传统内存库不包含此功能点。
 
@@ -781,7 +781,7 @@ Libhaisqlmalloc 库中的内存分配的物理地址分配，是可以配置为�
 
 配置实现提前分配常规page页面：申请常规page页面, 可以配置为立即实际分配4KiB page页面的物理地址，默认配置为关闭此功能。参见配置bool_enable_page_prefault的说明。启用后，将会很浪费空间，将会略微增加用户程序的性能。因为集中产生实际物理页面的分配，会增加一些程序的稳定性(例如：避免Facebook fstring早期版本末尾‘\0’推迟实现Bug)，这个功能点启用后对所有大小的内存申请都有效(包括管理内存等)，对所有线程的内存申请都有效。
 
-### **12.支持释放内存自动清理CPU Cache：**
+### <strong>12.支持释放内存自动清理CPU Cache：</strong>
 
 Libhaisqlmalloc 库提供了释放内存自动清理CPU Cache的支持。目前很多传统内存库不包含此功能点。
 
@@ -793,7 +793,7 @@ Libhaisqlmalloc 库可以将释放内存从前端工作CPU的L1L2L3级Cache中�
 
 后台线程默认启用此功能，具体参见配置bool_enable_thread_background_clear_cpu_cache的说明。
 
-### **13.支持线程与CPU自动绑定：**
+### <strong>13.支持线程与CPU自动绑定：</strong>
 
 Libhaisqlmalloc 库提供了对线程与CPU的自动绑定的支持。目前很多传统内存库不包含此功能点。
 
@@ -803,7 +803,7 @@ Libhaisqlmalloc 库提供了对线程与CPU的自动绑定的支持。目前很�
 
 2021-09-27的1.40版本之后默认不启用此功能, 之前默认是启用， 原因是2021年intel新款CPU实现了大小核的设计，Intel建议由系统来进行CPU的分配，以便减慢能源消耗，不再建议用户自行绑定CPU。
 
-### **14.支持NUMA node内存绑定:**
+### <strong>14.支持NUMA node内存绑定:</strong>
 
 Libhaisqlmalloc 库提供了对NUMA内存绑定node的支持。目前很多传统内存库不包含此功能点。
 
@@ -831,13 +831,13 @@ membind: 0
 
 在目前常用的Linux4.X版本下，NUMA的相关系统调用还不能稳定支持Hugepage2M，因此，Libhaisqlmalloc库关闭了Hugepage2M 的NUMA内存绑定．就是说当前的分配策略是：当申请的2M块是Hugepage的时候，将不执行NUMA node内存绑定．只有申请的是常规Page内存，并且配置启用NUMA内存绑定功能，才会优先执行基于线程的NUMA node内存绑定，失败将执行系统默认NUMA策略。
 
-### **15.** **低碎片的系统调用:**
+### <strong>15.</strong> <strong>低碎片的系统调用:</strong>
 
 系统调用：Libhaisqlmalloc 库内部在申请内存和释放内存的时候，只使用mmap / munmap，没有使用madvice函数（脏牛漏洞就是利用madvise(map, XXX, MADV_DONTNEED)实现入侵，Facebook jemalloc 等库都有调用），so文件初始化成功后没有sbrk和brk申请释放内存（so文件初始化成功前也只存在一次2MiB的sbrk调用），有利于系统进行页面归集整理，减少系统的内部碎片。
 
 超低的系统碎片：Libhaisqlmalloc 库管理内存范围是1Byte---2MiB, (传统内存分配库一般只负责管理128KiB以下的大小)，所有的内存申请都是将2MiB的大块内存切成小内存实现内存分配。Libhaisqlmalloc 库对系统的内存申请除了管理内存申请有偶然个别少量64KiB的申请外，其他内存申请都是2MiB或者N*2MiB，对系统的内存管理很友好，系统的碎片率很低，提高了系统的整体工作效率。
 
-### **16.默认提供thread safe性和数据同步保证:**
+### <strong>16.默认提供thread safe性和数据同步保证:</strong>
 
 Libhaisqlmalloc 库内部默认提供了完整的thread safe性保证，对应用程序没有同步或者thread safe性的要求。目前很多传统内存库不包含此功能点。Libhaisqlmalloc 库设计思路是以牺牲性能表现为代价，以CPU所有顺序性保证均不存在的严苛的数据存取条件，以严格的多线程编程规范，换取完整彻底的thread safe性和数据同步保证，具备CPU移植性。Libhaisqlmalloc 库在多线程下很稳定，代价就是在一些场景下减慢了性能。
 
@@ -861,11 +861,11 @@ Libhaisqlmalloc 库在多线程下很稳定，实现了很多额外（远远超�
 
 总之，Libhaisqlmalloc 库设计思路是在多线程领域的代码以thread safe为首要问题，宁可浪费各种开销，宁可在这些地方慢一点，冗余次数多一点，也要确保thread safe。在其它不涉及并发的代码上，在这些地方不留余地的进行各种优化，实现高性能。这样兼顾的总体设计方案，既保证了thread safe，又实现了高性能。
 
-### **17.默认分配物理内存，增加内存连续读写性能**
+### <strong>17.默认分配物理内存，增加内存连续读写性能</strong>
 
 Libhaisqlmalloc 库为了增加用户程序的内存连续读写的性能和程序的稳定性，默认启用了实际分配物理内存，因此malloc/realloc申请到的内存默认都是已经分配物理内存的内存空间，这样，读写动作不会触发缺页中断，因此memset之类的连续内存动作，由于不会被缺页中断所打断，因此有较大幅度的性能增加。此功能点默认启用，也可以通过设置参数关闭，具体的参数，见 bool_enable_malloc_force_page_prefault / bool_enable_realloc_force_page_prefault / bool_enable_malloc_over_2m_force_page_prefault / bool_enable_realloc_over_over_2m_force_page_prefault 这些参数的配置说明。其中，对于2M以上的内存申请，可以单独关闭分配物理内存，见bool_enable_malloc_over_2m_force_page_prefault / bool_enable_realloc_over_over_2m_force_page_prefault的说明。
 
-### **18.现代C++是高性能的关键技术：**
+### <strong>18.现代C++是高性能的关键技术：</strong>
 
 Libhaisqlmalloc库使用了一些高性能组件，代码模块是用C++写的，经过反复测试和调整，具备较高的性能表现。软件工程的实践中，很多的性能增加，来自于现代C++技术。计算机从1970年只有50年的发展时间，近一二十年来计算机的硬件技术发生了进步，软件追随硬件而变，新一代C++软件发挥硬件新特性，发挥硬件的各种潜力（例如CPU多发射各种新指令集各种多线程高并发友好的新的数据结构与算法），时代变了，因此，以前写的古老的C/C++库用现代C++技术重写一遍，很多都可以获得大幅度的性能增加，这是时代的红利，只是需要投入人力资源投入时间去做而已，just do it。
 
@@ -885,7 +885,7 @@ vector_allocator, Memory_allocator > d_vt_up_normal;
 
 另外由于使用了比较新的C++算法，重写vector后一些常用函数的性能比std库有大幅增加，例如删除 / push_back等，另外提供了一些更高性能的扩展函数，例如乱序删除等。
 
-### **19. Libhaisqlmalloc 库的性能测试：**
+### <strong>19. Libhaisqlmalloc 库的性能测试：</strong>
 
 Libhaisqlmalloc 库是一个新的内存分配库，具备很高的稳定性，可以增加应用程序的性能，减少内存浪费和碎片，更有效使用内存。Libhaisqlmalloc 库使用了大量类似于Intel dpdk / mpdk / spdk 的高性能C++技术（这些库对比同领域的旧传统方案都有较大性能改进，网上有大量的公开资料和说明），因此，Libhaisqlmalloc 库在 “所有大小的内存申请和释放” 的性能也比以前设计的旧内存库Linux malloc库 / Google tcmalloc库 / Facebook jemalloc库快。使用现代C++软件技术重新写了一个可测试可下载可运行的新型的内存分配库。
 
@@ -1229,7 +1229,7 @@ ulong_verify_id=12739876336654934
 
 建议：建议配置一半内存为hugepage2M,见前面第26页的 sysctl.conf 的配置说明。
 
-**附录三：测试代码main.cpp的编译方法**
+<strong>附录三：测试代码main.cpp的编译方法</strong>
 
 g++ -Wall -fexceptions -march=core2 -O2 -std=c++11 -c ./main.cpp -o ./main.o
 

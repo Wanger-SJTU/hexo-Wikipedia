@@ -102,7 +102,7 @@ xmax = 0
 xexp = exp(0 - 0) = 1
 但正确结果应该是`exp(0 - 2) = e^-2`。 因为最终最大值是`2`。`j=1`时，当前看到`[0, 1]`，所以`xmax = 1, xexp = exp(1 - 1) = 1` ，但正确结果是`exp(1 - 2) = e^-1` 。`j = 2`时当前看到`[0, 1, -1]` , 所以`xmax = 1, xexp = exp(-1 - 1) = e^-2` , 但正确结果应该是`exp(-1 - 2) = e^-3` . `j = 3`时当前看到完整行`[0, 1, -1, 2]` , 所以`xmax = 2, xexp = exp(2 - 2) = 1` . 这一项才是正确的，因为naive fusion得到的`xsum[0]`是`1 + 1 + e^-2 + 1`, 而正确结果是`e^-2 + e^-1 + e^-3 + 1`, 不一样。这就是Fig. 1(e)里橙色部分展示的错误依赖：`xexp`太早读取了`xmax`，读到的是中间值，而不是最终值。传统tensor compiler看到这种依赖关系，会认为这个fusion不合法，于是拒绝融合。
 
-**而Neptune的核心思想是先打破依赖，允许fusion暂时算错，再用代数公式构造一个repair term把结果修复回来。**
+<strong>而Neptune的核心思想是先打破依赖，允许fusion暂时算错，再用代数公式构造一个repair term把结果修复回来。</strong>
 
 在softmax例子里，问题是前面的`xsum`是基于`old_max`算的，但现在`max`更新成了`new_max`。那么我们需要把旧的partial sum从`old_max`的坐标系转换到`new_max`的坐标系。修正公式是：
 
@@ -133,11 +133,11 @@ xmax_1 = new_max
 exp(old_max - new_max) = repair term
 Fig. 1(f)中绿色部分展示的就是修正项和修正后的`xsum`。
 
-**现在问题变成了为什么这个repair term是正确的？**
+<strong>现在问题变成了为什么这个repair term是正确的？</strong>
 
 还是看第 0 行`[0, 1, -1, 2]`，第0行读到0初始`old_max = -inf, xsum=0`读到`x = 0, new_max = 0`更新`xsum=exp(-inf - 0) * 0 + exp(0 - 0) = 1`，此时`xsum`表示`exp(0 - 当前max)=exp(0 - 0) = 1`，这是对当前前缀[0]来说是正确的。第1步读到1，现在`old_max = 0, xsum = 1`，读到`x = 1, new_max = 1`，注意旧的`xsum = 1`其实是`exp(0 - 0)`，但现在`max`变成了1，所以旧项应该变成`exp(0 - 1) = e^-1`，怎么把`exp(0 - 0)`变成`exp(0 - 1)`，只要乘`exp(0 - 1)`，也就是`exp(old_max - new_max)`，所以`xsum = exp(0 - 1) * 1 + exp(1 - 1) = e^-1 + 1`，这正是前缀[0, 1]在当前`max = 1`下的正确`sum`为`exp(0 - 1) + exp(1 - 1)`。第2步读到-1，现在`old_max = 1, new_max = max(1, -1) = 1`，`max`没变，所以repair factor是`exp(1 - 1) = 1`，于是`xsum = e^-1 + 1 + exp(-1 - 1) = e^-1 + 1 + e^-2`，这是前缀`[0, 1, -1]`在当前`max = 1`下的正确`sum`。第3步读到2，现在`old_max = 1, xsum = e^-1 + 1 + e^-2`，读到`x = 2, new_max = 2`，`max`从1变成2，所以旧的所有项都要从以1为`max`转成以2为`max`，修正因子`exp(1 - 2) = e^-1`，于是`xsum = e^-1 * (e^-1 + 1 + e^-2) + exp(2 - 2) = e^-2 + e^-1 + e^-3 + 1`，这就是原始程序的正确结果。所以Neptune修正后的fused程序虽然中间结果和原程序不一样，但最终结果是一样的。
 
-**Neptune的贡献在于它不是手写online softmax，而是把这种修正过程抽象成编译器transformation。**
+<strong>Neptune的贡献在于它不是手写online softmax，而是把这种修正过程抽象成编译器transformation。</strong>
 
 二、Neptune的一般化：f、g、h分别是什么？
 论文4.1节把这个例子推广到一般的reduction fusion。它考虑一种模式consumer reduction依赖producer reduction，写成公式：
@@ -250,7 +250,7 @@ for i in range(2):
 
 第五步保留producer reduction的前后两个版本。为了使用`h(xsum, old_max, new_max)`，必须同时知道旧的`xmax `和新的`xmax`。因为Neptune把 producer reduction 改成保留两个值`xmax_0 = old_max, xmax_1 = new_max`。最终生成Fig. 1(c)的正确融合程序。 
 
-**Rolling Update如何得到FA？**
+<strong>Rolling Update如何得到FA？</strong>
 
 Attention的核心公式可以写成：
 
@@ -349,7 +349,7 @@ decompose_reduction(...)
 ![](https://pic1.zhimg.com/v2-092dd187054f6604e9add6b441a53cb2_r.jpg)Neptune 不是完全自动发现所有 schedule。它仍然需要用户提供一个 high-level schedule template。但是相比手写 Triton FlashAttention kernel，这已经抽象了很多。论文提到，Tri Dao 的 Triton attention kernel 大约 650 行，而 Neptune 的 attention 输入是 38 行 compute definition + 28 行 schedule。
 
 七、Template-Guided Optimizer做什么
-Template-Guided Optimizer 会把 tensor expression 先转换成 **loop-scalar IR**。所谓 loop-scalar IR，就是普通的 loop nest + scalar expression。例如：
+Template-Guided Optimizer 会把 tensor expression 先转换成 <strong>loop-scalar IR</strong>。所谓 loop-scalar IR，就是普通的 loop nest + scalar expression。例如：
 
 for i in range(N):
     for j in range(M):
@@ -357,7 +357,7 @@ for i in range(N):
 这个层次适合做loop fusion；rolling update；split-k update；reduction fusion；algebraic repair，因为它能清楚的看到循环结构；reduction变量；依赖关系；标量表达式。Neptune 的两个核心 transformation：rolling update 和 split-k update就是在这个层次完成的。
 
 八、Neptune支持哪些算子
-Neptune 的核心适用对象是**存在多个 reduction，并且后面的 reduction 依赖前面的 reduction 的算子。**主要包括以下几类：attention；numerically stable l2 norm；rmsnorm with dynamic scaling quantization；performer（一种近似softmax attention的近似形式）
+Neptune 的核心适用对象是<strong>存在多个 reduction，并且后面的 reduction 依赖前面的 reduction 的算子。</strong>主要包括以下几类：attention；numerically stable l2 norm；rmsnorm with dynamic scaling quantization；performer（一种近似softmax attention的近似形式）
 
 九、局限性
 只能处理固定pattern的算子，通用性不足；Neptune理论证明基于实数语义和reducer的结合律，浮点数不严格满足结合律，所以实际数值正确性需要实验验证

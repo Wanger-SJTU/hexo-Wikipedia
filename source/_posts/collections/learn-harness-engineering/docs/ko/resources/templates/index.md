@@ -32,14 +32,14 @@ categories:
 
 루트 지침 파일입니다. 에이전트가 세션을 시작할 때 가장 먼저 읽는 파일로, 코드를 작성하기 전에 해야 할 일, 작업 방식, 마무리 방법 등 운영 규칙을 정의합니다.
 
-**사용 방법:**
+<strong>사용 방법:</strong>
 
 - 프로젝트 루트 디렉터리에 복사하십시오.
 - 시작 워크플로우 단계를 실제 프로젝트 경로와 명령어로 교체하십시오.
 - 팀의 컨벤션(convention)에 맞게 작업 규칙을 조정하십시오.
 - "완료 정의(Definition of Done)" 섹션은 가장 중요한 부분이므로 반드시 유지하십시오.
 
-**에이전트에게 제공하는 역할:**
+<strong>에이전트에게 제공하는 역할:</strong>
 
 - 작업 시작 전에 진행 상태와 기능(feature) 상태를 먼저 읽도록 지시합니다.
 - 한 번에 하나의 기능만 작업하도록 강제합니다.
@@ -52,7 +52,7 @@ Codex 또는 다른 에이전트에는 `AGENTS.md`를 사용하십시오. Claude
 
 시작 스크립트입니다. 의존성 설치, 검증(verification), 시작 명령 출력을 한 번에 실행합니다.
 
-**사용 방법:**
+<strong>사용 방법:</strong>
 
 - 프로젝트 루트에 복사하십시오.
 - 상단의 다음 세 변수를 편집하십시오.
@@ -61,7 +61,7 @@ Codex 또는 다른 에이전트에는 `AGENTS.md`를 사용하십시오. Claude
   - `START_CMD` — 개발 서버 시작 명령 (예: `npm run dev`)
 - 실행 권한을 부여하십시오: `chmod +x init.sh`
 
-**동작:**
+<strong>동작:</strong>
 
 1. 현재 디렉터리를 출력합니다(올바른 위치에서 실행되고 있는지 확인).
 2. 의존성을 설치합니다.
@@ -74,21 +74,21 @@ Codex 또는 다른 에이전트에는 `AGENTS.md`를 사용하십시오. Claude
 
 진행 로그(progress log)입니다. 모든 세션은 이 파일에 기록하고, 새 세션은 이 파일을 가장 먼저 읽습니다.
 
-**사용 방법:**
+<strong>사용 방법:</strong>
 
 - 프로젝트 루트에 복사하십시오.
 - "현재 검증된 상태(Current Verified State)" 섹션을 프로젝트 정보로 채우십시오.
 - 각 세션 후에 세션 레코드를 업데이트하십시오.
 
-**각 필드의 의미:**
+<strong>각 필드의 의미:</strong>
 
-- **현재 검증된 상태(Current Verified State)** — 프로젝트의 현재 상태를 나타내는 단일 진실 원천
+- <strong>현재 검증된 상태(Current Verified State)</strong> — 프로젝트의 현재 상태를 나타내는 단일 진실 원천
   - `Repository root directory` — 프로젝트 위치
   - `Standard startup path` — 프로젝트를 실행하는 명령
   - `Standard verification path` — 테스트 실행 명령
   - `Highest priority unfinished feature` — 다음 세션에서 작업할 항목
   - `Current blocker` — 막혀 있는 항목
-- **세션 레코드(Session Record)** — 세션당 하나의 항목
+- <strong>세션 레코드(Session Record)</strong> — 세션당 하나의 항목
   - `Goal` — 계획한 작업
   - `Completed` — 실제로 완료된 것
   - `Verification run` — 실행된 테스트
@@ -101,7 +101,7 @@ Codex 또는 다른 에이전트에는 `AGENTS.md`를 사용하십시오. Claude
 
 기능 추적기(feature tracker)입니다. 에이전트가 구현해야 할 모든 기능 목록과 상태(status), 검증 단계, 증거를 기계 가독 형식으로 관리합니다.
 
-**사용 방법:**
+<strong>사용 방법:</strong>
 
 - 프로젝트 루트에 복사하십시오.
 - 예시 기능을 실제 기능으로 교체하십시오.
@@ -116,7 +116,7 @@ Codex 또는 다른 에이전트에는 `AGENTS.md`를 사용하십시오. Claude
   - `evidence` — 검증 통과를 기록한 증거 (에이전트가 채움)
   - `notes` — 추가 맥락
 
-**상태(status) 규칙:**
+<strong>상태(status) 규칙:</strong>
 
 - `not_started` — 아직 작업하지 않음
 - `in_progress` — 현재 작업 중인 기능 (한 번에 하나만)
@@ -129,18 +129,18 @@ Codex 또는 다른 에이전트에는 `AGENTS.md`를 사용하십시오. Claude
 
 세션 간 간결한 핸드오프(handoff) 노트입니다. 세션이 종료되고 다음 세션이 빠르게 이어 받길 원할 때 사용하십시오.
 
-**사용 방법:**
+<strong>사용 방법:</strong>
 
 - 프로젝트 루트에 복사하십시오.
 - 각 세션 종료 시 채우십시오(에이전트가 채울 수도 있음).
 
-**각 섹션이 다루는 내용:**
+<strong>각 섹션이 다루는 내용:</strong>
 
-- **현재 검증된 것(Currently verified)** — 작동이 확인된 것과 실행된 검증
-- **이번 세션의 변경 사항(Changes this session)** — 변경된 코드 또는 인프라
-- **손상되거나 미검증된 것(Still broken or unverified)** — 알려진 문제와 위험 영역
-- **다음으로 최선의 행동(Next best action)** — 다음 세션에서 할 일과 건드리지 말아야 할 것
-- **명령어(Commands)** — 시작, 검증, 디버그 명령 참고용
+- <strong>현재 검증된 것(Currently verified)</strong> — 작동이 확인된 것과 실행된 검증
+- <strong>이번 세션의 변경 사항(Changes this session)</strong> — 변경된 코드 또는 인프라
+- <strong>손상되거나 미검증된 것(Still broken or unverified)</strong> — 알려진 문제와 위험 영역
+- <strong>다음으로 최선의 행동(Next best action)</strong> — 다음 세션에서 할 일과 건드리지 말아야 할 것
+- <strong>명령어(Commands)</strong> — 시작, 검증, 디버그 명령 참고용
 
 이 파일은 소규모 세션에서는 선택 사항입니다. 세션이 길거나 프로젝트에 여러 활성 영역이 있을 때 중요해집니다.
 
@@ -148,13 +148,13 @@ Codex 또는 다른 에이전트에는 `AGENTS.md`를 사용하십시오. Claude
 
 각 세션 종료 전에 실행할 체크리스트입니다. 다음 세션이 클린 상태(clean state)로 시작할 수 있도록 저장소가 좋은 상태인지 확인합니다.
 
-**사용 방법:**
+<strong>사용 방법:</strong>
 
 - 프로젝트 루트에 복사하십시오.
 - 세션을 닫기 전에 확인하십시오.
 - 에이전트도 세션 종료 루틴의 일부로 이 항목들을 점검해야 합니다.
 
-**확인 항목:**
+<strong>확인 항목:</strong>
 
 - 표준 시작 경로가 여전히 작동하는지
 - 표준 검증 경로가 여전히 실행되는지
@@ -167,28 +167,28 @@ Codex 또는 다른 에이전트에는 `AGENTS.md`를 사용하십시오. Claude
 
 에이전트 산출물(output) 품질을 검토하기 위한 점수표(scorecard)입니다. 세션 후 또는 프로젝트 마일스톤(milestone)에서 작업이 기준을 충족하는지 평가할 때 사용하십시오.
 
-**사용 방법:**
+<strong>사용 방법:</strong>
 
 - 프로젝트 루트에 복사하십시오.
 - 세션(또는 일련의 세션) 후 여섯 가지 차원에서 에이전트의 작업을 점수화하십시오.
 - 각 차원은 0-2점으로 채점합니다.
 
-**여섯 가지 차원:**
+<strong>여섯 가지 차원:</strong>
 
-1. **정확성(Correctness)** — 구현이 목표 동작과 일치하는가?
-2. **검증(Verification)** — 필요한 검사가 증거와 함께 실제로 실행되었는가?
-3. **범위 규율(Scope discipline)** — 에이전트가 선택한 기능 범위 안에 머물렀는가?
-4. **신뢰성(Reliability)** — 결과가 재시작 또는 재실행 후에도 유지되는가?
-5. **유지보수성(Maintainability)** — 코드와 문서가 다음 세션에서 충분히 이해 가능한가?
-6. **핸드오프 준비성(Handoff readiness)** — 새 세션이 저장소 산출물만으로 계속할 수 있는가?
+1. <strong>정확성(Correctness)</strong> — 구현이 목표 동작과 일치하는가?
+2. <strong>검증(Verification)</strong> — 필요한 검사가 증거와 함께 실제로 실행되었는가?
+3. <strong>범위 규율(Scope discipline)</strong> — 에이전트가 선택한 기능 범위 안에 머물렀는가?
+4. <strong>신뢰성(Reliability)</strong> — 결과가 재시작 또는 재실행 후에도 유지되는가?
+5. <strong>유지보수성(Maintainability)</strong> — 코드와 문서가 다음 세션에서 충분히 이해 가능한가?
+6. <strong>핸드오프 준비성(Handoff readiness)</strong> — 새 세션이 저장소 산출물만으로 계속할 수 있는가?
 
-**결론 옵션:**
+<strong>결론 옵션:</strong>
 
 - Accept — 기준 충족
 - Revise — 수락 전 수정 필요
 - Block — 먼저 해결해야 할 근본적인 문제 있음
 
-**중요: 평가자(evaluator)는 보정(calibration)이 필요합니다.** 기본 설정에서 에이전트는 자기 평가를 잘 하지 못합니다. 문제를 발견하고도 스스로 승인하는 방향으로 논리를 전개하는 경향이 있습니다. 다음과 같이 반복적으로 조정해야 합니다.
+<strong>중요: 평가자(evaluator)는 보정(calibration)이 필요합니다.</strong> 기본 설정에서 에이전트는 자기 평가를 잘 하지 못합니다. 문제를 발견하고도 스스로 승인하는 방향으로 논리를 전개하는 경향이 있습니다. 다음과 같이 반복적으로 조정해야 합니다.
 
 1. 완료된 스프린트(sprint)에 평가자(evaluator)를 실행합니다.
 2. 점수를 여러분 자신의 인간적 판단과 비교합니다.
@@ -202,33 +202,33 @@ Codex 또는 다른 에이전트에는 `AGENTS.md`를 사용하십시오. Claude
 
 프로젝트의 각 제품 도메인(domain)과 아키텍처(architecture) 레이어(layer)를 등급화하는 품질 스냅샷(snapshot)입니다. 개별 세션 산출물이 아닌 코드베이스(codebase) 전체의 건전성을 시간에 따라 추적합니다.
 
-**사용 방법:**
+<strong>사용 방법:</strong>
 
 - 프로젝트 루트에 복사하십시오.
 - 세션 시작 전: 코드베이스에서 가장 약한 부분을 파악하기 위해 읽으십시오.
 - 세션 후: 변경된 사항에 따라 등급을 업데이트하십시오.
 - 시간이 지남에 따라: 스냅샷을 비교하여 어떤 하네스(harness) 변경이 실제로 코드베이스 건전성을 개선했는지 확인하십시오.
 
-**등급화 항목:**
+<strong>등급화 항목:</strong>
 
-- **제품 도메인(Product domains)** (예: 문서 가져오기, Q&A 흐름, 색인화): 각 도메인은 검증 상태, 에이전트 가독성(agent legibility), 테스트 안정성, 주요 격차에 대한 등급(A-D)을 받습니다.
-- **아키텍처 레이어(Architectural layers)** (예: 메인 프로세스, preload, renderer, services): 각 레이어는 경계 적용(boundary enforcement)과 에이전트 가독성에 대한 등급을 받습니다.
+- <strong>제품 도메인(Product domains)</strong> (예: 문서 가져오기, Q&A 흐름, 색인화): 각 도메인은 검증 상태, 에이전트 가독성(agent legibility), 테스트 안정성, 주요 격차에 대한 등급(A-D)을 받습니다.
+- <strong>아키텍처 레이어(Architectural layers)</strong> (예: 메인 프로세스, preload, renderer, services): 각 레이어는 경계 적용(boundary enforcement)과 에이전트 가독성에 대한 등급을 받습니다.
 
-**중요성:**
+<strong>중요성:</strong>
 
 평가자 루브릭은 개별 에이전트 산출물을 점수화합니다. 품질 문서는 코드베이스 자체를 점수화합니다. 두 문서는 서로 다른 질문에 답합니다.
 
 - 평가자 루브릭(evaluator rubric): "에이전트가 이번 세션에서 좋은 작업을 했는가?"
 - 품질 문서(quality document): "프로젝트가 시간이 지남에 따라 강해지고 있는가, 약해지고 있는가?"
 
-**업데이트 시점:**
+<strong>업데이트 시점:</strong>
 
 - 각 중요한 세션 후
 - 벤치마크(benchmark) 비교 전
 - 정리 또는 단순화 작업 후
 - 새 에이전트 또는 모델을 프로젝트에 온보딩(onboarding)할 때
 
-**하네스 단순화 연계:**
+<strong>하네스 단순화 연계:</strong>
 
 품질 문서는 하네스(harness) 단순화도 지원합니다. 모든 하네스 구성 요소는 모델이 할 수 없는 것에 대한 가정을 내포합니다. 모델이 발전함에 따라 이러한 가정은 낡아집니다. 구성 요소가 여전히 필요한지 확인하려면 다음을 수행하십시오.
 

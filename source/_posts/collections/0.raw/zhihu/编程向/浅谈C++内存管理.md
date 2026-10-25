@@ -15,14 +15,14 @@ source_url: https://zhuanlan.zhihu.com/p/51855842
 ---
 
 
-### **1.从内存对齐讲起**
+### <strong>1.从内存对齐讲起</strong>
 
 对于结构体变量内存对齐遵循以下[三个原则](https://www.zhihu.com/question/27862634/answer/208895189)：
 
-- **变量**的**起始地址**能够被其对齐值整除，结构体变量的对齐值为最宽的成员大小。
-- 结构体每个成员相对于**起始地址的偏移**能够被其**自身对齐值整除**，如果不能则在**前一个成员后面**补充字节。
-- 结构体总体大小能够**被最宽的成员的大小**整除，如不能则在**后面**补充字节。
-此外还有编译器的默认对齐值，一般默认对齐值为4(结构体的**实际**对齐值会取结构体对齐值和编译器默认对齐值中较小的那一个)。
+- <strong>变量</strong>的<strong>起始地址</strong>能够被其对齐值整除，结构体变量的对齐值为最宽的成员大小。
+- 结构体每个成员相对于<strong>起始地址的偏移</strong>能够被其<strong>自身对齐值整除</strong>，如果不能则在<strong>前一个成员后面</strong>补充字节。
+- 结构体总体大小能够<strong>被最宽的成员的大小</strong>整除，如不能则在<strong>后面</strong>补充字节。
+此外还有编译器的默认对齐值，一般默认对齐值为4(结构体的<strong>实际</strong>对齐值会取结构体对齐值和编译器默认对齐值中较小的那一个)。
 
 那么为什么要内存对齐？
 
@@ -56,7 +56,7 @@ C++中可以使用alignof获取类型的对齐值，char类型的对齐值为1�
 
 现在考虑一个double类型的数组(double类型为8字节对齐)， 其在内存中所处的位置如下：
 
-![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_3552c0c25509.jpg)
+![](/images/collections/0.raw/zhihu/%E7%BC%96%E7%A8%8B%E5%90%91/asset/img_3552c0c25509.jpg)
 
 数组的首地址为2，根据原则1数组未对齐。若CPU每次从内存中为8字节整数倍的地址开始读入8字节的数据，则每次从未对齐的数组中读取一个成员都要进行两次读取操作，而从对齐的数组中读取则只需要一次读取操作，数组对齐时读取效率有较大提升（虽然现在也有很多处理器支持非对齐的读取，但是还是推荐对齐)。
 
@@ -68,7 +68,7 @@ a.windows内存管理机制
 
 Windows系统中的内存分配机制如下图所示：
 
-![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_c53e47521063.jpg)
+![](/images/collections/0.raw/zhihu/%E7%BC%96%E7%A8%8B%E5%90%91/asset/img_c53e47521063.jpg)
 
 Windows内存管理机制操作系统将Physical Memory映射为连续的Virtual Memory(通过TLB)，并提供了一些与Virtual Memory相关的API(VirtualAlloc，VirtualFree...)对Virtual Memory进行管理，在Virtual Memory API之上又构建了Heap Memory Memory API(HeapALloc...)，而C的内存管理机制(malloc，free)就构建在 Heap Memory Memory API之上。
 
@@ -78,7 +78,7 @@ b.Linux内存管理机制
 
 Linux中可以借助brk或mmap函数从用户空间中申请连续内存。
 
-![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_f119eea7f15a.jpg)
+![](/images/collections/0.raw/zhihu/%E7%BC%96%E7%A8%8B%E5%90%91/asset/img_f119eea7f15a.jpg)
 
 Linux寻址空间(32位)，用户空间为3GB，内核空间为1GB通过调用brk(0)可以获取指向用户空间某一地址的指针，随后调用brk(len)可以在原指针地址的基础上移动该指针以达到申请或释放内存的目的。而mmap则是直接在用户空间中申请一块连续的空闲内存。(更详细的Linux内存分配机制可以参见1)
 
@@ -86,7 +86,7 @@ c.C内存管理机制
 
 C/C++程序的内存布局如下：
 
-![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_698528eae940.jpg)
+![](/images/collections/0.raw/zhihu/%E7%BC%96%E7%A8%8B%E5%90%91/asset/img_698528eae940.jpg)
 
 C/C++ Memory Layout从Code Segment到Stack的内存地址均位于用户空间中，其地址空间由低到高。其中：
 
@@ -115,7 +115,7 @@ C/C++ Memory Layout从Code Segment到Stack的内存地址均位于用户空间�
 
 栈由高地址向低地址增长。
 
-### **3.Malloc的简单实现**
+### <strong>3.Malloc的简单实现</strong>
 
 本节将会介绍如何实现一个简单的malloc，这里采用的内存管理方式为：先通过_aligned_malloc申请一块8字节对齐的内存(也可以采用VirtualAlloc分配)，然后实现malloc和free函数对这块内存进行管理。
 
@@ -133,7 +133,7 @@ struct BlockNode
 
 Header中记录了指向下一块内存的指针和一个size_t类型的flag，flag的前4位中记录了一个Magic Number用来标记这块内存是否由我们所实现的Malloc申请得到的，而其它位记录了这块内存数据区的大小。
 
-![](/images/collections/0.raw/zhihu/%25E7%25BC%2596%25E7%25A8%258B%25E5%2590%2591/asset/img_317a86334731.jpg)
+![](/images/collections/0.raw/zhihu/%E7%BC%96%E7%A8%8B%E5%90%91/asset/img_317a86334731.jpg)
 
 Header的结构这里定义了一些简单的函数来帮助读取或设置flag中的信息：
 
@@ -220,7 +220,7 @@ m_numAllocations记录了申请和释放内存的次数(每次申请内存时加
 	BEST_FIT
 };	
 
-bool GetProperBlock(size_t pSize, SEARCH_MODE pMode, BlockNode **pPrevNode, BlockNode **pFoundNode)
+bool GetProperBlock(size_t pSize, SEARCH_MODE pMode, BlockNode <strong>pPrevNode, BlockNode</strong>pFoundNode)
 {
 	if (pMode == SEARCH_MODE::FIRST_FIT)
 	{
@@ -232,7 +232,7 @@ bool GetProperBlock(size_t pSize, SEARCH_MODE pMode, BlockNode **pPrevNode, Bloc
 
 First fit的查找实现如下：
 
-`	bool GetFirstFitBlock(size_t pSize, BlockNode **pPrevNode, BlockNode **pFoundNode)
+`	bool GetFirstFitBlock(size_t pSize, BlockNode <strong>pPrevNode, BlockNode</strong>pFoundNode)
 	{
 		BlockNode *prev = nullptr;
 		BlockNode *curr = m_freeList;
@@ -257,7 +257,7 @@ First fit的查找实现如下：
 
 Best fit的查找实现如下：
 
-`	bool GetBestFitBlock(size_t pSize, BlockNode **pPrevNode, BlockNode **pFoundNode)
+`	bool GetBestFitBlock(size_t pSize, BlockNode <strong>pPrevNode, BlockNode</strong>pFoundNode)
 	{
 		BlockNode *prev = nullptr;
 		BlockNode *curr = m_freeList;
@@ -473,7 +473,7 @@ ps:什么是内存碎片？
 
 如果如果每次分配8字节内存，且每相邻的两块内存一个被使用而另一个空闲，此时总的空闲内存远大于8字节(空闲内存为：8*N，N为空闲块的数量)，但是此时却无法再分配一个16字节的内存，因为所有空闲块都不是连续的。
 
-### **4.C++new，delete的原理与实现**
+### <strong>4.C++new，delete的原理与实现</strong>
 
 C++中的new有三种形态：
 

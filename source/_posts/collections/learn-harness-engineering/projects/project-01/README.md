@@ -19,8 +19,8 @@ Compare how a weak harness (prompt only) and an explicit harness (rule files plu
 
 | Directory | Meaning |
 |------|------|
-| `starter/` | **Starting point**: only a vague `task-prompt.md`, with no AGENTS.md and no feature_list.json. This is the "weak harness" version you give to the agent. |
-| `solution/` | **Reference implementation**: the same application code, but with complete harness files (AGENTS.md, feature_list.json, init.sh, claude-progress.md). This is the "explicit harness" version. |
+| `starter/` | <strong>Starting point</strong>: only a vague `task-prompt.md`, with no AGENTS.md and no feature_list.json. This is the "weak harness" version you give to the agent. |
+| `solution/` | <strong>Reference implementation</strong>: the same application code, but with complete harness files (AGENTS.md, feature_list.json, init.sh, claude-progress.md). This is the "explicit harness" version. |
 
 ## How to Use
 

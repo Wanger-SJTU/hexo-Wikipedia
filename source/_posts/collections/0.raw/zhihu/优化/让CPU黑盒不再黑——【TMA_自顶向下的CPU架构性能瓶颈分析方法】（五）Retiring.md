@@ -21,7 +21,7 @@ source_url: https://zhuanlan.zhihu.com/p/64576459
 
 [](https://zhuanlan.zhihu.com/p/64529137)
 
-![](/images/collections/0.raw/zhihu/%25E4%25BC%2598%25E5%258C%2596/asset/img_5d7e627eb5aa.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BC%98%E5%8C%96/asset/img_5d7e627eb5aa.jpg)
 
 Retiring分支上的各个节点对于Retiring这个大类，代表的是Retired的uops数量占所有slots数量的比重。现代x86 CPU内部会将CISC指令转换成RISC指令来执行，变成一条条uops，但是有些复杂的CISC指令，并不会通过Frontend中的Decoder来得到相应的uops，而是通过Microcode Sequencer (MS) unit来生成相应的uops指令。故在Retiring这个大类中，划分成了Base和Microcode Sequencer两个子类，分别代表传统Decoder生成的uops和由MS生成的uops所占的比重。
 
@@ -29,17 +29,17 @@ Retiring分支上的各个节点对于Retiring这个大类，代表的是Retired
 
 对于该分类的计算公式如下：
 
-> self.val = EV("UOPS_RETIRED.RETIRE_SLOTS**", 1) / **SLOTS**
+> self.val = EV("UOPS_RETIRED.RETIRE_SLOTS<strong>", 1) /</strong>SLOTS**
 
-对于公式中的SLOTS函数的计算公式，即如何求得Pipeline Slots的总数量，由于前面有进行过讲解，所以这里将不再赘述。我们只需要关注**UOPS_RETIRED.RETIRE_SLOTS**事件所统计的内容，通过查阅Intel的手册，对该事件的解释是：统计所有的Retired Slots数量。用这个值除以总的Slots数量，即可得到被有效利用的Slots所占的比重，IPC的值越大，Retiring所占比重将会越高。
+对于公式中的SLOTS函数的计算公式，即如何求得Pipeline Slots的总数量，由于前面有进行过讲解，所以这里将不再赘述。我们只需要关注<strong>UOPS_RETIRED.RETIRE_SLOTS</strong>事件所统计的内容，通过查阅Intel的手册，对该事件的解释是：统计所有的Retired Slots数量。用这个值除以总的Slots数量，即可得到被有效利用的Slots所占的比重，IPC的值越大，Retiring所占比重将会越高。
 
 #### Microcode_Sequencer：
 
 Microcode_Sequencer子类所代表的含义是来自MS（Microcode Sequencer）产生的有效uops数量占所有uops数量的比重大小。MS用于解析默认decoders不支持的CISC指令，比如对string重复执行move操作的指令，CPUID指令等，这些类型的指令均由MS生成。下面我们来看一下该类别具体的计算公式：
 
-**self.val = Retire_Uop_Fraction** * EV("**IDQ.MS_UOPS**", 2) / **SLOTS**在公式中，调用了**Retire_Uop_Fraction**函数以计算retired uops所占的一个比重大小，我们先来看下该函数具体的计算公式：
+<strong>self.val = Retire_Uop_Fraction</strong> * EV("<strong>IDQ.MS_UOPS</strong>", 2) / <strong>SLOTS</strong>在公式中，调用了<strong>Retire_Uop_Fraction</strong>函数以计算retired uops所占的一个比重大小，我们先来看下该函数具体的计算公式：
 
-**def Retire_Uop_Fraction**(self, EV, level):** return EV("UOPS_RETIRED.RETIRE_SLOTS**", level) / EV("**UOPS_ISSUED.ANY**", level)可以很直观地了解到，**Retire_Uop_Fraction**，即Retired uops占所有issued uops的比例，可以由UOPS_RETIRED.RETIRE_SLOTS除以UOPS_ISSUED.ANY，即Retired uops数量除以Issued uops数量直接得到。然后再用这个系数乘以**IDQ.MS_UOPS**事件（该事件表达的含义是由Microcode Sequencer (MS) delivered的uops数量），便可以近似得到由MS issued且最终Retired的uops数量。最后用这个近似值除以总的Slots数量，便是MS这个分类所占的比重大小。
+<strong>def Retire_Uop_Fraction</strong>(self, EV, level):<strong>return EV("UOPS_RETIRED.RETIRE_SLOTS</strong>", level) / EV("<strong>UOPS_ISSUED.ANY</strong>", level)可以很直观地了解到，<strong>Retire_Uop_Fraction</strong>，即Retired uops占所有issued uops的比例，可以由UOPS_RETIRED.RETIRE_SLOTS除以UOPS_ISSUED.ANY，即Retired uops数量除以Issued uops数量直接得到。然后再用这个系数乘以<strong>IDQ.MS_UOPS</strong>事件（该事件表达的含义是由Microcode Sequencer (MS) delivered的uops数量），便可以近似得到由MS issued且最终Retired的uops数量。最后用这个近似值除以总的Slots数量，便是MS这个分类所占的比重大小。
 
 **
 
@@ -49,7 +49,7 @@ Microcode_Sequencer子类所代表的含义是来自MS（Microcode Sequencer）�
 
 对于Assist类别，具体的计算公式如下：
 
-** self.val = Avg_Assist_Cost ***(EV("**FP_ASSIST.ANY**", 3) + EV("**OTHER_ASSISTS.ANY**", 3)) / **SLOTS**(self, EV, 3)这里使用了一个统计平均值**Avg_Assist_Cost***，*即每次Assist平均消耗的slots数量，在skl_clinet_ratios中，该常数的定义为100，即认为assist操作平均会使用100条uops。然后再用这个平均值乘以FP_ASSIST与OTHER_ASSISTS两个事件的和，即用每次操作的平均值乘以发生Assists的总次数，以得到Assists操作总共消耗的slots数量。最后用这个值除以总的slots数，以得到对应的比重大小。
+<strong>self.val = Avg_Assist_Cost</strong>*(EV("<strong>FP_ASSIST.ANY</strong>", 3) + EV("<strong>OTHER_ASSISTS.ANY</strong>", 3)) / <strong>SLOTS</strong>(self, EV, 3)这里使用了一个统计平均值<strong>Avg_Assist_Cost</strong>*，*即每次Assist平均消耗的slots数量，在skl_clinet_ratios中，该常数的定义为100，即认为assist操作平均会使用100条uops。然后再用这个平均值乘以FP_ASSIST与OTHER_ASSISTS两个事件的和，即用每次操作的平均值乘以发生Assists的总次数，以得到Assists操作总共消耗的slots数量。最后用这个值除以总的slots数，以得到对应的比重大小。
 
 #### Base：
 
@@ -57,7 +57,7 @@ Microcode_Sequencer子类所代表的含义是来自MS（Microcode Sequencer）�
 
 对于Base这个节点，具体的计算公式如下：
 
-** self.val = Retiring** - **Microcode_Sequencer**在了解父亲节点和兄弟节点的比重后，该节点的值只需使用父节点减去兄弟节点便可得出。对于该节点的下一层级，分为浮点类型指令和其他类型指令两个类别。
+<strong>self.val = Retiring</strong> - <strong>Microcode_Sequencer</strong>在了解父亲节点和兄弟节点的比重后，该节点的值只需使用父节点减去兄弟节点便可得出。对于该节点的下一层级，分为浮点类型指令和其他类型指令两个类别。
 
 **
 
@@ -65,7 +65,7 @@ Microcode_Sequencer子类所代表的含义是来自MS（Microcode Sequencer）�
 
 该类别表示的是被执行且最终Retired的浮点类型uops所占的比重大小，具体的计算公式如下：
 
-**self.val = self.X87_Use**.compute(EV) + self.**FP_Scalar**.compute(EV) + self.**FP_Vector**.compute(EV)该节点的值为其三个子节点的值之和，所以只要我们了解了其子节点的计算方法后，便可以得知该节点具体的计算公式和对应的值。在这个节点下面，划分了三个子节点，分别表示x87指令、标量浮点类型指令和矢量浮点类型所占的比重大小，接下来，将一一讲解这三个子节点。
+<strong>self.val = self.X87_Use</strong>.compute(EV) + self.<strong>FP_Scalar</strong>.compute(EV) + self.<strong>FP_Vector</strong>.compute(EV)该节点的值为其三个子节点的值之和，所以只要我们了解了其子节点的计算方法后，便可以得知该节点具体的计算公式和对应的值。在这个节点下面，划分了三个子节点，分别表示x87指令、标量浮点类型指令和矢量浮点类型所占的比重大小，接下来，将一一讲解这三个子节点。
 
 **
 
@@ -73,7 +73,7 @@ Microcode_Sequencer子类所代表的含义是来自MS（Microcode Sequencer）�
 
 该类别代表的是历史遗留的x87指令类型所占的比重大小，虽然当代的x86 CPU还支持x87指令集，但由于其效率不如现代的矢量指令集，所以最好能用AVX或SSE指令集替代x87指令集。对于该类别，具体的计算公式如下：
 
-** self.val = EV("UOPS_EXECUTED.X87**", 4) / EV("**UOPS_EXECUTED.THREAD**", 4)可能由于没有Counter去统计Retired的x87 uops数量，所以这里使用的是UOPS_EXECUTED.X87事件，即执行的x87 uops数量。公式中，用该统计值除以总共执行uops的数量，以近似得到x87的比重。
+<strong>self.val = EV("UOPS_EXECUTED.X87</strong>", 4) / EV("<strong>UOPS_EXECUTED.THREAD</strong>", 4)可能由于没有Counter去统计Retired的x87 uops数量，所以这里使用的是UOPS_EXECUTED.X87事件，即执行的x87 uops数量。公式中，用该统计值除以总共执行uops的数量，以近似得到x87的比重。
 
 **
 
@@ -81,7 +81,7 @@ Microcode_Sequencer子类所代表的含义是来自MS（Microcode Sequencer）�
 
 该类别表示的是标量浮点类型uops的比重大小，若此类别的值大于一定值时，应该研究是什么限制了编译器生成相应的矢量浮点类型指令，而使用了大量的标量浮点类型。对于该节点，具体的计算公式如下：
 
-** self.val = (EV("FP_ARITH_INST_RETIRED.SCALAR_SINGLE**", 4) + EV("**FP_ARITH_INST_RETIRED.SCALAR_DOUBLE**", 4)) / EV("**UOPS_RETIRED.RETIRE_SLOTS**", 4)对于公式中的FP_ARITH_INST_RETIRED.SCALAR_SINGLE和FP_ARITH_INST_RETIRED.SCALAR_DOUBLE，分别代表的是Retired的SSE/AVX标量单精度和双精度浮点类型指令数量，两者之和便是Retired的标量浮点类型指令数量。然后再用该值除以总的Retired uops数量，得到相应的比重。
+<strong>self.val = (EV("FP_ARITH_INST_RETIRED.SCALAR_SINGLE</strong>", 4) + EV("<strong>FP_ARITH_INST_RETIRED.SCALAR_DOUBLE</strong>", 4)) / EV("<strong>UOPS_RETIRED.RETIRE_SLOTS</strong>", 4)对于公式中的FP_ARITH_INST_RETIRED.SCALAR_SINGLE和FP_ARITH_INST_RETIRED.SCALAR_DOUBLE，分别代表的是Retired的SSE/AVX标量单精度和双精度浮点类型指令数量，两者之和便是Retired的标量浮点类型指令数量。然后再用该值除以总的Retired uops数量，得到相应的比重。
 
 **
 
@@ -89,7 +89,7 @@ Microcode_Sequencer子类所代表的含义是来自MS（Microcode Sequencer）�
 
 除了标量的浮点类型外，还有矢量的浮点类型，对应的计算公式如下：
 
-** self.val = (EV("FP_ARITH_INST_RETIRED.128B_PACKED_DOUBLE**", 4) + EV("**FP_ARITH_INST_RETIRED.128B_PACKED_SINGLE**", 4) + EV("**FP_ARITH_INST_RETIRED.256B_PACKED_DOUBLE**", 4) + EV("**FP_ARITH_INST_RETIRED.256B_PACKED_SINGLE**", 4)) / EV("**UOPS_RETIRED.RETIRE_SLOTS**", 4)与上个公式类似，先是用四个事件的统计值之和，以得到总的矢量浮点类型uops数量，这四个事件分别统计的是SSE/AVX 128-bit packed和256-bit packed下的单精度和双精度Retired的指令数量。用这四者之和除以总的Retired uops数量，便可以得到这个节点的比重大小。
+<strong>self.val = (EV("FP_ARITH_INST_RETIRED.128B_PACKED_DOUBLE</strong>", 4) + EV("<strong>FP_ARITH_INST_RETIRED.128B_PACKED_SINGLE</strong>", 4) + EV("<strong>FP_ARITH_INST_RETIRED.256B_PACKED_DOUBLE</strong>", 4) + EV("<strong>FP_ARITH_INST_RETIRED.256B_PACKED_SINGLE</strong>", 4)) / EV("<strong>UOPS_RETIRED.RETIRE_SLOTS</strong>", 4)与上个公式类似，先是用四个事件的统计值之和，以得到总的矢量浮点类型uops数量，这四个事件分别统计的是SSE/AVX 128-bit packed和256-bit packed下的单精度和双精度Retired的指令数量。用这四者之和除以总的Retired uops数量，便可以得到这个节点的比重大小。
 
 **
 

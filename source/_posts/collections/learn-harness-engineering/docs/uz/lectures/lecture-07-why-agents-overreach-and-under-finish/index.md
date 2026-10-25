@@ -65,12 +65,12 @@ flowchart TB
 
 ## Asosiy tushunchalar
 
-- **Haddan oshish (Overreach)**: Agent bitta sessiyada optimal miqdordan koʻra koʻproq vazifalarni faollashtirishi. Buni oʻlchash mumkin — bittayam end-to-endʼdan oʻtmagan holatda 5 ta funksiyani bajarish bu haddan oshishdir.
-- **Oxiriga yetkazmaslik (Under-finish)**: Barcha faollashtirilgan vazifalar ichidan, end-to-end tekshiruvidan muvaffaqiyatli oʻtgan vazifalarning ulushi belgilangan meʼyordan (threshold) tushib ketishi. Kod yozilgan, ammo testlar oʻtmagan holat bu — oxiriga yetkazmaslikdir.
-- **WIP chegarasi (WIP Limit / Work-in-Progress Limit)**: Kanban metodologiyasidan olingan. Asosiy gʻoya: bir vaqtning oʻzida qancha vazifa jarayonda ekanligini cheklash. Agentlar uchun WIP=1 eng xavfsiz standart (default) hisoblanadi — keyingisini boshlashdan oldin bittasini tugatish. Shved stoli (buffet) kabi — likopchangizga hamma narsani uyavermang, bitta likopchani tugating, soʻngra keyingisi uchun qaytib boring.
-- **Bajarilganlik dalili (Completion Evidence)**: Vazifaning “jarayonda” (in progress) bosqichidan “tugatildi” (done) bosqichiga oʻtishi uchun qanoatlantirishi kerak boʻlgan tekshirilishi mumkin boʻlgan shart. Busiz agentlar “testlardan muvaffaqiyatli oʻtdi” oʻrniga “kod yaxshi koʻrinyapti”ni qabul qilishadi.
-- **Skoup yuzasi (Scope Surface)**: Har bir tugun ishlash birligi va chekkalar (edges) qaramliklar (dependencies) boʻlgan DAG (Directed Acyclic Graph) strukturasi. Holatlar toʻrtta bilan cheklangan: not_started (boshlanmagan), active (faol), blocked (toʻsilgan), passing (oʻtgan).
-- **Tugatish bosimi (Completion Pressure)**: Harnessʼning WIP chegaralari va bajarilganlik dalillari talablari orqali agentga oʻtkazadigan cheklovchi kuchi boʻlib, u agentni yangisini boshlashdan oldin joriy vazifani yakunlashiga majbur qiladi.
+- <strong>Haddan oshish (Overreach)</strong>: Agent bitta sessiyada optimal miqdordan koʻra koʻproq vazifalarni faollashtirishi. Buni oʻlchash mumkin — bittayam end-to-endʼdan oʻtmagan holatda 5 ta funksiyani bajarish bu haddan oshishdir.
+- <strong>Oxiriga yetkazmaslik (Under-finish)</strong>: Barcha faollashtirilgan vazifalar ichidan, end-to-end tekshiruvidan muvaffaqiyatli oʻtgan vazifalarning ulushi belgilangan meʼyordan (threshold) tushib ketishi. Kod yozilgan, ammo testlar oʻtmagan holat bu — oxiriga yetkazmaslikdir.
+- <strong>WIP chegarasi (WIP Limit / Work-in-Progress Limit)</strong>: Kanban metodologiyasidan olingan. Asosiy gʻoya: bir vaqtning oʻzida qancha vazifa jarayonda ekanligini cheklash. Agentlar uchun WIP=1 eng xavfsiz standart (default) hisoblanadi — keyingisini boshlashdan oldin bittasini tugatish. Shved stoli (buffet) kabi — likopchangizga hamma narsani uyavermang, bitta likopchani tugating, soʻngra keyingisi uchun qaytib boring.
+- <strong>Bajarilganlik dalili (Completion Evidence)</strong>: Vazifaning “jarayonda” (in progress) bosqichidan “tugatildi” (done) bosqichiga oʻtishi uchun qanoatlantirishi kerak boʻlgan tekshirilishi mumkin boʻlgan shart. Busiz agentlar “testlardan muvaffaqiyatli oʻtdi” oʻrniga “kod yaxshi koʻrinyapti”ni qabul qilishadi.
+- <strong>Skoup yuzasi (Scope Surface)</strong>: Har bir tugun ishlash birligi va chekkalar (edges) qaramliklar (dependencies) boʻlgan DAG (Directed Acyclic Graph) strukturasi. Holatlar toʻrtta bilan cheklangan: not_started (boshlanmagan), active (faol), blocked (toʻsilgan), passing (oʻtgan).
+- <strong>Tugatish bosimi (Completion Pressure)</strong>: Harnessʼning WIP chegaralari va bajarilganlik dalillari talablari orqali agentga oʻtkazadigan cheklovchi kuchi boʻlib, u agentni yangisini boshlashdan oldin joriy vazifani yakunlashiga majbur qiladi.
 
 ## Haddan oshish va oxiriga yetkazmaslik oʻzaro bogʻliqdir (Symbiotic)
 
@@ -84,7 +84,7 @@ Bu insonlar olamida ham qadimiy muammo — Steve McConnell oʻzining *Rapid Deve
 
 ### 1. WIP=1 ni qatʼiy talab qiling
 
-Bu eng bevosita va samarali usul. Harnessʼingizda agentga ochiq-oydin shunday deng: **har qanday vaqtda faqat bitta vazifa “faol” (active) holatda boʻlishiga ruxsat beriladi.** Claude Codeʼning CLAUDE.md yoki Codexʼning AGENTS.md faylida shunday yozing:
+Bu eng bevosita va samarali usul. Harnessʼingizda agentga ochiq-oydin shunday deng: <strong>har qanday vaqtda faqat bitta vazifa “faol” (active) holatda boʻlishiga ruxsat beriladi.</strong> Claude Codeʼning CLAUDE.md yoki Codexʼning AGENTS.md faylida shunday yozing:
 
 ```
 ## Ish qoidalari
@@ -117,19 +117,19 @@ Harness VCR (Verified Completion Rate) ni doimiy kuzatib borishi kerak = tekshir
 
 8 ta funksiyaga ega REST API loyihasi, taqqoslangan ikkita strategiya:
 
-**Shved stoli rejimi (cheklovsiz)**: Agent 1-sessiyada 5 ta funksiyani bir vaqtda faollashtiradi. 12 ta faylda ~800 qator kod yozadi. End-to-end testlaridan oʻtish darajasi: 20% — faqat foydalanuvchi roʻyxatdan oʻtish qismi ishlaydi. Qolgan 4 ta funksiya: maʼlumotlar bazasi sxemasi yaratilgan lekin validatsiya (validation) mantigʻi yoʻq, marshrutlar (routes) belgilangan lekin xato formatda javob qaytarmoqda. Bu xuddi oltita taomni bir vaqtda pishirayotgan odamga oʻxshaydi — ulardan faqat bittasigina zoʻrgʻa yeyishga yaroqli boʻlgan. 3-sessiya oxiriga kelib, 8 ta funksiyadan faqat 3 tasi tugatilgan.
+<strong>Shved stoli rejimi (cheklovsiz)</strong>: Agent 1-sessiyada 5 ta funksiyani bir vaqtda faollashtiradi. 12 ta faylda ~800 qator kod yozadi. End-to-end testlaridan oʻtish darajasi: 20% — faqat foydalanuvchi roʻyxatdan oʻtish qismi ishlaydi. Qolgan 4 ta funksiya: maʼlumotlar bazasi sxemasi yaratilgan lekin validatsiya (validation) mantigʻi yoʻq, marshrutlar (routes) belgilangan lekin xato formatda javob qaytarmoqda. Bu xuddi oltita taomni bir vaqtda pishirayotgan odamga oʻxshaydi — ulardan faqat bittasigina zoʻrgʻa yeyishga yaroqli boʻlgan. 3-sessiya oxiriga kelib, 8 ta funksiyadan faqat 3 tasi tugatilgan.
 
-**Bitta likopcha rejimi (WIP=1)**: Agent 1-sessiyada faqat foydalanuvchi roʻyxatdan oʻtishi ustida ishlaydi. 4 ta faylda ~200 qator kod yozadi. End-to-end testlar: 100% oʻtmoqda. Toza, tekshirilgan implementatsiyani commit qiladi. 4-sessiya oxiriga kelib, 8 ta funksiyadan 7 tasi yakunlanadi (8-chisi tashqi qaramlik (external dependency) sababli toʻxtatib qoʻyilgan).
+<strong>Bitta likopcha rejimi (WIP=1)</strong>: Agent 1-sessiyada faqat foydalanuvchi roʻyxatdan oʻtishi ustida ishlaydi. 4 ta faylda ~200 qator kod yozadi. End-to-end testlar: 100% oʻtmoqda. Toza, tekshirilgan implementatsiyani commit qiladi. 4-sessiya oxiriga kelib, 8 ta funksiyadan 7 tasi yakunlanadi (8-chisi tashqi qaramlik (external dependency) sababli toʻxtatib qoʻyilgan).
 
 Natija: umumiy yozilgan kod kamroq (WIP=1 da 800 qator, shved stoli rejimida 1200 qator), lekin samaraliroq. Yakunlash darajasi: 87.5% va 37.5%. Bir vaqtning oʻzida bitta tishlamdan olsangiz, haqiqatda koʻproq yeysiz.
 
 ## Asosiy xulosalar
 
-- **WIP=1 bu agent harnessʼlari uchun standart xavfsiz sozlamadir** — bittasini tugating, keyin boshqasini boshlang; parallel bajarishga urinmang. Bir tishlashda semirib qolmaysiz.
-- **Bajarilganlik dalili bajarilishi (executable) mumkin boʻlishi shart** — “kod yaxshi koʻrinyapti” degani hisobga oʻtmaydi; “curl 201 qaytardi” degani oʻtadi.
-- **Skoup yuzasi (scope surface) tashqi fayl sifatida yozilishi shart** — nafaqat suhbatda aytib oʻtilishi, balki repoda mashina oʻqiy oladigan formatda yozib borilishi kerak.
-- **Haddan oshish va oxiriga yetkazmaslik oʻzaro bogʻliqdir** — birini hal qilish ikkinchisini ham hal qiladi.
-- **“Kamroq qil, lekin tugat” har doim “koʻproq qil, lekin chala tashlab ket”dan ustunroqdir** — agent tomonidan yozilgan kod qatorlari va funksiyalarning tugallanish darajasi bir-biriga teskari korrelyatsiyaga ega (negatively correlated). Sifat har doim miqdordan ustun turadi.
+- <strong>WIP=1 bu agent harnessʼlari uchun standart xavfsiz sozlamadir</strong> — bittasini tugating, keyin boshqasini boshlang; parallel bajarishga urinmang. Bir tishlashda semirib qolmaysiz.
+- <strong>Bajarilganlik dalili bajarilishi (executable) mumkin boʻlishi shart</strong> — “kod yaxshi koʻrinyapti” degani hisobga oʻtmaydi; “curl 201 qaytardi” degani oʻtadi.
+- <strong>Skoup yuzasi (scope surface) tashqi fayl sifatida yozilishi shart</strong> — nafaqat suhbatda aytib oʻtilishi, balki repoda mashina oʻqiy oladigan formatda yozib borilishi kerak.
+- <strong>Haddan oshish va oxiriga yetkazmaslik oʻzaro bogʻliqdir</strong> — birini hal qilish ikkinchisini ham hal qiladi.
+- <strong>“Kamroq qil, lekin tugat” har doim “koʻproq qil, lekin chala tashlab ket”dan ustunroqdir</strong> — agent tomonidan yozilgan kod qatorlari va funksiyalarning tugallanish darajasi bir-biriga teskari korrelyatsiyaga ega (negatively correlated). Sifat har doim miqdordan ustun turadi.
 
 ## Qoʻshimcha oʻqish uchun
 
@@ -140,8 +140,8 @@ Natija: umumiy yozilgan kod kamroq (WIP=1 da 800 qator, shved stoli rejimida 120
 
 ## Mashqlar
 
-1. **Vazifani atomizatsiya qilish (Task Atomization)**: Katta bir talabni tanlang (masalan, “foydalanuvchilarni boshqarish tizimini amalga oshirish”) va uni kamida 5 ta atomik ishlash birligiga boʻling. Har bir birlik uchun quyidagilarni aniqlang: (a) yagona xatti-harakat tavsifi, (b) bajariladigan (executable) tekshiruv buyrugʻi, (c) qaramliklar (dependencies). Boʻlinish WIP=1 cheklovini qanoatlantirishi yoki yoʻqligini tekshiring.
+1. <strong>Vazifani atomizatsiya qilish (Task Atomization)</strong>: Katta bir talabni tanlang (masalan, “foydalanuvchilarni boshqarish tizimini amalga oshirish”) va uni kamida 5 ta atomik ishlash birligiga boʻling. Har bir birlik uchun quyidagilarni aniqlang: (a) yagona xatti-harakat tavsifi, (b) bajariladigan (executable) tekshiruv buyrugʻi, (c) qaramliklar (dependencies). Boʻlinish WIP=1 cheklovini qanoatlantirishi yoki yoʻqligini tekshiring.
 
-2. **Taqqoslash tajribasi**: Bir xil loyihani ikki marta ishga tushirib koʻring — birinchi marta hech qanday cheklovsiz, ikkinchi marta WIP=1 ga qatʼiy amal qilgan holda. Taqqoslang: tekshirilgan yakunlash darajasi (VCR), umumiy yozilgan kod qatorlari soni, samarali kod nisbati.
+2. <strong>Taqqoslash tajribasi</strong>: Bir xil loyihani ikki marta ishga tushirib koʻring — birinchi marta hech qanday cheklovsiz, ikkinchi marta WIP=1 ga qatʼiy amal qilgan holda. Taqqoslang: tekshirilgan yakunlash darajasi (VCR), umumiy yozilgan kod qatorlari soni, samarali kod nisbati.
 
-3. **Bajarilganlik dalili auditi**: Yaqinda qilingan agent sessiyasi natijalarini koʻrib chiqing, har bir kod oʻzgarishini “tugallangan xatti-harakat”, “tugallanmagan xatti-harakat” yoki “qolip (scaffolding)” sifatida tasniflang. Har bir tugallanmagan xatti-harakat uchun yetishmayotgan tekshiruv buyruqlarini qoʻshing.
+3. <strong>Bajarilganlik dalili auditi</strong>: Yaqinda qilingan agent sessiyasi natijalarini koʻrib chiqing, har bir kod oʻzgarishini “tugallangan xatti-harakat”, “tugallanmagan xatti-harakat” yoki “qolip (scaffolding)” sifatida tasniflang. Har bir tugallanmagan xatti-harakat uchun yetishmayotgan tekshiruv buyruqlarini qoʻshing.

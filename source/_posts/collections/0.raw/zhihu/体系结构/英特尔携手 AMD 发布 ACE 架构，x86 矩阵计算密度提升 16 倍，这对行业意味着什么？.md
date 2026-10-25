@@ -105,7 +105,7 @@ ACE通过EAG机制试图避免重蹈覆辙。EAG不只是Intel和AMD两家关起
 
 标准比速度重要。但标准能不能变成产品，产品能不能变成生态，才是真正的考验。AVX-512的碎片化用了将近十年才算基本修复，ACE没有十年可以等了。ARM的SME2已经在手机上跑起来了，x86这边连搭载ACE的CPU都还没公布。
 
-**参考来源**
+<strong>参考来源</strong>
 
 - [ACE Whitepaper v1.0 (x86ecosystem.org)](https://link.zhihu.com/?target=https%3A//x86ecosystem.org/wp-content/uploads/2026/03/ACE-Whitepaper-v1.pdf) — 英特尔与AMD联合发布，2026年4月15日
 - [Wccftech: AMD & Intel’s ACE Partnership](https://link.zhihu.com/?target=https%3A//wccftech.com/amd-intel-ace-partnership-boosts-ai-performance-standard-matrix-acceleration-architecture-for-x86/) — 2026年4月30日报道

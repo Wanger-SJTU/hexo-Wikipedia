@@ -35,19 +35,19 @@ This directory contains reusable AI agent skills for the Learn Harness Engineeri
 
 Production harness engineering skill for AI coding agents. Helps create, assess, and improve agent harness files (AGENTS.md, feature lists, verification workflows, session continuity mechanisms).
 
-- **7 reference patterns**: Memory Persistence, Skill Runtime, Context Engineering, Tool Registry, Multi-Agent Coordination, Lifecycle & Bootstrap, Gotchas
-- **Templates**: AGENTS.md/CLAUDE.md, feature-list.json, init.sh, progress.md, session-handoff.md
-- **Scripts**: scaffold, validate, render HTML assessment, run structural benchmark
-- **10 built-in eval test cases**
+- <strong>7 reference patterns</strong>: Memory Persistence, Skill Runtime, Context Engineering, Tool Registry, Multi-Agent Coordination, Lifecycle & Bootstrap, Gotchas
+- <strong>Templates</strong>: AGENTS.md/CLAUDE.md, feature-list.json, init.sh, progress.md, session-handoff.md
+- <strong>Scripts</strong>: scaffold, validate, render HTML assessment, run structural benchmark
+- <strong>10 built-in eval test cases</strong>
 
 See [harness-creator/README.md](harness-creator/README.md) for full documentation.
 
 ## How harness-creator Was Built
 
-The `harness-creator` skill was developed using the **skill-creator** methodology — Anthropic's official meta-skill for creating, testing, and iterating on agent skills. The skill-creator provides a structured workflow (draft → test → evaluate → iterate) with built-in eval runners, graders, and a benchmark viewer.
+The `harness-creator` skill was developed using the <strong>skill-creator</strong> methodology — Anthropic's official meta-skill for creating, testing, and iterating on agent skills. The skill-creator provides a structured workflow (draft → test → evaluate → iterate) with built-in eval runners, graders, and a benchmark viewer.
 
-- **skill-creator source**: [anthropics/skills — skill-creator](https://github.com/anthropics/skills/tree/main/skills/skill-creator)
-- **Anthropic Claude Code skills docs**: [anthropics/claude-code — plugin-dev/skills](https://github.com/anthropics/claude-code/tree/main/plugins/plugin-dev/skills)
+- <strong>skill-creator source</strong>: [anthropics/skills — skill-creator](https://github.com/anthropics/skills/tree/main/skills/skill-creator)
+- <strong>Anthropic Claude Code skills docs</strong>: [anthropics/claude-code — plugin-dev/skills](https://github.com/anthropics/claude-code/tree/main/plugins/plugin-dev/skills)
 
 ## Directory Structure
 
@@ -79,9 +79,9 @@ skills/
 
 Each skill follows a standard structure:
 
-1. **SKILL.md** — The entry point. Contains YAML frontmatter (name, description for triggering) and Markdown instructions for the agent.
-2. **references/** — Additional docs loaded into context as needed.
-3. **templates/** — Starting templates that the skill can generate for users.
+1. <strong>SKILL.md</strong> — The entry point. Contains YAML frontmatter (name, description for triggering) and Markdown instructions for the agent.
+2. <strong>references/</strong> — Additional docs loaded into context as needed.
+3. <strong>templates/</strong> — Starting templates that the skill can generate for users.
 
 Skills use progressive disclosure — the agent first sees only the name + description, then loads the full SKILL.md body when triggered, and reads bundled resources only when needed.
 

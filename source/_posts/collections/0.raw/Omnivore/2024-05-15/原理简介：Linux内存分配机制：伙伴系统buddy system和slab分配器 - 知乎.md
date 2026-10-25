@@ -47,7 +47,7 @@ struct zone{
 
 ![](https://proxy-prod.omnivore-image-cache.app/730x372,s3PrqAcYKFZzIrbX_QOWJ87U3W93KegOL0n9RLyhCXaY/https://pic2.zhimg.com/v2-c130ab0ec716aa579769c414692b8855_b.jpg)
 
-### **分配**
+### <strong>分配</strong>
 
 当需要分配一段内存时，系统会寻找合适大小的内存块。如果找到了一个恰好大小的内存块，则直接分配给请求的程序；如果没有找到，系统会向上搜索直到找到一个更大的内存块，然后将其切分成合适大小的块，并将其中一个分配给请求的程序，将剩余的部分继续保留在内存池中。
 
@@ -55,15 +55,15 @@ struct zone{
 
 ![](https://proxy-prod.omnivore-image-cache.app/720x309,sMvNa2tsYqeLadz3Zic_s3SpabgyM9wWmerqDzuk3tyo/https://pic1.zhimg.com/v2-369a336478d5778833f93044ca4e7fcc_b.jpg)
 
-**查找合适块**：首先查看 size 为 128 字节的 free list，但没有空闲块。再看 256 字节的 free list，还是没有，再看 512 字节的 free list，找到一个空闲的内存块 A'。
+<strong>查找合适块</strong>：首先查看 size 为 128 字节的 free list，但没有空闲块。再看 256 字节的 free list，还是没有，再看 512 字节的 free list，找到一个空闲的内存块 A'。
 
-**分割内存块**：将 A'划分为 256 字节的 E 和 E'，再将内存块 E 划分成 128 字节的 F 和 F'，内存块 F 即是们需要的内存。之后，在此过程中产生的 E'和 F'将分别被挂接到 size 为 256 字节和 128 字节的 free list 上，位图中 bits 的值也会相应变化。
+<strong>分割内存块</strong>：将 A'划分为 256 字节的 E 和 E'，再将内存块 E 划分成 128 字节的 F 和 F'，内存块 F 即是们需要的内存。之后，在此过程中产生的 E'和 F'将分别被挂接到 size 为 256 字节和 128 字节的 free list 上，位图中 bits 的值也会相应变化。
 
 得到的结果如下：
 
 ![](https://proxy-prod.omnivore-image-cache.app/772x313,s86bUHM76v0M54Me4248hJvHyKtDCjWG11KX_hkAbPdQ/https://pic4.zhimg.com/v2-a7cbc8c03fd304617046210cddb6ca9b_b.jpg)
 
-### **释放**
+### <strong>释放</strong>
 
 当程序释放内存时，系统会将这块内存标记为空闲状态，并尝试将其与相邻的空闲块合并，以形成更大的空闲块，方便后续的分配。
 
@@ -77,7 +77,7 @@ struct zone{
 
 ![](https://proxy-prod.omnivore-image-cache.app/631x262,sbIQdjs6KWd-ZcytVX9tMkpLANpM0z7wHMY7mZD4f_7s/https://pic4.zhimg.com/v2-98d9020410bf26cc29af37a6cd7a4c03_b.jpg)
 
-### **优缺点**
+### <strong>优缺点</strong>
 
 优点：
 
@@ -86,15 +86,15 @@ struct zone{
 缺点：
 
 1. 释放 page 的时候调用方必须记住之前该 page 分配的 order，然后释放从该 page 开始的 2^{order} 个 page，对于调用者来说不方便
-2. 每次分配必须是 2^{order} 个 page，如果需要的内存大小不是 2 的阶，会造成**内部碎片。**
+2. 每次分配必须是 2^{order} 个 page，如果需要的内存大小不是 2 的阶，会造成<strong>内部碎片。</strong>
 
 Linux 为了解决 buddy system 造成的内部碎片问题，引入 slab 分配器处理小粒度的内存分配。
 
-## **slab 分配器**
+## <strong>slab 分配器</strong>
 
 Linux 中的 buddy 分配器是以 page frame 为最小粒度的，而有很多现实的应用以内核 objects 的大小来申请和释放内存的，这些内核 objects 的大小通常从几十字节到几百字节不等，远远小于一个 page 的大小。
 
-### **结构**
+### <strong>结构</strong>
 
 slab 分配器用于分配小块内存。它从内存管理模块申请一整块页，然后划分成多个小块的存储池，用队列来维护这些小块的状态。
 
@@ -102,7 +102,7 @@ slab 分配器用于分配小块内存。它从内存管理模块申请一整块
 
 ![](https://proxy-prod.omnivore-image-cache.app/563x370,sVPdI4MejgGub7iuVUMmKOAIJQXunIsdttZBZdMTvdrM/https://pic2.zhimg.com/v2-fef7427e05c0bc7d795c21315d498589_b.jpg)
 
-cache 的内存从 buddy allocator 获得。slab 层直接面向程序的分配需求，相当于是**前端**，而 buddy system 则成为 slab 分配器的**后端**。
+cache 的内存从 buddy allocator 获得。slab 层直接面向程序的分配需求，相当于是<strong>前端</strong>，而 buddy system 则成为 slab 分配器的<strong>后端</strong>。
 
 ![](https://proxy-prod.omnivore-image-cache.app/769x326,sxT1-cIA2399c5BgUkbMJAikly9pfgHhNsAHqjnR7U6Q/https://pic1.zhimg.com/v2-34eb27d21836c520fc1d5387f98c5610_b.jpg)
 
@@ -112,12 +112,12 @@ cache 的内存从 buddy allocator 获得。slab 层直接面向程序的分配�
 
 Slab 分配器的主要优点和缺点如下：
 
-### **优缺点**
+### <strong>优缺点</strong>
 
 优点：
 
-1. **降低内存碎片化**：可以提供小块内存的分配支持，提高内存利用率。
-2. **减少内存分配和释放的开销**：Slab 分配器通过重复使用预分配的内存块，使得内存的申请和释放不必每次需要 buddy system 介入，提高了分配和释放的效率
+1. <strong>降低内存碎片化</strong>：可以提供小块内存的分配支持，提高内存利用率。
+2. <strong>减少内存分配和释放的开销</strong>：Slab 分配器通过重复使用预分配的内存块，使得内存的申请和释放不必每次需要 buddy system 介入，提高了分配和释放的效率
 
 缺点：
 

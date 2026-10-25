@@ -17,15 +17,15 @@ source_url: https://zhuanlan.zhihu.com/p/384874383
 
 大家好，我是老萧。
 
-[![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_713079a5a96f.jpg)Computer Architecture —— Cache 缓存器介绍 （三）：缓存的基础优化34 赞同 · 0 评论 文章](https://zhuanlan.zhihu.com/p/347651405)
+[![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_713079a5a96f.jpg)Computer Architecture —— Cache 缓存器介绍 （三）：缓存的基础优化34 赞同 · 0 评论 文章](https://zhuanlan.zhihu.com/p/347651405)
 
 距离上一篇关于缓存的文章，已经过去了大半年了。中间发布了一些其他主题的文章，再加上学业繁忙，关于缓存这块一直没有更新。今天老萧重新整理了一下以前的笔记，准备给大家继续带来关于缓存系统优化的知识点。
 
 ### 高级优化方法一：缓存流水线化（Pipelined Cache）
 
-**为什么需要带有流水线的缓存呢？**
+<strong>为什么需要带有流水线的缓存呢？</strong>
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_58a4c8349d01.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_58a4c8349d01.jpg)
 
 图1. 分开来的 Tag Array 和 Data Array通常来说，将数据写入缓存有两步：
 
@@ -39,9 +39,9 @@ source_url: https://zhuanlan.zhihu.com/p/384874383
 - 一个周期用来写入数据（如果命中）
 所以，为了让效率最大化，我们就可以使用流水线缓存（Pipelined Cache）来对这两个时序进行 Pipelining。
 
-**流水线缓存如何工作？**
+<strong>流水线缓存如何工作？</strong>
 
-为了拆分这两个步骤，设计人员在缓存旁边新添加了一个模块，叫做（**缓存延迟存储缓冲区 Delayed Cache Store Buffer）**。没错，你一定看晕了，为了便于理解，我们可以认为它就是块缓冲区（Buffer），数据将在里面持续等待，直到被写入缓存。
+为了拆分这两个步骤，设计人员在缓存旁边新添加了一个模块，叫做（<strong>缓存延迟存储缓冲区 Delayed Cache Store Buffer）</strong>。没错，你一定看晕了，为了便于理解，我们可以认为它就是块缓冲区（Buffer），数据将在里面持续等待，直到被写入缓存。
 
 那么数据要等到什么时候呢？答案是当遇到下一个 Store 指令的时候，在其比较标签 Tag 的时候，来自上一个 Store 指令的数据就可以完成第二步：从缓冲区写入缓存。下面的时序图能更直观的展示流水线缓存的工作流程：
 
@@ -56,15 +56,15 @@ CHK = Check Tag`
 
 来自 SW2 指令的数据一直停留在缓冲区中，直到第六个周期，下一条指令 SW3 开始了 CHK，这个时候这块 Buffer 检测到了，并把 SW2 的数据写入进了缓存。
 
-**流水线缓存的得与失**
+<strong>流水线缓存的得与失</strong>
 
-![](/images/collections/0.raw/zhihu/%25E6%2588%2591%25E7%259A%2584%25E6%2594%25B6%25E8%2597%258F/asset/img_c15abc41699f.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_c15abc41699f.jpg)
 
 图2. Delayed Cache Stored Buffer 的 Bypass 路线（黄色标注部分）看似 Pipelined Cache 这种优化思路能够拆分写入缓存的步骤，减少写命中时间，但从硬件实现的角度来说，这一点还需要斟酌。假设有一个情况，一个 Load 指令紧接着 Store 指令，那么这个 Load 指令就需要去 Delayed Stored Buffer 里面寻找有没有相同的地址。如果有，就需要使用 Bypass 把数据送还给 CPU。图2 中的黄色标注路线就是 Bypass 路径。可以看出，为了实现这一点，一些新的硬件模块比如多路复用器（MUX）和比较器（Comparator）被加入到了缓存系统，而新的硬件则会为 Timing 和命中时间（Hit Time）带来新的挑战。
 
 ### 高级优化方法二：内存写入缓冲区（Write Buffer）
 
-同样，我们先抛出相同的问题：**为什么需要这种优化？**
+同样，我们先抛出相同的问题：<strong>为什么需要这种优化？</strong>
 
 - 如果有连续的 Store 指令（其实很普遍），我们不希望让 Cache 和 Memory 之间每次都通信，这样耗费的时间太多
 - 所以可以加一个Write Buffer，类似一个 Queue，可以 Queue-in 要存入内存的数据
@@ -77,7 +77,7 @@ CHK = Check Tag`
 
 在经历过连续的 Store 指令后，多个数据可以在 Write Buffer 里面形成一个完整的 Block，然后再将整个 Block 存入内存中，而不是每次都要访问内存。这种效果叫做写入合并（Write Merging）。从处理器的角度来说，处理器不需要担心 Write Buffer的存在，当 Store 指令把数据存进 Write Buffer 之后，整个写入内存的过程已经完成了。
 
-**Write Buffer 对于写穿和写回缓存有区别吗？**
+<strong>Write Buffer 对于写穿和写回缓存有区别吗？</strong>
 
 老萧在之前的缓存笔记中提到过两种缓存写入内存的策略，写穿（Write Through）和写回（Write Back）。还没看过的小伙伴们，链接帮你们 po 在下面了：
 
@@ -97,4 +97,4 @@ CHK = Check Tag`
 
 *注：知识点来源于 Coursera 的 Computer Architecture 公开课*
 
-**欢迎关注我的专栏：老萧追芯，和老萧一起学习芯片行业的点点滴滴**
+<strong>欢迎关注我的专栏：老萧追芯，和老萧一起学习芯片行业的点点滴滴</strong>

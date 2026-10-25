@@ -17,13 +17,13 @@ source_url: https://zhuanlan.zhihu.com/p/2015793350209450091
 
 #### 📌 太长不看
 
-- **官网**：https://tickflow.org
-- **文档**：https://docs.tickflow.org
-- **Github**：[https://github.com/tickflow-org/tickflow](https://link.zhihu.com/?target=https%3A//github.com/tickflow-org/tickflow)
+- <strong>官网</strong>：https://tickflow.org
+- <strong>文档</strong>：https://docs.tickflow.org
+- <strong>Github</strong>：[https://github.com/tickflow-org/tickflow](https://link.zhihu.com/?target=https%3A//github.com/tickflow-org/tickflow)
 
 #### 前言
 
-2021 年，我发布了 **efinance**，一个专注从东方财富获取股票、ETF、期货、基金等数据的 Python 库。至今累计获得 3.4k ⭐。开发难度不大，但它的火爆说明了量化研究者对高质量数据的需求非常大。
+2021 年，我发布了 <strong>efinance</strong>，一个专注从东方财富获取股票、ETF、期货、基金等数据的 Python 库。至今累计获得 3.4k ⭐。开发难度不大，但它的火爆说明了量化研究者对高质量数据的需求非常大。
 
 当时接口没有严格限流，efinance 上手简单、数据齐全，受到广泛好评。可惜到 2025 年上半年，东方财富开始限制匿名接口调用，频繁访问会被阻断，需要验证或审核。通过后又可能被拉入“小黑屋”，反复循环。
 
@@ -31,18 +31,18 @@ AI 的快速发展降低了量化研究门槛，参与人数激增，导致数�
 
 #### TickFlow 的诞生
 
-为了解决这一痛点，我和团队启动了新项目 **TickFlow**，提供覆盖 A 股行情、K 线、财务数据的 API。目标是：
+为了解决这一痛点，我和团队启动了新项目 <strong>TickFlow</strong>，提供覆盖 A 股行情、K 线、财务数据的 API。目标是：
 
-- **低延迟、高可用**
-- **让开发者专注策略本身，而非数据抓取**
+- <strong>低延迟、高可用</strong>
+- <strong>让开发者专注策略本身，而非数据抓取</strong>
 开发过程中，有几十位 GitHub 网友作为早期用户，他们见证了 TickFlow 从 0 到 1 的成长。解决他们的需求，也能覆盖大部分量化研究者的需求。
 
 #### 定价与服务
 
 TickFlow 区分两类用户：
 
-- **免费用户**：只需要日 K 级别历史数据
-- **高级用户**：需要实时行情、分钟级 K 线及全市场覆盖
+- <strong>免费用户</strong>：只需要日 K 级别历史数据
+- <strong>高级用户</strong>：需要实时行情、分钟级 K 线及全市场覆盖
 免费用户无需注册和 API key；高级用户需注册获取 API key，以保障流量和权限管理。
 
 #### 产品对比
@@ -52,7 +52,7 @@ TickFlow 区分两类用户：
 
 TickFlow 提供官方 Python SDK**，支持 A 股、ETF、美股、港股、国内期货等。
 
-**完整文档**：https://docs.tickflow.org
+<strong>完整文档</strong>：https://docs.tickflow.org
 #### 安装
 
 `# 安装完整版（支持 DataFrame 与进度条）
@@ -88,15 +88,15 @@ print(instruments)`
 
 #### 完整服务（需注册 API key）
 
-- **获取 API Key****登录 tickflow.org，在控制台生成 API key。
+- <strong>获取 API Key</strong>**登录 tickflow.org，在控制台生成 API key。
 - 配置认证**
-**方式一：直接传入**
+<strong>方式一：直接传入</strong>
 
 `from tickflow import TickFlow
 
 tf = TickFlow(api_key="your-api-key")`
 
-**方式二：环境变量（Windows / Linux / Mac）**
+<strong>方式二：环境变量（Windows / Linux / Mac）</strong>
 
 `# Linux / Mac
 export TICKFLOW_API_KEY="your-api-key"
@@ -107,12 +107,12 @@ from tickflow import TickFlow
 
 tf = TickFlow()  # 自动读取环境变量`
 
-- **发起第一个请求**
+- <strong>发起第一个请求</strong>
 `quotes = tf.quotes.get(symbols=["600000.SH", "000001.SZ"])
 for q in quotes:
     print(f"{q['symbol']}: {q['last_price']}")`
 
-**完整服务特点**：
+<strong>完整服务特点</strong>：
 
 - ✅ 实时行情数据
 - ✅ 分钟级 K 线（5m、15m、30m、60m、4h）

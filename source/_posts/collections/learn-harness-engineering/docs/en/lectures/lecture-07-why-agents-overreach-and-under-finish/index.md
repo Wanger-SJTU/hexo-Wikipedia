@@ -65,12 +65,12 @@ flowchart TB
 
 ## Core Concepts
 
-- **Overreach**: The agent activates more tasks in a single session than optimal. This isn't subjective — it's quantifiable: doing 5 features with 0 passing end-to-end is overreach.
-- **Under-finish**: The ratio of tasks that pass end-to-end verification, out of all activated tasks, falls below threshold. Code written but tests not passing is under-finish.
-- **WIP Limit (Work-in-Progress Limit)**: From Kanban methodology. Core idea: limit how many tasks are in-flight at once. For agents, WIP=1 is the safest default — finish one before starting the next.
-- **Completion Evidence**: The verifiable condition a task must satisfy to move from "in progress" to "done." Without this, agents substitute "the code looks fine" for "the behavior passes tests."
-- **Scope Surface**: A DAG structure where each node is a work unit and edges are dependencies. States are limited to four: not_started, active, blocked, passing.
-- **Completion Pressure**: The constraining force the harness exerts through WIP limits and completion evidence requirements, forcing the agent to finish the current task before starting a new one.
+- <strong>Overreach</strong>: The agent activates more tasks in a single session than optimal. This isn't subjective — it's quantifiable: doing 5 features with 0 passing end-to-end is overreach.
+- <strong>Under-finish</strong>: The ratio of tasks that pass end-to-end verification, out of all activated tasks, falls below threshold. Code written but tests not passing is under-finish.
+- <strong>WIP Limit (Work-in-Progress Limit)</strong>: From Kanban methodology. Core idea: limit how many tasks are in-flight at once. For agents, WIP=1 is the safest default — finish one before starting the next.
+- <strong>Completion Evidence</strong>: The verifiable condition a task must satisfy to move from "in progress" to "done." Without this, agents substitute "the code looks fine" for "the behavior passes tests."
+- <strong>Scope Surface</strong>: A DAG structure where each node is a work unit and edges are dependencies. States are limited to four: not_started, active, blocked, passing.
+- <strong>Completion Pressure</strong>: The constraining force the harness exerts through WIP limits and completion evidence requirements, forcing the agent to finish the current task before starting a new one.
 
 ## Overreach and Under-finish Are Two Sides of the Same Coin
 
@@ -84,7 +84,7 @@ This is an old problem in the human world too. Steve McConnell documented in *Ra
 
 ### 1. Enforce WIP=1
 
-This is the most direct and effective method. In your harness, tell the agent explicitly: **only one task is allowed in "active" status at any time.** In Claude Code's CLAUDE.md or Codex's AGENTS.md, write:
+This is the most direct and effective method. In your harness, tell the agent explicitly: <strong>only one task is allowed in "active" status at any time.</strong> In Claude Code's CLAUDE.md or Codex's AGENTS.md, write:
 
 ```
 ## Work Rules
@@ -115,19 +115,19 @@ The harness should continuously track VCR (Verified Completion Rate) = verified 
 
 A REST API project with 8 features, two strategies compared:
 
-**Unconstrained mode**: Agent activates 5 features simultaneously in session 1. Produces ~800 lines across 12 files. End-to-end test pass rate: 20% — only user registration works. The other 4 features: database schema created but missing validation logic, routes defined but returning wrong response formats. By end of session 3, only 3 of 8 features complete.
+<strong>Unconstrained mode</strong>: Agent activates 5 features simultaneously in session 1. Produces ~800 lines across 12 files. End-to-end test pass rate: 20% — only user registration works. The other 4 features: database schema created but missing validation logic, routes defined but returning wrong response formats. By end of session 3, only 3 of 8 features complete.
 
-**WIP=1 mode**: Agent works on user registration only in session 1. Produces ~200 lines across 4 files. End-to-end tests: 100% passing. Commits a clean, verified implementation. By end of session 4, 7 of 8 features complete (the 8th blocked by an external dependency).
+<strong>WIP=1 mode</strong>: Agent works on user registration only in session 1. Produces ~200 lines across 4 files. End-to-end tests: 100% passing. Commits a clean, verified implementation. By end of session 4, 7 of 8 features complete (the 8th blocked by an external dependency).
 
 Result: less total code (800 vs 1200 lines) but more effective code. Completion rate: 87.5% vs 37.5%.
 
 ## Key Takeaways
 
-- **WIP=1 is the default safe setting for agent harnesses** — finish one, then start the next; don't try to parallelize.
-- **Completion evidence must be executable** — "the code looks fine" doesn't count; "curl returns 201" does.
-- **The scope surface must be externalized as a file** — not just mentioned in conversation, but recorded in a machine-readable format in the repo.
-- **Overreach and under-finish are symbiotic** — solving one solves the other.
-- **"Do less but finish" always beats "do more but leave half-done"** — agent code lines and feature completion rate are negatively correlated. Quality always beats quantity.
+- <strong>WIP=1 is the default safe setting for agent harnesses</strong> — finish one, then start the next; don't try to parallelize.
+- <strong>Completion evidence must be executable</strong> — "the code looks fine" doesn't count; "curl returns 201" does.
+- <strong>The scope surface must be externalized as a file</strong> — not just mentioned in conversation, but recorded in a machine-readable format in the repo.
+- <strong>Overreach and under-finish are symbiotic</strong> — solving one solves the other.
+- <strong>"Do less but finish" always beats "do more but leave half-done"</strong> — agent code lines and feature completion rate are negatively correlated. Quality always beats quantity.
 
 ## Further Reading
 
@@ -138,8 +138,8 @@ Result: less total code (800 vs 1200 lines) but more effective code. Completion 
 
 ## Exercises
 
-1. **Task Atomization**: Pick a broad requirement (e.g., "implement a user management system") and break it into at least 5 atomic work units. For each unit, specify: (a) a single behavior description, (b) an executable verification command, (c) dependencies. Check whether the decomposition satisfies the WIP=1 constraint.
+1. <strong>Task Atomization</strong>: Pick a broad requirement (e.g., "implement a user management system") and break it into at least 5 atomic work units. For each unit, specify: (a) a single behavior description, (b) an executable verification command, (c) dependencies. Check whether the decomposition satisfies the WIP=1 constraint.
 
-2. **Comparison Experiment**: Run the same project twice — once without constraints, once with enforced WIP=1. Compare verified completion rate, total lines of code, and effective code ratio.
+2. <strong>Comparison Experiment</strong>: Run the same project twice — once without constraints, once with enforced WIP=1. Compare verified completion rate, total lines of code, and effective code ratio.
 
-3. **Completion Evidence Audit**: Review a recent agent run's output, classifying each code change as "completed behavior," "incomplete behavior," or "scaffolding." Add missing verification commands for each incomplete behavior.
+3. <strong>Completion Evidence Audit</strong>: Review a recent agent run's output, classifying each code change as "completed behavior," "incomplete behavior," or "scaffolding." Add missing verification commands for each incomplete behavior.

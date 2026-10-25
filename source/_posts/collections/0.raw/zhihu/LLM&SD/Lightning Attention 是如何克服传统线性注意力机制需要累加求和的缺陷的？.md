@@ -60,15 +60,15 @@ source_url: https://www.zhihu.com/question/9740764576/answer/80735153803
 
 这样我们就可以通过训练RNN的形式，在线性的时间内训练线性注意力。
 
-**但是如果用这种最基本的循环来训练有非常多的问题。**
+<strong>但是如果用这种最基本的循环来训练有非常多的问题。</strong>
 
 第一点，如果使用autograd，那么，每一个时刻的hidden state 
-![](https://www.zhihu.com/equation?tex=%5Cmathbf%7BS%7D_t) 都会被保存下来给反向传播算梯度。保存中间hidden state在之前的RNN训练里面没啥问题，**但是在这里却是一个大问题。**为什么呢？因为传统RNN 每个时刻的hidden state的大小是 
+![](https://www.zhihu.com/equation?tex=%5Cmathbf%7BS%7D_t) 都会被保存下来给反向传播算梯度。保存中间hidden state在之前的RNN训练里面没啥问题，<strong>但是在这里却是一个大问题。</strong>为什么呢？因为传统RNN 每个时刻的hidden state的大小是 
 ![](https://www.zhihu.com/equation?tex=%5Cmathcal%7BO%7D%28d%29) ，而linear attention每个时刻的hidden state大小是 
 ![](https://www.zhihu.com/equation?tex=%5Cmathcal%7BO%7D%28d%5E2%29) ，如果全部存下来需要 
 ![](https://www.zhihu.com/equation?tex=%5Cmathcal%7BO%7D%28Ld%5E2%29) ，那是万万不可接受的（你可以想象，输入的QKV才3Ld, 一般d>>3, 那么你基本就显存爆炸寄了不用玩了）
 
-[Transformers are RNNs: Fast Autoregressive Transformers with Linear Attention](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2006.16236) 里面提出了一个**memory-efficient 训练的解决方案。**
+[Transformers are RNNs: Fast Autoregressive Transformers with Linear Attention](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2006.16236) 里面提出了一个<strong>memory-efficient 训练的解决方案。</strong>
 
 在这个方案里， 
 ![](https://www.zhihu.com/equation?tex=%5Cmathbf%7BS%7D_t) 在前向传播的过程中是不会被保存的。 由于只有 
@@ -84,7 +84,7 @@ source_url: https://www.zhihu.com/question/9740764576/answer/80735153803
 
 ![](https://picx.zhimg.com/v2-cb7e5d922bb6c210c0330ba36abe282c_r.jpg?source=2c26e567)到此为止，memory的问题解决了。
 
-**第二个问题**，循环训练并行度太差了。此外，linear attention的recurrent update全部都是element-wise的操作（外积，点乘，...），根本没有一丁点矩阵乘法的影子，而矩阵乘法在GPU上非常高效（相同数量的FLOPs,在A100上用tensor cores算半精度矩阵乘法的效率是其他操作的16倍，所以现代的算法都是怎么矩阵乘法怎么来，这也是为什么注意力机制最先被提出来，然后直接席卷deep learning，因为它训的快呀。）
+<strong>第二个问题</strong>，循环训练并行度太差了。此外，linear attention的recurrent update全部都是element-wise的操作（外积，点乘，...），根本没有一丁点矩阵乘法的影子，而矩阵乘法在GPU上非常高效（相同数量的FLOPs,在A100上用tensor cores算半精度矩阵乘法的效率是其他操作的16倍，所以现代的算法都是怎么矩阵乘法怎么来，这也是为什么注意力机制最先被提出来，然后直接席卷deep learning，因为它训的快呀。）
 
 在parallel形式中，我们不需要算任何hidden state，只通过Q K V来得到output，但是需要 
 ![](https://www.zhihu.com/equation?tex=%5Cmathcal%7BO%7D%28L%5E2%29) 复杂度。在Recurrent形式中，我们需要算每个time step的hidden state，但是只需要 
@@ -153,4 +153,4 @@ Chunkwise parallel form的核心优势在于：
 
 最后值得一提是，我们上面的I/O-aware算法并不一定是最优的(比方说kernel大师tridao教育我，第二个版本每个chunk计算量太小了，应该同时多算几个chunk，再存一个final state，来增强计算intensity。xLSTM团队应该也采用了类似的思路来优化他们的mLSTM训练)，但核心思路都大差不差，都是基于chunkwise的算法。Minimax分布式chunkwise训练也是自然的推广。
 
-最后，我和 [@yzhangcs](https://www.zhihu.com/people/8d5f4c3b705ef7df799b680515700468)维护的[https://github.com/fla-org/flash-linear-attention](https://link.zhihu.com/?target=https%3A//github.com/fla-org/flash-linear-attention) 就旨在把chunkwise算法科普到户，**让整个领域没有人再用hardware-inefficient的recurrent form来训linear attention （**比方说已经教育了hazyresearch的好姐妹；xlstm团队；rwkv团队等等来用chunkwise算法训他们的线性注意力 XD）。
+最后，我和 [@yzhangcs](https://www.zhihu.com/people/8d5f4c3b705ef7df799b680515700468)维护的[https://github.com/fla-org/flash-linear-attention](https://link.zhihu.com/?target=https%3A//github.com/fla-org/flash-linear-attention) 就旨在把chunkwise算法科普到户，<strong>让整个领域没有人再用hardware-inefficient的recurrent form来训linear attention （</strong>比方说已经教育了hazyresearch的好姐妹；xlstm团队；rwkv团队等等来用chunkwise算法训他们的线性注意力 XD）。

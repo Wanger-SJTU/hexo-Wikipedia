@@ -20,19 +20,19 @@ categories:
 
 Your agent runs all afternoon, modifies 20 files, commits the code, and the session ends. The next agent session starts up and immediately discovers: build is broken, tests are red, temporary debug files are scattered everywhere, the feature list hasn't been updated, and progress is completely opaque. The first 30 minutes of the new session are spent entirely on "figuring out what the last session actually did."
 
-Both OpenAI and Anthropic state clearly: **long-term reliability depends on operational discipline, not just single-run success.** The quality of state at the end of each session directly determines the next session's efficiency.
+Both OpenAI and Anthropic state clearly: <strong>long-term reliability depends on operational discipline, not just single-run success.</strong> The quality of state at the end of each session directly determines the next session's efficiency.
 
 ## Entropy Growth Is the Default State
 
 Lehman's laws of software evolution tell us that systems undergoing continuous change will inevitably grow more complex unless actively managed. This is especially true for AI coding agents. Every session introduces changes, and without cleanup at exit, technical debt accumulates exponentially.
 
-During five months of Codex experiments, OpenAI observed something striking: **agents copy patterns already present in the repository, even when those patterns are inconsistent or suboptimal.** Over time, this copying inevitably leads to drift. The first person leaves a coffee cup in the common area; the second person figures "it's already messy" and leaves another; a week later the table is buried under cups. A codebase works the same way.
+During five months of Codex experiments, OpenAI observed something striking: <strong>agents copy patterns already present in the repository, even when those patterns are inconsistent or suboptimal.</strong> Over time, this copying inevitably leads to drift. The first person leaves a coffee cup in the common area; the second person figures "it's already messy" and leaves another; a week later the table is buried under cups. A codebase works the same way.
 
 The OpenAI team initially spent 20% of every Friday manually cleaning up "AI slop," but this approach clearly doesn't scale. They eventually arrived at a systematic solution:
 
-1. **Encode "golden rules" into the repository**: Rules like "prefer the shared utility package over hand-rolled ad-hoc helpers" (keep invariants centralized) and "don't YOLO-guess data structures" (validate boundaries or depend on typed SDKs). These rules are concrete, mechanical, and automatically checkable.
-2. **Establish periodic cleanup workflows**: A fleet of background Codex tasks that regularly scan for deviations, update quality scores, and open targeted refactoring PRs. Most can be reviewed and auto-merged within a minute.
-3. **Capture human taste once, enforce it continuously**: Review comments, refactoring PRs, and user-facing bugs are all translated into documentation updates or encoded directly into tooling. When documentation isn't enough, promote the rule into code.
+1. <strong>Encode "golden rules" into the repository</strong>: Rules like "prefer the shared utility package over hand-rolled ad-hoc helpers" (keep invariants centralized) and "don't YOLO-guess data structures" (validate boundaries or depend on typed SDKs). These rules are concrete, mechanical, and automatically checkable.
+2. <strong>Establish periodic cleanup workflows</strong>: A fleet of background Codex tasks that regularly scan for deviations, update quality scores, and open targeted refactoring PRs. Most can be reviewed and auto-merged within a minute.
+3. <strong>Capture human taste once, enforce it continuously</strong>: Review comments, refactoring PRs, and user-facing bugs are all translated into documentation updates or encoded directly into tooling. When documentation isn't enough, promote the rule into code.
 
 Technical debt is a high-interest loan. Continuously paying it off in small increments is almost always better than letting it accumulate into one massive payoff event.
 
@@ -72,12 +72,12 @@ flowchart LR
 
 ## Core Concepts
 
-- **Clean state**: The system must satisfy five conditions at session end — build passes, tests pass, progress recorded, no stale artifacts, startup path available. Missing any one means the session isn't "done."
-- **Session integrity**: Analogous to database transactions — either fully commit and leave a clean state, or roll back to the last consistent state. No middle ground.
-- **Quality document**: An active artifact that continuously records quality ratings for each module. Not a one-time assessment, but a tracker showing whether the codebase is getting stronger or weaker over time.
-- **Cleanup loop**: A regular maintenance session aimed at systematically reducing entropy in the codebase. Not an emergency fix, but routine operations.
-- **Harness simplification**: As model capabilities improve, periodically remove harness components that are no longer necessary. A constraint essential today may be unnecessary overhead in three months.
-- **Idempotent cleanup**: Cleanup operations produce the same result regardless of how many times they run, ensuring cleanup remains safe even in failure-retry scenarios.
+- <strong>Clean state</strong>: The system must satisfy five conditions at session end — build passes, tests pass, progress recorded, no stale artifacts, startup path available. Missing any one means the session isn't "done."
+- <strong>Session integrity</strong>: Analogous to database transactions — either fully commit and leave a clean state, or roll back to the last consistent state. No middle ground.
+- <strong>Quality document</strong>: An active artifact that continuously records quality ratings for each module. Not a one-time assessment, but a tracker showing whether the codebase is getting stronger or weaker over time.
+- <strong>Cleanup loop</strong>: A regular maintenance session aimed at systematically reducing entropy in the codebase. Not an emergency fix, but routine operations.
+- <strong>Harness simplification</strong>: As model capabilities improve, periodically remove harness components that are no longer necessary. A constraint essential today may be unnecessary overhead in three months.
+- <strong>Idempotent cleanup</strong>: Cleanup operations produce the same result regardless of how many times they run, ensuring cleanup remains safe even in failure-retry scenarios.
 
 ## "Clean Up Later" Means Never Clean Up
 
@@ -103,7 +103,7 @@ After 12 weeks: build pass rate differs by 29 percentage points, new session sta
 
 ### 1. Clean State Is a Necessary Condition for Completion
 
-Define explicitly in the harness: **session completion = task passes verification AND clean state check passes.** Missing either one means the session isn't complete. Write in CLAUDE.md:
+Define explicitly in the harness: <strong>session completion = task passes verification AND clean state check passes.</strong> Missing either one means the session isn't complete. Write in CLAUDE.md:
 
 ```
 ## Session Exit Checklist
@@ -118,9 +118,9 @@ Define explicitly in the harness: **session completion = task passes verificatio
 
 Combine two cleanup modes:
 
-**Immediate cleanup (at end of every session)**: Clean up temporary artifacts created during the session, update feature list state, ensure build and tests pass. This is "reference counting" cleanup — clean up as soon as you're done using something.
+<strong>Immediate cleanup (at end of every session)</strong>: Clean up temporary artifacts created during the session, update feature list state, ensure build and tests pass. This is "reference counting" cleanup — clean up as soon as you're done using something.
 
-**Periodic cleanup (weekly)**: Full-system scan — handle accumulated structural issues, update quality documents, run benchmark tests to detect drift. This is "tracing" cleanup — a comprehensive maintenance pass done on a regular cadence.
+<strong>Periodic cleanup (weekly)</strong>: Full-system scan — handle accumulated structural issues, update quality documents, run benchmark tests to detect drift. This is "tracing" cleanup — a comprehensive maintenance pass done on a regular cadence.
 
 ### 3. Maintain a Quality Document
 
@@ -154,9 +154,9 @@ Anthropic's experiments demonstrated this directly. Their initial harness includ
 
 But the evaluator told a different story. Even with Opus 4.6's stronger capabilities, when tasks approached the model's capability boundary, the evaluator still provided real value — catching the generator's missing functionality and stub implementations. This means the evaluator isn't a fixed yes/no decision; it depends on where task difficulty sits relative to model capability.
 
-**Recommended practice**: Every month, pick one harness component, temporarily disable it, and run benchmark tasks. If results don't degrade, remove it permanently. If they do, restore it or replace it with a lighter alternative.
+<strong>Recommended practice</strong>: Every month, pick one harness component, temporarily disable it, and run benchmark tasks. If results don't degrade, remove it permanently. If they do, restore it or replace it with a lighter alternative.
 
-A deeper principle: **as models improve, the interesting combinations in a harness don't shrink — they shift.** Problems that previously required explicit solutions get absorbed by model capabilities, but new capability boundaries open up harness design spaces that were previously impossible. The AI engineer's job is to continuously find the next valuable combination.
+A deeper principle: <strong>as models improve, the interesting combinations in a harness don't shrink — they shift.</strong> Problems that previously required explicit solutions get absorbed by model capabilities, but new capability boundaries open up harness design spaces that were previously impossible. The AI engineer's job is to continuously find the next valuable combination.
 
 ### 5. Cleanup Operations Must Be Idempotent
 
@@ -173,25 +173,25 @@ npm run test  # Verify cleanup didn't break anything
 
 When agent output far exceeds human review capacity, the traditional merge philosophy needs adjustment. The OpenAI team's experience: in an environment where an agent opens 3.5 PRs per day (and later even more), minimizing blocking merge gates is the right call. PRs should be short-lived; test flakiness is usually resolved with subsequent runs rather than indefinitely blocking progress. In a system where the cost of fixing is low and the cost of waiting is high, moving fast with fast fixes is a better strategy than slow confirmation.
 
-**Caveat**: This is irresponsible in a low-throughput environment. But when agent output far exceeds human attention, it's often the correct tradeoff. The key criterion: **average cost of fixing a bug vs. average cost of waiting for a human to review a PR.** When the former is lower than the latter, fast merging is the right call.
+<strong>Caveat</strong>: This is irresponsible in a low-throughput environment. But when agent output far exceeds human attention, it's often the correct tradeoff. The key criterion: <strong>average cost of fixing a bug vs. average cost of waiting for a human to review a PR.</strong> When the former is lower than the latter, fast merging is the right call.
 
 ## Real-World Case
 
 An Electron app developed with agents over 12 weeks, comparing two approaches:
 
-**Without cleanup strategy** (control group): Week 12, build pass rate 68%, test pass rate 61%, new session startup 60+ min, 103 stale artifacts.
+<strong>Without cleanup strategy</strong> (control group): Week 12, build pass rate 68%, test pass rate 61%, new session startup 60+ min, 103 stale artifacts.
 
-**With cleanup strategy** (experimental group): Full clean-state check at every session end, plus a weekly cleanup loop. Week 12, build pass rate 97%, test pass rate 95%, new session startup 9 min, 11 stale artifacts.
+<strong>With cleanup strategy</strong> (experimental group): Full clean-state check at every session end, plus a weekly cleanup loop. Week 12, build pass rate 97%, test pass rate 95%, new session startup 9 min, 11 stale artifacts.
 
 By week 12, the experimental group's build pass rate was 29 percentage points higher, test pass rate 34 points higher, and new session startup time 85% lower. Each session spent an extra 5 minutes on cleanup, but over 12 weeks that saved dozens of hours of chaos.
 
 ## Key Takeaways
 
-- **Clean state is a necessary condition for session completion** — not optional housekeeping, but part of the "definition of done."
-- **All five dimensions are non-negotiable** — build, tests, progress, artifacts, startup — each must be explicitly checked.
-- **Quality documents make codebase health trackable** — you can only proactively fix what you know is degrading.
-- **Periodically simplify the harness** — as model capabilities improve, remove constraints that are no longer needed.
-- **"Clean up later" equals never cleaning up.** Entropy growth is the default state; only active cleanup counteracts it.
+- <strong>Clean state is a necessary condition for session completion</strong> — not optional housekeeping, but part of the "definition of done."
+- <strong>All five dimensions are non-negotiable</strong> — build, tests, progress, artifacts, startup — each must be explicitly checked.
+- <strong>Quality documents make codebase health trackable</strong> — you can only proactively fix what you know is degrading.
+- <strong>Periodically simplify the harness</strong> — as model capabilities improve, remove constraints that are no longer needed.
+- <strong>"Clean up later" equals never cleaning up.</strong> Entropy growth is the default state; only active cleanup counteracts it.
 
 ## Further Reading
 
@@ -202,8 +202,8 @@ By week 12, the experimental group's build pass rate was 29 percentage points hi
 
 ## Exercises
 
-1. **Clean State Checklist**: Design a session exit checklist for your codebase covering all five dimensions. Apply it across 5 consecutive sessions and record the number of violations per dimension.
+1. <strong>Clean State Checklist</strong>: Design a session exit checklist for your codebase covering all five dimensions. Apply it across 5 consecutive sessions and record the number of violations per dimension.
 
-2. **Benchmark Comparison**: Use a fixed task set with two harness variants (with/without clean state requirements). Compare completion rate, retry count, and defect escape rate.
+2. <strong>Benchmark Comparison</strong>: Use a fixed task set with two harness variants (with/without clean state requirements). Compare completion rate, retry count, and defect escape rate.
 
-3. **Harness Simplification Practice**: Pick one harness component, temporarily disable it, and run benchmark tasks. Compare results with and without it. Decide whether to keep, remove, or replace.
+3. <strong>Harness Simplification Practice</strong>: Pick one harness component, temporarily disable it, and run benchmark tasks. Compare results with and without it. Decide whether to keep, remove, or replace.

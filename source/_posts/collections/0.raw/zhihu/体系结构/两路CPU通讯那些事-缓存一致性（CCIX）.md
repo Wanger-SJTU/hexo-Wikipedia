@@ -19,7 +19,7 @@ source_url: https://zhuanlan.zhihu.com/p/659199436
 
 两路CPU是指计算机系统中使用了两个CPU（中央处理器）来处理数据和运行程序。其设计在服务器领域通常进行使用，为了提高计算机系统的性能和处理能力，特别是在需要大量计算的应用程序中。使用两个CPU可以让服务器同时处理更多的任务，提高服务器的吞吐量和响应速度。此外，两路CPU还可以提高服务器的可靠性和容错能力，因为当一个CPU出现故障时，另一个CPU仍然可以继续工作，保证了服务器的正常运行。
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_9e772c671682.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_9e772c671682.jpg)
 
 那么这两个CPU之间内存空间是如何共享的？那么会涉及到缓存一致性。
 
@@ -35,17 +35,17 @@ CCIX（Cache Coherent Interconnect for Accelerators）是一种高性能互联�
 
 CCIX总线可以在不同的物理层上运行，包括PCIe物理层、基于CoaXPress的物理层、串行RS-232物理层等。这种灵活性允许CCIX适应各种硬件配置和需求。而对于PCle物理层在高性能CPU是不可缺少的一部分，所以为CCIX总线提供了传输的物理通道，因此CCIX的吸引力之一就是其与PCI Express的兼容性。
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_67f58b3aea42.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_67f58b3aea42.jpg)
 
 CCIX总线架构CCIX总线架构可以看到其可以大致分为两层：
 
-**CCIX Port: CCIX协议层和CCIX链接层。这些层规定缓存一致性、报文发送、流控和CCIX传输部分的协议。**
+<strong>CCIX Port: CCIX协议层和CCIX链接层。这些层规定缓存一致性、报文发送、流控和CCIX传输部分的协议。</strong>
 
 CCIX 协议层 ：CCIX 栈的最上层是 CCIX 协议层。这一层负责一致性协 议，包括内存的读、写流。这一层提供了片上一致性协议 （例如 Arm AMBA CHI）的简单映射。这一层定义的缓存状 态使得硬件能够确定内存的状态。比如硬件可以确定数据 是否唯一且未被修改（和内存一致），或是共享且被修改 的（和内存不一致）。
 
 CCIX 链接层： CCIX 协议层之下是 CCIX 链接层。这一层负责 CCIX 协议层 定义的代理（agent）之间消息的传输格式。目前 CCIX 链 接层是构建在 PCIe 之上，但是基于分层架构，CCIX 将来 可以映射到不同的传输层。此外，这一层负责端口聚合， 使得多个端口能够聚合在一起提升带宽。
 
-**PCie Port: 包含CCIX/PCIe事务层、PCIe数据链路层和CCIX/PCIe物理层。这些层负责器件间的物理连接，包括速率和带宽协商、传输包错误检测和重试，以及初始包编码协议。**
+<strong>PCie Port: 包含CCIX/PCIe事务层、PCIe数据链路层和CCIX/PCIe物理层。这些层负责器件间的物理连接，包括速率和带宽协商、传输包错误检测和重试，以及初始包编码协议。</strong>
 
 CCIX 和 PCIe 事务层 ：CCIX 和 PCIe 事务层负责处理它们各自的包。PCIe 协议支 持部署虚拟通道，使得不同数据流通过一个 PCIe 链路。 将 CCIX 和 PCIe 传输流各分到一个虚拟通道，CCIX 和 PCIe 传输可以共享相同的链路。 CCIX 能够传输标准的 PCIe 包，或经过优化的 CCIX 包。经 过优化的 CCIX 包删减了 PCIe 包里的几个不必要的字段。 传输标准的 PCIe 包时可以采用现有的 PCIe 交换器。传输 经过优化的 CCIX 包，能降低 PCIe 的额外开销，使得一致 性传输的包更小、更高效。
 
@@ -57,7 +57,7 @@ CCIX拓扑结构样例
 
 CCIX总线支持多种灵活的拓扑结构，在下面图中分别为单节点树、网状结构、复杂拓扑结构—全互连。
 
-![](/images/collections/0.raw/zhihu/%25E4%25BD%2593%25E7%25B3%25BB%25E7%25BB%2593%25E6%259E%2584/asset/img_3dc51a212eb9.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_3dc51a212eb9.jpg)
 
 CCIX拓扑结构样例
 #### 小结

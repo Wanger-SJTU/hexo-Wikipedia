@@ -27,11 +27,11 @@ id: 02f7c882-867f-4f51-8ce5-3b947733544c
 
 关注者
 
-**3,448**
+<strong>3,448</strong>
 
 被浏览
 
-**980,920**
+<strong>980,920</strong>
 
 他们也关注了该问题![kaitoukito](https://proxy-prod.omnivore-image-cache.app/0x0,s3olYFQrXQsGq2I_xREsglyFq10DeDBVCylwEcb3M4Ck/https://picx.zhimg.com/v2-169c381d987ce40cae2241abb6a57b0f_l.jpg?source=c8b7c179)![许阳](https://proxy-prod.omnivore-image-cache.app/0x0,sI5T3oW4RXetEQ_F-Uz52PtpSEnsf0Yysd867QOgDs4A/https://picx.zhimg.com/v2-63e56f054b78c431f552f036e57cb5c7_l.jpg?source=c8b7c179)![郭忠明](https://proxy-prod.omnivore-image-cache.app/0x0,swQ6rRA6LJNFD_gdhwvEHxOjavwpc4yrhwoXfUxQCFTE/https://pic1.zhimg.com/v2-abed1a8c04700ba7d72b45195223e0ff_l.jpg?source=c8b7c179)![月踏](https://proxy-prod.omnivore-image-cache.app/0x0,sEhOKsclEawan49Fjf0p7ePZ7yDn9uYUK2cjcMgqnJsI/https://picx.zhimg.com/v2-505cdb67ce30fdbffafe700049128bb3_l.jpg?source=c8b7c179)![chip](https://proxy-prod.omnivore-image-cache.app/0x0,sedzy3Ffbz2aLay89PR0q3OxxM8Clx8iMITBrqO1Gun4/https://picx.zhimg.com/v2-a10266505845532a4b89ef9f407f374a_l.jpg?source=c8b7c179)![朱里](https://proxy-prod.omnivore-image-cache.app/0x0,sHmWIxj5t6WDKEqDxx64R-i1hvOLMlyXsYIcklPkKNwg/https://picx.zhimg.com/4d4fd07dc_l.jpg?source=c8b7c179)![Jerish](https://proxy-prod.omnivore-image-cache.app/0x0,sE2vYQOcmvf-M7ZVAkAmocKRx2kjfukHHyy4kwNsSOAk/https://picx.zhimg.com/3969460e70a9dd5b347c22e3f4980053_l.jpg?source=c8b7c179)
 
@@ -108,7 +108,7 @@ to be continued…
    * 其次，将内存一致性模型分为顺序一致性模型(sequential consistency model)和松弛一致性模型(relaxed consistency model), 并讨论这两种模型的概念、实现与代价；
    * 最后，讨论了原子操作间的关系(synchronized-with, happens-before等)，浅析C++11内存模型，将其提供的6种内存次序归类成三种内存模型。
 
-**I. Memory coherence and memory consistency**  
+<strong>I. Memory coherence and memory consistency</strong>  
 
 \[1\] Chapter 5.2介绍了由共享内存(shared memory)的多核计算机因为使用缓存(cache)而引入的缓存连贯性(?)问题(cache coherence problem)。考虑下图：
 
@@ -140,20 +140,20 @@ to be continued…
 
 被引用超过一千多次，同时被\[1\]\[3\] highly recommend 的\[2\]作为了解memory consistency model的入门导引，正是定义了写操作的结果何时被读操作获得。
 
-**II. Memory consistency model**
+<strong>II. Memory consistency model</strong>
 
 本质上，内存一致模型限制了读操作的返回值。  
 
-**2.1 Sequential consistency model**
+<strong>2.1 Sequential consistency model</strong>
 
-**2.1.1 什么是sequential consistency**
+<strong>2.1.1 什么是sequential consistency</strong>
 
 直观上，读操作应该返回“最后”一次写入的值。
 
    * 在单处理器系统中，“最后”由程序次序定义。
    * 在多处理器系统中，我们称之为顺序连贯(sequential consistency, SC).
 
-通俗地说，SC要求所有内存操作表现为(appear)逐个执行（任一次的执行结果都像是所有处理器的操作都以某种次序执行），每个处理器中的操作都以其程序指定的次序执行。**SC有两点要求**：
+通俗地说，SC要求所有内存操作表现为(appear)逐个执行（任一次的执行结果都像是所有处理器的操作都以某种次序执行），每个处理器中的操作都以其程序指定的次序执行。<strong>SC有两点要求</strong>：
 
    1. 在每个处理器内，维护每个处理器的程序次序；
    2. 在所有处理器间，维护单一的表征所有操作的次序。对于写操作W1, W2, 不能出现从处理器 P1 看来，执行次序为 W1->W2; 从处理器 P2 看来，执行次序却为 W2->W1 这种情况。
@@ -178,24 +178,24 @@ to be continued…
    3. P3 看到 P2 写 B 后才去读 A, P3 此时读出的 A 必须要是 1 （而不会是0）
    4. 因为从 P2 看来操作执行次序为 (A=1)->(B=1), 不允许P3在看到操作 B=1 时，没有看到 A=1\.
 
-**2.1.2 实现Sequential consistency**
+<strong>2.1.2 实现Sequential consistency</strong>
 
 为实现SC，要考虑它与常见硬件优化间的冲突。
 
-**2.1.2.1 在无缓存的体系结构下实现SC**
+<strong>2.1.2.1 在无缓存的体系结构下实现SC</strong>
 
 对于无缓存的体系结构，\[2\]以三个常见硬件优化为例，讨论了SC与它们间的冲突及解决办法：
 
    * 带有读旁路的写缓冲(Write buffers with read bypassing)
-      * 读操作可以不等待写操作，导致后续的读操作越过前面的写操作，**违反程序次序**
+      * 读操作可以不等待写操作，导致后续的读操作越过前面的写操作，<strong>违反程序次序</strong>
    * 重叠写(Overlapping writes)
-      * 对于不同地址的多个写操作同时进行，导致后续的写操作越过前面的读操作，**违反程序次序**
+      * 对于不同地址的多个写操作同时进行，导致后续的写操作越过前面的读操作，<strong>违反程序次序</strong>
    * 非阻塞读(Nonblocking reads)
-      * 多个读操作同时进行，导致后续的读操作越过前面的读操作先执行，**违反程序次序**
+      * 多个读操作同时进行，导致后续的读操作越过前面的读操作先执行，<strong>违反程序次序</strong>
 
 为解决上述硬件优化对SC带来的问题，\[2\]提出了程序次序要求(program order requirement): 按照程序次序，处理器的上一次内存操作需要在下一次内存操作前完成。 （\[2\]中针对每个冲突提出了特定的解决方法，在此不展开）
 
-**2.1.2.2 在有缓存的体系结构下实现SC**
+<strong>2.1.2.2 在有缓存的体系结构下实现SC</strong>
 
 对于带有缓存的体系结构，这种数据的副本（缓存）的出现引入了三个额外的问题：
 
@@ -213,7 +213,7 @@ to be continued…
          2. P1 没有等待 Data 的写结果传播到 P2 的缓存中,继续进行 Head 的写操作；
          3. P2 读取到了内存中 Head 的新值；
          4. P2 继续执行，读到了缓存中 Data 的旧值。
-      * 这**违反SC**，因此我们需要延后每个处理器发布写确认通知的时间：直至别的处理器发回写确认通知，才发射下一个写操作。
+      * 这<strong>违反SC</strong>，因此我们需要延后每个处理器发布写确认通知的时间：直至别的处理器发回写确认通知，才发射下一个写操作。
    * 维护写原子性(maintaining write atomicity): “写原子性”是我们在2.1.2中谈到的SC的两个要求之一。“将值的改变传播给多个处理器的缓存”这一操作是非原子操作（非瞬发完成的），因此需要采取特殊措施提供写原子性的假象。因此我们提出两个要求，这两个要求将共同保证写原子性的实现。
       * 要求1：针对同一地址的写操作被串行化(serialized). 图4阐述了对这个条件的需求：如果对 A 的写操作不是序列化的，那么 P3 和 P4 输出（寄存器 1,2）的结果将会不同,这违反了次序一致性。这种情况可以在基于网络（而不是总线）的系统中产生，由于消息可经不同路径传递，这种系统不 供它们传递次序的保证。  
       ![](https://proxy-prod.omnivore-image-cache.app/1272x0,sfsrB8ggf1PiPBMweVCsLlD7XeJVtarhvjE528ooEsZM/https://picx.zhimg.com/50/978a9e33a2cba304710e377c7bbc49ed_720w.jpg?source=1def8aca)  
@@ -223,18 +223,18 @@ to be continued…
          1. P2 读 A 为 1
          2. “P2 对 B 的更新”先于“P1 对 A 的更新”到达 P3
          3. P3 获得 B 的新值，获得 A 的旧值
-         * 这使得 P2 和 P3 看到的对值 A, B 的写操作次序不同，**违反的了写原子性要求**。
+         * 这使得 P2 和 P3 看到的对值 A, B 的写操作次序不同，<strong>违反的了写原子性要求</strong>。
 
-**2.1.3 实现SC的总结**
+<strong>2.1.3 实现SC的总结</strong>
 
 注意到，与特定硬件优化，如重叠写(overlapping writes)、缓存(cache)等技术相结合时，要保证这种SC是有代价的。\[1\] Chapter 5.6给出了为保证SC, 一个写操作的耗时从 50 cycles 变为 170 cycles 的例子。同时，SC的要求同样会限制编译器优化。
 
-**2.2 Relaxed consistency model**
+<strong>2.2 Relaxed consistency model</strong>
 
-为获得好的性能，我们可以引入放松内存一致性模型(relaxed memory consistency model**s**)，**这些**模型主要通过两种方式优化程序（读写）：
+为获得好的性能，我们可以引入放松内存一致性模型(relaxed memory consistency model<strong>s</strong>)，<strong>这些</strong>模型主要通过两种方式优化程序（读写）：
 
-   * 放松对程序次序的要求：这种放松与此前所述的“在无缓存的体系结构中采用的优化”类似，**仅适用于**对不同地址的操作对(opeartion pairs)间使用。
-   * 放松对写原子性的要求：一些模型允许读操作在“一个写操作未对所有处理器可见”前返回值。这种放松**仅适用于**基于缓存的体系结构。
+   * 放松对程序次序的要求：这种放松与此前所述的“在无缓存的体系结构中采用的优化”类似，<strong>仅适用于</strong>对不同地址的操作对(opeartion pairs)间使用。
+   * 放松对写原子性的要求：一些模型允许读操作在“一个写操作未对所有处理器可见”前返回值。这种放松<strong>仅适用于</strong>基于缓存的体系结构。
 
 我们用A->B表示 A 先于 B 完成，\[1\] Chapter 5.6 根据放松的操作对次序，给出了多种内存模型：
 
@@ -249,11 +249,11 @@ to be continued…
 
 \[2\] 针对这些模型的复杂性（放松不同操作对的优势和复杂性，一个写操作何时才算完成，以及决定处理器何时能看到它自己修改的值等）做了相对详尽的描述，在此不展开。
 
-**III. C++11 memory order**
+<strong>III. C++11 memory order</strong>
 
 \[3\] Chapter 5.3 Synchronizing operations and enforcing order介绍了下述内存关系与内存次序。
 
-**3.1 Synchronized-with 与 happens-before 关系** 
+<strong>3.1 Synchronized-with 与 happens-before 关系</strong> 
 
 考虑下述程序：
 
@@ -271,13 +271,13 @@ to be continued…
 
 通过 happens-before 的传递性及引入原子变量,我们保证了读写间的顺序。 默认的原子操作使得写变量在读变量之前发生,然而原子操作也有用其他可选的操作方式,我们在此先介绍 synchronized-with 和 happens-before 关系。 
 
-**3.1.1 Synchronized-with 关系**
+<strong>3.1.1 Synchronized-with 关系</strong>
 
-该关系 描述的是，对于suitably tagged**（如默认的memory\_order\_seq\_cst）**在变量 x 上的写操作 W(x) synchronized-with 在该变量上的读操作 R(x), 这个读操作欲读取的值是 W(x) 或同一线程随后的在 x 上的写操作 W’, 或任意线程一系列的在 x 上的 read-modify-write 操作（如 fetch\_add()或 compare\_exchange\_weak()）而这一系列操作最初读到 x 的值是 W(x) 写入的值。
+该关系 描述的是，对于suitably tagged<strong>（如默认的memory\_order\_seq\_cst）</strong>在变量 x 上的写操作 W(x) synchronized-with 在该变量上的读操作 R(x), 这个读操作欲读取的值是 W(x) 或同一线程随后的在 x 上的写操作 W’, 或任意线程一系列的在 x 上的 read-modify-write 操作（如 fetch\_add()或 compare\_exchange\_weak()）而这一系列操作最初读到 x 的值是 W(x) 写入的值。
 
 简单地说,如果线程 A 写了变量 x, 线程 B 读了变量 x, 那么我们就说线程 A, B 间存在 synchronized-with 关系。
 
-**3.1.2 Happens-before 关系**
+<strong>3.1.2 Happens-before 关系</strong>
 
 Happens-before 指明了哪些指令将看到哪些指令的结果。
 
@@ -285,13 +285,13 @@ Happens-before 指明了哪些指令将看到哪些指令的结果。
 
 对于多线程而言,如果一个线程中的操作 A inter-thread happens-before 另一个线程中的操作 B, 那么 A happens-before B.
 
-**Inter-thread happens-before 关系**
+<strong>Inter-thread happens-before 关系</strong>
 
 Inter-thread happens-before 概念相对简单,并依赖于 synchronized-with 关系: 如果一个线程中的操作 A synchronized-with 另一个线程中的操作 B, 那么 A inter-thread happens-before B. Inter-thread happens-before 关系具有传递性。
 
 Inter-thread happens-before 可以与 sequenced-before 关系结合:如果 A sequenced-before B, B inter-thread happens-before C, 那么 A inter-thread happens-before C. 这揭示了如果你在一个线程中对数据进行了一系列操作，那么你只需要一个 synchronized-with 关系,即可使得数据对于另一个执行操作 C 的线程可 见。 
 
-**3.2 C++11 memory order**
+<strong>3.2 C++11 memory order</strong>
 
 C++11 述了 6 种可以应用于原子变量的内存次序: 
 
@@ -312,7 +312,7 @@ C++11 述了 6 种可以应用于原子变量的内存次序:
 
 不同的内存序模型与 synchronized-with 关系结合时,将产生不同的结果。
 
-**3.2.1 顺序一致次序(sequential consisten ordering)**
+<strong>3.2.1 顺序一致次序(sequential consisten ordering)</strong>
 
 对应memory\_order\_seq\_cst.
 
@@ -322,7 +322,7 @@ SC作为默认的内存序，是因为它意味着将程序看做是一个简单
 
 非顺序一致内存次序(non-sequentially consistency memory ordering)强调对同一事件（代码），不同线程可以以不同顺序去执行，不仅是因为编译器可以进行指令重排,也因为不同的 CPU cache 及内部缓存的状态可以影响这些指令的执行。但所有线程仍需要对某个变量的连续修改达成顺序一致。
 
-**3.2.2 松弛次序(relaxed ordering)**
+<strong>3.2.2 松弛次序(relaxed ordering)</strong>
 
 对应memory\_order\_relaxed.
 
@@ -330,7 +330,7 @@ SC作为默认的内存序，是因为它意味着将程序看做是一个简单
 
 没有附加同步的情况下，“对每个变量的修改次序”(我的理解是对每个变量的写串行化)是唯一一件被多个线程共享的事。
 
-**3.2.3 获取-释放次序(acquire-release ordering)**
+<strong>3.2.3 获取-释放次序(acquire-release ordering)</strong>
 
 对应memory\_order\_release, memory\_order\_acquire, memory\_order\_acq\_rel.
 
@@ -338,7 +338,7 @@ Acquire-release 中没有全序关系,但它 供了一些同步方法。在这�
 
 这意味着不同线程仍然看到了不一样的次序,但这次序是被限制过了的。当我们在此再引入 happens-before 关系时，就可以实现更大规模的顺序关系。（\[3\] Listing 5.8, 5.9）
 
-**3.2.4 acquire-release间的数据依赖与memory\_order\_consume**
+<strong>3.2.4 acquire-release间的数据依赖与memory\_order\_consume</strong>
 
 memory\_order\_consume 是 acquire-release 顺序模型中的一种，但它比较特殊，它为 inter-thread happens-before 引入了数据依赖关系：dependency-ordered-before 和 carries-a-dependency-to.
 

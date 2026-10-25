@@ -29,7 +29,7 @@ categories:
 
 # Learn Harness Engineering
 
-> **Yapay zeka kod yazma ajanlarının güvenilir biçimde çalışmasını sağlayan ortamı, durum yönetimini, doğrulamayı ve kontrol mekanizmalarını kurmaya odaklanan, proje tabanlı bir kurs.**
+> <strong>Yapay zeka kod yazma ajanlarının güvenilir biçimde çalışmasını sağlayan ortamı, durum yönetimini, doğrulamayı ve kontrol mekanizmalarını kurmaya odaklanan, proje tabanlı bir kurs.</strong>
 
 Learn Harness Engineering, yapay zeka kod yazma ajanlarının mühendisliğine adanmış bir kurstur. Sektördeki en gelişmiş Harness Engineering teorilerini ve uygulamalarını derinlemesine inceleyip sentezledik. Temel referanslarımız:
 
@@ -38,7 +38,7 @@ Learn Harness Engineering, yapay zeka kod yazma ajanlarının mühendisliğine a
 - [Anthropic: Harness design for long-running application development](https://www.anthropic.com/engineering/harness-design-long-running-apps)
 - [Awesome Harness Engineering](https://github.com/walkinglabs/awesome-harness-engineering)
 
-> **Hızlı başlangıç mı?** [`skills/harness-creator/`](../../skills/harness-creator/) skill'i, kendi projeniz için üretim kalitesinde bir harness (AGENTS.md, özellik listeleri, init.sh, doğrulama iş akışları) iskeletini dakikalar içinde oluşturmanıza yardımcı olabilir.
+> <strong>Hızlı başlangıç mı?</strong> [`skills/harness-creator/`](../../skills/harness-creator/) skill'i, kendi projeniz için üretim kalitesinde bir harness (AGENTS.md, özellik listeleri, init.sh, doğrulama iş akışları) iskeletini dakikalar içinde oluşturmanıza yardımcı olabilir.
 
 ---
 
@@ -85,7 +85,7 @@ Depo artık kurs içeriği için bir PDF üretim hattı içermektedir.
 
 ## Model akıllıdır, harness onu güvenilir kılar
 
-Çoğu insanın zor yoldan öğrendiği acı bir gerçek var: **Dünyanın en güçlü modeli bile, etrafına uygun bir ortam kurmazsanız gerçek mühendislik görevlerinde başarısız olacaktır.**
+Çoğu insanın zor yoldan öğrendiği acı bir gerçek var: <strong>Dünyanın en güçlü modeli bile, etrafına uygun bir ortam kurmazsanız gerçek mühendislik görevlerinde başarısız olacaktır.</strong>
 
 Muhtemelen bunu kendiniz de yaşamışsınızdır. Claude veya GPT'ye deponuzda bir görev verirsiniz. İyi başlar — dosyaları okur, kod yazar, üretken görünür. Sonra bir şeyler ters gider. Bir adımı atlar. Bir testi bozar. "Tamamlandı" der ama hiçbir şey gerçekten çalışmaz. Kendiniz yapsanız harcayacağınızdan daha fazla zamanı temizlik yaparak harcarsınız.
 
@@ -95,7 +95,7 @@ Kanıtlar açık. Anthropic kontrollü bir deney yürüttü: aynı model (Opus 4
 
 OpenAI Codex ile aynı şeyi bildirdi: iyi harness'lanmış bir depoda aynı model "güvenilmez"den "güvenilir"e geçer. Marjinal bir iyileşme değil — niteliksel bir sıçrama.
 
-**Bu kurs size o ortamı nasıl kuracağınızı öğretir.**
+<strong>Bu kurs size o ortamı nasıl kuracağınızı öğretir.</strong>
 
 ```text
                     HARNESS DESENİ
@@ -156,17 +156,17 @@ Bir harness'ın beş alt sistemi vardır:
 
 Her alt sistemin bir görevi vardır:
 
-- **Talimatlar (Instructions)** — Ajana ne yapacağını, hangi sırada yapacağını ve başlamadan önce ne okuyacağını söyler. Tek bir dev dosya değil; ajanın ihtiyaca göre gezdiği aşamalı bir açılım yapısı.
-- **Durum (State)** — Yapılanı, devam edeni ve sıradakini takip eder. Diske kalıcı olarak yazılır, böylece sonraki oturum tam olarak öncekinin bıraktığı yerden devam eder.
-- **Doğrulama (Verification)** — Yalnızca geçen bir test paketi kanıt sayılır. Ajan, çalıştırılabilir kanıt olmadan zafer ilan edemez.
-- **Kapsam (Scope)** — Ajanı bir seferde tek bir özelliğe sınırlar. Sınırı aşma yok. Üç şeyi yarım bırakma yok. Yarım kalan işi gizlemek için özellik listesini yeniden yazma yok.
-- **Oturum yaşam döngüsü (Session Lifecycle)** — Başta başlat. Sonda temizle. Sonraki oturum için temiz bir yeniden başlatma yolu bırak.
+- <strong>Talimatlar (Instructions)</strong> — Ajana ne yapacağını, hangi sırada yapacağını ve başlamadan önce ne okuyacağını söyler. Tek bir dev dosya değil; ajanın ihtiyaca göre gezdiği aşamalı bir açılım yapısı.
+- <strong>Durum (State)</strong> — Yapılanı, devam edeni ve sıradakini takip eder. Diske kalıcı olarak yazılır, böylece sonraki oturum tam olarak öncekinin bıraktığı yerden devam eder.
+- <strong>Doğrulama (Verification)</strong> — Yalnızca geçen bir test paketi kanıt sayılır. Ajan, çalıştırılabilir kanıt olmadan zafer ilan edemez.
+- <strong>Kapsam (Scope)</strong> — Ajanı bir seferde tek bir özelliğe sınırlar. Sınırı aşma yok. Üç şeyi yarım bırakma yok. Yarım kalan işi gizlemek için özellik listesini yeniden yazma yok.
+- <strong>Oturum yaşam döngüsü (Session Lifecycle)</strong> — Başta başlat. Sonda temizle. Sonraki oturum için temiz bir yeniden başlatma yolu bırak.
 
 ---
 
 ## Bu kurs neden var
 
-Soru "modeller kod yazabilir mi?" değil. Yazabilirler. Soru şu: **Gerçek depolarda, birden fazla oturum boyunca, sürekli insan denetimi olmadan gerçek mühendislik görevlerini güvenilir biçimde tamamlayabilirler mi?**
+Soru "modeller kod yazabilir mi?" değil. Yazabilirler. Soru şu: <strong>Gerçek depolarda, birden fazla oturum boyunca, sürekli insan denetimi olmadan gerçek mühendislik görevlerini güvenilir biçimde tamamlayabilirler mi?</strong>
 
 Şu an için cevap: bir harness olmadan, hayır.
 
@@ -202,13 +202,13 @@ Bu kursun gerçekten önemsediği sorular:
 
 ## Kurs Müfredatı ve Dokümantasyon
 
-Tüm kurs materyalleri için lütfen **[Dokümantasyon Sitesi](https://walkinglabs.github.io/learn-harness-engineering/)**'ni ziyaret edin.
+Tüm kurs materyalleri için lütfen <strong>[Dokümantasyon Sitesi](https://walkinglabs.github.io/learn-harness-engineering/)</strong>'ni ziyaret edin.
 
 Müfredat üç bölüme ayrılmıştır:
 
-1. **Dersler**: Harness engineering'in arkasındaki teoriyi açıklayan 12 kavramsal birim.
-2. **Projeler**: Ajansal bir çalışma alanını sıfırdan inşa ettiğiniz 6 uygulamalı proje.
-3. **Kaynak Kütüphanesi**: Kendi depolarınızda bugün kullanabileceğiniz kopya-yapıştır şablonlar (`AGENTS.md`, `feature_list.json`, `init.sh` vb.).
+1. <strong>Dersler</strong>: Harness engineering'in arkasındaki teoriyi açıklayan 12 kavramsal birim.
+2. <strong>Projeler</strong>: Ajansal bir çalışma alanını sıfırdan inşa ettiğiniz 6 uygulamalı proje.
+3. <strong>Kaynak Kütüphanesi</strong>: Kendi depolarınızda bugün kullanabileceğiniz kopya-yapıştır şablonlar (`AGENTS.md`, `feature_list.json`, `init.sh` vb.).
 
 ---
 
@@ -234,7 +234,7 @@ Başlangıç şablonlarını [Kaynak Kütüphanesi](https://walkinglabs.github.i
 
 ## Bitirme projesi: Gerçek bir uygulama
 
-Altı kurs projesinin tamamı aynı ürün etrafında döner: **Electron tabanlı kişisel bir bilgi tabanı masaüstü uygulaması**.
+Altı kurs projesinin tamamı aynı ürün etrafında döner: <strong>Electron tabanlı kişisel bir bilgi tabanı masaüstü uygulaması</strong>.
 
 ```text
     ┌─────────────────────────────────────────────────────┐
@@ -396,7 +396,7 @@ Yarı zamanlı ilerliyorsanız her aşama yaklaşık bir hafta sürer. Daha hız
 
 ## Ajan oturumunun yaşam döngüsü
 
-Bu kursun temel fikirlerinden biri: **ajanın oturumu serbest takılma değil, yapılandırılmış bir yaşam döngüsünü izlemelidir.** İşte bunun nasıl göründüğü:
+Bu kursun temel fikirlerinden biri: <strong>ajanın oturumu serbest takılma değil, yapılandırılmış bir yaşam döngüsünü izlemelidir.</strong> İşte bunun nasıl göründüğü:
 
 ```text
     AJAN OTURUMU YAŞAM DÖNGÜSÜ
@@ -569,7 +569,7 @@ learn-harness-engineering/
 
 Bu depo ayrıca IDE'nize veya ajan çalışma alanınıza doğrudan kurabileceğiniz yeniden kullanılabilir yapay zeka ajan skill'leri de içerir.
 
-- [**harness-creator**](../../skills/harness-creator/): Kendi projeniz için dakikalar içinde üretim kalitesinde bir harness iskeletini oluşturmanıza yardımcı olan bir skill.
+- [<strong>harness-creator</strong>](../../skills/harness-creator/): Kendi projeniz için dakikalar içinde üretim kalitesinde bir harness iskeletini oluşturmanıza yardımcı olan bir skill.
 
 ---
 
@@ -579,7 +579,7 @@ Ekibimiz başka kurslar da hazırladı! Göz atın:
 
 [![Hands-on Modern RL](https://img.shields.io/badge/HANDS--ON_MODERN_RL-0052cc?style=for-the-badge)](https://github.com/walkinglabs/hands-on-modern-rl)
 
-**Hands-on Modern RL**: Temel RL kavramlarından LLM hizalamasına, RLVR'ye ve ileri ajansal sistemlere uzanan boşluğu kapatan, açık kaynaklı, uygulamalı bir müfredat.
+<strong>Hands-on Modern RL</strong>: Temel RL kavramlarından LLM hizalamasına, RLVR'ye ve ileri ajansal sistemlere uzanan boşluğu kapatan, açık kaynaklı, uygulamalı bir müfredat.
 
 ---
 
