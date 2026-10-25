@@ -168,17 +168,7 @@ infobox:
 
 ## 截图
 
-| 条目页 | 关系图谱 |
-| --- | --- |
-| ![条目页](../../docs/screenshots/article.png) | ![关系图谱](../../docs/screenshots/graph.png) |
-
-| 统计面板 | 深色模式 |
-| --- | --- |
-| ![统计](../../docs/screenshots/stats.png) | ![深色](../../docs/screenshots/dark.png) |
-
-移动端（390px）：
-
-<img src="../../docs/screenshots/mobile.png" width="260" alt="移动端">
+![关系图谱](../../docs/screenshots/graph.png)
 
 
 ---

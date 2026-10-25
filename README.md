@@ -5,20 +5,10 @@
 
 本仓库 = **可直接运行的 demo 站点** + **主题本体**（`themes/hexowiki/`）。
 
-![首页](docs/screenshots/home.png)
-
-<table>
-  <tr>
-    <td width="50%"><img src="docs/screenshots/article.png" alt="条目页"></td>
-    <td width="50%"><img src="docs/screenshots/graph.png" alt="关系图谱"></td>
-  </tr>
-  <tr>
-    <td align="center"><sub>条目页：维基式排版 + 反链/出链/断链面板</sub></td>
-    <td align="center"><sub>全站关系图谱：拖拽 / 缩放 / 搜索 / 未创建节点</sub></td>
-  </tr>
-</table>
-
-![统计面板](docs/screenshots/stats.png)
+<p align="center">
+  <img src="docs/screenshots/home.png" width="49%" alt="HexWiki 首页">
+  <img src="docs/screenshots/graph.png" width="49%" alt="全站关系图谱">
+</p>
 
 ---
 
@@ -139,11 +129,6 @@ infobox:
   - 桌面 1440、移动 390（mobile emulation）、深色模式：`scrollWidth == clientWidth`，0 console error，0 失败请求；
   - 交互 9 项全部通过：搜索建议/跳转、红链拦截 + 提示、深色切换与持久化、侧栏筛选、
     移动端抽屉、全站图谱渲染/搜索高亮、局部图数据与画布。
-
-<p align="center">
-  <img src="docs/screenshots/mobile.png" width="240" alt="移动端">
-  <img src="docs/screenshots/dark.png" width="560" alt="深色模式">
-</p>
 
 ## 如何测试
 
