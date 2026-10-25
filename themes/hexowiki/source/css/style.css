@@ -3292,6 +3292,14 @@ html[data-theme="dark"] .pagination__item.is-current {
   opacity: 1;
 }
 
+.math-tex.math-display {
+  display: block;
+  margin: 0.6em 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  text-align: center;
+}
+
 .katex {
   font-size: 1.04em;
 }
