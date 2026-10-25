@@ -8,9 +8,11 @@
     "clean": "hexo clean",
     "server": "hexo server",
     "dev": "hexo server --draft",
-    "test": "node --test themes/hexowiki/test/*.test.js",
+    "test": "node --test themes/hexowiki/test/*.test.js tools/*.test.js",
     "verify": "node tools/verify-site.js",
-    "verify:ui": "node tools/check-interactions.js"
+    "verify:ui": "node tools/check-interactions.js",
+    "links:sync": "node tools/link-sync.js --once",
+    "links:watch": "node tools/link-sync.js --watch"
   },
   "hexo": {
     "version": "8.1.2"

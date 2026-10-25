@@ -7,3 +7,4 @@ db.json
 .DS_Store
 tmp/
 preview/
+.link-sync-state.json
