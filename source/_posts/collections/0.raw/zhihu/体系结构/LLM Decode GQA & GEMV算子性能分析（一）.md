@@ -41,7 +41,7 @@ source_url: https://zhuanlan.zhihu.com/p/715091838
 
 本文前言部分引用的知乎文章表明，合理GQA的性能预估方式如下：
 
-Cost=KVCache&#x005F;for&#x005F;MHA/L2&#x005F;Bandwidth" role="presentation">Cost=KVCache_for_MHA/L2_BandwidthCost=KVCache\_for\_MHA/L2\_Bandwidth 
+Cost=KVCache_for_MHA/L2_Bandwidth" role="presentation">Cost=KVCache_for_MHA/L2_BandwidthCost=KVCache\_for\_MHA/L2\_Bandwidth 
 
 由于我们做了张量并行TP=8，每个GPU只需负责=8个Head的Attention计算，从L2 Cache中读取的数据量大约为8个Head的KVCache大小。我们选择Decode阶段第256个Step进行分析，KVCache中上下文的长度为4096 + (256 - 1) = 4351，对应的KVCache大小约为271.9375 MiB(fp16 datatype)。
 

@@ -267,12 +267,12 @@ import time
 # RTX 30/40/50 系列默认会在 FP32 矩阵乘中使用 TF32,这会大大加速计算。
 # 为了测试“纯 FP32”性能,我们先关掉它；后面再开启它来体验 Tensor Core。
 torch.backends.cuda.matmul.allow_tf32 = False 
-device = torch.device(&#34;cuda&#34;)
+device = torch.device("cuda")
 
 # 获取显卡名称,确认是 5070
 
 ```python
-print(f&#34;当前显卡: {torch.cuda.get_device_name(0)}&#34;)
+print(f"当前显卡: {torch.cuda.get_device_name(0)}")
 
 def profile_kernel(func, name, n_iters=100):
     # 使用 CUDA Event 计时比 time.time() 更精确
@@ -311,7 +311,7 @@ def run_vector_add():
 ```
 
 
-t_add = profile_kernel(run_vector_add, &#34;Vector Add&#34;)
+t_add = profile_kernel(run_vector_add, "Vector Add")
 
 # 理论分析
 bytes_per_iter = 3 * N * 4 # 读x(4B)+读y(4B)+写z(4B)
@@ -320,10 +320,10 @@ bw = (bytes_per_iter / t_add) / 1e9  # GB/s
 ai = flops_per_iter / bytes_per_iter
 
 ```python
-print(f&#34;\n[实验 A: Vector Add]&#34;)
-print(f&#34;计算强度 (AI): {ai:.4f} FLOPs/Byte (极低)&#34;)
-print(f&#34;实测带宽: {bw:.2f} GB/s&#34;)
-print(f&#34;分析: 接近 GDDR7 的物理带宽上限 (600-700 GB/s)&#34;)
+print(f"\n[实验 A: Vector Add]")
+print(f"计算强度 (AI): {ai:.4f} FLOPs/Byte (极低)")
+print(f"实测带宽: {bw:.2f} GB/s")
+print(f"分析: 接近 GDDR7 的物理带宽上限 (600-700 GB/s)")
 ```
 
 
@@ -341,7 +341,7 @@ def run_matmul_fp32():
 ```
 
 
-t_fp32 = profile_kernel(run_matmul_fp32, &#34;MatMul FP32&#34;, n_iters=20)
+t_fp32 = profile_kernel(run_matmul_fp32, "MatMul FP32", n_iters=20)
 
 # 理论分析
 flops_per_iter = 2 * S**3
@@ -350,10 +350,10 @@ bytes_accessed = 3 * S**2 * 4
 ai_gemm = flops_per_iter / bytes_accessed
 
 ```python
-print(f&#34;\n[实验 B: MatMul FP32 (No Tensor Core)]&#34;)
-print(f&#34;计算强度 (AI): {ai_gemm:.2f} FLOPs/Byte (高)&#34;)
-print(f&#34;实测算力: {gflops:.2f} GFLOPS&#34;) # 也就是 TFLOPS = GFLOPS / 1000
-print(f&#34;分析: 接近 CUDA Cores 的理论峰值 (约 30 TFLOPS)&#34;)
+print(f"\n[实验 B: MatMul FP32 (No Tensor Core)]")
+print(f"计算强度 (AI): {ai_gemm:.2f} FLOPs/Byte (高)")
+print(f"实测算力: {gflops:.2f} GFLOPS") # 也就是 TFLOPS = GFLOPS / 1000
+print(f"分析: 接近 CUDA Cores 的理论峰值 (约 30 TFLOPS)")
 ```
 
 
@@ -365,15 +365,15 @@ print(f&#34;分析: 接近 CUDA Cores 的理论峰值 (约 30 TFLOPS)&#34;)
 # 它在 FP32 容器里跑 FP19 计算,利用 Tensor Core
 torch.backends.cuda.matmul.allow_tf32 = True 
 
-t_tf32 = profile_kernel(run_matmul_fp32, &#34;MatMul TF32&#34;, n_iters=50)
+t_tf32 = profile_kernel(run_matmul_fp32, "MatMul TF32", n_iters=50)
 
 gflops_tf32 = (flops_per_iter / t_tf32) / 1e9
 
 ```python
-print(f&#34;\n[实验 C: MatMul TF32 (Using Tensor Cores)]&#34;)
-print(f&#34;实测算力: {gflops_tf32:.2f} GFLOPS&#34;)
-print(f&#34;加速比: {gflops_tf32 / gflops:.2f}x&#34;)
-print(f&#34;分析: 这利用了 Blackwell Tensor Cores,性能会远超普通 FP32 roofline&#34;)
+print(f"\n[实验 C: MatMul TF32 (Using Tensor Cores)]")
+print(f"实测算力: {gflops_tf32:.2f} GFLOPS")
+print(f"加速比: {gflops_tf32 / gflops:.2f}x")
+print(f"分析: 这利用了 Blackwell Tensor Cores,性能会远超普通 FP32 roofline")
 ```
 
 
@@ -386,20 +386,20 @@ print(f&#34;分析: 这利用了 Blackwell Tensor Cores,性能会远超普通 FP
 def run_matmul_fp16():
     # 必须确保输入是 half (fp16) 类型
     # 并且使用 Tensor Core 友好的维度 (8的倍数, 这里已经是8192了)
-    with torch.amp.autocast(&#34;cuda&#34;):     # 或者直接定义 .half() tensor
+    with torch.amp.autocast("cuda"):     # 或者直接定义 .half() tensor
         torch.mm(mat_a.half(), mat_b.half())
 ```
 
 
-t_fp16 = profile_kernel(run_matmul_fp16, &#34;MatMul FP16&#34;)
+t_fp16 = profile_kernel(run_matmul_fp16, "MatMul FP16")
 
 gflops_fp16 = (flops_per_iter / t_fp16) / 1e9
 
 ```python
-print(f&#34;\n[实验 D: MatMul FP16 (Using Tensor Cores)]&#34;)
-print(f&#34;实测算力: {gflops_fp16:.2f} GFLOPS&#34;)
-print(f&#34;加速比: {gflops_fp16 / gflops:.2f}x&#34;)
-print(f&#34;分析: 这利用了 Tensor Cores FP16, Ultimate Roof line!&#34;)
+print(f"\n[实验 D: MatMul FP16 (Using Tensor Cores)]")
+print(f"实测算力: {gflops_fp16:.2f} GFLOPS")
+print(f"加速比: {gflops_fp16 / gflops:.2f}x")
+print(f"分析: 这利用了 Tensor Cores FP16, Ultimate Roof line!")
 ```
 
 运行结果：

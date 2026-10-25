@@ -21,7 +21,7 @@ source_url: https://zhuanlan.zhihu.com/p/426978026
 
 ### 前言
 
-$首先需要对reduce算法进行介绍。reduce算法本质上就是计算x=x0&#x2297;x1&#x2297;x2&#x2297;x3......&#x2297;xn&#x2212;1&#x2297;xn&#xA0;" role="presentation">x=x0⊗x1⊗x2⊗x3......⊗xn−1⊗xn x=x_0\otimes x_1 \otimes x_2 \otimes x_3 ...... \otimes x_{n-1} \otimes x_n\。下面本文将详细说明如何在GPU中实现reduce算法并进行深入地优化。$
+$首先需要对reduce算法进行介绍。reduce算法本质上就是计算x=x0⊗x1⊗x2⊗x3......⊗xn−1⊗xn " role="presentation">x=x0⊗x1⊗x2⊗x3......⊗xn−1⊗xn x=x_0\otimes x_1 \otimes x_2 \otimes x_3 ...... \otimes x_{n-1} \otimes x_n\。下面本文将详细说明如何在GPU中实现reduce算法并进行深入地优化。$
 
 ### 并行算法设计
 

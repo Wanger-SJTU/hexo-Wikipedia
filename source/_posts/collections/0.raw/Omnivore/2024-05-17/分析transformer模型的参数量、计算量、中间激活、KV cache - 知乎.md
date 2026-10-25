@@ -82,7 +82,10 @@ self-attention块和MLP块各有一个layer normalization，包含了2个可训�
 
 在一次训练迭代中，假设输入数据的形状为 \[b,s \] 。我们<strong>先分析self-attention块的计算</strong>，计算公式如下：
 
+```text
 Q=xW\_Q,K=xW\_K,V=xW\_V\\\\x\_{out}=softmax(\\frac{QK^{T}}{\\sqrt{h}})\\cdot V\\cdot W\_o + x\\\\
+```
+
 
 1\. 计算 Q,K,V ：矩阵乘法的输入和输出形状为 \[b,s,h\] \\times \[h,h\]\\rightarrow \[b,s,h\] 。计算量为 3\*2bsh^2=6bsh^2 。
 
@@ -94,7 +97,10 @@ Q=xW\_Q,K=xW\_K,V=xW\_V\\\\x\_{out}=softmax(\\frac{QK^{T}}{\\sqrt{h}})\\cdot V\\
 
 <strong>接下来分析MLP块的计算，计算公式如下</strong>：
 
+```text
 x=f\_{gelu}(x\_{out}W\_1)W\_2+x\_{out}\\\\
+```
+
 
 1\. 第一个线性层，矩阵乘法的输入和输出形状为 \[b,s,h\]\\times\[h,4h\]\\rightarrow\[b,s,4h\] 。计算量为 8bsh^2 。
 
@@ -114,7 +120,10 @@ x=f\_{gelu}(x\_{out}W\_1)W\_2+x\_{out}\\\\
 
 接下来，我们可以估计训练GPT3-175B所需要的计算量。对于GPT3，每个token，每个参数进行了6次浮点数运算，再乘以参数量和总tokens数就得到了总的计算量。GPT3的模型参数量为 174600M ，训练数据量为 300B  tokens。
 
+```text
 6 \\times 174600 \\times 10^{6} \\times 300 \\times 10^{9} = 3.1428 \\times 10^{23} flops\\\\
+```
+
 
 ![](https://proxy-prod.omnivore-image-cache.app/1804x804,s3B0B8ci7whI8F89TZL_7uS5mc2FH2Fet8xLjqLal4Lc/https://pic4.zhimg.com/v2-fb0e11503faf2d6e05dcc2e913f05bb3_b.jpg)
 
@@ -124,13 +133,19 @@ x=f\_{gelu}(x\_{out}W\_1)W\_2+x\_{out}\\\\
 
 上文讲到一次前向传递中，对于每个token，每个模型参数，进行2次浮点数计算。使用激活重计算技术来减少中间激活显存（下文会详细介绍）需要进行一次额外的前向传递，因此前向传递 + 后向传递 + 激活重计算的系数=1+2+1=4。使用<strong>激活重计算</strong>的一次训练迭代中，对于每个token，每个模型参数，需要进行 2\*4=8 次浮点数运算。<strong>在给定训练tokens数、硬件环境配置的情况下，训练transformer模型的计算时间为</strong>：
 
+```text
 训练时间\\approx \\frac{8\\times tokens数\\times 模型参数量}{GPU数\\times GPU峰值flops\\times GPU利用率}\\\\
+```
+
 
 ![](https://proxy-prod.omnivore-image-cache.app/1170x898,snjTuu27vMJBfHbmGxTl04aTQP7Vlza4vK4kLVOGy-T0/https://pic1.zhimg.com/v2-41e0547593a6a89432675c8722476028_b.jpg)
 
-以GPT3-175B为例，在1024张40GB显存的A100上，在300B tokens的数据上训练175B参数量的GPT3。40GB显存A100的峰值性能为312TFLOPS，设GPU利用率为0.45，则<strong>所需要的训练时间为34天，这与\[7\]中的训练时间是对得上的</strong>。 \\frac{8\\times(300 \\times 10^9) \\times (175 \\times 10^9)}{1024\\times (312\\times 10^{12})\\times 0.45}\\approx 2921340 \\space seconds\\approx 34 days\\\\
+```text
+以GPT3-175B为例，在1024张40GB显存的A100上，在300B tokens的数据上训练175B参数量的GPT3。40GB显存A100的峰值性能为312TFLOPS，设GPU利用率为0.45，则**所需要的训练时间为34天，这与\[7\]中的训练时间是对得上的**。 \\frac{8\\times(300 \\times 10^9) \\times (175 \\times 10^9)}{1024\\times (312\\times 10^{12})\\times 0.45}\\approx 2921340 \\space seconds\\approx 34 days\\\\
 
-以LLaMA-65B为例，在2048张80GB显存的A100上，在1.4TB tokens的数据上训练了65B参数量的模型。80GB显存A100的峰值性能为624TFLOPS，设GPU利用率为0.3，则<strong>所需要的训练时间为21天，这与\[4\]中的实际训练时间是对得上的</strong>。 \\frac{8\\times (1.4\\times 10^{12})\\times(65\\times 10^9)}{2048\\times (624\\times 10^{12})\\times 0.3}\\approx 1898871\\space seconds\\approx 21 days\\\\
+以LLaMA-65B为例，在2048张80GB显存的A100上，在1.4TB tokens的数据上训练了65B参数量的模型。80GB显存A100的峰值性能为624TFLOPS，设GPU利用率为0.3，则**所需要的训练时间为21天，这与\[4\]中的实际训练时间是对得上的**。 \\frac{8\\times (1.4\\times 10^{12})\\times(65\\times 10^9)}{2048\\times (624\\times 10^{12})\\times 0.3}\\approx 1898871\\space seconds\\approx 21 days\\\\
+```
+
 
 ## 4\. 中间激活值分析
 
@@ -144,15 +159,21 @@ x=f\_{gelu}(x\_{out}W\_1)W\_2+x\_{out}\\\\
 
 <strong>先分析self-attention块的中间激活</strong>。self-attention块的计算公式如下：
 
+```text
 Q=xW\_Q,K=xW\_K,V=xW\_V\\\\
 
 x\_{out}=softmax(\\frac{QK^{T}}{\\sqrt{h}})\\cdot V\\cdot W\_o + x\\\\
+```
+
 
 1\. 对于 Q,K,V ，需要保存它们共同的输入 x ，这就是中间激活。输入 x 的形状为 \[b,s,h\] ，元素个数为 bsh ，占用显存大小为 2\*bsh=2bsh 。
 
 2\. 对于 QK^T 矩阵乘法，需要保存中间激活 Q,K ，两个张量的形状都是 \[b,s,h\] ，占用显存大小合计为 2\*2\*bsh=4bsh 。
 
+```text
 3\. 对于 softmax() 函数，需要保存函数的输入 QK^T ，占用显存大小为 2bs^2a ，这里的 a 表示注意力头数。 score = softmax(\\frac{QK^T}{\\sqrt{d\_k}})\\\\
+```
+
 
 Q 的形状为： \[b, head\\\_num, s, per\\\_head\\\_hidden\\\_size\] 
 
@@ -168,7 +189,10 @@ QK^T 的形状为： \[b,head\\\_num,s,s\] ，元素个数为 bs^2a ，占用显
 
 因此，将上述中间激活相加得到，self-attention块的中间激活占用显存大小为 11bsh+5bs^2a 。
 
-接下来<strong>看MLP块的中间激活。MLP块的计算公式如下</strong>： x=f\_{gelu}(x\_{out}W\_1)W\_2+x\_{out}\\\\
+```text
+接下来**看MLP块的中间激活。MLP块的计算公式如下**： x=f\_{gelu}(x\_{out}W\_1)W\_2+x\_{out}\\\\
+```
+
 
 1\. 第一个线性层需要保存其输入，占用显存大小为 2bsh 。
 
@@ -222,11 +246,17 @@ GPT3的序列长度 s 为 2048 。对比不同的批次大小 b 占用的中间�
 
 key cache和value cache的计算过程为：
 
+```text
 x^{i}\_{K} = x^{i} \\cdot W^{i}\_{K}\\\\x^{i}\_{V} = x^{i} \\cdot W^{i}\_{V}\\\\
+```
+
 
 第 i 个transformer层剩余的计算过程为：
 
+```text
 x^{i}\_{Q} = x^{i} \\cdot W^{i}\_{Q}\\\\x^{i}\_{out} = softmax(\\frac{x^{i}\_{Q} {x^{i}\_{K}}^{T}}{\\sqrt{h}}) \\cdot x^{i}\_{V} \\cdot W^{i}\_{O} + x^{i}\\\\x^{i+1} = f\_{gelu}(x^{i}\_{out}\\cdot W\_1) \\cdot W\_2 + x^{i}\_{out}\\\\
+```
+
 
 <strong>解码阶段</strong>
 
@@ -234,15 +264,21 @@ x^{i}\_{Q} = x^{i} \\cdot W^{i}\_{Q}\\\\x^{i}\_{out} = softmax(\\frac{x^{i}\_{Q}
 
 更新key cache和value cache的计算过程如下：
 
+```text
 x^{i}\_{K} \\leftarrow Concat(x^{i}\_{K}, t^{i}\\cdot W^{i}\_{K})\\\\
 
 x^{i}\_{V} \\leftarrow Concat(x^{i}\_{V}, t^{i}\\cdot W^{i}\_{V})\\\\
+```
+
 
 第 i 个transformer层剩余的计算过程为：
 
+```text
 t^{i}\_{Q} = t\_{i} \\cdot W^{i}\_{Q}\\\\
 
 t^{i}\_{out} = softmax(\\frac{{t^{i}\_{Q}x^{i}\_{K}}^{T}}{\\sqrt{h}}) \\cdot x^{i}\_{V} \\cdot W^{i}\_{O} + t^{i}\\\\t^{i+1} = f\_{gelu}(t^{i}\_{out}\\cdot W\_1) \\cdot W\_2 + t^{i}\_{out}\\\\
+```
+
 
 ### 5.1 KV cache的显存占用分析
 

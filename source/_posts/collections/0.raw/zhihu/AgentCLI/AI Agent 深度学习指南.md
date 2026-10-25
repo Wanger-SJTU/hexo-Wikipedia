@@ -439,8 +439,12 @@ const review = await reviewerAgent.generateText({
 一个 “管理者” agent 把子任务分配给专门的 agent。
 
 Manager Agent
+
+```text
         /      |      \
   Search Agent  Code Agent  Test Agent`
+```
+
 
 实现方式：把「调用其他 agent」作为管理者的工具。
 

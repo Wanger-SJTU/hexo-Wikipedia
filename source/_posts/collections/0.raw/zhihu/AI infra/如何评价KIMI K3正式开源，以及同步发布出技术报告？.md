@@ -69,7 +69,7 @@ v = v.view(B, T, self.n_head, C // self.n_head).transpose(1, 2)
 
 # 手动实现的注意力
 att = (q @ k.transpose(-2, -1)) * (1.0 / math.sqrt(k.size(-1)))
-att = att.masked_fill(self.bias[:,:,:T,:T] == 0, float(&#39;-inf&#39;))  # 因果 mask
+att = att.masked_fill(self.bias[:,:,:T,:T] == 0, float('-inf'))  # 因果 mask
 att = F.softmax(att, dim=-1)
 y = att @ v  # (B, nh, T, T) × (B, nh, T, hs) → (B, nh, T, hs)
 y = y.transpose(1, 2).contiguous().view(B, T, C)  # 拼回所有头
@@ -120,7 +120,7 @@ def forward(self, x, mask=None, past_kv=None):
     if past_kv is None:  # prefill 阶段需要 mask
         causal_mask = torch.ones(t, t, dtype=bool, device=q.device)
         causal_mask = torch.triu(causal_mask, diagonal=1)
-        scores = scores.masked_fill(causal_mask, float(&#39;-inf&#39;))
+        scores = scores.masked_fill(causal_mask, float('-inf'))
 
     attn = scores.softmax(-1)
     o = attn @ v
@@ -544,8 +544,8 @@ AttnRes 不是把所有前层输出等权相加，而是给每一项乘一个<st
 
 V = torch.stack(blocks + [partial_block])  # [N+1, B, T, D]
 K = norm(V)
-logits = torch.einsum(&#39;d, n b t d -> n b t&#39;, proj.weight.squeeze(), K)
-h = torch.einsum(&#39;n b t, n b t d -> b t d&#39;, logits.softmax(0), V)
+logits = torch.einsum('d, n b t d -> n b t', proj.weight.squeeze(), K)
+h = torch.einsum('n b t, n b t d -> b t d', logits.softmax(0), V)
 return h
 把多个 block 的表示堆叠成 V，归一化后做 query-key 点积得到 logits，softmax 后加权求和。一个 block 是 12 个解码器层（注意力和 MLP 输出的逐元素和）累积的单一深度表示，用于后续的 AttnRes 混合。
 

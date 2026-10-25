@@ -27,13 +27,13 @@ source_url: https://zhuanlan.zhihu.com/p/683636677
 - 国产芯片迎来一次机会，设计并量产 14nm 的中算力、大显存 LLM 推理芯片，可以绕开芯片制程的瓶颈迅速商业化
 3.8 13:00 更新:经评论区 [@程勇](//www.zhihu.com/people/3791f46565ab66ffdcae165a99650023)
 
- $指正，  Scaling Laws 原论文中的 table 1 漏算了 Attention 部分 Attention Score * V 部分（跟 Mask 的开销一样），因此实际的公式应该是： Csora&#x2212;forward/token=2N+4nlayernctxdattn=2(12nlayerdmodel2+2nlayernctxdattn)&#x2248;2(12nlayerdmodel2+2&#x2217;12nlayer&#x2217;14dmodel&#x2217;dmodel)=58N" role="presentation">Csora−forward/token=2N+4nlayernctxdattn=2(12nlayerdmodel2+2nlayernctxdattn)≈2(12nlayerdmodel2+2∗12nlayer∗14dmodel∗dmodel)=58NC_{sora-forward/token} = 2N + 4n_{layer}n_{ctx}d_{attn} = 2 (12n_{layer}d_{model}^{2} + 2n_{layer}n_{ctx}d_{attn} ) \approx 2(12n_{layer}d_{model}^{2} + 2*12n_{layer}*14d_{model}*d_{model}) = 58N $
+ $指正，  Scaling Laws 原论文中的 table 1 漏算了 Attention 部分 Attention Score * V 部分（跟 Mask 的开销一样），因此实际的公式应该是： Csora−forward/token=2N+4nlayernctxdattn=2(12nlayerdmodel2+2nlayernctxdattn)≈2(12nlayerdmodel2+2∗12nlayer∗14dmodel∗dmodel)=58N" role="presentation">Csora−forward/token=2N+4nlayernctxdattn=2(12nlayerdmodel2+2nlayernctxdattn)≈2(12nlayerdmodel2+2∗12nlayer∗14dmodel∗dmodel)=58NC_{sora-forward/token} = 2N + 4n_{layer}n_{ctx}d_{attn} = 2 (12n_{layer}d_{model}^{2} + 2n_{layer}n_{ctx}d_{attn} ) \approx 2(12n_{layer}d_{model}^{2} + 2*12n_{layer}*14d_{model}*d_{model}) = 58N $
 
 相当于 Sora 的推理成本如果是完整的 1M token 的话，需要 58N （之前的结论是 30N），训练则是 58N*3 = 174N。  推理成本还会将近翻一倍 （达到 GPT-4 生成 1k token 的 3000 倍**）。   不过也有可能是 Sora 的视频是由多段 30s 视频拼接起来，不是一次性生成 1min 的视频，这样可以使其单位 token 的成本减半，总成本和之前预估的持平。 因此我正文中就不再一一更改公式了。
 
 2.27 15:00 更新:经评论区 [@Victarry](//www.zhihu.com/people/b8fd114b56b395d247744cee40056139)
 
- 指正， Scaling Laws 里推导的 C&#x2248;6ND" role="presentation">C≈6NDC\approx6ND 成立的前提是 dmodel&#x226B;nctx/12" role="presentation">dmodel≫nctx/12d_{model} \gg n_{ctx}/12 。这个在超长的 context length （如 1M）时不再适用，因此 Sora 的训练推理成本均会更高，初步估算 Sora 的推理成本在原结论 100 倍的基础上还需要增加 15 倍。** 我更新到原文推导 Sora 所需算力的部分。 
+ 指正， Scaling Laws 里推导的 C≈6ND" role="presentation">C≈6NDC\approx6ND 成立的前提是 dmodel≫nctx/12" role="presentation">dmodel≫nctx/12d_{model} \gg n_{ctx}/12 。这个在超长的 context length （如 1M）时不再适用，因此 Sora 的训练推理成本均会更高，初步估算 Sora 的推理成本在原结论 100 倍的基础上还需要增加 15 倍。** 我更新到原文推导 Sora 所需算力的部分。 
 
 2.26 11:00 更新：经评论区 [@mackler](//www.zhihu.com/people/59f76a6c40b262c91e0e8b9dbb100168)
 

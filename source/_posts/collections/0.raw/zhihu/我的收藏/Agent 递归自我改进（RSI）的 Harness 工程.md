@@ -15,7 +15,7 @@ source_url: https://zhuanlan.zhihu.com/p/2067214030054467237
 ---
 
 
-原文标题：Harness Engineering for Self-Improvement（翁荔, Lil&#39;Log, 2026-07）。
+原文标题：Harness Engineering for Self-Improvement（翁荔, Lil'Log, 2026-07）。
 
 翁荔的这篇长文 从一个老问题切入：<strong>递归自我改进（RSI）</strong>——系统用现有能力去改进「产生能力的机制」。Good (1965) 谈 ultraintelligent machine，Yudkowsky (2008) 把 RSI 说成明确的反馈环。翁荔在当下的理解是：改进不一定等于 <strong>模型当场改写权重</strong>；更现实的路径包括改 <strong>训练 pipeline</strong>、改 <strong>部署系统</strong>，从而得到更强的后继模型。她特意强调，<strong>部署系统</strong>——从基座模型到真实任务之间的那一层——重要性可能不亚于预训练结束时的 eval；Claude Code、Codex 等产品，价值大量在 <strong>harness</strong> 里。
 
@@ -207,6 +207,6 @@ SIA 有三个角色：
 
 <strong>延伸阅读</strong>
 
-- Harness Engineering for Self-Improvement — Lil&#39;Log
+- Harness Engineering for Self-Improvement — Lil'Log
 - Effective harnesses for long-running agents — Anthropic Engineering
 - Building effective agents — Anthropic Engineering

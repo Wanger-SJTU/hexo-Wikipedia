@@ -29,7 +29,7 @@ $$1023 + \lfloor y \cdot \frac{1}{\ln 2} \rfloor$$
 
 那么尾数的那部分呢？它实际上是
 
-$$2{y&#x22C5;1ln&#x2061;2}&#x2212;1" role="presentation">2{y⋅1ln⁡2}−12^{\{ y \cdot \frac{1}{\ln 2} \}} - 1$$
+$$2{y⋅1ln⁡2}−1" role="presentation">2{y⋅1ln⁡2}−12^{\{ y \cdot \frac{1}{\ln 2} \}} - 1$$
 
 减去1，是因为浮点数已经亲切地替我们把最高位的1省略掉了。
 

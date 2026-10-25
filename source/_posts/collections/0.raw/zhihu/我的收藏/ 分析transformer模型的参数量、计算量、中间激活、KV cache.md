@@ -29,7 +29,7 @@ source_url: https://zhuanlan.zhihu.com/p/624740065
 
 transformer模型由 l" role="presentation">ll 个相同的层组成，每个层分为两部分：self-attention块和MLP块。
 
-self-attention块的模型参数有 Q&#x3001;K&#x3001;V" role="presentation">Q、K、VQ、K、V 的权重矩阵 WQ&#x3001;WK&#x3001;WV" role="presentation">WQ、WK、WVW_Q、W_K、W_V 和偏置，输出权重矩阵 WO" role="presentation">WOW_O 和偏置，4个权重矩阵的形状为 [h,h]" role="presentation">[h,h][h,h] ，4个偏置的形状为 [h]" role="presentation">[h][h] 。self- attention块的参数量为 4h2+4h" role="presentation">4h2+4h4h^2+4h 。
+self-attention块的模型参数有 Q、K、V" role="presentation">Q、K、VQ、K、V 的权重矩阵 WQ、WK、WV" role="presentation">WQ、WK、WVW_Q、W_K、W_V 和偏置，输出权重矩阵 WO" role="presentation">WOW_O 和偏置，4个权重矩阵的形状为 [h,h]" role="presentation">[h,h][h,h] ，4个偏置的形状为 [h]" role="presentation">[h][h] 。self- attention块的参数量为 4h2+4h" role="presentation">4h2+4h4h^2+4h 。
 
 MLP块由2个线性层组成，一般地，第一个线性层是先将维度从 h" role="presentation">hh 映射到 4h" role="presentation">4h4h ，第二个线性层再将维度从4h" role="presentation">4h4h映射到h" role="presentation">hh。第一个线性层的权重矩阵 W1" role="presentation">W1W_1 的形状为 [h,4h]" role="presentation">[h,4h][h,4h] ，偏置的形状为 [4h]" role="presentation">[4h][4h] 。第二个线性层权重矩阵 W2" role="presentation">W2W_2 的形状为 [4h,h]" role="presentation">[4h,h][4h,h] ，偏置形状为 [h]" role="presentation">[h][h] 。MLP块的参数量为 8h^2+5h 。
 
@@ -78,7 +78,10 @@ $2. QK^{T} 矩阵乘法的输入和输出形状为 [b, head\_num, s,per\_head\_h
 
 <strong>接下来分析MLP块的计算，计算公式如下</strong>：
 
+```text
 x=f_{gelu}(x_{out}W_1)W_2+x_{out}\\
+```
+
 
 1. 第一个线性层，矩阵乘法的输入和输出形状为 [b,s,h]\times[h,4h]\rightarrow[b,s,4h] 。计算量为 8bsh^2 。
 
@@ -152,7 +155,10 @@ QK^T 的形状为： [b,head\_num,s,s] ，元素个数为 bs^2a ，占用显存�
 
 因此，将上述中间激活相加得到，self-attention块的中间激活占用显存大小为 11bsh+5bs^2a 。
 
-接下来<strong>看MLP块的中间激活。MLP块的计算公式如下</strong>： x=f_{gelu}(x_{out}W_1)W_2+x_{out}\\
+```text
+接下来**看MLP块的中间激活。MLP块的计算公式如下**： x=f_{gelu}(x_{out}W_1)W_2+x_{out}\\
+```
+
 
 1. 第一个线性层需要保存其输入，占用显存大小为 2bsh 。
 

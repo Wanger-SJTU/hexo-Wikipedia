@@ -20,7 +20,10 @@ source_url: https://zhuanlan.zhihu.com/p/60915302
 循环神经网络 (Recurrent Neural Network，RNN) 是一类具有短期记忆能力的神经网络，因而常用于序列建模。本篇先总结 RNN 的基本概念，以及其训练中时常遇到梯度爆炸和梯度消失问题，再引出 RNN 的两个主流变种 —— LSTM 和 GRU。
 
 
+```text
 VanillaRNN" role="presentation" style="font-size: 100%; display: inline-block; position: relative;">VanillaRNN\Large\cal{Vanilla \;\; RNN} \\ 
+```
+
 
  Vanilla RNN 的主体结构： 
 
@@ -30,7 +33,7 @@ Vanilla RNN
 
 上图中 X,h,y" role="presentation">X,h,y\bf{X, h, y} 都是向量，公式如下： 
 
-$(1)ht=fW(ht&#x2212;1,xt)(2a)ht=f(Whxxt+Whhht&#x2212;1+bh)(2b)ht=tanh(Whxxt+Whhht&#x2212;1+bh)(3)y&#x005E;t=softmax(Wyhht+by)" role="presentation" style="font-size: 100%; display: inline-block; position: relative;">(1)ht=fW(ht−1,xt)(2a)ht=f(Whxxt+Whhht−1+bh)(2b)ht=tanh(Whxxt+Whhht−1+bh)(3)y^t=softmax(Wyhht+by)\begin{align} \textbf{h}_{t} &= f_{\textbf{W}}\left(\textbf{h}_{t-1}, \textbf{x}_{t} \right) \tag{1} \\ \textbf{h}_{t} &= f\left(\textbf{W}_{hx}\textbf{x}_{t} + \textbf{W}_{hh}\textbf{h}_{t-1} + \textbf{b}_{h}\right) \tag{2a} \\ \textbf{h}_{t} &= \textbf{tanh}\left(\textbf{W}_{hx}\textbf{x}_{t} +  \textbf{W}_{hh}\textbf{h}_{t-1} + \textbf{b}_{h}\right) \tag{2b} \\ \hat{\textbf{y}}_{t} &= \textbf{softmax}\left(\textbf{W}_{yh}\textbf{h}_{t} + \textbf{b}_{y}\right) \tag{3} \end{align} $
+$(1)ht=fW(ht−1,xt)(2a)ht=f(Whxxt+Whhht−1+bh)(2b)ht=tanh(Whxxt+Whhht−1+bh)(3)y^t=softmax(Wyhht+by)" role="presentation" style="font-size: 100%; display: inline-block; position: relative;">(1)ht=fW(ht−1,xt)(2a)ht=f(Whxxt+Whhht−1+bh)(2b)ht=tanh(Whxxt+Whhht−1+bh)(3)y^t=softmax(Wyhht+by)\begin{align} \textbf{h}_{t} &= f_{\textbf{W}}\left(\textbf{h}_{t-1}, \textbf{x}_{t} \right) \tag{1} \\ \textbf{h}_{t} &= f\left(\textbf{W}_{hx}\textbf{x}_{t} + \textbf{W}_{hh}\textbf{h}_{t-1} + \textbf{b}_{h}\right) \tag{2a} \\ \textbf{h}_{t} &= \textbf{tanh}\left(\textbf{W}_{hx}\textbf{x}_{t} +  \textbf{W}_{hh}\textbf{h}_{t-1} + \textbf{b}_{h}\right) \tag{2b} \\ \hat{\textbf{y}}_{t} &= \textbf{softmax}\left(\textbf{W}_{yh}\textbf{h}_{t} + \textbf{b}_{y}\right) \tag{3} \end{align} $
 
 $其中  \textbf{W}_{hx} \in \mathbb{R}^{h \times x}, \; \textbf{W}_{hh} \in \mathbb{R}^{h \times h},  \; \textbf{W}_{yh} \in \mathbb{R}^{y \times h}, \; \textbf{b}_{h} \in \mathbb{R}^{h}, \; \textbf{b}_{y} \in \mathbb{R}^{y} $
 
@@ -101,7 +104,10 @@ $\begin{align*} & A \mathbf{v} = \lambda \mathbf{v} \\[1ex]  ||A \mathbf{v}||^2&
 
 ![](/images/collections/0.raw/zhihu/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%EF%BC%81/asset/img_7d9c67431c85.jpg)
 
+```text
 ### \Large\cal{LSTM} \\ 
+```
+
 
 虽然 Vanilla RNN 理论上可以建立长时间间隔状态之间的依赖关系，但由于梯度爆炸或消失问题，实际上只能学到短期依赖关系。为了学到长期依赖关系，LSTM 中引入了门控机制来控制信息的累计速度，包括有选择地加入新的信息，并有选择地遗忘之前累计的信息，整个 LSTM 单元结构如下图所示：
 
@@ -140,7 +146,10 @@ $\begin{align*} \text{input gate}&: \quad  \textbf{i}_t = \sigma(\textbf{W}_i\te
 
 ![](/images/collections/0.raw/zhihu/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%EF%BC%81/asset/img_632d51bd628e.jpg)
 
+```text
 ### \Large\cal{GRU} \\ 
+```
+
 
 相比于 Vanilla RNN (每个 time step 有一个输入 \textbf{x}_t )，从上面的 (1) \sim (4) 式可以看出 一个 LSTM 单元有四个输入 (如下图，不考虑 peephole) ，因而参数是 Vanilla RNN 的四倍，带来的结果是训练起来很慢，因而在2014年 Cho 等人提出了 *[GRU](https://link.zhihu.com/?target=https%3A//arxiv.org/pdf/1409.1259.pdf)* ，对 LSTM 进行了简化，在不影响效果的前提下加快了训练速度。
 

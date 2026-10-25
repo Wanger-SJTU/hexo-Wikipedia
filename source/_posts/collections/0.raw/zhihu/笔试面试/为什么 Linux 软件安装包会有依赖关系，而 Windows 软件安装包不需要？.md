@@ -32,7 +32,7 @@ Conway 定律：“系统设计必然反映其组织的沟通结构”。
 - 没有一个统一的项目经理或架构师来规划所有事情，实际上是非常混乱的。最终就慢慢演化出了一种简单可靠的分布式开源协作的开发模式，也就是Unix哲学:
 
 - 做好一件事（Do One Thing Well）。每个程序聚焦单一职能，避免“大而全”；保持可维护、可替换。
-- 借用他人的轮子，而非重复造 （Don&#39;t reinvent the wheel）。应优先复用已有的工具、库或模块，以节省时间、降低风险、提高效率。这样，每个人专注于自己的一亩三分地，把自己的软件做好，积极使用其他人写的库。这样的一个简单的规则，就达成了一种分布式的开源协作。最终就诞生出了这样一个繁荣的Linux社区。
+- 借用他人的轮子，而非重复造 （Don't reinvent the wheel）。应优先复用已有的工具、库或模块，以节省时间、降低风险、提高效率。这样，每个人专注于自己的一亩三分地，把自己的软件做好，积极使用其他人写的库。这样的一个简单的规则，就达成了一种分布式的开源协作。最终就诞生出了这样一个繁荣的Linux社区。
 
 [https://upload.wikimedia.org/wikipedia/commons/1/1b/Linux_Distribution_Timeline.svg](https://link.zhihu.com/?target=https%3A//upload.wikimedia.org/wikipedia/commons/1/1b/Linux_Distribution_Timeline.svg)
 ![](https://pica.zhimg.com/v2-54ba95c0474e27514890bd4165bbddd8_r.jpg?source=2c26e567)但是，这样的方式也就会出现很多问题：造成了<strong>依赖关系的耦合</strong>，这种耦合就引发了“Linux的依赖关系陷阱”，普通用户的一种牵一发而动全身，一个依赖问题导致全局崩溃的可怕景象。例如：

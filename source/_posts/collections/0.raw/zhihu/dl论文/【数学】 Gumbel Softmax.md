@@ -16,7 +16,7 @@ source_url: https://zhuanlan.zhihu.com/p/115386452
 
 
 原文传送门
-ICLR 2017：[Jang, Eric, Shixiang Gu, and Ben Poole. &#34;Categorical reparameterization with gumbel-softmax.&#34; arXiv preprint arXiv:1611.01144 (2016).](https://link.zhihu.com/?target=https%3A//arxiv.org/pdf/1611.01144.pdf%2520http%3A//arxiv.org/abs/1611.01144.pdf)
+ICLR 2017：[Jang, Eric, Shixiang Gu, and Ben Poole. "Categorical reparameterization with gumbel-softmax." arXiv preprint arXiv:1611.01144 (2016).](https://link.zhihu.com/?target=https%3A//arxiv.org/pdf/1611.01144.pdf%2520http%3A//arxiv.org/abs/1611.01144.pdf)
 
 特色
 对于离散变量，最常用的分布就是 categorical 分布，这种分布下需要用 reparameterization trick 来求导的话，就需要用到 Gumbel Softmax 这种方法。在离散版本的 soft actor critic 的实现中需要使用到这种功能技术。

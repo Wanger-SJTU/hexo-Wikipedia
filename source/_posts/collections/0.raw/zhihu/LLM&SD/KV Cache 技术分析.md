@@ -53,7 +53,10 @@ $$O = softmax(\frac{\begin{bmatrix} Q_0K_0^T & Q_0K_1^T\\ Q_1K_0^T & Q_1K_1^T\\ 
 
 $$A = \begin{bmatrix} A_0\\ A_1 \end{bmatrix} = \begin{bmatrix} Q_0K_0^T & Q_0K_1^T\\ Q_1K_0^T & Q_1K_1^T\\ \end{bmatrix}, f(x) = \frac{softmax(x)}{\sqrt{d_k}}\\$$
 
+```text
 此时， A_1 只和 Q_1 有关，和 Q_0 无关，那么， \begin{bmatrix} O_0\\ O_1 \end{bmatrix} = O = \begin{bmatrix} f(A_0)\\ f(A_1) \end{bmatrix}V = \begin{bmatrix} f(A_0)V\\ f(A_1)V \end{bmatrix}\\
+```
+
 
 因此， O_i 只和  A_i 相关，而根据A的设定， A_i 只和  Q_i 相关，即：Attention矩阵的第 i 个输出只和第 i 个 Q有关，和之前的 Q无关
 
@@ -65,7 +68,10 @@ $$O_i = Attention(Q_i,K,V) = softmax(\frac{Q_iK^T}{\sqrt{d_k}})V\\$$
 
 假设FNN层的变换如下：   Y = XW^T\\ 那么，
 
+```text
  \begin{bmatrix} Y_0\\ Y_1 \end{bmatrix} = \begin{bmatrix} X_0\\ X_1 \end{bmatrix}W^T = \begin{bmatrix} X_0W^T\\ X_1W^T \end{bmatrix}\\
+```
+
 
 也就是经过FNN层或者Dense层之后，第 i 个输出仍然只和第 i 个输入有关，和其他输入无关。
 

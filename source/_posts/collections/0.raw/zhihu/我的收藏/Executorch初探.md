@@ -105,11 +105,15 @@ Export Llama models using the export_llm script or Optimum-ExecuTorch:
 python -m executorch.extension.llm.export.export_llm --model llama3_2 --output llama.pte
 
 # Using Optimum-ExecuTorch
+
+```text
 optimum-cli export executorch \
   --model meta-llama/Llama-3.2-1B \
   --task text-generation \
   --recipe xnnpack \
   --output_dir llama_model
+```
+
 Run on-device with the LLM runner API:
 
 C++

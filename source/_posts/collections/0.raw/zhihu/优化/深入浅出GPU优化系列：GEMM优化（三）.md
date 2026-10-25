@@ -47,7 +47,7 @@ NV每一代机器的指令集都有所不同。关于指令集相关资料，NV�
 
 ![](/images/collections/0.raw/zhihu/%E4%BC%98%E5%8C%96/asset/img_9878e435afb2.jpg)
 
-shared memory -&amp;amp;amp;amp;gt;register技巧3，Store C矩阵的时候，为了合并访存，采用了一种非常奇怪的方式去store。
+shared memory -&amp;amp;amp;gt;register技巧3，Store C矩阵的时候，为了合并访存，采用了一种非常奇怪的方式去store。
 
 ![](/images/collections/0.raw/zhihu/%E4%BC%98%E5%8C%96/asset/img_b09ee9b742e9.jpg)
 

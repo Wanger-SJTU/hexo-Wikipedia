@@ -86,7 +86,10 @@ Google 将这一现象总结为 Internal Covariate Shift，简称 ICS. 什么是
 
 我们以神经网络中的一个普通神经元为例。神经元接收一组输入向量 \bold{x}=(x_1, x_2, \cdots, x_d)\\ 通过某种运算后，输出一个标量值：
 
+```text
 y=f(\bold{x})\\ 
+```
+
 
 由于 ICS 问题的存在， \bold{x} 的分布可能相差很大。要解决独立同分布的问题，“理论正确”的方法就是对每一层的数据都进行白化操作。然而标准的白化操作代价高昂，特别是我们还希望白化操作是可微的，保证白化操作可以通过反向传播来更新梯度。
 
@@ -102,7 +105,10 @@ $$h=f\left(\bold{g}\cdot\frac{\bold{x}-\bold{\mu}}{\bold{\sigma}}+\bold{b}\right
 $$（1） \bold{\mu} 是平移参数<strong>（shift parameter）， \bold{\sigma} 是</strong>缩放参数**（scale parameter）。通过这两个参数进行 shift 和 scale 变换： \bold{\hat{x}}=\frac{\bold{x}-\bold{\mu}}{\bold{\sigma}}\\ 得到的数据符合均值为 0、方差为 1 的标准分布。 $$
 
 
-（2） \bold{b} 是再平移参数<strong>（re-shift parameter）， \bold{g} 是</strong>再缩放参数**（re-scale parameter）。将 上一步得到的 \bold{\hat{x}} 进一步变换为： \bold{y}=\bold{g}\cdot \bold{\hat{x}} + \bold{b}\\ 
+```text
+（2） \bold{b} 是再平移参数**（re-shift parameter）， \bold{g} 是**再缩放参数**（re-scale parameter）。将 上一步得到的 \bold{\hat{x}} 进一步变换为： \bold{y}=\bold{g}\cdot \bold{\hat{x}} + \bold{b}\\ 
+```
+
 
 最终得到的数据符合均值为  \bold{b} 、方差为 \bold{g}^2 的分布。
 
@@ -172,7 +178,10 @@ BN 独立地规范化每一个输入维度 x_i ，但规范化的参数是一个
 
 层规范化就是针对 BN 的上述不足而提出的。与 BN 不同，LN 是一种横向的规范化，如图所示。它综合考虑一层所有维度的输入，计算该层的平均输入值和输入方差，然后用同一个规范化操作来转换各个维度的输入。
 
+```text
 \mu = \sum_i{x_i}, \quad \sigma= \sqrt{\sum_i{(x_i-\mu)^2}+\epsilon }\\ 
+```
+
 
 其中 i 枚举了该层所有的输入神经元。对应到标准公式中，四大参数 \bold{\mu}, \bold{\sigma}, \bold{g}, \bold{b} 均为标量（BN中是向量），所有输入共享一个规范化变换。
 
@@ -208,7 +217,10 @@ $$h=f\left(\bold{g}\cdot\frac{\bold{x}-\bold{\mu}}{\bold{\sigma}}+\bold{b}\right
 
 我们只需令：
 
+```text
 \bold{\sigma} = \bold{||v||}, \quad \bold{\mu}=0, \quad \bold{b}=0\\ 
+```
+
 
 就完美地对号入座了！
 
@@ -265,7 +277,10 @@ CN 通过用余弦计算代替内积计算实现了规范化，但成也萧何�
 4.1 Normalization 的权重伸缩不变性
 
 
+```text
 权重伸缩不变性（weight scale invariance）**指的是，当权重 \bold{W} 按照常量 \lambda 进行伸缩时，得到的规范化后的值保持不变，即：Norm(\bold{W'}\bold{x})=Norm(\bold{W}\bold{x})\\ 
+```
+
 
 其中 \bold{W'}=\lambda\bold{W} 。
 
@@ -293,7 +308,10 @@ $$由于 \frac{\partial Norm(\bold{W'x})}{\partial \bold{W'}} =\frac{1}{ \lambda
 4.2 Normalization 的数据伸缩不变性
 
 
+```text
 数据伸缩不变性（data scale invariance）**指的是，当数据 \bold{x} 按照常量 \lambda 进行伸缩时，得到的规范化后的值保持不变，即：Norm(\bold{W}\bold{x'})=Norm(\bold{W}\bold{x})\\ 
+```
+
 
 其中 \bold{x'}=\lambda\bold{x} 。
 

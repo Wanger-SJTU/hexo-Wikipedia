@@ -100,7 +100,10 @@ $$- actor loss：优化actor model，目的是鼓励模型采取能够产生更�
  $$\mathcal{T}^{PPO}(\theta) = \frac{1}{G} \sum_{t=1}^{G} \left[ \frac{1}{|o|} \sum_{t=1}^{|o|} \min \left( \frac{\pi_{\theta}(o_t \mid q, o_{$$
 - 最后用于backward的loss：
 
-- 联合loss<strong>：一种是将critic loss 以一定权重加入到 actor loss 上进行联合优化，这样actor loss 也会优化critic ，同样critic loss 也会优化actor。（verl实现）即：</strong>         loss_{backward} = actor\_loss + \delta \ast critic\_loss \quad (\text{ppo_merge_loss}) \\
+```text
+- 联合loss**：一种是将critic loss 以一定权重加入到 actor loss 上进行联合优化，这样actor loss 也会优化critic ，同样critic loss 也会优化actor。（verl实现）即：**         loss_{backward} = actor\_loss + \delta \ast critic\_loss \quad (\text{ppo_merge_loss}) \\
+```
+
 - 分别优化**：即两个loss分别进行backward，将对方的值作为其中的常量处理。即critic loss 只优化critic model参数。 actor loss 只优化actor model参数（trl实现）。
 
 #### 工作过程
@@ -265,7 +268,11 @@ $$GRPO主要按照上式的 \frac{1}{G} \sum_{i=1}^G \frac{1}{|o_i|} \sum_{t=1}^
 - <strong>计算reward</strong>：同GRPO
 - <strong>计算value：</strong>无value模型，不算
 - <strong>计算return</strong>：无value模型，不算
-- <strong>计算优势函数</strong>：取消了GRPO中的std归一化操作，即：**A_i=r_i-mean(\{r_1,r_2,...,r_G\}) \\
+
+```text
+- **计算优势函数**：取消了GRPO中的std归一化操作，即：**A_i=r_i-mean(\{r_1,r_2,...,r_G\}) \\
+```
+
 $$- 计算KL散度<strong>：</strong>使用近似器估计KL散度，<strong>该近似器的思想是通过对当前策略和参考策略的概率比值的简单变换来估计KL散度</strong>\mathbb{D}_{KL} \left( \pi_{old} \| \pi_{ref} \right) = \frac{\pi_{ref}(o_i \mid q)}{\pi_{old}(o_i \mid q)}- \log \frac{\pi_{ref}(o_i \mid q)}{\pi_{old}(o_i \mid q)} - 1 \\$$
 - 重要性采样**：同PPO，GRPO
 - <strong>clip处理</strong>：同PPO，GRPO
@@ -313,7 +320,11 @@ $$R_{\text{length}}(y) = \begin{cases} 0, & |y| \leq L_{\text{max}} - L_{\text{c
 
 - <strong>计算value：</strong>无value模型，不算
 - <strong>计算return</strong>：无value模型，不算
-- <strong>计算优势函数</strong>：取消了GRPO中的std归一化操作，即：**A_i=r_i-mean(\{r_1,r_2,...,r_G\}) \\
+
+```text
+- **计算优势函数**：取消了GRPO中的std归一化操作，即：**A_i=r_i-mean(\{r_1,r_2,...,r_G\}) \\
+```
+
 - 计算KL散度<strong>：</strong>不使用KL惩罚**，认为不应该用KL限制其模型的探索空间
 - <strong>重要性采样</strong>：动态采样
 - <strong>clip处理</strong>：<strong>扩大上限，增加低分区间上限，提供更多样性的探索空间（还是固定的上下限）。</strong>
@@ -445,7 +456,11 @@ $$\mathcal{T}^{\text{GSPO}}_{token}(\theta) = \left[ \frac{1}{G} \sum_{i=1}^{G} 
 #### 涉及计算
 
 - <strong>计算reward</strong>：基于规则的reward
+
+```text
 R_j^i = \begin{cases} 1, & \text{答案和格式正确} \\0, & \text{格式正确，答案不正确} \\-1, & \text{格式错误}\end{cases} \\
+```
+
 
 - <strong>计算value：</strong> 无value模型，不算
 - <strong>计算return</strong>：无value模型，不算

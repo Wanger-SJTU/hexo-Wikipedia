@@ -62,7 +62,7 @@ Y = W × X
 那我们是否可以暂时扔掉这些隐层Tensor，在反向计算时再把它们重新生成出来呢？当然可以，这正是上面这篇paper的思想。
 
 重计算
-顾名思义，&#34;重计算&#34;就是让每个训练迭代过程做两次前向计算，看起来有点奇怪，实际上却非常有效！对于刚刚那个吃显存的Bert Large，支持重计算机制后，显存占用直接从175GB降低到20GB，陡峭的显存上升直线变成了缓慢增长的Z形曲线，如下图所示。
+顾名思义，"重计算"就是让每个训练迭代过程做两次前向计算，看起来有点奇怪，实际上却非常有效！对于刚刚那个吃显存的Bert Large，支持重计算机制后，显存占用直接从175GB降低到20GB，陡峭的显存上升直线变成了缓慢增长的Z形曲线，如下图所示。
 
 ![](https://pic3.zhimg.com/v2-8b2e33037ced305aff661d0920f93e1e_r.jpg)核心思想是将前向计算分割成多个段，将每个段的起始Tensor作为这个段的检查点（checkpoints）。前向计算时，除了检查点以外的其他隐层Tensor占有的显存可以及时释放。反向计算用到这些隐层Tensor时，从前一个检查点开始，重新进行这个段的前向计算，就可以重新获得隐层Tensor。
 
@@ -95,15 +95,15 @@ import paddle.fluid as fluid
 def mlp(input_x, input_y, hid_dim=128, label_dim=2):
     print(input_x)
     fc_1 = fluid.layers.fc(input=input_x, size=hid_dim)
-    prediction = fluid.layers.fc(input=[fc_1], size=label_dim, act=&#39;softmax&#39;)
+    prediction = fluid.layers.fc(input=[fc_1], size=label_dim, act='softmax')
     cost = fluid.layers.cross_entropy(input=prediction, label=input_y)
     sum_cost = fluid.layers.reduce_mean(cost)
     return sum_cost, fc_1, prediction
 ```
 
 
-input_x = fluid.layers.data(name=&#34;x&#34;, shape=[32], dtype=&#39;float32&#39;)
-input_y = fluid.layers.data(name=&#34;y&#34;, shape=[1], dtype=&#39;int64&#39;)
+input_x = fluid.layers.data(name="x", shape=[32], dtype='float32')
+input_y = fluid.layers.data(name="y", shape=[1], dtype='int64')
 cost, fc_1, pred = mlp(input_x, input_y)
 
 # 定义RecomputeOptimizer

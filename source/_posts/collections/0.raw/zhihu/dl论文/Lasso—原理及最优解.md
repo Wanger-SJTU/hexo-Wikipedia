@@ -208,7 +208,7 @@ Lasso因为其约束条件（也有叫损失函数的）不是连续可导的，
 ![](https://www.zhihu.com/equation?tex=x_2) 上做投影，得到 
 ![](https://www.zhihu.com/equation?tex=%5Chat%7B%5Cbeta%7D_2) ，over。（如图所示）
 
-![](https://pica.zhimg.com/v2-9d123a3531ea1f64b004cc7800ef3dba_r.jpg)最小角回归算法与之类似，但不像向前选择一样&#34;贪婪&#34;，按照论文上的说法是这样：
+![](https://pica.zhimg.com/v2-9d123a3531ea1f64b004cc7800ef3dba_r.jpg)最小角回归算法与之类似，但不像向前选择一样"贪婪"，按照论文上的说法是这样：
 
 与经典向前选择算法一样，我们所有的系数都从0开始，然后找到与相应变量 
 ![](https://www.zhihu.com/equation?tex=y) 最相关的预测变量 

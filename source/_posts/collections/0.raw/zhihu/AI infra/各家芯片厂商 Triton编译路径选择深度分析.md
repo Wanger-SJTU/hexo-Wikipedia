@@ -268,16 +268,16 @@ NVIDIA Blackwell架构（如B200）是第五代Tensor Core架构：
 
 - <strong>Ampere的共享内存为164KB/SM（可配置为共享内存或L1缓存），支持异步拷贝（async copy）从全局内存到共享内存</strong>。<strong>Tensor Core 的累加器结果必须经过寄存器，通用寄存器成了瓶颈</strong>——寄存器文件大小固定，矩阵乘法的中间结果占满之后无法继续流水。
 - <strong>Hopper 的 228KB /SM 共享内存扩大了容量</strong>，但更革命性的是引入了分布式共享内存，<strong>允许不同 SM 之间直接读写对方的共享内存</strong>，这是第一次在硬件上打破 SM 间数据隔离的壁垒。
-- Blackwell 的 tmem（256KB 专用片上存储）是真正的范式转变：累加器数据不再走通用寄存器，直接写入 tmem。这和 NPU 中的专用累加器存储思想完全一致——通用寄存器是稀缺资源，把矩阵乘法的中间结果从寄存器里&#34;驱逐&#34;出去，通用寄存器就可以专注于控制流和地址计算，Tensor Core 的流水利用率得以提升。<strong>数据搬运的演进：从软件控制到硬件自动化</strong>
+- Blackwell 的 tmem（256KB 专用片上存储）是真正的范式转变：累加器数据不再走通用寄存器，直接写入 tmem。这和 NPU 中的专用累加器存储思想完全一致——通用寄存器是稀缺资源，把矩阵乘法的中间结果从寄存器里"驱逐"出去，通用寄存器就可以专注于控制流和地址计算，Tensor Core 的流水利用率得以提升。<strong>数据搬运的演进：从软件控制到硬件自动化</strong>
 
 - Ampere 的 Async Copy 是第一步：允许软件发起一个异步的全局内存到共享内存的搬运请求，不阻塞当前线程。但它是一维的、软件显式控制的，程序员需要手动计算地址、管理同步点。
 - Hopper 的 TMA（Tensor Memory Accelerator）是质变：它是一个独立的硬件引擎，<strong>理解多维张量的布局描述符（stride、shape、swizzle）</strong>，可以自动处理多维张量从全局内存到共享内存的搬运，完全绕过寄存器，不占用 CUDA 核心的执行带宽。这是把 NPU 里 DMA 引擎的思想引入 GPU——让专用硬件做数据搬运，让计算单元专注于计算。
-- Blackwell 的<strong>增强 TMA 进一步支持直接写入 tmem，使得&#34;全局内存 → tmem → Tensor Core 累加&#34;这条路径可以全程不经过 SMEM</strong>，降低了延迟，也减少了共享内存的压力。
+- Blackwell 的<strong>增强 TMA 进一步支持直接写入 tmem，使得"全局内存 → tmem → Tensor Core 累加"这条路径可以全程不经过 SMEM</strong>，降低了延迟，也减少了共享内存的压力。
 
 <strong>线程组织的演进：从同质到分工</strong>
-传统 GPU 的 warp 是同质的，一个 warp 内所有线程执行同样的任务（SIMT 模型）。这对通用并行计算很合适，但对 AI 计算产生了低效：矩阵乘法需要的操作序列是&#34;搬数据 → 计算 → 再搬数据 → 再计算&#34;，在同质 warp 模型下，搬数据和计算是串行的，GPU 总有一半时间在等待。
+传统 GPU 的 warp 是同质的，一个 warp 内所有线程执行同样的任务（SIMT 模型）。这对通用并行计算很合适，但对 AI 计算产生了低效：矩阵乘法需要的操作序列是"搬数据 → 计算 → 再搬数据 → 再计算"，在同质 warp 模型下，搬数据和计算是串行的，GPU 总有一半时间在等待。
 
-- <strong>Hopper 的 Warp Specialization 打破了这个假设</strong>：<strong>同一个线程块内，一部分 warp 专门负责用 TMA 搬运数据（producer warp），另一部分专门负责驱动 Tensor Core 计算（consumer warp）。两者通过异步屏障协调</strong>，实现了计算和数据搬运的真正并行——这正是 NPU 中&#34;搬运单元和计算单元独立工作&#34;的设计哲学在 GPU 上的体现。
+- <strong>Hopper 的 Warp Specialization 打破了这个假设</strong>：<strong>同一个线程块内，一部分 warp 专门负责用 TMA 搬运数据（producer warp），另一部分专门负责驱动 Tensor Core 计算（consumer warp）。两者通过异步屏障协调</strong>，实现了计算和数据搬运的真正并行——这正是 NPU 中"搬运单元和计算单元独立工作"的设计哲学在 GPU 上的体现。
 - Blackwell 在此基础上进一步灵活化，支持更细粒度的任务分工，<strong>配合 tmem 的调度使得 producer/consumer 之间的数据传递延迟更低</strong>。
 
 <strong>数据类型的演进：精度与计算密度的持续权衡</strong>
@@ -287,7 +287,7 @@ NVIDIA Blackwell架构（如B200）是第五代Tensor Core架构：
 - Hopper 的 FP8 使计算密度相比 FP16 再翻倍，配合 TMA 和 Warp Specialization，使得 H100 在 transformer 工作负载下的实际利用率远高于 A100。
 - Blackwell 的 FP4 已经接近表示能力的物理极限（4 bit 只有 16 个离散值），但通过分组量化（group quantization）和混合精度累加，在推理场景下依然能保持可接受的精度损失，换取近乎 4 倍于 FP16 的计算密度。总之，一句话总结：
 
-- Ampere 做的是&#34;给通用 GPU 加上 AI 加速器&#34;，Hopper 做的是&#34;重新设计数据通路让 AI 计算成为一等公民&#34;，Blackwell 做的是&#34;引入专用存储分层让 GPU 的片上存储模型趋近于 NPU&#34;。
+- Ampere 做的是"给通用 GPU 加上 AI 加速器"，Hopper 做的是"重新设计数据通路让 AI 计算成为一等公民"，Blackwell 做的是"引入专用存储分层让 GPU 的片上存储模型趋近于 NPU"。
 - 每一步都是在回答同一个问题：如何让越来越多的时钟周期花在真正的矩阵乘法上，而不是花在数据搬运、同步等待和地址计算上。
 
 3.2 AMD：CDNA架构与MFMA

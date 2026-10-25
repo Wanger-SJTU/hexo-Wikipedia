@@ -56,4 +56,4 @@ source_url: https://zhuanlan.zhihu.com/p/133623737
 <strong>参考文献</strong>
 
 - Garnett, N., Cohen, R., Pe’er, T., Lahav, R., Levi, D. ”3D-lanenet: end-to-end 3d multiple lane detection“，ICCV 2019.
-- Y Guo et al., &#34;Gen-LaneNet: A Generalized and Scalable Approach for 3D Lane Detection&#34;, arXiv 2003.10656, March 24, 2020.
+- Y Guo et al., "Gen-LaneNet: A Generalized and Scalable Approach for 3D Lane Detection", arXiv 2003.10656, March 24, 2020.

@@ -121,9 +121,13 @@ import torch
 import math
 
 def flash_attention_forward(Q, K, V, block_size=256):
+```
 
-    &#34;&#34;&#34;
+
+    """
     参数:
+
+```text
         Q: 查询张量, shape (batch_size, seq_len, d_k)
         K: 键张量, shape (batch_size, seq_len, d_k)
         V: 值张量, shape (batch_size, seq_len, d_v)
@@ -135,7 +139,7 @@ def flash_attention_forward(Q, K, V, block_size=256):
 
 ```text
         O: 注意力输出, shape (batch_size, seq_len, d_v)
-    &#34;&#34;&#34;
+    """
 
     batch_size, seq_len, d_k = Q.shape
     d_v = V.shape[-1]

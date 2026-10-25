@@ -337,8 +337,12 @@ perf record -F 99 --call-graph dwarf --tid
 perf script -i perf.data > perf.unfold
  
 # clone FlameGraph
+
+```bash
 git clone https://github.com/brendangregg/FlameGraph
 cd FlameGraph
+```
+
   
 # 假设 perf.unfold 放在了里
 stackcollapse-perf.pl /perf.unfold > perf.fold
@@ -372,8 +376,12 @@ systemtap 是一个操作系统的动态追踪 (dynamic tracing) 工具。它的
 除此之外，我们还需要安装 systemtap 运行时的各种 kernel 依赖：我们可以直接运行 `sudo stap-prep` 来安装依赖，如果这个命令执行失败，则需要手动安装：
 
 `sudo apt install kernel-debuginfo-`uname -r`
+
+```text
 sudo apt install kernel-debuginfo-common-`uname -r`
 sudo apt install kernel-devel-`uname -r``
+```
+
 
 systemtap 的运行需要 sudo 权限，我们可以运行下面的命令来检测安装是否成功:
 
@@ -385,8 +393,11 @@ systemtap 的运行需要 sudo 权限，我们可以运行下面的命令来检�
 
 我们需要用到 openresty-systemtap-toolkit 提供的两个工具：sample_gt 和 sample_bt_off_cpu，这两个工具分别对程序 cpu time 和 off-cpu time 的调用栈进行采样：
 
+```bash
 git clone https://github.com/openresty/openresty-systemtap-toolkit.git
 cd openresty-systemtap-toolkit
+```
+
  
 # 对程序 cpu time 的调用栈进行采样，采样时间为 10s, 采样对象为 user space 调用栈，并将结果保存为 cpu.bt
 sudo ./sample_bt -u -t 10 -p PID > cpu.bt

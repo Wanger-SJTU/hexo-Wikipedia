@@ -32,7 +32,7 @@ Radix Tree 数据结构
 
 ![](https://pic1.zhimg.com/v2-768fcd3904941f1a8bdffd53e17feaae_r.jpg)论文图 （https://arxiv.org/pdf/2312.07104）
 TreeNode 
-我们来看一下参数，身为一个树的节点有父节点（parent）和子节点（key）没什么好惊奇的。key 是节点对应的 token_ids，一个节点要从根节点一路走过来拼接上才是真正的 prompt，比如说上图（2）中 a 节点的 key 就是 &#34;You are a helpful assistant.\nUser: Hello!\nAssistant: Hi!&#34; 这段字符对应的 token ids。value 对应的是每个 token 对应的 device token slot（[不知道 slot 这个概念的看这里](https://zhuanlan.zhihu.com/p/2063186900777805603)）。
+我们来看一下参数，身为一个树的节点有父节点（parent）和子节点（key）没什么好惊奇的。key 是节点对应的 token_ids，一个节点要从根节点一路走过来拼接上才是真正的 prompt，比如说上图（2）中 a 节点的 key 就是 "You are a helpful assistant.\nUser: Hello!\nAssistant: Hi!" 这段字符对应的 token ids。value 对应的是每个 token 对应的 device token slot（[不知道 slot 这个概念的看这里](https://zhuanlan.zhihu.com/p/2063186900777805603)）。
 
 hit count 表示这个 node 命中测试，当淘汰策略时有用（比如说每一轮 step hit count --，hit count = 0 时进入淘汰队列）。host_ref_counter 表示当前有多少个异步存储（存到主机内存里）或搬运操作正在使用这份 host cache，暂时不能淘汰它；host_value 则是记录这个节点在  host kv cache 的 slot。hash_value 是对每一页 page 包括前面所有的 token 做hash，得到一个值，有点类似于 id，在不搞什么 offload、distribution 操作时没啥用。
 
@@ -65,9 +65,9 @@ child_key() 为了找路径用的。比如当前进入父节点 token 都对上�
 
 ```python
 class RadixKey:
-    &#34;&#34;&#34;is_bigram=True: token_ids holds raw tokens (N+1 for N bigrams); slices share one boundary token.&#34;&#34;&#34;
+    """is_bigram=True: token_ids holds raw tokens (N+1 for N bigrams); slices share one boundary token."""
 
-    __slots__ = (&#34;token_ids&#34;, &#34;extra_key&#34;, &#34;is_bigram&#34;, &#34;limit&#34;)
+    __slots__ = ("token_ids", "extra_key", "is_bigram", "limit")
 
     def __init__(
         self,
@@ -310,7 +310,7 @@ cache_unfinished_req() 在一个 prefill chunk 完成时调用。将当前已经
                 key=radix_key,
                 value=values,
                 chunked=chunked,
-                priority=getattr(req, &#34;priority&#34;, 0) or 0,
+                priority=getattr(req, "priority", 0) or 0,
             )
         )
         new_prefix_len = result.prefix_len
@@ -334,7 +334,7 @@ cache_unfinished_req() 在一个 prefill chunk 完成时调用。将当前已经
         )
         assert len(new_indices) == len(
             radix_key
-        ), f&#34;{len(new_indices)=}, {len(radix_key)=}&#34;
+        ), f"{len(new_indices)=}, {len(radix_key)=}"
 ```
 
 
@@ -400,7 +400,7 @@ cache_finished_req() 在请求彻底结束时调用。执行逻辑很简单：�
         if is_insert:  # 树中没有的新后缀 KV 留给 Radix Cache，后续请求可复用。
 
 ```sql
-            priority = getattr(req, &#34;priority&#34;, 0) or 0
+            priority = getattr(req, "priority", 0) or 0
             result = self.insert(
                 InsertParams(key=radix_key, value=values, priority=priority)
             )
@@ -511,7 +511,7 @@ In Architecture
 当 prefill batch 已经完成，[进入到 Scheduler.event_loop_overlap() 里面](https://zhuanlan.zhihu.com/p/2061009711907057681)处理 batch 结果的函数 process_batch_result 中。 在 SchedulerBatchResultProcessor 的 process_batch_result_prefill 方法中会调用 maybe_cache_unfinished_req 或 release_kv_cache（有些任务只进行 prefill）。
 
 - 在 maybe_cache_unfinished_req()  方法中调用 tree_cache.cache_unfinished_req() 去更新 radix cache。
-- 在 release_kv_cache() 方法中调用 tree_cache.cache_finished_req() 去更新或释放 radix cache。    @scheduler_nvtx_method(&#34;scheduler.process_batch_result&#34;)
+- 在 release_kv_cache() 方法中调用 tree_cache.cache_finished_req() 去更新或释放 radix cache。    @scheduler_nvtx_method("scheduler.process_batch_result")
 
 ```python
     def process_batch_result(
@@ -581,21 +581,25 @@ MODEL_PATH=/home/zeke/sglearn/models/Qwen3.5-0.8B
 PORT=30000
 
 # 不添加 --disable-radix-cache，Radix Cache 默认开启。
+
+```text
 python3 -m sglang.launch_server \
-  --model-path &#34;$MODEL_PATH&#34; \
+  --model-path "$MODEL_PATH" \
   --host 127.0.0.1 \
-  --port &#34;$PORT&#34; \
+  --port "$PORT" \
   --trust-remote-code \
   --mem-fraction-static 0.85 \
   --max-running-requests 4 \
   --chunked-prefill-size -1 \
   >sglang_radix_cache.log 2>&1 &
+```
+
 
 SERVER_PID=$!
 cleanup() {
-  echo &#34;停止 SGLang Server……&#34;
-  kill -TERM &#34;$SERVER_PID&#34; 2>/dev/null || true
-  wait &#34;$SERVER_PID&#34; 2>/dev/null || true
+  echo "停止 SGLang Server……"
+  kill -TERM "$SERVER_PID" 2>/dev/null || true
+  wait "$SERVER_PID" 2>/dev/null || true
 
 ```text
 }
@@ -603,49 +607,45 @@ cleanup() {
 
 trap cleanup EXIT
 
-echo &#34;等待 SGLang 服务启动……&#34;
-until curl -fsS &#34;http://127.0.0.1:${PORT}/health&#34; >/dev/null 2>&1; do
-  if ! kill -0 &#34;$SERVER_PID&#34; 2>/dev/null; then
+echo "等待 SGLang 服务启动……"
+until curl -fsS "http://127.0.0.1:${PORT}/health" >/dev/null 2>&1; do
+  if ! kill -0 "$SERVER_PID" 2>/dev/null; then
     tail -n 50 sglang_radix_cache.log
     exit 1
   fi
   sleep 2
 done
 
-REQUEST_BODY=$(printf &#39;%s&#39; \
-&#39;{&#34;model&#34;:&#34;&#39;&#34;$MODEL_PATH&#34;&#39;&#34;,&#34;messages&#34;:[{&#34;role&#34;:&#34;user&#34;,&#34;content&#34;:&#34;Solve the following MATH problem. Put the final answer in \\boxed{} and show your reasoning.\n\n$\\overline{BC}$ is parallel to the segment through $A$, and $AB = BC$. What is the number of degrees represented by $x$?\n\n[asy]\ndraw((0,0)--(10,0));\ndraw((0,3)--(10,3));\ndraw((2,3)--(8,0));\ndraw((2,3)--(4,0));\nlabel(\&#34;$A$\&#34;,(2,3),N);\nlabel(\&#34;$B$\&#34;,(4,0),S);\nlabel(\&#34;$C$\&#34;,(8,0),S);\nlabel(\&#34;$124^{\\circ}$\&#34;,(2,3),SW);\nlabel(\&#34;$x^{\\circ}$\&#34;,(4.5,3),S);\n[/asy]&#34;}],&#34;temperature&#34;:0,&#34;top_p&#34;:1,&#34;seed&#34;:20260730,&#34;max_tokens&#34;:1024,&#34;stream&#34;:false}&#39;)
+REQUEST_BODY=$(printf '%s' \
+'{"model":"'"$MODEL_PATH"'","messages":[{"role":"user","content":"Solve the following MATH problem. Put the final answer in \\boxed{} and show your reasoning.\n\n$\\overline{BC}$ is parallel to the segment through $A$, and $AB = BC$. What is the number of degrees represented by $x$?\n\n[asy]\ndraw((0,0)--(10,0));\ndraw((0,3)--(10,3));\ndraw((2,3)--(8,0));\ndraw((2,3)--(4,0));\nlabel(\"$A$\",(2,3),N);\nlabel(\"$B$\",(4,0),S);\nlabel(\"$C$\",(8,0),S);\nlabel(\"$124^{\\circ}$\",(2,3),SW);\nlabel(\"$x^{\\circ}$\",(4.5,3),S);\n[/asy]"}],"temperature":0,"top_p":1,"seed":20260730,"max_tokens":1024,"stream":false}')
 
-```text
-curl -fsS &#34;http://127.0.0.1:${PORT}/v1/chat/completions&#34; \
-  -H &#34;Content-Type: application/json&#34; \
-  -H &#34;Authorization: Bearer empty&#34; \
-  -d &#34;$REQUEST_BODY&#34; \
+```bash
+curl -fsS "http://127.0.0.1:${PORT}/v1/chat/completions" \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer empty" \
+  -d "$REQUEST_BODY" \
   >response1.json
 
-curl -fsS &#34;http://127.0.0.1:${PORT}/v1/chat/completions&#34; \
-  -H &#34;Content-Type: application/json&#34; \
-  -H &#34;Authorization: Bearer empty&#34; \
-  -d &#34;$REQUEST_BODY&#34; \
+curl -fsS "http://127.0.0.1:${PORT}/v1/chat/completions" \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer empty" \
+  -d "$REQUEST_BODY" \
   >response2.json
 ```
 
 
 extract_output() {
-  python3 -c &#39;import json,sys; m=json.load(open(sys.argv[1]))[&#34;choices&#34;][0][&#34;message&#34;]; print(json.dumps({&#34;reasoning_content&#34;:m.get(&#34;reasoning_content&#34;),&#34;content&#34;:m.get(&#34;content&#34;)},ensure_ascii=False,sort_keys=True))&#39; &#34;$1&#34;
+  python3 -c 'import json,sys; m=json.load(open(sys.argv[1]))["choices"][0]["message"]; print(json.dumps({"reasoning_content":m.get("reasoning_content"),"content":m.get("content")},ensure_ascii=False,sort_keys=True))' "$1"
 
 ```text
 }
-```
-
 
 if diff -u \
   <(extract_output response1.json) \
   <(extract_output response2.json); then
-  echo &#34;两次模型输出一致&#34;
-
-```text
+  echo "两次模型输出一致"
 else
-  echo &#34;两次模型输出不一致：开启 Radix Cache 时复现了不确定性&#34;
+  echo "两次模型输出不一致：开启 Radix Cache 时复现了不确定性"
 ```
 
 fi

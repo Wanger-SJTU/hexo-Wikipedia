@@ -19,11 +19,11 @@ source_url: https://zhuanlan.zhihu.com/p/372835186
 
 　　KL散度（Kullback-Leibler Divergence）一般用于度量两个概率分布函数之间的“距离”，其定义如下（参考文献[2]、[4]）：
 
-$$KL[P(X)||Q(X)]=&#x2211;x&#x2208;X[P(x)logP(x)Q(x)]=Ex&#x223C;P(x)[logP(x)Q(x)]" role="presentation">KL[P(X)||Q(X)]=∑x∈X[P(x)logP(x)Q(x)]=Ex∼P(x)[logP(x)Q(x)]KL\left[ P\left( X \right)  || Q \left( X \right) \right] = \sum_{x\in X}{\left[ P\left( x \right)log\frac{P\left( x \right)}{Q\left( x \right)} \right]} = E_{x\sim P\left( x \right)}\left[ log\frac{P\left( x \right)}{Q\left( x \right)} \right]$$
+$$KL[P(X)||Q(X)]=∑x∈X[P(x)logP(x)Q(x)]=Ex∼P(x)[logP(x)Q(x)]" role="presentation">KL[P(X)||Q(X)]=∑x∈X[P(x)logP(x)Q(x)]=Ex∼P(x)[logP(x)Q(x)]KL\left[ P\left( X \right)  || Q \left( X \right) \right] = \sum_{x\in X}{\left[ P\left( x \right)log\frac{P\left( x \right)}{Q\left( x \right)} \right]} = E_{x\sim P\left( x \right)}\left[ log\frac{P\left( x \right)}{Q\left( x \right)} \right]$$
 
 　　由于KL散度的计算公式中对 x" role="presentation">xx 进行了积分（连续型随机变量）或求和（离散型随机变量），因此KL与 x" role="presentation">xx 的某个具体取值无关，因此也可以记为 KL[P||Q]" role="presentation">KL[P||Q]KL\left[ P || Q \right] ，本文后面为了便于读者理解会混用这两种表示。
 
-　　$注意到KL散度的定义中 KL[P(X)||Q(X)]" role="presentation">KL[P(X)||Q(X)]KL\left[ P\left( X \right)  || Q \left( X \right) \right] 关于 P(X)" role="presentation">P(X)P\left( X \right) 、 Q(X)" role="presentation">Q(X)Q\left( X \right) 并不对称。根据公式，KL散度不满足对称性，即： KL[P(X)||Q(X)]&#x2260;KL[Q(X)||P(X)]" role="presentation">KL[P(X)||Q(X)]≠KL[Q(X)||P(X)]KL\left[ P\left( X \right)  || Q \left( X \right) \right] \ne KL\left[ Q \left( X \right)  || P \left( X \right) \right] ，因此，KL散度显然不是数学意义上的“度量”。$
+　　$注意到KL散度的定义中 KL[P(X)||Q(X)]" role="presentation">KL[P(X)||Q(X)]KL\left[ P\left( X \right)  || Q \left( X \right) \right] 关于 P(X)" role="presentation">P(X)P\left( X \right) 、 Q(X)" role="presentation">Q(X)Q\left( X \right) 并不对称。根据公式，KL散度不满足对称性，即： KL[P(X)||Q(X)]≠KL[Q(X)||P(X)]" role="presentation">KL[P(X)||Q(X)]≠KL[Q(X)||P(X)]KL\left[ P\left( X \right)  || Q \left( X \right) \right] \ne KL\left[ Q \left( X \right)  || P \left( X \right) \right] ，因此，KL散度显然不是数学意义上的“度量”。$
 
 　　KL散度的典型应用场景如下：假设某优化问题中, P(X)" role="presentation">P(X)P\left( X \right) 是真实分布（true distribution）， Q(X)" role="presentation">Q(X)Q\left( X \right) 是一个用于拟合 P(X)" role="presentation">P(X)P\left( X \right) 的近似分布（approximate distribution），我们尝试通过修改 Q(X)" role="presentation">Q(X)Q\left( X \right) 使得二者间的KL[P(X)||Q(X)]" role="presentation">KL[P(X)||Q(X)]KL\left[ P\left( X \right)  || Q \left( X \right) \right] 尽可能小来实现用 Q(X)" role="presentation">Q(X)Q\left( X \right) 拟合 P(X)" role="presentation">P(X)P\left( X \right) ，如下图所示（参考文献[4]）。
 

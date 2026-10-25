@@ -167,7 +167,7 @@ slime 的一个核心特点，是把 rollout 做成可以通过 HTTP API 调用�
 
 在此基础上，GLM-5 进一步引入了 Multi-Task Rollout Orchestrator。它把不同任务的 rollout 和 reward logic 做成独立的 task service，由中心 orchestrator 统一控制任务配比、生成速度和并发调度。来自不同 agentic task 的轨迹，则被标准化成统一的 message-list representation。这个设计和 Forge 把 Agent 视为 trajectory producer 的思路是相通的：训练系统不需要理解每个 Agent 内部如何运行，只需要能够稳定接住它们产出的轨迹。
 
-slime 这里还有一个特别关键的点，是它对 TITO（Token-In-Token-Out） 的强调。异步、多轮、流式的 agent rollout 很容易在 text round-trip 里引入 re-tokenization mismatch：比如空白符、特殊 token、截断边界或 action 对齐发生偏差。GLM-5 的做法是引入 TITO Gateway，直接记录 rollout 过程中真实生成的 token IDs 和 metadata，训练侧直接消费这份 token-level 轨迹，而不是事后再从文本重建。这样做的核心价值，不只是省掉一次 tokenize，而是保证&#34;被采样的动作&#34;和&#34;被优化的动作&#34;严格对应。
+slime 这里还有一个特别关键的点，是它对 TITO（Token-In-Token-Out） 的强调。异步、多轮、流式的 agent rollout 很容易在 text round-trip 里引入 re-tokenization mismatch：比如空白符、特殊 token、截断边界或 action 对齐发生偏差。GLM-5 的做法是引入 TITO Gateway，直接记录 rollout 过程中真实生成的 token IDs 和 metadata，训练侧直接消费这份 token-level 轨迹，而不是事后再从文本重建。这样做的核心价值，不只是省掉一次 tokenize，而是保证"被采样的动作"和"被优化的动作"严格对应。
 
 2. 长尾 rollout 怎么调度
 从目前公开的几类工作来看，Agentic RL Infra 最核心的工程矛盾几乎都集中在 rollout 这一段。而要理解 Forge 的 Windowed FIFO、ROLL和slime 的异步训练pipeline以及 Seer 的同步优化，最好先从一个更基本的问题开始：为什么 agentic RL 几乎天然会走向异步？
@@ -256,7 +256,7 @@ ROLL 还进一步引入了 train-rollout multiplexing。ROLL团队注意到，�
 - train-rollout multiplexing 的动态资源分配。从这个角度看，ROLL 不是只在某个局部环节做异步，而是把整个 agentic RL pipeline 当成一个异步分布式系统来重构。这也是为什么它非常适合长尾环境、高并发多环境 rollout 和工业规模训练。当然，这样做的代价就是它必须额外解决 stale sample、数据过滤、mask / reweight、policy mismatch，以及故障恢复等一系列问题。ROLL 选择先把系统跑起来，再用更多控制逻辑兜住稳定性。
 
 2.5 slime：在 fully asynchronous setting 下直接控制 off-policy 误差
-GLM-5 在 slime 上采用的是一种更彻底的 fully asynchronous training paradigm：inference engine 持续生成 trajectory，training engine 按样本到达节奏异步更新参数，rollout 侧权重再周期性与 training 侧同步。对这一类系统来说，最棘手的问题不是&#34;要不要异步&#34;，而是当一条长轨迹本身都可能跨越多个 policy version 时，off-policy 误差到底怎么控。
+GLM-5 在 slime 上采用的是一种更彻底的 fully asynchronous training paradigm：inference engine 持续生成 trajectory，training engine 按样本到达节奏异步更新参数，rollout 侧权重再周期性与 training 侧同步。对这一类系统来说，最棘手的问题不是"要不要异步"，而是当一条长轨迹本身都可能跨越多个 policy version 时，off-policy 误差到底怎么控。
 
 GLM-5 的处理方式很有代表性。它没有尝试为每个 token 精确恢复对应的历史旧策略检查点，而是直接复用 rollout 阶段记录下来的 log-probability 作为行为策略代理，再与当前训练策略计算 importance ratio。也就是说，它放弃了显式维护完整的 πθoldπθold​​ 历史族，转而采用一种更工程化的近似。
 
@@ -265,7 +265,7 @@ GLM-5 的处理方式很有代表性。它没有尝试为每个 token 精确恢�
 
 除了 token 级 clipping，GLM-5 还进一步在 sample 级别控制 staleness。系统会记录一条 response 在 rollout 时经历过的模型版本序列，如果其最早使用的版本与当前训练版本之间差距超过阈值，就直接将该样本丢弃。换句话说，它同时在 token 层和 sample 层各设了一道闸：前者限制局部策略漂移，后者限制整体样本陈旧度。
 
-GLM-5报告里还提到，coding-agent 场景下还有一类会明显破坏异步训练稳定性的数据：环境本身崩溃导致的失败样本。这类失败并不反映模型能力，因此 GLM-5 会记录 failure reason，并把环境 collapse 样本从训练中剔除；对于 group-based sampling，如果剩余有效样本过少，则直接丢掉整组。这样做本质上是在防止系统把&#34;环境异常&#34;误学成&#34;策略负样本&#34;。
+GLM-5报告里还提到，coding-agent 场景下还有一类会明显破坏异步训练稳定性的数据：环境本身崩溃导致的失败样本。这类失败并不反映模型能力，因此 GLM-5 会记录 failure reason，并把环境 collapse 样本从训练中剔除；对于 group-based sampling，如果剩余有效样本过少，则直接丢掉整组。这样做本质上是在防止系统把"环境异常"误学成"策略负样本"。
 
 2.6 Seer：坚持同步，但把 rollout 本身做薄
 Seer 的意义恰恰在于它代表了另一种答案：

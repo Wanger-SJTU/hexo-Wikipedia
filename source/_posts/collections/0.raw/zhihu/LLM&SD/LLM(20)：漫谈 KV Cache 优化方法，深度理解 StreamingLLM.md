@@ -26,11 +26,11 @@ source_url: https://zhuanlan.zhihu.com/p/659770503
 
 ### 一、KV cache 的由来与基本矛盾
 
-$以典型的 GPT2 结构为例。假设第 i" role="presentation">ii 层 Decoder 的权重矩阵为 WQi,WKi,WVi,WOi,Wupi,Wdowni" role="presentation">WQi,WKi,WVi,WOi,Wupi,WdowniW^i_Q,W^i_K,W^i_V,W^i_O,W^i_{up},W^i_{down}。其中，self-attention块的4个权重矩阵WQi,WKi,WVi,WOi&#x2208;Rh&#x00D7;h" role="presentation">WQi,WKi,WVi,WOi∈Rh×hW^i_Q,W^i_K,W^i_V,W^i_O\in \mathbb{R}^{h\times h}，并且MLP块的2个权重矩阵Wupi&#x2208;Rh&#x00D7;4h,Wdowni&#x2208;R4h&#x00D7;h" role="presentation">Wupi∈Rh×4h,Wdowni∈R4h×hW^i_{up}\in \mathbb{R}^{h\times 4h},W^i_{down}\in \mathbb{R}^{4h\times h}。$
+$以典型的 GPT2 结构为例。假设第 i" role="presentation">ii 层 Decoder 的权重矩阵为 WQi,WKi,WVi,WOi,Wupi,Wdowni" role="presentation">WQi,WKi,WVi,WOi,Wupi,WdowniW^i_Q,W^i_K,W^i_V,W^i_O,W^i_{up},W^i_{down}。其中，self-attention块的4个权重矩阵WQi,WKi,WVi,WOi∈Rh×h" role="presentation">WQi,WKi,WVi,WOi∈Rh×hW^i_Q,W^i_K,W^i_V,W^i_O\in \mathbb{R}^{h\times h}，并且MLP块的2个权重矩阵Wupi∈Rh×4h,Wdowni∈R4h×h" role="presentation">Wupi∈Rh×4h,Wdowni∈R4h×hW^i_{up}\in \mathbb{R}^{h\times 4h},W^i_{down}\in \mathbb{R}^{4h\times h}。$
 
 #### 第一阶段（prefill）：
 
-$假设第 i" role="presentation">ii 层的输入为 xi&#x2208;Rb&#x00D7;s&#x00D7;h" role="presentation">xi∈Rb×s×hx^i \in \mathbb{R}^{b\times s\times h} ，self-attention块的key、value、query和output表示为 xKi,xVi,xQi&#x2208;Rb&#x00D7;s&#x00D7;h" role="presentation">xKi,xVi,xQi∈Rb×s×hx^i_K,x^i_V,x^i_Q \in \mathbb{R}^{b\times s\times h} 。$
+$假设第 i" role="presentation">ii 层的输入为 xi∈Rb×s×h" role="presentation">xi∈Rb×s×hx^i \in \mathbb{R}^{b\times s\times h} ，self-attention块的key、value、query和output表示为 xKi,xVi,xQi∈Rb×s×h" role="presentation">xKi,xVi,xQi∈Rb×s×hx^i_K,x^i_V,x^i_Q \in \mathbb{R}^{b\times s\times h} 。$
 
 K cache和V cache的计算过程为：
 

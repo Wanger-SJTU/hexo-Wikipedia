@@ -166,7 +166,7 @@ Continuous Batching现已成为大模型推理框架的必备技术，像vLLM,Te
 [](https://zhuanlan.zhihu.com/p/676109470)
 
 
-#### Prefill &amp; Decode分离
+#### Prefill & Decode分离
 
 随着近期Moonshot这波公开[技术分享](https://link.zhihu.com/?target=https%3A//github.com/kvcache-ai/Mooncake)，Prefill和Decode分离的技术方案已经被干成事实标准，大家对long context应用分离架构已基本达成共识。
 

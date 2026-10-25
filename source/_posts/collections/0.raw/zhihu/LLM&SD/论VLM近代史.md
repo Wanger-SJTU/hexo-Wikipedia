@@ -192,9 +192,9 @@ def pixel_shuffle(self, x, scale_factor=0.5):
         # N, H * scale, W, C // scale --> N, H * scale, W * scale, C // (scale ** 2)
         x = x.view(n, int(h * scale_factor), int(w * scale_factor),
                    int(c / (scale_factor * scale_factor)))
-        if self.ps_version == &#39;v1&#39;:
-            warnings.warn(&#34;In ps_version &#39;v1&#39;, the height and width have not been swapped back, &#34;
-                          &#39;which results in a transposed image.&#39;)
+        if self.ps_version == 'v1':
+            warnings.warn("In ps_version 'v1', the height and width have not been swapped back, "
+                          'which results in a transposed image.')
         else:
             x = x.permute(0, 2, 1, 3).contiguous()
         return x
@@ -430,7 +430,7 @@ Qwen2.5-VL实际上也没有特别多的改进，结构如下：
 MRoPE-Interleave的代码，这里原始代码跳得比较多，我以偏伪代码的方式来示例一下：
 
 第一步：读配置
-self.mrope_section = config.rope_scaling.get(&#34;mrope_section&#34;, [24, 20, 20])
+self.mrope_section = config.rope_scaling.get("mrope_section", [24, 20, 20])
 mrope_section 定义了THW各自占用的维度数量（单位是组，每组3维），默认是[24, 20, 20]表示：T占24×3=72维，H占60维，W占60维，总共192维。
 
 第二步：原始频率生成
@@ -579,7 +579,7 @@ CogVLM2和GLM-4V是一起发布的，并且放在同一个报告里，区别就�
 <strong>训练阶段：</strong>
 
 - pretraining阶段：好了，把自己在第一代用的LAION喷了一遍说人家质量太低，所以开发了Iterative Refinement的pipeline去过滤数据（先用public dataset训一个，然后用这个模型打标，再人工修正）；其他数据就是合成数据，高质量合成，用GLIPv2去搞grounding数据，反正就是疯狂自动打标再疯狂洗，把数据量和质量都scaling上去。pretraining阶段用了三种方式去训练：（1）渐进式解冻：先训练Crossattention之类的外部组件（CogAgent），后面再解冻vision encoder和visual expert。就是保证先对齐，再细化vision token的表达，这在其他厂的VL里也很常见。（2）一开始就解冻全部参数，这个的前提是数据必须是混合的，这个和（1）是不冲突的，但这种训练是特别吃数据质量的，基本上每个batch都有纯text数据和img-text的成对数据，不然很容易出现灾难性遗忘（3）分辨率递增，这个也是大家都惯用的思路，先在低分辨率图像上训，再提高token数量在高分辨率图像上训
-- Post-Training阶段：scaling了大量的VQA数据，并且发现简短回答是会影响模型性能的（可能不是因为短回答本身，而是因为短回答太多，因为之前我微调很多VLM都发现如果数据在很多维度上都属于长尾分布的话，训出来的模型很容易被拉偏为那种模式的回答），所以在简短回答的前面都加了 <strong>&#34;Short Answer&#34;</strong>这个前缀表达；此外还自己标注了300K的图文数据，还有50K的偏好数据。post-training有两个阶段，第一阶段用全量VQA数据+300K自标注数据去SFT，第二阶段用高质量VQA子集+50K偏好数据去模拟人类偏好去SFT。SFT的训练中都是全参训得，其中vision encoder的lr是其他部分lr的十分之一。<strong>额外版本：</strong>
+- Post-Training阶段：scaling了大量的VQA数据，并且发现简短回答是会影响模型性能的（可能不是因为短回答本身，而是因为短回答太多，因为之前我微调很多VLM都发现如果数据在很多维度上都属于长尾分布的话，训出来的模型很容易被拉偏为那种模式的回答），所以在简短回答的前面都加了 <strong>"Short Answer"</strong>这个前缀表达；此外还自己标注了300K的图文数据，还有50K的偏好数据。post-training有两个阶段，第一阶段用全量VQA数据+300K自标注数据去SFT，第二阶段用高质量VQA子集+50K偏好数据去模拟人类偏好去SFT。SFT的训练中都是全参训得，其中vision encoder的lr是其他部分lr的十分之一。<strong>额外版本：</strong>
 
 CogVLM2还额外训了CogVLM2-Video版本，支持video understanding，实在224分辨率的base CogVLM2上训的，每个视频采了24帧去做理解，数据分为videoQA数据+videoGrounding数据（Grounding数据是通过采帧Grounding+GPT-4o过滤场景变化小的数据获得的），先训QA，lr为4e-6，后训Grounding，lr为1e-6。这个lr很保险，也是智谱一贯风格。
 
@@ -689,7 +689,7 @@ from PIL import Image, ImageDraw, ImageFont
 
 
 cur_directory = Path(__file__).parent.absolute()
-FONT_PATH = os.path.join(cur_directory, &#34;Roboto-Regular.ttf&#34;)
+FONT_PATH = os.path.join(cur_directory, "Roboto-Regular.ttf")
 
 ```python
 def render_single_image_with_timestamp(
@@ -697,14 +697,14 @@ def render_single_image_with_timestamp(
 ```
 
 ):
+    """
+    Function: Renders a timestamp to the image of pil.image
 
 ```text
-    &#34;&#34;&#34;
-    Function: Renders a timestamp to the image of pil.image
     The timestamp size is the rate of min(width, height)
     The font color is black, the outline is white, and the outline size is 10% of the font
     Returns an Image object
-    &#34;&#34;&#34;
+    """
     draw = ImageDraw.Draw(image)
     width, height = image.size
     font_size = int(min(width, height) * rate)
@@ -730,9 +730,9 @@ def render_single_image_with_timestamp(
     return image
 
 def timestamp_converting(time_stamp_in_seconds):
-    &#34;&#34;&#34;
+    """
     convert timestamp format from seconds to hr:min:sec
-    &#34;&#34;&#34;
+    """
     # get hours
     hours = 0
     while time_stamp_in_seconds >= 3600:
@@ -743,22 +743,22 @@ def timestamp_converting(time_stamp_in_seconds):
     while time_stamp_in_seconds >= 60:
         mins += 1
         time_stamp_in_seconds -= 60
-    time_hours = f&#34;{int(hours):02d}&#34;
-    time_mins = f&#34;{int(mins):02d}&#34;
-    time_secs = f&#34;{time_stamp_in_seconds:05.02f}&#34;
-    fi_time_stamp = time_hours + &#34;:&#34; + time_mins + &#34;:&#34; + time_secs
+    time_hours = f"{int(hours):02d}"
+    time_mins = f"{int(mins):02d}"
+    time_secs = f"{time_stamp_in_seconds:05.02f}"
+    fi_time_stamp = time_hours + ":" + time_mins + ":" + time_secs
 
     return fi_time_stamp
 
 def render_frame_timestamp(frame, timestamp, font_rate=0.1):
-    &#34;&#34;&#34;
+    """
     Function, given a frame, render the index in order
     Logic: render the index to the upper left corner of the image
     frame: frame, PIL.Image object
     timestamp: timestamp, in seconds
     font_rate: the ratio of font size to min(wi, hei)
-    &#34;&#34;&#34;
-    time_stamp = &#34;time: &#34; + timestamp_converting(timestamp)
+    """
+    time_stamp = "time: " + timestamp_converting(timestamp)
     new_frame = render_single_image_with_timestamp(frame, time_stamp, font_rate)
 
     return new_frame

@@ -168,7 +168,7 @@ Linux 内核中的 RDMA 子系统是一个分层架构，旨在将硬件细节�
 
 关键成员：
 
-- name[IB_DEVICE_NAME_MAX]: 设备的唯一名称 (例如 &#34;mlx5_0&#34;, &#34;urdma0&#34;)。
+- name[IB_DEVICE_NAME_MAX]: 设备的唯一名称 (例如 "mlx5_0", "urdma0")。
 - ops: 一个内嵌的 struct ib_device_ops 结构体。这是实现所有 Verbs 功能的核心，驱动程序通过定义一个 static const struct ib_device_ops 实例，并使用 ib_set_device_ops() 将其内容复制到 ib_device->ops 中。
 - dev: 一个内嵌的 struct device，通过ib_alloc_device() 进行初始化。
 - node_type: 节点类型 (e.g., RDMA_NODE_IB_CA, RDMA_NODE_RNIC)。
@@ -297,13 +297,13 @@ struct urdma_ucontext {
 ```cpp
 // urdma_main.c
 #include <linux/module.h> // 标准模块头文件
-#include &#34;urdma.h&#34;        // 我们自己的头文件
+#include "urdma.h"        // 我们自己的头文件
 ```
 
 
-MODULE_AUTHOR(&#34;Linux RDMA Tutorial Driver Developer&#34;); // 模块作者
-MODULE_DESCRIPTION(&#34;A minimal virtual RDMA device driver&#34;); // 模块描述
-MODULE_LICENSE(&#34;GPL&#34;); // 许可证声明
+MODULE_AUTHOR("Linux RDMA Tutorial Driver Developer"); // 模块作者
+MODULE_DESCRIPTION("A minimal virtual RDMA device driver"); // 模块描述
+MODULE_LICENSE("GPL"); // 许可证声明
 
 ```cpp
 #define NUM_DEV 2 // 定义我们想要创建的虚拟设备数量
@@ -323,7 +323,7 @@ static struct urdma_dev *urdma_alloc_device(const int id) {
 
 ```text
   if (!urdma) {
-    pr_err(&#34;urdma: alloc_device failed for id: %d\n&#34;, id);
+    pr_err("urdma: alloc_device failed for id: %d\n", id);
     return NULL;
   }
 ```
@@ -332,7 +332,7 @@ static struct urdma_dev *urdma_alloc_device(const int id) {
   urdma->id = id;
   urdma->gid.global.subnet_prefix = cpu_to_be64(0xfe80000000000000);
   urdma->gid.global.interface_id  = cpu_to_be64(0x505400fffe123456);
-  pr_info(&#34;urdma: allocated device for id: %d\n&#34;, id);
+  pr_info("urdma: allocated device for id: %d\n", id);
 
 ```cpp
   return urdma;
@@ -341,7 +341,7 @@ static struct urdma_dev *urdma_alloc_device(const int id) {
 static void urdma_dealloc_device(struct urdma_dev *urdma) {
   if (!urdma)
     return;
-  pr_info(&#34;urdma: deallocating device for id: %d\n&#34;, urdma->id);
+  pr_info("urdma: deallocating device for id: %d\n", urdma->id);
   ib_dealloc_device(&urdma->ibdev);
 }
 
@@ -352,7 +352,7 @@ static int __init urdma_init_module(void) {
 ```
 
 
-  pr_info(&#34;urdma: loading module...\n&#34;);
+  pr_info("urdma: loading module...\n");
 
 ```cpp
   for (i = 0; i < NUM_DEV; i++) {
@@ -372,7 +372,7 @@ static int __init urdma_init_module(void) {
 ```
 
 
-  pr_info(&#34;urdma: module loaded successfully with %d device(s)\n&#34;, NUM_DEV);
+  pr_info("urdma: module loaded successfully with %d device(s)\n", NUM_DEV);
 
 ```text
   return 0;
@@ -380,7 +380,7 @@ static int __init urdma_init_module(void) {
 
 
 err_cleanup:
-  pr_err(&#34;urdma: error during module initialization, cleaning up...\n&#34;);
+  pr_err("urdma: error during module initialization, cleaning up...\n");
 
 ```cpp
   // 清理已成功创建的设备
@@ -397,7 +397,7 @@ err_cleanup:
 // 模块退出函数
 static void __exit urdma_exit_module(void) {
   int i;
-  pr_info(&#34;urdma: unloading module...\n&#34;);
+  pr_info("urdma: unloading module...\n");
 
   for (i = 0; i < NUM_DEV; i++) {
     if (urdma_devs[i]) {
@@ -406,7 +406,7 @@ static void __exit urdma_exit_module(void) {
       urdma_devs[i] = NULL;
     }
   }
-  pr_info(&#34;urdma: module unloaded.\n&#34;);
+  pr_info("urdma: module unloaded.\n");
 }
 ```
 
@@ -546,7 +546,7 @@ static int urdma_register_device(struct urdma_dev *urdma)
   int err;
 
   // --- 填充 ib_device 的属性 ---
-  strscpy(dev->node_desc, &#34;URDMA Virtual HCA&#34;, sizeof(dev->node_desc));
+  strscpy(dev->node_desc, "URDMA Virtual HCA", sizeof(dev->node_desc));
   dev->node_type = RDMA_NODE_UNSPECIFIED; // 我们的设备类型标识为未知
   dev->phys_port_cnt = 1; // 模拟一个单端口设备
 
@@ -554,12 +554,12 @@ static int urdma_register_device(struct urdma_dev *urdma)
   ib_set_device_ops(dev, &urdma_device_ops);
 
   // --- 注册设备到 ib_core ---
-  // 第二个参数 &#34;urdma%d&#34; 用于格式化注册信息，dev->name 才是最终的设备名
-  err = ib_register_device(dev, &#34;urdma%d&#34;, NULL);
+  // 第二个参数 "urdma%d" 用于格式化注册信息，dev->name 才是最终的设备名
+  err = ib_register_device(dev, "urdma%d", NULL);
   if (err) {
-    pr_err(&#34;urdma: failed to register device %s: %d\n&#34;, dev->name, err);
+    pr_err("urdma: failed to register device %s: %d\n", dev->name, err);
   } else {
-    pr_info(&#34;urdma: successfully registered device %s\n&#34;, dev->name);
+    pr_info("urdma: successfully registered device %s\n", dev->name);
   }
 
   return err;
@@ -611,9 +611,12 @@ make
 
 3. 加载模块:
 
+```text
 sudo insmod ./urdma.ko
 sudo dmesg -T | tail -n 20
-检查 dmesg 的输出，相关的 pr_info 消息（如 &#34;urdma: loading module...&#34;, &#34;urdma: allocated device for id: 0&#34;, &#34;urdma: successfully registered device urdma0&#34; 等）按预期出现，可以确认模块加载成功。
+```
+
+检查 dmesg 的输出，相关的 pr_info 消息（如 "urdma: loading module...", "urdma: allocated device for id: 0", "urdma: successfully registered device urdma0" 等）按预期出现，可以确认模块加载成功。
 
 4. 验证:
 

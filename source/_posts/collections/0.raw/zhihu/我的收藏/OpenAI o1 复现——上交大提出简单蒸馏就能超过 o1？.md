@@ -51,7 +51,7 @@ O1-Journey 是上交大 GAIR 团队复现 OpenAI o1 的工作。
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_a80595984ed3.jpg)
 
-图2：&quot;旅程学习&quot; 在MATH500上的效果
+图2："旅程学习" 在MATH500上的效果
 #### 1.1 什么是"旅程学习"？
 
 按照技术报告的说法，"<strong>旅程学习</strong>" 旨在使人工智能系统能够通过学习、反思、回溯和适应不断进步，就像人类一样，从而展现出更高水平的智能。

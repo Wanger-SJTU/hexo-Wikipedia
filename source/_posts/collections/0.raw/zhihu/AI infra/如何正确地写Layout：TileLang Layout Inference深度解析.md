@@ -26,7 +26,7 @@ for i in T.Parallel(BLOCK):
   A[i] = B[i, 0]
 有时会编译报错：
 
-File &#34;/workspace/tilelang/3rdparty/tvm/src/arith/iter_affine_map.cc&#34;, line 2568, in void tvm::arith::InverseAffineIterMapTransformer::Visit_(const tvm::arith::IterSumExpr&)
+File "/workspace/tilelang/3rdparty/tvm/src/arith/iter_affine_map.cc", line 2568, in void tvm::arith::InverseAffineIterMapTransformer::Visit_(const tvm::arith::IterSumExpr&)
 
 ```text
     TVM_FFI_ICHECK(analyzer_->CanProveEqual(abs(source->scale), 1));
@@ -94,7 +94,7 @@ tvm::transform::Pass LayoutInference() {
     //...
     return f;
   };
-  return CreatePrimFuncPass(pass_func, 0, &#34;tl.LayoutInference&#34;, {});
+  return CreatePrimFuncPass(pass_func, 0, "tl.LayoutInference", {});
 }
 
 class LayoutInferencer : public IRMutatorWithAnalyzer {
@@ -304,7 +304,7 @@ for i, j in T.Parallel(...):
 for i, j in T.Parallel(...):
   C[i, j] = A[i, j]
 
-# don&#39;t need propagation, because A[0,0] is fully replicated
+# don't need propagation, because A[0,0] is fully replicated
 for i, j in T.Parallel(...):
   D[i,j] = A[0, 0]
 这部分的源码：
@@ -355,7 +355,7 @@ for i, j in T.Parallel(...):
 - 最后：自由推导// ...
 
 ```cpp
-  // Step 1: try to infer loop&#39;s partition from a source fragment
+  // Step 1: try to infer loop's partition from a source fragment
   Buffer source_buffer, read_source_buffer;
   bool source_buffer_is_write = false;
   Buffer replicated_write_buffer; // Backup: fully replicated write buffer
@@ -377,7 +377,7 @@ for i, j in T.Parallel(...):
         // Keep the buffer with largest number of indices
         // (which means the inference based on that buffer is more accurate)
         // as read_source_buffer to get more accurate layout
-        // if the buffer is completed replicated, we don&#39;t need to infer the
+        // if the buffer is completed replicated, we don't need to infer the
         // layout from this buffer.
         if ((!read_source_buffer.defined() ||
              access.indices.size() >
@@ -404,7 +404,7 @@ for i, j in T.Parallel(...):
 ```text
 // ...
   // Try to infer loop layout from buffers in order of preference only if we
-  // don&#39;t already have a layout (e.g., from annotations):
+  // don't already have a layout (e.g., from annotations):
   // 1. Annotated loop layout
   // 2. Non-replicated write buffer (most reliable)
   // 3. Non-replicated read buffer
@@ -500,8 +500,8 @@ for i, j in T.Parallel(...):
 我们还需要保证推导出的layout和所有已经推导出的buffer layout是兼容的。如果不兼容，说明推导过程错误，直接报错。
 
 ```text
-// Step 2: Check that the loop&#39;s partition can correctly align with all source
-  // fragment, and infer layout only when it&#39;s not yet layout-ed.
+// Step 2: Check that the loop's partition can correctly align with all source
+  // fragment, and infer layout only when it's not yet layout-ed.
   ValidateCandidateAgainstFragments(loop_layout_, T, /*throw_on_error=*/true,
                                     /*check_forward_index=*/false,
                                     source_buffer);
@@ -648,7 +648,7 @@ for i in T.Parallel(M):
 ```cpp
 // ...
 else {
-    Var rep(&#34;_rep&#34;);
+    Var rep("_rep");
     auto rep_iter =
         IterVar({0, src_layout->ReplicateExtent()}, rep, IterVarType::kDataPar);
     PrimExpr loop_var_to_thread =
@@ -658,8 +658,8 @@ else {
       if (auto opt_var = objref.as<Var>();
           opt_var && inner_vars_.count(*opt_var)) {
         std::ostringstream oss;
-        oss << &#34;loop_var_to_thread = &#34; << loop_var_to_thread
-            << &#34;contains inner var&#34; << *opt_var;
+        oss << "loop_var_to_thread = " << loop_var_to_thread
+            << "contains inner var" << *opt_var;
         throw LayoutConflictException(oss.str());
       }
     });
@@ -748,7 +748,7 @@ Fragment Partition(const For &op, int num_thread, int vectorize_size) {
 
     auto fragment = Fragment(loop_vars_, {idx}, {thd}, {});
     if (has_fragment_) {
-      // for fragment buffer, we don&#39;t need to replicate the loop layout
+      // for fragment buffer, we don't need to replicate the loop layout
       auto thread_extent = *as_const_int(fragment->ThreadExtent());
       auto num_thread_fragment = num_thread / thread_extent;
       fragment = fragment->Replicate(num_thread_fragment);
@@ -865,7 +865,7 @@ if (check_forward_index) {
 接着，函数为small fragment引入一个符号replicate变量：
 
 ```cpp
-Var rep_small(&#34;__checking_frag_contains_rep&#34;);
+Var rep_small("__checking_frag_contains_rep");
 analyzer.Bind(rep_small,
               Range(IntImm(small_frag->ReplicateExtent()->dtype, 0),
                     small_frag->ReplicateExtent()),

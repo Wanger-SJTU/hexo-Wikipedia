@@ -25,9 +25,9 @@ source_url: https://zhuanlan.zhihu.com/p/66281890
 
 <strong>第一种方案是自洽正则化（Consistency Regularization）【3，4】</strong>。以前遇到标记数据太少，监督学习泛化能力差的时候，人们一般进行训练数据增广，比如对图像做随机平移，缩放，旋转，扭曲，剪切，改变亮度，饱和度，加噪声等。数据增广能产生无数的修改过的新图像，扩大训练数据集。<strong>自洽正则化的思路是，对未标记数据进行数据增广，产生的新数据输入分类器，预测结果应保持自洽。即同一个数据增广产生的样本，模型预测结果应保持一致。</strong>此规则被加入到损失函数中，有如下形式，
 
-$** &#x2016;p&#xA0;model&#xA0;(y|&#xA0;Augment&#xA0;(x);&#x03B8;)&#x2212;p&#xA0;model&#xA0;(y|&#xA0;Augment&#xA0;(x);&#x03B8;)&#x2016;22" role="presentation">‖p model (y| Augment (x);θ)−p model (y| Augment (x);θ)‖22\| \mathrm{p}_{\text { model }}(y | \text { Augment }(x) ; \theta)-\mathrm{p}_{\text { model }}(y | \text { Augment }(x) ; \theta) \|_{2}^{2} $
+$** ‖p model (y| Augment (x);θ)−p model (y| Augment (x);θ)‖22" role="presentation">‖p model (y| Augment (x);θ)−p model (y| Augment (x);θ)‖22\| \mathrm{p}_{\text { model }}(y | \text { Augment }(x) ; \theta)-\mathrm{p}_{\text { model }}(y | \text { Augment }(x) ; \theta) \|_{2}^{2} $
 
-其中 x 是未标记数据，Augment(x) 表示对x做随机增广产生的新数据， &#x03B8;" role="presentation">θ\theta 是模型参数，y 是模型预测结果。注意数据增广是随机操作，两个 Augment(x) 的输出不同。这个 L2 损失项，约束机器学习模型，对同一个图像做增广得到的所有新图像，作出自洽的预测。
+其中 x 是未标记数据，Augment(x) 表示对x做随机增广产生的新数据， θ" role="presentation">θ\theta 是模型参数，y 是模型预测结果。注意数据增广是随机操作，两个 Augment(x) 的输出不同。这个 L2 损失项，约束机器学习模型，对同一个图像做增广得到的所有新图像，作出自洽的预测。
 
 MixMatch 集成了自洽正则化。数据增广使用了对图像的随机左右翻转和剪切（Crop）。
 

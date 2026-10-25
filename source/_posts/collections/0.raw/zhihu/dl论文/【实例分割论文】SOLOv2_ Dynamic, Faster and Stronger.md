@@ -48,7 +48,7 @@ for i, cate_layer in enumerate(self.cate_convs):
 ```text
     if i == self.cate_down_pos:
         seg_num_grid = self.seg_num_grids[idx]
-        cate_feat = F.interpolate(cate_feat, size=seg_num_grid, mode=&#39;bilinear&#39;)
+        cate_feat = F.interpolate(cate_feat, size=seg_num_grid, mode='bilinear')
         # 将FPN最高层的特征从H*W*feat_channel 对齐到 S*S*feat_channel
     cate_feat = cate_layer(cate_feat) # 7个卷积 
 ```
@@ -69,7 +69,7 @@ ins_feat = torch.cat([ins_feat, coord_feat], 1) # CoordConv
 for i, ins_layer in enumerate(self.ins_convs): # 7个3*3 Conv 提取特征
     ins_feat = ins_layer(ins_feat)  # H*W*feat_channel
 
-ins_feat = F.interpolate(ins_feat, scale_factor=2, mode=&#39;bilinear&#39;) # 上采样到2H*2W*feat_channel
+ins_feat = F.interpolate(ins_feat, scale_factor=2, mode='bilinear') # 上采样到2H*2W*feat_channel
 ins_pred = self.solo_ins_list[idx](ins_feat) 
 # 从2H*2W*feat_channel到2H*2W*(S^2) S^2的复杂度，这里也是Decoupled 和 Solo v2的优化之处
 

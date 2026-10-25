@@ -52,27 +52,27 @@ vLLM PD分离方案浅析当前的server框架（比如vllm、sglang）通常用
 相同的vllm server怎么分为prefill server和decoder server呢？其实在启动参数上并没多大区别，启动两个server服务，所有的request首先发送到prefill server，并将max_tokens设为1。处理完成后将相同的request再输入decoder server，获取输出即可。那么这两个server自然就会一个只处理prefilling、一个只处理decoding了。
 
 # prefill server
+
+```text
 CUDA_VISIBLE_DEVICES='0' python3 -m vllm.entrypoints.openai.api_server  \
                     --model $MODEL_NAME \
                     --port 8100 \
                     --trust-remote-code \
                     --enforce-eager \
                     --kv-transfer-config \
-
-```text
                     '{"kv_connector":"SharedStorageConnector","kv_role":"kv_both","kv_connector_extra_config": {"shared_storage_path": "local_storage"}}'  
 ```
 
 
 # decoder server
+
+```text
 CUDA_VISIBLE_DEVICES='1' python3 -m vllm.entrypoints.openai.api_server \
                     --model $MODEL_NAME  \
                     --port 8200 \
                     --trust-remote-code \
                     --enforce-eager \
                     --kv-transfer-config \
-
-```text
                     '{"kv_connector":"SharedStorageConnector","kv_role":"kv_both","kv_connector_extra_config": {"shared_storage_path": "local_storage"}}'  
 ```
 
@@ -385,7 +385,10 @@ kv_cache_type="SharedStorageConnector"  # SharedStorageConnector/ LMCacheConnect
 # Trap the SIGINT signal (triggered by Ctrl+C)
 trap 'cleanup' INT
 
+```bash
 export VLLM_HOST_IP=$(hostname -I | awk '{print $1}')
+```
+
 
 # a function that waits vLLM server to start
 wait_for_server() {
@@ -441,10 +444,9 @@ wait_for_server 8200
 
 python3  disagg_pd_proxy_server.py  
 
+```text
 output2=$(curl -X POST -s http://localhost:8000/v1/completions \
     -H "Content-Type: application/json" \
-
-```text
     -d '{
     "model": "'$MODEL_NAME'",
     "prompt": "hello. Santa Clara is a",
@@ -470,6 +472,8 @@ GPU_MEMORY_UTILIZATION=0.95
 
 # prefill
 echo "async start prefill server."
+
+```text
 CUDA_VISIBLE_DEVICES=$gpu_id_prefill python3 -m sglang.launch_server --model-path $MODEL_NAME \
     --disaggregation-mode prefill \
     --context-length $MAX_MODEL_LEN \
@@ -480,9 +484,13 @@ CUDA_VISIBLE_DEVICES=$gpu_id_prefill python3 -m sglang.launch_server --model-pat
     --trust-remote-code  \
     --page-size 16 \
     --port 8100  
+```
+
 
 # decoder
 echo "async start decoder server."
+
+```text
 CUDA_VISIBLE_DEVICES=$gpu_id_decoder python3 -m sglang.launch_server --model-path $MODEL_NAME \
     --disaggregation-mode decode \
     --context-length $MAX_MODEL_LEN \
@@ -493,10 +501,16 @@ CUDA_VISIBLE_DEVICES=$gpu_id_decoder python3 -m sglang.launch_server --model-pat
     --trust-remote-code \
     --page-size 16 \
     --port 8200  
+```
+
 
 echo "start schedule server."
+
+```text
 python3 -m sglang.srt.disaggregation.mini_lb \
     --prefill http://localhost:8100 --decode http://localhost:8200 --host 0.0.0.0 --port 8002   
+```
+
 
 # 多个prefill和decoder node 链接：https://blog.csdn.net/u013701860/article/details/147745303
 

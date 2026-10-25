@@ -23,7 +23,7 @@ source_url: https://zhuanlan.zhihu.com/p/1948746945867802457
 
 参考《Hardware-efficient Softmax Approximation for  Self-Attention Networks》
 
-$$&#x03C3;(zi)=ezi&#x2212;zmax&#x2211;j=1Nezj&#x2212;zmaxfor&#xA0;i=1,2,&#x2026;,N" role="presentation">σ(zi)=ezi−zmax∑j=1Nezj−zmaxfor i=1,2,…,N\sigma(z_i) = \frac{e^{z_i - z_{\max}}}{\sum_{j=1}^{N} e^{z_j - z_{\max}}} \quad \text{for } i = 1, 2, \ldots, N \\$$
+$$σ(zi)=ezi−zmax∑j=1Nezj−zmaxfor i=1,2,…,N" role="presentation">σ(zi)=ezi−zmax∑j=1Nezj−zmaxfor i=1,2,…,N\sigma(z_i) = \frac{e^{z_i - z_{\max}}}{\sum_{j=1}^{N} e^{z_j - z_{\max}}} \quad \text{for } i = 1, 2, \ldots, N \\$$
 
 计算分为三个阶段，并有很强的<strong>数据相关性</strong>，因此很难<strong>流水线化</strong>和<strong>并行化；</strong>同时 <strong>exp</strong>和 <strong>division</strong>操作硬件不友好：
 
@@ -31,7 +31,7 @@ $$&#x03C3;(zi)=ezi&#x2212;zmax&#x2211;j=1Nezj&#x2212;zmaxfor&#xA0;i=1,2,&#x2026;
 
 本文用如下 e 指数实现方法：
 
-$ey=2y&#x22C5;log2&#x2061;e=2u&#x22C5;2v" role="presentation" style="font-size: 100%; display: inline-block; position: relative;">ey=2y⋅log2⁡e=2u⋅2ve^y = 2^{y \cdot \log_2 e} = 2^u \cdot 2^v\\$
+$ey=2y⋅log2⁡e=2u⋅2v" role="presentation" style="font-size: 100%; display: inline-block; position: relative;">ey=2y⋅log2⁡e=2u⋅2ve^y = 2^{y \cdot \log_2 e} = 2^u \cdot 2^v\\$
 
 其中 u 表示 integer，v 表示 fraction。 2v" role="presentation">2v2^v 通过<strong>线性近似</strong>的方式实现， 2u" role="presentation">2u2^u 通过<strong>移位</strong>的方式实现。
 

@@ -57,7 +57,10 @@ SSD`专注于加速`Transformer`中的前馈网络（通常占总计算量的`60
 
 在密集计算中，前馈网络（`FFNs`）通过以下方式计算：
 
+```text
 \begin{equation} \small \text{FFN}({\mathbf{x}}) = {\mathbf{W}}_o \sigma({\mathbf{W}}_i {\mathbf{x}} + {\mathbf{b}}_i) + {\mathbf{b}}_o, \end{equation} \\
+```
+
 
 在稀疏计算中，前馈网络（`FFNs`）被均分为 N 个专家，并以`SMoE`的方式进行计算，
 

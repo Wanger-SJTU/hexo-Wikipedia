@@ -17,7 +17,7 @@ source_url: https://zhuanlan.zhihu.com/p/1919340508637016870
 
 前段时间，备受瞩目的Qwen3系列模型正式发布。除了全量引入Think之外，还有一处不太重大的变化就是引入了QK-Norm，官方Report中介绍如下。
 
-&#34;Besides, we remove QKV-bias used in Qwen2 (Yang et al., 2024a) and introduce QK-Norm (Dehghani et al., 2023) to the attention mechanism to ensure stable training for Qwen3.&#34;简单来说，Qwen3移除了前代模型中的QK-Bias，并引入了QK-Norm。官方给出的理由是“确保稳定的训练”。这无疑是一个重要的优化，但从端侧推理视角看，这一变化的收益不止于训练，对于推理，特别是端侧推理的溢出问题也是一个很大改善。
+"Besides, we remove QKV-bias used in Qwen2 (Yang et al., 2024a) and introduce QK-Norm (Dehghani et al., 2023) to the attention mechanism to ensure stable training for Qwen3."简单来说，Qwen3移除了前代模型中的QK-Bias，并引入了QK-Norm。官方给出的理由是“确保稳定的训练”。这无疑是一个重要的优化，但从端侧推理视角看，这一变化的收益不止于训练，对于推理，特别是端侧推理的溢出问题也是一个很大改善。
 
 这个想法，源于我此前在部署Qwen2时遇到的已经数值溢出问题。在我们尝试将<strong>Qwen2-1.5B-Instruct</strong>模型通过MNN部署到端侧设备时。为了在移动端获得最佳性能，我们采用了float16作为推理时的激活值精度。然而，模型在推理时频繁出现回答错误。通过逐层排查，我们最终定位到了问题——Attention模块中的`query @ key`计算结果发生了<strong>数值溢出</strong>。这里，我们需要了解一个关键的背景：
 

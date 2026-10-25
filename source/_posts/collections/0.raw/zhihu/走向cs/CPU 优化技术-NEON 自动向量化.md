@@ -96,9 +96,13 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O2")
 
 - 在不明确配置 -mcpu 的情况下，编译器将使用默认配置（取决于编译工具链时的选项设置）**进行编译。
 - 通常情况下 -mfpu 和 -mcpu 的配置存在关联性，对应关系如下。（如当选取-mcpu为cortex-a8时，-mfpu一般设置为vfpv3或neon）
+
+```text
 -mcpu-mfpu-mfpu-FP onlyFP + SIMDcortex-a5-mfpu=vfpv3-fp16**-mfpu=vfpv3-d16-fp16-mfpu=neon-fp16cortex-a7-mfpu=vfpv4
 -mfpu=vfpv4-d16-mfpu=neon-vfpv4cortex-a8-mfpu=vfpv3-mfpu=neoncortex-a9-mfpu=vfpv3-fp16
 -mfpu=vfpv3-d16-fp16-mfpu=neon-fp16cortex-a15-mfpu=vfpv4-mfpu=neon-vfpv4gcc 中实现自动向量化的编译配置如下**：
+```
+
 
 # AArch32
 arm-none-linux-gnueabihf-gcc -mcpu=cortex-a53 -mfpu=neon -ftree-vectorize -O2 main.c

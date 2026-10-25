@@ -43,7 +43,11 @@ $$
 x^i_Q = x^i · w^i_Q  
 $$
 $$
+
+```text
 x^i_{Out} = fSoftmax(\frac{x^i_Q (x^i_K)^T}{\sqrt{h}}) · x^i_V · w^i_O + x^i \\
+```
+
 
 $$
 

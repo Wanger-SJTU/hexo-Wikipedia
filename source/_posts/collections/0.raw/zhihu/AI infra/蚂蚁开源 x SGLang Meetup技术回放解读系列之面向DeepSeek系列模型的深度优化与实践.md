@@ -114,6 +114,7 @@ source_url: https://zhuanlan.zhihu.com/p/2035331396995129665
 - Prefill 使用 TP8。目标是满足 TTFT 约束，并且 Prefill 节点可以按流量弹性扩缩。
 - Decode 使用 DP16 + EP16。H20-96G 显存更大，NVLink 带宽也高，比较适合把 Decode 的注意力做 DP，把 MoE 做 EP，减少不必要的 TP 通信。Ant 的复现 PR 里给了非常具体的启动参数。Prefill 侧大致是：
 
+```text
 PYTHONUNBUFFERED=1 \
 SGL_CHUNKED_PREFIX_CACHE_THRESHOLD=0 \
 python3 -m sglang.launch_server \
@@ -124,9 +125,12 @@ python3 -m sglang.launch_server \
   --chunked-prefill-size 16384 \
   --quantization fp8 \
   --kv-cache-dtype fp8_e4m3
+```
+
 
 Decode 侧的关键参数是：
 
+```text
 PYTHONUNBUFFERED=1 \
 SGL_ENABLE_JIT_DEEPGEMM=1 \
 SGLANG_DEEPEP_NUM_MAX_DISPATCH_TOKENS_PER_RANK=96 \
@@ -151,6 +155,8 @@ python3 -m sglang.launch_server \
   --moe-a2a-backend deepep \
   --deepep-mode low_latency_overlap \
   --enable-single-batch-overlap
+```
+
 
 这组参数基本把后面的优化都串起来了：Prefill 侧有 `fa3`、chunked prefix、TP scattered input；Decode 侧有 `flashmla`、DP attention、DeepEP low latency、SwapAB、SBO、Expert location 初始化和 NEXTN/Eagle。
 
@@ -196,7 +202,7 @@ class AttnTpContext:
             and get_moe_a2a_backend().is_none()
             and not enable_moe_dense_fully_dp()
             and get_global_server_args().disable_piecewise_cuda_graph
-            and get_global_server_args().speculative_algorithm != &#34;EAGLE3&#34;
+            and get_global_server_args().speculative_algorithm != "EAGLE3"
         )
 
     def use_input_scattered(self, forward_batch: ForwardBatch):
@@ -237,7 +243,7 @@ export SGL_CHUNKED_PREFIX_CACHE_THRESHOLD=0
 
 当前代码里，attention backend handler 会在 `fa3`、`flashinfer`、`flashmla` 这些 backend 上判断是否能走 `MHA_ONE_SHOT`：
 
-MHA_ONE_SHOT_SUPPORTED_BACKENDS = [&#34;fa3&#34;, &#34;flashinfer&#34;, &#34;flashmla&#34;]
+MHA_ONE_SHOT_SUPPORTED_BACKENDS = ["fa3", "flashinfer", "flashmla"]
 
 ```python
 def _support_mha_one_shot(attn, forward_batch, backend_name):
@@ -296,12 +302,12 @@ if hidden_states.shape[0] == 16384 and get_tensor_model_parallel_rank() == 0:
 
 ```text
     topk_ids_dir = xxxx
-    if not hasattr(self, &#34;save_idx&#34;):
+    if not hasattr(self, "save_idx"):
         self.save_idx = 0
     if self.save_idx <= 1:
         torch.save(
             topk_output.topk_ids,
-            f&#34;{topk_ids_dir}/topk_idx_layer{self.layer_id}_idx{self.save_idx}.pt&#34;,
+            f"{topk_ids_dir}/topk_idx_layer{self.layer_id}_idx{self.save_idx}.pt",
         )
     self.save_idx += 1
 ```
@@ -309,12 +315,11 @@ if hidden_states.shape[0] == 16384 and get_tensor_model_parallel_rank() == 0:
 
 然后用 `tuning_fused_moe_triton_sep.py` 对真实分布做 tuning：
 
+```text
 python benchmark/kernels/fused_moe_triton/tuning_fused_moe_triton_sep.py \
     --model $model_path \
     --tp-size 8 \
     --dtype fp8_w8a8 \
-
-```text
     --topk-ids-dir ${topk_ids_dir} \
     --tune
 ```
@@ -343,7 +348,7 @@ down_moe_use_tma = (
 ```text
     _down_moe_use_tma()
     and down_config is not None
-    and down_config.pop(&#34;USE_TMA&#34;, False)
+    and down_config.pop("USE_TMA", False)
 )
 ```
 
@@ -490,7 +495,7 @@ PR 给的 H20 数据里，cache length=8196、head_num=64 时，batch size 32/48
 
 ```text
 class CombineOverlapArgs:
-    # this &#34;overlap&#34; flag means overlapping with down gemm
+    # this "overlap" flag means overlapping with down gemm
     overlap: bool
     stream: torch.cuda.Stream
     wait_event: torch.cuda.Event
@@ -579,8 +584,8 @@ overlap_args_dict = dict(
     overlap=overlap_args.overlap,
     packed_recv_count=self.packed_recv_count,
     comp_signal=overlap_args.signal,
-    block_m=meta_overlap_args[&#34;block_m&#34;],
-    threshold=meta_overlap_args[&#34;threshold&#34;],
+    block_m=meta_overlap_args["block_m"],
+    threshold=meta_overlap_args["threshold"],
     num_sms=overlap_args.num_sms,
 )
 ```
@@ -614,13 +619,13 @@ deep_gemm_return_value = deep_gemm_wrapper.grouped_gemm_nt_f8f8bf16_masked(
 )
 ```
 
-meta_overlap_args = running_state.get(&#34;meta_overlap_args&#34;, None)
+meta_overlap_args = running_state.get("meta_overlap_args", None)
 if meta_overlap_args is not None:
 
 ```text
     block_m, threshold = deep_gemm_return_value
-    meta_overlap_args[&#34;block_m&#34;] = block_m
-    meta_overlap_args[&#34;threshold&#34;] = threshold
+    meta_overlap_args["block_m"] = block_m
+    meta_overlap_args["threshold"] = threshold
 ```
 
 
@@ -677,7 +682,7 @@ if topk_idx.numel() > 0:
 ```text
     get_global_expert_distribution_recorder().record_topk_ids(topk_idx)
 else:
-    logger.warning(&#34;topk_idx is empty in DeepEP low latency dispatch.&#34;)
+    logger.warning("topk_idx is empty in DeepEP low latency dispatch.")
 ```
 
 
@@ -886,13 +891,13 @@ def is_nsa_enable_prefill_cp():
 def is_nsa_prefill_cp_in_seq_split():
     return (
         is_nsa_enable_prefill_cp()
-        and get_global_server_args().nsa_prefill_cp_mode == &#34;in-seq-split&#34;
+        and get_global_server_args().nsa_prefill_cp_mode == "in-seq-split"
     )
 
 def is_nsa_prefill_cp_round_robin_split():
     return (
         is_nsa_enable_prefill_cp()
-        and get_global_server_args().nsa_prefill_cp_mode == &#34;round-robin-split&#34;
+        and get_global_server_args().nsa_prefill_cp_mode == "round-robin-split"
     )
 ```
 

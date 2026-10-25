@@ -38,7 +38,7 @@ NCCL是NVIDIA Collective Communication Library 的简称，支持P2P和集合通
 ![](https://pica.zhimg.com/v2-5cef0db3284ba6417984503fb3738bdf_r.jpg?source=2c26e567)NCCL常用的通信算法是 Ring 和 Tree，NVLS 和 CollNet 被用来优化 AllReduce，NVLS 算法也能利用特定硬件能力提升 ReduceScatter 和 AllGather 性能。
 
 - CollNet 算法  针对网络设施能够参与集合通信，比如利用像 NVIDIA SHARP 这样的网络硬件特性，把部分运算（如 reduce）下放到网络交换机上执行，从而减少数据传输量和延迟。
-- NVLS 算法  利用 NVIDIA&#39;S NVSwitch，提供了高带宽的direct GPU-to_GPU 通路。NVLS intra-node 用 NVLink SHARP, inter-node 用 CollNet 和 SHARP-enabled 交换机通信; NVLS-Tree intra-node 用 NVLink SHARP，inter-node 用 tree-based fan-out
+- NVLS 算法  利用 NVIDIA'S NVSwitch，提供了高带宽的direct GPU-to_GPU 通路。NVLS intra-node 用 NVLink SHARP, inter-node 用 CollNet 和 SHARP-enabled 交换机通信; NVLS-Tree intra-node 用 NVLink SHARP，inter-node 用 tree-based fan-out
 ![](https://picx.zhimg.com/v2-8138cfefa65d259e969f958e40674444_r.jpg?source=2c26e567)NCCL 所有的集合计算都是建立在通信原语上的，通信原语包括send, recv, recvReduceSend, recvCopySend, recvReduceCopySend。每个通信原语都表示一个单独的数据移动或通信模式。命名也表示执行顺序，比如 recvReduceSend，recv->reduce->send
 
 - 每个 NCCL 通信原语具体行为进一步由被选择的通信协议决定。同步、buffer 管理、传输粒度都会根据 Simple/LL/LL128而不同。通信原语在固定、少数的源和目标的情况下优化的很好，比如 ring 和 tree 一般都只有一个源和一个目标。但对于像 all-to-all 这样的 pattern，会有 N 个源和 N 个目标，通信原语就没有那么高效了。数据在可用的 communication channels 切分，channel-level 可以并行，每个 Channel 的开始地址由 workOffset 决定，channel 中数据大小由 channelCount 决定。

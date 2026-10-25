@@ -489,7 +489,7 @@ public class SimpleRadixTreeDemo {
         }
 
         String path(int key) {
-            return slot(key, 4) + &#34; -> &#34; + slot(key, 2) + &#34; -> &#34; + slot(key, 0);
+            return slot(key, 4) + " -> " + slot(key, 2) + " -> " + slot(key, 0);
         }
 
         private static int slot(int key, int shift) {
@@ -500,16 +500,16 @@ public class SimpleRadixTreeDemo {
     public static void main(String[] args) {
         SimpleRadixTree tree = new SimpleRadixTree();
 
-        tree.put(5, &#34;A&#34;);
-        tree.put(42, &#34;B&#34;);
-        tree.put(47, &#34;C&#34;);
+        tree.put(5, "A");
+        tree.put(42, "B");
+        tree.put(47, "C");
 
-        System.out.println(&#34;path(5)  = &#34; + tree.path(5));
-        System.out.println(&#34;path(42) = &#34; + tree.path(42));
-        System.out.println(&#34;path(47) = &#34; + tree.path(47));
+        System.out.println("path(5)  = " + tree.path(5));
+        System.out.println("path(42) = " + tree.path(42));
+        System.out.println("path(47) = " + tree.path(47));
 
-        System.out.println(&#34;get(42) = &#34; + tree.get(42));
-        System.out.println(&#34;get(6)  = &#34; + tree.get(6));
+        System.out.println("get(42) = " + tree.get(42));
+        System.out.println("get(6)  = " + tree.get(6));
     }
 }
 ```
@@ -678,11 +678,11 @@ child
 
 前面的 Java 小例子是：
 
-put(5,  &#34;A&#34;)
-   put(42, &#34;B&#34;)
-   put(47, &#34;C&#34;)
+put(5,  "A")
+   put(42, "B")
+   put(47, "C")
 
-   get(42) -> &#34;B&#34;
+   get(42) -> "B"
 换成老内核 page cache，就是：
 
 mapping->i_pages[5]  = page for file offset 5  * PAGE_SIZE
@@ -706,11 +706,7 @@ SimpleRadixTreeDemo              Linux 老 page cache
 
       key 42
         path 2 -> 2 -> 2
-
-```text
-        value = &#34;B&#34;
-```
-
+        value = "B"
 
    老内核 page cache:
 
@@ -1102,15 +1098,12 @@ index -> page/folio
 
 XArray<String> xa
 
-   xa[0]       = &#34;A&#34;
-   xa[1000]    = &#34;B&#34;
-   xa[9000000] = &#34;C&#34;
+   xa[0]       = "A"
+   xa[1000]    = "B"
+   xa[9000000] = "C"
 它看起来像数组：
 
-```text
-xa.get(1000) -> &#34;B&#34;
-```
-
+xa.get(1000) -> "B"
 但它不会真的分配：
 
 Object[] array = new Object[9000001]
@@ -1298,8 +1291,8 @@ public class MiniXArrayDemo {
         }
 
         void dumpTree() {
-            printNodeLine(&#34;&#34;, &#34;root&#34;, root, 0);
-            dumpChildren(root, 0, &#34;&#34;);
+            printNodeLine("", "root", root, 0);
+            dumpChildren(root, 0, "");
         }
 
         private void dumpChildren(Node node, int base, String prefix) {
@@ -1314,19 +1307,19 @@ public class MiniXArrayDemo {
                 }
 
                 boolean last = ++seen == childCount;
-                String branch = last ? &#34;└─ &#34; : &#34;├─ &#34;;
-                String nextPrefix = prefix + (last ? &#34;   &#34; : &#34;│  &#34;);
+                String branch = last ? "└─ " : "├─ ";
+                String nextPrefix = prefix + (last ? "   " : "│  ");
                 int childBase = base + offset * slotSpan;
-                String markText = node.marks[DIRTY].get(offset) ? &#34; DIRTY&#34; : &#34;&#34;;
-                String label = &#34;slot[&#34; + offset + &#34;]&#34; + markText;
+                String markText = node.marks[DIRTY].get(offset) ? " DIRTY" : "";
+                String label = "slot[" + offset + "]" + markText;
 
                 if (entry instanceof Node) {
                     Node child = (Node) entry;
-                    printNodeLine(prefix + branch, label + &#34; -> node&#34;, child, childBase);
+                    printNodeLine(prefix + branch, label + " -> node", child, childBase);
                     dumpChildren(child, childBase, nextPrefix);
                 } else {
                     System.out.println(prefix + branch + label
-                            + &#34; -> &#34; + entry + &#34; index=&#34; + childBase);
+                            + " -> " + entry + " index=" + childBase);
                 }
             }
         }
@@ -1344,10 +1337,10 @@ public class MiniXArrayDemo {
         private static void printNodeLine(String prefix, String label,
                                           Node node, int base) {
             int span = 1 << (node.shift + CHUNK_SHIFT);
-            String treeText = prefix + label + &#34; [&#34;
-                    + base + &#34;..&#34; + (base + span - 1)
-                    + &#34; shift=&#34; + node.shift + &#34;]&#34;;
-            printWithRightColumn(treeText, &#34;dirtyBits=&#34; + bits(node.marks[DIRTY]));
+            String treeText = prefix + label + " ["
+                    + base + ".." + (base + span - 1)
+                    + " shift=" + node.shift + "]";
+            printWithRightColumn(treeText, "dirtyBits=" + bits(node.marks[DIRTY]));
         }
 
         private static void printWithRightColumn(String treeText, String rightText) {
@@ -1359,20 +1352,20 @@ public class MiniXArrayDemo {
         private static String spaces(int count) {
             StringBuilder builder = new StringBuilder();
             for (int i = 0; i < count; i++) {
-                builder.append(&#39; &#39;);
+                builder.append(' ');
             }
             return builder.toString();
         }
 
         private static String bits(BitSet bitSet) {
-            StringBuilder builder = new StringBuilder(&#34;[&#34;);
+            StringBuilder builder = new StringBuilder("[");
             for (int i = 0; i < CHUNK_SIZE; i++) {
-                builder.append(bitSet.get(i) ? &#39;1&#39; : &#39;0&#39;);
+                builder.append(bitSet.get(i) ? '1' : '0');
                 if (i + 1 < CHUNK_SIZE) {
-                    builder.append(&#39; &#39;);
+                    builder.append(' ');
                 }
             }
-            return builder.append(&#39;]&#39;).toString();
+            return builder.append(']').toString();
         }
 
         private Integer findMarked(Node node, int base, int start, int mark) {
@@ -1410,20 +1403,20 @@ public class MiniXArrayDemo {
     public static void main(String[] args) {
         MiniXArray xa = new MiniXArray();
 
-        xa.put(5, &#34;page-5&#34;);
-        xa.put(42, &#34;page-42&#34;);
-        xa.put(47, &#34;page-47&#34;);
+        xa.put(5, "page-5");
+        xa.put(42, "page-42");
+        xa.put(47, "page-47");
 
         xa.setMark(42, DIRTY);
         xa.setMark(47, DIRTY);
 
         xa.dumpTree();
 
-        System.out.println(&#34;get 42 = &#34; + xa.get(42));
+        System.out.println("get 42 = " + xa.get(42));
 
         Integer index = xa.findMarked(0, DIRTY);
         while (index != null) {
-            System.out.println(&#34;dirty at index &#34; + index + &#34; -> &#34; + xa.get(index));
+            System.out.println("dirty at index " + index + " -> " + xa.get(index));
             index = xa.findMarked(index + 1, DIRTY);
         }
     }
@@ -1488,11 +1481,7 @@ index 42 在 4 叉树里可以分成三段：
 
 root.slots[2]
         └─ child.slots[2]
-
-```text
-              └─ leaf.slots[2] = &#34;page-42&#34;
-```
-
+              └─ leaf.slots[2] = "page-42"
 所以设置 DIRTY mark 时，不是只在叶子 value 上记一下，而是把这条路径上每一层 node 的对应 bit 都置 1。
 
 打 DIRTY mark 后：

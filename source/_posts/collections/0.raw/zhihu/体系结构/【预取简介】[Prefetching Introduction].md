@@ -247,7 +247,7 @@ This reference prediction table is a tagged, set-associative structure that uses
 
 ![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_10121c41b007.jpg)
 
-Baer and Chen&amp;amp;#39;s reference prediction table
+Baer and Chen&amp;#39;s reference prediction table
 
 Address-correlated prefetching
 

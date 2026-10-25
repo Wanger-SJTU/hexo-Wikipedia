@@ -23,9 +23,9 @@ MiroThinker 用 30B 模型跑出了 SoTA 的 Agentic 性能，并提出了 Agent
 
 MiroThinker 采用的是最常见的的 ReAct 范式：给定一个查询 q" role="presentation">qq，模型交替进行思考、工具调用、得到工具结果的循环，直到得到最终的回复输出。我们先来简单定义一下符号。
 
-$第 t" role="presentation">tt 轮开始时，agent 的上下文窗口中是这样一条轨迹：Ht={(T1,A1,O1),&#x2026;,(Tt&#x2212;1,At&#x2212;1,Ot&#x2212;1)}" role="presentation">Ht={(T1,A1,O1),…,(Tt−1,At−1,Ot−1)}H_t=\{(T_1,A_1,O_1),\dots,(T_{t-1},A_{t-1},O_{t-1})\}，其中 Ti,Ai,Oi" role="presentation">Ti,Ai,OiT_i,A_i,O_i 分别表示模型思考、工具调用和工具结果（观察）。在第 t" role="presentation">tt 轮，模型首先进行思考 Tt=f&#x03B8;(q,Ht)" role="presentation">Tt=fθ(q,Ht)T_t=f_\theta(q,H_t)，基于思考结果决定调用何种工具并给出对应参数 At=&#x03C0;&#x03B8;(q,Ht,Tt)" role="presentation">At=πθ(q,Ht,Tt)A_t=\pi_\theta(q,H_t,T_t)，随后会得到一个来自环境的工具调用结果 Ot=tool(At)" role="presentation">Ot=tool(At)O_t=\text{tool}(A_t)，这样第 t" role="presentation">tt 轮就完成了，拼起来即得到第 t+1" role="presentation">t+1t+1 轮的起始轨迹 Ht+1={(T1,A1,O1),&#x2026;,(Tt&#x2212;1,At&#x2212;1,Ot&#x2212;1),(Tt,At,Ot}" role="presentation">Ht+1={(T1,A1,O1),…,(Tt−1,At−1,Ot−1),(Tt,At,Ot}H_{t+1}=\{(T_1,A_1,O_1),\dots,(T_{t-1},A_{t-1},O_{t-1}),(T_t,A_t,O_t\}。$
+$第 t" role="presentation">tt 轮开始时，agent 的上下文窗口中是这样一条轨迹：Ht={(T1,A1,O1),…,(Tt−1,At−1,Ot−1)}" role="presentation">Ht={(T1,A1,O1),…,(Tt−1,At−1,Ot−1)}H_t=\{(T_1,A_1,O_1),\dots,(T_{t-1},A_{t-1},O_{t-1})\}，其中 Ti,Ai,Oi" role="presentation">Ti,Ai,OiT_i,A_i,O_i 分别表示模型思考、工具调用和工具结果（观察）。在第 t" role="presentation">tt 轮，模型首先进行思考 Tt=fθ(q,Ht)" role="presentation">Tt=fθ(q,Ht)T_t=f_\theta(q,H_t)，基于思考结果决定调用何种工具并给出对应参数 At=πθ(q,Ht,Tt)" role="presentation">At=πθ(q,Ht,Tt)A_t=\pi_\theta(q,H_t,T_t)，随后会得到一个来自环境的工具调用结果 Ot=tool(At)" role="presentation">Ot=tool(At)O_t=\text{tool}(A_t)，这样第 t" role="presentation">tt 轮就完成了，拼起来即得到第 t+1" role="presentation">t+1t+1 轮的起始轨迹 Ht+1={(T1,A1,O1),…,(Tt−1,At−1,Ot−1),(Tt,At,Ot}" role="presentation">Ht+1={(T1,A1,O1),…,(Tt−1,At−1,Ot−1),(Tt,At,Ot}H_{t+1}=\{(T_1,A_1,O_1),\dots,(T_{t-1},A_{t-1},O_{t-1}),(T_t,A_t,O_t\}。$
 
-这样迭代循环进行思考、工具调用、得到工具结果的循环，直到模型的回复中不在包括工具调用 At=&#x2298;" role="presentation">At=⊘A_t=\oslash，此时模型会基于已有的轨迹结果，生成最终回答 y=g&#x03B8;(Ht)" role="presentation">y=gθ(Ht)y=g_\theta(H_t)。
+这样迭代循环进行思考、工具调用、得到工具结果的循环，直到模型的回复中不在包括工具调用 At=⊘" role="presentation">At=⊘A_t=\oslash，此时模型会基于已有的轨迹结果，生成最终回答 y=gθ(Ht)" role="presentation">y=gθ(Ht)y=g_\theta(H_t)。
 
 ![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_1f4b11ad3c5c.jpg)
 
@@ -111,7 +111,10 @@ $如前所述，构建 SFT 数据集 \mathcal{D}_\text{sft}=\{(x_i,H_i\}_{i=1}^N
 
 训练的第二阶段是采用 DPO 来精调模型的决策能力，所用偏好数据是由 SFT 后的模型生成得到。DPO 的训练需要任务指令 x 和对应的偏好数据 H^+,H^-，其损失函数为：
 
+```text
  \mathcal{L}_\text{DPO}(x,H^+,H^-)=-\log\sigma(\beta[\log\pi_\theta(H^+|x)-\log\pi_\theta(H^-|x))-(\log\pi_\text{ref}(H^+|x)-\log\pi_\text{ref}(H^-|x))])\notag \\ 
+```
+
 
 超参数 \beta 用于调控对参考模型 \pi_\text{ref} 的偏离程度。在 Miro 的偏好训练阶段，整体损失是在 DPO 损失的基础上再加上偏好正样本的 SFT 损失： 
 

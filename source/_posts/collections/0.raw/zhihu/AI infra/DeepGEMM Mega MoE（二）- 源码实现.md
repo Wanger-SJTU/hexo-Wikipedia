@@ -22,27 +22,19 @@ source_url: https://zhuanlan.zhihu.com/p/2032493993485924283
 
 然后对x进行fp8量化，返回的x包含了fp8的tensor和对应的sf，sf会打包成int。
 
-x = torch.randn((num_tokens, hidden), dtype=torch.bfloat16, device=&#39;cuda&#39;)
+x = torch.randn((num_tokens, hidden), dtype=torch.bfloat16, device='cuda')
 l1_weights = torch.randn(
-
-```text
-    (num_experts_per_rank, intermediate_hidden * 2, hidden), dtype=torch.bfloat16, device=&#39;cuda&#39;)
-```
-
+    (num_experts_per_rank, intermediate_hidden * 2, hidden), dtype=torch.bfloat16, device='cuda')
 l2_weights = torch.randn(
-
-```text
-    (num_experts_per_rank, hidden, intermediate_hidden), dtype=torch.bfloat16, device=&#39;cuda&#39;)
-```
-
+    (num_experts_per_rank, hidden, intermediate_hidden), dtype=torch.bfloat16, device='cuda')
 x = per_token_cast_to_fp8(x, use_ue8m0=True, gran_k=32, use_packed_ue8m0=True)
 类似的对w量化成fp4，sf pack成int，后面会UMMA中要求每次TMA一列的数据，因此transform_sf_into_required_layout会将sf转成MN major。
 
 ```python
 def cast_grouped_weights_to_fp4(bf16_weights: torch.Tensor) -> Tuple[torch.Tensor, torch.Tensor]:
     num_groups, n, k = bf16_weights.shape
-    w = torch.empty((num_groups, n, k // 2), device=&#39;cuda&#39;, dtype=torch.int8)
-    w_sf = torch.empty((num_groups, n, k // 32), device=&#39;cuda&#39;, dtype=torch.float)
+    w = torch.empty((num_groups, n, k // 2), device='cuda', dtype=torch.int8)
+    w_sf = torch.empty((num_groups, n, k // 32), device='cuda', dtype=torch.float)
     for i in range(num_groups):
         w[i], w_sf[i] = per_token_cast_to_fp4(bf16_weights[i], use_ue8m0=True, gran_k=32)
     w_sf = deep_gemm.transform_sf_into_required_layout(w_sf, n, k, (1, 32), num_groups)
@@ -176,7 +168,7 @@ static CUtensorMapDataType aten_dtype_to_tensor_map_dtype(const at::ScalarType& 
         case torch::kFloat8_e4m3fn: return CU_TENSOR_MAP_DATA_TYPE_UINT8;
         case kPackedFP4:            return fp4_unpacked_smem ? CU_TENSOR_MAP_DATA_TYPE_16U4_ALIGN16B
                                                              : CU_TENSOR_MAP_DATA_TYPE_16U4_ALIGN8B;
-        default: DG_HOST_UNREACHABLE(&#34;Unsupported dtype&#34;);
+        default: DG_HOST_UNREACHABLE("Unsupported dtype");
     }
 }
 ```
@@ -670,7 +662,7 @@ for_each_block() {
     uint64_t cached_l2_arrival_mask = 0;
     for (uint32_t k_block_idx = 0; k_block_idx < num_k_blocks; advance_pipeline(k_block_idx)) {
         if (block_phase == sched::BlockPhase::Linear2) {
-            DG_STATIC_ASSERT(BLOCK_K == BLOCK_N, &#34;Invalid block sizes&#34;);
+            DG_STATIC_ASSERT(BLOCK_K == BLOCK_N, "Invalid block sizes");
             const uint64_t needed = 3ull << (k_block_idx * 2);
             if ((cached_l2_arrival_mask & needed) != needed) {
                 const auto ptr = workspace.get_l2_arrival_mask_ptr(pool_block_idx);
@@ -778,16 +770,16 @@ struct SM100_TMA_2SM_LOAD_2D
   {
     uint64_t gmem_int_desc = reinterpret_cast<uint64_t>(desc_ptr);
     // Executed by both CTAs. Set peer bit to 0 so that the
-    // transaction bytes will update CTA0&#39;s barrier.
+    // transaction bytes will update CTA0's barrier.
     uint32_t smem_int_mbar = cast_smem_ptr_to_uint(mbar_ptr) & Sm100MmaPeerBitMask;
     uint32_t smem_int_ptr  = cast_smem_ptr_to_uint(smem_ptr);
     asm volatile (
-      &#34;cp.async.bulk.tensor.2d.cta_group::2.shared::cluster.global.mbarrier::complete_tx::bytes.L2::cache_hint&#34;
-      &#34; [%0], [%1, {%3, %4}], [%2], %5;&#34;
+      "cp.async.bulk.tensor.2d.cta_group::2.shared::cluster.global.mbarrier::complete_tx::bytes.L2::cache_hint"
+      " [%0], [%1, {%3, %4}], [%2], %5;"
       :
-      : &#34;r&#34;(smem_int_ptr), &#34;l&#34;(gmem_int_desc), &#34;r&#34;(smem_int_mbar),
-        &#34;r&#34;(crd0), &#34;r&#34;(crd1), &#34;l&#34;(cache_hint)
-      : &#34;memory&#34;);
+      : "r"(smem_int_ptr), "l"(gmem_int_desc), "r"(smem_int_mbar),
+        "r"(crd0), "r"(crd1), "l"(cache_hint)
+      : "memory");
   }
 };
 ```
@@ -802,13 +794,13 @@ CUTLASS_HOST_DEVICE
     uint32_t smem_addr = cute::cast_smem_ptr_to_uint(smem_ptr);
     if (pred) {
       asm volatile(
-          &#34;{\n\t&#34;
-          &#34;.reg .b32 remAddr32;\n\t&#34;
-          &#34;mapa.shared::cluster.u32  remAddr32, %0, %1;\n\t&#34;
-          &#34;mbarrier.arrive.shared::cluster.b64  _, [remAddr32];\n\t&#34;
-          &#34;}&#34;
+          "{\n\t"
+          ".reg .b32 remAddr32;\n\t"
+          "mapa.shared::cluster.u32  remAddr32, %0, %1;\n\t"
+          "mbarrier.arrive.shared::cluster.b64  _, [remAddr32];\n\t"
+          "}"
           :
-          : &#34;r&#34;(smem_addr), &#34;r&#34;(cta_id));
+          : "r"(smem_addr), "r"(cta_id));
     }
 
     cutlass::arch::synclog_emit_cluster_barrier_arrive_cluster(__LINE__, smem_addr, cta_id, pred);
@@ -817,7 +809,7 @@ CUTLASS_HOST_DEVICE
 #elif defined(__CUDA_ARCH__)
 
 ```text
-    asm volatile (&#34;brkpt;\n&#34; ::);
+    asm volatile ("brkpt;\n" ::);
 #endif
   }
 ```
@@ -917,9 +909,9 @@ struct SM100_UTCCP_4x32dp128bit_2cta {
   copy(uint64_t const& src_addr, uint32_t const& dst_addr) {
 
 ```text
-    asm volatile (&#34;tcgen05.cp.cta_group::2.32x128b.warpx4 [%0], %1;&#34;
+    asm volatile ("tcgen05.cp.cta_group::2.32x128b.warpx4 [%0], %1;"
     :
-    : &#34;r&#34;(dst_addr)  &#34;l&#34;(src_addr));
+    : "r"(dst_addr)  "l"(src_addr));
   }
 };
 ```
@@ -960,14 +952,14 @@ fma(uint64_t const& desc_a,
 ```text
         uint32_t const& tmem_sfb) {
         asm volatile(
-          &#34;{\n\t&#34;
-          &#34;.reg .pred p;\n\t&#34;
-          &#34;setp.ne.b32 p, %4, 0;\n\t&#34;
-          &#34;tcgen05.mma.cta_group::2.kind::mxf8f6f4.block_scale [%0], %1, %2, %3, [%5], [%6], p; \n\t&#34;
-          &#34;}\n&#34;
+          "{\n\t"
+          ".reg .pred p;\n\t"
+          "setp.ne.b32 p, %4, 0;\n\t"
+          "tcgen05.mma.cta_group::2.kind::mxf8f6f4.block_scale [%0], %1, %2, %3, [%5], [%6], p; \n\t"
+          "}\n"
           :
-          : &#34;r&#34;(tmem_c), &#34;l&#34;(desc_a), &#34;l&#34;(desc_b), &#34;r&#34;(static_cast<uint32_t>(desc >> 32)), &#34;r&#34;(scale_c),
-            &#34;r&#34;(tmem_sfa), &#34;r&#34;(tmem_sfb));
+          : "r"(tmem_c), "l"(desc_a), "l"(desc_b), "r"(static_cast<uint32_t>(desc >> 32)), "r"(scale_c),
+            "r"(tmem_sfa), "r"(tmem_sfb));
     }
 ```
 
@@ -980,11 +972,11 @@ void umma_arrive_multicast_2x1SM(uint64_t const* smem_ptr, uint16_t cta_mask) {
   uint32_t bar_intptr = cute::cast_smem_ptr_to_uint(smem_ptr);
   if (cute::elect_one_sync()) {
     asm volatile(
-      &#34;{\n\t&#34;
-      &#34;tcgen05.commit.cta_group::2.mbarrier::arrive::one.shared::cluster.multicast::cluster.b64 [%0], %1; \n\t&#34;
-      &#34;}&#34;
+      "{\n\t"
+      "tcgen05.commit.cta_group::2.mbarrier::arrive::one.shared::cluster.multicast::cluster.b64 [%0], %1; \n\t"
+      "}"
       :
-      :&#34;r&#34;(bar_intptr), &#34;h&#34;(cta_mask));
+      :"r"(bar_intptr), "h"(cta_mask));
   }
 }
 ```
@@ -1074,11 +1066,11 @@ L1 epilogue做的流程为swiglu，fp8 cast和TMA写回。所以首先需要将�
 copy(uint32_t const& src_addr, uint32_t& dst0, uint32_t& dst1, uint32_t& dst2, uint32_t& dst3) {
 
 ```text
-    asm volatile (&#34;tcgen05.ld.sync.aligned.16x256b.x1.b32&#34;
-                    &#34;{%0, %1, %2, %3},&#34;
-                    &#34;[%4];\n&#34;
-    :  &#34;=r&#34;(dst0), &#34;=r&#34;(dst1), &#34;=r&#34;(dst2), &#34;=r&#34;(dst3)
-    :  &#34;r&#34;(src_addr));
+    asm volatile ("tcgen05.ld.sync.aligned.16x256b.x1.b32"
+                    "{%0, %1, %2, %3},"
+                    "[%4];\n"
+    :  "=r"(dst0), "=r"(dst1), "=r"(dst2), "=r"(dst3)
+    :  "r"(src_addr));
   }
 ```
 
@@ -1207,10 +1199,10 @@ template <typename dtype_t>
 struct SM100_U8x4_STSM_T {
     __device__ __forceinline__ static void
     copy(dtype_t src_0, void* smem_dst) {
-        DG_STATIC_ASSERT(sizeof(dtype_t) == sizeof(uint32_t), &#34;Invalid dtype&#34;);
+        DG_STATIC_ASSERT(sizeof(dtype_t) == sizeof(uint32_t), "Invalid dtype");
         const uint32_t src = *reinterpret_cast<uint32_t*>(&src_0);
-        asm volatile(&#34;stmatrix.sync.aligned.m16n8.x1.trans.shared.b8 [%0], {%1};\n&#34;
-                     :: &#34;l&#34;(__cvta_generic_to_shared(smem_dst)), &#34;r&#34;(src));
+        asm volatile("stmatrix.sync.aligned.m16n8.x1.trans.shared.b8 [%0], {%1};\n"
+                     :: "l"(__cvta_generic_to_shared(smem_dst)), "r"(src));
     }
 };
 ```
@@ -1238,7 +1230,7 @@ scheduler.for_each_block([&](...) {
 	  ptx::tma_store_wait<0>();
     ptx::sync_aligned(kNumEpilogueThreads, kEpilogueFullBarrierIdx);
     if (epilogue_warp_idx == 0 and cute::elect_one_sync()) {
-        DG_STATIC_ASSERT(L2_SHAPE_K <= 64 * L1_OUT_BLOCK_N, &#34;L2 shape K is too large&#34;);
+        DG_STATIC_ASSERT(L2_SHAPE_K <= 64 * L1_OUT_BLOCK_N, "L2 shape K is too large");
         ptx::red_or_rel_gpu(
             workspace.get_l2_arrival_mask_ptr(pool_block_idx),
             1ull << n_block_idx
@@ -1260,12 +1252,12 @@ L2 epilogue对TMEM的ld和L1 epilogue一致，不再赘述。
 struct SM90_U32x4_STSM_T {
     CUTLASS_DEVICE static void
     copy(dtype_t src_0, dtype_t src_1, dtype_t src_2, dtype_t src_3, void* smem_dst) {
-        DG_STATIC_ASSERT(sizeof(dtype_t) == sizeof(uint32_t), &#34;Invalid dtype&#34;);
+        DG_STATIC_ASSERT(sizeof(dtype_t) == sizeof(uint32_t), "Invalid dtype");
         const uint32_t src[4] = {*reinterpret_cast<uint32_t*>(&src_0), *reinterpret_cast<uint32_t*>(&src_1),
                                  *reinterpret_cast<uint32_t*>(&src_2), *reinterpret_cast<uint32_t*>(&src_3)};
-        asm volatile(&#34;stmatrix.sync.aligned.x4.m8n8.shared.b16.trans [%0], {%1, %2, %3, %4};\n&#34;
-                     :: &#34;l&#34;(__cvta_generic_to_shared(smem_dst)),
-                        &#34;r&#34;(src[0]), &#34;r&#34;(src[1]), &#34;r&#34;(src[2]), &#34;r&#34;(src[3]));
+        asm volatile("stmatrix.sync.aligned.x4.m8n8.shared.b16.trans [%0], {%1, %2, %3, %4};\n"
+                     :: "l"(__cvta_generic_to_shared(smem_dst)),
+                        "r"(src[0]), "r"(src[1]), "r"(src[2]), "r"(src[3]));
     }
 };
 ```

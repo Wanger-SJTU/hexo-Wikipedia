@@ -42,7 +42,7 @@ case 1: stride = 2, pad = 0
 
 对stride = 2的case，需要对输入feature_map进行插0，并在最外围填一圈0，
 
-$得到 X&#x2032;=(0000001020000000304000000)" role="presentation">X′=(0000001020000000304000000)X' = \left (  \begin{matrix} 0 & 0 & 0 & 0 & 0\\ 0 & 1 & 0 & 2 & 0\\ 0 & 0 & 0 & 0 & 0 \\ 0 & 3 & 0 & 4 & 0 \\ 0 & 0 & 0 & 0 & 0 \\ \end{matrix} \right ) ,  把卷积核进行中心对称旋转得到 W&#x2032;=(8765)" role="presentation">W′=(8765)W' = \left (  \begin{matrix} 8 & 7 \\ 6 & 5 \\ \end{matrix} \right ) ,  $
+$得到 X′=(0000001020000000304000000)" role="presentation">X′=(0000001020000000304000000)X' = \left (  \begin{matrix} 0 & 0 & 0 & 0 & 0\\ 0 & 1 & 0 & 2 & 0\\ 0 & 0 & 0 & 0 & 0 \\ 0 & 3 & 0 & 4 & 0 \\ 0 & 0 & 0 & 0 & 0 \\ \end{matrix} \right ) ,  把卷积核进行中心对称旋转得到 W′=(8765)" role="presentation">W′=(8765)W' = \left (  \begin{matrix} 8 & 7 \\ 6 & 5 \\ \end{matrix} \right ) ,  $
 
 把W'与X'左上角的2x2子矩阵 (0001)" role="presentation">(0001)\left (  \begin{matrix} 0 & 0\\ 0 & 1\\ \end{matrix} \right ) 做convolution计算得到5，与横向滑动一个step后的2x2子矩阵 (0010)" role="presentation">(0010)\left (  \begin{matrix} 0 & 0\\ 1 & 0\\ \end{matrix} \right ) 计算得到6，横向再滑动一个step后的2x2子矩阵 (0002)" role="presentation">(0002)\left (  \begin{matrix} 0 & 0\\ 0 & 2\\ \end{matrix} \right ) 计算得到10，横向再滑动一个step后的2x2子矩阵 \left (  \begin{matrix} 0 & 0\\ 2 & 0\\ \end{matrix} \right ) 计算得到12，回到起始子矩阵位置，与纵向下滑一个step的2x2子矩阵 \left (  \begin{matrix} 0 & 1\\ 0 & 0\\ \end{matrix} \right ) 计算得到7 ... ... , 重复这个过程得到输出计算结果 Y = \left (  \begin{matrix} 5 & 6 & 10 & 12\\ 7 & 8 & 14 & 16\\ 15 & 18 & 20 & 24\\ 21 & 24 & 28 & 32\\ \end{matrix} \right ) ， 调用Pytorch验证上述推导过程的正确性：
 

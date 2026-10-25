@@ -25,15 +25,15 @@ source_url: https://www.zhihu.com/question/9740764576/answer/80735153803
 
 其实linear attention的思想很简单，就是把 
 
-$O=softmax&#x2061;(QK&#x22A4;)V" role="presentation">O=softmax⁡(QK⊤)V\mathbf{O} = \operatorname{softmax}(\mathbf{Q}\mathbf{K}^\top) \mathbf{V} $
+$O=softmax⁡(QK⊤)V" role="presentation">O=softmax⁡(QK⊤)V\mathbf{O} = \operatorname{softmax}(\mathbf{Q}\mathbf{K}^\top) \mathbf{V} $
 
 的softmax去掉，变成了
 
-$O=(QK&#x22A4;)V" role="presentation">O=(QK⊤)V\mathbf{O} = (\mathbf{Q}\mathbf{K}^\top) \mathbf{V} $
+$O=(QK⊤)V" role="presentation">O=(QK⊤)V\mathbf{O} = (\mathbf{Q}\mathbf{K}^\top) \mathbf{V} $
 
 然后借助矩阵乘法结合律得到
 
-$O=Q(K&#x22A4;V)" role="presentation">O=Q(K⊤V)\mathbf{O} = \mathbf{Q}(\mathbf{K}^\top \mathbf{V}) $
+$O=Q(K⊤V)" role="presentation">O=Q(K⊤V)\mathbf{O} = \mathbf{Q}(\mathbf{K}^\top \mathbf{V}) $
 
 在双向注意力里，比方说古代的bert时期，以及计算机视觉领域中，这样就已经足够了，大家开开心心地在线性时间内算两个很大的矩阵乘法，甚至都不需要写kernel就能很高效
 

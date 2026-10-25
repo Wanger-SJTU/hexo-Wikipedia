@@ -40,8 +40,12 @@ trailofbits/claude-code-config` 是 Trail of Bits 开源的一套 Claude Code �
 #### 安装步骤（README流程）
 
 # 克隆仓库
+
+```bash
 git clone https://github.com/trailofbits/claude-code-config.git
 cd claude-code-config
+```
+
 ​
 # 启动 Claude 会话
 claude`

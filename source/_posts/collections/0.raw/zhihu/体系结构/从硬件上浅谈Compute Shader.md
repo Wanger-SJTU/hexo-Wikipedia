@@ -104,7 +104,7 @@ HLSL中的线程同步
 
 ![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_35410280a914.jpg)
 
-VGPR &amp; SGPR<strong>Flow Control</strong>
+VGPR & SGPR<strong>Flow Control</strong>
 
 在传统的vert-frag shader进行分支有时候会一定程度上影响性能，对于compute shader来说也是如此。当使用一个true branch的时候，只要有一个thread上的分支判断为true然后执行了相应的block，那么整个wavefront上的thread都要执行这个block。为了避免这种情况，在设计分支时尽量避免导致真分支的判断，如判断时尽量用uniform variable参与判断（对于每个thread判断条件都一致）
 

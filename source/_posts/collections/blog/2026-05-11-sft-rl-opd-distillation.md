@@ -56,8 +56,12 @@ SFT is Forward KL, RL is Reverse KLThe first explanation is often related to the
 
 $$
 \begin{align}
+
+```text
 D_{KL}(p \| q_\theta) &= \sum_x p(x) \log \frac{p(x)}{q_\theta(x)} \\
 &= \sum_x p(x) \log p(x) - \sum_x p(x) \log q_\theta(x) \\
+```
+
 &= -H(p) + H(p, q_\theta)
 \end{align}
 $$The mode-covering behavior of forward KL could thus lead to sacrificing previous modes (representing pre-existing capabilities) to learn the new task. Chen et al., 2025

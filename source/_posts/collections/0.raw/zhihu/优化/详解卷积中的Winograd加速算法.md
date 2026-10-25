@@ -21,11 +21,11 @@ source_url: https://zhuanlan.zhihu.com/p/260109670
 
 ### 2. 为什么会有这篇文章？
 
-最近尝试给MsnhNet做3&#x00D7;3" role="presentation">3×33\times 3卷积的WinoGrad实现，然后开始了解这个算法，并尝试参考着NCNN来理解和动手写一下。参考了多篇优秀的讲解文章和NCNN源码，感觉算是对这个算法有了较为清楚的认识，这篇文章就记录一下我在实现3&#x00D7;3" role="presentation">3×33\times 3并且步长为1" role="presentation">11的WinoGrad卷积时的一些理解。这篇文章的重点是WinoGrad卷积的实现，关于WinoGrad卷积里面的变化矩阵如何推导可以看梁德澎作者的文章：[详解Winograd变换矩阵生成原理](https://link.zhihu.com/?target=https%3A//mp.weixin.qq.com/s/_CKl1cdWHziUYYlG6tuQmA) （听说后续他会做个视频来仔细讲讲QAQ)，现在就假设我们知道了WinoGrad的几个变换矩阵。如果你不知道也没关系，因为有一个Python工具包可以直接帮我们计算，地址为：`https://github.com/andravin/wincnn` 。然后现在我们就要用拿到的这几个矩阵来实现WinoGrad算法，听起来比较简单，但我们还是得一步步理清楚是不。
+最近尝试给MsnhNet做3×3" role="presentation">3×33\times 3卷积的WinoGrad实现，然后开始了解这个算法，并尝试参考着NCNN来理解和动手写一下。参考了多篇优秀的讲解文章和NCNN源码，感觉算是对这个算法有了较为清楚的认识，这篇文章就记录一下我在实现3×3" role="presentation">3×33\times 3并且步长为1" role="presentation">11的WinoGrad卷积时的一些理解。这篇文章的重点是WinoGrad卷积的实现，关于WinoGrad卷积里面的变化矩阵如何推导可以看梁德澎作者的文章：[详解Winograd变换矩阵生成原理](https://link.zhihu.com/?target=https%3A//mp.weixin.qq.com/s/_CKl1cdWHziUYYlG6tuQmA) （听说后续他会做个视频来仔细讲讲QAQ)，现在就假设我们知道了WinoGrad的几个变换矩阵。如果你不知道也没关系，因为有一个Python工具包可以直接帮我们计算，地址为：`https://github.com/andravin/wincnn` 。然后现在我们就要用拿到的这几个矩阵来实现WinoGrad算法，听起来比较简单，但我们还是得一步步理清楚是不。
 
 ### 3. WinoGrad算法原理
 
-$WinoGrad算法起源于1980年，是Shmuel Winograd提出用来减少FIR滤波器计算量的一个算法。它指出，对于输出个数为m" role="presentation">mm，参数个数为r" role="presentation">rr的FIR滤波器，不需要m&#x00D7;r" role="presentation">m×rm\times r次乘法计算，而只需要u(F(m,r))=m+r&#x2212;1" role="presentation">u(F(m,r))=m+r−1u(F(m,r))=m+r-1次乘法计算即可。$
+$WinoGrad算法起源于1980年，是Shmuel Winograd提出用来减少FIR滤波器计算量的一个算法。它指出，对于输出个数为m" role="presentation">mm，参数个数为r" role="presentation">rr的FIR滤波器，不需要m×r" role="presentation">m×rm\times r次乘法计算，而只需要u(F(m,r))=m+r−1" role="presentation">u(F(m,r))=m+r−1u(F(m,r))=m+r-1次乘法计算即可。$
 
 下面是一个经典例子，以1维卷积为例，输入信号d=[d0,d1,d2,d3]T" role="presentation">d=[d0,d1,d2,d3]Td=[d_0,d_1,d_2,d3]^T，卷积核g=[g0,g1,g2]T" role="presentation">g=[g0,g1,g2]Tg=[g_0,g_1,g_2]^T，则卷积可以写成如下矩阵乘法形式：
 

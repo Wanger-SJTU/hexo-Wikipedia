@@ -229,7 +229,7 @@ SpargeAttn-T是增加了backward的可训练sparge attn版本，效果确实比V
 Sparge Attn:  Accurate and Training-free Sparse Attention Accelerating Any Model Inference
 sparse可以和linear结合，也可以和量化(sage)结合！ ICML2025，同样THU 朱军老师组的工作。Sparge是Sparse+Sage attention，在sage量化的基础上利用attention的稀疏性提供更好的性能。比SLA早一点，但是是更通用和完善的工作，因此放在压轴写。
 
-文章的目标是：&#34;A universal sparse attention that guarantees both the speedup and end-to-end performance of diverse models &#34;
+文章的目标是："A universal sparse attention that guarantees both the speedup and end-to-end performance of diverse models "
 
 这里的universal、speedup、end-to-end performance都很难，而universal就更难了，因为attention patterns高度异构。
 

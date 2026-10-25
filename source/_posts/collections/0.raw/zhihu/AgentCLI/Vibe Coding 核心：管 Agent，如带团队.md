@@ -170,7 +170,8 @@ Orchestrat这个词最早就是交响乐团的指挥（orchestra conductor）—
 
 Anthropic 做了一个实验，让 Claude 等 AI agent 自主尝试完成复杂长期任务（比如构建一个类似 claude.ai 的复杂 web 应用），结果发现这些 agent 非常<strong>短视</strong>（myopic）：它们倾向于只做简单部分、过早宣称任务完成、留下大量未完成或无文档的工作，<strong>就像人类有时也会挑容易的干一样</strong>。
 
-为了解决这个问题，他们引入了<strong>多 agent 协作结构</strong>：用一个专门的 <strong>initializer/planner agent</strong>（初始化/规划者）在项目一开始就建立清晰的结构（比如 JSON 功能列表、进度日志文件 claude-progress.txt、git 初始提交等），然后让后续的 coding executor agent 每次只专注增量完成一小部分功能、写测试、提交干净的 commit，并为下一轮留下明确状态，从而实现跨多次 session 的长期协调和持续推进。
+为了解决这个问题，他们引入了<strong>多 agent 协作结构</strong>：用一个专门的 <strong>initializer/planner agent</strong>（初始化/规划者）在项目一开始就建立清晰的结构（比如 JSON 功能列表、进度日志文件 claude-progress.txt、
+git 初始提交等），然后让后续的 coding executor agent 每次只专注增量完成一小部分功能、写测试、提交干净的 commit，并为下一轮留下明确状态，从而实现跨多次 session 的长期协调和持续推进。
 
 而我在做自主实验的时候，喜欢把一个子任务多轮跌倒拆成至少 3 个角色：<strong>Planner 规划任务，Executor 执行任务，Reviewer 审查过程和结论。</strong>
 

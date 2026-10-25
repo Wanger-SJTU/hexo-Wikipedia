@@ -124,11 +124,11 @@ transport.cpp:nvshmemi_transport_init() (transport.cpp:50)
     ↓
 根据 NVSHMEM_REMOTE_TRANSPORT 环境变量选择传输层
     ↓
-如果是 &#34;ibrc&#34;:
+如果是 "ibrc":
 
 ```text
-    dlopen(&#34;nvshmem_transport_ibrc.so.X&#34;)   // 加载共享库
-    dlsym(&#34;nvshmemt_init&#34;)                   // 获取函数指针
+    dlopen("nvshmem_transport_ibrc.so.X")   // 加载共享库
+    dlsym("nvshmemt_init")                   // 获取函数指针
     init_fn(&transports[index], ...)         // 调用 nvshmemt_init
 ```
 
@@ -227,7 +227,7 @@ for (int i = 0; i < state->npes; i++) {
 
         // 如果没有任何传输层能到达该 PE，报错退出
         if ((!reach_any) && (!nvshmemi_options.BYPASS_ACCESSIBILITY_CHECK)) {
-            fprintf(stderr, &#34;Peer GPU %d is not accessible, exiting ... \n&#34;, i);
+            fprintf(stderr, "Peer GPU %d is not accessible, exiting ... \n", i);
             goto out;
         }
     }

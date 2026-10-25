@@ -112,7 +112,10 @@ $$\begin{aligned} P_{ndc}.x&=\frac{P'.x+width/2}{width} \notag \\ P_{ndc}.y&=\fr
 
 假设图像大小为 image_height、image_width，图像原点位于左上角，y 轴朝下。那么，NDC 坐标系到图像坐标系的转换公式为：
 
+```text
 \begin{aligned} P_{image}.x&=\lfloor P_{ndc}.x*image\_width \rfloor \notag \\ P_{image}.y&=\lfloor (1-P_{ndc}.y)*image\_height \rfloor \notag \end{aligned} \\
+```
+
 
 <strong>注意 NDC 坐标系是连续的坐标系，只有转换到图像坐标系，才会对坐标进行取整操作。此外，NDC 坐标系仍是三维坐标系，不过在考虑投影的时候，z 轴通常会被忽略。</strong>
 
@@ -272,7 +275,10 @@ NeRF 中的坐标，是以射线的形式表示：\mathbf{o}+t\mathbf{d}，其�
 
 假设我们已经获得了相机坐标系中的坐标点 P_e=\mathbf{o}+t\mathbf{d}，对应 x/y/z 轴的坐标分别为 (注意区分这里的 t 和投影平面的边界 t)：
 
+```text
 \begin{align} x_e&=o_x+t*d_x \notag \\ y_e&=o_y+t*d_y \notag \\ z_e&=o_z+t*d_z \notag \end{align} \\
+```
+
 
 现在需要求出它在 NDC 坐标系中的投影坐标，假设是 P'=\mathbf{o'}+t'\mathbf{d'}。
 

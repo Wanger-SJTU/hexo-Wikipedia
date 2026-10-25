@@ -93,7 +93,7 @@ Perceiver Resampler模块将由Vision Encoder输出的可变大小的时空视�
 
 ![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_ae5d2c0da4d6.jpg)
 
-BLIP-2框架概述。我们通过一个两阶段策略预训练轻量级的查询Transformer，以弥合模态差距。第一阶段从冻结的图像编码器中引导视觉-语言表示学习。第二阶段从冻结的LLM中引导视觉到语言的生成学习，这使得零样本指导的图像到文本生成成为可能。&lt;br&gt;LLM本质上是个语言模型，自然无法直接接受其他模态的信息。所以如何把各个模态的信息，统一到LLM能理解的特征空间，就是第一步要解决的问题。为此，作者提出了Q-Former。
+BLIP-2框架概述。我们通过一个两阶段策略预训练轻量级的查询Transformer，以弥合模态差距。第一阶段从冻结的图像编码器中引导视觉-语言表示学习。第二阶段从冻结的LLM中引导视觉到语言的生成学习，这使得零样本指导的图像到文本生成成为可能。<br>LLM本质上是个语言模型，自然无法直接接受其他模态的信息。所以如何把各个模态的信息，统一到LLM能理解的特征空间，就是第一步要解决的问题。为此，作者提出了Q-Former。
 
 ![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_5f411b1008ed.jpg)
 
@@ -302,7 +302,7 @@ tl;nr: 使用已经训练好的LLM，然后给它添加图像的功能。方法�
 - Visual expert module：在 LLM 的每一层中引入可训练的 visual expert，其包含专门处理 image feature 的「QKV矩阵」和「MLP层」，以实现深度的视觉-语言特征对齐。QKV矩阵和MLP的形状与预训练语言模型中的相同，并从中进行初始化。trainable visual expert 专门用于转换图像特征，功能上和 LLM QKV/MLP 一致，但是只针对 image feature，从而实现模态间的深度融合。
 ![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_cd00cb567d4e.jpg)
 
-CogVLM的架构。(a) 关于输入的说明，其中图像由预训练的ViT处理，并映射到与文本特征相同的空间中。(b) 语言模型中的Transformer块。图像特征具有不同的QKV矩阵和FFN。只有紫色部分是可训练的。&lt;br&gt;<strong>PRETRAINING</strong>: 用了公开可用的图像文本对进行训练，为 LAION-2B 和 COYO-700M
+CogVLM的架构。(a) 关于输入的说明，其中图像由预训练的ViT处理，并映射到与文本特征相同的空间中。(b) 语言模型中的Transformer块。图像特征具有不同的QKV矩阵和FFN。只有紫色部分是可训练的。<br><strong>PRETRAINING</strong>: 用了公开可用的图像文本对进行训练，为 LAION-2B 和 COYO-700M
 
 <strong>The first stage</strong>：Image captioning loss, next token prediction task on 1.5B image-text pairs
 
@@ -341,7 +341,7 @@ Monkey的整体架构允许通过从原始图像中捕获全局特征和从分�
 
 ![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_8a04c2c9ca0a.jpg)
 
-LLaMA-VID的框架。在用户指令下，LLaMA-VID通过接受单个图像或视频帧作为输入，并从LLM生成响应。该过程始于一个视觉编码器，将输入帧转换为视觉嵌入。然后，文本解码器根据用户输入生成文本查询。在上下文注意力中，文本查询从视觉嵌入中聚合与文本相关的视觉线索。为了提高效率，提供了将视觉嵌入降采样到各种令牌大小甚至单个令牌的选项。然后，使用线性投影器制定文本引导的上下文令牌和视觉丰富的内容令牌来表示每个时间t的每个帧。最后，LLM接受用户指令和所有视觉令牌作为输入并给出响应。&lt;br&gt;
+LLaMA-VID的框架。在用户指令下，LLaMA-VID通过接受单个图像或视频帧作为输入，并从LLM生成响应。该过程始于一个视觉编码器，将输入帧转换为视觉嵌入。然后，文本解码器根据用户输入生成文本查询。在上下文注意力中，文本查询从视觉嵌入中聚合与文本相关的视觉线索。为了提高效率，提供了将视觉嵌入降采样到各种令牌大小甚至单个令牌的选项。然后，使用线性投影器制定文本引导的上下文令牌和视觉丰富的内容令牌来表示每个时间t的每个帧。最后，LLM接受用户指令和所有视觉令牌作为输入并给出响应。<br>
 ### MoE-LLaVA: Mixture of Experts for Large Vision-Language Models
 
 最近的进展表明，扩展大型视觉语言模型（LVLMs）有效地提高了下游任务的性能。然而，现有的扩展方法使得所有模型参数在计算中对每个标记都是活跃的，这带来了巨大的训练和推理成本。在这项工作中，我们提出了一种简单而有效的训练策略MoE-Tuning用于LVLMs。这一策略创新地解决了多模态稀疏学习中的性能下降问题，从而构建了一个具有惊人参数数量但计算成本恒定的稀疏模型。此外，我们提出了基于MoE的稀疏LVLM体系结构MoE-LLaVA，它在部署过程中通过路由器唯一激活了仅排名靠前的k个专家，使其余的专家保持不活跃状态。大量实验证明了MoE-LLaVA在各种视觉理解和物体幻觉基准测试中的显著性能。值得注意的是，仅有约3B个稀疏激活参数，MoE-LLaVA在各种视觉理解数据集上表现出与LLaVA-1.5-7B相当的性能，甚至在物体幻觉基准测试中超过了LLaVA-1.5-13B。通过MoE-LLaVA，我们旨在建立稀疏LVLMs的基准，并为未来研究开发更高效、更有效的多模态学习系统提供宝贵的见解。

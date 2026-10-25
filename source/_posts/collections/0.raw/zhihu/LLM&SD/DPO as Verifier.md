@@ -26,7 +26,7 @@ V-STaR是google近期提出的一个self-play的方法。其核心流程如上�
 - 使用SFT数据训练一个policy并产生一系列response，并根据sft训练集，对模型新产生的样本过滤（只保留正确答案的response用于迭代policy）
 - 上一步产生的答案不正确的样本与答案正确的样本构造preference-dataset，用于DPO训练
 - 推理阶段，采样多次并应用DPO训练得到的policy作为verifier，对模型输出的样本排序，选择最好的样本作为输出。
-$$本文的一个亮点是使用DPO产出的policy，作为一个verifier: log&#x2061;pdpopsft" role="presentation">log⁡pdpopsft\log \frac{p_{\text{dpo}}}{p_{\text{sft}}} ，可以用于对TOP-K样本排序。$$
+$$本文的一个亮点是使用DPO产出的policy，作为一个verifier: log⁡pdpopsft" role="presentation">log⁡pdpopsft\log \frac{p_{\text{dpo}}}{p_{\text{sft}}} ，可以用于对TOP-K样本排序。$$
 
 除了self-play本身取得较好的效果外，本文额外验证（也是笔者之前想做但拖着一直未动手的实验）了DPO在数学/code上的可行性：
 

@@ -34,11 +34,18 @@ Turbo-Softmaxgithub.com/LongWeihan/Turbo-Softmax
 softmax 的定义：
 
 softmax(xi)=exi∑jexj
+
+```text
 \mathrm{softmax}(x_i)=\frac{e^{x_i}}{\sum_j e^{x_j}} \\
+```
+
 
 工程里几乎一定用数值稳定写法：
 
+```text
 \mathrm{softmax}(x_i)=\frac{e^{x_i-m}}{\sum_j e^{x_j-m}},\quad m=\max_j x_j \\
+```
+
 
 在 CPU 上，耗时主要来自：
 
@@ -59,7 +66,10 @@ Quake 的逆平方根之所以经典，是因为它利用 IEEE-754 的位级结�
 3. 核心推导：把 exp(x) 写成 2^i * exp(t)
 关键等式：
 
+```text
 e^x = 2^{x\log_2 e} \\
+```
+
 
 令：
 
@@ -67,15 +77,24 @@ y=x\log_2 e \\
 
 把 y 拆成整数与小数：
 
+```text
 y=i+f,\quad i\in\mathbb{Z},\ f\in[-0.5,0.5] \\
+```
+
 
 于是：
 
+```text
 e^x = 2^{i+f}=2^i\cdot 2^f=2^i\cdot e^{f\ln 2} \\
+```
+
 
 令：
 
+```text
 t=f\ln 2\in\left[-\frac{\ln2}{2},\frac{\ln2}{2}\right]\approx[-0.3466,0.3466] \\
+```
+
 
 现在问题变成两件事：
 
@@ -93,7 +112,10 @@ float two_i = as_float((uint32_t)(i + 127)    23);
 5. poly5 近似 exp(t)：在小区间里又快又准
 因为 t 的范围很小，可以用五阶多项式近似：
 
+```text
 e^t\approx 1+t+\frac{t^2}{2}+\frac{t^3}{6}+\frac{t^4}{24}+\frac{t^5}{120} \\
+```
+
 
 用 Horner 形式写出来：
 

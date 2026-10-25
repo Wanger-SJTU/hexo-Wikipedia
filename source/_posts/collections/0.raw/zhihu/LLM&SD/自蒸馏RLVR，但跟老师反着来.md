@@ -23,10 +23,10 @@ RLVR(Reinforcement Learning with Verifiable Rewards)目前是reasoning模型的�
 
 ![](https://pic2.zhimg.com/v2-2055f18c3ed385d8b525a1f58714237f_r.jpg)如上表所示，近期出了多个标志性工作：
 
-- <strong>SDPO[1]：第一篇把自蒸馏接到RLVR上的工作。teacher的privileged context是学生自己写出的一条正确rollout</strong>——用&#34;完成态&#34;反过来教&#34;过程态&#34;。另外在代码生成等任务中，SDPO 、还可以用运行时错误、LLM judge的评价文本作为教师的上下文。loss形式是**logit-level KL散度
+- <strong>SDPO[1]：第一篇把自蒸馏接到RLVR上的工作。teacher的privileged context是学生自己写出的一条正确rollout</strong>——用"完成态"反过来教"过程态"。另外在代码生成等任务中，SDPO 、还可以用运行时错误、LLM judge的评价文本作为教师的上下文。loss形式是**logit-level KL散度
 ![](https://www.zhihu.com/equation?tex=%5Ctext%7BKL%7D%28P_T+%5C%2C%5C%7C%5C%2C+P_S%29)，加到GRPO的surrogate loss上，在所有rollout**上apply。
-- <strong>SRPO[2]：在SDPO基础上加了sample routing。teacher还是看正确rollout、loss还是logit KL，但只在错误轨迹（r=0）上用SDPO loss，正确轨迹（r=1）退回GRPO</strong>，配一个entropy-aware的动态权重。直觉很朴素：<strong>学生做错的时候才需要老师指，做对的时候让学生自己跑</strong>——其实已经预示了&#34;成功轨迹上teacher该退场&#34;的思路，但没把它当一等设计原则。
-- <strong>RLSD[3]：换了一种完全不同的写法。teacher的privileged context不再是rollout而是ground-truth answer</strong>——让teacher&#34;知道标准答案后&#34;重新对每个token打概率。loss也不用KL了，把师生token概率比直接当advantage上的per-token weight。这里
+- <strong>SRPO[2]：在SDPO基础上加了sample routing。teacher还是看正确rollout、loss还是logit KL，但只在错误轨迹（r=0）上用SDPO loss，正确轨迹（r=1）退回GRPO</strong>，配一个entropy-aware的动态权重。直觉很朴素：<strong>学生做错的时候才需要老师指，做对的时候让学生自己跑</strong>——其实已经预示了"成功轨迹上teacher该退场"的思路，但没把它当一等设计原则。
+- <strong>RLSD[3]：换了一种完全不同的写法。teacher的privileged context不再是rollout而是ground-truth answer</strong>——让teacher"知道标准答案后"重新对每个token打概率。loss也不用KL了，把师生token概率比直接当advantage上的per-token weight。这里
 ![](https://www.zhihu.com/equation?tex=%5Ctext%7Bsign%7D%28A%29)是group-relative advantage的符号。即<strong>verifiable reward决定update方向，teacher只决定magnitude（每个token该被加权多少）</strong>，所有rollout都apply。到这里这条baseline谱系的三个关键设计已经穷举完一轮：teacher看rollout还是ground truth（SDPO/SRPO选rollout，RLSD选ground truth）、weight是logit KL还是token ratio（SDPO/SRPO选KL，RLSD选ratio）、在哪些rollout上apply（SDPO/RLSD全部，SRPO只在r=0）。但<strong>所有方法的update direction都指向同一个方向：把student往teacher拉</strong>——SDPO/SRPO是分布拉近，RLSD是token概率拉近，本质都是alignment。
 
 直到最近微软和KAIST联手出了一篇RLRT[4]，第一次把update direction整个反过来，把RLSD版token权重的分子分母对调，且<strong>只在正确轨迹（r=1）上apply</strong>——错误轨迹完全退回GRPO，不动。
@@ -39,9 +39,9 @@ RLRT
 为什么反着来
 作者的关键洞察是一个被忽略的事实：<strong>在成功轨迹上，学生已经做对了，这时候教师反而是冗余信息</strong>。
 
-RLSD在成功轨迹上加权教师偏好的token，逻辑是&#34;教师条件了更多上下文，所以教师偏好的大概率更好&#34;。但如果学生在关键位置选了一个<strong>反常识但正确</strong>的token（比如先试一个看似不优雅的路径，最后绕回正确答案），教师因为多看到了标准解法，<strong>根本不会选这个token</strong>——它会选课本里的标准做法。RLSD会把&#34;教师偏好的标准token&#34;加权，把&#34;学生自己摸出来的反常识token&#34;压低，<strong>每一次成功后都磨掉一点学生独有的多样性</strong>。
+RLSD在成功轨迹上加权教师偏好的token，逻辑是"教师条件了更多上下文，所以教师偏好的大概率更好"。但如果学生在关键位置选了一个<strong>反常识但正确</strong>的token（比如先试一个看似不优雅的路径，最后绕回正确答案），教师因为多看到了标准解法，<strong>根本不会选这个token</strong>——它会选课本里的标准做法。RLSD会把"教师偏好的标准token"加权，把"学生自己摸出来的反常识token"压低，<strong>每一次成功后都磨掉一点学生独有的多样性</strong>。
 
-论文用&#34;information asymmetry&#34;（信息不对称）把这个机制讲清楚：
+论文用"information asymmetry"（信息不对称）把这个机制讲清楚：
 
 - <strong>位置级不对称</strong> 
 ![](https://www.zhihu.com/equation?tex=%5Cbar%7BD%7D_t+%3D+%5Ctext%7BKL%7D%28P_S+%5C%2C%5C%7C%5C%2C+P_T%29)：哪些token位置上师生分布差异最大——这些是critical positions，token选择对最终结果影响最大。
@@ -69,7 +69,7 @@ RLSD在成功轨迹上加权教师偏好的token，逻辑是&#34;教师条件了
 论文在6个数学benchmark上做对比，训练集DAPO-Math-17k，作者采用了3种基座来检验方法的有效性：base模型(Qwen3-4B/8B-Base)、instruction-tuned模型(Qwen3-4B-Instruct)和thinking-tuned模型(Qwen3-8B)。
 
 ![](https://picx.zhimg.com/v2-8e939a2e2c99c18ce309d981835de6c5_r.jpg)
-![](https://pica.zhimg.com/v2-f9c96134322ae1e855699889ea146540_r.jpg)可以看到，在base模型上的提升比较显著，明显大于精调过的模型。base模型没什么&#34;思维路径&#34;上的偏向，反向信号能挖出来的&#34;自驱探索&#34;空间大；而精调过模型已经收敛到某种推理模式上了，再强化&#34;偏离教师&#34;的token边际效用就低。
+![](https://pica.zhimg.com/v2-f9c96134322ae1e855699889ea146540_r.jpg)可以看到，在base模型上的提升比较显著，明显大于精调过的模型。base模型没什么"思维路径"上的偏向，反向信号能挖出来的"自驱探索"空间大；而精调过模型已经收敛到某种推理模式上了，再强化"偏离教师"的token边际效用就低。
 
 总结
 最近有篇nrehiew的blog[5]做了一个对照实验：用SFT teacher和RL teacher分别去做OPD，结果两个OPD学生表现几乎一样，都略微超越自己的RL teacher——作者的猜测是<strong>on-policy采样比teacher能力更重要</strong>。
@@ -78,7 +78,7 @@ RLSD在成功轨迹上加权教师偏好的token，逻辑是&#34;教师条件了
 
 - 经典SFT时代：教师是绝对的标准答案提供者，学生的唯一任务就是精准复刻
 - 传统知识蒸馏时代：教师进化为软标签提供者，传递的是更细腻的分布信息而非死板的对错
-- 自蒸馏RLVR时代：教师的指导价值开始被系统性剥离，SRPO让教师只在学生犯错时出手，RLSD让教师退化为更新幅度的调节器而RLRT把这个趋势推到了最激进的终点：它彻底清零了教师的指导功能，只保留了最纯粹的鉴别能力。教师不再告诉学生 &#34;应该选什么token&#34;，只负责标记&#34;哪些token是学生独立做出的选择&#34;。更新方向甚至与教师的偏好完全相反：<strong>越是教师不看好的路径，只要学生靠自己走通了，就越要被重点强化</strong>。
+- 自蒸馏RLVR时代：教师的指导价值开始被系统性剥离，SRPO让教师只在学生犯错时出手，RLSD让教师退化为更新幅度的调节器而RLRT把这个趋势推到了最激进的终点：它彻底清零了教师的指导功能，只保留了最纯粹的鉴别能力。教师不再告诉学生 "应该选什么token"，只负责标记"哪些token是学生独立做出的选择"。更新方向甚至与教师的偏好完全相反：<strong>越是教师不看好的路径，只要学生靠自己走通了，就越要被重点强化</strong>。
 
  [1] Reinforcement Learning via Self-Distillation: [https://arxiv.org/abs/2601.20802](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2601.20802)
 

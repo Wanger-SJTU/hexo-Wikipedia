@@ -27,7 +27,7 @@ source_url: https://zhuanlan.zhihu.com/p/667489780
 
 大模型的Scaling Law是OpenAI在2020年提出的概念[1]，具体如下:
 
-- 对于Decoder-only的模型，计算量C" role="presentation">CC(Flops), 模型参数量N" role="presentation">NN, 数据大小D" role="presentation">DD(token数)，三者满足: C&#x2248;6ND" role="presentation">C≈6NDC ≈ 6ND 。(推导见本文最后)
+- 对于Decoder-only的模型，计算量C" role="presentation">CC(Flops), 模型参数量N" role="presentation">NN, 数据大小D" role="presentation">DD(token数)，三者满足: C≈6ND" role="presentation">C≈6NDC ≈ 6ND 。(推导见本文最后)
 - 模型的最终性能主要与<strong>计算量C" role="presentation">CC，模型参数量N" role="presentation">NN和数据大小D" role="presentation">DD三者相关，而与模型的具体结构(层数/深度/宽度)基本无关。</strong> 
 ![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_76925809400e.jpg)
 

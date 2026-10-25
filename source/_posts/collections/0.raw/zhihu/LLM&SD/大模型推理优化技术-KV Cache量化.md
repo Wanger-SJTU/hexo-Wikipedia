@@ -296,17 +296,22 @@ TensorRT-LLM 中采用静态逐层（per-tensor）KV Cache 8 位（FP8和INT8）
 
 首先将进行模型权重转换，这里通过kv_cache_dtype指定KV Cache的数据类型：
 
+```text
 CUDA_VISIBLE_DEVICES=0,1,2  python examples/quantization/quantize.py --model_dir /workspace/models/Qwen1.5-7B-Chat \
                                    --dtype bfloat16 \
                                    --kv_cache_dtype int8 \
                                    --output_dir /workspace/models/Qwen1.5-7B-Chat-1tp-wbf16-kvint8-trt \
                                    --calib_size 512 \
                                    --calib_dataset 
+```
+
                                    
 
 进行模型编译：
 
 rm -rf  /workspace/models/Qwen1.5-7B-Chat-1tp-wbf16-kvint8-trt-engine-4090
+
+```text
 trtllm-build --checkpoint_dir /workspace/models/Qwen1.5-7B-Chat-1tp-wbf16-kvint8-trt \
 --output_dir /workspace/models/Qwen1.5-7B-Chat-1tp-wbf16-kvint8-trt-engine-4090 \
 --gpt_attention_plugin bfloat16 \
@@ -319,6 +324,8 @@ trtllm-build --checkpoint_dir /workspace/models/Qwen1.5-7B-Chat-1tp-wbf16-kvint8
 --max_input_len 1024 \
 --max_output_len 1024 \
 --max_batch_size 128
+```
+
 
 
 接下来使用Triton部署模型，先修改配置文件。
@@ -326,29 +333,44 @@ trtllm-build --checkpoint_dir /workspace/models/Qwen1.5-7B-Chat-1tp-wbf16-kvint8
 #rm -rf /workspace/models/Qwen1.5-7B-Chat-wbf16kvint8-server-4090
 cp -r /workspace/code/tensorrtllm_backend/all_models/inflight_batcher_llm /workspace/models/Qwen1.5-7B-Chat-wbf16kvint8-server-4090
 
+```bash
 export HF_LLAMA_MODEL=/workspace/models/Qwen1.5-7B-Chat
 export ENGINE_PATH=/workspace/models/Qwen1.5-7B-Chat-1tp-wbf16-kvint8-trt-engine-4090
 export TEMPLATE_PATH=/workspace/models/Qwen1.5-7B-Chat-wbf16kvint8-server-4090
 
 cd /workspace/code/tensorrtllm_backend
 python3 tools/fill_template.py -i ${TEMPLATE_PATH}/preprocessing/config.pbtxt \
+```
+
 tokenizer_dir:${HF_LLAMA_MODEL},triton_max_batch_size:64,preprocessing_instance_count:1
 
+```text
 python3 tools/fill_template.py -i ${TEMPLATE_PATH}/postprocessing/config.pbtxt \
+```
+
 tokenizer_dir:${HF_LLAMA_MODEL},triton_max_batch_size:64,postprocessing_instance_count:1
 
+```text
 python3 tools/fill_template.py -i ${TEMPLATE_PATH}/tensorrt_llm_bls/config.pbtxt \
+```
+
 triton_max_batch_size:64,decoupled_mode:False,bls_instance_count:1,accumulate_tokens:False
 
+```text
 python3 tools/fill_template.py -i ${TEMPLATE_PATH}/ensemble/config.pbtxt \
+```
+
 triton_max_batch_size:64
 
+```text
 python3 tools/fill_template.py -i ${TEMPLATE_PATH}/tensorrt_llm/config.pbtxt \
 triton_backend:tensorrtllm,triton_max_batch_size:128,decoupled_mode:True,\
 max_beam_width:1,engine_dir:${ENGINE_PATH},\
 kv_cache_free_gpu_mem_fraction:0.95,gpu_weights_percent:0.5,\
 exclude_input_in_output:True,\
 batching_strategy:inflight_fused_batching,max_queue_delay_microseconds:0,\
+```
+
 enable_chunked_context:False,batch_scheduler_policy:max_utilization
 
 echo "------------------------------------"
@@ -360,6 +382,7 @@ cat ${TEMPLATE_PATH}/tensorrt_llm/config.pbtxt | grep -C 5 "enable_chunked_conte
 
 部署推理服务：
 
+```bash
 docker run -it --rm \
 --gpus '"device=6"' \
 --shm-size=32g \
@@ -370,6 +393,8 @@ aiharbor.msxf.local/nvidia/tritonserver:24.06-trtllm-python-py3 \
 tritonserver --model-repository /workspace/models/Qwen1.5-7B-Chat-wbf16kvint8-server-4090 \
 --log-info true \
 --log-verbose 4
+```
+
 
 最后使用接口`/v2/models/ensemble/generate`正常请求就行。
 

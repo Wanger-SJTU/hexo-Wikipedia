@@ -128,9 +128,8 @@ model_path=/global/models/Qwen2.5-32B-Instruct
 dataset_path=/workspace/data/ShareGPT_V3_unfiltered_cleaned_split.json
 ds_channel_path=/workspace/outputs/DoubleSparse-qwen25/models/Qwen2.5-32B-Instruct.json
 
-CUDA_VISIBLE_DEVICES=3 python3 -m sglang.bench_offline_throughput \
-
 ```text
+CUDA_VISIBLE_DEVICES=3 python3 -m sglang.bench_offline_throughput \
     --model-path ${model_path} \
     --dataset-name random \
     --random-input 8192 \
@@ -159,9 +158,12 @@ CUDA_VISIBLE_DEVICES=3 python3 -m sglang.bench_offline_throughput \
 - --ds-sparse-decode-threshold：使用Double Sparsity进行解码的阈值。如果同一批次的最大序列长度小于该值或者最小序列长度小于重要Token的数量（heavy_token_num），不使用Double Sparsity。
 其中，Double Sparsity 的重要通道信息（--ds-channel-config-path）通过如下代码（`https://github.com/andy-yang-1/DoubleSparse/blob/main/config/offline_calibration.py`）生成即可，比如：
 
+```text
 python3 offline_calibration.py \
 --model_path  /global/models/Qwen2.5-7B-Instruct \
 --output_dir  /workspace/outputs/DoubleSparse-qwen25-7b
+```
+
 
 ### 总结
 

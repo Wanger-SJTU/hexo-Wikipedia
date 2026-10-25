@@ -188,9 +188,9 @@ html：显存占用还有用于耗时分析的trace文件json.gz，trace文件�
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_cefa1cb7187f.jpg)
 
-select * from slice where cat = &#39;kernel&#39;![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_3a24fa96d920.jpg)
+select * from slice where cat = 'kernel'![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_3a24fa96d920.jpg)
 
-select sum(dur)/1e6 as total_kernel_ms from slice where category = &#39;kernel&#39;
+select sum(dur)/1e6 as total_kernel_ms from slice where category = 'kernel'
 
 送礼物
 

@@ -23,9 +23,9 @@ MNN提供了对模型进行量化版本的转化，相应的代码在tools/quant
 <strong>编译量化工具</strong>
  cd MNN
  mkdir build
- cd build
 
 ```bash
+ cd build
  cmake -DMNN_BUILD_QUANTOOLS=ON ..
  make -j4
 ```
@@ -42,30 +42,30 @@ MNN提供了对模型进行量化版本的转化，相应的代码在tools/quant
 
 ```text
  {
-     &#34;format&#34;:&#34;RGB&#34;,
-     &#34;mean&#34;:[
+     "format":"RGB",
+     "mean":[
          127.5,
          127.5,
          127.5
      ],
-     &#34;normal&#34;:[
+     "normal":[
          0.00784314,
          0.00784314,
          0.00784314
      ],
-     &#34;width&#34;:224,
-     &#34;height&#34;:224,
-     &#34;path&#34;:&#34;path/to/images/&#34;,
-     &#34;used_image_num&#34;:500,
-     &#34;feature_quantize_method&#34;:&#34;KL&#34;,
-     &#34;weight_quantize_method&#34;:&#34;MAX_ABS&#34;
+     "width":224,
+     "height":224,
+     "path":"path/to/images/",
+     "used_image_num":500,
+     "feature_quantize_method":"KL",
+     "weight_quantize_method":"MAX_ABS"
  }
 ```
 
  ​
 
 <strong>format</strong>
-图片统一按RGBA读取，然后转换到`format`指定格式，可选：&#34;RGB&#34;, &#34;BGR&#34;, &#34;RGBA&#34;, &#34;GRAY&#34;。
+图片统一按RGBA读取，然后转换到`format`指定格式，可选："RGB", "BGR", "RGBA", "GRAY"。
 
 <strong>mean, normal</strong>
 模型预处理需要的`mean,normal`, 数据按此公式填写：​
@@ -84,13 +84,13 @@ MNN提供了对模型进行量化版本的转化，相应的代码在tools/quant
 <strong>feature_quantize_method</strong>
 指定计算特征量化系数的方法，可选：
 
-- &#34;KL&#34;: 使用KL散度进行特征量化系数的校正，一般需要100 ~ 1000张图片
-- &#34;ADMM&#34;: 使用ADMM（Alternating Direction Method of Multipliers）方法进行特征量化系数的校正，一般需要一个batch的数据默认：&#34;KL&#34;
+- "KL": 使用KL散度进行特征量化系数的校正，一般需要100 ~ 1000张图片
+- "ADMM": 使用ADMM（Alternating Direction Method of Multipliers）方法进行特征量化系数的校正，一般需要一个batch的数据默认："KL"
 <strong>weight_quantize_method</strong>
 指定权值量化方法，可选：
 
-- &#34;MAX_ABS&#34;: 使用权值的绝对值的最大值进行对称量化
-- &#34;ADMM&#34;: 使用ADMM方法进行权值量化默认：&#34;MAX_ABS&#34;上述特征量化方法和权值量化方法可进行多次测试，择优使用。
+- "MAX_ABS": 使用权值的绝对值的最大值进行对称量化
+- "ADMM": 使用ADMM方法进行权值量化默认："MAX_ABS"上述特征量化方法和权值量化方法可进行多次测试，择优使用。
 
 <strong>量化模型的使用</strong>
 和浮点模型同样使用方法，输入输出仍然为浮点类型
@@ -144,11 +144,11 @@ MNN提供了对模型进行量化版本的转化，相应的代码在tools/quant
 
 ```cpp
      // 进行量化操作， 这个靠的是Calibration类
-     DLOG(INFO) << &#34;Calibrate the feature and quantize model...&#34;;
+     DLOG(INFO) << "Calibrate the feature and quantize model...";
      std::shared_ptr<Calibration> calibration(
          new Calibration(netT.get(), modelForInference.get(), size, preTreatConfig));
      calibration->runQuantizeModel();
-     DLOG(INFO) << &#34;Quantize model done!&#34;;
+     DLOG(INFO) << "Quantize model done!";
      // 量化后的模型写入到FlatBufferBuilder
      flatbuffers::FlatBufferBuilder builderOutput(1024);
      builderOutput.ForceDefaults(true);
@@ -200,7 +200,7 @@ MNN提供了对模型进行量化版本的转化，相应的代码在tools/quant
  ​
 
 ```cpp
-     // Op&#39;s name, Inputs, Outputs
+     // Op's name, Inputs, Outputs
      // op到  input/output tensor的映射
      std::map<std::string, std::pair<std::vector<MNN::Tensor*>, std::vector<MNN::Tensor*>>> _opInfo;
 ```
@@ -225,8 +225,8 @@ MNN提供了对模型进行量化版本的转化，相应的代码在tools/quant
  ​
 
 ```cpp
-     std::string _featureQuantizeMethod = &#34;KL&#34;;
-     std::string _weightQuantizeMethod  = &#34;MAX_ABS&#34;;
+     std::string _featureQuantizeMethod = "KL";
+     std::string _weightQuantizeMethod  = "MAX_ABS";
     // 根据模型，创建session
      void _initMNNSession(const uint8_t* modelBuffer, const int bufferSize, const int channels);
      void _initMaps();// 统计模型里的 tensor和op信息放到前面的map结构里
@@ -271,7 +271,7 @@ MNN提供了对模型进行量化版本的转化，相应的代码在tools/quant
          auto outputStr = output.str();
          document.Parse(outputStr.c_str());
          if (document.HasParseError()) {
-             MNN_ERROR(&#34;Invalid json\n&#34;);
+             MNN_ERROR("Invalid json\n");
              return;
          }
      }
@@ -280,9 +280,9 @@ MNN提供了对模型进行量化版本的转化，相应的代码在tools/quant
      config.filterType = BILINEAR;
      config.destFormat = BGR;
      {
-         if (picObj.HasMember(&#34;format&#34;)) {
-             auto format = picObj[&#34;format&#34;].GetString();
-             static std::map<std::string, ImageFormat> formatMap{{&#34;BGR&#34;, BGR}, {&#34;RGB&#34;, RGB}, {&#34;GRAY&#34;, GRAY}};
+         if (picObj.HasMember("format")) {
+             auto format = picObj["format"].GetString();
+             static std::map<std::string, ImageFormat> formatMap{{"BGR", BGR}, {"RGB", RGB}, {"GRAY", GRAY}};
              if (formatMap.find(format) != formatMap.end()) {
                  config.destFormat = formatMap.find(format)->second;
              }
@@ -341,7 +341,7 @@ MNN提供了对模型进行量化版本的转化，相应的代码在tools/quant
      // 输入数据格式的 处理  NHWC和NC4HW4
      _inputTensorDims.resize(4);
      auto inputTensorDataFormat = MNN::TensorUtils::getDescribe(_inputTensor)->dimensionFormat;
-     DCHECK(4 == _inputTensor->dimensions()) << &#34;Only support 4 dimensions input&#34;;
+     DCHECK(4 == _inputTensor->dimensions()) << "Only support 4 dimensions input";
      if (inputTensorDataFormat == MNN::MNN_DATA_FORMAT_NHWC) {
          _inputTensorDims[0] = 1;
          _inputTensorDims[1] = _height;
@@ -353,14 +353,14 @@ MNN提供了对模型进行量化版本的转化，相应的代码在tools/quant
          _inputTensorDims[2] = _height;
          _inputTensorDims[3] = _width;
      } else {
-         DLOG(ERROR) << &#34;Input Data Format ERROR!&#34;;
+         DLOG(ERROR) << "Input Data Format ERROR!";
      }
     // 使用KL散度， 或者ADMM进行特征量化系数校正
-     if (_featureQuantizeMethod == &#34;KL&#34;) {
+     if (_featureQuantizeMethod == "KL") {
          _interpreter->resizeTensor(_inputTensor, _inputTensorDims);// input tensor的resize
          _interpreter->resizeSession(_session);// session的resize
-     } else if (_featureQuantizeMethod == &#34;ADMM&#34;) {
-         DCHECK((_imageNum * 4 * _height * _width) < (INT_MAX / 4)) << &#34;Use Little Number of Images When Use ADMM&#34;;
+     } else if (_featureQuantizeMethod == "ADMM") {
+         DCHECK((_imageNum * 4 * _height * _width) < (INT_MAX / 4)) << "Use Little Number of Images When Use ADMM";
          _inputTensorDims[0] = _imageNum;
          _interpreter->resizeTensor(_inputTensor, _inputTensorDims);
          _interpreter->resizeSession(_session);
@@ -385,7 +385,7 @@ MNN提供了对模型进行量化版本的转化，相应的代码在tools/quant
              for (auto t : nTensors) {
                  if (_featureInfo.find(t) == _featureInfo.end()) {
                      _featureInfo[t] = std::shared_ptr<TensorStatistic>(
-                         new TensorStatistic(t, _featureQuantizeMethod, info->name() + &#34;__input&#34;));
+                         new TensorStatistic(t, _featureQuantizeMethod, info->name() + "__input"));
                  }
              }
          }
@@ -420,7 +420,7 @@ MNN提供了对模型进行量化版本的转化，相应的代码在tools/quant
              _tensorMap[op->outputIndexes[i]] = _opInfo[op->name].second[i];
          }
      }
-     if (_featureQuantizeMethod == &#34;KL&#34;) {
+     if (_featureQuantizeMethod == "KL") {
          // set the tensor-statistic method of input tensor as THRESHOLD_MAX
          auto inputTensorStatistic = _featureInfo.find(_inputTensor);
          if (inputTensorStatistic != _featureInfo.end()) {
@@ -487,9 +487,9 @@ MNN提供了对模型进行量化版本的转化，相应的代码在tools/quant
 
 ```text
  void Calibration::runQuantizeModel() {
-     if (_featureQuantizeMethod == &#34;KL&#34;) { // 如果配置文件里是 KL散度做
+     if (_featureQuantizeMethod == "KL") { // 如果配置文件里是 KL散度做
          _computeFeatureScaleKL();
-     } else if (_featureQuantizeMethod == &#34;ADMM&#34;) {// 如果配置文件里是ADMM
+     } else if (_featureQuantizeMethod == "ADMM") {// 如果配置文件里是ADMM
          _computeFeatureScaleADMM();
      }
      _updateScale();
@@ -562,10 +562,10 @@ MNN提供了对模型进行量化版本的转化，相应的代码在tools/quant
          };
          // 推理一遍
          _interpreter->runSessionWithCallBackInfo(_session, before, after);
-         MNN_PRINT(&#34;\rComputeFeatureRange: %.2lf %%&#34;, (float)count * 100.0f / (float)_imageNum);
+         MNN_PRINT("\rComputeFeatureRange: %.2lf %%", (float)count * 100.0f / (float)_imageNum);
          fflush(stdout);
      }
-     MNN_PRINT(&#34;\n&#34;);
+     MNN_PRINT("\n");
  }
 ```
 
@@ -609,10 +609,10 @@ MNN提供了对模型进行量化版本的转化，相应的代码在tools/quant
  ​
 
 ```text
-         MNN_PRINT(&#34;\rCollectFeatureDistribution: %.2lf %%&#34;, (float)count * 100.0f / (float)_imageNum);
+         MNN_PRINT("\rCollectFeatureDistribution: %.2lf %%", (float)count * 100.0f / (float)_imageNum);
          fflush(stdout);
      }
-     MNN_PRINT(&#34;\n&#34;);
+     MNN_PRINT("\n");
  }
 ```
 
@@ -866,7 +866,7 @@ MNN提供了对模型进行量化版本的转化，相应的代码在tools/quant
          }
          auto tensorsPair = _opInfo.find(op->name);
          if (tensorsPair == _opInfo.end()) {
-             MNN_ERROR(&#34;Can&#39;t find tensors for %s\n&#34;, op->name.c_str());
+             MNN_ERROR("Can't find tensors for %s\n", op->name.c_str());
          }
 ```
 
@@ -1030,7 +1030,7 @@ MNN提供了对模型进行量化版本的转化，相应的代码在tools/quant
              // construct new op， 创建一个 定点转浮点的 op
              auto dequantizationOp       = new MNN::OpT;
              dequantizationOp->main.type = MNN::OpParameter_QuantizedFloatParam;
-             dequantizationOp->name      = &#34;___Int8ToFloat___For_&#34; + name + flatbuffers::NumToString(i);
+             dequantizationOp->name      = "___Int8ToFloat___For_" + name + flatbuffers::NumToString(i);
              // 填充参数
              dequantizationOp->type           = MNN::OpType_Int8ToFloat;
              auto dequantizationParam         = new MNN::QuantizedFloatParamT;
@@ -1049,7 +1049,7 @@ MNN提供了对模型进行量化版本的转化，相应的代码在tools/quant
  ​
 
 ```cpp
-             // reset current op&#39;s input index at i， 新创建定点转浮点op的 输出 接到 op的输入
+             // reset current op's input index at i， 新创建定点转浮点op的 输出 接到 op的输入
              inputIndexes[i] = dequantizationOp->outputIndexes[0];
              iter = _originaleModel->oplists.insert(iter, std::unique_ptr<MNN::OpT>(dequantizationOp));
              iter++;
@@ -1060,7 +1060,7 @@ MNN提供了对模型进行量化版本的转化，相应的代码在tools/quant
 
 ```cpp
          iter++;
-         // LOG(INFO) << &#34;insert quantization op after this op if neccessary&#34;;
+         // LOG(INFO) << "insert quantization op after this op if neccessary";
          // insert quantization op after this op if neccessary
          //// 对于该op的所有输出tensor
          for (int i = 0; i < op->outputIndexes.size(); ++i) {
@@ -1074,7 +1074,7 @@ MNN提供了对模型进行量化版本的转化，相应的代码在tools/quant
              // 创建反量化的op
              auto quantizationOp        = new MNN::OpT;
              quantizationOp->main.type  = MNN::OpParameter_QuantizedFloatParam;
-             quantizationOp->name       = name + &#34;___FloatToInt8___&#34; + flatbuffers::NumToString(i);
+             quantizationOp->name       = name + "___FloatToInt8___" + flatbuffers::NumToString(i);
              quantizationOp->type       = MNN::OpType_FloatToInt8;
              auto quantizationParam     = new MNN::QuantizedFloatParamT;
              quantizationOp->main.value = quantizationParam;
@@ -1108,7 +1108,7 @@ MNN提供了对模型进行量化版本的转化，相应的代码在tools/quant
          // construct new op
          auto dequantizationOp       = new MNN::OpT;
          dequantizationOp->main.type = MNN::OpParameter_QuantizedFloatParam;
-         dequantizationOp->name      = &#34;___Int8ToFloat___For_&#34; + flatbuffers::NumToString(index);
+         dequantizationOp->name      = "___Int8ToFloat___For_" + flatbuffers::NumToString(index);
 ```
 
  ​

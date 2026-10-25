@@ -31,7 +31,7 @@ source_url: https://zhuanlan.zhihu.com/p/387938179
 
 正态分布，也即高斯分布，是定义在Rn" role="presentation">Rn\mathbb{R}^n上的连续型概率分布，其概率密度函数为
 
-$$p(x)=1(2&#x03C0;)ndet(&#x03A3;)exp&#x2061;{&#x2212;12(x&#x2212;&#x03BC;)&#x22A4;&#x03A3;&#x2212;1(x&#x2212;&#x03BC;)}" role="presentation" style="font-size: 100%; display: inline-block; position: relative;">p(x)=1(2π)ndet(Σ)exp⁡{−12(x−μ)⊤Σ−1(x−μ)}p(\boldsymbol{x})=\frac{1}{\sqrt{(2\pi)^n \det(\boldsymbol{\Sigma})}}\exp\left\{-\frac{1}{2}(\boldsymbol{x}-\boldsymbol{\mu})^{\top}\boldsymbol{\Sigma}^{-1}(\boldsymbol{x}-\boldsymbol{\mu})\right\}\\ 这里的x,&#x03BC;&#x2208;Rn" role="presentation">x,μ∈Rn\boldsymbol{x},\boldsymbol{\mu}\in\mathbb{R}^n，&#x03BC;" role="presentation">μ\boldsymbol{\mu}即均值向量（本文的向量默认情况下都为列向量），而&#x03A3;&#x2208;Rn&#x00D7;n" role="presentation">Σ∈Rn×n\boldsymbol{\Sigma}\in\mathbb{R}^{n\times n}即为协方差矩阵，它要求是正定对称的。可以看到，正态分布由\boldsymbol{\mu}和\boldsymbol{\Sigma}唯一确定，因此不难想象它的统计量都是\boldsymbol{\mu}和\boldsymbol{\Sigma}的函数。当\boldsymbol{\mu}=\boldsymbol{0}, \boldsymbol{\Sigma}=\boldsymbol{I}时，对应的分布称为“标准正态分布”。  $$
+$$p(x)=1(2π)ndet(Σ)exp⁡{−12(x−μ)⊤Σ−1(x−μ)}" role="presentation" style="font-size: 100%; display: inline-block; position: relative;">p(x)=1(2π)ndet(Σ)exp⁡{−12(x−μ)⊤Σ−1(x−μ)}p(\boldsymbol{x})=\frac{1}{\sqrt{(2\pi)^n \det(\boldsymbol{\Sigma})}}\exp\left\{-\frac{1}{2}(\boldsymbol{x}-\boldsymbol{\mu})^{\top}\boldsymbol{\Sigma}^{-1}(\boldsymbol{x}-\boldsymbol{\mu})\right\}\\ 这里的x,μ∈Rn" role="presentation">x,μ∈Rn\boldsymbol{x},\boldsymbol{\mu}\in\mathbb{R}^n，μ" role="presentation">μ\boldsymbol{\mu}即均值向量（本文的向量默认情况下都为列向量），而Σ∈Rn×n" role="presentation">Σ∈Rn×n\boldsymbol{\Sigma}\in\mathbb{R}^{n\times n}即为协方差矩阵，它要求是正定对称的。可以看到，正态分布由\boldsymbol{\mu}和\boldsymbol{\Sigma}唯一确定，因此不难想象它的统计量都是\boldsymbol{\mu}和\boldsymbol{\Sigma}的函数。当\boldsymbol{\mu}=\boldsymbol{0}, \boldsymbol{\Sigma}=\boldsymbol{I}时，对应的分布称为“标准正态分布”。  $$
 
 #### 基本性质
 
@@ -143,7 +143,10 @@ $$\begin{aligned} KL(p(\boldsymbol{x})\Vert q(\boldsymbol{x}))=&\,\frac{1}{2}\le
 
 然后，我们来看看<strong>巴氏距离（Bhattacharyya distance）</strong>，它定义为
 
+```text
 BD(p(\boldsymbol{x}), q(\boldsymbol{x})) = -\log \int \sqrt{p(\boldsymbol{x}) q(\boldsymbol{x})} d\boldsymbol{x} \\
+```
+
 
 $$与之相关的还有一个叫做“<strong>Hellinger距离</strong>”的概念，它的平方定义为 \frac{1}{2}\int\left(\sqrt{p(\boldsymbol{x})} - \sqrt{q(\boldsymbol{x})}\right)^2 d\boldsymbol{x}，展开后就能发现跟巴氏距离本质是等价的。$$
 
@@ -171,7 +174,10 @@ $\mathcal{W}[p,q]=\inf_{\gamma\in \Pi[p,q]} \iint \gamma(\boldsymbol{x},\boldsym
 
 不同的d(\boldsymbol{x},\boldsymbol{y})会得到不同的结果，为了得到较为简单的解，这里选择
 
+```text
 d(\boldsymbol{x},\boldsymbol{y}) = \Vert \boldsymbol{x} - \boldsymbol{y}\Vert^2 \\
+```
+
 
 #### 计算结果
 
@@ -189,7 +195,10 @@ $然后我们可以直接验证(\boldsymbol{\Sigma}_q^{}\boldsymbol{\Sigma}_p^{}
 
 第二个看起来稍微简单一些的版本，结果是：
 
+```text
 \mathcal{W}[p,q]=\Vert \boldsymbol{\mu}_p - \boldsymbol{\mu}_q\Vert^2 + \text{Tr}(\boldsymbol{\Sigma}_p) + \text{Tr}(\boldsymbol{\Sigma}_q) - 2\text{Tr}((\boldsymbol{\Sigma}_p\boldsymbol{\Sigma}_q)^{})\label{eq:w-v2} \\
+```
+
 
 这个版本通常被称为“<strong>Fréchet距离</strong>”。GAN中经常使用的评价指标FID（<strong>[Frechet Inception Distance](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/1706.08500)</strong>），就是基于这个公式进行计算的。可以模仿前面证明它关于p,q的对称性，当然也可以从下面的等价性讨论中直接得出。
 
@@ -205,17 +214,26 @@ $然后直接验证(\boldsymbol{\Sigma}_p^{}(\boldsymbol{\Sigma}_p^{}\boldsymbol
 
 特别地，如果\boldsymbol{\Sigma}_p,\boldsymbol{\Sigma}_q的乘法可以交换，那么将会简化为非常直观的形式：
 
+```text
 \mathcal{W}[p,q]=\Vert \boldsymbol{\mu}_p - \boldsymbol{\mu}_q\Vert^2 + \Vert \boldsymbol{\Sigma}_p^{} - \boldsymbol{\Sigma}_q^{}\Vert_F^2\label{eq:w-jiaohuan} \\
+```
+
 
 为什么说它非常直观呢？因为正态分布的参数为\boldsymbol{\mu},\boldsymbol{\Sigma}，所以比较正态分布的差异其实就是比较\boldsymbol{\mu},\boldsymbol{\Sigma}的差异，按照机器学习的习惯，一个很容易相当想到的指标是平方误差
 
+```text
 \mathcal{W}[p,q]=\Vert \boldsymbol{\mu}_p - \boldsymbol{\mu}_q\Vert^2 + \Vert \boldsymbol{\Sigma}_p - \boldsymbol{\Sigma}_q\Vert_F^2 \\
+```
+
 
 但从物理角度来看，这个指标是不妥的，因为如果将\boldsymbol{\mu}看成是长度量纲，那么\boldsymbol{\Sigma}就具有长度平方的量纲，所以\Vert \boldsymbol{\mu}_p - \boldsymbol{\mu}_q\Vert^2和\Vert \boldsymbol{\Sigma}_p - \boldsymbol{\Sigma}_q\Vert_F^2是具有不同量纲的两个量，不能相加。而为了使得量纲一致，直观的想法就是把\boldsymbol{\Sigma}“开平方”后再算平方误差，这就得到了式\eqref{eq:w-jiaohuan}。
 
 特别地，当q为标准正态分布时，结果简化为
 
+```text
 \mathcal{W}[p,q]=\Vert \boldsymbol{\mu}_p\Vert^2 + \Vert \boldsymbol{\Sigma}_p^{} - \boldsymbol{I}\Vert_F^2 \\
+```
+
 
 #### 推导过程1
 
@@ -231,7 +249,10 @@ $\begin{aligned} &\,\mathbb{E}_{(\boldsymbol{x},\boldsymbol{y})\sim\gamma(\bolds
 
 该结果意味着
 
+```text
 \mathcal{W}[p,q]=\Vert \boldsymbol{\mu}_p - \boldsymbol{\mu}_q\Vert^2 + \mathcal{W}[\tilde{p},\tilde{q}] \\
+```
+
 
 所以，只需要算出均值都为零时的Wasserstein距离，然后加上\Vert \boldsymbol{\mu}_p - \boldsymbol{\mu}_q\Vert^2就得到了一般情况的结果。
 
@@ -323,7 +344,10 @@ $\boldsymbol{\Sigma}_q = \boldsymbol{B}\boldsymbol{B}^{\top} = \left(\boldsymbol
 
 $令\boldsymbol{W}_p=\boldsymbol{\Sigma}_p^{-}\boldsymbol{R}\boldsymbol{\Sigma}_p^{-}，代入上式得\boldsymbol{\Sigma}_q=\boldsymbol{\Sigma}_p^{-}\boldsymbol{R}^2\boldsymbol{\Sigma}_p^{-}，即$
 
+```text
 \boldsymbol{R} = (\boldsymbol{\Sigma}_p^{}\boldsymbol{\Sigma}_q\boldsymbol{\Sigma}_p^{})^{} \\
+```
+
 
 而
 

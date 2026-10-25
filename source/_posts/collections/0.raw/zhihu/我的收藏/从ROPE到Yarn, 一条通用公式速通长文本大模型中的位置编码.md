@@ -37,16 +37,23 @@ f_W'(x_m, m, \theta_d) = f_W(x_m, g(m), h(\theta_d)) \\
 
 -  x_m  是输入向量。
 -  m  是位置索引。
-$- &#x03B8;d" role="presentation">θd \theta_d  是频率参数。$
+$- θd" role="presentation">θd \theta_d  是频率参数。$
 -  g(m)  和  h(\theta_d)  是可调函数，分别描述位置和频率的变换逻辑。
 在原始 Transformer Self-Attention 中，通用公式中的  f_W  表示将输入向量  x_m  和位置相关信息（ g(m)  和  h(\theta_d) ）结合后，进行的进一步变换。具体来说：
 
+```text
 f_W(x_m, g(m), h(\theta_d)) = W(x_m + \text{PE}_m) \\
+```
+
 
 这里：
 
 -  x_m : 输入向量。
+
+```text
 -  \text{PE}_m : 位置编码，具体由 \sin 和 \cos 构成，基于  g(m)  和  h(\theta_d)  计算：\text{PE}_m[2d] = \sin(m \cdot h(\theta_d)), \quad \text{PE}_m[2d+1] = \cos(m \cdot h(\theta_d)) \\ 
+```
+
 -  W : 线性投影矩阵，用于变换向量。
 因此， f_W  具体对应的是将位置编码 \text{PE}_m 加到输入向量  x_m ，再通过投影矩阵  W  处理后， 输入self-attention经典公式前的部分。
 
@@ -64,7 +71,10 @@ h(\theta_d) = \theta_d
 
 因此，ROPE的具体实现为（这里求简只考虑二维情况）：
 
+```text
 f_W(x_m, m, \theta_d) =  \begin{bmatrix} \cos(m\theta_d) & -\sin(m\theta_d) \\ \sin(m\theta_d) & \cos(m\theta_d) \end{bmatrix} W x_m \\
+```
+
 
 其中：
 

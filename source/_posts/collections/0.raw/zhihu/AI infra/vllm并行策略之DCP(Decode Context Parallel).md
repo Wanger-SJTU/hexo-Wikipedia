@@ -74,7 +74,7 @@ kvcache store in dcp_rank1: 1, 3, 5, 7,
 - 由于得到完整的Attention Score需要K0-K2, V0-V2的所有结果，因此O0和O1也需要online softmax来更新，获得最终的O。
 ![](https://picx.zhimg.com/v2-cfd9d3392a5973eba709730f34d13355_r.jpg)图3. Attention计算示意图<strong>通信</strong>
 
-接下来说说计算出O0,O1之后的通信部分。前面提到DCP是需要多余通信的，这是由于上文提到的不同DCP rank得到的output是partial output，需要online_saftmax调整。如果是两个partial output, 我们可以直接用merge_attn_states kernel，通过ouput和lse来更新，其介绍可见[[vLLM实践][算子]📚vLLM算子开发流程: &#34;保姆级&#34;详细记录](https://zhuanlan.zhihu.com/p/1892966682634473987)。
+接下来说说计算出O0,O1之后的通信部分。前面提到DCP是需要多余通信的，这是由于上文提到的不同DCP rank得到的output是partial output，需要online_saftmax调整。如果是两个partial output, 我们可以直接用merge_attn_states kernel，通过ouput和lse来更新，其介绍可见[[vLLM实践][算子]📚vLLM算子开发流程: "保姆级"详细记录](https://zhuanlan.zhihu.com/p/1892966682634473987)。
 
 DCP并行度不确定，且涉及到多卡通信，其具体是怎么做的呢？请见图4。这是DCP的默认通信方式，目前也已经实现了dcp_all2all通信（参见[Helix Parallelism论文](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2507.07120)，[PR](https://link.zhihu.com/?target=https%3A//github.com/vllm-project/vllm/pull/34883)）。
 

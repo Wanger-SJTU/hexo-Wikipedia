@@ -48,7 +48,8 @@ categories:
 - [OpenAI Developers: Run long horizon tasks with Codex](https://developers.openai.com/blog/run-long-horizon-tasks-with-codex)（2026-02-23）：长时任务中的 durable project memory、milestone validation 和 done-when 例子。
 - [OpenAI: The next evolution of the Agents SDK](https://openai.com/index/the-next-evolution-of-the-agents-sdk/)（2026-04-15）：model-native harness、sandbox execution、文件与命令执行能力。
 - [OpenAI: An open-source spec for Codex orchestration: Symphony](https://openai.com/index/open-source-codex-orchestration-symphony/)（2026-04-27）：把 issue tracker / Linear 变成多 agent 控制平面。
-- [Anthropic: Building a C compiler with a team of parallel Claudes](https://www.anthropic.com/engineering/building-c-compiler)（2026-02-05）：并行 agent 团队、任务锁、git 同步、容器隔离和自主循环。
+- [Anthropic: Building a C compiler with a team of parallel Claudes](https://www.anthropic.com/engineering/building-c-compiler)（2026-02-05）：并行 agent 团队、任务锁、
+git 同步、容器隔离和自主循环。
 - [Anthropic: Scaling Managed Agents: Decoupling the brain from the hands](https://www.anthropic.com/engineering/managed-agents)（2026-04-08）：meta-harness 视角，把 session、harness、sandbox 拆成可替换接口。
 - [Anthropic: An update on recent Claude Code quality reports](https://www.anthropic.com/engineering/april-23-postmortem)（2026-04-23）：reasoning effort、context pruning、system prompt 都属于 harness 变更，且需要回归治理。
 - [LangChain: Context Management for Deep Agents](https://www.langchain.com/blog/context-management-for-deepagents)（2026-01-28）：filesystem offloading、tool-call truncation、summarization 和 targeted evals 组成的 context-management harness。

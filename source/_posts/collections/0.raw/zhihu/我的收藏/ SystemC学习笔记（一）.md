@@ -598,10 +598,9 @@ HEADERS = fir.h tb.h
 # source files used, for dependency checking
 SOURCES = main.cc fir.cc tb.cc
 
+```text
 DEPENDENCIES = \
     Makefile \
-
-```text
     $(HEADERS) \
     $(SOURCES)
 ```

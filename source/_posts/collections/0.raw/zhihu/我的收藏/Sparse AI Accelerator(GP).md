@@ -116,7 +116,7 @@ Gamma 使用 preprocessing 来应对两种恶劣情况：1. 相邻 A-row 的 non
 
 ![](https://picx.zhimg.com/v2-1605487be47d05ac17b3633d3f8b5b17_r.jpg)row-reorder algorithmSelective Coordinate-Space Tiling：只有当 row-A 很 dense 时才进行 Tiling，判断标准是，rows of A whose footprint to hold rows of B is estimated to be above <strong>25% of the FiberCache capacity</strong>(the estimated footprint is the <strong>length of A’s row</strong>times<strong>the average number of nonzeros per row of B</strong>). 使用估计的方法<strong>无需遍历</strong>，所以 tradeoff 比 InnerSP 要小得多。
 
-同时，为了减少因 tiling 产生的 PO merge 的次数，本文利用 <strong>merger&#39;s ratix</strong> 来进行分块，也就是说，每行最多分为 <strong>R 个子行</strong>，保证可以一次 merge 完成，减少反复的片外访存。在tiling时不是按元素数量进行均匀tiling，而是按照 <strong>Coordinate-Space</strong> 进行<strong>均匀 tiling</strong>，the ith subrow having the nonzeros within an even subrange [iK/R, (i +1)K/R)，这样在进行 row-reordering 时容易获得更大的 <strong>affinity</strong>。（子行间无 affinity，但原始行的对应子行间存在 affinity，如 
+同时，为了减少因 tiling 产生的 PO merge 的次数，本文利用 <strong>merger's ratix</strong> 来进行分块，也就是说，每行最多分为 <strong>R 个子行</strong>，保证可以一次 merge 完成，减少反复的片外访存。在tiling时不是按元素数量进行均匀tiling，而是按照 <strong>Coordinate-Space</strong> 进行<strong>均匀 tiling</strong>，the ith subrow having the nonzeros within an even subrange [iK/R, (i +1)K/R)，这样在进行 row-reordering 时容易获得更大的 <strong>affinity</strong>。（子行间无 affinity，但原始行的对应子行间存在 affinity，如 
 ![](https://www.zhihu.com/equation?tex=a_0) 被分为 
 ![](https://www.zhihu.com/equation?tex=a_%7B00%7Da_%7B01%7Da_%7B02%7D) 三个子行，
 ![](https://www.zhihu.com/equation?tex=a_1) 被分为 

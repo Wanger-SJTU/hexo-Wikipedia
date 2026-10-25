@@ -119,7 +119,7 @@ TensorFlow Probability传送门：
 
 [https://medium.com/tensorflow/an-introduction-to-probabilistic-programming-now-available-in-tensorflow-probability-6dcc003ca29e?linkId=60908456](https://link.zhihu.com/?target=https%3A//medium.com/tensorflow/an-introduction-to-probabilistic-programming-now-available-in-tensorflow-probability-6dcc003ca29e%3FlinkId%3D60908456)— <strong>完</strong> —
 量子位 · QbitAI
-վ&#39;ᴗ&#39; ի 追踪AI技术和产品新动态
+վ'ᴗ' ի 追踪AI技术和产品新动态
 
 [量子位](https://www.zhihu.com/org/liang-zi-wei-48)欢迎大家关注我们，以及订阅[我们的知乎专栏](https://zhuanlan.zhihu.com/qbitai)
 <strong>诚挚招聘</strong>

@@ -33,7 +33,10 @@ Transformer升级之路：1、Sinusoidal位置编码追根溯源 - 科学空间|
 
 作为该专题的第一篇文章，笔者将会介绍自己对Google在《Attention is All You Need》中提出来的Sinusoidal位置编码
 
+```text
 \begin{equation}\left\{\begin{aligned} \boldsymbol{p}_{k,2i}=\sin\Big(k/10000^{2i/d}\Big)\\   \boldsymbol{p}_{k, 2i+1}=\cos\Big(k/10000^{2i/d}\Big)  \end{aligned}\right.\label{eq:sin}\end{equation}\\
+```
+
 
 的新理解，其中pk,2i,pk,2i+1\boldsymbol{p}_{k,2i},\boldsymbol{p}_{k,2i+1}分别是位置kk的编码向量的第2i,2i+1个分量，d是向量维度。
 
@@ -44,13 +47,19 @@ Transformer升级之路：1、Sinusoidal位置编码追根溯源 - 科学空间|
 泰勒展开
 假设我们的模型为f(\cdots,\boldsymbol{x}_m,\cdots,\boldsymbol{x}_n,\cdots)，其中标记出来的\boldsymbol{x}_m,\boldsymbol{x}_n分别表示第m,n个输入，不失一般性，设ff是标量函数。像Transformer这样的纯Attention模型，它是全对称的，即对于任意的m,n，都有
 
+```text
 \begin{equation}f(\cdots,\boldsymbol{x}_m,\cdots,\boldsymbol{x}_n,\cdots)=f(\cdots,\boldsymbol{x}_n,\cdots,\boldsymbol{x}_m,\cdots)\end{equation} \\
+```
+
 
 这就是我们说Transformer无法识别位置的原因——全对称性，简单来说就是函数天然满足恒等式f(x,y)=f(y,x)，以至于我们无法从结果上区分输入是[x,y]还是[y,x]。
 
 因此，我们要做的事情，就是要打破这种对称性，比如在每个位置上都加上一个不同的编码向量：
 
+```text
 \begin{equation}\tilde{f}(\cdots,\boldsymbol{x}_m,\cdots,\boldsymbol{x}_n,\cdots)=f(\cdots,\boldsymbol{x}_m + \boldsymbol{p}_m,\cdots,\boldsymbol{x}_n + \boldsymbol{p}_n,\cdots)\end{equation} \\
+```
+
 
 一般来说，只要每个位置的编码向量不同，那么这种全对称性就被打破了，即可以用\tilde{f}代替f来处理有序的输入。但现在我们希望能进一步分析位置编码的性质，甚至得到一个显式解，那么就不能止步于此。
 
@@ -65,25 +74,40 @@ Transformer升级之路：1、Sinusoidal位置编码追根溯源 - 科学空间|
 相对位置
 我们先从简单的例子入手，假设\boldsymbol{\mathcal{H}}=\boldsymbol{I}是单位矩阵，此时\boldsymbol{p}_m^{\top} \boldsymbol{\mathcal{H}} \boldsymbol{p}_n = \boldsymbol{p}_m^{\top} \boldsymbol{p}_n = \langle\boldsymbol{p}_m, \boldsymbol{p}_n\rangle是两个位置编码的内积，我们希望在这个简单的例子中该项表达的是相对位置信息，即存在某个函数g使得
 
+```text
 \begin{equation}\langle\boldsymbol{p}_m, \boldsymbol{p}_n\rangle = g(m-n)\label{eq:r1}\end{equation} \\
+```
+
 
 这里的\boldsymbol{p}_m, \boldsymbol{p}_n是d维向量，这里我们从最简单d=2入手。
 
 对于2维向量，我们借助复数来推导，即将向量[x,y]视为复数x + y\text{i}，根据复数乘法的运算法则，我们不难得到：
 
+```text
 \begin{equation}\langle\boldsymbol{p}_m, \boldsymbol{p}_n\rangle = \text{Re}[\boldsymbol{p}_m \boldsymbol{p}_n^*]\end{equation} \\
+```
+
 
 其中\boldsymbol{p}_n^*是\boldsymbol{p}_n的共轭复数，\text{Re}[]代表复数的实部。为了满足式\eqref{eq:r1}，我们可以假设存在复数\boldsymbol{q}_{m-n}使得
 
+```text
 \begin{equation}\boldsymbol{p}_m \boldsymbol{p}_n^* = \boldsymbol{q}_{m-n}\end{equation} \\
+```
+
 
 这样两边取实部就得到了式\eqref{eq:r1}。为了求解这个方程，我们可以使用复数的指数形式，即设\boldsymbol{p}_m=r_m e^{\text{i}\phi_m}, \boldsymbol{p}_n^*=r_n e^{-\text{i}\phi_n}, \boldsymbol{q}_{m-n}=R_{m-n} e^{\text{i}\Phi_{m-n}}得到
 
+```text
 \begin{equation}r_m r_n e^{\text{i}(\phi_m - \phi_n)} = R_{m-n} e^{\text{i}\Phi_{m-n}}\quad\Rightarrow\quad \left\{\begin{aligned} r_m r_n = R_{m-n}\\   \phi_m - \phi_n=\Phi_{m-n}\end{aligned}\right.\end{equation} \\
+```
+
 
 对于第一个方程，代入n=m得r_m^2=R_0，即r_m是一个常数，简单起见这里设为1就好；对于第二个方程，代入n=0得\phi_m - \phi_0=\Phi_m，简单起见设\phi_0=0，那么\phi_m=\Phi_m，即\phi_m - \phi_n=\phi_{m-n}，代入n=m-1得\phi_m - \phi_{m-1}=\phi_1，那么\{\phi_m\}只是一个等差数列，通解为m\theta，因此我们就得到二维情形下位置编码的解为：
 
+```text
 \begin{equation}\boldsymbol{p}_m = e^{\text{i}m\theta}\quad\Leftrightarrow\quad \boldsymbol{p}_m=\begin{pmatrix}\cos m\theta \\ \sin m\theta\end{pmatrix}\end{equation} \\
+```
+
 
 由于内积满足线性叠加性，所以更高维的偶数维位置编码，我们可以表示为多个二维位置编码的组合：
 
@@ -116,17 +140,26 @@ Plot[f[x], {x, -128, 128}]
 
 如果\boldsymbol{\mathcal{H}}是一个对角阵，那么上面的各个性质可以得到一定的保留，此时
 
+```text
 \begin{equation}\boldsymbol{p}_m^{\top} \boldsymbol{\mathcal{H}} \boldsymbol{p}_n=\sum_{i=1}^{d/2} \boldsymbol{\mathcal{H}}_{2i,2i} \cos m\theta_i \cos n\theta_i + \boldsymbol{\mathcal{H}}_{2i+1,2i+1} \sin m\theta_i \sin n\theta_i\end{equation} \\
+```
+
 
 由积化和差公式得到
 
+```text
 \begin{equation}\sum_{i=1}^{d/2} \frac{1}{2}\left(\boldsymbol{\mathcal{H}}_{2i,2i} + \boldsymbol{\mathcal{H}}_{2i+1,2i+1}\right) \cos (m-n)\theta_i + \frac{1}{2}\left(\boldsymbol{\mathcal{H}}_{2i,2i} - \boldsymbol{\mathcal{H}}_{2i+1,2i+1}\right) \cos (m+n)\theta_i \end{equation} \\
+```
+
 
 可以看到它也是确实包含了相对位置m-n，只不过可能会多出m+n这一项，如果不需要它，模型可以让\boldsymbol{\mathcal{H}}_{2i,2i} = \boldsymbol{\mathcal{H}}_{2i+1,2i+1}来消除它。在这个特例下，我们指出的是Sinusoidal位置编码赋予了模型学习相对位置的可能，至于具体需要什么位置信息，则由模型的训练自行决定。
 
 特别地，对于上式，远程衰减特性依然存在，比如第一项求和，类比前一节的近似，它相当于积分
 
+```text
 \begin{equation}\sum_{i=1}^{d/2} \frac{1}{2}\left(\boldsymbol{\mathcal{H}}_{2i,2i} + \boldsymbol{\mathcal{H}}_{2i+1,2i+1}\right) \cos (m-n)\theta_i \sim \int_0^1 h_t e^{\text{i}(m-n)\theta_t}dt\end{equation} \\
+```
+
 
 同样地，振荡积分的一些估计结果（参考《Oscillatory integrals》、《学习笔记3-一维振荡积分与应用》等）告诉我们，该振荡积分在比较容易达到的条件下，有|m-n|\to\infty时积分值趋于零，因此远程衰减特性是可以得到保留的。
 

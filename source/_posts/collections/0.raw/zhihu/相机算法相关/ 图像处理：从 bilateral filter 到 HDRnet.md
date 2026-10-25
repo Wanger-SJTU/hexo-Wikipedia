@@ -29,7 +29,7 @@ $$˜I(p)=∑qI(p)w(p,q)∑qw(p,q)\tilde{I}(p)=\frac{\sum_qI(p)w(p,q)}{\sum_qw(p,
 
 $$w(p,q)=g_{\sigma_s}(\|p-q\|)g_{\sigma_r}(\|I(p)-I(q)\|) $$
 
-这里 g(&#x22C5;)" role="presentation">g(⋅)g(\cdot) 表示高斯函数。原始版本的 bilateral filter 数据组织形式上能较有效地利用 data locality，效率较高。尽管如此，相比于早期其他 convolution based filter（比如 gaussian filter），计算量非常大，速度较慢。
+这里 g(⋅)" role="presentation">g(⋅)g(\cdot) 表示高斯函数。原始版本的 bilateral filter 数据组织形式上能较有效地利用 data locality，效率较高。尽管如此，相比于早期其他 convolution based filter（比如 gaussian filter），计算量非常大，速度较慢。
 
 PS. 这里 bilateral filter 是直接利用像素值的差异来衡量 p, q 两点之间的相似程度，如果换成两个中心位于 p, q 的小 patch 来度量相似度，就是 non-local means 的核心思想了。
 

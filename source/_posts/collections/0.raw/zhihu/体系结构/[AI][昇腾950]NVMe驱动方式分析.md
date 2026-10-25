@@ -225,7 +225,7 @@ AIV 正在向 UB 写本地计算结果（UB Write，高优先级）
   +
 MTE2 ROB 重排完成后向 UB 写 NVMe 读回数据（BUS Write，低优先级）
 
-MTE FS line 1575: &#34;When bank conflict between UB Write and BUS Write (write-write conflict), the BUS Write is back pressured.&#34;
+MTE FS line 1575: "When bank conflict between UB Write and BUS Write (write-write conflict), the BUS Write is back pressured."
 
 问题：
   - BUS Write（NVMe 读回数据）被 UB Write 反压
@@ -240,7 +240,7 @@ AIV 连续发 64 笔 512B read（outstanding 上限）
   - NVMe 某些 LBA 命中缓存（<10us），某些需介质（100us）
   - completion 乱序加剧，ROB 链表需大跨度重排
   - 介质慢的笔占用 TAGID 100us，outstanding 被少量慢笔耗尽
-  - &#34;head-of-line blocking&#34;：ROB 链表头部慢笔未到，后续快笔数据无法写出
+  - "head-of-line blocking"：ROB 链表头部慢笔未到，后续快笔数据无法写出
 
 7.5 缓解措施
 手段原理配置增大 burst（512B）减少 read request 数量，降低 TAGID 压力SC 配 max_burst_len=512B对齐 128B避免 ROB 拼接跨边界开销buffer 分配

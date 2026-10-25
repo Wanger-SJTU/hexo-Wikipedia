@@ -200,8 +200,11 @@ Batch 越大，GPU 利用率越高，吞吐越高。但对 GLM-5.2 + 长上下�
 --max-running-requests 64
 一些 PP 实验甚至进一步下降到：
 
+```text
 --max-running-requests 6
 --max-queued-requests 24
+```
+
 为什么？
 
 因为大模型长上下文场景里，request 多了之后，争抢的不只是算力。

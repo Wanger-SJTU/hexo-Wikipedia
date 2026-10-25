@@ -29,26 +29,26 @@ source_url: https://zhuanlan.zhihu.com/p/15311461897
 
 无论是ROPE还是它的所有变种，本质上都可以被以下公式所统一：
 
-$fW&#x2032;(xm,m,&#x03B8;d)=fW(xm,g(m),h(&#x03B8;d))" role="presentation" style="font-size: 100%; display: inline-block; position: relative;">fW′(xm,m,θd)=fW(xm,g(m),h(θd))f_W'(x_m, m, \theta_d) = f_W(x_m, g(m), h(\theta_d)) \\$
+$fW′(xm,m,θd)=fW(xm,g(m),h(θd))" role="presentation" style="font-size: 100%; display: inline-block; position: relative;">fW′(xm,m,θd)=fW(xm,g(m),h(θd))f_W'(x_m, m, \theta_d) = f_W(x_m, g(m), h(\theta_d)) \\$
 
 这里：
 
 - xm" role="presentation">xm x_m  是输入向量。
 - m" role="presentation">m m  是位置索引。
-$- &#x03B8;d" role="presentation">θd \theta_d  是频率参数。$
-$- g(m)" role="presentation">g(m) g(m)  和 h(&#x03B8;d)" role="presentation">h(θd) h(\theta_d)  是可调函数，分别描述位置和频率的变换逻辑。$
-$在原始 Transformer Self-Attention 中，通用公式中的 fW" role="presentation">fW f_W  表示将输入向量 xm" role="presentation">xm x_m  和位置相关信息（g(m)" role="presentation">g(m) g(m)  和 h(&#x03B8;d)" role="presentation">h(θd) h(\theta_d) ）结合后，进行的进一步变换。具体来说：$
+$- θd" role="presentation">θd \theta_d  是频率参数。$
+$- g(m)" role="presentation">g(m) g(m)  和 h(θd)" role="presentation">h(θd) h(\theta_d)  是可调函数，分别描述位置和频率的变换逻辑。$
+$在原始 Transformer Self-Attention 中，通用公式中的 fW" role="presentation">fW f_W  表示将输入向量 xm" role="presentation">xm x_m  和位置相关信息（g(m)" role="presentation">g(m) g(m)  和 h(θd)" role="presentation">h(θd) h(\theta_d) ）结合后，进行的进一步变换。具体来说：$
 
-$fW(xm,g(m),h(&#x03B8;d))=W(xm+PEm)" role="presentation" style="font-size: 100%; display: inline-block; position: relative;">fW(xm,g(m),h(θd))=W(xm+PEm)f_W(x_m, g(m), h(\theta_d)) = W(x_m + \text{PE}_m) \\$
+$fW(xm,g(m),h(θd))=W(xm+PEm)" role="presentation" style="font-size: 100%; display: inline-block; position: relative;">fW(xm,g(m),h(θd))=W(xm+PEm)f_W(x_m, g(m), h(\theta_d)) = W(x_m + \text{PE}_m) \\$
 
 这里：
 
 - xm" role="presentation">xm x_m : 输入向量。
-$- PEm" role="presentation">PEm \text{PE}_m : 位置编码，具体由 sin" role="presentation">sin\sin 和 cos" role="presentation">cos\cos 构成，基于 g(m)" role="presentation">g(m) g(m)  和 h(&#x03B8;d)" role="presentation">h(θd) h(\theta_d)  计算：PEm[2d]=sin&#x2061;(m&#x22C5;h(&#x03B8;d)),PEm[2d+1]=cos&#x2061;(m&#x22C5;h(&#x03B8;d))" role="presentation" style="font-size: 100%; display: inline-block; position: relative;">PEm[2d]=sin⁡(m⋅h(θd)),PEm[2d+1]=cos⁡(m⋅h(θd))\text{PE}_m[2d] = \sin(m \cdot h(\theta_d)), \quad \text{PE}_m[2d+1] = \cos(m \cdot h(\theta_d)) \\ $
+$- PEm" role="presentation">PEm \text{PE}_m : 位置编码，具体由 sin" role="presentation">sin\sin 和 cos" role="presentation">cos\cos 构成，基于 g(m)" role="presentation">g(m) g(m)  和 h(θd)" role="presentation">h(θd) h(\theta_d)  计算：PEm[2d]=sin⁡(m⋅h(θd)),PEm[2d+1]=cos⁡(m⋅h(θd))" role="presentation" style="font-size: 100%; display: inline-block; position: relative;">PEm[2d]=sin⁡(m⋅h(θd)),PEm[2d+1]=cos⁡(m⋅h(θd))\text{PE}_m[2d] = \sin(m \cdot h(\theta_d)), \quad \text{PE}_m[2d+1] = \cos(m \cdot h(\theta_d)) \\ $
 - W" role="presentation">W W : 线性投影矩阵，用于变换向量。
 因此，fW" role="presentation">fW f_W  具体对应的是将位置编码 PEm" role="presentation">PEm\text{PE}_m 加到输入向量 xm" role="presentation">xm x_m ，再通过投影矩阵 W" role="presentation">W W  处理后， 输入self-attention经典公式前的部分。
 
-这条公式背后隐藏的逻辑是：如何通过适配 g(m)" role="presentation">g(m) g(m)  和 h(&#x03B8;d)" role="presentation">h(θd) h(\theta_d)  来在固定上下文长度的限制下延展语言模型的能力。接下来，我们基于这条公式逐一拆解各个变种。
+这条公式背后隐藏的逻辑是：如何通过适配 g(m)" role="presentation">g(m) g(m)  和 h(θd)" role="presentation">h(θd) h(\theta_d)  来在固定上下文长度的限制下延展语言模型的能力。接下来，我们基于这条公式逐一拆解各个变种。
 
 #### 2. ROPE：一切的起点
 
@@ -62,7 +62,10 @@ h(\theta_d) = \theta_d
 
 因此，ROPE的具体实现为（这里求简只考虑二维情况）：
 
+```text
 f_W(x_m, m, \theta_d) =  \begin{bmatrix} \cos(m\theta_d) & -\sin(m\theta_d) \\ \sin(m\theta_d) & \cos(m\theta_d) \end{bmatrix} W x_m \\
+```
+
 
 其中：
 

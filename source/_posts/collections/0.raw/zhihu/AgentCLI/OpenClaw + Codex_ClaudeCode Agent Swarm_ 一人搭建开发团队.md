@@ -25,7 +25,7 @@ source_url: https://zhuanlan.zhihu.com/p/2010324070751826756
 - 提交 → MRR: 我用它来构建一个真实的 B2B SaaS——将其与创始人领导的销售捆绑，以实现大多数功能请求的当日交付。速度将潜在客户转化为付费客户。
 ![](/images/collections/0.raw/zhihu/AgentCLI/asset/img_61dd157376b5.jpg)
 
-1 月前：仅 CC/codex | 1 月后：Openclaw 协调 CC/codex&lt;br&gt;>  我的 git 历史看起来就像我刚雇佣了一个开发团队。实际上，我只是从管理 Claude code，转变为管理一个 Openclaw 代理，该代理管理着一支其他 Claude code 和 Codex 代理的舰队。
+1 月前：仅 CC/codex | 1 月后：Openclaw 协调 CC/codex<br>>  我的 git 历史看起来就像我刚雇佣了一个开发团队。实际上，我只是从管理 Claude code，转变为管理一个 Openclaw 代理，该代理管理着一支其他 Claude code 和 Codex 代理的舰队。
  
 
 成功率`：该系统几乎无需任何干预就能一次性完成几乎所有中小型任务。
@@ -77,25 +77,37 @@ OpenClaw 和 Codex 的上下文差异极大：
 每个代理都有自己的工作树（隔离分支）和 tmux 会话：
 
 # Create worktree + spawn agent
+
+```bash
 git worktree add ../feat-custom-templates -b feat/custom-templates origin/main
 cd ../feat-custom-templates && pnpm install
 
 tmux new-session -d -s "codex-templates" \
   -c "/Users/elvis/Documents/GitHub/medialyst-worktrees/feat-custom-templates" \
   "$HOME/.codex-agent/run-agent.sh templates gpt-5.3-codex high"
+```
+
 
 该代理在 tmux 会话中运行，并通过脚本实现完整的终端日志记录。 我们启动代理的方式如下：
 
 # Codex
+
+```text
 codex --model gpt-5.3-codex \
   -c "model_reasoning_effort=high" \
   --dangerously-bypass-approvals-and-sandbox \
   "Your prompt here"
+```
+
 
 # Claude Code  
+
+```text
 claude --model claude-opus-4.5 \
   --dangerously-skip-permissions \
   -p "Your prompt here"
+```
+
 
 我以前使用 codex exec 或 claude -p，但最近切换到 tmux：
 

@@ -866,9 +866,9 @@ Claude Code 的输入框模拟了常见的 <strong>终端 / readline 快捷键</
 编辑器由 **`EDITOR`** 环境变量决定，两种设置方式：
 
 # 方式一：在 ~/.zshrc 或 ~/.bashrc 中
-export EDITOR=vim      # 或 nano, code, nvim 等
 
-```text
+```bash
+export EDITOR=vim      # 或 nano, code, nvim 等
 // 方式二：在 ~/.claude/settings.json 中（需重启）
 {
   "env": {

@@ -34,27 +34,27 @@ source_url: https://zhuanlan.zhihu.com/p/31200098
 
 根据 pl" role="presentation">plp_{l} 用一个bernoulli random variable生成每个block的激活状态 bl" role="presentation">blb_{l} ，最终把ResNet的bottleneck block，从
 
-$Hl=ReLU(fl(Hl&#x2212;1)+id(Hl&#x2212;1))" role="presentation">Hl=ReLU(fl(Hl−1)+id(Hl−1))H_{l}=ReLU(f_{l}(H_{l-1})+id(H_{l-1})) $
+$Hl=ReLU(fl(Hl−1)+id(Hl−1))" role="presentation">Hl=ReLU(fl(Hl−1)+id(Hl−1))H_{l}=ReLU(f_{l}(H_{l-1})+id(H_{l-1})) $
 
 重新定义为
 
-$Hl=ReLU(blfl(Hl&#x2212;1)+id(Hl&#x2212;1))" role="presentation">Hl=ReLU(blfl(Hl−1)+id(Hl−1))H_{l}=ReLU(b_{l}f_{l}(H_{l-1})+id(H_{l-1})) $
+$Hl=ReLU(blfl(Hl−1)+id(Hl−1))" role="presentation">Hl=ReLU(blfl(Hl−1)+id(Hl−1))H_{l}=ReLU(b_{l}f_{l}(H_{l-1})+id(H_{l-1})) $
 
 当 bl=0" role="presentation">bl=0b_{l}=0 ，即block未被激活时，
 
-$Hl=ReLU(id(Hl&#x2212;1))" role="presentation">Hl=ReLU(id(Hl−1))H_{l}=ReLU(id(H_{l-1})) $
+$Hl=ReLU(id(Hl−1))" role="presentation">Hl=ReLU(id(Hl−1))H_{l}=ReLU(id(H_{l-1})) $
 
-$（Note：原文是 Hl=id(Hl&#x2212;1)" role="presentation">Hl=id(Hl−1)H_{l}=id(H_{l-1}) ，也做了解释，但是我觉得以上表述更加清晰）$
+$（Note：原文是 Hl=id(Hl−1)" role="presentation">Hl=id(Hl−1)H_{l}=id(H_{l-1}) ，也做了解释，但是我觉得以上表述更加清晰）$
 
 另外， pl" role="presentation">plp_{l} 是从 p0=1" role="presentation">p0=1p_{0}=1简单线性递减至 pL=0.5" role="presentation">pL=0.5p_{L}=0.5 ，被定义为
 
-$$pl=1&#x2212;lL(1&#x2212;pL)" role="presentation">pl=1−lL(1−pL)p_{l}=1-\frac{l}{L}(1-p_{L}) $$
+$$pl=1−lL(1−pL)" role="presentation">pl=1−lL(1−pL)p_{l}=1-\frac{l}{L}(1-p_{L}) $$
 
 <strong>预测时：</strong>
 
 ResNet的block被定义为
 
-$HlTest=ReLU(plfl(Hl&#x2212;1Test)+id(Hl&#x2212;1Test))" role="presentation">HlTest=ReLU(plfl(Hl−1Test)+id(Hl−1Test))H^{Test}_{l}=ReLU(p_{l}f_{l}(H^{Test}_{l-1})+id(H^{Test}_{l-1})) $
+$HlTest=ReLU(plfl(Hl−1Test)+id(Hl−1Test))" role="presentation">HlTest=ReLU(plfl(Hl−1Test)+id(Hl−1Test))H^{Test}_{l}=ReLU(p_{l}f_{l}(H^{Test}_{l-1})+id(H^{Test}_{l-1})) $
 
 即<strong>每个block的概率变成了这个block的残差的权重</strong>
 

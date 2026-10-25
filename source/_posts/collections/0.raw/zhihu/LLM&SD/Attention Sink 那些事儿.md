@@ -63,7 +63,7 @@ Attention Sink 这一概念的正式出现，是 2023 年 9 月在 arxiv 上发�
 ![](https://pica.zhimg.com/v2-06f195600973bd032f5970019034af44_r.jpg)论文[《MAGICPIG: LSH SAMPLING FOR EFFICIENT LLM GENERATION》](https://link.zhihu.com/?target=https%3A//openreview.net/pdf%3Fid%3DALzTQUgW8a)绘制了 attention sink token 的 K 向量和其他 token 平均 K 向量和 Q 向量的几何结构。attention sink token 的 K 向量几乎与其他 token 相反，且其方向对输入 token 的依赖性出人意料地不敏感。其他 token 的 Q 向量靠近 sink token K 向量，从而形成 attention sink，通常位于一个远离的狭窄锥体中。
 
 向阳花木易为春：位置很重要
-[《Efficient Streaming Language Models with Attention Sinks》](https://link.zhihu.com/?target=https%3A//openreview.net/forum%3Fid%3DNG7sS51zVF)论文在滑动窗口注意力上做了一个实验，将窗口的长度设置为 1024。实验结果如下表所示，当窗口滑动到将开头 4 个 token 丢弃时，PPL 开始爆炸。作者将窗口长度设置为 1020，并将初始的 4 个 token 始终放置在窗口的开头位置，PPL 就稳定在 5.40。作者尝试用换行符“\n&#34; 来替换最初的 4 个 token，PPL 几乎没有变化。这表明，<strong>初始 token 的绝对位置比语义更重要</strong>。
+[《Efficient Streaming Language Models with Attention Sinks》](https://link.zhihu.com/?target=https%3A//openreview.net/forum%3Fid%3DNG7sS51zVF)论文在滑动窗口注意力上做了一个实验，将窗口的长度设置为 1024。实验结果如下表所示，当窗口滑动到将开头 4 个 token 丢弃时，PPL 开始爆炸。作者将窗口长度设置为 1020，并将初始的 4 个 token 始终放置在窗口的开头位置，PPL 就稳定在 5.40。作者尝试用换行符“\n" 来替换最初的 4 个 token，PPL 几乎没有变化。这表明，<strong>初始 token 的绝对位置比语义更重要</strong>。
 
 ![](https://pic2.zhimg.com/v2-aac3bf2ab1c3edfa2cee406cd9d2dec5_1440w.jpg)为什么 attention sink token 要选择开头的位置呢？一个直观且直接的推测是：<strong>首个或者初始几个位置上的 token 能被后续 token“看到”</strong>。
 
@@ -187,8 +187,8 @@ Massive value 在每个注意力头中，某些维度呈现出显著的巨大值
 
 遗憾的是，论文没有针对 sink token 和非 sink token 的 Q、K 嵌入向量进行统计。因此，笔者在 notebook 上用 Gemma2-9b-It-SimPo 尝试复现结果。
 
-input_ids = tokenizer(&#34;中国首都是哪里？&#34;, return_tensors=&#34;pt&#34;)[&#34;input_ids&#34;]
-input_ids = input_ids.to(&#34;cuda:0&#34;)
+input_ids = tokenizer("中国首都是哪里？", return_tensors="pt")["input_ids"]
+input_ids = input_ids.to("cuda:0")
     
 with torch.no_grad():
 

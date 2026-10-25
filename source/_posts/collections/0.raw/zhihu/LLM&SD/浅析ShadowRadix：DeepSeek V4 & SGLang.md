@@ -53,7 +53,7 @@ Step1: 每 m 个 token → 压成 1 个 KV   -->  Step2: 每个 query → 只看
 
 HCA
 
-![](https://pic2.zhimg.com/v2-ce274ad630bd03c67858f652d98b9695_r.jpg)Core Architecture of HCA直觉上理解：CSA 是压缩 + 选 top-k ；而HCA 是更强的压缩（m&#39; >> m） 但不做筛选（dense attention）；同样这部分的技术细节也请参考paper。
+![](https://pic2.zhimg.com/v2-ce274ad630bd03c67858f652d98b9695_r.jpg)Core Architecture of HCA直觉上理解：CSA 是压缩 + 选 top-k ；而HCA 是更强的压缩（m' >> m） 但不做筛选（dense attention）；同样这部分的技术细节也请参考paper。
 
 SWA, CSA, HCA的协同设计实现了面对长上下文，<strong>粗细结合</strong>，“<strong>盲选”和“精筛”结合的design insights</strong>；同时这种架构也天然对KVCache的存储设计提供了耦合的接口。
 
@@ -91,8 +91,8 @@ Classical KV Cache 存储已经压缩完成的 CSA / HCA KV entries。
 
 - <strong>HCA KV</strong>
  
-- 每 `m&#39;` 个原始 token 压缩成 1 个 KV entry
-- 其中 `m&#39; >> m` 
+- 每 `m'` 个原始 token 压缩成 1 个 KV entry
+- 其中 `m' >> m` 
 3. Block 对齐方式
 Classical KV Cache 中，每个 cache block 覆盖：
 

@@ -240,9 +240,9 @@ struct st {                                                                   \
     template  struct FIELD;                                 \
     static constexpr size_t _field_count_ = GET_ARG_COUNT(__VA_ARGS__);       \
     PASTE(FOR_EACH_, GET_ARG_COUNT(__VA_ARGS__)) (FIELD_EACH, 0, __VA_ARGS__) \
+};                                                                            \
 ```
 
-};                                                                            \
 
 _field_count`信息就是由之前提到的求宏变参个数获取的：`GET_ARG_COUNT`。
 

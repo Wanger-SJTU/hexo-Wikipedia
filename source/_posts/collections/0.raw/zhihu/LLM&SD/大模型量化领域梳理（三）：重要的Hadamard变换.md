@@ -43,7 +43,7 @@ SmoothQuant试图通过通道缩放把激活的难度转移到权重，但这只
 
 一个n×n的哈达玛矩阵H是元素只有+1和-1的方阵，满足行正交条件：
 
-$H&#x22C5;HT=n&#x22C5;I" role="presentation">H⋅HT=n⋅IH \cdot H^T = n \cdot I$
+$H⋅HT=n⋅I" role="presentation">H⋅HT=n⋅IH \cdot H^T = n \cdot I$
 
 这里I是单位矩阵。正交性的含义是：任意两行的内积为0（不同行），每行与自己的内积为n（行长度的平方）。
 

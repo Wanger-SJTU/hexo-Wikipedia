@@ -83,8 +83,11 @@ dflash训练的注意力mask图既然我们现在有了dflash的推理过程了�
 
 2.然后cd 仓库，安装包
 
+```bash
 cd SpecForge
 pip install -e ./`
+```
+
 
 3.然后生成对应的训练数据
 
@@ -92,17 +95,19 @@ pip install -e ./`
 python scripts/prepare_data.py --dataset perfectblend
 
 # 2. Start SGLang server for Qwen3-8B
+
+```text
 python3 -m sglang.launch_server \
     --model Qwen/Qwen3-8B \
     --dtype bfloat16 \
-
-```text
     --mem-frac=0.8 \
     --port 30000
 ```
 
 
 # 3. Regenerate with target model (thinking enabled)
+
+```text
 python scripts/regenerate_train_data.py \
     --model Qwen/Qwen3-8B \
     --is-reasoning-model \
@@ -112,6 +117,8 @@ python scripts/regenerate_train_data.py \
     --server-address localhost:30000 \
     --input-file-path ./cache/dataset/perfectblend_train.jsonl \
     --output-file-path ./cache/dataset/perfectblend_qwen3-8b_regen.jsonl`
+```
+
 
 如果不想重新生成的话，可以用这个数据集
 

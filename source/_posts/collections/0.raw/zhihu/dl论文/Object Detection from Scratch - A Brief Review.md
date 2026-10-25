@@ -25,20 +25,20 @@ source_url: https://zhuanlan.zhihu.com/p/137410354
 
 <strong>最后总结一下，one-stage因为自身特点每张卡上的batch size（包括整体的batch size）比较大，所以普通的BN就可以train from scratch，没有BN也可以（比如SSD+VGGNet，加上DSOD中用到的大batch size，128 vs. 32和更久的training），对于two-stage的模型，单卡和整体batch size都比较小，所以需要引入其他一些技术，包括ROI Align，Group Norm，Sync BN等等，只是16年底的时候并没有这些方法，所以我们当时提出train from scratch需要基于one-stage的detector也是完全可以理解的。DSOD除了提出train from scratch这个问题外，还有其他一些很小但有意思的contribution，包括stem结构对于detection的帮助等等（我们应该是最先发现用3个3x3小卷积替换第一层7x7大卷机可以带来明显提升的工作，虽然我们论文里写的是受Inception V3启发，但其实两者并没有什么关联，当时做完实验之后写论文时担心被reviewer说这个design不合理，所以硬是找一个能support这个结构的文章==），后面的PeeleNet [6]，ScratchDet [2]等也或多或少验证和借鉴了这点。个人觉得Kaiming的rethinking很好的把这个问题给讲透彻了，包括training data scale和training epoch数目对最终performance的影响，但还是要说network structure对于数据规模的需求的确不太一样，也很重要。我觉得未来在这个方向可能还可以挖掘的点一个是如何提升from scratch的训练效率（8倍于finetune的训练时长还是太久了），或者大幅度提升检测性能（通过改变backbone的结构[9]，现在已经有一些跟NAS结合的文章了[7, 8]）。DSOD当时投稿ICCV拿到了三个weak accept，rebuttal之后有个reviewer提升到了oral/poster，当时有个reviewer提出想看下如果我们的模型在imagenet上pretrain了之后结果会怎么样，他同时也强调即使这个结果更高也不会damage我们文章的contribution，我跑了一下然后发现用了imagenet pretrain之后居然没有什么提升，虽然由于rebuttal时间有限pretrain的模型比标准的epoch要少，但是我对这个结果还是非常震惊的，最后这个结论也被保留在了camera ready版本之中，但当时我的确有点担心有没有可能是我实验弄错了导致结论不正确，毕竟在17年初你跟我说不用pretrain的object detection可以跟用了的结果差不多我是很难相信的，所以这里也要感谢coauthor们对我的信任以及坚持要把这个结论放进最后的论文。我很喜欢当时其中一个reviewer给的一句评论：I think this paper is worth publishing at ICCV to open up more discussions on this direction. 如果大家有兴趣的话我可以把review意见share一下，当时看了还是很受鼓舞的。</strong>
 
-<strong>[1] Kaiming He, Ross Girshick, and Piotr Dollár. &#34;Rethinking imagenet pre-training.&#34; In Proceedings of the IEEE International Conference on Computer Vision, pp. 4918-4927. 2019.</strong>
+<strong>[1] Kaiming He, Ross Girshick, and Piotr Dollár. "Rethinking imagenet pre-training." In Proceedings of the IEEE International Conference on Computer Vision, pp. 4918-4927. 2019.</strong>
 
-<strong>[2] Rui Zhu, Shifeng Zhang, Xiaobo Wang, Longyin Wen, Hailin Shi, Liefeng Bo, and Tao Mei. &#34;ScratchDet: Training single-shot object detectors from scratch.&#34; In Proceedings of the IEEE conference on computer vision and pattern recognition, pp. 2268-2277. 2019.</strong>
+<strong>[2] Rui Zhu, Shifeng Zhang, Xiaobo Wang, Longyin Wen, Hailin Shi, Liefeng Bo, and Tao Mei. "ScratchDet: Training single-shot object detectors from scratch." In Proceedings of the IEEE conference on computer vision and pattern recognition, pp. 2268-2277. 2019.</strong>
 
-<strong>[3] Chao Peng, Tete Xiao, Zeming Li, Yuning Jiang, Xiangyu Zhang, Kai Jia, Gang Yu, and Jian Sun. &#34;Megdet: A large mini-batch object detector.&#34; In Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition, pp. 6181-6189. 2018.</strong>
+<strong>[3] Chao Peng, Tete Xiao, Zeming Li, Yuning Jiang, Xiangyu Zhang, Kai Jia, Gang Yu, and Jian Sun. "Megdet: A large mini-batch object detector." In Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition, pp. 6181-6189. 2018.</strong>
 
-<strong>[4] Yuxin Wu, and Kaiming He. &#34;Group normalization.&#34; In Proceedings of the European Conference on Computer Vision (ECCV), pp. 3-19. 2018.</strong>
+<strong>[4] Yuxin Wu, and Kaiming He. "Group normalization." In Proceedings of the European Conference on Computer Vision (ECCV), pp. 3-19. 2018.</strong>
 
-<strong>[5] Geoff Pleiss, Danlu Chen, Gao Huang, Tongcheng Li, Laurens van der Maaten, and Kilian Q. Weinberger. &#34;Memory-efficient implementation of densenets.&#34; arXiv preprint arXiv:1707.06990 (2017).</strong>
+<strong>[5] Geoff Pleiss, Danlu Chen, Gao Huang, Tongcheng Li, Laurens van der Maaten, and Kilian Q. Weinberger. "Memory-efficient implementation of densenets." arXiv preprint arXiv:1707.06990 (2017).</strong>
 
-<strong>[6] Robert J. Wang, Xiang Li, and Charles X. Ling. &#34;Pelee: A real-time object detection system on mobile devices.&#34; In Advances in Neural Information Processing Systems, pp. 1963-1972. 2018.</strong>
+<strong>[6] Robert J. Wang, Xiang Li, and Charles X. Ling. "Pelee: A real-time object detection system on mobile devices." In Advances in Neural Information Processing Systems, pp. 1963-1972. 2018.</strong>
 
-<strong>[7] Lewei Yao, Hang Xu, Wei Zhang, Xiaodan Liang, and Zhenguo Li. &#34;SM-NAS: Structural-to-Modular Neural Architecture Search for Object Detection.&#34; arXiv preprint arXiv:1911.09929(2019).</strong>
+<strong>[7] Lewei Yao, Hang Xu, Wei Zhang, Xiaodan Liang, and Zhenguo Li. "SM-NAS: Structural-to-Modular Neural Architecture Search for Object Detection." arXiv preprint arXiv:1911.09929(2019).</strong>
 
-<strong>[8] Yosuke Shinya, Edgar Simo-Serra, and Taiji Suzuki. &#34;Understanding the Effects of Pre-Training for Object Detectors via Eigenspectrum.&#34; In Proceedings of the IEEE International Conference on Computer Vision Workshops, pp. 0-0. 2019.</strong>
+<strong>[8] Yosuke Shinya, Edgar Simo-Serra, and Taiji Suzuki. "Understanding the Effects of Pre-Training for Object Detectors via Eigenspectrum." In Proceedings of the IEEE International Conference on Computer Vision Workshops, pp. 0-0. 2019.</strong>
 
-<strong>[9] Zeming Li, Chao Peng, Gang Yu, Xiangyu Zhang, Yangdong Deng, and Jian Sun. &#34;Detnet: A backbone network for object detection.&#34; arXiv preprint arXiv:1804.06215(2018).</strong>
+<strong>[9] Zeming Li, Chao Peng, Gang Yu, Xiangyu Zhang, Yangdong Deng, and Jian Sun. "Detnet: A backbone network for object detection." arXiv preprint arXiv:1804.06215(2018).</strong>

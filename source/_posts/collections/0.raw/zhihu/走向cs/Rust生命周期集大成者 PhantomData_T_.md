@@ -379,7 +379,7 @@ struct UnownedVec {
 
 ![](/images/collections/0.raw/zhihu/%E8%B5%B0%E5%90%91cs/asset/img_093fb6232823.jpg)
 
-Box&lt;T&gt; 的drop方法用到了#[may_dangle]   为什么呢？让我们尝试自己实现一个简单的MyBox
+Box<T> 的drop方法用到了#[may_dangle]   为什么呢？让我们尝试自己实现一个简单的MyBox
 
 use std::ops::{Deref, DerefMut};
 

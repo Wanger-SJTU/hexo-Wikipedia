@@ -106,7 +106,7 @@ Node 0 的 Controller 进程会获取请求分发的通信端口，然后将端�
 
 不同 Node 之间需要建立 ZMQ 通信连接，用于分发请求。之前介绍[分布式集群](https://zhuanlan.zhihu.com/p/1950702248284894524)时简单描述过通信端口的计算方法：所有节点都使用相同的计算规则，算出一样的端口号用于请求的传输。这种实现方式有缺陷：按照固定规则算出来的端口，在 Node 0 上有可能已被其它进程占用，最终导致服务启动失败。最近（2025.10）修复了这个缺陷：Node 0 先创建通信用的 dp_size 个 ZMQ 对象，然后将 ZMQ 对象的端口传递给其他 Node，其他 Node 使用该端口做请求通信。虽然端口的传递使用了 dist_init_port + 13，也是多机约定规则，仍然有可能冲突，但相比 dp_size 个使用规则算出来的端口，冲突概率大大降低了。
 
-理想态思考：Node 0 作为主节点，应该在进程启动时指定一个端口作为和其它 Node 的&#34;集群初始化通信端口&#34;。当前启动命令里唯一涉及多机协同的 dist_init_addr 参数，被直接作为 pytorch 分布式通信初始化端口使用，无法用做集群初始化通信端口，应该考虑新设计一个参数，然后 dist_init_addr 参数也可以由集群初始化通信协商指定。
+理想态思考：Node 0 作为主节点，应该在进程启动时指定一个端口作为和其它 Node 的"集群初始化通信端口"。当前启动命令里唯一涉及多机协同的 dist_init_addr 参数，被直接作为 pytorch 分布式通信初始化端口使用，无法用做集群初始化通信端口，应该考虑新设计一个参数，然后 dist_init_addr 参数也可以由集群初始化通信协商指定。
 
 7.4 初始化分布式通信组
 通信组的理论基础和之前 [SGLang 的 PP 模式浅析](https://zhuanlan.zhihu.com/p/1965709884877149831)文章一样，不再赘述。下面举个例子介绍 DP Attention 如何和 PP、TP 配合使用。
@@ -128,9 +128,9 @@ Node 0 的 Controller 进程会获取请求分发的通信端口，然后将端�
             assert (
                 not self.do_tensor_parallel_all_gather
                 or get_local_attention_dp_size() == 1
-            ), &#34;dp attention + sharded lm_head doesn&#39;t support full logits&#34;
+            ), "dp attention + sharded lm_head doesn't support full logits"
             full_logits = self._get_logits(hidden_states, lm_head, logits_metadata)
-            dump_to_file(self.debug_tensor_dump_output_folder, &#34;logits&#34;, full_logits)
+            dump_to_file(self.debug_tensor_dump_output_folder, "logits", full_logits)
 ```
 
 这里的断言不合理。首先 _get_logits 函数会处理 all-gather；然后 _get_logits 的输出和 DP Attention 没有关系；第三 DP Attention 也不是通过 get_local_attention_dp_size 函数判断，应该是 get_attention_dp_size 函数。
@@ -185,7 +185,7 @@ DP Attention 的推理执行过程，思路看起来很简单：首先给 DP ran
 - Controller 将请求转发给 ATTN TP rank 0，ATTN TP rank 0 将请求广播给同 DP rank 的其它 ATTN TP rank。
 - 虽然所有 TP rank 都会收集负载，但只有 ATTN TP rank 0 会回包 GetLoadReqOutput 给 tokenizer。
 - tokenizer 收集到所有 ATTN TP rank 0 的 GetLoadReqOutput 回包之后汇总发送给 Controller。
-- Controller 根据负载数据生成 budget_queue，queue 元素为可接收请求的 DP rank 序号，元素生成思路：通过逐步提升最小负载的 DP rank，最终让所有 DP rank 的请求数都相等（都达到负载最高的 DP rank）。注：当前的负载更新只支持&#34;最短请求队列策略&#34;，负载指标统计的是&#34;未完成的请求数&#34;。<strong>8.3.3 理想态的思考</strong>
+- Controller 根据负载数据生成 budget_queue，queue 元素为可接收请求的 DP rank 序号，元素生成思路：通过逐步提升最小负载的 DP rank，最终让所有 DP rank 的请求数都相等（都达到负载最高的 DP rank）。注：当前的负载更新只支持"最短请求队列策略"，负载指标统计的是"未完成的请求数"。<strong>8.3.3 理想态的思考</strong>
 
 （1）负载均衡策略
 
@@ -381,7 +381,7 @@ def _dp_gather(
 
 （1）当开启了 EP，但是不使用 DeepEP 或者 MOONCAKE，而使用标准 EP——FuseEP 时，FFN 层的输入和输出和非 EP 模式一样；
 
-（2）通信合并优化：FFN 计算完后得到的是 FULL 模式的数据，但值不完整。普通路径需要先做 all-reduce（全局 tp_group 通信），然后做 dp_scatter（本地内存拷贝），将数据变为 TP_ATTN_FULL 模式；优化路径将&#34;all-reduce（通信）+ dp_scatter（本地拷贝）&#34;替换为&#34;reduce-scatter（通信）+ all-gather（通信）&#34;，可以减少通信量，降低显存峰值。对比如下:
+（2）通信合并优化：FFN 计算完后得到的是 FULL 模式的数据，但值不完整。普通路径需要先做 all-reduce（全局 tp_group 通信），然后做 dp_scatter（本地内存拷贝），将数据变为 TP_ATTN_FULL 模式；优化路径将"all-reduce（通信）+ dp_scatter（本地拷贝）"替换为"reduce-scatter（通信）+ all-gather（通信）"，可以减少通信量，降低显存峰值。对比如下:
 
 路径 1（普通路径，不使用 reduce-scatter 优化）：
 

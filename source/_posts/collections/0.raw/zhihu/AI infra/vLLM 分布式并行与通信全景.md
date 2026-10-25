@@ -97,17 +97,16 @@ vLLM 还有一条容易和 PCP、MoE sequence parallel 混淆的 dense TP 编译
 如何开启
 vLLM 中，建议显式同时打开 SP 改写和 GEMM-collective fusion：
 
+```text
 vllm serve MODEL \
   --tensor-parallel-size 4 \
   -O2 \
-  --compilation-config &#39;{
-
-```text
-    &#34;pass_config&#34;: {
-      &#34;enable_sp&#34;: true,
-      &#34;fuse_gemm_comms&#34;: true
+  --compilation-config '{
+    "pass_config": {
+      "enable_sp": true,
+      "fuse_gemm_comms": true
     }
-  }&#39;
+  }'
 ```
 
 fuse_gemm_comms=true` 会自动令 `enable_sp=true`，示例同时写出两项是为了明确意图。需要注意：尽管本版本默认优化级别是 `-O2`，`IS_DENSE` 当前被硬编码为 `False`，因此 `-O2/-O3` <strong>不会自动打开</strong>这两个 pass，必须像上面一样显式配置。
@@ -119,7 +118,7 @@ sp_min_token_num =
     floor(per_device_min_bytes × TP / (hidden_size × element_size))
 当前 policy 为：
 
-平台最小 hidden sizeper_device_min_bytesCUDA SM90 / H10081928 MiBCUDA SM100-family / Blackwell819232 MiBXPU40968 MiB例如 H100 上使用 BF16/FP16、`hidden_size=8192` 时，`TP=2/4/8` 的阈值分别为 `1024/2048/4096` tokens；相同 shape 在 Blackwell policy 下阈值是其 4 倍。该值还会被 `max_num_batched_tokens` 封顶。未命中自动 policy，或希望覆盖默认启发式时，可以在 `pass_config` 中显式加入 `&#34;sp_min_token_num&#34;: N`；这是强制选择优化区间的调优旋钮，不能代表该设备和负载一定更快，应通过基准测试确定 `N`。
+平台最小 hidden sizeper_device_min_bytesCUDA SM90 / H10081928 MiBCUDA SM100-family / Blackwell819232 MiBXPU40968 MiB例如 H100 上使用 BF16/FP16、`hidden_size=8192` 时，`TP=2/4/8` 的阈值分别为 `1024/2048/4096` tokens；相同 shape 在 Blackwell policy 下阈值是其 4 倍。该值还会被 `max_num_batched_tokens` 封顶。未命中自动 policy，或希望覆盖默认启发式时，可以在 `pass_config` 中显式加入 `"sp_min_token_num": N`；这是强制选择优化区间的调优旋钮，不能代表该设备和负载一定更快，应通过基准测试确定 `N`。
 
 优劣分析
 enable_sp` 单独开启与再开启通信融合的优劣要分开看：
@@ -173,7 +172,7 @@ slice_tensor = tensor.reshape(tp_size, -1)[tp_rank]
 tensor = all_gather(slice_tensor, dim=0).reshape(original_shape)
 isend_tensor_dict/irecv_tensor_dict` 在传输前保留完整 tensor 的 shape metadata；接收端先只对属于本 TP rank 的 slice 发起 `irecv`，等待 P2P 完成后再执行上述 AllGather postprocess。默认启用条件是传入了 `all_gather_group=get_tp_group()`，且 `tensor.numel() % TP == 0`；`all_gather_tensors` 还可以逐 tensor 覆盖该决定。
 
-这项优化要求发送 stage 上的 tensor 在 TP ranks 间完全相同。开启 Dense SP 后，`residual` 可能已经沿 token 维分布在不同 TP ranks 上，此时再按 TP rank 取一段会造成二次切分和数据缺失，因此 vLLM 会通过 `all_gather_tensors[&#34;residual&#34;]=False` 禁用该 tensor 的优化。
+这项优化要求发送 stage 上的 tensor 在 TP ranks 间完全相同。开启 Dense SP 后，`residual` 可能已经沿 token 维分布在不同 TP ranks 上，此时再按 TP rank 取一段会造成二次切分和数据缺失，因此 vLLM 会通过 `all_gather_tensors["residual"]=False` 禁用该 tensor 的优化。
 
 该优化通常适合 TP ranks 通过 NVLink 等高速互联连接、而 PP 边界更昂贵的拓扑；如果 PP 和 TP 使用相近的慢速链路，新增 `AG[TP]` 可能抵消节省的 P2P 流量。
 

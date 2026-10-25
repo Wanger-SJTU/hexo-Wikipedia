@@ -114,8 +114,8 @@ Details
 - <strong>不管是SGD还是Adam还是AdamW，学习率的调整都对他们有帮助</strong>
 ![](https://pica.zhimg.com/v2-95578abe2f5a58eb2d0e993616722fc6_r.jpg)图3第二组：
 
-- ReduceLROnPlateau(mode=&#39;min&#39;) + SGD(大学习率) + momentum(大动量) + L2
-- ReduceLROnPlateau(mode=&#39;max&#39;) + SGD(大学习率) + momentum(大动量) + L2
+- ReduceLROnPlateau(mode='min') + SGD(大学习率) + momentum(大动量) + L2
+- ReduceLROnPlateau(mode='max') + SGD(大学习率) + momentum(大动量) + L2
 - 余弦退火 + SGD(大学习率) + momentum(大动量) + L2先解释一下ReduceLROnPlateau的两种模式：min和max
 当模型为min的时候，如果指标A在一段时间内没有减小的话，则学习率衰减。
 当模型为max的时候，如果指标A在一段时间内没有增大的话，则学习率衰减。ReduceLROnPlateau我选择mode为min模式的时候，指标的是acc，很有意思的是，其收敛速度非常快（比mode为max更快），我猜测原因应该是：

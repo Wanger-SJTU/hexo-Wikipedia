@@ -238,7 +238,7 @@ __global__ void smem_4(uint32_t *a) {
   }
   reinterpret_cast<uint4 *>(a)[tid] =
       reinterpret_cast<const uint4 *>(smem)[addr];
-  // printf(&#34;tid: %d, addr: %d\n&#34;, tid, addr);
+  // printf("tid: %d, addr: %d\n", tid, addr);
 }
 ```
 
@@ -271,7 +271,7 @@ __global__ void smem_5(uint32_t *a) {
   uint32_t addr = (tid / 16) * 4 + (tid % 16) / 8 + (tid % 8) / 4 * 8;
   reinterpret_cast<uint4 *>(a)[tid] =
       reinterpret_cast<const uint4 *>(smem)[addr];
-  printf(&#34;tid: %d, addr: %d\n&#34;, tid, addr);
+  printf("tid: %d, addr: %d\n", tid, addr);
 }
 ```
 

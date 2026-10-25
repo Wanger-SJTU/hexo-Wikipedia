@@ -23,7 +23,7 @@ source_url: https://www.zhihu.com/question/333371020/answer/1686069171
 
 首先，我们有换底公式：
 
-$ab=m&#x21D2;eln&#x2061;ab=m&#x21D2;ebln&#x2061;a=m&#x21D2;ln&#x2061;ebln&#x2061;a=ln&#x2061;m&#x21D2;bln&#x2061;a=ln&#x2061;m&#x21D2;b=ln&#x2061;mln&#x2061;a" role="presentation">ab=m⇒eln⁡ab=m⇒ebln⁡a=m⇒ln⁡ebln⁡a=ln⁡m⇒bln⁡a=ln⁡m⇒b=ln⁡mln⁡a\begin{aligned} a^b &= m \\ \Rightarrow e^ {\ln {a^b}} &= m\\ \Rightarrow e^ {b\ln {a}} &= m\\ \Rightarrow \ln e^{b\ln {a}} &= \ln m\\ \Rightarrow {b\ln {a}} &= \ln m\\ \Rightarrow b &= {\ln m\over \ln a}\\ \end{aligned} $
+$ab=m⇒eln⁡ab=m⇒ebln⁡a=m⇒ln⁡ebln⁡a=ln⁡m⇒bln⁡a=ln⁡m⇒b=ln⁡mln⁡a" role="presentation">ab=m⇒eln⁡ab=m⇒ebln⁡a=m⇒ln⁡ebln⁡a=ln⁡m⇒bln⁡a=ln⁡m⇒b=ln⁡mln⁡a\begin{aligned} a^b &= m \\ \Rightarrow e^ {\ln {a^b}} &= m\\ \Rightarrow e^ {b\ln {a}} &= m\\ \Rightarrow \ln e^{b\ln {a}} &= \ln m\\ \Rightarrow {b\ln {a}} &= \ln m\\ \Rightarrow b &= {\ln m\over \ln a}\\ \end{aligned} $
 
 所以我们知道所有的对数函数的计算都可化为两个 ln" role="presentation">ln\ln 函数相除，比如：
 

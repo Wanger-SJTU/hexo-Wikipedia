@@ -194,7 +194,7 @@ curriculum learning，课程学习，借鉴人类的学习模式。 按照先容
 
 - w 就是一般 CNN 要学习的权重。
 - lambda 是超参数，表示学习难度。
-- v 是 curriculum learning 引入的权重， v_i < lambda, 表示第 i 条数据 &#34;easy&#34;，参与本次训练。可见，lambda 和 v 共同定义了“课程”。
+- v 是 curriculum learning 引入的权重， v_i < lambda, 表示第 i 条数据 "easy"，参与本次训练。可见，lambda 和 v 共同定义了“课程”。
 
 学的过程是：依次固定 v，w，优化另外一个参数。
 

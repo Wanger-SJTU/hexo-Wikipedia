@@ -151,7 +151,7 @@ Python
 # ==========================================
 
 # 1. 业务启动时，Mooncake底层已完成万兆网卡的连接与几百GB内存池的预注册
-mooncake_engine = MooncakeEngine.initialize(topology_config=&#34;cluster.json&#34;)
+mooncake_engine = MooncakeEngine.initialize(topology_config="cluster.json")
 
 # 2. Prefill 节点计算完毕，产生 KV Cache 张量
 # 这个张量直接在 Mooncake 的预注册内存池中分配
@@ -163,7 +163,7 @@ fill_data_from_gpu(kv_cache_tensor)
 transfer_handle = mooncake_engine.async_send(
 
 ```text
-    destination_node=&#34;decode-node-042&#34;,
+    destination_node="decode-node-042",
     data=kv_cache_tensor,
     priority=HIGH
 )
@@ -243,7 +243,7 @@ class RDMAMultipathScheduler:
 
     def send_tensor(self, tensor_data):
         # 1. 切片机制：将巨大的张量切分为小的 Chunk
-        chunks = chunk_data(tensor_data, chunk_size=&#34;2MB&#34;)
+        chunks = chunk_data(tensor_data, chunk_size="2MB")
 ```
 
         

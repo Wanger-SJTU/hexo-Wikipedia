@@ -23,7 +23,7 @@ source_url: https://zhuanlan.zhihu.com/p/34204282
 ![](/images/collections/0.raw/zhihu/%E6%A8%A1%E5%9E%8B%E9%83%A8%E7%BD%B2%E9%82%A3%E4%BA%9B%E4%BA%8B/asset/img_eef5d36726c2.jpg)
 
 有了 Roofline Model，我就可以知道模型在机器上能跑多快喽～做梦都会笑出声来～
-$### <strong>1. 计算平台的两个指标：算力 &#x03C0;" role="presentation">π\pi 与带宽 &#x03B2;" role="presentation">β\beta</strong> $
+$### <strong>1. 计算平台的两个指标：算力 π" role="presentation">π\pi 与带宽 β" role="presentation">β\beta</strong> $
 
 
 - 算力 <strong>\pi ：也称为计算平台的</strong>性能上限**，指的是一个计算平台倾尽全力每秒钟所能完成的浮点运算数。单位是 `FLOPS` or `FLOP/s`。

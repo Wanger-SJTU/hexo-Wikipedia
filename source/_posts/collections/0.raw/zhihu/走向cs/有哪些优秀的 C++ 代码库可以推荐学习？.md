@@ -67,12 +67,9 @@ xmake r co
 使用 coost 开发 C++ 项目
 最简单的，可以直接包含[co/all.h](https://link.zhihu.com/?target=https%3A//github.com/idealvin/coost/blob/master/include/co/all.h)，使用 coost 中的所有特性。如果担心影响编译速度，也可以只包含需要用到的头文件，如包含[co/co.h](https://link.zhihu.com/?target=https%3A//github.com/idealvin/coost/blob/master/include/co/co.h)，可以使用 co/flag, co/log 以及协程相关的所有特性。
 
-```cpp
-#include &#34;co/all.h&#34;
-```
+#include "co/all.h"
 
-
-DEF_string(s, &#34;nice&#34;, &#34;&#34;);
+DEF_string(s, "nice", "");
 
 ```cpp
 int main(int argc, char** argv) {
@@ -87,12 +84,9 @@ int main(int argc, char** argv) {
 
 用户也可以用宏 `DEF_main` 定义 main 函数：
 
-```cpp
-#include &#34;co/all.h&#34;
-```
+#include "co/all.h"
 
-
-DEF_string(s, &#34;nice&#34;, &#34;&#34;);
+DEF_string(s, "nice", "");
 
 DEF_main(argc, argv) {
 
@@ -114,24 +108,24 @@ co/flag 为每个配置项提供一个默认值，在没有配置参数的情况
 
 ```cpp
 // xx.cc
-#include &#34;co/flag.h&#34;
-#include &#34;co/log.h&#34;
+#include "co/flag.h"
+#include "co/log.h"
 ```
 
 
-DEF_bool(x, false, &#34;bool x&#34;);
-DEF_bool(y, false, &#34;bool y&#34;);
-DEF_uint32(u32, 0, &#34;...&#34;);
-DEF_string(s, &#34;hello world&#34;, &#34;string&#34;);
+DEF_bool(x, false, "bool x");
+DEF_bool(y, false, "bool y");
+DEF_uint32(u32, 0, "...");
+DEF_string(s, "hello world", "string");
 
 ```cpp
 int main(int argc, char** argv) {
     flag::init(argc, argv);
 
-    COUT << &#34;x: &#34; << FLG_x;
-    COUT << &#34;y: &#34; << FLG_y;
-    COUT << &#34;u32: &#34; << FLG_u32;
-    COUT << FLG_s << &#34;|&#34; << FLG_s.size();
+    COUT << "x: " << FLG_x;
+    COUT << "y: " << FLG_y;
+    COUT << "u32: " << FLG_u32;
+    COUT << FLG_s << "|" << FLG_s.size();
 
     return 0;
 }
@@ -142,7 +136,7 @@ int main(int argc, char** argv) {
 
 ./xx                  # 按默认配置运行
 ./xx -xy -s good      # 单字母命名的 bool flag, 可以一并设置为 true
-./xx -s &#34;I&#39;m ok&#34;      # 含空格的字符串
+./xx -s "I'm ok"      # 含空格的字符串
 ./xx -u32 8k          # 整数可以带单位: k,m,g,t,p, 不区分大小写
 
 ./xx -mkconf          # 自动生成配置文件 xx.conf
@@ -154,11 +148,11 @@ co/log
 
 co/log 将日志分为 debug, info, warning, error, fatal 5 个级别，<strong>打印 fatal 级别的日志会终止程序的运行</strong>。用户可以像下面这样打印不同级别的日志：
 
-DLOG << &#34;hello &#34; << 23;  // debug
-LOG << &#34;hello &#34; << 23;   // info
-WLOG << &#34;hello &#34; << 23;  // warning
-ELOG << &#34;hello &#34; << 23;  // error
-FLOG << &#34;hello &#34; << 23;  // fatal
+DLOG << "hello " << 23;  // debug
+LOG << "hello " << 23;   // info
+WLOG << "hello " << 23;  // warning
+ELOG << "hello " << 23;  // error
+FLOG << "hello " << 23;  // fatal
 
 co/log 还提供了一系列 `CHECK` 宏，可以视为加强版的 `assert`，它们在 debug 模式下也不会被清除。
 
@@ -166,8 +160,8 @@ co/log 还提供了一系列 `CHECK` 宏，可以视为加强版的 `assert`，�
 void* p = malloc(32);
 ```
 
-CHECK(p != NULL) << &#34;malloc failed..&#34;;
-CHECK_NE(p, NULL) << &#34;malloc failed..&#34;;
+CHECK(p != NULL) << "malloc failed..";
+CHECK_NE(p, NULL) << "malloc failed..";
 
 CHECK 断言失败时，co/log 会打印函数调用栈信息，然后终止程序的运行。
 
@@ -185,8 +179,8 @@ co/unitest
 [unitest](https://link.zhihu.com/?target=https%3A//idealvin.gitee.io/cn/co/unitest/) 是一个简单易用的单元测试框架，cocoyaxi 中的很多组件会用它写单元测试代码，为 cocoyaxi 的稳定性提供了保障。
 
 ```cpp
-#include &#34;co/unitest.h&#34;
-#include &#34;co/os.h&#34;
+#include "co/unitest.h"
+#include "co/os.h"
 
 namespace test {
 ```
@@ -196,7 +190,7 @@ DEF_test(os) {
 
 ```text
     DEF_case(homedir) {
-        EXPECT_NE(os::homedir(), &#34;&#34;);
+        EXPECT_NE(os::homedir(), "");
     }
 
     DEF_case(cpunum) {
@@ -211,7 +205,7 @@ DEF_test(os) {
 上面是一个简单的例子，`DEF_test` 宏定义了一个测试单元，实际上就是一个函数(类中的方法)。`DEF_case` 宏定义了测试用例，每个测试用例实际上就是一个代码块。多个测试单元可以放到同一个 C++ 项目中，main 函数一般只需要下面几行：
 
 ```cpp
-#include &#34;co/unitest.h&#34;
+#include "co/unitest.h"
 
 int main(int argc, char** argv) {
     flag::init(argc, argv);
@@ -247,7 +241,7 @@ go(&T::f, &o, 7);  // void T::f(int); T o;
 go([](){
 
 ```text
-    LOG << &#34;hello go&#34;;
+    LOG << "hello go";
 });
 ```
 
@@ -274,10 +268,7 @@ for (size_t i = 0; i < s.size(); ++i) {
 channel
 [co::Chan](https://link.zhihu.com/?target=https%3A//idealvin.gitee.io/cn/co/coroutine/%23channelcochan)，类似于 golang 中的 channel，可用于在协程之间传递数据。
 
-```cpp
-#include &#34;co/co.h&#34;
-```
-
+#include "co/co.h"
 
 DEF_main(argc, argv) {
 
@@ -289,7 +280,7 @@ DEF_main(argc, argv) {
 
     int v = 0;
     ch >> v;
-    LOG << &#34;v: &#34; << v;
+    LOG << "v: " << v;
 
     return 0;
 }
@@ -311,10 +302,7 @@ cocoyaxi 中的 channel 基于内存拷贝实现，传递的数据类型可以�
 waitgroup
 [co::WaitGroup](https://link.zhihu.com/?target=https%3A//idealvin.gitee.io/cn/co/coroutine/%23waitgroupcowaitgroup)，类似于 golang 中的 `sync.WaitGroup`，可用于等待协程或线程的退出。
 
-```cpp
-#include &#34;co/co.h&#34;
-```
-
+#include "co/co.h"
 
 DEF_main(argc, argv) {
 
@@ -326,7 +314,7 @@ DEF_main(argc, argv) {
 
     for (int i = 0; i < 8; ++i) {
         go([wg]() {
-            LOG << &#34;co: &#34; << co::coroutine_id();
+            LOG << "co: " << co::coroutine_id();
             wg.done();
         });
     }
@@ -343,13 +331,13 @@ cocoyaxi 提供了一套协程化的 [socket API](https://link.zhihu.com/?target
 <strong>静态 web server</strong>
 
 ```cpp
-#include &#34;co/flag.h&#34;
-#include &#34;co/log.h&#34;
-#include &#34;co/so.h&#34;
+#include "co/flag.h"
+#include "co/log.h"
+#include "co/so.h"
 ```
 
 
-DEF_string(d, &#34;.&#34;, &#34;root dir&#34;); // Specify the root directory of the web server
+DEF_string(d, ".", "root dir"); // Specify the root directory of the web server
 
 ```cpp
 int main(int argc, char** argv) {
@@ -371,9 +359,9 @@ http::Server serv;
 serv.on_req(
     [](const http::Req& req, http::Res& res) {
         if (req.is_method_get()) {
-            if (req.url() == &#34;/hello&#34;) {
+            if (req.url() == "/hello") {
                 res.set_status(200);
-                res.set_body(&#34;hello world&#34;);
+                res.set_body("hello world");
             } else {
                 res.set_status(404);
             }
@@ -383,8 +371,8 @@ serv.on_req(
     }
 );
 
-serv.start(&#34;0.0.0.0&#34;, 80);                                    // http
-serv.start(&#34;0.0.0.0&#34;, 443, &#34;privkey.pem&#34;, &#34;certificate.pem&#34;); // https
+serv.start("0.0.0.0", 80);                                    // http
+serv.start("0.0.0.0", 443, "privkey.pem", "certificate.pem"); // https
 ```
 
 
@@ -392,16 +380,16 @@ serv.start(&#34;0.0.0.0&#34;, 443, &#34;privkey.pem&#34;, &#34;certificate.pem&#
 
 ```cpp
 void f() {
-    http::Client c(&#34;https://github.com&#34;);
+    http::Client c("https://github.com");
 
-    c.get(&#34;/&#34;);
-    LOG << &#34;response code: &#34;<< c.response_code();
-    LOG << &#34;body size: &#34;<< c.body_size();
-    LOG << &#34;Content-Length: &#34;<< c.header(&#34;Content-Length&#34;);
+    c.get("/");
+    LOG << "response code: "<< c.response_code();
+    LOG << "body size: "<< c.body_size();
+    LOG << "Content-Length: "<< c.header("Content-Length");
     LOG << c.header();
 
-    c.post(&#34;/hello&#34;, &#34;data xxx&#34;);
-    LOG << &#34;response code: &#34;<< c.response_code();
+    c.post("/hello", "data xxx");
+    LOG << "response code: "<< c.response_code();
 }
 ```
 

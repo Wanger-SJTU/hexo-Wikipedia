@@ -53,9 +53,12 @@ source_url: https://zhuanlan.zhihu.com/p/360364235
 - 跟踪调(trace schedule)度：真正全局调度的运用，编译器会尽量去优化最经常被运行的代码控制流路
 LLVM 调度有两种IR状态的调度，基于SchduleDAGSDNode 或者基于ScheduleDAGInstr，目前LLVM框架下，很多后端都是基于MachineScheduler （ScheduleDAGInstr）做调度。使能调度的优化选项：
 
+```text
 -pre-RA-sched        - Instruction schedulers available (before register allocation):
 -enable-misched      - Enable the machine instruction scheduling pass.默认开启
 -enable-post-misched - Enable the post-ra machine instruction scheduling pass. 默认开启`
+```
+
 
 ![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_472f8828093f.jpg)
 

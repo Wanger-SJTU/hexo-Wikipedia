@@ -23,7 +23,7 @@ source_url: https://www.zhihu.com/question/302589692/answer/533950472
 - 二是「高原法」，即在每一帧都给 a 一个高概率。不妨设在每一帧，a 的概率都是 0.9，所有其它音素（包括空白）的概率都是 0.01。
 上面两种方法中，各帧各个音素的概率简洁表示如下：
 
-$&#x5C16;&#x5CF0;&#x6CD5;:blankaother[0.90.010.90.010.90.010.010.010.01]&#x9AD8;&#x539F;&#x6CD5;:blankaother[0.010.010.010.90.90.90.010.010.01]" role="presentation" style="font-size: 100%; display: inline-block; position: relative;">尖峰法:blankaother[0.90.010.90.010.90.010.010.010.01]高原法:blankaother[0.010.010.010.90.90.90.010.010.01]\text{尖峰法}: \begin{array}{c} \text{blank} \\ a \\ \text{other} \end{array} \left[ \begin{array}{c} 0.9 & 0.01 & 0.9\\ 0.01 & 0.9 & 0.01 \\ 0.01 & 0.01 & 0.01 \end{array} \right] \qquad \text{高原法}: \begin{array}{c} \text{blank} \\ a \\ \text{other} \end{array} \left[ \begin{array}{c} 0.01 & 0.01 & 0.01 \\ 0.9 & 0.9 & 0.9 \\ 0.01 & 0.01 & 0.01 \end{array} \right] \\ $
+$尖峰法:blankaother[0.90.010.90.010.90.010.010.010.01]高原法:blankaother[0.010.010.010.90.90.90.010.010.01]" role="presentation" style="font-size: 100%; display: inline-block; position: relative;">尖峰法:blankaother[0.90.010.90.010.90.010.010.010.01]高原法:blankaother[0.010.010.010.90.90.90.010.010.01]\text{尖峰法}: \begin{array}{c} \text{blank} \\ a \\ \text{other} \end{array} \left[ \begin{array}{c} 0.9 & 0.01 & 0.9\\ 0.01 & 0.9 & 0.01 \\ 0.01 & 0.01 & 0.01 \end{array} \right] \qquad \text{高原法}: \begin{array}{c} \text{blank} \\ a \\ \text{other} \end{array} \left[ \begin{array}{c} 0.01 & 0.01 & 0.01 \\ 0.9 & 0.9 & 0.9 \\ 0.01 & 0.01 & 0.01 \end{array} \right] \\ $
 
 上面说了，「CTC 认为这个音素是 a」，那么这个音素实际上（ground truth）是什么呢？我们考虑三种常见情况：
 

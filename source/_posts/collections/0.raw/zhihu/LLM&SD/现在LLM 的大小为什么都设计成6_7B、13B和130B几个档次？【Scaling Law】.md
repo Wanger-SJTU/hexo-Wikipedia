@@ -25,7 +25,7 @@ source_url: https://zhuanlan.zhihu.com/p/670046783
 
 <strong>scaling law</strong>：语言模型性能主要和尺寸（scale）有关，和模型形状(宽度、深度)基本无关。scale主要说的是三个因素：参数量N（不包括embedding），数据集大小D，训练计算量C。大模型比小模型样本效率高，所以计算效率最高的方式是训练大模型早点停止，而不是训练小模型到收敛。
 
-浮点运算量（FLOPs）C" role="presentation">CC、模型参数N" role="presentation">NN以及训练的token数D" role="presentation">DD之间存在关系：C&#x223C;6ND" role="presentation">C∼6NDC\sim6ND
+浮点运算量（FLOPs）C" role="presentation">CC、模型参数N" role="presentation">NN以及训练的token数D" role="presentation">DD之间存在关系：C∼6ND" role="presentation">C∼6NDC\sim6ND
 
 N ∝ C^0.73
 

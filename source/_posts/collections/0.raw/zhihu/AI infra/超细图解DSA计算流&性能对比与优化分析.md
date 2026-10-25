@@ -42,30 +42,30 @@ DSA在MLA(Multi-Head Latent Attention)的基础上多了下图中红色框的模
 
 ```text
 {
-    &#34;vocab_size&#34;: 129280,
-    &#34;dim&#34;: 7168,
-    &#34;inter_dim&#34;: 18432,
-    &#34;moe_inter_dim&#34;: 2048,
-    &#34;n_layers&#34;: 61,
-    &#34;n_dense_layers&#34;: 3,
-    &#34;n_heads&#34;: 128,
-    &#34;n_routed_experts&#34;: 256,
-    &#34;n_shared_experts&#34;: 1,
-    &#34;n_activated_experts&#34;: 8,
-    &#34;n_expert_groups&#34;: 8,
-    &#34;n_limited_groups&#34;: 4,
-    &#34;route_scale&#34;: 2.5,
-    &#34;score_func&#34;: &#34;sigmoid&#34;,
-    &#34;q_lora_rank&#34;: 1536,
-    &#34;kv_lora_rank&#34;: 512,
-    &#34;qk_nope_head_dim&#34;: 128,
-    &#34;qk_rope_head_dim&#34;: 64,
-    &#34;v_head_dim&#34;: 128,
-    &#34;dtype&#34;: &#34;fp8&#34;,
-    &#34;scale_fmt&#34;: &#34;ue8m0&#34;,
-    &#34;index_n_heads&#34;: 64,
-    &#34;index_head_dim&#34;: 128,
-    &#34;index_topk&#34;: 2048
+    "vocab_size": 129280,
+    "dim": 7168,
+    "inter_dim": 18432,
+    "moe_inter_dim": 2048,
+    "n_layers": 61,
+    "n_dense_layers": 3,
+    "n_heads": 128,
+    "n_routed_experts": 256,
+    "n_shared_experts": 1,
+    "n_activated_experts": 8,
+    "n_expert_groups": 8,
+    "n_limited_groups": 4,
+    "route_scale": 2.5,
+    "score_func": "sigmoid",
+    "q_lora_rank": 1536,
+    "kv_lora_rank": 512,
+    "qk_nope_head_dim": 128,
+    "qk_rope_head_dim": 64,
+    "v_head_dim": 128,
+    "dtype": "fp8",
+    "scale_fmt": "ue8m0",
+    "index_n_heads": 64,
+    "index_head_dim": 128,
+    "index_topk": 2048
 }
 ```
 
@@ -241,14 +241,14 @@ class Indexer(torch.nn.Module):
         self.softmax_scale = self.head_dim ** -0.5
         self.scale_fmt = args.scale_fmt
 
-        self.register_buffer(&#34;k_cache&#34;, torch.zeros(args.max_batch_size, args.max_seq_len, self.head_dim, dtype=torch.float8_e4m3fn), persistent=False)
-        self.register_buffer(&#34;k_scale_cache&#34;, torch.zeros(args.max_batch_size, args.max_seq_len, self.head_dim // block_size, dtype=torch.float32), persistent=False)
+        self.register_buffer("k_cache", torch.zeros(args.max_batch_size, args.max_seq_len, self.head_dim, dtype=torch.float8_e4m3fn), persistent=False)
+        self.register_buffer("k_scale_cache", torch.zeros(args.max_batch_size, args.max_seq_len, self.head_dim // block_size, dtype=torch.float32), persistent=False)
 
     def forward(self, x: torch.Tensor, qr: torch.Tensor, start_pos: int, freqs_cis: torch.Tensor, mask: Optional[torch.Tensor]):
         bsz, seqlen, _ = x.size()
         end_pos = start_pos + seqlen
         q = self.wq_b(qr)
-        q = rearrange(q, &#39;b s (h d) -> b s h d&#39;, d=self.head_dim)
+        q = rearrange(q, 'b s (h d) -> b s h d', d=self.head_dim)
         q_pe, q_nope = torch.split(q, [self.rope_head_dim, self.head_dim - self.rope_head_dim], dim=-1)
         q_pe = apply_rotary_emb(q_pe, freqs_cis)
         q = torch.cat([q_pe, q_nope], dim=-1)
@@ -271,11 +271,11 @@ class Indexer(torch.nn.Module):
         topk_indices = index_score.topk(min(self.index_topk, end_pos), dim=-1)[1]
         topk_indices_ = topk_indices.clone()
         dist.broadcast(topk_indices_, src=0)
-        assert torch.all(topk_indices == topk_indices_), f&#34;{topk_indices=} {topk_indices_=}&#34;
+        assert torch.all(topk_indices == topk_indices_), f"{topk_indices=} {topk_indices_=}"
         return topk_indices
 
 class MLA(nn.Module):
-    &#34;&#34;&#34;
+    """
     Multi-Head Latent Attention (MLA) Layer.
     Attributes:
         dim (int): Dimensionality of the input features.
@@ -288,7 +288,7 @@ class MLA(nn.Module):
         qk_head_dim (int): Total dimensionality of query/key projections.
         v_head_dim (int): Dimensionality of value projections.
         softmax_scale (float): Scaling factor for softmax in attention computation.
-    &#34;&#34;&#34;
+    """
     def __init__(self, args: ModelArgs):
         super().__init__()
         self.dim = args.dim
@@ -315,12 +315,12 @@ class MLA(nn.Module):
 
         self.indexer = Indexer(args)
 
-        self.register_buffer(&#34;kv_cache&#34;, torch.zeros(args.max_batch_size, args.max_seq_len, self.kv_lora_rank), persistent=False)
-        self.register_buffer(&#34;pe_cache&#34;, torch.zeros(args.max_batch_size, args.max_seq_len, self.qk_rope_head_dim), persistent=False)
+        self.register_buffer("kv_cache", torch.zeros(args.max_batch_size, args.max_seq_len, self.kv_lora_rank), persistent=False)
+        self.register_buffer("pe_cache", torch.zeros(args.max_batch_size, args.max_seq_len, self.qk_rope_head_dim), persistent=False)
         self.dequant_wkv_b = None
 
     def forward(self, x: torch.Tensor, start_pos: int, freqs_cis: torch.Tensor, mask: Optional[torch.Tensor]):
-        &#34;&#34;&#34;
+        """
         Forward pass for the Multi-Head Latent Attention (MLA) Layer.
         Args:
             x (torch.Tensor): Input tensor of shape (batch_size, seq_len, dim).
@@ -329,7 +329,7 @@ class MLA(nn.Module):
             mask (Optional[torch.Tensor]): Mask tensor to exclude certain positions from attention.
         Returns:
             torch.Tensor: Output tensor with the same shape as the input.
-        &#34;&#34;&#34;
+        """
         bsz, seqlen, _ = x.size()
         end_pos = start_pos + seqlen
         qr = self.q_norm(self.wq_a(x))
@@ -349,7 +349,7 @@ class MLA(nn.Module):
             kv = kv.view(bsz, seqlen, self.n_local_heads, self.qk_nope_head_dim + self.v_head_dim)
             k_nope, v = torch.split(kv, [self.qk_nope_head_dim, self.v_head_dim], dim=-1)
             k = torch.cat([k_nope, k_pe.expand(-1, -1, self.n_local_heads, -1)], dim=-1)
-            scores = torch.einsum(&#34;bshd,bthd->bsht&#34;, q.float(), k.float()) * self.softmax_scale
+            scores = torch.einsum("bshd,bthd->bsht", q.float(), k.float()) * self.softmax_scale
 ```
 
 
@@ -357,20 +357,20 @@ class MLA(nn.Module):
 
 ```text
             topk_indices = self.indexer(x, qr, start_pos, freqs_cis, mask)
-            index_mask = torch.full((bsz, seqlen, seqlen), float(&#34;-inf&#34;), device=x.device).scatter_(-1, topk_indices, 0)
+            index_mask = torch.full((bsz, seqlen, seqlen), float("-inf"), device=x.device).scatter_(-1, topk_indices, 0)
             index_mask += mask
             scores += index_mask.unsqueeze(2)
 
             scores = scores.softmax(dim=-1, dtype=torch.float32)
-            x = torch.einsum(&#34;bsht,bthd->bshd&#34;, scores.type_as(x), v)
+            x = torch.einsum("bsht,bthd->bshd", scores.type_as(x), v)
         else:                   # MHA decode
             if self.dequant_wkv_b is None and self.wkv_b.scale is not None:
                 self.dequant_wkv_b = weight_dequant(self.wkv_b.weight, self.wkv_b.scale)
             wkv_b = self.wkv_b.weight if self.dequant_wkv_b is None else self.dequant_wkv_b
             wkv_b = wkv_b.view(self.n_local_heads, -1, self.kv_lora_rank)
-            q_nope = torch.einsum(&#34;bshd,hdc->bshc&#34;, q_nope, wkv_b[:, :self.qk_nope_head_dim])
-            scores = (torch.einsum(&#34;bshc,btc->bsht&#34;, q_nope.float(), self.kv_cache[:bsz, :end_pos].float()) +
-                      torch.einsum(&#34;bshr,btr->bsht&#34;, q_pe.float(), self.pe_cache[:bsz, :end_pos].float())) * self.softmax_scale
+            q_nope = torch.einsum("bshd,hdc->bshc", q_nope, wkv_b[:, :self.qk_nope_head_dim])
+            scores = (torch.einsum("bshc,btc->bsht", q_nope.float(), self.kv_cache[:bsz, :end_pos].float()) +
+                      torch.einsum("bshr,btr->bsht", q_pe.float(), self.pe_cache[:bsz, :end_pos].float())) * self.softmax_scale
 ```
 
 
@@ -378,12 +378,12 @@ class MLA(nn.Module):
 
 ```text
             topk_indices = self.indexer(x, qr, start_pos, freqs_cis, mask)
-            index_mask = torch.full((bsz, 1, end_pos), float(&#34;-inf&#34;), device=x.device).scatter_(-1, topk_indices, 0)
+            index_mask = torch.full((bsz, 1, end_pos), float("-inf"), device=x.device).scatter_(-1, topk_indices, 0)
             scores += index_mask.unsqueeze(2)
 
             scores = scores.softmax(dim=-1, dtype=torch.float32)
-            x = torch.einsum(&#34;bsht,btc->bshc&#34;, scores.type_as(x), self.kv_cache[:bsz, :end_pos])
-            x = torch.einsum(&#34;bshc,hdc->bshd&#34;, x, wkv_b[:, -self.v_head_dim:])
+            x = torch.einsum("bsht,btc->bshc", scores.type_as(x), self.kv_cache[:bsz, :end_pos])
+            x = torch.einsum("bshc,hdc->bshd", x, wkv_b[:, -self.v_head_dim:])
         x = self.wo(x.flatten(2))
         return x
 ```

@@ -619,8 +619,11 @@ make
 
 3. 加载模块:
 
+```text
 sudo insmod ./urdma.ko
 sudo dmesg -T | tail -n 20
+```
+
 检查 dmesg 的输出，相关的 pr_info 消息（如 "urdma: loading module...", "urdma: allocated device for id: 0", "urdma: successfully registered device urdma0" 等）按预期出现，可以确认模块加载成功。
 
 4. 验证:

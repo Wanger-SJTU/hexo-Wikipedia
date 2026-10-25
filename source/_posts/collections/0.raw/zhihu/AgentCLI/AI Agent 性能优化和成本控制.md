@@ -22,7 +22,7 @@ source_url: https://zhuanlan.zhihu.com/p/2009938845945328180
 - 缓存策略和最佳实践
 - 模型选择和 Prompt 优化
 - 监控和成本追踪
-- 实战案例：从每月 1000&#x964D;&#x5230;" role="presentation">1000降到1000 降到 100
+- 实战案例：从每月 1000降到" role="presentation">1000降到1000 降到 100
 
 前置知识：** 需要先阅读前 3 篇
 

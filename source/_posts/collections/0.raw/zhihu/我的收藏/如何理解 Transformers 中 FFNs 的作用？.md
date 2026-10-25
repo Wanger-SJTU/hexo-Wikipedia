@@ -98,11 +98,17 @@ Attention, FFN, ResNet 缺一不可但却可能是各司其职，我个人的观
 - skip connection 将每层 FFN 的结果进行细化。
 2015年，《End-To-End Memory Networks 》这篇论文提出了 Key-Value Memory 的结构，对于一个输入 x, 其网络结构为
 
+```text
 \text{MemoryNet(x)} = \text{softmax}(x \cdot K^\top) V \\ 
+```
+
 
 FFN 的公式为，
 
+```text
 \text{FFN}(x) = f(x \cdot W_1) W_2 = f(x \cdot K^\top) V \\ 
+```
+
 
 这里 f 是 ReLU 激活函数，可以看出两个结构的唯一区别就是一个是才用 softmax 进行归一化，另一个则采用 ReLU 进行筛选。本质上都差不多。
 

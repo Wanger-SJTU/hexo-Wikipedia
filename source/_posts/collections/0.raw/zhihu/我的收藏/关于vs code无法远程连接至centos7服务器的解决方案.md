@@ -21,7 +21,7 @@ source_url: https://zhuanlan.zhihu.com/p/1909663308669260068
 
 实现过程：
 
-$#### &#x7B2C;&#x4E00;&#x6B65;&#xFF1A;&#x4E0B;&#x8F7D;&#x5E76;&#x7F16;&#x8BD1; glibc 2.28 &#x5230;&#x7528;&#x6237;&#x76EE;&#x5F55;" role="presentation">第一步：下载并编译 glibc 2.28 到用户目录\enclose{horizontalstrike}{\text{第一步：下载并编译 glibc 2.28 到用户目录}} $
+$#### 第一步：下载并编译 glibc 2.28 到用户目录" role="presentation">第一步：下载并编译 glibc 2.28 到用户目录\enclose{horizontalstrike}{\text{第一步：下载并编译 glibc 2.28 到用户目录}} $
 
 #### 第一步：使用crosstool来编译工具链（glibc）
 
@@ -100,9 +100,12 @@ fi `
 
 然后在环境变量中指向这个fake-patchelf即可，我这里贴出我的环境变量以供参考：
 
+```bash
 export VSCODE_SERVER_PATCHELF_PATH="$HOME/local/fake-patchelf"
 export VSCODE_SERVER_CUSTOM_GLIBC_PATH="$HOME/local/x86_64-linux-gnu/x86_64-linux-gnu/sysroot/lib"
 export VSCODE_SERVER_CUSTOM_GLIBC_LINKER="$HOME/local/x86_64-linux-gnu/x86_64-linux-gnu/sysroot/lib/ld-linux-x86-64.so.2"`
+```
+
 
 此时用新版本的vscode连接，应该就能成功了。
 

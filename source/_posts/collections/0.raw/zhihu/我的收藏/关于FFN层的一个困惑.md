@@ -37,7 +37,7 @@ def ffn_native():
 ```
 
 
-$为了描述方便，下面我们用 H" role="presentation">HH 代表hidden_size，使用 4&#x22C5;H" role="presentation">4⋅H4\cdot H 代表immedate size，假设只有一个token做FFN，即hidden states的shape是 [1,H]" role="presentation">[1,H][1, H] 。 $
+$为了描述方便，下面我们用 H" role="presentation">HH 代表hidden_size，使用 4⋅H" role="presentation">4⋅H4\cdot H 代表immedate size，假设只有一个token做FFN，即hidden states的shape是 [1,H]" role="presentation">[1,H][1, H] 。 $
 
 我们发现可以做如下两次变换：
 

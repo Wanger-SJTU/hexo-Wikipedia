@@ -405,10 +405,14 @@ review@ubuntu:~/02_dtb$ fdtdump --h
 Usage: fdtdump [options] 
 
 Options: -[dshV]
+
+```cpp
   -d, --debug   Dump debug information while decoding the file
   -s, --scan    Scan for an embedded fdt in file
   -h, --help    Print this help and exit
   -V, --version Print version and exit`
+```
+
 
 本文采用 jz2440.dtb文件为例说明fdtdump工具的使用。Linux终端执行fdtdump
 

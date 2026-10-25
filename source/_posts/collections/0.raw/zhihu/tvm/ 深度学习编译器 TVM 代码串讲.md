@@ -1838,6 +1838,8 @@ enum OpPatternKind {
 对于 TVM 的 Fuse 来说，最大的实现层面的麻烦在于识别并融合下面这样的模式
 
             conv2d
+
+```text
             /  |  \
            /   |   \
          op    op   op
@@ -1845,6 +1847,8 @@ enum OpPatternKind {
            \   |   /
           elemwise add
                |
+```
+
 
 但是从前文可以知道，elemwise add 是 conv2d 的后序支配节点，所以 TVM 的融合步骤大致为
 

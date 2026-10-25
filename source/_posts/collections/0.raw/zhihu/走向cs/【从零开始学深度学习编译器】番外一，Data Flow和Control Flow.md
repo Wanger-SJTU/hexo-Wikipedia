@@ -25,7 +25,7 @@ source_url: https://zhuanlan.zhihu.com/p/369780094
 
 我记得我接触的第一个深度学习框架是TensorFlow1.x，本科毕业设计也是基于TensorFlow完成的，因此这里我将以TensorFlow1.x为例介绍一下DataFlow。
 
-假设现在我们要实现一个(a+b)&#x2217;c" role="presentation">(a+b)∗c(a + b) * c的逻辑，其中a" role="presentation">aa，b" role="presentation">bb，c" role="presentation">cc都是一个简单的实数，然后我们如果用Python来实现非常简单，大概长这样：
+假设现在我们要实现一个(a+b)∗c" role="presentation">(a+b)∗c(a + b) * c的逻辑，其中a" role="presentation">aa，b" role="presentation">bb，c" role="presentation">cc都是一个简单的实数，然后我们如果用Python来实现非常简单，大概长这样：
 
 #coding=utf-8
 
@@ -153,7 +153,7 @@ TensorFlow提供了两个条件控制OP，即tf.cond和tf.case 下面的代码�
 
 ![](/images/collections/0.raw/zhihu/%E8%B5%B0%E5%90%91cs/asset/img_51e95658fbd2.jpg)
 
-并列的条件分支&amp;gt;2个时，使用tf.case来控制
+并列的条件分支&gt;2个时，使用tf.case来控制
 ### 循环
 
 TensorFlow提供了`tf.while_loop`来构造循环块，感觉和RNN类似的结构有这个需求，例如：

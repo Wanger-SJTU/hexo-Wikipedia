@@ -523,31 +523,18 @@ pfn_to_page/page_to_pfn 的作用是 struct page* 和 pfn 页帧号之间的转�
 
 #elif defined(CONFIG_DISCONTIGMEM)
 
+```text
 #define __pfn_to_page(pfn)   \
 ({ unsigned long __pfn = (pfn);  \
-
-```text
  unsigned long __nid = arch_pfn_to_nid(__pfn);  \
-```
-
  NODE_DATA(__nid)->node_mem_map + arch_local_page_offset(__pfn, __nid);\
-
-```text
 })
 
 #define __page_to_pfn(pg)      \
-```
-
 ({ const struct page *__pg = (pg);     \
-
-```text
  struct pglist_data *__pgdat = NODE_DATA(page_to_nid(__pg)); \
-```
-
  (unsigned long)(__pg - __pgdat->node_mem_map) +   \
   __pgdat->node_start_pfn;     \
-
-```text
 })
 ```
 
@@ -573,30 +560,18 @@ linux 内核中静态定义了一个 mem_section 的指针数组，一个 sectio
 ```
 
  */
-#define __page_to_pfn(pg)     \
-({ const struct page *__pg = (pg);    \
 
 ```cpp
+#define __page_to_pfn(pg)     \
+({ const struct page *__pg = (pg);    \
  int __sec = page_to_section(__pg);   \
-```
-
  (unsigned long)(__pg - __section_mem_map_addr(__nr_to_section(__sec))); \
-
-```text
 })
 
 #define __pfn_to_page(pfn)    \
-```
-
 ({ unsigned long __pfn = (pfn);   \
-
-```text
  struct mem_section *__sec = __pfn_to_section(__pfn); \
-```
-
  __section_mem_map_addr(__sec) + __pfn;  \
-
-```text
 })
 #endif /* CONFIG_FLATMEM/DISCONTIGMEM/SPARSEMEM */
 ```

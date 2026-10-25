@@ -23,18 +23,18 @@ source_url: https://zhuanlan.zhihu.com/p/2022071052365301640
 
 Gated DeltaNet 的核心是一个状态递推：
 
-$St=gt&#x22C5;St&#x2212;1+&#x0394;t&#x22C5;kt&#x22A4;" role="presentation" style="font-size: 100%; display: inline-block; position: relative;">St=gt⋅St−1+Δt⋅kt⊤ S_t = g_t \cdot S_{t-1} + \Delta_t \cdot k_t^\top $
+$St=gt⋅St−1+Δt⋅kt⊤" role="presentation" style="font-size: 100%; display: inline-block; position: relative;">St=gt⋅St−1+Δt⋅kt⊤ S_t = g_t \cdot S_{t-1} + \Delta_t \cdot k_t^\top $
 
 其中：
 
-$- St&#x2208;Rd&#x00D7;d" role="presentation">St∈Rd×dS_t \in \mathbb{R}^{d \times d} 是状态矩阵$
-$- gt&#x2208;R" role="presentation">gt∈Rg_t \in \mathbb{R} 是衰减门控$
-$- &#x0394;t=&#x03B2;t(vt&#x2212;St&#x2212;1kt)" role="presentation">Δt=βt(vt−St−1kt)\Delta_t = \beta_t (v_t - S_{t-1} k_t) 是增量更新$
-$- kt,vt&#x2208;Rd" role="presentation">kt,vt∈Rdk_t, v_t \in \mathbb{R}^d 是 key 和 value 向量$
+$- St∈Rd×d" role="presentation">St∈Rd×dS_t \in \mathbb{R}^{d \times d} 是状态矩阵$
+$- gt∈R" role="presentation">gt∈Rg_t \in \mathbb{R} 是衰减门控$
+$- Δt=βt(vt−St−1kt)" role="presentation">Δt=βt(vt−St−1kt)\Delta_t = \beta_t (v_t - S_{t-1} k_t) 是增量更新$
+$- kt,vt∈Rd" role="presentation">kt,vt∈Rdk_t, v_t \in \mathbb{R}^d 是 key 和 value 向量$
 
 #### 1.2 顺序依赖链
 
-$关键问题在于 &#x0394;t" role="presentation">Δt\Delta_t 的计算：$
+$关键问题在于 Δt" role="presentation">Δt\Delta_t 的计算：$
 
 old_v = S_{t-1} @ k_t     # 必须知道 S_{t-1}
 delta = beta * (v - old_v) # 依赖 old_v
@@ -48,9 +48,9 @@ S_t = g * S_{t-1} + outer(delta, k)  # 更新状态`
 
 #### 1.3 Parallel Scan 为什么不行？
 
-$理论上，形如 St=AtSt&#x2212;1+Bt" role="presentation">St=AtSt−1+BtS_t = A_t S_{t-1} + B_t 的递推可以用 Parallel Scan 并行化。但 GDN 的问题是：$
+$理论上，形如 St=AtSt−1+Bt" role="presentation">St=AtSt−1+BtS_t = A_t S_{t-1} + B_t 的递推可以用 Parallel Scan 并行化。但 GDN 的问题是：$
 
-$&#x0394;t=&#x03B2;t(vt&#x2212;St&#x2212;1kt&#x23DF;&#x4F9D;&#x8D56;&#x72B6;&#x6001;)" role="presentation" style="font-size: 100%; display: inline-block; position: relative;">Δt=βt(vt−St−1kt⏟依赖状态) \Delta_t = \beta_t (v_t - \underbrace{S_{t-1} k_t}_{\text{依赖状态}})  $
+$Δt=βt(vt−St−1kt⏟依赖状态)" role="presentation" style="font-size: 100%; display: inline-block; position: relative;">Δt=βt(vt−St−1kt⏟依赖状态) \Delta_t = \beta_t (v_t - \underbrace{S_{t-1} k_t}_{\text{依赖状态}})  $
 
 \Delta_t <strong>本身就依赖</strong>S_{t-1}，不是预先可知的常数。这打破了 Parallel Scan 的前提条件。
 

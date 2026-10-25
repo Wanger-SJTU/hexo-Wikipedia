@@ -193,8 +193,11 @@ source_url: https://zhuanlan.zhihu.com/p/1911805939247486365
 
 将仓库克隆到您要运行的系统上，并切换到该目录：
 
+```bash
 git clone https://github.com/robert-mcdermott/ai-knowledge-graph.git
 cd ai-knowledge-graph`
+```
+
 
 使用`uv`安装依赖项：
 
@@ -244,6 +247,8 @@ usage: generate-graph.py [-h] [--test] [--config CONFIG] [--output OUTPUT] [--in
 Knowledge Graph Generator and Visualizer
 
 options:
+
+```text
   -h, --help        显示此帮助消息并退出
   --test            使用示例数据生成测试可视化
   --config CONFIG   配置文件路径
@@ -252,6 +257,8 @@ options:
   --debug           启用调试输出（原始LLM响应和提取的JSON）
   --no-standardize  禁用实体标准化
   --no-inference    禁用关系推理`
+```
+
 
 以下是使用当前目录中文本文件`mydocument.txt`创建知识图谱的示例（如果您使用`uv`，请将“python”替换为“uv run”）：
 

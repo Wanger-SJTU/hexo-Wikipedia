@@ -19,7 +19,7 @@ source_url: https://zhuanlan.zhihu.com/p/8925826414
 
 ### Sliding Window attention
 
-在prefill阶段，Sliding Window attention 每个token会选和自己最邻近的W个tokens去做注意力计算，假设当前的token 位置是i，那么在最末层需要计算 [i&#x2212;W,i]" role="presentation">[i−W,i][i-W,i] 之间的token注意力，因此再上一层需要计算 [i&#x2212;2W,i]" role="presentation">[i−2W,i][i-2W,i] 内的tokens注意力，依此类推，则prefill的时间复杂度是 O(TW)" role="presentation">O(TW)O(TW) ,在KV cache占用方面，可以按照W的大小将长chunk切成对应窗口长度的小段，只存储对应长度的片段。
+在prefill阶段，Sliding Window attention 每个token会选和自己最邻近的W个tokens去做注意力计算，假设当前的token 位置是i，那么在最末层需要计算 [i−W,i]" role="presentation">[i−W,i][i-W,i] 之间的token注意力，因此再上一层需要计算 [i−2W,i]" role="presentation">[i−2W,i][i-2W,i] 内的tokens注意力，依此类推，则prefill的时间复杂度是 O(TW)" role="presentation">O(TW)O(TW) ,在KV cache占用方面，可以按照W的大小将长chunk切成对应窗口长度的小段，只存储对应长度的片段。
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_3ee3bb1b2bf3.jpg)
 

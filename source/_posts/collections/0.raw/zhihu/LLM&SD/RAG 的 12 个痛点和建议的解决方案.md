@@ -433,9 +433,13 @@ class Album(BaseModel):
 
 
 # Define openai pydantic program
+
+```text
 prompt_template_str = """\
 Generate an example album, with an artist and a list of songs. \
 Using the movie {movie_name} as inspiration.\
+```
+
 """
 program = OpenAIPydanticProgram.from_defaults(
 

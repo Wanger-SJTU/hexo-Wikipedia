@@ -34,7 +34,7 @@ source_url: https://zhuanlan.zhihu.com/p/350228423
 论文中结构图
 #### 1.1 训练阶段
 
-A和B两个sentence分别进入同一个BERT模型得到各自的poolout向量u,v，通过计算 |u&#x2212;v|" role="presentation">|u−v||u-v| 对u,v向量提取交叉特征，并和u,v向量concat到一起进入fusion layers得到预测结果。这种在u,v后面加入fusion layers的方式会让预测结果更准，但也会让u,v向量与预测结果的关联性变弱。
+A和B两个sentence分别进入同一个BERT模型得到各自的poolout向量u,v，通过计算 |u−v|" role="presentation">|u−v||u-v| 对u,v向量提取交叉特征，并和u,v向量concat到一起进入fusion layers得到预测结果。这种在u,v后面加入fusion layers的方式会让预测结果更准，但也会让u,v向量与预测结果的关联性变弱。
 
 #### 1.2 推理阶段
 

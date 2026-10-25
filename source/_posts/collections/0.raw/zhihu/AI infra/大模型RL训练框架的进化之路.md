@@ -161,10 +161,10 @@ def process_rollout_data(rollout_id, args, data_buffer):
 
 ```python
     def async_init_weight_update_connections(self, rollout):
-        &#34;&#34;&#34;
+        """
         Connect rollout engines and actors, e.g. initialize the process group between them
         to update weights after each training stage.
-        &#34;&#34;&#34;
+        """
         self.rollout = rollout
         ray.get([actor.set_data_buffer.remote(rollout.data_buffer) for actor in self._actor_handlers])
 ```
@@ -175,26 +175,26 @@ def process_rollout_data(rollout_id, args, data_buffer):
 
 ```python
     def async_init_weight_update_connections(self, rollout):
-        &#34;&#34;&#34;
+        """
         Connect rollout engines and actors, e.g. initialize the process group between them
         to update weights after each training stage.
-        &#34;&#34;&#34;
+        """
         self.rollout = rollout
         ray.get([actor.set_data_buffer.remote(rollout.data_buffer) for actor in self._actor_handlers])
         actor_parallel_configs = ray.get([actor.get_parallel_config.remote() for actor in self._actor_handlers])
         parallel_config = {}
         for rank, config in enumerate(actor_parallel_configs):
-            assert config[&#34;rank&#34;] == rank and config[&#34;world_size&#34;] == len(self._actor_handlers)
-            config.pop(&#34;rank&#34;)
+            assert config["rank"] == rank and config["world_size"] == len(self._actor_handlers)
+            config.pop("rank")
             for key, value in config.items():
-                if &#34;size&#34; in key and key:
+                if "size" in key and key:
                     if key not in parallel_config:
                         parallel_config[key] = value
                     else:
                         assert (
                             parallel_config[key] == value
-                        ), f&#34;mismatch {key} on rank {rank}: {parallel_config[key]} != {value}&#34;
-        parallel_config[&#34;actors&#34;] = actor_parallel_configs
+                        ), f"mismatch {key} on rank {rank}: {parallel_config[key]} != {value}"
+        parallel_config["actors"] = actor_parallel_configs
         ray.get(rollout.async_set_parallel_config(parallel_config))
 
         return [
@@ -233,7 +233,7 @@ roll通过cluster的方式，定义了多个角色。
  )
 ```
 
- if self.pipeline_config.adv_estimator == &#34;gae&#34;:
+ if self.pipeline_config.adv_estimator == "gae":
 
 ```text
             self.critic: Any = Cluster(
@@ -260,9 +260,9 @@ roll细化到，不同domain，不同batch，不同query上都可以做自定义
         comm_plan = self.model_update_comm_plan[self.worker.rank_info.pp_rank]
         model = self.unwrap_model()
         broadcast_time_cost = 0
-        with Timer(&#34;model_update_total&#34;) as timer_total:
+        with Timer("model_update_total") as timer_total:
             for param_name, param in tqdm(
-                model.named_parameters(), desc=&#34;weight update progress&#34;, total=len(list(model.named_parameters()))
+                model.named_parameters(), desc="weight update progress", total=len(list(model.named_parameters()))
             ):
                 shape = param.shape if not self.ds_config.is_zero3() else param.ds_shape
                 if not self.ds_config.is_zero3():
@@ -270,11 +270,11 @@ roll细化到，不同domain，不同batch，不同query上都可以做自定义
                     param_weight = param.data
                     refs = []
                     for p2p_tgt_device in p2p_tgt_devices:
-                        p2p_tgt_worker = tgt_workers[p2p_tgt_device[&#34;rank&#34;]]
+                        p2p_tgt_worker = tgt_workers[p2p_tgt_device["rank"]]
                         ref = p2p_tgt_worker.update_parameter.remote(
                             parameter_name=param_name,
                             weight=param_weight,
-                            ranks_in_worker=[p2p_tgt_device[&#34;device&#34;][&#34;rank&#34;]],
+                            ranks_in_worker=[p2p_tgt_device["device"]["rank"]],
                         )
                         refs.append(ref)
 
@@ -292,7 +292,7 @@ roll细化到，不同domain，不同batch，不同query上都可以做自定义
                             )
                             refs.append(ref)
                     if len(broadcast_tgt_devices) > 0:
-                        collective.broadcast(tensor=param_weight, src_rank=0, group_name=comm_plan[&#34;group_name&#34;])
+                        collective.broadcast(tensor=param_weight, src_rank=0, group_name=comm_plan["group_name"])
                     ray.get(refs)
 ```
 
@@ -345,19 +345,19 @@ colocate，多个角色共用一个ray actor实例，同一个进程内实例化
 
 ```python
 def create_colocated_worker_cls(class_dict: dict[str, RayClassWithInitArgs]):
-    &#34;&#34;&#34;
+    """
     This function should return a class instance that delegates the calls to every
     cls in cls_dict
-    &#34;&#34;&#34;
+    """
     cls_dict = {}
     init_args_dict = {}
     worker_cls = _determine_fsdp_megatron_base_class([cls.cls.__ray_actor_class__.__mro__ for cls in class_dict.values()])
-    assert issubclass(worker_cls, Worker), f&#34;worker_cls {worker_cls} should be a subclass of Worker&#34;
-    print(f&#34;colocated worker base class {worker_cls}&#34;)
+    assert issubclass(worker_cls, Worker), f"worker_cls {worker_cls} should be a subclass of Worker"
+    print(f"colocated worker base class {worker_cls}")
 
     for key, cls in class_dict.items():
         cls_dict[key] = cls.cls
-        init_args_dict[key] = {&#34;args&#34;: cls.args, &#34;kwargs&#34;: cls.kwargs}
+        init_args_dict[key] = {"args": cls.args, "kwargs": cls.kwargs}
 
     assert cls_dict.keys() == init_args_dict.keys()
 ```
@@ -375,8 +375,8 @@ def create_colocated_worker_cls(class_dict: dict[str, RayClassWithInitArgs]):
                 # directly instantiate the class without remote
                 # in worker class, e.g. <verl.single_controller.base.worker.Worker>
                 # when DISABLE_WORKER_INIT == 1 it will return immediately
-                with patch.dict(os.environ, {&#34;DISABLE_WORKER_INIT&#34;: &#34;1&#34;}):
-                    self.worker_dict[key] = user_defined_cls(*init_args_dict[key].get(&#34;args&#34;, ()), **init_args_dict[key].get(&#34;kwargs&#34;, {}))
+                with patch.dict(os.environ, {"DISABLE_WORKER_INIT": "1"}):
+                    self.worker_dict[key] = user_defined_cls(*init_args_dict[key].get("args", ()), **init_args_dict[key].get("kwargs", {}))
 ```
 
 

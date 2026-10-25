@@ -31,9 +31,9 @@ $$L(N)=(NcN)αN,αN∼0.076,Nc∼8.8×1013L(D)=(DcD)αD,αD∼0.095,Dc∼5.4×10
 
 出自Google DeepMind团队，核心结论如下：
 
-$$L(N,D)=E+AN&#x03B1;+BD&#x03B2;," role="presentation">L(N,D)=E+ANα+BDβ,\begin{equation} L(N, D)=E+\frac{A}{N^\alpha}+\frac{B}{D^\beta}, \end{equation} $$
+$$L(N,D)=E+ANα+BDβ," role="presentation">L(N,D)=E+ANα+BDβ,\begin{equation} L(N, D)=E+\frac{A}{N^\alpha}+\frac{B}{D^\beta}, \end{equation} $$
 
-$其中， E=1.69,A=406.4,B=410.7,&#x03B1;=0.34,&#x03B2;=0.28" role="presentation">E=1.69,A=406.4,B=410.7,α=0.34,β=0.28\begin{equation} E=1.69, \quad A=406.4, \quad B=410.7, \alpha=0.34, \beta=0.28 \end{equation}。那这个公式是如何得到的呢：作者采用传统的风险分解方法（risk decomposition），假设了上述带有参数E，A，B， &#x03B1;,&#x03B2;" role="presentation">α,β\begin{equation} \alpha, \beta \end{equation} 的参数化模型，然后在N位于70M~16B, D 位于5B ~ 500B的范围内跑了所有不同配置组合的训练实验，再根据实验数据拟合出上述参数化模型 \begin{equation} L(N, D) \end{equation} 。$
+$其中， E=1.69,A=406.4,B=410.7,α=0.34,β=0.28" role="presentation">E=1.69,A=406.4,B=410.7,α=0.34,β=0.28\begin{equation} E=1.69, \quad A=406.4, \quad B=410.7, \alpha=0.34, \beta=0.28 \end{equation}。那这个公式是如何得到的呢：作者采用传统的风险分解方法（risk decomposition），假设了上述带有参数E，A，B， α,β" role="presentation">α,β\begin{equation} \alpha, \beta \end{equation} 的参数化模型，然后在N位于70M~16B, D 位于5B ~ 500B的范围内跑了所有不同配置组合的训练实验，再根据实验数据拟合出上述参数化模型 \begin{equation} L(N, D) \end{equation} 。$
 
 根据前文介绍的论文(a)中的经验公式 \begin{equation} C \approx 6 N D \end{equation} ，可求解使得 \begin{equation} L(N, D) \end{equation} 最优的N和D的表达式如下：
 

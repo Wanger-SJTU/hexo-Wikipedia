@@ -125,7 +125,10 @@ $z_i = x_{2i} + j \,x_{2i+1} \quad (\text{其中 } j^2 = -1), \\$
 
 那么二维旋转就是与复数的乘法
 
+```text
 z_i \;\mapsto\; z_i \,\exp\bigl(j\,\theta_i(p)\bigr). \\
+```
+
 
 如果 \mathbf{q}\in\mathbb{R}^d 表示某个 token 的向量，那么在位置 p 处的 RoPE 变换可写为<strong>复数向量</strong>
 
@@ -149,7 +152,10 @@ $$= \sum_{i=1}^{\frac{d}{2}} \text{Re}\Bigl(z_i \,\overline{w_i}\Bigr) \;\exp\Bi
 
 为简化记号，记
 
+```text
 \Delta_i(p,p') \;=\; \theta_i(p) - \theta_i(p'), \\
+```
+
 
 那么
 
@@ -159,7 +165,10 @@ $$\mathbf{q}^\text{rope}(p)\;\cdot\;\mathbf{k}^\text{rope}(p') \;=\; \sum_{i=1}^
 
 在常见的RoPE中，\theta_i(p) = \alpha_i\,p，于是
 
+```text
 \Delta_i(p,p') \;=\;\alpha_i\,(p - p'). \\
+```
+
 
 对“远距离”而言（比如 |p - p'| 很大），\Delta_i 也就很大，从而会在复平面里产生较大幅度的旋转。
 
@@ -167,7 +176,10 @@ $$\mathbf{q}^\text{rope}(p)\;\cdot\;\mathbf{k}^\text{rope}(p') \;=\; \sum_{i=1}^
 
 为了研究“远程衰减”这类宏观现象，最直接的方法之一就是去<strong>计算其期望值</strong>（或者均值的模量等统计量），即
 
+```text
 \mathbb{E}\Bigl[ \mathbf{q}^\text{rope}(p)\;\cdot\;\mathbf{k}^\text{rope}(p') \Bigr]. \\
+```
+
 
 若我们能证明随着 |p - p'| 增大，此期望值呈现<strong>下降</strong>（衰减）或其他行为，就能为实验结论提供一定的理论解释。
 

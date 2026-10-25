@@ -17,7 +17,7 @@ source_url: https://zhuanlan.zhihu.com/p/698308542
 
 近期，LLM 的长文本能力越来越受到关注。LLM 处理长文本的能力可以应用在多个应用场景中，例如 LLM Agent 场景：假设 Agent 会调用不同的工具解决用户给出的任务，当用户对 Agent 提出一个任务时，Agent 会先调用一次 LLM，对给定的任务生成一系列的 Function Call，然后依次调用不同的 Function，Agent 将 Function  的所有输出结果作为输入，再调用一次 LLM，生成最终呈现给用户的自然语言。其中，通过 Function 返回的结果可能很长，多个Function结果拼起来可能是一个很长的输入，这样 Agent 模型就需要具备长文本处理能力。除了 Agent 以外，RAG、文本摘要、多模态都需要 LLM 模型具备长文本处理能力，这些应用在落地时需要 LLM 推理服务具备很高的长文本推理效率。笔者之前在介绍 [vLLM 的文章中](https://zhuanlan.zhihu.com/p/656939628) 介绍过与 LLM 推理服务性能最关键的因素：KVCache 显存大小。KVCache 显存占用的计算公式为：
 
-$KVCacheMemroyCostPerToken=&#xA0;2&#x00D7;L&#x00D7;H&#x00D7;N&#x00D7;D(1)KVCacheMemroyTotalCost=&#xA0;T&#x00D7;KVCacheMemroyCostPerToken(2)" role="presentation">KVCacheMemroyCostPerToken= 2×L×H×N×D(1)KVCacheMemroyTotalCost= T×KVCacheMemroyCostPerToken(2)\begin{equation} \begin{aligned}  KVCacheMemroyCostPerToken =& \ 2 \times L \times H \times N \times D &(1) \\ KVCacheMemroyTotalCost =& \ T \times KVCacheMemroyCostPerToken &(2) \\  \end{aligned} \end{equation}  $
+$KVCacheMemroyCostPerToken= 2×L×H×N×D(1)KVCacheMemroyTotalCost= T×KVCacheMemroyCostPerToken(2)" role="presentation">KVCacheMemroyCostPerToken= 2×L×H×N×D(1)KVCacheMemroyTotalCost= T×KVCacheMemroyCostPerToken(2)\begin{equation} \begin{aligned}  KVCacheMemroyCostPerToken =& \ 2 \times L \times H \times N \times D &(1) \\ KVCacheMemroyTotalCost =& \ T \times KVCacheMemroyCostPerToken &(2) \\  \end{aligned} \end{equation}  $
 
 其中:
 

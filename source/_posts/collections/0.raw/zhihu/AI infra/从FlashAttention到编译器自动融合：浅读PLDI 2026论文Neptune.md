@@ -180,42 +180,42 @@ f(x, y) = x + y
 g(r, c) = exp(c - r)
 r = xmax[i]
 c = inp[i,j]
-Neptune要找一个repair function：h(t, r, r&#39;)，含义是：
+Neptune要找一个repair function：h(t, r, r')，含义是：
 
 t 原来是基于旧 r 算出来的 partial result；
-现在 producer reduction 变成了 r&#39;；
-h 把 t 修成基于 r&#39; 的结果。
-对于softmax来说h(t, r, r&#39;) = t * exp(r - r&#39;)。
+现在 producer reduction 变成了 r'；
+h 把 t 修成基于 r' 的结果。
+对于softmax来说h(t, r, r') = t * exp(r - r')。
 
 Neptune要求repair function h满足两个条件。
 
 条件1: 能修正单个term
 
-h(g(r, c), r, r&#39;) = g(r&#39;, c)
-意思是如果一个单项原来是用旧 r 算的，h 可以把它改成用新 r&#39; 算的。对softmax：
+h(g(r, c), r, r') = g(r', c)
+意思是如果一个单项原来是用旧 r 算的，h 可以把它改成用新 r' 算的。对softmax：
 
 g(r, c) = exp(c - r)
-h(t, r, r&#39;) = t * exp(r - r&#39;)
+h(t, r, r') = t * exp(r - r')
 所以：
 
-h(exp(c - r), r, r&#39;)
-= exp(c - r) * exp(r - r&#39;)
-= exp(c - r&#39;)
-= g(r&#39;, c)
+h(exp(c - r), r, r')
+= exp(c - r) * exp(r - r')
+= exp(c - r')
+= g(r', c)
 成立。
 
 条件2: 能修正整个partial reduction
 
-h(x f y, r, r&#39;) = h(x, r, r&#39;) f h(y, r, r&#39;)
+h(x f y, r, r') = h(x, r, r') f h(y, r, r')
 如果 f = +，就是：
 
 h(x + y) = h(x) + h(y)
 这意味着 h 不需要把 partial sum拆开逐项修正，而是可以直接修整个 partial sum。对softmax：
 
-h(x + y, r, r&#39;)
-= (x + y) * exp(r - r&#39;)
-= x * exp(r - r&#39;) + y * exp(r - r&#39;)
-= h(x, r, r&#39;) + h(y, r, r&#39;)
+h(x + y, r, r')
+= (x + y) * exp(r - r')
+= x * exp(r - r') + y * exp(r - r')
+= h(x, r, r') + h(y, r, r')
 成立。
 
 这两个条件是Neptune reduction fusion正确性的核心。
@@ -230,11 +230,11 @@ t = g(r, c)
 c = g_c^{-1}(r, t)
 然后：
 
-h(t, r, r&#39;) = g(r&#39;, g_c^{-1}(r, t))
+h(t, r, r') = g(r', g_c^{-1}(r, t))
 /*
 1. t 是旧 r 下的结果；
 2. 先从 t 和旧 r 反推出原始输入 c；
-3. 再用新 r&#39; 重新计算 g。
+3. 再用新 r' 重新计算 g。
 */
 对softmax：
 
@@ -245,10 +245,10 @@ log(t) = c - r
 c = r + log(t)
 所以：
 
-h(t, r, r&#39;)
-= g(r&#39;, r + log(t))
-= exp((r + log(t)) - r&#39;)
-= t * exp(r - r&#39;)
+h(t, r, r')
+= g(r', r + log(t))
+= exp((r + log(t)) - r')
+= t * exp(r - r')
 也就是我们前面手工看到的修正项。Neptune用符号求解器来做这一步。也就是说，编译器可以从程序表达式里自动找出 `f`、`g`，再推导出 `h`。
 
 三、Rolling Update：生成FlashAttention-like kernel
@@ -274,7 +274,7 @@ for i in range(2):
 
 第三步匹配`f`和`g` 。Neptune 从 fused loop 里识别出`xsum[i] = xsum[i] + exp(inp[i,j] - xmax[i])`，于是得到`f = + g(r, c) = exp(c - r) `。
 
-第四步求repair function h。根据前面的公式，得到`h(t, r, r&#39;) = t * exp(r - r&#39;)`。
+第四步求repair function h。根据前面的公式，得到`h(t, r, r') = t * exp(r - r')`。
 
 第五步保留producer reduction的前后两个版本。为了使用`h(xsum, old_max, new_max)`，必须同时知道旧的`xmax `和新的`xmax`。因为Neptune把 producer reduction 改成保留两个值`xmax_0 = old_max, xmax_1 = new_max`。最终生成Fig. 1(c)的正确融合程序。 
 
@@ -351,13 +351,13 @@ sum_g[i] += exp(max_l[i,j0] - max_g[i]) * sum_l[i,j0]
 其中`exp(max_l - max_g)`，就是repair term。
 
 五、Rolling Update和Split-K Update的区别
-可以这样理解，rolling update一边扫描一边修正旧 partial result，适合 prefill，局部性好，但 rolling 维并行性较差。split-k update先并行算多个 local partial result，再把 local 坐标系修正到 global 坐标系，适合 decoding，可以制造更多并行度。两者使用的是同一个核心`h(t, r, r&#39;)`，只不过:
+可以这样理解，rolling update一边扫描一边修正旧 partial result，适合 prefill，局部性好，但 rolling 维并行性较差。split-k update先并行算多个 local partial result，再把 local 坐标系修正到 global 坐标系，适合 decoding，可以制造更多并行度。两者使用的是同一个核心`h(t, r, r')`，只不过:
 
 rolling update:
 
 ```text
     r = old_max
-    r&#39; = new_max
+    r' = new_max
 ```
 
 
@@ -365,7 +365,7 @@ split-k update:
 
 ```text
     r = local_max
-    r&#39; = global_max 
+    r' = global_max 
 ```
 
 所以 Neptune 把 FA 和 FD 背后的核心算法统一到了同一个 break-and-repair 框架里。

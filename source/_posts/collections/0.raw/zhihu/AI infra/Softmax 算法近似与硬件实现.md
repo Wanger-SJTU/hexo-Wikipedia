@@ -34,13 +34,19 @@ Dataflow is all u need.
 1.1 一阶近似
 参考《Hardware-efficient Softmax Approximation for  Self-Attention Networks》
 
+```text
 σ(zi)=ezi−zmax∑j=1Nezj−zmaxfor i=1,2,…,N\sigma(z_i) = \frac{e^{z_i - z_{\max}}}{\sum_{j=1}^{N} e^{z_j - z_{\max}}} \quad \text{for } i = 1, 2, \ldots, N \\
+```
+
 
 计算分为三个阶段，并有很强的数据相关性，因此很难流水线化和并行化；同时 exp 和 division 操作硬件不友好：
 
 本文用如下 e 指数实现方法：
 
+```text
 ey=2y⋅log2⁡e=2u⋅2ve^y = 2^{y \cdot \log_2 e} = 2^u \cdot 2^v\\
+```
+
 
 其中 u 表示 integer，v 表示 fraction。 2v2^v 通过线性近似的方式实现， 2u2^u 通过移位的方式实现。
 
@@ -73,7 +79,10 @@ Ours 1 为不剪枝，Ours 2 为剪枝可以看到这种近似计算方式在许
 
 本文和《Hardware-efficient Softmax Approximation for  Self-Attention Networks》用的类似的方法，拆分为 integer 和 fraction 两部分，integer 通过移位实现。与之不同的是，fraction 部分本文采用了更精确的8段线性拟合的方式，而不是直接近似为n/2+1。
 
+```text
 exp2(x) \approx 2^{x_i} \cdot (slope_k \cdot x_f + intercept_k), \quad k \in [0, 8].\\
+```
+
 
 因为本文是将 softmax 和 SA 做融合，因此进行8段线性拟合的计算也可以复用 SA 硬件电路。
 
@@ -126,28 +135,43 @@ Log-Sum-Exp 的方法在硬件上有以下问题：
 
 err_0 = \log_2(e) - \log_2(e)_h,\\ \exp(-x_i) = 2^{-x_i \cdot (\log_2(e)_h + err_0)} = 2^{-x_i \cdot err_0} \times 2^{-x_i \cdot \log_2(e)_h}.\\\exp(-x_i) = 2^{\frac{-err_0(n_i+f_i)}{\log_2(e)_h}} \times 2^{-(n_i+f_i)}  = 2^{-n_i \cdot \frac{err_0}{\log_2(e)_h}} \times 2^{-f_i \cdot \left(1+\frac{err_0}{\log_2(e)_h}\right)} \gg n_i,\\ P_{ov} = 2^{-n_i \cdot \frac{err_0}{\log_2(e)_h}} ~~~~~~P_{in} = \frac{err_0}{\log_2(e)_h}\\ 使p_0=n_i\\ exp_{p_0}(-x_i) = P_{ov} \times 2^{-f_i(1+P_{in})} \gg n_i  = P_{ov} \times (k \cdot f_i + b) \gg n_i\\同理优化 ln2 :
 
+```text
 err_1 = \ln(2) - \ln(2)_h,\\ \ln(S) = (\ln(2)_h + err_1) \cdot \log_2(u \cdot 2^v) = (\ln(2)_h + err_1) \cdot v + \ln(2) \cdot \log_2(u),\\ P_{ln} = err_1 \cdot v.\\ 使p_1=v\\ \ln_{p_1}(S) = \ln(2)_h \cdot v + (k' \cdot u + b') + P_{ln}\\
+```
+
 
 最终得到 ISP 表达式：
 
 x′_i = x_i − x_{max}\\ f_{p_0p_1}(x_i) = exp_{p_0}\left(x'_i - \ln_{p_1}\left(\sum_{j=0}^{N-1} exp_{p_0}(x'_j)\right)\right)\\ 其中 p_0,p_1 可以通过分析输入数据特征而 offline 地确定。本文设定
 
+```text
 p_0=4\\ p_1 = \begin{cases}     0,   \text{if } v   3 \\     th,   \text{if } v \ge 3 \end{cases}\\
+```
+
 
 3.2 跳零
 QK^T 计算后经过量化执行 softmax 操作。
 
+```text
 \frac{P - min}{max - min}   2^{-n}.\\
+```
+
 
 因此如果量化后为0可以直接跳过 softmax 计算：
 
 stage1跳零的条件：
 
+```text
 \exp(x_i - x_{\max})   2^{-n} \implies x_i - x_{\max}   -n \cdot \ln(2). \\
+```
+
 
 stage3跳零的条件： 
 
+```text
  x_i - x_{\max} - \ln(S)   -n \cdot \ln(2).\\
+```
+
 
 3.3 整体算法
 

@@ -25,7 +25,7 @@ source_url: https://zhuanlan.zhihu.com/p/354995641
 - 动态数据的网络结构。如Tree-Structured LSTM补齐了LSTM对树形结构处理的不足，支持每个输入单元依赖多个其他单元的隐层输出
 ![](/images/collections/0.raw/zhihu/%E4%BC%98%E5%8C%96/asset/img_cee624151462.jpg)
 
-- 动态shape算子。如BERT网络相比于LSTM在时序上处理，将数据进行了空间上的扩展处理，从而引入了维度不确定的Tensor。还有Wide&amp;Deep、AutoML等也会引入动态shape的算子。
+- 动态shape算子。如BERT网络相比于LSTM在时序上处理，将数据进行了空间上的扩展处理，从而引入了维度不确定的Tensor。还有Wide&Deep、AutoML等也会引入动态shape的算子。
 
 ![](/images/collections/0.raw/zhihu/%E4%BC%98%E5%8C%96/asset/img_2b4590cf7f85.jpg)
 

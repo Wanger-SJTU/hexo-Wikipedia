@@ -79,7 +79,7 @@ CSA 的直觉很朴素：长文档里，和当前 token 相关的远程信息通
 这里有一个重要的兜底设计：indexer 可能漏选，压缩也可能损失细节，所以 CSA 保留了局部原始窗口。也就是说，远距离信息走“压缩后检索”，近期信息仍然走未压缩 attention。这样做会保留一部分局部精度，同时把远距离访问成本降下来。
 
 3.2 HCA：低成本全局通道
-HCA，全称 Heavily Compressed Attention。它压得更狠，典型压缩率是 `m&#39; = 128`，压缩后不做 top-k 稀疏选择，直接在高度压缩后的 KV entry 上做 dense MQA。
+HCA，全称 Heavily Compressed Attention。它压得更狠，典型压缩率是 `m' = 128`，压缩后不做 top-k 稀疏选择，直接在高度压缩后的 KV entry 上做 dense MQA。
 
 ![](https://pic3.zhimg.com/v2-9d049f04c29920db95d4691a6cc88c70_r.jpg)DeepSeek-V4 Figure 4：HCA 核心结构HCA 的压缩率比 CSA 激进得多。它牺牲细粒度定位能力，换取极低成本的全局覆盖；同时也保留 sliding window，避免近期 token 只经过重压缩路径。
 

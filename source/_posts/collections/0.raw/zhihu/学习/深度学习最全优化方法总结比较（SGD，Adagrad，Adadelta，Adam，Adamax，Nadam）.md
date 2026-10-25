@@ -25,11 +25,11 @@ source_url: https://zhuanlan.zhihu.com/p/22252270
 
 SGD就是每一次迭代计算mini-batch的梯度，然后对参数进行更新，是最常见的优化方法了。即：
 
-$gt=&#x2207;&#x03B8;t&#x2212;1f(&#x03B8;t&#x2212;1)" role="presentation">gt=∇θt−1f(θt−1)g_t=\nabla_{\theta_{t-1}}{f(\theta_{t-1})}**$
-$&#x0394;&#x03B8;t=&#x2212;&#x03B7;&#x2217;gt" role="presentation">Δθt=−η∗gt\Delta{\theta_t}=-\eta*g_t$
-$其中，&#x03B7;" role="presentation">η\eta是学习率，gt" role="presentation">gtg_t是梯度$
+$gt=∇θt−1f(θt−1)" role="presentation">gt=∇θt−1f(θt−1)g_t=\nabla_{\theta_{t-1}}{f(\theta_{t-1})}**$
+$Δθt=−η∗gt" role="presentation">Δθt=−η∗gt\Delta{\theta_t}=-\eta*g_t$
+$其中，η" role="presentation">η\eta是学习率，gt" role="presentation">gtg_t是梯度$
 
-SGD完全依赖于当前batch的梯度，所以&#x03B7;" role="presentation">η\eta可理解为允许当前batch的梯度多大程度影响参数更新 
+SGD完全依赖于当前batch的梯度，所以η" role="presentation">η\eta可理解为允许当前batch的梯度多大程度影响参数更新 
 
 缺点**：（正因为有这些缺点才让这么多大神发展出了后续的各种算法） 
 

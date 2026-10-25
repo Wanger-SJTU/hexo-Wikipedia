@@ -17,12 +17,12 @@ source_url: https://zhuanlan.zhihu.com/p/1940518023904601791
 
 ### 先说最重要的可取之处：
 
-$&#x8FD9;&#x4E2A;&#x7279;&#x6027;&#x53EF;&#x4EE5;&#x8BA9;&#x5F02;&#x6B65;&#x7F16;&#x7A0B;&#x7684;&#x590D;&#x6742;&#x5EA6;&#x964D;&#x4F4E;&#x975E;&#x5E38;&#x5927;&#x3002;&#x4E5F;&#x662F;&#x6211;&#x4E2A;&#x4EBA;&#x89C9;&#x5F97;&#x662F;tcgen05&#x4E0A;&#x6700;&#x597D;&#x7684;&#x8BBE;&#x8BA1;&#x3002;" role="presentation">这个特性可以让异步编程的复杂度降低非常大。也是我个人觉得是tcgen05上最好的设计。\color{red}{这个特性可以让异步编程的复杂度降低非常大。也是我个人觉得是tcgen05上最好的设计。} $
+$这个特性可以让异步编程的复杂度降低非常大。也是我个人觉得是tcgen05上最好的设计。" role="presentation">这个特性可以让异步编程的复杂度降低非常大。也是我个人觉得是tcgen05上最好的设计。\color{red}{这个特性可以让异步编程的复杂度降低非常大。也是我个人觉得是tcgen05上最好的设计。} $
 
-$- tcgen05&#x8BBE;&#x8BA1;&#x4E2D;&#x7684;alloc/dealloc&#x673A;&#x5236;&#xFF1A;" role="presentation">tcgen05设计中的alloc/dealloc机制：\color{red}{tcgen05 设计中的alloc/dealloc 机制：} $
+$- tcgen05设计中的alloc/dealloc机制：" role="presentation">tcgen05设计中的alloc/dealloc机制：\color{red}{tcgen05 设计中的alloc/dealloc 机制：} $
 
-$- &#x964D;&#x4F4E;&#x591A;&#x7EBF;&#x7A0B;&#x5E76;&#x884C;&#x5BF9;tmem&#x7684;&#x7BA1;&#x7406;&#x6210;&#x672C;&#xFF0C;&#x901A;&#x8FC7;alloc/dealloc&#x5B9E;&#x73B0;&#x7C7B;cache&#x7684;&#x529F;&#x80FD;" role="presentation">降低多线程并行对tmem的管理成本，通过alloc/dealloc实现类cache的功能\color{green}{降低多线程并行对tmem的管理成本，通过alloc/dealloc 实现类cache的功能} 。$
-$- 通过alloc/dealloc 的模式管理内存， &#x53EF;&#x4EE5;&#x5728;&#x786C;&#x4EF6;&#x5185;&#x90E8;&#x5B9E;&#x73B0;&#x7C7B;scoreboard&#x7684;&#x4F9D;&#x8D56;&#x68C0;&#x67E5;&#x6A21;&#x5F0F;" role="presentation">可以在硬件内部实现类scoreboard的依赖检查模式\color{green}{可以在硬件内部实现类scoreboard 的依赖检查模式} ，可以实现数据依赖检查和越界检查， &#x4E0D;&#x7528;&#x7528;&#x6237;&#x624B;&#x52A8;&#x6307;&#x5B9A;&#x4F9D;&#x8D56;&#x5173;&#x7CFB;" role="presentation">不用用户手动指定依赖关系\color{red}{不用用户手动指定依赖关系} 。 &#x8FD9;&#x4E2A;&#x975E;&#x5E38;&#x91CD;&#x8981;" role="presentation">这个非常重要\color{red}{这个非常重要} ，这个特性最起码可以将 当前npu采用的异步编程代码量减少 , 或者更多。$
+$- 降低多线程并行对tmem的管理成本，通过alloc/dealloc实现类cache的功能" role="presentation">降低多线程并行对tmem的管理成本，通过alloc/dealloc实现类cache的功能\color{green}{降低多线程并行对tmem的管理成本，通过alloc/dealloc 实现类cache的功能} 。$
+$- 通过alloc/dealloc 的模式管理内存， 可以在硬件内部实现类scoreboard的依赖检查模式" role="presentation">可以在硬件内部实现类scoreboard的依赖检查模式\color{green}{可以在硬件内部实现类scoreboard 的依赖检查模式} ，可以实现数据依赖检查和越界检查， 不用用户手动指定依赖关系" role="presentation">不用用户手动指定依赖关系\color{red}{不用用户手动指定依赖关系} 。 这个非常重要" role="presentation">这个非常重要\color{red}{这个非常重要} ，这个特性最起码可以将 当前npu采用的异步编程代码量减少 , 或者更多。$
 
 
 ### 总结：
@@ -33,18 +33,18 @@ $- 通过alloc/dealloc 的模式管理内存， &#x53EF;&#x4EE5;&#x5728;&#x786C;
 
 ![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_e86f62313a60.jpg)
 
-$特性对比&#x6211;&#x8FD9;&#x91CC;&#x5148;&#x7EDF;&#x4E00;&#x6C47;&#x603B;&#x4E00;&#x4E9B;&#x8BBE;&#x8BA1;&#x4F7F;&#x7528;&#x75DB;&#x70B9;&#xFF0C;&#x5927;&#x5BB6;&#x53EF;&#x4EE5;&#x4ED4;&#x7EC6;&#x770B;&#x770B;&#x540E;&#x7EED;&#x7684;&#x4ECB;&#x7ECD;&#xFF1A;" role="presentation">我这里先统一汇总一些设计使用痛点，大家可以仔细看看后续的介绍：\color{red}{我这里先统一汇总一些设计使用痛点，大家可以仔细看看后续的介绍：} $
+$特性对比我这里先统一汇总一些设计使用痛点，大家可以仔细看看后续的介绍：" role="presentation">我这里先统一汇总一些设计使用痛点，大家可以仔细看看后续的介绍：\color{red}{我这里先统一汇总一些设计使用痛点，大家可以仔细看看后续的介绍：} $
 
 #### tma 小shape性能瓶颈：
 
-$- tma 引入tile的数据搬运， &#x4F46;&#x672C;&#x8EAB;tile&#x7684;&#x63CF;&#x8FF0;&#x5C31;&#x9700;&#x8981;&#x5F88;&#x591A;&#x4FE1;&#x606F;" role="presentation">但本身tile的描述就需要很多信息\color{red}{但本身tile的描述就需要很多信息} ，nv为了解决这个问题，增加了 bulk.tensor 类指令。 &#x4F46;&#x5B83;&#x9700;&#x8981;&#x5403;&#x4E00;&#x4E2A;gm&#x4E0A;&#x7684;tensorMap&#x63CF;&#x8FF0;&#x7B26;&#x6307;&#x9488;" role="presentation">但它需要吃一个gm上的tensorMap描述符指针\color{red}{但它需要吃一个gm上的tensorMap描述符指针} 。这一个异步通路的加载， &#x5C31;&#x9700;&#x8981;&#x51E0;&#x767E;&#x4E2A;cycle" role="presentation">就需要几百个cycle\color{red}{就需要几百个cycle} 。$
+$- tma 引入tile的数据搬运， 但本身tile的描述就需要很多信息" role="presentation">但本身tile的描述就需要很多信息\color{red}{但本身tile的描述就需要很多信息} ，nv为了解决这个问题，增加了 bulk.tensor 类指令。 但它需要吃一个gm上的tensorMap描述符指针" role="presentation">但它需要吃一个gm上的tensorMap描述符指针\color{red}{但它需要吃一个gm上的tensorMap描述符指针} 。这一个异步通路的加载， 就需要几百个cycle" role="presentation">就需要几百个cycle\color{red}{就需要几百个cycle} 。$
 - <strong>创建这个描述符太慢了，nv 居然推荐大家在host上描述符构建好，通过传参传进来</strong>
-- 为了解决描述符的动态性，增加了一堆修改描述符的指令 tensormap.replace. 这个指令还是去修改 gm&#x4E0A;&#x7684;&#x5185;&#x5BB9;" role="presentation">gm上的内容\color{red}{gm上的内容} 。就算可以cache住，但这个<strong>开销也要上百cycle的</strong>
+- 为了解决描述符的动态性，增加了一堆修改描述符的指令 tensormap.replace. 这个指令还是去修改 gm上的内容" role="presentation">gm上的内容\color{red}{gm上的内容} 。就算可以cache住，但这个<strong>开销也要上百cycle的</strong>
 
 #### tcgen05 编程复杂和simt割裂：
 
-$- &#x5F02;&#x6B65;+&#x4E71;&#x5E8F;&#x7684;&#x6307;&#x4EE4;&#x5E8F;&#x5185;&#x5B58;&#x5E8F;" role="presentation">异步+乱序的指令序内存序\color{red}{异步+乱序的指令序内存序} 。这个复杂度已经很高了。而且性能好，还需要排多个thread 之间的流水，编程复杂度大大提高。$
-$- 为了适配输出tensor可以在register_file上， &#x5F15;&#x5165;&#x4E86;&#x5F88;&#x591A;&#x5206;&#x578B;layout" role="presentation">引入了很多分型layout\color{red}{引入了很多分型layout} ，又复杂又麻烦。**$
+$- 异步+乱序的指令序内存序" role="presentation">异步+乱序的指令序内存序\color{red}{异步+乱序的指令序内存序} 。这个复杂度已经很高了。而且性能好，还需要排多个thread 之间的流水，编程复杂度大大提高。$
+$- 为了适配输出tensor可以在register_file上， 引入了很多分型layout" role="presentation">引入了很多分型layout\color{red}{引入了很多分型layout} ，又复杂又麻烦。**$
 - 混杂 \color{red}{线程粒度指令} 和 \color{red}{warp} \color{blue}{warp\_group} 粒度指令，<strong>编程难度</strong>又进一步提高。
 - 为了将shared_memory 和 tmem 进一步复用，<strong>引入了CTA-pair 的联合matrix计算能力</strong>。 \color{red}{但这个cta\_pair 需要将两个sm分为主和从} ，而且在一个tcgen05指令流里面需要保持cta-pair数量不变。这个编程难度 和定制npu 没啥两样了。
 

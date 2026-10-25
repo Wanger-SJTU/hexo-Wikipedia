@@ -41,9 +41,9 @@ OPD 的吸引力在于它同时继承了 RL 和蒸馏的优点：学生从自身
 这个公式的梯度方向，是让学生在自己已经采样出的 token 上，向教师的概率靠近。因为轨迹来自学生自身，不存在 distribution shift；因为教师给出 per-token 信号，每次更新的信息量远超稀疏 RL。
 
 Reverse KL 的 Mode-Seeking 性质
-选择 reverse KL 而非 forward KL 不是随意的。Reverse KL 具有 <strong>mode-seeking</strong> 性质：当学生概率为零的地方，KL 项也为零，梯度消失；因此学生会集中学习教师的某一个高概率 &#34; 模式 &#34;，而不是平均覆盖教师所有可能的输出。
+选择 reverse KL 而非 forward KL 不是随意的。Reverse KL 具有 <strong>mode-seeking</strong> 性质：当学生概率为零的地方，KL 项也为零，梯度消失；因此学生会集中学习教师的某一个高概率 " 模式 "，而不是平均覆盖教师所有可能的输出。
 
-这对推理任务恰恰合适。数学推理题有正确解题路径，不需要模型均匀地模仿所有可能的推导风格。Mode-seeking 的 OPD 让学生 &#34; 找到一条教师认可的路并坚定地走下去 &#34;，比 forward KL（试图覆盖教师所有输出）的效果更好。
+这对推理任务恰恰合适。数学推理题有正确解题路径，不需要模型均匀地模仿所有可能的推导风格。Mode-seeking 的 OPD 让学生 " 找到一条教师认可的路并坚定地走下去 "，比 forward KL（试图覆盖教师所有输出）的效果更好。
 
 此外，thinkingmachines.ai 博客指出 OPD 天然 <strong>unhackable</strong>：低 KL 总是对应着学生在模仿教师的好行为，不像 RL 的 reward function 可以被模型找到捷径绕过。
 
@@ -51,15 +51,15 @@ Reverse KL 的 Mode-Seeking 性质
 在已有 RL 训练框架（如 GRPO）之上接入 OPD，改动极小：只需把原来的 group-normalized advantage 替换为教师与学生的 log ratio： 
 ![](https://www.zhihu.com/equation?tex=%24%24%5Chat%7BA%7D_%7Bi%2Ct%7D+%3D+%5Ctext%7Bsg%7D%5Cleft%5B%5Clog+%5Cfrac%7B%5Cpi_%5Ctext%7Bteacher%7D%28y_%7Bi%2Ct%7D%7Cx%2C+y_%7Bi%2C%3Ct%7D%29%7D%7B%5Cpi_%5Ctheta%28y_%7Bi%2Ct%7D%7Cx%2C+y_%7Bi%2C%3Ct%7D%29%7D%5Cright%5D%24%24)
 
-其中 `sg` 是 stop-gradient 算子，防止梯度流回教师分布。博客将其描述为 &#34;a one-line change on top of RL implementations&#34;。GLM-5 和 MiMo 的论文都可以印证这一说法，二者都显式复用了自己的 RL 优化框架。
+其中 `sg` 是 stop-gradient 算子，防止梯度流回教师分布。博客将其描述为 "a one-line change on top of RL implementations"。GLM-5 和 MiMo 的论文都可以印证这一说法，二者都显式复用了自己的 RL 优化框架。
 
 实验验证效率优势
-thinkingmachines.ai 博客给出了迄今最清晰的对比数据（AIME&#39;24 数学推理基准，从同一个 off-policy 蒸馏 checkpoint 出发）：
+thinkingmachines.ai 博客给出了迄今最清晰的对比数据（AIME'24 数学推理基准，从同一个 off-policy 蒸馏 checkpoint 出发）：
 
-方法得分相对计算量Off-policy 蒸馏（基线）60%1×纯 RL67.6%10×On-Policy 蒸馏74.4%1×OPD 以远低于纯 RL 的算力，实现了远超 off-policy 蒸馏、且优于纯 RL 的效果。Qwen3 在旗舰模型层面印证了这一结论，并将效率优势定量为 &#34; 仅需完整 4 阶段 RL 训练的 1/10 GPU 时间 &#34;。
+方法得分相对计算量Off-policy 蒸馏（基线）60%1×纯 RL67.6%10×On-Policy 蒸馏74.4%1×OPD 以远低于纯 RL 的算力，实现了远超 off-policy 蒸馏、且优于纯 RL 的效果。Qwen3 在旗舰模型层面印证了这一结论，并将效率优势定量为 " 仅需完整 4 阶段 RL 训练的 1/10 GPU 时间 "。
 
 二、OPD 的变种：各家实现的技术分歧
-Qwen3（2025 年 5 月）是主要头部实验室中最早在技术报告中系统阐述 OPD 的。随后数月内，GLM-5（2026 年 2 月）、MiMo-V2-Flash（2026 年 1 月）、DeepSeek V4 相继跟进。但四家的实现在关键技术维度上存在显著分歧，形成了事实上的 &#34;OPD 变种谱系 &#34;。
+Qwen3（2025 年 5 月）是主要头部实验室中最早在技术报告中系统阐述 OPD 的。随后数月内，GLM-5（2026 年 2 月）、MiMo-V2-Flash（2026 年 1 月）、DeepSeek V4 相继跟进。但四家的实现在关键技术维度上存在显著分歧，形成了事实上的 "OPD 变种谱系 "。
 
 2.1 KL 计算粒度：Token-Level vs Full-Vocabulary
 这是最根本的技术分歧。
@@ -74,7 +74,7 @@ GLM-5（Section 3.5，Eq. 2）、MiMo（Section 4.4，Eq. 5-8）和 Qwen3（Sect
 ![](https://www.zhihu.com/equation?tex=%5B%5Cepsilon_%5Ctext%7Blow%7D%2C+%5Cepsilon_%5Ctext%7Bhigh%7D%5D) 时丢弃该 token，增强训练稳定性<strong>Full-Vocabulary Logit Distillation（DeepSeek V4，Section 5.1.2）</strong>：保留完整词表上的 KL，即 
 ![](https://www.zhihu.com/equation?tex=%24%24D_%7BKL%7D%28%5Cpi_0%5Ei+%7C+%5Cpi_%5Ctheta%5Ei%29+%3D+%5Csum_%7Bv+%5Cin+%5Cmathcal%7BV%7D%7D+%5Cpi_%5Ctext%7Bteacher%7D%28v%7Cx%2Cy_%7B%3Ct%7D%29+%5Clog+%5Cfrac%7B%5Cpi_%5Ctext%7Bteacher%7D%28v%7Cx%2Cy_%7B%3Ct%7D%29%7D%7B%5Cpi_%5Ctheta%28v%7Cx%2Cy_%7B%3Ct%7D%29%7D%24%24)
 
-DeepSeek V4 原文明确批评 token-level 近似：&#34;prior works typically simplify the full-vocabulary KL loss into token-level KL estimates... this approach leads to <strong>high variance in gradient estimation</strong> and often causes <strong>training instability</strong>&#34;。全词表 KL 给出每一步的精确梯度，训练更稳定，但代价是巨大的工程挑战：词表尺寸 × 序列长度 × 专家数 的显存消耗。
+DeepSeek V4 原文明确批评 token-level 近似："prior works typically simplify the full-vocabulary KL loss into token-level KL estimates... this approach leads to <strong>high variance in gradient estimation</strong> and often causes <strong>training instability</strong>"。全词表 KL 给出每一步的精确梯度，训练更稳定，但代价是巨大的工程挑战：词表尺寸 × 序列长度 × 专家数 的显存消耗。
 
 DeepSeek V4 为此专门开发了三层工程解决方案：
 
@@ -84,7 +84,7 @@ DeepSeek V4 为此专门开发了三层工程解决方案：
 2.2 额外奖励信号：纯蒸馏 vs OPD + ORM
 <strong>纯蒸馏路线</strong>（GLM-5、DeepSeek V4）：OPD 阶段只使用 KL 散度作为信号，完全不叠加 outcome reward。
 
-GLM-5 的逻辑是：OPD 是最终收尾阶段，目标纯粹是 &#34; 恢复能力 &#34;，不需要再探索新的行为空间，只需高效对齐前序 RL checkpoint。DeepSeek V4 则是用 OPD 完全替代了 V3.2 中的 mixed RL 阶段，整个统一化过程只有 KL 信号驱动。
+GLM-5 的逻辑是：OPD 是最终收尾阶段，目标纯粹是 " 恢复能力 "，不需要再探索新的行为空间，只需高效对齐前序 RL checkpoint。DeepSeek V4 则是用 OPD 完全替代了 V3.2 中的 mixed RL 阶段，整个统一化过程只有 KL 信号驱动。
 
 <strong>OPD + ORM 混合路线</strong>（MiMo MOPD，Section 4.4，Eq. 9）：
 
@@ -97,7 +97,7 @@ MiMo 的 ablation（Figure 6）给出了清晰的层级关系：纯 ORM RL < MOP
 2.3 教师选取策略：同架构 checkpoint vs 异构多专家
 <strong>同架构前序 checkpoint（GLM-5）</strong>：教师是同一个模型在 Reasoning RL 和 General RL 两个前序阶段训练完毕的 checkpoint。教师与学生共享完全相同的架构和词表，logit 空间天然对齐，实现最简单，信号质量最有保障。代价是教师的多样性受限——只有两个来自不同 RL 阶段的版本。
 
-<strong>多领域专家混合路由（MiMo）</strong>：教师集合包括各领域 RL 专家（代码、数学、搜索、通用等）、SFT 模型，以及学生模型自身（用于 self-distillation，防止现有能力退化）。哪个任务路由到哪个教师由任务域标签决定。论文特别强调这种 &#34;decoupled design enables easy integration of new teachers without restructuring the entire pipeline&#34;——教师集合可以随时增减，无需重训流水线。
+<strong>多领域专家混合路由（MiMo）</strong>：教师集合包括各领域 RL 专家（代码、数学、搜索、通用等）、SFT 模型，以及学生模型自身（用于 self-distillation，防止现有能力退化）。哪个任务路由到哪个教师由任务域标签决定。论文特别强调这种 "decoupled design enables easy integration of new teachers without restructuring the entire pipeline"——教师集合可以随时增减，无需重训流水线。
 
 <strong>10+ 万亿参数异构专家（DeepSeek V4）</strong>：规模最大的多教师方案，独立训练 10 个以上专家模型，每个覆盖一个领域（数学、代码、Agent、指令跟随），每个领域还有三种推理强度变体（Non-think / Think High / Think Max）。各专家以 per-expert 权重 
 ![](https://www.zhihu.com/equation?tex=w_i) 加权贡献：
@@ -115,7 +115,7 @@ MiMo 的 ablation（Figure 6）给出了清晰的层级关系：纯 ORM RL < MOP
 3.1 Qwen3：效率革命，OPD 最早的系统性应用（2025 年 5 月）
 Qwen3 是这轮 OPD 浪潮的先行者，但其使用场景颇为务实：旗舰模型（Qwen3-235B-A22B 和 Qwen3-32B）走完了完整的四阶段 RL 流水线（Long-CoT Cold Start → Reasoning RL → Thinking Mode Fusion → General RL），OPD 专门用于降低<strong>轻量模型</strong>的训练成本。
 
-Qwen3 的 Strong-to-Weak Distillation 分两步走。第一步是 off-policy 蒸馏：收集教师（旗舰模型）在 `/think` 和 `/no_think` 两种模式下的输出，做标准 SFT，让学生建立基础的双模式切换能力。第二步才是 on-policy 蒸馏：学生从自身分布采样轨迹，对齐教师 logit，最小化 KL 散度。两阶段串行设计的思路是：off-policy 先为学生 &#34; 打好底 &#34;，避免 on-policy 阶段一开始因为学生输出质量太差导致教师信号噪声过大。
+Qwen3 的 Strong-to-Weak Distillation 分两步走。第一步是 off-policy 蒸馏：收集教师（旗舰模型）在 `/think` 和 `/no_think` 两种模式下的输出，做标准 SFT，让学生建立基础的双模式切换能力。第二步才是 on-policy 蒸馏：学生从自身分布采样轨迹，对齐教师 logit，最小化 KL 散度。两阶段串行设计的思路是：off-policy 先为学生 " 打好底 "，避免 on-policy 阶段一开始因为学生输出质量太差导致教师信号噪声过大。
 
 效果是戏剧性的。Qwen3-30B-A3B（总参数 30B，激活 3B）通过 OPD 获得的推理能力，可以与 QwQ-32B（32B 全激活）相当；Qwen3-0.6B 也明显超越 Qwen2.5-1.5B 同规模对手。整个轻量模型系列的训练只需要旗舰四阶段 RL 的 <strong>1/10 GPU 时间</strong>。
 
@@ -126,11 +126,11 @@ GLM-5（智谱 AI & 清华大学）的后训练设计了一条雄心勃勃的四
 
 问题随之而来：顺序优化多个目标，天然存在<strong>灾难性遗忘（catastrophic forgetting）</strong>。General RL 阶段的偏好对齐训练会侵蚀 Reasoning RL 积累的推理能力；Agentic RL 对长轨迹的强化会改变模型的输出风格，影响 General RL 后来想建立的自然语言质量。
 
-GLM-5 的解法是将 OPD 作为<strong>最终收尾阶段</strong>（Section 3.5，&#34;On-Policy Cross-Stage Distillation&#34;）：把 Reasoning RL 和 General RL 两个阶段的最终 checkpoint 同时作为教师，学生从自身分布采样，优化 reverse KL。由于教师就是同一个模型的前序版本，架构和词表完全对齐，logit 信号直接可用。
+GLM-5 的解法是将 OPD 作为<strong>最终收尾阶段</strong>（Section 3.5，"On-Policy Cross-Stage Distillation"）：把 Reasoning RL 和 General RL 两个阶段的最终 checkpoint 同时作为教师，学生从自身分布采样，优化 reverse KL。由于教师就是同一个模型的前序版本，架构和词表完全对齐，logit 信号直接可用。
 
 一个精巧的实现细节：GRPO 在 RL 训练时，group size 通常设置为 32，目的是通过组内对比来估计 advantage 的基线。但在 OPD 阶段，advantage 直接由教师 log ratio 给出，无需组内对比，因此 group size 可以降至 <strong>1</strong>，batch size 则从 32 扩大到 1024，大幅提升数据吞吐。
 
-OPD 让 GLM-5 在最终评测上实现了各项能力的同时在线：在 LMArena 中文本和代码双排行榜登顶，Humanity&#39;s Last Exam 达 50.4，SWE-bench Verified 77.8，Terminal-Bench 2.0 56.2，均优于或持平 Claude Opus 4.5。
+OPD 让 GLM-5 在最终评测上实现了各项能力的同时在线：在 LMArena 中文本和代码双排行榜登顶，Humanity's Last Exam 达 50.4，SWE-bench Verified 77.8，Terminal-Bench 2.0 56.2，均优于或持平 Claude Opus 4.5。
 
 3.3 MiMo-V2-Flash：能力不平衡的系统性解法
 小米 MiMo-V2-Flash 将 OPD（以 MOPD，Multi-Teacher On-Policy Distillation 命名）放在了后训练流水线的<strong>核心位置</strong>，而非收尾步骤。
@@ -152,7 +152,7 @@ MiMo 的三阶段方案：Stage 1 是通用 SFT 建立基础；Stage 2 是独立
 3.4 DeepSeek V4：万亿参数专家知识的 Logit-Space 压缩
 DeepSeek V4 的后训练场景是这四家中最复杂的：需要整合 10 个以上独立训练的专家模型，每个专家针对一个领域，还有三种推理强度变体（Non-think / Think High / Think Max），对应不同的 length penalty 和 context window 设置。
 
-传统方案的失败已有先例：参数合并（weight merge）导致各专家的尖锐能力在参数空间里 &#34; 稀释 &#34;；Mixed RL（同时对多领域做联合强化）则是 MiMo 所描述的 see-saw effect。DeepSeek V4 的选择是完全放弃 Mixed RL，将 OPD 设定为整个后训练的统一化终点。原文表述直接：&#34;the mixed Reinforcement Learning (RL) stage was entirely replaced by On-Policy Distillation (OPD)&#34;。
+传统方案的失败已有先例：参数合并（weight merge）导致各专家的尖锐能力在参数空间里 " 稀释 "；Mixed RL（同时对多领域做联合强化）则是 MiMo 所描述的 see-saw effect。DeepSeek V4 的选择是完全放弃 Mixed RL，将 OPD 设定为整个后训练的统一化终点。原文表述直接："the mixed Reinforcement Learning (RL) stage was entirely replaced by On-Policy Distillation (OPD)"。
 
 DeepSeek V4 OPD 最显著的技术贡献是 <strong>full-vocabulary logit distillation</strong>，以及配套的工程基础设施。逻辑链条很清晰：既然用 10 个以上的万亿参数教师，就必须精确地从每个教师的完整分布中学习，token-level 近似的高方差会掩盖各专家的细微差异，导致统一化质量下降。
 
@@ -169,30 +169,30 @@ OPD 在不到一年内从边缘技术变为主流范式，接下来的演化方�
 DeepSeek V4 已经证明全词表 KL 在理论和实践上都优于 token-level 近似。随着 hidden state 缓存和专用 kernel 的开源化（DeepSeek V4 已开源 TileLang），其他团队复制这套工程方案的成本将大幅降低。可以预期，未来 12-18 个月内，主要实验室的 OPD 实现会向全词表方向收敛。
 
 4.2 OPD + PRM：从结果监督到过程监督
-MiMo 的 MOPD 证明 KL + ORM（序列级结果奖励）的组合优于单独的任一方案。下一步自然演化是将 ORM 替换为 <strong>Process Reward Model（PRM）</strong>——对每个推理步骤而非最终答案打分。PRM 可以在轨迹中途识别 &#34; 推理失误的关键 fork point&#34;，与 OPD 的 per-token 信号在粒度上高度匹配。两者结合，可能是目前最密集的训练信号配置：教师 logit（全局方向）+ PRM（步骤正确性）+ ORM（最终结果）三重叠加。
+MiMo 的 MOPD 证明 KL + ORM（序列级结果奖励）的组合优于单独的任一方案。下一步自然演化是将 ORM 替换为 <strong>Process Reward Model（PRM）</strong>——对每个推理步骤而非最终答案打分。PRM 可以在轨迹中途识别 " 推理失误的关键 fork point"，与 OPD 的 per-token 信号在粒度上高度匹配。两者结合，可能是目前最密集的训练信号配置：教师 logit（全局方向）+ PRM（步骤正确性）+ ORM（最终结果）三重叠加。
 
 4.3 Iterative Co-Evolution：自强化的师生螺旋
-MiMo 在论文中明确提出了一个前瞻性路线图：蒸馏产生的学生模型可以重新进入专家 RL 训练阶段，成为更强的下一代教师，再反哺下一代学生——形成自强化循环。这与 AlphaZero 的 self-play 范式在结构上高度相似，区别在于 OPD 框架让 &#34; 教师 - 学生 &#34; 角色的切换更加显式和可控。
+MiMo 在论文中明确提出了一个前瞻性路线图：蒸馏产生的学生模型可以重新进入专家 RL 训练阶段，成为更强的下一代教师，再反哺下一代学生——形成自强化循环。这与 AlphaZero 的 self-play 范式在结构上高度相似，区别在于 OPD 框架让 " 教师 - 学生 " 角色的切换更加显式和可控。
 
 如果这个循环被验证有效，它意味着 OPD 不只是一次性的知识压缩操作，而是一种<strong>持续改进机制</strong>。每一代模型都可以在前一代的基础上自动提升，无需持续引入新的外部数据或人工标注。
 
 4.4 OPD 与百万 Token 长上下文的张力
 DeepSeek V4 和 MiMo 都将百万 token 长上下文作为核心能力目标。但 OPD 面临一个显著的工程困难：在百万 token 长轨迹上做 on-policy 采样，推理成本极高；而计算完整轨迹每个 token 上的教师 logit，显存需求随序列长度线性增长。
 
-这个矛盾目前靠 &#34; 分段采样 &#34; 和 &#34; 轨迹截断 &#34; 缓解，但理论上并不完美。如何在超长上下文中设计高效的 OPD 采样策略（例如只在关键决策点做 OPD 更新，其余位置用 RL），是下一个值得攻关的工程问题。
+这个矛盾目前靠 " 分段采样 " 和 " 轨迹截断 " 缓解，但理论上并不完美。如何在超长上下文中设计高效的 OPD 采样策略（例如只在关键决策点做 OPD 更新，其余位置用 RL），是下一个值得攻关的工程问题。
 
 4.5 Inference-Time Distillation：推理时的动态教师
-目前的 OPD 全部发生在训练阶段。一个更激进的方向是 <strong>inference-time distillation</strong>：在模型推理时，对于识别出的关键 &#34;forking token&#34;（决定推理路径走向的关键节点），实时查询教师模型的分布，在 beam search 或 sampling 过程中加入教师引导。
+目前的 OPD 全部发生在训练阶段。一个更激进的方向是 <strong>inference-time distillation</strong>：在模型推理时，对于识别出的关键 "forking token"（决定推理路径走向的关键节点），实时查询教师模型的分布，在 beam search 或 sampling 过程中加入教师引导。
 
-这本质上是将 OPD 的信号从训练时延伸到推理时，让学生在每次推理中都能实时 &#34; 请教 &#34; 教师，而不是只在训练阶段学习一次就固化。thinkingmachines.ai 博客在实验中自然发现了 forking token 的存在——这些 token 上 OPD 的惩罚信号特别大，说明它们正是学生偏离教师正确路径的关键节点。将这种识别能力迁移到推理时，是一条逻辑上连贯的演化路径。
+这本质上是将 OPD 的信号从训练时延伸到推理时，让学生在每次推理中都能实时 " 请教 " 教师，而不是只在训练阶段学习一次就固化。thinkingmachines.ai 博客在实验中自然发现了 forking token 的存在——这些 token 上 OPD 的惩罚信号特别大，说明它们正是学生偏离教师正确路径的关键节点。将这种识别能力迁移到推理时，是一条逻辑上连贯的演化路径。
 
 4.6 范式总结：从参数空间整合到 Logit 空间整合
 OPD 的核心贡献不仅在于训练效率，更在于它提供了一种<strong>在 logit 空间而非参数空间整合知识</strong>的方法论。
 
-传统的知识整合方案（weight merge、adapter 叠加、混合 RL）都在参数空间操作，各专家能力的 &#34; 干涉 &#34; 不可避免。OPD 则绕开了这个问题：专家模型独立存在，它们的知识以 logit 分布的形式流入学生，而学生的参数在自身生成的轨迹上学习，两个空间的操作互不干扰。
+传统的知识整合方案（weight merge、adapter 叠加、混合 RL）都在参数空间操作，各专家能力的 " 干涉 " 不可避免。OPD 则绕开了这个问题：专家模型独立存在，它们的知识以 logit 分布的形式流入学生，而学生的参数在自身生成的轨迹上学习，两个空间的操作互不干扰。
 
 这一洞察被四家团队从不同角度独立发现，并相继写入各自的技术报告，说明它触及了某种更深层的结构性真理：<strong>语言模型的能力，在 logit 空间比在参数空间更容易合并、迁移和保留。</strong>
 
-随着专家模型的规模和数量持续扩大，OPD 作为 &#34; 能力压缩与整合 &#34; 的核心工具，其重要性将只增不减。
+随着专家模型的规模和数量持续扩大，OPD 作为 " 能力压缩与整合 " 的核心工具，其重要性将只增不减。
 
 参考文献：Qwen3 Technical Report (2505.09388)；GLM-5: from Vibe Coding to Agentic Engineering (2602.15763)；MiMo-V2-Flash Technical Report (2601.02780)；DeepSeek-V4 Technical Report；On-Policy Distillation, thinkingmachines.ai

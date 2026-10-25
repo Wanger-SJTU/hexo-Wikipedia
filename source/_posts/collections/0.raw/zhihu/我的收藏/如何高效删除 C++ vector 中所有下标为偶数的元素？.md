@@ -34,7 +34,7 @@ int main() {
     vector v = {1, 2, 3, 4, 5, 6};
     erase_if(v, [&v](auto& num) { return (&num - &v[0] + 1) % 2 == 0; });
     for(auto i: v) {
-        cout<<i<<&#34;, &#34;;
+        cout<<i<<", ";
     }
 }
 ```

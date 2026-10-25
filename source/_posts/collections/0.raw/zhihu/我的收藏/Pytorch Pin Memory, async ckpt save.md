@@ -68,7 +68,7 @@ to()+non_blocking=True：****由堆栈可看到，调用cudaMemcpyAsync之后不
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_5fac128a20cd.jpg)
 
-如上图，main调用玩aten::to之后，调用cudaMemcpyAsync，Synchronize之后再进行计算操作，通信与计算不重叠。并且可看到cpu移动到gpu是pageable-&gt;Devicepinned=True+ non_blocking=True + multiple cuda streams：
+如上图，main调用玩aten::to之后，调用cudaMemcpyAsync，Synchronize之后再进行计算操作，通信与计算不重叠。并且可看到cpu移动到gpu是pageable->Devicepinned=True+ non_blocking=True + multiple cuda streams：
 
 数据拷贝stream13和计算stream7在不同cuda流中进行并且能够重叠。
 

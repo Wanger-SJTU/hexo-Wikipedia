@@ -17,7 +17,7 @@ source_url: https://zhuanlan.zhihu.com/p/463666907
 
 ![](/images/collections/0.raw/zhihu/dl%E8%AE%BA%E6%96%87/asset/img_5fc92ae2cf86.jpg)
 
-Nature 2020 8月封面文章去年(2021)夏天，AlphaFold先后在Nature(封面)和Science上发文，阐述其在两年一届的CASP14 (Critical Assessment of Techniques for Protein Structure Prediction) 蛋白质结构预测的竞赛中，首次将位置预测的平均误差降低到(碳)原子以下，即约1A( 10&#x2212;10" role="presentation">10−1010^{-10} 米，碳-12原子直径约为1.7A)。AlphaFold采用的两个关键机制是图网络和基于注意力机制的EvoFormer(类Transformer)。蛋白质折叠的准确预测被认为是困扰计算生物学界五十年的难题，对于治疗阿兹海默症、糖尿病等多种疾病具有重要意义。结构生物学家，诺贝尔化学奖得主Venkatraman Ramakrishnan (1949-)称 Alphafold 在该领域取得令人震惊(stunning)的进展，比很多人的预测提前的数十年，将对生物学研究的许多方面产生根本性改变。此前，英国科学家确认了Alphafold准确的预测了COVID-19的蛋白质SARS-CoV-2结构。
+Nature 2020 8月封面文章去年(2021)夏天，AlphaFold先后在Nature(封面)和Science上发文，阐述其在两年一届的CASP14 (Critical Assessment of Techniques for Protein Structure Prediction) 蛋白质结构预测的竞赛中，首次将位置预测的平均误差降低到(碳)原子以下，即约1A( 10−10" role="presentation">10−1010^{-10} 米，碳-12原子直径约为1.7A)。AlphaFold采用的两个关键机制是图网络和基于注意力机制的EvoFormer(类Transformer)。蛋白质折叠的准确预测被认为是困扰计算生物学界五十年的难题，对于治疗阿兹海默症、糖尿病等多种疾病具有重要意义。结构生物学家，诺贝尔化学奖得主Venkatraman Ramakrishnan (1949-)称 Alphafold 在该领域取得令人震惊(stunning)的进展，比很多人的预测提前的数十年，将对生物学研究的许多方面产生根本性改变。此前，英国科学家确认了Alphafold准确的预测了COVID-19的蛋白质SARS-CoV-2结构。
 
 ![](/images/collections/0.raw/zhihu/dl%E8%AE%BA%E6%96%87/asset/img_79b3e594e308.jpg)
 

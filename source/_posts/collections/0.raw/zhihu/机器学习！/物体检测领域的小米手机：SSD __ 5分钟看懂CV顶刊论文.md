@@ -43,7 +43,7 @@ source_url: https://zhuanlan.zhihu.com/p/57399396
 
 傻傻弟：本文主角SSD，单发多框物体检测模型
 
-$IOU：又称Jaccard Index， J(A,B)=|A&#x2229;B||A&#x222A;B|=|A&#x2229;B||A|+|B|&#x2212;|A&#x2229;B|." role="presentation">J(A,B)=|A∩B||A∪B|=|A∩B||A|+|B|−|A∩B|.{\displaystyle J(A,B)={{|A\cap B|} \over {|A\cup B|}}={{|A\cap B|} \over {|A|+|B|-|A\cap B|}}.} $
+$IOU：又称Jaccard Index， J(A,B)=|A∩B||A∪B|=|A∩B||A|+|B|−|A∩B|." role="presentation">J(A,B)=|A∩B||A∪B|=|A∩B||A|+|B|−|A∩B|.{\displaystyle J(A,B)={{|A\cap B|} \over {|A\cup B|}}={{|A\cap B|} \over {|A|+|B|-|A\cap B|}}.} $
 
 ![](/images/collections/0.raw/zhihu/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%EF%BC%81/asset/img_b9e5d2bfed63.jpg)
 

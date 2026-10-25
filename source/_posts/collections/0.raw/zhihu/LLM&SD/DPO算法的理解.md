@@ -33,9 +33,9 @@ DPO算法的目的就是最大化奖励模型，使得奖励模型对chosen和re
 
 最大化部分根据对数函数运算，以上公式可以转化为a-b，a和b公式如下：
 
-$a=log(&#x03C0;&#x03B8;(yw|x))&#x2212;log(&#x03C0;ref(yw|x))" role="presentation">a=log(πθ(yw|x))−log(πref(yw|x))a = log(\pi_{\theta}(y_{w}|x)) - log(\pi_{ref}(y_{w}|x))  $
+$a=log(πθ(yw|x))−log(πref(yw|x))" role="presentation">a=log(πθ(yw|x))−log(πref(yw|x))a = log(\pi_{\theta}(y_{w}|x)) - log(\pi_{ref}(y_{w}|x))  $
 
-$b=log(&#x03C0;&#x03B8;(yl|x))&#x2212;log(&#x03C0;ref(yl|x))" role="presentation">b=log(πθ(yl|x))−log(πref(yl|x))b = log(\pi_{\theta}(y_{l}|x)) - log(\pi_{ref}(y_{l}|x))  $
+$b=log(πθ(yl|x))−log(πref(yl|x))" role="presentation">b=log(πθ(yl|x))−log(πref(yl|x))b = log(\pi_{\theta}(y_{l}|x)) - log(\pi_{ref}(y_{l}|x))  $
 
  其中，a代表经过训练之后的policy模型与之前的reference模型对于chosen的差值越来越大。对于rejected的差值越来越小。（参考：[DPO: Direct Preference Optimization 论文解读及代码实践 - 知乎 (zhihu.com)](https://zhuanlan.zhihu.com/p/642569664)）
 

@@ -36,9 +36,9 @@ source_url: https://zhuanlan.zhihu.com/p/60747096
 
 维基百科介绍：
 
-$> Softmax函数<strong>，或称</strong>归一化指数函数**<span class="wikilink wikilink--missing" title="未导入的页面">1</span>(https://link.zhihu.com/?target=https%3A//zh.wikipedia.org/wiki/Softmax%25E5%2587%25BD%25E6%2595%25B0%23cite_note-bishop-1)，是逻辑函数的一种推广。它能将一个含任意实数的K维向量 z" role="presentation">z{\displaystyle \mathbf {z} }  “压缩”到另一个K维实向量 &#x03C3;(z)" role="presentation">σ(z){\displaystyle \sigma (\mathbf {z} )} 中，使得每一个元素的范围都在 &#x03C3;(z)" role="presentation">σ(z){\displaystyle \sigma (\mathbf {z} )} $
+$> Softmax函数<strong>，或称</strong>归一化指数函数**<span class="wikilink wikilink--missing" title="未导入的页面">1</span>(https://link.zhihu.com/?target=https%3A//zh.wikipedia.org/wiki/Softmax%25E5%2587%25BD%25E6%2595%25B0%23cite_note-bishop-1)，是逻辑函数的一种推广。它能将一个含任意实数的K维向量 z" role="presentation">z{\displaystyle \mathbf {z} }  “压缩”到另一个K维实向量 σ(z)" role="presentation">σ(z){\displaystyle \sigma (\mathbf {z} )} 中，使得每一个元素的范围都在 σ(z)" role="presentation">σ(z){\displaystyle \sigma (\mathbf {z} )} $
 之间，并且所有元素的和为1。该函数的形式通常按下面的式子给出：
- $$&#x03C3;(z)j=ezj&#x2211;k=1Kezk&#xA0;for&#xA0;j=1,&#x2026;,K." role="presentation">σ(z)j=ezj∑k=1Kezk for j=1,…,K.{\displaystyle \sigma (\mathbf {z} )_{j}={\frac {e^{z_{j}}}{\sum _{k=1}^{K}e^{z_{k}}}}}  \  for\ j= 1, …,K. $$
+ $$σ(z)j=ezj∑k=1Kezk for j=1,…,K." role="presentation">σ(z)j=ezj∑k=1Kezk for j=1,…,K.{\displaystyle \sigma (\mathbf {z} )_{j}={\frac {e^{z_{j}}}{\sum _{k=1}^{K}e^{z_{k}}}}}  \  for\ j= 1, …,K. $$
 
 简单来说 softmax 将一组向量进行压缩，使得到的向量各元素之和为 1，而压缩后的值便可以作为置信率，所以常用于分类问题。另外，在实际运算的时候，为了避免上溢和下溢，在将向量丢进softmax之前往往先对每个元素减去其中最大值，即：
 

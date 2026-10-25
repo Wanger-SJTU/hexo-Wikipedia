@@ -23,15 +23,18 @@ source_url: https://zhuanlan.zhihu.com/p/479235186
 
 <strong>定理1（No Free Lunch）：</strong>假定 A" role="presentation">A\mathcal{A} 是一个在域 X" role="presentation">X\mathcal{X} 的二分类任务中任意一个机器学习算法，其损失函数为 0\text{-}1 损失。令 n" role="presentation">nn 是一个大小为 |X|/2" role="presentation">|X|/2|\mathcal{X}|/2 的训练集，存在域 X" role="presentation">X\mathcal{X} 中的分布 D" role="presentation">D\mathcal{D}，则有：
 
-$- 存在一个函数 f:X&#x2192;{0,1}" role="presentation">f:X→{0,1}f:\mathcal{X}\rightarrow \{0,1\}，且有 LD(f)=0" role="presentation">LD(f)=0L_\mathcal{D}(f)=0。** $
-$- 对于子列 S&#x223C;Dn" role="presentation">S∼Dn\mathcal{S\sim D}^n，则概率不等式 P(LD(A(S))&#x2265;:S&#x223C;Dn)&#x2265;" role="presentation">P(LD(A(S))≥:S∼Dn)≥P(L_\mathcal{D}(\mathcal{A}(\mathcal{S}))\ge : \mathcal{S}\sim\mathcal{D}^n)\ge  成立。$
+$- 存在一个函数 f:X→{0,1}" role="presentation">f:X→{0,1}f:\mathcal{X}\rightarrow \{0,1\}，且有 LD(f)=0" role="presentation">LD(f)=0L_\mathcal{D}(f)=0。** $
+$- 对于子列 S∼Dn" role="presentation">S∼Dn\mathcal{S\sim D}^n，则概率不等式 P(LD(A(S))≥:S∼Dn)≥" role="presentation">P(LD(A(S))≥:S∼Dn)≥P(L_\mathcal{D}(\mathcal{A}(\mathcal{S}))\ge : \mathcal{S}\sim\mathcal{D}^n)\ge  成立。$
  
 证明：
 
-$- 令 C" role="presentation">C\mathcal{C} 表示域 X" role="presentation">X\mathcal{X} 中大小为 2n" role="presentation">2n2n 的一个子集。主要的证明思路是只利用数据集 C" role="presentation">C\mathcal{C} 一半的数据样本点并不能给出剩下一半数据点的信息。假定 H" role="presentation">H\mathcal{H} 表示数据集 C" role="presentation">C\mathcal{C} 到标签集合 {0,1}" role="presentation">{0,1}\{0,1\} 所有可能的函数集合，且 T" role="presentation">TT 表示的是函数集合的基数，其中 H={f1,&#x22EF;,fT}" role="presentation">H={f1,⋯,fT}\mathcal{H}=\{f_1,\cdots,f_T\}，T=22n" role="presentation">T=22nT=2^{2n}。对于 H" role="presentation">H\mathcal{H} 中每一个函数假设，令 Di" role="presentation">Di\mathcal{D}_i 是 C&#x00D7;{0,1}" role="presentation">C×{0,1}\mathcal{C}\times\{0,1\} 中的分布：$
+$- 令 C" role="presentation">C\mathcal{C} 表示域 X" role="presentation">X\mathcal{X} 中大小为 2n" role="presentation">2n2n 的一个子集。主要的证明思路是只利用数据集 C" role="presentation">C\mathcal{C} 一半的数据样本点并不能给出剩下一半数据点的信息。假定 H" role="presentation">H\mathcal{H} 表示数据集 C" role="presentation">C\mathcal{C} 到标签集合 {0,1}" role="presentation">{0,1}\{0,1\} 所有可能的函数集合，且 T" role="presentation">TT 表示的是函数集合的基数，其中 H={f1,⋯,fT}" role="presentation">H={f1,⋯,fT}\mathcal{H}=\{f_1,\cdots,f_T\}，T=22n" role="presentation">T=22nT=2^{2n}。对于 H" role="presentation">H\mathcal{H} 中每一个函数假设，令 Di" role="presentation">Di\mathcal{D}_i 是 C×{0,1}" role="presentation">C×{0,1}\mathcal{C}\times\{0,1\} 中的分布：$
 Di({(x,y)})={mif y=fi(x)0otherwise
 
+```text
 \mathcal{D}_i(\{(x,y)\})=\left\{\begin{array}{ll}m & \mathrm{if}\text{ } y=f_i(x)\\0& \mathrm{otherwise}\end{array}\right. \\
+```
+
 
 $进而可知存在函数 fi" role="presentation">fif_i，在数据分布 Di" role="presentation">Di\mathcal{D}_i 上则有 LDi(fi)=0" role="presentation">LDi(fi)=0L_{\mathcal{D}_i}(f_i)=0。$
 
@@ -59,7 +62,10 @@ $$\begin{aligned}\frac{1}{T}\sum\limits_{i=1}^T L_{\mathcal{D}_i}(\mathcal{A}(\m
 
 对于给定的 r\in [p]，因为 T 是所有可能函数映射的基数，所以总有成对存在的 a,b\in [T] 有：
 
+```text
 \mathbb{I}(\mathcal{A}(\mathcal{S}^i_j)(v_r)\ne f_a(v_r))+\mathbb{I}(\mathcal{A}(\mathcal{S}^i_j)(v_r)\ne f_b(v_r))=1 \\
+```
+
 
 进而则有：
 
@@ -67,7 +73,10 @@ $$\begin{aligned}\mathbb{E}_{\mathcal{S}\sim \mathcal{D}_i^n}[L_{\mathcal{D}_i}(
 
 <strong>根据马尔可夫不等式的修改版可知，给定一个随机变量 X \in[0,1]，给定一个常数 a\in [0,1]，进而则有：</strong>
 
+```text
 \begin{aligned}\mathbb{E}[X]&=\int_0^1 x p(x)dx\\&= \int_0^a x p(x)dx + \int_a^1xp(x)dx\\&\le a \int_0^a  p(x)dx + \int^1_a p(x)dx\\&=a(1-p\{X\ge a\})+p\{X\ge a\}\\&=a+(1-a)P\{X\ge a\}\end{aligned} \\
+```
+
 
 马尔可夫不等式为：
 
@@ -91,11 +100,17 @@ $P(L_{(\mathcal{D},f)}(h)\le \epsilon)\ge 1-\delta \\$
 
 <strong>证明：</strong>该推论可以利用反证法来证明。假定 \mathcal{H} 是PAC可学习的。选取 \epsilon  和 \delta 。通过PAC的定义可知，一定存在学习算法 \mathcal{A}，其数量为 m=m(\epsilon,\delta)，对于任意在 \mathcal{X}\times\{0,1\} 上生成的数据分布，如果对于一些函数 f:\mathcal{X} \rightarrow \{0,1\}，使得 L_\mathcal{D}(f)=0，并且当 \mathcal{A} 在采样出 m 个样本的数据集合 S 上，有：
 
+```text
 P(L_\mathcal{D}\mathcal{A}(\mathcal{S}) \le \epsilon) \le 1 -\delta\\
+```
+
 
 然后由No Free Lunch定理可知，当  2m">|\mathcal{X}|> 2m，对于每一个学习算法，存在分布 \mathcal{D} 使得：
 
+```text
  \epsilon) \ge \delta > \\">P(L_\mathcal{D}\mathcal{A}(\mathcal{S}) \ge > \epsilon) \ge \delta > \\
+```
+
 
 所以出现矛盾。
 

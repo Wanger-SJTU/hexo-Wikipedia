@@ -60,13 +60,13 @@ void post_desc(void)
      * coherent DMA 靠 snoop,数据待 cache 里设备也读得到。 */
     dma_wmb();
 
-    /* 步骤3:写 flag。这一个写入本身就是&#34;描述符已就绪&#34;的信号(owner-bit 模型)。
+    /* 步骤3:写 flag。这一个写入本身就是"描述符已就绪"的信号(owner-bit 模型)。
      * 它后面不需要第二个 barrier——后面没别的正文要排在它前面。 */
     WRITE_ONCE(*dma_addr, desc_flag);
 
     /* 步骤4:敲 doorbell,踢设备去取。写 UC 寄存器,严格保序、立即发出。
      * writeq 内部对 x86 是普通 store(UC 天然有序);对弱序架构会带屏障。
-     * 注意:doorbell 是&#34;提示&#34;,正确性锚在上面的 flag/描述符本身。 */
+     * 注意:doorbell 是"提示",正确性锚在上面的 flag/描述符本身。 */
     writeq(db, db_addr);
 }
 ```
@@ -188,8 +188,12 @@ barrier 的真正作用
 x86 上内存类型由 <strong>MTRR + PAT</strong> 决定:
 
 # 1. PAT 已登记的范围(最有用,设备 BAR 的 WC/UC 基本都在这)
+
+```text
 sudo mount -t debugfs none /sys/kernel/debug 2>/dev/null
 sudo cat /sys/kernel/debug/x86/pat_memtype_list
+```
+
 #   write-back @ 0x...-0x...
 #   uncached-minus @ 0x...-0x...
 #   write-combining @ 0x...-0x...
@@ -397,19 +401,19 @@ owner-last` 在 ARM 需要 `dmb ishst` 或用 `STLR`(store-release)保证 body �
 
 非一致 DMA 上的完整发送流程(描述符若为 cacheable)
 build_wqe_body(wqe);
-asm volatile(&#34;dmb ishst&#34; ::: &#34;memory&#34;);   // body 先于 owner(或 owner 用 STLR)
+asm volatile("dmb ishst" ::: "memory");   // body 先于 owner(或 owner 用 STLR)
 wqe->ctrl.owner = OWN_HW;
 
 ```cpp
 for (char *p = (char*)wqe; p < (char*)wqe + wqe_len; p += cache_line_size)
-    asm volatile(&#34;dc cvac, %0&#34; :: &#34;r&#34;(p) : &#34;memory&#34;);   // clean 到 PoC(DRAM)
+    asm volatile("dc cvac, %0" :: "r"(p) : "memory");   // clean 到 PoC(DRAM)
 ```
 
-asm volatile(&#34;dsb osh&#34; ::: &#34;memory&#34;);                   // 等 clean 真完成
+asm volatile("dsb osh" ::: "memory");                   // 等 clean 真完成
 
 *dbrec = producer_index;
-asm volatile(&#34;dc cvac, %0&#34; :: &#34;r&#34;(dbrec) : &#34;memory&#34;);
-asm volatile(&#34;dsb osh&#34; ::: &#34;memory&#34;);
+asm volatile("dc cvac, %0" :: "r"(dbrec) : "memory");
+asm volatile("dsb osh" ::: "memory");
 
 *doorbell_reg = db_val;                                 // Device-nGnRnE,无需 DC
 接收方向(CQ 轮询)读前要 `DC CIVAC`+DSB;`DC IVAC` 是 EL1 特权,用户态只能 CIVAC—— 所以<strong>实务一律把 SQ/CQ/dbrec 放 non-cacheable 绕开 cache maintenance,只对 payload 做 streaming sync</strong>。

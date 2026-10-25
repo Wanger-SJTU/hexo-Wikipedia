@@ -62,7 +62,7 @@ source_url: https://zhuanlan.zhihu.com/p/99766566
 
 [3] Wang, X., Kong, T., Shen, C., Jiang, Y., & Li, L. (2019). SOLO: Segmenting Objects by Locations.
 
-[4] Dijk, Tom van, and Guido de Croon. &#34;How Do Neural Networks See Depth in Single Images?.&#34; In ICCV. 2019.
+[4] Dijk, Tom van, and Guido de Croon. "How Do Neural Networks See Depth in Single Images?." In ICCV. 2019.
 
 [5] Liu, R., Lehman, J., Molino, P., Such, F. P., Frank, E., Sergeev, A., & Yosinski, J. (2018). An intriguing failing of convolutional neural networks and the coordconv solution. In NIPS .
 

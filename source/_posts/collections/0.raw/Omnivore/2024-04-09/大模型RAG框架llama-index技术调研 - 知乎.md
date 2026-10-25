@@ -372,10 +372,14 @@ RAG不仅仅是关于特定事实的问答，用户可能会问各种问题。�
 > Given the context information and not prior knowledge.  
 > generate only questions based on the below query.
 > 
+
+```text
 > You are a Teacher/ Professor. Your task is to setup \\  
 > {num\_questions\_per\_chunk} questions for an upcoming \\  
 > quiz/examination. The questions should be diverse in nature \\  
 > across the document. Restrict the questions to the \\  
+```
+
 > context information provided."
 > 
 > 现在基本上主流的RAG框架都支持embedding微调以及大模型lora微调，比如QAnything都支持，详细参考这篇：[有道 QAnything 背后的故事 --- 关于 RAG 的一点经验分享](https://xie.infoq.cn/article/2ae5eb5668425d625647fd718)

@@ -94,10 +94,10 @@ Raw格式只能用于不需要Adapter重试支持的场景。如果CXL或PCIe协
 ![](https://pica.zhimg.com/v2-0773888b5a9dc6ec89057ea068ee6764_r.jpg)
 ![](https://pic2.zhimg.com/v2-6828189e0ccc1d3e881cc1cd02f66f3d_r.jpg)由于Adapter添加了4个字节，Flit的对齐并不完全匹配物理链路的lane数(总是16的倍数)。Adapter添加的字节要求Adapter为连续的Flit移动四个字节。数据总是以256B的倍数传输(注意，Retimer信用具有256B的数据粒度)。当Adapter没有Flit要发送时，它使用数据流暂停(PDS)令牌终止数据流，然后将0b填充到下一个64B计数多个边界和至少两个后续64B块的所有0值数据。如果传输不是在256B计数倍数边界，则需要对所有0值数据进行额外的64B传输，以使传输的字节达到256B计数倍数。上述所有0数据的后续传输给接收方至少两次64B传输来复位接收字节移位器。PDS令牌及其后面的0字节不能发到协议层。PDS令牌是一个可变大小的Flit，它携带一个2B特殊的Flit Header，并在RDI的剩余字节上填充0字节。PDS的发送端在Flit Header上驱动以下内容：
 
-- Byte 0的bit[4]为1&#39;b1。
-- Byte 1的bit[7]为1&#39;b1。
-- Byte 1的bit[6]为1&#39;b1。
-- Byte 1的bit[5:4]为2&#39;b00，序列号[7:0]与PDS Flit Header在此位置的期望值相匹配。如果使能了重试，如果上述四个条件中的任何两个满足，则接收端必须将该Flit Header解释为PDS。如果重试没有使能，如果条件(1)和(2)为真，接收端必须将该Flit Header解释为PDS。这保证了如果Flit Header中的错误少于3位，PDS将被检测到。对于3位错误，会导致重试，但这将通过重试规则无缝地处理。
+- Byte 0的bit[4]为1'b1。
+- Byte 1的bit[7]为1'b1。
+- Byte 1的bit[6]为1'b1。
+- Byte 1的bit[5:4]为2'b00，序列号[7:0]与PDS Flit Header在此位置的期望值相匹配。如果使能了重试，如果上述四个条件中的任何两个满足，则接收端必须将该Flit Header解释为PDS。如果重试没有使能，如果条件(1)和(2)为真，接收端必须将该Flit Header解释为PDS。这保证了如果Flit Header中的错误少于3位，PDS将被检测到。对于3位错误，会导致重试，但这将通过重试规则无缝地处理。
 
 当Retry被触发或RDI状态经过Retrain时，会发生隐式PDS。发送端必须插入0，就像它会为一个实际的PDS，并开始重新开始Flit从新的对齐。对于重试和Retrain场景，接收方还必须在收到的数据中的字节0和字节1中查找期望的序列号。
 
@@ -109,7 +109,7 @@ Standard 256B Flit Format
 
 协议层以256B的Flit发送数据，但它将Adapter保留的字节上驱动为0 (图3-16、图3-17、图3-18和图3-19中以浅橙色显示)。PCIe规范定义的DLP 6B以Format 3和Format 4的形式存在于PCIe和[http://CXL.io](https://link.zhihu.com/?target=http%3A//CXL.io)协议中。但是，在PCIe和[http://CXL.io](https://link.zhihu.com/?target=http%3A//CXL.io)协议中，由于DLLP需要绕过TX Retry buffer，DLP字节最终是唯一的，因为它们部分由协议层填充，部分由Adapter填充。DLP0和DLP1被UCIe的Flit Header取代，并由UCIe Adapter驱动。然而，如果Flit携带一个Flit Marker，协议层必须填充Flit Header byte 0的bit 4为1b，以及Flit_Marker位中的相关信息(这些是PCIe规范定义的)。协议层还必须为它生成的Flit填充Flit Header中的协议Identifier位。
 
-对于Streaming协议，Flit格式如图3-18。协议层只填充Flit Header字节0的bit[7:6]，并且它不能将bit[7:6]设置为2&#39;b00。
+对于Streaming协议，Flit格式如图3-18。协议层只填充Flit Header字节0的bit[7:6]，并且它不能将bit[7:6]设置为2'b00。
 
 对于PCIe Flit模式协议，Standard 256B Start Header Flit格式是可选的。
 
@@ -127,7 +127,7 @@ Latency-Optimized 256B Flit Format
 
 从Adapter的角度，这两种格式看起来是一样的，唯一的区别是协议层是否填充协议信息的可选字节。当协议层不填充可选字节时，是Format 5，而当协议层填充可选字节时，是Format 6。
 
-延迟优化的256B Flit格式(带或不带可选字节)支持是Streaming协议的可选选项。协议层只填充Flit Header的bit[7:6]，并且它不能为bit[7:6]设置2&#39;b00。
+延迟优化的256B Flit格式(带或不带可选字节)支持是Streaming协议的可选选项。协议层只填充Flit Header的bit[7:6]，并且它不能为bit[7:6]设置2'b00。
 
 对于PCIe Flit模式协议，延迟优化Flit带可选字节Flit格式是可选的。
 
@@ -197,7 +197,7 @@ CRC LFSR计算的CRC比特数初始值为0000h。CRC从消息的第0字节的第
 UCIe上的重试机制是PCIe规范中定义的Flit模式下的重试机制的简化版。不适用的规则和相应的参数更改如下：
 
 - 选择性Nak和相关的规则不适用，不能实现。与RX retry buffer相关的规则也不适用，不能实现。
-- 在整个链路操作期间，当不与PCIe replay规则冲突时，显式序列号flit和Ack/Nak flit交替进行。这允许更快的Ack周转，从而更小的retry buffer大小。如果没有Ack/Nak flit要发送，则允许发送显式序列号flit。为了满足这个要求，PCIe replay规则中描述的所有显式序列号flit传输都要求满足&#34; CONSECUTIVE_TX_EXPLICIT_SEQ_NUM_FLIT < 3 &#34;条件，改成要满足&#34; CONSECUTIVE_TX_EXPLICIT_SEQ_NUM_FLIT < 1 &#34;条件，并且不需要发送3个连续的显式序列号flit。
+- 在整个链路操作期间，当不与PCIe replay规则冲突时，显式序列号flit和Ack/Nak flit交替进行。这允许更快的Ack周转，从而更小的retry buffer大小。如果没有Ack/Nak flit要发送，则允许发送显式序列号flit。为了满足这个要求，PCIe replay规则中描述的所有显式序列号flit传输都要求满足" CONSECUTIVE_TX_EXPLICIT_SEQ_NUM_FLIT < 3 "条件，改成要满足" CONSECUTIVE_TX_EXPLICIT_SEQ_NUM_FLIT < 1 "条件，并且不需要发送3个连续的显式序列号flit。
 - 将所有与重试相关的10位计数器替换为8位计数器，最大允许的序号为255(因此所有计算和初始值中的1023被替换为255)。
 - REPLAY_TIMEOUT_FLIT_COUNT是一个9位计数器，在1FFh时饱和。除了PCIe规范中增加REPLAY_TIMEOUT_FLIT_COUNT外，当处于Active状态，并且从上一个flit发送到现在已经经过了一个flit时间(以当前链路速度和宽度传输256B数据所需的Adapter时钟周期数(lclk))且没有传输Payload flit和NOP flit时，也必须增加该count。每个flit没有发送时，计数器都必须加1(这可能导致在各个flit之间或达到限制之前，计数器需要加几次)。增加的要求补偿了NOP flit的非连续传输。
 

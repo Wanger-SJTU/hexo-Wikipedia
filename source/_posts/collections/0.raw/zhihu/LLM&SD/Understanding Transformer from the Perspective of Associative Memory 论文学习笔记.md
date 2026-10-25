@@ -27,7 +27,7 @@ source_url: https://zhuanlan.zhihu.com/p/1986946791497819070
 
 联想矩阵这个概念是从心理学中借鉴并数学化的一个概念，其心理学背景就是指信息加工的过程是由”通过建立知识单元间的联系实现信息存储与提取“。 那么这个最简单的表示方式就是 o=Sq" role="presentation">o=Sqo = Sq ，即直接用一个线性矩阵 S" role="presentation">SS 去存储记忆，然后获取记忆的结果就是他俩一个操作的结果。
 
-然后在这篇文章当中，作者通过使用<strong>核函数</strong> &#x03BA;(&#x22C5;,&#x22C5;)" role="presentation">κ(⋅,⋅)\kappa(\cdot ,\cdot) 将整个 Transformer 里面的 FFN 和 Attention 部分都写成了 o=S&#x03D5;(q)" role="presentation">o=Sϕ(q)o = S\phi(q) 的形式，其中 &#x03D5;" role="presentation">ϕ\phi 是核函数 &#x03BA;" role="presentation">κ\kappa 对应的特征映射, 其对应的原始核， S" role="presentation">SS 中也包含着核函数最后二者可以合并消掉还原成一些我们更熟悉的方式，然后 q" role="presentation">qq 呢就是当前的 token 的表征。然后具体怎么处理的我们后文再展开。
+然后在这篇文章当中，作者通过使用<strong>核函数</strong> κ(⋅,⋅)" role="presentation">κ(⋅,⋅)\kappa(\cdot ,\cdot) 将整个 Transformer 里面的 FFN 和 Attention 部分都写成了 o=Sϕ(q)" role="presentation">o=Sϕ(q)o = S\phi(q) 的形式，其中 ϕ" role="presentation">ϕ\phi 是核函数 κ" role="presentation">κ\kappa 对应的特征映射, 其对应的原始核， S" role="presentation">SS 中也包含着核函数最后二者可以合并消掉还原成一些我们更熟悉的方式，然后 q" role="presentation">qq 呢就是当前的 token 的表征。然后具体怎么处理的我们后文再展开。
 
 #### 记忆容量
 
@@ -35,15 +35,15 @@ source_url: https://zhuanlan.zhihu.com/p/1986946791497819070
 
 #### 记忆更新
 
-其实就是这里的 S" role="presentation">SS 的迭代规则，怎么从 St&#x2212;1" role="presentation">St−1S_{t-1} 更新到 St" role="presentation">StS_t ，这一部分主要是针对 Attention 来处理的。
+其实就是这里的 S" role="presentation">SS 的迭代规则，怎么从 St−1" role="presentation">St−1S_{t-1} 更新到 St" role="presentation">StS_t ，这一部分主要是针对 Attention 来处理的。
 
 ### 从 Transformer 到 Associate Matrix
 
-现在让我们来一下作者是怎么将 FFN 和 Attention 这两个部分全都写成 o=S&#x03D5;(q)" role="presentation">o=Sϕ(q)o = S\phi(q) 的形式的，并且这两者具体长什么样子。
+现在让我们来一下作者是怎么将 FFN 和 Attention 这两个部分全都写成 o=Sϕ(q)" role="presentation">o=Sϕ(q)o = S\phi(q) 的形式的，并且这两者具体长什么样子。
 
 #### Attention 部分
 
-$首先我们将整个 Attention 的计算公式写开，这里我们先忽略底下的归一化项，并且将 &#x03D5;" role="presentation">ϕ\phi 通过拆开这里的分子得到，即 exp(ki&#x22A4;qt/dk)=&#x03D5;(ki)&#x22A4;&#x03D5;(qt)" role="presentation">exp(ki⊤qt/dk)=ϕ(ki)⊤ϕ(qt)exp(k_i^\top q_t/\sqrt d_k)=\phi(k_i)^\top \phi(q_t) 。$
+$首先我们将整个 Attention 的计算公式写开，这里我们先忽略底下的归一化项，并且将 ϕ" role="presentation">ϕ\phi 通过拆开这里的分子得到，即 exp(ki⊤qt/dk)=ϕ(ki)⊤ϕ(qt)" role="presentation">exp(ki⊤qt/dk)=ϕ(ki)⊤ϕ(qt)exp(k_i^\top q_t/\sqrt d_k)=\phi(k_i)^\top \phi(q_t) 。$
 
 ![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_25f4549cb043.jpg)
 

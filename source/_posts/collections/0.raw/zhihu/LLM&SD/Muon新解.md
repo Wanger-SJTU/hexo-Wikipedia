@@ -81,7 +81,7 @@ ARO那篇文章把Muon要解决的问题视为对称性与坐标系旋转的问�
 
 2026.4.4
 
-今天在cifar 10数据集上做了一次实验，模型是从[GitHub - hananshafi/vits-for-small-scale-datasets: [BMVC 2022] Official repository for &#34;How to Train Vision Transformer on Small-scale Datasets?&#34; · GitHub](https://link.zhihu.com/?target=https%3A//github.com/hananshafi/vits-for-small-scale-datasets)里选择的ViT，优化器是让AI写的。观察了Linear Recon Loss 
+今天在cifar 10数据集上做了一次实验，模型是从[GitHub - hananshafi/vits-for-small-scale-datasets: [BMVC 2022] Official repository for "How to Train Vision Transformer on Small-scale Datasets?" · GitHub](https://link.zhihu.com/?target=https%3A//github.com/hananshafi/vits-for-small-scale-datasets)里选择的ViT，优化器是让AI写的。观察了Linear Recon Loss 
 ![](https://www.zhihu.com/equation?tex=%7C%7C%28W%5E%5Ctop+W+-+I%29x%7C%7C) 与MLP Recon Loss 
 ![](https://www.zhihu.com/equation?tex=%7C%7C%28W_1%5E%5Ctop+W_2%5E%5Ctop+W_2+W_1+-+I%29x%7C%7C) ，但是这里的 
 ![](https://www.zhihu.com/equation?tex=W) 是权重不是更新量（优化器的重建损失里的 

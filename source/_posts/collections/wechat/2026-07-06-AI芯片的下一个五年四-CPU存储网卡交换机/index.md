@@ -13,7 +13,7 @@ categories:
 
 # AI芯片的下一个五年（四）：CPU，存储，网卡和交换机
 
-> 来源: Winnie&nbsp;shao
+> 来源: Winnie shao
 > 原文链接: https://mp.weixin.qq.com/s/by_rWEwLvG_-CaMGgQVtAw
 
 CPU，在AI之前，一直是IT世界的中心，只是在训练这种纯粹的计算任务中，GPU的优势太过明显。推理业务中，CPU的比重本来就在提高，更何况Agent对CPU的依赖性更强。至于存储，训练需要存储，推理，最近AI infra的会议上全是在研究KVcache的管理。 还是存储金字塔，每一层都有点说法。对于AI Infra来说，存储也分scale-up domain和scale-out domain， 冷温热要分层。但是如果所有的钱都被存储赚走了，... ... ，AI infra的建设节奏也会放慢吧.. ... 总不能给存储厂商打工吧。 

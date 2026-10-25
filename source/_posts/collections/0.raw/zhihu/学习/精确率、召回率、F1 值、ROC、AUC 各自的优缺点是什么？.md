@@ -33,7 +33,7 @@ source_url: https://www.zhihu.com/question/30643044/answer/222274170
 
 F1值是精确率和召回率的调和均值，即F1=2PR/(P+R)，相当于精确率和召回率的综合评价指标。
 
-另外还有Fα值，为F1值的变体， F&#x3B1;=&#xFF08;&#x3B1;2+1&#xFF09;PR/(&#x3B1;2P+R)" role="presentation">Fα=（α2+1）PR/(α2P+R)Fα=（α^2+1）PR/(α^2 P+R) ，利用α给P和R赋予不同的权重，若α=1则为F1值。
+另外还有Fα值，为F1值的变体， Fα=（α2+1）PR/(α2P+R)" role="presentation">Fα=（α2+1）PR/(α2P+R)Fα=（α^2+1）PR/(α^2 P+R) ，利用α给P和R赋予不同的权重，若α=1则为F1值。
 
 接着来说ROC曲线（Receiver operating characteristic curve），ROC曲线其实是多个混淆矩阵的结果组合，如果在上述模型中我们没有定好阈值，而是将模型预测结果从高到低排序，将每个概率值依次作为阈值，那么就有多个混淆矩阵。
 

@@ -24,22 +24,22 @@ source_url: https://www.zhihu.com/question/23311674/answer/235256926
 
 KKT条件有几个不同的等价表述方式，我们只讨论其中一种，其他表述可以类似地推得。给定优化问题：
 
-$maxxf(x)s.t.hj(x)=0,j=1,&#x2026;,qgi(x)&#x2264;0,i=1,&#x2026;,p" role="presentation">maxxf(x)s.t.hj(x)=0,j=1,…,qgi(x)≤0,i=1,…,pmax_{x}f(x) \\s.t.h_j(x)=0,j=1,\dots,q \\g_i(x)\leq 0,i=1,\dots,p$
+$maxxf(x)s.t.hj(x)=0,j=1,…,qgi(x)≤0,i=1,…,p" role="presentation">maxxf(x)s.t.hj(x)=0,j=1,…,qgi(x)≤0,i=1,…,pmax_{x}f(x) \\s.t.h_j(x)=0,j=1,\dots,q \\g_i(x)\leq 0,i=1,\dots,p$
 
-也就是说，自变量 x" role="presentation">xx 是一个n维向量，要最大化一个目标函数 f" role="presentation">ff ，满足若干等式和不等式约束。KKT条件宣称，如果有一个点 x&#x2217;" role="presentation">x∗x^* 是满足所有约束的极值点，则
+也就是说，自变量 x" role="presentation">xx 是一个n维向量，要最大化一个目标函数 f" role="presentation">ff ，满足若干等式和不等式约束。KKT条件宣称，如果有一个点 x∗" role="presentation">x∗x^* 是满足所有约束的极值点，则
 
-$&#x2207;f(x&#x2217;)=&#x2211;j&#x03BB;j&#x2207;hj(x&#x2217;)+&#x2211;i&#x03BC;i&#x2207;gi(x&#x2217;)&#x03BC;i&#x2265;0,&#x03BC;igi(x&#x2217;)=0" role="presentation">∇f(x∗)=∑jλj∇hj(x∗)+∑iμi∇gi(x∗)μi≥0,μigi(x∗)=0\nabla f(x^*)=\sum_j\lambda_j\nabla h_j(x^*)+\sum_i\mu_i \nabla g_i(x^*) \\\mu_i\geq0,\mu_ig_i(x^*)=0$
+$∇f(x∗)=∑jλj∇hj(x∗)+∑iμi∇gi(x∗)μi≥0,μigi(x∗)=0" role="presentation">∇f(x∗)=∑jλj∇hj(x∗)+∑iμi∇gi(x∗)μi≥0,μigi(x∗)=0\nabla f(x^*)=\sum_j\lambda_j\nabla h_j(x^*)+\sum_i\mu_i \nabla g_i(x^*) \\\mu_i\geq0,\mu_ig_i(x^*)=0$
 
-简单说，就是在极值点处， f" role="presentation">ff 的梯度是一系列等式约束 hj" role="presentation">hjh_j 的梯度和不等式约束 gi" role="presentation">gig_i 的梯度的线性组合。在这个线性组合中，等式约束梯度的权值 &#x03BB;j" role="presentation">λj\lambda_j 没有要求；不等式约束梯度的权值 &#x03BC;i" role="presentation">μi\mu_i 是非负的，并且如果某个 gi(x&#x2217;)" role="presentation">gi(x∗)g_i(x^*) 严格小于0，那这个约束不会出现在加权式中，因为对应的权值 &#x03BC;i" role="presentation">μi\mu_i 必须为0。换句话说，只有 x&#x2217;" role="presentation">x∗x^* 恰好在边界 gi=0" role="presentation">gi=0g_i=0上的那些 gi" role="presentation">gig_i 的梯度才会出现在加权式中。如果去掉不等式约束的部分，那么上式就是拉格朗日乘子法的精确表述。
+简单说，就是在极值点处， f" role="presentation">ff 的梯度是一系列等式约束 hj" role="presentation">hjh_j 的梯度和不等式约束 gi" role="presentation">gig_i 的梯度的线性组合。在这个线性组合中，等式约束梯度的权值 λj" role="presentation">λj\lambda_j 没有要求；不等式约束梯度的权值 μi" role="presentation">μi\mu_i 是非负的，并且如果某个 gi(x∗)" role="presentation">gi(x∗)g_i(x^*) 严格小于0，那这个约束不会出现在加权式中，因为对应的权值 μi" role="presentation">μi\mu_i 必须为0。换句话说，只有 x∗" role="presentation">x∗x^* 恰好在边界 gi=0" role="presentation">gi=0g_i=0上的那些 gi" role="presentation">gig_i 的梯度才会出现在加权式中。如果去掉不等式约束的部分，那么上式就是拉格朗日乘子法的精确表述。
 
 
 二、理解思路
 
 给定一个优化问题，我们把<strong>满足所有约束条件的n维空间区域称为可行域</strong>。从可行域中的每一个点 x" role="presentation">xx 朝某个方向 v" role="presentation">vv 出发走一点点，如果还在可行域中，或者偏离可行域的程度很小，准确地说，偏移量是行进距离的高阶无穷小量，那么我们就说 v" role="presentation">vv 是一个<strong>可行方向</strong>。我们用 F(x)" role="presentation">F(x)F(x) 表示点 x" role="presentation">xx 的所有可行方向的集合 。
 
-对于可行域中的一个极大值点 x&#x2217;" role="presentation">x∗x^* ，它的可行方向集合为 F(x&#x2217;)" role="presentation">F(x∗)F(x^*) ，从 x&#x2217;" role="presentation">x∗x^* 朝 F(x&#x2217;)" role="presentation">F(x∗)F(x^*) 中的某个方向走一小步，那么落点仍然（近似）在可行域中。 x&#x2217;" role="presentation">x∗x^* 是局部最大值点就意味着在这些可行方向上目标函数 f(x)" role="presentation">f(x)f(x) 不能增大，从而我们得到下面这样一个结论：
+对于可行域中的一个极大值点 x∗" role="presentation">x∗x^* ，它的可行方向集合为 F(x∗)" role="presentation">F(x∗)F(x^*) ，从 x∗" role="presentation">x∗x^* 朝 F(x∗)" role="presentation">F(x∗)F(x^*) 中的某个方向走一小步，那么落点仍然（近似）在可行域中。 x∗" role="presentation">x∗x^* 是局部最大值点就意味着在这些可行方向上目标函数 f(x)" role="presentation">f(x)f(x) 不能增大，从而我们得到下面这样一个结论：
 
-在极值点 x&#x2217;" role="presentation">x∗x^* ，让目标函数增大的方向不能在 F(x&#x2217;)" role="presentation">F(x∗)F(x^*) 中。
+在极值点 x∗" role="presentation">x∗x^* ，让目标函数增大的方向不能在 F(x∗)" role="presentation">F(x∗)F(x^*) 中。
 
 把这句话精确表达出来，就得到了KKT条件的数学表述。
 

@@ -35,7 +35,7 @@ PS：之后会根据论文的类别对其进行重新排序并补充开源代码
 
 [Convex Global 3D Registration With Lagrangian Duality](https://link.zhihu.com/?target=http%3A//openaccess.thecvf.com/content_cvpr_2017/html/Briales_Convex_Global_3D_CVPR_2017_paper.html)
 
-[Group-Wise Point-Set Registration Based on Renyi&#39;s Second Order Entropy](https://link.zhihu.com/?target=http%3A//openaccess.thecvf.com/content_cvpr_2017/html/Giraldo_Group-Wise_Point-Set_Registration_CVPR_2017_paper.html) 
+[Group-Wise Point-Set Registration Based on Renyi's Second Order Entropy](https://link.zhihu.com/?target=http%3A//openaccess.thecvf.com/content_cvpr_2017/html/Giraldo_Group-Wise_Point-Set_Registration_CVPR_2017_paper.html) 
 
 <strong>CVPR 2016 共六篇</strong>[cvpr2016AbsBook](https://link.zhihu.com/?target=http%3A//openaccess.thecvf.com/cvpr2016AbsBook.pdf)
 [3D Part-Based Sparse Tracker With Automatic Synchronization and Registration](https://link.zhihu.com/?target=http%3A//openaccess.thecvf.com/content_cvpr_2016/html/Bibi_3D_Part-Based_Sparse_CVPR_2016_paper.html)

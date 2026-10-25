@@ -19,7 +19,7 @@ source_url: https://www.zhihu.com/question/625455785/answer/45691785285
 
 近期deepseek爆火后，再次感觉到了类o1/R1模型，应该和这些self-correct的工作有很大关联。
 
-学术界做的这些&#34;input->output1&#34;, &#34;output1->feedback&#34;, &#34;input+feedback->output2&#34;的工作，在o1/R1上体现为&#34;input->feedback/reasoning->output2&#34;，即“<strong>内化了self-correct的能力</strong>”。所以说，学术界做的这些工作还是对工业界的开发有一定启发/助力作用的（例如feedback/reasoning的设计）。
+学术界做的这些"input->output1", "output1->feedback", "input+feedback->output2"的工作，在o1/R1上体现为"input->feedback/reasoning->output2"，即“<strong>内化了self-correct的能力</strong>”。所以说，学术界做的这些工作还是对工业界的开发有一定启发/助力作用的（例如feedback/reasoning的设计）。
 
 对于这个问题，推荐一篇文章：
 

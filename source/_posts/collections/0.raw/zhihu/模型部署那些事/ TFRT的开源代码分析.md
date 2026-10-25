@@ -42,9 +42,13 @@ TFRT是一个新的TensorFlow运行时。它的目标是提供一个统一的、
 
 - Compiler优化TF Graph并产生low-level TFRT Host Program，TFRT host program用MLIR表达。
 - tfrt_translate和bef_executor是tools目录下的2个可执行文件。
+
+```text
      -tfrt_translate根据host program产生BEF 文件。
 
      -bef_executor读入BEF文件并执行。  
+```
+
 
 -  为高效执行，runtime不直接处理MLIR。mlir_to_bef将host程序转换为内存的Binary Executable Format(BEF)格式，BEF是mmap-able且cache友好的表示形式。  
 - high level的表示便于编译分析并优化，是平台无关的。
@@ -77,11 +81,15 @@ TFRT包含Distributed Runtime、Host Runtime和Device Runtime。
 - 无锁
 - 辅助类AsyncValueRef是类型安全的
 - 异步执行
+
+```text
      -Asynchronous functions return unavailable AsyncValues
 
      -Caller can schedule dependent computations with AsyncValue::AndThen()
 
      -Caller need not block until AsyncValue becomes available
+```
+
 
 ### Kernels
 
@@ -116,9 +124,13 @@ static void TFRTAdd(AsyncKernelFrame* frame) {
 ### Host Runtime特点
 
 - 异步执行
+
+```text
    -Kernel不会阻塞
 
    -AsyncValue无锁
+```
+
 
 - 线程池
    -中心调度
@@ -146,11 +158,15 @@ static void TFRTAdd(AsyncKernelFrame* frame) {
    -支持“non-strict” execution：当部分输入可用时，kernel也可以执行
 
 - 关键概念
+
+```text
    -BEF: dataflow graph
 
    -Kernel: dataflow node
 
    -AsyncValue: dataflow edge
+```
+
 
 ### Detailed Design
 

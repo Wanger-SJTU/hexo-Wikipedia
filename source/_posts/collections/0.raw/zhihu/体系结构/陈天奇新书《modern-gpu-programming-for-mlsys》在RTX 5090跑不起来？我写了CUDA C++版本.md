@@ -30,7 +30,7 @@ source_url: https://zhuanlan.zhihu.com/p/2059730024626905589
 3.2 核心设计
 设计选择说明MMA 指令wmma::mma_sync（走 HMMA 路径，SM120 原生支持）累加器warp 级寄存器 fragment（wmma::fragment<accumulator, ...>）Shared MemoryA: [128][64] row-major；B: [64][128] 转置存储Warp 布局M 维 8 warps × N 维 4 warps = 32 warps = 1024 threads/blockTile 大小128×128×64（每个 warp 算 2 个 N-tile，128÷16=8 warps in M，128÷16÷2=4 warps in N）K 循环累加器在 K 循环外初始化，跨 K 分块累加
 3.2 代码
-&#34;&#34;&#34;
+"""
 SM120 (RTX 5090) 兼容的 GEMM kernel。
 
 TIRx 0.25 的 Tx.gemm_async 仅支持 tcgen05 (SM100/B100/B200)，
@@ -40,8 +40,8 @@ RTX 5090 (SM120) 没有 TMEM 不支持 tcgen05。
 通过 torch.utils.cpp_extension.load_inline JIT 编译。
 
 运行:
-  LD_LIBRARY_PATH=&#34;<conda_lib>:<tvm_ffi_lib>:<tvm_lib>&#34; python tirx_kernels/gemm.py
-&#34;&#34;&#34;
+  LD_LIBRARY_PATH="<conda_lib>:<tvm_ffi_lib>:<tvm_lib>" python tirx_kernels/gemm.py
+"""
 
 ```python
 import math
@@ -54,7 +54,7 @@ from torch.utils.cpp_extension import load_inline
 # ============================================================
 # CUDA kernel: SM120 Tensor Core GEMM (HMMA via mma.sync)
 # ============================================================
-CUDA_SOURCE = r&#34;&#34;&#34;
+CUDA_SOURCE = r"""
 
 ```cpp
 #include <torch/extension.h>
@@ -119,7 +119,7 @@ __global__ void hgemm_sm120_kernel(
         wmma::fill_fragment(acc_frag[n_tile], 0.0f);
     }
 
-    // Pre-compute row/col offsets for this warp&#39;s tiles
+    // Pre-compute row/col offsets for this warp's tiles
     int a_row = warp_m * MMA_M;
     int b_col[TILES_PER_WARP_N];
     for (int n_tile = 0; n_tile < TILES_PER_WARP_N; n_tile++) {
@@ -182,10 +182,10 @@ __global__ void hgemm_sm120_kernel(
 torch::Tensor hgemm_sm120(torch::Tensor A, torch::Tensor B) {
 
 ```cpp
-    TORCH_CHECK(A.dtype() == torch::kFloat16, &#34;A must be float16&#34;);
-    TORCH_CHECK(B.dtype() == torch::kFloat16, &#34;B must be float16&#34;);
-    TORCH_CHECK(A.size(1) == B.size(1), &#34;K dimension must match&#34;);
-    TORCH_CHECK(A.dim() == 2 && B.dim() == 2, &#34;A and B must be 2D&#34;);
+    TORCH_CHECK(A.dtype() == torch::kFloat16, "A must be float16");
+    TORCH_CHECK(B.dtype() == torch::kFloat16, "B must be float16");
+    TORCH_CHECK(A.size(1) == B.size(1), "K dimension must match");
+    TORCH_CHECK(A.dim() == 2 && B.dim() == 2, "A and B must be 2D");
 
     int M = A.size(0);
     int N = B.size(0);  // B is NxK
@@ -207,12 +207,12 @@ torch::Tensor hgemm_sm120(torch::Tensor A, torch::Tensor B) {
 }
 ```
 
-&#34;&#34;&#34;
+"""
 
-CPP_SOURCE = &#34;&#34;&#34;
+CPP_SOURCE = """
 #include <torch/extension.h>
 torch::Tensor hgemm_sm120(torch::Tensor A, torch::Tensor B);
-&#34;&#34;&#34;
+"""
 
 # ============================================================
 # 编译 & 测试
@@ -220,24 +220,24 @@ torch::Tensor hgemm_sm120(torch::Tensor A, torch::Tensor B);
 
 ```python
 def main():
-    print(&#34;=&#34; * 60)
-    print(&#34;SM120 (RTX 5090) Tensor Core GEMM — mma.sync (HMMA)&#34;)
-    print(&#34;=&#34; * 60)
+    print("=" * 60)
+    print("SM120 (RTX 5090) Tensor Core GEMM — mma.sync (HMMA)")
+    print("=" * 60)
     print()
 
-    print(&#34;\U0001f527 Compiling CUDA kernel with nvcc via load_inline...&#34;)
+    print("\U0001f527 Compiling CUDA kernel with nvcc via load_inline...")
     module = load_inline(
-        name=&#34;hgemm_sm120&#34;,
+        name="hgemm_sm120",
         cpp_sources=[CPP_SOURCE],
         cuda_sources=[CUDA_SOURCE],
-        functions=[&#34;hgemm_sm120&#34;],
-        extra_cuda_cflags=[&#34;-O2&#34;, &#34;-arch=sm_120&#34;],
+        functions=["hgemm_sm120"],
+        extra_cuda_cflags=["-O2", "-arch=sm_120"],
         verbose=False,
     )
-    print(&#34;   Done.&#34;)
+    print("   Done.")
     print()
 
-    device = torch.device(&#34;cuda&#34;)
+    device = torch.device("cuda")
     torch.cuda.empty_cache()
 ```
 
@@ -254,10 +254,10 @@ def main():
     C_ref = A @ B.T
 
     max_err = float((C - C_ref).abs().max())
-    print(f&#34;   正确性测试 ({M}x{N}x{K}):&#34;)
-    print(f&#34;     max_error = {max_err:.6f}&#34;)
+    print(f"   正确性测试 ({M}x{N}x{K}):")
+    print(f"     max_error = {max_err:.6f}")
     is_close = max_err < 0.02 or torch.allclose(C, C_ref, rtol=0.02, atol=0.01)
-    print(f&#34;     {&#39;✅ PASS&#39; if is_close else &#39;❌ FAIL&#39;}&#34;)
+    print(f"     {'✅ PASS' if is_close else '❌ FAIL'}")
     print()
 ```
 
@@ -271,8 +271,8 @@ def main():
     B_bench = torch.randn(N, K, dtype=torch.float16, device=device)
 
     total_flops = 2 * M * N * K
-    print(f&#34;   性能测试: A({M}x{K}) x B({N}x{K})^T → C({M}x{N})&#34;)
-    print(f&#34;   总 FLOPS: {total_flops / 1e9:.1f} GFLOPS&#34;)
+    print(f"   性能测试: A({M}x{K}) x B({N}x{K})^T → C({M}x{N})")
+    print(f"   总 FLOPS: {total_flops / 1e9:.1f} GFLOPS")
     print()
 
     def benchmark(fn, warmup=5, repeat=20):
@@ -289,25 +289,25 @@ def main():
     t_kernel, tflops_kernel = benchmark(lambda: module.hgemm_sm120(A_bench, B_bench))
     t_torch, tflops_torch = benchmark(lambda: A_bench @ B_bench.T)
 
-    print(&#34;  ┌─────────────────────┬────────────┬──────────┐&#34;)
-    print(&#34;  │ 版本                 │ 耗时 (ms)   │ TFLOPS   │&#34;)
-    print(&#34;  ├─────────────────────┼────────────┼──────────┤&#34;)
-    print(f&#34;  │ hgemm_sm120 (mma)   │ {t_kernel*1000:10.3f} │ {tflops_kernel:8.4f} │&#34;)
-    print(f&#34;  │ PyTorch (cuBLAS)    │ {t_torch*1000:10.3f} │ {tflops_torch:8.4f} │&#34;)
-    print(&#34;  └─────────────────────┴────────────┴──────────┘&#34;)
+    print("  ┌─────────────────────┬────────────┬──────────┐")
+    print("  │ 版本                 │ 耗时 (ms)   │ TFLOPS   │")
+    print("  ├─────────────────────┼────────────┼──────────┤")
+    print(f"  │ hgemm_sm120 (mma)   │ {t_kernel*1000:10.3f} │ {tflops_kernel:8.4f} │")
+    print(f"  │ PyTorch (cuBLAS)    │ {t_torch*1000:10.3f} │ {tflops_torch:8.4f} │")
+    print("  └─────────────────────┴────────────┴──────────┘")
     print()
 
     speedup = t_kernel / t_torch
-    print(f&#34;  📊 cuBLAS 比本 kernel 快 {speedup:.1f}x &#34;
-          f&#34;(cuBLAS 用了更多高级优化如 TMA、warp specialization 等)&#34;)
+    print(f"  📊 cuBLAS 比本 kernel 快 {speedup:.1f}x "
+          f"(cuBLAS 用了更多高级优化如 TMA、warp specialization 等)")
     print()
-    print(&#34;  💡 这个 kernel 用 wmma::mma_sync 在 SM120 的 HMMA 路径上跑。&#34;)
-    print(&#34;     SM120 不支持 tcgen05/TMEM，但支持 mma.sync (HMMA/QMMA/OMMA)。&#34;)
-    print(&#34;     相比 03_matmul.py 的 shared-memory tiling，这个版本用了 Tensor Core。&#34;)
+    print("  💡 这个 kernel 用 wmma::mma_sync 在 SM120 的 HMMA 路径上跑。")
+    print("     SM120 不支持 tcgen05/TMEM，但支持 mma.sync (HMMA/QMMA/OMMA)。")
+    print("     相比 03_matmul.py 的 shared-memory tiling，这个版本用了 Tensor Core。")
 ```
 
 
-if __name__ == &#34;__main__&#34;:
+if __name__ == "__main__":
     main()
 
 核心 kernel 结构：
@@ -380,9 +380,13 @@ conda install -y cuda-cudart=13.0.96 cuda-nvrtc=13.0.88
 pip install cuda-bindings==13.0.3
 
 # 设置动态库搜索路径
-export LD_LIBRARY_PATH=&#34;/root/miniconda3/lib:$LD_LIBRARY_PATH&#34;
-export LD_LIBRARY_PATH=&#34;/root/miniconda3/lib/python3.12/site-packages/tvm_ffi/lib:$LD_LIBRARY_PATH&#34;
-export LD_LIBRARY_PATH=&#34;/root/miniconda3/lib/python3.12/site-packages/tvm/lib:$LD_LIBRARY_PATH&#34;
+
+```bash
+export LD_LIBRARY_PATH="/root/miniconda3/lib:$LD_LIBRARY_PATH"
+export LD_LIBRARY_PATH="/root/miniconda3/lib/python3.12/site-packages/tvm_ffi/lib:$LD_LIBRARY_PATH"
+export LD_LIBRARY_PATH="/root/miniconda3/lib/python3.12/site-packages/tvm/lib:$LD_LIBRARY_PATH"
+```
+
 
 python gemm.py
 

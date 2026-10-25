@@ -25,7 +25,7 @@ VAE虽然是2013年提出的生成模型，但是它的原理可以说和GAN、�
 
 首先，对于生成模型来说，一般都需要一个先验概率 p(z)" role="presentation">p(z)p(z) ，其中 z" role="presentation">zz  为隐空间向量（latent space vector）。我们一般假设数据（e.g. 图像）都是从一个无法观测的隐空间点，通过一系列随机过程生成的。因此，图像生成的过程，我们一般会理解成，随机在latent space中采样一个sample点 zi" role="presentation">ziz_i ，然后通过某个条件分布 p(x|z)" role="presentation">p(x|z)p(x|z)  ，得到我们想要的图像 xi" role="presentation">xix_i 。一般来说，这个先验概率 p(z)" role="presentation">p(z)p(z) 我们是不知道的，但是在大部分主流生成模型中（如VAE、GAN、扩散模型），我们都将其假设成了性质最好的标准正态分布。
 
-那么现在可能有人说了，那还不简单吗，我们直接训练一个解码器，从标准正态分布中抽取一个 zi" role="presentation">ziz_i ，然后解码，得到 xi&#x005E;" role="presentation">xi^\hat{x_i} ，再去和数据集中的 xi" role="presentation">xix_i 计算重构损失，反向传播优化解码器，不就好了吗？这其实是一个最平凡的想法，但是这里面有一个核心的问题，就是我们不知道对于我们数据集中的 xi" role="presentation">xix_i 这个图像，它对应在隐空间中的隐向量到底是不是我们取出来的这一个zi" role="presentation">ziz_i，如果不是，我们就不能去计算重构损失，因为我们取出来的 z" role="presentation">zz 和 xi" role="presentation">xix_i 可能根本就不对应。
+那么现在可能有人说了，那还不简单吗，我们直接训练一个解码器，从标准正态分布中抽取一个 zi" role="presentation">ziz_i ，然后解码，得到 xi^" role="presentation">xi^\hat{x_i} ，再去和数据集中的 xi" role="presentation">xix_i 计算重构损失，反向传播优化解码器，不就好了吗？这其实是一个最平凡的想法，但是这里面有一个核心的问题，就是我们不知道对于我们数据集中的 xi" role="presentation">xix_i 这个图像，它对应在隐空间中的隐向量到底是不是我们取出来的这一个zi" role="presentation">ziz_i，如果不是，我们就不能去计算重构损失，因为我们取出来的 z" role="presentation">zz 和 xi" role="presentation">xix_i 可能根本就不对应。
 
 那我们不如再换个角度想问题，就是给定 xi" role="presentation">xix_i ， z" role="presentation">zz 的分布会是什么样子？这个分布可以表示为 p(z|x=xi)" role="presentation">p(z|x=xi)p(z|x=x_i) 。换句话说，如果我们可以求得这个后验分布，再从这个分布里采样得到的 z_i 大概率就是 x_i 对应的 z 。然后经过解码得到的 \hat{x_i} 就可以放心地和 x_i 去计算重构误差从而优化解码器了。
 

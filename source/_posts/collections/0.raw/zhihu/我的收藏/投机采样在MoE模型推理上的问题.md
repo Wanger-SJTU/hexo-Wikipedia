@@ -19,7 +19,7 @@ source_url: https://zhuanlan.zhihu.com/p/1956326731205026560
 
 投机采样的理论收益空间：
 
-$benifit=acceptlen&#x2217;T(fwd1token)&#x2212;T(fwddraftlentokens)&#x2212;DraftModelOverHead" role="presentation">benifit=acceptlen∗T(fwd1token)−T(fwddraftlentokens)−DraftModelOverHeadbenifit = acceptlen * T(fwd_{1 token}) - T(fwd_{draft len tokens}) - DraftModelOverHead $
+$benifit=acceptlen∗T(fwd1token)−T(fwddraftlentokens)−DraftModelOverHead" role="presentation">benifit=acceptlen∗T(fwd1token)−T(fwddraftlentokens)−DraftModelOverHeadbenifit = acceptlen * T(fwd_{1 token}) - T(fwd_{draft len tokens}) - DraftModelOverHead $
 
 通俗讲，投机采样的收益上限bs=1 forward accept length次的耗时减去bs=draft length forward 1次的时间，再扣除投机采样的overhead。overhead主要有两方面组成，一个部分是draft length由于猜测准确率有限，往往大于accept length，所以verification有额外开销；第二部分是draft model本身的开销，这部分相对较少。
 

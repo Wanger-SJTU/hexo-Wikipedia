@@ -115,21 +115,21 @@ ifdef RANDOMIZE_REG_INIT
 endif // RANDOMIZE_REG_INIT
   reg [31:0] cntReg; // @[Hello.scala 19:23]
   reg  blkReg; // @[Hello.scala 20:23]
-  wire [31:0] _cntReg_T_1 = cntReg + 32&#39;h1; // @[Hello.scala 22:20]
+  wire [31:0] _cntReg_T_1 = cntReg + 32'h1; // @[Hello.scala 22:20]
   assign io_led = blkReg; // @[Hello.scala 27:10]
   always @(posedge clock) begin
 
 ```text
     if (reset) begin // @[Hello.scala 19:23]
-      cntReg <= 32&#39;h0; // @[Hello.scala 19:23]
-    end else if (cntReg == 32&#39;h17d783f) begin // @[Hello.scala 23:28]
-      cntReg <= 32&#39;h0; // @[Hello.scala 24:12]
+      cntReg <= 32'h0; // @[Hello.scala 19:23]
+    end else if (cntReg == 32'h17d783f) begin // @[Hello.scala 23:28]
+      cntReg <= 32'h0; // @[Hello.scala 24:12]
     end else begin
       cntReg <= _cntReg_T_1; // @[Hello.scala 22:10]
     end
     if (reset) begin // @[Hello.scala 20:23]
-      blkReg <= 1&#39;h0; // @[Hello.scala 20:23]
-    end else if (cntReg == 32&#39;h17d783f) begin // @[Hello.scala 23:28]
+      blkReg <= 1'h0; // @[Hello.scala 20:23]
+    end else if (cntReg == 32'h17d783f) begin // @[Hello.scala 23:28]
       blkReg <= ~blkReg; // @[Hello.scala 25:12]
     end
   end
@@ -226,11 +226,11 @@ $ git fetch --unshallow
 $ cd circt
 $ mkdir llvm/build
 $ cd llvm/build
-$ cmake -G Ninja ../llvm \
 
-```text
-    -DLLVM_ENABLE_PROJECTS=&#34;mlir&#34; \
-    -DLLVM_TARGETS_TO_BUILD=&#34;host&#34; \
+```bash
+$ cmake -G Ninja ../llvm \
+    -DLLVM_ENABLE_PROJECTS="mlir" \
+    -DLLVM_TARGETS_TO_BUILD="host" \
     -DLLVM_ENABLE_ASSERTIONS=ON \
     -DCMAKE_BUILD_TYPE=DEBUG \
     -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
@@ -242,9 +242,9 @@ $ ninja check-mlir
 $ cd circt
 $ mkdir build
 $ cd build
-$ cmake -G Ninja .. \
 
-```text
+```bash
+$ cmake -G Ninja .. \
     -DMLIR_DIR=$PWD/../llvm/build/lib/cmake/mlir \
     -DLLVM_DIR=$PWD/../llvm/build/lib/cmake/llvm \
     -DLLVM_ENABLE_ASSERTIONS=ON \
@@ -261,29 +261,29 @@ $ ninja check-circt-integration # Run the integration tests.
 
 // See README.md for license details.
 
-ThisBuild / scalaVersion     := &#34;2.13.12&#34;
-ThisBuild / version          := &#34;0.1.0&#34;
-ThisBuild / organization     := &#34;%ORGANIZATION%&#34;
+ThisBuild / scalaVersion     := "2.13.12"
+ThisBuild / version          := "0.1.0"
+ThisBuild / organization     := "%ORGANIZATION%"
 
-val chiselVersion = &#34;6.2.0&#34;
+val chiselVersion = "6.2.0"
 
-lazy val root = (project in file(&#34;.&#34;))
+lazy val root = (project in file("."))
   .settings(
 
 ```text
-    name := &#34;%NAME%&#34;,
+    name := "%NAME%",
     libraryDependencies ++= Seq(
-      &#34;org.chipsalliance&#34; %% &#34;chisel&#34; % chiselVersion,
-      &#34;org.scalatest&#34; %% &#34;scalatest&#34; % &#34;3.2.16&#34; % &#34;test&#34;,
+      "org.chipsalliance" %% "chisel" % chiselVersion,
+      "org.scalatest" %% "scalatest" % "3.2.16" % "test",
     ),
     scalacOptions ++= Seq(
-      &#34;-language:reflectiveCalls&#34;,
-      &#34;-deprecation&#34;,
-      &#34;-feature&#34;,
-      &#34;-Xcheckinit&#34;,
-      &#34;-Ymacro-annotations&#34;,
+      "-language:reflectiveCalls",
+      "-deprecation",
+      "-feature",
+      "-Xcheckinit",
+      "-Ymacro-annotations",
     ),
-    addCompilerPlugin(&#34;org.chipsalliance&#34; % &#34;chisel-plugin&#34; % chiselVersion cross CrossVersion.full),
+    addCompilerPlugin("org.chipsalliance" % "chisel-plugin" % chiselVersion cross CrossVersion.full),
   )
 ```
 
@@ -317,16 +317,16 @@ module PE(
 
 ```text
     if (reset)
-      res <= 28&#39;h0;
+      res <= 28'h0;
     else begin
       automatic logic [15:0] _GEN;
       automatic logic [15:0] _GEN_0;
-      _GEN = {8&#39;h0, io_in_a};
-      _GEN_0 = {8&#39;h0, io_in_b};
+      _GEN = {8'h0, io_in_a};
+      _GEN_0 = {8'h0, io_in_b};
       if (io_accum)
-        res <= res + {12&#39;h0, _GEN * _GEN_0};
+        res <= res + {12'h0, _GEN * _GEN_0};
       else
-        res <= {12&#39;h0, _GEN * _GEN_0};
+        res <= {12'h0, _GEN * _GEN_0};
     end
   end // always @(posedge)
   assign io_out = res;
@@ -405,7 +405,7 @@ import circt.stage.ChiselStage
     for (i <- 0 until n){
         for (j <- 0 until n) {
             // ==== OUTPUT ====
-            // pe array&#39;s output mapped to the matrix position
+            // pe array's output mapped to the matrix position
             io.out(n * i + j) := pe_io(n * i + j).out
 
             // ==== INPUT ====
@@ -447,9 +447,9 @@ import circt.stage.ChiselStage
 
 ```text
     new NeuralCoreforTest(),
-    firtoolOpts = Array(&#34;-disable-all-randomization&#34;, &#34;-strip-debug-info&#34;)
+    firtoolOpts = Array("-disable-all-randomization", "-strip-debug-info")
   )
-  Files.write(Paths.get(&#34;neuralCore.v&#34;), hdl.getBytes(StandardCharsets.UTF_8))
+  Files.write(Paths.get("neuralCore.v"), hdl.getBytes(StandardCharsets.UTF_8))
 }
 ```
 
@@ -474,16 +474,16 @@ module PE(
 
 ```text
     if (reset)
-      res <= 28&#39;h0;
+      res <= 28'h0;
     else begin
       automatic logic [15:0] _GEN;
       automatic logic [15:0] _GEN_0;
-      _GEN = {8&#39;h0, io_in_a};
-      _GEN_0 = {8&#39;h0, io_in_b};
+      _GEN = {8'h0, io_in_a};
+      _GEN_0 = {8'h0, io_in_b};
       if (io_accum)
-        res <= res + {12&#39;h0, _GEN * _GEN_0};
+        res <= res + {12'h0, _GEN * _GEN_0};
       else
-        res <= {12&#39;h0, _GEN * _GEN_0};
+        res <= {12'h0, _GEN * _GEN_0};
     end
   end // always @(posedge)
   assign io_out = res;

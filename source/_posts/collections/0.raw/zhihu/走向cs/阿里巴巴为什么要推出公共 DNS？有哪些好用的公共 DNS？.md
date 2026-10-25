@@ -153,7 +153,7 @@ source_url: https://www.zhihu.com/question/26856736/answer/34644193
 
 [DNS 查询的工作原理](https://link.zhihu.com/?target=http%3A//technet.microsoft.com/zh-cn/library/cc775637%28v%3Dws.10%29.aspx)
 - <strong>BGP anycast是啥？</strong>
-从域名可以解析出来很多个主机IP地址对应，那DNS服务器只有一个IP地址可不是只有一台。<strong>为了让一个IP地址对应分布在各地的多台DNS服务器</strong>，采用anycast(任播)将数据发送到一组目标节点上，通过路由协议选择&#34;路由矢量最近点&#34;提供“最快”的服务。可以应对DOS攻击和网络拥塞。
+从域名可以解析出来很多个主机IP地址对应，那DNS服务器只有一个IP地址可不是只有一台。<strong>为了让一个IP地址对应分布在各地的多台DNS服务器</strong>，采用anycast(任播)将数据发送到一组目标节点上，通过路由协议选择"路由矢量最近点"提供“最快”的服务。可以应对DOS攻击和网络拥塞。
 
 - <strong>主动同步万网注册域名是啥，其他能同步吗？</strong>
 万网被阿里买下了，内部数据同步下快还不行么。其他时限不一定，看同步间隔。

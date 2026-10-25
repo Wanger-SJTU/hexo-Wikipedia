@@ -73,8 +73,8 @@ from unstructured.partition.pdf import partition_pdf
 
 
 # Load 
-path = &#34;/Users/rlm/Desktop/IH-Unstructured/&#34;
-file = &#34;IH_Policy_Doc.pdf&#34;
+path = "/Users/rlm/Desktop/IH-Unstructured/"
+file = "IH_Policy_Doc.pdf"
 
 # Get elements
 raw_pdf_elements = partition_pdf(
@@ -84,7 +84,7 @@ raw_pdf_elements = partition_pdf(
     extract_images_in_pdf=False,
     infer_table_structure=True, 
     # Post processing to aggregate text once we have the title 
-    chunking_strategy=&#34;by_title&#34;,
+    chunking_strategy="by_title",
     # Chunking params to aggregate text blocks
     # Require maximum chunk size of 4000 chars
     # Attempt to create a new chunk at 3800 chars
@@ -110,20 +110,20 @@ categorized_elements = []
 for element in raw_pdf_elements:
 
 ```text
-    if &#34;unstructured.documents.elements.Table&#34; in str(type(element)):
-        categorized_elements.append(Element(type=&#34;table&#34;, text=str(element)))
-    elif &#34;unstructured.documents.elements.CompositeElement&#34; in str(type(element)):
-        categorized_elements.append(Element(type=&#34;text&#34;, text=str(element)))
+    if "unstructured.documents.elements.Table" in str(type(element)):
+        categorized_elements.append(Element(type="table", text=str(element)))
+    elif "unstructured.documents.elements.CompositeElement" in str(type(element)):
+        categorized_elements.append(Element(type="text", text=str(element)))
 ```
 
 
 # Tables
-table_elements = [e for e in categorized_elements if e.type == &#34;table&#34;]
+table_elements = [e for e in categorized_elements if e.type == "table"]
 print(len(table_elements)) 
 # output: 28 elements in the PDF file
 
 # Text
-text_elements = [e for e in categorized_elements if e.type == &#34;text&#34;]
+text_elements = [e for e in categorized_elements if e.type == "text"]
 print(len(text_elements)) 
 # output: 127 elements in the PDF file
 
@@ -137,7 +137,7 @@ print(len(text_elements))
 vectorstore = Chroma(
 
 ```text
-    collection_name=&#34;rag_with_summaries&#34;,
+    collection_name="rag_with_summaries",
     embedding_function=OpenAIEmbeddings()
 )
 ```
@@ -145,7 +145,7 @@ vectorstore = Chroma(
 
 # The storage layer for the parent documents
 store = InMemoryStore()
-id_key = &#34;doc_id&#34;
+id_key = "doc_id"
 
 # The retriever (empty to start)
 retriever = MultiVectorRetriever(
@@ -171,24 +171,20 @@ retriever.vectorstore.add_documents(summary_tables)
 retriever.docstore.mset(list(zip(table_ids, tables)))
 
 # Prompt template
-
-```text
-template = &#34;&#34;&#34;Answer the question based only on the following context, which can include text and tables:
-```
-
+template = """Answer the question based only on the following context, which can include text and tables:
 {context}
 Question: {question}
-&#34;&#34;&#34;
+"""
 prompt = ChatPromptTemplate.from_template(template)
 
 # LLM
-model = ChatOpenAI(temperature=0,model=&#34;gpt-4&#34;)
+model = ChatOpenAI(temperature=0,model="gpt-4")
 
 # RAG pipeline
 semi_structured_chain = (
 
 ```text
-    {&#34;context&#34;: retriever, &#34;question&#34;: RunnablePassthrough()} 
+    {"context": retriever, "question": RunnablePassthrough()} 
     | prompt 
     | model 
     | StrOutputParser()
@@ -204,7 +200,7 @@ vectorstore_baseline = Chroma.from_documents(
 
 ```text
     documents=all_splits,
-    collection_name=&#34;baseline_rag&#34;,
+    collection_name="baseline_rag",
     embedding=OpenAIEmbeddings()
 )
 ```
@@ -213,24 +209,20 @@ vectorstore_baseline = Chroma.from_documents(
 retriever_baseline = vectorstore_baseline.as_retriever()
 
 # Prompt template
-
-```text
-template = &#34;&#34;&#34;Answer the question based only on the following context, which can include text and tables:
-```
-
+template = """Answer the question based only on the following context, which can include text and tables:
 {context}
 Question: {question}
-&#34;&#34;&#34;
+"""
 prompt = ChatPromptTemplate.from_template(template)
 
 # LLM
-model = ChatOpenAI(temperature=0,model=&#34;gpt-4&#34;)
+model = ChatOpenAI(temperature=0,model="gpt-4")
 
 # RAG pipeline
 baseline_chain = (
 
 ```text
-    {&#34;context&#34;: retriever_baseline, &#34;question&#34;: RunnablePassthrough()} 
+    {"context": retriever_baseline, "question": RunnablePassthrough()} 
     | prompt 
     | model 
     | StrOutputParser()
@@ -239,17 +231,14 @@ baseline_chain = (
 
 现在，我们可以使用相应链的 invoke 函数查询这两种方法。
 
-```text
-semi_structured_chain.invoke(&#34;Can you explain what medical necessity is in relation to coverage?&#34;)
-```
+semi_structured_chain.invoke("Can you explain what medical necessity is in relation to coverage?")
 
-
-# output: &#34;Medical necessity in relation to coverage refers to the requirement that a health care service, procedure, treatment, test, device, prescription drug, or supply must be medically necessary for benefits to be provided. This means that they must be clinically appropriate in terms of type, frequency, extent, site, and duration, and considered effective for the patient&#39;s illness, injury, or disease. They must be required for the direct care and treatment or management of that condition, and the patient&#39;s condition would be adversely affected if the services were not provided. These services must be provided in accordance with generally-accepted standards of medical practice and should not be primarily for the convenience of the patient, their family, or their provider. They should also not be more costly than an alternative service or sequence of services that is at least as likely to produce equivalent therapeutic or diagnostic results. The fact that a provider has furnished, prescribed, ordered, recommended, or approved the service does not automatically make it medically necessary or mean that it has to be covered. The decision may be based on a review of the patient&#39;s medical records, medical policies and clinical guidelines, reports in peer-reviewed medical literature, reports and guidelines published by nationally-recognized health care organizations, professional standards of safety and effectiveness, and the opinions of health care professionals and attending providers.&#34;
+# output: "Medical necessity in relation to coverage refers to the requirement that a health care service, procedure, treatment, test, device, prescription drug, or supply must be medically necessary for benefits to be provided. This means that they must be clinically appropriate in terms of type, frequency, extent, site, and duration, and considered effective for the patient's illness, injury, or disease. They must be required for the direct care and treatment or management of that condition, and the patient's condition would be adversely affected if the services were not provided. These services must be provided in accordance with generally-accepted standards of medical practice and should not be primarily for the convenience of the patient, their family, or their provider. They should also not be more costly than an alternative service or sequence of services that is at least as likely to produce equivalent therapeutic or diagnostic results. The fact that a provider has furnished, prescribed, ordered, recommended, or approved the service does not automatically make it medically necessary or mean that it has to be covered. The decision may be based on a review of the patient's medical records, medical policies and clinical guidelines, reports in peer-reviewed medical literature, reports and guidelines published by nationally-recognized health care organizations, professional standards of safety and effectiveness, and the opinions of health care professionals and attending providers."
 
 构建评估数据集
 LangSmith 是一个用于构建生产 LLM 应用程序的平台。它还具有测试和评估它们的嵌入式功能。为了评估我们方法的性能，我们首先使用问答 （QA） 对在 LangSmith 中构建一个评估集。下面可以看到一个示例及其输出。
 
-df_curated = pd.read_json(&#39;../cleaned_json/curated_subset_table_eval_pairs_dbc_passport.json&#39;)
+df_curated = pd.read_json('../cleaned_json/curated_subset_table_eval_pairs_dbc_passport.json')
 df_curated.head(3)
 
 ![](https://pica.zhimg.com/v2-18f76241f9cb534bac674c0a701e359c_r.jpg?source=2c26e567)​构建 QA 对后，我们将数据集上传到 LangSmith。
@@ -262,7 +251,7 @@ from langsmith import Client
 
 # Dataset
 client = Client()
-dataset_name = f&#34;IH Policy Doc Curated QA {str(uuid.uuid4())}&#34;
+dataset_name = f"IH Policy Doc Curated QA {str(uuid.uuid4())}"
 dataset = client.create_dataset(dataset_name=dataset_name)
 
 # Populate dataset
@@ -270,11 +259,11 @@ for _, row in df_curated.iterrows():
     # Get Q, A
 
 ```text
-    q = row[&#39;question&#39;]
-    a = row[&#39;answer&#39;]
+    q = row['question']
+    a = row['answer']
     # Use the values in your function
-    client.create_example(inputs={&#34;question&#34;: q}, 
-                          outputs={&#34;answer&#34;: a}, 
+    client.create_example(inputs={"question": q}, 
+                          outputs={"answer": a}, 
                           dataset_id=dataset.id)
 ```
 
@@ -304,7 +293,7 @@ from langchain.smith import RunEvalConfig
 eval_config = RunEvalConfig(
 
 ```text
-    evaluators=[&#34;qa&#34;],
+    evaluators=["qa"],
 )
 ```
 
@@ -313,9 +302,9 @@ _ = client.run_on_dataset(
 
 ```text
     dataset_name=dataset_name,
-    llm_or_chain_factory=lambda: (lambda x: x[&#34;question&#34;]) | semi_structured_chain,
+    llm_or_chain_factory=lambda: (lambda x: x["question"]) | semi_structured_chain,
     evaluation=eval_config,
-    project_name=&#34;IH Policy Doc: Semi-Structured RAG&#34;,
+    project_name="IH Policy Doc: Semi-Structured RAG",
 )
 ```
 

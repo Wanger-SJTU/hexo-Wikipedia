@@ -187,8 +187,12 @@ The Art of Differentiating Computer Programs
 图一的<strong>计算序列</strong>可以记作如下形式
 
 \begin{eqnarray*}
+
+```text
 y^{1} &=&f^{1}\left( x\right)  \\
 y^{i} &=&f^{i}\left( x,y^{1},\cdots ,y^{i-1}\right) ,i=2,\cdots ,n \\
+```
+
 z &=&\bar{f}\left( x,y^{1},\cdots ,y^{n}\right) 
 \end{eqnarray*}
 
@@ -217,7 +221,11 @@ $$
 \begin{tabular}{c|c}
 Tensor Form & Matrix Form \\ \hline\hline
 $\dfrac{dy^{1k}}{ds}=\dfrac{\partial f^{1k}}{\partial x^{j}}\dfrac{dx^{j}}{ds%
+
+```text
 }$ & $D_{s}^{1}=P_{x}^{1}d_{s}$ \\ 
+```
+
 $\dfrac{dy^{ik}}{ds}=\dfrac{\partial f^{ik}}{\partial x^{j}}\dfrac{dx^{j}}{ds%
 }+\dfrac{\partial f^{ik}}{\partial y^{jh}}\dfrac{dy^{jh}}{ds}$ & $%
 D_{s}^{i}=P_{x}^{i}d_{s}+\sum_{j
@@ -239,10 +247,18 @@ $$
 Tensor Form & Matrix Form \\ \hline\hline
 \multicolumn{1}{c|}{$d_{t}=t_{i}\dfrac{\partial z^{i}}{\partial x^{j}}%
 dx^{j}+t_{i}\dfrac{\partial z^{i}}{\partial y^{jl}}dy^{jl}$} & $%
+
+```text
 D_{x}+=TP_{x}^{z},D_{j}+=TP_{j}^{z}$ \\ 
+```
+
 \multicolumn{1}{c|}{$dy^{ik}=\dfrac{\partial y^{ik}}{\partial x^{j}}dx^{j}+%
 \dfrac{\partial y^{ik}}{\partial y^{jl}}dy^{jl}$} & $%
+
+```text
 D_{x}+=D_{i}P_{x}^{i},D_{j}+=D_{i}P_{j}^{i}$ \\ 
+```
+
 \multicolumn{1}{c|}{$dy^{1k}=\dfrac{\partial y^{1k}}{\partial x^{j}}dx^{j}$}
 & $D_{x}+=D_{1}P_{x}^{1}$%
 \end{tabular}%

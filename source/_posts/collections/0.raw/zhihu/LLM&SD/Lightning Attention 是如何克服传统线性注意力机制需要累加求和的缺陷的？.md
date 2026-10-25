@@ -17,7 +17,7 @@ source_url: https://www.zhihu.com/question/9740764576/answer/80735153803
 
 1/18 update: 做了一个视频介绍linear attention一些近期进展
 
-[[Talk][中文] What&#39;s next to Mamba? Towards more expressive recurrent update rule_哔哩哔哩_bilibili](https://link.zhihu.com/?target=https%3A//www.bilibili.com/video/BV1MDwAeWEoM/%3Fvd_source%3D035872531a338721ba64a57a1cdc1ebc)--- 分割线 ---
+[[Talk][中文] What's next to Mamba? Towards more expressive recurrent update rule_哔哩哔哩_bilibili](https://link.zhihu.com/?target=https%3A//www.bilibili.com/video/BV1MDwAeWEoM/%3Fvd_source%3D035872531a338721ba64a57a1cdc1ebc)--- 分割线 ---
 
 看来大家对linear attention的一些经典算法和发展历史都了解甚少。。。忍不了来写个睡前回答
 

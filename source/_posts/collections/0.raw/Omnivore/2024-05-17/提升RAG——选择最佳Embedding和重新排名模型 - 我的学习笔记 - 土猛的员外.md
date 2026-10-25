@@ -88,11 +88,14 @@ Context information is below.
 Given the context information and not prior knowledge.  
 generate only questions based on the below query.  
   
+```text
 You are a Professor. Your task is to setup \  
 {num_questions_per_chunk} questions for an upcoming \  
 quiz/examination. The questions should be diverse in nature \  
 across the document. The questions should not contain options, not start with Q1/ Q2. \  
 Restrict the questions to the context information provided.\  
+```
+
 """  
 llm = Anthropic(api_key=anthropic_api_key)  
 qa_dataset = generate_question_context_pairs(  

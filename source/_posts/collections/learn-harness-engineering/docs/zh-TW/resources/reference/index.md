@@ -48,7 +48,8 @@ categories:
 - [OpenAI Developers: Run long horizon tasks with Codex](https://developers.openai.com/blog/run-long-horizon-tasks-with-codex)（2026-02-23）：長時任務中的持久專案記憶、里程碑驗證與 done-when 範例。
 - [OpenAI: The next evolution of the Agents SDK](https://openai.com/index/the-next-evolution-of-the-agents-sdk/)（2026-04-15）：模型原生的執行環境、沙箱執行與檔案／命令執行能力。
 - [OpenAI: An open-source spec for Codex orchestration: Symphony](https://openai.com/index/open-source-codex-orchestration-symphony/)（2026-04-27）：把 issue tracker 或 Linear 看板轉成多代理控制平面。
-- [Anthropic: Building a C compiler with a team of parallel Claudes](https://www.anthropic.com/engineering/building-c-compiler)（2026-02-05）：平行代理團隊、任務鎖、git 同步、容器隔離與自主迴圈。
+- [Anthropic: Building a C compiler with a team of parallel Claudes](https://www.anthropic.com/engineering/building-c-compiler)（2026-02-05）：平行代理團隊、任務鎖、
+git 同步、容器隔離與自主迴圈。
 - [Anthropic: Scaling Managed Agents: Decoupling the brain from the hands](https://www.anthropic.com/engineering/managed-agents)（2026-04-08）：從 meta-harness 角度，把工作階段、執行環境與沙箱拆成可替換介面。
 - [Anthropic: An update on recent Claude Code quality reports](https://www.anthropic.com/engineering/april-23-postmortem)（2026-04-23）：reasoning effort、脈絡裁剪與 system prompt 都屬於執行環境變更，且需要迴歸治理。
 - [LangChain: Context Management for Deep Agents](https://www.langchain.com/blog/context-management-for-deepagents)（2026-01-28）：以 filesystem offloading、tool-call truncation、summarization 與 targeted evals 建構脈絡管理執行環境。

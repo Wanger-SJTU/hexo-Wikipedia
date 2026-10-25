@@ -26,7 +26,7 @@ source_url: https://zhuanlan.zhihu.com/p/44958351
 参考材料
 [1] [Awesome Semantic Segmentation.](https://link.zhihu.com/?target=https%3A//github.com/mrgloom/awesome-semantic-segmentation)
 [2] [Semantic Segmentation](https://link.zhihu.com/?target=https%3A//github.com/handong1587/handong1587.github.io/blob/master/_posts/deep_learning/2015-10-09-segmentation.md)
-[3] Mike Liao. [&#34;Deep Layer Aggregation — Combining Layers in NN Architectures.&#34;](https://link.zhihu.com/?target=https%3A//medium.com/%40mikeliao/deep-layer-aggregation-combining-layers-in-nn-architectures-2744d29cab8)(2018)
+[3] Mike Liao. ["Deep Layer Aggregation — Combining Layers in NN Architectures."](https://link.zhihu.com/?target=https%3A//medium.com/%40mikeliao/deep-layer-aggregation-combining-layers-in-nn-architectures-2744d29cab8)(2018)
 
 0. 说在前面
 大家好，我叫周纵苇，现在是一个在读二年级的博士，目前在亚利桑那州立大学念生物信息学。主要的侧重点是计算机视觉，应用的领域大多在医学影像，当然我也是每年有在关注CVPR这样的顶会。另外，我们也会关注医学图像方面的顶会MICCAI，今天分享题目中的U-Net最早就是出自2015年的MICCAI。今年的MICCAI正在西班牙召开，我由于签证的关系没有参加，不过英文版的20分钟发言会更新YouTube和我的[微博](https://link.zhihu.com/?target=http%3A//weibo.com/u/1060010800)上，当然，我更习惯用中文的，所以非常感谢雷锋网的邀请，我可以就借次机会用中文讲一讲我们刚刚发表的工作。
@@ -129,7 +129,7 @@ U-Net和FCN非常的相似，U-Net比FCN稍晚提出来，但都发表在2015年
 
 ![](https://pica.zhimg.com/v2-9bee627e3ff09bd89ae4cb4e31231d2c_r.jpg)
 
-如果没有我上面说的那一堆话来盘逻辑，这个结构可能不那么容易想到，但是如果顺着思路一步一步的走，这个结构虽然不能说是显而易见，也算是顺理成章的。我的故事还没有讲完，但是我提一句，这个结构由UC Berkeley的团队提出，发表在今年的CVPR上，是一个oral的论文，题目是&#34;[Deep Layer Aggregation](https://link.zhihu.com/?target=http%3A//openaccess.thecvf.com/content_cvpr_2018/papers/Yu_Deep_Layer_Aggregation_CVPR_2018_paper.pdf)&#34;。
+如果没有我上面说的那一堆话来盘逻辑，这个结构可能不那么容易想到，但是如果顺着思路一步一步的走，这个结构虽然不能说是显而易见，也算是顺理成章的。我的故事还没有讲完，但是我提一句，这个结构由UC Berkeley的团队提出，发表在今年的CVPR上，是一个oral的论文，题目是"[Deep Layer Aggregation](https://link.zhihu.com/?target=http%3A//openaccess.thecvf.com/content_cvpr_2018/papers/Yu_Deep_Layer_Aggregation_CVPR_2018_paper.pdf)"。
 
 可能就有小伙伴惊呆了，就这样吗，就发了CVPR！？是，也不是。。。这只是他们在论文中给出的关于分割网络结构的改进，他们还做了其他的工作，包括分类，和边缘检测。但是主要的思路就是刚刚盘的那些，目标就是取整合各个不同层次的特征。
 

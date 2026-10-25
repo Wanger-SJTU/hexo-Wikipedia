@@ -257,7 +257,7 @@ flash_attn_output = xops.memory_efficient_attention(
 ```python
     attn_bias=xops.LowerTriangularMask()
 )
-print(f&#39;flash attention time: {(time.time()-start_time)*1000} ms&#39;)
+print(f'flash attention time: {(time.time()-start_time)*1000} ms')
 ```
 
 为验证其精确性，需要将其结果与标准 attention 对比精度，验证精度的代码如下：
@@ -293,7 +293,7 @@ start_time = time.time()
 attn_output = standard_attention(query_states, key_states, value_states, attention_mask)
 
 ```python
-print(f&#39;standard attention time: {(time.time()-start_time)*1000} ms&#39;)
+print(f'standard attention time: {(time.time()-start_time)*1000} ms')
 
 print(torch.allclose(attn_output, flash_attn_output, rtol=2e-3, atol=2e-3))
 ```
@@ -355,31 +355,31 @@ def run_single_query_cached_kv_attention(
 ) -> None:
 
 ```text
-    qkv = torch.empty(num_tokens, 3, num_heads, head_size, dtype=dtype, device=&#39;cuda&#39;)
+    qkv = torch.empty(num_tokens, 3, num_heads, head_size, dtype=dtype, device='cuda')
     qkv.uniform_(-1e-3, 1e-3)
     query, _, _ = qkv.unbind(dim=1)
 
     x = 16 // torch.tensor([], dtype=dtype).element_size()
     key_block_shape = (num_heads, head_size // x, block_size, x)
-    key_cache = torch.empty(size=(num_blocks, *key_block_shape), dtype=dtype, device=&#39;cuda&#39;)
+    key_cache = torch.empty(size=(num_blocks, *key_block_shape), dtype=dtype, device='cuda')
     key_cache.uniform_(-1e-3, 1e-3)
     value_block_shape = (num_heads, head_size, block_size)
-    value_cache = torch.empty(size=(num_blocks, *value_block_shape), dtype=dtype, device=&#39;cuda&#39;)
+    value_cache = torch.empty(size=(num_blocks, *value_block_shape), dtype=dtype, device='cuda')
     value_cache.uniform_(-1e-3, 1e-3)
 
     context_lens = [random.randint(1, MAX_SEQ_LEN) for _ in range(num_tokens)] 
     max_context_len = max(context_lens)
-    context_lens = torch.tensor(context_lens, dtype=torch.int, device=&#39;cuda&#39;)
+    context_lens = torch.tensor(context_lens, dtype=torch.int, device='cuda')
 
     max_num_blocks_per_seq = (max_context_len + block_size - 1) // block_size
     block_tables = []
     for _ in range(num_tokens):
         block_table = [random.randint(0, num_blocks - 1) for _ in range(max_num_blocks_per_seq)]
         block_tables.append(block_table)
-    block_tables = torch.tensor(block_tables, dtype=torch.int, device=&#39;cuda&#39;)
+    block_tables = torch.tensor(block_tables, dtype=torch.int, device='cuda')
 
     scale = float(1.0 / (head_size ** 0.5))
-    output = torch.empty(num_tokens, num_heads, head_size, dtype=dtype, device=&#39;cuda&#39;)
+    output = torch.empty(num_tokens, num_heads, head_size, dtype=dtype, device='cuda')
     attention_ops.single_query_cached_kv_attention(
         output,
         query,
@@ -417,20 +417,16 @@ from vllm import LLM, SamplingParams
 
 # Sample prompts.
 prompts = [
-
-```text
-    &#34;Hello, my name is&#34;,
-    &#34;The president of the United States is&#34;,
-    &#34;The capital of France is&#34;,
-    &#34;The future of AI is&#34;,
+    "Hello, my name is",
+    "The president of the United States is",
+    "The capital of France is",
+    "The future of AI is",
 ]
-```
-
 # Create a sampling params object.
 sampling_params = SamplingParams(temperature=0.8, top_p=0.95, max_tokens=128)
 
 # Create an LLM.
-llm = LLM(model=&#34;lmsys/vicuna-13b-v1.3&#34;)
+llm = LLM(model="lmsys/vicuna-13b-v1.3")
 # Generate texts from the prompts. The output is a list of RequestOutput objects that contain the prompt, generated text, and other information.
 outputs = llm.generate(prompts, sampling_params)
 # Print the outputs.
@@ -439,17 +435,17 @@ for output in outputs:
 ```python
     prompt = output.prompt
     generated_text = output.outputs[0].text
-    print(f&#34;Prompt: {prompt!r}, Generated text: {generated_text!r}&#34;)
+    print(f"Prompt: {prompt!r}, Generated text: {generated_text!r}")
 ```
 
 其输出结果为：
 
 INFO 06-23 17:59:49 llm_engine.py:128] # GPU blocks: 1464, # CPU blocks: 327
 Processed prompts: 100%|█████████████████████████████████████████████████████████████████████| 4/4 [00:05<00:00,  1.34s/it]
-Prompt: &#39;The capital of France is&#39;, Generated text: &#39;Paris.</s>&#39;
-Prompt: &#39;The future of AI is&#39;, Generated text: &#34;bright, and it&#39;s clear that it will continue to have a significant impact on the way we work, live, and play. The key to ensuring that AI is a force for good is to continue to develop and deploy it responsibly, with a focus on transparency, accountability, and fairness. By doing so, we can unlock the full potential of AI and create a future where it benefits everyone.</s>&#34;
-Prompt: &#39;Hello, my name is&#39;, Generated text: &#34;Bastien and I&#39;m a developer at BigCommerce, a leading eCommerce platform. I noticed your question about copying a BigCommerce store to another server, and I&#39;d like to help you with that.\n\nTo move your BigCommerce store to a new server, you&#39;ll need to follow these steps:\n\n1. Export your data: First, you&#39;ll need to export your store data, including products, orders, customers, and other information. You can do this using the BigCommerce API or the store export tool in the BigCommerce Control Panel.\n2.&#34;
-Prompt: &#39;The president of the United States is&#39;, Generated text: &#39;the head of state and head of government of the United States. The president leads the executive branch of the federal government and is the commander-in-chief of the United States Armed Forces.\n\nThe president is elected to a four-year term by the Electoral College, a body of electors chosen by the states. The president may be re-elected to a maximum of two terms. The president is required to be a natural-born citizen of the United States, at least 35 years old, and a resident of the United States for at least 14 years.\n\nThe president is&#39;
+Prompt: 'The capital of France is', Generated text: 'Paris.</s>'
+Prompt: 'The future of AI is', Generated text: "bright, and it's clear that it will continue to have a significant impact on the way we work, live, and play. The key to ensuring that AI is a force for good is to continue to develop and deploy it responsibly, with a focus on transparency, accountability, and fairness. By doing so, we can unlock the full potential of AI and create a future where it benefits everyone.</s>"
+Prompt: 'Hello, my name is', Generated text: "Bastien and I'm a developer at BigCommerce, a leading eCommerce platform. I noticed your question about copying a BigCommerce store to another server, and I'd like to help you with that.\n\nTo move your BigCommerce store to a new server, you'll need to follow these steps:\n\n1. Export your data: First, you'll need to export your store data, including products, orders, customers, and other information. You can do this using the BigCommerce API or the store export tool in the BigCommerce Control Panel.\n2."
+Prompt: 'The president of the United States is', Generated text: 'the head of state and head of government of the United States. The president leads the executive branch of the federal government and is the commander-in-chief of the United States Armed Forces.\n\nThe president is elected to a four-year term by the Electoral College, a body of electors chosen by the states. The president may be re-elected to a maximum of two terms. The president is required to be a natural-born citizen of the United States, at least 35 years old, and a resident of the United States for at least 14 years.\n\nThe president is'
 基于此，可进行完整任务离线推理性能的比较，采用的代码为 [vllm/benchmarks/benchmark_throughput.py](https://link.zhihu.com/?target=https%3A//github.com/vllm-project/vllm/blob/main/benchmarks/benchmark_throughput.py)，设备为 1*A6000，数据为 [ShareGPT_V3_unfiltered_cleaned_split.json](https://link.zhihu.com/?target=https%3A//huggingface.co/datasets/anon8231489123/ShareGPT_Vicuna_unfiltered/resolve/main/ShareGPT_V3_unfiltered_cleaned_split.json) 使用其中 1000 个 prompt 样本。
 
 vllm 的运行命令为：
@@ -472,15 +468,15 @@ python3 benchmark_throughput.py -tp 4 --dataset ShareGPT_V3_unfiltered_cleaned_s
 python3 -m entrypoints.openai.api_server --model lmsys/vicuna-13b-v1.3
 然后利用与 OpenAI API 相同的格式来查询服务器，命令如下：
 
-```text
-curl http://localhost:8000/v1/completions \-H&#34;Content-Type: application/json&#34; \-d &#39;{&#34;model&#34;: &#34;lmsys/vicuna-13b-v1.3&#34;,&#34;prompt&#34;: &#34;San Francisco is a&#34;,&#34;max_tokens&#34;: 128,&#34;temperature&#34;: 1.0 }&#39;
+```bash
+curl http://localhost:8000/v1/completions \-H"Content-Type: application/json" \-d '{"model": "lmsys/vicuna-13b-v1.3","prompt": "San Francisco is a","max_tokens": 128,"temperature": 1.0 }'
 ```
 
 输出结果如下：
 
-{&#34;id&#34;:&#34;cmpl-4049e3ad12964d19b9f2810d0ea7a3df&#34;,&#34;object&#34;:&#34;text_completion&#34;,&#34;created&#34;:1687519516,
-&#34;model&#34;:&#34;lmsys/vicuna-13b-v1.3&#34;,
-&#34;choices&#34;:[{&#34;index&#34;:0,&#34;text&#34;:&#34;city and county in California, United States, located on the northern end of the San Francisco Peninsula. It is the fourth most populous city in California and the 14th most populous city in the United States, with a population of 883,305 as of 2020.\n\nSan Francisco is known for its iconic landmarks, including the Golden Gate Bridge, Alcatraz Island, Fisherman&#39;s Wharf, the cable cars, and Chinatown, one of the largest Chinatowns in the world outside of Asia. It is also known&#34;,&#34;logprobs&#34;:null,&#34;finish_reason&#34;:&#34;length&#34;}],&#34;usage&#34;:{&#34;prompt_tokens&#34;:5,&#34;total_tokens&#34;:133,&#34;completion_tokens&#34;:128}}
+{"id":"cmpl-4049e3ad12964d19b9f2810d0ea7a3df","object":"text_completion","created":1687519516,
+"model":"lmsys/vicuna-13b-v1.3",
+"choices":[{"index":0,"text":"city and county in California, United States, located on the northern end of the San Francisco Peninsula. It is the fourth most populous city in California and the 14th most populous city in the United States, with a population of 883,305 as of 2020.\n\nSan Francisco is known for its iconic landmarks, including the Golden Gate Bridge, Alcatraz Island, Fisherman's Wharf, the cable cars, and Chinatown, one of the largest Chinatowns in the world outside of Asia. It is also known","logprobs":null,"finish_reason":"length"}],"usage":{"prompt_tokens":5,"total_tokens":133,"completion_tokens":128}}
 当然也可以进行本地部署
 
 python3 -m entrypoints.api_server --model lmsys/vicuna-13b-v1.3

@@ -44,7 +44,7 @@ tl::expected<void, ErrorCode> RealClient::register_buffer_internal(
 ```cpp
     void *buffer, size_t size) {
     if (!client_) {
-        LOG(ERROR) << &#34;Client is not initialized&#34;;
+        LOG(ERROR) << "Client is not initialized";
         return tl::unexpected(ErrorCode::INVALID_PARAMS);
     }
     auto result = client_->RegisterLocalMemory(buffer, size, kWildcardLocation,
@@ -109,7 +109,7 @@ int RdmaTransport::registerLocalMemoryInternal(void *addr, size_t length,
     1. parallel_reg_mr is enabled via MC_ENABLE_PARALLEL_REG_MR;
     2. parallel_reg_mr not set and multiple contexts exist and memory has been
     pre-touched
-    Note: If memory hasn&#39;t been touched, parallel register can be
+    Note: If memory hasn't been touched, parallel register can be
     slower. Details in: https://github.com/kvcache-ai/Mooncake/issues/848
     Note: force_sequential is used by batch operations to avoid nested
     parallelism.
@@ -143,7 +143,7 @@ int RdmaTransport::registerLocalMemoryInternal(void *addr, size_t length,
 
         for (size_t i = 0; i < ret_codes.size(); ++i) {
             if (ret_codes[i] != 0) {
-                LOG(ERROR) << &#34;Failed to register memory region with context &#34;
+                LOG(ERROR) << "Failed to register memory region with context "
                            << i;
                 return ret_codes[i];
             }
@@ -153,7 +153,7 @@ int RdmaTransport::registerLocalMemoryInternal(void *addr, size_t length,
             int ret = context_list_[i]->registerMemoryRegion(addr, length,
                                                              access_rights);
             if (ret) {
-                LOG(ERROR) << &#34;Failed to register memory region with context &#34;
+                LOG(ERROR) << "Failed to register memory region with context "
                            << i;
                 return ret;
             }
@@ -167,11 +167,11 @@ int RdmaTransport::registerLocalMemoryInternal(void *addr, size_t length,
             .count();
 
     if (globalConfig().trace) {
-        LOG(INFO) << &#34;registerMemoryRegion: addr=&#34; << addr
-                  << &#34;, length=&#34; << length
-                  << &#34;, contexts=&#34; << context_list_.size()
-                  << &#34;, parallel=&#34; << (use_parallel_reg ? &#34;true&#34; : &#34;false&#34;)
-                  << &#34;, duration=&#34; << reg_duration_ms << &#34;ms&#34;;
+        LOG(INFO) << "registerMemoryRegion: addr=" << addr
+                  << ", length=" << length
+                  << ", contexts=" << context_list_.size()
+                  << ", parallel=" << (use_parallel_reg ? "true" : "false")
+                  << ", duration=" << reg_duration_ms << "ms";
     }
 
     // Collect keys from all contexts
@@ -181,7 +181,7 @@ int RdmaTransport::registerLocalMemoryInternal(void *addr, size_t length,
     }
 
     // Get the memory location automatically after registered MR(pinned),
-    // when the name is kWildcardLocation(&#34;*&#34;).
+    // when the name is kWildcardLocation("*").
     if (name == kWildcardLocation) {
         bool only_first_page = true;
         const std::vector<MemoryLocationEntry> entries =
@@ -195,7 +195,7 @@ int RdmaTransport::registerLocalMemoryInternal(void *addr, size_t length,
     buffer_desc.addr = (uint64_t)addr;
     buffer_desc.length = length;
 #ifdef ENABLE_MULTI_PROTOCOL
-    buffer_desc.protocol = &#34;rdma&#34;;
+    buffer_desc.protocol = "rdma";
 #endif
     int rc = metadata_->addLocalMemoryBuffer(buffer_desc, update_metadata);
     if (rc) return rc;
@@ -307,7 +307,7 @@ Mooncake 作为业界广泛使用的高性能通信库，其内存注册机制�
 
 ```python
 def merge_contiguous_memory(ptrs: list[int], sizes: list[int]) -> tuple[list[int], list[int]]:
-    &#34;&#34;&#34;Merge contiguous memory regions to reduce register_buffer overhead
+    """Merge contiguous memory regions to reduce register_buffer overhead
 ```
 
 
@@ -335,9 +335,9 @@ def merge_contiguous_memory(ptrs: list[int], sizes: list[int]) -> tuple[list[int
 
         >>> merge_contiguous_memory([0, 5, 20], [5, 5, 10])
         ([0, 20], [10, 10])
-    &#34;&#34;&#34;
+    """
     if len(ptrs) != len(sizes):
-        raise ValueError(&#34;ptrs and sizes must have the same length&#34;)
+        raise ValueError("ptrs and sizes must have the same length")
 ```
 
 
@@ -387,11 +387,7 @@ def merge_contiguous_memory(ptrs: list[int], sizes: list[int]) -> tuple[list[int
 BTW，这也是TQ的核心易用性设计之一，把RDMA所需的元数据信息通过BatchMeta进行传递，除了dtype和shape之外，还允许后端传递自定义的字段，并可通过全局的TQ controller进行获取，从而简化了像nixl这种比较裸的通信库需要用户手动交换meta的步骤def allocate_empty_tensors(
     dtypes: list[torch.dtype], shapes: list[tuple]
 ) -> tuple[list[Tensor], list[int], list[int], list[int]]:
-
-```text
-    &#34;&#34;&#34;Allocate empty tensors, grouping same dtypes into shared memory blocks.
-```
-
+    """Allocate empty tensors, grouping same dtypes into shared memory blocks.
 
     Instead of allocating each tensor separately, this function groups tensors
     by their dtype and allocates one large contiguous memory block per dtype.
@@ -419,8 +415,8 @@ BTW，这也是TQ的核心易用性设计之一，把RDMA所需的元数据信�
         >>> shapes = [(10,), (20,), (5,), (15,)]
         >>> tensors, ptrs, region_ptrs, region_sizes = allocate_empty_tensors(dtypes, shapes)
         >>> # tensors[0], [1], [3] share the same dtype and memory block
-    &#34;&#34;&#34;
-    assert len(dtypes) == len(shapes), &#34;dtypes and shapes must have the same length&#34;
+    """
+    assert len(dtypes) == len(shapes), "dtypes and shapes must have the same length"
 
     if len(dtypes) == 0:
         return [], [], [], []

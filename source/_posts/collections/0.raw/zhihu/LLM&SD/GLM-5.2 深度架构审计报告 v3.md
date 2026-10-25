@@ -172,7 +172,7 @@ benchmark 预期:
   SWE-bench Verified:   当前 ~55   → 65-70
   SWE-bench Marathon:   当前 13.0  → 28-35
   Tool-Decathlon:       当前 48.2  → 62-68
-  Humanity&#39;s Last Exam: 当前 ~24.5 → 28-32
+  Humanity's Last Exam: 当前 ~24.5 → 28-32
 核心结论：GLM-5.2 的架构本身没问题（744B MoE + DSA 是正确方向）。卡它的是昇腾集群的通信带宽和无 FP8 两个硬伤。前者可以靠 Expert 复制在纯软件层面解决（P1，投入产出比最高），后者只能等 910D。后训练短板是最容易补齐的——就一个资源调度问题。
 
 本报告基于公开的 config.json、官方 model card、GLM-5 技术报告（arXiv:2602.15763）、IndexCache（arXiv:2603.12201）、TreeRouter 深度测评、NVIDIA NIM 文档整理。不含任何专有方法论或内部信息。 （内容由AI生成，仅供参考）

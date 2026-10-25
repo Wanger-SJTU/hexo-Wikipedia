@@ -28,7 +28,7 @@ DeepSeek Harness
 
 整个景象可以画成下图
 
-![](https://pica.zhimg.com/v2-8b582438ddcf6ae0a40dc591c4f7f828_r.jpg)上文描述的是一个固定逆的模型，即对于任意`γ`，固定的`g`都可以撤销`f`的效果。更合理的建模是`g`取决于具体的`γ`，我们引入`Γ → ∂Γ`这个类型，记作`𝔈Γ`，`e(γ) = (γ&#39;, g)`表示一个作用施加在`γ`上可以得到新的环境`γ&#39;`，`g`可以撤销这个效果，对于不同的`γ`有不同的`g`。
+![](https://pica.zhimg.com/v2-8b582438ddcf6ae0a40dc591c4f7f828_r.jpg)上文描述的是一个固定逆的模型，即对于任意`γ`，固定的`g`都可以撤销`f`的效果。更合理的建模是`g`取决于具体的`γ`，我们引入`Γ → ∂Γ`这个类型，记作`𝔈Γ`，`e(γ) = (γ', g)`表示一个作用施加在`γ`上可以得到新的环境`γ'`，`g`可以撤销这个效果，对于不同的`γ`有不同的`g`。
 
 这个设定下track可以升级为effect操作
 
@@ -74,7 +74,7 @@ get : (k : K) → Σ → 𝒱ₖ
 get k σ = σ(k)         -- 前提：k ∈ dom(σ)
 
 set : (k : K) × 𝒱ₖ → Σ → Σ × (Σ → Σ)
-set (k, v) σ = (σ[k ↦ v], λσ&#39;. σ&#39; \ k)   -- 前提：k ∉ dom(σ)
+set (k, v) σ = (σ[k ↦ v], λσ'. σ' \ k)   -- 前提：k ∉ dom(σ)
 值得注意的是，`set` 的类型正是 
 ![](https://www.zhihu.com/equation?tex=+%5Cmathfrak%7BE%7D_%5CSigma+) ——它是一个<strong>可逆效果</strong>！注册一个依赖与撤销它天然地配对在一起。
 
@@ -87,7 +87,7 @@ set (k, v) σ = (σ[k ↦ v], λσ&#39;. σ&#39; \ k)   -- 前提：k ∉ dom(σ
 
 当上下文发生变化时（一个 `set` 或它的逆被调用），系统对每个组件分类：
 
-状态转换分类系统动作\sigma \not\Vdash d \to \sigma&#39; \Vdash d激活加载该组件\sigma \Vdash d \to \sigma&#39; \not\Vdash d停用卸载该组件其他中性无操作这意味着：<strong>组件从轮询变为响应式</strong>——依赖齐全时自动加载，依赖缺失时自动卸载，无需开发者编写任何重试或错误恢复代码。
+状态转换分类系统动作\sigma \not\Vdash d \to \sigma' \Vdash d激活加载该组件\sigma \Vdash d \to \sigma' \not\Vdash d停用卸载该组件其他中性无操作这意味着：<strong>组件从轮询变为响应式</strong>——依赖齐全时自动加载，依赖缺失时自动卸载，无需开发者编写任何重试或错误恢复代码。
 
 隔离与拦截
 在复杂系统中，同一个键在不同的上下文中可能需要绑定不同的值。例如，测试环境与生产环境使用不同的数据库。Coeffect Context 支持两层映射：
@@ -205,14 +205,14 @@ class Context:
             return self._fiber.committed[name]
         # 2. 检查是否声明但未加载
         if self._fiber and name in self._fiber.inject:
-            raise AttributeError(f&#34;依赖 {name} 未激活&#34;)
+            raise AttributeError(f"依赖 {name} 未激活")
         # 3. 沿父链向上查找
         if self._parent:
             return getattr(self._parent, name)
-        raise AttributeError(f&#34;依赖 {name} 未声明&#34;)
+        raise AttributeError(f"依赖 {name} 未声明")
 
     def __setattr__(self, name, value):
-        if name.startswith(&#39;_&#39;):
+        if name.startswith('_'):
             object.__setattr__(self, name, value)
             return
         # 这是一个可逆效果：注册依赖

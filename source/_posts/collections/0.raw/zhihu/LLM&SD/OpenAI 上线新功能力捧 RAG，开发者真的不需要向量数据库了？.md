@@ -77,10 +77,10 @@ Milvus 是一款高度灵活、可扩展的开源向量数据库，毫秒内即�
 pip install openai==1.2.0
 pip install langchain==0.0.333
 pip install pymilvus
-```
-
 
 export OPENAI_API_KEY=xxxx  # Enter your OpenAI API key here
+```
+
 
 - 使用向量数据库构建自定义检索器。我们选择 Milvus 作为向量数据库、 LangChain 作为调用框架。
 

@@ -229,7 +229,7 @@ void arch_flush_tlb() {
 void arch_invlpg(uintptr_t addr) {
 ```
 
- asm volatile(&#34;invlpg (%0)&#34; :: &#34;r&#34;(addr) : &#34;memory&#34;);
+ asm volatile("invlpg (%0)" :: "r"(addr) : "memory");
 
 ```text
 }
@@ -314,7 +314,7 @@ TLB shootdown 的开销主要在：
 
 <strong>坑 2：INVLPG 是异步的</strong>
 
-解法：在 `invlpg` 之后加一个 `jmp` 或 `mfence`（`asm volatile(&#34;mfence&#34;)`），强制 CPU 等待刷新完成。
+解法：在 `invlpg` 之后加一个 `jmp` 或 `mfence`（`asm volatile("mfence")`），强制 CPU 等待刷新完成。
 
 <strong>坑 3：TLB shootdown 和上下文切换的顺序</strong>
 
@@ -345,9 +345,8 @@ TLB shootdown 是多核操作系统里一个看不见的「交通管制」——
 
 - <strong>下载 wandos</strong>：
 
-bash
-
 ```bash
+bash
    git clone https://github.com/zhangfuwen/wandos.git
    cd wandos`
 ```

@@ -384,11 +384,11 @@ python run.py -s     朱一龙.jpg    -t myface.avi -o output.avi，就能工程
 
 在工程目录下运行
 
+```text
 python inference.py --driven_audio  \
 
                     --source_video  \
 
-```text
                     --enhancer  \  #(默认lip)
 
                     --use_DAIN \ #(使用该功能会占用较大显存和消耗较多时间)
