@@ -28,6 +28,7 @@
       <% } }); %>
       <% if (_features.graph !== false) { %><a class="wiki-footer__link" href="<%- _graphUrl %>"><%= __('graph') %></a><% } %>
       <% if (_features.stats !== false) { %><a class="wiki-footer__link" href="<%- _statsUrl %>"><%= __('statistics') %></a><% } %>
+      <% if (theme.docs && theme.docs.enable) { %><a class="wiki-footer__link" href="<%- url_for(theme.docs.url || '/collections/') %>"><%- theme.docs.title || '文档库' %></a><% } %>
       <a class="wiki-footer__link" href="<%- _urls.tags || url_for('/tags/') %>"><%= __('tags') %></a>
       <a class="wiki-footer__link" href="<%- _allUrl %>"><%= __('all_pages') %></a>
     </nav>
