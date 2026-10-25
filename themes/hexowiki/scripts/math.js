@@ -38,6 +38,8 @@ function extractInline(text, store) {
   out = out.replace(/(?<!\\)\$([^$\n]+?)\$/g, (whole, tex) => {
     const text = tex.trim();
     if (!text) return whole;
+    // 中文说明句/HTML 标记不应整体塞进 KaTeX，去掉美元符号按普通文本渲染
+    if (/[\u3400-\u9fff]/.test(text) || /<[^>]+>|\*\*/.test(text)) return tex;
     // 纯数字/价格（$5.00$）不当公式
     if (/^[\d.,]+$/.test(text)) return whole;
     const mathLike = /[\\^_{}=<>]|\b(sum|frac|sqrt|int|cdot|times|alpha|beta|gamma|theta|lambda|sigma|omega|prod|lim|log|sin|cos|tan)\b/.test(text);
@@ -55,6 +57,63 @@ function processLine(line, store) {
     .split(/(`+[^`]*?`+)/g)
     .map((part) => (/^`/.test(part) ? part : extractInline(part, store)))
     .join('');
+}
+
+function wrapBareMathLines(content) {
+  const lines = String(content == null ? '' : content).split('\n');
+  const out = [];
+  let fence = null;
+  const mathHint = /\\(left|right|begin\{|end\{|frac|sum|int|cdot|times|sqrt|mathbf|text|overline|hat|vec|displaystyle)/;
+  for (const line of lines) {
+    const f = /^\s{0,3}(`{3,}|~{3,})/.exec(line);
+    if (f) {
+      if (!fence) fence = f[1][0];
+      else if (f[1][0] === fence) fence = null;
+      out.push(line);
+      continue;
+    }
+    if (fence) {
+      out.push(line);
+      continue;
+    }
+    let text = line.trim();
+    if (!text) {
+      out.push(line);
+      continue;
+    }
+    const dollarCount = (text.match(/\$/g) || []).length;
+    if (dollarCount >= 2 || /^\\\(|^\\\[/.test(text) || text.indexOf('`') !== -1) {
+      out.push(line);
+      continue;
+    }
+    if (/^[#>]|^[-+]\s|^!\[|^\[.*\]\(|role="presentation"|^</.test(text)) {
+      out.push(line);
+      continue;
+    }
+    // 只处理独立公式行：不含中文、不含 HTML/Markdown 标记，且以字母或反斜杠开头
+    if (/[\u3400-\u9fff]/.test(text) || /<[^>]+>|\*\*/.test(text) || !/^[A-Za-z\\]/.test(text)) {
+      out.push(line);
+      continue;
+    }
+    // 至少要有公式命令 + 等号/矩阵环境，避免误伤普通文本
+    if (!mathHint.test(text)) {
+      out.push(line);
+      continue;
+    }
+    if (!/[=]|\\begin\{/.test(text)) {
+      out.push(line);
+      continue;
+    }
+    text = text.replace(/\s*\$$/, ''); // 行尾残留的单个 $
+    if (text.length > 2000) {
+      out.push(line);
+      continue;
+    }
+    out.push('$$');
+    out.push(text);
+    out.push('$$');
+  }
+  return out.join('\n');
 }
 
 function extractMath(content, store) {
@@ -124,7 +183,8 @@ function restoreMath(html, store) {
 
 hexo.extend.filter.register('before_post_render', function (data) {
   if (!data || typeof data.content !== 'string' || !data.content) return data;
-  if (!/\$|\\\(|\\\[/.test(data.content)) return data;
+  if (!/\$|\\\(|\\\[|\\(left|right|begin\{)/.test(data.content)) return data;
+  data.content = wrapBareMathLines(data.content);
   const store = [];
   const content = extractMath(data.content, store);
   if (store.length) {
