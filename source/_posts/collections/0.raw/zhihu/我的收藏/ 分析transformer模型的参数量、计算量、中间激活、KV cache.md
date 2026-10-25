@@ -56,13 +56,13 @@ self-attention块和MLP块各有一个layer normalization，包含了2个可训�
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_41adb57ea504.jpg)
 
-#### <strong>2.2 推理过程中的显存占用分析</strong>
+#### 2.2 推理过程中的显存占用分析
 
 在神经网络的推理阶段，没有优化器状态和梯度，也不需要保存中间激活。<strong>少了梯度、优化器状态、中间激活，模型推理阶段占用的显存要远小于训练阶段</strong>。模型推理阶段，占用显存的大头主要是模型参数，如果使用float16来进行推理，<strong>推理阶段模型参数占用的显存大概是</strong> 2\Phi\space bytes 。如果使用KV cache来加速推理过程，<strong>KV cache也需要占用显存</strong>，KV cache占用的显存下文会详细介绍。此外，输入数据也需要放到GPU上，还有一些中间结果（推理过程中的中间结果用完会尽快释放掉），不过这部分占用的显存是很小的，可以忽略。
 
 ### 3. 计算量FLOPs估计
 
-**FLOPs，floating point operations，表示浮点数运算次数，衡量了计算量的大小。
+FLOPs，floating point operations，表示浮点数运算次数，衡量了计算量的大小。
 如何计算矩阵乘法的FLOPs呢？
 对于 A\in R^{1\times n},B\in R^{n\times 1} ，计算 AB 需要进行  n 次乘法运算和 n 次加法运算，共计 2n 次浮点数运算，需要 2n 的FLOPs。对于 A\in R^{m\times n},B\in R^{n\times p} ，计算 AB 需要的浮点数运算次数为 2mnp 。在一次训练迭代中，假设输入数据的形状为 [b,s ] 。我们先分析self-attention块的计算**，计算公式如下：
 

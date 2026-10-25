@@ -18,24 +18,21 @@ source_url: https://zhuanlan.zhihu.com/p/19585986234
 <strong>关于MLA，在本文开头想先简单记录下我了解它的心路历程：</strong>**
 
 - 我第一次了解MLA，是在它刚出来的档口。在我读过它的原生实践后，我发现它既不省KV cache，还徒增了计算量**。这个问题让我困扰了很久，当时网上对MLA细节的讨论还不多，所以我一直觉得是我没懂它，再加上没有实际的业务需求，它就被我放一边了。别人问起我MLA，我都回答不知道，因为我确实没想明白。
-**
 
 - 直到最近dpsk v3的风刮起来，再加上实际体验后它的推理速度确实很快（当然我知道不止于MLA），所以又有了重新认识MLA的兴趣。而幸运的是，此时网上已经有关于MLA的诸多讨论了，这样就能和我的理解相互校验。在这一次的重新认识中，我发现我之前的认知并没有错，原生MLA确实存在上述的2个问题，并且开源社区已有了各种对原生MLA的优化方法<strong>，这里我主要参考了：</strong>
 
 - [章明星老师关于MLA优化的思路](https://zhuanlan.zhihu.com/p/700214123)（代码在[这里](https://link.zhihu.com/?target=https%3A//github.com/madsys-dev/deepseekv2-profile/tree/main)）<strong>。</strong>*本文第二部分介绍的各种MLA优化思路也来自于此*，我推荐大家都看看这份资料，写得非常具有启发性。****
-- [知乎上一篇对MLA计算量的分析](https://zhuanlan.zhihu.com/p/714761319)。在这个分析思路的启发下，本文按照自己的理解重新做了MLA各种优化方法的计算量和KV cache分析，算出的结果和章明星老师团队做的[实验分析结果](https://link.zhihu.com/?target=https%3A//github.com/madsys-dev/deepseekv2-profile/blob/main/workspace/blog/optimizing-mla.md)吻合。**
+- [知乎上一篇对MLA计算量的分析](https://zhuanlan.zhihu.com/p/714761319)。在这个分析思路的启发下，本文按照自己的理解重新做了MLA各种优化方法的计算量和KV cache分析，算出的结果和章明星老师团队做的[实验分析结果](https://link.zhihu.com/?target=https%3A//github.com/madsys-dev/deepseekv2-profile/blob/main/workspace/blog/optimizing-mla.md)吻合。
 
-**
 
-我个人认为，首次学习MLA的难点之一是它的算法设计颇为“绕”，不管是用数学公式，或者是用流程图，似乎都很难一下找到它设计的核心思想。所以本文第一部分将会抛开各种复杂的计算细节，先根据我自己的理解抽象出MLA的设计方案。基于此再来谈计算细节和各种优化。**
+我个人认为，首次学习MLA的难点之一是它的算法设计颇为“绕”，不管是用数学公式，或者是用流程图，似乎都很难一下找到它设计的核心思想。所以本文第一部分将会抛开各种复杂的计算细节，先根据我自己的理解抽象出MLA的设计方案。基于此再来谈计算细节和各种优化。
 
-**
 
-【往期文章合集】**
+【往期文章合集】
 
 [](https://zhuanlan.zhihu.com/p/654910335)
 
-### **
+### 
 一、MLA的基本思想
 
 #### 1.1 MLA，MQA与GQA
@@ -54,16 +51,14 @@ MQA和GQA的运作方式如下：
 
 - 在MQA的情况下，一个token所有的heads都共享同一个k和v**。这样在降低param weights大小的同时，还让原本需要保存num_heads份的kv cache降低为只需保存1份。
 - 但是，MQA可能造成模型效果上的损失，毕竟原来对于1个token，它的每个head都有各自的k、v信息的，现在却被压缩为一份。<strong>所以GQA作为一种折衷的方案出现了</strong>，即将1个token的head分成num_group组，每个group内共享同一个k，v信息，使得信息压缩不像GQA那样严重。
-**
 但是，不管是MQA还是GQA，对于1个token来说，总是存在heads上k、v信息被压缩的情况。那么是否有一种办法，能在尽量不压缩head上k，v信息的情况下，节省kv cache，提高整体推理速度呢？**那么接下来，我们就来大致看一下MLA的设计思想。
 
-**
 
 #### 1.2 MLA的整体设计思想
 
 ⚠️：在本节中，我们会以K cache为例，抽象出MLA的核心优化思想<strong>。V cache的优化思想也是同理，但不在这节赘述，而是合并到后文对于MLA的细节讲解中。</strong>
 
-现在先让我们回到MHA上（图1.1），来思考一个问题：为什么对于一个token，我们需要保存它所有heads上的K值作为K cache呢？**
+现在先让我们回到MHA上（图1.1），来思考一个问题：为什么对于一个token，我们需要保存它所有heads上的K值作为K cache呢？
 
 <!-- TODO: 公式语法错误，需手动修复 -->
 <strong>主要原因我们在上文解释过：这是因为每个k_head附带有不同的信息，它将用这份独有的信息和对应的q_head进行attn的计算</strong>，用公式表示即为$attn\_weights = (W_{Q}h_{i})^{T} * (W_{K}h_{j})$，这里的$W_{Q}, W_{K$是合并了所有head对应的param weight后的表达。**
@@ -77,9 +72,8 @@ MQA和GQA的运作方式如下：
 
 - 原来 attn\_weights = (W_{Q}h_{i})^{T} * (W_{K}h_{j}) ，括号表示运算顺序，即先各自算2个括号内的，再做 * 计算
 - 现在 attn\_weights = (h_{i}^{T}W_{Q}^{T}W_{K}) * h_{j} ，同理括号表示运算顺序。
-- 也就是说，这里我们通过矩阵乘法的交换律，巧妙地把1个token上k_heads独有的信息转移到了对应的q_head上来，这样1个token上k_heads间共享的相同信息就能被我们当作K cache存储下来。**
+- 也就是说，这里我们通过矩阵乘法的交换律，巧妙地把1个token上k_heads独有的信息转移到了对应的q_head上来，这样1个token上k_heads间共享的相同信息就能被我们当作K cache存储下来。
 
-**
 
 （在这里，你可以抽象地把 h_{j} 理解成是4个k_heads共享的信息，但最终K cache的形式还会在这基础上有所变化。我知道此时你脑海中一定有很多疑惑。但我们先不要纠结细节的问题，因为在后文会展示全部细节，这里我们要做的是从宏观上理解MLA设计的核心思想。）
 
@@ -92,18 +86,17 @@ MQA和GQA的运作方式如下：
 - 对于每个token的k_heads，我们需要抽取出它们的相异信息**，而这个相异信息本质上是由 W_{K} 维护的。观测到所有tokens都共享1个 W_{K} ，所以我们对于q_heads，我们只需做1次对于 W_{K} 的吸收，就能统一获取所有tokens的所有k_heads上的相异信息。
 - <strong>对于每个tokens的k_heads，我们还需要抽取出它们的相同信息</strong>，而这个相同信息应该是每个tokens的所有k_heads共享一份，同时不在不同tokens间共享。那么我们自然而然想到，可以学习一个linear参数矩阵，从原始token h_{j} 中提取出这份共有信息，以此作为我们的K cache。而不管是从“信息提取”还是从“进一步节省K cache大小”的角度来说，似乎这个linear参数参数矩阵如果能把 h_{j} 压缩到一个更低维的空间，会收获更紧密的信息表达和更小的存储量，这也是图中compress_k的由来。
 - <strong>最后，我们使用压缩后了共有信息的compress_k，和吸收了相异信息的q_head做计算，得到attn_weights</strong>。
-**
 
 对v cache的优化也是同理，这里额外提几点：
 
 - 事实上，当我们考虑到v cache优化时，上图中的compress_k其实应该被理解成compress_kv<strong>，</strong>也就是它是1个token所有k_heads和v_heads的共有信息**。
 - W_{V} 可以和 W_{O} 作吸收，我们在后文会讲这块细节。
-**好，到此为止，我们抽象出了MLA的整体优化思路，从中你可以发现：
+好，到此为止，我们抽象出了MLA的整体优化思路，从中你可以发现：
 
 - 虽然从形式上来说，MLA和MQA/GQA很像，似乎都是通过压缩k/v_heads的数量来节省KV cache大小的。但MLA是压缩num_heads，不压缩信息（把信息转移到了q_heads上）；而MQA/GQA则在一定程度上对信息做了压缩**。
 - <strong>从这一点上看，我个人认为MLA其实更应该理解成是MHA的变种优化，而并非MQA/GQA的变种优化。</strong>
 
-### **
+### 
 二、MLA的运作流程
 
 #### 2.1 CD<strong>(</strong>CacheDecompressed, dpsk MLA的原生实现**）
@@ -112,7 +105,6 @@ MQA和GQA的运作方式如下：
 
 ![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_80db485774c4.jpg)
 
-**
 
 - 本图参考自huggingface上dpsk v2的MLA原生实现，代码在[这里](https://link.zhihu.com/?target=https%3A//huggingface.co/deepseek-ai/DeepSeek-V2/blob/main/modeling_deepseek.py%23L682)。
 - 关于MLA的更多细节，例如“为什么要区分nope和rope维度”，“为什么要做low rank压缩”等，已经有前人的分析珠玉在前，因此本文不做重点阐述，更多细节请参考：
@@ -127,16 +119,15 @@ MQA和GQA的运作方式如下：
 - `kv_b_proj`：它包含了 W_{UK}, W_{UV} 两部分，分别表示对 k_nope 和 v 部分的计算。
 - <strong>以上符号表示皆遵从dpsk原始论文，下标</strong> D <strong>表示Down降维，</strong> U <strong>表示Up升维，</strong> R <strong>表示做Rope（诸如</strong> K <strong>就表示和K的rope相关）。</strong>
 
-好，现在关于这个MLA的原生实现，我们来讨论几个有意思的点：**
+好，现在关于这个MLA的原生实现，我们来讨论几个有意思的点：
 
 （1）在MLA中，每个head_dim的尺寸更大了<strong>。观察到原始hidden_size = 5120，如果按照num_heads = 128来看的话，正常来说一个head_dim = 40 (=40)。但是在MLA中，一个head_dim = 128，远大于40。也就说MLA其实是用比一般MHA更大的head_dim（或者也可能是num_heads）来做attn计算的，然后在最终的 W_{O} 矩阵中映射回原来的hidden_size。对此我个人给出一些简单猜测：</strong>如果推理阶段KV cache造成的memory bound的问题已经得到解决的话，那么训练时我就能少一点后顾之忧，然后通过提升模型的复杂度来取得与MHA比肩或更好的效果（训练阶段还有别的优化方式）。这样当我回到推理阶段时，我的整体计算强度就上去了（每读1次，算的次数更多了）只要没有达到compute bound的界限，这样的提升就是有好处的<strong>。</strong>
 
 （2）原生MLA的计算最终展开成了MHA的计算<strong>。这一点可以参见图中q（蓝色），k（绿色），v（黄色），它们最终都变成了标准MHA的计算。从理论上来说，这一点也不奇怪，因为我们在第一部分说过MLA就是MHA的变种，只是它在MHA的基础上做了信息从k/v_head向q_head的转移。</strong>嗯?!!但是等等，从上图这个原生MLA上来看，虽然产出了compress_kv，但是好像并没有做什么信息转移呀**，也就是粗糙来看目前的计算流程还是 attn\_weights = (W_{Q}h_{i})^{T} * (W_{K}h_{j}) 而不是转移后的 attn\_weights = (h_{i}^{T}W_{Q}^{T}W_{K}) * h_{j} 呀：**
 
-- 是的，如果你有这个疑惑，那么恭喜你发现了原生MLA的问题，也就是它没有做任何的信息转移。**
+- 是的，如果你有这个疑惑，那么恭喜你发现了原生MLA的问题，也就是它没有做任何的信息转移。
 - 同时，原生MLA保存的KV cache并不是图中绘制的compress_kv，而是图中已经成形的完整的k（绿色）和v（黄色），这一点在上面的代码中可以看见。
 - <strong>再有，考虑到这里head_dim = 128（远大于同num_heads数量下的标准head_dim=40），所以原生MLA增加算力所付出的代价是，KV cache显存反而增加了。</strong>
-**
 基于这些，我们管原生MLA的实现方式为CD<strong>（</strong>CacheDecompressed<strong>），即存储的KV cache是没有经过任何压缩的。我们马上就来看后一些做过“信息转移/吸收”的优化方法，不过在此之前，我们先对原生MLA的计算量和KV cache做一个分析。</strong>
 
 CD<strong>（</strong>CacheDecompressed<strong>）</strong>zh表格效果有点鸡肋...我直接从我笔记里截图了
@@ -152,7 +143,7 @@ CD我们对这张表格做一些说明：
 - <strong>我们接下来会对比除CD外的MLA优化方法，这里提前预告下，在这些比较中，你会发现CD的计算量是最小的（不难理解，因为它相当于是从流程图最靠近下方的部分开始计算的），但是它的KV cache是最大的</strong>。注意，这里我们说的计算量小，是CD相比于别的MLA优化方法，而不是CD相比于head_dim=40的标准MHA。
 - <strong>最后总结一下，在CD中，单token KV cache = 80 KB ，单token KV相关的计算量为 0.08 MFLOPs</strong>。
 
-#### **
+#### 
 2.2 CC<strong>(</strong>CacheCompressed**）
 
 好，在进入大家从第一部分开始就心心念念的“k/v_head信息向q转移（或者理解成被q吸收）”这个优化介绍前，我们先介绍基于原生实践和这个优化的一个中间态：<strong>CC</strong>(<strong>CacheCompressed</strong>）。<strong>在这个中间态中，我们终于是以compress_kv为kv cache了，但是我们没做任何吸收。之所以要介绍这个中间态，是方便大家更好感受“吸收”的好处</strong>。**
@@ -171,7 +162,7 @@ CC
 
 2.3** **A_CC（AbsorbCacheCompressed）**
 
-现在，终于来到我们心心念念的涉及吸收的优化了**
+现在，终于来到我们心心念念的涉及吸收的优化了
 
 ![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_e19cc84daf2a.jpg)
 
@@ -188,9 +179,9 @@ A_CC
 
 #### 
 
-2.4 A_CC_ME**
+2.4 A_CC_ME
 
-**最后，这个优化其实就是在A_CC的基础上，在计算attn_weights的时候，把nope和rope的部分拆开算，然后再求和。这样做是为了避开无用的数据拷贝和广播（可以看代码，你会发现A_CC为了做数据拼接，是先初始化一个一个拼接好的空张量，再往里塞数据，这样就是2倍的显存开销。而避开拼接各自算各自的，可以直接复用已有的数据）
+最后，这个优化其实就是在A_CC的基础上，在计算attn_weights的时候，把nope和rope的部分拆开算，然后再求和。这样做是为了避开无用的数据拷贝和广播（可以看代码，你会发现A_CC为了做数据拼接，是先初始化一个一个拼接好的空张量，再往里塞数据，这样就是2倍的显存开销。而避开拼接各自算各自的，可以直接复用已有的数据）
 
 ![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_38e6558563bb.jpg)
 
@@ -200,9 +191,9 @@ A_CC
 
 ![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_80db485774c4.jpg)
 
-我们着重关注流程图中红色部分（也就是param_weights），大家回想一下之前的介绍：尽管compress_kv已经被抽取成类似单头的形式了（1个token只有1个，且不区分heads），但是它能这样做的原因是因为kv_heads上的信息转移去q_heads了，对了！q还是有heads的呀！！**
+我们着重关注流程图中红色部分（也就是param_weights），大家回想一下之前的介绍：尽管compress_kv已经被抽取成类似单头的形式了（1个token只有1个，且不区分heads），但是它能这样做的原因是因为kv_heads上的信息转移去q_heads了，对了！q还是有heads的呀！！
 
-所以这边，我们先给出结论：MLA可以做TP，但是它可能需要一些定制化的TP方式，而不是套用惯常decoder模型的TP方式。**
+所以这边，我们先给出结论：MLA可以做TP，但是它可能需要一些定制化的TP方式，而不是套用惯常decoder模型的TP方式。
 
 我们首先来看一下，dpsk官方是如何在上面这张流程图中做TP切分的，详细代码可以参见[这里](https://link.zhihu.com/?target=https%3A//github.com/deepseek-ai/DeepSeek-V3/blob/ee4c4ea32bfd89e197616b80e713466954c51c75/inference/model.py%23L409)：
 

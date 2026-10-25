@@ -41,7 +41,7 @@ CPU硬件上，两种方法来解决这个问题。
 
 ![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_c86d907a22b2.jpg)
 
-Snoopy Bus**
+Snoopy Bus
 
 MESI协议**是一个基于失效的缓存一致性协议，是支持回写（write-back）缓存的最常用协议。与写通过（write through）缓存相比，回写缓冲能节约大量带宽。总是有“脏”（dirty）状态表示缓存中的数据与主存中不同。MESI协议要求在缓存不命中（miss）且数据块在另一个缓存时，允许缓存到缓存的数据复制。（来源：https://zh.wikipedia.org/wiki/MESI%E5%8D%8F%E8%AE%AE）
 
@@ -89,7 +89,6 @@ l) 收到invalidate请求。
 
 2）当所有失效确认（Invalidate Acknowledge）都接收到时，数据才会最终被提交。
 
-**
 
 ![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_497dc0b77eb9.jpg)
 
@@ -105,7 +104,7 @@ Store Buffers
 
 ![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_8cf32f630798.jpg)
 
- invalidate queue**
+ invalidate queue
 
 即便新增加了Store Bufferes 和  invalidate queue，但是对于存在变量顺序依赖的情况，也还是没法处理的。
 
@@ -144,7 +143,7 @@ voidexecutedOnCpu1(){
 
 （详细:[https://zhuanlan.zhihu.com/p/55767485](https://zhuanlan.zhihu.com/p/55767485)）
 
-memory barrier（内存屏障）**
+memory barrier（内存屏障）
 
 写屏障 Store Memory Barrier(a.k.a. ST, SMB, smp_wmb)是一条告诉处理器在执行这之后的指令之前，应用所有已经在存储缓存（store buffer）中的保存的指令。
 

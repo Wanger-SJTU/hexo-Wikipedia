@@ -35,9 +35,8 @@ conv_transpose有一种最直接的计算方式：首先对卷积核做中心对
 
 ***out_h = stride_h * (in_h - 1) + kernel_h - 2 * pad_h***
 
-**
 
-case 1: stride = 2, pad = 0**
+case 1: stride = 2, pad = 0
 
 令输入  X=(1234)" role="presentation">X=(1234)X = \left (  \begin{matrix} 1 & 2\\ 3 & 4 \\ \end{matrix} \right ) ,  卷积核 W=(5678)" role="presentation">W=(5678)W = \left (  \begin{matrix} 5 & 6 \\ 7 & 8 \\ \end{matrix} \right ) , 根据公式计算可得out_*w = out_*h =4：
 

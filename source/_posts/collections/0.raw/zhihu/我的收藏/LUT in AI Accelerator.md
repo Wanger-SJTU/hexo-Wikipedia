@@ -124,7 +124,7 @@ OS SA
 - Ripple-counter：使用行波计数器实现。行波计数器高位的时钟连接在低位的Q'信号**。
 - Bidirectional-counter：使用双向计数器实现。可以实现<strong>加一和减一</strong>。这样的话可以将 Regfile 的大小继续缩小为原来的<strong>1/2.</strong>
 
-#### <strong>3.4 PE 微架构</strong>
+#### 3.4 PE 微架构
 
 基于以上三种计数器微架构设计了以下的几种 PE：
 

@@ -150,13 +150,12 @@ https://medium.com/analytics-vidhya/natural-language-processing-from-basics-to-u
 
 与CNN和RNN类似，图节点的特征表达仍是非欧数据机器学习的关键任务之一，虽然有些传统的利用领域知识定义手工特征的方法，但从数据中自动学习特征，实现端到端的预测仍是大家希望的共同目标。
 
-#### <strong>4.1 对节点嵌入映射的要求</strong>
+#### 4.1 对节点嵌入映射的要求
 
 受Word2Vec的思想启发，我们希望训练一个函数 f ，输入一个图，输出该图所有节点的嵌入向量。同时要求：在图中比较临近的节点，所对应的向量之间的距离也比较近。
 
 ![](/images/collections/0.raw/zhihu/dl%E8%AE%BA%E6%96%87/asset/img_b12a96e17715.jpg)
 
-**
 
 具体到某一个图的节点 u  ，训练一个神经网络，对应于下图中的函数 f ，该神经网络以图的节点 u 作为输入，输出 u 的 d 维特征表达，这种将节点转变为向量的方法被称为Node2Vec。这并不意外，上面提过Anything都可以2Vec。
 
@@ -183,7 +182,6 @@ https://medium.com/analytics-vidhya/natural-language-processing-from-basics-to-u
 
 同一个图不同的Order Plan导致不同的邻接矩阵 来源：CS229W<strong>定义：</strong> 置换<strong>不变，</strong>考虑我们要学习一个函数 f ，将图 G(A,X) 映射到 \mathbb R^{d} ，使得 f(A_1, X_1)=f(A_2, X_2) ，其中 A,X 分别表示邻接矩阵和节点特征矩阵，1和2分别对应上面的Order Plan 1和2。如果对于任意的 i,j ， f(A_i, X_i)=f(A_j, X_j) 都成立，就说 f 是个<strong>置换不变</strong>的函数。
 
-**
 
 #### 4.3 从图像到图
 
@@ -217,7 +215,6 @@ https://www.outsystems.com/blog/posts/graph-neural-networks/消息传递可分�
 
 下面看一个利用消息传递进行节点分类的例子。
 
-**
 
 ![](/images/collections/0.raw/zhihu/dl%E8%AE%BA%E6%96%87/asset/img_3e29e1d93b13.jpg)
 

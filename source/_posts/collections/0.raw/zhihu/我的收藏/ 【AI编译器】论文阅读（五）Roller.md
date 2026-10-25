@@ -60,7 +60,6 @@ Roller的观察：
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_422165b9342e.jpg)
 
-**
 
 Roller从张量表达式中提取张量的形状，并利用硬件的相关规范来构造rTiles。在rTiles的基础上使用一种*scale-upthen-scale-out*的递归构造算法生成rProgram。构造算法通过评估生成的rProgram的性能来识别rTile合适的配置。
 
@@ -97,7 +96,7 @@ Roller首先使用scale up以满足前两点，之后利用scale out利用多核
 - scale out：Roller在最底层的内存尺寸上构造单一单元执行的rProgram，并通过将每层的rTile平均分配来将rProgram复制到其他单元。一般会在reduce的轴上分配单元。
 Roller尝试沿着具有最小数据重用得分的轴上收缩rTiles以实现足够的并行度。
 
-第四章节**
+第四章节
 
 Roller的实现基于TVM和Rammer。通过8K行代码实现了表达式优化、构造算法和微性能模型等核心机制。
 

@@ -23,7 +23,6 @@ MHA 和 MLA 里面，不同 head 的 softmax 是没有数据依赖的。因此�
 
 总而言之，顺序的 vector SIMD core 没有足够的 instruction window 来挖掘 ILP 或者 TLP。
 
-**
 
 理论上，我知道 3 种技术路线可以同时从 seq-wise 和 head-wise 进行并行性挖掘：
 

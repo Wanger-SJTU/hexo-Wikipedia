@@ -45,7 +45,6 @@ FlashAttention V2 论文：
 
 这里最主要的问题是第 1 - 3 步中，每一轮都要从 HBM（即 global memory）读数据，计算完后再将结果写回去，效率就很低。
 
-**
 
 那么有没有什么办法，可以减少读写次数呢？
 
@@ -73,7 +72,7 @@ $第二遍计算每一行的 sumexp，即 \sum_{j=1}^{n} e^{s_j - m} ，$
 
 可以清晰感受到，为了计算 P（即 softmax 结果），我们进行了多轮的数据遍历；
 
-*那么有没有可能压缩成一轮遍历呢？***
+*那么有没有可能压缩成一轮遍历呢？*
 
 即我们在遍历 K_{j}^{T} 的时候，就把 P_{i,j}  算好，然后乘以 V_j  （V 中第 j 块数据），再把每一次的结果（ j = 1 到 N）累加起来，就得到了 O 中对应位置的结果。
 
@@ -81,7 +80,6 @@ $第二遍计算每一行的 sumexp，即 \sum_{j=1}^{n} e^{s_j - m} ，$
 
 下面我们再看看怎么做～～
 
-**
 
 #### 1.2、第一步：优化 Softmax 计算过程（Online Softmax）
 
@@ -117,7 +115,6 @@ $*<strong>于是，只需要找到 \tilde{l}_i  和 \tilde{l}_{i-1} 的迭代关
 
 $\begin{align*} \tilde{l}_i &= \sum_{j=1}^{i} e^{s_j - m_i} \\ &= \left( \sum_{j=1}^{i-1} e^{s_j - m_i} \right) + e^{s_i - m_i} \\ &= \left( \sum_{j=1}^{i-1} e^{s_j - m_{i-1}} \right) e^{m_{i-1} - m_i} + e^{s_i - m_i} \\ &= \tilde{l}_{i-1} e^{m_{i-1} - m_i} + e^{s_i - m_i} \end{align*}  $
 
-**
 
 现在 softmax 的计算可以优化成：（这个就 *Online Softmax***）
 
@@ -125,7 +122,6 @@ $\begin{align*} \tilde{l}_i &= \sum_{j=1}^{i} e^{s_j - m_i} \\ &= \left( \sum_{j
 
 到这里后，就不再能压缩成一个 for 循环了。
 
-**
 
 #### 1.3、第二步：把 O = PV 的计算考虑进来
 
@@ -170,7 +166,6 @@ $*<strong>于是，只需要找到</strong>*\tilde{o}_i *<strong>和</strong>*\t
 
 $$\begin{align*} \tilde{o}_i &= \sum_{j=1}^{i} \frac{e^{s_j - m_i}}{\tilde{l}_i} V[j,:] \\ &= \left( \sum_{j=1}^{i-1} \frac{e^{s_j - m_i}}{\tilde{l}_i} V[j,:] \right) + \frac{e^{s_i - m_i}}{\tilde{l}_i} V[i,:] \\ &= \left( \sum_{j=1}^{i-1} \frac{e^{s_j - m_{i-1}}}{\tilde{l}_{i-1}} \frac{\tilde{l}_{i-1}}{\tilde{l}_i} V[j,:] \right) + \frac{e^{s_i - m_i}}{\tilde{l}_i} V[i,:] \\ &= \left( \sum_{j=1}^{i-1} \frac{e^{s_j - m_{i-1}}}{\tilde{l}_{i-1}} V[j,:] \right) \frac{\tilde{l}_{i-1} e^{m_{i-1} - m_i}}{\tilde{l}_i} + \frac{e^{s_i - m_i}}{\tilde{l}_i} V[i,:] \\ &= \tilde{o}_{i-1} \frac{\tilde{l}_{i-1} e^{m_{i-1} - m_i}}{\tilde{l}_i} + \frac{e^{s_i - m_i}}{\tilde{l}_i} V[i,:] \end{align*}  $$
 
-**
 
 于是就有了 FlashAttention 中的算法：
 
@@ -204,7 +199,7 @@ FlashAttention v1 就是按照上面的公式来计算。
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_3aa450e31005.jpg)
 
-*下标有点凌乱，总结了几个理解技巧：***
+*下标有点凌乱，总结了几个理解技巧：*
 
 - <strong>所有以</strong> <strong>ij</strong> <strong>作为下标的，都表示只针对当前分块的计算；</strong>
 - <strong>所有以</strong> <strong>i</strong> <strong>作为下标的，都表示截止到前一个分块（即第 1 到第 i - 1 个分块）的计算结果；</strong>
@@ -217,7 +212,6 @@ m_i 表示从 S_{1,j} 到 S_{i-1,j} 这 i - 1 个分块的 rowmax，
 
 $m_i^{new} 则是结合了 m_i 和 \tilde{m}_{ij} 后的结果。$
 
-**
 
 另外，公式从直观上看，和 1.3 有一点点区别的地方就是，
 
@@ -255,7 +249,6 @@ v2 最主要的修改是循环顺序变为：外层是对 Q 逐块遍历，内�
 
 $$\begin{cases} y = \text{softmax}(z) \\ L = f(y) \end{cases}  ，最终目标是想求 \frac{\partial L}{\partial z} ，*这里我们简单假设 L 是标量，y 和 z 都是向量；***$$
 
-**
 
 $$（1）求 \frac{\partial y}{\partial z} $$
 
@@ -279,7 +272,6 @@ $$记  \frac{\partial L}{\partial y} = [dy_1, dy_2, dy_3] ，$$
 
 $$\begin{align*} \frac{\partial L}{\partial \mathbf{z}} &= \frac{\partial L}{\partial \mathbf{y}} \frac{\partial \mathbf{y}}{\partial \mathbf{z}} = \mathbf{dy}(\text{diag}(\mathbf{y}) - \mathbf{y} \mathbf{y}^T) \\ &= [\text{dy}_1 \ \text{dy}_2 \ \text{dy}_3] \left(  \begin{bmatrix} y_1 & 0 & 0 \\ 0 & y_2 & 0 \\ 0 & 0 & y_3 \end{bmatrix}  -  \begin{bmatrix} y_1 \\ y_2 \\ y_3 \end{bmatrix} \begin{bmatrix} y_1 & y_2 & y_3 \end{bmatrix} \right) \\ &= [\text{dy}_1 \ \text{dy}_2 \ \text{dy}_3] \begin{bmatrix} y_1 - y_1^2 & -y_1 y_2 & -y_1 y_3 \\ -y_2 y_1 & y_2 - y_2^2 & -y_2 y_3 \\ -y_3 y_1 & -y_3 y_2 & y_3 - y_3^2 \end{bmatrix} \end{align*}  $$
 
-**
 
 #### 3.2、backward 标准实现
 

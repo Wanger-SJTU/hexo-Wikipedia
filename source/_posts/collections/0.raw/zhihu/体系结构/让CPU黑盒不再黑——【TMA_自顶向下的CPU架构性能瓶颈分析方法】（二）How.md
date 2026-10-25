@@ -19,7 +19,6 @@ source_url: https://zhuanlan.zhihu.com/p/60940902
 
 [![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_c02b3a03adc6.jpg)拓荒犬：让CPU黑盒不再黑——【TMA_自顶向下的CPU架构性能瓶颈分析方法】（一）概要293 赞同 · 17 评论 文章](https://zhuanlan.zhihu.com/p/60569271)
 
-**
 
 首先讲讲为什么要划分成这四个大的分类，而不是三个或者五个，并且为什么是这四种。了解CPU微架构的朋友兴许还记得，CPU内部可以分为前端后后端，前端主要负责取值、译码等操作，是顺序执行；后端负责接收前端的指令，并且乱序执行，顺序Retire。但是由于现在的高性能CPU，几乎都有分支预测的功能，既然是预测，必然有预测出错的情况存在。那么，一个CPU若出现性能瓶颈，那么便有可能出现在前端或者后端，也有可能是分支预测导致的**。所以，TMA的第一层级中有Frontend、Backend、Speculation这三个分类，那么，为什么还有Retiring这个分类呢？在这里，Retiring分类表示的是理想状况的流水线执行比重。
 

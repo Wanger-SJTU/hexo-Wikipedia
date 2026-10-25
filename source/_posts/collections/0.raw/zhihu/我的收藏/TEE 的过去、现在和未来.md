@@ -42,7 +42,7 @@ SGX 难用的根本原因在于，许多必要的组件并没有被包含在 TCB
 
 确实，如果我们的 TEE 一直局限于 CPU 上的话，就会存在不少限制，尤其是在面对复杂的计算任务。幸运的是，NVIDIA 嗅觉敏锐，推出了首款具有 TEE 功能的 GPU——H100，这一举动弥补了可信计算领域的一大短板。然而，再好的技术也有其局限性。对于 CPU TEE 而言，外部设备的安全性无法得到保障，尤其是未经认证的 I/O 设备，我们无法信任它们。因此，一个虚拟机的私有内存不能直接让 GPU 访问，这成为一个亟待解决的问题。为了解决这个问题，系统需要通过设计一些特殊的机制来确保数据在 GPU 和 VM 之间传输时的安全性。可能的做法包括为 GPU 创建专用的隔离区，或在 CPU 和 GPU 之间建立安全的数据通道，以保证内存访问的安全。通过这些方式，可以在保持 TEE 安全属性的同时，让 GPU 参与可信计算的任务。
 
-**swiotlb is a memory buffer allocator used by the Linux kernel DMA layer. It is typically used when a device doing DMA can’t directly access the target memory buffer because of hardware limitations or other requirements.在 Linux 系统上，有一个名为 SWIOTLB 的机制：它是一个内存缓冲区分配器，用于 Linux 内核的 DMA 层，通常在硬件限制或其他需求导致设备无法直接访问目标内存缓冲区时使用。基于此，出现了一个巧妙的“hack”：将这块内存设为共享，从而解决设备访问问题。实际上，TDX 就是这样实现的。具体来说，当虚拟机内的内核启动时，它会尝试启用 TDX 功能。如果检测到 TDX 支持，就会使用 TDCALL 将共享内存区域映射给 SWIOTLB，供 DMA 使用。这样一来，GPU 和 CPU 就可以在这块共享内存上进行 DMA 操作。当然，为了防止数据泄露，GPU 和 CPU 之间的数据传输会使用协商后的密钥进行加密，从而确保数据在共享内存中的安全性。
+swiotlb is a memory buffer allocator used by the Linux kernel DMA layer. It is typically used when a device doing DMA can’t directly access the target memory buffer because of hardware limitations or other requirements.在 Linux 系统上，有一个名为 SWIOTLB 的机制：它是一个内存缓冲区分配器，用于 Linux 内核的 DMA 层，通常在硬件限制或其他需求导致设备无法直接访问目标内存缓冲区时使用。基于此，出现了一个巧妙的“hack”：将这块内存设为共享，从而解决设备访问问题。实际上，TDX 就是这样实现的。具体来说，当虚拟机内的内核启动时，它会尝试启用 TDX 功能。如果检测到 TDX 支持，就会使用 TDCALL 将共享内存区域映射给 SWIOTLB，供 DMA 使用。这样一来，GPU 和 CPU 就可以在这块共享内存上进行 DMA 操作。当然，为了防止数据泄露，GPU 和 CPU 之间的数据传输会使用协商后的密钥进行加密，从而确保数据在共享内存中的安全性。
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_fa250e2c2c49.jpg)
 
@@ -80,7 +80,7 @@ int rmp_make_shared(u64 pfn, enum pg_level level)
 
 让我们来谈谈 Remote Attestation。
 
-**Remote attestation is a method for a client to authenticate its hardware and software configuration to a remote server.对于 TEE 来说，RA 几乎是可信计算的基石，没有它，可信计算就无法实现。但目前的 RA 能做的事情还比较粗糙，一般就是让 CPU 用密钥签名一个报告，然后发给验证方进行检查，这种方式还有很大的改进空间。
+Remote attestation is a method for a client to authenticate its hardware and software configuration to a remote server.对于 TEE 来说，RA 几乎是可信计算的基石，没有它，可信计算就无法实现。但目前的 RA 能做的事情还比较粗糙，一般就是让 CPU 用密钥签名一个报告，然后发给验证方进行检查，这种方式还有很大的改进空间。
 
 但我们来看 RA 的两部分：
 

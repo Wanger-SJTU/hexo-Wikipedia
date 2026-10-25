@@ -23,7 +23,7 @@ source_url: https://zhuanlan.zhihu.com/p/669896230
 
 在 LangChain 中处理 Notion 文档共包含三个步骤：获取、存储和查询文档。获取是指获取 Notion 文档并将内容加载到内存中。存储步骤包括启动向量数据库（Milvus）、将文档转化为向量、将文档向量存储至向量数据库中。查询部分包括针对 Notion 文档进行提问。本文将带大家一一拆解这三个步骤，代码请参考 <strong>colab notebook</strong>。
 
-### <strong>01.获取 Notion 文档</strong>
+### 01.获取 Notion 文档
 
 用 LangChain 的 NotionDirectoryLoader将文档加载到内存中。我们提供文档的路径并调用load 函数来获取 Notion 文档。加载完毕后，可以得到 Notion 文档的 Markdown 文件。本例中我们以一个 Markdown 文件示意。
 
@@ -61,7 +61,7 @@ all_splits
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_56ac37d12461.jpg)
 
-### <strong>02.存储 Notion 文档</strong>
+### 02.存储 Notion 文档
 
 所有文档加载和分割完毕后，就需要存储这些文档块。首先，在 notebook 中直接运行向量数据库 Milvus Lite，随后导入所需的 LangChain 模块——Milvus 和 OpenAI Embeddings。
 
@@ -84,11 +84,11 @@ vectordb = Milvus.from_documents(documents=all_splits,
 ```
 
 
-### <strong>03.查询 Notion 文档</strong>
+### 03.查询 Notion 文档
 
 现在可以开始查询文档了。开始前，我们需要从 LangChain 中再导入三个模块：
 
-- OpenAI：用于访问GPT。** 
+- OpenAI：用于访问GPT。
 - SelfQueryRetriever：用于搭建基本的 RAG 应用。
  
 - Attribute info：用于传入元数据的。

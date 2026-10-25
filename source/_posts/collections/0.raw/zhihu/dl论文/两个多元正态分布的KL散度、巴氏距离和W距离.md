@@ -23,17 +23,17 @@ source_url: https://zhuanlan.zhihu.com/p/387938179
 
 本文主要来计算两个多元正态分布的几种度量，包括KL散度、巴氏距离和W距离，它们都有显式解析解。
 
-### <strong>正态分布</strong>
+### 正态分布
 
 这里简单回顾一下正态分布的一些基础知识。注意，仅仅是回顾，这还不足以作为正态分布的入门教程。
 
-#### <strong>概率密度</strong>
+#### 概率密度
 
 正态分布，也即高斯分布，是定义在Rn" role="presentation">Rn\mathbb{R}^n上的连续型概率分布，其概率密度函数为
 
 $$p(x)=1(2&#x03C0;)ndet(&#x03A3;)exp&#x2061;{&#x2212;12(x&#x2212;&#x03BC;)&#x22A4;&#x03A3;&#x2212;1(x&#x2212;&#x03BC;)}" role="presentation" style="font-size: 100%; display: inline-block; position: relative;">p(x)=1(2π)ndet(Σ)exp⁡{−12(x−μ)⊤Σ−1(x−μ)}p(\boldsymbol{x})=\frac{1}{\sqrt{(2\pi)^n \det(\boldsymbol{\Sigma})}}\exp\left\{-\frac{1}{2}(\boldsymbol{x}-\boldsymbol{\mu})^{\top}\boldsymbol{\Sigma}^{-1}(\boldsymbol{x}-\boldsymbol{\mu})\right\}\\ 这里的x,&#x03BC;&#x2208;Rn" role="presentation">x,μ∈Rn\boldsymbol{x},\boldsymbol{\mu}\in\mathbb{R}^n，&#x03BC;" role="presentation">μ\boldsymbol{\mu}即均值向量（本文的向量默认情况下都为列向量），而&#x03A3;&#x2208;Rn&#x00D7;n" role="presentation">Σ∈Rn×n\boldsymbol{\Sigma}\in\mathbb{R}^{n\times n}即为协方差矩阵，它要求是正定对称的。可以看到，正态分布由\boldsymbol{\mu}和\boldsymbol{\Sigma}唯一确定，因此不难想象它的统计量都是\boldsymbol{\mu}和\boldsymbol{\Sigma}的函数。当\boldsymbol{\mu}=\boldsymbol{0}, \boldsymbol{\Sigma}=\boldsymbol{I}时，对应的分布称为“标准正态分布”。  $$
 
-#### <strong>基本性质</strong>
+#### 基本性质
 
   $通常来说，基本的统计量就是均值和方差了，它们对应着正态分布的两个参数： \begin{aligned} \mathbb{E}_{\boldsymbol{x}}\left[\boldsymbol{x}\right]=&\int p(\boldsymbol{x}) \boldsymbol{x} dx=\boldsymbol{\mu}\\ \mathbb{E}_{\boldsymbol{x}}\left[(\boldsymbol{x}-\boldsymbol{\mu})(\boldsymbol{x}-\boldsymbol{\mu})^{\top}\right]=&\int p(\boldsymbol{x}) (\boldsymbol{x}-\boldsymbol{\mu})(\boldsymbol{x}-\boldsymbol{\mu})^{\top} dx=\boldsymbol{\Sigma}\\ \end{aligned}\\$
 
@@ -47,7 +47,7 @@ $$\mathcal{H} = \mathbb{E}_{\boldsymbol{x}}\left[-\log p(\boldsymbol{x})\right]=
 
 其计算过程可以参考后面KL散度的推导。
 
-#### <strong>高斯积分</strong>
+#### 高斯积分
 
 概率密度函数意味着\int p(\boldsymbol{x}) d\boldsymbol{x} = 1，这就可以推出：
 
@@ -63,11 +63,11 @@ $$\mathbb{E}_{\boldsymbol{x}}\left[\exp\left(\boldsymbol{\omega}^{\top}\boldsymb
 
 特征函数可以用来算正态分布的各阶矩。
 
-### <strong>线性代数</strong>
+### 线性代数
 
 这里补充一些线性代数基础，它们在后面的推导中会频繁用到。同样地，这仅仅是“回顾”，并不能作为线性代数教程。
 
-#### <strong>内积范数</strong>
+#### 内积范数
 
 首先，我们来定义内积和范数。对于向量\boldsymbol{x}=(x_1,\cdots,x_n)和\boldsymbol{y}=(y_1,\cdots,y_n)，内积按照
 
@@ -85,7 +85,7 @@ $\langle\boldsymbol{A},\boldsymbol{B}\rangle_F = \text{Tr}\left(\boldsymbol{A}^{
 
 也就是说，矩阵的Frobenius内积可以转化为矩阵乘法的迹，并且交换相乘顺序不改变结果（不改变迹的结果，但是矩阵乘法的整体结果会改变）。
 
-#### <strong>正定对称</strong>
+#### 正定对称
 
 $接着，来看正定对称矩阵的一些性质。\boldsymbol{\Sigma}是一个正定对称矩阵，对称说的是\boldsymbol{\Sigma}^{\top}=\boldsymbol{\Sigma}，正定说的是对于任意非零向量\boldsymbol{\xi}\in\mathbb{R}^n，都有 0">\boldsymbol{\xi}^{\top}\boldsymbol{\Sigma}\boldsymbol{\xi} > 0。可以证明，如果\boldsymbol{\Sigma}_1,\boldsymbol{\Sigma}_2都是正定对称矩阵，那么\boldsymbol{\Sigma}_1^{-1},\boldsymbol{\Sigma}_2^{-1},\boldsymbol{\Sigma}_1+\boldsymbol{\Sigma}_2也都是正定对称矩阵。如果\boldsymbol{C} = \boldsymbol{B}^{\top}\boldsymbol{A}\boldsymbol{B}，\boldsymbol{B}是可逆阵，那么\boldsymbol{C}是正定对称的当且仅当\boldsymbol{A}是正定对称的。$
 
@@ -97,7 +97,7 @@ $\boldsymbol{\Sigma} = \boldsymbol{U}\boldsymbol{\Lambda}\boldsymbol{U}^{\top} \
 
 其中\boldsymbol{U}是正交矩阵，而\boldsymbol{\Lambda}是对角阵，并且对角线上的元素都是正的。该结果的一个直接推论是：正定对称矩阵都可以“开平方”，其平方根为\boldsymbol{\Sigma}^{} = \boldsymbol{U}\boldsymbol{\Lambda}^{}\boldsymbol{U}^{\top}，其中\boldsymbol{\Lambda}^{}是指将对角线上的元素都开平方，可以检验平方根矩阵也是正定对称的。反过来，可以开平方的对称矩阵，一定也是正定对称矩阵。
 
-#### <strong>矩阵求导</strong>
+#### 矩阵求导
 
 最后，在求Wasserstein距离的时候，还需要用到一些矩阵求导公式，如果不了解的读者，可以直接参考维基百科的“<strong>Matrix Calculus</strong>”。当然，其实也不难，主要用到了
 
@@ -107,11 +107,11 @@ $$\frac{\partial\,\text{Tr}\left(\boldsymbol{X}\boldsymbol{A}\right)}{\partial \
 
 $$\frac{\partial\,\text{Tr}\left(\boldsymbol{A}\boldsymbol{X}\boldsymbol{B}\right)}{\partial \boldsymbol{X}} = \frac{\partial\,\text{Tr}\left(\boldsymbol{X}\boldsymbol{B}\boldsymbol{A}\right)}{\partial \boldsymbol{X}} = \boldsymbol{B}\boldsymbol{A} \\$$
 
-### <strong>KL散度</strong>
+### KL散度
 
 作为第一个尝试，我们来算两个高斯分布的<strong>KL散度（Kullback-​Leibler divergence）</strong>。KL散度算是最常用的分布度量之一了，因为它积分之前需要取对数，这对于指数簇分布来说通常能得到相对简单的结果。此外它还跟“熵”有着比较紧密的联系。
 
-#### <strong>计算结果</strong>
+#### 计算结果
 
 两个概率分布的KL散度定义为
 
@@ -125,7 +125,7 @@ $$KL(p(\boldsymbol{x})\Vert q(\boldsymbol{x}))=\frac{1}{2}\left[(\boldsymbol{\mu
 
 $$KL(p(\boldsymbol{x})\Vert q(\boldsymbol{x}))=\frac{1}{2}\left[\Vert\boldsymbol{\mu}_p\Vert^2-\log \det(\boldsymbol{\Sigma}_p) + \text{Tr}(\boldsymbol{\Sigma}_p) - n\right]\\$$
 
-#### <strong>推导过程</strong>
+#### 推导过程
 
 $从KL散度的定义知道，我们主要把\mathbb{E}_{\boldsymbol{x}\sim p(\boldsymbol{x})}\left[-\log q(\boldsymbol{x})\right]算出来就行了：$
 
@@ -139,7 +139,7 @@ $\begin{aligned} \mathbb{E}_{\boldsymbol{x}\sim p(\boldsymbol{x})}\left[(\boldsy
 
 $$\begin{aligned} KL(p(\boldsymbol{x})\Vert q(\boldsymbol{x}))=&\,\frac{1}{2}\left[n\log 2\pi + \log \det(\boldsymbol{\Sigma}_q) + \text{Tr}\left(\boldsymbol{\Sigma}_q^{-1}\boldsymbol{\Sigma}_p\right) + (\boldsymbol{\mu}_p-\boldsymbol{\mu}_q)^{\top}\boldsymbol{\Sigma}_q^{-1}(\boldsymbol{\mu}_p-\boldsymbol{\mu}_q)\right] \\ &\,\qquad- \frac{1}{2}\left[n\log 2\pi + \log \det(\boldsymbol{\Sigma}_p) + n\right]\\ =&\,\frac{1}{2}\left[(\boldsymbol{\mu}_p-\boldsymbol{\mu}_q)^{\top}\boldsymbol{\Sigma}_q^{-1}(\boldsymbol{\mu}_p-\boldsymbol{\mu}_q)-\log \det(\boldsymbol{\Sigma}_q^{-1}\boldsymbol{\Sigma}_p) + \text{Tr}\left(\boldsymbol{\Sigma}_q^{-1}\boldsymbol{\Sigma}_p\right) - n\right] \end{aligned}\\$$
 
-### <strong>巴氏距离</strong>
+### 巴氏距离
 
 然后，我们来看看<strong>巴氏距离（Bhattacharyya distance）</strong>，它定义为
 
@@ -147,7 +147,7 @@ BD(p(\boldsymbol{x}), q(\boldsymbol{x})) = -\log \int \sqrt{p(\boldsymbol{x}) q(
 
 $$与之相关的还有一个叫做“<strong>Hellinger距离</strong>”的概念，它的平方定义为 \frac{1}{2}\int\left(\sqrt{p(\boldsymbol{x})} - \sqrt{q(\boldsymbol{x})}\right)^2 d\boldsymbol{x}，展开后就能发现跟巴氏距离本质是等价的。$$
 
-#### <strong>计算结果</strong>
+#### 计算结果
 
 对于两个正态分布来说，它们的巴氏距离为
 
@@ -157,11 +157,11 @@ $$这里\boldsymbol{\Sigma}=\frac{1}{2}(\boldsymbol{\Sigma}_p + \boldsymbol{\Sig
 
 当两者之一为标准正态分布时，结果并没有明显简化，所以这里就不单独写出来了。
 
-#### <strong>推导过程</strong>
+#### 推导过程
 
  $$按照定义，两个正态分布的巴氏距离，是下述积分的负对数： \begin{aligned} &\qquad\int \sqrt{p(\boldsymbol{x}) q(\boldsymbol{x})} d\boldsymbol{x}=\frac{1}{\sqrt[4]{(2\pi)^{2n}\det(\boldsymbol{\Sigma}_p\boldsymbol{\Sigma}_q)}}\times \\ &\int \exp\left\{-\frac{1}{4}(\boldsymbol{x}-\boldsymbol{\mu}_p)^{\top}\boldsymbol{\Sigma}_p^{-1}(\boldsymbol{x}-\boldsymbol{\mu}_p)-\frac{1}{4}(\boldsymbol{x}-\boldsymbol{\mu}_q)^{\top}\boldsymbol{\Sigma}_q^{-1}(\boldsymbol{x}-\boldsymbol{\mu}_q)\right\}d\boldsymbol{x} \end{aligned}\\ 记\boldsymbol{y}=\boldsymbol{x}-\boldsymbol{\mu}_p, \boldsymbol{\Delta}=\boldsymbol{\mu}_p - \boldsymbol{\mu}_q，积分部分可以换元为 \begin{aligned} &\int \exp\left\{-\frac{1}{4}\boldsymbol{y}^{\top}\boldsymbol{\Sigma}_p^{-1}\boldsymbol{y}-\frac{1}{4}(\boldsymbol{y}+\boldsymbol{\Delta})^{\top}\boldsymbol{\Sigma}_q^{-1}(\boldsymbol{y}+\boldsymbol{\Delta})\right\}d\boldsymbol{y}\\ =&\int \exp\left\{-\frac{1}{4}\boldsymbol{y}^{\top}\left(\boldsymbol{\Sigma}_p^{-1}+\boldsymbol{\Sigma}_q^{-1}\right)\boldsymbol{y}-\frac{1}{2}\boldsymbol{\Delta}^{\top}\boldsymbol{\Sigma}_q^{-1}\boldsymbol{y} - \frac{1}{4}\boldsymbol{\Delta}^{\top}\boldsymbol{\Sigma}_q^{-1}\boldsymbol{\Delta}\right\}d\boldsymbol{y}\\ =&\int \exp\left\{-\frac{1}{2}\boldsymbol{y}^{\top}\left(\boldsymbol{\Sigma}_p^{-1}\boldsymbol{\Sigma}\boldsymbol{\Sigma}_q^{-1}\right)\boldsymbol{y}-\frac{1}{2}\boldsymbol{\Delta}^{\top}\boldsymbol{\Sigma}_q^{-1}\boldsymbol{y} - \frac{1}{4}\boldsymbol{\Delta}^{\top}\boldsymbol{\Sigma}_q^{-1}\boldsymbol{\Delta}\right\}d\boldsymbol{y}\end{aligned}\\ 这里\boldsymbol{\Sigma}=\frac{1}{2}(\boldsymbol{\Sigma}_p + \boldsymbol{\Sigma}_q)。按照前面介绍的高斯积分公式\eqref{eq:g-int}，积分结果是 \begin{aligned} &\,\sqrt{(2\pi)^n \det(\boldsymbol{\Sigma}_p^{-1}\boldsymbol{\Sigma}\boldsymbol{\Sigma}_q^{-1})^{-1}}\exp\left\{\frac{1}{8}\left(\boldsymbol{\Sigma}_q^{-1}\boldsymbol{\Delta}\right)^{\top}\left(\boldsymbol{\Sigma}_p^{-1}\boldsymbol{\Sigma}\boldsymbol{\Sigma}_q^{-1}\right)^{-1}\left(\boldsymbol{\Sigma}_q^{-1}\boldsymbol{\Delta}\right)-\frac{1}{4}\boldsymbol{\Delta}^{\top}\boldsymbol{\Sigma}_q^{-1}\boldsymbol{\Delta}\right\}\\ =&\,\sqrt{(2\pi)^n \det(\boldsymbol{\Sigma}_q\boldsymbol{\Sigma}^{-1}\boldsymbol{\Sigma}_p)}\exp\left\{\frac{1}{8}\boldsymbol{\Delta}^{\top}\left(\boldsymbol{\Sigma}^{-1}\boldsymbol{\Sigma}_p\boldsymbol{\Sigma}_q^{-1} - 2\boldsymbol{\Sigma}_q^{-1}\right)\boldsymbol{\Delta}\right\}\\ =&\,\sqrt{(2\pi)^n \det(\boldsymbol{\Sigma}_q\boldsymbol{\Sigma}^{-1}\boldsymbol{\Sigma}_p)}\exp\left\{\frac{1}{8}\boldsymbol{\Delta}^{\top}\boldsymbol{\Sigma}^{-1}\left(\boldsymbol{\Sigma}_p\boldsymbol{\Sigma}_q^{-1} - 2\boldsymbol{\Sigma}\boldsymbol{\Sigma}_q^{-1}\right)\boldsymbol{\Delta}\right\}\\ =&\,\sqrt{(2\pi)^n \det(\boldsymbol{\Sigma}_q\boldsymbol{\Sigma}^{-1}\boldsymbol{\Sigma}_p)}\exp\left\{-\frac{1}{8}\boldsymbol{\Delta}^{\top}\boldsymbol{\Sigma}^{-1}\boldsymbol{\Delta}\right\} \end{aligned}\\ 所以最终 \begin{aligned} BD(p(\boldsymbol{x}), q(\boldsymbol{x})) =&\, -\log \frac{\sqrt{(2\pi)^n \det(\boldsymbol{\Sigma}_q\boldsymbol{\Sigma}^{-1}\boldsymbol{\Sigma}_p)}}{\sqrt[4]{(2\pi)^{2n}\det(\boldsymbol{\Sigma}_p\boldsymbol{\Sigma}_q)}}\exp\left\{-\frac{1}{8}\boldsymbol{\Delta}^{\top}\boldsymbol{\Sigma}^{-1}\boldsymbol{\Delta}\right\} \\ =&\, -\log \frac{\sqrt[4]{\det(\boldsymbol{\Sigma}_p\boldsymbol{\Sigma}_q)}}{\sqrt{\det\left(\boldsymbol{\Sigma}\right)}}\exp\left\{-\frac{1}{8}\boldsymbol{\Delta}^{\top}\boldsymbol{\Sigma}^{-1}\boldsymbol{\Delta}\right\}\\ =&\,\frac{1}{2}\log \frac{\det(\boldsymbol{\Sigma})}{\sqrt{\det(\boldsymbol{\Sigma}_p\boldsymbol{\Sigma}_q)}} + \frac{1}{8}(\boldsymbol{\mu}_p - \boldsymbol{\mu}_q)^{\top}\boldsymbol{\Sigma}^{-1}(\boldsymbol{\mu}_p - \boldsymbol{\mu}_q) \end{aligned} \\$$
 
-### <strong>W距离</strong>
+### W距离
 
 如果读者还想看了解更多关于概率散度的内容，可以参考书籍<strong>《Statistical Inference Based on Divergence Measures》</strong>。现在我们转向另一类概率度量——基于最优传输的W距离（Wasserstein距离）。
 
@@ -173,11 +173,11 @@ $\mathcal{W}[p,q]=\inf_{\gamma\in \Pi[p,q]} \iint \gamma(\boldsymbol{x},\boldsym
 
 d(\boldsymbol{x},\boldsymbol{y}) = \Vert \boldsymbol{x} - \boldsymbol{y}\Vert^2 \\
 
-#### <strong>计算结果</strong>
+#### 计算结果
 
 有意思的是，关于两个正态分布的W距离的结果，流传着两个不同的版本，这两个版本都有一定的认知度，但却没有看到有明确说两者等价的资料。两个版本出自不同的论文，还被冠以了不同的名字。
 
-#### <strong>版本1</strong>
+#### 版本1
 
 首先第一个流传相对较广的版本（很多文献包括维基百科也使用这个版本）：
 
@@ -185,7 +185,7 @@ $\mathcal{W}[p,q]=\Vert \boldsymbol{\mu}_p - \boldsymbol{\mu}_q\Vert^2 + \text{T
 
 $然后我们可以直接验证(\boldsymbol{\Sigma}_q^{}\boldsymbol{\Sigma}_p^{}(\boldsymbol{\Sigma}_p^{}\boldsymbol{\Sigma}_q\boldsymbol{\Sigma}_p^{})^{}\boldsymbol{\Sigma}_p^{-}\boldsymbol{\Sigma}_q^{-})^2=\boldsymbol{\Sigma}_q^{}\boldsymbol{\Sigma}_p\boldsymbol{\Sigma}_q^{}，所以有\text{Tr}((\boldsymbol{\Sigma}_p^{}\boldsymbol{\Sigma}_q\boldsymbol{\Sigma}_p^{})^{})=\text{Tr}((\boldsymbol{\Sigma}_q^{}\boldsymbol{\Sigma}_p\boldsymbol{\Sigma}_q^{})^{})。$
 
-#### <strong>版本2</strong>
+#### 版本2
 
 第二个看起来稍微简单一些的版本，结果是：
 
@@ -193,7 +193,7 @@ $然后我们可以直接验证(\boldsymbol{\Sigma}_q^{}\boldsymbol{\Sigma}_p^{}
 
 这个版本通常被称为“<strong>Fréchet距离</strong>”。GAN中经常使用的评价指标FID（<strong>[Frechet Inception Distance](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/1706.08500)</strong>），就是基于这个公式进行计算的。可以模仿前面证明它关于p,q的对称性，当然也可以从下面的等价性讨论中直接得出。
 
-#### <strong>等价性</strong>
+#### 等价性
 
 事实上，证明两者的等价性并不难：
 
@@ -201,7 +201,7 @@ $\begin{aligned}\text{Tr}((\boldsymbol{\Sigma}_p^{}\boldsymbol{\Sigma}_q\boldsym
 
 $然后直接验证(\boldsymbol{\Sigma}_p^{}(\boldsymbol{\Sigma}_p^{}\boldsymbol{\Sigma}_q\boldsymbol{\Sigma}_p^{})^{}\boldsymbol{\Sigma}_p^{-})^2=\boldsymbol{\Sigma}_p \boldsymbol{\Sigma}_q即可。$
 
-#### <strong>特殊时</strong>
+#### 特殊时
 
 特别地，如果\boldsymbol{\Sigma}_p,\boldsymbol{\Sigma}_q的乘法可以交换，那么将会简化为非常直观的形式：
 
@@ -217,13 +217,13 @@ $然后直接验证(\boldsymbol{\Sigma}_p^{}(\boldsymbol{\Sigma}_p^{}\boldsymbol
 
 \mathcal{W}[p,q]=\Vert \boldsymbol{\mu}_p\Vert^2 + \Vert \boldsymbol{\Sigma}_p^{} - \boldsymbol{I}\Vert_F^2 \\
 
-#### <strong>推导过程1</strong>
+#### 推导过程1
 
 现在介绍第一个证明，主要参考了论文<strong>《A class of Wasserstein metrics for probability distributions》</strong>。另外<strong>《The distance between two random vectors with given dispersion matrices》</strong>也提供了一个类似的证明，也可以参考。
 
 下面的推导过程则是经过笔者简化的，相对原论文的证明来说简单一些，但依然不可避免地会涉及到较多的线性代数知识，我们将分几个部分介绍。
 
-#### <strong>去均值</strong>
+#### 去均值
 
 不失一般性，我们可以只考虑均值为0的分布p,q。因为如果p,q的均值不为0，那么设对应的均值为0的分布为\tilde{p},\tilde{q}，此时有
 
@@ -235,7 +235,7 @@ $\begin{aligned} &\,\mathbb{E}_{(\boldsymbol{x},\boldsymbol{y})\sim\gamma(\bolds
 
 所以，只需要算出均值都为零时的Wasserstein距离，然后加上\Vert \boldsymbol{\mu}_p - \boldsymbol{\mu}_q\Vert^2就得到了一般情况的结果。
 
-#### <strong>纯代数</strong>
+#### 纯代数
 
 现在我们假设p,q的均值均为0，然后计算
 
@@ -247,7 +247,7 @@ $\boldsymbol{\Sigma}_{\gamma}= \begin{pmatrix} \boldsymbol{\Sigma}_p & \boldsymb
 
 $构成联合分布\gamma的协方差矩阵。我们知道协方差矩阵是正定对阵矩阵，所以从代数的角度看，问题变成了： 已知\boldsymbol{\Sigma}_{\gamma}= \begin{pmatrix} \boldsymbol{\Sigma}_p & \boldsymbol{C}\\ \boldsymbol{C}^{\top} & \boldsymbol{\Sigma}_q\end{pmatrix}为正定对称矩阵，求\text{Tr}(\boldsymbol{C})的最大值。$
 
-#### <strong>舒尔补</strong>
+#### 舒尔补
 
 为此，我们需要利用下述关于“舒尔补”的恒等式：
 
@@ -255,7 +255,7 @@ $\begin{pmatrix} \boldsymbol{\Sigma}_p & \boldsymbol{C}\\ \boldsymbol{C}^{\top} 
 
 $其中对称矩阵\boldsymbol{S} = \boldsymbol{\Sigma}_q - \boldsymbol{C}^{\top}\boldsymbol{\Sigma}_p^{-1}\boldsymbol{C}称为“<strong>舒尔补（Schur Complement）</strong>”，该分解具有\boldsymbol{B}^{\top}\boldsymbol{A}\boldsymbol{B}的形式，要想它是正定的，那么\boldsymbol{A}要是正定的，而\boldsymbol{\Sigma}_p已经是正定的，所以\boldsymbol{S}需要是正定的。$
 
-#### <strong>分参数</strong>
+#### 分参数
 
 $我们尝试分离参数，即从\boldsymbol{S} = \boldsymbol{\Sigma}_q - \boldsymbol{C}^{\top}\boldsymbol{\Sigma}_p^{-1}\boldsymbol{C}中把\boldsymbol{C}解出来。首先移项得到\boldsymbol{\Sigma}_q - \boldsymbol{S} = \boldsymbol{C}^{\top}\boldsymbol{\Sigma}_p^{-1}\boldsymbol{C}，由于\boldsymbol{\Sigma}_p是正定对称的，所以\boldsymbol{\Sigma}_p^{-1}也是，从而\boldsymbol{C}^{\top}\boldsymbol{\Sigma}_p^{-1}\boldsymbol{C}也是正定对称的，那么它具有正定对称的平方根，即存在正定对称矩阵\boldsymbol{R}，使得$
 
@@ -263,7 +263,7 @@ $\boldsymbol{C}^{\top}\boldsymbol{\Sigma}_p^{-1}\boldsymbol{C} = \boldsymbol{R}^
 
 $这说明\boldsymbol{\Sigma}_p^{-}\boldsymbol{C}\boldsymbol{R}^{-1}是正交矩阵，记为\boldsymbol{O}，那么\boldsymbol{C} = \boldsymbol{\Sigma}_p^{}\boldsymbol{O}\boldsymbol{R}。$
 
-#### <strong>乘子法</strong>
+#### 乘子法
 
 $此时，变量分别是\boldsymbol{O}和\boldsymbol{R}，求\text{Tr}(\boldsymbol{C})=\text{Tr}(\boldsymbol{\Sigma}_p^{}\boldsymbol{O}\boldsymbol{R})的最大值。我们先固定\boldsymbol{R}，求取最大值时的\boldsymbol{O}，此时相当于在\boldsymbol{O}^{\top}\boldsymbol{O}=\boldsymbol{I}的约束下，求\text{Tr}(\boldsymbol{\Sigma}_p^{}\boldsymbol{O}\boldsymbol{R})的最大值，我们用“<strong>拉格朗日乘子法</strong>”：引入新参数矩阵\boldsymbol{W}，转化为下述无约束极值问题$
 
@@ -281,7 +281,7 @@ $即\boldsymbol{O}\boldsymbol{W}\boldsymbol{O}^{\top}=(\boldsymbol{\Sigma}_p^{}\
 
 $\text{Tr}(\boldsymbol{\Sigma}_p^{}\boldsymbol{O}\boldsymbol{R})=\text{Tr}(\boldsymbol{O}\boldsymbol{R}\boldsymbol{\Sigma}_p^{})=\text{Tr}(\boldsymbol{O}\boldsymbol{W}\boldsymbol{O}^{\top})=\text{Tr}((\boldsymbol{\Sigma}_p^{}\boldsymbol{R}^2\boldsymbol{\Sigma}_p^{})^{}) \\$
 
-#### <strong>不等式</strong>
+#### 不等式
 
 最后需要把\boldsymbol{R}确定下来。回顾\boldsymbol{R}的定义，我们有\boldsymbol{R}^2=\boldsymbol{\Sigma}_q - \boldsymbol{S}，其中\boldsymbol{S}是正定矩阵。直觉上\boldsymbol{S}=\boldsymbol{0}时取得最大值，事实上也确实如此，这算是“<strong>Weyl不等式</strong>”的一个直接推论。
 
@@ -291,13 +291,13 @@ $根据Weyl不等式，如果矩阵\boldsymbol{A},\boldsymbol{B},\boldsymbol{A}+
 
 至于Weyl不等式的证明，主要利用到了<strong>Rayleigh quotient</strong>和<strong>Courant–Fischer定理</strong>，有兴趣了解的读者自行查阅这两部分资料后，再查阅Wely不等式的证明就好。事实上，熟悉这两部分内容后，Weyl不等式基本上就“水到渠成”了。
 
-#### <strong>推导过程2</strong>
+#### 推导过程2
 
 这里继续介绍另一个更为简单的证明，原始证明可以在<strong>《The Fréchet distance between multivariate normal distributions》</strong>找到。相对而言该证明简单不少，尤其是不需要太多的纯线性代数知识。下面的推导过程依旧是经过笔者进一步简化的，比原始论文更好理解一些。
 
 $在这个推导过程中，“去均值”、“纯代数”两个步骤跟“推导过程1”是一样的，不再重复。所以，此时问题已经被转化为 已知\boldsymbol{\Sigma}_{\gamma}= \begin{pmatrix} \boldsymbol{\Sigma}_p & \boldsymbol{C}\\ \boldsymbol{C}^{\top} & \boldsymbol{\Sigma}_q\end{pmatrix}为正定对称矩阵，求\text{Tr}(\boldsymbol{C})的最大值。$
 
-#### <strong>分块阵</strong>
+#### 分块阵
 
 $由于\boldsymbol{\Sigma}_{\gamma}是正定对称矩阵，所以它必然可以表达成\boldsymbol{D}\boldsymbol{D}^{\top}的形式，我们将\boldsymbol{D}表达为分块矩阵\begin{pmatrix}\boldsymbol{A} \\ \boldsymbol{B}\end{pmatrix}，其中\boldsymbol{A},\boldsymbol{B}\in \mathbb{R}^{n\times 2n}，此时$
 
@@ -305,7 +305,7 @@ $\begin{pmatrix} \boldsymbol{\Sigma}_p & \boldsymbol{C}\\ \boldsymbol{C}^{\top} 
 
 $对应地有\boldsymbol{\Sigma}_p=\boldsymbol{A}\boldsymbol{A}^{\top}, \boldsymbol{\Sigma}_q=\boldsymbol{B}\boldsymbol{B}^{\top},\boldsymbol{C}=\boldsymbol{A}\boldsymbol{B}^{\top}。$
 
-#### <strong>乘子法</strong>
+#### 乘子法
 
 $在上述参数化之下，问题转化为： 已知\boldsymbol{A}\boldsymbol{A}^{\top}=\boldsymbol{\Sigma}_p, \boldsymbol{B}\boldsymbol{B}^{\top}=\boldsymbol{\Sigma}_q，求\text{Tr}(\boldsymbol{A}\boldsymbol{B}^{\top})的最大值。$
 
@@ -329,6 +329,6 @@ $令\boldsymbol{W}_p=\boldsymbol{\Sigma}_p^{-}\boldsymbol{R}\boldsymbol{\Sigma}_
 
 $\begin{aligned} \text{Tr}(\boldsymbol{A}\boldsymbol{B}^{\top}) =&\, \text{Tr}(\boldsymbol{A}\boldsymbol{A}^{\top}\boldsymbol{W}_p)=\text{Tr}(\boldsymbol{\Sigma}_p\boldsymbol{W}_p)\\ =&\,\text{Tr}(\boldsymbol{\Sigma}_p^{}\boldsymbol{R}\boldsymbol{\Sigma}_p^{-}) = \text{Tr}(\boldsymbol{R}\boldsymbol{\Sigma}_p^{-}\boldsymbol{\Sigma}_p^{})\\ =&\,\text{Tr}(\boldsymbol{R}) \end{aligned}\\$
 
-### <strong>文章小结</strong>
+### 文章小结
 
 本文详细计算了两个多元正态分布的KL散度、巴氏距离和W距离，给出了它们的显式解析解，这些结果在某些场景下可以作为隐变量的正则项使用，来规范隐变量的分布。此外，本文还可以作为比较有挑战性的线性代数练习题，供大家参考练习。

@@ -25,7 +25,6 @@ source_url: https://zhuanlan.zhihu.com/p/667439436
 - <strong>LLM优化：</strong> 模型需要如何行动才能解决问题。
 ![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_18613283c55d.jpg)
 
-**
 
 在对大型语言模型（LLM）进行性能优化的过程中，OpenAI采用了一种综合性的优化流程。如下图所示，这个流程横跨了上下文优化（Context Optimization）<strong>与</strong>LLM优化<strong>两个关键维度。</strong>上下文优化<strong>关注于模型</strong>需要了解的信息<strong>，即为了成功执行任务，模型需要了解的背景知识。而</strong>LLM优化<strong>则着重于</strong>模型的行为方式**，即模型采取的方法和行动来解决特定问题。
 
@@ -39,7 +38,7 @@ source_url: https://zhuanlan.zhihu.com/p/667439436
 
 ### 三种优化方法
 
-#### Part 1: <strong>提示工程（Prompt Engineering）</strong>
+#### Part 1: **提示工程（Prompt Engineering）
 
 在LLM性能优化的领域内，<strong>提示工程</strong>（Prompt Engineering）是一个至关重要的概念。优化的策略始于一些基本步骤，这些步骤要求我们<strong>编写清晰的指令</strong>，以便于模型可以理解和执行任务。同时，需要将<strong>复杂任务分解为更简单的子任务</strong>，从而使问题变得更加可管理。在这个过程中，给予GPTs时间去“思考”是另一项重要策略，这意味着让模型在生成响应之前有充分的内部处理时间。此外，<strong>系统地测试变化</strong>也是优化过程中的关键环节，这样我们就能评估每次调整对于性能的实际影响。<strong>设定好评估体系</strong>，保证优化朝着指定方向前进，而不是东一锤西一锤。
 
@@ -68,7 +67,7 @@ source_url: https://zhuanlan.zhihu.com/p/667439436
 - 将复杂任务分解成更简单的子任务，以便模型可以对每个子单元或子任务做出预测。
 - 给予GPT时间思考，通过提供详细指令来解构问题，使模型更有可能成功执行任务。
 
-#### Part 2: <strong>检索增强生成（Retrieval-Augmented Generation，RAG）</strong>
+#### Part 2: **检索增强生成（Retrieval-Augmented Generation，RAG）
 
 <strong>RAG</strong> 一般流程：
 
@@ -80,7 +79,6 @@ source_url: https://zhuanlan.zhihu.com/p/667439436
 
 ![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_7facb45d3d30.jpg)
 
-**
 
 RAG接近于给模型提供基于特定问题的上下文知识。
 
@@ -121,7 +119,6 @@ RAG接近于给模型提供基于特定问题的上下文知识。
 
 ![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_36b9a8de91f0.jpg)
 
-**
 
 #### Part 3: 模型精调（Fine-tuning）
 
@@ -153,7 +150,6 @@ RAG接近于给模型提供基于特定问题的上下文知识。
 
 ![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_ff1ef5342ba9.jpg)
 
-**
 
 实际中如何进行模型精调。
 
@@ -183,7 +179,7 @@ RAG接近于给模型提供基于特定问题的上下文知识。
 
 ![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_e49d520c7132.jpg)
 
-#### <strong>一个示例</strong>：通过 Fine-tuning + RAG 达到SOTA效果
+#### 一个示例**：通过 Fine-tuning + RAG 达到SOTA效果
 
 任务 <strong>Spider 1.0: Yale Semantic Parsing and Text-to-SQL Challenge</strong>。这个任务上的SOTA精度是 84%（包括很多负责的前后处理流程）。
 
@@ -232,6 +228,5 @@ Spider 1.0: SQL语句生成任务，左边为输入（表schema，以及自然�
 - Youtube
 - B站搬运
 
-**
 
 欢迎转载，转载请注明出处：OpenAI 如何优化 LLM 的效果 | Breezedeus.com **，谢谢。

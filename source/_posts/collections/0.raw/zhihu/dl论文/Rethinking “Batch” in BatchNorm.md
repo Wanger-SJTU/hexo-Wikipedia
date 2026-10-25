@@ -15,7 +15,7 @@ source_url: https://zhuanlan.zhihu.com/p/373674481
 ---
 
 
-**作者：Smarter
+作者：Smarter
 转载自：Smarter
 原文链接：[![](/images/collections/0.raw/zhihu/dl%E8%AE%BA%E6%96%87/asset/img_77eda03bf0ce.jpg)Rethinking “Batch” in BatchNormmp.weixin.qq.com/s?__biz=Mzg4MjQ1NzI0NA==&mid=2247495027&idx=1&sn=c0bcb02c1b0a02f33a737a1dc1e90a12&chksm=cf54c280f8234b96f9fe5be408e15e0758da75e6f19bd0aad03017db2b16c54a2f4538715836&mpshare=1&scene=1&srcid=0519ekrsZ6hbubXV5klfMXWa&sharer_sharetime=1621432329798&sharer_shareid=3055fa2ca7e035740437beb9a3cbb17b&exportkey=AVy9E73HhPD20bLXiSIzcmw%3D&pass_ticket=XqPjiVA0Lca7%2F2sZvWzrzbqpD4oVk90Aw7z5NncmrxKbbv1%2B7lSaMgFJsULMRPVa&wx_header=0#rd](https://link.zhihu.com/?target=https%3A//mp.weixin.qq.com/s%3F__biz%3DMzg4MjQ1NzI0NA%3D%3D%26mid%3D2247495027%26idx%3D1%26sn%3Dc0bcb02c1b0a02f33a737a1dc1e90a12%26chksm%3Dcf54c280f8234b96f9fe5be408e15e0758da75e6f19bd0aad03017db2b16c54a2f4538715836%26mpshare%3D1%26scene%3D1%26srcid%3D0519ekrsZ6hbubXV5klfMXWa%26sharer_sharetime%3D1621432329798%26sharer_shareid%3D3055fa2ca7e035740437beb9a3cbb17b%26exportkey%3DAVy9E73HhPD20bLXiSIzcmw%253D%26pass_ticket%3DXqPjiVA0Lca7%252F2sZvWzrzbqpD4oVk90Aw7z5NncmrxKbbv1%252B7lSaMgFJsULMRPVa%26wx_header%3D0%23rd)
 
@@ -23,15 +23,13 @@ source_url: https://zhuanlan.zhihu.com/p/373674481
 
 之前对于Norm的研究主要在于改变Norm的维度，然后衍生出了BatchNorm、GroupNorm、InstanceNorm和LayerNorm等方法，但是除了BN外的其他Norm含义是确定，而BN的batch却可以有多种采样方式，本文就是为了探讨BN的batch使用不同的采样方式会有什么影响<strong>，</strong>堪称BatchNorm圣经，建议全文背诵**(ps：GN也是吴育昕的作品)。
 
-**
 
 本文总共4大核心实验，每个核心实验有多个子结论。
 
-### 01 Motivation**
+### 01 Motivation
 
 BatchNorm现在已经广泛的应用于CNN中。但是BN针对不同的场景使用时有许多细微的差异，如果选择不当会降低模型的性能。BatchNorm相对于其他算子来说，主要的不同在于BN是对batch数据进行操作的。BN在batch数据中进行统计量计算，而其他算子一般都是独立处理单个样本的。因此<strong>影响BN的输出不仅仅取决于单个样本的性质，还取决于batch的采样方式</strong>。
 
-**
 
 ![](/images/collections/0.raw/zhihu/dl%E8%AE%BA%E6%96%87/asset/img_cb9b52d7bb6f.jpg)
 
@@ -39,9 +37,8 @@ BatchNorm现在已经广泛的应用于CNN中。但是BN针对不同的场景使
 
 本文实验证明了使用BN时不考虑batch的采样方式会在许多方面产生负面影响，合理使用batch采样方式会改善模型性能。
 
-### 02 A Review of BatchNorm**
+### 02 A Review of BatchNorm
 
-**
 
 简单回顾一下BN的计算形式，这里以CNN中的BN为例。假设BN的输入feature维度为 (C,H,W) ，逐通道统计量mean和std为 \mu, \sigma^2 ，那么BN的输出y为：
 
@@ -57,13 +54,12 @@ $推理的时候，  \mu, \sigma^2用训练集计算得到的统计量，定义�
 
 不同于默认的BN设置，因为batch采样方式主要影响的是统计量mean和std，本文将mean和std看成是一个逐通道分开计算的仿射变换(可以等价为一个1x1的depth-wise layer)。
 
-### 03 Whole Population as aBatch**
+### 03 Whole Population as aBatch
 
-**
 
 BN中统计量的计算默认使用EMA方法，但是作者实验发现EMA会导致模型性能次优，然后提出了PreciseBN方法，近似将整个训练集统计量作为一个batch。
 
-Inaccuracy of EMA**
+Inaccuracy of EMA
 
 $EMA是指数滑动平均的缩写，为了统计 \mu_{pop}, \sigma^2_{pop}  ，EMA在训练过程中对统计量进行更新：$
 
@@ -97,15 +93,13 @@ $$\sigma_{\text {pop }}^{2}=\mathrm{E}\left[\mu_{\mathcal{B}}^{2}+\sigma_{B}^{2}
 
 2.PreciseBN的所有样本的权重是相同的，而EMA不同样本的权重是不同的。
 
-**
 
 ![](/images/collections/0.raw/zhihu/dl%E8%AE%BA%E6%96%87/asset/img_5228d072130d.jpg)
 
 100 samples of batch mean意思是相同epoch下模型对100个随机batch统计量的结果。如图所示，在训练早期EMA的统计量不精确，会导致最终模型性能次优。由于滑动平均的计算方式导致EMA的统计量滞后于PrciseBN。
 
-4个主要结论：**
+4个主要结论：
 
-**
 
 ![](/images/collections/0.raw/zhihu/dl%E8%AE%BA%E6%96%87/asset/img_22f07bf82486.jpg)
 
@@ -123,19 +117,17 @@ $$\sigma_{\text {pop }}^{2}=\mathrm{E}\left[\mu_{\mathcal{B}}^{2}+\sigma_{B}^{2}
 
 4.小batch会产生统计量积累错误。
 
-### 04 Batch in Training and Testing**
+### 04 Batch in Training and Testing
 
-**
 
 BN在训练和测试中行为不一致：训练时，BN的统计量来自mini-batch；测试时，BN的统计量来自population。这部分主要探讨了BN行为不一致对模型性能的影响，并且提出消除不一致的方法提升模型性能。
 
-Effect of Normalization Batch Size**
+Effect of Normalization Batch Size
 
 为了避免混淆，将SGD batch size或者total batch size定义为所有GPU上总的batch size大小，将normalization batch   size定义为单个GPU上的batch size大小。
 
 normalization batch size对training noise和train-test inconsistency有着直接影响：使用更大的batch，mini-batch统计量越接近population统计量，从而降低training noise和train-test inconsistency。
 
-**
 
 以下实验的SGD batch size固定使用1024大小。
 
@@ -157,27 +149,24 @@ Train-test inconsistency：在小batch下，mini-batch统计量和population统�
 
 为了保持train和test的BN统计量一致，作者提出了两种方法来解决不一致问题，一种是推理的时候使用mini-batch统计量，另一种是训练的时候使用population batch统计量。
 
-Use Mini-batch in Inference**
+Use Mini-batch in Inference
 
-**
 
 ![](/images/collections/0.raw/zhihu/dl%E8%AE%BA%E6%96%87/asset/img_a7847a585bfa.jpg)
 
 作者在Mask R-CNN上进行实验，mini-batch的结果超过了population的结果，证明了在推理中使用mini-batch可以有效的缓解训练测试不一致。(ps：不使用norm效果略差，使用GN效果更好)****
 
-Use Population Batch in Training**
+Use Population Batch in Training
 
 为了在训练阶段使用population统计量，作者采用FrozenBN的方法，FrozenBN使用population统计量。具体地，作者先选择第80个epoch模型，然后将所有BN替换成FrozenBN，然后训练20个epoch。
 
-**
 
 ![](/images/collections/0.raw/zhihu/dl%E8%AE%BA%E6%96%87/asset/img_a04517a34b04.jpg)
 
 FrozenBN可以有效缓解训练测试不一致，即使在小normalization batch size，也能达到比较好的性能。但是随着normalization batch size增大，作者提出的两种缓解不一致的方法都不如常规BN的结果。
 
-### 05 Batch from Different Domains**
+### 05 Batch from Different Domains
 
-**
 
 BN的训练过程可以看成是两个独立的阶段：第一个阶段是通过SGD学习features，第二个阶段是由这些features得到population统计量。两个阶段分别称为SGD training和population statistics training。
 
@@ -185,17 +174,15 @@ BN的训练过程可以看成是两个独立的阶段：第一个阶段是通过
 
 实验主要探究了两种使用场景：第一种，模型在一个domain上进行训练，然后在其他domain上进行测试；第二种，模型在多个domain上进行训练。
 
-Domain to Compute Population Statistics**
+Domain to Compute Population Statistics
 
-**
 
 ![](/images/collections/0.raw/zhihu/dl%E8%AE%BA%E6%96%87/asset/img_adafa71b04b9.jpg)
 
 作者实验发现，当存在显著的domain shift时，模型使用评估domain的population统计量会得到更好的结果，可以缓解训练测试的不一致。
 
-BatchNorm in Multi-Domain Training**
+BatchNorm in Multi-Domain Training
 
-**
 
 ![](/images/collections/0.raw/zhihu/dl%E8%AE%BA%E6%96%87/asset/img_2a8c7f23e79e.jpg)
 
@@ -207,15 +194,13 @@ BatchNorm in Multi-Domain Training**
 
 最终实验表明，SGD training、population statistics training和testing保持一致是非常重要的，并且全部使用domain-specific能取得最好的效果。(ps：不使用norm效果略差，使用GN效果更好)****
 
-### 06 Information Leakage within a Batch**
+### 06 Information Leakage within a Batch
 
-**
 
 BN在使用中还存在一种information leakage现象，因为BN是对mini-batch的样本计算统计量的，导致在样本进行独立预测时，会利用mini-batch内其他样本的统计信息。
 
-Exploit Patterns in Mini-batches**
+Exploit Patterns in Mini-batches
 
-**
 
 ![](/images/collections/0.raw/zhihu/dl%E8%AE%BA%E6%96%87/asset/img_d8a71c009e34.jpg)
 
@@ -229,31 +214,29 @@ Exploit Patterns in Mini-batches**
 
 实验结果表明，shuffling和SyncBN都能有效地处理信息泄漏，使得head在测试时能够很好地泛化。在速度方面，我们注意到shuffling需要更少的跨gpu同步，但是shuffling每次传输的数据比SyncBN多。因此，shuffling和SyncBN的相对效率跟具体模型架构相关。
 
-Cheating in Contrastive Learning**
+Cheating in Contrastive Learning
 
-在对比学习和度量学习时，训练目标通常是在mini-batch下进行比较的，这种情况下BN也会造成信息泄露，导致模型在训练期间作弊，之前的研究提出了很多不同方法来针对性解决对比学习和度量学习的信息泄露问题。**
+在对比学习和度量学习时，训练目标通常是在mini-batch下进行比较的，这种情况下BN也会造成信息泄露，导致模型在训练期间作弊，之前的研究提出了很多不同方法来针对性解决对比学习和度量学习的信息泄露问题。
 
-### 07 总结**
+### 07 总结
 
 本文从多个角度探讨了BN的batch使用不同的采样方式会有什么影响，并且做了非常详尽的对比试验，堪称BatchNorm圣经，建议全文背诵。
 
 <strong>另外，看完后最大的感触是，BN不会用就别用，GN yyds。</strong>
 
-**
 
-Reference**
+Reference
 
 [1] Rethinking “Batch” in BatchNorm
 
-**
 
-### 机器学习/深度学习算法/自然语言处理交流群**
+### 机器学习/深度学习算法/自然语言处理交流群
 
 已建立机器学习算-自然语言处理微信交流群！想要进交流群进行学习的同学，可以直接加我的微信号：<strong>HIT_NLP</strong>。加的时候备注一下：<strong>知乎+学校+昵称 （不加备注不会接受同意，望谅解）</strong>，想进<strong>pytorch群，备注知乎+学校+昵称+Pytorch</strong>即可。然后我们就可以拉你进群了。群里已经有非得多国内外高校同学，交流氛围非常好。
 
 <strong>强烈推荐大家关注</strong>机器学习算法与自然语言处理<strong>账号和</strong>[机器学习算法与自然语言处理](https://link.zhihu.com/?target=https%3A//mp.weixin.qq.com/s/VhZW2qS_UC3kUdXhvAVKxA)<strong>微信公众号，可以快速了解到最新优质的干货资源。</strong>
 
-### <strong>推荐阅读</strong>
+### 推荐阅读
 
 [EMNLP 2021（征稿通知）+交流群](https://zhuanlan.zhihu.com/p/349345306)
 

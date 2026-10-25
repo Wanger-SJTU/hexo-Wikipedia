@@ -30,7 +30,7 @@ source_url: https://zhuanlan.zhihu.com/p/352546929
 8.思想与情感：** **独立思考、男女交往、婚姻经营等。 
 9.调研报告：** **社会现状、时事热点、理论分析、区域经济等。
 
-正文开始~**
+正文开始~
 
 <strong>1.生活经营</strong>
 
@@ -669,7 +669,7 @@ source_url: https://zhuanlan.zhihu.com/p/352546929
 [马克思的劳动价值论是假的么？如果是假的，如何证伪？ - 知乎](https://www.zhihu.com/question/47055877) 
 [有哪些我们觉得荒谬的事，却有着合理的经济学解释？ - 知乎](https://www.zhihu.com/question/34406872/answer/58582081) 
 
-9.4.其他** 
+9.4.其他
 [程序员们平时都喜欢逛什么论坛呢？ - 知乎](https://www.zhihu.com/question/27145069) 
 [没有钱真的可以创业吗？ - 知乎](https://www.zhihu.com/question/339834932) 
 [为什么很多女人生完孩子就会变成微商？ - 知乎](https://www.zhihu.com/question/324226565) 

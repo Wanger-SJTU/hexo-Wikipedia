@@ -17,7 +17,7 @@ source_url: https://zhuanlan.zhihu.com/p/9616453650
 
 一些Pytorch内存管理基础：略，类似操作系统。
 
-#### <strong>可分页内存（Pageable Memory）vs</strong>固定内存（Pinned Memory）
+#### 可分页内存（Pageable Memory）vs **固定内存（Pinned Memory）
 
 与分页内存相对，ram与disk一起构成虚拟内存，目的是为了让程序可以在更大的、大于ram的内存上运行，，但是频繁的页面换入换出会拖慢访问速度，因此就有了pinned memory，顾名思义，就是被固定在ram里的内存，不支持换入换出，pinned memory访问速度更快，但内存有限，因此需要小心使用。
 
@@ -68,7 +68,7 @@ to()+non_blocking=True：****由堆栈可看到，调用cudaMemcpyAsync之后不
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_5fac128a20cd.jpg)
 
-如上图，main调用玩aten::to之后，调用cudaMemcpyAsync，Synchronize之后再进行计算操作，通信与计算不重叠。并且可看到cpu移动到gpu是pageable-&gt;Devicepinned=True+ non_blocking=True + multiple cuda streams：**
+如上图，main调用玩aten::to之后，调用cudaMemcpyAsync，Synchronize之后再进行计算操作，通信与计算不重叠。并且可看到cpu移动到gpu是pageable-&gt;Devicepinned=True+ non_blocking=True + multiple cuda streams：
 
 数据拷贝stream13和计算stream7在不同cuda流中进行并且能够重叠。
 
@@ -83,7 +83,7 @@ to()+non_blocking=True：****由堆栈可看到，调用cudaMemcpyAsync之后不
 加载数据比较好的方式是多线程pinned memory方式传输，这样可以达到非阻塞传输的目的，但也会增加内存开销和线程管理的复杂性。**影响因素有：CPU cores number, CPU cores and Memory utilization, CUDA Device Capabilities(DMA engines), 传输数据（tensors number and size）, bus width, network latency and so on. 
 pinned memory需要在声明时设置，直接使用pin_memory()反而会拖累速度。
 
-Feature关注：**
+Feature关注：
 
 7B的ckpt保存加速23.6x， 148.8 -> 6.3 秒，
 

@@ -75,7 +75,7 @@ Flush即clflush指令，Visual C++中定义如下：
 
 <strong>硬件预取: Hardware Prefetcher</strong>
 
-如果你在自己的电脑上进行测试，你看到的可能不是上图所示的样子，很大的可能如下图所示，明显的分界点不是64字节而是128字节：**
+如果你在自己的电脑上进行测试，你看到的可能不是上图所示的样子，很大的可能如下图所示，明显的分界点不是64字节而是128字节：
 
 ![](/images/collections/0.raw/zhihu/%E4%BC%98%E5%8C%96/asset/img_ac7070322742.jpg)
 
@@ -83,7 +83,7 @@ Flush即clflush指令，Visual C++中定义如下：
 
 ![](/images/collections/0.raw/zhihu/%E4%BC%98%E5%8C%96/asset/img_20c72320a043.jpg)
 
-如何关闭硬件预取**
+如何关闭硬件预取
 
 - 通过BIOS设置： 通过BIOS选项来关闭hwprefetcher，对所有的CPU生效
 - 通过内核调试器windbg直接关闭：通过直接改写msr寄存器关闭当前核的硬件预取功能:

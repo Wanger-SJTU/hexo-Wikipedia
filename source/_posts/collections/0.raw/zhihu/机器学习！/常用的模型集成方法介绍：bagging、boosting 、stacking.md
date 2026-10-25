@@ -124,7 +124,6 @@ Boosting 会迭代地拟合一个弱学习器，将其聚合到集成模型中�
 
 因此，假设我们面对的是一个二分类问题：数据集中有 N 个观测数据，我们想在给定一组弱模型的情况下使用 adaboost 算法。在算法的起始阶段（序列中的第一个模型），所有的观测数据都拥有相同的权重「1/N」。然后，我们将下面的步骤重复 L 次（作用于序列中的 L 个学习器）：
 
-**
 
 - 用当前观测数据的权重拟合可能的最佳弱模型
 - 计算更新系数的值，更新系数是弱学习器的某种标量化评估指标，它表示相对集成模型来说，该弱学习器的分量如何
@@ -134,7 +133,7 @@ Boosting 会迭代地拟合一个弱学习器，将其聚合到集成模型中�
 
 ![](/images/collections/0.raw/zhihu/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%EF%BC%81/asset/img_50548447c9fc.jpg)
 
-Adaboost 在每次迭代中更新观测数据的权重。正确分类的观测数据的权重相对于错误分类的观测数据的权重有所下降。在最终的集成模型中，性能更好的模型具有更高的权重。Stacking 概述**
+Adaboost 在每次迭代中更新观测数据的权重。正确分类的观测数据的权重相对于错误分类的观测数据的权重有所下降。在最终的集成模型中，性能更好的模型具有更高的权重。Stacking 概述
 
 Stacking 与 bagging 和 boosting 主要存在两方面的差异。首先，Stacking 通常考虑的是异质弱学习器（不同的学习算法被组合在一起），而bagging 和 boosting 主要考虑的是同质弱学习器。其次，stacking 学习用元模型组合基础模型，而bagging 和 boosting 则根据确定性算法组合弱学习器。   
 
@@ -160,7 +159,7 @@ Stacking 与 bagging 和 boosting 主要存在两方面的差异。首先，Stac
 
 ![](/images/collections/0.raw/zhihu/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%EF%BC%81/asset/img_78269cf6d716.jpg)
 
-Stacking 方法会训练一个元模型，该模型根据较低层的弱学习器返回的输出结果生成最后的输出。**
+Stacking 方法会训练一个元模型，该模型根据较低层的弱学习器返回的输出结果生成最后的输出。
 
 *![](/images/collections/0.raw/zhihu/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%EF%BC%81/asset/img_0fd794650ff4.jpg)
 

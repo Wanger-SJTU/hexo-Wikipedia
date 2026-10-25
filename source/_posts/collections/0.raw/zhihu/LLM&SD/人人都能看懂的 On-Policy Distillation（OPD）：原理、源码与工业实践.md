@@ -216,7 +216,7 @@ KL 散度大家应该都熟，但它是一个<strong>有方向</strong>的距离
 
 2.3 词表选择：Sampled-Token / Top-k / Full-Vocab，到底用哪个？
 确定了用 Reverse KL 之后，我们还要面对一个非常工程化的决策：**算 KL 的时候，要不要把整个词表 
-![](https://www.zhihu.com/equation?tex=V) 都拿来求和？**
+![](https://www.zhihu.com/equation?tex=V) 都拿来求和？
 
 直觉上，词表越大、参与计算的 token 越多，KL 估计就越准。但 V 通常是 100k 量级（Qwen3 的词表是 151936），把整个词表都拉进 loss 计算意味着显存会爆炸。所以业界根据&#34;取多少 token 进入 KL 求和&#34;，演化出了三种 OPD 变体：
 

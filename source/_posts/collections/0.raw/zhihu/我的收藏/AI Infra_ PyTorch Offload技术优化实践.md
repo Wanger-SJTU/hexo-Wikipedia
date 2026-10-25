@@ -15,7 +15,7 @@ source_url: https://zhuanlan.zhihu.com/p/1949075068694013367
 ---
 
 
-**本文很大程度上参考PyTorch Tutorial：[https://docs.pytorch.org/tutorials/intermediate/pinmem_nonblock.html](https://link.zhihu.com/?target=https%3A//docs.pytorch.org/tutorials/intermediate/pinmem_nonblock.html) 以及 [https://developer.nvidia.com/blog/how-overlap-data-transfers-cuda-cc/](https://link.zhihu.com/?target=https%3A//developer.nvidia.com/blog/how-overlap-data-transfers-cuda-cc/)在大模型推理过程中，有很多内存换计算的技术，如LLM的KVCache、Diffusion的Feature Cache等，然而GPU的显存往往是不够的，我们会希望借助更充足的CPU内存进行“扩容”，这就是offload技术——前提是offload的开销（主要为数据搬移）小于直接计算开销。
+本文很大程度上参考PyTorch Tutorial：[https://docs.pytorch.org/tutorials/intermediate/pinmem_nonblock.html](https://link.zhihu.com/?target=https%3A//docs.pytorch.org/tutorials/intermediate/pinmem_nonblock.html) 以及 [https://developer.nvidia.com/blog/how-overlap-data-transfers-cuda-cc/](https://link.zhihu.com/?target=https%3A//developer.nvidia.com/blog/how-overlap-data-transfers-cuda-cc/)在大模型推理过程中，有很多内存换计算的技术，如LLM的KVCache、Diffusion的Feature Cache等，然而GPU的显存往往是不够的，我们会希望借助更充足的CPU内存进行“扩容”，这就是offload技术——前提是offload的开销（主要为数据搬移）小于直接计算开销。
 
 将数据在CPU和GPU之间传输**是非常基本的PyTorch操作，我们需要掌握如何高效地进行传输。
 
@@ -40,7 +40,7 @@ source_url: https://zhuanlan.zhihu.com/p/1949075068694013367
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_7e3f73940e14.jpg)
 
-图1: CPU内存架构和CUDA数据搬移**
+图1: CPU内存架构和CUDA数据搬移
 
 #### CUDA 数据搬移
 

@@ -15,7 +15,7 @@ source_url: https://zhuanlan.zhihu.com/p/64025085
 ---
 
 
-### <strong>一、初衷</strong>
+### 一、初衷
 
 自从跟小伙伴开专栏以来，发现很大一部分的关注者都是学生群体，以及对移动端有潜在性能需求的程序员同胞们，因此我特地整理了一下移动端（ARMv7/ARMv8）在实现AI推理框架时常用的汇编指令，旨在帮助各位童鞋、战友快速熟悉指令，快速上手汇编实现，也是为了能快速跟上我以后将写到的汇编极限优化（instructions pipeline、cache）的相关知识呀！
 
@@ -33,9 +33,8 @@ source_url: https://zhuanlan.zhihu.com/p/64025085
 
 我爱学习~）
 
-**
 
-### 二、汇编在推理框架中的定位**
+### 二、汇编在推理框架中的定位
 
 推理框架在整个app中是属于sdk层次的，为追求高性能一般就是用C++写的，通过JNI接口与JAVA层进行交互。
 
@@ -123,11 +122,10 @@ END_FUNCTION q8gemm_ukernel_4x8__aarch32_neon
 
 因此这就是为什么要推出内联汇编，即抓住主要矛盾，在c++层次尽可能地提高代码性能。
 
-**
 
-### 三、AI推理框架中常用的指令汇总**
+### 三、AI推理框架中常用的指令汇总
 
-#### <strong>3.1 寄存器差异介绍</strong>
+#### 3.1 寄存器差异介绍
 
 我假设你已经知道了ARM后面的版本有37个寄存器，其中我们常用的通用寄存器是r0~r15（在A64指令集里面就是x0~x31或者w0~w31）,其中r13、r14、r15不能乱用；
 
@@ -145,7 +143,6 @@ For ArmV7这是AArch32状态下的NEON寄存器组，Q0~Q15，同时对应D0~D32
 
 ArmV8你看V0对应AArch32状态下Q0，这里只对应D0，跟AArch32不同的是D1分配到V1中去了，也就是说寄存器不连续了，这里可能有人有疑问，假如我要把数据放到V0的上班部分怎么办呢？这个当然考虑到了比如smlal2指令就是专门处理这类问题的，后面慢慢会接触到的，这里就先不展开说了。
 
-**
 
 > 给各位推荐两个文档，里面可以分别查看ARMv7的NEON汇编指令，以及ARMv8的所有指令：
 《RealView® 编译工具3.1 版汇编程序指南》
@@ -155,7 +152,6 @@ ArmV8你看V0对应AArch32状态下Q0，这里只对应D0，跟AArch32不同的�
 
 *里面有所有**Intrinsics指令以及对应的汇编指令及用法，作为工具临时查询指令的用法还是蛮有用的！后面补个例子就知道如何方便地用了！（写着写着我觉得我自己定会没时间举例子的~huohuohuo~）*
 
-**
 
 Arm的A32/T32指令集跟A64指令集在SIMD汇编指令语法这块的整体区别如下：
 
@@ -165,12 +161,12 @@ Arm的A32/T32指令集跟A64指令集在SIMD汇编指令语法这块的整体区
 
 ![](/images/collections/0.raw/zhihu/%E4%BC%98%E5%8C%96/asset/img_0c83630c951b.jpg)
 
-**注1.  *A64下不仅仅只有取到L1cache并keep这一种预取方式啊，还有stream模式，取到L2cache的模式啊，具体可取查看上面我给我的那个手册哈；*
+注1.  *A64下不仅仅只有取到L1cache并keep这一种预取方式啊，还有stream模式，取到L2cache的模式啊，具体可取查看上面我给我的那个手册哈；*
 注2.  *A64更专注于指令表达意思的本身，数据类型让寄存器来设定;*
 注3. *与在C层次不一样的是在汇编层次地址单位都是byte；*
 注4.  [NCNN的ArmV7参考资料](https://link.zhihu.com/?target=https%3A//github.com/Tencent/ncnn/wiki/armv7-neon-intrinsics-%25E5%2592%258C%25E5%2586%2585%25E5%25B5%258C%25E6%25B1%2587%25E7%25BC%2596%25E6%25B7%25B7%25E7%2594%25A8)
 注5.  [NCNN的ArmV8参考资料](https://link.zhihu.com/?target=https%3A//github.com/Tencent/ncnn/wiki/aarch64-neon-intrinsics-%25E5%2592%258C%25E5%2586%2585%25E5%25B5%258C%25E6%25B1%2587%25E7%25BC%2596%25E6%25B7%25B7%25E7%2594%25A8)
-#### 3.3 常用指令解析**
+#### 3.3 常用指令解析
 
 <strong>官网的详细指令解析：</strong>
 
@@ -180,11 +176,11 @@ Arm的A32/T32指令集跟A64指令集在SIMD汇编指令语法这块的整体区
 
 <strong>v7：</strong>
 
-**从%3处预取192个byte；`  "pld        [%3, #192]          \n"`
+从%3处预取192个byte；`  "pld        [%3, #192]          \n"`
 
-v8：**
+v8：
 
-** pld1kepp这个参数是可以改的，改为预取到L2中，不keep，而是流式缓存，也就是不会真放进cache中，具体的可以去看芯片手册（看下面的图片）。` "prfm   pldl1keep, [%1, #512]       \n"`
+pld1kepp这个参数是可以改的，改为预取到L2中，不keep，而是流式缓存，也就是不会真放进cache中，具体的可以去看芯片手册（看下面的图片）。` "prfm   pldl1keep, [%1, #512]       \n"`
 
 ![](/images/collections/0.raw/zhihu/%E4%BC%98%E5%8C%96/asset/img_23fa52831ad5.jpg)
 
@@ -265,9 +261,9 @@ v8的int16操作：以int16 的方式加载一个D寄存器的_k0出来，然后
   "smull   v4.4s, %6.4h, v0.h[7]        \n" 
   "w"(_k0),    // %6 `
 
-### <strong>四、AI底层常见算子汇编实现</strong>
+### 四、AI底层常见算子汇编实现
 
-#### <strong>4.1</strong> <strong>移动端内嵌汇编语法</strong>
+#### 4.1** **移动端内嵌汇编语法
 
 如何在C或C++代码中嵌入ARM汇编代码？
 
@@ -374,9 +370,8 @@ __asm__ __volatile__("ldr %0, [%1]\n\t"
 
 此列表中的每一项都要用双引号（""）括起来，每项之间要用逗号（“,”）分割。
 
-**
 
-#### 4.2** ** conv1x1s1**
+#### 4.2** ** conv1x1s1
 
 我假设大家已经知道1x1s1卷积的的原理了哈，网上有很多图例的呀，我这里就展示一个三维版的哈：如下图所示，输入是CHW=(32,16,16)的数据，输出是（8,16,16），weights是NCHW排布的，size为(8,32,1,1)；
 
@@ -504,7 +499,7 @@ cruiser0.GET_RawEvent_TOCK(setRawEvent);
 
 ![](/images/collections/0.raw/zhihu/%E4%BC%98%E5%8C%96/asset/img_343a27d24b02.jpg)
 
-** label@perf,CPU_CYCLES=365336032
+label@perf,CPU_CYCLES=365336032
 E/perf@perf: label@perf,SW_INCR=0
 label@perf,L1I_CACHE_REFILL=1592
 label@perf,L1D_CACHE_REFILL=1249195
@@ -520,8 +515,8 @@ Todo~
 
 （当然写这些东西很费时间的呀，我只能有时间慢慢写了~由于只是个人兴趣，不定期更新哈~）
 
-4.2  pooling （图纸only， now）**
+4.2  pooling （图纸only， now）
 
 ![](/images/collections/0.raw/zhihu/%E4%BC%98%E5%8C%96/asset/img_6025da856370.jpg)
 
-#### <strong>4.3 to be continue......</strong>
+#### 4.3 to be continue......

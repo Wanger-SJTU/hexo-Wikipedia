@@ -28,7 +28,7 @@ source_url: https://zhuanlan.zhihu.com/p/659770503
 
 $以典型的 GPT2 结构为例。假设第 i" role="presentation">ii 层 Decoder 的权重矩阵为 WQi,WKi,WVi,WOi,Wupi,Wdowni" role="presentation">WQi,WKi,WVi,WOi,Wupi,WdowniW^i_Q,W^i_K,W^i_V,W^i_O,W^i_{up},W^i_{down}。其中，self-attention块的4个权重矩阵WQi,WKi,WVi,WOi&#x2208;Rh&#x00D7;h" role="presentation">WQi,WKi,WVi,WOi∈Rh×hW^i_Q,W^i_K,W^i_V,W^i_O\in \mathbb{R}^{h\times h}，并且MLP块的2个权重矩阵Wupi&#x2208;Rh&#x00D7;4h,Wdowni&#x2208;R4h&#x00D7;h" role="presentation">Wupi∈Rh×4h,Wdowni∈R4h×hW^i_{up}\in \mathbb{R}^{h\times 4h},W^i_{down}\in \mathbb{R}^{4h\times h}。$
 
-#### <strong>第一阶段（prefill）：</strong>
+#### 第一阶段（prefill）：
 
 $假设第 i" role="presentation">ii 层的输入为 xi&#x2208;Rb&#x00D7;s&#x00D7;h" role="presentation">xi∈Rb×s×hx^i \in \mathbb{R}^{b\times s\times h} ，self-attention块的key、value、query和output表示为 xKi,xVi,xQi&#x2208;Rb&#x00D7;s&#x00D7;h" role="presentation">xKi,xVi,xQi∈Rb×s×hx^i_K,x^i_V,x^i_Q \in \mathbb{R}^{b\times s\times h} 。$
 
@@ -43,7 +43,7 @@ $$x^{i}_{Q} = x^{i} \cdot W^{i}_{Q}  \in \mathbb{R}^{b\times s\times h}\\x^{i}_{
 ![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_6906deb9655c.jpg)
 
 KV cache 作用过程
-#### <strong>第二阶段（decode）：</strong>
+#### 第二阶段（decode）：
 
 $给定当前生成词在第 i  层的向量表示为 t^{i}\in \mathbb{R}^{b\times 1\times h} 。推断计算分两部分：更新KV cache和计算第 i 层的输出。$
 
@@ -62,7 +62,7 @@ $$t^{i}_{out} = softmax(\frac{{t^{i}_{Q}x^{i}_{K}}^{T}}{\sqrt{h}}) \cdot x^{i}_{
 ![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_5fe4b807c8bf.jpg)
 
 without cache vs with cache
-#### <strong>KV cache的显存占用分析</strong>
+#### KV cache的显存占用分析
 
 假设输入序列的长度为 s ，输出序列的长度为 n ，以 FP16 来保存KV cache，那么<strong>KV cache的峰值显存占用大小为</strong> b(s+n)h * l * 2 * 2=4blh(s+n) 。这里第一个2表示K/V cache，第二个2表示 FP16 占2个bytes。
 

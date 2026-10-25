@@ -15,10 +15,10 @@ source_url: https://zhuanlan.zhihu.com/p/261747940
 ---
 
 
-**一文了解 DDR4 中的初始化(Initialization)、内存训练(Training )以及校准(Calibration)，简称 ITC。（ITC 只是译者自己想的缩写）。
+一文了解 DDR4 中的初始化(Initialization)、内存训练(Training )以及校准(Calibration)，简称 ITC。（ITC 只是译者自己想的缩写）。
 原文地址： https://www.systemverilog.io/ddr4-initialization-and-calibration
 申请翻译授权中，如有侵权，将会删除
-#### 引言 Introduction**
+#### 引言 Introduction
 
 当一个拥有 DRAM 子系统的设备启动时，有几件事需要在 DRAM 进入工作状态之前完成。下图是来自 JEDEC specification （DDR4 标准，https://www.jedec.org/standards-documents/docs/jesd79-4a）的状态机，展示出上电之后 DRAM 经历的几个状态。
 
@@ -40,7 +40,7 @@ source_url: https://zhuanlan.zhihu.com/p/261747940
 
 图-2 示例系统
 
-#### <strong>初始化 Initialization</strong>
+#### 初始化 Initialization
 
 ![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_f7cbca888c3e.png)
 
@@ -58,7 +58,7 @@ source_url: https://zhuanlan.zhihu.com/p/261747940
 
 原作者的另一篇文章可以帮助你了解更多关于时序参数的事儿：DDR4 timing parameters： https://www.systemverilog.io/understanding-ddr4-timing-parameters
 
-#### <strong>ZQ 校准 ZQ Calibration</strong>
+#### ZQ 校准 ZQ Calibration
 
 ![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_239f942f7476.png)
 
@@ -107,7 +107,7 @@ DQ 电路中的 240 欧姆电阻是 Poly Silicon Resistor 类型的，通常来�
 
 信号驱动强度可以通过 mode register MR1[2:1] 控制。端接电阻可以通过 MR/5 中的 RTT_NOM, RTT_WR & RTT_PARK 进行调节。 
 
-#### <strong>DQ 判决电平校准 Verf DQ Calibraton</strong>
+#### DQ 判决电平校准 Verf DQ Calibraton
 
 ![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_03ad4136a056.png)
 
@@ -123,7 +123,7 @@ DDR4 数据线的端接方式（Termination Style）从 CCT（Center Tapped Term
 
 但是在 DDR4 中，接收方不再有分压电路，取而代之的是一个内部参考判决电平，判断信号为 0 或者为 1。这个判决电平称为 VerfDQ。VerfDQ 可以通过模式寄存器 MR6 进行设定，在 VrefDQ 阶段，控制器需要通过尝试不同的 VerfDQ 值，来设置一个能够正确区分高低电平的值。
 
-#### <strong>读写训练 Read/Write Training</strong>
+#### 读写训练 Read/Write Training
 
 在完成上述步骤后，DRAM 初始化已经完成，并处于 IDLE 状态，但此时存储介质仍然未处于正确的工作状态。在正确读写 DRAM 之前，DDR 控制器或者物理层还必须来做一些重要的步骤，称为读写训练，也称存储介质训练/初始校准。
 
@@ -132,7 +132,7 @@ DDR4 数据线的端接方式（Termination Style）从 CCT（Center Tapped Term
 - 将采样时刻移动至读取数据眼图的中央
 - 报告错误，如果此时的信号完整性实在太差，没办法确保可靠的读写操作
 
-#### <strong>为什么需要读写训练</strong>
+#### 为什么需要读写训练
 
 让我们一起仔细地观察我们的参考系统，下图显示数据与地址/控制信号，在内存条与主机（ASIC/Processor）之间是如何连接的。
 
@@ -160,7 +160,7 @@ DRAM 本身是个很“呆” 的器件，很多事情都需要 DDR 控制器来
 - Write Centering
 以上算法一般由控制器/PHY（译注：以下统一表示为控制器） 完成，用户只需要在寄存器中使能/失能相关算法，并根据其结果进行相应操作。接下来的几节将进一步探讨控制器是如何具体实现这些算法的。
 
-#### <strong>Write Leveling</strong>
+#### Write Leveling
 
 DRAM 写入中最重要的，不能违反的时序参数是 tDQSS，表示数据有效信号 DQS 相对时钟信号 CK 的相对位置。tDQSS 必须在协议规定的 tDQSS(MIN) 和 tDQSS(MAX) 之间。如果 tDQSS 超出规定的限制，那么可能会写入错误的数据。
 
@@ -186,7 +186,7 @@ DRAM 写入中最重要的，不能违反的时序参数是 tDQSS，表示数据
 
 图-11 Write Leveling 示意图
 
-#### <strong>MPR Pattern Write</strong>
+#### MPR Pattern Write
 
 MPR（Multi Purpose Register，多用途寄存器）Pattern Write 实际上并不是一种校准算法，通常是读写对齐（Read/Write Centering）之前的一个预备步骤。
 
@@ -194,7 +194,7 @@ DDR4 DRAM 包括四个 8 比特可编程寄存器，称为 MPR，用于 DQ 比�
 
 ![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_ab9afb62afc3.jpg)
 
-#### <strong>Read Centering</strong>
+#### Read Centering
 
 Read Centering 的目的是训练控制器的读采样电路，在读数据眼图的中央进行采样，以获得最稳定的采样结果。DDR 控制器
 
@@ -204,7 +204,7 @@ Read Centering 的目的是训练控制器的读采样电路，在读数据眼�
 - 在确定眼图的左右边界后，将读延迟寄存器设置为眼图的中央
 - 对每一条数据信号 DQ 重复上述操作
 
-#### <strong>Write Centering</strong>
+#### Write Centering
 
 与 Read Centering 类似，Write Centering 的目的是设定每条数据信号线上写数据的发送延迟，使 DRAM 端能够根据对齐数据眼图的中央的 DQS 采样数据信号 DQ。
 
@@ -215,7 +215,7 @@ Read Centering 的目的是训练控制器的读采样电路，在读数据眼�
 - 将读取的数据与发送数据进行比较
 通过上述流程，控制器判断出正常读写数据时能容忍的最大发送延迟。因此可以推断出写数据的左右有效边界，并在 DRAM 端将写数据的中央与 DQS 边沿对齐。
 
-#### <strong>周期性校准 Periodic Calibration</strong>
+#### 周期性校准 Periodic Calibration
 
 交换机或者路由器等网络设备，运行过程中的温度和电压可能发生变化。为了确保信号完整性，以及读写的稳定性，一些在初始化阶段进行训练的参数必须重新训练更新。控制器 IP 通常会提供下列两项周期性校准流程。
 
@@ -225,7 +225,7 @@ Read Centering 的目的是训练控制器的读采样电路，在读数据眼�
 
 一般来说控制器可以通过设定一个计时器，来进行周期性校准，在计时器计满中断发生后进行周期性校准。
 
-#### <strong>总结 In a Nutshell</strong>
+#### 总结 In a Nutshell
 
 在 DRAM 投入使用之前，有 4 个步骤的工作需要完成
 
@@ -235,7 +235,7 @@ Read Centering 的目的是训练控制器的读采样电路，在读数据眼�
 - 读写训练，即存储介质训练/初始校准，Read/Write Training
 在这些步骤完成后，系统正式进入 IDLE 状态，并为后续的读写操作做好准备。根据设备的运行环境，你可能需要使能定期校准。
 
-#### <strong>参考文献 Reference</strong>
+#### 参考文献 Reference
 
 - JEDEC specification
 - A number of Micron DDR4 Datasheets

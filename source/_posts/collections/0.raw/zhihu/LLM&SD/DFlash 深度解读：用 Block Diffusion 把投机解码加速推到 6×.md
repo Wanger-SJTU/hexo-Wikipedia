@@ -43,15 +43,15 @@ source_url: https://zhuanlan.zhihu.com/p/2049539716261864313
 ![](https://www.zhihu.com/equation?tex=%5Ctau+%5Cin+%5B1%2C+%5Cgamma%2B1%5D)：<strong>每个 cycle 平均被接受的 token 数</strong>（接受长度，含 target 产出的 bonus token）最终加速比 
 ![](https://www.zhihu.com/equation?tex=%5Ceta+%3D+L_%7Btarget%7D%2FL)。这个公式把设计目标说得很清楚（Section 3.1）：
 
-**要么提高接受长度 
+要么提高接受长度 
 ![](https://www.zhihu.com/equation?tex=%5Ctau)，要么降低 drafting 开销 
-![](https://www.zhihu.com/equation?tex=T_%7Bdraft%7D)。**
+![](https://www.zhihu.com/equation?tex=T_%7Bdraft%7D)。
 1.2 EAGLE-3 的死结：两个杠杆互相掐脖子
 EAGLE-3 这类 SOTA 方法的 draft 模型是<strong>自回归</strong>的——草稿 token 也得一个接一个串行生成。于是 drafting 开销（Section 3.2, Eq. 2）是：
 
 ![](https://www.zhihu.com/equation?tex=+T_%7Bdraft%7D+%3D+%5Cgamma+%5Ccdot+t_%7Bstep%7D+)
 
-**草稿开销随草稿长度 
+草稿开销随草稿长度 
 ![](https://www.zhihu.com/equation?tex=%5Cgamma) 线性增长**。这就形成了一个死结：
 
 - 为了让 

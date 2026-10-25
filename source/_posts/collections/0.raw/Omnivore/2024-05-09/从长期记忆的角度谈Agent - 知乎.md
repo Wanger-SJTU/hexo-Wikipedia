@@ -138,7 +138,7 @@ NexusGPT——世界首个人工智能自由职业者平台！这里的自由职
 <strong>2.2.7 悟空</strong>  
 悟空是自主研发的Autonomous Agents。它除了具有LLM提供的基础语言能力，还具备长期记忆能力和接入第三方API能力以及基于文档的个性化数据理解能力。不过只能算是初级的autonomous agents，在之后的章节会详细介绍。
 
-## <strong>3\. Agent Simulations</strong>
+## 3\. Agent Simulations
 
 ### 3.1 什么是Agent Simulations
 
@@ -311,7 +311,7 @@ Generative Agents是斯坦福和谷歌的研究者们利用人工智能创造出
 3. 对memory进行summary，注意这里summary是预先计算，起到加速作用，之后计算prompt长度，如果仍然超长；
 4. 只保留history，因为history是基于所有的对话历史记录构建的，本身也包括最新的k轮对话，区别在于基于history只召回最相关的问答对，而memory不考虑相关性，只保留最近的k轮对话。如果此时长度还超过了最大长度限制，则history也会丢弃，只保留一条文档检索结果。
 
-###   <strong>6.2 重点</strong>
+###   6.2 重点
 
 <strong>6.2.1 如何更好地解决短期记忆的问题</strong>  
 

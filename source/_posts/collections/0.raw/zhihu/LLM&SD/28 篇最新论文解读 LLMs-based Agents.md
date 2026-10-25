@@ -17,7 +17,7 @@ source_url: https://zhuanlan.zhihu.com/p/662506575
 
 ### 引言
 
-**1.  博主在阅读Agent方向的论文时，做了些笔记，加工后形成了这篇文章。
+1.  博主在阅读Agent方向的论文时，做了些笔记，加工后形成了这篇文章。
 2.  学术论文最核心的idea通常用一两段话就可以概括。
 3.  这也是论文简读的意义所在。
 4.  对每篇论文，本文从motivation + design + conclusions三个角度介绍。
@@ -28,7 +28,7 @@ source_url: https://zhuanlan.zhihu.com/p/662506575
 本文解读的28项工作：一个朴素分类
 ### Planning
 
-#### CoT, 2023, Jason Wei et al., Google Research.**
+#### CoT, 2023, Jason Wei et al., Google Research.
 
 Wei, Jason, et al. “Chain-of-thought prompting elicits reasoning in large language models.” *Advances in Neural Information Processing Systems* 35 (2022): 24824-24837.
 
@@ -39,7 +39,7 @@ Wei, Jason, et al. “Chain-of-thought prompting elicits reasoning in large lang
 CoT prompting示意![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_07723efcf982.jpg)
 
 引入CoT后的LAMDA和PaLM 540B
-#### <strong>ToT, 2023, Shunyu Yao et al., Princeton & Google DeepMind.</strong>
+#### ToT, 2023, Shunyu Yao et al., Princeton & Google DeepMind.
 
 Yao, Shunyu, et al. "Tree of thoughts: Deliberate problem solving with large language models." *arXiv preprint arXiv:2305.10601* (2023).
 
@@ -50,7 +50,7 @@ LLMs 的token-level、left-to-right的决策过程，使得其在那些需要广
 ToT的推理过程示意（右）![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_518bb84105d8.jpg)
 
 ToT在Game of 24上成功率可以达到74%（vs. CoT=4%）
-#### <strong>Chain of Hindsight, 2023, Hao Liu et al., UC Berkeley.</strong>
+#### Chain of Hindsight, 2023, Hao Liu et al., UC Berkeley.
 
 Liu, Hao, Carmelo Sferrazza, and Pieter Abbeel. “Chain of hindsight aligns language models with feedback.” *arXiv preprint arXiv:2302.02676* 3 (2023).
 
@@ -61,7 +61,7 @@ Liu, Hao, Carmelo Sferrazza, and Pieter Abbeel. “Chain of hindsight aligns lan
 Chain of Hindsight训练、推理示意![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_35fc0086aa9c.jpg)
 
 Summarization 任务上的评估结果
-#### <strong>LLM+P, 2023, Bo Liu et al., University of Texas Austin.</strong>
+#### LLM+P, 2023, Bo Liu et al., University of Texas Austin.
 
 Liu, Bo, et al. “LLM+P: Empowering large language models with optimal planning proficiency.” *arXiv preprint arXiv:2304.11477* (2023).
 
@@ -74,7 +74,7 @@ Liu, Bo, et al. “LLM+P: Empowering large language models with optimal planning
 LLM+P原理示意![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_7a7a785e2cd2.jpg)
 
 LLM+P在大多数任务上给出了最优解
-#### <strong>PAL, 2023, Luyu Gao et al., CMU</strong>
+#### PAL, 2023, Luyu Gao et al., CMU
 
 Gao, L., Madaan, A., Zhou, S., Alon, U., Liu, P., Yang, Y., ... & Neubig, G. (2023, July). Pal: Program-aided language models. In *International Conference on Machine Learning* (pp. 10764-10799). PMLR.
 
@@ -91,7 +91,7 @@ PAL Prompting 的一个示例实验结果显示，PAL在数学类（如算术）
 PAL在数学推理类任务上表现优于CoT![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_3c1814c5766e.jpg)
 
 采用不同基础大模型下，PAL 和 CoT 在 GSM8K 数据集上的对比
-#### <strong>Reflexion, 2023, Noah Shinn et al., Northeastern University.</strong>
+#### Reflexion, 2023, Noah Shinn et al., Northeastern University.
 
 Shinn, Noah, et al. "Reflexion: Language agents with verbal reinforcement learning." *arXiv preprint arXiv:2303.11366*(2023).
 
@@ -104,7 +104,7 @@ Shinn, Noah, et al. "Reflexion: Language agents with verbal reinforcement learni
 Diagram of Reflexion![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_eb285e096dca.jpg)
 
 Reflexion(Heuristic) + ReAct表现最好
-#### <strong>ReAct, 2023, Shunyu Yao et al., Princeton.</strong>
+#### ReAct, 2023, Shunyu Yao et al., Princeton.
 
 Yao, Shunyu, et al. "React: Synergizing reasoning and acting in language models." *arXiv preprint arXiv:2210.03629* (2022).
 
@@ -115,7 +115,7 @@ ReAct将推理和行动结合起来应用到LLMs上。其中，推理产生的tr
 ReAct对以往Reason Only和Act Only的方法进行结合，https://react-lm.github.io![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_93caf5b3b319.jpg)
 
 ReAct在包括HotpotQA等在内的四类任务上取得SOTA, https://react-lm.github.io
-#### <strong>Self-Notes, 2023, Jack lanchantin et al., Meta AI.</strong>
+#### Self-Notes, 2023, Jack lanchantin et al., Meta AI.
 
 Lanchantin, Jack, et al. "Learning to Reason and Memorize with Self-Notes." *arXiv preprint arXiv:2305.00833* (2023).
 
@@ -129,15 +129,15 @@ Self-Notes vs. Scratchpad![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_
 
 Self-Notes在五类任务集上取得SOTA且部分任务上提升效果十分显著Self-Notes本质上将LLMs的token预测过程进行了分解、分步的优化。一个显著的问题是，增加了训练和推理的计算消耗，尤其是推理期间的消耗，对于回答问题本来就慢的LLMs（e.g.,相比于Google搜索的响应速度），是个不容忽视的新增代价。
 
-### <strong>Memory</strong>
+### Memory
 
-#### <strong>Computationally Universal Models, 2023, Dale Schuurmans, Google Brain.</strong>
+#### Computationally Universal Models, 2023, Dale Schuurmans, Google Brain.
 
 Schuurmans, Dale. "Memory augmented large language models are computationally universal." *arXiv preprint arXiv:2301.04589* (2023).
 
 这是一项较为理论的研究工作。作者通过模拟的方式表明，用一个外部可读写内存（R/W memory）增强后, 基于transformer模型的LLM是计算通用的（computationally universal）；即增强后的大模型（理论上）可以<strong>模拟任何算法</strong>。在本文中，作者将一个Flan-U-PaLM 540B模型，用一个外部R/W内存增强后，可以完全<strong>模拟通用图灵机U15,2</strong>，且该过程不需要对LLM进行参数微调，只需采用一个存储指令计算机（stored instruction computer，用于外部存储读写）对LLM循环prompt即可。这个研究与Neural Turning Machine（NTM）有相似结论，可参考NTM论文和Reddit 讨论，DeepMind在2016年也做过类似的研究。
 
-#### <strong>LONGMEM, 2023, Weizhi Wang et al., UCSB & Microsoft Research.</strong>
+#### LONGMEM, 2023, Weizhi Wang et al., UCSB & Microsoft Research.
 
 Wang, Weizhi, et al. "Augmenting Language Models with Long-Term Memory." *arXiv preprint arXiv:2306.07174* (2023).
 
@@ -151,7 +151,7 @@ LONGMEM架构在记忆构建过程中，长文本序列被分割成固定长度�
 
 LONGMEM中长期记忆的构建与读取传统 LLMs 因输入序列长度限制，prompt 中能够提供的示例个数是比较有限的，<strong>LONGMEM</strong> <strong>将上下文长度扩充到了65K</strong>，可以支持非常丰富的 prompt 示例。例如，可以将几千个 demonstration examples 缓存在LONGMEM的记忆中，显著增强 in-context learning 的效果。
 
-#### <strong>Atlas, 2022, Gautier Izacard et al., Meta AI & UCL.</strong>
+#### Atlas, 2022, Gautier Izacard et al., Meta AI & UCL.
 
 Izacard, Gautier, et al. "Few-shot learning with retrieval augmented language models." *arXiv preprint arXiv:2208.03299* (2022).
 
@@ -161,9 +161,9 @@ LLMs超大的参数量存储了海量知识（in-parameter memorization），使
 
 Atlas: Retrieval Augmented Language Model (RAG LM)根据scaling law, 更大的模型、更多的数据，通常可以带来更好的模型泛化能力。本文的研究进一步表明，scaling law描述的结果是一种充分非必要条件。除了增大模型参数量、增加训练样本量，还可以通过其它途径来提高模型的Few-Shot能力，如Atlas所采用的检索增强技术。本质上，Atlas将模型的memorization从generalization中解耦出来，将memorization的问题<strong>外包给一个retriever</strong>，并对解耦后的model和retriever进行联合训练，显著减少了为达到和LLMs相同泛化能力所需要的模型参数量。检索增强的引入，将一部分复杂度从model本身转移到了retriever。不过，Atlas的这种设计带来了adaptability, interpretability 和efficiency等多个优势。这里有两个有趣的问题，待进一步研究，1). 当memorization被剥离后，语言模型学到的具体是什么？2). 现有很多关于memory-augmented的研究，本质上是否等价于进一步增大了LLMs的参数量，即通过一个更高效的方式（知识的直接存储）获得了有效知识，只不过这种获得如果是通过传统的in-parameter memorization实现，则需要付出更大的成本。
 
-### <strong>Tools</strong>
+### Tools
 
-#### <strong>Toolformer, 2023, Timo Schick et al., Meta AI Research.</strong>
+#### Toolformer, 2023, Timo Schick et al., Meta AI Research.
 
 Schick, Timo, et al. "Toolformer: Language models can teach themselves to use tools." *arXiv preprint arXiv:2302.04761*(2023).
 
@@ -174,7 +174,7 @@ Toolformer 是一个基于<strong>自监督学习方式</strong>，在API calls�
 Toolformer的几个关键步骤：采样、执行、过滤API Calls![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_80e84c58e00d.jpg)
 
 在三个benchmark数据集上的性能对比
-#### <strong>WebGPT, 2022, Reiichiro Nakano et al., OpenAI.</strong>
+#### WebGPT, 2022, Reiichiro Nakano et al., OpenAI.
 
 Nakano, Reiichiro, et al. "Webgpt: Browser-assisted question-answering with human feedback." *arXiv preprint arXiv:2112.09332* (2021).
 
@@ -184,7 +184,7 @@ Nakano, Reiichiro, et al. "Webgpt: Browser-assisted question-answering with huma
 
 WebGPT定义的Agent在网上冲浪时可以执行的命令/可采取的动作在 Explain-me-Like-I’m-Five 数据集上的训练结果表明，在作者所尝试的几组不同技术组合中，结合行为克隆（behavior cloning）和对奖励函数进行拒绝采样（rejection sampling）的方案，可以得到最佳模型。
 
-#### <strong>LLMs as Tool Makers, 2023, Tianle Cai et al., DeepMind & Princeton.</strong>
+#### LLMs as Tool Makers, 2023, Tianle Cai et al., DeepMind & Princeton.
 
 Cai, Tianle, et al. “Large language models as tool makers.” *arXiv preprint arXiv:2305.17126* (2023).
 
@@ -195,7 +195,7 @@ Cai, Tianle, et al. “Large language models as tool makers.” *arXiv preprint 
 LATM （LLMs-as-Tool-Makers）的闭环设计![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_44e8371c77f8.jpg)
 
 LATM和CoT的比较
-#### <strong>Gorilla, 2023, Shishir G. Patil et al., UC Berkeley & Microsoft Research.</strong>
+#### Gorilla, 2023, Shishir G. Patil et al., UC Berkeley & Microsoft Research.
 
 Patil, Shishir G., et al. "Gorilla: Large language model connected with massive apis." *arXiv preprint arXiv:2305.15334*(2023).
 
@@ -209,7 +209,7 @@ Gorilla的训练和推理过程示意本文提出Gorilla，一个在LLaMA-7B基�
 
 从“幻觉”和准确率两个维度的比较结果实验表明，Gorilla在API调用指令生成方面的性能（幻觉和准确率）超越了GPT-4。同时，作者公开了APIBench，一个较全面的API数据集，包含了来自HuggingFace, TorchHub, TensorHub的几乎所有API。
 
-#### <strong>HuggingGPT, 2023, Yongliang Shen et al., Zhejiang University, MSRA.</strong>
+#### HuggingGPT, 2023, Yongliang Shen et al., Zhejiang University, MSRA.
 
 Shen, Yongliang, et al. "Hugginggpt: Solving ai tasks with chatgpt and its friends in huggingface." *arXiv preprint arXiv:2303.17580* (2023).
 
@@ -218,7 +218,7 @@ Shen, Yongliang, et al. "Hugginggpt: Solving ai tasks with chatgpt and its frien
 ![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_23eb2a3e18b2.jpg)
 
 HuggingGPT示意：多个专用模型协同解决一个多模态类型的任务
-#### <strong>WebAgent, 2023, Izzeddin Gur et al., Google DeepMind.</strong>
+#### WebAgent, 2023, Izzeddin Gur et al., Google DeepMind.
 
 Gur, Izzeddin, et al. "A real-world webagent with planning, long context understanding, and program synthesis." *arXiv preprint arXiv:2307.12856* (2023).
 
@@ -232,7 +232,7 @@ Gur, Izzeddin, et al. "A real-world webagent with planning, long context underst
 
 WebAgent结合了通用模型Flan-U-PaLM和专用模型HTML-T5作者的研究表明 1. 将任务规划和HTML文档总结耦合到领域专用模型中（即HTML领域大模型, e.g., HTML-T5），对于提高任务成功率具有关键作用；2. 在完成基于HTML类数据的任务方面，HTML-T5目前具有SOTA表现。3. WebAgent 带来了额外的计算开销，泛化困难，且在真实网络环境中评估效果的成本较高等问题，需进一步解决。
 
-#### <strong>ToolLLM, 2023, Yujia Qin et al., Tsinghua, ModelBest, Renmin University.</strong>
+#### ToolLLM, 2023, Yujia Qin et al., Tsinghua, ModelBest, Renmin University.
 
 Qin, Yujia, et al. "ToolLLM: Facilitating large language models to master 16000+ real-world apis." *arXiv preprint arXiv:2307.16789* (2023).
 
@@ -243,7 +243,7 @@ Qin, Yujia, et al. "ToolLLM: Facilitating large language models to master 16000+
 ToolLLM框架：构建ToolBench并训练ToolLLaMA和API Retriever![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_7820e2363d98.jpg)
 
 在工具使用能力评估中与ReAct方法的比较
-#### <strong>Additional Opinions, 2023, Hui Yang et al., Amazon.</strong>
+#### Additional Opinions, 2023, Hui Yang et al., Amazon.
 
 Yang, H., Yue, S., & He, Y. (2023). Auto-GPT for Online Decision Making: Benchmarks and Additional Opinions. arXiv preprint arXiv:2306.02224.
 
@@ -256,9 +256,9 @@ Additional Opinions算法通过引入监督信号，显著改善Agent表现的�
 AutoGPT + Additional Opinions的一步迭代过程示意![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_d095f3c671b1.jpg)
 
 在WebShop上的性能比较
-### <strong>Multiagents</strong>
+### Multiagents
 
-#### <strong>Generative Agents, 2023, Joon Sung Park et al., Stanford.</strong>
+#### Generative Agents, 2023, Joon Sung Park et al., Stanford.
 
 Park, Joon Sung, et al. “Generative agents: Interactive simulacra of human behavior.” *arXiv preprint arXiv:2304.03442* (2023).
 
@@ -269,7 +269,7 @@ Park, Joon Sung, et al. “Generative agents: Interactive simulacra of human beh
 Generative Agents![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_b84641407336.jpg)
 
 对Observation，Planning，Reflection三个模块的消融分析
-#### <strong>Multiagent Debate, 2023, Yilun Du et al., MIT & Google Brain.</strong>
+#### Multiagent Debate, 2023, Yilun Du et al., MIT & Google Brain.
 
 Du, Yilun, et al. "Improving Factuality and Reasoning in Language Models through Multiagent Debate." *arXiv preprint arXiv:2305.14325* (2023).
 
@@ -280,7 +280,7 @@ Du, Yilun, et al. "Improving Factuality and Reasoning in Language Models through
 Multiagent Debate解决数学问题的一个示例![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_3456263d6e50.jpg)
 
 Multiagent Debate提高推理性能并改善事实准确性
-#### <strong>ChatEval, 2023, Chi-Min Chan et al., Tsinghua, HKUST, & PKU.</strong>
+#### ChatEval, 2023, Chi-Min Chan et al., Tsinghua, HKUST, & PKU.
 
 Chan, Chi-Min, et al. "ChatEval: Towards Better LLM-based Evaluators through Multi-Agent Debate." *arXiv preprint arXiv:2308.07201* (2023).
 
@@ -291,7 +291,7 @@ ChatEval是多体辩论的改进版。主要改进有两点。一，为不同智
 ![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_463354e5a1ad.jpg)
 
 ChatEval提出的三种Agent之间的通信模式
-#### <strong>ChatDev, 2023, Chen Qian et al., Tsinghua & BUPT.</strong>
+#### ChatDev, 2023, Chen Qian et al., Tsinghua & BUPT.
 
 Qian, C., Cong, X., Yang, C., Chen, W., Su, Y., Xu, J., ... & Sun, M. (2023). Communicative agents for software development. arXiv preprint arXiv:2307.07924.
 
@@ -304,9 +304,9 @@ LLMs惊人的语言运用和编码能力，必深刻变革软件工程。畅想�
 Architecture of CHATDEV![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_247585e9a959.jpg)
 
 示例：CEO和CTO讨论该选择哪个编程语言进行开发
-### <strong>Embodied Agents</strong>
+### Embodied Agents
 
-#### <strong>Voyager, 2023, Guanzhi Wang et al., NVIDIA & Caltech.</strong>
+#### Voyager, 2023, Guanzhi Wang et al., NVIDIA & Caltech.
 
 Wang, Guanzhi, et al. "Voyager: An open-ended embodied agent with large language models." *arXiv preprint arXiv:2305.16291* (2023).
 
@@ -321,7 +321,7 @@ VOYAGER的三个主要模块VOYAGER与GPT-4等LLMs通过黑箱模式进行交互
 ![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_1d6ad0d634a6.jpg)
 
 Minecraft: VOYAGER vs. (ReAct/Reflexion/Auto-GPT)
-#### <strong>A Unified RL Agent, 2023, Norman Di Palo et al., ICL & Google DeepMind.</strong>
+#### A Unified RL Agent, 2023, Norman Di Palo et al., ICL & Google DeepMind.
 
 Di Palo, Norman, et al. "Towards a unified agent with foundation models." *Workshop on Reincarnating Reinforcement Learning at ICLR 2023*. 2023.
 
@@ -333,9 +333,9 @@ A unified agent with foundation models (e.g., VLM, LLM)在该框架中，对于�
 
 实验表明，通过将LLMs和VLM嵌入到传统RL框架，Agent在<strong>探索效率、经验数据复用、技能调度、模仿学习</strong>等方面均得到了显著提升，而这些棘手问题在以前均需要分别进行设计和单独处理。**
 
-### Benchmark**
+### Benchmark
 
-#### <strong>API-Bank, 2023, Minghao Li et al., Alibaba DAMO Academy & PKU.</strong>
+#### API-Bank, 2023, Minghao Li et al., Alibaba DAMO Academy & PKU.
 
 Li, Minghao, et al. "Api-bank: A benchmark for tool-augmented llms." *arXiv preprint arXiv:2304.08244* (2023).
 
@@ -344,7 +344,7 @@ Li, Minghao, et al. "Api-bank: A benchmark for tool-augmented llms." *arXiv prep
 ![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_9cda3dec4e31.jpg)
 
 一个LLMs使用API工具的工作流：Tool-Augmented LLMs
-#### <strong>WebArena, 2023, Shuyan Zhou et al., CMU.</strong>
+#### WebArena, 2023, Shuyan Zhou et al., CMU.
 
 Zhou, Shuyan, et al*. "Webarena: A realistic w*eb environment for building autonomous agents." arXiv preprint arXiv:2307.13854 (2023).
 
@@ -354,7 +354,7 @@ Zhou, Shuyan, et al*. "Webarena: A realistic w*eb environment for building auton
 
 Design of WebArena实验结果表明，完成WebArena基准测试集中的任务，对于LLMs智能体而言极具挑战，如基于最先进的GPT-4的智能体，其<strong>端到端的任务成功率只有10.59%</strong>。如何让智能体在开放网络环境中可靠、鲁棒地执行任务，仍然是亟待研究的问题。
 
-#### <strong>AgentBench, 2023, Xiao Liu et al., Tsinghua.</strong>
+#### AgentBench, 2023, Xiao Liu et al., Tsinghua.
 
 Liu, Xiao, et al. "AgentBench: Evaluating LLMs as Agents." *arXiv preprint arXiv:2308.03688*(2023).
 
@@ -365,7 +365,7 @@ Liu, Xiao, et al. "AgentBench: Evaluating LLMs as Agents." *arXiv preprint arXiv
 Design of AgentBench![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_fef579fe1b27.jpg)
 
 LLMs on AgentBench
-### <strong>参考文献说明</strong>
+### 参考文献说明
 
 1.  Agent相关的研究已超过200篇（2023-10-01），博主参考MetaAI的综述性论文*Augmented Language Models: a Survey*，从planning、tools、memory、multiagents、benchmark等维度各选了几篇代表性论文，共27篇。主要想法是，对Agent研究形成一个全局性的认识，又能了解到每个细分方向主要在关注什么问题。
 

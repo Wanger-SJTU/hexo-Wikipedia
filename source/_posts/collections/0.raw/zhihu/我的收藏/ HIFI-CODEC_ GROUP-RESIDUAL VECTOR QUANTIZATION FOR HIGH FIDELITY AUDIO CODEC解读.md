@@ -23,7 +23,6 @@ source_url: https://zhuanlan.zhihu.com/p/627261186
 
 [AcademiCodec](https://link.zhihu.com/?target=https%3A//github.com/yangdongchao/AcademiCodec)
 
-**
 
 ### 解读
 
@@ -37,17 +36,15 @@ Audio codec **是一种被广泛使用的压缩audio的通信技术。
 
         VALL-E[3]利用Encodec[4] 作为中间表征用来帮助TTS任务
 
-**
 
-尽管Audio codec 对生成任务很有帮助，但有两个挑战：**
+尽管Audio codec 对生成任务很有帮助，但有两个挑战：
 
 （1）训练audio codec 模型很难，因为没有公开可用的训练流程，并且需要大量的数据和GPU
 
 （2）实现好的重构性能需要很多codebooks，增加了生成模型的压力
 
-**
 
-本文设计针对生成任务的audio codec 模型，目标有两个：**
+本文设计针对生成任务的audio codec 模型，目标有两个：
 
 （1）有很好的重构性能
 
@@ -59,11 +56,10 @@ Audio codec **是一种被广泛使用的压缩audio的通信技术。
 
 实验结果表明尽管只使用4个codebooks，HiFi-Codec 在重构性能方面超过了Encodec。
 
-**
 
 #### 2. 方法
 
-HiFi-Codec 的模型结果如下图所示，包括三个主要模块：**
+HiFi-Codec 的模型结果如下图所示，包括三个主要模块：
 
 （1）Encoder，将输入的audio 编码成一个latent feature representation z
 
@@ -71,11 +67,10 @@ HiFi-Codec 的模型结果如下图所示，包括三个主要模块：**
 
 （3）Decoder，从压缩的表征Zq重构回audio
 
-**
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_3cb07e072a40.jpg)
 
-模块介绍：**
+模块介绍：
 
 （1）Encoder 和Decoder 参考了Encodec 和 SoundStream
 
@@ -87,9 +82,8 @@ HiFi-Codec 的模型结果如下图所示，包括三个主要模块：**
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_82b0eeca0064.jpg)
 
-**
 
-模型训练：**
+模型训练：
 
 使用三个discriminators: （1）Encodec中的 multi-scale STFT-based (MS-STFT)判别器，（2）HiFi-GAN vocoder 中的multi-period discriminator (MPD)  和 multi-scale discriminator (MSD)  
 

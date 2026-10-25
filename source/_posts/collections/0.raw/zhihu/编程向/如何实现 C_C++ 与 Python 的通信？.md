@@ -33,7 +33,7 @@ source_url: https://www.zhihu.com/question/23003213/answer/56121859
 练习本文中的例子，需要搭建Python扩展开发环境。具体细节见
 
 [搭建Python扩展开发环境 - 蛇之魅惑 - 知乎专栏](http://zhuanlan.zhihu.com/python-dev/20150730)
-1 C/C++ 调用 Python（基础篇）**
+1 C/C++ 调用 Python（基础篇）
 
 Python 本身就是一个C库。你所看到的可执行体python只不过是个stub。真正的python实体在动态链接库里实现，在Windows平台上，这个文件位于 %SystemRoot%\System32\python27.dll。
 
@@ -80,7 +80,7 @@ def great_function(a):
 ```
 
 
-**接下来要把它包装成C语言的函数。我们期待的C语言的对应函数应该是这样的：
+接下来要把它包装成C语言的函数。我们期待的C语言的对应函数应该是这样的：
 
 ```cpp
 int great_function_from_python(int a) {
@@ -156,7 +156,7 @@ csh:
 
 `setenv PYTHONPATH .:$PYTHONPATH`
 
-2 Python 调用 C/C++（基础篇）**
+2 Python 调用 C/C++（基础篇）
 
 这种做法称为Python扩展。
 
@@ -224,7 +224,7 @@ PyMODINIT_FUNC initgreat_module(void) {
 
 cl /LD great_module.c /o great_module.pyd -IC:\Python27\include C:\Python27\libs\python27.lib
 
-/LD 即生成动态链接库。编译成功后在当前目录可以得到 great_module.pyd（实际上是dll）。这个pyd可以在Python环境下直接当作module使用。**
+/LD 即生成动态链接库。编译成功后在当前目录可以得到 great_module.pyd（实际上是dll）。这个pyd可以在Python环境下直接当作module使用。
 
 在Linux下面，则用gcc编译：
 
@@ -242,7 +242,6 @@ cl /LD great_module.c /o great_module.pyd -IC:\Python27\include C:\Python27\libs
 用以上的方法实现C/C++与Python的混合编程，需要对Python的内部实现有相当的了解。接下来介绍当前较为成熟的技术Cython和SWIG。
 
 3 C/C++ 调用 Python（使用Cython）
-**
 
 在前面的小节中谈到，Python的数据类型和C的数据类型貌似是有某种“一一对应”的关系的，此外，由于Python（确切的说是CPython）本身是由C语言实现的，故Python数据类型之间的函数运算也必然与C语言有对应关系。那么，有没有可能“自动”的做替换，把Python代码直接变成C代码呢？答案是肯定的，这就是Cython主要解决的问题。
 
@@ -518,7 +517,7 @@ Linux，使用C++的编译器
 
 SWIG非常强大，对于Python接口而言，简单类型，甚至指针，都无需人工干涉即可自动转换，而复杂类型，尤其是自定义类型，SWIG提供了typemap供转换。而一旦使用了typemap，配置文件将不再在各个语言当中通用。
 
-参考资料：**
+参考资料：
 
 SWIG的官方文档，质量比较高。
 

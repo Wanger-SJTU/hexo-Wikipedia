@@ -17,7 +17,7 @@ source_url: https://zhuanlan.zhihu.com/p/700569722
 
 [Memory Management for Serving LLMs without PagedAttention](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2405.04437)
 
-**PagedAttention动态分配内存，导致内存不连续。有如下问题：
+PagedAttention动态分配内存，导致内存不连续。有如下问题：
 
 - 需要在框架中引入额外内存管理代码。增大开发难度。
 - kv cache在attention计算中无法连续读取，需要手动修改注意力kernel代码进行分段读取，增大开发难度。
@@ -33,7 +33,7 @@ PagedAttention速度慢于FlashAttention
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_d01d72f4a787.jpg)
 
-vllm代码 PagedAttention改进：使用连续内存。**
+vllm代码 PagedAttention改进：使用连续内存。
 
 最开始其实就是使用连续内存，但是存在问题：
 

@@ -27,17 +27,17 @@ source_url: https://zhuanlan.zhihu.com/p/533807811
 
  。感兴趣的小伙伴可以读一下，而本篇文章就来阅读一下 PET 。
 
-### <strong>0x1. 标题和作者</strong>
+### 0x1. 标题和作者
 
 ![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_e46e30aef961.jpg)
 
 PET标题和作者标题可以翻译为：<strong>基于部分等价变换和自动校正来优化张量化程序</strong>。作者团队来自清华，CMU和FaceBook等。这篇论文的一作王豪杰来自清华大学。后面会介绍到这篇论文在生成突变程序集合时，要维护K个效率最高的突变程序时，使用了ASO中的代价模型和评估方式，所以作者有贾志豪大神也不奇怪。
 
-### <strong>0x2. 摘要</strong>
+### 0x2. 摘要
 
 现有的框架在图层做优化<strong>一般都是基于等价变换</strong>，也就时说变换前后的程序是完全等价的。这里等价的意思是给定相同的输入，那么变换前后的程序一定可以得到相同的输出。而这篇论文挖了一个新坑，即做了一个新的框架PET，<strong>在优化过程中允许出现部分等价的变换</strong>，并且设计了一个高效的搜索算法去组合完全等价以及部分等价的变换以探索更大的搜索空间。并且最终结果也比较好。
 
-### <strong>0x3. 介绍</strong>
+### 0x3. 介绍
 
 这里需要先说明一个名词的含义，<strong>统计特性</strong>。统计特性的意思就是变换前后程序是完全数学等价的特性。目前TVM，以及TensorFlow，PyTorch，TensorRT等框架的变换优化或者叫 Pass 都是满足这个特性的。而部分等价变换<strong>不要求</strong>变换前后的程序保持这个统计特性，也就是允许变换后的程序和原程序在相同输入时输出的某些位置的元素是不等的。支持部分等价变换可以 <strong>（1）改变输入Tensor的shape和排列顺序以提高计算效率（2）使用效率更高的算子代替效率更低的算子（3）对图结构进行变换获得更多的高效优化机会</strong>。但要支持部分等价变换也有两个挑战。<strong>第一个</strong>就是如果直接使用部分等价变换会降低模型精度，因此有必要校正那些不等的张量区域，但是快速识别哪些区域是不等的并且产生校正Kernel是一项很难的任务并且要标注出输出的哪些位置在变换前后是不等的也是一个难题。<strong>第二个</strong>就是应用了部分等价比变换之后张量程序的搜索空间扩大了，生成候选的张量化程序的算法必须仔细管理其计算复杂度。<strong>程序优化器</strong>（后面有单独的一节讲）必须平衡部分等价变换带来的好处以及因为它引入的额外开销，并结合完全等价变换来获得高性能的张量化程序。
 
@@ -48,7 +48,7 @@ PET标题和作者标题可以翻译为：<strong>基于部分等价变换和自
 - <strong>Program Optimizer。</strong>首先一个模型被切分成多个子图，然后对每个子图应用部分等价变换来获得更多的优化机会。最后在整个模型的各个子图的边界部分应用一系列后优化，包括冗余消除和算子融合等以达到整体的最佳性能。
 贡献方面其实就是上面这三点，我们先提一下PET在几个模型上进行评估的性能。对于ResNet-18提升了1.2倍，对于CSRNet和BERT提升了2.5倍。
 
-### <strong>0x4. 背景和想法来源</strong>
+### 0x4. 背景和想法来源
 
 这一节没什么好讲的，感觉和Introduction有一点重复，我们只讲讲图1，帮助大家理解什么是部分等价变换。首先图1长这样：
 
@@ -58,7 +58,7 @@ PET标题和作者标题可以翻译为：<strong>基于部分等价变换和自
 
 后面几节我们会详细讲解<strong>如何确定数值不相等的部分是哪些</strong>以及<strong>如何对这些数值不相等的区域进行校正</strong>，现在不理解也没关系。
 
-### <strong>0x5. 设计总览</strong>
+### 0x5. 设计总览
 
 PET是<strong>第一个</strong>利用部分等价变换去优化张量化程序的框架，它利用了张量化程序的多线性性质。这里首先要解释一下什么是<strong>Multi-linear tensor programs (MLTPs)</strong> 即多线性张量化程序，后面我们一律用MLTPs的说法。一个拥有n个输入张量I_1, ..., I_n的Op，如果对于每一个输入I_k都是线性的那么就称这个Op是多线性的：
 
@@ -76,7 +76,7 @@ PET总览<strong>首先原始的张量化程序输入到PET框架中，然后PET
 
 <strong>校正后的突变体被发送到 PET 的程序优化器，它将现有的完全等价变换与部分等价变换结合起来，构建一个程序优化的综合搜索空间。 优化器为每个子程序评估一组丰富的突变体，并在它们的边界上应用后期优化，以便在搜索空间中发现高度优化的候选程序。</strong>
 
-### <strong>0x6. Mutation Generator</strong>
+### 0x6. Mutation Generator
 
 这一节主要描述了Mutation Generator的算法实现流程并描述了几种生成的典型突变模式。Mutation Generator的算法如下图所示：
 
@@ -94,11 +94,11 @@ Dialated Conv通过Mutation Generator变成普通的Conv计算以获得加速这
 
 - <strong>Multi-operator mutants。</strong> 这里就是将个算子集合替换为另外一个高效的算子集合。比如InceptionV3里面一些具有相似的输出形状的张量对应的算子可以被组合成一个更大的卷积以提高GPU的利用率并减少Kernel Launch的开销。
 
-### <strong>0x7. Mutation Corrector</strong>
+### 0x7. Mutation Corrector
 
 PET中最重要的一环应该就是这个Mutation Corrector。设计突变校正器主要有两个挑战。<strong>第一：输出张量可能会非常大，可能涉及多达数百万个需要等价验证的元素。单独验证输出张量的每个元素是不可行的。第二：每个输出元素的验证可能依赖大量的输入元素比如矩阵乘算子中一个输出元素是两个输入矩阵的一行和一列的内积，两者的数量都可能达到上千</strong>。为了解决这两个挑战，PET提出了2个数学理论。
 
-### <strong>0x7.1 理论基础</strong>
+### 0x7.1 理论基础
 
 我这里不完全按照论文的写作来讲，而是按照我自己的理解来讲，讲得更加通俗不那么理论化。首先我们可以看一下一个3\times 3的卷积可以由如下公式进行表示：
 
@@ -117,7 +117,7 @@ PET中最重要的一环应该就是这个Mutation Corrector。设计突变校�
 ![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_9cfd33e1180c.jpg)
 
 Table2
-### <strong>0x7.2 Mutation Correction算法</strong>
+### 0x7.2 Mutation Correction算法
 
 有了上述两个定义就可以引出Mutation Correction算法。此算法分为以下三个步骤：
 
@@ -129,7 +129,7 @@ Table2
 - <strong>Step 2: Random testing for each box pair</strong>。第二步就是对于输入MLTP P_1和它的变体 P_2应用上一小节介绍的定理来判断哪些区域是数值等效的。根据定理1首先要选取m+1个位置，对于Figure5中的例子m=4。然后对于m+1个位置都要基于随机数据检查t次，这样误判的可能性就变成(n/p)^t，其中p=2^{32}-1，t是一个可调的超参数用来平衡程序检查的开销和出错的可能性。
 - <strong>Step 3: Correction kernel generation</strong>。最后一步就是对于所有输出Tensor数值不等的区域自动生成校正Kernel。为了减少校正Kernel的开销，PET尽可能的将校正Kernel和已有的计算Kernel融合起来。
 
-### <strong>0x7.3 融合Correction Kernels</strong>
+### 0x7.3 融合Correction Kernels
 
 这里就是对上面Step3的一个解释。请看Figure6：
 
@@ -137,7 +137,7 @@ Table2
 
 Figure6Figure6(a)表示一个标准的卷积过程。然后Figure6(b)表示在Figure6(a)上应用一个部分等效变换。Conv-2是校正Kernel，这里和Conv-1是共享权重的，所以我们可以把conv1-conv2融合起来变成一个conv-1-2，如Figire6(c)所示。具体来说这个融合操作就是将T_1和T_0^{'} 联合到一个单独的Tensor并将Conv-1-2的输出结果分解成T^2和T_3^{'}。这里的联合和分解只包含数据拷贝，可以用reshape和transpose来做到。
 
-### <strong>0x8. Program Optimizer</strong>
+### 0x8. Program Optimizer
 
 这一节介绍了PET中的程序优化器，它可以通过将等效变换和部分等效变换结合起来探索一个更大的程序优化搜索空间。<strong>首先程序优化器将输入程序分解成几个更小尺寸的子程序并传给Mutation Generator。然后为了优化每个子程序，PET在一个丰富的搜索空间中通过调整参与突变的Op集合以及DFS搜索算法的迭代次数找到最好的变体程序。最后，把所有优化后的子程序缝合到一起的时候会跨边界应用额外的后优化包括算子融合，消除冗余Op等等</strong>。下面的算法2描述了程序优化器的整个流程：
 
@@ -163,11 +163,11 @@ Figure6Figure6(a)表示一个标准的卷积过程。然后Figure6(b)表示在Fi
 - <strong>算子融合</strong>。 如图 7(c) 所示，PET 将剩余的连续 R/T 算子融合为单个算子（例如，R/T-DH）以降低Kernel Launch的成本。 张量化程序中的非线性激活也与 R/T 或其他线性算子融合。 算子融合是最常用的非线性算子的程序优化。 PET 能够恢复切分原始的张量化程序时损失的大部分效率。
 - <strong>预处理</strong>。 如果所有输入张量都是静态已知的，我们会预处理任何算子。 例如，在图 7(b) 中，R/T-B 和 R/T-I 都可以在卷积权重张量 w1 和 w2 上进行预处理。其实这就是<strong>常量折叠</strong>。
 
-### <strong>0x9. 实现</strong>
+### 0x9. 实现
 
 他们的代码是开源的，大约有13000行C++代码和1000行Python代码。如果你对这个工作感兴趣的话可以去研究源码。地址见：[https://github.com/thu-pacman/PET](https://link.zhihu.com/?target=https%3A//github.com/thu-pacman/PET) 。
 
-### <strong>10. 评估</strong>
+### 10. 评估
 
 论文给出的实验结果是相当丰富的，这里就不仔细讲每一种实验结果图表了。只讲一个最重要的实验结果图：
 
@@ -181,6 +181,6 @@ PET在多种网络上的性能表现在ResNet-18，CSRNet，InceptionV3，BERT�
 
 不同框架或者库作为后端时一些常见的单算子的加速效果这里感觉说明了PET的扩展性是比较好的，可以结合大多数先进的代码生成类工作以及手工优化的算子库。
 
-### <strong>11. 结论</strong>
+### 11. 结论
 
 这篇论文提出了PET，也是一个将部分等价变换应用在张量化程序上的DNN框架。通过应用部分等价变换可以探索更大的程序搜索空间并在大多数流行的深度学习网络上取得不错的加速效果。这篇论文的实验部分是非常扎实的，推荐大家学习一下。

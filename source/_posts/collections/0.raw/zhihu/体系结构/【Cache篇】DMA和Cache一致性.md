@@ -21,7 +21,7 @@ source_url: https://zhuanlan.zhihu.com/p/508439396
 
 前文：
 
-**【Cache篇】初见Cache
+【Cache篇】初见Cache
 【Cache篇】Cache的映射方式
 【Cache篇】包容性和排他性的Cache
 【Cache篇】Cache的分类
@@ -33,14 +33,14 @@ source_url: https://zhuanlan.zhihu.com/p/508439396
 - DMA直接操作系统总线来读写内存地址，而CPU并不感知。
 - DMA修改的内存地址，在CPU的cache中有缓存，但是CPU并不知道内存数据被修改了，CPU依然去访问cache的旧数据，导致Cache一致性问题。
 
-#### <strong>DMA和cache一致性的解决</strong>
+#### DMA和cache一致性的解决
 
 - 第一种方案是使用硬件cache一致性的方案，需要SOC中CCI这种IP的支持。
 - 第二种方案就是使用non-cacheable的内存来进行DMA传输，这种方案最简单但效率最低，严重降低性能，还增加功耗。
 - 第三种使用软件主动干预的方法来帮助cache一致性。这个是比较常规的方法，特别是在类似CCI这种缓存一致性控制器没有出来之前，都用这种方式。
 对于DMA的操作，我们需要考虑以下两种情况。
 
-#### <strong>从内存到设备FIFO</strong>
+#### 从内存到设备FIFO
 
 传输路径：内存->设备FIFO （设备例如网卡，通过DMA读取内存数据到设备FIFO）
 
@@ -50,13 +50,12 @@ source_url: https://zhuanlan.zhihu.com/p/508439396
 
 ![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_37a35f52ffa2.jpg)
 
-**
 
-在DMA传数据之前，先做cache的clean或者flush操作是一个非常关键的点。**
+在DMA传数据之前，先做cache的clean或者flush操作是一个非常关键的点。
 
 例如上面的图中，最新的数据其实是在cache里。因为CPU创建一个新的数据后必定是先到cache，然后再传递给DMA buffer。因此在启动DMA传输之前，必须要先clean/flush cache，把cache的数据回写到DMA buffer里。
 
-#### <strong>从设备FIFO到内存</strong>
+#### 从设备FIFO到内存
 
 传输路径：设备FIFO -> 内存 （设备把数据写入到内存中）
 

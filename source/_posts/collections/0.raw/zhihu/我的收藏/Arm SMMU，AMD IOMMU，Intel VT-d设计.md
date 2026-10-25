@@ -77,7 +77,6 @@ feature：
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_483c10e78df1.jpg)
 
-**
 
 TBU（Translation Buffer Unit）用于提供地址转换，提供两种形式：
 
@@ -185,7 +184,7 @@ Page Request Interface queue 是ATS的一个扩展项，是其允许Endpoint请�
 
 在允许 stage 1 转换的虚拟化场景中，呈现给 guest OS 编程界面与非虚拟化场景相同，guest OS 认为它是在控制真正的 SMMU （尽管只是 stage 1），guest OS 看到与非虚拟化场景相同的 Comnand、Event、可选的 PRI队列、和基于内存的数据结构。
 
-#### 缺页异常Page Fault**
+#### 缺页异常Page Fault
 
 [一切皆是映射：浅谈操作系统内核的缺页异常（Page Fault）](https://link.zhihu.com/?target=https%3A//mp.weixin.qq.com/s%3Fsrc%3D11%26timestamp%3D1739250694%26ver%3D5805%26signature%3DDcmJEsscycYQq4SPKI1Easyb3hZP-8jfQkL8qW667V2a-KJRFb9Fv67-%2AI-CHIPBR%2AfSiP%2ADQ30YhOCbFQvvP%2A3D31ECODPZhjMsWCkxlyI6oVxQvCAAfFj6l4I%2Avmnv%26new%3D1)
 
@@ -204,7 +203,6 @@ Page Request Interface queue 是ATS的一个扩展项，是其允许Endpoint请�
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_05d38c55de95.jpg)
 
-**
 
 ### AMD IOMMU
 
@@ -412,7 +410,6 @@ PCD和PWT和cache属性相关：
 
 <strong>PWT</strong> （Page Write Through）- 置为1表示该page对应的cache部分采用write through的方式，否则采用write back。
 
-**
 
 #### paging structure caches
 

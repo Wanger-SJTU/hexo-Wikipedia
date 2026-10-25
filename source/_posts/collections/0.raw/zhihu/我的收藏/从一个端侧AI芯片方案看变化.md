@@ -33,7 +33,7 @@ source_url: https://zhuanlan.zhihu.com/p/1926315882587596008
 - 1 reticle density 40GB
 - 1 reticle BW 16TB/s
 - 接口速度 400-500MHz
-*** 其中缺了一行，打了码，我猜是 DRAM 工艺 1c ？所以打个码是不是就能理解了。*
+* 其中缺了一行，打了码，我猜是 DRAM 工艺 1c ？所以打个码是不是就能理解了。*
 
 快速理解了一下：
 

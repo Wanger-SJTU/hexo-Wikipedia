@@ -136,9 +136,8 @@ tag RAM的宽度和TAGADDR的连接取决于所选择way的大小。可以通过
 
 - 连接TAGADDR以支持最大通道尺寸 
 - 对应于标签RAM宽度的TAGRDn和TAGWD必须相连，以支持最小的路尺寸。
-**
 
-RAM clocking and latencies**
+RAM clocking and latencies
 
 RAM时钟 
 
@@ -158,7 +157,6 @@ RAM时钟
 
 <strong>DATACLKOUT，</strong> 时钟的门控版本，仅在访问data RAM时启用。使用该时钟，数据RAM和高速缓存控制器逻辑以相同的频率运行。当有banking时，存在四个时钟输出，每个bank一个。
 
-**
 
 第2-32页的图2-16显示了与高速缓存控制器相比，tag RAM以一半的频率运行的例子。
 
@@ -187,7 +185,7 @@ write access延迟是写访问的RAM时钟沿和对应于另一个访问(读或�
 
 ![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_5036c9b86a5b.jpg)
 
-MBIST support**
+MBIST support
 
 - MBIST端口一次只能访问一个RAM。  
 - data RAM为256位宽，高速缓存控制器上的MBISTDIN和MBISTDOUT总线的大小为64位，因此data RAM的每个索引需要四次读取和四次写入。高速缓存控制器通过使用两个MBISTADDR地址引脚作为data RAM每个索引的双字选择来处理这一问题。  

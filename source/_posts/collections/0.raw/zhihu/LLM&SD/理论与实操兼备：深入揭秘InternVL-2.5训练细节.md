@@ -46,7 +46,7 @@ InternVL-2.5模型框架在模型框架上，InternVL-2.5仍然遵循：<strong>
 ![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_451041a2d27e.jpg)
 
 InternVL系列各模型组件概览
-#### <strong>2.1 视觉编码器ViT</strong>
+#### 2.1 视觉编码器ViT
 
 InternVL-2.5系列包含了两种参数大小的ViT：<strong>InternViT-6B</strong> 和<strong>InternViT-300M</strong>，这两种大小的ViT适用于不同size的MLLM，小于8B的MLLM（1B、2B、4B、8B）<strong>InternViT-300M</strong>，而大于8B的MLLM（26B、38B、78B、pro）统一使用<strong>InternViT-6B</strong>。
 
@@ -54,13 +54,13 @@ InternVL-2.5系列包含了两种参数大小的ViT：<strong>InternViT-6B</stro
 
 <strong>InternViT-300M</strong>: 由InternViT-6B蒸馏而来，知识蒸馏训练细节详见原文在此不过度展开。
 
-#### <strong>2.2 大语言模型LLM</strong>
+#### 2.2 大语言模型LLM
 
 相较于InternVL-2，InternVL-2.5采用了更多样且先进的LLM，包含：InternLM 2.5系列和Qwen 2.5系列等。
 
 ### 3 训练策略
 
-#### 3.1 <strong>Dynamic High-Resolution for Multimodal Data</strong>
+#### 3.1 **Dynamic High-Resolution for Multimodal Data
 
 ![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_4771a5beb4a0.jpg)
 
@@ -68,7 +68,7 @@ InternVL-2.5系列包含了两种参数大小的ViT：<strong>InternViT-6B</stro
 
 为了解决这类难题，U-reader提出了一种动态分辨率切片方案，通俗一点来说就是将原图切成固定分辩率的子图，i.e. 448 \times 448，然后将若干子图和resize过后的原图一起送入ViT转化成视觉特征。通常，我们称被切分后的子图为<strong>tile</strong>，而被resized过后的原图为<strong>thumbnail</strong>。本质上，动态分辨率方案增加了视觉信息的token数。分享一下代季峰教授在workshop时的一个观点：
 
-**高分辨率只是一个工程化的问题，不本质。通过切子图实现高分辨率对模型训练的上限不会有太大影响。关于分辨率的争论才CV发展的历史中比比皆是，不看好分辨率相关的突破会是下一个通往AGI的breakthrough。动态分辨率最核心的点就是切图的准则，即给定一张任意分辨率的图片并且子图tile的分辨率已经固定，该将图片resize到什么分辨率从而可以切成固定的tiles？
+高分辨率只是一个工程化的问题，不本质。通过切子图实现高分辨率对模型训练的上限不会有太大影响。关于分辨率的争论才CV发展的历史中比比皆是，不看好分辨率相关的突破会是下一个通往AGI的breakthrough。动态分辨率最核心的点就是切图的准则，即给定一张任意分辨率的图片并且子图tile的分辨率已经固定，该将图片resize到什么分辨率从而可以切成固定的tiles？
 
 InternVL系列采用了比较简洁且有效的准则，即根据图片的长宽比来选择pre-defined grids。这些grid即是图像可以去size到的分辨率，grid的长和宽皆是tile（448方图）的整数倍。
 
@@ -276,7 +276,6 @@ def len2weight(x, loss_reduction):
 ```
 
 
-**
 
 # internvl_chat/internvl/train/internvl_chat_finetune.py -> main
 if data_args.use_packed_ds:

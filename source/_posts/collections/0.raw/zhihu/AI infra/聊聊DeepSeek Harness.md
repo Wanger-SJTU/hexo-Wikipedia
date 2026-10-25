@@ -123,11 +123,11 @@ intercept(k, metadata)` 将元数据合并到上下文中，后续对 `k` 的访
 
 ![](https://www.zhihu.com/equation?tex=+%5Cmathfrak%7BC%7D_%5CGamma+%3A%3D+%5Cmathfrak%7BD%7D_%5CGamma+%5Ctimes+%5Cmathfrak%7BP%7D_%5CGamma+%5Ctimes+%5Cmathfrak%7BE%7D_%5CGamma%5E%2A+)
 
-- **
+-
 ![](https://www.zhihu.com/equation?tex=+d+)**：依赖规格说明（需要什么）
-- **
+-
 ![](https://www.zhihu.com/equation?tex=+p+)**：提供声明（提供什么）
-- **
+-
 ![](https://www.zhihu.com/equation?tex=+e+)<strong>：有见证的效果函数（激活时做什么）一个组件在运行时的实例称为</strong>光纤（Fiber）**：
 
 ⟨d, p, e, π, σ, τ, θ⟩

@@ -15,8 +15,8 @@ source_url: https://zhuanlan.zhihu.com/p/20053834500
 ---
 
 
-**我是小冬瓜AIGC，原创超长文知识分享，原创课程已帮助多名同学速成上岸LLM赛道。  
-研究方向：LLM、RL、RLHF*Reward is Enough.***
+我是小冬瓜AIGC，原创超长文知识分享，原创课程已帮助多名同学速成上岸LLM赛道。  
+研究方向：LLM、RL、RLHF*Reward is Enough.*
 
 ### 前言
 
@@ -60,7 +60,7 @@ DeepSeek-R1-Zero 所训练的数据形式是：Close-form Answer-Check的这种�
 
 对于通用任务问题，如果是`open-form`的，比如文本续写，仍要求模型有“推理”能力，能够续写出逻辑一致的文本，所以能力是可以在不同任务体现的. 而不同的任务又有对应特点，普遍认为数学任务就是能够更直接方便去学习到推理的能力，体现在
 
-- `close-form`问题比`open-form`更容易监督，** 
+- `close-form`问题比`open-form`更容易监督，
 - `Answer-Check` 较`Solution-Answer-Check`进一步简化标签，更易监督。
  
 所以现在Post-Training的目标是使得模型通用能力提高，而通用里面的瓶颈是推理难题，解决数学难题的好处在于：
@@ -79,7 +79,7 @@ DeepSeek-R1-Zero 所训练的数据形式是：Close-form Answer-Check的这种�
 
 - 在`Close-form`的数学问题上得到高的`Answer-Check`高分，而Answer与Label的判别是具体客观的，也就是ruled-based 判别
 - 那么在训练过程中，我们只需要准备好数学问题集，我们可以让模型在线采样出CoT Solution，最后的答案用`$\boxed{}$ `来包裹；
-- RL过程中on-policy采样出来的CoT Solution，是否是step-by-step，是否是每一步都正确，是否是逻辑连贯，是否是乱码，是否是混合语言，是否是格式混乱，是否是Aha Moment，都不重要，只要Final Answer是正确，那么哪怕solution是乱码，每个token都是有益的正反馈（通过adavatage形式）**
+- RL过程中on-policy采样出来的CoT Solution，是否是step-by-step，是否是每一步都正确，是否是逻辑连贯，是否是乱码，是否是混合语言，是否是格式混乱，是否是Aha Moment，都不重要，只要Final Answer是正确，那么哪怕solution是乱码，每个token都是有益的正反馈（通过adavatage形式）
 - 在Answer-Check的问题设置里，`open-form`开放问题是没法在这一套`GRPO`框架训的，因为生成结果不能rule-based判别，也没有reward model。所以`R1-Zero`只是在close-form和answer-Check的特殊问题上进行训练的。
 Q: `DeepSeek-R1-Zero` CoT过程一定是正确的吗？能否部署？
 
@@ -103,7 +103,7 @@ R1-Zero` 纯Reasoning RL训练过程中会采样出“Aha Moment”(顿悟), 我
 
 在“Aha Moment”里我们不能直接量化过程推理能力， 而是通过观测CoT采样 Solution的token 序列长度(test-time computation increases, 产生越长的token需要的计算量越多)来对等判别的
 
-**`DeepSeek-R1-Zero` naturally acquires the ability to solve increasingly complex reasoning tasks by leveraging extended test-time computation.这里实际不make sense，如果产生了重复思考，那么越长的token长度不等于推理能力就提升了。
+`DeepSeek-R1-Zero` naturally acquires the ability to solve increasingly complex reasoning tasks by leveraging extended test-time computation.这里实际不make sense，如果产生了重复思考，那么越长的token长度不等于推理能力就提升了。
 
 Aha Moment有什么弊端？ 
 
@@ -118,7 +118,7 @@ Aha Moment有什么弊端？
 - `DeepSeek-R1` 也有SFT但是产生了更高的分数，我们能知道所用的数据包含600k的long-CoT推理数据。
 SFTRLMATH-500(pass@1)AIME 2024(pass@1)DeepSeek-V3✅✅90.239.2DeepSeek-R1-Zero✅95.971.0DeepSeek-R1✅✅96.379.8*[注]美国数学邀请赛（*AIME*，American Invitational Mathematics Examination）*
 
-所以做个不严格的结论：SFT是没问题的，也不存在SFT无用论，数据质量影响可能远大于方法本身。**
+所以做个不严格的结论：SFT是没问题的，也不存在SFT无用论，数据质量影响可能远大于方法本身。
 
 <strong>那么训练的数据瓶颈就变为了收集或者合成复杂问题的“Long-CoT” solution，过程中有错误也能接受，毕竟无法让人类手写出600k条高质量的solution</strong>
 
@@ -128,7 +128,7 @@ SFTRLMATH-500(pass@1)AIME 2024(pass@1)DeepSeek-V3✅✅90.239.2DeepSeek-R1-Zero�
 
 在过去一直被诟病SFT或者其他对齐方法，会对整体性能产生“遗忘”或“性能退化”，我们总结下SFT的弊端：
 
-- 满血的base更强** 
+- 满血的base更强
 - 现有的数据Long-CoT少
  
 - 哪怕是从o1采样的数据去蒸馏，也只是强行适配o1的模型的分布。
@@ -165,7 +165,7 @@ B. 当模型能够输出可读性好的reasoning数据（合成数据），才�
 #### 1.2.6 R1 工程部署优势
 
 - 提示词工程决定“deepthink”模式
-> we call DeepSeek-V3 to generate a potential chain-of-thought before answering the question by prompting. However, for simpler queries, such as “hello” we do not provide a CoT in response.**
+> we call DeepSeek-V3 to generate a potential chain-of-thought before answering the question by prompting. However, for simpler queries, such as “hello” we do not provide a CoT in response.
 
 2. 不用额外的模型， 即可做summarization
 
@@ -198,7 +198,7 @@ B. 当模型能够输出可读性好的reasoning数据（合成数据），才�
 
 #### 2.2 更早的端到端推理学习： STaR
 
-** STaR: Bootstrapping Reasoning With Reasoning在22年的STaR的文章里，已经有端到端推理思想了，只不过所用的训练方法是SFT
+STaR: Bootstrapping Reasoning With Reasoning在22年的STaR的文章里，已经有端到端推理思想了，只不过所用的训练方法是SFT
 
 我们在以下选择题形式的问题里，我们可以在线采样出Rationale和Answer，这里的Rationale我们当成是CoT/Long-CoT来看待，那么如果采样出的Answer和Label匹配，那么这条采样数据我们保留，如果不匹配，那么剔除。所保留带CoT的数据，进行SFT训练。
 
@@ -237,7 +237,7 @@ B. 当模型能够输出可读性好的reasoning数据（合成数据），才�
 
 title简介Math-Shepherd: Verify and Reinforce LLMs Step-by-step without Human AnnotationsMath-Shepherd: 有较高的标注成本，且标注值为概率，而非准确性。Improve Mathematical Reasoning in Language Models by Automated Process SupervisionOmega-PRM 提出更宽松的假设，进行二分标注相对应的Search方法，实际上PRM的在难度等级5的数学题下，准确率低下。对于难题的解决的矛头仍指向：<strong>如何将推理能力训练到模型本身</strong>
 
-** Scaling LLM Test-Time Compute Optimally can be More Effective than Scaling Model Parameter[](https://zhuanlan.zhihu.com/p/877197813)
+Scaling LLM Test-Time Compute Optimally can be More Effective than Scaling Model Parameter[](https://zhuanlan.zhihu.com/p/877197813)
 
 ![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_8155e3b7897f.jpg)
 
@@ -253,7 +253,7 @@ AlphaGo`和`AlphaGo-Zero`里的区别：AlphaGo的MCTS价值估计是rollout再�
 
 围棋的难度相较LLM Next-Token generation式的MDP简单的多。另外价值网络也会直接影响生成的选择，LLM Next Token预测较围棋网络下子 inference成本大的多，工程受限下的MCTS试错成本高。
 
-** While AlphaGo’s core success relied on training a value model to progressively enhance its performance, this principle proves difficult to replicate in our setup due to the complexities of token generation.我们前面提到的`GRPO`也具有用了搜索的思想，在线采样实际上是MC Rollout，但是不做常规的动作或状态价值估计，从真实奖励进行估计优势，需要花费inference的成本。
+While AlphaGo’s core success relied on training a value model to progressively enhance its performance, this principle proves difficult to replicate in our setup due to the complexities of token generation.我们前面提到的`GRPO`也具有用了搜索的思想，在线采样实际上是MC Rollout，但是不做常规的动作或状态价值估计，从真实奖励进行估计优势，需要花费inference的成本。
 
 ### 4. 总结
 

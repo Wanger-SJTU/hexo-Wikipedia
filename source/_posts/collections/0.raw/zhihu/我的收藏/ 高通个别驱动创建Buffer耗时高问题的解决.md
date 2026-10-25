@@ -15,13 +15,13 @@ source_url: https://zhuanlan.zhihu.com/p/643075021
 ---
 
 
-### <strong>前言</strong>
+### 前言
 
 最近在优化游戏的时候，发现在在高通特定驱动版本的机器上(855,855+等)，创建VB的耗时跟VB的数量成正比，这个应该是驱动的bug。跟官方人员确认过，确实是有这个问题，他们给的解决方案是减少Buffer的数量，经过一轮优化后，Buffer数量减少了将近30%，但是这个耗时的问题还是没能解决，在正常机型上创建100个VB的开销大约在几ms的时间，但是在有问题的机器上可以达到30多ms。那这个问题有没有可能解决呢？是有方法的，这里也把解决过程记录下，给遇到相关问题的人做个参考。
 
-### <strong>解决方案</strong>
+### 解决方案
 
-### <strong>尝试1</strong>
+### 尝试1
 
 首先想到的是像内存管理一样预创建特定大小的Buffer，在后面所有使用到的地方直接从Pool里面去取，然后调用glBufferSubData去更新，这个时候Buffer的创建开销确实大缩短了，在framepro中基本上看不到Buffer创建的耗时，但是耗时开销转移了！转移到了创建纹理相关的操作上！！！而且耗时跟你预创建Buffer的数量成正比。
 
@@ -31,7 +31,7 @@ source_url: https://zhuanlan.zhihu.com/p/643075021
 
 创建纹理开销显著增加那这个方案看起来是行不通的。
 
-### <strong>尝试2</strong>
+### 尝试2
 
 既然是跟Buffer数量成正比，那就直接减少Buffer数量，尝试像Vulkan、Metal、D3D12来管理内存，思路就是像内存管理一样创建特定大小的大Buffer，然后使用ringbuffer的方式来管理内存，通过glMapBufferRange来局部更新内容。
 
@@ -48,7 +48,7 @@ source_url: https://zhuanlan.zhihu.com/p/643075021
 - 因为Index Buffer相关的接口不是所有的都支持offset，所以Index buffer走预创建Buffer的方式。
 - Shader里面会访问texture buffer，这个时候需要使用offset来做，为了减少Shader的修改，我们这部分数据也采用预创建buffer的方式来处理。
 
-### <strong>优化效果</strong>
+### 优化效果
 
 优化前：
 
@@ -60,10 +60,10 @@ source_url: https://zhuanlan.zhihu.com/p/643075021
 
 可以看到优化前有很多峰值，优化后基本上看不到创建Buffer的开销，创建纹理的开销也正常。
 
-### <strong>总结</strong>
+### 总结
 
 因为我们是大世界游戏，所以Buffer数量比较多，容易触发这个问题。不知道有没有人遇到这个问题，以及你们是如何解决的，欢迎一起讨论，解决的方式比较Trick，这里就把它记录下来。
 
-### <strong>参考</strong>
+### 参考
 
 - https://registry.khronos.org/OpenGL-Refpages/es3.0/html/glMapBufferRange.xhtml

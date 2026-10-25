@@ -17,15 +17,14 @@ source_url: https://zhuanlan.zhihu.com/p/628820408
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_498bf2050c0a.jpg)
 
-**本文主要介绍与Transformer计算和内存使用相关的基本数学知识。
+本文主要介绍与Transformer计算和内存使用相关的基本数学知识。
 
-作者 | Quentin Anthony、Stella Biderman、Hailey Schoelkopf**
+作者 | Quentin Anthony、Stella Biderman、Hailey Schoelkopf
 
 <strong>OneFlow编译</strong>
 
 <strong>翻译 | 贾川、徐佳渝、杨婷</strong>
 
-**
 
 ### 引言
 
@@ -47,7 +46,6 @@ Transformer模型的训练成本可通过以下基本公式计算得出：
 
 这些公式由OpenAI的论文[《Scaling Laws for Neural Language Models》](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2001.08361)和DeepMind的论文[《Training Compute-Optimal Large Language Models》](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2203.15556)提出并经实验证实。如需更多信息，请参阅各自论文。
 
-**
 
 值得一提的是C的单位问题。 C是对总计算量的度量，可以用多种单位来表示，例如：
 
@@ -63,11 +61,9 @@ Actual FLOPs是一个值得注意的有用概念。GPU加速器白皮书通常�
 
 让我们从关键问题“计算最优（compute optimal）”语言模型入手。**关于参数数量的理论“Chinchilla scaling laws”指出，一个计算最优的语言模型拥有的参数数量和数据集大小需满足一个近似等式：   。这在特定意义上是最优的：假设使用1,000个GPU运行1小时的成本与使用1个GPU运行1,000小时的成本相同，如果你的目标是在最小化GPU训练成本的同时最大化模型性能，你就应该使用上面提到的公式。
 
-**
 
 我们不建议训练小于200B个token的大型语言模型。**虽然对于许多模型来说这样才能达到“Chinchilla最优”，但最终的模型效果通常非常差。针对所有应用程序，我们建议要确定用例的可接受推理成本，然后尽可能地训练最大的模型，以使得尽可能多的token的训练保持在这一推理成本下。
 
-**
 
 #### 计算成本的工程实践要点
 
@@ -108,7 +104,6 @@ Transformer模型通常用GPU-hours或FLOP-seconds来表示计算成本。
 
 除了模型参数之外，训练还需要在设备内存中存储优化器状态和梯度。这就是为什么当问及“我需要多少内存来拟合模型 X”时，会立即得到“这取决于训练或推理”的答案。通常情况下，训练需要的内存比推理更多。
 
-**
 
 #### 模型参数
 
@@ -184,7 +179,6 @@ LLM有3种主要并行方式：
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_adb453ee937e.jpg)
 
-**
 
 注意，此等式是近似值，原因如下：
 
@@ -221,6 +215,6 @@ EleutherAI的工程师们经常使用上述启发式方法规划高效的模型�
 - [为什么ChatGPT用强化学习而非监督学习](https://link.zhihu.com/?target=http%3A//mp.weixin.qq.com/s%3F__biz%3DMzU5ODY2MTk3Nw%3D%3D%26mid%3D2247491548%26idx%3D1%26sn%3D45c78ba578e450e1ad81f5ca89bd0e31%26chksm%3Dfe4191eac93618fc92cb3bc221f407960a50c98d2aea1f94431b21b6fd7dc49cae770f5532d6%26scene%3D21%23wechat_redirect)
 - [OneEmbedding:单卡](https://link.zhihu.com/?target=http%3A//mp.weixin.qq.com/s%3F__biz%3DMzU5ODY2MTk3Nw%3D%3D%26mid%3D2247488841%26idx%3D1%26sn%3D6c5de6713dbce2bd25d60db742879368%26chksm%3Dfe419b7fc93612690a667bec72a258ac837c2454cd180c2432c1c190bc236743cf7e4dd0dfee%26scene%3D21%23wechat_redirect)[训练TB级推荐模型不是梦](https://link.zhihu.com/?target=http%3A//mp.weixin.qq.com/s%3F__biz%3DMzU5ODY2MTk3Nw%3D%3D%26mid%3D2247488841%26idx%3D1%26sn%3D6c5de6713dbce2bd25d60db742879368%26chksm%3Dfe419b7fc93612690a667bec72a258ac837c2454cd180c2432c1c190bc236743cf7e4dd0dfee%26scene%3D21%23wechat_redirect)
 - [GLM训练加速：性能最高提升3倍，显存节省](https://link.zhihu.com/?target=http%3A//mp.weixin.qq.com/s%3F__biz%3DMzU5ODY2MTk3Nw%3D%3D%26mid%3D2247490555%26idx%3D1%26sn%3D280c4ac043a31170236a9d8fba5fc2d2%26chksm%3Dfe4195cdc9361cdb6db1cb3b77c66b45c353b2fb65c4d082fbae9b72fe0b3a441ab9101cb147%26scene%3D21%23wechat_redirect)
-欢迎Star、试用OneFlow: **
+欢迎Star、试用OneFlow:
 
 [](https://link.zhihu.com/?target=http%3A//github.com/Oneflow-Inc/oneflow/)

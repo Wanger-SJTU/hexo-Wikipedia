@@ -21,13 +21,12 @@ paper：[https://arxiv.org/pdf/2307.02457.pdf](https://link.zhihu.com/?target=ht
 
 董超组 & 腾讯ARC Lab ICML的新作，思路也是非常好的一篇真实超分工作。
 
-**
 
 #### Motivation
 
 GAN-SR模型会产生伪影，作者将其分为两类：
 
-GAN-training artifacts**
+GAN-training artifacts
 
 训练阶段产生的伪影，产生原因是GAN训练的不稳定与SR的ill-posed特性（这里可以理解为SR的目标解不是确定的，因此可能会产生除了GT之外的值，这里就是伪影）。这些伪影可以用GT做监督，改善训练过程从而尽可能去除。
 
@@ -41,7 +40,6 @@ GAN-training artifacts**
 
 由于真实超分的最终目标就是处理测试数据，因此解决第二种伪影才是更为关键的且富有实际意义的。
 
-**
 
 #### Preliminary
 
@@ -67,7 +65,7 @@ GAN-inference artifacts有以下两个特性：
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_367dd71cbdd1.jpg)
 
-Automatically Detect GAN-inference Artifacts**
+Automatically Detect GAN-inference Artifacts
 
 由于缺少GT，因此使用MSE-SR的结果和GAN-SR的结果进行比较用于检测伪影。
 
@@ -91,7 +89,7 @@ $$D=\frac{2 \sigma_x \sigma_y}{\sigma_x^2+\sigma_y^2+C} $$
 
 注意，这里由于做了变换，原本是值越大越有可能存在伪影，变换后的值越小越可能产生伪影。
 
-Semantic-aware adjustment**
+Semantic-aware adjustment
 
 这里提到了一个perceptual tolerance rate，具体而言就是LDL中提到的B,C区域的区别，复杂的无规则纹理，比如树、毛发等，伪影不容易被看到，perceptual tolerance rate较大；而规则的纹理出现的伪影容易被看到，如天空、海面等，perceptual tolerance rate较小。那么根据perceptual tolerance rate，需要对原来的纹理差异评估进行修改，直观的方法就是对于perceptual tolerance rate较大的，也就是复杂无规则纹理，其伪影的判别条件也应该更为宽松；而对于perceptual tolerance rate较小的，也就是有规则纹理，其伪影的判别条件应该偏向严格。这里宽松与严格的控制就需要一个adjustment weight。
 
@@ -121,9 +119,8 @@ morphological manipulations
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_4cd1e4f40e9a.jpg)
 
-**
 
-Improve GAN-SR Models with Fine-tuning**
+Improve GAN-SR Models with Fine-tuning
 
 检测出伪影之后，就是要去除伪影。这里有一个观点是："weak restoration without artifacts is even better than strong restoration with artifacts"，也就是说，相较于有伪影的好的复原（这里指可视化效果更好的GAN-SR结果），没有伪影的差的复原（这里指可视化效果较差的MSE-SR结果）更好。当然这一点并不是说明MSR-SR的结果比GAN-SR的结果要好，只是为了引出作者去除伪影的方法，即在存在伪影的部分用MSE-SR的结果去替代GAN-SR的结果，得到的是pseudo GT：
 
@@ -133,7 +130,6 @@ Finetune的过程如下图：
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_a99aaee6e71e.jpg)
 
-**
 
 #### Experiments 
 
@@ -145,9 +141,8 @@ Model：**RealESRGAN, LDL，SwinIR
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_8b1cd0cca28d.jpg)
 
-**
 
-Evaluation**
+Evaluation
 
 由于没有GT，传统的有监督指标PSNR, SSIM就无法使用，并且作者发现了无监督指标NIQE, MANIQA不能很好地匹配可视化效果，因此作者提出了三个评价指标：IoU, precision和recall
 
@@ -175,9 +170,8 @@ Recall= N_R / N_G
 
 注：可以理解为精确率关注被检测为伪影的区域中有多少是真正的伪影，而召回率关注于所有真正的伪影有多少被检测出来。
 
-**
 
-Results**
+Results
 
 具体实验是用NIQE, PAL4Inpainting, LDL*（这里把LDL的GT换成了MSE-SR结果），实验结果如下：
 
@@ -197,17 +191,15 @@ Results**
 
 IoU的明显下降代表伪影被去除。
 
-**
 
-User Study **
+User Study
 
 作者进行了用户调研，让参与者对Finetuned GAN-SR结果和GAN-SR，MSE-SR结果分别进行比较，主观判断哪一种伪影更少，结果如下：
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_8a96566552af.jpg)
 
-**
 
-Ablation Studies**
+Ablation Studies
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_c1c56a3e4489.jpg)
 

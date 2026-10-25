@@ -52,7 +52,6 @@ source_url: https://zhuanlan.zhihu.com/p/688215018
 
 ### Flamingo: a Visual Language Model for Few-Shot Learning
 
-**
 
 ![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_c94235c0bdf3.jpg)
 
@@ -68,7 +67,6 @@ Perceiver Resampler模块将由Vision Encoder输出的可变大小的时空视�
 
 #### GATED XATTN-DENSE details
 
-**
 
 ![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_f9a49ff6f7cc.jpg)
 
@@ -87,7 +85,6 @@ Perceiver Resampler模块将由Vision Encoder输出的可变大小的时空视�
 - 训练数据集**由不同格式的训练数据集混合而成。去除交错的图像文本数据集M3W导致性能下降超过17％，而去除传统的配对图像文本对也会导致性能下降（下降9.8％），这表明需要不同类型的数据集。 
 ![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_b63e419ab236.jpg)
 
-**
 
 - 冻结LM组件可以防止灾难性遗忘**。如果从头开始训练，我们观察到性能大幅下降了-12.9％。有趣的是，微调我们预训练的LM也导致了性能下降了-8.0％。
 - <strong>数据集加权</strong>。M3W、ALIGN、LTIP和VTP，其权重分别为1.0、0.2、0.2和0.03。这些权重是在小模型规模下经验性地获得的，并且在之后保持不变。
@@ -225,7 +222,6 @@ SVIT涉及构建一个包含420万个视觉指导调整数据点的数据集，�
 
 ### Qwen-VL: A Versatile Vision-Language Model for Understanding, Localization, Text Reading, and Beyond
 
-**
 
 ![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_0ac98509bd55.jpg)
 
@@ -261,7 +257,6 @@ NExT-GPT基本思想是利用编码器对各种模态的输入进行编码，将
 
 为了完成编码器对齐，作者从现有语料库和基准中准备了“X-caption”对（“X”代表图像、音频或视频，caption代表文字）数据，然后强制 LLM 根据标注caption生成每个输入模态的caption，学习过程如上图所示。
 
-**
 
 ![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_5cc2c393187d.jpg)
 
@@ -403,7 +398,6 @@ Yi-VL采用了LLaVA架构，经过全面的三阶段训练过程，以将视觉�
 
 第3阶段：训练整个模型的参数（即ViT、投影模块和LLM）。主要目标是增强模型在多模态对话交互中的熟练程度，从而赋予其无缝整合和解释视觉和语言输入的能力。为此，训练数据集涵盖了各种来源，总计约100万个图像-文本对，包括GQA、VizWiz VQA、TextCaps、OCR-VQA、Visual Genome、LAION GPT4V等。为确保数据平衡，我们对<strong>任何单个来源的最大数据贡献设定了上限，限制为不超过5万对</strong>。
 
-**
 
 ### Beyond llava-hd: diving into high-resolution large multimodal models
 

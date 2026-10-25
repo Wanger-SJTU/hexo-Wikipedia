@@ -15,7 +15,7 @@ source_url: https://zhuanlan.zhihu.com/p/67834038
 ---
 
 
-**斯坦福大学博士生与 Facebook 人工智能研究所研究工程师 Edward Z. Yang 是 PyTorch 开源项目的核心开发者之一。他在 5 月 14 日的 PyTorch 纽约聚会上做了一个有关 PyTorch 内部机制的演讲，本文是该演讲的长文章版本。选自ezyang博客，作者：Edward Z. Yang，机器之心编译，参与：panda。
+斯坦福大学博士生与 Facebook 人工智能研究所研究工程师 Edward Z. Yang 是 PyTorch 开源项目的核心开发者之一。他在 5 月 14 日的 PyTorch 纽约聚会上做了一个有关 PyTorch 内部机制的演讲，本文是该演讲的长文章版本。选自ezyang博客，作者：Edward Z. Yang，机器之心编译，参与：panda。
 
 ![](/images/collections/0.raw/zhihu/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%EF%BC%81/asset/img_73c1f9d436cb.jpg)
 
@@ -33,7 +33,7 @@ source_url: https://zhuanlan.zhihu.com/p/67834038
 
 第二部分会阐述真正用 PyTorch 写代码时所涉及的基本细节。我会告诉你如何在 autograd 代码中披荆斩棘、什么代码是真正重要的以及怎样造福他人，我还会介绍 PyTorch 为你写核（kernel）所提供的所有炫酷工具。
 
-### 概念**
+### 概念
 
 <strong>张量</strong>
 
@@ -63,7 +63,7 @@ source_url: https://zhuanlan.zhihu.com/p/67834038
 
 在这种情况下，了解如何做到这一点并不算太困难：3 和 4 位于邻接的内存中，我们只需要记录一个说明该（逻辑）张量的数据位于顶部以下 2 个位置的偏移量（offset）。（每个张量都记录一个偏移量，但大多数时候它为零，出现这种情况时我会在我的图表中省略它。）
 
-**演讲时的提问：如果我取张量的一个域段，我该如何释放底层张量的内存？
+演讲时的提问：如果我取张量的一个域段，我该如何释放底层张量的内存？
 
 答案：你必须制作该域段的一个副本，由此断开其与原始物理内存的连接。你能做的其它事情实际上并不多。另外，如果你很久之前写过 Java，取一个字符串的子字符串也有类似的问题，因为默认不会制作副本，所以子字符串会保留（可能非常大的字符串）。很显然，Java 7u6 将其固定了下来。如果我想取第一列，还会更有意思：
 
@@ -118,7 +118,7 @@ source_url: https://zhuanlan.zhihu.com/p/67834038
 
 所以当你查看一个张量的实际布局时（定义为 TensorImpl 结构），会看到所有字段的一个公共前缀——我们认为所有类似「张量」的东西都会有；还有一些字段仅真正适用于有步幅的张量，但它们也很重要，所以我们将其保留在主结构中；然后可以在每个张量的基础上完成有自定义字段的后缀。比如稀疏张量可将其索引和值存储在这个后缀中。
 
-自动梯度（autograd）**
+自动梯度（autograd）
 
 我已经说明了张量，但如果 PyTorch 仅有这点把戏，这就只不过是 Numpy 的克隆罢了。PyTorch 的显著特性是其在最初发布时就已提供对张量的自动微分（现在我们还有 TorchScript 等炫酷功能，但那时候就只有这个！）
 
@@ -166,7 +166,7 @@ autograd 的意义就在于执行这幅图所描述的计算，但却不用真�
 
 ![](/images/collections/0.raw/zhihu/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%EF%BC%81/asset/img_0825dd181c4d.jpg)
 
-### <strong>工程开发</strong>
+### 工程开发
 
 说够了概念，我们来看看代码。
 
@@ -224,7 +224,6 @@ PyTorch 为有望编写核的人提供了大量有用工具。在这一节我们
 
 ![](/images/collections/0.raw/zhihu/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%EF%BC%81/asset/img_6f580e2fb39c.jpg)
 
-**
 
 我们一般将 PyTorch 中的核看作由以下部分组成：
 
@@ -283,7 +282,7 @@ PyTorch 中大量核都仍然是用传统的 TH 风格编写的。（顺便一�
 - 其位于 generic/ 目录，这意味着我们实际上要编译这个文件很多次，但要使用不同的 #define scalar_t
 这种代码相当疯狂，而且我们讨厌回顾它，所以请不要添加它。如果你想写代码但对核编写了解不多，你能做的一件有用的事情：将某些 TH 函数移植到 ATen。
 
-工作流程效率**
+工作流程效率
 
 ![](/images/collections/0.raw/zhihu/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%EF%BC%81/asset/img_740e15344d01.jpg)
 
@@ -299,9 +298,8 @@ PyTorch 中大量核都仍然是用传统的 TH 风格编写的。（顺便一�
 
 ****
 
-**![](/images/collections/0.raw/zhihu/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%EF%BC%81/asset/img_c4c90c65314a.jpg)
+![](/images/collections/0.raw/zhihu/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%EF%BC%81/asset/img_c4c90c65314a.jpg)
 
-**
 
 这就是我们旋风一般的 PyTorch 内核之旅了！其中省略了很多很多东西；但希望这里的描述和解释至少能帮你消化其代码库中相当大一部分。
 
@@ -311,7 +309,6 @@ PyTorch 中大量核都仍然是用传统的 TH 风格编写的。（顺便一�
 
 即使你并不想马上就开始写代码，也仍有很多其它有用的工作值得去做，比如改善文档（我很喜欢合并文档 PR，它们都很赞）、帮助我们重现来自其他用户的 bug 报告以及帮助我们讨论问题跟踪器上的 RFC。没有我们的开源贡献者，PyTorch 不会走到今天；我们希望你也能加入我们！
 
-**
 
 *![](/images/collections/0.raw/zhihu/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%EF%BC%81/asset/img_0fd794650ff4.jpg)
 

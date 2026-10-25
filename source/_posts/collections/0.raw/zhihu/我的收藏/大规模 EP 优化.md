@@ -15,7 +15,7 @@ source_url: https://zhuanlan.zhihu.com/p/1944715179439924643
 ---
 
 
-**近期看到nv官方发布了一个关于scale ep很好的演讲视频，正好跟我前段时间做的工作有很强的联系，故就把视频的课程记录整理成如下。
+近期看到nv官方发布了一个关于scale ep很好的演讲视频，正好跟我前段时间做的工作有很强的联系，故就把视频的课程记录整理成如下。
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_eefb7f2938c1.jpg)
 

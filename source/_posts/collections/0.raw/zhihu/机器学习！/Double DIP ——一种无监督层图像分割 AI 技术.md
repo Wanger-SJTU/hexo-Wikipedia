@@ -53,7 +53,7 @@ source_url: https://zhuanlan.zhihu.com/p/67926513
 
 什么样的分割是好的图像分割？有很多方法可以将其分割为基本图层，但作者提出有意义的分割应该满足这样几个标准：
 
-- 重新组合时，恢复的图层能够重建输入图像**
+- 重新组合时，恢复的图层能够重建输入图像
 - 每层应该尽可能「简单」，即它应该具有很强的图像元素内部自相似性
 
 - 恢复的图层之间彼此独立
@@ -73,7 +73,7 @@ source_url: https://zhuanlan.zhihu.com/p/67926513
 
 优化过程使用到了 ADAM 优化器，而每张图片在 Tesla V100 GPU 上仅需要几分钟来完成。
 
- 研究成果**
+ 研究成果
 
  论文内提到的多个成果中，我们在下文中着重讨论：
 
@@ -86,7 +86,6 @@ source_url: https://zhuanlan.zhihu.com/p/67926513
 
 ![](/images/collections/0.raw/zhihu/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%EF%BC%81/asset/img_8a8f1a25770c.png)
 
-**
 
 这个公式非常适合文中所提到的框架，它将「好的图像片段」定义为易于通过自身合成，但很难使用图像其他部分进行合成这个概念。为了使分割掩码 m（x）变为二进制，我们使用以下正则化损失：
 
@@ -98,7 +97,7 @@ Double-DIP 能够基于无监督的层分割获得高质量的分割，如图 4 
 
 图4：图像分割实例
 
-- 水印去除**
+- 水印去除
 水印广泛用于保护受版权保护的图像和视频。Double-DIP 能够将水印作为图像反射的特殊情况来进行去除，其中图层 y1 和图层 y2 是分别是清理后的图像和水印。
 
 和图像分割不同，在这种情况下，掩模没有被明确设置，而是使用两种实际解决方案之一来处理固有的透明层模糊性。如果仅涉及单个水印，则用户通过带有边界框来标记水印区域；而当有少量图像具有相同的水印时（通常 2-3 张图像），在训练过程中将由模糊性原则自行处理。图 5 为一些水印去除的实例：
@@ -111,10 +110,10 @@ Double-DIP 能够基于无监督的层分割获得高质量的分割，如图 4 
 
 雷锋网 AI 科技评论将相关链接整理如下：
 
-**原论文地址
+原论文地址
 [https://arxiv.org/abs/1812.00467](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/1812.00467)
 
 杂志原文地址
-https://www.rsipvision.com/ComputerVisionNews-2019May/4/Github项目推荐：**
+https://www.rsipvision.com/ComputerVisionNews-2019May/4/Github项目推荐：
 
 ![](/images/collections/0.raw/zhihu/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%EF%BC%81/asset/img_f7cf3653f079.jpg)

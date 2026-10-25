@@ -25,7 +25,7 @@ Auto data tranform是AutoSearch的一个功能模块，这部分工作是由Auto
 
 auto data transform的基本流程是，对应一个计算过程，也就是一个Pipeline，自动对Pipeline中的每个input遍历data transform，计算其计算排布的cost，选择cost最小的一种排布策略。
 
-**具体源码实现在: 
+具体源码实现在: 
 
 [](https://link.zhihu.com/?target=https%3A//github.com/OAID/AutoKernel/blob/main/AutoSearch/src/common/DataTransform.h)
 
@@ -142,7 +142,7 @@ func(x,y,b)=input_a(k,y,b)*Br(k,x,b)`
 - ReorderOP**：将一个input第一维和第二维数据排布交换的操作。其实现方法是定义一个新的函数，令reorder_func(x,y,...) = input(y,x,...)。
 - <strong>InterleaveOP</strong>：将一个input第一维每m个数据划分。其实现方法是定义一个新的函数，令interleave_func(x,y,xo,...) = input(xo*m+x,y,...)。
 <strong>SplitYOP</strong>:将一个input第二维每m个数据划分。其实现方法是定义一个新的函数，令splity_func(x,y,yo,...) = input(x,yo*m+y,...)。**
-AutoDataTransform的cost model**
+AutoDataTransform的cost model
 
 cost model设计的基本原理就是，选择合适的数据排布，使得在计算过程中，数据的读取是流畅的连续的，减少cache miss。**根据优化经验，几种数据重新排布的方法可以提高优化后的执行速度，为了表征这些排布的效果，cost model的设计定义了两类cost：分别为reorder cost和use_distance cost。
 reorder cost****对于一个这样的表达式：
@@ -189,7 +189,7 @@ use_distance cost的定义：表达式相邻两次计算时读取的输入数据
 
 目前auto data transform主要是针对gemm这个例子，根据手工优化经验抽象出来的data_transform_op, 然后设计cost model来衡量使得在计算过程中，数据的读取是流畅的连续的，减少cache miss。如何把这份工作的思想推广到更general的计算，希望和大家多多交流~
 
-传送门**
+传送门
 
 Tengine：让AI部署更简单
 

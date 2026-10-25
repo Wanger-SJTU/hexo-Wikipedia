@@ -23,7 +23,6 @@ source_url: https://zhuanlan.zhihu.com/p/633571685
 
 #### 整体架构
 
-**
 
 ![](/images/collections/0.raw/zhihu/%E4%BC%98%E5%8C%96/asset/img_b91792c4b1b3.jpg)
 
@@ -110,7 +109,7 @@ Wq：dmodel，dmodel / num_head
 
 Motivation**:
 
--  缺陷：注意力机制实现为密集矩阵计算的加速是次优的，注意力机制是基于内容的搜索，大部分内容没有被使用到** 
+-  缺陷：注意力机制实现为密集矩阵计算的加速是次优的，注意力机制是基于内容的搜索，大部分内容没有被使用到
 -  改进：通过近似算法减少计算量，利用并行性和数据路径专门化提高硬件利用率
  
 主要方法是基于贪心的候选搜索
@@ -261,9 +260,8 @@ step7：合并结果并输出至DDR
 
 3.高度非结构化，给硬件加速带来挑战
 
-稀疏注意力的剪枝策略**
+稀疏注意力的剪枝策略
 
-**
 
 ![](/images/collections/0.raw/zhihu/%E4%BC%98%E5%8C%96/asset/img_c9a7a113c86c.jpg)
 
@@ -273,10 +271,9 @@ step7：合并结果并输出至DDR
 
 3.包装和拆分注意力掩码
 
-硬件数据流**
+硬件数据流
 
 - dense数据流
-**
 
 ![](/images/collections/0.raw/zhihu/%E4%BC%98%E5%8C%96/asset/img_1a7e87d35619.jpg)
 
@@ -303,7 +300,7 @@ step7：合并结果并输出至DDR
 
 对计算进行简单分类：
 
-#### softmax**
+#### softmax
 
 - 对softmax、LayerNorm不采用量化，在FPGA的host CPU上计算
 - 以float计算softmax，结果进行定点量化后继续计算

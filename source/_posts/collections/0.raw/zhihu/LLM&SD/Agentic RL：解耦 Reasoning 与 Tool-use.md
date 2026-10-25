@@ -29,7 +29,7 @@ The Landscape of Agentic Reinforcement Learning for LLMs: A Survey然而，这�
 
 这意味着两种能力在参数空间中追求的是截然不同的最优解。当它们被迫在同一套参数上联合更新时，优化过程只能走向一个“折中方向”，该方向对任何一方而言都是次优解。由此，Agentic RL 的性能上限被一种结构性的梯度冲突所限制。
 
-#### <strong>Q1：为什么会观察到梯度正交现象？</strong>
+#### Q1：为什么会观察到梯度正交现象？
 
 从线性代数角度看，在高维空间中，任意两个随机向量几乎必然是正交的。更严格地说，如果向量维度为 d，随机采样两个向量 \mathbf{g}_1, \mathbf{g}_2​，则它们的夹角分布会高度集中在 90^\circ 附近。这是高维几何的基本现象： g⊤1g2‖g1‖‖g2‖≈0
 
@@ -39,7 +39,7 @@ $$\frac{\mathbf{g}_1^\top \mathbf{g}_2}{\|\mathbf{g}_1\|\|\mathbf{g}_2\|} \appro
 
 ![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_e7a876414f9e.jpg)
 
-#### <strong>Q2：既然多任务学习也有不同梯度，为什么 LLM 预训练没有这么严重的问题？</strong>
+#### Q2：既然多任务学习也有不同梯度，为什么 LLM 预训练没有这么严重的问题？
 
 因为 pre-training 和 post-training 处在完全不同的几何 regime。当多任务学习在参数空间中的最优子空间差异很大，且被强制投影到同一子空间时，才会出现显著冲突。
 
@@ -71,7 +71,7 @@ $$\frac{\mathbf{g}_1^\top \mathbf{g}_2}{\|\mathbf{g}_1\|\|\mathbf{g}_2\|} \appro
 
 ![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_06a9796e37e6.jpg)
 
-#### <strong>Q3：DART 为什么有效？用线性代数怎么理解？</strong>
+#### Q3：DART 为什么有效？用线性代数怎么理解？
 
 DART 的本质是给不同能力分配不同的参数子空间W \to W + B_r A_r \quad (\text{reasoning}), \quad W + B_a A_a \quad (\text{action})这相当于人为构造两个近似正交的低秩子空间，让 \mathbf{g}_r \in \mathcal{S}_r,\quad \mathbf{g}_a \in \mathcal{S}_a,\quad \mathcal{S}_r \cap \mathcal{S}_a \approx \varnothing从几何上看，就是避免了 \mathbf{g}_r + \mathbf{g}_a 被投影到同一参数空间中相互干扰，而是让它们在各自的子空间中独立收敛。
 

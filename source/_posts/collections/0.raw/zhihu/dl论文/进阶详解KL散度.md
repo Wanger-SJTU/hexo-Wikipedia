@@ -41,7 +41,7 @@ $$KL[P(X)||Q(X)]=∑x∈X[P(x)logP(x)Q(x)]=Ex∼P(x)[logP(x)Q(x)]KL\left[ P\left
 
 　　$考虑随机变量 X 的子集 X_{0}=\left\{ x|P\left( x \right)=0 \right\} ，由于 P\left( x \right) 是前向KL公式中的权重系数，因此 X_{0} 中的元素实际上对前向KL的值没有任何影响。换言之，对任意 x\in X_{0} ，无论 P\left( x_{0} \right) 与 Q\left( x_{0} \right) 相差多大都对前向KL的计算结果毫无影响，因此前向KL值不受 Q\left( x \right) 在子集 \left\{ x|P\left( x \right)=0 \right\} 上取值的影响。在极小化前向KL散度的过程中，每当 P\left( x \right)=0 时， Q\left( x \right) 就会被无视。从连续性角度推理，最小化前向KL散度倾向于忽视“ Q\left( x \right) 在满足 P\left( x \right) 近似为0的随机变量取值集合上的拟合精度”，而去更努力的实现“ Q\left( x \right) 在满足 0">P\left( x \right)>0的随机变量取值集合上的拟合精度”。上述分析结论总结如下（参考文献[4]）：$
 
-***Wherever *P\left( \cdot \right) *has high probability, *Q\left( \cdot \right) *must also have high probability.*　　下图展示了使用前向KL散度代价拟合一个多峰（实际上是双峰）分布的效果示意图（参考文献[4]）。
+*Wherever *P\left( \cdot \right) *has high probability, *Q\left( \cdot \right) *must also have high probability.*　　下图展示了使用前向KL散度代价拟合一个多峰（实际上是双峰）分布的效果示意图（参考文献[4]）。
 
 ![](/images/collections/0.raw/zhihu/dl%E8%AE%BA%E6%96%87/asset/img_5e7e22960f58.jpg)
 
@@ -51,7 +51,7 @@ $$KL[P(X)||Q(X)]=∑x∈X[P(x)logP(x)Q(x)]=Ex∼P(x)[logP(x)Q(x)]KL\left[ P\left
 
 　　在反向KL中，差异加权求和时的权重系数是 Q\left( x \right) 。此时， P\left( x \right) 在子集 \left\{ x|Q\left( x \right)=0 \right\} 的取值不影响反向KL值的计算，而当 0">Q\left( x \right)>0 时， Q\left( x \right) 与 P\left( x \right) 的差异需要尽可能小以使得反向KL值尽可能小。上述分析结论总结如下（参考文献[4]）：
 
-***Wherever *Q\left( \cdot \right)* has high probability, *P\left( \cdot \right)* must also have high probability.*　　下图展示了使用前向反向KL散度代价拟合一个多峰（实际是双峰）分布的效果示意图（参考文献[4]）。
+*Wherever *Q\left( \cdot \right)* has high probability, *P\left( \cdot \right)* must also have high probability.*　　下图展示了使用前向反向KL散度代价拟合一个多峰（实际是双峰）分布的效果示意图（参考文献[4]）。
 
 ![](/images/collections/0.raw/zhihu/dl%E8%AE%BA%E6%96%87/asset/img_693c42ca1db8.jpg)
 
@@ -69,7 +69,7 @@ $$\lim_{x \rightarrow 0}{xlnx}=\lim_{n \rightarrow \infty}{\frac{1}{n}ln\frac{1}
 
 　　上面的定性证明过程中的第一个等号左边的表达式，其实也可以使用洛必达法则（L'Hospital's rule）求解。该证明的意义在于说明：若 P log\ Q 中的 P 和 Q 以近似相同的速度趋向于0，则 P log\ Q 也会趋向于0。这背后隐含的意义是：只要 P\left( x \right) 在 x 处接近于0，那么 Q\left( x \right) 无论取何值（这里的“无论”是指 Q 有大于0的下界或至多是 P 的等价无穷小量），那么P\left( x \right) log\left( Q\left( x \right) \right)就是可忽略的。这也就定性的证明，在拟合中 Q 在在 P\left( x \right) 中接近于0的那部分自变量集合上花费精力基本是无意义的，因此拟合结果 Q 会表现为倾向于拟合 0">P>0 的那些区域。
 
-　　其他示例**
+　　其他示例
 
 　　前向KL和反向KL拟合效果的二维多峰（实际上是双峰 P ）分布情况示例（参考文献[1]）：
 

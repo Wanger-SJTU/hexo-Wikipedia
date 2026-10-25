@@ -15,7 +15,7 @@ source_url: https://zhuanlan.zhihu.com/p/2006389553703982040
 ---
 
 
-** 作者：Yancheng He, Weixun Wang, and Xiaoyang Li | Project Leader:  Weixun Wang
+作者：Yancheng He, Weixun Wang, and Xiaoyang Li | Project Leader:  Weixun Wang
 
 - English Version：https://www.notion.so/The-Bitter-Lesson-Behind-Building-Agentic-RL-in-Terminal-Environments-2eaddd45837f80c9ad2ed6a15ef3c1a1?pvs=21
 - 🚀ROLL TEAM：https://wwxfromtju.github.io/roll_team.html
@@ -61,11 +61,10 @@ Morgan 笑了笑：“幸运的是，我们把这些都记录下来了——基�
 
 那一天，Alex 终于意识到：
 
-RLVR 训练的是一个“会回答”的模型。 而 Agentic RL 训练的是一个“会行动”的模型——跨时间、跨状态、跨不确定性地行动。**
+RLVR 训练的是一个“会回答”的模型。 而 Agentic RL 训练的是一个“会行动”的模型——跨时间、跨状态、跨不确定性地行动。
 
 而这，改变了一切。
 
-**
 
 ![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_5a3fb2ca71ad.jpg)
 
@@ -92,7 +91,7 @@ Agentic RL 则更接近多步交互式 MDP 的设定：模型需要<strong>采�
 - <strong>CLI-Native Mode</strong>：上下文、会话与历史信息完全由 iFlow CLI 维护；ROLL 仅作为调用方，不负责轨迹拼接。
 在不同的训练阶段，我们会根据当前的优先目标在这两种模式之间切换。
 
-#### <strong>Roll-Managed Mode</strong>
+#### Roll-Managed Mode
 
 在这种模式下，终端环境以轻量级、step粒度的方式运行，而 ROLL 负责整个 rollout 循环、轨迹构建与上下文管理。
 
@@ -106,9 +105,8 @@ Agentic RL 则更接近多步交互式 MDP 的设定：模型需要<strong>采�
 
 但其缺点就是需要在 ROLL 内部维护额外的上下文处理逻辑，这不可避免地会与真实 iFlow CLI Agent 的行为存在一定差距。
 
-#### <strong>CLI-Native Mode</strong>
+#### CLI-Native Mode
 
-**
 
 ![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_1f4481975d93.jpg)
 
@@ -131,7 +129,6 @@ Agentic RL 具有明显的<strong>长尾延迟（long-tail latency）特性：�
 
 <strong>在同步、批量式 rollout 管线</strong>中，这些长耗时任务极易成为<strong>拖尾瓶颈（straggler bottleneck）</strong>，导致 GPU 利用率下降、端到端延迟增加。
 
-**
 
 ![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_4028872494cc.jpg)
 
@@ -147,7 +144,6 @@ Agentic RL 具有明显的<strong>长尾延迟（long-tail latency）特性：�
 
 如果你对底层设计与更多实现细节感兴趣，可以参考我们的 [ROLL Flash](https://link.zhihu.com/?target=https%3A//arxiv.org/pdf/2510.11345) 论文和 [ROLLART](https://link.zhihu.com/?target=https%3A//www.arxiv.org/pdf/2512.22560) 论文。
 
-**
 
 ![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_db7ce449bd29.jpg)
 
@@ -211,7 +207,6 @@ then I see the output "hello world"`
 
 因此，Agent 完全可以在不真正构建 git → push → deploy 整个流水线的情况下通过测试——例如直接将 `hello.html` 写入 web 根目录。最终输出结果看似正确，但底层系统行为并不符合预期。
 
-**
 
 ![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_915a9cbad0d7.jpg)
 
@@ -238,7 +233,6 @@ then I see the output "hello world"`
 
 在实践中，这些操作相当于一种<strong>环境增强(environment augmentation)</strong>：它们帮助 Agent 处理不确定性，促使其在行动前主动检查环境状态，并提升其对不同环境配置的适应能力。
 
-**
 
 ![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_616bf0baf6e8.jpg)
 
@@ -378,7 +372,6 @@ class GroupFilterTB:
 
 如下图所示，不使用 mask & filter 时训练波动较大、准确率不稳定；而采用该策略后，训练曲线更加平滑，并收敛到显著更优的性能。
 
-**
 
 ![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_22579f52af78.jpg)
 
@@ -392,7 +385,6 @@ class GroupFilterTB:
 
 我们对两种训练策略进行了直接对比。在大规模合成数据上，同时使用正负轨迹进行更新往往频繁崩溃，而仅用正轨迹训练在各种设置下都保持稳定。
 
-**
 
 ![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_bdaab9216ffc.jpg)
 
@@ -441,7 +433,6 @@ class GroupFilterTB:
 - 提升模型可学习能力的上限。
 从实验结果来看，IPA 在困难的长程任务上始终表现出更平滑的梯度与更强的性能表现。下图展示了 token 级优化与 chunk 级优化的直接对比：
 
-**
 
 ![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_3085021335d6.jpg)
 
@@ -453,7 +444,7 @@ class GroupFilterTB:
 
 #### 自适应地应用 RL 技巧
 
-Agentic RL 为什么更难？**
+Agentic RL 为什么更难？
 
 在训练 agentic model时，有以下几个突出的问题：
 
@@ -486,7 +477,6 @@ Agentic RL 为什么更难？**
 
 如下图所示，在两种不同的数据设置下，我们观察到了截然相反的现象：在一种情况下，移除标准差（std）会迅速导致训练崩溃；而在另一种情况下，同样的操作却反而使训练更加稳定（这里主要是数据分布的差异导致）。
 
-**
 
 ![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_4fcc9f814d7c.jpg)
 
@@ -510,13 +500,11 @@ Agentic RL 为什么更难？**
 
 为缓解这一问题，我们首先对响应长度超过 20k 的失败轨迹进行 masking来消除这些极端负样本的影响（以及其他目标一致的策略，例如<strong>降低权重</strong>）。从灰色曲线可以看到，优势的平均值开始回升，训练过程趋于稳定。
 
-**
 
 ![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_76e9c6424447.jpg)
 
 但在大约 40 个 step 之后，不稳定再次出现。这一次，最早的信号是负样本数量逐渐增加**。针对这一现象，我们对负样本进行全局重加权，降低其在策略更新中的整体贡献。结果如橙色曲线所示。
 
-**
 
 ![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_c85a5ea4fede.jpg)
 
@@ -568,7 +556,6 @@ Agentic RL 为什么更难？**
 
 事实上，<strong>我们在多个阶段都遇到过因环境并发抖动导致的训练异常，这些问题在没有系统级服务观测的情况下会很难定位。</strong>
 
-**
 
 ![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_ba1b0567e15a.jpg)
 
@@ -630,7 +617,6 @@ Agentic RL 其实非常地吃工程能力，需要高并发、低阻塞、可扩
 
 我们观察到，<strong>claude-sonnet-4.5 的并行度显著更高</strong>，无论是在进行并行工具调用的频率上，还是在单步内同时调用的工具数量上，都明显领先。
 
-**
 
 ![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_316d51773392.jpg)
 
@@ -657,7 +643,6 @@ Agentic RL 其实非常地吃工程能力，需要高并发、低阻塞、可扩
 
 下图展示了多个模型在 Terminal Bench 上的错误类型分布：
 
-**
 
 ![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_a80866aeb157.jpg)
 

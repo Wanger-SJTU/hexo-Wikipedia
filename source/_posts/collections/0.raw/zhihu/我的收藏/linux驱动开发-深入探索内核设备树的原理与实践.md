@@ -25,7 +25,7 @@ source_url: https://zhuanlan.zhihu.com/p/972681787
 
 之后经过一些讨论，对ARM平台的相关code做出如下相关规范调整，这个也正是引入DTS的原因。
 
-**1、ARM的核心代码仍然保存在arch/arm目录下
+1、ARM的核心代码仍然保存在arch/arm目录下
 2、ARM SoC core architecture code保存在arch/arm目录下
 3、ARM SOC的周边外设模块的驱动保存在drivers目录下
 4、ARM SOC的特定代码在arch/arm/mach-xxx目录下
@@ -45,7 +45,7 @@ source_url: https://zhuanlan.zhihu.com/p/972681787
 
 #### 2. DTS基本知识
 
-2.1 dts**
+2.1 dts
 
 硬件的相应信息都会写在.dts为后缀的文件中，每一款硬件可以单独写一份xxxx.dts，一般在Linux源码中存在大量的dts文件，对于arm架构可以在arch/arm/boot/dts找到相应的dts，一个dts文件对应一个ARM的machie。
 
@@ -323,7 +323,6 @@ Ranges是一个地址转换列表。每个输入ranges表格的是包含子地�
 
 device tree中的status标识了设备的状态，使用status可以去禁止设备或者启用设备，看下设备树规范中的status可选值
 
-**
 
 valueDescription“okay”表示设备正在运行“disabled”表示该设备目前尚未运行，但将来可能会运行“fail”表示设备无法运行。 在设备中检测到严重错误，确实如此没有修理就不可能投入运营“fail-sss”表示设备无法运行。 在设备中检测到严重错误，它是没有修理就不可能投入运营。 值的sss部分特定于设备并指示检测到的错误情况
 
@@ -605,7 +604,7 @@ tftp 0x30001000 s3c2440-smdk2440.dtb
 	"fdt chosen [ ]          - Add/update the /chosen branch in the tree\n"
 	"                                        / - initrd start/end addr\n"`
 
-实例**
+实例
 
 nand read.jffs2 32000000 device_tree      // 从flash读出dtb文件到内存(0x32000000)
 fdt addr 32000000                                      // 告诉fdt, dtb文件在哪

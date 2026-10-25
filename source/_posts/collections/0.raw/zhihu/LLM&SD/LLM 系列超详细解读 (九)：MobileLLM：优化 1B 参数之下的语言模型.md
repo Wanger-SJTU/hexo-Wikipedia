@@ -47,7 +47,7 @@ source_url: https://zhuanlan.zhihu.com/p/689006901
 图1：MobileLLM 精度与其他模型对比
 #### 本文得出了哪些具体的结论
 
-1) 网络架构：**
+1) 网络架构：
 
 - 与 Scaling Law<span class="wikilink wikilink--missing" title="未导入的页面">1</span>(#ref_1)相反，本文证明了深度比宽度对于小的 LLM 更加重要。一个 deep-and-thin 的模型结构擅长捕捉抽象概念，从而获得更好的最终性能。
 - 重新思考了 OPT<span class="wikilink wikilink--missing" title="未导入的页面">2</span>(#ref_2)中提出的 Embedding sharing 方法，并将 Grouped Query Attention<span class="wikilink wikilink--missing" title="未导入的页面">3</span>(#ref_3)实现在小的 LLM 中。
@@ -74,9 +74,9 @@ source_url: https://zhuanlan.zhihu.com/p/689006901
 
 ![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_247fdf205dbb.jpg)
 
-图2：流行的移动设备中的内存层次结构。尽管有足够的 Flash 存储，但是执行高速应用程序主要依赖于 DRAM，通常限制为 6-12GB 大小**
+图2：流行的移动设备中的内存层次结构。尽管有足够的 Flash 存储，但是执行高速应用程序主要依赖于 DRAM，通常限制为 6-12GB 大小
 
-1.2 优化 1B 参数之下的语言模型的路线图**
+1.2 优化 1B 参数之下的语言模型的路线图
 
 下面开始介绍从参数量为 1B 以下的 Baseline 的 LLM 到最终模型的整个过程，如图3所示。作者尝试了 125M 和 300M 这两种尺寸的模型，对于一些模型大小是主要限制条件的设备而言，如何高效分配模型的参数非常关键。本文探索的结论可以概括为：
 
@@ -89,15 +89,14 @@ source_url: https://zhuanlan.zhihu.com/p/689006901
 
 ![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_69846a6de498.jpg)
 
-图3：探索实验结果。前景和背景分别代表 125M 和 300M 的模型的 Zero-Shot 的常识推理任务的结果**
+图3：探索实验结果。前景和背景分别代表 125M 和 300M 的模型的 Zero-Shot 的常识推理任务的结果
 
-1.3 前馈网络选择**
+1.3 前馈网络选择
 
 作者首先把原始的 FFN (FC →ReLU → FC) 替换为了 SwiGLU，这使得 125M 模型 Zero-Shot 推理任务的平均性能从 42.6 提高到 43.9。因此，作者以后都使用 SwiGLU 进行实验。
 
-**
 
-1.4 架构宽度和深度**
+1.4 架构宽度和深度
 
 一个普遍存在的认知是 Transformer 模型的性能主要由参数数量、训练数据集的大小和训练迭代次数决定。这个认知假设架构设计对变压器模型的性能的影响是可以忽略不计的。但本文的研究结果表明，这对于较小的模型可能不成立。本文的实验结果，尤其是对于容量有限的小模型，表明深度对于提高模型的性能非常重要。
 
@@ -109,9 +108,9 @@ source_url: https://zhuanlan.zhihu.com/p/689006901
 
 ![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_ac2163512a2e.jpg)
 
-图5：在相似的模型大小下，更深更薄的模型通常在各种任务中都优于更广泛和更浅的模型，例如零样本常识推理、问答和阅读理解**
+图5：在相似的模型大小下，更深更薄的模型通常在各种任务中都优于更广泛和更浅的模型，例如零样本常识推理、问答和阅读理解
 
-1.5 嵌入层共享**
+1.5 嵌入层共享
 
 对于一个 1B 规模的语言模型而言，嵌入层 (Embedding Layer) 构成了参数量的很大一部分。对于一个嵌入维度为 512，词汇表大小为 32K 的模型而言，输入和输出的嵌入层各包含 16M 个参数，它们占据了 125M 参数模型规模的 20% 以上。相比之下，在更大的语言模型中，这个比例要低得多：输入和输出的嵌入层仅占 LLaMA-7B 模型中参数量总数的 3.7%，在 LLaMA-70B 模型中仅占 0.7%。
 
@@ -125,9 +124,9 @@ source_url: https://zhuanlan.zhihu.com/p/689006901
 
 ![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_772f37afe328.jpg)
 
-图6：使用 512 嵌入维度的 30 层模型进行输入输出嵌入共享的消融实验结果，任务是 Zero-Shot 的常识推理任务**
+图6：使用 512 嵌入维度的 30 层模型进行输入输出嵌入共享的消融实验结果，任务是 Zero-Shot 的常识推理任务
 
-1.6 Heads 的数量**
+1.6 Heads 的数量
 
 作者接下来研究 Transformer 模型的最优 Head 数量。Head 数量少的话每个 head 的语义信息比较丰富，head 数量多的话多个 heads 可以非线性组合。本文发现 Grouped Query Attention，最初是为减少 LLM 中的 KV-cache 的大小而设计的，也可以有效地减少语言模型中 Key-Value heads 的冗余。Grouped Query Attention 可以视为权重共享的另一种形式，其中 Key-Value heads 的数量是 Query heads 的 1/n 倍。
 
@@ -137,9 +136,8 @@ source_url: https://zhuanlan.zhihu.com/p/689006901
 
 图7：Heads 数量和 kv-heads 数量的消融实验结果这一步得到的模型称之为 MobileLLM。
 
-**
 
-1.7 层共享**
+1.7 层共享
 
 上节的发现表面了层数的增加有益于小型 Transformer 模型，这也启发作者探索层共享 (Layer Sharing) 策略，即在不增加模型存储成本的前提下增加隐藏层的数量。这种方法特别适用于模型大小是一个主要约束的设备上场景。令人惊讶的是，本文的实验结果表明，可以通过简单地复制 Transformer Block，就能够提升模型的性能，而不需要修改架构或者缩放模型。本文作者尝试了下图8的四种方案。
 
@@ -151,9 +149,8 @@ source_url: https://zhuanlan.zhihu.com/p/689006901
 
 图9：层共享策略的消融实验结果这一步得到的模型称之为 MobileLLM-LS。
 
-**
 
-1.8 实验结果**
+1.8 实验结果
 
 MobileLLM 优化器 Adam，weight decay 使用 0.1，初始学习率为 2e-3，使用余弦衰减策略，最高精度的模型在 1T tokens 上面训练了 480k iterations。评估的任务包括 Zero-Shot 的常识推理任务、问答和阅读理解任务。
 

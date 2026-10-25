@@ -21,7 +21,7 @@ source_url: https://zhuanlan.zhihu.com/p/367993367
 
 [![](/images/collections/0.raw/zhihu/%E8%B5%B0%E5%90%91cs/asset/img_88aa0307c5ca.jpg)腾讯技术工程：Linux 内存管理知识总结（一）118 赞同 · 4 评论 文章](https://zhuanlan.zhihu.com/p/366957562)
 
-#### <strong>Linux 内存管理框架</strong>
+#### Linux 内存管理框架
 
 传统的多核运算是使用 SMP(Symmetric Multi-Processor )模式：将多个处理器与一个集中的存储器和 I/O 总线相连，所有处理器访问同一个物理存储器，因此 SMP 系统有时也被称为一致存储器访问（<strong>UMA</strong>）结构体系，即无论在什么时候，处理器只能为内存的每个数据保持或共享唯一一个数值。
 
@@ -37,7 +37,7 @@ Linux 内核通过插入一些兼容层，使两个不同体系结构的差异�
 
 而在 UMA 系统中, 内存就相当于一个只使用一个 NUMA 节点来管理整个系统的内存，这样在内存管理的其它地方可以认为他们就是在处理一个(伪)NUMA 系统。
 
-#### <strong>内存管理框架初始化</strong>
+#### 内存管理框架初始化
 
 在 linux 中，每个物理内存节点 node 都被划分为多个内存管理区域用于表示不同范围的内存，比如上面提到的 NORMAL 内存、高端内存，内核可以使用不同的映射方式映射物理内存。zone 只是内核为了管理方便而做的一种逻辑上的划分，并不存在这种物理硬件单元。
 
@@ -613,7 +613,7 @@ linux 内核中静态定义了一个 mem_section 的指针数组，一个 sectio
 ```
 
 
-#### <strong>内存管理区 Zone 初始化</strong>
+#### 内存管理区 Zone 初始化
 
 回到 paging_init()的最后一个函数调用：<strong>zone_sizes_init</strong>()。
 
@@ -1251,7 +1251,7 @@ void __meminit memmap_init_zone(unsigned long size, int nid, unsigned long zone,
 ```
 
 
-#### <strong>struct page</strong>
+#### struct page
 
 最后这里简单介绍一下 struct page，内核会为每一个物理页帧创建一个 struct page 的结构体，因此要保证 page 结构体足够的小，否则仅 struct page 就要占用大量的内存，该结构有很多 union 结构，主要是用于各种算法不同数据的空间复用。
 
@@ -1535,13 +1535,13 @@ pfn_to_page、page_to_pfn 可以参考上面的内存模型，不同的模型实
 
 PAGE_OFFSET 与具体的架构有关，在 x86_32 中，PAGE_OFFSET 是 0xC0000000，即 32 位系统中，内核的逻辑地址只有高位的 1GB
 
-#### <strong>总结</strong>
+#### 总结
 
 Linux 内存管理是一个很复杂的“工程”，Linux 会通过中断调用获取被 BIOS 保留的内存地址范围以及系统可以使用的内存地址范围。在内核初始化阶段，通过 memblock 内存分配器，实现页分配器初始化之前的内存管理和分配请求，memblock 内存区管理算法将可用可分配的内存用 memblock.memory 进行管理，已分配的内存用 memblock.reserved 进行管理，只要内存块加入到 memblock.reserved 里面就表示该内存被申请占用了，申请和释放的操作都集中在 memblock.reserved，这个算法效率不高，但是却是合理的，因为在内核初始化阶段并没有太多复杂的内存操作场景，而且很多地方都是申请的内存都是永久使用的。为了合理地利用 4G 的内存空间，Linux 采用了 3：1 的策略，即内核占用 1G 的线性地址空间，用户占用 3G 的线性地址空间，且 Linux 采用了一种折中方案是只对 1G 内核空间的前 896 MB 按线性映射, 剩下的 128 MB 采用动态映射，即走多级页表翻译，这样，内核态能访问空间就更多了。传统的多核运算是使用 SMP(Symmetric Multi-Processor )模式，将多个处理器与一个集中的存储器和 I/O 总线相连，所有处理器访问同一个物理存储器，因此 SMP 系统有时也被称为一致存储器访问（UMA）结构体系。而 NUMA 模式是一种分布式存储器访问方式，处理器可以同时访问不同的存储器地址，大幅度提高并行性。NUMA 模式下系统的每个 CPU 都有本地内存，可支持快速访问，各个处理器之间通过总线连接起来，以支持对其它 CPU 本地内存的访问，但是这些访问要比处理器本地内存的慢。Linux 内核通过插入一些兼容层，使两个不同体系结构的差异被隐藏，两种模式都使用了同一个数据结构，另外 linux 的物理内存管理机制将物理内存划分为三个层次来管理，依次是：Node（存储节点）、Zone（管理区）和 Page（页面）。
 
 Linux 内存管理的内容十分多且复杂，上面介绍到的也只是其中的一部分，如果感兴趣的话可以下载一份源代码，然后细细品味[手动狗头]
 
-#### <strong>参考文献</strong>
+#### 参考文献
 
 Linux 内存管理-Zone：https://blog.csdn.net/wyy4045/article/details/81776277
 
@@ -1565,6 +1565,5 @@ struct page：https://blog.csdn.net/gatieme/article/details/52384636
 
 页表初始化：https://www.cnblogs.com/tolimit/p/4585803.html
 
-**
 
 更多干货尽在腾讯技术，<strong>欢迎关注官方公众号</strong>：腾讯技术工程，<strong>交流群已建立，交流讨论可加</strong>QQ 群：<strong>160315980</strong>（备注腾讯技术） 。**

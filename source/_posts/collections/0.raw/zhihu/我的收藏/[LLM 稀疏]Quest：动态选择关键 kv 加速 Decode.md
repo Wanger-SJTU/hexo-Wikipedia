@@ -21,7 +21,7 @@ source_url: https://zhuanlan.zhihu.com/p/1933253949143613737
 
 github：[https://github.com/mit-han-lab/Quest](https://link.zhihu.com/?target=https%3A//github.com/mit-han-lab/Quest) 
 
-**单从时间+ star 来看的话，llm+sparse 热度似乎还不如 Diffusion + sparse 啊，Radial 才开源没多久就 445 star 了。看了很多 Diffusion 中的稀疏注意力，也来学习一下 LLM 中的稀疏。
+单从时间+ star 来看的话，llm+sparse 热度似乎还不如 Diffusion + sparse 啊，Radial 才开源没多久就 445 star 了。看了很多 Diffusion 中的稀疏注意力，也来学习一下 LLM 中的稀疏。
 
 [](https://zhuanlan.zhihu.com/p/1926372534066061776)
 

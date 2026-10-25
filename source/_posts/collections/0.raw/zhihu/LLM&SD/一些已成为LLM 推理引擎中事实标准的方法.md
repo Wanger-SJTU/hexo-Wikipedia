@@ -27,7 +27,7 @@ source_url: https://zhuanlan.zhihu.com/p/685706549
 
 ![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_6840e1816d45.jpg)
 
-MHA和MQA实现对比**
+MHA和MQA实现对比
 
 #### GQA(Grouped-Query Attention)
 
@@ -51,14 +51,14 @@ GQA最知名的使用者，大概是Meta开源的LLAMA2-70B，以及LLAMA3全系
 
 大佬们的经典文章：
 
-**[苏剑林：缓存与效果的极限拉扯：从MHA、MQA、GQA到MLA](https://zhuanlan.zhihu.com/p/700588653) 
+[苏剑林：缓存与效果的极限拉扯：从MHA、MQA、GQA到MLA](https://zhuanlan.zhihu.com/p/700588653) 
 [ZHANG Mingxing：DeepSeek-V2 高性能推理 (1)：通过矩阵吸收十倍提速 MLA 算子](https://zhuanlan.zhihu.com/p/700214123)
 [BBuf：大模型KV Cache节省神器MLA学习笔记（包含推理时的矩阵吸收分析）](https://zhuanlan.zhihu.com/p/703862723) 
 [rainbow：还在用MHA？MLA来了DeepSeek-v2的MLA的总结和思考](https://zhuanlan.zhihu.com/p/697781431)
 #### 
 Sliding Window Attention
 
-Mistral sliding window attention**
+Mistral sliding window attention
 
 这个是Mistral AI中使用的sliding window attention，详细可见[https://github.com/mistralai/mistral-src?tab=readme-ov-file#sliding-window-attention](https://link.zhihu.com/?target=https%3A//github.com/mistralai/mistral-src%3Ftab%3Dreadme-ov-file%23sliding-window-attention)。**针对long context非常有效，是一种local化的attention，在每层attention layer中只对固定的window size计算attentionScore，如下图所示。
 
@@ -70,13 +70,12 @@ Mistral sliding window attention**
 
 ![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_04089c4df268.jpg)
 
-Longformer sliding window attention**
+Longformer sliding window attention
 
 ![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_bb833f210519.jpg)
 
 [Longformer The Long-Document Transformer](https://link.zhihu.com/?target=https%3A//arxiv.org/pdf/2004.05150.pdf)中的sliding window attention提供了window attention的较多玩法，固定长度的window、扩散长度的window、不同层变化长度的window和全局+window，也是按需使用吧。其中不同层变化长度的window， 在底层使用较小的滑窗，以构建局部信息；越上层滑窗越大，以扩大感受野。
 
-**
 
 #### ALiBi
 
@@ -102,7 +101,6 @@ Longformer sliding window attention**
 
 总结来说，RoPE 的 self-attention 操作的流程是：对于 token 序列中的每个词嵌入向量，首先计算其对应的 query 和 key 向量，然后对每个 token 位置都计算对应的旋转位置编码，接着对每个 token 位置的 query 和 key 向量的元素按照两两一组**应用旋转变换（在query和key各自内部进行旋转），最后再计算 query 和 key 之间的内积得到 self-attention 的计算结果。
 
-**
 
 #### Speculative Decoding
 
@@ -148,7 +146,7 @@ Tri Dao的2篇大作[FlashAttention-2: Faster Attention with Better Parallelism 
 
 推理场景中prefill和decode阶段处理的sequence通常都是变长的，早期存储KVCache的方式比较简单粗暴的，就是静态地分配一个固定长度max_seq_len 空间，可想而知在组batch的场景下会有大量的碎片存储空间导致浪费，于是一个比较直接的想法就是利用动态分页的思想将逻辑空间和物理空间分离开来再通过一个map来映射**，这样逻辑上处理KVCache仍旧是连续的，在物理上block是非连续存储组织的，如此空间肯定是最大化利用了，处理流程上会有一些overhead但设计实现的好的话可以基本忽略。下面这张图可以清楚地表达分block映射的流程，详细的内容可参考：
 
-**https://blog.vllm.ai//20/vllm.html https://docs.vllm.ai/en/latest/dev/kernel/paged_attention.html#value 
+https://blog.vllm.ai//20/vllm.html https://docs.vllm.ai/en/latest/dev/kernel/paged_attention.html#value 
 [SiriusNEO：LLM 高速推理框架 vLLM 源代码分析 / vLLM Source Code Analysis](https://zhuanlan.zhihu.com/p/641999400)![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_cd6bbae411ef.jpg)
 
 #### Continuous Batching
@@ -167,7 +165,6 @@ Continuous Batching现已成为大模型推理框架的必备技术，像vLLM,Te
 
 [](https://zhuanlan.zhihu.com/p/676109470)
 
-**
 
 #### Prefill &amp; Decode分离
 

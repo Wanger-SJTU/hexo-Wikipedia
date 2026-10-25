@@ -29,7 +29,6 @@ Intel Skylake Frontend Bound的展开Frontend Bound可以划分为Latency和Band
 
 再次声明一下，下列的公式均来源于TMAM 3.5中的skl_client_ratios.py文件，该文件主要存放的是Skylake的TMA比例系数和公式，读者可以在该文件中找到我下面提及的所有公式。对于公式中使用到的PMC事件的具体解释说明，可以在Intel的*<strong>Intel® 64 and IA-32 Architectures Software Developer’s Manual</strong>*中找到，具体是在*<strong>Volume 3 (3A, 3B, 3C & 3D): System Programming Guide</strong>*中的CHAPTER 19 PERFORMANCE MONITORING EVENTS。
 
-**
 
 #### Frontend Bound：
 
@@ -65,27 +64,24 @@ SMT**, Simultaneous Multi-Threading，即同步多线程，在Intel的CPU中称�
 
 在GitHub上的提问已经被Closed了，作者只简单地回复了：It's not statically partitioned. 即表示在SMT的模式下，每个物理内核中的两个逻辑线程竞争4宽度的流水线，所以每个逻辑内核的最大流水线宽度确实为4。可是，如果两个线程都有uops要issue的时候怎么办，我猜大概率会对4宽度进行平分，每个逻辑内核的流水线宽度变成2。所以这时，Pipeline_Width还继续沿用4的话，一定会造成Frontend_Latency这个分类的比重偏大。所以我们在应用TMAM的时候，应该尽量避免开启SMT，若开启了SMT，也尽量不要同时使用一个物理内核中的两个逻辑内核，这也算是TMAM的一个小小缺陷吧。
 
-**
 
 接下来看下有哪些原因可以导致Frontend Latency，TMAM在这里划分成了ICache_Misses，ITLB_Misses，Branch_Resteers，DSB_Switches，LCP，MS_Switches这六个子类，接下来将一一讲解这六个子类。
 
-*1. ICache_Misses：***
+*1. ICache_Misses：*
 
 首先是*<strong>ICache_Misses</strong>*，一旦发生instruction cache miss，Frontend没有Instruction去做decode，必然会导致没有相应的uops发往后端，导致Frontend Latency出现瓶颈。
 
 <strong>self.val = (EV("ICACHE_16B.IFDATA_STALL</strong>", 3) + 2 * EV("<strong>ICACHE_16B.IFDATA_STALL:c1:e1</strong>", 3)) / CLKS(self, EV, 3)这里可以先简单理解为，用L1 ICache Miss所导致pipeline Stall的周期数，除以总的周期数，以得到L1 ICache Miss所占的一个比重。 <strong>ICACHE_16B.IFDATA_STALL</strong>事件的说明为：Cycles where a code line fetch is stalled due to an L1 instruction cache miss. The legacy decode pipeline works at a<strong>16 Byte granularity.</strong>
 
-**
 
-*2. ITLB_Misses:***
+*2. ITLB_Misses:*
 
 对于*<strong>ITLB_Misses，</strong>*思路还是和ICache Misses一样，也是站在Cycles这个层级去统计计算的，为什么不继续站在Slots的层级去统计计算呢？Slots层级的优势当然比Cycles层级的优势多得多，但是很多具体的底层事件，所站的角度是在Cycles这一个级别的，很难、甚至不可能计算出所浪费的Slots数量，所以这时候就只能在Cycles这一个层级做统计分析，这样会更加方便和简洁。对于该分类，具体的计算公式为：
 
 <strong>self.val = EV("ICACHE_64B.IFTAG_STALL</strong>", 3) / CLKS(self, EV, 3)其中的<strong>ICACHE_64B.IFTAG_STALL</strong>事件的解释为：Cycles where a code fetch is stalled due to L1 instruction cache tag miss。若发生了Cache Tag Miss，即表明在TLB中没有找到相应的Tag，发生了TLB Miss，用Tag Miss所导致停顿的周期数，除以总周期数，即为相应的比重。
 
-**
 
-*3.Branch_Resteers:***
+*3.Branch_Resteers:*
 
 对于***Branch_Resteers*，**统计的是前端从一条错误的分支恢复过来，中间所消耗的周期数占所有周期数的一个比重。作者提到了这里可能会和其他的兄弟节点重复统计（Note the value of this node may overlap with its siblings.），因为在恢复的过程中，有可能会发生TLB Miss或者ICache Miss，这些会出现重叠，但影响不大。具体的计算公式为：
 
@@ -93,9 +89,8 @@ SMT**, Simultaneous Multi-Threading，即同步多线程，在Intel的CPU中称�
 
 然后对于BACLEARS.ANY，被简单地解释为Number of front end re-steers due to BPU misprediction，即前端Misprediction发生的次数。然后用发生的次数乘以BAClear_Cost，这里BAClear_Cost为一个常数，等于9。即可以理解为每发生一次分支预测错误，将会浪费9个周期，这里的9要不就是一个恒定值，要不就是统计后的平均经验值。对于Branch Resteers，还能继续向下展开为三类，分别为Branch Misprediction，Machine Clears和new branch address clears三类原因导致的比重。后面讲继续介绍第三层级的其他分类，先不在这里对改层级进一步展开。
 
-**
 
-*4.DSB_Switches:***
+*4.DSB_Switches:*
 
 对于*<strong>DSB_Switches</strong>*，这个分类统计的是从DSB pipeline切换到MITE pipeline导致前端停顿的周期比重。这里的<strong>DSB</strong>是Decoded Stream Buffer的缩写，存放的一些已经被decode的uops，可以把它理解为一个uops ICahce，DSB是在Intel的Sandy Bridge架构中引入的，有兴趣的朋友可以在网上找到更多相关的资料。DSB对应到AMD中就是Op Cache，顾名思义，就是存放uOps的Cache。<strong>MITE</strong>是Micro-instruction Translation Engine的缩写，其实就是没有引入DSB之前传统的decode pipeline。
 
@@ -107,17 +102,15 @@ SMT**, Simultaneous Multi-Threading，即同步多线程，在Intel的CPU中称�
 
 <strong>self.val = EV("DSB2MITE_SWITCHES.PENALTY_CYCLES</strong>", 3) / CLKS(self, EV, 3)这个计算公式很好理解，DSB2MITE_SWITCHES.PENALTY_CYCLES事件表示的是Cycles of delay due to Decode Stream Buffer to MITE switches，即切换所浪费的周期数，然后用该值除以总周期数，得到相应的比重。
 
-**
 
-*5.LCP:***
+*5.LCP:*
 
 接下来分析下*<strong>LCP</strong>*这个子类，LCP是<strong>Length Changing Prefixes</strong>的缩写，对于正在decode的指令，若发生dynamically changing prefix length，即有LCP，长度改变前缀，便会出现几个周期的Stall。在Intel的相关文档里面提到：This may result in a <strong>three-cycle penalty</strong> for each LCP (Length changing prefix) in a 16-byte chunk，大约是三个周期的惩罚，然后只要Using proper compiler flags or Intel Compiler by default will <strong>certainly</strong> avoid this，便可以解决LCP的问题。接着来看下LCP的计算公式：
 
 <strong>self.val = EV("ILD_STALL.LCP</strong>", 3) / CLKS(self, EV, 3)也十分容易理解，ILD_STALL.LCP事件表示的是Stalls caused by <strong>changing prefix length</strong> of the instruction，即由于LCP导致停顿的周期数，除以总的周期数。
 
-**
 
-*6.MS_Switches：***
+*6.MS_Switches：*
 
 对于*<strong>MS_Switches</strong>*子类，想要表达的是从DSB pipeline或MITE pipeline切换到MS pipeline所浪费的周期比重。其中，MS是<strong>Microcode</strong> <strong>Sequencer</strong>的缩写，对应的是Intel架构图中的MSROM module和AMD架构图中的Microcode Rom。这个模块主要用于存放<strong>microcode，</strong>即某些CISC指令的uops流，比如CPUID指令，对应的是一系列的uops指令，这些uops序列将会存放在MS ROM中。
 
@@ -125,7 +118,6 @@ SMT**, Simultaneous Multi-Threading，即同步多线程，在Intel的CPU中称�
 
 ** self.val = MS_Switches_Cost * EV("IDQ.MS_SWITCHES**", 3) / CLKS(self, EV, 3)IDQ.MS_SWITCHES事件统计的是切换的次数，具体的解释为：Number of switches from DSB (Decode Stream Buffer) or MITE (legacy decode pipeline) to the Microcode Sequencer，然后再用次数乘以切换所浪费的周期数MS_Switches_Cost （这里MS_Switches_Cost为常数2），变得可以得到MS切换所导致停顿的周期数。最后用这个值除以总的周期数，便是MS Switch相应的比重。
 
-**
 
 好了，终于将Frontend Lantern以及他下面的六个子类讲解清楚了，需要注意的是，这里的六个子类都是站在总的执行周期这个层面是去看相应的比重的，所以他们和一定不等于他们的父类。但是由于他们的分母都是总的执行周期，所以他们之间可以相互比较，这也是为什么TMA方法学所强调的，不同层级、不同分类下的数值比较没有意义**。只有当Frontend Latency这个分类是主要瓶颈的时候，我们才会对他展开，然后我们只需要比较它下面的六个子类比重大小，而不用再去考虑其他的分类。
 
@@ -133,17 +125,16 @@ SMT**, Simultaneous Multi-Threading，即同步多线程，在Intel的CPU中称�
 
 接下来轮到Frontend Bandwidth了，即前端没有充分利用带宽所消耗的Slots比重。这里对于的计算公式为：
 
-** self.val = self.Frontend_Bound.compute(EV) - self.Frontend_Latency.compute(EV)即直接用父类Frontend_Bound的值减去他兄弟Frontend_Latency的值，由于这两个子类的和一定等于前端总浪费的Slots数量，所以就可以通过这样简单地相减得到。接下来主要详细看下Bandwidth下的三个子类，对于Bandwidth，TMA将他划分成了MITE，DSB和LSD三个子类，这三个子类分别对应三种Frontend pipeline，均有可能出现issue的uops宽度不为4的情况。
+self.val = self.Frontend_Bound.compute(EV) - self.Frontend_Latency.compute(EV)即直接用父类Frontend_Bound的值减去他兄弟Frontend_Latency的值，由于这两个子类的和一定等于前端总浪费的Slots数量，所以就可以通过这样简单地相减得到。接下来主要详细看下Bandwidth下的三个子类，对于Bandwidth，TMA将他划分成了MITE，DSB和LSD三个子类，这三个子类分别对应三种Frontend pipeline，均有可能出现issue的uops宽度不为4的情况。
 
-*1.MITE:***
+*1.MITE:*
 
 通过上面的讲解，应该还记得<strong>MITE（Micro-instruction Translation Engine）</strong>，由于Frontend的Decoder pipeline可能会出现inefficiencies的情况，所以会导致MITE的Bandwidth不理想。具体的计算公式为：
 
 <strong>self.val = (EV("IDQ.ALL_MITE_CYCLES_ANY_UOPS</strong>", 3) - EV("<strong>IDQ.ALL_MITE_CYCLES_4_UOPS</strong>", 3)) / CORE_CLKS(self, EV, 3)先简单讲解下公式中的两个事件，对于IDQ.ALL_MITE_CYCLES_ANY_UOPS，统计的是有uops从MITE发送到IDQ（Instruction Decode Queue）的周期数，对应的解释为：Counts cycles MITE is delivered at least one uops。然后对于IDQ.ALL_MITE_CYCLES_4_UOPS，统计的是有4个uops从MITE发往IDQ的周期数，即Counts cycles MITE is delivered four uops。两者之差，即为MITE的Bandwidth不为4的周期数，再用这个差除以总的周期数，即可得到相应的比重。当然，我们可以将MITE分别向IDQ发送1、2、3uops的周期数全部加起来，即可得到Bandwidth小于4的周期数，再用这个周期数除以总周期数，也可以得到同样的结果。
 
-**
 
-*2.DSB:***
+*2.DSB:*
 
 对于DSB（Decoded Stream Buffer），即<strong>decoded uop cache，</strong>也有可能出现inefficient的情况，具体原因可能是没有利用好DSB cache structure，或者在读取的时候发生了Bank conflict，这些原因均会导致DSB没有充分利用带宽。具体的计算公式为：
 
@@ -155,20 +146,19 @@ SMT**, Simultaneous Multi-Threading，即同步多线程，在Intel的CPU中称�
 
 但是在Skylake的代码中，还是使用的是IDQ.ALL_DSB_CYCLES_4_UOPS和IDQ.ALL_MITE_CYCLES_4_UOPS，均表示uops为4的周期数。看来我还需要在GitHub上再提交一个issue，等后续作者有相应的答复，这里会及时更新。
 
-**
 
 作者也很及时答复了这个问题，下面的作者的回答。我提议用发送1、2、3 uops的周期数的和作为分子，作者表示发送 uops只会出现在指令fusiond的情况下，这时流水线的宽度依然是4。对于fusion，其实就是micro-fusion，是Intel CPU的一种机制，使得Frontend可以将多个uops融合成一个复杂的uop进行处理，然后在后端执行的时候，会将其拆分来进行处理。所以作者可能是想表明， uops的时候，其实也只有4条uops，只不过是有micro-fused uops混杂在这4条里面罢了。如果从这个角度解释的话，那么公式中为什么只减去4 uops的周期数，便是合理的。其实要验证这个问题也很简单，只需要统计一下现有公式所计算出来的值，是否和使用1、2、3 uops的周期数作为分子算出来的值一致，便可以验证、解决这个问题的，然后需要注意的是，要使用一些能够产生micro-fusion的程序作为测试程序，以使得uops宽度能“达到”。
 
 > How about you test if your formulas work better on some tests?
 AFAIK the  cases only happen with fusion, so 4 is the full width. Ignoring that is quite reasonable, so the existing formula seems reasonable.
 
-*3.LSD:***
+*3.LSD:*
 
 LSD是Loop Stream Detector的缩写，通过下图可以得知，LSD处于uOp Queue内部，中文翻译过来叫做<strong>循环流检测器</strong>，其实就是检测、保存uops循环序列，当uops循环序列小于或等于LSD的容量时候，可存放在LSD中，便可以不需要再通过前端的译码得到相应的uops序列，只需要不断从LSD中取出相应的uops序列便可。
 
 ![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_ef32caf8da72.jpg)
 
-**在一些罕见的情况下，比如uops循环的大小与当前硬件的LSD结构不匹配，就会出现LSD带宽不足的情况。对于Intel的Skylake，该项的值直接等于0，也许是Intel对Skylake的LSD进行了Update，不会再出现Bandwidth的相应问题？还是说相关的PMC出现了异常？我们不得而知。
+在一些罕见的情况下，比如uops循环的大小与当前硬件的LSD结构不匹配，就会出现LSD带宽不足的情况。对于Intel的Skylake，该项的值直接等于0，也许是Intel对Skylake的LSD进行了Update，不会再出现Bandwidth的相应问题？还是说相关的PMC出现了异常？我们不得而知。
 
 所以，我们来看下Intel的第四代架构，Haswell中该项所使用的公式：
 
@@ -176,9 +166,8 @@ LSD是Loop Stream Detector的缩写，通过下图可以得知，LSD处于uOp Qu
 
 看来还是和他的兄弟节点计算方法一致，<strong>LSD.CYCLES_ACTIVE</strong>事件为Cycles with at least one uop delivered by the LSD and none from the decoder，<strong>LSD.CYCLES_4_UOPS</strong>事件为Cycles with 4 uops delivered by the LSD and none from the decoder。那么两者之差便是LSD带宽不满的周期数，然后再用这个数值除以总的周期数，得到相应的比重。
 
-**
 
-至此，我们便完成了对Frontend Bandwidth和他三个子类的讲解。与Frontend Latency的六个子类相似，这些子类均是站在周期数这个层级进行统计的，所以他们的和肯定不等于他们的父类。但是他们之间是有相互比较的意义的。不过，哪怕是Frontend Latency下的六个子类，和Frontend Bandwidth下的三个子类之间，也是没有比较意义的，一个是压根没有uops发射的周期数比重，另一个是uops带宽不足的周期数比重，显然不在一个层面上。正确的分析方法还是先看第一层，然后再看对应的第二层，接着再看对应的第三层，根本没必要去关注不同分支下的各个类比的比重大小，只需要关注同一个分支下的比重大小即可。**
+至此，我们便完成了对Frontend Bandwidth和他三个子类的讲解。与Frontend Latency的六个子类相似，这些子类均是站在周期数这个层级进行统计的，所以他们的和肯定不等于他们的父类。但是他们之间是有相互比较的意义的。不过，哪怕是Frontend Latency下的六个子类，和Frontend Bandwidth下的三个子类之间，也是没有比较意义的，一个是压根没有uops发射的周期数比重，另一个是uops带宽不足的周期数比重，显然不在一个层面上。正确的分析方法还是先看第一层，然后再看对应的第二层，接着再看对应的第三层，根本没必要去关注不同分支下的各个类比的比重大小，只需要关注同一个分支下的比重大小即可。
 
 终于完成了对TMA Frontend Bound下各个分类的讲解了，希望在了解TMA方法学的同时，大家能够对目前CPU的Frontend能有一个更深刻的了解和认识。毕竟，当我们对所要分析的事物理解越透彻、越深刻时，我们便能够越容易地对它进行剖析，找出其根本的原因和问题。
 

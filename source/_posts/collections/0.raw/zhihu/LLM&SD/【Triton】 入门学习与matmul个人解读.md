@@ -34,7 +34,7 @@ Triton的学习需要会GPU架构：[复习GPU架构 以及 Triton 课程](https
 - program_id的个人理解。从CUDA的角度来说，一个 grid 内部可以分为多个 block，其中 block 的排布可以是一维的、二维的、三维的。Triton 通常是以块为单位进行调度计算，那么 program_id 指的是某一个块的全局索引。（也可以理解成循环，如果只有一个SM，就要让该SM循环执行所有的 Block。）那么我们可以通过 `pid = tl.program_id(axis=0)` 和 `pid = tl.program_id(axis=1)`  来获得某个块在某个维度的索引。
 <strong>Block-wise编程，Block上面的归用户，Block内部的归Triton compiler自动化处理</strong>与CUDA对应，Triton 以 Block 为单位，因此获得的是块的索引。CUDA是以 Thread 为单位，因此需要获得现成的索引。
 
--  pid = tl.program_id(axis=0)  表示当前执行的 程序块序号；该值可能是持续增加的，但是核函数内具体的 pid_m 和 pid_n 则是通过 pid 计算出来的，比如在 row_major中 计算为：         `python         pid_m = pid // num_pid_n         pid_n = pid % num_pid_n`         在group_major中计算为：         ```python          pid_m = first_pid_m + (pid % group_size_m)          pid_n = (pid % num_pid_in_group) // group_size_m** 
+-  pid = tl.program_id(axis=0)  表示当前执行的 程序块序号；该值可能是持续增加的，但是核函数内具体的 pid_m 和 pid_n 则是通过 pid 计算出来的，比如在 row_major中 计算为：         `python         pid_m = pid // num_pid_n         pid_n = pid % num_pid_n`         在group_major中计算为：         ```python          pid_m = first_pid_m + (pid % group_size_m)          pid_n = (pid % num_pid_in_group) // group_size_m
 -  stride 的理解（以pytorch为例）：`a =torch.rand([3,6])     a.stride()     # (6, 1)`
  第一个维度的 `stride` 为6 ， 表示从 `a[m,k]` 的地址到`a[m+1, k]` 的地址，中间差了6个元素。第二个维度 stride为1，表示从 `a[m,k]`  的地址到 `a[m,k+1]` 的地址，中间差了1个元素。可以帮助更方便找到每个元素的 pointer
  
@@ -164,7 +164,6 @@ matmul_kernel[grid](
 
 grid` 是一个函数，他的输入和 `matmul_kernel` 的输入相同，通过拿到 `matmul_kenel` 的输入 `kwargs` 来计算 `grid` 。这里的 `gird`  可以人做是通过 `M`  与 `N` 即数据块的大小计算出的实际需要分块的数量，即 warps 数量。比如这里将 M* N的数据分为了
 
-**
 
 ![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_f2f4d4c11454.jpg)
 

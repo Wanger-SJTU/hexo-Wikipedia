@@ -33,7 +33,7 @@ OpenCL kernel函数的整体结构和C函数像似，由函数名、形参列表
 
 #### 2.1  kernel 代码样例
 
-**下面kernel样例是一维矩阵向量相加操作，每个工作项计算一个矩阵中的8个元素，实现并行计算。`__kernel void add(__global uchar *a,
+下面kernel样例是一维矩阵向量相加操作，每个工作项计算一个矩阵中的8个元素，实现并行计算。`__kernel void add(__global uchar *a,
                   __global uchar *b,
                   __global ushort *dst,
 
@@ -145,7 +145,7 @@ OpenCL C严格遵循C99标准，不支持标准C99头文件、函数指针、递
 
 数据类型主要有三部分，最基础的标量数据类型和C99标准保持一致，额外新增了矢量数据类型和其他内置image和sampler等类型。
 
-3.1.1 标量数据类型**
+3.1.1 标量数据类型
 
 <strong>OpenCL支持的标量数据类型比较简单，功能和C/C++中的数据类型一样。需要强调注意的点在于半精度和双精度浮点数是可选项。类型API类型描述char/ucharcl_char/cl_uchar有/无符号8位整数short/ushortcl_short/cl_ushort有/无符号16位整数int/uintcl_int/cl_uint有/无符号32位整数long/ulongcl_long/cl_ulong有/无符号64位整数float/doublecl_float/cl_double32位浮点数/64位浮点数，符合IEEE754存储格式halfcl_half16位浮点数。half数据类型必须符合IEEE754-2008半精度存储格式size_tn/a无符号整数类型，sizeof结果类型，匹配设备地址空间(32、64)voidvoid无类型数据3.1.1.1 半精度浮点数</strong>
 
@@ -212,7 +212,7 @@ err = clGetDeviceInfo(device,CL_DEVICE_DOUBLE_FP_CONFIG, sizeof(cl_device_fp_con
 
 类型API类型描述charn/ucharncl_charn/cl_ucharnn个8位有/无符号整数值的矢量shortn/ushortncl_shortn/cl_ushortnn个16位有/无符号整数值的矢量intn/uintncl_intn/cl_uintnn个32位有/无符号整数值的矢量longn/ulongncl_longn/cl_ulongnn个64位有/无符号整数值的矢量floatncl_floatnn个32位浮点数值的矢量doublencl_doublenn个64位浮点数值的矢量矢量初始化
 
-**可以由一组标量、矢量或标量和矢量的组合来初始化一个矢量的值。矢量初始化写法：
+可以由一组标量、矢量或标量和矢量的组合来初始化一个矢量的值。矢量初始化写法：
 
 float4 v0 = (float4)(1.0f, 2.0f, 3.0f, 4.0f);
 
@@ -257,7 +257,7 @@ int4 b = data.lo; // b = (1, 2, 3, 4)
 int4 c = data.even; // c = (2, 4, 6, 8)
 int4 d = data.odd; // d = (1, 3, 5, 7)`
 
-3.1.3 其他内置类型**
+3.1.3 其他内置类型
 
 例如一些图像处理相关的内置类型image1d_t、image2d_t、image3d_t以及sampler_t等其他内置类型，这些会在后面文章详细讲解。
 
@@ -384,7 +384,7 @@ __kernel __attribute__((reqd_work_group_size(16, 16, 1)))`
 
 <strong>3.3.3 对象访问修饰符</strong>
 
-**访问修饰符用于指定图像类型的参数, 内核参数中的图像对象可以声明为只读、只写或者读写。 __read_only(或read_only)和__write_only(或write_only)来修饰图像对象参数。__read_write(或read_write)只能在内核中对又读又写的图像对象参数进行修饰。默认修饰符为read_only。
+访问修饰符用于指定图像类型的参数, 内核参数中的图像对象可以声明为只读、只写或者读写。 __read_only(或read_only)和__write_only(或write_only)来修饰图像对象参数。__read_write(或read_write)只能在内核中对又读又写的图像对象参数进行修饰。默认修饰符为read_only。
 
 __kernel void add(__read_only image2d_t img_a,
 
@@ -396,7 +396,7 @@ __kernel void add(__read_only image2d_t img_a,
 
 }`
 
-3.3.4 属性限定符**
+3.3.4 属性限定符
 
 - 指定 enum、struct 和 union 类型的特殊属性
 __attribute__((aligned(n))) __attribute__((endian(host)))
@@ -457,11 +457,11 @@ __kernel void op_sample(__global int4 *output)
 
 }`
 
-#### <strong>3.5 build-in 函数</strong>
+#### 3.5 build-in 函数
 
-**build-in：内建函数通俗的理解就是OpenCL c标准中自带的内部函数，有点类似与C语言的math.h文件中的函数。内置函数支持标量和向量类型参数，同时返回类型和实际类型保持一致。同时内置函数也会扩展 cl_khr_fp64和cl_khr_fp16 的支持，只需要使用时指定double和half类型就可以。
+build-in：内建函数通俗的理解就是OpenCL c标准中自带的内部函数，有点类似与C语言的math.h文件中的函数。内置函数支持标量和向量类型参数，同时返回类型和实际类型保持一致。同时内置函数也会扩展 cl_khr_fp64和cl_khr_fp16 的支持，只需要使用时指定double和half类型就可以。
 
-3.5.1 工作项函数**
+3.5.1 工作项函数
 
 <strong>工作项作为内核执行的最小单元工需要遍历整个数据，主要是根据执行内核的所有其他工作项中的 ID。维度和工作项</strong>
 
@@ -503,7 +503,7 @@ __kernel void image_process(__global uchar *src,
 
 <strong>工作组</strong>
 
-**当工作项需要同步它们的执行时，工作组变得很重要。工作组内的工作项可以共享局部存储器。对于工作组的信息，OpenCL内核提供了一下几个内置查询函数。如下表所示：
+当工作项需要同步它们的执行时，工作组变得很重要。工作组内的工作项可以共享局部存储器。对于工作组的信息，OpenCL内核提供了一下几个内置查询函数。如下表所示：
 
 size_t get_num_groups(uint dim)返回dim指定维度上工作组数目size_t get_group_id(uint dim)返回dim指定维度上工作组idsize_t get_local_id(uint dim)返回工作组内dim指定维度上的工作项idsize_t get_local_size(uint dim)返回工作组内dim指定维度上的工作项数目为了能够明白上述函数的使用方法，我们以遍历一张56x56的灰度图像为例子展开说明：
 
@@ -550,7 +550,7 @@ __kernel void group_sample(__global float *dst)
 
 上述样例详细说明了 clEnqueueNDRangeKernel 如何为工作项配置本地和全局 ID等信息，相信大家能有一个直观的认识。
 
-3.5.2 浮点数学函数**
+3.5.2 浮点数学函数
 
 OpenCL 的浮点函数分为五类：算术和舍入、比较、指数和对数、三角函数和杂项。 
 
@@ -744,7 +744,7 @@ dst[1] = 0x9531;`
 
 <strong>shuffle 函数：</strong> 
 
-**在OpenCL中，经常会碰到会对向量的多个分量进行交叉运算的情况，针对运算对象并不是相邻，存在交叉的情况，效率可能并不会很好，使用shuffle性能可能会提升10%以上。 OpenCL 的 shuffle 函数接受一个或两个输入向量并创建一个包含输入分量的输出向量。 
+在OpenCL中，经常会碰到会对向量的多个分量进行交叉运算的情况，针对运算对象并不是相邻，存在交叉的情况，效率可能并不会很好，使用shuffle性能可能会提升10%以上。 OpenCL 的 shuffle 函数接受一个或两个输入向量并创建一个包含输入分量的输出向量。 
 
 - 示例函数：`allm shuffle(alln x, uintegerm mask);` 
 - 作用：按照 mask 规定的顺序创建一个包含 x 的分量的向量 
@@ -774,9 +774,9 @@ const int mask = (uint4)(1, 2, 0, 1);
 float4 d4;
 float4 res = shuffle(d4, mask);`
 
-select 函数：**
+select 函数：
 
-**为了保证kernel代码的流水线顺序，避免分支跳转，需要把if、条件运算符可能引起分支跳转的语句使用select内置函数优化掉，进而提升内核运行效率。 OpenCL 的 select 函数从两个输入的内容创建一个输出向量。 
+为了保证kernel代码的流水线顺序，避免分支跳转，需要把if、条件运算符可能引起分支跳转的语句使用select内置函数优化掉，进而提升内核运行效率。 OpenCL 的 select 函数从两个输入的内容创建一个输出向量。 
 
 - 示例函数：`alln select(alln a, alln b, u/integern mask)` 
 - 作用：根据mask中的最高有效位从 a 和 b 中选择分量输出。 
@@ -804,7 +804,7 @@ GPU设备会有内置硬件模块基本单元（EFU），专门用来加速一�
 
 - 带有native_前缀 
 - 相比常规函数性能更好，精度更低 
-native函数 **
+native函数
 
 native_cos, native_divide, native_exp, native_exp2, native_exp10, native_log,
 native_log2, native_log10, native_powr, native_recip, native_rsqrt, native_sin,

@@ -90,7 +90,7 @@ HyperDFlash 的整个设计，就是冲着这两重错配去的。
 ![](https://www.zhihu.com/equation?tex=%5Calpha_%7Bt%2Cj%7D) 是作用于<strong>整条路径</strong> 
 ![](https://www.zhihu.com/equation?tex=H_%7Bt%2Cj%7D) 的<strong>标量 sigmoid 门</strong>（注意是各路径独立的 sigmoid，而不是跨路径的 softmax）。也就是说，给每条路径打一个 0~1 的「该信多少」的分，再加权合起来。
 
-**通用 DFlash 的静态 
+通用 DFlash 的静态 
 ![](https://www.zhihu.com/equation?tex=fc%3A%5Cmathbb%7BR%7D%5E%7Bmd%7D%5Cto%5Cmathbb%7BR%7D%5E%7Bd%7D)<strong>（DeepSeek-V4-Flash 上约</strong>67M 参数<strong>）把多路径残差当成一根长向量、从零学一个稠密压缩——</strong>根本表达不出这种输入相关的门控**，从一开始就和 target 错配。
 
 HyperDFlash 的做法：用<strong>和上式相同的输入相关门控形式</strong>实例化一个 drafter 侧压缩器（额外加一层轻量逐路径 RMSNorm），并**用 target 的 `hc_head` 权重直接初始化门控参数**。于是 drafter 起步就站在一个「已经和 target 预测路径对齐」的坍缩上：

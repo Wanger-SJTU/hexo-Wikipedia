@@ -97,7 +97,7 @@ memory network包含四部分内容：<strong>query（输入）的向量、一�
 
 ![](/images/collections/0.raw/zhihu/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%EF%BC%81/asset/img_a5b96286d007.jpg)
 
-MT中对齐权重的可视化，很好的解释了工作过程**
+MT中对齐权重的可视化，很好的解释了工作过程
 
 ![](/images/collections/0.raw/zhihu/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%EF%BC%81/asset/img_fcc30704ae1f.jpg)
 
@@ -107,7 +107,7 @@ MT中对齐权重的可视化，很好的解释了工作过程**
 
 图像caption的可视化，不够直观
 
-6.注意力在多种NLP任务中的应用**
+6.注意力在多种NLP任务中的应用
 
 <strong>attention</strong>广泛应用于Natural Language Generation(NLG)、MT、QA、对话系统、Multimedia Description (MD)、文本分类、推荐系统、情感分析等任务，上面有了一些简单介绍，不再赘述。另外，QA和对话中有效融入外部知识库、预训练、多任务学习、无监督表征学习、稀疏学习等也可以使用attention。
 

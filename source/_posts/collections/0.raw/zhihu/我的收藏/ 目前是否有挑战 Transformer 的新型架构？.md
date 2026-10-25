@@ -17,7 +17,6 @@ source_url: https://www.zhihu.com/question/641253249/answer/3376193344
 
 之前有关Mamba的架构在人工智能领域引起不少轰动。最近又有一篇基于Mamba的论文——《MambaByte: Token-free Selective State Space Model》（《MambaByte：无Token选择状态空间模型》），论文号称可以和Transformer有得一比，我们接下来稍微介绍一下该论文。
 
-**
 
 #### 论文概要
 
@@ -35,7 +34,6 @@ source_url: https://www.zhihu.com/question/641253249/answer/3376193344
 
 通过简单的观察，使用 Mamba（无需修改）可以缓解语言建模中的主要计算瓶颈，从而消除补丁并有效利用可用的计算预算。
 
-**
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_4c1a6a87a179.jpg)
 

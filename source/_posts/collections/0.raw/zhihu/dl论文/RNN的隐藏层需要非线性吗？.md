@@ -15,7 +15,7 @@ source_url: https://zhuanlan.zhihu.com/p/615672175
 ---
 
 
-**Update: 
+Update: 
 其实很多前人的工作早就意识到了这一点. See: RNN 中学习长期依赖的三种机制 - Quokka的文章 - 知乎 [https://zhuanlan.zhihu.com/p/34490114](https://zhuanlan.zhihu.com/p/34490114)![](/images/collections/0.raw/zhihu/dl%E8%AE%BA%E6%96%87/asset/img_f0a7ce3a3aa9.jpg)
 
 RNN 中学习长期依赖的三种机制 - Quokka的文章 - 知乎 https://zhuanlan.zhihu.com/p/34490114

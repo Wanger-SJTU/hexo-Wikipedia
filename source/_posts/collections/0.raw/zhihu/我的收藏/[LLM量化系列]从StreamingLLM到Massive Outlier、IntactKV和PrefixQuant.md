@@ -27,7 +27,6 @@ LLM在2022年底开始火爆后，处理长上下文成为各个MaaS厂商PR的�
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_8d00b40e48c5.jpg)
 
-**
 
 ### 二、发展：Massive Outlier
 
@@ -45,7 +44,6 @@ StreamingLLM之后，CMU和Meta的研究人员又做了进一步的分析，在[
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_eb36d2f7c19f.jpg)
 
-**
 
 ### 三、应用：PrefixQuant
 

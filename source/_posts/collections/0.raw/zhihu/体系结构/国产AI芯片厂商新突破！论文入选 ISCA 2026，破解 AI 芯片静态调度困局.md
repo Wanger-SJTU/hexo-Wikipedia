@@ -17,7 +17,7 @@ source_url: https://zhuanlan.zhihu.com/p/2025500292049847493
 
 ![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_2b499980bc70.jpg)
 
-**![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_a28bdee692df.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_a28bdee692df.jpg)
 
 **<strong>奕行智能动态调度架构论文入选计算机架构国际顶会ISCA 2026。</strong>
 
@@ -31,11 +31,10 @@ source_url: https://zhuanlan.zhihu.com/p/2025500292049847493
 
 <strong>ISCA</strong>（International Symposium on Computer Architecture）<strong>是该领域历史最悠久、影响力最强的国际顶会，平均录取率仅约17%</strong>，AMD、NVIDIA、Google的标志性架构研究均常发表于此。该论文标志着AI芯片体系结构前沿研究上的又一重要突破。
 
-**
 
 ![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_2c7c582808d3.jpg)
 
-二、静态调度为什么不够用？**
+二、静态调度为什么不够用？
 
 要理解这个突破，先要理解一个藏在芯片设计里的“经典难题”：<strong>静态调度（Static Scheduling）</strong>。
 
@@ -93,7 +92,7 @@ TISA 动态调度架构的调度器实时观察每个任务的数据是否就绪
 
 其中最值得关注的一组数字是：在峰值算力低于国际主流竞品的情况下，奕行智能自研芯片EPOCH凭借TISA架构，实现了平均1.46倍的推理延迟优势。这强有力地证明，通过动态调度提升的“实际可用算力”，足以弥补甚至反超纯硬件算力上的差距。在算力竞赛的下半场，效率才是真正的护城河。
 
-六、不止于性能：一次设计范式的迁徙**
+六、不止于性能：一次设计范式的迁徙
 
 TISA的价值不止于性能数字的提升。它标志着AI芯片系统设计思路的一次范式转变：从 “编译器排定一切，硬件被动执行” 的静态确定性模式，转向“编译器描述意图，硬件实时决策” 的动态智能模式。
 

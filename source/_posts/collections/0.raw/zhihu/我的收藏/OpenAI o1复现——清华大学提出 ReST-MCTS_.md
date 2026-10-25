@@ -27,7 +27,7 @@ source_url: https://zhuanlan.zhihu.com/p/14200380598
 
 去购买​
 
-](https://union-click.jd.com/jdc?e=jdext-1955201411202670849-0-1&p=JF8BAUwJK1olXwIEU15fCE4VBV8IHlIdXwEKU24ZVxNJXF9RXh5UHw0cSgYYXBcIWDoXSQVJQwYHXVZfD0MQHDZNRwYlI1hbEQJeXBR3BzMWGhsQAH0LJywhaEcbM28BG1kdXAcCU11tCEoWA2sNGFgTXDYyVFttWiXPtdnQvuoJiayNgdbKOEonA2kMElMXWgQHV1xZDHsXC2s4zfWBiI69je743uG51uK4ztK-ibiEZG5tC3tMVjtBXkcVVQIGV19dDUsXAG4LHF0UVAMKSF9BCHsUAm0NGFIdWAEEOltdCUsUAm8KElp7XwYDVVdZDkoRA18IK1glA2gDB1hfCRhDVgFUTVtIDQBGFzBeDEoeBGkKEmsXXAcAVm5tOBVBYhx-QxMSHgdAAikgbDNNYBJhExp0DmgAFxsPdT93QAZLE1NLIHNVCS1tDXsXBW8KKw)**
+](https://union-click.jd.com/jdc?e=jdext-1955201411202670849-0-1&p=JF8BAUwJK1olXwIEU15fCE4VBV8IHlIdXwEKU24ZVxNJXF9RXh5UHw0cSgYYXBcIWDoXSQVJQwYHXVZfD0MQHDZNRwYlI1hbEQJeXBR3BzMWGhsQAH0LJywhaEcbM28BG1kdXAcCU11tCEoWA2sNGFgTXDYyVFttWiXPtdnQvuoJiayNgdbKOEonA2kMElMXWgQHV1xZDHsXC2s4zfWBiI69je743uG51uK4ztK-ibiEZG5tC3tMVjtBXkcVVQIGV19dDUsXAG4LHF0UVAMKSF9BCHsUAm0NGFIdWAEEOltdCUsUAm8KElp7XwYDVVdZDkoRA18IK1glA2gDB1hfCRhDVgFUTVtIDQBGFzBeDEoeBGkKEmsXXAcAVm5tOBVBYhx-QxMSHgdAAikgbDNNYBJhExp0DmgAFxsPdT93QAZLE1NLIHNVCS1tDXsXBW8KKw)
 
 论文链接：[ReST-MCTS∗ : LLM Self-Training via Process Reward Guided Tree Search](https://link.zhihu.com/?target=https%3A//arxiv.org/pdf/2406.03816)
 
@@ -41,7 +41,7 @@ GitHub 地址：[GitHub - THUDM/ReST-MCTS: ReST-MCTS*: LLM Self-Training via Pro
 
 下面我们就来详细介绍一下 <strong>ReST-MCTS</strong>*。
 
-### <strong>简化版</strong>
+### 简化版
 
 由于 Rest-MCTS* 的内容较多，为了便于理解，我们先给出一个简单的介绍。
 
@@ -73,7 +73,7 @@ Rest-MCTS* 在推理回答新问题时，使用的是 MCTS* 搜索，过程和�
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_3ede848eb254.jpg)
 
 Rest-MCTS* 推理：新问题使用MCTS*搜索生成推理路径
-### <strong>详细版</strong>
+### 详细版
 
 ### 一、ReST-MCTS* 方法
 
@@ -240,7 +240,7 @@ $$\text{Accuracy}=\frac{1}{t}\sum_{i=1}^{t}{\text{I}\left( \left| \text{clip}\le
 
 [](https://zhuanlan.zhihu.com/p/1246547399)
 
-**下图是自训练的具体流程：
+下图是自训练的具体流程：
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_9363f4497174.jpg)
 
@@ -329,7 +329,7 @@ $使用加权平均方法更新父节点的质量值： v_C\leftarrow \alpha v_C
 - <strong>终止条件</strong>：当节点的质量值 v_C 达到或超过阈值（通常设置为0.9）时，认为该节点已经接近正确答案，终止搜索并返回该节点的部分解决方案作为最终输出。
 - <strong>终止信号(EoI)</strong>：如果策略模型的自我判断生成了 EoI，则终止搜索。
 
-#### <strong>1.6 贪婪蒙特卡洛展开（Greedy MC Rollout）</strong>
+#### 1.6 贪婪蒙特卡洛展开（Greedy MC Rollout）
 
 之所以要把<strong>贪婪蒙特卡洛展开（Greedy MC Rollout）</strong>单独讲一下，是因为在 ReST-MCTS* 方法中，<strong>Greedy MC Rollout</strong> 是树搜索过程中的一个关键步骤，用于对扩展的节点进行模拟，选择最有价值的推理路径。<strong>Greedy MC Rollout</strong>通过逐步生成推理步骤，并使用过程奖励模型评估每一步的质量，从而选择最有价值的推理路径。
 

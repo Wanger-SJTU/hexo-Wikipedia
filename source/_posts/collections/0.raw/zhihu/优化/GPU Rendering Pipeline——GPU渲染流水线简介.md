@@ -42,12 +42,11 @@ Application阶段的职责，可以简单理解为：定义当下要构建世界
 
 Application结束后，GPU就拿到rendering primitives和一些相关指令、参数，开始了在GPU中的旅程。首先，这些图元会经过Geometry Pipeline，在*Real-time Rendering*中，将Geometry Pipeline划分成了如下图的四个阶段。整个Geometry Processing阶段的目的是对输入的图元进行调整、修改、转换、增删等操作，在这整个阶段中，我们的处理对象是图元，输入的是图元，输出的还是图元。这里之所以强调处理对象，是因为在Rendering Pipeline的后面，处理对象就从图元变成了像素（Pixel），即光栅化之后的操作。
 
-**
 
 ![](/images/collections/0.raw/zhihu/%E4%BC%98%E5%8C%96/asset/img_8731c5d1b57a.jpg)
 
 Geometry processing stage
-#### 1. Vertex Shading**
+#### 1. Vertex Shading
 
 接收到CPU发来的图元信息后，GPU的Vertex Shader就开始了工作，Vertex就是顶点的意思，之前提到过，图元无非就是点、线和三角形，对应的其实就是一个Vertex，两个Vertex和三个Vertex。
 
@@ -55,9 +54,8 @@ Geometry processing stage
 
 那么Vertex Shading阶段要对这些Vertex做什么呢？主要有两件事情，一件是计算这些顶点的位置，将这些Vertex从模型空间转换到视角空间；另一件是根据程序员的指令，对这些顶点添加信息，或作出一些修改。其中，Vertex Shader一定要计算每一个Vertex的position（位置），而其他的操作是可选项，由程序员在应用中进行定义。下面会对Vertex Shading阶段所做的事情做一个简要的介绍。
 
-**
 
-- Position**
+- Position
 首先，什么是视角转换，为什么要转换视角，给每个Vertex一个新的Position呢？
 
 ![](/images/collections/0.raw/zhihu/%E4%BC%98%E5%8C%96/asset/img_2e78a440702a.jpg)
@@ -66,7 +64,7 @@ Geometry processing stage
 
 ![](/images/collections/0.raw/zhihu/%E4%BC%98%E5%8C%96/asset/img_f37ca17cfe0f.jpg)
 
-通过变换矩阵，以改变Vertex坐标系，得到各个Vertex的新Position**
+通过变换矩阵，以改变Vertex坐标系，得到各个Vertex的新Position
 
 - Lighting, animation, texture coordinates** **and others**
 接下来说说Vertex Shader的其他操作，比如lighting, animation和texture。
@@ -75,7 +73,6 @@ Geometry processing stage
 
 光照应该比较好理解，因为我们会将光源信息和视角信息也一并送入GPU，GPU拿着这些信息便可以给每个Vertex添加相应的光照信息。当然，物体之间的位置关系、距离、重叠、遮挡这些因素也需要考虑，以得到反射、阴影这些信息。如果展开，还有光的各种反射、折射，还可以引申到光线的追踪范畴，需要注意的是，这里只需对每个Vertex计算对应的光照信息。
 
-**
 
 然后说说animation，动画为什么和Vertex相关呢？既然Vertex Shader可以改变Vertex的信息，就可以使得Vertex移动到特定的位置，以改变物体形状，或者产生一些动作。就拿人物表情作为例子，假设角色的头部由一系列的Vertex组成，通过改变某些特定的Vertex，就可以构成人物各种生动丰富的表情。Vertex数目越多，可以修改的顶点就越多，那么人物的动作就可以越丰富。
 
@@ -89,14 +86,14 @@ The Delsin characters face![](/images/collections/0.raw/zhihu/%E4%BC%98%E5%8C%96
 
 这里还需要提及的就是，上图中的人物主要是靠纹理（texture）来实现不同部位具有不同的颜色的效果，虽然在Vertex Shader阶段还不需要进行贴图操作，但是我们可以在这一阶段通过计算来得到每个Vertex对应的纹理坐标（texture coordinates），以方便后续的阶段使用该坐标。
 
-Tessellation，Geometry Shader**
+Tessellation，Geometry Shader
 
 以上这一系列的操作仅仅是Vertex Shading的一部分，接下来Vertex Shader将会进行Projection阶段的操作，在介绍后续的Projection和Clipping阶段之前，这里需要对Vertex处理阶段中的两个可选阶段单独拎出来重点介绍，分别是Tessellation和Geometry Shader。因为他们在Rendering Pipeline中占有一定地位的，在DX11 pipeline中可以发现他们的身影。Tessellation是在DX11中被引入的，而Geometry Shader是在DX10中被引入的。
 
 ![](/images/collections/0.raw/zhihu/%E4%BC%98%E5%8C%96/asset/img_9124343c9307.jpg)
 
 DX11 Pipeline
-#### <strong>1.1. Tessellation</strong>
+#### 1.1. Tessellation
 
 首先，与Tessellation相关的是DX11中的Hull Shader, Tesselator, Domain Shader，整个Tessellation阶段的目的其实就是在已有图元的基础上，去加入更多的Vertex（这些Vertex还是在原始的图元内），以形成更精细的模型。Tessellation的中文意思是镶嵌，还是挺形象的，因为是在原始图元的内部添加顶点，所以看起来就像是在内部镶嵌了许多的三角形。
 
@@ -112,7 +109,6 @@ Tessellation后再进行Displacement Mapping![](/images/collections/0.raw/zhihu/
 
 Tessellation PipelineTessellation具体的Pipeline可以参照上图，大概是Hull Shader会将控制点信息发往Domain Shader，同时也会给Tessellator一些系数，告诉Tessellator具体的细分级别。最后Domain Shader再将所有接收到的信息进行整合，就可以完成整个Tessellation流程，生成我们想要的新的模型。想了解更多的Tessellation阶段细节，可以浏览以下网址。
 
-**
 
 #### 1.2. Geometry Shader
 
@@ -132,7 +128,7 @@ an additional two vertices for a line, an additional three for a triangle那么�
 
  Use Geometry Shader to expand
 
-#### 2. Projection**
+#### 2. Projection
 
 由于GPU最终是在屏幕上显示我们可以观看到的画面，所以Projection阶段需要决定我们的屏幕具体可以投影出什么内容。对于投影方式，有许多种，一般使用透视投影 (perspective projection)和正交投影 (orthographic projection)。当我们观察外界时，外界是通过透视投影来输入到眼睛的，即我们的观察方式是一个视椎体（Viewing frustum）。透视投影的投影线相交于一点，特点是近大远小，具体可以看到左边示意图中的黄球大，红球小。而平行投影的投影线相互平行，投影的结果与原物体的大小相等，主要应用在建筑、工程制图等方面。
 
@@ -142,9 +138,8 @@ an additional two vertices for a line, an additional three for a triangle那么�
 
 通过以上两张示意图，便可以很直观地了解到Projection阶段所做的事情，即将三维的物体投影到一个二维的平面上，并且决定具体的投影方式。需要注意的是，虽然这里生成的是二维的平面，但是具体Z坐标信息都会存储在z-buffer中，后续的阶段还会使用到Z坐标的信息。
 
-**
 
-#### 3. Clipping**
+#### 3. Clipping
 
 裁剪阶段，这个就很好理解了，顾名思义，就是将我们看不到的，也就是视野范围外的物体统统剔除掉，反正他们最后都不会出现在屏幕，要他们有何用？对应的就是上图Far clip plane之外的模型，比如那颗绿球，有可能在Vertex Shading阶段我们对绿球做了许多操作，但是我们最后看不见它啊，我们也只好忍痛将它剔除。这里我就在想，现在的Rendering Pipeline，有什么机制可以使得Vertex Shader提前知道有哪些Vertex将会被clip掉，然后就不对这些Vertex进行操作，避免做无用功，这确实很有意思，后续有空再慢慢挖这个坑吧。
 
@@ -152,15 +147,14 @@ an additional two vertices for a line, an additional three for a triangle那么�
 
 Clipping阶段我们屏幕最终可以显示的内容就是unit-cube中的内容，由于红色三角形在外部，对其进行剔除；橙色三角形有一部分在外部，对其添加两个新的Vertex，将外部的三角形剔除，最终转变成两个三角形；左下角的线条一部分在外面，直接在边缘交接处形成一个新的顶点，连接起来，再删除原有的外部顶点。这样，就完成了Clipping阶段的所有操作。
 
-**
 
-#### 4. Screen Mapping**
+#### 4. Screen Mapping
 
 屏幕映射阶段，简而言之，就是将unit-cube中的坐标系转换到屏幕的坐标系，如下图所示，就是将Projection阶段后得到的x, y坐标系转换到(x1, y1)到(x2, y2)这个矩阵坐标系中。当然，对于z坐标系也需要进行转换，以映射到对应的坐标系中，默认是[0, 1]，这个值可以通过API进行修改。是不是映射后就可以直接显示在屏幕上了呢？当然不是，现在只知道有哪些Vertex会在视野范围内，以及他们对应的坐标和其他信息，而真正显示在屏幕上的是一个个像素，这中间还有很多事情需要做，目前大概只完成了Rendering Pipeline的一半工作。
 
 ![](/images/collections/0.raw/zhihu/%E4%BC%98%E5%8C%96/asset/img_5fa8b1028275.jpg)
 
- Screen Mapping阶段**
+ Screen Mapping阶段
 
 让我们来简单梳理下Geometry Processing**，首先是Vertex Processing，顶点操作大致可以分为下图三种橙色方框的操作，其中Vertex Shader是必选操作，后面的Tessellation和Geometry Shader是可选操作。CPU将图元输入GPU，GPU首先需要对这些Vertex进行处理，以得到对应的新坐标（position）。然后可以通过Tessellation，在原始图元内部添加更多顶点，以实现对原有模型的精细化。同时，还可以通过Geometry Shader来对现有的图元进行拓展，转换成一个新的模型。在结束了上述操作后，通过Projection得到相应的投影平面，再通过Clipping裁剪掉视野外的模型，最后通过Screen Mapping转换到相应的坐标系。至此，我们就结束了Geometry Processing这个阶段，后续就将经历光栅化，然后就该和像素打交道了。
 
@@ -168,7 +162,7 @@ Clipping阶段我们屏幕最终可以显示的内容就是unit-cube中的内容
 
 ### Rasterization
 
-光栅化的目的是将Geometry Processing处理后的得到的图元（primitives）转换成一系列的像素（即picture elements），以方便后续的Pixel Processing，最终输出到屏幕上。Rasterization可以细分成Triangle Setup和Triangle Traversal，名字中含有Triangle并不意味着光栅化只处理三角形（当然还需要处理点和线图元），只是因为大部分的图元是三角形。** 
+光栅化的目的是将Geometry Processing处理后的得到的图元（primitives）转换成一系列的像素（即picture elements），以方便后续的Pixel Processing，最终输出到屏幕上。Rasterization可以细分成Triangle Setup和Triangle Traversal，名字中含有Triangle并不意味着光栅化只处理三角形（当然还需要处理点和线图元），只是因为大部分的图元是三角形。
 
 ![](/images/collections/0.raw/zhihu/%E4%BC%98%E5%8C%96/asset/img_864e1eb3e95f.jpg)
 
@@ -178,13 +172,12 @@ Rasterization, Pixel ProcessingRasterization也被称作scan conversion，比较
 
 Rasterization Result
 
-#### 1. Triangle Setup**
+#### 1. Triangle Setup
 
 这一个阶段也称作primitive assembly，也就是将一个个图元组装起来，会计算图元的边方程和一些其他信息，说白了就是将各个点连接起来，组成真正的三角形（或者连成线）。然后下一阶段会利用这些信息进行三角形的遍历，也就是检查有哪些像素位于该三角形图元内，对于点、线图元，就看他们覆盖了哪些像素。
 
-**
 
-#### 2. Triangle Traversal**
+#### 2. Triangle Traversal
 
 为了将图元转换成像素，就需要识别每个图元覆盖了哪些像素，或者说，哪些像素处于图元的内部。那么，对于那些只有一部分在图元内部的像素，该怎么样去划分呢？一般情况下，我们会将下图中的绿色和黄色像素归为该图元的像素，为什么这样去划分呢？我们可以看到，每个像素的中心有一个点，我们便是用这个中心点来进行划分的，若中心点在图元内部，那么这个中心点所对应的像素就属于该图元。
 
@@ -194,7 +187,6 @@ Triangle Traversal除了目前传统的划分模式——Standard Rasterization�
 
 如果只用像素的中心点来判别是否属于该图元的像素，可能就会出现下图左边的情形，虽然很大一部分的像素被红色三角形所覆盖，可最终这个像素的颜色是白色。这时如果像素有四个采样点进行识别，就可以得到右边的结果，由于一半在内部一半在外部，所以最终像素的颜色为红色和白色的混合，变成粉红色。这里只是给大家一个思路，就是采样点不一定位于像素的正中心，有很多种的像素处理方式，这里就不展开说明，有兴趣的朋友可以去了解一下Supersampling, Multisampling antialiasing techniques。
 
-**
 
 ![](/images/collections/0.raw/zhihu/%E4%BC%98%E5%8C%96/asset/img_a0d720af3040.jpg)
 
@@ -216,13 +208,12 @@ Texturing之前在Vertex Shading阶段提到过，可以给每个Vertex加上对
 
 ![](/images/collections/0.raw/zhihu/%E4%BC%98%E5%8C%96/asset/img_16870d0e17f1.jpg)
 
-**
 
 以上这种方法实现的光照效果，称作Per vertex lighting，即通过Vertex信息插值得到像素的光照信息，如果三角形比较大的话，插值出来的光照效果可能就会不理想，不够真实。相应的，还有一种计算光照信息的方法，称作Per pixel lighting，顾名思义，就是对每个像素进行光照处理。具体实现方法是用光源向量、射线向量、法线向量来计算每个像素的光照信息，这样的实现效果必然比插值的效果更好，同时，运算量会大大增加。目前在纹理中还可以加入向量信息，这样就可以对应知道每个像素的法线向量，通过这个向量，就可以实现凹凸的贴图光照效果。
 
 这里就不继续往下展开了，有兴趣的朋友可以去查阅相关资料，光线追踪什么的，这里也是一个大坑。我们只需要了解到Pixel Shading就是给每个输入的Pixel一个相应的信息就足够了，然后这些Pixel就可以带着这些信息来进行后续处理，最终显示在屏幕上。目前应用中与光照相关的计算，大部分都在这个阶段进行处理，所以这个阶段通常是整个系统最大的性能瓶颈。
 
-#### 2. Merging**
+#### 2. Merging
 
 到了Merging这一阶段，输入的每个Pixel都有相应的颜色信息，被存储在Color buffer，这一阶段就是要整合这些Pixel信息，以得到具体一帧的图像信息，这一阶段也被称作ROP。
 
@@ -234,7 +225,7 @@ Texturing之前在Vertex Shading阶段提到过，可以给每个Vertex加上对
 
 Stencil Test![](/images/collections/0.raw/zhihu/%E4%BC%98%E5%8C%96/asset/img_284037bc6910.jpg)
 
-Blending**
+Blending
 
 这里对Pixel Processing阶段做个总结，我们拿到光栅化的Pixel之后，首先通过Pixel Shading（即Fragment Shading）给每个像素赋予相应的信息，然后再通过Merging阶段，得到最终需要在屏幕上显示的图像信息，至此，就完成了整条Rendering Pipeline。
 

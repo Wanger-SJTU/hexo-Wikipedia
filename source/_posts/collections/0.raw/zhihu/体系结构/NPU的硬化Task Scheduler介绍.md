@@ -19,7 +19,7 @@ source_url: https://zhuanlan.zhihu.com/p/7071414585
 
 正文开始
 
-### 1 <strong>任务调度的模型与实现</strong>
+### 1 **任务调度的模型与实现
 
 构建一个拥有大量异构加速器的软硬件系统并非易事。Figure 1是一个异构SoC系统示例，其中包含使用shared memory的CPU和多种加速器[1]。由于加速器可能需要使用CPU生产的数据，因此内存的coherence和consistence的设计十分具有挑战。并且操作系统的堆栈、编译器以及调度器都需要重新设计，加速器的粒度也需要仔细定义。因此，编程模型的选择、调度器的设计是NPU系统的重要问题，好编程模型和调度器可以极大的提高算法在NPU芯片中的运算效率。
 
@@ -51,7 +51,7 @@ Figure 5 包含HTS的异构SoC系统CPU可以将任务和任务间的依赖关�
 ![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_d679db2b3cb4.jpg)
 
 Figure 6. HTS相比于runtime带来的性能提升
-### <strong>2 任务调度洞察</strong>
+### 2 任务调度洞察
 
 Ascend提供了软硬件结合的调度方案。Ascend开发软件栈支持原生的可微分编程范式和原生的执行模式，在开发效率和计算效率之间进行了折中。一方面，开发者可以轻易的将DNN模型部署到各种Ascend设备上，这些设备也可以配备不同的Ascend core上。开发者可以使用high-level的编程模型实现一次性的开发和按需部署。另一方面，拥有更多架构知识的专家可以利用low-level的编程模型和库进一步提高计算效率。Ascend的开发软件栈如Figure 7所示[4]。
 
@@ -77,7 +77,7 @@ Figure 8. Graph切分示例TBE (Tensor Boost Engine) DSL (Domain Specific Langua
 Figure 9. Ascend调度层级![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_3e4e68c7767e.jpg)
 
 Figure 10. Ascend 310 SoC架构图
-### <strong>参考文献</strong>
+### 参考文献
 
 - Hegde, Kartik, Abhishek Srivastava, and Rohit Agrawal. "HTS: A hardware task scheduler for heterogeneous systems." *arXiv preprint arXiv:1907.00271* (2019).
 - Thoman, Peter, et al. "A taxonomy of task-based parallel programming technologies for high-performance computing." *The Journal of Supercomputing* 74.4 (2018): 1422-1434.

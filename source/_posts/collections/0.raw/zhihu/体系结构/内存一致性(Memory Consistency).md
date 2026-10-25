@@ -75,7 +75,7 @@ Sequential模型的优点是实现简单（对硬件和软件人员都简单）�
 
 ![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_1b4ecb5f55e3.jpg)
 
-** 注：使用store buffer的好处不仅在于加快存储的速度，另外还可以利用store buffer实现乱序执行以及实现推断执行(speculative execution)失败后的回退roll back，等
+注：使用store buffer的好处不仅在于加快存储的速度，另外还可以利用store buffer实现乱序执行以及实现推断执行(speculative execution)失败后的回退roll back，等
 
 当CPU需要写(store)数据时, 数据不直接写到memory或者cache中，而是先写到store buffer中，store buffer负责后续以某种次序写入L1 data Cache 。我们还是用前面那个例子来解释一下什么情况下会输出另外一种结果：
 
@@ -124,7 +124,7 @@ RISC-V采用的内存模型叫RVWMO(RISC-V Weak Memory Ordering)，其设计目�
 
 因为图中的表达方式对于非内存模型领域的朋友们有点不太好懂，我们简单地解释一下这些规则：
 
-规则1：A可以是读或者写操作，B是写操作，A与B有地址重叠**
+规则1：A可以是读或者写操作，B是写操作，A与B有地址重叠
 
 如果A和B访问同一个地址（或者A和B操作的地址空间有重叠，比如A操作一个1字， B操作1个字），则在全局顺序上A必须出现B之前，具体来说：
 

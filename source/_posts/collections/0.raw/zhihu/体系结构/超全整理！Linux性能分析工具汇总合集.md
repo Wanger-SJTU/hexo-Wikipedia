@@ -167,7 +167,7 @@ sar、netstat、pidstat、strace、tcpdump、blktrace、iotop、slabtop、sysctl
 
 是一款性能调优工具，主要是从linux内核源码层进行的调优，想要深入了解，可以参考下文附件文档。
 
-四、Linux observability sar | linux性能观测工具**
+四、Linux observability sar | linux性能观测工具
 
 ![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_57b8b3afe5b4.jpg)
 

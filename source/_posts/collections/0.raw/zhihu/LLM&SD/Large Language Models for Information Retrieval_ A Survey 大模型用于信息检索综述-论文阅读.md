@@ -17,11 +17,11 @@ source_url: https://zhuanlan.zhihu.com/p/666414155
 
 论文地址：[https://arxiv.org/abs/2308.07107](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2308.07107)
 
-### <strong>Abstract：</strong>
+### Abstract：
 
 IR是信息获取的主要手段，在对话、问答、推荐系统中均有应用。IR从最初基于term的方法演化到基于高级神经网络的方法后，仍然受到数据稀疏性、准确性等挑战。在chatgpt和gpt-4为代表的大模型的兴起后，IR系统也尝试使用大模型。本综述整理了现有的方法，并探索未来的方向。
 
-### <strong>INTRODUCTION：</strong>
+### INTRODUCTION：
 
 信息获取是日常基础需求之一，除了搜索引擎（百度、谷歌、bing）,信息检索在对话系统、问答系统、图像搜索等领域也扮演着重要的角色。
 
@@ -33,9 +33,9 @@ IR系统图示如下，其中rerank阶段只对检索到的有限doc集排序，
 
  作者收集并将持续更新LLM应用于信息检索的相关论文和代码，地址在 [https://github.com/RUC-NLPIR/LLM4IR-Survey](https://link.zhihu.com/?target=https%3A//github.com/RUC-NLPIR/LLM4IR-Survey)。如上图所示，大模型可以应用于IR系统的多个步骤。
 
-### <strong>BACKGROUND</strong>
+### BACKGROUND
 
-#### <strong>IR系统</strong>
+#### IR系统
 
 IR 系统早期使用的是布尔模型，通过布尔逻辑运算符来组合查询并检索满足特定条件的文档；后来，基于词袋模型的向量表示方法被引入IR系统，查询query和候选doc通过词袋模型表示成稀疏向量，然后通过计算向量相似性来评估查询结果和query的相关性；再之后，神经网络IR出现，依托神经网络强大的表征能力，IR系统的效果取得了显著的提升。
 
@@ -49,7 +49,7 @@ query改写：query改写通过修改或重写用户的输入query，可以改�
 
 reader：reader是随着大预言模型快速发展起来的一个模块，它实时理解用户意图，并根据检索结果动态生成响应。相较于传统的给用户呈现一个候选文档列表的方式，reader模块以人类获取信息的方式组织检索结果。为了提高结果的可信度，将参考文献集成到生成的结果中是该模块的一种有效技术。
 
-#### <strong>LLM</strong>
+#### LLM
 
 LM可以做文本生成，大量的自然语言处理问题可以被表示为文本到文本的格式，使得用LM解决NLP问题成为一个可行的方案。LM的发展经历了统计语言模型->神经网络语言模型->预训练语言模型的阶段。统计语言模型应用马尔科夫假设基于文本的前面token预测后续的token；神经网络语言模型用神经网络建模文本序列的似然，并使得表示学习容易实现。ELMo首先提出用双向LSTM模型结构学习词的语义表示，并在下游任务重微调；类似地，BERT在大语料上预训练了transformer的encoder。这些研究开创了“预训练语言模型-PLM”领域，并使得先预训练再微调的范式成为主流的方法。沿着这条线，各式各样的生成式预训模型被提了出来并用在了包括文本摘要、机器翻译、对话在内的多种领域，比如GPT-2、BART、T5等等。近来，研究者们发现增大预训练语言模型的规模可以提升下游任务的性能，所以研究转向了大预言模型LLM。
 
@@ -59,9 +59,9 @@ LM可以做文本生成，大量的自然语言处理问题可以被表示为文
 
 LLM用于信息检索可以采用 in-context learning (ICL) 和 parameter-efficient fine-tuning方式。ICL不需要调整LLM的参数，是LLM应用于信息检索领域的最普遍方式。parameter-efficient fine-tuning的目标是在保持模型性能的同时降低模型训练的参数量， LoRA 是这个方向上普遍使用于开源大模型微调的方法。
 
-### <strong>重写阶段</strong>
+### 重写阶段
 
-#### <strong>两个检索范式</strong>
+#### 两个检索范式
 
 <strong>Ad-hoc检索</strong>
 
@@ -93,7 +93,7 @@ LLMs用于对话式搜索有个工作叫LLMCS-Large Language Models know yourCon
 
 *上述图示中有个地方有疑问：第二轮问的是买手机应该考虑哪个方面，重写后变成了推荐哪个智能手机？大模型引进的错误如何解？*
 
-#### <strong>数据层面</strong>
+#### 数据层面
 
 <strong>使用LLM的内在知识，不引入新数据</strong>
 
@@ -108,7 +108,7 @@ LLMs用于对话式搜索有个工作叫LLMCS-Large Language Models know yourCon
 - GRF能提供第一遍检索不包含的信息；
 - PRF将查询限制为包含在目标语料库内的信息。
 
-#### <strong>方法</strong>
+#### 方法
 
 ![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_6993e7d9209d.jpg)
 
@@ -134,11 +134,11 @@ QUILL提出了一种两阶段蒸馏方法。首先有一个训练好的检索大
 
 疑问：为啥不直接从profersser蒸馏得到BERT？需要读QUILL论文。（QUILL:  query  intentwith large language models using retrieval augmen-tation  and  multi-stage  distillation）
 
-### <strong>检索阶段</strong>
+### 检索阶段
 
 LLM用不检索阶段有两种方法：用LLM生成检索结果；用LLM增强模型结构。
 
-#### <strong>LLM生成检索结果</strong>
+#### LLM生成检索结果
 
 鉴于搜索数据的质量和数量，关于如何通过LLM提高检索性能，有两种普遍的观点。第一个视角围绕着搜索数据优化方法，这些方法专注于重新制定输入查询，以精确地呈现用户意图。第二个视角涉及训练数据扩充方法，该方法利用LLM的生成能力来扩充密集检索模型的训练数据，特别是在零样本或少样本场景中。
 
@@ -160,7 +160,7 @@ LLM用不检索阶段有两种方法：用LLM生成检索结果；用LLM增强�
 
 在query和doc容易获取、但label不容易得到的场景，比如问答类，可以使用LLM针对query和doc生成概率分布，再配合正则化过程将概率分布转化成label。
 
-#### <strong>用LMM增强模型结构</strong>
+#### 用LMM增强模型结构
 
 LLM具有很好的文本编码和解码能力，可以用于query和doc的理解。LMM增强检索模型结构有两种做法：基于编码器的检索模型和生成式检索模型。
 
@@ -175,11 +175,11 @@ LLM具有很好的文本编码和解码能力，可以用于query和doc的理解
 - prompt大模型是直接让大模型生成针对输入query的文档url。LLM-URL模型是本方向的一个工作，模型用GPT-3 text-davinci-003模型生成候选url，然后设计正则化表示从候选中提取有效的url。
 ![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_576024b109ed.jpg)
 
-### <strong>排序阶段</strong>
+### 排序阶段
 
 LLM用于排序阶段有三种做法：微调大模型、prompt大模型和使用大模型进行训练数据增广。
 
-#### <strong>微调大模型</strong>
+#### 微调大模型
 
 - 因预训练时缺乏排序意识，LLM不能恰当的评估查询-文档的相关性，也无法全面理解rerank任务。通过在任务特定任务的排序数据集上进行微调，LLM可以在排序任务上获得更好的性能。
 - 这个阶段的微调有两种做法：将LLM微调为生成模型和将LLM微调为排序模型。
@@ -192,7 +192,7 @@ LLM用于排序阶段有三种做法：微调大模型、prompt大模型和使�
 
 - RankT5可以针对输入的query和doc对直接生成相关性打分，模型训练时用pairwise或listwise损失。
 
-#### <strong>prompt大模型</strong>
+#### prompt大模型
 
 - LLM参数太大不好微调，prompt希望通过利用LLM的输入指导能力提升模型的排序能力。
 - 做法有三种：pointwise、listwise、pairwise。
@@ -213,28 +213,28 @@ LLM用于排序阶段有三种做法：微调大模型、prompt大模型和使�
 - pairwise排序prompt让LLM判断一个doc是不是比另一个doc更相关，然后设计了几种排序算法来利用这种pair结果对整个文档列表进行重新排序。
 ![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_38f0f0fc46d7.jpg)
 
-#### <strong>LLM用于训练数据增广</strong>
+#### LLM用于训练数据增广
 
 - ExaRanker使用GPT-3.5生成检索数据集的解释，然后训练seq2seq排序模型用于生成相关性标签和解释。
 - InPars Light通过prompt大模型输入doc生成query。 
 
-### <strong>reader阶段</strong>
+### reader阶段
 
 鉴于LLM在语言理解、抽取和文本数据处理方面的能力，研究人员尝试将IR系统的范围从内容排序扩展到答案生成。reader是在这一发展过程中引入的模块，通过该模块，IR系统可以直接向用户呈现结论性的结果，而之前的IR是给用户提供文档列表。
 
-#### <strong>被动式reader</strong>
+#### 被动式reader
 
 - 用查询query检索到的文档或IR系统生成的文本作为LLM的输入，让LLM输出目标文本。因LLM和IR系统是独立的，LLM充当IR系统文档的被动接收者，故这种方式称为被动式。
 - 一次检索reader：将检索到的头部doc输入到LLM中生成答案。
 - 周期检索reader：在生成答案的过程中，每隔一定的token或sentences，就调用一次检索。
 - 非周期检索reader：预先定义一个阈值，在生成答案的过程中如果生成的token或sentences置信度低于阈值，使用IR系统对正在生成的句子进行检索，同时删除低这个低概率句子。
 
-#### <strong>主动式reader</strong>
+#### 主动式reader
 
 - prompting大模型，使得大模型在生成答案的过程中调用搜索。
 - 通过强化学习框架训练大模型调用搜索。
 
-### <strong>未来工作</strong>
+### 未来工作
 
 - 当前LLM和IR相结合的工作还只是初级阶段，未来潜在的方向还包括 索引、用户建模、匹配或排序、评估、交互等。
 - 索引：探索构建生成检索增量索引的方法；设计实现针对多模态检索的LLM。
@@ -243,7 +243,7 @@ LLM用于排序阶段有三种做法：微调大模型、prompt大模型和使�
 - 评估：制定合理的评估指标和测试集。
 - 交互：用户和IR系统的交互。
 
-### <strong>总结</strong>
+### 总结
 
 LLM因为强大的语言理解和生成能力，可以被应用在IR系统的多个模块中：
 

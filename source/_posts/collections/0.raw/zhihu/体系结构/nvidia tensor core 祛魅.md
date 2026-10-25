@@ -15,7 +15,7 @@ source_url: https://zhuanlan.zhihu.com/p/1940518023904601791
 ---
 
 
-### <strong>先说最重要的可取之处：</strong>
+### 先说最重要的可取之处：
 
 $&#x8FD9;&#x4E2A;&#x7279;&#x6027;&#x53EF;&#x4EE5;&#x8BA9;&#x5F02;&#x6B65;&#x7F16;&#x7A0B;&#x7684;&#x590D;&#x6742;&#x5EA6;&#x964D;&#x4F4E;&#x975E;&#x5E38;&#x5927;&#x3002;&#x4E5F;&#x662F;&#x6211;&#x4E2A;&#x4EBA;&#x89C9;&#x5F97;&#x662F;tcgen05&#x4E0A;&#x6700;&#x597D;&#x7684;&#x8BBE;&#x8BA1;&#x3002;" role="presentation">这个特性可以让异步编程的复杂度降低非常大。也是我个人觉得是tcgen05上最好的设计。\color{red}{这个特性可以让异步编程的复杂度降低非常大。也是我个人觉得是tcgen05上最好的设计。} $
 
@@ -24,11 +24,10 @@ $- tcgen05&#x8BBE;&#x8BA1;&#x4E2D;&#x7684;alloc/dealloc&#x673A;&#x5236;&#xFF1A;"
 $- &#x964D;&#x4F4E;&#x591A;&#x7EBF;&#x7A0B;&#x5E76;&#x884C;&#x5BF9;tmem&#x7684;&#x7BA1;&#x7406;&#x6210;&#x672C;&#xFF0C;&#x901A;&#x8FC7;alloc/dealloc&#x5B9E;&#x73B0;&#x7C7B;cache&#x7684;&#x529F;&#x80FD;" role="presentation">降低多线程并行对tmem的管理成本，通过alloc/dealloc实现类cache的功能\color{green}{降低多线程并行对tmem的管理成本，通过alloc/dealloc 实现类cache的功能} 。$
 $- 通过alloc/dealloc 的模式管理内存， &#x53EF;&#x4EE5;&#x5728;&#x786C;&#x4EF6;&#x5185;&#x90E8;&#x5B9E;&#x73B0;&#x7C7B;scoreboard&#x7684;&#x4F9D;&#x8D56;&#x68C0;&#x67E5;&#x6A21;&#x5F0F;" role="presentation">可以在硬件内部实现类scoreboard的依赖检查模式\color{green}{可以在硬件内部实现类scoreboard 的依赖检查模式} ，可以实现数据依赖检查和越界检查， &#x4E0D;&#x7528;&#x7528;&#x6237;&#x624B;&#x52A8;&#x6307;&#x5B9A;&#x4F9D;&#x8D56;&#x5173;&#x7CFB;" role="presentation">不用用户手动指定依赖关系\color{red}{不用用户手动指定依赖关系} 。 &#x8FD9;&#x4E2A;&#x975E;&#x5E38;&#x91CD;&#x8981;" role="presentation">这个非常重要\color{red}{这个非常重要} ，这个特性最起码可以将 当前npu采用的异步编程代码量减少 , 或者更多。$
 
-**
 
 ### 总结：
 
-上篇文档中，也介绍了我对 simt 和 simd 的理解。这篇文档想重点介绍一下，nv 的 tensor core 的编程方式。 也给大家祛祛魅,  让大家对nvidia 遇到的核心困难有一些更加直观的理解。**
+上篇文档中，也介绍了我对 simt 和 simd 的理解。这篇文档想重点介绍一下，nv 的 tensor core 的编程方式。 也给大家祛祛魅,  让大家对nvidia 遇到的核心困难有一些更加直观的理解。
 
 *tensor core 从nv 的 votal 架构就开始引入了。 具体的 细节我就不一一介绍了，知乎上有很多很多 朋友已经对各种架构和细节 进行了很详细的介绍。我这里只描述一些核心的内容，如果大家对一些实现细节有兴趣的话，可以去看 很多朋友对每代架构的详细介绍。*
 
@@ -41,7 +40,6 @@ $特性对比&#x6211;&#x8FD9;&#x91CC;&#x5148;&#x7EDF;&#x4E00;&#x6C47;&#x603B;&#x
 $- tma 引入tile的数据搬运， &#x4F46;&#x672C;&#x8EAB;tile&#x7684;&#x63CF;&#x8FF0;&#x5C31;&#x9700;&#x8981;&#x5F88;&#x591A;&#x4FE1;&#x606F;" role="presentation">但本身tile的描述就需要很多信息\color{red}{但本身tile的描述就需要很多信息} ，nv为了解决这个问题，增加了 bulk.tensor 类指令。 &#x4F46;&#x5B83;&#x9700;&#x8981;&#x5403;&#x4E00;&#x4E2A;gm&#x4E0A;&#x7684;tensorMap&#x63CF;&#x8FF0;&#x7B26;&#x6307;&#x9488;" role="presentation">但它需要吃一个gm上的tensorMap描述符指针\color{red}{但它需要吃一个gm上的tensorMap描述符指针} 。这一个异步通路的加载， &#x5C31;&#x9700;&#x8981;&#x51E0;&#x767E;&#x4E2A;cycle" role="presentation">就需要几百个cycle\color{red}{就需要几百个cycle} 。$
 - <strong>创建这个描述符太慢了，nv 居然推荐大家在host上描述符构建好，通过传参传进来</strong>
 - 为了解决描述符的动态性，增加了一堆修改描述符的指令 tensormap.replace. 这个指令还是去修改 gm&#x4E0A;&#x7684;&#x5185;&#x5BB9;" role="presentation">gm上的内容\color{red}{gm上的内容} 。就算可以cache住，但这个<strong>开销也要上百cycle的</strong>
-**
 
 #### tcgen05 编程复杂和simt割裂：
 
@@ -53,7 +51,6 @@ $- 为了适配输出tensor可以在register_file上， &#x5F15;&#x5165;&#x4E86;
 #### 异步指令的sync 性能瓶颈：
 
 - 为了让异步指令可以进行sync， \color{red}{采用shared\_memory上的atomic实现sync} ，但这个频繁对内存的操作，<strong>延迟也是很大的</strong>[单次读shared_memory 30个cycle].
-**
 
 #### tcgen05 独立性：
 
@@ -63,7 +60,6 @@ nv 的tcgen05 已经是将tensor_core 变成一个独立的编程单元了<stron
 
 编程单元执行数序同步异步编程粒度smit顺序执行强内存序同步iothread 粒度tcgen05乱序执行弱内存序异步io混合粒度\color{red}{要不是nv的股票价格太高了，我感觉，很快就有nv的人出来，搞个初创工作，搞simd[v + m] + smt 的方案了} 
 
-**
 
 ### 下文会对一些细节，进行详细的介绍。
 
@@ -90,7 +86,7 @@ nv 的tcgen05 已经是将tensor_core 变成一个独立的编程单元了<stron
 - \color{red}{那为什么还要支持这个功能吗？} 还是片内sram 太小了，让两个sm 的sram 可以一起使用，来提升存储的复用。 \color{red}{但这种设计真的好吗？} \color{blue}{和大家吹捧的 simt 天差地别啊。完全不是一个编程思路了。} 
 ![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_5a54e085b4dd.jpg)
 
-Layout by @Kurnal**
+Layout by @Kurnal
 
 ### TMA  的设计：
 
@@ -120,7 +116,6 @@ Layout by @Kurnal**
 
 \color{red}{大家看看这几点细节，和我们看的市面上的 npu 几乎是没区别的。} 
 
-**
 
 ### tcgen05 的设计：
 
@@ -139,12 +134,11 @@ Layout by @Kurnal**
 - 但因为 \color{red}{无法摆脱simt的 线程设计粒度} ，如果matrix 计算完，还是需要将 输出tensor 按照C维度拆分到一个sm 上的多个wrap 上的 thread上。
 \color{red}{从整体上看，tcgen05 的编程方式，和simt还是脱节的。 但确实已经比前几代芯片好很多了。} 
 
-#### <strong>原因：</strong>
+#### 原因：
 
 - 前几代芯片， \color{red}{输入tensor 都还是需要从register_file来的} ，但register_file 是分拆到多个wrap 的多个 thread 上的。所以要进行matrix 计算，必须多个warp 一起操作。
 - tcgen05 这一代芯片， \color{red}{单个 sm 内部，matrix 的输入直接从shared\_memory来} 。 而不再依赖 register_file，多起码在输入上，可以抛开 warp，单个线程启动matrix
 - 但无论如何，因为有 \color{red}{simt 这种线程粒度的编程} ，matrix 的结果，还是需要退回到线程粒度，进行后续操作。而这引入的分形编程难度，又是很大的。
-**
 
 ### 异步编程接口：
 
@@ -156,14 +150,13 @@ tcgen05 指令汇总首先tcgen05 的异步编程方式和相关的内存一致�
 
 #tcgen05-memory-consistency-model 章节找到
 
-**
 
-不同tcgen05 指令又分为两种：**
+不同tcgen05 指令又分为两种：
 
 - <strong>流水线 tcgen05 指令</strong>
 - <strong>专门的 tcgen05 特定的线程间同步机制</strong>
 
-#### <strong>指令分类</strong>
+#### 指令分类
 
 而<strong>不同指令的行为也不一样</strong>，有的是<strong>同步指令</strong>，有的是<strong>异步指令</strong>。
 

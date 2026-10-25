@@ -15,7 +15,7 @@ source_url: https://zhuanlan.zhihu.com/p/609457879
 ---
 
 
-### <strong>1. 技术背景</strong>
+### 1. 技术背景
 
 现代处理器的内存管理单元(MMU)大多都支持多种大小的page size。但内核长期以来默认使用4k大小的page size。对大于4k的页，我们统称为 “大页（huge pages”）。在某些应用场景下，使用 huge pages 可以获得更好的性能，可惜的是，这种性能优势在 Linux 2.6.38以前几乎一直未被利用。从内核版本 2.6.38 开始，大页的支持使得这种状况将会发生转变。
 
@@ -25,11 +25,11 @@ source_url: https://zhuanlan.zhihu.com/p/609457879
 - <strong>减少了页表级数，也可以减少查找页表的时间。</strong>大页使得页表级数减少，例如原来从多达4级的页表可以减少到2级。查找页表的时间会明显改善。
 - <strong>减少缺页异常（page fault）的发生次数。</strong>假设应用程序需要 2MB 的内存，如果操作系统以 4KB 作为分页的单位，则需要512 次缺页异常才能将 2MB 应用程序空间全部映射到物理内存；然而当采用 2MB 作为分页时，只需要一次缺页异常就能完成。
 
-### <strong>2. 大页分类</strong>
+### 2. 大页分类
 
 在 Linux 中大页分为两种： Huge pages ( 标准大页 ) 和  Transparent Huge pages( 透明大页 ) 。<strong>标准大页</strong>：使用hugetlbfs伪文件系统，其在/mnt/huge/ 目录下创建的文件，将其映射到内存中时都会使用 大页进行映射。值得一提的是，hugetlbfs 中的文件是不支持读写系统调用 ( 如read()或write()等 ) 的，一般对它的访问都是以内存映射的形式进行。<strong>透明大页</strong>： 标准大页的优点是预先分配大页， 进程申请大页的时候到大页内存池中分配，成功概率很高。缺点应用程序需要特定适配使用文件系统编程接口。透明大页则是对应用程序透明，使其更容易使用，缺点是动态分配内存，大块连续内存在使用过程中由于内存碎片原因分配成功率会比较低。**总结起来，两者最大区别是标准大页使用内存是预分配的方式，而透明大页使用内存则是动态分配的方式。
 
-### 3. ARM64的支持**
+### 3. ARM64的支持
 
 ARM64 支持两种类型的大页。
 
@@ -45,9 +45,9 @@ ARM64 支持两种类型的大页。
 
 ![](/images/collections/0.raw/zhihu/%E8%B5%B0%E5%90%91cs/asset/img_ba95b724d39d.jpg)
 
-### 4. 标准大页(hugetlbfs)**
+### 4. 标准大页(hugetlbfs)
 
-#### <strong>4.1 标准大页的使用</strong>
+#### 4.1 标准大页的使用
 
 标准大页的使用不像普通内存申请那么简单，而是需要借助 Hugetlb文件系统来创建，下面将会介绍 HugePages 的使用步骤：
 
@@ -103,7 +103,7 @@ int main()
 
 }`
 
-#### <strong>4.2 实现原理</strong>
+#### 4.2 实现原理
 
 - <strong>标准大页内存预分配</strong>
 ![](/images/collections/0.raw/zhihu/%E8%B5%B0%E5%90%91cs/asset/img_223b0cac6487.jpg)
@@ -113,21 +113,20 @@ int main()
 
 ![](/images/collections/0.raw/zhihu/%E8%B5%B0%E5%90%91cs/asset/img_976e858cc46c.jpg)
 
-**
 
-### 5. 透明大页(THP)**
+### 5. 透明大页(THP)
 
 透明大页之所以叫透明大页，是因是其对应用进程而言是透明的，如果虚拟内存足够大并且允许使用大页，那么内核在分配内存时会优先为其分配大页，如果大页分配失败，使用普通小页分配。
 
-#### <strong>5.1 透明大页的使用</strong>
+#### 5.1 透明大页的使用
 
-**echo always >/sys/kernel/mm/transparent_hugepage/enabled
+echo always >/sys/kernel/mm/transparent_hugepage/enabled
 echo madvise >/sys/kernel/mm/transparent_hugepage/enabled
 echo never >/sys/kernel/mm/transparent_hugepage/enabledAlways：总是使用透明大页
 Madvise：仅针对madvise（MADV_HUGEPAGE）指定的虚拟地址范围使用透明大页。
 Never：从不使用透明大页
 
-#### 5.2 实现原理**
+#### 5.2 实现原理
 
 - <strong>透明大页映射</strong>
 ![](/images/collections/0.raw/zhihu/%E8%B5%B0%E5%90%91cs/asset/img_4e618d6c4d99.jpg)
@@ -146,7 +145,7 @@ __split_huge_pmd函数把PMD级别透明大页分裂成普通页,流程如下:
 
 从上面可以看到, 针对文件页映射,内核选择了直接解除映射而不是将其分裂, 主要是原因是觉得文件页分裂复杂度较高,还不如直接将其解映射。
 
-- 透明大页分裂**
+- 透明大页分裂
 当进程使用munmap释放大页一部分时，需要把大页进行分裂成普通页，透明大页分裂前后如下图所示：
 
 【分裂前】：
@@ -263,7 +262,7 @@ static void __split_huge_pmd_locked(struct vm_area_struct *vma, pmd_t *pmd,
 
 ![](/images/collections/0.raw/zhihu/%E8%B5%B0%E5%90%91cs/asset/img_da8c05c2f54a.jpg)
 
-2) 大页分裂**
+2) 大页分裂
 
 拆分页表最终的目的也是为了拆分大页，这样在系统内存不够时可以回收大页中没有使用的部分。最终通过split_huge_page_to_list函数实现拆分大页
 
@@ -505,7 +504,7 @@ collapse_huge_page负责把普通页合并成大页，它只会把最近访问�
 
 ![](/images/collections/0.raw/zhihu/%E8%B5%B0%E5%90%91cs/asset/img_405b3351ad33.jpg)
 
-### 6. 参考资料**
+### 6. 参考资料
 
 > https://tinylab.org/lwn-423584/
 https://lwn.net/Articles/423584/

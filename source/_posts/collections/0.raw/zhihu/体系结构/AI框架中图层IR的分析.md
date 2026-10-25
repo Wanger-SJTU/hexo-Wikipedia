@@ -21,9 +21,8 @@ source_url: https://zhuanlan.zhihu.com/p/263420069
 
 AI框架的演进趋势和MindSpore的构想：[https://zhuanlan.zhihu.com/p/225392622](https://zhuanlan.zhihu.com/p/225392622)
 
-**
 
-### 背景**
+### 背景
 
 IR-Intermediate Representation（中间表示）是程序编译过程中，源代码与目标代码之间翻译的中介，IR的设计对编译器来说非常关键，好的IR要考虑从源代码到目标代码编译的完备性、编译优化的易用性和性能。
 
@@ -31,14 +30,13 @@ AI框架本质的作用在于把一个把用户的模型表达翻译到可执行
 
 在开始之前，我想先介绍一些背景知识—通用的编译器IR的分类以及各自特点
 
-### <strong>业界IR的介绍</strong>
+### 业界IR的介绍
 
 参考[1]，IR根据其组织结构，可以分为：
 
 - Linear IR（线性IR）：类似某些抽象机的伪代码，对应的算法通过迭代来遍历简单的线性操作序列。
 - Graphical IR（图IR）：将编译过程的知识/信息保存在图中，对应的算法通过对图中的对象（节点、边、列表和树）操作来描述。
 - Hybrid IR（混合IR）：结合了图IR和线性IR的要素。一种常见的混合IR使用底层的线性IR来表示无循环代码块，使用图IR来表示这些块之间的控制流。
-**
 
 线性IR的一个例子是堆栈机代码（Stack-Machine Code），它是一种单地址代码，假定操作数存在一个栈中。大多数操作从栈获得操作数，并将其结果推入栈中。例如：表达式 b-a*3对应的堆栈机代码如下：
 
@@ -414,7 +412,7 @@ lambda (x, y)
 
 MindIR较传统计算图的一个重要特性是不仅可以表达算子之间的数据依赖，还可以表达丰富的函数式语义。
 
-高阶函数**
+高阶函数
 
 在MindIR中，函数的定义是由一个子图来定义，但其本身可以是一个被传递的值，作为其他高阶函数的输入或输出。 例如下面一个简单的示例中，函数f作为参数传入了函数g，因此函数g是一个接收函数输入的高阶函数，函数f真正的调用点是在函数g内部。
 
@@ -433,13 +431,12 @@ def hof(x):
 
 对应的MindIR为hof.dot：
 
-**
 
 ![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_6d30163c2e90.jpg)
 
 在实际网络训练脚本中，自动求导泛函GradOperation和优化器中常用到的Partial和HyperMap都是典型的高阶函数。高阶语义极大地提升了MindSpore表达的灵活性和简洁性。
 
-控制流**
+控制流
 
 控制流在MindIR中是以高阶函数选择调用的形式表达。这样的形式把控制流转换为高阶函数的数据流，从而使得自动微分算法更加强大。不仅可以支持数据流的自动微分，还可以支持条件跳转、循环和递归等控制流的自动微分。
 
@@ -455,13 +452,12 @@ def fibonacci(n):
 
 对应的MindIR为cf.dot：
 
-**
 
 ![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_b237979530dc.jpg)
 
 其中fibonacci是顶层函数图，在顶层中有两个函数图被switch选择调用。✓fibonacci是第一个if的True分支，✗fibonacci是第一个if的False分支。在✗fibonacci中被调用的✓✗fibonacci是elif的True分支，✗✗fibonacci是elif的False分支。这里需要理解的关键是在MindIR中，条件跳转和递归是以高阶控制流的形式表达的。例如，✓fibonacci和✗fibonacci是作为switch算子的参数传入，switch根据条件参数选择哪一个函数作为返回值。因此，switch是把输入的函数当成普通的值做了一个二元选择操作，并没有调用，而真正的函数调用是在紧随switch后的CNode上完成。
 
-自由变量和闭包**
+自由变量和闭包
 
 闭包（closure）是一种编程语言特性，它指的是代码块和作用域环境的结合。自由变量(free variable)是指在代码块中引用作用域环境中的变量而非局部变量。在MindIR中，代码块是以函数图呈现的，而作用域环境可以理解为该函数被调用时的上下文环境，自由变量的捕获方式是值拷贝而非引用。
 
@@ -490,7 +486,6 @@ def ms_closure():
 
 对应的MindIR为closure.dot：
 
-**
 
 ![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_7b416e9d8fc7.jpg)
 
@@ -512,7 +507,7 @@ GitHub-[https://github.com/mindspore-ai/mindspore](https://link.zhihu.com/?targe
 
 官方QQ群: 871543426
 
-参考文献**
+参考文献
 
 - [1] 《Engineering a Compiler》Second Edition，Chapter 5. Intermediate Representation
 - [2] 《Combining Analyses, Combining Optimizations》

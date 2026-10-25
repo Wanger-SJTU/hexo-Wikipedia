@@ -72,13 +72,11 @@ $GPTQ (Symmetric Calibration): min \text{GPTQ (Symmetric Calibration): } \min_{
 
 ![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_99b1eb0b9fde.jpg)
 
-**
 
 Kenji博士:** 这种利用GPU架构特性的优化思路非常高明。他们用Cholesky分解 H⁻¹ = LLᵀ 替代了高斯消元，保证了数值稳定性，并通过Lazy-Batch Updates，按块（block）更新权重，进一步提升了GPU的利用率。从图4的延迟测试来看，相比于GPTQ，GPTAQ增加的额外延迟非常小，在典型层维度（如4096）下低于10%，这在实践中完全可以接受。
 
 ![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_3fa24e9c3879.jpg)
 
-**
 
 Alistair博士:** 那么，让我们看看实际效果。实验结果部分（第5节）的数据非常有说服力。我们来看看表1和表2。
 

@@ -24,7 +24,7 @@ repo地址：[https://gitcode.com/ascend-tribe/ascend-inference-cluster/blob/mai
 - <strong>AMLA</strong>：以加代乘的高性能昇腾MLA算子。针对昇腾优化MLA算子，性能优于FlashMLA实现。
 - <strong>大模型推理中昇腾算子融合技术与设计原理</strong>。首次披露了基于昇腾的融合算子的设计原则。
 - <strong>SMTurbo</strong>：面向高性能原生LoadStore 语义加速。介绍了基于CloudMatrix384集群的Load/Store语义加速方案。**我们一个个来学习下。
-（1）AMLA**
+（1）AMLA
 
 AMLA（即Ascend MLA，昇腾MLA），它 是针对 MLA 在华为昇腾芯片（Ascend）上高效实现的一种优化版算子。它借鉴 Flash Attention 的思想，对在线 Softmax 和中间变量计算过程进行重新设计，核心技术是：<strong>以加代乘（Add-Multiply Replacement, AMLA）：通过浮点数的位级变换，把原本需要乘法操作的地方，用加法操作来实现，进而减少核外数据搬运，提高性能。</strong>
 

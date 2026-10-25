@@ -43,12 +43,12 @@ source_url: https://zhuanlan.zhihu.com/p/573512820
 
 转换为im2col根据卷积的kernel size、padding、stride、dilation等计算im2col转换后矩阵的size
 
-具体公式如下：** 
+具体公式如下：
  
 
 ![](/images/collections/0.raw/zhihu/%E4%BC%98%E5%8C%96/asset/img_42dad4680e8b.jpg)
 
-模型的转换：**
+模型的转换：
 
 使用TVM中的<strong>ExprFunctor</strong>来转换整个relay图
 
@@ -73,7 +73,6 @@ source_url: https://zhuanlan.zhihu.com/p/573512820
 
 将计算图传递至TVM已经存在的pass如<strong>DenseToSparseDense</strong>,在这一步dense算子会被转化为sparse_dense算子，是一个压缩存储的格式。在这一步需要<strong>离线选择</strong>使用的压缩存储格式
 
-**
 
 两次变换的算法伪代码如下：
 
@@ -109,8 +108,8 @@ source_url: https://zhuanlan.zhihu.com/p/573512820
 
 - QNN为计算图级别的高层次IR。在QNN中添加了新的算子，但未进行任何图级别或算子级别优化。而是将这些算子映射到已经定义好的图或算子级别优化。
 - QNN量化算子表示比任何图级别算子的层次都高
-- 可以定义新的QNN优化pass来转换图，使其适配特定硬件后端** 
-设计与实现**
+- 可以定义新的QNN优化pass来转换图，使其适配特定硬件后端
+设计与实现
 
 ![](/images/collections/0.raw/zhihu/%E4%BC%98%E5%8C%96/asset/img_715c0b0698b8.jpg)
 
@@ -121,7 +120,7 @@ source_url: https://zhuanlan.zhihu.com/p/573512820
 
 - QNN Legalize**合法化检查，包括量化上下文，是量化感知的IR，执行特定硬件转换（例如硬件指令是否支持该量化方式）
 - QNN Canonicalize
-规范化，将其转换为一系列Relay-only算子（由开发者提供）。该pass作为一个边界，之后不存在图级别量化上下文。**
+规范化，将其转换为一系列Relay-only算子（由开发者提供）。该pass作为一个边界，之后不存在图级别量化上下文。
 3.运行Relay优化，如死代码消除、图融合
 
 <strong>QNN算子和框架解析器:</strong>

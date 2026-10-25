@@ -142,13 +142,13 @@ source_url: https://zhuanlan.zhihu.com/p/75391062
 - <strong>如何确定条件概率：</strong>现有一个上下文向量X，经过未知节点之后找到正确的中心词，在找的过程中，每经过一个子节点，都要进行一次判断，看是往左走还是往右走，刚好哈夫曼树左为1右为0，即每走一步都可看作是一个二分类，总结一句话就是：上下文词找到中心词的过程就是上下文词经过多个二分类之后最终到达目标词，每一步都要进行判断。
 - <strong>时间复杂度：</strong>从O（N）降到O（log（N））
 - <strong>概率表示：</strong>**
-![](https://pic3.zhimg.com/v2-acd3ed83b0d1d2f5bb0fbad787384d8e_r.jpg)**
+![](https://pic3.zhimg.com/v2-acd3ed83b0d1d2f5bb0fbad787384d8e_r.jpg)
 
 如上图所示，每一步都是一个由逻辑回归得到的概率值，那么根据独立随机变量的联合概率计算，将每一步的概率乘起来即可得到总的概率。
 
 ![](https://pica.zhimg.com/v2-7fd9a9bc5f739ceb432e67431ca0a2d6_r.jpg)
 - <strong>目标函数（对数似然函数）：</strong>**
-![](https://picx.zhimg.com/v2-7d4ce928a699fe86afa5d0ea72fac373_r.jpg)**
+![](https://picx.zhimg.com/v2-7d4ce928a699fe86afa5d0ea72fac373_r.jpg)
 
 很好理解，外面一层求和是要保证每一次训练或者说每一个中心词都被预测正确的概率最大，那么就要求每个中心词预测正确的概率的乘积。里面一层求和是在求每个词时哈夫曼树路径上二分类的概率的乘积。
 
@@ -165,7 +165,7 @@ source_url: https://zhuanlan.zhihu.com/p/75391062
 - <strong>与CBOW的区别：</strong>目标函数有三个连加，最内层为每一个被预测词从根节点走下来的概率，外面一层是一个中心词预测的多个上下文词的概率，最外面是确保整个训练集的预测正确的概率。如图：
 ![](https://picx.zhimg.com/v2-c603c649ed387bbd58a33f5bf0ea7003_r.jpg)
 - <strong>更新时：</strong>每一个Theta j都对应一个w的偏导，所以要求和，另外每一个上下文词u也对应一个w的偏导，再次求和。**
-![](https://pic3.zhimg.com/v2-e4c5a3330aacbf2529f326c2929f7c46_r.jpg)**
+![](https://pic3.zhimg.com/v2-e4c5a3330aacbf2529f326c2929f7c46_r.jpg)
 
 4. 深入剖析nagative sampling（利用CBOW）：
 
@@ -302,7 +302,7 @@ source_url: https://zhuanlan.zhihu.com/p/75391062
 
 - <strong>Elmo和GPT最大的问题：</strong>两者都是单一方向的，无法考虑另一方向的信息。虽说Elmo用了双向LSTM，但是这是个伪双向，因为它只是把两个方向的信息拼接起来，并非同时获取前后信息，从目标函数里也可以体现这一点，他的目标函数是两个方向的语言模型拼接起来的，BERT的目标函数是只有一个，利用上下文的单词预测其中一个单词。GPT虽说用的是transformer，里面的self attention按道理是不需要距离的，任意两个词距离都是1，就不存在前后方向的问题，但是毕竟用的是decoder，有mask，前面看不到后面，所以等于也是单向的，另外这也是为什么transformer在进行并行运算的时候，只有encoder可以并行成矩阵运算，decoder需要一个词一个词计算，因为encoder没有mask可以实现一个词看完所有词的信息。
 - <strong>总体框架：</strong>利用半监督学习一个双向语言模型，然后在下游任务中，经过该语言模型后，接其他任务。**
-![](https://picx.zhimg.com/v2-9bb8bba6b3cf1afa6031eea9f439888b_r.jpg)**
+![](https://picx.zhimg.com/v2-9bb8bba6b3cf1afa6031eea9f439888b_r.jpg)
 
 <strong>3. BERT输入表示（如图）：</strong>
 
@@ -359,8 +359,7 @@ Where do water droplets collide with ice crystals to form precipitation?
 
 类似的有一个向量T，用于计算答案结束的位置。
 
-**
-![](https://pica.zhimg.com/v2-2d36bcef3b1eb9f81ee19e34cf3a33b4_r.jpg)**
+![](https://pica.zhimg.com/v2-2d36bcef3b1eb9f81ee19e34cf3a33b4_r.jpg)
 
 <strong>十六. ELMo，OpenAI GPT，BERT比较：</strong>
 

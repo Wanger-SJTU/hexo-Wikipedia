@@ -15,7 +15,7 @@ source_url: https://zhuanlan.zhihu.com/p/2016897558933426874
 ---
 
 
-** 翻译自 [https://courses.cs.washington.edu/courses/cse599m/23sp/notes/flashattn.pdf](https://link.zhihu.com/?target=https%3A//courses.cs.washington.edu/courses/cse599m/23sp/notes/flashattn.pdf)
+翻译自 [https://courses.cs.washington.edu/courses/cse599m/23sp/notes/flashattn.pdf](https://link.zhihu.com/?target=https%3A//courses.cs.washington.edu/courses/cse599m/23sp/notes/flashattn.pdf)
  FlashAttention 核心创新在于采用了与 Online Softmax 类似的思想，对自注意力计算进行分块计算。从而我们可以融合整个多头注意力层，不用去访问 GPU 全局内存来存储中间的 logits 和注意力分数。这篇笔记中，我将简要的解释下为什么分块 self-attention 计算并非易事，如何驱动 FlashAttention 计算从 online softmax 这个技巧。
 
 ### Self-Attention
@@ -36,7 +36,6 @@ X=QK^T, A = softmax(X), O=AV
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_21c03e61f83d.jpg)
 
-**
 
 这张图主要是介绍了如何对矩阵乘法C=A\times B的输入和输出进行分片。矩阵被分为T\times T块。对于每个输出块，我们从左到右遍历 A 相关块，从上到下遍历 B 的相关块，加载数据从全局内存中给到片上内存，整体片上内存占用大小O(T^2)，对于逐片部分矩阵乘，针对位置(i, j)我们加载该分块内所有 k 对应的A[i, k]和B[k, j]（红色标注），然后再片上内存中将A[i,k] \times B[k, j]累加到C[i, j]。在一个分块处理完成后，我们将C的片上数据写回主存中，然后移动到下一个分块上继续计算，[i, j]所有分块都计算完成后，此分块的最终结果也就算是得到了。
 

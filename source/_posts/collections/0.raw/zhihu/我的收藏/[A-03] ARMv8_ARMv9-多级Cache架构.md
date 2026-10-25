@@ -175,7 +175,7 @@ CCI是ARM架构中用于实现多核处理器之间缓存一致性的关键技�
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_2cab8d55af69.jpg)
 
-图1-10 Big.Little架构下的多级Cache**
+图1-10 Big.Little架构下的多级Cache
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_ebfa2a893139.jpg)
 
@@ -189,7 +189,7 @@ CCI是ARM架构中用于实现多核处理器之间缓存一致性的关键技�
 
 搞清楚了多级Cache的架构之后，我们还不能停止步伐，下面来看两款具体的CPU实例来印证我们的结论。
 
-基于Big.Little的PE-Core 多级Cache实例**
+基于Big.Little的PE-Core 多级Cache实例
 
 通过图1-12，我们能够清晰的看到，早期的A72芯片的L2Cache是各个PE-Core共享的，儿L1级别的Cache是各个PE-Core独立，而且分成了指令Cache和数据Cache。从手册中摘录一下Cache的特征信息：
 

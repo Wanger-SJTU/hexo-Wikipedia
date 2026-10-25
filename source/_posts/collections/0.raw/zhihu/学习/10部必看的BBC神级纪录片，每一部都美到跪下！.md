@@ -29,7 +29,6 @@ source_url: https://zhuanlan.zhihu.com/p/29177369
 
 ![](/images/collections/0.raw/zhihu/%E5%AD%A6%E4%B9%A0/asset/img_6951bfe79ddb.png)
 
-**
 
 ![](/images/collections/0.raw/zhihu/%E5%AD%A6%E4%B9%A0/asset/img_7a35258698d8.png)
 
@@ -51,7 +50,6 @@ source_url: https://zhuanlan.zhihu.com/p/29177369
 
 ![](/images/collections/0.raw/zhihu/%E5%AD%A6%E4%B9%A0/asset/img_5686951d1cdb.png)
 
-**
 
 ![](/images/collections/0.raw/zhihu/%E5%AD%A6%E4%B9%A0/asset/img_6dfdbe27ced4.png)
 
@@ -75,7 +73,6 @@ source_url: https://zhuanlan.zhihu.com/p/29177369
 
 ![](/images/collections/0.raw/zhihu/%E5%AD%A6%E4%B9%A0/asset/img_a60c918a7705.png)
 
-**
 
 ![](/images/collections/0.raw/zhihu/%E5%AD%A6%E4%B9%A0/asset/img_d0364e3a2e5c.png)
 
@@ -87,7 +84,6 @@ source_url: https://zhuanlan.zhihu.com/p/29177369
 
 ![](/images/collections/0.raw/zhihu/%E5%AD%A6%E4%B9%A0/asset/img_8612ca3a6dfa.png)
 
-**
 
 ![](/images/collections/0.raw/zhihu/%E5%AD%A6%E4%B9%A0/asset/img_81445fc56865.png)
 
@@ -109,7 +105,6 @@ BBC前往了80多个城市，拍摄了在世界上不同的地方，都有哪些
 
 ![](/images/collections/0.raw/zhihu/%E5%AD%A6%E4%B9%A0/asset/img_a58da9511f45.png)
 
-**
 
 ![](/images/collections/0.raw/zhihu/%E5%AD%A6%E4%B9%A0/asset/img_26b747c8ace1.png)
 
@@ -135,7 +130,6 @@ BBC前往了80多个城市，拍摄了在世界上不同的地方，都有哪些
 
 ![](/images/collections/0.raw/zhihu/%E5%AD%A6%E4%B9%A0/asset/img_471694197ad3.png)
 
-**
 
 ![](/images/collections/0.raw/zhihu/%E5%AD%A6%E4%B9%A0/asset/img_2036038ecbce.png)
 
@@ -147,7 +141,6 @@ BBC前往了80多个城市，拍摄了在世界上不同的地方，都有哪些
 
 ![](/images/collections/0.raw/zhihu/%E5%AD%A6%E4%B9%A0/asset/img_fffccdd86272.png)
 
-**
 
 ![](/images/collections/0.raw/zhihu/%E5%AD%A6%E4%B9%A0/asset/img_e482d4503b0f.png)
 
@@ -165,7 +158,6 @@ BBC用将近一年的时间，对热带秘鲁的洪堡企鹅、亚南极海岛�
 
 ![](/images/collections/0.raw/zhihu/%E5%AD%A6%E4%B9%A0/asset/img_b3dbac9b3d71.png)
 
-**
 
 ![](/images/collections/0.raw/zhihu/%E5%AD%A6%E4%B9%A0/asset/img_c6ce6eeadb72.png)
 
@@ -183,7 +175,6 @@ BBC用将近一年的时间，对热带秘鲁的洪堡企鹅、亚南极海岛�
 
 ![](/images/collections/0.raw/zhihu/%E5%AD%A6%E4%B9%A0/asset/img_314efb1ded97.png)
 
-**
 
 ![](/images/collections/0.raw/zhihu/%E5%AD%A6%E4%B9%A0/asset/img_6b089fb600b4.png)
 
@@ -215,7 +206,6 @@ BBC耗巨资，拍摄下在地球两级，最为极端寒冷的地方，正在�
 
 ![](/images/collections/0.raw/zhihu/%E5%AD%A6%E4%B9%A0/asset/img_5217739ac2aa.png)
 
-**
 
 ![](/images/collections/0.raw/zhihu/%E5%AD%A6%E4%B9%A0/asset/img_77e3806d3922.png)
 
@@ -229,7 +219,7 @@ BBC耗巨资，拍摄下在地球两级，最为极端寒冷的地方，正在�
 
 ![](/images/collections/0.raw/zhihu/%E5%AD%A6%E4%B9%A0/asset/img_dcd3e4eb17e2.png)
 
-以上纪录片大家可以前往B站搜索名称，就可以看~**
+以上纪录片大家可以前往B站搜索名称，就可以看~
 
 不过！B站很多节目下架了，乘着还能看得时候赶紧去看吧！
 

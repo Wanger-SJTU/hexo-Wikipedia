@@ -21,7 +21,7 @@ Project Page：https://supir.xpixel.group
 
 arxiv：[https://arxiv.org/pdf/2401.13627.pdf](https://link.zhihu.com/?target=https%3A//arxiv.org/pdf/2401.13627.pdf)
 
-### <strong>Scaling Up to Excellence: Practicing Model Scaling for Photo-Realistic Image Restoration In the Wild</strong>
+### Scaling Up to Excellence: Practicing Model Scaling for Photo-Realistic Image Restoration In the Wild
 
 2024.1.25，董超XPixelGroup发布的一个新作。这篇文章用20M+张图像数据，结合SDXL模型进行了图像复原，使用64张A6000训练10天，可以看做是底层视觉领域迈向大模型的一个里程碑。本文对其进行详细的解读。
 
@@ -31,7 +31,6 @@ arxiv：[https://arxiv.org/pdf/2401.13627.pdf](https://link.zhihu.com/?target=ht
 
 另外Project Page上有一些可交互的可视化结果。
 
-**
 
 #### Introduction
 
@@ -55,15 +54,14 @@ arxiv：[https://arxiv.org/pdf/2401.13627.pdf](https://link.zhihu.com/?target=ht
 
 #### Model Scaling Up
 
-Generative Prior**
+Generative Prior
 
 可选的生成式大模型有Imagen, IF, SDXL。作者首先给出了选择SDXL的原因：Imagen和IF都是层次化方法，即先生成一个低分辨率的图像然后逐步上采样，SDXL一步到位生成高分辨率图像能够更加有效地利用其参数来提升图像质量，而不是进行文本解释，更加符合本工作的目标；
 
 另外，SDXL采用了一种Base-Refine策略。在Base model中，生成的图像多样但质量较低，Refine model则提升了这些图像的感知质量。与Base model相比，Refine model使用的训练图像质量更高，但多样性较少。由于训练数据已经是大量高质量的图像，SDXL的两阶段设计就没有必要，因此选择了参数更多的基础模型。
 
-**
 
-Degradation-Robust Encoder**
+Degradation-Robust Encoder
 
 在SDXL中，diffusion过程是在latent space进行的，HQ图像要经过一个预训练的encoder从而映射为latent HQ，前面的一些工作为了更好地利用LQ先验，将LQ也用同一个encoder映射到latent space。而作者认为这个encoder没用LQ图像训练过(这样会导致其对退化敏感，受到退化的影响)，会影响模型对LQ图像内容的判断，可能会产生伪影。因此作者用LQ和HQ对预训练encoder进行了finetune，从而得到一个退化鲁棒的encoder，不会不受到退化影响。
 
@@ -71,9 +69,8 @@ $\mathcal{L}_{\mathcal{E}}=\left\|\mathcal{D}\left(\mathcal{E}_{\mathrm{dr}}\lef
 
 $\mathcal{E}_{\mathrm{dr}} 是Degradation-Robust Encoder， \mathcal{D} 是固定的decoder$
 
-**
 
-Large-Scale Adaptor Design**
+Large-Scale Adaptor Design
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_7d11988ef08a.jpg)
 
@@ -83,9 +80,8 @@ Large-Scale Adaptor Design**
 - 重新设计adapter和SDXL的connector。connector的设计是非常重要的，最初的SD用的是zero convolution；PASD是用了带cross-attention的PACA模块；StableSR是用了IKC中的SFT模块；PromptSR和SeeSR也是带cross-attention的模块。IKC中SFT模块如下，可以看成是退化估计向量作为原图仿射变换的参数。这里的SFT也是类似， X_c 是adapter的输出， X_s,X_f 分别是encoder的shortcut和decoder的feature map。一方面，adapter的输出与shortcut相加后与encoder拼接，并接上一个GroupNorm；另一方面，adapter输出作为仿射变换的系数与上面的feature结合。
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_851d6ce4b07c.jpg)
 
-**
 
-#### Scaling Up Training Data**
+#### Scaling Up Training Data
 
 <strong>Image Collection</strong>
 
@@ -99,9 +95,8 @@ $textual prompts在image restoration中非常重要，这里作者使用了多�
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_79e8b11b2b18.jpg)
 
-**
 
-Negative-Quality Samples and Prompt**
+Negative-Quality Samples and Prompt
 
 概括而言，就是加入negative prompts，也就是对图像质量负面评价的词，比如oil painting, cartoon, blur, dirty, messy, low quality, deformation, low resolution, over-smooth等，然后将positive和negative prompts得到的输出融合，公式如下：
 

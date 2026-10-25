@@ -523,7 +523,7 @@ hypervisor 怎么控制os的内存
 - A big problem in the supercomputing field is the difficulty of writing code that can exploit the parallel architecture. Not only writing multithreaded and message-passing codes is difficult, but also the performance debugging phase can often be very frustrating. Therefore, it has been argued that a better metric is to measure the “time-to-solution” to evaluate a system. The time-to-solution includes the time to write a program to solve the problem, and the running time of the machine to produce an answer. Critique this metric and consider its practical use.
 答案: Time to solution is a useful metric in some situations where the programmer’s time is a large component in the time to arrive to a solution. 不过, 如果每天都要运行这个程序, 很久也不会改程序, 那么running time就很重要了,  the time to solution converges to simply the runtime of the program, given that the initial programmer’s time will be a small component of the overall time to solution
 
-#### quiz2**
+#### quiz2
 
 - Consider adding hardware multithreading to a core. What is the impact on throughput as measured by instruction per cycle, and what is the impact on latency as measured by the time a thread can finish a certain number of instructions?
 (可以keep processor busy, 分享same pipeline cache 和memory带宽, 所以code locality好的话, 可以充分exploiting pipeline bubbles,    )  吞吐量会上升. latency可能上升.  (但是competition 可能会slow down each thread , 所以latency 可能会变大)
@@ -536,7 +536,7 @@ hypervisor 怎么控制os的内存
 
 没(太大)变化, 因为都不是瓶颈.
 
-#### <strong>quiz3</strong>
+#### quiz3
 
 1 可以并发吗？
 

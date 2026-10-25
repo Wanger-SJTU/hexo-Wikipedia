@@ -19,12 +19,12 @@ source_url: https://zhuanlan.zhihu.com/p/394352476
 
 由于自己也是刚开始学习不久，很多东西不是特别熟悉，如果您在阅读的时候发现错误，还请留言告知，谢谢您~
 
-**文中图片大部分来自NVIDIA 产品白皮书
+文中图片大部分来自NVIDIA 产品白皮书
 TODO：英伟达显卡型号梳理
 
 目录**：
 
-**一、NVIDIA GPU的架构演变历史
+一、NVIDIA GPU的架构演变历史
 二、Tesla 架构
 三、Fermi架构
 四、Kepler架构
@@ -38,7 +38,7 @@ TODO：英伟达显卡型号梳理
 
 截止2021年，发布时间离我们最近的8种NVIDIA GPU微架构是：
 
-- Tesla**
+- Tesla
 - <strong>Fermi</strong>
 - <strong>Kepler</strong>
 - <strong>Maxwell</strong>
@@ -50,7 +50,6 @@ NVIDIA一般以历史上一些著名科学家的名字命名自己的GPU微架�
 
 其中最新的是2020年宣布的Ampere架构。
 
-**
 
 ### 二、Tesla 架构
 
@@ -58,7 +57,6 @@ Tesla 架构的资料在官网也没找到多少，不过这是英伟达第一�
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_c25b5f3bef9b.jpg)
 
-**
 
 经典型号是G80**，在Fermi架构白皮书的开篇部分有对G80的简要介绍：
 
@@ -82,7 +80,6 @@ NVIDIA的GPU研发团队从G80和GT200两个型号上汲取经验，采用全新
 - <strong>更多共享内存</strong>——许多 CUDA 程序员要求超过 16 KB 的 SM 共享内存来加速他们的应用程序。
 - <strong>更快的上下文切换</strong>——用户要求在应用程序和更快的图形和计算互操作之间进行更快的上下文切换。
 - <strong>更快的原子操作</strong>(Atomic Operations)——用户要求为他们的并行算法提供更快的读-修改-写原子操作。
-**
 
 基于以上出发点，Fermi架构有以下四大亮点：
 
@@ -131,7 +128,7 @@ Fermi 架构
 
 6个64-bit显存分区，组成一个384-bit的显存接口，总共支持高达 6GB 的 GDDR5 DRAM显存。
 
-**GDDR5：第五版图形用双倍数据传输率存储器
+GDDR5：第五版图形用双倍数据传输率存储器
 DRAM：动态随机存取存储器主机接口(host interface )通过 PCI-Express 将 GPU 连接到 CPU。 Giga Thread 全局调度器将线程块分发给 SM 线程调度器。
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_08ab7b5791e2.jpg)
@@ -152,7 +149,7 @@ Fermi Streaming Multiprocessor (SM)上图是将16个SM中的 1 个拿出来放�
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_7a96a2ac061c.jpg)
 
-CUDA 内核**
+CUDA 内核
 
 SM（Streaming Multiprocessors）是GPU架构中非常重要的部分，GPU硬件的并行性就是由SM决定的。
 
@@ -200,7 +197,7 @@ CUDA内核总数 从Kpler时代的每组SM单元192个减少到了每组128个�
 > 参考：
 [Maxwell: The Most Advanced CUDA GPU Ever Made | NVIDIA Developer Blog](https://link.zhihu.com/?target=https%3A//developer.nvidia.com/blog/maxwell-most-advanced-cuda-gpu-ever-made/)
 
-### 六、Pascal架构**
+### 六、Pascal架构
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_6dfc33fd3aa7.jpg)
 
@@ -227,13 +224,12 @@ CUDA内核总数从Maxwell时代的每组SM单元128个减少到了每组64个�
 
 制程工艺升级到了16nm，性能大幅提升，功耗却不增加。
 
-**
 
-### 七、Volta架构**
+### 七、Volta架构
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_14d55005faf6.jpg)
 
-Volta架构的GV100核心**
+Volta架构的GV100核心
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_4380385c79b7.jpg)
 
@@ -256,9 +252,8 @@ GV100核心的SM单元
 
 Volta架构在传统的单双精度计算之外还增加了专用的<strong>Tensor Core</strong>张量单元，用于深度学习、AI运算等。
 
-**
 
-### 八、Turing架构**
+### 八、Turing架构
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_f7a7ec8351b7.jpg)
 
@@ -267,7 +262,6 @@ Turing架构的TU102核心Turing架构目前一共有三种核心：
 - TU102核心
 - TU104核心
 - TU106核心
-**
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_d5bf48236487.jpg)
 
@@ -281,7 +275,7 @@ TU102核心的SM单元每个SM单元有4个处理块，每个处理块中：
 - 4 个 SFU
 这一代架构去掉了对FP64的支持。
 
-### 九、Ampere架构**
+### 九、Ampere架构
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_f289c15ba161.jpg)
 

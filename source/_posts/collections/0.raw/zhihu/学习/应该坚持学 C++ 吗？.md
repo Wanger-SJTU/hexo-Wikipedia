@@ -31,7 +31,7 @@ C++ 代码要想写好，关键点并不在于你有多么熟悉 C++ 的语法�
 
 这本书也是让我理解 C++ 代码该如何优化，思考如何写出高效 C++ 代码的第一本书。网上有同学分享出来了（链接收集于网络，喜欢请购买正版）：
 
-**链接：https://pan.baidu.com/s/1w2B20KHowcNOFcqa-fyoyQ 提取码: iwhs 
+链接：https://pan.baidu.com/s/1w2B20KHowcNOFcqa-fyoyQ 提取码: iwhs 
 #### 第二本书 《C++性能优化指南》
 
 ![](/images/collections/0.raw/zhihu/%E5%AD%A6%E4%B9%A0/asset/img_0f78c7362949.jpg)![](/images/collections/0.raw/zhihu/%E5%AD%A6%E4%B9%A0/asset/img_9810644cfe1b.webp)

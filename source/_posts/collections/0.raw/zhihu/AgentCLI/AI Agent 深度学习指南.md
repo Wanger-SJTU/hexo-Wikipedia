@@ -17,7 +17,7 @@ source_url: https://zhuanlan.zhihu.com/p/2009766290772993640
 
 ### Claude opus4.6生成的AI Agent 深度学习指南
 
-** 从”会调 SDK”到”真正理解 Agent”的完整学习路径
+从”会调 SDK”到”真正理解 Agent”的完整学习路径
 ### 目录
 
 - [Agent 的本质](https://zhuanlan.zhihu.com/p/2009766290772993640/edit#1-agent-%E7%9A%84%E6%9C%AC%E8%B4%A8)

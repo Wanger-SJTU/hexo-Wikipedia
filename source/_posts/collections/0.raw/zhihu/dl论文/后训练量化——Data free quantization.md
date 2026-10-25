@@ -23,11 +23,11 @@ source_url: https://zhuanlan.zhihu.com/p/393556057
 
 首先登场的是高通提出的一篇论文：<strong>Data-Free Quantization Through Weight Equalization and Bias Correction</strong>。之所以介绍它是因为笔者在使用高通的模型量化工具 *Snapdragon Neural Processing Engine* (*SNPE*) 时感觉效果奇好，而 weight qualization 和 bias correction 就是该工具中提供的常用算法，应该说是比较成熟的量化技术了，况且算法本身也有很多巧妙之处，值得学习。
 
-### <strong>三个关键点</strong>
+### 三个关键点
 
 这篇论文发表于 2019 年的 ICCV 会议，但在此之前高通就已经将它落地到自己的工具中了，算是有一定知名度的论文。学习这篇论文只要把握住三个点就可以：Data-Free、Weight Equalization、Bias Correction (好的题目可以把握住读者的心)。
 
-#### <strong>Data-Free Quantization</strong>
+#### Data-Free Quantization
 
 第一点 Data-Free，也是最不重要的一点，我觉得是高通搞出来的一点噱头。
 
@@ -41,7 +41,7 @@ source_url: https://zhuanlan.zhihu.com/p/393556057
 
 第四重，需要数据，也需要重训练，模型结构还不能乱来。这种指的是最 navie 的量化训练，一遇到特殊的结构或者压缩很厉害的模型就 gg 的那种。
 
-#### <strong>Weight Equalization</strong>
+#### Weight Equalization
 
 weight equalization 是论文的关键点之一，这在另一篇论文 <strong>Same, Same But Different</strong>^1 中也有所提及。
 
@@ -61,7 +61,7 @@ Mobilenet 类的网络在 per-layer 量化下，精度直接掉到 0.001 了，�
 
 高通说他们实现这一步并不需要额外的数据，可以优雅地在 Data-Free 的情况下实现，这也是他们给论文起名 Data-Free 的缘由。具体的算法我们后面再说。
 
-#### <strong>Bias Correction</strong>
+#### Bias Correction
 
 除了 weight 的问题之外，研究人员发现，模型量化的时候总是会产生一种误差，这种误差对数值分布的形态影响不大，但却会使整个数值分布发生偏移 (biased)。
 
@@ -93,13 +93,13 @@ $$E[\widetilde{y_j}-y_j]\approx\frac{1}{N}(\sum_n(\widetilde{W}x_n)_j-(Wx_n)_j) 
 
 研究人员发现，用上 weight equalization 后，这种 biased error 会更加地突出。而 Bias Correction 就是为了解决该问题提出的。
 
-### <strong>具体方法</strong>
+### 具体方法
 
-#### <strong>Weight Equalization</strong>
+#### Weight Equalization
 
 要实现 Weight Equalization，一个很直接的想法就是对卷积核的每个 kernel (或者是全连接层的每个权重通道) 都乘上一个缩放系数，对数值范围大的 kernel 进行缩小，范围小的则扩大。
 
-#### <strong>Positive scaling equivariance (伸缩等价)</strong>
+#### Positive scaling equivariance (伸缩等价)
 
 不过，乘上放缩系数的同时不能影响网络的输出。为了保证计算上的等效性，论文利用了卷积层 (包括全连接层) 和 ReLU 这类激活函数的伸缩等价性 (Positive scaling equivariance)。
 
@@ -131,7 +131,7 @@ ReLU(sx)=sReLU(x) \tag{3}
 
 $$\begin{align} y&=f(W^{(2)}f(W^{(1)}x+b^{(1)})+b^{(2)}) \tag{4} \\ &=f(W^{(2)}S\hat{f}(S^{-1}W^{(1)}x+S^{-1}b^{(1)}) +b^{(2)}) \tag{5} \\ &=f(\hat{W}^{(2)}\hat{f}(\hat{W}^{(1)}x+\hat{b}^{(1)}) +b^{(2)}) \tag{6}  \end{align} $$
 
-#### <strong>如何找到放缩系数S</strong>
+#### 如何找到放缩系数S
 
 下一步就是如何找出合适的放缩系数 S。
 
@@ -190,7 +190,7 @@ def equalize(weight1, bias1, weight2):
 
 不过，论文对这种方法做了一个很严格的假设，作者假设 activation 会经过 batchnorm 层，使得数值分布接近高斯分布。但在实际情况中，这个假设过于严格，并非每个卷积层之后都会跟上一个 BN 层。因此，我觉得这个方法局限性比较大，不够通用，这里就不过多介绍了。
 
-#### <strong>Bias Correction</strong>
+#### Bias Correction
 
 前面提到，量化可能会破坏模型的数值分布，使得输出结果产生一个偏移 (biased)，因此需要对这个偏移做一点矫正。
 
@@ -218,7 +218,7 @@ $$\begin{align} E[x_c]&=E[ReLU(x_c^{pre})] \tag{11} \\ &=\gamma_{c}N(\frac{-\bet
 
 对推导过程感兴趣的同学，可以自行查阅论文附录。同样地，如果你看了之后一阵眩晕，也不用太强迫自己一定要看懂，毕竟公式推导是数学家的事，工程师要做的是把搭建数学和现实之间的桥梁，把它们实现出来。
 
-### <strong>实验</strong>
+### 实验
 
 这里摘取部分我比较关注的实验结果。
 
@@ -242,7 +242,7 @@ $$\begin{align} E[x_c]&=E[ReLU(x_c^{pre})] \tag{11} \\ &=\gamma_{c}N(\frac{-\bet
 
 不过，Bias Correction 对 weight equalize 的加持作用好像不明显啊。反倒是剪枝 (Clip@15) 和直接 per-layer 量化的情况中能带来很大的收益。<strong>这倒是给我带来一些启发，也许在一些模型剪枝压缩的任务中，可以考虑用上 Bias Correction。</strong>
 
-### <strong>总结</strong>
+### 总结
 
 这篇文章主要介绍了高通 Data-Free 论文中的两个神技：Weight Equalization 和 Bias Correction。通过这些技巧，可以在卷积 (或者全连接层) 的 kernel 数值差异较大的情况下，用 per-layer 量化达到 per-channel 的效果。算法流程可以概括为下图：
 
@@ -250,7 +250,7 @@ $$\begin{align} E[x_c]&=E[ReLU(x_c^{pre})] \tag{11} \\ &=\gamma_{c}N(\frac{-\bet
 
 下一章中，我们挖一下 pytorch 源码，看看大佬们是怎么实现 Weight Equalization 和 Bias Correction 的，咱们下回见。
 
-### <strong>参考</strong>
+### 参考
 
 - <strong>[Same, Same But Different - Recovering Neural Network Quantization Error Through Weight Factorization](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/1902.01917)</strong>
 - [https://zhuanlan.zhihu.com/p/104052236](https://zhuanlan.zhihu.com/p/104052236)

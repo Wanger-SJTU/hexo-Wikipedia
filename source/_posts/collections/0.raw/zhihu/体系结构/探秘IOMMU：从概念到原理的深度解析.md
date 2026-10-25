@@ -193,7 +193,7 @@ kernel_init ->
 
 ### 六、IOMMU 常见问题
 
-#### 6.1intel怎么管理那么多iommu硬件？**
+#### 6.1intel怎么管理那么多iommu硬件？
 
 使用一个全局的 dmar_drhd_units 链表来管理对应的iommu硬件，dmar_drhd_unit 的list 成员串接在这个全局链表中。
 

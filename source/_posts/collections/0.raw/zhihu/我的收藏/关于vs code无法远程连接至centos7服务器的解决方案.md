@@ -25,7 +25,7 @@ $#### &#x7B2C;&#x4E00;&#x6B65;&#xFF1A;&#x4E0B;&#x8F7D;&#x5E76;&#x7F16;&#x8BD1; g
 
 #### 第一步：使用crosstool来编译工具链（glibc）
 
-**不想自己编译的也可以去下载现成的编译好的glibc库，但是不确保能用：[https://github.com/liuliping0315/glibc2.28_for_CentOS7/tree/main](https://link.zhihu.com/?target=https%3A//github.com/liuliping0315/glibc2.28_for_CentOS7/tree/main)先下载crosstool
+不想自己编译的也可以去下载现成的编译好的glibc库，但是不确保能用：[https://github.com/liuliping0315/glibc2.28_for_CentOS7/tree/main](https://link.zhihu.com/?target=https%3A//github.com/liuliping0315/glibc2.28_for_CentOS7/tree/main)先下载crosstool
 
 `wget http://crosstool-ng.org/download/crosstool-ng/crosstool-ng-1.25.0.tar.bz2`
 
@@ -65,7 +65,7 @@ ct-ng build`
 安装好patchelf后，可以通过设置环境变量来自动patch，这样当有新版本的vscode客户端连接时，它会自动patch：
 
 - 准备好patchelf和glibc
-- 创建三个环境变量（可以放在~/.bashrc中）:**
+- 创建三个环境变量（可以放在~/.bashrc中）:
 
 - VSCODE_SERVER_CUSTOM_GLIBC_LINKER** path to the dynamic linker in the sysroot (used for `--set-interpreter` option with [patchelf](https://link.zhihu.com/?target=https%3A//github.com/NixOS/patchelf))
 - <strong>VSCODE_SERVER_CUSTOM_GLIBC_PATH</strong> path to the library locations in the sysroot (used as `--set-rpath` option with [patchelf](https://link.zhihu.com/?target=https%3A//github.com/NixOS/patchelf))

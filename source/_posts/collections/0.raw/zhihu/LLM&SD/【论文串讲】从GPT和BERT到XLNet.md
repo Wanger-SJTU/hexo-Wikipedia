@@ -35,14 +35,14 @@ source_url: https://zhuanlan.zhihu.com/p/182377100
 - <strong>NLU</strong>: Natural Language Understanding
 - <strong>NLG</strong>: Natural Language Generation
 
-### <strong>1. GPT</strong>
+### 1. GPT
 
 - <strong>关键词:</strong>单向信息，NLU的pretrain-finetune差异
 优化目标是单向(从左到右或者从右到左)建模序列的联合概率，是传统意义上的语言模型，后预测的词以先预测的词为条件，比较适合文本生成任务，但是缺陷是只使用了单向的语言表征信息，无法获取双向上下文信息表征，而文本理解任务中经常需要用到双向的上下文信息(比如，完形填空)，因此，这就带来了pre-train阶段和下游任务的不一致。
 
 $$p(x_{1:T})=\prod_{t=1}^{T}p(x_{t}|x_{0:t-1})$$
 
-### <strong>2. BERT</strong>
+### 2. BERT
 
 - <strong>关键词:</strong>双向信息，独立性假设，NLG的pretrain-finetune差异
 将一段序列部分“损坏”，优化目标是部分损坏的序列恢复到原始序列的独立概率之积。其优点是获取了双向上下文信息表征，缺点之一是引入了“<strong>独立性假设</strong>”，也即每一个被mask的token都是独立被重建的；缺点之二是预训练阶段的[MASK] token在下游任务的finetune中并没有出现过，这也会造成pretrain阶段和下游生成类任务的不一致。
@@ -52,7 +52,7 @@ $$p(x_{1:T})\approx\prod_{t=1}^{T}p(x_{t}|\tilde{x})^{m_{t}}$$
 - 如果当前token被mask，则m_{t}=1否则m_{t}=0
 - \tilde{x}为部分损坏的序列
 
-### <strong>3. XLNet (AR + MLM -> PLM)</strong>
+### 3. XLNet (AR + MLM -> PLM)
 
 GPT和BERT的对比如下图所示
 
@@ -115,7 +115,7 @@ $- 其中 g_{\theta}\left(\mathbf{x}_{\mathbf{z}_{ 在h_{\theta}\left(\mathbf{x}
 
 #### 3.3. 双流自注意力机制(Two-stream Self-attention)
 
-**该机制的提出是为了实现上文所述的Target-aware Representations g_{\theta}\left(\mathbf{x}_{\mathbf{z}_{ 在考虑到使用上述Target-aware Representations来整个序列的解码过程时，发现了互相矛盾的两点:
+该机制的提出是为了实现上文所述的Target-aware Representations g_{\theta}\left(\mathbf{x}_{\mathbf{z}_{ 在考虑到使用上述Target-aware Representations来整个序列的解码过程时，发现了互相矛盾的两点:
 
 $- 预测X_{z_{t}}时，g_{\theta}\left(\mathbf{x}_{\mathbf{z}_{应该只使用position z_{t}，而不该包含content x_{z_{t}} $
 $- 预测t)">X_{z_{j}}(j>t)时，g_{\theta}\left(\mathbf{x}_{\mathbf{z}_{应该同时使用position z_{t}和content x_{z_{t}}$

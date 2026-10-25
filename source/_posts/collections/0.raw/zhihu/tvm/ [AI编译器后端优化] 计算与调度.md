@@ -15,7 +15,7 @@ source_url: https://zhuanlan.zhihu.com/p/687720171
 ---
 
 
-**本系列文章为AI编译器后端优化系列视频的对应文章，同步更新在[chenzomi12/DeepLearningSystem: Deep Learning System core principles introduction. (github.com)github.com/chenzomi12/DeepLearningSystem](https://link.zhihu.com/?target=https%3A//github.com/chenzomi12/DeepLearningSystem)
+本系列文章为AI编译器后端优化系列视频的对应文章，同步更新在[chenzomi12/DeepLearningSystem: Deep Learning System core principles introduction. (github.com)github.com/chenzomi12/DeepLearningSystem](https://link.zhihu.com/?target=https%3A//github.com/chenzomi12/DeepLearningSystem)
 
 ### 算子的计算与调度
 

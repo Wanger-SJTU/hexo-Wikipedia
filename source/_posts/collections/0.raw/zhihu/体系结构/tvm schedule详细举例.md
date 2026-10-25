@@ -32,7 +32,7 @@ tvm 的guide地址：https://docs.tvm.ai/api/python/schedule.html
 
 理解schedule本质上是一次理解计算机系统结构、loop optimization和多线程编程的过程，因此文会依次介绍。
 
-### <strong>1. 存储层次相关schedule</strong>
+### 1. 存储层次相关schedule
 
 <strong>cache_read(tensor, scope, readers)</strong>
 
@@ -374,10 +374,10 @@ produce B {
 ```
 
 
-**compute_root是compute_at的反操作。因为不做任何schedule的话，每一个stage默认就是compute_root的，这个schedule相当于注释了对之前对一个stage的compute操作。
+compute_root是compute_at的反操作。因为不做任何schedule的话，每一个stage默认就是compute_root的，这个schedule相当于注释了对之前对一个stage的compute操作。
 ### 2. 常见循环优化
 
-fuse**
+fuse
 
 produce B {
   B[0] = 0f
@@ -541,8 +541,8 @@ produce C {
 ```
 
 
-**unroll是一种常见的循环优化方法，减分支预测失败减少，如果循环体内语句没有数据相关，增加了并发执行的机会，也有利于指令流水线的调度<span class="wikilink wikilink--missing" title="未导入的页面">4</span>(#ref_4)。
-### 3. 多线程并行优化**
+unroll是一种常见的循环优化方法，减分支预测失败减少，如果循环体内语句没有数据相关，增加了并发执行的机会，也有利于指令流水线的调度<span class="wikilink wikilink--missing" title="未导入的页面">4</span>(#ref_4)。
+### 3. 多线程并行优化
 
 <strong>vectorize</strong>
 
@@ -636,10 +636,10 @@ produce B {
 ```
 
 
-**parallel将指定iter的for循环替换为parallel操作，从而在GPU以外的CPU等设备上实现并行。
+parallel将指定iter的for循环替换为parallel操作，从而在GPU以外的CPU等设备上实现并行。
 ### 4. 其他schedule
 
-pragma**
+pragma
 
 produce B {
 

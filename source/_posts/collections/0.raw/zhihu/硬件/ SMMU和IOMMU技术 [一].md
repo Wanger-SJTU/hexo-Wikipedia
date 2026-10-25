@@ -25,7 +25,7 @@ source_url: https://zhuanlan.zhihu.com/p/75978422
 
 ![](/images/collections/0.raw/zhihu/%E7%A1%AC%E4%BB%B6/asset/img_5e632c4afd0f.jpg)
 
-### <strong>ARM的SMMU</strong>
+### ARM的SMMU
 
 那IOMMU/SMMU具体应该如何使用呢？本文将主要以ARM的SMMU为例，讲解其转换地址的过程。
 
@@ -67,9 +67,8 @@ source_url: https://zhuanlan.zhihu.com/p/75978422
 
 限于篇幅控制，[下文](https://zhuanlan.zhihu.com/p/76643300)继续。
 
-**
 
-参考：**
+参考：
 
 *ARM System Memory Management Unit Architecture Specification, version 3.1*
 

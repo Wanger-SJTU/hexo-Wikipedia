@@ -48,7 +48,7 @@ UFS 协议更像是一个整合者，重新定义的东西不多，Application L
 
 ![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_e99e219c27cf.jpg)
 
-**M-PHY 和 UniPro 扩展：图摘自《mipi_M-PHY_specification》《mipi_UniPro_specification》
+M-PHY 和 UniPro 扩展：图摘自《mipi_M-PHY_specification》《mipi_UniPro_specification》
 L1，M-PHY：专为移动设备开发的一种串行接口技术，时钟频率能够达到 5.8Gbps（高 performance），每个 Upstream Lane 或者 Downstream Lane 只需要两根差分信号线（pin 脚少，方便 PCB 布线），并且具有多种省电模式。M-PHY 是全双工且不要求上行 Lane 和下行 Lane 成对出现，下图就是两个下行 Lane 配一个上行 Lane 的例子。但是注意针对目前的 UFS 上行下行 Lane 还都是成对出现的；![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_76f28ca979aa.jpg)
 
 > UniPro：也是针对 mobile 设备开发的，广泛用于移动设备 AP、协处理器和 modem 之前的通信协议，通常把这层看作是对硬件接口的抽象、管理和负责通信的的软件层来帮助理解；
@@ -69,7 +69,7 @@ L1，M-PHY：专为移动设备开发的一种串行接口技术，时钟频率�
 
 ![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_669a00eb704c.jpg)
 
-**DME（Device Management Entity）与 UniPro 的每层都留有 SAP 接口（Service Access Point），通过 SAP DME 可以访问每个 layer 的控制和状态参数，管理他们的 power 模式，并且可以访问、控制对端设备的 UniPro 模块。![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_ef67b8bdf783.jpg)
+DME（Device Management Entity）与 UniPro 的每层都留有 SAP 接口（Service Access Point），通过 SAP DME 可以访问每个 layer 的控制和状态参数，管理他们的 power 模式，并且可以访问、控制对端设备的 UniPro 模块。![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_ef67b8bdf783.jpg)
 
 > UniPro 的上面就是 UTP 和 SCSI 命令集，由于涉及的 SCSI 命令是很大一块需要单独来讲，所以这里只简单两笔。正如最开始提到的，UTP 和 SCSI 是属于 SCSI 这部分，在 JEDEC 的标准里能找到它们的具体说明。
 UTP（UFS Transport Protocol）：这层软件主要有两个目的，一是把 UniPro 的 segment 打包成 UFS 直接可以识别的命令格式；二是通过这层可以让 UFS 自己来掌握发送数据的节奏、控制自身的状态等，这样既可以免去 host 端持续的查询 UFS 的状态所带来的系统消耗，也是因为只有 UFS 本身最了解自己的内部状态，能够选择以最佳的方式在最佳时间把数据传递出去。
@@ -99,13 +99,13 @@ I_T_L_Q Nexus：唯一地定义了连接到特定 Host Initiator Port (I) 的一
 
 ![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_3e6e87059bc8.jpg)
 
-#### 2.1 UFS Application Layer**
+#### 2.1 UFS Application Layer
 
 UFS 应用层由基于 SCSI 体系结构模型 （SAM） 的 UFS SCSI 命令集组成：
 
 - 传输事务使用固定长度的CDB（command descriptor block，命令描述符块）进行；
 - 每个事务都遵循 I_T_L_Q 关系，这意味着 CDB 需要识别与目标中的特定 LUN 通信的发起方。
-**命令描述符块的长度可以是 6、10 或 16 个字节，一些重要的命令：
+命令描述符块的长度可以是 6、10 或 16 个字节，一些重要的命令：
 
 ```text
 * READ / WRITE；
@@ -116,9 +116,9 @@ UFS 应用层由基于 SCSI 体系结构模型 （SAM） 的 UFS SCSI 命令集�
 * INQUIRY：查询有关逻辑单元的更多信息；
 ```
 
-#### 2.2 Logical unit**
+#### 2.2 Logical unit
 
-UFS 设备有若干个 LU，LU 接收主机发过来的命令或请求可能来自应用层的 SCSI 模块、设备管理器或者任务管理器：**
+UFS 设备有若干个 LU，LU 接收主机发过来的命令或请求可能来自应用层的 SCSI 模块、设备管理器或者任务管理器：
 
 ![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_2de04d97bb88.jpg)
 
@@ -172,7 +172,7 @@ UFS 设备有若干个 LU，LU 接收主机发过来的命令或请求可能来�
 
 > 注意：一般 LU 的写是 cache 操作的，即主机数据到设备的内部 buffer，设备就会回命令完成状态给主机，但 Boot LU 和 RPMB LU 写操作不支持 cache，数据必须写到闪存中以后才算该命令完成。
 
-#### 2.3 UFS Transport Layer**
+#### 2.3 UFS Transport Layer
 
 UFS 传输层的事务由称为 UFS 协议信息单元 （UPIU） 的数据包组成，主机是启动器，设备是目标。有不同类型的 UPIU 用于处理 SCSI 命令、数据操作、任务管理操作、查询操作等。每笔交易包括：
 
@@ -190,7 +190,7 @@ UFS 架构以 HCI（Host Controller Interface，主机控制器接口）为界�
 
 ![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_57b52239818e.jpg)
 
-#### <strong>3</strong>.1 HCI 接口架构
+#### 3**.1 HCI 接口架构
 
 数据结构服务于软件，主机的软件通过内存中的一系列主机 register 和数据结构 Transfer Request Descriptors 来与 Host controller 硬件进行交互。UFSHCI 定义了两种接口：IO Memory/Registar Space 以及 Host Memory Space，下图展示了 UFS HCI 的框图：
 
@@ -210,7 +210,7 @@ IO Memory/Registar Space：在这个空间，主机 register 被定义为主机�
 - Vendor Specific Registers：由供应商进行定义；
 Host Memory Space：该空间中包含了能够描述将执行命令和命令中数据缓存的数据结构。简单地可以理解为——UTP Transfer Request List 负责通用的 IO 命令，UTP Task Mangement Request List 负责管理命令。
 
-***UTP Transfer Request List（传输请求列表）由一系列数据结构 UTRD (UTP Transfer Request Descriptor，传输请求描述符) 组成。UFS host controller 命令队列中的命令槽（slot）被 MMIO 到 UTRD，32 个 UTRD 对应最多 32 个 slot，UTRD 描述了要执行的命令及相关数据。*
+*UTP Transfer Request List（传输请求列表）由一系列数据结构 UTRD (UTP Transfer Request Descriptor，传输请求描述符) 组成。UFS host controller 命令队列中的命令槽（slot）被 MMIO 到 UTRD，32 个 UTRD 对应最多 32 个 slot，UTRD 描述了要执行的命令及相关数据。*
 *UFS 主机软件通过将要执行的命令及相关数据放置在 UTRD，再敲响主机控制器门铃（Offset 58h: UTRLDBR – UTP Transfer Request List Door Bell<strong>Register ）向主机控制器发出命令。传输请求列表中的命令被 UFSHCI 顺序执行，但可能会按照不同的顺序完成。所有命令都可以产生命令完成中断或者更新在列表中的 UTRD 命令状态字段。UFS 主机软件可以在运行时向列表中添加命令。主机控制器支持中断聚合，即在预定义的命令完成设定的数量后生成单个命令完成中断。</strong>当传输请求完成（成功或出错）时，主机控制器将相应的位清*除为“0”。
 
 主机控制器始终按照提交到列表中的顺序有序处理传输请求。在批处理模式下，如果多个命令使用单个门铃寄存器进行触发，主机控制器对这些传输请求的调度顺序将基于它们在列表中的索引。具有较低索引值的传输请求将在具有较高索引值的传输请求之前执行。
@@ -259,7 +259,7 @@ host software 对于 UFS HCI 的操作又分为三部分：Host controller配置
 
 #### 4.1 UPIU 数据包头
 
-UPIU 是命令、数据和状态信息传输的载体，是 UFS 协议栈的灵魂。UPIU 是有固定格式的数据包，我们分析数据包格式，有助于我们更深的理解 UPIU 以及整个 UFS 协议。在学习 UPIU 数据包之前我们先回顾下数据在 UniPro 各个层级之间是如何层层封装和解包的，意义并不是说 UniPro 中的数据包与 UPIU 数据包有什么对应关系，因为事实恰恰相反，回顾的意义是将我们之前学习的这些概念放在一边，以避免与我们将要学习的概念搞混：**
+UPIU 是命令、数据和状态信息传输的载体，是 UFS 协议栈的灵魂。UPIU 是有固定格式的数据包，我们分析数据包格式，有助于我们更深的理解 UPIU 以及整个 UFS 协议。在学习 UPIU 数据包之前我们先回顾下数据在 UniPro 各个层级之间是如何层层封装和解包的，意义并不是说 UniPro 中的数据包与 UPIU 数据包有什么对应关系，因为事实恰恰相反，回顾的意义是将我们之前学习的这些概念放在一边，以避免与我们将要学习的概念搞混：
 
 ![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_bdde37bbab7d.jpg)
 
@@ -351,7 +351,7 @@ CP：表示命令的优先级。1 为高优先级，0 为低优先级，注意�
 - <strong>NOP OUT UPIU</strong>：设备上电后，主机检测是否与之连接，会发 <strong>NOP OUT UPIU</strong>给设备。我们平时想看看跟某个电脑或者网站能否连接上，会发一个 ping 命令。<strong>NOP OUT UPIU</strong>跟 ping 命令作用类似。当设备收到 <strong>NOP OUT UPIU</strong>后，会返回 <strong>NOP IN UPIU</strong>。主机收到该 UPIU 后，确认与设备连接，然后可以进行后续操作；
 - <strong>REJECT UPIU</strong>，当设备收到一个无效的UPIU时，它会发REJECT UPIU拒绝无效的UPIU；
 
-#### <strong>4.3 UPIU 交互例子（以读写命令为例）</strong>
+#### 4.3 UPIU 交互例子（以读写命令为例）
 
 <strong>4.3.1 例子一：主机往设备读取96KB数据</strong>
 
@@ -369,7 +369,7 @@ CP：表示命令的优先级。1 为高优先级，0 为低优先级，注意�
 
 UFS 目前没有定义自己的命令，使用简化的SCSI命令。本节将介绍常用的 scsi 协议命令，如您遇到相关问题需要深入查询域名时建议再阅读《JESD220E》详细了解。
 
-#### 5<strong>.1 查询类</strong>
+#### 5**.1 查询类
 
 <strong>INQUIRY</strong>
 

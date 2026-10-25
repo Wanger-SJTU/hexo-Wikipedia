@@ -21,7 +21,6 @@ memory barrier对于程序员来讲应该都比较熟悉，具体是什么不再
 
 现代cpu的速度远超内存的速度。为了应对这种超过两个数量级的速度悬殊，引入了多级cache。如图1所示，数据以"cache lines"的形式在cpus的cache和内存之间传输，cache line是定长的block，大小通常在16～256bytes。
 
-**
 
 ![](/images/collections/0.raw/zhihu/%E7%AC%94%E8%AF%95%E9%9D%A2%E8%AF%95/asset/img_9320eaf36b87.jpg)
 

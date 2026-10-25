@@ -19,13 +19,12 @@ source_url: https://www.zhihu.com/question/58121772/answer/1914708043062556662
 
 知乎专栏和回答似乎是不能同步更新的，后面的翻译我会逐步补上（<strong>目前更新至第26篇</strong>）。
 
-**
 
 Linkedin上推送了Linux内核开发人员[Moon Hee Lee](https://link.zhihu.com/?target=https%3A//www.linkedin.com/in/moon-hee-lee/)的内核思考系列文章《The Kernel in the Mind》,副标题为“Understanding Linux Kernel Before Code”，大意是在了解代码之前去理解Linux内核。简单浏览目录和标题后，发现对其中的话题和讲解的方式颇为感兴趣，随产生了边学习边翻译的想法。在与作者取得联系并表达意图后，对方告知文章是基于[CC BY](https://link.zhihu.com/?target=https%3A//creativecommons.org/licenses/by/4.0/)协议发布的，对于有人愿意翻译他表示欢迎，这个系列翻译也终于可以成行。
 
 [Moon Hee Lee](https://link.zhihu.com/?target=https%3A//www.linkedin.com/in/moon-hee-lee/)当前受雇于Linux基金会，关注的领域是包括Kernel, KVM, microVMs以及Rust，有兴趣的可以在Linkedin上关注他。
 
-有一定内核基础的，建议直接阅读原文，非常易懂，位置在这里：[The Kernel in the Mind](https://link.zhihu.com/?target=https%3A//www.linkedin.com/pulse/kernel-mind-moon-hee-lee-miwze/)。此系列翻译对应原文版本为V1.1.2025**
+有一定内核基础的，建议直接阅读原文，非常易懂，位置在这里：[The Kernel in the Mind](https://link.zhihu.com/?target=https%3A//www.linkedin.com/pulse/kernel-mind-moon-hee-lee-miwze/)。此系列翻译对应原文版本为V1.1.2025
 
 <strong>不方便访问原链接的，我上传到了国内网盘：</strong>[https://www.123912.com/s/qJF4vd-q746H](https://link.zhihu.com/?target=https%3A//www.123912.com/s/qJF4vd-q746H)
 

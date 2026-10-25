@@ -25,13 +25,11 @@ source_url: https://zhuanlan.zhihu.com/p/607522540
 
 与 剑桥大学<strong>郭志江</strong> 共同翻译为中文
 
-**
 
 感谢 上海交通大学何俊贤<strong>，加州大学洛杉矶分校</strong>鲁盼<strong>，达特茅斯学院</strong>刘睿博** 对初稿的讨论与建议。
 
 感谢 <strong>Raj Ammanabrolu</strong> (Allen Institute for AI), <strong>Peter Liu</strong> (Google Brain), <strong>Brendan Dolan-Gavitt</strong> (New York University), <strong>Denny Zhou</strong> (Google Brain) 对终稿的讨论和建议，他们的建议极大程度上增加了本文的完整度。
 
-**
 
 英文版完稿于 2022 年 12 月 11 日，中文版完稿于 2022 年 12 月 18 日。
 
@@ -43,7 +41,6 @@ source_url: https://zhuanlan.zhihu.com/p/607522540
 
 <strong>转发请在文章的开头标明出处，而不是在结尾列一行小字</strong>
 
-**
 
 最近，OpenAI的预训练模型ChatGPT给人工智能领域的研究人员留下了深刻的印象和启发。毫无疑问，它又强又聪明，且跟它说话很好玩，还会写代码。它在多个方面的能力远远超过了自然语言处理研究者们的预期。于是我们自然就有一个问题：ChatGPT 是怎么变得这么强的？它的各种强大的能力到底从何而来？在这篇文章中，我们试图剖析 ChatGPT 的突现能力（Emergent Ability），追溯这些能力的来源，希望能够给出一个全面的技术路线图，来说明 GPT-3.5 模型系列以及相关的大型语言模型是如何一步步进化成目前的强大形态。
 
@@ -70,7 +67,6 @@ source_url: https://zhuanlan.zhihu.com/p/607522540
 
 虽然初代的 GPT-3 可能表面上看起来很弱，但后来的实验证明，初代 GPT-3 有着非常强的潜力。这些潜力后来被代码训练、指令微调 (instruction tuning) 和基于人类反馈的强化学习 (reinforcement learning with human feedback, RLHF) 解锁，最终体展示出极为强大的突现能力。
 
-**
 
 ### 二、从 2020 版 GPT-3 到 2022 版 ChatGPT
 
@@ -92,7 +88,7 @@ source_url: https://zhuanlan.zhihu.com/p/607522540
 
 在`code-davinci-002`和`text-davinci-002`之前，有两个中间模型，分别是 davinci-instruct-beta 和 text-davinci-001。两者在很多方面都比上述的两个-002模型差（例如，text-davinci-001 链式思维推理能力不强）。所以我们在本节中重点介绍 -002 型号。
 
-#### <strong>3.1 复杂推理能力的来源和泛化到新任务的能力</strong>
+#### 3.1 复杂推理能力的来源和泛化到新任务的能力
 
 我们关注`code-davinci-002`和`text-davinci-002`，这两兄弟是第一版的 GPT3.5 模型，一个用于代码，另一个用于文本。它们表现出了四种与初代 GPT-3 不同的重要能力：
 
@@ -190,7 +186,7 @@ source_url: https://zhuanlan.zhihu.com/p/607522540
 - ChatGPT: 通过<strong>牺牲上下文学习</strong>的能力<strong>换取建模对话历史</strong>的能力。这是一个基于经验的观测结果，因为 ChatGPT 似乎不像 text-davinci-003 那样受到上下文演示的强烈影响。
 - text-davinci-003：<strong>恢复了</strong> text-davinci-002 所牺牲的<strong>上下文学习能力</strong>， <strong>提高零样本的能力</strong>。 我们不确定这是否也是 RLHF 或其他东西的副产品。 根据instructGPT的论文，这是来自于强化学习调整阶段混入了语言建模的目标（而不是 RLHF 本身）。
 
-### 五、总结<strong>当前阶段 GPT-3.5 的进化历程</strong>
+### 五、总结**当前阶段 GPT-3.5 的进化历程
 
 到目前为止，我们已经仔细检查了沿着进化树出现的所有能力，下表总结了演化路径：
 
@@ -214,7 +210,7 @@ source_url: https://zhuanlan.zhihu.com/p/607522540
 - 增加对话信息量
 - 拒绝模型知识范围之外的问题
 
-### 六、<strong>GPT-3.5 目前不能做什么</strong>
+### 六、**GPT-3.5 目前不能做什么
 
 虽然GPT-3.5是自然语言处理研究中的重要一步，但它并没有完全包含许多研究人员（包括 AI2）设想的所有理想属性。以下是GPT-3.5不具备的某些重要属性：
 

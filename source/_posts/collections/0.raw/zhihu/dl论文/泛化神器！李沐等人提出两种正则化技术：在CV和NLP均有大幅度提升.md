@@ -21,7 +21,7 @@ source_url: https://zhuanlan.zhihu.com/p/350067666
 
 <strong>注2：整理不易，欢迎点赞，支持分享！</strong>
 
-**作者：ChaucerG
+作者：ChaucerG
 原出处：AI人工智能初学者
 原文链接：[泛化神器 | 李沐老师新作进一步提升模型在多域多的泛化性，CV和NLP均有大幅度提升(文末获取论文)](https://link.zhihu.com/?target=https%3A//mp.weixin.qq.com/s/LpoUzRXVSnsIDuuYyMZcmA)![](/images/collections/0.raw/zhihu/dl%E8%AE%BA%E6%96%87/asset/img_91c4aeccd978.jpg)
 
@@ -148,7 +148,7 @@ CN可视化在头部(左)，尾部(中)2块和开始3块(右)在一个WideResNet
 
 [1].SelfNorm and CrossNorm for Out-of-Distribution Robustness
 
-### <strong>CVer-细分垂直交流群成立</strong>
+### CVer-细分垂直交流群成立
 
 扫码添加CVer助手微信，<strong>可申请加入CVer-细分垂直方向 微信交流群，也可申请加入CVer大群，细分方向已涵盖：目标检测、图像分割、目标跟踪、人脸检测&识别、OCR、姿态估计、超分辨率、SLAM、医疗影像、Re-ID、GAN、NAS、深度估计、自动驾驶、强化学习、车道线检测、模型剪枝&压缩、去噪、去雾、去雨、风格迁移、遥感图像、行为识别、视频理解、图像融合、图像检索、论文投稿&交流、Transformer、PyTorch和TensorFlow等群。</strong>
 

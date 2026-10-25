@@ -35,7 +35,6 @@ SGD完全依赖于当前batch的梯度，所以&#x03B7;" role="presentation">η\
 
 -  选择合适的learning rate比较困难
 - 对所有的参数更新使用同样的learning rate。对于稀疏数据或者特征，有时我们可能想更新快一些对于不经常出现的特征，对于常出现的特征更新慢一些，这时候SGD就不太能满足要求了
-**
 
 - SGD容易收敛到局部最优，并且在某些情况下可能被困在鞍点【原来写的是“容易困于鞍点”，经查阅论文发现，其实在合适的初始化和step size的情况下，鞍点的影响并没这么大。感谢@冰橙的指正】
 
@@ -47,14 +46,13 @@ $m_t=\mu*m_{t-1}+g_t$
 
 \Delta{\theta_t}=-\eta*m_t其中，\mu是动量因子
 
-特点：**
+特点：
 
 - 下降初期时，使用上一次参数更新，下降方向一致，乘上较大的\mu能够进行很好的加速 
 - 下降中后期时，在局部最小值来回震荡的时候，gradient\to0，\mu使得更新幅度增大，跳出陷阱 
 - 在梯度改变方向的时候，\mu能够减少更新
 
 总而言之，momentum项能够在相关方向加速SGD，抑制振荡，从而加快收敛
-**
 ### Nesterov
 
 nesterov项在梯度更新时做一个校正，避免前进太快，同时提高灵敏度。
@@ -83,7 +81,7 @@ n_t=n_{t-1}+g_t^2
 
 $$\Delta{\theta_t}=-\frac{\eta}{\sqrt{n_t+\epsilon}}*g_t此处，对g_t从1到t进行一个递推形成一个约束项regularizer，-\frac{1}{\sqrt{\sum_{r=1}^t(g_r)^2+\epsilon}}，\epsilon用来保证分母非0 $$
 
-特点：**
+特点：
 
 - 前期g_t较小的时候， regularizer较大，能够放大梯度 
 - 后期g_t较大的时候，regularizer较小，能够约束梯度 
@@ -93,7 +91,6 @@ $$\Delta{\theta_t}=-\frac{\eta}{\sqrt{n_t+\epsilon}}*g_t此处，对g_t从1到t�
 - 由公式可以看出，仍依赖于人工设置一个全局学习率 
 - \eta设置过大的话，会使regularizer过于敏感，对梯度的调节太大 
 - 中后期，分母上梯度平方的累加将会越来越大，使gradient\to0，使得训练提前结束 
-**
 ### Adadelta 
 
 Adadelta是对Adagrad的扩展，最初方案依然是对学习率进行自适应约束，但是进行了计算上的简化。
@@ -109,12 +106,11 @@ $$\Delta{x_t}=-\frac{\sqrt{\sum_{r=1}^{t-1}\Delta{x_r}}}{\sqrt{E|g^2|_t+\epsilon
 
 此时，可以看出Adadelta已经不用依赖于全局学习率了。 
 
-特点：**
+特点：
 
 - 训练初中期，加速效果不错，很快 
 - 训练后期，反复在局部最小值附近抖动 
 
-**
 ### RMSprop 
 
 RMSprop可以算作Adadelta的一个特例： 
@@ -132,7 +128,6 @@ $$\Delta{x_t}=-\frac{\eta}{RMS|g|_t}*g_t特点：**$$
 - 适合处理非平稳目标
 - 对于RNN效果很好 
 
-**
 ### Adam 
 
 Adam(Adaptive Moment Estimation)本质上是带有动量项的RMSprop，它利用梯度的一阶矩估计和二阶矩估计动态调整每个参数的学习率。Adam的优点主要在于经过偏置校正后，每一次迭代学习率都有个确定范围，使得参数比较平稳。公式如下： 
@@ -148,7 +143,7 @@ $$\hat{n_t}=\frac{n_t}{1-\nu^t}$$
 $$\Delta{\theta_t}=-\frac{\hat{m_t}}{\sqrt{\hat{n_t}}+\epsilon}*\eta其中，m_t，n_t分别是对梯度的一阶矩估计和二阶矩估计，可以看作对期望E|g_t|，E|g_t^2|的估计；\hat{m_t}，\hat{n_t}是对m_t，n_t的校正，这样可以近似为对期望的无偏估计。$$
 可以看出，直接对梯度的矩估计对内存没有额外的要求，而且可以根据梯度进行动态调整，而-\frac{\hat{m_t}}{\sqrt{\hat{n_t}}+\epsilon}对学习率形成一个动态约束，而且有明确的范围。
 
-特点：**
+特点：
 
 - 结合了Adagrad善于处理稀疏梯度和RMSprop善于处理非平稳目标的优点 
 - 对内存需求较小 
@@ -156,7 +151,6 @@ $$\Delta{\theta_t}=-\frac{\hat{m_t}}{\sqrt{\hat{n_t}}+\epsilon}*\eta其中，m_t
 - 也适用于大多非凸优化
 - 适用于大数据集和高维空间
  
-**
 ### Adamax 
 
 Adamax是Adam的一种变体，此方法对学习率的上限提供了一个更简单的范围。公式上的变化如下： 
@@ -200,7 +194,7 @@ $$\hat{n_t}=\frac{n_t}{1-\nu^t}\bar{m_t}=(1-\mu_t)*\hat{g_t}+\mu_{t+1}*\hat{m_t}
 
 在鞍点处的比较
 
-转载须全文转载且注明作者和原文链接，否则保留维权权利**
+转载须全文转载且注明作者和原文链接，否则保留维权权利
 
 ### 引用
 

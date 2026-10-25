@@ -17,7 +17,6 @@ source_url: https://zhuanlan.zhihu.com/p/64529137
 
 上篇文章简要地介绍完TMAM的Frontend Bound分支后，这篇文章将简要地对Bad Speculation分支做一个简要的讲解和说明。该大类表示的是错误的分支预测和CPU中的Machine Clears机制对CPU性能影响情况，将Bad Speculation做为一个大的分类是TMAM的一个特点。若该分类的值大于一定程度时，需先调查解决该分类。因为哪怕此时其他分支也占据很大的比重，但可能暴露出这些问题的都是那些处于错误分支上的指令，并不能真实地反映出CPU运行该程序正确指令流的特性，所以需要先解决该分类的问题，再去调查研究其他的分支。
 
-**
 
 [](https://zhuanlan.zhihu.com/p/61015720)
 
@@ -37,7 +36,6 @@ Bad Speculation展开Bad Speculation分类代表的是由于错误的Speculation
 
 <strong>def Recovery_Cycles</strong>(self, EV, level):<strong>return (EV("INT_MISC.RECOVERY_CYCLES_ANY</strong>", level) / 2) if <strong>smt_enabled</strong> else EV("<strong>INT_MISC.RECOVERY_CYCLES</strong>", level)Recovery Cycle需要考虑SMT（Simultaneous Multi-Threading）是否enable，<strong>INT_MISC.RECOVERY_CYCLES_ANY</strong>事件统计的是从分支预测错误或者Machine Clear事件中恢复导致Resource allocator Stall的周期数。若开启了HT，由于同一个Core中运行着两个Threads，所以需要将值均分到两个线程中。若能单独地统计每个线程的RECOVERY_CYCLES数量，必然会更精确，但是那样的实现难度和资源消耗的代价将会增大很多，所以这里使用了一种投机的方法，直接除以2。
 
-**
 
 Bad Speculation的子分类为Branch Mispredicts和Machine Clears两部分，一个代表的是分支错误预测导致所浪费的slots数目比重；另一个代表的是由于触发某些条件，导致Machine Clear发生所浪费的Slots数量比重，下面将分别对这两个分类进行讲解。
 
@@ -53,7 +51,6 @@ Mispred_Clears_Fraction**(self, EV, 2)* <strong>Bad_Speculation</strong>
 
 可以看出，用该系数乘以其父节点，得到的值并不十分准确，因为每一次的Mispredicts和Machine Clears对Slots的浪费情况均有所不同，只考虑发生的次数而不考虑具体的影响情况，必然会导致在某些极端的情况下出现较大的偏差。不过这也可能是受Counter所限，在没有更好、更贴切的Counters情况下，这也不失是一种折衷的方法。
 
-**
 
 #### Machine Clears：
 

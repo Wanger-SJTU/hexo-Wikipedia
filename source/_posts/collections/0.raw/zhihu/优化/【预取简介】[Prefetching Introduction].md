@@ -21,7 +21,6 @@ source_url: https://zhuanlan.zhihu.com/p/491673969
 
 *<strong>Prefetching</strong>* is a technique used by the CPU to boost execution performance by fetching <strong>instructions</strong> or <strong>data</strong> from their original storage in slower memory to a faster local memory before it is actually needed (hence the term 'pre-fetch').
 
-**
 
 #### Why need prefetch?
 
@@ -57,7 +56,7 @@ The growing disparity between processor and memory performance
 
 在没有预取的情况下执行矩阵运算![](/images/collections/0.raw/zhihu/%E4%BC%98%E5%8C%96/asset/img_d1d6ee8ca5ce.jpg)
 
-在有预取的情况下执行矩阵运算**
+在有预取的情况下执行矩阵运算
 
 对于x86处理器，具体执行预取操作的有如下指令，他们之间的区别可以参考下图Intel手册中给出的Fill Cache Detail，由于我不是软件相关的专家，这块就不展开细说了，善用Google的话还是可以找到很多相关内容的。这块应该还有个编译器优化的深坑，往下深究还可以顺便研究下编译器原理，汇编级别的代码优化等。
 
@@ -84,7 +83,6 @@ The growing disparity between processor and memory performance
 
 *Prefetching***—predicting future memory accesses and issuing requests for the corresponding memory blocks in advance of explicit accesses by a processor—is quite promising as an approach to hide memory access latency.
 
-**
 
 §To hide latency effectively, a prefetching mechanism must: 
 
@@ -114,7 +112,6 @@ Coverage** measures the fraction of explicit processor requests for which a pref
 
 <strong>Accuracy</strong> measures the fraction of accesses issued by the prefetcher that turn out to be useful (i.e., the fraction of correct prefetches over all prefetches). 
 
-**
 
 Many simple prefetchers can improve coverage at the expense of accuracy, whereas an ideal prefetcher provides both high accuracy and coverage.
 
@@ -126,21 +123,19 @@ Many simple prefetchers can improve coverage at the expense of accuracy, whereas
 
 Even if addresses are predicted correctly, a prefetcher that issues prefetches too early may not be able to hold all prefetched memory close to the processor long enough prior to access.
 
-Prefetching too early**
+Prefetching too early
 
 •Prefetched data might not be used before it is evicted from the processor.
 
 •In the worst case, it may evict other useful information.
 
-**
 
-Prefetching too late**
+Prefetching too late
 
 •Might not hide the whole memory latency.
 
 •In the limit, late prefetches may lead to performance degradation due to additional memory system traffic.
 
-**
 
 #### Instruction & Data prefetching
 
@@ -150,13 +145,11 @@ Instruction prefetching <strong>fetches instructions before they need to be exec
 
 <strong>Data prefetching</strong>fetches data before it is needed. Because data access patterns show less regularity than instruction patterns, accurate data prefetching is generally more challenging than instruction prefetching.
 
-**
 
 The instruction prefetching techniques** include next-line prefetchers, branch-directed prefetching, discontinuity prefetchers, and temporal instruction streaming…
 
 The <strong>data prefetchers</strong>include stride and stream-based data prefetchers, address-correlated prefetching, spatially correlated prefetching, and execution-based prefetching….
 
-**
 
 下面将简单分别介绍指令预取和数据预取几种简单的策略，抛砖引玉，希望可以激发大家对预取策略的兴趣，也去发几篇相关的Paper，提升目前CPU架构的性能，造福人类。
 
@@ -168,7 +161,7 @@ The <strong>data prefetchers</strong>include stride and stream-based data prefet
 
  (a) sequential fetch   (b) discontinuity due to an if-statement and a loop   (c) discontinuities due to function calls.  (a) sequential fetch (b) discontinuity due to an if-statement and a loop (c) discontinuities due to function calls. 
 
-Next-line prefetching**
+Next-line prefetching
 
 开胃菜我们先来看下最简单的指令预取机制，这里使用了一个叫做Stream Buffer的预取Buffet，可以理解成是一个全关联Cache，每次CPU请求一个Cache Line的时候，该模块就会把下个Cache Line的内容的读取请求发往下级Cache Level，以提前Ready。当然这种简单的机制只能应付最简单的a情形，一旦出现了分支/跳转之类的指令，这种就有点无能为力了。
 
@@ -176,15 +169,13 @@ This picture depicts the anatomy of the next-line prefetcher in a modern process
 
 An instruction prefetch buffer or stream buffer, a small associative buffer, stores prefetched instruction cache blocks retrieved from lower cache hierarchy levels. Each time a block from the prefetch buffer is explicitly requested by the processor, it is transferred to the cache and the next consecutive block is prefetched from the memory.
 
-**
 
 ![](/images/collections/0.raw/zhihu/%E4%BC%98%E5%8C%96/asset/img_3a8ffc2eef5a.jpg)
 
-Branch-predictor-directed prefetchers**
+Branch-predictor-directed prefetchers
 
 那么遇到分支指令我们有什么相关的机制可以解决呢？首先简单介绍一下FDIP这种预取机制，该机制在Branch Predictor模块和Instruction Fetch模块之间插入了一个FTQ的模块，然后会经过一个filter把一部分地址过滤掉（比如已经存在ICache中的？），然后进入到PIQ中，这时就会将PIQ中的地址发往L2 Cache，然后将取回的Cache Line放入一个全相联的Cache中。
 
-**
 
 Fetch-directed instruction prefetching (FDIP) **is one of the best branch-predictor-directed techniques. 
 
@@ -192,13 +183,11 @@ FDIP decouples the branch predictor from stalls in the L1 instruction fetch unit
 
 ![](/images/collections/0.raw/zhihu/%E4%BC%98%E5%8C%96/asset/img_4661a4620c2e.jpg)
 
-**
 
-DISCONTINUITY PREFETCHING**
+DISCONTINUITY PREFETCHING
 
 前一种预取发生在Branch Predicate之后，可能有点滞后。然后我们再来看一种不连续预取机制，该机制维护一张不连续表，该表格会记录每次分支最终跳转的位置，并且记录这个位置的Cache Line地址。要注意的是这里的tag保存的是PC的值，而不是译码之后的指令值，所以在取指阶段拿到PC值的时候便可以执行预取操作，整个流程提前了很多。
 
-**
 
 Discontinuity predictor maintains a table of fetch discontinuities mapping the PC of the block containing the taken branch to the branch target. 
 
@@ -206,11 +195,10 @@ As a next-line instruction prefetcher explores ahead of the fetch unit, it consu
 
 ![](/images/collections/0.raw/zhihu/%E4%BC%98%E5%8C%96/asset/img_37430e7a8638.jpg)
 
-Temporal instruction fetch streaming (TIFS)**
+Temporal instruction fetch streaming (TIFS)
 
 我们再看看指令预取的另一种思路，从L1I Cache这个模块入手。TIFS机制会维护一个L1I Cache Miss Log，可以简单理解为把L1I犯错没有做好一系列错误记录都归档，然后当L1I再次犯错了，会通过一个Index Table去索引，看下能不能在Log中发现这个没有找到的Cache Line的身影，如果找到了，就会把在记录中这个Cache Line后续要读取的地址发往L2，提前拿到Buffer中去。那么下次L1I就很有可能还是需要同样地址的内容，这时就可以直接从Buffer中获取而不用劳烦L2大哥了。这种机制尤其对那种复杂刁钻的指令序列流有效，哪怕你再不连续，只要你敢来第二次，我们这边会有案底记录，下次我就按照你之前的作案手法守株待兔便可。
 
-**
 
 TIFS is designed to address the lookahead limitations of helper-thread and fetch/discontinuity-based mechanisms. Rather than explore a program's control flow graph, TIFS predicts future instruction-cache misses directly, through recording and replaying recurring L1 instruction miss sequences. 
 
@@ -239,7 +227,6 @@ Whereas code tends to be static and hence easy to prefetch (with the exception o
 
 This greater complexity in access patterns has led to a rich and diverse design space for data prefetching schemes that is much broader than instruction prefetchers.
 
-**
 
 We divide the design space of data prefetchers into four broad categories. 
 
@@ -251,23 +238,21 @@ Third are those that rely on regular (yet potentially non-strided) data structur
 
 Finally, are mechanisms that explore ahead of the conventional out-of-order instruction window, and hence do not rely on regularity or repetition in the memory access address stream.
 
-Stride and stream prefetchers**
+Stride and stream prefetchers
 
 先来看一个在PC阶段就进行预取操作的数据预取机制，该机制每次会记录最后一次访问的地址，并且还会记录最后两次访问地址直接的间距。只要该模块连续两次观察到相同的间距时，便会用最后一次访问的地址加上相应的部分作为要预取的地址进行提前的预取。
 
-**
 
 This reference prediction table is a tagged, set-associative structure that uses the load instruction PC as the lookup key. Each entry holds the last address referenced <strong>by that load and the difference in address between the</strong>last two preceding references<strong>. Whenever the same stride is observed</strong>twice** **consecutively**, the last reference address and stride are used to compute one or more additional addresses for prefetch. Subsequent accesses that continue to match the recorded stride will trigger additional prefetches. 
 
 ![](/images/collections/0.raw/zhihu/%E4%BC%98%E5%8C%96/asset/img_10121c41b007.jpg)
 
-Baer and Chen&amp;amp;#39;s reference prediction table**
+Baer and Chen&amp;amp;#39;s reference prediction table
 
-Address-correlated prefetching**
+Address-correlated prefetching
 
 由于前一种机制通常对基于指针的数据结构效果不大，我们再来看一种在数据读取阶段触发的预取机制，该触发机制会记录读取的数据地址后续会访问的地址，一般会保存四个候选地址。在访问某个地址时，在相应的表格中查找，如果命中，可以将候选地址中的全部取出，当然也有做出调整，只取出访问频率最高的那一个。该策略等于维护了一个地址访问记录日志，把某个地址后续可能会访问的地址记录下来，当然出于资源的限制，只能记录少数的地址和少数的候选人。
 
-**
 
 Whereas stride prefetchers are typically ineffective for pointer-based data structures**, such as linked lists, the second class of prefetcher we consider is specifically designed to target the pointer-chasing access patterns of such data structures.
 
@@ -275,37 +260,32 @@ The Markov prefetcher is organized as an on-chip set-associative table indexed b
 
 ![](/images/collections/0.raw/zhihu/%E4%BC%98%E5%8C%96/asset/img_432cd72d1992.jpg)
 
-Markov prefetcher**
+Markov prefetcher
 
-Spatially correlated prefetching **
+Spatially correlated prefetching
 
 关于空间相关性预取机制利用数据访问的规律性和重复性，这种机制对面向对象编程中的对象，固定大小字段的数据库数据等有规律的数据块进行访问时比较有效。而且目前许多高级编程语言会将数据结构与Cache Line和页边界进行对齐，以提升其数据访问的规律性，更容易发挥这种预取机制的，有其用武之地。具体的实现可以直接找到很多相关的论文，这里就不展开细说了。
 
-**
 
 Spatially correlated prefetching mechanisms exploit regularity<strong>and</strong>repetition** in data layout. 
 
 Spatial correlation arises due to <strong>regularity</strong> in <strong>data structure layouts</strong>, as programs frequently use data structures with fixed layouts in memory (e.g., objects in object-oriented programming language, database records with fixed-size fields, stack frames). Many high-level programming languages align data structures to cache-line and page boundaries, further increasing layout regularity. Strided access patterns are a special case of spatial correlation.
 
-**
 
-DELTA-CORRELATED LOOKUP**
+DELTA-CORRELATED LOOKUP
 
 与Delta相关的查找预取机制，这里简要介绍使用GHB这种数据预取机制，更详细关于这种机制的介绍可以直接参考相关的论文。可以简单理解为这种机制会维护一个全局历史信息的Buffer，然后设计者可以根据自己的喜好，比如选择用Delta值进行索引，再结合Miss的数据地址，得到要进行预取的地址进行预取。
 
-**
 
 One of the most effective known prefetchers from both a storage efficiency and coverage perspective is the program counter-localized delta-correlating variant of the global history buffer **(GHB PC/DC).
 
 ![](/images/collections/0.raw/zhihu/%E4%BC%98%E5%8C%96/asset/img_33429ee50a80.jpg)
 
-**
 
-Execution-based prefetching**
+Execution-based prefetching
 
 最后再简要介绍还有一种不依赖于数据规律性/重复性，也不依赖于数据结构布局的基于执行的预取策略。这种策略会尝试在执行数据存取操作之前进行预取操作，利用CPU中的Stall周期和空闲的硬件资源，提前在执行之前把将要之前存取的指令地址提前在Cache中准备好，有点提前找打考试内容并打小抄的感觉。
 
-**
 
 The final category of data prefetcher we briefly address relies neither on repetition in miss sequences nor in data layouts; rather execution-based prefetchers seek to explore the program’s instruction sequence ahead of instruction execution and retirement to discover address calculations and dereference pointers. 
 

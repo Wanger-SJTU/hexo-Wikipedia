@@ -15,9 +15,8 @@ source_url: https://zhuanlan.zhihu.com/p/525373501
 ---
 
 
-### <strong>一、走进 linux 内存</strong>
+### 一、走进 linux 内存
 
-**
 
 1、内存是什么？
 
@@ -25,7 +24,7 @@ source_url: https://zhuanlan.zhihu.com/p/525373501
 
 1)内存又称主存，是 CPU 能直接寻址的存储空间，由半导体器件制成；2)内存的特点是存取速率快，断电一般不保存数据，非持久化设备；
 
-好文推荐：**
+好文推荐：
 
 [全网最牛Linux内核分析--Intel CPU体系结构](https://zhuanlan.zhihu.com/p/472840233)
 
@@ -53,9 +52,8 @@ source_url: https://zhuanlan.zhihu.com/p/525373501
 
 ![](/images/collections/0.raw/zhihu/%E8%B5%B0%E5%90%91cs/asset/img_688349c6f980.jpg)
 
-### <strong>二、 linux 内存地址空间</strong>
+### 二、 linux 内存地址空间
 
-**
 
 1、linux 内存地址空间 Linux 内存管理全貌
 
@@ -118,7 +116,7 @@ source_url: https://zhuanlan.zhihu.com/p/525373501
 - bss：存放程序中未初始化的全局变量
 - heap：运行时的堆，在程序运行中使用 malloc 申请的内存区域
 - mmap：共享库及匿名文件的映射区域
-- stack：用户进程栈**
+- stack：用户进程栈
 7、内核态地址空间
 
 ![](/images/collections/0.raw/zhihu/%E8%B5%B0%E5%90%91cs/asset/img_e6fefb5ee31f.jpg)
@@ -134,9 +132,8 @@ source_url: https://zhuanlan.zhihu.com/p/525373501
 - 内核空间是由内核负责映射，不会跟着进程变化；内核空间地址有自己对应的页表，用户进程各自有不同额页表
 ![](/images/collections/0.raw/zhihu/%E8%B5%B0%E5%90%91cs/asset/img_f320e660a61b.jpg)
 
-### 三、 Linux 内存分配算法**
+### 三、 Linux 内存分配算法
 
-**
 
 内存管理算法——对讨厌自己管理内存的人来说是天赐的礼物
 
@@ -301,9 +298,8 @@ source_url: https://zhuanlan.zhihu.com/p/525373501
 - HLDA：CPU 向 DMA 控制器发出的信号，允许接管总线的应答信号：
 ![](/images/collections/0.raw/zhihu/%E8%B5%B0%E5%90%91cs/asset/img_55f084d026f3.jpg)
 
-### 四、 内存使用场景**
+### 四、 内存使用场景
 
-**
 
  out of memory 的时代过去了吗？no，内存再充足也不可任性使用。
 
@@ -372,9 +368,8 @@ a)     如果当前连续内存块足够 realloc 的话，只是将 p 所指向�
 - shmat 启动对该共享内存的访问，并把共享内存连接到当前进程的地址空间
 - shmdt 将共享内存从当前进程中分离
 
-### 五、 内存使用那些坑**
+### 五、 内存使用那些坑
 
-**
 
 1、C 内存泄露
 
@@ -541,7 +536,7 @@ ip6_dst_cache         13     24    320   12    1 : tunables   54   27    0 : sla
 ndisc_cache            1     10    384   10    1 : tunables   54   27    0 : slabdata      1      1      0
 ip6_mrt_cache          0      0    128   30    1 : tunables  120   60    0 : slabdata      0      0      0`
 
-释放系统内存缓存**
+释放系统内存缓存
 
         可以通过 /proc/sys/vm/drop_caches来释放
 

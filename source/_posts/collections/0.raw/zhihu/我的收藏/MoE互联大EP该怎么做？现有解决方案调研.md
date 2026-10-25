@@ -31,7 +31,7 @@ MoE，就是在层中加入动态路由
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_b975eefc85fb.jpg)
 
-[1]**
+[1]
 
 ### All to All 挑战
 
@@ -155,7 +155,7 @@ IPDPS 2024首先，通过<strong>All-Gather</strong>在所有GPU间共享所有�
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_ad4f74549bb2.jpg)
 
-INFOCOM 2024**
+INFOCOM 2024
 
 ### 硬件层次的互联方案
 
@@ -217,4 +217,4 @@ Intra-Rack Connection.机架间相互互联，通过互联通信。
 
 #### Google TPU
 
-*如有帮助，点点赞同！***
+*如有帮助，点点赞同！*

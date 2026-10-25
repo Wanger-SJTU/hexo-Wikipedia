@@ -23,7 +23,7 @@ source_url: https://zhuanlan.zhihu.com/p/628675070
 
 我们从一些背景知识讲起。
 
-### <strong>CG中的相机模型</strong>
+### CG中的相机模型
 
 NDC 坐标系统跟三维物体投影到相机屏幕的过程高度相关，因此，需要先了解一下图形学中的相机模型。
 
@@ -50,7 +50,7 @@ Near clipping plane 其实就是成像平面，而 Far clipping plane 则限制�
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_6928693d7dd9.jpg)
 
 上图中，P1可以投影到平面上，但P2不可见
-### <strong>3D坐标到2D坐标</strong>
+### 3D坐标到2D坐标
 
 了解 CG 中的相机模型后，可以帮助我们进一步理解 3D 世界中的点是如何转换到 2D 图像坐标的。
 
@@ -58,13 +58,13 @@ Near clipping plane 其实就是成像平面，而 Far clipping plane 则限制�
 
 上图是一个典型的物体投影到屏幕上的过程。我们假设已经获得了物体在世界坐标系中的坐标，在世界坐标系转换到图像坐标系的过程中，涉及以下过程。
 
-#### <strong>1. 世界坐标系转换到相机坐标系</strong>
+#### 1. 世界坐标系转换到相机坐标系
 
 对三维物体投影的第一步，是将三维物体从世界坐标系转换到以相机为中心的坐标系统，这样方便后续的投影计算。
 
 相机坐标系是以相机为中心的坐标系 (也叫 eye coordinates)，由于相机和世界坐标系的原点可能不同，且其坐标轴方向和世界坐标系可能不同，因此世界坐标系和相机坐标系的转换一般涉及旋转平移两项操作。在图形学中，通常使用齐次坐标，并配合 4x4 的矩阵来完成两个坐标系统的转换。具体原理我们后面再介绍。
 
-#### <strong>2. 相机坐标系到屏幕坐标系</strong>
+#### 2. 相机坐标系到屏幕坐标系
 
 获得物体的相机坐标系后，接下来就可以计算物体投影到成像平面上的坐标。
 
@@ -90,7 +90,7 @@ $$同理，可以算出：P'.x=\frac{Z_{near}*P.x}{|P.z|}。$$
 
 由于屏幕 (也即 Near clipping plane) 的大小有限，当物体有部分坐标超出屏幕范围时，超出部分需要裁剪掉。因此，这一步转换过程中，还涉及到 clipping 操作，在之后的推导中会再具体介绍。
 
-#### <strong>3. 屏幕坐标系到图像坐标系</strong>
+#### 3. 屏幕坐标系到图像坐标系
 
 转换到屏幕坐标系后，我们理论上已经获得了物体的 2D 坐标，但这个坐标并不是最终图像上的坐标。
 
@@ -120,7 +120,7 @@ $$\begin{aligned} P_{ndc}.x&=\frac{P'.x+width/2}{width} \notag \\ P_{ndc}.y&=\fr
 
 采用 NDC 坐标的好处是，我们可以将 NDC 看作是一个通用的坐标系统，并将不同系统的坐标统一起来。比如，我们在将屏幕坐标系转换到图像坐标系时，可以先换算到统一的 NDC 坐标系中，再实现二者的相互转化。在 NDC 坐标系中进行处理的时候，就不需要关心投影屏幕长宽、图像大小等信息了。
 
-### <strong>投影矩阵(Projection Matrix)</strong>
+### 投影矩阵(Projection Matrix)
 
 从上面三维坐标到二维坐标的转换过程中，不难发现，整个过程涉及步骤很多，非常繁琐。为了简化计算，在很多图形系统中，会将物体从相机坐标系到 NDC 坐标系的过程，用一个矩阵串联起来 (即投影矩阵)。
 
@@ -128,7 +128,7 @@ $$\begin{aligned} P_{ndc}.x&=\frac{P'.x+width/2}{width} \notag \\ P_{ndc}.y&=\fr
 
 理解投影矩阵，对后面 NeRF 中 NDC 坐标系统的推导至关重要。因此，这里先详细介绍投影矩阵的由来，并补充一些相关的数学知识。
 
-#### <strong>不同坐标系统的转换</strong>
+#### 不同坐标系统的转换
 
 三维坐标转二维坐标的第一步，就是将物体从世界坐标系转换到相机坐标系。
 
@@ -164,7 +164,7 @@ $由此推出，\mathbf a = \mathbf M^T \mathbf b，\mathbf b = (\mathbf M^T)^{-
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_94cb7e4f90bd.jpg)
 
-#### <strong>齐次坐标(Homogenous Coordinates)</strong>
+#### 齐次坐标(Homogenous Coordinates)
 
 上面提到的变换矩阵 \mathbf M 存在一点不足，那就是它只能表达旋转和缩放操作，但无法表达平移。具体原因有很多资料已做了描述，这里不再赘述。
 
@@ -184,7 +184,7 @@ $$如果 w \neq 1，那换算方法是：[x,y,z,w]=[\frac{x}{w},\frac{y}{w},\fra
 
 在之后投影矩阵的计算过程中，齐次坐标的作用会更加明显。
 
-#### <strong>投影矩阵推导</strong>
+#### 投影矩阵推导
 
 假设我们已经获得了物体在相机坐标系中的坐标 P_e=[x_e,y_e,z_e] (如果只有世界坐标系，也可以通过前面所讲的不同坐标系统的变换，来转换到相机坐标系，这一步也属于相机外参标定的流程)。
 
@@ -258,7 +258,7 @@ $$\mathbf{P_{proj}}= \begin{bmatrix} \frac{n}{r} & 0 & 0 & 0 \\ 0 & \frac{n}{t} 
 
 对于投影点的坐标 (x_{ndc},y_{ndc},z_{ndc})，如果数值超出 [-1,1] 的范围，就说明投影后的点超出了屏幕范围，可以直接舍弃。
 
-### <strong>NeRF中的NDC ray space</strong>
+### NeRF中的NDC ray space
 
 前面掰扯了这么多，一方面是帮助大家了解 3D 坐标投影到屏幕上的过程，当然，更重要的是对投影矩阵的推导，这是接下来推导 NDC ray space 的基础。
 
@@ -328,7 +328,7 @@ $$\begin{align} o_z+t_n*d_z&=-n \notag \\ t_n&=\frac{n+o_z}{d_z} \tag{18} \\ \en
 
 因此，移动后的光线起点为：\mathbf{o_n}=\mathbf{o}+t_n\mathbf{d}
 
-#### <strong>代码实现</strong>
+#### 代码实现
 
 以上这些，最终汇总为 NeRF 中的这段代码：
 
@@ -336,13 +336,13 @@ $$\begin{align} o_z+t_n*d_z&=-n \notag \\ t_n&=\frac{n+o_z}{d_z} \tag{18} \\ \en
 
 看懂上面的流程，这段代码也就不难理解了。
 
-### <strong>总结</strong>
+### 总结
 
 这篇文章主要介绍了世界坐标系到相机坐标系，再到 NDC 的转换流程以及数学原理，并由此推导出光线从相机坐标系到 NDC ray space 的转换公式。
 
 NDC 坐标系由于把各个坐标轴都归一化到 [-1,1] 区间，对坐标处理更加方便，尤其是对于 z 轴上极其远处的物体，在 NDC 坐标系中仍然只需在一个固定区间内处理即可。此外，使用归一化的坐标作为输入，也有利于神经网络的训练。这也是 NeRF 中使用 NDC 坐标系的原因之一。
 
-### <strong>参考</strong>
+### 参考
 
 - http://www.songho.ca/opengl/gl_projectionmatrix.html
 - [https://github.com/bmild/nerf/files/4451808/ndc_derivation.pdf](https://link.zhihu.com/?target=https%3A//github.com/bmild/nerf/files/4451808/ndc_derivation.pdf)

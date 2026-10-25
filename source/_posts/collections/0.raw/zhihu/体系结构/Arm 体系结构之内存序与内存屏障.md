@@ -111,7 +111,6 @@ Normal memory 用于行为看起来像是一个 memory 的东东，包括 RAM、
 
 Normal 是系统中最常见的 memory type，如下图：
 
-**
 
 ![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_c5b395bf525e.jpg)
 
@@ -139,7 +138,7 @@ Device 区域不是 cacheable 的，这是因为大概率你应该是不会想�
 
 Device type 的内存区域上不允许做数据的投机读。处理器只能访问 architecturally accessed 的内存，所谓的 architecturally accessed，意思就是指令在执行时所明确要访问的内存。
 
-译者：这里值得重点注解一下，本文行文中有多种对内存访问的定语修饰，比如 architecturally accesses、explicit data accesses，其意思都差不多，指的是一条指令中明确的对内存所进行的访问，典型如“LDR X0, [X1]、STR X0, [X1]”这种。那难道还有非 architecturally accesses 或 implicit data accesses 吗？有的，比如一次 load 背后可能会涉及到页表查询，页表查询也是一种内存访问，但其并不是由指令显式所指定的，页表查询这类所引发的内存访问，不是 architecturally accesses 或 explicit data accesses。**
+译者：这里值得重点注解一下，本文行文中有多种对内存访问的定语修饰，比如 architecturally accesses、explicit data accesses，其意思都差不多，指的是一条指令中明确的对内存所进行的访问，典型如“LDR X0, [X1]、STR X0, [X1]”这种。那难道还有非 architecturally accesses 或 implicit data accesses 吗？有的，比如一次 load 背后可能会涉及到页表查询，页表查询也是一种内存访问，但其并不是由指令显式所指定的，页表查询这类所引发的内存访问，不是 architecturally accesses 或 explicit data accesses。
 
 不应该把指令放在 Device 区域。推荐的做法是总是将 Device 区域标记为不可执行，否则处理器可能会从该区域做指令预取，进而会在 FIFOs 这类“读敏感”设备上搞出问题。
 
@@ -172,7 +171,6 @@ Device 后面的字母表达的是属性的组合：
 
 memory type 描述了一个地址的可允许行为（译者：“行为”指合并、乱序、投机读等）。咱们只关注 Device type，下图展示了所允许的行为：
 
-**
 
 ![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_e9a0e4361baf.jpg)
 
@@ -211,7 +209,6 @@ Armv8-A 是个弱内存序体系结构，其所支持的内存访问，不会强
 
 在 Normal、Device-nGRE 或 Device GRE 内存上的乱序是可能的。考虑下面的代码序列：
 
-**
 
 ![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_dfceca95f275.jpg)
 
@@ -223,7 +220,7 @@ Armv8-A 是个弱内存序体系结构，其所支持的内存访问，不会强
 
 但这并不意味本示例中的访问是无法被优化的。处理器可以将两个 store 合并在一起，最终向内存系统呈现为一个合并后的 store。处理器还要能检测 load 操作的目标内存是 store 指令所写目标内存的情况，也就是说，处理器可以直接返回新的值而无需重新从内存中读取（译者：类似 store buffer forwarding，参阅《Intel SDM 之 Memory Ordering》“5.5 允许处理器内部的 forwarding[8.2.3.5]”）。
 
-注意：上面的代码序列是刻意构造以展示数据冒险的。具体实践中，数据冒险可能不会这么显而易见。**
+注意：上面的代码序列是刻意构造以展示数据冒险的。具体实践中，数据冒险可能不会这么显而易见。
 
 再举一个因为存在地址依赖（Address Dependencies）而必须按序执行的例子。地址依赖的一个具体场景是，一个 load 或 store 使用前面的一个 load 的结果作为地址。下面是例子：
 
@@ -418,7 +415,6 @@ Load-Acquire LDAR 指令的保序规则如下：
 - 所有 LDAR<strong>之前</strong>的 explicit 内存访问不受影响，可以无视 LDAR 而乱序。
 下图展示了具体的保序规则：
 
-**
 
 ![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_81c95ea340d0.jpg)
 
@@ -432,7 +428,6 @@ Store-Release STLR 指令的保序规则如下：
 - 所有 STLR <strong>之后</strong>的 explicit 内存访问不受影响，可以无视 STLR 而乱序。
 下图展示了具体的保序规则：
 
-**
 
 ![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_fad1b9203757.jpg)
 
@@ -459,7 +454,6 @@ Load-Acquire 和 Store-Release 指令可以作为一个 pair 组合来对代码�
 
 acquire/release 操作使用 sequentially consistent 模型。意思是，当一个 Load-Acquire 在 program order 上位于一个 Store-Release 之后<strong>时，则由 Store-Release 指令所发起的内存访问，将</strong>先于** Load-Acquire 指令所发起的内存访问被观察到。下图展示了这种保序约束：
 
-**
 
 ![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_935aa7d0be59.jpg)
 
@@ -481,7 +475,6 @@ Armv8.1-A 添加了对 Limited Ordering Regions(LORegions)（译者：受限的�
 
 LORegions 可以避免在等待一个内存访问（针对内存映射中的任意地址，并对发起访问的 PE 所属的 Shareability domain 中的所有 Observers 可观察）时的大量性能开销。该场景（译者：指的是引入性能开销的场景）可能由现有的 Load-Acquire 和 Store-Release 指令引入（译者：这里的意思是说，原先的 Load-Acquire、Store-Release 指令会导致有些访问必须在屏障之前完成，导致 CPU 一直等待直至访问完成而引入性能开销）。此特性只在软件明确知道哪些 Observers 希望共享一个内存地址时使用，此软件通常可以知道系统的拓扑。举个例子，下图展示了一个多 socket 系统上，跨 socket 内存访问会带来极大的延迟：
 
-**
 
 ![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_74d11496e954.jpg)
 
@@ -512,7 +505,6 @@ ISB`
 
 下图中，只有对相同 LORegion 中地址（由 LDLAR 或 STLLR 指令指定）的访问才会受影响，对 LORegion 之外的内存访问不受影响。举例来说，对 C 的 store 会先于<strong>LDLAR 被观察到。如果软件使用了一个 LDAR，则对 C 的 store 会在 LDAR</strong>之后**被观察到，如图中所示：
 
-**
 
 ![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_ddd0e028761a.jpg)
 

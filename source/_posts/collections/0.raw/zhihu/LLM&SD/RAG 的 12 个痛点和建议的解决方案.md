@@ -51,10 +51,10 @@ We have two proposed solutions:
 
 我们提出了两种解决方案：
 Clean your data  <strong>清理数据</strong>
-**Garbage in, garbage out. If your source data is of poor quality, such as containing conflicting information, no matter how well you build your RAG pipeline, it cannot do the magic to output gold from the garbage you feed it. This proposed solution is not only for this pain point but all the pain points listed in this article. Clean data is the prerequisite for any well-functioning RAG pipeline.
+Garbage in, garbage out. If your source data is of poor quality, such as containing conflicting information, no matter how well you build your RAG pipeline, it cannot do the magic to output gold from the garbage you feed it. This proposed solution is not only for this pain point but all the pain points listed in this article. Clean data is the prerequisite for any well-functioning RAG pipeline.
 
 垃圾进，垃圾出。如果你的源数据质量很差，比如包含冲突信息，无论你构建的RAG管道有多好，它都无法从你提供的垃圾中输出黄金。这个拟议的解决方案不仅适用于这个痛点，也适用于本文中列出的所有痛点。干净的数据是任何运行良好的RAG管道的先决条件。**Better prompting 更好的提示
-**Better prompting can significantly help in situations where the system might otherwise provide a plausible but incorrect answer due to the lack of information in the knowledge base. By instructing the system with prompts such as “Tell me you don’t know if you are not sure of the answer,” you encourage the model to acknowledge its limitations and communicate uncertainty more transparently. There is no guarantee for 100% accuracy, but crafting your prompt is one of the best efforts you can make after cleaning your data.
+Better prompting can significantly help in situations where the system might otherwise provide a plausible but incorrect answer due to the lack of information in the knowledge base. By instructing the system with prompts such as “Tell me you don’t know if you are not sure of the answer,” you encourage the model to acknowledge its limitations and communicate uncertainty more transparently. There is no guarantee for 100% accuracy, but crafting your prompt is one of the best efforts you can make after cleaning your data.
 
 在由于知识库中缺乏信息而导致系统可能提供看似合理但不正确的答案的情况下，更好的提示会有很大帮助。通过用“如果你不确定答案，告诉我你不知道”等提示来指导系统，你鼓励模型承认其局限性，并更透明地传达不确定性。无法保证100%的准确性，但制作提示是清理数据后所能做的最大努力之一。 
 
@@ -146,7 +146,7 @@ For more details, refer to LlamaIndex’s full notebook on Hyperparameter Optimi
 
 有关更多详细信息，请参阅LlamaIndex关于RAG超参数优化的完整笔记本。
 
-Reranking  重新排序**
+Reranking  重新排序
 
 Reranking retrieval results before sending them to the LLM has significantly improved RAG performance. This LlamaIndex notebook demonstrates the difference between: 在将检索结果发送到LLM之前对其重新排序显著提高了RAG性能。这本LlamaIndex笔记本演示了以下两者之间的区别：
 
@@ -245,7 +245,7 @@ This pain point is yet another typical victim of bad data. We cannot stress enou
 
 这个痛点是坏数据的又一个典型受害者。我们再怎么强调干净数据的重要性也不为过！在指责你的RAG管道之前，一定要先花时间清理你的数据。
 
-#### **Prompt Compression
+#### Prompt Compression
 
 Prompt compression in the long-context setting was introduced in the [LongLLMLingua research project/paper](https://link.zhihu.com/?target=https%3A//archive.is/o/bNbZo/https%3A//arxiv.org/abs/2310.06839). With its integration in LlamaIndex, we can now implement LongLLMLingua as a node postprocessor, which will compress context after the retrieval step before feeding it into the LLM.
 

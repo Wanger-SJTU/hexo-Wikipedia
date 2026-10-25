@@ -14,7 +14,7 @@ categories:
 
 MemSifter：用4B小模型给大模型当"记忆管家"，检索又快又准
 
-** 一句话总结：MemSifter训练一个4B参数的代理模型，通过"先推理再检索"的方式，替大模型从海量历史对话中筛选相关记忆，速度比全上下文方案快12倍，效果还更好。
+一句话总结：MemSifter训练一个4B参数的代理模型，通过"先推理再检索"的方式，替大模型从海量历史对话中筛选相关记忆，速度比全上下文方案快12倍，效果还更好。
  论文标题**：MemSifter: Offloading LLM Memory Retrieval via Outcome-Driven Proxy Reasoning
 
 <strong>论文链接</strong>：[https://arxiv.org/abs/2603.03379](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2603.03379)
@@ -165,7 +165,6 @@ $$w_n = \frac{1}{\log_2(k_n + 1)} - \frac{1}{\log_2(k_{n+1} + 1)} \\$$
 
 下表展示了以DeepSeek V3.2为评估器时各方法的F1分数：
 
-**
 
 方法LoCoMo 32KLoCoMo 128KLoCoMo 1MLongMemEvalPersonaMemPerM-V2ZH4OHotpotQAWebWalkerWebDancerBGE-M329.5725.6722.5620.2712.8719.1937.6019.9823.3926.59GemmaEmb30.6126.28—17.7214.3820.3040.4120.1423.1827.41Nemori32.4226.58—19.0414.1416.9334.8217.0218.5626.41Mem027.3424.72—18.3812.3015.5131.7615.5618.2325.65HippoRAG31.2625.90—13.3816.2318.7434.0614.4119.6921.91A-MEM28.9723.53—15.9312.2716.5831.7215.0018.4224.01Rearank32.0030.2524.0516.8916.6320.3940.7520.6022.7831.79ReasonRank34.4930.1725.5518.3616.0821.3039.3820.4124.1530.78DS-V3.2全上下文33.5028.79—18.6615.8923.6444.6517.8920.8329.73MemSifter41.7935.3833.3223.7021.1423.5748.1324.9526.1138.21几个值得关注的数据点：
 
@@ -185,7 +184,6 @@ MemSifter在所有10个配置上都取得了最佳或接近最佳的成绩**。�
 
 F1分数衡量的是最终回答质量。那检索本身的质量如何？
 
-**
 
 方法LoCoMo NDCG@1LoCoMo NDCG@5LongMemEval NDCG@1LongMemEval NDCG@5PersonaMem NDCG@1PersonaMem NDCG@5BGE-M343.5769.5943.3373.1645.8364.82ReasonRank47.6471.4660.6780.7240.0066.53MemSifter70.0078.1167.3389.6760.0075.63MemSifter在NDCG@1上的表现差距惊人：LoCoMo上70.00 vs ReasonRank的47.64，提升了47%；PersonaMem上60.00 vs BGE-M3的45.83，提升了31%。
 
@@ -205,7 +203,6 @@ NDCG@1反映的是"排在第1位的session是否真的最相关"。MemSifter在�
 
 小模型做代理到底能省多少时间？
 
-**
 
 方法模型参数量延迟（ms）BGE-M30.2B1015.05Rearank7B7657.52ReasonRank7B8322.83MemSifter4B3982.53DS-V3.2全上下文632B49873.60在WebDancer 128K数据集上，MemSifter的延迟为3982ms，约为4秒。对比来看：
 

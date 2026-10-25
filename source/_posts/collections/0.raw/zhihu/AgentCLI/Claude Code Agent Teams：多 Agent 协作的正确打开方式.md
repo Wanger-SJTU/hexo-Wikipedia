@@ -15,7 +15,7 @@ source_url: https://zhuanlan.zhihu.com/p/2003061730788521596
 ---
 
 
-**原文来源于我的博客: Claude Code Agent Teams：多 Agent 协作的正确打开方式
+原文来源于我的博客: Claude Code Agent Teams：多 Agent 协作的正确打开方式
  当一个 Agent 不够用的时候，就上一个团队
 #### 从单兵作战到团队协作
 

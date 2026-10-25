@@ -15,19 +15,19 @@ source_url: https://zhuanlan.zhihu.com/p/665990267
 ---
 
 
-**以下内容来自腾讯工程师 guoqing导语 | 调研目的 为开发紫霄平台的模型&算子推理性能预测&分析工具，调研了华为、寒武纪、谷歌TPU、百度昆仑以及燧源的模型推理分析工具的实现。其中，华为CANN的模型推理分析工具值得参考，这套方案的底层理论为Roofline模型。更进一步，结合紫霄的硬件架构，我们可以设计紫霄端模型&算子推理分析工具的实现方案。
+以下内容来自腾讯工程师 guoqing导语 | 调研目的 为开发紫霄平台的模型&算子推理性能预测&分析工具，调研了华为、寒武纪、谷歌TPU、百度昆仑以及燧源的模型推理分析工具的实现。其中，华为CANN的模型推理分析工具值得参考，这套方案的底层理论为Roofline模型。更进一步，结合紫霄的硬件架构，我们可以设计紫霄端模型&算子推理分析工具的实现方案。
 
-### 小节安排**
+### 小节安排
 
        下面首先简练介绍<strong>CANN的模型推理性能Profiling工具</strong>和<strong>Roofline模型原理</strong>，进而阐述<strong>华为基于Roofline模型的算子推理瓶颈识别</strong>以及<strong>在识别瓶颈的基础上华为CANN官方推荐的模型&算子优化思路</strong>。
 
-### 1.  <strong>CANN的模型推理性能Profiling工具</strong>
+### 1.  **CANN的模型推理性能Profiling工具
 
-### <strong>1.1 Profiling工具介绍</strong>
+### 1.1 Profiling工具介绍
 
        Profiling工具目的是通过分析AI任务运行时采集的性能数据。判断AI任务运行时的软硬件性能瓶颈可以根据性能数据进行分析。类似NVIDIA提供的Profiling工具nvprof，华为CANN提供命令行工具msprof和AscendCL API等四种方式方便用户进行Profiling。
 
-### <strong>1.2 roofline模型需要采集的性能数据</strong>
+### 1.2 roofline模型需要采集的性能数据
 
         针对基于Roofline模型的算子推理瓶颈识别，华为CANN需要用户使用Profiling工具采集的性能数据如下：
 
@@ -107,38 +107,38 @@ ub_read_bw_scalar：代表scalar从ub读带宽速率，单位GB/s。
 
 ub_write_bw_scalar：代表scalar向ub写带宽速率，单位GB/s。
 
-### 2.  <strong>Roofline模型原理</strong>
+### 2.  **Roofline模型原理
 
-### <strong>2.1 不考虑缓存机制的roofline模型原理</strong>
+### 2.1 不考虑缓存机制的roofline模型原理
 
        AI模型推理依赖于具体的计算平台。此时，模型和计算平台的"默契程度"会决定模型的实际表现。<strong>Roofline Model 提出了使用 Operational Intensity（计算强度）进行定量分析的方法，并给出了模型在计算平台上所能达到理论计算性能上限公式。</strong>
 
-#### <strong>2.1.1 计算平台的两个指标：算力 π 与带宽 β</strong>
+#### 2.1.1 计算平台的两个指标：算力 π 与带宽 β
 
 - <strong>算力 π</strong> ：也称为计算平台的性能上限，指的是一个计算平台倾尽全力每秒钟所能完成的浮点运算数。单位是 FLOPS 。
 - <strong>带宽 β</strong> ：也即计算平台的带宽上限，指的是一个计算平台倾尽全力每秒所能完成的内存交换量。单位是Byte/s。
 - <strong>计算强度上限 Imax</strong> ：两个指标相除即可得到计算平台的计算强度上限。它描述的是在这个计算平台上，单位内存交换最多用来进行多少次计算。单位是FLOPs/Byte。<strong>Imax=π/β</strong>
 注：这里所说的“内存”是广义上的内存。对于CPU计算平台而言指的就是真正的内存；而对于GPU计算平台指的则是显存。
 
-#### <strong>2.1.2 模型的两个指标：计算量 与 访存量</strong>
+#### 2.1.2 模型的两个指标：计算量 与 访存量
 
 - <strong>计算量：</strong>指的是输入单个样本（对于CNN而言就是一张图像），模型进行一次完整的前向传播所发生的浮点运算个数，也即模型的<strong>时间复杂度</strong>。单位是 FLOPs。其中卷积层的计算量公式如下（[卷积神经网络的复杂度分析 - 知乎](https://zhuanlan.zhihu.com/p/31575074)）
 - <strong>访存量：</strong>指的是输入单个样本，模型完成一次前向传播过程中所发生的内存交换总量，也即模型的<strong>空间复杂度</strong>。在理想情况下（即不考虑片上缓存），模型的访存量就是模型各层权重参数的内存占用（Kernel Mem）与每层所输出的特征图的内存占用（Output Mem）之和。单位是Byte。由于数据类型通常为float32 ，因此需要乘以四。
 - <strong>模型的计算强度 I</strong> ：由计算量除以访存量就可以得到模型的计算强度，它表示此模型在计算过程中，每Byte内存交换到底用于进行多少次浮点运算。单位是FLOPs/Byte。可以看到，模计算强度越大，其内存使用效率越高。
 - <strong>模型的理论性能 P</strong> ：我们最关心的指标，即模型在计算平台上所能达到的每秒浮点运算次数（理论值）。单位是 FLOPS。Roof-line Model 给出的就是计算这个指标的方法。
 
-#### <strong>2.1.3 Roof-line Model</strong>
+#### 2.1.3 Roof-line Model
 
        其实 Roof-line Model 说的是很简单的一件事：<strong>模型在一个计算平台的限制下，到底能达到多快的浮点计算速度</strong>。更具体的来说，Roof-line Model 解决的，是“<strong>计算量为A且访存量为B的模型在算力为C且带宽为D的计算平台所能达到的理论性能上限E是多少</strong>”这个问题。
 
-#### <strong>2.1.3.1 Roof-line 的形态</strong>
+#### 2.1.3.1 Roof-line 的形态
 
 - 所谓“Roof-line”，指的就是由计算平台的算力和带宽上限这两个参数所决定的“屋顶”形态，如下图所示。
 - 算力决定“屋顶”的高度（绿色线段）
 - 带宽决定“房檐”的斜率（红色线段）
 ![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_cf28a59c689a.jpg)
 
-#### <strong>2.1.3.2 Roof-line 划分出的两个瓶颈区域</strong>
+#### 2.1.3.2 Roof-line 划分出的两个瓶颈区域
 
 - 计算瓶颈区域 Compute-Bound
        不管模型的计算强度 I 有多大，它的理论性能 P 最大只能等于计算平台的算力 π 。当模型的计算强度 I 大于计算平台的计算强度上限 Imax 时，模型在当前计算平台处于 Compute-Bound状态，即模型的理论性能 P 受到计算平台算力 π 的限制，无法与计算强度 I 成正比。从充分利用计算平台算力的角度上看，此时模型已经 100% 的利用了计算平台的全部算力。可见，计算平台的算力 π 越高，模型进入计算瓶颈区域后的理论性能 P 也就越大。
@@ -146,19 +146,19 @@ ub_write_bw_scalar：代表scalar向ub写带宽速率，单位GB/s。
 - 带宽瓶颈区域 Memory-Bound
        当模型的计算强度 I 小于计算平台的计算强度上限 Imax 时，由于此时模型位于“房檐”区间，因此模型理论性能 P 的大小完全由计算平台的带宽上限 β （房檐的斜率）以及模型自身的计算强度 I 所决定，因此这时候就称模型处于 Memory-Bound 状态。可见，在模型处于带宽瓶颈区间的前提下，计算平台的带宽 β 越大（房檐越陡），或者模型的计算强度 I 越大，模型的理论性能 P 可呈线性增长。
 
-#### <strong>2.1.4. 模型实例分析</strong>
+#### 2.1.4. 模型实例分析
 
        下面用 Roof-line Model 理论来对比分析一下VGG16和MobileNet模型推理性能瓶颈。
 
-#### <strong>2.1.4.1 VGG16</strong>
+#### 2.1.4.1 VGG16
 
        VGG一次前向传播的计算量 15 GFLOPs。访存量则是 Kernel Mem 和 Output Mem 之和再乘以四，大约是 600MB。<strong>因此 VGG16 的计算强度就是 25 FLOPs/Byte。</strong>
 
-#### <strong>2.1.4.2 MobileNet</strong>
+#### 2.1.4.2 MobileNet
 
        MobileNet 的计算量只有大约 0.5 GFLOPs（VGG16 则是 15 GFLOPs），其访存量也只有 74 MB（VGG16 则是约 600 MB）， MobileNet 的计算强度只有 7 FLOPs/Byte。
 
-#### <strong>2.1.4.3 两个模型在 1080Ti 上的对比</strong>
+#### 2.1.4.3 两个模型在 1080Ti 上的对比
 
        作为性价比之王的 1080Ti，我们的两个模型 VGG16 和 MobileNet 的性能将分别位于这个计算平台 Roof-line Model 的什么位置呢？
 
@@ -177,7 +177,7 @@ ub_write_bw_scalar：代表scalar向ub写带宽速率，单位GB/s。
 
 注：Roofline 模型讲的是程序<strong>在计算平台的算力和带宽这两个指标限制下，所能达到的理论性能上界</strong>，而不是实际达到的性能，因为实际计算过程中<strong>还有除算力和带宽之外的其他重要因素</strong>，它们也会影响模型的实际性能，这是 Roofline Model 未考虑到的。例如矩阵乘法，会因为 cache 大小的限制、GEMM 实现的优劣等其他限制，导致你几乎无法达到 Roofline 模型所定义的边界（屋顶）。
 
-### <strong>2.2 考虑缓存机制的roofline模型原理</strong>
+### 2.2 考虑缓存机制的roofline模型原理
 
 ![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_bc5a87e96a5a.jpg)
 
@@ -189,9 +189,9 @@ ub_write_bw_scalar：代表scalar向ub写带宽速率，单位GB/s。
 - 使用prof工具得到算子的一次推理的计算量FLOPs。
 - 计算L1、L2、HBM三层的计算强度（FLOPs/访存量），计算得到三个<strong>计算强度，画到图中。</strong>
 
-### 3.  <strong>基于Roofline模型的算子最优性能评估及推理瓶颈识别功能实现方案（推测）</strong>
+### 3.  **基于Roofline模型的算子最优性能评估及推理瓶颈识别功能实现方案（推测）
 
-### <strong>3.1 算子推理性能评估</strong>
+### 3.1 算子推理性能评估
 
 <strong>计算流程：</strong>
 
@@ -216,7 +216,7 @@ ub_write_bw_scalar：代表scalar向ub写带宽速率，单位GB/s。
 
        算子指标：FLOPs，时延，各级缓存的访存量
 
-### <strong>3.2 算子推理瓶颈识别功能实现方案（推测）</strong>
+### 3.2 算子推理瓶颈识别功能实现方案（推测）
 
        华为CANN的算子推理瓶颈识别功能官网只有使用文档。这里我结合华为CANN的算子推理瓶颈识别功能需要采集的数据，综合分析各使用示例的推断过程，总结了华为CANN的算子推理瓶颈识别功能实现方案（推测）。
 
@@ -236,22 +236,21 @@ ub_write_bw_scalar：代表scalar向ub写带宽速率，单位GB/s。
 
      （其它瓶颈识别需要我们进一步分析，华为CANN此处因为只考虑算子推理瓶颈，且不考虑不能转换的算子，因此瓶颈识别相对简单，但是包含的瓶颈也不少，以紫霄为例，3级缓存加3种不同的计算指令，再加缓存指令与计算指令之间的依赖）
 
-### 4.  <strong>优化</strong>
+### 4.  **优化
 
        Profiling系统调优的目的是通过分析AI任务运行时采集的性能数据，判断AI任务运行时的软硬件性能瓶颈。可以根据来对数据进行分析。
 
 ![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_efa454822177.jpg)
 
-### 5.  <strong>调研结论</strong>
+### 5.  **调研结论
 
 <strong>华为CANN的模型推理分析工具</strong>值得参考，这套方案的底层理论为<strong>Roofline模型</strong>。更进一步，<strong>结合紫霄的硬件架构</strong>，我们可以设计紫霄端模型&算子推理分析工具的实现方案。
 
-### 6.  <strong>附录</strong>
+### 6.  **附录
 
 NVIDIA 考虑多级缓存情况下的Roofline模型（NVIDIA GTC 2019）：
 
 s9624-performance-analysis-of-gpu-accelerated-applications-using-the-roofline-model.pdf
 
-**
 
-欢迎点赞分享，搜索关注【鹅厂架构师】公众号，一起探索更多业界领先产品技术。**
+欢迎点赞分享，搜索关注【鹅厂架构师】公众号，一起探索更多业界领先产品技术。

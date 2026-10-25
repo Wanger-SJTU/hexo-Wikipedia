@@ -35,7 +35,7 @@ Learn SystemC (6) - Compiling and Running Simulations
 
 <strong>参考书籍：</strong>
 
-**参考书籍已上传至github。SystemC: From the Ground Up
+参考书籍已上传至github。SystemC: From the Ground Up
 
 [](https://link.zhihu.com/?target=https%3A//github.com/kaitoukito/Integrated-Circuit-Textbooks)
 
@@ -57,7 +57,7 @@ Learn SystemC (6) - Compiling and Running Simulations
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_d9a1a6d132b7.jpg)
 
-SC_METHOD()**
+SC_METHOD()
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_29f3003946d3.jpg)
 
@@ -352,7 +352,7 @@ void tb::source() {
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_93aecc514bc1.jpg)
 
-**1.gcc  `-l`
+1.gcc  `-l`
 -l` 参数就是用来指定程序要链接的库，`-l` 参数紧接着就是库名，那么库名跟真正的库文件名有什么关系呢？就拿数学库来说，他的库名是 `m`，他的库文件名是 `libm.so`，很容易看出，把库文件名的头 `lib` 和尾 `.so` 去掉就是库名了。好了现在我们知道怎么得到库名，当我们自已要用到一个第三方提供的库名字 `libtest.so`，那么我们只要把 `libtest.so` 拷贝到 `/usr/lib` 里，编译时加上 `-ltest` 参数，我们就能用上 `libtest.so` 库了（当然要用 `libtest.so` 库里的函数，我们还需要与 `libtest.so` 配套的头文件）
 2.gcc `-L`
 放在 `/lib` 和 `/usr/lib` 和 `/usr/local/lib` 里的库直接用 `-l` 参数就能链接了，但如果库文件没放在这三个目录里，而是放在其他目录里，这时我们只用 `-l` 参数的话，链接还是会出错，出错信息大概是：`“/usr/bin/ld: cannot find -lxxx”`，也就是链接程序 `ld` 在那3个目录里找不到 `libxxx.so`。这时另外一个参数 `-L` 就派上用场了，比如常用的 `X11` 的库，它在 `/usr/X11R6/lib` 目录下，我们编译时就要用 `-L/usr/X11R6/lib -lX11` 参数，`-L` 参数跟着的是库文件所在的目录名**。再比如我们把 `libtest.so` 放在 `/aaa/bbb/ccc` 目录下，那链接参数就是 `-L/aaa/bbb/ccc -ltest`**3.gcc `-I`
@@ -363,7 +363,7 @@ void tb::source() {
 来源：简书
 著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。参考文献：GCC -L -I 等参数区别
 
-编译命令行：**
+编译命令行：
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_c1e3cfa686a8.jpg)
 

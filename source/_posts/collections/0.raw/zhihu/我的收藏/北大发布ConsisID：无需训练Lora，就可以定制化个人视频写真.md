@@ -17,7 +17,6 @@ source_url: https://zhuanlan.zhihu.com/p/10004384702
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_8598ef15be9c.jpg)
 
-**
 
 这两天，北京大学等研究团队发布了一个视频生成的可控生成工作：ConsisID**。ConsisID可以实现无需训练Lora的保持参考人脸一致性的文生视频，类似之前图像生成的IP-Adapter-Face和InstantID等工作。虽然之前也有类似的工作，但是ConsisID在效果更上一个台阶。
 
@@ -30,7 +29,6 @@ source_url: https://zhuanlan.zhihu.com/p/10004384702
 - 训练数据：[https://huggingface.co/datasets/BestWishYsh/ConsisID-preview-Data](https://link.zhihu.com/?target=https%3A//huggingface.co/datasets/BestWishYsh/ConsisID-preview-Data)
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_d4a0dff0ead8.jpg)
 
-**
 
 ConsisID是基于目前主流的DiT<strong>来实现的，准确地说是基于目前开源的文生图视频模型</strong>CogVideoX-5B<strong>。首先，作者团队发现</strong>DiT架构相比之前的UNet架构有一些不同**。对于DiT架构，有两处比较关键的发现：首先低级（例如，浅层）特征对于扩散模型中的像素级预测任务至关重要，这有助于促进模型训练；然后是transformer对高频信息的感知有限，而这对于可控生成非常重要。基于这些发现，ConsisID在实现上将人物ID特征解耦为高频和低频部分，并将它们注入到特定位置，实现了有效的保持身份一致性的文本到视频生成。具体架构如下所示：
 

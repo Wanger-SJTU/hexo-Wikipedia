@@ -161,7 +161,7 @@ NVIDIA 近日完全开源了 <strong>Nemotron Nano 9B v2</strong> 模型，不�
 
 ### 六、Post-training / Alignment（SFT、DPO、GRPO、RLHF）数据流
 
-** 这是从 base model 到 aligned model 所用的数据与合成的具体流程（含 SFT 分阶段的具体处理）。
+这是从 base model 到 aligned model 所用的数据与合成的具体流程（含 SFT 分阶段的具体处理）。
  
 ### 6.1 Post-training 数据分布（SFT dataset）
 

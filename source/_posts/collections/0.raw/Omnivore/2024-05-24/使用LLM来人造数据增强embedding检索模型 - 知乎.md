@@ -79,7 +79,7 @@ w\_f是0-1之间的权重参数，代表不同表示的重要性。
 
 <strong>因此，每个chunk有自己的一个embedding即可，同时，也可以用ANN搜索。</strong>
 
-### <strong>colbert模型的应用：</strong>
+### colbert模型的应用：
 
 <strong>作者认为，因为colbert是token级别的计算相似度(query的一个token的embedding，会去和doc所有token的embedding去计算相似度，然后取最大)，因此将doc的不同表示</strong>synthetic queries, title and chunk，拼接起来就行。他们会参与query与doc的计算。  
 

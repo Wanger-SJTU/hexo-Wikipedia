@@ -27,7 +27,7 @@ source_url: https://zhuanlan.zhihu.com/p/108186054
 
 转载：欢迎转载，但未经作者同意，必须保留此段声明；必须在文章中给出原文连接；否则必究法律责任
 
-### <strong>背景</strong>
+### 背景
 
 - `Read the fucking source code!` --By 鲁迅
 - `A picture is worth a thousand words.` --By 高尔基
@@ -37,18 +37,18 @@ source_url: https://zhuanlan.zhihu.com/p/108186054
 - ARM64处理器，Contex-A53，双核
 - 使用工具：Source Insight 3.5， Visio
 
-### <strong>1. 介绍</strong>
+### 1. 介绍
 
 要想理解好Linux的页表映射，MMU的机制是需要去熟悉的，因此将这两个模块放到一起介绍。**关于ARMv8 MMU的相关内容，主要参考文档：`《ARM Cortex-A Series Programmer’s Guide for ARMv8-A》`。
 
-### 2. ARMv8 MMU**
+### 2. ARMv8 MMU
 
-### <strong>2.1 MMU/TLB/Cache概述</strong>
+### 2.1 MMU/TLB/Cache概述
 
 - `MMU`：完成的工作就是虚拟地址到物理地址的转换，可以让系统中的多个程序跑在自己独立的虚拟地址空间中，相互不会影响。程序可以对底层的物理内存一无所知，物理地址可以是不连续的，但是不妨碍映射连续的虚拟地址空间。
 - `TLB`：`MMU`工作的过程就是查询页表的过程，页表放置在内存中时查询开销太大，因此专门有一小片访问更快的区域用于存放`地址转换条目`，用于提高查找效率。当页表内容有变化的时候，需要清除`TLB`，以防止地址映射出错。
 - `Cache`：处理器和存储器之间的缓存机制，用于提高访问速率，在ARMv8上会存在多级Cache，其中`L1 Cache`分为`指令Cache`和`数据Cache`，在`CPU Core`的内部，支持虚拟地址寻址；`L2 Cache`容量更大，同时存储指令和数据，为多个`CPU Core`共用，这多个`CPU Core`也就组成了一个`Cluster`。
-下图浅黄色部分描述的就是一个地址转换的过程。**
+下图浅黄色部分描述的就是一个地址转换的过程。
 
 ![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_22fceee46269.jpg)
 
@@ -60,9 +60,9 @@ source_url: https://zhuanlan.zhihu.com/p/108186054
 
 ![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_a3101d29b257.jpg)
 
-### 2.2 虚拟地址到物理地址的转换**
+### 2.2 虚拟地址到物理地址的转换
 
-虚拟地址到物理地址的映射通过查表的机制来实现，ARMv8中，`Kernel Space`的页表基地址存放在`TTBR1_EL1`寄存器中，`User Space`页表基地址存放在`TTBR0_EL0`寄存器中，其中内核地址空间的高位为全1，`(0xFFFF0000_00000000 ~ 0xFFFFFFFF_FFFFFFFF)`，用户地址空间的高位为全0，`(0x00000000_00000000 ~ 0x0000FFFF_FFFFFFFF)`**
+虚拟地址到物理地址的映射通过查表的机制来实现，ARMv8中，`Kernel Space`的页表基地址存放在`TTBR1_EL1`寄存器中，`User Space`页表基地址存放在`TTBR0_EL0`寄存器中，其中内核地址空间的高位为全1，`(0xFFFF0000_00000000 ~ 0xFFFFFFFF_FFFFFFFF)`，用户地址空间的高位为全0，`(0x00000000_00000000 ~ 0x0000FFFF_FFFFFFFF)`
 
 ![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_9ed0a394e90c.jpg)
 
@@ -94,11 +94,11 @@ ARMv8中：
 
 在ARMv8中，与页表相关的寄存器有：`TCR_EL1, TTBRx_EL1`.
 
-### 3. Linux页表映射**
+### 3. Linux页表映射
 
-### <strong>3.1 Linux页表基本操作</strong>
+### 3.1 Linux页表基本操作
 
-看过《深入理解Linux内核》的同学应该很熟悉下边这张图片，Linux的分页模式（图中以X86为例，页表基地址由CR3寄存器指定）：**
+看过《深入理解Linux内核》的同学应该很熟悉下边这张图片，Linux的分页模式（图中以X86为例，页表基地址由CR3寄存器指定）：
 
 ![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_796350bfff97.jpg)
 
@@ -164,9 +164,9 @@ typedef struct { pgdval_t pgd; } pgd_t;
 ```
 
 
-### 3.2 head.S中的页表映射**
+### 3.2 head.S中的页表映射
 
-#### <strong>3.2.1 idmap_pg_dir和swapper_pg_dir临时页表</strong>
+#### 3.2.1 idmap_pg_dir和swapper_pg_dir临时页表
 
 是时候来个实例分析了，看看页表的创建过程，代码路径：`arch/arm64/kernel/head.S`。**内核启动过程中，在真正的物理内存尚未添加进系统，以及页表还未初始化之前，为了保证系统能正常运行，需要建立两个临时全局页表：`idmap_pg_dir`和`swapper_pg_dir`：
 其中两个全局页表的定义在`arch/arm64/kernel/vmlinux.lds.S`中，放置在`BSS段`之后：
@@ -192,7 +192,7 @@ typedef struct { pgdval_t pgd; } pgd_t;
 - `swapper_pg_dir`
 Linux内核编译后，kernel image是需要进行映射的，包括`text，data`等各种段。
 
-#### 3.2.2 页表创建**
+#### 3.2.2 页表创建
 
 在`head.S`中，创建页表相关的有三个宏：
 

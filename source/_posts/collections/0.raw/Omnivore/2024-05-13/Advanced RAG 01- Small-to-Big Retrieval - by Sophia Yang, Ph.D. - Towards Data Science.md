@@ -259,7 +259,7 @@ Here you can see the actual sentence retrieved and the window of the sentence, w
 
 ![](https://proxy-prod.omnivore-image-cache.app/700x288,sWlvBquxrjKjsmxOhTJy8JSwxVJOM3CTnv8trLY-3Q_M/https://miro.medium.com/v2/resize:fit:875/0*SNakisDYccy2EaXu)
 
-## <strong>Conclusion</strong>
+## Conclusion
 
 In this blog, we explored how to use small-to-big retrieval to improve RAG, focusing on the Child-Parent RecursiveRetriever and Sentence Window Retrieval with LlamaIndex. In future blog posts, we will dive deeper into other tricks and tips. Stay tuned for more on this exciting journey into advanced RAG techniques!
 

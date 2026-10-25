@@ -23,7 +23,7 @@ id: 59a2f249-5563-40ac-ac55-09374a1acab3
 
 
 
-## <strong>Highlight:</strong>
+## Highlight:
 
 ```text
 * BGE-M3支持超过100种语言的语义表示及检索任务，多语言、跨语言能力全面领先（**M**ulti-Lingual）
@@ -32,7 +32,7 @@ id: 59a2f249-5563-40ac-ac55-09374a1acab3
 ```
 
 
-## <strong>模型概述</strong>
+## 模型概述
 
 语义向量模型（Embedding Model）是语言模型生态体系中的重要组成部分，这一技术被广泛应用于搜索（Search）、问答（QA）、大语言模型检索增强（RAG）等应用场景之中。智源 BGE（BAAI General Embedding）模型自去年8月发布后广受好评，被开源爱好者集成至 LangChain、Llama\_index 等项目，<strong>全球下载量已达713万次。</strong>
 
@@ -70,7 +70,7 @@ id: 59a2f249-5563-40ac-ac55-09374a1acab3
 > <strong>Reranker Model</strong>: [BGE Reranker](https://github.com/FlagOpen/FlagEmbedding/tree/master/FlagEmbedding/reranker)  
 > <strong>Benchmark</strong>: [C-MTEB](https://github.com/FlagOpen/FlagEmbedding/tree/master/C%5FMTEB)
 
-## <strong>BGE-M3 在多项评测中全面领先</strong>
+## BGE-M3 在多项评测中全面领先
 
 <strong>1\. 多语言检索能力（MIRACL)</strong>
 
@@ -99,7 +99,7 @@ BGE-M3可以支持长达8192的输入文档，同时长文档检索的效果要�
 
 为了探究长文档检索能力的来源，智源研究员进一步剥离了长文档检索的微调数据（w.o.long）。<strong>实验结果显示，BGE-M3通过预训练阶段的学习就已经获得了非常出色的长文档检索能力，单纯使用稠密检索（Dense-w.o.long）就可以实现与E5-mistral相当的实验效果。</strong>考虑到 E5-mistrial 使用了高于 BGE-M3 数十倍的参数以及高达4096的向量维度，BGE-M3 在实际中使用成本将远低于 E5-mistrial，是颇具竞争力的。此外，研究人员还尝试在长文档中插入多个 CLS token以强化长文档建模效果（MCLS：Multiple CLS，详见技术报告）。实验发现，将这一策略不加训练而直接应用在推理时（Dense-w.o.long MCLS）就可以得到非常明显的效果增益。
 
-## <strong>BGE-M3技术路线简介</strong>  
+## BGE-M3技术路线简介
 
 ![](https://proxy-prod.omnivore-image-cache.app/1080x367,s5LiseJSlsNTshifraHxu5MzIgeCpY3tw6OfUn0Z05qY/https://pic4.zhimg.com/v2-ab2a9e9bca990608bb71c9e8d188fe13_b.jpg)
 

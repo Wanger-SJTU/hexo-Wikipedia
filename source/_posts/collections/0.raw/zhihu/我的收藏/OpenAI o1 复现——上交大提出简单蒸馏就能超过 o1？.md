@@ -27,7 +27,7 @@ source_url: https://zhuanlan.zhihu.com/p/10180139030
 
 去购买​
 
-](https://union-click.jd.com/jdc?e=jdext-1955201309570470445-0-1&p=JF8BAUsJK1olXwIEU15fCE4VBV8IHlIdXwEKU24ZVxNJXF9RXh5UHw0cSgYYXBcIWDoXSQVJQwYHXVZfD0MQHDZNRwYlD3EFVAgOADJyWDt1XjpzFHkcPRY4aEcbM28BG1kdXAcCU11tCEoWA2sNGFgTXDYyVFttWiXPtdnQvuoJiayNgdbKOEonA2kMElMXWgQCXV5dC3sXC2s4zfWBiI69je743uG51uK4ztK-ibiEZG5tC3tMVjtBXkcVVQIGV19dCkofB2kJHl0UWAMGSF9BCHsUAm0NGFIdWAEEOltdCUsUAm8KElp7XwYDVVdZDkoRA18IK1glA2gDU1pZCk8VVwFUTVtIVUcGAzBUDk0QBW8JK1kUXAQAZG5tVh12cBlQU1xWXERUIis0dBh0fhxoHyhPMwRBEQwgfCtUaiwAEwVoKFFfJ25YOEsRA204)**
+](https://union-click.jd.com/jdc?e=jdext-1955201309570470445-0-1&p=JF8BAUsJK1olXwIEU15fCE4VBV8IHlIdXwEKU24ZVxNJXF9RXh5UHw0cSgYYXBcIWDoXSQVJQwYHXVZfD0MQHDZNRwYlD3EFVAgOADJyWDt1XjpzFHkcPRY4aEcbM28BG1kdXAcCU11tCEoWA2sNGFgTXDYyVFttWiXPtdnQvuoJiayNgdbKOEonA2kMElMXWgQCXV5dC3sXC2s4zfWBiI69je743uG51uK4ztK-ibiEZG5tC3tMVjtBXkcVVQIGV19dCkofB2kJHl0UWAMGSF9BCHsUAm0NGFIdWAEEOltdCUsUAm8KElp7XwYDVVdZDkoRA18IK1glA2gDU1pZCk8VVwFUTVtIVUcGAzBUDk0QBW8JK1kUXAQAZG5tVh12cBlQU1xWXERUIis0dBh0fhxoHyhPMwRBEQwgfCtUaiwAEwVoKFFfJ25YOEsRA204)
 
 随着 OpenAI o1 的发布，推理能力的巨大提升立即吸引了业界的广泛关注，国内迅速掀起了一股复现 o1 的热潮。目前，国内已经有大量团队在复现 o1，以下是几个具有代表性的团队：
 
@@ -160,7 +160,7 @@ deepseek-sft-abeldeepseek-sft-prm800kSFT-phase10.3720.290SFT-phase2-shortcutLear
 
 长思维回答：
 
-**让我们来探讨如何求出顶点为 A(1, 1) 、 B\left( 6,1 \right) 和 C\left( 3,7 \right) 的三角形的面积。
+让我们来探讨如何求出顶点为 A(1, 1) 、 B\left( 6,1 \right) 和 C\left( 3,7 \right) 的三角形的面积。
 首先，我们使用给定顶点 A\left( x_1,y_1 \right) 、 B\left( x_2,y_2 \right) 和 C\left( x_3,y_3 \right) 的三角形面积公式。公式如下：
 
 $$ \text{面积} = \frac{1}{2} |x_1(y_2-y_3) + x_2(y_3-y_1) + x_3(y_1-y_2)| $$
@@ -190,7 +190,7 @@ $$ \text{面积} = \frac{1}{2} \times 30 = 15 $$
 
 长思维回答：
 
-**让我们一步一步地解决这个问题，记录我们的推理过程以及在过程中需要做的任何调整。
+让我们一步一步地解决这个问题，记录我们的推理过程以及在过程中需要做的任何调整。
 我们有一个关于圆柱体的问题，其中将半径增加6个单位和将高度增加6个单位都会导致体积增加 y 立方单位。我们的目标是找到圆柱体的原始半径，已知原始高度为2。
 首先，让我们使用圆柱体体积的公式 V = \pi r^2 h  来建立初始方程。我们假设原始半径为 r ，高度为 2。因此，原始体积为 V = \pi r^2 \times 2  。
 现在，当半径增加6个单位时，新体积变为 V' = \pi (r+6)^2 \times 2  。我们知道这导致体积增加了 y 立方单位，因此：
@@ -202,7 +202,7 @@ $$ \pi (r+6)^2 \times 2 = \pi r^2 \times 2 + y $$
 
 我们再看一个：
 
-问题3：正六边形的对角线有两种可能的长度。较短长度与较长长度的比率是多少？**
+问题3：正六边形的对角线有两种可能的长度。较短长度与较长长度的比率是多少？
 长思维回答：
 
 > 让我们探讨在正六边形中较短对角线与较长对角线的比率问题。
@@ -216,7 +216,7 @@ $$ \frac{\text{较长对角线}}{\text{较短对角线}} = \frac{2s}{s\sqrt{3}} 
 
 和上面的问题一样，回答中找出的错误根本不存在。前面并没有计算出 1+\sqrt{3} 的过程，而纠错位置却硬造出一个错误。
 
-目前看上交大开源的这份包含 327 条示例的长思维数据是有问题的，回答中找出的错误根本不存在。**
+目前看上交大开源的这份包含 327 条示例的长思维数据是有问题的，回答中找出的错误根本不存在。
 
 ### 二阶段：知识蒸馏
 

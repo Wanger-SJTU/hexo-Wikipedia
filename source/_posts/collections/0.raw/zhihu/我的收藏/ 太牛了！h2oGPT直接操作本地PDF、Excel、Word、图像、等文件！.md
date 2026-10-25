@@ -19,7 +19,7 @@ source_url: https://zhuanlan.zhihu.com/p/647580415
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_05846e28a2a9.jpg)
 
-查询和总结您的文档，或者只是使用 h2oGPT（一个 Apache V2 开源项目）与本地私有 GPT LLM 聊天。**
+查询和总结您的文档，或者只是使用 h2oGPT（一个 Apache V2 开源项目）与本地私有 GPT LLM 聊天。
 项目地址****
 [https://github.com/h2oai/h2ogpt](https://link.zhihu.com/?target=https%3A//github.com/h2oai/h2ogpt)
 
@@ -110,7 +110,7 @@ https://gpt.h2o.ai/
 文档管理****可以查看和管理自己上传的文档。
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_73facb12f924.jpg)
 
-聊天记录管理：**
+聊天记录管理：
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_7f3dadf6f282.jpg)
 
 自定义输出配置

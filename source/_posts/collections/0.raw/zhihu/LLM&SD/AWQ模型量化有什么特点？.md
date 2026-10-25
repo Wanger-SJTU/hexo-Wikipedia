@@ -21,7 +21,7 @@ source_url: https://www.zhihu.com/question/645963779/answer/4841384841
 
 临战弹琴，遇事摸鱼，赶 paper 不急
 
-**​ 关注
+​ 关注
 
 这篇文章是 AWQ（activation-aware weight quantization）的阅读笔记，实际上这篇文章是 9 月 12 日我在从广州飞往洛杉矶的飞机上就开始读的。然而此后，因为学校手续等等事由，没能及时补充上读书笔记，而 SGLang 的文档自然也搁置了许久。无妨，从今天开始便要认真工作了。这篇工作是 MLsys 2024 的 best paper，可见其受欢迎程度。
 
@@ -58,7 +58,7 @@ source_url: https://www.zhihu.com/question/645963779/answer/4841384841
 
 12. 通过测试 bbl 作为 metric，AWQ 达到了某种意义上的最优。此外，AWQ 具有不平凡的 generalizability，对于 instruction-tuned model 甚至 multi-modal model 都有不错的效果。
 
-【特别强调】**
+【特别强调】
 
 <strong>这里测试 PPL 是值得质疑的。</strong>开 COLM 期间我和一些做 ML sys 的老哥聊了聊，我一直以为 LLM evaluate 已经非常好 hack 了，结果有业内人士给我说其实 ML sys 的 work 更好 hack。一个典例就是有的 quantization paper 会去测试 ppl。ppl 即便 maintain 的再好，对于下游任务也是 nonsense，因此但凡是测试 ppl 的 paper，一般都是很有问题的。
 

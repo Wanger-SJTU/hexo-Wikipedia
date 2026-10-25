@@ -25,7 +25,7 @@ id: a631977e-1d0c-4e3c-9a0c-46f282104536
 
 上回和大家分享了推荐算法中的常见指标Precision、Recall、AUC、GAUC等，此次继续和大家分享一些推荐系统中常见的评价指标，包括：MRR、HR、MAP等。这次分享的一些指标会用到上回介绍的一些内容，因此有不了解的小伙伴可以先看一下
 
-## <strong>MRR</strong>
+## MRR
 
 平均倒数排名（Mean Reciprocal Rank,MRR），该指标反应的是我们找到的这些item是否摆在用户更明显的位置，强调位置关系，顺序性。公式如下，N表示推荐次数，pip\_i表示用户真实访问的item在推荐列表中的位置，如果没在推荐序列中，则p为无穷大，1/p为0。
 
@@ -33,13 +33,13 @@ MRR\=1N∑i\=1N1piMRR=\\frac{1}{N}\\sum\_{i=1}^{N}{\\frac{1}{p\_i}} \\\\
 
 举个栗子：加入我们去top-5，推荐\[1,2,3,4,5\]这5个item，然后测试数据中对应的访问的item为3，则1/p=1/3。
 
-## <strong>HR</strong>
+## HR
 
 命中率（Hit Rate，HR），它反映的是在推荐序列中是否包含了用户真正点击的item，公式如下，N表示推荐次数，hit()函数表示是否命中，即用户选择的item是否在推荐序列中，存在则为1，反之则为0。
 
 HR\=1N∑i\=1Nhit(i)HR=\\frac{1}{N}\\sum\_{i=1}^{N}{hit(i)} \\\\
 
-## <strong>MAP</strong>
+## MAP
 
 平均精度均值（Mean Average Precision，MAP），该指标在目标检测、多标签等领域也都有应用，是一个应用很广的评价指标。MAP是计算AP（Average Precision）的均值，因此我们需要先知道如何计算AP。
 
@@ -65,7 +65,7 @@ AP\=1N∑i\=1Nhit(i)×1piAP=\\frac{1}{N}\\sum\_{i=1}^{N}{hit(i)\\times \\frac{1}
 
 MAP\=1|U|∑i\=1|U|APiMAP=\\frac{1}{|U|}\\sum\_{i=1}^{|U|}{AP\_i} \\\\
 
-## <strong>F-Score</strong>
+## F-Score
 
 刚刚我们提到同时考虑Precision和Recall的MAP，这里还有一个可以同时考虑P和R的指标就是F-score。这个指标其实也很常用，这里就不过多介绍了。公式如下，
 

@@ -24,9 +24,8 @@ TFRT是一个新的TensorFlow运行时。它的目标是提供一个统一的、
 - 全异步，kernel不阻塞
 - 良好的错误传播机制
 - 性能是第一位（graph and eager）
-**
 
-整体流程：**
+整体流程：
 
 ![](/images/collections/0.raw/zhihu/%E6%A8%A1%E5%9E%8B%E9%83%A8%E7%BD%B2%E9%82%A3%E4%BA%9B%E4%BA%8B/asset/img_b6d3971d1d07.jpg)
 
@@ -39,7 +38,7 @@ TFRT是一个新的TensorFlow运行时。它的目标是提供一个统一的、
 
 ![](/images/collections/0.raw/zhihu/%E6%A8%A1%E5%9E%8B%E9%83%A8%E7%BD%B2%E9%82%A3%E4%BA%9B%E4%BA%8B/asset/img_2ddaf2673032.jpg)
 
-**[https://github.com/tensorflow/runtime/blob/master/documents/img/BEF_conversion.svg](https://link.zhihu.com/?target=https%3A//github.com/tensorflow/runtime/blob/master/documents/img/BEF_conversion.svg)
+[https://github.com/tensorflow/runtime/blob/master/documents/img/BEF_conversion.svg](https://link.zhihu.com/?target=https%3A//github.com/tensorflow/runtime/blob/master/documents/img/BEF_conversion.svg)
 
 - Compiler优化TF Graph并产生low-level TFRT Host Program，TFRT host program用MLIR表达。
 - tfrt_translate和bef_executor是tools目录下的2个可执行文件。
@@ -51,7 +50,7 @@ TFRT是一个新的TensorFlow运行时。它的目标是提供一个统一的、
 - high level的表示便于编译分析并优化，是平台无关的。
 - low level的表示目的是高效执行，是平台相关的。
 
-TFRT的整体架构：**
+TFRT的整体架构：
 
 ![](/images/collections/0.raw/zhihu/%E6%A8%A1%E5%9E%8B%E9%83%A8%E7%BD%B2%E9%82%A3%E4%BA%9B%E4%BA%8B/asset/img_409cf321c9b1.jpg)
 
@@ -60,7 +59,6 @@ TFRT包含Distributed Runtime、Host Runtime和Device Runtime。
 - Host Runtime：提供Kernel相关数据结构和注册机制，提供Kernel Graph的执行机制，另外提供Threading Model、Memory Allocation等基本组件。
 - Distributed Runtime：提供分布式相关Kernel和分布式相关API。
 - Device Runtime：GPU Runtime将Cuda操作封装为Kernel，并在内部实现了Buffer/Tensor/Allocator等组件。无流分配等复杂操作（由编译器负责）。
-**
 
 ### Host Runtime
 

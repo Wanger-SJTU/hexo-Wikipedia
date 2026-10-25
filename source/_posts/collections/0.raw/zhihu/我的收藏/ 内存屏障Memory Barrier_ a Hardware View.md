@@ -103,7 +103,7 @@ However, the memory-barrier instructions can interact with the invalidate queue,
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_e6409393278b.jpg)
 
-### <strong>Memory-Barrier Instructions For Specific CPUs</strong>
+### Memory-Barrier Instructions For Specific CPUs
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_4299b9a7e66f.jpg)
 

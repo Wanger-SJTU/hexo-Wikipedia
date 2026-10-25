@@ -66,7 +66,6 @@ KIVI 通过对流行的 LLM 的 KV 缓存中的元素分布进行了全面的研
 
 然而，对于逐通道 key 缓存量化，量化过程跨越不同的Token，这不能直接在流式场景中实现。KIVI解决这个问题的关键思想是将每 G 个Token的 Key 缓存进行分组并分别进行量化。
 
-**
 
 ![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_4b760575cb35.jpg)
 

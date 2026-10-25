@@ -15,7 +15,7 @@ source_url: https://zhuanlan.zhihu.com/p/10130905669
 ---
 
 
-**直接说结论：全量聚类用 DBSCAN；无监督流式聚类用 DenStream；已知聚类数、按较大时间间隔获取聚类标签且对计算量敏感，用 CluStream.GitHub 项目地址：[stream-clustering](https://link.zhihu.com/?target=https%3A//github.com/luochang212/stream-clustering)
+直接说结论：全量聚类用 DBSCAN；无监督流式聚类用 DenStream；已知聚类数、按较大时间间隔获取聚类标签且对计算量敏感，用 CluStream.GitHub 项目地址：[stream-clustering](https://link.zhihu.com/?target=https%3A//github.com/luochang212/stream-clustering)
 
 本文涉及的内容包括：
 
@@ -563,7 +563,6 @@ for i, (x, _) in enumerate(stream.iter_array(x_test)):
 ```
 
 
-**
 
 # 再将所有的训练和预测数据预测一遍，看是否发生变化
 
@@ -757,7 +756,7 @@ utils.simple_scatter(data=X,
 
 CluStream（Clustering Stream）算法是一种用于数据流聚类的算法，主要应用于大规模、高速生成的数据流场景。它能够高效地对数据流进行实时聚类，且支持动态变化的聚类结构。值得注意的是，CluStream 在执行聚类时需要明确指定聚类数，这包括微观聚类阶段的微簇数量和宏观聚类阶段的最终簇数量。
 
-CluStream算法的基本流程**
+CluStream算法的基本流程
 
 CluStream算法的基本思想是通过以下两个主要步骤来对数据流进行聚类：
 
@@ -1004,7 +1003,7 @@ utils.simple_scatter(data=X,
 
 <strong>轮廓系数（Silhouette Coefficient）</strong> 是一种用于评估聚类效果的指标，它从单个样本的角度衡量其聚类的合理性。轮廓系数综合考虑了样本与其所属簇内点的相似性（紧密度）和样本与其最近簇的点的相似性（分离度）。
 
-#### <strong>1. 定义公式</strong>
+#### 1. 定义公式
 
 对于某个样本 i ： 
 

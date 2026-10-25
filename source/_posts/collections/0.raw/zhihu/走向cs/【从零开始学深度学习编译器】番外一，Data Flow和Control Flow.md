@@ -17,11 +17,11 @@ source_url: https://zhuanlan.zhihu.com/p/369780094
 
 【GiantPandaCV导语】本文作为从零开始学深度学习编译器的番外篇，介绍了一下深度学习框架的Data Flow和Control Flow，并基于TensorFlow解释了TensorFlow是如何在静态图中实现Control Flow的。而对于动态图来说，是支持在Python层直接写Control Flow的，最后基于Pytorch介绍了如何将Python层的Control Flow导出到TorchScript模型以及ONNX模型。
 
-### <strong>0x0. 前言</strong>
+### 0x0. 前言
 
 本来是想在讲TVM Relay的时候提一下DataFlow和ControlFlow的，但是担心读者看到解析代码的文章打开就关了，所以这里用一篇简短的文章来介绍一下深度学习框架中的DataFlow和ControlFlow。
 
-### <strong>0x1. DataFlow</strong>
+### 0x1. DataFlow
 
 我记得我接触的第一个深度学习框架是TensorFlow1.x，本科毕业设计也是基于TensorFlow完成的，因此这里我将以TensorFlow1.x为例介绍一下DataFlow。
 
@@ -73,7 +73,6 @@ Tensor("add:0", shape=(), dtype=float32
 
 这是因为，TensorFlow1.x实现的这个计算函数首先在内存中构造了一个数据流图，长这样：
 
-**
 
 ![](/images/collections/0.raw/zhihu/%E8%B5%B0%E5%90%91cs/asset/img_0cadca5c5754.jpg)
 
@@ -81,13 +80,12 @@ Tensor("add:0", shape=(), dtype=float32
 
 像TensorFlow这种基于数据流图（DataFlow）进行计算的深度学习框架不少，比如早期的Theano，2020年开源的国内深度学习框架OneFlow**，PaddlePaddle1.x 初级版本都是基于数据流图的。当然更多人将其称为静态图。
 
-### <strong>0x2. Control Flow</strong>
+### 0x2. Control Flow
 
 这一节我将结合TensorFlow1.x的Control Flow来为大家解析一下Control Flow的难点以及TensorFlow的一些解决方案。这里的内容理解主要基于这篇博客(https://www.altoros.com/blog/logical-graphs-native-control-flow-operations-in-tensorflow/)，感兴趣的同学可以去查看原文。
 
 在计算机科学中，控制流（Control Flow）定义了独立语句，指令，函数调用等执行或者求值的顺序。举个例子，我们要实现一个本机控制流，即我们需要根据函数A的输出值选择运行函数B或者C中的一个：
 
-**
 
 ![](/images/collections/0.raw/zhihu/%E8%B5%B0%E5%90%91cs/asset/img_a58613525431.jpg)
 
@@ -109,11 +107,10 @@ Pytorch官方文档指出当我们导出ONNX的时候如果想导出Python层的
 
 大概就是如果想在Pytorch里面导出含有Python层控制流的模型时导出ONNX会丢失控制流，如果需要保留建议导出TorchScript模型或者使用基于script模型的导出方式 像Pytorch这种动态图框架可以方便的使用Python层的Control Flow，但TensorFlow在1.x时代为了解决这个问题是花费了不少努力的，即TensorFlow1.x的原生控制流。
 
-### TensorFlow的原生控制流**
+### TensorFlow的原生控制流
 
 TensorFlow提供了几个运算符用于原生控制流，如下：
 
-**
 
 ![](/images/collections/0.raw/zhihu/%E8%B5%B0%E5%90%91cs/asset/img_2d050e08ba01.jpg)
 
@@ -123,11 +120,10 @@ TensorFlow提供了几个运算符用于原生控制流 那么使用这些原生
 - <strong>灵活</strong>。静态计算图可以使用动态模块加强，计算图逻辑是自包含的。Pytorch目前比TensorFlow更受欢迎的主要原因就是前者为动态计算图，可以在运行时修改计算图。TensorFlow 利用控制流可以在一个静态定义的计算图中实现类似动态计算图的功能。
 - <strong>兼容</strong>。通过 TensorBoard 调试和检查计算图，无缝通过 TensorFlow Serving 部署，也可以利用自动微分，队列和流水线机制。
 
-### <strong>控制依赖</strong>
+### 控制依赖
 
 TensorFlow会记录每一个运算符的依赖，然后基于依赖进行调度计算。也就是说一个运算符当且仅当它的依赖都完成之后才会执行一次。任何两个完成依赖的运算符可以以任意顺序进行。但这种设定可能会引发<strong>竞争</strong>，比如：
 
-**
 
 ![](/images/collections/0.raw/zhihu/%E8%B5%B0%E5%90%91cs/asset/img_094509d85796.jpg)
 
@@ -142,11 +138,10 @@ TensorFlow会记录每一个运算符的依赖，然后基于依赖进行调度�
 ![](/images/collections/0.raw/zhihu/%E8%B5%B0%E5%90%91cs/asset/img_8bbfd679e2f5.jpg)
 
 加入依赖关系之后，计算图长这样
-### 条件分支**
+### 条件分支
 
 接下来看一下条件分支，即TensorFlow如何处理我们在这一节开头提出来的那个例子？
 
-**
 
 ![](/images/collections/0.raw/zhihu/%E8%B5%B0%E5%90%91cs/asset/img_5c844d1b32b9.jpg)
 
@@ -159,11 +154,10 @@ TensorFlow提供了两个条件控制OP，即tf.cond和tf.case 下面的代码�
 ![](/images/collections/0.raw/zhihu/%E8%B5%B0%E5%90%91cs/asset/img_51e95658fbd2.jpg)
 
 并列的条件分支&amp;gt;2个时，使用tf.case来控制
-### 循环**
+### 循环
 
 TensorFlow提供了`tf.while_loop`来构造循环块，感觉和RNN类似的结构有这个需求，例如：
 
-**
 
 ![](/images/collections/0.raw/zhihu/%E8%B5%B0%E5%90%91cs/asset/img_145eed38eebd.jpg)
 
@@ -173,7 +167,7 @@ tf.while_loop可以实现循环控制流解决RNN这种计算图结构的控制�
 
 使用tf.while_loop在静态图中实现循环控制流总的来说，TensorFlow应该是首个将Control Flow引入到计算图中的深度学习框架，而不是像动态图框架那样直接在Python层去做Control Flow，这方面必须给予一定的尊重。即使Pytorch目前在学术界已经比TensorFlow更加流行，但基于TensorFlow演化的各种工业级项目仍然发挥着作用。
 
-### 0x3. Pytorch中的Control Flow**
+### 0x3. Pytorch中的Control Flow
 
 在Pytorch这种动态图框架中，支持直接在Python端写Control Flow，并且可以将这些控制逻辑放到计算图中。这里以TorchScript为例，当我们尝试将Pytorch模型转为TorchScript时，有两种方式，一种是trace，另外一种是script。对于trace模式，适合Python层没有Control Flow的计算图，举例如下：
 
@@ -282,7 +276,6 @@ torch.onnx.export(model, (dummy_input, loop_count), 'loop.onnx', verbose=True)
 
 这样就可以成功导出名字为`loop`的ONNX模型，使用Netron可视化软件打开看一下：
 
-**
 
 ![](/images/collections/0.raw/zhihu/%E8%B5%B0%E5%90%91cs/asset/img_ff819af355e1.jpg)
 
@@ -314,11 +307,11 @@ torch.onnx.export(model, (dummy_input, loop_count), 'loop.onnx', verbose=True,
 ![](/images/collections/0.raw/zhihu/%E8%B5%B0%E5%90%91cs/asset/img_6950845efe05.jpg)
 
 Pytorch模型中在Python层定义的Control Flow被保留下来了
-### 0x4. 总结**
+### 0x4. 总结
 
 这篇文章介绍了一下深度学习中的Data Flow和Control Flow，然后介绍了一下将Pytorch模型转为TorchScript的两种模式，并探索了要将Pytorch的Python层的Control Flow转换为ONNX应该怎么做。
 
-### <strong>0x5. 参考</strong>
+### 0x5. 参考
 
 - https://blog.csdn.net/lvxingzhe123456/article/details/82597095
 - https://www.altoros.com/blog/logical-graphs-native-control-flow-operations-in-tensorflow/

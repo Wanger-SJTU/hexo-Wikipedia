@@ -48,7 +48,7 @@ RAG主要面临三个方面的挑战：检索质量、增强过程和生成质�
 
 ![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_c0a8bbd16229.jpg)
 
-**从图上可以清晰的看出，整个产品架构包含如下四层：
+从图上可以清晰的看出，整个产品架构包含如下四层：
 
 - 最底层是模型层。在模型层屏蔽掉了模型的差异，不仅可以支持自研的序列猴子，也可以支持开源的大模型，第三方的模型。此外，为了优化embedding的效果，提出一种跨语言Embedding模型，有效的解决跨语言检索问题，同时提高了模型的效果。
 - 离线理解层。在该层，主要围绕智能知识库和搜索增强两个模块设计的。关于智能知识库主要负责将非结构化的文本进行处理，从而转化为检索知识库，主要包括文本解析，表格识别，OCR识别等。搜索增强通过引入问句改写、重排等模块，保证检索的精准度。
@@ -64,7 +64,7 @@ RAG主要面临三个方面的挑战：检索质量、增强过程和生成质�
 - query理解：该模块旨在对用户的query进行理解或者将用户的query生成结构化的查询，既可以查询结构化的数据库也可以查询非结构化的数据，进而提高召回率。该模块包括四部分，他们分别是query改写，query扩写和意图识别等。**各个模块的介绍我们将在之后的章节进行详细介绍。
 - 检索模型：该模型旨在从给定的文档集或知识库中检索相关信息。 他们通常使用信息检索或语义搜索等技术来根据给定的查询识别最相关的信息。基于检索的模型擅长查找准确且具体的信息，但缺乏生成创意或新颖内容的能力。从技术上来讲， 检索模型主要包括<strong>文档加载、文本转换、Embedding等模块。</strong>我们将在之后的章节中详细介绍。
 - 生成模型：该模型旨在根据给定的Prompt或上下文生成新内容。 目前，生成模型可以生成富有创意且连贯的文本，但它们可能会在事实准确性或与特定上下文的相关性方面遇到困难。在RAG框架中，生成模型主要包括<strong>chat系统（长期记忆和短期记忆）、Prompt优化</strong>等。这些内容在之后的章节中也会介绍。
-**总之，检索增强生成结合了检索模型和生成模型优势，克服它们各自的局限性。 在此框架中，基于检索的模型用于根据给定的查询或上下文从知识库或一组文档中检索相关信息。 然后，检索到的信息将用作生成模型的输入或附加上下文。通过整合检索到的信息，生成模型可以利用基于检索的模型的准确性和特异性来生成更相关、更准确的文本。这有助于生成模型立足于现有知识，生成与检索信息一致的文本。
+总之，检索增强生成结合了检索模型和生成模型优势，克服它们各自的局限性。 在此框架中，基于检索的模型用于根据给定的查询或上下文从知识库或一组文档中检索相关信息。 然后，检索到的信息将用作生成模型的输入或附加上下文。通过整合检索到的信息，生成模型可以利用基于检索的模型的准确性和特异性来生成更相关、更准确的文本。这有助于生成模型立足于现有知识，生成与检索信息一致的文本。
 
 ### 4. Query理解
 
@@ -87,7 +87,7 @@ RAG主要面临三个方面的挑战：检索质量、增强过程和生成质�
 
 该模块主要利用LLM重新措辞用户query，而不是直接使用原始的用户query进行检索。这是因为对于RAG系统来说，在现实世界中原始query不可能总是最佳的检索条件。
 
-4.2.1 HyDE**
+4.2.1 HyDE
 
 Hypothetical Document Embeddings（HyDE）是一种生成文档嵌入以检索相关文档而不需要实际训练数据的技术。首先，LLM创建一个假设答案来响应query。虽然这个答案反映了与query相关的模式，但它包含的信息可能在事实上并不准确。接下来，query和生成的答案都被转换为嵌入。然后，系统从预定义的数据库中识别并检索在向量空间中最接近这些嵌入的实际文档。
 
@@ -115,7 +115,7 @@ Chain of Verification (CoVe) 旨在通过系统地验证和完善回答以尽量
 
 ![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_9b2849bf42a2.jpg)
 
-4.3.3 [RAG-Fusion](https://link.zhihu.com/?target=https%3A//github.com/Raudaschl/rag-fusion)**
+4.3.3 [RAG-Fusion](https://link.zhihu.com/?target=https%3A//github.com/Raudaschl/rag-fusion)
 
 在这种方法中，原始query经过LLM 生成多个query。然后可以并行执行这些搜索查询，并将检索到的结果一并传递。当一个问题可能依赖于多个子问题时，这种方法就非常有用。RAG-Fusion便是这种方法的代表，它是一种搜索方法，旨在弥合传统搜索范式与人类查询的多面性之间的差距。这种方法先是采用LLM生成多重查询，之后使用倒数排名融合（Reciprocal Rank Fusion，RRF）来重新排序。
 
@@ -127,7 +127,7 @@ Chain of Verification (CoVe) 旨在通过系统地验证和完善回答以尽量
 
 ![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_4e94edddcc73.jpg)
 
-**ReAct的模式如上图所示，它是将思维链提示（Chain of Thoughts，简写为CoT）和Action计划生成结合起来，相互补充增强，提升大模型解决问题的能力。其中CoT的Reasoning推理跟踪有助于模型诱导、跟踪和更新行动计划以及处理异常。Action操作允许它与知识库或环境等外部来源接口并收集其他信息。
+ReAct的模式如上图所示，它是将思维链提示（Chain of Thoughts，简写为CoT）和Action计划生成结合起来，相互补充增强，提升大模型解决问题的能力。其中CoT的Reasoning推理跟踪有助于模型诱导、跟踪和更新行动计划以及处理异常。Action操作允许它与知识库或环境等外部来源接口并收集其他信息。
 
 #### 4.4 Query重构
 
@@ -155,7 +155,7 @@ Chain of Verification (CoVe) 旨在通过系统地验证和完善回答以尽量
 
 检索的一个关键部分是只获取文档的相关部分。当加载文档后，通常需要对其进行转换，以便更好地适应应用程序。这涉及几个转换步骤，以便为检索文档做好准备。其中一个主要步骤是将大型文档分割（或分块）成较小的块，即文本转换器。最简单的例子是，当需要处理长篇文本时，有必要将文本分割成若干块，以便能放入模型的上下文窗口中。理想情况下，希望将语义相关的文本片段放在一起。这听起来很简单，但潜在的复杂性却很大。
 
-5.4.1 工作原理**
+5.4.1 工作原理
 
 - 将文本分割成语义上有意义的小块（通常是句子）。
 - 开始将这些小块组合成一个大块，直到达到一定的大小（用某个函数来衡量）。
@@ -185,7 +185,7 @@ NameSplits OnAdds MetadataDescriptionRecursiveA list of user defined charactersR
 经过前面的数据读取和文本分块操作后，接着就需要对处理好的数据进行索引。索引是一种数据结构，用于快速检索出与用户查询相关的文本内容。它是检索增强 LLM 的核心基础组件之一。
 下面介绍几种常见的索引结构。为了说明不同的索引结构，引入节点(Node)的概念。在这里，节点就是前面步骤中对文档切分后生成的文本块(Chunk)。下面的索引结构图来自 LlamaIndex 的《 How Each Index Works》。
 
-5.7.1 摘要索引（以前称为链式索引） **
+5.7.1 摘要索引（以前称为链式索引）
 
 摘要索引只是将节点存储为顺序链。在后续的检索和生成阶段，可以简单地顺序遍历所有节点，也可以基于关键词进行过滤。
 
@@ -197,23 +197,21 @@ NameSplits OnAdds MetadataDescriptionRecursiveA list of user defined charactersR
 
 ![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_f11f13fcdcef.jpg)
 
-**
 
-5.7.3 关键词表索引**
+5.7.3 关键词表索引
 
 关键词表索引从每个节点中提取关键词，构建了每个关键词到相应节点的多对多映射，意味着每个关键词可能指向多个节点，每个节点也可能包含多个关键词。在检索阶段，可以基于用户查询中的关键词对节点进行筛选。
 
 ![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_3d2658153ac9.jpg)
 
-**
 
-5.7.4 向量索引**
+5.7.4 向量索引
 
 向量索引是当前最流行的一种索引方法。这种方法一般利用文本嵌入模型将文本块映射成一个固定长度的向量，然后存储在向量数据库中。检索的时候，对用户查询文本采用同样的Embedding模型映射成向量，然后基于向量相似度计算获取最相似的一个或者多个节点。
 
 ![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_6b9348a50545.jpg)
 
-#### <strong>5.8 排序和后处理</strong>
+#### 5.8 排序和后处理
 
 经过前面的检索过程可能会得到很多相关文档，就需要进行筛选和排序。常用的筛选和排序策略包括：
 
@@ -223,9 +221,9 @@ NameSplits OnAdds MetadataDescriptionRecursiveA list of user defined charactersR
 - 基于时间进行过滤和排序，比如只筛选最新的相关文档
 - 基于时间对相似度进行加权，然后进行排序和筛选
 
-### <strong>6. 生成模型</strong>
+### 6. 生成模型
 
-#### <strong>6.1 回复生成策略</strong>
+#### 6.1 回复生成策略
 
 检索模块基于用户查询检索出相关的文本块，回复生成模块让 LLM 利用检索出的相关信息来生成对原始查询的回复。这里给出一些不同的回复生成策略。
 
@@ -281,7 +279,7 @@ NameSplits OnAdds MetadataDescriptionRecursiveA list of user defined charactersR
 
 #### 8.3 如何实现归因
 
-#### 8.3.1 模型生成**
+#### 8.3.1 模型生成
 
 直接让模型生成归因信息。可在Prompt 添加类似“每个生成的证据都需在参考信息中进行引用”的话。这种方法最简单，但也对模型的指令遵循能力要求较高，一般会采用GPT-4 回答，或者微调模型让模型学习在生成时附带引用的回答方式。缺点也很明显，极度依赖模型的能力（甚至可能引用也是编的），且针对实际场景中出现的badcase 修复周期长，干预能力弱。
 
@@ -289,7 +287,7 @@ NameSplits OnAdds MetadataDescriptionRecursiveA list of user defined charactersR
 
 在模型生成的过程中进行引用信息的附加。具体的操作为在流式生成的场景下，对生成的文本进行语义单元的判断（比如句号，换行段落等），当出现一个完整的语义单元时，将该语义单元和参考信息中的每个参考源进行匹配（关键字，embedding等），通过卡阈值的办法找到Top-N 的参考源，从而将参考源进行附加返回。这种方法的实现相比方法一简单了很多，badcase 修复周期也短，但受限于匹配方式和阈值，且存在一个前提假设：模型的生成文本来源于参考信息。
 
-**更多关于归因研究的工作可以参考：[A Survey of Large Language Models Attribution](https://link.zhihu.com/?target=https%3A//arxiv.org/pdf/2311.03731.pdf) 或 LLM+RAG 中关于回答片段归因的讨论
+更多关于归因研究的工作可以参考：[A Survey of Large Language Models Attribution](https://link.zhihu.com/?target=https%3A//arxiv.org/pdf/2311.03731.pdf) 或 LLM+RAG 中关于回答片段归因的讨论
 ### 9. 评估
 
 做开发的同学不管用没用过，对 TDD(Test-Driven Development)的大名总归是听过的，类似的，开发大模型应用的时候也应该有个对应的 MDD(Metrics-Driven Development) 的概念，最舒服的姿势肯定是预先定义好业务的场景、用到的数据、设定的指标以及需要达到的分值，然后按部就班的实现既定目标，员工士气高老板也开心！
@@ -307,7 +305,7 @@ NameSplits OnAdds MetadataDescriptionRecursiveA list of user defined charactersR
 
 #### 9.2 评测方法
 
-9.2.1 RGB（[Benchmarking Large Language Models in Retrieval-Augmented Generation](https://link.zhihu.com/?target=https%3A//arxiv.org/pdf/2309.01431.pdf)）**
+9.2.1 RGB（[Benchmarking Large Language Models in Retrieval-Augmented Generation](https://link.zhihu.com/?target=https%3A//arxiv.org/pdf/2309.01431.pdf)）
 
 这一工作系统地研究了检索增强生成对大型语言模型的影响。它分析了不同大型语言模型在RAG所需的4项基本能力方面的表现，包括噪声鲁棒性、拒答、信息整合和反事实鲁棒性，并建立了检索增强生成基准。此外，现在做RAG都是做的pipeline，涉及到切块、相关性召回、拒答等多个环节，每个环节都可以单独做评测，文中提到的4个能力其实可以影射到每个环节当中。
 

@@ -50,7 +50,6 @@ WAW对同一个寄存器，第一条指令写它，第二条指令也写它，�
 
 经过data hazard和control hazard的分析，我们体会到5级流水线是能保证指令执行的正确性的，也就是说5级流水线的计算结果和不使用流水线的CPU是一样的。至于忽略的分支预测和bypassing都属于性能上的锦上添花，因此不关注。
 
-**
 
 ### 2. 超标量处理器<span class="wikilink wikilink--missing" title="未导入的页面">2</span>(#ref_2) 
 
@@ -68,7 +67,7 @@ ILP理论上有多种实现方式，工程师们可以发挥自己的聪明才�
 
 顺序取指，乱序执行，顺序提交整体结构如上图，下面依次分析
 
-- Instruction Fetching**
+- Instruction Fetching
 超标量处理器一次可以取多条指令，但我们这里并不关心，因为这只关乎性能，取指令本身还是顺序的。
 
 - <strong>Instruction Decoding</strong>

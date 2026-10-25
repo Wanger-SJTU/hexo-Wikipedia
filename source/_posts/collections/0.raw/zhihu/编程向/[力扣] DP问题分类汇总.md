@@ -27,7 +27,7 @@ source_url: https://zhuanlan.zhihu.com/p/126546914
 - 博弈型DP；
 - 记忆化搜索；
 
-### <strong>1. 线性DP</strong>
+### 1. 线性DP
 
 最经典单串：
 
@@ -77,7 +77,7 @@ source_url: https://zhuanlan.zhihu.com/p/126546914
 
 10. 正则表达式匹配
 
-### <strong>2. 区间DP</strong>
+### 2. 区间DP
 
 516. 最长回文子序列 
 
@@ -89,7 +89,7 @@ source_url: https://zhuanlan.zhihu.com/p/126546914
 
 312. 戳气球
 
-### <strong>3. 背包DP</strong>
+### 3. 背包DP
 
 416. 分割等和子集 (01背包-要求恰好取到背包容量)
 
@@ -101,7 +101,7 @@ source_url: https://zhuanlan.zhihu.com/p/126546914
 
 474. 一和零 (二维费用背包)
 
-### <strong>4. 树形DP</strong>
+### 4. 树形DP
 
 124. 二叉树中的最大路径和
 
@@ -113,7 +113,7 @@ source_url: https://zhuanlan.zhihu.com/p/126546914
 
 337. 打家劫舍 III
 
-### <strong>5. 状态压缩DP</strong>
+### 5. 状态压缩DP
 
 464. 我能赢吗
 
@@ -123,7 +123,7 @@ source_url: https://zhuanlan.zhihu.com/p/126546914
 
 1349. 参加考试的最大学生数
 
-### <strong>6. 数位DP</strong>
+### 6. 数位DP
 
 233. 数字 1 的个数
 
@@ -131,7 +131,7 @@ source_url: https://zhuanlan.zhihu.com/p/126546914
 
 1015. 可被 K 整除的最小整数
 
-### <strong>7. 计数型DP</strong>
+### 7. 计数型DP
 
 <strong>计数型DP都可以以组合数学的方法写出组合数，然后dp求组合数</strong>
 
@@ -143,7 +143,7 @@ source_url: https://zhuanlan.zhihu.com/p/126546914
 
 1259. 不相交的握手 (<strong>卢卡斯定理</strong>求大组合数模质数)
 
-### <strong>8. 递推型DP</strong>
+### 8. 递推型DP
 
 <strong>所有线性递推关系都可以用矩阵快速幂做，可以O(logN)，最典型是斐波那契数列</strong>
 
@@ -157,7 +157,7 @@ source_url: https://zhuanlan.zhihu.com/p/126546914
 
 1137. 第 N 个泰波那契数
 
-### <strong>9. 概率型DP</strong>
+### 9. 概率型DP
 
 <strong>求概率，求数学期望</strong>
 
@@ -165,7 +165,7 @@ source_url: https://zhuanlan.zhihu.com/p/126546914
 
 837. 新21点
 
-### <strong>10. 博弈型DP</strong>
+### 10. 博弈型DP
 
 <strong>策梅洛定理，SG定理，minimax</strong>
 
@@ -193,7 +193,7 @@ Nim游戏
 
 1275. 找出井字棋的获胜者
 
-### <strong>11. 记忆化搜索</strong>
+### 11. 记忆化搜索
 
 <strong>本质是 dfs + 记忆化，用在状态的转移方向不确定的情况</strong>
 

@@ -81,7 +81,7 @@ RDMA 通信模型中，数据通路进行 RDMA Write 操作的流程如图 5 所
 
 ![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_da554f5f2bbb.jpg)
 
-图 5 RDMA Write 操作流程**
+图 5 RDMA Write 操作流程
 
 #### 2.3 RDMA Read 操作流程
 
@@ -190,9 +190,8 @@ CMP_AND_SWAP`（比较并交换）是一种更复杂的原子操作，执行过�
 
 FETCH_AND_ADD` 和 `CMP_AND_SWAP` 操作通常是在同一个地址上进行的，这个地址是通过 `ib_reg_mr` 注册的。这确保了远程节点能够访问并操作该内存区域，实现分布式系统中的高效并发控制。
 
-**
 
-#### 4.1 `FETCH_AND_ADD`（获取并增加）**
+#### 4.1 `FETCH_AND_ADD`（获取并增加）
 
 <strong>用途：</strong>
 
@@ -214,7 +213,7 @@ FETCH_AND_ADD` 和 `CMP_AND_SWAP` 操作通常是在同一个地址上进行的�
 
 假设多个节点访问一个共享资源，并且每次访问后都需要递增计数器（例如：对API请求次数的统计）。每个节点可以通过 `FETCH_AND_ADD` 操作递增计数器，从而实现高效的并发计数。
 
-#### 4.2 `CMP_AND_SWAP`<strong>（比较并交换）</strong>
+#### 4.2 `CMP_AND_SWAP`**（比较并交换）
 
 <strong>用途：</strong>
 
@@ -238,7 +237,7 @@ FETCH_AND_ADD` 和 `CMP_AND_SWAP` 操作通常是在同一个地址上进行的�
 
 <strong>示例：</strong>假设有多个节点在进行分布式锁操作。每个节点检查锁变量，如果锁是空闲的，则通过 `CMP_AND_SWAP` 原子地设置锁变量的值，这样就获得了锁的所有权。
 
-#### 4.3 <strong>这两种操作的组合应用</strong>
+#### 4.3 **这两种操作的组合应用
 
 FETCH_AND_ADD` 和 `CMP_AND_SWAP` 结合使用，可以实现复杂的分布式同步协议：
 

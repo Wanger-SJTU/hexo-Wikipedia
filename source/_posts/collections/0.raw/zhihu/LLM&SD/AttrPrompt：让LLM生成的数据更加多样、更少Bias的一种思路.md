@@ -15,7 +15,7 @@ source_url: https://zhuanlan.zhihu.com/p/663371079
 ---
 
 
-### <strong>引言</strong>
+### 引言
 
 让LLM生成数据不难，难的是生成高质量的数据。
 
@@ -35,7 +35,7 @@ source_url: https://zhuanlan.zhihu.com/p/663371079
 
 本文首先介绍一种更多样、更少bias的数据生成方法：<strong>AttrPrompt</strong>，源自NIPS 2023的论文：<strong>Large Language Model as Attributed Training Data Generator: A Tale of Diversity and Bias[3]</strong>；随后笔者将谈谈实践工作（包括OpenAI的内容审核、知乎博主的Style Transfer尝试），最后提到对AttrPrompt本质的思考，希望对读者有启发。
 
-### <strong>何谓AttrPrompt</strong>
+### 何谓AttrPrompt
 
 一句话：明确告诉LLM，你想要生成的文本在<strong>哪些维度（Attribute）</strong>上、有怎样的 <strong>具体要求（Value）</strong>。
 
@@ -63,8 +63,8 @@ source_url: https://zhuanlan.zhihu.com/p/663371079
 
 ![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_304bd2a90fe7.jpg)
 
-**补充：在实践中，想得到更加详细的Attribute，还需要更多的工作、以及更多的专业知识。
-### 效果如何**
+补充：在实践中，想得到更加详细的Attribute，还需要更多的工作、以及更多的专业知识。
+### 效果如何
 
 衡量合成数据主要看两方面：
 
@@ -96,8 +96,8 @@ source_url: https://zhuanlan.zhihu.com/p/663371079
 
 从结果来看，在4个文本多分类数据集上，<strong>AttrPrompt方法合成的数据，都能带来比SimPrompt更好的效果，但和Gold还有差距</strong>。说明更多样的生成样本，的确能带来更好的模型训练效果。
 
-**补充：要进一步提升合成数据的多样性，可以再增加Attribute的数量、Value的范围；论文提供了一种在生成中减少bias的思路 -- 将可能产生bias的维度作为Attribute，在Prompt中指明，然后通过随机采样来消除这个bias。
-### 发散一下**
+补充：要进一步提升合成数据的多样性，可以再增加Attribute的数量、Value的范围；论文提供了一种在生成中减少bias的思路 -- 将可能产生bias的维度作为Attribute，在Prompt中指明，然后通过随机采样来消除这个bias。
+### 发散一下
 
 至此，AttrPrompt的主要内容已讲完，意犹未尽的朋友可以阅读原论文，以了解更多细节。
 
@@ -121,17 +121,17 @@ source_url: https://zhuanlan.zhihu.com/p/663371079
 
 随后笔者进行了发散思考，提到了两个实践工作，包括OpenAI在内容审核场景的应用、知乎博主的Style Transfer尝试，最后提出AttrPrompt的本质是学习文本分布的结构化自然语言表征。
 
-### <strong>关注笔者</strong>
+### 关注笔者
 
 笔者将定期分享论文解读、技术实践等内容，欢迎读者朋友关注笔者的知乎账号，也欢迎关注笔者的公众号（二维码如下）。
 
 http://weixin.qq.com/r/6RM6IgLEQ188rUZB90b7 (二维码自动识别)
 
-### <strong>欢迎交流</strong>
+### 欢迎交流
 
 如果你对本文感兴趣、或者对NLP的学习或实践感兴趣，欢迎与笔者进行交流，关注公众号后即可获得微信号。期待和你一起进行有趣的探索：）
 
-#### <strong>参考资料</strong>
+#### 参考资料
 
 [1] 智谱清言: *https://chatglm.cn/*
 

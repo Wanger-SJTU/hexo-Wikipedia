@@ -25,7 +25,7 @@ source_url: https://zhuanlan.zhihu.com/p/679733540
 
 改文章属于召回早期作品，直指召回层的关键问题——<strong>训练数据正负样本判定。</strong>
 
-#### <strong>2.结构</strong>
+#### 2.结构
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_697ae8316f83.jpg)
 
@@ -33,7 +33,7 @@ source_url: https://zhuanlan.zhihu.com/p/679733540
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_1cdbb6bd3d39.jpg)
 
-#### <strong>3.Loss</strong>
+#### 3.Loss
 
 定义三元组函数，
 
@@ -74,7 +74,6 @@ source_url: https://zhuanlan.zhihu.com/p/679733540
 
 原文 : Que2Search: Fast and Accurate Query and Document Understanding for Search at Facebook
 
-**
 
 #### 1.核心问题
 

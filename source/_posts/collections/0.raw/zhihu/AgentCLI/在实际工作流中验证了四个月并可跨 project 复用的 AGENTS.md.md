@@ -15,7 +15,7 @@ source_url: https://zhuanlan.zhihu.com/p/2009629370684306095
 ---
 
 
-**# AGENTS.md - Agent Coding Guidelines
+# AGENTS.md - Agent Coding Guidelines
 **<strong>## 文档写作原则：Self-Contained（自解释）</strong>**
 所有文档（PROGRESS.md、STATES.md、EXPERIMENTS.md、TODO.md）必须做到<strong>只读文档就能完全理解</strong><strong>，不依赖对话上下文或任何脑内默认知识。</strong>
 核心要求：

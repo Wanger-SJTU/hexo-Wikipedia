@@ -15,7 +15,7 @@ source_url: https://zhuanlan.zhihu.com/p/73468830
 ---
 
 
-### *<strong>Structured Knowledge Distillation for Semantic Segmentation</strong>*
+### *Structured Knowledge Distillation for Semantic Segmentation*
 
 [](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/1903.04197)
 

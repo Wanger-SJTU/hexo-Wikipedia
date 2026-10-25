@@ -19,7 +19,7 @@ FA4 虽然论文还没出来，但是代码已经开源。目前网上的分析�
 
 <strong>总的来说，FA4 针对 B 系列进行了优化，关键算法改进包括：</strong><strong>1. 高效的在线 softmax</strong>：采用了一种新型在线 softmax 算法，可跳过 90% 的输出重缩放操作。<strong>2. exp 近似加速</strong>：为更有效地使 softmax 计算与张量核计算重叠，运用指数的软件模拟以提升吞吐量。<strong>此外，FA4 在工程实现上也做了优化，利用 warp specialization</strong>的特性设计了 5 阶段的流水线，充分发挥了 GPU 的并行性。![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_84b7473457fd.jpg)
 
-前向推理的计算效率对比，可见FA4相对于Nvidia cuDNN Attention内核性能提升约 20%。(B200 FP16算力为2.2PFLOPS，图中可见算力利用率最高为72%)**
+前向推理的计算效率对比，可见FA4相对于Nvidia cuDNN Attention内核性能提升约 20%。(B200 FP16算力为2.2PFLOPS，图中可见算力利用率最高为72%)
 
 本文档主要参考的外部资源如下：
 
@@ -84,7 +84,7 @@ $y=e^x = 2^{x / \ln(2)} = 2^{i + r} = 2^i \cdot 2^r $
 
   这正是 SFU 中 <strong>exp 指令</strong> 的核心机制。
 
-- FA4 中，使用 Horner 多项式近似方法来近似计算 f(r)=2^r ：**
+- FA4 中，使用 Horner 多项式近似方法来近似计算 f(r)=2^r ：
 g(r)=0.07711909*r^3+0.22756439*r^2+0.69514614*r+1.0 
 
 将 f(r)和 g(r)画图如下，可见在[0, 1)之间，两者几乎重合

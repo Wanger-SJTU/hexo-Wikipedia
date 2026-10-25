@@ -29,7 +29,6 @@ source_url: https://zhuanlan.zhihu.com/p/649325629
 
 方法是打开 Stable Dissusion WebUI 前端页面，进入“扩展插件”-“从网址安装”，在“扩展插件的git仓库网址”中输入：[https://github.com/Mikubill/sd-webui-controlnet](https://link.zhihu.com/?target=https%3A//github.com/Mikubill/sd-webui-controlnet)，然后点击“安装”，待安装完成后重启 SD WebUI。各种 ControlNet 模型和预处理器一般会在首次使用时自动下载安装。
 
-**
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_df90840ee46f.jpg)
 
@@ -77,7 +76,7 @@ source_url: https://zhuanlan.zhihu.com/p/649325629
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_931a179803f7.jpg)
 
-生图参数：**
+生图参数：
 
 a man in a suit waves from a plane window as he stands on the deck of a plane with his hand up, Beeple, sunglasses, a stock photo, american romanticism**Negative prompt: EasyNegative,bad hands,bad fingers
 Steps: 20, Sampler: Euler a, CFG scale: 7, Seed: 289185078, Size: 656x432, Model hash: c0d1994c73, Model: realisticVisionV20_v20, Denoising strength: 0.7, Clip skip: 2, ControlNet 0: "preprocessor: openpose_full, model: control_v11p_sd15_openpose_fp16 [73c2b67d], weight: 1.5, starting/ending: (0, 1), resize mode: Crop and Resize, pixel perfect: True, control mode: Balanced, preprocessor params: (512, -1, -1)", Hires upscale: 2, Hires upscaler: Latent, TI hashes: "EasyNegative: c74b4e810b03", Version: v1.5.1
@@ -128,7 +127,7 @@ Steps: 20, Sampler: Euler a, CFG scale: 7, Seed: 289185078, Size: 656x432, Model
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_eb4ac03beff3.jpg)
 
-生图参数：**
+生图参数：
 
 eastern girl,18 years old, standing, waving left hand, balck hair, long straight hair, blue eyes, white shirt, blue jeans, trees, blue sky, cloud
 Negative prompt: EasyNegative, bad hands, bad fingers, malformed

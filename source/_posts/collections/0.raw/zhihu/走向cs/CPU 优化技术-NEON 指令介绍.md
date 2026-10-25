@@ -17,15 +17,15 @@ source_url: https://zhuanlan.zhihu.com/p/441686632
 
 <strong>版权声明 ©本文首发于知乎专栏：移动端算法优化</strong><strong>本专栏「移动端算法优化」所有文章著作权归作者所有。</strong><strong>允许个人直接分享本专栏文章到个人微博、朋友圈。但媒体（包括但不限于网站、微信公众号、微博营销号）转载需事先征得专栏同意。转载需在正文开头显著位置注明出处，给出原始链接，注明「发表于知乎专栏《移动端算法优化》」，并不得进行任何形式的修改演绎。</strong>
 
-### <strong>一、 概述</strong>
+### 一、 概述
 
 ARM NEON 可以提升计算机视觉等计算密集型程序的性能，编译器可以将 C/C++ 代码自动转换为 NEON 指令。但是想要有更好的性能还是需要手工编写 NEON 代码，熟练掌握 NEON 指令是第一步。
 
 本文接下来会详细的介绍 Armv7 和 Armv8 架构下 NEON 向量寄存器、NEON 汇编指令格式、NEON  Intrinsics 指令格式、常用的 Intrinsics 指令以及作用、在 x86 平台调试 NEON 代码，最后针对几个常用的 Intrinsics 指令结合实例进行说明。
 
-### <strong>二、NEON指令格式</strong>
+### 二、NEON指令格式
 
-#### <strong>2.1 Armv7，Armv8，Armv9的介绍</strong>
+#### 2.1 Armv7，Armv8，Armv9的介绍
 
 Armv7-A 和 Armv8-A 的关系如下图所示:
 
@@ -39,14 +39,14 @@ ARM ISAArmv8-A 的执行状态可以分为 <strong>AArch64</strong> 和 <strong>
 
 Armv9-A 是 arm 当前最新的指令架构，Armv9-A 除了向前兼容 Armv8-A，在性能计算上有了很大的提升，主要表现在安全、AI 以及改进矢量扩展（SVE2）和 DSP 能力。
 
-#### <strong>2.2 向量寄存器介绍</strong>
+#### 2.2 向量寄存器介绍
 
 <strong>向量寄存器</strong>用来存放向量数据，*每个向量元素的类型必须相同*。向量寄存器根据处理元素的大小可以划分为 / 个通道。
 
 ![](/images/collections/0.raw/zhihu/%E8%B5%B0%E5%90%91cs/asset/img_30e3dabbd251.jpg)
 
 SIMD register
-#### <strong>2.2.1 AArch64 向量寄存器</strong>
+#### 2.2.1 AArch64 向量寄存器
 
 AArch64 有 32 个 128bit 的向量寄存器，这些寄存器又可以划分为：
 
@@ -58,7 +58,7 @@ AArch64 有 32 个 128bit 的向量寄存器，这些寄存器又可以划分为
 ![](/images/collections/0.raw/zhihu/%E8%B5%B0%E5%90%91cs/asset/img_dc54eadf1fec.jpg)
 
 AArch64 SIMD register
-#### <strong>2.2.2 AArchh32 / ARMV7向量寄存器</strong>
+#### 2.2.2 AArchh32 / ARMV7向量寄存器
 
 AArch32/Armv7 有 16 个 128bit 的向量寄存器，这些寄存器又可以划分为：
 
@@ -70,7 +70,7 @@ AArch32/Armv7 有 16 个 128bit 的向量寄存器，这些寄存器又可以划
 ![](/images/collections/0.raw/zhihu/%E8%B5%B0%E5%90%91cs/asset/img_735dc8c6e497.jpg)
 
 AArch32 SIMD register
-#### <strong>2.3 汇编指令格式介绍</strong>
+#### 2.3 汇编指令格式介绍
 
 AArch64 与AArch32 / Armv7-A 的 NEON 汇编指令除了种类上存在差异，格式上也存在很大差异。
 
@@ -79,7 +79,7 @@ AArch64 与AArch32 / Armv7-A 的 NEON 汇编指令除了种类上存在差异，
 - {}, 表示可选项
 - <>, 表示必选项
 
-#### <strong>2.3.1 AArch64汇编指令格式</strong>
+#### 2.3.1 AArch64汇编指令格式
 
 `{prefix>}op>{suffix>} Vd.T>, Vn.T>, Vm.T>`
 
@@ -149,7 +149,7 @@ V0[3] = SAT((V2[1] + round_const) >> shift)
 ![](/images/collections/0.raw/zhihu/%E8%B5%B0%E5%90%91cs/asset/img_4d5190100f48.jpg)
 
 SQRSHRN2
-#### <strong>2.3.2 AArch32 / Armv7汇编指令格式</strong>
+#### 2.3.2 AArch32 / Armv7汇编指令格式
 
 `V{mod>}op>{shape>}{cond>}{.dt>}dest1>{,dest2>},src1>{,src2>}`
 
@@ -208,11 +208,11 @@ for (int i = 0; i  4; i++)
 ![](/images/collections/0.raw/zhihu/%E8%B5%B0%E5%90%91cs/asset/img_38a6c789de10.jpg)
 
 VQDMULL.S16
-#### <strong>2.4 intrinsics指令格式</strong>
+#### 2.4 intrinsics指令格式
 
 相比于汇编指令，NEON Intrinsics 是一种更简单的编写 NEON 代码的方法，NEON Intrinsics 类似于 C 函数调用，在编译时由编译器替换为相应的汇编指令，使用时需要包含头文件`arm_neon.h`*。*
 
-#### <strong>2.4.1 向量类型格式</strong>
+#### 2.4.1 向量类型格式
 
 // 非数组向量格式
 type>size>xnumber_of_lanes>_t
@@ -230,7 +230,7 @@ type>size>xnumber_of_lanes>xlength_of_array>_t
 ![](/images/collections/0.raw/zhihu/%E8%B5%B0%E5%90%91cs/asset/img_1e6467a2dddc.jpg)
 
 向量类型示意图
-#### <strong>2.4.2 NEON内联函数格式</strong>
+#### 2.4.2 NEON内联函数格式
 
 vmod>opname>shape>flags>_type>
 
@@ -293,16 +293,16 @@ int16x4_t vmul_lane_s16(int16x4_t a, int16x4_t v, const int lane);
 ![](/images/collections/0.raw/zhihu/%E8%B5%B0%E5%90%91cs/asset/img_cfc51bec1177.jpg)
 
 内联函数结构示意图
-### <strong>三、intrinsics 指令介绍</strong>
+### 三、intrinsics 指令介绍
 
-#### <strong>3.1 intrinsics指令分类</strong>
+#### 3.1 intrinsics指令分类
 
 功能类别介绍Load/Store对数据进行向量加载和存储，既可以对单个数据进行加载和存储，也可以对向量结构体数据进行加载和存储Arithmetic对整数和浮点数向量加减运算Multiply整型或浮点型的向量乘法运算，同时包含了乘法和加法混合运算，以及乘法和减法的运算的混合运算Shift向量位移操作，其中位移数据可以是立即数也可以是向量Logical and compare包含了逻辑运算（与或非运算等）和比较运算（等于、大于、小于等）Floating-point包含了浮点和其他类型数据之间的相互转化操作Permutation对向量进行重排操作Misecllaneous标量数据赋值到向量的操作Data processing一般性处理，极值操作、绝对值差、数值取反、平方根倒数等Type conversion数值类型转换，数据的组合及提取等
-#### <strong>3.2 NEON intrinsics指令详述</strong>
+#### 3.2 NEON intrinsics指令详述
 
 本节将对每种类型的 NEON intrinsics 指令做出详细的描述。
 
-#### <strong>3.2.1 Load/Store</strong>
+#### 3.2.1 Load/Store
 
 - 以解交织的方式加载数据
 // 以解交织方式加载数据到n个向量寄存器, n为1~4
@@ -325,7 +325,7 @@ void vst[n]q>_lane_type(Scalar_t *p_addr, Vector_t M, int N);
 ![](/images/collections/0.raw/zhihu/%E8%B5%B0%E5%90%91cs/asset/img_b4ccc9526195.jpg)
 
 2 个向量中多通道 load/store, 以及单个通道的load/store
-#### <strong>3.2.2 Arithmetic</strong>
+#### 3.2.2 Arithmetic
 
 - 整数和浮点数的加减运算。
 // 基本的加减操作
@@ -363,7 +363,7 @@ Result_t vrsubhn_type(Vector1_t N, Vector2_t M);
 ![](/images/collections/0.raw/zhihu/%E8%B5%B0%E5%90%91cs/asset/img_3d9034cf5690.jpg)
 
 vhadd_s32 instrisics指令的操作
-#### <strong>3.2.3 Multiply</strong>
+#### 3.2.3 Multiply
 
 - 整型和浮点型的乘法运算, 参与计算的都是向量
 // 基本乘法操作
@@ -440,7 +440,7 @@ Result_t vmlsl_n_type(Vector1_t N, Vector2_t M, Scalar_t P);
 Result_t vqdmlal_n_type(Vector1_t N, Vector2_t M, Scalar_t P);
 Result_t vqdmlsl_n_type(Vector1_t N, Vector2_t M, Scalar_t P);
 
-#### <strong>3.2.4 Shift</strong>
+#### 3.2.4 Shift
 
 - 立即数类型的位移
 // 基本的立即数左移和右移
@@ -512,7 +512,7 @@ Result_t vsliq>_n_type(Vector1_t N, Vector2_t M, int n);
 ![](/images/collections/0.raw/zhihu/%E8%B5%B0%E5%90%91cs/asset/img_e4119199fe06.jpg)
 
 vsliq_n_u32  intrinsics 指令的操作
-#### <strong>3.2.5 Logical and compare</strong>
+#### 3.2.5 Logical and compare
 
 <strong>eq</strong> 表示相等，<strong>ge</strong> 表示大于或等于，<strong>gt</strong>表示大于，<strong>le</strong>表示小于或等于，<strong>lt</strong>表示小于
 
@@ -551,7 +551,7 @@ Result_t vbicq>_type(Vector1_t N, Vector2_t M);
 // P 作为 mask，按位 select。当 P 中某位是 1 时，将选择 N 中对应位作为输出，否则选择 M
 Result_t vbslq>_type(Vector1_t N, Vector2_t M, Vector3_t P);
 
-#### <strong>3.2.6 Floating-point</strong>
+#### 3.2.6 Floating-point
 
 - 浮点数之间的转化, 以及浮点类型与整数类型之间的转化
 // 单精度浮点转化为整数类型
@@ -575,7 +575,7 @@ Result_t vfmsq>_type(Vector1_t N, Vector2_t M, Vector3_t P);
 ![](/images/collections/0.raw/zhihu/%E8%B5%B0%E5%90%91cs/asset/img_1c90fe88a397.jpg)
 
 vfms intrinsics 指令操作
-#### <strong>3.2.7 Permutation</strong>
+#### 3.2.7 Permutation
 
 - 向量提取组合操作
 Result_t vextq>_type(Vector1_t N, Vector2_t M, int n);
@@ -598,7 +598,7 @@ Result_t vrev16q>_type(Vector_t N);
 vrev16_s8, vrev32_s8 intrinsics 指令操作
 
 - 旋转操作
-**旋转指令包含了两种矩阵旋转的指令，`TRN1`, `TRAN2` `Result_t vtrn1q>_type(Vector1_t N, Vector2_t M);
+旋转指令包含了两种矩阵旋转的指令，`TRN1`, `TRAN2` `Result_t vtrn1q>_type(Vector1_t N, Vector2_t M);
 Result_t vtrn2q>_type(Vector1_t N, Vector2_t M);
 
 ![](/images/collections/0.raw/zhihu/%E8%B5%B0%E5%90%91cs/asset/img_8973a9c3f118.jpg)
@@ -615,7 +615,7 @@ Result_t vuzpq>_type(Vector1_t N, Vector2_t M);
 ![](/images/collections/0.raw/zhihu/%E8%B5%B0%E5%90%91cs/asset/img_7ac2ed5b0c54.jpg)
 
 vzip_u8 intrinsics 指令操作
-#### 3.2.8 Miscellaneous**
+#### 3.2.8 Miscellaneous
 
 - 将同一个标量填充到每个向量通道
 Result_t vcreate_type(Scalar_t N);
@@ -631,7 +631,7 @@ Result_t vdupq>_lane_type(Vector_t N, int n);
 ![](/images/collections/0.raw/zhihu/%E8%B5%B0%E5%90%91cs/asset/img_23c4b23a1998.jpg)
 
 vdup_lane_s32 intrinsics 指令操作
-#### <strong>3.2.9 Data processing</strong>
+#### 3.2.9 Data processing
 
 - max\min操作
 // 基本的 max, min
@@ -705,7 +705,7 @@ Result_t vqmovn_type(Vector_t N);
 // QN(Saturated, Narrow) 类型的赋值，饱和的方式赋值，输出是输入宽度的两倍，而且输入为有符号数据，输出无符号
 Result_t vqmovun_type(Vector_t N);
 
-#### <strong>3.2.10 Type conversion</strong>
+#### 3.2.10 Type conversion
 
 - 元素类型的重新解释
 Result_t vreinterpretq>_DSTtype_SRCtype(Vector1_t N);
@@ -719,9 +719,9 @@ Result_t vget_low_type(Vector_t N);
 
 ![](/images/collections/0.raw/zhihu/%E8%B5%B0%E5%90%91cs/asset/img_5e093f915494.jpg)
 
-vget_low_s32 \ vget_high_s32 intrinsics 指令操作**
+vget_low_s32 \ vget_high_s32 intrinsics 指令操作
 
-### 四、NEON intrisics 指令在x86平台的仿真**
+### 四、NEON intrisics 指令在x86平台的仿真
 
 为了便于 NEON 指令从 ARM 平台移植到 x86 平台使用，Intel 提供了一套转化接口 <strong>NEON2SSE</strong>，用于将 NEON 内联函数转化为 Intel SIMD(SSE) 内联函数。大部分 x86 平台 C/C++编译器均支持 SSE，因此只需下载并包含接口头文件`NEON_2_SSE.h`，即可在x86平台调试 NEON 指令代码。
 
@@ -736,11 +736,11 @@ vget_low_s32 \ vget_high_s32 intrinsics 指令操作**
 - 对于使用 128 位向量运算的 NEON 操作，NEON2SSE 在 x86 平台能得到与 ARM 类似的加速比；
 - 如果使用 64 位向量做 NEON 运算，x86 平台的加速比将低于 ARM 平台。
 
-### <strong>五、 NEON指令的应用</strong>
+### 五、 NEON指令的应用
 
 本节将会结合实际应用场景介绍 NEON 指令的使用方法。
 
-#### <strong>5.1 RGB de-interleave 加载 / interleave 存储</strong>
+#### 5.1 RGB de-interleave 加载 / interleave 存储
 
 使用 `vld3q` 以解交织的方式加载 RGB 图像；`vst3q` 以交织的方式存储 RGB 图像。
 
@@ -753,7 +753,7 @@ vst3q(out_ptr, vec);
 ![](/images/collections/0.raw/zhihu/%E8%B5%B0%E5%90%91cs/asset/img_905e3b0cd0d6.jpg)
 
 load/store 示意图
-#### <strong>5.2 查表操作</strong>
+#### 5.2 查表操作
 
 大多数的重排操作中，重排模式都是固定的，这在使用上带来了一定的局限性。
 
@@ -764,22 +764,22 @@ NEON 在常规重排指令外，支持使用`TBL`和`TBX`指令来完成任意�
 - 向量类型的下标，通过下标向量到表中查找对应的元素。
 - 向量类型的表，最多可以有 4 个寄存器向量值。
 
-**这两条指令使用下标向量到对应表中索引数据，并把找到的数据存放到输出向量中去。
+这两条指令使用下标向量到对应表中索引数据，并把找到的数据存放到输出向量中去。
 TBL`和`TBX`的不同在于：当没有索引值超过范围时，`TBL`返回 0， `TBX`保持原有目的数据不变。`// a表示table, b表示index, c表示结果
 uint8x8_t c = vtbl2_u8(a, b)
 
 ![](/images/collections/0.raw/zhihu/%E8%B5%B0%E5%90%91cs/asset/img_f57595167d47.jpg)
 
 vtbl2_u8 intrisics 操作
-#### 5.3 边缘处理**
+#### 5.3 边缘处理
 
 处理图像边缘时，经常会有使用常数填充边界的情况。
 
 NEON 开发中，可以使用`DUP`指令将常数填充到向量中，然后使用`EXT`指令组建新向量。
 
-**例如 7x7 的 boxfilter，处理边界时需要填充 3 个像素的值。
+例如 7x7 的 boxfilter，处理边界时需要填充 3 个像素的值。
 
-- EXT指令还常常用于滤波向量的重组操作。**
+- EXT指令还常常用于滤波向量的重组操作。
 // 构造边界填充向量
 uint8_t c_0 =0;
 uint8x8_t v_c0 = v_dup_n_u8(c_0);
@@ -793,7 +793,7 @@ uint8x8_t v_border = vext_u8(v_1, v_c0, 3)
 ![](/images/collections/0.raw/zhihu/%E8%B5%B0%E5%90%91cs/asset/img_38aa22611bda.jpg)
 
 边界扩展示意图
-#### <strong>5.4 SAD操作</strong>
+#### 5.4 SAD操作
 
 <strong>SAD(sum of absolute difference)</strong>运算可以使用 NEON 指令来加速。 
 
@@ -819,11 +819,11 @@ uint32_t res = vaddvq_u32(v_sum);
 ![](/images/collections/0.raw/zhihu/%E8%B5%B0%E5%90%91cs/asset/img_f4fbe5024544.jpg)
 
 NEON SAD 操作示意图
-#### <strong>六、总结</strong>
+#### 六、总结
 
 本文主要介绍了 NEON 指令相关的知识，首先通过讲解 arm 指令集的分类，NEON寄存器的类型，树立基本概念。然后进一步梳理了 NEON 汇编以及 intrinsics 指令的格式。最后结合指令的分类，使用例子讲述 NEON 指令的使用方法。
 
-### <strong>七、附录</strong>
+### 七、附录
 
 参考资料
 

@@ -17,7 +17,7 @@ source_url: https://zhuanlan.zhihu.com/p/2020921487947736363
 
 ### 深度对比：华为昇腾 Ascend950 (DaVinci arch35) vs NVIDIA SM_90 微架构
 
-** 本文从硬件架构、内存层次、编程模型、代码实例等多个维度，深入对比华为昇腾 Ascend950（DaVinci 架构 arch35 代）与 NVIDIA GPU Streaming Multiprocessor（SM）架构的设计哲学与实现差异。适合 AI 系统工程师、算子开发者以及对国产 AI 芯片感兴趣的读者。
+本文从硬件架构、内存层次、编程模型、代码实例等多个维度，深入对比华为昇腾 Ascend950（DaVinci 架构 arch35 代）与 NVIDIA GPU Streaming Multiprocessor（SM）架构的设计哲学与实现差异。适合 AI 系统工程师、算子开发者以及对国产 AI 芯片感兴趣的读者。
 #### 目录
 
 - [引言：两条不同的路径](https://zhuanlan.zhihu.com/p/2020921487947736363/edit#1-%E5%BC%95%E8%A8%80%E4%B8%A4%E6%9D%A1%E4%B8%8D%E5%90%8C%E7%9A%84%E8%B7%AF%E5%BE%84)
@@ -174,7 +174,6 @@ UB (Unified Buffer): 248 KB per AI Core
 <strong>参考</strong>：NVIDIA Hopper Architecture In-Depth
 #### 3.2 昇腾 AI Core (DaVinci arch35) 内部结构
 
-**
 
 ![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_7bb9884a2bc0.jpg)
 
@@ -194,7 +193,6 @@ arch35 AI Core 关键参数**：
 - <strong>UB → L1</strong>：支持 UB 数据回写 L1 进行缓存复用
 - <strong>SSBuf</strong>：CV 之间的消息通路，支持 AIC/AIV 核间同步
 
-**
 
 > 参考**：昇腾官方文档 - AI Core 基本架构
 
@@ -202,7 +200,6 @@ arch35 AI Core 关键参数**：
 
 DaVinci 架构从 910B 起，每个 AI Core 实际上包含两个<strong>协同工作的子核心</strong>：
 
-**
 
 ![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_a3808c099a54.jpg)
 
@@ -242,7 +239,6 @@ Ascend C 逻辑视角物理硬件说明一个 “AI Core” (Vector 算子)AIV �
 
 #### 4.1 内存层次对比
 
-**
 
 ![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_dce58cf0ba9a.jpg)
 
@@ -354,7 +350,6 @@ kernel_name>(argument_list);`
 
 - NVIDIA**：L2 Cache 默认全自动，开发者通过 `cudaAccessPolicyWindow` 在 Stream 级别”提示”哪些数据应持久化驻留，支持 hitRatio 精细调控，是<strong>锦上添花</strong>的优化手段。
 - <strong>昇腾</strong>：L2 Cache 同样默认自动缓存，但开发者被<strong>强烈建议</strong>通过 `SetL2CacheHint` 将只读一次的冷数据标记为 `CACHE_MODE_DISABLE` 以避免污染 L2，配合 Tiling 切分确保热数据在 L2 中驻留。这更像是<strong>性能必修课</strong>而非可选优化。
-**
 
 #### 4.3 数据流模型根本差异
 
@@ -370,7 +365,6 @@ NVIDIA：隐式数据流** — 代码中直接访问全局内存指针，硬件�
 
 #### 5.1 NVIDIA CUDA：SIMT 模型
 
-**
 
 ![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_ab4fa2fe50a6.jpg)
 
@@ -382,7 +376,6 @@ NVIDIA：隐式数据流** — 代码中直接访问全局内存指针，硬件�
 
 - SIMD**：一条指令操作一个向量缓冲区，开发者需显式管理向量宽度、对齐、Tail 处理。
 - <strong>SIMT</strong>：一条指令由多个独立线程执行，开发者像写标量代码，硬件自动并行化。
-**
 
 #### 5.3 编程模型对比表
 
@@ -579,7 +572,6 @@ extern "C" __global__ __aicore__ void vector_add_kernel(
 
 #### 6.4 执行流水线时序对比
 
-**
 
 ![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_626ba4bcfa8e.jpg)
 
@@ -784,7 +776,6 @@ operator/
 场景更适合 NVIDIA SM_90更适合昇腾 AI Core通用并行计算 (GPGPU)生态成熟，CUDA 无可替代主要面向 AI 场景矩阵运算密集型Tensor Core 强大Cube Unit 高效向量运算CUDA Core 灵活Vector Unit 专用高度优化的 AI 算子优化空间大显式控制上限更高快速原型开发代码简洁，调试方便学习曲线较陡LLM 推理成熟方案多950DT/PR 专用优化国产化要求受出口管制自主可控
 #### 设计哲学总结
 
-**
 
 ![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_d7dc4d006f08.jpg)
 

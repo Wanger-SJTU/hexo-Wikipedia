@@ -128,7 +128,7 @@ Wordline选通后，电容和Bitline的开关就被打开了，就出现了电�
 
 ![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_422ad8e03e23.jpg)
 
-点击图片可查看完整电子表格**
+点击图片可查看完整电子表格
 
 - <strong>DDR的写操作</strong>**由于写操作是向某个Memory cell写入0或者1，所以在操作上与读有些不同。
 1）第一步，将Bitline预充电到工作电压，也就是1V的一半，0.5V；
@@ -152,7 +152,7 @@ Wordline选通后，电容和Bitline的开关就被打开了，就出现了电�
 
 ![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_b2aecc7dcabf.jpg)
 
-点击图片可查看完整电子表格**
+点击图片可查看完整电子表格
 
 - <strong>DDR的刷新操作</strong>
 前面我们提到了，虽然电容非常简单，但是它也有缺点，就是电容会漏电：

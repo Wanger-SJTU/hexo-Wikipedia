@@ -53,11 +53,10 @@ source_url: https://www.zhihu.com/question/332778359/answer/3519201011
 - fmt: [https://github.com/fmtlib/fmt](https://link.zhihu.com/?target=https%3A//github.com/fmtlib/fmt) - 现代、安全且快速的C++20 format 库，代码行数3000左右，最近我就在看这个。
 这几个都是现代 C++ 风格的高质量开源代码仓库，值得学习和使用，个人更喜欢folly多一些。
 
-**
 
 再推荐15个小巧的C语言开源项目：
 
-- [stb](https://link.zhihu.com/?target=https%3A//github.com/nothings/stb)：简单的 C 库集合，C语言的轮子库，提供了很多实用的工具函数和数据结构。代码行数5000行左右，star数21.5k。**
+- [stb](https://link.zhihu.com/?target=https%3A//github.com/nothings/stb)：简单的 C 库集合，C语言的轮子库，提供了很多实用的工具函数和数据结构。代码行数5000行左右，star数21.5k。
 - [kilo](https://link.zhihu.com/?target=https%3A//github.com/antirez/kilo)：一个小巧的文本编辑器，可以在终端中运行，并且支持基本的编辑操作。代码行数1000行左右，star数5.9k。
 - [uthash](https://link.zhihu.com/?target=https%3A//github.com/troydhanson/uthash)：一个小型的哈希表实现库，可以用于 C 语言中的任何类型。代码行数1200行左右，star数3.4k。
 - [picotcp](https://link.zhihu.com/?target=https%3A//github.com/tass-belgium/picotcp)：一个小型的 TCP/IP 协议栈。代码行数4000行左右，star数995。
@@ -74,8 +73,8 @@ source_url: https://www.zhihu.com/question/332778359/answer/3519201011
 - [inih](https://link.zhihu.com/?target=https%3A//github.com/benhoyt/inih)：一个小型的 INI 配置文件解析器，可以用于读取和修改 INI 文件格式的配置文件。代码行数800行左右，star数2k。
 请注意，上述提到的代码行数仅为粗略估计（粗略看了下），可能不是完全准确。而关于 star 数量，是在我最近检查时（2023年4月5日）所观察到的数量。
 
-**作者：程序喵
-CPP学习网站：[程序喵/cpp-learning](https://link.zhihu.com/?target=https%3A//gitee.com/chengxumiaodaren/cpp-learning)创作不易，觉得不错的话，帮忙点个赞呗。**
+作者：程序喵
+CPP学习网站：[程序喵/cpp-learning](https://link.zhihu.com/?target=https%3A//gitee.com/chengxumiaodaren/cpp-learning)创作不易，觉得不错的话，帮忙点个赞呗。
 
 [发布于 2024-06-03 22:47](//www.zhihu.com/question/332778359/answer/3519201011)・上海
 

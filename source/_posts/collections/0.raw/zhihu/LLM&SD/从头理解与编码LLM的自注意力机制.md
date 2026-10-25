@@ -17,7 +17,6 @@ source_url: https://zhuanlan.zhihu.com/p/682016587
 
 ![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_9fac1bf80714.jpg)
 
-**
 
 本文将介绍Transformer架构和GPT-4、LLaMA等语言大模型中使用的自注意力机制。自注意力和相关机制是LLM的核心组件，使用LLM时，了解这些机制十分有必要。
 
@@ -25,17 +24,15 @@ source_url: https://zhuanlan.zhihu.com/p/682016587
 
 本文作者是机器学习和人工智能研究员Sebastian Raschka，目前担任Lightning AI的首席AI教育研究员，他正在编写书籍《从零开始构建语言大模型》。（以下内容由OneFlow编译发布，转载请联系授权。原文：https://magazine.sebastianraschka.com/p/understanding-and-coding-self-attention)
 
-来源 | Ahead of AI**
+来源 | Ahead of AI
 
 <strong>OneFlow编译</strong>
 
 <strong>翻译｜杨婷、宛子琳</strong>
 
-**
 
-### 1. 自注意力机制简介**
+### 1. 自注意力机制简介
 
-**
 
 自最初的Transformer论文“Attention Is All You Need”发表以来，自注意力（self-attention）成为了许多SOTA深度学习模型的基石，特别是在自然语言处理（NLP）领域。目前，自注意力机制的应用十分广泛，因此理解其工作原理至关重要。
 
@@ -57,9 +54,8 @@ source_url: https://zhuanlan.zhihu.com/p/682016587
 
 因此，本文的重点是最初的可缩放点积注意力机制（（scaled dot-product attention，称为自注意力机制），因为它仍是目前最流行、使用范围最广的注意力机制。然而，如果你对其他类型的注意力机制感兴趣，可以参考一些研究综述和最新论文，如《*2020 Efficient Transformers: A Survey*》、《*2023 A Survey on Efficient Training of Transformers*》以及最近的《*FlashAttention*》和《*FlashAttention-v2*》论文。
 
-### 2 嵌入一个输入句子**
+### 2 嵌入一个输入句子
 
-**
 
 在介绍自注意力机制之前，先考虑一个输入句子："Life is short, eat dessert first"。我们希望将其通过自注意力机制处理。类似于其他处理文本的建模方法（例如循环神经网络或卷积神经网络），首先我们需要创建一个句子嵌入（sentence embedding）。
 
@@ -136,9 +132,8 @@ torch.Size([6, 3])`
 ```
 
 
-### 3 定义权重矩阵**
+### 3 定义权重矩阵
 
-**
 
 接下来，我们将讨论一种广泛使用的自注意力机制，即缩放点积注意力机制，这是Transformer架构的重要组成部分。
 
@@ -180,9 +175,8 @@ W_value = torch.nn.Parameter(torch.rand(d, d_v))`
 
 为了更直观地进行说明，我们在这里使用了较小的数字。）
 
-### 4 计算未归一化的注意力权重**
+### 4 计算未归一化的注意力权重
 
-**
 
 现在，我们来计算第二个输入元素的注意力向量，其中第二个输入元素充当查询：
 
@@ -265,7 +259,7 @@ print(omega_2)`
 
 `tensor([-0.6004,  3.4707, -1.5023,  0.4991,  1.2903, -1.3374])`
 
-### 5 计算注意力权重****
+### 5 计算注意力权重
 
 自注意力机制的下一步操作是通过应用softmax函数，将未归一化的注意力权重*ω*归一化，得到标准化的注意力权重*α*（alpha）。此外，在通过softmax函数进行归一化之前，还需要使用1/√{*dk*}来对ω进行缩放，具体如下所示：
 
@@ -312,9 +306,8 @@ tensor([0.5313, 1.3607, 0.7891, 1.3110])`
 
 请注意，此输出向量的维度*(dv=4)*比原始输入向量的维度*(d=3)*高，因为我们之前指定了*dv>d*；然而，这里指定的嵌入大小*dv*是任意的。
 
-### 6 自注意力机制**
+### 6 自注意力机制
 
-**
 
 为总结前面章节中自注意力机制的代码实现，我们可以将前面的代码总结在一个简洁的SelfAttention类中：
 
@@ -375,9 +368,8 @@ tensor([[-0.1564,  0.1028, -0.0763, -0.0764],
 
 查看第二行，可以看到它与上一节context_vector_2中的值完全匹配：tensor([0.5313, 1.3607, 0.7891, 1.3110])。
 
-### 7 多头注意力机制**
+### 7 多头注意力机制
 
-**
 
 在本文一开始的顶部图表中（为了方便在下文再次展示），可以看到Transformer使用了一个名为"多头注意力（multi-head attention）"的模块。
 
@@ -494,9 +486,8 @@ context_vecs.shape: torch.Size([6, 4])`
 
 简而言之，使用多个注意头不仅能增加模型容量，还能增强其学习数据内部多样特征和关系的能力。例如，7B LLaMA 2模型使用了32个注意头。
 
-### 8 交叉注意力机制**
+### 8 交叉注意力机制
 
-**
 
 在上述代码演示中，我们设置d_q = d_k = 2和d_v = 4。换句话说，我们对查询和键序列使用了相同的维度。虽然值矩阵W_v通常选择与查询和键矩阵具有相同的维度（例如在PyTorch的MultiHeadAttention类中），但我们可以选择任意大小的值维度。
 
@@ -616,9 +607,8 @@ Output shape: torch.Size([6, 4])`
 
 ![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_97ed2477158d.jpg)
 
-### 9 因果自注意力机制**
+### 9 因果自注意力机制
 
-**
 
 本节，我们将先前讨论过的自注意力机制调整为了因果自注意力机制，特别是用于生成文本的类似GPT（解码器风格）的LLM。这种因果自注意力机制通常也被称为“掩码自注意力（masked self-attention）”。在原始Transformer架构中，它对应“掩码多头注意力”模块。为简单起见，本节只讨论单个注意力头，但相同的概念也适用于多个注意力头。
 
@@ -767,9 +757,8 @@ tensor([[1.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000],
 
 在神经网络中，像Transformer模型一样对注意力权重进行归一化，有两个主要优点：首先，总和为1的归一化注意力权重类似于概率分布，有助于按比例解释模型对输入的不同部分的注意力；其次，将注意力权重总和限制为1，有助于控制权重和梯度的规模，改善训练的动态性。
 
-无需重新归一化的更高效掩码处理**
+无需重新归一化的更高效掩码处理
 
-**
 
 在上述编写的因果自注意力过程中，我们首先计算注意力得分，然后计算注意力权重，掩码处理对角线以上的注意力权重，最后重新归一化注意力权重。步骤总结如下：
 
@@ -822,9 +811,8 @@ tensor([[1.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000],
 
 为什么这会生效呢？在最后一步应用softmax函数时，它将输入值转换为概率分布。当输入中存在-inf时，softmax会有效地将其视为零概率。因为 e^(-inf) 趋近于0，所以这些位置对输出概率没有任何影响。
 
-### 10 结论**
+### 10 结论
 
-**
 
 本文通过逐步编码探讨了自注意力机制的内部工作原理。基于此，我们深入探究了多头注意力机制，这是语言大模型Transformer的基本组件。
 
@@ -838,7 +826,7 @@ tensor([[1.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000],
 
 ![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_c9141417be70.jpg)
 
-SiliconLLM的吞吐最高提升近4倍，时延最高降低近4倍**
+SiliconLLM的吞吐最高提升近4倍，时延最高降低近4倍
 
 ![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_3a3b5a31a22b.jpg)
 
@@ -857,6 +845,6 @@ System Prompt场景：SiliconLLM的吞吐最高提升11倍；MoE模型：推理 
 - 语言大模型推理性能工程：最佳实践
 - 迈向100倍加速：全栈Transformer推理优化
 - Mistral AI:LLM推理的吞吐、时延及成本空间
-试用OneDiff: **
+试用OneDiff:
 
 [](https://link.zhihu.com/?target=http%3A//github.com/siliconflow/onediff)

@@ -19,7 +19,6 @@ source_url: https://zhuanlan.zhihu.com/p/60915302
 
 循环神经网络 (Recurrent Neural Network，RNN) 是一类具有短期记忆能力的神经网络，因而常用于序列建模。本篇先总结 RNN 的基本概念，以及其训练中时常遇到梯度爆炸和梯度消失问题，再引出 RNN 的两个主流变种 —— LSTM 和 GRU。
 
-**
 
 VanillaRNN" role="presentation" style="font-size: 100%; display: inline-block; position: relative;">VanillaRNN\Large\cal{Vanilla \;\; RNN} \\ 
 
@@ -63,7 +62,6 @@ $$\frac{\partial \textbf{h}_{t}}{\partial \textbf{h}_{k}} = \frac{\partial \text
 
 $$\prod_{i=k+1}^{t} \frac{\partial \textbf{h}_{i}}{\partial \textbf{h}_{i-1}} = \prod_{i=k+1}^{t} \textbf{W}^\top \text{diag} \left[ f'\left(\textbf{h}_{i-1}\right) \right] \\ $$
 
-**
 
 $由于 \textbf{W}_{hh} \in \mathbb{R}^{h \times h} 为方阵，对其进行特征值分解： $
 
@@ -81,7 +79,6 @@ $\mathbf{W}^t = (\mathbf{V} \, \text{diag}(\boldsymbol{\lambda}) \, \mathbf{V}^{
 
 ![](/images/collections/0.raw/zhihu/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%EF%BC%81/asset/img_f901f9ce4114.jpg)
 
-**
 
 (2)  Clipping Gradients**： 当梯度超过一定的 threshold 后，就进行 element-wise 的裁剪，该方法的缺点是又引入了一个新的参数 threshold。同时该方法也可视为一种基于瞬时梯度大小来自适应 learning rate 的方法： 
 
@@ -89,7 +86,6 @@ $$\text{if} \quad \lVert \textbf{g} \rVert \ge \text{threshold} \\[1ex] \textbf{
 
 ![](/images/collections/0.raw/zhihu/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%EF%BC%81/asset/img_363518242ff7.jpg)
 
-**
 
 ### 梯度消失的解决办法
 

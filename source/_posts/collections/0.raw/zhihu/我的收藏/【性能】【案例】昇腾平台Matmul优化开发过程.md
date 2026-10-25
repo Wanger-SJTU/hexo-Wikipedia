@@ -25,7 +25,6 @@ source_url: https://zhuanlan.zhihu.com/p/1989667615744995635
 
 其中，\rm op(X) = X 或 XT\rm X^T。
 
-**
 
 ### 昇腾910B平台简介
 
@@ -41,7 +40,6 @@ source_url: https://zhuanlan.zhihu.com/p/1989667615744995635
 
 其中，\rm op(X) = X 或 \rm X^T。
 
-**
 
 #### 昇腾910B平台简介
 
@@ -94,7 +92,7 @@ for (int kt = 0; kt
 
 根据上表可知，在该场景算子性能瓶颈在于MTE2流水线。此外，由于后续流水线依赖于MTE2流水线，为了防止后续流水线等待时间过长，且能被MTE2流水线掩盖，需要在L1 Buufer和L0 Buffer 上都进行Double Buffer设计。
 
-在实现Double Buffer后再使用msprof op simulator工具进行仿真，可得到如下仿真波形图。 AIC #0 仿真波形图**
+在实现Double Buffer后再使用msprof op simulator工具进行仿真，可得到如下仿真波形图。 AIC #0 仿真波形图
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_764dffceb925.jpg)
 

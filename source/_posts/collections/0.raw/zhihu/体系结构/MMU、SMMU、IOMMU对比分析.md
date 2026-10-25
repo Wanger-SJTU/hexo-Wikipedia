@@ -17,7 +17,6 @@ source_url: https://zhuanlan.zhihu.com/p/706779113
 
 （S，IO）MMU是一个与cache紧密关联的，不但体现在配合使用实现提升读取数据的性能，还体现在MMU内部实现中TLB（TBU）和TWU（TCU）也会分别使用cache来缓存va-pa的映射等信息，以及不同级页表的信息。
 
-**
 
 MMU即内存管理单元（Memory Manage Unit），无论是MMU、还是SMMU、IOMMU，其最基本的功能都是负责将虚拟地址转换成物理地址。
 
@@ -27,7 +26,7 @@ MMU即内存管理单元（Memory Manage Unit），无论是MMU、还是SMMU、I
 - TWU模块：负责完成页表的查过程
 ![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_53e94f3b3336.jpg)
 
-术语定义：**
+术语定义：
 
 <strong>页表：</strong>
 
@@ -66,9 +65,8 @@ MMU是负责把虚拟地址映射为物理地址，但凡"映射"都要解决两
 
 - 系统初始化代码会在内存中生成页表，然后把页表地址设置给MMU对应寄存器，使MMU知道页表在物理内存中的什么位置，以便在需要时进行查找。之后通过专用指令启动MMU，以此为分界，之后程序中所有内存地址都变成虚地址，MMU硬件开始自动完成查表和虚实地址转换。
 - os初始化后期，创建第一个用户进程，这个过程中也需要创建页表，把其地址赋给进程结构体中某指针成员变量。即每个进程都要有独立的页表。
-**
 
-MMU映射失败的几种情况**
+MMU映射失败的几种情况
 
 ．．1.访问了受内核保护的页面，或者访问了只读的页面（比如c语言中存储字符串字面量和const变量的段），此时内核会抛出段错误
 
@@ -78,7 +76,6 @@ MMU映射失败的几种情况**
 
 除了第一点，第二第三都会以内核降低自身运行速度来修复，也就是老师说的，通过中断形成页表映射，然后再重新执行引起中断的命令（此时数据页已经在内存中并且建立映射关系了）。
 
-**
 
 ![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_73c2bb9b09db.jpg)
 
@@ -90,9 +87,8 @@ MMU**是在处理器中使用的，一个MMU仅支持一个CPU，用于将支持
 
 ![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_cdb2fe75a617.jpg)
 
-**
 
-根据MMU和cache的顺序关系——物理和虚拟cache**
+根据MMU和cache的顺序关系——物理和虚拟cache
 
 ![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_f4652880b0ce.jpg)
 
@@ -108,9 +104,8 @@ CPU使用虚拟地址寻址高速缓存，这种高速缓存称为虚拟高速�
 
 CPU在寻址时，先把虚拟地址发送到高速缓存，若在高速缓存里找到所需数据，就不再访问TLB和DDR。
 
-**
 
-cache缓存寻址方式与设计 – VIVT, VIPT, PIPT**
+cache缓存寻址方式与设计 – VIVT, VIPT, PIPT
 
 •即用虚拟地址或者物理地址 (VA/PA) 作为Index和tag对缓存行进行寻址的方式引申出的不同缓存设计
 
@@ -122,7 +117,7 @@ VIVT-虚拟高速缓存 VIVT（Virtually-Indexed Virtually Tagged）![](/images/
 
 VIPT-物理标记的虚拟高速缓存 VIPT（Virtually-Indexed Physically-Tagged）![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_6b0511b4153a.jpg)
 
-PIPT-物理高速缓存 PIPT（Physically-Indexed，Physically-Tagged）**
+PIPT-物理高速缓存 PIPT（Physically-Indexed，Physically-Tagged）
 
 SMMU**是在子系统之间使用，SMMU可以支持多个外设，为了区分这些外设，使用StreamID来标识，同个SMMU的StreamID必须唯一，不同SMMU的StreamID互不影响。将离散的物理地址映射到连续的虚拟地址空间，避免内存分配过程中的碎片化问题，用于解决越界和地址踩他问题
 
@@ -147,7 +142,6 @@ SMMUv3 提供了功能以补充 PCI Express 根复合体和其他潜在的大型
 - 页面的访问标志和脏状态的硬件转换表更新（HTTU）。实现可能仅支持访问标志的更新，支持页面的访问标志和脏状态的更新，或者不支持 HTTU。 
 - 与兼容的根复合体一起使用时的 PCIe ATS 和 PRI。 
 - 16KB 和 64KB 页面粒度。然而，建议在阶段 1 和阶段 2 都存在 64KB 页面粒度，以与服务器基础系统架构中的 PE 要求保持一致。 由于使用内存中的配置来支持大量流导致 SMMUv3 编程接口与 SMMUv2 有显著不同，SMMUv3 并非设计为与 SMMUv2 向后兼容。 
-**
 
 为什么需要SMMU？https://blog.csdn.net/junwua/article/details/138972951
 
@@ -189,7 +183,6 @@ Privileged 指的是 CPU 处于 svc 等状态，而 Unprivileged 则为 CPU 处�
 
 ![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_0b9c6a46e0c1.jpg)
 
-**
 
 IOMMU**通常是实现在北桥之中，现在北桥通常被集成进 SOC 中了，所以 IOMMU 通常都放在SOC 内部了，用于提供设备端的地址翻译能力，它让具有 DMA（Direct Memory Access）能力的设备可以使用虚拟地址，然后经过 IOMMU 翻译成可以直接访问内存的物理地址。设备端的地址翻译功能（DMA 重定向）只是 IOMMU 的功能之一，IOMMU 另一个重要的功能是中断重映射。
 

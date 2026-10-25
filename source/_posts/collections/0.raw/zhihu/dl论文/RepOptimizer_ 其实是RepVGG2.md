@@ -15,7 +15,7 @@ source_url: https://zhuanlan.zhihu.com/p/531477704
 ---
 
 
-#### <strong>前言</strong>
+#### 前言
 
 在神经网络结构设计中，我们经常会引入一些先验知识，比如ResNet的残差结构。然而我们还是用常规的优化器去训练网络。
 
@@ -25,14 +25,14 @@ source_url: https://zhuanlan.zhihu.com/p/531477704
 
 论文链接： <strong>[Re-parameterizing Your Optimizers rather than Architectures](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2205.15242)</strong>
 
-#### <strong>与RepVGG的区别</strong>
+#### 与RepVGG的区别
 
 - RepVGG加入了结构先验（如1x1，identity分支），并使用常规优化器训练。而RepOptVGG则是<strong>将这种先验知识加入到优化器实现中</strong>
 - 尽管RepVGG在推理阶段可以把各分支融合，成为一个直筒模型。但是<strong>其训练过程中有着多条分支，需要更多显存和训练时间</strong>。而RepOptVGG可是 <strong>真-直筒模型</strong>，从训练过程中就是一个VGG结构
 - 我们通过定制优化器，实现了结构重参数化和梯度重参数化的等价变换，这种变换是通用的，可以拓展到更多模型
 ![](/images/collections/0.raw/zhihu/dl%E8%AE%BA%E6%96%87/asset/img_38bd4cfb5da6.jpg)
 
-#### <strong>将结构先验知识引入优化器</strong>
+#### 将结构先验知识引入优化器
 
 我们注意到一个现象，在特殊情况下，每个分支包含一个线性可训练参数，加一个常量缩放值，只要该缩放值设置合理，则模型性能依旧会很高。我们将这个网络块称为Constant-Scale Linear Addition(CSLA)
 
@@ -42,13 +42,13 @@ source_url: https://zhuanlan.zhihu.com/p/531477704
 
 我们考虑等价变换到一个分支内，那等价变换对应2个规则：
 
-#### <strong>初始化规则</strong>
+#### 初始化规则
 
 融合的权重需为：
 
 ![](/images/collections/0.raw/zhihu/dl%E8%AE%BA%E6%96%87/asset/img_73066622167d.png)
 
-#### <strong>更新规则</strong>
+#### 更新规则
 
 针对融合后的权重，其更新规则为： 
 
@@ -130,13 +130,13 @@ print(torch_fused_w_updated)
 
 那么剩下一个问题，即如何确定这个缩放系数
 
-#### <strong>HyperSearch</strong>
+#### HyperSearch
 
 受DARTS启发，我们将CSLA中的常数缩放系数，替换成可训练参数。在一个小数据集（如CIFAR100）上进行训练，在小数据上训练完毕后，我们将这些可训练参数固定为常数。
 
 具体的训练设置可参考论文
 
-#### <strong>实验结果</strong>
+#### 实验结果
 
 ![](/images/collections/0.raw/zhihu/dl%E8%AE%BA%E6%96%87/asset/img_0cc6df6f1ddc.jpg)
 
@@ -146,9 +146,8 @@ print(torch_fused_w_updated)
 
 ![](/images/collections/0.raw/zhihu/dl%E8%AE%BA%E6%96%87/asset/img_dc97a6459621.jpg)
 
-**
 
-#### 代码简单走读**
+#### 代码简单走读
 
 我们主要看 <strong>[repoptvgg.py](https://link.zhihu.com/?target=https%3A//github.com/DingXiaoH/RepOptimizers/blob/main/repoptvgg.py)</strong> 这个文件，核心类是 `RepVGGOptimizer`
 
@@ -180,7 +179,6 @@ mask = torch.ones_like(para) * (scales[1] ** 2).view(-1, 1, 1, 1)
 
 mask[:, :, 1:2, 1:2] += torch.ones(para.shape[0], para.shape[1], 1, 1) * (scales[0] ** 2).view(-1, 1, 1, 1)
 
-**
 
 ![](/images/collections/0.raw/zhihu/dl%E8%AE%BA%E6%96%87/asset/img_7b2f3c5cc5ef.jpg)
 
@@ -191,6 +189,6 @@ mask[ids, ids, 1:2, 1:2] += 1.0
 >  如果有不明白Identity分支为什么对应的是对角线话，可以参考下笔者的图解RepVGG
  
 
-#### 总结**
+#### 总结
 
 这篇文章出来有段时间了，但是好像没有很多人关注。在我看来这是个实用性很高的工作，解决了上一代RepVGG留下的小坑，真正实现了训练时完全直筒的模型，并且对剪枝友好，十分适合实际部署。

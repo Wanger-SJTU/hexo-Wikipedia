@@ -15,15 +15,15 @@ source_url: https://zhuanlan.zhihu.com/p/260109670
 ---
 
 
-### <strong>1. 为什么会引入WinoGrad？</strong>
+### 1. 为什么会引入WinoGrad？
 
 做过ACM/OI的朋友大家应该对FFT并不陌生，我们知道对于两个序列的乘法通过FFT可以从原始O(n^2)复杂度变成O(nlogn)，所以我们就会想着FFT这个算法是否可以应用到我们计算卷积中来呢？当然是可以的，但是FFT的计算有个问题哦，会引入复数。而移动端是不好处理复数的，对于小卷积核可能减少的计算量和复数运算带来的降速效果是不好说谁会主导的。所以在这种情况下，针对卷积的WinoGrad算法出现了，它不仅可以类似FFT一样降低计算量，它还不会引入复数，使得卷积的运算加速成为了可能。因此，本文尝试从工程实现的角度来看一下WinoGrad，希望对从事算法加速的小伙伴有一些帮助。
 
-### <strong>2. 为什么会有这篇文章？</strong>
+### 2. 为什么会有这篇文章？
 
 最近尝试给MsnhNet做3&#x00D7;3" role="presentation">3×33\times 3卷积的WinoGrad实现，然后开始了解这个算法，并尝试参考着NCNN来理解和动手写一下。参考了多篇优秀的讲解文章和NCNN源码，感觉算是对这个算法有了较为清楚的认识，这篇文章就记录一下我在实现3&#x00D7;3" role="presentation">3×33\times 3并且步长为1" role="presentation">11的WinoGrad卷积时的一些理解。这篇文章的重点是WinoGrad卷积的实现，关于WinoGrad卷积里面的变化矩阵如何推导可以看梁德澎作者的文章：[详解Winograd变换矩阵生成原理](https://link.zhihu.com/?target=https%3A//mp.weixin.qq.com/s/_CKl1cdWHziUYYlG6tuQmA) （听说后续他会做个视频来仔细讲讲QAQ)，现在就假设我们知道了WinoGrad的几个变换矩阵。如果你不知道也没关系，因为有一个Python工具包可以直接帮我们计算，地址为：`https://github.com/andravin/wincnn` 。然后现在我们就要用拿到的这几个矩阵来实现WinoGrad算法，听起来比较简单，但我们还是得一步步理清楚是不。
 
-### <strong>3. WinoGrad算法原理</strong>
+### 3. WinoGrad算法原理
 
 $WinoGrad算法起源于1980年，是Shmuel Winograd提出用来减少FIR滤波器计算量的一个算法。它指出，对于输出个数为m" role="presentation">mm，参数个数为r" role="presentation">rr的FIR滤波器，不需要m&#x00D7;r" role="presentation">m×rm\times r次乘法计算，而只需要u(F(m,r))=m+r&#x2212;1" role="presentation">u(F(m,r))=m+r−1u(F(m,r))=m+r-1次乘法计算即可。$
 
@@ -43,7 +43,7 @@ $WinoGrad算法起源于1980年，是Shmuel Winograd提出用来减少FIR滤波�
 
 ![](/images/collections/0.raw/zhihu/%E6%A8%A1%E5%9E%8B%E9%83%A8%E7%BD%B2%E9%82%A3%E4%BA%9B%E4%BA%8B/asset/img_3185b7d67479.jpg)
 
-等式3**
+等式3
 
 我们知道，在CNN的推理阶段，卷积核上的元素是固定的，所以上式中和g相关的式子可以提前算好，在预测阶段只用计算一次，可以忽略。所以这里一共需要「4次乘法加4次加法」**。
 
@@ -102,7 +102,7 @@ $WinoGrad算法起源于1980年，是Shmuel Winograd提出用来减少FIR滤波�
 
 2D WinoGrad示意图这个时候，WinoGrad算法的乘法次数为4\times 4=16，而如果直接卷积乘法次数为36，<strong>「降低了2.25倍的乘法计算复杂度」</strong>。
 
-### <strong>4. 从工程角度来看WinoGrad</strong>
+### 4. 从工程角度来看WinoGrad
 
 下面我们就从一个实际例子来说，如何利用WinoGrad来实现3\times 3并且步长为1的卷积运算。基于上面介绍的2D WinoGrad的原理，我们现在只需要分4步即可实现WnoGrad算法：
 
@@ -112,7 +112,7 @@ $WinoGrad算法起源于1980年，是Shmuel Winograd提出用来减少FIR滤波�
 - 最后一步就是结果的计算：Y=A^TMA
 接下来我们就以WinoGrad实现3\times 3并且步长为1的卷积计算为例子，来理解一下WinoGrad的工程实现。
 
-### <strong>4.1 对输入卷积核进行变换</strong>
+### 4.1 对输入卷积核进行变换
 
 这一步就是对卷积核进行变化，公式为：U_{k,c}=Gg_{k,c}G^T，其中k表示输出通道标号，c表示输入通道标号，一个U(k,c)对应卷积核的一个g(k,c)。由于我们要实现的是F(6\times 6,3\times 3)，因此G是一个(m+r-1)\times r=8\times 3的矩阵，我们不难写出这部分代码（其中，G矩阵可以通过`https://github.com/andravin/wincnn` 这个工具进行计算）：
 
@@ -162,7 +162,7 @@ int nnOutchannel = outChannel >> 2;
 ```
 
 
-### <strong>4.2 对输入数据进行变换</strong>
+### 4.2 对输入数据进行变换
 
 对卷积核进行变换之后，接下来就轮到对输入矩阵进行变换了，即对V矩阵进行计算，V_{c,b}=B^Td_{c,b}B。上面我们已经提到过，对于卷积核获得的每一个U_{k,c}，我们都需要一个对应的8\times 8的图像块(tile)和它做卷积运算（eltwise_multiply）。所以这里我们首先需要确定输入数据可以被拆成多少个图像块，并且我们需要为变换矩阵V申请空间，从第三节可知：输入变换矩阵，尺寸为(m+r-1)\times (m+r-1)，即每个小块的变换矩阵都为(6+3-1)\times (6+3-1)=8\times 8，但是输入特征图长宽不一定会被8整除，这个时候就需要对输入特征图进行扩展(padding)，这部分预处理的代码实现如下：
 
@@ -262,7 +262,7 @@ int nnOutchannel = outChannel >> 2;
 ![](/images/collections/0.raw/zhihu/%E6%A8%A1%E5%9E%8B%E9%83%A8%E7%BD%B2%E9%82%A3%E4%BA%9B%E4%BA%8B/asset/img_4c94546f03cd.jpg)
 
 对输入矩阵进行变换的过程
-### <strong>4.3 计算M矩阵</strong>
+### 4.3 计算M矩阵
 
 M矩阵的计算公式为：
 
@@ -285,7 +285,7 @@ $M_{k,b}=\sum_{c}U_{k,c}\odot V_{c,b}$
 ![](/images/collections/0.raw/zhihu/%E6%A8%A1%E5%9E%8B%E9%83%A8%E7%BD%B2%E9%82%A3%E4%BA%9B%E4%BA%8B/asset/img_78114df4fc6e.jpg)
 
 M矩阵长得和V矩阵有点像，主要是通道维度变了
-### <strong>4.4 计算结果Y矩阵</strong>
+### 4.4 计算结果Y矩阵
 
 现在就到了最后一步了，我们需要计算结果矩阵Y，公式为：
 
@@ -345,11 +345,11 @@ Y矩阵汇聚存放获得输出Blob但是需要注意的是这里获得的Y有�
 
 至此，WinoGrad的算法流程结束，我们获得了最后的卷积计算结果。
 
-### <strong>5. WinoGrad算法进一步加速</strong>
+### 5. WinoGrad算法进一步加速
 
 上面无论是针对U,V,M还是Y矩阵的计算我们使用的都是暴力计算，所以接下来可以使用Neon Instrics和Neon Assembly技术进行优化。介于篇幅原因，这里就不贴代码了，有需要学习的可以关注后续MsnhNet的WinoGrad代码部分`https://github.com/msnh2012/Msnhnet/blob/master/src/layers/arm/MsnhConvolution3x3s1Winograd.cpp`。这个代码实现的思路取自开源框架NCNN，在此表示感谢NCNN这一优秀工作(github：`https://github.com/Tencent/ncnn`)。
 
-### <strong>6. 何时开启WinoGrad卷积</strong>
+### 6. 何时开启WinoGrad卷积
 
 和Sgemm用于3\times 3卷积一样，我们也需要思考WinoGrad在何种情况下是适用的，或者说是有明显加速的。这篇文章介绍的WinoGrad卷积是针对NCHW这种内存排布的，然后我们来看一下NCNN在基于NCHW这种内存排布下，是在何种情况下启用WinoGrad(F(6,3))？
 
@@ -361,21 +361,21 @@ Y矩阵汇聚存放获得输出Blob但是需要注意的是这里获得的Y有�
 
 第二，当计算量比较大的时候，又要考虑到Cache命中率的问题，这个时候WinoGrad访存可能会比直接手动优化更差，导致速度上不去。
 
-### <strong>7. 速度测试</strong>
+### 7. 速度测试
 
 由于笔者还未实现完整Neon Instrics和Assembly部分，所以暂时无法给出速度对比。尝试从NCNN的BenchMark中找到WinoGrad的加速效果大概是什么样的，但只能找到各个网络在各种板子上的整体推理速度，没有WinoGrad F(6,3)单独的速度对比，等国庆争取补上来吧。
 
-### <strong>8. 结语</strong>
+### 8. 结语
 
 关于WinoGrad的原理介绍还有工程实现（基于NCNN）暂时就讲到这里了，有问题欢迎在评论区讨论哦。我刚入门移动端优化几个月还有非常多知识需要学习，nihui，虫叔，白牛，大老师他们都是高人，这几个月从他们的文章受益良多，非常感谢！
 
-### <strong>9. 致谢</strong>
+### 9. 致谢
 
 - [https://zhuanlan.zhihu.com/p/72149270](https://zhuanlan.zhihu.com/p/72149270)
 - https://www.cnblogs.com/shine-lee/p/10906535.html
 - [https://zhuanlan.zhihu.com/p/81201840](https://zhuanlan.zhihu.com/p/81201840)
 
-### <strong>10. 广告时间</strong>
+### 10. 广告时间
 
 MsnhNet是一款基于纯c++的轻量级推理框架，本框架受到darknet启发。
 

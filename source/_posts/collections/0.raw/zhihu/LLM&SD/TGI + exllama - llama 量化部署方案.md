@@ -71,7 +71,7 @@ save_file(tensors, "/home/kevin/models/llama2-7b-chat-gptq-int4/gptq_config.safe
 
 目前 TGI 中对量化权重的处理方法不是很兼容 AUTOGPTQ 等 GPTQ 采用的数据储存方式，但有几个 PR 中已经在对此优化。
 
-### <strong>TGI + EXLLAMA 测试结果</strong>
+### TGI + EXLLAMA 测试结果
 
 部署后，发送单一（batch size = 1）的请求进行速度测试：
 

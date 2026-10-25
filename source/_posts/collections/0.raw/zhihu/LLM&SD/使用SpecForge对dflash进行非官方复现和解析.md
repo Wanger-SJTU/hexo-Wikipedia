@@ -50,7 +50,6 @@ dflash的架构图上图为dflash的架构图，从图中可以看到dflash的�
 
 dFlash 首先通过target模型完成 Prefill 并生成首个起始 Token。随后，该 Token 会与若干 Mask Token 组成待预测块（Block）送入 Embedding 层。在此基础上，kv cache 和新生成的embedding向量通过双向注意力层与 MLP 进行多次迭代处理，充分融合上下文特征。最终，dFlash 复用target模型的 LM Head，将这些经过多轮dflash layer的hidden state一次性并行地映射为多个候选 Token。这种设计巧妙地利用了目标模型的先验知识，同时发挥了扩散架构并行生成的速率优势。
 
-**
 
 ![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_9a1c868bae30.jpg)
 
@@ -124,7 +123,6 @@ python scripts/regenerate_train_data.py \
 
 `bash examples/run_qwen3_8b_dflash_online.sh`
 
-**
 
 #### 训练效果
 

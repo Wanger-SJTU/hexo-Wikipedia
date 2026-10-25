@@ -47,7 +47,7 @@ SmoothQuant认为大语言模型的权重好量化，而激活值比较难量化
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_7cf1adeade44.jpg)
 
-**[EMNLP2023] [W8A8] [Outlier Suppression+: Accurate quantization of large language models by equivalent and effective shifting and scaling](https://link.zhihu.com/?target=https%3A//aclanthology.org/2023.emnlp-main.102/)
+[EMNLP2023] [W8A8] [Outlier Suppression+: Accurate quantization of large language models by equivalent and effective shifting and scaling](https://link.zhihu.com/?target=https%3A//aclanthology.org/2023.emnlp-main.102/)
 #### AWQ [MLSys2024]
 
 权重并不是同等重要的，仅保护1%的显著权重可以大大减少量化误差**。那么什么样的权重值得保护呢，在推理时被显著激活的权重肯定更重要，即较大激活值对应的权重比较重要。
@@ -62,7 +62,7 @@ SmoothQuant认为大语言模型的权重好量化，而激活值比较难量化
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_3bb70c3fecfa.jpg)
 
-**[MLSys2024] [W3A16] [AWQ: Activation-aware Weight Quantization for LLM Compression and Acceleration](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2306.00978v4)
+[MLSys2024] [W3A16] [AWQ: Activation-aware Weight Quantization for LLM Compression and Acceleration](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2306.00978v4)
 #### OmniQuant [ICLR2024]
 
 前面的方法都是手动设计或者网格搜索搜出来的缩放参数，作者认为这是次优的。解决方式是在量化过程中学习转换参数和裁剪参数。
@@ -99,7 +99,7 @@ OBD建立了一个误差函数的局部模型来预测扰动参数向量对优�
 
 OBS认为OBD中提出的参数之间的独立性假设不成立，我们还是要考虑交叉项，推导出的公式只需要求解海森矩阵的逆，就可以计算每个参数w_q对目标的影响\dfrac{1}{2} \dfrac{w_q^2}{[\mathbf{H}^{-1}]_{qq}}，然后就可以按照影响从小到大给参数排个序，这样就确定了参数剪枝的次序。
 
-**[Hassibi et al., ICNN1993] [Optimal Brain Surgeon and general network pruning ](https://link.zhihu.com/?target=https%3A//ieeexplore.ieee.org/document/298572)
+[Hassibi et al., ICNN1993] [Optimal Brain Surgeon and general network pruning ](https://link.zhihu.com/?target=https%3A//ieeexplore.ieee.org/document/298572)
 [Optimal Brain Surgeon公式推导 - 知乎](https://zhuanlan.zhihu.com/p/656316235)（3）GPTQ作者Frantar在OBC中认为当今模型过于复杂，导致求解整个模型的海森矩阵太复杂，假设参数矩阵的同一行参数互相之间是相关的，而不同行之间的参数互不相关，则只需计算行内海森矩阵即可；作者认为剪枝是一种特殊的量化，同时提出OBQ：逐层求海森矩阵并按影响从小到大给层内权重排个序，然后依次量化
 
 > [Frantar et al., NIPS2022] [Optimal Brain Compression: A Framework for Accurate Post-Training Quantization and Pruning ](https://link.zhihu.com/?target=https%3A//openreview.net/forum%3Fid%3DksVGCOlOEba)
@@ -109,7 +109,7 @@ GPTQ主要的改进如下：
 - 按固定顺序量化：**到了GPTQ，作者觉得对于LLMs来说，每次都要挑选需要量化的参数是不必要的。即同时按照相同的顺序量化所有的权重，而不是逐个权重按照固定的贪心策略（先量化对目标影响最小的参数）进行量化。这种方法使得在大型模型上的计算效率更高，因为它减少了计算复杂性。
 - <strong>Lazy Batch-Updates：</strong>同时每次迭代都需要更新整个海塞矩阵的逆以及对整个权重进行更新，每次更新权重时都会涉及到大量的计算，但只涉及很少的内存访问。这种情况下，计算操作无法充分利用现代GPU的大规模计算能力，因为GPU通常具有较高的计算吞吐量，但相对较低的内存带宽。由于参数量化是一列一列按次序进行的，第 i 列的参数的量化结果受到前 i-1 列量化的影响，但第 i 列的量化结果不影响前面列的量化。因此不需要每次量化前面的列，就更新一遍第 i 列的参数，而是可以先记录第 i 列的更新量，在量化到第 i 列时，再一次性更新参数，这样就可以减少 IO 的次数。
 - <strong>Cholesky Reformulation：</strong>频繁更新整个海森矩阵的逆会引入数值误差。作者改用 Cholesky 分解求海森矩阵的逆，在增强数值稳定性的同时，不再需要对海森矩阵做更新计算，进一步减少了计算量。结合 Lazy Batch-Updates, 可以将权重更新式限制在 block 内, 然后再通过一次更新将此 block 之后的全部列进行更新. 这样就起到了节省内存带宽的作用, 从而显著提升算法效率。
-**[ICLR2023][W3A16] [GPTQ: Accurate Post-Training Quantization for Generative Pre-trained Transformers](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2210.17323)
+[ICLR2023][W3A16] [GPTQ: Accurate Post-Training Quantization for Generative Pre-trained Transformers](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2210.17323)
 [QLoRA、GPTQ：模型量化概述 ](https://zhuanlan.zhihu.com/p/646210009)
 #### GPTAQ [ICML2025]
 
@@ -123,7 +123,7 @@ GPTQ有个问题是：传统的权重-激活量化一般是最小化当前block/
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_7bfd346c8d08.jpg)
 
-**[ICML2025] [GPTQv2: Efficient Finetuning-Free Quantization for Asymmetric Calibration](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2504.02692v1)
+[ICML2025] [GPTQv2: Efficient Finetuning-Free Quantization for Asymmetric Calibration](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2504.02692v1)
 #### MagR [NeurIPS2024]
 
 先前的研究通过权重转换的方法，旋转矩阵的方法或是其他变换方法，量化的是TW矩阵， 这为量化的过程引入了额外的计算开销和存储开销，降低了大模型推理的推理速度。
@@ -158,9 +158,9 @@ QuIP作者发现<strong>当权重和海森矩阵不相关时，量化过程更�
 
 值得注意的是，FlashAttention3里就用到了QuIP所提出的方法。
 
-**[NeurIPS2023] [W2A16] [QuIP: 2-Bit Quantization of Large Language Models With Guarantees](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2307.13304v2)
+[NeurIPS2023] [W2A16] [QuIP: 2-Bit Quantization of Large Language Models With Guarantees](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2307.13304v2)
 [FlashAttention-3: Fast and Accurate Attention with Asynchrony and Low-precision](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2407.08608)
-#### QuaRot [NeurIPS2024]**
+#### QuaRot [NeurIPS2024]
 
 QuaRot没有用随机正交矩阵，而是利用计算不变性，对权重进行Hadamard变换，消除Outlier使之更容易量化。
 
@@ -180,7 +180,7 @@ https://openreview.net/forum?id=dfqsW38v1X[](https://zhuanlan.zhihu.com/p/121864
 
 [](https://link.zhihu.com/?target=https%3A//github.com/Dao-AILab/fast-hadamard-transform)
 
-**[NeurIPS2024] [W4A4KV4] [QuaRot: Outlier-Free 4-Bit Inference in Rotated LLMs](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2404.00456v1)
+[NeurIPS2024] [W4A4KV4] [QuaRot: Outlier-Free 4-Bit Inference in Rotated LLMs](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2404.00456v1)
 [ICLR2024] [SliceGPT: Compress Large Language Models by Deleting Rows and Columns](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2401.15024%23%3A~%3Atext%3DIn%2520this%2520paper%2520we%2520present%2520SliceGPT%252C%2520a%2520new%2Cmatrix%252C%2520reducing%2520the%2520embedding%2520dimension%2520of%2520the%2520network)
 #### SpinQuant [ICLR2025]
 
@@ -309,7 +309,7 @@ KVQuant: Towards 10 Million Context Length LLM Inference with KV Cache Quantizat
 
 #### KIVI [ICML2024] 
 
-作者发现在KV-Cache中，Key上有更多Channel-wise的Outlier，而Value上Outlier较少**
+作者发现在KV-Cache中，Key上有更多Channel-wise的Outlier，而Value上Outlier较少
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_5dca1c7ca37f.jpg)
 
@@ -317,19 +317,19 @@ KVQuant: Towards 10 Million Context Length LLM Inference with KV Cache Quantizat
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_2902e1dfd609.jpg)
 
-**[ICML2024] [KIVI: A Tuning-Free Asymmetric 2bit Quantization for KV Cache.](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2402.02750v2)
+[ICML2024] [KIVI: A Tuning-Free Asymmetric 2bit Quantization for KV Cache.](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2402.02750v2)
 #### KVQuant [NeurIPS2024]
 
-KVQuant则是进一步观察到Key-Cache在RoPE前后呈现不同的Outlier模式，而Value-Cache则没有明显的Outlier。**
+KVQuant则是进一步观察到Key-Cache在RoPE前后呈现不同的Outlier模式，而Value-Cache则没有明显的Outlier。
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_9a579f839335.jpg)
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_09fd6181bf29.jpg)
 
-**[NeurIPS2024] [KVQuant: Towards 10 Million Context Length LLM Inference with KV Cache Quantization.](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2401.18079v5)
+[NeurIPS2024] [KVQuant: Towards 10 Million Context Length LLM Inference with KV Cache Quantization.](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2401.18079v5)
 #### ZipCache [NeurIPS2024]
 
-1.Group-wise量化效果更好，但是量化的开销要更大。Token-wise的量化开销更小，但是效果较差。**
+1.Group-wise量化效果更好，但是量化的开销要更大。Token-wise的量化开销更小，但是效果较差。
 
 <strong>2.先前的KV-Cache压缩方法没有有效地识别出重要的token，例如基于attention score去判断做KV-Cache稀疏。</strong>
 
@@ -339,7 +339,7 @@ KVQuant则是进一步观察到Key-Cache在RoPE前后呈现不同的Outlier模�
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_44fc50464bdb.jpg)
 
-**[NeurIPS2024] [ZipCache: Accurate and Efficient KV Cache Quantization with Salient Token Identification](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2405.14256v1).
+[NeurIPS2024] [ZipCache: Accurate and Efficient KV Cache Quantization with Salient Token Identification](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2405.14256v1).
 ### MoE 量化方法
 
 #### QMoE [MLSys2024] 
@@ -352,7 +352,7 @@ MoE模型的量化特点是MoE的专家只在特定输入下会被激活。**也
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_80c3feff4f7d.jpg)
 
-**[MLSys2024] [QMoE: Practical Sub-1-Bit Compression of Trillion-Parameter Models.](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2310.16795v1)
+[MLSys2024] [QMoE: Practical Sub-1-Bit Compression of Trillion-Parameter Models.](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2310.16795v1)
 ### Scaling Laws for Precision
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_5ca7c1a6f39d.jpg)
@@ -377,7 +377,7 @@ MoE模型的量化特点是MoE的专家只在特定输入下会被激活。**也
 DeepSeek-V3 Technical Report. ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_bc460b1275c4.jpg)
 
 DeepSeek-V3 Technical Report. **[deepseek-ai/DeepSeek-V3 (github.com)](https://link.zhihu.com/?target=https%3A//github.com/deepseek-ai/DeepSeek-V3)
-### 基于LookUp Table (LUT)/Vector Quantization的方法**
+### 基于LookUp Table (LUT)/Vector Quantization的方法
 
 Vector Quantization概念在图像生成领域如VQVAE也有广泛应用，量化用到的所谓旋转技巧也被迁移过去，并且效果还不错，当然我并不了解图像生成。
 

@@ -77,9 +77,8 @@ graph =Neo4jGraph(  url="bolt://54.87.130.140:7687",  username="neo4j",  passwor
 
 ****
 
-**![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_f61933278b5c.jpg)
+![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_f61933278b5c.jpg)
 
-**
 
 #### 两种工作模式
 

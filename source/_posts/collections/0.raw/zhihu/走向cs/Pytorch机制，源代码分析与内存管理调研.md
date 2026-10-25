@@ -31,7 +31,6 @@ The repository cloned from GitHub [pytorch/pytorch](https://link.zhihu.com/?targ
 
 Here, let's discuss the release version or the installed package at first. The package has a lot of components, Here I only pick out some most important parts to do the explanation.
 
-**
 
 ![](/images/collections/0.raw/zhihu/%E8%B5%B0%E5%90%91cs/asset/img_36faf2bab129.jpg)
 
@@ -95,7 +94,6 @@ Storage: <strong>THStorage</strong>. It manages the way of storing the Tensor.
 
 Access: <strong>THTensor</strong>. It provides access to the user.
 
-**
 
 ![](/images/collections/0.raw/zhihu/%E8%B5%B0%E5%90%91cs/asset/img_24e855bbb861.jpg)
 
@@ -202,7 +200,7 @@ at::DataPtr THMapAllocator::makeDataPtr(const char *filename, int flags, size_t 
 ```
 
 
-** Default allocator is malloc/free allocator. malloc and realloc raise an error (using THError) on allocation failure.
+Default allocator is malloc/free allocator. malloc and realloc raise an error (using THError) on allocation failure.
  
 #### Understand Parameters
 
@@ -530,7 +528,6 @@ The C++ code that implements what you might call the frontend of PyTorch. In mor
 
 #### The mechanism inside a simple call
 
-**
 
 ![](/images/collections/0.raw/zhihu/%E8%B5%B0%E5%90%91cs/asset/img_89009a0ebd6c.jpg)
 
@@ -797,4 +794,4 @@ lltm = load(name='lltm', sources=['lltm_cuda.cpp', 'lltm_cuda_kernel.cu'])`
 - PYTORCH DOCUMENTATION
 - [PyTorch源码浅析](https://zhuanlan.zhihu.com/p/34629243)
 - [Pytorch GitHub Repo](https://link.zhihu.com/?target=https%3A//github.com/pytorch/pytorch)
-Zhongyang Zhang**
+Zhongyang Zhang

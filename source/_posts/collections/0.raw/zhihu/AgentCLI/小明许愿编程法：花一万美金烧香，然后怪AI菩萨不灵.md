@@ -31,15 +31,15 @@ source_url: https://zhuanlan.zhihu.com/p/2007656505554511663
 
 许愿的人都这样。
 
-### 许愿和工程的区别**
+### 许愿和工程的区别
 
 Google Chrome团队的Addy Osmani专门区分了vibe coding和agentic engineering。前者的流程是：prompt，accept，run，看看能不能用。后者的流程是：plan，direct，review，test。小明同学的每一个失败案例，都精准的落在前者。
 
 Osmani说得很直白：
 
-**The single biggest differentiator between agentic engineering and vibe coding is testing.测试。就这么简单。小明同学花了一万美金，测试是agent自己vibe出来的，"它说什么就是什么"。这不叫工程，这叫占卜。
+The single biggest differentiator between agentic engineering and vibe coding is testing.测试。就这么简单。小明同学花了一万美金，测试是agent自己vibe出来的，"它说什么就是什么"。这不叫工程，这叫占卜。
 
-### 一句话需求**
+### 一句话需求
 
 小明给agent的任务是"为当前Kotlin项目集成GCP Transcoding服务"。agent通读文档，发现只有Java SDK，于是决定用ktor-client手动实现RESTful接口。小明说人类一眼就知道该包装SDK，"半天到一天就能上线"。
 
@@ -47,7 +47,7 @@ Osmani说得很直白：
 
 小明把这个案例当作agent能力不足的证据。恰恰相反，这恰恰证明agent很听话：你说集成，它就集成；你说封装，它就封装。你什么都不说，它只能猜。
 
-### <strong>又当裁判又当运动员</strong>
+### 又当裁判又当运动员
 
 小明抱怨agent"写了几千行getter/setter的test case，最后测试全绿告诉我可以上生产环境发布了"。他还举了GCP Transcoding的例子："agent写错了可选字段的字段名，测试照样能过，因为测试也是它自己写的，错的一致就是'对'的。"
 
@@ -57,9 +57,9 @@ Osmani说得很直白：
 
 Osmani说得更狠：
 
-**If your ability to 'read' doesn't scale at the same rate as the agent's ability to 'output,' you aren't engineering anymore — you're rubber stamping.小明连rubber stamp都算不上。他连盖章的对象都没看。
+If your ability to 'read' doesn't scale at the same rate as the agent's ability to 'output,' you aren't engineering anymore — you're rubber stamping.小明连rubber stamp都算不上。他连盖章的对象都没看。
 
-### "巧克力味的屎"**
+### "巧克力味的屎"
 
 小明对AI代码的评价很生动："经常会被这第一层假象蒙蔽，放松警惕。主要是这个屎山有点难在review阶段发现，经常是上线后出了问题，回头细查的时候才发现是'巧克力味的屎'。"
 
@@ -69,7 +69,7 @@ Osmani说得更狠：
 
 小明的CNC类比也很有意思。他说软件不像物理工件，"没法拿卡尺量一下这段代码的质量公差是多少"。实际上，软件的验证工具比物理制造丰富得多：单元测试、集成测试、属性测试、模糊测试、静态分析、类型检查、运行时监控、灰度发布。CNC操作员如果只量一次也会出废品。小明的问题不是没有卡尺，是他根本不会用，科班基础太差了。
 
-### <strong>初见即巅峰</strong>
+### 初见即巅峰
 
 小明观察到agent"初见即巅峰"：新项目惊艳，老项目拉垮。原因他自己也说了，上下文越长，agent越蠢。
 
@@ -79,7 +79,7 @@ Osmani说得更狠：
 
 你不会让一个人连续工作72小时然后怪他犯错。agent也一样。
 
-### 强类型不是答案**
+### 强类型不是答案
 
 小明的核心药方是强类型语言。他推荐Rust、Scala、Haskell，甚至建议给红黑树加形式化验证来"上强度"。
 
@@ -87,7 +87,7 @@ Osmani说得更狠：
 
 给红黑树加形式化验证来"上强度学CS"，就像让一个不会炒菜的人去研究分子料理。你连基本的TDD都不会，研究液氮冰淇淋有什么用？先学会把鸡蛋炒熟再说。
 
-### <strong>不许愿，该怎么办？</strong>
+### 不许愿，该怎么办？
 
 把AI coding当工程管理，而不是当魔法。**Addy Osmani、Martin Fowler、Agentic Coding Handbook，所有严肃的从业者都指向同一个方向：把AI当工程问题管理，plan、direct、review、test，而不是prompt、accept、pray。
 
@@ -101,11 +101,11 @@ AI时代，程序员需要培养的核心能力不是写更多代码，也不是
 
 有兴趣讨论AI coding工程化的同好，欢迎在公众号给我留言。骂我也行，但请附上你的工程实践，不要只附上你的token账单。
 
-### 写作也可以工程化**
+### 写作也可以工程化
 
 顺便说一句，本文是我用AI写的，但是95%的读者不会发现低劣的AI味道，因为我有一整套写作流程，模版，角色，质量关卡，非常工程化的写作。
 
-### <strong>引用来源</strong>
+### 引用来源
 
 - 小明，《Vibe Coding一年实践后的冷思考》，知乎
 [https://zhuanlan.zhihu.com/p/2003390589538956495](https://zhuanlan.zhihu.com/p/2003390589538956495)

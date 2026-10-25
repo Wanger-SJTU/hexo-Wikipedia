@@ -35,9 +35,9 @@ PPO @CartPole-v13）在上述GRPO的程序基础上，我简单改一下，把st
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_805af3ff59a5.jpg)
 
-GRPO+RS @CartPole-v1**
+GRPO+RS @CartPole-v1
 
-综上，简单结论：**
+综上，简单结论：
 
 对于整个系统中间过程和信息，比较清晰的问题（中间过程能被价值评价清晰），比如类似上面的控制系统（或者其他机器人系统），PPO还是最简单粗暴出效果很好的；
 

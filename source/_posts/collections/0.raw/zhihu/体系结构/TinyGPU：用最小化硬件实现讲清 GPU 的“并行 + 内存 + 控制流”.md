@@ -73,7 +73,7 @@ localparam NOP = 4'b0000,
 - <strong>带宽仲裁（Memory Controller）</strong>：顶层把多线程 LSU 访问汇聚到固定通道的外部内存接口，强调“<strong>请求数 > 带宽</strong>时必须仲裁/节流”的现实约束。
 - <strong>Cache 与高级优化</strong>：`README.md` 将 cache 标注为 <strong>WIP</strong>，并在 Advanced Functionality 讨论了 <strong>memory coalescing、pipelining、warp scheduling、barrier/同步、多级 cache/shared memory</strong> 等——作为读者进一步扩展的路线图，而非当前实现的既成事实。
 
-### <strong>工程入口-流程</strong>（从“启动一个 kernel”到“所有线程结束”）：
+### 工程入口-流程**（从“启动一个 kernel”到“所有线程结束”）：
 
 - 项目提供基于 `iverilog + cocotb` 的仿真（`make test_matadd`/`make test_matmul`），并生成执行日志与 trace，方便做“功能正确性 + 微架构行为”的联合观察。
 
@@ -113,7 +113,6 @@ TinyGPU 设计成“一次只跑一个 kernel”。启动前需要（对应 `REA
 - <strong>LSU</strong>（`lsu.sv`）
 - <strong>PC/NZP</strong>（`pc.sv`）
 
-**
 
 也就是说：控制是“共享的阶段推进”，状态是“每线程独立一份”**。这正是它用来讲清 SIMD/SIMT 的关键取舍。
 
@@ -128,7 +127,6 @@ TinyGPU 把每条指令拆成固定阶段（`scheduler.sv`）：
 - `registers.sv` 读出本线程的 `rs/rt`
 - 如果是 `LDR/STR`，LSU 进入请求流程，准备对全局数据内存发起访问
 
-**
 
 - WAIT**（关键难点）：如果有异步访存，Scheduler 会停在 WAIT，直到需要的 LSU 都不再处于“请求/等待”状态。
 - <strong>EXECUTE</strong>：ALU 计算（ADD/SUB/MUL/DIV），PC 逻辑计算 next_pc（含 BRnzp 判断）。
@@ -146,7 +144,6 @@ TinyGPU 把每条指令拆成固定阶段（`scheduler.sv`）：
 - `LDR`：发起 `mem_read_valid + address`，等待外部 `mem_read_ready`，拿到 `mem_read_data`，把结果缓存到 `lsu_out`
 - `STR`：发起 `mem_write_valid + address + data`，等待 `mem_write_ready`
 
-**
 
 - 数据内存控制器（`controller.sv`）**在“很多 LSU 请求”与“有限外部通道（例如 4 通道）”之间做仲裁/节流/转发。
 因此 Scheduler 的 WAIT 阶段本质是在处理一个 GPU 的核心现实：<strong>外部内存带宽/延迟是瓶颈</strong>，硬件必须围绕它组织控制流。
@@ -183,7 +180,6 @@ gpu.sv` 的端口可以分成三组（见 `gpu.sv` 端口声明）：
 - 程序内存：`program_mem_read_valid/address` → 外部；外部回 `program_mem_read_ready/data`
 - 数据内存：读 `data_mem_read_valid/address`，写 `data_mem_write_valid/address/data`；外部回对应的 `*_ready`
 
-**
 
 这里的关键点是：TinyGPU 不实现片上 SRAM<strong>，而是假设</strong>外部异步内存**存在，内部通过控制器做多路仲裁（这也是它用来讲清“带宽受限”的工程现实）。
 
@@ -338,7 +334,6 @@ Scheduler 在 UPDATE 阶段只取 `next_pc[THREADS_PER_BLOCK-1]` 作为 `current
 - `core_reset` 被拉高/拉低后，`core_start` 拉高
 - `block_id`、`thread_count` 固定在该 block 生命周期
 
-**
 
 - 观察 Core 状态机**：`IDLE→FETCH→DECODE→REQUEST→WAIT→EXECUTE→UPDATE→...`
 - <strong>观察一次 LDR</strong>：  
@@ -348,6 +343,5 @@ Scheduler 在 UPDATE 阶段只取 `next_pc[THREADS_PER_BLOCK-1]` 作为 `current
 - WAIT：直到外部 `mem_read_ready` 返回，LSU 锁存数据并回到 DONE
 - UPDATE：寄存器把 `lsu_out` 写入 rd
 
-**
 
 - 观察 RET**：Decoder 置 `decoded_ret`，Scheduler 在 UPDATE 进入 DONE，并对 Dispatcher 输出 `core_done`

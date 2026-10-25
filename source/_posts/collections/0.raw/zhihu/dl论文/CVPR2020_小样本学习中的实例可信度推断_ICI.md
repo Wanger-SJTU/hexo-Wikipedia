@@ -59,7 +59,7 @@ source_url: https://zhuanlan.zhihu.com/p/120354934
 
 ![](https://www.zhihu.com/equation?tex=%5Chat%7B%5Cbeta%7D%3D%5Cleft%28X%5E%7B%5Ctop%7DX%5Cright%29%5E%7B%5Cdagger%7DX%5E%7B%5Ctop%7D%5Cleft%28Y-%5Cgamma%5Cright%29) 
 
-**注意基于我们的假设，我们实际并不关注 
+注意基于我们的假设，我们实际并不关注 
 ![](https://www.zhihu.com/equation?tex=%5Chat%7B%5Cbeta%7D) 的解，同时 
 ![](https://www.zhihu.com/equation?tex=%5Chat%7B%5Cbeta%7D) 也依赖于对 
 ![](https://www.zhihu.com/equation?tex=%5Cgamma) 的估计**，因此，我们将 

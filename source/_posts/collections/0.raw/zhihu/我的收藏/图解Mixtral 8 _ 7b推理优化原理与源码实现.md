@@ -33,9 +33,8 @@ source_url: https://zhuanlan.zhihu.com/p/691066049
 
 所以在这篇文章中，我们就把焦点放在“Mixtral加速推理”这一块上**，同样通过图解的方式，把代码的运作流程串起来，帮助大家更好阅读源码。在本文的最后一部分，给出一些源码阅读的hint（可能是大部分朋友在读Mixtral代码时感到最痛的点）。
 
-**
 
-【大模型计算加速系列】**
+【大模型计算加速系列】
 
 <strong>[猛猿：图解大模型计算加速系列：FlashAttention V1，从硬件到计算逻辑](https://zhuanlan.zhihu.com/p/669926191)</strong>
 
@@ -59,13 +58,11 @@ source_url: https://zhuanlan.zhihu.com/p/691066049
 
 <strong>[猛猿：图解大模型计算加速系列：分离式推理架构2，模糊分离与合并边界的chunked-prefills](https://zhuanlan.zhihu.com/p/710165390)</strong>
 
-**
 
-【历史文章汇总】**
+【历史文章汇总】
 
 <strong>[猛猿：【必看】历史技术文章导航](https://zhuanlan.zhihu.com/p/654910335)</strong>
 
-**
 
 ### 一、LLM推理的两阶段
 
@@ -85,7 +82,6 @@ source_url: https://zhuanlan.zhihu.com/p/691066049
 生成response的阶段<strong>。在这个阶段中，</strong>我们根据prompt的prefill结果，一个token一个token地生成response<strong>。</strong>同样，如果采用了KV cache，则每走完一个decode过程，我们就把对应response token的KV值存入cache中，以便能加速计算。例如对于图中的t4，它与cache中t0~t3的KV值计算完attention后，就把自己的KV值也装进cache中。对t6也是同理。
 由于Decode阶段的是逐一生成token的，因此它不能像prefill阶段那样能做大段prompt的并行计算，所以在LLM推理过程中，Decode阶段的耗时一般是更大的**。
 
-**
 
 ### 二、Sliding Window Attention
 
@@ -115,9 +111,8 @@ source_url: https://zhuanlan.zhihu.com/p/691066049
 - 以此类推，当我们来到layer0时，不难发现，对于`layer3 t9`，它最远能看到`layer0 t0`这个位置的信息。
 欸你发现了吗！对于`layer3 t9`，虽然在每一层它“最远”只能看到前置序列中部分token，但是只要模型够深，它一定能够在某一层看到所有的前置tokens。****
 如果你还觉得抽象，那么可以想想CNN技术中常谈的“感受野”<strong>。当你用一个固定大小的卷积窗口，对一张原始图片做若干次卷积，得到若干张特征图。越深的特征图，它的每一个像素点看到的原始图片的范围越广。</strong>类比到我们的滑动窗口Attention上，从layer0开始，每往上走一层，对应token的感受野就往前拓宽W。****
-所以，Silding Window Attention并非完全不利用窗口外的token信息，而是随着模型层数的增加，间接性地利用起窗口外的tokens。**
+所以，Silding Window Attention并非完全不利用窗口外的token信息，而是随着模型层数的增加，间接性地利用起窗口外的tokens。
 
-**
 
 ### 三、Rolling Buffer Cache
 
@@ -134,9 +129,9 @@ source_url: https://zhuanlan.zhihu.com/p/691066049
 - 在i时刻，我们对`an`做attention，做完后将`an`的KV值更新进cache中
 - 在 i + 1时刻，我们对`example`做attention，做完后将`example`的KV值更新进cache中。此时对于第1条prompt，它在KV cache中的存储空间已满。
 - 在 i + 2时刻，我们对`of`做attention，由于此时KV cache已满，所以我们将`of`的KV值更新进KV cache的0号位置，替换掉原来`This`的KV值。再后面时刻的token也以此类推。
-- 不难发现，prompt中第i个token在KV cache中的存储序号为：`i % W`** 
+- 不难发现，prompt中第i个token在KV cache中的存储序号为：`i % W`
 
-#### **
+#### 
 3.2 “旋转”从何而来
 
 如果你读过Mixtral的源码，你可能会记得，在源码中管`Rolling Buffer Cache`叫`Rotary Buffer Cache`<strong>。而“Rotary”这个词很值得我们关注：为什么叫“旋转”呢“</strong>
@@ -151,7 +146,6 @@ source_url: https://zhuanlan.zhihu.com/p/691066049
 
 所以，Rotary的意思就是：通过某种规则，将Cache中的数据旋转回正确的位置，以便能正确做Attention。**这个规则在Mixtral源码中用一个`unrotate`函数来定义。在后文我们会详细看这个函数的运作方式。
 
-**
 
 ### 四、Chunking
 
@@ -184,7 +178,6 @@ source_url: https://zhuanlan.zhihu.com/p/691066049
 
 在我们介绍代码之前，我们先用图解的方式把整个推理流程串一遍，好知道代码在做一件什么事情**（毕竟这块代码确实不好读）。然后我们再来看代码的细节。
 
-**
 
 #### 5.1 输入数据
 
@@ -221,7 +214,6 @@ source_url: https://zhuanlan.zhihu.com/p/691066049
 - 取出当前KV Cache中存储的KV值，和chunk计算出来的KV值进行拼组，计算SWA**（如图所示，mask矩阵的row行，每个色块由两部分组成：当前cache + 当前chunk）
 - 在计算SWA的mask矩阵时，我们同样采用Xformers库，这时调用的是**`BlockDiagonalCausalLocalAttentionFromBottomRightMask`**类，和chunk0调用的`BlockDiagonalCausalLocalAttentionMask`相比，它的主要不同在“FromBottomRight”上，也就是<strong>对于每个block，它从右下角开始以窗口长度为W（本例中W=4）的形式设置mask矩阵。</strong>
 - 计算完chunk1的SWA后，我们将chunk1的KV值更新进KV Cache中
-**
 （3）chunk2****
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_3a8724771c6c.jpg)
@@ -233,7 +225,6 @@ source_url: https://zhuanlan.zhihu.com/p/691066049
 - 把chunk2计算的KV结果更新进KV Cache。我<strong>们特别关注第2、3条prompt（绿红色块）更新后的KV cache结果。</strong>按照3.1中rolling buffer cache设置的放置方式，<strong>这两条prompt中KV值是非顺序存放的。</strong>例如对于第2条prompt，它KV值的存放顺序是`[8, 9, 6, 7]`。因此如果我们想继续对它做decode，就要把KV cache的值`unrotate`回`[6, 7, 8, 9]`，以此类推。
 **事实上，无论是prefill还是decode，无论是哪个chunk，只要涉及到用当前cache和chunk（在decode阶段则是token）做attention计算，我们都需要把cache中的KV值排布`unrotate`一遍**。`unrotate`的结果就是，如果cache中的值已经是按顺序排布的，那就照常输出；如果是非顺序排布的，那就排好了再输出。由于在Mixtral源码中，这块数据处理逻辑比较复杂，又没有写注释，所以很多朋友读到`unrotate`的部分可能一头雾水。因此这里特地画出，帮助大家做源码解读。
 
-**
 
 #### 5.3 一个新例子：chunk_size != W
 
@@ -254,7 +245,6 @@ prompt的划分如下图：
 
 同样，我们每次在使用KV Cache计算Attention时，也要注意用unrotate方法将KV Cache中的元素先按顺序排布好**。
 
-**
 
 ### 六、一些关于源码的hint
 

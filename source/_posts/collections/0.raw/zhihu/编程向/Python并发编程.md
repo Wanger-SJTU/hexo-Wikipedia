@@ -23,7 +23,7 @@ source_url: https://zhuanlan.zhihu.com/p/25377631
 
 我非常认同玉伯在知乎回答《如何评价真阿当的文章：《2016年前端技术观察》？》说过的一句话。 我稍微加了一小句：
 
-**前端风起云涌的类库、框架、工具，各种前端技术交流会议。都是为了两件事：
+前端风起云涌的类库、框架、工具，各种前端技术交流会议。都是为了两件事：
 
 一是为了更好地写代码， 二是为了写出更好的代码。
 
@@ -45,7 +45,7 @@ source_url: https://zhuanlan.zhihu.com/p/25377631
 使用Python进行并发编程-asyncio篇(二)
 使用Python进行并发编程-asyncio篇(三)
 
-附带对500lines项目中的爬虫翻译的2篇文章：**
+附带对500lines项目中的爬虫翻译的2篇文章：
 
 [一个使用asyncio协程的Web爬虫(一)](https://link.zhihu.com/?target=http%3A//mp.weixin.qq.com/s%3F__biz%3DMzA3NDk1NjI0OQ%3D%3D%26mid%3D2247483875%26idx%3D1%26sn%3D66b10f67c8f2cb2002fa16d9022540be%26chksm%3D9f76ad55a8012443cd1c58c82a5f8a40178b29e04179ae7122f122116531bf1d8a96e736a275%23rd)
 [asyncio协程的Web爬虫(二)](https://link.zhihu.com/?target=http%3A//mp.weixin.qq.com/s%3F__biz%3DMzA3NDk1NjI0OQ%3D%3D%26mid%3D2247483875%26idx%3D2%26sn%3D753243326c3486228881c9810eb43f0e%26chksm%3D9f76ad55a80124439cdcd5a37e6d4ce8ec6bc95a4848474f4e089f56039b82d8c8d9516fbc42%23rd)最后说一点，同步到知乎的内容只会是我公众号的一部分，如果你希望及时的看到我写的以及一些我并不会发到这里的内容，强烈建议关注微信公众号（也可以直接搜索「Python之美」）：

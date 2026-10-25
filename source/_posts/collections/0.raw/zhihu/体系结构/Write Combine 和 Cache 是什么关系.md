@@ -33,7 +33,7 @@ source_url: https://zhuanlan.zhihu.com/p/607637105
 
 WB 理论上性能最好，是 <strong>system memory</strong> 的默认配置，而 UC 多作为 <strong>memory-mapped I/O</strong>（简称 MMIO） 的属性。相比而言，WC 要小众一些，它可以将多个 write 操作合并成一个【注-1】，以减少内存访问的开销，但代价是可能 reorder： 
 
-**Writes to this memory type can be combined internally by the processor and written to memory as a single write operation to reduce memory accesses. For example, four word writes to consecutive addresses can be combined by the processor into a single quadword write, resulting in one memory access instead of four.                                                                                                                                                                 
+Writes to this memory type can be combined internally by the processor and written to memory as a single write operation to reduce memory accesses. For example, four word writes to consecutive addresses can be combined by the processor into a single quadword write, resulting in one memory access instead of four.                                                                                                                                                                 
 The WC memory type is useful for graphics-display memory buffers where the order of writes is not important.SMP 系统上，各个 CPU 可以通过支持 [cache 一致性协议](https://zhuanlan.zhihu.com/p/95435168)的总线 snoop 到其他 CPU 对 cache 的读写，而通过 PCIe 连接的 CPU 和 GPU 则不能互相 snoop，因此从 CPU 的角度，「显存」算是 I/O memory，对其访问需要是 uncachable 的。
 
 ![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_546a83a9c6e8.jpg)
@@ -46,7 +46,7 @@ The WC memory type is useful for graphics-display memory buffers where the order
 
 那 WC 对同一地址的连续写呢？以最后写入的为准（来自 Intel SDM 卷 3 第 11.3.1 节）。
 
-**multiple writes to the same memory location will leave the last data written in the location and the other writes will be lost.
+multiple writes to the same memory location will leave the last data written in the location and the other writes will be lost.
 ### 后来者
 
 x86 是有先发优势的，Linux 中早早就有了 ioremap_wc() 等和 write-combine 有关的函数，作为后来者的 ARM，在设计上需要去兼容。
@@ -67,7 +67,7 @@ ARM 并没有直接的 WC 的概念，但它提供的 Normal NC** 的效果等�
 
 这里你会看到 ARM 有个 GRE 的概念（不是 GRE 考试），其中 G 代表 Gathering：
 
-**Multiple memory accesses of the same type, read or write, to the same memory location to be merged into a single transaction.
+Multiple memory accesses of the same type, read or write, to the same memory location to be merged into a single transaction.
 Multiple memory accesses of the same type, read or write, to different memory locations to be merged into a single memory transaction on an interconnect.R 代表 Re-ordering，E 代表 Early Write Acknowledgement（所谓 early ack，就是 CPU 不会等待数据真的写入目标 device）。而如果加上 "n" 前缀，就表示相反的意思。
 
 这算是在 UC 和 WC 的基础上，对 device memory 的访问提供了更多可能的组合。按理 2 的 3 次方对应 8 种组合？
@@ -80,13 +80,11 @@ Multiple memory accesses of the same type, read or write, to different memory lo
 
 如果你遇到一台（不知道什么原因）不能很好支持 Normal NC 的 ARM 机器，想把对 device memory 的访问改成 nGnRnE 的模式，那么你可要小心了：如果传入 glibc 库的 memset() 的参数是非自然对齐的，那么很可能出现 bus error**，因为 memset 在 ARM64 架构上的实现可能用了 "dc zva" 指令。
 
-**
 
 注-1**：看起来 write combine 和 write back 有一点像，都有 write 的延迟和聚合，但 WC 是 uncache, reorder 的，"uncache" 是指它不涉及 cache line 的分配。那数据暂存在哪里呢？答案是CPU 内部一个叫 "WC buffer" 的硬件单元，它不是 L1/L2/L3 cache，也不是 store buffer。
 
-**
 
-参考：**
+参考：
 
 - *AMD64 Architecture Programmer's Manual Volume 2* 第 7.4 节 *Memory Types*
 - *Armv8-A memory model*

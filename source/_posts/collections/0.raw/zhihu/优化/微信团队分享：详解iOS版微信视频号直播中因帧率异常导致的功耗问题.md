@@ -15,14 +15,14 @@ source_url: https://zhuanlan.zhihu.com/p/667129554
 ---
 
 
-**本文由微信客户端团队rhythm分享，原题“视频号直播：如何进一步降低功耗占用？”，本文有修订和改动。
-### 1、引言**
+本文由微信客户端团队rhythm分享，原题“视频号直播：如何进一步降低功耗占用？”，本文有修订和改动。
+### 1、引言
 
 <strong>功耗优化一直是 app 性能优化中让人头疼的问题，尤其是在直播这种用户观看时长特别久的场景。怎样能在不影响主体验的前提下，进一步优化微信iOS端视频号直播的功耗占用，本文给出了一个不太一样的答案。</strong>
 
 ![](/images/collections/0.raw/zhihu/%E4%BC%98%E5%8C%96/asset/img_341aa8506e4f.jpg)
 
-### <strong>2、问题背景</strong>
+### 2、问题背景
 
 问题的起因是我们测试统计发现带有点赞的直播会比无点赞动画的直播 GPU 占用要高将近一倍，同时 FPS 差异也很大。
 
@@ -34,9 +34,9 @@ source_url: https://zhuanlan.zhihu.com/p/667129554
 
 <strong>如下图所示 PerfDog 数据显示在 13 pro max上直播点赞期间 FPS 直奔120：</strong>
 
-**![](/images/collections/0.raw/zhihu/%E4%BC%98%E5%8C%96/asset/img_a5c939d68a24.jpg)
+![](/images/collections/0.raw/zhihu/%E4%BC%98%E5%8C%96/asset/img_a5c939d68a24.jpg)
 
-**正常情况下，视频号直播里大部分主播开播流基本都是30fps 以内，也就是正常情况下我们只需要维持30fps 渲染，就能保持好流程的用户体验。
+正常情况下，视频号直播里大部分主播开播流基本都是30fps 以内，也就是正常情况下我们只需要维持30fps 渲染，就能保持好流程的用户体验。
 
 <strong>那为什么这里降帧后依旧会出现60fps 呢？</strong>
 
@@ -44,15 +44,15 @@ source_url: https://zhuanlan.zhihu.com/p/667129554
 
 <strong>这到底是怎么回事？我们是否可以降动画的帧率降低到某个值来去优化我们整体的 GPU 占用呢？</strong>
 
-### <strong>3、知识储备1：iOS中的动画分类</strong>
+### 3、知识储备1：iOS中的动画分类
 
 在iOS中，大部分动画的本质就是根据输入的时间戳，返回对应属性的动画参数，从而移动图像，达到运动的效果。根据动画 api 实现方式的特点我们可以把动画 api 划分为如下几类。
 
-#### <strong>3.1UIView block animation</strong>
+#### 3.1UIView block animation
 
 基于 「+[UIView animateWithDuration:delay : options:animations:completion:]」 动画api驱动的动画，特点是所有动画都在 animations block 里同步触发，可以方便的设置任何属性动画。
 
-**[UIView animateWithDuration:duration
+[UIView animateWithDuration:duration
                              delay:0
                            options:option
 
@@ -64,25 +64,25 @@ source_url: https://zhuanlan.zhihu.com/p/667129554
                         completion:completion];
 ```
 
-#### 3.2CAAnimation**
+#### 3.2CAAnimation
 
 <strong>基于 「CAAnimation api」 直接触发提交的动画，例如：</strong>
 
-**CABasicAnimation *ani_position = [CABasicAnimation animationWithKeyPath:@"position"];
+CABasicAnimation *ani_position = [CABasicAnimation animationWithKeyPath:@"position"];
 ani_position.fromValue = @(val.position.from);
 ani_position.toValue = @(val.position.to);
 [view.layer addAnimation:group forKey:key];
-#### 3.3Timer**
+#### 3.3Timer
 
 基于 「NSTimer/GCD」 触发的动画，例如定时去修改某个 imageView.image，使得它能定期变换的效果。基于 「CADisplayLink」 触发的动画，和基于 NSTimer 触发类似，只不过这个 timer 源是和渲染保持一致的，能够做到更流畅更贴合。
 
 比如我们要实现自定义的 UIScrollView 动画，就可以基于 CADisplayLink 来做。
 
-#### <strong>3.4UIViewPropertyAnimator</strong>
+#### 3.4UIViewPropertyAnimator
 
 「UIViewPropertyAnimator」是iOS10开始苹果推动的新的动画api，相比 UIView block animation 可以更灵活的控制动画的过程。
 
-**[UIViewPropertyAnimator runningPropertyAnimatorWithDuration:duration
+[UIViewPropertyAnimator runningPropertyAnimatorWithDuration:duration
                                      delay:0
                                    options:option
 
@@ -94,11 +94,11 @@ ani_position.toValue = @(val.position.to);
                                 completion:completion];
 ```
 
-### 4、知识储备2：iOS中的动画渲染**
+### 4、知识储备2：iOS中的动画渲染
 
 iOS中的动画或者 UIView 的修改到底是怎么被渲染到屏幕上去的？
 
-#### <strong>4.1Core Animation Pipeline</strong>
+#### 4.1Core Animation Pipeline
 
 iOS 的 UI 更新和动画操作都离不开 Core Animation 和 UIKit，他们的底层都是 QuartzCore，所有的 UI 刷新和动画提交都会打包成对应的 CA::Transaction 和 CAAnimation 对象并提交给 Render Server 去处理。
 
@@ -112,7 +112,7 @@ App 本身并不负责渲染，渲染是由独立的进程 Render Server 来负�
 - *<strong>4）</strong>*GPU 最终完成了图像的渲染并显示到屏幕 Display。
 ![](/images/collections/0.raw/zhihu/%E4%BC%98%E5%8C%96/asset/img_316ee90dba39.jpg)
 
-#### <strong>4.2Render Server</strong>
+#### 4.2Render Server
 
 如下图所示，最终的上屏任务提交操作是由 Render Server 也即 backboardd 进程来最终触发的。
 
@@ -130,25 +130,25 @@ App 本身并不负责渲染，渲染是由独立的进程 Render Server 来负�
 
 ![](/images/collections/0.raw/zhihu/%E4%BC%98%E5%8C%96/asset/img_d95b56e7436f.jpg)
 
-#### <strong>4.3Render Loop</strong>
+#### 4.3Render Loop
 
 Render Loop 是包括了从 app 到 Render Server 再最终到屏幕的一系列任务触发，刷新，更新与提交，直到上屏的一系列过程，是对渲染管道的进一步封装，类似于一套 runloop 循环机制，能随时的处理输入和输出。
 
 ![](/images/collections/0.raw/zhihu/%E4%BC%98%E5%8C%96/asset/img_c4cc0c6ce7b6.jpg)
 
-#### <strong>4.4动画渲染</strong>
+#### 4.4动画渲染
 
 当我们调用-[UIView animateWithDuration:animations:] api触发动画后，整体动画渲染过程如下图3步所示。
 
 ![](/images/collections/0.raw/zhihu/%E4%BC%98%E5%8C%96/asset/img_ee76ea848506.jpg)
 
-#### <strong>4.5帧率</strong>
+#### 4.5帧率
 
 帧率即 FPS（frames per second），每秒渲染了多少帧，正常情况下只要我们定期提交一次 opengl 上屏 [curContext presentRenderbuffer:GL_RENDERBUFFER] 就会触发一帧的上屏操作，这就回导致 FPS 发生变化，也最终影响了 app 的性能占用。
 
 FPS 越高对于游戏等高清视频效果就更细腻更好，但是并不是所有情况都需要高 FPS，部分情况下高 FPS 反而导致了无用的功耗但并没有带来更好的体验。
 
-#### <strong>4.6屏幕刷新率</strong>
+#### 4.6屏幕刷新率
 
 对于 iOS15/iPhone 13以前的设备，屏幕是固定的刷新率，在这之后 iPhone 13和 iPad Pro 后引入了高刷屏，并且支持了动态刷新率。
 
@@ -161,9 +161,9 @@ FPS 越高对于游戏等高清视频效果就更细腻更好，但是并不是�
 
 在我们遇到的问题中，我们的视频流 FPS 是25，那么我们预期的最终 GPU FPS 和屏幕 FPS 理应同理也是接近25才是，而这里却达到了60fps，说明了有重复的内容帧一直被 Render Server 重复的复制并提交给 GPU，导致了画质细节没有增加，但频繁的拷贝渲染造成了更高的 GPU 占用。这就是我们的问题所在。
 
-### <strong>5、知识储备3：iOS中的动画降帧</strong>
+### 5、知识储备3：iOS中的动画降帧
 
-#### <strong>5.1概述</strong>
+#### 5.1概述
 
 结合上文，我们要解决直播帧率异常升高的问题，就需要解决点赞动画的高帧率问题。
 
@@ -173,7 +173,7 @@ FPS 越高对于游戏等高清视频效果就更细腻更好，但是并不是�
 
 ![](/images/collections/0.raw/zhihu/%E4%BC%98%E5%8C%96/asset/img_4b9d8937287a.jpg)
 
-#### <strong>5.2CAAnimation 降帧原理</strong>
+#### 5.2CAAnimation 降帧原理
 
 iOS15开始苹果引入了 CAFrameRateRange 相关 api 来供 app 去设置 CADisplayLink 和 CAAnimation 的 preferredFrameRateRange，以方便调节帧率，达到在高刷机上能进一步降低功耗的目的。
 
@@ -183,7 +183,7 @@ iOS15开始苹果引入了 CAFrameRateRange 相关 api 来供 app 去设置 CADi
 
 具体而言，我们以 UIScrollView的 setContentOffset:animated 动画为例。
 
-#### <strong>5.3setContentOffset:animated 动画机制</strong>
+#### 5.3setContentOffset:animated 动画机制
 
 当我们触发[scrollView setContentOffset:CGPointMake(120,0) animated:YES]后，会触发创建一个 UIScrollViewAnimation 的实例对象（UIAnimation的子类），接下来会调用 UIUpdateSequenceInsertItem 将这个动画实例注册到当前的 UIUpdateCycle 循环中。
 
@@ -197,7 +197,7 @@ UIUpdateCycle 负责根据设备的 CADisplay 屏幕刷新率和设置动态效�
 
 每次触发触发 _UIUpdateSequenceRun 时，会向 UIScrollViewAnimation 请求[UIAnimation fractionForTime:]来返回对应时间戳的 contentOffset 和 progress，然后触发修改 contentOffset，最终接近目标 contentOffset 后就完成了完整的动画。
 
-#### <strong>5.4CAFrameRateRange</strong>
+#### 5.4CAFrameRateRange
 
 当我们设置 CAAnimation 的 preferredFrameRateRange 后，QuartzCore 会将 CAFrameRateRange 转为CAFrameIntervalRange 结构，并最终尝试触发 Render Server 在指定帧间隔内渲染每一帧动画。
 
@@ -205,7 +205,7 @@ UIUpdateCycle 负责根据设备的 CADisplay 屏幕刷新率和设置动态效�
 
 ![](/images/collections/0.raw/zhihu/%E4%BC%98%E5%8C%96/asset/img_912b90cbfd48.jpg)
 
-#### <strong>5.5帧率变化探索</strong>
+#### 5.5帧率变化探索
 
 所有的帧提交操作最终都是在 Render Server 触发的，也就是只有从 Render Server 统计FPS才是最终的实际 FPS，那我们要怎么统计呢？
 
@@ -215,7 +215,7 @@ QuartzCore 提供了一个系统级的面板工具，它可以很方便的显示
 
 我们可以在越狱后给 app 自签名 com.apple.QuartzCore.debug 这个 entitlement 后，再调用如下代码所示的私有 api 即可全局打开这个面板，可以方便的在手机端查看 Render Server 上的实际 FPS。
 
-**extern"C"{
+extern"C"{
 intCARenderServerGetDebugOption(mach_port_t port, intkey);
 intCARenderServerGetDebugValue(mach_port_t port, intkey);
 voidCARenderServerSetDebugOption(mach_port_t port, intkey, intvalue);
@@ -240,20 +240,20 @@ voidCARenderServerSetDebugValue(mach_port_t port, intkey, intvalue);
 
 基于以上研究，理论上我们可以尝试调用私有 api 来全局控制 CADisplay 的刷新率，来进一步降低性能占用，但是由于 Render Server 是在其他进程，我们还是无法控制 Render Server 的刷新率，并且私有 api 会导致 app 被拒审，所以我们最终依旧只能改造部分系统动画实现以继续基于 CAAnimation api 去优化帧率。
 
-### <strong>6、我们的优化方案</strong>
+### 6、我们的优化方案
 
-#### <strong>6.1概述</strong>
+#### 6.1概述
 
 从 iOS15开始苹果新增加了 preferredFrameRateRange api 可用于设置相应动画或timer的刷新频率，我们就可以基于该方案去改造相应动画即可。
 
-**@propertyCAFrameRateRange preferredFrameRateRange
+@propertyCAFrameRateRange preferredFrameRateRange
 
 ```text
     API_AVAILABLE(macos(12.0), ios(15.0), watchos(8.0), tvos(15.0));但新的问题又来了，系统仅给 CAAnimation 和 CADisplayLink 的 api 提供了动态修改帧率的操作。
 ```
 
 
-但是在我们直播场景中，一共有如下几种场景的动画提交：**
+但是在我们直播场景中，一共有如下几种场景的动画提交：
 
 - *<strong>1）</strong>*UIView block 动画；
 - *<strong>2）</strong>*UIScrollView scroll 动画；
@@ -263,7 +263,7 @@ voidCARenderServerSetDebugValue(mach_port_t port, intkey, intvalue);
 
 针对以上1~3点我们分别做如下处理。
 
-#### <strong>6.2UIView block 动画</strong>
+#### 6.2UIView block 动画
 
 通过分析 +[UIView animateWithDuration:delay : options:animations:completion:] 调用，我们发现 animations block 里的 property animation 会被同步的创建为 CAAnimation 对象。
 
@@ -281,7 +281,7 @@ voidCARenderServerSetDebugValue(mach_port_t port, intkey, intvalue);
 
 <strong>部分代码如下：</strong>
 
-**    if(@available(iOS 15.0, *)) {
+if(@available(iOS 15.0, *)) {
 
 ```text
         setFrameRateLevel(level);
@@ -305,7 +305,7 @@ completion:^(UIViewAnimatingPosition finalPosition) {
 ```
 
 
-#### 6.3UIScrollView 动画**
+#### 6.3UIScrollView 动画
 
 经过上文的分析我们发现 UIScrollView setContentOffset 的动画是基于系统_UIUpdateTarget 机制来驱动的，由于对应的回调是私有 api 触发的，所以我们无法直接调节它的帧率，于是我们干脆自己实现一个基于 CADisplayLink 驱动的 setContentOffset 滑动动画即可解决问题。
 
@@ -313,7 +313,7 @@ completion:^(UIViewAnimatingPosition finalPosition) {
 
 <strong>主体代码大致如下：</strong>
 
-**- (void)tt_contentOffset:(CGPoint)contentOffset duration:(CFTimeInterval)duration {
+- (void)tt_contentOffset:(CGPoint)contentOffset duration:(CFTimeInterval)duration {
 
 ```text
     self.duration = duration;
@@ -344,7 +344,7 @@ completion:^(UIViewAnimatingPosition finalPosition) {
         if(percent 
 ```
 
-#### 6.4NSTimer 动画**
+#### 6.4NSTimer 动画
 
 根据苹果Explore UI animation hitches and the render loop 的说法，为了避免 vsync 信号和 timer  可能不同步的情形，我们直接用 CADisplayLink 来替换原先的 NSTimer，并在 CADisplayLink 回调里再触发对应的 UI 提交操作和动画即可。
 
@@ -352,7 +352,7 @@ completion:^(UIViewAnimatingPosition finalPosition) {
 
 ![](/images/collections/0.raw/zhihu/%E4%BC%98%E5%8C%96/asset/img_062d6db8b954.jpg)
 
-### <strong>7、优化后的效果</strong>
+### 7、优化后的效果
 
 按照苹果的建议 ，app 内容在没有频繁更新时，应该尽量降低 FPS 以平衡功耗占用，因为高刷必然带来更频繁的 GPU 任务提交，使得 GPU 占用提升。
 
@@ -372,7 +372,7 @@ completion:^(UIViewAnimatingPosition finalPosition) {
 
 ![](/images/collections/0.raw/zhihu/%E4%BC%98%E5%8C%96/asset/img_25082120bfb3.jpg)
 
-### <strong>8、问题扩展</strong>
+### 8、问题扩展
 
 我们通过一些奇怪的绕过方式间接的实现了对所有基于 UIView block animation api 调用的动画以及 CAAnimation api 调用的动画都实现了动态降帧，这极大的改善了低帧率直播间的业务动画导致的 GPU 功耗占用问题。
 
@@ -386,7 +386,7 @@ completion:^(UIViewAnimatingPosition finalPosition) {
 
 最终也一样取得了GPU 同比下降28%甚至更高的效果，有效减轻了过热时的系统负载和功耗，并且从肉眼上基本无法分辨出差异。
 
-### <strong>9、本文小结</strong>
+### 9、本文小结
 
 本文在不影响现有用户体验和业务逻辑的情况下，通过扩展系统接口的能力与实验调试分析，最终实现了一套 UI 动画的帧率调节方案。
 
@@ -399,7 +399,7 @@ completion:^(UIViewAnimatingPosition finalPosition) {
 
 至此，关于iOS视频号直播的功耗优化方案讲解完毕。
 
-### <strong>10、相关文章</strong>
+### 10、相关文章
 
 [1] 淘宝直播技术干货：高清、低延时的实时视频直播技术解密
 
@@ -417,7 +417,7 @@ completion:^(UIViewAnimatingPosition finalPosition) {
 
 [8] 直播系统聊天技术(五)：微信小游戏直播在Android端的跨进程渲染推流实践
 
-### <strong>附录：微信团队分享的其它文章</strong>
+### 附录：微信团队分享的其它文章
 
 《微信团队分享：极致优化，iOS版微信编译速度3倍提升的实践总结》
 

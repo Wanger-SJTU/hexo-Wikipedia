@@ -47,7 +47,7 @@ struct zone{
 
 ![](https://proxy-prod.omnivore-image-cache.app/730x372,s3PrqAcYKFZzIrbX_QOWJ87U3W93KegOL0n9RLyhCXaY/https://pic2.zhimg.com/v2-c130ab0ec716aa579769c414692b8855_b.jpg)
 
-### <strong>分配</strong>
+### 分配
 
 当需要分配一段内存时，系统会寻找合适大小的内存块。如果找到了一个恰好大小的内存块，则直接分配给请求的程序；如果没有找到，系统会向上搜索直到找到一个更大的内存块，然后将其切分成合适大小的块，并将其中一个分配给请求的程序，将剩余的部分继续保留在内存池中。
 
@@ -63,7 +63,7 @@ struct zone{
 
 ![](https://proxy-prod.omnivore-image-cache.app/772x313,s86bUHM76v0M54Me4248hJvHyKtDCjWG11KX_hkAbPdQ/https://pic4.zhimg.com/v2-a7cbc8c03fd304617046210cddb6ca9b_b.jpg)
 
-### <strong>释放</strong>
+### 释放
 
 当程序释放内存时，系统会将这块内存标记为空闲状态，并尝试将其与相邻的空闲块合并，以形成更大的空闲块，方便后续的分配。
 
@@ -77,7 +77,7 @@ struct zone{
 
 ![](https://proxy-prod.omnivore-image-cache.app/631x262,sbIQdjs6KWd-ZcytVX9tMkpLANpM0z7wHMY7mZD4f_7s/https://pic4.zhimg.com/v2-98d9020410bf26cc29af37a6cd7a4c03_b.jpg)
 
-### <strong>优缺点</strong>
+### 优缺点
 
 优点：
 
@@ -90,11 +90,11 @@ struct zone{
 
 Linux 为了解决 buddy system 造成的内部碎片问题，引入 slab 分配器处理小粒度的内存分配。
 
-## <strong>slab 分配器</strong>
+## slab 分配器
 
 Linux 中的 buddy 分配器是以 page frame 为最小粒度的，而有很多现实的应用以内核 objects 的大小来申请和释放内存的，这些内核 objects 的大小通常从几十字节到几百字节不等，远远小于一个 page 的大小。
 
-### <strong>结构</strong>
+### 结构
 
 slab 分配器用于分配小块内存。它从内存管理模块申请一整块页，然后划分成多个小块的存储池，用队列来维护这些小块的状态。
 
@@ -112,7 +112,7 @@ cache 的内存从 buddy allocator 获得。slab 层直接面向程序的分配�
 
 Slab 分配器的主要优点和缺点如下：
 
-### <strong>优缺点</strong>
+### 优缺点
 
 优点：
 

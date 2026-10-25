@@ -25,21 +25,21 @@ source_url: https://zhuanlan.zhihu.com/p/683636677
 
 - 复现 Sora 的难度没有预想中的大，至少训练算力不是瓶颈； 国内靠 A800/H800 的余量仍可以满足
 - 国产芯片迎来一次机会，设计并量产 14nm 的中算力、大显存 LLM 推理芯片，可以绕开芯片制程的瓶颈迅速商业化
-**3.8 13:00 更新:经评论区 [@程勇](//www.zhihu.com/people/3791f46565ab66ffdcae165a99650023)
+3.8 13:00 更新:经评论区 [@程勇](//www.zhihu.com/people/3791f46565ab66ffdcae165a99650023)
 
  $指正，  Scaling Laws 原论文中的 table 1 漏算了 Attention 部分 Attention Score * V 部分（跟 Mask 的开销一样），因此实际的公式应该是： Csora&#x2212;forward/token=2N+4nlayernctxdattn=2(12nlayerdmodel2+2nlayernctxdattn)&#x2248;2(12nlayerdmodel2+2&#x2217;12nlayer&#x2217;14dmodel&#x2217;dmodel)=58N" role="presentation">Csora−forward/token=2N+4nlayernctxdattn=2(12nlayerdmodel2+2nlayernctxdattn)≈2(12nlayerdmodel2+2∗12nlayer∗14dmodel∗dmodel)=58NC_{sora-forward/token} = 2N + 4n_{layer}n_{ctx}d_{attn} = 2 (12n_{layer}d_{model}^{2} + 2n_{layer}n_{ctx}d_{attn} ) \approx 2(12n_{layer}d_{model}^{2} + 2*12n_{layer}*14d_{model}*d_{model}) = 58N $
 
 相当于 Sora 的推理成本如果是完整的 1M token 的话，需要 58N （之前的结论是 30N），训练则是 58N*3 = 174N。  推理成本还会将近翻一倍 （达到 GPT-4 生成 1k token 的 3000 倍**）。   不过也有可能是 Sora 的视频是由多段 30s 视频拼接起来，不是一次性生成 1min 的视频，这样可以使其单位 token 的成本减半，总成本和之前预估的持平。 因此我正文中就不再一一更改公式了。
 
-**2.27 15:00 更新:经评论区 [@Victarry](//www.zhihu.com/people/b8fd114b56b395d247744cee40056139)
+2.27 15:00 更新:经评论区 [@Victarry](//www.zhihu.com/people/b8fd114b56b395d247744cee40056139)
 
  指正， Scaling Laws 里推导的 C&#x2248;6ND" role="presentation">C≈6NDC\approx6ND 成立的前提是 dmodel&#x226B;nctx/12" role="presentation">dmodel≫nctx/12d_{model} \gg n_{ctx}/12 。这个在超长的 context length （如 1M）时不再适用，因此 Sora 的训练推理成本均会更高，初步估算 Sora 的推理成本在原结论 100 倍的基础上还需要增加 15 倍。** 我更新到原文推导 Sora 所需算力的部分。 
 
-**2.26 11:00 更新：经评论区 [@mackler](//www.zhihu.com/people/59f76a6c40b262c91e0e8b9dbb100168)
+2.26 11:00 更新：经评论区 [@mackler](//www.zhihu.com/people/59f76a6c40b262c91e0e8b9dbb100168)
 
  指正，以及和团队内负责多模态大模型的 黄君实 老师讨论，Sora 的 DiT 是 Encoder-Only 架构，而非 GPT 的 Decoder-Only 架构，导致 Sora 模型的推理访存需求要远小于 GPT， Sora 的推理计算量占推理的主要代价而非访存量**。 所以下一代推理芯片不能一味地追求低算力，算力提升会显著提升 Sora 的视频生成速度，但对 GPT 的推理速度提升有限。 具体分析我补充到原答案正文中的 Sora 推理算力需求估计部分。
 
-以下是原文：**
+以下是原文：
 
 ### 测算 GPT-4 的训练算力需求
 
@@ -53,7 +53,7 @@ LLM 每 token 需要的计算量是 6 倍的模型大小基于一些"众所周�
 - GPT-4 的训练数据约为 13T - 20T 之间，我们假设为 20T 数据
 则 GPT-4 训练所需的 FLOPs = 6 * 400B * 20T = 4.8 * 10^25
 
-**目前最大的模型训练计算量预估在 10^25 - 10^26 之间那么 GPT-4 需要训练多久呢？ 
+目前最大的模型训练计算量预估在 10^25 - 10^26 之间那么 GPT-4 需要训练多久呢？ 
 
 GPT-4 是 2022 年上半年训练的，据说 OpenAI 使用了 25000 张 A100。 每张 A100 的理论算力是 312 TFLOPs。  假设 25k 的超大规模集群训练 所需通信量比 Dense 更高的 MoE 模型，OpenAI Infra 优化利用率 MFU 到 40% （无法 overlap 的通信和访存会大幅降低利用率），则可以推导出来训练所需的时间是：
 
@@ -63,7 +63,7 @@ GPT-4 是 2022 年上半年训练的，据说 OpenAI 使用了 25000 张 A100。
 
 如果是改为 H100 的卡，虽然标称了 989 TFLOPs 的单卡算力，实际的训练效率则约为 A100 的 2.5 倍（BF16），因此需要 10000 张 H100 训练半年时间**。
 
-**如果用 FP8 的混合精度，则能进一步提升至 A100 的 3.5 倍。
+如果用 FP8 的混合精度，则能进一步提升至 A100 的 3.5 倍。
 ### 测算 Sora 的训练算力需求
 
 根据 OpenAI 的技术报告： Video generation models as world simulators ，Sora 是一个 Diffusion Model， 且应该使用的是 Diffusion Transformer** （DiT）作为主干模型网络。 虽然 Diffusion Transformer 和 LLM 的 Autoregression Model 架构不同， 但均为 Transformer 架构： 
@@ -90,11 +90,11 @@ Sora 的 Video Encoder 部分参考 Diffusion Transformer， 256x256 的图片�
 
 1min Video = 64*32*60*9=1.1M patches 
 
-**关于一分钟的视频具体有多少 patch 有多种推导方法，如果没有下采样的话，一帧 1920x1080 经过 VAE Encoder 可能会得到  120x68=8k patch。 即使 FPS=1 也会有 480k。 如果 FPS = 6 的话就有 3M patch 了。而 Diffusion Transformer 把整个 video 切成 m*n*t 三维的 patch （仍是 RGB 像素空间）阵列后，经过空间映射会得到 latent 空间中的一维序列，一个 patch 对应的一个 latent 元素，等价于 LLM 中的一个 token（经过字符空间映射过来的 token 空间基本单元）。 因此保守估计 1 分钟的视频有 1M tokens。
+关于一分钟的视频具体有多少 patch 有多种推导方法，如果没有下采样的话，一帧 1920x1080 经过 VAE Encoder 可能会得到  120x68=8k patch。 即使 FPS=1 也会有 480k。 如果 FPS = 6 的话就有 3M patch 了。而 Diffusion Transformer 把整个 video 切成 m*n*t 三维的 patch （仍是 RGB 像素空间）阵列后，经过空间映射会得到 latent 空间中的一维序列，一个 patch 对应的一个 latent 元素，等价于 LLM 中的一个 token（经过字符空间映射过来的 token 空间基本单元）。 因此保守估计 1 分钟的视频有 1M tokens。
 
 D=10^{8}*10^{6}=10^{14}=100T 
 
-则基于 Sora 1亿分钟 video ，估计 Sora 的训练 token 量是 100T tokens**
+则基于 Sora 1亿分钟 video ，估计 Sora 的训练 token 量是 100T tokens
 
 $**注： 先前计算 Sora 的 FLOPs 仍使用了 6ND 的公式，但是这个在 1M 的 seq len 下不适用。这里更新一下。Scaling Laws 里推导的 C\approx6ND 成立的前提是 d_{model} \gg n_{ctx}/12 。 一般目前 20B 左右的模型， d_{model} 也就是 4k - 6k，我们这里假设 d_{model}=6144 ，而 n_{ctx}=1M ， d_{model}=d_{attn}=6144 ， n_{ctx} / 12 = 1M / 12 \approx 14 * 6144=14d_{model} ，则可以估算：$
 
@@ -104,14 +104,14 @@ $C_{(fw+bw)/token} = 6N+6n_{layer}n_{ctx}d_{attn} = 6 (12n_{layer}d_{model}^{2} 
 
 context length 很大时，Attention 部分的计算不能忽略因此，如果 Sora 全量数据训练都是 1M seq length，则 Sora 的训练成本需要增加 15 倍。**如果 Sora 是先训练一个 32k/64k 的模型，最后再 Continue Training 1M 的模型，则 Sora 的训练成本跟之前预估的接近。
 
-**我个人倾向于后者。   LLM 里的 long context 也不是全量数据都用这么长的 seq len 训练的，更经济的做法是用 4k 训练完之后，再扩展到 100k 继续训练一小部分数据。假设 Sora 训练时是一个 32k 的模型，则： Sora 训练所需的计算量是 1.2 * 10^25
+我个人倾向于后者。   LLM 里的 long context 也不是全量数据都用这么长的 seq len 训练的，更经济的做法是用 4k 训练完之后，再扩展到 100k 继续训练一小部分数据。假设 Sora 训练时是一个 32k 的模型，则： Sora 训练所需的计算量是 1.2 * 10^25
 
 FLOPs = 6*N*D = 6 * 20 * 10^{9}*10^{14}=1.2*10^{25} 
 
 相比于 GPT-4 训练所需算力的 4.8 * 10^25 FLOPs，seq len = 32k 的 Sora 训练所需算力 1.2 * 10^25 FLOPs 是 GPT-4 的 。**由于 GPT-4 的成本是 25000 张 A100 训练了 6 个月，因此 Sora 只需要 6000 张 A100 训练 6 个月。
 
 **如果 Sora 全量训练全部是用的 1M 的 seq length，则训练成本会超过 GPT-4： FLOPs = 90ND = 90 * 20 * 10^{9}*10^{14}=1.8*10^{26}     约为 GPT-4 的 4 倍**。
-### <strong>测算 Sora 的推理算力需求</strong>
+### 测算 Sora 的推理算力需求
 
 我们假设：
 
@@ -132,7 +132,7 @@ GPT-4 推理 1k token 的成本仍可以按照 一次前向： C_{GPT-forward/to
 
 - 推理一个 1k token GPT-4 的计算成本就是： FLOPs = 2 * 400B * 1k = 800T
 - 推理一个 1min video （1M tokens ） Sora 的计算成本是：  FLOPs = 30 * 20B * 1M * 20 = 12000000T
-则得出结论： Sora 推理 1min video 的理论计算量 是 GPT-4 推理 1k token 的理论计算量的 15000 倍。**
+则得出结论： Sora 推理 1min video 的理论计算量 是 GPT-4 推理 1k token 的理论计算量的 15000 倍。
 
 <strong>注： 访存开销的量化分析挪到了文末。但是推理需求的计算不能只考虑理论计算量。 GPT（所有 LLM）是 Decoder-Only Transformer 架构，通过 Auto Regression 的方式预测下一个 token，是一个完全的 Memory bound 场景，一般实际推理时的 GPU 算力利用率很低，5% 左右。 而 Sora 的 DiT 是一个 Encoder-Only Transformer 架构，推理时会输出全部长度的 token，一次性生成全部长度的 token，对 Memory 的访存次数要远小于 GPT，是一个 Compute Bound 场景，</strong>我们假设 Sora 的推理利用率是 50%<strong>。</strong>不过 Sora 是否是一次性生成 1M token 超长序列是存疑的，我们假设他的 seq len 就是完整的 1M，而非多段（每段大概 5 s，相邻两段有 overlap 的视频帧）顺序生成后拼接得到完整视频。
 
@@ -142,7 +142,7 @@ $$\frac{Sora-InferenceCost}{GPT-InferenceCost} = \frac{C_{Sora} / MFU_{Sora}}{C_
 
 <strong>Sora 推理 1min video 对于实际算力的需求是 GPT-4 推理 1k token 的 1500 倍。</strong>
 
-#### <strong>Sora 生成 1min video 需要多久？</strong>
+#### Sora 生成 1min video 需要多久？
 
 我们假设一台 8xA100 机器生成 Sora 1min video，A100 的单卡算力是 312TFLOPs ，根据之前推导的各项参数，可以推导出来 8xA100 机器需要生成的时间：
 

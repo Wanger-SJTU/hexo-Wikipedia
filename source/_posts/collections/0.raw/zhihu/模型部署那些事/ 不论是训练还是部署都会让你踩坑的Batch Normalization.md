@@ -19,7 +19,7 @@ source_url: https://zhuanlan.zhihu.com/p/388730276
 
 [![](/images/collections/0.raw/zhihu/%E6%A8%A1%E5%9E%8B%E9%83%A8%E7%BD%B2%E9%82%A3%E4%BA%9B%E4%BA%8B/asset/img_6788c640f41d.jpg)不看必进坑~不论是训练还是部署都会让你踩坑的Batch Normalizationmp.weixin.qq.com/s?__biz=Mzg3ODU2MzY5MA==&mid=2247487388&idx=1&sn=915ef017a4de77dd545f788bfcd4d86d&chksm=cf109799f8671e8ff68dd5ac34929982d99a9d4a75638ac23ba77741f2f2d0d42c019de9b36e&token=1139683613&lang=zh_CN#rd](https://link.zhihu.com/?target=https%3A//mp.weixin.qq.com/s%3F__biz%3DMzg3ODU2MzY5MA%3D%3D%26mid%3D2247487388%26idx%3D1%26sn%3D915ef017a4de77dd545f788bfcd4d86d%26chksm%3Dcf109799f8671e8ff68dd5ac34929982d99a9d4a75638ac23ba77741f2f2d0d42c019de9b36e%26token%3D1139683613%26lang%3Dzh_CN%23rd)
 
-### <strong>简单的Batch Normalization</strong>
+### 简单的Batch Normalization
 
 BN、Batch Normalization、批处理化层。
 
@@ -43,12 +43,12 @@ BN层往往用在深度神经网络的卷积层之后、激活层之前。其作
 
 借用<strong>[陀飞轮兄](https://www.zhihu.com/question/38102762/answer/1895873061)</strong>的回答：
 
-** BN效果好是因为BN的存在会引入mini-batch内其他样本的信息，就会导致预测一个独立样本时，其他样本信息相当于正则项，使得loss曲面变得更加平滑，更容易找到最优解。相当于一次独立样本预测可以看多个样本，学到的特征泛化性更强，更加general。
+BN效果好是因为BN的存在会引入mini-batch内其他样本的信息，就会导致预测一个独立样本时，其他样本信息相当于正则项，使得loss曲面变得更加平滑，更容易找到最优解。相当于一次独立样本预测可以看多个样本，学到的特征泛化性更强，更加general。
  BN层仍然有一些我们未知的特性待我们去发掘，不过BatchNormalization的简单介绍先到这里**，接下来我们讨论下BN的细节以及会遇到的坑，不论是训练还是部署，如果对BN不熟悉，说不定哪天就会踩到坑里~
 
 ![](/images/collections/0.raw/zhihu/%E6%A8%A1%E5%9E%8B%E9%83%A8%E7%BD%B2%E9%82%A3%E4%BA%9B%E4%BA%8B/asset/img_823631a7e83b.jpg)
 
-### <strong>BN层都在哪里</strong>
+### BN层都在哪里
 
 因为BN层太<strong>常见</strong>了，以至于我们以为每个神经网络中可能都有BN层，但事实肯定不是这样。
 
@@ -64,7 +64,7 @@ BN层往往用在深度神经网络的卷积层之后、激活层之前。其作
 - <strong>Instance Normalization</strong>在Gan、风格迁移类模型中经常用到
 上述是老潘见到过的一些例子，也算是抛砖引玉。这些不同的标准化方法，说白了就是<strong>不同维度</strong>的标准化，有的时候稍微改变一下代码就可以互相混用，不过本文的重点不在这里。
 
-### <strong>BN层都在这里</strong>
+### BN层都在这里
 
 我们翻一翻常见的backbone的结构。可以看到在官方Pytorch的`resnet.py`的`class BasicBlock`中，forward时的基本结构是`Conv+BN+Relu`:
 
@@ -104,7 +104,7 @@ resnet作为我们常见的<strong>万年青backbone</strong>不是没有理由�
 
 这种结构是很常见的。
 
-### <strong>常见的Conv+BN+Relu融合</strong>
+### 常见的Conv+BN+Relu融合
 
 既然这个融合已经很常见了，现在也基本是标配。一般网络中往往也有很多这样的结构，如果可以优化的话，岂不是可以实现加速？当然是可以的。
 
@@ -126,7 +126,7 @@ resnet作为我们常见的<strong>万年青backbone</strong>不是没有理由�
 
 融合后的Conv+BN就相当于一个Conv了，因为大部分网络结构中Conv+BN这样的组合很多，所以一般来说仅仅是这个融合操作就可以使模型加速10%左右。
 
-### <strong>TensorRT中的融合</strong>
+### TensorRT中的融合
 
 这种基本的优化方式TensorRT肯定是不会放过的，我们来看看TensorRT对BN层的处理：
 
@@ -214,9 +214,9 @@ DEFINE_BUILTIN_OP_IMPORTER(BatchNormalization)
 
 通过TensorRT的前端解释器解释后，TensorRT会将BN层视为一个简单的Scale层(通过`addScaleNd`构建)，之后的优化中会根据情况与该层前面的CONV层合并：
 
-** Convolution and Scale A Convolution layer followed by a Scale layer that is kUNIFORM or kCHANNEL can be fused into a single convolution by adjusting the convolution weights. This fusion is disabled if the scale has a non-constant power parameter.
+Convolution and Scale A Convolution layer followed by a Scale layer that is kUNIFORM or kCHANNEL can be fused into a single convolution by adjusting the convolution weights. This fusion is disabled if the scale has a non-constant power parameter.
  
-### RepVGG中融合方式**
+### RepVGG中融合方式
 
 当然很多其他地方也可以实现相应的操作，最简单的我们可以直接在Pytorch模型中通过修改`.py`文件实现这样的操作，这样我们在推理的时候就会比在训练中快一些，在<strong>[repvgg](https://link.zhihu.com/?target=https%3A//github.com/DingXiaoH/RepVGG)</strong>中也有类似的融合思想，这里就不详细描述了：
 
@@ -254,7 +254,7 @@ def _fuse_bn_tensor(self, branch):
 ```
 
 
-### <strong>有坑的优化</strong>
+### 有坑的优化
 
 上述我们聊了BN层的基本优化策略，那么这种优化我们在任何时候都可以使用吗？当然不是！
 
@@ -272,7 +272,7 @@ def _fuse_bn_tensor(self, branch):
 
 那么怎么解决呢？在解决之前，我想分析一下Pytorch关于BN的源码，如果不想看源码分析的<strong>直接看最后的结论</strong>就好。
 
-### <strong>探索一下Pytorch中BN层源码</strong>
+### 探索一下Pytorch中BN层源码
 
 就这个问题来说，为什么train和eval会对模型性能产生差异，我们看Pytorch的BN层是怎么实现的。注意~这部分在面试中<strong>要考</strong>。
 
@@ -366,7 +366,7 @@ class _BatchNorm(_NormBase):
 
 而`bn_training`这个参数并不是一定由<strong>模型在训练状态决定</strong>的参数，如果BN层中没有初始化`self.running_mean`和`self.running_var`，也就是我们一开始初始化BN层的时候，关闭了`track_running_stats`这个参数，那么这个BN层是不会在训练过程中记录`self.running_mean`和`self.running_var`，而是实时计算。
 
-### <strong>再看Pytorch的C++源码</strong>
+### 再看Pytorch的C++源码
 
 Pytorch中底层C++BN层的具体实现代码在`/pytorch/aten/src/ATen/native/Normalization.cpp`中，这里不涉及到BN的反向传播，我们先看BN的前向处理过程。
 
@@ -523,7 +523,7 @@ std::tupleTensor,Tensor,Tensor> batch_norm_cpu_transform_input_template(
 ```
 
 
-### <strong>总结下Pytorch中的BN行为</strong>
+### 总结下Pytorch中的BN行为
 
 总结一下，Pytorch中的BN有两种处理`running_mean`和`running_var`的方式:
 
@@ -531,7 +531,7 @@ std::tupleTensor,Tensor,Tensor> batch_norm_cpu_transform_input_template(
 - 可以初始化的时候关闭，此时不管是推理还是训练，都会重新计算一遍mean和std
 而Pytorch中BN的train与eval的区别，则是`train`是否设置为True，传入C++中即`bn_training`是否为True，这个参数会决定BN层是否实时更新mean和std。
 
-### <strong>最终解决方案</strong>
+### 最终解决方案
 
 知道问题出在哪里了，那我们该怎么办呢？
 
@@ -610,7 +610,7 @@ class TrainedBatchNorm2d(torch.nn.BatchNorm2d):
 
 解决！
 
-### <strong>后记</strong>
+### 后记
 
 BN层很简单，但是其中的一些隐含的信息却不得不值得我们去重视。毕竟细节决定成败呀。
 
@@ -618,6 +618,6 @@ BN层很简单，但是其中的一些隐含的信息却不得不值得我们去
 
 我是老潘，我们下期见~
 
-### <strong>参考资料</strong>
+### 参考资料
 
 https://blog.csdn.net/weixin_39580564/article/details/110518533 https://blog.csdn.net/Cxiazaiyu/article/details/81838306#commentBox https://discuss.pytorch.org/t/what-num-batches-tracked-in-the-new-bn-is-for/27097

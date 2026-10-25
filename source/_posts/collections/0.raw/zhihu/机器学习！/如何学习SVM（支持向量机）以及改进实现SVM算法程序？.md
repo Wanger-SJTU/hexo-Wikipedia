@@ -110,7 +110,7 @@ G[k] += delta_alpha_i * Kik * y[i] + delta_alpha_j * Kjk * y[j];
 
 <strong>第四步：实现冷热数据分离</strong>
 
-Platt 的文章里也证明过一旦某个 alpha 出于边界（0 或者 C）的时候，就很不容易变动，而且伪代码里也是优先再工作集里寻找 > 0 and Ensemble**
+Platt 的文章里也证明过一旦某个 alpha 出于边界（0 或者 C）的时候，就很不容易变动，而且伪代码里也是优先再工作集里寻找 > 0 and Ensemble
 
 大家都知道，通过 Ensemble 可以让多个不同的弱模型组和成一个强模型，而传统 SVM 实现并不能适应一些类似 AdaBoost 的集成方法，所以我们需要做一些改动。可以让外面针对某一个分类传入一个“权重”过来，修正 SVM 的识别结果。
 

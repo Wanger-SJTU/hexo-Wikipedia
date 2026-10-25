@@ -17,7 +17,6 @@ source_url: https://zhuanlan.zhihu.com/p/2014996241344373641
 
 当前AI算力网络领域出现了一个引人深思的现象：以腾讯（ETH-X）和字节跳动（EthLink）为代表的<strong>客户侧计算互联协议设计</strong>普遍要求同时支持<strong>基于Load/Store/Atomic的细粒度</strong>（≤512B）<strong>数据访问</strong>和<strong>基于RDMA的粗粒度</strong>（≥4K）<strong>数据传输；</strong>而NVIDIA的NVLink、AMD主导的UALink及Broadcom主导的SUE(Scale Up Ethernet)等<strong>解决方案提供方的计算互联协议设计</strong>却仅支持Load、Store、Atomic，AMD主导的UEC（Ultra Ethernet Consortium）则专注于RDMA优化。这一分化背后存在哪些深刻的技术约束？还反映了哪些产业链的商业竞争与合作考量？能不能从技术约束和商业竞争合作两个维度展开深度剖析，揭示AI算力网络发展的核心矛盾与未来走向？
 
-**
 
 一、**  **技术约束：AI计算场景对协议设计的双重需求​​**
 
@@ -109,7 +108,6 @@ source_url: https://zhuanlan.zhihu.com/p/2014996241344373641
 
 <strong>​​三、技术路线对比与未来趋势​​</strong>
 
-**
 
 ​​协议​​支持能力技术约束商业意图​​ETH-X/EthLink​​Load/Store + RDMA需分层协议（GPU-GPU/GPU-Switch）打破封闭生态，降低算力成本​​NVLink​​Load/Store硬件一致性协议限制维护GPU生态垄断​​UALink​​Load/Store开放标准，但未集成RDMA联合巨头对抗NVIDIA​​UEC​​RDMA以太网优化，无内存映射支持主导Scale Out市场
 

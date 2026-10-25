@@ -24,7 +24,7 @@ source_url: https://zhuanlan.zhihu.com/p/656990524
 - <strong>上下文相关性（context relevance，又细分为 Precision 和  Recall，所以可以看到有些类似的框架引入了 F1  指标）</strong>
 ![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_eb48cf5e6ca2.jpg)
 
-图一：Ragas  针对  RAG  系统的三个评估维度**
+图一：Ragas  针对  RAG  系统的三个评估维度
 
 做开发的同学不管用没用过，对 TDD(Test-Driven Development)的大名总归是听过的，类似的，开发大模型应用的时候也应该有个对应的 MDD(Metrics-Driven Development) 的概念，最舒服的姿势肯定是预先定义好业务的场景、用到的数据、设定的指标以及需要达到的分值，然后按部就班的实现既定目标，员工士气高老板也开心！
 

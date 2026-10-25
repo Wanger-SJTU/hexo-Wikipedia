@@ -17,7 +17,6 @@ source_url: https://zhuanlan.zhihu.com/p/644541524
 
 幻觉问题是LLM的实际落地应用中大家非常关注的一个问题。推荐一个前人写的比较全面的综述，但这篇Survey较少涉及2023年以后LLM时代的幻觉问题工作。
 
-**
 
 [Survey of Hallucination in Natural Language Generationarxiv.org/abs/2202.03629](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2202.03629)
 
@@ -71,13 +70,13 @@ source_url: https://zhuanlan.zhihu.com/p/644541524
 
 - <strong>模型结构</strong>：如果是较弱的backbone（比如RNN）可能导致比较严重的幻觉问题，但在LLMs时代应该不太可能存在这一问题；
 - <strong>解码算法</strong>：研究表明，如果使用不确定性较高的采样算法（e.g.，top-p）会诱导LMs出现更严重的幻觉问题。甚至可以故意在解码算法中加入一些随机性，进一步让LMs胡编乱造（可以用该方法生成一些negative samples）
-***Nayeon Lee, Wei Ping, Peng Xu, Mostofa Patwary, Mohammad Shoeybi, and Bryan Catanzaro. 2022. Factuality enhanced language models for open-ended text generation. arXiv preprint arXiv:2206.04624 (2022).*
+*Nayeon Lee, Wei Ping, Peng Xu, Mostofa Patwary, Mohammad Shoeybi, and Bryan Catanzaro. 2022. Factuality enhanced language models for open-ended text generation. arXiv preprint arXiv:2206.04624 (2022).*
 
 - 暴露偏差**：训练和测试阶段不匹配的exposure bias问题可能导致LLMs出现幻觉，特别是生成long-form response的时候。
-***Chaojun Wang and Rico Sennrich. 2020. On exposure bias, hallucination and domain shift in neural machine translation. In Proceedings of the 2020 Annual Conference of the Association for Computational Linguistics. 3544–3552.*
+*Chaojun Wang and Rico Sennrich. 2020. On exposure bias, hallucination and domain shift in neural machine translation. In Proceedings of the 2020 Annual Conference of the Association for Computational Linguistics. 3544–3552.*
 
 - 参数知识：**LMs在预训练阶段记忆的错误的知识，将会严重导致幻觉问题。
-***Shayne Longpre, Kartik Perisetla, Anthony Chen, Nikhil Ramesh, Chris DuBois, and Sameer Singh. 2021. Entity-based knowledge conflicts in question answering. In Proceedings of the 2021 Conference on Empirical Methods in Natural Language Processing (EMNLP’21). 7052–7063.*
+*Shayne Longpre, Kartik Perisetla, Anthony Chen, Nikhil Ramesh, Chris DuBois, and Sameer Singh. 2021. Entity-based knowledge conflicts in question answering. In Proceedings of the 2021 Conference on Empirical Methods in Natural Language Processing (EMNLP’21). 7052–7063.*
 ### 幻觉的评估
 
 现有的传统幻觉评估指标和人类结果的相关性往往较低，同时大都是task-specific的。
@@ -92,7 +91,7 @@ Reference-based的指标有两类：
 - <strong>基于Source Information</strong>：由于NLG任务里，Target输出往往是多种多样的，因此许多工作只基于Source信息进行幻觉的评估。比如Knowledge F1。
 *基于Reference的评价指标，基本上只能评价Faithfulness，而无法评价Factualness，因此通常不适用于LLMs。*
 
-#### <strong>Reference-Free</strong>
+#### Reference-Free
 
 - <strong>基于IE</strong>：将知识限定于可以用三元组形式表示的关系和事件，基于额外的IE模型进行抽取，接着使用额外模型进行验证。
 
@@ -108,7 +107,7 @@ Reference-based的指标有两类：
 - 同样存在QA/QG模型的错误传播问题。
 - 难以评估Factualness，因为上述第二步里面，Source Information不可能包含全部的世界知识，因此对于一些问题难以生成可靠的回复。
 
-***Esin Durmus, He He, and Mona Diab. 2020. FEQA: A question answering evaluation framework for faithfulness assessment in abstractive summarization. In Proceedings of the 58th Annual Meeting of the ACL. 5055–5070.*
+*Esin Durmus, He He, and Mona Diab. 2020. FEQA: A question answering evaluation framework for faithfulness assessment in abstractive summarization. In Proceedings of the 58th Annual Meeting of the ACL. 5055–5070.*
 
 - 基于NLI**：基于NLI的方法通过NLI模型评估是否Source Information可以蕴含Generated Text，从而评估是否出现了幻觉现象。
 
@@ -116,7 +115,7 @@ Reference-based的指标有两类：
 
 - Off-the-shelf NLI模型用于核查事实效果不是很好；
 
-***Nouha Dziri, Hannah Rashkin, Tal Linzen, and David Reitter. 2021. Evaluating groundedness in dialogue systems: The BEGIN benchmark. In Findings of the Association for Computational Linguistics. Association for Computational Linguistics, 1–12.*
+*Nouha Dziri, Hannah Rashkin, Tal Linzen, and David Reitter. 2021. Evaluating groundedness in dialogue systems: The BEGIN benchmark. In Findings of the Association for Computational Linguistics. Association for Computational Linguistics, 1–12.*
 
 - 无法评估需要世界知识的幻觉问题：仅能依赖于Source进行核查；
 - 都是sentence-level的，无法支撑更细粒度的幻觉检查；
@@ -128,7 +127,7 @@ Reference-based的指标有两类：
 - 例子：Putin is president. -> Putin is U.S. president (可以蕴含，但是是幻觉)
 
 - 基于Factualness Classification Metric**：标注/构造一批和幻觉/事实有关的数据，训练检测模型，利用该模型评估新生成文本的幻觉/事实问题。
-***Emily Dinan, Stephen Roller, Kurt Shuster, Angela Fan, Michael Auli, and Jason Weston. 2018. Wizard of Wikipedia: Knowledge-powered conversational agents. In Proceedings of the International Conference on Learning Representations.*
+*Emily Dinan, Stephen Roller, Kurt Shuster, Angela Fan, Michael Auli, and Jason Weston. 2018. Wizard of Wikipedia: Knowledge-powered conversational agents. In Proceedings of the International Conference on Learning Representations.*
 
 - 人工评估：**目前为止最靠谱的，此外还可以依靠LLM打分（比如利用GPT4，但是GPT4也存在着严重的幻觉问题，即使经过retrival-augment，检索回来的信息也有可能是错误的）
 
@@ -143,7 +142,7 @@ Reference-based的指标有两类：
 - <strong>训练数据</strong>：LLM上不可行，只适用于task-specific的幻觉问题
 - <strong>评测数据</strong>：构建细粒度的幻觉评估benchmark用于分析幻觉的严重程度和原因
 
-***Saadia Gabriel, Asli Celikyilmaz, Rahul Jha, Yejin Choi, and Jianfeng Gao. 2021. GO FIGURE: A meta evaluation of factuality in summarization. In Findings of the Association for Computational Linguistics: ACL-IJCNLP 2021. Association for Computational Linguistics, 478–487.*
+*Saadia Gabriel, Asli Celikyilmaz, Rahul Jha, Yejin Choi, and Jianfeng Gao. 2021. GO FIGURE: A meta evaluation of factuality in summarization. In Findings of the Association for Computational Linguistics: ACL-IJCNLP 2021. Association for Computational Linguistics, 478–487.*
 *Or Honovich, Leshem Choshen, Roee Aharoni, Ella Neeman, Idan Szpektor, and Omri Abend. 2021. Q2: Evaluating factual consistency in knowledge-grounded dialogues via question generation and question answering. In Proceedings of the 2021 Conference on Empirical Methods in Natural Language Processing. 7856–7870*
 
 - 自动筛选**：
@@ -151,38 +150,37 @@ Reference-based的指标有两类：
 - 利用<strong>模型筛选</strong>出可能导致幻觉的数据并剔除；
 - 预训练时给更faithful的<strong>数据加权</strong>（wiki vs. fake news），或者不使用可靠来源的数据（比如只选用经过人工审查的数据源，如wiki或者教科书，预训练）
 
-**
 
 [](https://zhuanlan.zhihu.com/p/626544154)
 
 #### 模型层面的工作
 
-模型结构**
+模型结构
 
 - 模型结构层面的工作往往focus在设计更能充分编码利用source information的方法，比如融入一些人类偏置，如GNN网络。
 - 或者在解码时减少模型的<strong>生成随机性</strong>，因为diversity和Faithfulness往往是一个trade-off的关系，减少diversity/randomness可以变相提升Faithfulness/Factuality。
-***Nayeon Lee, Wei Ping, Peng Xu, Mostofa Patwary, Mohammad Shoeybi, and Bryan Catanzaro. 2022. Factuality enhanced language models for open-ended text generation. arXiv preprint arXiv:2206.04624 (2022).*
+*Nayeon Lee, Wei Ping, Peng Xu, Mostofa Patwary, Mohammad Shoeybi, and Bryan Catanzaro. 2022. Factuality enhanced language models for open-ended text generation. arXiv preprint arXiv:2206.04624 (2022).*
 
 - 检索增强**被证明可以显著减少幻觉问题，e.g., llama-index。
 ***Peng, Baolin, Michel Galley, Pengcheng He, Hao Cheng, Yujia Xie, Yu Hu, Qiuyuan Huang et al. "Check your facts and try again: Improving large language models with external knowledge and automated feedback."arXiv preprint arXiv:2302.12813(2023).*训练方式**
 
 - <strong>可控文本生成</strong>：将幻觉的程度作为一个可控的属性，利用可控文本生成技术进行控制。
-***Hannah Rashkin, David Reitter, Gaurav Singh Tomar, and Dipanjan Das. 2021. Increasing faithfulness in knowledgegrounded dialogue with controllable features. In Proceedings of the 59th Annual Meeting of the Association for Computational Linguistics and the 11th International Joint Conference on Natural Language Processing. 704–718.*
+*Hannah Rashkin, David Reitter, Gaurav Singh Tomar, and Dipanjan Das. 2021. Increasing faithfulness in knowledgegrounded dialogue with controllable features. In Proceedings of the 59th Annual Meeting of the Association for Computational Linguistics and the 11th International Joint Conference on Natural Language Processing. 704–718.*
 *Zeqiu Wu, Michel Galley, Chris Brockett, Yizhe Zhang, Xiang Gao, Chris Quirk, Rik Koncel-Kedziorski, et al. 2021. A controllable model of grounded response generation. In Proceedings of the AAAI Conference on Artificial Intelligence. 14085–14093.*
 
 - 提前规划骨架，再生成**：sketch to content
-***Ratish Puduppully, Li Dong, and Mirella Lapata. 2019. Data-to-text generation with content selection and planning. In Proceedings of the AAAI Conference on Artificial Intelligence*
+*Ratish Puduppully, Li Dong, and Mirella Lapata. 2019. Data-to-text generation with content selection and planning. In Proceedings of the AAAI Conference on Artificial Intelligence*
 
 - 强化学习：**假设是基于word的MLE训练目标，只优化唯一的reference，可能导致暴露偏差问题。现有工作将减轻幻觉的指标作为强化学习的reward函数，从而减轻幻觉现象。
-***Yangming Li, Kaisheng Yao, Libo Qin, Wanxiang Che, Xiaolong Li, and Ting Liu. 2020. Slot-consistent NLG for task-oriented dialogue systems with iterative rectification network. In Proceedings of the 58th Annual Meeting of the Association for Computational Linguistics. 97–106.*
+*Yangming Li, Kaisheng Yao, Libo Qin, Wanxiang Che, Xiaolong Li, and Ting Liu. 2020. Slot-consistent NLG for task-oriented dialogue systems with iterative rectification network. In Proceedings of the 58th Annual Meeting of the Association for Computational Linguistics. 97–106.*
 *Mohsen Mesgar, Edwin Simpson, and Iryna Gurevych. 2021. Improving factual consistency between a response and persona facts. In Proceedings of the 16th Conference of the European Chapter of the Association for Computational Linguistics. 549–562.*
 
 - 多任务学习**: 通过设计合适的额外任务，可以达到减轻幻觉的效果。
 - <strong>后处理</strong>：设计一个小模型专门用于fix幻觉错误。
-***Sihao Chen, Fan Zhang, Kazoo Sone, and Dan Roth. 2021. Improving faithfulness in abstractive summarization with contrast candidate generation and selection. In Proceedings of the 2021 Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies (NAACL-HLT’21). 5935–5941.*
+*Sihao Chen, Fan Zhang, Kazoo Sone, and Dan Roth. 2021. Improving faithfulness in abstractive summarization with contrast candidate generation and selection. In Proceedings of the 2021 Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies (NAACL-HLT’21). 5935–5941.*
 ### 可能的后续方向
 
-- 更细粒度的幻觉评估：**
+- 更细粒度的幻觉评估：
 
 - token/phrase level instead of sentence level
 - 更精细的幻觉分类体系：
@@ -218,7 +216,6 @@ Reference-based的指标有两类：
 
 <strong>TruthfulQA</strong>
 
-**
 
 一个很重要的用于评估LLM是否能够生成符合事实的答案的QA基准，被后续的LLM工作，如GPT4采用评估。
 
@@ -229,9 +226,8 @@ Reference-based的指标有两类：
 - 与人类相比(94%)，当前较好的LLMs(GPT3)也只能诚实地回答58%的问题而不进行编造。
 - 更大的模型更容易编造回答。
 - 微调后的GPT3可以有效分辨是否回答是truthful的。
-HaluEval benchmark**
+HaluEval benchmark
 
-**
 
 [](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2305.11747)
 
@@ -252,7 +248,6 @@ HaluEval benchmark**
 
 <strong>ChatGPT/GPT4生成不真实回复的评估、机理</strong>
 
-**
 
 [](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2304.10513)
 
@@ -282,11 +277,10 @@ HaluEval benchmark**
 - ChatGPT有能力识别虚假信息，并能够在无法识别时回复不知道；
 - ChatGPT仍然会被TruthfulQA内的问题误导；
 - ChatGPT同样可能出现intrinstic/extrinsic hallucination的case；
-Retrieval-augment LLM评估**
+Retrieval-augment LLM评估
 
 Retrieval有助于显著减少LLM的幻觉现象。
 
-**
 
 [](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2305.06311)
 
@@ -325,9 +319,8 @@ Retrieval有助于显著减少LLM的幻觉现象。
 - LLM相信更长的知识；
 - LLM随大流，相信占据大多数的知识
 
-LLM幻觉的滚雪球现象**
+LLM幻觉的滚雪球现象
 
-**
 
 [](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2305.13534)
 
@@ -340,9 +333,8 @@ LLM幻觉的滚雪球现象**
 - 更好的Prompt（CoT）：有效，但是CoT也存在着思维链内部的幻觉滚雪球问题。
 - 解码算法：作者尝试了不同的解码算法，但并没有显著效果。
 - 训练策略：构造更多的CoT训练数据，以及构造允许模型自我回溯（self-correct）的训练数据。
-LLM幻觉的原子粒度评估**
+LLM幻觉的原子粒度评估
 
-**
 
 [](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2305.14251)
 
@@ -376,11 +368,10 @@ LLM幻觉的原子粒度评估**
 
 #### 幻觉检测&修正
 
-事实性增强的语言模型**
+事实性增强的语言模型
 
 面向LLM的事实/幻觉问题的早期工作(2022.6)。
 
-**
 
 [](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2206.04624)
 
@@ -410,9 +401,8 @@ LLM幻觉的原子粒度评估**
 
 - 使用更权威的数据，如Wiki来训练；
 - 给每个句子加上Wiki Document的名称：作者认为这能给句子提供额外的事实信息，比如解释句子里的代词（有点玄学）
-基于外部知识和自动反馈提升事实性**
+基于外部知识和自动反馈提升事实性
 
-**
 
 [](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2302.12813)
 
@@ -441,9 +431,8 @@ LLM幻觉的原子粒度评估**
 
 ![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_59e4a2c521dd.jpg)
 
-零资源黑盒LLM幻觉检测**
+零资源黑盒LLM幻觉检测
 
-**
 
 [](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2303.08896)
 
@@ -457,9 +446,8 @@ LLM幻觉的原子粒度评估**
 
 ETH-Zurich也有一篇类似的工作，着重关注LLM生成回复中的自相矛盾现象，包括评估、检测和消除。
 
-零资源黑盒事实错误纠正**
+零资源黑盒事实错误纠正
 
-**
 
 [](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2305.07982)
 
@@ -472,9 +460,8 @@ ETH-Zurich也有一篇类似的工作，着重关注LLM生成回复中的自相�
 - Question Answer：针对每个问题，将外部证据作为额外输入，进行回答；
 - QA-to-claim：将QA-pair转回陈述；
 - Correction scoring：额外打分器判断新的陈述是否合理。
-工具增强的LLM自动纠正**
+工具增强的LLM自动纠正
 
-**
 
 [](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2305.11738)
 
@@ -482,9 +469,8 @@ MSRA的工作，本文允许LLM在自我检查答案正确性的过程中调用�
 
 ![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_e92a923544b7.jpg)
 
-通过推理时干预诱导LLM生成符合事实的答案**
+通过推理时干预诱导LLM生成符合事实的答案
 
-**
 
 [](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2306.03341)
 
@@ -496,9 +482,8 @@ MSRA的工作，本文允许LLM在自我检查答案正确性的过程中调用�
 ![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_1d900ffe09c2.jpg)
 
 - ITI方法选择和事实知识紧密相关的head，进行干预，让激活值移动到truthful相关的方向，实验表明能够有效提升回复的事实性。
-训练小模型后处理幻觉问题**
+训练小模型后处理幻觉问题
 
-**
 
 [](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2305.14908)
 
@@ -509,9 +494,8 @@ Google的工作，核心思想是用LLM自动对一个正确样本生成幻觉�
 - 根据文档、干净的陈述，利用LLM对陈述进行加噪，使其含有幻觉问题；
 - 将文档和含有幻觉的文本作为输入，干净的文本作为输出，训练一个小模型用于降噪（去幻觉）
 - 推理时，对给定的陈述，先使用QG模型生成一系列问题，再根据问题召回证据，将证据文档和陈述传入小模型进行幻觉的编辑和修正。
-利用多智能体辩论显著提升LM的事实性和推理能力**
+利用多智能体辩论显著提升LM的事实性和推理能力
 
-**
 
 [](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2305.14325)
 
@@ -519,7 +503,7 @@ MIT&Google，利用多个智能体（LLM）相互辩论来解决事实性问题�
 
 ![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_b07f53ee91f0.jpg)
 
-人在回路的幻觉消除**
+人在回路的幻觉消除
 
 [](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2305.13669)
 

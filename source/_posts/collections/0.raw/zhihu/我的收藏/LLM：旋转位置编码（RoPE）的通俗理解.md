@@ -21,7 +21,7 @@ ChatGLM 和 LLaMA 中使用的<strong>旋转位置编码（RoPE）</strong>，�
 
 【省流版直接看2.2小节】
 
-**原本论文：[RoFormer: Enhanced Transformer with Rotary Position Embedding](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2104.09864v4)
+原本论文：[RoFormer: Enhanced Transformer with Rotary Position Embedding](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2104.09864v4)
 HuggingFace实现：[RoFormer](https://link.zhihu.com/?target=https%3A//huggingface.co/docs/transformers/model_doc/roformer)
 ### 1. 溯源“位置编码”
 

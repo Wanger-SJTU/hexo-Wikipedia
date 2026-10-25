@@ -45,9 +45,8 @@ $$2 \, b s h \, \frac{(n-1)}{n}$$
 
 $$2 \frac{k}{n} \times b s h \, \frac{(n-1)}{n}$$
 
-**
 
-解释：**
+解释：
 
 - <strong>TP的通信量</strong>
 

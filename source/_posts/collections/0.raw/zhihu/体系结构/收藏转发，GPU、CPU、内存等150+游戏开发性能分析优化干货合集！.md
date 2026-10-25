@@ -21,7 +21,7 @@ source_url: https://zhuanlan.zhihu.com/p/662926467
 
 大家好～承蒙厚爱，前面几次合集（见下方）很受大家欢迎，分享转发非常多，感谢大家一如既往的支持~
 
-- [非广告！6年老号福利，描边、景深、泛光、投影等60+游戏后处理效果实现合集！](https://link.zhihu.com/?target=http%3A//mp.weixin.qq.com/s%3F__biz%3DMzUxMDM3MTYwNQ%3D%3D%26mid%3D2247512555%26idx%3D1%26sn%3D8a98f83843a035ddc89b17e2cbeb6a1f%26chksm%3Df9010391ce768a87f4789be4c4b6e342a669edcadd33f14762535d67414341be1943368c6e69%26scene%3D21%23wechat_redirect)**
+- [非广告！6年老号福利，描边、景深、泛光、投影等60+游戏后处理效果实现合集！](https://link.zhihu.com/?target=http%3A//mp.weixin.qq.com/s%3F__biz%3DMzUxMDM3MTYwNQ%3D%3D%26mid%3D2247512555%26idx%3D1%26sn%3D8a98f83843a035ddc89b17e2cbeb6a1f%26chksm%3Df9010391ce768a87f4789be4c4b6e342a669edcadd33f14762535d67414341be1943368c6e69%26scene%3D21%23wechat_redirect)
 - [收藏转发！原神、只狼、战神4等80+游戏渲染效果技术实现研究合集！免费！](https://link.zhihu.com/?target=http%3A//mp.weixin.qq.com/s%3F__biz%3DMzUxMDM3MTYwNQ%3D%3D%26mid%3D2247511897%26idx%3D1%26sn%3D3f14b6405fe583a24f70169ae8863fd8%26chksm%3Df9011d23ce7694352cdbfe6b7fc45171410f7c2d4f1f3a0dc6745bd25e5b79137ee0cc191a30%26scene%3D21%23wechat_redirect)
 
 - [Unity3D游戏开发中100+效果的实现和源码大全 - 收藏起来肯定用得着](https://link.zhihu.com/?target=http%3A//mp.weixin.qq.com/s%3F__biz%3DMzUxMDM3MTYwNQ%3D%3D%26mid%3D2247487026%26idx%3D1%26sn%3D442efa67e68f323aaa2e2077f80ecce9%26chksm%3Df902bc48ce75355ed8fd99975c1964c3e38455ad6ba36086be7e8cb6ea2797e973b05cafda85%26scene%3D21%23wechat_redirect)

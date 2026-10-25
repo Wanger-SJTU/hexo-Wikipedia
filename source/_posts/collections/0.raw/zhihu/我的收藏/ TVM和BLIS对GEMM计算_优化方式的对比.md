@@ -17,7 +17,7 @@ source_url: https://zhuanlan.zhihu.com/p/494347227
 
 前段时间做了点用TVM对深度模型进行优化的事情。最近很空，因为觉得TVM比较有趣，就研究了一下TVM对GEMM的优化，并和BLIS库的实现进行了对比，记录如下。
 
-#### <strong>1. GEMM在CPU上的优化</strong>
+#### 1. GEMM在CPU上的优化
 
         GEMM是指General Matrix Multiply，C=alpha<strong>AB+beta</strong>C，是神经网络中的核心运算。因为其计算的规律性，通过一定的技巧，在现代架构的CPU上可以得到比较好的优化。
 
@@ -25,7 +25,7 @@ source_url: https://zhuanlan.zhihu.com/p/494347227
 
         本文对BLIS手工优化的GEMM计算代码和TVM编译生成的计算代码进行了对比分析。
 
-#### <strong>2. 相关代码及性能测试</strong>
+#### 2. 相关代码及性能测试
 
 [matmul_perf_test](https://link.zhihu.com/?target=https%3A//github.com/billmuch/matmul_perf_test)分别使用BLIS库和TVM进行1024x1024x1024的单精度（float32）和双精度（float64）矩阵乘法运算，并统计了单线程和多线程下的计算时间。
 
@@ -68,7 +68,7 @@ Numpy（MKL），TVM和BLIS进行1024x1024x1024的双精度矩阵乘法的性能
 ```
 
 
-#### <strong>3. 使用TVM生成GEMM计算代码并对参数调优（TVM对GEMM的编译及优化）</strong>
+#### 3. 使用TVM生成GEMM计算代码并对参数调优（TVM对GEMM的编译及优化）
 
         TVM官方How To Guids里面的How to optimize GEMM on CPU介绍了如何优化CPU上进行的GEMM运算。
 
@@ -141,7 +141,7 @@ Auto Scheduler调优IR和TVM How to中的IR对比        因为上述三份TVM�
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_c5ab6671c8c3.jpg)
 
-#### <strong>5.</strong>TVM和BLIS<strong>分块及计算路径的对比</strong>
+#### 5. <strong>TVM和BLIS</strong>分块及计算路径的对比
 
 <strong>BLIS分块</strong>
 
@@ -169,7 +169,7 @@ Auto Scheduler调优IR和TVM How to中的IR对比        因为上述三份TVM�
 ```
 
 
-#### <strong>6. TVM和BLIS kernel计算方式</strong>
+#### 6. TVM和BLIS kernel计算方式
 
  BLIS将需要计算的矩阵按照前述方式分成大块后，在我的机器上将每块再次分成多个6x16小块，并调用手工优化的内核对每个小块进行计算。核心计算代码如下：
 
@@ -343,7 +343,7 @@ BLIS Kernel做如下计算![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84
 TVM Kernel做如下计算![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_75979ddd67a7.jpg)
 
 TVM kernel计算步骤
-#### <strong>7.</strong>TVM和BLIS的<strong>Pack和Write Back Cache</strong>
+#### 7. <strong>TVM和BLIS的</strong>Pack和Write Back Cache
 
 <strong>TVM</strong>
 
@@ -359,7 +359,7 @@ TVM kernel计算步骤
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_cfde0acf8ac5.jpg)
 
-#### <strong>8.</strong>TVM和BLIS的<strong>多线程</strong>
+#### 8. <strong>TVM和BLIS的</strong>多线程
 
 <strong>TVM</strong>
 
@@ -372,7 +372,7 @@ TVM kernel计算步骤
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_59a270d34c38.jpg)
 
 BLIS 影响线程的环境变量
-#### <strong>9. 单精度GEMM时，TVM与BLIS的对比</strong>
+#### 9. 单精度GEMM时，TVM与BLIS的对比
 
 - <strong>计算kernel的对比：</strong>
                 对比两部分kernel的代码可以看出：
@@ -408,7 +408,7 @@ BLIS 影响线程的环境变量
 
                 很有趣的是，矩阵乘法与 SIMD这篇文章使用144x144x144的MKN进行TVM的优化方案和参数搜索，搜索出了更高效的6x16的kernel。生成的汇编代码几乎与BLIS的计算方式一样，只是只使用了15个ymm寄存器。TVM中这段代码反复将A块的一个元素vbroadcast到ymm14，再做fmadd运算；而BLIS中会将A块的两个元素分别vbroadcast到两个ymm寄存器中，因为vbroadcast有大于1的latency，BLIS多用一个寄存器后可以得到更好的性能。
 
-**参考关于sgemm_hsw的一点解释说明，CPU的register renaming技术可能有硬件将这段代码中引用的逻辑寄存器ymm14实际mapping到不同的物理寄存器上以提高并行性。好的编译器也可能可以对这部分进行优化。
+参考关于sgemm_hsw的一点解释说明，CPU的register renaming技术可能有硬件将这段代码中引用的逻辑寄存器ymm14实际mapping到不同的物理寄存器上以提高并行性。好的编译器也可能可以对这部分进行优化。
 编辑于2022.4.19                下面代码是矩阵乘法与 SIMD文章使用144x144x144的MKN搜索出的6x16的kernel。
 
 vbroadcastss    -2324(%rdx,%rbx), %ymm14
@@ -433,7 +433,7 @@ vfmadd231ps     %ymm13, %ymm14, %ymm0
 vbroadcastss    -2320(%rdx,%rbx), %ymm13
 vfmadd231ps     %ymm12, %ymm14, %ymm1`
 
--         Pack方式对比：**
+-         Pack方式对比：
                 1. BLIS对A矩阵数据按照访问顺序做了重排，而TVM没有。
 
                       a. BLIS重排A可以让prefetch指令和硬件prefetch更有效的工作。对比TVM kernel核心计算代码，没有显示的prefetch指令加载，硬件prefetch也不会预加载4k外的data，此时的cache miss肯定会stall CPU。
@@ -463,7 +463,7 @@ blis_float32tvm_float32dTLB-loads199,895,991168,586,332dTLB-load-misses4,610,995
 
                 论文Anatomy of High-Performance Many-Threaded Matrix Multiplication对在什么维度做多线程调用做了讨论。
 
-#### <strong>10. 对比小结</strong>
+#### 10. 对比小结
 
          通过对比可以看出，对于类似GEMM的计算，TVM可以自动搜索出性能还不错的计算方式和参数。
 

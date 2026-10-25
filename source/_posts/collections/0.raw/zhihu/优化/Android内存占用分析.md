@@ -15,7 +15,7 @@ source_url: https://zhuanlan.zhihu.com/p/90076117
 ---
 
 
-** 思考的问题：
+思考的问题：
  1、为什么/proc/meminfo中的内存总大小比物理内存小?
  2、怎么看Android还剩多少可用内存比较准确？
  3、怎么看Kernel的内存占用比较准确？
@@ -111,7 +111,7 @@ MemTotal:        1983136 kB`
 
 <strong>Q3:</strong> 为什么开机时 `totalram_pages`的大小(上例中1982176K) 和 `totalram_pages`的大小(上例中1983136K) 开机后 不一致呢?<strong>A3:</strong> 这是因为memblock管理的`reserved type`中部分内存在初始化完毕后释放了,添加到了伙伴系统(buddy system)中. 详细代码见`free_initmem()`  比如上面的log, 1982176K + 960K = 1983136K
 
-** [    2.258901] -(2)[1:swapper/0]Freeing unused kernel memory: 960K
+[    2.258901] -(2)[1:swapper/0]Freeing unused kernel memory: 960K
  Q4:<strong>kernel代码部分的占用在哪个部分体现?</strong> A4:** 这部分包含 kernel code+rwdata+rodata+init+bss , 在 kernel log中已经输出. 这部分的物理占用计算在reserved部分.详细代码见 `arm64_memblock_init()`. 另外kernel code物理区域也会vmap到虚拟地址空间，其vmap的区间可以看 `/proc/vmallocinfo`中带有`paging_init`的行。
 
 #### 1.3 reserved包含哪些
@@ -242,7 +242,7 @@ static int s_show(struct seq_file *m, void *p)
 
 但是如果按排除这几个类型来统计，会有一定的偏差，在Android P（kernel 为4.14），存在的误差主要表现在：
 
-1、kernel code** 
+1、kernel code
 
 kernel code的占用，包括kernel code+rwdata+rodata+init+bss，都计入了`memblock reserved`部分。
 
@@ -456,7 +456,7 @@ public int getTotalSwappedOutPss() {
 
 }`
 
-1、Total PSS by process**
+1、Total PSS by process
 
 Total PSS by process`下是由大到小显示所有进程的PSS情况。
 
@@ -507,7 +507,7 @@ dumpsys meminfo pid` 是显示指定pid进程的PSS内存占用详细信息，�
 
 具体代码在:
 
-** //fs/proc/task_mmu.c static int show_smap(struct seq_file *m, void *v, int is_pid)
+//fs/proc/task_mmu.c static int show_smap(struct seq_file *m, void *v, int is_pid)
  使用如下的调用关系遍历一个VMA的所有页框(page frame)对应的`struct page`，统计的信息填充到 `struct mem_size_stats`结构体。
 
 >  walk_page_vma(vma, &smaps_walk) --> __walk_page_range() --> walk_pgd_range()

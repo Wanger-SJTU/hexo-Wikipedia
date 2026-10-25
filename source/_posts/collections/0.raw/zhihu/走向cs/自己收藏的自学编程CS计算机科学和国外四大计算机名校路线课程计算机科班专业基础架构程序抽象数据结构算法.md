@@ -545,7 +545,7 @@ source_url: https://zhuanlan.zhihu.com/p/320063653
 
 ### 上面内容 · 补充细节描述
 
-**本文作者起初制作的图，仅作参考![](/images/collections/0.raw/zhihu/%E8%B5%B0%E5%90%91cs/asset/img_d83a5061cb8f.jpg)
+本文作者起初制作的图，仅作参考![](/images/collections/0.raw/zhihu/%E8%B5%B0%E5%90%91cs/asset/img_d83a5061cb8f.jpg)
 
 > 《计算机系统要素》nand2tetris教学路线图
 
@@ -553,7 +553,7 @@ source_url: https://zhuanlan.zhihu.com/p/320063653
 
 ![](/images/collections/0.raw/zhihu/%E8%B5%B0%E5%90%91cs/asset/img_8d5c72381d47.jpg)
 
-> Berkeley课程路线图（大图点击链接）⭐⭐**
+> Berkeley课程路线图（大图点击链接）⭐⭐
 
 ![](/images/collections/0.raw/zhihu/%E8%B5%B0%E5%90%91cs/asset/img_0df3160b9022.jpg)
 
@@ -561,9 +561,9 @@ source_url: https://zhuanlan.zhihu.com/p/320063653
 
 ![](/images/collections/0.raw/zhihu/%E8%B5%B0%E5%90%91cs/asset/img_e6be9912b30f.jpg)
 
-### <strong>如何看英文文档</strong>
+### 如何看英文文档
 
-### <strong>彩云小译-中英对照-中文字转换颜色和加粗</strong>
+### 彩云小译-中英对照-中文字转换颜色和加粗
 
 <strong>F12开发者工具---Sources面板---Snippets</strong>`document.querySelectorAll(".cyxy-trs-target").forEach(item => {
 
@@ -625,7 +625,7 @@ source_url: https://zhuanlan.zhihu.com/p/320063653
 
 ### 伯克利 Berkeley 
 
-**计算机科学技能需求量很大，你不需要为了计算机科学的职业生涯而主修计算机科学。如果你计划从事计算机科学的职业，你应该至少参加计算机科学61A/AS 和61B/BL。另外，学习 cs61c 可以确保你理解完整的堆栈。Cs10 和/或  cs8 在为 CS61A/AS 做准备时很有用，如果您以前没有或很少有编程背景的话。数学技能也很重要; 一个关键的要求是离散数学和概率，cs70。其他的数学课程对于计算机科学的特定领域是有帮助的; 例如，计算机图形学使用了大量的线性代数和多元微积分对于机器学习是有用的。完成 CS61ABC 和 CS70课程，再加上生物学或化学背景，将为你在生物信息学和计算生物学研究方面的高级部门工作打下良好的基础。你甚至可以去研究生院在 CS 完成后，在这里的 CS 或 EECS 副课程！Math 1A 1B(微积分) 
+计算机科学技能需求量很大，你不需要为了计算机科学的职业生涯而主修计算机科学。如果你计划从事计算机科学的职业，你应该至少参加计算机科学61A/AS 和61B/BL。另外，学习 cs61c 可以确保你理解完整的堆栈。Cs10 和/或  cs8 在为 CS61A/AS 做准备时很有用，如果您以前没有或很少有编程背景的话。数学技能也很重要; 一个关键的要求是离散数学和概率，cs70。其他的数学课程对于计算机科学的特定领域是有帮助的; 例如，计算机图形学使用了大量的线性代数和多元微积分对于机器学习是有用的。完成 CS61ABC 和 CS70课程，再加上生物学或化学背景，将为你在生物信息学和计算生物学研究方面的高级部门工作打下良好的基础。你甚至可以去研究生院在 CS 完成后，在这里的 CS 或 EECS 副课程！Math 1A 1B(微积分) 
 
 - EECS Course WEB Sites ⭐⭐
 - CS COURSE MAP
@@ -643,7 +643,7 @@ source_url: https://zhuanlan.zhihu.com/p/320063653
 ![](/images/collections/0.raw/zhihu/%E8%B5%B0%E5%90%91cs/asset/img_3fe5d97161f1.jpg)
 
 - CS106A 是编程和计算机科学的第一门课程，为那些没有任何经验的人开设。CS106B 是第二门课程，为那些懂得基本编程的人讲授更高级的编程和计算机科学。
-- CS106A 为以前没有编过程序的人介绍了代码和计算机编程。**
+- CS106A 为以前没有编过程序的人介绍了代码和计算机编程。
 
 - 我们将涵盖 Python 中基本编程的所有重要主题: 类型、数字、字符串、函数、线性集合、字典、逻辑、分解、良好的编程风格、整个程序结构、文本、文件处理、调试和性能。我们还将介绍一些将来可能需要的更高级的主题，包括 lambdas、 comprehension、 modules 和 Jupyter 笔记本。
 

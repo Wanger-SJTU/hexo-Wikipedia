@@ -21,7 +21,7 @@ source_url: https://zhuanlan.zhihu.com/p/686143745
 
 ### 0. Variance<span class="wikilink wikilink--missing" title="未导入的页面">2</span>(#ref_2) 
 
-**Variance is a property that generic types have with respect to their arguments.默认大家都懂什么是*covariant, contravariant *和 *invariant，*这里就不详细解释了。简单回顾，就是讨论在类型 `T1` 是 `T2` 的子类型的情况下，带类型参数的类型(generic type) `SomeType` 是不是 `SomeType` 的子类型。 
+Variance is a property that generic types have with respect to their arguments.默认大家都懂什么是*covariant, contravariant *和 *invariant，*这里就不详细解释了。简单回顾，就是讨论在类型 `T1` 是 `T2` 的子类型的情况下，带类型参数的类型(generic type) `SomeType` 是不是 `SomeType` 的子类型。 
 
 比如假设 `T1` 是`Dog` 类型，`T2` 是 `Animal` 类型，`Dog` 是 `Animal` 的子类型(subtyping)。那么`Array` 还是不是 `Array` 的子类型呢？这里的`Array`类型就是上面的`SomeType` 的一个例子。至于`Array`到底是不是`Array` 的子类型呢，这个只和 `Array` 自己的性质有关 ，这个性质就是Variance。
 
@@ -44,7 +44,7 @@ struct Item'a> {
 
 看出来问题了吗？ `T` 或者 `'a` 都没有出现在 结构体定义中，这样会导致编译器有理由认为Animal 和 Animal 是可以互换的，毕竟 Animal 本身并没有真的使用 Dog 或者 Car(不是Cat， 用Car表示一个和动物完全没有关系的物品)，那它们不就是一样的吗？但是这种规则明显没有意义且可能出错，Dog 和 Car 类型之间没有任何联系，自然不能把 Animal 看成和 Animal 一样是可以互换使用的类型。但是在Rust早期，对于没有实际用到的生命周期参数，Rust确实是这么处理的，也造成了很多错误。
 
-于是在这个RFC中，提议: make it an error to have a type or lifetime parameter whose variance is not constrained. **
+于是在这个RFC中，提议: make it an error to have a type or lifetime parameter whose variance is not constrained.
 
 接着提出程序员消除这个错误的方法要么是直接删去没有使用的类型参数，要么是插入一个Marker Type，也就是本文讨论的PhantomData。
 
@@ -124,7 +124,7 @@ struct Node'a> {
 ```
 
 
-#### <strong>3.1 带有生命周期标注的drop方法</strong>
+#### 3.1 带有生命周期标注的drop方法
 
 ```text
 // 代码1
@@ -234,7 +234,7 @@ fn main() {
 
 在上面的代码中，按照drop order，变量val会先drop，然后才drop变量i，但这段代码仍然无法通过编译，原因就是没有Strictly outlives。
 
-#### <strong>3.2</strong>带有类型标注的drop方法
+#### 3.2  **带有类型标注的drop方法
 
 如果结构体drop函数不再有 'a 这样的生命周期标注，只有表示类型的 T，是否就不存在生命周期的问题了呢，答案显然是No，因为T本身可以是任何类型，包括带生命周期的结构体，所以可能会隐式地包含生命周期的问题。
 
@@ -353,7 +353,7 @@ rust doc关于drop check的检查过程是这样说的
 - 如果 T 有drop glue，那么对 T 递归<strong>包含(own)</strong>的所有的类型 U来说，要保证 U 在 drop 时，所有类型或生命周期都是有效的。(注意，这里和drop glue相同的是都要求包含关系，但drop glue关心的是value，这里关心的是类型)
 接下来说明如何计算包含(own)关系，这里直接搬运一下(如果你能坚持看到这里，下面这段原文也一定能大概理解)
 
-**The set of owned types is determined by recursively traversing`T`:
+The set of owned types is determined by recursively traversing`T`:
 1. Recursively descend through `PhantomData`, `Box`, tuples, and arrays (including arrays of length 0).
 2. Stop at reference and raw pointer types as well as function pointers and function items; they do not own anything.
 3. Stop at non-composite types (type parameters that remain generic in the current context and base types such as integers and `bool`); these types are owned.

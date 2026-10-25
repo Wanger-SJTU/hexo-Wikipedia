@@ -29,9 +29,9 @@ bert vs ELMo![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_992153da685e.
 
 ELMo vs gpt1<strong>（3）众多研究“用脚投票”</strong> 很多研究已经证明了 Transformer 提取特征的能力是要远强于 LSTM 的，当前ai届统治者openai说了：lstm相比transformer在总集上掉5.6个点，只有一个集不掉点。
 
-** we analyze the effect of the Transformer by comparing it with a single layer 2048 unit LSTM using the same framework. We observe a 5.6 average score drop when using the LSTM instead of the Transformer. The LSTM only outperforms the Transformer on one dataset – MRPC![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_58054df06730.jpg)
+we analyze the effect of the Transformer by comparing it with a single layer 2048 unit LSTM using the same framework. We observe a 5.6 average score drop when using the LSTM instead of the Transformer. The LSTM only outperforms the Transformer on one dataset – MRPC![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_58054df06730.jpg)
 
-2、transformer处理长距离依赖更有效**
+2、transformer处理长距离依赖更有效
 
 虽然RNN/lstm结构上能将信息一步一步向后传递，但这种结构极难训练，容易出现梯度消失、梯度爆炸问题，导致远距离的信息容易丢失。有论文表示基于lstm的大模型只能捕捉近200个token的内容。为了追求实用性，市面上动辄要求模型能处理几千token，因此这几乎是<strong>致命缺陷</strong>。但transformer不同。通过attention机制，transformer抹去了距离的概念，相隔遥远的两个token之间的关系可以被捕捉到。
 

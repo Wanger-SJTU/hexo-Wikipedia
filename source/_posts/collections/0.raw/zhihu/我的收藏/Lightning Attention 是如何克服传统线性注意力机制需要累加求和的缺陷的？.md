@@ -47,7 +47,6 @@ $\begin{align}\mathbf{O} &= (\mathbf{Q}\mathbf{K}^\top \odot \mathbf{M}) \mathbf
 
 由于这个 \mathbf{M} 的存在，我们不能直接利用矩阵乘法的结合律得到上面先算KV矩阵乘法的线性形式（因为矩阵乘法跟矩阵点乘是不可以交换的）。另外提一下，很多早期的线性注意力的文章都有QK上的activation function（被称为kernel function，因为是从softmax attention的softmax operator的kernelization的角度出发的，跟传统机器学习的kernel method异曲同工），并且有一个整体的normalization的分母项。但在[The Devil in Linear Transforme](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2210.10340)r 中证明了分母带来数值问题，所以在最近的linear attention中几乎全部去掉了，取而代之的是加上output normalization。另外，[Fine-Tuning Pre-trained Transformers into Decaying Fast Weights](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2210.04243)发现QK的activation啥也不设就good enough，后续的RetNet/GLA也不用激活函数，所以这两个term都省掉了）
 
-**
 
 在自回归linear attention的开山之作
 
@@ -63,7 +62,7 @@ $\begin{aligned} &&&&\mathbf{o}_t &=   \sum_{j=1}^t \mathbf{v}_j(\mathbf{k}_j^\t
 
 这样我们就可以通过训练RNN的形式，在线性的时间内训练线性注意力。
 
-但是如果用这种最基本的循环来训练有非常多的问题。**
+但是如果用这种最基本的循环来训练有非常多的问题。
 
 第一点，如果使用autograd，那么，每一个时刻的hidden state \mathbf{S}_t 都会被保存下来给反向传播算梯度。保存中间hidden state在之前的RNN训练里面没啥问题，<strong>但是在这里却是一个大问题。</strong>为什么呢？因为传统RNN 每个时刻的hidden state的大小是 \mathcal{O}(d) ，而linear attention每个时刻的hidden state大小是 \mathcal{O}(d^2) ，如果全部存下来需要 \mathcal{O}(Ld^2) ，那是万万不可接受的（你可以想象，输入的QKV才3Ld, 一般d>>3, 那么你基本就显存爆炸寄了不用玩了）
 
@@ -90,7 +89,6 @@ $在这个方案里， \mathbf{S}_t 在前向传播的过程中是不会被保�
 - 每个chunk通过前一个chunk的last hidden state来aggregate历史信息，在chunk内部则是用一个attention的parallel形式直接得到output，而不是通过当前hidden state来算output。
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_887b3517ae4c.jpg)
 
-**
 
 $更加formal的来说，记 \mathbf{S}_{[i]} := \mathbf{S}_{iC} 为第i个chunk最后的state （C是chunk size别忘了）， 记\square_{[i]} = \square_{iC+1:(i+1)C} \in \mathbb{R}^{C \times d} for \square \in \{\mathbf{Q}, \mathbf{K}, \mathbf{V}, \mathbf{O}\}为 QKVO对应的chunk submatrix，$
 

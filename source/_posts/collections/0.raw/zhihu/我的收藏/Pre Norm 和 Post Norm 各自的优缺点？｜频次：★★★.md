@@ -21,7 +21,7 @@ source_url: https://zhuanlan.zhihu.com/p/18753164849
 
 Pre Norm 和 Post Norm 的区别 Layer Norm 和 Residual connections 组合方式的不同。
 
-### <strong>2017 Attention is All your Need</strong>
+### 2017 Attention is All your Need
 
 <strong>在原始的 Transformers 论文中，使用的是 Post Norm</strong>，如下所示。
 
@@ -39,7 +39,7 @@ Post Norm 之所以这么设计，是把 Normalization 放在一个模块的最�
 
 下一篇文章讨论了 ResNet 中  Identity mappings 的重要性，并且以此为基础提出了 Pre Norm。
 
-### <strong>2019 Transformers without Tears: Improving the Normalization of Self-Attention</strong>
+### 2019 Transformers without Tears: Improving the Normalization of Self-Attention
 
 假设输入 X、Attention(X)、FNN(X) 的均值为0，方差都为1，且相互独立。事实上可能没有那么理想，因为权重矩阵的分布在学习过程中并不一定能保持理想的分布，这里为了说明问题对建模进行了简化。
 

@@ -91,7 +91,6 @@ ASearcher采用single agent design，其中agent可以使用基本的search & br
 
 在设定更大的轮数限制时，我们采用了<strong>完全异步RL训练（Fully Async RL），大大提升了训练效率</strong>。
 
-**
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_2195d51f9550.jpg)
 

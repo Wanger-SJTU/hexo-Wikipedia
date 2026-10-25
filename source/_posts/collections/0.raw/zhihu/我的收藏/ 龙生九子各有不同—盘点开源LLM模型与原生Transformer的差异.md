@@ -19,9 +19,9 @@ source_url: https://zhuanlan.zhihu.com/p/637837856
 
 下表整体给出了本文比较的模型在各个维度的差异。  
 
-模型结构位置编码激活函数layer norm方法原生TransformerEncoder-DecoderSinusoidal编码ReLUPost layer normBERTEncoder绝对位置编码GeLUPost layer normLLaMACausal decoderRoPESwiGLUPre RMS NormChatGLM-6BPrefix decoderRoPEGeGLUPost Deep NormBloomCausal decoderALiBiGeLUPre Layer Norm**
+模型结构位置编码激活函数layer norm方法原生TransformerEncoder-DecoderSinusoidal编码ReLUPost layer normBERTEncoder绝对位置编码GeLUPost layer normLLaMACausal decoderRoPESwiGLUPre RMS NormChatGLM-6BPrefix decoderRoPEGeGLUPost Deep NormBloomCausal decoderALiBiGeLUPre Layer Norm
 
-  1.  模型结构** 
+  1.  模型结构
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_5f5ee993cc03.jpg)
 

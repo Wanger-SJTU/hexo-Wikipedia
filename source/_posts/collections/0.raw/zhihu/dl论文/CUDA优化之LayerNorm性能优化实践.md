@@ -33,7 +33,6 @@ NVIDIA Apex 中实现了高效的 fused LayerNorm Kernel 来扩展 PyTorch 算�
 
 横轴为 `num_cols` 大小，纵轴为 Kernel 执行需要的时间(越低越好)：
 
-**
 
 ![](/images/collections/0.raw/zhihu/dl%E8%AE%BA%E6%96%87/asset/img_6acfd4c274c1.jpg)
 
@@ -318,6 +317,6 @@ oneflow::cuda::softmax::DirectLoad load(in, cols);
 - [在OneFlow做技术文档工程师是怎样的体验](https://link.zhihu.com/?target=http%3A//mp.weixin.qq.com/s%3F__biz%3DMzU5ODY2MTk3Nw%3D%3D%26mid%3D2247486177%26idx%3D2%26sn%3D808b75c76ee95c6159eae254a0e24937%26chksm%3Dfe4184d7c9360dc13b2458636a24d0390534a9de3ff3ab556a2354036272f6aebdf69751aa5a%26scene%3D21%23wechat_redirect)
 - [如何设置CUDA Kernel中的grid_size和block_size](https://link.zhihu.com/?target=http%3A//mp.weixin.qq.com/s%3F__biz%3DMzU5ODY2MTk3Nw%3D%3D%26mid%3D2247486265%26idx%3D2%26sn%3D2a1c0f6f1fec62fc25c48e74ba61edfe%26chksm%3Dfe41850fc9360c19105cb3a444c4877553dd7501de911e94b449b5f0ac607a15894aa53507f7%26scene%3D21%23wechat_redirect)
 - [计算机史最疯狂一幕：豪赌50亿美元，“蓝色巨人”奋身一跃](https://link.zhihu.com/?target=http%3A//mp.weixin.qq.com/s%3F__biz%3DMzU5ODY2MTk3Nw%3D%3D%26mid%3D2247486231%26idx%3D1%26sn%3Dc4dba65e159c9f18d71ef87311e6ed2a%26chksm%3Dfe418521c9360c37b3f2b3a6bb617ba4f36a9ffd34c84d6894faa5b78db4b29b605459ba5897%26scene%3D21%23wechat_redirect)
-欢迎下载体验OneFlow新一代开源深度学习框架：**
+欢迎下载体验OneFlow新一代开源深度学习框架：
 
 [](https://link.zhihu.com/?target=https%3A//github.com/Oneflow-Inc/oneflow/)

@@ -31,7 +31,7 @@ source_url: https://zhuanlan.zhihu.com/p/684800836
 
 3. 实验
 
-### <strong>0. 摘要</strong>
+### 0. 摘要
 
 低秩适应（Low-Rank Adaptation，LoRA）在文本到图像模型中被广泛利用，以准确呈现生成图像中的特定元素，如独特的字符或独特的风格。然而，现有方法在有效组合多个 LoRA 时面临挑战，特别是随着要集成的 LoRA 数量增加，从而阻碍了复杂图像的创建。在本文中，我们通过<strong>以解码为中心（decoding-centric）</strong>的视角研究了多 LoRA 组合。我们提出了两种无需训练的方法：<strong>LoRA Switch</strong>，它在每个去噪步骤中在不同的 LoRA 之间交替，以及 <strong>LoRA Composite</strong>，它同时整合所有 LoRA 以引导更一致的图像合成。为了评估提出的方法，我们建立了<strong>ComposLoRA</strong>，这是一个新的全面测试平台。它包含了 480 个组合集的各种 LoRA 类别。利用基于 GPT-4V 的评估框架，我们的研究结果表明，相对于流行的基准线，在使用我们的方法时性能有明显提高，特别是在增加组合中 LoRA 的数量时。
 
@@ -39,9 +39,9 @@ source_url: https://zhuanlan.zhihu.com/p/684800836
 
 ![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_953aef568a51.jpg)
 
-### <strong>2. 方法</strong>
+### 2. 方法
 
-#### <strong>2.1 基础</strong>
+#### 2.1 基础
 
 （2022|CVPR，LDM）使用潜在扩散模型进行高分辨率图像合成
 
@@ -55,7 +55,7 @@ source_url: https://zhuanlan.zhihu.com/p/684800836
 
 ![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_07215da3a515.jpg)
 
-#### <strong>2.2. 通过以解码为中心的视角进行多LoRA组合</strong>
+#### 2.2. 通过以解码为中心的视角进行多LoRA组合
 
 为了解决上述问题，我们的方法基于扩散模型的去噪过程，并研究在保持 LoRA 权重不变的情况下如何进行组合。具体分为两个视角：在每个去噪步骤中，要么仅激活一个 LoRA，要么同时激活所有 LoRA 来引导生成。
 
@@ -73,7 +73,7 @@ source_url: https://zhuanlan.zhihu.com/p/684800836
 
 在这里，wi 是分配给每个 LoRA 的标量权重，旨在调整第 i 个 LoRA 的影响。对于我们的实验设置，我们将 wi 设置为1，赋予每个 LoRA 相等的重要性。LORA-C 确保每个 LoRA 在去噪过程的每个阶段都能有效地发挥作用，解决了常与合并 LoRA 相关的鲁棒性和细节保留的潜在问题。 
 
-### <strong>3. 实验</strong>
+### 3. 实验
 
 ![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_550415a19591.jpg)
 

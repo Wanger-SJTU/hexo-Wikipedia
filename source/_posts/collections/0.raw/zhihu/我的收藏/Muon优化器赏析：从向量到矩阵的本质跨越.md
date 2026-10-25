@@ -23,7 +23,6 @@ source_url: https://zhuanlan.zhihu.com/p/13401683661
 
 不过，最近推特上一个名为“[Muon](https://link.zhihu.com/?target=https%3A//github.com/KellerJordan/Muon)”的优化器颇为热闹，它声称比AdamW更为高效，且并不只是在Adam基础上的“小打小闹”，而是体现了关于向量与矩阵差异的一些值得深思的原理。本文让我们一起赏析一番。
 
-**
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_c0e67332f7cb.jpg)
 

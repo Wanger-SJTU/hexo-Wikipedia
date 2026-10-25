@@ -11,7 +11,7 @@ categories:
   - 文档
 ---
 
-**<span class="wikilink wikilink--missing" title="未导入的页面">随笔/XPU 优化/用满l1cache 的micro kernel</span>
+<span class="wikilink wikilink--missing" title="未导入的页面">随笔/XPU 优化/用满l1cache 的micro kernel</span>
 
 <span class="wikilink wikilink--missing" title="未导入的页面">ansor搜索算法</span>
 <span class="wikilink wikilink--missing" title="未导入的页面">随笔/tvm/dietcode 支持动态shape</span>

@@ -17,7 +17,7 @@ source_url: https://www.zhihu.com/question/275648655/answer/2190658050
 
 ​目录
 
-**内容同步发表在公众号文章 ： [如何理解 Tomasulo 算法](https://link.zhihu.com/?target=https%3A//mp.weixin.qq.com/s/3Qk-S7yyEounJnV3zkPtsg) ，欢迎关注 : )IBM 浮点单元最先实现Tomasulo算法从而允许乱序执行。360体系只有4个双精度浮点寄存器，限制了编译器调度的有效性。而且，IBM 的访存和浮点延迟都很长，如果顺序执行指令，虽然只有RAW hazard，但是后面无关的指令只能被stall。如果乱序执行，还会额外引入WAR和WAW hazard。Tomasulo算法通过Register renaming解决了这些问题。
+内容同步发表在公众号文章 ： [如何理解 Tomasulo 算法](https://link.zhihu.com/?target=https%3A//mp.weixin.qq.com/s/3Qk-S7yyEounJnV3zkPtsg) ，欢迎关注 : )IBM 浮点单元最先实现Tomasulo算法从而允许乱序执行。360体系只有4个双精度浮点寄存器，限制了编译器调度的有效性。而且，IBM 的访存和浮点延迟都很长，如果顺序执行指令，虽然只有RAW hazard，但是后面无关的指令只能被stall。如果乱序执行，还会额外引入WAR和WAW hazard。Tomasulo算法通过Register renaming解决了这些问题。
 
 Tomasulo算法1966年提出，设计目标是让编译器在360系列计算机中通用，不用为每台计算机专门做一个编译器。
 
@@ -140,7 +140,7 @@ load/store指令对于相同的effective address也是存在hazard的，而且�
 - result —— RS通过CDB传输的EU计算结果。
 - RegisterStat —— 寄存器结构，Regs —— 实际寄存器。
 
-### <strong>RS和ROB的项数</strong>
+### RS和ROB的项数
 
 <strong>可以看出RS和ROB的总项数反映出一个处理器的乱序执行能力。项数越大表明in-flight（正在执行）的指令数目越多。Intel公司的Nehamel有128项ROB，IBM公司的Power 有200项ROB.</strong>
 

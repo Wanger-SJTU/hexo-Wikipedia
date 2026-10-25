@@ -17,9 +17,9 @@ source_url: https://zhuanlan.zhihu.com/p/651732241
 
 ![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_fb0a75ff5b4b.jpg)
 
-### <strong>正文</strong>
+### 正文
 
-#### <strong>CPU Cache 的数据写入</strong>
+#### CPU Cache 的数据写入
 
 随着时间的推移，CPU 和内存的访问性能相差越来越大，于是就在 CPU 内部嵌入了 CPU Cache（高速缓存），CPU Cache 离 CPU 核心相当近，因此它的访问速度是很快的，于是它充当了 CPU 与内存之间的缓存角色。
 
@@ -40,7 +40,7 @@ CPU Cache 通常分为三级缓存：L1 Cache、L2 Cache、L3 Cache，级别越�
 - 写直达（*Write Through*）
 - 写回（*Write Back*）
 
-#### <strong>写直达</strong>
+#### 写直达
 
 保持内存与 Cache 一致性最简单的方式是，<strong>把数据同时写入内存和 Cache 中</strong>，这种方法称为**写直达（*Write Through*）**。
 
@@ -52,13 +52,12 @@ CPU Cache 通常分为三级缓存：L1 Cache、L2 Cache、L3 Cache，级别越�
 - 如果数据没有在 Cache 里面，就直接把数据更新到内存里面。
 写直达法很直观，也很简单，但是问题明显，无论数据在不在 Cache 里面，每次写操作都会写回到内存，这样写操作将会花费大量的时间，无疑性能会受到很大的影响。
 
-#### <strong>写回</strong>
+#### 写回
 
 既然写直达由于每次写操作都会把数据写回到内存，而导致影响性能，于是为了要减少数据写回内存的频率，就出现了**写回（*Write Back*）的方法**。
 
 在写回机制中，<strong>当发生写操作时，新的数据仅仅被写入 Cache Block 里，只有当修改过的 Cache Block「被替换」时才需要写到内存中</strong>，减少了数据写回内存的频率，这样便可以提高系统的性能。
 
-**
 
 ![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_9c216bdc2e30.jpg)
 
@@ -70,7 +69,7 @@ CPU Cache 通常分为三级缓存：L1 Cache、L2 Cache、L3 Cache，级别越�
 
 这样的好处是，如果我们大量的操作都能够命中缓存，那么大部分时间里 CPU 都不需要读写内存，自然性能相比写直达会高很多。
 
-#### 缓存一致性问题**
+#### 缓存一致性问题
 
 现在 CPU 都是多核的，由于 L1/L2 Cache 是多个核心各自独有的，那么会带来多核心的**缓存一致性（*Cache Coherence*）** 的问题，如果不能保证缓存一致性的问题，就可能造成结果错误。
 
@@ -110,7 +109,7 @@ CPU Cache 通常分为三级缓存：L1 Cache、L2 Cache、L3 Cache，级别越�
 - 要引入「锁」的概念，如果两个 CPU 核心里有相同数据的 Cache，那么对于这个 Cache 数据的更新，只有拿到了「锁」，才能进行对应的数据更新。
 那接下来我们看看，写传播和事务串形化具体是用什么技术实现的。
 
-#### <strong>总线嗅探</strong>
+#### 总线嗅探
 
 写传播的原则就是当某个 CPU 核心更新了 Cache 中的数据，要把该事件广播通知到其他核心。最常见实现的方式是**总线嗅探（*Bus Snooping*）**。
 
@@ -122,7 +121,7 @@ CPU Cache 通常分为三级缓存：L1 Cache、L2 Cache、L3 Cache，级别越�
 
 于是，有一个协议基于总线嗅探机制实现了事务串形化，也用状态机机制降低了总线带宽压力，这个协议就是 MESI 协议，这个协议就做到了 CPU 缓存一致性。
 
-#### <strong>MESI 协议</strong>
+#### MESI 协议
 
 MESI 协议其实是 4 个状态单词的开头字母缩写，分别是：
 
@@ -157,11 +156,10 @@ MESI 协议其实是 4 个状态单词的开头字母缩写，分别是：
 
 MESI 协议的四种状态之间的流转过程，我汇总成了下面的表格，你可以更详细的看到每个状态转换的原因：
 
-**
 
 ![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_73f30d0cd4cb.jpg)
 
-#### 总结**
+#### 总结
 
 CPU 在读写数据的时候，都是在 CPU Cache 读写数据的，原因是 Cache 离 CPU 很近，读写性能相比内存高出很多。对于 Cache 里没有缓存 CPU 所需要读取的数据的这种情况，CPU 则会从内存读取数据，并将数据缓存到 Cache 里面，最后 CPU 再从 Cache 读取数据。
 

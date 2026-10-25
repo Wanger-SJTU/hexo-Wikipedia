@@ -32,7 +32,7 @@ source_url: https://zhuanlan.zhihu.com/p/102707081
 ![](https://pic4.zhimg.com/v2-b0de34148ccc4e788aec1c858e1a0677_r.jpg)可变卷积开始是对一些常规参数的设置(kernel_size,stride,padding)，后续定义了self.conv（最终输出的卷积层，设置输入通道数和输出通道数），self.p_conv（偏置层，学习之前公式(2)中说的偏移量），self.m_conv(权重学习层，这个是后来提出的第二个版本的卷积也就是公式(3)描述的卷积)。register_backward_hook是为了方便查看这几层学出来的结果，对网络结构无影响。
 
 self.p_conv和self.m_conv输入通道由我们自己设置，self.p_conv输出通道为2*kernel_size*kernel_size代表了卷积核中所有元素的偏移坐标(因为同时存在x和y的偏移，所以要乘以2)，而self.p_conv输出通道为(kernel_size*kernel_size)代表了卷积核每个元素的权重。他们的kernel_size为3，**stride可以由我们自己设置(这里涉及之前公式(1,2)对于 
-![](https://www.zhihu.com/equation?tex=p_0) 的查找)stride默认值为1**
+![](https://www.zhihu.com/equation?tex=p_0) 的查找)stride默认值为1
 
 接下来我们分析一下前传函数
 

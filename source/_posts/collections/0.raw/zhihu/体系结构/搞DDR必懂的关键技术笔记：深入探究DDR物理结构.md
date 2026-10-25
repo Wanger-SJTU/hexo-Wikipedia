@@ -15,13 +15,13 @@ source_url: https://zhuanlan.zhihu.com/p/713042976
 ---
 
 
-### <strong>引言</strong>
+### 引言
 
 这篇文章的目的就是来看看芯片的物理结构，拿LPDDR5举例。
 
 通过逐步深入探讨LPDDR5内存的<strong>物理结构</strong>，到文章结束时，您将清晰了解与LPDDR5内存相关的关键术语，包括：
 
-- LPDDR5 IOs：命令总线（CA）、数据总线（DQ/DQS）、芯片选择（CS）、时钟（CK）** 
+- LPDDR5 IOs：命令总线（CA）、数据总线（DQ/DQS）、芯片选择（CS）、时钟（CK）
 - Bank和Bank组架构
  
 - Rank和页面大小
@@ -35,11 +35,10 @@ source_url: https://zhuanlan.zhihu.com/p/713042976
 ![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_39de75e9aad4.jpg)
 
 图0：从存储单元到存储封装
-### LPDDR5内存芯片**
+### LPDDR5内存芯片
 
-#### <strong>单个存储单元</strong>
+#### 单个存储单元
 
-**
 
 ![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_c35b0406953d.jpg)
 
@@ -50,9 +49,8 @@ source_url: https://zhuanlan.zhihu.com/p/713042976
 
 ![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_d0201010a388.jpg)
 
-#### Bank, Rows and Columns**
+#### Bank, Rows and Columns
 
-**
 
 ![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_d2de687acb47.jpg)
 
@@ -62,15 +60,15 @@ source_url: https://zhuanlan.zhihu.com/p/713042976
 
 在读操作期间，首先会激活一行并将其加载到感测放大器中。
 
-** 之前讲过哦：
+之前讲过哦：
  
 
-- [搞DDR，你必须得看看我的这篇笔记](https://link.zhihu.com/?target=https%3A//mp.weixin.qq.com/s%3F__biz%3DMzUyOTY5NzkwNg%3D%3D%26mid%3D2247499905%26idx%3D1%26sn%3D0ff71ca88db96df46cd7737cfe879c1c%26chksm%3Dfa5f9d9ccd28148a949b406e9a8e7b09c7798d2e61d7b3ef25d0b66fdd2192abb9143ec2ec26%26payreadticket%3DHHmEk1v_ke3WLiL9zTAMF4zQb7El4fLiqNNv70LRP0Fnhhx3QJjNGPMPBeIAhAwvGmwiypE%23rd)**
+- [搞DDR，你必须得看看我的这篇笔记](https://link.zhihu.com/?target=https%3A//mp.weixin.qq.com/s%3F__biz%3DMzUyOTY5NzkwNg%3D%3D%26mid%3D2247499905%26idx%3D1%26sn%3D0ff71ca88db96df46cd7737cfe879c1c%26chksm%3Dfa5f9d9ccd28148a949b406e9a8e7b09c7798d2e61d7b3ef25d0b66fdd2192abb9143ec2ec26%26payreadticket%3DHHmEk1v_ke3WLiL9zTAMF4zQb7El4fLiqNNv70LRP0Fnhhx3QJjNGPMPBeIAhAwvGmwiypE%23rd)
 然后，使用列地址来读取相应的列位。
 
 在LPDDR5中，
 
-- 每个Bank的一行包含1KB（8192位）的数据。** 
+- 每个Bank的一行包含1KB（8192位）的数据。
 - 每行中的这1KB数据被排列成64列，每列128位。[64 x 128位 = 8192位]
  
 - 因此，每次读/写访问都会指定一个行地址和一个列地址，Bank会返回128位的数据。这个数字很重要，我们将在下一节中再次提及它。
@@ -78,9 +76,8 @@ source_url: https://zhuanlan.zhihu.com/p/713042976
 ![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_b249a7c4aeb5.jpg)
 
 图2：存储器阵列
-#### LPDDR5 Bank架构**
+#### LPDDR5 Bank架构
 
-**
 
 ![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_d9c67d8278aa.jpg)
 
@@ -91,7 +88,7 @@ source_url: https://zhuanlan.zhihu.com/p/713042976
 
 在下面的图3中，请注意Y轴上的BG0、1、2、3和X轴上的Bank0、1、2、3。 在读/写操作期间，提供的Bank地址会激活2个Bank，并访问总共256位的数据（请记住，每个行和列地址在一个Bank内访问128位的数据）。
 
-** 记得之前我们讲过那个寻址的路线没，一共多少个线，然后不断地分配总线数量。用来做片选。
+记得之前我们讲过那个寻址的路线没，一共多少个线，然后不断地分配总线数量。用来做片选。
  
 
 - 16 Bank模式
@@ -116,7 +113,7 @@ LPDDR5提供多种Bank模式以适应不同的操作速度（如3200Mbps、5400M
 - 原生突发长度 - 每次操作您想要读取/写入多少位数据？
 让我们详细看看这些。
 
-** 速度等级
+速度等级
  
 
 - 如果存储器以> 3200Mb/s的速度运行，则只能使用Bank组模式。
@@ -133,13 +130,13 @@ LPDDR5提供多种Bank模式以适应不同的操作速度（如3200Mbps、5400M
  
  Note<strong>：在Bank组模式下，您也可以实现BL32（突发长度32），但这稍微复杂一些，并且会对数据进行一些交织处理。如果您想要突发长度为32，那么直接使用8 Bank模式会更好。</strong> 
 
-#### 页大小（Page Size）**
+#### 页大小（Page Size）
 
 <strong>页大小是指当一行被激活时，加载到感测放大器中的位数。</strong>
 
 - 在16 Bank模式和Bank组模式下，页大小为2KB。
 - 在8 Bank模式下，页大小为4KB。
-** 我们是如何得出这些数字的？
+我们是如何得出这些数字的？
  在图2中，我们看到Bank中的每一行存储1KB的数据**（以64列、每列128位的方式排列）；
 
 ![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_b249a7c4aeb5.jpg)
@@ -148,7 +145,7 @@ LPDDR5提供多种Bank模式以适应不同的操作速度（如3200Mbps、5400M
 
 由此推断，<strong>在8 Bank模式下，一次访问会激活4个Bank，因此页大小为4KB</strong>。
 
-#### <strong>密度</strong>
+#### 密度
 
 到目前为止，我们已经讨论了LPDDR5内存芯片的物理结构，<strong>但是内存芯片的容量是多少，它能存储多少位数据呢？</strong>
 
@@ -158,21 +155,21 @@ LPDDR5内存芯片是按照特定的容量制造的，从JEDEC规范中指定的
 
 下表显示了以Bank组模式（BG模式）运行的内存所需的地址位数。
 
-** 表1：x16 DQ 模式寻址
- Memory Density2Gb8Gb16Gb32GbNumber of Rows819232,76865,536131,072Number of Cols64646464Row Address BitsR0-R12R0-R14R0-R15R0-R16Col Address BitsC0-C5C0-C5C0-C5C0-C5Bank Address BitsBA0-BA1BA0-BA1BA0-BA1BA0-BA1BG Address BitsBG0-BG1BA0-BA1BA0-BA1BA0-BA1Page Size2KB2KB2KB2KBArray Pre-Fetch256b256b256b256b计算一个2Gb芯片的总密度：**
+表1：x16 DQ 模式寻址
+ Memory Density2Gb8Gb16Gb32GbNumber of Rows819232,76865,536131,072Number of Cols64646464Row Address BitsR0-R12R0-R14R0-R15R0-R16Col Address BitsC0-C5C0-C5C0-C5C0-C5Bank Address BitsBA0-BA1BA0-BA1BA0-BA1BA0-BA1BG Address BitsBG0-BG1BA0-BA1BA0-BA1BA0-BA1Page Size2KB2KB2KB2KBArray Pre-Fetch256b256b256b256b计算一个2Gb芯片的总密度：
 
-** 4 (BG) x 4 (Banks) x 8192 (rows) x 64 (cols) x 256b (each col) = 2,147,483,648 = 2Gb
+4 (BG) x 4 (Banks) x 8192 (rows) x 64 (cols) x 256b (each col) = 2,147,483,648 = 2Gb
  再给你整个图放这里！
 
 ![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_d9c67d8278aa.jpg)
 
 ![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_587b6e65d37e.jpg)
 
-### 说说参数**
+### 说说参数
 
 DRAM芯片相当于一栋装满文件柜的大楼
 
-- Bank组（Bank Group）相当于楼层号，用于识别你需要的文件所在的楼层** 
+- Bank组（Bank Group）相当于楼层号，用于识别你需要的文件所在的楼层
 - Bank地址（Bank Address）相当于楼层内的文件柜编号，用于识别你需要的文件所在的具体文件柜
  
 - 行地址（Row Address）相当于文件柜中的抽屉编号，用于识别文件所在的具体抽屉。将数据读取到感测放大器（Sense Amplifiers）中相当于打开/抽出文件抽屉。
@@ -182,7 +179,7 @@ DRAM芯片相当于一栋装满文件柜的大楼
 - 当你想读取另一行数据时，你需要先将当前文件放回抽屉并关闭它，然后再打开下一个抽屉。这相当于预充电（PRECHARGE）操作。
  
 
-### x8 DQ 模式**
+### x8 DQ 模式
 
 LPDDR5 接口有 16 个 DQ（数据）引脚。因此，默认情况下，内存以所谓的 x16 DQ 模式运行。
 
@@ -190,7 +187,7 @@ LPDDR5 接口有 16 个 DQ（数据）引脚。因此，默认情况下，内存
 
 在这种模式下，在一次读或写访问期间，只有一个 Bank 被激活（而不是 2 个）。作为回报，你得到的是一个容量更大的内存，即与 x16 模式相比，每个 Bank 看起来的行数是 x16 模式的两倍。（我们将访问宽度减半，因此，正如你所期望的，深度加倍。）
 
-** 我先解释一下这个 “容量更大”
+我先解释一下这个 “容量更大”
  在LPDDR5或其他DRAM技术中，将接口从x16 DQ模式切换到x8 DQ模式实际上并不直接增加物理上的存储容量（即芯片上存储单元的总数）。然而，从逻辑和访问效率的角度来看，它给人一种“容量更大”的错觉，这主要是因为改变了数据访问的方式和Bank的利用率。
 
 具体来说，当在x16 DQ模式下工作时，内存接口可以并行处理更多的数据（因为有两个Bank可以同时被激活，并且每个Bank的访问宽度是16位），这提高了数据传输的吞吐量。但是，在x8 DQ模式下，虽然一次只能激活一个Bank，并且访问宽度减半（每个Bank的访问宽度现在是8位），但这允许在逻辑上更深入地访问内存。
@@ -210,25 +207,25 @@ Memory Density2Gb8Gb16Gb32GbNumber of Rows16,38465,536131,072262,144Number of Co
 >  x16模式与x8模式的设置是通过模式寄存器MR8来完成的。
  
 
-### LPDDR5 内存通道**
+### LPDDR5 内存通道
 
 ![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_5fab3711318f.jpg)
 
-** 表3：LPDDR5 输入/输出（IOs）
+表3：LPDDR5 输入/输出（IOs）
  `|`
 
 PinWidthTypeDescriptionRESET_n1InputReset pinCK_t, CK_c1InputDifferential clockCS[1:0]2InputChip Select. Think of this as the enable/valid pin. The rest of the command bus is valid only when this is high.CA[6:0]7InputAddress bus. This is used to select which BankGroup,Bank,Row,Col to access.DQ[15:0]16InOutBidirectional data busWCK[1:0]_t, WCK[1:0]_c2InputDifferential clocks used for WRITE data capture and READ data outputDMI[1:0]2InOutData mask inversion. This IO has several functions such as DataMask (DM), DataBusInversion (DBI), or Link ECC based on the mode register setting.RDQS[1:0]_t, RDQS[1:0]_c1RDQS_t: Inout, RDQS_c: OutputRead Data Strobe
-#### 秩（Ranks）、宽度级联（Width Cascading）和深度级联（Depth Cascading）**
+#### 秩（Ranks）、宽度级联（Width Cascading）和深度级联（Depth Cascading）
 
 一个通道可以由一个或多个LPDDR5内存芯片组成<strong>。在下图中，我展示了如何配置多个2Gb内存芯片来增加通道中的总内存容量。</strong>
 
-- 2Gb通道容量：这很简单。只需将一个2Gb内存芯片连接到LPDDR5的IOs上。** 
+- 2Gb通道容量：这很简单。只需将一个2Gb内存芯片连接到LPDDR5的IOs上。
 - 4Gb通道容量：在这里，我们有两个2Gb芯片，它们被“深度级联”，也称为2秩（Rank）配置。通过设置芯片选择0（CS0引脚）来访问芯片A，而芯片B则通过CS1引脚来选择。但是，由于一次只有一个芯片选择引脚处于活动状态，因此两个芯片共享相同的地址和数据总线。**** 
 - 8Gb通道容量：在这里，我们有四个2Gb芯片。与4Gb容量类似，这里也有2秩。但在每个秩内部，我们有两个“宽度级联”的芯片，即每个芯片都被配置为x8宽度模式<strong>。</strong> 
 ![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_1b82e2e1c511.jpg)
 
 图5：LPDDR5 通道
-### LPDDR5 内存封装**
+### LPDDR5 内存封装
 
 ![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_c8ef09627481.jpg)
 
@@ -238,11 +235,11 @@ PinWidthTypeDescriptionRESET_n1InputReset pinCK_t, CK_c1InputDifferential clockC
 
 在供应商的产品目录中，典型的宽度和容量包括：
 
-- 容量：4GB、8GB、16GB等** 
+- 容量：4GB、8GB、16GB等
 - 宽度：x16（1通道）、x32（2通道）、x64（4通道）。每个通道都是独立可访问的，并且拥有自己的CA和DQ引脚集。
  
 
-### SoC-LPDDR5 接口**
+### SoC-LPDDR5 接口
 
 既然我们已经了解了LPDDR5内存的外观，那么我将以讨论处理器或SoC如何对内存进行读写来结束本文。
 
@@ -251,18 +248,18 @@ PinWidthTypeDescriptionRESET_n1InputReset pinCK_t, CK_c1InputDifferential clockC
 ![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_9e2e74ce05e6.jpg)
 
 图7：LPDDR5内存子系统
-### <strong>LPDDR5 接口</strong>
+### LPDDR5 接口
 
 如前所述，下表描述了PHY与单个LPDDR5内存通道之间的接口。这些IO是PCB上的物理走线。
 
 PinWidthTypeDescriptionRESET_n1InputReset pinCK_t, CK_c1InputDifferential clockCS1InputChip Select. Think of this as the enable/valid pin. The rest of the command bus is valid only when this is high.CA[6:0]7InputAddress bus. This is used to select which BankGroup,Bank,Row,Col to access.DQ[15:0]16InOutBidirectional data busWCK[1:0]_t, WCK[1:0]_c2InputDifferential clocks used for WRITE data capture and READ data outputDMI[1:0]2InOutData mask inversion. This IO has several functions such as DataMask (DM), DataBusInversion (DBI), or Link ECC based on the mode register setting.RDQS[1:0]_t, RDQS[1:0]_c1RDQS_t: Inout, RDQS_c: OutputRead Data Strobe
-### <strong>DFI 接口</strong>
+### DFI 接口
 
 <strong>控制器可以被视为逻辑层面的核心</strong>。<strong>它是一个复杂的状态机，确保在执行读取、写入或刷新操作时严格遵守LPDDR5协议</strong>。而另一方面，<strong>PHY则代表物理层面，包含了所有必要的模拟组件，以确保时钟、地址和数据信号在内存与PHY之间能够可靠地传输。</strong>
 
 参考前面的图7，PHY和控制器通过一个定义明确的标准接口——即DFI接口——进行通信。通过这个接口，PHY可以向控制器报告其当前状态，比如是否处于初始化阶段、校准阶段，或者是否已准备好执行读取/写入操作。
 
-### <strong>控制器接口</strong>
+### 控制器接口
 
 <strong>访问DDR内存需要精确的步骤和时序控制</strong>。例如，为了将数据写入内存，需要向内存发送一系列命令来激活正确的bank、行和列，然后在精确的时间点（称为写入延迟）发送数据。此外，在所有这些操作之间，内存还需要以固定的周期进行刷新，以防止数据丢失。
 
@@ -270,13 +267,13 @@ PinWidthTypeDescriptionRESET_n1InputReset pinCK_t, CK_c1InputDifferential clockC
 
 除了提供一个简单的内存访问接口外，<strong>控制器还具备多种智能功能（如地址重排序），这些功能有助于SoC/处理器最大化内存带宽</strong>。这一点非常重要，因为内存通常是笔记本电脑、手机或复杂ASIC（如TPU）性能瓶颈的所在。
 
-** 点赞超200，更Training！
+点赞超200，更Training！
  
-### 推荐阅读**
+### 推荐阅读
 
 - <strong>[搞DDR，你必须得看看我的这篇笔记（一）：DRAM](https://link.zhihu.com/?target=https%3A//mp.weixin.qq.com/s%3F__biz%3DMzUyOTY5NzkwNg%3D%3D%26mid%3D2247499731%26idx%3D1%26sn%3Ded6d2d9c7c1394cb2e14e06d816ca6d3%26chksm%3Dfa5fa2cecd282bd83fc7b03b9ced81f340106c4eff24584cdb43f67951cd8b79a0103d9ac5e8%26payreadticket%3DHIRmBy507MIugzZMMmmuQ0AWO4p3txZaIfjD8aztw7CoTccSKWTcw99cdX4632pLwKgKzgI%23rd)</strong>** 
 - [搞DDR，你必须得看看我的这篇笔记（二）：DDRC](https://link.zhihu.com/?target=https%3A//mp.weixin.qq.com/s%3F__biz%3DMzUyOTY5NzkwNg%3D%3D%26mid%3D2247499810%26idx%3D1%26sn%3D645237902019cbbdbcf8b10a809ce99d%26chksm%3Dfa5f9d3fcd281429ef86e0978187565eff36f00e65b4056e9630d568cd6446354a402a8f2c44%26payreadticket%3DHPE0wn7SohYJRH0lQwSlb-zec4XZDS94KHrAWJ5y4DH3rszLagMHRmlEiL4t4Oifq-uLZYc%23rd)**** 
 - [搞DDR，你是可以看看我的这篇笔记（三）：DDRPHY](https://link.zhihu.com/?target=https%3A//mp.weixin.qq.com/s%3F__biz%3DMzUyOTY5NzkwNg%3D%3D%26mid%3D2247499837%26idx%3D1%26sn%3Dd6a26437743137ba2c7e2af35fdd35b4%26chksm%3Dfa5f9d20cd281436f50709e2f8c7cba68d9d525f3488540b15b0ee4a059eef96448aa1438499%26token%3D84940425%26lang%3Dzh_CN%23rd)**** 
 - [搞DDR，你必须得看看我的这篇笔记（总结篇）](https://link.zhihu.com/?target=https%3A//mp.weixin.qq.com/s%3F__biz%3DMzUyOTY5NzkwNg%3D%3D%26mid%3D2247499905%26idx%3D1%26sn%3D0ff71ca88db96df46cd7737cfe879c1c%26chksm%3Dfa5f9d9ccd28148a949b406e9a8e7b09c7798d2e61d7b3ef25d0b66fdd2192abb9143ec2ec26%26payreadticket%3DHMFCrV2B0r_Iz2RraVfQjksHCi-gHbyo5F7EY1mOA-MdLJDMhpecfl8-t8lOL5gZ2OyLCCI%23rd)**** 
 - [搞DDR必懂的关键技术笔记：ODT](https://link.zhihu.com/?target=https%3A//mp.weixin.qq.com/s%3F__biz%3DMzUyOTY5NzkwNg%3D%3D%26mid%3D2247500207%26idx%3D1%26sn%3Deea78433813d7202f302f8299bdba83c%26chksm%3Dfa5f9cb2cd2815a447601a59254e217f83662c877cf08811e11b628b4f4066c6e0a469b12096%26payreadticket%3DHJsZjEEG-deG7cFtMIE2hakjJn7nbERQyTQM_NLliRXX0SYohpXr1RTNhTzKofee-jNXne0%23rd)**** 
-- [搞DDR必懂的关键技术笔记：Initialization, Training ， Calibration](https://link.zhihu.com/?target=https%3A//mp.weixin.qq.com/s%3F__biz%3DMzUyOTY5NzkwNg%3D%3D%26mid%3D2247500248%26idx%3D1%26sn%3D503c5f59d1676950ec7013635fe170dc%26chksm%3Dfa5f9cc5cd2815d3de2d22fafda69e3870403f23bcb765c088a4f20eb56dc7079dd305212038%26token%3D851425450%26lang%3Dzh_CN%23rd)**
+- [搞DDR必懂的关键技术笔记：Initialization, Training ， Calibration](https://link.zhihu.com/?target=https%3A//mp.weixin.qq.com/s%3F__biz%3DMzUyOTY5NzkwNg%3D%3D%26mid%3D2247500248%26idx%3D1%26sn%3D503c5f59d1676950ec7013635fe170dc%26chksm%3Dfa5f9cc5cd2815d3de2d22fafda69e3870403f23bcb765c088a4f20eb56dc7079dd305212038%26token%3D851425450%26lang%3Dzh_CN%23rd)

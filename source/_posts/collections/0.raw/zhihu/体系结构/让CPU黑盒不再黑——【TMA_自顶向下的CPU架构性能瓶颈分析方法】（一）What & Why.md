@@ -27,7 +27,7 @@ Intel有一位工程师就找到了这么一种分析方法，称为*Top-down Mi
 
 先来看看Intel在一次活动中对TMA的解释：
 
-**Top-down Microarchitecture Analysis (TMA) Method is an industry-proven systematic approach that identifies performance bottlenecks in out-of-order cores. Identifying true bottlenecks lets developers focus software tuning to remediate them and improve efficiently on same hardware. TMA simplifies cycle-accounting using microarchitecture independent-metrics organized in one single hierarchy which makes analysis simple. Using TMA, the high-learning curve associated with each microarchitecture generation is replaced by a structured drill-down that guides the user to true performance limiters.
+Top-down Microarchitecture Analysis (TMA) Method is an industry-proven systematic approach that identifies performance bottlenecks in out-of-order cores. Identifying true bottlenecks lets developers focus software tuning to remediate them and improve efficiently on same hardware. TMA simplifies cycle-accounting using microarchitecture independent-metrics organized in one single hierarchy which makes analysis simple. Using TMA, the high-learning curve associated with each microarchitecture generation is replaced by a structured drill-down that guides the user to true performance limiters.
 
 再来看看具体可以得到的性能瓶颈架构图：
 
@@ -57,7 +57,7 @@ SPEC CPU在Intel 3rd和4rd上的TMA结果通过运行同样测试用例（SPEC C
 
 ![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_3f209f19bbde.jpg)
 
-由于TMA对矩阵乘进行相应的优化想要提升特定应用在特定机器上的性能，若知道该应用在特定处理器上的相应表现，便可以有的放矢地进行相应的代码修改，以充分利用CPU资源，提升处理性能。在步骤一，先运行一次程序，发现瓶颈在DRAM，然后检测代码是否有优化DRAM访问的可能性，发现循环存在问题（跳跃访问，而不是连续访问）。对循环进行修正后，再次运行TMA，发现瓶颈落在后端的处理上，便可以考虑是否可以矢量化，以充分利用Core中的ALU运算模块，提升执行速度。矢量化后，发现瓶颈依然处在后端，便可以思考还有什么方法可以提升后端的处理能力，若程序员了解指令集中指令的优劣，便可以选用更优的指令集代替传统的指令集。通过这样一步步的分析，我们便可以充分压榨CPU的资源，以提升我们的处理速度。**
+由于TMA对矩阵乘进行相应的优化想要提升特定应用在特定机器上的性能，若知道该应用在特定处理器上的相应表现，便可以有的放矢地进行相应的代码修改，以充分利用CPU资源，提升处理性能。在步骤一，先运行一次程序，发现瓶颈在DRAM，然后检测代码是否有优化DRAM访问的可能性，发现循环存在问题（跳跃访问，而不是连续访问）。对循环进行修正后，再次运行TMA，发现瓶颈落在后端的处理上，便可以考虑是否可以矢量化，以充分利用Core中的ALU运算模块，提升执行速度。矢量化后，发现瓶颈依然处在后端，便可以思考还有什么方法可以提升后端的处理能力，若程序员了解指令集中指令的优劣，便可以选用更优的指令集代替传统的指令集。通过这样一步步的分析，我们便可以充分压榨CPU的资源，以提升我们的处理速度。
 
 ![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_35fcb0b6d4e9.jpg)
 

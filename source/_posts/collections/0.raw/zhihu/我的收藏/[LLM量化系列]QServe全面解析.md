@@ -17,7 +17,7 @@ source_url: https://zhuanlan.zhihu.com/p/700538726
 
 QServe是MIT Han-Lab和NVIDIA合作推出的W4A8KV4量化新作，笔者觉得是近期算法和工程结合地非常紧密的一篇文章，里面干货很多，有大量的实现细节，而且每个部分都有很多延展。本文主要是结合自己的理解对它做一个比较全面的解析，权当做学习笔记。
 
-**论文地址：[QServe: W4A8KV4 Quantization and System Co-design for Efficient LLM Serving](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2405.04532)
+论文地址：[QServe: W4A8KV4 Quantization and System Co-design for Efficient LLM Serving](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2405.04532)
 代码地址：[https://github.com/mit-han-lab/qserve](https://link.zhihu.com/?target=https%3A//github.com/mit-han-lab/qserve)
 ### Introduction
 

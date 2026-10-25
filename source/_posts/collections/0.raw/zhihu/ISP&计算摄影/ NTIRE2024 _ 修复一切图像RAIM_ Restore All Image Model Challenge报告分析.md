@@ -64,9 +64,9 @@ unpaired数据对衡量，邀请18个老司机参与主观打分，评价维度�
 最终裁量的结果，以40%的客观分数阶段2得分+60%的主观分数阶段3得分决出。
 
 <strong>【笔者看法】</strong><strong>IQA（Image Quality Assessment）图像质量评价也是笔者团队的研究领域，长期以来都是一个尚处open的命题。尽管如此，open的是计算方法而不是概念，在AI-ISP处理盛行其道的今天，对图像高频细节效果的评价维度也基本与赛事官方给出的这4个方面相近。</strong><strong>对于亮度、对比度和色彩，这些维度一来不在本次restoration的赛道范畴，二来作为enhancement的处理环节、更受个人主观的影响，在缺乏GT的情况下相对容易陷入争议。</strong>
-### <strong>2、参赛队伍技术报告</strong>
+### 2、参赛队伍技术报告
 
-#### <strong>2.1、MiAlgo（小米）：万级自筹UHD数据集，“三年陈</strong>”<strong>技术照打天下</strong>
+#### 2.1、MiAlgo（小米）：万级自筹UHD数据集，“三年陈<strong>”</strong>技术照打天下
 
 ![](/images/collections/0.raw/zhihu/ISP%26%E8%AE%A1%E7%AE%97%E6%91%84%E5%BD%B1/asset/img_5dd4d3c8e72e.jpg)
 
@@ -104,7 +104,7 @@ MW-ISPNet：主要采用小波变换和通道注意力机制提升图像处理�
 
 第二个模型，在第一个基础上增加赛会阶段2的高blur LQ数据作为GT，再选择同场景的100张HQ作为输入以unpaired的形式进行训练，训练方式同样参考第一个模型引用的论文。
 
-**【笔者看法：这个训练方式，笔者暂时没有深究，此前的算法中少有涉及unpaired训练；但感觉应该很有意思，后续研究后再更上来】第二个模型相比第一个模型会引入更强的blur。在使用第二个模型的时候，团队在这里将HQ图像的人形、文字单独分割出来，用第一个模型退化出微弱blur的结果替换到LQ图像中。此举的目的是为了保证训练出来的restoration模型在推理的时候能够有更好的保真度/fidelity。
+【笔者看法：这个训练方式，笔者暂时没有深究，此前的算法中少有涉及unpaired训练；但感觉应该很有意思，后续研究后再更上来】第二个模型相比第一个模型会引入更强的blur。在使用第二个模型的时候，团队在这里将HQ图像的人形、文字单独分割出来，用第一个模型退化出微弱blur的结果替换到LQ图像中。此举的目的是为了保证训练出来的restoration模型在推理的时候能够有更好的保真度/fidelity。
 
 > 【笔者看法】**<strong>这里团队的操作无可非议，但能work有2个背景：1、其restoration模型参数量够大；2、赛道场景中并没有人形甚至人脸，fidelity的约束并不强。但从起数据退化的精心程度，也足见当LQ劣化到一定程度已经丢失对象的fidelity可能，例如人脸已经丢失ID特征后，会产生更强的uncertainty，restoration甚至enhancement大概率是无能为力的，因此团队才会力求避免把人形和文字部分劣化过度，造成对restoration模型的污染、产生偏向generate的能力。</strong>
 
@@ -123,7 +123,7 @@ MW-ISPNet：主要采用小波变换和通道注意力机制提升图像处理�
 - 模型训练的关键还是在于数据，数据如何做好domain gap的跨越和易获取性，是衡量数据质量的重要指标。更何况小米自己的团队有万级的UHD数据库。
 - 训练过程的雕琢不可或缺，从上面的5个阶段就可以比照，其他团队或者我们自己的算法研究中是否穷尽一切策略？
 
-#### <strong>2.2、Xhs-IAG（小红书）：站在</strong>SUPIR<strong>巨人肩上但没能看得更远</strong>
+#### 2.2、Xhs-IAG（小红书）：站在<strong>SUPIR</strong>巨人肩上但没能看得更远
 
 小红书团队在两个参赛阶段采用了全然不同的策略：
 
@@ -141,7 +141,7 @@ Xhs-IAG模型：利用SUPIR的强生成和DeSRA的伪纹分类，最终修复出
 
 Xhs-IAG介绍到SUPIR使用了2千万级数据训练、输出结果自然度较好，但团队也坦言赛期紧张且SUPIR并未开源训练工程，因此就“拿来主义”了，最多在推理的时候调整了部分参数和prompt。
 
-**【笔者看法】
+【笔者看法】
 RAIM的挑战并未约束开销，就SUPIR基于StableDiffusion-XL的体量，断然就不是一个对部署条件很友好的方案。<strong>同时，目前</strong>扩散模型在对文字的处理上还欠缺稳定，对于real-world场景中广泛存在的文本图像场景，甚至要对已经经过拍摄设备SR处理过的劣化文字进行处理，可能会起到反作用（可以从本文上方图的zoom效果和下方效果看到效果，字符笔画碎裂）。**<strong>这一反差从Xhs-IAG团队阶段2只用SrFormer的分数相对优于阶段3的分数也看得出草蛇灰线</strong>。![](/images/collections/0.raw/zhihu/ISP%26%E8%AE%A1%E7%AE%97%E6%91%84%E5%BD%B1/asset/img_8fafdf1c95ef.jpg)
 
 SUPIR论文展示素材中唯一的文字样本，LQ中的车牌已看不清是啥文字，但出来的结果并不是一个很规整的字符序列<strong>【fidelity保姆：DeSRA】</strong>
@@ -249,13 +249,13 @@ IIP IR阶段2模型：stableSR超分后送入预训练的StableSR，输出再下
 作者罗梓巍（个人主页：https://algolzw.github.io/）目前在乌普萨拉大学攻读博士学位，本次参赛的算法方案建立在其此前发表工作之上：**IR-SDE：[Image Restoration with Mean-Reverting Stochastic Differential Equations](https://link.zhihu.com/?target=https%3A//arxiv.org/pdf/2301.11699)
 DA-CLIP（Degradation-aware CLIP）：[Controlling Vision-Language Models for Multi-Task Image Restoration](https://link.zhihu.com/?target=https%3A//arxiv.org/pdf/2310.01018)
 
-作者的IR-SDE，采用stochastic differential equation（SDE）描述图像的劣化和修复过程，旨在让模型能力不限制在某种具体的劣化空间下修复问题。但在本次挑战中，作者提到仿照DA-CLIP，把LQ的embedding是注入了IR-SDE的过程以提升修复的结果。**
+作者的IR-SDE，采用stochastic differential equation（SDE）描述图像的劣化和修复过程，旨在让模型能力不限制在某种具体的劣化空间下修复问题。但在本次挑战中，作者提到仿照DA-CLIP，把LQ的embedding是注入了IR-SDE的过程以提升修复的结果。
 
 对于赛事并未提供训练数据集的现实，作者先基于Real-ESRGAN的数据劣化策略，<strong>修改了一个随机劣化顺序的流程</strong>。然后借助自己以前的工作<strong>DA-CLIP来提升所劣化出来的LQ图像的质量，具体的方法是最小化LQ和HQ样本embeddings之间的L1距离</strong>。
 
 为了改善泛化性能，作者先用LSDIR的数据集训练，然后用上文提到的数据劣化出的synthesis数据与赛事提供的数据精调。作者提到，引入赛事提供的paired数据后，效果提升很显著。
 
-**【作者看法】
+【作者看法】
 这个参赛队主要IP都来自其本人的论文工作，首先respect。笔者会在后续进一步研究其publication。
 但是回过头来也能看到，作者不管是数据劣化、还是其IR-SDE、DA-CLIP的工作，都没有很好的解决domain gap的问题<strong>，才会出现其提到引入赛会数据精调后效果有显著的提升，并且</strong>主观效果并没有很理想，对比下来其模型输出还是高频信息偏弱、且对比度是最弱的。**
 #### 2.6、剩余4支队伍：主要都采用了扩散模型的DiffSR和StableSR
@@ -281,4 +281,4 @@ resize再送入扩散模型，处理结果的字符纹理完整且稳定
 - 一方面模型要尽量拟合到target domain，另一方面把数据通过一定预处理调整至模型的domain也不失为一种更好的trade-off，比如队伍中采用上采样来抑制扩散模型对字符纹理处理的瑕疵。
 - 心愿单拉长了很多，一些笔者认为有意思的工作，后续都会逐步剖析解读，欢迎催更！
 
-#### <strong>本人所在团队长期投入图像算法根技术研究，如有相关前沿AI-ISP和图像处理、渲染、IQA相关技术点和意见，欢迎留言。</strong>
+#### 本人所在团队长期投入图像算法根技术研究，如有相关前沿AI-ISP和图像处理、渲染、IQA相关技术点和意见，欢迎留言。

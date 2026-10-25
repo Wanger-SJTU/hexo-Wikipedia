@@ -21,7 +21,7 @@ Range Search 功能诞生于社区。
 
 为了帮助用户解决这一问题，Milvus 推出了全新功能—— Range Search（范围搜索）。本文将带各位详解这一新功能，包括 Range Search 的基本介绍、使用场景及其背后的技术细节。
 
-### <strong>01.什么是 Range Search？</strong>
+### 01.什么是 Range Search？
 
 顾名思义，Range Search 即范围搜索。不同于 KNN Search 返回最相似的 TOP-K 个结果，Range Search 会返回向量距离落于某一区间的 TOP-K 个结果。
 
@@ -35,17 +35,17 @@ Range Search 最典型的应用场景就是推荐系统。比如商品推荐，�
 
 Range Search 新增了 2 个参数，分别是：
 
-- radius（半径） - 指相似性的外边界** 
+- radius（半径） - 指相似性的外边界
 - range_filter（范围过滤器） - 指相似性的内边界
  
 
-### 02.Range Search 的技术实现细节**
+### 02.Range Search 的技术实现细节
 
 接下来，我们深入 Range Search 功能的架构和算法，探讨其优势、局限性以及 Range Search 与第三方算法库集成。
 
 Range Search 重用了现有的搜索流程，二者在上层所有数据通路几乎完全是一样的。以下是接收到搜索请求时所采取的步骤：
 
-- SDK 接到一个用户的查询请求，在 search param 中包含了 radius 和 range_filter 信息；** 
+- SDK 接到一个用户的查询请求，在 search param 中包含了 radius 和 range_filter 信息；
 - proxy 在收到这个查询请求后，生成一个 SearchTask 传给 querynode；
  
 - querynode 在收到 SearchTask 后，通过 cgo 调用 segcore 的 Search 接口；
@@ -66,19 +66,19 @@ Range Search 重用了现有的搜索流程，二者在上层所有数据通路�
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_5a5816b0540e.jpg)
 
-### 03.Range Search 使用方法**
+### 03.Range Search 使用方法
 
 如需使用 Range Search，只需要修改搜索请求中的搜索参数。接下来我会讲一下的详细使用指南，在指南的最后还提供了 Python 示例代码。
 
-#### <strong>开始前</strong>
+#### 开始前
 
 请确保已安装并运行 Milvus。
 
 请确保已创建 1 个 Collection，并为该 Collection 创建索引。
 
-#### <strong>Range Search 参数</strong>
+#### Range Search 参数
 
-- radius：必要参数。决定搜索请求将执行 Range Search 还是 KNN Search。** 
+- radius：必要参数。决定搜索请求将执行 Range Search 还是 KNN Search。
 - range_filter：可选参数。如果设置该参数，函数将对结果进行二次过滤。
  
 通过上述两个参数，我们可以根据不同应用场景和需求微调 Range Search 的行为。以下为示例代码：
@@ -99,7 +99,7 @@ search_params = {"metric_type": "L2","limit": TOPK,
 
 res = collection.search(vectors[:nq], "float_vector", search_params, limit)`
 
-### 04.参数检查**
+### 04.参数检查
 
 下表列出了所有 metric type 对应的 radius 合法值范围：
 
@@ -110,7 +110,7 @@ res = collection.search(vectors[:nq], "float_vector", search_params, limit)`
 - 对于 L2/Hamming/Jaccard，range_filter  radius
  
 
-### 05.总结**
+### 05.总结
 
 Milvus 的 Range Search 功能不仅限于推荐引擎，还可以广泛应用在内容匹配、异常检测和 NLP 搜索等任务中。通过利用 radius 和 range_filter 两个参数，用户可以精准定制查询，满足不同用例的需求。
 

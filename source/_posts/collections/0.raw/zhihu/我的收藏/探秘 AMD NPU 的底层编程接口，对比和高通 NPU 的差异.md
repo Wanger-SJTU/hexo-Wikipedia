@@ -292,7 +292,6 @@ vshuffle  x10, x6, x0, r3   ; 向量重排单元
 - S**hift: 右移（由 `s0` 寄存器指定移位量）
 - <strong>R</strong>ound: 舍入
 - <strong>S</strong>aturate: 饱和（64-bit → 32-bit，防止截断溢出）
-**
 
 这条指令直接从累加器读数据、截断、存储到内存，一拍完成。
 

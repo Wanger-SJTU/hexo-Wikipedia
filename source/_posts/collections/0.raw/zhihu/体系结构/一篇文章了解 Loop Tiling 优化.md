@@ -137,7 +137,6 @@ for i_o in range(0, N, T_i):
 
 # 注意，内三层循环仍然是按照 i_i,k_i,j_i 的顺序，因此仍然满足 RowMajor 的顺序读取`
 
-**
 
 #### 多级缓存 Tiling
 
@@ -148,7 +147,7 @@ for i_o in range(0, N, T_i):
 - 但对循环 `k_o=0,...`，对应的会重用的数组是 `C[i_i][j_i]` 
 
 - 因为其下层循环时 `j_o` 度过了从 `0..N` 的大层循环时，且 `N` 非常大，所以此时必然出现 cache miss
-- 即 `k_o=0` 时存在 cache 里的 `C[i_i][j_i]` ，在 `k_o=T_k` 时必然已经被 evict 了**
+- 即 `k_o=0` 时存在 cache 里的 `C[i_i][j_i]` ，在 `k_o=T_k` 时必然已经被 evict 了
 - 因此，我们可以用<strong>更大的缓存</strong>再对下一层循环 `j_o` 进行 tile
 
 for j_oo in range(0, N, T2_j):
@@ -166,7 +165,7 @@ for j_oo in range(0, N, T2_j):
 # 这样的话，内三层循环 i_i, k_i, j_i （对应的 Tile size 为 T_i, T_j, T_k）放到 L1 Cache 里。
 # 外层循环 j_oi （对应Tile size 为 T2_j） 就可以放到更大的 L2 Cache 里。于是便在 L2 里形成了对 C[i_i][j_i] 的复用`
 
-** 同理，对于 `k_o`, `i_o` 也可以再 tile 去利用 L2 Cache。甚至再去搞搞利用 L3 Cache 也有可能。
+同理，对于 `k_o`, `i_o` 也可以再 tile 去利用 L2 Cache。甚至再去搞搞利用 L3 Cache 也有可能。
 
 ### 做法总结
 

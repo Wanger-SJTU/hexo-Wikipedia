@@ -29,15 +29,14 @@ source_url: https://zhuanlan.zhihu.com/p/30000490
 
 在下面的例子当中，我们假设环境中的网络划分为外部网络（network1）和内部网络（network2）两部分，并且这两个网络之间，只能在 externo1 与 interno1 之间通过 SSH 连接的方式来互相访问。外部网络的节点之间和内部网络的节点之间是完全联通的。
 
-**
 
 ![](/images/collections/0.raw/zhihu/%E5%AD%A6%E4%B9%A0/asset/img_7097735bc54a.jpg)
 
 *SSH tunnels: no tunnel*
 
-### 场景 1**
+### 场景 1
 
-**在 externo1 节点访问由 interno1 节点提供的 TCP 服务（本地端口转发 / 绑定地址 = localhost / 主机 = localhost ）externo1 节点可以通过 OpenSSH 连接到 interno1 节点，之后我们想通过其访问运行在 5900 端口上的 VNC 服务。
+在 externo1 节点访问由 interno1 节点提供的 TCP 服务（本地端口转发 / 绑定地址 = localhost / 主机 = localhost ）externo1 节点可以通过 OpenSSH 连接到 interno1 节点，之后我们想通过其访问运行在 5900 端口上的 VNC 服务。
 
 ![](/images/collections/0.raw/zhihu/%E5%AD%A6%E4%B9%A0/asset/img_a0aee9b14993.jpg)
 
@@ -62,9 +61,9 @@ Tcp 0 0 127.0.0.1:7900 0.0.0.0:*  LISTEN
 
 注意：在 vncviewer 的 man 手册中并未提及这种修改端口号的方式。在 About VNCViewer configuration of the output TCP port 中可以看到。这也是 the TightVNC vncviewer 所介绍的的。
 
-### 场景 2**
+### 场景 2
 
-**在 externo2 节点上访问由 interno1 节点提供的 TCP 服务（本地端口转发 / 绑定地址 = 0.0.0.0 / 主机 = localhost）这次的场景跟方案 1 的场景的类似，但是我们这次想从 externo2 节点来连接到 interno1 上的 VNC 服务：
+在 externo2 节点上访问由 interno1 节点提供的 TCP 服务（本地端口转发 / 绑定地址 = 0.0.0.0 / 主机 = localhost）这次的场景跟方案 1 的场景的类似，但是我们这次想从 externo2 节点来连接到 interno1 上的 VNC 服务：
 
 ![](/images/collections/0.raw/zhihu/%E5%AD%A6%E4%B9%A0/asset/img_508801de3474.jpg)
 
@@ -108,9 +107,9 @@ Proto Recv-Q Send-Q Local Address Foreign Address State
 Tcp 0 0 192.168.24.80:7900 0.0.0.0:* LISTEN
 ...`
 
-### 场景 3**
+### 场景 3
 
-**在 interno1 上访问由 externo1 提供的 TCP 服务（远程端口转发 / 绑定地址 = localhost / 主机 = localhost）在场景 1 中 SSH 服务器与 TCP 服务（VNC）提供者在同一个节点上。现在我们想在 SSH 客户端所在的节点上，提供一个 TCP 服务（VNC）供 SSH 服务端来访问：
+在 interno1 上访问由 externo1 提供的 TCP 服务（远程端口转发 / 绑定地址 = localhost / 主机 = localhost）在场景 1 中 SSH 服务器与 TCP 服务（VNC）提供者在同一个节点上。现在我们想在 SSH 客户端所在的节点上，提供一个 TCP 服务（VNC）供 SSH 服务端来访问：
 
 ![](/images/collections/0.raw/zhihu/%E5%AD%A6%E4%B9%A0/asset/img_1ae1cae87b34.jpg)
 
@@ -135,9 +134,9 @@ Tcp 0 0 127.0.0.1:7900 0.0.0.0:* LISTEN
 
 `interno1 $ vncviewer localhost::7900 `
 
-### 场景 4**
+### 场景 4
 
-**interno2 使用 externo1 上提供的 TCP 服务（远端端口转发 / 绑定地址 = 0.0.0.0 / 主机 = localhost）与场景 3 类似，但是现在我们尝试指定允许访问转发端口的 IP（就像场景 2 中做的一样）为 0.0.0.0，这样其他节点也可以访问 VNC 服务：
+interno2 使用 externo1 上提供的 TCP 服务（远端端口转发 / 绑定地址 = 0.0.0.0 / 主机 = localhost）与场景 3 类似，但是现在我们尝试指定允许访问转发端口的 IP（就像场景 2 中做的一样）为 0.0.0.0，这样其他节点也可以访问 VNC 服务：
 
 ![](/images/collections/0.raw/zhihu/%E5%AD%A6%E4%B9%A0/asset/img_cc75038affa0.jpg)
 
@@ -177,9 +176,9 @@ Tcp 0 0 0.0.0.0:7900 0.0.0.0:* LISTEN
 
 `interno2 $ internal vncviewer1::7900`
 
-### 场景 5**
+### 场景 5
 
-**在 externo1 上使用由 interno2 提供的 TCP 服务（本地端口转发 / 绑定地址 localhost / 主机 = interno2 ）
+在 externo1 上使用由 interno2 提供的 TCP 服务（本地端口转发 / 绑定地址 localhost / 主机 = interno2 ）
 
 ![](/images/collections/0.raw/zhihu/%E5%AD%A6%E4%B9%A0/asset/img_90dab5a8e84a.jpg)
 
@@ -193,9 +192,9 @@ Tcp 0 0 0.0.0.0:7900 0.0.0.0:* LISTEN
 
 `externo1 $ vncviewer localhost::7900`
 
-### 场景 6**
+### 场景 6
 
-**在 interno1 上使用由 externo2 提供的 TCP 服务（远程端口转发 / 绑定地址 = localhost / host = externo2）
+在 interno1 上使用由 externo2 提供的 TCP 服务（远程端口转发 / 绑定地址 = localhost / host = externo2）
 
 ![](/images/collections/0.raw/zhihu/%E5%AD%A6%E4%B9%A0/asset/img_3582df7d6878.jpg)
 
@@ -209,9 +208,9 @@ Tcp 0 0 0.0.0.0:7900 0.0.0.0:* LISTEN
 
 `interno1 $ vncviewer localhost::7900 `
 
-### 场景 7**
+### 场景 7
 
-**在 externo2 上使用由 interno2 提供的 TCP 服务（本地端口转发 / 绑定地址 = 0.0.0.0 / 主机 = interno2）
+在 externo2 上使用由 interno2 提供的 TCP 服务（本地端口转发 / 绑定地址 = 0.0.0.0 / 主机 = interno2）
 
 ![](/images/collections/0.raw/zhihu/%E5%AD%A6%E4%B9%A0/asset/img_697a0f5c246e.jpg)
 
@@ -229,7 +228,7 @@ Tcp 0 0 0.0.0.0:7900 0.0.0.0:* LISTEN
 
 `externo2 $ vncviewer externo1::7900 `
 
-### 场景 8**
+### 场景 8
 
 > 在 interno2 上使用由 externo2 提供的 TCP 服务（远程端口转发 / 绑定地址 = 0.0.0.0 / 主机 = externo2）
 

@@ -17,7 +17,7 @@ source_url: https://zhuanlan.zhihu.com/p/2019814309815927081
 
 随着大规模混合专家（MoE）模型在在线推理中的应用不断扩大，Fine-Grained MoE 模型逐渐成为核心服务模型，理解推理过程中 MoE 推理过程中的计算流程有助于看懂当前主流推理框架的优化点，为了简化问题我们先考虑非 Hybird-Attention 架构的模型来对计算通信计算流程进行剖析，在此声明，本文以看图为主。
 
-### <strong>单卡推理 MoE 模型</strong>
+### 单卡推理 MoE 模型
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_56a0580ac378.jpg)
 
@@ -85,9 +85,9 @@ Attention 输出进入 Dispatch 模块，将数据按路由分发到不同专家
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_c651c73c3b24.jpg)
 
-图8. Meta Shuffling 优化方案多GPU混合部署示意图**
+图8. Meta Shuffling 优化方案多GPU混合部署示意图
 
-### Reference**
+### Reference
 
 [1] [[2406.06858] FLUX: Fast Software-based Communication Overlap On GPUs Through Kernel Fusion](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2406.06858)
 

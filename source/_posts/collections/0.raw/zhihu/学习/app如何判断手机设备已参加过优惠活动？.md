@@ -23,7 +23,6 @@ iOS 7.0以前，可以通过获取MAC、UDID、UUID、OPEN UDID等方式来唯�
 
 iOS 7.0以后，苹果禁止了UDID及剪贴板共享权限，无法通过获取MAC、UDID等方式来得到iOS设备的唯一识别号，继续采用OPEN UDID的意义也不大。
 
-**
 
 苹果官方解决方案：
 
@@ -51,7 +50,7 @@ Use IDFV(identifierForVendor) + keychain to make sure UDID consistency, even if 
 
 当然可以采用：CFUUID、NSUUID+keychain的方案
 
-2、Android**
+2、Android
 
 可以通过如下途径获取终端唯一识别号（不同手机厂商权限要求不同，有些需要用户授权）
 
@@ -63,11 +62,11 @@ MAC地址
 
 ANDROID_ID
 
-只不过以上信息，在android虚拟机/模拟器上都可以伪造，因此Android平台上还涉及虚拟机/模拟器反欺诈问题。建议采用首次安装判断+用户注册绑定手机号等手段。**
+只不过以上信息，在android虚拟机/模拟器上都可以伪造，因此Android平台上还涉及虚拟机/模拟器反欺诈问题。建议采用首次安装判断+用户注册绑定手机号等手段。
 
 关于android虚拟机和模拟器以前的一个回答 [https://www.zhihu.com/question/33537532/answer/64966375](https://www.zhihu.com/question/33537532/answer/64966375)  ，供参考。
 
-3、如果不是原生app，而是采用HTML5（例如在微信公众号、小程序中）**
+3、如果不是原生app，而是采用HTML5（例如在微信公众号、小程序中）
 
 可以考虑采用一些web 指纹识别的解决方案，但存在用户重置唯一标识问题。
 

@@ -110,7 +110,7 @@ ld.global.b32 r2, [data];`
 
 同时我们还可以看到，这里使用了.sys，也算是我们前面scope语义的一个补充示例。此时若使用st.release.cta，硬件仅需确保写入对<strong>当前 SM</strong> 可见，数据完全可能滞留在本地 L1 或写缓冲中，而未被强制刷新至全局共享的 L2 Cache。这意味着，位于另一个 SM 的 P1 根本无法观测到这一更新。因此，涉及 Global Memory 的跨 Block 通信，必须使用能穿透至 L2 层级的 `.gpu` 或 `.sys` Scope，以强制维护<strong>全局一致性</strong>，而非仅仅是 Block 内的局部一致性。
 
-### <strong>Cache Hint</strong>
+### Cache Hint
 
 最后还有一个Cache Hint修饰符也比较常见，会和性能调优有一些关系。可以通过这个修饰符告诉cache你更倾向于驻留与替换的策略。另外强调这是Performance Hint，硬件<strong>不保证</strong>一定执行，虽然大多数时候会遵循。
 

@@ -25,7 +25,7 @@ source_url: https://zhuanlan.zhihu.com/p/20858086974
 
 <strong>一句话总结下，PPO、TRPO 和 GRPO的关系。PPO、TRPO 和 GRPO 都是用于优化强化学习策略的方法，其中 PPO 通过裁剪控制策略更新，TRPO 通过信赖域和 KL 散度约束保证稳定性，而 GRPO 结合了两者的优点，采用群体相对优势计算和自适应 KL 约束实现更高效的优化，进一步降低了计算复杂度和资源需求。</strong>
 
-### <strong>1. PPO（Proximal Policy Optimization）</strong>：
+### 1. PPO（Proximal Policy Optimization）**：
 
 #### 1.1  PPO介绍
 
@@ -39,7 +39,6 @@ PPO的核心公式如下所示，
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_993ed58b605a.jpg)
 
-**
 
 #### 1.2 PPO核心机制
 
@@ -78,7 +77,7 @@ PPO的核心公式如下所示，
 
 图6![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_9a12a999271d.jpg)
 
-图7**
+图7
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_46f38ebbec9c.jpg)
 
@@ -96,25 +95,24 @@ PPO的核心公式如下所示，
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_d9c2cfa9e0ef.jpg)
 
-#### <strong>1.3 PPO的关键优势</strong>
+#### 1.3 PPO的关键优势
 
 - <strong>稳定性</strong>：通过裁剪或KL惩罚，避免策略突变导致的性能崩溃。
 - <strong>样本高效</strong>：支持多轮次（epochs）复用同一批数据，减少环境交互需求。
 - <strong>简单易实现</strong>：相比TRPO（需要复杂的二阶优化） L_{\theta}^{clip}，PPO仅需一阶梯度优化。
 
-#### <strong>1.4. PPO的训练流程</strong>
+#### 1.4. PPO的训练流程
 
 - <strong>数据收集</strong>：用当前策略与环境交互，生成轨迹数据。
 - <strong>计算优势值</strong>：使用Critic网络估计每个状态-动作对的优势值 A_{t}（例如通过GAE方法)。
 - <strong>优化目标函数</strong>：通过随机梯度上升最大化裁剪目标函数，更新策略参数 *θ*。
 - <strong>迭代更新</strong>：重复上述步骤，直到策略收敛。
-**
 
 ### 2. **TRPO（Trust Region Policy Optimization）
 
 <strong>TRPO（信任区域策略优化）</strong> 是一种强化学习算法，旨在通过约束策略更新的幅度来确保训练的稳定性。其核心思想是每次更新策略时，限制新旧策略之间的差异，使其保持在“信任区域”内，从而避免因更新过大导致策略性能骤降。到了这一步就比较清楚了，<strong>相对于PPO通过裁剪CLIP进行新旧策略的更新，TRPO则是通过KL散度约束新旧策略的差异，可以让策略在合理范围内更新得更快。核心还是rt(θ)这个比率进行约束，但现在TRPO使用了KL散度这个计算机制，比单纯地进行裁剪会灵活不少。</strong>
 
-#### 2.1 TRPO<strong>核心目标</strong>
+#### 2.1 TRPO**核心目标
 
 - <strong>数学目标</strong>：在最大化期望回报的同时，约束新旧策略的差异（通过KL散度）。
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_4be19f0a4a0f.jpg)
@@ -133,7 +131,6 @@ PPO的核心公式如下所示，
 
 <strong>迭代更新</strong>：重复上述过程，逐步优化策略。
 
-**
 
 ### 3. GRPO  （Generalized Reinforcement Learning with Policy Optimization）
 
@@ -145,7 +142,6 @@ GRPO（Generalized Reinforcement Learning with Policy Optimization）是一种�
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_2352f29329bc.jpg)
 
-**
 
 GRPO 主要在 PPO** 、 TRPO基础上做了下面的改进：
 
@@ -171,9 +167,8 @@ PPO网络<strong>（2）基于组的优势计算</strong>
 
 <strong>PPO 裁剪固定范围可能导致策略收敛速度受限，GRPO通过加入</strong>\beta<strong>函数动态调整策略更新范围，也就是动态调整KL散度，使策略更新既稳定又高效。这个思想并不稀奇，过往在进行多任务训练、或者进行L1/L2正则化约束的时候也是采用这种机制。</strong>
 
-**
 
-#### 3.2 一个通俗的例子讲一下PPO和GRPO的区别**
+#### 3.2 一个通俗的例子讲一下PPO和GRPO的区别
 
 假设你是一个AI篮球队的教练，正在训练一支5人球队。这些球员是AI智能体（Agents），目标是通过团队协作赢得比赛。
 
@@ -231,7 +226,7 @@ GRPO（Group Relative Policy Optimization，群体相对策略优化）算法，
 
 <strong>(1) 组采样（Group Sampling）</strong>**对每个问题 q，从旧策略 πθ​ 中采样 G 个输出 {o1​,o2​,…,oG​}。例如，若 G=16，则对同一问题生成 16 种不同解法。这一步通过组内样本的多样性，估计当前策略的表现分布。
 
-(2) 优势函数计算（Advantage Calculation）**
+(2) 优势函数计算（Advantage Calculation）
 
 根据公式计算每个输出的优势值
 
@@ -239,21 +234,18 @@ GRPO（Group Relative Policy Optimization，群体相对策略优化）算法，
 
 ​其中，ri​ 是第 i 个输出的奖励得分，由奖励模型计算。分子是当前输出奖励与组内平均奖励的差值，衡量相对优势；分母是组内奖励的标准差，用于标准化处理，消除不同问题间的量纲差异。
 
-**
 
-(3) 目标函数优化（Objective Function Optimization）**
+(3) 目标函数优化（Objective Function Optimization）
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_bec5ab890d85.jpg)
 
 根据公式优化策略模型 
 
-**
 
 其中， \pi_{\theta}ref 是参考策略，通常为初始基座模型。重要性采样比衡量新旧策略对同一动作的概率差异，clip<strong>操作限制策略更新的幅度（如 ϵ=0.2），防止过度优化，KL散度惩罚项约束新策略与参考策略的差异，防止过度偏离基座模型的原始能力。其中这个公式可以进一度拆解成下面的计算过程。上面的公式看着很复杂，</strong>其实如果从不严谨的角度去分析，你只要关注下面这个计算比率策略 <strong>r_{t}</strong>，就可以了，这个是公式核心中的核心，至于clip和后面的KL散度约束其实还是一些计算上的优化而已。**
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_44b7d3be399f.jpg)
 
-**
 
 自适应调整 KL 惩罚系数 **\beta ：
 
@@ -269,6 +261,6 @@ GRPO（Group Relative Policy Optimization，群体相对策略优化）算法，
 
 <strong>（5）训练循环（Training Loop）</strong>**   在每个训练回合中，重复上述步骤，不断更新策略模型，直到达到预定的训练次数或满足收敛条件
 
-### 4. TRPO 、PPO、GRPO 对比和区别**
+### 4. TRPO 、PPO、GRPO 对比和区别
 
 特性/算法PPO (近端策略优化)TRPO (信任域策略优化)GRPO (群体相对策略优化)优势函数计算使用广义优势估计（GAE）来计算优势函数。使用蒙特卡洛方法计算优势函数，并通过泰勒级数展开进行近似。基于组的优势计算，通过比较一组样本的表现来决定哪些策略应被保留或改进。策略更新方式通过限制新旧策略的概率比（PPO-Clip）或使用KL散度惩罚（PPO-Penalty）来更新策略。通过信任域方法限制策略更新的范围，确保新旧策略之间的KL散度不超过预设阈值。通过群体相对优势估计和直接的KL散度优化来更新策略，无需单独的价值函数模型。计算复杂度相对较低，易于实现和调整。较高，需要计算Hessian矩阵和解决约束优化问题。通过去除价值函数模型和基于组的优势计算，显著降低了计算复杂度。适用性适用于连续动作空间和大规模模型训练。适用于需要精确控制策略更新幅度的任务，但实现复杂。适用于需要高效策略优化和减少计算资源的场景，特别是在大规模模型训练中。稳定性通过裁剪策略和KL散度项的结合，确保模型在探索和稳定性之间取得平衡。通过信任域约束确保训练的稳定性，但可能导致训练过程较慢。通过群体相对优势计算和直接的KL散度优化，提高了训练的稳定性和效率。训练资源需求需要额外的价值函数模型和计算资源。需要大量的计算资源来处理Hessian矩阵和约束优化问题。通过从群体分数估计基线，显著减少了训练资源的需求。

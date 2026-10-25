@@ -328,7 +328,7 @@ def release(collection: Collection = None):
 
 <strong>2.x版本目前只有python，其他还在开发中</strong>
 
-### <strong>可视化管理</strong>
+### 可视化管理
 
 milvus的强大之处，还在于它提供了可视化的管理工具。
 

@@ -25,7 +25,7 @@ source_url: https://zhuanlan.zhihu.com/p/468861191
 
 ### Compute shader为何能实现性能提升？
 
-#### <strong>Compute units的出现</strong>
+#### Compute units的出现
 
 在图形硬件发展的早期阶段（GeForce 7 ），显卡会针对不同的渲染阶段提供不同的固定功能处理单元。这些不同的单元虽然具有类似的计算能力，但是显存的读取有着很大的区别。例如顶点着色器在很长的一段时间里都不能像像素着色器一样直接访问texture。随着游戏工业的发展，以及GPGPU的应用场景开始出现，这种固定功能的硬件开始无法适应时代的需求。从GeForce 8800 GTX之后，图形硬件开始逐渐引入了统一的计算单元来处理vertex和pixel。这使得在顶点着色器和像素着色之间分配性能负担成为可能。 
 
@@ -34,13 +34,13 @@ source_url: https://zhuanlan.zhihu.com/p/468861191
   早期图形硬件，顶点着色和像素着色分别由不同的单元处理![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_daaa87c7e589.jpg)
 
 当代图形硬件，顶点着色和像素着色同时由compute units 处理，这成为了之后的GPGPU以及compute shader的铺垫
-#### <strong>Compute shader之于传统图形管线</strong>
+#### Compute shader之于传统图形管线
 
 在传统管线中，管线需有专门的硬件来处理图形与光栅化相关操作，对于通用计算来说造成了很多overhead。compute shader的引入可以直接调用一定数量的compute units与显存使它们之间互相传递数据。 
 
 ![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_f3717e7ec104.jpg)
 
-传统图形管线**
+传统图形管线
 
 ![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_787475489ad6.jpg)
 
@@ -53,7 +53,7 @@ compute shader绕过了多余的硬件直接调用compute units
 ![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_f98d88af16e0.jpg)
 
 AMD的GCN架构
-#### 抽象的compute space**
+#### 抽象的compute space
 
 不同于传统的vertex or pixel shader（顶点或像素的运算都在其明确定义的具象空间（object，world，tangent，camera。。。。），compute shader所在的空间是抽象的，其具体的语义只有在应用到具体的用途上才会体现。例如在对一张贴图的texel进行操作时，compute space此时类比于贴图所在的uv space。而在利用compute shader进行GPU粒子模拟时，compute space类比于object space下。
 
@@ -73,7 +73,7 @@ HLSL中对compute space的定义<strong>work group（higher level)</strong>
 
 在大概了解compute shader的实现框架后，再来看下硬件是如何分配thread的。 **首先dispatch call会激活thread groups(无明确顺序）。接着每个thread group被分配到相应可用的compute unit。最后在compute unit中，thread被分配给SIMDs 
 
-分配过程中的数据形式**
+分配过程中的数据形式
 
 threads 并不会一个接一个分配给SIMDs，而是以组的形式分配给SIMDs（bundle）。在amd的GCN架构中，一个bundle的大小是64，被称为wavefront。Nvidia 的架构通常是32（被称为warp）。如果threadgroup的大小同样是64，那么整个thread group正好都会被打包成一个wavefront分配到SIMDs（GCN架构，nvidia的架构会打包成2个）。这也就是为什么在设置threadgroup size时通常保险的做法是设成64的倍数，这样能够保证thread尽可能完整的被打包成wavefront并分配给各个SIMD，从而避免性能浪费。
 
@@ -98,7 +98,7 @@ Nvidia A100显卡架构，不同的SM（compute units）通过一个40mb大小�
 HLSL中使用LDS，在变量类型前声明groupshared![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_e3d08683d6da.jpg)
 
 HLSL中的线程同步
-#### <strong>变量与性能优化</strong>
+#### 变量与性能优化
 
 变量被分为uniform和非uniform变量。这两者的区别在于非uniform变量对于每个thread都有一个不同的copy，而uniform对于每个thread都只有一个相同的copy。在硬件层面，一个非uniform变量需要存储在vector registers中（VGPR)，每个变量需要64倍于变量的大小的储存大小（假设wavefront大小为64）。而unifrom变量只需要1倍于变量的大小即可，变量储存在scalar register中（SGPR)。因此实际操作中应尽可能得使用uniform变量，使用太多非uniform变量会导致每个SIMDs单元所对应的wavefront数量减少，从而导致延迟增加。
 

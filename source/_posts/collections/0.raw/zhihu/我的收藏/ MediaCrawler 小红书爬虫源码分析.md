@@ -111,7 +111,7 @@ async def login_by_qrcode(self):
 
 大致逻辑：
 
-- 启动 headless 浏览器并且 headless 模式必须设为 `False`, 因为不会把 QRCode 显示在终端或者通过信息转发服务转发到你的手机上** 
+- 启动 headless 浏览器并且 headless 模式必须设为 `False`, 因为不会把 QRCode 显示在终端或者通过信息转发服务转发到你的手机上
 - 通过`utils.find_login_qrcode`工具函数以及`qrcode_img_selector`获取headless 浏览器所渲染页面中的 QRCode 图片元素
  
 - 如果没有获取到，则点击`login_button_ele` , 弹出登录对话框，然后再重复一次步骤2，如果依旧没有获取到，则退出爬虫，爬取失败。
@@ -225,7 +225,7 @@ await input_ele.fill(self.login_phone)`
  
 - 因为依赖了 Redis 数据库组件，所以可以通过短信转发软件或者短信获取接口实现短信验证码输入的自动化，实现自动化手机号登录
 
-- 代码中没有检测验证码的正确性。**
+- 代码中没有检测验证码的正确性。
 - 代码中<strong>没有登录失败重试机制</strong>
 
 #### Cookie登录

@@ -15,7 +15,7 @@ source_url: https://zhuanlan.zhihu.com/p/57961004
 ---
 
 
-**学习 PyTorch 比较简单，但你能学习 PyTorch 内部机制吗？最近，有 14 年 ML 经验的大神 Christian 介绍了 PyTorch 的内核机制。虽然在实际使用中并不需要这些知识，但探索 PyTorch 内核能大大提升我们对代码的直觉与理解，挖底层实现的都是大神~PyTorch 的构建者表明，[Pytorch](https://link.zhihu.com/?target=https%3A//mp.weixin.qq.com/s%3F__biz%3DMzA3MzI4MjgzMw%3D%3D%26mid%3D2650757835%26idx%3D3%26sn%3D3998b1bf97e0dafbee8acf067b0a39fb%26chksm%3D871a9eb5b06d17a3b2d179cf9cee0eb333ad1037e9ac9659b7d325b2fdf85cc1a217ae60edb0%26token%3D1438099043%26lang%3Dzh_CN) 的哲学是解决当务之急，也就是说即时构建和运行我们的计算图。这恰好适合 Python 的编程理念，一边定义就可以在 Jupyter Notebook 一边运行，因此，PyTorch 的工作流程非常接近于 Python 的科学计算库 [NumPy](https://link.zhihu.com/?target=https%3A//mp.weixin.qq.com/s%3F__biz%3DMzA3MzI4MjgzMw%3D%3D%26mid%3D2650757835%26idx%3D3%26sn%3D3998b1bf97e0dafbee8acf067b0a39fb%26chksm%3D871a9eb5b06d17a3b2d179cf9cee0eb333ad1037e9ac9659b7d325b2fdf85cc1a217ae60edb0%26token%3D1438099043%26lang%3Dzh_CN)。
+学习 PyTorch 比较简单，但你能学习 PyTorch 内部机制吗？最近，有 14 年 ML 经验的大神 Christian 介绍了 PyTorch 的内核机制。虽然在实际使用中并不需要这些知识，但探索 PyTorch 内核能大大提升我们对代码的直觉与理解，挖底层实现的都是大神~PyTorch 的构建者表明，[Pytorch](https://link.zhihu.com/?target=https%3A//mp.weixin.qq.com/s%3F__biz%3DMzA3MzI4MjgzMw%3D%3D%26mid%3D2650757835%26idx%3D3%26sn%3D3998b1bf97e0dafbee8acf067b0a39fb%26chksm%3D871a9eb5b06d17a3b2d179cf9cee0eb333ad1037e9ac9659b7d325b2fdf85cc1a217ae60edb0%26token%3D1438099043%26lang%3Dzh_CN) 的哲学是解决当务之急，也就是说即时构建和运行我们的计算图。这恰好适合 Python 的编程理念，一边定义就可以在 Jupyter Notebook 一边运行，因此，PyTorch 的工作流程非常接近于 Python 的科学计算库 [NumPy](https://link.zhihu.com/?target=https%3A//mp.weixin.qq.com/s%3F__biz%3DMzA3MzI4MjgzMw%3D%3D%26mid%3D2650757835%26idx%3D3%26sn%3D3998b1bf97e0dafbee8acf067b0a39fb%26chksm%3D871a9eb5b06d17a3b2d179cf9cee0eb333ad1037e9ac9659b7d325b2fdf85cc1a217ae60edb0%26token%3D1438099043%26lang%3Dzh_CN)。
 
 Christian 表明 PyTorch 之所以这么方便，很多都是因为它的「基因」——内部运行机制决定的。这一篇报告并不会介绍如何使用 PyTorch 基础模块，或如何用 PyTorch 训练一个神经网络，Christian 关注的是如何以直观的形式介绍 PyTorch 的内核机制，即各个模块到底是怎么工作的。
 
@@ -33,7 +33,7 @@ Christian 在 Reddit 表示这一次报告由于录像问题并不能上传演�
 
 其实初学者了解到整体流程就可以学着使用了，但底层机制有助于对代码的理解和掌控。
 
-张量**
+张量
 
 在概念上，张量就是向量和矩阵的推广，PyTorch 中的张量就是元素为同一数据类型多维矩阵。虽然 PyTorch 的接口是 Python，但底层主要都是用 C++实现的，而在 Python 中，集成 C++代码通常被称为「扩展」。
 
@@ -107,7 +107,6 @@ Zero-Copying 的形式确实能省很多内存，但是如上所示在位（in-p
 
 最后，Christian 还介绍了很多内部运行机制，不过因为它们都很难，而且暂时没有提供视频讲解，读者大牛们可以看看具体 PPT 内容。
 
-**
 
 *![](/images/collections/0.raw/zhihu/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%EF%BC%81/asset/img_0fd794650ff4.jpg)
 

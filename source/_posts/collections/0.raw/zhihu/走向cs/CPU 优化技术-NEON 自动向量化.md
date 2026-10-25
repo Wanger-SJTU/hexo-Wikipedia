@@ -16,7 +16,7 @@ source_url: https://zhuanlan.zhihu.com/p/435342281
 
 
 <strong>版权声明 ©本文首发于知乎专栏：移动端算法优化</strong><strong>本专栏「移动端算法优化」所有文章著作权归作者所有。</strong><strong>允许个人直接分享本专栏文章到个人微博、朋友圈。但媒体（包括但不限于网站、微信公众号、微博营销号）转载需事先征得专栏同意。转载需在正文开头显著位置注明出处，给出原始链接，注明「发表于知乎专栏《移动端算法优化》」，并不得进行任何形式的修改演绎。</strong>
-### <strong>一、概述</strong>
+### 一、概述
 
 SIMD 作为一种重要的并行化技术，在提升性能的同时也会增加开发的难度。目前大多数编译器都具有自动向量化的功能，将 C/C++ 代码自动替换为 SIMD 指令。
 
@@ -54,13 +54,13 @@ for (int i = 0; i  (n & ~3); i += 4)
 
 SLP 自动向量化接下来介绍如何通过编译器实现自动向量化。
 
-### <strong>二、编译器配置</strong>
+### 二、编译器配置
 
 目前支持自动向量化的编译器有 Arm Compiler 6、Arm C/C++ Compiler、LLVM-clang 以及 GCC，这几种编译器间的相互关系如下表所示。
 
 Arm Compiler 6需arm授权基于LLVM-clang，针对裸机端的嵌入式开发Arm C/C++ Compiler需arm授权基于LLVM-clang，最初为高性能计算设计，针对linux下的用户应用程序开发LLVM-clang开源基于LLVM架构的C/C++/Objective-C编译器前端GCC开源GNU编译器套件**`自动向量化默认不会被启用，编程人员需要向编译器提供允许自动向量化的“许可证”来对自动向量化功能进行使能`。**
 
-#### <strong>A. Arm Compiler 中使能自动向量化</strong>
+#### A. Arm Compiler 中使能自动向量化
 
 下文中 Arm Compiler 6 与 Arm C/C++ Compiler 使用 armclang 统称`，armclang 使能自动向量化配置信息如下表所示：
 
@@ -72,7 +72,7 @@ armclang --target=arm-none-eabi -mcpu=cortex-a53 -O1 -fvectorize main.c
 # AArch64
 armclang --target=aarch64-arm-none-eabi -O2 main.c`
 
-#### B. LLVM-clang中使能自动向量化**
+#### B. LLVM-clang中使能自动向量化
 
 Android NDK 从 r13 开始以 clang 为默认编译器，本节通过 cmake 调用Android NDK r19c 工具链展示 clang 的自动向量化方法。
 
@@ -88,7 +88,7 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O1 -fvectorize")
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O2")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O2")
 
-#### <strong>C. GCC 中使能自动向量化</strong>
+#### C. GCC 中使能自动向量化
 
 在 gcc 中使能自动向量化配置参数如下：
 
@@ -108,7 +108,7 @@ aarch64-none-linux-gnu-gcc -mcpu=cortex-a53 -ftree-vectorize -O2 main.c`
 
 `此外，gcc 中可以通过 -fopt-info-vec 命令查看自动向量化的详细信息，比如哪些代码实现了向量化，哪些代码没有实现向量化及没有进行向量化的原因。` 
 
-#### <strong>D. 自动向量化实例</strong>
+#### D. 自动向量化实例
 
 我们以上节的求和示例代码，来对编译器自动向量化的功能进行演示。编译器以 32 位 arm-gcc 为例：
 
@@ -126,11 +126,11 @@ arm-none-linux-gnueabihf-gcc -mfpu=neon -ftree-vectorize -O2 main.c -o avtest`
 
 反汇编代码启用自动向量化之后，编译器通过*<strong>矢量化加载</strong>* (<strong>ldr</strong> -> <strong>vld1</strong>）、*<strong>求和</strong>* (<strong>add</strong>-> <strong>vadd</strong>)以及*<strong>保存</strong>* (<strong>str</strong> -> <strong>vst1</strong>)等指令，将每次循环中处理的数据变为 4 个，循环次数精简为之前的 。
 
-### <strong>三、自动向量化友好型代码</strong>
+### 三、自动向量化友好型代码
 
 基于一定的编程优化准则，可以更好的协助编译器完成自动向量化的工作，获得理想的性能状态。
 
-#### <strong>A. 避免使用难以向量化的语句</strong>
+#### A. 避免使用难以向量化的语句
 
 - <strong>数据依赖</strong>
 当循环中存在数据依赖时，编译器无法进行向量化。
@@ -198,7 +198,7 @@ for (int i = 0; i  (n & ~3); ++i)
 ```
 
 
-#### <strong>B. 增加自动向量化信息</strong>
+#### B. 增加自动向量化信息
 
 - <strong>地址交叠</strong>
 指针操纵同一片数据区的情况被称为地址交叠。地址交叠会阻止自动向量化操作。
@@ -292,9 +292,8 @@ struct st_align
 
 sum[i] = a[i] + b[i];
 
-**
 
-#### C. 重排数据实现缓存友好**
+#### C. 重排数据实现缓存友好
 
 - <strong>循环合并</strong>
 当数据连续存储在结构体中时，可以进行循环合并操作，即在一个循环内处理临近的数据，提高缓存命中率。
@@ -331,7 +330,7 @@ for (...)
 ```
 
 
-### <strong>四、总结</strong>
+### 四、总结
 
 本章节主要介绍了自动向量化的相关内容，其优缺点对比如下：
 

@@ -23,7 +23,7 @@ source_url: https://zhuanlan.zhihu.com/p/13621083399
 
 P：欢迎自荐或者推荐哈哈哈！
 
-### <strong>系 统 篇</strong>
+### 系 统 篇
 
 - 方佳瑞：知乎著名MLSys专家，Colossal-AI/xDiT/YunChang作者
 2. 手抓饼熊：知乎著名MLSys专家。

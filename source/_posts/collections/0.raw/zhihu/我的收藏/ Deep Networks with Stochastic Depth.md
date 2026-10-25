@@ -17,7 +17,6 @@ source_url: https://zhuanlan.zhihu.com/p/31200098
 
 我就是管不住这张嘴啊，大半夜的喝什么monster，活该睡不着觉，就简单说说题目里的这个工作吧。
 
-**
 
 （我是不会给你们翻译论文的！！！自己去读论文！！！）
 
@@ -31,7 +30,7 @@ source_url: https://zhuanlan.zhihu.com/p/31200098
 
 总共有 L" role="presentation">LL 个block，作者给每个block都加上了一个概率 pl" role="presentation">plp_{l} 。
 
-训练时：**
+训练时：
 
 根据 pl" role="presentation">plp_{l} 用一个bernoulli random variable生成每个block的激活状态 bl" role="presentation">blb_{l} ，最终把ResNet的bottleneck block，从
 
@@ -59,7 +58,6 @@ $HlTest=ReLU(plfl(Hl&#x2212;1Test)+id(Hl&#x2212;1Test))" role="presentation">HlT
 
 即<strong>每个block的概率变成了这个block的残差的权重</strong>
 
-**
 
 作者声称以上调整之后的模型，期望深度为原来的 \frac{3}{4} ，并且提速40%，在我的测试过程中，大概是因为我的写代码的姿势有问题，运行速度要比对应的确定深度的模型慢15%左右。
 
@@ -67,7 +65,6 @@ $HlTest=ReLU(plfl(Hl&#x2212;1Test)+id(Hl&#x2212;1Test))" role="presentation">HlT
 
 另外一种解释，这种引入随机变量的设计是<strong>把Dropout应用到了整个网络</strong>。我觉得说的很有道理。
 
-**
 
 最后，废话少说，上代码
 
@@ -142,7 +139,7 @@ class BottleNeck(nn.Module):
 
 代码里我偷了个懒，就是每个block都做了downsample，跟论文的要求是不一样的。
 
-完整代码在[ResNet50 with Stochastic Depth](https://link.zhihu.com/?target=https%3A//github.com/minghao-wu/DeepLearningFromScratch/blob/master/ResNet50_with_Stochastic_Depth/ResNet50_with_Stochastic_Depth.py)，这是一个把ResNet50变为随机深度的例子。**
+完整代码在[ResNet50 with Stochastic Depth](https://link.zhihu.com/?target=https%3A//github.com/minghao-wu/DeepLearningFromScratch/blob/master/ResNet50_with_Stochastic_Depth/ResNet50_with_Stochastic_Depth.py)，这是一个把ResNet50变为随机深度的例子。
 
 =========2017年11月27日分割线=============
 

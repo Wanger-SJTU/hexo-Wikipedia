@@ -29,7 +29,6 @@ source_url: https://zhuanlan.zhihu.com/p/704562553
 - 进入配置工程界面，Compile SDK<strong>选择“</strong>4.1.0(11)**”，其他参数保持默认设置即可。
 其中<strong>Node</strong>用来配置当前工程运行的Node.js版本，可选择使用已有的Node.js或下载新的Node.js版本。
 
-**
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_e33eb13f6f9d.jpg)
 
@@ -39,7 +38,6 @@ source_url: https://zhuanlan.zhihu.com/p/704562553
 
 #### ArkTS工程目录结构（Stage模型）
 
-**
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_96ed76f8a5a2.jpg)
 
@@ -133,7 +131,6 @@ struct Index {
 }`
 
 - 在编辑窗口右上角的侧边工具栏，点击Previewer，打开预览器。第一个页面效果如下图所示：
-**
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_fa9c48d333c2.jpg)
 
@@ -255,7 +252,6 @@ struct Index {
 
 }  `
 
-**
 
 - 第二个页面返回到第一个页面。
 在第二个页面中，返回按钮绑定onClick事件，点击按钮时返回到第一页。“Second.ets**”文件的示例如下：
@@ -319,7 +315,6 @@ struct Second {
 
 img按钮进行刷新。效果如下图所示：
 
-**
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_fa39e6fcb6b7.jpg)
 

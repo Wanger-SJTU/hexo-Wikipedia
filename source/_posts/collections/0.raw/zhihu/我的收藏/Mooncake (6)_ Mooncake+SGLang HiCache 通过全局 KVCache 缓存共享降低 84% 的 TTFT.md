@@ -15,7 +15,7 @@ source_url: https://zhuanlan.zhihu.com/p/1959366095443064318
 ---
 
 
-**作者：来自 SGLang community、趋境、蚂蚁、阿里的很多很多贡献者，详细可见 [lmsys blog](https://link.zhihu.com/?target=https%3A//lmsys.org/blog/2025-09-10-sglang-hicache/)
+作者：来自 SGLang community、趋境、蚂蚁、阿里的很多很多贡献者，详细可见 [lmsys blog](https://link.zhihu.com/?target=https%3A//lmsys.org/blog/2025-09-10-sglang-hicache/)
 ### TL;DR
 
 继和 LMCache 团队合作支持了 vLLM 上的全局 KVCache 共享之后，上个月我们也在 @乔枫惜
@@ -28,7 +28,7 @@ source_url: https://zhuanlan.zhihu.com/p/1959366095443064318
 
  在 SGLang 中设计并实现了 HiCache 模块对原本只使用显存的 RadixAttention 模块进行扩展，而我们也在前几个月的合作中为 HiCache 增加了 Mooncake Store 的后端支持。
 
-HiCache 通过引入 HiRadixTree 作为页表，来统一引用 GPU 显存和 CPU 内存中的 KV Cache。同时，Cache Controller 负责自动管理跨层级的数据加载与回写，包括远程 KV Cache 的读取与写入。借助这一机制，HiCache 将 GPU、CPU、SSD 的“闲置”存储空间充分利用，并依赖 Mooncake、3FS、NIXL 等分布式存储系统来实现全局 KV Cache 的存储与调度。在保障读取性能的前提下，KV Cache 的可用容量得到了大幅提升。**
+HiCache 通过引入 HiRadixTree 作为页表，来统一引用 GPU 显存和 CPU 内存中的 KV Cache。同时，Cache Controller 负责自动管理跨层级的数据加载与回写，包括远程 KV Cache 的读取与写入。借助这一机制，HiCache 将 GPU、CPU、SSD 的“闲置”存储空间充分利用，并依赖 Mooncake、3FS、NIXL 等分布式存储系统来实现全局 KV Cache 的存储与调度。在保障读取性能的前提下，KV Cache 的可用容量得到了大幅提升。
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_e6987ada4852.jpg)
 
@@ -65,7 +65,7 @@ HiCache 的工作流程主要涉及两个关键操作：预取和写回。当系
 - <strong>write_through</strong>：每次访问都立即写回到下一层。在带宽允许的情况下，这种策略提供了最强的缓存收益。
 - <strong>write_through_selective</strong>：访问频率达到阈值后才写回到下一层。这种策略只备份热点数据，减少 I/O 负载。
 - <strong>write_back</strong>：在被上一层 evict 时才写回到下一层。这个策略可以有效缓解存储压力，适合存储容量有限但需要最大化内存利用率的场景。
-用户可根据具体的系统配置、使用场景和性能需求选择最适合的写回策略。**
+用户可根据具体的系统配置、使用场景和性能需求选择最适合的写回策略。
 
 ### 进一步优化
 
@@ -89,7 +89,7 @@ MLA 的写回优化**：对于 MHA（Multi-Head Attention）模型，在多 TP �
 
  通过 [PR8865](https://link.zhihu.com/?target=https%3A//github.com/sgl-project/sglang/pull/8865) 给 HiCache 对 MLA 加上了特判逻辑，保证只有一个 rank 会发起写回操作，数据也不会存储多份。
 
-### **下一步工作
+### 下一步工作
 
 不同 TP Size 的实例共享 KV Cache**：在大规模部署中，特别是在异构环境中，集群内可能存在不同 TP size 的 SGLang 实例。当前的 HiCache 实现存在一个限制：当 TP size 大于 1 时，每个 token 的 KV Cache 会被拆分到不同的 rank 中，每个 rank 只存储 1/tp_size 的数据。这意味着在 L3 存储中，同一个 token 的 KV cache 会以 tp_size 个不同的对象形式存储。这种设计导致了一个重要问题：即使不同 TP size 的实例处理相同的模型和相同的前缀，由于 KV Cache 的拆分粒度不同，它们无法共享 L3 存储中的 KV Cache 数据。下一步我们会实现 KV Cache 数据的动态重组，在零拷贝的前提下，实现不同 TP size 配置的 KV Cache 的数据共享。
 

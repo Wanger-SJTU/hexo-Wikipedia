@@ -15,7 +15,7 @@ source_url: https://zhuanlan.zhihu.com/p/669484515
 ---
 
 
-**本文主要为阅读ICCV 2023 一篇Tutorial的笔记（Part 2）：
+本文主要为阅读ICCV 2023 一篇Tutorial的笔记（Part 2）：
 原文连接：ICCV 2023 Tutorial: Understanding the In-Camera Rendering Pipeline and the role of AI/Deep Learning (yorku.ca)
 只是图像信号处理流程的一个总体的介绍，以便更好理解一张照片究竟是如何诞生的，实际的技术要复杂很多。
 
@@ -31,11 +31,10 @@ source_url: https://zhuanlan.zhihu.com/p/669484515
 
 常见的彩色图像格式是RGB三通道的，但是最开始的光信号采集却不是每个像素都会采集RGB三个像素的信息**，这样做会有成本以及空间的问题，而是收集三种不同光的Sensor成拜尔阵列分布，后续再通过插值等手段去恢复。
 
-**
 
 ![](/images/collections/0.raw/zhihu/ISP%26%E8%AE%A1%E7%AE%97%E6%91%84%E5%BD%B1/asset/img_21106cd83ca9.jpg)
 
-CFA的作用是过滤其他光线，使得我们需要的红、绿、蓝三种波段的光才能进入传感器。**
+CFA的作用是过滤其他光线，使得我们需要的红、绿、蓝三种波段的光才能进入传感器。
 
 但是不同的CFA(color filter array)过滤后，最终相机对于不同波段的光的敏感度曲线也是有差别的。
 
@@ -99,7 +98,6 @@ Sensor最终的值是光强和曝光时间的线性函数，结合前面的人�
 - <strong>按相似度加权：</strong>
 ![](/images/collections/0.raw/zhihu/ISP%26%E8%AE%A1%E7%AE%97%E6%91%84%E5%BD%B1/asset/img_6e6e6ed6f348.jpg)
 
-**
 
 另外现在的很多传感器其实也不再采用拜尔阵列，而是有其他不同的排布方式
 
@@ -164,7 +162,7 @@ Sensor最终的值是光强和曝光时间的线性函数，结合前面的人�
 
 #### 色彩空间转换
 
-- 第二个阶段是将raw-RGB映射变换到CIE XYZ色彩空间。**
+- 第二个阶段是将raw-RGB映射变换到CIE XYZ色彩空间。
 ![](/images/collections/0.raw/zhihu/ISP%26%E8%AE%A1%E7%AE%97%E6%91%84%E5%BD%B1/asset/img_6739c06fd951.jpg)
 
 相机厂商会先去标定两个极值下（CCT 2500K与CCT 6500K）的CST矩阵,后续的在这个范围内的色温就可以通过这两个标定好的极值去做插值得到，就像这里的4300K。所以这个阶段的变换矩阵也同样需要上阶段估算出环境色温。

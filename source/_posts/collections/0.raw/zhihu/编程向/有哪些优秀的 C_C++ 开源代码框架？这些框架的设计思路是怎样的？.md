@@ -31,7 +31,7 @@ senders源码：
 
 [](https://link.zhihu.com/?target=https%3A//github.com/NVIDIA/stdexec)
 
-二、asio网络库，它包含了多种功能强大且鲜为人知的网络与并发编程设计模式**
+二、asio网络库，它包含了多种功能强大且鲜为人知的网络与并发编程设计模式
 
 asio源码的设计思想看起来自成一套，而且有一些看似独特的概念，像completion token之类的，其实这并非作者发明，而是运用了一些早已被总结出来的设计模式，这些模式被收录在《面向模式的软件体系构架，卷2》中：
 

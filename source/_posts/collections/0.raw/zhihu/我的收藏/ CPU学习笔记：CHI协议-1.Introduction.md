@@ -27,7 +27,7 @@ source_url: https://zhuanlan.zhihu.com/p/647841067
 
 #### 1.1.2.CHI协议的作用是什么？
 
-**The CHI architecture is a scalable, coherent hub interface and on-chip interconnect used by multiple
+The CHI architecture is a scalable, coherent hub interface and on-chip interconnect used by multiple
 components.The CHI architecture allows for flexible topologies of component connections, driven by performance,power, and area system requirements.CHI架构是一个可测量的一致性集线器，以及一种用于多器件之间的片上互联。
 
 CHI架构允许基于性能，功耗，面积要求的多器件之间拥有灵活的拓扑结构。
@@ -116,7 +116,7 @@ Flit：切片
 
 - 在系统网络设备(network)之间提供流程控制
 - 在系统网络(network)之间管理连接通道（link channels）提供无死锁切换？(deadlock-free switching)
-如何理解呢？**
+如何理解呢？
 
 这个又如何理解呢？可以看这个文章，写的非常好，通俗易懂又不失严谨
 
@@ -124,10 +124,10 @@ Flit：切片
 
 以下摘抄文章原文
 
-**如果说Protocol是top层纯软的定义协议的东西，那么Link Layer层就是纯纯硬的硬件层。多硬呢，就是你在eda仿真，把各个模块之间连接的接口的信号拉到verdi来看，看到的就是link层的信号。
+如果说Protocol是top层纯软的定义协议的东西，那么Link Layer层就是纯纯硬的硬件层。多硬呢，就是你在eda仿真，把各个模块之间连接的接口的信号拉到verdi来看，看到的就是link层的信号。
  Link层定义的信号，那都是实现到RTL里面实实在在的信号。这也是为啥先讲Link的原因。就是说该层已经是CHI的硬件实现的那一层了，CHI中所有与传输相关的硬件描述都是属于这一层的，是物理上客观存在的总线连接。
 
-#### 1.2拓扑结构**
+#### 1.2拓扑结构
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_6cc924465775.jpg)
 
@@ -153,7 +153,7 @@ CHI-Topology
 
 <strong>Phit</strong>是物理层传输单位，一个flit可以由一个或多个phits组成。phit定义为两相邻网络设备之间的一个传输。
 
-**待补充
+待补充
 #### 1.4 传输分类
 
 - 传输分类
@@ -168,7 +168,7 @@ CHI-Topology
 - Atomic
 - Other 
 - Snoop 
-Read:   *此处列表内容从后文得知应该是transaction的请求分类（initial request），其余传输方式下的列表内容也是类似性质***
+Read:   *此处列表内容从后文得知应该是transaction的请求分类（initial request），其余传输方式下的列表内容也是类似性质*
 
 - ReadNoSnp, ReadNoSnpSep
 - ReadOnce
@@ -243,7 +243,6 @@ Snoop
 - SnpMakeInvalidStash
 - SnpQuery
 - SnpDVMO
-**
 
 #### 1.4.2传输种类列表
 
@@ -304,9 +303,8 @@ UDP态的获得：UDP态获得的前提是当前cacheline为UCE态，然后Reque
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_599fc181c173.jpg)
 
-不过要特殊注意理解UCE和UDP；**
+不过要特殊注意理解UCE和UDP；
 
-**
 
 #### 1.6 组件命名
 
@@ -315,14 +313,12 @@ RN**（Request Node）产生协议transaction给互连，包含读和写。
 - <strong>RN-F</strong>，（Fully coherent Request Node，全一致性请求节点）：包含硬件一致性cache；允许产生所有协议定义的transactions；支持所有的snoop transactions。
 - <strong>RN-D</strong>，（IO coherent Request Node with DVM support，支持DVM的IO一致性请求节点）：不包含硬件一致性cache；可以接收DVM操作；可以产生协议定义的部分transactions。
 - <strong>RN-I</strong>，（IO coherent Request Node，IO一致性请求节点）：不包含硬件一致性cache；不能接受DVM操作；可以产生协议定义的部分transactions；不要求具有snoop功能。
-**
 
 HN** (Home Node)用于组件内接收来自RN的协议transaction，（完成相应的一致性操作并返回一个响应）
 
 - <strong>HN-F</strong>，（Fully coherent Home Node，全一致性主节点）：用于接收除了DVM操作所有的请求操作：包括一个PoC（Point of Coherence）点，通过监听RN-Fs，管理各Master一致性，完成所有的snoop响应后，发送一个响应给发出请求的RN；最好是一个PoS（Point of Serialization）点，用于管理多个memory请求的顺序。可能包含目录或监听过滤，以此来减少冗余的snoop请求。
 - <strong>HN-I</strong>，（Non-coherent Home Node，非一致性主节点）：处理有限的一部分协议定义的Request：不包含PoC点，也不具备处理snoop请求；最好是一个PoS点，管理访问IO 子系统的请求顺序。
 - <strong>MN</strong>，（Miscellaneous Node，混合节点）：用于接收来自RN发送的DVM操作，完成相应的操作，并返回一个响应。
-**
 
 SN**（Subordinate Node）用于接收来自HN的请求，完成相应的操作,并返回一个响应。
 

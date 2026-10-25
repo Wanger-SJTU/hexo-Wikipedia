@@ -17,7 +17,7 @@ source_url: https://zhuanlan.zhihu.com/p/358603760
 
 本文同步发表于GiantPandaCV公众号，未经作者允许严禁转载
 
-### <strong>前言</strong>
+### 前言
 
         Neon是ARM平台的向量化计算指令集，通过一条指令完成多个数据的运算达到加速的目的，常用于AI、多媒体等计算密集型任务。
 
@@ -57,7 +57,7 @@ source_url: https://zhuanlan.zhihu.com/p/358603760
 
 <strong>4. 其他：相关的研讨会视频、库、文档等</strong>
 
-### <strong>1 入门</strong>
+### 1 入门
 
 <strong>1.1  Neon介绍、简明案例与编程惯例</strong>
 
@@ -103,7 +103,7 @@ Intrinsics命名规则（具体含义见链接）<strong>1.2 如何检索Intrins
 
 启用Neon<strong>关于在iOS开发中启用Neon（Xcode，版本12.3）</strong>：笔者尝试过将Android的NDK代码迁移至iOS，在不修改Xcode任何设置的情况下，arm_neon.h可找到，编译可通过，那说明Xcode默认打开了Neon的启用开关，写就完事了。
 
-### <strong>2 进阶</strong>
+### 2 进阶
 
 <strong>2.1  与Neon相关的ARM体系结构</strong>
 
@@ -169,9 +169,8 @@ SIMD相关目录摘录        笔者的学习总结如下：
 
 （2）执行SISD（single instruction, Single data，单指令流单数据流，这里可理解为标量计算）指令时，需要完成（时间开销大的）冒险（hazard，包括数据冒险和结构冒险）检查。SIMD指令计算的数据蕴含着这些数据之间无依赖性，也就从指令集层面回避了不必要的时间开销。
 
-**
 
-3.2   了解硬件决定的速度极限：Software Optimization Guide**
+3.2   了解硬件决定的速度极限：Software Optimization Guide
 
         我们可能还要关心，我们所编写的Neon Intrinsics，可以将手头上硬件的性能发挥到多少水平？是否还有提升空间？这些是好问题。
 

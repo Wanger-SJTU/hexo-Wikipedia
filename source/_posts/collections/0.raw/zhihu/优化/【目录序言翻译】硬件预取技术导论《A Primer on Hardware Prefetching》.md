@@ -47,12 +47,12 @@ source_url: https://zhuanlan.zhihu.com/p/373038275
 
 <strong>关键词：</strong>hardware prefetching（硬件预取）, next-line prefetching（下一行预取）, branch-directed prefetching（分支定向的预取）, discontinuity prefetching（不连续的预取）, stride prefetching（跨步预取）, address-correlated prefetching（基于地址相关性的预取）, Markov prefetcher（马尔可夫预测器）, global history buffer（全局历史缓冲区）, temporal memory streaming（时间域上的存储流）, spatial memory streaming（空间域上的存储流）, execution-based prefetching（基于执行的预取）
 
-**原书：《A Primer on Hardware Prefetching》Babak Falsafi, Thomas F. Wenisch（Morgan&Claypool Publishers - Synthesis Lectures On Computer Architecture）出版时间：May 2014
+原书：《A Primer on Hardware Prefetching》Babak Falsafi, Thomas F. Wenisch（Morgan&Claypool Publishers - Synthesis Lectures On Computer Architecture）出版时间：May 2014
 个人汉化了此书的目录与前言，以便大家在搜索相关中文关键词时能获得参考，但也仅供参考。如果帮到了您，那就再好不过了，希望能留个赞支持一下！（有支持才有动力嘛）
 note：本文包括很多算法或方法，这些算法或方法的名称也被我翻译了，但在使用时请优先采用英文原名，因为这些名词仅仅只是我的个人翻译，仅供参考。> Fetch被译为“获取”。
 术语Directed被译为“定向”，意思是通过某个事物来确定方向。例如Fetch-Directed Prefetching的意思就是通过“Fetch”来确定预取方向。XX-Directed的意思就是基于“XX”来确定方向。
 
-### 目录**
+### 目录
 
 - ■■1 引言 Introduction
 

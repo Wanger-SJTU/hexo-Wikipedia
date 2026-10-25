@@ -33,9 +33,8 @@ source_url: https://zhuanlan.zhihu.com/p/374331876
 
 想要比较准确地了解一个岗位的工作内容，其实有一种很直接的方法，就是直接去看业界认可的大公司对这个岗位的招聘信息中的工作描述，这样就可以对这个岗位有一个直观并且准确的认识。这里我选取了老牌设计公司IBM和新兴设计公司Apple，完整的招聘信息可以直接点击下面链接去查看，当然也可以试着去投递: )
 
-**
 
-IBM CPU and System Performance Modeling Engineer**
+IBM CPU and System Performance Modeling Engineer
 
 Key member of the MicroProcessor and System design community responsible for delivering optimized future processor and system designs.
 
@@ -45,9 +44,8 @@ Other responsibilities include workload performance counter and hardware trace a
 
 Focus on continuous improvement of the modeling infrastructure and capabilities as well as the modeling process.
 
-**
 
-Apple Performance Modeling Architect**
+Apple Performance Modeling Architect
 
 §Collaborate with Platform Architecture, <strong>Microarchitecture</strong> and core software teams to document performance targets and details of interesting and important use cases
 
@@ -61,7 +59,6 @@ Apple Performance Modeling Architect**
 
 §<strong>Correlate</strong> performance of the SOC RTL infrastructure with the C-model
 
-**
 
 从上面这两家对Performance Modeling Engineer的工作描述中可以找到下面这几个共通的关键词：
 
@@ -74,7 +71,7 @@ Apple Performance Modeling Architect**
 
 ![](/images/collections/0.raw/zhihu/%E4%BC%98%E5%8C%96/asset/img_4028550d7896.jpg)
 
-LEGO ArchitectureWhy modeling?**
+LEGO ArchitectureWhy modeling?
 
 - Fast turn around time for changes than RTL
 - Faster to write, much faster than simulation and emulation
@@ -87,7 +84,6 @@ LEGO ArchitectureWhy modeling?**
 
 这个模型的受益者也不仅仅是架构师团队，RTL Designers可以用这个模型和他们所编写的RTL Code做测试比对，以验证RTL Code的正确性。除此之外他们可以用模型来进行co-simulation，就是用一部分的RTL模块替换模型中的相应模块，以进行整体系统的测试。然后软件团队可以早早地开始相关的设计工作，shift left以确保Silicon回来后芯片能够早些进入市场。
 
-**
 
 ![](/images/collections/0.raw/zhihu/%E4%BC%98%E5%8C%96/asset/img_9d06bd2eba33.jpg)
 
@@ -105,7 +101,7 @@ SW团队可以早早介入上图体现了SW团队可以早早介入，除此之�
 
 其实Performance Modeling有可以有很多种类型，并且模拟的精确度等级也可以划分成很多种，但其实业界主要用到的是软件模型中的TLM模型。RTL模型虽然精确度高，但是仿真速度慢和周期长，所以不太适合用来做性能模型，除非是特别小型的项目。算法模型虽然速度特别快，但是得到的准确度不如TLM模型，一般适合特别前期的简单探索。然后TLM模型根据准确性也可以划分成3个Levels，业界普遍的是Cycle-accurate model。
 
-*Architecture***
+*Architecture*
 
 • Performance modeling
 
@@ -113,9 +109,8 @@ SW团队可以早早介入上图体现了SW团队可以早早介入，除此之�
 
     • Throughput, delay, congestion, buffer size, etc.
 
-**
 
-*Software***
+*Software*
 
 • Algorithmic model - functional/behavior
 
@@ -130,17 +125,15 @@ SW团队可以早早介入上图体现了SW团队可以早早介入，除此之�
 
     • Cycle-accurate model
 
-**
 
-*Hardware***
+*Hardware*
 
 • RTL: cycle-, bit-, and pin-accurate model
 
-**
 
 然后对于TLM建模所用到的语言，业界一般是C++和SystemC，这里就不展开说明了，有兴趣地可以Google一下。
 
-### Languages for TLM Modeling**
+### Languages for TLM Modeling
 
 High-Level Languages
 
@@ -153,7 +146,6 @@ High-Level Languages
 
         • For functional/behavior model only, no timing/clock
 
-**
 
 Electronic/Executable System-Level Languages (ESL)
 
@@ -181,9 +173,8 @@ Intel对于性能建模推出过Intel® CoFluent™ Studio这套工具集，下�
 
 那么从事Performance Modeling能习得什么技能，成为一个怎样的专家呢?我们还可以从前面提到的招聘信息中一窥一二，我们可以看下Job Key Qualifications是否是我们想要发展的方向，这样也能对于自我的一个Career Path有一个初步的构想。关键词无非还是micro-architecture/programming languages/team work/performance benchmarks，意味着你可以了解复杂芯片的微架构，懂得C++/SystemC这种底层语言的编写方法，有很好的团队沟通合作能力以应付跨团队的合作，知道用一些Benchmarks来测试分析架构。
 
-**
 
-IBM CPU and System Performance Modeling Engineer**
+IBM CPU and System Performance Modeling Engineer
 
 The candidate will have previous experience designing, modeling, analyzing, tuning new <strong>microarchitectures</strong>and ISA features for the core, uncore, and/or chip models across a suite of workloads. 
 
@@ -191,9 +182,8 @@ Server microprocessor design experience preferred. Modern <strong>programming la
 
 Ability to work in a team, <strong>network with people</strong> outside of the team and effectively communicate in written and verbal presentations is essential.
 
-**
 
-Apple Performance Modeling Architect**
+Apple Performance Modeling Architect
 
 §Strong SoC architecture knowledge, <strong>micro-architecture</strong> knowledge, and an understanding of competing architectures
 

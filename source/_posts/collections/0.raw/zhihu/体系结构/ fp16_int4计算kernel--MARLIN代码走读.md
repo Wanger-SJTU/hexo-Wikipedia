@@ -72,7 +72,6 @@ A(thread_m_blocks*16,thread_k_blocks*16)*B(thread_k_blocks*16,thread_n_blocks*16
 
 #### 2.2.1 m方向的切片
 
-**
 
 在实际的实现过程中，对m方向首先做了切片。
 
@@ -251,7 +250,7 @@ auto transform_a = [&] (int i) {
 
 B矩阵的存储是int4(小写)，只是INT4的。
 
-这里的内存排布，才是最复杂的。**
+这里的内存排布，才是最复杂的。
 
 <strong>复杂的有两点：</strong>
 
@@ -285,7 +284,6 @@ SUBTILE重排对应的是：
 
 这里共享内存读写B矩阵，也就是直接存写，也就不需要考虑bank conflict了。
 
-**
 
 #### 3.2 shared->reg
 
@@ -390,9 +388,8 @@ thread_k_blocks/b_sh_wr_iters = threads/8/thread_n_blocks
 - 运算并没有变多，B矩阵一直在变化，所以不会有重复计算。
 <strong>简单来说就是为了配平IO,和MMA操作，做的妖操作。</strong>
 
-**
 
-外围代码实现：**
+外围代码实现：
 
 ```cpp
  for (int i = 0; i  thread_m_blocks; i++)
@@ -446,7 +443,6 @@ B矩阵的读取指令在vllm库中为了支持H100，稍有修改，建议参�
 
 中的FastInterleavedAndBiasedNumericArrayConverter函数
 
-**
 
 可以参考：
 
@@ -577,13 +573,12 @@ C = A00*B00+A01*B10
 
 SM内部在TILE迭代时，对应块得乘加和都是放在frag_c中的（m,n相等）。
 
-因此在mma的计算过程中SM就已经做了tile层面的归约操作。**
+因此在mma的计算过程中SM就已经做了tile层面的归约操作。
 
-### <strong>五、归约</strong>
+### 五、归约
 
 这里的归约特指计算块迭代完成或者是换(m,n)的情况。部分迭代和tile的归约，在mma中就已经完成。
 
-**
 
 具体来说可以分为两个层次的归约：
 
@@ -626,7 +621,7 @@ global归约实际上可以理解成是同步顺序处理。
 ```
 
 
-具体来说就是靠：barrier_acquire传入的slice_idx参数。**
+具体来说就是靠：barrier_acquire传入的slice_idx参数。
 
 该函数实现：
 

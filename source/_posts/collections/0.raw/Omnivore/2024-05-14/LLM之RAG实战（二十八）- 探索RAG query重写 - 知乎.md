@@ -46,7 +46,7 @@ id: 7572f409-cc55-4c91-b526-1767cb8537d9
 
 让我们深入研究一下这些方法的细节。
 
-## <strong>一、假设文档嵌入（HyDE）</strong>
+## 一、假设文档嵌入（HyDE）
 
  论文《Precise Zero-Shot Dense Retrieval without Relevance Labels》\[1\]提出了一种基于假设文档嵌入（HyDE）的方法，主要过程如图2所示：
 
@@ -220,7 +220,7 @@ After going to RISD, Paul Graham resumed his old life in New York, but now he wa
 
  总之，虽然HyDE引入了一种新的查询重写方法，但它确实有一些局限性。它不依赖于查询嵌入相似性，而是强调一个文档与另一个文档的相似性。然而，如果语言模型不精通该主题，它可能并不总是产生最佳结果，这可能会导致错误的增加。
 
-## <strong>二、重写-检索-读取</strong>
+## 二、重写-检索-读取
 
  这个想法来自于论文《Query Rewriting for Retrieval-Augmented Large Language Models》\[5\]。论文认为，在真实世界的场景中，原始查询可能并不总是LLM检索的最佳查询。因此，本文建议我们应该首先使用LLM来重写查询，然后再进行检索和生成答案，而不是直接从原始查询中检索内容并生成答案。论文思路如图4（b）所示：
 
@@ -370,7 +370,7 @@ LangChain is a Python framework designed to help build AI applications powered b
 
 到目前为止，通过重写查询，我们已经成功地获得了正确的答案。
 
-## <strong>三、Step-Back提示</strong>
+## 三、Step-Back提示
 
  STEP-BACK PROMPING是一种简单的提示技术，使LLM能够从包含特定细节的实例中抽象、提取高级概念和基本原理。其思想是将“step-back问题”定义为从原始问题派生出的更抽象的问题。
 
@@ -551,7 +551,7 @@ No, ChatGPT was not around while Trump was president. ChatGPT was released to th
 
  正如Edsger W.Dijkstra所说，“抽象的目的不是模糊，而是创造一个新的语义层次，在这个层次上可以绝对精确。”
 
-## <strong>四、Query2doc</strong>
+## 四、Query2doc
 
  《Query2doc: Query Expansion with Large Language Models》\[6\]提出了Query2doc方法来进行query改写，它使用LLM的一些提示生成伪文档，然后将它们与原始查询组合以创建新的查询，如图6所示：
 
@@ -565,7 +565,7 @@ No, ChatGPT was not around while Trump was president. ChatGPT was released to th
 
  目前，在Langchain或LlamaIndex中未找到query2doc的实现。
 
-## <strong>五、迭代</strong>
+## 五、迭代
 
  《Enhancing Retrieval-Augmented Large Language Models with Iterative Retrieval-Generation Synergy》\[7\]提出了ITER-RETGEN方法，它使用生成的内容来指导检索。它在检索-读取-检索-读取流中迭代地实现“检索增强的生成”和“生成增强的检索”。
 
@@ -581,7 +581,7 @@ No, ChatGPT was not around while Trump was president. ChatGPT was released to th
 
  与Query2doc类似，目前，在Langchain或LlamaIndex中，尚未找到实现。
 
-## <strong>六、结论</strong>
+## 六、结论
 
  本文介绍了各种查询重写技术，包括一些技术的代码演示。
 
@@ -591,7 +591,7 @@ No, ChatGPT was not around while Trump was president. ChatGPT was released to th
 
  此外，还有一些方法，如查询路由、将查询分解为多个子问题等，它们不属于查询重写，但它们是预检索方法，这些方法将来将有机会引入。
 
-## <strong>参考文献：</strong>
+## 参考文献：
 
 \[1\] <https://arxiv.org/pdf/2212.10496.pdf>
 

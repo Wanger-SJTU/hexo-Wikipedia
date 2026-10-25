@@ -23,7 +23,7 @@ source_url: https://zhuanlan.zhihu.com/p/611217770
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_ec66fc0e4b83.jpg)
 
-### <strong>前言</strong>
+### 前言
 
 随着大模型（GPT3，Instruction GPT，ChatGPT）的横空出世，如何更高效地提示大模型也成了学术界与工业界的关注，因此 In-context learning 的方法在 NLP 领域十分火热。
 
@@ -53,7 +53,7 @@ source_url: https://zhuanlan.zhihu.com/p/611217770
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_94762bd57e76.jpg)
 
-### <strong>什么是In-Context Learning</strong>
+### 什么是In-Context Learning
 
 在这篇综述论文给出了详细的定义：
 
@@ -67,7 +67,7 @@ In Context Learning（ICL）的关键思想是从类比中学习。上图给出�
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_c196369bcdd8.jpg)
 
-### <strong>论文分析</strong>
+### 论文分析
 
 Rethinking the Role of Demonstrations: What Makes In-Context Learning Work？中我们已经发现 Demonstration，ICL 与大规模语言模型结合（LMs）在零样本条件下的许多任务上取得了很好的效果，但人们对它如何工作以及演示的哪些方面有助于最终任务的执行知之甚少。本文主要以实验为主，探究以上影响 ICL 的因素。
 
@@ -91,10 +91,8 @@ Rethinking the Role of Demonstrations: What Makes In-Context Learning Work？中
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_aa37e57fb3d8.jpg)
 
-### <strong>结论1：ICL中Ground Truth信息无关紧要</strong>
+### 结论1：ICL中Ground Truth信息无关紧要
 
-**
-**
 
 <strong>No Demos：</strong>LMs 直接进行零样本预测，无提示
 
@@ -120,27 +118,19 @@ Rethinking the Role of Demonstrations: What Makes In-Context Learning Work？中
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_8c31d6e1110e.jpg)
 
-### <strong>结论2：ICL的性能收益主要来自独立规范的输入空间和标签空间，以及正确一致的演示格式</strong>
+### 结论2：ICL的性能收益主要来自独立规范的输入空间和标签空间，以及正确一致的演示格式
 
 作者分别从以下四个维度探究 In-Context Learning 效果增益的影响。
 
-**
-**
 
 <strong>1. The input-label mapping：</strong>即每个输入 xi 是否与正确的标签 yi 配对
 
-**
-**
 
 <strong>2. The distribution of the input text：</strong>即 x1...xk 的分布是否一致
 
-**
-**
 
 <strong>3. The label space：</strong>y1...yk 所覆盖的标签空间
 
-**
-**
 
 <strong>4. The format：</strong>使用输入标签配对作为格式。
 
@@ -166,7 +156,7 @@ Rethinking the Role of Demonstrations: What Makes In-Context Learning Work？中
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_54668af35321.jpg)
 
-### <strong>有意思的讨论</strong>
+### 有意思的讨论
 
 作者还进行了个有意思的讨论，<strong>即模型是否在 Test 阶段学习到了知识？</strong>
 
@@ -176,14 +166,12 @@ Rethinking the Role of Demonstrations: What Makes In-Context Learning Work？中
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_91081b536831.jpg)
 
-### <strong>总结</strong>
+### 总结
 
 本文从多个角度探究了演示是如何让 In-context learning 在不同的任务中产生性能增益的，而且随着 fine-tune 阶段的黑盒化，很多文章也提出 fine-tune 阶段可能让模型丧失了泛化性，那么 ICL 这种不 fine tune 的方法既节省时间与资源开销，且能提升效果，应该会在大模型林立的时代被人关注，并迅速火起来。
 
 <strong>往期回顾</strong>
 
-**
-**
 
 <strong>基础知识</strong>
 
@@ -201,44 +189,32 @@ Rethinking the Role of Demonstrations: What Makes In-Context Learning Work？中
 
 【CV知识点汇总与解析】| 技术发展篇 (超详细！！！)
 
-**
-**
 
 <strong>最新论文解析</strong>
 
-NeurIPS2022 Spotlight | TANGO：一种基于光照分解实现逼真稳健的文本驱动3D风格化**
-**
+NeurIPS2022 Spotlight | TANGO：一种基于光照分解实现逼真稳健的文本驱动3D风格化
 
-ECCV2022 Oral | 微软提出UNICORN，统一文本生成与边框预测任务**
-**
+ECCV2022 Oral | 微软提出UNICORN，统一文本生成与边框预测任务
 
-NeurIPS 2022 | VideoMAE：南大&腾讯联合提出第一个视频版MAE框架，遮盖率达到90%**
-**
+NeurIPS 2022 | VideoMAE：南大&腾讯联合提出第一个视频版MAE框架，遮盖率达到90%
 
 NeurIPS 2022 | 清华大学提出OrdinalCLIP，基于序数提示学习的语言引导有序回归
 
-SlowFast Network：用于计算机视觉视频理解的双模CNN**
-**
+SlowFast Network：用于计算机视觉视频理解的双模CNN
 
-WACV2022 | 一张图片只值五句话吗？UAB提出图像-文本匹配语义的新视角！**
-**
+WACV2022 | 一张图片只值五句话吗？UAB提出图像-文本匹配语义的新视角！
 
-CVPR2022 | Attention机制是为了找最相关的item？中科大团队反其道而行之！**
-**
+CVPR2022 | Attention机制是为了找最相关的item？中科大团队反其道而行之！
 
-ECCV2022 Oral | SeqTR：一个简单而通用的 Visual Grounding网络**
-**
+ECCV2022 Oral | SeqTR：一个简单而通用的 Visual Grounding网络
 
-如何训练用于图像检索的Vision Transformer？Facebook研究员解决了这个问题！**
-**
+如何训练用于图像检索的Vision Transformer？Facebook研究员解决了这个问题！
 
 ICLR22 Workshop | 用两个模型解决一个任务，意大利学者提出维基百科上的高效检索模型
 
-See Finer, See More！腾讯&上交提出IVT，越看越精细，进行精细全面的跨模态对比！**
-**
+See Finer, See More！腾讯&上交提出IVT，越看越精细，进行精细全面的跨模态对比！
 
-MM2022｜兼具低级和高级表征，百度提出利用显式高级语义增强视频文本检索**
-**
+MM2022｜兼具低级和高级表征，百度提出利用显式高级语义增强视频文本检索
 
 MM2022 | 用StyleGAN进行数据增强，真的太好用了
 

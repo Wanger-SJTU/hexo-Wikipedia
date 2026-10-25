@@ -31,9 +31,9 @@ source_url: https://www.zhihu.com/question/340144492/answer/808173912
 
 Kick Start的官方介绍是：
 
-**Kick Start （网址：g.co/kickstart）是一项在线编程全球挑战赛，也是谷歌校招网测平台，参与者可以参加任意一轮或全部在线比赛。通过 Kick Start，你不仅能锻炼提高编程能力，还可以了解 Google 的编程环境以及技能要求。更重要的是！通过 Kick Start 的同学，将跳过电话面试，直接踏入校园招聘快速通道。注意到了吗？
+Kick Start （网址：g.co/kickstart）是一项在线编程全球挑战赛，也是谷歌校招网测平台，参与者可以参加任意一轮或全部在线比赛。通过 Kick Start，你不仅能锻炼提高编程能力，还可以了解 Google 的编程环境以及技能要求。更重要的是！通过 Kick Start 的同学，将跳过电话面试，直接踏入校园招聘快速通道。注意到了吗？
 
-通过 Kick Start 的同学，将跳过电话面试，直接踏入校园招聘快速通道。**
+通过 Kick Start 的同学，将跳过电话面试，直接踏入校园招聘快速通道。
 
 <strong>通过 Kick Start 的同学，将跳过电话面试，直接踏入校园招聘快速通道。</strong>
 

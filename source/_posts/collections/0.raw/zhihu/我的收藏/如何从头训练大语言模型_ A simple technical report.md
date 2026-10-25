@@ -140,7 +140,7 @@ Quality is all your need, 应该是今年所有人的共识。<strong>数据的d
 - SFT还真没见过pretrain的loss spike现象,总体上比较稳定。不过单看各domain的loss曲线似乎不是很稳定....最麻烦的是就是过拟合, 实在不好把握这个度。
 - 华为有篇文章论证,小模型的SFT epoch可以多跑几次效果会好,大模型复杂度高可能更容易过拟合。可能是我从pretrain过来的惯性,还是很难接受两轮以上的training,所以我只把SFT epoch设为2
 - <strong>建议做sft的同学一定要自己看一下数据</strong>，做到心里有数；我手动看了百来条后，确实获得了不一样的理解
-**所以SFT微调链路的交付哥,一天的生活是这样的:每天早上开十几个job, 只改动一点点参数, 然后苦等一天, 期间做做数据, 晚上收割一波模型, 跑测评看结果....最后各domain的效果一定是有好有坏的,后续可以用DPO偏好数据去定向提升。
+所以SFT微调链路的交付哥,一天的生活是这样的:每天早上开十几个job, 只改动一点点参数, 然后苦等一天, 期间做做数据, 晚上收割一波模型, 跑测评看结果....最后各domain的效果一定是有好有坏的,后续可以用DPO偏好数据去定向提升。
 
 复杂指令是另一个很有意思的话题,可以看我知乎号此前发布的另一篇推理增强的文章。先写到这里,更详细的细节以后再来丰富吧
 
@@ -148,7 +148,7 @@ Quality is all your need, 应该是今年所有人的共识。<strong>数据的d
 
 LLM训练的大Boss: Pretrain。
 
-*请认真读一下MiniCPM：[2404.06395 (arxiv.org)](https://link.zhihu.com/?target=https%3A//arxiv.org/pdf/2404.06395)，以及openai的[2001.08361 (arxiv.org)](https://link.zhihu.com/?target=https%3A//arxiv.org/pdf/2001.08361)。会有很大收获的***
+*请认真读一下MiniCPM：[2404.06395 (arxiv.org)](https://link.zhihu.com/?target=https%3A//arxiv.org/pdf/2404.06395)，以及openai的[2001.08361 (arxiv.org)](https://link.zhihu.com/?target=https%3A//arxiv.org/pdf/2001.08361)。会有很大收获的*
 
 *<strong>请认真读一下上面两篇！</strong>*
 
@@ -212,7 +212,7 @@ llama 3.1诡计多端的8-shot![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9
 - 代码和数学的数据pipeline参考deepseek
 - Textbook is all your need
 - 数据合成：[Cosmopedia: how to create large-scale synthetic data for pre-training Large Language Models (huggingface.co)](https://link.zhihu.com/?target=https%3A//huggingface.co/blog/cosmopedia)
-（其实我的数据侧偷了很多懒，今年开源了不少质量不错的预训练数据集，比如huggingface的fineweb。天工的skypile，以及一个很大的Redpajama等等，集合起来做一些过滤，去重，分类即可)**
+（其实我的数据侧偷了很多懒，今年开源了不少质量不错的预训练数据集，比如huggingface的fineweb。天工的skypile，以及一个很大的Redpajama等等，集合起来做一些过滤，去重，分类即可)
 
 #### 3.4 数据配比
 
@@ -226,7 +226,7 @@ llama3: 大家的配比和这个都差不多，不过这里的推理数据量确
 
 具体multi-stage的设计就见仁见智了，每个阶段都是动态的重调配比。长文本和推理数据要稍微靠后一点再加入
 
-末期一定是高质量数据！**
+末期一定是高质量数据！
 
 所以不少文章都是利用退火来评估末期数据质量，然后选择性加入
 

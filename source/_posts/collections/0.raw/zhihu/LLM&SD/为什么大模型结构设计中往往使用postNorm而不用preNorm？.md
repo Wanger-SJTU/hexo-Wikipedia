@@ -31,15 +31,15 @@ source_url: https://zhuanlan.zhihu.com/p/682747135
 
 3. PostNorm 结构的模型中 warm up 是如何起作用的？
 
-### 一、<strong>直观理解</strong>
+### 一、**直观理解
 
-#### <strong>1.结论</strong>
+#### 1.结论
 
 Pre Norm的深度有“水分”！
 
 也就是说，一个L层的Pre Norm模型，其实际等效层数不如L层的Post Norm模型；而因为pre Norm实际层数少了导致效果变差了。
 
-#### <strong>2.公式阐释</strong>
+#### 2.公式阐释
 
 <strong>1）Pre Norm 和 Post Norm的公式</strong>
 
@@ -76,9 +76,9 @@ Pre Norm的深度有“水分”！
 
 那么再根据上面公式推导的结论，说白了，Pre Norm结构无形地增加了模型的宽度而降低了模型的深度，所以在无形之中的降低深度导致最终效果变差了。
 
-### 二、<strong>实验结论</strong>
+### 二、**实验结论
 
-#### <strong>1. Pre Norm效果优于Post Norm？</strong>
+#### 1. Pre Norm效果优于Post Norm？
 
 《On Layer Normalization in the Transformer Architecture》这篇论文中显示Pre Norm要好于Post Norm。
 
@@ -86,17 +86,16 @@ Pre Norm的深度有“水分”！
 
 Pre Norm可以不加Warmup，但Post Norm通常要加Warmup，如果Post Norm结构的模型不进行Wamrup，我们能观察到的现象往往是：loss快速收敛到一个常数附近，然后再训练一段时间，loss开始发散，直至NAN。所以结论并不矛盾。
 
-#### 2. <strong>其他实验</strong>
+#### 2. **其他实验
 
 论文《Understanding the Difficulty of Training Transformers》与《RealFormer: Transformer Likes Residual Attention》都显示Post Norm优于Pre Norm。
 
-**此外，苏神的实验中，Post Norm的结构迁移性能更加好，也就是说在Pretraining中，Pre Norm和Post Norm都能做到大致相同的结果，但是Post Norm的Finetune效果明显更好。
+此外，苏神的实验中，Post Norm的结构迁移性能更加好，也就是说在Pretraining中，Pre Norm和Post Norm都能做到大致相同的结果，但是Post Norm的Finetune效果明显更好。
 
-### 三、PostNorm 结构模型中 warm up 如何起作用的？ **
+### 三、PostNorm 结构模型中 warm up 如何起作用的？
 
 大家可能已经听说过，Warmup是Transformer训练的关键步骤，没有它可能不收敛，或者收敛到比较糟糕的位置。为什么会这样呢？
 
-**
 
 Warmup是在训练开始阶段，将学习率从0缓增到指定大小，而不是一开始从指定大小训练。如果不进行Wamrup，那么模型一开始就快速地学习，由于梯度消失，模型对越靠后的层越敏感，也就是越靠后的层学习得越快，**然后后面的层是以前面的层的输出为输入的，前面的层根本就没学好，所以后面的层虽然学得快，但却是建立在糟糕的输入基础上的。
 
@@ -104,11 +103,10 @@ Warmup是在训练开始阶段，将学习率从0缓增到指定大小，而不�
 
 所以，如果Post Norm结构的模型不进行Wamrup，我们能观察到的现象往往是：loss快速收敛到一个常数附近，然后再训练一段时间，loss开始发散，直至NAN。如果进行Wamrup，<strong>那么留给模型足够多的时间进行“预热”，在这个过程中，主要是抑制了后面的层的学习速度，并且给了前面的层更多的优化时间，以促进每个层的同步优化。</strong>
 
-**
 
 这里的讨论前提是梯度消失，如果是Pre Norm之类的结果，没有明显的梯度消失现象，那么不加Warmup往往也可以成功训练。
 
-更多的算法相关细节，前沿学术理论研究以及大模型微调专题实践代码，欢迎关注公众号：瓦力算法学研所**
+更多的算法相关细节，前沿学术理论研究以及大模型微调专题实践代码，欢迎关注公众号：瓦力算法学研所
 
 参考文献
 

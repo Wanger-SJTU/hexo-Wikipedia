@@ -19,19 +19,16 @@ source_url: https://zhuanlan.zhihu.com/p/688153204
 
 这学期在上计算机体系结构课的时候老师提到过Cache的三种映射方式是direct mapping，set associative和fully associative。但是当时只是单纯记住了这个知识点，并没有理解，因此看上面这段话看的一头雾水，Cache里的数据存储形式是怎样的？不同的workload为什么会受益于不同的Cache映射方式？带着这些疑问，我去查了一些资料复习了一下顺便写了这篇笔记。
 
-**
 
 首先来明确一下Cache是什么，本文中的Cache指的是CPU高速缓存**，是用于减少处理器访问内存所需平均时间的部件。在金字塔式存储体系中它位于自顶向下的第二层，仅次于CPU寄存器。其容量远小于内存，但速度却可以接近处理器的频率。
 
 其实在遥远的PC-AT/XT和286时代，CPU是没有Cache，直接访问内存的。那后来为什么要在CPU寄存器和内存之间设置一个CPU缓存呢？这是因为<strong>CPU访问寄存器和内存的延迟差距太大了</strong>。
 
-**
 
 ![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_cced5d2d85ea.jpg)
 
 可以看到，访问寄存器的延迟约为0.3ns<strong>，而访问内存的延迟为</strong>62.9ns** [2]，两者之间差了数百倍，如果在Cache中没有我们想要的数据，那么CPU就需要等待漫长的load操作将数据从内存copy到Cache中。因此后来引入了多级Cache，等级越高，速度越慢，容量越大。在3级Cache的缓冲下，相邻Cache之间和Cache与memory之间的延迟差距也越来越小。让我们来看一下一个真实的案例——ARMv8-A架构的Cortex-A53处理器的Cache组织方式[3]（Switch上的SoC——Tegra X1里就是四个Cortex-A57核心和四个Cortex-A53核心）。
 
-**
 
 ![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_d1b55aebfcd6.jpg)
 

@@ -25,7 +25,7 @@ LLM Inference Acceleration: GPU Optimization for Attention in the Decode Phase
 
 RTP-LLM是阿里巴巴智能引擎团队开发的大模型推理加速引擎，作为一个高性能的大模型推理解决方案，它已被广泛应用于阿里内部。在这篇文章里，我们将基于RTP-LLM的实践，介绍decode阶段的Attention在GPU上是如何优化的。
 
-### <strong>背景</strong>
+### 背景
 
 我们比较熟悉的Attention计算如下图所示，包含Q与K相乘，其结果在mask后做softmax，然后与V相乘，得到Attention的结果。在LLM推理的decode阶段，由于加入KV Cache优化，一次迭代只需要计算新增的一个token，因此计算可以变化为当前step的Q（seq == 1）与K Cache、V Cache做计算。
 
@@ -58,7 +58,7 @@ out = matmul(res, V)`
 
 在整个计算过程中，BiasAdd、Rotary Embedding相对计算量较小，对kernel的latency影响较小，因此下文省略这一部分的分析。
 
-### <strong>计算分析</strong>
+### 计算分析
 
 我们以当前的[TensorRT-LLM](https://link.zhihu.com/?target=https%3A//github.com/NVIDIA/TensorRT-LLM)中Masked Multi Head Attention(MMHA)的实现为例，分析当前的MMHA是怎么实现高性能。
 
@@ -87,7 +87,7 @@ Q乘K Cache的计算在D上累加。假设我们用half存KV Cache，用float做
 
 主流框架如[vllm](https://link.zhihu.com/?target=https%3A//github.com/vllm-project/vllm)，[xformers](https://link.zhihu.com/?target=https%3A//github.com/facebookresearch/xformers)等对MMHA的实现和优化思路都是比较类似的，仅在细节处略有差异。TensorRT-LLM在mmha外还实现了XQA以继续优化decode阶段Attention的计算，但由于代码未开源，本文也不做分析。
 
-### <strong>改进与优化</strong>
+### 改进与优化
 
 当然上文分析到的简单优化在实际应用中还是不那么够用的，最常见的就是小B和长S场景。
 

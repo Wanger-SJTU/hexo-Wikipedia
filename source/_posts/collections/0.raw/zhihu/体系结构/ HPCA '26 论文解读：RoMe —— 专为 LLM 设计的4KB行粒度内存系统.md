@@ -190,7 +190,6 @@ endmodule
 
 ### 4.1.  架构对比一览表
 
-**
 
 组件特性传统 HBM4 内存控制器RoMe 内存控制器核心优势访问粒度(AG_{MC})32 Bytes (缓存行)4 K Bytes (行粒度)完美契合 LLM 连续大块访存需要维护的 Bank 状态7 种 (Idle, Activating, Active, Precharging, Reading, Writing, Refreshing)4 种 (Idle, Reading, Writing, Refreshing)读写完成后自动返回 Idle，无需管理 Active 状态追踪的时序参数数量15+ (包括复杂的内外行列时序)10 (仅需管理宏观的读写转换延迟)调度逻辑面积缩减 90.9%并发调度的 FSM 数量至少 5 个 (每伪通道)2 个 (仅需追踪当前和下一个 VBA)极大降低状态机开销请求队列深度 (Queue Size)45 ~ 64 项2 ~ 4 项仅需极小队列即可打满带宽页面策略 (Page Policy)动态自适应 (Open/Close Page)无 (强制每次读写后自动 Precharge)消除策略预测逻辑调度(Scheduling)Row-buffer locality，
 Bank Group 交错  

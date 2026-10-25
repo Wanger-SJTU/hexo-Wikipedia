@@ -254,13 +254,12 @@ model = AutoModelForCausalLM.from_pretrained(model_name_or_path, device_map="aut
 
 你可以看到，我们可以只用~5GB VRAM就加载一个量化的7B模型。
 
-**
 
 ![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_2f5bd20cae0e.jpg)
 
 Mistral AWQ VRAM使用情况（作者提供）
 
-- 如何使用AWQ预量化模型进行推理**
+- 如何使用AWQ预量化模型进行推理
 我们可以像正常的CausalLM推理一样使用预量化模型进行推理。在这种情况下，分词器没有chat_template，所以我们必须传递模板。推理代码如下所示。
 
 prompt = "Tell me about blackhole."
@@ -386,7 +385,6 @@ model_nf4 = get_peft_model(model_nf4, config)`
 
 你可以看到，我们可以只用~4GB VRAM就加载一个量化的3B模型。
 
-**
 
 ![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_ae54f16da1b8.jpg)
 
@@ -478,7 +476,7 @@ trainer.save_model(output_dir)`
 
 保存目录图片（作者提供）
 
-- 如何使用训练好的QLoRA模型进行推理？**
+- 如何使用训练好的QLoRA模型进行推理？
 当我们加载QLoRA模型时，我们只需要传递trainer.save_model()的保存目录。
 
 tokenizer = AutoTokenizer.from_pretrained(output_dir)

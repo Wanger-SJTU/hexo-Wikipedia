@@ -21,11 +21,11 @@ source_url: https://zhuanlan.zhihu.com/p/704158815
 - 开源代码：
 [](https://link.zhihu.com/?target=https%3A//github.com/Gaffey/ExCP)
 
-### <strong>一、引言</strong>
+### 一、引言
 
 大型语言模型最近成为人工智能领域的研究热点，然而它们的训练过程耗费巨大的计算和存储资源。因此，高效压缩存储模型的checkpoint文件显得尤为关键。我们提出了一种创新的模型checkpoint压缩方案（ExCP），该方案能够在保持性能几乎不受损失的前提下，显著降低训练过程中的存储开销。首先，我们通过计算相邻checkpoint的残差值来捕获关键但稀疏的信息，从而提高压缩比。接下来，我们实行权重和优化器动量的联合压缩，利用优化器存储的动量信息实现更高效的压缩，并通过压缩优化器动量进一步去除checkpoint中的冗余参数。最终，我们采用非均匀量化及编码压缩策略进一步减小checkpoint文件的存储尺寸。在从410M到7B不同规模的模型上测试我们的压缩框架，特别是在Pythia-410M模型上，我们实现了近乎无损的性能下达到约70倍的压缩比例。
 
-### <strong>二、方法</strong>
+### 二、方法
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_694f3295b201.jpg)
 
@@ -61,7 +61,7 @@ $\Delta \mathcal P_t = \{\Delta \mathcal W_t, \mathcal O_t\} = \{\mathcal W_t-\m
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_3a8613d47605.jpg)
 
-### <strong>三、实验结果</strong>
+### 三、实验结果
 
 <strong>1. 大语言模型</strong>
 
@@ -87,6 +87,6 @@ $\Delta \mathcal P_t = \{\Delta \mathcal W_t, \mathcal O_t\} = \{\mathcal W_t-\m
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_4b557c9a2c51.jpg)
 
-### <strong>四、总结</strong>
+### 四、总结
 
 我们提出了一个大模型Checkpoint压缩框架（ExCP），通过Checkpoint残差、权重与优化器动量的联合剪枝，以及非均匀量化等策略，在保持性能几乎不受损失的前提下，显著降低训练过程中的存储开销。我们在大型语言模型和视觉模型上均对此方法进行了评估，证实了方法的有效性。

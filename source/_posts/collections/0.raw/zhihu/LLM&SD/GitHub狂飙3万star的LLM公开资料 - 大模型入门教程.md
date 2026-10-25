@@ -23,7 +23,7 @@ huggingface：https://huggingface.co/mlabonne
 
 欢迎大家关注微信公众号：<strong>精博士论文小酒馆</strong>
 
-### <strong>先用一张图片说明这篇blog多火热！</strong>
+### 先用一张图片说明这篇blog多火热！
 
 ![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_5c5ad39b12c6.jpg)
 
@@ -527,8 +527,7 @@ LLM安全 - @llm_sec：与LLM安全相关的资源的广泛列表。
 
 [GitHub - mlabonne/llm-course: Course to get into Large Language Models (LLMs) with roadmaps and Colab notebooks.](https://link.zhihu.com/?target=https%3A//github.com/mlabonne/llm-course%3Ftab%3Dreadme-ov-file)
 
-**
 
-欢迎大家关注微信公众号：精博士论文小酒馆**
+欢迎大家关注微信公众号：精博士论文小酒馆
 
 http://weixin.qq.com/r/mp/gRKPl77EKuNVrfr090eT (二维码自动识别)

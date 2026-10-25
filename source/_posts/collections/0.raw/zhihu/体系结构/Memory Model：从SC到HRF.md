@@ -47,7 +47,7 @@ TSO引入后，load->store序不再强制要求，借助write buffer甚至可以
 
 ![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_b2e937a8e2a7.jpg)
 
-TSO的保序要求图中的RMW是read-modify-write，常常是atomic操作，在不可打断的过程中，完成一次完整的的先读，再改，改完结果再写入Memory的操作。**
+TSO的保序要求图中的RMW是read-modify-write，常常是atomic操作，在不可打断的过程中，完成一次完整的的先读，再改，改完结果再写入Memory的操作。
 
 #### XC/RC（Relax/Release Consistency）
 
@@ -181,7 +181,7 @@ Atomicity Axiom示意LR-SC是RISCV A扩展中的显式指令，LR是load一个�
 #### HRF-direct
 
 同scope的线程之间进行同步通信。如果两个线程或者操作确实存在data race，又没在同scope内采用同步机制，那在HRF-direct模型中，result不可知。
-Formal Definition：**
+Formal Definition：
 
 - <strong>Ordinary Conflict：</strong>两个操作当且仅当它们地址相同，且至少有一个是write，认为它们冲突；
 - <strong>Synchronization Conflic</strong>  ：两个不同scope的同步操作，当且仅当它们同位置，且至少有一个是write（或者RMW），认为冲突。

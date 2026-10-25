@@ -31,7 +31,7 @@ LLM由于这些模型很大，因此它们很难在一般的设备上运行。�
 
 在这里，你将了解到究竟是什么让一个大模型占用这么多内存？是什么让 BLOOM 占用了 350GB 内存？我们先从一些基础知识开始，慢慢展开。
 
-### <strong>机器学习中常用的数据类型</strong>
+### 机器学习中常用的数据类型
 
 我们从理解不同浮点数据类型开始，这些数据类型在机器学习中也被称为“精度”。
 
@@ -61,7 +61,7 @@ Model-storage以字节为单位计算模型大小时，需要将参数量乘以�
 
 但是，如果我们可以使用另外的数据类型来用更少的内存存储这些权重呢？深度学习社区已广泛使用的方法是量化。
 
-### <strong>模型量化简介</strong>
+### 模型量化简介
 
 通过实验，我们发现不使用 4 字节 FP32 精度转而使用 2 字节 BF16/FP16 半精度可以获得几乎相同的推理结果，同时模型大小会减半。这促使我们想进一步削减内存，但随着我们使用更低的精度，推理结果的质量也开始急剧下降。
 
@@ -73,7 +73,7 @@ Model-storage以字节为单位计算模型大小时，需要将参数量乘以�
 
 在零点量化中，如果我的数值范围是 `-1.0…1.0`，我想量化到 `-127…127`，我需要先缩放 `127`倍，然后四舍五入到 `8` 位精度。要恢复原始值，我需要将 Int8 值除以相同的量化因子 `127`。在这个例子中，值 `0.3` 将缩放为 `0.3*127 = 38.1`。四舍五入后得到值 `38`。恢复时，我们会得到 `=0.2992` —— 因此最终会有 `0.008` 的量化误差。这些看似微小的误差在沿着模型各层传播时往往会累积和增长，从而导致最终的精度下降。
 
-** 译者注: 这个例子举得不好，因为浮点范围和整型范围都是对称的，所以不存在零点调整了，而零点调整是零点量化中最能体现其命名原因的部分。简而言之，零点量化分为两步，第一步值域映射，即通过缩放将原始的数值范围映射为量化后的数值范围; 第二步零点调整，即通过平移将映射后的数据的最小值对齐为目标值域的最小值
+译者注: 这个例子举得不好，因为浮点范围和整型范围都是对称的，所以不存在零点调整了，而零点调整是零点量化中最能体现其命名原因的部分。简而言之，零点量化分为两步，第一步值域映射，即通过缩放将原始的数值范围映射为量化后的数值范围; 第二步零点调整，即通过平移将映射后的数据的最小值对齐为目标值域的最小值
  ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_0bcb23b76b95.jpg)
 
 quantization(图源**)
@@ -94,7 +94,7 @@ quant-freeze对于无符号 Int8，我们可以先减去最小值然后再用最
 
 虽然这些基本技术能够帮助我们量化深度学习模型，但它们通常会导致大模型准确性的下降。我们集成到 Hugging Face Transformers 和 Accelerate 库中的 LLM.int8() 是第一个适用于大模型 (如 BLOOM-176B) 且不会降低准确性的量化技术。
 
-### <strong>简要总结 LLM.int8(): 大语言模型的零退化矩阵乘法</strong>
+### 简要总结 LLM.int8(): 大语言模型的零退化矩阵乘法
 
 在 LLM.int8() 中，我们已经证明理解 transformer 模型表现出的与模型规模相关的涌现特性对于理解为什么传统量化对大模型失效至关重要。我们证明性能下降是由离群特征 (outlier feature) 引起的，下一节我们会详细解释。LLM.int8() 算法本身如下。
 
@@ -108,20 +108,20 @@ quant-freeze对于无符号 Int8，我们可以先减去最小值然后再用最
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_6aa1cb201b1c.jpg)
 
 Mixed-int8.gif
-#### <strong>离群特征的重要性</strong>
+#### 离群特征的重要性
 
 超出某个分布范围的值通常称为离群值。离群值检测已得到广泛应用，在很多文献中也有涉及，且获取特征的先验分布对离群值检测任务很有助益。更具体地说，我们观察到对于参数量大于 6B 的 transformer 模型，经典的量化方法会失效。虽然离群值特征也存在于较小的模型中，但在大于 6B 的 transformer 模型中，我们观察到几乎每层都会出现超出特定阈值的离群点，而且这些离群点呈现出一定的系统性模式。有关该现象的更多详细信息，请参阅 <strong>[LLM.int8() 论文](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2208.07339)</strong> 和 <strong>涌现特征的博文</strong>。
 
 如前所述，8 位精度的动态范围极其有限，因此量化具有多个大值的向量会产生严重误差。此外，由于 transformer 架构的固有特性，它会将所有元素互相关联起来，这样的话，这些误差在传播几层后往往会混杂在一起。因此，我们发明了混合精度分解的方法，以对此类极端离群值进行有效量化。接下来我们对此方法进行讨论。
 
-#### <strong>MatMul 内部</strong>
+#### MatMul 内部
 
 计算隐含状态后，我们使用自定义阈值提取离群值，并将矩阵分解为两部分，如上所述。我们发现，以这种方式提取所有幅度大于等于 6 的离群值可以完全恢复推理精度。离群值部分使用 FP16 表示，因此它是一个经典的矩阵乘法，而 8 位矩阵乘法是通过使用向量量化将权重和隐含状态分别量化为 8 位精度 - 即按行量化权重矩阵，并按列量化隐含状态，然后再进行相应向量乘加操作。最后，将结果反量化至半精度，以便与第一个矩阵乘法的结果相加。
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_fa1964c7875c.jpg)
 
 Matmul.png
-#### <strong>0 退化是什么意思？</strong>
+#### 0 退化是什么意思？
 
 我们如何正确评估该方法是否会对性能造成下降？使用 8 位模型时，我们的生成质量损失了多少？
 
@@ -133,7 +133,7 @@ Matmul.png
 
 测试基准----差值测试基准名指标指标值 - int8指标值 - fp16标准差 - fp16-hellaswagacc_norm0.72740.73030.00440.0029hellaswagacc0.55630.55840.0050.0021piqaacc0.78350.78840.00950.0049piqaacc_norm0.79220.79110.00950.0011lambadappl3.91913.9310.08460.0119lambadaacc0.68080.67180.00650.009winograndeacc0.70480.70480.01280我们切实地看到上述这些模型的性能下降为 0，因为指标的绝对差异均低于原始模型的标准误差 (BLOOM-int8 除外，它在 lambada 上略好于原始模型)。如果想要知道 LLM.int8() 与当前其他先进方法的更详细的性能比较，请查看 <strong>[论文](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2208.07339)</strong>！
 
-#### <strong>比原始模型更快吗？</strong>
+#### 比原始模型更快吗？
 
 LLM.int8() 方法的主要目的是在不降低性能的情况下降低大模型的应用门槛。但如果速度非常慢，该方法用处也不会很大。所以我们对多个模型的生成速度进行了基准测试。
 
@@ -141,11 +141,11 @@ LLM.int8() 方法的主要目的是在不降低性能的情况下降低大模型
 
 精度参数量硬件每词元延迟 (单位: 毫秒，batch size: 1)每词元延迟 (单位: 毫秒，batch size: 8)每词元延迟 (单位: 毫秒，batch size: 32)bf16176B8xA100 80GB239329.9int8176B4xA100 80GB28237.510.2bf16176B14xA100 40GB28536.510.4int8176B5xA100 40GB36746.4oomfp1611B2xT4 15GB11.71.70.5int811B1xT4 15GB43.55.31.3fp323B2xT4 15GB457.23.1int83B1xT4 15GB31239.110.2上表中的 3 个模型分别为 BLOOM-176B、T5-11B 和 T5-3B。
 
-### **Hugging Face `transformers` 集成细节**
+### Hugging Face `transformers` 集成细节
 
 接下来让我们讨论在 Hugging Face `transformers` 集成该方法的细节，向你展示常见的用法及在使用过程中可能遇到的常见问题。
 
-#### <strong>用法</strong>
+#### 用法
 
 所有的操作都集成在 `Linear8bitLt` 模块中，你可以轻松地从 `bitsandbytes` 库中导入它。它是 `torch.nn.modules` 的子类，你可以仿照下述代码轻松地将其应用到自己的模型中。
 
@@ -247,7 +247,7 @@ hidden_states = int8_model(input_.to(torch.device('cuda', 0)))
 
 现在我们开始了解如何将其集成到 `transformers` 库中！
 
-#### **`accelerate` 足矣**
+#### `accelerate` 足矣
 
 在处理大模型时， `accelerate` 库包含许多有用的工具。`init_empty_weights` 方法特别有用，因为任何模型，无论大小，都可以在此方法的上下文 (context) 内进行初始化，而无需为模型权重分配任何内存。
 
@@ -303,7 +303,7 @@ def replace_8bit_linear(model, threshold=6.0, module_to_not_convert="lm_head"):
 
 而且，第二次调用量化过程时会失败！我们必须想出一个与 `accelerate` 的  `set_module_tensor_to_device` 函数相应的实现 (称为 `set_module_8bit_tensor_to_device`)，以确保我们不会调用两次量化。我们将在下面的部分中详细讨论这个问题！
 
-#### **在  `accelerate` 设置设备要当心**
+#### 在  `accelerate` 设置设备要当心
 
 这方面，我们对 `accelerate` 库进行了精巧的修改，以取得平衡！
 
@@ -311,7 +311,7 @@ def replace_8bit_linear(model, threshold=6.0, module_to_not_convert="lm_head"):
 
 我们通过两个 PR 实现了目的，<strong>[这里](https://link.zhihu.com/?target=https%3A//github.com/huggingface/accelerate/pull/539/)</strong> 的第一个 PR 破坏了一些测试，但 <strong>[这个 PR](https://link.zhihu.com/?target=https%3A//github.com/huggingface/accelerate/pull/576/)</strong> 成功修复了所有问题！
 
-#### <strong>总结</strong>
+#### 总结
 
 因此，最终我们完成了:
 
@@ -325,15 +325,15 @@ def replace_8bit_linear(model, threshold=6.0, module_to_not_convert="lm_head"):
 
 现在，我们看看如何在 `transformers` 中成功使用它并从中获益！
 
-### **如何在 `transformers` 中使用它**
+### 如何在 `transformers` 中使用它
 
-#### <strong>硬件要求</strong>
+#### 硬件要求
 
 CPU 不支持 8 位张量核心 [*]。 bitsandbytes 可以在支持 8 位张量核心的硬件上运行，这些硬件有 Turing 和 Ampere GPU (RTX 20s、RTX 30s、A40-A100、T4+)。例如，Google Colab GPU 通常是 NVIDIA T4 GPU，而最新的 T4 是支持 8 位张量核心的。我们后面的演示将会基于 Google Colab！
 
-** *: 译者注: Intel 最新的 Sapphire Rapids CPU 已支持 8 位张量指令集: AMX
+*: 译者注: Intel 最新的 Sapphire Rapids CPU 已支持 8 位张量指令集: AMX
  
-#### 安装**
+#### 安装
 
 使用以下命令安装最新版本的库 (确保你的 python>=3.8)。
 
@@ -344,7 +344,7 @@ pip install git+https://github.com/huggingface/transformers.git
 ```
 
 
-#### <strong>演示示例 - 在 Google Colab 上运行 T5 11B</strong>
+#### 演示示例 - 在 Google Colab 上运行 T5 11B
 
 以下是运行 T5-11B 的演示。 T5-11B 模型的 checkpoint 精度为 FP32，需要 42GB 内存，Google Colab 里跑不动。使用我们的 8 位模块，它仅需 11GB 内存，因此能轻易跑通:
 
@@ -354,13 +354,13 @@ T5-11B 的 Colab 演示: https://colab.research.google.com/drive/1YORPWx4okIHXnj
 
 BLOOM-3B 的 Colab 演示: https://colab.research.google.com/github/huggingface/blog/blob/main/notebooks/HuggingFace_int8_demo.ipynb
 
-### <strong>影响范围</strong>
+### 影响范围
 
 我们认为，该方法让超大模型不再是阳春白雪，而是人人皆可触及。在不降低性能的情况下，它使拥有较少算力的用户能够使用以前无法使用的模型。
 
 我们已经发现了几个可以在继续改进的领域，以使该方法对大模型更友好！
 
-#### <strong>较小模型的推理加速</strong>
+#### 较小模型的推理加速
 
 正如我们在 [基准测试部分](# 比原始模型更快吗？) 中看到的那样，我们可以将小模型 (<strong>英文原文: https://hf.co/blog/hf-bitsandbytes-integration</strong>
  原文作者: Younes Belkada，Tim Dettmers

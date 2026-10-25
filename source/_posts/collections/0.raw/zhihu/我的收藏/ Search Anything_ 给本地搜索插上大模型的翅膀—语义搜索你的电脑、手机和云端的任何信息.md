@@ -27,7 +27,7 @@ source_url: https://zhuanlan.zhihu.com/p/641128049
 - <strong>视频介绍：</strong>大模型：助力人机交互自由飞翔--《大模型时代的科研》之4_哔哩哔哩_bilibili
 本开源项目的主要作者是中科院自动化所硕士生朱凯捷，其也是大模型[Prompt](https://zhuanlan.zhihu.com/p/631922240)鲁棒性评估基准 PromptBench 的主要作者（[PromptBench: 首个大语言模型提示鲁棒性的评测基准](https://zhuanlan.zhihu.com/p/637219127)）。其他参与作者包括微软应用科学家侯汶昕、新加坡国立大学博士生张储祺。微软亚洲研究院王晋东担任指导教师。
 
-### <strong>DEMO 体验</strong>
+### DEMO 体验
 
 - <strong>文本搜索：</strong>
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_e2f21cd9a965.jpg)
@@ -37,9 +37,9 @@ source_url: https://zhuanlan.zhihu.com/p/641128049
 - 图片搜索：
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_ddd171a043ed.jpg)
 
-图片搜索**
+图片搜索
 
-###   工作流程**
+###   工作流程
 
 下图展示了Search Anything的工作流程。
 
@@ -47,26 +47,26 @@ source_url: https://zhuanlan.zhihu.com/p/641128049
 
 Search Anything主要涉及两个步骤：
 
-#### <strong>嵌入(Embedding)</strong>
+#### 嵌入(Embedding)
 
 给定一个文本或图像，首先将它们处理成一个矢量（Embedding）。主要的AI模型基于setence-transformer库。
 
 - 文本语义搜索：All-mpnet-base-v2
 - 图像语义搜索： clip-ViT-B-32
 
-#### <strong>保存</strong>
+#### 保存
 
 在为每个图像和文本生成Embedding之后，我们将Embedding与文件路径等一系列的元数据（Meta data）一起保存到数据库中。
 
-#### <strong>检索</strong>
+#### 检索
 
 当给定一个查询q和一个搜索类型t 时，首先将查询q处理成一个Embedding e_q，然后检索数据库内关于类型t的所有Embeddings [e_1, e_2, ..., e_n]。最后计算查询e_q和每个e_i的余弦相似度，按降序排序，并返回结果。
 
-#### <strong>隐私保护</strong>
+#### 隐私保护
 
 SearchAnything将最先进的AI模型下载至本地运行，因此，无需担心您的隐私数据会被泄露！ 文字语义检索仅需要约400MB的内存空间，而图像语义检索需要4GB内存。未来我们将加入更多的模型以方便不同内存大小的用户都可以使用。
 
-### <strong>️ 安装</strong>
+### ️ 安装
 
 本地计算机需要下载conda环境。
 
@@ -77,9 +77,9 @@ SearchAnything将最先进的AI模型下载至本地运行，因此，无需担�
 conda env create -f env.yaml
 conda activate anything`
 
-### <strong>使用方法</strong>
+### 使用方法
 
-#### <strong>加载&处理文件</strong>
+#### 加载&处理文件
 
 打开命令行，运行`python anything.py`来启动命令行应用程序。
 
@@ -97,7 +97,7 @@ Instruction:`
 
 键入`insert`并回车，然后输入需要处理的文件地址/文件夹地址，如果给定的是一个文件夹地址，则该文件夹中所有支持的文件类型的文件都将被解析并保存到数据库中。
 
-#### <strong>检索</strong>
+#### 检索
 
 我们推荐使用网页端的可视化来进行检索，在命令行中键入`streamlit run app.py`。然后，会在本地浏览器中打开一个界面。
 
@@ -111,7 +111,7 @@ Instruction:`
 
 3. 用户友好的界面：SearchAnything配备了由Streamlit提供的本地界面，该界面设计对非技术用户十分友好。
 
-### <strong>未来工作</strong>
+### 未来工作
 
 当前，我们正在开发更多新功能，包括对小白用户更友好的界面、自动监测文件变化、语义搜索音频资源等。欢迎加入我们的旅程，共同见证和推动SearchAnything的发展！让我们共同探索信息技术的未来，开启高效工作的新篇章！
 

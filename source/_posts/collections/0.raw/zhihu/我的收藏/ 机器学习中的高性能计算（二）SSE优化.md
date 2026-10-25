@@ -15,9 +15,9 @@ source_url: https://zhuanlan.zhihu.com/p/409973153
 ---
 
 
-**在上篇文章中的最后，我们介绍了SIMD指令，最后留了一个小尾巴，今天补充完整。上文链接：[![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_a4bfe64df6ab.jpg)陈震：机器学习中的高性能计算（一）CPU优化316 赞同 · 16 评论 文章](https://zhuanlan.zhihu.com/p/384654825)
+在上篇文章中的最后，我们介绍了SIMD指令，最后留了一个小尾巴，今天补充完整。上文链接：[![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_a4bfe64df6ab.jpg)陈震：机器学习中的高性能计算（一）CPU优化316 赞同 · 16 评论 文章](https://zhuanlan.zhihu.com/p/384654825)
 
-#### 8 SSE指令集介绍**
+#### 8 SSE指令集介绍
 
 目前，绝大多数的CPU都支持SIMD，不同的CPU架构和厂商提供了不同的SIMD指令集来支持，以常用的x86架构来说，我们可以通过SSE指令集来使用x86架构下的SIMD能力。
 
@@ -43,7 +43,7 @@ Intel intrinsics中与load相关的指令集函数之所以有这么多种，首
 
 由于SSE指令集发展多年，有SSE、SSE2、SSE3、SSEE3、SSE4.1、AVX等众多版本，但是命名上主要遵循上面的规则。在真正使用时可以查阅Intel® Intrinsics Guide 了解细节。
 
-#### <strong>8 SSE指令集优化</strong>
+#### 8 SSE指令集优化
 
 接下来尝试使用SSE指令集对原来的代码进行优化。由于SSE指令集操作的单位都是128bit，即可同时操作四个32bit的单精度float数据，为了编程方便，我们修改blur操作的kernel大小，从3*3修改为3*4，代码执行的流程如下图：
 
@@ -118,9 +118,8 @@ void blur_mat_sse(const vector> &input,
 
 [](https://link.zhihu.com/?target=https%3A//github.com/zackchen/ParallelProgrammingInAction)
 
-**
 
-参考资料**
+参考资料
 
 - https://ucbrise.github.io/cs294-ai-sys-sp19/
 - https://halide-lang.org/

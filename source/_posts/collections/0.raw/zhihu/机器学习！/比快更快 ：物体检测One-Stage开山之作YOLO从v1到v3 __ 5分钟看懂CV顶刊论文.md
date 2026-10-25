@@ -17,27 +17,26 @@ source_url: https://zhuanlan.zhihu.com/p/64051698
 
 <strong>项目地址：</strong>
 
-**YOLOv1-Pytorch：[GitHberChen/Yolov1-Pytorch](https://link.zhihu.com/?target=https%3A//github.com/GitHberChen/Yolov1-Pytorch)
-to be continue原论文：**
+YOLOv1-Pytorch：[GitHberChen/Yolov1-Pytorch](https://link.zhihu.com/?target=https%3A//github.com/GitHberChen/Yolov1-Pytorch)
+to be continue原论文：
 
-**[You Only Look Once: Unified, Real-Time Object Detection](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/1506.02640)
+[You Only Look Once: Unified, Real-Time Object Detection](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/1506.02640)
 [YOLO9000: Better, Faster, Stronger](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/1612.08242)
-[YOLOv3: An Incremental Improvement](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/1804.02767)前期提过的物体检测的算法：**
+[YOLOv3: An Incremental Improvement](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/1804.02767)前期提过的物体检测的算法：
 
-**[SSD || 5分钟看懂CV顶刊论文](https://zhuanlan.zhihu.com/p/57399396)
+[SSD || 5分钟看懂CV顶刊论文](https://zhuanlan.zhihu.com/p/57399396)
 [R-CNN： 狼入羊群 || 5分钟看懂CV顶刊论文](https://zhuanlan.zhihu.com/p/62041286)
 [Fast R-CNN： 变快了，也变强了 || 5分钟看懂CV顶刊论文](https://zhuanlan.zhihu.com/p/62273673)
 [Faster R-CNN：这篇论文讲的是一个感人的爱情故事 || 5分钟看懂CV顶刊论文](https://zhuanlan.zhihu.com/p/62401362)
 
-本文目录：**
+本文目录：
 
 - <strong>YOLO发展路线</strong>
 - <strong>YOLOv1介绍</strong>
 - <strong>YOLOv2介绍</strong>
 - <strong>YOLOv3</strong>介绍
-**
 
-### 一、YOLO发展路线**
+### 一、YOLO发展路线
 
 YOLO作为物体检测领域中极具名气的算法，只因它拿下两个第一：
 
@@ -78,7 +77,6 @@ YOLOv2做出的改变还是挺多的，比较重要的有以下几点：
 
 不得不说，这论文写得真是清新脱俗。
 
-**
 
 调侃归调侃，Yolov3还是做了一些改变的，在论文中尝试了许多tricks，而且告诉了读者哪些有用，哪些没有用。其中最重要的还是主体网络的改变，提出了Darknet-53，且使用了多层级的Feature maps进行检测：
 
@@ -86,7 +84,7 @@ YOLOv2做出的改变还是挺多的，比较重要的有以下几点：
 
 接下来会对其分别作详细介绍。
 
-### 二、YOLOv1介绍**
+### 二、YOLOv1介绍
 
 <strong>1、主体网络结构</strong>
 
@@ -104,17 +102,16 @@ P(Obj)*P(Class_i|Obj)*IOU^{truth}_{pred}=P(Class_i)*IOU^{truth}_{pred}
 
 $其中 \lambda_{coord}=5,\lambda_{noobj}=0.5 ； \mathbb 1^{obj}_{i} 用于选择真框落入的那个； \mathbb 1^{obj}_{ij} 表示当真框的中心坐标落在格子 i 中时，选出真框 IOU 最大的那个box。$
 
-**参考链接：https://blog.csdn.net/guleileo/article/details/80581858
+参考链接：https://blog.csdn.net/guleileo/article/details/80581858
 
-2、激活函数**
+2、激活函数
 
 激活函数并非ReLU，而是Leaky ReLU，即：
 
 \phi(x)= \left\{   \begin{array}{leaky} x,&if\ x\gt 0 \\ 0.1x, & otherwise \end{array} \right. 
 
-**
 
-3、模型训练**
+3、模型训练
 
 - 采用VOC2007、VOC2012的训练集和交叉验证集，总共训练了135个epochs。
 - batch_size=64。
@@ -126,17 +123,16 @@ $其中 \lambda_{coord}=5,\lambda_{noobj}=0.5 ； \mathbb 1^{obj}_{i} 用于选�
 - 调整原始图像大小以及转换最高幅度至20%。
 - 在HSV颜色空间使用factor=1.5随机对曝光以及饱和度作调整
 
-**
 
-4、算法流程图**
+4、算法流程图
 
 ![](/images/collections/0.raw/zhihu/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%EF%BC%81/asset/img_3bba0ac5bc49.jpg)
 
-**参考链接：
+参考链接：
 https://blog.csdn.net/hrsstudy/article/details/70305791
 https://blog.csdn.net/hrsstudy/article/details/70305791
 
-5、个人感受**
+5、个人感受
 
 YOLOv1和Faster R-CNN个人都简单地用Pytorch实现过，最大的感受就是YOLO真的比Faster R-CNN快太多了，用CPU跑都很快。不过，YOLOv1的槽点也有不少，其一是在对物体的的定位上真的差，常常是可以准确地找出图中含有的物体种类，但标出来的框框很飘逸：
 
@@ -152,9 +148,8 @@ YOLOv1和Faster R-CNN个人都简单地用Pytorch实现过，最大的感受就�
 
 其二是YOLOv1模型真的太大了，锅在全连接层，光第一个全连接层就有206M的参数，将近需要1GB的内存了，作为对比，ResNet101模型大小不到200MB。
 
-**
 
-### 三、YOLOv2介绍**
+### 三、YOLOv2介绍
 
 <strong>1、Better</strong>
 
@@ -172,11 +167,10 @@ YOLOv1和Faster R-CNN个人都简单地用Pytorch实现过，最大的感受就�
 - 为了使YOLOv2在不同分辨率下依然有很好的表现，训练时每过19个Batch，网络会随机地选择一个新的图片尺寸，尺寸大小间隔选择为下采样的倍数，即32，可选大小为{320，352…..608}，最小 320*320，最大 608*608。这样使得YOLOv2 的速度和精度上进行权衡，在输入图片较小时跑得快，较大时精度高。
 在 voc2007 上的速度与精度对比：
 
-**
 
 ![](/images/collections/0.raw/zhihu/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%EF%BC%81/asset/img_84be5078e978.jpg)
 
-2、Faster**
+2、Faster
 
 作者自行自行设计了一个高效的网络结构Darknet-19作为特征提取网络，效果与VGG-16相当，运算量缩减为20%。
 
@@ -186,7 +180,7 @@ YOLOv1和Faster R-CNN个人都简单地用Pytorch实现过，最大的感受就�
 
 - 使用SGD优化器，momentum=0.9，decay=0.0005
 - 初始学习率0.1，采用指数为4的多项式衰减，训练160个epoch
-**参考链接：https://blog.csdn.net/dcrmg/article/details/80017200
+参考链接：https://blog.csdn.net/dcrmg/article/details/80017200
 
 - 数据增强手段和YOLOv1、SSD类似，使用：随机裁剪、旋转、色调调整、曝光调整。
 - 训练完后再在448\times 448分辨率下训练10个epoch，这会使Darknet的top-1、top-5从72.9%、91.2%分别提高到76.5%、93.3%。
@@ -199,7 +193,7 @@ YOLOv2的性能表现：
 
 ![](/images/collections/0.raw/zhihu/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%EF%BC%81/asset/img_c38c788534b8.jpg)
 
-3、Stronger**
+3、Stronger
 
 作者用WordTree的结构嵌套多个softmax，在VOC和ImageNet上联合训练得到了可以分类9000种的一个模型：
 
@@ -207,18 +201,17 @@ YOLOv2的性能表现：
 
 个人觉得并不实用，识别的准度糟糕，不过还是挺有意思的。
 
-**
 
-### 四、YOLOv3介绍**
+### 四、YOLOv3介绍
 
 <strong>1、YOLOv3性能</strong>
 
-**YOLOv3 在 Pascal Titan X 上处理 608x608 图像速度可以达到 20FPS，在 COCO test-dev 上 mAP@0.5 达到 57.9%，与RetinaNet（FocalLoss论文所提出的单阶段网络）的结果相近，并且速度快 4 倍。YOLO v3 的模型比之前的模型复杂了不少，可以通过改变模型结构的大小来权衡速度与精度。
+YOLOv3 在 Pascal Titan X 上处理 608x608 图像速度可以达到 20FPS，在 COCO test-dev 上 mAP@0.5 达到 57.9%，与RetinaNet（FocalLoss论文所提出的单阶段网络）的结果相近，并且速度快 4 倍。YOLO v3 的模型比之前的模型复杂了不少，可以通过改变模型结构的大小来权衡速度与精度。
 从YOLOv1到YOLOv3，目标检测的进化之路 - TinyMind -专注人工智能的技术社区速度对比如下：
 
 ![](/images/collections/0.raw/zhihu/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%EF%BC%81/asset/img_f850f267b20e.jpg)
 
-2、YOLOv3的改进**
+2、YOLOv3的改进
 
 - 使用了多尺度预测 （实用类似FPN的上采样），分割的格子数量分别是 13\times 13  、 26\times 26  、 52\times 52  。
 - 更佳的特征提取网络（类ResNet）DarkNet-53
@@ -230,9 +223,8 @@ YOLOv2的性能表现：
 - Softmax 可被独立的多个 logistic 分类器替代，且准确率不会下降。 
 - 分类损失采用 binary cross-entropy loss.
 
-**
 
-3、多尺度预测**
+3、多尺度预测
 
 锚框由k-means得出，每层分别负责三种尺寸，在COCO数据集下使用聚类得出：
 

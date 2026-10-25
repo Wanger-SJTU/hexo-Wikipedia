@@ -47,13 +47,13 @@ source_url: https://zhuanlan.zhihu.com/p/260693956
 - GPT-3
 - 更多待续
 
-### <strong>Overall</strong>
+### Overall
 
 Bert出来以后，迅速引爆了NLP领域，出现了很多的针对模型的改进。然而，Roberta用实力表明，只对原来的Bert模型调优就可以有明显的提升。
 
 Roberta，是Robustly Optimized BERT Approach的简称。
 
-** Robustly用词很赞，既有“鲁棒的”，又有”体力的”。Roberta是一片实验为基础的论文，有点体力活的意思，但是结果又非常的鲁棒可信赖。
+Robustly用词很赞，既有“鲁棒的”，又有”体力的”。Roberta是一片实验为基础的论文，有点体力活的意思，但是结果又非常的鲁棒可信赖。
  先来回顾一下Bert中的一些细节：
 
 - 在输入上，Bert的输入是两个segment，其中每个segment可以包含多个句子，两个segment用[SEP]拼接起来。
@@ -85,7 +85,7 @@ Roberta在如下几个方面对Bert进行了调优：
 - 输入编码
 - 大语料与更长的训练步数
 
-### Masking策略——静态与动态**
+### Masking策略——静态与动态
 
 原来的Bert中是在训练数据中静态的标上Mask标记，然后在训练中是不变的，这种方式就是静态的。
 
@@ -95,7 +95,7 @@ Roberta尝试了一种动态的方式，说是动态，其实也是用静态的�
 
 ![](/images/collections/0.raw/zhihu/dl%E8%AE%BA%E6%96%87/asset/img_7f31ab395521.jpg)
 
-### <strong>模型输入格式与Next Sentence Prediction</strong>
+### 模型输入格式与Next Sentence Prediction
 
 Bert的模型输入中是由两个segment组成的，因而就有两个问题：
 
@@ -111,11 +111,11 @@ Bert的模型输入中是由两个segment组成的，因而就有两个问题：
 
 另外，Full-Sentence和Doc-Sentence能够带来微小的提升，说明NSP不是必须的。
 
-** 这点跟Bert中的消融实验结论相反，但是请注意它们的输入还是不同的，原始Bert中的输入是Segment-Pair，有50%/50%的采样，而Full/Doc-Sentence中则是从文章中连续sample来的句子。![](/images/collections/0.raw/zhihu/dl%E8%AE%BA%E6%96%87/asset/img_be099e0fbe5c.jpg)
+这点跟Bert中的消融实验结论相反，但是请注意它们的输入还是不同的，原始Bert中的输入是Segment-Pair，有50%/50%的采样，而Full/Doc-Sentence中则是从文章中连续sample来的句子。![](/images/collections/0.raw/zhihu/dl%E8%AE%BA%E6%96%87/asset/img_be099e0fbe5c.jpg)
 
 因为Doc-Sentence会导致不同的batch_size（因为要保证每个batch见到的token数类似），所以在Roberta中，使用Full-Sentence模式。
 
-### Large-Batch**
+### Large-Batch
 
 现在越来越多的实验表明增大batch_size会使得收敛更快，最后的效果更好。原始的Bert中，batch_size=256，同时训练1M steps。
 
@@ -127,19 +127,19 @@ Bert的模型输入中是由两个segment组成的，因而就有两个问题：
 
 ![](/images/collections/0.raw/zhihu/dl%E8%AE%BA%E6%96%87/asset/img_ae8269daafdc.jpg)
 
-### <strong>输入编码</strong>
+### 输入编码
 
 不管是GPT还是Bert，都是用的BPE的编码方式，BPE是Byte-Pair Encoding的简称，是介于字符和词语之间的一个表达方式，比如hello，可能会被拆成“he”, "ll", "o", 其中BPE的字典是从语料中统计学习到的。
 
 原始Bert中，采用的BPE字典是30k， Roberta中增大到了50K，相对于Bertbase和Bertlarge会增加15M/20M的参数。
 
-### <strong>增大语料和训练步数</strong>
+### 增大语料和训练步数
 
 增大语料和训练步数还是能带来比较大的提升的。
 
 ![](/images/collections/0.raw/zhihu/dl%E8%AE%BA%E6%96%87/asset/img_a562dca03b4b.jpg)
 
-### <strong>Roberta</strong>
+### Roberta
 
 就是上面所有改进的总和。可以看到，在各项任务中的提升还是很大的。Roberta的训练在1024个 V100GPU上训练一天左右。
 
@@ -149,7 +149,7 @@ Bert的模型输入中是由两个segment组成的，因而就有两个问题：
 
 ![](/images/collections/0.raw/zhihu/dl%E8%AE%BA%E6%96%87/asset/img_91eefb1867de.jpg)
 
-### <strong>思考与总结</strong>
+### 思考与总结
 
 从上面的各种实验结果中看，可以得到如下结论：
 
@@ -158,13 +158,13 @@ Bert的模型输入中是由两个segment组成的，因而就有两个问题：
 - 增大batch size和增大训练数据能带来较大的提升。
 由于Roberta出色的性能，现在很多应用都是基于Roberta而不是原始的Bert去微调了。
 
-** 勤思考， 多提问是Engineer的良好品德。
+勤思考， 多提问是Engineer的良好品德。
  提问如下：
 
 - 继续增大数据集，还有没有可能提升？数据集的量与所带来的提升是一个什么分布？
 - 不管是Bert还是Roberta，训练时间都很长，如何进行优化？
 回答后续公布，欢迎关注公众号【雨石记】
 
-### 参考文献**
+### 参考文献
 
 - [1]. Liu, Yinhan, et al. "Roberta: A robustly optimized bert pretraining approach." arXiv preprint arXiv:1907.11692 (2019).

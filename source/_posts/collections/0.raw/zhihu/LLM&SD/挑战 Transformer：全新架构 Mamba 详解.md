@@ -27,7 +27,7 @@ source_url: https://zhuanlan.zhihu.com/p/684231320
 
 去购买​
 
-](https://union-click.jd.com/jdc?e=jdext-1953867897207234694-0-1&p=JF8BAUwJK1olXwIEU15fCE4VBV8IHlIdXwEKU24ZVxNJXF9RXh5UHw0cSgYYXBcIWDoXSQVJQwYHXVZfD0MQHDZNRwYlPnhcND47QTt3YjcASDhTQ3trAjogXkcbM28BG1kdXAcCU11tCEoWA2sNGFgTXDYyVFttWiXPtdnQvuoJiayNgdbKOEonA2kMElwVVAMDUldfCHsXC2s4zfWBiI69je743uG51uK4ztK-ibiEZG5tC3tMVjtBXkcVVQIAXVlbAUMRAG4OGFkQWg4HSF9BCHsUAm0NGFIdWAEEOltdCUsUAm8KElp7XwYDVVdZDkoRA18IK1glA2gDB1hfCRhDVgFUTB1GFkQDBjBYDUweBmgLGGsXXAcAVm5tOBVBYhx-QxMSHgdACggeWzgVYBpQSCBpL2gAFxsPdT93QAZLE1NLIHNVCS1tDXsXBW8KKw)**
+](https://union-click.jd.com/jdc?e=jdext-1953867897207234694-0-1&p=JF8BAUwJK1olXwIEU15fCE4VBV8IHlIdXwEKU24ZVxNJXF9RXh5UHw0cSgYYXBcIWDoXSQVJQwYHXVZfD0MQHDZNRwYlPnhcND47QTt3YjcASDhTQ3trAjogXkcbM28BG1kdXAcCU11tCEoWA2sNGFgTXDYyVFttWiXPtdnQvuoJiayNgdbKOEonA2kMElwVVAMDUldfCHsXC2s4zfWBiI69je743uG51uK4ztK-ibiEZG5tC3tMVjtBXkcVVQIAXVlbAUMRAG4OGFkQWg4HSF9BCHsUAm0NGFIdWAEEOltdCUsUAm8KElp7XwYDVVdZDkoRA18IK1glA2gDB1hfCRhDVgFUTB1GFkQDBjBYDUweBmgLGGsXXAcAVm5tOBVBYhx-QxMSHgdACggeWzgVYBpQSCBpL2gAFxsPdT93QAZLE1NLIHNVCS1tDXsXBW8KKw)
 
 ### 背景
 
@@ -446,7 +446,6 @@ $公式（26）表示矩阵 \bm{A} 可以分解为 \bm{V}^{-1}\left(  \bm{\Lambd
 
 $$\begin{align} &\bar{\bm{A}}=\left( \bm{I}-\Delta /2\cdot \bm{A} \right)^{-1}\left( \bm{I}+\Delta /2\cdot \bm{A} \right)\\ & \bar{\bm{B}}=\left( \bm{I}-\Delta /2\cdot \bm{A} \right)^{-1}\bm{B}\end{align} \tag{30}先考虑  \bm{I}+\Delta /2\cdot \bm{A}  ：  \begin{align}  \bm{I}+\Delta /2\cdot \bm{A} &= \bm{I}+\Delta /2\left( \bm{\Lambda}-\bm{PQ}^{\text{T}} \right)\\ &= \frac{\Delta}{2}\left[ \frac{2}{\Delta}+ \left( \bm{\Lambda}-\bm{PQ}^{\text{T}} \right)\right]\\ &=\frac{\Delta}{2}\bm{A}_0 \end{align} \tag{31}$$
 
-**
 
 $然后计算 \left(  \bm{I}-\Delta /2\cdot \bm{A}  \right)^{-1} ：$
 
@@ -456,7 +455,7 @@ $$现在，我们可以将公式（30）重新表示为下面的形式： \begin
 
 $\begin{align} &\bm{x}_k=\bar{\bm{A}}\bm{x}_{k-1}+\bar{\bm{B}}{u}_k=\bm{A}_1\bm{A}_0\bm{x}_{k-1}+2\bm{A}_1\bm{B}{u}_k\\ &{y}_k=\bm{Cx}_k \end{align} \tag{34}可以看到矩阵 \bm{A}_1 和矩阵 \bm{A}_0中的乘法运算都是矩阵-向量乘法（Matrix-Vector Multiplications，MVM）。因为它们都是对角矩阵+低秩矩阵，因此计算复杂度为 O\left( N \right) MVM。$
 
-卷积计算复杂度**
+卷积计算复杂度
 
 这一块就不再具体介绍了，感兴趣的可以直接去看原论文，在论文的附录 C.3 有详细的分析过程。
 
@@ -658,7 +657,7 @@ multiply and sum with C，得到最后的(B,L,D) output 写入HBM
 - 对矩阵 A 进行 HiPPO 初始化，以捕获远程依赖关系；
 - 选择性扫描算法，有选择地压缩信息；
 - 硬件感知算法，加速计算；
-**下面是一个端到端（输入到输出）的例子：
+下面是一个端到端（输入到输出）的例子：
 
 ![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_fad3ee3f5ae7.jpg)
 
@@ -669,7 +668,7 @@ multiply and sum with C，得到最后的(B,L,D) output 写入HBM
 图5-15：Mamaba和Transformer以及RNN对比
 #### 5.5 实验
 
-之前提到 \Delta 的作用类似遗忘门，而遗忘门毫无疑问是 LSTM 里面最重要的门，下面这个消融实验结果就论证了 \Deltadata dependent 影响最大。**
+之前提到 \Delta 的作用类似遗忘门，而遗忘门毫无疑问是 LSTM 里面最重要的门，下面这个消融实验结果就论证了 \Deltadata dependent 影响最大。
 
 ![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_f12632009e5f.jpg)
 
@@ -685,7 +684,7 @@ multiply and sum with C，得到最后的(B,L,D) output 写入HBM
 
 实验证明了 Mamba 的优秀，但是还需要更长的时间检验，目前还没有 10B 以上的 Mamba 模型，就让时间来检验。
 
-### <strong>参考</strong>
+### 参考
 
 [Mamba: Linear-Time Sequence Modeling with Selective State Spaces](https://link.zhihu.com/?target=https%3A//arxiv.org/pdf/2312.00752.pdf)
 

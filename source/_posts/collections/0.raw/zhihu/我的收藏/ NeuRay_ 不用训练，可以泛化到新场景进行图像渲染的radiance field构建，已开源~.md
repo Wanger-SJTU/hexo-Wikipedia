@@ -59,8 +59,8 @@ source_url: https://zhuanlan.zhihu.com/p/495709285
 
 感兴趣的话，可以去看看paper。除了泛化到新场景外，我们还在paper中讨论了1）在某个特定场景内finetune时，NeuRay可以引入一个记忆的机制去记住场景的几何信息，从而进一步更好的重建整个场景。 2）NeuRay可以大致估计surface的位置去加速渲染。当然，我们现在的模型也还有很多提升空间：我们主要还是基于输入图像之间的特征匹配来构建用于渲染的场景表达；当特征匹配无法进行或者比较困难的时候（例如高光表面、繁杂重复纹理等），依然会出现artifacts。欢迎大家去尝试代码，关于论文或代码的任何问题也欢迎来讨论~
 
-**相关文献
-**[1] Wang Q, Wang Z, Genova K, et al. IBRNet: Learning multi-view image-based rendering. CVPR 2021.
+相关文献
+[1] Wang Q, Wang Z, Genova K, et al. IBRNet: Learning multi-view image-based rendering. CVPR 2021.
 [2] Chen A, Xu Z, Zhao F, et al. MVSNeRF: Fast generalizable radiance field reconstruction from multi-view stereo. ICCV 2021.
 [3] Yu A, Ye V, Tancik M, et al. PixelNeRF: Neural radiance fields from one or few images. CVPR 2021.
 [4] Chibane J, Bansal A, Lazova V, et al. Stereo Radiance Fields (SRF): Learning view synthesis for sparse views of novel scenes. CVPR 2021

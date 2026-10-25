@@ -93,7 +93,7 @@ $$s*cos(\theta) = s*\frac{W}{|W|} *\frac{X}{|X|} $$
 
 ![](/images/collections/0.raw/zhihu/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%EF%BC%81/asset/img_a7dfd07c5065.jpg)
 
-**可以看到，m就意味着类别之间的那个距离。添加了参数m，会有两个好处，扩大了类间距，缩小了类内距。从而使分类的效果更好。
+可以看到，m就意味着类别之间的那个距离。添加了参数m，会有两个好处，扩大了类间距，缩小了类内距。从而使分类的效果更好。
 
 下面，我们看下原论文上面的使用arcface loss的flow chart：
 
@@ -105,7 +105,7 @@ $$s*cos(\theta) = s*\frac{W}{|W|} *\frac{X}{|X|} $$
 
 下面进入第三个loss：
 
-Cosine Face loss：**
+Cosine Face loss：
 
 ![](/images/collections/0.raw/zhihu/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%EF%BC%81/asset/img_3ee219e920a8.jpg)
 

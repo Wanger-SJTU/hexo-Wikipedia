@@ -17,7 +17,6 @@ source_url: https://zhuanlan.zhihu.com/p/433869519
 
 <strong>撰文 | 袁进辉</strong>
 
-**
 
 GShard的论文最早于2020.6.30放在arXiv上，包括《GShard: Scaling Giant Models with Conditional Computation and Automatic Sharding (*[https://arxiv.org/pdf/2006.16668.pdf](https://link.zhihu.com/?target=https%3A//arxiv.org/pdf/2006.16668.pdf)*）》，还有一篇更系统的系统论文《GSPMD: General and Scalable Parallelization for ML Computation Graphs (*[https://arxiv.org/pdf/2105.04663.pdf](https://link.zhihu.com/?target=https%3A//arxiv.org/pdf/2105.04663.pdf)*)》。
 
@@ -27,13 +26,12 @@ GShard is a module composed of a set of lightweight annotation APIs and an exten
 
 我也不打算过多介绍文章的细节，这些内容在原论文里都可以看到，只介绍一些背景信息，以及从OneFlow里做过的类似工作来评价一下GShard还有哪些可改进的地方。只有把GShard放在上下文里去看，才能更清楚地看到它的好和不好。
 
-### 1、与GShard类似的工作带来的启发**
+### 1、与GShard类似的工作带来的启发
 
-**
 
 这要从数据并行和模型并行说起，先列一下我知道的在GShard之前的相关工作。
 
-1. One weird trick for parallelizing convolutional neural networks**
+1. One weird trick for parallelizing convolutional neural networks
 
 这也许是最早探讨模型并行的文章，由Alex Krizhevsky (没错，就是AlexNet那位）在2014年发表在arXiv上（*[https://arxiv.org/pdf/1404.5997.pdf](https://link.zhihu.com/?target=https%3A//arxiv.org/pdf/1404.5997.pdf)*）。
 
@@ -41,11 +39,10 @@ GShard is a module composed of a set of lightweight annotation APIs and an exten
 
 ![](/images/collections/0.raw/zhihu/%E8%B5%B0%E5%90%91cs/asset/img_a807d416552a.jpg)
 
-**
 
 这最早是在cuda-convnet这个史前的深度学习框架上实现的，现在知道这套软件的人比较少了。
 
-2. Exploring Hidden Dimensions in Parallelizing Convolutional Neural Networks**
+2. Exploring Hidden Dimensions in Parallelizing Convolutional Neural Networks
 
 这篇由Zhihao Jia在2018年发在ICML（链接：https://cs.stanford.edu/~zhihao/papers/icml18.pdf），他在这个方向上发表过2篇很有影响力的文章。
 
@@ -73,7 +70,6 @@ Tofu提出了一套DSL，方便开发者描述张量的划分策略，使用了�
 
 ![](/images/collections/0.raw/zhihu/%E8%B5%B0%E5%90%91cs/asset/img_c04128fbdad1.jpg)
 
-**
 
 Tofu与所有其它工作的不同之处在于，它的关注点是operator的划分，其它工作的关注点是tensor的划分，二者当然是等价的。不过，我认为关注点放在tensor的划分上更好一些，这不需要用户修改operator的实现，Tofu需要在DSL里描述operator的实现方式。
 
@@ -83,7 +79,7 @@ Tofu与所有其它工作的不同之处在于，它的关注点是operator的�
 
 这篇文章讨论了这套解决办法的适用范围，以及有什么问题解决不了，这是同类工作中比较难得的。特别是限定了partition-n-reduce的模式，其实GShard也是这种模式。partition and reduce也包含小小的缺陷，其实partition之后，不见得”立刻“unreduced, 可以让中间的partial结果在系统里继续参与计算，这样反而有可能效率更优，OneFlow的SBP标注体系之所以引入了P（partial）的原因也在此。
 
-5. Mesh-TensorFlow: Deep Learning for Supercomputers**
+5. Mesh-TensorFlow: Deep Learning for Supercomputers
 
 这篇是Google Brain在NIPS 2018上发表的Mesh-TensorFlow（*[https://arxiv.org/pdf/1811.02084.pdf](https://link.zhihu.com/?target=https%3A//arxiv.org/pdf/1811.02084.pdf)*）。需要注意的是，Mesh-TensorFlow的作者和GShard的作者几乎是重叠的，Mesh-TensorFlow甚至可以被看作GShard的前身。
 
@@ -91,23 +87,20 @@ Mesh-TensorFlow的核心理念也是beyond batch splitting，数据并行是batc
 
 ![](/images/collections/0.raw/zhihu/%E8%B5%B0%E5%90%91cs/asset/img_960a6b1a8566.jpg)
 
-**
 
 我认为，Mesh-TensorFlow的不足主要是需要给张量的维度命名，这种命名是反抽象，会丢失一般性，当然GShard作为后续工作，克服了这个问题，也是GShard的进步之处。
 
 好的，文献综述到此为止，我们总结一下：
 
-- 所有这些工作的目的都是提供一个与编程语言”类型系统“类似的annotation 体系，这个体系需要最简且完备，这个体系定义了”自动并行“的搜索空间。**
+- 所有这些工作的目的都是提供一个与编程语言”类型系统“类似的annotation 体系，这个体系需要最简且完备，这个体系定义了”自动并行“的搜索空间。
 - <strong>搜索空间中的任何一种构型，也就是任何一种并行策略，在数学上都是正确的，它们的区别仅仅是执行效率不同，我们目的是找到效率最高的并行策略。</strong>
 - <strong>框架需要这样一种能力，给定任何一种构型，都能翻译和转换成一个物理图（执行计划），确保这个并行策略可以成功执行，即使它的效率不高。</strong>
 - <strong>框架最好能够自动搜索到效率最高的那个构型。</strong>
-**
 
 从这些维度来考察所有这些工作，我们就可以对每一件工作做出评价，当然也可以评价GShard。
 
-### 2、GShard需要改进的地方**
+### 2、GShard需要改进的地方
 
-**
 
 GShard 提供了3种类型的标注，即：
 
@@ -125,7 +118,6 @@ GShard 提供了3种类型的标注，即：
 
 ![](/images/collections/0.raw/zhihu/%E8%B5%B0%E5%90%91cs/asset/img_60c089f06086.jpg)
 
-**
 
 同样一个逻辑张量，在两个设备上可以有以上几种映射方式。
 
@@ -139,7 +131,6 @@ GShard 提供了3种类型的标注，即：
 
 ![](/images/collections/0.raw/zhihu/%E8%B5%B0%E5%90%91cs/asset/img_fee979c519f1.jpg)
 
-**
 
 多维SBP可以有非常强大的功能，譬如基于SBP实现下面这篇文章描述的2D矩阵乘就非常便利：An Efficient 2D Method for Training Super-Large Deep Learning Models (*[https://arxiv.org/pdf/2104.05343.pdf](https://link.zhihu.com/?target=https%3A//arxiv.org/pdf/2104.05343.pdf)*)。
 
@@ -155,6 +146,6 @@ GShard 提供了3种类型的标注，即：
 - [一文详解OneFlow的DataLoader实现](https://link.zhihu.com/?target=http%3A//mp.weixin.qq.com/s%3F__biz%3DMzU5ODY2MTk3Nw%3D%3D%26mid%3D2247486090%26idx%3D1%26sn%3Dd8b6fb99e01668a3321ec988c7d878f0%26chksm%3Dfe4184bcc9360daa8228defb240b3ab069c4b9cafd5aedf56d25bc3794fe36395ffdb54ec983%26scene%3D21%23wechat_redirect)
 - [没有这个传奇工程师，就没有今天的Windows](https://link.zhihu.com/?target=http%3A//mp.weixin.qq.com/s%3F__biz%3DMzU5ODY2MTk3Nw%3D%3D%26mid%3D2247486116%26idx%3D1%26sn%3D357b176a1dcdf7c9840b8d83c9ce7014%26chksm%3Dfe418492c9360d84af75031c7b267b88d72d6f9bf2ef3eb55dedd0a434010efa23169456dcf3%26scene%3D21%23wechat_redirect)
 - [如何实现比PyTorch快6倍的Permute/Transpose算子](https://link.zhihu.com/?target=http%3A//mp.weixin.qq.com/s%3F__biz%3DMzU5ODY2MTk3Nw%3D%3D%26mid%3D2247486069%26idx%3D1%26sn%3Da9f6a8f35b8da27e9cb58f34a392e779%26chksm%3Dfe418443c9360d55384e89042954ce39361d0ef3ce199e51de8794228d5f4ad9e8f1e09854c8%26scene%3D21%23wechat_redirect)
-欢迎下载体验OneFlow新一代开源深度学习框架：[https://github.com/Oneflow-Inc/oneflow](https://link.zhihu.com/?target=https%3A//github.com/Oneflow-Inc/oneflow)**
+欢迎下载体验OneFlow新一代开源深度学习框架：[https://github.com/Oneflow-Inc/oneflow](https://link.zhihu.com/?target=https%3A//github.com/Oneflow-Inc/oneflow)
 
 https://u.wechat.com/MJIuTeMuRXsF4cvGWz38of0 (二维码自动识别)

@@ -33,13 +33,12 @@ AI复现：[https://github.com/guoqixin1/kv-distill](https://link.zhihu.com/?tar
 
 约翰斯·霍普金斯大学，微软
 
-### <strong>前言</strong>
+### 前言
 
 KV-Cache是当前常用的推理加速手段，通过空间换时间的方式提高大模型推理速度。然而这一置换也导致了严重的显存开销，尤其是在长上下文场景下，部署成本极大。于是作者想要舍弃掉部分token的kv缓存，然后通过蒸馏的方式让模型保持原本性能
 
-**
 
-### 相关工作：H2O kv驱逐算法**
+### 相关工作：H2O kv驱逐算法
 
 有一篇类似的前置工作：[https://arxiv.org/pdf/2306.14048](https://link.zhihu.com/?target=https%3A//arxiv.org/pdf/2306.14048)
 
@@ -55,11 +54,10 @@ KV-Cache是当前常用的推理加速手段，通过空间换时间的方式提
 
 除了通过上述两种方法保存重要token外，还需要保留一部分最近产生的token，相当于引入“邻近的信息也很重要”这一先验知识
 
-**
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_6e8ad61f197e.jpg)
 
-### 本文方法**
+### 本文方法
 
 相对于上述kv驱逐算法，主要有以下改动：
 
@@ -85,35 +83,31 @@ KV-Cache是当前常用的推理加速手段，通过空间换时间的方式提
 
 同时使用正向和反向 KL 散度的组合目标函数能够获得最佳性能。仅使用正向或反向 KL 散度的模型性能显著下降，而使用自编码和语言建模目标（如 ICAE 和 DODO）的模型性能则更差
 
-**
 
-### 实验效果**
+### 实验效果
 
-#### <strong>一、大海捞针测试</strong>
+#### 一、大海捞针测试
 
-**
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_1987e7151c5b.jpg)
 
 与H2I方法相比，KV-distill保持了较好的长上下文检索能力，即使是在压缩率90%时也能保持较好的准确性
 
-#### 二、抽取式问答测试**
+#### 二、抽取式问答测试
 
-**
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_052b4a45d996.jpg)
 
 应用到各个模型中，长文本抽取式问答的zero-shot准确率均好于对照组
 
-#### 三、理解性问答测试**
+#### 三、理解性问答测试
 
-**
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_82ed257baeb1.jpg)
 
 在长文本理解性问答测试中（需要深入理解上下文才能回答问题），KV-Distill方法即使是在90%的压缩率下，也保持了和原始模型相当的性能
 
-#### 四、摘要生成测试**
+#### 四、摘要生成测试
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_0b9cae2f3a81.jpg)
 

@@ -222,7 +222,7 @@ $\begin{align} p_{i+2}&=\text{Softmax}\left( \text{LM_Head}\left( f_{i+1} \right
 
 于是提出 <strong>EAGLE-2</strong>：利用 draft 的置信度近似接受率，<strong>动态调整 draft tree</strong>，目标是“每轮验稿能接受更多 token”。 
 
-#### <strong>2.1</strong>上下文相关的接受率
+#### 2.1 **上下文相关的接受率
 
 EAGLE 总是用固定（static）的 draft tree 形状；EAGLE-2 会根据上下文动态调整 draft tree 形状。比如下面的例子：
 
@@ -232,7 +232,7 @@ EAGLE 总是用固定（static）的 draft tree 形状；EAGLE-2 会根据上下
 
 - EAGLE（静态树）会怎么做？因为树形固定，它“无论上下文是否确定”都会在这个位置塞多个候选分支：除了正确候选 “1”，还会再加一个候选（图注举例是 “3”）。但在这种上下文里，“3” 成为正确下一个 token 的概率极低，所以这个额外分支基本是在浪费 compute / verify budget。
 - EAGLE-2（动态树）会怎么做？因为它会看上下文“有多确定”，对于这种简单 query，它<strong>只放一个候选 “1”</strong>，不再硬塞第二个分支。** 
-(B) Query = “10+2”**
+(B) Query = “10+2”
 
 当 query 变成 <strong>“10+2”</strong>（注意没有等号）时，下一个 token 变得难预测，因此 EAGLE-2 会在这里加 <strong>两个候选</strong>。
 
@@ -254,7 +254,7 @@ EAGLE 总是用固定（static）的 draft tree 形状；EAGLE-2 会根据上下
 <strong>关键观察 2：但同一位置的方差很大——接受率强烈“上下文相关”</strong>
 
 - 更重要的是：<strong>即便固定在同一个位置（比如都在 P3），不同 query 的接受率也会差很多</strong>。论文明确说他们观察到了 *significant variance*，因此接受率“不仅与位置有关，也与上下文有关”。 
-**静态草稿树只能利用“位置先验”，但无法利用“上下文难度差异”；而上下文差异很大，所以静态树存在天然上限，动态树有更大潜力。 
+静态草稿树只能利用“位置先验”，但无法利用“上下文难度差异”；而上下文差异很大，所以静态树存在天然上限，动态树有更大潜力。 
 
 这就是 EAGLE-2 后面要做的事：让草稿树结构随着上下文而变（context-aware dynamic draft tree）**，把 token/分支预算动态投到更可能被接受的地方。
 
@@ -324,9 +324,9 @@ $- 于是用 draft model 的 <strong>confidence score</strong> c_j  近似 p_j �
 ![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_6219d7c18b31.jpg)
 
 图 2-7：Attention mask
-#### ** 2.4 实验
+#### 2.4 实验
 
-指标：**
+指标：
 
 - <strong>Speedup Ratio</strong>：相对 vanilla AR 的真实加速比。 
 - <strong>Average Acceptance Length τ</strong>：每个“draft→verify”循环平均能被接受的 token 数。  

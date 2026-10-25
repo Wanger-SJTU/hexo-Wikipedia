@@ -27,7 +27,6 @@ source_url: https://zhuanlan.zhihu.com/p/36624193
 
 [本文介绍我与李远志的NIPS'17论文 Convergence Analysis of Two-layer Neural Networks with ReLU Activation]
 
-**
 
 神经网络很神奇的地方是，你设计一个不算复杂的结构（那些一百层一千层的网络，其实每一层长得都差不多），使用一个非常简单的算法（SGD，Stochastic Gradient Descent，如果你对这个算法不熟悉，可以读一下我之前的[博文](https://zhuanlan.zhihu.com/p/27609238)），加上海量的数据，居然能够表现得那么好。假如用这种东西就能够实现强人工智能，那么和我们从小接受的教育，即“人脑是一个复杂而精致的奇迹”，还是有很大出入的——也许我们脑袋里每天做的运算不过就是SGD的一个变体罢了。
 
@@ -101,7 +100,7 @@ source_url: https://zhuanlan.zhihu.com/p/36624193
 
 基于这个势能函数，我们可以证明如下的引理：
 
-**如果 g\leq \alpha ， \alpha 是一个常数，那么当前的 I+W 的导数是指向 I+W^* 的（即夹角小于90度）。
+如果 g\leq \alpha ， \alpha 是一个常数，那么当前的 I+W 的导数是指向 I+W^* 的（即夹角小于90度）。
 
 也就是说，势能函数 g 控制了 I+W 是否处于对于 I+W^* 的单点凸区域。换句话说，如果我们知道 g 非常小，那么 I+W 就处于单点凸区域，那么SGD就会很容易收敛了。
 

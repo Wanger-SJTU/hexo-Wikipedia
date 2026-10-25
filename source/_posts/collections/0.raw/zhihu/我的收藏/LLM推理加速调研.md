@@ -21,7 +21,6 @@ source_url: https://zhuanlan.zhihu.com/p/699776257
 - 介绍了推理阶段的prefilling（主要方向：计算优化）和decoding（主要方向：内存优化）差异。
 - prefilling优化方面，针对流行的FlashAttention和PagedAttention和Lmdeploy等优缺点进行了详细讲解。
 - decoding优化方面，主要有多token预测、降低kv cache等方法。
-**
 
 ### [A Survey on Efficient Inference for Large Language Models](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2404.14294)
 
@@ -53,14 +52,13 @@ LLM推理时的Memory和Latency变化<strong>问题：</strong>随着context的�
 
 模型在小bs*短seq情况下，会出现传输瓶颈，当数据量增大到一定程度，会碰到计算瓶颈。
 
-**[极市开发者平台-计算机视觉算法开发落地平台-极市科技](https://link.zhihu.com/?target=https%3A//www.cvmart.net/community/detail/8245)
+[极市开发者平台-计算机视觉算法开发落地平台-极市科技](https://link.zhihu.com/?target=https%3A//www.cvmart.net/community/detail/8245)
 
-*推理优化***
+*推理优化*
 
 - <strong>数据优化</strong>：prompt总结、压缩、检索
 - <strong>模型优化</strong>：1、GQA、GLA、MOE等；2、量化、蒸馏等
 - <strong>系统优化</strong>：vllm、lmdeploy、tensorRT等
-**
 
 #### 1、数据优化
 
@@ -70,7 +68,7 @@ prompt总结、压缩、检索（RAG）。其中RAG用的最多，其他都用�
 
 #### 
 
-2、模型级别优化**
+2、模型级别优化
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_e1a9c7b4f5de.jpg)
 
@@ -89,7 +87,7 @@ prompt总结、压缩、检索（RAG）。其中RAG用的最多，其他都用�
 
 还有稀疏Attention、线性Attention，其他更大的架构变化还有[KAN](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2404.19756)、[megalodon](https://link.zhihu.com/?target=https%3A//github.com/XuezheMax/megalodon)、[mamba](https://link.zhihu.com/?target=https%3A//github.com/state-spaces/mamba)等
 
-架构调整需要重新训练LLM，耗时耗力，只有头部公司在做。剩下99%的公司都在pretrained model上做SFT和RLHF，无法修改预训练模型的结构。**
+架构调整需要重新训练LLM，耗时耗力，只有头部公司在做。剩下99%的公司都在pretrained model上做SFT和RLHF，无法修改预训练模型的结构。
 
 剩下比较好用的就是量化、剪枝、蒸馏等。其中相对来说量化最成熟，用的最多的有GPTQ和AWQ。
 
@@ -104,7 +102,7 @@ prompt总结、压缩、检索（RAG）。其中RAG用的最多，其他都用�
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_e0ea1b7d58a2.jpg)
 
-由图可看出，prefill阶段加速比基本在0.9~1之间，变化不大。decoding阶段加速比可在2倍左右。**
+由图可看出，prefill阶段加速比基本在0.9~1之间，变化不大。decoding阶段加速比可在2倍左右。
 
 #### 3、系统级别优化
 
@@ -118,7 +116,7 @@ prompt总结、压缩、检索（RAG）。其中RAG用的最多，其他都用�
 
 - Prefilling：**假设 prompt 的长度是 350 token，那么预填充所需要的时间 = number of tokens * ( number of parameters / accelerator compute bandwidth) = 350 * (2 * 7B) FLOP / 125 TFLOP/s = 39 ms（A10)。这个阶段主要是计算瓶颈。
 - <strong>decoding：</strong>time/token = total number of bytes moved (the model weights) / accelerato     r memory bandwidth = (2 * 7B) bytes / (600 GB/s) = 23 ms/token（A10)。这个阶段的瓶颈是带宽。
-**[大语言模型（LLM）推理性能优化以及推理框架、后端的评测 · Issue #107 · ninehills/blog](https://link.zhihu.com/?target=https%3A//github.com/ninehills/blog/issues/107)
+[大语言模型（LLM）推理性能优化以及推理框架、后端的评测 · Issue #107 · ninehills/blog](https://link.zhihu.com/?target=https%3A//github.com/ninehills/blog/issues/107)
 
 prefilling阶段的计算效率要高很多。prefilling数据量较大，更容易遇到计算瓶颈，这时候的优化方向是算子合并、简化等，降低模型计算量。
 
@@ -148,12 +146,12 @@ prefilling阶段对计算资源的需求量极大，哪怕是小批次的预填�
 
 既然decoding的多次迭代耗时，那么自然而然的一个想法就是减少迭代次数。所以有个下面这篇一次预测多个token的论文。（需要修改模型架构**）
 
-**[next-token被淘汰！Meta实测多token训练方法，推理提速3倍](https://link.zhihu.com/?target=https%3A//www.toutiao.com/article/7376159248470655527/%3Fapp%3Dnews_article%26group_id%3D7376159248470655527%26req_id%3D20240604003754357885CCD4C954C5662D%26share_token%3D60fa138b-d713-461c-b951-99700c9f35ae%26timestamp%3D1717432675%26tt_from%3Dcopy_link%26use_new_style%3D1%26utm_campaign%3Dclient_share%26utm_medium%3Dtoutiao_android%26utm_source%3Dcopy_link%26source%3Dm_redirect)
+[next-token被淘汰！Meta实测多token训练方法，推理提速3倍](https://link.zhihu.com/?target=https%3A//www.toutiao.com/article/7376159248470655527/%3Fapp%3Dnews_article%26group_id%3D7376159248470655527%26req_id%3D20240604003754357885CCD4C954C5662D%26share_token%3D60fa138b-d713-461c-b951-99700c9f35ae%26timestamp%3D1717432675%26tt_from%3Dcopy_link%26use_new_style%3D1%26utm_campaign%3Dclient_share%26utm_medium%3Dtoutiao_android%26utm_source%3Dcopy_link%26source%3Dm_redirect)
 根据模型参数越小，速度越快。prefill速度比多次decode更快的结论。也可以通过小模型对prompt生成结果（prefilling+decoding），再将prompt+结果一起输入大模型（prefilling），达到加速目的。（ps：这个不一定能快多少，但是用不好的话会慢不少。。。）
 
 > [Accelerating Large Language Model Decoding with Speculative Sampling](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2302.01318)
 
-#### KV Cache Compression**
+#### KV Cache Compression
 
 [https://github.com/opengear-project/GEAR/tree/main](https://link.zhihu.com/?target=https%3A//github.com/opengear-project/GEAR/tree/main)
 
@@ -166,7 +164,6 @@ GEAR通过三种互补技术来分解和压缩KV矩阵：
 - 引入稀疏矩阵来纠正异常条目的个别误差。
 内存压缩可以降低kvcache内存，提高decoding效率。
 
-**
 
 #### draft模型和原始模型联合推理
 
@@ -234,7 +231,7 @@ run_flash_fwd函数如下
 
 flash_fwd_kernel参数
 
-kernel为flash_fwd_kernel，通常可以理解为一个kernel会开启一个进程，对应一个grid进行管理。*同一个grid上的所有线程共享相同的全局内存空间。***
+kernel为flash_fwd_kernel，通常可以理解为一个kernel会开启一个进程，对应一个grid进行管理。*同一个grid上的所有线程共享相同的全局内存空间。*
 
 grid中可以创建很多block（最大block数量在几亿级别以上，但是建议按需使用。不管1维2维还是3维，使用的总block数量一样的情况下，不同维度创建的位置排布不同，所以访问速度上还是有些差异。因此需要根据数据类型的维度来选择grid的维度）。每个block中又可以创建很多个线程。最终所有线程同时对数据进行处理。
 
@@ -248,7 +245,7 @@ grid参数为(num_m_block, params.b, params.h)，代表着分配的block数目�
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_cdc5cd491a60.jpg)
 
-b*seqlen不变时，相同的数据和计算量。pytorch的耗时基本不变，而FlashAttention的耗时随着bs变小而越来越长！！！因此FlashAttention并不适合小批量的推理场景。**
+b*seqlen不变时，相同的数据和计算量。pytorch的耗时基本不变，而FlashAttention的耗时随着bs变小而越来越长！！！因此FlashAttention并不适合小批量的推理场景。
 
 一个block上的线程是放在同一个流式多处理器（SM)上的。比如在FlashAttention的代码中，kNWarps_为4 or 8，每个Warp是32个线程（每一次最基本调度指令就会执行32个线程），那么每个block会调用128 or 256个线程。而在SM中，通常最大上限为512 or 1024个线程。那么1个SM可以多个block。
 

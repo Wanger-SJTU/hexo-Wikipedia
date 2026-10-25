@@ -138,7 +138,7 @@ MOE 架构的基本思想是在传统 Transformer 模型中，将每个前馈网
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_ae057997626b.jpg)
 
-token“:”的专家分配**
+token“:”的专家分配
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_667267a92421.jpg)
 

@@ -23,7 +23,6 @@ source_url: https://zhuanlan.zhihu.com/p/1888313027880808563
 
 [https://mp.weixin.qq.com/s?__biz=MzUxNzQ5MTExNw==&mid=2247493977&idx=1&sn=ceac5ef24a45f7dfb09199870967e3f4&chksm=f8e9636bc173881c2bfb98e07b1d3fa4236114039e2328133c71803acfb12ab7f157fe8b7242&mpshare=1&srcid=0415qNRixVZPat9CTQZaKx9J&sharer_shareinfo=ba0618139b9a20732bd7a490f1294d63&sharer_shareinfo_first=ba0618139b9a20732bd7a490f1294d63&from=timeline&scene=2&subscene=2&sessionid=1745123867&clicktime=1745129196&enterid=1745129196&ascene=45&fasttmpl_type=0&fasttmpl_fullversion=7694450-zh_CN-zip&fasttmpl_flag=0&realreporttime=1745129196535&devicetype=android-31&version=28003953&nettype=cmnet&lang=zh_CN&countrycode=CN&exportkey=n_ChQIAhIQ3EmUvbBbBmU5QjYtn0F%2FlxL1AQIE97dBBAEAAAAAACzFJfKpHk8AAAAOpnltbLcz9gKNyK89dVj0XvqQBKTY5lqmcRFDvWdlG5tlpbHxxXWab16PGvcYK7RK2YTBOhbcpRHfgS6uZunhgc06rs%2BvMdXYlJaWhEeW9vajyGT%2BlHM1K1yJhX58yl1XMql%2Bwsbs%2FpJv2UVS%2BoOcbgNxCaJjuCzgMSHwfe9Hq%2B6j4lKJn0CkXeIbQpPTIlMeG%2BIgQpdh1punI2ks2ad55mmRetpOrUtO141rQ1WT8k2ZxNaq6sBqZhM7uL9tjydkNJQZghY6veqW%2F75hPVoh94qoCh4Nebu7sEV9j0kG&pass_ticket=iuFwoviSBXE%2B5B%2BcT7f5YrrAeh6Gx8Jl7VH8EI621BLXSqs3MwohRCeJ66HjBt3h&wx_header=3mp.weixin.qq.com/s?__biz=MzUxNzQ5MTExNw==&mid=2247493977&idx=1&sn=ceac5ef24a45f7dfb09199870967e3f4&chksm=f8e9636bc173881c2bfb98e07b1d3fa4236114039e2328133c71803acfb12ab7f157fe8b7242&mpshare=1&srcid=0415qNRixVZPat9CTQZaKx9J&sharer_shareinfo=ba0618139b9a20732bd7a490f1294d63&sharer_shareinfo_first=ba0618139b9a20732bd7a490f1294d63&from=timeline&scene=2&subscene=2&sessionid=1745123867&clicktime=1745129196&enterid=1745129196&ascene=45&fasttmpl_type=0&fasttmpl_fullversion=7694450-zh_CN-zip&fasttmpl_flag=0&realreporttime=1745129196535&devicetype=android-31&version=28003953&nettype=cmnet&lang=zh_CN&countrycode=CN&exportkey=n_ChQIAhIQ3EmUvbBbBmU5QjYtn0F%2FlxL1AQIE97dBBAEAAAAAACzFJfKpHk8AAAAOpnltbLcz9gKNyK89dVj0XvqQBKTY5lqmcRFDvWdlG5tlpbHxxXWab16PGvcYK7RK2YTBOhbcpRHfgS6uZunhgc06rs%2BvMdXYlJaWhEeW9vajyGT%2BlHM1K1yJhX58yl1XMql%2Bwsbs%2FpJv2UVS%2BoOcbgNxCaJjuCzgMSHwfe9Hq%2B6j4lKJn0CkXeIbQpPTIlMeG%2BIgQpdh1punI2ks2ad55mmRetpOrUtO141rQ1WT8k2ZxNaq6sBqZhM7uL9tjydkNJQZghY6veqW%2F75hPVoh94qoCh4Nebu7sEV9j0kG&pass_ticket=iuFwoviSBXE%2B5B%2BcT7f5YrrAeh6Gx8Jl7VH8EI621BLXSqs3MwohRCeJ66HjBt3h&wx_header=3](https://link.zhihu.com/?target=https%3A//mp.weixin.qq.com/s%3F__biz%3DMzUxNzQ5MTExNw%3D%3D%26mid%3D2247493977%26idx%3D1%26sn%3Dceac5ef24a45f7dfb09199870967e3f4%26chksm%3Df8e9636bc173881c2bfb98e07b1d3fa4236114039e2328133c71803acfb12ab7f157fe8b7242%26mpshare%3D1%26srcid%3D0415qNRixVZPat9CTQZaKx9J%26sharer_shareinfo%3Dba0618139b9a20732bd7a490f1294d63%26sharer_shareinfo_first%3Dba0618139b9a20732bd7a490f1294d63%26from%3Dtimeline%26scene%3D2%26subscene%3D2%26sessionid%3D1745123867%26clicktime%3D1745129196%26enterid%3D1745129196%26ascene%3D45%26fasttmpl_type%3D0%26fasttmpl_fullversion%3D7694450-zh_CN-zip%26fasttmpl_flag%3D0%26realreporttime%3D1745129196535%26devicetype%3Dandroid-31%26version%3D28003953%26nettype%3Dcmnet%26lang%3Dzh_CN%26countrycode%3DCN%26exportkey%3Dn_ChQIAhIQ3EmUvbBbBmU5QjYtn0F%252FlxL1AQIE97dBBAEAAAAAACzFJfKpHk8AAAAOpnltbLcz9gKNyK89dVj0XvqQBKTY5lqmcRFDvWdlG5tlpbHxxXWab16PGvcYK7RK2YTBOhbcpRHfgS6uZunhgc06rs%252BvMdXYlJaWhEeW9vajyGT%252BlHM1K1yJhX58yl1XMql%252Bwsbs%252FpJv2UVS%252BoOcbgNxCaJjuCzgMSHwfe9Hq%252B6j4lKJn0CkXeIbQpPTIlMeG%252BIgQpdh1punI2ks2ad55mmRetpOrUtO141rQ1WT8k2ZxNaq6sBqZhM7uL9tjydkNJQZghY6veqW%252F75hPVoh94qoCh4Nebu7sEV9j0kG%26pass_ticket%3DiuFwoviSBXE%252B5B%252BcT7f5YrrAeh6Gx8Jl7VH8EI621BLXSqs3MwohRCeJ66HjBt3h%26wx_header%3D3)
 
-**
 
 [](https://link.zhihu.com/?target=https%3A//mp.weixin.qq.com/s%3F__biz%3DMzUxNzQ5MTExNw%3D%3D%26mid%3D2247493955%26idx%3D1%26sn%3D0e880f3d509f0b494287cb552cbdb236%26chksm%3Df8dd30dccb86aa1af236b9d23b7a24701fb318f68ed466ada2e47439f67d0366216f607350cd%26sessionid%3D1745123867%26scene%3D126%26sessionid%3D1745123867%26clicktime%3D1745129255%26enterid%3D1745129255%26subscene%3D10000%26ascene%3D3%26fasttmpl_type%3D0%26fasttmpl_fullversion%3D7694450-zh_CN-zip%26fasttmpl_flag%3D0%26realreporttime%3D1745129255021%23rd)
 
@@ -45,9 +44,8 @@ Zartbot详细列举了Nvidia GPU的Memory Model，其实就是告诉你，好的
 
 但这里，还是先把这两个事物进一步展开来看一下 ：） 其实光头和和尚本身的定义就有很多故事的，讲清楚这两者大致上结果可能会清晰些，或者，让理解更混乱？
 
-> 先看LD（Load）/ST（Store）**
+> 先看LD（Load）/ST（Store）
 
-**
 
 如果
 
@@ -75,15 +73,14 @@ Zartbot详细列举了Nvidia GPU的Memory Model，其实就是告诉你，好的
 
 若一定要一个相对严格的定义。
 
-那么软件的视角上，只有调用instruction中的ld、st指令，并且操作的一方是Reg一方是Mem，才算Load/Store。**
+那么软件的视角上，只有调用instruction中的ld、st指令，并且操作的一方是Reg一方是Mem，才算Load/Store。
 
 <strong>但是在硬件的视角，严格定义上的Load/Store，是指相比Message，把Transaction、Transport都合为一体，简化为具有耦合关系的rd req ->re dat或者wr req -> wr rsp，高效直接一次性完成整个信息交互的行为。作为硬件公司，我们号称支持Load/Store时，是基于一个硬件系统上支持了这种行为的运行，即使软件的同学认为GPU TMA不是ld/st的指令，但这和软件换做用SM就直接运行的ld/st指令在硬件上的需求是一样的，硬件特性支持的是底线，而不是某种行为。</strong>
 
 <strong>所以，无论是网党还是计党在说一个Scale-UP协议支持跨节点load/store，都应该算是硬件公司提供的面对客户的能力（吹牛逼的界面），并不妨碍源头客户是否采用CPU LSU or GPU TMA or SoC SDMA or NIC RDMA。</strong>
 
-**
 
-那么，内存语义又是什么呢？ 和尚和光头又是什么关系？**
+那么，内存语义又是什么呢？ 和尚和光头又是什么关系？
 
 不打哑谜，讲答案。
 
@@ -104,15 +101,12 @@ Zartbot详细列举了Nvidia GPU的Memory Model，其实就是告诉你，好的
 然后再看行为。
 
 - 最初的，如果某些业务，例如Dense大模型的训练，程序员使用内存语义时更多是基于生产者-消费者的表达方式时，是比较容易被Send、Recv这类与网络Message行为亲和力更好的语义高效表达的，所以如果只是针对这一类场景适配，Scale-up支持内存语义是可以不需要load/store的，Google只支持高性能的RDMA，也可以号称支持内存语义即如此 ：） 也就是和尚可以不是光头，带发的和尚看着很糙。但也可以说这种Scale-up系统实现了<strong>Coarse Memory Semantics</strong>。
-**
 
-- 所以这涉及的就是一个度的问题，当出现MoE这类模型推理甚至推荐之类的网络，就需要相对小粒度的数据交互，额，例如软件直接跨机获取内存什么的，使用LSU/TMA会比RDMA更加高效，而这种小颗粒的语义即使是TMA在软件看做是DMA，但在Scale-up的接口上也会体现为Load/Store，所以，出于需要尽可能支持更大范围的内存语义的程序在Scale-up系统上能运行，Scale-up系统最好支持这种行为上更高效，甚至从网络视角把transaction和transport都揉为一体的Load/Store的直接传输，这是ualink/nvlink等ScaleUp系统所谓支持内存语义都是指Load/store的原因，即为了保证一定的道德底线，和尚还是都搞成光头比较好。也可以说，支持Load/Store的Scale-Up，算得上实现了Native Memory Semantics，这里加一个Native表达大家的道德底线 ：）**
-**
+- 所以这涉及的就是一个度的问题，当出现MoE这类模型推理甚至推荐之类的网络，就需要相对小粒度的数据交互，额，例如软件直接跨机获取内存什么的，使用LSU/TMA会比RDMA更加高效，而这种小颗粒的语义即使是TMA在软件看做是DMA，但在Scale-up的接口上也会体现为Load/Store，所以，出于需要尽可能支持更大范围的内存语义的程序在Scale-up系统上能运行，Scale-up系统最好支持这种行为上更高效，甚至从网络视角把transaction和transport都揉为一体的Load/Store的直接传输，这是ualink/nvlink等ScaleUp系统所谓支持内存语义都是指Load/store的原因，即为了保证一定的道德底线，和尚还是都搞成光头比较好。也可以说，支持Load/Store的Scale-Up，算得上实现了Native Memory Semantics，这里加一个Native表达大家的道德底线 ：）
 
 - 但是，内存语义又不仅仅是个load/store行为就ok的，还包括例如cache coherency等特性，截止到今天为止，AI Scale-up系统都不支持coherency，所以也有传统做CPU的人会说纯血Scale-up只能有小型机大型机才是，而nvlink/ualink没有支持Coherency算不上完整的内存语义也是对的，在通用计算领域某些对延迟比较敏感的业务若没有cache coherency则性能损失比较大的，这还是算是一个灰度状态吧，如果你只认大悲寺和尚的才是真和尚，说当前Ualink/Nvlink的内存语义只做到了90分也是可以的，要达成Full Memory Semantics最后登顶这10分难度很大**，AI相关的业务付出那代价往往不值得。
-**
 
-- 此外，内存语义也并不是说要完全照搬片上总线（noc）的行为，毕竟系统拉远之后，物理特征和本地是有区别的，所以这里会增加有非常多体系结构研究的空间，即软件在本地内存语义的某种高效表达，例如某些read、lock、modify、unlock行为，甚至更复杂且可抽象的表达，在Scale-up拉远时若直接表现为某些req-rsp的频繁交互，那即使是load/store，性能也会非常低，所以在scale-up接口侧是可以归纳并新增一些macro operator（大多数时候携带更多信息的大颗粒load/store）来高效表达的。其实这个和CPU内部做macro instruction是一样的道理，额，也就是和尚吃不了肉，但可以用豆腐来做鱼香肉丝一样 ：） Characteristics Memory Semantics，入乡随俗了，这协议才算得上开枝散叶。**
+- 此外，内存语义也并不是说要完全照搬片上总线（noc）的行为，毕竟系统拉远之后，物理特征和本地是有区别的，所以这里会增加有非常多体系结构研究的空间，即软件在本地内存语义的某种高效表达，例如某些read、lock、modify、unlock行为，甚至更复杂且可抽象的表达，在Scale-up拉远时若直接表现为某些req-rsp的频繁交互，那即使是load/store，性能也会非常低，所以在scale-up接口侧是可以归纳并新增一些macro operator（大多数时候携带更多信息的大颗粒load/store）来高效表达的。其实这个和CPU内部做macro instruction是一样的道理，额，也就是和尚吃不了肉，但可以用豆腐来做鱼香肉丝一样 ：） Characteristics Memory Semantics，入乡随俗了，这协议才算得上开枝散叶。
 总结一下：）
 
 <strong>支持内存语义其实是指软件基于内存语义所表达出的丰富的软件行为，能够尽可能多且最低损耗地在Scale-Up系统上运行。</strong>

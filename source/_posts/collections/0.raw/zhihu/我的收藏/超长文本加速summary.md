@@ -17,13 +17,13 @@ source_url: https://zhuanlan.zhihu.com/p/8925826414
 
 ### Inference：仅在推理测加速
 
-### <strong>Sliding Window attention</strong>
+### Sliding Window attention
 
 在prefill阶段，Sliding Window attention 每个token会选和自己最邻近的W个tokens去做注意力计算，假设当前的token 位置是i，那么在最末层需要计算 [i&#x2212;W,i]" role="presentation">[i−W,i][i-W,i] 之间的token注意力，因此再上一层需要计算 [i&#x2212;2W,i]" role="presentation">[i−2W,i][i-2W,i] 内的tokens注意力，依此类推，则prefill的时间复杂度是 O(TW)" role="presentation">O(TW)O(TW) ,在KV cache占用方面，可以按照W的大小将长chunk切成对应窗口长度的小段，只存储对应长度的片段。
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_3ee3bb1b2bf3.jpg)
 
-**查找了Mistral-7B相关引用和被引用，mistral-7B-instruct-v0.1是sliding window attention，但是v0.2以上也是vanilla（dense）attention。
+查找了Mistral-7B相关引用和被引用，mistral-7B-instruct-v0.1是sliding window attention，但是v0.2以上也是vanilla（dense）attention。
 
 1.使用SWA在过长文本上ppl会过高，出现attention沉降现象。
 
@@ -78,7 +78,7 @@ evaluate the two models on seven diverse NLP bench-marks, including ARC-[Challen
 
 使用streamingLLM可以在推理框架下同时保持无限长度的高效的推理和有限长度的KVcache缓存占用。
 
-在速度方面，streamingLLM是流式框架，因此关注于逐token的输出速度：**
+在速度方面，streamingLLM是流式框架，因此关注于逐token的输出速度：
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_f42ca5fa2a00.jpg)
 
@@ -128,7 +128,7 @@ $$A(M) = Softmax( \frac{1}{\sqrt{d}} QK^⊤ − c(1 − M)), $$
 
 动态稀疏注意力系统的目标是以最小的开销实现更高的加速，同时保留尽可能多的注意力权重。形式上可以表示为:
 
-min |A(M) − A_{dense}|,\\ min t_{sparse}(M) + t_{overhead}(M), ** 
+min |A(M) − A_{dense}|,\\ min t_{sparse}(M) + t_{overhead}(M),
 
 因此文章提供了一种合适的方法去构建适合对应的时间t时间下的A-shape方法:
 
@@ -148,7 +148,7 @@ min |A(M) − A_{dense}|,\\ min t_{sparse}(M) + t_{overhead}(M), **
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_26e50094c06c.jpg)
 
-**KV 缓存压缩方法集成:
+KV 缓存压缩方法集成:
 <strong>将 MInference 与最先进的 KV 缓存压缩方法 SnapKV相结合，如表 5 所示。这证明了该方法与 KV 缓存压缩技术是兼容的。对于大多数任务，性能几乎没有变化，平均分数甚至略有提高：</strong>
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_efbdcecefabd.jpg)
@@ -171,7 +171,7 @@ min |A(M) − A_{dense}|,\\ min t_{sparse}(M) + t_{overhead}(M), **
 
 四种kernel，分别对Q,K,P,V采用不同的量化方法：
 
-Q,K 采用per-token，per-block的量化，精度最高，且smooth K精度更高：**
+Q,K 采用per-token，per-block的量化，精度最高，且smooth K精度更高：
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_4ff6e6b0ee28.jpg)
 
@@ -198,7 +198,7 @@ vB>vT>B>T
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_59e699f71db8.jpg)
 
-Speed（TOPS)：速度是flashAttn2的2倍**
+Speed（TOPS)：速度是flashAttn2的2倍
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_67abc3e0c4dd.jpg)
 
@@ -214,14 +214,13 @@ Speed（TOPS)：速度是flashAttn2的2倍**
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_0e11bb6b50f9.jpg)
 
-**Observation:
-**
+Observation:
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_b7b61ad7b134.jpg)
 
-Q,K,V矩阵的值分布在channel维度上展现出高一致性，但是由于 S=QK^T 反量化的需要，必须按照token维度展开。**
+Q,K,V矩阵的值分布在channel维度上展现出高一致性，但是由于 S=QK^T 反量化的需要，必须按照token维度展开。
 
-Quantization strategy：**
+Quantization strategy：
 
 <strong>for Q,K:</strong>
 
@@ -231,7 +230,7 @@ Quantization strategy：**
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_a3051d371f04.jpg)
 
-Smooth Q：**
+Smooth Q：
 
 按之前的观察发现，尽管使用channel维度可以减轻离群值带来的误差，但是在反量化计算中，必须使用token维度进行，因此可以选择对Q,K矩阵在量化前进行归一化来减轻channel维度的误差。
 
@@ -245,7 +244,7 @@ S矩阵的后续计算不会依赖于mean(K),因此再恢复实际的S矩阵时�
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_ddbe2dd5a907.jpg)
 
-Experiment:**
+Experiment:
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_40dc7276237f.jpg)
 
@@ -255,8 +254,7 @@ Experiment:**
 
 <strong>选用WikiText，LAMBADA,MMLU,LongBench数据集做速度和精度测试：</strong>
 
-**SageAttn-4b的在RTX4090速度的峰值为485TOPS，是FlashAttn2的3.1倍
-**
+SageAttn-4b的在RTX4090速度的峰值为485TOPS，是FlashAttn2的3.1倍
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_1ba6048ee8ee.jpg)
 

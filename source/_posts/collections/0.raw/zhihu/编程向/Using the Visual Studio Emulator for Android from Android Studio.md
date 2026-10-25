@@ -25,7 +25,7 @@ Visual Studio Emulator for Android 是<strong>微软公司</strong>推出的安�
 
 Visual Studio Emulator for Android 可以随同Visual Studio 2015 一同安装也可以[<strong>单独下载</strong>](/)进行安装。（我在 Windows 10 Build 10586上试过，但是由于一个bug导致不能运行，但是已在 Windows 10 Build 14393上 修复）
 
-**注：Visual Studio Emulator for Android 是运行在Hyper-V上，所以系统就需要专业版 Windows 版本。我的是 Windows 10 Pro ,电脑为 Surface Pro 4 i5 8G 256GB，微软天猫旗舰店购买，学生买打9折（逃  突然想到了轮子哥 @vczh
+注：Visual Studio Emulator for Android 是运行在Hyper-V上，所以系统就需要专业版 Windows 版本。我的是 Windows 10 Pro ,电脑为 Surface Pro 4 i5 8G 256GB，微软天猫旗舰店购买，学生买打9折（逃  突然想到了轮子哥 @vczh
 
 **<strong>，买时预装 Windows 10 10586 中文家庭版，后来用MSDN上的Key升级到 Pro .</strong>
 
@@ -46,7 +46,6 @@ API 19（Andorid 4.4）的x86镜像
 
 ![](/images/collections/0.raw/zhihu/%E7%BC%96%E7%A8%8B%E5%90%91/asset/img_13fd089b438d.png)
 
-**
 Android Studio 是使用 adb** 作为桥梁来连接Visual Studio Emulator for Android
 
  。
@@ -66,7 +65,7 @@ Android Studio 是使用 adb** 作为桥梁来连接Visual Studio Emulator for A
 ![](/images/collections/0.raw/zhihu/%E7%BC%96%E7%A8%8B%E5%90%91/asset/img_25d50019c613.png)
 
 <strong>2.</strong>**在
-Android Studio 里添加启动模拟器的快捷按钮**
+Android Studio 里添加启动模拟器的快捷按钮
 
 点击 Android Studio 左上方的 <strong>File > Settings > Tools > External Tools</strong> ,在右上方选择 Add 按钮（对，就是那个绿色的 <strong>+</strong> 符号）
 
@@ -101,9 +100,8 @@ Android Studio 里添加启动模拟器的快捷按钮**
 
 <strong>在弹出的窗口中选择 Main menu > Main Toolbar > Android.MainToolBarActionGroup</strong>,点击右上方的 <strong>Add After</strong>
 
-**![](/images/collections/0.raw/zhihu/%E7%BC%96%E7%A8%8B%E5%90%91/asset/img_729e2fa95c1c.png)
+![](/images/collections/0.raw/zhihu/%E7%BC%96%E7%A8%8B%E5%90%91/asset/img_729e2fa95c1c.png)
 
-**
 
 <strong>在弹出的新窗口中点击 External Tools > External Tools ,这时可以看见我们在设置已添加模拟器的名字，我的是 VS Emulator (4.4 API 19) ，所以选择这个，最后点击OK !</strong>
 
@@ -111,19 +109,17 @@ Android Studio 里添加启动模拟器的快捷按钮**
 
 <strong>点击OK之后 就会发现新的自定义小图标已经出现了 ！</strong>
 
-**![](/images/collections/0.raw/zhihu/%E7%BC%96%E7%A8%8B%E5%90%91/asset/img_655423a827f0.png)
+![](/images/collections/0.raw/zhihu/%E7%BC%96%E7%A8%8B%E5%90%91/asset/img_655423a827f0.png)
 
-**
 
 <strong>点击这个小图标之后就可以启动模拟器了。</strong>
 
 ****
 
-**![](/images/collections/0.raw/zhihu/%E7%BC%96%E7%A8%8B%E5%90%91/asset/img_35d88ab05d8d.png)
+![](/images/collections/0.raw/zhihu/%E7%BC%96%E7%A8%8B%E5%90%91/asset/img_35d88ab05d8d.png)
 
 ****不是说只有在这个才可以启动模拟器，在刚安装完 Visual Studio Emulator for Android 之后就可以启动模拟器了。![](/images/collections/0.raw/zhihu/%E7%BC%96%E7%A8%8B%E5%90%91/asset/img_8502909fbbfc.png)
 
-**
 
 <strong>但这时只是启动了模拟器还不可以进行应用的部署，和调试。</strong>
 
@@ -133,9 +129,8 @@ Android Studio 里添加启动模拟器的快捷按钮**
 
 <strong>之后弹出 Select Deployment Target 窗口，这时我们会看见我们已经设置的模拟器出现在这里了。</strong>
 
-**![](/images/collections/0.raw/zhihu/%E7%BC%96%E7%A8%8B%E5%90%91/asset/img_6b9d239e00d4.png)
+![](/images/collections/0.raw/zhihu/%E7%BC%96%E7%A8%8B%E5%90%91/asset/img_6b9d239e00d4.png)
 
-**
 
 <strong>点击OK，就可以把应用部署到这个模拟器里了。</strong>
 
@@ -185,7 +180,7 @@ Android Studio 里添加启动模拟器的快捷按钮**
 
 ****
 
-**![](/images/collections/0.raw/zhihu/%E7%BC%96%E7%A8%8B%E5%90%91/asset/img_0848207b6081.png)
+![](/images/collections/0.raw/zhihu/%E7%BC%96%E7%A8%8B%E5%90%91/asset/img_0848207b6081.png)
 
 ****![](/images/collections/0.raw/zhihu/%E7%BC%96%E7%A8%8B%E5%90%91/asset/img_d79450c47261.png)
 

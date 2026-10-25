@@ -15,7 +15,7 @@ source_url: https://zhuanlan.zhihu.com/p/28527379
 ---
 
 
-**李杉 李林 编译整理
+李杉 李林 编译整理
 量子位 报道 | 公众号 QbitAI![](/images/collections/0.raw/zhihu/%E6%9C%89%E8%B6%A3%E7%9A%84%E4%B8%9C%E8%A5%BF/asset/img_fbbd70424b3a.jpg)
 
 △** 『凡所有相，皆是虚妄』
@@ -50,7 +50,6 @@ source_url: https://zhuanlan.zhihu.com/p/28527379
 
 ![](/images/collections/0.raw/zhihu/%E6%9C%89%E8%B6%A3%E7%9A%84%E4%B8%9C%E8%A5%BF/asset/img_77ead928f7b0.jpg)
 
-**
 
 ![](/images/collections/0.raw/zhihu/%E6%9C%89%E8%B6%A3%E7%9A%84%E4%B8%9C%E8%A5%BF/asset/img_0d28e39e1ee0.jpg)
 

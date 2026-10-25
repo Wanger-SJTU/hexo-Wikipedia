@@ -17,7 +17,6 @@ source_url: https://zhuanlan.zhihu.com/p/11562967966
 
 机器之心报道。
 
-**
 
 支持大模型一路狂飙的 Scaling Law 到头了？
 
@@ -27,16 +26,14 @@ source_url: https://zhuanlan.zhihu.com/p/11562967966
 
 然而 Scaling Law 并非唯一的视角，近期，来自清华大学刘知远教授团队发现并提出大模型的密度定律（Densing Law）—— 模型能力密度随时间呈指数级增长，2023 年以来能力密度约每 3.3 个月（约 100 天) 翻一倍。**这意味着每 100 天，我们可以用一半参数量实现当前最优模型相当的性能。
 
-**
 
 根据密度定律，研究团队还得出以下重要推论，并且发现 AI 时代的三大核心引擎——电力、算力与智力，都同样遵循密度快速增长趋势。
 
-- 推论 1 ：模型推理开销随时间指数级下降。**
+- 推论 1 ：模型推理开销随时间指数级下降。
 - <strong>推论 2 ：大模型能力密度正在加速增强 。</strong>
 - <strong>推论 3：模型小型化揭示端侧智能巨大潜力 。</strong>
 - <strong>推论 4：无法依靠模型压缩算法增强模型能力密度 。</strong>
 - <strong>推论 5：模型高性价比有效期不断缩短。</strong>
-**
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_08c02b190c7f.jpg)
 
@@ -48,9 +45,8 @@ source_url: https://zhuanlan.zhihu.com/p/11562967966
 
 - 论文标题：Densing Law of LLMs
 - 论文链接：[https://arxiv.org/pdf/2412.04315v2](https://link.zhihu.com/?target=https%3A//arxiv.org/pdf/2412.04315v2)
-Scaling Law 和 Densing Law**
+Scaling Law 和 Densing Law
 
-**
 
 大模型尺度定律（Scaling Law）和密度定律（Densing Law），都是大模型指导性的规律发现。它们分别在不同的维度，对大模型进行科学化的推演。
 
@@ -72,9 +68,8 @@ Scaling Law 和 Densing Law**
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_f74476aaa098.jpg)
 
-密度定律表明，大约每过 3.3 个月 (100 天），我们就能用参数量减半的模型达到当前最先进模型的性能水平。**
+密度定律表明，大约每过 3.3 个月 (100 天），我们就能用参数量减半的模型达到当前最先进模型的性能水平。
 
-**
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_527461ff0cad.jpg)
 
@@ -102,7 +97,7 @@ Scaling Law 和 Densing Law**
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_6b99c1dd63a3.jpg)
 
-Densing Law（密度定律）揭示 LLM 进入「密度至上」新发展阶段**
+Densing Law（密度定律）揭示 LLM 进入「密度至上」新发展阶段
 
 尺度定律下，LLM 规模至上。而在密度定律下，LLM 正进入一个全新的发展阶段。在清华刘知远老师最新报告中，AI 时代的三大核心引擎 —— 电力、算力与智力，密度都在快速增长：电池能量密度在过去 20 年中增长了 4 倍，其倍增周期约为 10 年；摩尔定律则揭示，芯片的晶体管密度每 18 个月翻倍；而 AI 模型能力密度每 100 天翻倍的速度更是惊人。
 

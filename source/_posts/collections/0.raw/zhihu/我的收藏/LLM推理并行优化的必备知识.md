@@ -141,7 +141,7 @@ A、B矩阵都进行二分后，输出矩阵C的大小不变，所有C矩阵进�
 
 线性层的并行运算，包括层内切分、层间切分以及参数冗余消除，并行方式包括了数据并行（DP）、序列并行(SP)、张量并行（TP）、层并行（PP）、参数冗余消除（Zero）。
 
-#### <strong>2.1 层内并行</strong>
+#### 2.1 层内并行
 
 可根据输入激活值的切分维度对应不同的并行策略，一般<strong>切batch为DP、切序列为SP、切隐藏层尺寸为TP</strong>。
 
@@ -166,7 +166,7 @@ DP与SP/TP可以解耦独立使用，SP与TP一般可以配合使用(在当前�
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_1b9a7a9de2c6.jpg)
 
-#### <strong>2.2 层间并行</strong>
+#### 2.2 层间并行
 
 模型的各个层分散放在不同GPU上面，激活值按照流水的方式在层间传递，这种方式称为<strong>流水线并行PP(Pipeline Parallelism)</strong>，具体可参看megatron2论文。
 
@@ -385,6 +385,5 @@ MLA还有第二种形态，就是将KV的up_project运算移动到Q上面，即K
 
 <strong>想深耕AI Infra领域？欢迎访问[InfraTech](https://link.zhihu.com/?target=https%3A//github.com/CalvinXKY/InfraTech)</strong>库！内容涵盖大模型基础、PyTorch/vLLM/SGLang框架入门、性能加速等核心方向，配套<strong>[50+知识干货](https://link.zhihu.com/?target=https%3A//github.com/CalvinXKY/InfraTech)</strong>及适合初学者的<strong>[notebook](https://link.zhihu.com/?target=https%3A//github.com/CalvinXKY/InfraTech)</strong>练习。[](https://link.zhihu.com/?target=https%3A//github.com/CalvinXKY/InfraTech)
 
-**
 
 文中不足之处** @kaiyuan

@@ -23,21 +23,21 @@ UWA视频地址, 2021年Unity开放日就讲过了 文章地址, 视频地址.
 
 括号()内的话都是我自己想的.
 
-### <strong>1. 光源</strong>
+### 1. 光源
 
 目标是手机同屏32盏点光, PC 128盏点光.
 
-#### <strong>1.1 Tile-based Light Culling</strong>
+#### 1.1 Tile-based Light Culling
 
 - 相关文章, COD Tile Culling
 - 先基于tile进行一次culling, 再在Z上进行一次culling
 - 在Compute Shader上完成
 - (现在好像很多在研游戏都已经用了这套技术在手机上)
 
-#### <strong>1.2 Light Barrier</strong>
+#### 1.2 Light Barrier
 
 - 遮挡剔除, 视椎体裁剪
-- 比如 给点光加一个范围**
+- 比如 给点光加一个范围
 
 - 下图点光范围有一个BOX裁剪范围,
 - 如果没有裁剪范围就会漏光
@@ -46,30 +46,30 @@ UWA视频地址, 2021年Unity开放日就讲过了 文章地址, 视频地址.
 
 ![](/images/collections/0.raw/zhihu/%E4%BC%98%E5%8C%96/asset/img_26b679435596.jpg)
 
-#### 1.3 Light Num**
+#### 1.3 Light Num
 
 - 检测屏幕物体接受光源的数量
 - 如果是深红色则说明超标了
 - (有点类似于OverDraw的感觉)
 ![](/images/collections/0.raw/zhihu/%E4%BC%98%E5%8C%96/asset/img_d6ab64ab8724.jpg)
 
-### <strong>2. GI</strong>
+### 2. GI
 
-#### <strong>2.1 一般</strong>
+#### 2.1 一般
 
 - 一般手游静态光用UV2去烘焙Lightmap
 - 动态物体用Light Probe(光照探针)
 - (Lightmap占用硬盘和内存压力比较大)
 - (其实Lightmap是可以realtime的, 大佬秀技)
 
-#### <strong>2.2 Irradiance Volume</strong>
+#### 2.2 Irradiance Volume
 
 - 相关文章
 - 储存每一块区域的光照信息
 - 他们游戏就是用的这套
 ![](/images/collections/0.raw/zhihu/%E4%BC%98%E5%8C%96/asset/img_5ad102798659.jpg)
 
-#### <strong>2.3 储存详细</strong>
+#### 2.3 储存详细
 
 - 用2阶球谐, 1阶段存 Color(3Byte), 2阶只存亮度(3Byte)
 - 存Sky Visbility(1Byte), 存Light Mask(1Byte)
@@ -87,7 +87,7 @@ UWA视频地址, 2021年Unity开放日就讲过了 文章地址, 视频地址.
 
 ![](/images/collections/0.raw/zhihu/%E4%BC%98%E5%8C%96/asset/img_97acdac333af.jpg)
 
-- 计算公式?**
+- 计算公式?
 
 - 间接光 = GIIndirectSH(烘焙) * LightIntensity(美术调节) + GISkyVisibility(烘焙) * SkySH(美术调节)
 
@@ -107,7 +107,7 @@ UWA视频地址, 2021年Unity开放日就讲过了 文章地址, 视频地址.
 
 ![](/images/collections/0.raw/zhihu/%E4%BC%98%E5%8C%96/asset/img_c4b186f29c08.jpg)
 
-#### 2.4 Streaming**
+#### 2.4 Streaming
 
 - Scrolling Clipmap Update
 
@@ -115,7 +115,7 @@ UWA视频地址, 2021年Unity开放日就讲过了 文章地址, 视频地址.
 - 分帧数, 切片更新, 当角色到边缘的时候发起加载和upload
 - 相关文章
 
-#### <strong>2.5 Baker Tools</strong>
+#### 2.5 Baker Tools
 
 - (他们自己写了一个工具可以烘焙选定区域)
 - 根据NavMesh和碰撞体自动摆放区域, 溢出无效的probes
@@ -127,7 +127,7 @@ UWA视频地址, 2021年Unity开放日就讲过了 文章地址, 视频地址.
 
 ![](/images/collections/0.raw/zhihu/%E4%BC%98%E5%8C%96/asset/img_61b40705bc70.jpg)
 
-#### <strong>2.5 耗时</strong>
+#### 2.5 耗时
 
 - 范围: 256m * 256m * 200m
 - 3D Texture: 2 * RGBA8 128 * 128 * 100
@@ -136,7 +136,7 @@ UWA视频地址, 2021年Unity开放日就讲过了 文章地址, 视频地址.
 - 内存: 2~4MB
 - 包体占用: 2MB~9MB / 1KM
 
-#### <strong>2.6 其它</strong>
+#### 2.6 其它
 
 - 3D Virtual Texture (没有细说)
 
@@ -146,9 +146,9 @@ UWA视频地址, 2021年Unity开放日就讲过了 文章地址, 视频地址.
 
 - Lightmap VS Irradiance Volume
 Lightmap VolumeIrradiance Volume静态物体两者都可需要UV2不用UV2更大的包体和内存占用包体和内存小可扩展性强大数据要自定义效果更好漏光兼容度更好是用Compute Shader 和 3D Texutre烘焙慢烘焙更快离线烘焙可以实时GI
-### <strong>3. Dynamic GI</strong>
+### 3. Dynamic GI
 
-#### <strong>3.1 以往的技术</strong>
+#### 3.1 以往的技术
 
 - Radiosity
 
@@ -181,7 +181,7 @@ Lightmap VolumeIrradiance Volume静态物体两者都可需要UV2不用UV2更大
 - (RTX)
 - ...
 
-#### <strong>3.2 Lux</strong>
+#### 3.2 Lux
 
 他们自己取名, 跟Lumen名字类似.
 
@@ -233,7 +233,7 @@ LPV需要用RSM来考虑遮挡关系, 但是这里没有用到RSM. 所以引入�
 
 关于光照的遮挡. 在Propagate Buffer中用Raycast的时候顺便记录了六个方向的深度值. 这样只考虑probe和光源的距离就好了. 对于每个光源只考虑周围的八个probe, 别的位置都不计算.
 
-#### <strong>3.3 效果</strong>
+#### 3.3 效果
 
 比平行光 Diffuse效果要好, 而且效率也会高点. 不过高光部分效果不太行, 平行光是GGX, 而Lux高光效果会变散.
 
@@ -241,7 +241,7 @@ LPV需要用RSM来考虑遮挡关系, 但是这里没有用到RSM. 所以引入�
 
 ![](/images/collections/0.raw/zhihu/%E4%BC%98%E5%8C%96/asset/img_62a7b761d4cb.jpg)
 
-#### <strong>3.4 漏光</strong>
+#### 3.4 漏光
 
 大体上是不会漏光的, 但是采样时插值还是会漏光. 比如下图墙角处, 蓝绿色插值就会出现漏光.
 
@@ -277,7 +277,7 @@ Lux.
 
 ![](/images/collections/0.raw/zhihu/%E4%BC%98%E5%8C%96/asset/img_0a4e39089a17.jpg)
 
-#### <strong>3.5 性能</strong>
+#### 3.5 性能
 
 - Iphone13
 - 地图大小120m * 120m * 40m.
@@ -285,7 +285,7 @@ Lux.
 - Relighting阶段. 硬件三线性插值0.5ms. 防漏光需要自己采样八次计算插值做比较 耗时1.5ms.
 - 防漏光是可选的, 并且可以降低分辨率继续减少消耗.
 
-#### <strong>3.6 缺点</strong>
+#### 3.6 缺点
 
 - 高光效果
 - 附加光的形状

@@ -29,7 +29,7 @@ coherence从何而来cache一致性问题的产生，往往来源于三个方面
 
 （2）进程在host间的切换
 
-某addr的data被保存在hsot#1和#2中。原本进程运行在host #1上，对该data进行了修改。然后进程切换到了host #2上，读取该data，却还是原始内容，发生了不一致。**
+某addr的data被保存在hsot#1和#2中。原本进程运行在host #1上，对该data进行了修改。然后进程切换到了host #2上，读取该data，却还是原始内容，发生了不一致。
 （3）DMA等IO操作导致
 
 DMA操作会绕过host，直接从外部memory想main memory中搬运数据。如果这种搬运，修改了某个data。但是却未曾告知保存有该data的host，当host在读这个data时会发生不一致。
@@ -67,7 +67,7 @@ Host #1发生的修改，广播到总线上，host #2-#3看到后，发现内部
 位向量标识一共Nbit，每bit指向一个host，用来表征该host是否缓存了相应addr的data。
 例如：S101011，说明该data在host #1 #3 #5 #6中都存在；
 M001000，说明该data在host #3中被modify
-由此，可以将BUS Snooping中的全局广播，转为定向广播。**
+由此，可以将BUS Snooping中的全局广播，转为定向广播。
 
 ![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_6c402d689d64.jpg)
 
@@ -128,13 +128,13 @@ Host #0的L0C中，一个对应addr为0xFF40的cacheline 处于shared 状态，h
 
 最开始应该是AMD提出，引入O（owned）位，并且S位的含义跟MESI协议不一样。
 众说纷纭……这里以arm为base：
-① O（owned）位。Shared Dirty，描述一个cache line为dirty，并且存在于多个cache中。一个 Owned 状态的cache line保存着 最新的 而且 正确的（new and correct） 的数据。只有一个core的cache 可以将数据保存为 Owned 状态，其他core 为 shared 状态。O cacheline 必须响应该data的snoop 请求。**
+① O（owned）位。Shared Dirty，描述一个cache line为dirty，并且存在于多个cache中。一个 Owned 状态的cache line保存着 最新的 而且 正确的（new and correct） 的数据。只有一个core的cache 可以将数据保存为 Owned 状态，其他core 为 shared 状态。O cacheline 必须响应该data的snoop 请求。
 
 ② S（shared）位，该cacheline数据在多个host中存在，<strong>data可以是dirty的：如果dirty，则存在另一个O的host cacheline，最终更新到main memory也是由这个O 负责。如果都没O，那就是clean的。</strong>
 
 引入原因：**在原本的MESI协议中，对于dirty的data，其他host如果想获取，只能先把dirty data写回main memory，其他host再读取。这样比较慢。而O态的引入，允许直接share dirty data，及O态的host直接把dirty的data，传给其他share的host。
 
-状态互相关系表**
+状态互相关系表
 
 MOESIM××××√O×××√√E××××√S×√×√√I√√√√√盗图一张，MOESI协议下，状态之间的跳转。（ARM中采用）
 
@@ -148,7 +148,7 @@ MOESIM××××√O×××√√E××××√S×√×√√I√√√√√盗图�
 
 ### 6. 变种之MESIF协议
 
-**Intel基于MESI协议，新增了F态（forward），其他四态和MESI含义一致。
+Intel基于MESI协议，新增了F态（forward），其他四态和MESI含义一致。
 F态：在多个处在shared态 且 clean的cacheline中，标记一个为F态，其他shared态不变。
 引入原因****假设host#2、3、4，都拥有一个addr的data。而host #0没有。host #0发起了对这个addr的read请求，miss。此时host #0获取这个data的方式有如下2种：
 
@@ -156,6 +156,6 @@ F态：在多个处在shared态 且 clean的cacheline中，标记一个为F态�
 - Host #0可以从已有这个data的host #2、3、4中去拿。
 方式2，往往速度会快于方案1。但是host #2、3、4都有，他们仨是平等的，都会向host #0发data，造成浪费及拥挤。因此在host #2、3、4中选一个带头大哥，作为F态，其他维持S态。只有F态才有资格向host #0发data，其他S态的保持沉默。
 
-状态互相关系表**
+状态互相关系表
 
 MESIFM×××√×E×××√×S××√√√I√√√√√F××√√×

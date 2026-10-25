@@ -85,15 +85,15 @@ source_url: https://zhuanlan.zhihu.com/p/376572255
 <strong>来自MIT CSAIL和NVDIA</strong>，主要研究方向向为深度学习加速器、处理器微体系架构等，他目前是NVDIA的资深杰出科学家，也曾经是Intel的Fellow，以及ACM/IEEE Fellow（本文提到的国外这些大佬基本上都是Fellow加身），也拿到了计算机体系结构界最高奖项Eckert-Mauchly奖（前面提到的不少人都拿到过，比如Mark D. Hill等）。![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_a139e692b4a9.png)
 
 - <strong>Frederic T. Chong团队</strong>
-**来自University of Chicago，主要研究方向为计算机体系架构、量子计算、计算机安全等。Frederic T. Chong是epiqc的负责人，该团队主要致力于量子计算的研究，由MIT、Princeton以及uchicago等多个高校的研究人员组成。Frederic T. Chong在加入uchicago之前，在UCSB工作，他目前也是阿贡国家实验室的高级科学家。![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_8b1934e2ea55.jpg)
+来自University of Chicago，主要研究方向为计算机体系架构、量子计算、计算机安全等。Frederic T. Chong是epiqc的负责人，该团队主要致力于量子计算的研究，由MIT、Princeton以及uchicago等多个高校的研究人员组成。Frederic T. Chong在加入uchicago之前，在UCSB工作，他目前也是阿贡国家实验室的高级科学家。![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_8b1934e2ea55.jpg)
 
-- Yiran Chen团队**
-**来自Duke university，主要研究方向为内存系统、机器学习和神经形态计算、异构加速器等，是Duke Center of Computational Evolutionary Intelligence Lab的负责人。陈老师不但在学术圈极为活跃，而且也是个微博控，有兴趣的可以关注下他的微博，可以掌握部分学术圈的一手资讯，他目前也是IEEE和ACM Fellow。其团队在HPCA等顶会上发表多篇文章，他的学生宋凌皓连续四年都在HPCA上以第一作者发表文章。![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_2f60cae0f96d.jpg)
+- Yiran Chen团队
+来自Duke university，主要研究方向为内存系统、机器学习和神经形态计算、异构加速器等，是Duke Center of Computational Evolutionary Intelligence Lab的负责人。陈老师不但在学术圈极为活跃，而且也是个微博控，有兴趣的可以关注下他的微博，可以掌握部分学术圈的一手资讯，他目前也是IEEE和ACM Fellow。其团队在HPCA等顶会上发表多篇文章，他的学生宋凌皓连续四年都在HPCA上以第一作者发表文章。![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_2f60cae0f96d.jpg)
 
-- Jishen Zhao团队**
-**来自UCSD，主要研究方向为新型内存架构、系统协同设计、机器学习、边缘计算等，她是之前提到的NVSL实验室的负责人之一。Jishen Zhao本硕毕业于浙江大学，之后去PSU读博，老板是上面提到的谢源大佬（谢源在加入UCSB之前在PSU工作），14年博士毕业，算是比较年轻的PI，所在团队每年基本都有文章在MICRO发表。![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_b4e3a47ce9d2.png)
+- Jishen Zhao团队
+来自UCSD，主要研究方向为新型内存架构、系统协同设计、机器学习、边缘计算等，她是之前提到的NVSL实验室的负责人之一。Jishen Zhao本硕毕业于浙江大学，之后去PSU读博，老板是上面提到的谢源大佬（谢源在加入UCSB之前在PSU工作），14年博士毕业，算是比较年轻的PI，所在团队每年基本都有文章在MICRO发表。![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_b4e3a47ce9d2.png)
 
-- William J. Dally团队**
+- William J. Dally团队
 <strong>来自Standford University/NVDIA</strong>，主要研究方向为低功耗微处理器、片上网络等，目前是Concurrent VLSI Architecture Group的负责人，在加入Standford University之前，在MIT工作。他目前是NVDIA的首席科学家和高级副总裁，但也在Standford University带学生。William J. Dally本人也是美国工程院院士，IEEE/ACM Fellow等，著有经典教材《数字设计:系统方法》。所在团队在ISCA上发表的文章数量超过20篇，也在MICRO/ASPLOS等拿到过Best Paper。![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_b1eb0850562c.jpg)
 
 - <strong>Christopher W. Fletcher团队</strong>

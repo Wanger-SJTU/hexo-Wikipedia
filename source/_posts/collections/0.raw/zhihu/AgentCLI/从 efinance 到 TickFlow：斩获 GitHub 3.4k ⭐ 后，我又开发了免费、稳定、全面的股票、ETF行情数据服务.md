@@ -61,7 +61,7 @@ pip install "tickflow[all]" --upgrade
 # 安装基础版
 pip install tickflow`
 
-** 支持 Python 3.9+，推荐 3.10+。
+支持 Python 3.9+，推荐 3.10+。
 #### 初始化客户端
 
 #### 免费服务（无需注册）
@@ -89,7 +89,7 @@ print(instruments)`
 #### 完整服务（需注册 API key）
 
 - <strong>获取 API Key</strong>**登录 tickflow.org，在控制台生成 API key。
-- 配置认证**
+- 配置认证
 <strong>方式一：直接传入</strong>
 
 from tickflow import TickFlow

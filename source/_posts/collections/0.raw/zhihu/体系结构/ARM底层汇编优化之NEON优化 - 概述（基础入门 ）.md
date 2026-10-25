@@ -17,7 +17,6 @@ source_url: https://zhuanlan.zhihu.com/p/61356656
 
 ### 一、官网介绍：
 
-**
 
 嗯~就是这么干净的一章开头，只有两个链接一张图，图还是临时找的~
 
@@ -35,7 +34,7 @@ Arm NEON technology is an advanced SIMD (single instruction multiple data) archi
 
 NEON technology was introduced to the Armv7-A and Armv7-R profiles. It is also now an extension to the Armv8-A and Armv8-R profiles.
 
-NEON technology is intended to improve the multimedia user experience by accelerating audio and video encoding/decoding, user interface, 2D/3D graphics or gaming. NEON can also accelerate signal processing algorithms and functions to speed up applications such as audio and video processing, voice and facial recognition, computer vision and deep learning.**
+NEON technology is intended to improve the multimedia user experience by accelerating audio and video encoding/decoding, user interface, 2D/3D graphics or gaming. NEON can also accelerate signal processing algorithms and functions to speed up applications such as audio and video processing, voice and facial recognition, computer vision and deep learning.
 
 **其他具体的细节，在官网还有很多描述，自己去看嘛（*嘿嘿，其实我就是懒~*）**
 
@@ -80,26 +79,24 @@ NEON是SIMD架构下的一个加速部分，其实本来是给多媒体做的，
 
 -  循环的时候，可以把循环展开，从而稀释掉循环判断在占用时间中的比例，这个优化的是CPU的计算时间；
 - 在数据运算的时候，比如乘法，我们可以把刚刚第一步展开的4个32bit一次性丢进Q寄存器，然后一次就计算完了，理论上是四倍计算加速啊！
-**总结：虽然讲到了加速，而且还讲了点编译器的相关优化，但是都还不够geek，不够彻底，不够爽！
+总结：虽然讲到了加速，而且还讲了点编译器的相关优化，但是都还不够geek，不够彻底，不够爽！
 
-你看看下面这一篇，就知道什么叫做严谨，什么叫做geek了！**
+你看看下面这一篇，就知道什么叫做严谨，什么叫做geek了！
 
 ![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_7fb2cc2e8234.jpg)
 
-**
 
 这里面讲到了指令重排、微架构、流水线等很深的东西，不懂？
 
 没关系，先知道设计原则就好，后面慢慢说。
 
-其中尤其关注的点是：指令流水线排布**
+其中尤其关注的点是：指令流水线排布
 
 -  那指令流水排布跟啥有关？即主要需要注意不要引起<strong>CPU的Hazard</strong>。
 -  介绍Hazard的连接在这：
 
-**
 
-Hazard：**
+Hazard：
 
 简短说下：在CPU微架构里，当下一条指令无法在接下来的时钟周期内被执行，由此导致的指令流水线问题就叫做Hazard。 
 
@@ -111,7 +108,7 @@ Hazard：**
 
 你看上面一条指令假设需要花很多个指令周期（NEON指令确实如此），那么就被推入了流水线，并分割为好多的小步骤，其中最后一个步骤就是把数据写回Q0，让当前这条指令的下一句就是先取Q0的值，然后做运算啥的，你从图上看，是不是很有可能上一条指令的Q0还没写进去，我下面的Q0就读出来啦！<strong>因此在微架构里面叫这玩意做：Hazard</strong>。
 
-**当然咯！这种情况肯定是不允许出现的，具体怎么解我不知道，我知道的是，肯定得等Q0写完才能读，因此势必流水线就会被破坏，势必就有资源会被作为牺牲品，因此这就是为什么不提倡上述这种操作方式，再下面的NEON优化部分，我会有更专业的操作来验证。![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_1151873267b5.png)
+当然咯！这种情况肯定是不允许出现的，具体怎么解我不知道，我知道的是，肯定得等Q0写完才能读，因此势必流水线就会被破坏，势必就有资源会被作为牺牲品，因此这就是为什么不提倡上述这种操作方式，再下面的NEON优化部分，我会有更专业的操作来验证。![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_1151873267b5.png)
 
 老是挖坑~而且还不填~
 
@@ -137,11 +134,11 @@ Hazard：**
 
 在ARMv7-A平台**注意，其他平台不一定是这个效果了，需要去精调的哈)下，NEON指令通常比ARM标准指令集需要更多的指令周期。
 
-**原文：On ARMv7-A platform, NEON instructions usually take more cycles than ARM instructions. To reduce instruction latency, it’s better to avoid using the destination register of current instruction as the source register of next instruction.因此，为了减少指令延时时间，避免使用当前指令的目地寄存器作为下一条指令的源寄存器。
+原文：On ARMv7-A platform, NEON instructions usually take more cycles than ARM instructions. To reduce instruction latency, it’s better to avoid using the destination register of current instruction as the source register of next instruction.因此，为了减少指令延时时间，避免使用当前指令的目地寄存器作为下一条指令的源寄存器。
 
 > 这里我大概解释下：为什么当前指令的目的寄存器作为下一条指令的源寄存器会增加延时？我觉得是由于流水线的问题，你想啊，NEON指令要的周期数比ARM指令要多，也就是是说在指令流水线里面呆的时间越长，因此为了保证数据不会出现Hazard（见上面的wiki解释），于是我刚进流水线我就得把流水线给清了，这无疑是极大浪费资源跟效率的。
 
-C语言实现版本：**
+C语言实现版本：
 
 就是两块内存中的数据求差分值，然后平方和，就是求均方差的函数，在求出差分（写入作为目的寄存器）后马上又要使用差分值平方（平方作为源寄存器）。
 
@@ -159,9 +156,8 @@ float SumSquareError_C(const float* src_a, const float* src_b, int count)
 ```
 
 
-**
 
-内联汇编实现版本1：**
+内联汇编实现版本1：
 
 这里几乎是常规的写法，你看注释那里，可以看到q0是vsub的目的寄存器，马上又是下面vmla的源寄存器了，所以这里是会打断流水线的（粗略解释见上面*<strong>Hazard</strong>*部分）。
 
@@ -221,13 +217,11 @@ float SumSquareError_NEON1(const float* src_a, const float* src_b, int count)
 ```
 
 
-**
 
-汇编实现版本2：**
+汇编实现版本2：
 
 你看这个操作就合理多了，把减法操作跟平方操作不连起来，在中间穿插其他的操作，从而保证Q0在被取的时候，流水线肯定把Q0的值写进去了，也就说留出足够的时间出来了。
 
-**
 
 ```cpp
 float SumSquareError_NEON2(const float* src_a, const float* src_b, int count)
@@ -282,11 +276,11 @@ float SumSquareError_NEON2(const float* src_a, const float* src_b, int count)
 ```
 
 
-结论:** 
+结论:
 
     在当前的ARMv7平台下测试效果是汇编版本2比版本1快了约30%，此外，intrinsics方式写的NEON指令可以通过编译器来进行精调。
 
-**Note: this test runs on Cortex-A9. The result may be different on other platforms.
+Note: this test runs on Cortex-A9. The result may be different on other platforms.
 
 #### 3.3、Skill2：Reduce branches
 
@@ -298,9 +292,8 @@ float SumSquareError_NEON2(const float* src_a, const float* src_b, int count)
 
 *<strong>talk less, show me the code.(亮代码吧！兄嘚~)</strong>*
 
-**
 
-*C语言版本：***
+*C语言版本：*
 
 ```text
 if( flag )
@@ -320,9 +313,8 @@ else
 ```
 
 
-**
 
-*NEON版本：***
+*NEON版本：*
 
 ```text
 //dst[x * 4]       = (a&Eflag) | (b&~Eflag);
@@ -337,24 +329,20 @@ else
 
 VBSL qFlag, qA, qB
 
-**
 
-*VBSL（按位选择）:***
+*VBSL（按位选择）:*
 
 - 如果目标的对应位为1，则该指令从第一个操作数中选择目标的每一位；
 - 如果目标的对应位为 0，则从第二个操作数中选择目标的每一位。
-**
 
-*ARM NEON 指令集提供以下指令来帮助用户实现上述的逻辑操作：***
+*ARM NEON 指令集提供以下指令来帮助用户实现上述的逻辑操作：*
 
 VCEQ, VCGE, VCGT, VCLE, VCLT……
 VBIT, VBIF, VBSL……
 
-**
 
 小结：<strong>减少分支并不是仅仅对NEON有用，这是一个对所有代码(指令集)都有用的小trick啦~ 甚至连在c语言里面这都是一条很有效的准则：</strong>少用分支**。
 
-**
 
 #### 3.4、 Skill3：Preload data-PLD
 
@@ -393,12 +381,11 @@ Shift - is an optional shift.
 
 Label - is a PC-relative expression.
 
-*PLD操作的一些特征：***
+*PLD操作的一些特征：*
 
 - 独立于加载/存储的的指令运行（Independent of load and store instruction execution）；
 - 当处理器在持续执行其他指令的时候，预加载是在<strong>后台运行</strong>的；
 - 偏移量指定为实际情况（The offset is specified to real cases）。
-**
 
 #### 3.5、 Skill4：Misc
 
@@ -410,11 +397,11 @@ Label - is a PC-relative expression.
 
 <strong>Floating-point VMLA/VMLS instruction</strong>
 
-**注意咯：这里的数据仅对Cortex-A9平台有效，对于其他的平台结果就需要重新评估啦！通常，VMUL+VADD/VMUL+VSUB指令能够被VMLA/VMLS指令替换，因为指令数量更少了，更精简了。
+注意咯：这里的数据仅对Cortex-A9平台有效，对于其他的平台结果就需要重新评估啦！通常，VMUL+VADD/VMUL+VSUB指令能够被VMLA/VMLS指令替换，因为指令数量更少了，更精简了。
 
 但是，对比于浮点VMUL操作，浮点VMLA/VMLS操作有更长的指令delay，假如在这段delay空隙中没有其他的指令能够插入的话，使用浮点VMUL+VADD/VMUL+VSUB操作将会表现出更好的性能。
 
-问题：如何会更好？我认为还是一个流水线的问题罢！**
+问题：如何会更好？我认为还是一个流水线的问题罢！
 
 举个实例：Ne10库中的浮点FIR函数，代码片段如下所述：
 
@@ -432,9 +419,8 @@ VEXT qTemp3,qInp,qTemp,#3
 VMLA qAcc0,qTemp2,dCoeff_1[0]
 VMLA qAcc0,qTemp3,dCoeff_1[1]
 
-**
 
-Implementation 2: VMUL+VADD**
+Implementation 2: VMUL+VADD
 
 这里仍然还有*qAcc0*的数据依赖缺（就是说流水线里面的Hazard，见前文的分析），但是 *VADD/VMUL*只需要5个指令周期哈！
 
@@ -459,13 +445,12 @@ VADD qAcc0, qAcc0, qAcc3
 
 具体实现代码位置在：modules/dsp/NE10_fir.neon.s：line 195
 
-**
 
 下面是上面提到的，指令周期对照表：
 
 ![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_7b80e5c5903e.jpg)
 
-优化手段大体总结如下：**
+优化手段大体总结如下：
 
 - 尽可能地利用指令之间的延时空隙；
 - 避免使用分支；
@@ -506,7 +491,7 @@ NEON汇编方式跟intrinsics方式对比如下：
 
 使用汇编的方式可能会更灵活，<strong>主要体现在数据的load/store</strong>。
 
-**当然这个不足，可以在将来的编译器升级过程中进行解决。有时候，编译器是有能力将两条内联函数指令优化为一条汇编指令的，比如：
+当然这个不足，可以在将来的编译器升级过程中进行解决。有时候，编译器是有能力将两条内联函数指令优化为一条汇编指令的，比如：
 
 ![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_dc83cfdebe75.jpg)
 
@@ -524,9 +509,8 @@ Register allocation**：
 
 对于ARMv8-A AArch64，有更多的NEON寄存器（32个 128bit NEON寄存器），因此对于寄存器分配问题的影响就较低了！
 
-**
 
-#### 4.3 性能跟编译器的关系？**
+#### 4.3 性能跟编译器的关系？
 
 在一个特定的平台下，NEON汇编的的性能表现仅仅取决于其实现代码，与编译器鸟关系都没有的啊！好处就是你能预测并估计你手调代码的性能表现，这很正常嘛！
 
@@ -552,7 +536,6 @@ NEON汇编和内联方式有同样的实现过程，编码-调试-性能测试�
 - 基于已使用指令的时间消耗来调整指令的序列，并尽你所能地最小化指令延时（延时间隙插入指令）；
 这种方式的的缺点是优化仅仅是针对于某个`micro-architecture`的，移植性不好啊！同时对于相对较小的收益来说，这也是非常耗时的，也就是性价比不是很高啊！
 
-**
 
 NEON intrinsics 精调的方法更难哟！**：
 
@@ -565,7 +548,6 @@ NEON intrinsics 精调的方法更难哟！**：
 
 基于ARMv7-A的经验，可能有这样的疑问：是不是汇编就一定有更好的性能呢？我认为随着 ARMv8-A 环境的成熟化，内联函数将会有更好的性能（截至目前2019.4貌似大家还是在用手写汇编，至少用内联在现在阶段还没得到普遍接受，嗯~极限性能领域~）。
 
-**
 
 #### 4.4 跨平台跟可移植性
 

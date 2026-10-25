@@ -71,7 +71,7 @@ relax_mod = welder.tune(relax_mod)
 
 因此，我在这里学习了一下MLC-LLM的项目结构，并且借鉴和简化了一下，把一个基于TVM实现的小项目使用这种方式分离成一个单独的小项目: [LeiWang1999/TVM.CMakeExtend](https://link.zhihu.com/?target=https%3A//github.com/LeiWang1999/TVM.CMakeExtend).
 
-#### <strong>一种解决方案：通过CMake模块化构建TVM扩展</strong>
+#### 一种解决方案：通过CMake模块化构建TVM扩展
 
 基于之前讨论的种种痛点，本文接下来介绍[LeiWang1999/TVM.CMakeExtend]里的CMake的构建方式，可以作为TVM模块化开发的参考方案。具体来说，我们将TVM视为一个独立的子模块，并且引入自定义的扩展逻辑，如TileLang（这里是一个示例的扩展模块），通过CMake的模块管理能力，将这些扩展与核心的TVM库解耦，从而实现灵活的功能组合与模块管理。
 
@@ -164,7 +164,7 @@ target_link_libraries(tilelang PUBLIC tvm_runtime)`
 
 通过生成共享库 tilelang 以及静态库 tilelang_static，用户可以根据需要灵活地选择不同的链接方式（静态链接或动态链接），并且 tilelang 模块会自动依赖 tvm_runtime，保证在编译时能够正确地找到相关符号和依赖项。
 
-#### <strong>在cpp通过TVM的核心API编写自己的扩展模块</strong>
+#### 在cpp通过TVM的核心API编写自己的扩展模块
 
 在[src](https://link.zhihu.com/?target=https%3A//github.com/LeiWang1999/TVM.CMakeExtend/tree/main/src)下面, 我放置了对tvm扩展的例子，包括优化的pass，新的codegen等，在自己写的代码中，我们引入TVM的头文件，编写自己的Pass:
 
@@ -196,7 +196,7 @@ TVM_REGISTER_GLOBAL("tl.transform.Simplify").set_body_typed(Simplify);
 
 这样在python端就可以通过`tvm.tl.transform.Simplify`来调用这个pass优化tensorir的语法树了。
 
-#### <strong>在项目init的时候为TVM扩展模块动态查找与加载自定义库文件</strong>
+#### 在项目init的时候为TVM扩展模块动态查找与加载自定义库文件
 
 在基于 TVM 的扩展模块中，我们经常需要将自定义的动态链接库（DLL）或共享库（如 .so、.dll 或 .dylib）与现有的 TVM 运行时进行集成。这种情况下，一个有效的全局入口点机制能够帮助我们动态查找这些库文件，并确保它们能够被正确加载到系统中。这篇博客将详细讲解一个典型的库查找与加载的实现——包括路径的动态定位、多平台的兼容处理、以及如何优雅地处理环境变量，确保我们在复杂的开发环境中能够稳定地找到所需的库文件，在这个例子中，做这段时期的代码是[libinfo.py](https://link.zhihu.com/?target=https%3A//github.com/LeiWang1999/TVM.CMakeExtend/blob/tilelang/python/tilelang/libinfo.py), 这段代码的核心功能是实现自定义库(如刚刚编译出来的本项目的libxxx.so)的自动查找与路径定位，当然也是大部分借鉴自[MLC-LLM](https://link.zhihu.com/?target=https%3A//github.com/mlc-ai/mlc-llm)，供大家一起讨论。
 
@@ -260,6 +260,6 @@ import tvm as tvm
 
 所以在之前的例子上, 我们使用了`from bitblas import tvm as tvm`来确保我们的tvm的python接口和我们link的lib是一致的，不过这个是为了谨慎，一般而言应该不需要。
 
-#### <strong>总结</strong>
+#### 总结
 
 本文介绍了一种基于 CMake 的模块化开发方案，例子参考[LeiWang1999/TVM.CMakeExtend](https://link.zhihu.com/?target=https%3A//github.com/LeiWang1999/TVM.CMakeExtend)，用于构建 TVM 的扩展模块，帮助和我一样基于TVM开发项目的同学们一点小启发。通过将 TVM 核心库与自定义扩展模块相分离，我们不仅能够更加灵活地管理和组合功能，还避免了直接修改 TVM 源码所带来的种种问题。试想一下，当我们安装基于 TVM 的项目时，不需要单独编译一份 TVM，只需通过 `pip install apache-tvm` 安装最上游版本的 TVM，然后再使用 `pip install xxx` 安装自己的扩展模块。从源码安装时，也无需构建完整的 TVM 代码，只需先用 `pip install apache-tvm` 下载最新的 TVM 发行版，扩展模块的库文件就能自动链接到已安装的 TVM 包中，大家如果都这么做，tvm的体验应该会变得美好一些 (

@@ -99,13 +99,11 @@ $- S_{out} \in \mathbb{R}^{d \times d} (chunk 结束时的状态)$
 
  \begin{align} \text{old\_v}_1 &= S_0 k_1 \\ \Delta_1 &= \beta_1 (v_1 - \text{old\_v}_1) \\ S_1 &= g_1 S_0 + \Delta_1 k_1^\top \end{align} 
 
-**
 
-Token 2:** 
+Token 2:
 
  \begin{align} \text{old\_v}_2 &= S_1 k_2 = (g_1 S_0 + \Delta_1 k_1^\top) k_2 \\ &= g_1 S_0 k_2 + \Delta_1 (k_1^\top k_2) \\ \Delta_2 &= \beta_2 (v_2 - \text{old\_v}_2) \\ S_2 &= g_2 S_1 + \Delta_2 k_2^\top \\ &= g_2 g_1 S_0 + g_2 \Delta_1 k_1^\top + \Delta_2 k_2^\top \end{align} 
 
-**
 
 #### 3.2 归纳出模式
 
@@ -134,7 +132,6 @@ $- A_{tj} = \gamma_{j:t} (k_j^\top q_t) 为”衰减注意力分数”$
 
  $O = \underbrace{\Gamma \cdot (S_0 Q^\top)^\top}_{\text{状态贡献}} + \underbrace{\text{CausalAttn}(\Delta, K, Q, G)}_{\text{Chunk 内交互}} $
 
-**
 
 #### 3.4 转化为 Tensor Core 友好的形式
 
@@ -408,7 +405,7 @@ Chunk Size优点缺点C=32更少顺序步骤矩阵太小，Tensor Core 利用率
 
 #### 十、实战经验：我们的 Prefill 优化之路
 
-** 以下内容来自我们在 NVIDIA B200 上优化 GDN Prefill 内核的实践经验。
+以下内容来自我们在 NVIDIA B200 上优化 GDN Prefill 内核的实践经验。
 #### 10.1 问题起点：朴素实现的瓶颈
 
 最初的 Triton 实现采用最直接的方式——逐 token 顺序扫描：

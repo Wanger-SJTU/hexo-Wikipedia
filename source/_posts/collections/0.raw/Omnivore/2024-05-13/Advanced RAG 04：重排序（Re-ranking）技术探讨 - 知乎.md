@@ -34,7 +34,7 @@ id: c563d7ac-9999-4fc2-9ad9-62df66dfea12
 
 本文介绍了 RAG 系统的重排序（Re-ranking）技术，并演示了两种将重排序（Re-ranking）技术融入到 RAG 系统中的主流方法。
 
-## <strong>01 Re-ranking 技术简介</strong>
+## 01 Re-ranking 技术简介
 
 ![](https://proxy-prod.omnivore-image-cache.app/720x541,siRXwnLsVz2z0PAI3u8O8SeHBJrJcscTFDRZcC9AYf8U/https://pic2.zhimg.com/v2-db11d3617cd17e73ac09d86957cf5f61_b.jpg)
 
@@ -51,7 +51,7 @@ id: c563d7ac-9999-4fc2-9ad9-62df66dfea12
 1. <strong>重排序模型（Re-ranking models）</strong> ：这些重排序模型会分析用户提出的 query 与文档之间的交互特征，以便更准确地评估它们之间的相关性。
 2. <strong>LLM</strong>：通过使用 LLM 深入理解整个文档和用户提出的 query ，可以更全面地捕捉语义信息。
 
-## <strong>02 将 Re-ranking models 作为 reranker 使用</strong>
+## 02 将 Re-ranking models 作为 reranker 使用
 
 与嵌入模型（embedding model）不同，重排序模型（re-ranking model）将用户提出的 query 和上下文作为输入，直接输出 similarity scores （译者注：指的是重排序模型输出的文档与 query 之间的相似程度评分），而不是嵌入（embeddings）。值得注意的是，重排序模型是利用交叉熵损失（cross-entropy loss）进行优化的\[1\]，因此 similarity scores 不局限于特定范围，甚至可以是负数。
 
@@ -74,7 +74,7 @@ id: c563d7ac-9999-4fc2-9ad9-62df66dfea12
 
 在本文中，将使用 bge-reranker-base 模型。
 
-## <strong>2.1</strong> <strong>开发环境配置</strong>
+## 2.1** **开发环境配置
 
 导入相关库，设置环境变量和全局变量。
 
@@ -96,7 +96,7 @@ dir_path = "YOUR_DIR_PATH"
 tinyllama.pdf
 ```
 
-## <strong>2.2 使用 LlamaIndex 构建一个简单的检索器</strong>
+## 2.2 使用 LlamaIndex 构建一个简单的检索器
 
 ```reasonml
 documents = SimpleDirectoryReader(dir_path).load_data()
@@ -104,7 +104,7 @@ index = VectorStoreIndex.from_documents(documents)
 retriever = index.as_retriever(similarity_top_k = 3)
 ```
 
-## <strong>2.3 基础检索功能的实现</strong>
+## 2.3 基础检索功能的实现
 
 ```crmsh
 query = "Can you provide a concise description of the TinyLlama model?"
@@ -186,7 +186,7 @@ optimal performance within specific inference constraints This is achieved by tr
 more tokens...
 ```
 
-## <strong>2.4 Re-ranking</strong>
+## 2.4 Re-ranking
 
 使用 bge-reranker-base 模型对上述节点（Node）进行重排序。
 
@@ -250,7 +250,7 @@ w...
 
 很明显，经过重排序，ID 为 ca4db90f-5c6e-47d5-a544-05a9a1d09bc6 的节点（Node）其排名从 2 变为 1，这说明最相关的上下文已经被排在了第一位。
 
-## <strong>03 将 LLM 作为 reranker 使用</strong>
+## 03 将 LLM 作为 reranker 使用
 
 现有的涉及 LLM 的重排序方法大致可分为三类：<strong>对 LLM 进行 fine-tuning，使其专门针对重排序任务进行训练</strong>、<strong>使用 Prompt 的方式引导 LLM 进行重排序</strong>以及<strong>利用 LLM 生成的数据来增强训练集，从而提高重排序模型的性能。</strong>
 
@@ -404,7 +404,7 @@ query_engine = index.as_query_engine( # add reranker to query_engine
 
 对此感兴趣的读者可以试一试。
 
-## <strong>05 Conclusion</strong>
+## 05 Conclusion
 
 本文介绍了重排序（re-ranking）的原理和两种主流方法。其中，<strong>使用重排序模型的这种方法轻量且开销较小</strong>。另一方面，<strong>使用 LLM 的这种方法在多个基准测试上都表现良好</strong>\[7\]，<strong>但成本较高，并且仅在使用 ChatGPT 和 GPT-4 时表现良好，而在使用其他开源模型（如 FLAN-T5 和 Vicuna-13B ）时性能不如人意。</strong> 因此，在实际应用中，需要根据具体情况进行具体分析。
 

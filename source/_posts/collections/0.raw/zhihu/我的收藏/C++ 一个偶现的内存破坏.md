@@ -17,7 +17,7 @@ source_url: https://zhuanlan.zhihu.com/p/578290634
 
 <strong>原文：[《C++ 一个偶现的内存破坏》](https://link.zhihu.com/?target=https%3A//bot-man-jl.github.io/articles/%3Fpost%3D2022/Cpp-Memory-Occasionally-Corruption)，公众号 BOTManJL</strong>~http://weixin.qq.com/r/zigHAh3EUtUuKFlhb31K (二维码自动识别)
 
-**不要忽视告警和潜在问题。本文介绍了一个典型的 C++ 内存破坏问题的分析方法，主要使用了 反汇编、STL 源码分析、AddressSanitizer (Asan) 等技术手段。
+不要忽视告警和潜在问题。本文介绍了一个典型的 C++ 内存破坏问题的分析方法，主要使用了 反汇编、STL 源码分析、AddressSanitizer (Asan) 等技术手段。
 
 ### 问题
 
@@ -263,7 +263,7 @@ previously allocated by thread T0 here:
 - 和上次不同，本次出现的是 <strong>使用已释放的堆变量</strong> `heap-use-after-free` 错误
 - 代码 `*reinterpret_cast(payload_ + read_index_)` 试图访问 `response.buffer()` 返回值拷贝构造时申请的堆内存
 - 而在 `response.buffer()` 返回值的临时变量析构时，这块堆内存已被释放
-**虽然 clang [支持在编译时检查 std::string 内部指针的生命周期问题](https://link.zhihu.com/?target=%3Ccode%3Ehttps%3A//cla%3C/code%3Eng.llvm.org/docs/analyzer/checkers.html%23cplusplus-innerpointer-c)（[在线运行](https://link.zhihu.com/?target=https%3A//godbolt.org/z/zYsdMnava)）：
+虽然 clang [支持在编译时检查 std::string 内部指针的生命周期问题](https://link.zhihu.com/?target=%3Ccode%3Ehttps%3A//cla%3C/code%3Eng.llvm.org/docs/analyzer/checkers.html%23cplusplus-innerpointer-c)（[在线运行](https://link.zhihu.com/?target=https%3A//godbolt.org/z/zYsdMnava)）：
 
 ```cpp
 const char *return_temp(int x) {

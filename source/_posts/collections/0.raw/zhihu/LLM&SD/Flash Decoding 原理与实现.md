@@ -70,7 +70,6 @@ Flash Decoding 的解决方案很直观：既然 Q 维度没有足够的并行�
 
 ![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_464c9635fa06.jpg)
 
-**
 
 *将 K/V 切分为多个块，Q 分别与多个 KV 块进行注意力计算，最终将结果归约合并为全局输出。*
 
@@ -82,7 +81,7 @@ Flash Decoding 的解决方案很直观：既然 Q 维度没有足够的并行�
 
 下面我使用公式来描述 Flash Decoding 的计算过程。
 
-单个 KV 分块**
+单个 KV 分块
 
 对于第 k 个 KV 块，设其中包含的注意力分数为 s_i^{(k)}（即 Q 与该块中第 i 个 Key 的点积除以 \sqrt{d}）。
 

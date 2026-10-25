@@ -101,7 +101,7 @@ dtoc(g)进行generating token的时候，数据搬移时间的量化结果*<stro
 
 ### Approximate Methods 近似方法
 
-#### 压缩   Group-wise Quantization ** 
+#### 压缩   Group-wise Quantization
 
 本文重点研讨系统结构方面的计算并行设计，flexgen的近似方法，采用压缩量化、稀疏化的方法， 属于跟系统设计正交的优化方法，本文不重点分享。
 
@@ -113,7 +113,7 @@ dtoc(g)进行generating token的时候，数据搬移时间的量化结果*<stro
 
 压缩考虑作者仍然采用fp16进行GPU上的运算，这个可能时cpu offload系统特点，*<strong>因为offload系统瓶颈都在IO端，是IO带宽瓶颈，</strong>*GPU上的算力和存储相对充分，所以还原fp16可以最大程度的保持算法精度。
 
-#### 稀疏化   Sparse Attention** 
+#### 稀疏化   Sparse Attention
  
 
 此处就是稀疏的attention计算，下面的计算中QK计算结构进行TopK筛选，然后结合TopK结果去load稀疏V值，进行稀疏计算：

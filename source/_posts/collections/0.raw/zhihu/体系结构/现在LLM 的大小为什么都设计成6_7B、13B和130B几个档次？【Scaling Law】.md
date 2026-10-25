@@ -55,7 +55,6 @@ transformer 语言模型的核心结论：
 
 <strong>8、最优batch size</strong>。训练这些模型的理想批量大小大致仅是损失的幂，并且可以通过测量梯度噪声标度来确定
 
-**
 
 参考资料：
 
@@ -63,7 +62,7 @@ transformer 语言模型的核心结论：
 
 [nghuyong：解析大模型中的Scaling Law](https://zhuanlan.zhihu.com/p/667489780)
 
-公主号【walle优选笔记】，欢迎来玩**
+公主号【walle优选笔记】，欢迎来玩
 
 相关文章：
 

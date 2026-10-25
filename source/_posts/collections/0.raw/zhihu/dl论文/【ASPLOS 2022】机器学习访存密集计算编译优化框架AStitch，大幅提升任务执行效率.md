@@ -21,7 +21,7 @@ source_url: https://zhuanlan.zhihu.com/p/475898491
 
 AStitch通过编译优化的手段来自动化地提高机器学习任务的执行效率, 提出了一种大粒度计算融合的编译优化手段，通过计算图的依赖关系特性、GPU多层次存储架构上的数据局部性、以及不同数据尺寸之下的线程并发性等三个方面的联合考虑，自动化地为大粒度的复杂访存密集算子子图生成高效的GPU代码，从而大幅减少GPU kernel调用及框架层算子调度的额外开销，避免了不必要的重复计算。大幅减少片外访存的同时，可适配各种数据尺寸以得到最佳并行效率。对比XLA[1]，AStitch最高可以取得2.73倍的性能加速。
 
-### <strong>背景</strong>
+### 背景
 
 近年来，深度学习编译优化已经成为深度学习系统领域最活跃的方向之一。“编译“方法将机器学习DSL（TensorFlow、PyTorch等）自动化地翻译为底层硬件支持的程序，“优化”方法则在翻译（编译）过程中执行一系列的性能优化方案，使得最终生成的程序能够跑得更快更好。
 
@@ -37,7 +37,7 @@ XLA所使用的优化方法是kernel fusion，进一步分析XLA的fusion优化�
 
 基于上述发现，如果我们将shared memory引入机器学习编译优化的fusion中，增大fusion粒度，可以减少框架调度和kernel调用开销，并减少片外存储的访问，进一步优化访存密集型计算的性能。但是，XLA（包括TVM）为什么没这么做呢？进一步分析后，我们发现最大的挑战在于，编译器需要自动化地执行优化，手工优化的想法，到了编译器这里，难度往往会被放大。
 
-### <strong>挑战</strong>
+### 挑战
 
 到了编译器IR层面，机器学习模型的计算图会变得非常复杂，涉及两层的数据依赖关系：Element层面和Operator层面。
 
@@ -53,7 +53,7 @@ Operator层面是指图层面的算子依赖关系，下图展示了一个访存
 
 除了复杂的计算图之外，输入数据形状的多样性和未知性，也给自动代码生成带来了很大的挑战。不同的tensor形状需要不同的代码生成schedule，以得到较好的并行性。XLA针对常规的tensor形状提供了代码生成的schedule，但tensor形状的可能性是无穷无尽的，我们在真实生产中发现，一些特殊的形状会导致XLA产生极大的性能问题。（注：这里讨论的是静态shape的多样性，而非动态shape问题。）
 
-### <strong>破局</strong>
+### 破局
 
 困难和挑战总是让对技术有极致追求的人兴奋。
 
@@ -77,7 +77,7 @@ XLA所支持的是Local的策略，只支持通过寄存器传递数据，算子
 
 ![](/images/collections/0.raw/zhihu/dl%E8%AE%BA%E6%96%87/asset/img_e01a9929a773.jpg)
 
-### <strong>结语</strong>
+### 结语
 
 AStitch的雏形是我们早期的工作FusionStitching[4]，FusionStitching最早将shared memory引入了访存密集算子的编译优化自动fusion，并采用cost model来做fusion和代码生成的一系列决策。随着深入优化，我们发现可以将kernel之间的隐式同步给inline到kernel内部，并通过global memory做stitch，避免CPU和GPU之间的无谓的切换，进一步的，结合Adaptive Thread Mapping方法解决并行策略问题，可以形成强大的代码生成能力。至此，我们已经不需要cost model来指导fusion决策和代码生成，我们可以stitch一切，我们的代码生成也具有自适应能力。
 
@@ -85,9 +85,8 @@ AStitch的雏形是我们早期的工作FusionStitching[4]，FusionStitching最�
 
 论文地址：https://dl.acm.org/doi/10..3507723
 
-**
 
-### 参考文献：**
+### 参考文献：
 
 [1] TensorFlow XLA. https://www.tensorflow.org/xla
 

@@ -77,7 +77,7 @@ Repo: [https://github.com/hemingkx/SpeculativeDecodingPapers](https://link.zhihu
 
 图4: https://huggingface.co/blog/assisted-generation这一思路由Google和Deepmind同时提出<span class="wikilink wikilink--missing" title="未导入的页面">12</span>(#ref_12)<span class="wikilink wikilink--missing" title="未导入的页面">13</span>(#ref_13)。作为Speculative Decoding的早期探索，这种“推测”思路易于实践和部署。并且，这两篇工作同时在理论上证明了推测解码不仅支持greedy decoding，还支持nucleus sampling的无损加速（我们下文会讲到）。这两种解码策略涵盖了LLM应用的大多数场景。因此，这两篇工作极大地促进推测解码在LLM推理加速中的应用，吸引了工业界和学术界的大量关注。
 
-**然而，同系列小模型的“推测”精度还有提升空间吗？显然是有的。最直接的思路，就是去增强小模型和大模型之间的“行为相似性”（behavior alignment），让小模型模仿得“更像”一些。目前在这方面的研究进展集中在知识蒸馏（knowledge distillation）上：将target LLM作为教师模型，小模型作为学生模型，通过知识蒸馏让小模型更加趋向于target LLM的预测行为<span class="wikilink wikilink--missing" title="未导入的页面">14</span>(#ref_14)<span class="wikilink wikilink--missing" title="未导入的页面">15</span>(#ref_15)。并且，知识蒸馏还可以有效地增强小模型的生成质量，通过减少低级的预测错误，增加通过验证的token数量。
+然而，同系列小模型的“推测”精度还有提升空间吗？显然是有的。最直接的思路，就是去增强小模型和大模型之间的“行为相似性”（behavior alignment），让小模型模仿得“更像”一些。目前在这方面的研究进展集中在知识蒸馏（knowledge distillation）上：将target LLM作为教师模型，小模型作为学生模型，通过知识蒸馏让小模型更加趋向于target LLM的预测行为<span class="wikilink wikilink--missing" title="未导入的页面">14</span>(#ref_14)<span class="wikilink wikilink--missing" title="未导入的页面">15</span>(#ref_15)。并且，知识蒸馏还可以有效地增强小模型的生成质量，通过减少低级的预测错误，增加通过验证的token数量。
 
 #### 4.2 Self-Drafting
 

@@ -19,7 +19,7 @@ source_url: https://zhuanlan.zhihu.com/p/680635901
 
 ![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_0821dc912210.jpg)
 
-推理加速技术分类**
+推理加速技术分类
 
 ### 系统工程优化
 
@@ -42,7 +42,7 @@ QAT一般效果是更好的，但是它需要重训模型所以成本会大一�
 
 利用现代硬件架构的并行处理能力，并行计算方法将计算分配给多个核心或设备，从而在推理过程中实现实质性的加速，主要有两类并行：模型并行和非集中式推理。
 
-模型并行**
+模型并行
 
 大多数模型并行都是应用在分布式训练场景，比如Tensor Parallelism(TP)和Pipeline Parallelism(PP)，不过像[PaLM](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2211.05102) inference继承了TP的思想是应用在大规模Transformer推理场景的。而Sequence Parallelism(SP)具有多种不同的设计和实现方式，但其针对大型语言模型推理的关键思想，是通过沿序列长度维度将长序列的处理过程拆分到多个GPU上，从而实现计算和存储负载的分布式处理，不过这个的应用相对来说没有前两个这么广泛。
 
@@ -52,7 +52,6 @@ QAT一般效果是更好的，但是它需要重训模型所以成本会大一�
 
 非集中式处理方法主要是利用一些非中心化的节点来处理数据进行推理，这个方法面向的场景是计算资源是物理隔离的通过Internet互联的，可以充分利用一些消费级GPU的计算资源，同样也有很多挑战，比如设备的异构特性、有限的计算存储容量、低带宽的网络、容错性、隐私保护等等，目前业界比较成熟的这类系统就是[Petals](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2209.01188)。
 
-**
 
 #### 3. 内存管理
 
@@ -68,7 +67,7 @@ QAT一般效果是更好的，但是它需要重训模型所以成本会大一�
 
 文章把一些利用硬件特性加速特定操作的优化归纳到内核优化的范畴，主要提出了5点，即内核融合、定制attention、采样优化、变长序列优化和自动编译优化。
 
-内核融合**
+内核融合
 
 内核融合是一个广泛使用的内核优化手段，可以减少内核launch和访存开销，一些推理引擎像FasterTransformer、LightSeq、ByteTransformer都用到了内核融合的技术。常规做法是把相同shape的GEMM进行融合、addBias和其他非GEMM层(残差、LN、Relu)融合、通过CUTLASS将GEMM和一些激活层融合等等。
 

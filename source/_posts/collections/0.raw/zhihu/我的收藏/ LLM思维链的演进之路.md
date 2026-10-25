@@ -17,7 +17,7 @@ source_url: https://zhuanlan.zhihu.com/p/658873953
 
 大语言模型的爆火也推动了大量prompt工程的研究，我想用过ChatGPT之类大模型的同学应该都听过思维链这一方法，简单好用！继思维链之后，延伸出了许多新的方法，本文主要梳理下目前常见的一些方法。
 
-### <strong>思维链(Chain-of-Thought，CoT)</strong>
+### 思维链(Chain-of-Thought，CoT)
 
 论文链接：[https://arxiv.org/pdf/2201.11903.pdf](https://link.zhihu.com/?target=https%3A//arxiv.org/pdf/2201.11903.pdf)
 
@@ -27,7 +27,7 @@ source_url: https://zhuanlan.zhihu.com/p/658873953
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_a03d567f55c8.jpg)
 
-### <strong>CoT-Self-consistency</strong>
+### CoT-Self-consistency
 
 论文链接：[https://arxiv.org/pdf/2203.11171.pdf](https://link.zhihu.com/?target=https%3A//arxiv.org/pdf/2203.11171.pdf)
 
@@ -37,7 +37,7 @@ source_url: https://zhuanlan.zhihu.com/p/658873953
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_53341e9689ba.jpg)
 
-### <strong>Tree-of-Thoughts (ToT)</strong>
+### Tree-of-Thoughts (ToT)
 
 论文链接：[https://arxiv.org/pdf/2305.10601.pdf](https://link.zhihu.com/?target=https%3A//arxiv.org/pdf/2305.10601.pdf)
 
@@ -47,7 +47,7 @@ source_url: https://zhuanlan.zhihu.com/p/658873953
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_5a209bae1676.jpg)
 
-### <strong>Graph-of-Thoughts (GoT)</strong>
+### Graph-of-Thoughts (GoT)
 
 论文链接：[https://arxiv.org/pdf/2308.09687.pdf](https://link.zhihu.com/?target=https%3A//arxiv.org/pdf/2308.09687.pdf)
 
@@ -57,7 +57,7 @@ source_url: https://zhuanlan.zhihu.com/p/658873953
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_c29a676aec7d.jpg)
 
-### <strong>Algorithm-of-Thoughts (AoT)</strong>
+### Algorithm-of-Thoughts (AoT)
 
 论文链接：[https://arxiv.org/pdf/2308.10379.pdf](https://link.zhihu.com/?target=https%3A//arxiv.org/pdf/2308.10379.pdf)
 
@@ -67,7 +67,7 @@ source_url: https://zhuanlan.zhihu.com/p/658873953
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_dd38e179efe7.jpg)
 
-### <strong>Skeleton-of-Thought (SoT)</strong>
+### Skeleton-of-Thought (SoT)
 
 论文链接：[https://arxiv.org/pdf/2307.15337.pdf](https://link.zhihu.com/?target=https%3A//arxiv.org/pdf/2307.15337.pdf)
 
@@ -77,7 +77,7 @@ source_url: https://zhuanlan.zhihu.com/p/658873953
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_3cb5540ed37c.jpg)
 
-### <strong>Program-of-Thoughts (PoT)</strong>
+### Program-of-Thoughts (PoT)
 
 论文链接：[https://arxiv.org/pdf/2211.12588.pdf](https://link.zhihu.com/?target=https%3A//arxiv.org/pdf/2211.12588.pdf)
 

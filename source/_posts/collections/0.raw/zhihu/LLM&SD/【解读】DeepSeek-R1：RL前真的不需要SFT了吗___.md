@@ -15,7 +15,7 @@ source_url: https://zhuanlan.zhihu.com/p/19623772462
 ---
 
 
-**我是小冬瓜AIGC，原创超长文知识分享，原创课程已帮助多名同学速成上岸LLM赛道。 
+我是小冬瓜AIGC，原创超长文知识分享，原创课程已帮助多名同学速成上岸LLM赛道。 
 研究方向：LLM、RL、RLHF先回答：
 
 `DeepSeek-R1-Zero` 不需要`SFT`
@@ -84,12 +84,12 @@ Deepseek-V3-base模型不做SFT就可以RL训练，“问题是RL的数据和rew
 
 对于数学题这种有确定答案的场景，那么通过匹配答案正确性就可以得到奖励，比如
 
-** question: find the minimal value of x^2 - 4x + 1 = 0
+question: find the minimal value of x^2 - 4x + 1 = 0
  ....
  Answer: \boxed{-3}(` $\boxed{-3}`)
  ground truth： -3， 那么可以通过规则匹配上就可以得到奖励1，匹配不上为奖励-1， 特别的要处理 和0.5 这种同值不同形式的匹配
 
-不需要训练奖励模型，因为容易reward hacking**
+不需要训练奖励模型，因为容易reward hacking
 
 <strong>We do not apply the outcome or process neural reward model in developing DeepSeek-R1-Zero, because we find that the neural reward model may suffer from reward hacking</strong> in the large-scale reinforcement learning process另外：要求模型在线采样的数据必须有`` 和``标签, 也作为格式奖励。
 
@@ -101,7 +101,7 @@ Deepseek-V3-base模型不做SFT就可以RL训练，“问题是RL的数据和rew
 
 在RL训练过程的在线采样中，可见输出长度逐渐增加，越来越多的CoT解答，另外自发的产生自省、revisits和revaluate行为
 
-** Behaviors such as reflection—where the model revisits and reevaluates its previous steps—and the exploration of alternative approaches to problem-solving arise spontaneously![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_19063320d6a5.jpg)
+Behaviors such as reflection—where the model revisits and reevaluates its previous steps—and the exploration of alternative approaches to problem-solving arise spontaneously![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_19063320d6a5.jpg)
 
 意味着不需要人为的数据教授模型CoT** ，模型通过规则奖励和人工数据，就能产生思维类风格的输出。
 
@@ -109,7 +109,7 @@ Deepseek-V3-base模型不做SFT就可以RL训练，“问题是RL的数据和rew
 
 将RL过程中的Checkpoint 进行采样生成，发现一些有趣的“自言自语”式的文本，而这些思考的文本，是模型自己的采样输出。
 
-** It underscores the power and beauty of reinforcement learning: rather than explicitly teaching the model on how to solve a problem, we simply provide it with the right incentives, and it autonomously develops advanced problem-solving strategies![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_950ba598bc72.jpg)
+It underscores the power and beauty of reinforcement learning: rather than explicitly teaching the model on how to solve a problem, we simply provide it with the right incentives, and it autonomously develops advanced problem-solving strategies![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_950ba598bc72.jpg)
 
 #### 1.7 `DeepSeek-R1-Zero`弊端
 
@@ -124,7 +124,7 @@ Deepseek-V3-base模型不做SFT就可以RL训练，“问题是RL的数据和rew
 
 DeepSeek-R1-Zero在早期从Base训练存在不稳定问题，那么仍然需要冷启动**做SFT，那么问题在于
 
-** Can reasoning performance be further improved or convergence accelerated by incorporating a small amount of high-quality data as a cold start?
+Can reasoning performance be further improved or convergence accelerated by incorporating a small amount of high-quality data as a cold start?
 How can we train a user-friendly model that not only produces clear and coherent Chains of Thought (CoT) but also demonstrates strong general capabilities? 
 
 - 并入少量的人工SFT数据是否会加速推理性能的收敛？
@@ -149,9 +149,9 @@ How can we train a user-friendly model that not only produces clear and coherent
 
 - 增加`` 特殊token
 - 增加` ` 提高阅读性，所以<strong>R1并不需要额外的摘要模型</strong>
-** we design a readable pattern that includes a summary at the end of each response and filters out responses that are not reader-friendly. Here, we define the output format as |special_token||special_token| ``, where the reasoning process is the CoT for the query, and the summary is used to summarize the reasoning results.
+we design a readable pattern that includes a summary at the end of each response and filters out responses that are not reader-friendly. Here, we define the output format as |special_token||special_token| ``, where the reasoning process is the CoT for the query, and the summary is used to summarize the reasoning results.
  
-#### 2.2  Reasoning-oriented Reinforcement Learning**
+#### 2.2  Reasoning-oriented Reinforcement Learning
 
 在Cold-start SFT后，进入到类似`Deepseek-R1-Zero` 类的RL训练，不同的是增加“语言一致性奖励”, 减轻输出混合。
 
@@ -160,9 +160,9 @@ How can we train a user-friendly model that not only produces clear and coherent
 
 是否仍需要CoT, 为了提高通用能力，仍需要收集数据做SFT
 
-** which primarily focuses on reasoning, this stage incorporates data from other domains to enhance the model’s capabilities in writing, role-playing, and other general-purpose tasks.重点在于数据收集
+which primarily focuses on reasoning, this stage incorporates data from other domains to enhance the model’s capabilities in writing, role-playing, and other general-purpose tasks.重点在于数据收集
 
-Reasoning Data：**
+Reasoning Data：
 
 - 可以根据rule-based来采集数据
 - 增加额外的数据
@@ -176,7 +176,7 @@ Reasoning Data：**
 <strong>we call DeepSeek-V3 to generate a potential chain-of-thought before answering the question by prompting. However, for simpler queries, such as “hello” we do not provide a CoT in response.混合数据有800K对Base 模型做SFT, 注意，阶段1和2的训练过程，只是为了给真正的R1模型训练收集数据，真正微调的仍是DeepSeek-V3-Base</strong>，而非训练阶段1和2的中间模型
 
 <strong>We fine-tune DeepSeek-V3-Base</strong> for two epochs using the above curated dataset of about 800k samples.
-#### <strong>2.4. Reinforcement Learning for all Scenarios</strong>
+#### 2.4. Reinforcement Learning for all Scenarios
 
 最后真正的通用RL训练, 混合了rule-based reward和preference reward。在GRPO算法里可以采样group回复
 
@@ -188,7 +188,7 @@ Reasoning Data：**
 
 先说方法，基于dense模型从R1蒸馏，8B左右效果就已经很好，纯sft蒸馏。
 
-** For distilled models, we apply only SFT and do not include an RL stage, even though incorporating RL could substantially boost model performance.![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_cfe2e4569501.jpg)
+For distilled models, we apply only SFT and do not include an RL stage, even though incorporating RL could substantially boost model performance.![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_cfe2e4569501.jpg)
 
 问题：从零R1训练小模型 VS 蒸馏R1到小模型，哪个推理能力更强
 
@@ -221,11 +221,11 @@ Reasoning Data：**
 - MCTS价值影响模型生成质量（不如纯CoT采样）
 <strong>First,unlike chess, where the search space is relatively well-defined, token generation presents an exponentially</strong> larger search space. To address this, we set a maximum extension limit for each node, but this can lead to the model getting stuck in local optima.<strong>Second, the value model directly influences the quality of generation</strong> since it guides each step of the search process.** MCTS仍有非常大的挑战，并不能否定这一条路
 
->  In conclusion, while MCTS can improve performance during inference when paired with a pre-trained value model, iteratively boosting model performance through self-search remains a significant challenge.**
+>  In conclusion, while MCTS can improve performance during inference when paired with a pre-trained value model, iteratively boosting model performance through self-search remains a significant challenge.
 
 ### 总结
 
-- R1-Zero是纯RL训练，不需要SFT，不需要reward model和value model，RL硬训，缺点在于生成数据可读性差。** 
+- R1-Zero是纯RL训练，不需要SFT，不需要reward model和value model，RL硬训，缺点在于生成数据可读性差。
 - R1主要分为4个阶段，前两个阶段cold start和reasoning-oriented RL训练是为了给第3阶段产生SFT数据，在第四阶段混合rule-reward和peference reward做RL训练，解决R1-Zero问题，具有格式化、语言统一、推理模式判别、cot摘要功能。相较R1-Zero最大的特点是R1增加了对齐**** 
 - R1方案里没有step、prm、MCTS、树推理，一路做SFT和RL训练就够了；并不用精心设计提示词来加入推理技巧如：self-reflection、revisit和self-evaluate等，模型CoT能探索到"Aha-moment"
  

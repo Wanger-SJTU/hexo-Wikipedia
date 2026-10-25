@@ -152,9 +152,9 @@ alias q='cd ~/Desktop/projects'  # 快速跳转到项目目录`
 
 在需要切换上下文前，让 Claude 编写一份 <strong>交接文档（HANDOFF.md）</strong> ：
 
-** “把剩余计划写入 HANDOFF.md。说明你尝试过什么、什么有效、什么无效，让下一个新上下文的 agent 只需加载这个文件就能继续工作。”Claude 会生成结构化的交接文档，包含：
+“把剩余计划写入 HANDOFF.md。说明你尝试过什么、什么有效、什么无效，让下一个新上下文的 agent 只需加载这个文件就能继续工作。”Claude 会生成结构化的交接文档，包含：
 
-- 目标（Goal）**
+- 目标（Goal）
 - <strong>当前进度（Progress）</strong>
 - <strong>已尝试的方法及结果</strong>
 - <strong>下一步计划</strong>
@@ -254,7 +254,6 @@ Claude Code 的 <strong>WebFetch 工具</strong> 无法访问某些站点（如 
 - 学习各种技巧和工具特性
 - 了解 Claude Code 的核心功能
 
-**
 
 >  不需要做到极致，但 至少花一些时间** 在工具优化上。
 
@@ -404,7 +403,6 @@ gh run watch` 会 **持续输出大量行** ，浪费 Token。而手动指数退
 - “这行应该移到那里”
 - “这行需要这样修改”
 - 也可以询问参考资料
-**
 
 #### 推荐布局
 
@@ -574,7 +572,7 @@ claude() {
 
 `realpath some/relative/path`
 
-** 简单但实用，避免相对路径在不同工作目录下产生歧义。
+简单但实用，避免相对路径在不同工作目录下产生歧义。
 ### 四、CLAUDE.md vs Skills vs Slash Commands vs Plugins 深度对比
 
 这四个概念容易混淆，以下是它们的核心区别与联系：
@@ -623,7 +621,6 @@ Claude Code 非常适合做 <strong>PR Review</strong> ，与传统 AI 的 <stro
 - <strong>整体审查</strong> ：快速了解 PR 的总体结构
 - <strong>逐文件审查</strong> ：一个文件一个文件地深入检查
 - <strong>带测试审查</strong> ：让 Claude 同时运行相关测试
-**
 
 - 你控制节奏和深度** ——想要多详细就多详细
 <strong>关键区别</strong> ：Claude Code 是一个 <strong>可对话的 PR 审查员</strong> ，而非只能给出一次性反馈的工具。
@@ -648,7 +645,6 @@ Claude Code 本质上是一个 <strong>增强版的搜索/深度研究工具</st
 
 - 问它 “你确定吗？请再检查一遍”
 - <strong>最佳提示词</strong> ：”double check everything, every single claim in what you produced and at the end make a table of what you were able to verify”（逐条验证所有声明，最后制作验证结果表格）
-**
 
 ### 八、Claude Code 作为 DevOps 工程师
 
@@ -663,9 +659,8 @@ Claude Code 本质上是一个 <strong>增强版的搜索/深度研究工具</st
 - 是某个特定 commit 导致的？
 - 是某个 PR 引入的？
 - 还是 <strong>flaky test</strong> （不稳定测试）？
-**
 
-- Claude Code 能够处理大量日志，这种工作 手动做极其痛苦**
+- Claude Code 能够处理大量日志，这种工作 手动做极其痛苦
 
 #### 预置的 `/gha` 斜杠命令
 
@@ -809,9 +804,8 @@ TDD 流程：  写测试 → 确认失败 → 提交 → 写代码通过测试 �
 - Claude Code 提出潜在原因和解决方案
 - 作者逐一实验
 - 遇到死胡同就换方向
-**
 
-- 最终找到了一个 优雅的解决方案**
+- 最终找到了一个 优雅的解决方案
 
 #### 关键方法论：控制速度与抽象层次
 
@@ -891,7 +885,6 @@ export EDITOR=vim      # 或 nano, code, nvim 等
 
 - ⚠️ Mac 上是 **`Ctrl+V`** ，不是 `Cmd+V`
 
-**
 
 ### 六、花时间规划，但也要快速原型验证
 
@@ -902,7 +895,7 @@ export EDITOR=vim      # 或 nano, code, nvim 等
 - 使用什么 <strong>技术栈</strong>
 - 项目应该如何 <strong>组织结构</strong>
 - 每个功能应该 <strong>放在哪里</strong> 、哪些 <strong>文件</strong> 中
-** 好的决策越早做出，后面的引导就越顺畅。
+好的决策越早做出，后面的引导就越顺畅。
 #### 原型验证辅助决策
 
 快速原型** 可以帮助你验证技术选型：
@@ -913,7 +906,6 @@ export EDITOR=vim      # 或 nano, code, nvim 等
 - 再尝试 <strong>Ink + Node</strong> 自建 Git viewer
 - 遇到各种问题，最终都没发布
 - 但通过这个过程 <strong>验证了技术选型</strong> ，学到了宝贵经验
-**
 
 #### Plan Mode
 

@@ -51,11 +51,10 @@ source_url: https://www.zhihu.com/question/666819229/answer/13711170384
 
 这几个都是现代 C++ 风格的高质量开源代码仓库，值得学习和使用，个人更喜欢folly多一些，spdlog也强烈推荐。
 
-**
 
 再推荐15个小巧的C语言开源项目：
 
-- [stb](https://link.zhihu.com/?target=https%3A//github.com/nothings/stb)：简单的 C 库集合，C语言的轮子库，提供了很多实用的工具函数和数据结构。代码行数5000行左右，star数21.5k。**
+- [stb](https://link.zhihu.com/?target=https%3A//github.com/nothings/stb)：简单的 C 库集合，C语言的轮子库，提供了很多实用的工具函数和数据结构。代码行数5000行左右，star数21.5k。
 - <strong>[cJSON](https://link.zhihu.com/?target=https%3A//github.com/DaveGamble/cJSON)：一个小型的</strong> <strong>JSON 解析器和生成器，可以用于C 语言中处理 JSON 数据，估计C语言开发很多人都会用这个Json库。代码行数1500行左右，star数8.6k。</strong>
 - [nanopb](https://link.zhihu.com/?target=https%3A//github.com/nanopb/nanopb)：一个小型的 Protocol Buf库，适用于嵌入式设备和内存受限环境。代码行数5000左右，star数3.4k。
 - [miniz](https://link.zhihu.com/?target=https%3A//github.com/richgel999/miniz)：一个小型的 ZIP 文件压缩和解压库，可以在内存中处理数据。代码行数1600行左右，star数1.7k。
@@ -71,7 +70,7 @@ source_url: https://www.zhihu.com/question/666819229/answer/13711170384
 - [libmill](https://link.zhihu.com/?target=https%3A//github.com/sustrik/libmill)：一个小型的Go风格协程库，提供了高效的并发编程模型。代码行数3000行左右，star数2.6k。
 请注意，上述提到的代码行数仅为粗略估计（粗略看了下），可能不是完全准确。而关于 star 数量，是在我最近检查时（2023年4月5日）所观察到的数量。
 
-**作者：程序喵
+作者：程序喵
 CPP学习网站：[程序喵/cpp-learning](https://link.zhihu.com/?target=https%3A//gitee.com/chengxumiaodaren/cpp-learning)这个网站也收录了各个方向的C++库，强烈推荐
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_0aea8ee23eff.jpg)
@@ -80,7 +79,7 @@ CPP学习网站：[程序喵/cpp-learning](https://link.zhihu.com/?target=https%
 
 [](https://link.zhihu.com/?target=https%3A//cpp-reference.com/)
 
-创作不易，觉得不错的话，帮忙点个赞呗。**
+创作不易，觉得不错的话，帮忙点个赞呗。
 
 [发布于 2024-10-24 16:19](//www.zhihu.com/question/666819229/answer/13711170384)・上海
 

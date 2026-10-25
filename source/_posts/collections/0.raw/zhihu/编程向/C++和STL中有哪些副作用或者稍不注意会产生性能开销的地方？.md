@@ -21,7 +21,7 @@ source_url: https://www.zhihu.com/question/355171938/answer/2173582004
 
 <strong>先谈一谈开销，再谈一谈其他的容易踩坑的地方</strong>
 
-### <strong>C++和STL中常被忽略的开销</strong>
+### C++和STL中常被忽略的开销
 
 #### STL容器的clear的时间复杂度不是O(1)
 
@@ -31,7 +31,7 @@ source_url: https://www.zhihu.com/question/355171938/answer/2173582004
 
 当然在实践中，也有个例。比如当vector存储基本数据类型或POD类型（比如基本数据类型构成的struct）的时候，由于其元素类型没有析构函数（也不需要析构函数），加之vector内部连续存储的特性，编译器的实现是可以在常量时间完成clear()的。
 
-**Linear insize(destructions).
+Linear insize(destructions).
 This may be optimized to*constant complexity*fortrivially-destructible types(such as scalar or PODs), where elements need not be destroyedhttp://www.cplusplus.com/reference/vector/vector/clear/
 
 当然仅限于vector存储基本数据类型和POD类型的时候，编译器可能有此优化。如果vector存储的是其他类型的对象，或者是其他容器（比如list、map、unordered_map）都是没办法做这个优化的！
@@ -58,7 +58,6 @@ std::pairconst std::string, int>
 
 如上的遍历方法，就会产生一个临时对象，有拷贝的开销。
 
-**
 
 #### 减少隐性的重复操作
 
@@ -195,9 +194,9 @@ p4 = p1;
 
 对于大对象的析构，我们要慎之又慎。大内存释放有时不仅是耗时问题，而且会让CPU IDLE下降。影响服务的整体性能（同期的其他请求处理耗时也增加了）。根据业务需要，有时我们不需要真的析构掉这个对象，只需要clear掉它（内存不释放），后续再复用该对象。也就是类似“对象池”的思想。避免对象创建和析构的开销。又或者我们需要搞一个独立的线程，想办法把这些需要析构的大对象，在不影响服务请求处理耗时的独立线程中，进行定期清理。等等。
 
-### <strong>STL中容易踩坑的副作用（持续补充……）</strong>
+### STL中容易踩坑的副作用（持续补充……）
 
-#### <strong>clear()不会清空vector的内存</strong>
+#### clear()不会清空vector的内存
 
 尽管clear()会调用vector中元素的析构函数，但是并不会释放掉元素所占用的内存。这并不难理解，因为在vector为空的时候，我们也可以用reserver()函数来预分配内存。所以vector所占的内存并不会随着元素的释放而释放。如果你想在vector生命周期结束之前及时释放掉vector的内存，请：
 
@@ -210,7 +209,6 @@ v.swap(vectorint>()); // 编译失败
 ```
 
 
-**
 
 #### size()-1
 

@@ -28,7 +28,6 @@ source_url: https://zhuanlan.zhihu.com/p/663730490
 - 在多个区域中地址匹配的访问使用最高匹配区域编号作为访问属性。
 - 不匹配区域地址匹配（启用MPU）或背景/默认内存映射匹配的所有访问条件的访问会生成故障。
 
-**
 
 ![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_e67f797c4817.jpg)
 
@@ -41,7 +40,6 @@ source_url: https://zhuanlan.zhihu.com/p/663730490
 - 如果实现了单独的指令和数据缓存，则为 <strong>CCR.IC</strong> 位。
 - 如果实现了统一缓存，则为 <strong>CCR.DC</strong> 位。
 
-**
 
 - 数据访问使用表B3-1中显示的默认内存映射和属性。不执行内存访问权限检查，也不会产生中止。
 - 程序流预测功能正常，由 CCR.BP** 位的值控制。
@@ -166,7 +164,7 @@ Permissions DefaultPermissions(bits(32) address)
 - MPU类型寄存器（MPU Type Register<strong>），参见MPU_TYPE说明。该寄存器可用于确定是否存在</strong>MPU**，以及支持的区域数。
 - MPU控制寄存器（<strong>MPU Control Register</strong>），参见MPU_CTRL说明。<strong>MPU</strong> 控制寄存器包含一个全局使能位，必须将其设置为 <strong>1</strong> 才能使能 MPU。
 - MPU区域编号寄存器（<strong>MPU Region Number Register</strong>），参见第B3-638页的MPU_RNR 。
-MPU 区域编号寄存器会选择的相关区域寄存器：**
+MPU 区域编号寄存器会选择的相关区域寄存器：
 
 - MPU区域基地址寄存器（MPU Region Base Address Register**），参见第B3-639页的MPU_RBAR。
 - MPU区域属性和大小寄存器（<strong>MPU Region Attribute and Size Register</strong>），参见第B3-640页的MPU_RASR ，控制了内存区域的区域大小、子区域访问、访问权限、内存类型和其他属性。
@@ -278,12 +276,10 @@ MPU 区域编号寄存器会选择的相关区域寄存器：**
 
 - 对于普通内存，设置区域的可缓存属性。
 - 对于设备内存，设置区域是否可共享。
-**
 
 - 对于普通内存区域，S<strong>位表示该区域是否可共享，请参见表</strong>B3-13<strong>。 对于强秩序内存和设备内存，需忽略</strong>S** 位。
 - <strong>AP[2:0]</strong> 位表示区域的访问和特权属性，请参见第B3-642页的表 <strong>B3-15</strong>。
 - XN 位是 Execute Never 位，指示处理器是否可以从该区域执行指令，请参阅第B3-642页的 从不执行编码。
-**
 
 ![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_21246b4f771a.jpg)
 

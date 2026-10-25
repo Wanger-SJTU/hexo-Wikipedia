@@ -17,7 +17,7 @@ source_url: https://zhuanlan.zhihu.com/p/24702989
 
 原贴：
 
-ARM NEON Optimization. An Example将RGB图像转为灰度图，作者运用NEON优化，速度大幅提升。这里来学习一下如何使用NEON。**
+ARM NEON Optimization. An Example将RGB图像转为灰度图，作者运用NEON优化，速度大幅提升。这里来学习一下如何使用NEON。
 
 Since there is so little information about NEON optimizations out there I thought I’d write a little about it.
 
@@ -79,9 +79,9 @@ Lets take a look at it step by step:
 
 First off I load my weight factors into three NEON registers. The vdup.8 instruction does this and also replicates the byte into all 8 bytes of the NEON register.
 
-读取8字节的预设值到64位寄存器**
+读取8字节的预设值到64位寄存器
 
-** uint8x8_t rfac = vdup_n_u8 (77);
+uint8x8_t rfac = vdup_n_u8 (77);
 
 ```text
     uint8x8_t gfac = vdup_n_u8 (151);
@@ -108,7 +108,7 @@ Now calculate the weighted average:
 
 vmull.u8 multiplies each byte of the first argument with each corresponding byte of the second argument. Each result becomes a 16 bit unsigned integer, so no overflow can happen. The entire result is returned as a 128 bit NEON register pair.
 
-vmull_u8作用是：第一个参数的每个字节都与第二个参数的每个字节相乘，乘的结果是一个16位的无符号整数，最后的结果放到128位寄存器里，因此不会发生溢出，这也体现的NEON的强大之处。**
+vmull_u8作用是：第一个参数的每个字节都与第二个参数的每个字节相乘，乘的结果是一个16位的无符号整数，最后的结果放到128位寄存器里，因此不会发生溢出，这也体现的NEON的强大之处。
 
 vmlal.u8 does the same thing as vmull.u8 but also adds the content of another register to the result.
 
@@ -139,7 +139,7 @@ NEON-version:     9.9 cycles per pixel.
 
 That’s only a speed-up of factor 1.5. I expected much more from the NEON implementation. It processes 8 pixels with just 6 instructions after all. What’s going on here? A look at the assembler output explained it all. Here is the inner-loop part of the convert function:
 
-速度仅仅提升了1.5倍，看下汇编代码发生了什么：**
+速度仅仅提升了1.5倍，看下汇编代码发生了什么：
 
  160:   f46a040f        vld3.8  {d16-d18}, [sl]
  164:   e1a0c005        mov     ip, r5
@@ -164,7 +164,7 @@ That’s only a speed-up of factor 1.5. I expected much more from the NEON imple
  1b0:   e2899008        add     r9, r9, #8      ; 0x8
  1b4:   caffffe9        bgt     160`
 
-**Note the store at offset 168? The compiler decides to write the three registers onto the stack. After a bit of useless memory accesses from the GPP side the compiler reloads them (offset 188, 190 and 1a0) in exactly the same physical NEON register.
+Note the store at offset 168? The compiler decides to write the three registers onto the stack. After a bit of useless memory accesses from the GPP side the compiler reloads them (offset 188, 190 and 1a0) in exactly the same physical NEON register.
 
 What all the ordinary integer instructions do? I have no idea. Lots of memory accesses target the stack for no good reason. There is definitely no shortage of registers anywhere. For reference: I used the GCC 4.3.3 (CodeSourcery 2009q1 lite) compiler .
 
@@ -211,15 +211,15 @@ Time for some benchmarking again. How does the hand-written assembler version co
   NEON-version:     9.9 cycles per pixel.
   Assembler:        2.0 cycles per pixel.That’s roughly a factor of five over the intrinsic version and 7.5 times faster than my not-so-bad C implementation. And keep in mind: I didn’t even optimized the assembler loop.
 
-手动优化后的汇编代码速度是C函数的7.5倍，编译器可能并不能很好的生成高效的汇编代码，这时候需要自己手动修改NEON部分的汇编代码。**
+手动优化后的汇编代码速度是C函数的7.5倍，编译器可能并不能很好的生成高效的汇编代码，这时候需要自己手动修改NEON部分的汇编代码。
 
 My conclusion: If you want performance out of your NEON unit stay away from the intrinsics. They are nice as a prototyping tool. Use them to get your algorithm working and then rewrite the NEON-parts of it in assembler.
 
-**Btw: Sorry for the ugly syntax-highlighting. I’m still looking for a nice wordpress plug-in.
+Btw: Sorry for the ugly syntax-highlighting. I’m still looking for a nice wordpress plug-in.
 
-如果看到更多NEON的类C指令，将添加到下面来：**
+如果看到更多NEON的类C指令，将添加到下面来：
 
-1.  vdup_n_u8( src )：读取8字节到64位寄存器;**
+1.  vdup_n_u8( src )：读取8字节到64位寄存器;
 
 2.  vld3_u8 (src):         一次读取3个unit8x8到3个64位寄存器;
 
@@ -231,7 +231,7 @@ My conclusion: If you want performance out of your NEON unit stay away from the 
 
 http://gcc.gnu.org/onlinedocs/gcc/ARM-NEON-Intrinsics.html
 
-本文介绍了arm-linux编译器针对ARM处理器NEON的内建Intrinsics指令的介绍，当-mfpu=neon编译选项使能时就可以在C/C++代码内使用ARM的SIMD指令了，包括加法、乘法、比较、移位、绝对值 、极大极小极值运算、保存和加载指令等。**
+本文介绍了arm-linux编译器针对ARM处理器NEON的内建Intrinsics指令的介绍，当-mfpu=neon编译选项使能时就可以在C/C++代码内使用ARM的SIMD指令了，包括加法、乘法、比较、移位、绝对值 、极大极小极值运算、保存和加载指令等。
 
 <strong>有些指令看名字并不是很理解，下面的代码能帮助你理解其中的作用</strong>
 

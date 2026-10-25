@@ -21,7 +21,7 @@ source_url: https://zhuanlan.zhihu.com/p/639242511
 
 研究显示，移除那些最容易受到隐私攻击的训练样本，也就是最脆弱的数据，会产生一种反直觉的结果：在移除了最易受隐私攻击影响的数据，并只在先前被认为安全的数据上重新训练模型后，一组新的样本反过来会变得容易受到同样的隐私攻击。我们将这种现象称为“隐私洋葱效应”，并定义如下：
 
-**移除最容易受到隐私攻击的“层”中的 *outlier points*后，新的一层，原先被视为安全的数据点，就可能会暴露在同样的攻击之下。本文考虑了一种非常常见的隐私包含攻击：成员推断攻击。实验中表明，如果从训练样本中删除那些在成员推断中风险最大的5,000个样本，理论上，应该期望在没有任何其他影响的情况下，这种删除应该能提高整体隐私的15倍，但实际上它只增加了2倍的隐私。这就是所谓的隐私洋葱效应，它使得这种删除带来的效果低于预期的6倍以上。
+移除最容易受到隐私攻击的“层”中的 *outlier points*后，新的一层，原先被视为安全的数据点，就可能会暴露在同样的攻击之下。本文考虑了一种非常常见的隐私包含攻击：成员推断攻击。实验中表明，如果从训练样本中删除那些在成员推断中风险最大的5,000个样本，理论上，应该期望在没有任何其他影响的情况下，这种删除应该能提高整体隐私的15倍，但实际上它只增加了2倍的隐私。这就是所谓的隐私洋葱效应，它使得这种删除带来的效果低于预期的6倍以上。
 
 并且，通过实验可以表明为：洋葱效应可能由于outliers的特性而产生。当更多极端的离群值被剔除，那些先前不算outliers的数据点就可能转变为新的outliers。
 
@@ -76,7 +76,7 @@ Does removing the easy-to-attack examples significantly improve privacy? Surpris
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_01b2105d97e7.jpg)
 
-### <strong>Potential (Incorrect) Explanations for the Onion Effect</strong>
+### Potential (Incorrect) Explanations for the Onion Effect
 
 在本节中，探讨了各种可能解释洋葱效应的假设，但经过深入的探究，发现这些假设都无法站得住脚。由于实验的计算成本相当高昂（这主要是因为需要训练大量的模型），只针对CIFAR-10数据集进行了研究。
 
@@ -96,7 +96,7 @@ Does removing the easy-to-attack examples significantly improve privacy? Surpris
 
 证明和样本的 重复出现无关
 
-### <strong>Understanding the Onion Effect</strong>
+### Understanding the Onion Effect
 
 洋葱效应是由于在移除更极端的离群值后，原本的内部值变成了离群值。在这一节中，我们将提供实验证据来支持这个观点，然后会讨论这对机器遗忘的影响。
 
@@ -108,7 +108,7 @@ $实验思路也非常的简单，进行了一个实验，即在之前LiRA攻击
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_029c394d60b1.jpg)
 
-Consequences for Machine Unlearning **
+Consequences for Machine Unlearning
 
 上述的洋葱效应，对机器学习遗忘有一些启发。
 
@@ -118,7 +118,7 @@ Consequences for Machine Unlearning **
 
 上述关于PRIVINF分数的实验也揭示了一种f *adversarial unlearning*：面对一个特定训练数据点，攻击者可以自适应地选择其他训练数据点进行遗忘学习，以最大化提升对该目标个体的成员推断攻击的成功率。
 
-### <strong>Conclusion</strong>
+### Conclusion
 
 <strong>Membership inference attacks only audit specifific (dataset, model) tuples.</strong>
 

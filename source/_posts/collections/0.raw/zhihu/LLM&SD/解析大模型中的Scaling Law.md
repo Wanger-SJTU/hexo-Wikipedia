@@ -23,29 +23,29 @@ source_url: https://zhuanlan.zhihu.com/p/667489780
 - 老板对现在10B的模型不满意，想知道扩大到100B模型的效果能提升到多少？
 以上这些问题都可以基于Scaling Law的理论进行回答。本文是阅读了一系列 Scaling Law的文章后的整理和思考，包括Scaling Law的概念和推导以及反Scaling Law的场景，不当之处，欢迎指正。
 
-### <strong>核心结论</strong>
+### 核心结论
 
 大模型的Scaling Law是OpenAI在2020年提出的概念[1]，具体如下:
 
-- 对于Decoder-only的模型，计算量C" role="presentation">CC(Flops), 模型参数量N" role="presentation">NN, 数据大小D" role="presentation">DD(token数)，三者满足: C&#x2248;6ND" role="presentation">C≈6NDC ≈ 6ND 。(推导见本文最后)** 
+- 对于Decoder-only的模型，计算量C" role="presentation">CC(Flops), 模型参数量N" role="presentation">NN, 数据大小D" role="presentation">DD(token数)，三者满足: C&#x2248;6ND" role="presentation">C≈6NDC ≈ 6ND 。(推导见本文最后)
 - 模型的最终性能主要与<strong>计算量C" role="presentation">CC，模型参数量N" role="presentation">NN和数据大小D" role="presentation">DD三者相关，而与模型的具体结构(层数/深度/宽度)基本无关。</strong> 
 ![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_76925809400e.jpg)
 
 >  固定模型的总参数量，调整层数/深度/宽度，不同模型的性能差距很小，大部分在2%以内
 
-3. 对于计算量C" role="presentation">CC，模型参数量N" role="presentation">NN和数据大小D" role="presentation">DD，当不受其他两个因素制约时，模型性能与每个因素都呈现幂律关系**
+3. 对于计算量C" role="presentation">CC，模型参数量N" role="presentation">NN和数据大小D" role="presentation">DD，当不受其他两个因素制约时，模型性能与每个因素都呈现幂律关系
 
 ![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_12f16681db78.jpg)
 
 4. 为了提升模型性能，模型参数量N和数据大小D需要同步放大，但模型和数据分别放大的比例还存在争议。
 
-5. Scaling Law不仅适用于语言模型，还适用于其他模态以及跨模态的任务[4]：** 
+5. Scaling Law不仅适用于语言模型，还适用于其他模态以及跨模态的任务[4]：
 
 ![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_66ace5d8e6f0.jpg)
 
 >  这里横轴单位为PF-days: 如果每秒钟可进行10^{15}次运算，就是1 peta flops，那么一天的运算就是10^{15} × 24 × 3600 = 8.64 × 10^{19}，这个算力消耗被称为1个petaflop/s-day。
 
-### 核心公式**
+### 核心公式
 
 $$L(x) = L_{\infty} + (\frac{x_{0}}{x})^{\alpha} \\ $$
 
@@ -55,31 +55,31 @@ $$L(x) = L_{\infty} + (\frac{x_{0}}{x})^{\alpha} \\ $$
 - 第二项(x_{0} / x)^{\alpha}是指能通过增加计算量来减少的损失，可以认为是模型拟合的分布与实际分布之间的差。
 根据公式，增大x(例如计算量C)，模型整体loss下降，模型性能提升；伴随x趋向于无穷大，模型能拟合数据的真实分布，让第二项逼近0，整体趋向于L_{\infty} 
 
-### <strong>大模型中的Scaling Law</strong>
+### 大模型中的Scaling Law
 
-#### <strong>GPT4</strong>
+#### GPT4
 
 下图是GPT4报告[5]中的Scaling Law曲线，计算量C和模型性能满足幂律关系
 
 ![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_2259b41279b9.jpg)
 
-- 横轴是归一化之后的计算量，假设GPT4的计算量为1。基于10,000倍小的计算规模，就能预测最终GPT4的性能。** 
+- 横轴是归一化之后的计算量，假设GPT4的计算量为1。基于10,000倍小的计算规模，就能预测最终GPT4的性能。
 - 纵轴是"Bits for words", 这也是交叉熵的一个单位。在计算交叉熵时，如果使用以 2 为底的对数，交叉熵的单位就是 "bits per word"，与信息论中的比特（bit）概念相符。所以这个值越低，说明模型的性能越好。
  
 
-#### Baichuan2**
+#### Baichuan2
 
 下图是Baichuan2[6]技术报告中的Scaling Law曲线。基于10M到3B的模型在1T数据上训练的性能，可预测出最后7B模型和13B模型在2.6T数据上的性能
 
 ![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_8f44029a7758.jpg)
 
-#### <strong>MindLLM</strong>
+#### MindLLM
 
 下图是MindLLM[7]技术报告中的Scaling Law曲线。基于10M到500M的模型在10B数据上训练的性能，预测出最后3B模型在500B数据上的性能。
 
 ![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_75c1549bdffa.jpg)
 
-### <strong>Scaling Law实操: 计算效率最优</strong>
+### Scaling Law实操: 计算效率最优
 
 根据幂律定律，模型的参数固定，无限堆数据并不能无限提升模型的性能，模型最终性能会慢慢趋向一个固定的值
 
@@ -111,7 +111,7 @@ $例如在PaLM的实验中，计算量从1 \times 10^{21}放大10倍到1 \times 
 
 具体最好在自己的数据上做实验来获得你场景下的a和b。
 
-### <strong>LLaMA: 反Scaling Law的大模型</strong>
+### LLaMA: 反Scaling Law的大模型
 
 假设遵循<strong>计算效率最优</strong>来研发LLM，那么根据Scaling Law，给定模型大小，可以推算出最优的计算量，进一步根据最优计算量就能推算出需要的token数量，然后训练就行。
 
@@ -127,7 +127,7 @@ Meta在LLaMA[8]的观点是：给定模型的目标性能，并不需要用最�
 
 ![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_2b3c10e90548.jpg)
 
-### <strong>计算量、模型和数据大小的关系推导</strong>
+### 计算量、模型和数据大小的关系推导
 
 对于Decoder-only的模型，计算量C(Flops), 模型参数量N(除去Embedding部分), 数据大小D(token数), 三者的关系为: C ≈ 6ND
 
@@ -175,7 +175,7 @@ $$平均每个token的计算量为 C_{token} = \frac{C}{bs} = 72ld^2 + 12lsd = 6
 
 所以对于全部包含D个token的数据集: C = C_{token}D  \approx 6ND 
 
-### 参考资料**
+### 参考资料
 
 - [1] [Scaling Laws for Neural Language Models](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2001.08361)
 - [2] [Training Compute-Optimal Large Language Models](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2203.15556)

@@ -41,7 +41,6 @@ C++日志系统有很多开源的项目，如log4clpus、glog、spdlog、boostlo
 
 首先为了降低写延迟，Nanolog用到的第一个编程技术就是<strong>无锁编程</strong>。这里说的无锁编程是真的<strong>完全没有锁</strong>。而非有的文章中写的将基于CAS锁的编程称为无锁编程。在低延迟的世界里，CAS锁也是锁。无锁编程使得任何写线程都能在较确定性的时间内非常快的完成调用，不会因为不同线程竞争资源而卡住不确定的时间。
 
-**
 
 ![](/images/collections/0.raw/zhihu/AI%20infra/asset/img_7ed9f637372c.jpg)
 

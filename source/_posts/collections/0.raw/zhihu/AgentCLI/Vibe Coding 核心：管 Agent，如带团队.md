@@ -19,13 +19,13 @@ source_url: https://zhuanlan.zhihu.com/p/2008273917891076619
 
 2025 年 2 月 2 日，Andrej Karpathy 发了一条推文，随手造了一个词：
 
-** There’s a new kind of coding I call “vibe coding”, where you fully give in to the vibes, embrace exponentials, and forget that the code even exists.他描述自己用 Cursor 和 SuperWhisper 做项目，几乎不碰键盘，对着 AI 说话就行。”Accept All”，不看 diff，有报错就把错误信息粘进去，通常就修好了。代码越长越超出他自己的理解范围，有些 bug 修不了就绕过去，或者随便改改直到它消失。“我在做一个项目或网页应用，但其实并不算是在写代码——我只是观察情况、动嘴指令、运行程序、复制粘贴，然后它基本上就能跑通了。”
+There’s a new kind of coding I call “vibe coding”, where you fully give in to the vibes, embrace exponentials, and forget that the code even exists.他描述自己用 Cursor 和 SuperWhisper 做项目，几乎不碰键盘，对着 AI 说话就行。”Accept All”，不看 diff，有报错就把错误信息粘进去，通常就修好了。代码越长越超出他自己的理解范围，有些 bug 修不了就绕过去，或者随便改改直到它消失。“我在做一个项目或网页应用，但其实并不算是在写代码——我只是观察情况、动嘴指令、运行程序、复制粘贴，然后它基本上就能跑通了。”
 
 这条推文被看了 450 万次，”vibe coding”成了 2025 年最火的年度词汇之一。但一年过去了，大部分人对它的理解依然是模糊的——很多人把它和 AI 编程混为一谈了。
 
 AI 编程是什么？它范围更广，是包含你用 Copilot、Cursor 之类的工具辅助写代码。AI 帮你补全、帮你生成函数、帮你重构。但你依然在看每一行 diff，依然在 review 每一个实现细节，代码好不好，你心里有数。AI 只是让你写得更快了。你还是那个写代码的人。
 
-Vibe coding 完全不同——你不看代码。**
+Vibe coding 完全不同——你不看代码。
 
 你输入一个想法，看产出。跑起来了吗？行为符合预期吗？对了就往前走，不对就换一种说法再试。代码具体怎么实现的，你不关心，甚至可能看不懂，比如一些产品经理，就可以很好地完成这项工作。
 
@@ -109,7 +109,7 @@ Claude Code 的 Plan 模式，这个实际上连官方都在推荐使用，但�
 
 可能有很多项目，它和标准软件工程的流程是不一样的。我的做法是我把[Superpower](https://link.zhihu.com/?target=https%3A//github.com/obra/superpowers)这个库甩给 Claude，让它学习自我改进，个性化适配当前项目。
 
-#### <strong>Context Rot（上下文腐烂）</strong>
+#### Context Rot（上下文腐烂）
 
 一个 Agent session 走偏了，你会看到一个熟悉的模式：每次修复都引入新的问题，每次”快好了”之后都冒出新的 bug。它在一个错误的方向上越陷越深。
 
@@ -132,7 +132,7 @@ Claude Code 的 Plan 模式，这个实际上连官方都在推荐使用，但�
 
 好的管理者果断止损，好的 vibe coder 也是。
 
-#### <strong>Agentic Engineering</strong>
+#### Agentic Engineering
 
 2026 年 2 月 4 日，vibe coding 一周年。Karpathy 自己发了一条回顾帖，给这个概念做了升级。他说，vibe coding 是早期的、实验性的玩法。而现在专业级别的开发已经演化到了下一个阶段，他给它起了个新名字：<strong>Agentic Engineering。</strong>
 

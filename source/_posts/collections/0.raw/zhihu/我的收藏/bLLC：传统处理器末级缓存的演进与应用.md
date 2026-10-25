@@ -49,7 +49,7 @@ bLLC的概念在多核处理器时代得到了重要发展。早期的单核处�
 架构特征Intel Sapphire RapidsAMD GenoaAmazon Graviton3容量配置4×1.875MB tiles32MB CCD64MB SLC互联带宽2TB/s Mesh3TB/s IF1.6TB/s NOC一致性协议MESIF+MOESICHI
 ### 缓存一致性协议
 
-#### <strong>协议状态机的工程实现演进</strong>
+#### 协议状态机的工程实现演进
 
 <strong>基础MESI状态转换</strong>
 
@@ -59,10 +59,10 @@ bLLC的概念在多核处理器时代得到了重要发展。早期的单核处�
 - Clean-Evict：处理E→I转换的节能策略
 - Snoop Filter：AMD Zen4采用的12-bit Bloom过滤器减少70%侦听流量
 
-扩展协议对比**
+扩展协议对比
 
 协议变种新增状态典型应用优势场景MESIFForward (F)Intel至强读密集型负载MOESIOwned (O)AMD EPYC混合读写负载MESIF-MMigratory (M)IBM POWER10锁竞争优化Coherence-ExpressTokenAWS Graviton4云原生多租户
-#### <strong>优化技术实践</strong>
+#### 优化技术实践
 
 <strong>目录协议创新</strong>
 
@@ -105,14 +105,14 @@ bLLC（最后一级缓存）的性能优化核心在于替换策略与预取技�
 <strong>‌混合策略创新</strong>‌
 
 策略类型核心机制适用场景硬件开销ARC（自适应）动态平衡LRU/LFU队列多模式混合负载高CARF（频率感知）LRU+访问计数阈值筛选流媒体服务器中Hawkeye机器学习预测缓存行价值云计算虚拟机极高
-### <strong>预取技术</strong>
+### 预取技术
 
 预取技术通过预测程序未来的数据访问需求，提前将数据从主存加载至缓存层级（尤其是bLLC），有效隐藏内存访问延迟并提升系统整体性能。其核心价值在于将计算与数据迁移过程重叠，避免处理器因缓存未命中而停顿。
 
 <strong>顺序预取器（Stream Prefetcher）</strong>
 
 工作原理：检测连续地址访问流（如数组遍历），预取后续N个缓存行（Intel Sapphire Rapids支持最大8行预取）**优化方向：动态调整预取距离（Prefetch Degree），避免跨页预取导致的TLB未命中
-步长预取器（Stride Prefetcher）**
+步长预取器（Stride Prefetcher）
 
 模式识别：通过历史地址差分析固定步长（如矩阵运算中的行跨步），AMD Zen4可检测±2KB范围内的步长**容错机制：ARM Neoverse V2采用置信度计数器，仅当步长模式连续命中3次以上才触发预取
 指针追踪预取器（Pointer-Chasing Prefetcher）
@@ -121,7 +121,7 @@ bLLC（最后一级缓存）的性能优化核心在于替换策略与预取技�
 
 多级预取：IBM POWER10支持预取深度达4层，显著减少树结构遍历延迟
 
-#### 编译器辅助预取**
+#### 编译器辅助预取
 
 自动插入策略：LLVM循环优化Pass分析数据依赖，在科学计算代码中自动插入prefetch指令，实测加速比达1.3倍**距离计算：申威编译器采用深度优先搜索确定最优预取距离，避免过早预取导致缓存污染
 程序员显式控制
@@ -129,13 +129,13 @@ bLLC（最后一级缓存）的性能优化核心在于替换策略与预取技�
 指令类型：x86平台提供PREFETCHT0（预取至L1）和PREFETCHT2（预取至bLLC）等指令
 最佳实践：仅在数据访问路径明确且缓存未命中率高时使用，过度预取会浪费30%内存带宽
 
-混合预取架构**
+混合预取架构
 
 硬件+软件协作：Google TPUv5的LSTM预取器与编译器指令协同，不规则访问预测准确率提升至81%**带宽感知调度：AMD 3D V-Cache根据内存控制器负载动态关闭低效预取器
 
 #### 主要厂商的bLLC实现
 
-Intel Xeon处理器的bLLC设计**
+Intel Xeon处理器的bLLC设计
 
 Intel在其Xeon系列处理器中实现了先进的bLLC设计。以Skylake和Cascade Lake架构为例，其L3缓存采用了非包含性设计，主要存储从L2缓存中被驱逐的缓存行。
 

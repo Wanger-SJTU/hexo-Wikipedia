@@ -35,13 +35,12 @@ GitHub 有一些特殊的仓库规则，如你的账号名下，可以创建一�
 - <strong>个人账号</strong>
 - 新建同名仓库，如 [sindresorhus/sindresorhus](https://link.zhihu.com/?target=https%3A//github.com/sindresorhus/sindresorhus) 即可。
 - 详见[官方文档](https://link.zhihu.com/?target=https%3A//docs.github.com/en/account-and-profile/setting-up-and-managing-your-github-profile/customizing-your-profile/managing-your-profile-readme)。
-**
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_6f3dfc2233e6.jpg)
 
 image.png
 
-- 组织账号**
+- 组织账号
 - `${owner}/.github/README.md` 是公开的介绍
 - `${owner}/.github-private/README.md` 是仅成员可见的介绍
 - 详见[官方文档](https://link.zhihu.com/?target=https%3A//docs.github.com/en/organizations/collaborating-with-groups-in-organizations/customizing-your-organizations-profile%23adding-a-member-only-organization-profile-readme)。

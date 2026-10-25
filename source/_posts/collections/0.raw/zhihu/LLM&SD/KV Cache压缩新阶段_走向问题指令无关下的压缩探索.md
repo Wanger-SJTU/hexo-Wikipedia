@@ -35,27 +35,26 @@ NVIDIA团队在Blog中给出的问题指令无关评估结果（其中使用Ada-
 - [PyramidKV] [Zefan-Cai/KVCache-Factory](https://link.zhihu.com/?target=https%3A//github.com/Zefan-Cai/KVCache-Factory) 这是PyramidKV的作者Zefan Cai从PyramidKV源码升级到KVCache算法的统一评估库，覆盖的算法也十分全面，支持了包括AdaKV在内的许多方法的评估。
 - [Cloudflare kvcompress] [IsaacRe/vllm-kvcompress](https://link.zhihu.com/?target=https%3A//github.com/IsaacRe/vllm-kvcompress)。这是由Cloudflare Isaac Rehg 提供了AdaKV算法在vLLM下的落地应用，其中提供了非常详细的进一步评估数据（比如大Batch吞吐，70B模型的性能提升），也通过兼容Paged attention很好的解决了显存碎片问题。
 
-#### 下面是自己的一些看法：<strong>现有的压缩方法以及评估方式对于问题指令严重依赖，仍是一个很有空间的研究方向。</strong>
+#### 下面是自己的一些看法：**现有的压缩方法以及评估方式对于问题指令严重依赖，仍是一个很有空间的研究方向。
 
 现在大家一般公认的比较SOTA的压缩方法往往是SnapKV这种范式下的，例如目前广泛使用的大海捞针任务或者LongBench这种真实任务上的评估，<strong>许多论文中的评估结果显示往往可以将Cache大小压缩到也没有什么很明显的损失。但这实际上这些方法远远并没有看起来的这么强大</strong>，这主要结果是由于直接将问题和上下文一起压缩造成的结果，然而在一些真实的应用场景中，比如chunked prefill以及多轮对话之类的，这种针对于特定问题的压缩显然是不实际的。
 
 下面是分别在4k ruler上 13个数据集均分的评估，可以看到如果带着问题一起压缩，SnapKV的损失还是比较小的，50%的Cache性能还能够接近90分，然而一旦在压缩上下文时排除掉问题，性能就会骤降到69.8分。
 
-**
 
 ![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_3b73c368b2ef.jpg)
 
 问题指令对KV Cache压缩的影响（SnapKV和Ada-SnapKV（AdaKV强化后的SnapKV）在ruler上的均分）
 
-那么这个时候其实一个很重要的研究方向就可以被提取出来：我们是否可以不依赖特定的问题的场景下，对上下文进行压缩呢？从目前来看的话至少有两个方向是可以做的：**
+那么这个时候其实一个很重要的研究方向就可以被提取出来：我们是否可以不依赖特定的问题的场景下，对上下文进行压缩呢？从目前来看的话至少有两个方向是可以做的：
 
 - <strong>设计更合理的Cache 重要性指标：</strong>例如一开始的NVIDIA评估结果中就展示了一种新的cache 压缩方法expected_attention，这个方法由NVIDIA kvpress团队提出放在了kvpress项目中开源，目前文章还没有公开。可以看到这个expected_attention在这种不依赖特定的问题的压缩场景下，其性能要高于SnapKV，这个就主要得益于它对于cache 重要性的估计更为精准。
 - <strong>注意力头间的压缩预算调度增强：</strong>我们的AdaKV就是首个实现了注意力头间的预算调度的压缩方法，可以看到通过AdaKV增强后的expected_attention和snapkv都有了非常明显的性能提升，尤其是ada_expected_attention，在50%的压缩率下已经接近85分数。
 ![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_b455ab9bd04a.jpg)
 
-NVIDIA kvpress团队在ruler上不带问题压缩测试结果（使用了Ada-KV分别增强了snapkv和expected_attention，其中ada_expected_attention获得了这个benchmark上所有方法的最高分）**
+NVIDIA kvpress团队在ruler上不带问题压缩测试结果（使用了Ada-KV分别增强了snapkv和expected_attention，其中ada_expected_attention获得了这个benchmark上所有方法的最高分）
 
-KV Cache压缩方法在实际应用落地时的价值是什么？**
+KV Cache压缩方法在实际应用落地时的价值是什么？
 
 在之前和企业的合作交流中，我感觉依赖和非依赖问题的Cache压缩都是有着实际应用场景的，但可能二者具体场景是不一致的。其中非依赖指令的Cache压缩的场景是比较明确，比如关于长文档Cache的缓存之类的工作，或者共用前缀的压缩，甚至是更多的chunked prefill以及多轮对话，它的应用场景相对来说就不会受限。
 

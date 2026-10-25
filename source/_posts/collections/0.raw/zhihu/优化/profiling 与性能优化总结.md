@@ -15,7 +15,7 @@ source_url: https://zhuanlan.zhihu.com/p/362575905
 ---
 
 
-**作者：王璐璐 | 旷视 MegEngine 架构师
+作者：王璐璐 | 旷视 MegEngine 架构师
 ### 一、背景
 
 在 MegEngine imperative runtime 的早期开发中，我们面临着一些的性能优化问题。除了一些已知需要重构的地方（早期设计时为了开发效率而牺牲性能的妥协），还存在一些未知的性能问题需要用 profiler 进行观测和分析才能发现。MegEngine的imperative runtime 是一个由 Python 和 C/C++ 编写的模块，对于这类程序，各种profiler多到令人眼花缭乱。在调研各种profiler的过程中，我们也踩了不少的坑，比如发现两个 profiler 对同一个程序的profiling结果差异巨大，我们起初怀疑其中一个 profiler 的准确性有问题，最后发现是两者的观测对象不同，其中一个只 profiling 程序的 CPU time，而另一个 profiling wall clock time。虽然一些这样的信息在文档的某些角落里能够找到，但很多使用者可能在踩了坑之后才会注意到。如果一开始能找到一篇介绍各种 profiler 的特点、优势、不足和使用场景的文章，我们可能会节省不少时间。
@@ -27,11 +27,11 @@ source_url: https://zhuanlan.zhihu.com/p/362575905
 - 各种工具的使用方法和结果的可视化方法
 除此之外，本文还会介绍一些性能优化中需要了解的基本概念，并在文章末尾以 MegEngine 开发过程中的一个性能优化的实际案例来展示一个优化的流程。
 
-### 二、基本概念**
+### 二、基本概念
 
 本节介绍性能优化中的一些基础概念：
 
-### <strong>2.1 wall clock time, CPU time 和 off-CPU time</strong>
+### 2.1 wall clock time, CPU time 和 off-CPU time
 
 衡量程序性能最直接的标准就是程序的运行时间，但仅仅知道程序的运行时间很难指导我们如何把程序优化地更快，我们想要更进一步地了解这段时间之内到底发生了什么。
 
@@ -43,7 +43,7 @@ Linux 系统上的 time 命令能够告诉我们一些粗糙的信息，我们�
 
 `8.22s user 1.06s system 96% cpu 9.618 total`
 
-**这段文字告诉了我们时间都花在了哪里:
+这段文字告诉了我们时间都花在了哪里:
 
 - 总时间 9.618s
 - user 时间 8.22s
@@ -56,7 +56,7 @@ Linux 系统上的 time 命令能够告诉我们一些粗糙的信息，我们�
 
 通常在计算密集型（CPU intensive）的任务中 CPU time 会占据较大的比重，而在 I/O 密集型（I/O intensive）任务中 off-CPU time 会占据较大的比重。搞清楚 CPU time 和 off-CPU time 的区别对性能优化十分重要，比如某个程序的性能瓶颈在 off-CPU time 上，而我们选择了一个只观测 CPU time 的工具，那么很难找到真正的性能瓶颈，反之亦然。
 
-### 2.2 性能观测工具**
+### 2.2 性能观测工具
 
 我们知道了一个线程执行过程中的 CPU time 和 off-CPU time，如果要对程序的性能进行优化，这些还远远不够，我们需要进一步知道 CPU time 的时间段内，CPU 上到底发生了哪些事情、这些事情分别消耗了多少时间、在哪里导致了线程被 block 住了、分别 block 了多久等。我们需要性能观测工具来获得这些详细的信息。通常情况下我们也将称这种观测工具称为 profiler。
 
@@ -66,7 +66,7 @@ Linux 系统上的 time 命令能够告诉我们一些粗糙的信息，我们�
 
 - 进程级只观测一个进程或线程上发生的事情
 - 系统级不局限在某一个进程上，观测对象为整个系统上运行的所有程序
-需要注意的是，某些工具既能观测整个系统也支持观测单个进程，比如 perf，因此这样的工具同时属于两个类别。**
+需要注意的是，某些工具既能观测整个系统也支持观测单个进程，比如 perf，因此这样的工具同时属于两个类别。
 按照观测方法来分类，大致可以分为 event based 和 sampling based 两大类。其中：
 
 - event based：在一个指定的 event 集合上进行，比如进入或离开某个/某些特定的函数、分配内存、异常的抛出等事件。event based profiler 在一些文章中也被称为 tracing profiler 或 tracer
@@ -86,7 +86,7 @@ Linux 系统上的 time 命令能够告诉我们一些粗糙的信息，我们�
 - C/C++ 线程
 这里的 Python 线程具体指 CPython 解释器线程，而 C/C++ 线程指不包含 Python 调用栈的 C/C++ 线程。
 
-### 三、profiler 的分类和选择**
+### 三、profiler 的分类和选择
 
 我们从以下两个角度对 profiler 进行刻画:
 
@@ -97,7 +97,7 @@ Linux 系统上的 time 命令能够告诉我们一些粗糙的信息，我们�
 
 ![](/images/collections/0.raw/zhihu/%E4%BC%98%E5%8C%96/asset/img_5a28235c8e65.jpg)
 
-表格中第一种是纯 Python profiler，只能观测 Python 线程中 Python 函数的调用栈，适合优化纯 Python 代码时使用，本文将介绍 CProfile（Python 的 built-in profiler）和 pyinstrument（第三方 Python profiler），这类 profiler 还有很多，比如 scalene、line-profiler、pprofile 等，由于这些 profiler 在能力上差异不大，因此这里就不一一介绍了。**
+表格中第一种是纯 Python profiler，只能观测 Python 线程中 Python 函数的调用栈，适合优化纯 Python 代码时使用，本文将介绍 CProfile（Python 的 built-in profiler）和 pyinstrument（第三方 Python profiler），这类 profiler 还有很多，比如 scalene、line-profiler、pprofile 等，由于这些 profiler 在能力上差异不大，因此这里就不一一介绍了。
 第二类是 Python 线程 profiler，与第一类的主要区别是除了能够观测 Python 线程里的 Python 调用栈，还能观测 c/c++ 拓展的调用栈，这一类只介绍 py-spy。
 
 第三类是系统级 profiler，我们主要用来观测 Python 线程中的 C/C++ 拓展的调用栈和纯 C/C++ 线程，这类 profiler 虽然能够观测 CPython 解释器的调用栈，但由于不是专为 Python 设计的 profiler，不会去解析 Python 函数的调用栈，因此不太适合观测 Python stack。这一类工具我们将介绍 perf 和 systemtap。
@@ -110,11 +110,11 @@ Linux 系统上的 time 命令能够告诉我们一些粗糙的信息，我们�
 
 由于 profiler 的介绍里需要引用可视化工具，因此接下来我们先介绍可视化工具，再介绍 profiler。
 
-### 四、可视化工具**
+### 四、可视化工具
 
 ### 4.1 flamegraph
 
-火焰图（flamegraph）是一个功能强大的可视化 profiling 结果的工具。它即可以对多种 profiler 的输出进行处理，也可以对处理后的结果进行可视化。它能够处理不同平台上的十多种 profiler 的原始输出，除了能够可视化 cpu 上的 profiling 结果，它也可以对一些内存 profiler 的输出结果进行可视化。**
+火焰图（flamegraph）是一个功能强大的可视化 profiling 结果的工具。它即可以对多种 profiler 的输出进行处理，也可以对处理后的结果进行可视化。它能够处理不同平台上的十多种 profiler 的原始输出，除了能够可视化 cpu 上的 profiling 结果，它也可以对一些内存 profiler 的输出结果进行可视化。
 flamegraph 的使用流程一般是对 profiler 的原始输出结果进行处理，之后再生成一个 SVG 文件，可以在浏览器里打开，效果如下：
 
 ![](/images/collections/0.raw/zhihu/%E4%BC%98%E5%8C%96/asset/img_27a211533aa6.jpg)
@@ -259,9 +259,9 @@ flameprof xxx.cprof > flamegraph.svg`
 
 更多信息请参考 cProfile 文档: https://docs.python.org/3/library/profile.html
 
-5.3 pyinstrument**
+5.3 pyinstrument
 
-pyinstrument 是一个 sampling based profiler，功能上与 cProfile 类似，只支持 Sampling 纯 Python 调用栈，类似地只支持 wall clock time，但 overhead 相对 cProfile 低一些，且自带多种可视化方法。**
+pyinstrument 是一个 sampling based profiler，功能上与 cProfile 类似，只支持 Sampling 纯 Python 调用栈，类似地只支持 wall clock time，但 overhead 相对 cProfile 低一些，且自带多种可视化方法。
 官方 repo 地址：[https://github.com/joerick/pyinstrument](https://link.zhihu.com/?target=https%3A//github.com/joerick/pyinstrument)
 
 安装:
@@ -409,7 +409,7 @@ stackcollapse-stap.pl /cpu.bt > cpu.fold
 # 将 perf.fold 转为 svg 文件
 flamegraph.pl cpu.fold > cpu.svg`
 
-5.6 eu-stack**
+5.6 eu-stack
 
 eu-stack 是 elfutils（https://sourceware.org/elfutils）工具集中的一员，它的基础功能是对一个程序的调用栈进行采样：
 
@@ -431,7 +431,7 @@ eu-stack -p
 #12 0x00007f5f96ac5bf7 __libc_start_main
 #13 0x00000000005b2f0a _start`
 
-与 perf 和 systemtap 不同的地方是，即使程序处于 off-CPU 的状态，eu-stack 依然可以获得它的 C/C++ 调用栈。因此我们可以写一个简单的脚本对一个线程的调用栈不断采样来实现一个 wall clock time 上的 sampling based profiler。**
+与 perf 和 systemtap 不同的地方是，即使程序处于 off-CPU 的状态，eu-stack 依然可以获得它的 C/C++ 调用栈。因此我们可以写一个简单的脚本对一个线程的调用栈不断采样来实现一个 wall clock time 上的 sampling based profiler。
 一个简单的 profiler 实现：
 
 #!/bin/bash -xe
@@ -467,7 +467,7 @@ stackcollapse-elfutils.pl /d*txt > eu_perf.txt
 flamegraph.pl eu_perf.txt output.svg
 # 在浏览器里打开 output.svg`
 
-### 六、例子**
+### 六、例子
 
 Python 主线程: 执行python训练脚本，并且向队列里发送任务展示一个从 profiling 到寻找 bottleneck 再到性能优化的流程。
 

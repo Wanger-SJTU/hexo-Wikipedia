@@ -20,7 +20,7 @@ source_url: https://zhuanlan.zhihu.com/p/1959981457079506045
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_4ae33766702c.jpg)
 
 不同RLHF算法间的改进关系
-### <strong>基础</strong>
+### 基础
 
 #### 涉及的模型
 
@@ -54,7 +54,7 @@ sequence-leveltoken-level定义在序列级别上进行优化，即整个生成�
 2. 计算效率相对较低，是每生成一个token进行一次评估
 3. 能够更精细地对齐人类偏好，适合需要逐步推理的任务适合的任务新闻文章、故事生成等如数学题解题过程，代码生成，需要逐步推理和精确控制生成内容目前几乎所有的RLHF框架都能够兼容sequence-level和token-level的损失函数，只需要配置即可
 
-### PPO**
+### PPO
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_5520f5ac7770.jpg)
 
@@ -75,7 +75,7 @@ PPO算法的演进
 
 - 利用old model对每个prompt采样单个response，没有特殊要求限制。
 
-#### <strong>涉及计算：</strong>
+#### 涉及计算：
 
 - <strong>计算reward</strong>：通过训练好的reward model对生成的response打分，输出为 R_t \in [0,1] 。
 - <strong>计算value</strong>：<strong>用于预测期望总收益</strong>，通过评估response来估计动作价值期望 V_t
@@ -86,7 +86,7 @@ $- <strong>计算优势函数 A_t</strong> ：**当前动作产生的实际价�
 $$- 在采样数据时计算<strong>old model和ref model之间的KL散度：</strong>** \begin{aligned}KL[Actor_{old}(X) \,\|\, Ref(X)] = \mathbb{E}_{x \sim Actor_{old}(x)} \left[ \log \frac{Actor_{old}(x)}{Ref(x)} \right] \\= log\_probs_{old} - ref\_log\_probs\end{aligned} \\$$
 $$- off policy训练过程中计算new model和ref model之间构建KL散度：**** \begin{aligned}KL[Actor_{new}(X) \,\|\, Ref(X)] = \mathbb{E}_{x \sim Actor_{new}(x)} \left[ \log \frac{Actor_{new}(x)}{Ref(x)} \right] \\= log\_probs_{new} - ref\_log\_probs\end{aligned} \\$$
 
-常采用第一种方式将其作为reward（奖励函数）的一部分**
+常采用第一种方式将其作为reward（奖励函数）的一部分
 
 $$- <strong>重要性采样</strong>：PPO本身是on-policy的RL方法，但是一般是off-policy训练的，通过重要性采样近似on-policy：**r_t=\frac{p_{new}(a_t|s_t)}{p_{old}(a_t|s_t)}=\frac{\theta_{new}(a_t|s_t)}{\theta_{old}(a_t|s_t)} \\$$
 - Clip处理**：PPO还有一种PPO-Clip形式，可以约束两个policy间的差异，即：
@@ -134,7 +134,7 @@ $$- 计算策略概率比，即： r_t=\frac{p_{new}(a_t|s_t)}{p_{old}(a_t|s_t)}
 
 [一文详细对比PPO、GRPO、DAPO、GSPO、DCPO的核心差异](https://zhuanlan.zhihu.com/p/1888311680880080185)
 
-### <strong>DPO</strong>
+### DPO
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_40a2fa788b9d.jpg)
 
@@ -142,16 +142,16 @@ $$- 计算策略概率比，即： r_t=\frac{p_{new}(a_t|s_t)}{p_{old}(a_t|s_t)}
 
 - 数据集中包含prompt，一个被人类偏好的“获胜”回答(chosen response）和一个不被偏好的“落败”回答(rejected response）两个答案
 
-#### <strong>涉及模型：</strong>
+#### 涉及模型：
 
 - reference model[不训、计算KL散度、降低训偏风险，甚至可以把ref model输出保存下来重复使用]
 - actor/policy model[训练、目标模型，优化其按照人类偏好生成能力]
 
-#### <strong>采样过程：</strong>
+#### 采样过程：
 
 - 利用actor/policy model对每个prompt采样单个response，没有特殊要求限制。
 
-#### <strong>涉及计算</strong>
+#### 涉及计算
 
 $$- <strong>计算reward</strong>：DPO不用事先学习一个奖励函数 r(x,y) ，而是一个从 \pi_{\theta} 和 \pi_{ref} 反解出的隐式奖励函数：**r_\theta(x, y) = \beta \log \left( \frac{\pi_\theta(y | x)}{\pi_{\text{ref}}(y | x)} \right) + \beta \log(Z(x)) \\其中 Z(x) 项仅与提示 x 有关，在比较同一提示下的两个不同回答时，这一项可以被抵消$$
 - 计算value：** 无value模型，不算
@@ -179,7 +179,7 @@ DPO训练过程
 - DPO存在的问题：[为什么dpo算法的泛化性不如ppo？](https://www.zhihu.com/question/1905728020439868255/answer/1919449001603863027)
 - [DPO 为何销声匿迹？GRPO 凭什么成为大模型新宠算法？](https://zhuanlan.zhihu.com/p/1945892634217407564)
 
-### GRPO**
+### GRPO
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_cc7feb09f4f5.jpg)
 
@@ -200,7 +200,7 @@ DPO训练过程
 
 - 利用old model对每个prompt采样一组response。
 
-#### <strong>涉及计算：</strong>
+#### 涉及计算：
 
 - <strong>计算reward</strong>：可以用PPO中的Reward model进行打分，但<strong>实际上多采用基于规则的打分</strong>。采用<strong>多种打分规则加权</strong>获得最终的reward结果。（trl中就是这样实现的）
 - <strong>计算value：</strong>无value模型，不算
@@ -246,7 +246,7 @@ $$GRPO主要按照上式的 \frac{1}{G} \sum_{i=1}^G \frac{1}{|o_i|} \sum_{t=1}^
 
 [一文详细对比PPO、GRPO、DAPO、GSPO、DCPO的核心差异](https://zhuanlan.zhihu.com/p/1888311680880080185)
 
-### <strong>Dr.GRPO</strong>
+### Dr.GRPO
 
 #### 数据准备
 
@@ -260,7 +260,7 @@ $$GRPO主要按照上式的 \frac{1}{G} \sum_{i=1}^G \frac{1}{|o_i|} \sum_{t=1}^
 
 <strong>与GRPO相同</strong>
 
-#### <strong>涉及计算</strong>
+#### 涉及计算
 
 - <strong>计算reward</strong>：同GRPO
 - <strong>计算value：</strong>无value模型，不算
@@ -284,7 +284,7 @@ $$\mathcal{T}^{Dr.GRPO}(\theta) = \frac{1}{G*M} \sum_{i=1}^{G} \sum_{t=1}^{|o_i|
 
 [一文详细对比PPO、GRPO、DAPO、GSPO、DCPO的核心差异](https://zhuanlan.zhihu.com/p/1888311680880080185)
 
-### <strong>DAPO</strong>
+### DAPO
 
 结合Dr.GRPO, 在GPRO的基础上进行改进。
 
@@ -292,18 +292,18 @@ $$\mathcal{T}^{Dr.GRPO}(\theta) = \frac{1}{G*M} \sum_{i=1}^{G} \sum_{t=1}^{|o_i|
 
 同GRPO
 
-#### <strong>涉及模型：</strong>
+#### 涉及模型：
 
 同GRPO
 
-#### <strong>采样过程：【动态采样】</strong>
+#### 采样过程：【动态采样】
 
 <strong>PPO中是一个prompt采样一个response即可；而GRPO中是一个prompt 没有特殊要求地采样一组response；DAPO采用的是动态采样</strong>
 
 - 动态采样：利用old model对每个prompt采样一组G>1[DAPO=16]个response，同时<strong>要求G个response中必须同时包含正负样本</strong>且根据Reward方式进行丢弃或加权，否则对应prompt重新采样[限定次数]或被直接丢弃[DAPO做法]，候补其他prompt进行采样。 即：
 0 
 
-#### <strong>涉及计算</strong>
+#### 涉及计算
 
 - <strong>计算reward</strong>：在GRPO的基础上，<strong>增加对长度惩罚项或超长过滤</strong>
 
@@ -330,7 +330,7 @@ $$L^{DAPO}(\theta) = \frac{1}{\sum_{i=1}^{G} |o_i|} \sum_{i=1}^{G} \sum_{t=1}^{|
 
 [一文详细对比PPO、GRPO、DAPO、GSPO、DCPO的核心差异](https://zhuanlan.zhihu.com/p/1888311680880080185)
 
-### <strong>VAPO</strong>
+### VAPO
 
 #### 数据准备
 
@@ -349,7 +349,7 @@ $$L^{DAPO}(\theta) = \frac{1}{\sum_{i=1}^{G} |o_i|} \sum_{i=1}^{G} \sum_{t=1}^{|
 
 提出了Group-Sampling，与GRPO相似，每一个 prompt 采样多个回答，以获得更丰富的对比信号。
 
-#### <strong>涉及计算</strong>
+#### 涉及计算
 
 - <strong>计算reward</strong>：通过训练好的reward model对生成的response打分，输出为 R_t \in [0,1] 。
 - <strong>计算value：</strong>计算过程与PPO相同，<strong>但Value-Pretraining 先行训练了Value Model</strong>
@@ -379,7 +379,7 @@ critic loss与PPO相同
 
 [一文详细对比PPO、GRPO、DAPO、GSPO、DCPO的核心差异](https://zhuanlan.zhihu.com/p/1888311680880080185)
 
-### <strong>GSPO</strong>
+### GSPO
 
 与PPO、GRPO、DAPO、Dr.GRPO主要区别在于，<strong>GSPO中的clip从token维度转换为sequence维度，并针对MOE做了router。</strong>
 
@@ -389,15 +389,15 @@ critic loss与PPO相同
 
 同GRPO、Dr.GRPO、DAPO
 
-#### <strong>涉及模型：</strong>
+#### 涉及模型：
 
 同GRPO、Dr.GRPO、DAPO
 
-#### <strong>采样过程：</strong>
+#### 采样过程：
 
 同GRPO、Dr.GRPO、没有采用DAPO的动态采样
 
-#### <strong>涉及计算</strong>
+#### 涉及计算
 
 - <strong>计算reward</strong>：与GRPO、Dr.GRPO等相同，未采用DAPO对response长度进行惩罚的策略
 - <strong>计算value：</strong> 无value模型，不算
@@ -426,7 +426,7 @@ $$\mathcal{T}^{\text{GSPO}}_{token}(\theta) = \left[ \frac{1}{G} \sum_{i=1}^{G} 
 
 [一文详细对比PPO、GRPO、DAPO、GSPO、DCPO的核心差异](https://zhuanlan.zhihu.com/p/1888311680880080185)
 
-### <strong>DCPO</strong>
+### DCPO
 
 主要解决主流RL中普遍存在的问题：1）固定CLIP范围对低概率token不友好，导致模型在高熵”rare token“上探索能力不足；2）现有advantage计算只考虑当前生成的response簇，而生成过程中存在很大随机性，导致相同reward时梯度为零以及随机性生成的response归一化后的advantage会波动更大，对模型训练稳定性不友好问题。
 
@@ -434,15 +434,15 @@ $$\mathcal{T}^{\text{GSPO}}_{token}(\theta) = \left[ \frac{1}{G} \sum_{i=1}^{G} 
 
 同GRPO、Dr.GRPO、DAPO
 
-#### <strong>涉及模型：</strong>
+#### 涉及模型：
 
 同GRPO、Dr.GRPO、DAPO
 
-#### <strong>采样过程：</strong>
+#### 采样过程：
 
 同GRPO、Dr.GRPO、没有采用DAPO的动态采样
 
-#### <strong>涉及计算</strong>
+#### 涉及计算
 
 - <strong>计算reward</strong>：基于规则的reward
 R_j^i = \begin{cases} 1, & \text{答案和格式正确} \\0, & \text{格式正确，答案不正确} \\-1, & \text{格式错误}\end{cases} \\

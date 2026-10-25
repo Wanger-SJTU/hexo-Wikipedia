@@ -52,7 +52,6 @@ f_{x} u+f_{y} v+f_{t}=0
 
 其中， f_x 和 f_y 分别是图像梯度， f_t 是图像沿着时间的梯度。
 
-**
 
 ![](/images/collections/0.raw/zhihu/%E6%9C%89%E7%94%A8%E7%9A%84%E6%96%B9%E5%90%91%E6%80%9D%E8%80%83/asset/img_cbd7ebb78b86.jpg)
 
@@ -355,7 +354,7 @@ flow=cv.calcOpticalFlowFarneback(
         pyr_scale, levels, winsize, 
         iterations, poly_n, poly_sigma, flags)`
 
-** 输入
+输入
 
 - prev--> 前一帧图片 
 - next--> 下一帧图片，格式与prev相同 

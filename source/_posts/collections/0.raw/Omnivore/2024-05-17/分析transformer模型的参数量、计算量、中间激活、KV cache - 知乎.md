@@ -70,7 +70,7 @@ self-attention块和MLP块各有一个layer normalization，包含了2个可训�
 
 ![](https://proxy-prod.omnivore-image-cache.app/1122x188,sf2oyrDIY-0hgVVH_p0s-dcAoOTMWv7Ze1gZmW7yLQnE/https://pic3.zhimg.com/v2-c249a90b069342a6d38b9b29d182226a_b.jpg)
 
-### <strong>2.2 推理过程中的显存占用分析</strong>
+### 2.2 推理过程中的显存占用分析
 
 在神经网络的推理阶段，没有优化器状态和梯度，也不需要保存中间激活。<strong>少了梯度、优化器状态、中间激活，模型推理阶段占用的显存要远小于训练阶段</strong>。模型推理阶段，占用显存的大头主要是模型参数，如果使用float16来进行推理，<strong>推理阶段模型参数占用的显存大概是</strong> 2\\Phi\\space bytes 。如果使用KV cache来加速推理过程，<strong>KV cache也需要占用显存</strong>，KV cache占用的显存下文会详细介绍。此外，输入数据也需要放到GPU上，还有一些中间结果（推理过程中的中间结果用完会尽快释放掉），不过这部分占用的显存是很小的，可以忽略。
 

@@ -21,7 +21,7 @@ source_url: https://zhuanlan.zhihu.com/p/26029380528
 
 在训练 InternLM2-20B 模型时，由于使用 InternEvo 框架时用到 `recordStream` 来实现并行策略，有异常的显存过高的问题。通过对比显存占用曲线发现，InternEvo 中 `all_gather` 操作的临时显存生命周期过长，导致部分显存未能及时释放，从而引发峰值显存占用的增加。进一步调研表明，FSDP2 在显存管理中未采用 `recordStream` 技术，而是通过手动同步机制实现显存释放管理，因此不会出现异常显存的情况。在 InternEvo 框架中，通过设置环境变量，可以使当前 stream 的操作完成后立即释放对应的显存资源，从而显著降低训练过程中的显存峰值占用。这一改进在大规模模型训练中具有重要的实际意义，有助于更高效地利用显存资源。
 
-**InternEvo： [https://github.com/InternLM/InternEvo](https://link.zhihu.com/?target=https%3A//github.com/InternLM/InternEvo)
+InternEvo： [https://github.com/InternLM/InternEvo](https://link.zhihu.com/?target=https%3A//github.com/InternLM/InternEvo)
 ### 1. 问题背景
 
 在使用 InternEvo 框架训练 InternLM2-20B 模型时，采用权重并行（Weight Parallelism, WP）策略，在 64 张 A100 GPU 上进行训练，开启 `wp=64`。训练过程中显存变化趋势如图 1 所示：
@@ -138,9 +138,8 @@ torch.cuda.synchronize()`是一个PyTorch函数，用于同步CUDA设备，确�
 ### 4. 总结
 
 在多 GPU 环境下的大模型训练中，模型切分引入的`all_gather`和`reduce_scatter`异步通信操作会占用临时显存。由于 PyTorch 的`recordStream`机制，这些显存可能会延迟释放，从而导致训练过程中的峰值显存过高。通过启用`TORCH_NCCL_AVOID_RECORD_STREAMS=1`环境变量，并在代码中确保在显存使用后调用`handle.wait()`及时释放，可以有效解决异步显存延迟释放的问题，从而显著降低训练过程中的峰值显存。
-另一个需要探讨的问题是：训练过程中的P2P通信是否会遇到类似的显存延迟释放问题？这一问题将在下期继续讨论。**
+另一个需要探讨的问题是：训练过程中的P2P通信是否会遇到类似的显存延迟释放问题？这一问题将在下期继续讨论。
 
-**
 
 > 如果你喜欢我们的内容，欢迎赞同∆、收藏⭐️、关注➕<strong>我们！</strong>也欢迎在评论区**与我们互动！
 你的支持是我们持续创作的动力！

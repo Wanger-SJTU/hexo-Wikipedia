@@ -91,7 +91,7 @@ img2.image = [UIImage imageNamed:@"image.png"];`
 - 最终得到效果除了走一遍1的流程以外，还要把上面得到①和②从离屏缓冲区中取出来，然后再组合起来，存放到帧缓冲区中，最后显示出来。
 总结: 所以当App需要进行额外得渲染和合并时，就会把数据存放到offscreen Buffer，然后在组合，放在Frame Buffer，最后再显示到屏幕上；
 
-**面试题:为什么离屏渲染会有性能问题？
+面试题:为什么离屏渲染会有性能问题？
 1.离屏渲染会有额外得存储空间；
 2.从offScreen取出来放入Frame Buffer时也有时间消耗
 3.offScreen是有空间限制，是屏幕像素的2.5倍
@@ -100,7 +100,7 @@ img2.image = [UIImage imageNamed:@"image.png"];`
 1.其主要原因是，有些特殊的效果，无法一次性得到最终的效果，必须使用offScreen Buffer来保存中间状态，就不的不使用，这时是系统自动触发，常见的圆角、阴影等；
 2.如果这个特殊效果会多次渲染到屏幕上，那么我们就可以提前渲染好，保存在offScreen Buffer中，从而达到复用的目的；这是手动触发的；
 
-1.4.毛玻璃渲染流程**
+1.4.毛玻璃渲染流程
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_6ecd2dd0a5c0.jpg)
 
@@ -119,7 +119,7 @@ img2.image = [UIImage imageNamed:@"image.png"];`
 
 <strong>2.1.设置光栅化（shouldRasterize）</strong>
 
-**When the value of this property istrue, the layer is rendered as a bitmap in its local coordinate space and then composited to the destination with any other content.Apple原话是，当把这个属性设置为true时，该图层将在其本地坐标空间中呈现为位图，然后与其他任何内容合成到目标。即当想要把某个效果复用时，就把这个属性设置为true
+When the value of this property istrue, the layer is rendered as a bitmap in its local coordinate space and then composited to the destination with any other content.Apple原话是，当把这个属性设置为true时，该图层将在其本地坐标空间中呈现为位图，然后与其他任何内容合成到目标。即当想要把某个效果复用时，就把这个属性设置为true
 
 光栅化的使用建议:
 
@@ -127,7 +127,7 @@ img2.image = [UIImage imageNamed:@"image.png"];`
 - 如果layer不是静态的，需要频繁修改修改的，比如处于动画之中，那么开启离屏渲染反而会影响效率；
 - 离屏渲染缓存内容有时间限制，缓存内容在100ms内，如果内容没有被使用，那么它就会被丢弃，无法再进行复用了；
 - 离屏渲染缓存空间优先，超过2.5倍的屏幕像素大小的话，也会失效，且无法进行复用。
-2.2圆角导致**
+2.2圆角导致
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_a049f73978a5.jpg)
 

@@ -49,11 +49,11 @@ RAG 有以下特点：
 
 作者对比了现有的几种 RAG 场景的 KV Cache 复用解决方案：
 
-#### <strong>Full KV Re-compute</strong>：
+#### Full KV Re-compute**：
 
 不复用 KV Cache，这样做 prefill 开销巨大
 
-#### <strong>Prefix Caching</strong>：
+#### Prefix Caching**：
 
 [RAGCache](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2404.12457) 构建了一棵文档树，把每个请求中文档的 KV Cache 块序列缓存下来，请求间的的前缀文档必须完全匹配才可以复用。比如之前的请求用到 [D1、D2、D3]，下一个请求是 [D1、D2、D5]，可以复用 [D1、D2]。
 
@@ -62,7 +62,7 @@ RAG 有以下特点：
 ![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_a4101085e2a2.jpg)
 
 RAGCache
-#### <strong>Full KV Reuse</strong>
+#### Full KV Reuse
 
 直接将不同文本块的 KV Cache 拼接起来，那如何解决前面提到的两个问题呢？   
 

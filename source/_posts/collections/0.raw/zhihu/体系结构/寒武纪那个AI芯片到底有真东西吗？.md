@@ -144,7 +144,7 @@ for (int nnn = 0; nnn ¡ Nn; nnn += Tnn) { // tiling for output neurons;
 
 加速器支持单个图像或批处理，生成代码里只有CP值会变化。
 
-### <strong>DaDianNao</strong>
+### DaDianNao
 
 为了支持日益扩大的神经网络模型，<strong>DaDianNao</strong>是一个支持扩展到64个节点的加速器架构，相比GPU，可以实现450.65倍提速，而减少150.31倍功耗。
 
@@ -203,7 +203,7 @@ tile内部NFU和<strong>DianNao</strong>差别不是太大，也是分成三个�
 
  数据被分割成多个256位的数据块，每个数据块包含 = 16个神经元；每个节点分配/4 = 64个数据块，每个tile分配 = 4个数据块，所以每个节点需要4个指令； 前面三个指令会从中间eDRAM给所有tile分发数据，同时从tile内部eDRAM里读取权重，然后将计算部分和写入到NBout；最后一个指令时，每个tile内部NFU会计算出最终的和，并进行变换计算，最后将结果写回到中间eDRAM。 这些节点指令会将相应的控制发送到每个tile，一个节点或tile指令对一套连续的输入数据完成同一层的计算；因为同一个指令的输入数据是连续的，因此指令里只需要使用开始地址，步长和迭代次数。 另外，不同节点以同样速度处理几乎相同的数据量，<strong>DaDianNao</strong>采用了computing-and forwarding的通信模式，即一个节点一旦完成计算，就可以马上处理新输入的数据；所以不需要全局同步或屏障指令。
 
-### <strong>ShiDianNao</strong>
+### ShiDianNao
 
 <strong>ShiDianNao</strong>是一个CNN加速器，放置在CMOS或CCD传感器旁边。在许多应用中，例如智能手机、安全、自动驾驶汽车，图像直接来自CMOS或CCD传感器。图像由CMOS/CCD传感器采集，发送到DRAM，然后由CPU/GPU获取以进行识别处理。CNN加速器的小尺寸使其可以将其提升到传感器旁边，并且仅将识别过程的几个输出字节（通常是图像类别）发送到DRAM或主机处理器，从而几乎完全消除了对存储器的访问。下图展示了<strong>ShiDianNao</strong>的应用场景： 
 
@@ -279,7 +279,7 @@ NB控制器的写模式比较直接，在CNN神经网络模型里，一旦一个
 
  使用61位长度的指令来表示HFSM状态和相应参数，执行5万个周期的CNN网络只需要1KB的指令存储空间。
 
-### <strong>PuDianNao</strong>
+### PuDianNao
 
 <strong>PuDianNao</strong>, 可以对包括k-means, k-nearest neighbors, 朴素贝叶斯(naive bayes), 支持向量机(support vector machine), 线性回归(linear regression), 分类树(classification tree), 和深度神经网络(deep neural network)在内的7种机器学习进行加速。机器学习算法一般通过使用的数学模型(线性或非线性)，学习方式(监督学习或无监督学习)，训练算法(最大后验估计或梯度下降)等进行区分。但是从计算机体系结构上看，机器学习算法可以根据分解的计算原语和数据临近性来分类。通过对上述7种机器学习算法从计算原语和数据临近性上分析，<strong>PuDianNao</strong>在架构上，采用一个通用的ALU来执行一般操作，而对最耗时的操作卸载到专用硬件执行，实现了对多种机器学习算法的加速。
 

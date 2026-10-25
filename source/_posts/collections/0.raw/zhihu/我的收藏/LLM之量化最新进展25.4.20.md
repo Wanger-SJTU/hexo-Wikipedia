@@ -17,7 +17,7 @@ source_url: https://zhuanlan.zhihu.com/p/1897066489246376792
 
 ### [VPTQ](https://link.zhihu.com/?target=https%3A//github.com/microsoft/VPTQ)
 
-**[VPTQ: Extreme Low-bit Vector Post-Training Quantization for Large Language Models](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2409.17066)
+[VPTQ: Extreme Low-bit Vector Post-Training Quantization for Large Language Models](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2409.17066)
 [https://github.com/microsoft/VPTQ](https://link.zhihu.com/?target=https%3A//github.com/microsoft/VPTQ)
 [LLM量化迎来“革命性突破” | 17小时将405B模型量化成1~2比特，吞吐量提升1.8倍！](https://link.zhihu.com/?target=https%3A//mp.weixin.qq.com/s/-54RAQjooDipEO-tz9qmfw)
 [LLM极低比特量化VQ方法解析：从AQLM、GPTVQ到VPTQ](https://link.zhihu.com/?target=https%3A//mp.weixin.qq.com/s/2uWK_7hIaEgY-OsIOT0zvw%3Fpoc_token%3DHCULiWej2cNKkqVVXWuxllLn4BIa2_EPeJ_z5NF0)统的标量量化方法由于数值表示的限制，难以实现如此低比特的量化。因此，论文提出了一种新的矢量后训练量化（VPTQ）方法，用于实现LLMs的极低比特量化，以减少模型大小、优化存储成本并降低推理时的内存带宽需求。
@@ -51,9 +51,9 @@ source_url: https://zhuanlan.zhihu.com/p/1897066489246376792
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_fa643265c0e0.jpg)
 
-#### AQLM原理**
+#### AQLM原理
 
-**[Extreme Compression of Large Language Models via Additive Quantization](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2401.06118)
+[Extreme Compression of Large Language Models via Additive Quantization](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2401.06118)
 [GitHub - Vahe1994/AQLM: Official Pytorch repository for Extreme Compression of Large Language Models via Additive Quantization https://arxiv.org/pdf/2401.06118.pdf and PV-Tuning: Beyond Straight-Through Estimation for Extreme LLM Compression https://arxiv.org/abs/2405.14852](https://link.zhihu.com/?target=https%3A//github.com/Vahe1994/AQLM)自称是第一篇将RVQ方法应用到对LLM权重压缩中的工作。
 
 > [大模型低比特量化新思路 AQLM](https://zhuanlan.zhihu.com/p/706103629)
@@ -70,7 +70,7 @@ VPTQ主要就是在GPTQ的基础上，将张量量化变成了矢量量化。
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_a420c5245e08.jpg)
 
-由于VQ可以使用更大的码本来存储量化数据，因此与GPTQ的标量量化相比，它覆盖更宽范围的数值分布，从而实现更好的精度。**
+由于VQ可以使用更大的码本来存储量化数据，因此与GPTQ的标量量化相比，它覆盖更宽范围的数值分布，从而实现更好的精度。
 
 从下图可以看出，大致流程和GPTQ是差不多的，只不过weight是向量化表示。
 
@@ -104,7 +104,6 @@ https://github.com/microsoft/VPTQ/blob/algorithm/vptq/vptq.py对于每一列，�
 
 总结：**首先对每个linear层训练一个旋转矩阵，减少原始权重的outliers，从而使后续的GPTQ的效果更好。
 
-**
 
 ### [BitNet a4.8: 4-bit Activations for 1-bit LLMs](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2411.04965)
 
@@ -120,7 +119,6 @@ https://github.com/microsoft/VPTQ/blob/algorithm/vptq/vptq.py对于每一列，�
 - <strong>浮点量化</strong>：对于浮点量化，仅将FFN下投影的输入保留为8-bit整数，其余激活量化为FP4，使用MinMax量化器。这种量化方式可以处理激活的长尾分布。
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_b3b711450bf2.jpg)
 
-**
 
 ### [QuEST](https://link.zhihu.com/?target=https%3A//github.com/IST-DASLab/QuEST)（低位QAT）
 
@@ -146,7 +144,6 @@ QuEST在所有测试的精度和模型大小下都能稳定收敛，而PACT在�
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_8b5580a89af9.jpg)
 
-** 
 
 ### [rsq](https://link.zhihu.com/?target=https%3A//github.com/ylsung/rsq)
 
@@ -170,13 +167,12 @@ QuEST在所有测试的精度和模型大小下都能稳定收敛，而PACT在�
 
 实验表明，RSQ 在多个下游任务和长文本基准测试中均优于现有的量化方法，特别是在低量化位数时表现更为出色。此外，RSQ 在不同模型大小、校准数据集和量化方法上均表现出良好的泛化能力。
 
-** 
 
 ### [Sigma: Differential Rescaling of Query, Key and Value for Efficient Language Models](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2501.13629)
 
 关注于如何通过优化注意力机制中的查询（Query, Q）、键（Key, K）和值（Value, V）来提高模型的推理效率，同时保持或提升模型性能。
 
-差异化压缩KV（Differentially Compressed KV）**
+差异化压缩KV（Differentially Compressed KV）
 
 - <strong>动机</strong>：模型对K和V的压缩敏感度不同。实验表明，模型性能对V的压缩更为敏感，无论是维度还是头数。因此，论文提出对K进行更激进的压缩，而对V进行较轻的压缩。
 - <strong>方法</strong>：在DiffQKV中，K的头数（nh_k）和维度（dh_k）被显著减少，而V的头数（nh_v）保持不变或减少较少。例如，在SIGMA-1.5B模型中，K的头数从16减少到4，而V的头数保持为16。此外，K的维度可以减少到V维度的一半（dh_k = dh_v/2），并通过一个可训练的前馈层将K的维度调整为与V相同，以计算注意力分数。
@@ -186,13 +182,12 @@ QuEST在所有测试的精度和模型大小下都能稳定收敛，而PACT在�
 - <strong>动机</strong>：由于Q在自注意力中不需要缓存，增加Q的参数对内存使用和数据传输的影响较小，但可以有效提升模型的表示能力和性能。
 - <strong>方法</strong>：通过增加Q头的维度（dh_q），为模型提供更多的参数来学习复杂的表示。例如，在SIGMA-1.5B中，Q头的维度被设置为3072，是隐藏状态维度的1.5倍。
 - <strong>效果</strong>：增强Q可以显著提升模型性能，尤其是在K和V被高度压缩的情况下。实验表明，增强Q对推理速度的影响较小，但能有效抵消KV压缩带来的性能下降。
-**
 
 ### [MixLLM: LLM Quantization with Global Mixed-precision between Output-features and Highly-efficient System Design](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2412.14590)
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_af04a96b25c9.jpg)
 
-量化设计和决策**
+量化设计和决策
 
 - <strong>混合精度量化（Mixed-Precision Quantization）</strong>：MixLLM 在权重的输出特征之间引入混合精度量化，根据全局重要性（salience）分配不同的位宽。具体来说，对于高重要性的输出特征分配8位，对于其他特征分配4位。这种设计利用了不同输出特征对模型输出的不同贡献，从而在保持低内存消耗的同时实现高准确性。
 - <strong>全局重要性识别（Global Salience Identification）</strong>：与现有方法不同，MixLLM 不是在单个层内识别高重要性特征，而是从全局角度识别。通过计算每个输出特征对模型最终损失的影响来确定其重要性，从而更准确地分配位宽。
@@ -209,7 +204,6 @@ MixLLM 使用一种全局精度搜索算法来确定哪些输出特征需要更�
 - <strong>两步反量化（Two-Step Dequantization）</strong>：为了利用GPU的int8 Tensor Core进行高效计算，MixLLM设计了一种两步反量化方法。首先将量化后的权重部分反量化为整数，然后使用Tensor Core进行矩阵乘法，最后应用比例因子完成反量化。
 - <strong>快速整数到浮点转换（Fast Int-to-Float Conversion）</strong>：通过一种基于范围依赖的快速转换方法，将整数转换为浮点数，避免了昂贵的I2F指令。
 - <strong>端到端软件流水线（End-to-End Software Pipeline）</strong>：设计了一种软件流水线，将内存访问、反量化计算和矩阵乘法重叠执行，从而最大化系统效率。
-**
 
 ### [70% Size, 100% Accuracy: Lossless LLM Compression for Efficient GPU Inference via Dynamic-Length Float](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2504.11651)（BF16的无损压缩）
 
@@ -223,7 +217,7 @@ MixLLM 使用一种全局精度搜索算法来确定哪些输出特征需要更�
 
 #### Dynamic-Length Float：LLMs无损压缩框架
 
-高效解码与紧凑查找表（LUTs）**
+高效解码与紧凑查找表（LUTs）
 
 - 传统的霍夫曼解码需要逐位遍历霍夫曼树，不适合GPU的并行架构。论文提出将单个大型查找表（LUT）分解为多个紧凑的LUTs，存储在GPU的SRAM中，以实现快速访问。具体来说，将一个2^32大小的LUT分解为四个2^8大小的LUTs（LUT1、LUT2、LUT3和LUT4），每个LUT占用1024字节，加上CodeLengths表的256字节，总共占用1280字节，适合存储在GPU的SRAM中。
 - 解码时，从编码序列中读取第一个字节，用作LUT1的索引。如果对应的霍夫曼码长度为8位或更短，则LUT1返回有效的解码符号，解码完成。否则，返回一个保留值R，表示代码尚未完全解析。然后继续读取下一个字节，用作LUT2的索引，依此类推，直到返回非R值，表示霍夫曼码已成功解码。
@@ -241,7 +235,6 @@ MixLLM 使用一种全局精度搜索算法来确定哪些输出特征需要更�
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_ab882d5892f7.jpg)
 
-**
 
 #### 实验结果
 
@@ -250,7 +243,6 @@ MixLLM 使用一种全局精度搜索算法来确定哪些输出特征需要更�
 - <strong>准确性</strong>：DFloat11压缩后的模型在各种任务上的表现与原始BFloat16模型完全一致，包括在MMLU、TruthfulQA、WikiText和C4等标准基准测试中的准确性和困惑度评估。例如，Llama-3.1-8B-Instruct模型在MMLU任务上的准确率为68.010%，在TruthfulQA任务上的准确率为36.965%，在WikiText数据集上的困惑度为8.649，在C4数据集上的困惑度为21.677。压缩后的DFloat11模型在这些指标上与原始模型完全相同。
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_b8d3773b35fa.jpg)
 
-**
 
 ### [LogQuant: Log-Distributed 2-Bit Quantization of KV Cache with Superior Accuracy Preservation](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2503.19950)
 
@@ -263,9 +255,8 @@ LogQuant通过以下方式实现：
 - 基于对数分布的注意力模式**：观察到注意力分数的高值位置呈对数分布，越远离当前位置的tokens越稀疏。
 - <strong>量化策略</strong>：选择保留最近的tokens，并以对数间隔选择其他tokens进行量化，以减少内存占用。
 - <strong>位置无关的注意力计算</strong>：在解码阶段，KV缓存条目的原始位置可以忽略，从而优化量化/反量化过程的速度。
-**
 
-### [Q-Filters: Leveraging QK Geometry for Efficient KV Cache Compression](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2503.02812)**
+### [Q-Filters: Leveraging QK Geometry for Efficient KV Cache Compression](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2503.02812)
 
 论文提出了一种名为Q-Filters的训练无关KV缓存压缩方法，通过利用Query和Key向量的几何特性来过滤掉不重要的KV对，从而减少KV缓存的大小。
 

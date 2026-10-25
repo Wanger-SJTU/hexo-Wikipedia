@@ -34,7 +34,7 @@ _有效解析和理解非结构化文档中的表格时，设计 RAG 方案仍�
 ```
 
 
-## <strong>关键技术</strong>
+## 关键技术
 
 ### Table Parsing（表格解析）
 
@@ -71,7 +71,7 @@ _有效解析和理解非结构化文档中的表格时，设计 RAG 方案仍�
 ```
 
 
-## <strong>现有开源解决方案</strong>
+## 现有开源解决方案
 
 LlamaIndex 中提供了四种方法，其中前三种依赖多模态模型：
 
@@ -87,7 +87,7 @@ LlamaIndex 中提供了四种方法，其中前三种依赖多模态模型：
 
 ![](https://proxy-prod.omnivore-image-cache.app/1657x817,sO-3gHESvrcceZBpOpdxRikCbjWpU1z1hBX2wFyvYJqQ/https://pic1.zhimg.com/v2-4f03359ad55c68a16aa4c86b54c10ca8_b.jpg)
 
-## <strong>建议的方案</strong>
+## 建议的方案
 
 本文对关键技术和现有解决方案进行了总结、分类和讨论。基于此，我们提出了以下解决方案，如下图所示。为简单起见，这里省略了一些 RAG 模块，例如重新排名和查询重写。 
 
@@ -122,11 +122,11 @@ LlamaIndex 中提供了四种方法，其中前三种依赖多模态模型：
 ```
 
 
-## <strong>总结</strong>
+## 总结
 
 本文讨论了 RAG 流程中表处理的关键技术和现有解决方案，并提出了解决方案及其实现。本文推荐使用 nougat 来解析表格。但是，如果有更快、更有效的解析工具可用，我们也建议对其进行替换。对工具的态度是先有正确的想法，然后找到工具来实现它，而不是依赖某个具体的工具。在本文中，我们将所有表内容输入到 LLM。但是，在实际场景中，我们应该考虑表超过 LLM 上下文长度的情况，比如通过有效地分块方法来在一定程度上解决这个问题。
 
-## <strong>参考资料</strong>
+## 参考资料
 
 \[1\] Table Transformer: _<https://github.com/microsoft/table-transformer>_
 

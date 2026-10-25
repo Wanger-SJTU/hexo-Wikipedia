@@ -23,11 +23,11 @@ source_url: https://zhuanlan.zhihu.com/p/1999079916122183598
 
 下面我们来看看，这款工具到底能做什么，又该怎么上手使用。
 
-#### <strong>幕后机制：Git Worktrees 深度解析</strong>
+#### 幕后机制：Git Worktrees 深度解析
 
 在深入 Auto Claude 的内部机制之前，先解释一下支撑它的关键工具：<strong>git worktree</strong>。
 
-#### <strong>传统困境</strong>
+#### 传统困境
 
 用 Git 久了，你大概都遇到过这种尴尬场景。
 
@@ -39,7 +39,7 @@ source_url: https://zhuanlan.zhihu.com/p/1999079916122183598
 
 ![](/images/collections/0.raw/zhihu/AgentCLI/asset/img_d8ea60a8f043.jpg)
 
-#### Git Worktrees 解决方案**
+#### Git Worktrees 解决方案
 
 Git Worktrees 的思路其实很直接：<strong>每个分支对应一个独立目录。</strong>
 
@@ -59,7 +59,7 @@ project-repo/
 
 关键在于，这些目录本身就是完全隔离的工作环境。切换分支时，你只需要进入对应的目录（比如 `cd ../hotfix`），而不必反复执行 `git checkout`。不需要 stash，不会丢失未完成的工作状态，也不会和其他任务相互干扰。
 
-#### <strong>技术细节</strong>
+#### 技术细节
 
 git worktrees` 的核心设计在<strong>目录隔离</strong>+<strong>引用共享</strong>：
 
@@ -83,9 +83,9 @@ git worktree remove ../hotfix`
 
 通过这种结构，Git 原生支持了真正的并行开发，而不再依赖频繁的分支切换或临时 stash。
 
-#### <strong>Auto Claude：规模化自主编程</strong>
+#### Auto Claude：规模化自主编程
 
-#### <strong>认识 Auto Claude</strong>
+#### 认识 Auto Claude
 
 Auto Claude 是一个开源的桌面应用，用来把开发流程尽量自动化、流程化：
 
@@ -97,7 +97,7 @@ Auto Claude 是一个开源的桌面应用，用来把开发流程尽量自动�
 - <strong>智能合并</strong>：在合并阶段自动处理冲突，减少人工干预
 目标很明确：在不牺牲代码质量的前提下，显著提升开发效率。
 
-#### <strong>核心功能</strong>
+#### 核心功能
 
 Auto Claude 提供了一套完整的功能模块，帮助你从不同角度管理和推进项目：
 
@@ -113,14 +113,14 @@ Auto Claude 提供了一套完整的功能模块，帮助你从不同角度管�
 
 ![](/images/collections/0.raw/zhihu/AgentCLI/asset/img_10331f4055c8.jpg)
 
-#### <strong>其他功能</strong>
+#### 其他功能
 
 - <strong>洞察对话（Insights）</strong>：以对话形式与 AI 讨论项目，提问、理解代码或快速浏览代码结构
 - <strong>创意与审计（Ideation）</strong>：帮助发现潜在的代码优化点、性能问题和安全隐患
 - <strong>变更日志（Changelog）</strong>：根据已完成任务自动生成发布说明
 - <strong>项目上下文（Context）</strong>：集中展示 AI 当前掌握的项目信息，包括技术栈、目录结构和关键约定
 
-#### <strong>关键特性</strong>
+#### 关键特性
 
 <strong>并行智能体执行</strong>：Auto Claude 可以同时运行多个 AI 智能体，每个智能体都在独立的 `git worktree` 中工作。构建、测试可以并行跑，不会互相阻塞。
 
@@ -137,7 +137,7 @@ Auto Claude 提供了一套完整的功能模块，帮助你从不同角度管�
 - 回退方案：必要时才做整文件合并
 结果是：即使分支落后了几十次提交，也能在很短时间内完成干净合并。
 
-#### <strong>并行任务的核心机制</strong>
+#### 并行任务的核心机制
 
 关键只有一点：**Auto Claude 会为每个任务单独创建一个 `git worktree`**。
 
@@ -156,7 +156,7 @@ Auto Claude 提供了一套完整的功能模块，帮助你从不同角度管�
 - <strong>冲突被自然隔离</strong>：每个任务独立，合并时再集中处理
 - <strong>更敢放手</strong>：当环境是隔离的，你才敢让 AI 自主干活
 
-#### <strong>全新的开发范式</strong>
+#### 全新的开发范式
 
 **`git worktrees` + 自主 AI 智能体<strong>的组合创建了一个以前不可能的模式：</strong>安全、并行、自主开发**。
 
@@ -173,16 +173,16 @@ Auto Claude 提供了一套完整的功能模块，帮助你从不同角度管�
 - 主分支始终受到保护
 这让多任务并行不再是「冒险行为」，而是可以放心使用的工程方案。
 
-#### <strong>快速上手指南</strong>
+#### 快速上手指南
 
-#### <strong>环境要求</strong>
+#### 环境要求
 
 - <strong>Python</strong>：3.10及以上（推荐3.12）
 - <strong>操作系统</strong>：macOS、Linux 或 Windows（WSL2）
 - <strong>Claude Code CLI</strong>：`npm install -g @anthropic-ai/claude-code`
 - <strong>Git 仓库</strong>：项目需要已经初始化为一个 Git 仓库
 
-#### <strong>安装配置</strong>
+#### 安装配置
 
 步骤1：下载并安装适合你系统的平台版本
 
@@ -194,7 +194,7 @@ Auto Claude 提供了一套完整的功能模块，帮助你从不同角度管�
 
 ![](/images/collections/0.raw/zhihu/AgentCLI/asset/img_c580ebc62003.jpg)
 
-#### <strong>快速开始</strong>
+#### 快速开始
 
 1、打开项目：选择你的 Git 仓库目录
 
@@ -228,41 +228,41 @@ Auto Claude 提供了一套完整的功能模块，帮助你从不同角度管�
 
 ![](/images/collections/0.raw/zhihu/AgentCLI/asset/img_07d69febd76a.jpg)
 
-#### <strong>常见问题</strong>
+#### 常见问题
 
-#### <strong>Q1：Auto Claude 适合哪些类型的开发者？</strong>
+#### Q1：Auto Claude 适合哪些类型的开发者？
 
 A：适用面很广。刚入门的开发者可以借助它快速看到一个功能从规划到落地的完整过程；有经验的开发者则可以把重复、耗时的工作交给 AI，把精力放在架构设计和关键决策上。
 
-#### <strong>Q2：为什么必须使用 git 仓库？</strong>
+#### Q2：为什么必须使用 git 仓库？
 
 A：因为 `git worktree` 是并行开发的基础。每个任务都会在独立的分支和目录中进行，彼此互不影响，主分支始终保持干净，这也是 Auto Claude 能安全并行运行多个任务的前提。
 
-#### <strong>Q3：如果不想用桌面界面，可以只用命令行吗？</strong>
+#### Q3：如果不想用桌面界面，可以只用命令行吗？
 
 A：可以。Auto Claude 提供完整的 CLI 模式，适合在服务器或 CI/CD 环境中使用，具体用法可以参考 `guides/CLI-USAGE.md`。
 
-#### <strong>Q4：代码安全吗？会不会泄露项目内容？</strong>
+#### Q4：代码安全吗？会不会泄露项目内容？
 
 A：所有操作都在本地完成。命令执行有白名单限制，文件访问仅限当前项目目录。模型调用使用你自己的订阅密钥，代码和数据不会经过第三方服务器。
 
-#### <strong>Q5：记忆层一定要开启吗？</strong>
+#### Q5：记忆层一定要开启吗？
 
 A：不是强制，但建议开启。开启后，AI 可以在不同任务之间复用已有理解，减少重复分析，整体决策会更稳定。如果暂时不想配置，也可以先关闭。
 
-#### <strong>Q6：可以同时运行多少个任务？</strong>
+#### Q6：可以同时运行多少个任务？
 
 A：桌面版默认支持最多 12 个并行终端。如果配置了多个 Claude Code 订阅，可以进一步扩展，适合高强度开发或小团队使用。
 
-#### <strong>Q7：合并冲突真的能自动解决吗？</strong>
+#### Q7：合并冲突真的能自动解决吗？
 
 A：大多数情况下可以。系统会先尝试 Git 的自动合并，只在真正发生冲突的部分才介入处理。即使是复杂冲突，结果也会以 staged 的形式交给你最终确认。
 
-#### <strong>Q8：支持哪些语言和框架？</strong>
+#### Q8：支持哪些语言和框架？
 
 A：没有限制。只要是标准的软件项目，Auto Claude 会先分析项目结构和技术栈，然后选择最合适的工具和命令来执行任务。
 
-#### <strong>写到最后</strong>
+#### 写到最后
 
 Auto Claude 提供了一种不同于传统 AI 编程工具的方式：它不是帮你补几行代码，而是把规划、实现、验证、合并这些环节串成一条完整流程，让整个工作可以自动运转。这样，你就不必被零碎操作拖住精力，可以把时间和注意力放在真正需要判断和取舍的地方。
 
@@ -274,11 +274,11 @@ Auto Claude 提供了一种不同于传统 AI 编程工具的方式：它不是�
 - BigModel 官方文档[2]
 - Parallel Autonomous Development[3]
 
-#### <strong>引用链接</strong>
+#### 引用链接
 
 [1]` Auto Claude 开源项目: *[https://github.com/AndyMik90/Auto-Claude](https://link.zhihu.com/?target=https%3A//github.com/AndyMik90/Auto-Claude)***`[2]` BigModel 官方文档: *https://docs.bigmodel.cn/cn/guide/start/introduction*
 [3]` Parallel Autonomous Development: *https://ajianaz.dev/auto-claude-glm-4-7-the-future-of-parallel-autonomous-development-with-git-worktrees/*
 
-既然看到这里了，如果觉得有启发，随手点个赞、推荐、转发三连吧，你的支持是我持续分享干货的动力。**
+既然看到这里了，如果觉得有启发，随手点个赞、推荐、转发三连吧，你的支持是我持续分享干货的动力。
 
 推荐阅读：[告别手搓代码！Claude Code完整上手攻略](https://link.zhihu.com/?target=https%3A//mp.weixin.qq.com/s%3F__biz%3DMjM5NzA1NzMyOQ%3D%3D%26mid%3D2247486226%26idx%3D1%26sn%3D42770a6e88aa7bfb905c54bca6945e92%26scene%3D21%23wechat_redirect)

@@ -26,7 +26,7 @@ source_url: https://zhuanlan.zhihu.com/p/681615103
 - 语音可以分解为哪些内在属性？
 - 对这些内在属性分别采用什么方法建模？
 
-### <strong>Mega-TTS：好钢用在刀刃上！</strong>
+### Mega-TTS：好钢用在刀刃上！
 
 文章链接：[Mega-TTS: Zero-Shot Text-to-Speech at Scale with Intrinsic Inductive Bias](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2306.03509)
 
@@ -39,7 +39,7 @@ source_url: https://zhuanlan.zhihu.com/p/681615103
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_8eebc0183ee6.jpg)
 
 图1：对不同语音属性的论述
-#### <strong>问题2：对不同属性的建模方法</strong>
+#### 问题2：对不同属性的建模方法
 
 在问题1中，我们明确将语音分解为四种内在属性：内容、音色、韵律和相位。那么，对这四种属性，我们应该如何建模呢？从简单到复杂，我们一个一个来看。
 
@@ -111,7 +111,7 @@ $针对不同的下游任务，模型的推断方法会有所不同。对于TTS�
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_5138ae16f433.jpg)
 
 图7：Mega-TTS和baseline在鲁棒性上的表现
-#### <strong>算法总结</strong>
+#### 算法总结
 
 本文提出的Mega-TTS可以看成是大模型时代下增强版的非自回归FastSpeech，除开韵律属性的语言建模，其他属性的建模方式都较为传统。不过，因为其非自回归的结构，本文的Mega-TTS在语音合成的速度和鲁棒性上相比于自回归的VALL-E会更有优势，这一点在实验中已经得到了证明。
 
@@ -172,7 +172,7 @@ $我们将这一过程形式化一下，令 H_{CT} 表示编码了内容和音�
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_45cd80d0968d.jpg)
 
 图10：Mega-TTS 2的整体结构
-#### <strong>问题4：参数规模和训练语料</strong>
+#### 问题4：参数规模和训练语料
 
 本文在训练语料上做了扩展，使用了共计38k小时的中英多领域语料。语音对应的转录文本同样由ASR模型得到。同时，和Mega-TTS一样，也要做speaker diarization来提取说话人标签，也要抽取音素级别的对齐信息来为duration predictor的训练提供ground truth。
 
@@ -192,7 +192,7 @@ $我们将这一过程形式化一下，令 H_{CT} 表示编码了内容和音�
 
 在第一阶段，在8块A100显卡上训练基于VQGAN的TTS模型，batch size为48，共计训练600k个step。在第二阶段，训练PLM和ADM，batch size是每个GPU 5000个音素，共计训练300k个step。
 
-#### <strong>实验结果</strong>
+#### 实验结果
 
 合成质量。使用1秒的语音提示，Mega-TTS 2的效果就已经很好了，但说话人相似度略低，不过这可以通过加大语音提示的长度来解决。
 

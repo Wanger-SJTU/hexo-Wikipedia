@@ -29,11 +29,10 @@ core流水线前端的改进：
 
 注意：apple没有对外公布微结构信息，目前不确定其是否使用decoupled frontend，不过有些[测试发现apple确实不是decoupled frontend](https://zhuanlan.zhihu.com/p/678983061)。这里ARM想强调的是，decoupled frontend已经足够快，icache太大对于ARM的core性能影响不大。实际我们测试时也发现，decoupled frontend分支预测只要足够准，可以提前发出足够多的指令预取，icache的size确实影响不大。
 
-**
 
 4. 在N2这一带还有mop Cache，但是再往后发展（N3/X等）ARM认为MOpCache功耗很高, 但是只能cover小的loop不能覆盖大的循环, 因此去掉了mOpCache，经过性能评估，即使去掉mOpCache后，增大icache的取指带宽也能起到类似的想能效果.  
 
-注意：mop Cache在X3,N2中还有，但是到了X4，N3中被去掉的：**
+注意：mop Cache在X3,N2中还有，但是到了X4，N3中被去掉的：
 
 ![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_d15324b1692e.jpg)
 
@@ -43,7 +42,6 @@ ARM X4去掉了Mop Cache![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E
 
 6. 从ARM V1 2B*256的SVE为何改为V2的4B*128? 原因是考虑到对于vector操作相同数据量, 前者使用更少的指令,后者更适合使用SVE运行non-vector-type的workload; scale down更方便, 可以很快改为2B*128，因此是设计的tradeoff
 
-**
 
 ### AMD Zen4
 
@@ -87,7 +85,6 @@ ARM X4去掉了Mop Cache![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E
 
 5.** **ARM去掉了MicroOpCache, 相反AMD增加了MicroOpCache, 因为CISC/RISC指令密度不同, 供指速度不同，所以造成了ARM觉得没用但是AMD觉得有用的这种情况。**
 
-**
 
 ### Ventana V1
 
@@ -97,7 +94,6 @@ Veyron V1 流水线框图1. Icache 512KB, **dcache: 64KB, private L2 512KB
 
 ![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_adfbb72c4d8a.jpg)
 
-**
 
 2. 流水线宽度8，相比Intel、AMD更激进
 
@@ -155,7 +151,6 @@ SandyBridge的端口利用率
 
 序号1234567891011121314151617端口012310111213303108092829202122OpsALUALUALUALULDLDSTASTAJmpJmpSTDSTDVSTDVSTDVALUVALUVALUOpsShiftShiftShiftShiftAESAESMulMulFMULFMULDIVDIVFADDFADDSHAIMULFDIV其他乏善可陈，主要功力在功耗控制，Intel在HotChips很少深入介绍微结构
 
-**
 
 ### AMD Ryzen 7040
 

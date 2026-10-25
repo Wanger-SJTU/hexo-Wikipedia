@@ -15,7 +15,7 @@ source_url: https://zhuanlan.zhihu.com/p/60546887
 ---
 
 
-### <strong>声明：本篇文章首发于微信公众号：极市平台（微信号：extrememart）</strong>
+### 声明：本篇文章首发于微信公众号：极市平台（微信号：extrememart）
 
 <strong>原文链接：</strong>
 
@@ -35,9 +35,8 @@ source_url: https://zhuanlan.zhihu.com/p/60546887
 
 首先作者在Maket1501数据集上对比了ECCV2018和CVPR2018的一些baseline的性能，并与自己提出的baseline作对比，这些baseline大部分都是通过一些训练技巧来提升的，由于在论文中轻描淡写易被忽视，因此作者也建议评价一篇学术论文一定要把训练技巧考虑在内，这样才会更加客观。
 
-**
 
-### Standard Baseline**
+### Standard Baseline
 
 ![](/images/collections/0.raw/zhihu/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%EF%BC%81/asset/img_1c18bb0f06f6.jpg)
 
@@ -108,13 +107,13 @@ source_url: https://zhuanlan.zhihu.com/p/60546887
 
 ![](/images/collections/0.raw/zhihu/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%EF%BC%81/asset/img_5eb129389cfe.jpg)
 
-其公式为：**
+其公式为：
 
 ![](/images/collections/0.raw/zhihu/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%EF%BC%81/asset/img_a3a109f93dc3.jpg)
 
 然后我们把三种loss函数进行相加，一起去优化整个网络！
 
-### 对比试验**
+### 对比试验
 
 作者首先在同一个数据域下进行试验，分别在Markert1501和DukeMTMC这两个数据集进行训练与测试，结果为
 

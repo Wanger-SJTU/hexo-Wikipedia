@@ -189,7 +189,7 @@ Memory order枚举值意义memory_order_relaxed对于其它读写操作没有任
 操作有效的Memory order枚举值备注Loadmemory_order_relaxed, memory_order_consume,**memory_order_acquire, or memory_order_seq_cst其它枚举值不合法， MS STL的实现是将其当作memory_order_seq_cst处理Storememory_order_relaxed, memory_order_release,
 or memory_order_seq_cst同上read-modify-writememory_order_relaxed, memory_order_consume, memory_order_acquire, memory_order_release, memory_order_acq_rel, or memory_order_seq_cst内存模型的介绍大致就是以上内容。我们最后来举例说明模型的使用。
 
-3、std::atomic<>与内存模型：**
+3、std::atomic<>与内存模型：
 
 （1）顺序一致模型（sequentially consistent ordering）
 

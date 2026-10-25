@@ -29,7 +29,7 @@ source_url: https://zhuanlan.zhihu.com/p/1989667023207303012
 
 ![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_11db4510bf42.jpg)
 
-图1：基线方案数据流图**
+图1：基线方案数据流图
 
 ### 2.2 优化分析
 

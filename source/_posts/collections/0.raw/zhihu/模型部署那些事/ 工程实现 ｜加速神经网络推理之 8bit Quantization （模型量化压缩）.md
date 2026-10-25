@@ -37,7 +37,7 @@ DNN 拓扑结构其中多层的非线性转换就是上一层的输出与当前�
 
 量化（Quantization）模型的论文来自于 Google 发表的文章 [On the efficient representation and execution of deep acoustic models](https://link.zhihu.com/?target=https%3A//arxiv.org/pdf/1607.04683.pdf)。作者的初衷是：
 
-**We present a simple and computationally efficient quantization scheme that enables us to reduce the resolution of the parameters of a neural network from 32-bit floating point values to 8-bit integer values. The proposed quantization scheme leads to significant memory savings and enables the use of optimized hardware instructions for integer arithmetic, thus significantly reducing the cost of inference.量化方法的目的就是使用 8 位或 16 位的整型数来替代浮点数，这种方法试图利用定点点积来替代浮点点积，这很大程度上降低了神经网络在无硬浮点设备上的运算开销。同时，该方法在一些支持单指令流多数据流 SIMD 的硬件设备上优势就更加明显了，比如128-bit 寄存器 SSE 可以单个指令同时运算 4 个 32 位单精度浮点，8 个 16 位整型，16 个 8 位整型。显然 8 位整型数在 SIMD 的加持下，相比于单精度浮点运算速率要更快一些。另外，该方法还可以减少模型的内存和存储占用空间。
+We present a simple and computationally efficient quantization scheme that enables us to reduce the resolution of the parameters of a neural network from 32-bit floating point values to 8-bit integer values. The proposed quantization scheme leads to significant memory savings and enables the use of optimized hardware instructions for integer arithmetic, thus significantly reducing the cost of inference.量化方法的目的就是使用 8 位或 16 位的整型数来替代浮点数，这种方法试图利用定点点积来替代浮点点积，这很大程度上降低了神经网络在无硬浮点设备上的运算开销。同时，该方法在一些支持单指令流多数据流 SIMD 的硬件设备上优势就更加明显了，比如128-bit 寄存器 SSE 可以单个指令同时运算 4 个 32 位单精度浮点，8 个 16 位整型，16 个 8 位整型。显然 8 位整型数在 SIMD 的加持下，相比于单精度浮点运算速率要更快一些。另外，该方法还可以减少模型的内存和存储占用空间。
 
 量化方法是一种类似于离差标准化的归一化方法，是对原始数据进行线性变换，使结果映射到一定范围内，具体公式如下：
 
@@ -134,7 +134,7 @@ def ListQuantRevert(quant_data_list, Q, RQM):
 
 ![](/images/collections/0.raw/zhihu/%E6%A8%A1%E5%9E%8B%E9%83%A8%E7%BD%B2%E9%82%A3%E4%BA%9B%E4%BA%8B/asset/img_76b2ef43a93b.jpg)
 
-8位量化曲线**
+8位量化曲线
 
 另外，我们看看随机产生的数组，量化数组分布形式与原始分布形式几乎一致，只是取值范围发生了变化，而还原后的点几乎都落在了原始数据的连接线上。
 

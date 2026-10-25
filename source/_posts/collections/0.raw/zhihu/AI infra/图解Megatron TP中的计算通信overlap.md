@@ -159,8 +159,8 @@ Pipeline chunk的思想是：假设原来是做完gemm(A, B)后再对结果reduc
 在[代码](https://link.zhihu.com/?target=https%3A//github.com/NVIDIA/TransformerEngine/blob/c9ea6be92948e1ec553037f1a04900617b9f7f6b/transformer_engine/common/comm_gemm_overlap/comm_gemm_overlap.cpp%23L171)中，管黄框中的overlap叫<strong>bulk overlap</strong>，<strong>并通过设置主流(stream_main)和通信流(stream_comm)来实现这个overlap</strong>，我们直接来看代码细节：
 
 /*
-** Bulk GEMM + COMM
-** This function assumes the communication input is pre-copied to _ubuf
+Bulk GEMM + COMM
+This function assumes the communication input is pre-copied to _ubuf
 */
 
 ```cpp

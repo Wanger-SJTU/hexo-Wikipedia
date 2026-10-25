@@ -51,9 +51,8 @@ att = self.attn_drop(att) # 这是原始代码`
 
 进一步思考，可以精确计算出通用的加权曲线（这有人做过吗？）。留作后续研究。
 
-**
 
-### 改进二：不妨称为 "Time-mixing"**
+### 改进二：不妨称为 "Time-mixing"
 
 这个操作很特别，应该没有人提出过。它来自于我对自注意力机制的思考。
 
@@ -82,9 +81,8 @@ v = self.value(x).view(B, T, self.n_head, C // self.n_head).transpose(1, 2) # �
 
 这不但解决了任务三，而且相当于引入了额外的 local attention 层，效果也很明显。
 
-**
 
-### 改进后的效果**
+### 改进后的效果
 
 Perplexity 曲线，训练更快，最终效果更好：
 

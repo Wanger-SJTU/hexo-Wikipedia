@@ -135,9 +135,8 @@ static double zero   =  0.0;
 
 这么艹的代码，是不是看一眼就不想看了。别急，咱个儿挑重点讲。
 
-**
 
-1. 参数约化（Argument Reduction）**
+1. 参数约化（Argument Reduction）
 
 将输入的一个数字 x 重整化为这个形式 x= 2^k \times (1+f) ，其中 {\sqrt 2\over2} . 以确保 1+f 小到足够合适，要不然之后换元的泰勒展开精度会很差。
 

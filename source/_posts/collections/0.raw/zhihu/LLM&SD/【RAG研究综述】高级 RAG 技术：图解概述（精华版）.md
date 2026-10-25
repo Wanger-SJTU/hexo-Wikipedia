@@ -126,7 +126,7 @@ LlamaIndex支持许多向量存储索引，但也支持其他更简单的索引�
 - <strong>[回退提示(Step-back prompting)](https://link.zhihu.com/?target=https%3A//arxiv.org/pdf/2310.06117.pdf%3Fref%3Dblog.langchain.dev)</strong>使用LLM生成一个更普适的查询，检索它我们获得一个更普适或更高层次的上下文语境，有助于支撑初始查询的答案。初始查询的检索同时被执行，两个上下文都被提交到LLM以便在最后一步生成答案。这里可以看到[LangChain的实现](https://link.zhihu.com/?target=https%3A//github.com/langchain-ai/langchain/blob/master/cookbook/stepback-qa.ipynb%3Fref%3Dblog.langchain.dev)。
 - <strong>查询重写(Query re-writing)</strong>使用LLM重新构造初始查询以提升检索效率。[LangChain](https://link.zhihu.com/?target=https%3A//github.com/langchain-ai/langchain/blob/master/cookbook/rewrite.ipynb%3Fref%3Dblog.langchain.dev)和LlamaIndex都有实现，作者的观点是LlamaIndex的解决方案更强大。
 
-#### <strong>参考引用(Reference citations)</strong>
+#### 参考引用(Reference citations)
 
 当前这个条目作者没有给它编号，因为这项技术更像是一种工具，而不是检索改进技术，尽管它确实非常重要。
 
@@ -179,7 +179,7 @@ OpenAI Assistants基本上实现了LLM周边之前在开源项目中已经存在
 
 ![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_5d96f4d58be7.jpg)
 
-多文档智能体的示意图，涉及查询路由和智能体的行为模式**
+多文档智能体的示意图，涉及查询路由和智能体的行为模式
 
 这种复杂方案的缺点基本可以从上图中推测出来——由于涉及智能体内部的多次LLM迭代，所以执行效率有点低下。需要注意的是，LLM调用总是RAG管道中最费时的操作。因此，对于大型多文档存储，建议考虑对这个方案进行一些简化，以便提高其可扩展性。
 
@@ -204,10 +204,9 @@ OpenAI Assistants基本上实现了LLM周边之前在开源项目中已经存在
 
 这一段楼主也跳过，感兴趣的读者除了阅读作者原文外，还可以看[母贴](https://zhuanlan.zhihu.com/p/673392898)中两篇有关科学评估RAG的文章翻译：《Evaluating RAG Applications with RAGAs》和《Evaluating Verifiability in Generative Search Engines》
 
-**
 
 > *文章精华摘要到此结束，感谢同学们的认真阅读，如发现有错误或疑问请在评论区留言。
-*翻译辛苦，码字不易，如果感觉有收获，欢迎赞同/喜欢/收藏本文，并关注楼主**
+*翻译辛苦，码字不易，如果感觉有收获，欢迎赞同/喜欢/收藏本文，并关注楼主
 
 ### 原文地址
 

@@ -17,7 +17,7 @@ source_url: https://zhuanlan.zhihu.com/p/557923508
 
 简单回答：
 
-**用llvm-ar、gcc-ar而不是直接ar在termux上编译自己项目时出了问题，提示无法链接到xxx symbol。
+用llvm-ar、gcc-ar而不是直接ar在termux上编译自己项目时出了问题，提示无法链接到xxx symbol。
 
 仔细一看，是动态库里有一个undefined的symbol，而这个符号应该是一个静态库产生的，然后会被一起编译进这个动态库。
 
@@ -75,7 +75,6 @@ jump_arm64_aapcs_elf_gas.S.o:
 
 lto只对C/C++编译生效，汇编不受影响，难道是这混合的情况导致了问题？
 
-**
 
 又搜了一搜，很快找到了一篇回答：
 

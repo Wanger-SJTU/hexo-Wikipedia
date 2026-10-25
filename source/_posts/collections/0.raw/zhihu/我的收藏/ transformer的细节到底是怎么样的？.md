@@ -25,7 +25,7 @@ source_url: https://www.zhihu.com/question/362131975/answer/3297483297
 
 Transformer最早在2017年的[Attention Is All You Need](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/1706.03762)论文中提出，用于解决传统的序列到序列（sequence-to-sequence，Seq2Seq）模型在<strong>处理可变长序列</strong>时遇到的问题。
 
-** 作为Seq2Seq模型，指的是输入一段序列，模型输出也是一段序列，比如最常见的翻译模型，输入一段文本序列，输出一段翻译后的文本序列。
+作为Seq2Seq模型，指的是输入一段序列，模型输出也是一段序列，比如最常见的翻译模型，输入一段文本序列，输出一段翻译后的文本序列。
 ### RNN的困境
 
 一个新技术尤其是革命性的技术诞生出来，注定是为了解决某项长期存在、难以解决的问题。RNN不可避免的存在这三个问题：
@@ -35,7 +35,6 @@ Transformer最早在2017年的[Attention Is All You Need](https://link.zhihu.com
 - 由于在类似于 seq2seq 等实际场景中，句法/行文风格等差异，导致不同位置对结果贡献会有差异。但是 <strong>RNN 由于是固定权重</strong>，需要较大的成本去适应复杂多变的句法和行文风格。
 这三点也就导致无法将RNN广泛应用，在这RNN走不出的困境中，诞生出来Transformer模型。
 
-**
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_30a44fc1c479.jpg)![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_636b2d962349.webp)
 
@@ -57,7 +56,6 @@ Transformer模型的核心思想是使用自注意力机制（Self-Attention）�
 
 千万不要对Transformer的模型结构给吓倒了，其实简单了来看，也就划分为Encoder和Decoder两个模块，左边是Encoder部分将数据进行编码，右边是Decoder部分对左边编码后的数据进行解码，得到最终的输出结果。接下来我们只需要一步一步揭开Encoder和Decoder内部结构就可以完全剖析Transformer结构啦。
 
-**
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_b9c26185aab1.jpg)
 
@@ -131,7 +129,6 @@ Softmax(XX^T)X
 
 因此Self-attention中的QKV思想，另一个层面是想要<strong>构建一个具有全局语义整合功能的数据库</strong>，所得到的最后矩阵就是输入矩阵X注意了上下文信息得到的在隐空间的语义矩阵。
 
-**
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_75135f198e36.jpg)
 
@@ -143,7 +140,7 @@ img
 
 🔥技术岗高薪必学：AI大模型技术原理+应用开发+模型训练￥0.00就业无忧
 
-如果还是0元，建议你赶紧冲，跟AI大牛对话的机会太难得了！除此以外，[数学公式]更能体验自主训练的机器学习模型，实践理论相结合。上面的链接就是公开课的链接！！另外，添加课程之后一定一定一定要添加助教小姐姐的微信，可以私聊助教领取今年最火最热的大模型学习资源！！**
+如果还是0元，建议你赶紧冲，跟AI大牛对话的机会太难得了！除此以外，[数学公式]更能体验自主训练的机器学习模型，实践理论相结合。上面的链接就是公开课的链接！！另外，添加课程之后一定一定一定要添加助教小姐姐的微信，可以私聊助教领取今年最火最热的大模型学习资源！！
 
 Self-Attention的代码实现
 

@@ -17,7 +17,7 @@ source_url: https://zhuanlan.zhihu.com/p/611133924
 
 ### 每个程序员都应该了解的内存知识（What every programmer should know about memory）
 
-**https://lwn.net/Articles/250967/
+https://lwn.net/Articles/250967/
 https://people.freebsd.org/~lstewart/articles/cpumemory.pdf原文作者：Ulrich Drepper
 
 - Part 1 (RAM)
@@ -52,7 +52,6 @@ https://people.freebsd.org/~lstewart/articles/cpumemory.pdf原文作者：Ulrich
 
 ![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_813238b6d252.png)
 
-**
 
 - The following resources are shared between two threads running in the same core<strong>:</strong>
 
@@ -91,7 +90,6 @@ https://people.freebsd.org/~lstewart/articles/cpumemory.pdf原文作者：Ulrich
 
 #### 处理器独占总线，2007 年
 
-**
 
 ![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_56dbe5b8e18b.png)
 
@@ -109,7 +107,6 @@ Intel® QuickPath Interconnect（QPI）技术最早发布于 2009 年 3 月的�
 
 #### 后 QPI 时代，2012 年
 
-**
 
 ![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_8f9e42444fe9.png)
 
@@ -125,7 +122,7 @@ CPU 同时集成内存控制器和 PCI-E 控制器，传统意义的北桥消失
 
 ### P2 - 虚拟内存
 
-**https://lwn.net/Articles/253361/处理器的虚拟内存子系统实现提供给每个进程的虚拟地址空间，这使得每个进程都认为它独占系统的全部内存。
+https://lwn.net/Articles/253361/处理器的虚拟内存子系统实现提供给每个进程的虚拟地址空间，这使得每个进程都认为它独占系统的全部内存。
 
 虚拟内存的优点列表在别处有详细描述，这里不再重复。相反，本节将重点放在虚拟内存子系统的实际实现细节和相关成本上。
 
@@ -159,7 +156,7 @@ CPU 同时集成内存控制器和 PCI-E 控制器，传统意义的北桥消失
 
 解决方案是使用多级页表。通过多级页表可以表示一个稀疏的大页面目录，其中实际未使用的区域不需要分配内存。因此，表示更加紧凑，可以在内存中拥有许多进程的页表，而不会对性能产生太大影响。
 
-下图是，x86-64 平台上 4 级页表的示意图。**
+下图是，x86-64 平台上 4 级页表的示意图。
 
 ![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_693d6b579487.png)
 
@@ -182,7 +179,7 @@ CPU 有一个专用的寄存器（x86-64 上为 CR3），保存着最高级（�
 
 一个小程序可能只使用第 2、3 和 4 级每个目录中的一个目录和所有 1 级目录。在具有 4KiB  page 和每个页表目录 512 个条目的 x86-64 上，这允许寻址 2MiB 地址。
 
-下图是 x64 平台，每一级页表项的详细信息。**
+下图是 x64 平台，每一级页表项的详细信息。
 
 ![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_fe1b7f62e2b3.png)
 
@@ -251,7 +248,6 @@ TLB 也是一块的高速缓存，与常规意义的 Cache 物理实现类似，
 - 如果在 CR4寄存器里置位了 PGE（page global enable），则 TLB 里的 G 标志位就生效了，含有 G 的 TLB entries 就不会被 flush 了，成了钉子户了。当然，reset 的时候，钉子户也是会被清掉的。
 - 利用此机制也可以在进程间方便的共享内存
 
-**
 
 - 进程切换频繁，从 A 进程切换成 B 进程时，TLB flush 掉 A 的页表，当又切换回 A 进程时，A 面临一个空的 TLB，这个过程频繁发生，会降低性能
 
@@ -260,7 +256,6 @@ TLB 也是一块的高速缓存，与常规意义的 Cache 物理实现类似，
 
 ![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_62d8f95a847f.png)
 
-**
 
 - 置位 CR4寄存器的 PCIDE（PCID Enable）位后，PCID 就生效了，进程切换的时候就不需要 flush TLB 了。但是 CR3中的 PCID 只占12个 bits，也就是说，它最多能表达4096个 process。
 
@@ -620,7 +615,6 @@ Non-temporal 操作约等同于写合并+ no-write-allocate + no-fetch-on-write-
 
 为了了解 Non-Temporal 指令的作用，我们将看一个新的测试，该测试用于测量对矩阵的写入，矩阵被组织为二维阵列。编译器在内存中布置矩阵，以便最左边的（第一个）索引寻址具有在内存中顺序布置的所有元素的行。右侧（第二个）索引寻址行中的元素。测试程序以两种方式对矩阵进行迭代：行优先访问和列优先访问。
 
-**
 
 ![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_bea6dcbeba8f.png)
 
@@ -660,7 +654,7 @@ __m128i _mm_stream_load_si128 (__m128i *p);
 
 在本节中，我们将展示哪些类型的代码更改可以帮助提高性能。继续前面的部分，我们首先关注顺序访问内存的优化。当按顺序访问内存时，处理器会自动预取数据。
 
-使用的示例代码是矩阵乘法。我们使用两个1000×1000 double 方阵。**
+使用的示例代码是矩阵乘法。我们使用两个1000×1000 double 方阵。
 
 ![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_627e46e75476.png)
 
@@ -760,7 +754,6 @@ https://quick-bench.com/q/mmCA_YqPBiGsE8vY8POpSvYzwCo
 
 本节前面提到的 MMX 几乎总是要求对齐内存访问。即内存地址应该是16字节对齐的。x86和 x86-64处理器的内存操作的支持处理未对齐的访问，但速度较慢。在大多数 RISC 体系结构中，要求对所有内存的访问都是完全对齐的，上述的严苛对齐要求对于它们来说并不是什么新鲜事。即使架构支持不对齐的访问，这有时也比使用适当的对齐要慢，特别是如果不对齐导致装入或存储使用两条缓存行而不是一条缓存行。
 
-**
 
 ![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_ebe4d1566087.png)
 
@@ -1062,25 +1055,21 @@ NIC 连接到（或属于）南桥。它启动 DMA 访问，但提供有关应�
 
 - These operations set or clear a bit atomically and return a status indicating whether the bit was set before or not.
 
-**
 
-- Load Lock/Store Conditional (LL/SC)**
+- Load Lock/Store Conditional (LL/SC)
 
 - These operations work as a pair where the special load instruction is used to start an transaction and the final store will only succeed if the location has not been modified in the meantime. The store operation indicates success or failure, so the program can repeat its efforts if necessary.
 
-**
 
-- Compare-and-Swap (CAS)**
+- Compare-and-Swap (CAS)
 
 - This is a ternary operation which writes a value provided as a parameter into an address (the second parameter) only if the current value is the same as the third parameter value;
 
-**
 
-- Atomic Arithmetic**
+- Atomic Arithmetic
 
 - These operations are only available on x86 and x86-64, which can perform arithmetic and logic operations on memory locations. These processors have support for non-atomic versions of these operations but RISC architectures do not. So it is no wonder that their availability is limited.
 
-**
 
 一种体系结构支持 LL/SC 或 CAS 指令，但不能同时支持两者。这两种方法基本上是等价的；它们同样可以很好地实现原子算术运算，但 CAS 似乎是目前首选的方法。所有其他操作都可以使用它间接实现。例如，一个原子加法：
 
@@ -1117,7 +1106,7 @@ for (i = 0; i
 ```
 
 
-1. Add and Read Result**
+1. Add and Read Result
 
 ```cpp
 for (i = 0; i 
@@ -1159,7 +1148,6 @@ X86 使用 `lock` 前缀使汇编操作具有原子性。
 
 在对程序本身进行优化以避免缓存缺失后，为了实现更好的带宽利用率，剩下的唯一选择就是将线程更好地放在可用的 core 上。默认情况下，内核中的调度器会根据自己的策略将线程分配给一个处理器。尽可能避免将一个线程从一个核心移到另一个核心。不过，调度器并不真正了解工作负载的情况。它可以从缓存缺失中收集信息，但这在很多情况下是没有什么帮助的。
 
-**
 
 ![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_bddbb43bacf7.png)
 
@@ -1211,7 +1199,7 @@ int pthread_attr_getaffinity_np(pthread_attr_t *at, size_t 大小,
 - opannotate
 - cachegrind
 - massif
-- valgrind**
+- valgrind
 > 2023-03-03 20:09:24
 
 > 本文使用 [WPL/s](https://zhuanlan.zhihu.com/p/390528313) 发布 [@GitHub](https://link.zhihu.com/?target=https%3A//github.com/jks-liu/WPL-s)
