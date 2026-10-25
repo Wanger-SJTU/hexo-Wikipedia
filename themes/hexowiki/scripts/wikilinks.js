@@ -513,7 +513,7 @@ hexo.extend.generator.register('hexowiki-routes', function generateWikiRoutes(lo
     data
   });
 
-  const redirectRoutes = Object.entries(hexo.config.wiki_redirects || {})
+  const redirectRoutes = (docSearch.length ? Object.entries(hexo.config.wiki_redirects || {}) : [])
     .filter(([from, to]) => from && to)
     .map(([from, to]) => {
       const target = encodeURI(String(to));

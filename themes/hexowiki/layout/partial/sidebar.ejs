@@ -71,7 +71,7 @@
         <span><%= __('all_pages') %></span>
       </a>
       <% } %>
-      <% if (_theme.docs && _theme.docs.enable) { %>
+      <% if (_docsMode) { %>
       <a class="sidebar-tools__link" href="<%- url_for(_theme.docs.url || '/collections/') %>">
         <svg width="13" height="13" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M2.5 3.5h4.2c.7 0 1.3.6 1.3 1.3v8.7c0-.8-.6-1.4-1.3-1.4H2.5zM13.5 3.5H9.3c-.7 0-1.3.6-1.3 1.3v8.7c0-.8.6-1.4 1.3-1.4h4.2z" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/></svg>
         <span><%- _theme.docs.title || '文档库' %></span>
