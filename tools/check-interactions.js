@@ -166,6 +166,14 @@ class CDP {
     })()`);
     record('标签索引筛选', !tagFilter.error && tagFilter.visible > 0 && tagFilter.visible < tagFilter.before && /个标签/.test(tagFilter.status), tagFilter);
 
+    /* 5c. 数学公式与代码复制 */
+    await goto('/wiki/math-code/');
+    const mathCode = await cdp.eval(`({
+      katex: document.querySelectorAll('.katex').length,
+      copy: document.querySelectorAll('.code-copy').length
+    })`);
+    record('数学公式与代码复制', mathCode.katex > 0 && mathCode.copy > 0, mathCode);
+
     /* 6. 移动端抽屉 */
     await cdp.send('Emulation.setDeviceMetricsOverride', { width: 390, height: 844, deviceScaleFactor: 1, mobile: true });
     await goto('/wiki/wikilinks/');

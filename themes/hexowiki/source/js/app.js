@@ -854,6 +854,59 @@
   }
 
   /* ----------------------------------------------------------------------
+     9c. 代码块复制按钮
+     ---------------------------------------------------------------------- */
+  function copyText(text) {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      return navigator.clipboard.writeText(text);
+    }
+    return new Promise(function (resolve, reject) {
+      var area = doc.createElement('textarea');
+      area.value = text;
+      area.setAttribute('readonly', 'readonly');
+      area.style.position = 'fixed';
+      area.style.opacity = '0';
+      body.appendChild(area);
+      area.select();
+      try {
+        doc.execCommand('copy');
+        resolve();
+      } catch (err) {
+        reject(err);
+      } finally {
+        if (area.parentNode) area.parentNode.removeChild(area);
+      }
+    });
+  }
+
+  $all('.article__content figure.highlight, .article__content pre').forEach(function (block) {
+    if (block.tagName === 'PRE' && block.closest('figure.highlight')) return;
+    if (block.querySelector('.code-copy')) return;
+    var codeEl = block.matches('figure.highlight')
+      ? (block.querySelector('.code pre') || block.querySelector('code'))
+      : (block.querySelector('code') || block);
+    if (!codeEl) return;
+    var text = (codeEl.innerText || codeEl.textContent || '').replace(/\s+$/, '');
+    if (!text) return;
+
+    var button = doc.createElement('button');
+    button.type = 'button';
+    button.className = 'code-copy';
+    button.setAttribute('aria-label', '复制代码');
+    button.textContent = '复制';
+    button.addEventListener('click', function () {
+      copyText(text).then(function () {
+        button.textContent = '已复制';
+        showToast('代码已复制');
+        window.setTimeout(function () { button.textContent = '复制'; }, 1600);
+      }).catch(function () {
+        showToast('复制失败，请手动选择代码');
+      });
+    });
+    block.appendChild(button);
+  });
+
+  /* ----------------------------------------------------------------------
      10. 首屏锚点定位修正（sticky header 偏移由 CSS scroll-margin 处理）
      ---------------------------------------------------------------------- */
   if (window.location.hash && window.location.hash.length > 1) {
