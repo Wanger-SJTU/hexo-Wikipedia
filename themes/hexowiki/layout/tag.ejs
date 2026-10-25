@@ -7,7 +7,11 @@
   <header class="list-page__header">
     <h1 class="list-page__title"><%= __('tag_title') %>：<%- _name %></h1>
     <p class="site-sub"><%= __('site_sub', (theme.brand && theme.brand.title) || config.title || 'HexWiki') %></p>
-    <p class="list-page__meta"><%= __('posts_count', _count) %></p>
+    <p class="list-page__meta">
+      <%= __('posts_count', _count) %>
+      <span class="tags-page__sep" aria-hidden="true">·</span>
+      <a href="<%- (typeof wiki_urls === 'function' && (wiki_urls() || {}).tags) || url_for('/tags/') %>"><%= __('tags_all') %></a>
+    </p>
   </header>
   <%- include('partial/post-list', { posts: page.posts }) %>
   <%- include('partial/pagination', { base: _base }) %>

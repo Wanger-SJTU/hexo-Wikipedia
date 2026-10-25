@@ -150,3 +150,11 @@ newer: Newer
 older: Older
 missing_link_toast: 'Red link: this page does not exist yet.'
 graph_search_status: '%s matching nodes'
+tags_title: 'Tags'
+tags_count: '%s tags'
+tags_cloud: 'Tag cloud'
+tags_all: 'All tags'
+tags_filter_label: 'Filter tags'
+tags_filter_placeholder: 'Filter tags…'
+tags_empty: 'No matching tags'
+tags_empty_page: 'No tags yet'

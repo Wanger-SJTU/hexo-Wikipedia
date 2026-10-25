@@ -1,0 +1,60 @@
+<%
+  const _tags = Array.isArray(page.tags) ? page.tags : [];
+  const _max = _tags.reduce(function (max, tag) { return Math.max(max, Number(tag.count) || 0); }, 1);
+  const _weight = function (count) {
+    return Math.max(1, Math.min(5, 1 + Math.round(4 * Math.sqrt((Number(count) || 0) / _max))));
+  };
+  const _urls = (typeof wiki_urls === 'function') ? (wiki_urls() || {}) : {};
+  const _tagsUrl = _urls.tags || url_for('/' + String(config.tag_dir || 'tags').replace(/^\/+|\/+$/g, '') + '/');
+  const _siteTitle = (theme.brand && theme.brand.title) || config.title || 'HexWiki';
+%>
+<div class="list-page tags-page" data-tags-page data-tags-url="<%- _tagsUrl %>">
+  <header class="list-page__header">
+    <h1 class="list-page__title"><%= __('tags_title') %></h1>
+    <p class="site-sub"><%= __('site_sub', _siteTitle) %></p>
+    <p class="list-page__meta">
+      <%= __('tags_count', _tags.length) %>
+      <span class="tags-page__sep" aria-hidden="true">·</span>
+      <a href="<%- _urls.all || url_for('/wiki/all/') %>"><%= __('all_pages') %></a>
+    </p>
+  </header>
+
+  <% if (_tags.length) { %>
+  <div class="tags-toolbar">
+    <label class="visually-hidden" for="tags-filter"><%= __('tags_filter_label') %></label>
+    <input class="allpages__filter" id="tags-filter" type="search"
+      placeholder="<%= __('tags_filter_placeholder') %>" aria-label="<%= __('tags_filter_label') %>"
+      autocomplete="off" data-tag-filter>
+    <span class="allpages__filter-status" data-tag-status aria-live="polite"></span>
+  </div>
+
+  <section class="tags-section" data-tag-section>
+    <h2 class="tags-section__title"><%= __('tags_cloud') %></h2>
+    <div class="tag-cloud tag-cloud--tags">
+      <% _tags.forEach(function (tag) { %>
+      <a class="tag-cloud__item tag-cloud__item--w<%- _weight(tag.count) %>"
+        href="<%- tag.url %>" data-tag-item data-tag-name="<%- tag.name %>"
+        style="font-size: <%- 11 + _weight(tag.count) * 2 %>px">
+        <%- tag.name %> <span class="tag-cloud__count"><%- tag.count %></span>
+      </a>
+      <% }); %>
+    </div>
+  </section>
+
+  <section class="tags-section" data-tag-section>
+    <h2 class="tags-section__title"><%= __('tags_all') %></h2>
+    <ul class="tag-list">
+      <% _tags.forEach(function (tag) { %>
+      <li class="tag-list__item" data-tag-item data-tag-name="<%- tag.name %>">
+        <a class="tag-list__link" href="<%- tag.url %>"><%- tag.name %></a>
+        <span class="tag-list__count"><%= __('posts_count', tag.count) %></span>
+      </li>
+      <% }); %>
+    </ul>
+  </section>
+
+  <p class="tags-empty" data-tag-empty hidden><%= __('tags_empty') %></p>
+  <% } else { %>
+  <p class="tags-empty"><%= __('tags_empty_page') %></p>
+  <% } %>
+</div>

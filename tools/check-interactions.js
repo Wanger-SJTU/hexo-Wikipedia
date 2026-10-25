@@ -149,6 +149,23 @@ class CDP {
     })()`);
     record('侧栏目录筛选', !filter.error && filter.visible < filter.before && filter.matched.length > 0, filter);
 
+    /* 5b. 标签索引筛选 */
+    await goto('/tags/');
+    const tagFilter = await cdp.eval(`(async () => {
+      const input = document.querySelector('[data-tag-filter]');
+      if (!input) return { error: 'no tag filter' };
+      const items = [...document.querySelectorAll('[data-tag-item]')];
+      const before = items.filter((i) => !i.hidden).length;
+      const setter = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value').set;
+      setter.call(input, '链接');
+      input.dispatchEvent(new Event('input', { bubbles: true }));
+      await new Promise((r) => setTimeout(r, 350));
+      const visible = items.filter((i) => !i.hidden).length;
+      const status = (document.querySelector('[data-tag-status]') || {}).textContent || '';
+      return { before, visible, status };
+    })()`);
+    record('标签索引筛选', !tagFilter.error && tagFilter.visible > 0 && tagFilter.visible < tagFilter.before && /个标签/.test(tagFilter.status), tagFilter);
+
     /* 6. 移动端抽屉 */
     await cdp.send('Emulation.setDeviceMetricsOverride', { width: 390, height: 844, deviceScaleFactor: 1, mobile: true });
     await goto('/wiki/wikilinks/');

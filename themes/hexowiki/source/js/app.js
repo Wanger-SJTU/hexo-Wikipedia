@@ -805,6 +805,55 @@
   }
 
   /* ----------------------------------------------------------------------
+     9b. 标签索引页筛选
+     ---------------------------------------------------------------------- */
+  var tagFilter = $('[data-tag-filter]');
+
+  if (tagFilter) {
+    var tagItems = $all('[data-tag-item]');
+    var tagSections = $all('[data-tag-section]');
+    var tagStatus = $('[data-tag-status]');
+    var tagEmpty = $('[data-tag-empty]');
+
+    var applyTagFilter = function (value) {
+      var query = String(value || '').trim().toLowerCase();
+      var visible = Object.create(null);
+
+      tagItems.forEach(function (item) {
+        var name = item.getAttribute('data-tag-name') || item.textContent || '';
+        var show = !query || name.toLowerCase().indexOf(query) !== -1;
+        item.hidden = !show;
+        if (show) visible[name] = true;
+      });
+
+      tagSections.forEach(function (section) {
+        section.hidden = !$all('[data-tag-item]', section).some(function (item) {
+          return !item.hidden;
+        });
+      });
+
+      var count = Object.keys(visible).length;
+      if (tagStatus) tagStatus.textContent = query ? count + ' 个标签' : '';
+      if (tagEmpty) tagEmpty.hidden = !(query && count === 0);
+    };
+
+    tagFilter.addEventListener('input', debounce(function () {
+      applyTagFilter(tagFilter.value);
+    }, 80));
+
+    var initialTagQuery = '';
+    try {
+      initialTagQuery = new URLSearchParams(window.location.search).get('q') || '';
+    } catch (err) {
+      initialTagQuery = '';
+    }
+    if (initialTagQuery) {
+      tagFilter.value = initialTagQuery;
+      applyTagFilter(initialTagQuery);
+    }
+  }
+
+  /* ----------------------------------------------------------------------
      10. 首屏锚点定位修正（sticky header 偏移由 CSS scroll-margin 处理）
      ---------------------------------------------------------------------- */
   if (window.location.hash && window.location.hash.length > 1) {

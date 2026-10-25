@@ -20,13 +20,27 @@ const json = (rel) => {
 /* ---------- 1. 路由存在性 ---------- */
 const routes = [
   'index.html', 'archives/index.html',
-  'graph/index.html', 'stats/index.html', 'wiki/all/index.html',
+  'graph/index.html', 'stats/index.html', 'wiki/all/index.html', 'tags/index.html',
   'wiki-graph.json', 'wiki-search.json', 'wiki-stats.json',
 
 ];
 for (const rel of routes) {
   if (exists(rel)) ok('路由存在', rel);
   else bad('路由缺失', rel);
+}
+
+/* ---------- 1b. 标签索引 ---------- */
+if (exists('tags/index.html')) {
+  const tagHtml = read('tags/index.html');
+  const tagCount = (tagHtml.match(/data-tag-name=/g) || []).length;
+  if (!/tag-cloud/.test(tagHtml) || !tagCount) bad('标签页未渲染标签');
+  else ok('标签索引', tagCount + ' 项');
+  const tagRoot = path.join(PUB, 'tags');
+  const tagDirs = fs.readdirSync(tagRoot).filter((name) => {
+    try { return fs.statSync(path.join(tagRoot, name)).isDirectory(); } catch (err) { return false; }
+  });
+  if (!tagDirs.length) bad('没有生成任何标签页');
+  else ok('标签页数量', String(tagDirs.length));
 }
 
 /* ---------- 2. JSON 一致性 ---------- */

@@ -28,6 +28,7 @@
       <% } }); %>
       <% if (_features.graph !== false) { %><a class="wiki-footer__link" href="<%- _graphUrl %>"><%= __('graph') %></a><% } %>
       <% if (_features.stats !== false) { %><a class="wiki-footer__link" href="<%- _statsUrl %>"><%= __('statistics') %></a><% } %>
+      <a class="wiki-footer__link" href="<%- _urls.tags || url_for('/tags/') %>"><%= __('tags') %></a>
       <a class="wiki-footer__link" href="<%- _allUrl %>"><%= __('all_pages') %></a>
     </nav>
     <p class="wiki-footer__meta">由 <a href="https://hexo.io" rel="noopener" target="_blank">Hexo</a> 生成 · HexWiki 主题</p>

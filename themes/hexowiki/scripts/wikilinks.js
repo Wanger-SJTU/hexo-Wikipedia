@@ -70,6 +70,7 @@ function themeOptions(hexo) {
     graph: String(wikiConfig.graph_route || DEFAULT_ROUTES.graph).replace(/^\/+|\/+$/g, ''),
     stats: String(wikiConfig.stats_route || DEFAULT_ROUTES.stats).replace(/^\/+|\/+$/g, ''),
     all: String(wikiConfig.all_route || DEFAULT_ROUTES.all).replace(/^\/+|\/+$/g, ''),
+    tags: String(wikiConfig.tags_route || hexo.config.tag_dir || 'tags').replace(/^\/+|\/+$/g, ''),
     graphJson: String(wikiConfig.graph_json_route || DEFAULT_ROUTES.graphJson).replace(/^\/+/, ''),
     searchJson: String(wikiConfig.search_json_route || DEFAULT_ROUTES.searchJson).replace(/^\/+/, ''),
     statsJson: String(wikiConfig.stats_json_route || DEFAULT_ROUTES.statsJson).replace(/^\/+/, '')
@@ -453,6 +454,7 @@ hexo.extend.helper.register('wiki_urls', function () {
     graph: toUrl(routes.graph + '/', root),
     stats: toUrl(routes.stats + '/', root),
     all: toUrl(routes.all + '/', root),
+    tags: toUrl(routes.tags + '/', root),
     graph_json: toUrl(routes.graphJson, root),
     search_json: toUrl(routes.searchJson, root),
     stats_json: toUrl(routes.statsJson, root)
@@ -471,18 +473,28 @@ hexo.extend.helper.register('wiki_local_graph_json', function () {
 /* 生成器                                                              */
 /* ------------------------------------------------------------------ */
 
-hexo.extend.generator.register('hexowiki-routes', function generateWikiRoutes() {
+hexo.extend.generator.register('hexowiki-routes', function generateWikiRoutes(locals) {
   const state = getState(hexo);
   if (!state) return [];
 
   const routes = state.routes || DEFAULT_ROUTES;
   const searchIndex = buildSearchIndex(state.pages, state.options);
+  const root = state.root || hexo.config.root || '/';
 
   const pageRoute = (base, layout, data) => ({
     path: String(base).replace(/^\/+|\/+$/g, '') + '/index.html',
     layout,
     data
   });
+
+  const tagList = (locals && locals.tags ? locals.tags.toArray() : [])
+    .map((tag) => ({
+      name: String(tag.name),
+      url: toUrl(tag.path, root),
+      count: Number(tag.length) || 0
+    }))
+    .filter((tag) => tag.name)
+    .sort((a, b) => b.count - a.count || a.name.localeCompare(b.name, 'zh-Hans-CN'));
 
   return [
     { path: routes.graphJson, data: safeJson(state.graphJson) },
@@ -505,6 +517,13 @@ hexo.extend.generator.register('hexowiki-routes', function generateWikiRoutes() 
       layout: 'wiki_allpages',
       type: 'wiki_allpages',
       description: '按首字排序的全部条目索引。'
+    }),
+    pageRoute(routes.tags, 'wiki_tags', {
+      title: '标签',
+      layout: 'wiki_tags',
+      type: 'wiki_tags',
+      description: '按标签浏览全部条目。',
+      tags: tagList
     })
   ];
 });
