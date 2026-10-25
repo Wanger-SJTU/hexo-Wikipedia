@@ -90,6 +90,8 @@ pip install -r requirements.txt
 训练的数据格式上面的图是我生成出来的数据，总计生成了大概60万条对话数据
 
 `# -*- coding: utf-8 -*-
+
+```python
 import json
 import requests
 import time
@@ -112,6 +114,8 @@ class ShareGPTReGenerator:
                  num_threads: int = 4, request_timeout: int = 60):
         """
         初始化ShareGPT数据重新生成器
+```
+
 
         Args:
             vllm_url: vLLM服务的API地址
@@ -119,6 +123,8 @@ class ShareGPTReGenerator:
             temperature: 生成文本的温度参数
             max_tokens: 每次生成的最大token数
             num_threads: 并行处理的线程数
+
+```text
             request_timeout: API请求超时时间(秒)
         """
         self.vllm_url = vllm_url
@@ -127,29 +133,45 @@ class ShareGPTReGenerator:
         self.max_tokens = max_tokens
         self.num_threads = num_threads
         self.request_timeout = request_timeout
+```
+
 
         # 用于线程安全的操作
+
+```text
         self.result_lock = threading.Lock()
         self.progress_lock = threading.Lock()
         self.api_rate_limit_lock = threading.Lock()
         self.last_api_call = 0
         self.min_api_interval = 0.1  # 最小API调用间隔(秒)
+```
+
 
         # 确保输出目录存在
+
+```python
         os.makedirs(output_dir, exist_ok=True)
     def load_ultra_dataset(self, directory_path:str) -> List[Dict]:
         # 获取指定目录下所有parquet文件路径
         parquet_files = glob.glob(os.path.join(directory_path, "*.parquet"))
 
         result_list = []
+```
+
 
         # 读取每个parquet文件并添加到列表中
         for file_path in parquet_files:
+
+```text
             table = pq.read_table(file_path)
             # 将Table转换为字典列表
             records = table.to_pydict()
+```
+
 
             # 转换为记录列表
+
+```python
             num_rows = len(next(iter(records.values())))
             row_list = [
                 {key: records[key][i] for key in records} 
@@ -163,6 +185,8 @@ class ShareGPTReGenerator:
     def load_sharegpt_dataset(self, dataset_path: str) -> List[Dict]:
         """
         加载ShareGPT数据集
+```
+
 
         Args:
             dataset_path: ShareGPT数据集文件路径，格式为jsonl或json
@@ -170,6 +194,8 @@ class ShareGPTReGenerator:
         Returns:
             加载的数据集
         """
+
+```python
         data = []
         if dataset_path.endswith('.jsonl'):
             with open(dataset_path, 'r', encoding='utf-8') as f:
@@ -187,6 +213,8 @@ class ShareGPTReGenerator:
     def call_vllm_api(self, prompt: str) -> str:
         """
         调用vLLM API生成回答
+```
+
 
         Args:
             prompt: 输入提示
@@ -197,6 +225,8 @@ class ShareGPTReGenerator:
         try:
             # 实现简单的速率限制
             with self.api_rate_limit_lock:
+
+```text
                 current_time = time.time()
                 time_since_last_call = current_time - self.last_api_call
                 if time_since_last_call  0:
@@ -204,13 +234,19 @@ class ShareGPTReGenerator:
             # else:
             #     print(f"未知的API响应格式: {result}")
             #     return ""
+```
+
 
         except Exception as e:
+
+```python
             print(f"调用vLLM API时出错: {e}")
             return ""
     def process_conversation(self, conversation: Dict, idx: int) -> Dict:
         """
         处理单个对话，重新生成助手回答
+```
+
 
         Args:
             conversation: 原始对话数据
@@ -224,43 +260,69 @@ class ShareGPTReGenerator:
         if not conversations_list:
             # 如果使用的是另一种格式
             if "items" in conversation:
+
+```text
                 conversations_list = conversation["items"]
             else:
                 conversations_list = conversation.get("messages", [])
+```
+
 
         # 重新生成的对话
+
+```text
         new_conversations = []
         context = ""
 
         for i, msg in enumerate(conversations_list):
             role = msg.get("from") or msg.get("role")
             content = msg.get("value") or msg.get("content")
+```
+
 
             # 如果是人类消息，保持不变并添加到上下文
             if role in ["human", "user"]:
+
+```text
                 new_conversations.append({
                     "from": "human",
                     "value": content
                 })
                 context += f"Human: {content}\n\n"
+```
+
 
             # 如果是助手消息，使用vLLM重新生成
             elif role in ["gpt", "assistant"]:
                 # 准备提示，包含之前的上下文
+
+```text
                 prompt = f"{context}Assistant:"
+```
+
 
                 # 调用vLLM生成新回答
+
+```text
                 new_response = self.call_vllm_api(prompt)
 
                 new_conversations.append({
                     "from": "gpt",
                     "value": new_response
                 })
+```
+
 
                 # 更新上下文，添加新的回答
+
+```text
                 context += f"Assistant: {new_response}\n\n"
+```
+
 
         # 保存重新生成的对话
+
+```python
         new_data = {
             "id": conversation.get("id", f"regenerated_{idx}"),
             "conversations": new_conversations
@@ -272,6 +334,8 @@ class ShareGPTReGenerator:
                    progress_bar: tqdm, processed_count: List[int]):
         """
         工作线程任务函数
+```
+
 
         Args:
             task_queue: 任务队列
@@ -281,12 +345,16 @@ class ShareGPTReGenerator:
         """
         while True:
             try:
+
+```text
                 task = task_queue.get(block=False)
                 if task is None:
                     break
 
                 idx, conversation = task
                 result = self.process_conversation(conversation, idx)
+```
+
 
                 # 添加结果到结果列表（线程安全）
                 with self.result_lock:
@@ -294,12 +362,18 @@ class ShareGPTReGenerator:
 
                 # 更新进度（线程安全）
                 with self.progress_lock:
+
+```sql
                     processed_count[0] += 1
                     progress_bar.update(1)
 
                 task_queue.task_done()
+```
+
 
             except queue.Empty:
+
+```python
                 break
             except Exception as e:
                 print(f"处理对话时出错: {e}")
@@ -309,6 +383,8 @@ class ShareGPTReGenerator:
                                     end_index: Optional[int] = None, batch_save: int = 10) -> List[Dict]:
         """
         使用多线程并行重新生成对话中的助手回答
+```
+
 
         Args:
             conversations: 原始对话数据列表
@@ -320,22 +396,36 @@ class ShareGPTReGenerator:
             更新后的对话数据列表
         """
         if end_index is None:
+
+```python
             end_index = len(conversations)
 
         total_conversations = end_index - start_index
         print(f"开始并行处理数据，总共 {total_conversations} 条对话，使用 {self.num_threads} 个线程")
+```
+
 
         # 初始化结果列表和进度条
+
+```text
         results = []
         progress_bar = tqdm(total=total_conversations)
         processed_count = [0]  # 使用列表以便在函数间传递引用
+```
+
 
         # 创建任务队列
+
+```text
         task_queue = queue.Queue()
         for idx in range(start_index, end_index):
             task_queue.put((idx, conversations[idx]))
+```
+
 
         # 启动工作线程
+
+```text
         threads = []
         for _ in range(min(self.num_threads, total_conversations)):
             thread = threading.Thread(
@@ -344,8 +434,12 @@ class ShareGPTReGenerator:
             )
             thread.start()
             threads.append(thread)
+```
+
 
         # 定期检查是否需要保存批次
+
+```text
         last_save_count = 0
         while processed_count[0] = last_save_count + batch_save:
                 self.save_batch(
@@ -354,13 +448,19 @@ class ShareGPTReGenerator:
                     start_index + len(current_results) - 1
                 )
                 last_save_count = len(current_results)
+```
+
 
         # 等待所有线程完成
         for thread in threads:
+
+```python
             thread.join()
 
         progress_bar.close()
         print(f"并行处理完成，共处理 {len(results)} 条对话")
+```
+
 
         # 确保结果按索引排序
         results.sort(key=lambda x: int(x["id"].split("_")[-1]) if "_" in x["id"] else 0)
@@ -380,29 +480,47 @@ class ShareGPTReGenerator:
                 更新后的对话数据列表
             """
             if end_index is None:
+
+```python
                 end_index = len(conversations)
 
             total_conversations = end_index - start_index
             print(f"开始使用线程池处理数据，总共 {total_conversations} 条对话，使用 {self.num_threads} 个线程")
+```
+
 
             # 准备任务
+
+```text
             tasks = [(idx, conversations[idx]) for idx in range(start_index, end_index)]
             results = []
+```
+
 
             # 使用线程池执行任务
+
+```text
             with concurrent.futures.ThreadPoolExecutor(max_workers=self.num_threads) as executor:
                 # 提交所有任务
                 future_to_idx = {executor.submit(self.process_conversation, conv, idx): (idx, i) 
                                 for i, (idx, conv) in enumerate(tasks)}
+```
+
 
                 # 处理完成的任务结果
+
+```text
                 for future in tqdm(concurrent.futures.as_completed(future_to_idx), total=len(tasks)):
                     idx, task_idx = future_to_idx[future]
                     try:
                         result = future.result()
                         results.append(result)
+```
+
 
                         # 每完成batch_save个任务保存一次
+
+```text
                         if len(results) % batch_save == 0:
                             # 获取当前批次的索引范围
                             completed_indices = sorted([future_to_idx[f][0] for f in future_to_idx if f.done()])
@@ -413,15 +531,23 @@ class ShareGPTReGenerator:
                                 current_batch = [r for r in results if int(r["id"].split("_")[-1]) = batch_start]
                                 if current_batch:
                                     self.save_batch(current_batch, batch_start, batch_end)
+```
+
 
                     except Exception as e:
+
+```python
                         print(f"处理任务 {idx} 时出错: {e}")
+```
+
 
             # 确保结果按索引排序
             results.sort(key=lambda x: int(x["id"].split("_")[-1]) if "_" in x["id"] else 0)
 
             # 保存剩余结果
             if results:
+
+```python
                 remaining_start = start_index + (len(results) // batch_save) * batch_save
                 remaining_end = start_index + len(results) - 1
                 remaining_batch = results[remaining_start - start_index:]
@@ -433,6 +559,8 @@ class ShareGPTReGenerator:
                              end_index: Optional[int] = None, batch_save: int = 10) -> List[Dict]:
         """
         单线程重新生成对话中的助手回答（保留此方法作为备选）
+```
+
 
         Args:
             conversations: 原始对话数据列表
@@ -444,6 +572,8 @@ class ShareGPTReGenerator:
             更新后的对话数据列表
         """
         if end_index is None:
+
+```python
             end_index = len(conversations)
 
         print(f"开始处理数据，总共 {end_index - start_index} 条对话")
@@ -453,12 +583,20 @@ class ShareGPTReGenerator:
             conversation = conversations[idx]
             new_data = self.process_conversation(conversation, idx)
             regenerated_data.append(new_data)
+```
+
 
             # 每处理一定量的数据保存一次
+
+```text
             if (idx - start_index + 1) % batch_save == 0:
                 self.save_batch(regenerated_data, start_index, idx)
+```
+
 
         # 保存剩余数据
+
+```python
         if regenerated_data and (end_index - start_index) % batch_save != 0:
             self.save_batch(regenerated_data, start_index, end_index - 1)
 
@@ -472,13 +610,21 @@ class ShareGPTReGenerator:
             with open(os.path.join(self.output_dir, batch_file), 'r', encoding='utf-8') as f:
                 batch_data = json.load(f)
                 all_data.extend(batch_data)
+```
+
 
         # 保存完整数据集
+
+```text
         complete_file = os.path.join(self.output_dir, "regenerated_complete.json")
         with open(complete_file, 'w', encoding='utf-8') as f:
             json.dump(all_data, f, ensure_ascii=False, indent=2)
+```
+
 
         # 保存jsonl格式
+
+```python
         complete_jsonl = os.path.join(self.output_dir, "regenerated_complete.jsonl")
         with open(complete_jsonl, 'w', encoding='utf-8') as f:
             for item in all_data:
@@ -519,8 +665,12 @@ def main():
         print(f"加载ShareGPT数据集: {args.dataset}")
         dataset = regenerator.load_sharegpt_dataset(args.dataset)
     print(f"数据集加载完成，共 {len(dataset)} 条对话")
+```
+
 
     # 根据所选模式处理数据
+
+```text
     if args.mode == 'single':
         # 单线程处理
         regenerator.regenerate_responses(
@@ -545,6 +695,8 @@ def main():
             end_index=args.end_index,  
             batch_save=args.batch_save
         )
+```
+
 
     # 合并批次文件
     regenerator.merge_batches()

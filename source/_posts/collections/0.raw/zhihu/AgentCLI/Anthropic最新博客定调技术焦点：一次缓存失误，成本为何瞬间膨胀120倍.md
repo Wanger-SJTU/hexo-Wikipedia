@@ -59,8 +59,12 @@ Anthropic的官方文档反复强调：
 
 上轮: [系统提示含时间10:00][工具定义][消息1][消息2]
 本轮: [系统提示含时间10:01][工具定义][消息1][消息2]
+
+```text
        ↑差异在位置N=50
        ──❌──从位置50开始全部失效──❌──❌──❌──
+```
+
 
 - 时间从&#34;10:00&#34;变成&#34;10:01&#34; → 差异出现在位置50
 - <strong>位置50之后的所有内容（工具定义、消息1、消息2）全部无法命中</strong>
@@ -68,8 +72,12 @@ Anthropic的官方文档反复强调：
 
 上轮: [系统提示][工具定义][消息1旧][消息2]
 本轮: [系统提示][工具定义][消息1新][消息2]
+
+```text
                          ↑差异在位置N=5000
        ───命中───         ──❌──从5000开始失效──❌──
+```
+
 
 - 系统提示 + 工具定义（位置0-4999）→ <strong>完全没变，命中</strong>
 - 消息1新 + 消息2（位置5000之后）→ 变了，需要重新计算
@@ -151,6 +159,8 @@ import anthropic
 client = anthropic.Anthropic()
 
 response = client.messages.create(
+
+```text
     model=&#34;claude-sonnet-4-6&#34;,
     max_tokens=1024,
     system=[
@@ -162,6 +172,8 @@ response = client.messages.create(
     ],
     messages=[{&#34;role&#34;: &#34;user&#34;, &#34;content&#34;: &#34;请审查这段代码&#34;}]
 )
+```
+
 
 <strong>关键点</strong>：
 
@@ -195,11 +207,15 @@ response = client.messages.create(
 
 # 自动缓存：无需任何标记，系统自行判断
 response = client.messages.create(
+
+```text
     model=&#34;claude-opus-4-6&#34;,
     max_tokens=1024,
     system=&#34;你是一个客服助手...&#34;,
     messages=conversation_history
 )
+```
+
 
 但生产环境中，<strong>显式缓存仍被推荐</strong>，原因有三：
 
@@ -217,17 +233,26 @@ Breakpoint 4: 最后一条非system消息                      ← 当前轮次
 
 代码实现：
 
+```python
 def apply_cache_breakpoints(messages, system_prompt):
     &#34;&#34;&#34;为Anthropic API消息序列应用缓存断点&#34;&#34;&#34;
     import copy
     msgs = copy.deepcopy(messages)
+```
+
 
     # Breakpoint 1: System prompt（在调用时通过system参数传递）
 
     # Breakpoint 2-4: 在消息历史中的滚动断点
+
+```text
     non_system_msgs = [i for i, m in enumerate(msgs) if m[&#34;role&#34;] != &#34;system&#34;]
+```
+
 
     for idx in non_system_msgs[-3:]:
+
+```text
         content = msgs[idx][&#34;content&#34;]
         if isinstance(content, list) and content:
             content[-1][&#34;cache_control&#34;] = {&#34;type&#34;: &#34;ephemeral&#34;}
@@ -237,6 +262,8 @@ def apply_cache_breakpoints(messages, system_prompt):
                  &#34;cache_control&#34;: {&#34;type&#34;: &#34;ephemeral&#34;}}
             ]
     return msgs
+```
+
 
 这种策略的优势：system prompt始终被缓存（最大收益区），消息历史通过滚动窗口逐步建立新的缓存层，避免整段历史失效。
 
@@ -248,6 +275,7 @@ def apply_cache_breakpoints(messages, system_prompt):
 TypeScript/Node实现
 对于使用Vercel AI SDK的开发者：
 
+```python
 import { anthropic } from &#39;@ai-sdk/anthropic&#39;;
 import { generateText } from &#39;ai&#39;;
 
@@ -263,6 +291,8 @@ const result = await generateText({
     } : {})
   })),
 });
+```
+
 
 AI SDK会自动将message-level的 `providerOptions` 转换为Anthropic API所需的block-level `cache_control`。
 
@@ -391,6 +421,7 @@ Martin Kostov 2026年4月分享了一个完整的生产级成本优化案例，�
 从API账单读取命中状态
 Anthropic API的响应包含三个关键字段，这是判断命中与否的唯一可靠方式：
 
+```text
 {
   &#34;usage&#34;: {
     &#34;input_tokens&#34;: 500,                    // 全新输入token（未命中部分）
@@ -398,6 +429,8 @@ Anthropic API的响应包含三个关键字段，这是判断命中与否的唯�
     &#34;cache_read_input_tokens&#34;: 0             // 本次命中缓存读取的token数
   }
 }
+```
+
 
 <strong>三种状态解读</strong>：
 
@@ -430,10 +463,18 @@ OpenClaw项目在2026年3月记录了一个教科书级的缓存失败案例（1
 
 import difflib
 diff = list(difflib.unified_diff(
+
+```text
     request1_system.encode(), request2_system.encode(), lineterm=&#39;&#39;
 ))
+```
+
 if diff:
+
+```python
     print(&#34;前缀不一致！&#34;, diff[:10])
+```
+
 
 **Step 3: 检查`cache_control`位置**
 
@@ -453,6 +494,7 @@ if diff:
 
 工具类型核心能力适用场景Langfuse开源/自托管Trace链路、Prompt版本管理、Session聚合需要数据自主权的团队Helicone代理/托管零代码集成（改base URL即可）、内置缓存、成本追踪快速上线、不想改代码PortkeyAI网关统一路由、缓存、guardrails、40+属性日志多模型统一管理层Braintrust全栈平台实时监控+CI/CD集成eval、A/B测试、成本归因严肃的生产Agent系统LangWatch端到端Agent仿真测试、多步trace可视化、连续质量控制复杂Agent工作流<strong>必须监控的核心指标</strong>：
 
+```text
 {
   &#34;timestamp&#34;: &#34;2026-05-03T10:00:00Z&#34;,
   &#34;model&#34;: &#34;claude-sonnet-4-6&#34;,
@@ -466,6 +508,8 @@ if diff:
   &#34;prompt_version&#34;: &#34;v2.3.1&#34;,
   &#34;session_id&#34;: &#34;sess_abc123&#34;
 }
+```
+
 
 <strong>告警阈值建议</strong>：
 

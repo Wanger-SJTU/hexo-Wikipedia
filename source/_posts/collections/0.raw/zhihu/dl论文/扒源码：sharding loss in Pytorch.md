@@ -32,9 +32,13 @@ print(x.grad)
 
 y_list = torch.split(y, 1)
 for z in y_list:
+
+```python
     loss = torch.sum(z)
     loss.backward()
     print(x.grad)
+```
+
 # tensor([ 2.,  0.,  0.])
 # RuntimeError: Trying to backward through the graph a second time, but the buffers have already been freed. Specify retain_graph=True when calling backward the first time.
 在循环的第一步，x 得到了梯度 [2, 0, 0]，确实是 y[0] 的梯度回溯结果。可是在循环的第二步，同一个 graph 连续两次进行 backward，报错了。加上 “retain_graph=True”可以解决这个问题，不过那和不分 shard 也没区别了。
@@ -45,6 +49,8 @@ v_list = []
 g_list = []
 
 for z in torch.split(y, 1):
+
+```text
     t = z.data.clone()       # 只对data进行clone()，阻断到网络内部的梯度传递;
     t.requires_grad = True   # 将t变成leaf node;
 
@@ -53,6 +59,8 @@ for z in torch.split(y, 1):
 
     v_list.append(z)         # 注意t只是计算梯度用的，真正连接着网络内部的是z,即y的shard;
     g_list.append(t.grad)    # 把t的梯度保存下来,它和z的梯度是一样的;
+```
+
 
 # 对v_list中的每一个shard，使用g_list中对应的梯度，继续回溯直至x;
 torch.autograd.backward(v_list, g_list)

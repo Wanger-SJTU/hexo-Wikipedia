@@ -103,11 +103,14 @@ AI玩家日志
 2. RAG（别停留在Naive RAG）
 我刚开始学RAG的时候，写的代码是这样的：
 
+```python
 def naive_rag(query):
     docs = vector_db.search(query, top_k=5)
     context = "\n".join(docs)
     response = llm.generate(f"Context: {context}\nQuery: {query}")
     return response
+```
+
 
 我以为这就是RAG了。
 
@@ -149,19 +152,26 @@ Agent这块，我踩的坑最多。
 ReAct模式（最基础但最重要）
 ReAct就是让LLM交替进行"推理"和"行动"。
 
+```python
 def react_agent(task):
     history = []
     while not is_finished():
         # 推理：下一步该做什么
         thought = llm.generate(f"Task: {task}\nHistory: {history}\nThought:")
+```
+
         
         # 行动：执行工具
+
+```text
         action = parse_action(thought)
         observation = execute_tool(action)
-        
+
         history.append({"thought": thought, "action": action, "observation": observation})
-    
+
     return final_answer
+```
+
 
 看起来简单吧？
 
@@ -174,21 +184,32 @@ def react_agent(task):
 Plan-and-Execute模式（适合复杂任务）
 这个模式是先让LLM生成一个完整的计划，然后逐步执行。
 
+```python
 def plan_and_execute(task):
     # 生成计划
     plan = planner.generate_plan(task)
+```
+
     
     # 执行计划
+
+```text
     results = []
     for step in plan:
         result = executor.execute(step, context=results)
         results.append(result)
+```
+
         
         # 如果执行失败，重新规划
+
+```text
         if need_replan(result):
             plan = planner.replan(task, results)
-    
+
     return results
+```
+
 
 这个模式的难点在于：
 
@@ -214,33 +235,44 @@ Multi-Agent协作（最复杂）
 
 第一层：工作记忆（就是当前对话的上下文）
 
+```python
 class ConversationBuffer:
     def __init__(self, max_tokens=2000):
         self.messages = []
-    
+
     def add_message(self, message):
         self.messages.append(message)
         # 超出token限制就删掉最早的消息
         while self.count_tokens()   self.max_tokens:
             self.messages.pop(0)
+```
+
 
 第二层：短期记忆（定期总结）
 
+```python
 class SummaryMemory:
     def __init__(self):
         self.summary = ""
         self.recent_messages = []
-    
+
     def add_message(self, message):
         self.recent_messages.append(message)
+```
+
         
         # 每10条消息总结一次
+
+```text
         if len(self.recent_messages)   10:
             self.summary = llm.summarize(self.summary, self.recent_messages)
             self.recent_messages = []
+```
+
 
 第三层：长期记忆（向量数据库）
 
+```python
 class VectorMemory:
     def store(self, memory_item):
         self.vector_db.insert({
@@ -249,9 +281,11 @@ class VectorMemory:
             "timestamp": memory_item.timestamp,
             "importance": memory_item.importance
         })
-    
+
     def retrieve(self, query):
         return self.vector_db.search(query, top_k=5)
+```
+
 
 这套Memory系统，我是参考人类的记忆机制设计的。
 
@@ -267,6 +301,7 @@ class VectorMemory:
 
 我自己实现了一个简单的追踪系统：
 
+```python
 class AgentTracer:
     def start_span(self, name, inputs):
         span = {
@@ -277,12 +312,14 @@ class AgentTracer:
         }
         self.spans.append(span)
         return span
-    
+
     def end_span(self, span_id, outputs):
         span = self.find_span(span_id)
         span["end_time"] = time.time()
         span["outputs"] = outputs
         span["duration"] = span["end_time"] - span["start_time"]
+```
+
 
 有了这个，我就能看到Agent的完整推理链路，哪一步出问题了一目了然。
 

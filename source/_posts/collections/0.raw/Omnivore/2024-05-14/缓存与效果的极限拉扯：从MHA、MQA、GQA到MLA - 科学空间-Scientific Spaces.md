@@ -169,10 +169,15 @@ _<strong>更详细的转载事宜请参考：</strong>_[《科学空间FAQ》](h
  year={2024},  
  month={May},  
  url={\\url{https://kexue.fm/archives/10091}},  
+
+```text
  }
+```
+
 
 ### 你也许还对下面的内容感兴趣
 
+```text
 * [以蒸馏的名义：“从去噪自编码器到生成模型”重出江湖](https://kexue.fm/archives/10085 "以蒸馏的名义：“从去噪自编码器到生成模型”重出江湖")
 * [生成扩散模型漫谈（二十四）：少走捷径，更快到达](https://kexue.fm/archives/10077 "生成扩散模型漫谈（二十四）：少走捷径，更快到达")
 * [生成扩散模型漫谈（二十三）：信噪比与大图生成（下）](https://kexue.fm/archives/10055 "生成扩散模型漫谈（二十三）：信噪比与大图生成（下）")
@@ -183,4 +188,6 @@ _<strong>更详细的转载事宜请参考：</strong>_[《科学空间FAQ》](h
 * [“闭门造车”之多模态模型方案浅谈](https://kexue.fm/archives/9984 "“闭门造车”之多模态模型方案浅谈")
 * [幂等生成网络IGN：试图将判别和生成合二为一的GAN](https://kexue.fm/archives/9969 "幂等生成网络IGN：试图将判别和生成合二为一的GAN")
 * [Transformer升级之路：16、“复盘”长度外推技术](https://kexue.fm/archives/9948 "Transformer升级之路：16、“复盘”长度外推技术")
+```
+
 

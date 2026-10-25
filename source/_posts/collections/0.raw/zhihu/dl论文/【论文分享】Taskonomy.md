@@ -17,11 +17,14 @@ source_url: https://zhuanlan.zhihu.com/p/93036772
 
 大家好，本周的论文分享专栏带来的是CVPR2018年的best paper:《Taskonomy：Disentangling Task Transfer Learning》。
 
+```text
 	论文链接：[http://taskonomy.stanford.edu/taskonomy_CVPR2018.pdf](https://link.zhihu.com/?target=http%3A//taskonomy.stanford.edu/taskonomy_CVPR2018.pdf)
 
 	Demo网站：[http://taskonomy.stanford.edu/](https://link.zhihu.com/?target=http%3A//taskonomy.stanford.edu/)
 
 	文章二作的解读：[https://zhuanlan.zhihu.com/p/38425434](https://zhuanlan.zhihu.com/p/38425434)
+```
+
 
 	文章标题中写到的Taskonomy，实际上是Task+taxonomy，论文探究的是视觉领域任务之间的分类问题，即任务之间的关系。
 

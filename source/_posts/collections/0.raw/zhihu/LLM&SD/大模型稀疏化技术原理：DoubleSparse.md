@@ -129,6 +129,8 @@ dataset_path=/workspace/data/ShareGPT_V3_unfiltered_cleaned_split.json
 ds_channel_path=/workspace/outputs/DoubleSparse-qwen25/models/Qwen2.5-32B-Instruct.json
 
 CUDA_VISIBLE_DEVICES=3 python3 -m sglang.bench_offline_throughput \
+
+```text
     --model-path ${model_path} \
     --dataset-name random \
     --random-input 8192 \
@@ -144,6 +146,8 @@ CUDA_VISIBLE_DEVICES=3 python3 -m sglang.bench_offline_throughput \
     --ds-heavy-channel-type k \
     --ds-heavy-token-num 256 \
     --ds-sparse-decode-threshold 0
+```
+
 `
 
 参数说明：

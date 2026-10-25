@@ -384,6 +384,89 @@ function main() {
     return out;
   }
 
+  function looksLikeCode(line) {
+    const raw = String(line || '');
+    const text = raw.trim();
+    if (!text || text.length > 300) return false;
+    if (/^(```|~~~)/.test(text)) return false;
+    if (/^`[^`]*`$/.test(text)) return false;
+    if (/^(#include|#define|#pragma|#if|#endif|using\s+|namespace\s+|template\b|typedef\b|struct\b|class\b|void\b|int\b|float\b|double\b|char\b|long\b|short\b|unsigned\b|signed\b|bool\b|const\b|static\b|public\b|private\b|protected\b|for\s*\(|while\s*\(|if\s*\(|else\b|switch\s*\(|case\b|return\b|break\b|continue\b|import\s+|from\s+|def\s+|print\s*\(|console\.|function\b|let\b|var\b|SELECT\b|INSERT\b|UPDATE\b|DELETE\b|CREATE\b|curl\b|pip\b|npm\b|git\b|docker\b|cmake\b|make\b|__m\d+|std::)/.test(text)) return true;
+    if (/^[{}();,\[\]]+;?$/.test(text)) return true;
+    if (/^\/\//.test(text) || /^\/\*/.test(text) || /^\*\s/.test(text)) return true;
+    if (/^( {4}|\t)/.test(raw) && /[;{}()=]/.test(text)) return true;
+    return false;
+  }
+
+  function detectLang(text) {
+    if (/(#include|std::|__m\d+|void\s+\w+\s*\(|int\s+\w+|for\s*\()/.test(text)) return 'cpp';
+    if (/(^|\n)\s*(def\s+|import\s+|from\s+|print\s*\()/.test(text)) return 'python';
+    if (/(function\s+\w+|console\.|=>|const\s+\w+\s*=)/.test(text)) return 'js';
+    if (/\b(SELECT|INSERT|UPDATE|DELETE|CREATE)\b/i.test(text)) return 'sql';
+    if (/(^|\n)\s*(\$ |pip\b|npm\b|git\b|docker\b|cmake\b)/.test(text)) return 'bash';
+    return 'text';
+  }
+
+  function autoFenceCode(body) {
+    const lines = String(body == null ? '' : body).split('\n');
+    const out = [];
+    let fence = null;
+    let i = 0;
+    while (i < lines.length) {
+      const line = lines[i];
+      const f = /^\s{0,3}(`{3,}|~{3,})/.exec(line);
+      if (f) {
+        if (!fence) fence = f[1][0];
+        else if (f[1][0] === fence) fence = null;
+        out.push(line);
+        i += 1;
+        continue;
+      }
+      if (fence) {
+        out.push(line);
+        i += 1;
+        continue;
+      }
+      if (!looksLikeCode(line)) {
+        out.push(line);
+        i += 1;
+        continue;
+      }
+
+      const group = [line];
+      let j = i + 1;
+      while (j < lines.length) {
+        const next = lines[j];
+        if (/^\s{0,3}(`{3,}|~{3,})/.test(next)) break;
+        if (!next.trim()) {
+          if (j + 1 < lines.length && looksLikeCode(lines[j + 1])) {
+            group.push('');
+            j += 1;
+            continue;
+          }
+          break;
+        }
+        if (looksLikeCode(next) || /^( {2,}|\t)/.test(next)) {
+          group.push(next);
+          j += 1;
+          continue;
+        }
+        break;
+      }
+      if (group.length < 2 && !/[;{}]/.test(line)) {
+        out.push(line);
+        i += 1;
+        continue;
+      }
+      const fixed = group.map((item) => item.replace(/^(#include)\s+([A-Za-z0-9_./-]+\.h)\s*$/, '$1 <$2>'));
+      if (out.length && out[out.length - 1].trim()) out.push('');
+      out.push('```' + detectLang(fixed.join('\n')));
+      out.push(...fixed);
+      out.push('```', '');
+      i = j;
+    }
+    return out.join('\n');
+  }
+
   function transformBody(body, doc) {
     const lines = String(body).split('\n');
     let fence = null;
@@ -427,7 +510,7 @@ function main() {
   let replacedWiki = 0;
 
   for (const doc of docs) {
-    const body = transformBody(doc.body, doc);
+    const body = transformBody(autoFenceCode(doc.body), doc);
     const fm = {
       title: doc.title,
       date: formatDate(doc.date),

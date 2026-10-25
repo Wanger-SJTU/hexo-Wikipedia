@@ -57,11 +57,17 @@ source_url: https://zhuanlan.zhihu.com/p/434087002
 
 STL标准库中的大多类都支持用户提供一个自定义的内存分配器，默认使用的是std::allocator，如std::string：
 
+```text
 typedef basic_string, allocator > string;
+```
+
 
 如果我们的内存池兼容std::allocator，那么我们就可以使用我们自己的内存池来替换默认的std::allocator分配器，如：
 
+```text
 typedef basic_string, MemoryPoll > mystring;
+```
+
 
 ### 三、内存池的具体实现
 
@@ -84,6 +90,8 @@ typedef basic_string, MemoryPoll > mystring;
 代码中使用了std::mutex等C++11才支持的特性，所以需要编译器最低支持C++11：
 
 `#ifndef PPX_BASE_MEMORY_POOL_H_
+
+```cpp
 #define PPX_BASE_MEMORY_POOL_H_
 
 #include 
@@ -385,8 +393,12 @@ namespace ppx {
 }
 
 #endif // PPX_BASE_MEMORY_POOL_H_
+```
+
 
 使用示例：
+
+```cpp
 #include 
 #include 
 using namespace std;
@@ -405,7 +417,7 @@ public:
         char* p2 = (char*)mp->allocate();
 
         mp->deallocate(p1);
-        
+
         mp->deallocate(p2);
 
     }
@@ -448,6 +460,8 @@ int main()
     getchar();
     return 0;
 }
+```
+
 
 `
 

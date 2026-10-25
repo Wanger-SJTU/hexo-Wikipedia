@@ -27,7 +27,11 @@ for i in T.Parallel(BLOCK):
 有时会编译报错：
 
 File &#34;/workspace/tilelang/3rdparty/tvm/src/arith/iter_affine_map.cc&#34;, line 2568, in void tvm::arith::InverseAffineIterMapTransformer::Visit_(const tvm::arith::IterSumExpr&)
+
+```text
     TVM_FFI_ICHECK(analyzer_->CanProveEqual(abs(source->scale), 1));
+```
+
 
 tvm.error.InternalError: Check failed: (analyzer_->CanProveEqual(abs(source->scale), 1)) is false:
 然而，如果用`T.Fragment`对`B`进行layout annotation，或者更改`BLOCK`的大小，就可以通过编译。出于好奇，笔者开始阅读TileLang layout inference的源码。
@@ -36,15 +40,23 @@ tvm.error.InternalError: Check failed: (analyzer_->CanProveEqual(abs(source->sca
 首先为大家介绍一下layout inference的概念，熟悉的同学可以跳过。在Triton中，我们编写的kernel都会取自己的`program_id`，然后根据它来推算当前thread/program覆盖的索引范围，计算数据的物理地址。比如：
 
 @triton.jit
+
+```python
 def matrix_transpose_kernel(
     input, output, rows, cols, stride_ir, stride_ic, stride_or, stride_oc
+```
+
 ):
+
+```text
     row_pid = tl.program_id(0)
     col_pid = tl.program_id(1)
     src_offset = input + row_pid * stride_ir + col_pid * stride_ic
     tar_offset = output + col_pid * stride_or + row_pid * stride_oc
     val = tl.load(src_offset)
     tl.store(tar_offset, val)
+```
+
 在TileLang中，我们并不和thread直接打交道，而是使用Tensor buffer声明要做的事即可：
 
 # 类似以下形式
@@ -73,6 +85,8 @@ with T.Kernel(1, threads=32):
 Layout inference在TileLang中通过`tilelang.transform.LayoutInference`这个pass实现，通过FFI绑定到`tvm::tl::LayoutInference`。可以看到这个pass的目的就是将IR中的操作进行thread binding：
 
 tvm::transform::Pass LayoutInference() {
+
+```cpp
   using namespace tirx::transform;
   auto pass_func = [=](PrimFunc f, const IRModule &m, const PassContext &ctx) {
     //...
@@ -96,6 +110,8 @@ public:
     fptr->body = substituter.VisitStmt(f->body);
     return f;
   }
+```
+
 
 通过“正确性”和“性能”的两个要求，可以推出inference是一个constraint optimization过程：我们需要在满足thread-local约束下，尽可能提升编译结果的性能。`collector.Run`通过BFS来解决这个问题，核心是以下几步。我们先简略带过，后面细说。
 
@@ -104,6 +120,8 @@ public:
 - Step 1：对每一个operation进行strict layout推导，更新layout map。
 - Step 2：对队列中的operation进行common layout推导，BFS直到收敛，更新layout map。
 - Step 3：对队列中的operation进行free layout推导，BFS直到收敛，更新layout map。LayoutInferenceResult Run() {
+
+```cpp
     // ...
     Map<Buffer, Layout> layout_map = annotated_layout_map_;
     Map<Buffer, Layout> strict_layout_map;
@@ -143,15 +161,21 @@ public:
     InferInFreeMode(layout_map, strict_layout_map);
     // ...
   }
+```
+
 
 <strong>floating fragment buffer</strong>：类似如下情况。`A`在`if`语句下使用，不会被进行layout分析，所以会将`A`直接replicate到所有thread上保证正确性。
 
 A = T.alloc_fragment(...)
 for i, j in T.Parallel:
   if A[i, j] > 0:
+
+```text
     B[i, j ] = 0
   else:
     B[i, j] = 1
+```
+
 
 剩下的三个layout inference pass，最终都是调用同一个方法`RunInferStep`进行收敛。
 
@@ -161,6 +185,8 @@ for i, j in T.Parallel:
 - 如果该buffer的layout已经存在，则检查是否兼容，并尝试合并。
 - 进行alias propagation。比如这次更新了`buffer_A`，然后`op_X`和`op_Y`用了`buffer_A`，则将这两个operation加入队列进行下一轮迭代。void RunInferStep(int cur_infer_id, InferLevel level, bool update_queue,
                     LayoutMap &layout_map, const LayoutMap &strict_layout_map,
+
+```cpp
                     std::deque<int> &q, std::vector<bool> &in_queue) {
     // ...
     auto num_infer = infer_list_.size();
@@ -214,6 +240,8 @@ for i, j in T.Parallel:
         }
       }
     }
+```
+
 
 Strict Layout Inference
 在下面的例子中，`B`只有常数索引，和循环变量无关，所以可以算作自由变量。从循环体的视角看，`B`就是一个外部常量，所以直接给每个thread都复制一份即可。
@@ -227,6 +255,8 @@ for i, j in T.Parallel(...):
 以下是`ParallelOpNode::InferLayout`的strict layout部分源码。其核心就是`const PrimExpr &forward_thread = rep;`。这句的含义是`forward_thread(i, j, rep) = rep`，即使得绑定的thread只和replication有关，和index无关。换句话说，这个值被fully replicated。
 
 LayoutMap ParallelOpNode::InferLayout(const LayoutInferArgs &T,
+
+```cpp
                                       InferLevel level) const {
   // ...
 
@@ -261,6 +291,8 @@ LayoutMap ParallelOpNode::InferLayout(const LayoutInferArgs &T,
   }
   // ...
 }
+```
+
 
 Common/Free Layout Inference
 下一步，common layout inference会进行layout propagation。比如下面的代码中，如果前一次BFS迭代已经得到了`A[i,j]`的layout，那么由于它被用在了第二个循环中，所以第二个循环的layout要根据`A[i,j]`进行推导。下面源码注释也讲到，propagation需要发生的条件是存在非常数索引。
@@ -277,6 +309,7 @@ for i, j in T.Parallel(...):
   D[i,j] = A[0, 0]
 这部分的源码：
 
+```cpp
 // ...
   // Collect fragment buffers with const index and all fragment_buffers
   std::vector<Buffer> const_index_fragment_buffer, fragment_buffers;
@@ -310,6 +343,8 @@ for i, j in T.Parallel(...):
   bool allow_layout_propgate =
       const_index_fragment_buffer.empty() ||
       (fragment_buffers.size() > const_index_fragment_buffer.size());
+```
+
 
 由于一个循环可能存在多个可以用于推导的source buffer，我们需要选择其中一个。下面列出了考虑的优先级。
 
@@ -319,6 +354,7 @@ for i, j in T.Parallel(...):
 - 再再次：fully replicated write buffer。（这个我也不是很理解，为什么会有replicated write buffer？
 - 最后：自由推导// ...
 
+```cpp
   // Step 1: try to infer loop&#39;s partition from a source fragment
   Buffer source_buffer, read_source_buffer;
   bool source_buffer_is_write = false;
@@ -360,9 +396,12 @@ for i, j in T.Parallel(...):
       }
     }
   }
+```
+
 
 选好source buffer以后，推导的核心是`ComputeLoopLayoutFromBuffer`函数。如果找不到source buffer，就通过`ComputePlanCandidate`进行自由推导。这两个函数相对重要，我们后面单独展开。可以看到在自由推导模式下，代码会通过这两个函数分别计算一个layout，然后用`ChooseBestCandidate`取一个更优解。
 
+```text
 // ...
   // Try to infer loop layout from buffers in order of preference only if we
   // don&#39;t already have a layout (e.g., from annotations):
@@ -411,9 +450,12 @@ for i, j in T.Parallel(...):
   } else if (!loop_layout_.defined()) {
     return {};
   }
+```
+
 
 下一步是一些收尾工作。首先通过`DetectInjective`判断推导出的loop layout是否是合法的单射，以此保证两个不同的逻辑元素不会映射到同一个物理地址上造成collision。
 
+```text
 // ...
   // Non-fragment SIMT loops may deliberately over-cover a ragged iteration
   // space; PartitionLoop emits guards for the padded points. Fragment/reducer
@@ -424,13 +466,20 @@ for i, j in T.Parallel(...):
     // ...
     throw LoopLayoutInjectiveException(oss.str());
   }
+```
+
 
 然后加一些predicate来保证layout没有映射到的thread是no-op。
 
+```text
 // ...
   PrimExpr loop_thread_extent = loop_layout_->ThreadExtent();
+```
+
 
   auto block_size = T.thread_bounds->extent;
+
+```text
   if (loop_layout_.defined()) {
     if (loop_layout_->ThreadRange().defined()) {
       auto thread_range = loop_layout_->ThreadRange();
@@ -445,24 +494,33 @@ for i, j in T.Parallel(...):
     AddPredicate(
         LT(InputPlaceholder(0), loop_thread_extent + T.thread_bounds->min));
   }
+```
+
 
 我们还需要保证推导出的layout和所有已经推导出的buffer layout是兼容的。如果不兼容，说明推导过程错误，直接报错。
 
+```text
 // Step 2: Check that the loop&#39;s partition can correctly align with all source
   // fragment, and infer layout only when it&#39;s not yet layout-ed.
   ValidateCandidateAgainstFragments(loop_layout_, T, /*throw_on_error=*/true,
                                     /*check_forward_index=*/false,
                                     source_buffer);
+```
+
 
 接着检查是否存在replication并且写shared/global memory的情况，因为这会导致data racing。如果replication只写自己的fragment buffer，则是合法的。
 
+```text
 // Step 3: Build replication guards
   BuildReplicationGuardsIfNeeded(
       T, store_shared_global_buffers_, store_fragment_buffers_,
       has_cross_thread_access_, const_index_fragment_buffer);
+```
+
 
 大功告成。将layout作为返回值发回BFS，进行下一步迭代。
 
+```cpp
 // Step 4: Collect buffer fragments
   LayoutMap results;
   for (const auto &buffer : access_order_) {
@@ -474,6 +532,8 @@ for i, j in T.Parallel(...):
   }
   loop_layout_inferred_ = true;
   return results;
+```
+
 
 精读推导算法
 这个部分我们会详细阅读几个关键函数，探究几个问题：
@@ -494,25 +554,39 @@ Layout((M, N) -> (M / 16, N, 16),
 
 `Layout`源码如下
 
+```text
 class Layout : public ObjectRef {
 public:
   TVM_DLL Layout(Array<IterVar> forward_var, Array<PrimExpr> forward_index);
   TVM_DLL Layout(Array<PrimExpr> input_size, Array<PrimExpr> forward_index);
+```
+
 
   TVM_FFI_DEFINE_OBJECT_REF_METHODS_NULLABLE(Layout, ObjectRef, LayoutNode);
+
+```text
 };
+```
+
 
 `Fragment`是一个特殊的layout。如我们之前所说，它需要两个映射：`forward_index`和`forward_thread`，分别映射到thread-local索引和对应的thread。此时映射的入参是循环变量`forward_var`和replication参数`thread_replicate`。
 
+```text
 class Fragment : public Layout {
 public:
   TVM_DLL Fragment(Array<IterVar> forward_var, Array<PrimExpr> forward_index,
                    PrimExpr forward_thread, IterVar thread_replicate);
+```
+
 
   TVM_DLL Fragment(Array<PrimExpr> input_size, Array<PrimExpr> forward_index,
                    PrimExpr forward_thread, PrimExpr replicate_size,
+
+```text
                    Optional<Var> replicate_var);
 }
+```
+
 
 `ComputeLoopLayoutFromBuffer`
 `ComputeLoopLayoutFromBuffer`接受一个`Buffer`，返回一个`Fragment` layout。大致分为以下几步：
@@ -530,6 +604,8 @@ for h, i, j in T.Parallel(2, 16, 32):
 
 Fragment
 ParallelOpNode::ComputeLoopLayoutFromBuffer(const Buffer &buffer,
+
+```text
                                             const LayoutInferArgs &T) const {
   Fragment src_layout = T.layout_map[buffer].as<Fragment>().value();
   Fragment result;
@@ -538,6 +614,8 @@ ParallelOpNode::ComputeLoopLayoutFromBuffer(const Buffer &buffer,
     result = src_layout;
   } else {
     // ...
+```
+
 
 如果不能走快速通道，我们会拿到当前循环中source buffer的索引信息，传入其`forward_thread`得到thread映射表达式，即`loop_var_to_thread`。比如我们的source layout是：
 
@@ -545,8 +623,12 @@ ParallelOpNode::ComputeLoopLayoutFromBuffer(const Buffer &buffer,
 - `forward_index(i, j, rep) = 0`，即每个thread都只保存一个元素而当前loop是：
 
 for group, row_in_group in T.Parallel(2, 2):
+
+```text
     row = group * 2 + row_in_group
     x = Q[row, 0]
+```
+
 
 那么我们将`i = group * 2 + row_in_group`和`j = 0`替换入原来的表达式，就可以得到这个loop的layout：
 
@@ -563,6 +645,7 @@ for i in T.Parallel(M):
 
 这段源码如下：
 
+```cpp
 // ...
 else {
     Var rep(&#34;_rep&#34;);
@@ -581,9 +664,12 @@ else {
       }
     });
   // ...
+```
+
 
 最后，我们通过循环变量`loop_vars_`、替换后的表达式`loop_var_to_thread`、原layout的replication参数`rep_iter`来构造新的layout。然后绑定thread范围，即定义这个layout会用到哪些thread。
 
+```text
 //..
     try {
       result = Fragment(loop_vars_, {}, loop_var_to_thread, rep_iter)
@@ -594,6 +680,8 @@ else {
   }
   return result;
 }
+```
+
 
 `ComputePlanCandidate`
 当没有已知的fragment layout可以传播时，`ComputePlanCandidate`会自由推导一个loop layout。如果说`ComputeLoopLayoutFromBuffer`表示“从已有buffer推导loop layout”，那么`ComputePlanCandidate`表示“从loop shape本身推导一个好的loop layout”。
@@ -613,24 +701,34 @@ for i in T.Parallel(4):
 这部分的源码：
 
 Fragment ParallelOpNode::ComputePlanCandidate(const LayoutInferArgs &T) const {
+
+```cpp
   // Vectorize Size must be aware of the buffer_remap
   // As the pass will do post processing to the layout
   auto maybe_remapped_root_ =
       IfBufferRemapLoopGenerator::run(root_, T.buffer_remap, T.layout_map);
   int vector_size =
       GetVectorizeSize(maybe_remapped_root_, T.analyzer, T.layout_map);
+```
+
 
 计算loop迭代总数
 通过计算parallel loops的extent来计算拍平后的loop size。例如`for i, j in T.Parallel(4, 16):`的loop size就是64。
 
 PrimExpr loop_total_size = 1;
+
+```cpp
   for (Stmt l = root_; l.as<For>().has_value(); l = l.as<For>().value()->body)
     loop_total_size = loop_total_size * l.as<For>().value()->extent;
+```
+
 
 调用`PlanLoopPartition`构造layout
 实际layout构造发生在`PlanLoopPartition`中。源码如下：
 
 Fragment Partition(const For &op, int num_thread, int vectorize_size) {
+
+```cpp
     this->VisitStmt(op);
     DataType dtype = DataType::Int(32);
     if (!loop_vars_.empty()) {
@@ -657,6 +755,8 @@ Fragment Partition(const For &op, int num_thread, int vectorize_size) {
     }
     return fragment;
   }
+```
+
 
 可以看到这里我们在手搓一个表达式。`flattened`就是一个拍平的循环变量，比如`i * 16 + j`。由于我们按照`vector_extent`进行分组，分组后的索引(`access_index`)就是`flattened / vector_extent`。按照这个索引平均分配到`num_thread`个thread上，得到`forward_thread=access_index % num_thread`。`forward_index` 由两部分组成：`(access_index/num_thread) * vector_extent` 得到对应的向量组，`flattened % vector_size`得到组内的相对索引。
 
@@ -672,6 +772,7 @@ local_idx      = (i * 16 + j) / 64 +  (i * 16 + j) % 4
 Fragment buffer的特殊检查
 Fragment loop比普通copy/shared-memory loop更严格。对于fragment access，TileLang会尽量避免padded logical points，因为padding会制造假的fragment ownership。对于非fragment的SIMT loop，padding可以在lowering时通过guard跳过。
 
+```text
 bool has_fragment_access = !indice_map_.empty();
   if (has_fragment_access) {
     while (
@@ -684,6 +785,8 @@ bool has_fragment_access = !indice_map_.empty();
     vector_size = SelectMinPaddingVectorSize(
         vector_size, loop_total_size, T.thread_bounds->extent, &analyzer_);
   }
+```
+
 
 这个`floormod`的整除检查为了保证 `loop_total_size % (threads * vector_size) == 0`。我们将多个大小是`vector_size`的组分配给threads，我们希望每个thread拿到的组都是完整的，没有padded元素。这是因为fragment buffer代表真实的thread-local storage。如果planner覆盖的逻辑元素比loop实际拥有的更多，这些padded元素仍然会看起来像fragment的元素，可能造成非法ownership。对于非fragment loop，编译器通常可以写一个predicate跳过这些padded element。对于fragment，padding可能会使得正确性的保证变得更加复杂。比如以下例子：
 
@@ -697,6 +800,7 @@ for i in T.Parallel(256):
 
 函数会遍历loop访问的所有fragment buffers：
 
+```cpp
 bool ParallelOpNode::ValidateCandidateAgainstFragments(
     const Fragment &candidate, const LayoutInferArgs &T, bool throw_on_error,
     bool check_forward_index, const Buffer &source_buffer) const {
@@ -708,17 +812,23 @@ bool ParallelOpNode::ValidateCandidateAgainstFragments(
       continue;
     // ...
     auto fragment = T.layout_map[buffer].as<Fragment>().value();
+```
+
 
 对于read，要求是“包含”，即loop layout需要能从source fragment layout中读取元素。这很好理解，如果loop iteration映射到的thread并不拥有需要读取的元素，那么这个读取就是非法的。
 
+```text
 if (access.is_read &&
     !ProveFragmentContains(candidate, fragment, vars, access.indices,
                            analyzer_, check_forward_index)) {
   success = false;
 }
+```
+
 
 我们继续看`ProveFragmentContains`的实现：
 
+```text
 bool ProveFragmentContains(Fragment small_frag, Fragment large_frag,
                            Array<PrimExpr> small_frag_indices,
                            Array<PrimExpr> large_frag_indices,
@@ -728,11 +838,14 @@ bool ProveFragmentContains(Fragment small_frag, Fragment large_frag,
     return true;
   }
   // ...
+```
+
 
 `small_frag`表示目标fragment的layout，`large_frag`表示已经存在的fragment的layout。函数首先有一个特殊情况：如果large fragment是fully replicated，每个thread都有一份合法拷贝，那么containment显然为真。
 
 当`check_forward_index`为true时，还会检查两个layout是否使用相同的物理local index。
 
+```cpp
 if (check_forward_index) {
   auto small_physical = small_frag->Forward(small_frag_indices);
   auto large_physical = large_frag->Forward(large_frag_indices);
@@ -746,14 +859,20 @@ if (check_forward_index) {
     }
   }
 }
+```
+
 
 接着，函数为small fragment引入一个符号replicate变量：
 
 Var rep_small(&#34;__checking_frag_contains_rep&#34;);
 analyzer.Bind(rep_small,
+
+```text
               Range(IntImm(small_frag->ReplicateExtent()->dtype, 0),
                     small_frag->ReplicateExtent()),
               true);
+```
+
 auto thread = small_frag->ForwardThread(small_frag_indices, rep_small);
 
 这表示：对于candidate layout的任意合法replica，计算执行这次access的thread。
@@ -764,25 +883,42 @@ auto large_frag_physical_and_thread = large_frag->Forward(large_frag_indices);
 large_frag_physical_and_thread.push_back(thread);
 auto inv_large_frag = large_frag->Inverse();
 auto inv_large_frag_logical_and_rep =
+
+```text
     inv_large_frag->Forward(large_frag_physical_and_thread);
+```
+
 
 `large_frag->Forward(large_frag_indices)`给出local index，结合推理出的thread，形成物理坐标`(large local index, candidate thread)`。Large fragment的inverse会把这个物理坐标映射回`(large logical indices, large replica)`。最后一个元素就是恢复出的replica。
 
 auto inv_large_frag_rep =
+
+```text
     inv_large_frag_logical_and_rep[inv_large_frag_logical_and_rep.size() - 1];
+```
+
 
 最后，函数使用这个恢复出的replica重新计算large fragment的owning thread：
 
 auto check_thread =
+
+```text
     large_frag->ForwardThread(large_frag_indices, inv_large_frag_rep);
+```
+
 
 auto diff = analyzer.Simplify(thread - check_thread);
+
+```text
 return analyzer.CanProve(diff == 0);
+```
+
 
 如果重新算出来的large-fragment thread等于原来的candidate thread，那么candidate thread就是这个large-fragment access的合法owner。否则，candidate loop就试图从错误的thread读写元素。这个恢复的过程就是在模拟lower以后的根据thread推理索引的过程。
 
 对于write，检查更严格：
 
+```text
 if (access.is_write &&
     (!ProveFragmentContains(fragment, candidate, access.indices, vars,
                             analyzer_, check_forward_index) ||
@@ -790,6 +926,8 @@ if (access.is_write &&
                             analyzer_, check_forward_index))) {
   success = false;
 }
+```
+
 
 这里使用两个方向的containment check，实际上要求owner-thread完全兼容，即所有被访问元素的ownership相等。Read只需要单向containment，因为loop只需要证明它所读取的值在执行它的thread上可用。Write需要相等，因为write会更新buffer layout的物理状态。
 
@@ -818,6 +956,8 @@ forward_thread(group, row_in_group) = group * 32 + row_in_group * 16
 我们用一个例子把所有东西串起来：
 
 @tilelang.jit
+
+```python
 def plan_then_buffer_layout():
     @T.prim_func
     def main(
@@ -835,6 +975,8 @@ def plan_then_buffer_layout():
                 B[row] = fragment[row, 0]
 
     return main
+```
+
 完整的layout inference时序图如下：
 
 IterationLevelOperationUpdate1Strictloop1没有更新，因为没有常数索引1Strictloop2没有更新，同上1Commonloop1没有更新，因为没有source layout1Commonloop2没有更新，同上1Freeloop1通过ComputePlanCandidate 计算得到layout，并通过reuse重新将loop2 enqueue2Strictloop2没有更新2Freeloop2通过ComputeLoopLayoutFromBuffer 得到传播的layout第一个loop写整个fragment：
@@ -850,9 +992,12 @@ for row, col in T.Parallel(4, 16):
 
 第二个loop:
 
+```text
             for group, row_in_group in T.Parallel(2, 2):
                 row = group * 2 + row_in_group
                 B[row] = fragment[row, 0]
+```
+
 推导第二个loop时，`fragment`已经有已知layout，所以`ComputeLoopLayoutFromBuffer`可以运行。它会将access indices替换进source fragment的thread表达式。带入`row = group * 2 + row_in_group`和，`col = 0`得到：
 
 - `forward_thread(group, row_in_group) = group * 32 + row_in_group * 16`四个逻辑iteration分别映射到thread 0, thread 16, thread 32, thread 48。问题是，<strong>这个layout是稀疏的</strong>。从数学角度看，这个映射仍然是单射：没有两个逻辑iteration映射到同一个物理位置。然而，当前inverse-lowering路径很难表示它。Lowering需要从物理thread坐标反推出逻辑loop变量，但推导过程需要整除约束：
@@ -871,12 +1016,19 @@ TVM_FFI_ICHECK(analyzer_->CanProveEqual(abs(source->scale), 1));
 - 改变loop结构，让被投影掉的dimension成为local index的一部分，而不是thread index的一部分。
 - 改变`BLOCK`或`threads`，让传播出的layout对当前inverse machinery来说恰好dense。（这个就有点玄学和碰运气了）下面是一个具体的annotation版本。我们可以定义一个layout，把`col`放到thread轴，把`row`放到local轴：
 
+```python
 def source_layout(row, col):
     return col, row
+```
+
 
 T.annotate_layout({
+
+```text
     fragment: T.Fragment((4, 16), forward_fn=source_layout)
 })
+```
+
 于是`forward_thread(row, col) = col`。那么读取`fragment[row, 0]`会得到：
 
 thread = 0

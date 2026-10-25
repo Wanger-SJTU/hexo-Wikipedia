@@ -96,8 +96,12 @@ python scripts/prepare_data.py --dataset perfectblend
 python3 -m sglang.launch_server \
     --model Qwen/Qwen3-8B \
     --dtype bfloat16 \
+
+```text
     --mem-frac=0.8 \
     --port 30000
+```
+
 
 # 3. Regenerate with target model (thinking enabled)
 python scripts/regenerate_train_data.py \

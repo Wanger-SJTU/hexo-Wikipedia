@@ -93,27 +93,36 @@ Github: https://github.com/Di-viner/LLM-Robustness-to-Irrelevant-Information
 
 先放相关结论，后面补充相关细节。
 
+```text
 * 与常见语义无关的答案无关片段相比，LLMs更容易受到高度语义相关的答案无关片段的影响；
 * 随着答案无关片段的增加，LLMs更容易分心，识别正确信息的能力降低；
 * LLMs对答案无关片段的的识别能力随着问题格式的不同有所不同，自由式问答>是非性问答>多项选择式问答；
 * 系统提示词中增加“忽略无关片段”等相关内容，对LLMs的识别能力有提升，但较小；
 * 存在高度语义相关的答案无关片段时，COT或者ICL会导致LLMs过度思考，识别能力变差。
+```
+
 
 ## 数据&片段构造
 
 将答案无关片段，分成三类：
 
+```text
 * 无关：与问题主题无关但相似性得分高的段落
 * 部分相关：不仅在相似性度量上得分高，而且与问题的主题部分内容重叠
 * 相关：不仅在相似性度量上得分高，而且与问题的主题内容重叠，但不包含正确答案。
+```
+
 
 ![](https://proxy-prod.omnivore-image-cache.app/627x0,sS7mPnw8ftKb9NzX90bA5Liu3ycJuHC9geYZs-kLqPoY/https://pic1.zhimg.com/50/v2-2b9514e4018ba877cb4f8c3e6270b53b_720w.jpg?source=1def8aca)
 
 数据构造：
 
+```text
 * 无关：通过检索器直接检索Top10的段落；
 * 部分相关：从检索Top10的段落中选择一个包含subj，但缺少obj的段落，作为前半段；然后找到一个包含错误答案obj'的片段作为后半段；
 * 相关：与“部分相关”相比，“相关”片段与问题高度语义相关，但并不包含正确答案，主要涉及系误导性联类型、共同特征类型和虚构轶事类型。
+```
+
 
 相关样例如下图所示， 
 
@@ -125,8 +134,11 @@ Github: https://github.com/Di-viner/LLM-Robustness-to-Irrelevant-Information
 
 评价指标：
 
+```text
 * 误表述比率（Misrepresentation Ratio，MR）：LLMs因受到答案无关信息影响而改变正确回答内容的比例，用于衡量LLMs被无关信息误导的倾向；
 * 不确定比率（Uncertainty Ratio，UR）：LLMs因受到答案无关信息影响而在回答中表述“不确定”的比例，用于衡量LLMs对干扰后生成答案的信心程度。
+```
+
 
 为了方便评测，采用多项选择题的形式进行LLMs评估，将“正确答案”、“错误答案”以及“不确定”作为选择供LLMs选择。
 

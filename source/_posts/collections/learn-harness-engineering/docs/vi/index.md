@@ -36,8 +36,12 @@ Chọn lộ trình học của bạn để bắt đầu. Khóa học được ch
   </a>
   <a href="./resources/" class="card">
     <h3>Thư viện Tài nguyên</h3>
+
+```text
     <p>Các mẫu sao chép ngay (AGENTS.md, feature_list.json) để sử dụng trong kho lưu trữ của riêng bạn.</p>
   </a>
+```
+
 </div>
 
 ## Cơ chế cốt lõi của một Harness

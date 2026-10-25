@@ -38,12 +38,20 @@ docker run -itd \
 &nbsp; --name tokenspeed \
 &nbsp; lightseekorg/tokenspeed-runner:latest \
 &nbsp; /bin/bash
+
+```bash
 git&nbsp;clone&nbsp;https://github.com/lightseekorg/tokenspeed.git
+```
+
 cd&nbsp;tokenspeed
 export&nbsp;PIP_BREAK_SYSTEM_PACKAGES=1
+
+```bash
 pip install -e&nbsp;"./python"&nbsp;--no-build-isolation
 pip install -e tokenspeed-kernel/python/ --no-build-isolation
 pip install -e tokenspeed-scheduler/
+```
+
 tokenspeed env
 tokenspeed serve --help
 最小服务启动命令如下：tokenspeed serve openai/gpt-oss-20b \
@@ -72,8 +80,12 @@ response = client.chat.completions.create(
 &nbsp; &nbsp; model="kimi-k2.5",
 &nbsp; &nbsp; messages=[{"role":&nbsp;"user",&nbsp;"content":&nbsp;"Write a concise deployment checklist."}],
 &nbsp; &nbsp; max_tokens=256,
+
+```python
 )
 print(response.choices[0].message.content)
+```
+
 更多具体参数可参考：Getting Started[2]、Launching a Server[3]、Server Parameters[4]。## unsetunset二、为什么智能体负载需要新的推理引擎unsetunset
 传统 LLM serving 框架大多围绕“批量吞吐”和“通用聊天”优化。但&nbsp;coding agent 的流量更像一场复杂的城市交通调度：有的请求携带超长上下文，有的请求只需要极短 decode，有的请求复用相同系统提示词和仓库上下文，有的请求在工具调用后马上进入下一轮。官方博客将这种场景称为 agentic-inference regime。
 TokenSpeed 的设计目标就是从第一性原理出发服务这种负载。它强调：编译器支撑的 modeling mechanism，用于并行 placement 与 collective 自动生成；高性能 C++ scheduler；可由类型系统约束的安全 KV 资源复用；可插拔、分层的 kernel 系统，支持异构加速器；SMG[5]&nbsp;集成的低开销 CPU 请求入口。
@@ -103,7 +115,11 @@ def&nbsp;main()&nbsp;-&gt;&nbsp;None:
 &nbsp; &nbsp; &nbsp; &nbsp; sys.exit(1)
 &nbsp; &nbsp; args.func(args)
 真正的主入口是&nbsp;Engine。代码注释说明系统由 TokenizerManager、Scheduler 子进程和输出处理链路组成，进程间通过 ZMQ 通信。# 来源：python/tokenspeed/runtime/entrypoints/engine.py
+
+```text
 class&nbsp;Engine(EngineBase):
+```
+
 &nbsp; &nbsp;&nbsp;"""
 &nbsp; &nbsp; The entry point to the inference engine.
 &nbsp; &nbsp; - The engine consists of three components:
@@ -229,8 +245,12 @@ using&nbsp;State =&nbsp;std::variant&lt;Bootstrapping, Submitted, Prefetching, P
 } &nbsp;// namespace tokenspeed::fsm
 这里的&nbsp;std::variant&nbsp;很关键。它意味着资源不再是挂在请求对象上的若干可空字段，而是和状态绑定。例如处于&nbsp;Decoding&nbsp;的请求拥有 decode 所需 KV allocator 和 req pool index；处于&nbsp;WritingBack&nbsp;的请求则持有 device/host node ref，用于保证异步写回期间对应页不会被提前释放。
 调度器每轮生成一个&nbsp;ExecutionPlan：// 来源：tokenspeed-scheduler/csrc/scheduler/execution_plan.h
+
+```text
 class&nbsp;ExecutionPlan&nbsp;{
 public:
+```
+
 &nbsp; &nbsp;&nbsp;template&nbsp;&lt;typename&nbsp;OperationType&gt;
 &nbsp; &nbsp;&nbsp;ExecutionPlan&amp;&nbsp;With(OperationType operation)&nbsp;{
 &nbsp; &nbsp; &nbsp; &nbsp; operations_.emplace_back(operation);
@@ -246,7 +266,11 @@ public:
 &nbsp; &nbsp;&nbsp;const&nbsp;std::vector&lt;Operation&gt;&amp;&nbsp;Operations()&nbsp;const&nbsp;{&nbsp;return&nbsp;operations_; }
 private:
 &nbsp; &nbsp;&nbsp;std::vector&lt;Operation&gt; operations_;
+
+```text
 };
+```
+
 NextExecutionPlan&nbsp;负责清理已完成请求、跳过正在 cache 操作中的请求，并从可调度候选中生成 forward/cache operation：// 来源：tokenspeed-scheduler/csrc/scheduler/scheduler.cpp
 ExecutionPlan&nbsp;Scheduler::NextExecutionPlan()&nbsp;{
 &nbsp; &nbsp; ExecutionPlan plan;
@@ -271,11 +295,19 @@ ExecutionPlan&nbsp;Scheduler::NextExecutionPlan()&nbsp;{
 &nbsp; &nbsp; &nbsp; &nbsp; }
 &nbsp; &nbsp; }
 &nbsp; &nbsp;&nbsp;return&nbsp;plan;
+
+```text
 }
+```
+
 这就是 TokenSpeed 与许多 Python-first 调度器不同的地方：它不是靠约定和运行时检查维持资源正确性，而是让“请求现在处于什么状态、拥有什么资源、可以接受什么事件”成为控制系统的一部分。## unsetunset七、KV 缓存：从张量缓存变成资源所有权系统unsetunset
 在长上下文智能体场景中，KV cache 的价值极高。系统提示词、仓库上下文、工具描述和历史轨迹经常被重复使用。TokenSpeed 因此把 KV cache 当成 page 化资源来管理，并引入 device/host/L3 storage 等层级。
 在 scheduler 侧，rolling hash 用于 page 粒度前缀匹配：// 来源：tokenspeed-scheduler/csrc/scheduler/scheduler.cpp
+
+```cpp
 std::vector&lt;std::string&gt;&nbsp;Scheduler::CalcRollingHash(const&nbsp;std::vector&lt;std::int32_t&gt;&amp; input_tokens,&nbsp;bool&nbsp;apply_match)&nbsp;{
+```
+
 &nbsp; &nbsp;&nbsp;conststd::int32_t&nbsp;page_size = config_.page_size;
 &nbsp; &nbsp;&nbsp;conststd::size_t&nbsp;num_pages = input_tokens.size() / page_size;
 &nbsp; &nbsp;&nbsp;std::vector&lt;std::span&lt;conststd::int32_t&gt;&gt; token_pages;
@@ -295,10 +327,18 @@ std::vector&lt;std::string&gt;&nbsp;Scheduler::CalcRollingHash(const&nbsp;std::v
 &nbsp; &nbsp;&nbsp;std::string&nbsp;prior = hashes.empty() ?&nbsp;std::string{} : hashes.back();
 &nbsp; &nbsp;&nbsp;return&nbsp;ComputePagedHashes(
 &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;std::vector&lt;std::span&lt;conststd::int32_t&gt;&gt;(token_pages.begin() + host_matched, token_pages.end()), prior);
+
+```text
 }
+```
+
 请求结束后，KV cache 也不是立刻释放，而是可能进入 host 写回。FinishEvent&nbsp;会把已完成的 device KV 页插入 prefix cache；如果需要持久化到 host，则进入&nbsp;Draining&nbsp;状态。// 来源：tokenspeed-scheduler/csrc/fsm/forward_events.cpp
+
+```cpp
 template&nbsp;&lt;typename&nbsp;ForwardStateT&gt;
 std::variant&lt;Draining, Finished&gt;&nbsp;FinishEvent::apply(ForwardStateT&amp;&amp; state)&nbsp;{
+```
+
 &nbsp; &nbsp;&nbsp;auto&nbsp;full_paged_tokens = state.GetFullPagedTokens(true);
 &nbsp; &nbsp;&nbsp;std::vector&lt;std::int32_t&gt; prefix_pages = DevicePagesFromRoot(state.GetDeviceNode());
 &nbsp; &nbsp;&nbsp;std::int32_t&nbsp;alloc_count =
@@ -322,7 +362,11 @@ std::variant&lt;Draining, Finished&gt;&nbsp;FinishEvent::apply(ForwardStateT&amp
 &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;return&nbsp;Draining{BuildWriteBackPairs(write_diff),&nbsp;std::move(device_node_ref),&nbsp;std::move(host_node_ref)};
 &nbsp; &nbsp; }
 &nbsp; &nbsp;&nbsp;return&nbsp;Finished{};
+
+```text
 }
+```
+
 这段逻辑解释了为什么 TokenSpeed 要把生命周期拆得如此细：在业务语义上，请求已经结束；但在资源语义上，KV 页可能还在异步搬运。如果没有&nbsp;Draining/WritingBack&nbsp;这样的状态，cache 复用很容易发生竞态。## unsetunset八、MLA KV 布局：为长上下文与 FP8 缓存做结构化折中unsetunset
 TokenSpeed MLA 是官方博客重点强调的核心优化之一。项目单独提供&nbsp;tokenspeed-mla&nbsp;包，面向 NVIDIA Blackwell&nbsp;SM100/SM103，支持 MLA prefill、decode，以及 MLA K/V pack + FP8 quantize。
 在 runtime 中，MLA KV pool 根据量化方式分配不同布局：# 来源：python/tokenspeed/runtime/layers/attention/kv_cache/mla.py
@@ -436,7 +480,11 @@ max_num_tokens = _resolve_max_num_tokens(
 tokenspeed-kernel&nbsp;README 也给出了清晰分层：public API → select_kernel → KernelRegistry → 各 op family 下的 Triton、Gluon、CuTe DSL、vendor wrapper、reference 实现。
 Kernel 注册结构如下：# 来源：tokenspeed-kernel/python/tokenspeed_kernel/registry.py
 @dataclass(frozen=True)
+
+```text
 class&nbsp;KernelSpec:
+```
+
 &nbsp; &nbsp;&nbsp;"""Complete specification of a registered kernel."""
 &nbsp; &nbsp;&nbsp;# Identity
 &nbsp; &nbsp; name: str

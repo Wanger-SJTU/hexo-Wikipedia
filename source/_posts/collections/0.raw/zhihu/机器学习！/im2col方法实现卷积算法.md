@@ -176,6 +176,8 @@ $a_{n, i, j, d}=\sum_{h=0}^{k H-1} \sum_{w=0}^{k W-1} \sum_{c} w_{d, h, w, c} x_
 接下来，就是用python实现了
 
 `def im2col(img, ksize, stride=1):
+
+```text
     N, H, W, C = img.shape
     out_h = (H - ksize) // stride + 1
     out_w = (W - ksize) // stride + 1
@@ -190,6 +192,8 @@ $a_{n, i, j, d}=\sum_{h=0}^{k H-1} \sum_{w=0}^{k W-1} \sum_{c} w_{d, h, w, c} x_
             x_max = x_min + ksize
             col[y_start+x::outsize, :] = img[:, y_min:y_max, x_min:x_max, :].reshape(N, -1)
     return col`
+```
+
 
 以上就是将卷积转换成矩阵乘法的关键函数im2col的实现，参数img是一个4维数组，而且在传进来之前就已经做过padding处理了，out_h，out_w，是卷积结果的宽高，例如输入的img的宽高是4x4的，卷积核的宽高是3x3，步长为1，那么其大小就是2x2了
 
@@ -212,6 +216,8 @@ $a_{n, i, j, d}=\sum_{h=0}^{k H-1} \sum_{w=0}^{k W-1} \sum_{c} w_{d, h, w, c} x_
 最后，在根据im2col包装一个conv函数：
 
 `def conv(X, W, stride=1, padding='same'):
+
+```text
     FN, ksize, ksize, C = W.shape
     if padding == 'same':
 	p = ksize // 2
@@ -222,6 +228,8 @@ $a_{n, i, j, d}=\sum_{h=0}^{k H-1} \sum_{w=0}^{k W-1} \sum_{c} w_{d, h, w, c} x_
     z = z.reshape(N, z.shape[0] / N, -1)
     out_h = (H - ksize) // stride + 1
     return z.reshape(N, out_h, -1 , FN)`
+```
+
 
 感谢@Sebastian
 

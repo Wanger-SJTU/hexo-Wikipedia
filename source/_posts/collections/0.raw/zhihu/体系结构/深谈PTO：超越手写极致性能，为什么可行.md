@@ -127,10 +127,14 @@ HIVM data copy operation from L0C to other memory hierarchies.
 Syntax:
 
 operation ::= `hivm.hir.fixpipe` attr-dict
+
+```text
               `ins` `(` $src `:` type($src) `)`
               `outs` `(` $dst `:` type($dst) `)`
               (`unit_flag` `[` $unit_flag_mode^ (`,` $unit_flag_cond^)? `]`)?
               (`->` type($result_tensor)^)?
+```
+
 Fixpipe is pipeline that performing data movement from L0C to other memory hierarchies, with on-the-fly fixed function of pre-stage quantization, pre-stage ReLU, element-wise add, post-stage ReLU, post-stage quantization. Currently support:
 问题是，写编译器的人不一定是设计硬件的人。他怎么知道这里面的门道？
 

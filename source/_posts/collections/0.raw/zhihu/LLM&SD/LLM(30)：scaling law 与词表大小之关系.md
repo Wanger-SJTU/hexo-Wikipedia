@@ -104,18 +104,24 @@ $$在给定非词表参数 N_{nv} 、词表参数 N_v 和训练字符量 H 的�
 $$可以对（2）进行求导，并搜索最优值，即 \begin{aligned} \frac{\partial \mathcal{L}_u}{\partial V} & =\frac{\partial}{\partial V}\left(\frac{A_2}{(V d)^{\alpha_2}}\right)+\frac{\partial}{\partial V}\left(\frac{B}{\left(\frac{C}{6\left(N_{n v}+V d\right)}\right)^\beta}\right) \\ & =-\alpha_2 \frac{A_2 d}{(V d)^{\alpha_2+1}}+\beta \frac{B \frac{C d}{6\left(N_{n v}+V d\right)^2}}{\left(\frac{F}{6\left(N_{n v}+V d\right)}\right)^{\beta+1}} . \end{aligned}\\其代码实现如下：$$
 
 `def dl_dv(V, Nnv, d, F):
+
+```text
     term1 = 0  # Derivative of -E
     term2 = 0  # Derivative of A1/[Nnv]^alpha1
     term3 = -alpha2 * A2 * d / (V * d) ** (alpha2 + 1)
     u = F / (6 * (Nnv + V * d))
     du_dV = F * d / (6 * (Nnv + V * d) ** 2)
     term4 = beta * B * du_dV / (u ** (beta + 1))
-    
+
     return term1 + term2 + term3 + term4 `
+```
+
 
 $也可以对（2）式进行最优化变换，即 \begin{gathered} \min _{a_1, a_2, b, e, \alpha_1, \alpha_2} \operatorname{Huber}_\delta\left(-\exp (e)+\exp \left(a_1-\alpha_1 * \log \left(N_{n v}\right)+\exp \left(a_2-\alpha_2 * \log \left(N_v\right)\right.\right.\right. \\ \left.+\exp (b-\beta * \log ([H f(V)])), \quad \mathcal{L}_u\right) \end{gathered} \\ 其中 A_1=\exp \left(a_1\right), A_2=\exp \left(a_2\right), B=\exp (b), E=\exp (e)  ，其代码实现如下：$
 
 `def LSE(params, Nnv, V, d, H):
+
+```text
     # fit a, b, e, alpha, beta, where A = exp(a), B = exp(b), E = exp(e)
     a1, a2, b, e, alpha2, beta = params
     alpha1 = beta
@@ -124,6 +130,8 @@ $也可以对（2）式进行最优化变换，即 \begin{gathered} \min _{a_1, 
     term2 = b - beta * np.log(H_to_D(H,V))
     term3 = e
     return (np.exp(term1_1) + np.exp(term1_2) + np.exp(term2) - np.exp(term3))`
+```
+
 
 最终得到的是\mathcal{L}_u与 V 的关系曲线如下：
 

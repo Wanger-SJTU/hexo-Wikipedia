@@ -128,6 +128,8 @@ ARMv8中：
 > 页表处理
 
 `/*描述各级页表中的页表项*/
+
+```text
 typedef struct { pteval_t pte; } pte_t;
 typedef struct { pmdval_t pmd; } pmd_t;
 typedef struct { pudval_t pud; } pud_t;
@@ -160,6 +162,8 @@ typedef struct { pgdval_t pgd; } pgd_t;
 #define pmd_offset(dir, addr)       ((pmd_t *)__va(pmd_offset_phys((dir), (addr))))
 #define pte_offset_phys(dir,addr)   (pmd_page_paddr(READ_ONCE(*(dir))) + pte_index(addr) * sizeof(pte_t))
 #define pte_offset_kernel(dir,addr) ((pte_t *)__va(pte_offset_phys((dir), (addr))))`
+```
+
 
 ### 3.2 head.S中的页表映射**
 
@@ -169,6 +173,8 @@ typedef struct { pgdval_t pgd; } pgd_t;
 其中两个全局页表的定义在`arch/arm64/kernel/vmlinux.lds.S`中，放置在`BSS段`之后：
 
 `. = ALIGN(PAGE_SIZE);
+
+```text
     idmap_pg_dir = .;
     . += IDMAP_DIR_SIZE;
     swapper_pg_dir = .;
@@ -176,6 +182,8 @@ typedef struct { pgdval_t pgd; } pgd_t;
 /*  定义了连续的几个页，分别存放PGD，PMD，PTE等，连续在一起，这个也是head.S中填充的 */
 #define SWAPPER_DIR_SIZE    (SWAPPER_PGTABLE_LEVELS * PAGE_SIZE)
 #define IDMAP_DIR_SIZE      (IDMAP_PGTABLE_LEVELS * PAGE_SIZE)`
+```
+
 
 - `idmap_pg_dir`
 从名字可以看出，`identify map`，也就是物理地址和虚拟地址是相等的。为什么需要这么一个映射呢？我们都知道在MMU打开之前，CPU访问的都是物理地址，那么当MMU打开后访问的就是虚拟地址了，这段页表的映射就是从CPU到打开MMU之前的这段代码物理地址的映射，防止开启MMU后，无法获取页表。可以从`System.map`文件中查看这些代码：
@@ -191,14 +199,24 @@ Linux内核编译后，kernel image是需要进行映射的，包括`text，data
 
 - `create_pgd_entry`
 `/*
+
+```text
  * Macro to populate the PGD (and possibily PUD) for the corresponding
  * block entry in the next level (tbl) for the given virtual address.
+```
+
  *
+
+```text
  * Preserves:   tbl, next, virt
  * Corrupts:    tmp1, tmp2
+```
+
  */
     .macro  create_pgd_entry, tbl, virt, tmp1, tmp2
     create_table_entry \tbl, \virt, PGDIR_SHIFT, PTRS_PER_PGD, \tmp1, \tmp2
+
+```text
 #if SWAPPER_PGTABLE_LEVELS > 3
     create_table_entry \tbl, \virt, PUD_SHIFT, PTRS_PER_PUD, \tmp1, \tmp2
 #endif
@@ -206,16 +224,26 @@ Linux内核编译后，kernel image是需要进行映射的，包括`text，data
     create_table_entry \tbl, \virt, SWAPPER_TABLE_SHIFT, PTRS_PER_PTE, \tmp1, \tmp2
 #endif
     .endm`
+```
+
 
 上述函数主要是调用`create_table_entry`，由于`SWAPPER_PGTABLES`配置为3，因此相当于创建了`pgd和pmd`两级页表，此处需要注意一点，`create_table_entry`函数执行后，`tbl`参数会自动加上`PAGE_SIZE`，也就是说`pgd和pmd`两级页表是物理连续的。
 
 - `create_block_map`
 `/*
+
+```text
  * Macro to populate block entries in the page table for the start..end
  * virtual range (inclusive).
+```
+
  *
+
+```text
  * Preserves:   tbl, flags
  * Corrupts:    phys, start, end, pstate
+```
+
  */
     .macro  create_block_map, tbl, flags, phys, start, end
     lsr \phys, \phys, #SWAPPER_BLOCK_SHIFT
@@ -237,14 +265,22 @@ Linux内核编译后，kernel image是需要进行映射的，包括`text，data
 `/*
  * Macro to create a table entry to the next page.
  *
+
+```text
  *  tbl:    page table address
  *  virt:   virtual address
  *  shift:  #imm page table shift
  *  ptrs:   #imm pointers per table page
+```
+
  *
+
+```text
  * Preserves:   virt
  * Corrupts:    tmp1, tmp2
  * Returns: tbl -> next level table page address
+```
+
  */
     .macro  create_table_entry, tbl, virt, shift, ptrs, tmp1, tmp2
     lsr \tmp1, \virt, #\shift

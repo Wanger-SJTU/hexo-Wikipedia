@@ -41,16 +41,22 @@ Application Binary Interface 也就是我们常说的 ABI，是个让人感觉�
 
 x64 平台上主要有两套常用的 ABI：
 
+```text
 * 用于 64 位 Windows 操作系统上的 [Windows x64 ABI](https://learn.microsoft.com/en-us/cpp/build/x64-software-conventions?view=msvc-170)
 * 用于 64 位 Linux 以及一众 UNIX-like 的操作系统上的 [x86-64 System V ABI](https://gitlab.com/x86-psABIs/x86-64-ABI)
+```
+
 
 > x64, x86-64, x86\_64, AMD64 和 Intel 64 都是指一个 [东西](https://en.wikipedia.org/wiki/X86-64)，即 x86 指令集的 64 位版本。
 
 而从一个动态库里面调用某个函数可以简单的看成下面这个三个步骤：
 
+```text
 * 按照某种格式解析动态库
 * 根据符号名从解析结果中查找函数地址
 * 函数参数传递，调用函数
+```
+
 
 ### Object File Format
 
@@ -105,10 +111,13 @@ int main(){
 
 接下来就到函数传参这一步了。我们知道，函数不过就是一段二进制数据，执行函数其实就是跳转到函数的入口地址，然后执行那一段代码，最后执行完了再跳转回来就行了。而传参无非就是找一块地方，存放数据，<strong>使得调用前后都能访问到这个地方来取数据</strong>。有哪些位置可以选择呢？主要有下面四个选项： 
 
+```text
 * global（全局变量）
 * heap（堆）
 * register（寄存器）
 * stack（栈）
+```
+
 
 使用全局变量进行传参，听起来很魔幻，实际上平常写代码的时候经常把一些需要反复传递的参数改成全局变量，例如`config`这种的。但是，显然不是所有参数都适合使用全局变量传参，如果考虑到线程安全就要更加注意了。
 
@@ -120,12 +129,15 @@ int main(){
 
 具体来说，调用约定规定下面这些内容： 
 
+```text
 * 函数参数传递顺序，从左到右还是从右到左？
 * 函数参数和返回值传递的方式，通过栈还是寄存器？
 * 哪些寄存器在调用者调用前后是保持不变的？
 * 谁负责清理栈帧，调用者还是被调用者？
 * 如何处理 C 语言的 [variadic](https://en.cppreference.com/w/c/variadic) 函数？
 * `...`
+```
+
 
 在`32`位程序中，有很多调用约定，像什么`__cdecl`，`__stdcall`，`__fastcall`，`__thiscall`等等，当时的程序可谓是饱受兼容性之苦。而在`64`位程序中，已经基本完成统一。主要有两种调用约定，也就是 Windows x64 ABI 和 x86-64 System V ABI 分别规定的调用约定（不过并没有个正式的名字）。<strong>需要强调的是函数传参方式只和调用约定有关，和代码优化等级无关。你也不想不同优化等级编译出来的代码，链接到一起之后跑不起来吧。</strong>
 
@@ -244,17 +256,23 @@ g(int):
 
 我们都知道 C++ 标准没有明确规定 ABI，但并不是完全没有规定，它对于编译器的实现是有一些要求的，例如：
 
+```text
 * 结构体成员地址按照声明顺序 [递增](https://en.cppreference.com/w/c/language/struct#Explanation)，这保证了编译器不会对结构体成员进行重新排序
 * 满足 [Standard Layout](https://en.cppreference.com/w/cpp/language/data%5Fmembers#Standard-layout) 约束的结构体需要与相应的 C 结构体布局兼容
 * 满足 [Trivially Copyable](https://en.cppreference.com/w/cpp/types/is%5Ftrivially%5Fcopyable) 约束的结构体可以使用`memmove`或者`memcpy`进行拷贝得到一个完全相同的全新对象
 * `...`
+```
+
 
 另外，由于 C++ 一直在推出新的版本。同一份代码，我使用新标准和旧标准分别进行编译，得到的结果相同吗（不考虑使用宏控制 C++ 版本进行条件编译的影响）？这就要看 C++ 标准层面对 ABI 兼容性的保证了，事实上，C++ 标准尽可能的保证<strong>向后兼容性</strong>。也就是说，两段代码，使用旧标准和新标准编译出来的代码是完全一样的。
 
 然而，也有极少数的例外，例如（我只找得到这些，欢迎评论区补充）：
 
+```text
 * C++17 把`noexcept`作为函数类型的一部分，这会影响函数最后生成的 mangling name
 * C++20 引入的`no_unique_address`，MSVC 目前仍然没直接支持，因为会导致 ABI Broken
+```
+
 
 更多时候，C++ 新版本会在加入新的语言特性的同时带来新的 ABI，而不会影响旧的代码，例如 C++23 加入的两个新特性：
 
@@ -346,12 +364,15 @@ std::size_t n = h(42);
 
 C++ 中的一些抽象最终是要落实到实现上的，而标准有没有规定如何实现，那这部分内容就由编译器自由发挥，例如：
 
+```text
 * name mangling 的规则（为了实现函数重载和模板函数）
 * 复杂类型的布局（例如含有虚继承）
 * 虚函数表的布局
 * RTTI 的实现
 * 异常处理
 * `...`
+```
+
 
 如果编译器对这些部分的实现不同，那么最后不同编译器编译出的二进制产物自然是互不兼容，不能混用的。
 
@@ -359,8 +380,11 @@ C++ 中的一些抽象最终是要落实到实现上的，而标准有没有规�
 
 在今天，C++ 编译器的 ABI 已经基本得到统一，主流的 ABI 只有两套：
 
+```text
 * Itanium C++ ABI，具有公开透明的 [文档](https://itanium-cxx-abi.github.io/cxx-abi/abi.html)
 * MSVC C++ ABI，并没有官方的文档，这里有一份非正式的 [版本](http://www.openrce.org/articles/files/jangrayhood.pdf)
+```
+
 
 > 尽管名为 Itanium C++ ABI，但它实际上是用于 C++ 的跨架构 ABI，除了 MSVC 之外，几乎所有的 C++ 编译器都在使用它，尽管在异常处理方面的细节略有不同。历史上，C++ 编译器都以各自的方式处理 C++ ABI。当英特尔大力推广 Itanium 时，他们希望避免不兼容问题，因此，他们为 Itanium 上的所有 C++ 供应商创建了一个标准化的 ABI。后来，由于各种原因，GCC 需要修改其内部 ABI，而且鉴于它已经支持了 Itanium ABI（为 Itanium 处理器），他们选择将 ABI 定义扩展到所有架构，而不是创建自己的 ABI。从那时起，所有主要的编译器除了 MSVC 都采用了跨架构的 Itanium ABI，并且即使 Itanium 处理器本身不再接收维护，该 ABI 仍然得到了维护。 
 
@@ -382,10 +406,13 @@ C++ 中的一些抽象最终是要落实到实现上的，而标准有没有规�
 
 除此之外，编译器还提供了一些列选项用来控制编译器的行为，这些选项可能会影响 ABI，比如：
 
+```text
 * \-fno-strict-aliasing：关闭严格别名
 * \-fno-exceptions：关闭异常
 * \-fno-rtti：关闭 RTTI
 * `...`
+```
+
 
 给不同选项编译出来的库链接到一起的时候，尤其要兼容性问题。例如你的代码关闭了严格别名，但是依赖的外部库开启了严格别名，很可能指针错误的传播，从而导致程序出错。
 
@@ -397,9 +424,12 @@ C++ 中的一些抽象最终是要落实到实现上的，而标准有没有规�
 
 三大 C++ 编译器都有自己的标准库 
 
+```text
 * MSVC 对应的是 [msvc stl](https://github.com/microsoft/STL)
 * GCC 对应的是 [libstdc++](https://github.com/gcc-mirror/gcc/tree/master/libstdc%2B%2B-v3)
 * Clang 对应的是 [libc++](https://github.com/llvm/llvm-project/tree/main/libcxx)
+```
+
 
 我们在前面提到过，C++ 标准尽量保证 ABI 向后兼容。即使是从 C++98 到 C++11 这样的大更新，旧代码的 ABI 也没有受到太大影响，导致 ABI Break Change 的措辞改变更是完全找不到。
 
@@ -413,8 +443,11 @@ C++ 中的一些抽象最终是要落实到实现上的，而标准有没有规�
 
 除了标准库以外，C++ 程序一般还需要链接 C 运行时 
 
+```text
 * 在 Windows 上，必须链接 [CRT](https://learn.microsoft.com/en-us/cpp/c-runtime-library/compatibility?view=msvc-170)
 * 在 Linux 上 取决于所使用的发行版和编译环境，可能会链接 [glibc](https://www.gnu.org/software/libc/) 或者 [musl](https://musl.libc.org/)
+```
+
 
 C 运行时除了提供 C 标准库的实现外，还负责程序的初始化和清理。它负责调用`main`函数，并管理程序的启动和终止过程，包括执行一些必要的初始化和清理工作。对于大多数在操作系统上的软件来说，链接它是必须的。
 

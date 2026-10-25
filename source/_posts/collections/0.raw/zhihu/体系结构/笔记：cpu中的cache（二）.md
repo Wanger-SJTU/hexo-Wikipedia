@@ -111,14 +111,22 @@ Store Buffers
 
 `//假定b在cpu0
 voidexecutedOnCpu0(){
+
+```text
     a = 1;
     b = 1;
  } 
 //假定a在cpu1
+```
+
 voidexecutedOnCpu1(){  
+
+```text
    while (b == 0) {};
    assert(a == 1);
 }
+```
+
 `
 
 ![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_47791d16d748.jpg)
@@ -145,18 +153,26 @@ memory barrier（内存屏障）**
 
 `//假定在cpu0
 voidexecutedOnCpu0(){
+
+```text
     a = 1;
     //在更新数据之前必须将所有存储缓存（store buffer）中的指令执行完毕。
     storeMemoryBarrier();
     b = 1;
  } 
 //假定在cpu1
+```
+
 voidexecutedOnCpu1(){  
+
+```text
    while (b == 0) {
 };
     //在读取之前将所有失效队列中关于该数据的指令执行完毕。
     loadMemoryBarrier();
    assert(a == 1);
+```
+
 }`
 
 ![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_1b3cf4d6bdf7.jpg)

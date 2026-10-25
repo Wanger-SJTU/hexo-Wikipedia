@@ -284,15 +284,23 @@ Tier 0-3 解决的是 &#34;端侧内部的功耗分层&#34;。但当 Tier 1-2 �
 端侧量化优先考虑 &#34;齐次量化&#34; (同一 scale factor), 避免 &#34;分组量化&#34; (增加开销):
 
 # 端侧推荐: 齐次量化 (快)
+
+```python
 def quantize_homogeneous(weights):
     scale = max(abs(weights)) / 127
     return (weights / scale).astype(int8)
+```
+
 
 # 避免: 分组量化 (慢, 需要额外 scale 存储)
+
+```python
 def quantize_grouped(weights, group_size=32):
     for group in weights.reshape(-1, group_size):
         scale = max(abs(group)) / 127
         # ← 每个 group 一个 scale, 增加存储和访问开销
+```
+
 
 <strong>2.5.3 端侧模型生命周期</strong>
 端侧面临额外约束：模型占用存储大（1-7GB）、加载耗时长（2-5s）、无法像云端瞬间切换。因此我们需要进行特殊处理。
@@ -370,11 +378,15 @@ def quantize_grouped(weights, group_size=32):
 
 不确定性 (概率、噪声、故障)
     |
+
+```text
     ├─ 冗余 + 投票   —— &#34;多试几次&#34; &#34;取最好的&#34;
     ├─ 闭环反馈      —— &#34;试了检查&#34; &#34;错了修正&#34;
     ├─ 约束空间      —— &#34;不让你错&#34; &#34;框住行为&#34;
     ├─ 确定性优先路由 —— &#34;能确定就&#34; &#34;不要猜&#34;
     └─ 不可逆隔离    —— &#34;错了也没&#34; &#34;大事&#34;
+```
+
 
 在端侧Agent OS，所有五种范式都在围绕一个统一的目标展开：
 
@@ -592,7 +604,11 @@ Harness: &#34;这需要 Grant, 我来请求&#34;
 TEE (Grant Service):
     - 检查 Grant 历史：上次转账给这个人是何时？
     - 检查金额: 500 元超过今日额度吗？
+
+```text
     - 展示 UI: 询问用户 &#34;确认转账？&#34;
+```
+
  ↓ 
 User: 生物识别 (人脸 + 指纹)
  ↓
@@ -696,9 +712,12 @@ KVCache 内存估算 (7B INT4 模型):
 <strong>6.1.3 Session → Context 的选取策略</strong>
 端侧 Context Window 极小，必须精确选取最有价值的信息注入：
 
+```text
              Session 事件流 (完整历史，可能数千条)
                        │
                        ▼
+```
+
 ┌──────────────────────────────────────────────────────────────┐
 │           Context Selector (Harness 内)                       │
 │                                                              │
@@ -730,9 +749,13 @@ Task A 运行中 → Task B 高优先级插入
 
 方案 1: 完全切换 (简单但慢)
     保存 Task A 的 KVCache → NVMe
+
+```text
     加载 Task B 的 KVCache (或重新 prefill)
     完成 Task B → 恢复 Task A 的 KVCache
     代价：每次切换 100-500ms (取决于 context 长度)
+```
+
 
 方案 2: 前缀复用 (推荐)
     Task A 和 Task B 共享系统 prompt 前缀的 KVCache
@@ -740,9 +763,13 @@ Task A 运行中 → Task B 高优先级插入
     代价：每次切换 < 50ms (仅差异部分)
 
 方案 3: 分优先级 (Tier 联动)
+
+```text
     Tier 0-1 任务：短 context, 不缓存 (每次重 prefill 即可)
     Tier 2 任务：完整 KVCache 缓存 + 切换
     代价: Tier 0-1 无切换开销，Tier 2 按方案 2
+```
+
 
 <strong>6.2 本地 RAG 与云端知识的一致性</strong>
 端侧 RAG 面临的最大挑战：本地索引 (≤500MB) 无法覆盖全部知识，必须与云端知识保持动态同步。
@@ -786,23 +813,39 @@ Trace 含：路由决策、Tool 调用序列、LLM 输入输出、验证结果
 批量 Trace 分析（Tier 0 DSP 或 CPU 小核 + 轻量规则）：
 
 高频路径检测
+
+```text
     &#34;过去 30 天，&#39;查天气&#39;任务 200 次，每次都是 LLM→调 weather_api→格式化&#34;
     → 沉淀为 Skill: 直接调 weather_api (跳过 LLM 路由)
     → 效果：该场景从 Tier 1 降到 Tier 0 (省电 + 更快 + 更确定)
+```
+
 
 失败模式聚类
+
+```text
     &#34;GUI 操作外卖 App 失败率 40%, 主要是按钮定位失败&#34;
     → 策略：优先检查该 App 是否有 Intent/DeepLink
     → 或：上报开发者平台 → 推动 App 提供 CLI 接口
+```
+
 
 路由模型微调
+
+```text
     &#34;基于成功 Trace 训练轻量分类器&#34;
     → 用于 Tier 0 DSP 直接判断：此请求是否匹配已有 Skill?
     → 匹配 → 跳过 LLM 完全不调用；不匹配 → 升 Tier 走 Harness
+```
+
 
 Context 模板学习
+
+```text
     &#34;同类 Task 总是需要注入哪些 Context?&#34;
     → 生成 Context Template → 加速 Prepare 阶段
+```
+
 
 最后一部分会将所有内容凝练为竞争定位、设计原则。
 

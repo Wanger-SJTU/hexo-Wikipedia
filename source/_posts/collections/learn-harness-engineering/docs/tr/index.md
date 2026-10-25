@@ -36,8 +36,12 @@ Başlamak için öğrenme yolunuzu seçin. Kurs üç bölümden oluşur: teorik 
   </a>
   <a href="./resources/" class="card">
     <h3>Kaynak Kütüphanesi</h3>
+
+```text
     <p>Kendi depolarınızda kullanabileceğiniz hazır şablonlar (AGENTS.md, feature_list.json).</p>
   </a>
+```
+
 </div>
 
 ## Harness'ın temel mekanizması

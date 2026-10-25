@@ -19,14 +19,21 @@ source_url: https://www.zhihu.com/question/57184661/answer/19648995610
 
 `typedef void (*read_function_t)(const char* read_buf, int read_size, void* user_data);
 
+```cpp
 int register_read_callback(read_function_t on_read_function, void* user_data);`
+```
+
 
 这样，用户在回调函数里，就可以使用 user_data 这个参数，获取额外的状态信息。
 
 但是，也有一些古早时代的 C api, 没有办法设置 user_data。 比如：
 
 `typedef void (*read_callback_t)(const char* read_buf, int read_size);
+
+```cpp
 int set_read_callback(read_callback_t on_read);`
+```
+
 
 那么回调函数里，就只能拿到库作者设定好的回调信息了。 自己也没有办法传递别的信息给回调处理函数。
 
@@ -71,6 +78,8 @@ set_read_callback(static_castread_callback_t>(read_cb));
 用汇编来表示，这个代码应该这样
 
 `dynamic_callback:
+
+```text
     mov rax, [rip+17] ; 此指令 7 个字节，取得 user_data 存入 rax 寄存器
     nop ; 1 个字节
     jmp [rip+2]; // 此指令 6 个字节，直接跳转执行 cb_function_wrapper
@@ -78,12 +87,16 @@ set_read_callback(static_castread_callback_t>(read_cb));
     nop ; 1 个字节
     .qword cb_function_wrapper // 8 字节存储带 user_data 的回调
     .qword user_data // 8 字节存储 user_data`
+```
+
 
 一共32个字节。使用时，每次复制一份新的代码，然后将最后的2个8 字节，填入相应指针。 然后折断代码的起始地址，就可以作为 C 库的 回调函数指针使用了。
 
 注意的是， cb_function_wrapper 还不是真正的回调函数。因为它需要从 rax 寄存器获取 user_data. 这个 cb_function_wrapper 这么写
 
 `static void cb_function_wrapper(const char* read_buf, int read_size)
+
+```cpp
 {
     std::functionvoid(const char* read_buf, int read_size)>* user_data;
     asm("\t mov %%rax,%0" : "=r"(user_data));
@@ -91,6 +104,8 @@ set_read_callback(static_castread_callback_t>(read_cb));
     (*user_data)(read_buf, read_size);
     delete user_data;
 }
+```
+
 `
 
 这里， user_data 是 std::function,它把真正的用户的 lambda 给包起来了。
@@ -104,6 +119,8 @@ ooops,user_data 删了， dynamic_callback 这段动态代码没删。会有内�
 于是，我们获得了一个这样的类
 
 `struct cb_function_wrapper
+
+```cpp
 {
     unsigned char _trunk_code[32];
     std::functionvoid(const char* read_buf, int read_size)>* user_function;
@@ -129,6 +146,8 @@ ooops,user_data 删了， dynamic_callback 这段动态代码没删。会有内�
         return reinterpret_castread_callback_t>(_trunk_code);
     }
 }
+```
+
 `
 
 cb_function_wrapper 里面的 _trunk_code 就是上文讲到的32个字节的机器代码。
@@ -140,12 +159,22 @@ cb_function_wrapper 里面的 _trunk_code 就是上文讲到的32个字节的机
 但是，C 库的回调种类是何其的多！总不能每种回调都写一个 包装器吧。 所以，这时候我们需要祭出模板大法。
 
 `templatetypename Signature>
+
+```text
 struct c_function_ptr;
+```
+
 
 templatetypename Signature>
+
+```text
 struct dynamic_function;
+```
+
 
 templatetypename R, typename... Args>
+
+```cpp
 class dynamic_function
 {
     typedef R (* function_ptr ) (Args...);
@@ -169,8 +198,12 @@ class dynamic_function
     {
         return ExecutableAllocator{}.deallocate(ptr, size);
     }
+```
+
 
     templatetypename LambdaFunction>
+
+```cpp
     explicit dynamic_function(LambdaFunction&& lambda)
         : ref_count(2)
         , user_function(std::forwardLambdaFunction>(lambda))
@@ -216,6 +249,8 @@ class dynamic_function
     std::atomic_int ref_count;
     std::functionR(Args...)> user_function;
 };
+```
+
 `
 
 此时， _jit_code 和 user_function 放到一个类里，一次性的分配出来了。 因此，机器代码也稍作了修改，用 `lea rax, [rip-8]` 直接获得 _jit_code 的地址。而 _jit_code 的地址，就是这个类的 this 指针。
@@ -225,16 +260,26 @@ class dynamic_function
 c_function_ptr 的代码如下
 
 `templatetypename Signature>
+
+```text
 struct c_function_ptr;
+```
+
 
 templatetypename R, typename... Args>
+
+```text
 struct c_function_ptrR(Args...)>
 {
     using wrapper_class = dynamic_functionR(Args...)>;
 
     wrapper_class * _impl;
+```
+
 
     templatetypename LambdaFunction>
+
+```cpp
     explicit c_function_ptr(LambdaFunction&& lambda)
     {
         _impl = new wrapper_class(std::forwardLambdaFunction>(lambda));
@@ -264,6 +309,8 @@ struct c_function_ptrR(Args...)>
             _impl->unref();
     }
 };
+```
+
 `
 
 使用的代码如下：（还是使用 set_read_callback 为例）
@@ -271,11 +318,14 @@ struct c_function_ptrR(Args...)>
 `auto read_cb = c_function_ptrread_callback_t>([&捕获其他状态](const char* read_buf, int read_size)
 {  。。。 处理代码，可以访问 捕获的变量 });
 
+```text
 // NOTE：如果 set_read_callback 是一次设置，永久使用，则调用这个
 // 如果是每次设置只回调一次，则不调用
 // read_cb.no_auto_destory();
 
 //正常来说， 带捕获的 lambda 是没法 cast 成一个 C 指针的。。。 但是有了这个 魔法，它就可以了。
+```
+
 set_read_callback(static_castread_callback_t>(read_cb));
 `
 

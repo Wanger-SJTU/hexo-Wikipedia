@@ -20,6 +20,7 @@ source_url: https://zhuanlan.zhihu.com/p/340228853
 1. Concepts
 不加额外要求的情况下，Tensor的成员变量可以简化如下：
 
+```cpp
 struct Tensor {
     double* data;
     int* offset;
@@ -27,6 +28,8 @@ struct Tensor {
     int* shape;
     int* stride;
 };
+```
+
 
 - `Tensor::data`，浮点型数据的指针，指向储存数据的内存（这里只考虑数据是浮点数的情况）；
 - `Tensor::offset`，表示Tensor存储数据的开始地址到`Tensor::data`之间的偏移，也就是说`offset + data`得到的才是Tensor储存数据的开始地址；
@@ -38,8 +41,12 @@ Tensor t;
 
 // data指向包含24个元素的double数组，元素为0到23.
 t.data = new double[24];
+
+```cpp
 for(int i = 0; i < 24; ++i)
     data[i] = i;
+```
+
 
 t.ndim = 3;
 t.shape = new int[3]{2, 3, 4};
@@ -55,6 +62,7 @@ t.stride = new int[3]{12, 4, 1};
 
  用代码表示：
 
+```cpp
 void init_stride(Tensor& t) {
     int stride = 1;
     for(int i = ndim - 1; i >= 0; --i) {
@@ -62,6 +70,8 @@ void init_stride(Tensor& t) {
         stride *= t.shape[i];
     }
 }
+```
+
 
 有了这个结构之后，下面结合具体的操作来进行说明如何使用。
 
@@ -72,18 +82,25 @@ void init_stride(Tensor& t) {
 
 这个过程主要是`Tensor::stride`在发挥作用，我们可以参考编译器是如何从多维数组里取值的。从一个多维数组里取值，可以转化为从一维数组里的某个位置取值。比如：
 
+```cpp
 int array3d[2][3][4];
 int* array1d = reinterpret_cast<int*>(array);
+```
+
 ASSERT(array3d[i][j][k] == array1d[i*12 + j*4 + k])
 
 `Tensor::stride`就是一样的东西，记录了如何把一维的`Tensor::data`解释成多维。
 
 data_t& get_value(Tensor& t, const std::vector<int>& inds) {
+
+```cpp
     int offset = t.offset;
     for(int i = 0; i < t.ndim; ++i)
         offset += inds[i] * t.stride[i];
     return t.data[offset];
 }
+```
+
 
 当然，我们可以在`get_value()`中加上一些Assert，对`inds`的长度及其取值进行约束，这时候才会用到`t.shape`。
 
@@ -93,6 +110,8 @@ data_t& get_value(Tensor& t, const std::vector<int>& inds) {
 如果说取值时对于`Tensor::stride`的使用很自然，那么在transpose中就稍微有点惊喜了。在`Tensor::stride`的帮助下，transpose变得格外简单：仅需要交换`t.shape`和`t.stride`对应两个维度的元素即可得到结果。代码如下，同样地，这里省略了对参数的检查。
 
 Tensor tranpose(const Tensor& t, int dim0, int dim1) {
+
+```cpp
     Tensor nt {
         /*data=*/t.data, /*offset=*/t.offset, /*ndim=*/t.ndim, 
         /*shape=*/new int[t.ndim], 
@@ -107,6 +126,8 @@ Tensor tranpose(const Tensor& t, int dim0, int dim1) {
     std::swap(nt.stride[dim0], nt.stride[dim1]);
     return nt;
 }
+```
+
 
 大致上可以这么理解这件事：假设`nt`是由`t`在第0维和第1维上transpose得到的，那么我们期待的是
 
@@ -117,6 +138,8 @@ nt[i, j, k] == t[j, i, k]
 同样地，`torch.permute(*dims)`也是这个道理，将`t.shape`和`t.stride`的元素按照对应的顺序重新排列即可得到结果。
 
 Tensor permute(const Tensor& t, const std::vector<int>& dims) {
+
+```cpp
     Tensor nt {
         /*data=*/t.data, /*offset=*/t.offset, /*ndim=*/t.ndim,
         /*shape=*/new int[t.ndim],
@@ -128,6 +151,8 @@ Tensor permute(const Tensor& t, const std::vector<int>& dims) {
     }
     return nt;
 }
+```
+
 
 2.3 view
 这里的view指的是直接改变Tensor的形状，给一维的`Tensor::data`换一种解释方式，Pytorch的接口是`t.view(*shape)`。
@@ -140,6 +165,7 @@ t1 = t0.transpose(1, 0)
 t2 = t1.view(3, 4)  # RuntimeError
 这里连续与不连续的定义也是通过`Tensor::stride`来定义的。
 
+```cpp
 bool is_contiguous(const Tensor& t) {
     int stride = 1;
     for(int i = t.ndim - 1; i >= 0; --i) {
@@ -149,6 +175,8 @@ bool is_contiguous(const Tensor& t) {
     }
     return true;
 }
+```
+
 
 直观地说，如果`t.stride`满足前面讲的初始化公式，
 
@@ -159,6 +187,8 @@ bool is_contiguous(const Tensor& t) {
 如果已知view前后的Tensor都是连续的（Pytorch里好像可以对局部连续的Tensor做view，这里就不探讨了），那么view操作就同样简单了，只需根据新的shape初始化stride就行。
 
 Tensor view(const Tensor& t, const std::vector<int>& shape) {
+
+```cpp
     Tensor nt {
         /*data=*/t.data, /*offset=*/t.offset, /*ndim=*/shape.size(),
         /*shape=*/new int[shape.size()],
@@ -173,6 +203,8 @@ Tensor view(const Tensor& t, const std::vector<int>& shape) {
     }
     return nt;
 }
+```
+
 
 如果想要对参数进行检查的话，需要检查`is_contiguous(t)`，以及`shape`对应的数据量和`t.shape`对应的数据量是否相等。
 
@@ -187,6 +219,8 @@ Tensor view(const Tensor& t, const std::vector<int>& shape) {
 - `nt.stride[0] = t.stride[0], nt.stride[1] = t.stride[2]`，同样跳过了`t.stride[1]`具体的代码如下：
 
 Tensor slice(const Tensor& t, int idx, int dim) {
+
+```cpp
     Tensor nt {
         /*data=*/t.data, 
         /*offset=*/t.offset + idx * t.stride[dim],
@@ -206,6 +240,8 @@ Tensor slice(const Tensor& t, int idx, int dim) {
     }
     return nt;
 }
+```
+
 
 2.5 切片
 这里所说的切片和上面的索引类似，只是不会让Tensor减少一维，对应的Pytorch语句是`t[:, j0:j1, :]`。
@@ -213,6 +249,8 @@ Tensor slice(const Tensor& t, int idx, int dim) {
 实现起来也和索引类似，`nt.stride`完全复制`t.stride`；`nt.shape`基本复制`t.shape`，只在做索引的维度上，根据`j0:j1`确定新值，这一维度上的尺寸通常会缩小。具体实现代码如下：
 
 Tensor slice(const Tensor& t, int start_idx, int end_idx, int dim) {
+
+```cpp
     Tensor nt {
         /*data=*/t.data, 
         /*offset=*/t.offset + start_idx * t.stride[dim],
@@ -226,6 +264,8 @@ Tensor slice(const Tensor& t, int start_idx, int end_idx, int dim) {
     nt.shape[dim] = end_dix - start_idx;
     return nt;
 }
+```
+
 
 2.6 Broadcasting
 广播机制也是Tensor运算的一大特色，可以使不具有相同形状的Tensor进行加减乘除运算。下面是[Pytorch官网的例子](https://link.zhihu.com/?target=https%3A//pytorch.org/docs/stable/notes/broadcasting.html%3Fhighlight%3Dbroadcasting)：
@@ -252,6 +292,7 @@ torch.Size([3, 1, 7])
 
 用代码表示依然很简单：
 
+```cpp
 void init_stride(Tensor& t) {
     int stride = 1;
     for(int i = ndim - 1; i >= 0; --i) {
@@ -259,6 +300,8 @@ void init_stride(Tensor& t) {
         stride *= t.shape[i];
     }
 }
+```
+
 
 首先，这样设置对正常取值是没有影响的，因为这一维的尺寸是1，那么能够取的索引值只有0，无论stride设置成怎样的值，这一维对偏移的贡献都是0。因为上面的代码没有对传进来的参数进行检查，所以这一点没有体现出来。比如形状是`(2, 1, 4)`的Tensor，那么对它取值的时候，能取得索引值只有`[i, 0, k]`，也就是第二维上的值一定是0，那么这一维上的stride其实可以取任意值。
 

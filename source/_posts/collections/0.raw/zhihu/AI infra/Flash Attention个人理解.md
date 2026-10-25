@@ -115,6 +115,8 @@ Flash Attention计算原理
 ![](https://www.zhihu.com/equation?tex=o%5E%7B%28i%29%7D+%3D+o_%7B%5Ctext%7Bold%7D%7D+%2B+o_i%5E%7B%5Ctext%7Badj%7D%7D+%3D+%5Csum_%7Bj%3D1%7D%5E%7Bn_i%7D+%5Cexp%28s_j+-+m%5E%7B%28i%29%7D%29+v_j+%5Ctag%7B8%7D) 
 
 Flash Attention torch代码
+
+```python
 import torch
 import math
 
@@ -126,8 +128,12 @@ def flash_attention_forward(Q, K, V, block_size=256):
         K: 键张量, shape (batch_size, seq_len, d_k)
         V: 值张量, shape (batch_size, seq_len, d_v)
         block_size: 分块大小, 控制内存使用
+```
+
         
     返回:
+
+```text
         O: 注意力输出, shape (batch_size, seq_len, d_v)
     &#34;&#34;&#34;
 
@@ -137,75 +143,101 @@ def flash_attention_forward(Q, K, V, block_size=256):
     O = torch.zeros_like(V)          # 输出张量, 初始化为零
     L = torch.zeros(batch_size, seq_len, device=Q.device)  # 指数和统计量
     M = torch.full((batch_size, seq_len), -torch.inf, device=Q.device)  # 最大值统计量
-    
+
     # 计算缩放因子 (1/sqrt(d_k))
     scale = 1.0 / math.sqrt(d_k)
+```
+
     
     # 外层循环: 按块处理键/值序列
+
+```text
     for j in range(0, seq_len, block_size):
         # 获取当前键块和值块
         K_block = K[:, j:j+block_size, :]  # [batch_size, block_size, d_k]
         V_block = V[:, j:j+block_size, :]  # [batch_size, block_size, d_v]
+```
+
         
         # 计算查询与键块的相似度分数
+
+```text
         S_j = torch.matmul(Q, K_block.transpose(-2, -1)) * scale  # [batch_size, seq_len, block_size]
-        
+
         # 计算当前块的最大值 (按最后一个维度)
         m_j = torch.max(S_j, dim=-1).values  # [batch_size, seq_len]
+```
+
         
         # 更新全局最大值
+
+```text
         M_new = torch.maximum(M, m_j)  # [batch_size, seq_len]
-        
+
         # 计算调整因子 (指数部分)
         # 旧部分的调整因子: exp(M_prev - M_new)
         exp_old = torch.exp(M - M_new)  # [batch_size, seq_len]
         # 新块的调整因子: exp(m_j - M_new)
         exp_new = torch.exp(m_j - M_new)  # [batch_size, seq_len]
-        
+
         # 使用当前块的局部最大值计算指数 (数值稳定性)
         # P_j = exp(S_j - m_j)
         P_j = torch.exp(S_j - m_j.unsqueeze(-1))  # [batch_size, seq_len, block_size]
+```
+
         
         # 计算当前块的指数和
         l_j = P_j.sum(dim=-1)  # [batch_size, seq_len]
         
         # 计算当前块的加权和输出
+
+```text
         # O_j = P_j @ V_block
         O_j = torch.matmul(P_j, V_block)  # [batch_size, seq_len, d_v]
-        
+
         # 调整旧输出: O_prev * exp(M_prev - M_new)
         O = O * exp_old.unsqueeze(-1)  # 保持维度一致
-        
+
         # 调整新块输出: O_j * exp(m_j - M_new)
         O_j_adjusted = O_j * exp_new.unsqueeze(-1)
-        
+
         # 更新输出: O = O_prev_adjusted + O_j_adjusted
         O = O + O_j_adjusted
-        
+
         # 调整旧指数和: L_prev * exp(M_prev - M_new)
         L = L * exp_old
-        
+
         # 调整新块指数和: l_j * exp(m_j - M_new)
         l_j_adjusted = l_j * exp_new
-        
+
         # 更新指数和: L = L_prev_adjusted + l_j_adjusted
         L = L + l_j_adjusted
+```
+
         
         # 更新全局最大值
+
+```text
         M = M_new
-    
+
     # 最终归一化: O = O / L
     O = O / L.unsqueeze(-1) 
-    
+
     return O
+```
+
 在pytorch2.0以上的版本F.scaled_dot_product_attention融合了Flash Attention的算子，不过经过评论区大佬 [@shenjingwa33](https://www.zhihu.com/people/fdb860fe88410c80c6106880bd6eaa22) 的指正这里的适用范围很其实狭窄，合适的硬件和对应的编译文件都配套才可以，看来还是不能偷懒了：
 
 import torch.nn.functional as F
 
 output = F.scaled_dot_product_attention(
     query, key, value,
+
+```text
     attn_mask=None,
     dropout_p=0.0,
     is_causal=False
 )
+```
+
 Flash Attention通过数学和工程上的简单优化，达到了即降低运行时间，又降低显存占用，可谓十分优雅，确实是太强了

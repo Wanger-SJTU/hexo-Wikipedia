@@ -154,18 +154,28 @@ Quest 不再需要加载整个 KV 缓存，而是仅加载所需数据的一小�
 `def old_llama_decoder_layer_forward(
     self,
     hidden_states: torch.Tensor,
+
+```text
     attention_mask: Optional[torch.Tensor] = None,
     position_ids: Optional[torch.LongTensor] = None,
     past_key_value: Optional[Tuple[torch.Tensor]] = None,
     output_attentions: Optional[bool] = False,
     use_cache: Optional[bool] = False,
     padding_mask: Optional[torch.LongTensor] = None,
+```
+
 ) -> Tuple[torch.FloatTensor, Optional[Tuple[torch.FloatTensor, torch.FloatTensor]]]:
+
+```text
     residual = hidden_states
 
     hidden_states = self.input_layernorm(hidden_states)
+```
+
 
     # Self Attention
+
+```text
     hidden_states, self_attn_weights, present_key_value = self.self_attn(
         hidden_states=hidden_states,  # （1, 1, 4096）
         attention_mask=attention_mask,  # None
@@ -176,22 +186,32 @@ Quest 不再需要加载整个 KV 缓存，而是仅加载所需数据的一小�
         padding_mask=padding_mask,
     )
     hidden_states = residual + hidden_states
+```
+
 
     # Fully Connected
+
+```text
     residual = hidden_states
     hidden_states = self.post_attention_layernorm(hidden_states)
     hidden_states = self.mlp(hidden_states)
     hidden_states = residual + hidden_states
 
     outputs = (hidden_states,)
+```
+
 
     if output_attentions:
         outputs += (self_attn_weights,)
 
     if use_cache:
+
+```text
         outputs += (present_key_value,)
 
     return outputs`
+```
+
 
 再下一层会调用：quest/evaluation/quest_attention.py
 
@@ -206,6 +226,8 @@ sparse 的计算逻辑如下：
 1. qkv proj
 
 `query_states = (
+
+```text
         self.q_proj(hidden_states)
         .view(bsz, q_len, self.num_heads, self.head_dim)
         .transpose(1, 2)
@@ -220,6 +242,8 @@ sparse 的计算逻辑如下：
         .view(bsz, q_len, self.num_key_value_heads, self.head_dim)
         .transpose(1, 2)
     )`
+```
+
 
 2. 从 kv cache 获取 kv_seq_len
 
@@ -227,11 +251,15 @@ sparse 的计算逻辑如下：
 if isinstance(past_key_value, DynamicCache):
     kv_seq_len = past_key_value.get_seq_length()
 # 旧缓存格式
+
+```text
 else:
     kv_seq_len = key_states.shape[-2]   # 1 
     if past_key_value is not None:
         assert isinstance(past_key_value, tuple)
         kv_seq_len += past_key_value[0].shape[-2]  #4008`
+```
+
 
 3. rope
 
@@ -247,12 +275,16 @@ if isinstance(past_key_value, DynamicCache):
     if use_cache:
         key_states, value_states = past_key_value.update(key_states, value_states, layer_idx=self.layer_idx)
 # Legacy cache format
+
+```text
 else:
     if past_key_value is not None:
         # reuse k, v, self_attention
         key_states = torch.cat([past_key_value[0], key_states], dim=2)
         value_states = torch.cat([past_key_value[1], value_states], dim=2)
     past_key_value = (key_states, value_states) if use_cache else None`
+```
+
 
 5. GQA 适配
 
@@ -306,14 +338,20 @@ chunk_max_key = chunk_max_key.reshape(
 11. 计算query 和 max_key 的权重
 
 `quantized_weight = torch.matmul(
+
+```text
     postive_query.float(),    # [1, 32, 1, 128]
     chunk_max_key.transpose(2, 3),    # [1, 32, 128, 4008]
 )  
+```
+
 # (1, 32, 1, 4008)`
 
 12. 应用 mask (当前没有）
 
 `if attention_mask is not None:
+
+```text
     attn_weights = attn_weights + attention_mask
     attn_weights = torch.max(
         attn_weights, torch.tensor(torch.finfo(attn_weights.dtype).min)
@@ -322,6 +360,8 @@ chunk_max_key = chunk_max_key.reshape(
     quantized_weight = torch.max(
         quantized_weight, torch.tensor(torch.finfo(quantized_weight.dtype).min)
     )`
+```
+
 
 13. 选择 top-k
 
@@ -329,11 +369,15 @@ chunk_max_key = chunk_max_key.reshape(
 attn_weights_for_selection = quantized_weight  #(1, 32, 1, 4008)
 
 if token_budget > 0:
+
+```text
     mask_bottom = local_heavy_hitter_mask(
         attn_weights_for_selection, token_budget, self.chunk_size
     )  # [1, 32, 1, 4008]  bool 格式
 else: 
     mask_bottom = torch.zeros_like(attn_weights_for_selection, dtype=torch.bool)`
+```
+
 
 14. 应用 叠加 casual mask
 

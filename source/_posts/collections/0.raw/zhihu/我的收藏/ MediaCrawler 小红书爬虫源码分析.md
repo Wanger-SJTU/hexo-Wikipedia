@@ -43,19 +43,29 @@ MediaCrawler 是最近冲上 Github 热搜的开源多社交平台爬虫。虽�
 
 `async def login_by_qrcode(self):
     """Login to Xiaohongshu website and keep webdriver login state."""
+
+```text
     utils.logger.info("[XHSLogin.login_by_qrcode] Begin login to Xiaohongshu by QR code...")
     qrcode_img_selector = "xpath=//img[@class='qrcode-img']"
+```
+
 
     # Find login QR code
+
+```text
     base64_qrcode_img = await utils.find_login_qrcode(
         self.context_page,
         selector=qrcode_img_selector
     )
     if not base64_qrcode_img:
         utils.logger.info("[XHSLogin.login_by_qrcode] Login failed, QR code not found, please check....")
+```
+
 
         # If this website does not automatically popup login dialog box,
         # we will manually click login button
+
+```text
         await asyncio.sleep(0.5)
         login_button_ele = self.context_page.locator("xpath=//*[@id='app']/div[1]/div[2]/div[1]/ul/div[1]/button")
         await login_button_ele.click()
@@ -65,15 +75,23 @@ MediaCrawler 是最近冲上 Github 热搜的开源多社交平台爬虫。虽�
         )
         if not base64_qrcode_img:
             sys.exit()
+```
+
 
     # Get not logged session
+
+```text
     current_cookie = await self.browser_context.cookies()
     _, cookie_dict = utils.convert_cookies(current_cookie)
     no_logged_in_session = cookie_dict.get("web_session")
+```
+
 
     # Show login QR code
     # We need to use partial function to call show_qrcode function and run in executor
     # then current asyncio event loop will not be blocked
+
+```text
     partial_show_qrcode = functools.partial(utils.show_qrcode, base64_qrcode_img)
     asyncio.get_running_loop().run_in_executor(executor=None, func=partial_show_qrcode)
 
@@ -87,6 +105,8 @@ MediaCrawler 是最近冲上 Github 热搜的开源多社交平台爬虫。虽�
     wait_redirect_seconds = 5
     utils.logger.info(f"[XHSLogin.login_by_qrcode] Login successful then wait for {wait_redirect_seconds} seconds redirect...")
     await asyncio.sleep(wait_redirect_seconds)
+```
+
 
 `
 
@@ -100,8 +120,12 @@ MediaCrawler 是最近冲上 Github 热搜的开源多社交平台爬虫。虽�
 - 如果获取到了，则等待用户扫码完成登录。
 - 其中可能会出现验证码的情况，此时会提示需要手动验证，没有实现自动验证，需要人工手动操作干预。
 ` async def check_login_state(self, no_logged_in_session: str) -> bool:
+
+```text
      if "请通过验证" in await self.context_page.content():
         utils.logger.info("[XHSLogin.check_login_state] A verification code appeared during the login process, please verify manually.")`
+```
+
 
 #### 手机号登录
 
@@ -109,6 +133,8 @@ MediaCrawler 是最近冲上 Github 热搜的开源多社交平台爬虫。虽�
 
 `async def login_by_mobile(self):
     """Login xiaohongshu by mobile"""
+
+```text
     utils.logger.info("[XHSLogin.login_by_mobile] Begin login xiaohongshu by mobile ...")
     await asyncio.sleep(1)
     try:
@@ -161,11 +187,15 @@ MediaCrawler 是最近冲上 Github 热搜的开源多社交平台爬虫。虽�
         await asyncio.sleep(0.5)
 
         await submit_btn_ele.click()  # 点击登录
+```
+
 
         # todo ... 应该还需要检查验证码的正确性有可能输入的验证码不正确
         break
 
     try:
+
+```text
         await self.check_login_state(no_logged_in_session)
     except RetryError:
         utils.logger.info("[XHSLogin.login_by_mobile] Login xiaohongshu failed by mobile login method ...")
@@ -174,6 +204,8 @@ MediaCrawler 是最近冲上 Github 热搜的开源多社交平台爬虫。虽�
     wait_redirect_seconds = 5
     utils.logger.info(f"[XHSLogin.login_by_mobile] Login successful then wait for {wait_redirect_seconds} seconds redirect ...")
     await asyncio.sleep(wait_redirect_seconds)
+```
+
 
 `
 
@@ -203,6 +235,8 @@ await input_ele.fill(self.login_phone)`
 实现代码为 `login_by_cookies` 方法。就是将用户提供的 `cookie(web_session)`信息放到`browser_context` 中
 
 `async def login_by_cookies(self):
+
+```text
     for key, value in utils.convert_str_cookie_to_dict(self.cookie_str).items():
         if key != "web_session":  # Only set web_session cookie attribute
             continue
@@ -215,6 +249,8 @@ await input_ele.fill(self.login_phone)`
                 'path': "/"
             }
         ])
+```
+
 
 `
 
@@ -223,6 +259,8 @@ await input_ele.fill(self.login_phone)`
 小红书浏览器端接口有做`sign`验签，MediaCrawler 生成 `sign`相关参数的代码位于 `media_platform/xhs/client.py` 文件中的 `_pre_headers` 方法。代码如下:
 
 `async def _pre_headers(self, url: str, data=None) -> Dict:
+
+```js
     encrypt_params = await self.playwright_page.evaluate("([url, data]) => window._webmsxyw(url,data)", [url, data])
     local_storage = await self.playwright_page.evaluate("() => window.localStorage")
     signs = sign(
@@ -240,6 +278,8 @@ await input_ele.fill(self.login_phone)`
     }
     self.headers.update(headers)
     return self.headers
+```
+
 `
 
 - 没有逆向后用 Python 重新实现`window._webmsxyw`函数，而是通过 `self.playwright_page.evaluate("([url, data]) => window._webmsxyw(url,data)", [url, data])` 直接主动调用浏览器运行时中的 `window._webmsxyw`  生成 `encrypt_params`
@@ -251,6 +291,8 @@ await input_ele.fill(self.login_phone)`
 
 `def sign(a1="", b1="", x_s="", x_t=""):
     """
+
+```python
     takes in a URI (uniform resource identifier), an optional data dictionary, and an optional ctime parameter. It returns a dictionary containing two keys: "x-s" and "x-t".
     """
     common = {
@@ -342,6 +384,8 @@ def mrc(e):
     for n in range(57):
         o = ie[(o & 255) ^ ord(e[n])] ^ right_without_sign(o, 8)
     rturn o ^ -1 ^ 3988292384
+```
+
 `
 
 - 这个`sign`函数没有像`window._webmsxyw` 方法一样，选择通过`self.playwright_page.evaluate`主动调用浏览器运行时中的`sign`相关方法，而是自己用 Python 实现。实现代码不再解释，就是逆向 JS 逻辑后，翻译成了 Python。
@@ -359,19 +403,31 @@ await self.browser_context.add_init_script(path="libs/stealth.min.js")`
 
 - 通过添加 `webId cookie` 来防止出现 `captcha` 滑块
 `await self.browser_context.add_cookies([
+
+```text
     {
+```
+
  'name': "webId",
  'value': "xxx123",  # any value
  'domain': ".xiaohongshu.com",
  'path': "/"
+
+```text
     }
+```
+
 ])`
 
 - 支持设置 ip 代理来更改 ip 地址
 `if config.ENABLE_IP_PROXY:
+
+```text
     ip_proxy_pool = await create_ip_pool(config.IP_PROXY_POOL_COUNT, enable_validate_ip=True)
     ip_proxy_info: IpInfoModel = await ip_proxy_pool.get_proxy()
     playwright_proxy_format, httpx_proxy_format = self.format_proxy_info(ip_proxy_info)`
+```
+
 
 #### 数据爬取
 

@@ -46,20 +46,28 @@ source_url: https://www.zhihu.com/question/30957800/answer/2700292012
 假设`Widget`有一个用于处理的成员函数：
 
 `class Widget {
+
+```cpp
 public:
     // ...
     void process();
     // ...
 };
+```
+
 `
 
 对于`Widget::process`看起来合理的代码如下：
 
 `void Widget::process()
+
+```text
 {
     // ...
     processedWidgets.emplace_back(this);
 }
+```
+
 `
 
 在 `process()` 中执行 `processedWidgets.emplace_back(this);` 的时候，`std::shared_ptr`的会为 `this`这个原始指针创建一个控制块。但是有可能，`this` 指向的 `Widget` 的 `process()` 成员函数之外也被其他的 `std::shared_ptr`管理，所以**可能存在多个 `std::shared_ptr`的控制块，导致非法行为**。 
@@ -71,6 +79,8 @@ public:
 `Widget::process`的安全实现：
 
 `class Widget: public std::enable_shared_from_thisWidget> {
+
+```cpp
 public:
     // ...
     void process();
@@ -80,6 +90,8 @@ void Widget::process()
 {
     processedWidgets.emplace_back(shared_from_this());
 }
+```
+
 `
 
 `shared_from_this()`会查找当前对象控制块，然后创建一个新的`std::shared_ptr`关联这个控制块。用这个函数之前，是假设当前对象已经存在一个关联的控制块。因此，必须已经存在一个指向当前对象的`std::shared_ptr`。如果没有`std::shared_ptr`指向当前对象（即当前对象没有关联控制块），那么`shared_from_this`会抛出一个异常。

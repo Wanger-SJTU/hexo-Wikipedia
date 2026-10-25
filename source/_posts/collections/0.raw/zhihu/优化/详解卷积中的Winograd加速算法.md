@@ -117,6 +117,8 @@ $WinoGrad算法起源于1980年，是Shmuel Winograd提出用来减少FIR滤波�
 这一步就是对卷积核进行变化，公式为：U_{k,c}=Gg_{k,c}G^T，其中k表示输出通道标号，c表示输入通道标号，一个U(k,c)对应卷积核的一个g(k,c)。由于我们要实现的是F(6\times 6,3\times 3)，因此G是一个(m+r-1)\times r=8\times 3的矩阵，我们不难写出这部分代码（其中，G矩阵可以通过`https://github.com/andravin/wincnn` 这个工具进行计算）：
 
 `// 矩阵G
+
+```cpp
         const float ktm[8][3] = {
             {1.0f,      0.0f,      0.0f},
             {-2.0f / 9, -2.0f / 9, -2.0f / 9},
@@ -134,6 +136,8 @@ $WinoGrad算法起源于1980年，是Shmuel Winograd提出用来减少FIR滤波�
     #pragma omp parallel for num_threads(OMP_THREAD)
 #endif
         for(int outc = 0; outc 
+```
+
 
 通过这段代码，所有的卷积核g都被转换成了U，存放在了`kernel_tm`上，一行代表一个U(k,c)，`kernel_tm`的内存排布如下图所示：
 
@@ -162,6 +166,7 @@ Pack策略之后的矩阵kernel_tm2就长这个样子这部分的代码实现如
 
 `// Vc,b = B^Td_{c,b}B
         
+```cpp
         // 输出特征图如果长宽不够需要Padding
         int outW = (outWidth + 5) / 6 * 6;
         int outH = (outHeight + 5) / 6 * 6;
@@ -178,7 +183,7 @@ Pack策略之后的矩阵kernel_tm2就长这个样子这部分的代码实现如
         float *srcPadding = new float[PadHeight * PadWidth * inChannel];
         PaddingLayerArm now;
         now.padding(src, inWidth, inHeight, inChannel, srcPadding, 0, H - inHeight, 0, W - inWidth, 0);
-        
+
         int w_tm = outW / 6 * 8;
         int h_tm = outH / 6 * 8;
         int tiles = w_tm / 8 * h_tm / 8;
@@ -186,9 +191,11 @@ Pack策略之后的矩阵kernel_tm2就长这个样子这部分的代码实现如
         int src_tm_channel = inChannel;
         int src_tm_h = 16 * w_tm / 8 * h_tm / 8;
         int src_tm_w = 4;
-        
+
         int src_tm_size = src_tm_h * src_tm_w;
         float *src_tm  = new float[src_tm_channel * src_tm_h * src_tm_w];
+```
+
 `
 
 注意上面`src_tm`的形状，这是考虑到了卷积核变换矩阵已经执行了Pack策略，所以这里为了方便后续的卷积计算和进行指令集加速，同样将`src_tm`进行Pack，这个Pack是直接规定计算完之后4个4个岔开存储的方式来实现的。另外，输入Blob的一个Channel对应了输出Blob的一个Channel。
@@ -196,6 +203,8 @@ Pack策略之后的矩阵kernel_tm2就长这个样子这部分的代码实现如
 然后我们再通过WinCNN工具可以获得B矩阵和B的转置矩阵，并确定V矩阵更好的计算策略（指的是可以复用一些中间变量）。
 
 `// BT = 
+
+```text
         // ⎡1   0    -    0         0    -1  0⎤
         // ⎢                                          ⎥
         // ⎢0   1      1    -  -    1    1   0⎥
@@ -235,14 +244,20 @@ Pack策略之后的矩阵kernel_tm2就长这个样子这部分的代码实现如
         // reuse r03 * 2.5
         // 5 = (r06 + (r02 - r04 * 1.25) * 4) + (r01 * 2 - r03 * 2.5 + r05 * 0.5)
         // 6 = (r06 + (r02 - r04 * 1.25) * 4) - (r01 * 2 - r03 * 2.5 + r05 * 0.5)
+```
+
 `
 
 接下来我们就可以开始计算V矩阵了，代码如下：
 
 `#if USE_OMP
+
+```cpp
     #pragma omp parallel for num_threads(OMP_THREAD)
 #endif
         for(int q = 0; q 
+```
+
 
 可以看到这个地方不仅计算了V矩阵，并在存储时就对V矩阵进行了重新排列，以适应卷积核变化矩阵的Pack结果，方便后面进行卷积计算的加速同时获得更好的访存，这个过程如下图所示：
 
@@ -260,9 +275,13 @@ $M_{k,b}=\sum_{c}U_{k,c}\odot V_{c,b}$
 由于上面输入图像块已经执行了Pack策略，这里只需要将对应小块进行乘加操作即完成了M矩阵的计算，这部分的代码实现如下：
 
 `#if USE_OMP
+
+```cpp
     #pragma omp parallel for num_threads(OMP_THREAD)
 #endif
         for(int cc = 0; cc 
+```
+
 
 至此，我们获得了M矩阵，矩阵大概长下面这样子，它仍然是交错排列的：
 
@@ -278,6 +297,8 @@ Y_{k,b}=A^TM_{k,b}A
 其中k表示输出通道数，b表示tile标号，这部分和上面卷积核的计算类似，代码如下：
 
 `// Yk,b=A^TMk,bA
+
+```cpp
 // AT=
 // ⎡1  1  1   1    1    1      1    0⎤
 // ⎢                                 ⎥
@@ -300,14 +321,19 @@ Y_{k,b}=A^TM_{k,b}A
 
         float *dest_tm2 = new float[outW * outH * outChannel];
         const int dst_tm_size2 = outW * outH;
+```
+
         
 
+```cpp
         const int outSize = outHeight * outWidth;
 
 #if USE_OMP
     #pragma omp parallel for num_threads(OMP_THREAD)
 #endif
         for(int cc = 0; cc 
+```
+
 
 这部分代码就实现了M矩阵汇聚并利用A矩阵获得了最终的结果Y。这个过程上一节图中已经画了，这里主要实现的是图中的右半部分：
 
@@ -316,7 +342,11 @@ Y_{k,b}=A^TM_{k,b}A
 Y矩阵汇聚存放获得输出Blob但是需要注意的是这里获得的Y有可能是多了几行或者几列，也就是拖尾为0的部分，所以需要把这一部分Crop掉，才能获得我们最终outHeight * outWidth * outChannel的结果特征图。Crop部分的代码如下：
 
 `//crop
+
+```cpp
         for(int cc = 0; cc 
+```
+
 
 至此，WinoGrad的算法流程结束，我们获得了最后的卷积计算结果。
 

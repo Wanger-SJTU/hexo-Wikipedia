@@ -79,9 +79,13 @@ CLIP zero-shot prediction步骤可以整理成下面这样：
 预测过程的代码如下：
 
 `import os
+
+```python
 import clip
 import torch
 from torchvision.datasets import CIFAR100
+```
+
 
 # Load the model
 device = "cuda" if torch.cuda.is_available() else "cpu"
@@ -97,8 +101,12 @@ text_inputs = torch.cat([clip.tokenize(f"a photo of a {c}") for c in cifar100.cl
 
 # Calculate features
 with torch.no_grad():
+
+```text
     image_features = model.encode_image(image_input)
     text_features = model.encode_text(text_inputs)
+```
+
 
 # Pick the top 5 most similar labels for the image
 image_features /= image_features.norm(dim=-1, keepdim=True)
@@ -109,7 +117,11 @@ values, indices = similarity[0].topk(5)
 # Print the result
 print("\nTop predictions:\n")
 for value, index in zip(values, indices):
+
+```python
     print(f"{cifar100.classes[index]:>16s}: {100 * value.item():.2f}%")`
+```
+
 
 <strong>3.3 Training</strong>
 

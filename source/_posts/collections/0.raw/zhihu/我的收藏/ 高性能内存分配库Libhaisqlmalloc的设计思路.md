@@ -909,6 +909,7 @@ Libhaisqlmalloc 库目前接管了下列内存相关的函数接口实现内存�
 
 对外的C函数接口支持如下：
 
+```cpp
  void* malloc( size_t sizet_size_in )  __THROW
 
  void free( void* ptr_void_in )  __THROW
@@ -934,6 +935,8 @@ Libhaisqlmalloc 库目前接管了下列内存相关的函数接口实现内存�
  void malloc_stats( void )  __THROW
 
  int mallopt( int int_key, int int_value )  __THROW
+```
+
 
  size_t malloc_size( void* p )  __THROW
 
@@ -963,6 +966,7 @@ malloc函数接口默认与Linux的接口兼容，但是也有区别，说明如
 
 对外的C++函数接口支持如下：
 
+```cpp
 void* operator new( size_t sizet_size_in ) __THROW
 
 void* operator new[]( size_t sizet_size_in ) __THROW
@@ -1002,6 +1006,8 @@ void operator delete[]( void* ptr_void_in, size_t sizet_size_in )  __THROW
 void operator delete( void* ptr_void_in, size_t sizet_size_in, std::align_val_t  alignt_in )  __THROW
 
 void operator delete[]( void* ptr_void_in, size_t sizet_size_in, std::align_val_t  alignt_in )  __THROW
+```
+
 
 库增加了下列6个额外的扩展函数：
 
@@ -1085,9 +1091,12 @@ Libhaisqlmalloc 库提供了显示内部分配情况的接口malloc_stats，与�
 
 用法见下面的定义:
 
+```cpp
 #include 
 
 void malloc_stats(void);
+```
+
 
 Libhaisqlmalloc 库中的内存分配是很复杂的一个体系，这个体系首先区分了两大类内存，一种是自身消耗的内存，用于管理数据，这种内存我们称为Metadata, 第二种是给用户分配的内存，这种内存以NUMA node和Thread Local为核心，从系统申请的块大小是2M块，再切成小内存分配给用户。下面是一个malloc_stats()调用后的显示案例：
 

@@ -55,6 +55,7 @@ Numpy（MKL），TVM和BLIS进行1024x1024x1024的单精度矩阵乘法的性能
 
 Numpy（MKL），TVM和BLIS进行1024x1024x1024的双精度矩阵乘法的性能测试        说明：
 
+```text
             * [tvm_without_tune](https://link.zhihu.com/?target=https%3A//github.com/billmuch/matmul_perf_test/blob/main/tvm_without_tune.py)使用TVM的How to optimize GEMM on CPU例子计算方案并使用固定参数运行
 
             * [tvm_autotvm](https://link.zhihu.com/?target=https%3A//github.com/billmuch/matmul_perf_test/blob/main/tvm_autotvm_tune.py)使用TVM的autotvm对tvm_without_tune的计算方案参数调优
@@ -64,6 +65,8 @@ Numpy（MKL），TVM和BLIS进行1024x1024x1024的双精度矩阵乘法的性能
             * [blis](https://link.zhihu.com/?target=https%3A//github.com/billmuch/matmul_perf_test/blob/main/blis.cpp)调用本地编译的blis库进行计算，编译是使用 --enable-cblas -t openmp CC=clang CXX=clang++选项
 
             * numpy使用后端MKL支持的conda中的numpy binary进行同样的矩阵运算
+```
+
 
 #### <strong>3. 使用TVM生成GEMM计算代码并对参数调优（TVM对GEMM的编译及优化）</strong>
 
@@ -96,6 +99,8 @@ Auto Scheduler调优IR和TVM How to中的IR对比        因为上述三份TVM�
 `@main = primfn(A_1: handle, B_1: handle, C_1: handle) -> ()
   attr = {"from_legacy_te_schedule": True, "global_symbol": "main", "tir.noalias": True}
   buffers = {C: Buffer(C_2: Pointer(float32), float32, [1024, 1024], []),
+
+```cpp
              B: Buffer(B_2: Pointer(float32), float32, [1024, 1024], []),
              A: Buffer(A_2: Pointer(float32), float32, [1024, 1024], [])}
   buffer_map = {A_1: A, B_1: B, C_1: C} {
@@ -126,6 +131,8 @@ Auto Scheduler调优IR和TVM How to中的IR对比        因为上述三份TVM�
       }
     }
   }
+```
+
 }`
 
 #### 4. BLIS GEMM计算的算法简介
@@ -142,9 +149,12 @@ Auto Scheduler调优IR和TVM How to中的IR对比        因为上述三份TVM�
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_5c46383de1fc.jpg)
 
+```text
           BLIS（单线程）将C矩阵分成多个Cb(144 x 1024)的block（还有一些剩余的m != 144的块），A分成多个Ab(144 x 256)block，B分成多个Bb(256 x 1024)的block，按照需要将Ab的多个block与对应的不同的Bb相乘，将结果加回对应的Cb中。
 
           对其中的每一个Cb += Ab x Bb，后续会将Cb分为许多更小的Cr(6 x 16)的小块，对每一个Cr和对应的Ar和Br中的每一个k，使用Cr(6 x 16) += Ar(6 x 1) * Br(1 x 16)的kernel进行计算。
+```
+
 
 <strong>TVM分块</strong>
 
@@ -152,15 +162,20 @@ Auto Scheduler调优IR和TVM How to中的IR对比        因为上述三份TVM�
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_50a847c00c8e.jpg)
 
+```text
           TVM将C矩阵分成多个Cb(512 x 128)的block，A分成多个Ab(512 x 1024)block，B分成多个Bb(1024 x 128)的block，按照需要将Ab的多个block与对应的不同的Bb相乘，将结果加回对应的Cb中。
 
           对其中的每一个Cb += Ab x Bb，将Cb分为许多更小的Cr(4 x 16)的小块，对每一个Cr和对应的Ar和Br中的每一个k，使用Cr(4 x 16) += Ar(4 x 1) * Br(1 x 16)的kernel进行计算。        
+```
+
 
 #### <strong>6. TVM和BLIS kernel计算方式</strong>
 
  BLIS将需要计算的矩阵按照前述方式分成大块后，在我的机器上将每块再次分成多个6x16小块，并调用手工优化的内核对每个小块进行计算。核心计算代码如下：
 
 `	mov(var(k_iter), rsi) // i = k_iter;
+
+```text
 	test(rsi, rsi) // check i via logical AND.
 	je(.SCONSIDKLEFT) // if i == 0, jump to code that
 	// contains the k_left loop.
@@ -276,6 +291,8 @@ Auto Scheduler调优IR和TVM How to中的IR对比        因为上述三份TVM�
 
 	dec(rsi) // i -= 1;
 	jne(.SLOOPKITER) // iterate again if i != 0.
+```
+
 `
 
          BLIS在计算时使用了一个6x16的内核来计算。在一个C(6x16)的计算中，C的所有数据常驻寄存器ymm4~ymm15；k从0到256（KC=256），对每一个k值ki，将b（1x16)的值加载到ymm0和ymm1中；将ki对应的a(6x1)中的a0，a1值作为一组，load到ymm2和ymm3中，与ymm0，ymm1相乘后加回C对应行数据所在的寄存器中，之后再计算第二组a2，a3和第三组a4，a5。
@@ -295,6 +312,8 @@ BLIS Kernel做如下计算![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84
         TVM auto scheduler生成的kernel对应的汇编代码如下：
 
 `.LBB3_8:
+
+```text
 	vmovaps	(%rsi), %ymm8
 	vmovaps	32(%rsi), %ymm9
 	vbroadcastss	-8192(%rdx,%rbx), %ymm10
@@ -316,6 +335,8 @@ BLIS Kernel做如下计算![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84
         在一个C(4x16)的计算中，C的所有数据常驻寄存器ymm0~ymm7；k从0到1024，对每一个k值ki，将b（1x16)的值加载到ymm8和ymm9中；将ki对应的a(4x1)中的4个a值，分4次load到ymm10中，与ymm8和ymm9相乘后加回C对应行数据所在的寄存器中。
 
         从代码中可以注意到，对于同一个b数组的所有数据是连续存放的（pack_b)，而a中的两个数据相距4096（vbroadcasts的数据地址相距4096，对应A的一行），没做任何pack。
+```
+
 
         如下图示：
 
@@ -367,11 +388,15 @@ BLIS 影响线程的环境变量
 - <strong>分块方式对比：</strong>
 
 - BLIS的分块和计算：
+
+```text
                 单线程的时候，BLIS将乘法先分成大的block mc(144 x 1024) += ac(144 x 256) * bc(256 x 1024)，在计算大block的乘法时，再把三个块进一步分成小的block乘法 mr(6 x 16) += ar(6 x 256) * br (256  x 16)解决。
 
                 进行一次大block计算时，一个mc 576K，一个ac 144K，一个bc 1M。两次相邻的大block计算，会共用同一个bc，所以需要2 **576 + 2 * *144 + 1024 = 2464K数据。每个CPU有4M的L2 Cache，所以所有数据都可以存在在L2 Cache中。
 
                 进行小block的计算时，mr (6x16)的数据384 Bytes常驻ymm寄存器，一个ar 6144 Bytes，一个br 16 K。两次相邻的小block计算，会共用同一个br，共需要2 *384 + 2 * 6144 + 16384 = 28.75 K。每个CPU有256 K的L1 Cache，所以所有数据都可以存在在L1 Cache中。
+```
+
 
 2. TVM的分块和计算： 
 

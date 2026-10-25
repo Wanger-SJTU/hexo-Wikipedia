@@ -113,10 +113,14 @@ cache一致性协议通过管理cache-line的状态来防止不一致或者数�
 `void foo(void) {  
   a = 1;   
   b = 1; 
+
+```cpp
 } 
 void bar(void) {   
   while(b==0) continue;   
   assert(a == 1); 
+```
+
 }`
 
 如下顺序的操作可能会发生：
@@ -135,6 +139,8 @@ void bar(void) {
 硬件不清楚哪些变量是可能相关的，硬件设计者无法提供直接的解决方式。因此他们提供了<strong>memory-barrier</strong>指令给软件开发者，由他们告诉CPU变量的关系。上述程序代码使用memory-barrier更改后如下：
 
 `void foo(void)
+
+```cpp
 {
   a = 1;
   smp_mb();
@@ -144,6 +150,8 @@ void bar(void)
 {
   while(b==0) continue;
   assert(a == 1);
+```
+
 }`
 
 CPU执行smp_mb()时，后续的<strong>store</strong>必须等待store buffer刷到cache中才能存储到cache line中。CPU可能简单stall，直到store buffer清空，或者用store buffer保存后续的store直到之前的entries被应用。
@@ -168,7 +176,10 @@ invalidate确认花费较长时间的一个原因是必须要确保相应cache l
 
 假设变量"a"和"b"的值初始都是0，"a"是只读副本(share 状态)，"b"被CPU0所owner(modified或者exclusive状态)。如下程序，CPU0执行foo函数，CPU1执行bar函数。
 
+```cpp
 void foo(void) {   a = 1;   smp_mb();   b = 1; } void bar(void) {   while(b==0) continue;   assert(a == 1); }
+```
+
 
 可能的操作序列如下：
 
@@ -187,6 +198,8 @@ void foo(void) {   a = 1;   smp_mb();   b = 1; } void bar(void) {   while(b==0) 
 硬件设计者依旧无法直接解决，而memory-barrier可以于invalidate queue交互，当cpu执行memory barrier时，标记当前invalidate queue中的所有条目，强制后续的<strong>load</strong>等待，直到所有标记的条目成功应用到cache中。因此加入一条memory barrier的程序代码如下：
 
 `void foo(void)
+
+```cpp
 {
   a = 1;
   smp_mb();
@@ -196,6 +209,8 @@ void bar(void)
 {
   while(b==0) continue;
   assert(a == 1);
+```
+
 }`
 
 cpu1执行完while循环后执行smp_mb()，标记invalidate queue中的条目，当执行<strong>assert(a==1)</strong>时，必须等待队列中的条目被应用才能load，"a"的cache line失效，cpu1继续执行load发现"a"的cache line不在cache中，因此发送"read"消息，获取到"a"的最新值，assert成功。
@@ -209,6 +224,8 @@ cpu1执行完while循环后执行smp_mb()，标记invalidate queue中的条目�
 使用读写屏障修改的程序如下：
 
 `void foo(void)
+
+```cpp
 {
   a = 1;
   smp_mb();
@@ -219,6 +236,8 @@ void bar(void)
   while(b==0) continue;
   smp_mb();
   assert(a == 1);
+```
+
 }`
 
 一些计算机具有更多种类的memory barrier，但是了解这三种可以对memory barrier有一个比较好的理解。

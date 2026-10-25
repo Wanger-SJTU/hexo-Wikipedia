@@ -89,6 +89,8 @@ PTQ过程中的一个基本步骤是为每个量化器找到良好的量化范�
  weight2 = weight2.permute(1, 0, 2, 3)
  out_channel = weight1.shape[0]
  for i in range(out_channel):
+
+```text
     r1 = compute_range(weight1, i)  # 计算kernel数值范围
     r2 = compute_range(weight2, i)
     s =  r1 / sqrt(r1 * r2)
@@ -96,7 +98,11 @@ PTQ过程中的一个基本步骤是为每个量化器找到良好的量化范�
     weight2[i] = weight2[i] * s
     bias1[i] = bias1[i] * (1. / s)
   # 调整回之前的数据排布
+```
+
  weight2 = weight2.permute(1, 0, 2, 3)
+
+```python
  return weight1, weight2
 
 def equalize(weight1, bias1, weight2, bias2, weight3):
@@ -113,18 +119,28 @@ def equalize(weight1, bias1, weight2, bias2, weight3):
        S1.append(s)
        s = pow(r1 * r2 * r3, 1. / 3) / r3
        S2.append(s)
+```
+
 
    # 对前两个conv进行equalize
    for i in range(out_channel):
+
+```text
        weight1[i] = weight1[i] * (1. / S1[i])
        bias1[i] = bias1[i] * (1. / S1[i])
        weight2[i] = weight2[i] * S1[i]
+```
+
 
    # 对后两个conv进行equalize
    for i in range(out_channel):
+
+```text
        weight2[i] = weight2[i] * (1. / S2[i])
        bias2[i] = bias2[i] * (1. / S2[i])
        weight3[i] = weight3[i] * S2[i]
+```
+
         
    # 调整回之前的数据排布
    weight3 = weight3.permute(1, 0, 2, 3)

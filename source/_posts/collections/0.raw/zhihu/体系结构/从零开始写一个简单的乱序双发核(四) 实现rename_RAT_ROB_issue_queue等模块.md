@@ -108,17 +108,29 @@ Spec_RAT / Arch_RAT就是两张32entry的表，0-31个entry的内容分别是0-3
 `// RAW Hazard Detection for rs1
 // A RAW hazard occurs if Instruction 1's rs1 reads a register that Instruction 0 writes to.
 assign raw_hazard_rs1 = instr0_lrd_valid && instr1_lrs1_valid && 
+
+```text
                         (instr0_lrd == instr1_lrs1) && (instr0_lrd != 5'd0);
 
 // RAW Hazard Detection for rs2
 // A RAW hazard occurs if Instruction 1's rs2 reads a register that Instruction 0 writes to.
+```
+
 assign raw_hazard_rs2 = instr0_lrd_valid && instr1_lrs2_valid && 
+
+```text
                         (instr0_lrd == instr1_lrs2) && (instr0_lrd != 5'd0);
 
 // WAW Hazard Detection
 // A WAW hazard occurs if both Instruction 0 and Instruction 1 write to the same register.
+```
+
 assign waw_hazard = instr0_lrd_valid && instr1_lrd_valid &&
+
+```text
                    (instr0_lrd == instr1_lrd) && (instr0_lrd != 5'd0);`
+```
+
 
 同时我们还要注意一个事情，hazard检查只是为设sleep服务的，不是是否做重命名的条件。我们是无脑对所有需要writeback的rd寄存器都做重命名的，因为rename一次可以看到的opcode数量是有限的，它不可能知道"是否只针对某些opcode做rename就够了"这件事，所以就直接无脑全rename了事，反正freelist就在那，做全部重命名根本没什么代价。
 
@@ -174,16 +186,21 @@ module age_deq_policy_ooo (
     input wire                           reset_n,
     input wire [ `ISSUE_QUEUE_DEPTH-1:0] iq_entries_ready_to_go,
     input wire [ `ISSUE_QUEUE_DEPTH-1:0] iq_entries_valid,
+
+```text
     /* ------------------------------ enqueue fire ------------------------------ */
     input wire [ `ISSUE_QUEUE_DEPTH-1:0] iq_entries_wren_oh,
     input wire [`ISSUE_QUEUE_LOG -1 : 0] enq_ptr,
     /* ------------------------------ dequeue fire ------------------------------ */
     input wire [ `ISSUE_QUEUE_DEPTH-1:0] iq_entries_clear_entry,
     input wire [   `ISSUE_QUEUE_LOG-1:0] deq_ptr,
+```
+
 
     output reg                          oldest_found,
     output reg [`ISSUE_QUEUE_DEPTH-1:0] oldest_idx_oh
 
+```cpp
 );
 
     // age_matrix[i][j] = 1 => "entry i" is older than "entry j"
@@ -202,6 +219,8 @@ module age_deq_policy_ooo (
         // Check if there's any j that is older than i
         any_j_older = 'b0;
         for (i = 0; i 
+```
+
 
 有了age matrix来确保出队总是出所有已ready opcode中最老的那个。那么入队就可以随便乱入了，通过一个简单的findfirst逻辑，直接往找到的第一个有空的entry入队就完事了。
 

@@ -21,9 +21,13 @@ source_url: https://zhuanlan.zhihu.com/p/392826624
 
 `module {
   func @test_matmul(%arg0: tensor1x14x19xf32>, %arg1: tensor1x19x28xf32>) -> tensor1x14x28xf32> {
+
+```text
     %0 = "tosa.matmul"(%arg0, %arg1) : (tensor1x14x19xf32>, tensor1x19x28xf32>) -> tensor1x14x28xf32>
     return %0 : tensor1x14x28xf32>
   }
+```
+
 }`
 
 我们把它转化成linalg表示。
@@ -34,12 +38,16 @@ output:
 
 `module  {
   func @test_matmul(%arg0: tensor1x14x19xf32>, %arg1: tensor1x19x28xf32>) -> tensor1x14x28xf32> {
+
+```text
     %cst = constant 0.000000e+00 : f32
     %0 = linalg.init_tensor [1, 14, 28] : tensor1x14x28xf32>
     %1 = linalg.fill(%cst, %0) : f32, tensor1x14x28xf32> -> tensor1x14x28xf32>
     %2 = linalg.batch_matmul ins(%arg0, %arg1 : tensor1x14x19xf32>, tensor1x19x28xf32>) outs(%1 : tensor1x14x28xf32>) -> tensor1x14x28xf32>
     return %2 : tensor1x14x28xf32>
   }
+```
+
 }`
 
 这里的linalg算子是named op，我们把它转化成generic 表示。
@@ -55,6 +63,8 @@ output:
 #map4 = affine_mapd0, d1, d2, d3) -> (d0, d1, d2)>
 module  {
   func @test_matmul(%arg0: tensor1x14x19xf32>, %arg1: tensor1x19x28xf32>) -> tensor1x14x28xf32> {
+
+```text
     %cst = constant 0.000000e+00 : f32
     %0 = linalg.init_tensor [1, 14, 28] : tensor1x14x28xf32>
     %1 = linalg.generic {indexing_maps = [#map0, #map1], iterator_types = ["parallel", "parallel", "parallel"]} ins(%cst : f32) outs(%0 : tensor1x14x28xf32>) {
@@ -69,6 +79,8 @@ module  {
     } -> tensor1x14x28xf32>
     return %2 : tensor1x14x28xf32>
   }
+```
+
 }`
 
 这个时候已经很有趣了，这是一个接近halide DSL描述。map里的d3也就是reduce维度，其他维度都是并行维度。
@@ -87,6 +99,8 @@ output:
 #map5 = affine_mapd0, d1, d2, d3) -> (d0, d1, d2)>
 module  {
   func @test_matmul(%arg0: tensor1x14x19xf32>, %arg1: tensor1x19x28xf32>) -> tensor1x14x28xf32> {
+
+```text
     %cst = constant 0.000000e+00 : f32
     %c4 = constant 4 : index
     %c14 = constant 14 : index
@@ -131,6 +145,8 @@ module  {
     }
     return %2 : tensor1x14x28xf32>
   }
+```
+
 }`
 
 我们再把linalg整体转化成affine方言，但是首先做一下bufferize，把tensor转化成memref。
@@ -149,6 +165,8 @@ output:
 #map7 = affine_mapd0, d1, d2, d3) -> (d0, d1, d2)>
 module  {
   func @test_matmul(%arg0: memref1x14x19xf32, #map0>, %arg1: memref1x19x28xf32, #map0>) -> memref1x14x28xf32> {
+
+```text
     %c1 = constant 1 : index
     %c0 = constant 0 : index
     %c19 = constant 19 : index
@@ -186,6 +204,8 @@ module  {
     memref.dealloc %0 : memref1x14x28xf32>
     return %0 : memref1x14x28xf32>
   }
+```
+
 }`
 
 不过到这里发现先做了tiling，转化到affine的时候有个问题。我们暂时把tiling去掉，后面可以在affine里面做tiling。
@@ -197,6 +217,8 @@ output:
 `#map = affine_mapd0, d1, d2)[s0, s1, s2, s3] -> (d0 * s1 + s0 + d1 * s2 + d2 * s3)>
 module  {
   func @test_matmul(%arg0: memref1x14x19xf32, #map>, %arg1: memref1x19x28xf32, #map>) -> memref1x14x28xf32> {
+
+```text
     %cst = constant 0.000000e+00 : f32
     %0 = memref.alloc() : memref1x14x28xf32>
     affine.for %arg2 = 0 to 1 {
@@ -223,6 +245,8 @@ module  {
     memref.dealloc %0 : memref1x14x28xf32>
     return %0 : memref1x14x28xf32>
   }
+```
+
 }`
 
 我们把上下两个loop做一下fusion。
@@ -234,6 +258,8 @@ output:
 `#map = affine_mapd0, d1, d2)[s0, s1, s2, s3] -> (d0 * s1 + s0 + d1 * s2 + d2 * s3)>
 module  {
   func @test_matmul(%arg0: memref1x14x19xf32, #map>, %arg1: memref1x19x28xf32, #map>) -> memref1x14x28xf32> {
+
+```text
     %c0 = constant 0 : index
     %cst = constant 0.000000e+00 : f32
     %0 = memref.alloc() : memref1x14x28xf32>
@@ -255,6 +281,8 @@ module  {
     memref.dealloc %0 : memref1x14x28xf32>
     return %0 : memref1x14x28xf32>
   }
+```
+
 }`
 
 我们对于loop做一些简化。
@@ -269,6 +297,8 @@ output:
 #map3 = affine_mapd0) -> (d0 + 4)>
 module  {
   func @test_matmul(%arg0: memref1x14x19xf32, #map0>, %arg1: memref1x19x28xf32, #map0>) -> memref1x14x28xf32> {
+
+```text
     %c0 = constant 0 : index
     %c0_0 = constant 0 : index
     %cst = constant 0.000000e+00 : f32
@@ -293,6 +323,8 @@ module  {
     memref.dealloc %0 : memref1x14x28xf32>
     return %0 : memref1x14x28xf32>
   }
+```
+
 }`
 
 再对于affine for重新做一个tiling，我们最对外层loop做tiling。
@@ -307,6 +339,8 @@ output:
 #map3 = affine_mapd0) -> (d0 + 4)>
 module  {
   func @test_matmul(%arg0: memref1x14x19xf32, #map0>, %arg1: memref1x19x28xf32, #map0>) -> memref1x14x28xf32> {
+
+```text
     %c0 = constant 0 : index
     %c0_0 = constant 0 : index
     %cst = constant 0.000000e+00 : f32
@@ -331,6 +365,8 @@ module  {
     memref.dealloc %0 : memref1x14x28xf32>
     return %0 : memref1x14x28xf32>
   }
+```
+
 }`
 
 然后我们加入一级存储层次，然后做memory data copy。这里似乎有bug，我们必须把linalg-comprehensive-module-buffersize退回到linalg-bufferize。
@@ -344,6 +380,8 @@ output:
 #map2 = affine_mapd0) -> (d0 + 4)>
 module  {
   func @test_matmul(%arg0: tensor1x14x19xf32>, %arg1: tensor1x19x28xf32>) -> tensor1x14x28xf32> {
+
+```text
     %cst = constant 0.000000e+00 : f32
     %c76 = constant 76 : index
     %c1 = constant 1 : index
@@ -409,6 +447,8 @@ module  {
     %7 = memref.tensor_load %3 : memref1x14x28xf32>
     return %7 : tensor1x14x28xf32>
   }
+```
+
 }`
 
 我们再试着做下software pipeline。
@@ -422,6 +462,8 @@ output:
 #map2 = affine_mapd0) -> (d0)>
 module  {
   func @test_matmul(%arg0: tensor1x14x19xf32>, %arg1: tensor1x19x28xf32>) -> tensor1x14x28xf32> {
+
+```text
     %c12 = constant 12 : index
     %c24 = constant 24 : index
     %cst = constant 0.000000e+00 : f32
@@ -581,6 +623,8 @@ module  {
     %14 = memref.tensor_load %3 : memref1x14x28xf32>
     return %14 : tensor1x14x28xf32>
   }
+```
+
 }`
 
 To be continued...

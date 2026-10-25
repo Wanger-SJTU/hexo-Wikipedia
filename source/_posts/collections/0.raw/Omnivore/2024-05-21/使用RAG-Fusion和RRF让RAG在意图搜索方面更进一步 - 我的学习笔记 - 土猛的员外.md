@@ -33,15 +33,21 @@ id: 1238e077-5f66-458e-b372-32540a95603d
 
 RAG现在非常火，当然性能也非常出色，它绝对走在了信息检索技术的康庄大道上，RAG有许多<strong>优点</strong>:
 
-* <strong>向量搜索融合：</strong> RAG通过将向量搜索功能与生成模型集成，引入了一种新的范例。这种融合能够从大型语言模型(大语言模型)生成更丰富、更具上下文感知的输出。
-* <strong>减少幻觉：</strong> RAG显著降低了LLM的幻觉倾向，使生成的文本更基于数据。
-* <strong>个人和专业实用程序：</strong>从个人应用程序如筛选笔记到更专业的集成，RAG展示了在提高生产力和内容质量方面的多功能性，同时基于可信赖的数据源。
+```text
+* **向量搜索融合：** RAG通过将向量搜索功能与生成模型集成，引入了一种新的范例。这种融合能够从大型语言模型(大语言模型)生成更丰富、更具上下文感知的输出。
+* **减少幻觉：** RAG显著降低了LLM的幻觉倾向，使生成的文本更基于数据。
+* **个人和专业实用程序：**从个人应用程序如筛选笔记到更专业的集成，RAG展示了在提高生产力和内容质量方面的多功能性，同时基于可信赖的数据源。
+```
+
 
 然而，我发现越来越多的“<strong>限制</strong>”:
 
-* <strong>当前搜索技术的限制：</strong> RAG受到限制我们基于检索的词法和向量搜索技术的相同限制。
-* <strong>人工搜索效率低下：</strong>人类并不擅长在搜索系统中输入他们想要的东西，比如打字错误、模糊的查询或有限的词汇，这通常会导致错过明显的顶级搜索结果之外的大量信息。虽然RAG有所帮助，但它并没有完全解决这个问题。
-* <strong>搜索的过度简化：</strong>我们流行的搜索模式将查询线性地映射到答案，缺乏深度来理解人类查询的多维本质。这种线性模型通常无法捕捉更复杂的用户查询的细微差别和上下文，从而导致相关性较低的结果。
+```text
+* **当前搜索技术的限制：** RAG受到限制我们基于检索的词法和向量搜索技术的相同限制。
+* **人工搜索效率低下：**人类并不擅长在搜索系统中输入他们想要的东西，比如打字错误、模糊的查询或有限的词汇，这通常会导致错过明显的顶级搜索结果之外的大量信息。虽然RAG有所帮助，但它并没有完全解决这个问题。
+* **搜索的过度简化：**我们流行的搜索模式将查询线性地映射到答案，缺乏深度来理解人类查询的多维本质。这种线性模型通常无法捕捉更复杂的用户查询的细微差别和上下文，从而导致相关性较低的结果。
+```
+
 
 ![Google keyword tends showing an increase in searched for Retrieval Augmented Generation](https://proxy-prod.omnivore-image-cache.app/0x0,sMwQUBz7nXCnsJR-g9L70d1b9l3VDNJH3mG9j7GCGFD8/https://luxiangdong.com/images/ragfusion/1.jpeg)
 
@@ -51,8 +57,11 @@ RAG关键词的Google搜索量在2023年暴涨。
 
 <strong>为什么使用RAG-Fusion?</strong>
 
+```text
 * 通过生成多个用户查询和重新排序结果来解决RAG固有的约束。
-* 利用<strong>倒数排序融合（RRF）</strong>和自定义向量评分加权，生成全面准确的结果。
+* 利用**倒数排序融合（RRF）**和自定义向量评分加权，生成全面准确的结果。
+```
+
 
 RAG-Fusion希望弥合用户明确提出的问题和他们（原本的意图）打算提出的问题之间的差距，更接近于发现通常仍然隐藏的变革性知识。
 
@@ -60,9 +69,12 @@ RAG-Fusion希望弥合用户明确提出的问题和他们（原本的意图）�
 
 RAG Fusion的基本三要素与RAG相似，并在于相同的三个关键技术:
 
-* 一种通用<strong>编程语言</strong>，通常是Python。
-* 一个专用的<strong>向量搜索数据库</strong>，如Elasticsearch或Pinecone，指导文档检索。
-* 一个强大的<strong>大型语言模型</strong>，如ChatGPT，制作文本。
+```text
+* 一种通用**编程语言**，通常是Python。
+* 一个专用的**向量搜索数据库**，如Elasticsearch或Pinecone，指导文档检索。
+* 一个强大的**大型语言模型**，如ChatGPT，制作文本。
+```
+
 
 ![Overview of RAG-Fusion from query -> multiple queries -> multiple vector searches -> generated output](https://proxy-prod.omnivore-image-cache.app/0x0,sz6z-dDq9cyWlyjSzx5Anje9ahkOge6ssLAPAuydAV0s/https://luxiangdong.com/images/ragfusion/2.jpeg)
 

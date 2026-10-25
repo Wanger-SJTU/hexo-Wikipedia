@@ -136,6 +136,8 @@ module CommandGenerator (
     input wire [15:0] row_addr,
     input wire vba_id,            // 虚拟 Bank ID
     output reg dram_cmd_out       // 输出给底层 DRAM Die 的标准命令
+
+```cpp
 );
 
     // 内部时序常量
@@ -147,13 +149,13 @@ module CommandGenerator (
         if (opcode == `CMD_RD_ROW) begin
             // 步骤 1: 激活 VBA 中的第一个物理 Bank
             Issue_DRAM_CMD(`CMD_ACT, Bank_A, row_addr);
-            
+
             // 步骤 2: 满足 tRRDS - tCCDS 延迟，以保证后续 Read 的完美交错
             Wait(tRRDS - tCCDS);
-            
+
             // 步骤 3: 激活 VBA 中的第二个物理 Bank
             Issue_DRAM_CMD(`CMD_ACT, Bank_B, row_addr);
-            
+
             // 步骤 4: 等待 tRCDRD 延迟后，开始交错发送列读命令
             Wait(tRCDRD);
             for (int i = 0; i  32; i++) begin
@@ -162,12 +164,14 @@ module CommandGenerator (
                 Issue_DRAM_CMD(`CMD_RD, Bank_B, col_addr_B + i);
                 Wait(tCCDS);
             end
-            
+
             // 步骤 5: 自动发送预充电命令 (Auto-Precharge)
             Issue_DRAM_CMD(`CMD_PRE, Bank_A);
             Issue_DRAM_CMD(`CMD_PRE, Bank_B);
         end
     end
+```
+
 endmodule
 `
 

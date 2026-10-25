@@ -83,8 +83,12 @@ UFS Application Command Layer：这层是 UFS 命令集，分为 UFS 的独有�
 ![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_6c5466b2fab1.jpg)
 
 > SCSI 的 Initiator 与 Target 共同构成了一个典型的 C/S 模型，每个指令都是“请求/应答”这样的模型来实现：
+
+```text
 * Initiator主要任务：发出SCSI请求；
 * Target主要任务：回答SCSI请求，通过 LU 提供业务，并通过任务管理器提供任务管理功能；
+```
+
 LU（Logical Unit）：逻辑单元，是指一个可被操作系统识别和访问的逻辑存储单元。一个 UFS 设备可以包含多个 LU，每个 LU 可以被视为一个独立的存储设备；
 LUs ： LU 的复数形式；
 LUN（Logical Unit Number）：逻辑单元号码，是用来标识不同 LU 的唯一编号。每个 LU 都有一个对应的 LUN，它可以用来在系统中唯一地标识和访问该 LU；
@@ -102,12 +106,16 @@ UFS 应用层由基于 SCSI 体系结构模型 （SAM） 的 UFS SCSI 命令集�
 - 传输事务使用固定长度的CDB（command descriptor block，命令描述符块）进行；
 - 每个事务都遵循 I_T_L_Q 关系，这意味着 CDB 需要识别与目标中的特定 LUN 通信的发起方。
 **命令描述符块的长度可以是 6、10 或 16 个字节，一些重要的命令：
+
+```text
 * READ / WRITE；
 * READ CAPACITY：获取逻辑单元的大小；
 * REPORT LUNS：获取所有逻辑单元的列表；
 * TEST UNIT READY：检查逻辑单元是否已准备好接受请求；
 * START STOP UNIT：开关设备的电源模式；
 * INQUIRY：查询有关逻辑单元的更多信息；
+```
+
 #### 2.2 Logical unit**
 
 UFS 设备有若干个 LU，LU 接收主机发过来的命令或请求可能来自应用层的 SCSI 模块、设备管理器或者任务管理器：**
@@ -272,9 +280,13 @@ UPIU 是命令、数据和状态信息传输的载体，是 UFS 协议栈的灵�
 > R：如果该比特置起来，说明该命令是读命令；
 W：如果该比特置起来，说明该命令是写命令；
 ATTR：命令属性域。UFS 命令有 simple ，ordered 和 Head of Queue 命令；
+
+```text
 * Simple command：就是一般的命令，设备收到这样的命令无需特别处理，一般谁先到谁先执行；
 * Ordered command：设备收到这样的命令，应该把该命令之前的命令都处理完，才能处理该命令（清场）；
 * Head of Queue command：设备收到该命令后，放到命令队列的头部，立刻执行（插队）；
+```
+
 CP：表示命令的优先级。1 为高优先级，0 为低优先级，注意该比特只适合简单命令（simple command）；
 
 - LUN：Logical Unit Numbe，用以寻址指定命令发送的 LU，“一、UFS 协议技术”中有解释；

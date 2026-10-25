@@ -58,7 +58,11 @@ CUDA_VISIBLE_DEVICES='0' python3 -m vllm.entrypoints.openai.api_server  \
                     --trust-remote-code \
                     --enforce-eager \
                     --kv-transfer-config \
+
+```text
                     '{"kv_connector":"SharedStorageConnector","kv_role":"kv_both","kv_connector_extra_config": {"shared_storage_path": "local_storage"}}'  
+```
+
 
 # decoder server
 CUDA_VISIBLE_DEVICES='1' python3 -m vllm.entrypoints.openai.api_server \
@@ -67,7 +71,11 @@ CUDA_VISIBLE_DEVICES='1' python3 -m vllm.entrypoints.openai.api_server \
                     --trust-remote-code \
                     --enforce-eager \
                     --kv-transfer-config \
+
+```text
                     '{"kv_connector":"SharedStorageConnector","kv_role":"kv_both","kv_connector_extra_config": {"shared_storage_path": "local_storage"}}'  
+```
+
 
 # proxy server
 python3 disagg_pd_proxy_server.py  
@@ -78,24 +86,36 @@ python3 disagg_pd_proxy_server.py
 @app.route('/v1/completions', methods=['POST'])
 async def handle_request():
     try:
+
+```text
         original_request_data = await request.get_json()
         prefill_request = original_request_data.copy()
 
         # change max_tokens = 1 to let it only do prefill
         prefill_request['max_tokens'] = 1
+```
+
 
         # finish prefill
+
+```text
         async for _ in forward_request('http://localhost:8100/v1/completions',
                                     prefill_request):
             continue
+```
+
 
         # return decode
+
+```text
         generator = forward_request('http://localhost:8200/v1/completions',
                                     original_request_data)
         response = await make_response(generator)
         response.timeout = None
 
         return response
+```
+
 
     except Exception as e:
         print("Error occurred in disagg prefill proxy server")
@@ -367,10 +387,14 @@ export VLLM_HOST_IP=$(hostname -I | awk '{print $1}')
 wait_for_server() {
   local port=$1
   timeout 1200 bash -c "
+
+```text
     until curl -s localhost:${port}/v1/completions   /dev/null; do
       sleep 1
     done"    return 0 || return 1
 }
+```
+
 
 # You can also adjust --kv-ip and --kv-port for distributed inference.
 gpu_count_prefill=$(echo "$gpu_id_prefill" | tr ',' '\n' | wc -l)
@@ -378,6 +402,8 @@ gpu_count_decode=$(echo "$gpu_id_decoder" | tr ',' '\n' | wc -l)
 
     echo "Using LMCacheConnectorV1 for kv cache"
         # prefilling instance, which is the KV producer
+
+```text
     CUDA_VISIBLE_DEVICES=$gpu_id_prefill python3 -m vllm.entrypoints.openai.api_server  \
                     --model $MODEL_NAME \
                     --disable-log-requests \
@@ -401,6 +427,8 @@ gpu_count_decode=$(echo "$gpu_id_decoder" | tr ',' '\n' | wc -l)
                     --tensor-parallel-size $gpu_count_decode \
                     --kv-transfer-config \
                     '{"kv_connector":"LMCacheConnectorV1","kv_role":"kv_consumer","kv_connector_extra_config": {"discard_partial_chunks": false, "lmcache_rpc_port": "consumer1"}}'  
+```
+
 
           
 # wait until prefill and decode instances are ready
@@ -411,11 +439,15 @@ python3  disagg_pd_proxy_server.py
 
 output2=$(curl -X POST -s http://localhost:8000/v1/completions \
     -H "Content-Type: application/json" \
+
+```text
     -d '{
     "model": "'$MODEL_NAME'",
     "prompt": "hello. Santa Clara is a",
     "max_tokens": 10,
     "temperature": 0
+```
+
 }')
 lmcache最好从官方docker中安装
 

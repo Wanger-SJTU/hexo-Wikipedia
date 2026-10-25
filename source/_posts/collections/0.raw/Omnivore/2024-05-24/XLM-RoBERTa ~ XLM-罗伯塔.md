@@ -74,8 +74,11 @@ This tokenizer inherits from [PreTrainedTokenizer](https://huggingface.co/docs/t
 
 Parameters 参数
 
-* [](#transformers.XLMRobertaTokenizer.build%5Finputs%5Fwith%5Fspecial%5Ftokens.token%5Fids%5F0) <strong>token\_ids\_0</strong> (`List[int]`) — List of IDs to which the special tokens will be added.token\_ids\_0 (List\[int\]) — 将添加特殊标记的 ID 列表。
-* [](#transformers.XLMRobertaTokenizer.build%5Finputs%5Fwith%5Fspecial%5Ftokens.token%5Fids%5F1) <strong>token\_ids\_1</strong> (`List[int]`, _optional_) — Optional second list of IDs for sequence pairs.token\_ids\_1 (List\[int\], 可选) — 可选的序列对 ID 的第二个列表。
+```text
+* [](#transformers.XLMRobertaTokenizer.build%5Finputs%5Fwith%5Fspecial%5Ftokens.token%5Fids%5F0) **token\_ids\_0** (`List[int]`) — List of IDs to which the special tokens will be added.token\_ids\_0 (List\[int\]) — 将添加特殊标记的 ID 列表。
+* [](#transformers.XLMRobertaTokenizer.build%5Finputs%5Fwith%5Fspecial%5Ftokens.token%5Fids%5F1) **token\_ids\_1** (`List[int]`, _optional_) — Optional second list of IDs for sequence pairs.token\_ids\_1 (List\[int\], 可选) — 可选的序列对 ID 的第二个列表。
+```
+
 
 Returns退货
 
@@ -85,8 +88,11 @@ List of [input IDs](https://huggingface.co/docs/transformers/glossary#input-ids)
 
 Build model inputs from a sequence or a pair of sequence for sequence classification tasks by concatenating and adding special tokens. An XLM-RoBERTa sequence has the following format:通过连接和添加特殊标记，从一个序列或一对序列构建模型输入以进行序列分类任务。 XLM-RoBERTa 序列具有以下格式：
 
+```text
 * single sequence: `<s> X </s>`单个序列：<s> X </s>
 * pair of sequences: `<s> A </s></s> B </s>`序列对：<s> A </s></s> B </s>
+```
+
 
 #### get\_special\_tokens\_mask获取特殊令牌掩码
 
@@ -96,8 +102,11 @@ Build model inputs from a sequence or a pair of sequence for sequence classifica
 
 Parameters 参数
 
-* [](#transformers.XLMRobertaTokenizer.get%5Fspecial%5Ftokens%5Fmask.token%5Fids%5F0) <strong>token\_ids\_0</strong> (`List[int]`) — List of IDs.token\_ids\_0 (List\[int\]) — ID 列表。
-* [](#transformers.XLMRobertaTokenizer.get%5Fspecial%5Ftokens%5Fmask.token%5Fids%5F1) <strong>token\_ids\_1</strong> (`List[int]`, _optional_) — Optional second list of IDs for sequence pairs.token\_ids\_1 (List\[int\], 可选) — 可选的序列对 ID 的第二个列表。
+```text
+* [](#transformers.XLMRobertaTokenizer.get%5Fspecial%5Ftokens%5Fmask.token%5Fids%5F0) **token\_ids\_0** (`List[int]`) — List of IDs.token\_ids\_0 (List\[int\]) — ID 列表。
+* [](#transformers.XLMRobertaTokenizer.get%5Fspecial%5Ftokens%5Fmask.token%5Fids%5F1) **token\_ids\_1** (`List[int]`, _optional_) — Optional second list of IDs for sequence pairs.token\_ids\_1 (List\[int\], 可选) — 可选的序列对 ID 的第二个列表。
+```
+
 * [](#transformers.XLMRobertaTokenizer.get%5Fspecial%5Ftokens%5Fmask.already%5Fhas%5Fspecial%5Ftokens) <strong>already\_has\_special\_tokens</strong> (`bool`, _optional_, defaults to `False`) — Whether or not the token list is already formatted with special tokens for the model.has\_has\_special\_tokens (bool, 可选, 默认为 False) — 标记列表是否已使用模型的特殊标记进行格式化。
 
 Returns退货
@@ -116,8 +125,11 @@ Retrieve sequence ids from a token list that has no special tokens added. This m
 
 Parameters 参数
 
-* [](#transformers.XLMRobertaTokenizer.create%5Ftoken%5Ftype%5Fids%5Ffrom%5Fsequences.token%5Fids%5F0) <strong>token\_ids\_0</strong> (`List[int]`) — List of IDs.token\_ids\_0 (List\[int\]) — ID 列表。
-* [](#transformers.XLMRobertaTokenizer.create%5Ftoken%5Ftype%5Fids%5Ffrom%5Fsequences.token%5Fids%5F1) <strong>token\_ids\_1</strong> (`List[int]`, _optional_) — Optional second list of IDs for sequence pairs.token\_ids\_1 (List\[int\], 可选) — 可选的序列对 ID 的第二个列表。
+```sql
+* [](#transformers.XLMRobertaTokenizer.create%5Ftoken%5Ftype%5Fids%5Ffrom%5Fsequences.token%5Fids%5F0) **token\_ids\_0** (`List[int]`) — List of IDs.token\_ids\_0 (List\[int\]) — ID 列表。
+* [](#transformers.XLMRobertaTokenizer.create%5Ftoken%5Ftype%5Fids%5Ffrom%5Fsequences.token%5Fids%5F1) **token\_ids\_1** (`List[int]`, _optional_) — Optional second list of IDs for sequence pairs.token\_ids\_1 (List\[int\], 可选) — 可选的序列对 ID 的第二个列表。
+```
+
 
 Returns退货
 
@@ -151,8 +163,11 @@ This tokenizer inherits from [PreTrainedTokenizerFast](https://huggingface.co/do
 
 Parameters 参数
 
-* [](#transformers.XLMRobertaTokenizerFast.build%5Finputs%5Fwith%5Fspecial%5Ftokens.token%5Fids%5F0) <strong>token\_ids\_0</strong> (`List[int]`) — List of IDs to which the special tokens will be added.token\_ids\_0 (List\[int\]) — 将添加特殊标记的 ID 列表。
-* [](#transformers.XLMRobertaTokenizerFast.build%5Finputs%5Fwith%5Fspecial%5Ftokens.token%5Fids%5F1) <strong>token\_ids\_1</strong> (`List[int]`, _optional_) — Optional second list of IDs for sequence pairs.token\_ids\_1 (List\[int\], 可选) — 可选的序列对 ID 的第二个列表。
+```text
+* [](#transformers.XLMRobertaTokenizerFast.build%5Finputs%5Fwith%5Fspecial%5Ftokens.token%5Fids%5F0) **token\_ids\_0** (`List[int]`) — List of IDs to which the special tokens will be added.token\_ids\_0 (List\[int\]) — 将添加特殊标记的 ID 列表。
+* [](#transformers.XLMRobertaTokenizerFast.build%5Finputs%5Fwith%5Fspecial%5Ftokens.token%5Fids%5F1) **token\_ids\_1** (`List[int]`, _optional_) — Optional second list of IDs for sequence pairs.token\_ids\_1 (List\[int\], 可选) — 可选的序列对 ID 的第二个列表。
+```
+
 
 Returns退货
 
@@ -162,8 +177,11 @@ List of [input IDs](https://huggingface.co/docs/transformers/glossary#input-ids)
 
 Build model inputs from a sequence or a pair of sequence for sequence classification tasks by concatenating and adding special tokens. An XLM-RoBERTa sequence has the following format:通过连接和添加特殊标记，从一个序列或一对序列构建模型输入以进行序列分类任务。 XLM-RoBERTa 序列具有以下格式：
 
+```text
 * single sequence: `<s> X </s>`单个序列：<s> X </s>
 * pair of sequences: `<s> A </s></s> B </s>`序列对：<s> A </s></s> B </s>
+```
+
 
 #### create\_token\_type\_ids\_from\_sequencescreate\_token\_type\_ids\_from\_sequences
 
@@ -173,8 +191,11 @@ Build model inputs from a sequence or a pair of sequence for sequence classifica
 
 Parameters 参数
 
-* [](#transformers.XLMRobertaTokenizerFast.create%5Ftoken%5Ftype%5Fids%5Ffrom%5Fsequences.token%5Fids%5F0) <strong>token\_ids\_0</strong> (`List[int]`) — List of IDs.token\_ids\_0 (List\[int\]) — ID 列表。
-* [](#transformers.XLMRobertaTokenizerFast.create%5Ftoken%5Ftype%5Fids%5Ffrom%5Fsequences.token%5Fids%5F1) <strong>token\_ids\_1</strong> (`List[int]`, _optional_) — Optional second list of IDs for sequence pairs.token\_ids\_1 (List\[int\], 可选) — 可选的序列对 ID 的第二个列表。
+```sql
+* [](#transformers.XLMRobertaTokenizerFast.create%5Ftoken%5Ftype%5Fids%5Ffrom%5Fsequences.token%5Fids%5F0) **token\_ids\_0** (`List[int]`) — List of IDs.token\_ids\_0 (List\[int\]) — ID 列表。
+* [](#transformers.XLMRobertaTokenizerFast.create%5Ftoken%5Ftype%5Fids%5Ffrom%5Fsequences.token%5Fids%5F1) **token\_ids\_1** (`List[int]`, _optional_) — Optional second list of IDs for sequence pairs.token\_ids\_1 (List\[int\], 可选) — 可选的序列对 ID 的第二个列表。
+```
+
 
 Returns退货
 
@@ -597,14 +618,21 @@ This model is also a [keras.Model](https://www.tensorflow.org/api%5Fdocs/python/
 
 TensorFlow models and layers in `transformers` accept two formats as input:TensorFlow 模型和 Transformer 中的层接受两种格式作为输入：
 
+```text
 * having all inputs as keyword arguments (like PyTorch models), or将所有输入作为关键字参数（如 PyTorch 模型），或者
 * having all inputs as a list, tuple or dict in the first positional argument.将所有输入作为第一个位置参数中的列表、元组或字典。
+```
+
 
 The reason the second format is supported is that Keras methods prefer this format when passing inputs to models and layers. Because of this support, when using methods like `model.fit()` things should “just work” for you - just pass your inputs and labels in any format that `model.fit()` supports! If, however, you want to use the second format outside of Keras methods like `fit()` and `predict()`, such as when creating your own layers or models with the Keras `Functional` API, there are three possibilities you can use to gather all the input Tensors in the first positional argument:支持第二种格式的原因是 Keras 方法在将输入传递到模型和层时更喜欢这种格式。由于这种支持，当使用像 model.fit() 这样的方法时，事情应该“正常工作” - 只需以 model.fit() 支持的任何格式传递您的输入和标签即可！但是，如果您想在 Keras 方法（如 fit() 和 Predict()）之外使用第二种格式，例如使用 Keras Function API 创建您自己的层或模型时，您可以使用三种可能性来收集所有在第一个位置参数中输入张量：
 
 * a single Tensor with `input_ids` only and nothing else: `model(input_ids)`仅具有 input\_ids 而没有其他内容的单个张量： model(input\_ids)
 * a list of varying length with one or several input Tensors IN THE ORDER given in the docstring:`model([input_ids, attention_mask])` or `model([input_ids, attention_mask, token_type_ids])`不同长度的列表，其中一个或多个输入张量按照文档字符串中给出的顺序： model(\[input\_ids, Attention\_mask\]) 或 model(\[input\_ids, Attention\_mask, token\_type\_ids\])
+
+```text
 * a dictionary with one or several input Tensors associated to the input names given in the docstring:`model({"input_ids": input_ids, "token_type_ids": token_type_ids})`一本字典，其中包含一个或多个与文档字符串中给出的输入名称相关联的输入张量： model({"input\_ids": input\_ids, "token\_type\_ids": token\_type\_ids})
+```
+
 
 Note that when creating models and layers with[subclassing](https://keras.io/guides/making%5Fnew%5Flayers%5Fand%5Fmodels%5Fvia%5Fsubclassing/) then you don’t need to worry about any of this, as you can just pass inputs like you would to any other Python function!请注意，当使用子类化创建模型和层时，您无需担心任何这些，因为您可以像传递任何其他 Python 函数一样传递输入！
 
@@ -651,14 +679,21 @@ This model is also a [keras.Model](https://www.tensorflow.org/api%5Fdocs/python/
 
 TensorFlow models and layers in `transformers` accept two formats as input:TensorFlow 模型和 Transformer 中的层接受两种格式作为输入：
 
+```text
 * having all inputs as keyword arguments (like PyTorch models), or将所有输入作为关键字参数（如 PyTorch 模型），或者
 * having all inputs as a list, tuple or dict in the first positional argument.将所有输入作为第一个位置参数中的列表、元组或字典。
+```
+
 
 The reason the second format is supported is that Keras methods prefer this format when passing inputs to models and layers. Because of this support, when using methods like `model.fit()` things should “just work” for you - just pass your inputs and labels in any format that `model.fit()` supports! If, however, you want to use the second format outside of Keras methods like `fit()` and `predict()`, such as when creating your own layers or models with the Keras `Functional` API, there are three possibilities you can use to gather all the input Tensors in the first positional argument:支持第二种格式的原因是 Keras 方法在将输入传递到模型和层时更喜欢这种格式。由于这种支持，当使用像 model.fit() 这样的方法时，事情应该“正常工作” - 只需以 model.fit() 支持的任何格式传递您的输入和标签即可！但是，如果您想在 Keras 方法（如 fit() 和 Predict()）之外使用第二种格式，例如使用 Keras Function API 创建您自己的层或模型时，您可以使用三种可能性来收集所有在第一个位置参数中输入张量：
 
 * a single Tensor with `input_ids` only and nothing else: `model(input_ids)`仅具有 input\_ids 而没有其他内容的单个张量： model(input\_ids)
 * a list of varying length with one or several input Tensors IN THE ORDER given in the docstring:`model([input_ids, attention_mask])` or `model([input_ids, attention_mask, token_type_ids])`不同长度的列表，其中一个或多个输入张量按照文档字符串中给出的顺序： model(\[input\_ids, Attention\_mask\]) 或 model(\[input\_ids, Attention\_mask, token\_type\_ids\])
+
+```text
 * a dictionary with one or several input Tensors associated to the input names given in the docstring:`model({"input_ids": input_ids, "token_type_ids": token_type_ids})`一本字典，其中包含一个或多个与文档字符串中给出的输入名称相关联的输入张量： model({"input\_ids": input\_ids, "token\_type\_ids": token\_type\_ids})
+```
+
 
 Note that when creating models and layers with[subclassing](https://keras.io/guides/making%5Fnew%5Flayers%5Fand%5Fmodels%5Fvia%5Fsubclassing/) then you don’t need to worry about any of this, as you can just pass inputs like you would to any other Python function!请注意，当使用子类化创建模型和层时，您无需担心任何问题，因为您可以像传递任何其他 Python 函数一样传递输入！
 
@@ -704,14 +739,20 @@ This model is also a [keras.Model](https://www.tensorflow.org/api%5Fdocs/python/
 
 TensorFlow models and layers in `transformers` accept two formats as input:
 
+```text
 * having all inputs as keyword arguments (like PyTorch models), or
 * having all inputs as a list, tuple or dict in the first positional argument.
+```
+
 
 The reason the second format is supported is that Keras methods prefer this format when passing inputs to models and layers. Because of this support, when using methods like `model.fit()` things should “just work” for you - just pass your inputs and labels in any format that `model.fit()` supports! If, however, you want to use the second format outside of Keras methods like `fit()` and `predict()`, such as when creating your own layers or models with the Keras `Functional` API, there are three possibilities you can use to gather all the input Tensors in the first positional argument:
 
+```text
 * a single Tensor with `input_ids` only and nothing else: `model(input_ids)`
 * a list of varying length with one or several input Tensors IN THE ORDER given in the docstring:`model([input_ids, attention_mask])` or `model([input_ids, attention_mask, token_type_ids])`
 * a dictionary with one or several input Tensors associated to the input names given in the docstring:`model({"input_ids": input_ids, "token_type_ids": token_type_ids})`
+```
+
 
 Note that when creating models and layers with[subclassing](https://keras.io/guides/making%5Fnew%5Flayers%5Fand%5Fmodels%5Fvia%5Fsubclassing/) then you don’t need to worry about any of this, as you can just pass inputs like you would to any other Python function!
 
@@ -772,14 +813,20 @@ This model is also a [keras.Model](https://www.tensorflow.org/api%5Fdocs/python/
 
 TensorFlow models and layers in `transformers` accept two formats as input:
 
+```text
 * having all inputs as keyword arguments (like PyTorch models), or
 * having all inputs as a list, tuple or dict in the first positional argument.
+```
+
 
 The reason the second format is supported is that Keras methods prefer this format when passing inputs to models and layers. Because of this support, when using methods like `model.fit()` things should “just work” for you - just pass your inputs and labels in any format that `model.fit()` supports! If, however, you want to use the second format outside of Keras methods like `fit()` and `predict()`, such as when creating your own layers or models with the Keras `Functional` API, there are three possibilities you can use to gather all the input Tensors in the first positional argument:
 
+```text
 * a single Tensor with `input_ids` only and nothing else: `model(input_ids)`
 * a list of varying length with one or several input Tensors IN THE ORDER given in the docstring:`model([input_ids, attention_mask])` or `model([input_ids, attention_mask, token_type_ids])`
 * a dictionary with one or several input Tensors associated to the input names given in the docstring:`model({"input_ids": input_ids, "token_type_ids": token_type_ids})`
+```
+
 
 Note that when creating models and layers with[subclassing](https://keras.io/guides/making%5Fnew%5Flayers%5Fand%5Fmodels%5Fvia%5Fsubclassing/) then you don’t need to worry about any of this, as you can just pass inputs like you would to any other Python function!
 
@@ -838,14 +885,20 @@ This model is also a [keras.Model](https://www.tensorflow.org/api%5Fdocs/python/
 
 TensorFlow models and layers in `transformers` accept two formats as input:
 
+```text
 * having all inputs as keyword arguments (like PyTorch models), or
 * having all inputs as a list, tuple or dict in the first positional argument.
+```
+
 
 The reason the second format is supported is that Keras methods prefer this format when passing inputs to models and layers. Because of this support, when using methods like `model.fit()` things should “just work” for you - just pass your inputs and labels in any format that `model.fit()` supports! If, however, you want to use the second format outside of Keras methods like `fit()` and `predict()`, such as when creating your own layers or models with the Keras `Functional` API, there are three possibilities you can use to gather all the input Tensors in the first positional argument:
 
+```text
 * a single Tensor with `input_ids` only and nothing else: `model(input_ids)`
 * a list of varying length with one or several input Tensors IN THE ORDER given in the docstring:`model([input_ids, attention_mask])` or `model([input_ids, attention_mask, token_type_ids])`
 * a dictionary with one or several input Tensors associated to the input names given in the docstring:`model({"input_ids": input_ids, "token_type_ids": token_type_ids})`
+```
+
 
 Note that when creating models and layers with[subclassing](https://keras.io/guides/making%5Fnew%5Flayers%5Fand%5Fmodels%5Fvia%5Fsubclassing/) then you don’t need to worry about any of this, as you can just pass inputs like you would to any other Python function!
 
@@ -898,14 +951,20 @@ This model is also a [keras.Model](https://www.tensorflow.org/api%5Fdocs/python/
 
 TensorFlow models and layers in `transformers` accept two formats as input:
 
+```text
 * having all inputs as keyword arguments (like PyTorch models), or
 * having all inputs as a list, tuple or dict in the first positional argument.
+```
+
 
 The reason the second format is supported is that Keras methods prefer this format when passing inputs to models and layers. Because of this support, when using methods like `model.fit()` things should “just work” for you - just pass your inputs and labels in any format that `model.fit()` supports! If, however, you want to use the second format outside of Keras methods like `fit()` and `predict()`, such as when creating your own layers or models with the Keras `Functional` API, there are three possibilities you can use to gather all the input Tensors in the first positional argument:
 
+```text
 * a single Tensor with `input_ids` only and nothing else: `model(input_ids)`
 * a list of varying length with one or several input Tensors IN THE ORDER given in the docstring:`model([input_ids, attention_mask])` or `model([input_ids, attention_mask, token_type_ids])`
 * a dictionary with one or several input Tensors associated to the input names given in the docstring:`model({"input_ids": input_ids, "token_type_ids": token_type_ids})`
+```
+
 
 Note that when creating models and layers with[subclassing](https://keras.io/guides/making%5Fnew%5Flayers%5Fand%5Fmodels%5Fvia%5Fsubclassing/) then you don’t need to worry about any of this, as you can just pass inputs like you would to any other Python function!
 
@@ -966,14 +1025,20 @@ This model is also a [keras.Model](https://www.tensorflow.org/api%5Fdocs/python/
 
 TensorFlow models and layers in `transformers` accept two formats as input:
 
+```text
 * having all inputs as keyword arguments (like PyTorch models), or
 * having all inputs as a list, tuple or dict in the first positional argument.
+```
+
 
 The reason the second format is supported is that Keras methods prefer this format when passing inputs to models and layers. Because of this support, when using methods like `model.fit()` things should “just work” for you - just pass your inputs and labels in any format that `model.fit()` supports! If, however, you want to use the second format outside of Keras methods like `fit()` and `predict()`, such as when creating your own layers or models with the Keras `Functional` API, there are three possibilities you can use to gather all the input Tensors in the first positional argument:
 
+```text
 * a single Tensor with `input_ids` only and nothing else: `model(input_ids)`
 * a list of varying length with one or several input Tensors IN THE ORDER given in the docstring:`model([input_ids, attention_mask])` or `model([input_ids, attention_mask, token_type_ids])`
 * a dictionary with one or several input Tensors associated to the input names given in the docstring:`model({"input_ids": input_ids, "token_type_ids": token_type_ids})`
+```
+
 
 Note that when creating models and layers with[subclassing](https://keras.io/guides/making%5Fnew%5Flayers%5Fand%5Fmodels%5Fvia%5Fsubclassing/) then you don’t need to worry about any of this, as you can just pass inputs like you would to any other Python function!
 
@@ -1036,10 +1101,13 @@ This model is also a[flax.linen.Module](https://flax.readthedocs.io/en/latest/ap
 
 Finally, this model supports inherent JAX features such as:
 
+```text
 * [Just-In-Time (JIT) compilation](https://jax.readthedocs.io/en/latest/jax.html#just-in-time-compilation-jit)
 * [Automatic Differentiation](https://jax.readthedocs.io/en/latest/jax.html#automatic-differentiation)
 * [Vectorization](https://jax.readthedocs.io/en/latest/jax.html#vectorization-vmap)
 * [Parallelization](https://jax.readthedocs.io/en/latest/jax.html#parallelization-pmap)
+```
+
 
 #### \_\_call\_\_
 
@@ -1083,10 +1151,13 @@ This model is also a[flax.linen.Module](https://flax.readthedocs.io/en/latest/ap
 
 Finally, this model supports inherent JAX features such as:
 
+```text
 * [Just-In-Time (JIT) compilation](https://jax.readthedocs.io/en/latest/jax.html#just-in-time-compilation-jit)
 * [Automatic Differentiation](https://jax.readthedocs.io/en/latest/jax.html#automatic-differentiation)
 * [Vectorization](https://jax.readthedocs.io/en/latest/jax.html#vectorization-vmap)
 * [Parallelization](https://jax.readthedocs.io/en/latest/jax.html#parallelization-pmap)
+```
+
 
 #### \_\_call\_\_
 
@@ -1131,10 +1202,13 @@ This model is also a[flax.linen.Module](https://flax.readthedocs.io/en/latest/ap
 
 Finally, this model supports inherent JAX features such as:
 
+```text
 * [Just-In-Time (JIT) compilation](https://jax.readthedocs.io/en/latest/jax.html#just-in-time-compilation-jit)
 * [Automatic Differentiation](https://jax.readthedocs.io/en/latest/jax.html#automatic-differentiation)
 * [Vectorization](https://jax.readthedocs.io/en/latest/jax.html#vectorization-vmap)
 * [Parallelization](https://jax.readthedocs.io/en/latest/jax.html#parallelization-pmap)
+```
+
 
 #### \_\_call\_\_
 
@@ -1178,10 +1252,13 @@ This model is also a[flax.linen.Module](https://flax.readthedocs.io/en/latest/ap
 
 Finally, this model supports inherent JAX features such as:
 
+```text
 * [Just-In-Time (JIT) compilation](https://jax.readthedocs.io/en/latest/jax.html#just-in-time-compilation-jit)
 * [Automatic Differentiation](https://jax.readthedocs.io/en/latest/jax.html#automatic-differentiation)
 * [Vectorization](https://jax.readthedocs.io/en/latest/jax.html#vectorization-vmap)
 * [Parallelization](https://jax.readthedocs.io/en/latest/jax.html#parallelization-pmap)
+```
+
 
 #### \_\_call\_\_
 
@@ -1225,10 +1302,13 @@ This model is also a[flax.linen.Module](https://flax.readthedocs.io/en/latest/ap
 
 Finally, this model supports inherent JAX features such as:
 
+```text
 * [Just-In-Time (JIT) compilation](https://jax.readthedocs.io/en/latest/jax.html#just-in-time-compilation-jit)
 * [Automatic Differentiation](https://jax.readthedocs.io/en/latest/jax.html#automatic-differentiation)
 * [Vectorization](https://jax.readthedocs.io/en/latest/jax.html#vectorization-vmap)
 * [Parallelization](https://jax.readthedocs.io/en/latest/jax.html#parallelization-pmap)
+```
+
 
 #### \_\_call\_\_
 
@@ -1276,10 +1356,13 @@ This model is also a[flax.linen.Module](https://flax.readthedocs.io/en/latest/ap
 
 Finally, this model supports inherent JAX features such as:
 
+```text
 * [Just-In-Time (JIT) compilation](https://jax.readthedocs.io/en/latest/jax.html#just-in-time-compilation-jit)
 * [Automatic Differentiation](https://jax.readthedocs.io/en/latest/jax.html#automatic-differentiation)
 * [Vectorization](https://jax.readthedocs.io/en/latest/jax.html#vectorization-vmap)
 * [Parallelization](https://jax.readthedocs.io/en/latest/jax.html#parallelization-pmap)
+```
+
 
 #### \_\_call\_\_
 
@@ -1323,10 +1406,13 @@ This model is also a[flax.linen.Module](https://flax.readthedocs.io/en/latest/ap
 
 Finally, this model supports inherent JAX features such as:
 
+```text
 * [Just-In-Time (JIT) compilation](https://jax.readthedocs.io/en/latest/jax.html#just-in-time-compilation-jit)
 * [Automatic Differentiation](https://jax.readthedocs.io/en/latest/jax.html#automatic-differentiation)
 * [Vectorization](https://jax.readthedocs.io/en/latest/jax.html#vectorization-vmap)
 * [Parallelization](https://jax.readthedocs.io/en/latest/jax.html#parallelization-pmap)
+```
+
 
 #### \_\_call\_\_
 

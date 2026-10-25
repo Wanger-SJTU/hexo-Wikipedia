@@ -78,16 +78,20 @@ source_url: https://zhuanlan.zhihu.com/p/2023791484751679788
 #### 1. Docstring = Prompt
 
 `@agentic_function
+
+```python
 def observe(task):
     """观察屏幕，找到目标元素。"""  # ← 这就是发给 LLM 的 prompt
-    
+
     img = take_screenshot()       # Python：确定性
     ocr = run_ocr(img)            # Python：确定性
-    
+
     return runtime.exec(content=[ # LLM：只做推理
         {"type": "text", "text": f"任务: {task}\nOCR: {ocr}"},
         {"type": "image", "path": img},
     ])`
+```
+
 
 改注释就改行为。函数签名定义接口。Python 代码处理确定性逻辑。
 

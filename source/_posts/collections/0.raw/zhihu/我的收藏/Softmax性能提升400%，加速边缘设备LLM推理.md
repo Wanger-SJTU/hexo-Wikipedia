@@ -84,7 +84,10 @@ t=f\ln 2\in\left[-\frac{\ln2}{2},\frac{\ln2}{2}\right]\approx[-0.3466,0.3466] \\
 4. 工程技巧：用 IEEE-754 位级构造 2^i
 float32 的指数位有 bias=127。2^i 对应的 float 可以直接把指数位设为 i+127，尾数为 0：
 
+```text
 float two_i = as_float((uint32_t)(i + 127)    23);
+```
+
 这一步没有真正的指数运算，成本非常低。
 
 5. poly5 近似 exp(t)：在小区间里又快又准
@@ -94,7 +97,10 @@ e^t\approx 1+t+\frac{t^2}{2}+\frac{t^3}{6}+\frac{t^4}{24}+\frac{t^5}{120} \\
 
 用 Horner 形式写出来：
 
+```text
 float p = 1 + t*(1 + t*(0.5 + t*(1/6 + t*(1/24 + t*(1/120)))));
+```
+
 最终：
 
 exp(x) ≈ two_i * p
@@ -153,16 +159,17 @@ gcc -O3 -std=c11 -Wall -Wextra -pedantic bench.c qsoftmax_poly5_div/qsoftmax.c -
 ./bench.exe --out bench.csv
 bench.c：
 
+```cpp
 #include "qsoftmax.h"
 
-#include  math.h 
-#include  stdint.h 
-#include  stdio.h 
-#include  stdlib.h 
-#include  string.h 
+#include <math.h>
+#include <stdint.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
 #ifdef _WIN32
-#include  windows.h 
+#include <windows.h>
 #endif
 
 static volatile float g_sink = 0.0f;
@@ -209,8 +216,12 @@ static uint64_t now_ns(void) {
   uint64_t rem = counter % freq;
   return sec * 1000000000ull + (rem * 1000000000ull) / freq;
 }
+```
+
 #else
-#include  time.h 
+
+```cpp
+#include <time.h>
 static uint64_t now_ns(void) {
   struct timespec ts;
   clock_gettime(CLOCK_MONOTONIC,  ts);
@@ -274,19 +285,30 @@ int main(int argc, char** argv) {
       sizes[i] = defaults[i];
     }
   }
+```
+
 
   FILE* f = fopen(out_path, "wb");
+
+```text
   if (!f) {
     perror("fopen");
     return 1;
   }
+```
+
 
   fprintf(f,
+
+```text
           "n,batch,scale,min_ms,ref_ns_per_elem,q_ns_per_elem,speedup,ref_melems_s,q_melems_s,mean_abs,max_abs,max_sum_err,top1_mismatch\\n");
+```
+
 
   qsoftmax_params p = qsoftmax_default_params();
   uint32_t seed = 1;
 
+```cpp
   for (int si = 0; si   size_count; si++) {
     int n = sizes[si];
     size_t bytes = (size_t)batch * (size_t)n * sizeof(float);
@@ -397,11 +419,17 @@ int main(int argc, char** argv) {
     free(r);
     free(q);
   }
+```
+
 
   fclose(f);
   fprintf(stdout, "wrote %s (sink=%g)\\n", out_path, (double)g_sink);
+
+```text
   return 0;
 }
+```
+
 
 编辑于 2026-01-21 01:49・中国香港
 LLM推理

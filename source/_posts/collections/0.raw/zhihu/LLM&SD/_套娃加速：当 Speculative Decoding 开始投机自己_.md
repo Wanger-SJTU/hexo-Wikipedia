@@ -47,8 +47,12 @@ SSD 的核心洞察很简单：
 用 Python 伪代码来理解 speculator 的核心逻辑：
 
 `class Speculator:
+
+```python
     def run(self, prompt, primary_draft, backup_draft):
         spec_tokens = primary_draft.speculate(prompt)
+```
+
         
         while True:
             # 1. 发送当前 speculation 给 verifier
@@ -58,18 +62,26 @@ SSD 的核心洞察很简单：
             predicted_outcomes = predict_verify_outcomes(spec_tokens, primary_draft)  # Sec 4.1
             
             # 3. 为每个预测 outcome 预计算下一轮 speculation → 存入 cache
+
+```text
             cache = {}
             for outcome in predicted_outcomes:
                 cache[outcome] = primary_draft.speculate(outcome)  # Sec 4.2
+```
+
             
             # 4. 等待真实验证结果
             verify_outcome = receive_from_verifier()
             
             # 5. 查缓存
             if verify_outcome in cache:  # Cache hit!
+
+```text
                 spec_tokens = cache[verify_outcome]  # 零 draft 延迟
             else:  # Cache miss
                 spec_tokens = fallback_speculate(verify_outcome, ...)  # Sec 4.3`
+```
+
 
 和标准 SD 的关键区别<strong>：步骤 2-3 和 verifier 的计算是</strong>并行**的。如果 cache hit，则 draft 延迟从 O(K × draft_time) 降到 ~0。（Section 3.1, p.4-5）
 

@@ -51,13 +51,15 @@ source_url: https://zhuanlan.zhihu.com/p/2009938845945328180
 模型输入价格输出价格适用场景GPT-4 Turbo0.K | 0.K复杂推理、关键任务GPT-3.5 Turbo0.K | 0.K简单对话、常规任务Claude 3 Haiku0.K | 0.K快速响应、大量请求本地模型（Llama）0 | 0隐私敏感、高频调用<strong>策略：根据任务复杂度选择模型</strong>
 
 `class SmartModelSelector:
+
+```python
     def __init__(self):
         self.models = {
             "complex": "gpt-4-turbo-preview",
             "simple": "gpt-3.5-turbo",
             "fast": "claude-3-haiku"
         }
-    
+
     def select_model(self, task: str) -> str:
         """根据任务复杂度选择模型"""
         # 简单规则
@@ -67,7 +69,7 @@ source_url: https://zhuanlan.zhihu.com/p/2009938845945328180
             return self.models["fast"]
         else:
             return self.models["simple"]
-    
+
     def estimate_cost(self, model: str, input_tokens: int, output_tokens: int) -> float:
         """估算成本"""
         prices = {
@@ -75,10 +77,12 @@ source_url: https://zhuanlan.zhihu.com/p/2009938845945328180
             "gpt-3.5-turbo": (0.0005, 0.0015),
             "claude-3-haiku": (0.00025, 0.00125)
         }
-        
+
         input_price, output_price = prices.get(model, (0, 0))
         cost = (input_tokens / 1000 * input_price) + (output_tokens / 1000 * output_price)
         return cost
+```
+
 
 # 使用示例
 selector = SmartModelSelector()
@@ -135,6 +139,8 @@ prompt = "情绪分析（积极/消极/中性）："`
 <strong>三级缓存架构：</strong>
 
 `import redis
+
+```python
 import hashlib
 import json
 from functools import lru_cache
@@ -143,35 +149,49 @@ class CacheManager:
     def __init__(self):
         self.redis_clienRedis(host='localhost', port=6379)
         self.memory_cache = {}  # 内存缓存
-    
+
     def get_cache_key(self, prompt: str, model: str) -> str:
         """生成缓存键"""
         content = f"{model}:{prompt}"
         return hashlib.md5(content.encode()).hexdigest()
-    
+
     def get(self, prompt: str, model: str):
         """三级缓存查询"""
         cache_key = self.get_cache_key(prompt, model)
+```
+
         
         # 1. 内存缓存（最快）
         if cache_key in self.memory_cache:
+
+```python
             print("📦 命中内存缓存")
             return self.memory_cache[cache_key]
+```
+
         
         # 2. Redis 缓存（快）
+
+```python
         cached = self.redis_client.get(cache_key)
         if cached:
             print("📦 命中 Redis 缓存")
             result = json.loads(cached)
             self.memory_cache[cache_key] = result  # 回填内存缓存
             return result
+```
+
         
         # 3. 未命中
+
+```python
         return None
-    
+
     def set(self, prompt: str, model: str, response: str, ttl: int = 3600):
         """保存到缓存"""
         cache_key = self.get_cache_key(prompt, model)
+```
+
         
         # 保存到内存
         self.memory_cache[cache_key] = response
@@ -182,20 +202,27 @@ class CacheManager:
 # 使用示例
 cache = CacheManager()
 
+```python
 def call_llm_with_cache(prompt: str, model: str) -> str:
     """带缓存的 LLM 调用"""
     # 尝试从缓存获取
     cached_response = cache.get(prompt, model)
     if cached_response:
         return cached_response
+```
+
     
     # 调用 LLM
     response = call_llm(prompt, model)
     
     # 保存到缓存
+
+```text
     cache.set(prompt, model, response)
-    
+
     return response`
+```
+
 
 <strong>节省效果：</strong> 50-80%（取决于重复率）
 
@@ -221,14 +248,22 @@ print(response)  # 一次性输出`
 <strong>❌ 逐个处理（慢 + 贵）：</strong>
 
 `for email in emails:
+
+```text
     response = llm.invoke(f"分析邮件：{email}")
     # 10 封邮件 = 10 次 API 调用`
+```
+
 
 <strong>✅ 批量处理（快 + 便宜）：</strong>
 
 `batch_prompt = "分析以下邮件：\n\n"
 for i, email in enumerate(emails, 1):
+
+```text
     batch_prompt += f"{i}. {email}\n"
+```
+
 
 response = llm.invoke(batch_prompt)
 # 10 封邮件 = 1 次 API 调用`
@@ -269,11 +304,15 @@ response = llm.invoke(batch_prompt)
 <strong>❌ 同步（慢）：</strong>
 
 `def process_emails(emails):
+
+```text
     results = []
     for email in emails:
         result = agent.run(email)  # 串行处理
         results.append(result)
     return results
+```
+
 
 # 10 封邮件 = 100 秒`
 
@@ -282,9 +321,13 @@ response = llm.invoke(batch_prompt)
 `import asyncio
 
 async def process_emails_async(emails):
+
+```text
     tasks = [agent.arun(email) for email in emails]
     results = await asyncio.gather(*tasks)  # 并行处理
     return results
+```
+
 
 # 10 封邮件 = 10 秒`
 
@@ -301,26 +344,36 @@ engine = create_engine(DATABASE_URL)
 # ✅ 使用连接池
 engine = create_engine(
     DATABASE_URL,
+
+```text
     poolclass=QueuePool,
     pool_size=20,        # 连接池大小
     max_overflow=10,     # 最大溢出连接
     pool_timeout=30,     # 获取连接超时
     pool_recycle=3600    # 连接回收时间
+```
+
 )`
 
 #### 4.3 预加载和预热
 
 `class PreloadedAgent:
+
+```python
     def __init__(self):
         # 预加载模型
         self.llm = ChatOpenAI(model="gpt-3.5-turbo")
+```
+
         
         # 预加载向量数据库
         self.vectorstore = Chroma(persist_directory="./db")
         
         # 预热（发送一个测试请求）
+
+```python
         self._warmup()
-    
+
     def _warmup(self):
         """预热模型"""
         try:
@@ -328,6 +381,8 @@ engine = create_engine(
             print("✅ 模型预热完成")
         except Exception as e:
             print(f"❌ 预热失败: {e}")
+```
+
 
 # 应用启动时预加载
 agent = PreloadedAgent()`
@@ -356,6 +411,8 @@ TOKEN_USAGE = Histogram(
     'llm_token_usage',
     'LLM token usage',
     ['model', 'type']  # type: input/output
+
+```python
 )
 
 class CostTracker:
@@ -364,40 +421,61 @@ class CostTracker:
             "gpt-4-turbo-preview": (0.01, 0.03),
             "gpt-3.5-turbo": (0.0005, 0.0015)
         }
-    
+
     def track_call(self, model: str, input_tokens: int, output_tokens: int):
         """追踪 API 调用成本"""
         # 记录调用次数
         API_CALLS.labels(model=model, status="success").inc()
+```
+
         
         # 记录 token 使用
+
+```text
         TOKEN_USAGE.labels(model=model, type="input").observe(input_tokens)
         TOKEN_USAGE.labels(model=model, type="output").observe(output_tokens)
+```
+
         
         # 计算成本
+
+```text
         input_price, output_price = self.prices.get(model, (0, 0))
         cost = (input_tokens / 1000 * input_pric_tokens / 1000 * output_price)
+```
+
         
         # 记录成本
+
+```text
         API_COST.labels(model=model).inc(cost)
-        
+
         return cost
+```
+
 
 # 使用示例
 tracker = CostTracker()
 
+```python
 def call_llm_with_tracking(prompt: str, model: str) -> str:
     """带成本追踪的 LLM 调用"""
     response = llm.invoke(prompt)
+```
+
     
     # 追踪成本
+
+```python
     input_tokens = len(prompt.split())  # 简化计算
     output_tokens = len(response.split())
     cost = tracker.track_call(model, input_tokens, output_tokens)
-    
+
     print(f"💰 本次调用成本: ${cost:.6f}")
-    
+
     return response`
+```
+
 
 #### 5.2 Grafana 仪表板
 
@@ -405,6 +483,8 @@ def call_llm_with_tracking(prompt: str, model: str) -> str:
   "dashboard": {
     "tle": "AI Agent 成本监控",
     "panels": [
+
+```text
       {
         "title": "每日成本",
         "targets": [
@@ -431,6 +511,8 @@ def call_llm_with_tracking(prompt: str, model: str) -> str:
       }
     ]
   }
+```
+
 }`
 
 ### 六、实战案例

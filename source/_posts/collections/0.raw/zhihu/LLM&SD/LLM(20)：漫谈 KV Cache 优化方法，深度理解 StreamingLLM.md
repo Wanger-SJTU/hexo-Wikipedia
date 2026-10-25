@@ -82,19 +82,31 @@ batch sizes+nKV cache(GB)KV cache/weight4409675.50.221640963020.8664409612083.45
 self.Wqkv = nn.Linear(     # Multi-Head Attention 的创建方法
     self.d_model,
     3 * self.d_model,     # Q、K和V 3 个矩阵, 所以是 3 * d_model
+
+```text
     device=device
 )
+```
+
 query, key, value = qkv.chunk(3, dim=2)      # 每个 tensor 都是 (1, 512, 768)
 
 # Multi Query Attention
 self.Wqkv = nn.Linear(       # Multi-Query Attention 的创建方法
     d_model,
     d_model + 2 * self.head_dim,    # 只创建Q的头向量，所以是 1* d_model, 而K和V不再具备单独的头向量, 所以是 2 * self.head_dim
+
+```text
     device=device,
 )
+```
+
 query, key, value = qkv.split(
+
+```text
     [self.d_model, self.head_dim, self.head_dim],    # query -> (1, 512, 768), key   -> (1, 512, 96), value -> (1, 512, 96)
     dim=2
+```
+
 )`
 
 ![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_c4fceb370466.jpg)
@@ -182,11 +194,15 @@ $$\operatorname{SoftMax}(x)_i=\frac{e^{x_i}}{e^{x_1}+\sum_{j=2}^N e^{x_j}}, \qua
 上述过程可以用代码描述如下：
 
 `    history = ["\n[|Human|]{}\n[|AI|]{}".format(x[0], x[1]) for x in history]
+
+```text
     history.append("\n[|Human|]{}\n[|AI|]".format(text))
     history_text = ""
     flag = False
     for x in history[::-1]:
         if tokenizer(prompt + history_text + x, return_tensors="pt")["input_ids"].size(-1) 
+```
+
 
 实际上这就是典型的<strong>滑动窗口</strong>的做法，滑窗 l 的存在保证了 GPU 的显存不会溢出，但是由于上节的讨论，会存在精度损失。
 

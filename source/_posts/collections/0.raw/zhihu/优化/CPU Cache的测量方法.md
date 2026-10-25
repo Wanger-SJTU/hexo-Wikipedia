@@ -51,12 +51,16 @@ Flush即clflush指令，Visual C++中定义如下：
 测量代码：
 
 `/* flush */
+
+```text
         _mm_clflush(&data[0]);
 
         /* measure cache miss latency */
         ts = rdtscp(&ui);
         m |= data[0];
         te = rdtscp(&ui);`
+```
+
 
 #### 实战：Cache Line的测量
 

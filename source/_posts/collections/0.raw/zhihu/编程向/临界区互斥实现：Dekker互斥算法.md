@@ -20,13 +20,15 @@ source_url: https://zhuanlan.zhihu.com/p/122544351
 <strong>Dekker互斥算法代码(简写版只举出一个进程）：</strong>
 
 `bool flag[2]; //初始化为false
+
+```cpp
 int turn; //轮转变量
 
 void process(int me){
     other = 1 - me;
     do{
         flag[me] = true;  //举手，表明进入临界区意愿 
-        
+
         while(flag[other] == true){ //检查对方是否举手 ，若举手检查是否礼让 
         	if(turn == other){ //目前对方的轮次，我方礼让 
         		flag[me] = false; //放手 
@@ -34,14 +36,16 @@ void process(int me){
         		flag[me] = true; //举手 
         	}
         }
-        
+
         /* enter critical section */
-        
+
         turn = other; //把下一次竞争时的轮次交给对方 
         flag[me] = false;
-        
+
 	}while(true);  
 }
+```
+
 
 `
 
@@ -52,10 +56,14 @@ flag：这是一个互斥标志，用于进程间的状态交流。当有一个�
 turn：用来避免死锁，也就是
 
 ` while(flag[other] == true){ //检查对方是否举手 ，若举手检查是否礼让 
+
+```text
         	if(turn == other){ //目前对方的轮次，我方礼让 
-        		
+
         	}
    }`
+```
+
 
 决定了这样一个竞争时轮转的机制，如果没有这个turn变量，有可能两个进程同时步入while而出现死锁。它决定了当 flag[me] 与 flag[other] 同时为真时，即me和other同时被测试时，me的行为是放手礼让对方，还是等待对方放手。
 

@@ -131,6 +131,8 @@ $$L_{ang}=\frac{1}{N}\sum_i-log({\frac {e^{||x||\psi(\theta_{y_i,i})}}{e^{||x||\
 Pytorch代码实现：
 
 `# SphereFace
+
+```python
 class SphereProduct(nn.Module):
     r"""Implement of large margin cosine distance: :
     Args:
@@ -152,9 +154,13 @@ class SphereProduct(nn.Module):
         self.iter = 0
         self.weight = Parameter(torch.FloatTensor(out_features, in_features))
         nn.init.xavier_uniform(self.weight)
+```
+
 
         # duplication formula
         # 将x\in[-1,1]范围的重复index次映射到y\[-1,1]上
+
+```python
         self.mlambda = [
             lambda x: x ** 0,
             lambda x: x ** 1,
@@ -195,13 +201,21 @@ class SphereProduct(nn.Module):
         k = (self.m * theta / 3.14159265).floor()
         phi_theta = ((-1.0) ** k) * cos_m_theta - 2 * k
         NormOfFeature = torch.norm(input, 2, 1)
+```
+
 
         # --------------------------- convert label to one-hot ---------------------------
+
+```text
         one_hot = torch.zeros(cos_theta.size())
         one_hot = one_hot.cuda() if cos_theta.is_cuda else one_hot
         one_hot.scatter_(1, label.view(-1, 1), 1)
+```
+
 
         # --------------------------- Calculate output ---------------------------
+
+```python
         output = (one_hot * (phi_theta - cos_theta) / (1 + self.lamb)) + cos_theta
         output *= NormOfFeature.view(-1, 1)
 
@@ -212,6 +226,8 @@ class SphereProduct(nn.Module):
                + 'in_features=' + str(self.in_features) \
                + ', out_features=' + str(self.out_features) \
                + ', m=' + str(self.m) + ')'`
+```
+
 
 三、CosFace
 
@@ -242,6 +258,8 @@ cos(\theta_j,i)=W^T_jx_i
 代码实现：
 
 `# CosFace
+
+```python
 class AddMarginProduct(nn.Module):
     r"""Implement of large margin cosine distance: :
     Args:
@@ -283,6 +301,8 @@ class AddMarginProduct(nn.Module):
                + ', out_features=' + str(self.out_features) \
                + ', s=' + str(self.s) \
                + ', m=' + str(self.m) + ')'
+```
+
 `
 
 四、ArcFace
@@ -319,6 +339,8 @@ cos(\theta_j,i)=W^T_jx_i
 代码实现：
 
 `# ArcFace
+
+```python
 class ArcMarginProduct(nn.Module):
     r"""Implement of large margin arc distance: :
         Args:
@@ -383,6 +405,8 @@ class ArcMarginProduct(nn.Module):
         # print(output)
 
         return output
+```
+
 
 `
 

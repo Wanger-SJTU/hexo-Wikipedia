@@ -243,6 +243,7 @@ Linux 内核中的 RDMA 子系统是一个分层架构，旨在将硬件细节�
 
 首先，我们定义驱动所需的核心数据结构。这些结构将保存在一个头文件 urdma.h 中，以便在驱动的各个部分共享。
 
+```cpp
 // urdma.h
 #ifndef __URDMA_H__
 #define __URDMA_H__
@@ -281,6 +282,8 @@ struct urdma_ucontext {
 };
 
 #endif /* __URDMA_H__ */
+```
+
 关键点说明：
 
 - struct urdma_dev: 这是驱动的核心结构，代表一个虚拟 RDMA 设备。它通过内嵌 struct ib_device 来与内核 RDMA 子系统集成，同时允许添加驱动特有的数据（如 id 和 gid）。
@@ -291,14 +294,18 @@ struct urdma_ucontext {
 
 驱动的主逻辑，包括模块的加载和卸载，将放在一个名为 urdma_main.c 的文件中。
 
+```cpp
 // urdma_main.c
 #include <linux/module.h> // 标准模块头文件
 #include &#34;urdma.h&#34;        // 我们自己的头文件
+```
+
 
 MODULE_AUTHOR(&#34;Linux RDMA Tutorial Driver Developer&#34;); // 模块作者
 MODULE_DESCRIPTION(&#34;A minimal virtual RDMA device driver&#34;); // 模块描述
 MODULE_LICENSE(&#34;GPL&#34;); // 许可证声明
 
+```cpp
 #define NUM_DEV 2 // 定义我们想要创建的虚拟设备数量
 static struct urdma_dev *urdma_devs[NUM_DEV] = {}; // 全局数组，用于存放我们的设备实例
 
@@ -309,17 +316,25 @@ static const struct ib_device_ops urdma_device_ops; // 定义在后续
 // 设备分配与释放的辅助函数
 static struct urdma_dev *urdma_alloc_device(const int id) {
   struct urdma_dev *urdma;
+```
+
 
   urdma = ib_alloc_device(urdma_dev, ibdev);
+
+```text
   if (!urdma) {
     pr_err(&#34;urdma: alloc_device failed for id: %d\n&#34;, id);
     return NULL;
   }
+```
+
 
   urdma->id = id;
   urdma->gid.global.subnet_prefix = cpu_to_be64(0xfe80000000000000);
   urdma->gid.global.interface_id  = cpu_to_be64(0x505400fffe123456);
   pr_info(&#34;urdma: allocated device for id: %d\n&#34;, id);
+
+```cpp
   return urdma;
 }
 
@@ -334,8 +349,12 @@ static void urdma_dealloc_device(struct urdma_dev *urdma) {
 static int __init urdma_init_module(void) {
   int err = 0;
   int i;
+```
+
 
   pr_info(&#34;urdma: loading module...\n&#34;);
+
+```cpp
   for (i = 0; i < NUM_DEV; i++) {
     urdma_devs[i] = urdma_alloc_device(i);
     if (!urdma_devs[i]) {
@@ -350,12 +369,20 @@ static int __init urdma_init_module(void) {
       goto err_cleanup;
     }
   }
+```
+
 
   pr_info(&#34;urdma: module loaded successfully with %d device(s)\n&#34;, NUM_DEV);
+
+```text
   return 0;
+```
+
 
 err_cleanup:
   pr_err(&#34;urdma: error during module initialization, cleaning up...\n&#34;);
+
+```cpp
   // 清理已成功创建的设备
   for (i = i - 1; i >= 0; i--) { // 从最后一个成功分配/注册的开始清理
     if (urdma_devs[i]) {
@@ -381,6 +408,8 @@ static void __exit urdma_exit_module(void) {
   }
   pr_info(&#34;urdma: module unloaded.\n&#34;);
 }
+```
+
 module_init(urdma_init_module);
 module_exit(urdma_exit_module);
 
@@ -399,6 +428,7 @@ module_exit(urdma_exit_module);
 - ib_unregister_device(&urdma_devs[i]->ibdev): 从 ib_core 注销设备。
 - urdma_dealloc_device(urdma_devs[i]): 调用 ib_dealloc_device() 释放设备结构占用的内存。<strong>5.4 定义和实现 ib_device_ops</strong>
 
+```cpp
 struct ib_device_ops 是一个包含大量函数指针的结构体，它定义了驱动程序如何响应来自 ib_core 的各种 verbs 操作请求。对于我们的最小化驱动，许多这些函数可以只是存根 (stub) 实现。
 
 // urdma_main.c
@@ -457,6 +487,8 @@ static const struct ib_device_ops urdma_device_ops = {
   // mandatory methods <https://elixir.bootlin.com/linux/v6.8/source/drivers/infiniband/core/device.c#L267>
   .query_device = urdma_query_device,
   .query_port = urdma_query_port,
+```
+
 
   .alloc_pd = urdma_alloc_pd,
   .dealloc_pd = urdma_dealloc_pd,
@@ -483,6 +515,7 @@ static const struct ib_device_ops urdma_device_ops = {
 
   .get_port_immutable = urdma_get_port_immutable,
 
+```text
   // uverbs required methods
   .alloc_ucontext = urdma_alloc_ucontext,
   .dealloc_ucontext = urdma_dealloc_ucontext,
@@ -491,6 +524,8 @@ static const struct ib_device_ops urdma_device_ops = {
   // rc_pingpong required methods
   .query_gid = urdma_query_gid,
 };
+```
+
 关键点说明：
 
 - owner = THIS_MODULE: 确保内核正确管理模块的引用计数。
@@ -503,6 +538,7 @@ static const struct ib_device_ops urdma_device_ops = {
 
 urdma_register_device 函数负责在 ib_alloc_device 之后，进一步初始化 ib_device 结构并最终调用 ib_register_device() 将其注册到内核 RDMA 子系统。
 
+```cpp
 // urdma_main.c
 static int urdma_register_device(struct urdma_dev *urdma)
 {
@@ -516,7 +552,7 @@ static int urdma_register_device(struct urdma_dev *urdma)
 
   // 设置设备的操作函数表
   ib_set_device_ops(dev, &urdma_device_ops);
-  
+
   // --- 注册设备到 ib_core ---
   // 第二个参数 &#34;urdma%d&#34; 用于格式化注册信息，dev->name 才是最终的设备名
   err = ib_register_device(dev, &#34;urdma%d&#34;, NULL);
@@ -528,6 +564,8 @@ static int urdma_register_device(struct urdma_dev *urdma)
 
   return err;
 }
+```
+
 关键填充字段：
 
 - dev->node_desc: 设备的描述性字符串。
@@ -565,8 +603,11 @@ log:
         sudo dmesg -T | tail -n 20
 2. 编译:
 
+```text
 make
   这将生成 urdma.ko (在 Makefile 中指定的模块名)。
+```
+
 
 3. 加载模块:
 

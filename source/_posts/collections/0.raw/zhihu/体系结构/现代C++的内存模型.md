@@ -52,6 +52,8 @@ source_url: https://zhuanlan.zhihu.com/p/382372072
 图4. 优化（Herb Sutter: atomic Weapons）对于重排（Reordering），编译器和CPU都会有重排，主要就是为了优化性能。既然发生在哪一层不重要，我们这里就从编译器方面来看，以下面代码为例，
 
 `//reordering 重排示例代码
+
+```cpp
 int A = 0, B = 0;
 void foo()
 {
@@ -62,6 +64,8 @@ void foo()
 // 编译器重排后的代码
 // 注意第一句汇编，已经将B最初的值存到了
 // 寄存器eax，而后将该eax的值加1，再赋给A
+```
+
 movl  B(%rip), %eax
 movl  $1, B(%rip)          // B = 1
 addl  $1, %eax             // A = B + 1
@@ -73,14 +77,22 @@ movl  %eax, A(%rip)
 再来说Invention，其实这主要涉及CPU的Speculative execution，我们看如下代码，
 
 `// Invention示例代码
+
+```text
 // 原始代码
 if( cond ) x = 42;
 
 // 优化后代码
+```
+
 r1 = x;// read what's there
 x = 42;// oops: optimistic write is not conditional
+
+```text
 if( !cond)// check if we guessed wrong
     x = r1;// oops: back-out write is not SC
+```
+
 `
 
 我们看到，相比于最初的代码，多了一次对x的写入。同样，对于单线程来说，没有什么问题，但是对于多线程，显然是有问题的，另一个线程在cond为false的情况下，依然可能看到x为42.
@@ -98,8 +110,12 @@ if( !cond)// check if we guessed wrong
 （1）顺序一致（Sequential consistency）
 
 编译器和CPU需要严格按照代码顺序进行生成和执行。对于多线程程序，由图1架构可知，每个线程的指令执行顺序由各自的CPU来控制，因而都有独立的执行顺序，但因为它们共享同一个内存，而内存修改的顺序是全局的（global memory order），我们可以以该全局顺序为参照，对所有线程进行同步。其实，我们用互斥锁来推导线程间同步顺序时，也是基于类似这种顺序一致的前提。但顺序一致更为严格，对于内存读写来说，读写顺序需要严格按照代码顺序，即要求如下（符号”// 顺序一致的要求
+
+```text
 /* Load→Load */
 /*若按代码顺序，a变量的读取先于b变量，
+```
+
 则内存顺序也需要先读a再读b
 后面的规则同理。*/
 if L(a) p L(b) ⇒ L(a) m L(b) 
@@ -157,6 +173,8 @@ C++内存模型借鉴lock/unlock，引入了两个等效的概念，Acquire（�
 图8. 三种屏障 （可下移、可上移、不能跨越）现代C++的内存模型，其实主要表现在对原子变量进行操作时，通过指定memory order（内存顺序）的参数，来控制线程间同步。图7的示例便是其中一种内存顺序模型（获取发布模型：Acquire-Release Ordering）。memory order是一个枚举值，定义如下：
 
 `// 内存模型枚举值
+
+```text
 typedef enum memory_order {
     memory_order_relaxed,
     memory_order_consume,
@@ -164,6 +182,8 @@ typedef enum memory_order {
     memory_order_release,
     memory_order_acq_rel,
     memory_order_seq_cst
+```
+
 } memory_order;
 `
 
@@ -187,6 +207,8 @@ or memory_order_seq_cst同上read-modify-writememory_order_relaxed, memory_order
 以如下代码为例，以下代码，其执行结果是否能保证z不为0？
 
 `// 顺序一致
+
+```cpp
 std::atomicbool> x,y;
 std::atomicint> z;
 void write_x()
@@ -224,6 +246,8 @@ int main()
     d.join();
     assert(z.load()!=0);
 }
+```
+
 `
 
 由代码可知，显然线程a Synchronizes-with 线程c（线程c读取到了线程a对原子变量x的写入值），同理，线程b Synchronizes-with 线程d（根据对原子变量y的写入读取），但是其它线程关系，则只能分情况推知：
@@ -257,6 +281,8 @@ int main()
 该模型比获取发布模型更为宽松，所以依旧需要结合图2进行分析。以下面代码为例
 
 `// 松散模型
+
+```cpp
 std::atomicbool> x(false),y(false);
 std::atomicint> z(0);
 void write_x_then_y()    // thread 1
@@ -270,6 +296,8 @@ void read_y_then_x()     // thread 2
     if(x.load(std::memory_order_relaxed))
         ++z;
 }
+```
+
 `
 
 执行结果，z值可能为0。其实很简单，若y.store重排于x.store之前，便可得出结论。重排可以发生在编译器，也可以在CPU/Cache。例如，将写入结果先缓存至Store Buffer，最后写入内存，但是Store Buffer到内存，可能会先写y再写x（先进后出），这样也相当于重排。所以正如前面的优化分析所述，我们无需关注优化发生在哪一层，我们只需关注这种优化是否发生以及发生后的影响，以便我们进行分析。当然，即使不是重排，也有可能，例如，线程2对于x的读取，可能读取的是cache而非内存。
@@ -279,6 +307,8 @@ void read_y_then_x()     // thread 2
 从前面的表2可知，Relaxed ordering仅要求保证原子性和内存修改顺序一致性（modification order consistency）。原子性不用多说。举例说一下修改顺序一致性，
 
 `// 内存修改顺序一致性
+
+```cpp
 std::atomicint> x(0),y(0);
 
 // thread 1
@@ -298,6 +328,8 @@ for(unsigned i=0;i10;++i) {
     std::cout  "("  x1  ","  y1  ")"  std::endl;
     std::this_thread::yield();
 }
+```
+
 `
 
 假设上述两个线程同时分别执行两个for循环，那么，输出的结果可能如下：

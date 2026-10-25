@@ -62,21 +62,33 @@ B矩阵二分(<strong>列切</strong>)后，子矩阵B1、B2的尺寸为<strong>
 M, N, K = 3, 4, 6
 A = np.random.randint(0, 10, size=(M, N))  # 随机整数矩阵 [0, 10)
 B = np.random.randint(0, 10, size=(N, K))
+
+```python
 print("A:\n", A, "\nshape:", A.shape)
 print("\nB:\n", B, "\nshape:", B.shape)
+```
+
 
 # 2. 对 B 按列切分（均分）
 num_splits = 3  # 切分块数
 B_splits = np.split(B, num_splits, axis=1)  # 沿列切分
 print("\nB 分块结果:")
 for i, B_i in enumerate(B_splits):
+
+```python
     print(f"B_{i}:\n", B_i, "\nshape:", B_i.shape)
+```
+
 
 # 3. 模拟并行计算：每个进程计算 A @ B_i
 local_results = [A @ B_i for B_i in B_splits]
 print("\n局部乘积结果:")
 for i, C_i in enumerate(local_results):
+
+```python
     print(f"C_{i} (A @ B_{i}):\n", C_i, "\nshape:", C_i.shape)
+```
+
 
 # 4. 模拟 allgather：拼接所有局部结果
 C_final = np.concatenate(local_results, axis=1)
@@ -84,8 +96,12 @@ print("\n合并后的 C_final:\n", C_final, "\nshape:", C_final.shape)
 
 # 5. 验证结果与直接乘法的等价性
 C_ground_truth = A @ B
+
+```python
 print("\n标准乘法结果 (A @ B):\n", C_ground_truth)
 print("\n验证一致性:", np.array_equal(C_final, C_ground_truth))`
+```
+
 
 #### 场景二：A矩阵行切(row split)
 
@@ -205,6 +221,7 @@ Scaled Dot-Product Attention这里我们分三个子问题来分析：
 
 `import numpy as np
 
+```python
 def softmax(x):
     e_x = np.exp(x - np.max(x, axis=-1, keepdims=True))
     return e_x / np.sum(e_x, axis=-1, keepdims=True)
@@ -213,6 +230,8 @@ def attention(Q, K, V):
     scores = np.matmul(Q, K.transpose(0, 1, 3, 2)) / np.sqrt(K.shape[-1])
     weights = softmax(scores)
     return np.matmul(weights, V)
+```
+
 
 # 设置随机种子（确保可复现）
 np.random.seed(42)

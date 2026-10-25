@@ -86,9 +86,13 @@ BufferQueue：
 ` /**
  * Coordinates the timing of animations, input and drawing.
  * 
+
+```text
  * The choreographer receives timing pulses (such as vertical synchronization)
  * from the display subsystem then schedules work to occur as part of rendering
  * the next display frame.`
+```
+
 
 - [移动端显示技术杂谈](https://www.zhihu.com/column/c_1286062381815140352?share_code=XwY7cLYfXbCJ&utm_psn=1944896500875375040)
 - [Android Choreographer 原理 以及 动画原理](https://link.zhihu.com/?target=https%3A//bokmark.github.io/p/fwk/choreographer/)

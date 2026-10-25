@@ -28,7 +28,11 @@ $ab=m&#x21D2;eln&#x2061;ab=m&#x21D2;ebln&#x2061;a=m&#x21D2;ln&#x2061;ebln&#x2061
 所以我们知道所有的对数函数的计算都可化为两个 ln" role="presentation">ln\ln 函数相除，比如：
 
 `double log10(double x) {
+
+```text
     return log(x) / log(10); // log == ln
+```
+
 }`
 
 我们只需要解决如何求 ln" role="presentation">ln\ln 函数就可以了。
@@ -37,11 +41,18 @@ $ab=m&#x21D2;eln&#x2061;ab=m&#x21D2;ebln&#x2061;a=m&#x21D2;ln&#x2061;ebln&#x2061
 
 `#include "fdlibm.h"
 
+```text
 #ifdef __STDC__
 static const double
+```
+
 #else
+
+```text
 static double
 #endif
+```
+
 ln2_hi  =  6.93147180369123816490e-01,	/* 3fe62e42 fee00000 */
 ln2_lo  =  1.90821492927058770002e-10,	/* 3dea39ef 35793c76 */
 two54   =  1.80143985094819840000e+16,  /* 43500000 00000000 */
@@ -53,11 +64,16 @@ Lg5 = 1.818357216161805012e-01,  /* 3FC74664 96CB03DE */
 Lg6 = 1.531383769920937332e-01,  /* 3FC39A09 D078C69F */
 Lg7 = 1.479819860511658591e-01;  /* 3FC2F112 DF3E5244 */
 
+```text
 static double zero   =  0.0;
 
 #ifdef __STDC__
 	double __ieee754_log(double x)
+```
+
 #else
+
+```cpp
 	double __ieee754_log(x)
 	double x;
 #endif
@@ -92,7 +108,11 @@ static double zero   =  0.0;
 	    if(k==0) return f-R; else {dk=(double)k;
 	    	     return dk*ln2_hi-((R-dk*ln2_lo)-f);}
 	}
+```
+
  	s = f/(2.0+f); 
+
+```text
 	dk = (double)k;
 	z = s*s;
 	i = hx-0x6147a;
@@ -110,6 +130,8 @@ static double zero   =  0.0;
 	    if(k==0) return f-s*(f-R); else
 		     return dk*ln2_hi-((s*(f-R)-dk*ln2_lo)-f);
 	}
+```
+
 }`
 
 这么艹的代码，是不是看一眼就不想看了。别急，咱个儿挑重点讲。
@@ -165,6 +187,8 @@ $$\ln(x) = k\ln 2 + \ln (1+f) = k\ln2 + f - {ff\over2}  + s(\frac{ff}{2}+R(z)) $
 一年多来这个回答收到了很多赞，看来大家对计算机+数学都是真爱，刚好前两天顺道看到 Go 的源码，发现里面的 `log` 实现得更“可读”，于是贴出来给大家参考参考：
 
 `func log(x float64) float64 {
+
+```text
 	const (
 		Ln2Hi = 6.93147180369123816490e-01 /* 3fe62e42 fee00000 */
 		Ln2Lo = 1.90821492927058770002e-10 /* 3dea39ef 35793c76 */
@@ -206,6 +230,8 @@ $$\ln(x) = k\ln 2 + \ln (1+f) = k\ln2 + f - {ff\over2}  + s(\frac{ff}{2}+R(z)) $
 	hfsq := 0.5 * f * f
 	return k*Ln2Hi - ((hfsq - (s*(hfsq+R) + k*Ln2Lo)) - f)
 } 
+```
+
 `
 
 算法还是同C一样的，这次看完相信大家一定能手写了！

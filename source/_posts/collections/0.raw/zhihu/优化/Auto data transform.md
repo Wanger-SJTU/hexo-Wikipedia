@@ -45,12 +45,18 @@ T op_;`
 在DataTransformer中，我们仅考虑了四则运算，即加，减，乘，除和除余，这里以加法运算做说明：
 
 `void visit(const Add *add) override {
+
+```text
     IRVisitor::visit(add);
     Add *node = const_castAdd *>(reinterpret_castconst Add *>(add)) ;
  if (const Halide::Internal::Call *v= node->a.asHalide::Internal::Call>()) {
  if (v->name==target_)
         {
+```
+
  auto expr = v->args;
+
+```text
             op_(expr);
             node->a = replace_func_(expr);
         }
@@ -58,12 +64,18 @@ T op_;`
  if (const Halide::Internal::Call *v= node->b.asHalide::Internal::Call>()) {
  if (v->name==target_)
         {
+```
+
  auto expr = v->args;
+
+```text
             op_(expr);
             node->b = replace_func_(expr);
         }
     }
 }
+```
+
 `
 
 当加法运算的两端中的一个是函数(Call)时，检查其函数名是否为目标名，如果是目标名，则获取其函数的运算参数，并对所有运算参数执行op_的data transform操作，然后将这个Call函数重新用replace_func_定义。
@@ -71,9 +83,13 @@ T op_;`
 ### auto data_transform函数
 
 `template
+
+```cpp
 void data_transform(std::vector &outputs,Func target,DataTransformMethod method)
 
 void auto_data_transform(std::vector &outputs)`
+```
+
 
 data_transform_impl的封装函数，根据提供的method来调用不同的data_transform_impl函数。DataTransformMethod是枚举类，定义在DataOP.h中。
 
@@ -96,9 +112,13 @@ DataTransformMethod是一个枚举类，定义了data transform的三种方法
 DataOP需要重载三个函数，两个括号运算符重载和一个命名函数,命名规则是$+算子名。
 
 `class DataOP
+
+```text
 {
 public:
     // operate the vector
+```
+
  virtual void operator()(std::vector &args){}
  virtual void operator()(Func &lfunc,Func &rfunc){}
  virtual std::string name(){return "$NULL";}

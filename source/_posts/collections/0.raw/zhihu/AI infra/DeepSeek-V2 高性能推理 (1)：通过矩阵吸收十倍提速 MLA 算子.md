@@ -55,12 +55,16 @@ q_b_proj 大小为 [q_lora_rank, num_heads * q_head_dim] = [q_lora_rank, num_att
 
     # 计算Q：对应公式中的 37-39 行，先降维再升维，好处是相比直接使用大小为 [5120, 24576] 的矩阵
     # [5120, 1536] * [1536, 24576] 这样的低秩分解在存储空间和计算量上都大幅度降低
+
+```text
     q = self.q_b_proj(self.q_a_layernorm(self.q_a_proj(hidden_states)))
     q = q.view(bsz, q_len, self.num_heads, self.q_head_dim).transpose(1, 2)
     # 切分 rope 和非 rope 部分，公式中 40 行反过来
     q_nope, q_pe = torch.split(
         q, [self.qk_nope_head_dim, self.qk_rope_head_dim], dim=-1
     )
+```
+
 这里值得注意的一个点是 DeepSeek-V2 有 128 个 heads，明显大于其它同等大小的模型，这个有可能是 MLA 效果比拟 MHA 的关键原因之一。
 
 KV向量
@@ -74,6 +78,8 @@ kv_b_proj 大小为  [kv_lora_rank， num_heads * (q_head_dim - qk_rope_head_dim
 
         # 对应公式中的 41 和 43 行只是还没有加 rope
         # 一个优化的 MLA KVCache 实现只需要缓存这个 compressed_kv 就行，不过后面实际上展开了
+
+```text
         compressed_kv = self.kv_a_proj_with_mqa(hidden_states)
         # 对应 44 行反过来
         compressed_kv, k_pe = torch.split(
@@ -90,6 +96,8 @@ kv_b_proj 大小为  [kv_lora_rank， num_heads * (q_head_dim - qk_rope_head_dim
         k_nope, value_states = torch.split(
             kv, [self.qk_nope_head_dim, self.v_head_dim], dim=-1
         )
+```
+
 通过维度分析可以看到 kv_lora_rank 是 qk_nope_head_dim 的 4 倍且 K 和 V 共享 latent state，qk_rope_head_dim 只有 qk_nope_head_dim 的一半，结合起来 4+1/2=9/2 正式下图中 MLA KVCache per Token 大小的来源
 
 不过从代码中我们也可以看到在开源实现中是展开成 MHA 存储的 KVCache，所以没有拿到这部分的收益。
@@ -104,6 +112,8 @@ MHA
         
         # 更新和拼接历史 KVCache，可以看到这里存储的是展开后的 MHA KVCache
         # 其中 q_head_dim 等于 qk_nope_head_dim + qk_rope_head_dim
+
+```sql
         query_states = k_pe.new_empty(bsz, self.num_heads, q_len, self.q_head_dim)
         query_states[:, :, :, : self.qk_nope_head_dim] = q_nope
         query_states[:, :, :, self.qk_nope_head_dim :] = q_pe
@@ -115,9 +125,13 @@ MHA
             key_states, value_states = past_key_value.update(
                 key_states, value_states, self.layer_idx, cache_kwargs
             )
+```
+
         
         # 后续就是标准的 MHA 代码 Q^T*K*V*O，不再赘述
         ....
+
+```text
         attn_weights = (
             torch.matmul(query_states, key_states.transpose(2, 3)) * self.softmax_scale
         )
@@ -132,6 +146,8 @@ MHA
         ....
         attn_output = self.o_proj(attn_output)
         ....
+```
+
 
 优化实现
 优化上述实现的核心在于实现论文中简单提了一句的”矩阵吸收“
@@ -146,6 +162,8 @@ atten\_weights = {q_t}^\top k_t = (W^{UQ} c_t^Q)^{\top} W^{UK} c_t^{KV} = {c_t^Q
 对应的实现代码如下
 
         # 以下和原本实现相同
+
+```text
         bsz, q_len, _ = hidden_states_q.size()
         q = self.q_b_proj(self.q_a_layernorm(self.q_a_proj(hidden_states_q)))
         q = q.view(bsz, q_len, self.num_heads, self.q_head_dim).transpose(1, 2)
@@ -158,12 +176,12 @@ atten\_weights = {q_t}^\top k_t = (W^{UQ} c_t^Q)^{\top} W^{UK} c_t^{KV} = {c_t^Q
             compressed_kv, [self.kv_lora_rank, self.qk_rope_head_dim], dim=-1
         )
         k_pe = k_pe.view(bsz, 1, kv_seq_len, self.qk_rope_head_dim)
-        
+
         # 从 kv_b_proj 中分离的 W^{UK} 和 W^{UK} 两部分，他们要分别在不同的地方吸收
         kv_b_proj = self.kv_b_proj.weight.view(self.num_heads, -1, self.kv_lora_rank)
         q_absorb = kv_b_proj[:, :self.qk_nope_head_dim,:]
         out_absorb = kv_b_proj[:, self.qk_nope_head_dim:, :]
-        
+
         cos, sin = self.rotary_emb(q_pe)
         q_pe = apply_rotary_pos_emb(q_pe, cos, sin, q_position_ids)
         # !!! 关键点，W^{UK} 即 q_absorb 被 q_nope 吸收
@@ -171,6 +189,8 @@ atten\_weights = {q_t}^\top k_t = (W^{UQ} c_t^Q)^{\top} W^{UK} c_t^{KV} = {c_t^Q
         # 吸收后 attn_weights 直接基于 compressed_kv 计算不用展开。
         attn_weights = torch.matmul(q_pe, k_pe.transpose(2, 3)) + torch.einsum('bhqc,blc- bhql', q_nope, compressed_kv)
         attn_weights *= self.softmax_scale
+```
+
 以上的实现主要复杂的地方就是两个 einsum 的维度梳理。
 
 第一个 q_nope = torch.einsum('hdc,bhqd- bhqc', q_absorb, q_nope) 中 q_absorb 的维度是 [head_num, q_head_dim, kv_lora_rank]，q_nope 是 [batch_size, head_num, q_len, q_head_dim]。相当于做了一个将每个 head 的维度从 q_head_dim 投影到 kv_lora_rank  的 BMM。

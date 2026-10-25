@@ -22,13 +22,18 @@ source_url: https://zhuanlan.zhihu.com/p/4245202423
 先在开头给一个例子，你认为下面这段benchmark代码结果会是怎样的。这里的逻辑很简单，将0-20000按线程切成n片，每个线程在一个Set里查找这个数字存不存在，存在则计数+1。
 
 `#include **
+
+```cpp
 #include 
 #include 
 #include 
 #include 
+```
+
 
 constexpr int kSetSize = 10000;
 
+```cpp
 class MyBenchmark : public benchmark::Fixture {
  public:
   void SetUp(const ::benchmark::State& state) override {
@@ -45,8 +50,12 @@ class MyBenchmark : public benchmark::Fixture {
   std::shared_ptr> s;
   std::once_flag flag;
 };
+```
+
 
 BENCHMARK_DEFINE_F(MyBenchmark, MultiThreadedWork)(benchmark::State& state) {
+
+```cpp
   for (auto _ : state) {
     int size_sum = kSetSize * 2;
     int size_per_thread = (size_sum + state.threads() - 1) / state.threads();
@@ -61,6 +70,8 @@ BENCHMARK_DEFINE_F(MyBenchmark, MultiThreadedWork)(benchmark::State& state) {
 }
 
 // 注册基准测试，并指定线程数
+```
+
 BENCHMARK_REGISTER_F(MyBenchmark, MultiThreadedWork)->Threads(1);
 BENCHMARK_REGISTER_F(MyBenchmark, MultiThreadedWork)->Threads(2);
 BENCHMARK_REGISTER_F(MyBenchmark, MultiThreadedWork)->Threads(4);
@@ -110,13 +121,18 @@ Lock Contention对应使用锁来处理多线程同步问题的场景，而Cache
 讲到这里，其实就可以解释为什么开头那段代码会随着线程数量的增加而性能反而下降。代码中的变量 s 是一个共享资源，但它使用了 shared_ptr。在复制 shared_ptr 时，会引起引用计数的增加（计数+1），多个线程频繁对同一个缓存行进行读写操作，从而引发缓存乒乓效应，导致性能下降。最简单的修改方式就是去掉 shared_ptr，代码如下，同时还可以得到我们预期的结果，即CPU时间随着线程数的增加而降低：
 
 `#include **
+
+```cpp
 #include 
 #include 
 #include 
 #include 
+```
+
 
 constexpr int kSetSize = 10000;
 
+```cpp
 class MyBenchmark : public benchmark::Fixture {
  public:
   void SetUp(const ::benchmark::State& state) override {
@@ -127,8 +143,12 @@ class MyBenchmark : public benchmark::Fixture {
   std::unordered_set s;
   std::once_flag flag;
 };
+```
+
 
 BENCHMARK_DEFINE_F(MyBenchmark, MultiThreadedWork)(benchmark::State& state) {
+
+```cpp
   for (auto _ : state) {
     int size_sum = kSetSize * 2;
     int size_per_thread = (size_sum + state.threads() - 1) / state.threads();
@@ -143,6 +163,8 @@ BENCHMARK_DEFINE_F(MyBenchmark, MultiThreadedWork)(benchmark::State& state) {
 }
 
 // 注册基准测试，并指定线程数
+```
+
 BENCHMARK_REGISTER_F(MyBenchmark, MultiThreadedWork)->Threads(1);
 BENCHMARK_REGISTER_F(MyBenchmark, MultiThreadedWork)->Threads(2);
 BENCHMARK_REGISTER_F(MyBenchmark, MultiThreadedWork)->Threads(4);
@@ -160,14 +182,19 @@ BENCHMARK_MAIN();
 为了更好地理解这一现象，我们可以对上面的代码进行一些修改。假设我们使用一个 vector 来记录不同线程的 sum 值，这样虽然不同线程修改的是不同的sum，但是还是在一个缓存行上。使用 atomic 是为了强制触发缓存一致性协议，否则操作系统可能会进行优化，不会立即将修改反映到主存。
 
 `#include 
+
+```cpp
 #include 
 #include 
 #include 
 #include 
 #include 
+```
+
 
 constexpr int kSetSize = 10000;
 
+```cpp
 class MyBenchmark : public benchmark::Fixture {
  public:
   void SetUp(const ::benchmark::State& state) override {
@@ -184,8 +211,12 @@ class MyBenchmark : public benchmark::Fixture {
   std::once_flag flag;
   std::vector> sums;
 };
+```
+
 
 BENCHMARK_DEFINE_F(MyBenchmark, MultiThreadedWork)(benchmark::State& state) {
+
+```cpp
   for (auto _ : state) {
     int size_sum = kSetSize;
     int size_per_thread = (size_sum + state.threads() - 1) / state.threads();
@@ -200,6 +231,8 @@ BENCHMARK_DEFINE_F(MyBenchmark, MultiThreadedWork)(benchmark::State& state) {
 }
 
 // 注册基准测试，并指定线程数
+```
+
 BENCHMARK_REGISTER_F(MyBenchmark, MultiThreadedWork)->Threads(1);
 BENCHMARK_REGISTER_F(MyBenchmark, MultiThreadedWork)->Threads(2);
 BENCHMARK_REGISTER_F(MyBenchmark, MultiThreadedWork)->Threads(4);
@@ -215,14 +248,19 @@ BENCHMARK_MAIN();
 针对这种情况，只要我们将 sums 中的元素隔离，使它们不在同一个缓存行上，就不会引发这个问题。一般来说，缓存行的大小为64字节，我们可以使用一个类填充到64个字节来实现隔离。优化后的代码如下：
 
 `#include 
+
+```cpp
 #include 
 #include 
 #include 
 #include 
 #include 
+```
+
 
 constexpr int kSetSize = 10000;
 
+```cpp
 struct alignas(64) PaddedCounter {
   std::atomic value{0};
   char padding[64 - sizeof(std::atomic)];  // 填充到缓存行大小
@@ -244,8 +282,12 @@ class MyBenchmark : public benchmark::Fixture {
   std::once_flag flag;
   std::vector sums;
 };
+```
+
 
 BENCHMARK_DEFINE_F(MyBenchmark, MultiThreadedWork)(benchmark::State& state) {
+
+```cpp
   for (auto _ : state) {
     int size_sum = kSetSize;
     int size_per_thread = (size_sum + state.threads() - 1) / state.threads();
@@ -260,6 +302,8 @@ BENCHMARK_DEFINE_F(MyBenchmark, MultiThreadedWork)(benchmark::State& state) {
 }
 
 // 注册基准测试，并指定线程数
+```
+
 BENCHMARK_REGISTER_F(MyBenchmark, MultiThreadedWork)->Threads(1);
 BENCHMARK_REGISTER_F(MyBenchmark, MultiThreadedWork)->Threads(2);
 BENCHMARK_REGISTER_F(MyBenchmark, MultiThreadedWork)->Threads(4);
@@ -280,6 +324,7 @@ BENCHMARK_MAIN();
 
 `#pragma once
 
+```cpp
 #include 
 #include 
 
@@ -289,18 +334,30 @@ class Sleeper {
 
  public:
   constexpr Sleeper() noexcept : spin_count_(0) {}
+```
+
 
   inline __attribute__((always_inline)) static void sleep() noexcept {
+
+```text
     struct timespec ts = {0, 500000};
     nanosleep(&ts, nullptr);
   }
+```
+
 
   inline __attribute__((always_inline)) void wait() noexcept {
+
+```cpp
     if (spin_count_ load(std::memory_order_relaxed) == LOCKED);
     }
   }
+```
+
 
   inline __attribute__((always_inline)) void unlock() noexcept {
+
+```cpp
     AtomicCast(&lock_)->store(FREE, std::memory_order_release);
   }
 
@@ -309,28 +366,39 @@ class Sleeper {
     return AtomicCast(&lock_)->compare_exchange_strong(compare, new_val, std::memory_order_acquire,
                                                        std::memory_order_relaxed);
   }
+```
+
 
   inline __attribute__((always_inline)) static std::atomic* AtomicCast(uint8_t* value) {
+
+```text
     return reinterpret_cast*>(value);
   }
 
  private:
   uint8_t lock_;
 };
+```
+
 `
 
 在第一个benchmark中，我们测试了无竞争情况下的性能。也就是说，原子变量的CAS操作只会执行一次，不会进入 sleep 状态。在这种情况下，自旋锁（SpinLock）等价于一次原子 set 操作。 代码如下：
 
 `#include 
+
+```cpp
 #include 
 #include 
 #include 
 #include 
 #include 
 #include "spin_lock.h"
+```
+
 
 constexpr int kSetSize = 10000;
 
+```cpp
 // struct alignas(64) PaddedCounter {
 //   std::atomic value{0};
 //   char padding[64 - sizeof(std::atomic)];  // 填充到缓存行大小
@@ -360,9 +428,13 @@ class MyBenchmark : public benchmark::Fixture {
   std::vector sums_atomic;
   std::vector sum_lock;
 };
+```
+
 
 BENCHMARK_DEFINE_F(MyBenchmark, MultiThreadedWorkAtomic)(benchmark::State& state) {
   SpinLock m;
+
+```cpp
   for (auto _ : state) {
     int size_sum = kSetSize;
     int size_per_thread = (size_sum + state.threads() - 1) / state.threads();
@@ -376,8 +448,12 @@ BENCHMARK_DEFINE_F(MyBenchmark, MultiThreadedWorkAtomic)(benchmark::State& state
     }
   }
 }
+```
+
 
 BENCHMARK_DEFINE_F(MyBenchmark, MultiThreadedWorkLock)(benchmark::State& state) {
+
+```cpp
   std::mutex m;
   for (auto _ : state) {
     int size_sum = kSetSize;
@@ -394,6 +470,8 @@ BENCHMARK_DEFINE_F(MyBenchmark, MultiThreadedWorkLock)(benchmark::State& state) 
 }
 
 // 注册基准测试，并指定线程数
+```
+
 BENCHMARK_REGISTER_F(MyBenchmark, MultiThreadedWorkAtomic)->Threads(1);
 BENCHMARK_REGISTER_F(MyBenchmark, MultiThreadedWorkAtomic)->Threads(2);
 BENCHMARK_REGISTER_F(MyBenchmark, MultiThreadedWorkAtomic)->Threads(4);
@@ -414,15 +492,20 @@ benchmark结果：
 第二个benchmark是对比竞争激烈时的性能，代码如下：
 
 `#include 
+
+```cpp
 #include 
 #include 
 #include 
 #include 
 #include 
 #include "spin_lock.h"
+```
+
 
 constexpr int kSetSize = 10000;
 
+```cpp
 class MyBenchmark : public benchmark::Fixture {
  public:
   void SetUp(const ::benchmark::State& state) override {
@@ -445,8 +528,12 @@ class MyBenchmark : public benchmark::Fixture {
   SpinLock m1_;
   std::mutex m2_;
 };
+```
+
 
 BENCHMARK_DEFINE_F(MyBenchmark, MultiThreadedWorkAtomic)(benchmark::State& state) {
+
+```cpp
   for (auto _ : state) {
     int size_sum = kSetSize;
     int size_per_thread = (size_sum + state.threads() - 1) / state.threads();
@@ -459,8 +546,12 @@ BENCHMARK_DEFINE_F(MyBenchmark, MultiThreadedWorkAtomic)(benchmark::State& state
     }
   }
 }
+```
+
 
 BENCHMARK_DEFINE_F(MyBenchmark, MultiThreadedWorkLock)(benchmark::State& state) {
+
+```cpp
   for (auto _ : state) {
     int size_sum = kSetSize;
     int size_per_thread = (size_sum + state.threads() - 1) / state.threads();
@@ -475,6 +566,8 @@ BENCHMARK_DEFINE_F(MyBenchmark, MultiThreadedWorkLock)(benchmark::State& state) 
 }
 
 // 注册基准测试，并指定线程数
+```
+
 BENCHMARK_REGISTER_F(MyBenchmark, MultiThreadedWorkAtomic)->Threads(1);
 BENCHMARK_REGISTER_F(MyBenchmark, MultiThreadedWorkAtomic)->Threads(2);
 BENCHMARK_REGISTER_F(MyBenchmark, MultiThreadedWorkAtomic)->Threads(4);
@@ -505,15 +598,20 @@ atomic 的优点有：
 case 1如下:
 
 `#include **
+
+```cpp
 #include 
 #include 
 #include 
 #include 
 #include 
 #include "spin_lock.h"
+```
+
 
 constexpr int kSetSize = 10000;
 
+```cpp
 class MyBenchmark : public benchmark::Fixture {
  public:
   void SetUp(const ::benchmark::State& state) override {
@@ -524,8 +622,12 @@ class MyBenchmark : public benchmark::Fixture {
   std::unordered_set s;
   std::once_flag flag;
 };
+```
+
 
 BENCHMARK_DEFINE_F(MyBenchmark, MultiThreadedWorkAtomic)(benchmark::State& state) {
+
+```cpp
   std::atomic sum = 0;
   for (auto _ : state) {
     int size_sum = kSetSize;
@@ -539,8 +641,12 @@ BENCHMARK_DEFINE_F(MyBenchmark, MultiThreadedWorkAtomic)(benchmark::State& state
     }
   }
 }
+```
+
 
 BENCHMARK_DEFINE_F(MyBenchmark, MultiThreadedWorkLock)(benchmark::State& state) {
+
+```cpp
   std::mutex m;
   uint32_t sum = 0;
   for (auto _ : state) {
@@ -558,6 +664,8 @@ BENCHMARK_DEFINE_F(MyBenchmark, MultiThreadedWorkLock)(benchmark::State& state) 
 }
 
 // 注册基准测试，并指定线程数
+```
+
 BENCHMARK_REGISTER_F(MyBenchmark, MultiThreadedWorkAtomic)->Threads(1);
 BENCHMARK_REGISTER_F(MyBenchmark, MultiThreadedWorkAtomic)->Threads(2);
 BENCHMARK_REGISTER_F(MyBenchmark, MultiThreadedWorkAtomic)->Threads(4);
@@ -578,15 +686,20 @@ benchmark结果：
 case 2如下:
 
 `#include 
+
+```cpp
 #include 
 #include 
 #include 
 #include 
 #include 
 #include "spin_lock.h"
+```
+
 
 constexpr int kSetSize = 10000;
 
+```cpp
 class MyBenchmark : public benchmark::Fixture {
  public:
   void SetUp(const ::benchmark::State& state) override {
@@ -605,8 +718,12 @@ class MyBenchmark : public benchmark::Fixture {
   std::atomic atomic_count_;
   std::mutex m;
 };
+```
+
 
 BENCHMARK_DEFINE_F(MyBenchmark, MultiThreadedWorkAtomic)(benchmark::State& state) {
+
+```cpp
   for (auto _ : state) {
     int size_sum = kSetSize;
     int size_per_thread = (size_sum + state.threads() - 1) / state.threads();
@@ -619,8 +736,12 @@ BENCHMARK_DEFINE_F(MyBenchmark, MultiThreadedWorkAtomic)(benchmark::State& state
     }
   }
 }
+```
+
 
 BENCHMARK_DEFINE_F(MyBenchmark, MultiThreadedWorkLock)(benchmark::State& state) {
+
+```cpp
   for (auto _ : state) {
     int size_sum = kSetSize;
     int size_per_thread = (size_sum + state.threads() - 1) / state.threads();
@@ -635,6 +756,8 @@ BENCHMARK_DEFINE_F(MyBenchmark, MultiThreadedWorkLock)(benchmark::State& state) 
 }
 
 // 注册基准测试，并指定线程数
+```
+
 BENCHMARK_REGISTER_F(MyBenchmark, MultiThreadedWorkAtomic)->Threads(1);
 BENCHMARK_REGISTER_F(MyBenchmark, MultiThreadedWorkAtomic)->Threads(2);
 BENCHMARK_REGISTER_F(MyBenchmark, MultiThreadedWorkAtomic)->Threads(4);
@@ -700,15 +823,19 @@ benchmark结果：
 
 `#pragma once
 
+```cpp
 #include 
 #include 
 #include 
 #include 
 #include 
+```
+
 
 constexpr uint8_t kEpochSize = 3;
 constexpr uint8_t kCacheLineSize = 64;
 
+```cpp
 template 
 class ThreadIDManager;
 
@@ -732,8 +859,12 @@ class ThreadIDManager {
     static ThreadIDManager inst;
     return inst;
   }
+```
+
 
   uint32_t AcquireThreadID() {
+
+```cpp
     std::lock_guard lock(tid_list_mutex_);
     auto tid = tid_list_.back();
     tid_list_.pop_back();
@@ -758,8 +889,11 @@ struct TLS {
   ~TLS() = default;
   std::atomic_flag active;
   std::atomic epoch;
+```
+
 } __attribute__((aligned(kCacheLineSize)));
 
+```cpp
 template 
 class EbrManager {
  public:
@@ -789,8 +923,12 @@ class EbrManager {
     thread_local ThreadID thread_id;
     return tls_list_[thread_id.tid];
   }
+```
+
 
   inline void TryGC() {
+
+```cpp
     auto epoch = global_epoch_.load(std::memory_order_acquire);
     // TODO 优化记录上一次搜索到的位置
     for (int i = 0; i obj);
@@ -814,11 +952,15 @@ class EbrManager {
   std::atomic retire_list_[kEpochSize];
   std::array end_padding_;
 };
+```
+
 `
 
 这里再给出一个benchmark，对比一下使用 Epoch Based Reclamation（EBR）和不使用 EBR 的区别。由于笔者时间有限，只能写一个非常简单的版本，仅供参考。
 
 `#include 
+
+```cpp
 #include 
 #include "ebr.h"
 #include "spin_lock.h"
@@ -839,7 +981,11 @@ class NodeFree {
 /*
  * 快速测试起见，简单写了个list版本的kv结构，里面只会有3个元素，然后只支持Get和Modify，Modify也必定会命中key。
  * 不是直接把key，value，next设置成atomic变量而是使用SpinLock的原因是模拟复杂情况，真实情况下会存在Add和Remove操作，实现没有如此简单。
+```
+
  */
+
+```cpp
 class MyList {
  public:
   MyList() {
@@ -939,22 +1085,31 @@ class MyList {
 class MyBenchmark : public benchmark::Fixture {
  public:
   void SetUp(const ::benchmark::State &state) override {}
+```
+
 
   MyList &GetMyList() { return l; }
 
+```cpp
  private:
   MyList l;
   std::once_flag flag;
 };
+```
+
 
 constexpr int kKeySize = 10000;
 
 BENCHMARK_DEFINE_F(MyBenchmark, MultiThreadedWorkNoUseEbr)(benchmark::State &state) {
+
+```cpp
   for (auto _ : state) {
     auto &mylist = GetMyList();
     if (0 == state.thread_index()) {
       // modify
       for (int i = 0; i Threads(4);
+```
+
 BENCHMARK_REGISTER_F(MyBenchmark, MultiThreadedWorkNoUseEbr)->Threads(8);
 BENCHMARK_REGISTER_F(MyBenchmark, MultiThreadedWorkNoUseEbr)->Threads(12);
 

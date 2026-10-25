@@ -183,6 +183,7 @@ PR 里的 16K chunked prefill profile 数据很有代表性：
 - `RMSNorm` 从 82.303ms 降到 43.398ms；
 - 输入长度 1000/2000/4000/4096 下，请求吞吐分别从 12.82/6.52/2.49/2.41 req/s 提到 14.22/7.33/2.72/2.63 req/s。当前 SGLang 代码里，这个优化由 `--enable-attn-tp-input-scattered` 控制。`AttnTpContext` 会检查一组约束，只有 DeepSeek MLA 这类 `q_lora_rank` 不为空、TP 大于 1、没有 DP attention、没有 MoE A2A、没有 EAGLE3 等条件满足时才启用：
 
+```python
 class AttnTpContext:
     def init_context(self, q_lora_rank, is_nsa):
         self.allow_input_scattered = (
@@ -207,9 +208,12 @@ class AttnTpContext:
             and forward_batch.input_ids is not None
             and not forward_batch.can_run_tbo
         )
+```
+
 
 后面 attention 真正需要完整 hidden 时，再通过 `fetch_hidden_states()` 做一次 TP all-gather：
 
+```python
 def fetch_hidden_states(self):
     if self.hidden_states_ is not None:
         return self.hidden_states_
@@ -219,6 +223,8 @@ def fetch_hidden_states(self):
             self.hidden_states_, self.forward_batch
         )
     return self.hidden_states_
+```
+
 
 这个优化属于「不改变数学，只改变中间张量放在哪个时刻变完整」的类型，收益也正来自这个时序调整。
 
@@ -233,6 +239,7 @@ export SGL_CHUNKED_PREFIX_CACHE_THRESHOLD=0
 
 MHA_ONE_SHOT_SUPPORTED_BACKENDS = [&#34;fa3&#34;, &#34;flashinfer&#34;, &#34;flashmla&#34;]
 
+```python
 def _support_mha_one_shot(attn, forward_batch, backend_name):
     attn_supported = backend_name in MHA_ONE_SHOT_SUPPORTED_BACKENDS
     sum_seq_lens = (
@@ -248,6 +255,8 @@ def _handle_attention_backend(attn, forward_batch, backend_name):
         return AttnForwardMethod.MHA_CHUNKED_KV
     else:
         return _dispatch_mla_subtype(attn, forward_batch)
+```
+
 
 `forward_mha.py` 里把三种路径说得很清楚：
 
@@ -284,6 +293,8 @@ PR [#10567](https://link.zhihu.com/?target=https%3A//github.com/sgl-project/sgla
 
 # DeepseekV2MoE::forward_normal
 if hidden_states.shape[0] == 16384 and get_tensor_model_parallel_rank() == 0:
+
+```text
     topk_ids_dir = xxxx
     if not hasattr(self, &#34;save_idx&#34;):
         self.save_idx = 0
@@ -293,6 +304,8 @@ if hidden_states.shape[0] == 16384 and get_tensor_model_parallel_rank() == 0:
             f&#34;{topk_ids_dir}/topk_idx_layer{self.layer_id}_idx{self.save_idx}.pt&#34;,
         )
     self.save_idx += 1
+```
+
 
 然后用 `tuning_fused_moe_triton_sep.py` 对真实分布做 tuning：
 
@@ -300,8 +313,12 @@ python benchmark/kernels/fused_moe_triton/tuning_fused_moe_triton_sep.py \
     --model $model_path \
     --tp-size 8 \
     --dtype fp8_w8a8 \
+
+```text
     --topk-ids-dir ${topk_ids_dir} \
     --tune
+```
+
 
 这会生成两套 config，一套给 up projection，一套给 down projection，后者文件名带 `_down`。
 
@@ -309,6 +326,8 @@ python benchmark/kernels/fused_moe_triton/tuning_fused_moe_triton_sep.py \
 
 config, (down_config, _) = try_get_optimal_moe_config(
     w1.shape,
+
+```text
     (w2.shape[0], w2.shape[1], w2.shape[2] - padded_size),
     topk_ids.shape[1],
     config_dtype,
@@ -317,11 +336,17 @@ config, (down_config, _) = try_get_optimal_moe_config(
     per_channel_quant=per_channel_quant,
     return_down_config=True,
 )
+```
+
 down_moe_use_tma = (
+
+```text
     _down_moe_use_tma()
     and down_config is not None
     and down_config.pop(&#34;USE_TMA&#34;, False)
 )
+```
+
 
 如果启用 TMA，up projection 的输出会按 down projection 想要的顺序写好：
 
@@ -331,8 +356,12 @@ invoke_fused_moe_kernel(
     ...,
     config,
     ...,
+
+```text
     c_sorted=down_moe_use_tma,
 )
+```
+
 
 随后 down projection 的 kernel 调用会把输入 A 和权重 B 都交给 TMA descriptor 路径：
 
@@ -342,9 +371,13 @@ invoke_fused_moe_kernel(
     ...,
     down_config or config,
     ...,
+
+```text
     a_use_tma=down_moe_use_tma,
     b_use_tma=down_moe_use_tma,
 )
+```
+
 
 这就是这页 slides 里「MoE down_proj with TMA, tuned configs」背后的关键。不是单纯加一个 TMA flag，而是先用真实 expert 分布做 tuning，再让 up kernel 的输出布局服务于 down kernel 的 TMA 访问。
 
@@ -371,27 +404,43 @@ invoke_fused_moe_kernel(
 
 # swap_ab benefits SM90 GPUs (H20, H100, H200, etc.) for certain block shapes.
 @functools.lru_cache(maxsize=8)
+
+```python
 def should_enable_swap_ab(
     BLOCK_SIZE_M: int,
     BLOCK_SIZE_N: int,
+```
+
 ) -> bool:
+
+```text
     if not _is_cuda or is_batch_invariant_mode_enabled():
         return False
 
     return is_sm90_supported() and BLOCK_SIZE_M < 64 and BLOCK_SIZE_N >= 64
+```
+
 
 也就是说，只有 SM90 且 `BLOCK_SIZE_M < 64`、`BLOCK_SIZE_N >= 64` 时才走这条路。进入 kernel 后，accumulator 的 shape 会反过来：
 
 if swap_ab:
+
+```text
     accumulator = tl.zeros((BLOCK_SIZE_N, BLOCK_SIZE_M), dtype=tl.float32)
 else:
     accumulator = tl.zeros((BLOCK_SIZE_M, BLOCK_SIZE_N), dtype=tl.float32)
+```
+
 
 FP8 dot 前，A/B 和 scale 也会交换：
 
 if swap_ab:
+
+```text
     a, b = tl.trans(b, (1, 0)), tl.trans(a, (1, 0))
     a_scale, b_scale = b_scale, a_scale
+```
+
 ...
 accumulator += tl.dot(a, b) * a_scale[:, None] * b_scale[None, :]
 
@@ -438,6 +487,8 @@ PR 给的 H20 数据里，cache length=8196、head_num=64 时，batch size 32/48
 当前 SGLang 的 `single_batch_overlap.py` 负责计算 overlap 参数。这里有几个关键字段：
 
 @dataclass
+
+```text
 class CombineOverlapArgs:
     # this &#34;overlap&#34; flag means overlapping with down gemm
     overlap: bool
@@ -447,41 +498,64 @@ class CombineOverlapArgs:
     signal: Optional[torch.Tensor] = None
     block_m: Optional[int] = 64
     threshold: Optional[int] = 0
+```
+
 
 @dataclass
+
+```cpp
 class DownGemmOverlapArgs:
     num_sms: int
     signal: torch.Tensor
     start_event: torch.cuda.Event
+```
+
 
 `compute_overlap_args` 会把 SM 分成通信和计算两部分，Hopper 上默认通信用 3 个 SM，剩下给 DeepGEMM：
 
 if envs.SGLANG_DEEPEP_LL_COMBINE_SEND_NUM_SMS.is_set():
+
+```text
     communicate_num_sms = envs.SGLANG_DEEPEP_LL_COMBINE_SEND_NUM_SMS.get()
 else:
     communicate_num_sms = 32 if is_blackwell() else 3
+```
+
 compute_num_sms = total_num_sms - communicate_num_sms
 
 如果启用 Down GEMM + Combine Send overlap，就创建 signal，并把 signal 同时传给 combine 和 down gemm：
 
 combine_signal_size = num_local_experts * (
+
+```text
     (num_tokens_static + MIN_BLOCK_M - 1) // MIN_BLOCK_M
 )
+```
+
 combine_signal = torch.zeros(
+
+```text
     combine_signal_size, dtype=torch.int32, device=hidden_states.device
 )
+```
+
 
 down_gemm_overlap_args = DownGemmOverlapArgs(
+
+```text
     signal=combine_signal,
     start_event=combine_wait_event,
     num_sms=compute_num_sms,
 )
+```
+
 combine_overlap_args.overlap = True
 combine_overlap_args.signal = combine_signal
 combine_overlap_args.threshold = compute_num_sms
 
 在 `DeepseekV2MoE` 里，SBO 是通过 hook 接入 DeepEP dispatcher 的。Dispatch 后计算 overlap args，并分别塞给 dispatcher 和 experts runner：
 
+```python
 def _post_dispatch_hook(dispatcher: BaseDispatcher, dispatch_output: DispatchOutput):
     combine_overlap_args, down_gemm_overlap_args, meta_overlap_args = (
         compute_overlap_args(dispatch_output, self.alt_stream)
@@ -494,10 +568,14 @@ def _post_dispatch_hook(dispatcher: BaseDispatcher, dispatch_output: DispatchOut
         down_gemm_overlap_args=down_gemm_overlap_args,
         meta_overlap_args=meta_overlap_args,
     )
+```
+
 
 DeepEP combine 侧会把这些参数传给 `low_latency_combine`：
 
 overlap_args_dict = dict(
+
+```text
     overlap=overlap_args.overlap,
     packed_recv_count=self.packed_recv_count,
     comp_signal=overlap_args.signal,
@@ -505,8 +583,12 @@ overlap_args_dict = dict(
     threshold=meta_overlap_args[&#34;threshold&#34;],
     num_sms=overlap_args.num_sms,
 )
+```
+
 
 combined_hidden_states, event, hook = buffer.low_latency_combine(
+
+```text
     x=hidden_states,
     topk_idx=topk_ids,
     topk_weights=topk_weights,
@@ -515,10 +597,14 @@ combined_hidden_states, event, hook = buffer.low_latency_combine(
     return_recv_hook=self.return_recv_hook,
     **overlap_args_dict,
 )
+```
+
 
 DeepGEMM runner 侧则会从 signal GEMM 的返回值里拿到动态 `block_m` 和 `threshold`，再写回 `meta_overlap_args`，供 combine 使用：
 
 deep_gemm_return_value = deep_gemm_wrapper.grouped_gemm_nt_f8f8bf16_masked(
+
+```text
     (down_input, down_input_scale),
     (w2_weight, w2_scale),
     down_output,
@@ -526,11 +612,17 @@ deep_gemm_return_value = deep_gemm_wrapper.grouped_gemm_nt_f8f8bf16_masked(
     expected_m,
     **gemm_overlap_args_dict,
 )
+```
+
 meta_overlap_args = running_state.get(&#34;meta_overlap_args&#34;, None)
 if meta_overlap_args is not None:
+
+```text
     block_m, threshold = deep_gemm_return_value
     meta_overlap_args[&#34;block_m&#34;] = block_m
     meta_overlap_args[&#34;threshold&#34;] = threshold
+```
+
 
 DeepEP PR [#390](https://link.zhihu.com/?target=https%3A//github.com/deepseek-ai/DeepEP/pull/390) 里对应的是 `low_latency_dispatch` 记录 token 的 `src_rank`，以及 `internode_ll::combine` 在 overlap 模式下减少 SM、轮询 signal、发送 token、写 finish flag。DeepGEMM PR [#183](https://link.zhihu.com/?target=https%3A//github.com/deepseek-ai/DeepGEMM/pull/183) 里对应的是 `m_grouped_fp8_gemm_nt_signal`、`SM90FP8SignalGemm1D2DRuntime`，以及 kernel 在算完对应 `block_m` 后 `atomicAdd` 写 signal。
 
@@ -544,6 +636,7 @@ AntGroup 的 [#2 feat: Add Expert Affinity Aware EPLB algorithm](https://link.zh
 
 PR 新增的 `comm_matrix_process.py` 很短：
 
+```python
 def compute_expert_co_occurrence_matrix(history_data, num_experts):
     history_data = history_data.cpu().numpy()
     num_samples, num_layers, top_k = history_data.shape
@@ -572,19 +665,27 @@ def generate_comm_matrix(history_data, num_experts):
     comm_matrix = co_occurrence.float()
     comm_matrix = comm_matrix / comm_matrix.max()
     return comm_matrix
+```
+
 
 也就是把同一 token 的 top-k experts 两两计数，再归一化成通信矩阵。
 
 数据来源在 DeepEP dispatcher。PR 在 `dispatch_a` 里记录 `topk_idx`：
 
 if topk_idx.numel() > 0:
+
+```text
     get_global_expert_distribution_recorder().record_topk_ids(topk_idx)
 else:
     logger.warning(&#34;topk_idx is empty in DeepEP low latency dispatch.&#34;)
+```
+
 
 放置优化的核心是 `optimize_group_placement`。它先把 physical experts 分 group，构造 group-to-node 映射，再用每个 group 的 leader expert 去查 communication cost。后面会尝试交换不同节点上的 group，只要 swap 能降低跨节点通信 cost，就执行：
 
 if best_gain > 0 and best_swap:
+
+```text
     node1, g1_idx, node2, g2_idx = best_swap
     g1 = node_groups[node1][g1_idx]
     g2 = node_groups[node2][g2_idx]
@@ -599,6 +700,8 @@ if best_gain > 0 and best_swap:
             optimized_pphy2log[layer, idx2].item(), optimized_pphy2log[layer, idx1].item()
 
     improved = True
+```
+
 
 这个 PR 给出的 benchmark 里，batch 1536/2048 时，Expert-Affinity Aware EPLB 相比 vanilla EPLB 的 P90-TPOT 从 84ms 左右降到 81ms 左右，P95-ITL 从 100ms 左右降到 97ms 左右。PR 里写的是相对标准 EPLB 额外约 5% 提升。
 
@@ -613,6 +716,8 @@ if best_gain > 0 and best_swap:
 目前公开代码里能对上的基础路径是 SGLang 的 DeepEP low-latency dispatcher，也就是 Decode 侧 `--moe-a2a-backend deepep --deepep-mode low_latency_overlap` 这条路。核心调用还在 `token_dispatcher/deepep.py`：
 
 DeepEPBuffer.set_dispatch_mode_as_low_latency()
+
+```text
 return DeepEPBuffer.get_deepep_buffer(
     self.group,
     self.hidden_size,
@@ -621,6 +726,8 @@ return DeepEPBuffer.get_deepep_buffer(
     self.num_max_dispatch_tokens_per_rank,
     self.num_experts,
 )
+```
+
 
 如果后续这页对应的代码公开，我会优先看两个位置：
 
@@ -654,11 +761,16 @@ batch_output = self.verify(model_worker_batch)
 with self.draft_worker.draft_tp_context(
     self.draft_worker.draft_runner.tp_group
 ), speculative_moe_backend_context(), speculative_moe_a2a_backend_context():
+
+```text
     self.draft_worker._draft_extend_for_decode(model_worker_batch, batch_output)
 return batch_output
+```
+
 
 PR [#11434](https://link.zhihu.com/?target=https%3A//github.com/sgl-project/sglang/pull/11434) 则把 draft post-processing 移进 CUDA Graph，并把 tree-building 工具整理到 `eagle_utils.py`。现在的 `EAGLEDraftExtendCudaGraphRunner` 会为 draft extend 准备静态输入和 batch sizes：
 
+```python
 class EAGLEDraftExtendCudaGraphRunner:
     def __init__(self, eagle_worker: EAGLEWorker, ...):
         ...
@@ -674,6 +786,8 @@ class EAGLEDraftExtendCudaGraphRunner:
         self.draft_extend_attn_backend.init_cuda_graph_state(
             self.max_bs, self.max_num_token
         )
+```
+
 
 这类优化的收益不一定体现在单个算子耗时上，而是减少 decode loop 里每步的 Python/prepare/graph 外碎片。对小 batch decode 来说，这些碎片也会变成可见 TPOT。
 
@@ -701,9 +815,13 @@ _buffer.low_latency_dispatch(
     topk_idx,
     num_max_dispatch_tokens_per_rank,
     num_experts,
+
+```text
     dispatch_wait_recv_cost_stats=dispatch_wait_recv_cost_stats,
     use_fp8=True,
 )
+```
+
 
 combine_wait_recv_cost_stats = _diagnose.get_stats_ll_stats_tensor()[1]
 _buffer.low_latency_combine(
@@ -711,8 +829,12 @@ _buffer.low_latency_combine(
     topk_idx,
     topk_weights,
     handle,
+
+```text
     combine_wait_recv_cost_stats=combine_wait_recv_cost_stats,
 )
+```
+
 
 这也解释了为什么 slides 把它放在 Methodology 最后：前面的 SwapAB/SBO/EPLB/Dispatch 都是「怎么优化」，DeepXTrace 是「线上怎么知道哪里又坏了」。
 
@@ -753,11 +875,15 @@ _buffer.low_latency_combine(
 
 当前代码里开关是：
 
+```python
 def is_nsa_enable_prefill_cp():
     return get_global_server_args().enable_nsa_prefill_context_parallel
+```
+
 
 并支持两种切分模式：
 
+```python
 def is_nsa_prefill_cp_in_seq_split():
     return (
         is_nsa_enable_prefill_cp()
@@ -769,6 +895,8 @@ def is_nsa_prefill_cp_round_robin_split():
         is_nsa_enable_prefill_cp()
         and get_global_server_args().nsa_prefill_cp_mode == &#34;round-robin-split&#34;
     )
+```
+
 
 round-robin split 的注释写得很清楚，它不是简单把连续 token 分给不同 rank，而是按 `token_idx % cp_size` 做交错切分：
 
@@ -784,6 +912,8 @@ round-robin split 的注释写得很清楚，它不是简单把连续 token 分�
 模型 forward 入口会准备 CP metadata：
 
 if self.nsa_enable_prefill_cp:
+
+```text
     if can_nsa_cp_split(len(input_ids), self.cp_size, self.use_nsa, forward_batch):
         forward_batch.attn_cp_metadata = prepare_context_parallel_metadata(
             len(input_ids),
@@ -791,10 +921,14 @@ if self.nsa_enable_prefill_cp:
             self.cp_size,
             forward_batch.seq_lens_cpu.tolist(),
         )
+```
+
 
 每层里，如果启用 NSA prefill CP，就换成 `NSACPLayerCommunicator`：
 
 if self.nsa_enable_prefill_cp:
+
+```text
     self.layer_communicator = NSACPLayerCommunicator(
         layer_scatter_modes=self.layer_scatter_modes,
         input_layernorm=self.input_layernorm,
@@ -805,9 +939,12 @@ if self.nsa_enable_prefill_cp:
         ),
         qkv_latent_func=self.self_attn.prepare_qkv_latent,
     )
+```
+
 
 PR [#11892](https://link.zhihu.com/?target=https%3A//github.com/sgl-project/sglang/pull/11892) 则对应 slides 里 Future Work 的「seq_len < 2K 用 masked MHA」。它的逻辑是：DeepSeek-V3.2 prefill 里如果所有长度都走 MLA，不一定最优。短序列下 MLA 的 compression/decompression 和 absorbed attention 开销不划算，MHA 更快。当前 NSA backend 会在 prefill 时根据长度、设备、dtype、chunk capacity 等条件决定是否走 MHA：
 
+```python
 def set_nsa_prefill_impl(self, forward_batch: Optional[ForwardBatch] = None):
     if forward_batch and forward_batch.forward_mode.is_extend_without_speculative():
         max_kv_len = forward_batch.seq_lens_cpu.max().item()
@@ -826,6 +963,8 @@ def set_nsa_prefill_impl(self, forward_batch: Optional[ForwardBatch] = None):
         )
     else:
         self.use_mha = False
+```
+
 
 PR [#12094](https://link.zhihu.com/?target=https%3A//github.com/sgl-project/sglang/pull/12094) 和 [#17205](https://link.zhihu.com/?target=https%3A//github.com/sgl-project/sglang/pull/17205) 都是 Indexer 侧的优化。前者把 `wk` 和 `weight_proj` 在 FP4 模型里融合成一次 GEMM，后者把 `weights_proj` 的计算从 FP32 调整为 BF16 权重计算再把输出转回 FP32，解决 indexer 里相对耗时的 `weight_proj-mma`。
 

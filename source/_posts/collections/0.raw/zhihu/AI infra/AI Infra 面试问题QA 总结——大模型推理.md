@@ -37,6 +37,8 @@ Q4. Tokenizer 怎么做的？
 利用特定算法（如 <strong>BPE</strong> 或 <strong>WordPiece</strong>）将连续的文本切分成一个个更小的单元，即 Token。这些 Token 可以是完整的单词、词根、词缀甚至单个字符。然后在一个预先构建好的”词汇表”中查找每个 Token，并将其映射为一个<strong>唯一的数字编号（Token ID）</strong>。最终，一段文本就被转换成一串由 Token ID 组成的序列，成为模型真正的输入。
 
 Q5. 手撕 Multi-Head Attention
+
+```python
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
@@ -57,36 +59,58 @@ class MultiHeadAttention(nn.Module):
         query = self.q_linear(hidden_state)
         key   = self.k_linear(hidden_state)
         value = self.v_linear(hidden_state)
+```
+
 
         # 多头拆分
+
+```text
         query = query.view(batch_size, -1, self.num_heads, self.head_dim).transpose(1, 2)
         key   = key.view(batch_size,   -1, self.num_heads, self.head_dim).transpose(1, 2)
         value = value.view(batch_size, -1, self.num_heads, self.head_dim).transpose(1, 2)
+```
+
 
         # 拼接 KV cache
         if past_key_value is not None:
+
+```text
             past_key, past_value = past_key_value
             key   = torch.cat([past_key,   key],   dim=2)
             value = torch.cat([past_value, value], dim=2)
 
         new_past_key_value = (key, value) if use_cache else None
+```
+
 
         # 注意力打分
+
+```text
         attention_scores = torch.matmul(query, key.transpose(-1, -2)) \
                            / torch.sqrt(torch.tensor(self.head_dim, dtype=torch.float32))
+```
+
 
         if causal_mask is not None:
+
+```text
             attention_scores += causal_mask * -1e9
 
         attention_probs = F.softmax(attention_scores, dim=-1)
         output = torch.matmul(attention_probs, value)
+```
+
 
         # 合并多头
+
+```text
         output = output.transpose(1, 2).contiguous() \
                        .view(batch_size, -1, self.num_heads * self.head_dim)
         output = self.o_linear(output)
 
         return (output, new_past_key_value) if use_cache else output
+```
+
 
 Q6. Multi-Head Attention 和 Single-Head Attention 的区别？Multi-Head 有什么好处？
 Multi-Head 把 hidden_size 拆成多个并行的子空间，每个 head 学习不同的关注模式（如语法、语义、位置等），再拼接回去。好处：

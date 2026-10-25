@@ -61,8 +61,11 @@ node.id_ = f"node-{idx}"
 
 We need to define two models:
 
+```sql
 * The embedding model is used to create vector embeddings for each of the text chunks. Here we are calling the [FlagEmbedding](https://huggingface.co/BAAI/bge-small-en) model from Hugging Face.
 * LLM: user query and the relevant text chunks are fed into the LLM so that it can generate answers with relevant context.
+```
+
 
 We can bundle these two models together in the ServiceContext and use them later in the indexing and querying steps.
 
@@ -85,12 +88,20 @@ base_retriever = base_index.as_retriever(similarity_top_k=2)
 * Query engine is built on top of the index and retriever providing a generic interface to ask questions about your data.
 
 query_engine_base = RetrieverQueryEngine.from_args(  
+
+```text
     base_retriever, service_context=service_context  
 )  
+```
+
 response = query_engine_base.query(  
     "Can you tell me about the key concepts for safety finetuning"  
+
+```python
 )  
 print(str(response))
+```
+
 
 ![](https://proxy-prod.omnivore-image-cache.app/700x74,soUX4jvihcyINzicfT-8Zo5k01dR32kK9k8eKEEWtPkM/https://miro.medium.com/v2/resize:fit:875/0*WhEGQ39oX-MEGh_T)
 
@@ -102,29 +113,43 @@ In the previous section, we used a fixed chunk size of 1024 for both retrieval a
 
 For each of the text chunks with chunk size 1024, we create even smaller text chunks:
 
+```text
 * 8 text chunks of size 128
 * 4 text chunks of size 256
 * 2 text chunks of size 512
+```
+
 
 We append the original text chunk of size 1024 to the list of text chunks.
 
 sub_chunk_sizes = [128, 256, 512]  
 sub_node_parsers = [  
+
+```text
     SimpleNodeParser.from_defaults(chunk_size=c) for c in sub_chunk_sizes  
 ]
+```
+
 
 all_nodes = []  
 for base_node in base_nodes:  
     for n in sub_node_parsers:  
+
+```text
         sub_nodes = n.get_nodes_from_documents([base_node])  
         sub_inodes = [  
             IndexNode.from_text_node(sn, base_node.node_id) for sn in sub_nodes  
         ]  
         all_nodes.extend(sub_inodes)
+```
+
 
       
+```text
     original_node = IndexNode.from_text_node(base_node, base_node.node_id)  
     all_nodes.append(original_node)  
+```
+
 all_nodes_dict = {n.node_id: n for n in all_nodes}
 
 When we take a look at all the text chunks \`all\_nodes\_dict\`, we can see many smaller chunks are associated with each of the original text chunks for example \`node-0\`. In fact, all of the smaller chunks reference to the large chunk in the metadata with index\_id pointing to the index ID of the larger chunk.
@@ -136,18 +161,26 @@ When we take a look at all the text chunks \`all\_nodes\_dict\`, we can see many
 * Index: Create vector embeddings of all the text chunks.
 
 vector_index_chunk = VectorStoreIndex(  
+
+```text
     all_nodes, service_context=service_context  
 )
+```
+
 
 * Retriever: the key here is to use a <strong>RecursiveRetriever</strong> to traverse node relationships and fetch nodes based on “references”. This retriever will recursively explore links from nodes to other retrievers/query engines. For any retrieved nodes, if any of the nodes are IndexNodes, then it will explore the linked retriever/query engine and query that.
 
 vector_retriever_chunk = vector_index_chunk.as_retriever(similarity_top_k=2)  
 retriever_chunk = RecursiveRetriever(  
     "vector",  
+
+```text
     retriever_dict={"vector": vector_retriever_chunk},  
     node_dict=all_nodes_dict,  
     verbose=True,  
 )
+```
+
 
 When we ask a question and retrieve the most relevant text chunks, it will actually retrieve the text chunk with the node id pointing to the parent chunk and thus retrieve the parent chunk.
 
@@ -156,12 +189,20 @@ When we ask a question and retrieve the most relevant text chunks, it will actua
 * Now with the same steps as before, we can create a query engine as a generic interface to ask questions about our data.
 
 query_engine_chunk = RetrieverQueryEngine.from_args(  
+
+```text
     retriever_chunk, service_context=service_context  
 )  
+```
+
 response = query_engine_chunk.query(  
     "Can you tell me about the key concepts for safety finetuning"  
+
+```python
 )  
 print(str(response))
+```
+
 
 ![](https://proxy-prod.omnivore-image-cache.app/700x199,sJ9GhArk0T5afC_qydgr4CmOq0Zlz5DM5Sz3vJML6jgU/https://miro.medium.com/v2/resize:fit:875/0*2VfiBXe3_0_oh9zt)
 
@@ -175,10 +216,14 @@ In this case, single sentences will be similar to the “child” chunk concept 
 
   
 node_parser = SentenceWindowNodeParser.from_defaults(  
+
+```text
     window_size=3,  
     window_metadata_key="window",  
     original_text_metadata_key="original_text",  
 )  
+```
+
 sentence_nodes = node_parser.get_nodes_from_documents(docs)  
 sentence_index = VectorStoreIndex(sentence_nodes, service_context=service_context)
 
@@ -187,16 +232,24 @@ sentence_index = VectorStoreIndex(sentence_nodes, service_context=service_contex
 When we create the query engine, we can replace the sentence with the sentence window using the MetadataReplacementPostProcessor, so that the window of the sentences get sent to the LLM.
 
 query_engine = sentence_index.as_query_engine(  
+
+```text
     similarity_top_k=2,  
-      
+
     node_postprocessors=[  
         MetadataReplacementPostProcessor(target_metadata_key="window")  
     ],  
 )  
+```
+
 window_response = query_engine.query(  
     "Can you tell me about the key concepts for safety finetuning"  
+
+```python
 )  
 print(window_response)
+```
+
 
 The Sentence Window Retrieval was able to answer the question “Can you tell me about the key concepts for safety finetuning”:
 
@@ -212,8 +265,11 @@ In this blog, we explored how to use small-to-big retrieval to improve RAG, focu
 
 ## References:
 
+```text
 * <https://docs.llamaindex.ai/en/latest/examples/node%5Fpostprocessor/MetadataReplacementDemo.html>
 * <https://docs.llamaindex.ai/en/stable/examples/retrievers/recursive%5Fretriever%5Fnodes.html>
+```
+
 
 ![](https://proxy-prod.omnivore-image-cache.app/700x394,s0x7NqfPmJX-gZAfYPC6lz1iN04WXZys2RLHRdGMwFIA/https://miro.medium.com/v2/resize:fit:875/1*urHmJosMAaUSF_VXGMShFA.png)
 

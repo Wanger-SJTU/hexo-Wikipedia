@@ -24,10 +24,14 @@ source_url: https://zhuanlan.zhihu.com/p/623724335
 我们直接写一段 Hello World 的 C 代码：
 
 `#include 
+
+```cpp
 int main()
 {
     printf("Hello World!\n");
     return 0;
+```
+
 }`
 
 注意的是，我们需要的是可执行的 64 位 elf。直接写段 PHP 然后调用解释器肯定小得多，但这显然不是完整的可执行文件。
@@ -48,10 +52,14 @@ int main()
 我们只打印一个字符串，显然不需要 `printf` 这么高级的东西。我们把 `printf` 改为 `puts`：
 
 `#include 
+
+```cpp
 int main()
 {
     puts("Hello World!\n");
     return 0;
+```
+
 }`
 
 然后编译选项开启~~臭氧~~优化：
@@ -133,6 +141,8 @@ C 代码显然还是太重型了。一切优化的尽头是汇编，所以我们
   BITS 64                 ; change to 64-bit mode
   GLOBAL main
   SECTION .data
+
+```text
     hello db "Hello World!", 10 ; 10 is the ASCII code for newline
   SECTION .text
   main:
@@ -146,6 +156,8 @@ C 代码显然还是太重型了。一切优化的尽头是汇编，所以我们
     mov eax, 60      ; system call number for exit
     xor edi, edi     ; exit status code (0)
     syscall          ; invoke the system call`
+```
+
 
 我们还顺手优化掉了原来庞大的标准库，改为系统调用。
 
@@ -171,6 +183,8 @@ $ gcc -m64 -s -o hello_world hello_world.o`
   BITS 64                 ; change to 64-bit mode
   GLOBAL nomainhere
   SECTION .data
+
+```text
     hello db "Hello World!", 10 ; 10 is the ASCII code for newline
   SECTION .text
   nomainhere:
@@ -184,6 +198,8 @@ $ gcc -m64 -s -o hello_world hello_world.o`
     mov eax, 231      ; system call number for _exit
     xor edi, edi     ; exit status code (0)
     syscall          ; invoke the system call`
+```
+
 
 值得注意的是，我们这里退出程序的时候使用的是 `_exit` 而不是 `exit`。
 
@@ -227,10 +243,14 @@ Section Headers:
 
 `ENTRY(nomainhere)
 SECTIONS
+
+```text
 {
   . = 0x8048000 + SIZEOF_HEADERS;
   tiny : { *(.text) *(.data) *(.rodata*) }
   /DISCARD/ : { *(*) }
+```
+
 }`
 
 然后链接：
@@ -257,6 +277,8 @@ $ strip hello_world`
   org 0x400000
 
   ehdr:           ; Elf64_Ehdr
+
+```text
     db 0x7f, "ELF", 2, 1, 1, 0 ; e_ident
     times 8 db 0
     dw  2         ; e_type
@@ -273,8 +295,12 @@ $ strip hello_world`
     dw  0         ; e_shnum
     dw  0         ; e_shstrndx
   ehdrsize  equ  $ - ehdr
+```
+
 
   phdr:           ; Elf64_Phdr
+
+```text
     dd  1         ; p_type
     dd  5         ; p_flags
     dq  0         ; p_offset
@@ -284,8 +310,12 @@ $ strip hello_world`
     dq  filesize  ; p_memsz
     dq  0x1000    ; p_align
   phdrsize  equ  $ - phdr
+```
+
 
   _start:
+
+```text
     ; write "Hello World!" to stdout
     mov eax, 1            ; system call for write
     mov edi, 1            ; file descriptor for stdout
@@ -296,6 +326,8 @@ $ strip hello_world`
     mov eax, 231      ; system call number for _exit
     xor edi, edi     ; exit status code (0)
     syscall          ; invoke the system call
+```
+
 
   hello: db "Hello World!", 10 ; 10 is the ASCII code for newline
 
@@ -325,6 +357,8 @@ elf 文件格式规定，除了文件头之外，别的部分可以出现在任�
   org 0x400000
 
   ehdr:           ; Elf64_Ehdr
+
+```text
     db 0x7f, "ELF", 2, 1, 1, 0 ; e_ident
     times 8 db 0
     dw  2         ; e_type
@@ -349,8 +383,12 @@ elf 文件格式规定，除了文件头之外，别的部分可以出现在任�
     dq  filesize  ; p_memsz
     dq  0x1000    ; p_align
   phdrsize  equ  $ - phdr
+```
+
 
   _start:
+
+```text
     ; write "Hello World!" to stdout
     mov eax, 1            ; system call for write
     mov edi, 1            ; file descriptor for stdout
@@ -361,6 +399,8 @@ elf 文件格式规定，除了文件头之外，别的部分可以出现在任�
     mov eax, 231      ; system call number for _exit
     xor edi, edi     ; exit status code (0)
     syscall          ; invoke the system call
+```
+
 
   hello: db "Hello World!", 10 ; 10 is the ASCII code for newline
 
@@ -393,6 +433,8 @@ $ wc -c hello_world
   org 0x400000
 
   ehdr:           ; Elf64_Ehdr
+
+```text
     db 0x7f, "ELF", 2, 1, 1, 0 ; e_ident
     times 8 db 0
     dw  2         ; e_type
@@ -417,8 +459,12 @@ $ wc -c hello_world
     dq  filesize  ; p_memsz
     dq  0x1000    ; p_align
   phdrsize  equ  $ - phdr
+```
+
 
   _start:
+
+```text
     ; write "Hello World!" to stdout
     push 1
     pop rax          ; system call for write
@@ -432,6 +478,8 @@ $ wc -c hello_world
     pop rax          ; system call number for _exit
     xor edi, edi     ; exit status code (0)
     syscall          ; invoke the system call
+```
+
 
   hello: db "Hello World!", 10 ; 10 is the ASCII code for newline
 
@@ -462,6 +510,8 @@ $ wc -c hello_world
   org 0x400000
 
   ehdr:           ; Elf64_Ehdr
+
+```text
     db 0x7f, "ELF", 2, 1, 1, 0 ; e_ident
     times 8 db 0
     dw  2         ; e_type
@@ -486,8 +536,12 @@ $ wc -c hello_world
     dq  filesize  ; p_memsz
     dq  0x1000    ; p_align
   phdrsize  equ  $ - phdr
+```
+
   
   _start:
+
+```text
     ; write "Hello World!" to stdout
 	  mov al, 1
     mov dl, 13
@@ -495,6 +549,8 @@ $ wc -c hello_world
     syscall
     mov al, 231
     syscall
+```
+
 
   hello: db "Hello World!", 10 ; 10 is the ASCII code for newline
 

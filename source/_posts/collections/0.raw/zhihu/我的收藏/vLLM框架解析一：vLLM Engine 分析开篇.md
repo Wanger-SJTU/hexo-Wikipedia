@@ -57,6 +57,8 @@ PageAttention SlopMapping
     torch::Tensor  k_cache,  // [num_blocks, block_size, num_heads, head_size]
     torch::Tensor  v_cache,  // [num_blocks, block_size, num_heads, head_size]
     torch::Tensor  slot_mapping,  // [num_tokens]
+
+```cpp
     const std::string  kv_cache_dtype) {
   // FIXME: only support auto datatype, does not support fp8
   if (kv_cache_dtype != "auto") {
@@ -71,9 +73,13 @@ PageAttention SlopMapping
   int value_stride = value.stride(0);
   int block_stride = k_cache.stride(0);
   TORCH_CHECK(k_cache.stride(0) == v_cache.stride(0));
+```
+
 
   dim3 grid(num_tokens);
   dim3 block(std::min(num_heads * head_size, 512));
+
+```text
   const at::cuda::OptionalCUDAGuard device_guard(device_of(key));
   const cudaStream_t stream = at::cuda::getCurrentCUDAStream();
   VLLM_DISPATCH_FLOATING_TYPES(
@@ -88,7 +94,11 @@ PageAttention SlopMapping
 }
 
 template  typename scalar_t 
+```
+
 __global__ void reshape_and_cache_flash_kernel(
+
+```cpp
     const scalar_t* __restrict__ key,    // [num_tokens, num_heads, head_size]
     const scalar_t* __restrict__ value,  // [num_tokens, num_heads, head_size]
     scalar_t* __restrict__ k_cache,      // [num_blocks, block_size, num_heads,
@@ -119,6 +129,8 @@ __global__ void reshape_and_cache_flash_kernel(
     v_cache[tgt_value_idx] = value[src_value_idx];
   }
 }
+```
+
 }  // namespace vllm
 
 slot_mapping作为实际操作Kernel过程中实际KVCache操作的索引，在此介绍的话主要是让大家对PageAttention中的KVCache操作有个概念，KVCache是怎么操作保存的，具体如上面代码所示，reshape_and_cache_flash会在计算Attention前将KVCache存到对应位置，通过slot_mapping映射到最终的Physical Memory。（后续在分析动态运行特性是还会对其运行过程的变化补充分析，在此不再展开）。

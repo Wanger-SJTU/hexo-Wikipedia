@@ -93,19 +93,27 @@ source_url: https://zhuanlan.zhihu.com/p/344953635
 欢迎大家follow我们的工作~。
 
 @inproceedings{NIPS2019_9426,
+
+```text
         title = {Implicit Semantic Data Augmentation for Deep Networks},
        author = {Wang, Yulin and Pan, Xuran and Song, Shiji and Zhang, Hong and Huang, Gao and Wu, Cheng},
     booktitle = {Advances in Neural Information Processing Systems (NeurIPS)},
         pages = {12635--12644},
          year = {2019},
 }
+```
+
 
 @article{wang2021regularizing,
+
+```text
         title = {Regularizing deep networks with semantic data augmentation},
        author = {Wang, Yulin and Huang, Gao and Song, Shiji and Pan, Xuran and Xia, Yitong and Wu, Cheng},
       journal = {IEEE Transactions on Pattern Analysis and Machine Intelligence},
          year = {2021}
 }
+```
+
 如有任何问题，欢迎留言或者给我发邮件，附上我的主页链接
 
 [wyl.cool](https://link.zhihu.com/?target=http%3A//wyl.cool)

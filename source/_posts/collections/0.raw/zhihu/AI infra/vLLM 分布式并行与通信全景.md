@@ -101,11 +101,15 @@ vllm serve MODEL \
   --tensor-parallel-size 4 \
   -O2 \
   --compilation-config &#39;{
+
+```text
     &#34;pass_config&#34;: {
       &#34;enable_sp&#34;: true,
       &#34;fuse_gemm_comms&#34;: true
     }
   }&#39;
+```
+
 `fuse_gemm_comms=true` 会自动令 `enable_sp=true`，示例同时写出两项是为了明确意图。需要注意：尽管本版本默认优化级别是 `-O2`，`IS_DENSE` 当前被硬编码为 `False`，因此 `-O2/-O3` <strong>不会自动打开</strong>这两个 pass，必须像上面一样显式配置。
 
 实际进入优化路径的条件
@@ -229,13 +233,21 @@ DCP 不增加 worker 数。它的 rank 来源取决于是否同时启用 PCP。
 
 PCP=1：
     DCP 复用 TP ranks
+
+```text
     TP % DCP == 0
     每个 TP group 被划成 TP/DCP 个 DCP groups
+```
+
 
 PCP>1：
+
+```text
     DCP ∈ {1, PCP, TP×PCP}
     DCP=PCP 时沿 PCP 轴成组
     DCP=TP×PCP 时先跨 PCP、再跨 TP，覆盖完整 TP×PCP block
+```
+
 对非 MLA 的 GQA/MQA，在 `PCP=1` 的当前支持范围内还需要满足：
 
 1 <= DCP <= TP / H_kv

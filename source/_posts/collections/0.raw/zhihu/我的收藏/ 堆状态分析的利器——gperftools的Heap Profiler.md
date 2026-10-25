@@ -19,6 +19,7 @@ source_url: https://zhuanlan.zhihu.com/p/681986521
 
 `#include 
 
+```cpp
 void* create(unsigned int size) {
     return malloc(size);
 }
@@ -50,6 +51,8 @@ int main(void) {
 
     return 0;
 }
+```
+
 `
 
 第19行每次申请1G的空间，且在整个程序周期中，都不会释放。 第22行每次申请1G的空间，每个空间都将在第29行释放掉。 第25行调用的create_destory方法，每次申请1M的空间，每次申请完就释放掉。 为了方便起见，我们还是要链接tcmalloc库，并开启调试信息

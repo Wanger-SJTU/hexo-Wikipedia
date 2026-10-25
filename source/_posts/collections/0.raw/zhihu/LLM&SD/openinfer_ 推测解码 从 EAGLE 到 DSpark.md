@@ -27,8 +27,11 @@ LLM decode forward 为什么只能吐一个 token？主流 LLM 都是 decoder-on
 
 有个直觉是：模型输出每个 token 的“费力程度”其实并不一致。比如它在写 Rust 的时候，换行之后第一个 token 是 “l”（当然 tokenizer 可能没切那么细），接下来大概率是 “e”、”t”，然后是空格：
 
+```text
 let a = 1;
 let b = 2;
+```
+
 有没有一种办法，能识别出某种 pattern，然后提前猜出模型之后可能输出什么？前提是精度不变：模型拿到这些 hint 后，最终输出仍然要和原始模型一致。
 
 简单的 idea 是：在某一次 decode step 之前，先用某种机制生成若干个后续 tokens，交给模型验证。如果模型接受了 3 个 token，就相当于一次 decode forward 生成了 3 个 token。先暂时忽略 draft 阶段和 verify 阶段的额外开销，那就相当于 10ms 生成 3 个 token，意味着接近 3 倍吞吐，单请求 tps 从 100 token/s 变成 300 token/s。

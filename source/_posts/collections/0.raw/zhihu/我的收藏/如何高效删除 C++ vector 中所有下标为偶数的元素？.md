@@ -23,6 +23,7 @@ STL里面有上百个现成的算法，富丰程度超过其它任何一种编�
 
 对于容器的批量删除一般用remove+erase，这里需要传入一个lambda来进行判断，所以用remove_if+erase，自从c++20开始，提供了std::erase_if，只要一步即可完成。如下：
 
+```cpp
 #include <vector>
 #include <algorithm>
 #include <iostream>
@@ -36,6 +37,8 @@ int main() {
         cout<<i<<&#34;, &#34;;
     }
 }
+```
+
 
 这里面还有个注意事项，是auto& num而不是auto num，题目要删除的是偶数下标而不是偶数值，下标更难一些，这也是这个题目的一个考点。
 

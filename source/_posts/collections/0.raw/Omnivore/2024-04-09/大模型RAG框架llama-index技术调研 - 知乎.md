@@ -64,11 +64,14 @@ LlamaIndex 是一个基于[LLM](https://en.wikipedia.org/wiki/Large%5Flanguage%5
   
 RAG 中有五个关键阶段，这将成为您构建的任何大型应用程序的一部分。这些都是：  
 
-* <strong>加载</strong>：这是指将数据从其所在位置（无论是文本文件、PDF、其他网站、数据库还是 API）获取到您的管道中。[LlamaHub](https://llamahub.ai/)提供数百种连接器可供选择。
-* <strong>索引</strong>：这意味着创建一个允许查询数据的数据结构。对于大模型来说，这几乎总是意味着创建`vector embeddings`数据含义的数字表示，以及许多其他元数据策略，以便轻松准确地找到上下文相关的数据。
-* <strong>存储</strong>：一旦数据被索引，您几乎总是希望存储索引以及其他元数据，以避免重新索引。
-* <strong>查询</strong>：对于任何给定的索引策略，您可以通过多种方式利用 LLM 和 LlamaIndex 数据结构进行查询，包括子查询、多步查询和混合策略。
-* <strong>评估</strong>：任何管道中的关键步骤是检查它相对于其他策略的有效性，或者何时进行更改。评估提供客观衡量您对查询的答复的准确性、忠实度和速度。
+```text
+* **加载**：这是指将数据从其所在位置（无论是文本文件、PDF、其他网站、数据库还是 API）获取到您的管道中。[LlamaHub](https://llamahub.ai/)提供数百种连接器可供选择。
+* **索引**：这意味着创建一个允许查询数据的数据结构。对于大模型来说，这几乎总是意味着创建`vector embeddings`数据含义的数字表示，以及许多其他元数据策略，以便轻松准确地找到上下文相关的数据。
+* **存储**：一旦数据被索引，您几乎总是希望存储索引以及其他元数据，以避免重新索引。
+* **查询**：对于任何给定的索引策略，您可以通过多种方式利用 LLM 和 LlamaIndex 数据结构进行查询，包括子查询、多步查询和混合策略。
+* **评估**：任何管道中的关键步骤是检查它相对于其他策略的有效性，或者何时进行更改。评估提供客观衡量您对查询的答复的准确性、忠实度和速度。
+```
+
 
 > 思考：很多人知道RAG的一般流程，但鲜有人深入研究实现RAG所需的关键步骤，特别最后一步评估（比如我最近面试的好多同学对RAG的评估都是一知半解），很少有人认真关注。如果这一步不能得到充分重视，那作为算法工程师的最后阵地也将失去。
 
@@ -293,9 +296,12 @@ LlamaIndex是一个提供高级接口用于嵌入、索引和查询外部数据�
 query\_engine = index.as\_query\_engine() response = query\_engine.query("Write an email to the user given their background information.") print(response)  
 <strong>查询的三个阶段</strong>
 
-* <strong>检索（Retrieval）</strong>：在索引中查找并返回与查询最相关的文档。常见的检索类型是“top-k”语义检索，但也存在许多其他检索策略。
-* <strong>后处理（Postprocessing）</strong>：检索到的节点（Nodes）可以选择性地进行排名、转换或过滤，例如要求节点具有特定的元数据，如关键词。
-* <strong>3\. 响应合成（Response Synthesis）</strong>：将查询、最相关数据和提示结合起来，发送给LLM以返回响应。
+```text
+* **检索（Retrieval）**：在索引中查找并返回与查询最相关的文档。常见的检索类型是“top-k”语义检索，但也存在许多其他检索策略。
+* **后处理（Postprocessing）**：检索到的节点（Nodes）可以选择性地进行排名、转换或过滤，例如要求节点具有特定的元数据，如关键词。
+* **3\. 响应合成（Response Synthesis）**：将查询、最相关数据和提示结合起来，发送给LLM以返回响应。
+```
+
 
 llama-index针对查询提供了丰富的定制化操作，具体如下：
 
@@ -307,11 +313,15 @@ LlamaIndex提供了一个低级组合API，允许你对查询进行细粒度控�
 检索器获取相关节点后，基础合成器通过结合信息合成最终响应。你可以配置它，例如：  
 query\_engine = RetrieverQueryEngine.from\_args(retriever, response\_mode=response\_mode)
 4. <strong>支持的响应模式</strong>
+
+```sql
 * 默认："create and refine" 通过顺序处理每个检索到的节点来创建和完善答案；适用于更详细的答案。
 * 紧凑："compact" 在每个LLM调用中压缩提示，尽可能多地填充节点文本块。
 * 树总结："tree\_summarize" 递归构建树并返回根节点作为响应；适用于总结目的。
 * 无文本：只运行检索器来获取节点，而不实际发送它们。
 * 累积：对每个文本块应用查询并累积响应到一个数组中。
+```
+
 
 <strong>5\. 结构化输出</strong>  
 如果你希望输出是结构化的，可以参考LlamaIndex的查询引擎和Pydantic输出，了解如何从查询引擎类中提取Pydantic对象。  
@@ -499,17 +509,23 @@ LlamaIndex 的目的是将你的数据与你的LLM（大型语言模型）应用
 4\. <strong>标准指标</strong>  
 针对标注数据集，无论是你自己的数据还是学术基准，都有一些标准指标需要了解：
 
+```text
 * 完全匹配（EM）：查询被完全正确回答的百分比。
 * 召回率：查询被正确回答的百分比，不考虑返回的答案数量。
 * 精确度：查询被正确回答的百分比，除以返回的答案数量。
 * F1：F1分数是精确度和召回率的调和平均数。因此，它在一个指标中对称地代表了精确度和召回率，考虑了假阳性和假阴性。
+```
+
 
 更详细的NDCG、MAP和MRR这样的技术指标参见：[RAG评价指标](https://towardsdatascience.com/ranking-evaluation-metrics-for-recommender-systems-263d0a66ef54)  
 5\. <strong>案例研究和资源</strong>
 
+```text
 * (Course) [Data-Centric AI (MIT), 2023](https://www.youtube.com/playlist?list=PLnSYPjg2dHQKdig0vVbN-ZnEU0yNJ1mo5)
 * [Scale's Approach to LLM Testing and Evaluation](https://scale.com/llm-test-evaluation)
 * [LLM Patterns by Eugene Yan](https://eugeneyan.com/writing/llm-patterns/)
+```
+
 
 ## 8\. langchain对比
 

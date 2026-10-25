@@ -137,6 +137,8 @@ invalidate queue
 store buffer和invalidate queue的引入提高了CPU的执行效率，每次的写操作会先将数据写入store buffer，然后再由 store buffer执行异步的操作，那么从store buffer发送invalidate广播到invalidate queue让缓存行失效前会存在各CPU缓存不一致的现象，使得MESI的强一致性被破坏。
 
 `//共享变量
+
+```cpp
 int a, b, c = 0;
 
 //CPU1中执行代码
@@ -151,6 +153,8 @@ void CPU2() {
     while(c == 0) continue; //4
     assert(b == 1); //5
 }
+```
+
 `
 
 在上面代码中，我们期望的结果是CPU2中"b == 1"条件成立，但是由于以下三个原因可能导致这个条件不成立。
@@ -179,6 +183,8 @@ void CPU2() {
 如下面代码，语句2、3之间插入了写屏障，语句3无法被重排至语句2之前，同时当执行到写屏障时，语句1、2的修改将从store buffer中刷进缓存最后同步到内存中，写屏障的存在解决了CPU指令乱序执行和 store buffer 异步写导致的数据本地更新顺序与代码顺序不一致的问题。
 
 `//共享变量
+
+```cpp
 int a, b, c = 0;
 
 //CPU1中执行代码
@@ -194,6 +200,8 @@ void CPU2() {
     while(c == 0) continue; //4
     assert(b == 1); //5
 }
+```
+
 `
 
 <strong>读屏障</strong>
@@ -201,6 +209,8 @@ void CPU2() {
 同写屏障，读屏障能够防止屏障后的指令重排到屏障前，并且执行到读屏障时invalidate queue中的失效消息能够全部被处理完。如下面代码，执行到读屏障时确保CPU2中b缓存行的失效信息被处理，因此执行语句5时由于b的缓存行已失效，将从内存中读取b的最新值，此时"b == 1"条件成立。
 
 `//共享变量
+
+```cpp
 int a, b, c = 0;
 
 //CPU1中执行代码
@@ -217,6 +227,8 @@ void CPU2() {
     smp_rb(); //读屏障
     assert(b == 1); //5
 }
+```
+
 `
 
 ### 内存模型
@@ -266,6 +278,8 @@ Sequential consistency模型即顺序一致性模型，在这个模型下所有�
 以下面代码为例，结合上述规则你可以先分析一下z最后的值可能是多少。
 
 `#include 
+
+```cpp
 #include 
 #include 
 
@@ -322,6 +336,8 @@ int main() {
     std::cout  "z = "  z.load(std::memory_order_seq_cst)  std::endl;
     return 0;
 }
+```
+
 `
 
 上述例子中z的值可能为0或1。根据前文规则1可知任意线程中内存操作与程序顺序一致，根据规则2，由于L3、L5、L9的存在，使得其后续语句肯定happens-after语句L1、L2，因此获取到的x值肯定为1，又根据规则3，L4、L7、L10之间不存在happens-before关系，因此获取到的y值可能为1也可能为0。综上，L12语句肯定无法执行，L8语句可能会执行。
@@ -338,6 +354,8 @@ Relax内存序是最宽松的内存序，他具有如下特性：
 根据特性1，可以利用relax实现计数器，下列代码中没有任何其他的同步要求，只需要保证多线程下的原子变量修改是安全有序的。
 
 `#include 
+
+```cpp
 #include 
 #include 
 
@@ -357,11 +375,15 @@ int main() {
     std::cout  "x = "  x  std::endl;
     return 0;
 }
+```
+
 `
 
 再看下下面这段代码，由于无法保证不同数据读写操作的顺序执行，下面代码的执行顺序可能为L1 L2 L3 L4或者L2 L3 L4 L1等，L2 L3 L4的顺序始终一致，但L1、L2的顺序无法被保证，因为他们作用于不同变量。即使代码执行顺序为L1 L2 L3 L4，也无法保证L1的修改对L4可见，因为Relax模型无法实现synchronizes-with关系，不保证可见性（理论上）。
 
 `#include 
+
+```cpp
 #include 
 #include 
 
@@ -384,6 +406,8 @@ int main() {
     t2.join();
     return 0;
 }
+```
+
 `
 
 <strong>Acquire-Release模型</strong>
@@ -402,6 +426,8 @@ Acquire-Release模型的强度介于前面两者之间，相较于relax模型限
 例子1：如下代码中使用了release-acquire，根据特性2、3、5可知，程序的执行顺序应当为L1、L2、L3、L4，L1 happends-before L4，L1的修改对L4是可见的，因此L4取出的值一定为100。
 
 `#include 
+
+```cpp
 #include 
 #include 
 
@@ -425,11 +451,15 @@ int main() {
     t2.join();
     return 0;
 }
+```
+
 `
 
 例子2：下代码中使用了release-consume，根据特性2、4、6， L1、L2 happends before L3，L4跳出循环要依赖L3的写入，L3 happends before L4，L4、L5具有数据依赖关系，L4 happends before L5，L4、L6不具有数据依赖关系，L4 不一定happends before L6，根据上述的happends before关系链，可以推断出L1 happends before L5, 但是L2不一定 happends before L6。
 
 `#include 
+
+```cpp
 #include 
 #include 
 
@@ -456,6 +486,8 @@ int main() {
     t2.join();
     return 0;
 }
+```
+
 `
 
 ### 内存模型使用
@@ -467,6 +499,8 @@ int main() {
 自旋锁常用于锁占用时间很短时避免上下文切换开销的场景，要保证同一时刻只有一个线程获得锁，获得锁的线程在锁期间产生的修改对后续获得锁的线程是可见的。下面是基于内存模型实现的自旋锁。
 
 `class SpinLock {
+
+```cpp
 private:
     std::atomicbool> flag_ = {false};
 public:
@@ -478,6 +512,8 @@ public:
         flag_.store(false, std::memory_order_release); 
     }
 };
+```
+
 `
 
 为了保证同一时刻只有一个线程获得锁，我们使用一个原子变量作为标记，<strong>原子变量的修改无论采用哪种内存序，即使最宽松的Relax内存序，也能够保证正确的修改顺序和可见性</strong>（这个可见性只存在于单原子变量的修改之间）。因此当多个线程同时执行Lock语句时，能够保证一个线程先将flag从false置为true，exchange返回false（旧值），加锁成功，后续线程执行exchange时会返回true，将阻塞在循环中。
@@ -486,6 +522,7 @@ public:
 
 `SpinLock lock;
 
+```cpp
 void thread1() {
     lock.Lock(); 
     //修改共享数据
@@ -497,6 +534,8 @@ void thread2() {
     //修改共享数据
     lock.Unlock();
 }
+```
+
 `
 
 #### 无锁队列
@@ -506,6 +545,8 @@ void thread2() {
 上述说到无锁队列的Push和Pop由几个索引变量控制，首先考虑利用队头索引（front)、队尾索引(back)两个索引的方案，代码如下。在Push操作中，首先取出back的值（L1)，然后判断队列是否满，不满时进行数据入队（L2)，随后CAS操作进行索引值修改(L3)。由于CAS只能解决线程重入时只有一个线程能够顺利完成索引修改操作，但是多个线程能够同时完成L1、L2操作，L2存在数据竞态问题。假设 a, b 两个线程的执行顺序是 a(L1), a(L2), b(L1), b(L2), a(L3成功),b(L3失败)。线程a虽然成功执行了L3，但是入队的值却被 b(L2) 覆盖掉了。
 
 `bool MultiplePush(const T val) {
+
+```cpp
     int back;
     do {
         back = back_.load(); //L1
@@ -514,7 +555,7 @@ void thread2() {
     }while(!back_.compare_exchange_strong(back, (back + 1) % capacity_)); //L3
     return true;
 }
-    
+
 bool MultiplePop(T& val) {
     int front;
     do {
@@ -522,14 +563,18 @@ bool MultiplePop(T& val) {
         if(front == back_.load()) return false;
         val = data_[front];
     }while(!front_.compare_exchange_strong(front, (front + 1) % capacity_));
-    
+
     return true;
 }
+```
+
 `
 
 为了解决上述问题，考虑将L2语句移到循环体外，这种方式解决了入队值被覆盖的问题，但是L3语句发生在L2之前，即索引的修改发生在数据入队之前，若a、b线程分别执行Push操作和Pop操作，且执行顺序为a(L3)、b(L4)、a(L2)，若L4语句刚好访问的是back索引处的数据，那么将取出一个无效值。
 
 `bool MultiplePush(const T val) {
+
+```cpp
     int back;
     do {
         back = back_.load(); //L1
@@ -538,7 +583,7 @@ bool MultiplePop(T& val) {
     data_[back] =  val; //L2
     return true;
 }
-    
+
 bool MultiplePop(T& val) {
     int front;
     do {
@@ -546,14 +591,18 @@ bool MultiplePop(T& val) {
         if(front == back_.load()) return false;
         val = data_[front]; //L4
     }while(!front_.compare_exchange_strong(front, (front + 1) % capacity_));
-    
+
     return true;
 }
+```
+
 `
 
 为了解决上述问题，<strong>必须保证L2 "happends-before" L4，且L2 "happends-after" L3</strong>，因此不得不引入修改索引（write)，Push时先修改write索引，利用write索引进行数据入队，最后利用write索引修改back索引。如下代码所示，<strong>L1 "happends-before" L2，避免入队数据被覆盖，L2 "happends-before" L3，避免back索引修改先于数据入队。</strong>
 
 `bool MultiplePush(const T val) {
+
+```cpp
     int write, back;
 
     do {
@@ -578,9 +627,11 @@ bool MultiplePop(T& val) {
             return false; 
         val = data_[front]; //L5
     }while(!front_.compare_exchange_strong(front, (front + 1) % capacity_));
-    
+
     return true;
 }
+```
+
 `
 
 最后我们再分析一下上述过程的内存序，如下面代码所示，write索引只需要保证修改的顺序和原子性即可，如果L1读到了write的旧值，可能导致L2条件成立使得在队列不满时Push操作失败，但是即使使用release-acquire内存序，因为多线程可能同时执行到L1，某个线程先执行了L3并成功，那么其他线程拿到的值就变成旧值了，不过不管如何，拿到旧值的线程在执行到L3时总会失败，因此只需要relax内存序即可。
@@ -588,6 +639,8 @@ bool MultiplePop(T& val) {
 根据上文的分析，我们知道L4应当"happends-before" L8，这就要求L5 "synchronizes-with" L9，因此使用release-acquire内存序。L2中需要根据front判断队列是否为空，因此L9的修改应当 "synchronizes-with" L2。
 
 `template typename T>
+
+```cpp
 class LockfreeQueue {
 private:
     std::vectorT> data_;
@@ -595,10 +648,10 @@ private:
     std::atomicint> back_ = {0};
     std::atomicint> write_ = {0};
     int capacity_;
-    
+
 public:
     LockfreeQueueT>(int capacity) : capacity_(capacity), data_(std::vectorT>(capacity)){}
-    
+
     bool MultiplePush(const T val) {
         int write, back;
 
@@ -616,7 +669,7 @@ public:
 
         return true;
     }
-    
+
     bool MultiplePop(T& val) {
         int front;
         do {
@@ -625,9 +678,11 @@ public:
                 return false;
             val = data_[front]; //L8
         }while(!front_.compare_exchange_strong(front, (front + 1) % capacity_, std::memory_order_release)); //L9
-        
+
         return true;
     }
+```
+
 `
 
 ### 总结

@@ -257,8 +257,11 @@ RTX 5070 使用 GDDR7 显存，位宽通常为 192-bit。标准显存带宽<stro
 第二步：PyTorch 实现代码
 在RTX 5070 环境中运行以下代码，这段代码会测试三个点，分别对应 Roofline 图上的三个不同位置。
 
+```python
 import torch
 import time
+```
+
 
 # 1. 设置环境：确保 TF32 (TensorFloat-32) 行为可控
 # RTX 30/40/50 系列默认会在 FP32 矩阵乘中使用 TF32,这会大大加速计算。
@@ -267,24 +270,32 @@ torch.backends.cuda.matmul.allow_tf32 = False
 device = torch.device(&#34;cuda&#34;)
 
 # 获取显卡名称,确认是 5070
+
+```python
 print(f&#34;当前显卡: {torch.cuda.get_device_name(0)}&#34;)
 
 def profile_kernel(func, name, n_iters=100):
     # 使用 CUDA Event 计时比 time.time() 更精确
     start_event = torch.cuda.Event(enable_timing=True)
     end_event = torch.cuda.Event(enable_timing=True)
+```
+
     
     # 预热
+
+```text
     for _ in range(10): func()
-    
+
     start_event.record()
     for _ in range(n_iters):
         func()
     end_event.record()
     torch.cuda.synchronize()
-    
+
     elapsed_time_ms = start_event.elapsed_time(end_event) / n_iters
     return elapsed_time_ms / 1000.0 # 转换为秒
+```
+
 
 # ==========================================
 # 实验 A: 访存瓶颈 (Vector Add)
@@ -294,8 +305,11 @@ N = 64 * 1024 * 1024 # 64M 元素
 x = torch.randn(N, device=device, dtype=torch.float32)
 y = torch.randn(N, device=device, dtype=torch.float32)
 
+```python
 def run_vector_add():
     z = x + y
+```
+
 
 t_add = profile_kernel(run_vector_add, &#34;Vector Add&#34;)
 
@@ -305,10 +319,13 @@ flops_per_iter = N         # 1次加法
 bw = (bytes_per_iter / t_add) / 1e9  # GB/s
 ai = flops_per_iter / bytes_per_iter
 
+```python
 print(f&#34;\n[实验 A: Vector Add]&#34;)
 print(f&#34;计算强度 (AI): {ai:.4f} FLOPs/Byte (极低)&#34;)
 print(f&#34;实测带宽: {bw:.2f} GB/s&#34;)
 print(f&#34;分析: 接近 GDDR7 的物理带宽上限 (600-700 GB/s)&#34;)
+```
+
 
 # ==========================================
 # 实验 B: 计算瓶颈 FP32 (Matrix Mul)
@@ -318,8 +335,11 @@ S = 8192 # 矩阵大小 8192 x 8192
 mat_a = torch.randn(S, S, device=device, dtype=torch.float32)
 mat_b = torch.randn(S, S, device=device, dtype=torch.float32)
 
+```python
 def run_matmul_fp32():
     torch.mm(mat_a, mat_b)
+```
+
 
 t_fp32 = profile_kernel(run_matmul_fp32, &#34;MatMul FP32&#34;, n_iters=20)
 
@@ -329,10 +349,13 @@ gflops = (flops_per_iter / t_fp32) / 1e9
 bytes_accessed = 3 * S**2 * 4
 ai_gemm = flops_per_iter / bytes_accessed
 
+```python
 print(f&#34;\n[实验 B: MatMul FP32 (No Tensor Core)]&#34;)
 print(f&#34;计算强度 (AI): {ai_gemm:.2f} FLOPs/Byte (高)&#34;)
 print(f&#34;实测算力: {gflops:.2f} GFLOPS&#34;) # 也就是 TFLOPS = GFLOPS / 1000
 print(f&#34;分析: 接近 CUDA Cores 的理论峰值 (约 30 TFLOPS)&#34;)
+```
+
 
 # ==========================================
 # 实验 C: 突破天花板 (Tensor Cores / TF32)
@@ -346,30 +369,39 @@ t_tf32 = profile_kernel(run_matmul_fp32, &#34;MatMul TF32&#34;, n_iters=50)
 
 gflops_tf32 = (flops_per_iter / t_tf32) / 1e9
 
+```python
 print(f&#34;\n[实验 C: MatMul TF32 (Using Tensor Cores)]&#34;)
 print(f&#34;实测算力: {gflops_tf32:.2f} GFLOPS&#34;)
 print(f&#34;加速比: {gflops_tf32 / gflops:.2f}x&#34;)
 print(f&#34;分析: 这利用了 Blackwell Tensor Cores,性能会远超普通 FP32 roofline&#34;)
+```
+
 
 # ==========================================
 # 实验 D: 真正的屋顶 (Tensor Cores / FP16)
 # ==========================================
 # 开启 FP16 极致压缩性能
 
+```python
 def run_matmul_fp16():
     # 必须确保输入是 half (fp16) 类型
     # 并且使用 Tensor Core 友好的维度 (8的倍数, 这里已经是8192了)
     with torch.amp.autocast(&#34;cuda&#34;):     # 或者直接定义 .half() tensor
         torch.mm(mat_a.half(), mat_b.half())
+```
+
 
 t_fp16 = profile_kernel(run_matmul_fp16, &#34;MatMul FP16&#34;)
 
 gflops_fp16 = (flops_per_iter / t_fp16) / 1e9
 
+```python
 print(f&#34;\n[实验 D: MatMul FP16 (Using Tensor Cores)]&#34;)
 print(f&#34;实测算力: {gflops_fp16:.2f} GFLOPS&#34;)
 print(f&#34;加速比: {gflops_fp16 / gflops:.2f}x&#34;)
 print(f&#34;分析: 这利用了 Tensor Cores FP16, Ultimate Roof line!&#34;)
+```
+
 运行结果：
 
 当前显卡: NVIDIA GeForce RTX 5070

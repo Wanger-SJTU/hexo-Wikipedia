@@ -238,11 +238,14 @@ Self-RAG 使用反思字符来自我评估输出，使其在推理过程中具�
 model = LLM("selfrag/selfrag_llama2_7b", download_dir="/gscratch/h2lab/akari/model_cache", dtype="half")
 sampling_params = SamplingParams(temperature=0.0, top_p=1.0, max_tokens=100, skip_special_tokens=False)
 
+```python
 def format_prompt(input, paragraph=None):
   prompt = "### Instruction:\n{0}\n\n### Response:\n".format(input)
   if paragraph is not None:
     prompt += "[Retrieval]{0}".format(paragraph)
   return prompt
+```
+
 
 query_1 = "Leave odd one out: twitter, instagram, whatsapp."
 query_2 = "What is China?"
@@ -251,7 +254,11 @@ queries = [query_1, query_2]
 # for a query that doesn't require retrieval
 preds = model.generate([format_prompt(query) for query in queries], sampling_params)
 for pred in preds:
+
+```python
   print("Model prediction: {0}".format(pred.outputs[0].text))`
+```
+
 
 输出结果如下，其中第一段结果不需要检索，第二段结果出现`[Retrieval]` 字段，因为这个问题需要更细粒度的事实依据。
 

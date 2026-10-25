@@ -162,9 +162,12 @@ int dump_backtrace_to_file_timeout(pid_t tid, int fd, int timeout_secs) {
 
 该方法的功能：
 
+```text
 * 首先，向debuggerd的socket服务端发出`DEBUGGER_ACTION_DUMP_BACKTRACE`请求，然后阻塞等待；
 * 循环遍历读取debuggerd服务端发送过来的数据，并写入到buffer;
 * 再将buffer数据输出到fd，此处是stdout文件描述符(屏幕终端)。
+```
+
 
 ### 2.4 dump\_tombstone
 
@@ -206,9 +209,12 @@ int dump_tombstone_timeout(pid_t tid, char* pathbuf, size_t pathlen, int timeout
 
 该方法的功能：
 
+```text
 * 首先，向debuggerd的socket服务端发出`DEBUGGER_ACTION_DUMP_TOMBSTONE`请求，然后阻塞等待；
 * 循环遍历读取debuggerd服务端发送过来的tombstone文件名，并写入到buffer;
 * 将buffer数据拷贝到pathbuf，即拷贝tombstone文件名。
+```
+
 
 ### 2.5 make\_dump\_request
 
@@ -357,10 +363,13 @@ static int do_server() {
 
 主要功能：
 
+```text
 * 忽略debuggerd进程自身crash的处理过程；
 * 重置所有crash handlers；
 * 建立socket通信中的服务端；
 * 循环等待客户端的连接，并调用handle\_request处理客户端请求。
+```
+
 
 ### 3.4 handle\_request
 
@@ -470,9 +479,12 @@ static int read_request(int fd, debugger_request_t* out_request) {
 
 该方法的功能是首先从socket获取client进程的pid,uid,gid用于权限控制，能处理以下三种情况：
 
+```text
 * C/C++进程crash时发送过来的请求；
 * root权限既可以可收集backtraces，又可以dump tombstones；
 * system权限只允许收集backtraces。
+```
+
 
 针对这些情况若相应的tid不存在或selinux权限不满足，则都忽略该显式dump请求。read\_request执行完成后，则从socket通道中读取到request信息。
 
@@ -926,17 +938,25 @@ debuggerd.main
 整个过程的核心方法为`worker_process()`，其流程如下：
 
 1. 根据请worker\_process()求中的不同action采取相应操作，除此之外则立即结束进程  
+
+```text
    * DEBUGGER\_ACTION\_DUMP\_TOMBSTONE，则调用open\_tombstone并继续执行；  
    * DEBUGGER\_ACTION\_CRASH ，则调用open\_tombstone并继续执行；  
    * DEBUGGER\_ACTION\_DUMP\_BACKTRACE，则直接继续执行；
+```
+
 2. 调用ptrace方法attach到目标进程;
 3. 调用BacktraceMap::Create来生成backtrace;
 4. 当Action=`DEBUGGER_ACTION_CRASH`，则执行activity\_manager\_connect；
 5. 调用drop\_privileges来取消特权模式；
 6. 通过perform\_dump执行dump操作：【见小节3.6.4】  
+
+```text
    * SIGSTOP && `DEBUGGER_ACTION_DUMP_BACKTRACE`，则`dump_backtrace`()  
    * SIGSTOP && `DEBUGGER_ACTION_DUMP_TOMBSTONE`，则`engrave_tombstone`()  
    * SIGBUS等致命信号，则`engrave_tombstone`()
+```
+
 7. 当Action=`DEBUGGER_ACTION_DUMP_TOMBSTONE`，则将向client端写入tombstone数据；
 8. 调用activity\_manager\_write，将进程crash情况告知AMS；
 9. 调用ptrace方法detach到目标进程;
@@ -1013,11 +1033,14 @@ static void dump_crash(log_t* log, BacktraceMap* map, pid_t pid, pid_t tid,
 
 主要输出信息：
 
+```text
 * dump\_header\_info
 * 主线程dump\_thread
 * dump\_logs (ro.debuggable=1 才输出此项)
 * 兄弟线程dump\_thread
 * dump\_logs (ro.debuggable=1 才输出此项)
+```
+
 
 \[-> debuggerd/tombstone.cpp\]
 
@@ -1133,8 +1156,11 @@ static void dump_thread_info(log_t* log, pid_t pid, pid_t tid) {
 
 ```
 
+```text
 * 获取进程名：`/proc/<pid>/cmdline`
 * 获取线程名：`/proc/<tid>/comm`
+```
+
 
 例如：
 
@@ -1172,8 +1198,11 @@ static void dump_signal_info(log_t* log, pid_t tid, int signal, int si_code) {
 
 ```
 
+```text
 * 对于`SIGBUS`，`SIGFPE`，`SIGILL`，`SIGSEGV`，`SIGTRAP`时触发的dump,则会输出fault addr的具体地址，
 * 对于`SIGSTOP`时,则输出fault addr为”——–”
+```
+
 
 例如：
 
@@ -1562,11 +1591,14 @@ static void dump_thread(log_t* log, pid_t pid, pid_t tid, BacktraceMap* map, int
 
 <strong>engrave\_tombstone</strong>主要输出信息：
 
+```text
 * dump\_header\_info
 * 主线程dump\_thread 【见小节4.7.1】
 * dump\_logs (ro.debuggable=1 才输出此项)
 * 兄弟线程dump\_thread 见小节4.7.2】
 * dump\_logs (ro.debuggable=1 才输出此项)
+```
+
 
 #### 4.7.1 主线程dump\_thread
 
@@ -1667,8 +1699,12 @@ stack:
 
 * `debuggerd -b <tid>`:  
 发送请求的action为`DEBUGGER_ACTION_DUMP_BACKTRACE`，则调用`dump_backtrace()`;[Native进程之Trace原理](http://gityuan.com/2016/11/27/native-traces/)
+
+```text
 * `debuggerd <tid>`: 发送请求的action为`DEBUGGER_ACTION_DUMP_TOMBSTONE`，则调用`engrave_tombstone()`;
 * `native crash`: 发送请求的action为`DEBUGGER_ACTION_CRASH`，且发送信号为SIGBUS等致命信号，则调用`engrave_tombstone()`。
+```
+
 
 ---
 

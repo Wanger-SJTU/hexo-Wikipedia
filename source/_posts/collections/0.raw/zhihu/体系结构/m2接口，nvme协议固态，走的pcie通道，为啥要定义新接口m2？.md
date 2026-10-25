@@ -176,6 +176,7 @@ NVMe（Non-Volatile Memory Express）是一种高性能通信协议，专为PCIe
 (1) CPU角度：Linux NVMe读写示例
 在Linux系统中，可通过SPDK（Storage Performance Development Kit）库实现高性能NVMe读写：
 
+```cpp
 #include "spdk/spdk.h"
 #include "spdk/nvme.h"
 #include "spdk/nvme.h"
@@ -185,7 +186,11 @@ NVMe（Non-Volatile Memory Express）是一种高性能通信协议，专为PCIe
 struct spdk_nvme ns *g_ns;
 
 // 读写完成回调函数
+```
+
 voidnvme_i o_ completeCB ( struct spdknvme_qpair *qpair, void *cbArg, int status, struct spdknvme_cpl *cpl )
+
+```text
 {
     if ( status != 0 ) {
         SPDKLOGERROR ( "I/O request failed: %d/n", status );
@@ -195,7 +200,11 @@ voidnvme_i o_ completeCB ( struct spdknvme_qpair *qpair, void *cbArg, int status
 }
 
 // 初始化NVMe控制器
+```
+
 voidinitiate控制器 ( void )
+
+```text
 {
     // 创建NVMe传输层（PCIe）
     struct spdknvme控制器 *ctrlr = spdk nvme控制器创建 (
@@ -224,16 +233,23 @@ voidinitiate控制器 ( void )
     // 提交写入请求
     spdk nvme ns cmd write (g_ns, qpair, write_buffer, lba, lba_count, nvme_io_ completeCB, NULL, 0);
 }
+```
+
 
 intmain ( void )
+
+```text
 {
     spdk app启动 ( NULL, NULL, initiate控制器 );
     return0;
 }
+```
+
 
 (2) SSD控制器角度：NVMe指令解析流程
 SSD控制器收到NVMe命令后，需执行以下解析流程：
 
+```cpp
 // 模拟SSD控制器的NVMe命令处理函数
 void process_nvme_command ( struct nvme_command *cmd )
 {
@@ -283,8 +299,12 @@ void process_nvme_command ( struct nvme_command *cmd )
                     break;
             }
             break;
+```
+
 
         default:
+
+```text
             // 不支持的命令
             cmd- status = SPDKst NVME Status InvalidOpCode;
             break;
@@ -293,6 +313,8 @@ void process_nvme_command ( struct nvme_command *cmd )
     // 更新完成队列
     updateCompletionQueue ( cmd );
 }
+```
+
 
 四、嵌入式存储SPI完整链路
 与高速NVMe SSD不同，嵌入式设备（如微控制器）通常使用SPI（Serial Peripheral Interface）接口连接存储设备：
@@ -339,13 +361,17 @@ SPI NOR Flash和SPI NAND Flash在操作和应用场景上有显著差异：
 (1) CPU角度：STM32 SPI驱动示例
 以下代码展示了如何在STM32微控制器上实现SPI接口与SPI NOR Flash的交互：
 
+```cpp
 #include "SPI.h"
 #include "GPIO.h"
 
 // 定义SPI参数
+```
+
 SPI_HandleTypeDef hspi1;
 GPIO_InitTypeDef GPIO_Initure;
 
+```cpp
 // 初始化SPI
 void SPI_Init ( void )
 {
@@ -391,7 +417,11 @@ void SPI_Init ( void )
 }
 
 // 发送一个字节并接收一个字节
+```
+
 uint8_t SPI传送接收 ( uint8_t data )
+
+```cpp
 {
     // 发送数据
     HAL SPI transmit (  hSpi1,  data, 1, 1000000 );
@@ -477,10 +507,13 @@ void SPI_NOR an derPageWrite ( uint32_t address, uint8_t *data, uint32_t length 
     // 等待写入完成
     while ( ( hal GPIO ReadPin ( GPIOA, GPIO_PIN_4 )   0x01 ) != 0 );
 }
+```
+
 
 (2) SPI NAND控制器角度：块擦除伪代码
 以下伪代码展示了SPI NAND Flash控制器如何处理块擦除命令：
 
+```cpp
 // 处理块擦除命令
 void handle_block Erase ( uint32_t block_address )
 {
@@ -526,6 +559,8 @@ void handle_block Erase ( uint32_t block_address )
     // 多次擦除失败
     set_status ( Erase Fail );
 }
+```
+
 
 五、拓展理解：M.2 不只是存储接口
 M.2 接口最初是为超极本设计的小型扩展接口，但它远不止用于 SSD。M.2 规范定义了一个物理插座，其引脚可以配置为多种功能，通过不同的“Key”来区分：

@@ -24,6 +24,8 @@ source_url: https://www.zhihu.com/question/521898260/answer/2399058597
 如果类的代码不可以修改，GotW #76: Uses and Abuses of Access Rights 这里提到了几种方法。这几种方法中，除了最后一种，其他方法都是非标准的。而最后一种方法的前提是，私有变量所在的这个类原先定义有成员函数模板，然后通过特化这个函数模板而获得对私有变量的访问权（成员函数模板特化后还是类的成员，自然有对私有成员的访问权），具体例子如下。
 
 `class Bank {
+
+```cpp
     int money = 999'999'999;
 public:
     int getMoney() {
@@ -58,6 +60,8 @@ int main() {
     cout  bank.getMoney()  ' '  thief.money  endl; // 0 999999999
     return 0;
 }  
+```
+
 `
 
 所以，如果类 `Bank` 原先没有那个成员函数模板 `templatevoidf(T& t){}`，这种方法也就行不通了，等于说，还是要修改类的代码，去添加一个成员函数模板，那倒不如正规地添加 getter/setter 了。 
@@ -79,12 +83,16 @@ int main() {
 `// 定义一个函数模板 steal，模板形参 p 是指向成员的指针，指向的是 Bank_t 类类型中 Money_t 类型的成员
 templatetypename Bank_t, typename Money_t, Money_t Bank_t::* p> 
 Money_t& steal(Bank_t& bank) {
+
+```text
     return bank.*p;
 }
 
 // 显式实例化 steal，[Bank_t = Bank, Money_t = int, p = &Bank::money]，Bank 类的定义同最上面例子
 // 模板显式实例化语句中不会执行访问控制检查，所以这里使用 &Bank::money 并不会报错
 template int& stealBank, int, &Bank::money>(Bank&);
+```
+
 `
 
 用 godbolt 查一下上面实例化得到的汇编（x86-64 gcc 11.2，-O1）：
@@ -102,6 +110,8 @@ template int& stealBank, int, &Bank::money>(Bank&);
 `#include 
 
 templatetypename T>
+
+```cpp
 struct A {
     T n = 123;
     A() {
@@ -116,6 +126,8 @@ template class Aint>;
 
 int main() {
 }
+```
+
 `
 
 上面程序会输出 `A's Ctor`。同样的，用 godbolt 查一下生成的汇编代码（x86-64 gcc 11.2，-std=c++17 -O1）：
@@ -137,12 +149,18 @@ A::A() [base object constructor]:
 所以，进亿步：
 
 `templatetypename Class, typename Member>
+
+```text
 struct Offset {
     using type = Member Class::*;
     inline static type value;
 };
+```
+
 
 templatetypename Bank_t, typename Money_t, typename OffsetBank_t, Money_t>::type offset>
+
+```text
 struct Thief {
     Thief() {
         OffsetBank_t, Money_t>::value = offset;
@@ -160,7 +178,11 @@ template class ThiefBank, int, &Bank::money>;
 // int& steal(Bank& bank) { reteurn bank.*Offset::value; }
 // “代入” Offset::value = &Bank::money 得：
 // int& steal(Bank& bank) { reteurn bank.*&Bank::money; } templatetypename Bank_t, typename Money_t>
+```
+
 Money_t& steal(Bank_t& bank) {
+
+```cpp
     return bank.*OffsetBank_t, Money_t>::value;
 }
 
@@ -171,6 +193,8 @@ int main() {
     cout  bank.getMoney()  endl; // 876543210
     return 0;
 }
+```
+
 `
 
 （上面代码魔改自：[Accessing Private Data](https://link.zhihu.com/?target=https%3A//gist.github.com/dabrahams/1528856)）
@@ -178,6 +202,8 @@ int main() {
 #### 改进 Thief，基于另外一种形式的副作用
 
 `templatetypename Bank, typename Money, Money Bank::* p>
+
+```cpp
 class Thief {
 public:
     friend Money& steal(Bank& bank) {
@@ -197,6 +223,8 @@ int main() {
     steal(bank) -= 123456789;
     cout  bank.getMoney()  endl; // 876543210
 }
+```
+
 `
 
 （上面代码魔改自 @WhoTFAmI

@@ -14,9 +14,13 @@ categories:
 
 # 背景
 1. 在transformer block中，主要的权重参数集中在FFN层，以llama结构为例，
+
+```text
 	1. attention部分的权重为 QKVO 变换的，大小约为 $2 * hidden * hidden = 4 * 4096 * 4096$
 	2. FFN 层为 up、gate、 down三部分为 $hidden * intermediate * 3 = 4096 * 11008 * 3$
 	3. 比例大概为 1 ：2。 粗略估计 FFN权重约 65 %。
+```
+
 
 3. DejaVu 
     - 高达 85% 的模型参数在推理阶段是上下文稀疏的，对于特定的输入，只有一小部分注意力头和前馈网络中的参数对模型输出有显著影响

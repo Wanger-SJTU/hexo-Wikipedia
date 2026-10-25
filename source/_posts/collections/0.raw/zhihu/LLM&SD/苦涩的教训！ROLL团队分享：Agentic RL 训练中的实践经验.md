@@ -193,9 +193,13 @@ RL 训练实例的质量对于 agentic RL 至关重要。同时并非所有“�
 
 git clone user@server:/git/server
 echo "hello world" > hello.html
+
+```bash
 git add index.html
 git commit -m "add index"
 git push origin webserver
+```
+
 
 And have this data then be pushed to a webserver running on port 8080 so if I run
 
@@ -261,12 +265,18 @@ then I see the output "hello world"`
 
 `def handle_rollout_with_mask(rollout, failure_type):
         """
+
+```text
         rollout: one trajectory (episode-level)
         failure_type: describes what went wrong during rollout
         """
+```
+
 
         # Unrecoverable or large-scale failures
         # e.g. env init failed, sandbox unavailable, reward computation broken
+
+```sql
         if failure_type in {
             "env_init_failed",
             "sandbox_unavailable",
@@ -275,14 +285,20 @@ then I see the output "hello world"`
         }:
             # Create a placeholder rollout to keep batch shape stable
             placeholder = create_placeholder_rollout()
+```
+
 
             # Mask all tokens so this sample contributes zero gradient
+
+```text
             placeholder.response_mask[:] = 0
             placeholder.advantages[:] = 0
             placeholder.rewards[:] = 0
 
             placeholder.meta["masked"] = True
             return placeholder
+```
+
 
         # Normal rollout: keep as-is
         return rollout`
@@ -290,6 +306,8 @@ then I see the output "hello world"`
 <strong>偶发且可恢复错误</strong>（例如工具超时、网速延缓等）：这类样本会被 <strong>filter 掉</strong>，并在全局控制比例（例如 ≤50%）下丢弃，避免过度重试。
 
 `class GroupFilterTB:
+
+```python
         def __init__(self, config: AgenticConfig, env_manager_config: EnvManagerConfig, mode: str):
             self.config = config
             self.env_manager_config = env_manager_config
@@ -302,15 +320,21 @@ then I see the output "hello world"`
             """
 
             self.global_filter_stats["total"] += 1
+```
+
 
             # Step 1: Check whether this group contains any rollout
             # that explicitly requests to be dropped
+
+```text
             # (e.g., due to tool timeout, transient execution error)
             should_drop = False
             for data in group:
                 if data.meta_info.get("drop_flag", False):
                     should_drop = True
                     break
+```
+
 
             # If no rollout indicates a drop condition, keep the group
             if not should_drop:
@@ -319,22 +343,38 @@ then I see the output "hello world"`
             # Step 2: Compute the current global filter ratio
             # This guards against pathological cases where
             # too many groups are dropped and training stalls
+
+```text
             current_global_filter_ratio = (
                 self.global_filter_stats["filtered"] / self.global_filter_stats["total"]
                 if self.global_filter_stats["total"] > 0 else 0.0
             )
+```
+
 
             # If we already filtered too much globally, stop filtering
+
+```text
             if current_global_filter_ratio >= 0.5:
                 return False
+```
+
 
             # Also prevent the *next* filter from exceeding the limit
+
+```text
             if (self.global_filter_stats["filtered"] + 1) / self.global_filter_stats["total"] > 0.5:
                 return False
+```
+
 
             # Step 3: Drop this group and update global stats
+
+```text
             self.global_filter_stats["filtered"] += 1
             return True`
+```
+
 
 此外，我们在训练过程中还会根据需要引入其他类型的 mask 操作，例如 max-turn mask 等，以进一步约束异常轨迹对优化的影响。
 

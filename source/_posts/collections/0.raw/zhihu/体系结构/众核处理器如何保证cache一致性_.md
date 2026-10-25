@@ -84,14 +84,20 @@ CPU cache 在 golang 中的实践
 - 按行列对应相加：这是最直接的方法，我们遍历矩阵的每个元素，将矩阵A的元素与矩阵B的对应元素相加。const matrixLength = 6400
 
 func createMatrix(size int) [][]int64 {
+
+```text
     matrix := make([][]int64, size)
     for i := 0; i   size; i++ {
         matrix[i] = make([]int64, size)
     }
     return matrix
 }
+```
+
 
 func BenchmarkMatrixCombination(b *testing.B) {
+
+```text
     matrixA := createMatrix(matrixLength)
     matrixB := createMatrix(matrixLength)
 
@@ -103,8 +109,12 @@ func BenchmarkMatrixCombination(b *testing.B) {
         }
     }
 }
+```
+
 
 - 按行列对称相加：在这种方法中，我们不是按照矩阵的行列坐标对应相加，而是将矩阵B的行和列坐标互换后进行相加。func BenchmarkMatrixReversedCombination(b *testing.B) {
+
+```text
     matrixA := createMatrix(matrixLength)
     matrixB := createMatrix(matrixLength)
 
@@ -116,6 +126,8 @@ func BenchmarkMatrixCombination(b *testing.B) {
         }
     }
 }
+```
+
 
 基准测试结果表明，按行列对应相加的方法比按行列对称相加的方法快了近十倍，这是为什么呢？ 
 
@@ -132,6 +144,7 @@ image.png 所以当两个线程要同时修改两个变量时，我们应该尽�
 
 image.png 下面我们通过运行一个 golang 程序来看一下加了 padding 后性能是否有提高
 
+```python
 import (
     "sync"
     "testing"
@@ -139,23 +152,39 @@ import (
 
 const M = 1000000
 const CacheLinePadSize = 64 //一般Cacheline大小64B
+```
+
 
 type SimpleStruct struct {
     n int
+
+```text
 }
+```
+
 
 type PaddedStruct struct {
     n int
     _ CacheLinePad
+
+```text
 }
+```
+
 
 type CacheLinePad struct {
     _ [CacheLinePadSize]byte
+
+```js
 }
 
 const CacheLinePadSize = 64
+```
+
 
 func BenchmarkStructureFalseSharing(b *testing.B) {
+
+```text
     structA := SimpleStruct{}
     structB := SimpleStruct{}
     wg := sync.WaitGroup{}
@@ -178,8 +207,12 @@ func BenchmarkStructureFalseSharing(b *testing.B) {
         wg.Wait()
     }
 }
+```
+
 
 func BenchmarkStructurePadding(b *testing.B) {
+
+```text
     structA := PaddedStruct{}
     structB := SimpleStruct{}
     wg := sync.WaitGroup{}
@@ -202,6 +235,8 @@ func BenchmarkStructurePadding(b *testing.B) {
         wg.Wait()
     }
 }
+```
+
 
 可以发现，当两个协程同时操作两个变量时，物理位置临近的两个变量表现不如位置不临近的两个变量，但是代价是使用了更多的内存空间。 
 

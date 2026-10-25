@@ -69,6 +69,8 @@ BN层往往用在深度神经网络的卷积层之后、激活层之前。其作
 我们翻一翻常见的backbone的结构。可以看到在官方Pytorch的`resnet.py`的`class BasicBlock`中，forward时的基本结构是`Conv+BN+Relu`:
 
 `# 省略了一些地方
+
+```python
 class BasicBlock(nn.Module):
     def __init__(self,...) -> None:
         ...
@@ -95,6 +97,8 @@ class BasicBlock(nn.Module):
         out = self.relu(out)
 
         return out
+```
+
 `
 
 resnet作为我们常见的<strong>万年青backbone</strong>不是没有理由的，<strong>效果好速度快方便部署</strong>。当然还有很多其他优秀的backbone，这些backbone的内部结构也多为`Conv+BN+Relu`或者`Conv+BN`的结构。
@@ -132,6 +136,8 @@ resnet作为我们常见的<strong>万年青backbone</strong>不是没有理由�
 这张图是官方介绍TensorRT优化的例子，很显然上述的`3x3 conv + bias + relu`被合并成了一个`3x3 CBR`，其中bias可以相当于bn(之后会介绍)，我们简单看下Pytorch中inception的结构：
 
 `def _forward(self, x: Tensor) -> List[Tensor]:
+
+```text
     branch1x1 = self.branch1x1(x)
 
     branch5x5 = self.branch5x5_1(x)
@@ -146,12 +152,15 @@ resnet作为我们常见的<strong>万年青backbone</strong>不是没有理由�
     # 就是这里需要cat的四个分支
     outputs = [branch1x1, branch5x5, branch3x3dbl, branch_pool]
     return outputs
+```
+
 `
 
 其中每个最基本的CONV模块就是，显然还是一个CONV+BN的结构:
 
 `class BasicConv2d(nn.Module):
 
+```python
   def __init__(
       self,
       in_channels: int,
@@ -166,6 +175,8 @@ resnet作为我们常见的<strong>万年青backbone</strong>不是没有理由�
       x = self.conv(x)
       x = self.bn(x)
       return F.relu(x, inplace=True)
+```
+
 `
 
 在TensorRT中BN层相当于Scale级别的变化，为什么，回顾一下老潘介绍过的公式：
@@ -175,6 +186,8 @@ resnet作为我们常见的<strong>万年青backbone</strong>不是没有理由�
 我们在利用TensorRT进行模型解析时，比如从ONNX中解析成TensorRT的网络结构，我们会提前对BN层的一些操作进行合并和融合。来看看<strong>[ONNX-TensorRT](https://link.zhihu.com/?target=https%3A//github.com/onnx/onnx-tensorrt)</strong>是怎么做的吧:
 
 `DEFINE_BUILTIN_OP_IMPORTER(BatchNormalization)
+
+```cpp
 {
     // ...省略部分代码
     // 从ONNX中BN层中会取到四个参数，分别是权重、偏置、mean和var
@@ -200,6 +213,8 @@ resnet作为我们常见的<strong>万年青backbone</strong>不是没有理由�
     return scaleHelper(ctx, node, *tensorPtr, nvinfer1::ScaleMode::kCHANNEL, combinedBias, combinedScale,
         ShapedWeights::empty(scale.type), bias.getName(), scale.getName());
 }
+```
+
 `
 
 通过TensorRT的前端解释器解释后，TensorRT会将BN层视为一个简单的Scale层(通过`addScaleNd`构建)，之后的优化中会根据情况与该层前面的CONV层合并：
@@ -212,6 +227,8 @@ resnet作为我们常见的<strong>万年青backbone</strong>不是没有理由�
 
 `# https://github.com/DingXiaoH/RepVGG/blob/main/repvgg.py
 # repvgg中bn层的融合方式
+
+```python
 def _fuse_bn_tensor(self, branch):
     if branch is None:
         return 0, 0
@@ -239,6 +256,8 @@ def _fuse_bn_tensor(self, branch):
     std = (running_var + eps).sqrt()
     t = (gamma / std).reshape(-1, 1, 1, 1)
     return kernel * t, beta - running_mean * gamma / std
+```
+
 `
 
 ### <strong>有坑的优化</strong>
@@ -268,6 +287,8 @@ def _fuse_bn_tensor(self, branch):
 我们可以看到默认`affine`和`track_running_stats`都是开启的，也就是我们平时在使用BN层的时候，权重、偏置、`running_mean`、`running_var`都是随着模型训练时候随时更新的。其中权重偏置是随着训练反向梯度的时候会进行更新，而`running_mean`、`running_var`则是buffer类型数据，可以在模型推理的时候设置是否需要更新。
 
 `class _NormBase(Module):
+
+```python
     def __init__(
         self,
         num_features: int,
@@ -293,12 +314,15 @@ def _fuse_bn_tensor(self, branch):
             self.register_parameter('running_var', None)
             self.register_parameter('num_batches_tracked', None)
         self.reset_parameters()
+```
+
 `
 
 再看`_BatchNorm`的实现，而我们在平常搭建网络时使用的`BatchNorm2d`就是继承了它。Pytorch的Python端BN层核心的实现都在`_BatchNorm`这里了，`BatchNorm2d`仅仅是做了一下接口检查。
 
 `class _BatchNorm(_NormBase):
 
+```python
     def __init__(self, num_features, eps=1e-5, momentum=0.1, affine=True,
                  track_running_stats=True):
         super(_BatchNorm, self).__init__(
@@ -307,10 +331,14 @@ def _fuse_bn_tensor(self, branch):
     def forward(self, input: Tensor) -> Tensor:
         self._check_input_dim(input)
         ... 
+```
+
 
         if self.training and self.track_running_stats:
             # TODO: if statement only here to tell the jit to skip emitting this when it is None
             if self.num_batches_tracked is not None:  # type: ignore
+
+```text
                 self.num_batches_tracked = self.num_batches_tracked + 1  # type: ignore
                 if self.momentum is None:  # use cumulative moving average
                     exponential_average_factor = 1.0 / float(self.num_batches_tracked)
@@ -321,9 +349,13 @@ def _fuse_bn_tensor(self, branch):
             bn_training = True
         else:
             bn_training = (self.running_mean is None) and (self.running_var is None)
+```
+
 
         r"""
         Buffers are only updated if they are to be tracked and we are in training mode. Thus they only need to be
+
+```sql
         passed when the update should occur (i.e. in training mode when they are tracked), or when buffer stats are
         used for normalization (i.e. in eval mode when buffers are not None).
         """
@@ -335,6 +367,8 @@ def _fuse_bn_tensor(self, branch):
             self.running_mean if not self.training or self.track_running_stats else None,
             self.running_var if not self.training or self.track_running_stats else None,
             self.weight, self.bias, bn_training, exponential_average_factor, self.eps)
+```
+
 `
 
 需要注意的，上述Pytorch前端BN代码中的`bn_training`会传递到C++的底层实现，而BN的C++底层实现会根据这个布尔变量决定是否实时计算mean和std。
@@ -348,15 +382,20 @@ Pytorch中底层C++BN层的具体实现代码在`/pytorch/aten/src/ATen/native/N
 为了方便理解，我们阅读的是<strong>CPU版本</strong>的实现(GPU版本与CPU的原理是相同的)。
 
 `std::tupleTensor, Tensor, Tensor> batch_norm_cpu(const Tensor& self, const c10::optionalTensor>& weight_opt, const c10::optionalTensor>& bias_opt, const c10::optionalTensor>& running_mean_opt, const c10::optionalTensor>& running_var_opt,
+
+```text
                                                   bool train, double momentum, double eps) {
   // See [Note: hacky wrapper removal for optional tensor]
   const Tensor& weight = c10::value_or_else(weight_opt, [] {return Tensor();});
   const Tensor& bias = c10::value_or_else(bias_opt, [] {return Tensor();});
   const Tensor& running_mean = c10::value_or_else(running_mean_opt, [] {return Tensor();});
   const Tensor& running_var = c10::value_or_else(running_var_opt, [] {return Tensor();});
+```
+
 
   checkBackend("batch_norm_cpu", {self, weight, bias, running_mean, running_var}, Backend::CPU);
 
+```cpp
   return AT_DISPATCH_FLOATING_TYPES(self.scalar_type(), "batch_norm", [&] {
       if (!train) {
         return batch_norm_cpu_transform_input_templatescalar_t>(self, weight, bias, {}, {}, running_mean, running_var, train, eps);
@@ -367,11 +406,15 @@ Pytorch中底层C++BN层的具体实现代码在`/pytorch/aten/src/ATen/native/N
       }
     });
 }
+```
+
 `
 
 `batch_norm_cpu_update_stats_template`做了啥？就是更新一下当前输入batch数据的均值和方差。
 
 `templatetypename scalar_t, templatetypename T> class VarTransform>
+
+```cpp
 std::tupleTensor,Tensor> batch_norm_cpu_update_stats_template(
     const Tensor& input, const Tensor& running_mean, const Tensor& running_var,
     double momentum, double eps) {
@@ -380,16 +423,24 @@ std::tupleTensor,Tensor> batch_norm_cpu_update_stats_template(
   // 计算channel维度
   int64_t n_input = input.size(1);
   int64_t n = input.numel() / n_input;
+```
+
 
   Tensor save_mean = at::empty({n_input}, input.options());
   Tensor save_var_transform = at::empty({n_input}, input.options());
   auto save_mean_a = save_mean.accessorscalar_t, 1>();
   auto save_var_transform_a = save_var_transform.accessorscalar_t, 1>();
+
+```text
   // 得到running_mean_a 和 running_var_a
   auto running_mean_a = conditional_accessor_1dscalar_t>(running_mean);
   auto running_var_a = conditional_accessor_1dscalar_t>(running_var);
+```
+
 
   parallel_for(0, n_input, 1, [&](int64_t b_begin, int64_t b_end) {
+
+```cpp
     for (int64_t f = b_begin; f  b_end; ++f) {
       Tensor in = input.select(1, f);
 
@@ -425,11 +476,15 @@ std::tupleTensor,Tensor> batch_norm_cpu_update_stats_template(
   });
   return std::make_tuple(save_mean, save_var_transform);
 }
+```
+
 `
 
 而`batch_norm_cpu_transform_input_template`就是具体的BN层实现：
 
 `templatetypename scalar_t>
+
+```cpp
 std::tupleTensor,Tensor,Tensor> batch_norm_cpu_transform_input_template(
     const Tensor& input, const Tensor& weight, const Tensor& bias,
     const Tensor& save_mean /* optional */, const Tensor& save_invstd /* optional */,
@@ -437,6 +492,8 @@ std::tupleTensor,Tensor,Tensor> batch_norm_cpu_transform_input_template(
     bool train, double eps) {
   ...
   Tensor output = at::empty_like(input, LEGACY_CONTIGUOUS_MEMORY_FORMAT);
+```
+
 
   int64_t n_input = input.size(1);
 
@@ -447,6 +504,8 @@ std::tupleTensor,Tensor,Tensor> batch_norm_cpu_transform_input_template(
   auto running_var_a = conditional_accessor_1dscalar_t>(running_var);
 
   parallel_for(0, n_input, 1, [&](int64_t b_begin, int64_t b_end) {
+
+```cpp
     for (int64_t f = b_begin; f  b_end; ++f) {
       Tensor in = input.select(1, f);
       Tensor out = output.select(1, f);
@@ -473,6 +532,8 @@ std::tupleTensor,Tensor,Tensor> batch_norm_cpu_transform_input_template(
   });
   return std::make_tuple(output, save_mean, save_invstd);
 }
+```
+
 `
 
 ### <strong>总结下Pytorch中的BN行为</strong>
@@ -497,6 +558,8 @@ std::tupleTensor,Tensor,Tensor> batch_norm_cpu_transform_input_template(
 Torch2trt是通过映射<strong>Pytorch的op到TensorRT</strong>中，这样我们就可以实现一个推理版的`TrainBatchNorm2d`，然后让这个解释器按照相应的op来转换到TensorRT端：
 
 `# 这里我们实现了一个纯python版的BN
+
+```python
 class TrainBatchNorm2d(torch.nn.BatchNorm2d):
     def __init__(self, num_features, eps=1e-5, momentum=0.1,
                  affine=True, track_running_stats=True):
@@ -516,6 +579,8 @@ class TrainBatchNorm2d(torch.nn.BatchNorm2d):
             input = input * self.weight[None, :, None, None] + self.bias[None, :, None, None]
 
         return input
+```
+
 `
 
 这样写好之后，模型顺利转换为TensorRT而且结果也正常了，但是速度缺很慢...dump了一下每层的耗时，发现耗时卡在`mean = input.mean([0, 2, 3])`这一步，网上简单搜了一下有没有和我们遇到相同问题的，还真有：https://forums.developer.nvidia.com/t/tensorrt-custom-roialign-plugin-is-very-slow/
@@ -529,6 +594,8 @@ class TrainBatchNorm2d(torch.nn.BatchNorm2d):
 即可，整体来说就是个等价替换：
 
 `class TrainedBatchNorm2d(torch.nn.BatchNorm2d):
+
+```python
     def __init__(self, num_features, eps=1e-5, momentum=0.1,
                  affine=True, track_running_stats=True):
         super(TrainBatchNorm2d, self).__init__(
@@ -542,11 +609,17 @@ class TrainBatchNorm2d(torch.nn.BatchNorm2d):
 
         input = input - mean[None, :, None, None]
         input = input / (var[None, :, None, None] + self.eps)
+```
+
         
         if self.affine:
+
+```text
             input = input * self.weight[None, :, None, None] + self.bias[None, :, None, None]
 
         return input
+```
+
 `
 
 咦，这样貌似就没问题了，模型转换成功，BN层不再依赖固定的`mean`和`std`，而且速度也正常了。

@@ -32,10 +32,14 @@ TVM是一个End2End的方案，接收来自Tensorflow/Pytorch等框架的 High L
 TVM 给 Runtime 设计了极其精简且稳定的 C API （定义于 [include/tvm/runtime/c_runtime_api.h](https://link.zhihu.com/?target=https%3A//github.com/apache/tvm/blob/v0.8.0/include/tvm/runtime/c_runtime_api.h) ）, 为了保持 API 的稳定，在头文件中隐藏了具体的类型信息，如下
 
 `typedef void* TVMModuleHandle;
+
+```text
 typedef void* TVMFunctionHandle;
 typedef void* TVMRetValueHandle;
 typedef void* TVMStreamHandle;
 typedef void* TVMObjectHandle;
+```
+
 `
 
 我们以 Python API 展示 Runtime 的运行示例
@@ -63,6 +67,8 @@ print(a.numpy())`
 对于类似 IR 这样的数据结构，天然就对其有 serialize/format/reflection 的需求，以往我们可以借助protobuf自动实现这些需求。在 TVM 中，额外还有 python binding/hash 等需求，于是 TVM 要求所有这样的数据结构继承自 Object 基类，并注册其内部所有成员，比如下面这个例子
 
 `class TensorNode : public Object {
+
+```cpp
 public:
   /*! \brief The shape of the tensor */
   ArrayExpr> shape;
@@ -82,6 +88,8 @@ public:
     v->Visit("value_index", &value_index);
   }
 };
+```
+
 `
 
 这种方式的好处主要在于，不需要为新增的 Class 实现单独的 serialize/format/reflection/python binding/hash 等功能。在 `include/tvm/runtime/object.h` 中定义了 `Object`和 `ObjectRef` 两个类型，`ObjectRef`可以视为 `shared_ptr`。
@@ -89,6 +97,8 @@ public:
 此外，继承自 Object 的类型需要注意几个变量，一个例子如下（可查阅`include/tvm/ir/tensor_type.h`）
 
 `class Object {
+
+```text
   static constexpr const char* _type_key = "runtime.Object";
   static constexpr uint32_t _type_index = TypeIndex::kDynamic;
   uint32_t type_index_;
@@ -96,6 +106,8 @@ public:
 class TensorTypeNode : public Object {
   static constexpr const char* _type_key = "relay.TensorType";
 };
+```
+
 `
 
 新类型如`TensorTypeNode`需要声明`_type_key` 作为其名字，当使用`make_object`创建这个类型的对象时，如果该类型的 `_type_index`值为 `TypeIndex::kDynamic`，则会为该`_type_key`分配一个固定的`_type_index`，此后该类型所有对象的`type_index_`都被设置为`_type_index`。
@@ -103,8 +115,12 @@ class TensorTypeNode : public Object {
 在 Python 端的类型则需要使用`register_object`注册
 
 `@tvm._ffi.register_object("relay.TensorType")
+
+```text
 class TensorType(Type):
     ...`
+```
+
 
 通过同样的`type_key`就可以将 C++ 与 Python 的类型匹配上，而设计 `type_index` 则是为了性能考虑。具体的两边类型匹配可以在 `python/tvm/_ffi/_cython/object.pxi` 查阅。
 
@@ -116,6 +132,7 @@ TVM 中另一个与 Object 同样底层的机制称为 FFI (Foreign Function Int
 
 `#include 
 
+```cpp
 void MyAdd(TVMArgs args, TVMRetValue* rv) {
   // automatically convert arguments to desired type.
   int a = args[0];
@@ -129,6 +146,8 @@ void CallPacked() {
   // get back 3
   int c = myadd(1, 2);
 }
+```
+
 `
 
 可以看到`MyAdd`的类型信息被擦除了，也就是不限制输入输出的类型。类型擦除后，由于C++强大的template tricks，与普通函数的使用方式差别不是特别大。类型擦除后，不需要写额外的处理类型的胶水代码也能很方便地在Python这种动态语言中调用。下面是一个在C++中注册然后在Python中调用的例子（反过来也是可以的）
@@ -157,6 +176,8 @@ tvm._ffi._init_api("relay.build_module", __name__)`
 CudaModule 定义在 `src/runtime/cuda/cuda_module.cc` 中，CudaModule接口中返回的PackedFunc则是CUfunction的一层封装。我们看核心的`GetFunction` 
 
 `PackedFunc CUDAModuleNode::GetFunction(const std::string& name,
+
+```js
                                        const ObjectPtrObject>& sptr_to_self) {
   ICHECK_EQ(sptr_to_self.get(), this);
   ICHECK_NE(name, symbol::tvm_module_main)  "Device function do not have main";
@@ -170,11 +191,15 @@ CudaModule 定义在 `src/runtime/cuda/cuda_module.cc` 中，CudaModule接口中
   f.Init(this, sptr_to_self, name, info.arg_types.size(), info.launch_param_tags);
   return PackFuncVoidAddr(f, info.arg_types);
 }
+```
+
 `
 
  逻辑比较简单，根据名字找到该CUfunction的描述信息FunctionInfo，而FunctionInfo中包含了launch_param_tags, 这里面含有kernel launch时需要的gridDim/blockDim/SharedMemorySize等信息，将上下文打包到CUDAWrappedFunc中。我们看一下CUDAWrappedFunc的执行
 
 `  void operator()(TVMArgs args, TVMRetValue* rv, void** void_args) const {
+
+```cpp
     int device_id;
     CUDA_CALL(cudaGetDevice(&device_id));
     if (fcache_[device_id] == nullptr) {
@@ -203,6 +228,8 @@ CudaModule 定义在 `src/runtime/cuda/cuda_module.cc` 中，CudaModule接口中
       LOG(FATAL)  os.str();
     }
   }
+```
+
 `
 
 可以看到CUDAWrappedFunc里面首先根据名字在CUDAModuleNode（内含CUmodule）中找到CUfunction然后根据launch_param_config_进行Launch.
@@ -228,17 +255,25 @@ CudaModule 定义在 `src/runtime/cuda/cuda_module.cc` 中，CudaModule接口中
 `/*!
  * \brief Primitive data types used in the low-level IR.
  *
+
+```text
  * PrimType represents POD-values and handles that are
  * not automatically managed by the runtime.
+```
+
  *
  * \sa PrimType
  */
+
+```text
 class PrimTypeNode : public TypeNode {
  public:
   /*!
    * \brief The corresponding dtype field.
    */
   runtime::DataType dtype;
+```
+
 `
 
 再看 FuncType 也就是函数类型的代码实现
@@ -246,11 +281,17 @@ class PrimTypeNode : public TypeNode {
 `/*!
  * \brief Function type.
  *
+
+```js
  * We support polymorphic function type.
  * This can be roughly viewed as template function in C++.
+```
+
  *
  * \sa FuncType, TypeVar, TypeConstraint
  */
+
+```cpp
 class FuncTypeNode : public TypeNode {
  public:
   /*! \brief type type of arguments */
@@ -266,6 +307,8 @@ class FuncTypeNode : public TypeNode {
    * \note this field is reserved for futher purposes.
    */
   ArrayTypeConstraint> type_constraints;
+```
+
 `
 
 如代码所述，FuncType 类似于 C++ 中的模板函数类型，记录了函数参数类型/返回值类型/模板参数等信息。
@@ -277,13 +320,21 @@ class FuncTypeNode : public TypeNode {
 我们看一下 FloatImm 的代码实现来体会 Expr
 
 `/*!
+
+```cpp
  * \brief Constant floating point literals in the program.
  * \sa FloatImm
+```
+
  */
+
+```text
 class FloatImmNode : public PrimExprNode {
  public:
   /*! \brief The constant value content. */
   double value;
+```
+
 `
 
 FloatImm 的意思是浮点数字面值表达式，所以其记录了一个 double 成员。
@@ -291,14 +342,24 @@ FloatImm 的意思是浮点数字面值表达式，所以其记录了一个 doub
 本节最后我们看一下 TensorType, 代码如下
 
 `/*!
+
+```text
  * \brief This is the most commonly used type in relay.
  *  TensorType have a fixed dimension, data type.
+```
+
  *
+
+```text
  *  The elements of shape can be either IntImm(constant integer),
  *  or any symbolic integer expression.
  *  The symbolic integer allows generic shape inference in certain cases.
  * \sa TensorType
+```
+
  */
+
+```text
 class TensorTypeNode : public BaseTensorTypeNode {
  public:
   /*!
@@ -308,6 +369,8 @@ class TensorTypeNode : public BaseTensorTypeNode {
   ArrayPrimExpr> shape;
   /*! \brief The content data type */
   DataType dtype;
+```
+
 `
 
 需要注意，shape 也是类型的一部分，所以 TVM 中的类型推断的意思自然也包括了 shape 推断。
@@ -325,14 +388,24 @@ class TensorTypeNode : public BaseTensorTypeNode {
 `/*!
  * \brief Primitive Op(builtin intrinsics)
  *
+
+```text
  * This data structure stores the meta-data
  * about primitive operators that can be invoked via Call.
+```
+
  *
+
+```text
  * Low-level IR intrinsics(such as libc.expf) are also
  * implemented via Op.
+```
+
  *
  * \sa Op
  */
+
+```text
 class OpNode : public RelayExprNode {
  public:
   /*! \brief name of the operator */
@@ -367,6 +440,8 @@ class OpNode : public RelayExprNode {
    *  This is in analogies to BLAS levels.
    */
   int32_t support_level = 10;
+```
+
 `
 
 代码中有些成员不太明白什么意思也没关系，接下来我们看个例子来加深理解。
@@ -374,17 +449,27 @@ class OpNode : public RelayExprNode {
 首先我们看 Relay 中定义的 nn.bias_add, 第一步，先为其定义一个属性类型记录其所有属性，如下
 
 `struct BiasAddAttrs : public tvm::AttrsNodeBiasAddAttrs> {
+
+```cpp
   int axis;
+```
+
 
   TVM_DECLARE_ATTRS(BiasAddAttrs, "relay.attrs.BiasAddAttrs") {
+
+```text
     TVM_ATTR_FIELD(axis).describe("The axis to add the bias").set_default(1);
   }
 };
+```
+
 `
 
 如代码所述，定义属性时还能规定默认值等，接着为其定义 type relation
 
 `bool BiasAddRel(const ArrayType>& types, int num_inputs, const Attrs& attrs,
+
+```cpp
                 const TypeReporter& reporter) {
   ICHECK_EQ(types.size(), 3);
   const auto* data = types[0].asTensorTypeNode>();
@@ -409,6 +494,8 @@ class OpNode : public RelayExprNode {
   reporter->Assign(types[2], types[0]);
   return true;
 }
+```
+
 `
 
 如代码所述，这是一个类型推断函数，根据0号Tensor输入和属性推断1号Tensor输入和2号输出的Type.
@@ -419,6 +506,8 @@ class OpNode : public RelayExprNode {
     .describe(R"code(Add bias to an axis of the input.
 
 )code" TVM_ADD_FILELINE)
+
+```text
     .set_attrs_typeBiasAddAttrs>()
     .set_num_inputs(2)
     .add_argument("data", "nD Tensor", "Input data.")
@@ -430,6 +519,8 @@ class OpNode : public RelayExprNode {
       const auto* param = attrs.asBiasAddAttrs>();
       return tvm::Arraytvm::te::Tensor>{topi::nn::bias_add(inputs[0], inputs[1], param->axis)};
     });
+```
+
 `
 
 此时我们可以与一开始的 OpNode 中的成员一一对应起来了，其中的name/description/num_inputs/arguments/support_level对应关系都比较直接，不再赘述。
@@ -444,9 +535,13 @@ class OpNode : public RelayExprNode {
 Expr MakeBiasAdd(Expr data, Expr bias, int axis) {
   auto attrs = make_objectBiasAddAttrs>();
   attrs->axis = axis;
+
+```text
   static const Op& op = Op::Get("nn.bias_add");
   return Call(op, {data, bias}, Attrs(attrs), {});
 }
+```
+
 
 TVM_REGISTER_GLOBAL("relay.op.nn._make.bias_add").set_body_typed(MakeBiasAdd);
 `
@@ -460,11 +555,17 @@ IRModule 可以大致视为 BaseFunc 的集合，代码如下
  *
  *  IRModule is the basic unit for all IR transformations across the stack.
  *
+
+```text
  *  Many operations require access to the global IRModule.
  *  We pass the IRModule by value in a functional style as an explicit argument,
  *  but we mutate the Module while optimizing programs.
  * \sa IRModule
+```
+
  */
+
+```text
 class IRModuleNode : public Object {
  public:
   /*! \brief A map from ids to all global functions. */
@@ -475,6 +576,8 @@ class IRModuleNode : public Object {
   parser::SourceMap source_map;
   /* \brief Additional attributes storing meta-data about the module. */
   DictAttrs attrs;
+```
+
 `
 
 type_definitions 是 ADT 相关，我们在后文的 ADT 章节深入。
@@ -484,6 +587,8 @@ type_definitions 是 ADT 相关，我们在后文的 ADT 章节深入。
 在2021年的今天，几乎所有人都知道 Pass 是什么，所以我也不多解释什么了。我们具体看看 TVM 相关的代码设计，首先看所有 Pass 的基类
 
 `class PassNode : public Object {
+
+```text
  public:
   /*!
    * \brief Get the pass information/meta data. */
@@ -498,6 +603,8 @@ type_definitions 是 ADT 相关，我们在后文的 ADT 章节深入。
    * \return The transformed module.
    */
   virtual IRModule operator()(IRModule mod, const PassContext& pass_ctx) const = 0;
+```
+
 `
 
 可以看到，Pass主要做一个 IRModule to IRModule 的变换，符合一般意义上的 Pass 概念。我们需要注意两个类型，PassInfo与PassContext.
@@ -505,6 +612,8 @@ type_definitions 是 ADT 相关，我们在后文的 ADT 章节深入。
 我们先看PassInfo, 每个具体的 Pass 实现都要提供 PassInfo 信息，如下
 
 `class PassInfoNode : public Object {
+
+```cpp
  public:
   /*! \brief The minimal optimization level that this pass will be enabled. */
   int opt_level;
@@ -514,6 +623,8 @@ type_definitions 是 ADT 相关，我们在后文的 ADT 章节深入。
 
   /*! \brief The passes that are required to perform the current pass. */
   ArrayString> required;
+```
+
 `
 
 可以看到，每个 Pass 实现需要使用字符串命名，并设定好依赖的前置 Pass，从而确定多个 Pass 的执行顺序。
@@ -521,6 +632,8 @@ type_definitions 是 ADT 相关，我们在后文的 ADT 章节深入。
 再看 PassContext
 
 `class PassContextNode : public Object {
+
+```cpp
  public:
   /*! \brief The default optimization level. */
   int opt_level{2};
@@ -536,6 +649,8 @@ type_definitions 是 ADT 相关，我们在后文的 ADT 章节深入。
 
   /*! \brief A list of pass instrument implementations. */
   Arrayinstrument::PassInstrument> instruments;
+```
+
 `
 
 顾名思义，是多个 Pass 执行过程中的共同上下文，大部分成员都很容易理解，关于PassInstrument我们后面再讲。
@@ -551,6 +666,8 @@ WithPassContext> scope(ctx);
 现在说回instruments，这是提供给开发者的一个工具，开发者可以实现一些函数运行在每个Pass的运行前后或者其他时机，这些函数打包到一起称为PassInstrument注册到PassContext中，如下
 
 `class PassInstrumentNode : public Object {
+
+```cpp
  public:
   /*! \brief Name of this pass instrument object. */
   String name;
@@ -584,6 +701,8 @@ WithPassContext> scope(ctx);
    * \param info The pass information.
    */
   virtual void RunAfterPass(const IRModule& mod, const transform::PassInfo& info) const = 0;
+```
+
 `
 
 为了方便，TVM 中实现了三个类别的 Pass
@@ -594,8 +713,12 @@ WithPassContext> scope(ctx);
   PassInfo pass_info;
   runtime::TypedPackedFuncModule(Module, PassContext)> pass_func;
   Module operator()(const Module& mod, const PassContext& pass_ctx) const final;
+
+```text
   // Other members/methods are omitted
 };
+```
+
 `
 
 然后看 Function-Level, 这个遍历 Module 中的Function进行处理
@@ -604,20 +727,28 @@ WithPassContext> scope(ctx);
   PassInfo pass_info;
   runtime::TypedPackedFuncFunction(Function, Module, PassContext)> pass_func;
   Module operator()(const Module& mod, const PassContext& pass_ctx) const final;
+
+```text
   bool SkipFunction(const Function& func) const;
   // Other members/methods are omitted...
 };
+```
+
 `
 
 最后是 Sequential, 这个类似 pytorch 里面的 nn.Sequential, 包含了一堆可执行的Pass按照顺序执行
 
 `class SequentialPassNode : PassNode {
   PassInfo pass_info;
+
+```text
   // Passes need to be executed.
   ArrayPass> passes;
   bool PassEnabled(const PassInfo& info) const;
   Module operator()(const Module& mod, const PassContext& pass_ctx) const final;
 };
+```
+
 `
 
 声明：本文原创于知乎 Will Zhang , 未经本人同意，拒绝任何形式地转载。
@@ -635,10 +766,15 @@ data Numbers {
   Empty : () -> Numbers
   Single : (Tensor[(), int32]) -> Numbers
   Pair : (Tensor[(), int32], Tensor[(), int32]) -> Numbers
+
+```text
 }
+```
+
 # A Numbers value can be produced using an Empty, Single, or Pair
 # constructor, each with a signature given above
 
+```python
 def @sum(%n : Numbers[]) -> Tensor[(), int32] {
    # The match expression branches on the constructor that was
    # used to produce %n. The variables in each case are bound
@@ -649,6 +785,8 @@ def @sum(%n : Numbers[]) -> Tensor[(), int32] {
      case Pair(x, y) { x + y }
    }
 }
+```
+
 
 @sum(Empty())    # evaluates to 0
 @sum(Single(3))  # evaluates to 3
@@ -667,6 +805,8 @@ data Optionala> {
 Optional[type1] 和 Optional[Type2] 会被类型系统认为是两个类型，比如下面这个例子中，big 无法作为 inc_scalar 的参数。
 
 `# the signature for option indicates the type argument
+
+```python
 def @inc_scalar(%opt : Optional[Tensor[(), int32]]) -> Tensor[(), int32] {
   match(%opt) {
     case None() { 1 }
@@ -685,6 +825,8 @@ def @main() {
   let %z = inc_scalar(None());
   ()
 }
+```
+
 `
 
 类似上面代码中`Optional[Tensor[(),int32]]`这样传入一个类型参数返回一个类型的语法，称为 Type Call. 
@@ -700,10 +842,14 @@ ADT 支持递归定义，如下通过递归定义一个 List
 
 `def @list_sum(%l : List[Tensor[(), int32]]) -> Tensor[(), int32] {
   match(%l) {
+
+```text
     case Nil() { 0 }
     # add the head of the list to the sum of the tail
     case Cons(%h, %t) { %h + @list_sum(%t) }
   }
+```
+
 }`
 
 从上面的代码可以看出，match 语法可以直接获得 ADT 实例的内容，也就是代码中的 %h 和 %t, 实际上，连 match 语法本身都是可以递归的，如下
@@ -711,10 +857,14 @@ ADT 支持递归定义，如下通过递归定义一个 List
 `def @second_opta>(%ll : Optional[List[a]]) -> Optional[a] {
   match(%ll) {
     # we only need the second member of the list if there is one
+
+```text
     case Some(Cons(_, Cons(%s, _))) { Some(%s) }
     case _ { None() }
   }
 }
+```
+
 
 # @second_opt(Some(Cons(1, Nil()))) evaluates to None()
 # @second_opt(Some(Cons(1, Cons(2, Nil())))) evaluates to Some(2)
@@ -727,10 +877,16 @@ ADT 支持递归定义，如下通过递归定义一个 List
 接下来我们看 TVM 中与 ADT 对应的代码，首先看构造函数的 Expr
 
 `/*!
+
+```text
  * \brief ADT constructor.
  * Constructors compare by pointer equality.
  * \sa Constructor
+```
+
  */
+
+```text
 class ConstructorNode : public RelayExprNode {
  public:
   /*! \brief The name (only a hint) */
@@ -741,11 +897,15 @@ class ConstructorNode : public RelayExprNode {
   GlobalTypeVar belong_to;
   /*! \brief Index in the table of constructors (set when the type is registered). */
   mutable int32_t tag = -1;
+```
+
 `
 
 belong_to 就对应于 List 这样的 ADT 定义的名字，具体的 ADT 类型如下
 
 `/*! \brief TypeData container node */
+
+```text
 class TypeDataNode : public TypeNode {
  public:
   /*!
@@ -759,11 +919,15 @@ class TypeDataNode : public TypeNode {
   ArrayTypeVar> type_vars;
   /*! \brief The constructors. */
   ArrayConstructor> constructors;
+```
+
 `
 
 构造函数的 belong to 对应于这里的 header, 这里的 type vars就对应于前文提到的 ADT 的类型参数。在这里我们可以回忆 IRModule 的成员
 
 `class IRModuleNode : public Object {
+
+```text
  public:
   /*! \brief A map from ids to all global functions. */
   MapGlobalVar, BaseFunc> functions;
@@ -773,6 +937,8 @@ class TypeDataNode : public TypeNode {
   parser::SourceMap source_map;
   /* \brief Additional attributes storing meta-data about the module. */
   DictAttrs attrs;
+```
+
 `
 
 注意所有的 ADT 定义（代码中的 type_definitions）都是作为 IRModule 的直接成员记录的。
@@ -780,6 +946,8 @@ class TypeDataNode : public TypeNode {
 前文提到的 type call 表达式，代码如下
 
 `class TypeCallNode : public TypeNode {
+
+```text
  public:
   /*!
    * \brief The type-level function (ADT that takes type params).
@@ -787,11 +955,15 @@ class TypeDataNode : public TypeNode {
   Type func;
   /*! \brief The arguments. */
   ArrayType> args;
+```
+
 `
 
 接着我们过一下 Match 相关的 Expr, 首先我们看 Match 本身
 
 `class MatchNode : public ExprNode {
+
+```text
  public:
   /*! \brief The input being deconstructed. */
   Expr data;
@@ -803,21 +975,29 @@ class TypeDataNode : public TypeNode {
    *  If yes, the type checker will generate an error if there are any missing cases.
    */
   bool complete;
+```
+
 `
 
 Clause 就是前面的多个 Case, 我们看 Clause
 
 `class ClauseNode : public Object {
+
+```text
  public:
   /*! \brief The pattern the clause matches. */
   Pattern lhs;
   /*! \brief The resulting value. */
   Expr rhs;
+```
+
 `
 
 上面的例子中 Cons(%h,%t) 就对应 lhs, 例子中的 {%h + @list_sum(%t)} 就对应 rhs, 我们具体看 Pattern 
 
 `/*! \brief Base type for declaring relay pattern. */
+
+```text
 class PatternNode : public RelayNode {
  public:
   static constexpr const char* _type_key = "relay.Pattern";
@@ -825,16 +1005,22 @@ class PatternNode : public RelayNode {
   static constexpr const bool _type_has_method_shash_reduce = true;
   TVM_DECLARE_BASE_OBJECT_INFO(PatternNode, Object);
 };
+```
+
 `
 
 可以看到 Pattern 本身只是一个基类，有多个具体实现 PatternWildcard/PatternVarNode/PatternConstructor/PatternTuple 对应不同的需求, 我们选取PatternConstructor来看
 
 `class PatternConstructorNode : public PatternNode {
+
+```text
  public:
   /*! Constructor matched by the pattern. */
   Constructor constructor;
   /*! Sub-patterns to match against each input to the constructor. */
   tvm::ArrayPattern> patterns;
+```
+
 `
 
 可以看到里面又嵌套了其他 Pattern, 这也意味着对递归 Match 的支持。
@@ -852,7 +1038,11 @@ Let Binding 这个概念也来自函数式编程，为了理解引入 Let Bindin
 `class Add : public Expr {
   Expr lhs;
   Expr rhs;
+
+```text
 };
+```
+
 `
 
 在上面的例子中，也就意味着 lhs 成员和 rhs 成员指向了同一个表达式。在传统的计算图模式中，我们会按照拓扑序求值，1% 只会计算一次。但是从做编译的角度来说，实现的 codegen 大概率是这样
@@ -860,8 +1050,12 @@ Let Binding 这个概念也来自函数式编程，为了理解引入 Let Bindin
 `auto Add::Codegen() {
   auto lhs_val = lhs->Codegen();
   auto rhs_val = rhs->Codegen();
+
+```text
   return add(lhs_val, rhs_val);
 }
+```
+
 `
 
 也就意味着 `log(%x)+log(%x)` ，所以这里就出现了歧义，而为了能够保持和传统计算图的兼容，TVM 在打印 IR 到文本格式时，会为每个节点打印一行，并分配一个临时 id （也就是上面的%1, %2)，所以从文本格式看可能发现不了什么。为了解决歧义，TVM 引入了 Let Binding, 看下面这个例子
@@ -873,6 +1067,8 @@ Let 表达式为 Let (var, value, body) , 其将value求值赋给var，然后返
 更简单地说，Let Binding 将表达式 Expr 绑定到局部的不可变 var 中。从代码实现角度，如果将传统计算图的方式称为 Graph Binding，与 Let Binding 对立的话。在 Graph Binding中，add 的 lhs 和 rhs 都直接指向了 log(%x) 这个计算表达式 Expr，而在 Let Binding 中，add 的 lhs 和 rhs 都指向了一个局部变量表达式，而这个局部变量表达式的值，由 Let 表达式负责赋值。我们可以看 Let 表达式的代码
 
 `class LetNode : public ExprNode {
+
+```cpp
  protected:
   // LetNode uses own deleter to indirectly call non-recursive destructor
   Object::FDeleter saved_deleter_;
@@ -885,6 +1081,8 @@ Let 表达式为 Let (var, value, body) , 其将value求值赋给var，然后返
   Expr value;
   /*! \brief The body of the let binding */
   Expr body;
+```
+
 `
 
 事实上，Let Binding 的一个核心用途就是指定计算的Scope，我们看下面这个没有使用 Let Binding 的例子
@@ -896,9 +1094,13 @@ Let 表达式为 Let (var, value, body) , 其将value求值赋给var，然后返
 `fn (%x) {
   %1 = log(%x)
   %2 = fn(%y) {
+
+```text
     add(%y, %1)
   }
   %2
+```
+
 }`
 
 我们应该在闭包的外面还是里面做 %1 的计算呢？而 Let Binding 解决了这个问题，我们只要加上 Let 就能解决这个歧义。
@@ -908,9 +1110,13 @@ Let 表达式为 Let (var, value, body) , 其将value求值赋给var，然后返
 事实上，前面我们已经看了 ADT 和 Let Binding 相关的表达式，所以本小节简单过一下其他的表达式。首先我们明确 Relay 的基类 Expr 是 IR 公共模块的 RelayExpr
 
 `namespace tvm {
+
+```text
 namespace relay {
 
 using Expr = tvm::RelayExpr;
+```
+
 `
 
 对于 Constant/Tuple/TupleGetItem 这样比较简单的 Expr, 本文就不介绍了，有兴趣的同学可以阅读 include/tvm/relay/expr.h
@@ -918,6 +1124,8 @@ using Expr = tvm::RelayExpr;
 首先我们看 var
 
 `class VarNode : public ExprNode {
+
+```text
  public:
   /*!
    * \brief The unique identifier of the Var.
@@ -935,19 +1143,27 @@ using Expr = tvm::RelayExpr;
    * This field is optional and can be None.
    */
   Type type_annotation;
+```
+
 `
 
 Id 可以简单理解为一个字符串，TVM 中的全局变量以 @ 开头，局部变量以 % 开头，这一点在前文也有体现。局部变量要么是函数参数，要么是 Let 表达式绑定的 immutable 变量。看下面这个例子，同样的名字可以创建两次，并且 IR 中会实际出现两个 Var 
 
 `let %a = 1;
+
+```text
 let %b = 2 * %a;  // %b = 2
 let %a = %a + %a; // %a = 2. %a is shadowed
+```
+
 %a + %b           // has value 2 + 2 = 4
 `
 
 接下来我们看函数，这是前文提到的 BaseFunc 在 Relay 中的具体实现
 
 `class FunctionNode : public BaseFuncNode {
+
+```js
  public:
   /*! \brief Function parameters */
   tvm::ArrayVar> params;
@@ -968,11 +1184,15 @@ let %a = %a + %a; // %a = 2. %a is shadowed
    * \note This can be usually empty for non-polymorphic functions.
    */
   tvm::ArrayTypeVar> type_params;
+```
+
 `
 
 再看Call，也就是调用
 
 `class CallNode : public ExprNode {
+
+```cpp
  protected:
   // CallNode uses own deleter to indirectly call non-recursive destructor
   Object::FDeleter saved_deleter_;
@@ -1012,6 +1232,8 @@ let %a = %a + %a; // %a = 2. %a is shadowed
    * \endcode
    */
   tvm::ArrayType> type_args;
+```
+
 `
 
 再看 if 语句表达式
@@ -1019,14 +1241,24 @@ let %a = %a + %a; // %a = 2. %a is shadowed
 `/*!
  * \brief Condition expression
  *
+
+```text
  * Unlike traditional statement `if`s, the if evalutes
  * to the result of the branch taken.
+```
+
  *
+
+```text
  * let x = if (true) { 1 } else { 0 }; // x is 1
  * let y = if (false) { 1 } else { 0 }; // y is 0
+```
+
  *
  * \note This is similar to C's ternary operator.
  */
+
+```text
 class If;
 /*! \brief container of If */
 class IfNode : public ExprNode {
@@ -1037,6 +1269,8 @@ class IfNode : public ExprNode {
   Expr true_branch;
   /*! \brief The expression evaluated when condition is false */
   Expr false_branch;
+```
+
 `
 
 最后还有tempexpr, 这是为了给编写 Pass 提供方便
@@ -1044,15 +1278,25 @@ class IfNode : public ExprNode {
 `/*!
  * \brief Base class of the temporary expression.
  *
+
+```text
  * TempExprs are pass specific expression that can be
  * useful to define intermediate result in the
  * rewriting pass such as layout or type transformation.
+```
+
  *
+
+```text
  * Subclass TempExprNode allows us to pattern match on
  * specific kind of TempExpr and use them for expression rewriting.
+```
+
  *
  * TempExpr should only be used within a pass,
  */
+
+```text
 class TempExprNode : public ExprNode {
  public:
   /*! \brief virtual destructor */
@@ -1062,6 +1306,8 @@ class TempExprNode : public ExprNode {
    * \return The corresponding normal(non-temp) expression.
    */
   virtual Expr Realize() const = 0;
+```
+
 `
 
 #### 5.3 Op
@@ -1073,6 +1319,8 @@ Relay 的 Op 机制完全复用了前文提到的公共 IR 模块的 Op 机制�
 TVM 中没有为每个 Relay Op 注册其 compute/schedule, 而是注册 fcompute/fschedule, 也就是根据 attr/inputs 等信息生成对应的 compute/schedule 的函数，这样的  fcompute + fschedule 组合称为 OpImplementation 如下
 
 `class OpImplementationNode : public Object {
+
+```cpp
  public:
   /*! \brief Compute function */
   FTVMCompute fcompute;
@@ -1082,22 +1330,30 @@ TVM 中没有为每个 Relay Op 注册其 compute/schedule, 而是注册 fcomput
   String name;
   /*! \brief Priority level */
   int plevel;
+```
+
 `
 
 由于特定的 OpImplementation 可能需要特定的条件，所以又按照条件进行了分组，每一组称为 OpSpecialization
 
 `class OpSpecializationNode : public Object {
+
+```text
  public:
   /*! \brief List of implementations. */
   ArrayOpImplementation> implementations;
   /*! \brief Condition to enable the specialization.
    *    Could be undefined to represent generic case. */
   te::SpecializedCondition condition;
+```
+
 `
 
 最后使用一个 OpStrategy 对象记录这个 Relay Op 的所有 OpImplementation 
 
 `class OpStrategyNode : public Object {
+
+```cpp
  public:
   /*! \brief List of operator specializations. */
   ArrayOpSpecialization> specializations;
@@ -1110,7 +1366,11 @@ TVM 中没有为每个 Relay Op 注册其 compute/schedule, 而是注册 fcomput
 
 /*!
  * \brief Operator strategy class.
+```
+
  */
+
+```cpp
 class OpStrategy : public ObjectRef {
  public:
   /*!
@@ -1122,6 +1382,8 @@ class OpStrategy : public ObjectRef {
    */
   TVM_DLL void AddImplementation(FTVMCompute fcompute, FTVMSchedule fschedule, String name,
                                  int plevel);
+```
+
 `
 
 AddImplementation 函数通过 FFI 机制暴露给 Python，Relay Op 大部分都是在 Python 端注册其 Strategy.
@@ -1130,6 +1392,8 @@ AddImplementation 函数通过 FFI 机制暴露给 Python，Relay Op 大部分�
 
 `      import tvm
       # wrap function as target generic
+
+```python
       @tvm.target.override_native_generic_func("my_func")
       def my_func(a):
           return a + 1
@@ -1142,10 +1406,14 @@ AddImplementation 函数通过 FFI 机制暴露给 Python，Relay Op 大部分�
       # displays 4, because my_func_cuda is called
       with tvm.target.cuda():
           print(my_func(2))`
+```
+
 
 可以看到，相当于对不同设备可以使用这种方式选择生效的函数，于是我们能看到 softmax 的注册如下
 
 `@override_native_generic_func("softmax_strategy")
+
+```python
 def softmax_strategy(attrs, inputs, out_type, target):
     """softmax generic strategy"""
     strategy = _op.OpStrategy()
@@ -1155,8 +1423,12 @@ def softmax_strategy(attrs, inputs, out_type, target):
         name="softmax.generic",
     )
     return strategy
+```
+
 
 @softmax_strategy.register(["cuda", "gpu"])
+
+```python
 def softmax_strategy_cuda(attrs, inputs, out_type, target):
     """softmax cuda strategy"""
     strategy = _op.OpStrategy()
@@ -1173,6 +1445,8 @@ def softmax_strategy_cuda(attrs, inputs, out_type, target):
             plevel=15,
         )
     return strategy
+```
+
 
 reg.register_strategy("nn.softmax", strategy.softmax_strategy)
 reg.register_pattern("nn.softmax", OpPattern.OUT_ELEMWISE_FUSABLE)`
@@ -1184,21 +1458,31 @@ reg.register_pattern("nn.softmax", OpPattern.OUT_ELEMWISE_FUSABLE)`
 TVM 定义了一套匹配语法便于 Pass 的编写，本小节简单看一下这套语法。首先看一个简单的匹配两个算子的例子
 
 `def test_match_op_or():
+
+```text
     is_add_or_sub = is_op('add') | is_op('subtract')
     assert is_add_or_sub.match(relay.op.op.get("add"))
     assert is_add_or_sub.match(relay.op.op.get("subtract"))`
+```
+
 
 再比如匹配一个 NHWC 格式的 conv2d
 
 `def test_match_data_layout():
+
+```text
     is_conv2d = is_op('nn.conv2d')(wildcard(), wildcard()).has_attr({"data_layout": "NHWC"})
     x = relay.var('x')
     y = relay.var('y')
     assert not is_conv2d.match(relay.op.nn.conv2d(x, y))`
+```
+
 
 再比如匹配一个 conv2d + biasadd + relu || conv2d + biasadd
 
 `def test_match_optional():
+
+```text
     conv_node = is_op('nn.conv2d')(wildcard(), wildcard())
     bias_node = is_op('nn.bias_add')(conv_node, wildcard())
     pat = bias_node.optional(lambda x: is_op('nn.relu')(x))
@@ -1211,23 +1495,33 @@ TVM 定义了一套匹配语法便于 Pass 的编写，本小节简单看一下�
     assert pat.match(bias)
     relu = relay.op.nn.relu(bias)
     assert pat.match(relu)`
+```
+
 
 接着看匹配一个菱形表达式
 
 `def test_match_diamond():
     # Pattern
+
+```text
     is_conv2d = is_op('nn.conv2d')(is_var(), is_var())
     path1 = is_op('nn.relu')(is_conv2d)
     path2 = is_op('nn.leaky_relu')(is_conv2d)
     diamond = is_op('add')(path1, path2)
+```
+
 
     # Expr
+
+```text
     inp = relay.var('input')
     weight = relay.var('weight')
     conv2d = relay.op.nn.conv2d(inp, weight)
     relu = relay.op.nn.relu(conv2d)
     leaky_relu = relay.op.nn.leaky_relu(conv2d, alpha=0)
     out = relu + leaky_relu
+```
+
 
     # Check
     assert diamond.match(out)`
@@ -1236,17 +1530,25 @@ TVM 定义了一套匹配语法便于 Pass 的编写，本小节简单看一下�
 
 `def test_match_dom_diamond():
     # Pattern
+
+```text
     is_conv2d = is_op('nn.conv2d')(is_var(), is_var())
     reduction = is_op('add')(wildcard(), wildcard())
     diamond = dominates(is_conv2d, is_elemwise, reduction)
+```
+
 
     # Expr
+
+```text
     inp = relay.var('input')
     weight = relay.var('weight')
     conv2d = relay.op.nn.conv2d(inp, weight)
     relu = relay.op.nn.relu(conv2d)
     leaky_relu = relay.op.nn.leaky_relu(conv2d, alpha=0)
     out = relu + leaky_relu
+```
+
 
     # Check
     assert diamond.match(out)`
@@ -1257,6 +1559,8 @@ dominates 的三个参数分别是 Parent Path Child, 表示child 支配了 pare
 
 `class BatchnormCallback(DFPatternCallback):
     # A callback class to rewrite the matched pattern to a batch_norm op.
+
+```python
     def __init__(self, require_type=False):
         super().__init__(require_type)
         self.x = wildcard()
@@ -1276,8 +1580,12 @@ dominates 的三个参数分别是 Parent Path Child, 表示child 支配了 pare
         gamma = node_map[self.gamma][0]
         eps = node_map[self.eps][0]
         return relay.op.nn.batch_norm(x, gamma, beta, mean, var, epsilon = eps.data.numpy().item())[0]
+```
+
 
     # A graph of arithmetic operators that are functional equivalent to batch_norm.
+
+```python
     x = relay.var('x')
     var = relay.var('var')
     mean = relay.var('mean')
@@ -1288,6 +1596,8 @@ dominates 的三个参数分别是 Parent Path Child, 表示child 支配了 pare
     from tvm.relay.dataflow_pattern import rewrite
     out = rewrite(BatchnormCallback(), BN)
     assert tvm.ir.structural_equal(out, relay.op.nn.batch_norm(x, gamma, beta, mean, var, epsilon = 1e-5)[0])`
+```
+
 
 上面这个例子，将多个加减乘除算子合并为一个 batch_norm 算子，这种将匹配和 rewrite 结合起来的用法称为 Pattern Rewriting. 如果想更复杂一些，把匹配结果替换为一个单独的 Function 进行后续的操作，称为 Pattern Partitioning, 如下
 
@@ -1323,19 +1633,29 @@ print(pattern.partition(relu))
 首先，所有 Pattern 的基类
 
 `/*!
+
+```text
  * \brief Base type of all dataflow patterns.
  * \sa DFPattern
+```
+
  */
+
+```text
 class DFPatternNode : public Object {
  public:
   static constexpr const char* _type_key = "DFPatternNode";
   TVM_DECLARE_BASE_OBJECT_INFO(DFPatternNode, Object);
 };
+```
+
 `
 
 可以看到纯粹作为一个接口基类而已，接下来看 Dominator 作为例子
 
 `class DominatorPatternNode : public DFPatternNode {
+
+```text
  public:
   /*! \brief The parent. */
   DFPattern parent;
@@ -1343,6 +1663,8 @@ class DFPatternNode : public Object {
   DFPattern path;
   /*! \brief The child. */
   DFPattern child;
+```
+
 `
 
 记录了前文提到的 parent path child. 
@@ -1352,33 +1674,56 @@ class DFPatternNode : public Object {
 `/*!
  * \brief Determine if a pattern matches an expression
  *
+
+```text
  * \param pattern The pattern to match
  * \param expr The expression to match
+```
+
  *
  * \return Return true if the pattern and the expression match, return false otherwise.
  */
+
+```text
 bool MatchPattern(DFPattern pattern, Expr expr);
 
 /*!
  * \brief Rewrite an expression based on some number of DFPatternCallbacks
+```
+
  *
+
+```text
  * \param callbacks An array of DFPatternCallback Nodes
  * \param expr The expression to rewrite
  * \param mod The module that associates with the expr
+```
+
  *
+
+```text
  * \return Return An Expr with every match of the pattern inside the callbacks rewritten by the
  * functions inside the callbacks
+```
+
  */
 Expr RewritePatterns(ArrayDFPatternCallback> callbacks, Expr expr, IRModule mod = IRModule());
 
+```text
 /*!
  * \brief Partition all matches of a DFPattern inside an Expr into separate Function calls
+```
+
  *
+
+```js
  * \param pattern The pattern to match
  * \param expr The expression to patition
  * \param attrs A set of parameter names and values to apply to the partitioned function
  * \param check A callback function for checking more complicated properties of the matched
  * expressions, returns true if the match is accepted and false otherwise
+```
+
  *
  * \return Return the paritioned Expr.
  */
@@ -1390,6 +1735,8 @@ Expr PartitionPattern(DFPattern pattern, Expr expr, MapString, ObjectRef> attrs,
 编写 Pass 时最常做的操作就是遍历 AST/IR，TVM为此设计了专门的工具。我们首先看一个基类 ExprFunctor 如下
 
 `template typename R, typename... Args>
+
+```cpp
 class ExprFunctorR(const Expr& n, Args...)> {
  private:
   using TSelf = ExprFunctorR(const Expr& n, Args...)>;
@@ -1420,6 +1767,8 @@ class ExprFunctorR(const Expr& n, Args...)> {
   virtual R VisitExpr_(const FunctionNode* op, Args... args) EXPR_FUNCTOR_DEFAULT;
   ...
   virtual R VisitExpr_(const CallNode* op, Args... args) EXPR_FUNCTOR_DEFAULT;
+```
+
 `
 
 如代码所述，其主要提供了 VisitExpr 这个接口，并根据 Expr 的具体类型转发到对应的 VisitExpr_ 。VisitExpr_ 则由派生类负责实现，当然从代码也可以看出，VisitExpr 本身也可以被 override 。
@@ -1427,6 +1776,8 @@ class ExprFunctorR(const Expr& n, Args...)> {
 有了 ExprFunctor 里的转发机制，可以很容易实现一个遍历所有 Expr 的功能，比如 ExprVisitor
 
 `class ExprVisitor : public ::tvm::relay::ExprFunctorvoid(const Expr& n)> {
+
+```cpp
  public:
   void VisitExpr(const Expr& expr) override;
   void VisitExpr_(const VarNode* op) override;
@@ -1438,6 +1789,8 @@ class ExprFunctorR(const Expr& n, Args...)> {
   // Internal visiting counter
   std::unordered_mapconst Object*, size_t> visit_counter_;
 };
+```
+
 `
 
 我们以 IfNode 为例
@@ -1447,13 +1800,19 @@ class ExprFunctorR(const Expr& n, Args...)> {
   this->VisitExpr(op->cond);
   this->VisitExpr(op->true_branch);
   this->VisitExpr(op->false_branch);
+
+```text
 }
+```
+
 `
 
 可以看到 VisitExpr_ 的实现又调用了 VisitExpr 来访问所有的子表达式。通过这种方式，ExprVisitor 提供的 VisitExpr 就可以递归访问所有的子表达式。需要注意 ExprVisitor 的实现对每个表达式都只会访问一次，通过一个内部计数器实现如下
 
 `void ExprVisitor::VisitExpr(const Expr& expr) {
   auto it = visit_counter_.find(expr.get());
+
+```sql
   if (it != visit_counter_.end()) {
     ++it->second;
   } else {
@@ -1462,6 +1821,8 @@ class ExprFunctorR(const Expr& n, Args...)> {
     visit_counter_.insert({expr.get(), 1});
   }
 }
+```
+
 `
 
 很容易想到，如果 Expr 比较复杂，那么如此递归很容易 Stack Overflow. 为了解决这个问题，TVM 提供了 MixedModeVisitor 来实现和 ExprVisitor 一样的功能，但是避免了 Stack Overflow.
@@ -1469,6 +1830,8 @@ class ExprFunctorR(const Expr& n, Args...)> {
 通常来说，对于 IR，除了读取，也有修改的需求，为此 TVM 提供了 ExprMutator ，同样继承了 ExprFunctor
 
 `class ExprMutator : public ::tvm::relay::ExprFunctorExpr(const Expr&)> {
+
+```cpp
  public:
   Expr Mutate(const Expr& expr) { return this->VisitExpr(expr); }
   Expr VisitExpr(const Expr& expr) override;
@@ -1481,12 +1844,16 @@ class ExprFunctorR(const Expr& n, Args...)> {
   /*! \brief Internal map used for memoization. */
   std::unordered_mapExpr, Expr, ObjectPtrHash, ObjectPtrEqual> memo_;
 };
+```
+
 `
 
 注意 Mutate 只是 VisitExpr 的别名。ExprMutator 的 VisitExpr 会返回一个修改后的新 Expr, 我们看一下 VisitExpr 的实现
 
 `Expr ExprMutator::VisitExpr(const Expr& expr) {
   auto it = this->memo_.find(expr);
+
+```text
   if (it != this->memo_.end()) {
     return it->second;
   } else {
@@ -1495,6 +1862,8 @@ class ExprFunctorR(const Expr& n, Args...)> {
     return new_expr;
   }
 }
+```
+
 `
 
 如代码所述，内部会保存一个原 Expr 到新 Expr 的映射，同时也避免了多次访问同一个 Expr, 我们还是以 If 作为例子来看
@@ -1504,8 +1873,11 @@ class ExprFunctorR(const Expr& n, Args...)> {
   auto true_b = this->Mutate(if_node->true_branch);
   auto false_b = this->Mutate(if_node->false_branch);
 
+```cpp
   return WithFields(GetRefIf>(if_node), std::move(cond), std::move(true_b), std::move(false_b));
 }
+```
+
 `
 
 可以看到同样会递归子表达式，且返回一个新的表达式。与 MixedModeVisitor 一样也存在一个 MixedModeMutator 作为 ExprMutator 的替代来避免 Stack Overflow.
@@ -1518,6 +1890,8 @@ Fuse 作为对性能影响最关键的一个 Pass, 本文会仔细过一遍 Fuse
 
 `/*! \brief operator pattern used in graph fusion */
 enum OpPatternKind {
+
+```text
   // Elementwise operation
   kElemWise = 0,
   // Broadcasting operator, can always map output axis to the input in order.
@@ -1538,6 +1912,8 @@ enum OpPatternKind {
   // Opaque operation, cannot fuse anything.
   kOpaque = 8
 };
+```
+
 `
 
 如注释所述，OpPattern 基本描述了 TVM 的 Fuse 规则，比如 kOutEWiseFusable Op 只能融合后续的 kElemWise Op 。
@@ -1562,13 +1938,19 @@ enum OpPatternKind {
 接下来代码，首先 Fuse 是一个 Function Level Pass, 如下
 
 `Expr FuseOps(const Expr& expr, int fuse_opt_level, size_t max_fuse_depth, const IRModule& module) {
+
+```text
   return FuseMutator().Transform(expr, fuse_opt_level, max_fuse_depth);
 }
 
 namespace transform {
+```
+
 
 Pass FuseOps(int fuse_opt_level) {
   runtime::TypedPackedFuncFunction(Function, IRModule, PassContext)> pass_func =
+
+```cpp
       [=](Function f, IRModule m, PassContext pc) {
         int opt_level = fuse_opt_level == -1 ? pc->opt_level : fuse_opt_level;
         auto max_fuse_depth = pc->GetConfig("relay.FuseOps.max_depth", Integer(kMaxFusedOps));
@@ -1576,11 +1958,15 @@ Pass FuseOps(int fuse_opt_level) {
       };
   return CreateFunctionPass(pass_func, 0, "FuseOps", {"InferType"});
 }
+```
+
 `
 
 可以看到主要逻辑落在 FuseMutator 中，其继承自上一节提到的 MixedModeMutator, 我们来看 Transform
 
 `  Expr Transform(const Expr& body, int fuse_opt_level, size_t max_fuse_depth) {
+
+```cpp
     // setup the group map.
     auto graph = IndexedForwardGraph::Create(&arena_, body);
     auto groups = GraphPartitioner(&arena_, fuse_opt_level, max_fuse_depth).Partition(graph);
@@ -1592,6 +1978,8 @@ Pass FuseOps(int fuse_opt_level) {
     // this->DebugDumpGroup(body);
     return this->Mutate(body);
   }
+```
+
 `
 
 如代码所述
@@ -1602,10 +1990,14 @@ Pass FuseOps(int fuse_opt_level) {
 跟踪一下建立 IndexedForwardGraph 的流程会走到 IndexedForwardGraph::Creator 内如下代码，注意 IndexedForwardGraph::Creator 继承自上一节提到的 ExprVisitor
 
 `  IndexedForwardGraph Prepare(const Expr& body) {
+
+```cpp
     this->Update(body, nullptr, kOpaque);
     this->VisitExpr(body);
     return std::move(graph_);
   }
+```
+
 `
 
 第一句 Update 可以理解为往 graph 插入第一个节点，第二句遍历所有的子表达式，并在遍历过程中往 graph 插入新的节点/边。
@@ -1613,6 +2005,8 @@ Pass FuseOps(int fuse_opt_level) {
 我们先看 Update 的实现，我插入了一些注释
 
 `  void Update(const Expr& node, IndexedForwardGraph::Node* parent, OpPatternKind pattern) {
+
+```text
     // graph 内维护一个 Expr 到 Graph::Node 的映射关系，所以这里取 Expr 的实际地址
     const tvm::Object* key = node.get();
     // 根据 Expr 找到对应的 Graph::Node, 使用 current 标识
@@ -1634,11 +2028,15 @@ Pass FuseOps(int fuse_opt_level) {
       current->extern_ref = true;
     }
   }
+```
+
 `
 
 这里面 current 和 parent 的关系可以如此理解，比如 tuple 表达式有多个 field 子表达式，所以 tuple 是 field 的parent. 同时数据又是从 field 解析流向 parent 进行下一步解析，所以 parent 是 field 的输出。我们看一下对 Tuple 表达式的 VisitExpr_ 实现
 
 `  void VisitExpr_(const TupleNode* op) final {
+
+```cpp
     ICHECK(graph_.node_map.count(op));
     Node* tuple_node = graph_.node_map.at(op);
     tuple_node->pattern = kTuple;
@@ -1652,11 +2050,15 @@ Pass FuseOps(int fuse_opt_level) {
     ExprVisitor::VisitExpr_(op);
     this->AddNode(op);
   }
+```
+
 `
 
 注意是先遍历 field 最后访问自己，所以是Post DFS，最后的 AddNode 记录了自身在 Post DFS 中的顺序，如下
 
 `  void AddNode(const tvm::Object* key) {
+
+```text
     auto it = graph_.node_map.find(key);
     ICHECK(it != graph_.node_map.end())  "Cannot find node "  GetRefObjectRef>(key);
     IndexedForwardGraph::Node* node = it->second;
@@ -1665,11 +2067,15 @@ Pass FuseOps(int fuse_opt_level) {
     node->index = graph_.post_dfs_order.size();
     graph_.post_dfs_order.push_back(node);
   }
+```
+
 `
 
 通过 Post DFS，我们成功建立了一个 IndexedForwardGraph
 
 `class IndexedForwardGraph {
+
+```cpp
  public:
   struct Node;
   /*!
@@ -1698,11 +2104,15 @@ Pass FuseOps(int fuse_opt_level) {
   std::unordered_mapconst tvm::Object*, Node*> node_map;
   /*! \brief All the nodes in post DFS order */
   std::vectorNode*> post_dfs_order;
+```
+
 `
 
 建立 Graph 之后是切 group, 我们跟踪 GraphPartitioner 的代码
 
 `std::vectorGraphPartitioner::Group*> GraphPartitioner::Partition(
+
+```cpp
     const IndexedForwardGraph& graph) {
   this->InitGroups(graph);
   if (opt_level_ == 0) return std::move(groups_);
@@ -1714,6 +2124,8 @@ Pass FuseOps(int fuse_opt_level) {
   }
   return std::move(groups_);
 }
+```
+
 `
 
 如代码所述
@@ -1724,6 +2136,8 @@ Pass FuseOps(int fuse_opt_level) {
 我们先看初始化groups
 
 `  void InitGroups(const IndexedForwardGraph& graph) {
+
+```cpp
     groups_.resize(graph.post_dfs_order.size());
     for (size_t nid = 0; nid  groups_.size(); ++nid) {
       const auto* graph_node = graph.post_dfs_order[nid];
@@ -1737,11 +2151,15 @@ Pass FuseOps(int fuse_opt_level) {
       groups_[nid] = group_node;
     }
   }
+```
+
 `
 
 可以看到，简单地把每个Node初始化为一个Group, 接着是建立支配树，我添加了注释，从 PostDom 开始
 
 `  Node* GetNode(support::Arena* arena, IndexedForwardGraph::Node* gnode) {
+
+```text
     Node* tnode = arena->makeNode>();
     tnode->gnode = gnode; // 记录 Graph 中对应的 node
     if (gnode->extern_ref) { // 没有支配节点，比如根节点
@@ -1759,8 +2177,12 @@ Pass FuseOps(int fuse_opt_level) {
     return tnode;
   }
 };
+```
+
 
 DominatorTree DominatorTree::PostDom(support::Arena* arena, const IndexedForwardGraph& graph) {
+
+```cpp
   // 支配树的核心成员就是 nodes
   DominatorTree tree;
   tree.nodes.resize(graph.post_dfs_order.size(), nullptr);
@@ -1772,11 +2194,15 @@ DominatorTree DominatorTree::PostDom(support::Arena* arena, const IndexedForward
   }
   return tree;
 }
+```
+
 `
 
 最后，来看 RunFuse, 回忆一下在 Partition 函数中调用了 phase=0,1,2 的 RunFuse, 接着看代码
 
 `  void RunFuse(const IndexedForwardGraph& graph, const DominatorTree& post_dom_tree, int phase) {
+
+```cpp
     for (size_t nid = 0; nid  groups_.size(); ++nid) {
       // the group of current node has been specified already.
       auto* graph_node = graph.post_dfs_order[nid];
@@ -1868,11 +2294,15 @@ DominatorTree DominatorTree::PostDom(support::Arena* arena, const IndexedForward
       }
     }
   }
+```
+
 `
 
 这是一段比较长的代码，因为融合的规则基本写在这个函数内。我们主要关注 CommitFuse, 因为融合结果由它产出
 
 `  /*!
+
+```cpp
    * \brief Merge the child group to the parent.
    * \param child The child group.
    * \param parent The parent group.
@@ -1904,11 +2334,15 @@ DominatorTree DominatorTree::PostDom(support::Arena* arena, const IndexedForward
       CommitFuse_(link->value.node, sink, target);
     }
   }
+```
+
 `
 
 可以看到最终走到 MergeFromTo 函数，这个函数里取了两个 group 的 root，再把 root 合并，代表着两个 group 的合并。看到这里我想起来了，这是并查集算法，再看 Group 的定义
 
 `struct Group {
+
+```cpp
     /*! \brief The parent in the union find data structure. */
     Group* parent{nullptr};
     /*! \brief The pattern of the group */
@@ -1945,11 +2379,15 @@ DominatorTree DominatorTree::PostDom(support::Arena* arena, const IndexedForward
      */
     uint32_t num_nodes{1};
   };
+```
+
 `
 
 这个路径压缩，确实是并查集。至此，我们切好了 groups, 走到最终的 FuseMutator::Mutate 来生成新表达式了。跟踪 Mutate 会来到 Rewrite
 
 `  Expr Rewrite_(const CallNode* call, const Expr& post) {
+
+```cpp
     if (call->op.asOpNode>()) {
       static auto fnoncomputational = Op::GetAttrMapTNonComputational>("TNonComputational");
 
@@ -1981,12 +2419,16 @@ DominatorTree DominatorTree::PostDom(support::Arena* arena, const IndexedForward
       return ExprMutator::VisitExpr_(call);
     }
   }
+```
+
 `
 
 我们注意到碰到每个 group 的 root 时，会调用 MakeNewFunction, 代码如下
 
 `  Expr MakeNewFunction(GraphPartitioner::Group* group, Type ret_type, Expr body) {
     ...
+
+```cpp
     const GroupInfo& ginfo = ginfo_[group];
     auto func = Function(ginfo.params, body, ret_type, {});
     func = WithAttr(std::move(func), attr::kPrimitive, tvm::Integer(visitor.has_call));
@@ -1996,6 +2438,8 @@ DominatorTree DominatorTree::PostDom(support::Arena* arena, const IndexedForward
     }
     return Call(func, ginfo.arguments, Attrs());
   }
+```
+
 `
 
 如代码所述，每个 group 都会变成一个新的带上 kPrimitive 属性的 relay.Function, 至此 Fuse Pass 的使命完成
@@ -2006,22 +2450,32 @@ DominatorTree DominatorTree::PostDom(support::Arena* arena, const IndexedForward
 
 `def build(
     ir_mod,
+
+```text
     target=None,
     target_host=None,
     executor=Executor("graph"),
     runtime=Runtime("cpp"),
     params=None,
     mod_name="default",
+```
+
 ):
     ...
+
+```text
     # If current dispatch context is fallback context (the default root context),
     # then load pre-tuned parameters from TopHub
     if isinstance(autotvm.DispatchContext.current, autotvm.FallbackContext):
         tophub_context = autotvm.tophub.context(list(target.values()))
     else:
         tophub_context = autotvm.utils.EmptyContext()
+```
+
 
     with tophub_context:
+
+```text
         bld_mod = BuildModule()
         graph_json, runtime_mod, params = bld_mod.build(
             mod=ir_mod,
@@ -2032,17 +2486,24 @@ DominatorTree DominatorTree::PostDom(support::Arena* arena, const IndexedForward
             mod_name=mod_name,
         )
         ...`
+```
+
 
 我们在一开始提到，TVM 存在一个模块用于寻找最优的 Schedule, 更准确来说细分为两种方法，也就是 AutoTVM 和 Ansor. 关于 Ansor 我们可以另起一篇新文了，所以本文暂不涉及。AutoTVM 依赖于提前写好的 Schedule 模板，AutoTVM 通过 Tuning 寻找这个模板的最优参数。为了降低用户使用门槛，很容易想到将最优参数提前存储起来，需要的时候下载下来直接使用，也就对应于上述代码中的 tophub.
 
 继续追踪 build 会走到 src/relay/backend/http://build_module.cc 的 RelayBuildModule::BuildRelay, 这个函数比较长，忽略非关键代码，并添加注释
 
 `  void BuildRelay(IRModule relay_module, const String& mod_name) {
+
+```cpp
     // 应用 High Level Pass, 包括前文提到的 FuseOps
     relay_module = OptimizeImpl(std::move(relay_module));
+```
+
 
     ...
 
+```text
     // 从 Relay 下降到 TIR
     executor_codegen_ = MakeExecutorCodegen(executor_->name);
     executor_codegen_->Init(nullptr, config_->legacy_target_map);
@@ -2051,18 +2512,27 @@ DominatorTree DominatorTree::PostDom(support::Arena* arena, const IndexedForward
     ret_.params = executor_codegen_->GetParams();
 
     auto lowered_funcs = executor_codegen_->GetIRModule();
+```
+
 
     ...
 
+```text
     if (lowered_funcs.size() == 0) {
       ...
     } else {
       // 编译 TIR 到 runtime.Module
       ret_.mod = tvm::build(lowered_funcs, host_target);
     }
+```
+
 
     ...
+
+```text
   }
+```
+
 `
 
 Executor 有两种实现，本文关注默认的 GraphExecutor, 代码中主要通过 codegen 这个步骤完成 IR 下降。中间经过多次封装调用，核心的逻辑落在 GraphExecutorCodegen::Codegen ，这个函数比较长，忽略非关键代码
@@ -2070,6 +2540,7 @@ Executor 有两种实现，本文关注默认的 GraphExecutor, 代码中主要�
 `  LoweredOutput Codegen(IRModule mod, relay::Function func, String mod_name) {
     ...
 
+```js
     IRModule lowered_mod = tec::LowerTEPass(
         mod_name_,
         [this](BaseFunc func) {
@@ -2086,9 +2557,12 @@ Executor 有两种实现，本文关注默认的 GraphExecutor, 代码中主要�
           tec::UpdateFunctionMetadata(func, this->function_metadata_);
         },
         config->host_virtual_device)(mod);
+```
+
 
     ...
 
+```cpp
     Function lowered_main_func = DowncastFunction>(lowered_mod->Lookup("main"));
 
     // Now that we have lowered all operators to TIR code, we can proceed with compilation.
@@ -2108,11 +2582,15 @@ Executor 有两种实现，本文关注默认的 GraphExecutor, 代码中主要�
     heads_ = VisitExpr(lowered_main_func->body);
     ...
   }
+```
+
 `
 
 代码主要有两个部分，一个是 LowerTEPass 下降到 TIR，一个是 MemoryPlan. 本文不关注 MemoryPlan ，继续追踪 LowerTEPass 走到 LowerTE
 
 `IRModule LowerTE(const IRModule& module, const String& module_name, ProcessFn process_fn,
+
+```cpp
                  VirtualDevice host_virtual_device) {
   TECompiler compiler(module);
 
@@ -2145,16 +2623,25 @@ Executor 有两种实现，本文关注默认的 GraphExecutor, 代码中主要�
   Arrayruntime::Module> external_mods =
       module->GetAttrArrayruntime::Module>>("external_mods", Arrayruntime::Module>()).value();
   Arrayruntime::Module> new_external_mods = compiler->LowerExternalFunctions();
+```
+
 
   ...
 
   updated_module = WithAttrs(updated_module, {{"external_mods", std::move(external_mods)},
+
+```cpp
                                               {"device_contexts", std::move(device_contexts)}});
+```
+
 
   ...
 
+```text
   return updated_module;
 }
+```
+
 `
 
 主要为以下逻辑
@@ -2168,6 +2655,8 @@ Executor 有两种实现，本文关注默认的 GraphExecutor, 代码中主要�
 本文不关注 Compiler 标记的函数，所以继续追踪 LowerTensorExpr
 
 `Pass LowerTensorExpr(const String& module_name, TECompiler compiler, ProcessFn process_fn,
+
+```text
                      VirtualDevice host_virtual_device) {
   runtime::TypedPackedFuncFunction(Function, IRModule, PassContext)> pass_func =
       [=](Function func, IRModule module, PassContext ctx) {
@@ -2177,11 +2666,15 @@ Executor 有两种实现，本文关注默认的 GraphExecutor, 代码中主要�
       };
   return CreateFunctionPass(pass_func, 0, "LowerTensorExpr", {});
 }
+```
+
 `
 
 注意 LowerTensorExprMutator 是前文提到的 ExprMutator, 我们关注其对 Call 的修改，忽略非关键代码添加注释如下
 
 `  Expr DeviceAwareVisitExpr_(const CallNode* call_node) override {
+
+```cpp
     // 1. 带 Primitive 标记的 Function, 将其 lower 为全局的 PrimFunc 再调用
     // 2. 带 Compiler 标记的 Function, 如前文所述，本文不展开
     // 3. 预定义的 PrimFunc, 将 Relay Call 替换为 call_lowered 即可
@@ -2197,9 +2690,12 @@ Executor 有两种实现，本文关注默认的 GraphExecutor, 代码中主要�
     for (const auto& arg : call_node->args) {
       new_args.push_back(VisitExpr(arg));
     }
+```
+
 
     ...
 
+```cpp
     // Typical case: call to fused primitive Relay Function.
     // Find the desired target device.
     Target target;
@@ -2218,19 +2714,28 @@ Executor 有两种实现，本文关注默认的 GraphExecutor, 代码中主要�
     ...
     return MakeLoweredCall(function, std::move(new_args), call_node->span, target);
   }
+```
+
 `
 
 Lower 发生在 MakeLoweredCall 中，继续追踪
 
 `  Expr MakeLoweredCall(Function func, ArrayExpr> visited_args, Span span, Target target) {
+
+```text
     CCacheKey key = CCacheKey(func, target);
     CachedFunc cfunc = compiler_->Lower(key, module_name_);
+```
+
 
     ...
 
+```cpp
     return CallLowered(cfunc->prim_fn_var, std::move(visited_args), std::move(call_lowered_attrs),
                        std::move(span));
   }
+```
+
 `
 
 可以看到首先 Lower 然后换为 CallLowered 表达式，继续追踪 Lower 会走到 LowerInternal 函数
@@ -2238,6 +2743,7 @@ Lower 发生在 MakeLoweredCall 中，继续追踪
 `  CCacheValue LowerInternal(const CCacheKey& key, std::functionString(String)> mangle_fn) {
     ...
 
+```cpp
     value->cached_func = PrimFuncFor(key->source_func, key->target, [&](std::string name) {
       auto mangled = mangle_fn(name);
       return GetUniqueName(mangled, &name_map_);
@@ -2271,17 +2777,24 @@ Lower 发生在 MakeLoweredCall 中，继续追踪
       ICHECK(value->cached_func->funcs->Lookup(value->cached_func->prim_fn_var)
                  .astir::PrimFuncNode>());
     }
+```
+
 
     ...
 
+```text
     return value;
   }
+```
+
 `
 
 PrimFuncFor 实际是 ScheduleBuilder::Create 负责生成 Schedule, 在一些情况下会直接生成 PrimFunc, 在更普遍的情况下则是由下面的 LowerSchedule 负责生成最终的 PrimFunc. 先追踪 ScheduleBuilder::Create, 需要注意 ScheduleBuilder 也继承自前文提到的 ExprFunctor
 
 `  CachedFunc Create(const Function& relay_func, std::functionstd::string(std::string)> renamer) {
     ...
+
+```cpp
     auto outputs = this->VisitExpr(relay_func->body);
     ...
 
@@ -2316,24 +2829,35 @@ PrimFuncFor 实际是 ScheduleBuilder::Create 负责生成 Schedule, 在一些�
 
     return CachedFunc(target_, prim_fn_var, fn_inputs, outputs, schedule, prim_func, {});
   }
+```
+
 `
 
 需要注意上述代码中的 VisitExpr 与 anchor_implementation_.Schedule，我们先看后者
 
 `te::Schedule OpImplementation::Schedule(const Attrs& attrs, const Arrayte::Tensor>& outs,
+
+```text
                                         const Target& target) {
   return (*this)->fschedule(attrs, outs, target);
 }
+```
+
 `
 
 可以看到直接调用前文提到的 fschedule 生成 schedule, 所以关键是 anchor_implementation_ ，而其是在 VisitExpr 的过程中设置的，所以我们追踪 VisitExpr_
 
 `  Arrayte::Tensor> VisitExpr_(const CallNode* call_node) final {
+
+```text
     static auto fpattern = Op::GetAttrMapTOpPattern>("TOpPattern");
     static auto flower_call = tvm::runtime::Registry::Get("relay.backend.lower_call");
+```
+
     
     ...
 
+```cpp
     Op op = DowncastOp>(call_node->op);
 
     Arrayte::Tensor> outputs;
@@ -2360,42 +2884,63 @@ PrimFuncFor 实际是 ScheduleBuilder::Create 负责生成 Schedule, 在一些�
     ...
     return outputs;
   }
+```
+
 `
 
 可以看到 anchor_implementation_  由每个 Op 的 relay.backend.lower_call 结果决定，所以追踪 relay.backend.lower_call
 
 `@tvm._ffi.register_func("relay.backend.lower_call")
+
+```python
 def lower_call(call, inputs, target):
     """Lower the call expression to op implementation and tensor outputs."""
     assert isinstance(call.op, tvm.ir.Op)
     op = call.op
+```
+
 
     ...
 
+```text
     is_dyn = _ty.is_dynamic(call.checked_type)
     for arg in call.args:
         is_dyn = is_dyn or _ty.is_dynamic(arg.checked_type)
+```
+
 
     # check if in the AutoTVM tracing mode, and disable if op is not in wanted list
+
+```text
     env = autotvm.task.TaskExtractEnv.current
     reenable_tracing = False
     if env is not None and env.tracing:
         if env.wanted_relay_ops is not None and op not in env.wanted_relay_ops:
             env.tracing = False
             reenable_tracing = True
+```
+
 
     if not is_dyn:
+
+```text
         best_impl, outputs = select_implementation(op, call.attrs, inputs, ret_type, target)
     else:
         # TODO(@icemelon9): Allow tvm to generate multiple kernels for dynamic shapes.
         best_impl, outputs = select_implementation(
             op, call.attrs, inputs, ret_type, target, use_autotvm=False
         )
+```
+
 
     # re-enable AutoTVM tracing
     if reenable_tracing:
+
+```text
         env.tracing = True
     return LoweredOutput(outputs, best_impl)`
+```
+
 
 可以看到 best_impl 由 select_implementation 决定，所以继续看 select_implementation
 
@@ -2405,6 +2950,8 @@ def lower_call(call, inputs, target):
     ...
 
     for impl in all_impls:
+
+```text
         outs = impl.compute(attrs, inputs, out_type)
         outputs[impl] = outs
         workload = autotvm.task.get_workload(outs)
@@ -2418,6 +2965,8 @@ def lower_call(call, inputs, target):
             best_autotvm_impl = impl
             best_cfg = cfg
     autotvm.GLOBAL_SCOPE.silent = old_silent
+```
+
 
     if best_autotvm_impl:
         ...
@@ -2429,6 +2978,8 @@ def lower_call(call, inputs, target):
 先使用 get_valid_implementations 得到所有合法的实现，然后使用 autotvm 调优，我们继续看 get_valid_implementations
 
 `def get_valid_implementations(op, attrs, inputs, out_type, target):
+
+```text
     fstrategy = op.get_attr("FTVMStrategy")
     assert fstrategy is not None, (
         "%s doesn't have an FTVMStrategy registered. You can register "
@@ -2455,6 +3006,8 @@ def lower_call(call, inputs, target):
             for impl in spec.implementations:
                 ret.append(impl)
     return ret`
+```
+
 
 如代码所述，直接由每个 Op 注册的 FTVMStrategy 来产生所有的 Implementations。
 

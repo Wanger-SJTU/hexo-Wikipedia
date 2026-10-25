@@ -172,11 +172,15 @@ prompt = "The best tomato sauce is"
 model_id = "meta-llama/Meta-Llama-3-8B-Instruct"
 
 bnb_config = BitsAndBytesConfig(
+
+```text
         load_in_4bit=True,
         bnb_4bit_quant_type="nf4",
         bnb_4bit_compute_dtype=torch.float16,
         bnb_4bit_use_double_quant=True,
 )
+```
+
 
 tokenizer = AutoTokenizer.from_pretrained(model_id)
 model = AutoModelForCausalLM.from_pretrained(model_id, quantization_config=bnb_config, attn_implementation="flash_attention_2", torch_dtype=torch.float16, device_map="cuda:0")
@@ -209,11 +213,17 @@ print(result)
 以下是vLLM中将KV Cache量化为 FP8（E5M2）的示例代码。
 
 `from vllm import LLM, SamplingParams
+
+```python
 import time
 import pandas as pd
+```
+
 
 # Sample prompts.
 prompts = [
+
+```text
   {
     "ability": "语言理解能力",
     "question": "请解释“双关语”是什么，并给出一个例子。"
@@ -231,6 +241,8 @@ prompts = [
     "question": "在一个假设的情景中，如果一个人工智能系统必须在保护多数人和保护一个无辜者之间做出选择，它应该如何决定？"
   }
 ]
+```
+
 
 # Create a sampling params object.
 sampling_params = SamplingParams(temperature=0.8, top_p=0.95, max_tokens=512)
@@ -244,16 +256,18 @@ gen_lens = []
 # 根据提示生成文本。输出是一个RequestOutput对象列表，其中包含提示、生成的文本和其他信息。
 # Print the outputs.
 for prompt in prompts:
+
+```python
     start = time.time()
     question = prompt["question"]
     output = llm.generate(question, sampling_params)
     infer_time = time.time() - start
     print("耗时：", infer_time)
     gen_len=len(output[0].outputs[0].token_ids)
-    
+
     infer_times.append(infer_time)
     gen_lens.append(gen_len)
-    
+
     #prompt = output[0].prompt
     generated_text = output[0].outputs[0].text
     prompt["answer"] = generated_text 
@@ -261,6 +275,8 @@ for prompt in prompts:
 
 print(infer_times)
 print(gen_lens)
+```
+
 avg_infer_time = round(sum(infer_times) / len(infer_times), 4)
 print("avg_infer_time: ", round(sum(infer_times) / len(infer_times), 4))
 
@@ -381,12 +397,18 @@ LMDeploy 中 kv 量化具备以下优势：
 modelkv typetest settingsRPSv.s. kv fp16llama2-chat-7bfp16tp1 / ratio 0.8 / bs 256 / prompts 1000014.981.0-int8tp1 / ratio 0.8 / bs 256 / prompts 1000019.011.27-int4tp1 / ratio 0.8 / bs 256 / prompts 1000020.811.39llama2-chat-13bfp16tp1 / ratio 0.9 / bs 128 / prompts 100008.551.0-int8tp1 / ratio 0.9 / bs 256 / prompts 1000010.961.28-int4tp1 / ratio 0.9 / bs 256 / prompts 1000011.911.39internlm2-chat-7bfp16tp1 / ratio 0.8 / bs 256 / prompts 1000024.131.0-int8tp1 / ratio 0.8 / bs 256 / prompts 1000025.281.05-int4tp1 / ratio 0.8 / bs 256 / prompts 1000025.801.07以下是将KV Cache量化为INT4示例代码，其中，**`qant_policy=4` 表示 kv int4 量化，`quant_policy=8` 表示 kv int8 量化。**
 
 `from lmdeploy import pipeline, TurbomindEngineConfig
+
+```python
 from lmdeploy.messages import GenerationConfig
 import time
 import pandas as pd
+```
+
 
 # Sample prompts.
 prompts = [
+
+```text
   {
     "ability": "语言理解能力",
     "question": "请解释“双关语”是什么，并给出一个例子。"
@@ -400,6 +422,8 @@ prompts = [
     "question": "在一个假设的情景中，如果一个人工智能系统必须在保护多数人和保护一个无辜者之间做出选择，它应该如何决定？"
   }
 ]
+```
+
 
 engine_config = TurbomindEngineConfig(quant_policy=4)
 #engine_config = TurbomindEngineConfig(quant_policy=0)
@@ -409,6 +433,8 @@ pipe = pipeline("/workspace/models/Qwen1.5-7B-Chat", backend_config=engine_confi
 # 根据提示生成文本。输出是一个RequestOutput对象列表，其中包含提示、生成的文本和其他信息。
 # Print the outputs.
 for prompt in prompts:
+
+```python
     start = time.time()
     question = prompt["question"]
     response = pipe(question, gen_config=gen_config)
@@ -417,6 +443,8 @@ for prompt in prompts:
     print(f"Prompt: {question!r}, Generated text: {generate_text!r}")
     print("耗时：", infer_time)
     prompt["answer"] = generate_text 
+```
+
     
 `
 

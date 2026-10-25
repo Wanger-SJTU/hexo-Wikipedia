@@ -35,7 +35,10 @@ btn2.backgroundColor = [UIColor blueColor];
 [self.view addSubview:btn2];
 btn2.clipsToBounds = YES;
 
+```text
 //3.UIImageView 设置了图片+背景色;
+```
+
 UIImageView *img1 = [[UIImageView alloc]init];
 img1.frame = CGRectMake(100, 320, 100, 100);
 img1.backgroundColor = [UIColor blueColor];
@@ -44,7 +47,10 @@ img1.layer.cornerRadius = 50;
 img1.layer.masksToBounds = YES;
 img1.image = [UIImage imageNamed:@"image.png"];
 
+```text
 //4.UIImageView 只设置了图片,无背景色;
+```
+
 UIImageView *img2 = [[UIImageView alloc]init];
 img2.frame = CGRectMake(100, 480, 100, 100);
 [self.view addSubview:img2];
@@ -166,6 +172,8 @@ _imageView.layer.cornerRadius=4.0;`
 贝塞尔曲线一
 
 `- (UIImage *)roundedCornerImageWithCornerRadius:(CGFloat)cornerRadius {
+
+```text
     CGFloat w = self.frame.size.width;
     CGFloat h = self.frame.size.height;
     CGFloat scale = [UIScreen mainScreen].scale;
@@ -182,30 +190,36 @@ _imageView.layer.cornerRadius=4.0;`
     [self drawRect:imageFrame];
     image = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
-    
+
     return image;
+```
+
 }`
 
 贝塞尔曲线二
 
 `- (void)addMaskToBounds:(CGFloat)maskBounds {
+
+```text
     CGFloat w = self.frame.size.width;
     CGFloat h = self.frame.size.height;
     CGFloat scale = [UIScreen mainScreen].scale;
     CGRect imageFrame = CGRectMake(0, 0, w, h);
-    
+
     if (self.cornerRadius  0) {
         self.cornerRadius = 0;
     } else if (self.cornerRadius > MIN(w, h)) {
         self.cornerRadius = MIN(w, h)/ 2.0;
     }
     UIImage *image = self.image;
-    
+
     UIGraphicsBeginImageContextWithOptions(self.frame.size, NO, scale);
     [[UIBezierPath bezierPathWithRoundedRect:imageFrame cornerRadius:self.cornerRadius] addClip];
     [self drawRect:imageFrame];
     image = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
+```
+
 }`
 
 4.3.方案三：
@@ -218,6 +232,8 @@ _imageView.layer.cornerRadius=4.0;`
 
 @implementation RoundImageView
 - (instancetype)init {
+
+```text
     if (self = [super init]) {
         _maskView = [[UIImageView alloc] initWithFrame:CGRectZero];
         _maskView.image = [UIImage imageNamed:@"mask_image"];
@@ -225,12 +241,18 @@ _imageView.layer.cornerRadius=4.0;`
     }
     return self;
 }
+```
+
 
 - (void)layoutSubviews {
+
+```text
     [super layoutSubviews];
     CGRect bounds = self.bounds;
     _maskView.frame = bounds;
 }
+```
+
 
 @end`
 
@@ -241,11 +263,13 @@ iOS上的 YYImage 的圆⻆处理
 [](https://link.zhihu.com/?target=https%3A//github.com/ibireme/YYWebImage/blob/093193c67bfa2409af93e618a48e3208d63106a5/YYWebImage/Categories/UIImage%252BYYWebImage.m%23L356)
 
 `- (UIImage *)yy_imageByRoundCornerRadius:(CGFloat)radius
+
+```text
                                  corners:(UIRectCorner)corners
                              borderWidth:(CGFloat)borderWidth
                              borderColor:(UIColor *)borderColor
                           borderLineJoin:(CGLineJoin)borderLineJoin {
-    
+
     if (corners != UIRectCornerAllCorners) {
         UIRectCorner tmp = 0;
         if (corners & UIRectCornerTopLeft) tmp |= UIRectCornerBottomLeft;
@@ -254,40 +278,42 @@ iOS上的 YYImage 的圆⻆处理
         if (corners & UIRectCornerBottomRight) tmp |= UIRectCornerTopRight;
         corners = tmp;
     }
-    
+
     UIGraphicsBeginImageContextWithOptions(self.size, NO, self.scale);
     CGContextRef context = UIGraphicsGetCurrentContext();
     CGRect rect = CGRectMake(0, 0, self.size.width, self.size.height);
     CGContextScaleCTM(context, 1, -1);
     CGContextTranslateCTM(context, 0, -rect.size.height);
-    
+
     CGFloat minSize = MIN(self.size.width, self.size.height);
     if (borderWidth  minSize / 2) {
         UIBezierPath *path = [UIBezierPath bezierPathWithRoundedRect:CGRectInset(rect, borderWidth, borderWidth) byRoundingCorners:corners cornerRadii:CGSizeMake(radius, borderWidth)];
         [path closePath];
-        
+
         CGContextSaveGState(context);
         [path addClip];
         CGContextDrawImage(context, rect, self.CGImage);
         CGContextRestoreGState(context);
     }
-    
+
     if (borderColor && borderWidth  minSize / 2 && borderWidth > 0) {
         CGFloat strokeInset = (floor(borderWidth * self.scale) + 0.5) / self.scale;
         CGRect strokeRect = CGRectInset(rect, strokeInset, strokeInset);
         CGFloat strokeRadius = radius > self.scale / 2 ? radius - self.scale / 2 : 0;
         UIBezierPath *path = [UIBezierPath bezierPathWithRoundedRect:strokeRect byRoundingCorners:corners cornerRadii:CGSizeMake(strokeRadius, borderWidth)];
         [path closePath];
-        
+
         path.lineWidth = borderWidth;
         path.lineJoinStyle = borderLineJoin;
         [borderColor setStroke];
         [path stroke];
     }
-    
+
     UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
     return image;
+```
+
 }`
 
 ### 5.常见触发离屏渲染的几种情况

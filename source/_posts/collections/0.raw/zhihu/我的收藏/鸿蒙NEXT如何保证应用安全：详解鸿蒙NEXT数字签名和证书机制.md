@@ -79,11 +79,15 @@ PEM 文件的label用于指示文件的内容类型。
 
 **Certificate:
     Data:
+
+```text
         Version: 3 (0x2) //证书的版本号
         Serial Number: 2913163237517564203 (0x286da287a8f6192b) //证书的序列号，用于唯一标识证书
         Signature Algorithm: ecdsa-with-SHA256
         Issuer: C = , ST = , L = , O = , OU = , CN = testscr //证书颁发者的信息
         Validity公钥信息（包括公钥算法、公钥位数、公钥值等）属于结构化数据并且较长，不利于识别和比较，所以需要用一个简短的字符串来标识公钥唯一性。常用做法是使用公钥指纹（Public Key Pin，也叫公钥Pin），计算方式是对DER编码的公钥进行SHA-256计算并进行Base64编码。
+```
+
 
 这里需要注意的是，在X509扩展字段里包括了Subject Key Identifier（SKID）字段，也是证书持有者的标识。那标识公钥的唯一性为什么不直接使用证书里自带的SKID，还要自己算一遍呢，根据[RFC 3280-4.2.1.2章节](https://link.zhihu.com/?target=https%3A//datatracker.ietf.org/doc/html/rfc3280%23section-4.2.1.2)中对SKID的定义：
 
@@ -135,6 +139,8 @@ mRjEEyJNOpen9kfhyOanSRrwtBlEFc0=
 **Certificate request self-signature verify OK //表明CSR的自签名已成功验证
 Certificate Request:
     Data:
+
+```text
         Version: 1 (0x0)
         Subject: C = , ST = , L = , O = , OU = , CN = testscr //证书申请者的信息
         Subject Public Key Info:
@@ -158,6 +164,8 @@ Certificate Request:
         fe:09:1d:04:52:6f:0e:8f:f9:0e:ea:b2:28:8c:31:61:d3:ef:
         02:20:1a:e8:16:ac:29:bb:b4:52:e1:99:18:c4:13:22:4d:3a:
         97:a7:f6:47:e1:c8:e6:a7:49:1a:f0:b4:19:44:15:cd注意到其中证书申请者的公钥值和上面p12文件中的公钥值是一样的，说明CSR中包含了我们的公钥信息。
+```
+
 
 使用如下命令也可以直接从CSR文件中得到公钥指纹：**
 
@@ -241,6 +249,8 @@ TegCiesP1THuMgiZhZYOYl1kIZBPVrEB8O1wtxEm
 
 **Certificate:
     Data:
+
+```text
         Version: 3 (0x2)
         Serial Number: 5339133492510690512 (0x4a18699f9d7d8cd0)
         Signature Algorithm: ecdsa-with-SHA384
@@ -277,9 +287,13 @@ TegCiesP1THuMgiZhZYOYl1kIZBPVrEB8O1wtxEm
         5b:9b:c7:83:31:96:39:ce:ae:62:31:95:02:e8:7e:d4:cd:84:
         a2:c7:85:32:d5:89:6c:2d:55:7b:df:c3:ed:28:ff:61:15:38:
         e0:0c:77:2d:5c:99:42:e4:be:fe:64:36中间证书：**
+```
+
 
 **Certificate:
     Data:
+
+```text
         Version: 3 (0x2)
         Serial Number: 6803676100576229407 (0x5e6b835db5a9381f)
         Signature Algorithm: ecdsa-with-SHA384
@@ -324,9 +338,13 @@ TegCiesP1THuMgiZhZYOYl1kIZBPVrEB8O1wtxEm
         4b:91:ff:0d:3d:9c:bb:29:5a:20:f7:cf:a2:09:32:ea:df:90:
         c9:d9:95:71:90:2c:64:9c:0f:58:86:21:d5:c9:77:f8:1c:f9:
         b8:26:54:fb:ad:6e:e8:43:e1:73:33:77叶子证书：**
+```
+
 
 **Certificate:
     Data:
+
+```text
         Version: 3 (0x2)
         Serial Number:
             63:cb:a2:fe:fb:f0:c6:a1:5f:fa:41:68:91:85
@@ -369,6 +387,8 @@ TegCiesP1THuMgiZhZYOYl1kIZBPVrEB8O1wtxEm
         2a:eb:99:bb:e2:de:2c:22:d9:24:51:0c:ee:d6:0a:0e:12:0a:
         4d:e8:02:89:eb:0f:d5:31:ee:32:08:99:85:96:0e:62:5d:64:
         21:90:4f:56:b1:01:f0:ed:70:b7:11:26注意到：**颁发下来的叶子证书里Subject和我们申请时所使用的CSR里的Subject不同，
+```
+
 
 <strong>叶子证书里是：</strong>
 
@@ -414,6 +434,8 @@ openssl pkcs7 -in my.p7b -print_certs  -inform DER //查看证书信息得到的
     "version-code": 2,
     "app-distribution-type": "app_gallery",
     "uuid": "234e1d73-**<strong>-</strong><strong>-</strong>**-f81e2598d0ff",
+
+```text
     "validity": {
         "not-before": 1727096284,
         "not-after": 1821704284
@@ -431,6 +453,8 @@ openssl pkcs7 -in my.p7b -print_certs  -inform DER //查看证书信息得到的
     "permissions": {},
     "acls": {},
     "issuer": "app_gallery"
+```
+
 }具体每个字段的含义可以参考官方文档和源码中的定义：
 
 - 官方文档：**[app-provision-structure.md](https://link.zhihu.com/?target=https%3A//gitee.com/openharmony/docs/blob/OpenHarmony-v5.0.0-Release/zh-cn/application-dev/security/app-provision-structure.md)
@@ -530,17 +554,29 @@ yafLYQ==
 <strong>/</strong>
  * The value of lower 8 bytes of magic word
  */
+
+```text
 public static final long HAP_SIG_BLOCK_MAGIC_LO_V3 = 0x676973207061683cL;
- 
+
 /**
  * The value of higher 8 bytes of magic word
+```
+
  */
+
+```text
 public static final long HAP_SIG_BLOCK_MAGIC_HI_V3 = 0x3e6b636f6c62206eL;
- 
+
 /**
  * Size of hap signature block header
+```
+
  */
+
+```cpp
 public static final int HAP_SIG_BLOCK_HEADER_SIZE = 32;通过hex工具直接打开App包也可以在Central Directory区前面找到：**
+```
+
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_cd4c167f2f66.jpg)
 
@@ -549,7 +585,11 @@ public static final int HAP_SIG_BLOCK_HEADER_SIZE = 32;通过hex工具直接打�
 <strong>/</strong>
  * ID of profile block
  */
+
+```cpp
 public static final int HAP_PROFILE_BLOCK_ID = 0x20000002;通过如下[hap-sign-tool.jar](https://link.zhihu.com/?target=https%3A//gitee.com/openharmony/developtools_hapsigner/tree/OpenHarmony-v5.0.0-Release/dist)的命令可以导出存储在App包或Hap包里的签名证书和Profile文件：
+```
+
 
 1java -jar hap-sign-tool.jar verify-app -inFile my-signed.app -outCertChain
 
@@ -653,6 +693,8 @@ yafLYQ==
     "version": "1.0.1",
     "release-time":"2021-06-03 10:06:00",
     "trust-app-source":[
+
+```text
         {
             "name":"huawei app gallery",
             "app-signing-cert":"C=CN, O=Huawei, OU=HOS AppGallery, CN=HOS AppGallery Application Release",
@@ -684,6 +726,8 @@ yafLYQ==
             "critialcal-cert-extension":["keyusage","huawei-signing-capability"]
         }
    ]
+```
+
 }这里有“huawei app gallery（应用市场）”、“huawei system apps（系统应用）”、“third_party app preload（三方预装）”三组。每一组包括对应的Hap签名证书Subject、Profile签名证书Subject等信息。
 
 我们走应用市场分发的Hap包会匹配到“huawei app gallery”这个证书。
@@ -711,13 +755,17 @@ yafLYQ==
 根据包管理子系统bundle_install_checker.cpp的[ParseHapFiles函数](https://link.zhihu.com/?target=https%3A//gitee.com/openharmony/bundlemanager_bundle_framework/blob/OpenHarmony-v5.0.0-Release/services/bundlemgr/src/bundle_install_checker.cpp)、inner_bundle_info.h的[SetProvisionId函数](https://link.zhihu.com/?target=https%3A//gitee.com/openharmony/bundlemanager_bundle_framework/blob/OpenHarmony-v5.0.0-Release/services/bundlemgr/include/inner_bundle_info.h)和这个[PR](https://link.zhihu.com/?target=https%3A//gitee.com/openharmony/bundlemanager_bundle_framework/pulls/52/files)来看：
 
 **// bundle_install_checker.cpp
+
+```cpp
     newInfo.SetProvisionId(provisionInfo.appId);
- 
+
 // inner_bundle_info.h
     void SetProvisionId(const std::string &provisionId)
 {
         baseBundleInfo_->appId = baseBundleInfo_->name + Constants::FILE_UNDERLINE + provisionId;
     }APP ID（接口）的值实际上是APP ID（公钥）加上了{bundleName}_的前缀。
+```
+
 
 ### 9、Hap包完整性校验**
 

@@ -125,9 +125,12 @@ Mega MoE 的核心创新是将上述五步<strong>融合进单个 mega-kernel</s
 
 在 csrc/apis/mega.hpp 中可以看到，Mega MoE 使用 PyTorch >= 2.9 提供的对称内存分配，所有 rank 共享同一地址空间的 buffer。SymBuffer 结构（见 deep_gemm/include/deep_gemm/layout/sym_buffer.cuh）通过 offset 映射实现跨 rank 指针翻译：
 
+```text
 // deep_gemm/include/deep_gemm/layout/sym_buffer.cuh
 template <uint32_t kNumRanks = kNumMaxRanks>
 struct SymBuffer {
+```
+
     int64_t base;
     int64_t offsets[kNumMaxRanks];
     uint32_t rank_idx;
@@ -135,9 +138,13 @@ struct SymBuffer {
     template <typename ptr_t>
     CUTLASS_DEVICE ptr_t map(const ptr_t& ptr, const uint32_t& dst_rank_idx) const {
         int64_t mapped_ptr = offsets[dst_rank_idx] + reinterpret_cast<int64_t>(ptr);
+
+```text
         return *reinterpret_cast<ptr_t*>(&mapped_ptr);
     }
 };
+```
+
 
 这让 GPU 线程可以直接通过地址偏移读写远端节点内存，无需经过 host 端协调。
 
@@ -153,47 +160,79 @@ struct SymBuffer {
 - 
 <strong>Epilogue 线程组（256 threads）</strong>：执行 SwiGLU 激活、FP8 量化与 TMA 输出写回
 
+```cpp
 const int num_dispatch_threads = 128;
 const int num_non_epilogue_threads = 128;
 const int num_epilogue_threads = 256;
+```
+
 
 #### 关键技术 3：Wave 级专家调度
 
 为了平衡负载，Mega MoE 引入 num_experts_per_wave 的概念——<strong>每个"wave"处理一批专家，通过启发式计算（考虑不均衡因子 kImbalanceFactor = 2）选择合适的 wave 大小，确保所有 SM 都有足够的 block 可执行：</strong>
 
+```cpp
 // csrc/jit_kernels/heuristics/mega_moe.hpp#L83-L110
 static int get_num_experts_per_wave_for_mega_moe(...) {
+```
+
     constexpr int kImbalanceFactor = 2;
+
+```cpp
     // ...
     int num_experts_per_wave = num_l1_blocks_per_expert > 0
+```
+
         ? ceil_div(kImbalanceFactor * num_sms, num_l1_blocks_per_expert) : 1;
+
+```text
     // Round up to nearest divisor of num_experts_per_rank
     while (num_experts_per_wave < max_num_experts_per_wave
+```
+
            and num_experts_per_rank % num_experts_per_wave != 0)
         ++ num_experts_per_wave;
+
+```text
     return num_experts_per_wave;
 }
+```
+
 
 #### 关键技术 4：NVLink Barrier 实现
 
 在 deep_gemm/include/deep_gemm/comm/barrier.cuh 中，实现了完整的 NVLink 跨 rank 同步原语，包括 grid 内同步和基于 ptx::red_add_rel_sys 的跨节点原子信号通知，并设有 30 秒超时检测：
 
+```text
 // deep_gemm/include/deep_gemm/comm/barrier.cuh
 template <uint32_t kNumRanks, uint32_t kNumSMs, ...>
+```
+
 CUTLASS_DEVICE void nvlink_barrier(...) {
     // Grid sync before NVLink signaling
     grid_sync<kNumSMs, kGridSyncIndex>(workspace, sm_idx, thread_idx, sync_scope);
 
+```text
     if (sm_idx == 0) {
         // Send signals to remote ranks
         if (thread_idx < kNumRanks)
+```
+
             ptx::red_add_rel_sys(sym_buffer.map(signal_ptr, thread_idx), ...);
+
+```text
         // Wait arrival with 30s timeout
         // ...
     }
     // Grid sync after NVLink completion
+```
+
     grid_sync<kNumSMs, kGridSyncIndex>(workspace, sm_idx, thread_idx, sync_scope);
+
+```text
 }
+```
+
 
 ### 1.3 Buffer 布局设计
 
@@ -220,6 +259,7 @@ head_dim 固定为 128，确保 64B swizzle 对齐
 - 
 TMA descriptor 使用 fp4_unpacked_smem = false，即 CU_TENSOR_MAP_DATA_TYPE_16U4_ALIGN8B
 
+```cpp
 static torch::Tensor fp8_fp4_mqa_logits(
     const std::tuple<torch::Tensor, std::optional<torch::Tensor>>& q,
     const std::tuple<torch::Tensor, torch::Tensor>& kv, ...) {
@@ -228,6 +268,8 @@ static torch::Tensor fp8_fp4_mqa_logits(
     // FP4 path: head_dim *= 2 (packed), scalar type = kPackedFP4
     // FP8 path: scalar type = kFloat8_e4m3fn
 }
+```
+
 
 同时保留了旧的 fp8_mqa_logits API 作为兼容包装，内部调用新接口并传入 std::nullopt 作为 SF。
 
@@ -241,15 +283,22 @@ static torch::Tensor fp8_fp4_mqa_logits(
 
 本次重构在 GemmConfig 中引入了 Layout::swap_ab 字段。当 swap_ab = 1 时，实际计算变为 B^T @ A^T，这样原来的 N 维度（weight 的 hidden size，通常较大且规则）变成了 UMMA 的 M 维度，可以做 cluster multicast。
 
+```text
 // Always enable swap A/B for m-grouped GEMMs
 if (desc.gemm_type == GemmType::MGroupedContiguous || ...) {
     const bool swap_ab = true;
     const auto block_n = 128;
     const auto block_m = heuristics_runtime->get_mk_alignment_for_contiguous_layout();
     const auto cluster_n = ceil_div(desc.n, block_n) % 2 == 0
+```
+
                            and desc.num_sms % 2 == 0 ? 2 : 1;
+
+```text
     // ...
 }
+```
+
 
 在 SM100 的候选枚举中，swap_ab 和非 swap_ab 两个方向均被考虑（for (int swap_ab = 0; swap_ab < 2; ++swap_ab)），由统一的比较器选择最优配置。这对 MoE 场景的提速尤为显著。
 
@@ -259,25 +308,39 @@ if (desc.gemm_type == GemmType::MGroupedContiguous || ...) {
 
 整个启发式系统被彻底重构。旧代码中 GemmConfig 是一个"大杂烩"结构体，新代码将其拆分为四层：
 
+```text
 // csrc/jit_kernels/heuristics/config.hpp#L134-L140
 struct GemmConfig {
+```
+
     Layout layout;              // block_m/n/k, swap_ab, cluster_m/n
     StorageConfig storage_config;  // load/store block sizes, swizzle modes
     PipelineConfig pipeline_config; // num_stages, smem_size
     LaunchConfig launch_config;    // num_sms, num_threads
+
+```text
 };
+```
+
 
 ### 4.2 SM90 引入 L1/L2 带宽建模
 
 SM90 的配置选择从"波数最小化"升级为基于 <strong>L1/L2 带宽建模的 cycle 估计</strong>：
 
+```cpp
 // csrc/jit_kernels/heuristics/sm90.hpp#L159-L176
 const int l2_bandwidth_per_cycle = std::min(64. * desc.num_sms, 8e6 / 1.3e3);
 const int l1_bandwidth_per_cycle = 128 * desc.num_sms;
 // ...
+```
+
 int64_t num_l2_cycles = (num_bytes_l2_ab + num_bytes_l1_l2_cd) * num_blocks / l2_bandwidth_per_cycle;
 int64_t num_l1_cycles = (num_bytes_l1_ab + num_bytes_l1_tc + ...) * num_blocks / l1_bandwidth_per_cycle;
+
+```text
 float wave_efficiency = static_cast<float>(num_blocks) / (num_waves * desc.num_sms);
+```
+
 int64_t num_cycles = std::max(num_l1_cycles, num_l2_cycles) / wave_efficiency;
 
 这使得 SM90 在小矩阵场景下能更准确地选择 block size 和 multicast 策略。
@@ -288,12 +351,19 @@ int64_t num_cycles = std::max(num_l1_cycles, num_l2_cycles) / wave_efficiency;
 
 新增 set_pdl / get_pdl API，在 kernel launch 时设置 cudaLaunchAttributeProgrammaticStreamSerialization，允许 CUDA 运行时在前一个 kernel 尚未完全结束时就启动下一个，减少 kernel 间的空泡：
 
+```text
 // csrc/jit/handle.hpp#L92-L98
 if (enable_pdl) {
+```
+
     auto& attr = attrs[config.numAttrs ++];
     attr.id = cudaLaunchAttributeProgrammaticStreamSerialization;
     attr.val.programmaticStreamSerializationAllowed = 1;
+
+```text
 }
+```
+
 
 ### 5.2 JIT 编译加速与分布式文件系统修复
 - 

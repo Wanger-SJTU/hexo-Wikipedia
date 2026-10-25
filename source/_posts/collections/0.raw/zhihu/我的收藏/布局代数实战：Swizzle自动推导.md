@@ -40,19 +40,31 @@ source_url: https://zhuanlan.zhihu.com/p/1941306442683515068
 Swizzle 布局在 CuTe 中定义为：
 
 `// A generic Swizzle functor
+
+```text
 /* 0bxxxxxxxxxxxxxxxYYYxxxxxxxZZZxxxx
  *                               ^--^ MBase is the number of least-sig bits to keep constant
  *                  ^-^       ^-^     BBits is the number of bits in the mask
  *                    ^---------^     SShift is the distance to shift the YYY mask
  *                                       (pos shifts YYY to the right, neg shifts YYY to the left)
+```
+
  *
+
+```text
  * e.g. Given
  * 0bxxxxxxxxxxxxxxxxYYxxxxxxxxxZZxxx
  * the result is
  * 0bxxxxxxxxxxxxxxxxYYxxxxxxxxxAAxxx where AA = ZZ xor YY
+```
+
  */
+
+```cpp
 template int BBits, int MBase, int SShift = BBits>
 struct Swizzle{/*...*/};
+```
+
 `
 
 含义是根据 B M S 三个模板参数，将 YY 移动到 ZZ 的位置，并进行异或。然而，上述的定义仅仅说明了具体的计算方法，并没有说明 swizzle 布局如何解决共享内存的 bank 冲突。因此，本文将就各种应用场景，说明如何计算出合适的 swizzle 布局参数。

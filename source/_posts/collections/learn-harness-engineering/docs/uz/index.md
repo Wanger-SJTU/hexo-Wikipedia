@@ -37,8 +37,12 @@ Oʻqish yoʻlingizni tanlang. Kurs uch qismdan iborat: nazariy maʼruzalar, amal
   </a>
   <a href="./resources/" class="card">
     <h3>Resurslar kutubxonasi</h3>
+
+```text
     <p>Oʻz repozitoriyalaringizda foydalanish uchun tayyor andozalar (AGENTS.md, feature_list.json).</p>
   </a>
+```
+
 </div>
 
 ## Harnessʼning asosiy mexanizmi

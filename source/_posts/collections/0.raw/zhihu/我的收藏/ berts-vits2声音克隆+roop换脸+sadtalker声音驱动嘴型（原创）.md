@@ -76,6 +76,8 @@ lab文件的内容（4）然后，我们要开始根据这些训练数据集。�
 `import os
 
 out_file = f"filelists/genshin_out.txt"
+
+```python
 def process():
     rootPathName='./raw/yuanshen'
     dirNames = os.listdir(rootPathName)
@@ -90,6 +92,8 @@ def process():
                         line = perFile.readline() 
                         result = f"./resampled/yuanshen/{ch_name}/{f.split('.')[0]}.wav|{ch_name}|{ch_language}|{line}"
                         wf.write(f"{result}\n")
+```
+
 
 if __name__ == "__main__":
     process()`
@@ -295,6 +299,8 @@ preprocess_text是生成训练需要的train.txt和val.txt，同时对数据进�
     "add_blank": true,
     "n_speakers": 5,
     "cleaned_text": true,
+
+```text
     "spk2id": {
       "上野": 0,
       "公主": 1,
@@ -303,6 +309,8 @@ preprocess_text是生成训练需要的train.txt和val.txt，同时对数据进�
       "麦娜尔": 4
     }
   },`
+```
+
 
 其中，trainning_files和validation_files的内容就是之前preprocess_text环节生成的train.txt和val.txt路经。
 
@@ -380,10 +388,13 @@ python inference.py --driven_audio  \
 
                     --source_video  \
 
+```text
                     --enhancer  \  #(默认lip)
 
                     --use_DAIN \ #(使用该功能会占用较大显存和消耗较多时间)
 
              		--time_step 0.5 #(插帧频率，默认0.5，即25fps—>50fps;0.25,即25fps—>100fps)
+```
+
 
 就能在results文件夹下生成最终的结果了。

@@ -55,11 +55,15 @@ source_url: https://zhuanlan.zhihu.com/p/667129554
 **[UIView animateWithDuration:duration
                              delay:0
                            options:option
+
+```text
                         animations:^{
                             view.top -= offsetY;
                             view.left -= offsetX;
                         }
                         completion:completion];
+```
+
 #### 3.2CAAnimation**
 
 <strong>基于 「CAAnimation api」 直接触发提交的动画，例如：</strong>
@@ -81,11 +85,15 @@ ani_position.toValue = @(val.position.to);
 **[UIViewPropertyAnimator runningPropertyAnimatorWithDuration:duration
                                      delay:0
                                    options:option
+
+```text
                                 animations:^{
                                     view.top -= offsetY;
                                     view.left -= offsetX;
                                 }
                                 completion:completion];
+```
+
 ### 4、知识储备2：iOS中的动画渲染**
 
 iOS中的动画或者 UIView 的修改到底是怎么被渲染到屏幕上去的？
@@ -239,7 +247,11 @@ voidCARenderServerSetDebugValue(mach_port_t port, intkey, intvalue);
 从 iOS15开始苹果新增加了 preferredFrameRateRange api 可用于设置相应动画或timer的刷新频率，我们就可以基于该方案去改造相应动画即可。
 
 **@propertyCAFrameRateRange preferredFrameRateRange
+
+```text
     API_AVAILABLE(macos(12.0), ios(15.0), watchos(8.0), tvos(15.0));但新的问题又来了，系统仅给 CAAnimation 和 CADisplayLink 的 api 提供了动态修改帧率的操作。
+```
+
 
 但是在我们直播场景中，一共有如下几种场景的动画提交：**
 
@@ -270,12 +282,18 @@ voidCARenderServerSetDebugValue(mach_port_t port, intkey, intvalue);
 <strong>部分代码如下：</strong>
 
 **    if(@available(iOS 15.0, *)) {
+
+```text
         setFrameRateLevel(level);
         [UIViewPropertyAnimator runningPropertyAnimatorWithDuration:duration
                                                               delay:delay
                                                             options:options
                                                          animations:animations
+```
+
 completion:^(UIViewAnimatingPosition finalPosition) {
+
+```text
                                                              if(completion) {
                                                                  completion(YES);
                                                              }
@@ -284,6 +302,8 @@ completion:^(UIViewAnimatingPosition finalPosition) {
     } else{
         if(level != MMAnimationFrameRateLevelNone) {
             if(level 新的接口可以无缝替换原有的+[UIView animateWithDuration:delay : options:animations:completion:] 调用，可对所有系统实现降帧调节优化，极大的方便了业务开发同学在不同场景中选择合适的动画帧率，以达到效果和耗电的平衡。
+```
+
 
 #### 6.3UIScrollView 动画**
 
@@ -294,6 +314,8 @@ completion:^(UIViewAnimatingPosition finalPosition) {
 <strong>主体代码大致如下：</strong>
 
 **- (void)tt_contentOffset:(CGPoint)contentOffset duration:(CFTimeInterval)duration {
+
+```text
     self.duration = duration;
     self.deltaContentOffset = CGPointMinus(contentOffset, self.scrollView.contentOffset);
     if(!self.displayLink) {
@@ -308,7 +330,11 @@ completion:^(UIViewAnimatingPosition finalPosition) {
         self.displayLink.paused = NO;
     }
 }
+```
+
 - (void)tt_onDisplayLink:(CADisplayLink *)displayLink {
+
+```text
     if(self.beginTime == 0.0) {
         self.beginTime = self.displayLink.timestamp;
         self.beginContentOffset = self.scrollView.contentOffset;
@@ -316,6 +342,8 @@ completion:^(UIViewAnimatingPosition finalPosition) {
         CFTimeInterval duration = displayLink.timestamp - self.beginTime;
         CGFloat percent = (CGFloat)(duration / self.duration);
         if(percent 
+```
+
 #### 6.4NSTimer 动画**
 
 根据苹果Explore UI animation hitches and the render loop 的说法，为了避免 vsync 信号和 timer  可能不同步的情形，我们直接用 CADisplayLink 来替换原先的 NSTimer，并在 CADisplayLink 回调里再触发对应的 UI 提交操作和动画即可。

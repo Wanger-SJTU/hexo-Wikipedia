@@ -89,9 +89,13 @@ source_url: https://zhuanlan.zhihu.com/p/310142893
 这里面先引入一个概念，就是我们如何通过仿射变换描述对于某个statement，循环向量和访存之间的关系。
 
 for i in range(N):
+
+```text
     for j in range(N):
         f(X[i-1]) # S1
         f(Y[i, j]) # S2
+```
+
 那我们也可以通过如下仿射变换分别描述S1与S2中循环向量(<i, j>)与访存的关系：
 
 ![](https://pica.zhimg.com/v2-f7e39057a073df4ad7e6c8d13322ecfc_1440w.jpg)那我们怎么用数学表达式表达self-temporal呢？其实很简单，如下所示，假设对于某个statement，我们分析可以把它的矩阵F和向量f拿出来
@@ -117,9 +121,13 @@ for i in range(N):
 除了self-temporal的例子，我们再来看一个group-spatial的例子
 
 for i in range(N):
+
+```text
     for j in range(N):
         f1(A[i, j])
         f2(A[i+1, j)
+```
+
 假设我们有上面的代码，那么很显然第一个Stmt的访存仿射变换就是
 
 ![](https://www.zhihu.com/equation?tex=%5Cleft%5B+%5Cbegin%7Bmatrix%7D++++1+%26+0+%5C%5C++++0+%26+1+++%5Cend%7Bmatrix%7D+%5Cright%5D+%5C+%5Cleft%5B+%5Cbegin%7Bmatrix%7D++++i+%5C%5C++++j+++%5Cend%7Bmatrix%7D+%5Cright%5D+%5C++%2B+%5Cleft%5B+%5Cbegin%7Bmatrix%7D++++0+%5C%5C++++0+++%5Cend%7Bmatrix%7D+%5Cright%5D+%5C+) 
@@ -139,9 +147,13 @@ for i in range(N):
 for j in range(N):
     f1(A[0, j])
 for i in range(1, N):
+
+```text
     for j in range(N):
         f1(A[i, j])
         f2(A[i, j)
+```
+
 多面体优化只能做仿射变换来改变代码结构。但是仿射变换有很多种，通常来说已经可以应付一般的优化需求了。
 
 ![](https://pic4.zhimg.com/v2-c404393cda17acf815d31eb38232bf89_r.jpg)

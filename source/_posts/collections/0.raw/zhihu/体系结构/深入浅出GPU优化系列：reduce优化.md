@@ -53,6 +53,8 @@ $首先需要对reduce算法进行介绍。reduce算法本质上就是计算x=x0
 Baseline算法比较简单，分为三个步骤。第一个步骤是将数据load至shared memory中，第二个步骤是在shared memory中对数据进行reduce操作，第三个步骤是将最后的结果写回global memory中。代码如下：
 
 `__global__ void reduce0(float *d_in,float *d_out){
+
+```cpp
     __shared__ float sdata[THREAD_PER_BLOCK];
 
     //each thread loads one element from global memory to shared mem
@@ -63,6 +65,8 @@ Baseline算法比较简单，分为三个步骤。第一个步骤是将数据loa
 
     // do reduction in shared mem
     for(unsigned int s=1; s
+```
+
 
 在进行优化之前，我们需要再来好好地梳理一下这个baseline代码。优化的本质是通过软件榨干硬件资源，所以必须清楚地了解代码在硬件上的执行过程才能更好地进行优化。因此，本节将花较多的篇幅说明代码和硬件的对应关系**，为后续的优化打好基础。
 
@@ -95,6 +99,8 @@ Baseline算法比较简单，分为三个步骤。第一个步骤是将数据loa
 解决的方式也比较明了，就是尽可能地让所有线程走到同一个分支里面。**代码示意如下：
 
 `__global__ void reduce1(float *d_in,float *d_out){
+
+```cpp
     __shared__ float sdata[THREAD_PER_BLOCK];
 
     //each thread loads one element from global memory to shared mem
@@ -105,6 +111,8 @@ Baseline算法比较简单，分为三个步骤。第一个步骤是将数据loa
 
     // do reduction in shared mem
     for(unsigned int s=1; s
+```
+
 
 虽然代码依旧存在着if语句，但是却与reduce0代码有所不同。我们继续假定block中存在256个thread，即拥有=8个warp。当进行第1次迭代<strong>时，0-3号warp的index</strong>=blockDim.x。对于每个warp而言，都只是进入到一个分支内，所以并不会存在warp divergence的情况。当进行第2次迭代<strong>时，0、1号两个warp进入计算分支。当进行</strong>第3次迭代<strong>时，只有0号warp进入计算分支。当进行</strong>第4次迭代**时，只有0号warp的前16个线程进入分支。此时开始产生warp divergence。通过这种方式，我们消除了前3次迭代的warp divergence。
 
@@ -125,6 +133,8 @@ reduce1的最大问题是<strong>bank冲突</strong>。我们把目光聚焦在�
 在reduce中，解决bank冲突的方式就是把for循环逆着来。原来stride从0到256，现在stride从128到0。其伪代码如下：
 
 `__global__ void reduce2(float *d_in,float *d_out){
+
+```cpp
     __shared__ float sdata[THREAD_PER_BLOCK];
 
     //each thread loads one element from global memory to shared mem
@@ -136,6 +146,8 @@ reduce1的最大问题是<strong>bank冲突</strong>。我们把目光聚焦在�
     // do reduction in shared mem
     for(unsigned int s=blockDim.x/2; s>0; s>>=1){
         if(tid 
+```
+
 
 那为什么通过这么一个小小的改变就能消除bank冲突呢，我们继续进行分析。
 
@@ -160,6 +172,8 @@ reduce1的最大问题是<strong>bank冲突</strong>。我们把目光聚焦在�
 对于HPC从业者而言，我们希望变成GPU的资本家，去尽可能地压榨GPU。但是呢，在这里，每一次迭代有一半的线程不干活。而且，128-255号线程最过分，它娘的，没有任何贡献，啥也不干。想来想去，能不能让它们干点活呢。想来想去，那这样吧，让它好歹做一次加法。除了去global memory中取数外，再做一次加法。当然为了实现这个，block数就得改一改了。Block数量减少，Num_per_block增加一倍。也就是说原来一个block只需要管256个数就行，现在得管512个数了。代码如下：
 
 `__global__ void reduce3(float *d_in,float *d_out){
+
+```cpp
     __shared__ float sdata[THREAD_PER_BLOCK];
 
     //each thread loads one element from global memory to shared mem
@@ -171,6 +185,8 @@ reduce1的最大问题是<strong>bank冲突</strong>。我们把目光聚焦在�
     // do reduction in shared mem
     for(unsigned int s=blockDim.x/2; s>0; s>>=1){
         if(tid 
+```
+
 
 通过这种方式，将一些idle的线程给利用起来了。
 
@@ -191,6 +207,8 @@ reduce1的最大问题是<strong>bank冲突</strong>。我们把目光聚焦在�
 由于一个warp中的32个线程其实是在一个SIMD单元上，这32个线程每次都是执行同一条指令，这天然地保持了同步状态，因而当s=32时，即只有一个SIMD单元在工作时，完全可以将__syncthreads()这条同步代码去掉。所以我们将最后一维进行展开以减少同步。伪代码如下：
 
 `__device__ void warpReduce(volatile float* cache,int tid){
+
+```text
     cache[tid]+=cache[tid+32];
     cache[tid]+=cache[tid+16];
     cache[tid]+=cache[tid+8];
@@ -198,8 +216,12 @@ reduce1的最大问题是<strong>bank冲突</strong>。我们把目光聚焦在�
     cache[tid]+=cache[tid+2];
     cache[tid]+=cache[tid+1];
 }
+```
+
 
 __global__ void reduce4(float *d_in,float *d_out){
+
+```cpp
     __shared__ float sdata[THREAD_PER_BLOCK];
 
     //each thread loads one element from global memory to shared mem
@@ -211,6 +233,8 @@ __global__ void reduce4(float *d_in,float *d_out){
     // do reduction in shared mem
     for(unsigned int s=blockDim.x/2; s>32; s>>=1){
         if(tid 
+```
+
 
 可以通过下面的示意图更好地了解，（图画的有点丑，比例也不太对，大家将就着看看。）warp0会被绑定在一个SIMD单元上，上面有thread0-thread31。warp1会被绑在另外一个SIMD单元上，上面有thread32-thread63。由于在一个SIMD单元上，然后不管啥时候thread0和thread7肯定是同一状态，不需要同步。而thread0和thread34就不能保证同步，必须用__syncthreads()来保证同步操作。
 
@@ -234,6 +258,8 @@ __global__ void reduce4(float *d_in,float *d_out){
 
 `template 
 __device__ void warpReduce(volatile float* cache,int tid){
+
+```text
     if(blockSize >= 64)cache[tid]+=cache[tid+32];
     if(blockSize >= 32)cache[tid]+=cache[tid+16];
     if(blockSize >= 16)cache[tid]+=cache[tid+8];
@@ -243,7 +269,11 @@ __device__ void warpReduce(volatile float* cache,int tid){
 }
 
 template 
+```
+
 __global__ void reduce5(float *d_in,float *d_out){
+
+```cpp
     __shared__ float sdata[THREAD_PER_BLOCK];
 
     //each thread loads one element from global memory to shared mem
@@ -257,6 +287,8 @@ __global__ void reduce5(float *d_in,float *d_out){
         if(tid=256){
         if(tid=128){
         if(tid
+```
+
 
 #### 实验结果
 
@@ -278,6 +310,8 @@ __global__ void reduce5(float *d_in,float *d_out){
 
 `template 
 __global__ void reduce6(float *d_in,float *d_out){
+
+```cpp
     __shared__ float sdata[THREAD_PER_BLOCK];
 
     //each thread loads one element from global memory to shared mem
@@ -290,6 +324,8 @@ __global__ void reduce6(float *d_in,float *d_out){
         if(tid=256){
         if(tid=128){
         if(tid
+```
+
 
 #### 实验结果
 
@@ -309,6 +345,8 @@ Shuffle指令是一组针对warp的指令。Shuffle指令最重要的特性就�
 
 `template 
 __device__ __forceinline__ float warpReduceSum(float sum){
+
+```text
     if(blockSize >= 32)sum += __shfl_down_sync(0xffffffff,sum,16);
     if(blockSize >= 16)sum += __shfl_down_sync(0xffffffff,sum,8);
     if(blockSize >= 8)sum += __shfl_down_sync(0xffffffff,sum,4);
@@ -318,7 +356,11 @@ __device__ __forceinline__ float warpReduceSum(float sum){
 }
 
 template 
+```
+
 __global__ void reduce7(float *d_in,float *d_out, unsigned int n){
+
+```cpp
     float sum = 0;
 
     //each thread loads one element from global memory to shared mem
@@ -334,6 +376,8 @@ __global__ void reduce7(float *d_in,float *d_out, unsigned int n){
     sum = (threadIdx.x (sum);
     // write result for this block to global mem
     if(tid==0)d_out[blockIdx.x]=sum;
+```
+
 }`
 
 #### 实验结果

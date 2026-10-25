@@ -129,10 +129,14 @@ self.eval_generate_rollout = load_function(self.args.eval_function_path)
 
 rollout的generate函数是通过buffer。
 
+```python
 def async_generate(self, rollout_id, evaluation=False):
      return self.data_buffer.generate.remote(rollout_id, evaluation=evaluation)
+```
+
 训练框架获取数据，也是通过buffer。
 
+```python
     def get_rollout_data(self, rollout_id):
         # Fetch data through ray on CPU, not sure if this will be performance bottleneck.
         # Both first pp stage and the last pp stage will recieve the data.
@@ -150,9 +154,12 @@ def process_rollout_data(rollout_id, args, data_buffer):
         data = [None]
         dist.broadcast_object_list(data, src=0)
         data = data[0]
+```
+
 
 使用的是同一个buffer，同步代码如下，把rollout的buffer同步给actor。
 
+```python
     def async_init_weight_update_connections(self, rollout):
         &#34;&#34;&#34;
         Connect rollout engines and actors, e.g. initialize the process group between them
@@ -160,10 +167,13 @@ def process_rollout_data(rollout_id, args, data_buffer):
         &#34;&#34;&#34;
         self.rollout = rollout
         ray.get([actor.set_data_buffer.remote(rollout.data_buffer) for actor in self._actor_handlers])
+```
+
 
 <strong>3.2.2 模型的传输</strong>
 把actor的配置传给rollout，让rollout引擎在需要的时候正确的同步参数。
 
+```python
     def async_init_weight_update_connections(self, rollout):
         &#34;&#34;&#34;
         Connect rollout engines and actors, e.g. initialize the process group between them
@@ -194,12 +204,15 @@ def process_rollout_data(rollout_id, args, data_buffer):
             )
             for actor in self._actor_handlers
         ]
+```
+
 看到这里，我们发现好像纠结什么single controller，multi controller并不重要。这些逻辑直接硬编码，好像也能支持？问题在哪？
 暂且不急，我们再看看roll。
 
 <strong>3.3</strong> <strong>roll的做法</strong>
 roll通过cluster的方式，定义了多个角色。
 
+```text
        self.actor_train: Any = Cluster(
             name=self.pipeline_config.actor_train.name,
             worker_cls=self.pipeline_config.actor_train.worker_cls,
@@ -218,13 +231,19 @@ roll通过cluster的方式，定义了多个角色。
             resource_manager=self.resource_manager,
             worker_config=self.pipeline_config.reference,
  )
+```
+
  if self.pipeline_config.adv_estimator == &#34;gae&#34;:
+
+```text
             self.critic: Any = Cluster(
                 name=self.pipeline_config.critic.name,
                 worker_cls=self.pipeline_config.critic.worker_cls,
                 resource_manager=self.resource_manager,
                 worker_config=self.pipeline_config.critic,
  )
+```
+
 分的比slime更细，好处是跟算法侧的认知比较一致，都是用cluster封装好了，毕竟算法是不知道训练框架和推理引擎有这么大的区别。
 
 <strong>3.3.1 数据的传输</strong>
@@ -236,6 +255,7 @@ roll细化到，不同domain，不同batch，不同query上都可以做自定义
 
 <strong>3.3.2 模型的传输</strong>
 
+```python
     def model_update(self, tgt_workers, broadcast_tgt_devices, p2p_tgt_devices):
         comm_plan = self.model_update_comm_plan[self.worker.rank_info.pp_rank]
         model = self.unwrap_model()
@@ -274,6 +294,8 @@ roll细化到，不同domain，不同batch，不同query上都可以做自定义
                     if len(broadcast_tgt_devices) > 0:
                         collective.broadcast(tensor=param_weight, src_rank=0, group_name=comm_plan[&#34;group_name&#34;])
                     ray.get(refs)
+```
+
 两种通信方式结合，会通过worker的node_rank和gpu_rank来判断是否在同一个设备上。
 第一种，对于同一设备上的参数，直接通过点对点通信更新。
 第二种，通过 collective communication 广播参数到目标集群，只在主进程（rank 0）执行广播操作。这两种就是colocate和非colocate的差异，下文会说到。
@@ -320,6 +342,8 @@ colocate，多个角色共用一个ray actor实例，同一个进程内实例化
 外部通过统一的接口调度不同角色的 Worker 方法，内部自动分发到对应的 Worker 实例。
 
 # deprecated, switching to FusedWorker
+
+```python
 def create_colocated_worker_cls(class_dict: dict[str, RayClassWithInitArgs]):
     &#34;&#34;&#34;
     This function should return a class instance that delegates the calls to every
@@ -336,8 +360,12 @@ def create_colocated_worker_cls(class_dict: dict[str, RayClassWithInitArgs]):
         init_args_dict[key] = {&#34;args&#34;: cls.args, &#34;kwargs&#34;: cls.kwargs}
 
     assert cls_dict.keys() == init_args_dict.keys()
+```
+
 
     # TODO: create a class with customizable name
+
+```python
     class WorkerDict(worker_cls):
         def __init__(self):
             super().__init__()
@@ -349,6 +377,8 @@ def create_colocated_worker_cls(class_dict: dict[str, RayClassWithInitArgs]):
                 # when DISABLE_WORKER_INIT == 1 it will return immediately
                 with patch.dict(os.environ, {&#34;DISABLE_WORKER_INIT&#34;: &#34;1&#34;}):
                     self.worker_dict[key] = user_defined_cls(*init_args_dict[key].get(&#34;args&#34;, ()), **init_args_dict[key].get(&#34;kwargs&#34;, {}))
+```
+
 
 跟别的框架不一样的点，同进程和非同进程。根据verl的反馈，同进程收益是非常大的。
 同进程通信的话，在某些场景下，速度会差十几倍，memory的碎片问题之类的也会造成很大的影响。

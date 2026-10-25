@@ -62,7 +62,11 @@ source_url: https://zhuanlan.zhihu.com/p/1989667615744995635
 上述分核方案将输出C矩阵切分并分配给每个AICORE进行计算。AICORE以 \tt Ktile 为步长在K方向迭代，通过计算并累加若干个规模为 \tt Mtile \times Ktile \times Ntile 的矩阵乘积，得到最终结果。
 
 `// execute on each AICORE
+
+```cpp
 for (int l = coreIdx; l 
+```
+
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_14f56c571695.jpg)
 

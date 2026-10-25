@@ -90,6 +90,8 @@ TFRT包含Distributed Runtime、Host Runtime和Device Runtime。
 典型的Kernel示例
 
 `// Kernel that adds two integers.
+
+```cpp
 // AsyncKernelFrame holds the kernel’s arguments and results.
 static void TFRTAdd(AsyncKernelFrame* frame) {
   // Fetch the kernel’s 0th argument.
@@ -103,6 +105,8 @@ static void TFRTAdd(AsyncKernelFrame* frame) {
   // Set the kernel’s 0th result.
   frame->EmplaceResultAtint>(0, v1 + v2);
 }
+```
+
 `
 
 - 使用相同的Kernel机制管理设备，比如内存管理、数据传输、启动计算。（设备管理操作也都封装为Kernel）
@@ -171,6 +175,8 @@ AsyncValue（基类）
 AsyncValue（基类）保存引用计数、可用状态和waiter list等，并提供AndThen接口。AsyncValue不提供虚函数接口，从而不生成虚表。
 
 `// A subset of interface functions in AsyncValue.
+
+```cpp
 class AsyncValue {
  public:
   bool IsAvailable() const;
@@ -187,6 +193,8 @@ class AsyncValue {
   void AndThen(std::functionvoid()>&& waiter);
   // ...
 };
+```
+
 `
 
 AsyncValue本身不感知真实数据的数据类型，用户调用AsyncValue::IsAvailable()或AsyncValue::AndThen()时也无需感知真实数据的数据类型。仅当通过`AsyncValue::get()` or `AsyncValue::emplace()`访问数据时才感知类型信息。

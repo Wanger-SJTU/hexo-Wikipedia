@@ -37,11 +37,14 @@ python有一个很有意思的地方，就是def函数可以嵌套在另一个de
 
 `x = 99
 
+```python
 def f1():
     x = 88
     def f2():
         print(x)
     f2()
+```
+
 
 f1()
 
@@ -54,10 +57,14 @@ f1()
 <strong>本地作用域在函数结束后就立即失效，而嵌套作用域在嵌套的函数返回后却仍然有效。</strong>
 
 `def f1():
+
+```python
     x = 88
     def f2():
         print(x)
     return f2
+```
+
 
 action = f1()
 action()
@@ -71,23 +78,35 @@ action()
 这里有一个应用就是<strong>工厂函数</strong>，工厂函数定义了一个外部的函数，这个函数简单的生成并返回一个内嵌的函数，仅仅是返回却不调用，因此通过调用这个工厂函数，可以得到内嵌函数的一个引用，内嵌函数就是通过调用工厂函数时，运行内部的def语句而创建的。
 
 `def maker(n):
+
+```python
     k = 8
     def action(x):
         return x ** n + k
     return action
+```
+
 
 f = maker(2)
+
+```python
 print(f)
 
 function maker.locals>.action at 0x00000000021C51E0>`
+```
+
 
 再看一个例子：
 
 `def maker(n):
+
+```python
     k = 8
     def action(x):
         return x ** n + k
     return action
+```
+
 
 f = maker(2)
 print(f(4))
@@ -101,12 +120,16 @@ print(f(4))
 本地函数通过global声明对全局变量进行引用修改，那么对应的，内嵌函数内部想对嵌套作用域中的变量进行修改，就要使用nonlocal进行声明。
 
 `def test(num):
+
+```python
     in_num = num
     def nested(label):
         nonlocal in_num
         in_num += 1
         print(label, in_num)
     return nested
+```
+
 
 F = test(0)
 F('a')
@@ -122,12 +145,16 @@ c 3`
 <strong>再最后一个例子：</strong>
 
 `def test(num):
+
+```python
     in_num = num
     def nested(label):
         nonlocal in_num
         in_num += 1
         print(label, in_num)
     return nested
+```
+
 
 F = test(0)
 F('a')

@@ -43,7 +43,11 @@ $$
 
 $$
 $$
+
+```text
 		\text{Gated-MLP}(x) := (\text{Combined}(x) ∗ \text{Mask}(x))W_{down}
+```
+
 $$
 ![Pasted image 20240810224217.png](/images/collections/assets/Pasted%20image%2020240810224217.png)
 显然效果显著。不影响模型表现的情况下，稀疏到达到了80%，而牺牲一定精度的条件下可以到达<strong>90%</strong>

@@ -53,12 +53,17 @@ v = test-expr ? then-expr : else-expr
 v = then-expr;
 ve = else-expr;
 t = test-expr;
+
+```text
 if(!t) v=ve;
+```
+
 
 编译器会倾向于将使用三元运算符且两种结果的计算量不大的表达式转换为CMOV条件数据转移。例如facebook folly中的例子，注意看注释：
 
 当分支的结果完全由外部输入决定，local branch history和global branch history都毫无规律时，效果会更好。下面这个是《Computer Systems A Programmer's Perspective 》5.11.2小节的例子，第二个版本性能是第一个三倍：
 
+```cpp
 /* Rearrange two vectors so that for each i, b[i]  = a[i] */
 void minmax1(long a[], long b[], long n) {
   long i;
@@ -81,10 +86,13 @@ void minmax2(long a[], long b[], long n) {
     b[i] = max;
   }
 }
+```
+
 
 使用算数逻辑代替分支
 比如ARM优化手册里提到，可以将范围比较转换为无条件计算，编译器有时候也会自动做这个转换：
 
+```cpp
 // origin version
 int insideRange1(int v, int min, int max) {
   return v  = min    v   max;
@@ -94,6 +102,8 @@ int insideRange1(int v, int min, int max) {
 int insideRange2(int v, int min, int max) {
   return (unsigned) (v - min)   (max - min);
 }
+```
+
 韦易笑大佬针对这个做过更详细的优化和测试，反正我是看晕了：
 
 引用文章内的测试数据：

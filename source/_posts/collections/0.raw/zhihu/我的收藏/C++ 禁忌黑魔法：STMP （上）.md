@@ -78,7 +78,10 @@ constexpr inline bool is_complete_v = requires { sizeof(T); };
 
 static_assert(!is_complete_vX>);
 
+```text
 struct X {};
+```
+
 
 static_assert(is_complete_vX>);
 `
@@ -86,16 +89,23 @@ static_assert(is_complete_vX>);
 实际上，上面的代码会编译错误，第二个静态断言失败了。太奇怪了，怎么回事呢？分开试一下
 
 `// first time
+
+```text
 struct X;
+```
+
 
 static_assert(!is_complete_vX>);
 
+```text
 struct X {};
 
 // second time
 struct X;
 
 struct X {};
+```
+
 
 static_assert(is_complete_vX>);
 `
@@ -107,11 +117,17 @@ static_assert(is_complete_vX>);
 `template typename T, int seed = 0>
 constexpr inline bool is_complete_v = requires { sizeof(T); };
 
+```text
 struct X;
+```
+
 
 static_assert(!is_complete_vX, 0>);
 
+```text
 struct X {};
+```
+
 
 static_assert(is_complete_vX, 1>);
 `
@@ -122,6 +138,7 @@ static_assert(is_complete_vX, 1>);
 
 `#include 
 
+```cpp
 template auto seed = [] {}>
 void test() {
     std::cout  typeid(seed).name()  std::endl;
@@ -133,6 +150,8 @@ int main() {
     test();  // class 
     return 0;
 }
+```
+
 `
 
 这个特性很好的满足了我们的需求，它可以每次自动填入一个不同的种子。于是最终的 `is_complete_v` 实现如下
@@ -147,7 +166,10 @@ constexpr inline bool is_complete_v = requires { sizeof(T); };
 
 static_assert(!is_complete_vX>);
 
+```text
 struct X {};
+```
+
 
 static_assert(is_complete_vX>);
 `
@@ -170,8 +192,12 @@ auto foo(auto);
 static_assert(!is_complete_v<>);
 
 auto foo(auto value) {
+
+```text
     return sizeof(value);
 }
+```
+
 
 static_assert(is_complete_v<>);
 `
@@ -181,6 +207,8 @@ static_assert(is_complete_v<>);
 友元函数与普通函数最大的不同就在于不要求函数定义与函数声明在同一 scope 中，考虑如下示例
 
 `struct X {
+
+```cpp
     friend auto foo(X);
 };
 
@@ -191,18 +219,23 @@ struct Y {
 };
 
 int x = foo(X{});
+```
+
 `
 
 上面的代码三大编译器都可以编译通过，并且完全符合 C++ 标准。这就给了我们操作的空间，我们可以在实例化类模板的同时实例化其内部定义的友元函数，从而给其他位置的函数声明添加定义。这种技术也被叫做<strong>友元注入 (friend injection)</strong>。
 
 `auto foo(auto);
 
+```text
 template typename T>
 struct X {
     friend auto foo(auto value) {
         return sizeof(value);
     }
 };
+```
+
 
 static_assert(!is_complete_v<>);  // #1
 
@@ -219,13 +252,18 @@ static_assert(is_complete_v<>);  // #3
 
 `auto flag(auto);
 
+```text
 template auto value>
 struct setter {
     friend auto flag(auto) {}
 };
 
 template auto N = 0, auto seed = [] {}>
+```
+
 consteval auto value() {
+
+```cpp
     constexpr bool exist = requires { flag(N); };
     if constexpr(!exist) {
         setterexist> setter;
@@ -238,6 +276,8 @@ int main() {
     constexpr auto b = value();
     static_assert(a != b);
 }
+```
+
 `
 
 它的原理很简单。第一次的时候，`setter` 尚未有任何实例化，所以 `flag` 函数也没有定义，于是 `exist` 求值为 `false`，走到了 `if constexpr` 里面那个分支，实例化了一个 `setter`，并且返回 `false`。第二次的时候，`setter` 有了一个实例化，`flag` 函数也有了定义，于是 `exist` 求值为 `true`，直接返回 `true`。
@@ -249,6 +289,8 @@ int main() {
 更进一步，我们可以直接实现一个编译期的计数器
 
 `template int N>
+
+```cpp
 struct reader {
     friend auto flag(reader);
 };
@@ -259,7 +301,11 @@ struct setter {
 };
 
 template int N = 0, auto seed = [] {}>
+```
+
 consteval auto next() {
+
+```cpp
     constexpr bool exist = requires { flag(readerN>{}); };
     if constexpr(!exist) {
         setterN> setter;
@@ -275,6 +321,8 @@ int main() {
     constexpr auto c = next();
     static_assert(a == 0 && b == 1 && c == 2);
 }
+```
+
 `
 
 它的逻辑是，从 `N` 为 0 开始，检测 `flag(reader)` 是否有定义，如果没有定义就实例化一个 `setter`，也就是给 `flag(reader)` 添加定义，并返回 `N`。否则递归调用 `next()`，检测 `N+1` 的情况。所以这个计数器记录的实际上是 `setter` 的实例化次数。
@@ -291,6 +339,7 @@ int main() {
 
 `#include 
 
+```cpp
 class Bank {
     double money = 999'999'999'999;
 
@@ -317,6 +366,8 @@ int main() {
     bank.check();       // 100
     return 0;
 }
+```
+
 `
 
 其中 #2 处的语法就是模板显式实例化了，我们可以直接访问到 `Bank` 的私有成员 `money`。通过 `&Bank::money` 从而取得该成员对应的成员指针。与此同时，通过模板显式实例化，给 #1 处的 `steal` 函数添加了一个定义，从而可以直接在 #3 处调用该函数并获取到 `money` 的引用。最后成功输出 100。

@@ -217,6 +217,8 @@ cProfile 的输出格式是一个 table，如下：
 Ordered by: standard name
  
 ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+
+```text
     1    0.000    0.000    0.000    0.000 :103(release)
     1    0.000    0.000    0.000    0.000 :143(__init__)
     1    0.000    0.000    0.000    0.000 :147(__enter__)
@@ -227,6 +229,8 @@ ncalls  tottime  percall  cumtime  percall filename:lineno(function)
    32    0.000    0.000    0.000    0.000 :222(_verbose_message)
     1    0.000    0.000    0.000    0.000 :307(__init__)
     1    0.000    0.000    0.000    0.000 :311(__enter__)
+```
+
  
 ....`
 

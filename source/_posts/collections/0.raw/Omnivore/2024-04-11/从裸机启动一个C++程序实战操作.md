@@ -154,11 +154,19 @@ IA-64不成功，但另一个64位架构却火了，这就是AMD公司在1999年
 那么最容易想到的就是用「纯软件」的方式来模拟。比如说我设置一个变量，用来表示`rax`寄存器，设置另一个变量来表示`rip`寄存器。再设置一片内存空间来表示模拟器的内存空间。之后，当我接收到类似于「把`0x10`内存空间的值写到`rax`寄存器中」这样的指令时，就把对应内存空间中，偏移量是`0x10`的值，赋值给用于表示`rax`寄存器的变量中。大致上用简单的代码来表示就是：
 
 ![](https://proxy-prod.omnivore-image-cache.app/0x0,s56UsqM5ZhjwwpVnzuHp9Y2FecE62BLbv4ldRqBGinp0/https://mmbiz.qpic.cn/mmbiz_svg/Iic9WLWEQMg2jTKicld7jhiahgW5maYNm1niaFWO3EXmBTo4NcLicwXholJeuk1iaq3REpicWhoVoRdDavmxdy0AMtCItfCMqJAK2qu/640?wx_fmt=svg&from=appmsg)`uint64_t rax; // 用于模拟rax寄存器
+
+```cpp
 std::byte mem[1024 * 1024]; // 用于模拟1MB的内存
 // 执行将内存数据读取到rax中的指令
 void load_mem_to_rax(std::ptrdiff_t address) {
+```
+
   rax = *reinterpret_cast<uint64_t *>(mem + address);
+
+```text
 }
+```
+
 `
 
 由此方法，模拟出所有硬件部件和所有指令集中的指令，那么自然就可以模拟出硬件设备的运行情况。
@@ -233,8 +241,12 @@ Home Brew是Mac上的开源软件管理器，类似于Debian中的apt-get和RedH
 这时我们可以执行下面的指令来解决：
 
 ![](https://proxy-prod.omnivore-image-cache.app/0x0,s56UsqM5ZhjwwpVnzuHp9Y2FecE62BLbv4ldRqBGinp0/https://mmbiz.qpic.cn/mmbiz_svg/Iic9WLWEQMg2jTKicld7jhiahgW5maYNm1niaFWO3EXmBTo4NcLicwXholJeuk1iaq3REpicWhoVoRdDavmxdy0AMtCItfCMqJAK2qu/640?wx_fmt=svg&from=appmsg)`git config --global --add safe.directory /opt/homebrew/Library/Taps/homebrew/homebrew-core
+
+```bash
 git config --global --add safe.directory /opt/homebrew/Library/Taps/homebrew/homebrew-cask
 git config --global --add safe.directory /opt/homebrew/Library/Taps/homebrew/homebrew-services
+```
+
 `
 
 当安装好Home Brew以后，就可以通过下面的指令来安装`bochs`：
@@ -868,7 +880,11 @@ BIOS中断可以提供很多功能，详细的情况只能去查BIOS手册了，
 ![](https://proxy-prod.omnivore-image-cache.app/0x0,s56UsqM5ZhjwwpVnzuHp9Y2FecE62BLbv4ldRqBGinp0/https://mmbiz.qpic.cn/mmbiz_svg/Iic9WLWEQMg2jTKicld7jhiahgW5maYNm1niaFWO3EXmBTo4NcLicwXholJeuk1iaq3REpicWhoVoRdDavmxdy0AMtCItfCMqJAK2qu/640?wx_fmt=svg&from=appmsg)`mov al, 0x03
 mov ah, 0x00
 ; 也可以写作 mov ax, 0x0003
+
+```cpp
 int 0x10 ; 调用0x10号BIOS中断，清屏
+```
+
 mov ax, 0xb800
 mov ds, ax
 mov [0x0000], byte 'H'
@@ -978,7 +994,11 @@ mov ch, 0 ; ch表示第几柱面
 mov dh, 0 ; dh表示第几磁头
 mov cl, 2 ; cl表示第几扇区
 mov dl, 0 ; dl表示驱动器号，软盘会在0x00~0x7F，硬盘会在0x80~0xFF
+
+```cpp
 int 0x13  ; 执行0x13号中断的2号功能（读盘功能）
+```
+
 `
 
 对于老式机械硬盘、软盘来说，它们都属于「磁盘」的一种。根据其机械结构分为柱面(Cylinder)、磁头(Head)、扇区(Sector)，一般表示为`CHS`，柱面和磁头从`0`开始，扇区从`1`开始标号。
@@ -1008,7 +1028,11 @@ mov ch, 0 ; ch表示第几柱面
 mov dh, 0 ; dh表示第几磁头
 mov cl, 2 ; cl表示第几扇区
 mov dl, 0 ; dl表示驱动器号，软盘会在0x00~0x7F，硬盘会在0x80~0xFF
+
+```cpp
 int 0x13  ; 执行0x13号中断的2号功能（读盘功能）
+```
+
 jmp 0x0800:0x0000 ; 这里写成0x0000:0x8000也OK，只是CS和IP的值会不同，但CS:IP是相同的
 
 times 510-($-$$) db 0 ; MBR剩余部分用0填充

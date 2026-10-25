@@ -61,24 +61,26 @@ sudo grubby --update-kernel=ALL --args="hugepagesz=1G default_hugepagesz=1G huge
 
 - 编写申请 HugePages 的代码
 `#include  
+
+```cpp
 #include  
 #include  
 #include  
- 
+
 #define MAP_LENGTH (10*1024*1024) // 10MB 
- 
+
 int main() 
 { 
     int fd; 
     void * addr; 
- 
+
     // 1. 打开 Hugetlb 文件系统的文件 
     fd = open("/mnt/huge/hugepage1", O_CREAT|O_RDWR); 
     if (fd  0) { 
         perror("open()"); 
         return -1; 
     } 
- 
+
     // 2. 把虚拟内存映射到 Hugetlb 文件系统的文件中 
     addr = mmap(0, MAP_LENGTH, PROT_READ|PROT_WRITE, MAP_SHARED, fd, 0); 
     if (addr == MAP_FAILED) { 
@@ -87,16 +89,18 @@ int main()
         unlink("/mnt/huge/hugepage1"); 
         return -1; 
     } 
- 
+
     strcpy(addr, "This is HugePages example..."); 
     printf("%s\n", addr); 
- 
+
     // 3. 使用完成后，解除映射关系 
     munmap(addr, MAP_LENGTH); 
     close(fd); 
     unlink("/mnt/huge/hugepage1"); 
- 
+
     return 0; 
+```
+
 }`
 
 #### <strong>4.2 实现原理</strong>
@@ -162,6 +166,8 @@ __split_huge_pmd函数把PMD级别透明大页分裂成普通页,流程如下:
 透明大页支持页表拆分，这样可以在必要的时候退回到四级页表。实现如下：
 
 `static void __split_huge_pmd_locked(struct vm_area_struct *vma, pmd_t *pmd,
+
+```cpp
 		unsigned long haddr, bool freeze)
 {
 	struct mm_struct *mm = vma->vm_mm;
@@ -173,7 +179,11 @@ __split_huge_pmd函数把PMD级别透明大页分裂成普通页,流程如下:
 	int i;
 
 	count_vm_event(THP_SPLIT_PMD);
+```
+
 …
+
+```cpp
     //把预留的pte页表项目拿出来，从三级页表变四级页表需要新增1个页表项
 	pgtable = pgtable_trans_huge_withdraw(mm, pmd);
     //pmd目录指向pte
@@ -242,6 +252,8 @@ __split_huge_pmd函数把PMD级别透明大页分裂成普通页,流程如下:
 			put_page(page + i);
 		}
 	}
+```
+
 }`
 
 实例推演一下页表分裂的过程。假设2个进程以PMD映射到一个thp大页，当进程A发生页表， 分裂前如下所示：
@@ -257,38 +269,62 @@ __split_huge_pmd函数把PMD级别透明大页分裂成普通页,流程如下:
 拆分页表最终的目的也是为了拆分大页，这样在系统内存不够时可以回收大页中没有使用的部分。最终通过split_huge_page_to_list函数实现拆分大页
 
 `int split_huge_page_to_list(struct page *page, struct list_head *list)
+
+```text
 {
 	struct page *head = compound_head(page);
 	struct pglist_data *pgdata = NODE_DATA(page_to_nid(head));
 	struct deferred_split *ds_queue = get_deferred_split_queue(head);
+```
+
 …
+
+```text
     /*解映射，try_to_unmap_one—>__split_huge_pmd_locked，这个过程也可能会拆分页表，如果页表已经拆分过了，就不需要再拆分了。*/
 	unmap_page(head); 
+```
+
 
 	。。。
+
+```text
        //分裂页面
 		__split_huge_page(page, list, end, flags);
 		ret = 0;
 	} else {
 		spin_unlock(&ds_queue->split_queue_lock);
+```
+
 fail:
+
+```text
 		if (mapping)
 			xa_unlock(&mapping->i_pages);
 		spin_unlock_irqrestore(&pgdata->lru_lock, flags);
 		remap_page(head, thp_nr_pages(head));
 		ret = -EBUSY;
 	}
+```
+
 
 out_unlock:
+
+```text
 	if (anon_vma) {
 		anon_vma_unlock_write(anon_vma);
 		put_anon_vma(anon_vma);
 	}
 	if (mapping)
 		i_mmap_unlock_read(mapping);
+```
+
 out:
+
+```text
 	count_vm_event(!ret ? THP_SPLIT_PAGE : THP_SPLIT_PAGE_FAILED);
 	return ret;
+```
+
 }`
 
 进程页表分裂后，其实还是没能进行内存回收。当进程B也发生的页表分裂，那么由于THP大页没有大页映射，会在内存回收时拆分大页。如下所示：
@@ -306,6 +342,8 @@ out:
  当page发生反向映射时page_remove_rmap发现page的mapcount等于-1即已经没有进程对这个page进行映射。就会将此page通过deferred_split_huge_page加入链表中，在下次内存压力紧张时进行shrink拆分回收。
 
 `void page_remove_rmap(struct page *page, bool compound)
+
+```text
 {
 	lock_page_memcg(page);
     //如果是文件页，通过文件页的方式反向映射。主要是mapcount的统计差异
@@ -331,13 +369,21 @@ out:
     //如果是thp大页，把page加到deferred_split的链表， 在下次内存紧张shrink时进分裂回收
 	if (PageTransCompound(page))
 		deferred_split_huge_page(compound_head(page));
+```
+
 out:
+
+```text
 	unlock_page_memcg(page);
+```
+
 }`
 
 在反向映射时如果page已经没有进程映射了， 就会把page加到deferred_split的链表， 在下次内存紧张shrink时进分裂回收。通过deferred_split_huge_page进行。
 
 `void deferred_split_huge_page(struct page *page)
+
+```text
 {
 	struct deferred_split *ds_queue = get_deferred_split_queue(page);
 #ifdef CONFIG_MEMCG
@@ -373,11 +419,15 @@ out:
 #endif
 	}
 	spin_unlock_irqrestore(&ds_queue->split_queue_lock, flags);
+```
+
 }`
 
 在内存压力紧张时系统回调各驱动注册的shrink接口，就会调用到deferred_split_scan。这个回调会进程大页分裂和普通页释放。
 
 `static unsigned long deferred_split_scan(struct shrinker *shrink,
+
+```cpp
 		struct shrink_control *sc)
 {
 	struct pglist_data *pgdata = NODE_DATA(sc->nid);
@@ -419,7 +469,11 @@ out:
 		if (!split_huge_page(page))
 			split++;
 		unlock_page(page);
+```
+
 next:
+
+```text
         //释放page内存
 		put_page(page);
 	}
@@ -435,6 +489,8 @@ next:
 	if (!split && list_empty(&ds_queue->split_queue))
 		return SHRINK_STOP;
 	return split;
+```
+
 }`
 
 我们再来看一下split_huge_page是如何进行大页分裂的. 它会调用到split_huge_page_to_list,传入的list参数为0,表示分裂后page加到LRU list. 最终调用到__split_huge_page进行分裂.

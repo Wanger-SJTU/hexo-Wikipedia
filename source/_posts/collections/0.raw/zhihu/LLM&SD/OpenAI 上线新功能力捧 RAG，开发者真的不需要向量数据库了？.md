@@ -74,8 +74,12 @@ Milvus 是一款高度灵活、可扩展的开源向量数据库，毫秒内即�
 - 配置环境。
 
 `pip install openai==1.2.0
+
+```bash
 pip install langchain==0.0.333
 pip install pymilvus
+```
+
 
 export OPENAI_API_KEY=xxxx  # Enter your OpenAI API key here
 `
@@ -123,6 +127,8 @@ my_assistant = client.beta.assistants.create(
    name='Chat with a custom retriever',
    instructions='You will search for relevant information via retriever and answer questions based on retrieved information.',
    tools=[
+
+```text
      {
        'type': 'function',
        'function': {
@@ -138,6 +144,8 @@ my_assistant = client.beta.assistants.create(
    ],
    model='gpt-4-1106-preview',  # Switch OpenAI model here
 )
+```
+
 `
 
 - Assistant 采用异步方式调用函数工具。首先开启线程并调用 Assistant，其状态存储在名为Run 的对象中。在运行过程中，如果 Assistant 认为有必要调用CustomRetriever函数，会暂停运行等待异步提交函数调用结果。通过轮询来获取Assistant 发出调用的命令。
@@ -147,12 +155,16 @@ my_assistant = client.beta.assistants.create(
 # Create a thread.
 my_thread = client.beta.threads.create(
  messages=[
+
+```text
    {
      'role': 'user',
      'content': QUERY,
    }
  ]
 )
+```
+
 
 # Invoke a run of my_assistant on my_thread.
 my_run = client.beta.threads.runs.create(
@@ -173,19 +185,27 @@ while True:
 if my_run.status == 'requires_action':
    tool_outputs = []
    for tool_call in my_run.required_action.submit_tool_outputs.tool_calls:
+
+```text
        if tool_call.function.name == 'Custom Retriever':
            search_res = retriever.get_relevant_documents(QUERY)
            tool_outputs.append({
                'tool_call_id': tool_call.id,
                'output': ('\n\n').join([res.page_content for res in search_res])
                })
+```
+
 
    # Send retrieval results to your Run service
    client.beta.threads.runs.submit_tool_outputs(
+
+```text
        thread_id=my_thread.id,
        run_id=my_run.id,
        tool_outputs=tool_outputs
    )
+```
+
 `
 
 - 最终，提取并解析与 OpenAI Assistant 的完整对话。
@@ -193,7 +213,11 @@ if my_run.status == 'requires_action':
 `messages = client.beta.threads.messages.list(thread_id=my_thread.id)
 
 for m in messages:
+
+```python
    print(f'{m.role}: {m.content[0].text.value}\n')
+```
+
 `
 
 至此，我们已成功实现用自定义的检索功能来增强 OpenAI Assistant 的回答能力。

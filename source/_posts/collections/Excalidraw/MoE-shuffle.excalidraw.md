@@ -32,26 +32,42 @@ NonLinearity ^HIQgVDdi
 ScatterAdd ^qnhGCnec
 
 输入: input_tokens: [T, D] (T: token数量; D: 特征维度); 
+
+```text
       router_weights: [D, E] (E: 专家数量); 
       router_biases: [E]; ^n4eJ2DcI
+```
+
 
 输出: routing_scores: [T, E]; scaling_factors: [T, E]; ^EXrGVuky
 
 输出:  routed_token_indices: [K * T]; 
+
+```text
       routed_expert_indices: [K * T]; 
       routed_token_counts_per_expert: [E]; ^r4RpaFFr
+```
+
 
 输入: routing_scores: [T, E]; K (top-k路由的阈值); ^FVee3Weq
 
 输入: tokens: [K * T, D]; 
+
+```text
       weights: [E, D, HD] (HD: 隐藏维度); 
       routed_token_counts_per_expert: [E]; ^qXvzVv0r
+```
+
 
 输出: tokens: [K * T, HD] ^lnyCJcVa
 
 输入: tokens: [K * T, D]; 
+
+```text
      weights: [E, D, HD] (HD: 隐藏维度); 
      routed_token_counts_per_expert: [E]; ^yfkiTH6S
+```
+
 
 输出: tokens: [K * T, HD] ^i86Xiihe
 

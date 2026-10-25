@@ -120,6 +120,8 @@ TensorShape含义sQ((128,16), 1, (4,2), 2)(atom_m=128, atom_k=16) × num_tiles_m
 - 这确认了 V 在 smem 中存储为 `(head_dim, seq_k)` 以提高 P×V MMA 效率
 `GLOBAL MEMORY
     │
+
+```text
     ├── Q tensor: (seq_q, head_dim) - Query
     ├── K tensor: (seq_k, head_dim) - Key
     ├── V tensor: (head_dim, seq_k) - Value (transposed)
@@ -128,6 +130,8 @@ TensorShape含义sQ((128,16), 1, (4,2), 2)(atom_m=128, atom_k=16) × num_tiles_m
     │
     │ TMA Load / TMA Store
     ▼
+```
+
 SHARED MEMORY
     │
     ├── sQ: Q stages × m_block × head_dim
@@ -140,16 +144,24 @@ SHARED MEMORY
     ▼
 TENSOR MEMORY (TMEM)
     │
+
+```text
     ├── tS: Attention scores S = Q × K^T (128 × 256 elements)
     ├── tP: Softmax probabilities P = exp2(S - row_max)
     └── tO: 累积输出 O (m_block × head_dim_v)
     │
     ▼
+```
+
 REGISTERS
     │
+
+```text
     ├── tSrS: Score fragment (tmem → registers)
     ├── tSrP: Probability fragment (registers → tmem)
     └── tSrO: Output fragment (tmem → registers)`
+```
+
 
 #### 4. Execution Flow
 
@@ -280,6 +292,8 @@ sm_stats_barrier:
    - P = exp2(S * scale - row_max * scale)
    - 用新的 row_max 更新 tSrS_t2r
    - 应用 exp2 并保存到 tSrP_r2t
+
+```text
       - 对于 4 个 frg (每个 32 沿 128 列)
          - 对于 128 个 lane，每隔 2 个
             - 如果 frg 0 和 3 (ex2_emu_start_frg)
@@ -287,13 +301,19 @@ sm_stats_barrier:
             - 如果 frg 1 和 2，每隔 12 (ex2_emu_freq) 行
                - 8 (ex2_emu_freq-ex2_emu_res) 行在 SFU 上做正常 exp2
                - 4 (ex2_emu_res) 行在 ALU 上做模拟 exp2
+```
+
 7. 存储 P 到 tmem
    - 前 :
+
+```text
       - 等待 tmem st 完成 (tcgen05.wait::st)
       - 释放供 P tmem 被 PV mma 使用 (pipeline_s_p_o, p consumer (实际上是 producer))
    - 最后 :
       - 等待 tmem st 完成 (tcgen05.wait::st)
       - 释放供 P tmem 被 PV mma 使用 (pipeline_p_lastsplit)
+```
+
 8. 计算 row_sum:
    - 作为 producer 等待 pipeline_sm_stats
    - 第一次迭代: r = sum(P)
@@ -507,8 +527,12 @@ SOFT  │░░░░░░│█████████████│██�
 │  (S scores)│  (S scores)│  (O accum) │  (O accum) │
 └───────────────────────────────────────────────────┘
      │           │
+
+```text
      │ tmem_s_to_p_offset = 64
      ▼           ▼
+```
+
 ┌──────────────────────────────────────────────────────────┐
 │  tP (Softmax probabilities) 与 tS 共享存储               │
 │  tP[stage] = tS[stage] + 64 (偏移 n_block_size/2)       │

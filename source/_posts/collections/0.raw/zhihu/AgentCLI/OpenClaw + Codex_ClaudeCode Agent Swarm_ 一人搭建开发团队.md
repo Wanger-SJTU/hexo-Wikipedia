@@ -123,7 +123,11 @@ tmux send-keys -t codex-templates "The schema is in src/types/template.ts. Use t
   "startedAt": 1740268800000,
   "status": "running",
   "notifyOnComplete": true
+
+```text
 }
+```
+
 `
 
 完成后，它会更新 PR 编号和检查状态。（更多内容见步骤 5）
@@ -137,9 +141,13 @@ tmux send-keys -t codex-templates "The schema is in src/types/template.ts. Use t
     "ciPassed": true,
     "claudeReviewPassed": true,
     "geminiReviewPassed": true
+
+```text
   },
   "note": "All checks passed. Ready to merge."
 }
+```
+
 `
 
 #### 步骤3：循环监控

@@ -39,6 +39,7 @@ return logits
 1.2 每个 Block 里面发生了什么
 放大看单个 Block，结构出奇地简单——两个子层，各带一个 LayerNorm 和残差连接：
 
+```python
 class Block(nn.Module):
     def __init__(self, config):
         super().__init__()
@@ -51,6 +52,8 @@ class Block(nn.Module):
         x = x + self.attn(self.ln_1(x))
         x = x + self.mlp(self.ln_2(x))
         return x
+```
+
 两行 forward 就概括了整个 Block 的逻辑：先归一化、算注意力、加残差；再归一化、算 MLP、加残差。“先归一化再算子层”是 Pre-Norm 结构，梯度比 Post-Norm 稳定。
 
 1.3 注意力：QKV 的矩阵游戏
@@ -88,6 +91,7 @@ This is an inefficiency of decoder-only generation: the model computes represent
 
 原文给出了带 KV 缓存的注意力实现：
 
+```python
 def forward(self, x, mask=None, past_kv=None):
     b, t, d = x.shape
     d_head = d // self.num_heads
@@ -97,12 +101,16 @@ def forward(self, x, mask=None, past_kv=None):
     q = qkv[:, :, :d].view(b, t, h, d_head).transpose(1, 2)
     k = qkv[:, :, d:2*d].view(b, t, h, d_head).transpose(1, 2)
     v = qkv[:, :, 2*d:].view(b, t, h, d_head).transpose(1, 2)
+```
+
 
     # prefill 时 q,k,v 形状是 b,h,t,d
     # decode 时形状是 b,h,1,d
     # 所以在 t 维度上 cat
 
     if past_kv is not None:
+
+```text
         k_past = past_kv[0]
         v_past = past_kv[1]
         k = torch.cat((k_past, k), dim=2)
@@ -120,6 +128,8 @@ def forward(self, x, mask=None, past_kv=None):
     o_proj = self.o_proj(o)
     past_kv = (k, v)
     return o_proj, past_kv
+```
+
 注意 `torch.cat((k_past, k), dim=2)` 这行——每次解码新 token 时，把新的 K、V 追加到缓存末尾。缓存随序列长度<strong>线性增长</strong>，复杂度是 
 ![](https://www.zhihu.com/equation?tex=O%3C%21--MATH_PH_4--%3E)。每个解码步骤要从 HBM（显存）读两次 N 维向量、写两次 1 维向量，而 KV 缓存随序列长度线性膨胀。
 
@@ -148,6 +158,7 @@ n_embd: int = 768
 2.2 动手：线性注意力的实现
 原文把标准注意力换成线性注意力后，代码变成了这样：
 
+```python
 def forward(self, x, mask=None, cache=None):
     b, t, d = x.shape
     d_head = d // self.num_heads
@@ -157,8 +168,12 @@ def forward(self, x, mask=None, cache=None):
     q = qkv[:, :, :d].view(b, t, h, d_head).transpose(1, 2)
     k = qkv[:, :, d:2*d].view(b, t, h, d_head).transpose(1, 2)
     v = qkv[:, :, 2*d:].view(b, t, h, d_head).transpose(1, 2)
+```
+
 
     # 关键变换：用 ELU+1 替代 softmax 的指数
+
+```text
     k = F.elu(k) + 1
     k = k.transpose(-1, -2)
     q = F.elu(q) + 1
@@ -175,6 +190,8 @@ def forward(self, x, mask=None, cache=None):
     cache = (S, z)
 
     return o_proj, cache
+```
+
 和第一章的 KV 缓存对比，最关键的变化在缓存部分。标准注意力的缓存是 `(k, v)`——随序列增长的一堆向量。线性注意力的缓存是 `(S, z)`——两个固定大小的矩阵和向量，<strong>不管序列多长都不增长</strong>。
 
 `S = S + k @ v` 是一个外积累加：每个新 token 的 key 和 value 做外积，加到状态矩阵 S 上。读取时 `o = q @ S`，用 query 去状态里检索。`z` 记录所有 key 的累加，用来做归一化。
@@ -211,6 +228,7 @@ DeltaNet 的思路是：<strong>在写入之前，先看看这个 key 方向上�
 
 代码是这样的：
 
+```python
 def forward(self, x, mask=None, cache=None):
     b, t, d = x.shape
     d_head = d // self.num_heads
@@ -234,6 +252,8 @@ def forward(self, x, mask=None, cache=None):
     o = q @ S              # 读取，没有分母
     o = o.transpose(1, 2).contiguous().view(b, t, d)
     return self.o_proj(o), S
+```
+
 三行核心逻辑：
 
 - `v_old = k @ S`：用当前 key 去状态里检索，看看这个方向上已经存了什么。
@@ -264,6 +284,8 @@ Q 也是一个学习到的“指针”：
 S = torch.zeros(b, h, dh, dh) if cache is None else cache
 outs = []
 for i in range(t):
+
+```text
     k_i = k[:, :, i:i+1]
     v_i = v[:, :, i:i+1]
     b_i = beta[:, :, i:i+1]
@@ -271,12 +293,16 @@ for i in range(t):
     u_i  = b_i * (v_i - v_old)        # 算 delta
     S = S + k_i.transpose(-1, -2) @ u_i  # 写
     outs.append(q[:, :, i:i+1] @ S)   # 用更新后的 S 读
+```
+
 o = torch.cat(outs, dim=2)
 每个 token 的更新都依赖前一个 token 更新后的状态 S——这没法并行。即使没有 Delta 规则，纯线性注意力的 prefill 也是串行的：
 
 S = torch.zeros(b, h, dh, dh) if cache is None else cache
 outs = []
 for i in range(t):
+
+```text
     q_i = q[:, :, i:i+1]
     k_i = k[:, :, i:i+1]
     v_i = v[:, :, i:i+1]
@@ -284,6 +310,8 @@ for i in range(t):
     o = q_i @ S
     o = self.norm(o)
     outs.append(o)
+```
+
 o = torch.cat(outs, dim=2)
 GPU 最擅长的是大规模矩阵乘法，而逐 token 的串行循环完全浪费了这种能力。
 
@@ -293,6 +321,8 @@ GPU 最擅长的是大规模矩阵乘法，而逐 token 的串行循环完全浪
 S = torch.zeros(b, h, dh, dh) if cache is None else cache
 outs = []
 for i in range(t // C):
+
+```text
     q_c = q[:, :, i*C:(i+1)*C]
     k_c = k[:, :, i*C:(i+1)*C]
     v_c = v[:, :, i*C:(i+1)*C]
@@ -307,6 +337,8 @@ for i in range(t // C):
     S_new = k_c.transpose(-1, -2) @ v_c        # 递归状态更新
     S = S + S_new
     outs.append(o)
+```
+
 
 o = torch.cat(outs, dim=2)
 原文的解释非常清晰：<strong>块内做</strong>`q(kᵀv)`<strong>——先算分数，是带 mask 的标准注意力顺序。块间做</strong>`(kᵀv)q`<strong>——先更新状态再读取，是递归顺序。</strong>
@@ -334,6 +366,7 @@ S_t = S_{t-1}(I − β_t k_t k_tᵀ) + β_t v_t k_tᵀ
 o_t = S_t q_t
 这个形式允许一个块内所有 C 个 delta 一次性算出来。完整代码如下：
 
+```python
 def chunk_delta_rule_forward(Q, K, V, beta, C):
     L, d = Q.shape
     # 分块
@@ -341,8 +374,12 @@ def chunk_delta_rule_forward(Q, K, V, beta, C):
     beta = beta.reshape(-1, C)
     K_beta = K * beta.unsqueeze(-1)
     V_beta = V * beta.unsqueeze(-1)
+```
+
 
     # 用向量化前代换计算快速逆矩阵（公式 10）
+
+```text
     T = -(K_beta @ K.t()).tril(-1)
     for i in range(1, C):
         T[i, :i] = T[i, :i] + (T[i, :, None] * T[:, :i]).sum(-2)
@@ -350,8 +387,12 @@ def chunk_delta_rule_forward(Q, K, V, beta, C):
     T += torch.eye(C)
     W = T @ K_beta
     U = T @ V_beta
+```
+
 
     # 分块并行（公式 8-9）
+
+```text
     S = torch.zeros(d, d)
     O = torch.empty_like(V)
 
@@ -364,6 +405,8 @@ def chunk_delta_rule_forward(Q, K, V, beta, C):
         S += k_i.t() @ u_i          # 状态更新
         O[i] = o_intra + o_inter    # 块内 + 跨块
     return O.reshape(L, d)
+```
+
 这段代码的精髓：`u_i = U[i] - w_i @ S` 把“读取旧信息、计算 delta”这一串串行操作，变成了可以用预计算的 W、U 矩阵一次性完成的并行操作。代价是需要先算一个下三角矩阵 T（用前代换求逆），但这在块内（C=64 或 128）规模很小，可以高效完成。
 
 至此，我们有了第一个对比基准：MHA（标准多头注意力）vs DeltaNet Transformer。DeltaNet 在保持线性复杂度的同时，通过 Delta 规则实现了精确的状态更新。
@@ -455,8 +498,12 @@ gate = x[..., :d].to(torch.float32)
 up = x[..., d:].to(torch.float32)
 situ_a = self.beta * torch.tanh(gate / self.beta) * torch.sigmoid(gate)
 if self.linear_beta is not None:
+
+```text
     up = self.linear_beta * torch.tanh(up / self.linear_beta)
 return (situ_a * up).to(x.dtype)
+```
+
 模型还把共享专家的输入下投影、输出上投影——专家在压缩的潜空间中运算，前向传播快得多，FLOP 几乎减半。不过原文也提到一个工程挑战：没有融合内核的话，新激活函数比原来慢近 3 倍。
 
 7.4 剩余的改进

@@ -230,9 +230,12 @@ FlashAttention 的 向后传递需要
 二、FlashAttention 实践与性能分析
 在此采用 xformers 的 memory_efficient_attention 的实现，测试用例如下：
 
+```python
 import torch
 from xformers import ops as xops
 import time
+```
+
 
 bs = 32
 seq_len = 512
@@ -250,33 +253,51 @@ flash_value_states = value_states.transpose(1, 2)
 start_time = time.time()
 flash_attn_output = xops.memory_efficient_attention(
     flash_query_states, flash_key_states, flash_value_states,
+
+```python
     attn_bias=xops.LowerTriangularMask()
 )
 print(f&#39;flash attention time: {(time.time()-start_time)*1000} ms&#39;)
+```
+
 为验证其精确性，需要将其结果与标准 attention 对比精度，验证精度的代码如下：
 
+```python
 import math
 import torch.nn as nn
+```
+
 
 attention_mask = torch.tril(torch.ones((seq_len, seq_len), dtype=torch.bool)).view(1, 1, seq_len, seq_len)
 attention_mask = attention_mask.to(dtype=torch.float16).cuda()  # fp16 compatibility
 attention_mask = (1.0 - attention_mask) * torch.finfo(torch.float16).min
 
+```python
 def standard_attention(query_states, key_states, value_states, attention_mask):
     attn_weights = torch.matmul(query_states, key_states.transpose(2, 3)) / math.sqrt(head_dim)
     attn_weights = attn_weights + attention_mask
+```
+
 
     # upcast attention to fp32
+
+```text
     attn_weights = nn.functional.softmax(attn_weights, dim=-1, dtype=torch.float32).to(query_states.dtype)
     attn_output = torch.matmul(attn_weights, value_states)
     attn_output = attn_output.transpose(1, 2)
     return attn_output
+```
+
 
 start_time = time.time()
 attn_output = standard_attention(query_states, key_states, value_states, attention_mask)
+
+```python
 print(f&#39;standard attention time: {(time.time()-start_time)*1000} ms&#39;)
 
 print(torch.allclose(attn_output, flash_attn_output, rtol=2e-3, atol=2e-3))
+```
+
 下面比较二者的性能差异，即比较不同参数下二者 Latency 的差异(测试设备为1块A6000，Latency 数据为100次结果的平均值)：
 
 batch sizeseq_lenn_headhead_dimstandard latency (ms)flash latency (ms)speedup3251216640.2420.1831.323x6451216640.5550.2722.041x12851216641.1720.4442.637x25651216645.0431.6443.067x6425616640.1120.1360.822x64102416645.4141.4603.707x642048166463.69043.6921.458x6451232641.1770.4422.663x6451240643.1791.0183.123x64512966422.0834.7714.628x64512161280.1380.09591.442x64512162560.1340.09931.357x
@@ -321,6 +342,7 @@ vLLM 的核心是 PagedAttention ，而 PagedAttention 核心则是 `attention_o
 
 首先需要构造 `query, kv cache, block_tables` 等值，输入到上述 op 中，并将结果采用 inplace 的形式输出到`output` 中。 
 
+```python
 def run_single_query_cached_kv_attention(
     num_tokens: int,
     num_heads: int,
@@ -328,7 +350,11 @@ def run_single_query_cached_kv_attention(
     block_size: int,
     num_blocks: int,
     dtype: torch.dtype,
+```
+
 ) -> None:
+
+```text
     qkv = torch.empty(num_tokens, 3, num_heads, head_size, dtype=dtype, device=&#39;cuda&#39;)
     qkv.uniform_(-1e-3, 1e-3)
     query, _, _ = qkv.unbind(dim=1)
@@ -365,8 +391,11 @@ def run_single_query_cached_kv_attention(
         block_size,
         max_context_len,
     )
+```
+
 为了验证其正确性，需要将其结果与标准模式（其实现可参考源代码，在此不予赘述）产生的结果进行对比，如下： 
 
+```text
     ref_output = torch.empty_like(query)
     ref_single_query_cached_kv_attention(
         ref_output,
@@ -378,6 +407,8 @@ def run_single_query_cached_kv_attention(
     )
     # NOTE(woosuk): Due to the difference in the data types the two implementations use for attention softmax logits and accumulation there is a small difference in the final outputs. We should use a relaxed tolerance for the test.
     assert torch.allclose(output, ref_output, atol=1e-3, rtol=1e-5)
+```
+
 <strong>3.2.2 本地性能分析与对比</strong>
 
 首先需要熟悉一下 vllm 运行完整大模型的方法，下面是一个极简版的运行 LLaMA-13B 模型的例子：
@@ -386,11 +417,15 @@ from vllm import LLM, SamplingParams
 
 # Sample prompts.
 prompts = [
+
+```text
     &#34;Hello, my name is&#34;,
     &#34;The president of the United States is&#34;,
     &#34;The capital of France is&#34;,
     &#34;The future of AI is&#34;,
 ]
+```
+
 # Create a sampling params object.
 sampling_params = SamplingParams(temperature=0.8, top_p=0.95, max_tokens=128)
 
@@ -400,9 +435,13 @@ llm = LLM(model=&#34;lmsys/vicuna-13b-v1.3&#34;)
 outputs = llm.generate(prompts, sampling_params)
 # Print the outputs.
 for output in outputs:
+
+```python
     prompt = output.prompt
     generated_text = output.outputs[0].text
     print(f&#34;Prompt: {prompt!r}, Generated text: {generated_text!r}&#34;)
+```
+
 其输出结果为：
 
 INFO 06-23 17:59:49 llm_engine.py:128] # GPU blocks: 1464, # CPU blocks: 327
@@ -433,7 +472,10 @@ python3 benchmark_throughput.py -tp 4 --dataset ShareGPT_V3_unfiltered_cleaned_s
 python3 -m entrypoints.openai.api_server --model lmsys/vicuna-13b-v1.3
 然后利用与 OpenAI API 相同的格式来查询服务器，命令如下：
 
+```text
 curl http://localhost:8000/v1/completions \-H&#34;Content-Type: application/json&#34; \-d &#39;{&#34;model&#34;: &#34;lmsys/vicuna-13b-v1.3&#34;,&#34;prompt&#34;: &#34;San Francisco is a&#34;,&#34;max_tokens&#34;: 128,&#34;temperature&#34;: 1.0 }&#39;
+```
+
 输出结果如下：
 
 {&#34;id&#34;:&#34;cmpl-4049e3ad12964d19b9f2810d0ea7a3df&#34;,&#34;object&#34;:&#34;text_completion&#34;,&#34;created&#34;:1687519516,

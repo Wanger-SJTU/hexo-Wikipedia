@@ -53,9 +53,12 @@ CPU性能验证 软件架构与开发
 
 Linux 用户可以使用三种不同的模式使用大页面：
 
+```text
 * 显式大页面(EHP)
 * 系统范围透明大页面(THP)
 * 进程范围透明大页面(THP)
+```
+
 
 让我们比较一下这些选项。首先，EHP 预先保留在虚拟内存中，而THP 则没有。这使得使用EHP 的软件包更难以交付，因为它们依赖于机器管理员所做的特定配置设置。此外，EHP 静态驻留在内存中，占用宝贵的内存空间，即使它们未使用。其次，系统范围的透明大页面非常适合快速实验。无需更改用户代码即可测试在您的应用程序中使用大页面的好处。但是，将软件包运送给客户并要求他们启用系统范围的THP 是不明智的，因为这可能会对该系统上运行的其他程序产生负面影响。通常，开发人员会识别代码中可以从大页面中受益的分配，并在这些位置使用madvise 提示（每个进程模式）。
 
@@ -84,9 +87,12 @@ HUGETLB_MORECORE=yes <your app command line> ，
 
 还有其他库允许使用大页面（非EHP）和malloc， 为了更精细地控制从代码访问大页面（即不影响每个内存分配），开发人员有以下替代方法：
 
+```text
 * 使用 MAP\_HUGETLB 标志的 MMAP[（参考代码](https://elixir.bootlin.com/linux/latest/source/tools/testing/selftests/vm/map%5Fhugetlb.c)）。
 * MMAP 使用已挂载的 HugetLBFS 文件系统中的文件（[参考代码](https://elixir.bootlin.com/linux/latest/source/tools/testing/selftests/vm/hugepage-mmap.c)）。
 * SHMGET 使用 SHM\_HUGETLB 标志（[参考代码](https://elixir.bootlin.com/linux/latest/source/tools/testing/selftests/vm/hugepage-shm.c)）。
+```
+
 
 <strong>透明大页(THP)</strong>
 
@@ -99,9 +105,12 @@ always [madvise] never
 
 如果值为always (系统范围) 或madvise (每个进程)，则THP 可供您的应用程序使用。有关每个选项的详细规范，请参见Linux 内核文档中关于THP 的内容。Linux 用户可以使用三种不同的模式使用大页面：
 
+```text
 * 显式大页面(EHP)
 * 系统范围透明大页面(THP)
 * 进程范围透明大页面(THP)
+```
+
 
 让我们比较一下这些选项。首先，EHP 预先保留在虚拟内存中，而THP 则没有。这使得使用EHP 的软件包更难以交付，因为它们依赖于机器管理员所做的特定配置设置。此外，EHP 静态驻留在内存中，占用宝贵的内存空间，即使它们未使用。其次，系统范围的透明大页面非常适合快速实验。无需更改用户代码即可测试在您的应用程序中使用大页面的好处。但是，将软件包运送给客户并要求他们启用系统范围的THP 是不明智的，因为这可能会对该系统上运行的其他程序产生负面影响。通常，开发人员会识别代码中可以从大页面中受益的分配，并在这些位置使用madvise 提示（每个进程模式）。
 
@@ -138,8 +147,11 @@ $ getconf PAGE_SIZE
 
 大页能够提升性能的原因主要有 2 点：
 
+```text
 * 减少页表条目，加快检索速度。
 * 提升 TLB 快表的命中率。
+```
+
 
 其中，TLB 是 CPU 芯片上的一个元件，硬件加速，但也非常小，通常在 16～128 个条目之间。也就是说当大页为 1GB 的时候，TLB 就能够对应到 16～128GB 之间的存储空间。
 
@@ -153,8 +165,11 @@ $ getconf PAGE_SIZE
 
 为了能以最小的代价来实现 Huge pages，Linux 引入了 hugetlb 和 hugetlbfs 这 2 个概念。
 
+```text
 * hugetlb 是记录在 TLB 中的条目，并指向 Huge pages。
 * hugetlbfs 则是一个特殊文件系统（本质是内存文件系统）。
+```
+
 
 hugetlbfs 的主要作用是使得 Application 可以根据自身需要灵活地设置虚拟地址空间的页面大小，而不需要在 Linux 操作系统层面，对全局配置进行更改。
 
@@ -172,8 +187,11 @@ hugetlbfs 的主要作用是使得 Application 可以根据自身需要灵活地
 
 使用 Huge pages 的好处是很明显的，假设应用程序需要 2MB 的内存。
 
+```text
 * 当操作系统以 4KB 作为分页的单位，则需要 512 个页面，进而在 TLB 中需要 512 个表项，同时也需要 512 个页表项，操作系统需要经历至少 512 次 TLB Miss 和 512 次缺页中断才能将 2MB 应用程序空间全部映射到物理内存；
 * 而当操作系统采用 2MB 作为分页的基本单位时，只需要一次 TLB Miss 和一次缺页中断，就可以为 2MB 的应用程序空间建立虚实映射，并在运行过程中无需再经历 TLB Miss 和缺页中断（假设未发生 TLB 项替换）。
+```
+
 
 此外，使用 Huge pages 还能减少系统管理和 CPU 访问内存页的时间（扩大了 TLB 快页表查询的内存地址范围）。合理设置大页面能减少内存操作的负担，减少访问页表造成性能瓶颈的可能性，从而提升系统性能。由此，如果你的系统空间非常大时，可以考虑启用大页内存。
 

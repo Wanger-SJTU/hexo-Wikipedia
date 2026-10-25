@@ -57,11 +57,14 @@ BBQ 量化过程包含以下关键步骤：
 2.2 量化结果结构
 代码位置：OptimizedScalarQuantizer.java
 
+```cpp
 public record QuantizationResult(
     float lowerInterval,      // 量化区间下界 a
     float upperInterval,       // 量化区间上界 b
     float additionalCorrection, // 额外纠正项（范数或点积相关）
     int quantizedComponentSum  // 量化值之和 sum(q_i)
+```
+
 ) {}
 存储的纠正因子：
 
@@ -77,6 +80,7 @@ public record QuantizationResult(
 3.1 文档向量打包（1-bit）
 代码位置：ESVectorUtil.packAsBinary()
 
+```cpp
 public static void packAsBinary(int[] vector, byte[] packed) {
     // 将每 8 个 0/1 值打包到一个字节中
     // 每个字节存储 8 个维度的量化值
@@ -94,6 +98,8 @@ public static void packAsBinary(int[] vector, byte[] packed) {
         packed[i/8] = result;
     }
 }
+```
+
 打包格式示例：
 
 - 输入：[1, 0, 1, 1, 0, 0, 1, 0] (8个维度)
@@ -102,6 +108,7 @@ public static void packAsBinary(int[] vector, byte[] packed) {
 3.2 查询向量打包（4-bit）
 代码位置：ESVectorUtil.transposeHalfByte()
 
+```cpp
 public static void transposeHalfByte(int[] q, byte[] quantQueryByte) {
     // 将 4-bit 量化的查询向量进行转置打包
     // 将每个维度的 4 个 bit 分别提取到 4 个 stripe 中
@@ -110,6 +117,8 @@ public static void transposeHalfByte(int[] q, byte[] quantQueryByte) {
     // stripe[2]: 所有维度的第 2 位
     // stripe[3]: 所有维度的第 3 位
 }
+```
+
 转置打包原理：
 
 假设有 8 个维度，每个维度 4-bit 量化值：
@@ -134,18 +143,19 @@ stripe[3] (最高位): [0, 1, 0, 1, 1, 0, 1, 0]  → 字节: 0b01011010
 4.1 核心算法：ipByteBinByte
 代码位置：ESVectorUtil.ipByteBinByte() → DefaultESVectorUtilSupport.ipByteBinByteImpl()
 
+```cpp
 public static long ipByteBinByteImpl(byte[] q, byte[] d) {
     long ret = 0;
     int size = d.length;  // 文档向量的字节数
-    
+
     // q 是转置后的 4-bit 查询向量，包含 4 个 stripe
     // d 是 1-bit 文档向量，每个字节存储 8 个维度的 bit
     // q.length = d.length * 4 (因为 q 有 4 个 stripe)
-    
+
     for (int s = 0; s   B_QUERY; s++) {  // B_QUERY = 4，遍历 4 个 stripe
         int r = 0;
         long stripeRet = 0;
-        
+
         // 对每个 stripe，计算 q[stripe]   d 的 bit count
         // 使用 32 位整数批量处理以提高效率
         for (final int upperBound = d.length   -Integer.BYTES; 
@@ -155,19 +165,21 @@ public static long ipByteBinByteImpl(byte[] q, byte[] d) {
             int dValue = (int) BitUtil.VH_NATIVE_INT.get(d, r);
             stripeRet += Integer.bitCount(qStripe   dValue);
         }
-        
+
         // 处理尾部字节
         for (; r   d.length; r++) {
             stripeRet += Integer.bitCount((q[s * size + r]   d[r])   0xFF);
         }
-        
+
         // 将 stripe 结果左移 s 位并累加
         // 相当于：ret += stripeRet * (2^s)
         ret += stripeRet    s;
     }
-    
+
     return ret;
 }
+```
+
 
 4.2 算法原理详解
 
@@ -186,8 +198,12 @@ d_reconstructed[i] = ax + lx * d_quant[i]
 
 原始点积近似为：
  q, d  ≈ Σ(ay + ly * q_quant[i]/15) * (ax + lx * d_quant[i])
+
+```text
       = Σ(ay * ax + ay * lx * d_quant[i] + ax * ly * q_quant[i]/15 + lx * ly * q_quant[i] * d_quant[i] / 15)
       = ay * ax * dims + ay * lx * Σ(d_quant[i]) + ax * ly * Σ(q_quant[i])/15 + lx * ly * Σ(q_quant[i] * d_quant[i]) / 15
+```
+
 
 4.2.2 Bit 级别计算
 关键观察：
@@ -242,6 +258,7 @@ SIMD 向量化：
 5.1 核心函数：quantizedScore
 代码位置：ES818BinaryFlatVectorsScorer.quantizedScore()
 
+```cpp
 private static float quantizedScore(
     int dims,                                    // 向量维度
     VectorSimilarityFunction similarityFunction, // 相似度函数
@@ -250,10 +267,14 @@ private static float quantizedScore(
     OptimizedScalarQuantizer.QuantizationResult queryCorrections,   // 查询向量纠正因子
     byte[] d,                                    // 量化文档向量（二进制打包）
     OptimizedScalarQuantizer.QuantizationResult indexCorrections   // 文档向量纠正因子
+```
+
 ) {
+
+```text
     // 步骤 1: 计算量化向量的点积（bit 级别计算）
     float qcDist = ESVectorUtil.ipByteBinByte(q, d);
-    
+
     // 步骤 2: 提取纠正因子
     float x1 = indexCorrections.quantizedComponentSum();  // 文档向量量化值之和
     float ax = indexCorrections.lowerInterval();          // 文档向量量化区间下界
@@ -261,11 +282,11 @@ private static float quantizedScore(
     float ay = queryCorrections.lowerInterval();          // 查询向量量化区间下界
     float ly = (queryCorrections.upperInterval() - ay) * FOUR_BIT_SCALE;  // 查询向量量化区间宽度（归一化）
     float y1 = queryCorrections.quantizedComponentSum();   // 查询向量量化值之和
-    
+
     // 步骤 3: 重构原始点积
     // score =  q_reconstructed, d_reconstructed 
     float score = ax * ay * dims + ay * lx * x1 + ax * ly * y1 + lx * ly * qcDist;
-    
+
     // 步骤 4: 根据相似度函数应用纠正
     if (similarityFunction == EUCLIDEAN) {
         // 欧氏距离：需要反转并应用平方范数纠正
@@ -284,6 +305,8 @@ private static float quantizedScore(
         return Math.max((1f + score) / 2f, 0);
     }
 }
+```
+
 
 5.2 点积重构公式推导
 
@@ -299,8 +322,12 @@ d_reconstructed[i] = ax + lx * d_quant[i]
 
 5.2.2 点积展开
  q, d  = Σ(q_reconstructed[i] * d_reconstructed[i])
+
+```text
        = Σ((ay + ly * q_quant[i]/15) * (ax + lx * d_quant[i]))
        = Σ(ay * ax + ay * lx * d_quant[i] + ax * ly * q_quant[i]/15 + lx * ly * q_quant[i] * d_quant[i]/15)
+```
+
        
 展开各项：
 1. Σ(ay * ax) = ay * ax * dims
@@ -315,7 +342,10 @@ d_reconstructed[i] = ax + lx * d_quant[i]
 - qcDist = Σ(q_quant[i] * d_quant[i])  (通过 ipByteBinByte 计算)
 注意：在代码中，ly 已经包含了 FOUR_BIT_SCALE：
 
+```text
 float ly = (queryCorrections.upperInterval() - ay) * FOUR_BIT_SCALE;
+```
+
 因此最终公式为：
 
 score = ax * ay * dims + ay * lx * x1 + ax * ly * y1 + lx * ly * qcDist
@@ -331,8 +361,12 @@ d = centroid + d_residual
 
 原始点积：
  q, d  =  centroid + q_residual, centroid + d_residual 
+
+```text
        =  centroid, centroid  +  centroid, d_residual  +  q_residual, centroid  +  q_residual, d_residual 
        = centroidDp +  centroid, d_residual  +  q_residual, centroid  +  q_residual, d_residual 
+```
+
 
 5.3.2 量化误差纠正
 量化后的点积是  q_residual_quantized, d_residual_quantized ，需要纠正为  q_residual, d_residual 。
@@ -345,88 +379,120 @@ d = centroid + d_residual
 点积/余弦相似度：
 
 score += queryCorrections.additionalCorrection() 
+
+```text
        + indexCorrections.additionalCorrection() 
        - centroidDp;
+```
+
 这里的 additionalCorrection 存储的是 residual · centroid，用于纠正中心化带来的误差。
 
 欧氏距离：
 
 score = queryCorrections.additionalCorrection() 
+
+```text
       + indexCorrections.additionalCorrection() 
       - 2 * score;
+```
+
 这里的 additionalCorrection 存储的是 ||residual||²，用于计算平方距离：
 
 ||q - d||² = ||(centroid + q_residual) - (centroid + d_residual)||²
+
+```text
            = ||q_residual - d_residual||²
            = ||q_residual||² + ||d_residual||² - 2 *  q_residual, d_residual 
            = queryCorrections.additionalCorrection() 
            + indexCorrections.additionalCorrection() 
            - 2 * score
+```
+
 
 6. 不同相似度函数的处理
 
 6.1 欧氏距离 (EUCLIDEAN)
 计算流程：
 
+```text
 if (similarityFunction == EUCLIDEAN) {
     // 1. 计算量化点积
     float score = ax * ay * dims + ay * lx * x1 + ax * ly * y1 + lx * ly * qcDist;
-    
+
     // 2. 转换为平方距离
     score = queryCorrections.additionalCorrection()  // ||q_residual||²
           + indexCorrections.additionalCorrection()  // ||d_residual||²
           - 2 * score;                                // -2 *  q_residual, d_residual 
-    
+
     // 3. 转换为相似度分数（距离越小，分数越高）
     return Math.max(1 / (1f + score), 0);
 }
+```
+
 数学推导：
 
 distance² = ||q - d||²
+
+```text
           = ||(centroid + q_residual) - (centroid + d_residual)||²
           = ||q_residual - d_residual||²
           = ||q_residual||² + ||d_residual||² - 2 *  q_residual, d_residual 
           ≈ additionalCorrection_q + additionalCorrection_d - 2 * quantized_score
+```
+
 
 similarity = 1 / (1 + distance²)
 
 6.2 点积 (DOT_PRODUCT)
 计算流程：
 
+```text
 else {
     // 1. 计算量化点积
     float score = ax * ay * dims + ay * lx * x1 + ax * ly * y1 + lx * ly * qcDist;
-    
+
     // 2. 应用纠正因子
     score += queryCorrections.additionalCorrection() 
            + indexCorrections.additionalCorrection() 
            - centroidDp;
-    
+
     // 3. 归一化到 [0, 1]
     return Math.max((1f + score) / 2f, 0);
 }
+```
+
 数学推导：
 
 dot_product =  q, d 
+
+```text
             =  centroid + q_residual, centroid + d_residual 
             ≈ quantized_score + corrections - centroidDp
+```
+
 
 similarity = (1 + dot_product) / 2  (归一化到 [0, 1])
 
 6.3 最大内积 (MAXIMUM_INNER_PRODUCT)
 计算流程：
 
+```text
 if (similarityFunction == MAXIMUM_INNER_PRODUCT) {
     float score = ...;  // 同点积计算
     return VectorUtil.scaleMaxInnerProductScore(score);
 }
+```
+
 特点：使用 scaleMaxInnerProductScore 进行额外的缩放处理，确保分数范围合理。
 
 6.4 余弦相似度 (COSINE)
 计算流程：
 
+```text
 // 同点积计算，但向量需要预先归一化
 // 余弦相似度 = 归一化向量的点积
+```
+
 注意：余弦相似度要求向量已经归一化，因此在量化前向量必须是单位向量。
 
 7. 批量评分优化
@@ -434,6 +500,7 @@ if (similarityFunction == MAXIMUM_INNER_PRODUCT) {
 7.1 批量评分函数
 代码位置：ESNextOSQVectorsScorer.scoreBulk()
 
+```cpp
 public float scoreBulk(
     byte[] q,                                    // 量化查询向量
     float queryLowerInterval,
@@ -443,10 +510,14 @@ public float scoreBulk(
     VectorSimilarityFunction similarityFunction,
     float centroidDp,
     float[] scores                              // 输出：批量评分结果
+```
+
 ) throws IOException {
+
+```cpp
     // 1. 批量计算量化点积
     quantizeScoreBulk(q, BULK_SIZE, scores);
-    
+
     // 2. 批量读取纠正因子
     in.readFloats(lowerIntervals, 0, BULK_SIZE);
     in.readFloats(upperIntervals, 0, BULK_SIZE);
@@ -454,7 +525,7 @@ public float scoreBulk(
         targetComponentSums[i] = Short.toUnsignedInt(in.readShort());
     }
     in.readFloats(additionalCorrections, 0, BULK_SIZE);
-    
+
     // 3. 批量应用纠正因子并计算最终分数
     float maxScore = Float.NEGATIVE_INFINITY;
     for (int i = 0; i   BULK_SIZE; i++) {
@@ -471,6 +542,8 @@ public float scoreBulk(
     }
     return maxScore;
 }
+```
+
 
 7.2 性能优化策略
 
@@ -519,9 +592,12 @@ public float scoreBulk(
 
 在支持的平台上，可以使用 SIMD 指令优化：
 
+```text
 // 使用 SIMD 指令并行处理多个字节
 // 利用 CPU 的 POPCNT 指令快速计算 bit count
 // 支持 AVX2、AVX-512 等指令集
+```
+
 
 9.2 内存布局优化
 纠正因子存储顺序：

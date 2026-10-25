@@ -89,6 +89,7 @@ $W_{\text{new}} = S \times i_{\text{best}}, \quad H_{\text{new}} = S \times j_{\
 `# internvl_chat/internvl/train/internvl_chat_finetune.py -> LazySupervisedDataset
 # i.e. multi_modal_multi_image_get_item: 多图处理，部分核心代码
 
+```python
 def multi_modal_multi_image_get_item(self, data_item):
     # Build transformation function
     transform = self.get_transform()
@@ -107,32 +108,52 @@ def multi_modal_multi_image_get_item(self, data_item):
     pixel_values = [transform(image) for image in images]
     pixel_values = torch.stack(pixel_values)
     num_patches = pixel_values.size(0)
+```
+
 
     # 计算多图中每张图片的visual token数量
     num_image_tokens = [self.num_image_token * num_tile for num_tile in num_tiles]
 
 # internvl_chat/internvl/train/dataset.py
 # 自适应分辨率逻辑
+
+```python
 def dynamic_preprocess(image, min_num=1, max_num=6, image_size=448, use_thumbnail=False):
     orig_width, orig_height = image.size
     aspect_ratio = orig_width / orig_height
+```
+
 
     # calculate the existing image aspect ratio
+
+```text
     target_ratios = set(
         (i, j) for n in range(min_num, max_num + 1) for i in range(1, n + 1) for j in range(1, n + 1) if
         i * j  max_num and i * j >= min_num)
     target_ratios = sorted(target_ratios, key=lambda x: x[0] * x[1])
+```
+
 
     # find the closest aspect ratio to the target
+
+```text
     target_aspect_ratio = find_closest_aspect_ratio(
         aspect_ratio, target_ratios, orig_width, orig_height, image_size)
+```
+
 
     # calculate the target width and height
+
+```text
     target_width = image_size * target_aspect_ratio[0]
     target_height = image_size * target_aspect_ratio[1]
     blocks = target_aspect_ratio[0] * target_aspect_ratio[1]
+```
+
 
     # resize the image
+
+```text
     resized_img = image.resize((target_width, target_height))
     processed_images = []
     for i in range(blocks):
@@ -150,6 +171,8 @@ def dynamic_preprocess(image, min_num=1, max_num=6, image_size=448, use_thumbnai
         thumbnail_img = image.resize((image_size, image_size))
         processed_images.append(thumbnail_img)
     return processed_images
+```
+
 `
 
 #### 3.2 Single Model Training Pipeline
@@ -197,6 +220,8 @@ def dynamic_preprocess(image, min_num=1, max_num=6, image_size=448, use_thumbnai
 
 - <strong>数据增强 - Random JPEG Compression</strong>：随机将图片进行压缩。quality level在75%到100%之间。
 `def simulate_jpeg_degradation(quality):
+
+```python
     def jpeg_degrade(img):
         with io.BytesIO() as output:
             img.convert('RGB').save(output, format='JPEG', quality=quality)
@@ -204,6 +229,8 @@ def dynamic_preprocess(image, min_num=1, max_num=6, image_size=448, use_thumbnai
             img_jpeg = Image.open(output).copy()  # Use .copy() to make sure the image is loaded in memory
         return img_jpeg
     return jpeg_degrade
+```
+
 
 # Define the JPEG compression quality range, pre-create all JPEG compression functions
 qualities = list(range(75, 101))
@@ -236,6 +263,8 @@ $$- square averaging：将每个token i 的权重设置为 w_i= \frac{1}{x^{0.5}
 <strong>可能因为我在国外呆了5年的中文表述不太好，所以将相关代码贴出来以供理解 (详细代码可看github)：</strong>
 
 `# internvl_chat/internvl/train/internvl_chat_finetune.py
+
+```python
 def len2weight(x, loss_reduction):
     if x == 0:
         return x
@@ -246,11 +275,15 @@ def len2weight(x, loss_reduction):
     if loss_reduction == 'square':
         return 1 / (x ** 0.5)
     raise NotImplementedError(loss_reduction)`
+```
+
 
 **
 
 `# internvl_chat/internvl/train/internvl_chat_finetune.py -> main
 if data_args.use_packed_ds:
+
+```text
     collator = partial(
         packed_collate_fn,
         data_collator=concat_pad_data_collator,
@@ -259,9 +292,13 @@ if data_args.use_packed_ds:
         len2weight=partial(len2weight, loss_reduction=data_args.loss_reduction),
         loss_reduction_all_gather=data_args.loss_reduction_all_gather,
     )`
+```
+
 
 `# internvl_chat/internvl/train/dataset_packed.py -> packed_collate_fn
 for feat_idx, feat in enumerate(features):
+
+```text
     data_index = feat.pop('data_index')
     curr_cu_seqlens, curr_indexes, curr_loss_weight = PackedDataset.get_cu_seqlens_and_indexes(
         data_index=data_index,
@@ -269,14 +306,22 @@ for feat_idx, feat in enumerate(features):
         labels=feat['labels'],
         len2weight=len2weight,
     )`
+```
+
 
 `# internvl_chat/internvl/train/dataset_packed.py -> get_cu_seqlens_and_indexes
+
+```python
 def get_cu_seqlens_and_indexes(
     data_index: torch.LongTensor,  # (seq_len,)
     input_ids: torch.LongTensor,   # (seq_len,)
     labels: torch.LongTensor,   # (seq_len,)
     len2weight: callable,
+```
+
 ):
+
+```text
     indexes = []
     cu_seqlens = [0]
     loss_weight = []
@@ -290,8 +335,12 @@ def get_cu_seqlens_and_indexes(
         # 更新累积序列长度
         cu_seqlens.append(cu_seqlens[-1] + num_tokens)
         assert num_tokens > 0
+```
+
 
         # 确保当前数据块的所有 data_index 都等于 i，保证数据分组的正确性
+
+```text
         curr_data_index = data_index[cu_seqlens[-2]:cu_seqlens[-2]+num_tokens]
         assert (curr_data_index == i).all(), data_index
 
@@ -303,10 +352,14 @@ def get_cu_seqlens_and_indexes(
 
     loss_weight = torch.tensor(loss_weight, dtype=torch.float32)
     return cu_seqlens, indexes, loss_weight
+```
+
 `
 
 `# internvl_chat/internvl/model/internvl_chat/modeling_internvl_chat.py -> forward
 if labels is not None and loss_weight is not None:
+
+```text
     loss_weight = torch.tensor(loss_weight, dtype=torch.float32, device=labels.device)
     # Shift so that tokens 
     shift_logits = logits[..., :-1, :].contiguous()
@@ -331,6 +384,8 @@ if labels is not None and loss_weight is not None:
     loss = loss.sum() / shift_weights_sum
     if ignore_flag:
         loss = loss * 0.0`
+```
+
 
 ### 4 数据安排
 
@@ -349,6 +404,8 @@ if labels is not None and loss_weight is not None:
 数据拼接方案，通过将多个样本拼接成长序列来减少填充，从而最大化模型输入序列容量的利用率。一般而言，我们通常考虑max token per sequence即可，因为视觉信息通过ViT+MLP已经转化成了visual token。但是，internVL的训练代码对其进行了更细的限定：同时限定<strong>语言学信息：max linguistic token per sequence</strong>以及<strong>视觉信息：max tiles per sequence</strong>。在implementation层面，是先判断是否满足<strong>max tiles per sequence</strong>再判断是否满足<strong>max linguistic token per sequence</strong>。
 
 `# internvl_chat/internvl/train/dataset_packed.py ->PackedDataset.find_buffer
+
+```python
 def find_buffer(self, buffer_list, new_sample):
     # NOTE: use `bisect` to search might be faster
 
@@ -360,8 +417,12 @@ def find_buffer(self, buffer_list, new_sample):
         if num_images_buffer + num_images_current  self.num_images_expected: #判断tiles
 
             num_merged_tokens = new_sample['input_ids'].size(0) + buffer['input_ids'].size(0)
+```
+
 
             if num_merged_tokens  self.max_packed_tokens: #判断linguistic tokens
+
+```text
                 find = True
                 find_idx = buffer_idx
                 break
@@ -369,10 +430,16 @@ def find_buffer(self, buffer_list, new_sample):
             if self.allow_overflow and len(buffer_list) >= self.max_buffer_size // 2:
                 find = True
                 find_idx = buffer_idx
+```
+
 
     if find:
+
+```text
         return buffer_list.pop(find_idx)
     return None`
+```
+
 
 ### 5 结语
 

@@ -97,24 +97,34 @@ NFU-3里sigmoid函数使用插值算法，同时使用一块RAM存储16段系数
 由于<strong>DianNao</strong>里存储结构和计算单元的限制，对原始的计算必须采用切片(tiling)才能适配到加速器上，下面分别展示了卷积层，池化层和分类层采用切片之后的伪代码。 卷积层伪代码，包括对空间局部性的优化：
 
 `for (int yy = 0; yy ¡ Nyin; yy += Ty) {
+
+```cpp
     for (int xx = 0; xx ¡ Nxin; xx += Tx) {
         for (int nnn = 0; nnn ¡ Nn; nnn += Tnn) {
             // — Original code — (excluding nn, ii loops)
             int yout = 0;
             for (int y = yy; y 
+```
+
 
 池化层伪代码，包括对空间局部性的优化：
 
 `for (int yy = 0; yy ¡ Nyin; yy += Ty) {
+
+```cpp
     for (int xx = 0; xx ¡ Nxin; xx += Tx) {
         for (int iii = 0; iii ¡ Ni; iii += Tii) {
             // — Original code — (excluding ii loop)
             int yout = 0;
             for (int y = yy; y 
+```
+
 
 分类层伪代码，包括对空间局部性的优化：
 
 `for (int nnn = 0; nnn ¡ Nn; nnn += Tnn) { // tiling for output neurons;
+
+```cpp
     for (int iii = 0; iii ¡ Ni; iii += Tii) { // tiling for input neurons;
         for (int nn = nnn; nn ¡ nnn + Tnn; nn += Tn) {
             for (int n = nn; n ¡ nn + Tn; n++)
@@ -122,6 +132,8 @@ NFU-3里sigmoid函数使用插值算法，同时使用一块RAM存储16段系数
             for (int ii = iii; ii ¡ iii + Tii; ii += Ti)
                 // — Original code
                 for (int n = nn; n 
+```
+
 
 每一层都被分解成一系列的指令来执行；大致上，一个指令对应于分类层和卷积层伪代码里的循环ii，i和n；池化层里的循环ii，i。指令保存在CP里的SRAM里，并驱动三个缓冲里的DMA和NFU执行。硬件上，这些指令实际是一个可配置的状态机完成的。每个指令有五个槽，分别对应CP，三个缓冲和NFU，具体格式如下所示： 
 
@@ -380,9 +392,13 @@ MLU支持机器学习里常见的几种计算原语，包括点乘(LR, SVM, 和D
 为了说明<strong>Cambricon</strong>指令集的用法，下面使用<strong>Cambricon</strong> 指令实现了三个简单但具有代表性的神经网络组件，即 MLP 前馈层、池化层和玻尔兹曼机 （BM） 层。为了简洁起见，省略了所有三个层的标量加载/存储指令，只列出了池化层的单个池化窗口（具有多个输入和输出特征图）的程序片段。
 
 `// $0: input size, $1: output size, $2: matrix size
+
+```text
 // $3: input address, $4: weight address
 // $5: bias address, $6: output address
 // $7-$10: temp variable address
+```
+
 VLOAD $3, $0, #100 // load input vector from address (100)
 MLOAD $4, $2, #300 // load weight matrix from address (300)
 MMV $7, $1, $4, $3, $0 // Wx
@@ -391,17 +407,25 @@ VEXP $9, $1, $8 // exp(tmp)
 VAS $10, $1, $9, #1 // 1+exp(tmp)
 VDV $6, $1, $9, $10 // y=exp(tmp)/(1+exp(tmp))
 VSTORE $6, $1, #200 // store output vector to address (200)
+
+```text
 // $0: feature map size, $1: input data size,
 // $2: output data size, $3: pooling window size ̢ 1
 // $4: x-axis loop num, $5: y-axis loop num
 // $6: input addr, $7: output addr
 // $8: y-axis stride of input
+```
+
 VLOAD $6, $1, #100 // load input neurons from address (100)
 SMOVE $5, $3 // init y
 L0: SMOVE $4, $3 // init x
 L1: VGTM $7, $0, $6, $7
+
+```text
 // feature map m, output[m]=(input[x][y][m]>output[m])?
 //                           input[x][y][m]:output[m]
+```
+
 SADD $6, $6, $0 // update input address
 SADD $4, $4, #-1 // x-
 CB #L1, $4 // if(x>0) goto L1
@@ -409,10 +433,14 @@ SADD $6, $6, $8 // update input address
 SADD $5, $5, #-1 // y-
 CB #L0, $5 // if(y>0) goto L0
 VSTORE $7, $2, #200 // stroe output neurons to address (200)
+
+```text
 // $0: visible vector size, $1: hidden vector size, $2: v-h matrix (W) size
 // $3: h-h matrix (L) size, $4: visible vector address, $5: W address
 // $6: L address, $7: bias address, $8: hidden vector address
 // $9-$17: temp variable address
+```
+
 VLOAD $4, $0, #100 // load visible vector from address (100)
 VLOAD $9, $1, #200 // load hidden vector from address (200)
 MLOAD $5, $2, #300 // load W matrix from address (300)

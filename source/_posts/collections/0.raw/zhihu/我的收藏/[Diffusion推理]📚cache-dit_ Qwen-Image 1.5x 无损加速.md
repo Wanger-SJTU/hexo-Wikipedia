@@ -33,6 +33,8 @@ pip install -U cache-dit`
 废话少说，直接贴示例代码，欢迎尝试。cache-dit为Qwen-Image提供了<strong>DBCache、TaylorSeer</strong>和<strong>cache CFG</strong>的缓存加速支持。提示：<strong>需要安装最新的cache-dit以及最新的diffusers.</strong>
 
 `import os
+
+```python
 import time
 import torch
 import argparse
@@ -50,19 +52,27 @@ def get_args() -> argparse.ArgumentParser:
     parser.add_argument("--rdt", type=float, default=0.12)
     parser.add_argument("--warmup-steps", type=int, default=8)
     return parser.parse_args()
+```
+
 
 args = get_args()
 print(args)
 
 pipe = QwenImagePipeline.from_pretrained(
+
+```text
     os.environ.get(
         "QWEN_IMAGE_DIR",
         "Qwen/Qwen-Image",
     ),
     torch_dtype=torch.bfloat16,
 )
+```
+
 
 if args.cache:
+
+```python
     cache_options = {
         "cache_type": CacheType.DBCache,
         "warmup_steps": args.warmup_steps,
@@ -93,6 +103,8 @@ if args.cache:
     cache_dit.enable_cache(pipe, **cache_options)
 else:
     cache_type_str = "NONE"
+```
+
 
 # Enable memory savings
 pipe.enable_model_cpu_offload()
@@ -100,7 +112,11 @@ pipe.enable_model_cpu_offload()
 positive_magic = {
     "en": "Ultra HD, 4K, cinematic composition.",  # for english prompt,
     "zh": "超清，4K，电影级构图",  # for chinese prompt,
+
+```text
 }
+```
+
 
 # Generate image
 prompt = """A coffee shop entrance features a chalkboard sign reading "Qwen Coffee   $2 per cup," with a neon light beside it displaying "通义千问". Next to it hangs a poster showing a beautiful Chinese woman, and beneath the poster is written "π≈3.1415926-53589793-23846264-33832795-02384197". Ultra HD, 4K, cinematic composition"""
@@ -111,6 +127,8 @@ negative_prompt = (
 
 # Generate with different aspect ratios
 aspect_ratios = {
+
+```text
     "1:1": (1328, 1328),
     "16:9": (1664, 928),
     "9:16": (928, 1664),
@@ -119,6 +137,8 @@ aspect_ratios = {
     "3:2": (1584, 1056),
     "2:3": (1056, 1584),
 }
+```
+
 
 width, height = aspect_ratios["16:9"]
 
@@ -126,6 +146,8 @@ start = time.time()
 
 # do_true_cfg = true_cfg_scale > 1 and has_neg_prompt
 image = pipe(
+
+```text
     prompt=prompt + positive_magic["en"],
     negative_prompt=negative_prompt,
     width=width,
@@ -133,27 +155,41 @@ image = pipe(
     num_inference_steps=50,
     true_cfg_scale=4.0,
     generator=torch.Generator(device="cpu").manual_seed(42),
+```
+
 ).images[0]
 
 end = time.time()
 
 if hasattr(pipe.transformer, "_cached_steps"):
+
+```python
     cached_steps = pipe.transformer._cached_steps
     residual_diffs = pipe.transformer._residual_diffs
     print(f"Cache Steps: {len(cached_steps)}, {cached_steps}")
     print(f"Residual Diffs: {len(residual_diffs)}, {residual_diffs}")
+```
+
 if hasattr(pipe.transformer, "_cfg_cached_steps"):
+
+```python
     cfg_cached_steps = pipe.transformer._cfg_cached_steps
     cfg_residual_diffs = pipe.transformer._cfg_residual_diffs
     print(f"CFG Cache Steps: {len(cfg_cached_steps)}, {cfg_cached_steps} ")
     print(
         f"CFG Residual Diffs: {len(cfg_residual_diffs)}, {cfg_residual_diffs}"
     )
+```
+
 
 time_cost = end - start
 save_path = f"qwen-image.{cache_type_str}.png"
+
+```python
 print(f"Time cost: {time_cost:.2f}s")
 print(f"Saving image to {save_path}")
+```
+
 image.save(save_path)`
 
 运行脚本：

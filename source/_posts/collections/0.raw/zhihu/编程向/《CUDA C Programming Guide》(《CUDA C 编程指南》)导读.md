@@ -111,6 +111,8 @@ CUDA线程层级
 
 `// Kernel definition
 __global__ void VecAdd(float* A, float* B, float* C)
+
+```cpp
 {
     int i = threadIdx.x;
     C[i] = A[i] + B[i];
@@ -123,6 +125,8 @@ int main()
     VecAdd1, N>>>(A, B, C);
     ...
 }
+```
+
 `
 
 `threadIdx.x`是线程在所处线程块中的X方向的ID。由于本例中是定义的1维排布，因此X方向ID即为线程的ID。
@@ -135,6 +139,8 @@ int main()
 
 `// Kernel definition
 __global__ void MatAdd(float A[N][N], float B[N][N],
+
+```cpp
 float C[N][N])
 {
     int i = blockIdx.x * blockDim.x + threadIdx.x;
@@ -150,8 +156,14 @@ int main()
     dim3 threadsPerBlock(16, 16);
     dim3 numBlocks(N / threadsPerBlock.x, N / threadsPerBlock.y);
     MatAddnumBlocks, threadsPerBlock>>>(A, B, C);
+```
+
 ...
+
+```text
 }
+```
+
 `
 
 首先看主函数，当排布不使用1维时，需要使用`dim3`数据类型。该程序每个线程块中线程为16x16排布，而线程块的排布依赖于数据的多少。
@@ -230,6 +242,8 @@ CUDA是软件平台，其版本(CUDA7.5 CUDA8.0 CUDA10.0)与计算能力基本�
 初学者的话，上面内容能看明白的都是勇士。这里给一个例子，是我自己写的BGR转灰度图的程序，希望能让大家稍微明白一点CUDA程序如何写。
 
 `/* main.cu */
+
+```cpp
 #include *
 #include 
 #include "opencv2/highgui.hpp"  //实际上在/usr/include下
@@ -238,7 +252,11 @@ using namespace cv;
 using namespace std;
 
 //内核函数
+```
+
 __global__ void rgb2grayincuda(uchar3 * const d_in, unsigned char * const d_out, 
+
+```cpp
                                 uint imgheight, uint imgwidth)
 {
     const unsigned int idx = blockIdx.x * blockDim.x + threadIdx.x;
@@ -317,6 +335,8 @@ int main(void)
     return 0;
 
 }
+```
+
 `
 
 这里我对比了CUDA、CPU、OPENCV三种实现方式的执行时间：
@@ -392,9 +412,13 @@ PTX代码的兼容性远强于二进制代码。只要不涉及到不同架构�
 除了使用`-arch`和`-code`来分别指定C->PTX和PTX->cubin的计算能力外，还可以用`-gencode`关键字来操作，如下例：
 
 `nvcc x.cu
+
+```text
     -gencode arch=compute_35,code=sm_35
     -gencode arch=compute_50,code=sm_50
     -gencode arch=compute_60,code=\'compute_60,sm_60\'`
+```
+
 
 使用上述编译指令后，会生成3...0的cubin文件，以及6.0的PTX代码。具体内容请参考nvcc user manual。
 
@@ -443,16 +467,28 @@ CUDA运行库提供了函数以分配/释放设备端的内存，以及与主机
 另外，如果要在设备内存中定义全局变量，则需要使用使用`__constant__`或`__device__`来修饰，并使用`cudaMemcpyToSymbol()`和`cudaMemcpyFromSymbol()`来读写。如下例：
 
 `__constant__ float constData[256];
+
+```text
 float data[256];
+```
+
 cudaMemcpyToSymbol(constData, data, sizeof(data));
 cudaMemcpyFromSymbol(data, constData, sizeof(data));
 
 __device__ float devData;
+
+```text
 float value = 3.14f;
+```
+
 cudaMemcpyToSymbol(devData, &value, sizeof(float));
 
 __device__ float* devPointer;
+
+```text
 float* ptr;
+```
+
 cudaMalloc(&ptr, 256 * sizeof(float));
 cudaMemcpyToSymbol(devPointer, &ptr, sizeof(ptr));
 `
@@ -468,6 +504,8 @@ cudaMemcpyToSymbol(devPointer, &ptr, sizeof(ptr));
 `__shared__ unsigned int hist_shared[256];   //共享内存仅在线程块内共享
 
 __global__ void getGrayHistincuda_usesharemem(unsigned char * const grayData, 
+
+```cpp
                                             unsigned int * const hist,
                                             uint imgheight,
                                             uint imgwidth)  //使用共享内存加速
@@ -495,6 +533,8 @@ __global__ void getGrayHistincuda_usesharemem(unsigned char * const grayData,
     }
 
 }
+```
+
 `
 
 当然，共享内存的声明放在内核函数里面也是可以的，效果一致。
@@ -551,8 +591,12 @@ CUDA中的内存映射，指的是将CPU端的锁页内存，映射到GPU端。
 映射的内存有两个地址，一个是CPU端访问的地址，一个是GPU端访问的地址。** CPU端的地址在调用`malloc()`或`cudaHostAlloc()`时就已经返回； GPU端的地址使用`cudaHostGetDevicePointer()`函数来获取。
 
 使用内存映射有以下好处：
+
+```text
  * 使用内存映射，可以让CPU/GPU之间的数据传输隐式执行，而不需要显示的分配GPU内存并传输数据。*
 * 当设备端执行内核函数需要某一块数据时，如果数据实际上在CPU端，会给出一个PCI-E传输请求(比全局内存还慢)，从主机端内存获取数据。此时给出数据请求的线程会被换出，直到数据就位后再被换入。因此如果使用内存映射，需要使用足够多的线程来隐藏PCI-E的传输延迟。 * 内存映射可以替代流，实现数据传输和内核执行的并行  有一点不是很确定：内存映射是否会在GPU端缓存数据；据我的记忆是不会缓存的，因此多次请求同一块数据的话，会启动多个PCI-E传输，效率很低  *不清楚内存映射在GPU更新后，CPU端数据会何时更新。是在CPU访问这些数据时？还是自动更新？*
+```
+
 
 使用内存映射必须要注意的几点：
  * 由于映射的内存会被CPU和GPU两方共享，因此程序需要注意数据同步问题 * 如果要使用内存映射，必须在其他CUDA函数执行前，执行`cudaSetDeviceFlags()`并传入`cudaDeviceMapHost`，来使能设备的内存映射功能。否则`cudaHostGetDevicePointer()`函数会返回error。 * 如果设备本身不支持内存映射，则使用`cudaHostGetDevicePointer()`一定会返回error。可以通过查看设备的`canMapHostMemory`信息来确认。 * 如果使用原子操作(atomicXXX)，需要注意，主机端和设备端的同时操作是不原子的。
@@ -610,11 +654,16 @@ CUDA允许以下操作互相并行：
 下述代码是一个流的创建和销毁的例子。该程序创建了两个流，分配了两个锁页内存传输数据，依次启动了两个内核，最后销毁了这两个流。
 
 `cudaStream_t stream[2];
+
+```cpp
 for (int i = 0; i  2; ++i)
     cudaStreamCreate(&stream[i]);
 float* hostPtr;
+```
+
 cudaMallocHost(&hostPtr, 2 * size);
 
+```cpp
 for (int i = 0; i  2; ++i) {
     cudaMemcpyAsync(inputDevPtr + i * size, hostPtr + i * size,
                     size, cudaMemcpyHostToDevice, stream[i]);
@@ -626,6 +675,8 @@ for (int i = 0; i  2; ++i) {
 
 for (int i = 0; i  2; ++i)
     cudaStreamDestroy(stream[i]);
+```
+
 `
 
 从上例中可以看到，流的创建需要定义`cudaStream_t`结构，并调用`cudaStreamCreate()`来初始化。** 流的销毁需要调用`cudaStreamDestroy()`来实现。
@@ -669,15 +720,23 @@ for (int i = 0; i  2; ++i)
 下例是一个使用回调的例子。该例中，两个stream将数据拷回主机端后，会调用回调函数。
 
 `void CUDART_CB MyCallback(cudaStream_t stream, cudaError_t status, void *data){
+
+```text
     printf("Inside callback %d\n", (size_t)data);
 }
+```
+
 ...
+
+```cpp
 for (size_t i = 0; i  2; ++i) {
     cudaMemcpyAsync(devPtrIn[i], hostPtr[i], size, cudaMemcpyHostToDevice, stream[i]);
     MyKernel100, 512, 0, stream[i]>>>(devPtrOut[i], devPtrIn[i], size);
     cudaMemcpyAsync(hostPtr[i], devPtrOut[i], size, cudaMemcpyDeviceToHost, stream[i]);
     cudaStreamAddCallback(stream[i], MyCallback, (void*)i, 0);
 }
+```
+
 `
 
 回调函数中不能直接或间接的执行CUDA函数，否则会因为等待自己完成而造成死锁。 *(原因尚不太明白)*
@@ -709,14 +768,22 @@ cudaEventDestroy(stop);
 下例是一个使用Event计算时间的例子：  
 
 `cudaEventRecord(start, 0);  //记录事件(将事件压入流)，流0则代表所有流完成任务后事件才会被触发
+
+```cpp
 for (int i = 0; i  2; ++i) {
     cudaMemcpyAsync(inputDev + i * size, inputHost + i * size, size, cudaMemcpyHostToDevice, stream[i]);
     MyKernel100, 512, 0, stream[i]>>>(outputDev + i * size, inputDev + i * size, size);
     cudaMemcpyAsync(outputHost + i * size, outputDev + i * size, size, cudaMemcpyDeviceToHost, stream[i]);
 }
+```
+
 cudaEventRecord(stop, 0);
 cudaEventSynchronize(stop);
+
+```text
 float elapsedTime;
+```
+
 cudaEventElapsedTime(&elapsedTime, start, stop);    //获取两个事件发生的时间差(ms)
 `
 
@@ -728,12 +795,16 @@ cudaEventElapsedTime(&elapsedTime, start, stop);    //获取两个事件发生�
 
 `int deviceCount;
 cudaGetDeviceCount(&deviceCount);   //获取设备数量
+
+```cpp
 int device;
 for (device = 0; device  deviceCount; ++device) {
     cudaDeviceProp deviceProp;
     cudaGetDeviceProperties(&deviceProp, device);
     printf("Device %d has compute capability %d.%d.\n", device, deviceProp.major, deviceProp.minor);
 }
+```
+
 `
 
 ### 3.2.6.2 设备选择(Device Selection)
@@ -746,11 +817,19 @@ for (device = 0; device  deviceCount; ++device) {
 
 `size_t size = 1024 * sizeof(float);
 cudaSetDevice(0);   // Set device 0 as current
+
+```text
 float* p0;
+```
+
 cudaMalloc(&p0, size);  // Allocate memory on device 0
 MyKernel1000, 128>>>(p0);    // Launch kernel on device 0
 cudaSetDevice(1);   // Set device 1 as current
+
+```text
 float* p1;
+```
+
 cudaMalloc(&p1, size);  // Allocate memory on device 1
 MyKernel1000, 128>>>(p1); // Launch kernel on device 1
 `
@@ -789,15 +868,22 @@ MyKernel100, 64, 0, s0>>>(); // Launch kernel on device 1 in s0
 对等设备的的地址是统一编址的，可用同一个指针访问，如下例：
 
 `cudaSetDevice(0);   // Set device 0 as current
+
+```text
 float* p0;
+```
+
 size_t size = 1024 * sizeof(float);
 cudaMalloc(&p0, size);      // Allocate memory on device 0
 MyKernel1000, 128>>>(p0);    // Launch kernel on device 0
 cudaSetDevice(1);               // Set device 1 as current
 cudaDeviceEnablePeerAccess(0, 0);   // Enable peer-to-peer access with device 0
 
+```text
 // Launch kernel on device 1
 // This kernel launch can access memory on device 0 at address p0
+```
+
 MyKernel1000, 128>>>(p0);
 `
 
@@ -806,11 +892,19 @@ MyKernel1000, 128>>>(p0);
 对等设备的地址是统一编址的，可以使用`cudaMemcpyPeer()、cudaMemcpyPeerAsync()、cudaMemcpy3DPeer、cudaMemcpy3DPeerAsync()`来进行直接拷贝。无需先拷贝会主机端内存，再转到另一块卡上。如下例：
 
 `cudaSetDevice(0);   // Set device 0 as current
+
+```text
 float* p0;
+```
+
 size_t size = 1024 * sizeof(float);
 cudaMalloc(&p0, size);  // Allocate memory on device 0
 cudaSetDevice(1);
+
+```text
 float* p1;
+```
+
 cudaMalloc(&p1, size);  // Allocate memory on device 1
 cudaSetDevice(0);       // Set Device 0 as Current
 MyKernel1000, 128>>>(p0);    // Launch Kernel on Device 0
@@ -976,6 +1070,8 @@ NVIDIA GPU是典型的SIMT架构(Single-Instruction, Multiple-Thread Architectur
  举个例子，假如程序是按如下方式编写的：
 
 `...
+
+```text
 if(条件)
 {
     操作1
@@ -984,6 +1080,8 @@ else
 {
     操作2
 }
+```
+
 ...
 `
 
@@ -1103,9 +1201,15 @@ CUDA具有Occupancy Calculator，帮助程序员设计。
 考虑如下两个内核：
 
 `//假设gpuData是一个二维数组，尺寸为32x32
+
+```cpp
 int gpuData[32][32];  //这样是不合法的，因为这么定义实际上是在主机端，还需要拷贝到设备端，这里只是为了方便说明问题
+```
+
 
 __global__ void Kernel1(int gpuData[][32])
+
+```cpp
 {
     const int tid = blockIdx.x * blockDim.x + threadIdx.x;
     int sum = 0;
@@ -1113,8 +1217,12 @@ __global__ void Kernel1(int gpuData[][32])
         sum += gpuData[i][tid]; //行访问
     ...
 }
+```
+
 
 __global__ void Kernel2(int gpu[][32])
+
+```cpp
 {
     const int tid = blockIdx.x * blockDim.x + threadIdx.x;
     int sum = 0;
@@ -1122,6 +1230,8 @@ __global__ void Kernel2(int gpu[][32])
         sum += gpuData[tid][i]; //列访问
     ...
 }
+```
+
 `
 
 上例中，执行Kernel1的线程束中的线程，在一次循环中，32个线程依次访问`gpuData[0][0], gpuData[0][1], gpuData[0][2], ..., gpuData[0][31]`。在内存中，这32个变量是连续存储的，因此可以被合并访问。这种访问被称为行访问。
@@ -1141,6 +1251,8 @@ C/C++内建的变量(int/float等)，以及CUDA支持的向量(float2/float4等)
 一些结构体可能会产生不对齐的情况，看下例：
 
 `struct struct1{
+
+```text
     float x;
     float y;
 };
@@ -1156,6 +1268,8 @@ struct struct3 __align__(16){
     float y;
     float z;
 };
+```
+
 `
 
 上例中，struct1是8字节的结构体，自动会对齐； struct2具有12个字节，无法对齐； struct3使用了`__align__(16)`关键字，显式指定对齐到16。

@@ -62,6 +62,8 @@ FlashAttention一个ThreadBlock里每次迭代需要处理的逻辑最后整个�
 
 Is_causal 
     是否需要应用causal_mask, 与Is_local互斥，计算公式 i+k-q
+
+```text
     If causal=True, the causal mask is aligned to the bottom right corner of the attention matrix.
     For example, if seqlen_q = 2 and seqlen_k = 5, the causal mask (1 = keep, 0 = masked out) is:
         1 1 1 1 0
@@ -72,8 +74,12 @@ Is_causal
         0 0
         1 0
         1 1
+```
+
 
 Is_local
+
+```text
     是否应用sliding_window_local_attention, =(params.window_size_left  = 0 || params.window_size_left  = 0)    !Is_causal
     query位置i对应的key计算范围 [i + seqlen_k - seqlen_q - window_size[0], i + seqlen_k - seqlen_q + window_size[1]]
     (window_size_left,window_size_left) 到本函数有四种取值：
@@ -81,10 +87,16 @@ Is_local
     seq_len_k,  =0
      =0, seq_len_k
      =0,  =0
+```
+
 
 Has_alibi
+
+```text
     是否加上alibi斜率偏置，=params.alibi_slopes_ptr != nullptr
     (-alibi_slope * |i + seqlen_k - seqlen_q - j|) is added to the attention score of query i and key j.
+```
+
 
 Is_even_MN
     用kBlockM和kBlockN对seqlen_q和seqlen_k进行分块后是否能被整除，params.seqlen_k % Kernel_traits::kBlockN == 0    params.seqlen_q % Kernel_traits::kBlockM == 0
@@ -97,6 +109,7 @@ inline __device__ void compute_attn_1rowblock(const Params  params, const int bi
 
 函数开始是一些基本变量的定义，这里对kBlockM、kBlockN进行了解释，如下所示：
 
+```cpp
     // cutlass::half_t
     using Element = typename Kernel_traits::Element;
     // float
@@ -118,12 +131,15 @@ inline __device__ void compute_attn_1rowblock(const Params  params, const int bi
     constexpr int kHeadDim = Kernel_traits::kHeadDim;
     // 一个threadblock中的设置的warps数量，eg.4
     constexpr int kNWarps = Kernel_traits::kNWarps;
+```
+
 
 2. early exit处理
 接着是early exit的处理，在对QK矩阵进行block分块后，对于某些block其实是不需要处理的。例如在window attention、causal mask等场景存在n_block_max  = n_block_min的情况(这里通过计算n_block_min和n_block_max来确定K方向上需要计算的最大块号和最小块号)，这种情况下这个线程块其实是不需要进行计算的，直接输出结果即可。比如下图causal mask场景下，深色Q block对应的ThreadBlock就不需要进行计算(因为全是0)，可以直接写入存储返回。
 
 其中n_block_min和n_block_max的计算逻辑如下，
 
+```cpp
     const BlockInfo /*Varlen=*/!Is_even_MN  binfo(params, bidb);
     // m_block is blockIdx.x; (params.seqlen_q + Kernel_traits::kBlockM - 1) / Kernel_traits::kBlockM;
     if (m_block * kBlockM  = binfo.actual_seqlen_q) return;
@@ -141,9 +157,12 @@ inline __device__ void compute_attn_1rowblock(const Params  params, const int bi
         //     printf("m_block = %d, n_block_max = %d\n", m_block, n_block_max);
         // }
     }
+```
+
 
 满足条件即可写入显存然后提前返回，这里运用到了大量的CUTLASS CUTE  API：Tensor、Layout、copy等等，在代码中做了比较详细的注释。
 
+```cpp
     // 这里在因果、local-attention和MN维度非整除的三种情况下存在不需要计算的可能，即 n_block_max  = n_block_min
     // 直接设置为0后即可返回，这里使用了封装了cute::copy的flash::copy，从register 复制到 global memory。
     if ((Is_causal || Is_local || !Is_even_MN)    n_block_max  = n_block_min) {
@@ -159,7 +178,7 @@ inline __device__ void compute_attn_1rowblock(const Params  params, const int bi
         // 将LSE组织为cute::Tensor, shape是（kBlockM）
         Tensor gLSE = make_tensor(make_gmem_ptr(reinterpret_cast ElementAccum * (params.softmax_lse_ptr) + row_offset_lse),
                                   Shape Int kBlockM  {}, Stride _1 {});
-        
+
         // 按线程对Tensor进行partition，每个线程处理其中一部分
         // 这里GmemTiledCopyO 线程模型shape(16,8)；每个线程从global memory写入8个元素，写入元素shape(16, 64)；每个元素(half_t)2个字节，所以每个线程write 8*2*8=128 bit
         typename Kernel_traits::GmemTiledCopyO gmem_tiled_copy_O;
@@ -195,14 +214,21 @@ inline __device__ void compute_attn_1rowblock(const Params  params, const int bi
         }
         return;
     }
+```
+
 
 其中flash对copy进行了封装，在tiling化后的两层循环上进行了数据拷贝，如下所示。看懂这里基本上对cute的数据拷贝过程应该了解的差不多了。
 
+```text
 template  bool Is_even_MN=true, bool Is_even_K=true, bool Clear_OOB_MN=false, bool Clear_OOB_K=true,
           typename TiledCopy, typename Engine0, typename Layout0, typename Engine1, typename Layout1,
           typename Engine2, typename Layout2, typename Engine3, typename Layout3 
+```
+
 __forceinline__ __device__ void copy(TiledCopy tiled_copy, Tensor Engine0, Layout0  const  S,
                             Tensor Engine1, Layout1   D, Tensor Engine2, Layout2  const  identity_MN,
+
+```cpp
                             Tensor Engine3, Layout3  const  predicate_K, const int max_MN=0) {
     CUTE_STATIC_ASSERT_V(rank(S) == Int 3 {});
     CUTE_STATIC_ASSERT_V(rank(D) == Int 3 {});
@@ -230,10 +256,13 @@ __forceinline__ __device__ void copy(TiledCopy tiled_copy, Tensor Engine0, Layou
             cute::clear(D(_, m, _));
         }
     }
+```
+
 
 3. QKVPS数据预处理
 接下来的代码对后续即将用到的QKVP数据进行Tensor化和partition划分，主要也是应用cute进行处理，这里有个小trick，就是后面会倒着block进行迭代，所以这里初始化时偏移量直接到了最后一个block。
 
+```cpp
     // We iterate over the blocks in reverse order. This is because the last block is the only one
     // that needs masking when we read K and V from global memory. Moreover, iterating in reverse
     // might save us 1 register (we just need n_block instead of both n_block and n_block_max).   
@@ -241,7 +270,7 @@ __forceinline__ __device__ void copy(TiledCopy tiled_copy, Tensor Engine0, Layou
         这段利用cute对QKVP的数据进行Tensor化和拆分
         S=QK, P=softmax(S), O=PV
         计算偏移量 -  得到全局内存Tensor -  得到共享内存Tensor -  得到本线程需要的全局和共享内存分片Tensor -  得到本线程需要的寄存器分片Tensor
-    
+
         q: (batch_size, seqlen_q, nheads, headdim)
         k: (batch_size, seqlen_k, nheads_k, headdim)
         v: (batch_size, seqlen_k, nheads_k, headdim)
@@ -344,10 +373,13 @@ __forceinline__ __device__ void copy(TiledCopy tiled_copy, Tensor Engine0, Layou
         #pragma unroll
         for (int k = 0; k   size(tKVpKV); ++k) { tKVpKV(k) = get 1 (tKVcKV(0, 0, k))   params.d; }
     }
+```
+
 
 4. 数据拷贝
 因为这里使用到了流水线的方式来overlap 数据拷贝和计算，所以在首次迭代前进行初始数据的异步拷贝。
 
+```cpp
     // We don't need to clear the sQ smem tiles since we'll only write out the valid outputs
     // 将Q从 global memory 异步 读取到 shared memory中， threadblock内拷贝一次即可
     flash::copy Is_even_MN, Is_even_K (gmem_tiled_copy_QKV, tQgQ, tQsQ, tQcQ, tQpQ,
@@ -383,12 +415,15 @@ __forceinline__ __device__ void copy(TiledCopy tiled_copy, Tensor Engine0, Layou
     }
 
     clear(acc_o);
+```
+
 
 5. 带mask的主体计算
 接下来进入到计算的主体，代码中拆成2个连续的循环，前一个循环处理有mask的block，后一个循环处理无mask的block。如下图简单例子所示，对于左下角block不需要mask(全部需要计算)，右下角block需要mask（部分参与计算）。
 
 首先介绍第一个循环，后一个循环流程差不太多，有些细节区别。循环里基本上就是QKVPS和output的相关计算，也就是P=Q*K，S=softmax(mask(P)), O=P*V，注释中有详细介绍。
 
+```cpp
  // acc_o shape: (MMA, MMA_M, MMA_K)
     flash::Softmax 2 * size 1 (acc_o)  softmax;
 
@@ -489,11 +524,14 @@ __forceinline__ __device__ void copy(TiledCopy tiled_copy, Tensor Engine0, Layou
             break;
         }
     }
+```
+
 
 在对其中使用的softmax和mask函数代码进行下详细介绍。
 
 softmax的实现中对算法的校准部分进行了诠释，这里再贴下算法图，可以对着注释看。
 
+```cpp
 template  int kNRows 
 struct Softmax {
 
@@ -562,9 +600,12 @@ struct Softmax {
         return lse;
     };
 };
+```
+
 
 mask部分的逻辑，这里要结合cute的拆分逻辑来看，四层for循环分别对应行和列的各2个维度，每个线程都会对mask tensor的内容进行赋值。
 
+```cpp
     // Causal_mask: whether this particular iteration needs causal masking
     template  bool Causal_mask=false, bool Is_even_MN=true, typename Engine, typename Layout 
     __forceinline__ __device__ void apply_mask(Tensor Engine, Layout   tensor_,
@@ -656,10 +697,13 @@ mask部分的逻辑，这里要结合cute的拆分逻辑来看，四层for循环
             }
         }
     };
+```
+
 
 6. 不带mask的主体计算
 这块的代码其实和上个循环差不多，注意下最后单独对全局进行了数据校准，对应paper里这个部分。
 
+```cpp
     // These are the iterations where we don't need masking on S
     for (; n_block  = n_block_min; --n_block) {
         Tensor acc_s = partition_fragment_C(tiled_mma, Shape Int kBlockM , Int kBlockN  {});  // (MMA=4, MMA_M, MMA_N)
@@ -719,10 +763,13 @@ mask部分的逻辑，这里要结合cute的拆分逻辑来看，四层for循环
     // Epilogue
     // 最后再统一校准，乘以rowsum倒数
     Tensor lse = softmax.template normalize_softmax_lse Is_dropout (acc_o, params.scale_softmax, params.rp_dropout);
+```
+
 
 7. 结果写入全局内存
 最后将output输出到全局内存中，这里流程是 寄存器- 共享内存 -  寄存器 -  全局内存，这样做的目的是对数据重新排列后最大化寄存器输出到全局内存的写入带宽。
 
+```cpp
     // Convert acc_o from fp32 to fp16/bf16
     Tensor rO = flash::convert_type Element (acc_o);
     Tensor sO = make_tensor(sQ.data(), typename Kernel_traits::SmemLayoutO{});    // (SMEM_M,SMEM_N)
@@ -785,6 +832,8 @@ mask部分的逻辑，这里要结合cute的拆分逻辑来看，四层for循环
     flash::copy Is_even_MN, Is_even_K, /*Clear_OOB_MN=*/false, /*Clear_OOB_K=*/false (
         gmem_tiled_copy_O, tOrO, tOgO, tOcO, tOpO, binfo.actual_seqlen_q - m_block * kBlockM
     );
+```
+
 
 总结
 本文描述的是(batch_size, head_num, seq_len, hidden_dim)定长输入batch情况的计算逻辑，对于变长句子组batch的varlen逻辑也是类似的，区别在于利用输入数据(total, nheads, headdim) + cu_seqlens_q + cu_seqlens_k生成偏移量和qk实际长度k_offset,q_offset,actual_seqlen_k,actual_seqlen_q的逻辑，这里也比较简单直接就不再详细叙述了。
@@ -850,7 +899,11 @@ Jayce
 flash::gemm /*A_in_regs=*/Kernel_traits::Is_Q_in_regs (
             acc_s, tSrQ, tSrK, tSsQ, tSsK, tiled_mma, smem_tiled_copy_Q, smem_tiled_copy_K,
             smem_thr_copy_Q, smem_thr_copy_K
+
+```text
         );
+```
+
 
 t代表thread，S代表计算目标，r代表register，s代表shared memory， QK代表计算源。
 

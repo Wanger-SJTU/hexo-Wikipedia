@@ -121,6 +121,8 @@ W/W2<strong>4）</strong>表示单个通道的数据类型，<strong>8B/16B/4H/8
 `SQRSHRN2` 表示对向量进行 Rouding 类型的右移操作，并对结果做饱和计算，最后将结果赋给目的向量的高半部分，并保持低半部分不改变，具体示例如下
 
 `// 指令语句作用：
+
+```text
 //             将 V2 向量中每个元素按照 Rounding 方式右移动 2 位，然后对结果做饱和操作, 
 //             并将结果保存到V0上半部分，而且保证V0的下半部分保持不变
 // 指令格式说明：
@@ -131,12 +133,17 @@ W/W2<strong>4）</strong>表示单个通道的数据类型，<strong>8B/16B/4H/8
 //                N2 -- 表示将结果保存到输出向量的高 64bit
 //             V2.2D -- 表示输入向量寄存器，长度为 128bit，一共两个通道，每个通道 64bit
 //             V0.4S -- 表示输出向量寄存器，长度为 128bit，一共四个通道，每个通道 32bit
+```
+
 
 SQRSHRN2 V0.4S,V2.2D,2
 
+```cpp
 // 伪代码如下:
 int shift = 2;
 int round_const = (1  (shift - 1));
+```
+
 V0[2] = SAT((V2[0] + round_const) >> shift)
 V0[3] = SAT((V2[1] + round_const) >> shift)
 `
@@ -173,6 +180,8 @@ SQRSHRN2
 `VQDMULL` 表示两向量相乘，结果乘以 2*。*
 
 `// 指令语句作用：
+
+```text
 //              64bit 向量 D1 和 D3 中每个元素对应相乘，并将结果乘以 2 
 //              最后的结果做饱和之后赋值给 128bit 向量 Q0
 //             
@@ -185,14 +194,19 @@ SQRSHRN2
 //             Q0 -- 表示输出向量寄存器，长度为 128bit
 //             D1 -- 表示输入向量寄存器，长度为 64bit
 //             D3 -- 表示输入向量寄存器，长度为 64bit
+```
+
 
 VQDMULL.S16 Q0, D1, D3
 
+```cpp
 // 伪代码
 for (int i = 0; i  4; i++)
 {
     q0[i] = SAT(d1[i] * d3[i] * 2)
 }
+```
+
 `
 
 ![](/images/collections/0.raw/zhihu/%E8%B5%B0%E5%90%91cs/asset/img_38a6c789de10.jpg)
@@ -317,10 +331,14 @@ Result_t vld[n]q>_lane_type(Scalar_t *p_addr, Vector_t M, int N);
 
 - 以交织的方式存储数据
 `// 将n个向量寄存器数据以交织方式存储到内存中, n为1~4
+
+```cpp
 void vst[n]q>_type(Scalar_t* N, Vector_t M);
 
 // 将n个寄存器的N通道数据以交织方式存储到内存中, n为1~4
 void vst[n]q>_lane_type(Scalar_t *p_addr, Vector_t M, int N);
+```
+
 `
 
 ![](/images/collections/0.raw/zhihu/%E8%B5%B0%E5%90%91cs/asset/img_b4ccc9526195.jpg)
@@ -505,8 +523,11 @@ Result_t vrshlq>_type(Vector1_t N, Vector2_t M);
 // 并保持 N 中每个元素的高 n 位保持不变
 Result_t vsriq>_n_type(Vector1_t N, Vector2_t M, int n);
 
+```text
 // 将向量 M 中各个通道先左移动 n 位, 然后将移动后元素插入到 N 对应的元素中,
 // 并保持 N 中第每个元素的低 n 位保持不变
+```
+
 Result_t vsliq>_n_type(Vector1_t N, Vector2_t M, int n);
 `
 
@@ -832,8 +853,11 @@ uint8x8_t v_border = vext_u8(v_1, v_c0, 3)
 uint32x4_t v_sum = vmovq_n_u32(0);
 uint8x16_t v_c1  = vmovq_n_u8(1);
 
+```text
 // v_src0, v_src1为两幅图的输入
 // 将做差的绝对值计算
+```
+
 uint8x16_t v_abd_res = vabdq_u8(v_src0, v_src1);
 
 // 做 vdot操作

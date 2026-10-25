@@ -51,12 +51,18 @@ C++程序默认的内存管理（new，delete，malloc，free）会频繁地在�
 memory_pool.hpp
 
 `#ifndef _MEMORY_POOL_H_
+
+```cpp
 #define _MEMORY_POOL_H_
 
 #include 
 #include 
+```
+
 
 templatesize_t BlockSize, size_t BlockNum = 10>
+
+```cpp
 class MemoryPool
 {
 public:
@@ -103,7 +109,7 @@ public:
 			for (int i = 1; i  BlockNum; i++)
 				new_chunk->blocks[i - 1].next = &(new_chunk->blocks[i]);
 			new_chunk->blocks[BlockNum - 1].next = NULL; // final block next is NULL
-			
+
 			if (!mem_chunk_head)
 				mem_chunk_head = new_chunk;
 			else
@@ -129,7 +135,7 @@ public:
 		int n = size / BlockSize;
 
 		// allocate n objects in continuous memory
-		
+
 		// FIXME: make sure n > 0
 		void* p = allocate();
 
@@ -174,6 +180,8 @@ private:
 };
 
 #endif // !_MEMORY_POOL_H_
+```
+
 `
 
 <strong>运行结果：</strong>

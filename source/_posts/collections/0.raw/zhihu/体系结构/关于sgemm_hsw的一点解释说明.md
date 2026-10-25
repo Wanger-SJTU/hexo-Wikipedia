@@ -64,6 +64,8 @@ source_url: https://zhuanlan.zhihu.com/p/426127316
 可以看到程序里面对于矩阵B的三个向量的读取，分别用了三个寄存器（ymm12，ymm13和ymm14），但对于矩阵A的四个标量的读取，只用一个ymm15寄存器，这样不会有问题吗？我们拿出程序的一段结构观察：
 
 `    vmovaps  0(%rbx), %ymm12
+
+```text
     vmovaps 32(%rbx), %ymm13
     vmovaps 64(%rbx), %ymm14
     vbroadcastss 0(%r12, %rax, 4), %ymm15
@@ -82,6 +84,8 @@ source_url: https://zhuanlan.zhihu.com/p/426127316
     vfmadd231ps %ymm12, %ymm15, %ymm9
     vfmadd231ps %ymm13, %ymm15, %ymm10
     vfmadd231ps %ymm14, %ymm15, %ymm11`
+```
+
 
 可以看到，第二条vbroadcastss指令要写入第二个标量给ymm15。从这个程序执行的性能结果分析，几乎每个周期都紧凑地有两条FMA发射出去，第二组三条FMA指令又依赖第二条vbroadcastss读取到的数据，所以这条广播指令一定被CPU乱序调度到第一组三条FMA指令更前面去了，因为LD指令本身需要4个周期。从程序逻辑来看，第一组三条FMA依赖的ymm15数据，是从第一条广播指令读取来的，但是第二条广播指令又会被调度到第一组三条FMA之前，这样数据不就乱套了吗？
 

@@ -41,6 +41,8 @@ Mark occurrences - Tips and Tricks (JDT)
 [第3320行](https://link.zhihu.com/?target=https%3A//github.com/eclipse/eclipse.jdt.ui/blob/master/org.eclipse.jdt.ui/ui/org/eclipse/jdt/internal/ui/javaeditor/JavaEditor.java%23L3320)的一段：
 
 `		if (locations == null && selectedNode instanceof Name) {
+
+```text
 			IBinding binding= ((Name)selectedNode).resolveBinding();
 			if (binding != null && markOccurrencesOfType(binding)) {
 				OccurrencesFinder finder= new OccurrencesFinder();
@@ -49,6 +51,8 @@ Mark occurrences - Tips and Tricks (JDT)
 				}
 			}
 		}`
+```
+
 
 可以看到，假如在编译器中被选定的AST节点是一个“名字”（例如说标识符），那么接下来要做的事情就是：
 
@@ -66,6 +70,8 @@ Mark occurrences - Tips and Tricks (JDT)
 假如有这样的Java代码：
 
 `class Foo {
+
+```cpp
   int bar() {             // method name "bar"
     int bar = 1;          // local variable "bar" 1
     {
@@ -74,6 +80,8 @@ Mark occurrences - Tips and Tricks (JDT)
     }
     return bar;           // local variable "bar" 1
   }
+```
+
 }`
 
 这段代码里一共出现了5次“bar”标识符，但其实背后是3个不同的符号：
@@ -88,6 +96,8 @@ Mark occurrences - Tips and Tricks (JDT)
 `ClassDeclaration "Foo"
 - MemberList
   - MethodDeclaration "bar"
+
+```text
     - signature "()I"
     - methodBody
       - StatementOrDeclarationList
@@ -109,6 +119,8 @@ Mark occurrences - Tips and Tricks (JDT)
           - ReturnStatement
             - value
               - VariableReference "bar" // 1`
+```
+
 
 可以看到，通过语法分析，构造出来的AST足以区分5次"bar"出现的地方各自代表的意义。所以，例如选定baz的初始化表达式中的bar时，就只有局部变量"bar" 2会被高亮，而另外两个"bar"实体都不会被高亮。
 
@@ -119,8 +131,12 @@ Mark occurrences - Tips and Tricks (JDT)
 换个更简单的例子再体会一下：
 
 `  public void setFoo(int foo) { // parameter "foo"
+
+```text
     this.foo = foo;             // field "foo" / paramater "foo"
   }`
+```
+
 
 同样，做足语法分析就能区分this.foo与foo，而只做词法分析就会只能把它们看为同一实体。
 

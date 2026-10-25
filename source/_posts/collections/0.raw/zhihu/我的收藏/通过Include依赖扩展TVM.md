@@ -22,18 +22,26 @@ source_url: https://zhuanlan.zhihu.com/p/942317791
 - 引入了两三个非常hack的新的Schedule原语，用来更改语法树以获得更好的性能:
 `with_scaling = bool(weight_dequantize_info["with_scaling"])
 if with_scaling:
+
+```text
       sch.unsafe_rewrite_buffer_region(
           dequantize_block,
           ("read", offset + 1),
           get_param_indices(intra_index_map),
       )
+```
+
 with_zeros = bool(weight_dequantize_info["with_zeros"])
 if with_zeros:
+
+```text
       sch.unsafe_rewrite_buffer_region(
           dequantize_block,
           ("read", offset + 2),
           get_param_indices(intra_index_map),
       )
+```
+
 `
 
 - 改进和添加了TVM的几个Pass，例如针对Hopper架构的PartialSync以及TMA的支持，修复了一些目前TVM上游存在的bug.
@@ -83,6 +91,8 @@ relax_mod = welder.tune(relax_mod)
   # 当指定了 TVM 预构建路径时，直接将其作为共享库引入，而不是从源码构建
   add_library(tvm SHARED IMPORTED)
   set_target_properties(tvm PROPERTIES
+
+```text
     IMPORTED_LOCATION "${TVM_PREBUILD_PATH}/libtvm.so"
     INTERFACE_INCLUDE_DIRECTORIES "${TVM_PREBUILD_PATH}/../include"
   )
@@ -96,6 +106,8 @@ else()
   message(STATUS "TVM_PREBUILD_PATH NOT SET, will build TVM from source")
   message(STATUS "TVM_SOURCE_DIR: ${TVM_SOURCE_DIR}")
   add_subdirectory(${TVM_SOURCE_DIR} tvm EXCLUDE_FROM_ALL)
+```
+
 endif()
 `
 
@@ -163,15 +175,21 @@ target_link_libraries(tilelang PUBLIC tvm_runtime)`
 在[src](https://link.zhihu.com/?target=https%3A//github.com/LeiWang1999/TVM.CMakeExtend/tree/main/src)下面, 我放置了对tvm扩展的例子，包括优化的pass，新的codegen等，在自己写的代码中，我们引入TVM的头文件，编写自己的Pass:
 
 `#include 
+
+```cpp
 #include 
 #include 
 #include 
 #include 
+```
+
 `
 
 在最后，我们注册一个全局接口，以供python端进行调用:
 
 `tvm::transform::Pass Simplify() {
+
+```text
     auto pass_func = [=](PrimFunc f, IRModule m, PassContext ctx) {
         arith::Analyzer analyzer;
         auto cfg = ctx->GetConfigSimplifyConfig>("tl.Simplify");
@@ -179,6 +197,8 @@ target_link_libraries(tilelang PUBLIC tvm_runtime)`
     };
     return CreatePrimFuncPass(pass_func, 0, "tl.Simplify", {});
 }
+```
+
 ​
 TVM_REGISTER_GLOBAL("tl.transform.Simplify").set_body_typed(Simplify);
 `
@@ -203,9 +223,13 @@ print(list_global_func_names())
 先load lib再`import tvm`:
 
 `import bitblas
+
+```python
 from bitblas import tvm as tvm
 from tvm._ffi.registry import list_global_func_names
 print(list_global_func_names())
+```
+
 '''
 'tl.transform.Simplify', ..., 'tir.analysis.find_anchor_block', 'tir.analysis.find_anchor_block', ...'relay._transform.InferTypeLocal', 'relay.backend.aot.CreateExecutorMetadata', 'relay.build_module._AOTExecutorCodegen', 'relay.build_module._BuildModule', 'tvm_callback_cuda_compile', 'relay.backend.CreateExecutor']
 '''
@@ -217,6 +241,8 @@ print(list_global_func_names())
 TVM_IMPORT_PYTHON_PATH = os.environ.get("TVM_IMPORT_PYTHON_PATH", None)
 ​
 if TVM_IMPORT_PYTHON_PATH is not None:
+
+```sql
     os.environ["PYTHONPATH"] = TVM_IMPORT_PYTHON_PATH + ":" + os.environ.get("PYTHONPATH", "")
     sys.path.insert(0, TVM_IMPORT_PYTHON_PATH + "/python")
 else:
@@ -224,7 +250,11 @@ else:
     if os.path.exists(install_tvm_path) and install_tvm_path not in sys.path:
         os.environ["PYTHONPATH"] = install_tvm_path + "/python:" + os.environ.get("PYTHONPATH", "")
         sys.path.insert(0, install_tvm_path + "/python")
+```
+
 ​
+
+```sql
     develop_tvm_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "3rdparty", "tvm")
     tvm_library_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "build", "tvm")
     if os.path.exists(develop_tvm_path) and develop_tvm_path not in sys.path:
@@ -232,6 +262,8 @@ else:
         sys.path.insert(0, develop_tvm_path + "/python")
     if os.environ.get("TVM_LIBRARY_PATH") is None:
         os.environ["TVM_LIBRARY_PATH"] = tvm_library_path
+```
+
 ​
 import tvm as tvm
 `

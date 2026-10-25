@@ -31,22 +31,32 @@ It is implementation-defined whether the dynamic initialization of a non-local v
 确实是每种编译器自己实现决定的。
 
 `#include 
+
+```cpp
 #include 
 #include 
 #include 
 #include 
 #include 
 using namespace std;
+```
+
 
 templatetypename Base>
+
+```cpp
 class Reflection {
 public:
    templatetypename Sub>
    static std::string type_name() {
        return TypeNameSub>::type_name();
    }
+```
+
 
    templatetypename Sub>
+
+```cpp
    static std::string type_name(Sub) {
        return TypeNameSub>::type_name();
    }
@@ -61,16 +71,24 @@ private:
     public:
         virtual Base* operator()() = 0;
     };
+```
+
 
     templatetypename T>
+
+```text
     class Allocator : public AllocatorBase{
     public:
         T* operator()() {
            return new T;
         }
     };
+```
+
 
     templatetypename Sub>
+
+```cpp
     class Registery {
     public:
        Registery() {
@@ -82,8 +100,12 @@ private:
            return typeid(Sub).name();
        }
     };
+```
+
 
     templatetypename Sub>
+
+```cpp
     class TypeName {
     public:
       static std::string type_name() {
@@ -95,14 +117,21 @@ private:
 
     static std::mapstd::string, AllocatorBase* > s_creator;
 };
+```
+
 
 templatetypename Base>
+
+```cpp
 std::mapstd::string, typename ReflectionBase>::AllocatorBase* > ReflectionBase>::s_creator;
+```
+
 
 templatetypename Base>
 templatetypename Sub>
 ReflectionBase>::RegisterySub> ReflectionBase>::TypeNameSub>::s_registery;
 
+```cpp
 class MapFn {
 public:
    virtual void call() = 0;
@@ -128,11 +157,15 @@ int main(int argc ,char** argv)
     std::string name = argv[1];
     ReflectionMapFn>::create(name)->call();  // 注意这子进程里从未显式调用过任何注册相关的代码
 }
+```
+
 `
 
 我们的项目目的是实现一个分布式计算的表示层API，有了上面的反射，这个API用起来就可以长得像下边这个样子了（现实要比这个好看不少，这里把功能简化简化再简化了）：
 
 `class ToInt: public MapFnstd::string, int> {
+
+```cpp
     int map(std::string input) const {
         return boost::lexical_castint>(input);
     }
@@ -153,11 +186,13 @@ int main(int argc, char argv) {
     p.map(ToInt())
      .reduce(Sum()) 
      .writelines("./output_dir");
-    
+
     // 只有本地执行会执行到这里，本地会把前边拼出的执行计划序列化一下，
     // 提交作业到分布式计算框架，让分布式框架在远端启动该程序
     run_workflow();
 }
+```
+
 `
 
 然后在client端把这些要执行的函数记录下来，翻译到分布式系统上，再到分布式系统上正确的位置反射出来正确的函数并执行即可。
@@ -167,6 +202,8 @@ int main(int argc, char argv) {
 C++普通类型的序列化，可以实现一些序列化类，派生自这个类：
 
 `template
+
+```cpp
 class Serde {
 public:
     typedef T ObjectType;
@@ -192,18 +229,26 @@ public:
     // for debug
     virtual std::string to_string(const T& object) const = 0;
 };
+```
+
 
 `
 
 然后，弄一个SerdeOf，用来获取一个类型默认的序列化器：
 
 `template
+
+```text
 struct SerdeOf;
+```
+
 `
 
 然后把各种常见类型都注册到SerdeOf上，例如：
 
 `template
+
+```cpp
 class ProtobufSerde : public Serde {
 public:
     virtual uint32_t serialize(const T& message, char* buffer, uint32_t buffer_size) const {
@@ -225,9 +270,15 @@ public:
 
 template
 struct SerdeOf::type
+```
+
 >::type> {
+
+```text
     typedef ProtobufSerde type;
 };
+```
+
 `
 
 这样，就实现了一套可以扩展的且原生、常见类型都不需要用户设置序列化器的序列化机制。
@@ -242,6 +293,8 @@ struct SerdeOf::type
 于是，我们试着找一个能够直接把lambda和原生函数序列化、反射、并反序列化的方法，这里是找到的一个将lambda反射的方法，但种方法只能用在没有捕获变量的情况下，也就是必须无状态。
 
 `template
+
+```cpp
 class LambdaMapFn : public MapFn {
     void call() {
         //这样构造一个lambda是经xreborner指点之后我才意识到可以这样搞的。
@@ -250,7 +303,11 @@ class LambdaMapFn : public MapFn {
 };
 
 template
+```
+
 LambdaMapFn map_lambda(F f) {
+
+```cpp
     return LambdaMapFn();
 }
 
@@ -262,6 +319,8 @@ int main(int argc ,char** argv)
         cmd += " \"" + Reflection::type_name(map_lambda([](){puts("a lambda");})) + "\"";
         std::cout ::create(name)->call(); 
 }
+```
+
 `
 
 如果捕获变量都是POD类型，则可以直接像 @vczh
@@ -276,6 +335,8 @@ int main(int argc ,char** argv)
 总之,有了这些，前述的API接口就可以变成这样了：
 
 `int main(int argc, char argv) {
+
+```cpp
     init_workflow(argc, argv);  
 
     PCollectionstd::string> p = readlines("hdfs:///input_dir/");
@@ -285,6 +346,8 @@ int main(int argc ,char** argv)
 
     run_workflow();
 }
+```
+
 `
 
 [编辑于 2019-12-30 19:09](//www.zhihu.com/question/37692782/answer/74130797)

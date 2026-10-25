@@ -102,14 +102,26 @@ Access: <strong>THTensor</strong>. It provides access to the user.
 #### Data Storage
 
 `typedef struct THStorage
+
+```text
 {
+```
+
  real *data;
  ptrdiff_t size;
+
+```cpp
  int refcount;
  char flag;
+```
+
  THAllocator *allocator;
+
+```text
  void *allocatorContext;
  struct THStorage *view;
+```
+
 } THStorage;
 `
 
@@ -119,17 +131,25 @@ Access: <strong>THTensor</strong>. It provides access to the user.
 #### Data Access
 
 `typedef struct THTensor
+
+```cpp
 {
  long *size;
  long *stride;
  int nDimension;
 
  // Attention: storage->size might be bigger than the size of tensor.
+```
+
  THStorage *storage;
  ptrdiff_t storageOffset;
+
+```cpp
  int refcount;
 
  char flag;
+```
+
 
 } THTensor;
 `
@@ -146,11 +166,16 @@ Access: <strong>THTensor</strong>. It provides access to the user.
 
 `#include 
 
+```text
 struct C10_API Allocator {
   virtual ~Allocator() = default;
+```
+
 
   virtual DataPtr allocate(size_t n) const = 0;
   virtual DeleterFnPtr raw_deleter() const {
+
+```cpp
     return nullptr;
   }
   void* raw_allocate(size_t n) {
@@ -164,6 +189,8 @@ struct C10_API Allocator {
     d(ptr);
   }
 };
+```
+
 `
 
 The `allocate` function is directly included from head file `memory`.
@@ -172,9 +199,13 @@ The `allocate` function is directly included from head file `memory`.
 
 `at::DataPtr THMapAllocator::makeDataPtr(const char *filename, int flags, size_t size, size_t* actual_size_out) {
   auto* context = new THMapAllocator(filename, flags, size);
+
+```text
   if (actual_size_out) *actual_size_out = context->size();
   return {context->data(), context, &deleteTHMapAllocator, at::DeviceType::CPU};
 }
+```
+
 `
 
 ** Default allocator is malloc/free allocator. malloc and realloc raise an error (using THError) on allocation failure.
@@ -237,6 +268,8 @@ Here's a simplified example:
 #### add.h
 
 `// add.h
+
+```cpp
 #include "general.h"
 #define CONCAT_2_EXPAND(A, B) A ## B
 #define CONCAT_2(A, B) CONCAT_2_EXPAND(A, B)
@@ -249,29 +282,41 @@ Here's a simplified example:
 #define num float
 #define Num Float
 #include "generic/add.h"
+```
+
 #undef num
 #undef Num
 
+```cpp
 #define num double
 #define Num Double
 #include "generic/add.h"
+```
+
 #undef num
 #undef Num`
 
 #### add.c
 
 `// add.c
+
+```cpp
 #include "add.h"
 
 #define num float
 #define Num Float
 #include "generic/add.c"
+```
+
 #undef num
 #undef Num
 
+```cpp
 #define num double
 #define Num Double
 #include "generic/add.c"
+```
+
 #undef num
 #undef Num`
 
@@ -279,10 +324,17 @@ Here's a simplified example:
 
 `// generic/add.h
 
+```text
 typedef struct Vector
 {
+```
+
 num *data;
+
+```cpp
 int n;
+```
+
 } Vector;
 
 extern void Vector_(add)(Vector *C, Vector *A, Vector *B);`
@@ -291,14 +343,25 @@ extern void Vector_(add)(Vector *C, Vector *A, Vector *B);`
 
 `// generic/add.c
 
+```cpp
 void Vector_(add)(Vector *C, Vector *A, Vector *B)
 {
 int i, n;
+```
+
 n = C->n;
+
+```cpp
 for(i=0;in;i++)
 {
+```
+
 C->data[i] = A->data[i] + B->data[i];
+
+```text
 }
+```
+
 }`
 
 ### An Example finding THStorage
@@ -306,10 +369,14 @@ C->data[i] = A->data[i] + B->data[i];
 I try to find the definition of THStorage, since it will give us a brief understanding of the file management structure of PyTorch, and we can also grab a basic idea of how those macros and includes are forming this huge project. We start from `torch/csrc/Storage.cpp`, and check step by step to the file included.
 
 `Storage.cpp                 ->
+
+```cpp
 #include           ->
 #include    ->
 #include    ->
 #include 
+```
+
 `
 
 Find the macro definition in `TH/generic/THStorage.h`:
@@ -320,8 +387,14 @@ Find the macro definition in `TH/generic/THStorage.h`:
 Find the structure definition in `c10/core/StorageImpl.h`:
 
 `namespace c10 {
+
+```text
 struct C10_API StorageImpl final : public c10::intrusive_ptr_target {
+```
+
 ...
+
+```text
 private:
   caffe2::TypeMeta  data_type_;  // Data type
   DataPtr data_ptr_;             // Data pointer
@@ -331,6 +404,8 @@ private:
   Allocator* allocator_;         // Data's allocator
 };
 }
+```
+
 `
 
 Therefore, the hidden real type of `THWStorage` is `at::StorageImpl`, and it is the implementation of data storage. Let's look into the definition of `THPStorage_(pynew)` at first, when the value of  `cdata` is not provided, it needs to create an implementation of class `THWStorage` using function `THWStorage_(NAME)`,  and the value of NAME can possibly be:
@@ -363,11 +438,17 @@ The declaration of function `THStorage_(NAME)` lives in `TH/generic/THStorage.h`
 Take THStorage_(newWithSize) function as an example, look into `TH/generic/THStorage.cpp` and we can find the definition:
 
 `THStorage* THStorage_(newWithSize)(ptrdiff_t size)
+
+```text
 {
   THStorage* storage = c10::make_instrusiveat::StorageImpl>(
 #ifdef THQUANTIZED
     caffe2::TypeMeta::Makequantized_t>(),
+```
+
 #else
+
+```text
     caffe2::TypeMeta::Makescalar_t>(),        // New a scalar_t type
 #endif
     size,
@@ -375,6 +456,8 @@ Take THStorage_(newWithSize) function as an example, look into `TH/generic/THSto
     true).release();
   return storage;
 }
+```
+
 `
 
 It's not hard to infer from this code block that it new a `StorageImpl`, and add an intrusive pointer pointing to one of them, at last return a pointer pointing to `StorageImpl` and destroy the intrusive pointer. Macro THStorage is `at::StorageImpl`, so this method simply new a `StorageImpl and return a pointer pointing to it. According to the definition of`c10::make_instrusive`, this work will actually be done by the constructor of StorageImpl' and it is:
@@ -539,6 +622,8 @@ DeviceType::XLA
 function.c**
 
 `int myFunction(int num)
+
+```text
 {
     if (num == 0){
         return 0;
@@ -549,6 +634,8 @@ function.c**
       else
           return 0;
     }
+```
+
 }`
 
 <strong>Compile</strong>
@@ -569,6 +656,7 @@ If this is a C++ file, you need to expose the function you want to use in an `ex
 
 `#include 
 
+```cpp
 class Foo{
     public:
         void bar(){
@@ -577,11 +665,17 @@ class Foo{
 };
 // Since ctypes can only talk to C functions, you need 
 // to provide those declaring them as extern "C"
+```
+
 
 extern "C" {
+
+```cpp
     Foo* Foo_new(){ return new Foo(); }
     void Foo_bar(Foo* foo){ foo->bar(); }
 }
+```
+
 `
 
 And then compile:
@@ -594,12 +688,15 @@ Afterward, things in Python code are similar as those in C.
 `from ctypes import cdll
 lib = cdll.LoadLibrary('./libfoo.so')
 
+```python
 class Foo(object):
     def __init__(self):
         self.obj = lib.Foo_new()
 
     def bar(self):
         lib.Foo_bar(self.obj)
+```
+
 # Once you have that you can call it like
 
 f = Foo()
@@ -613,15 +710,22 @@ A C++ Function can be exposed to Python by writing a Boost.Python wrapper:
 
 `#include **
 
+```text
 char const* greet()
 {
    return "hello, world";
 }
+```
+
 
 BOOST_PYTHON_MODULE(hello_ext)
+
+```text
 {
     using namespace boost::python;
     def("greet", greet);
+```
+
 }`
 
 That's it. We're done. We can now build this as a shared library. The resulting DLL is now visible to Python. Here's a sample Python session:
@@ -644,8 +748,12 @@ For the “ahead of time” flavor, we build our C++ extension by writing a `set
 from torch.utils import cpp_extension
 
 setup(name='lltm_cpp',
+
+```text
       ext_modules=[cpp_extension.CppExtension('lltm_cpp', ['lltm.cpp'])],
       cmdclass={'build_ext': cpp_extension.BuildExtension})`
+```
+
 
 The JIT compilation mechanism provides you with a way of compiling and loading your extensions on the fly by calling a simple function in PyTorch’s API called `torch.utils.cpp_extension.load()`. For the LLTM, this would look as simple as this:
 
@@ -661,6 +769,8 @@ The integration of our CUDA-enabled op with PyTorch is again very straightforwar
 from torch.utils.cpp_extension import BuildExtension, CUDAExtension
 
 setup(
+
+```text
     name='lltm',
     ext_modules=[
         CUDAExtension('lltm_cuda', [
@@ -671,6 +781,8 @@ setup(
     cmdclass={
         'build_ext': BuildExtension
     })`
+```
+
 
 Instead of `CppExtension()`, we now use `CUDAExtension()`. We can just specify the `.cu` file along with the `.cpp` files – the library takes care of all the hassle this entails for you. The JIT mechanism is even simpler:
 

@@ -140,8 +140,11 @@ def objective_function_semantic_similarity(params_dict):
 
  在将检索结果发送到LLM之前对其进行重新排序可以显着提高 RAG 性能。这个 LlamaIndex[笔记本](https://archive.is/o/bNbZo/https://docs.llamaindex.ai/en/stable/examples/node%5Fpostprocessor/CohereRerank.html)展示了以下之间的区别： 
 
+```text
 * 直接检索前 2 个节点而无需重新排序，导致检索不准确。
 * 通过检索前 10 个节点并使用CohereRerank重新排序并返回前 2 个节点来精确检索。
+```
+
 
 ```nix
 import os
@@ -170,12 +173,15 @@ response = query_engine.query(
 
  LlamaIndex 提供了一系列从基础到高级的检索策略，帮助我们在 RAG 管道中实现准确的检索。查看[检索器模块指南](https://archive.is/o/bNbZo/https://docs.llamaindex.ai/en/stable/module%5Fguides/querying/retriever/retrievers.html)，获取所有检索策略的完整列表，分为不同的类别。 
 
+```text
 * 每个索引的基本检索
 * 高级检索和搜索
 * 自动检索
 * 知识图检索器
 * 组合/分层检索器
 * 和更多！
+```
+
 
 ### 微调嵌入
 
@@ -262,17 +268,23 @@ reorder_response = reorder_engine.query("Did the author meet Sam Altman?")
 
  您可以采用多种策略来改进提示并纠正此问题： 
 
+```text
 * 澄清说明。
 * 简化请求并使用关键字。
 * 举例说明。
 * 迭代提示并询问后续问题。
+```
+
 
 ### 输出解析(Output parsing)
 
  可以通过以下方式使用输出解析来帮助确保所需的输出： 
 
+```text
 * 为任何提示/查询提供格式说明
 * 为 LLM 输出提供“解析”
+```
+
 
 LlamaIndex 支持与其他框架提供的输出解析模块集成，例如[Guardrails](https://archive.is/o/bNbZo/https://docs.llamaindex.ai/en/stable/module%5Fguides/querying/structured%5Foutputs/output%5Fparser.html%23guardrails)和[LangChain](https://archive.is/o/bNbZo/https://docs.llamaindex.ai/en/stable/module%5Fguides/querying/structured%5Foutputs/output%5Fparser.html%23langchain)。 请参阅下面的 LangChain 输出解析模块的示例代码片段，您可以在 LlamaIndex 中使用它。有关更多详细信息，请查看关于[输出解析模块](https://archive.is/o/bNbZo/https://docs.llamaindex.ai/en/stable/module%5Fguides/querying/structured%5Foutputs/output%5Fparser.html)的 LlamaIndex 文档。
 
@@ -325,9 +337,12 @@ print(str(response))
 
  Pydantic 程序充当通用框架，将输入字符串转换为结构化 Pydantic 对象。LlamaIndex 提供了几种类型的 Pydantic 程序： 
 
-* <strong>LLM 文本完成 Pydantic 程序</strong>：这些程序利用文本完成 API 与输出解析相结合，处理输入文本并将其转换为用户定义的结构化对象。
-* <strong>LLM 函数调用 Pydantic 程序</strong>：这些程序利用 LLM 函数调用 API，获取输入文本并将其转换为用户指定的结构化对象。
-* <strong>预打包的 Pydantic 程序</strong>：这些程序旨在将输入文本转换为预定义的结构化对象。
+```text
+* **LLM 文本完成 Pydantic 程序**：这些程序利用文本完成 API 与输出解析相结合，处理输入文本并将其转换为用户定义的结构化对象。
+* **LLM 函数调用 Pydantic 程序**：这些程序利用 LLM 函数调用 API，获取输入文本并将其转换为用户指定的结构化对象。
+* **预打包的 Pydantic 程序**：这些程序旨在将输入文本转换为预定义的结构化对象。
+```
+
 
 [请参阅下面OpenAI pydantic 程序](https://archive.is/o/bNbZo/https://docs.llamaindex.ai/en/stable/examples/output%5Fparsing/openai%5Fpydantic%5Fprogram.html)的示例代码片段。有关更多详细信息，请查看 LlamaIndex 关于[pydantic 程序](https://archive.is/o/bNbZo/https://docs.llamaindex.ai/en/stable/module%5Fguides/querying/structured%5Foutputs/pydantic%5Fprogram.html)的文档，以获取不同 pydantic 程序的笔记本/指南的链接。
 
@@ -375,9 +390,12 @@ output = program(
 
  当答案未达到您期望的正确粒度时，您可以改进检索策略。一些可能有助于解决这一痛点的主要高级检索策略包括： 
 
+```text
 * [从小到大检索](https://archive.is/o/bNbZo/https://docs.llamaindex.ai/en/stable/examples/retrievers/auto%5Fmerging%5Fretriever.html)
 * [句子窗口检索](https://archive.is/o/bNbZo/https://docs.llamaindex.ai/en/stable/examples/node%5Fpostprocessor/MetadataReplacementDemo.html)
 * [递归检索](https://archive.is/o/bNbZo/https://docs.llamaindex.ai/en/stable/examples/query%5Fengine/pdf%5Ftables/recursive%5Fretriever.html)
+```
+
 
 请参阅我的上一篇文章“[使用高级检索 LlamaPack 启动您的 RAG 管道”和“使用 Lighthouz AI 进行基准测试”，](https://archive.is/o/bNbZo/https://towardsdatascience.com/jump-start-your-rag-pipelines-with-advanced-retrieval-llamapacks-and-benchmark-with-lighthouz-ai-80a09b7c7d9d?sk=14e50a68f9ef825aaa6634365c7d9617)了解有关七个高级检索 LlamaPack 的更多详细信息。
 
@@ -389,10 +407,13 @@ output = program(
 
  比较问题在朴素的 RAG 方法中尤其表现不佳。提高 RAG 推理能力的一个好方法是添加查询理解层 ——在实际查询向量存储之前添加查询转换。以下是四种不同的查询转换： 
 
-* <strong>路由</strong>：保留初始查询，同时查明其所属的适当工具子集。然后，将这些工具指定为合适的选项。
-* <strong>查询重写</strong>：维护选定的工具，但以多种方式重新编写查询，以将其应用于同一组工具。
-* <strong>子问题</strong>：将查询分解为几个较小的问题，每个问题针对由其元数据确定的不同工具。
-* <strong>ReAct Agent 工具选择</strong>：根据原始查询，确定要使用的工具并制定要在该工具上运行的特定查询。
+```text
+* **路由**：保留初始查询，同时查明其所属的适当工具子集。然后，将这些工具指定为合适的选项。
+* **查询重写**：维护选定的工具，但以多种方式重新编写查询，以将其应用于同一组工具。
+* **子问题**：将查询分解为几个较小的问题，每个问题针对由其元数据确定的不同工具。
+* **ReAct Agent 工具选择**：根据原始查询，确定要使用的工具并制定要在该工具上运行的特定查询。
+```
+
 
 请参阅下面的示例代码片段，了解如何使用 HyDE（假设文档嵌入），这是一种查询重写技术。给定一个自然语言查询，首先生成一个假设的文档/答案。然后，该假设文档用于嵌入查找而不是原始查询。
 
@@ -446,8 +467,11 @@ nodes = pipeline.run(documents=documents, num_workers=4)
 
  ChainOfTablePack是一个基于Wang 等人创新的“chain-of-table”[论文的 LlamaPack。](https://archive.is/o/bNbZo/https://arxiv.org/abs/2401.04398)“表链”将思想链的概念与表转换和表示相结合。它使用一组受限的操作逐步转换表格，并在每个阶段将修改后的表格呈现给LLM。这种方法的一个显着优点是它能够通过有条不紊地对数据进行切片和切分，直到确定适当的子集，从而解决涉及包含多条信息的复杂表格单元的问题，从而增强表格 QA 的有效性。 查看 LlamaIndex 的[完整笔记本，](https://archive.is/o/bNbZo/https://github.com/run-llama/llama-hub/blob/main/llama%5Fhub/llama%5Fpacks/tables/chain%5Fof%5Ftable/chain%5Fof%5Ftable.ipynb)了解有关如何使用ChainOfTablePack查询结构化数据的详细信息。 混合自洽包 LLM可以通过两种主要方式对表格数据进行推理： 
 
+```text
 * 通过直接提示进行文本推理
 * 通过程序综合进行符号推理（例如，Python、SQL 等）
+```
+
 
 基于 Liu 等人的论文[Rethinking Tabular Data Understanding with Large Language Models](https://archive.is/o/bNbZo/https://arxiv.org/pdf/2312.16702v1.pdf)，LlamaIndex 开发了MixSelfConsistencyQueryEngine，它通过自我一致性机制（即多数投票）聚合文本和符号推理的结果，并实现 SoTA 性能。请参阅下面的示例代码片段。查看 LlamaIndex 的[完整笔记本](https://archive.is/o/bNbZo/https://github.com/run-llama/llama-hub/blob/main/llama%5Fhub/llama%5Fpacks/tables/mix%5Fself%5Fconsistency/mix%5Fself%5Fconsistency.ipynb)了解更多详细信息。
 
@@ -604,6 +628,7 @@ def moderate_and_query(query_engine, query):
 
 ## References:
 
+```text
 * [Seven Failure Points When Engineering a Retrieval Augmented Generation System](https://archive.is/o/bNbZo/https://arxiv.org/pdf/2401.05856.pdf)
 * [LongContextReorder](https://archive.is/o/bNbZo/https://docs.llamaindex.ai/en/stable/examples/node%5Fpostprocessor/LongContextReorder.html)
 * [Output Parsing Modules](https://archive.is/o/bNbZo/https://docs.llamaindex.ai/en/stable/module%5Fguides/querying/structured%5Foutputs/output%5Fparser.html)
@@ -620,6 +645,8 @@ def moderate_and_query(query_engine, query):
 * [Neutrino Routers](https://archive.is/o/bNbZo/https://platform.neutrinoapp.com/)
 * [Neutrino AI](https://archive.is/o/bNbZo/https://docs.llamaindex.ai/en/stable/examples/llm/neutrino.html)
 * [OpenRouter Quick Start](https://archive.is/o/bNbZo/https://openrouter.ai/docs%23quick-start)
+```
+
 
 [发布于 2024-03-11 07:34](https://www.zhihu.com/question/643138720/answer/3425882959)
 
@@ -695,16 +722,22 @@ References:
 
 RAG简单来说就是给予LLM的一些增强
 
-* <strong>引入新的信息</strong>，这些信息可能不在LLM中。
-* <strong>使用RAG控制内容来减少幻觉</strong>（模型生成与现实不符的输出），这是RAG的一个常见用途。通常的用例是提供内容给模型，并指示它仅使用该内容来回答问题，不使用LLM自有的知识，以此限制回答来自特定的知识库，减少幻觉。
+```text
+* **引入新的信息**，这些信息可能不在LLM中。
+* **使用RAG控制内容来减少幻觉**（模型生成与现实不符的输出），这是RAG的一个常见用途。通常的用例是提供内容给模型，并指示它仅使用该内容来回答问题，不使用LLM自有的知识，以此限制回答来自特定的知识库，减少幻觉。
+```
+
 
 ![](https://proxy-prod.omnivore-image-cache.app/2000x1079,sQW5k5T0QddvclOrdDaaqSl0gFUOyYkwHWDkwWl035PQ/https://picx.zhimg.com/50/v2-96ced1dd59266573a2422e82681f7799_720w.jpg?source=1def8aca)
 
   
 简单来说，RAG主要是由<strong>检索和生成</strong>两个阶段组成：
 
-* <strong>检索阶段</strong>：在检索阶段，算法搜索并检索与用户提示或问题相关的信息片段。向量数据库中查找与Query相关的数据。
-* <strong>生成阶段</strong>：大模型从增强提示及其训练数据的内部表示中提取信息，以在那一刻为用户量身定制引人入胜的答案。  
+```text
+* **检索阶段**：在检索阶段，算法搜索并检索与用户提示或问题相关的信息片段。向量数据库中查找与Query相关的数据。
+* **生成阶段**：大模型从增强提示及其训练数据的内部表示中提取信息，以在那一刻为用户量身定制引人入胜的答案。  
+```
+
 那么，基于RAG的提升方法也是从这两个极端来实现，接下来会用更简单通俗的方法讲解一下RAG存在的痛点和解决方法。  
 <strong>检索阶段：痛点和解决方案</strong>
 
@@ -722,10 +755,13 @@ RAG 模型严重依赖于检索到的上下文文档的质量。如果检索器�
   
 <strong>解决方案</strong>：
 
-* <strong>增强目标域的相关性</strong>：通过监督训练信号或模型反馈来微调检索器。
-* 采用 <strong>DPR 或 ANCE</strong> 等模型的密集检索器模型，以获得更高的召回率和相关性。
-* 尝试使用<strong>多向量表示、近似最近邻搜索和最大内积搜索</strong>来不影响准确性的情况下提高检索速度。
-* 为了真实性，使用<strong>可信度指标检索权威</strong>、值得信赖的来源。
+```text
+* **增强目标域的相关性**：通过监督训练信号或模型反馈来微调检索器。
+* 采用 **DPR 或 ANCE** 等模型的密集检索器模型，以获得更高的召回率和相关性。
+* 尝试使用**多向量表示、近似最近邻搜索和最大内积搜索**来不影响准确性的情况下提高检索速度。
+* 为了真实性，使用**可信度指标检索权威**、值得信赖的来源。
+```
+
 
 ###   
 <strong>痛点二：覆盖范围不足</strong>
@@ -735,9 +771,12 @@ RAG 模型严重依赖于检索到的上下文文档的质量。如果检索器�
   
 <strong>解决方案</strong>：
 
-* 通过<strong>集合不同来源的文档来扩展语料库</strong>，以增加覆盖的可能性。
-* <strong>设计模块化架构</strong>以添加/更新知识源，而无需完全重新培训。
-* 增加<strong>实时检索</strong>来覆盖运行时候文档覆盖度
+```text
+* 通过**集合不同来源的文档来扩展语料库**，以增加覆盖的可能性。
+* **设计模块化架构**以添加/更新知识源，而无需完全重新培训。
+* 增加**实时检索**来覆盖运行时候文档覆盖度
+```
+
 
 ###   
 <strong>痛点三：情境调节困难</strong>
@@ -745,9 +784,12 @@ RAG 模型严重依赖于检索到的上下文文档的质量。如果检索器�
 即使具有良好的检索能力，RAG 模型也常常难以正确地调节上下文文档并将外部知识合并到生成的文本中。如果没有有效的情境调节，就无法产生具体的、真实的反应。  
 <strong>解决方案</strong>：
 
-* 通过专用的<strong>交叉注意力转换器层加强情境化</strong>。
-* 具有<strong>自我监督目标的预训练语言模型</strong>，用于训练外部文本。
+```text
+* 通过专用的**交叉注意力转换器层加强情境化**。
+* 具有**自我监督目标的预训练语言模型**，用于训练外部文本。
 * 使用更好的情感实体分析方法
+```
+
 
 ###   
 <strong>痛点四：有效内容划分</strong>
@@ -756,8 +798,11 @@ RAG 模型严重依赖于检索到的上下文文档的质量。如果检索器�
 对于新增加的文档而言，RAG模型确定所需要检索的内容并用于生成是十分困难的，特别是针对长内容的处理。这就需要针对新增加的信息进行清洗和划分。  
 <strong>解决方案</strong>：
 
+```text
 * 更好的数据清洗方法，清理文档无效内容和隐私内容
-* 调整上下文数据分块大小，<strong>较小的块通常可以改善检索</strong>，但可能会导致生成过程缺乏周围的上下文
+* 调整上下文数据分块大小，**较小的块通常可以改善检索**，但可能会导致生成过程缺乏周围的上下文
+```
+
 
 ![](https://proxy-prod.omnivore-image-cache.app/728x601,sGZFGBLnL5YfZvb8eeD4CcybUa2D05ySc5ZA7ganxtuE/https://pic1.zhimg.com/50/v2-56ea1796ae39679fcf68f9a06c1908c7_720w.jpg?source=1def8aca)
 
@@ -768,9 +813,12 @@ RAG 模型严重依赖于检索到的上下文文档的质量。如果检索器�
 在检索源数据时候，需要有效的方法给检索的数据进行排名，找到最想相关的数据才能更好的得到内容。  
 <strong>解决方案</strong>：
 
+```text
 * 将元数据添加到块中，使用他们来帮助处理结果，包括日期、标记等
 * 增加多样性和相关性来进行排序器
 * 重新排名是解决相似性和相关性之间差异问题的一种解决方案
+```
+
 
 ![](https://proxy-prod.omnivore-image-cache.app/905x301,sUWbwpRG2Yb3L7dIH-zYJ5Sddxm52Alk5cgzv9DXcdRM/https://picx.zhimg.com/50/v2-573d69ba676c9f2ff5a24933acaef035_720w.jpg?source=1def8aca)
 
@@ -794,10 +842,13 @@ RAG 模型严重依赖于检索到的上下文文档的质量。如果检索器�
 由于过度依赖语言模型先验，RAG 模型经常生成<strong>看似合理但完全错误或不忠实的语句</strong>，而没有在检索到的上下文中进行验证。  
 <strong>解决方案</strong>：
 
+```text
 * 通过训练信号直接最小化产生幻觉文本的可能性。
 * 根据与上下文的不匹配自动检测制造。
-* <strong>对检索到的文档使用可信度指标</strong>，以防止对不可靠来源的限制。
-* 通过将优化<strong>重点放在上下文基础上来削弱语言模型先验。</strong>
+* **对检索到的文档使用可信度指标**，以防止对不可靠来源的限制。
+* 通过将优化**重点放在上下文基础上来削弱语言模型先验。**
+```
+
 
 ###   
 <strong>痛点二：缺乏可解释性</strong>
@@ -806,11 +857,14 @@ RAG 模型严重依赖于检索到的上下文文档的质量。如果检索器�
 与传统的 QA 系统不同，RAG 模型无法了解生成文本背后的推理。模型的可解释性仍然是含蓄和不透明的，而不是明确的。  
 <strong>解决方案</strong>：
 
+```text
 * 设计模型架构，以结构化链/图的形式明确跟踪证据和解释。
-* 实施辅助头来预测解释性证据，<strong>例如显着数据生成源的内容片段。</strong>
+* 实施辅助头来预测解释性证据，**例如显着数据生成源的内容片段。**
 * 在每个生成步骤附加有意义的上下文标签以跟踪来源。
-* 通过<strong>引用内容来源来生成描述推理</strong>的自然语言解释。
+* 通过**引用内容来源来生成描述推理**的自然语言解释。
 * 总结查询和上下文之间证明响应合理性的关键语义联系。
+```
+
 
 ![](https://proxy-prod.omnivore-image-cache.app/893x338,spzzZyOl6ekhPR8z-nqj-gdI-DmU48FRUOB9K5P-TXeo/https://picx.zhimg.com/50/v2-7d52ca9102dd48969dccc181e7742c16_720w.jpg?source=1def8aca)
 
@@ -821,11 +875,14 @@ RAG 模型严重依赖于检索到的上下文文档的质量。如果检索器�
 检索与生成的耦合阻碍了 RAG 模型与标准语言模型的延迟匹配。推理管道缺乏对需要毫秒响应的实时应用程序的优化。  
 <strong>解决方案</strong>：
 
-* 优化<strong>标记化、编码和检索推理</strong>，以最大程度地减少生成之前的开销。
-* 使用 <strong>NMSLIB、FAISS 或 ScaNN</strong> 等库采用高效的近似最近邻索引。
-* 利用<strong>模型并行性和批量检索+生成来提高管道效率。</strong>
-* 设计<strong>模型蒸馏方法</strong>，以最小的质量损失压缩检索器-生成器组合。
-* <strong>尽可能将检索转移到离线状态，以避免运行时瓶颈。</strong>
+```text
+* 优化**标记化、编码和检索推理**，以最大程度地减少生成之前的开销。
+* 使用 **NMSLIB、FAISS 或 ScaNN** 等库采用高效的近似最近邻索引。
+* 利用**模型并行性和批量检索+生成来提高管道效率。**
+* 设计**模型蒸馏方法**，以最小的质量损失压缩检索器-生成器组合。
+* **尽可能将检索转移到离线状态，以避免运行时瓶颈。**
+```
+
 
 ###   
 <strong>痛点四：个性化落地难</strong>
@@ -834,11 +891,14 @@ RAG 模型严重依赖于检索到的上下文文档的质量。如果检索器�
 在通用语料库上训练的 RAG 模型缺乏针对特定用户需求、上下文和查询生成响应的能力。如果没有个人理解，他们无法解决模棱两可的信息请求。  
 <strong>解决方案</strong>：
 
+```text
 * 设计角色上下文记忆来跟踪对话中的用户配置文件和上下文。
-* <strong>在匹配目标用户的标记查询->响应对上微调 RAG 模型。</strong>
-* 对<strong>先前对话和用户反馈</strong>进行多任务训练。
-* 利用<strong>元学习开发少量</strong>的个性化技术。
-* <strong>构建用户特定的扩展模块来补充检索语料库。</strong>
+* **在匹配目标用户的标记查询->响应对上微调 RAG 模型。**
+* 对**先前对话和用户反馈**进行多任务训练。
+* 利用**元学习开发少量**的个性化技术。
+* **构建用户特定的扩展模块来补充检索语料库。**
+```
+
 
 ![](https://proxy-prod.omnivore-image-cache.app/878x585,sA3FfHqLYRgxDWHztTTjoNHs0PChWDaA08SJiLHAgc1A/https://picx.zhimg.com/50/v2-3e218d315a52898a432a0c326674a435_720w.jpg?source=1def8aca)
 
@@ -849,11 +909,14 @@ RAG 模型严重依赖于检索到的上下文文档的质量。如果检索器�
 可能的接地响应的多样性使得使用自动化指标可靠地评估 RAG 模型输出的正确性和质量变得具有挑战性。人类评估也缺乏可扩展性。这阻碍了迭代改进。  
 <strong>解决方案</strong>：
 
+```text
 * 生成带有专家原理的带注释的测试集，以实现标准化评估。
 * 根据语义而不是 n 元语法重叠开发专门的指标。
 * 通过有针对性的自动评估，分别量化相关性、连贯性、一致性等关键轴。
 * 利用用户反馈信号作为个性化质量判断来设计在线学习方案。
 * 构建以注释而不是数字分数为中心的交互式评估界面。
+```
+
 
 ## RAG 的评价指标
 
@@ -876,6 +939,7 @@ RAG 是一种很有前途的提高 LLM 准确性和可靠性的方法，具有�
 
 ## References:
 
+```text
 * [Seven Failure Points When Engineering a Retrieval Augmented Generation System](https://archive.is/o/bNbZo/https://arxiv.org/pdf/2401.05856.pdf)
 * [Top RAG Pain Points and Solutions](https://medium.com/@bijit211987/top-rag-pain-points-and-solutions-108d348b4e5d)
 * [最具影响力的 RAG 论文](https://github.com/aishwaryanr/awesome-generative-ai-guide/blob/main/research%5Fupdates/rag%5Fresearch%5Ftable.md)
@@ -894,6 +958,8 @@ RAG 是一种很有前途的提高 LLM 准确性和可靠性的方法，具有�
 * [Neutrino Routers](https://archive.is/o/bNbZo/https://platform.neutrinoapp.com/)
 * [Neutrino AI](https://archive.is/o/bNbZo/https://docs.llamaindex.ai/en/stable/examples/llm/neutrino.html)
 * [OpenRouter Quick Start](https://archive.is/o/bNbZo/https://openrouter.ai/docs#quick-start)
+```
+
 
 [发布于 2024-05-12 14:28 ，编辑于 2024-05-12 14:37](https://www.zhihu.com/question/643138720/answer/3495870046)
 

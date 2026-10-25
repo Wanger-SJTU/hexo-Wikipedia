@@ -37,6 +37,8 @@ tvm 的guide地址：https://docs.tvm.ai/api/python/schedule.html
 <strong>cache_read(tensor, scope, readers)</strong>
 
 `produce B {
+
+```cpp
   for (i, 0, 1024) {
     B[i] = 0f
     for (k, 0, 1024) {
@@ -44,18 +46,26 @@ tvm 的guide地址：https://docs.tvm.ai/api/python/schedule.html
     }
   }
 }
+```
+
 
 ---------cutting line---------
 // attr [A.shared] storage_scope = "shared"
 allocate A.shared[float32 * 1048576]
 produce A.shared {
+
+```cpp
   for (ax0, 0, 1024) {
     for (ax1, 0, 1024) {
       A.shared[((ax0*1024) + ax1)] = A[((ax0*1024) + ax1)]
     }
   }
 }
+```
+
 produce B {
+
+```cpp
   for (i, 0, 1024) {
     B[i] = 0f
     for (k, 0, 1024) {
@@ -63,11 +73,15 @@ produce B {
     }
   }
 }
+```
+
 `
 
 <strong>cache_read将tensor读入指定存储层次scope的cache，这个设计的意义在于显式利用现有计算设备的on-chip memory hierarchy。这个例子中，会先将A的数据load到shared memory中，然后计算B。在这里，我们需要引入一个stage的概念，一个op对应一个stage，也就是通过cache_read会新增一个stage。cache_write(tensor, scope)</strong>
 
 `produce B {
+
+```cpp
   for (i, 0, 1024) {
     B[i] = 0f
     for (k, 0, 1024) {
@@ -75,11 +89,15 @@ produce B {
     }
   }
 }
+```
+
 
 ---------cutting line---------
 // attr [B.local] storage_scope = "local"
 allocate B.local[float32 * 1024]
 produce B.local {
+
+```cpp
   for (i.c, 0, 1024) {
     B.local[i.c] = 0f
     for (k, 0, 1024) {
@@ -87,11 +105,17 @@ produce B.local {
     }
   }
 }
+```
+
 produce B {
+
+```cpp
   for (i, 0, 1024) {
     B[i] = B.local[i]
   }
 }
+```
+
 `
 
 <strong>cache_write和cache_read对应，是先在shared memory中存放计算结果，最后将结果写回到global memory。当然在真实的场景中，我们往往是会将结果先放着register中，最后写回。set_scope</strong>
@@ -99,6 +123,8 @@ produce B {
 `// attr [B] storage_scope = "global"
 allocate B[float32 * 1024]
 produce B {
+
+```cpp
   for (i, 0, 1024) {
     B[i] = 0f
     for (k, 0, 1024) {
@@ -106,16 +132,24 @@ produce B {
     }
   }
 }
+```
+
 produce C {
+
+```cpp
   for (i, 0, 1024) {
     C[i] = (B[i] + 10f)
   }
 }
+```
+
 
 ---------cutting line---------
 // attr [B] storage_scope = "shared"
 allocate B[float32 * 1024]
 produce B {
+
+```cpp
   for (i, 0, 1024) {
     B[i] = 0f
     for (k, 0, 1024) {
@@ -123,11 +157,17 @@ produce B {
     }
   }
 }
+```
+
 produce C {
+
+```cpp
   for (i, 0, 1024) {
     C[i] = (B[i] + 10f)
   }
 }
+```
+
 `
 
 <strong>set_scope指定stage计算结果所在的存储层次，为tensor选择最优的存储位置，适用于设置线程间的共享内存。事实上，set_scope是cache_read的子操作。storage_align</strong>
@@ -135,13 +175,19 @@ produce C {
 `// attr [A.shared] storage_scope = "shared"
 allocate A.shared[float32 * 1048576]
 produce A.shared {
+
+```cpp
   for (ax0, 0, 1024) {
     for (ax1, 0, 1024) {
       A.shared[((ax0*1024) + ax1)] = A[((ax0*1024) + ax1)]
     }
   }
 }
+```
+
 produce B {
+
+```cpp
   for (i, 0, 1024) {
     B[i] = 0f
     for (k, 0, 1024) {
@@ -149,18 +195,26 @@ produce B {
     }
   }
 }
+```
+
 
 ---------cutting line---------
 // attr [A.shared] storage_scope = "shared"
 allocate A.shared[float32 * 1134592]
 produce A.shared {
+
+```cpp
   for (ax0, 0, 1024) {
     for (ax1, 0, 1024) {
       A.shared[((ax0*1108) + ax1)] = A[((ax0*1024) + ax1)]
     }
   }
 }
+```
+
 produce B {
+
+```cpp
   for (i, 0, 1024) {
     B[i] = 0f
     for (k, 0, 1024) {
@@ -168,6 +222,8 @@ produce B {
     }
   }
 }
+```
+
 `
 
 <strong>storage_align把stage对应的存储空间以factor为单位、以offset为偏置重新对齐，以避免GPU共享访问时的bank conflict，关于bank conflict可以参考<span class="wikilink wikilink--missing" title="未导入的页面">2</span>(#ref_2)。compute_at</strong>
@@ -175,6 +231,8 @@ produce B {
 `// attr [B.rf] storage_scope = "global"
 allocate B.rf[float32 * 32]
 produce B.rf {
+
+```cpp
   for (k.inner, 0, 32) {
     B.rf[k.inner] = 0f
     for (k.outer, 0, 32) {
@@ -182,7 +240,11 @@ produce B.rf {
     }
   }
 }
+```
+
 produce B {
+
+```text
   // attr [iter_var(threadIdx.x, , threadIdx.x)] thread_extent = 32
   // attr [reduce_temp0] storage_scope = "local"
   allocate reduce_temp0[float32 * 1]
@@ -190,9 +252,13 @@ produce B {
   tvm_thread_allreduce((uint32)1, B.rf[threadIdx.x], (bool)1, reduce_temp0, threadIdx.x)
   B[0] = reduce_temp0[0]
 }
+```
+
 
 ---------cutting line---------
 produce B {
+
+```cpp
   // attr [iter_var(threadIdx.x, , threadIdx.x)] thread_extent = 32
   // attr [B.rf] storage_scope = "local"
   allocate B.rf[float32 * 1]
@@ -208,6 +274,8 @@ produce B {
   tvm_thread_allreduce((uint32)1, B.rf[0], (bool)1, reduce_temp0, threadIdx.x)
   B[0] = reduce_temp0[0]
 }
+```
+
 `
 
 <strong>compute_at将当前的stage附着到目标stage的指定iter方向上，同时与目标stage采用相同的并行方式，在其内部完成当前stage的计算。往往compute_at会与cache_read和cache_write一起使用。compute_inline</strong>
@@ -215,13 +283,19 @@ produce B {
 `// attr [Apad] storage_scope = "global"
 allocate Apad[float32 * 1056784]
 produce Apad {
+
+```cpp
   for (yy, 0, 1028) {
     for (xx, 0, 1028) {
       Apad[((yy*1028) + xx)] = tvm_if_then_else(((((2  yy) && (yy  1026)) && (2  xx)) && (xx  1026)), A[(((yy*1024) + xx) - 2050)], 0f)
     }
   }
 }
+```
+
 produce B {
+
+```cpp
   for (yy, 0, 1026) {
     for (xx, 0, 1026) {
       B[((yy*1026) + xx)] = 0f
@@ -233,9 +307,13 @@ produce B {
     }
   }
 }
+```
+
 
 ---------cutting line---------
 produce B {
+
+```cpp
   for (yy, 0, 1026) {
     for (xx, 0, 1026) {
       B[((yy*1026) + xx)] = 0f
@@ -247,11 +325,15 @@ produce B {
     }
   }
 }
+```
+
 `
 
 <strong>compute_inline把独立的计算操作转化成内联函数形式，在使用到原计算结果时再调用内联函数完成运算，通过compute_inline来减少一个stage。compute_root</strong>
 
 `produce B {
+
+```cpp
   // attr [iter_var(threadIdx.x, , threadIdx.x)] thread_extent = 32
   // attr [B.rf] storage_scope = "local"
   allocate B.rf[float32 * 1]
@@ -267,11 +349,15 @@ produce B {
   tvm_thread_allreduce((uint32)1, B.rf[0], (bool)1, reduce_temp0, threadIdx.x)
   B[0] = reduce_temp0[0]
 }
+```
+
 
 ---------cutting line---------
 // attr [B.rf] storage_scope = "global"
 allocate B.rf[float32 * 32]
 produce B.rf {
+
+```cpp
   for (k.inner, 0, 32) {
     B.rf[k.inner] = 0f
     for (k.outer, 0, 32) {
@@ -279,7 +365,11 @@ produce B.rf {
     }
   }
 }
+```
+
 produce B {
+
+```text
   // attr [iter_var(threadIdx.x, , threadIdx.x)] thread_extent = 32
   // attr [reduce_temp0] storage_scope = "local"
   allocate reduce_temp0[float32 * 1]
@@ -287,6 +377,8 @@ produce B {
   tvm_thread_allreduce((uint32)1, B.rf[threadIdx.x], (bool)1, reduce_temp0, threadIdx.x)
   B[0] = reduce_temp0[0]
 }
+```
+
 `
 
 **compute_root是compute_at的反操作。因为不做任何schedule的话，每一个stage默认就是compute_root的，这个schedule相当于注释了对之前对一个stage的compute操作。
@@ -296,45 +388,63 @@ fuse**
 
 `produce B {
   B[0] = 0f
+
+```cpp
   for (k.outer, 0, 32) {
     for (k.inner, 0, 32) {
       B[0] = (B[0] + A[((k.outer*32) + k.inner)])
     }
   }
 }
+```
+
 
 ---------cutting line---------
 produce B {
   B[0] = 0f
+
+```cpp
   for (k.outer.k.inner.fused, 0, 1024) {
     B[0] = (B[0] + A[k.outer.k.inner.fused])
   }
 }
+```
+
 `
 
 <strong>fuse用于融合两个iter，将两层循环合并到一层，其返回值为iter类型，可以多次合并。split</strong>
 
 `produce B {
   B[0] = 0f
+
+```cpp
   for (k, 0, 1024) {
     B[0] = (B[0] + A[k])
   }
 }
+```
+
 
 ---------cutting line---------
 produce B {
   B[0] = 0f
+
+```cpp
   for (k.outer, 0, 32) {
     for (k.inner, 0, 32) {
       B[0] = (B[0] + A[((k.outer*32) + k.inner)])
     }
   }
 }
+```
+
 `
 
 <strong>split是fuse的反操作，把iter以factor为间隔分离成outer与inner两层迭代，增加循环层数，用于将循环操作分割为更小的子任务。事实上，以CUDA为例，gridDim和blockDim都可以最多是三维，所以通过split可以产生新的维度用于绑定到grid和block上<span class="wikilink wikilink--missing" title="未导入的页面">3</span>(#ref_3)。reorder</strong>
 
 `produce C {
+
+```cpp
   for (i.outer, 0, 32) {
     for (i.inner, 0, 32) {
       for (j.outer, 0, 32) {
@@ -345,9 +455,13 @@ produce B {
     }
   }
 }
+```
+
 
 ---------cutting line---------
 produce C {
+
+```cpp
   for (i.outer, 0, 32) {
     for (j.outer, 0, 32) {
       for (j.inner, 0, 32) {
@@ -358,11 +472,15 @@ produce C {
     }
   }
 }
+```
+
 `
 
 <strong>reorder用于重置循环iter的内外顺序，根据局部性原理，最大化利用cache中的现有数据，减少反复载入载出的情况。注意，这里到底怎样的顺序是最优化的是一个很有趣的问题。以矩阵乘法为例，M, N, K三维，往往是将K放在最外层可以最大程度利用局部性。这个具体例子，具体探究。tile</strong>
 
 `produce C {
+
+```cpp
   for (i, 0, 1024) {
     for (j, 0, 1024) {
       C[((i*1024) + j)] = 0f
@@ -372,9 +490,13 @@ produce C {
     }
   }
 }
+```
+
 
 ---------cutting line---------
 produce C {
+
+```cpp
   for (i.outer, 0, 32) {
     for (j.outer, 0, 32) {
       for (i.inner, 0, 32) {
@@ -388,11 +510,15 @@ produce C {
     }
   }
 }
+```
+
 `
 
 <strong>tile将stage的两个维度按照各自的factor拆分，并以固定顺序依次返回两个outer和两个inner的iter，从而增加循环层数，形成更小的计算任务。事实上，tile是可以由split和reorder来实现的，tile是矩阵乘法和卷积计算的重要schedule。unroll</strong>
 
 `produce C {
+
+```cpp
   for (i.outer, 0, 256) {
     for (i.inner, 0, 4) {
       for (j, 0, 1024) {
@@ -401,9 +527,13 @@ produce C {
     }
   }
 }
+```
+
 
 ---------cutting line---------
 produce C {
+
+```cpp
   for (i.outer, 0, 256) {
     for (j, 0, 1024) {
       C[((i.outer*4096) + j)] = (A[((i.outer*4096) + j)] + B[((i.outer*4096) + j)])
@@ -419,6 +549,8 @@ produce C {
     }
   }
 }
+```
+
 `
 
 **unroll是一种常见的循环优化方法，减分支预测失败减少，如果循环体内语句没有数据相关，增加了并发执行的机会，也有利于指令流水线的调度<span class="wikilink wikilink--missing" title="未导入的页面">4</span>(#ref_4)。
@@ -427,6 +559,8 @@ produce C {
 <strong>vectorize</strong>
 
 `produce C {
+
+```cpp
   for (x.outer, 0, 32) {
     for (y.outer, 0, 32) {
       for (x.inner, 0, 32) {
@@ -437,9 +571,13 @@ produce C {
     }
   }
 }
+```
+
 
 ---------cutting line---------
 produce C {
+
+```cpp
   for (x.outer, 0, 32) {
     for (y.outer, 0, 32) {
       for (x.inner, 0, 32) {
@@ -448,21 +586,29 @@ produce C {
     }
   }
 }
+```
+
 `
 
 <strong>vectorize把iter方向上的循环迭代替换成ramp，从而通过SIMD指令实现数据的批量计算，并且只有在数据size为常数、且分割的iter为2的幂（即满足SIMD的计算数量）时才会发生替换，否则vectorize没有效果，是SIMD计算设备的常用schedule。bind</strong>
 
 `produce B {
   B[0] = 0f
+
+```cpp
   for (k.outer, 0, 32) {
     for (k.inner, 0, 32) {
       B[0] = (B[0] + A[((k.outer*32) + k.inner)])
     }
   }
 }
+```
+
 
 ---------cutting line---------
 produce B {
+
+```text
   // attr [iter_var(blockIdx.x, , blockIdx.x)] thread_extent = 32
   // attr [reduce_temp0] storage_scope = "local"
   allocate reduce_temp0[float32 * 1]
@@ -471,11 +617,15 @@ produce B {
   tvm_thread_allreduce((uint32)1, A[((blockIdx.x*32) + threadIdx.x)], (bool)1, reduce_temp0, blockIdx.x, threadIdx.x)
   B[0] = reduce_temp0[0]
 }
+```
+
 `
 
 <strong>bind将iter绑定到block或thread的index上，从而把循环的任务分配到线程，实现并行化计算，这是针对CUDA后端最核心的部分。parallel</strong>
 
 `produce B {
+
+```cpp
   for (i, 0, 1024) {
     B[i] = 0f
     for (l, 0, 1024) {
@@ -483,9 +633,13 @@ produce B {
     }
   }
 }
+```
+
 
 ---------cutting line---------
 produce B {
+
+```cpp
   for (i, 0, 1024) {
     B[i] = 0f
     parallel (l, 0, 1024) {
@@ -493,6 +647,8 @@ produce B {
     }
   }
 }
+```
+
 `
 
 **parallel将指定iter的for循环替换为parallel操作，从而在GPU以外的CPU等设备上实现并行。
@@ -501,6 +657,8 @@ produce B {
 pragma**
 
 `produce B {
+
+```cpp
   for (i, 0, 1024) {
     B[i] = 0f
     for (l.outer, 0, 256) {
@@ -510,9 +668,13 @@ pragma**
     }
   }
 }
+```
+
 
 ---------cutting line---------
 produce B {
+
+```cpp
   for (i, 0, 1024) {
     B[i] = 0f
     for (l.outer, 0, 256) {
@@ -523,11 +685,15 @@ produce B {
     }
   }
 }
+```
+
 `
 
 <strong>pragma用于添加编译注释，使编译器遵循pragma的要求，实现unroll, vectorize等调度功能。事实上一个新的优化规则，都可以看做是一种gragma，也被称作directive<span class="wikilink wikilink--missing" title="未导入的页面">5</span>(#ref_5)。prefetch</strong>
 
 `produce B {
+
+```cpp
   for (i, 0, 1024) {
     B[i] = 0f
     for (k, 0, 1024) {
@@ -535,9 +701,13 @@ produce B {
     }
   }
 }
+```
+
 
 ---------cutting line---------
 produce B {
+
+```cpp
   for (i, 0, 1024) {
     B[i] = 0f
     for (k, 0, 1024) {
@@ -550,11 +720,15 @@ produce B {
     }
   }
 }
+```
+
 `
 
 <strong>prefetch利用数据的空间局部性，用于使得前一个iter的计算与后一个iter的访存overlap起来，以提高访存和计算的并行度，减少耗时。本质上是软件流水线的概念，不是硬件prefetch。tensorize</strong>
 
 `produce C {
+
+```cpp
   for (i, 0, 1024) {
     for (j.outer, 0, 32) {
       for (j.inner, 0, 16) {
@@ -566,32 +740,44 @@ produce B {
     }
   }
 }
+```
+
 
 ---------cutting line---------
 produce C {
+
+```cpp
   for (i, 0, 1024) {
     for (j.outer, 0, 32) {
       gemv_update(tvm_access_ptr(type_annotation(), C, ((i*512) + (j.outer*16)), 16, 2), tvm_access_ptr(type_annotation(), A, (i*64), 64, 1), tvm_access_ptr(type_annotation(), B, (j.outer*1024), 1024, 1), 16, 64, 64)
     }
   }
 }
+```
+
 `
 
 <strong>tensorize将计算作为整体，编译为一个tensor_intrin函数中。这是因为很多计算属于常用计算，针对这些计算已经有了很好的built-in的schedule，通过tensorize可以直接调用这些内置的intrinsic，其实这也就是intrinsic在计算机科学中的本意<span class="wikilink wikilink--missing" title="未导入的页面">6</span>(#ref_6)。rfactor(tensor, axis, factor_axis=0)</strong>
 
 `produce B {
   B[0] = 0f
+
+```cpp
   for (k.outer, 0, 32) {
     for (k.inner, 0, 32) {
       B[0] = (B[0] + A[((k.outer*32) + k.inner)])
     }
   }
 }
+```
+
 
 ---------cutting line---------
 // attr [B.rf] storage_scope = "global"
 allocate B.rf[float32 * 32]
 produce B.rf {
+
+```cpp
   for (k.inner, 0, 32) {
     B.rf[k.inner] = 0f
     for (k.outer, 0, 32) {
@@ -599,12 +785,18 @@ produce B.rf {
     }
   }
 }
+```
+
 produce B {
   B[0] = 0f
+
+```cpp
   for (k.inner.v, 0, 32) {
     B[0] = (B[0] + B.rf[k.inner.v])
   }
 }
+```
+
 `
 
 <strong>rfactor对原tensor在axis方向以factor_axis为间隔做reduction操作。set_store_predicate</strong>
@@ -613,6 +805,8 @@ produce B {
 allocate B.rf[float32 * 1]
 produce B {
   B[0] = 0f
+
+```cpp
   for (k.inner.v, 0, 16) {
     produce B.rf {
       B.rf[0] = 0f
@@ -623,12 +817,16 @@ produce B {
     B[0] = (B[0] + B.rf[0])
   }
 }
+```
+
 
 ---------cutting line---------
 // attr [B.rf] storage_scope = "global"
 allocate B.rf[float32 * 1]
 produce B {
   B[0] = 0f
+
+```cpp
   for (k.inner.v, 0, 16) {
     produce B.rf {
       B.rf[0] = 0f
@@ -641,6 +839,8 @@ produce B {
     }
   }
 }
+```
+
 `
 
 <strong>set_store_predicate设置了store的条件，适用于在多线程调度中预防写操作之间的冲突。create_group(outputs, inputs, include_inputs=False)</strong>
@@ -650,20 +850,30 @@ allocate D[float32 * 1048576]
 // attr [F] storage_scope = "global"
 allocate F[float32 * 1024]
 produce D {
+
+```cpp
   for (i, 0, 1024) {
     for (j, 0, 1024) {
       D[((i*1024) + j)] = (A[((i*1024) + j)] + B[((i*1024) + j)])
     }
   }
 }
+```
+
 produce E {
+
+```cpp
   for (i, 0, 1024) {
     for (j, 0, 1024) {
       E[((i*1024) + j)] = (D[((i*1024) + j)] + B[((i*1024) + j)])
     }
   }
 }
+```
+
 produce F {
+
+```cpp
   for (i, 0, 1024) {
     F[i] = 0f
     for (k, 0, 1024) {
@@ -671,6 +881,8 @@ produce F {
     }
   }
 }
+```
+
 
 ---------cutting line---------
 // attr [F] storage_scope = "global"
@@ -678,6 +890,8 @@ allocate F[float32 * 1024]
 // attr [D] storage_scope = "global"
 allocate D[float32 * 1]
 produce F {
+
+```cpp
   for (i, 0, 1024) {
     F[i] = 0f
     for (k, 0, 1024) {
@@ -691,6 +905,8 @@ produce F {
     }
   }
 }
+```
+
 `
 
 > create_group对从inputs到outputs的所有stage创建group，group本质上是一个虚拟stage，可以通过操作这个虚拟stage来一起操作这个group里的所有stage。本例中，通过compute_at使这个group中的D和E，一起附着到指定操作中。

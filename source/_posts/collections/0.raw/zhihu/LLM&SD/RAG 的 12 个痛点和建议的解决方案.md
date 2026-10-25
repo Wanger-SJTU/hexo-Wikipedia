@@ -69,11 +69,15 @@ Clean your data  <strong>清理数据</strong>
 chunk_size和similarity_top_k都是用于管理RAG模型中数据检索过程的效率和有效性的参数。调整这些参数可能会影响计算效率和检索信息质量之间的权衡。我们在上一篇文章《使用LlamaIndex自动进行超参数调整》中探讨了chunk_size和similarity_top_k的超参数调整细节。请参阅下面的示例代码片段。**Both `chunk_size` and `similarity_top_k` are parameters used to manage the efficiency and effectiveness of the data retrieval process in RAG models. Adjusting these parameters can impact the trade-off between computational efficiency and the quality of retrieved information. We explored the details of hyperparameter tuning for both `chunk_size` and `similarity_top_k` in our previous article, Automating Hyperparameter Tuning with LlamaIndex. See the sample code snippet below.
 
 `param_tuner = ParamTuner(
+
+```text
     param_fn=objective_function_semantic_similarity,
     param_dict=param_dict,
     fixed_param_dict=fixed_param_dict,
     show_progress=True,
 )
+```
+
 
 results = param_tuner.tune()`
 
@@ -89,6 +93,8 @@ fixed_param_dict = {
     "docs": documents,
     "eval_qs": eval_qs,
     "ref_response_strs": ref_response_strs,
+
+```python
 }
 
 def objective_function_semantic_similarity(params_dict):
@@ -97,6 +103,8 @@ def objective_function_semantic_similarity(params_dict):
     top_k = params_dict["top_k"]
     eval_qs = params_dict["eval_qs"]
     ref_response_strs = params_dict["ref_response_strs"]
+```
+
 
     # build index
     index = _build_index(chunk_size, docs)
@@ -105,22 +113,34 @@ def objective_function_semantic_similarity(params_dict):
     query_engine = index.as_query_engine(similarity_top_k=top_k)
 
     # get predicted responses
+
+```text
     pred_response_objs = get_responses(
         eval_qs, query_engine, show_progress=True
     )
+```
+
 
     # run evaluator
+
+```text
     eval_batch_runner = _get_eval_batch_runner_semantic_similarity()
     eval_results = eval_batch_runner.evaluate_responses(
         eval_qs, responses=pred_response_objs, reference=ref_response_strs
     )
+```
+
 
     # get semantic similarity metric
+
+```text
     mean_score = np.array(
         [r.score for r in eval_results["semantic_similarity"]]
     ).mean()
 
     return RunResult(score=mean_score, params=params_dict)`
+```
+
 
 For more details, refer to LlamaIndex’s full notebook on Hyperparameter Optimization for RAG.
 
@@ -139,9 +159,13 @@ api_key = os.environ["COHERE_API_KEY"]
 cohere_rerank = CohereRerank(api_key=api_key, top_n=2) # return top 2 nodes from reranker
 
 query_engine = index.as_query_engine(
+
+```text
     similarity_top_k=10, # we can set a high top_k here to ensure maximum relevant retrieval
     node_postprocessors=[cohere_rerank], # pass the reranker to node_postprocessors
 )
+```
+
 
 response = query_engine.query(
     "What did Sam Altman do in this essay?",
@@ -188,10 +212,14 @@ See below a sample code snippet on creating a finetune engine, run the finetunin
 
 `finetune_engine = SentenceTransformersFinetuneEngine(
     train_dataset,
+
+```text
     model_id="BAAI/bge-small-en",
     model_output_path="test_model",
     val_dataset=val_dataset,
 )
+```
+
 
 finetune_engine.finetune()
 
@@ -228,11 +256,17 @@ LongLLMLingua研究项目/论文中介绍了长上下文环境中的即时压缩
 有关更多详细信息，请查看LongLLMLingua上的完整笔记本。
 
 `from llama_index.query_engine import RetrieverQueryEngine
+
+```python
 from llama_index.response_synthesizers import CompactAndRefine
 from llama_index.postprocessor import LongLLMLinguaPostprocessor
 from llama_index.schema import QueryBundle
+```
+
 
 node_postprocessor = LongLLMLinguaPostprocessor(
+
+```text
     instruction_str="Given the context, please answer the final question",
     target_token=300,
     rank_method="longllmlingua",
@@ -243,6 +277,8 @@ node_postprocessor = LongLLMLinguaPostprocessor(
         "reorder_context": "sort",  # enable document reorder
     },
 )
+```
+
 
 retrieved_nodes = retriever.retrieve(query_str)
 synthesizer = CompactAndRefine()
@@ -250,10 +286,14 @@ synthesizer = CompactAndRefine()
 # outline steps in RetrieverQueryEngine for clarity:
 # postprocess (compress), synthesize
 new_retrieved_nodes = node_postprocessor.postprocess_nodes(
+
+```python
     retrieved_nodes, query_bundle=QueryBundle(query_str=query_str)
 )
 
 print("\n\n".join([n.get_content() for n in new_retrieved_nodes]))
+```
+
 
 response = synthesizer.synthesize(query_str, new_retrieved_nodes)`
 
@@ -272,8 +312,12 @@ See below a sample code snippet on how to define `LongContextReorder` as your `n
 reorder = LongContextReorder()
 
 reorder_engine = index.as_query_engine(
+
+```text
     node_postprocessors=[reorder], similarity_top_k=5
 )
+```
+
 
 reorder_response = reorder_engine.query("Did the author meet Sam Altman?")`
 
@@ -303,9 +347,13 @@ LlamaIndex supports integrations with output parsing modules offered by other fr
 See below a sample code snippet of LangChain’s output parsing modules that you can use within LlamaIndex. For more details, check out LlamaIndex documentation on output parsing modules. 请参阅下面的LangChain输出解析模块的示例代码片段，您可以在LlamaIndex中使用这些模块。有关更多详细信息，请查看关于输出解析模块的LlamaIndex文档。
 
 `from llama_index import VectorStoreIndex, SimpleDirectoryReader
+
+```python
 from llama_index.output_parsers import LangchainOutputParser
 from llama_index.llms import OpenAI
 from langchain.output_parsers import StructuredOutputParser, ResponseSchema
+```
+
 
 # load documents, build index
 documents = SimpleDirectoryReader("../paul_graham_essay/data").load_data()
@@ -313,6 +361,8 @@ index = VectorStoreIndex.from_documents(documents)
 
 # define output schema
 response_schemas = [
+
+```text
     ResponseSchema(
         name="Education",
         description="Describes the author's educational experience/background.",
@@ -322,6 +372,8 @@ response_schemas = [
         description="Describes the author's work experience/background.",
     ),
 ]
+```
+
 
 # define output parser
 lc_output_parser = StructuredOutputParser.from_response_schemas(
@@ -340,8 +392,12 @@ ctx = ServiceContext.from_defaults(llm=llm)
 query_engine = index.as_query_engine(service_context=ctx)
 response = query_engine.query(
     "What are a few things the author did growing up?",
+
+```python
 )
 print(str(response))`
+```
+
 
 ### Pydantic programs Pydantic程序
 
@@ -353,11 +409,17 @@ A Pydantic program serves as a versatile framework that converts an input string
 See below a sample code snippet from the OpenAI pydantic program. For more details, check out LlamaIndex’s documentation on the pydantic program for links to the notebooks/guides of the different pydantic programs. 请参阅下面的OpenAI pydantic程序的示例代码片段。有关更多详细信息，请查看LlamaIndex关于pydantic程序的文档，以获取不同pydanic程序的笔记本/指南的链接。
 
 `from pydantic import BaseModel
+
+```python
 from typing import List
 
 from llama_index.program import OpenAIPydanticProgram
+```
+
 
 # Define output schema (without docstring)
+
+```cpp
 class Song(BaseModel):
     title: str
     length_seconds: int
@@ -366,6 +428,8 @@ class Album(BaseModel):
     name: str
     artist: str
     songs: List[Song]
+```
+
 
 # Define openai pydantic program
 prompt_template_str = """\
@@ -373,8 +437,12 @@ Generate an example album, with an artist and a list of songs. \
 Using the movie {movie_name} as inspiration.\
 """
 program = OpenAIPydanticProgram.from_defaults(
+
+```text
     output_cls=Album, prompt_template_str=prompt_template_str, verbose=True
 )
+```
+
 
 # Run program to get structured output
 output = program(
@@ -456,12 +524,16 @@ documents = SimpleDirectoryReader(input_dir="./data/source_files").load_data()
 
 # create the pipeline with transformations
 pipeline = IngestionPipeline(
+
+```text
     transformations=[
         SentenceSplitter(chunk_size=1024, chunk_overlap=20),
         TitleExtractor(),
         OpenAIEmbedding(),
     ]
 )
+```
+
 
 # setting num_workers to a value greater than 1 invokes parallel execution.
 nodes = pipeline.run(documents=documents, num_workers=4)`
@@ -489,10 +561,16 @@ Based on the paper [Rethinking Tabular Data Understanding with Large Language Mo
 `download_llama_pack(
     "MixSelfConsistencyPack",
     "./mix_self_consistency_pack",
+
+```text
     skip_load=True,
 )
+```
+
 
 query_engine = MixSelfConsistencyQueryEngine(
+
+```text
     df=table,
     llm=llm,
     text_paths=5, # sampling 5 textual reasoning paths
@@ -500,6 +578,8 @@ query_engine = MixSelfConsistencyQueryEngine(
     aggregation_mode="self-consistency", # aggregates results across both text and symbolic paths via self-consistency (i.e. majority voting)
     verbose=True,
 )
+```
+
 `
 
 ### Pain Point 10: Data Extraction from Complex PDFs 痛点10：从复杂PDF中提取数据
@@ -520,8 +600,12 @@ EmbeddedTablesUnstructuredRetrieverPack = download_llama_pack(
 # create the pack
 embedded_tables_unstructured_pack = EmbeddedTablesUnstructuredRetrieverPack(
     "data/apple-10Q-Q2-2023.html", # takes in an html file, if your doc is in pdf, convert it to html first
+
+```text
     nodes_save_path="apple-10-q.pkl"
 )
+```
+
 
 # run the pack 
 response = embedded_tables_unstructured_pack.run("What's the total operating expenses?").response
@@ -545,12 +629,20 @@ LlamaIndex has integrated Neutrino support through its `Neutrino` class in the `
 from llama_index.llms import ChatMessage
 
 llm = Neutrino(
+
+```text
     api_key="", 
     router="test"  # A "test" router configured in Neutrino dashboard. You treat a router as a LLM. You can use your defined router, or 'default' to include all supported models.
 )
+```
+
 
 response = llm.complete("What is large language model?")
+
+```python
 print(f"Optimal model: {response.raw['model']}")`
+```
+
 
 ### OpenRouter
 
@@ -564,11 +656,15 @@ LlamaIndex has integrated OpenRouter support through its `OpenRouter` class in t
 from llama_index.llms import ChatMessage
 
 llm = OpenRouter(
+
+```text
     api_key="",
     max_tokens=256,
     context_window=4096,
     model="gryphe/mythomax-l2-13b",
 )
+```
+
 
 message = ChatMessage(role="user", content="Tell me a joke")
 resp = llm.chat([message])
@@ -586,9 +682,13 @@ LlamaIndex offers `LlamaGuardModeratorPack`, enabling developers to call Llama G
 
 `# download and install dependencies
 LlamaGuardModeratorPack = download_llama_pack(
+
+```text
     llama_pack_class="LlamaGuardModeratorPack", 
     download_dir="./llamaguard_pack"
 )
+```
+
 
 # you need HF token with write privileges for interactions with Llama Guard
 os.environ["HUGGINGFACE_ACCESS_TOKEN"] = userdata.get("HUGGINGFACE_ACCESS_TOKEN")
@@ -603,24 +703,40 @@ The implementation for the helper function `moderate_and_query`:
 
 `def moderate_and_query(query_engine, query):
     # Moderate the user input
+
+```python
     moderator_response_for_input = llamaguard_pack.run(query)
     print(f'moderator response for input: {moderator_response_for_input}')
+```
+
 
     # Check if the moderator's response for input is safe
+
+```text
     if moderator_response_for_input == 'safe':
         response = query_engine.query(query)
+```
+
         
         # Moderate the LLM output
+
+```python
         moderator_response_for_output = llamaguard_pack.run(str(response))
         print(f'moderator response for output: {moderator_response_for_output}')
+```
+
 
         # Check if the moderator's response for output is safe
+
+```text
         if moderator_response_for_output != 'safe':
             response = 'The response is not safe. Please ask a different question.'
     else:
         response = 'This query is not safe. Please ask a different question.'
 
     return response
+```
+
 `
 
 The sample output below shows that the query is unsafe and violated category 8 in the custom taxonomy.

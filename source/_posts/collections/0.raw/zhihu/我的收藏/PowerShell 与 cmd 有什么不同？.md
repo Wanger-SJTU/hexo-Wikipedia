@@ -35,7 +35,11 @@ source_url: https://www.zhihu.com/question/22611859/answer/75054963209
 
 `if (!(Test-Path -Path $PROFILE)) {
     New-Item -ItemType File -Path $PROFILE -Force
+
+```text
 }
+```
+
 notepad $PROFILE`
 
 这会打开你的 PowerShell 配置文件。配置文件的默认路径通常是： `C:\Users\你的用户名\Documents\WindowsPowerShell\Microsoft.PowerShell_profile.ps1`
@@ -45,6 +49,8 @@ notepad $PROFILE`
 在打开的配置文件中，添加以下函数：
 
 `function proxy {
+
+```js
     $env:http_proxy = "http://127.0.0.1:10809"
     $env:https_proxy = "http://127.0.0.1:10809"
     [System.Net.WebRequest]::DefaultWebProxy = New-Object System.Net.WebProxy("http://127.0.0.1:10809")
@@ -66,6 +72,8 @@ function check-proxy {
     } else {
         Write-Host "No proxy is currently set." -ForegroundColor Cyan
     }
+```
+
 }`
 
 #### <strong>步骤 3：保存并重新加载配置</strong>

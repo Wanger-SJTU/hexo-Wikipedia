@@ -59,11 +59,14 @@ Tensor Expression
 te.compute
 TE 中最重要的部分就是 te.compute 这个接口
 
+```python
 def compute(shape, fcompute, name="compute", tag="", attrs=None, varargs_names=None):
     """Construct a new tensor by computing over the shape domain.
 
     The compute rule is result[axis] = fcompute(axis)
     """
+```
+
 忽略掉不重要的参数，我们只需要关注 shape 和 fcompute。其中 shape 指的就是我们通过 compute 构造出来的这个 Tensor 的 shape，fcompute 就是计算用的函数。
 
 TE 本身是针对 index 的，所以 fcompute 本身应该是一个 "compute over shape domain" 的形式，也就是说假设
@@ -109,17 +112,25 @@ te.compute 的实现
 首先，对于传入的 shape，我们创建 len(shape) 个 tvm.tir.IterVar，range 为各自的维度大小。IterVar 本身代表对一个 int 范围内的 iteration。然后将这些 vars 和 fcompute(*vars) 传到 C++ 端（TVM 本身搞了一套很强大的 FFI）。
 
 TVM_REGISTER_GLOBAL("te.ComputeOp")
+
+```cpp
     .set_body_typed([](std::string name, std::string tag, Map String, ObjectRef  attrs,
                        Array IterVar  axis,
                        Array PrimExpr  body) { return ComputeOp(name, tag, attrs, axis, body); });
+```
+
 Array IterVar  axis 就是那些 vars。然后 body 是一个 Array PrimExpr ，即 fcompute 的计算结果，统一为 Array 是考虑到多返回值情况（应该吧）。这在代码中以一个 ComputeOp 的整体存在。
 
 PrimExpr
 PrimExpr 在 TVM 中的定位比较 low-level，它拥有基本的四则运算、比较等 operator，以及支持 Call，Call 的 op 可以是一个 Relay 的 op。然后 computation 的实现部分，实际上就是 ComputeOp -  TIR Stmt 的过程。这个过程比较复杂，就不详说了。核心部分在这个函数
 
 Stmt MakeComputeStmt(const ComputeOpNode* self, const Stage  stage,
+
+```cpp
                      const std::unordered_map IterVar, Range   dom_map,
                      bool debug_keep_trivial_loop) {
+```
+
 
 TOPI
 TOPI 全称是 TVM Operator Inventory，也就是 TVM 算子的一个 collection，主要就是基于 TE compute 的这一套来实现的（当然比较简单的算符直接靠 PrimExpr 就可以做到）。它不仅包含基本的 Tensor 算符，还包含很多 NN 的算符。它实现大多在 C++ 端，利用 FFI 暴露给 Python。

@@ -59,6 +59,7 @@ A100-80GB PICe 推理延迟与吞吐
 
 ---
 
+```text
 * 译者序
 * 摘要
 * 1 推理机制
@@ -88,6 +89,8 @@ A100-80GB PICe 推理延迟与吞吐
    * 4.4 GQA：减小从 KV-cache 加载的数据量
    * 4.5 GQA 的问题
 * 5 总结
+```
+
 
 ---
 
@@ -105,9 +108,12 @@ A100-80GB PICe 推理延迟与吞吐
 
 当语言模型<strong>生成</strong>文本时，它是逐个 [token](https://link.zhihu.com/?target=https%3A//tiktokenizer.vercel.app/) 进行的。 可以把<strong>语言模型</strong>（特别是 decoder-only text transformer，本文统称为 LLM） <strong>看做是一个函数</strong>，
 
+```text
 * 输入：一个 token
 * 输出：一组概率，每个概率对应词汇表中一个 token。
-* 推理程序使用概率来指导<strong>抽样</strong>，产生（从词汇表中选择）下一个 token 作为最终输出。
+* 推理程序使用概率来指导**抽样**，产生（从词汇表中选择）下一个 token 作为最终输出。
+```
+
 
 > <strong>词汇表</strong>（vocabulary）：通常由单词、单词片段、中文汉字等组成（这些都称为 token）。 vocabulary 长什么样，可以可以看一下 **`bert-base-chinese`** 的词典 [vocab.txt](https://link.zhihu.com/?target=https%3A//huggingface.co/google-bert/bert-base-chinese/blob/main/vocab.txt)。 更多基础：
 
@@ -135,16 +141,22 @@ attention 为当前 token 生成一个 query 向量，计算它与所有之前�
 
 以上两步计算有一个重要的共同特征：从矩阵或 KV-cache 读取的每个元素，只需要进行<strong>非常少量的浮点运算</strong>。
 
-* 矩阵-向量乘法对每个矩阵元素执行一次<strong>乘加运算</strong>（2 FLOPs）；
-* attention 对每个 key 执行一次<strong>乘加</strong>，对每个 value 执行一次<strong>乘加</strong>。
+```text
+* 矩阵-向量乘法对每个矩阵元素执行一次**乘加运算**（2 FLOPs）；
+* attention 对每个 key 执行一次**乘加**，对每个 value 执行一次**乘加**。
+```
+
 
 ### 1.3.1 典型“算力-带宽”比
 
 现代 CPU/GPU 的 <strong>ALU 操作</strong>（乘法、加法）<strong>内存 IO</strong> 速度要<strong>快得多</strong>。例如：
 
+```text
 * AMD Ryzen 7950X：**`67 GB/s`** 内存带宽和 2735 GFLOPS，`Flop:byte = 40:1`
 * NVIDIA GeForce RTX 4090：**`1008 GB/s`** 显存带宽和 83 TFLOPS，`Flop:byte = 82:1`
 * NVIDIA H100 SXM：**`3350 GB/s`** 内存带宽和 67 TFLOPS， 对于矩阵乘法，tensor core 提供 \~494 TFLOPS 稠密算力，`Flop:byte = 147:1`。
+```
+
 
 对于 FP16/FP8 等精度较低的浮点数，比率更夸张：
 
@@ -171,8 +183,12 @@ Mistral-7B 有 72 亿参数（所有矩阵元素的总数是 72 亿个）。
 参数的组成如下：
 
 1. **`4096 * 32000 = 131M`** 用于 embedding 矩阵；
+
+```text
 * 4096: hidden size (tokens per hidden-vector)
 * 32000: vocabulary size
+```
+
 
 矩阵-向量乘法中不会使用这整个大矩阵，每个 token 只读取这个矩阵中的一行，因此数据量相对很小，后面的带宽计算中将忽略这个；
 
@@ -203,8 +219,11 @@ attention 计算需要读取当前 token 及前面上下文中所有 tokens 对�
 
 对于 Mistral，KV-cache
 
+```text
 * 为每层的每个 key 存储 8 个 128 元素向量，
 * 为每个层的每个 value 存储 8 个 128 元素向量，
+```
+
 
 这加起来，每个 token 对应 32 \* 128 \* 8 \* 2 = 65K 个元素； 如果 KV-cache 使用 FP16，那么对于 token number P，我们需要读取 **`P * 130 KB`<strong>的数据。 例如， token number 1000 将需要从 KV-cache 读取</strong>`130MB`** 的数据。 跟 14.2GB 这个总数据量相比，这 130MB 可以忽略不计了。
 
@@ -214,8 +233,11 @@ attention 计算需要读取当前 token 及前面上下文中所有 tokens 对�
 
 例如，在 NVIDIA **`RTX 4090`**（1008 GB/s）上，
 
-* 14.2GB (fp16) 需要 **`~14.1ms`<strong>读取，因此可以预期对于位置靠前的 token， 每个 token 大约需要</strong>`14.1ms`**（KV-cache 影响可以忽略不计）。
-* 如果使用 **`8bit`<strong>权重，需要读取 7.1GB，这需要大约</strong>`7.0ms`**。
+```text
+* 14.2GB (fp16) 需要 **`~14.1ms`** 读取，因此可以预期对于位置靠前的 token， 每个 token 大约需要 **`14.1ms`**（KV-cache 影响可以忽略不计）。
+* 如果使用 **`8bit`** 权重，需要读取 7.1GB，这需要大约 **`7.0ms`**。
+```
+
 
 这些都是理论下限，代表了生成每个 token 的最小可能时间。
 
@@ -250,9 +272,12 @@ attention 计算需要读取当前 token 及前面上下文中所有 tokens 对�
 
 带宽与每个权重使用的 bit 数成正比；这意味着<strong>更小的权重格式（量化）能实现更低的延迟</strong>。 例如，在 RTX 4090 上 `llama.cpp` 使用 Mistral 7B
 
+```text
 * 16 bit 权重：\~17.1 ms/tok（82% 的峰值）
 * 8.5 bit 权重：\~10.3ms/tok （71% 的峰值）
 * 4.5 bit 权重：\~6.7ms/tok （58% 的峰值）
+```
+
 
 因此对于低延迟场景，可以考虑低精度量化。
 
@@ -264,8 +289,11 @@ attention 计算需要读取当前 token 及前面上下文中所有 tokens 对�
 
 但我们这里来看另一种场景：<strong>多用户场景</strong>。 注意到
 
-* 当多个用户请求同时处理时，我们用相同的矩阵同时执行多个矩阵-向量乘法， 这里可以将<strong>多个矩阵-向量乘法</strong>变成<strong>一个矩阵-矩阵乘法</strong>。
+```text
+* 当多个用户请求同时处理时，我们用相同的矩阵同时执行多个矩阵-向量乘法， 这里可以将**多个矩阵-向量乘法**变成**一个矩阵-矩阵乘法**。
 * 对于足够大的矩阵来说，只要矩阵-矩阵乘法实现得当，速度就比访存 IO 快，
+```
+
 
 因此这种场景下，瓶颈不再是访存 IO，而是算力（ALU）。这就是为什么这种 `ALU:byte` 不平衡<strong>对于生产推理系统不是关键问题</strong> —— 当使用 ChatGPT 时，你的请求与同一 GPU 上许多其他用户的请求并发评估，GPU 显存带宽利用更加高效。
 
@@ -294,8 +322,11 @@ Mistral-7B 是一个非常平衡的模型；在上面的所有计算中，<stron
 
 在 GQA 中（with a 4x ratio），为了得到 attention 的 4 个点积，
 
+```text
 * 不是使用 4 个 query 向量并分别与 4 个相应的 key 向量计算点积，
 * 而是只取一个 key 向量，然后执行 4 个点积。
+```
+
 
 这能够减少 KV-cache 的大小和所需带宽，也在某种程度上重新平衡了 ALU:bandwidth 比例。
 
@@ -303,8 +334,11 @@ Mistral-7B 是一个非常平衡的模型；在上面的所有计算中，<stron
 
 这对于 KV-cache 内存大小也很关键，不过，这可能<strong>对短上下文模型不太明显</strong>：
 
+```text
 * 4096 token 上下文的 Mistral 需要 0.5GiB，
 * 没有 GQA 的可比模型（如 Llama 7B）“只需要”2 GiB。
+```
+
 
 让我们看看一个最近不使用 GQA 的模型，Cohere 的 [Command-R](https://link.zhihu.com/?target=https%3A//txt.cohere.com/command-r/)。
 
@@ -318,20 +352,29 @@ Mistral-7B 是一个非常平衡的模型；在上面的所有计算中，<stron
 
 这么大的模型，典型的<strong>生产环境配置</strong>（单用户），
 
-* **`weights`<strong>通常使用</strong>`4bit`** 量化（通常的实现占用 \~4.5bit/权重）
-* **`KV-cache`<strong>可能会使用</strong>`8bit`**（FP8）值。
+```text
+* **`weights`** 通常使用 **`4bit`** 量化（通常的实现占用 \~4.5bit/权重）
+* **`KV-cache`** 可能会使用 **`8bit`**（FP8）值。
+```
+
 
 如果我们“保守地”假设上下文为 100K，则
 
+```text
 * 模型权重占 \~19.7GB
 * KV-cache 占 **`~65GB`**
+```
+
 
 计算到最后一个 token 时，我们需要从内存中读取这么大的数据。 可以看到，突然之间，<strong>attention 计算部分</strong>的数据量（最终转变成耗时）从微不足道变成了占 **`~75%`**！
 
 虽然 100K 上下文可能看起来有点极端，但在短上下文+多用户场景中，情况也是类似的：
 
+```text
 * 批处理优化将多次矩阵-向量乘法变成了一次矩阵-矩阵乘法（为一批用户请求读取一次模型权重），瓶颈来到算力（ALU），
-* 但<strong>每个用户请求通常都有自己的 KV-cache</strong>，
+* 但**每个用户请求通常都有自己的 KV-cache**，
+```
+
 
 因此最终的 attention 仍然受访存带宽限制，并且需要大量内存/显存才能将所有用户请求放到单个节点！
 

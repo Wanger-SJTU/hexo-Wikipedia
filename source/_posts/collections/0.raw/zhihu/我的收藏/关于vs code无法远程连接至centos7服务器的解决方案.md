@@ -79,15 +79,23 @@ ct-ng build`
 has_rpath=0
 for arg in "$@"; do
   if <span class="wikilink wikilink--missing" title="未导入的页面">&quot;$arg&quot; == &quot;--set-rpath&quot;</span>; then
+
+```text
     has_rpath=1
     break
   fi
+```
+
 done
 
 if <span class="wikilink wikilink--missing" title="未导入的页面">$has_rpath -eq 1</span>; then
   exec /usr/local/bin/patchelf --force-rpath "$@"     #这里的路径是你安装的patchelf的路径
+
+```text
 else
   exec /usr/local/bin/patchelf "$@"
+```
+
 fi `
 
 然后在环境变量中指向这个fake-patchelf即可，我这里贴出我的环境变量以供参考：

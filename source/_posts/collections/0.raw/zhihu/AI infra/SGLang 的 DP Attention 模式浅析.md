@@ -123,12 +123,16 @@ Node 0 的 Controller 进程会获取请求分发的通信端口，然后将端�
 （3）_LOCAL_ATTN_DP_SIZE 变量和它的访问函数 get_local_attention_dp_size 疑似废弃。这个变量只用在调试输出 logits 时，但调试输出 logits 的 assert 疑似有错误：
 
         if self.debug_tensor_dump_output_folder:
+
+```text
             assert (
                 not self.do_tensor_parallel_all_gather
                 or get_local_attention_dp_size() == 1
             ), &#34;dp attention + sharded lm_head doesn&#39;t support full logits&#34;
             full_logits = self._get_logits(hidden_states, lm_head, logits_metadata)
             dump_to_file(self.debug_tensor_dump_output_folder, &#34;logits&#34;, full_logits)
+```
+
 这里的断言不合理。首先 _get_logits 函数会处理 all-gather；然后 _get_logits 的输出和 DP Attention 没有关系；第三 DP Attention 也不是通过 get_local_attention_dp_size 函数判断，应该是 get_attention_dp_size 函数。
 
 8. 请求执行的关键过程
@@ -222,19 +226,26 @@ DP rank 虽然是独立处理小批次请求的注意力计算，但后续的 FF
 
 对齐方式的决策代码在 `dp_attention.py` 的 `DpPaddingMode.get_dp_padding_mode` 函数:
 
+```python
 def get_dp_padding_mode(
         cls, is_extend_in_batch, global_num_tokens: List[int]
     ) -> DpPaddingMode:
         if is_extend_in_batch:
             return DpPaddingMode.SUM_LEN
+```
+
 
         # we choose the mode that minimizes the communication cost
+
+```text
         max_len = max(global_num_tokens)
         sum_len = sum(global_num_tokens)
         if sum_len * 2 > max_len * get_attention_dp_size():
             return cls.MAX_LEN
         else:
             return cls.SUM_LEN
+```
+
 上述代码包含两条规则：
 
 - 如果任意 DP rank 有 extend 请求则使用 SUM_LEN。这估计是为了降低代码复杂度：不同 DP rank 分别处理 Decode 和 Prefill 请求时，如果选择 MAX_LEN padding，那么需要将 Decode 请求转为 Extend，以统一数据格式方便做 padding，这会增加代码复杂度。并且大多数情况下 extend 请求的序列长度差异比 decode 大，SUM_LEN 通常是合理的。
@@ -337,12 +348,17 @@ residual 转换的输入来自上一层的输出（没有上一层则是原始�
 
 相关判断代码见 `dp_attention.py` 的 `_dp_gather` 函数：
 
+```python
 def _dp_gather(
     global_tokens: torch.Tensor,
     local_tokens: torch.Tensor,
     forward_batch: ForwardBatch,
     is_partial: bool,
+```
+
 ):
+
+```text
     if forward_batch.dp_padding_mode.is_max_len():
         _dp_gather_via_all_gather(
             global_tokens, local_tokens, forward_batch, is_partial
@@ -351,6 +367,8 @@ def _dp_gather(
         _dp_gather_via_all_reduce(
             global_tokens, local_tokens, forward_batch, is_partial
         )
+```
+
 
 8.7. hidden state 传输举例
 前面介绍和 hidden state 传输相关的内容比较多而且碎，这里用几个例子来串起来。

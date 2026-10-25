@@ -39,6 +39,7 @@ C-MTEB中的数据集非常的丰富，包含6种任务类型，35个数据集�
 
 在说每种任务是什么前，我们先提纲挈领的总结一下：
 
+```text
 * 分类，一段文本，指标：准确率（多分类）或精确率（二分类）
 * 聚类，多段文本，指标：V-Measure
 * 查询类，一段文本查多段文本
@@ -49,6 +50,8 @@ C-MTEB中的数据集非常的丰富，包含6种任务类型，35个数据集�
 * 一段文本与另一段文本的关系（这类需要一群样本）
    * 相似性，STS，指标：Spearman秩相关性系数
    * 判别性，Pair-classification，指标：AP（average precision）
+```
+
 
 那具体到某中任务和其指标的含义，我们再分别看一下吧
 
@@ -245,9 +248,12 @@ BGE模型的指标，来自C-Pack论文
 
 其经历了如下的训练方式：
 
+```text
 * 大规模语料的预训练
 * 通用意图的微调（对比学习的方式）
 * 任务特定的微调（使用有标签的数据）
+```
+
 
 ![](https://proxy-prod.omnivore-image-cache.app/1328x162,shX6ccg7RX-YjTZYX-VhjbFLRJZXP9kRsY6xj9YWUm50/https://pic2.zhimg.com/v2-77a1543a082ba925ac05bf8d402d6085_b.jpg)
 

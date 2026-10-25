@@ -36,6 +36,8 @@ OpenCL kernel函数的整体结构和C函数像似，由函数名、形参列表
 **下面kernel样例是一维矩阵向量相加操作，每个工作项计算一个矩阵中的8个元素，实现并行计算。`__kernel void add(__global uchar *a,
                   __global uchar *b,
                   __global ushort *dst,
+
+```cpp
                   __private const int length)
 {
     // 获取工作项索引
@@ -43,17 +45,19 @@ OpenCL kernel函数的整体结构和C函数像似，由函数名、形参列表
     {
         return;
     }
-    
+
     // 每个工作项处理8个元素
     // vload8实现一次加载8个元素
     ushort8 a_ln = convert_ushort8(vload8(0, a + idx));
     ushort8 b_ln = convert_ushort8(vload8(0, b + idx));
-    
+
     // 向量相加
     ushort8 c_ln = a_ln + b_ln;
-    
+
     // 存储结算结果
     vstore8(c_ln, 0, dst + idx);
+```
+
 }`
 
 - 函数名
@@ -87,6 +91,8 @@ OpenCL 内存模型
 通过读取文件方式，我们需要把.cl文件内容转换为C字符串，然后对字符串的代码进行源码编译。
 
 `std::string ClReadString(const std::string &filename)
+
+```cpp
 {
     std::ifstream fs(filename);
     if(!fs.is_open())
@@ -97,6 +103,8 @@ OpenCL 内存模型
 std::string source_name = "gaussian.cl";
 std::string program_source = ClReadString(source_name);
 char *cl_str   = (char *)program_source.c_str();
+```
+
 program        = clCreateProgramWithSource(context, 1, (const char **)&cl_str, NULL, NULL);`
 
 - 字符串保存
@@ -106,19 +114,23 @@ static const MI_CHAR *add_cl_kernel_str = CL_KERNEL(
 __kernel void add(__global uchar *a,
                   __global uchar *b,
                   __global uchar *dst,
+
+```cpp
                   __private const int length)
 {
     int idx = get_global_id(0);
-    
+
     if (idx >= length)
     {
         return;
     }
-    
+
     dst[idx] = a[idx] + b[idx];
 }
 
 );
+```
+
 
 program = clCreateProgramWithSource(context, 1, (const char **)& add_cl_kernel_str , NULL, NULL);`
 
@@ -142,12 +154,20 @@ OpenCL C严格遵循C99标准，不支持标准C99头文件、函数指针、递
 - 针对半精度类型，需要查询设备是否支持半精度浮点数，如果device_flag结果为0，则说明设备不支持双精度。
 `int device_flag = 1;
 err = clGetDeviceInfo(device,CL_DEVICE_HALF_FP_CONFIG, sizeof(cl_device_fp_config),
+
+```text
                       &device_flag, NULL);`
+```
+
 
 - 对于支持半精度浮点运算的设备，为了在内核函数中启用此功能，需要添加如下预处理器指令，另外内核程序编译选项添加"-D FP16"，使能内核程序代码FP_16宏定义。
 `#ifdef FP16
+
+```text
 #pragma OpenCL EXTENSION cl_khr_fp16 : enable
 #endif`
+```
+
 
 <strong>3.1.1.2 双精度浮点数</strong>
 
@@ -155,14 +175,22 @@ err = clGetDeviceInfo(device,CL_DEVICE_HALF_FP_CONFIG, sizeof(cl_device_fp_confi
 
 `int device_flag = 1;
 err = clGetDeviceInfo(device,CL_DEVICE_DOUBLE_FP_CONFIG, sizeof(cl_device_fp_config),
+
+```text
                       &device_flag, NULL);
+```
+
 `
 
 对于支持双精度浮点运算的设备，为了在内核函数中启用此功能，需要添加如下预处理器指令，另外内核程序编译选项添加"-D FP64"，使能内核程序代码FP_64宏定义。
 
 `#ifdef FP64
+
+```text
 #pragma OpenCL EXTENSION cl_khr_fp64 : enable
 #endif`
+```
+
 
 对于OpenCL设备而言，双精度计算速度比单精度慢2~3倍，因此为了提升整体程序的性能，尽量使用单精度浮点类型。
 
@@ -248,6 +276,8 @@ int4 d = data.odd; // d = (1, 3, 5, 7)`
 `//标量load/store 代码
 __kernel void MatrixCopy(__global uchar *src, 
                          __global uchar *dst, 
+
+```cpp
                          int width, int height)
 {
     int g_idx = get_global_id(0);
@@ -258,8 +288,12 @@ __kernel void MatrixCopy(__global uchar *src,
 }
 
 // 向量load/store代码：
+```
+
 __kernel void MatrixCopyVector(__global uchar *src, 
                                __global uchar *dst, 
+
+```cpp
                                int width, int height)
 {
     int g_idx = get_global_id(0) = width) || (g_idy >= height))
@@ -268,6 +302,8 @@ __kernel void MatrixCopyVector(__global uchar *src,
     int offset = mad24(g_idy, width, g_idx);
     uchar4 v_ln0 = vload4(0, src + offset);
     vstore4(v_ln0, 0, dst + offset);
+```
+
 }`
 
 - 实测性能差异：在高通8450 Adreno GPUs上kernel的start->end执行时间如下图所示，向量化代码时间为1.17ms，标量代码时间为2.17ms，可以看出性能有接近1倍的提升。
@@ -304,18 +340,26 @@ __kernel（kernel）修饰符声明一个函数为内核函数，在OpenCL设备
 __kernel void MatrixMatrixAdd(__global float *mtx_a,
                               __global float *mtx_b,
                               __global float *mtx_c，  
+
+```cpp
                               const int rows,
                               const int cols)
 {
 }
 
 //或者
+```
+
 kernel void MatrixMatrixAdd(global float *mtx_a,
                             global float *mtx_b,
                             global float *mtx_c，  
+
+```cpp
                             const int rows,
                             const int cols)
 {
+```
+
 }`
 
 - 内核可选属性修饰符 
@@ -335,9 +379,13 @@ __kernel __attribute__((reqd_work_group_size(16, 16, 1)))`
 **访问修饰符用于指定图像类型的参数, 内核参数中的图像对象可以声明为只读、只写或者读写。 __read_only(或read_only)和__write_only(或write_only)来修饰图像对象参数。__read_write(或read_write)只能在内核中对又读又写的图像对象参数进行修饰。默认修饰符为read_only。
 
 `__kernel void add(__read_only image2d_t img_a,
+
+```text
                   __write_only image2d_t img_d)
 {
     ......
+```
+
 }`
 
 3.3.4 属性限定符**
@@ -364,30 +412,42 @@ OpenCL的运算符分类
 运算符类型运算符符号及描述算术运算符加(+)、减(-)、乘(*)、除(/)、取余(%)关系运算符大于(>)、小于(=)、小于等于(位运算符位与(&)、位或(|)、异或(^)、非(~)、右移(>>)、左移(逻辑运算符与(&&)、或(||)条件选择运算符三目选择运算符(?:)一元运算符正负(+\-)、自加(++)、自减(--)、类型长度(sizeof)、非(!)、逗号(,)、(&,*)赋值运算符=、*=、/=、+=、-=、>=、&=、^=、|=算术运算符主要用于内置函数、浮点标量和矢量数据类型。对于算术运算符，如果操作数具有相同的类型，则结果将具有与操作数相同的类型。 如果运算涉及包含整数的向量和包含浮点值的向量，则生成的向量为浮点。 同样不能对浮点值或包含浮点值的向量使用位运算符。
 
 `//操作数为浮点数和整数类型，返回值为浮点类型
+
+```cpp
 float a = 3.1415;
 int b = 2;
 float c = a * b;
 
 // 操作数一个为矢量数据，另一个为标量数据，标量数据会被转换为矢量
+```
+
 int4 v_d = (int4)(1, 2, 3, 4);
+
+```cpp
 int s_d = 3;
+```
+
 int4 v_sum = v_d * d;// (1, 2, 3, 4) * (3, 3，3，3) = (3, 6, 9, 12)`
 
 运算符的多种使用方式
 
 `__kernel void op_sample(__global int4 *output)
+
+```text
 {
     // 向量元素加4
     int4 vec = (int4)(1, 2, 3, 4);
     vec += 4;
-    
+
     // 向量第三个元素和7比较
     if(vec.s2 == 7)
     vec &= (int4)(-1, -1, 0, -1);
-    
+
     //对向量vec中的第一个和第二个元素赋值
     vec.s01 = vec.s23  7 && (vec.s0 >= 1;
     *output = vec;
+```
+
 }`
 
 #### <strong>3.5 build-in 函数</strong>
@@ -403,14 +463,24 @@ int4 v_sum = v_d * d;// (1, 2, 3, 4) * (3, 3，3，3) = (3, 6, 9, 12)`
 uint get_work_dim()返回内核中使用的维度数size_t get_global_size(uint dimindx)返回dim指定维度上全局工作项数目size_t get_global_id(uint dimindx)返回dim指定维度上全局工作项idsize_t get_global_offset()返回dim指定维度上全局工作项id初始偏移量为了能够明白上述函数的使用方法，我们以遍历一张56x56的灰度图像为例子展开说明：
 
 `//开发者使用外部API设置全局工作项和偏移量
+
+```text
 const size_t global_size[2] = {56, 56};
 const size_t offset[2] = {0, 10};
+```
+
 err = clEnqueueNDRangeKernel(cmdqueue, kernel, 2, offset,
+
+```text
                              global_size, NULL, 0, NULL, NULL);
 
 // kernel 代码
+```
+
 __kernel void image_process(__global uchar *src,
                             __global uchar *dst,
+
+```cpp
                             int rows,
                             int cols)
 {
@@ -421,6 +491,8 @@ __kernel void image_process(__global uchar *src,
     int ofst_x = get_global_offset(0); // 值为 0
     int ofst_y = get_global_offset(1); // 值为 10
     int dim_size = get_work_dim; //当前设置工作组为2维， 值为 2
+```
+
 }`
 
 <strong>工作组</strong>
@@ -430,13 +502,23 @@ __kernel void image_process(__global uchar *src,
 size_t get_num_groups(uint dim)返回dim指定维度上工作组数目size_t get_group_id(uint dim)返回dim指定维度上工作组idsize_t get_local_id(uint dim)返回工作组内dim指定维度上的工作项idsize_t get_local_size(uint dim)返回工作组内dim指定维度上的工作项数目为了能够明白上述函数的使用方法，我们以遍历一张56x56的灰度图像为例子展开说明：
 
 `const int global_offset[2] = {3, 5};
+
+```cpp
 const int global_size[2] = {6, 4};
 const int local_size[2] = {3, 2};
+```
+
 err = clEnqueueNDRangeKernel(cmdqueue, kernel, 2, offset,
+
+```text
                              global_size, local_size, 0, NULL, NULL);
-                             
+
 //kernel 代码
+```
+
 __kernel void group_sample(__global float *dst)
+
+```cpp
 {
     int gid_x     = get_global_id(0);
     int gid_y     = get_global_id(1);
@@ -454,6 +536,8 @@ __kernel void group_sample(__global float *dst)
 }
 
 //输出结果
+```
+
 35.00 45.10 55.20 65.00 75.10 85.20
 36.01 46.11 56.21 66.01 76.11 86.21
 37.00 47.10 57.20 67.00 77.10 87.20
@@ -474,6 +558,8 @@ OpenCL 的浮点函数分为五类：算术和舍入、比较、指数和对数�
 `__kernel void mod_round(__global float *mod_input,
                         __global float *mod_output,
                         __global float4 *round_input,
+
+```text
                         __global float4 *round_output) 
 {
     mod_output[0] = fmod(mod_input[0], mod_input[1]);
@@ -486,6 +572,8 @@ OpenCL 的浮点函数分为五类：算术和舍入、比较、指数和对数�
 }
 
 //输出结果
+```
+
 fmod(317.0, 23.0)          = 18.0
 remainder(317.0, 23.0)     = -5.0
 
@@ -509,6 +597,8 @@ trunc: -6.0, -3.0, 3.0, 6.0`
 OpenCL提供了更多的三角函数，可以帮助我们更好的实现某些算法优化。 样例示意:
 
 `__kernel void sin_cal(__global float4 *angle,
+
+```text
                       __global float4 *dst) 
 {
     *dst = sin(*angle);
@@ -516,6 +606,8 @@ OpenCL提供了更多的三角函数，可以帮助我们更好的实现某些�
 
 //结果
 //输入
+```
+
 (30, 60, 90, 120)
 //输出
 (0.5, 0.866025, 1, 0.866025)`
@@ -569,6 +661,8 @@ OpenCL 提供了广泛的整数运算，本节将它们分为三类：加减法�
 
 `__kernel void inter_arithmetic(__global int *x,
                                __global int *y,
+
+```cpp
                                __global int *dst)
 {
     int add0 = add_sat(x, y);
@@ -579,6 +673,8 @@ OpenCL 提供了广泛的整数运算，本节将它们分为三类：加减法�
 }
 
 //输入
+```
+
 x = 1,968,526,677 y = 1,914,839,586
 //输出
 add_sum = –411,601,033 (0xE7777777)
@@ -593,18 +689,22 @@ sub0    = 2,147,483,647 (0x7FFFFFFF) //饱和`
 示例代码
 
 `__kernel void inter_mul(__global uint *dst)
+
+```cpp
 {
     int x = 0x71111111, y = 0x72222222;
     uint a = 0x123456;
     uint b = 0x112233;
     uint c = 0x111111;
-    
+
     dst[0] = mul_hi(x, y);
     dst[1] = mad24(a, b, c);
     dst[2] = mad_hi(a, b, c);
 }
 
 //输出
+```
+
 dst[0] = 0x3268ACF1;
 dst[1] = ;
 dst[2] = ;`
@@ -618,16 +718,20 @@ dst[2] = ;`
 示例代码
 
 `__kernel void inter_opera(__global uint *dst)
+
+```text
 {
     uchar a = 252;
     uchar b = 0x95;
     uchar c = 0x31;
-    
+
     dst[0] = rotate(a, 3);
     dst[1] = upsample(b, c);
 }
 
 //输出
+```
+
 dst[0] = 224;
 dst[1] = 0x9531;`
 
@@ -665,7 +769,11 @@ select 函数：**
 - 作用：根据mask中的最高有效位从 a 和 b 中选择分量输出。 
 - 伪代码
 `//三目条件判断
+
+```cpp
 for( i = 0; i 
+```
+
 
 - 示例结果
 ![](/images/collections/0.raw/zhihu/%E4%BC%98%E5%8C%96/asset/img_9cf6e1f41353.jpg)
@@ -699,6 +807,8 @@ native_sqrt, native_tan`
 以 8 位灰度图像高斯滤波为例编写 CPU C 代码和 OpenCL 的kernel内核代码。CPU的C代码采用行列分离的方式进行计算，边界方式使用反射101的方式。具体代码如下所示。
 
 `int Gaussian3x3Sigma0U8C1(uint8_t *src, int width, int height, int istride,
+
+```cpp
                           uint8_t *dst, int ostride)
 {
     if ((NULL == src) || (NULL == dst))
@@ -706,17 +816,21 @@ native_sqrt, native_tan`
         printf("input param invalid!\n");
         return -1;
     }
-    
+
     for (int row = 0; row > 4) & 0xFF;
         }
     }
-    
+
     return 0;
+```
+
 }`
 
 OpenCL  kernel内核代码采用buffer的方式进行读写操作，每个工作项处理4个元素，利用向量化方式处理可以多个工作项并行运算。如果读采用image2d_t的方式，性能会更好，以后会介绍。
 
 `__kernel void Gauss3x3u8c1Buffer(__global uchar *src, int row, int col,
+
+```cpp
                                  int src_pitch, int dst_pitch,
                                  __global uchar *dst)
 {
@@ -736,6 +850,8 @@ OpenCL  kernel内核代码采用buffer的方式进行读写操作，每个工作
     int dst_index = mad24(y, dst_pitch, x + 1);
     // 写入到目的地址中
     vstore4(v_dst, 0, dst + dst_index);
+```
+
 }`
 
 <strong>4.2 结果展示</strong> 

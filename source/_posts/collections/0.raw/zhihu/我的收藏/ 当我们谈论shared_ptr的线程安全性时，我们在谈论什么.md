@@ -79,18 +79,34 @@ shared_ptr中除了有一个指针，指向所管理数据的地址。还有一�
 
 `void fn(shared_ptrA>* sp) {
     ...
+
+```text
 }
+```
+
 ...
+
+```cpp
     std::thread td(fn, &sp1);
+```
+
 `
 
 引用：
 
 `void fn(shared_ptrA>& sp) {
     ...
+
+```text
 }
+```
+
 ...
+
+```cpp
     std::thread td(fn, std::ref(sp1));
+```
+
 `
 
 这时候确实是不是线程安全的。
@@ -99,12 +115,16 @@ shared_ptr中除了有一个指针，指向所管理数据的地址。还有一�
 
 `void fn(shared_ptrA>& sp) {
     ...
+
+```text
     if (..) {
         sp = other_sp;
     } else if (...) {
         sp = other_sp2;
     }
 }
+```
+
 `
 
 shared_ptr内数据指针要修改指向，sp原先指向的引用计数的值要减去1，other_sp指向的引用计数值要加1。然而这几步操作加起来并不是一个原子操作，如果多少线程都在修改sp的指向的时候，那么有可能会出问题。比如在导致计数在操作减一的时候，其内部的指向，已经被其他线程修改过了。引用计数的异常会导致某个管理的对象被提前析构，后续在使用到该数据的时候触发core dump。
@@ -122,9 +142,17 @@ shared_ptr内数据指针要修改指向，sp原先指向的引用计数的值�
 
 `void fn(shared_ptrA> sp) {
     ...
+
+```text
 }
+```
+
 ...
+
+```cpp
     std::thread td(fn, sp1);
+```
+
 `
 
 这时候每个线程内看到的sp，他们所管理的是同一份数据，用的是同一个引用计数。但是各自是不同的对象，当发生多线程中修改sp指向的操作的时候，是不会出现非预期的异常行为的。
@@ -133,12 +161,16 @@ shared_ptr内数据指针要修改指向，sp原先指向的引用计数的值�
 
 `void fn(shared_ptrA> sp) {
     ...
+
+```text
     if (..) {
         sp = other_sp;
     } else if (...) {
         sp = other_sp2;
     }
 }
+```
+
 `
 
 ### 所管理数据的线程安全性

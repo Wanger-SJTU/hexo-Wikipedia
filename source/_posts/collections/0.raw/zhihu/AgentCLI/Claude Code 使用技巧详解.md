@@ -96,7 +96,11 @@ Claude Code 底部的 <strong>状态栏</strong> 可以高度定制化，用于�
   "attribution": {
     "commit": "",
     "pr": ""
+
+```text
   }
+```
+
 }`
 
 ### 六、上下文如同鲜奶——越新鲜越好
@@ -320,7 +324,11 @@ Claude Code 的 <strong>系统提示词 + 工具定义</strong> 在对话开始�
 `{
   "env": {
     "DISABLE_AUTOUPDATER": "1"
+
+```text
   }
+```
+
 }`
 
 将此配置添加到 `~/.claude/settings.json`，对所有 Claude Code 会话生效（包括交互式、非交互式、tmux）。
@@ -334,7 +342,11 @@ Claude Code 的 <strong>系统提示词 + 工具定义</strong> 在对话开始�
 `{
   "env": {
     "ENABLE_TOOL_SEARCH": "true"
+
+```text
   }
+```
+
 }`
 
 添加到 `~/.claude/settings.json`。Claude 会在 <strong>需要时才搜索和加载</strong> MCP 工具。从 v2.1.7 开始，当 MCP 工具描述超过上下文窗口的 10% 时会 <strong>自动启用</strong> 。
@@ -493,13 +505,17 @@ Worktree 方式：
 `claude() {
   local args=()
   for arg in "$@"; do
-    if <span class="wikilink wikilink--missing" title="未导入的页面">&quot;$arg&quot; == &quot;--fs&quot;</span>; then
+
+```text
+    if [[ "$arg" == "--fs" ]]; then
       args+=("--fork-session")
     else
       args+=("$arg")
     fi
   done
   command claude "${args[@]}"
+```
+
 }`
 
 #### 自定义克隆脚本
@@ -525,6 +541,8 @@ Worktree 方式：
 `{
   "hooks": {
     "Stop": [
+
+```text
       {
         "hooks": [
           {
@@ -535,6 +553,8 @@ Worktree 方式：
       }
     ]
   }
+```
+
 }`
 
 <strong>前提</strong> ：需要 <strong>关闭 auto-compact</strong> （`/config` > Auto-compact > false），否则 Claude Code 可能在 Hook 触发前就压缩了上下文。
@@ -544,8 +564,12 @@ Worktree 方式：
 
 `{
   "permissions": {
+
+```text
     "allow": ["Read(~/.claude)"]
   }
+```
+
 }`
 
 ### 三、用 realpath 获取绝对路径
@@ -853,11 +877,15 @@ Claude Code 的输入框模拟了常见的 <strong>终端 / readline 快捷键</
 
 `# 方式一：在 ~/.zshrc 或 ~/.bashrc 中
 export EDITOR=vim      # 或 nano, code, nvim 等
+
+```text
 // 方式二：在 ~/.claude/settings.json 中（需重启）
 {
   "env": {
     "EDITOR": "vim"
   }
+```
+
 }`
 
 #### 多行输入与图片粘贴

@@ -129,16 +129,24 @@ shared memory详细解析总之，这个索引给我整不会了。作为一个�
 我来说一下我的计算方法，以B矩阵对应的shared memory为例，首先，计算warp_id，也就是当前线程属于哪个warp，由tid/32即可得。随后计算lane_id，即当前线程属于这个warp上得哪个线程，由tid%32即可得。随后就是通过warp_id和lane_id来算出，对应128个元素得哪一个元素。先算(warp_id%4)×16，假设是warp2，就是上图左侧的第2个（从0算）warp。前面有2个warp，跳过了2*16=32个元素。然后再看看当前lane_id。0-15在左半边，16-31在右半边。所以lane_id/16，先看是左半边还是右半边。右半边的话，先跳过8个元素。最后再看lane_id的奇偶数，如果奇数的话，就再跳一个四个元素。代码实现如下，这个就是正常人可以看懂的方式了。对A矩阵的映射关系同理。
 
 `//load index of the tile
+
+```cpp
 const int warp_id = tid / 32;
 const int lane_id = tid % 32;
 const int tile_index_b = (warp_id%4)*16 + (lane_id/16)*8 + (lane_id%2)*4;
 const int tile_index_a = (warp_id/4)*32 + ((lane_id%16)/2)*4;`
+```
+
 
 然后shared memory取数的代码更改就是下面这样，以B矩阵块为例：
 
 `// 改变前
+
+```cpp
 #pragma unroll
 for (int thread_y = 0; thread_y 
+```
+
 
 当然，因为用来寄存C的64个元素对应的位置变化，所以最后的store C的过程也有代码变动。
 
@@ -167,6 +175,7 @@ FFMA R75, R55, R44.reuse, R75 ;`
 
 `
 
+```text
     // Temporary registers to calculate the state registers. Reuse the C output registers.
     // These can be dynamically allocated (~) in the available registger space to elimiate any register bank conflicts.
     0-63    ~ blk, ldx, ldx2, ldx4, k, tid1, tid4, tid7, tid31_4, xmad_t0, xmad_end, bxOrig, byOrig, loy
@@ -208,6 +217,8 @@ FFMA R75, R55, R44.reuse, R75 ;`
 
     // dynamically allocated C output registers(~)
     72-103  ~ cy, Cy, ldc, ldc1, ldc4, ldc8, ldc60, writeCs, readCs, cx, ci, alpha, xmad_ci //, xmad_D, D, blckDimX, gridDimX
+```
+
 
 `
 
@@ -216,13 +227,21 @@ FFMA R75, R55, R44.reuse, R75 ;`
 接着就是我遇到的<strong>第三个问题</strong>，就是指令重排。我把里面所有存在寄存器bank冲突的指令列了出来。在[comment版本里面](https://link.zhihu.com/?target=https%3A//github.com/Liu-xiandong/How_to_optimize_in_GPU/blob/master/sgemm/asm/sgemm_comment.sm_70.cuasm)。再来看看volta架构中的bank冲突，volta架构的寄存器有2路bank，奇数寄存器号代表bank0，偶数寄存器号代表bank1。如果FFMA指令的三个源寄存器的寄存器号都属于奇数或者偶数，那么就发生了bank冲突。
 
 `//0    FFMA R74, R36, R62.reuse, R74 ;    
+
+```text
 //1    FFMA R78, R34, R62.reuse, R78 ;
 //2    FFMA R16, R35, R62, R54 ;`
+```
+
 
 比如上面的代码，0号指令和1号三个源寄存器都是偶数，不考虑reuse标识的话，都有bank冲突，而2号指令就没有bank冲突。调整这3个的位置，变成：
 
 `//2    FFMA R16, R35, R62.reuse, R54 ;   
+
+```text
 //1    FFMA R78, R34, R62.reuse, R78 ; 
+```
+
 / 0    FFMA R74, R36, R62.reuse, R74 ;`
 
 让指令2的R62放入reuse cache中，指令1和指令0继续使用这个数，从而减少bank冲突。更改前后的代码在我的[github repo](https://link.zhihu.com/?target=https%3A//github.com/Liu-xiandong/How_to_optimize_in_GPU/tree/master/sgemm/asm)中。但是改完之后，我发现性能提升并不是很明显，大概就是1%左右的性能提升。这可能是在sgemm_v2的基础上改的原因，当时4.1所说的shared memory bank冲突还比较明显。总之，实验大概就是这样子。

@@ -26,6 +26,8 @@ source_url: https://zhuanlan.zhihu.com/p/371893547
 顺序矩阵乘法并行代码
 
 `void matMultCPU_parallel(const float* a, const float* b, float* c, int n)
+
+```cpp
 {
 #pragma omp parallel for schedule(dynamic)
 	for (int i = 0; i  n; i++)
@@ -39,6 +41,8 @@ source_url: https://zhuanlan.zhihu.com/p/371893547
 		}
 	}
 }
+```
+
 `
 
 C/C++ 中，本质上按行优先储存数据(一维数组)， ijk 枚举顺序将会使得内层k循环中 b[k][j]=b[k * n + j] 在内存中跳着枚举(按列读取，不连续)，降低效率。
@@ -46,6 +50,8 @@ C/C++ 中，本质上按行优先储存数据(一维数组)， ijk 枚举顺序�
 此时可以采用 ikj 的枚举顺序提高访存效率
 
 `void matMultCPU_parallel(const float* a, const float* b, float* c, int n)
+
+```cpp
 {
 #pragma omp parallel for schedule(dynamic)
 	for (int i = 0; i  n; i++)
@@ -60,6 +66,8 @@ C/C++ 中，本质上按行优先储存数据(一维数组)， ijk 枚举顺序�
 		}
 	}
 }
+```
+
 `
 
 在 k 循环中先读取 a[i * n + k] 保存到寄存器变量s中，在内层 j 循环计算时直接读取s，而 b[k * n + j] 和 c[i * n + j] 在 j 循环中是连续访问的。注意在外层k循环中（omp并行后去掉了最外层i循环）a[i * n + k] 也是连续读取的，这样就极大提高了访存效率。
@@ -89,6 +97,8 @@ $$C=\left[ \begin{matrix} C_{00}&C_{01}\\ C_{10}&C_{11} \end{matrix} \right]= \l
 一个 BLOCK 从内存中读取AB的分块矩阵数据到CPU核的缓存中，大小为BLOCKSIZE \times BLOCKSIZE，用一个双重循环对块进行滑动，并行化这个外层循环，每个 BLOCK 调用 matMultCPU(ai,bi,ci,BLOCKSIZE) 计算块内乘积，最后再累加。
 
 `#define BLOCK_SIZE 64
+
+```cpp
 void matMultCPU_Block(const float* a, const float* b, float* c, int n)
 {
 #pragma omp parallel for schedule(dynamic)
@@ -104,6 +114,8 @@ void matMultCPU_Block(const float* a, const float* b, float* c, int n)
 					}
 
 }
+```
+
 `
 
 外层循环 ii 和 jj 定位到C中要计算的 BLOCK ，kk 代表AB中块的滑动累加；内层循环和matMultCPU 的过程完全相同，计算大小n变成了 BLOCKSIZE 。

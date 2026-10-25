@@ -116,8 +116,12 @@ col = (tid % 4) * 2
 0 \le j   \mathrm{cols}/8 那么就得到了如下索引方式：uint32_t input[rows/8][cols/8]; 
 
 - A（m×k=16×16）uint32_t Areg[16/8][16/8];  // Areg[2][2] → 4 个寄存器/线程
+
+```text
 // 约定：Areg[fr][fc] 分别对应四块 8×8： (fr,fc)∈{0,1}²
 // 对应 PTX 里 a0,a1,a2,a3（顺序可约定为 [0][0],[0][1],[1][0],[1][1]）
+```
+
 
 - B（n×k=8×16）uint32_t Breg[8/8][16/8];   // Breg[1][2] → 2 个寄存器/线程
 // 对应 PTX 里 b0,b1 ；横向两块 8×8
@@ -142,13 +146,18 @@ mma_m16n8k16_f32_accum(
  
     uint32_t const  b1, uint32_t const  b2,
  
+```text
 	float const  c1, float const  c2,
 	float const  c3, float const  c4
+```
+
 ) {
+
+```cpp
     static_assert(std::is_same_v value_t, half  ||
                       std::is_same_v value_t, nv_bfloat16 ,
                   "value_t must be either half or nv_bfloat16");
- 
+
     if constexpr (std::is_same_v value_t, nv_bfloat16 ) {
         asm volatile("mma.sync.aligned.m16n8k16.row.col.f32.bf16.bf16.f32 "
                      " { %0, %1, %2, %3 }, "
@@ -170,14 +179,21 @@ mma_m16n8k16_f32_accum(
                        "f"(c1), "f"(c2), "f"(c3), "f"(c4));
     }
 }
+```
+
 
 asm voiatile内联部分的逻辑如下：
 
+```text
 // 假设：
 // A_regs[] 是 uint32_t 数组 (对应 input) -  使用 "r" 约束 (32-bit 通用寄存器)
 // C_regs[] 是 float 数组 (对应 accum)    -  使用 "f" 约束 (32-bit 浮点寄存器)
+```
+
 
 asm volatile(
+
+```text
     // 1. PTX 指令字符串
     // 必须显式列出所有涉及的寄存器占位符，例如 {%0, %1...} 代表 C 矩阵的寄存器组
     "mma.sync.aligned.m16n8k16.row.col.f32.f16.f16.f32 "
@@ -198,6 +214,8 @@ asm volatile(
 
     // 4. 破坏描述 (Clobbers)
     // 在纯寄存器操作中通常留空，除非修改了内存或特定标志位
+```
+
 
 GCC扩展 asm 是按 “先输出、后输入” 的顺序给 %0, %1, %2, ... 编号的
 
@@ -226,13 +244,19 @@ __device__ void cp_async_commit() { asm volatile("cp.async.commit_group;"); }
  
 template  int ngroups 
 __device__ void cp_async_wait() {
+
+```cpp
     asm volatile("cp.async.wait_group %0;" ::"n"(ngroups));
 }
- 
+
 template  int size, typename T 
+```
+
 __device__ void cp_async(T *smem_to, T *gmem_from) {
+
+```text
     static_assert(size == 16);
-    
+
     uint32_t smem_ptr = __cvta_generic_to_shared(smem_to);
     // The .cg (cache-global) option bypasses the L1 cache, reducing cache 
     // pollution and providing a more direct path from L2 to shared memory.
@@ -240,6 +264,8 @@ __device__ void cp_async(T *smem_to, T *gmem_from) {
                  :
                  : "r"(smem_ptr), "l"(gmem_from), "n"(size));
 }
+```
+
 
 这里简单提一下上面使用到的这个cuda内置函数 ：
 
@@ -296,12 +322,16 @@ __device__ void ldmatrix_x4(
     uint32_t  a3,
     uint32_t  a4
 ) {
+
+```text
     uint32_t smem_ptr = __cvta_generic_to_shared(load_from);
     asm volatile("ldmatrix.sync.aligned.x4.m8n8.shared.b16"
                  "{%0, %1, %2, %3}, [%4];"
                  : "=r"(a1), "=r"(a2), "=r"(a3), "=r"(a4)
                  : "r"(smem_ptr));
 }
+```
+
 
 这里总结一下ldmatrix指令的大致执行流程：
 

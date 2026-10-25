@@ -172,7 +172,11 @@ o_t=S_t^\top q_t.
 \frac{
 \phi(q_t)^\top
 \sum_{i\le t}\phi(k_i)v_i^\top
+
+```text
 }{
+```
+
 \phi(q_t)^\top
 \sum_{i\le t}\phi(k_i)
 }.

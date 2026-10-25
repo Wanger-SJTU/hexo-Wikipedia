@@ -70,7 +70,11 @@ source_url: https://zhuanlan.zhihu.com/p/682016587
 `sentence = 'Life is short, eat dessert first'
 ​
 dc = {s:i for i,s 
+
+```text
       in enumerate(sorted(sentence.replace(',', '').split()))}
+```
+
 ​
 print(dc)`
 
@@ -85,9 +89,13 @@ print(dc)`
 `import torch
 ​
 sentence_int = torch.tensor(
+
+```python
     [dc[s] for s in sentence.replace(',', '').split()]
 )
 print(sentence_int)`
+```
+
 
 输出：
 
@@ -107,8 +115,12 @@ torch.manual_seed(123)
 embed = torch.nn.Embedding(vocab_size, 3)
 embedded_sentence = embed(sentence_int).detach()
 ​
+
+```python
 print(embedded_sentence)
 print(embedded_sentence.shape)`
+```
+
 
 输出：
 
@@ -183,9 +195,13 @@ query_2 = x_2 @ W_query
 key_2 = x_2 @ W_key
 value_2 = x_2 @ W_value
 ​
+
+```python
 print(query_2.shape)
 print(key_2.shape)
 print(value_2.shape)`
+```
+
 
 输出：
 
@@ -200,8 +216,12 @@ torch.Size([4])`
 `keys = embedded_sentence @ W_key
 values = embedded_sentence @ W_value
 ​
+
+```python
 print("keys.shape:", keys.shape)
 print("values.shape:", values.shape)`
+```
+
 
 输出：
 
@@ -271,8 +291,12 @@ print(attention_weights_2)`
 
 `context_vector_2 = attention_weights_2 @ values
 ​
+
+```python
 print(context_vector_2.shape)
 print(context_vector_2)`
+```
+
 
 输出：
 
@@ -293,25 +317,33 @@ tensor([0.5313, 1.3607, 0.7891, 1.3110])`
 ​
 class SelfAttention(nn.Module):
 ​
+
+```python
     def __init__(self, d_in, d_out_kq, d_out_v):
         super().__init__()
         self.d_out_kq = d_out_kq
         self.W_query = nn.Parameter(torch.rand(d_in, d_out_kq))
         self.W_key   = nn.Parameter(torch.rand(d_in, d_out_kq))
         self.W_value = nn.Parameter(torch.rand(d_in, d_out_v))
+```
+
 ​
+
+```python
     def forward(self, x):
         keys = x @ self.W_key
         queries = x @ self.W_query
         values = x @ self.W_value
-        
+
         attn_scores = queries @ keys.T  # unnormalized attention weights    
         attn_weights = torch.softmax(
             attn_scores / self.d_out_kq**0.5, dim=-1
         )
-        
+
         context_vec = attn_weights @ values
         return context_vec`
+```
+
 
 根据PyTorch的惯例，上文的SelfAttention类初始化了 `__init__` 方法中的自注意力参数，并通过前向传播计算了所有输入的注意力权重和上下文向量。下面是这个类的使用示例：
 
@@ -363,14 +395,22 @@ print(sa(embedded_sentence))`
 `class MultiHeadAttentionWrapper(nn.Module):
 ​
 ​    def __init__(self, d_in, d_out_kq, d_out_v, num_heads):
+
+```text
         super().__init__()
         self.heads = nn.ModuleList(
             [SelfAttention(d_in, d_out_kq, d_out_v) 
              for _ in range(num_heads)]
         )
+```
+
 ​
+
+```python
     def forward(self, x):
         return torch.cat([head(x) for head in self.heads], dim=-1)`
+```
+
 
 在SelfAttention类中，d_*参数与之前相同，唯一的新输入参数是注意力头的数量：
 
@@ -411,13 +451,21 @@ print(sa(embedded_sentence))`
 ​
 block_size = embedded_sentence.shape[1]
 mha = MultiHeadAttentionWrapper(
+
+```text
     d_in, d_out_kq, d_out_v, num_heads=4
 )
+```
+
 ​
 context_vecs = mha(embedded_sentence)
 ​
+
+```python
 print(context_vecs)
 print("context_vecs.shape:", context_vecs.shape)`
+```
+
 
 输出：
 
@@ -473,25 +521,33 @@ context_vecs.shape: torch.Size([6, 4])`
 
 `class CrossAttention(nn.Module):
 ​
+
+```python
     def __init__(self, d_in, d_out_kq, d_out_v):
         super().__init__()
         self.d_out_kq = d_out_kq
         self.W_query = nn.Parameter(torch.rand(d_in, d_out_kq))
         self.W_key   = nn.Parameter(torch.rand(d_in, d_out_kq))
         self.W_value = nn.Parameter(torch.rand(d_in, d_out_v))
+```
+
 ​
+
+```python
     def forward(self, x_1, x_2):           # x_2 is new
         queries_1 = x_1 @ self.W_query
-        
+
         keys_2 = x_2 @ self.W_key          # new
         values_2 = x_2 @ self.W_value      # new
-        
+
         attn_scores = queries_1 @ keys_2.T # new 
         attn_weights = torch.softmax(
             attn_scores / self.d_out_kq**0.5, dim=-1)
-        
+
         context_vec = attn_weights @ values_2
         return context_vec`
+```
+
 
 CrossAttention类与之前的SelfAttention类的区别如下：
 
@@ -512,8 +568,12 @@ crossattn = CrossAttention(d_in, d_out_kq, d_out_v)
 first_input = embedded_sentence
 second_input = torch.rand(8, d_in)
 ​
+
+```python
 print("First input shape:", first_input.shape)
 print("Second input shape:", second_input.shape)`
+```
+
 
 输出：
 
@@ -526,8 +586,12 @@ Second input shape: torch.Size([8, 3])`
 
 `context_vectors = crossattn(first_input, second_input)
 ​
+
+```python
 print(context_vectors)
 print("Output shape:", context_vectors.shape)`
+```
+
 
 输出：
 
@@ -583,8 +647,12 @@ values = x @ W_value
 # the unnormalized attention weights
 attn_scores = queries @ keys.T 
 ​
+
+```python
 print(attn_scores)
 print(attn_scores.shape)`
+```
+
 
 输出：
 

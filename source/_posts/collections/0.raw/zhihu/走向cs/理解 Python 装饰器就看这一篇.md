@@ -22,10 +22,14 @@ source_url: https://zhuanlan.zhihu.com/p/24900548
 谈装饰器前，还要先要明白一件事，Python 中的函数和 Java、C++不太一样，Python 中的函数可以像普通变量一样当做参数传递给另外一个函数，例如：
 
 `def foo():
+
+```python
     print("foo")
 
 def bar(func):
     func()
+```
+
 
 bar(foo)`
 
@@ -39,17 +43,25 @@ bar(foo)`
 现在有一个新的需求，希望可以记录下函数的执行日志，于是在代码中添加日志代码：
 
 `def foo():
+
+```python
     print('i am foo')
     logging.info("foo is running")`
+```
+
 
 如果函数 bar()、bar2() 也有类似的需求，怎么做？再写一个 logging 在 bar 函数里？这样就造成大量雷同的代码，为了减少重复写代码，我们可以这样做，重新定义一个新的函数：专门处理日志 ，日志处理完之后再执行真正的业务代码
 
 `def use_logging(func):
+
+```python
     logging.warn("%s is running" % func.__name__)
     func()
 
 def foo():
     print('i am foo')
+```
+
 
 use_logging(foo)`
 
@@ -59,6 +71,7 @@ use_logging(foo)`
 
 `def use_logging(func):
 
+```python
     def wrapper():
         logging.warn("%s is running" % func.__name__)
         return func()   # 把 foo 当做参数传递进来时，执行func()就相当于执行foo()
@@ -66,6 +79,8 @@ use_logging(foo)`
 
 def foo():
     print('i am foo')
+```
+
 
 foo = use_logging(foo)  # 因为装饰器 use_logging(foo) 返回的时函数对象 wrapper，这条语句相当于  foo = wrapper
 foo()                    # 执行foo()就相当于执行 wrapper()`
@@ -78,14 +93,21 @@ use_logging 就是一个装饰器，它一个普通的函数，它把执行真�
 
 `def use_logging(func):
 
+```python
     def wrapper():
         logging.warn("%s is running" % func.__name__)
         return func()
     return wrapper
+```
+
 
 @use_logging
+
+```python
 def foo():
     print("i am foo")
+```
+
 
 foo()`
 
@@ -103,16 +125,24 @@ foo()`
 我们可以在定义 wrapper 函数的时候指定参数：
 
 `def wrapper(name):
+
+```text
         logging.warn("%s is running" % func.__name__)
         return func(name)
     return wrapper`
+```
+
 
 这样 foo 函数定义的参数就可以定义在 wrapper 函数中。这时，又有人要问了，如果 foo 函数接收两个参数呢？三个参数呢？更有甚者，我可能传很多个。当装饰器不知道 foo 到底有多少个参数时，我们可以用 *args 来代替：
 
 `def wrapper(*args):
+
+```text
         logging.warn("%s is running" % func.__name__)
         return func(*args)
     return wrapper`
+```
+
 
 如此一来，甭管 foo 定义了多少个参数，我都可以完整地传递到 func 中去。这样就不影响 foo 的业务逻辑了。这时还有读者会问，如果 foo 函数还定义了一些关键字参数呢？比如：
 
@@ -123,15 +153,21 @@ foo()`
 
 `def wrapper(*args, **kwargs):
         # args是一个数组，kwargs一个字典
+
+```text
         logging.warn("%s is running" % func.__name__)
         return func(*args, **kwargs)
     return wrapper`
+```
+
 
 #### 带参数的装饰器
 
 装饰器还有更大的灵活性，例如带参数的装饰器，在上面的装饰器调用中，该装饰器接收唯一的参数就是执行业务的函数 foo 。装饰器的语法允许我们在调用时，提供其它参数，比如@decorator(a)。这样，就为装饰器的编写和使用提供了更大的灵活性。比如，我们可以在装饰器中指定日志的等级，因为不同业务函数可能需要的日志级别是不一样的。
 
 `def use_logging(level):
+
+```python
     def decorator(func):
         def wrapper(*args, **kwargs):
             if level == "warn":
@@ -142,10 +178,16 @@ foo()`
         return wrapper
 
     return decorator
+```
+
 
 @use_logging(level="warn")
+
+```python
 def foo(name='foo'):
     print("i am %s" % name)
+```
+
 
 foo()`
 
@@ -159,6 +201,8 @@ foo()`
 没错，装饰器不仅可以是函数，还可以是类，相比函数装饰器，类装饰器具有灵活度大、高内聚、封装性等优点。使用类装饰器主要依靠类的__call__方法，当使用 @ 形式将装饰器附加到函数上时，就会调用此方法。
 
 `class Foo(object):
+
+```python
     def __init__(self, func):
         self._func = func
 
@@ -166,10 +210,16 @@ foo()`
         print ('class decorator runing')
         self._func()
         print ('class decorator ending')
+```
+
 
 @Foo
+
+```python
 def bar():
     print ('bar')
+```
+
 
 bar()`
 
@@ -178,24 +228,34 @@ bar()`
 使用装饰器极大地复用了代码，但是他有一个缺点就是原函数的元信息不见了，比如函数的docstring、__name__、参数列表，先看例子：
 
 `# 装饰器
+
+```cpp
 def logged(func):
     def with_logging(*args, **kwargs):
         print func.__name__      # 输出 'with_logging'
         print func.__doc__       # 输出 None
         return func(*args, **kwargs)
     return with_logging
+```
+
 
 # 函数
 @logged
+
+```python
 def f(x):
    """does some math"""
    return x + x * x
+```
+
 
 logged(f)`
 
 不难发现，函数 f 被with_logging取代了，当然它的docstring，__name__就是变成了with_logging函数的信息了。好在我们有functools.wraps，wraps本身也是一个装饰器，它能把原函数的元信息拷贝到装饰器里面的 func 函数中，这使得装饰器里面的 func 函数也有和原函数 foo 一样的元信息了。
 
 `from functools import wraps
+
+```cpp
 def logged(func):
     @wraps(func)
     def with_logging(*args, **kwargs):
@@ -203,11 +263,17 @@ def logged(func):
         print func.__doc__       # 输出 'does some math'
         return func(*args, **kwargs)
     return with_logging
+```
+
 
 @logged
+
+```python
 def f(x):
    """does some math"""
    return x + x * x`
+```
+
 
 #### 装饰器顺序
 
@@ -216,8 +282,12 @@ def f(x):
 `@a
 @b
 @c
+
+```python
 def f ():
     pass`
+```
+
 
 它的执行顺序是从里到外，最先调用最里层的装饰器，最后调用最外层的装饰器，它等效于
 

@@ -83,18 +83,26 @@ log格式的原则：
 之前 
 
 `if ( ( pInfo == NULL ) || ( pHandler == NULL ) ) 
+
+```text
 {
     log( ERROR, "invalid arguments" );
 }
+```
+
 `
 
 之后
 
 `if ( ( pInfo == NULL ) || ( pHandler == NULL ) ) 
+
+```text
 {
     log( ERROR, "invalid arguments:(pInfo, pHandler )=(%p,%p)", 
             pInfo, pHandler );
 }
+```
+
 
 `
 

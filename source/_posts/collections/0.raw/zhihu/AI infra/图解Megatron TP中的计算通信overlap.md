@@ -162,6 +162,8 @@ Pipeline chunk的思想是：假设原来是做完gemm(A, B)后再对结果reduc
 ** Bulk GEMM + COMM
 ** This function assumes the communication input is pre-copied to _ubuf
 */
+
+```cpp
 void CommOverlapBase::bulk_overlap(TensorWrapper &A, bool transa, TensorWrapper &B, bool transb,
                                    TensorWrapper &D, TensorWrapper &bias,
                                    TensorWrapper &pre_gelu_out, TensorWrapper &workspace, bool grad,
@@ -201,7 +203,7 @@ void CommOverlapBase::bulk_overlap(TensorWrapper &A, bool transa, TensorWrapper 
                                       (cudaEvent_t)_comm_launch_event);
     }
   }
-  
+
   //  主流执行gemm计算：
   assert(pre_gelu_out.numel() == 0);
   // When the kernel launch order is defined, enforce the GEMM kernel launch to wait for the communication kernel launch
@@ -215,6 +217,8 @@ void CommOverlapBase::bulk_overlap(TensorWrapper &A, bool transa, TensorWrapper 
   _ub_comm->sms = ori_sms;
   NVTE_CHECK_CUDA(cudaEventRecord(_stop_comm, _stream_comm));
   NVTE_CHECK_CUDA(cudaStreamWaitEvent(stream_main, _stop_comm, 0));
+```
+
 }  // CommOverlapBase::bulk_overlap
 
 fc1_wgrad 和 RS 的overlap也是用这个函数实现的，这里不再赘述。

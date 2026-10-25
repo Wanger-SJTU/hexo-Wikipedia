@@ -143,16 +143,24 @@ https://triton-lang.org/main/index.html
 在API函数中定义的 grid 通常为：（以 matmul函数为例）
 
 `grid = lambda META: (
+
+```text
         triton.cdiv(M, META['BLOCK_SIZE_M']) * triton.cdiv(N, META['BLOCK_SIZE_N']),
     )
+```
+
 matmul_kernel[grid](
         a, b, c,
         M, N, K,
+
+```text
         a.stride(0), a.stride(1),
         b.stride(0), b.stride(1),
         c.stride(0), c.stride(1),
         ACTIVATION=activation
     )`
+```
+
 
 `grid` 是一个函数，他的输入和 `matmul_kernel` 的输入相同，通过拿到 `matmul_kenel` 的输入 `kwargs` 来计算 `grid` 。这里的 `gird`  可以人做是通过 `M`  与 `N` 即数据块的大小计算出的实际需要分块的数量，即 warps 数量。比如这里将 M* N的数据分为了
 

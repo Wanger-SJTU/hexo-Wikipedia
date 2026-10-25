@@ -62,8 +62,12 @@ CUDA toolkit 提供了相对于host同步或者异步的数据搬移方法。在
 附：简易的实验代码
 
 `import contextlib
+
+```python
 import torch
 from torch.cuda import Stream
+```
+
 
 s = Stream()
 
@@ -76,6 +80,8 @@ assert torch.cuda.is_available()
 device = torch.device("cuda", torch.cuda.current_device())
 
 # The function we want to profile
+
+```python
 def inner(pinned: bool, streamed: bool):
     with torch.cuda.stream(s) if streamed else contextlib.nullcontext():
         if pinned:
@@ -89,12 +95,20 @@ def inner(pinned: bool, streamed: bool):
     t3_cuda_h2d_event = torch.cuda.current_stream().record_event()
     t_star_cuda_h2d_event.synchronize()
     t3_cuda_h2d_event.synchronize()
+```
+
 
 # Our profiler: profiles the `inner` function and stores the results in a .json file
+
+```python
 def benchmark_with_profiler(
     pinned,
     streamed,
+```
+
 ) -> None:
+
+```text
     torch._C._profiler._set_cuda_sync_enabled_val(True)
     wait, warmup, active = 1, 1, 2
     num_steps = wait + warmup + active
@@ -113,6 +127,8 @@ def benchmark_with_profiler(
             if rank is None or rank == 0:
                 prof.step()
     prof.export_chrome_trace(f"trace_streamed{int(streamed)}_pinned{int(pinned)}.json")
+```
+
     
 # main
 benchmark_with_profiler(pinned=0, streamed=0)
@@ -144,6 +160,8 @@ benchmark_with_profiler(pinned=1, streamed=1)`
 这个参数可以使`to()`等方法相对于host异步执行，也就是不阻塞CPU的主线程。 我们设计实验来观察其影响，对1000个数据进行传输，其中100次进行profile，代码如下：
 
 `import torch
+
+```python
 import matplotlib.pyplot as plt
 import time
 import functools
@@ -160,15 +178,23 @@ def timer(func):
         end = time.perf_counter()
         return (end - start) * 1000 / 1000
     return wrapper
+```
+
 
 @timer
+
+```python
 def copy_to_device(*tensors):
     result = []
     for tensor in tensors:
         result.append(tensor.to("cuda:0"))
     return result
+```
+
 
 @timer
+
+```python
 def copy_to_device_nonblocking(*tensors):
     result = []
     for tensor in tensors:
@@ -179,8 +205,12 @@ def copy_to_device_nonblocking(*tensors):
 def profile_detailed(tensors):
     print("\nDetailed Profiling Analysis:")
     print("-" * 50)
+```
+
     
     # 分析普通复制
+
+```python
     with profile(
         activities=[
             ProfilerActivity.CPU,
@@ -193,14 +223,18 @@ def profile_detailed(tensors):
             result = []
             for tensor in tensors[:100]:  # 使用较小的数据集来分析
                 result.append(tensor.to("cuda:0"))
-    
+
     print("\nNormal Copy Analysis:")
     print(prof.key_averages().table(
         sort_by="cuda_time_total",
         row_limit=10
     ))
+```
+
     
     # 分析非阻塞复制
+
+```python
     with profile(
         activities=[
             ProfilerActivity.CPU,
@@ -214,7 +248,7 @@ def profile_detailed(tensors):
             for tensor in tensors[:100]:
                 result.append(tensor.to("cuda:0", non_blocking=True))
             torch.cuda.synchronize()
-    
+
     print("\nNon-blocking Copy Analysis:")
     print(prof.key_averages().table(
         sort_by="cuda_time_total",
@@ -228,8 +262,12 @@ def main():
 
     print("Creating test data...")
     tensors = [torch.randn(1000) for _ in range(1000)]
+```
+
 
     # 运行性能分析
+
+```python
     profile_detailed(tensors)
 
     print("\nRunning timing tests...")
@@ -242,8 +280,12 @@ def main():
     print(f"Normal copy time: {to_device:.2f}ms")
     print(f"Non-blocking copy time: {to_device_nonblocking:.2f}ms")
     print(f"Speed ratio: {r1:.2f}x")
+```
+
 
     # 绘图
+
+```text
     fig, ax = plt.subplots(figsize=(10, 6))
 
     xlabels = [0, 1]
@@ -252,8 +294,12 @@ def main():
     values = [to_device, to_device_nonblocking]
 
     bars = ax.bar(xlabels, values, color=colors)
+```
+
 
     for bar in bars:
+
+```text
         height = bar.get_height()
         ax.text(bar.get_x() + bar.get_width()/2., height,
                 f'{height:.2f}ms',
@@ -267,6 +313,8 @@ def main():
 
     plt.tight_layout()
     plt.show()
+```
+
 
 if __name__ == "__main__":
     main()`
@@ -324,11 +372,17 @@ torch.cuda.synchronize() `
 基于我实际遇到的情况（较大的激活内存(B,S,D)，多层分次传输 layer=30），给出以下测试代码：
 
 `import torch
+
+```python
 import time
 from contextlib import contextmanager
 import numpy as np
+```
+
 
 @contextmanager
+
+```python
 def timer(name):
     start = time.perf_counter()
     yield
@@ -340,14 +394,18 @@ def test_memory_transfer_performance():
     B, S, D = 1, 16800, 1536
     num_layers = 30
     device = torch.device("cuda")
-    
+
     print("\n=== 测试配置 ===")
     print(f"Tensor shape: ({B}, {S}, {D})")
     print(f"Number of layers: {num_layers}")
     print(f"单个tensor大小: {B * S * D * 2 / (1024**2):.2f} MB")  # float16是2字节
     print(f"总数据大小: {B * S * D * 2 * num_layers * 2 / (1024**2):.2f} MB")  # *2是因为每层有两个hidden state
+```
+
     
     # 初始化测试数据
+
+```text
     test_cases = {
         "原始方案 (直接CPU转换)": {
             "store": lambda x: x.cpu(),
@@ -362,31 +420,47 @@ def test_memory_transfer_performance():
             "get": None    # 将在测试中设置
         }
     }
+```
+
 
     # 为预分配方案创建pinned buffers
+
+```python
     pinned_buffers = [torch.empty((B, S, D), dtype=torch.float16, pin_memory=True, device='cpu') 
                      for _ in range(num_layers * 2)]
-    
+
     def store_to_pinned(x, idx):
         pinned_buffers[idx].copy_(x, non_blocking=True)
         return pinned_buffers[idx]
-    
+
     def get_from_pinned(x, dev):
         return x.to(dev, non_blocking=True)
-    
+
     test_cases["预分配pin_memory"]["store"] = store_to_pinned
     test_cases["预分配pin_memory"]["get"] = get_from_pinned
+```
+
 
     # 运行测试
+
+```python
     for case_name, operations in test_cases.items():
         print(f"\n=== 测试场景: {case_name} ===")
+```
+
         
         # 准备GPU数据
+
+```text
         gpu_tensors = [torch.randn((B, S, D), dtype=torch.float16, device=device) 
                       for _ in range(num_layers * 2)]
         stored_tensors = []
+```
+
         
         # 测试存储操作
+
+```python
         torch.cuda.synchronize()
         with timer("存储30层数据到CPU (total)"):
             store_times = []
@@ -400,11 +474,15 @@ def test_memory_transfer_performance():
                 end = time.perf_counter()
                 store_times.append((end - start) * 1000)  # 转换为毫秒
                 stored_tensors.append(stored)
-        
+
         print(f"平均每层存储时间: {np.mean(store_times):.2f} ms")
         print(f"存储时间标准差: {np.std(store_times):.2f} ms")
+```
+
         
         # 测试获取操作
+
+```python
         torch.cuda.synchronize()
         with timer("从CPU加载30层数据到GPU (total)"):
             get_times = []
@@ -414,11 +492,15 @@ def test_memory_transfer_performance():
                 torch.cuda.synchronize()
                 end = time.perf_counter()
                 get_times.append((end - start) * 1000)  # 转换为毫秒
-        
+
         print(f"平均每层加载时间: {np.mean(get_times):.2f} ms")
         print(f"加载时间标准差: {np.std(get_times):.2f} ms")
+```
+
 
         # 测试批量操作性能
+
+```text
         torch.cuda.synchronize()
         with timer("批量存储30层数据 (total)"):
             if case_name == "预分配pin_memory":
@@ -427,11 +509,13 @@ def test_memory_transfer_performance():
             else:
                 stored_tensors = [operations["store"](tensor) for tensor in gpu_tensors]
             torch.cuda.synchronize()
-        
+
         torch.cuda.synchronize()
         with timer("批量加载30层数据 (total)"):
             retrieved_tensors = [operations["get"](tensor, device) for tensor in stored_tensors]
             torch.cuda.synchronize()
+```
+
 
         # 清理内存
         del gpu_tensors
@@ -520,12 +604,18 @@ Number of layers: 30
 理论可行，实践开始，下面给出测试代码：
 
 `import torch
+
+```python
 import time
 from contextlib import contextmanager
 import numpy as np
+```
+
 
 # timer上下文管理器
 @contextmanager
+
+```python
 def timer(name):
     torch.cuda.synchronize() # 确保开始计时前GPU空闲
     start = time.perf_counter()
@@ -551,8 +641,12 @@ def test_overlap_performance(num_layers=30, compute_intensity=10):
     cpu_dests = [torch.empty((B, S, D), dtype=torch.float16, pin_memory=True) for _ in range(num_layers)]
     # GPU工作区
     gpu_tensors = [torch.empty((B, S, D), dtype=torch.float16, device=device) for _ in range(num_layers)]
+```
+
 
     # 模拟计算的函数
+
+```python
     def do_compute(tensor):
         for _ in range(compute_intensity):
             tensor.mul_(1.001)
@@ -567,7 +661,7 @@ def test_overlap_performance(num_layers=30, compute_intensity=10):
             do_compute(gpu_tensors[i])
             # D2H
             cpu_dests[i].copy_(gpu_tensors[i], non_blocking=True)
-    
+
     # 测量基准时间 (单独测量各项操作耗时)
     # H2D
     start_event = torch.cuda.Event(enable_timing=True)
@@ -578,23 +672,31 @@ def test_overlap_performance(num_layers=30, compute_intensity=10):
     end_event.record()
     torch.cuda.synchronize()
     h2d_time_total = start_event.elapsed_time(end_event)
+```
+
 
     # Compute
+
+```text
     start_event.record()
     for i in range(num_layers):
         do_compute(gpu_tensors[i])
     end_event.record()
     torch.cuda.synchronize()
     compute_time_total = start_event.elapsed_time(end_event)
+```
+
     
     # D2H
+
+```python
     start_event.record()
     for i in range(num_layers):
         cpu_dests[i].copy_(gpu_tensors[i], non_blocking=True)
     end_event.record()
     torch.cuda.synchronize()
     d2h_time_total = start_event.elapsed_time(end_event)
-    
+
     theoretical_total_time = h2d_time_total + compute_time_total + d2h_time_total
     print(f"  - 单项任务累加理论总耗时: {theoretical_total_time:.2f} ms")
     print(f"    (H2D: {h2d_time_total:.2f} ms, Compute: {compute_time_total:.2f} ms, D2H: {d2h_time_total:.2f} ms)")
@@ -614,6 +716,8 @@ def test_overlap_performance(num_layers=30, compute_intensity=10):
                 do_compute(gpu_tensors[i])
                 # D2H
                 cpu_dests[i].copy_(gpu_tensors[i], non_blocking=True)
+```
+
 
     # 清理内存
     del cpu_sources, cpu_dests, gpu_tensors

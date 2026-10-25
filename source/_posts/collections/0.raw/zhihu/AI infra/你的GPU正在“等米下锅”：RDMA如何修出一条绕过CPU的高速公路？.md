@@ -51,15 +51,20 @@ RDMA：给内存架设一座“时空传送门”
 
 C
 
+```text
 // ==========================================
 // 传统 Socket 传输伪代码 (痛点：频繁系统调用)
 // ==========================================
 char buffer[8192];
 // 将数据填入buffer
+```
+
 populate_data(buffer); 
 
 // 系统调用1：陷入内核，拷贝数据到内核缓冲区
 ssize_t sent_bytes = send(socket_fd, buffer, sizeof(buffer), 0);
+
+```text
 if (sent_bytes < 0) {
     handle_error();
 }
@@ -74,11 +79,16 @@ struct ibv_mr *mr = ibv_reg_mr(protection_domain, buffer, sizeof(buffer),
 
 // 2. 数据传输阶段：下发工作请求 (数据面操作，完全在用户态)
 struct ibv_sge sge;
+```
+
 sge.addr   = (uintptr_t)buffer;
 sge.length = sizeof(buffer);
 sge.lkey   = mr->lkey;
 
+```text
 struct ibv_send_wr wr, *bad_wr = NULL;
+```
+
 wr.sg_list = &sge;
 wr.num_sge = 1;
 wr.opcode  = IBV_WR_SEND; // 也可以是 IBV_WR_RDMA_WRITE 直接写远端内存
@@ -90,11 +100,14 @@ ibv_post_send(queue_pair, &wr, &bad_wr);
 // 3. 应用程序做自己的高价值计算...
 do_heavy_tensor_computation();
 
+```text
 // 4. 轮询完成队列，查看网卡是否搬运完毕 (无中断开销)
 struct ibv_wc wc;
 while (ibv_poll_cq(completion_queue, 1, &wc) == 0) {
     // 循环等待，或者去干别的
 }
+```
+
 通过伪代码可以看出，RDMA的哲学是<strong>“控制与数据分离”</strong>。复杂的内存注册、连接建立都在最开始做完，一旦进入高频的数据传输阶段，CPU只需在用户态“发号施令”，剩下的重活全由RDMA网卡（RNIC）硬件包揽。
 
 原生RDMA的阿喀琉斯之踵
@@ -148,10 +161,14 @@ fill_data_from_gpu(kv_cache_tensor)
 # 3. 业务层只需调用一行异步发送接口
 # 无需关心 QP, WR, CQ 等底层 Verbs 概念
 transfer_handle = mooncake_engine.async_send(
+
+```text
     destination_node=&#34;decode-node-042&#34;,
     data=kv_cache_tensor,
     priority=HIGH
 )
+```
+
 
 # 4. 等待传输完成，底层通过轮询 CQ 实现零中断
 transfer_handle.wait()
@@ -218,32 +235,47 @@ Python
 # 现代传输库：拥塞感知与多路径调度伪代码
 # ==========================================
 
+```python
 class RDMAMultipathScheduler:
     def __init__(self, available_paths):
         self.paths = available_paths  # 包含多条QP链路
         self.congestion_window = {path: INITIAL_CWND for path in self.paths}
-        
+
     def send_tensor(self, tensor_data):
         # 1. 切片机制：将巨大的张量切分为小的 Chunk
         chunks = chunk_data(tensor_data, chunk_size=&#34;2MB&#34;)
+```
+
         
         for chunk in chunks:
+
+```text
             # 2. 探针机制：实时获取各路径的 RTT (往返延迟) 和 ECN (显式拥塞通知) 标记
             best_path = self._select_optimal_path()
+```
+
             
             # 3. 流量整形：如果窗口耗尽，主动退避，避免触发底层的 PFC 反压
+
+```text
             if self.congestion_window[best_path] <= 0:
                 self._wait_for_network_drain(best_path)
+```
+
                 
             # 4. 投递数据到指定路径的网卡工作队列
             best_path.post_send(chunk)
             
             # 5. 根据网卡硬件返回的完成事件更新拥塞窗口
+
+```python
             self._update_cwnd_based_on_ack(best_path)
 
     def _select_optimal_path(self):
         # 核心逻辑：避开延迟飙升和收到拥塞告警(ECN)的路径
         return min(self.paths, key=lambda p: p.current_rtt + p.ecn_penalty)
+```
+
 
 下一代网络基建：UltraEthernet与互联协议的终局
 站在今天，当我们审视整个集群计算的网络架构时，会发现一场路线之争正在上演。

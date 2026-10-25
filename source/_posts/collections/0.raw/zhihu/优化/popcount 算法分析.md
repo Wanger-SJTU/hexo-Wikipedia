@@ -26,13 +26,21 @@ popcount<span class="wikilink wikilink--missing" title="未导入的页面">1</s
 `template std::unsigned_integral T>
 //    requires unsigned integral type
 constexpr bool has_single_bit(T x) noexcept
+
+```text
 {
 #if 1
     return x != 0 && (x & (x - 1)) == 0;
+```
+
 #else
+
+```cpp
     return std::popcount(x) == 1;
 #endif
 }
+```
+
 `
 
 　　如今，底层硬件指令和上层库都给予了对 popcount 的支持，生活变得越来越美好。个中的算法，在此也讲解一番，可以提升数学和算法功底。算法大致有以下几种<span class="wikilink wikilink--missing" title="未导入的页面">3</span>(#ref_3)：
@@ -42,17 +50,23 @@ constexpr bool has_single_bit(T x) noexcept
 　　下面依次给出相关代码和算法分析。
 
 `int iterated_popcnt(uint32_t n)
+
+```cpp
 {
     int count = 0;
     for(; n; n >>= 1)
         count += n & 1U;
     return count;
 }
+```
+
 `
 
 　　iterated_popcnt 通过循环查找1位并累加，多少位就循环多少次，简单明了，也是最慢的。
 
 `int sparse_popcnt(uint32_t n)
+
+```cpp
 {
     int count = 0;
     while(n)
@@ -62,6 +76,8 @@ constexpr bool has_single_bit(T x) noexcept
     }
     return count;
 }
+```
+
 `
 
 ### sparse_popcnt
@@ -69,6 +85,8 @@ constexpr bool has_single_bit(T x) noexcept
 　　sparse_popcnt 对 iterated_popcnt 做了改进，每次迭代总是将最右边的非零位置零。这是减法的妙用。试想一下，一个仅最高位为1的整数，用此方法的话仅需一次迭代；而 iterated_popcnt 还是会“乖乖地”迭代 32 次。
 
 `int dense_popcnt(uint32_t n)
+
+```cpp
 {
     int count = 32;  // sizeof(uint32_t) * CHAR_BIT;
     n ^= 0xFF'FF'FF'FF;
@@ -79,6 +97,8 @@ constexpr bool has_single_bit(T x) noexcept
     }
     return count;
 }
+```
+
 `
 
 ### dense_popcnt
@@ -90,31 +110,41 @@ constexpr bool has_single_bit(T x) noexcept
 ### lookup_popcnt
 
 `int lookup_popcnt(uint32_t n)
+
+```cpp
 {
 #if 0  // generate the table algorithmically, and you should put it outside.
     static uint8_t table[256] = {0};
     for(uint32_t i = 1; i         table[i] = table[i>>1] + i & 1U;
-    
+
     const uint8_t* p = reinterpret_cast(&n);
     return table[p[0]] + table[p[1]] + table[p[2]] + table[p[3]];
+```
+
 #else
 # define BIT2(n)       n,       n+1,       n+1,       n+2
 # define BIT4(n) BIT2(n), BIT2(n+1), BIT2(n+1), BIT2(n+2)
 # define BIT6(n) BIT4(n), BIT4(n+1), BIT4(n+1), BIT4(n+2)
 # define BIT8(n) BIT6(n), BIT6(n+1), BIT6(n+1), BIT6(n+2)
 
+```text
     static const uint8_t table[256] = {BIT8(0)};
     return table[n & 0xFF] + table[(n>>8) & 0xFF] +
            table[(n>>16) & 0xFF] + table[(n>>24) & 0xFF];
 #endif          
 }
+```
+
 `
 
 　　lookup_popcnt 通过查表法，<strong>用空间换时间</strong>，所以来得快。
 
 	这里没有制作整个 uint32_t 或 uint16_t 范围内的表，需要太大空间，不切实际。uint8_t 表可以上高速缓存（cache），来得快。最终分四次求值然后相加。上述代码列出了两种方式来构造表：
 
+```text
 	1. 利用 f(n) = f(n/2) + n%2, f(0) = 0。直观而且方便移植。不要求 char 一定为8位，即static_assert(CHAR_BIT == 8);，CHAR_BIT 和 UCHAR_MAX 作为宏定义在 
+```
+
 -  文件中，平台移植时可能会用到。
 
 	2. 利用<strong>宏</strong>扩展递归展开，很漂亮的写法。上面假定了char为8位，有些旧的机器一个字节7位，就需要作一些修改。
@@ -122,6 +152,8 @@ constexpr bool has_single_bit(T x) noexcept
 ### parallel_popcnt
 
 `int parallel_popcnt(uint32_t n)
+
+```text
 {
 #define POW2(c)      (1U #define MASK(c)      (static_cast(-1) / (POW2(POW2(c)) + 1U))
 #define COUNT(x, c)  ((x) & MASK(c)) + (((x)>>(POW2(c))) & MASK(c))
@@ -132,10 +164,16 @@ constexpr bool has_single_bit(T x) noexcept
 	n = COUNT(n, 4);
 //	n = COUNT(n, 5);  // uncomment this line for 64-bit integers
 	return n;
+```
+
 #undef COUNT
 #undef MASK
 #undef POW2
+
+```text
 }
+```
+
 `
 
 parallel_popcnt 利用了<strong>并行计算</strong>。下面给出图片解说：
@@ -158,6 +196,8 @@ parallel_popcnt 利用了<strong>并行计算</strong>。下面给出图片解�
 ### nifty_popcnt
 
 `int nifty_popcnt(uint32_t n)
+
+```cpp
 {
 	constexpr uint32_t max = std::numeric_limitsuint32_t>::max();
 	constexpr uint32_t MASK_01010101 = max / 3;
@@ -168,6 +208,8 @@ parallel_popcnt 利用了<strong>并行计算</strong>。下面给出图片解�
 	n = (n & MASK_00001111) + ((n>>4) & MASK_00001111);
 	return n % 255 ;
 }
+```
+
 `
 
 　　nifty_popcnt 与 parallel_popcnt 开始都一样，只是写法不同，用3次迭代完成了每8位一组的和，不同之处在于末尾用模255一下子结束了运算，较之漂亮(取名 nifty 的由来)！这里面涉及到一些数学知识。
@@ -179,6 +221,8 @@ parallel_popcnt 利用了<strong>并行计算</strong>。下面给出图片解�
 ### hacker_popcnt
 
 ` int hacker_popcnt(uint32_t n)
+
+```text
 {
 	n -= (n>>1) & 0x55555555;
 	n  = (n & 0x33333333) + ((n>>2) & 0x33333333);
@@ -187,6 +231,8 @@ parallel_popcnt 利用了<strong>并行计算</strong>。下面给出图片解�
 	n += n>>16;
 	return n & 0x0000003F;
 }
+```
+
 `
 
 取名 hacker_popcnt 是因为来自于 Hacker's Delight<span class="wikilink wikilink--missing" title="未导入的页面">4</span>(#ref_4) 这本书。网上有电子版下载，强烈推荐翻阅。书中第5章专门讲 Counting Bits。上面这段代码来自第一节的 *Figure 5-2 Counting 1-bits in a word。*该段代码在各大开源项目都有。JDK 库源码里的 java.lang.Integer 和 java.lang.Long 类中的方法 bitCount，分别对应32位和64位的 popcount，至于任意精度的整数（java.lang.BigInteger ），则通过 Integer#bitCount 方法来计算。FFmpeg 工程的文件 [libavutil/common.h](https://link.zhihu.com/?target=https%3A//github.com/FFmpeg/FFmpeg/blob/master/libavutil/common.h%23L381) 中也有这段代码。
@@ -221,12 +267,16 @@ together to get base512 digits, and use mod 511.)
 This is HACKMEM 169, as used in X11 sources.
 Source: MIT AI Lab memo, late 1970's.
 */
+
+```cpp
 int hakmem_popcount(uint32_t n)
 {
     unsigned int tmp;
     tmp = n - ((n>>1) & 033333333333) - ((n>>2) & 011111111111);
     return ((tmp + (tmp >> 3)) & 030707070707) % 63;
 }
+```
+
 `
 
 　　取名 hakmem_popcnt 是因为来自于 HAKMEM (Hacks Memo)，来自 MIT AI Lab，里面有很多关于数学的有用而且漂亮的算法<span class="wikilink wikilink--missing" title="未导入的页面">5</span>(#ref_5)。这里用到了一个技巧：<strong>popcount(n) = n - (n>>1) - (n>>2) - ... - (n>>31) = a31 + a30 + ... + a0。</strong> 
@@ -238,15 +288,27 @@ int hakmem_popcount(uint32_t n)
 ### assembly_popcnt
 
 `int assembly_popcnt(uint32_t n)
+
+```text
 {
 #ifdef _MSC_VER  // Intel style assembly
     __asm popcnt eax,n;
+```
+
 #elif __GNUC__  // AT&T style assembly
+
+```text
     __asm__("popcnt %0,%%eax"::"r"(n));
+```
+
 #else
 #error "other POPCNT implementations go here"
+
+```text
 #endif
 }
+```
+
 `
 
 　　最终来到了汇编指令 POPCNT，对不熟悉汇编语言的同学，这里稍微讲一下。汇编语言有两种风格—— Intel 和 AT&T。语法都一样，只是记法不同。之间的区别可以自行 Google 学习。Visual  C++ 用的是 Intel style，类UNIX 操作系统使用 AT&T style。大学的<strong>微机原理</strong>课程讲的是前面一种。个人觉得 Intel  的风格简单易懂，上面的一行指令可已证明。然后 C/C++函数的返回值都是存入 EAX 寄存器的，所以这里看不到 return 语句。函数非常简短，所以被调用的时候最好直接 inline  到其他函数里。

@@ -60,6 +60,8 @@ RDMA让网卡绕过操作系统内核，直接在用户内存间搬运数据，�
 common 文件，定义两端约定的请求格式
 
 `#define PORT 8080
+
+```text
 #define BUFFER_SIZE 1024
 //----------------- Step0. 准备工作 common -------------------------------------
 //       1. 定义 request_t（两个主机约定的交换信息的数据格式）line7-15
@@ -73,24 +75,31 @@ typedef struct {
     op_code_t op;
     uint64_t offset;  // 模拟的内存偏移量
     uint32_t length;  // 数据长度
+```
+
 } request_t;`
 
 server （内存提供）端代码，注释中解释了每个步骤的功能
 
 `//----------------- Step0. 准备工作 Server -------------------------------------
+
+```cpp
 //       分配用户态内存，供远端主机读写 line 10-12
 int main() {
     int server_fd, client_fd;
     struct sockaddr_in address;
     int opt = 1;
     socklen_t addrlen = sizeof(address);
-    
+
     //分配一块用户态内存，返回用户态内存指针
     char *remote_memory = (char *)malloc(BUFFER_SIZE * 10);
     memset(remote_memory, 0, BUFFER_SIZE * 10);
     strcpy(remote_memory, 「Default Data in Server Memory」); // 初始数据
+```
+
 
     
+```cpp
 //------------------ Step1. Socket 创建 ---------------------------------  
     //按照标准流程，创建 Socket，建立与对端（client）主机的链接 line 22-32
     if ((server_fd = socket(AF_INET, SOCK_STREAM, 0)) == 0) {
@@ -98,7 +107,7 @@ int main() {
         exit(EXIT_FAILURE);
     }
     setsockopt(server_fd, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt));
-    
+
     address.sin_family = AF_INET;
     address.sin_addr.s_addr = INADDR_ANY;
     address.sin_port = htons(PORT);
@@ -108,24 +117,30 @@ int main() {
     printf(「Socket Server listening on port %d...\n」, PORT);
     //最终返回 client_fd 句柄，后续 send/recv 使用该句柄交换数据 line32
     client_fd = accept(server_fd, (struct sockaddr *)&address, &addrlen);
-    
+
     while(1) {
         request_t req;
 //-------------------- Step2. 请求发送/接收 -----------------------------
      //通过 recv 函数，通过上一步建立 socket 返回的句柄，接收 server 请求
         int n = recv(client_fd, &req, sizeof(req), 0);
         if (n 
+```
+
 
 client（请求发送）端代码
 
 `int main() {
+
+```cpp
 //------------------ Step1. Socket 创建 ---------------------------------  
     //创建 Socket，建立与对端主机的链接 line 5-20
     //最终返回 sock 句柄，后续 send/recv 使用该句柄交换数据 line32
     int sock = 0;
     struct sockaddr_in serv_addr;
-    
+
     if ((sock = socket(AF_INET, SOCK_STREAM, 0)) 
+```
+
 
 通过 TCP/IP，使用 socket 方式进行数据传输的步骤比较直观，总结下来就是一下三个步骤
 
@@ -152,6 +167,8 @@ client 端根据自身发送的请求，调用 send 给 server 发送数据（�
 common文件，定义两端主机交换QP信息的结构体
 
 `#define BUF_SIZE 1024
+
+```text
 #define MSG 「Hello RDMA Verbs RC!」
 
 struct cm_data {
@@ -159,11 +176,15 @@ struct cm_data {
     uint32_t rkey;
     uint64_t raddr;
 };
+```
+
 `
 
 Server(内存提供端)代码
 
 `MAIN():
+
+```text
 //---------------Step1.1 建立 RDMA 需要的各项资源，包括 mr/cq/qp 等----------------
     // --- a 资源初始化 ---
     dev_list = ibv_get_device_list(NULL)
@@ -183,20 +204,23 @@ Server(内存提供端)代码
     // --- b 状态机：RESET -> INIT ---
     ibv_modify_qp(qp, &attr, 
             IBV_QP_STATE | IBV_QP_PKEY_INDEX | IBV_QP_PORT)
-        
+
 //---------------Step1.2 通过 socket，交换 rdma 资源信息----------------
-  
+
     // --- a 建立 socket 连接 --
         lfd = socket(...)
         bind(lfd, ...)
         listen(lfd, ...)
         cfd = accept(lfd, ...)
- 
+
      //--- b 交换 QP 号、rkey、内存地址 --
         send(cfd, &local_cm_data, ...)
         recv(cfd, &peer_cm_data, ...)
+```
+
     
 
+```text
     // --- C. 状态机：INIT -> RTR (Ready to Receive) ---
     设置 attr (dest_qp_num, path_mtu, ...)
     ibv_modify_qp(qp, &attr, 
@@ -208,15 +232,22 @@ Server(内存提供端)代码
             IBV_QP_STATE | IBV_QP_TIMEOUT | IBV_QP_RETRY_CNT | ...)
 
 //---------------Step2 发送/接收请求，检查是否完成----------------
+```
+
  
 
+```text
     // 步骤 1: 准备接收 SEND
     ibv_post_recv(qp, &recv_wr, &bad_wr)
     while (ibv_poll_cq(cq, 1, &wc) 
+```
+
 
 client （内存访问端）代码
 
 `MAIN():
+
+```text
 //---------------Step1.1 建立 RDMA 上下文(context)，包括 mr/cq/qp 等----------------
     // --- a 资源初始化 ---
     dev_list = ibv_get_device_list(NULL)
@@ -226,7 +257,7 @@ client （内存访问端）代码
     pd = ibv_alloc_pd(ctx)
 
     posix_memalign(&buf, ...)
-    
+
     mr = ibv_reg_mr(pd, buf, BUF_SIZE, IBV_ACCESS_LOCAL_WRITE)
 
     cq = ibv_create_cq(ctx, 100, ...)
@@ -236,9 +267,9 @@ client （内存访问端）代码
      // --- b 状态机：RESET -> INIT ---
     ibv_modify_qp(qp, &attr, 
             IBV_QP_STATE | IBV_QP_PKEY_INDEX | IBV_QP_PORT)
-        
+
 //---------------Step1.2 通过 socket，交换 rdma 资源信息----------------
-  
+
     // --- a. 连接建立 socket 链接 ---
         fd = socket(...)
         inet_pton(...)                   // 填充地址结构
@@ -246,8 +277,11 @@ client （内存访问端）代码
     //--- b 交换 QP 号、rkey、内存地址 --
         recv(fd, &peer, ...)             // 接收服务端的 QP 信息、内存信息
         send(fd, &local, ...)            // 发送本端的 QP 信息
+```
+
     
 
+```text
     // --- C. 状态机：INIT -> RTR (Ready to Receive) ---
     设置 attr (dest_qp_num=peer.qp_num, ...)
     ibv_modify_qp(qp, &attr, 
@@ -275,6 +309,8 @@ client （内存访问端）代码
           remote_addr=peer.raddr, rkey=peer.rkey}
     ibv_post_send(qp, &wr, &bad_wr)
     while (ibv_poll_cq(cq, 1, &wc) 
+```
+
 
 通过RDMA访问远端主机内存，主要有两个步骤，每个步骤的功能如下：
 
@@ -376,7 +412,11 @@ RDMA直接内存访问带来的这些优势，背后涉及到一整套地址转�
 libibverbs 通过 verbs_context_ops 查找函数指针
 
 `static const struct verbs_context_ops mlx5_ctx_common_ops =
+
+```text
  {     
+```
+
 .query_port    = mlx5_query_port,     
 .alloc_pd      = mlx5_alloc_pd,     
 .async_event   = mlx5_async_event,     

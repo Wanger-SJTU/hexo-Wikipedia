@@ -30,9 +30,13 @@ source_url: https://zhuanlan.zhihu.com/p/165993590
 举一个直观一点的例子，比如打印一个结构体内容（其实就是把结构体转换成字符串）：
 
 `struct Point {
+
+```text
     double x;
     double y;
 };
+```
+
 Point p { 1, 2 };
 `
 
@@ -48,12 +52,18 @@ Point p { 1, 2 };
 后来我在C++社区看到一个讨论，说`C++20`在元编程方面提供了很多便利，其中最大的遍历就是`if-constexpr`，再也不用模式匹配写一堆`enable_if`了，然后题主给了一个例子，用`C++20`的模板元求结构体的字段数量，代码如下：
 
 `struct AnyType {
+
+```text
     template typename T>
     operator T();
 };
 
 template typename T>
+```
+
 consteval size_t CountMember(auto&&... Args) {
+
+```cpp
     if constexpr (! requires { T{ Args... }; }) { // (1)
         return sizeof...(Args) - 1;
     } else {
@@ -65,6 +75,8 @@ int main(int argc, char** argv) {
     struct Test { int a; int b; int c; int d; };
     printf("%zu\n", CountMemberTest>());
 }
+```
+
 `
 
 看到这坨代码，我愣了一会，然后问大师这个求结构体字段数量是怎么做到呢？C++目前最大缺陷是缺少静态反射能力（这里指的是语言层面提供的静态反射信息，`C++23`估计会落地），应该很难做到的，分析了一会，终于看懂了，太巧妙了：
@@ -78,6 +90,8 @@ int main(int argc, char** argv) {
 C++11编译期有有两大神器：`sizeof` + `decltype`，然后用这两者就能实现同样的功能，这里我用`decltype`来解决上述的`concept`问题：
 
 `template typename T, typename = void, typename ...Ts>
+
+```cpp
 struct CountMember {
     constexpr static size_t value = sizeof...(Ts) - 1;
 };
@@ -91,6 +105,8 @@ int main(int argc, char** argv) {
     struct Test { int a; int b; int c; int d; };
     printf("%zu\n", CountMemberTest>::value);
 }
+```
+
 `
 
 同样两种情况，用`decltype(T{Ts{}...})`来判断是否能够构造对象T。
@@ -103,6 +119,8 @@ int main(int argc, char** argv) {
     _1,  _2,  _3,  _4,  _5,  _6,  _7,  _8,  _9,  _10, _11, _12, _13, _14, _15, _16,         \
     _17, _18, _19, _20, _21, _22, _23, _24, _25, _26, _27, _28, _29, _30, _31, _32,         \
     _33, _34, _35, _36, _37, _38, _39, _40, _41, _42, _43, _44, _45, _46, _47, _48,         \
+
+```text
     _49, _50, _51, _52, _53, _54, _55, _56, _57, _58, _59, _60, _61, _62, _63, _64, n, ...) n
 
 #define GET_ARG_COUNT(...) GET_NTH_ARG(__VA_ARGS__,                     \
@@ -110,6 +128,8 @@ int main(int argc, char** argv) {
         48, 47, 46, 45, 44, 43, 42, 41, 40, 39, 38, 37, 36, 35, 34, 33, \
         32, 31, 30, 29, 28, 27, 26, 25, 24, 23, 22, 21, 20, 19, 18, 17, \
         16, 15, 14, 13, 12, 11, 10, 9,  8,  7,  6,  5,  4,  3,  2,  1)
+```
+
 `
 
 `GET_ARG_COUNT(a, b, c)`展开后，会调用`GET_NTH_ARG`，然后得到`GET_NTH_ARG(a, b, c, 64, 63, ..., 3, 2, 1) 3`，从而得到最终长度3，进一步延伸，这个宏有什么作用呢？那就是对结构体进行反射，用宏提供结构体的元数据信息，从而生成一些类型信息代码。
@@ -119,34 +139,56 @@ int main(int argc, char** argv) {
 来看看大师`actor`框架中的反射例子：
 
 `CAF_begin_message_def(Point)
+
+```text
     CAF_msg_field(x, double)
     CAF_msg_field(y, double)
+```
+
 CAF_end_message_def()
 
 CAF_begin_message_def(Rect)
+
+```text
     CAF_msg_field(p1, Point)
     CAF_msg_field(p2, Point)
     CAF_msg_field(color, uint32_t)
+```
+
 CAF_end_message_def()
 `
 
 现在可以做到这样：
 
 `DEFINE_STRUCT(Point,
+
+```text
     (double) x,
     (double) y)
+```
+
 
 DEFINE_STRUCT(Rect,
+
+```text
     (Point) p1,
     (Point) p2,
     (uint32_t) color)
+```
+
 
 Rect rect {
+
+```text
     {1.2, 3.4},
     {5.6, 7.8},
     12345678,
 };
+```
+
 dumpObj(rect);
+
+```text
 /* output:
 {
     p1: {
@@ -159,6 +201,8 @@ dumpObj(rect);
     },
     color: 12345678,
 }
+```
+
 */
 `
 
@@ -174,6 +218,8 @@ dumpObj(rect);
 
 `struct Point {
     templatetypename, size_t>
+
+```text
     struct FIELD;
     static constexpr size_t _field_count_ = 2;
     double x;
@@ -193,6 +239,8 @@ dumpObj(rect);
         static constexpr const char *name() { return "y"; }
     };
 };
+```
+
 `
 
 `Point`所需要的元数据都保存在`Point::FIELD`里，而所拥有的字段数在`Point::_field_count_`中，反射只需要这两个信息，就能够生成通用的序列化、反序列化代码。
@@ -200,10 +248,14 @@ dumpObj(rect);
 最核心的`DEFINE_STRUCT`宏定义如下：
 
 `#define DEFINE_STRUCT(st, ...)                                                \
+
+```text
 struct st {                                                                   \
     template  struct FIELD;                                 \
     static constexpr size_t _field_count_ = GET_ARG_COUNT(__VA_ARGS__);       \
     PASTE(FOR_EACH_, GET_ARG_COUNT(__VA_ARGS__)) (FIELD_EACH, 0, __VA_ARGS__) \
+```
+
 };                                                                            \
 `
 
@@ -216,6 +268,8 @@ struct st {                                                                   \
 先来看看`FIELD_EACH`的定义：
 
 `#define FIELD_EACH(i, arg)                    \
+
+```text
     PAIR(arg);                                \
     template                      \
     struct FIELD {                      \
@@ -228,6 +282,8 @@ struct st {                                                                   \
             return STRING(STRIP(arg));        \
         }                                     \
     }                                         \
+```
+
 `
 
 `PAIR(arg)`这个宏比较有意思，定义如下：
@@ -261,7 +317,11 @@ struct st {                                                                   \
 比如这个例子最终会展开成`FOR_EACH_2(FIELD_EACH, 0, (double) x, (double) y)`，继续看看`FOR_EACH_2`定义：
 
 `#define FOR_EACH_1(func, i, arg)        func(i, arg);
+
+```text
 #define FOR_EACH_2(func, i, arg, ...)   func(i, arg); FOR_EACH_1(func, i + 1, __VA_ARGS__)
+```
+
 ...
 `
 
@@ -281,17 +341,25 @@ FIELD_EACH(0 + 1, (double) y);
 - 一个函数`f`，对对象各个字段进行访问、操作，签名为`void(const char* fieldName, FieldT& value)`
 `templatetypename T, typename F, size_t... Is> // (1)
 inline constexpr void forEach(T&& obj, F&& f, std::index_sequenceIs...>) {
+
+```cpp
     using TDECAY = std::decay_tT>;
     (void(f(typename TDECAY::template FIELDTDECAY, Is>(obj).name(),
             typename TDECAY::template FIELDTDECAY, Is>(obj).value())), ...);
 }
+```
+
 
 templatetypename T, typename F> // (2)
 inline constexpr void forEach(T&& obj, F&& f) {
+
+```cpp
     forEach(std::forwardT>(obj),
             std::forwardF>(f),
             std::make_index_sequencestd::decay_tT>::_field_count_>{});
 }
+```
+
 `
 
 先看版本(1)，通过参数包`Is...`展开代码，从而将函数`f` `apply`到各个参数上，还是以`Point`为例，展开代码如下：
@@ -307,6 +375,8 @@ f(Point::FIELD1>(obj).name(), Point::FIELD1>(obj).value()));
 最后来看看反射最基本的一个应用，也就是序列化，将结构体序列化成字符串，从而打印出来，我们通过实现`dumpObj`来做到：
 
 `templatetypename T>
+
+```cpp
 void dumpObj(T&& obj, const char* fieldName = "", int depth = 0) {
     auto indent = [depth] {
         for (int i = 0; i  depth; ++i) {
@@ -327,6 +397,8 @@ void dumpObj(T&& obj, const char* fieldName = "", int depth = 0) {
         std::cout  fieldName  ": "  obj  ","  std::endl;
     }
 }
+```
+
 `
 
 这是一个递归版本，通过检查是否为基本类型，来判断是否需要递归打印。如果是基本类型，走分支(2)，直接将其打印出来，如果是结构体，走分支(1)，进一步递归遍历结构体各个字段，直到基本类型为止。

@@ -24,8 +24,12 @@ MNN提供了对模型进行量化版本的转化，相应的代码在tools/quant
  cd MNN
  mkdir build
  cd build
+
+```bash
  cmake -DMNN_BUILD_QUANTOOLS=ON ..
  make -j4
+```
+
 
 <strong>工具使用</strong>
  ./quantized.out origin.mnn quan.mnn preprocessConfig.json
@@ -36,6 +40,7 @@ MNN提供了对模型进行量化版本的转化，相应的代码在tools/quant
 <strong>Json 配置</strong>
 预处理配置文件格式如下：
 
+```text
  {
      &#34;format&#34;:&#34;RGB&#34;,
      &#34;mean&#34;:[
@@ -55,6 +60,8 @@ MNN提供了对模型进行量化版本的转化，相应的代码在tools/quant
      &#34;feature_quantize_method&#34;:&#34;KL&#34;,
      &#34;weight_quantize_method&#34;:&#34;MAX_ABS&#34;
  }
+```
+
  ​
 
 <strong>format</strong>
@@ -93,6 +100,7 @@ MNN提供了对模型进行量化版本的转化，相应的代码在tools/quant
 <strong>入口主函数</strong>
 主函数main在quantized.cpp文件里
 
+```cpp
  int main(int argc, const char* argv[]) {
       . . .
      std::unique_ptr<MNN::NetT> netT;
@@ -102,23 +110,39 @@ MNN提供了对模型进行量化版本的转化，相应的代码在tools/quant
          outputOs << input.rdbuf();
          netT = MNN::UnPackNet(outputOs.str().c_str());
      }
+```
+
  ​
+
+```cpp
      // temp build net for inference
      flatbuffers::FlatBufferBuilder builder(1024);
      auto offset = MNN::Net::Pack(builder, netT.get());
      builder.Finish(offset);
      int size      = builder.GetSize();
      auto ocontent = builder.GetBufferPointer();
+```
+
  ​
+
+```cpp
      // 创两个buffer，两个都是放的二进制的模型数据
      std::unique_ptr<uint8_t> modelForInference(new uint8_t[size]);
      memcpy(modelForInference.get(), ocontent, size);
      std::unique_ptr<uint8_t> modelOriginal(new uint8_t[size]);
      memcpy(modelOriginal.get(), ocontent, size);
+```
+
  ​
+
+```text
      netT.reset();
      netT = MNN::UnPackNet(modelOriginal.get());
+```
+
  ​
+
+```cpp
      // 进行量化操作， 这个靠的是Calibration类
      DLOG(INFO) << &#34;Calibrate the feature and quantize model...&#34;;
      std::shared_ptr<Calibration> calibration(
@@ -136,16 +160,23 @@ MNN提供了对模型进行量化版本的转化，相应的代码在tools/quant
          output.write((const char*)builderOutput.GetBufferPointer(), builderOutput.GetSize());
      }
  }
+```
+
 
 <strong>Calibration类</strong>
 其声明在Calibration.hpp， 这个类是包含了一张图在量化过程中所需要的全部数据和操作， 理解了它，就理解了整个量化。
 
+```cpp
  class Calibration {
  public:
      // 参数 原始模型， 模型二进制buffer，和 配置文件
      Calibration(MNN::NetT* model, uint8_t* modelBuffer, const int bufferSize, const std::string& configPath);
      void runQuantizeModel(); // 完成量化过程的函数
+```
+
  ​
+
+```cpp
  private:
      Calibration();
      MNN::NetT* _originaleModel; // 需要量化的模型 
@@ -155,47 +186,79 @@ MNN提供了对模型进行量化版本的转化，相应的代码在tools/quant
      int _width;  // 输入的宽
      int _height;// 输入的高
      std::vector<std::string> _imgaes; //图片，用于校正特征量化系数的
+```
+
  ​
+
+```cpp
      // Tensor and Info
      // tensor 到 对应的 TensorStatistic， TensorStatistic是描述tensor在量化过程中需要的统计数据
      std::map<const MNN::Tensor*, std::shared_ptr<TensorStatistic>> _featureInfo;
      std::map<int, const MNN::Tensor*> _tensorMap;// 所有的tensor
+```
+
  ​
+
+```cpp
      // Op&#39;s name, Inputs, Outputs
      // op到  input/output tensor的映射
      std::map<std::string, std::pair<std::vector<MNN::Tensor*>, std::vector<MNN::Tensor*>>> _opInfo;
+```
+
  ​
+
+```cpp
      // The scale results
      std::map<const MNN::Tensor*, std::vector<float>> _scales;
+```
+
  ​
+
+```cpp
      std::shared_ptr<MNN::Interpreter> _interpreter;// 模型的解释器
      // keep mnn forward information
      MNN::Session* _session; // 做推理的session
      MNN::Tensor* _inputTensor; // 该模型的输入tensor
      std::vector<int> _inputTensorDims;
+```
+
  ​
+
+```cpp
      std::string _featureQuantizeMethod = &#34;KL&#34;;
      std::string _weightQuantizeMethod  = &#34;MAX_ABS&#34;;
     // 根据模型，创建session
      void _initMNNSession(const uint8_t* modelBuffer, const int bufferSize, const int channels);
      void _initMaps();// 统计模型里的 tensor和op信息放到前面的map结构里
+```
+
  ​
+
+```cpp
      void _computeFeatureMapsRange();
      void _collectFeatureMapsDistribution();
      void _computeFeatureScaleKL();
      void _computeFeatureScaleADMM();
      void _updateScale();
+```
+
  ​
+
+```cpp
      // insert the dequantization op before the not supported op(int8), and insert dequantization op
      // after the output op, so that get original float data conveniently
      void _insertDequantize();
  };
+```
+
 
 <strong>构造函数</strong>
 
 - 对配置文件json进行解析，得到参数。 解析json引用了三方库rapidjson
 - 生成ImageProcess::config和ImageProcess对象（用于把image转成tensor）
 - 创建session以及统计网络里tensor信息 Calibration::Calibration(MNN::NetT* model, uint8_t* modelBuffer, const int bufferSize, const std::string& configPath)
+
+```cpp
      : _originaleModel(model) {
      // when the format of input image is RGB/BGR, channels equal to 3, GRAY is 1
      int channles = 3;
@@ -225,11 +288,19 @@ MNN提供了对模型进行量化版本的转化，相应的代码在tools/quant
              }
          }
      }
+```
+
  ​
+
+```text
      if (config.destFormat == GRAY) {
          channles = 1;
      }
+```
+
  ​
+
+```cpp
      config.sourceFormat = RGBA;
      std::string imagePath;
      _imageNum = 0;
@@ -237,24 +308,36 @@ MNN提供了对模型进行量化版本的转化，相应的代码在tools/quant
         //  生成ImageProcess对象
      std::shared_ptr<ImageProcess> process(ImageProcess::create(config));
      _process = process;
+```
+
  ​
+
+```text
      // read images file names， 读取image，用于量化系数校正
      Helper::readImages(_imgaes, imagePath.c_str(), &_imageNum);
     // 创建session，做推理的
      _initMNNSession(modelBuffer, bufferSize, channles);
      _initMaps();// 创建tensor map，统计所有tensor
  }
+```
+
 
 这3个步骤里， 解析json和 ImageProcess比较明确，不用在细分。下面看看创建session和统计tensor的过程。
 
 <strong>_initMNNSession函数</strong>
+
+```cpp
  void Calibration::_initMNNSession(const uint8_t* modelBuffer, const int bufferSize, const int channels) {
      _interpreter.reset(MNN::Interpreter::createFromBuffer(modelBuffer, bufferSize));
      // 根据原始模型数据，创建解释器Interpreter和session， 这部分在推理过程看过
      MNN::ScheduleConfig config;
      _session     = _interpreter->createSession(config);
      _inputTensor = _interpreter->getSessionInput(_session, NULL);
+```
+
  ​
+
+```text
      // 输入数据格式的 处理  NHWC和NC4HW4
      _inputTensorDims.resize(4);
      auto inputTensorDataFormat = MNN::TensorUtils::getDescribe(_inputTensor)->dimensionFormat;
@@ -284,8 +367,12 @@ MNN提供了对模型进行量化版本的转化，相应的代码在tools/quant
      }
      _interpreter->releaseModel();
  }
+```
+
 
 <strong>_initMaps函数</strong>
+
+```cpp
  void Calibration::_initMaps() {
      _featureInfo.clear(); // 清空各个数据
      _opInfo.clear();
@@ -341,13 +428,19 @@ MNN提供了对模型进行量化版本的转化，相应的代码在tools/quant
          }
      }
  }
+```
+
 
 <strong>理解TensorStatistic对象</strong>
 由于在Calibration实例里有个map包含了
 
+```cpp
  std::map<const MNN::Tensor*, std::shared_ptr<TensorStatistic>> _featureInfo;
+```
+
 这意味着，每个tensor都有一个TensorStatistic对象与之对应，TensorStatistic保存了一个tensor在量化过程中一些数据，要看一看。
 
+```cpp
  class TensorStatistic {
  public:
      TensorStatistic(const MNN::Tensor* tensor, std::string method, const std::string& name, int binNumber = 2048, GET_THRESHOLD_METHOD thresholdMethod = THRESHOLD_KL);
@@ -367,21 +460,32 @@ MNN提供了对模型进行量化版本的转化，相应的代码在tools/quant
      std::vector<float> mIntervals;//每个channel上的interval = mBinNumber / maxValue
      std::vector<bool> mValidChannel; //如果channel上的maxValue>0.00001f, 为true
      std::vector<std::vector<float>> mDistribution;// 对于每个channel，tensor上浮点数据做均匀映射，映射到[0,mBinNumber]，统计各个整数出现次数， 形成了直方图。
+```
+
  ​
+
+```cpp
      std::shared_ptr<MNN::Tensor> mHostTensor; // 该tensor在cpu端的表示
      const MNN::Tensor* mOriginTensor; // 原始的tensor
      int mBinNumber; //  默认是2048
      bool mUpdatedDistributionFlag = false;
      bool mUpdatedRangeFlags       = false;
+```
+
  ​
+
+```cpp
      bool mMergeChannel                    = true;
      std::string mName;
      GET_THRESHOLD_METHOD mThresholdMethod = THRESHOLD_KL;
  };
+```
+
 
 <strong>执行量化的过程</strong>
 执行量化的函数是Calibration::runQuantizeModel
 
+```text
  void Calibration::runQuantizeModel() {
      if (_featureQuantizeMethod == &#34;KL&#34;) { // 如果配置文件里是 KL散度做
          _computeFeatureScaleKL();
@@ -391,6 +495,8 @@ MNN提供了对模型进行量化版本的转化，相应的代码在tools/quant
      _updateScale();
      _insertDequantize();
  }
+```
+
 
 假设是KL散度，那么runQuantizeModel里的调用顺序是
 
@@ -401,10 +507,16 @@ MNN提供了对模型进行量化版本的转化，相应的代码在tools/quant
 - _updateScale()进行op量化;
 - _insertDequantize()插入反量化;
 <strong>理解KL散度计算过程</strong>
+
+```text
  void Calibration::_computeFeatureScaleKL() {
      _computeFeatureMapsRange(); // 计算 feature map里的数据范围
      _collectFeatureMapsDistribution(); // 计算feature map里的数据分布
+```
+
  ​
+
+```cpp
      _scales.clear();
      for (auto& iter : _featureInfo) {
          AUTOTIME;_imgaes
@@ -412,10 +524,13 @@ MNN提供了对模型进行量化版本的转化，相应的代码在tools/quant
      }
      //_featureInfo.clear();//No need now
  }
+```
+
 
 <strong>计算featuremap的数据范围</strong>
 这个函数_computeFeatureMapsRange的作用就是，用指定的图片集合做为模型输入，做推理， 在推理过程中，每一个op的计算前后分别统计tensor的每一个channel上featuremap的最大值最小值， 更新到该tensor关联的TensorStatistic对象实例里
 
+```cpp
  void Calibration::_computeFeatureMapsRange() {
      // feed input data according to input images
      int count = 0;
@@ -452,10 +567,13 @@ MNN提供了对模型进行量化版本的转化，相应的代码在tools/quant
      }
      MNN_PRINT(&#34;\n&#34;);
  }
+```
+
 
 <strong>计算featuremap的数据分布</strong>
 该函数_collectFeatureMapsDistribution的作用是 计算每个tensor的 数据分布情况
 
+```cpp
  void Calibration::_collectFeatureMapsDistribution() {
      for (auto& iter : _featureInfo) {
          iter.second->resetDistribution(); // 初始化，清空TensorStatistic实例里的记录数据分布的属性
@@ -486,17 +604,24 @@ MNN提供了对模型进行量化版本的转化，相应的代码在tools/quant
          }
          Helper::preprocessInput(_process.get(), _width, _height, img, _inputTensor); //读图片填到input
          _interpreter->runSessionWithCallBackInfo(_session, before, after); // 执行推理 
+```
+
  ​
+
+```text
          MNN_PRINT(&#34;\rCollectFeatureDistribution: %.2lf %%&#34;, (float)count * 100.0f / (float)_imageNum);
          fflush(stdout);
      }
      MNN_PRINT(&#34;\n&#34;);
  }
+```
+
 
 每个tensor的数据分布初始化是在TensorStatistic的resetDistribution()方法
 
 每个tensor的数据分布计算是在TensorStatistic的updateDistribution()方法
 
+```cpp
  void TensorStatistic::resetDistribution() { // 初始化分布
      for (int i = 0; i < mIntervals.size(); ++i) { // 在每一个channel上做运算
          int cIndex = i;
@@ -516,7 +641,11 @@ MNN提供了对模型进行量化版本的转化，相应的代码在tools/quant
          std::fill(c.begin(), c.end(), 1.0e-07); // mDistribution初始值设为 接近0的很小的浮点数。
      }
  }
+```
+
  ​
+
+```cpp
  void TensorStatistic::updateDistribution() {
      if (mUpdatedDistributionFlag) { //
          return;
@@ -529,7 +658,11 @@ MNN提供了对模型进行量化版本的转化，相应的代码在tools/quant
      int width   = mHostTensor->width();
      int height  = mHostTensor->height();
      auto area   = width * height;
+```
+
  ​
+
+```cpp
      for (int n = 0; n < batch; ++n) {
          auto dataBatch = mHostTensor->host<float>() + n * mHostTensor->stride(0);// 取该batch上的数据
          for (int c = 0; c < channel; ++c) {// 对每一个channel维度上计算
@@ -555,10 +688,13 @@ MNN提供了对模型进行量化版本的转化，相应的代码在tools/quant
          }
      }
  }
+```
+
 
 <strong>计算缩放参数TensorStatistic::finishAndCompute</strong>
 这个函数作用是 计算出从浮点数到定点数的缩放参数
 
+```cpp
  std::vector<float> TensorStatistic::finishAndCompute() {
      std::vector<float> scaleValue(mDistribution.size(), 0.0f);
      . . . 
@@ -570,20 +706,31 @@ MNN提供了对模型进行量化版本的转化，相应的代码在tools/quant
          auto& distribution = mDistribution[c];
          std::for_each(distribution.begin(), distribution.end(), [&](float n) { sum += n; });// 求和
          std::for_each(distribution.begin(), distribution.end(), [sum](float& n) { n /= sum; }); // 除以和，等于占比， 相当于归一化了
+```
+
  ​
+
+```text
          auto threshold = _computeThreshold(distribution); // 计算一个阈值
          scaleValue[c]  = ((float)threshold + 0.5) / mIntervals[c] / 127.0; // 计算缩放系数
      }
      return scaleValue;
  }
+```
+
 
 阈值计算， 找阈值使得KL散度最小
 
+```cpp
  // 找到一个使得kl散度最小的 Threshold
  int TensorStatistic::_computeThreshold(const std::vector<float>& distribution) {
      const int targetBinNums = 128;
      int threshold           = targetBinNums; // 默认128
+```
+
  ​
+
+```cpp
      if (mThresholdMethod == THRESHOLD_KL) { // 如果是通过KL散度
          float minKLDivergence   = 10000.0f;
          float afterThresholdSum = 0.0f;
@@ -600,7 +747,11 @@ MNN提供了对模型进行量化版本的转化，相应的代码在tools/quant
              afterThresholdSum -= distribution[i];
              // 空间大小i 缩小到targetBinNums时的间隔。
              const float binInterval = (float)i / (float)targetBinNums;
+```
+
  ​
+
+```cpp
              // merge i bins to target bins  j从0到127
              // 把0-i之间分布， 映射到更小空间 0-targetBinNums， 当然映射过后会有损失， 结果保存到quantizedDistribution
              for (int j = 0; j < targetBinNums; ++j) {
@@ -645,13 +796,21 @@ MNN提供了对模型进行量化版本的转化，相应的代码在tools/quant
                          count += rightScale;
                      }
                  }
+```
+
  ​
+
+```cpp
                  std::for_each(distribution.begin() + leftUpper, distribution.begin() + rightLower, [&](float n) {
                      if (n != 0) {
                          count += 1;
                      }
                  });
+```
+
  ​
+
+```text
                  if (count == 0) {
                      continue;
                  }
@@ -662,7 +821,11 @@ MNN提供了对模型进行量化版本的转化，相应的代码在tools/quant
                  if (rightLower < end && distribution[rightLower] != 0) {
                      expandedDistribution[rightLower] += toExpandValue * rightScale;
                  }
+```
+
  ​
+
+```cpp
                  for (int k = leftUpper; k < rightLower; ++k) {
                      if (distribution[k] != 0) {
                          expandedDistribution[k] += toExpandValue;
@@ -684,12 +847,15 @@ MNN提供了对模型进行量化版本的转化，相应的代码在tools/quant
      }
      return threshold;
  }
+```
+
 
 <strong>op的量化_updateScale</strong>
 该函数完成的事情：对于图里的conv/Eltwise的op计算其定点版本的参数（权重，bias等），替代浮点版本参数
 
 也就是完成了 可量化op的转化
 
+```cpp
  void Calibration::_updateScale() {
      for (const auto& op : _originaleModel->oplists) {
          const auto opType = op->type;
@@ -702,7 +868,11 @@ MNN提供了对模型进行量化版本的转化，相应的代码在tools/quant
          if (tensorsPair == _opInfo.end()) {
              MNN_ERROR(&#34;Can&#39;t find tensors for %s\n&#34;, op->name.c_str());
          }
+```
+
  ​
+
+```cpp
          if (opType == MNN::OpType_Eltwise) {//Eltwise类型op
              auto param = op->main.AsEltwise();
              // Now only support AddInt8
@@ -719,7 +889,11 @@ MNN提供了对模型进行量化版本的转化，相应的代码在tools/quant
              op->type = MNN::OpType_EltwiseInt8; // 修改op类型为量化版本
              op->main.Reset(); // 重新构造op的参数了
              op->main.type = MNN::OpParameter_EltwiseInt8;
+```
+
  ​
+
+```cpp
              auto eltwiseInt8Param         = new MNN::EltwiseInt8T;
              auto input0ScaleParam         = new MNN::QuantizedFloatParamT;
              auto input1ScaleParam         = new MNN::QuantizedFloatParamT;
@@ -734,11 +908,19 @@ MNN提供了对模型进行量化版本的转化，相应的代码在tools/quant
              op->main.value                = eltwiseInt8Param;
              continue;
          }
+```
+
  ​
+
+```text
          // below is Conv/DepthwiseConv
          const auto& inputScale  = _scales[tensorsPair->second.first[0]];
          const auto& outputScale = _scales[tensorsPair->second.second[0]];
+```
+
  ​
+
+```cpp
          auto param                = op->main.AsConvolution2D();
          param->common->inputCount = tensorsPair->second.first[0]->channel();
          const int channles        = param->common->outputCount;
@@ -754,7 +936,11 @@ MNN提供了对模型进行量化版本的转化，相应的代码在tools/quant
                                     quantizedParam->weight.data(), quantizedParam->bias.data(),
                                     quantizedParam->scale.data(), inputScale, outputScale, _weightQuantizeMethod);
              op->type = MNN::OpType_ConvInt8;
+```
+
  ​
+
+```text
          } else if (opType == MNN::OpType_ConvolutionDepthwise) {
              QuantizeDepthwiseConv(param->weight.data(), param->weight.size(), param->bias.data(),
                                    quantizedParam->weight.data(), quantizedParam->bias.data(),
@@ -769,10 +955,13 @@ MNN提供了对模型进行量化版本的转化，相应的代码在tools/quant
          param->bias.clear();
      }
  }
+```
+
 
 <strong>添加反量化_insertDequantize</strong>
 这个函数作用是：添加反量化操作。 因为量化op输出是整数， 但是以量化op输出为输入的下一个op是浮点，需要是浮点版本输出，所以需要反量化的过程.
 
+```cpp
  void Calibration::_insertDequantize() {
      // Search All Int Tensors
      std::set<int> int8Tensors;
@@ -796,7 +985,11 @@ MNN提供了对模型进行量化版本的转化，相应的代码在tools/quant
              }
          }
      }
+```
+
  ​
+
+```cpp
      // Insert Convert For Not Support Int8 Ops， 对于不支持int8的op，前后要加反量化的层
      for (auto iter = _originaleModel->oplists.begin(); iter != _originaleModel->oplists.end();) {
          auto op           = iter->get();
@@ -809,10 +1002,18 @@ MNN提供了对模型进行量化版本的转化，相应的代码在tools/quant
              iter++;
              continue;
          }
+```
+
  ​
+
+```cpp
          auto& inputIndexes  = op->inputIndexes;
          const int inputSize = inputIndexes.size();
+```
+
  ​
+
+```cpp
          // insert dequantization op before this op
          for (int i = 0; i < inputSize; ++i) {// 对于该op的所有输入 tensor
              const auto curInputIndex = inputIndexes[i];
@@ -821,7 +1022,11 @@ MNN提供了对模型进行量化版本的转化，相应的代码在tools/quant
              }
              auto input        = _tensorMap[curInputIndex];
              auto inputOpScale = _scales[input];
+```
+
  ​
+
+```text
              // construct new op， 创建一个 定点转浮点的 op
              auto dequantizationOp       = new MNN::OpT;
              dequantizationOp->main.type = MNN::OpParameter_QuantizedFloatParam;
@@ -831,17 +1036,29 @@ MNN提供了对模型进行量化版本的转化，相应的代码在tools/quant
              auto dequantizationParam         = new MNN::QuantizedFloatParamT;
              dequantizationOp->main.value     = dequantizationParam;
              dequantizationParam->tensorScale = inputOpScale;
+```
+
  ​
+
+```text
              dequantizationOp->inputIndexes.push_back(curInputIndex);
              dequantizationOp->outputIndexes.push_back(_originaleModel->tensorName.size());
              _originaleModel->tensorName.push_back(dequantizationOp->name);
+```
+
  ​
+
+```cpp
              // reset current op&#39;s input index at i， 新创建定点转浮点op的 输出 接到 op的输入
              inputIndexes[i] = dequantizationOp->outputIndexes[0];
              iter = _originaleModel->oplists.insert(iter, std::unique_ptr<MNN::OpT>(dequantizationOp));
              iter++;
          }
+```
+
  ​
+
+```cpp
          iter++;
          // LOG(INFO) << &#34;insert quantization op after this op if neccessary&#34;;
          // insert quantization op after this op if neccessary
@@ -872,33 +1089,55 @@ MNN提供了对模型进行量化版本的转化，相应的代码在tools/quant
              _originaleModel->tensorName.push_back(_originaleModel->tensorName[outputIndex]);
              _originaleModel->tensorName[outputIndex] = quantizationOp->name;
              op->outputIndexes[i]                              = quantizationOp->inputIndexes[0];
+```
+
  ​
+
+```cpp
              iter = _originaleModel->oplists.insert(iter, std::unique_ptr<MNN::OpT>(quantizationOp));
              iter++;
          }
      }
+```
+
  ​
+
+```cpp
      // Insert Turn float Op for output
      for (auto index : int8Outputs) { // 对该图的 输出tensor，添加反量化， 因为图最终输出还是要浮点的
          // construct new op
          auto dequantizationOp       = new MNN::OpT;
          dequantizationOp->main.type = MNN::OpParameter_QuantizedFloatParam;
          dequantizationOp->name      = &#34;___Int8ToFloat___For_&#34; + flatbuffers::NumToString(index);
+```
+
  ​
+
+```text
          dequantizationOp->type           = MNN::OpType_Int8ToFloat;
          auto dequantizationParam         = new MNN::QuantizedFloatParamT;
          dequantizationOp->main.value     = dequantizationParam;
          dequantizationParam->tensorScale = _scales[_tensorMap[index]];
+```
+
  ​
+
+```text
          dequantizationOp->inputIndexes.push_back(index);
          dequantizationOp->outputIndexes.push_back(_originaleModel->tensorName.size());
          auto originTensorName              = _originaleModel->tensorName[index];
          _originaleModel->tensorName[index] = dequantizationOp->name;
          _originaleModel->tensorName.emplace_back(originTensorName);
+```
+
  ​
+
+```cpp
          _originaleModel->oplists.insert(_originaleModel->oplists.end(), std::unique_ptr<MNN::OpT>(dequantizationOp));
      }
  }
+```
+
 
 简单收一下：
 

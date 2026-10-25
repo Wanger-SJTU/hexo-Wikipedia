@@ -51,6 +51,8 @@ source_url: https://zhuanlan.zhihu.com/p/12097798333
 图片来自：https://static.sched.com/hosted_files/kvmforumc/KVMForum_2020_io_uring_passthrough_Stefano_Garzarella.pdf用户程序将请求装配成一个SQE后，就可以提交到SQ队列（*通过WRITE_ONCE刷新sqe_tail*），详细过程如下<span class="wikilink wikilink--missing" title="未导入的页面">3</span>(#ref_3)
 
 `    read_barrier();
+
+```sql
     index = tail & *s->sq_ring.ring_mask;
     struct io_uring_sqe *sqe = &s->sqes[index];
     sqe->fd = file_fd;
@@ -68,6 +70,8 @@ source_url: https://zhuanlan.zhihu.com/p/12097798333
         *sring->tail = tail;
         write_barrier();
     }`
+```
+
 
 以上是装配一个IORING_OP_READV的流程，首先通过读屏障，确保当前sqe_tail是保序的（*避免与内核线程在该变量上竞争*），然后将操作文件、操作类型、buffer地址等等，写入SQE中（*注意：由于需要完成后释放fi，所以需要将其放入user_data，能在完成时访问这部分空间*）。
 

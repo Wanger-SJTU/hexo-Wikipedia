@@ -141,11 +141,15 @@ $- A_{tj} = \gamma_{j:t} (k_j^\top q_t) 为”衰减注意力分数”$
 上述公式中的 CausalAttn 可以进一步转化为矩阵乘法：
 
 `# 伪代码：Chunk 内计算
+
+```python
 def chunk_forward(Q, K, V, G, B, S_init):
     C, d = Q.shape
-    
+
     # Step 1: 计算累积衰减矩阵 Γ (下三角)
     # Γ[i,j] = prod(g[j+1:i+1]) for j 
+```
+
 
 #### 四、完整算法：两阶段 Chunkwise Parallel
 
@@ -156,27 +160,43 @@ def chunk_forward(Q, K, V, G, B, S_init):
 `def intra_chunk_parallel(chunks, S_init_per_chunk):
     """
     输入:
+
+```text
       chunks: List of (Q, K, V, G, B), 每个 shape [C, d]
       S_init_per_chunk: 每个 chunk 的初始状态 [num_chunks, d, d]
+```
+
     
     输出:
       outputs: [num_chunks, C, d]
       S_finals: [num_chunks, d, d]
     """
+
+```text
     outputs = []
     S_finals = []
+```
+
     
     # 这个循环可以完全并行！
+
+```text
     for chunk_idx, (Q, K, V, G, B) in enumerate(chunks):
         S_init = S_init_per_chunk[chunk_idx]
+```
+
         
         # Chunk 内计算（矩阵运算，Tensor Core）
+
+```text
         O, S_final = compute_chunk(Q, K, V, G, B, S_init)
-        
+
         outputs.append(O)
         S_finals.append(S_final)
-    
+
     return stack(outputs), stack(S_finals)`
+```
+
 
 #### 4.2 阶段二：Inter-Chunk（Chunk 间传递）
 
@@ -191,18 +211,22 @@ Chunk 间必须顺序传递状态，但只有 L/C 步：
     输出:
       S_corrected: 修正后的最终状态 [num_chunks, d, d]
     """
+
+```text
     num_chunks = len(S_finals)
     S_prev = initial_state
     S_corrected = []
-    
+
     # O(L/C) 顺序步骤
     for i in range(num_chunks):
         # 修正：考虑之前 chunk 的状态传递
         S_curr = propagate_state(S_prev, S_finals[i])
         S_corrected.append(S_curr)
         S_prev = S_curr
-    
+
     return stack(S_corrected)`
+```
+
 
 #### 4.3 整体流程图
 
@@ -275,17 +299,21 @@ $最棘手的部分是 \Delta_t 依赖 S_{t-1}。有两种处理方式：$
 
 `def compute_deltas_iterative(K, V, G, B, S_init):
     """Chunk 内迭代计算 Δ"""
+
+```text
     C, d = K.shape
     S = S_init.clone()
     deltas = []
-    
+
     for t in range(C):
         old_v = S @ K[t]
         delta = B[t] * (V[t] - old_v)
         deltas.append(delta)
         S = G[t] * S + outer(delta, K[t])
-    
+
     return stack(deltas)  # [C, d]`
+```
+
 
 $这仍然是 O© 顺序，但 C \gamma_t = \prod_{i=1}^{t} g_i 可能非常小（当 g  时）。建议：$
 
@@ -301,25 +329,37 @@ gamma = cumprod(G.float()).to(G.dtype)`
 为了避免 O(C²) 的注意力矩阵，可以使用 <strong>Flash Attention 风格</strong>的分块：
 
 `def memory_efficient_chunk(Q, K, V, G, B, S_init, BLOCK=16):
+
+```text
     """分块计算，避免 O(C²) 显存"""
     C, d = Q.shape
     O = zeros(C, d)
-    
+
     for i in range(0, C, BLOCK):
         q_block = Q[i:i+BLOCK]  # [BLOCK, d]
+```
+
         
         # 只计算需要的注意力块
+
+```text
         for j in range(0, i + BLOCK, BLOCK):
             k_block = K[j:j+BLOCK]
             v_block = V[j:j+BLOCK]
+```
+
             
             # 局部注意力 + 因果掩码
+
+```text
             a_block = q_block @ k_block.T  # [BLOCK, BLOCK]
             # ... apply mask and accumulate
-        
+
         O[i:i+BLOCK] = ...
-    
+
     return O`
+```
+
 
 #### 七、与其他方法的对比
 
@@ -374,27 +414,47 @@ Chunk Size优点缺点C=32更少顺序步骤矩阵太小，Tensor Core 利用率
 最初的 Triton 实现采用最直接的方式——逐 token 顺序扫描：
 
 `@triton.jit
+
+```python
 def _prefill_kernel_naive(Q, K, V, State, ...):
     # 加载初始状态 [D, D]
     S = tl.load(State + ...)  
+```
+
     
     # 逐 token 顺序处理
+
+```text
     for i in range(seq_len):
         t = t_start + i
+```
+
         
         # 加载当前 token 的 q, k, v
+
+```text
         q = tl.load(Q + t * stride_q + ...)
         k = tl.load(K + t * stride_k + ...)
         v = tl.load(V + t * stride_v + ...)
+```
+
         
         # GDN delta rule
+
+```sql
         old_v = tl.sum(S * k[None, :], axis=1)  # S @ k
         delta = beta * (v - old_v)
         S = g * S + delta[:, None] * k[None, :]  # rank-1 update
+```
+
         
         # 输出
+
+```text
         o = scale * tl.sum(S * q[None, :], axis=1)  # S @ q
         tl.store(Out + t * stride_o + ..., o)`
+```
+
 
 实测结果 (B200)**:
 
@@ -424,29 +484,45 @@ S[i,:] = g * S[i,:] + delta[i] * k[:]
 于是我们将 128 行分成多个 V-Block，每个 block 独立处理：
 
 `@triton.jit
+
+```python
 def _prefill_kernel(Q, K, V, State, ..., BLOCK_V: tl.constexpr):
     n  = tl.program_id(0)   # 序列索引
     h  = tl.program_id(1)   # v_head 索引
     vb = tl.program_id(2)   # V-block 索引 ← 新增！
     v0 = vb * BLOCK_V       # 本 program 负责的起始行
+```
+
     
     # 只加载本 block 负责的 V-slice [BLOCK_V, D]
+
+```text
     vi = tl.arange(0, BLOCK_V)[:, None]
     ki = tl.arange(0, D)[None, :]
     S = tl.load(State + ... + v0 * stride_s_v + vi * stride_s_v + ki)
-    
+
     for i in range(seq_len):
         # 只处理 V-slice
         vv = tl.load(V + ... + v0 + tl.arange(0, BLOCK_V))  # [BLOCK_V]
+```
+
         
         # 本 slice 的 delta rule
+
+```text
         old_v = tl.sum(S * kv[None, :], axis=1)  # [BLOCK_V]
         delta = beta * (vv - old_v)
         S = g * S + delta[:, None] * kv[None, :]
+```
+
         
         # 输出本 slice
+
+```text
         ov = scale * tl.sum(S * qv[None, :], axis=1)
         tl.store(Out + ... + v0 + tl.arange(0, BLOCK_V), ov)`
+```
+
 
 <strong>Grid 配置</strong>:
 

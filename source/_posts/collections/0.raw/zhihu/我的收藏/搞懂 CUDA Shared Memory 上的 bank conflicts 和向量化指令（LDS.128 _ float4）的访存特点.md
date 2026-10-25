@@ -93,6 +93,8 @@ Case 1
 __global__ void smem_1(uint32_t *a) {
   __shared__ uint32_t smem[128];
   uint32_t tid = threadIdx.x;
+
+```cpp
   for (int i = 0; i < 4; i++) {
     smem[i * 32 + tid] = tid;
   }
@@ -100,6 +102,8 @@ __global__ void smem_1(uint32_t *a) {
   reinterpret_cast<uint2 *>(a)[tid] =
       reinterpret_cast<const uint2 *>(smem)[tid];
 }
+```
+
 
 看下 nsight compute 的结果：
 
@@ -118,6 +122,8 @@ Case 2
 __global__ void smem_2(uint32_t *a) {
   __shared__ uint32_t smem[128];
   uint32_t tid = threadIdx.x;
+
+```cpp
   for (int i = 0; i < 4; i++) {
     smem[i * 32 + tid] = tid;
   }
@@ -125,6 +131,8 @@ __global__ void smem_2(uint32_t *a) {
   reinterpret_cast<uint2 *>(a)[tid] =
       reinterpret_cast<const uint2 *>(smem)[tid / 2];
 }
+```
+
 
 3、128 位宽的访存指令
 使用 LDS.128 指令（或者通过 float4、uint4 等类型）取数据时，每个 thread 请求 128 bits（即 16 bytes）数据，那么每 8 个 thread 就需要请求 128 bytes 的数据。
@@ -150,6 +158,8 @@ Case 1
 __global__ void smem_1(uint32_t *a) {
   __shared__ uint32_t smem[128];
   uint32_t tid = threadIdx.x;
+
+```cpp
   for (int i = 0; i < 4; i++) {
     smem[i * 32 + tid] = tid;
   }
@@ -159,6 +169,8 @@ __global__ void smem_1(uint32_t *a) {
         reinterpret_cast<const uint4 *>(smem)[4];
   }
 }
+```
+
 
 Case 2
 只激活第 0 和第 15 号线程，访问第 4 个 uint4：
@@ -168,6 +180,8 @@ Case 2
 __global__ void smem_2(uint32_t *a) {
   __shared__ uint32_t smem[128];
   uint32_t tid = threadIdx.x;
+
+```cpp
   for (int i = 0; i < 4; i++) {
     smem[i * 32 + tid] = tid;
   }
@@ -177,6 +191,8 @@ __global__ void smem_2(uint32_t *a) {
         reinterpret_cast<const uint4 *>(smem)[4];
   }
 }
+```
+
 
 Case 3
 
@@ -185,6 +201,8 @@ Case 3
 __global__ void smem_3(uint32_t *a) {
   __shared__ uint32_t smem[128];
   uint32_t tid = threadIdx.x;
+
+```cpp
   for (int i = 0; i < 4; i++) {
     smem[i * 32 + tid] = tid;
   }
@@ -192,6 +210,8 @@ __global__ void smem_3(uint32_t *a) {
   reinterpret_cast<uint4 *>(a)[tid] = reinterpret_cast<const uint4 *>(
       smem)[(tid / 8) * 2 + ((tid % 8) / 2) % 2];
 }
+```
+
 
 ![](https://pic1.zhimg.com/v2-240da99c0e8e5dde835aa3dadb1f8748_r.jpg)
 
@@ -204,6 +224,8 @@ Case 4
 __global__ void smem_4(uint32_t *a) {
   __shared__ uint32_t smem[128];
   uint32_t tid = threadIdx.x;
+
+```cpp
   for (int i = 0; i < 4; i++) {
     smem[i * 32 + tid] = tid;
   }
@@ -218,6 +240,8 @@ __global__ void smem_4(uint32_t *a) {
       reinterpret_cast<const uint4 *>(smem)[addr];
   // printf(&#34;tid: %d, addr: %d\n&#34;, tid, addr);
 }
+```
+
 
 ![](https://pic1.zhimg.com/v2-99be303a89213815b4d81c5f334aac10_r.jpg)
 
@@ -238,6 +262,8 @@ thread 8 - 11 访问第 1 个 uint4， thread 12 - 15 访问第 9 个 uint4（�
 __global__ void smem_5(uint32_t *a) {
   __shared__ uint32_t smem[128];
   uint32_t tid = threadIdx.x;
+
+```cpp
   for (int i = 0; i < 4; i++) {
     smem[i * 32 + tid] = tid;
   }
@@ -247,6 +273,8 @@ __global__ void smem_5(uint32_t *a) {
       reinterpret_cast<const uint4 *>(smem)[addr];
   printf(&#34;tid: %d, addr: %d\n&#34;, tid, addr);
 }
+```
+
 
 ![](https://pic1.zhimg.com/v2-c581ea723c99071dcdc448e26b63fe70_r.jpg)
 

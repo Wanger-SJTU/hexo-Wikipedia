@@ -84,11 +84,19 @@ Range Search 重用了现有的搜索流程，二者在上层所有数据通路�
 通过上述两个参数，我们可以根据不同应用场景和需求微调 Range Search 的行为。以下为示例代码：
 
 `default_index = {"index_type": "HNSW","metric_type": "L2","params": {"M":48,"efConstruction":500}
+
+```text
 }
+```
+
 collection.create_index("float_vector", default_index)
 search_params = {"metric_type": "L2","limit": TOPK,
+
+```text
                  "params": {"ef":32,"range_filter":1.0,"radius":2.0}
 }
+```
+
 res = collection.search(vectors[:nq], "float_vector", search_params, limit)`
 
 ### 04.参数检查**

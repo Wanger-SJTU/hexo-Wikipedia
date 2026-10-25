@@ -60,9 +60,12 @@ This figure shows a question-response pair from Gemini over the 2019 Uber 10K fi
 
 There are some parts where we noticed Gemini struggles a bit.
 
-* <strong>Gemini doesn’t read all tables and charts correctly.</strong> Gemini Pro still has a hard time being able to read figures and complex tables.
-* <strong>Gemini can take a long time.</strong> Returning an answer over the Uber 10K Filing (\~160k) takes \~20 seconds. Returning an answer over the LHS Schematic Design Binder (\~890k) takes \~60+ seconds.
-* <strong>Gemini can hallucinate page numbers.</strong> When asked to give a summary but also with page number citations, Gemini hallucinated the sources.
+```text
+* **Gemini doesn’t read all tables and charts correctly.** Gemini Pro still has a hard time being able to read figures and complex tables.
+* **Gemini can take a long time.** Returning an answer over the Uber 10K Filing (\~160k) takes \~20 seconds. Returning an answer over the LHS Schematic Design Binder (\~890k) takes \~60+ seconds.
+* **Gemini can hallucinate page numbers.** When asked to give a summary but also with page number citations, Gemini hallucinated the sources.
+```
+
 
 ![](https://proxy-prod.omnivore-image-cache.app/1250x0,sA1B-HrPMS5X7tmCGwTN8hES_nW7WVR3ouMM43nb_3Nw/https://www.llamaindex.ai/_next/image?url=https%3A%2F%2Fcdn.sanity.io%2Fimages%2F7m9jw85w%2Fproduction%2F3ac7723fbaeea5d785662feee8e815a3b763562f-2500x1407.png%3Ffit%3Dmax%26auto%3Dformat&w=3840&q=75)
 
@@ -114,8 +117,11 @@ Certain questions that are asking about specific details are well suited for exi
 
 More complex questions require more context from disparate pieces of different documents, and in those settings it is less clear how to correctly answer these questions while optimizing for latency and cost:
 
+```text
 * Summarization questions require going over entire documents.
 * Multi-part questions can be solved by doing chain-of-thought and interleaving retrieval and reasoning; they can also be solved by shoving all context into the prompt.
+```
+
 
 We imagine an intelligent routing layer that operates on top of multiple RAG and LLM synthesis pipelines over a knowledge base. Given a question, the router can ideally choose an optimal strategy in terms of cost and latency in terms of retrieving context to answer the question. This ensures that a single interface can handle different types of questions while not becoming prohibitively expensive.
 

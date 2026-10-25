@@ -146,6 +146,8 @@ C语言实现版本：**
 就是两块内存中的数据求差分值，然后平方和，就是求均方差的函数，在求出差分（写入作为目的寄存器）后马上又要使用差分值平方（平方作为源寄存器）。
 
 `float SumSquareError_C(const float* src_a, const float* src_b, int count)
+
+```cpp
 {
   float sse = 0u;
   int i;
@@ -155,6 +157,8 @@ C语言实现版本：**
   }
   return sse;
 }
+```
+
 `
 
 **
@@ -164,6 +168,8 @@ C语言实现版本：**
 这里几乎是常规的写法，你看注释那里，可以看到q0是vsub的目的寄存器，马上又是下面vmla的源寄存器了，所以这里是会打断流水线的（粗略解释见上面*<strong>Hazard</strong>*部分）。
 
 `float SumSquareError_NEON1(const float* src_a, const float* src_b, int count)
+
+```text
 {
   float sse;
   asm volatile (
@@ -178,11 +184,16 @@ C语言实现版本：**
     "vld1.32     {q2, q3}, [%[src_a]]!       \n"
     "vld1.32     {q12, q13}, [%[src_b]]!     \n"
     "vld1.32     {q14, q15}, [%[src_b]]!     \n"
+```
+
 
     "subs %[count], %[count], #16            \n"
 
+```text
 // q0, q1, q2, q3 are the destination of vsub.
 // they are also the source of vmla.
+```
+
 
     "vsub.f32 q0, q0, q12                    \n"
     "vmla.f32   q8, q0, q0                   \n"
@@ -199,6 +210,8 @@ C语言实现版本：**
     "vpadd.f32  d2, d22, d23                 \n"
     "vpadd.f32  d0, d2, d2                   \n"
     "vmov.32    %3, d0[0]                    \n"
+
+```text
     : "+r"(src_a),
       "+r"(src_b),
       "+r"(count),
@@ -208,6 +221,8 @@ C语言实现版本：**
       "q12", "q13","q14", "q15");
   return sse;
 }
+```
+
 `
 
 **
@@ -219,6 +234,8 @@ C语言实现版本：**
 **
 
 `float SumSquareError_NEON2(const float* src_a, const float* src_b, int count)
+
+```text
 {
   float sse;
   asm volatile (
@@ -228,12 +245,14 @@ C语言实现版本：**
     "veor    q10, q10, q10               \n"
     "veor    q11, q11, q11               \n"
   "1:                                    \n"
-  
+
     "vld1.32     {q0, q1}, [%[src_a]]!   \n"
     "vld1.32     {q2, q3}, [%[src_a]]!   \n"
-    
+
     "vld1.32     {q12, q13}, [%[src_b]]! \n"
     "vld1.32     {q14, q15}, [%[src_b]]! \n"
+```
+
     
     "subs       %[count], %[count], #16  \n"
     
@@ -254,6 +273,8 @@ C语言实现版本：**
     "vpadd.f32  d2, d22, d23             \n"
     "vpadd.f32  d0, d2, d2               \n"
     "vmov.32    %3, d0[0]                \n"
+
+```text
     : "+r"(src_a),
       "+r"(src_b),
       "+r"(count),
@@ -263,6 +284,8 @@ C语言实现版本：**
       "q12", "q13","q14", "q15");
   return sse;
 }
+```
+
 `
 
 结论:** 
@@ -286,6 +309,8 @@ C语言实现版本：**
 *C语言版本：***
 
 `if( flag )
+
+```text
 {
     dst[x * 4]     = a;
     dst[x * 4 + 1] = a;
@@ -299,6 +324,8 @@ else
     dst[x * 4 + 2] = b;
     dst[x * 4 + 3] = b;
 }
+```
+
 `
 
 **
@@ -307,11 +334,14 @@ else
 
 `//dst[x * 4]       = (a&Eflag) | (b&~Eflag);
 
+```text
 //dst[x * 4 + 1] = (a&Eflag) | (b&~Eflag);
 
 //dst[x * 4 + 2] = (a&Eflag) | (b&~Eflag);
 
 //dst[x * 4 + 3] = (a&Eflag) | (b&~Eflag);
+```
+
 
 VBSL qFlag, qA, qB
 `
@@ -350,11 +380,14 @@ ARM处理器是加载/存储的系统（load/store system）。
 
 `PLD syntax:
 
+```text
     PLD{cond} [Rn {, #offset}]
 
     PLD{cond} [Rn, +/-Rm {, shift}]
 
     PLD{cond} label
+```
+
 
 Where:
 

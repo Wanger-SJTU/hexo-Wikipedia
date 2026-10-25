@@ -36,6 +36,7 @@ TreeNode
 
 hit count 表示这个 node 命中测试，当淘汰策略时有用（比如说每一轮 step hit count --，hit count = 0 时进入淘汰队列）。host_ref_counter 表示当前有多少个异步存储（存到主机内存里）或搬运操作正在使用这份 host cache，暂时不能淘汰它；host_value 则是记录这个节点在  host kv cache 的 slot。hash_value 是对每一页 page 包括前面所有的 token 做hash，得到一个值，有点类似于 id，在不搞什么 offload、distribution 操作时没啥用。
 
+```python
 class TreeNode:
     counter = 0
     def __init__(self, id: Optional[int] = None, priority: int = 0):
@@ -50,6 +51,8 @@ class TreeNode:
         self.hash_value: Optional[List[str]] = None
 
         TreeNode.counter += 1
+```
+
 
 RadixKey 
 token_ids 就是我们上面讲的：这一个节点对应的 token ids。extra_key 还包含了 Lora 等骚操作，有 extra key 的话，即便 token ids 都对上也不能复用 cache。is_bigram 的含义是：是否将 token 序列解释为相邻 token 对，在 EAGLE 模式（投机采样）时会用到。limit 提供一份视图，比如说当前的节点上存的 token ids 是 [22, 11, 4, 56]，但是 limit=3，所以对于这个节点来说只有 [22, 11, 4] 是有效的 token。但这并不会影响子节点的前缀是 [22, 11, 4, 56]。
@@ -60,6 +63,7 @@ page_aligned() 是把自己按照页面大小裁剪一下，毕竟只有完整�
 
 child_key() 为了找路径用的。比如当前进入父节点 token 都对上了。现在要选进入到父节点的哪个子节点时，取出第一块（由 page size 决定块大小）和请求的第一块比较。
 
+```python
 class RadixKey:
     &#34;&#34;&#34;is_bigram=True: token_ids holds raw tokens (N+1 for N bigrams); slices share one boundary token.&#34;&#34;&#34;
 
@@ -105,8 +109,12 @@ class RadixKey:
                 break
             lo = hi
             step *= 2
+```
+
 
         if self.is_bigram:
+
+```python
             matched = max(0, min(matched_tokens - 1, len(self), len(other)))
             return (matched // page_size) * page_size if page_size > 1 else matched
 
@@ -119,10 +127,13 @@ class RadixKey:
         t = self.token_ids
         plain = t[0] if page_size == 1 else tuple(t[:page_size])
         return plain if self.extra_key is None else (self.extra_key, plain)
+```
+
 
 RadixCache
 讲讲参数，disable 代表是否彻底关闭 Radix Cache。关闭时不查树、不插树，KV 用完直接释放。req_to_token_pool 是 token id -> KV slot 的映射表。token_to_kv_pool_allocator 分配和释放 KV slot 的分配器。disable_finished_insert 请求结束时是否禁止将其 KV 插入缓存；确定性相关场景可能使用。
 
+```python
 class RadixCache(SessionRadixCacheMixin, KVCacheEventMixin, BasePrefixCache):
     def __init__(self, params: CacheInitParams):
         self.disable = params.disable
@@ -137,10 +148,13 @@ class RadixCache(SessionRadixCacheMixin, KVCacheEventMixin, BasePrefixCache):
 
         self.eviction_strategy = get_eviction_strategy(self.eviction_policy)
         self.evictable_leaves = set()
+```
+
 
 匹配最长前缀 match_prefix()
 它完成的事情是：输入请求 token⟶最长可复用前缀对应的 KV slot indices。输入 params（里面包含请求的 key）对现有的 Radix Cache 做匹配，如果最长前缀匹配点正好在节点内部，就把这个节点劈了。
 
+```python
     def match_prefix(self, params: MatchPrefixParams) -> MatchResult:
         key = params.key
         key, _ = key.maybe_to_bigram_view(self.is_eagle)
@@ -178,10 +192,13 @@ class RadixCache(SessionRadixCacheMixin, KVCacheEventMixin, BasePrefixCache):
                     child_key = key.child_key(self.page_size)
 
         return value, node
+```
+
 
 插入节点 insert()
 插入函数就是拿一串 key（token ids）和当前 Radix Tree 每个节点做匹配，看看能插到哪，能正好插的就插上。不行就把一个节点劈开，再插。
 
+```python
     def insert(self, params: InsertParams) -> InsertResult:
         key = params.key
         value = params.value
@@ -235,10 +252,13 @@ class RadixCache(SessionRadixCacheMixin, KVCacheEventMixin, BasePrefixCache):
             self._update_leaf_status(new_node)
             node = new_node
         return total_prefix_length, node
+```
+
 
 驱逐叶节点 evict()
 当 KV pool 空间不足时，从“当前安全可删的缓存叶节点”中，按配置的淘汰策略选择节点，释放其真实 GPU KV slot。它删的是整段 `TreeNode.value`，因此目标是“至少释放 `num_tokens` 个 slot”，不保证刚好等于该数。
 
+```python
     def evict(self, params: EvictParams) -> EvictResult:
         num_tokens = params.num_tokens
         leaves = list(self.evictable_leaves)
@@ -262,10 +282,13 @@ class RadixCache(SessionRadixCacheMixin, KVCacheEventMixin, BasePrefixCache):
             self._record_remove_event(x)
 
         return EvictResult(num_tokens_evicted=num_evicted)
+```
+
 
 Cache 的请求与释放
 cache_unfinished_req() 在一个 prefill chunk 完成时调用。将当前已经完整计算的 page 提前交给 Radix Cache，并把请求的 token→KV slot 映射切换到树里的规范索引，然后让请求继续执行。请仔细看完下方代码注释后再回来看一遍这句话。
 
+```python
     def cache_unfinished_req(self, req: Req, chunked=False):
         token_ids = req.get_fill_ids()
         kv_indices = self.req_to_token_pool.req_to_token[
@@ -276,8 +299,12 @@ cache_unfinished_req() 在一个 prefill chunk 完成时调用。将当前已经
             token_ids, req.extra_key, is_bigram=self.is_eagle
         ).page_aligned(self.page_size)
         values = kv_indices[: len(radix_key)].to(dtype=torch.int64, copy=True)
+```
+
 
         # 把这个new key插入到 Radix Tree
+
+```sql
         result = self.insert(
             InsertParams(
                 key=radix_key,
@@ -294,8 +321,12 @@ cache_unfinished_req() 在一个 prefill chunk 完成时调用。将当前已经
         self.token_to_kv_pool_allocator.free(
             kv_indices[req.cache_protected_len : new_prefix_len]
         )
+```
+
 
         # 拿到的是 Radix Tree 中的自己的 KV slot 索引
+
+```text
         match_result = self.match_prefix(MatchPrefixParams(key=radix_key))
         new_indices, new_last_node = (
             match_result.device_indices,
@@ -304,8 +335,12 @@ cache_unfinished_req() 在一个 prefill chunk 完成时调用。将当前已经
         assert len(new_indices) == len(
             radix_key
         ), f&#34;{len(new_indices)=}, {len(radix_key)=}&#34;
+```
+
 
         # 更新一下 req_to_token_pool 记录的 request 的 KV Slot 位置
+
+```text
         self.req_to_token_pool.write(
             (req.req_pool_idx, slice(req.cache_protected_len, len(new_indices))),
             new_indices[req.cache_protected_len :],
@@ -316,8 +351,12 @@ cache_unfinished_req() 在一个 prefill chunk 完成时调用。将当前已经
 
         self.dec_lock_ref(req.last_node)
         self.inc_lock_ref(new_last_node)
+```
+
 
         # 更新一下 Request 内部管理的 KV slot 状态信息
+
+```text
         if len(new_indices) < len(kv_indices):
             req.prefix_indices = torch.cat(
                 [new_indices, kv_indices[len(new_indices) :]]
@@ -328,8 +367,11 @@ cache_unfinished_req() 在一个 prefill chunk 完成时调用。将当前已经
         req.last_node = new_last_node
 
         self._tag_session_leaf(req, radix_key, node=new_last_node)
+```
+
 cache_finished_req() 在请求彻底结束时调用。执行逻辑很简单：（1）如果没有启动 KV Cache 就在这里进行 KV slot 释放；（2）否则，如果开启了 is_insert 就最后再更新一下 Radix Tree，然后释放尾部不整齐的 KV slot；（3）如果关闭了 is_insert 就释放没有进 Radix Cache 的 KV slot。
 
+```python
     def cache_finished_req(self, req: Req, is_insert: bool = True):
         # 推测解码等场景可能生成过临时 token
         # 只有 commit 过的才是确定的 token
@@ -351,9 +393,13 @@ cache_finished_req() 在请求彻底结束时调用。执行逻辑很简单：�
         ).page_aligned(self.page_size)
         key_len = len(radix_key)
         values = kv_indices[:key_len].to(dtype=torch.int64, copy=True)
+```
+
 
         # Radix Cache takes one ref in memory pool
         if is_insert:  # 树中没有的新后缀 KV 留给 Radix Cache，后续请求可复用。
+
+```sql
             priority = getattr(req, &#34;priority&#34;, 0) or 0
             result = self.insert(
                 InsertParams(key=radix_key, value=values, priority=priority)
@@ -368,11 +414,17 @@ cache_finished_req() 在请求彻底结束时调用。执行逻辑很简单：�
             self.token_to_kv_pool_allocator.free(
                 kv_indices[req.cache_protected_len : key_len]
             )
+```
+
 
         # free the unaligned tail
+
+```text
         self.token_to_kv_pool_allocator.free(kv_indices[key_len:])
 
         self._tag_session_leaf(req, radix_key, node=session_leaf)
+```
+
 
         # Remove req slot release the cache lock
         if req.last_node is not None:
@@ -390,8 +442,12 @@ Mamba 前缀匹配只能选最后一个有效 checkpoint。假如：
 
 root
  └─ [1,2] → Mamba=S2
+
+```text
       └─ [3,4] → Mamba=None
            └─ [5,6] → Mamba=S6
+```
+
 那么对于请求 [1,2,3,4,9] 来说，最长 token 前缀匹配是 [1,2,3,4]。但最后一个可用 Mamba checkpoint 是[1,2]，状态 S2。而请求 [1,2,3,4,5,6,9] 则可直接从 S6 恢复。
 
 传统 KV Cache 的已缓存 K/V 是只读的，多个请求可以共享。但 Mamba state 是“接下来还会被更新”的状态。若请求直接在缓存的 
@@ -404,6 +460,7 @@ In Architecture
 
 当 Request 到来时存在等待队列里，[在 Scheduler 调度的 get_next_batch_to_run() 函数中从等待队列中被调度](https://zhuanlan.zhihu.com/p/2061009711907057681)。在其内部调用 get_new_batch_prefill -> _get_new_batch_prefill_raw -> req.init_next_round_input(self.tree_cache)。在 init_next_round_input() 里的`match_prefix`只是<strong>查询</strong>——它只负责在 Radix Tree 中找到已经缓存(已经被写入`token_to_kv_pool`且未被驱逐)的那部分前缀，并把命中的物理槽位号写入`req.prefix_indices`。 
 
+```python
     def init_next_round_input(
         self,
         tree_cache: Optional[BasePrefixCache] = None,
@@ -449,10 +506,14 @@ In Architecture
                 self.cache_protected_len = match_result.cache_protected_len
             else:
                 self.cache_protected_len = len(self.prefix_indices)
+```
+
 当 prefill batch 已经完成，[进入到 Scheduler.event_loop_overlap() 里面](https://zhuanlan.zhihu.com/p/2061009711907057681)处理 batch 结果的函数 process_batch_result 中。 在 SchedulerBatchResultProcessor 的 process_batch_result_prefill 方法中会调用 maybe_cache_unfinished_req 或 release_kv_cache（有些任务只进行 prefill）。
 
 - 在 maybe_cache_unfinished_req()  方法中调用 tree_cache.cache_unfinished_req() 去更新 radix cache。
 - 在 release_kv_cache() 方法中调用 tree_cache.cache_finished_req() 去更新或释放 radix cache。    @scheduler_nvtx_method(&#34;scheduler.process_batch_result&#34;)
+
+```python
     def process_batch_result(
         self,
         batch: ScheduleBatch,
@@ -464,6 +525,8 @@ In Architecture
             self.batch_result_processor.process_batch_result_decode(batch, result)
         elif batch.forward_mode.is_extend():
             self.batch_result_processor.process_batch_result_prefill(batch, result)
+```
+
 
 实验
 我们已经对 Radix Cache 有所了解了。现在回到我们之前的问题，为什么 disable radix cache 之后，在 temperature=0 时会发生同样的输入但输出不同的这种事呢？
@@ -533,7 +596,11 @@ cleanup() {
   echo &#34;停止 SGLang Server……&#34;
   kill -TERM &#34;$SERVER_PID&#34; 2>/dev/null || true
   wait &#34;$SERVER_PID&#34; 2>/dev/null || true
+
+```text
 }
+```
+
 trap cleanup EXIT
 
 echo &#34;等待 SGLang 服务启动……&#34;
@@ -548,6 +615,7 @@ done
 REQUEST_BODY=$(printf &#39;%s&#39; \
 &#39;{&#34;model&#34;:&#34;&#39;&#34;$MODEL_PATH&#34;&#39;&#34;,&#34;messages&#34;:[{&#34;role&#34;:&#34;user&#34;,&#34;content&#34;:&#34;Solve the following MATH problem. Put the final answer in \\boxed{} and show your reasoning.\n\n$\\overline{BC}$ is parallel to the segment through $A$, and $AB = BC$. What is the number of degrees represented by $x$?\n\n[asy]\ndraw((0,0)--(10,0));\ndraw((0,3)--(10,3));\ndraw((2,3)--(8,0));\ndraw((2,3)--(4,0));\nlabel(\&#34;$A$\&#34;,(2,3),N);\nlabel(\&#34;$B$\&#34;,(4,0),S);\nlabel(\&#34;$C$\&#34;,(8,0),S);\nlabel(\&#34;$124^{\\circ}$\&#34;,(2,3),SW);\nlabel(\&#34;$x^{\\circ}$\&#34;,(4.5,3),S);\n[/asy]&#34;}],&#34;temperature&#34;:0,&#34;top_p&#34;:1,&#34;seed&#34;:20260730,&#34;max_tokens&#34;:1024,&#34;stream&#34;:false}&#39;)
 
+```text
 curl -fsS &#34;http://127.0.0.1:${PORT}/v1/chat/completions&#34; \
   -H &#34;Content-Type: application/json&#34; \
   -H &#34;Authorization: Bearer empty&#34; \
@@ -559,15 +627,25 @@ curl -fsS &#34;http://127.0.0.1:${PORT}/v1/chat/completions&#34; \
   -H &#34;Authorization: Bearer empty&#34; \
   -d &#34;$REQUEST_BODY&#34; \
   >response2.json
+```
+
 
 extract_output() {
   python3 -c &#39;import json,sys; m=json.load(open(sys.argv[1]))[&#34;choices&#34;][0][&#34;message&#34;]; print(json.dumps({&#34;reasoning_content&#34;:m.get(&#34;reasoning_content&#34;),&#34;content&#34;:m.get(&#34;content&#34;)},ensure_ascii=False,sort_keys=True))&#39; &#34;$1&#34;
+
+```text
 }
+```
+
 
 if diff -u \
   <(extract_output response1.json) \
   <(extract_output response2.json); then
   echo &#34;两次模型输出一致&#34;
+
+```text
 else
   echo &#34;两次模型输出不一致：开启 Radix Cache 时复现了不确定性&#34;
+```
+
 fi

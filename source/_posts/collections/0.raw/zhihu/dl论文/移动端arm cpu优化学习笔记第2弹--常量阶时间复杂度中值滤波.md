@@ -28,6 +28,8 @@ source_url: https://zhuanlan.zhihu.com/p/87516875
 一开始能想到的中值滤波最直观的实现就是，把每个滤波窗口的内的值放进一个数组里面，然后排序，排序结果的排中间的值就是滤波结果。下面给出中值滤波的一般实现的示例代码（下面展示的所有代码只是为了用于说明，不保证能运行，实际代码以github上的代码为准）：
 
 median_filter(const float  *input,
+
+```cpp
               const int     radius,
               const int     height,
               const int     width,
@@ -57,9 +59,12 @@ median_filter(const float  *input,
     }
   }
 }
+```
+
 
 排序函数sortArr的实现函数，这是实现的是[选择排序法](https://link.zhihu.com/?target=http%3A//bubkoo.com/2014/01/13/sort-algorithm/selection-sort/)：
 
+```cpp
 static void sortArr(float *arr, int len) {
   const int middle = len / 2;
   for (int i = 0; i <= middle; ++i) {
@@ -77,6 +82,8 @@ static void sortArr(float *arr, int len) {
     arr[i] = tmp;
   }
 }
+```
+
 
 这里有个<strong>小技巧</strong>是，实现排序函数的时候因为我们只是为了求中值，<strong>所以只需计算出前一半的有序元素即可</strong>，比如数组：
 
@@ -124,6 +131,7 @@ static void sortArr(float *arr, int len) {
 
 这版优化其实非常的暴力，就是既然每个窗口单次排序这样子太慢，那么就利用并行计算一次同时计算8个窗口的排序结果，下面是示例代码：
 
+```cpp
 #if defined(USE_NEON_INTRINSIC) && defined(__ARM_NEON)
     int neon_arr_len = h_interval * (w_end - w_start + 1) * 8;
     for (int w = w_second_loop_start; w < remain_start; w += 8) {
@@ -146,6 +154,8 @@ static void sortArr(float *arr, int len) {
       }
     }
 #endif
+```
+
 
 完整代码见：
 
@@ -153,6 +163,7 @@ static void sortArr(float *arr, int len) {
 
 从代码上可以看到，因为用的是uint16_t类型的数据，所以可以一次处理8个窗口，相当于把从左到右8个窗口内的数据打包成C8的结构，然后看下排序函数的改动：
 
+```cpp
 #if defined(USE_NEON_INTRINSIC) && defined(__ARM_NEON)
 static void sortC4ArrNeon(uint16_t *arr, int len) {
   const int actual_len = len / 8;
@@ -181,6 +192,8 @@ static void sortC4ArrNeon(uint16_t *arr, int len) {
   }
 }
 #endif // __ARM_NEON
+```
+
 
 其实代码上看主体框架改动不大，还是采用选择排序法，不过如何利用neon intrinsic并行计算指令，同时对8个窗口内的数据进行排序呢？借助 <strong>vcgtq 和 vbslq</strong>这两个指令就可以做到。
 

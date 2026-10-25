@@ -225,12 +225,15 @@ readahead:
 二、老内核：`i_pages` 是 radix tree
 在 Linux `v4.19.325` 里，`struct address_space` 的 page cache 索引字段可以抽象成：
 
+```text
 struct address_space
    ├─ host
    ├─ i_pages: radix_tree_root
    ├─ nrpages
    ├─ writeback_index
    └─ a_ops
+```
+
 它的意思是：
 
 这个 address_space 的 page cache
@@ -438,6 +441,7 @@ get(42) 可以直接按 key 算路径。
 
 为了代码短，它固定支持 `0..63` 的 key：
 
+```cpp
 public class SimpleRadixTreeDemo {
     private static final int BITS_PER_LEVEL = 2;
     private static final int SLOT_COUNT = 1 << BITS_PER_LEVEL;
@@ -508,6 +512,8 @@ public class SimpleRadixTreeDemo {
         System.out.println(&#34;get(6)  = &#34; + tree.get(6));
     }
 }
+```
+
 输出是：
 
 path(5)  = 0 -> 1 -> 1
@@ -517,7 +523,10 @@ path(5)  = 0 -> 1 -> 1
    get(6)  = null
 这段代码里最关键的是这一句：
 
+```text
 return (key >> shift) & SLOT_MASK;
+```
+
 它的意思是：
 
 从 key 里取出当前层要看的那一小段 bit。
@@ -697,7 +706,11 @@ SimpleRadixTreeDemo              Linux 老 page cache
 
       key 42
         path 2 -> 2 -> 2
+
+```text
         value = &#34;B&#34;
+```
+
 
    老内核 page cache:
 
@@ -746,6 +759,8 @@ inode
         │         └─ slot[1]
         │              └─ node
         │                   └─ slot[1] -> page A
+
+```text
         │                                  page->index = 5
         │                                  page->mapping = address_space
         │
@@ -762,17 +777,27 @@ inode
                             └─ slot[3] -> page C
                                            page->index = 47
                                            page->mapping = address_space
+```
+
 如果 page B 是脏页，page C 正在 writeback，可以把 tag 也画进去：
 
 page B:
+
+```text
       page->index = 42
       page dirty flag = 1
       radix tree PAGECACHE_TAG_DIRTY = 1
+```
+
 
    page C:
+
+```text
       page->index = 47
       page writeback flag = 1
       radix tree PAGECACHE_TAG_WRITEBACK = 1
+```
+
 树上的 tag bitmap 可以想象成这样：
 
 root node
@@ -788,26 +813,38 @@ root node
    │    slot[3] = 0
    │
    └─ WRITEBACK bits:
+
+```text
         slot[2] = 0
         slot[3] = 1     page C 在这条分支下面
+```
+
 于是：
 
 按 index 查 42:
       root.slot[2] -> child.slot[2] -> leaf.slot[2] -> page B
 
    按 DIRTY tag 找:
+
+```text
       root 看到 DIRTY slot[2] = 1
       进入 slot[2] 子树
       child 看到 DIRTY slot[2] = 1
       继续进入
       最终找到 page B
+```
+
 
    按 WRITEBACK tag 找:
+
+```text
       root 看到 WRITEBACK slot[2] = 1
       进入 slot[2] 子树
       child 看到 WRITEBACK slot[3] = 1
       继续进入
       最终找到 page C
+```
+
 这个图就是老内核 `mapping->i_pages` 的第一层心智模型：
 
 文件有一个 address_space。
@@ -824,6 +861,8 @@ root node
 
 分配 / 准备一个 page
         │
+
+```text
         ├─ page->mapping = mapping
         ├─ page->index   = 文件页偏移 index
         │
@@ -838,6 +877,8 @@ root node
         │
         └─ __radix_tree_replace(..., page, ...)
                把 page 指针放进这个 slot
+```
+
 从数据结构角度看，插入就是：
 
 mapping->i_pages[page->index] = page
@@ -897,11 +938,15 @@ page_cache_tree_delete(mapping, page, shadow)
         ▼
    __radix_tree_lookup(&mapping->i_pages, page->index, &node, &slot)
         │
+
+```text
         ├─ radix_tree_clear_tags(...)
         │      清掉这个 slot 上的 dirty/writeback/towrite 等 tag
         │
         └─ __radix_tree_replace(..., shadow 或 NULL, ...)
                把原来的 page 指针替换掉
+```
+
 如果是普通删除，可以理解成：
 
 mapping->i_pages[page->index] = NULL
@@ -914,27 +959,41 @@ mapping->i_pages[page->index] = NULL
 如果用前面的通用例子类比：
 
 通用例子：
+
+```text
       setMark(42, DIRTY)
       findMarked(DIRTY) -> key 42
+```
+
 
    老内核：
+
+```text
       radix_tree_tag_set(&mapping->i_pages, 42, PAGECACHE_TAG_DIRTY)
       find_get_pages_range_tag(..., PAGECACHE_TAG_DIRTY, ...)
          -> page(index=42)
+```
+
 page 第一次变脏时，路径里会做：
 
 page dirty flag = 1
         │
         ▼
    radix_tree_tag_set(&mapping->i_pages,
+
+```text
                       page_index(page),
                       PAGECACHE_TAG_DIRTY)
         │
         ▼
    inode 标记 I_DIRTY_PAGES
+```
+
 writeback 要找脏页时，就不是从头检查所有 page，而是按 tag 找：
 
 find_get_pages_range_tag(mapping, &index, end,
+
+```text
                             PAGECACHE_TAG_DIRTY, ...)
         │
         ▼
@@ -942,6 +1001,8 @@ find_get_pages_range_tag(mapping, &index, end,
         │
         ▼
    只返回带 DIRTY tag 的 page
+```
+
 于是 writeback 的逻辑不是：
 
 扫描文件所有 page index。
@@ -1000,8 +1061,12 @@ XArray 是一个表现得像“巨大指针数组”的抽象数据类型。
 所以不要被名字里的 Array 误导。
 
 XArray 的逻辑接口：
+
+```text
       entry = xa_load(xa, index)
       xa_store(xa, index, entry)
+```
+
 
    XArray 的内部形态：
       仍然是按 index bit 分层的稀疏树。
@@ -1009,13 +1074,21 @@ XArray 的逻辑接口：
 
 老内核：
       mapping->i_pages: radix_tree_root
+
+```text
       pagevec_lookup_range_tag(...)
       radix_tree_tag_set(...)
+```
+
 
    新内核：
       mapping->i_pages: xarray
+
+```text
       filemap_get_folios_tag(...)
       xa_set_mark / xas_set_mark / __xa_set_mark(...)
+```
+
 概念没有变：
 
 index -> page/folio
@@ -1108,6 +1181,7 @@ marks[mark_id].bitN = 1
       用 mark bitmap 快速跳过没有目标 mark 的子树。
 代码如下：
 
+```cpp
 import java.util.BitSet;
 
 public class MiniXArrayDemo {
@@ -1351,6 +1425,8 @@ public class MiniXArrayDemo {
         }
     }
 }
+```
+
 输出类似：
 
 root [0..63 shift=4]                                                 dirtyBits=[0 0 1 0]
@@ -1358,6 +1434,8 @@ root [0..63 shift=4]                                                 dirtyBits=[
    │  └─ slot[1] -> node [4..7 shift=0]                                 dirtyBits=[0 0 0 0]
    │     └─ slot[1] -> page-5 index=5
    └─ slot[2] DIRTY -> node [32..47 shift=2]                            dirtyBits=[0 0 1 1]
+
+```text
       ├─ slot[2] DIRTY -> node [40..43 shift=0]                         dirtyBits=[0 0 1 0]
       │  └─ slot[2] DIRTY -> page-42 index=42
       └─ slot[3] DIRTY -> node [44..47 shift=0]                         dirtyBits=[0 0 0 1]
@@ -1365,6 +1443,8 @@ root [0..63 shift=4]                                                 dirtyBits=[
    get 42 = page-42
    dirty at index 42 -> page-42
    dirty at index 47 -> page-47
+```
+
 这棵打印出来的树里，几个字段的含义是：
 
 左侧:
@@ -1405,7 +1485,11 @@ index 42 在 4 叉树里可以分成三段：
 
 root.slots[2]
         └─ child.slots[2]
+
+```text
               └─ leaf.slots[2] = &#34;page-42&#34;
+```
+
 所以设置 DIRTY mark 时，不是只在叶子 value 上记一下，而是把这条路径上每一层 node 的对应 bit 都置 1。
 
 打 DIRTY mark 后：
@@ -1426,16 +1510,28 @@ root.marks[DIRTY].bit2 = 1
 这样从 root 开始找 dirty entry 时，才能一路只走带 DIRTY bit 的分支：
 
 root:
+
+```text
       DIRTY bit2 = 1
       说明 slot[2] 下面值得进去找。
+```
+
 
    child:
+
+```text
       DIRTY bit2 = 1
       说明 slot[2] 下面继续值得进去找。
+```
+
 
    leaf:
+
+```text
       DIRTY bit2 = 1
       找到 page-42。
+```
+
 查找 dirty entry 时，如果某个 slot 的 DIRTY bit 是 0，就跳过它覆盖的整段范围。
 
 这就是 Linux radix tree tag / XArray mark 的核心模型。
@@ -1505,12 +1601,15 @@ XArray 是一个稀疏、可遍历、可打 mark 的 index -> entry 映射。
 十一、新内核里的 `mapping->i_pages`
 到了 Linux `v6.12.65`，`struct address_space` 里已经是：
 
+```text
 struct address_space
    ├─ host
    ├─ i_pages: xarray
    ├─ nrpages
    ├─ writeback_index
    └─ a_ops
+```
+
 page cache 的 value 也从老文章常说的 `struct page` 逐渐过渡到 `struct folio` 视角：
 
 mapping->i_pages[index] -> folio
@@ -1553,6 +1652,8 @@ folio B dirty flag = 1
 writeback 后续找脏 folio：
 
 filemap_get_folios_tag(mapping, &index, end,
+
+```text
                           PAGECACHE_TAG_DIRTY, &fbatch)
         │
         ▼
@@ -1560,6 +1661,8 @@ filemap_get_folios_tag(mapping, &index, end,
         │
         ▼
    文件系统 writepages/writepage 提交 I/O
+```
+
 
 十二、为什么不能只看 folio dirty flag
 如果只在 folio 上有 dirty flag：
@@ -1635,9 +1738,13 @@ i_pages:
 它们解决的问题不同。
 
 i_pages 回答：
+
+```text
       文件 offset=N 的缓存页在不在？
       如果在，对应哪个 folio？
       哪些 folio 是 dirty / writeback？
+```
+
 
    i_mmap 回答：
       哪些进程/VMA 映射了这个文件的哪些范围？
@@ -1721,6 +1828,8 @@ inode
 
 folio 被写脏
         │
+
+```text
         ├─ folio dirty flag = 1
         │
         ├─ mapping->i_pages[index] 设置 PAGECACHE_TAG_DIRTY
@@ -1729,6 +1838,8 @@ folio 被写脏
         ├─ inode 标记 I_DIRTY_PAGES
         │
         └─ wb/vmstat dirty 统计增加
+```
+
 
    后台 writeback
         │

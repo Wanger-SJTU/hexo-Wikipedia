@@ -54,8 +54,12 @@ id: e505d4b9-448a-4747-a5e9-a169bab4522c
 代码比较简单，例如图像方向分类+版面分析+表格识别实现如下：
 
 ![](https://proxy-prod.omnivore-image-cache.app/0x0,sg-pZS2-CyVBX28Ms8avu5Lq52rg3Ajl5MbmN79rde3s/https://mmbiz.qpic.cn/mmbiz_svg/Xewa2JUmZ1o1Yibps1Tia02fBbZhqc13O0fr3QSqx0A5sdFvGpZqL07QiaN6VNx06XaibSM8UrW8w8uoM4hgm3TwRlfGOWHHMX2N/640?wx_fmt=svg&from=appmsg)`import os
+
+```python
 import cv2
 from paddleocr import PPStructure,draw_structure_result,save_structure_res
+```
+
 table_engine = PPStructure(show_log=True, image_orientation=True)
 
 save_folder = './output'
@@ -66,9 +70,13 @@ save_structure_res(result, save_folder,os.path.basename(img_path).split('.')[0]
 
 for line in result:
     line.pop('img')
+
+```python
     print(line)
 
 from PIL import Image
+```
+
 
 font_path = 'doc/fonts/simfang.ttf' # PaddleOCR下提供字体包
 image = Image.open(img_path).convert('RGB')

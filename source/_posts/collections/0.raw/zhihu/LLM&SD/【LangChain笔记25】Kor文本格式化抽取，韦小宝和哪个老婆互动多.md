@@ -49,18 +49,28 @@ Kor是个支持LangChain的文本抽取库，可以把文本抽取成json格式�
 然后我们先给出模型的部分
 
 `from kor.extraction import create_extraction_chain
+
+```python
 from kor.nodes import Object, Text, Number
 from langchain.chat_models import ChatOpenAI
 
 from langchain.llms import OpenAI
+```
+
 llm = ChatOpenAI(
+
+```text
     model_name="gpt-3.5-turbo",
     temperature=0
+```
+
 )`
 
 然后我们可以定义kor中一个称为抽取schema的数据结构
 
 `schema = Object(
+
+```text
     id="script",
     description="Adapted from the novel into script",
     attributes=[
@@ -95,6 +105,8 @@ llm = ChatOpenAI(
         )
     ],
     many=True,
+```
+
 )`
 
 这里比较重要的是attributes和examples，这两者会以显著的形式出现在最终运行的pormpt中

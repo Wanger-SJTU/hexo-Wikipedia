@@ -182,6 +182,7 @@ Vicuna接受的输入：图片+图片caption+Text（可选Text）
 
 Pixel Shuffle代码：
 
+```python
 def pixel_shuffle(self, x, scale_factor=0.5):
         n, w, h, c = x.size()
         # N, W, H, C --> N, W, H * scale, C // scale
@@ -197,6 +198,8 @@ def pixel_shuffle(self, x, scale_factor=0.5):
         else:
             x = x.permute(0, 2, 1, 3).contiguous()
         return x
+```
+
 其实就是在空间上压缩到四分之一，然后把这个空间上的压缩补到通道上，通道变成了以前的四倍。这样相当于更多的信息被压到了channel中，后续MLP会对齐需要的维度。在通道和token数的权衡中明显减少token数带来的运算量要少很多（主要考虑infer的成本）。
 
 1.1的训练则简化到了两个阶段
@@ -437,6 +440,8 @@ freqs = (inv_freq_expanded.float() @ position_ids_expanded.float()).transpose(2,
 
 第三步：Interleave
 reqs = self.apply_interleaved_mrope(freqs, self.mrope_section)
+
+```python
 def apply_interleaved_mrope(self, freqs, mrope_section):
     freqs_t = freqs[0]  # 以T为主干
     for dim, offset in enumerate((1, 2), start=1):  # H=1, W=2
@@ -444,6 +449,8 @@ def apply_interleaved_mrope(self, freqs, mrope_section):
         idx = slice(offset, length, 3)
         freqs_t[..., idx] = freqs[dim, ..., idx]
     return freqs_t
+```
+
 
 最后形成：[T0, H0, W0, T1, H1, W1, T2, H2, W2, ...,]这样的格式
 第二个改进点是加入了deepstack，deepstack先把vision encoder中的低中高层的vision token都取出来然后分层注入到llm的各层中，这个操作很熟悉啊，感觉跟以前cnn大火的时候各种多尺度融合的操作非常相似，所以vlm其实也是老路新走而已。然后从low-level vision token到high-level vision token都会有一个proj去对齐到llm里面。
@@ -453,13 +460,19 @@ def apply_interleaved_mrope(self, freqs, mrope_section):
 在vision encoder中：
 deepstack_feature_lists = []
 for layer_num, blk in enumerate(self.blocks):
+
+```text
     hidden_states = blk(...)
     if layer_num in self.deepstack_visual_indexes:
         deepstack_feature = self.deepstack_merger_list[...](hidden_states)#要用merger也就是mlp去处理不同层的vision token
         deepstack_feature_lists.append(deepstack_feature)
+```
+
 
 在llm侧：
 for layer_idx, decoder_layer in enumerate(self.layers):
+
+```python
     hidden_states = decoder_layer(...)
     if deepstack_visual_embeds is not None and layer_idx in range(len(deepstack_visual_embeds)):
         hidden_states = self._deepstack_process(
@@ -468,6 +481,8 @@ for layer_idx, decoder_layer in enumerate(self.layers):
 def _deepstack_process(self, hidden_states, visual_pos_masks, visual_embeds):
     hidden_states[visual_pos_masks, :] += visual_embeds
     return hidden_states
+```
+
 
 #其中visual_pos_masks视觉占位符<image>，在LLM的第layer_idx层，将对应层的视觉特征加到vision token 的hidden states上。
 第三个改进点是把T-RoPE改成了文本时间戳-视频帧的交错输入，直接用文本去显式编码时间戳，格式类似：[0.0s] [frame_0] [0.1s] [frame_1] [0.2s] [frame_2]，这样还有一个好处就是llm本身就能很自然地支持时间信息，让LLM 在生成答案时，能像读普通词一样读取时间戳，从而在输出中精准地引用。
@@ -665,17 +680,25 @@ vision encoder就是一个支持原生分辨率的vit（通过resize到patch_siz
 
 对于video来说用了绝对时间戳代替PE和类似Seed1.5-VL的文本时间戳，一开始比较好奇就看了下源码：
 
+```python
 import os
 from pathlib import Path
 
 from PIL import Image, ImageDraw, ImageFont
+```
+
 
 cur_directory = Path(__file__).parent.absolute()
 FONT_PATH = os.path.join(cur_directory, &#34;Roboto-Regular.ttf&#34;)
 
+```python
 def render_single_image_with_timestamp(
     image: Image, number: str, rate: float, font_path: str = FONT_PATH
+```
+
 ):
+
+```text
     &#34;&#34;&#34;
     Function: Renders a timestamp to the image of pil.image
     The timestamp size is the rate of min(width, height)
@@ -689,8 +712,12 @@ def render_single_image_with_timestamp(
     font = ImageFont.truetype(font_path, font_size)
     x = 0
     y = 0
+```
+
 
     # Draw a black timestamp with a white border
+
+```python
     draw.text(
         (x, y),
         number,
@@ -735,6 +762,8 @@ def render_frame_timestamp(frame, timestamp, font_rate=0.1):
     new_frame = render_single_image_with_timestamp(frame, time_stamp, font_rate)
 
     return new_frame
+```
+
 原来是直接在图像的左上角写了一个格式为HH:MM:SS.xx的时间戳信息，然后完全依赖vision encoder的能力去提取时间信息。这个操作还挺吃vision encoder的能力的，在pretraining的时候vision encoder就从有文本的图像中获得了能够读取图像中文本的能力（OCR）。但这种方案感觉并没有文本时间戳显式，主要还是为了避免文本时间戳带来的token数量变多的问题。
 
 在vision encoder之后img token还会经过一个adapter，他用于空间+时间维度的压缩，首先是空间压缩，2×2不重叠的patch压缩成一个，然后时间维度采用了internvl最爱的pixel shuffle再次压缩。最后经过mlp对于text token的hidden dim。

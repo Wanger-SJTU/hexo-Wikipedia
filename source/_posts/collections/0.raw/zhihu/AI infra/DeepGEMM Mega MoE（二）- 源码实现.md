@@ -24,12 +24,21 @@ source_url: https://zhuanlan.zhihu.com/p/2032493993485924283
 
 x = torch.randn((num_tokens, hidden), dtype=torch.bfloat16, device=&#39;cuda&#39;)
 l1_weights = torch.randn(
+
+```text
     (num_experts_per_rank, intermediate_hidden * 2, hidden), dtype=torch.bfloat16, device=&#39;cuda&#39;)
+```
+
 l2_weights = torch.randn(
+
+```text
     (num_experts_per_rank, hidden, intermediate_hidden), dtype=torch.bfloat16, device=&#39;cuda&#39;)
+```
+
 x = per_token_cast_to_fp8(x, use_ue8m0=True, gran_k=32, use_packed_ue8m0=True)
 类似的对w量化成fp4，sf pack成int，后面会UMMA中要求每次TMA一列的数据，因此transform_sf_into_required_layout会将sf转成MN major。
 
+```python
 def cast_grouped_weights_to_fp4(bf16_weights: torch.Tensor) -> Tuple[torch.Tensor, torch.Tensor]:
     num_groups, n, k = bf16_weights.shape
     w = torch.empty((num_groups, n, k // 2), device=&#39;cuda&#39;, dtype=torch.int8)
@@ -38,11 +47,14 @@ def cast_grouped_weights_to_fp4(bf16_weights: torch.Tensor) -> Tuple[torch.Tenso
         w[i], w_sf[i] = per_token_cast_to_fp4(bf16_weights[i], use_ue8m0=True, gran_k=32)
     w_sf = deep_gemm.transform_sf_into_required_layout(w_sf, n, k, (1, 32), num_groups)
     return w, w_sf
+```
+
 l1_weights = cast_grouped_weights_to_fp4(l1_weights)
 l2_weights = cast_grouped_weights_to_fp4(l2_weights)
 transformed_l1_weights, transformed_l2_weights = deep_gemm.transform_weights_for_mega_moe(l1_weights, l2_weights)
 然后对开始w执行transform_weights_for_mega_moe。
 
+```cpp
 def _interleave_l1_weights(l1_weights: Tuple[torch.Tensor, torch.Tensor]) -> Tuple[torch.Tensor, torch.Tensor]:
     # [gate: 0..7, up: 0..7, gate: 8..15, up: 8..15, ...] instead of [gate | up]
     def interleave(t, gran: int = 8) -> torch.Tensor:
@@ -65,17 +77,24 @@ def _transpose_sf_for_utccp(sf: torch.Tensor) -> torch.Tensor:
 def transform_weights_for_mega_moe(
     l1_weights: Tuple[torch.Tensor, torch.Tensor],
     l2_weights: Tuple[torch.Tensor, torch.Tensor]
+```
+
 ) -> Tuple[Tuple[torch.Tensor, torch.Tensor], Tuple[torch.Tensor, torch.Tensor]]:
     # L1: interleave gate/up, then transpose SF for UTCCP
+
+```text
     l1_interleaved = _interleave_l1_weights(l1_weights)
     l1_weights = (l1_interleaved[0], _transpose_sf_for_utccp(l1_interleaved[1]))
     # L2: only transpose SF for UTCCP
     l2_weights = (l2_weights[0], _transpose_sf_for_utccp(l2_weights[1]))
     return l1_weights, l2_weights
+```
+
 由上节可知TMEM对sf存储格式需求，因此需要对sf做转置，称为UTCCP转置，UTCCP的转置就是将原始矩阵中一行看成一个元素，然后将4x32转成32x4，后续具体会看到。 对L1的w还有一个interleave的额外操作，后续具体会看到，因为L1w包含gate和up两个w，因此输出包含了两部分，为了对gate和up的输出做swiglu，这里会按照8对gate和up做interleave，这样同一个元素的gate和up正好会在mma输出中落在同一个线程的寄存器中，可以直接做swiglu，避免重复方寸。
 
 另外前面有说到，Mega MoE使用了buffer描述内存区域，shape为[num_ranks, num_max_tokens_per_rank]，这个shape中每一个元素通过data_layout解释，data_layout就是ptr + 长度。
 
+```text
 struct Buffer {
     Data data_layout;
     uint32_t num_ranks;
@@ -97,10 +116,13 @@ struct Data {
     bool require_tma_alignment;
     void* base;
 }
+```
+
 
 创建TensorMap
 然后看下为了TMA创建的TensorMap。首先看下make_tma_2d_desc，对sf和非sf都会使用到这个api。
 
+```cpp
 // constexpr auto kPackedFP4 = torch::kInt8;
 static CUtensorMap make_tma_2d_desc(const torch::Tensor& t,
                                     int gmem_inner_dim, int gmem_outer_dim,
@@ -120,6 +142,8 @@ static CUtensorMap make_tma_2d_desc(const torch::Tensor& t,
             smem_inner_dim = swizzle_mode * 2;
     }
 }
+```
+
 对于上一章中的数据类型b4x16_p64（对应CU_TENSOR_MAP_DATA_TYPE_16U4_ALIGN16B）和b6x16_p32（对应CU_TENSOR_MAP_DATA_TYPE_16U6_ALIGN16B），TMA还有额外的要求：
 
 - TMA的基地址需要对齐到32B（而不是之前的16B）
@@ -127,6 +151,7 @@ static CUtensorMap make_tma_2d_desc(const torch::Tensor& t,
 - boxDim[0]必须为128（而不是之前的swizzle xxB的模式，要求最内层不能超过xxB）
 - 只支持128B swizzle或者不swizzle 对于用户传进来的smem_inner_dim，按照swizzle_mode重新计算，对应要求3，同时满足16U4_ALIGN16B和fp8。 对于weight，用的是16U4_ALIGN16B，torch.tensor的类型为kInt8，因此w会进入kPackedFP4的分支，这里会检查如果是fp4_unpacked_smem的情况，需要gmem_inner_dim是128的倍数，如上述要求2。如果不是unpack的fp4，并且开启了swizzle，这里会有个问题，smem_inner_dim在一开始被覆盖为了swizzle_mode对应的元素，比如swizzle_128B，smem_inner_dim会被设置为128，由于是pack的模式，这128个fp4在smem上只占用了64B，但是swizzle要求的是128B，因此这里会乘上2。
 
+```text
 static CUtensorMap make_tma_2d_desc(...) {
     ...
     CUtensorMap tensor_map;
@@ -154,10 +179,13 @@ static CUtensorMapDataType aten_dtype_to_tensor_map_dtype(const at::ScalarType& 
         default: DG_HOST_UNREACHABLE(&#34;Unsupported dtype&#34;);
     }
 }
+```
+
 然后开始通过cuTensorMapEncodeTiled创建TensorMap，aten_dtype_to_tensor_map_dtype中会设置dtype，如果是fp8，会设置为CU_TENSOR_MAP_DATA_TYPE_UINT8，在fp4的场景，如果是pack，那么对应CU_TENSOR_MAP_DATA_TYPE_16U4_ALIGN8B，如果是unpack，那么对应CU_TENSOR_MAP_DATA_TYPE_16U4_ALIGN16B。
 
 对于sf会使用make_tma_sf_desc
 
+```cpp
 static CUtensorMap make_tma_sf_desc(const cute::UMMA::Major& major,
                                     const torch::Tensor& t,
                                     int shape_mn, int shape_k,
@@ -178,10 +206,13 @@ static CUtensorMap make_tma_sf_desc(const cute::UMMA::Major& major,
                             swizzle_mode, swizzle_base,
                             allow_tf32);
 }
+```
+
 可以看到会使用make_tma_2d_desc，因为一次是TMA load一列，所以对sf要求是MN major，smem_outer_dim为1。不用swizzle，sf_k通过shape_k和gran_k计算出来。
 
 然后看下上层使用。
 
+```cpp
 // const int load_block_m = block_m / 2;
 const auto tensor_map_l1_acts = make_tma_2d_desc(l1_acts,
                                                  hidden, config.num_max_pool_tokens,
@@ -192,14 +223,20 @@ const auto tensor_map_l1_acts_sf = make_tma_sf_desc(cute::UMMA::Major::MN, l1_ac
                                                     config.num_padded_sf_pool_tokens, hidden,
                                                     config.sf_block_m, kGranK,
                                                     1, 0);
+```
+
 对于l1_act，由上一章可知，num_max_pool_tokens是当前rank所有local_ep最多一共收到多少个token，并且每个local_ep对BLOCK_M对齐，因此l1_act的gmem_outer_dim为num_max_pool_tokens。 对于smem_outer_dim，这里使用的是load_block_m，为BLOCK_M的一半，即96，这个后续会具体介绍。
 
 Mega MoE使用SM100_UTCCP_4x32dp128bit_2cta对sf进行load，就是32lane x 128bit，对应sf矩阵中连续的128个int32，因此需要对一个BLOCK_M中对应的sf对齐到128，即sf_block_m。
 
 CUTLASS_HOST_DEVICE constexpr T get_num_padded_sf_pool_tokens(T num_max_pool_tokens, T block_m) {
+
+```cpp
     return (num_max_pool_tokens / block_m) * math::constexpr_align(block_m, static_cast<T>(128));
 }
 const int num_padded_sf_pool_tokens = layout::get_num_padded_sf_pool_tokens(num_max_pool_tokens, block_m);
+```
+
 到这里host端流程基本清楚了，然后开始看kernel的执行，为了做2-SM的UMMA，launch kernel的时候设置cluster_dim为2。
 
 接下来分角色看看各个warp的流程。
@@ -217,6 +254,7 @@ meta
 
 i为当前warp处理的第一个token，加上自己lane_idx就可以得到当前线程对应的topk_slot_idx，即i * kNumTopk + lane_idx，然后将topk_slot_idx和这个topk_slot_idx对应值，即expert_idx传给process函数。
 
+```cpp
 // kNumTokensPerWarp = 32 / kNumTopk
 const auto read_topk_idx = [&](const auto& process) {
     for (uint32_t i = (sm_idx * kNumDispatchWarps + warp_idx) * kNumTokensPerWarp;
@@ -232,19 +270,31 @@ const auto read_topk_idx = [&](const auto& process) {
         __syncwarp();
     }
 };
+```
+
 首先每个sm独立统计自己负责的token的topk，累加到smem_expert_count。
 
+```cpp
 // int smem[kNumExperts];
+```
+
 read_topk_idx([&](const uint32_t& token_topk_idx, const int& expert_idx) {
    atomicAdd_block(smem_expert_count + expert_idx, 1);
+
+```text
 });
+```
+
 然后每个sm的num_eps个thread将smem_expert_count[tid] atomic_add到workspace的expert_send_count[tid]，atomic_add的返回值记录到smem_expert_count[tid]。
 
+```cpp
 for (uint32_t i = thread_idx; i < kNumExperts; i += kNumDispatchThreads) {
     const uint64_t send_value = (1ull << 32) | static_cast<uint64_t>(smem_expert_count[i]);
     smem_expert_count[i] = static_cast<uint32_t>(
         ptx::atomic_add(workspace.get_expert_send_count_ptr(i), send_value));
 }
+```
+
 此时smem_expert_count[i]存的就是当前sm对应的token序列最后写到src_token_topk_idx[local_ep_idx][src_rank]中的区间位置，比如sm0写到绿色区域。另外这里send_value的高32位中写入了1，下边会介绍原因。 
 
 ![](https://picx.zhimg.com/v2-7781e4e9bc90f75896854dc48399822b_r.jpg)图 2
@@ -252,14 +302,19 @@ for (uint32_t i = thread_idx; i < kNumExperts; i += kNumDispatchThreads) {
 然后开始写入所有rank的src_token_topk_idx，每个线程再次遍历自己负责的token，smem_expert_count已经存储了当前sm对应的起始位置，然后每个线程通过atomic_add_block获取自己写入位置dst_slot_idx，将topk_slot_idx写入dst_rank的src_token_topk_idx[local_ep_idx][src_rank][dst_slot_idx]。
 
 read_topk_idx([&](const uint32_t& token_topk_idx, const int& expert_idx) {
+
+```text
     const auto dst_rank_idx = expert_idx / kNumExpertsPerRank;
     const auto dst_slot_idx = atomicAdd_block(smem_expert_count + expert_idx, 1);
     const auto dst_ptr = workspace.get_src_token_topk_idx_ptr(
         expert_idx % kNumExpertsPerRank, sym_buffer.rank_idx, dst_slot_idx);
     *sym_buffer.map(dst_ptr, dst_rank_idx) = token_topk_idx;
 });
+```
+
 然后所有sm都工作完成之后，sm0开始写入其他rank的expert_recv_count和expert_recv_count_sum，expert_recv_count直接写入即可，expert_recv_count_sum需要atomic_add_sys。
 
+```cpp
 // grid sync
 if (sm_idx == 0) {
     #pragma unroll
@@ -275,31 +330,50 @@ if (sm_idx == 0) {
             expert_status);
     }
 }
+```
+
 
 dispatch pull
 做完meta之后所有卡通过nvlink_barrier执行全局同步，然后开始dispatch pull，即根据src_token_topk_idx通过TMA从其他rank读取对应的token到当前sm的smem_send_buffers。 smem_send_buffers的shape为[kNumDispatchWarps, 1]，slot大小为fp8_token_layout，即一个warp对应一个token大小的空间。
 
+```text
 // fp8_token_layout = layout::Data(kHidden);
 const auto smem_send_buffers = layout::Buffer(
         fp8_token_layout, kNumDispatchWarps, 1,
         math::advance_ptr(smem_buffer, SMEM_EXPERT_COUNT_SIZE));
+```
+
 由于一个rank有多个local_expert，每个local_expert有所有rank的数据，因此这里通过scheduler进行调度，即每次从哪里获取token。为了均衡各个nvlink的带宽，会选择轮询的方式处理，轮询的逻辑如下图所示，下图表示的是如何遍历src_token_topk_idx，矩形中的数字表示对src_token_topk_idx中所有token的编号。 一个warp一次处理一个token，所有warp先处理完local_ep0，再处理local_ep1。对于一个local_ep内部，在rank之间进行轮询，比如warp0第一次需要处理token[0]，那么他会按照编号的顺序进行查找，发现token[0]是rank0的第0个token，那么就会对这个token进行处理，同理warp1会找到rank1的第0个token，即标号1的位置。直到有一个rank的token处理完成，即蓝色区域被处理完，然后处理绿色部分，以此类推完成local_ep0的处理，假设local_ep0会收到100个token，那么local_ep1会从100开始标号。 
 
 ![](https://pic3.zhimg.com/v2-1fc9737dfa9aa5b954cb3c44dd588250_r.jpg)图 3然后具体看一下，每个warp找到自己对应的smem和mbarrier，然后初始化scheduler。current_expert_idx表示当前在处理哪个local_ep，expert_start_idx和expert_end_idx表示这个local_ep的token标号范围，如图3中local_ep0就是0-100，expert_pool_block_offset当前正在处理的token对应第几个BLOCK_M，stored_rank_count记录一个local_ep中每个rank的token数。
 
 uint32_t pull_mbarrier_phase = 0;
+
+```text
 const auto pull_buffer = smem_send_buffers.get_rank_buffer(warp_idx).get_data_buffer(0);
 const auto pull_mbarrier = dispatch_barriers[warp_idx];
+```
+
 scheduler.fetch_expert_recv_count();
+
+```cpp
 int current_expert_idx = -1;
+```
+
 uint32_t stored_rank_count[kNumRanksPerLane] = {};
 uint32_t expert_start_idx = 0, expert_end_idx = 0;
 uint32_t expert_pool_block_offset = 0;
 CUTLASS_DEVICE explicit MegaMoEScheduler(const layout::Workspace& workspace): workspace(workspace) {
+
+```text
     block_idx = blockIdx.x;
 }
 // kNumExpertsPerLane = math::constexpr_ceil_div(kNumExpertsPerRank, 32u)
+```
+
 CUTLASS_DEVICE void fetch_expert_recv_count() {
+
+```cpp
     for (uint32_t i = 0; i < kNumExpertsPerLane; ++ i) {
         const auto expert_idx = i * 32 + ptx::get_lane_idx();
         uint64_t value = 0;
@@ -312,8 +386,11 @@ CUTLASS_DEVICE void fetch_expert_recv_count() {
     }
     __syncwarp();
 }
+```
+
 block_idx为cta_id，kNumExpertsPerRank即local_ep_num，fetch_expert_recv_count会将expert_recv_count_sum分布式的存到warp中的stored_num_tokens_per_expert，即lane[0]存local_ep[0]，local_ep[32]…。这里可以看到meta的处理中为什么要对高位置1，接收端就是通过轮询高32位是否为kNumSMs * kNumRanks判断是不是所有sm都已经完成发送。
 
+```cpp
 for (uint32_t token_idx = sm_idx * kNumDispatchWarps + warp_idx; ; token_idx += kNumGlobalWarps) {
 		int old_expert_idx = current_expert_idx;
 		while (token_idx >= expert_end_idx) {
@@ -335,8 +412,11 @@ for (uint32_t token_idx = sm_idx * kNumDispatchWarps + warp_idx; ; token_idx += 
 		}
 		...
 }
+```
+
 然后每个warp开始循环处理自己对应的token_idx，对于一个给定的token_idx，当前warp需要找token_idx对应src_token_topk_idx的哪个位置，首先通过token_idx定位是哪个local_ep，如果token_idx大于等于当前local_ep对应的expert_end_idx，那么就需要找下一个local_ep，直到所有local_ep完成处理。 找到对应的local_ep之后，如果发现和上次处理的不一样，即切换了local_ep，那么需要更新stored_rank_count，stored_rank_count和stored_num_tokens_per_expert类似，都是分布式存在一个warp的不同lane中。
 
+```cpp
 for (uint32_t token_idx = sm_idx * kNumDispatchWarps + warp_idx; ; token_idx += kNumGlobalWarps) {
 	for (uint32_t i = 0; i < kNumRanksPerLane; ++ i)
 	    remaining[i] = stored_rank_count[i];
@@ -356,8 +436,11 @@ for (uint32_t token_idx = sm_idx * kNumDispatchWarps + warp_idx; ; token_idx += 
 	}
 	...
 }
+```
+
 然后开始在local_ep中找token_idx的位置，remaining[i]表示rank[i]中剩余的token数，token_idx_in_expert都是将token_idx转成local_ep内部的偏移。 如图3，在一个local_ep内部也分为多次，称为round，一个round的长度就是当前还有token的rank中的最小值，如local_ep0中蓝色为一个round，绿色为第二个round，黄色为第三个round，所以在一个local_ep中找位置的时候先要确定是哪个round。 所以这里首先确定当前round的长度，即找remaining的最小值，首先找当前lane维护的的rank的remain的最小值，即min_in_lane。
 
+```cpp
 for (uint32_t token_idx = sm_idx * kNumDispatchWarps + warp_idx; ; token_idx += kNumGlobalWarps) {
 	while (true) {
       ...
@@ -378,7 +461,7 @@ for (uint32_t token_idx = sm_idx * kNumDispatchWarps + warp_idx; ; token_idx += 
 	        token_idx_in_rank = offset + (slot_idx / num_active_ranks);
 	        break;
 	    }
-	
+
 	    slot_idx -= num_round_tokens;
 	    offset += length;
 	    for (uint32_t i = 0; i < kNumRanksPerLane; ++ i)
@@ -386,11 +469,14 @@ for (uint32_t token_idx = sm_idx * kNumDispatchWarps + warp_idx; ; token_idx += 
 	}
 	...
 }
+```
+
 然后通过reduce_min获取所有rank的最小值，即length，num_active_ranks表示还剩余多少rank有token，按照图3中的话，第一次会找到图3中蓝色区间的长度，一共还剩3个rank，那么第一个round一共有num_round_tokens，即3 x length个token。
 
 - 如果slot_idx小于num_round_tokens，说明要找的token_idx就在这个round，位于active_rank[slot_idx_in_round]中，那么接下来就是从rank0开始统计，直到找到第slot_idx_in_round个还有token的rank。由于remaining是分布式存储在warp中，所以先看rank0 - rank31，通过__ballot_sync获取到rank0 - rank31中还有token的rank的mask，直到找到第slot_idx_in_round个active_rank。
 - 如果slot_idx大于num_round_tokens，说明不在这个round，那么需要切换到下一个round，对offset加上蓝色区间长度，表示已跳过的round的总长度，num_round_tokens调到下一个round，对slot_idx减去num_round_tokens转换成下一个round的偏移，更新remain。直到找到token_idx对应的local_ep，src_rank和rank内部的偏移，即current_expert_idx，current_rank_in_expert_idx，token_idx_in_rank。
 
+```cpp
 for (uint32_t token_idx = sm_idx * kNumDispatchWarps + warp_idx; ; token_idx += kNumGlobalWarps) {
     const uint32_t src_token_topk_idx = *workspace.get_src_token_topk_idx_ptr(
         current_expert_idx, current_rank_in_expert_idx, token_idx_in_rank);
@@ -405,8 +491,11 @@ for (uint32_t token_idx = sm_idx * kNumDispatchWarps + warp_idx; ; token_idx += 
             pull_mbarrier, kHidden);
     }
 }
+```
+
 然后读取src_token_topk_idx中token_idx的位置，得到topk_slot_idx，即src_token_topk_idx，转为src_token_idx和src_topk_idx。然后通过TMA load到pull_buffer。
 
+```cpp
 for (uint32_t token_idx = sm_idx * kNumDispatchWarps + warp_idx; ; token_idx += kNumGlobalWarps) {
     const uint32_t pool_token_idx = expert_pool_block_offset * BLOCK_M + token_idx_in_expert;
     if (cute::elect_one_sync()) {
@@ -435,10 +524,13 @@ for (uint32_t token_idx = sm_idx * kNumDispatchWarps + warp_idx; ; token_idx += 
     }
     __syncwarp();
 }
+```
+
 pool_token_idx为token_idx对应pool中第几行，load topk_weight写入到l1_topk_weights_buffer的pool_token_idx位置，通过tma将token写入到l1_token_buffer的pool_token_idx位置，将meta信息，即{current_rank_in_expert_idx, src_token_idx, src_topk_idx}写入到token_src_metadata的pool_token_idx位置。最后通过red_add_rel对l1_arrival_count_ptr中对应的block的flag原子加一。
 
 刚刚没有介绍对sf的load，在TMA load token的同时会执行对sf的load，这里load token的sf时候还要完成对sf的UTCCP转置。
 
+```cpp
 const auto remote_sf_ptr = sym_buffer.map(
     input_sf_buffer.get_data_buffer(src_token_idx).get_base_ptr<uint32_t>(),
     current_rank_in_expert_idx);
@@ -450,13 +542,18 @@ for (uint32_t i = 0; i < math::constexpr_ceil_div(kNumSFUint32, 32u); ++ i) {
     if (j < kNumSFUint32)
         local_sf_ptr[j * kNumPaddedSFPoolTokens + sf_pool_token_idx] = remote_sf_ptr[j];
 }
+```
+
 remote_sf_ptr是该token对应的sf地址，local_sf_ptr是当前rank的l1_sf_buffer，然后当前warp会从remote_sf_ptr中load数据到l1_sf_buffer，sf_pool_token_idx表示应该写入到l1_sf_buffer的哪一行，即转置到哪一行。由于转置发生在4x32的粒度，即128行内部，因此外部的计算都是不变的。先通过expert_pool_block_offset x SF_BLOCK_M算出当前expert对应的sf在哪行开始。
 
+```text
 const auto transform_sf_token_idx = [](const uint32_t& token_idx_in_expert) {
         const uint32_t idx = token_idx_in_expert % BLOCK_M;
         return token_idx_in_expert / BLOCK_M * SF_BLOCK_M +
                (idx & ~127u) + (idx & 31u) * 4 + ((idx >> 5) & 3u);
 };
+```
+
 然后看下transform_sf_token_idx，token_idx_in_expert是转置前的行号，token_idx_in_expert / BLOCK_M x SF_BLOCK_M用于找到token_idx_in_expert位于哪个SF_BLOCK，一个SF_BLOCK虽然有256行，但只有192个行是有效的，所以idx = token_idx_in_expert % BLOCK_M，算出来转置前token_idx_in_expert他的SF_BLOCK中位于第几行，idx & ~127u表示位于哪个128 block，因为转置的粒度是在128行内，idx & 31u和((idx >> 5) & 3u算的是在转置前矩阵中，即4x32中的位置，然后按照新的stride算出在转置后矩阵中的位置，注意这里4x32的说法，是指的4x32行，将一行看做了一个元素。
 
 最后拿上一章中的图总结一下整个过程： 
@@ -466,19 +563,29 @@ scheduler
 这里先介绍一下scheduler，后续TMA，Lx和Lx epilogue都是同样的遍历顺序。
 
 CUTLASS_DEVICE void for_each_block(Func&& func) {
+
+```text
     fetch_expert_recv_count();
     set_expert_idx(0);
     ...
 }
+```
+
 CUTLASS_DEVICE void set_expert_idx(const uint32_t& expert_idx) {
+
+```text
     current_local_expert_idx = expert_idx;
     current_num_tokens = get_num_tokens(expert_idx);
     current_pool_block_offset = get_pool_block_offset(expert_idx);
 }
+```
+
 前面提到fetch_expert_recv_count会等到其他所有rank完成meta信息，然后将expert_recv_count_sum分布式存储到寄存器stored_num_tokens_per_expert中。 然后设置当前正在处理哪个local_ep，即current_local_expert_idx，初始化是0，get_num_tokens获取current_local_expert_idx一共收到多少token，get_pool_block_offset获取在pool_block中，current_local_expert_idx开始的token将会从哪个block开始存储。
 
 CUTLASS_DEVICE void for_each_block(Func&& func) {
         ...
+
+```text
         while (true) {
             CUTE_TIE_DECL(get_next_block(), block_phase, current_local_expert_idx, m_block_idx, n_block_idx);
             if (block_phase == BlockPhase::None)
@@ -489,9 +596,13 @@ CUTLASS_DEVICE void for_each_block(Func&& func) {
                  m_block_idx, n_block_idx);
         }
     }
+```
+
 然后不断循环执行get_next_block得到block_phase，即当前是L1还是L2，current_local_expert_idx为当前处理的是哪个local_ep，m_block_idx和n_block_idx表示在处理D矩阵中的哪个block。
 
 CUTLASS_DEVICE bool fetch_next_l1_block() {
+
+```text
 		// get_wave_expert_end_idx: math::align(current_local_expert_idx + 1, kNumExpertsPerWave);
     const auto wave_end_expert_idx = get_wave_expert_end_idx();
     while (current_local_expert_idx < wave_end_expert_idx) {
@@ -505,9 +616,13 @@ CUTLASS_DEVICE bool fetch_next_l1_block() {
     }
     return false;
 }
+```
+
 先看下get_next_block依赖的fetch_next_l1_block，首先通过获取current_local_expert_idx获取到当前wave的最后一个local_ep_idx，即wave_end_expert_idx，如果超过了wave_end_expert_idx，那么直接返回false。 num_m_blocks表示M方向一共有多少block，kNumL1BlockNs为N方向的block数，通过block_idx计算出当前sm这一轮应该处理哪个M block，即m_block_idx，如果超过了num_m_blocks，那么切换到下一个local_ep，将block_idx转成从下一个local_ep开始的block计数。
 
 CUTLASS_DEVICE cute::tuple<BlockPhase, uint32_t, uint32_t, uint32_t> get_next_block() {
+
+```text
     while (true) {
         if (current_local_expert_idx >= kNumExpertsPerRank)
             break;
@@ -526,6 +641,8 @@ CUTLASS_DEVICE cute::tuple<BlockPhase, uint32_t, uint32_t, uint32_t> get_next_bl
     }
     return {BlockPhase::None, 0, 0, 0};
 }
+```
+
 最后看下get_next_block，如果current_local_expert_idx大于kNumExpertsPerRank，说明所有local_ep都完成了处理。next_phase初始化为L1。 如果fetch_next_l1_block返回false，说明当前phase执行完成，那么设置phase为L2，将current_local_expert_idx设置为这个wave开始的local_ep 否则fetch_next_l1_block得到了m_block_idx，通过block_idx可以计算得到n_block_idx，更新block_idx并返回。
 
 还是拿上一章的图总结一下这个遍历过程： 
@@ -535,6 +652,8 @@ TMA warp
 一共有两个TMA warp，一个对A TMA，一个对B TMA，我们以A为例。
 
 scheduler.for_each_block([&](const sched::BlockPhase& block_phase,
+
+```text
                              const uint32_t& local_expert_idx,
                              const uint32_t& num_k_blocks,
                              const uint32_t& m_block_idx, const uint32_t& n_block_idx) {
@@ -546,9 +665,13 @@ scheduler.for_each_block([&](const sched::BlockPhase& block_phase,
         while (ptx::ld_acq(ptr) != expected);
     }
 }
+```
+
 首先通过scheduler获取phase，m_block_idx，n_block_idx等信息。然后根据phase是L1还是L2选择不同的TensorMap和shape。pool_block_idx为当前处于哪个BLOCK_M。 如果phase为L1，get_valid_m得到当前选择的block在m方向实际有多少行，那么就轮询对应的l1_arrival_count，直到这个block中所有的token都完成了dispatch pull。
 
 for_each_block() {
+
+```cpp
     uint64_t cached_l2_arrival_mask = 0;
     for (uint32_t k_block_idx = 0; k_block_idx < num_k_blocks; advance_pipeline(k_block_idx)) {
         if (block_phase == sched::BlockPhase::Linear2) {
@@ -568,6 +691,8 @@ for_each_block() {
         uint32_t sfa_k_idx = k_block_idx;
     }
 }
+```
+
 然后开始循环当前block对应A矩阵中的K方向。 
 
 ![](https://pica.zhimg.com/v2-c9ae887a980fcdbcded0c14f3ba2a454_r.jpg)图 6
@@ -575,6 +700,8 @@ for_each_block() {
 如果是L2，如上图所示，那么还需要等待L1 epilogue在k_block_idx的产出，因为L2中D矩阵（即图中L2 Output）的一个k_block_idx对应了L1 D矩阵（即图中L2 Input）的两个N block，因此这里需要用3ull << (k_block_idx * 2)判断。
 
 for_each_block() {
+
+```cpp
     uint64_t cached_l2_arrival_mask = 0;
     for (uint32_t k_block_idx = 0; k_block_idx < num_k_blocks; advance_pipeline(k_block_idx)) {
         empty_barriers[stage_idx]->wait(phase ^ 1);
@@ -587,11 +714,15 @@ for_each_block() {
         ...
     }
 }
+```
+
 然后通过wait empty_barrier等待当前stage可用，然后将block粒度的index转成行列粒度的idx，即m_idx和k_idx。 之前有说到创建TensorMap的时候smem_outer_dim为96，Mega MoE使用的是2-SM UMMA，因此一个对于BLOCK_M=192的token方向，一个cta只需要load一半，即96，不过值得注意的是，这里的BLOCK_M在执行UMMA的时候其实对应了B矩阵，这里先有个印象，后续具体介绍。 然后看数据的TMA，2-SM的UMMA如下图所示 
 
 ![](https://picx.zhimg.com/v2-3f7f01cb4ce5bc2baf996579ab7caa03_r.jpg)图 7 CTA0 TMA load A0和B0然后通知CTA0的full_barrier，CTA1 TMA load A1和B1然后通知CTA0的full_barrier，因此full_barrier初始化arrive_count为4，然后看下TMA的过程。
 
 for_each_block() {
+
+```cpp
     for (uint32_t k_block_idx = 0; k_block_idx < num_k_blocks; advance_pipeline(k_block_idx)) {
         if (cute::elect_one_sync()) {
             tma::copy<BLOCK_K, LOAD_BLOCK_M, kSwizzleAMode, a_dtype_t>(
@@ -607,14 +738,21 @@ for_each_block() {
         __syncwarp();
     }
 }
+```
+
 leader CTA除了arrive之外还需要设置tx count为总的数据量，即图7中的A0，A1，B0，B1。
 
+```text
 template <uint32_t BLOCK_INNER, uint32_t BLOCK_OUTER,
           uint32_t kSwizzleMode,
           typename dtype_t, bool kIs3DTMA = false>
+```
+
 CUTLASS_DEVICE void
 copy(void const* desc_ptr, cutlass::arch::ClusterTransactionBarrier* barrier_ptr,
      dtype_t* smem_ptr, const uint32_t& inner_idx, const uint32_t& outer_idx,
+
+```cpp
      const uint32_t& num_tma_multicast = 1, const uint32_t& batch_idx = 0) {
     constexpr uint32_t BLOCK_INNER_ATOM = get_inner_block_atom_size<BLOCK_INNER, kSwizzleMode, dtype_t>();
 
@@ -630,15 +768,18 @@ copy(void const* desc_ptr, cutlass::arch::ClusterTransactionBarrier* barrier_ptr
                 }
         }
     }
+```
+
 copy的时候设置了num_tma_multicast=2，因此会执行SM100_TMA_2SM_LOAD_2D，这里其实没有对数据做multicast，只是multicast了arrive信号。
 
+```cpp
 // constexpr uint32_t Sm100MmaPeerBitMask = 0xFEFFFFFF;
 struct SM100_TMA_2SM_LOAD_2D
 {
   CUTE_HOST_DEVICE static void
-  copy(<span class="wikilink wikilink--missing" title="未导入的页面">maybe_unused</span> void const* desc_ptr, <span class="wikilink wikilink--missing" title="未导入的页面">maybe_unused</span> uint64_t* mbar_ptr, <span class="wikilink wikilink--missing" title="未导入的页面">maybe_unused</span> uint64_t cache_hint,
-       <span class="wikilink wikilink--missing" title="未导入的页面">maybe_unused</span> void      * smem_ptr,
-       <span class="wikilink wikilink--missing" title="未导入的页面">maybe_unused</span> int32_t const& crd0, int32_t const& crd1)
+  copy([[maybe_unused]] void const* desc_ptr, [[maybe_unused]] uint64_t* mbar_ptr, [[maybe_unused]] uint64_t cache_hint,
+       [[maybe_unused]] void      * smem_ptr,
+       [[maybe_unused]] int32_t const& crd0, int32_t const& crd1)
   {
     uint64_t gmem_int_desc = reinterpret_cast<uint64_t>(desc_ptr);
     // Executed by both CTAs. Set peer bit to 0 so that the
@@ -654,9 +795,13 @@ struct SM100_TMA_2SM_LOAD_2D
       : &#34;memory&#34;);
   }
 };
+```
+
 之前在介绍Blackwell架构的时候介绍过这里，因为指定了cta_group::2，所以就会根据mbar的地址，将mbarrier的信号广播到ctaMask指定的dst CTA所在的CTA pairs中对应的奇偶CTA，因为没开启multicast，所以dst CTA就是自己，所以CTA pairs就是自己和peer CTA，这里就会根据mbar位于哪里决定将mbar信号发送给哪里，mbar_ptr会对Sm100MmaPeerBitMask做与运算，将第24位设置为0，因此mbar被指定为leader CTA的mbar，因此所有mbar信号都会传播到leader CTA。
 
 CUTLASS_HOST_DEVICE
+
+```cpp
   static void arrive(ValueType const* smem_ptr, uint32_t cta_id, uint32_t pred) {
 #if CUDA_BARRIER_ENABLED
     uint32_t smem_addr = cute::cast_smem_ptr_to_uint(smem_ptr);
@@ -672,10 +817,16 @@ CUTLASS_HOST_DEVICE
     }
 
     cutlass::arch::synclog_emit_cluster_barrier_arrive_cluster(__LINE__, smem_addr, cta_id, pred);
+```
+
 #elif defined(__CUDA_ARCH__)
+
+```text
     asm volatile (&#34;brkpt;\n&#34; ::);
 #endif
   }
+```
+
 TMA之后的arrive也是类似的，leader CTA arrive自己的mbar，非leader CTA执行arrive(0)，表示arrive cluster_rank0的CTA的mbar，不过这里用的是标准的mapa实现。
 
 UMMA warp
@@ -691,12 +842,17 @@ constexpr uint32_t kNumAccumTmemCols = UMMA_N * kNumEpilogueStages;
 constexpr uint32_t kNumSFATmemCols = SF_BLOCK_M / 32;
 constexpr uint32_t kNumSFBTmemCols = SF_BLOCK_N / 32;
 constexpr uint32_t kNumTmemCols = utils::get_num_aligned_tmem_cols<kNumAccumTmemCols + kNumSFATmemCols + kNumSFBTmemCols>();
+
+```text
 if (warp_idx == 3) {
     // Allocate tensor memory
     Allocator().allocate(kNumTmemCols, tmem_ptr_in_smem);
 }
+```
+
 2-SM UMMA用的是m256n192k32的shape。然后看下TMEM，TMEM用于存储D，sfa和sfb，一个D占用N列，即192列，分配了2块空间用于存储D。由上可知SF_BLOCK_M为256，SF_BLOCK_N为128，然后除以32 lane得到需要多少col。三个区域加起来就是总的TMEM用量，通过tcgen05.alloc.cta_group::2分配TMEM。
 
+```text
 if (is_leader_cta) {
     // Make instruction descriptor with block scaling
     // NOTES: always swap A/B
@@ -708,20 +864,28 @@ if (is_leader_cta) {
     auto sf_desc = mma::sm100::make_sf_desc(nullptr);
     auto a_desc = mma::sm100::make_umma_desc<cute::UMMA::Major::K, LOAD_BLOCK_M, BLOCK_K, kSwizzleAMode>(smem_a[0], 0, 0);
     auto b_desc = mma::sm100::make_umma_desc<cute::UMMA::Major::K, LOAD_BLOCK_N, BLOCK_K, kSwizzleBMode>(smem_b[0], 0, 0);
+```
+
 由于为2-SM UMMA，如图7所示，只有leader CTA会执行umma指令。 创建instr_desc指定各种元信息，比如ab的type等，可以看到交换了A和B，也就是说weight为A矩阵，token为B矩阵，猜测可能是为了方便调整BLOCK_M，因为2-SM场景的UMMA_M只能是128或者256，但是UMMA_N的调整范围较大。另外在block scaling场景不需要配置Dtype，猜测可能只支持输出为f32。
 
 CUTLASS_DEVICE
 cute::UMMA::SmemDescriptor make_sf_desc(void* smem_ptr) {
+
+```text
     // NOTES: the UTCCP layout is K-major by default
     // Atom size: 8 x 128 bits
     // {SBO, LBO} means the byte stride between atoms on {MN, K}
     // Since the UTCCP we used is 128b-wide (only 1 atom on K), so LBO can be zero
     return make_smem_desc(cute::UMMA::LayoutType::SWIZZLE_NONE, smem_ptr, 8 * 16, 0);
 }
+```
+
 然后创建sf的smem desc，没有使用swizzle，由于K方向只有16B，所以K方向只有一个atom，LBO设置为0，SBO为8x16B。 然后通过make_umma_desc创建smem_a和smem_b的初始desc。
 
 uint32_t current_iter_idx = 0;
 scheduler.for_each_block() {
+
+```cpp
 		mma::sm100::update_instr_desc_with_umma_n(instr_desc, scheduler.template get_valid_m<true>());
 	  const auto accum_stage_idx = current_iter_idx % kNumEpilogueStages;
 	  const auto accum_phase = (current_iter_idx ++ / kNumEpilogueStages) & 1;
@@ -742,23 +906,34 @@ scheduler.for_each_block() {
             }
             ...
 }
+```
+
 通过for_each_block遍历所有D的block，首先通过wait tmem_barrier等待当前stage的TMEM可用，然后使用tcgen05_after_thread_sync建立barrier和之后的tcgen05的order。 对于一个D block的每个K方向的block，同样wait full_barrier等待TMA完成，同样使用tcgen05_after_thread_sync建立barrier和之后的tcgen05的order。 然后开始使用SM100_UTCCP_4x32dp128bit_2cta拷贝sf，以sfa为例，一次拷贝128个int32，循环直到拷贝完成SF_BLOCK_M。
 
+```text
 // 4x32 data path lanes (broadcast), 128-bit pattern, 2cta mode
 struct SM100_UTCCP_4x32dp128bit_2cta {
   using SRegisters = uint64_t[1];
   using DRegisters = uint32_t[1];
+```
+
 
   CUTE_HOST_DEVICE static void
   copy(uint64_t const& src_addr, uint32_t const& dst_addr) {
+
+```text
     asm volatile (&#34;tcgen05.cp.cta_group::2.32x128b.warpx4 [%0], %1;&#34;
     :
     : &#34;r&#34;(dst_addr)  &#34;l&#34;(src_addr));
   }
 };
+```
+
 32x128b拷贝完成之后会在32lane中得到如下存储。由于sf需要被复制到所有的32lane，因此使用warpx4广播到当前sm的所有32lane。由于为2-SM UMMA，因此需要cta_group::2广播到peer CTA的TMEM。 
 
 ![](https://picx.zhimg.com/v2-366e685b08c1e8e66f349f1cb3c77d6b_r.jpg)图 8scheduler.for_each_block() {
+
+```cpp
   	for (uint32_t k_block_idx = 0; k_block_idx < num_k_blocks; advance_pipeline(k_block_idx)) {
         if (cute::elect_one_sync()) {
             for (uint32_t k = 0; k < BLOCK_K / UMMA_K; ++ k) {
@@ -774,8 +949,10 @@ struct SM100_UTCCP_4x32dp128bit_2cta {
                    kTmemStartColOfSFB, kTmemStartColOfSFA);
             }
         }
-            
+
 }
+```
+
 通过当前K block更新instr_desc，a_desc和b_desc，然后开始执行mma指令，由于tcgen05.cp和tcgen05.mma为pipeline，因此不需要同步即可下发mma，mma指令如下所示：
 
 fma(uint64_t const& desc_a,
@@ -784,6 +961,8 @@ fma(uint64_t const& desc_a,
         uint32_t const& scale_c,
         uint64_t const& desc,
         uint32_t const& tmem_sfa,
+
+```text
         uint32_t const& tmem_sfb) {
         asm volatile(
           &#34;{\n\t&#34;
@@ -795,9 +974,13 @@ fma(uint64_t const& desc_a,
           : &#34;r&#34;(tmem_c), &#34;l&#34;(desc_a), &#34;l&#34;(desc_b), &#34;r&#34;(static_cast<uint32_t>(desc >> 32)), &#34;r&#34;(scale_c),
             &#34;r&#34;(tmem_sfa), &#34;r&#34;(tmem_sfb));
     }
+```
+
 umma_arrive_multicast_2x1SM封装了tcgen05.commit，cta_group::2用于trace之前的cta_group::2异步指令，关联到mbarrier，当之前的异步指令完成后，会触发一个arrive one的操作，multicast表示会广播到cluster中cta_mask对应的CTA。 下发mma指令之后，通过empty_barrier_arrive trace mma的完成，每个K block都要关联到empty_barrier，这样当mma完成之后，这个stage的smem可以被TMA使用，当所有K完成之后，这个block就完成了，此时还需要关联到tmem_full_barriers，这样eplogue可以trace mma的完成。
 
 CUTLASS_HOST_DEVICE
+
+```cpp
 void umma_arrive_multicast_2x1SM(uint64_t const* smem_ptr, uint16_t cta_mask) {
   uint32_t bar_intptr = cute::cast_smem_ptr_to_uint(smem_ptr);
   if (cute::elect_one_sync()) {
@@ -809,7 +992,11 @@ void umma_arrive_multicast_2x1SM(uint64_t const* smem_ptr, uint16_t cta_mask) {
       :&#34;r&#34;(bar_intptr), &#34;h&#34;(cta_mask));
   }
 }
+```
+
 auto empty_barrier_arrive = [&](const bool& do_tmem_full_arrive) {
+
+```text
     auto umma_arrive = [](const uint64_t* barrier) {
         constexpr uint16_t kCTAMask = (1 << 2) - 1;
         cutlass::arch::umma_arrive_multicast_2x1SM(barrier, kCTAMask);
@@ -821,24 +1008,35 @@ auto empty_barrier_arrive = [&](const bool& do_tmem_full_arrive) {
         umma_arrive(reinterpret_cast<uint64_t*>(tmem_full_barriers[accum_stage_idx]));
     __syncwarp();
 };
+```
+
 scheduler.for_each_block() {
+
+```cpp
   	for (uint32_t k_block_idx = 0; k_block_idx < num_k_blocks; advance_pipeline(k_block_idx)) {
      		// do mma
      		empty_barrier_arrive(k_block_idx == num_k_blocks - 1);
      }
 }
+```
+
 
 epilogue warp
 然后看下epilogue的过程，epilogue warp有8个，即2个warpgroup，UMMA的输出shape为256x192，因为swap A/B，其中192是token矩阵，即BLOCK_M，256是weight矩阵，即BLOCK_N。
 
+```text
 // kNumEpilogueWarpgroups = 2
 // STORE_BLOCK_M = 32
+```
+
 constexpr uint32_t WG_BLOCK_M = BLOCK_M / kNumEpilogueWarpgroups;
 constexpr uint32_t ATOM_M = 8;
 constexpr uint32_t kNumBankGroupBytes = 16u;
 constexpr uint32_t kNumAtomsPerStore = STORE_BLOCK_M / ATOM_M;
 uint32_t current_iter_idx = 0;
 scheduler.for_each_block([&](...) {
+
+```text
     tmem_full_barriers[accum_stage_idx]->wait(accum_phase);
     ptx::tcgen05_after_thread_sync();
     const uint32_t valid_m = ptx::exchange(scheduler.template get_valid_m<false>(), 0);
@@ -846,16 +1044,24 @@ scheduler.for_each_block([&](...) {
     uint32_t m_idx = pool_block_idx * BLOCK_M;
     uint32_t n_idx = n_block_idx * BLOCK_N;
 }
+```
+
 首先通过wait tmem_full_barrier等待mma的完成，然后获取valid_m，即TMEM中有效的col，pool_block_idx为当前TMEM中对应的是全局哪个block，然后转成m_idx和n_idx。
 
 L1 epilogue
 uint32_t kNumTMAStoreStages = 2;
 uint32_t L1_OUT_BLOCK_N = BLOCK_N / 2;  // 128 / 2 = 64
 constexpr uint32_t SMEM_CD_L1_SIZE =
+
+```text
     kNumEpilogueWarpgroups * STORE_BLOCK_M * L1_OUT_BLOCK_N * sizeof(cutlass::float_e4m3_t) * kNumTMAStoreStages;
+```
+
 SMEM_CD_L1用于存储swiglu的结果。因为L1的输出中按照8对up和gate做了interleave，所以做完swiglu之后在N方向维度成为一半，即64，stage为2。
 
 scheduler.for_each_block([&](...) {
+
+```cpp
   if (block_phase == sched::BlockPhase::Linear1) {
 	  for (uint32_t s = 0; s < WG_BLOCK_M / STORE_BLOCK_M; ++ s) {
         float2 swiglu_values[kNumAtomsPerStore * 2];
@@ -871,20 +1077,28 @@ scheduler.for_each_block([&](...) {
             cutlass::arch::fence_view_async_tmem_load();
 	  }
 }
+```
+
 L1 epilogue做的流程为swiglu，fp8 cast和TMA写回。所以首先需要将结果从TMEM中load出来，即tcgen05.cp。这里有两重循环，一个warpgroup对应WG_BLOCK_M列，最外层循环每次执行STORE_BLOCK_M列，内层每次执行一个ATOM，一个ATOM就是一次tcgen05.cp对应多少列。
 
 copy(uint32_t const& src_addr, uint32_t& dst0, uint32_t& dst1, uint32_t& dst2, uint32_t& dst3) {
+
+```text
     asm volatile (&#34;tcgen05.ld.sync.aligned.16x256b.x1.b32&#34;
                     &#34;{%0, %1, %2, %3},&#34;
                     &#34;[%4];\n&#34;
     :  &#34;=r&#34;(dst0), &#34;=r&#34;(dst1), &#34;=r&#34;(dst2), &#34;=r&#34;(dst3)
     :  &#34;r&#34;(src_addr));
   }
+```
+
 SM100_TMEM_LOAD_16dp256b1x用了最宽的指令16x256b，一个warp有32 lane，因此需要执行两次，第一次ld前16 lane，第二次将tmem_addr | 0x00100000得到后16 lane，256b为8列，对应一个ATOM_M。ld后通过tcgen05.wait保证完成，完成后线程间存储，如下图所示r[0 - 3]对应代码中的value[0 - 3]，value[4 - 7]为第二次ld，对于warp0来说即lane[16 - 31]，后续称上半16行为tmem_up，下半16行为tmem_down。
 
 由于lane方向为weight的N方向，所以lane[0 - 7]为gate，lane[8 - 15]为up，以此类推，因此接下来就是将图中r0和r2对应做swiglu，r1和r3对应做swiglu，以此类推。 
 
 ![](https://picx.zhimg.com/v2-4a17c7e5c02f874f1d14d92555b027d1_r.jpg)图 9scheduler.for_each_block([&](...) {
+
+```cpp
   if (block_phase == sched::BlockPhase::Linear1) {
 	  for (uint32_t s = 0; s < WG_BLOCK_M / STORE_BLOCK_M; ++ s) {
         for (uint32_t i = 0; i < kNumAtomsPerStore; ++ i) {
@@ -906,9 +1120,13 @@ SM100_TMEM_LOAD_16dp256b1x用了最宽的指令16x256b，一个warp有32 lane，
             }
 	  }
 }
+```
+
 最内层循环为遍历tmem_up和tmem_down，对于tmem_up，将gate对应的两个值打包为float2，同理对up，对应计算swiglu得到float2类型的swiglu_values。以warp0的第一个ATOM为例，swiglu_values[0]对应tmem_up的输出，swiglu_values[1]对应tmem_down的输出。 注意计算完swiglu_values之后tmem_up由16行变成了8行，同理tmem_down。
 
 scheduler.for_each_block([&](...) {
+
+```cpp
   if (block_phase == sched::BlockPhase::Linear1) {
 	  for (uint32_t s = 0; s < WG_BLOCK_M / STORE_BLOCK_M; ++ s) {
         for (uint32_t i = 0; i < kNumAtomsPerStore; ++ i) {
@@ -926,10 +1144,14 @@ scheduler.for_each_block([&](...) {
             __syncwarp();
 	  }
 }
+```
+
 然后开始找量化为fp8的max值。math::warp_reduce<4, true>通过__shfl_xor_sync计算max，由于是per_token量化，因此就是图9的col方向，warp内的线程要计算出自己所在列的max。
 
 template <uint32_t kNumLanesPerGroup, bool kIntergroupReduce, typename T, typename Op>
 CUTLASS_DEVICE T warp_reduce(T value, Op op) {
+
+```text
     constexpr uint32_t mask = 0xffffffff;
     if constexpr (kIntergroupReduce) {
         if constexpr (kNumLanesPerGroup <=  4) value = op(value, __shfl_xor_sync(mask, value,  4));
@@ -938,6 +1160,8 @@ CUTLASS_DEVICE T warp_reduce(T value, Op op) {
     }
     return value;
 }
+```
+
 以tid0的第一次warp_reduce为例看，输入的是max(swiglu_values[0].x, swiglu_values[1].x)，对应col0 tid0的两个值，然后开始执行shfl_xor_sync，第一次shfl得到max(T0, T4)，第二次得到max(0, 4, 8, 12)，最后一次得到max(0, 4, 8, 12, 16, 20, 24, 28)，正好得到col0的16个值中的最大值。如图10所示，不过这个含义和图9已经不同，图9表示mma输出，图10现在表示的是mma结果再执行swiglu的输出，图中展示的是一个atom中一个warp的结果，lane[0 - 7]为tmem_up，lane[8 - 15]为tmem_down。 
 
 ![](https://picx.zhimg.com/v2-4a17c7e5c02f874f1d14d92555b027d1_r.jpg)图 10 此时一个warp中的每个lane都得到所在列16个数的max值，由lane0-3写回smem。一个warp在一个atom中产生8个max值，对应4个float2，相邻的col组成一个float2，所以个数为即ATOM_M / 2。
@@ -945,6 +1169,8 @@ CUTLASS_DEVICE T warp_reduce(T value, Op op) {
 然后同步一下warpgroup，由于刚刚只算了一列中16个数的max，量化是按照32个数算的，因此相邻warp还要再求一次max。
 
 scheduler.for_each_block([&](...) {
+
+```cpp
   if (block_phase == sched::BlockPhase::Linear1) {
 	  for (uint32_t s = 0; s < WG_BLOCK_M / STORE_BLOCK_M; ++ s) {
         ptx::sync_aligned(128, kEpilogueWGBarrierStartIdx + epilogue_wg_idx);
@@ -962,9 +1188,13 @@ scheduler.for_each_block([&](...) {
 		    }
 	  }
 }
+```
+
 首先同步一下整个warp group，然后读取相邻warp的max，得到32个值对应的max，然后将fp32转成fp8存入到fp8x4_values，分别对应图中的r[0 - 3]。
 
 scheduler.for_each_block([&](...) {
+
+```cpp
   if (block_phase == sched::BlockPhase::Linear1) {
 	  for (uint32_t s = 0; s < WG_BLOCK_M / STORE_BLOCK_M; ++ s) {
         ptx::sync_aligned(128, kEpilogueWGBarrierStartIdx + epilogue_wg_idx);
@@ -981,8 +1211,11 @@ scheduler.for_each_block([&](...) {
 		    }
 	  }
 }
+```
+
 完成一个atom的sacle之后开始通过SM100_U8x4_STSM_T将他写回到smem_cd，一个atom中一个warp中线程持有的数据对应图10。stmatrix使用了.x1，因此只有前8个线程提供SMEM地址。
 
+```cpp
 template <typename dtype_t>
 struct SM100_U8x4_STSM_T {
     __device__ __forceinline__ static void
@@ -993,11 +1226,15 @@ struct SM100_U8x4_STSM_T {
                      :: &#34;l&#34;(__cvta_generic_to_shared(smem_dst)), &#34;r&#34;(src));
     }
 };
+```
+
 然后看下对smem_ptr的计算，这个逻辑和DeepGEMM的epilogue有点像。 一个warpgroup负责STORE_BLOCK_M x L1_OUT_BLOCK_N大小，因此通过epilogue_wg_idx找到当前warpgroup的起始位置。 然后再找当前warpgroup对应的ATOM，一个ATOM为ATOM_M x L1_OUT_BLOCK_N，所以乘i找到当前的ATOM。 因为要转置，图10中一个col在SMEM中对应一行，所以一个线程提供SMEM中一个连续的16B地址，即SMEM中一行，因此lane_idx x L1_OUT_BLOCK_N找到自己的行，第一个warp对应图10中前16行，转置后对应SMEM中一个16B，因此warp_idx就是第几列，smem_cd用了swizzle_64B，因此通过(col ^ (row / 2))找到swizzle后的列写入。
 
 然后开始写sf，这个过程和dispatch的过程很像，这里不再赘述。
 
 scheduler.for_each_block([&](...) {
+
+```cpp
   if (block_phase == sched::BlockPhase::Linear1) {
 	  for (uint32_t s = 0; s < WG_BLOCK_M / STORE_BLOCK_M; ++ s) {
         ptx::sync_aligned(128, kEpilogueWGBarrierStartIdx + epilogue_wg_idx);
@@ -1022,6 +1259,8 @@ scheduler.for_each_block([&](...) {
         );
     }
 }
+```
+
 完成一个STORE_BLOCK_M之后通过TMA将结果写入到l2_acts，最后完成一个block之后，通过red_or_rel_gpu设置l2_arrival_mask通知L2的TMA。
 
 L2 epilogue
@@ -1030,6 +1269,8 @@ L2 epilogue对TMEM的ld和L1 epilogue一致，不再赘述。
 然后看下如何将寄存器的值写回SMEM，依然是这张图，但是现在表示的是warp0 ld完成TMEM之后并且在寄存器内部转成bf16的结果。 
 
 ![](https://picx.zhimg.com/v2-4a17c7e5c02f874f1d14d92555b027d1_r.jpg)图 11template <typename dtype_t>
+
+```cpp
 struct SM90_U32x4_STSM_T {
     CUTLASS_DEVICE static void
     copy(dtype_t src_0, dtype_t src_1, dtype_t src_2, dtype_t src_3, void* smem_dst) {
@@ -1041,9 +1282,13 @@ struct SM90_U32x4_STSM_T {
                         &#34;r&#34;(src[0]), &#34;r&#34;(src[1]), &#34;r&#34;(src[2]), &#34;r&#34;(src[3]));
     }
 };
+```
+
 然后看下图12，展示的是ldmatrix.x4不带trans的过程，从上到下分别对应了4个8x8的小矩阵，假设叫M0-M3，stmatrix为图中逆操作，M0中T0对应了图11中的T0:r0和T0:r1，那么可以发现图11中lane0 - 7就对应了M0，带上转置写SMEM就可以得到原始[token, hidden]形状的结果，如col0的lane0 - 7写入图12的M0的第一行。 
 
 ![](https://pica.zhimg.com/v2-84eca412da386544559dd6491c428102_r.jpg)图 12scheduler.for_each_block([&](...) {
+
+```cpp
   if (block_phase == sched::BlockPhase::Linear2) {
 		for (uint32_t s = 0; s < WG_BLOCK_M / STORE_BLOCK_M; ++ s) {
         for (uint32_t i = 0; i < STORE_BLOCK_M / ATOM_M; ++ i) {
@@ -1066,6 +1311,8 @@ struct SM90_U32x4_STSM_T {
         }
 	}
 }
+```
+
 kSwizzleCDMode为128，即128B的swizzle，转置写回SMEM的过程后，图11的列方向，即token的hidden方向，对应128B，即64 lane或者说两个warp。这里在写SMEM的时候，原矩阵中shape为64 lane x STORE_BLOCK_M的区域是连续的。
 
 然后看下怎么提供SMEM地址，在D的一个ATOM中，一个warpgroup负责STORE_BLOCK_M * BLOCK_N，所以按照epilogue_warp_idx找到自己warpgroup的区域。 刚刚说到两个warp对应的数据为连续的，即大小为STORE_BLOCK_M x kSwizzleCDMode，所以按照warp_idx找到自己对应的STORE_BLOCK_M。 一个ATOM中，两个warp对应一个swizzle atom，所以根据第几个ATOM找到swizzle atom，并执行128B的swizzle，swizzle之前线程和SMEM对应关系如下图所示，下图展示了一个swizzle128B的atom，绿色为warp0，黄色为warp1。 
@@ -1075,6 +1322,8 @@ kSwizzleCDMode为128，即128B的swizzle，转置写回SMEM的过程后，图11�
 ![](https://pic4.zhimg.com/v2-71de32157dfd5870e040926268fef8a1_r.jpg)图 14完成一个STORE_BLOCK_M之后开始通过nvlink写回src rank。
 
 scheduler.for_each_block([&](...) {
+
+```cpp
   if (block_phase == sched::BlockPhase::Linear2) {
 		for (uint32_t s = 0; s < WG_BLOCK_M / STORE_BLOCK_M; ++ s) {
         for (uint32_t i = 0; i < STORE_BLOCK_M / ATOM_M; ++ i) {
@@ -1110,6 +1359,8 @@ scheduler.for_each_block([&](...) {
         }
 	}
 }
+```
+
 每个warp一次写TMEM中的两列，即两个token，前16线程负责第一个token，后16线程负责第二个token，一个token为128个bf16，一个warpgroup 4个warp，所以一次完成8行，因此需要循环kNumRowsPerWarp = STORE_BLOCK_M / 8。 row_in_atom表示在一个ATOM内部是第几行，一个warp对应两行，16个lane对应一行，row_in_store得到当前循环的行数，一次循环对应8个token，即8行，然后通过row_in_store计算出全局这是第几个token，然后从token_src_metadata获取到meta信息，即src rank和topk_slot，这样就可以获得写入的地址dst_token。 对于SMEM的计算，首先通过epilogue_wg_idx找到当前warpgroup的区域。如图14的SMEM部分，一个token对应了SMEM的两行，即两个箭头所在行，所以lane[0 - 15]中前8个线程对应蓝色箭头，后8线程对应红色箭头，lane[16 - 31]对应第二个token，然后再加上STORE内部的行号row_in_store，一个lane对应一个bank_group，即16B，然后用16B写回源端rank。
 
 最后再所有block执行结束后，nvlink执行全局barrier，然后将本地每一个token的所有topk对应的hidden执行reduce，这部分没有overlap。

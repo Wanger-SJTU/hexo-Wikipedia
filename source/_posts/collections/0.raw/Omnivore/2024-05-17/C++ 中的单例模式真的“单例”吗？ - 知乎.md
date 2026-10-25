@@ -225,9 +225,12 @@ addreress of x in src: 00007FFEF434C000
 
 上面的代码很好理解，如果保证`type_info`的地址是唯一的，那么直接比较`__mangled_name`就行了（它是`const char*`所以是指针比较）。若不然，就先比较地址然后比较类型名。具体到三大标准库的实现：
 
+```text
 * [libstdc++](https://github.com/gcc-mirror/gcc/blob/master/libstdc%2B%2B-v3/libsupc%2B%2B/tinfo.cc#L39) 使用`__GXX_MERGED_TYPEINFO_NAMES`来控制是否启用
 * [libc++](https://github.com/llvm/llvm-project/blob/main/libcxx/include/typeinfo#L197) 使用`_LIBCPP_TYPEINFO_COMPARATION_IMPLEMENTATION`来决定采用的方式（实际上还有一种特殊的 BIT\_FLAG 模式）
 * msvc stl (crt/src/vcruntime/std\_type\_info.cpp) 由于前面提到的 Windows 上 dll 的限制，总是使用第二种方式
+```
+
 
 举这个例子的目的是，为了说明，单例变量地址的唯一性会影响我们代码的编写方式。如果不唯一我们可能被迫要书写一些代码进行防御，可能会影响性能，而如果没写的话，甚至会直接导致逻辑错误。
 

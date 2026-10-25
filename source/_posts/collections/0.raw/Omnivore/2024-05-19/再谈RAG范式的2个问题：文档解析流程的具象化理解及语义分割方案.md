@@ -82,8 +82,12 @@ id: ae58d270-a08f-40fa-9265-1cca07f744bc
 另外，也有一个开源项目SeqModel模型，用于文本切分，地址：nlp\_bert\_document-segmentation\_chinese-base(https://modelscope.cn/models/damo/nlp\_bert\_document-segmentation\_chinese-base/summary)可以进行调用。
 
 ![](https://proxy-prod.omnivore-image-cache.app/0x0,stICKcT1j9p25LpMbXqqM1ybA_Girm42YuhxP9bktRpo/https://mmbiz.qpic.cn/mmbiz_svg/Xewa2JUmZ1o1Yibps1Tia02er09ucbkEA8cukQfRpLqQv0wACHT5wleITrf2o3XlGc5vUQ1ibhLKwiaQ5IvSWp6DpEaPP9aiacJoN/640?wx_fmt=svg&from=appmsg)`from modelscope.outputs import OutputKeys
+
+```python
 from modelscope.pipelines import pipeline
 from modelscope.utils.constant import Tasks
+```
+
  p = pipeline(
     task=Tasks.document_segmentation,
     model='damo/nlp_bert_document-segmentation_chinese-base')

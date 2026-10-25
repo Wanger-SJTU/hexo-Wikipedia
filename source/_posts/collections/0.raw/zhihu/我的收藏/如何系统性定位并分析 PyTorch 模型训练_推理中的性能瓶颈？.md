@@ -63,16 +63,22 @@ torch.cuda.memory._dump_snapshot("my_snapshot.pickle")`
 这里主要说的是基于torch profile的对ai workload进行的整体分析，pytorch本身提供了profiler工具，可以记录在cpu、gpu上的活动堆栈，以timeline可视化的形式进行分析，并允许用户插入自定义的annotation，以方便对局部进行定位分析：
 
 `import os
+
+```python
 import socket
 from datetime import datetime
 from functools import partial
 
 import torch
 from torch.autograd.profiler import record_function
+```
+
 
 # Non-default profiler schedule allows user to turn profiler on and off
 # on different iterations of the training loop;
 # trace_handler is called every time a new trace becomes available
+
+```python
 def trace_handler(prof: torch.profiler.profile, dir=""):
     os.makedirs(dir, exist_ok=True)
 
@@ -81,8 +87,12 @@ def trace_handler(prof: torch.profiler.profile, dir=""):
             sort_by="self_cuda_time_total", row_limit=10, max_name_column_width=200
         )
     )
+```
+
 
     # Prefix for file names.
+
+```text
     host_name = socket.gethostname()
     timestamp = datetime.now().strftime("%b_%d_%H_%M_%S")
     trace_file_prefix = os.path.join(dir, f"profiler_trace_{host_name}_{timestamp}")
@@ -92,25 +102,41 @@ def trace_handler(prof: torch.profiler.profile, dir=""):
     kernel_times_file_prefix = os.path.join(
         dir, f"profiler_kernel_times_{host_name}_{timestamp}"
     )
+```
+
 
     # Construct the trace file.
+
+```text
     prof.export_chrome_trace(f"{trace_file_prefix}.json.gz")
+```
+
 
     # Construct the memory timeline file.
+
+```text
     prof.export_memory_timeline(f"{memory_tl_file_prefix}.html")
+```
+
 
     # Construct the kernel times file.
+
+```text
     with open(f"{kernel_times_file_prefix}.txt", "w") as f:
         f.write(
             prof.key_averages(group_by_stack_n=5).table(
                 sort_by="cuda_time_total", row_limit=-1
             )
         )
+```
+
 
 N = 10
 input = torch.randn(10, 4096, 4096, requires_grad=True).to("cuda")
 weight = torch.randn(4096, 4096).to("cuda")
 with torch.profiler.profile(
+
+```text
     activities=[
         torch.profiler.ProfilerActivity.CPU,
         torch.profiler.ProfilerActivity.CUDA,
@@ -129,7 +155,11 @@ with torch.profiler.profile(
     on_trace_ready=partial(trace_handler, dir="save"),
     # on_trace_ready=torch.profiler.tensorboard_trace_handler('./log')
     # used when outputting for tensorboard
+```
+
 ) as p:
+
+```text
     for iter in range(N):
         with record_function("forward"):
             out = input @ weight
@@ -138,6 +168,8 @@ with torch.profiler.profile(
             loss.backward()
         # send a signal to the profiler that the next iteration has started
         p.step()`
+```
+
 
 上面的profiling程序会输出3个文件：txt文件记录了对应的kernel耗时，html文件记录了程序显存的大体占用情况，在训练中显存通常有模型参数、梯度、优化器状态、activation激活值这几部分组成。
 

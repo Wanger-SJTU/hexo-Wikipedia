@@ -89,14 +89,22 @@ Net driver 的初始化流程中包括对 DMA 空间进行初始化，主要的�
 ...
  union {
 ...
+
+```text
   /* RX */
   struct {
    struct sk_buff *skb;
    struct igb_rx_queue_stats rx_stats;
    struct u64_stats_sync rx_syncp;
   };
+```
+
 ...
+
+```text
 }
+```
+
 `
 
 sk_buff 的结构体定义如下图所示，它包含了一个 Frame 的 Interface（网络接口）、Protocol（协议类型）、Headers（协议头）指针、Data（业务数据）指针等信息。
@@ -211,37 +219,58 @@ NAPI 的工作流程如下：
 - ksoftirqd 线程调用 Net driver 注册的 poll() 函数。
 `// linux/drivers/net/ethernet/intel/igb/igb_main.c
 
+```text
 /**
  *  igb_poll - NAPI Rx polling callback
  *  @napi: napi polling structure
  *  @budget: count of how many packets we should handle
+```
+
  **/
+
+```cpp
 static int igb_poll(struct napi_struct *napi, int budget)
 {
+```
+
 ...
+
+```cpp
  if (q_vector->tx.ring)
   clean_complete = igb_clean_tx_irq(q_vector, budget);
 
  if (q_vector->rx.ring) {
   int cleaned = igb_clean_rx_irq(q_vector, budget);
+```
+
 ...
+
+```text
 }
+```
+
 `
 
 - poll() 调用 netif_receive_skb() 开始从 sk_buff 空间中收包，并将它传递给 TCP/IP 网络协议栈进行处理。
 `// linux/net/core/dev.c
 
+```cpp
 int netif_receive_skb(struct sk_buff *skb)
 {
  int ret;
+```
+
 
  trace_netif_receive_skb_entry(skb);
 
  ret = netif_receive_skb_internal(skb);
  trace_netif_receive_skb_exit(ret);
 
+```text
  return ret;
 }
+```
+
 `
 
 - 直到一段时间内没有 Frame 到达为止，关闭 ksoftirqd 内核线程，NIC Controller 重新切换到硬中断收包工作模式。

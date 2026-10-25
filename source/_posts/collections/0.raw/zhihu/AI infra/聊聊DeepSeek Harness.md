@@ -37,8 +37,12 @@ track (f, g)(γ, φ) = (f(γ), φ ∘ g)
 
 effect : 𝔈Γ → (∂Γ → ∂²Γ)
 effect (e)(γ, φ) = 
+
+```text
     let (δ, g) = e(γ) in
     ((δ, φ ∘ g), track(g, pr1 ∘ e))
+```
+
 其中的`∂²Γ`是`∂Γ × (∂Γ → ∂Γ)`，它表示一个Effect Context和恢复Effect Context的操作，形象地说就是可以撤销的环境（一个环境及其撤销操作），及其撤销撤销操作。这就是<strong>Revertible Effect</strong>的含义。
 
 整个景象可以画成下图
@@ -137,6 +141,8 @@ set (k, v) σ = (σ[k ↦ v], λσ&#39;. σ&#39; \ k)   -- 前提：k ∉ dom(σ
 ┌──────────┐
         │ Inactive │
         └────┬─────┘
+
+```text
              │ L-Begin (依赖满足)
              ▼
         ┌──────────┐       L-Iter (每次迭代)
@@ -152,6 +158,8 @@ set (k, v) σ = (σ[k ↦ v], λσ&#39;. σ&#39; \ k)   -- 前提：k ∉ dom(σ
         ┌──────────┐
         │Unloading │─── L-Unload (依赖方已清空) ──→ Inactive
         └──────────┘
+```
+
 关键设计：
 
 - <strong>Reloading</strong> 状态将加载拆分为多个迭代，每次迭代后检查目标视图是否仍然匹配
@@ -182,6 +190,7 @@ set (k, v) σ = (σ[k ↦ v], λσ&#39;. σ&#39; \ k)   -- 前提：k ∉ dom(σ
 Python 实现核心
 有了上述理论，我们可以用 Python 实现这个架构。核心是 `Context` 类的属性拦截：
 
+```python
 class Context:
     def __init__(self, parent=None, fiber=None):
         self._parent = parent          # 父上下文
@@ -189,7 +198,7 @@ class Context:
         self._store = {}               # 依赖表 Σ
         self._isolate = {}             # 隔离表 ρ
         self._dispose_stack = []       # 累积逆 (LIFO)
-    
+
     def __getattr__(self, name):
         # 1. 检查当前 Fiber 的已提交视图
         if self._fiber and name in self._fiber.committed:
@@ -201,7 +210,7 @@ class Context:
         if self._parent:
             return getattr(self._parent, name)
         raise AttributeError(f&#34;依赖 {name} 未声明&#34;)
-    
+
     def __setattr__(self, name, value):
         if name.startswith(&#39;_&#39;):
             object.__setattr__(self, name, value)
@@ -221,8 +230,11 @@ class Context:
             return _inverse
         inverse = await self._track(_effect)
         self._dispose_stack.append(inverse)
+```
+
 配套的 `Fiber` 类实现惯性状态机：
 
+```text
 class Fiber:
     async def refresh(self):
         target = self._compute_target()
@@ -230,7 +242,7 @@ class Fiber:
             await self._load(target)
         elif target is None and self.state == ACTIVE:
             await self._unload()
-    
+
     async def _unload(self):
         # 守卫：等待所有依赖方停用
         while self._has_dependents():
@@ -240,6 +252,8 @@ class Fiber:
             inverse = self.ctx._dispose_stack.pop()
             await inverse()
         self.state = INACTIVE
+```
+
 
 总结
 DeepSeek Harness 是一个基于 <strong>Revertible Effects</strong> 和 <strong>Reactive Coeffects</strong> 的动态组件系统。其核心设计理念可以概括为：

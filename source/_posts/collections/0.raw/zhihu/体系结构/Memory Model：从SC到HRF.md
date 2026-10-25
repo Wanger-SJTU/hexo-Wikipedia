@@ -74,9 +74,13 @@ TSO中已经需要显式地执行顺序了，那更加宽松的weak类Model也�
 y = 1       
 z = 2       
 release(x)  
+
+```text
 //acuqire之后的访存指令，不允许跑到acquire之前去执行； 
 //release之前的访存指令，不允许跑到release之后去执行； 
 //允许单独出现，只保半边。   `
+```
+
 
 weak模型下的load/store保序要求见下图：可以非常明显的看到，只有同地址或显式指定，才要求保序
 

@@ -44,11 +44,15 @@ SOLO的两个分支光看论文可能会比较迷糊，还好作者昨天开源�
 
 # cate branch
 for i, cate_layer in enumerate(self.cate_convs):
+
+```text
     if i == self.cate_down_pos:
         seg_num_grid = self.seg_num_grids[idx]
         cate_feat = F.interpolate(cate_feat, size=seg_num_grid, mode=&#39;bilinear&#39;)
         # 将FPN最高层的特征从H*W*feat_channel 对齐到 S*S*feat_channel
     cate_feat = cate_layer(cate_feat) # 7个卷积 
+```
+
 cate_pred = self.solo_cate(cate_feat) # 从 S*S*feat_channel 到 S*S*num_classes
 （3）对于Mask分支，首先对FPN最高层的特征做一个CoordConv，然后同样经过一系列卷积（7个3×3卷积）提取特征，此时维度为H×W×256，再做一步上采样至2H×2W×256，最后就是对齐到2H×2W×S^2的输出（Decoupled SOLO此处则为2H×2W×S）
 

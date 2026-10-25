@@ -83,10 +83,13 @@ loss.backward()
 torch_w1_updated = conv1.weight.detach().numpy() - conv1.weight.grad.numpy() * lr
 torch_w2_updated = conv2.weight.detach().numpy() - conv2.weight.grad.numpy() * lr
 
+```python
 print(torch_w1_updated + torch_w2_updated)
 
 import torch
 import numpy as np
+```
+
 
 np.random.seed(0)
 np_x = np.random.randn(1, 1, 5, 5).astype(np.float32)
@@ -150,6 +153,8 @@ print(torch_fused_w_updated)
 在`reinitialize` 方法中，它做的就是repvgg的工作，将1x1卷积权重和identity分支给融到3x3卷积中：
 
 `if len(scales) == 2:
+
+```text
     conv3x3.weight.data = conv3x3.weight * scales[1].view(-1, 1, 1, 1) \
                           + F.pad(kernel_1x1.weight, [1, 1, 1, 1]) * scales[0].view(-1, 1, 1, 1)
 else:
@@ -162,6 +167,8 @@ else:
         conv3x3.weight.data += F.pad(identity * identity_scale_weight.view(-1, 1, 1, 1), [1, 1, 1, 1])
     else:
         conv3x3.weight.data += F.pad(identity, [1, 1, 1, 1])
+```
+
 `
 
 然后我们再看下GradientMask生成逻辑，如果只有conv3x3和conv1x1两个分支，根据前面的CSLA等价变换规则，conv3x3的mask对应为：

@@ -35,11 +35,14 @@ id: 7572f409-cc55-4c91-b526-1767cb8537d9
 
 <strong>查询重写是对齐查询和文档语义的关键技术。例如：</strong>
 
-   * <strong>Hypothetical Document Embeddings (HyDE) ：</strong>通过假设文档来对齐查询和文档的语义空间。
-   * <strong>Rewrite-Retrieve-Read：</strong>提出了一个不同于传统的检索和阅读顺序的框架，专注于查询重写。
-   * <strong>Step-Back Prompting：</strong>允许LLM基于高级概念进行抽象推理和检索。
-   * <strong>Query2Doc：</strong>使用LLM的一些提示创建伪文档。然后，它将这些查询与原始查询合并，以构建一个新的查询。
-   * <strong>ITER-RETGEN：</strong>提出了一种将先前生成的结果与先前查询相结合的方法。随后检索相关文档并生成新结果。此过程重复多次以获得最终结果。
+```text
+   * **Hypothetical Document Embeddings (HyDE) ：**通过假设文档来对齐查询和文档的语义空间。
+   * **Rewrite-Retrieve-Read：**提出了一个不同于传统的检索和阅读顺序的框架，专注于查询重写。
+   * **Step-Back Prompting：**允许LLM基于高级概念进行抽象推理和检索。
+   * **Query2Doc：**使用LLM的一些提示创建伪文档。然后，它将这些查询与原始查询合并，以构建一个新的查询。
+   * **ITER-RETGEN：**提出了一种将先前生成的结果与先前查询相结合的方法。随后检索相关文档并生成新结果。此过程重复多次以获得最终结果。
+```
+
 
 让我们深入研究一下这些方法的细节。
 

@@ -176,15 +176,21 @@ Q2: 采样2的解答过程是否会随着RL训练，采样的解答过程越来�
 
 `def accuracy_reward(completions, ground_truth, **kwargs):
     """Reward function that checks if the completion is the same as the ground truth."""
+
+```text
     # Regular expression to capture content inside \boxed{}
     contents = [completion[0]["content"] for completion in completions]
     answers = [extract_boxed_content(content) for content in contents]
     # Reward 1 if the content is the same as the ground truth, 0 otherwise
     return [1.0 if answer == gt else 0.0 for answer, gt in zip(answers, ground_truth)]`
+```
+
 
 当前实现hf写了个库做一致性判别`huggingface/Math-Verify`, 可以通过调包来判别。但是具体的math_verify未探究
 
 `from math_verify import LatexExtractionConfig, parse, verify
+
+```python
 def accuracy_reward(completions, solution, **kwargs):
     """Reward function that checks if the completion is the same as the ground truth."""
     contents = [completion[0]["content"] for completion in completions]
@@ -212,6 +218,8 @@ def accuracy_reward(completions, solution, **kwargs):
             )
             # Reward 1 if the content is the same as the ground truth, 0 otherwise
             reward = float(verify(answer_parsed, gold_parsed)) # 进行正确性判别`
+```
+
 
 #### 3.2 SimpleEval判别
 
@@ -241,8 +249,11 @@ Yes
 No
 (these are actually equal, don't mark them equivalent if you need to do nontrivial simplifications)
 
+```text
     Expression 1: 2/(-3)
     Expression 2: -
+```
+
 
 Yes
 (trivial simplifications are allowed)
@@ -260,8 +271,11 @@ YOUR TASK
 
 Respond with only "Yes" or "No" (without quotes). Do not include a rationale.
 
+```text
     Expression 1: %(expression1)s
     Expression 2: %(expression2)s
+```
+
 """.strip()
 `
 
@@ -284,10 +298,14 @@ $$\hat{A}_{i,\color{red}{t}} = \frac{r_i - \text{mean}(\mathbf{r})}{\text{std}(\
 对应的代码实现为:
 
 `def grpo_advantage(rewards):
+
+```text
     epsilon = 0.00001
     rewards = torch.tensor(rewards, dtype = torch.float) 
     A = (rewards - rewards.mean()) / (rewards.std() + epsilon)
     return A`
+```
+
 
 测试, 我们假设采样6条输出，对应6个奖励，我们看case2里，正确项相对上的优势估计更大。而错误的回答将得到负的值。当全错和全对时，优势是无效的，那么可以skip掉，如果base模型差无法采样到正确反馈，那么优化将会非常缓慢和不稳定。
 
@@ -329,12 +347,16 @@ print(A)`
 通过正则表达式即能判别回答是否遵循格式，若遵循返回1，否则为0。
 
 `# open-r1
+
+```python
 def format_reward_func(completions, **kwargs):
     """Reward function that checks if the completion has a specific format."""
     pattern = r"^.*?.*?$"
     completion_contents = [completion[0]["content"] for completion in completions]
     matches = [re.match(pattern, content) for content in completion_contents]
     return [1.0 if match else 0.0 for match in matches]`
+```
+
 
 ### 4. GRPO KL
 
@@ -464,6 +486,8 @@ $$\mathcal{L}_{\text{GRPO}}(\theta) = - \frac{1}{G} \sum_{i=1}^G \frac{1}{|o_i|}
 [](https://link.zhihu.com/?target=https%3A//github.com/dhcode-cpp/grpo-loss)
 
 `def grpo_loss(pi_logprob, pi_old_logprob, pi_ref_logprob, advantage, input_len, len_oi):
+
+```text
     epsilon = 0.2
     beta = 0.01
 
@@ -473,8 +497,12 @@ $$\mathcal{L}_{\text{GRPO}}(\theta) = - \frac{1}{G} \sum_{i=1}^G \frac{1}{|o_i|}
     # 设定mask, 仅对response 为 1， 算loss
     mask = torch.zeros(bs, seq_len)
     mask[:, input_len:] = 1
+```
+
 
     # GRPO loss
+
+```text
     ratio = torch.exp(pi_logprob - pi_old_logprob)
     ratio_clip = torch.clamp(ratio, 1 - epsilon, 1 + epsilon)
     advantage = advantage.unsqueeze(dim = 1) # [a, b ,c] -> [[a], [b], [c]]
@@ -486,6 +514,8 @@ $$\mathcal{L}_{\text{GRPO}}(\theta) = - \frac{1}{G} \sum_{i=1}^G \frac{1}{|o_i|}
     loss = loss.sum()
 
     return loss`
+```
+
 
 调用输出
 
@@ -632,9 +662,12 @@ John Schulman：Approximating KL Divergence
 
 OpenAI's Reinforcement Fine-Tuning Research Program
 
+```bash
 git: huggingface/open-r1
 
 git: openai/simple-evals
+```
+
 
 *《手撕RLHF》*** 解析如何系统的来做LLM对齐工程
 

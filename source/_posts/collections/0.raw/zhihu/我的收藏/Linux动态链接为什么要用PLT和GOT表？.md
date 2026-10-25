@@ -115,6 +115,8 @@ PS：压入栈的got.plt[1]中的值和0会用于辅助got.plt[2]中保存的函
 除了对.rela.plt节进行简单的重定位外，动态链接器在加载动态库时还需要向got.plt[1]（对应着0x5d980）填入辅助延迟绑定的结构体的地址，向got.plt[2]（对应着0x5d988）处填入延迟绑定的处理函数dl_runtime_resolve的地址。需要注意的是这里的填充与CPU指令集架构有关，不同指令集的填充位置不一样。
 
 `pub(crate) fn prepare_lazy_bind(got: *mut usize, dylib: usize) {
+
+```text
     extern "C" {
         fn dl_runtime_resolve();
     }
@@ -123,6 +125,8 @@ PS：压入栈的got.plt[1]中的值和0会用于辅助got.plt[2]中保存的函
         got.add(2).write(dl_runtime_resolve as usize);
     }
 }
+```
+
 `
 
 以上就是动态链接器为了实现延迟绑定在动态库加载时所做的工作，虽然也需要一点简单的重定位，不过相较于不使用延迟绑定时到依赖的动态库中找所需的符号就快了很多。
@@ -138,6 +142,8 @@ PS：压入栈的got.plt[1]中的值和0会用于辅助got.plt[2]中保存的函
 	.type dl_runtime_resolve, @function
 	.align 16
 dl_runtime_resolve:
+
+```text
 // 保存参数寄存器,这里多使用了8字节栈是为了栈的16字节对齐
     sub rsp,8*7
     mov [rsp+8*0],rdi
@@ -162,8 +168,14 @@ dl_runtime_resolve:
     add rsp,7*8+2*8
 // 执行真正的函数
     jmp rax
+```
+
 "
+
+```text
 );
+```
+
 `
 
 其实dl_runtime_resolve函数所做的事情很简单（下面描述是还是以__cxa_finalize函数为例）：
@@ -182,6 +194,8 @@ dl_runtime_resolve:
 下面是dl_fixup的代码，它的所做的事情是在当前动态库的依赖库里寻找__cxa_finalize函数，找到__cxa_finalize函数时将其真实的地址填到0x5d990处，并将__cxa_finalize函数的地址作为函数的返回值返回。
 
 `unsafe extern "C" fn dl_fixup(dylib: &Dylib, rela_idx: usize) -> usize {
+
+```text
     let rela = &*dylib.pltrel.add(rela_idx);
     let r_type = rela.r_type();
     let r_sym = rela.r_symbol();
@@ -209,6 +223,8 @@ dl_runtime_resolve:
     ptr.write(symbol);
     symbol
 }
+```
+
 `
 
 PS：__cxa_finalize重定位信息里保存的就是0x5d990，因此`let ptr =(dylib.segments.base()+ rela.r_offset())as*mut usize`会使ptr指向0x5d990在运行时的真实地址。 

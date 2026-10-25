@@ -170,6 +170,8 @@ $$s_i=\frac{1}{r_i^{(2)}}\sqrt{r_i^{(1)}r_i^{(2)}} \tag{9} $$
  weight2 = weight2.permute(1, 0, 2, 3)
  out_channel = weight1.shape[0]
  for i in range(out_channel):
+
+```text
     r1 = compute_range(weight1, i)  # 计算kernel数值范围
     r2 = compute_range(weight2, i)
     s =  r1 / sqrt(r1 * r2)
@@ -177,6 +179,8 @@ $$s_i=\frac{1}{r_i^{(2)}}\sqrt{r_i^{(1)}r_i^{(2)}} \tag{9} $$
     weight2[i] = weight2[i] * s
     bias1[i] = bias1[i] * (1. / s)
   # 调整回之前的数据排布
+```
+
  weight2 = weight2.permute(1, 0, 2, 3)
  return weight1, weight2`
 

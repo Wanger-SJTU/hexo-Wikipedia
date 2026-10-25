@@ -107,14 +107,19 @@ plt.show()
 不同参数下的$1 /(1 + a \cdot y ^{(2b)})$曲线
 我们可以看到曲线系列对参数b非常敏感，在b较大时，曲线在纵轴Y较小时变化缓慢。这意味着在UMAP超参数min_dist以下，所有数据点均紧密连接。由于Q(Y)函数的行为几乎类似于Heaviside步进函数，这意味着UMAP为低维空间中彼此靠近的所有点分配几乎相同的低维坐标。 min_dist正是导致经常在UMAP降维图中观察到的超紧密堆积簇的原因。
 为了演示如何精确找到a和b参数，让我们显示一个简单的分段函数（其中，通过min_dist参数定义平稳部分），并使用函数族1 /(1 + a \cdot y ^{(2b)})，方法是使用Scipy Python库中的optimize.curve_fit。作为拟合的结果，我们获得了函数1 /(1 + a \cdot y ^{(2b)})的优化a和b参数。
+
+```python
   from scipy import optimize
   import matplotlib.pyplot as plt
   import numpy as np
+```
+
 
   MIN_DIST = 1
 
   x = np.linspace(0, 10, 300)
 
+```python
   def f(x, min_dist):
       y = []
       for i in range(len(x)):
@@ -123,6 +128,8 @@ plt.show()
           else:
               y.append(np.exp(- x[i] + min_dist))
       return y
+```
+
 
   dist_low_dim = lambda x, a, b: 1 / (1 + a*x**(2*b))
  
@@ -166,8 +173,12 @@ x = np.linspace(0, 10, 1000)
 sigma_list = [0.1, 1, 5, 10]
 
 for sigma in sigma_list:
+
+```text
     my_prob = lambda x: np.exp(-x**2 / (2*sigma**2))
     plt.plot(x, my_prob(x))
+```
+
 plt.gca().legend(('$\sigma$ = 0.1','$\sigma$ = 1', '$\sigma$ = 5', '$\sigma$ = 10'), 
                  fontsize = 20)
 plt.title("High-Dimensional Probability of Pairwise Euclidean Distances", fontsize = 20)
@@ -198,11 +209,14 @@ K L(X, Y) \approx-P(X) \log Q(Y)=e^{-X^{2}} \log \left(1+Y^{2}\right) \;\;\;\;(1
 
 这个函数看起来很奇怪，我们把这个函数画出来：
 
+```python
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib import cm
 from mpl_toolkits.mplot3d import Axes3D
 from matplotlib.ticker import LinearLocator, FormatStrFormatter
+```
+
 
 fig = plt.figure(figsize=(20, 15))
 ax = fig.gca(projection = '3d')
@@ -248,11 +262,14 @@ X \rightarrow \infty: C E(X, Y) \approx \log \left(\frac{1+Y^{2}}{Y^{2}}\right) 
 
 在这里，如果Y小，由于对数分母中的Y，我们将得到高罚分，因此鼓励Y大，以使对数下的比率变为1，并且得到零罚分。因此，我们在X\to\infty处得到Y\to\infty，因此当从高维空间移动到低维空间时，全局距离得以保留，这正是我们想要的。为了说明这一点，让我们绘制UMAP CE成本函数：
 
+```python
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib import cm
 from mpl_toolkits.mplot3d import Axes3D
 from matplotlib.ticker import LinearLocator, FormatStrFormatter
+```
+
 
 fig = plt.figure(figsize=(20, 15))
 ax = fig.gca(projection = '3d') 

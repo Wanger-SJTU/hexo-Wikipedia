@@ -97,6 +97,8 @@ regM[wSubRowIdx * TM + i] =As[(dotIdx * BM) + warpRow * WM + wSubRowIdx * WSUBM 
 我们可以用C++的lambda表达式做一个自己的语法糖，来让坐标到下标的转换更可读，如下所示：
 
 __device__ inline uint32_t idx(uint32_t x, uint32_t y, uint32_t row_num, uint32_t col_num) {
+
+```text
         return x * col_num + y;
 }
 
@@ -110,6 +112,8 @@ const auto bIdx = uint32_t x, uint32_t y {
 
 // 使用示例：访问A的(2,3)
 float x = A[aIdx(2, 3)];
+```
+
 
 这里是不用担心性能问题的，这里的lambda表达式很轻，编译器会自动把这些表达式内联，不会编译成函数调用。
 
@@ -131,29 +135,41 @@ OK，继续回到我们的主线任务。先简单回顾一下V3里面我们是�
 
 那么接下来就很简单了，根据threadIdx计算当前线程需要把数据加载到As和Bs的哪个位置，然后再以outTopLeft的坐标为偏移量完成加载即可，代码如下所示：
 
+```text
 // 加载As和Bs
 
 // 这里As的大小为 ROW_BLOCK_SIZE * K_STEP，线程数量为 (ROW_BLOCK_SIZE / ROW_TILE_SIZE) * COL_BLOCK_SIZE
 // 两者应该恰好相等，否则无法把As装载完成
 // 如果相等，就能通过编排的方式完成装载
+```
+
 assert((ROW_BLOCK_SIZE * K_STEP) == ((ROW_BLOCK_SIZE / TILE_ROW_SIZE) * COL_BLOCK_SIZE)); //会常量展开的，不影响性能
+
+```text
 // 这里计算每个线程负责装载到As的哪个位置
 const uint32_t asLoadX = threadIdx.x / K_STEP;
 const uint32_t asLoadY = threadIdx.x % K_STEP;
 // 该线程负责搬运 A[outTopLeftX + asLoadX][k + asLoadY] -  As[asLoadX][asLoadY]
+```
+
 As[asIdx(asLoadX, asLoadY)] = a[aIdx(outTopLeftX + asLoadX, k + asLoadY)];
 
 // Bs同理
 assert((K_STEP * COL_BLOCK_SIZE) == ((ROW_BLOCK_SIZE / TILE_ROW_SIZE) * COL_BLOCK_SIZE));
+
+```text
 const uint32_t bsLoadX = threadIdx.x / COL_BLOCK_SIZE;
 const uint32_t bsLoadY = threadIdx.x % COL_BLOCK_SIZE;
 // 这里搬运 B[k + bsLoadX][outTopLeftY + bsLoadY] -  Bs[bsLoadX][bsLoadY]
+```
+
 Bs[bsIdx(bsLoadX, bsLoadY)] = b[bIdx(k + bsLoadX, outTopLeftY + bsLoadY)];
 
 对于第二步，一个最直接的方法就是循环TILE_ROW_SIZE次，每次计算一个元素，这种实现当然是可行的。
 
 但是我们注意到，我们的计算实际只需要用到Bs中同一行的元素，如果每次计算都重新读取这一行，那就会造成“非必要”的内存访问，所以取而代之的，我们有下面这种只需要加载一次Bs的实现方法：
 
+```cpp
 // 循环计算 tmp[tile] += As[threadX * TILE_ROW_SIZE + tile][:] * Bs[:][threadY] ，其中 tile: 0 -  ROW_TILE_SIZE
 // 计算完成的 tmp[tile] 就是 OUT[x * TILE_ROW_SIZE + tile][threadY]
 // 这一步可以缓存 Bs[:][threadY] 以复用
@@ -163,15 +179,20 @@ for (uint32_t i = 0; i   K_STEP; i++) {
         tmp[tile] += As[asIdx(threadX * TILE_ROW_SIZE + tile, i)] * tmpB;
     }
 }
+```
+
 
 至此，Kernel的主体就已经完成了，最后只剩下了把中间结果写入到C里面。
 
 由于之前已经计算出了每个线程负责的C的坐标，所以只需要按部就班地进行一个写回即可，代码如下所示：
 
+```cpp
 // 写回结果
 for (uint32_t tile = 0; tile   TILE_ROW_SIZE; tile++) {
     out[outIdx(outTopLeftX + threadX * TILE_ROW_SIZE + tile, outTopLeftY + threadY)] = tmp[tile];
 }
+```
+
 
 （一个题外话：这里稍微改动一下就可以变成标准的GEMM了）
 
@@ -204,6 +225,7 @@ V5: 2D Block Tiling
 
 在计算结果的那一步中，参考文章作者提出了一种类似的技巧来复用As和Bs中的行与列，如下所示：
 
+```cpp
 // 这里经过优化，把SMEM访问次数从 TILE_ROW_SIZE * TILE_COL_SIZE * K_STEP
 // 变为了 K_STEP * (TILE_ROW_SIZE + TILE_COL_SIZE)
 // 能这么做的本质原因在于，计算OUT中的元素时，是存在复用的，比如(0, 0)和(0, 1)会共用As的第0行
@@ -224,12 +246,15 @@ for (uint32_t i = 0; i   K_STEP; i++) {
         }
     }
 }
+```
+
 
 实验结果
 按照参考文章作者的思路实现后，结果如下，发现并没有带来多少优化。
 
 但是很诡异的是，我尝试了另外一种实现，把基于regs的优化替换成了更直观的方式，如下所示：
 
+```cpp
 // 计算OUT
 for (uint32_t tile_row = 0; tile_row   TILE_ROW_SIZE; tile_row++) {
     for (uint32_t tile_col = 0; tile_col   TILE_COL_SIZE; tile_col++) {
@@ -238,6 +263,8 @@ for (uint32_t tile_row = 0; tile_row   TILE_ROW_SIZE; tile_row++) {
         }
     }
 }
+```
+
 
 诡异的是，此时性能直接翻倍了，如下所示：
 
@@ -258,14 +285,22 @@ V6: Vectorize
 下面这段代码展示了float4的基本用法：可以访问其每个分量，也可以直接一整个地进行赋值操作
 
 float4 tmp =
+
+```text
     reinterpret_cast float4 * ( A[innerRowA * K + innerColA * 4])[0];
+```
+
 As[(innerColA * 4 + 0) * BM + innerRowA] = tmp.x;
 As[(innerColA * 4 + 1) * BM + innerRowA] = tmp.y;
 As[(innerColA * 4 + 2) * BM + innerRowA] = tmp.z;
 As[(innerColA * 4 + 3) * BM + innerRowA] = tmp.w;
 
 reinterpret_cast float4 * ( Bs[innerRowB * BN + innerColB * 4])[0] =
+
+```text
     reinterpret_cast float4 * ( B[innerRowB * N + innerColB * 4])[0];
+```
+
 
 需要注意的是，使用reinterpret_cast把地址转成float4时，需要保证地址是16字节对齐的。
 

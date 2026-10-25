@@ -48,42 +48,45 @@ Transport 是 NVSHMEM 的核心抽象，每个 transport 实现特定的硬件�
 
 Transport硬件特点P2PNVLink/PCIeGPU直接内存访问IBRCInfiniBandCPU发起RDMA，可靠连接IBGDAInfiniBand DevXGPU发起RDMAUCX多种网络统一通信框架每个 transport 必须实现 `nvshmem_transport_host_ops` 接口：
 
+```cpp
 struct nvshmem_transport_host_ops {
     // 检查是否可以到达对端 PE
     int (*can_reach_peer)(int *access, nvshmem_transport_pe_info_t *peer_info,
                           struct nvshmem_transport *transport);
-    
+
     // 建立端点连接
     int (*connect_endpoints)(struct nvshmem_transport *tcurr, int *selected_dev_ids,
                              int num_selected_devs, int *out_qp_indices, int num_qps);
-    
+
     // 获取内存句柄 (用于远程访问)
     int (*get_mem_handle)(nvshmem_mem_handle_t *mem_handle, void *buf, size_t size,
                           struct nvshmem_transport *transport, bool local_only);
-    
+
     // 释放内存句柄
     int (*release_mem_handle)(nvshmem_mem_handle_t *mem_handle,
                               struct nvshmem_transport *transport);
-    
+
     // 清理 transport
     int (*finalize)(struct nvshmem_transport *transport);
-    
+
     // 进度推进
     int (*progress)(struct nvshmem_transport *transport);
-    
+
     // RMA 操作 (put/get)
     rma_handle rma;
-    
+
     // 原子操作
     amo_handle amo;
-    
+
     // 同步操作
     fence_handle fence;
     quiet_handle quiet;
-    
+
     // 带信号的 put
     put_signal_handle put_signal;
 };
+```
+
 
 Transport的抽象结构如下：
 
@@ -122,9 +125,13 @@ transport.cpp:nvshmemi_transport_init() (transport.cpp:50)
 根据 NVSHMEM_REMOTE_TRANSPORT 环境变量选择传输层
     ↓
 如果是 &#34;ibrc&#34;:
+
+```text
     dlopen(&#34;nvshmem_transport_ibrc.so.X&#34;)   // 加载共享库
     dlsym(&#34;nvshmemt_init&#34;)                   // 获取函数指针
     init_fn(&transports[index], ...)         // 调用 nvshmemt_init
+```
+
 NVSHMEM并不是通过常规的头文件include方式去调用符号，而是直接打开IBRC的动态库去找symbol然后调用。对于NVSHMEM的init的详细解读先不放在这个笔记里，我们专注于IBRC的init逻辑。
 
 IBRC init逻辑
@@ -167,6 +174,7 @@ IBRC init逻辑
                             └─────────────┘
 其中的注册回调函数逻辑，就是把IBRC的transport功能注册到host_ops，供应用层调用
 
+```text
     transport->host_ops.can_reach_peer = nvshmemt_ibrc_can_reach_peer;
     transport->host_ops.connect_endpoints = nvshmemt_ib_common_connect_endpoints;
     transport->host_ops.get_mem_handle = nvshmemt_ibrc_get_mem_handle;
@@ -179,6 +187,8 @@ IBRC init逻辑
     transport->host_ops.show_info = nvshmemt_ibrc_show_info;
     transport->host_ops.progress = nvshmemt_ibrc_progress;
     transport->host_ops.put_signal = nvshmemt_put_signal;
+```
+
 
 下面逐个理解每个函数的作用
 
@@ -189,6 +199,7 @@ nvshmemt_ibrc_can_reach_peer
 
 ![](https://picx.zhimg.com/v2-996e14810f20f896ce4de731d387ab37_r.jpg)这个函数被注册到host_ops的can_reach_peer接口，该接口主要用在topo.cpp里nvshmemi_build_transport_map()使用：
 
+```cpp
 for (int i = 0; i < state->npes; i++) {
         int reach_any = 0;
 
@@ -202,7 +213,7 @@ for (int i = 0; i < state->npes; i++) {
             // 调用每个传输层的 can_reach_peer
             status = state->transports[j]->host_ops.can_reach_peer(&reach, &state->pe_info[i],
                                                                    state->transports[j]);
-            
+
             // 记录该传输层对该 PE 的访问能力
             state->transports[j]->cap[i] = reach;
             reach_any |= reach;
@@ -220,6 +231,8 @@ for (int i = 0; i < state->npes; i++) {
             goto out;
         }
     }
+```
+
 
 nvshmemt_ib_common_connect_endpoints
 这是 IB 传输层的核心连接建立函数，负责在所有 PE 之间创建 RC (Reliable Connection) QP 连接。
@@ -348,8 +361,12 @@ nvshmem_init()
 nvshmemi_setup_symmetric_heap()
     ↓
 对每块对称堆内存调用:
+
+```text
     transport->host_ops.get_mem_handle()
     ↓
+```
+
 nvshmemt_ibrc_get_mem_handle()
     ↓
 返回的 rkey 通过 bootstrap 广播给所有 PE
@@ -433,6 +450,7 @@ nvshmemt_ibrc_amo
 │                    AMO 实现路径选择                                          │
 └─────────────────────────────────────────────────────────────────────────────┘
 
+```text
                         nvshmemt_ibrc_amo()
                               │
                               ▼
@@ -448,6 +466,8 @@ nvshmemt_ibrc_amo
             ▼               ▼               ▼
     64-bit ADD/SIGNAL   所有类型 AMO    ADD/SIGNAL/SET
     IBV_WR_ATOMIC_*     IBV_WR_SEND    IBV_WR_* 
+```
+
 对于IB Native，只支持64bit的累加和set操作，对于有GDRCopy的时候，可以使用软件模拟任意原子操作，工作流程如下：
 
 ┌─────────────────────────────────────────────────────────────────────────────┐
@@ -569,12 +589,16 @@ ib_state->ep[] 数组:
                       ┌─────┐
   操作 1 ────────────►│ QP1 │──┐
                       └─────┘  │
+
+```text
                       ┌─────┐  ├──► NIC ────► 网络 (更高带宽)
   操作 2 ────────────►│ QP2 │──┤
                       └─────┘  │
                       ┌─────┐  │
   操作 3 ────────────►│ QP3 │──┘
                       └─────┘
+```
+
   
   优势: 并行处理，充分利用 NIC 带宽
 有多QP的时候，发送会轮询QP实现均衡。注意到指定一个QP的时候，实际上有两个QP在工作，一个是host QP，一个是default QP。其中host QP主要是给CPU用的，default QP用来GPU调用proxy thread来使用。
@@ -644,6 +668,8 @@ nvshmemt_put_signal
   └──────────────┘                            └──────────────┘
          │                                           ▲
          │ Step 1: PUT data                          │
+
+```text
          │ (可能多次)                                 │
          └───────────────────────────────────────────┘
                             │
@@ -658,6 +684,8 @@ nvshmemt_put_signal
   │              │ ────────────────────────►  │  (flag=1)    │
   │              │     (AMO SET/ADD)          │              │
   └──────────────┘                            └──────────────┘
+```
+
 
 GPU侧device function的实现
 因为GPU是通过proxy thread和IBRC的代码交互，需要了解device侧是怎么实现的。
@@ -666,6 +694,7 @@ GPU侧device function的实现
 │                    GPU RMA 操作的两条路径                                     │
 └─────────────────────────────────────────────────────────────────────────────┘
 
+```text
                          GPU Kernel 调用 nvshmem_put()
                                     │
                                     ▼
@@ -682,6 +711,8 @@ GPU侧device function的实现
            │  GPU → GPU      │             │  GPU → CPU →    │
            │  (NVLink/PCIe)  │             │  RDMA → 远程    │
            └─────────────────┘             └─────────────────┘
+```
+
 其中，单机的实现，和proxy thread没有关系，或者说在NVLink域，不会用到IBRC。单机部分的内部实现代码实现在nvshmem/src/include/non_abi/device/common/nvshmemi_common_device.cuh。用户使用的API定义在nvshmem/src/include/device/nvshmem_defines.h
 
 其中内部实现的API(前缀是nvshmemi)如下
@@ -744,29 +775,39 @@ nvshmemi_packLL
 
 /*__device__ nvshmem_putmem_signal_nbi*/
 NVSHMEMI_DEVICE_PREFIX NVSHMEMI_DEVICE_ALWAYS_INLINE void nvshmem_putmem_signal_nbi(
+
+```cpp
     void *dest, const void *source, size_t bytes, uint64_t *sig_addr, uint64_t signal, int sig_op,
     int pe) {
     nvshmemi_put_signal<char, NVSHMEMI_THREADGROUP_THREAD>((char *)dest, (const char *)source,
                                                            bytes, sig_addr, signal, sig_op, pe, 1);
 }
+```
+
 
 走到内部API就是
 
 template <typename T, threadgroup_t SCOPE>
 __device__ NVSHMEMI_DEVICE_ALWAYS_INLINE void nvshmemi_put_signal(
     T *dest, const T *source, size_t nelems, uint64_t *sig_addr, uint64_t signal, int sig_op,
+
+```cpp
     int pe, bool is_nbi, nvshmemx_qp_handle_t qp_index = NVSHMEMX_QP_DEFAULT) {
     nvshmemi_threadgroup_sync<SCOPE>();
     nvshmemii_put_signal<T, SCOPE>(dest, source, nelems, sig_addr, signal, sig_op, pe, is_nbi,
                                    qp_index);
     nvshmemi_threadgroup_sync<SCOPE>();
 }
+```
+
 
 再追踪下去
 
 template <typename T, threadgroup_t SCOPE>
 __device__ NVSHMEMI_DEVICE_ALWAYS_INLINE void nvshmemii_put_signal(
     T *dest, const T *source, size_t nelems, uint64_t *sig_addr, uint64_t signal, int sig_op,
+
+```cpp
     int pe, bool is_nbi, nvshmemx_qp_handle_t qp_index = NVSHMEMX_QP_DEFAULT) {
     int myIdx = nvshmemi_thread_id_in_threadgroup<SCOPE>();
     void *peer_base_addr =
@@ -787,12 +828,15 @@ __device__ NVSHMEMI_DEVICE_ALWAYS_INLINE void nvshmemii_put_signal(
                                             is_nbi, qp_index);
     }
 }
+```
+
 
 这里面就可以看到分机内和跨机的逻辑了。判断是否是机内要看symmetric heap上的peer地址是否存在。那这个地址是怎么搞出来的呢？
 
 IBRC的机内nvshmemi_device_state_d
 这是一个GPU__constant__内存中的全局状态结构，类型是nvshmemi_device_host_state_t
 
+```cpp
 typedef struct {
     int version;
     int mype;
@@ -846,6 +890,8 @@ typedef struct {
     bool ibgda_is_initialized;
     bool nvshmemi_is_nvshmem_initialized;
     bool nvshmemi_is_nvshmem_bootstrapped;
+```
+
 } nvshmemi_device_host_state_v1
 
 在init symmetric heap时候，本地的memory会被export(cudaIpcGetMemHandle)出handle，通过外带通信allgather之后获取所有机内PE的handle，然后再import memory(cudaIpcOpenMemHandle)来打开其他PE的handle
@@ -944,6 +990,8 @@ nvshmemi_proxy_global_exit          # 请求全局退出
 
 template <threadgroup_t SCOPE>
 NVSHMEMI_TRANSFER_STATIC NVSHMEMI_TRANSFER_INLINE __device__ void nvshmemi_transfer_put_signal(
+
+```cpp
     void *rptr, void *lptr, size_t bytes, void *sig_addr, uint64_t signal, nvshmemi_amo_t sig_op,
     int pe, bool is_nbi, nvshmemx_qp_handle_t qp_index) {
 #ifdef NVSHMEM_IBGDA_SUPPORT
@@ -967,10 +1015,14 @@ NVSHMEMI_TRANSFER_STATIC NVSHMEMI_TRANSFER_INLINE __device__ void nvshmemi_trans
         }
     }
 }
+```
+
 
 其中IBGDA部分之后再学习，如果不是IBGDA，就会走到IBRC的nvshmem_proxy_put_signal_nbi，它的代码实现如下
 
 NVSHMEMI_STATIC __device__ NVSHMEMI_DEVICE_ALWAYS_FORCE_INLINE void nvshmemi_proxy_put_signal_nbi(
+
+```cpp
     void *rwrite_ptr, void *lwrite_ptr, size_t write_bytes, int pe, nvshmemi_op_t channel_op,
     void *sig_addr, uint64_t sig_val, nvshmemi_amo_t sig_op,
     nvshmemx_qp_handle_t qp_index = NVSHMEMX_QP_DEFAULT) {
@@ -1065,9 +1117,12 @@ NVSHMEMI_STATIC __device__ NVSHMEMI_DEVICE_ALWAYS_FORCE_INLINE void nvshmemi_pro
     uint64_t sigval_high = sig_val & mask_lowest_byte;
     *((volatile uint64_t *)req) = sigval_high | curr_flag;
 }
+```
+
 
 其中proxy_channels_buf是一块pinned memory，大小默认是4MB，每次向其中放的数据结构是proxy channel：
 
+```text
 typedef struct proxy_channel {
     char *buf;               // ★ 环形缓冲区（GPU 写，CPU 读）
     uint64_t *issue;         // GPU 端写入计数（在 device memory）
@@ -1080,6 +1135,8 @@ typedef struct proxy_channel {
     uint64_t last_cst_issue;
     uint64_t processed;      // CPU 已处理字节数
     uint64_t last_sync;
+```
+
 } proxy_channel_t;
 
 利用这块pinned memory的工作流程如下：
@@ -1088,6 +1145,7 @@ typedef struct proxy_channel {
 │                   Proxy Channel 内存布局和通信机制                           │
 └─────────────────────────────────────────────────────────────────────────────┘
 
+```text
                      Pinned Memory (Zero-Copy)
                   ┌───────────────────────────────┐
                   │                               │
@@ -1102,6 +1160,8 @@ typedef struct proxy_channel {
         │                                                    │
         │                                                    │
         ▼                                                    ▼
+```
+
 ┌─────────────────┐                                ┌─────────────────┐
 │ GPU Kernel      │                                │ Proxy Thread    │
 │                 │  ─────── write ───────►        │                 │

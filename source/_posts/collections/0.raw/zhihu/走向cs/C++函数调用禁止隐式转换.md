@@ -26,6 +26,7 @@ source_url: https://zhuanlan.zhihu.com/p/687000894
 
 `void f(int){}
 
+```cpp
 struct X{
     operator int()const { return 0; }
 };
@@ -48,12 +49,18 @@ int main(){
     f(X{});             // X
     f(Y{});             // Y
 }
+```
+
 `
 
 ** 一切可以隐式转换到 int 以及转换到可以转换为 int 类型的类型，都能够调用函数 `f`<strong>，所以是无数种。测试。但是我们只想让</strong>`f(1)` 成立**，这很简单，加一段代码：
 
 `templatetypename T>
+
+```cpp
 void f(T) = delete;
+```
+
 `
 
 原理也很简单，我们定义了一个重载函数模板 `f`，并且把它定义为<strong>弃置</strong>的。如果我们使用 `f(1)`，那么重载决议会选择到我们的非模板的函数 `f`。如果不是 `f(1)`，即不是传入的 int 类型，那么重载决议就会选择到模板函数 `f`。然而<strong>如果弃置函数真的被选择，那会产生一个编译错误</strong>。

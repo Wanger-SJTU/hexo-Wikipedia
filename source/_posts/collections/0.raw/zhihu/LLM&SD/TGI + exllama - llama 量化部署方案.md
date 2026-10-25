@@ -24,6 +24,8 @@ source_url: https://zhuanlan.zhihu.com/p/646716367
 就在几天前 TGI 优化了 exllama，基于之前量化 LLaMa 的测试：[Kevin吴嘉文：LLaMa 量化部署](https://zhuanlan.zhihu.com/p/641641929)，exllama 能在控制精度损失的情况下，将模型的推理速度提升，同时减小显存占用要求。以下参考 TGI 的官方手册对采用 AUTOGPTQ 量化后的 LLaMa v2 gptq 权重进行部署:
 
 `docker run --rm --name tgi \
+
+```text
     --runtime=nvidia \
     --gpus all \
     -p 5001:5001 \
@@ -39,6 +41,8 @@ source_url: https://zhuanlan.zhihu.com/p/646716367
     --sharded false \
     --max-input-length 1024 \
     --validation-workers 4`
+```
+
 
 其中，`llama2-7b-chat-gptq-int4` 量化采用 AUTOGPTQ 提供的示例量化代码进行量化，量化数据集选择 wikitext：
 
@@ -54,9 +58,13 @@ python basic_usage_wikitext2.py`
 from safetensors.torch import save_file
 ​
 tensors = {
+
+```text
     "gptq_bits": torch.tensor(4),
     "gptq_groupsize": torch.tensor(128)
 }
+```
+
 save_file(tensors, "/home/kevin/models/llama2-7b-chat-gptq-int4/gptq_config.safetensors")`
 
 目前 TGI 中对量化权重的处理方法不是很兼容 AUTOGPTQ 等 GPTQ 采用的数据储存方式，但有几个 PR 中已经在对此优化。
@@ -69,9 +77,13 @@ save_file(tensors, "/home/kevin/models/llama2-7b-chat-gptq-int4/gptq_config.safe
 POST http://127.0.0.1:5001/generate
 Content-Type: application/json
 ​
+
+```text
 {
     "inputs": "Once a upon time,",
     "parameters":{"max_new_tokens":100,"tempareture":0.6}
+```
+
 }`
 
 发送请求后，等待 853ms 得到预测结果，回复速度平均 117.23 tokens/s。比 TGI + AUTOGPTQ （约80 tokens/s）快。但还是不如 exllama 官方的推理速度（140+ tokens/s）。

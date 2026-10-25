@@ -46,11 +46,15 @@ Flash Attention 在训练阶段和推理的预填充（Prefill）阶段表现出
 下面是两层循环的伪代码，GPU 可以在外层循环的分块上并行执行：
 
 `for bq in range(0, n, Bm):       # 外层循环：遍历 Q 的分块，可并行
+
+```text
     bQ = Q[bq:bq+Bm, :]
     for bk in range(0, n, Bn):   # 内层循环：遍历 K/V 的分块，串行
         bK = K[bk:bk+Bn, :]
         bV = V[bk:bk+Bn, :]
         ...`
+```
+
 
 #### 解码阶段（Decode）
 
@@ -199,6 +203,8 @@ LSE 实际上只包含了 softmax 的分母中指数和部分的信息。虽然�
 `import torch
 
 # 计算单个 K/V 分块的 attention，输出当前分块的结果和 LSE
+
+```python
 def flash_decoding_single_block(q: torch.Tensor, k: torch.Tensor, v: torch.Tensor):
     s = q @ k.T / (q.size(-1) ** 0.5)
     row_max = s.max(dim=-1, keepdim=True).values
@@ -207,29 +213,39 @@ def flash_decoding_single_block(q: torch.Tensor, k: torch.Tensor, v: torch.Tenso
     out = (exp_s / expsum) @ v
     lse = row_max + expsum.log()
     return out, lse
+```
+
 
 # 对多个分块进行合并
+
+```cpp
 def flash_decoding_reduce(splits):
     global_lse = torch.zeros_like(splits[0][1])
     for _, lse in splits:
         global_lse += lse.exp()
     global_lse = torch.log(global_lse)
-    
+
     global_out = torch.zeros_like(splits[0][0])
     for (out, lse) in splits:
         global_out += out * torch.exp(lse - global_lse)
-    
+
     return global_out
+```
+
 
 # 执行 flash attention
+
+```python
 def flash_decoding(q: torch.Tensor, k: torch.Tensor, v: torch.Tensor):
     splits = []
     for i in range(0, 1024, 256):
         out, lse = flash_decoding_single_block(q, k[i:i+256], v[i:i+256])
         splits.append((out, lse))
-    
+
     out = flash_decoding_reduce(splits)
     return out
+```
+
 
 q = torch.randn(1, 128)
 k = torch.randn(1024, 128)
@@ -239,12 +255,16 @@ out = flash_decoding(q, k, v)
 print(out)
 
 # 简单的 attention 实现，用于结果对比
+
+```python
 def attention(q: torch.Tensor, k: torch.Tensor, v: torch.Tensor):
     s = q @ k.T / (q.size(-1) ** 0.5)
     row_max = s.max(dim=-1, keepdim=True).values
     exp_s = (s - row_max).exp()
     expsum = exp_s.sum(dim=-1, keepdim=True)
     return (exp_s / expsum) @ v
+```
+
 
 out = attention(q, k, v)
 print(out)`

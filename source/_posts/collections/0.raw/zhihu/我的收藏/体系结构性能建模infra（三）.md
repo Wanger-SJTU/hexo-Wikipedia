@@ -34,12 +34,16 @@ source_url: https://zhuanlan.zhihu.com/p/1891135474493547187
 首先是上面提到的PortMap抽象，为每个port维护了一写多读的设计，此外用string标识port name，这里就有一个开销的问题了，多读口那么就要用队列，每次创建一个port就要申请一个队列？最大的开销来自动态申请空间，于是作者额外增加了一个预先分配大块空间的内存区域用于创建port queue。
 
 `struct Cluster
+
+```cpp
     {
         class BasicWritePort* writer = nullptr;
         std::vectorBasicReadPort*> readers = {};
     };
 
     std::unordered_map map = { };`
+```
+
 
 接着看port的抽象设计，使用lasy_cycle和cycle进行打拍，使用Update_last_cycle来进行port的更新，这里体现为last_cycle = cycle，所以实际的更新操作呢？此外还有额外的开销，是read_port的latency，write_port的fanout以及bandwidth，这些都需要在初始化的时候进行设定。
 
@@ -57,14 +61,20 @@ WritePort继承自BasicWritePort，维护了一个ReadPort指针类型的数组�
 对应的port测试
 
 `pop.wp->write( 10, 0_cl);
+
+```text
     pop.wp->write( 11, 1_cl);
     CHECK( pop.rp->is_ready( 1_cl));
     CHECK( pop.rp->is_ready( 2_cl));
     CHECK( pop.rp->read( 2_cl) == 11);`
+```
+
 
 对应的module测试
 
 `class A : public Module
+
+```cpp
 {
 public:
     explicit A( Module* root) : Module( root, "A")
@@ -107,6 +117,8 @@ private:
     ReadPort* from_B;
     ReadPort* init;
     WritePort* stop;
+```
+
 };`
 
 代码链接：[https://github.com/MIPT-ILab/mipt-mips/tree/main/simulator/infra/ports](https://link.zhihu.com/?target=https%3A//github.com/MIPT-ILab/mipt-mips/tree/main/simulator/infra/ports)

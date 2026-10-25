@@ -59,9 +59,12 @@ source_url: https://zhuanlan.zhihu.com/p/685761148
 
         采用四个切分变量：blockLength：每个核上总计算数据大小；tileNum：每个核上总计算数据分块个数；tileLength：每个分块大小；lasttileLength：最后一个分块大小。
 
+```text
         当lasttileLength=tileLength时，就是第1种核间均分，核内均分的情况。
 
         所以把上述两种情形，定义为TilingKey= 1。在host侧通过“context->SetTilingKey(1)”进行设置。在kernel侧的核函数中通过“TILING_KEY_IS(1)”进行解析，并通过临时变量“tilingKey”=1，传递给算子内的函数使用。
+```
+
 
 3、核间不均分，每个核内都均分的情形，需要区分分配到较多数据量的核和分配到较少数据量的核。
 

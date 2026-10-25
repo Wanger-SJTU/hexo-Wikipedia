@@ -58,8 +58,10 @@ Intel intrinsics中与load相关的指令集函数之所以有这么多种，首
 此外，我们仍然可以用openmp，在循环的最外层进行并行计算加速，详细代码如下：
 
 `// 导入SSE指令集的头文件
+
+```cpp
 #include 
- 
+
 void blur_mat_sse(const vector> &input,
                   vector> &output) {
   int height = input.size();
@@ -82,6 +84,8 @@ void blur_mat_sse(const vector> &input,
       output[y][x] /= 12;
     }
   }
+```
+
 }`
 
 看一下动图：

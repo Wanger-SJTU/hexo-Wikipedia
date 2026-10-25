@@ -43,15 +43,20 @@ RTX 5090 (SM120) 没有 TMEM 不支持 tcgen05。
   LD_LIBRARY_PATH=&#34;<conda_lib>:<tvm_ffi_lib>:<tvm_lib>&#34; python tirx_kernels/gemm.py
 &#34;&#34;&#34;
 
+```python
 import math
 import time
 import torch
 from torch.utils.cpp_extension import load_inline
+```
+
 
 # ============================================================
 # CUDA kernel: SM120 Tensor Core GEMM (HMMA via mma.sync)
 # ============================================================
 CUDA_SOURCE = r&#34;&#34;&#34;
+
+```cpp
 #include <torch/extension.h>
 #include <cuda_fp16.h>
 #include <cuda_bf16.h>
@@ -79,13 +84,21 @@ using namespace nvcuda;
 #define WARPS_N 4
 #define TILES_PER_WARP_N 2  // each warp handles 2 tiles in N-dim
 #define THREADS_PER_WARP 32
+```
+
 
 __global__ void hgemm_sm120_kernel(
+
+```cpp
     const half* __restrict__ A,
     const half* __restrict__ B,
     half* __restrict__ C,
     int M, int N, int K
+```
+
 ) {
+
+```cpp
     // Shared memory: As[M][K] row-major; BsT[K][N] row-major (transposed B)
     __shared__ half As[BLK_M][BLK_K];
     __shared__ half BsT[BLK_K][BLK_N];
@@ -163,8 +176,12 @@ __global__ void hgemm_sm120_kernel(
         }
     }
 }
+```
+
 
 torch::Tensor hgemm_sm120(torch::Tensor A, torch::Tensor B) {
+
+```cpp
     TORCH_CHECK(A.dtype() == torch::kFloat16, &#34;A must be float16&#34;);
     TORCH_CHECK(B.dtype() == torch::kFloat16, &#34;B must be float16&#34;);
     TORCH_CHECK(A.size(1) == B.size(1), &#34;K dimension must match&#34;);
@@ -188,6 +205,8 @@ torch::Tensor hgemm_sm120(torch::Tensor A, torch::Tensor B) {
     cudaDeviceSynchronize();
     return C;
 }
+```
+
 &#34;&#34;&#34;
 
 CPP_SOURCE = &#34;&#34;&#34;
@@ -199,6 +218,7 @@ torch::Tensor hgemm_sm120(torch::Tensor A, torch::Tensor B);
 # 编译 & 测试
 # ============================================================
 
+```python
 def main():
     print(&#34;=&#34; * 60)
     print(&#34;SM120 (RTX 5090) Tensor Core GEMM — mma.sync (HMMA)&#34;)
@@ -219,8 +239,12 @@ def main():
 
     device = torch.device(&#34;cuda&#34;)
     torch.cuda.empty_cache()
+```
+
 
     # --- 正确性测试 ---
+
+```python
     M, N, K = 256, 256, 256
     torch.manual_seed(42)
     A = torch.randn(M, K, dtype=torch.float16, device=device)
@@ -235,8 +259,12 @@ def main():
     is_close = max_err < 0.02 or torch.allclose(C, C_ref, rtol=0.02, atol=0.01)
     print(f&#34;     {&#39;✅ PASS&#39; if is_close else &#39;❌ FAIL&#39;}&#34;)
     print()
+```
+
 
     # --- 性能测试 ---
+
+```python
     M, N, K = 2048, 2048, 2048
     torch.manual_seed(42)
     A_bench = torch.randn(M, K, dtype=torch.float16, device=device)
@@ -276,6 +304,8 @@ def main():
     print(&#34;  💡 这个 kernel 用 wmma::mma_sync 在 SM120 的 HMMA 路径上跑。&#34;)
     print(&#34;     SM120 不支持 tcgen05/TMEM，但支持 mma.sync (HMMA/QMMA/OMMA)。&#34;)
     print(&#34;     相比 03_matmul.py 的 shared-memory tiling，这个版本用了 Tensor Core。&#34;)
+```
+
 
 if __name__ == &#34;__main__&#34;:
     main()
@@ -283,11 +313,17 @@ if __name__ == &#34;__main__&#34;:
 核心 kernel 结构：
 
 __global__ void hgemm_sm120_kernel(
+
+```cpp
     const half* __restrict__ A,
     const half* __restrict__ B,
     half* __restrict__ C,
     int M, int N, int K
+```
+
 ) {
+
+```cpp
     // Shared memory: As[M][K], BsT[K][N] (transposed)
     __shared__ half As[128][64];
     __shared__ half BsT[64][128];
@@ -314,6 +350,8 @@ __global__ void hgemm_sm120_kernel(
     }
     // Store to global memory...
 }
+```
+
 
 3.3 B 矩阵转置存储的关键设计
 B 的原始存储是 `B[N][K]`（row-major）。对于 `wmma::mma_sync`，matrix_b 是 `K×N` 的：
@@ -322,7 +360,10 @@ MMA:  C[i][j] = Σ_k A[i][k] · B[k][j]
 GEMM: C[i][j] = Σ_k A[i][k] · B_orig[j][k]
 要让 `B[k][j] = B_orig[j][k]`，我们把 B 以 `[K][N]` 格式存入 shared memory：
 
+```text
 // B_global is [N][K]; BsT[k][n] = B_global[n][k] (transpose on load)
+```
+
 BsT[k_idx][n_idx] = B[(blk_n + n_idx) * K + (k_block + k_idx)];
 这样 `wmma::load_matrix_sync(b_frag, &BsT[k_inner][b_col], BLK_N)` 以 row_major 加载后：
 

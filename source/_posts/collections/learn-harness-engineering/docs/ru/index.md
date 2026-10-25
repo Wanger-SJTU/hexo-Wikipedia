@@ -36,8 +36,12 @@ Learn Harness Engineering — курс, посвящённый инженери�
   </a>
   <a href="./resources/" class="card">
     <h3>Библиотека материалов</h3>
+
+```text
     <p>Готовые шаблоны (AGENTS.md, feature_list.json) для использования в своих репозиториях.</p>
   </a>
+```
+
 </div>
 
 ## Основной механизм harness

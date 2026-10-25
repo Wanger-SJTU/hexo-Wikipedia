@@ -52,30 +52,40 @@ source_url: https://zhuanlan.zhihu.com/p/642690763
 
 ` version="0.1">
 
+```text
      name="patient_info">
          name="gender" description="Patient's gender" />
          name="age" format="valid-range: 0 100" />
+```
+
         
 - 
+
+```text
             name="symptoms"
             description="Symptoms that the patient is currently experiencing. Each symptom should be classified into a separate item in the list.">
-            
+
                  name="symptom" description="Symptom that a patient is experiencing"/>
-                
+
                     name="affected area"
                     description="What part of the body the symptom is affecting"
                     format="valid-choices: {['head', 'neck', 'chest']}"
                     on-fail-valid-choices="reask"
                 />
+```
+
             
         
+```text
          name="current_meds" description="Medications the patient is currently taking and their response">
-            
+
                  name="medication" description="Name of the medication the patient is taking" />
-                
+
                     name="response"
                     description="How the patient is responding to the medication"
                 />
+```
+
             
         
     
@@ -93,6 +103,8 @@ Given the following doctor's notes about a patient, please extract a dictionary 
 当生成结果有问题时，例如前面的例子中，“affected area”并没有按照指定选项来生成：
 
 `{
+
+```text
     'patient_info': {
         'gender': 'Male',
         'age': 49,
@@ -102,12 +114,15 @@ Given the following doctor's notes about a patient, please extract a dictionary 
         ],
         'current_meds': [{'medication': 'OTC steroid cream', 'response': 'Moderate response'}]
     }
+```
+
 }`
 
 接下来 validator 会将相关的错误找出来，形成下一次 ReAsk 的请求内容。注意到这里错误的信息的位置是和原来的 json 结构保持一致的，并且正确的部分被省略了：
 
 `I was given the following JSON response, which had problems due to incorrect values.
 
+```text
 {
   "patient_info": {
     "symptoms": [
@@ -126,6 +141,8 @@ Given the following doctor's notes about a patient, please extract a dictionary 
     ]
   }
 }
+```
+
 
 Help me correct the incorrect values based on the given error messages.`
 
@@ -137,11 +154,14 @@ Help me correct the incorrect values based on the given error messages.`
 document = open("data/article1.txt", "r").read()
 
     
+```text
         name="summary"
         description="Summarize the given document faithfully."
         format="similar-to-document: {document}, 0.60"
         on-fail-similar-to-document="filter" 
     />
+```
+
 `
 
 原理方面相对来说也比较直观。项目代码还是蛮工程范的，清晰易读，在这里也不多做深入分析了。
@@ -194,9 +214,13 @@ define bot inform capabilities
 
 `define flow check hallucination
     bot ...
+
+```text
     $result = execute check_hallucination
     if $result
         bot inform answer prone to hallucination
+```
+
 
 define bot inform answer prone to hallucination
     "The previous answer is prone to hallucination and may not be accurate. Please double check the answer using additional sources."
@@ -271,9 +295,13 @@ program(description="A quick and nimble fighter.", valid_weapons=valid_weapons)`
 
 `The following is a character profile for an RPG game in JSON format.
 ```json
+
+```text
 {
     "description": "A quick and nimble fighter.",
     "name": "`
+```
+
 
 将 LLM 的生成填入后，再继续执行整个模板的解析处理，以此类推。当然不同的操作指令会有各自的处理方式，例如碰到`{{select}}`命令时，会指定生成一个 token，并返回相应的 logprobs，然后通过 trie 树去匹配候选项，确定各自的概率，最后选择概率最高的那个。这就导致一些私有模型例如 GPT-3.5，GPT-4 等 API 中不支持返回 logprobs 的，就无法支持这类指令。包括像上面的 regex pattern guide 的实现，也需要动态获取与修改 inference 过程中的 logits，开源模型的优势在这里就体现出来了。
 

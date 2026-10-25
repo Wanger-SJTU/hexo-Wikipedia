@@ -44,16 +44,24 @@ source_url: https://zhuanlan.zhihu.com/p/31669135
 我习惯采用第一种函数装饰器的写法：
 
 `def singleton(class_):
+
+```python
     instances = {}
     def getinstance(*args, **kwargs):
         if class_ not in instances:
             instances[class_] = class_(*args, **kwargs)
         return instances[class_]
     return getinstance
+```
+
 
 @singleton
+
+```text
 class MyClass(BaseClass):
     pass`
+```
+
 
 这种写法非常好理解，用一个类变量instances保存该类生成的实例，每次类被调用的时候判断一下这个类是否在instances字典里，如果不在着生成一个实例并放入instances字典。
 
@@ -75,6 +83,7 @@ class MyClass(BaseClass):
 
 `class A:
 
+```python
     def __init__(self,):
         pass
 
@@ -83,11 +92,14 @@ class MyClass(BaseClass):
 
     def fun_b(self):
         b = Singleton()['a']`
+```
+
 
 应该
 
 `class B:
 
+```python
     def __init__(self,):
         self.a = Singleton()['a']
         self.b = Singleton()['b']
@@ -97,6 +109,8 @@ class MyClass(BaseClass):
 
     def fun_b(self):
         b = self.b
+```
+
 `
 
 2、将各个引用点的名称统一。
@@ -105,6 +119,7 @@ class MyClass(BaseClass):
 
 `class A:
 
+```python
     def __init__(self,):
         self.sets = Singleton()
 
@@ -114,38 +129,51 @@ class MyClass(BaseClass):
     def fun_b(self):
         self.SET = Singleton()
         b = self.SET['b']`
+```
+
 
 应该
 
 `class B:
 
+```python
     def __init__(self,):
         self.sets = Singleton()
 
     def fun_a(self):
         SET = self.sets
-    
+
     def fun_b(self):
         b = self.set['b']`
+```
+
 
 3、将子函数中直接引用单例字典的参数放到函数的参数列表中，由调用方获取单例字典内容，由传参的方法传入被调用函数，这样做是为了满足函数式编程中纯函数的原则。
 
 不应该这么用：
 
 `def b():
+
+```python
     return Singleton()['c']+'a'
 
 def a():
     returrn b()`
+```
+
 
 应该这样用
 
 `def b(c):
+
+```python
     return c +'a'
 
 def a()
     c = Singleton()['c']
     return b(c)`
+```
+
 
 4、将单一的单例字典分成多个单例字典，并将部分单例字典转换成模块，这个就不举例了。
 
@@ -172,9 +200,13 @@ def a()
 这段代码还是有个坑，一般出现在单元测试中，来看两段代码：
 
 `from configs import CONFIG_A, CONFIG_B
+
+```python
 print("use config:", CONFIG_A，CONFIG_B)
 import configs
 print("use config:", configs.CONFIG_A,configs.CONFIG_B)`
+```
+
 
 在单元测试中由于deepcopy的问题，根据导入的层级不一样，CONFIG_X的值也发生了不一样的改变，这是个还在研究的bug。
 

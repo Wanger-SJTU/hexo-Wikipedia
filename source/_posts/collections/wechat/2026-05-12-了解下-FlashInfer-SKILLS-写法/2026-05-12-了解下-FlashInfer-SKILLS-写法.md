@@ -205,22 +205,37 @@ median_time, std_time = bench_gpu_time(
 
 `namespace&nbsp;flashinfer {
 
+```text
 template&nbsp;&lt;typename&nbsp;T&gt;
+```
+
 __global__&nbsp;void&nbsp;ScaleKernel(const&nbsp;T* input, T* output, T factor,&nbsp;int&nbsp;n)&nbsp;{
+
+```text
 int&nbsp;idx = blockIdx.x * blockDim.x + threadIdx.x;
+```
+
 if&nbsp;(idx &lt; n) {
 &nbsp; &nbsp; output[idx] = input[idx] * factor;
 &nbsp; }
+
+```text
 }
 
 template&nbsp;&lt;typename&nbsp;T&gt;
+```
+
 cudaError_t&nbsp;ScaleLauncher(const&nbsp;T* input, T* output, T factor,&nbsp;int&nbsp;n,
 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; cudaStream_t stream =&nbsp;nullptr)&nbsp;{
 constint&nbsp;threads =&nbsp;256;
 constint&nbsp;blocks = (n + threads -&nbsp;1) / threads;
 &nbsp; ScaleKernel&lt;T&gt;&lt;&lt;&lt;blocks, threads,&nbsp;0, stream&gt;&gt;&gt;(input, output, factor, n);
+
+```text
 return&nbsp;cudaGetLastError();
 }
+```
+
 
 } &nbsp;// namespace flashinfer
 

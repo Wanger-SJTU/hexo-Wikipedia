@@ -30,6 +30,8 @@ Learn Harness Engineering은 AI 코딩 에이전트(coding agent)의 엔지니�
 
 <div class="card-grid">
   <a href="./lectures/lecture-01-why-capable-agents-still-fail/" class="card">
+
+```text
     <h3>강의(Lectures)</h3>
     <p>강력한 모델이 왜 여전히 실패하는지 이해하고, 효과적인 하네스의 이론을 배웁니다.</p>
   </a>
@@ -41,6 +43,8 @@ Learn Harness Engineering은 AI 코딩 에이전트(coding agent)의 엔지니�
     <h3>리소스 모음(Resource Library)</h3>
     <p>여러분의 저장소에서 바로 쓸 수 있는 복사용 템플릿(AGENTS.md, feature_list.json 등)입니다.</p>
   </a>
+```
+
 </div>
 
 ## 하네스의 핵심 메커니즘

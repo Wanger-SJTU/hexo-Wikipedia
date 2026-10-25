@@ -57,17 +57,23 @@ id: e5723f29-3338-420b-adda-9fa59ae629a5
 
 如果
 
+```text
 * chunk粒度是一个句子/单词，那么更加注重局部、关键信息的查询，相应的会缺失上下文的信息
 * 完整的长篇段落或文章，chunk 被embedding出来的就是整个文章的意思，但是很难精准到个体单词
+```
+
 
 这里有几个场景的区分，首先是微博（少字符）、知乎/小红书（中小量字符数）、博客（超多字符），还有专业性较强、专有名词较多的文章 与 综述类信息总结文章；不同类型的场景会需要不同chunk分块粒度。
 
 此时Chunk会影响到以下的信息（[RAG行业交流中发现的一些问题和改进方法](https://luxiangdong.com/2023/10/27/rag10/#/%E4%BF%A1%E6%81%AF%E4%BF%9D%E5%AD%98)）：
 
-* <strong>上下文信息：</strong>例如，《统计学习的要素》这本书有18章，每一章都专注于一个主题。每章有副标题和第二层副标题等。人们习惯于在语境中理解文章。
-* <strong>位置信息（</strong>文本的权重取决于它们在文档中的位置。文档开头和结尾的文字比中间的文字更重要<strong>）</strong>
-* <strong>连续的信息：</strong>一个故事可能以“in the beginning”开头，然后以“then”、“therefore”、“after that”继续，直到以“finally”、“finally”等结尾。使用分块策略，这种连接不再是完整的。
-* <strong>描述信息:</strong>使用分块，可能无法保证描述性信息集中在一起。想象一下你正在打电话，突然电话线被切断了。这取决于你的电话有多重要，当它发生时，影响范围从微不足道到非常令人沮丧。
+```text
+* **上下文信息：**例如，《统计学习的要素》这本书有18章，每一章都专注于一个主题。每章有副标题和第二层副标题等。人们习惯于在语境中理解文章。
+* **位置信息（**文本的权重取决于它们在文档中的位置。文档开头和结尾的文字比中间的文字更重要**）**
+* **连续的信息：**一个故事可能以“in the beginning”开头，然后以“then”、“therefore”、“after that”继续，直到以“finally”、“finally”等结尾。使用分块策略，这种连接不再是完整的。
+* **描述信息:**使用分块，可能无法保证描述性信息集中在一起。想象一下你正在打电话，突然电话线被切断了。这取决于你的电话有多重要，当它发生时，影响范围从微不足道到非常令人沮丧。
+```
+
 
 由此RAG任务不擅长回答的几类问题：
 
@@ -138,6 +144,7 @@ id: e5723f29-3338-420b-adda-9fa59ae629a5
 
 Langchain提供了很多文本切割的工具，其中langchain默认使用RecursiveCharacterTextSplitter：
 
+```text
 * RecursiveCharacterTextSplitter():按字符串分割文本，递归地尝试按不同的分隔符进行分割文本。
 * CharacterTextSplitter()：按字符来分割文本。
 * MarkdownHeaderTextSplitter()：基于指定的标题来分割markdown 文件。
@@ -146,6 +153,8 @@ Langchain提供了很多文本切割的工具，其中langchain默认使用Recur
 * Language() - 用于 CPP、Python、Ruby、Markdown 等。
 * NLTKTextSplitter()：使用 NLTK（自然语言工具包）按句子分割文本。
 * SpacyTextSplitter() - 使用 Spacy按句子的切割文本。
+```
+
 
 ### 2.1 RecursiveCharacterTextSplitter：重叠滑窗分句方法
 
@@ -153,10 +162,13 @@ RecursiveCharacterTextSplitter是Langchain的默认文本分割器，它按不�
 
 RecursiveCharacterTextSplitter默认使用`[“\n\n” ,"\n" ," ",""]` 这四个特殊符号作为分割文本的标记，下面对RecursiveCharacterTextSplitter()方法的参数说明如下：
 
+```text
 * chunk\_size：被切割的字符串的最大长度
 * chunk\_overlap：如果仅仅使用chunk\_size来切割时，前后两段字符串重叠的字符数量。
 * `add_start_index`:是否在元数据中包含每个块在原始文档中的起始位置
 * `length_function`:如何计算块的长度。默认情况下，只计算字符数，但通常在此处传递令牌计数器
+```
+
 
 `重复字段的意义`：<strong>块之间保持一些重叠，以确保语义上下文不会在块之间丢失</strong>。在<strong>大多数情况下，固定大小的分块将是最佳方式</strong>。与其他形式的分块相比，固定大小的分块在计算上更加经济且易于使用，因为它在分块过程中不需要使用任何NLP库。
 
@@ -1227,11 +1239,14 @@ class ChineseTextSplitter(CharacterTextSplitter):
 
 这里判定title的规则，或者说判定哪些不是title的规则：
 
+```text
 * 文本长度为0的话，肯定不是title
 * 文本中有标点符号，就不是title
 * 文本长度不能超过设定值，默认20
 * 文本中数字的占比不能太高，否则不是title
 * 开头的字符内应该有数字，默认5个字符内
+```
+
 
 ---
 
@@ -1271,11 +1286,14 @@ Embedding模型的语义提取能力有限。它们在呈现多主题、多回�
 
 ## 5 参考文献
 
+```text
 * [\- 派神 -：让Langchain与你的数据对话(一)：数据加载与分割](https://zhuanlan.zhihu.com/p/644938147)
 * [LangChain 按Token拆分文本内容](https://www.tizi365.com/topic/3095.html)
 * [Chunking Strategies for LLM Applications | Pinecone](https://www.pinecone.io/learn/chunking-strategies/)
 * [RAG行业交流中发现的一些问题和改进方法](https://luxiangdong.com/2023/10/27/rag10/#/%E4%BF%9D%E6%8C%81Embedding%E6%A8%A1%E5%9E%8B%E5%9C%A8%E5%90%8C%E4%B8%80%E5%B1%82%E9%9D%A2%E4%B8%8A)
 * [最详细的文本分块(Chunking)方法，直接影响LLM应用效果](https://luxiangdong.com/2023/09/20/chunk/#/%E5%8F%A5%E5%88%86%E5%89%B2%E2%80%94%E2%80%94Sentence-splitting)
+```
+
 
 发布于 2023-12-25 20:11・IP 属地上海 ，编辑于 2024-01-04 15:22・IP 属地上海
 

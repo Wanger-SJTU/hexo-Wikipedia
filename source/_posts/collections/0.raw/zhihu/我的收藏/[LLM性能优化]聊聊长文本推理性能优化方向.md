@@ -134,6 +134,8 @@ Attention 类型Grid Size设置算术强度MHA[B, N]O(1)MQA[B]O(N)BPA[N]O(B)但 
 下面是 Cascade Attention 的源码：
 
 `class BatchDecodeWithSharedPrefixPagedKVCacheWrapper:
+
+```python
     def forward(
         self,
         q: torch.Tensor,
@@ -170,6 +172,8 @@ Attention 类型Grid Size设置算术强度MHA[B, N]O(1)MQA[B]O(N)BPA[N]O(B)但 
         # Merge State
         merge_state_in_place(V_shared, S_shared, V_unique, S_unique)
         return V_shared`
+```
+
 
 #### 1.4 小结
 

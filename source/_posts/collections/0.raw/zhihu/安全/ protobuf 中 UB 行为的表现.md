@@ -26,14 +26,20 @@ hello.proto
 package helloworld;
 
 message HelloRequest {
+
+```text
     required string name = 1;
     optional bool test_a = 2;
 }
+```
+
 `
 
 http://main.cc
 
 `#include "hello.pb.h"
+
+```cpp
 #include 
 
 int main() {
@@ -48,6 +54,8 @@ int main() {
   std::string value;
   if (!request.SerializeToString(&value)) {
     std::cerr 
+```
+
 
 编译命令如下：
 

@@ -109,8 +109,12 @@ KLT算法工作有三个假设前提条件：
 <strong>1. 删除静止点的光流分析：</strong>
 
 `import numpy as np
+
+```python
 import cv2 as cv
 import math
+```
+
 cap = cv.VideoCapture('car_flow.mp4')
 
 #角点检测参数
@@ -128,12 +132,17 @@ old_gray = cv.cvtColor(old_frame, cv.COLOR_BGR2GRAY)
 p0 = cv.goodFeaturesToTrack(old_gray, mask=None, **feature_params,useHarrisDetector=False,k=0.04)
 good_ini=p0.copy()
 
+```python
 def caldist(a,b,c,d):
     return abs(a-c)+abs(b-d)
+```
+
 
 mask = np.zeros_like(old_frame)
 # 光流跟踪
 while True:
+
+```text
     ret, frame = cap.read()
     if ret is False:
         break
@@ -155,13 +164,21 @@ while True:
             good_old[k]=good_old[i]
             good_ini[k]=good_ini[i]
             k=k+1
+```
+
 
     # 提取动态点
+
+```text
     good_ini=good_ini[:k]
     good_new=good_new[:k]
     good_old=good_old[:k]  
+```
+
 
     # 绘制跟踪线
+
+```text
     for i, (new, old) in enumerate(zip(good_new,good_old)):
         a,b = new.ravel()
         c,d = old.ravel()
@@ -172,14 +189,24 @@ while True:
     if k == 27:
         cv.imwrite("flow.jpg", cv.add(frame,mask))
         break
+```
+
 
     # 更新
+
+```text
     old_gray = frame_gray.copy()
     p0 = good_new.reshape(-1, 1, 2)
+```
+
 
     if good_ini.shape[0]40:
+
+```text
         p0 = cv.goodFeaturesToTrack(old_gray, mask=None, **feature_params)
         good_ini=p0.copy()
+```
+
 
 cv.destroyAllWindows()
 cap.release()`
@@ -189,8 +216,12 @@ cap.release()`
 输出<strong>2. 反向检测的光流分析：</strong>
 
 `import numpy as np
+
+```python
 import cv2 as cv
 import math
+```
+
 cap = cv.VideoCapture('car_flow.mp4')
 
 #角点检测参数
@@ -211,6 +242,7 @@ frame_idx = 0
 detect_interval = 5
 while True:
 
+```text
     ret, frame = cap.read()
     if ret:
         frame_gray = cv.cvtColor(frame, cv.COLOR_BGR2GRAY)
@@ -221,6 +253,8 @@ while True:
             p0 = np.float32([tr[-1] for tr in tracks]).reshape(-1,1,2)
             # 上一帧的角点和当前帧的图像作为输入来得到角点在当前帧的位置  
             p1, st, err = cv.calcOpticalFlowPyrLK(img0, img1, p0, None, **lk_params)
+```
+
 
             # 反向检查,当前帧跟踪到的角点及图像和前一帧的图像作为输入来找到前一帧的角点位置  
             p0r, _, _ = cv.calcOpticalFlowPyrLK(img1, img0, p1, None, **lk_params)
@@ -229,11 +263,15 @@ while True:
             d = abs(p0-p0r).reshape(-1,2).max(-1)
 
             #判断d内的值是否小于1，大于1跟踪被认为是错误的跟踪点
+
+```text
             good = d  1
 
             new_tracks = []
 
             for i, (tr, (x, y), flag) in enumerate(zip(tracks, p1.reshape(-1, 2), good)):
+```
+
 
                 # 判断是否为正确的跟踪点
                 if not flag:
@@ -243,12 +281,16 @@ while True:
                 tr.append((x, y))
 
                 # 只保留track_len长度的数据，消除掉前面的超出的轨迹
+
+```text
                 if len(tr) > track_len:
                     del tr[0]
                 # 保存在新的list中
                 new_tracks.append(tr)
 
                 cv.circle(vis, (x, y), 2, (0, 255, 0), -1)
+```
+
 
             # 更新特征点    
             tracks = new_tracks
@@ -257,6 +299,8 @@ while True:
             cv.polylines(vis, [np.int32(tr) for tr in tracks], False, (0, 255, 0), 1)
 
         # 每隔 detect_interval 时间检测一次特征点
+
+```text
         if frame_idx % detect_interval==0:
             mask = np.zeros_like(frame_gray)
             mask[:] = 255
@@ -281,6 +325,8 @@ while True:
             break
     else:
         break
+```
+
 
 cv.destroyAllWindows()
 cap.release()`
@@ -336,14 +382,20 @@ ret, frame1 = cap.read()
 prvs = cv.cvtColor(frame1,cv.COLOR_BGR2GRAY)
 hsv = np.zeros_like(frame1)
 hsv[...,1] = 255
+
+```text
 while(1):
     ret, frame2 = cap.read()
     next = cv.cvtColor(frame2,cv.COLOR_BGR2GRAY)
+```
+
 
     # 返回一个两通道的光流向量，实际上是每个点的像素位移值
     flow = cv.calcOpticalFlowFarneback(prvs,next, None, 0.5, 3, 15, 3, 5, 1.2, 0)
 
     # 笛卡尔坐标转换为极坐标，获得极轴和极角
+
+```text
     mag, ang = cv.cartToPolar(flow[...,0], flow[...,1])
 
     hsv[...,0] = ang*180/np.pi/2  #角度
@@ -358,6 +410,8 @@ while(1):
         cv.imwrite('opticalfb.png',frame2)
         cv.imwrite('opticalhsv.png',bgr)
     prvs = next
+```
+
 cap.release()
 cv.destroyAllWindows()`
 

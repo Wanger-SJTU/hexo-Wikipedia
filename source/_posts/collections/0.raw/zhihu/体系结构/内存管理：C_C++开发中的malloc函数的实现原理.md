@@ -34,6 +34,7 @@ bss段、数据段和代码段是可执行程序编译时的分段，运行时�
 
 `///include/linux/sched.h 
 
+```cpp
 struct mm_struct {
   struct vm_area_struct * mmap;  /* 指向虚拟区间（VMA）链表 */
   rb_root_t mm_rb;         /*指向red_black树*/
@@ -56,6 +57,8 @@ struct mm_struct {
   unsigned dumpable:1;
   /* Architecture-specific MM context */
   mm_context_t context;
+```
+
 };`
 
 其中start_brk和brk分别是堆得起始和终止地址，我们使用malloc动态分配的内存就在这之间。start_stack是进程栈的起始地址，栈的大小是在编译时期确定的，在运行时不能改变。而堆的大小由start_brk 和brk决定，但是可以使用系统调用sbrk() 或brk()增加brk的值，达到增大堆空间的效果，但是系统调用代价太大，涉及到用户态和内核态的相互转换。所以，<strong>实际中系统分配较大的堆空间，进程通过malloc()库函数在堆上进行空间动态分配，堆如果不够用malloc可以进行系统调用，增大brk的值。</strong>
@@ -72,8 +75,12 @@ struct mm_struct {
 由之前的进程地址空间结构分析可以知道，要增加一个进程实际的可用堆大小，就需要将break指针向高地址移动。Linux通过<strong>brk和sbrk系统调用</strong>操作break指针。两个系统调用的原型如下：
 
 `#include 
+
+```cpp
 int brk(void *addr);
 void *sbrk(intptr_t increment);`
+```
+
 
 brk函数将break指针直接设置为某个地址，而sbrk将break指针从当前位置移动increment所指定的增量。brk在执行成功时返回0，否则返回-1并设置errno为ENOMEM；sbrk成功时返回break指针移动之前所指向的地址，否则返回(void *)-1。
 
@@ -94,8 +101,12 @@ brk函数将break指针直接设置为某个地址，而sbrk将break指针从当
 
 - mmap函数
 `#include 
+
+```cpp
 void *mmap(void *addr, size\_t length, int prot, int flags, int fd, off\_t offset);
 int munmap(void *addr, size_t length);`
+```
+
 
 mmap函数第一种用法是映射磁盘文件到内存中；而malloc使用的mmap函数的第二种用法，即匿名映射，匿名映射不映射磁盘文件，而是向映射区申请一块内存。 munmap函数是用于释放内存，第一个参数为内存首地址，第二个参数为内存的长度。接下来看下mmap函数的参数。
 

@@ -19,11 +19,14 @@ source_url: https://zhuanlan.zhihu.com/p/682033366
 
 `#include 
 
+```cpp
 int main() {
     const int array_size = 32; 
     void* p = malloc(array_size);
     return 0;
 }
+```
+
 `
 
 我们要使用携带调试信息的方式编译代码，即加上编译参数-g。
@@ -42,12 +45,15 @@ int main() {
 
 `#include 
 
+```cpp
 int main() {
     const int array_size = 32; 
     void* p = malloc(array_size);
     free(p);
     return 0;
 }
+```
+
 `
 
 使用massif分析的结果是 
@@ -58,6 +64,7 @@ int main() {
 
 `#include 
 
+```cpp
 void create_destory(unsigned int size) {
     void *p = malloc(size);
     free(p);
@@ -75,6 +82,8 @@ int main(void) {
 
     return 0;
 }
+```
+
 `
 
 这段代码频繁申请和释放大块内存，这对程序的性能是有影响的。但是如果上面的代码隐藏在繁杂的业务代码中时，则难以通过阅读方式定位。 我们继续使用之前的命令产生结果文件，并使用massif-visualizer分析 
@@ -99,6 +108,7 @@ int main(void) {
 
 `#include 
 
+```cpp
 void* create(unsigned int size) {
     return malloc(size);
 }
@@ -130,6 +140,8 @@ int main(void) {
 
     return 0;
 }
+```
+
 `
 
 这段代码，main函数中：  - 直接使用malloc申请4次10K的空间（22行），然后再4次释放它们（29行）。  - 调用create方法4次，每次申请但不释放10K空间。  - 调用create_destory方法4次，每次申请并释放100K空间。

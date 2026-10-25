@@ -139,8 +139,12 @@ nopb; nopa; vst.srs.s32.s64 bml3, s0, [p2, #0x0]; add r1, r1, #0x10; nopm; nopv
 源码：
 
 `extern "C" {
+
+```cpp
 void add_one_scalar(int32_t *in, int32_t *out, int32_t N) {
   for (int i = 0; i 
+```
+
 
 最普通的 C 代码。编译后加载到计算 tile 的 16 KB 程序存储器中执行。反汇编出的核心循环：
 
@@ -148,7 +152,11 @@ void add_one_scalar(int32_t *in, int32_t *out, int32_t N) {
 add.nc  lc, r0, #0x0         ; lc(loop count) = N
 movxm   ls, #0x200            ; ls(loop start) = 循环体起始地址
 movxm   le, #0x270            ; le(loop end) = 循环体结束地址
+
+```text
                                ; 到达 le 时自动跳回 ls，零周期开销
+```
+
 
 ; === 循环体：每次处理 1 个 int32 ===
 lshl    r2, r1, r0            ; r2 = i 
@@ -167,6 +175,8 @@ lshl    r2, r1, r0            ; r2 = i
 `#include 
 
 extern "C" {
+
+```cpp
 void add_one_vector(int32_t *in, int32_t *out, int32_t N) {
   constexpr int VEC_SIZE = 16;   // 512-bit / 32-bit = 16 lanes
   for (int i = 0; i  v = aie::load_v(in + i);
@@ -174,22 +184,36 @@ void add_one_vector(int32_t *in, int32_t *out, int32_t N) {
     aie::store_v(out + i, r);
   }
 }
+```
+
 }`
 
 和实验 1 做同样的事（每个元素 +1），但用向量指令一次处理 16 个 int32。反汇编：
 
 `; === 准备：广播标量 1 到 512-bit 向量寄存器 ===
 vbcst.32  x0, r2              ; x0[0:15] = broadcast(1)
+
+```text
                                 ; 把标量 r2=1 复制到 16 个 lane
+```
+
 
 ; === 核心循环：每次处理 16 个 int32 = 512 bits ===
 vlda  wh2, [p2, #0x20]        ; 向量加载高半: wh2 = in[i+8..i+15]   ← 256-bit
 vlda  wl2, [p2, #0x0]         ; 向量加载低半: wl2 = in[i+0..i+7]   ← 256-bit
+
+```text
                                 ; wl2 + wh2 拼成完整的 512-bit 向量 x2
       ... (nop 等待) ...
+```
+
 vadd.32  x4, x0, x2           ; 512-bit 向量加法: x4 = x0 + x2
+
+```text
                                 ; 16 路 int32 并行加！              ← 512-bit
       ... (1 cycle) ...
+```
+
 vst  wh4, [p2, #0x20]         ; 向量存储高半                        ← 256-bit
 vst  wl4, [p2, #0x0]          ; 向量存储低半                        ← 256-bit
 add  r1, r1, #0x10            ; i += 16`
@@ -209,6 +233,8 @@ add  r1, r1, #0x10            ; i += 16`
 `#include 
 
 extern "C" {
+
+```cpp
 void mul_vector(int32_t *in, int32_t *out, int32_t *factor, int32_t N) {
   constexpr int VEC_SIZE = 16;
   int32_t f = *factor;
@@ -217,6 +243,8 @@ void mul_vector(int32_t *in, int32_t *out, int32_t *factor, int32_t N) {
     aie::store_v(out + i, acc.template to_vector(0));
   }
 }
+```
+
 }`
 
 这里用了 `aie::mul` 返回 `acc64` 累加器——直接调用硬件 MAC 单元。反汇编出来比前两个复杂得多：
@@ -234,7 +262,11 @@ vmul   cm0, x8, x4, r4         ; 硬件乘法: cm0 = x8 × x4 → 768-bit 累加
 
 vshuffle  x10, x6, x0, r3      ;┐ 数据重排 #2: 奇数位元素
 vmac   cm1, cm0, x8, x2, r2    ;┘ 乘累加: cm1 = cm0 + x8 × x2
+
+```text
                                 ; ↑ 两条指令并行！VLIW 的威力
+```
+
 
 vmac   cm2, cm1, x10, x4, r5   ; 乘累加 #3
 vmac   cm3, cm2, x10, x2, r6   ; 乘累加 #4
@@ -340,6 +372,8 @@ IRON 的 Python API 描述了数据流和计算任务，`resolve_program()` 将�
 
 `module {
   aie.device(npu1) {
+
+```text
     %tile_0_2 = aie.tile(0, 2)
     %shim_0_0 = aie.tile(0, 0)
     aie.objectfifo @in(%shim_0_0, {%tile_0_2}, 2 : i32) : !aie.objectfifo>
@@ -361,6 +395,8 @@ IRON 的 Python API 描述了数据流和计算任务，`resolve_program()` 将�
       ...
     }
   }
+```
+
 }`
 
 这是一种空间数据流的声明式描述：哪些 tile 参与计算，数据怎么流动，每个 tile 跑什么代码。
@@ -424,6 +460,8 @@ DMA 配置不是直接写寄存器，而是打包成 ctrlcode——一系列事�
 #### 工具链全景
 
 `┌──────────────────────────────┐
+
+```text
                    │       用户应用 (Python)        │
                    └──────────────┬───────────────┘
                                   │
@@ -466,6 +504,8 @@ DMA 配置不是直接写寄存器，而是打包成 ctrlcode——一系列事�
                    │          NPU 硬件             │
                    │   16/32 AIE tiles + DMA + ERT │
                    └──────────────────────────────┘`
+```
+
 
 组件开源？获取方式IRON (Python API)是pip install mlir_aieMLIR-AIE 编译器是同上Peano (LLVM AIE backend)是 (Apache 2.0)pip install llvm-aieChess (私有编译器)否Vitis AIE Essentials (多 GB)XRT 运行时是从 xdna-driver 源码编译amdxdna 内核驱动是Linux 6.14+ 主线内核AIE API intrinsic 头文件是随 mlir_aie 安装AM020 架构手册是[http://docs.amd.com](https://link.zhihu.com/?target=http%3A//docs.amd.com) 免费下载ISA 编码 (TableGen)是[http://github.com/Xilinx/llvm-aie](https://link.zhihu.com/?target=http%3A//github.com/Xilinx/llvm-aie)全开源路线（Peano + IRON + XRT）可以完成从 Python 到硬件执行的全流程，无需任何私有工具。本文的三个实验就是用这条路线完成的。
 
@@ -609,10 +649,14 @@ hexkl_micro_hmx_mm_f16(vtcm, act_off, wt_off);       // 矩阵乘 (HMX)
 # AMD: 空间计算 + 数据流编排
 of_in = ObjectFifo(tile_ty, name="in")    # 定义 DMA 通道
 of_out = ObjectFifo(tile_ty, name="out")
+
+```python
 def core_body():                           # tile 上的计算
     elem = of_in.acquire(1)                # 等待 DMA 填好数据
     scale_fn(elem, out, factor)            # 调用 C++ 内核
     of_out.release(1)                      # 通知 DMA 搬走结果`
+```
+
 
 Hexagon 的编程体验更接近传统 SIMD 编程（SSE/NEON），学习曲线更平缓。AMD AIE 的空间编程模型需要理解 tile、DMA、锁三者的协作关系，概念上更陡。
 
@@ -638,12 +682,20 @@ HMX 的使用方式很特别——<strong>必须用内联汇编</strong>，因�
 `// Hexagon HMX: 内联汇编是唯一途径
 asm volatile("mxclracc.hf" ::: "memory");                       // 清零累加器
 asm volatile(
+
+```text
     "{ activation.hf = mxmem(%0, %1)\n"                         // 加载激活值
     "  weight.hf = mxmem(%2, %3) }\n"                           // 加载权重（必须同一 packet！）
     :: "r"(act), "r"(2047), "r"(wt), "r"(2047) : "memory");
+```
+
 asm volatile("mxmem(%0, %1):after.hf = acc\n"                   // 存储累加器到 VTCM
+
+```text
     :: "r"(out), "r"(0) : "memory");
 // AMD AIE: C++ intrinsic 即可
+```
+
 aie::vector a = aie::load_v(in);    // 512-bit 向量加载
 aie::accum acc = aie::mul(a, factor);       // 硬件 MAC
 aie::store_v(out, acc.to_vector());            // 存储（带饱和）`

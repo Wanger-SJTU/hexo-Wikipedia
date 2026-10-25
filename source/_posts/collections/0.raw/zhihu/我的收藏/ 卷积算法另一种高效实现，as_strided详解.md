@@ -244,17 +244,23 @@ print(A1)
 那么可以确定A的shape为：（N，C，？，？，kh，kw），至于中间的两个数值怎么确定？还是用以前的公式：
 
 `def split_by_strides(X, kh, kw, s):
+
+```text
     N, C, H, W = X.shape
     oh = (H - kh) // s + 1
     ow = (W - kw) // s + 1
     strides = (*X.strides[:-2], X.strides[-2]*s, X.strides[-1]*s, *X.strides[-2:])
     A = as_strided(X, shape=(N,C,oh,ow,kh,kw), strides=strides)`
+```
+
 
 这里没有padding，因为在这之前就X就已经认为是pad过了
 
 还有个小问题，如果X.shape不是上面那个样子怎么弄？这里举个其他的例子：
 
 `def split_by_strides(X, kh, kw, s):
+
+```text
     N, H, W, C = X.shape
     oh = (H - kh) // s + 1
     ow = (W - kw) // s + 1
@@ -262,6 +268,8 @@ print(A1)
     strides = (X.strides[0], X.strides[1]*s, X.strides[2]*s, *X.strides[1:])
     A = as_strided(X, shape=shape, strides=strides)
     return A`
+```
+
 
 其实就是将shape改一下，strides参数调整一下就行了
 

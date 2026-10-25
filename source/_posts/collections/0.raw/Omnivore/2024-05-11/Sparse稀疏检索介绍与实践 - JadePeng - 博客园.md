@@ -197,8 +197,11 @@ Recall@20:
 
 ## 参考
 
+```text
 * Sparse Vectors in Qdrant: Pure Vector-based Hybrid Search <https://qdrant.tech/articles/sparse-vectors/>
 * BGE（BAAI General Embedding）解读 <https://zhuanlan.zhihu.com/p/690856333>
+```
+
 
 posted @ [JadePeng](https://www.cnblogs.com/xiaoqi)阅读(225) 评论() [编辑](https://i.cnblogs.com/EditPosts.aspx?postid=18135929)收藏 举报
 

@@ -56,8 +56,12 @@ Loop Tiling 的目的是 <strong>确保一个 Cache Line 在被用过以后，�
 
 for j_o in range(0, M, T):
   for i in range(0, N):
+
+```text
     for j_i in range(j_o, j_o+T):
       A[i] += B[j_i]
+```
+
 
 # 这样的话，B[j_o] -> B[j_o+T] 可以 fit in cache，所以即便 i=0,1... 会重复访问 B[j_o]，也不会有 cache miss
 # 量化分析 cache miss 为
@@ -71,9 +75,13 @@ for j_o in range(0, M, T):
 
 `for i_o in range(0, N, T_i):
   for j_o in range(0, M, T_j):
+
+```text
     for i_i in range(i_o, i_o + T_i):
 	for j_i in range(j_o, j_o + T_j):
 	  A[i_i] += B[j_i]`
+```
+
 
 ### 例子：矩阵乘法
 
@@ -81,8 +89,12 @@ for j_o in range(0, M, T):
 
 `for i in range(0, N):
   for k in range(0, N):
+
+```text
     for j in range(0, N):
       C[i][j] += A[i][k] * B[k][j]
+```
+
 
 # 循环从内到外分别是：j, k, i。最内层循环忽略，
 # 对于循环 k 来说，k=0,1,2... 时，A[i][k],B[k][j] 读的位置是不同无法优化，但 C[i][j] 却可以被反复读取，因此可以 tile 循环 j
@@ -91,26 +103,38 @@ for j_o in range(0, M, T):
 # 优化如下
 for j_o in range(0, N, T_j):
   for i in range(0, N):
+
+```text
     for k in range(0, N):
       for j_i in range(j_o, j_o + T_j):
         C[i][j_i] += A[i][k] * B[k][j_i]
+```
+
 				
 for k_o in range(0, N, T_k):
   for j_o in range(0, N, T_j):
+
+```text
     for i in range(0, N):
       for k_i in range(k_o, k_o + T_k):
         for j_i in range(j_o, j_o + T_j):
           C[i][j_i] += A[i][k_i] * B[k_i][j_i]
+```
+
 # 这样，k_i=0,1... 时，C[i_i][j] 始终在 cache 中；i=0,1.. 时，B[k_i][j_i] 也始终在 cache 中
 
 # 又因为循环 i 从最外层循环变成了内循环，对于其上层循环 j_o 来说，当 j_o=0,1,...时，A[i][k_i] 是被反复读取的，因此也可以 tile 循环 i
 for i_o in range(0, N, T_i):
   for k_o in range(0, N, T_k):
+
+```text
     for j_o in range(0, N, T_j):
       for i_i in range(i_o, i_o + T_i):
         for k_i in range(k_o, k_o + T_k):
           for j_i in range(j_o, j_o + T_j):
             C[i_i][j_i] += A[i_i][k_i] * B[k_i][j_i]
+```
+
 # 注意，内三层循环仍然是按照 i_i,k_i,j_i 的顺序，因此仍然满足 RowMajor 的顺序读取`
 
 **
@@ -129,12 +153,16 @@ for i_o in range(0, N, T_i):
 
 `for j_oo in range(0, N, T2_j):
   for i_o in range(0, N, T_i):
+
+```text
     for k_o in range(0, N, T_k):
       for j_oi in range(j_oo, j_oo + T2_j, T_j):
         for i_i in range(0, N, T_i):
           for k_i in range(k_o, k_o + T_k):
             for j_i in range(j_oi, j_oi + T_j):
               C[i_i][j_i] += A[i_i][k_i] * B[k_i][j_i]
+```
+
 # 这样的话，内三层循环 i_i, k_i, j_i （对应的 Tile size 为 T_i, T_j, T_k）放到 L1 Cache 里。
 # 外层循环 j_oi （对应Tile size 为 T2_j） 就可以放到更大的 L2 Cache 里。于是便在 L2 里形成了对 C[i_i][j_i] 的复用`
 

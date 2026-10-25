@@ -49,29 +49,41 @@ ARM X4去掉了Mop Cache![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E
 
 1. 前端流水线的Fetch stage:
 
+```text
     a) Fetch做到单cycle出两个taken branch, 正常只能出一个，跟ARM N2类似
 
     b) Dispatch时, 也可以最多dispatch 2个taken branch
+```
+
 
 2. 执行单元部分:
 
+```text
     a) Bit manipulation延迟执行降低
 
     b) 写byte-writeable的数据到L1D时, 不需要读取数据做merge后写回, 直接写入减少读端口冲突, load的带宽就变大。猜测实现前提不使用ecc，基于parity校验
+```
+
 
 3. Cache部分:
 
+```text
     a) L2 size更大，从1MB改为2MB.
 
     b) 更多并行(MSHR)
 
     c) 3D V-cache使得L3变为96MB
+```
+
 
 4. AVX-512：
 
+```text
     a) 增加指令处理机器学习, 加解密（包括VNNI、GFNI、BFLOAT16）
 
     b) 降低AVX指令执行功耗
+```
+
 
 5.** **ARM去掉了MicroOpCache, 相反AMD增加了MicroOpCache, 因为CISC/RISC指令密度不同, 供指速度不同，所以造成了ARM觉得没用但是AMD觉得有用的这种情况。**
 
@@ -113,11 +125,12 @@ Veyron V1 流水线框图1. Icache 512KB, **dcache: 64KB, private L2 512KB
 
 14. LSU：
 
+```text
     a) 每个cycle可执行任意组合的4条load、store指令：相比而言，ARM、Intel、AMD等，都是2ld+1ldst+1st, 或者3ld+1ldst+2st等。
 
     b) 紧耦合低延迟的L1D、L2cache
 
-    c) <strong>L1D：VIVT.</strong>DCache miss后访问DTLB，硬件处理同义问题，对于多对一的读可以共存，常见的L1D一般是VIPT。
+    c) **L1D：VIVT. **DCache miss后访问DTLB，硬件处理同义问题，对于多对一的读可以共存，常见的L1D一般是VIPT。
 
     d) Inclusive write through L2：写回的L2比较常见，写穿的比较少见。
 
@@ -126,6 +139,8 @@ Veyron V1 流水线框图1. Icache 512KB, **dcache: 64KB, private L2 512KB
     f) L1-L2的datapath 64B：相比而言常见的都是32B甚至16B
 
     g) 预取器Next-line，sequential，stride，multi-stride patterns，next-line从L2预取到L1，更远的预取到L2
+```
+
 
 15. L3是L2的victim cache，non-inclusve， NINE
 

@@ -32,11 +32,16 @@ source_url: https://zhuanlan.zhihu.com/p/2032862444796785454
 Mooncake中的register_buffer实现
 在 MooncakeStore 的最上层 Python 接口（`store_py.cpp`）中，通过调用RealClient::register_buffer来进行内存注册
 
+```cpp
 int RealClient::register_buffer(void *buffer, size_t size) {
     return to_py_ret(register_buffer_internal(buffer, size));
 }
+```
+
 
 tl::expected<void, ErrorCode> RealClient::register_buffer_internal(
+
+```cpp
     void *buffer, size_t size) {
     if (!client_) {
         LOG(ERROR) << &#34;Client is not initialized&#34;;
@@ -53,9 +58,12 @@ tl::expected<void, ErrorCode> RealClient::register_buffer_internal(
     }
     return result;
 }
+```
+
 
 以RDMA Transport为例，在rdma_transport.cpp中，提供了registerLocalMemory的统一接口，与上层对接。
 
+```cpp
 int RdmaTransport::registerLocalMemory(void *addr, size_t length,
                                        const std::string &name,
                                        bool remote_accessible,
@@ -63,11 +71,14 @@ int RdmaTransport::registerLocalMemory(void *addr, size_t length,
     return registerLocalMemoryInternal(addr, length, name, remote_accessible,
                                        update_metadata, false);
 }
+```
+
 
 [https://github.com/kvcache-ai/Mooncake/blob/510cd4ee24674ddf6dc070235c7db5e5aa3fc224/mooncake-transfer-engine/src/transport/rdma_transport/rdma_transport.cpp#L174](https://link.zhihu.com/?target=https%3A//github.com/kvcache-ai/Mooncake/blob/510cd4ee24674ddf6dc070235c7db5e5aa3fc224/mooncake-transfer-engine/src/transport/rdma_transport/rdma_transport.cpp%23L174)
 
 进一步，在registerLocalMemoryInternal里，我们可以明确看到有一段关键的内存pre_touch逻辑：
 
+```cpp
 int RdmaTransport::registerLocalMemoryInternal(void *addr, size_t length,
                                                const std::string &name,
                                                bool remote_accessible,
@@ -190,6 +201,8 @@ int RdmaTransport::registerLocalMemoryInternal(void *addr, size_t length,
     if (rc) return rc;
     return 0;
 }
+```
+
 
 [https://github.com/kvcache-ai/Mooncake/blob/510cd4ee24674ddf6dc070235c7db5e5aa3fc224/mooncake-transfer-engine/src/transport/rdma_transport/rdma_transport.cpp#L182](https://link.zhihu.com/?target=https%3A//github.com/kvcache-ai/Mooncake/blob/510cd4ee24674ddf6dc070235c7db5e5aa3fc224/mooncake-transfer-engine/src/transport/rdma_transport/rdma_transport.cpp%23L182)
 
@@ -201,6 +214,7 @@ Pre-touch的判断条件是
 
 在preTouchMemory的逻辑内部，启动了多个thread去并发touch内存（上限16个thread）。注意，这里只让一个RDMA网卡去进行preTouch，不同线程分别去touch不同的内存段落，从而避免多张网卡的多个线程同时触发缺页中断，竞争mmap_lock。
 
+```cpp
 int RdmaTransport::preTouchMemory(void *addr, size_t length) {
     // ... 前置检查 ...
 
@@ -214,7 +228,7 @@ int RdmaTransport::preTouchMemory(void *addr, size_t length) {
     if (length > (size_t)globalConfig().max_mr_size) {
         length = (size_t)globalConfig().max_mr_size;
     }
-    
+
     // 2. 将大内存均匀切块给各个线程
     size_t block_size = length / num_threads;
     if (block_size == 0) return 0;
@@ -226,7 +240,7 @@ int RdmaTransport::preTouchMemory(void *addr, size_t length) {
     for (size_t thread_i = 0; thread_i < num_threads; ++thread_i) {
         // 计算当前线程负责的内存块起始地址
         void *block_addr = static_cast<char *>(addr) + thread_i * block_size;
-        
+
         threads.emplace_back([this, thread_i, block_addr, block_size, &thread_results]() {
             // 核心预热动作：调用底层真正的预热逻辑
             int ret = context_list_[0]->preTouchMemory(block_addr, block_size);
@@ -236,15 +250,18 @@ int RdmaTransport::preTouchMemory(void *addr, size_t length) {
 
     // 4. 等待所有线程完成
     for (auto &thread : threads) thread.join();
-    
+
     // ... 错误检查 ...
     return 0;
 }
+```
+
 
 [https://github.com/kvcache-ai/Mooncake/blob/510cd4ee24674ddf6dc070235c7db5e5aa3fc224/mooncake-transfer-engine/src/transport/rdma_transport/rdma_transport.cpp#L132](https://link.zhihu.com/?target=https%3A//github.com/kvcache-ai/Mooncake/blob/510cd4ee24674ddf6dc070235c7db5e5aa3fc224/mooncake-transfer-engine/src/transport/rdma_transport/rdma_transport.cpp%23L132)
 
 而在preTouchMemory的底层实现里，调用了真正的内存注册逻辑registerMemoryRegionInternal，之后再调用ibv_dereg_mr取消RDMA网卡的registration：
 
+```cpp
 int RdmaContext::preTouchMemory(void *addr, size_t length) {
     MemoryRegionMeta mrMeta;
     int ret = registerMemoryRegionInternal(addr, length, IBV_ACCESS_LOCAL_WRITE,
@@ -254,6 +271,8 @@ int RdmaContext::preTouchMemory(void *addr, size_t length) {
     }
     return ibv_dereg_mr(mrMeta.mr);
 }
+```
+
 
 这段逻辑复用主业务逻辑完成了内存pretouch，同时规避了在内核态的锁争抢，从而避免了正式注册内存时缺页中断导致的开销。由于我并不太懂RDMA以及操作系统内核，进一步的分析还有望大佬指点~
 
@@ -286,18 +305,31 @@ Mooncake 作为业界广泛使用的高性能通信库，其内存注册机制�
 
 ![](https://pica.zhimg.com/v2-5fc5a6e9b446612e674d89d15f04922e_1440w.jpg)在PR[[perf] Refactor MooncakeStore backend with zero-copy upsert API by 0oshowero0 · Pull Request #77 · Ascend/TransferQueue](https://link.zhihu.com/?target=https%3A//github.com/Ascend/TransferQueue/pull/77)里，我依照上述思路做了实现，在 put 阶段，找到内存连续的 tensor 进行合并，一次性完成 register_memory：
 
+```python
 def merge_contiguous_memory(ptrs: list[int], sizes: list[int]) -> tuple[list[int], list[int]]:
     &#34;&#34;&#34;Merge contiguous memory regions to reduce register_buffer overhead
+```
+
 
     Args:
+
+```text
         ptrs: List of memory pointers (starting addresses).
         sizes: List of memory region sizes corresponding to each pointer.
+```
+
 
     Returns:
+
+```text
         A tuple of (merged_ptrs, merged_sizes) where contiguous regions
         have been merged into single regions.
+```
+
 
     Example:
+
+```text
         >>> merge_contiguous_memory([0, 10, 30], [10, 20, 10])
         ([0, 30], [30, 10])
 
@@ -306,8 +338,12 @@ def merge_contiguous_memory(ptrs: list[int], sizes: list[int]) -> tuple[list[int
     &#34;&#34;&#34;
     if len(ptrs) != len(sizes):
         raise ValueError(&#34;ptrs and sizes must have the same length&#34;)
+```
+
 
     if not ptrs:
+
+```sql
         return [], []
 
     # Create list of (ptr, size) pairs and sort by pointer address
@@ -315,12 +351,16 @@ def merge_contiguous_memory(ptrs: list[int], sizes: list[int]) -> tuple[list[int
 
     merged_ptrs = []
     merged_sizes = []
+```
+
 
     # Initialize with the first region
     current_ptr, current_size = regions[0]
 
     for ptr, size in regions[1:]:
         # Check if current region is contiguous with the next one
+
+```text
         # A region is contiguous if: ptr == current_ptr + current_size
         if ptr == current_ptr + current_size:
             # Merge: extend the current region
@@ -330,18 +370,28 @@ def merge_contiguous_memory(ptrs: list[int], sizes: list[int]) -> tuple[list[int
             merged_ptrs.append(current_ptr)
             merged_sizes.append(current_size)
             current_ptr, current_size = ptr, size
+```
+
 
     # Add the last region
+
+```text
     merged_ptrs.append(current_ptr)
     merged_sizes.append(current_size)
 
     return merged_ptrs, merged_sizes
+```
+
 在 get 阶段，先根据 TQ 上层传递的 `BatchMeta` 一次性初始化一个大的 empty tensor，再根据每个 tensor 的 size 切分出对应指针：
 
 BTW，这也是TQ的核心易用性设计之一，把RDMA所需的元数据信息通过BatchMeta进行传递，除了dtype和shape之外，还允许后端传递自定义的字段，并可通过全局的TQ controller进行获取，从而简化了像nixl这种比较裸的通信库需要用户手动交换meta的步骤def allocate_empty_tensors(
     dtypes: list[torch.dtype], shapes: list[tuple]
 ) -> tuple[list[Tensor], list[int], list[int], list[int]]:
+
+```text
     &#34;&#34;&#34;Allocate empty tensors, grouping same dtypes into shared memory blocks.
+```
+
 
     Instead of allocating each tensor separately, this function groups tensors
     by their dtype and allocates one large contiguous memory block per dtype.
@@ -354,11 +404,17 @@ BTW，这也是TQ的核心易用性设计之一，把RDMA所需的元数据信�
     Returns:
         A tuple containing:
             - List of tensors sharing memory within their dtype groups.
+
+```text
             - List of memory pointers (data_ptr) for each tensor.
             - List of base pointers for each allocated memory region (one per dtype).
             - List of total bytes for each allocated memory region (one per dtype).
+```
+
 
     Example:
+
+```text
         >>> dtypes = [torch.float32, torch.float32, torch.int32, torch.float32]
         >>> shapes = [(10,), (20,), (5,), (15,)]
         >>> tensors, ptrs, region_ptrs, region_sizes = allocate_empty_tensors(dtypes, shapes)
@@ -368,8 +424,12 @@ BTW，这也是TQ的核心易用性设计之一，把RDMA所需的元数据信�
 
     if len(dtypes) == 0:
         return [], [], [], []
+```
+
 
     # Group indices by dtype
+
+```text
     dtype_groups: dict[torch.dtype, list[int]] = {}
     for i, dtype in enumerate(dtypes):
         if dtype not in dtype_groups:
@@ -380,32 +440,50 @@ BTW，这也是TQ的核心易用性设计之一，把RDMA所需的元数据信�
     ptr_list = [0] * len(dtypes)
     region_ptrs: list[int] = []
     region_sizes: list[int] = []
+```
+
 
     # For each dtype group, allocate one big tensor and create views
+
+```text
     for dtype, indices in dtype_groups.items():
         # Calculate total number of elements needed for this dtype
         total_elements = 0
         shape_info = []  # Store (index, shape, num_elements, offset)
+```
+
 
         for idx in indices:
+
+```text
             shape = tuple(shapes[idx])
             num_elements = reduce(operator.mul, shape, 1)
             shape_info.append((idx, shape, num_elements, total_elements))
             total_elements += num_elements
+```
+
 
         # Allocate one big contiguous memory block for this dtype
+
+```text
         big_tensor = torch.empty(total_elements, dtype=dtype)
         region_ptrs.append(big_tensor.data_ptr())
         region_sizes.append(big_tensor.nbytes)
+```
+
 
         # Create views into the big tensor for each small tensor
         for idx, shape, num_elements, offset in shape_info:
             # Use as_strided to create a view with the correct shape
+
+```text
             small_tensor = big_tensor.as_strided(size=shape, stride=compute_stride(shape), storage_offset=offset)
             tensor_list[idx] = small_tensor
             ptr_list[idx] = small_tensor.data_ptr()
 
     return tensor_list, ptr_list, region_ptrs, region_sizes
+```
+
 
 在verl上的实测可以发现，这两个函数有效实现了设计目标，将底层client从频繁的内存注册里解放出来（图后续再补😭），真正发挥RDMA的高性能传输（但愿吧，等待一个慷慨的老哥/老姐愿意提供机器帮忙跑个benchmark😭）
 

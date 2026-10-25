@@ -86,7 +86,11 @@ LLVM框架下，target-description 的描述信息的填充主要是基于以下
 •为指令的每个操作数分配调度资源，确定输入输出操作数
 
 `def WriteIALU : SchedWrite; // 32-bit integer ALU operations
+
+```python
 def ReadIALU  : SchedRead;  // 32-bit integer ALU operations`
+```
+
 
 - 将其填充到真实的指令中
 `def MUL : ALU_rr,
@@ -94,30 +98,42 @@ def ReadIALU  : SchedRead;  // 32-bit integer ALU operations`
 
 - 设置调度模型
 `def ProcessorModel : SchedMachineModel {
+
+```text
   let MicroOpBufferSize = 0;      //  in-order is zero.
   let IssueWidth = xx;            // xx micro-op is dispatched per cycle.
   let LoadLatency = xx;           // cache miss 
   let MispredictPenalty = xx;     // branch predicat failed
   let UnsupportedFeatures = [];   // some features instruction not support scheduling  
+```
+
 }`
 
 - 为指令分配writeRes 和 ReadAdvance，WriteRes，是指令执行多少个cycles，能够产生输出，而ReadAdvance 是指令执行多少个cycles，能够产生输入，这个值的设定与硬件的Forwarding机制相关。
 `def : WriteRes {
+
+```python
   let Latency = xx;
 }
 
 def : ReadAdvance;`
+```
+
 
 如果想基于自己的架构，自定义自己的调度器，该如何做？一般是通过三个方面去实现自定义自己架构或者处理器的调度器。1）自定义实现调度Policy；2）自定义实现调度的Strategy；3）改变DAG mutation
 
 - 自定义实现自己架构下的调度Policy，主要是基于当前已经创建好的DAG图，决定当前遍历是自顶向下，或者自底向上，或者遍历过程，是否跟踪纪录寄存器压力信息，为后面启发式算法，提供优化机会
 `void 
 SubTarget::overrideSchedPolicy(MachineSchedPolicy &Policy,
+
+```text
                                        unsigned NumRegionInstrs) const {
   Policy.OnlyTopDown = true;
   Policy.OnlyBottomUp = false;
   Policy.DisableLatencyHeuristic = false;
   Policy.ShouldTrackPressure = false； // 是否需要跟踪Register Pressure
+```
+
 }`
 
 - 自定义自己架构下调度Strategy，列表调度+ 启发式算法，选择当前可以调度的下一个节点。当前LLVM框架下也是基于列表调度算法，结合启发式算法完成调度程序下一个节点的选择，你可以设计自己架构下的启发式算法，使其尽可能的让调度接近最优解。
@@ -125,9 +141,13 @@ list scheduling ：本质上是拓扑排序，针对有向无环图做序列化�
 
 `Class customestragy : public GenericScheduler {
   Sunit *pickNode(bool &IsTopNode) override{
+
+```text
     // heuristic alogorithm 
     return GenericScheduler::pickNode(IsTopNode);
   }
+```
+
 }`
 
 - 改变DAG mutation。通常调度之前，已经创建好Data Dependence Grapy，LLVM 在这边提供一个机会可以重新计算Dependence机会。通常列表调度 + 启发式算法，只是尽量让调度结果达到最优解，可能存在某些场景不能覆盖到。看下图，假设节点a到b 和节点 a到c的边距一样，则经过调度之后，产生的指令序列可以是：abcd或者acbd，如果当前你的架构，要求指令a指令完成之后，一定要先执行b，则可以在bc 之间增加mutation

@@ -52,11 +52,19 @@ source_url: https://zhuanlan.zhihu.com/p/64025085
 同时伴生的问题就是代码维护难度增大，代码逻辑一般coder（没错说的就是我了~）不易读懂，我截取一段，咱们大家来感受感受：
 
 `/*
+
+```text
  * Copyright (c) Facebook, Inc. and its affiliates.
  * All rights reserved.
+```
+
  *
+
+```text
  * This source code is licensed under the BSD-style license found in the
  * LICENSE file in the root directory of this source tree.
+```
+
  */
  
 #include 
@@ -276,7 +284,11 @@ v8的int16操作：以int16 的方式加载一个D寄存器的_k0出来，然后
            "instruction  \n"  
            ......  
            "last instruction  \n"  
+
+```text
            );
+```
+
 `
 
 因为汇编代码部分是必需的，所以即使一行汇编代码也没有，也需要传入空字符串（""），否则会报错。
@@ -290,8 +302,12 @@ v8的int16操作：以int16 的方式加载一个D寄存器的_k0出来，然后
 可以再前面的汇编代码模板中直接应用定义的输出操作数和输入操作数，其用法是使用百分号（“%”）后面接一个数字，0表示定义的第一个操作数，1表示定义的第二个操作数，依次类推。
 
 `__asm__ __violate__ ("movl %1,%0"
+
+```text
              : "=r" (result)
              : "m" (input));`
+```
+
 
 这里%0代表后面定义的第一个操作数，即输出操作数，代表C语言中的result变量。%1代表定义的第二个操作数，即输入操作数，代表C语言中的value变量。
 
@@ -320,8 +336,12 @@ GCC中定义了三个修改符，分别是：
 如果想让一个C变量既作为输入操作数，也作为输出操作数的话，可以使用“+”限定符，并且这个操作数只需要在输出操作数列表中列出就行了。例如：
 
 `__asm__("mov %0, %0, ror #1"
+
+```text
         : "+r"(y)
         );`
+```
+
 
 但是GCC的老版本不一定支持“+”修改符，如果也想达到前面的这种输入和输出操作数是一个的目的，可以用一种变通的做法，并且这种变通的做法GCC的新版本也是支持的。其实，在限定符中，也可以使用数字，其作用是指代前面定义的操作数，0代表第一个，1代表第二个，以此类推。例如：
 
@@ -378,6 +398,8 @@ GCC中定义了三个修改符，分别是：
 ::std::vectorfloat> datas_float1(1024*1024*10);
 ::std::vectorfloat> weights(1024*1024*10);
 ::std::vectorfloat> bias(1024*1024*10);
+
+```cpp
 for (int x = 0; x  datas_float0.size(); ++x){
     datas_float0[x] = 1.0;
     datas_float1[x] = 1.0;
@@ -387,36 +409,53 @@ for (int x = 0; x  datas_float0.size(); ++x){
 
 const float* ptr_w = &weights[0];
 const float* ptr_b = &bias[0];
+```
+
 PowerPerf::Mat inMat   = PowerPerf::Mat::from_float_array(&datas_float0[0], 64,64,64);
 PowerPerf::Mat outMat = PowerPerf::Mat::from_float_array(&datas_float1[0], 64,64,64);
 
+```cpp
 int n = inMat.shape.h*inMat.shape.w ;
+```
+
 assert( inMat.shape.h*inMat.shape.w % 4 == 0);
+
+```cpp
 int inch = inMat.shape.c;
 int outw = outMat.shape.w;
 int outh = outMat.shape.h;
 int outch = outMat.shape.c;
+```
+
 
 PowerPerf::EventMonitor cruiser0;
 cruiser0.GET_RawEvent_TICK(setRawEvent);
+
+```cpp
 for(int ii = 0; ii  outch / 4; ++ii){
  int i = ii * 4;
+```
+
 
  PowerPerf::Mat outMat0 = outMat.channel(i);
  PowerPerf::Mat outMat1 = outMat.channel(i + 1);
  PowerPerf::Mat outMat2 = outMat.channel(i + 2);
  PowerPerf::Mat outMat3 = outMat.channel(i + 3);
 
+```text
  const float bias0 = ptr_b[i];
  const float bias1 = ptr_b[i + 1];
  const float bias2 = ptr_b[i + 2];
  const float bias3 = ptr_b[i + 3];
+```
+
 
  outMat0.fill(bias0);
  outMat1.fill(bias1);
  outMat2.fill(bias2);
  outMat3.fill(bias3);
 
+```cpp
  for (int j = 0; j + 3  inch; j+=4){
 
  float* out0 = outMat0;
@@ -434,6 +473,8 @@ for(int ii = 0; ii  outch / 4; ++ii){
  const float* k2 = ptr_w + (i + 2) * inch + j;
  const float* k3 = ptr_w + (i + 3) * inch + j;
  for (int k = 0; k + 3  n; k += 4){
+```
+
  out0[k]     += inch0[k    ]*k0[k] + inch1[k    ]*k0[k + 1] + inch2[k    ]*k0[k + 2] + inch3[k    ]*k0[k + 3];
  out0[k + 1] += inch0[k + 1]*k0[k] + inch1[k + 1]*k0[k + 1] + inch2[k + 1]*k0[k + 2] + inch3[k + 1]*k0[k + 3];
  out0[k + 2] += inch0[k + 2]*k0[k] + inch1[k + 2]*k0[k + 1] + inch2[k + 2]*k0[k + 2] + inch3[k + 2]*k0[k + 3];
@@ -453,9 +494,13 @@ for(int ii = 0; ii  outch / 4; ++ii){
  out3[k + 1] += inch0[k + 1]*k3[k] + inch1[k + 1]*k3[k + 1] + inch2[k + 1]*k3[k + 2] + inch3[k + 1]*k3[k + 3];
  out3[k + 2] += inch0[k + 2]*k3[k] + inch1[k + 2]*k3[k + 1] + inch2[k + 2]*k3[k + 2] + inch3[k + 2]*k3[k + 3];
  out3[k + 3] += inch0[k + 3]*k3[k] + inch1[k + 3]*k3[k + 1] + inch2[k + 3]*k3[k + 2] + inch3[k + 3]*k3[k + 3];
+
+```text
  }
     }
 }
+```
+
 cruiser0.GET_RawEvent_TOCK(setRawEvent);
 `
 

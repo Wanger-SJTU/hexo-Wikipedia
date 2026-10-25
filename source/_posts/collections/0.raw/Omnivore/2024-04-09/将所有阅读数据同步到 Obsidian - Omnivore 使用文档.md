@@ -25,6 +25,7 @@ id: 7b859b52-f6b6-47c9-9215-9c8d8266f8e2
 
 Omnivore 通过 [obsidian-omnivore](https://github.com/omnivore-app/obsidian-omnivore) 与 Obsidian 集成。该插件允许自定义从 Omnivore 同步到 Obsidian 的数据，并控制数据的布局。
 
+```text
 * [特点](#特点)
 * [安装](#安装)
 * [自定义从 Omnivore 同步到 Obsidian 的数据](#自定义从-omnivore-同步到-obsidian-的数据)
@@ -38,13 +39,18 @@ Omnivore 通过 [obsidian-omnivore](https://github.com/omnivore-app/obsidian-omn
 * [将所有文章同步到一个笔记中](#将所有文章同步到一个笔记中)
 * [预定的同步](#预定的同步)
 * [另一种安装 obsidian-omnivore 插件方法](#另一种安装-obsidian-omnivore-插件方法)
+```
+
 
 ## 特点 
 
+```text
 * 导入你的重点和保存的文章
 * 基于 Omnivore 数据创建图表
 * 使用 Omnivore [高级搜索语法搜索](https://omnivore.app/help/search)筛选导入的数据
 * 为导入的数据定制模板
+```
+
 
 ## 安装 
 
@@ -60,9 +66,12 @@ Omnivore 通过 [obsidian-omnivore](https://github.com/omnivore-app/obsidian-omn
 
 Omnivore Obsidian 插件为数据的导入提供了三种选择：
 
+```text
 * 导入我所有的文章：这将导入你保存在 Omnivore 的每一篇文章，以及你添加到文章中的标签（tags）、荧光笔高亮显示和注释。
 * 只导入高亮显示的内容：这将导入你保存的每一篇有荧光笔高亮显示的文章。
 * 高级：这允许您定义一个搜索筛选器来导入。例如，通过使用以下方法只导入新闻简报 `label:Newsletter`.
+```
+
 
 ## 控制导入到 Obsidian 数据的布局 
 
@@ -74,20 +83,27 @@ Mustache 是一种简单且无逻辑的模板语言，它允许你创建易于�
 
 Mustache 标签有几种类型，包括：
 
+```text
 * `{{ variable }}`：渲染一个变量的值。
 * `{{# section }}` ... `{{/ section }}`：渲染模板的一个部分，如果该部分的值为 true，比如一个数组或一个对象。
 * `{{^ inverted section }}` ... `{{/ inverted section }}`：渲染模板的一部分，如果该部分的值为 false 。
 * `{{! comment }}`：为模板添加注释，当模板被渲染时将被忽略。
+```
+
 
 除了基本的 Mustache 标签外，还有几个内置的 Mustache 功能，你可以在你的模板中使用，如：
 
+```text
 * `{{# list }}` ... `{{/ list }}`：为列表中的每篇文章渲染模板的一个部分。
 * `{{^ emptyList }}` ... `{{/ emptyList }}`：如果一个列表不是空的，则渲染模板的一个部分。
 * `{{& variable }}` or `{{{ variable }}}`: 渲染一个变量的值，且不转义为 HTML 字符。
 * `{{> partial }}`：渲染一部分模板，这是一个可重复使用的模板，可以包含在其他模板中。
+```
+
 
 ### 模板中可用的变量 
 
+```text
 * id：文章的 id。这将用作前言中文件的 ID。
 * title：文章的标题。
 * omnivoreUrl：Omnivore 中文章的网址。
@@ -116,6 +132,8 @@ Mustache 标签有几种类型，包括：
    * note：荧光笔高亮显示所附带的注释。  
    * dateHighlighted：荧光笔高亮显示创建的日期，以你喜欢的日期格式表示。  
    * color：荧光笔高亮显示的颜色，例如 `yellow` 。
+```
+
 
 默认模板：
 
@@ -201,10 +219,13 @@ date_published: {{{datePublished}}}
 
 ### 模板中的函数图 
 
+```text
 * lowerCase：将一个字符串转换为小写字母
 * upperCase：将一个字符串转换为大写字母
 * upperCaseFirst：将一个字符串的第一个字符转换为大写字母
 * formatDate：将日期转换为你喜欢的日期格式，例如 `{{#formatDate}}{{dateSaved}},"yyyy-MM-dd"{{/formatDate}}`。
+```
+
 
 在模板中使用一个函数将文章的状态转换为小写字母的例子：
 
@@ -219,6 +240,7 @@ state:: [[{{#lowerCase}}{{state}}{{/lowerCase}}]]
 
 可用的元数据遵循以下命名规范：
 
+```text
 * title
 * author
 * tags
@@ -235,6 +257,8 @@ state:: [[{{#lowerCase}}{{state}}{{/lowerCase}}]]
 * read\_length
 * state
 * date\_archived
+```
+
 
 默认的元数据有`title, author, tags, date_saved, date_published`。
 

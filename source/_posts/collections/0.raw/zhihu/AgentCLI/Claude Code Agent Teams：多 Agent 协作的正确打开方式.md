@@ -105,7 +105,11 @@ Agent Teams 目前还是实验性功能，默认关闭。需要手动开启，�
 `{
   "env": {
     "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1"
+
+```text
   }
+```
+
 }`
 
 或者直接设置 shell 环境变量：

@@ -37,6 +37,8 @@ SVM 的问题就变成：求解一系列满足约束的 alpha 值，使得上面
 point = training point matrix
 
 procedure takeStep(i1,i2)
+
+```js
 	if (i1 == i2) return 0
 	alph1 = Lagrange multiplier for i1
 	y1 = target[i1]
@@ -64,6 +66,8 @@ procedure takeStep(i1,i2)
 			a2 = alph2
 	}
 	if (|a2-alph2| 
+```
+
 
 核心代码很紧凑，就是给定两个 ai, aj 然后迭代出新的 ai, aj 出来，还有一层循环会不停的选择最需要被优化的系数 ai, aj，然后调用这个函数。如何更新权重和 b 变量（threshold）文章里面都有说，再多调试一下，可以用 python 先调试过了，再换成 C/C++，保证得到一个正确可用的 svm 程序，这是后面的基础。
 
@@ -94,7 +98,11 @@ platt 的文章建议是做一个 E 函数的缓存，方便后面选择 i, j �
 所以最好的办法是对 g(x) 进行缓存，platt 的方法里因为所有 alpha 值初始化成了 0，所以 g(x) 一开始就可以全部设置成 0，稍微观察一下 g(x) 的公式，你就会发现，因为去掉了 b 的干扰，而每次 SMO 迭代更新 ai, aj 参数时，这两个值都是线性变化的，所以我们可以给 g(x) 求一个关于 a 的偏导，假设 ai，aj 变化了步长 delta，那么所有样本对应的 g(x) 加上一个 delta 乘以针对 ai, aj 的偏导数就行了，具体代码类似：
 
 `double Kik = kernel(i, k);
+
+```text
 double Kjk = kernel(j, k);
+```
+
 G[k] += delta_alpha_i * Kik * y[i] + delta_alpha_j * Kjk * y[j];
 `
 

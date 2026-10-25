@@ -231,17 +231,23 @@ eval_results = await retriever_evaluator.aevaluate_dataset(qa_dataset)
 
 <strong>Embedding Models</strong>:
 
+```text
 * [OpenAI Embedding](https://platform.openai.com/docs/guides/embeddings)
 * [Voyage Embedding](https://www.voyageai.com/)
 * [CohereAI Embedding](https://txt.cohere.com/introducing-embed-v3/) (v2.0/ v3.0)
 * [Jina Embeddings](https://huggingface.co/jinaai/jina-embeddings-v2-small-en)
 * [BAAI/bge-large-en](https://huggingface.co/BAAI/bge-large-en)
+```
+
 
 <strong>Rerankers</strong>:
 
+```text
 * [CohereAI](https://txt.cohere.com/rerank/)
 * [bge-reranker-base](https://huggingface.co/BAAI/bge-reranker-base)
 * [bge-reranker-large](https://huggingface.co/BAAI/bge-reranker-large)
+```
+
 
 值得一提的是，这些结果提供了对该特定数据集和任务性能的深入了解。 然而，实际结果可能会因数据特征、数据集大小和其他变量（如 chunk\_size、similarity\_top\_k 等）而有所不同。
 

@@ -41,9 +41,13 @@ ExecuTorch 为在边缘设备上部署模型提供了多项强大功能：
 ExecuTorch工作流
 
 demo
+
+```python
 import torch
 from executorch.exir import to_edge_transform_and_lower
 from executorch.backends.xnnpack.partition.xnnpack_partitioner import XnnpackPartitioner
+```
+
 
 # 1. Export your PyTorch model
 model = MyModel().eval()
@@ -69,19 +73,25 @@ outputs = method.execute([torch.randn(1, 3, 224, 224)])
 
 C++
 
-#include  executorch/extension/module/module.h 
-#include  executorch/extension/tensor/tensor.h 
+```cpp
+#include <executorch/extension/module/module.h>
+#include <executorch/extension/tensor/tensor.h>
+```
+
 
 Module module("model.pte");
 auto tensor = make_tensor_ptr({2, 2}, {1.0f, 2.0f, 3.0f, 4.0f});
 auto outputs = module.forward(tensor);
 Swift (iOS)
 
+```python
 import ExecuTorch
 
 let module = Module(filePath: "model.pte")
 let input = Tensor Float ([1.0, 2.0, 3.0, 4.0], shape: [2, 2])
 let outputs = try module.forward(input)
+```
+
 Kotlin (Android)
 
 val module = Module.load("model.pte")
@@ -108,26 +118,41 @@ C++
 
 auto runner = create_llama_runner("llama.pte", "tiktoken.bin");
 executorch::extension::llm::GenerationConfig config{
+
+```text
     .seq_len = 128, .temperature = 0.8f};
+```
+
 runner- generate("Hello, how are you?", config);
 Swift (iOS)
 
+```python
 import ExecuTorchLLM
 
 let runner = TextRunner(modelPath: "llama.pte", tokenizerPath: "tiktoken.bin")
+```
+
 try runner.generate("Hello, how are you?", Config {
     $0.sequenceLength = 128
 }) { token in
+
+```python
     print(token, terminator: "")
 }
+```
+
 Kotlin (Android) — API Docs • Demo App
 
 val llmModule = LlmModule("llama.pte", "tiktoken.bin", 0.8f)
 llmModule.load()
 llmModule.generate("Hello, how are you?", 128, object : LlmCallback {
+
+```text
     override fun onResult(result: String) { print(result) }
     override fun onStats(stats: String) { }
 })
+```
+
 
 支持的硬件平台
 PlatformSupported BackendsAndroidXNNPACK, Vulkan, Qualcomm, MediaTek, Samsung ExynosiOSXNNPACK, MPS, CoreML (Neural Engine)Linux / WindowsXNNPACK, OpenVINO, CUDA (experimental)macOSXNNPACK, MPS, Metal (experimental)Embedded / MCUXNNPACK, ARM Ethos-U, NXP, Cadence DSP

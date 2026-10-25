@@ -41,6 +41,8 @@ $$- 背景补充：softmax 在计算 exp 时，为了数值稳定，需要减去
 - 减去最大值需要在 cuda core 操作，由于最大值的变化，频繁的更新数据会带来较大的计算开销。而该操作其实是为了数值稳定，直观上如果最大值的变化没有大到会影响数值稳定，那么就可以不用更新，这样可以减少计算。FA4 正是利用了这个思想，通过这种方式，可以将更新的计算减少 10 倍。
 - FA4 中具体的实现：
 `@cute.jit
+
+```python
 def update_row_max(self, acc_S_row: cute.TensorSSA, is_first: int) -> Tuple[Float32, Float32]:
     if cutlass.const_expr(is_first):
         row_max_new = self._compute_row_max(acc_S_row)
@@ -59,6 +61,8 @@ def update_row_max(self, acc_S_row: cute.TensorSSA, is_first: int) -> Tuple[Floa
                 acc_scale = 1.0
     self.row_max[0] = row_max_new
     return row_max_safe, acc_scale`
+```
+
 
 #### exp 近似加速
 
@@ -95,6 +99,8 @@ f(r)和g(r)在[0,1]之内几乎重合
 - 可以将 g(r)变为 3 个乘加操作（FMA，即(((c3 * r) + c2) * r + c1) * r + c0 ），对应如下代码的 65-67 行。
 
 `@cute.jit
+
+```python
 def apply_exp2_convert(
     self,
     acc_S_row: cute.Tensor,
@@ -103,7 +109,11 @@ def apply_exp2_convert(
     e2e_freq: cutlass.Constexpr[int] = 16,
     e2e_res: cutlass.Constexpr[int] = 4,
     e2e_frg_limit: cutlass.Constexpr[int] = 1,
+```
+
 ):
+
+```text
     assert cute.size(acc_S_row.shape) % 2 == 0, 「acc_S_row must have an even number of elements」
     frg_tile = 32
     assert frg_tile % 2 == 0
@@ -129,9 +139,13 @@ def apply_exp2_convert(
         acc_S_row_converted_frg[None, j].store(
             acc_S_row_frg[None, j].load().to(acc_S_row_converted.element_type)
         )
+```
+
 
 #code in flash_attn/cute/utils.py
 @dsl_user_op
+
+```python
 def e2e_asm2(x: Float32, y: Float32, *, loc=None, ip=None) -> Tuple[Float32, Float32]:
     out_f32x2 = llvm.inline_asm(
         llvm.StructType.get_literal([T.f32(), T.f32()]),
@@ -176,6 +190,8 @@ def e2e_asm2(x: Float32, y: Float32, *, loc=None, ip=None) -> Tuple[Float32, Flo
     out0 = Float32(llvm.extractvalue(T.f32(), out_f32x2, [0], loc=loc, ip=ip))
     out1 = Float32(llvm.extractvalue(T.f32(), out_f32x2, [1], loc=loc, ip=ip))
     return out0, out1
+```
+
 `
 
 ### 工程优化

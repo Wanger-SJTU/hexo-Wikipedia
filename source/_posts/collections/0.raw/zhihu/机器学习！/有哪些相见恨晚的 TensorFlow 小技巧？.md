@@ -23,9 +23,13 @@ source_url: https://www.zhihu.com/question/268375146/answer/339110449
 - 尽量不开 placeholder，从读取文件，parse 到写 loss，都交给 tensorflow，整个过程都用写进 graph 里面，调用高层抽象 estimator 会自动给 graph 分配资源，如果自己很有信心也可以自己写 device 信息到每个 op 上，不过一般没必要。
 - 经常搞各种乱七八糟的 word2vec ，以前笨的时候，要在非 tf 框架下映射好 id，然后写 pair，然后存文件训练，文件几百 G 的话，做起来炒鸡麻烦。。特么要天天这么搬砖累死人。其实 tf 高层抽象用得好，可以直接读文件，hash 映射，做 pair，一路写到 loss 不带眨眼，不到100行代码可以解决任意任意 csv 格式文件的 embedding  训练问题，还支持 hadoop 上读取，这就炒鸡方便了。
 `import tensorflow as tf
+
+```python
 from tensorflow.contrib.lookup import HashTable
 from tensorflow.contrib.lookup import TextFileIdTableInitializer
 from tensorflow.contrib.lookup import IdTableWithHashBuckets
+```
+
 
 # files looks like: key a b c\n ...
 dataset = tf.data.TextLineDataset(files)
@@ -55,11 +59,15 @@ targets = tf.transpose(targets)[:, 0:n]
 
 embedding = tf.nn.embedding_lookup(tf.Variable(init_emb>), feature)
 loss = tf.nn.nce_loss(
+
+```text
     weights=tf.Variable(init_weight>),
     biases=tf.Variable(init_bias>),
     labels=targets,
     inputs=embedding
 )
+```
+
 `
 
 - 指定调某几层 weight 的学习率，没必要构造 learning-rate placeholder，每个 layer 写个 lr-multipler，如下。

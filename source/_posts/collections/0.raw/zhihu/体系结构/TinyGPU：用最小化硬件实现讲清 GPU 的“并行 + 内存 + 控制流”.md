@@ -34,6 +34,8 @@ source_url: https://zhuanlan.zhihu.com/p/2001389056492319761
 下面这段译码器定义展示了指令 opcode（便于对照 ISA 图与测试用例中的二进制程序）：
 
 `localparam NOP = 4'b0000,
+
+```text
         BRnzp = 4'b0001,
         CMP = 4'b0010,
         ADD = 4'b0011,
@@ -44,10 +46,14 @@ source_url: https://zhuanlan.zhihu.com/p/2001389056492319761
         STR = 4'b1000,
         CONST = 4'b1001,
         RET = 4'b1111;`
+```
+
 
 执行控制上，Core 被拆成固定阶段：<strong>FETCH → DECODE → REQUEST → WAIT → EXECUTE → UPDATE</strong>。其中最能体现 GPU 难点的是 <strong>WAIT</strong>：`LDR/STR` 通过 LSU 发起异步访问，调度器需要等待所有线程的 LSU 都不再处于请求/等待态，才能进入执行阶段：
 
 `// SCHEDULER
+
+```sql
 // > Manages the entire control flow of a single compute core processing 1 block
 // 1. FETCH - Retrieve instruction at current program counter (PC) from program memory
 // 2. DECODE - Decode the instruction into the relevant control signals
@@ -57,6 +63,8 @@ source_url: https://zhuanlan.zhihu.com/p/2001389056492319761
 // 6. UPDATE - Update register values (including NZP register) and program counter
 // > Each core has it's own scheduler where multiple threads can be processed with
 //   the same control flow at once.`
+```
+
 
 #### 技术重难点分析（以及 TinyGPU 的“教学型取舍”）
 
@@ -185,11 +193,15 @@ TinyGPU 把每条指令拆成固定阶段（`scheduler.sv`）：
 设备控制寄存器 `dcr.sv` 只做一件事：在 `device_control_write_enable` 为 1 时，把 8-bit `device_control_data` 写入寄存器，并输出为 `thread_count`：
 
 `reg [7:0] device_conrol_register;
+
+```text
     assign thread_count = device_conrol_register[7:0];
 
     always @(posedge clk) begin
         if (reset) begin
             device_conrol_register 
+```
+
 
 ### 2) 外部内存如何被“接入”：`controller.sv` 的通道
 
@@ -221,7 +233,11 @@ Dispatcher 的职责就是把总线程数切块，并把 block 分配给空闲 c
 `dispatch.sv` 用整除实现向上取整：
 
 `wire [7:0] total_blocks;
+
+```text
     assign total_blocks = (thread_count + THREADS_PER_BLOCK - 1) / THREADS_PER_BLOCK;`
+```
+
 
 #### 3.2 对 core 的“启动包”包含什么
 
@@ -243,6 +259,8 @@ Dispatcher 的职责就是把总线程数切块，并把 block 分配给空闲 c
 Scheduler 是整个 Core 的“拍点”（每拍推进哪个阶段）。状态定义：
 
 `localparam IDLE = 3'b000,
+
+```sql
         FETCH = 3'b001,
         DECODE = 3'b010,
         REQUEST = 3'b011,
@@ -250,6 +268,8 @@ Scheduler 是整个 Core 的“拍点”（每拍推进哪个阶段）。状态�
         EXECUTE = 3'b101,
         UPDATE = 3'b110,
         DONE = 3'b111;`
+```
+
 
 #### 5.1 关键工程点：阶段与各模块在哪一拍工作
 
@@ -294,9 +314,13 @@ ALU 在 `decoded_alu_output_mux==1` 时把比较结果编码进 `alu_out[2:0]`�
 PC 单元在 EXECUTE 阶段，根据 `(nzp & decoded_nzp)` 决定跳转到 `decoded_immediate` 还是 `current_pc+1`：
 
 `if (core_state == 3'b101) begin 
+
+```text
                 if (decoded_pc_mux == 1) begin 
                     if (((nzp & decoded_nzp) != 3'b0)) begin 
                         next_pc 
+```
+
 
 #### 7.3 简化：不支持 branch divergence（所有线程 PC 收敛）
 

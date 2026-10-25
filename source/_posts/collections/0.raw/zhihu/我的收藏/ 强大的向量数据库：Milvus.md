@@ -70,8 +70,12 @@ services:
     container_name: milvus-etcd
     image: quay.io/coreos/etcd:v3.5.0
     volumes:
+
+```text
       - ${DOCKER_VOLUME_DIRECTORY:-.}/volumes/etcd:/etcd
     command: etcd -advertise-client-urls=http://127.0.0.1:2379 -listen-client-urls http://0.0.0.0:2379 --data-dir /etcd
+```
+
 
   minio:
     container_name: milvus-minio
@@ -80,6 +84,8 @@ services:
       MINIO_ACCESS_KEY: minioadmin
       MINIO_SECRET_KEY: minioadmin
     volumes:
+
+```text
       - ${DOCKER_VOLUME_DIRECTORY:-.}/volumes/minio:/minio_data
     command: minio server /minio_data
     healthcheck:
@@ -87,6 +93,8 @@ services:
       interval: 30s
       timeout: 20s
       retries: 3
+```
+
 
   standalone:
     container_name: milvus-standalone
@@ -96,12 +104,16 @@ services:
       ETCD_ENDPOINTS: etcd:2379
       MINIO_ADDRESS: minio:9000
     volumes:
+
+```text
       - ${DOCKER_VOLUME_DIRECTORY:-.}/volumes/milvus:/var/lib/milvus
     ports:
       - "19530:19530"
     depends_on:
       - "etcd"
       - "minio"
+```
+
 
 networks:
   default:
@@ -144,6 +156,7 @@ collection必须要有一个field是主键，一个field是存储向量，另外
 
 `field_name = "example_field"
 
+```python
 def create_collection():
     """
     创建集合collection
@@ -163,6 +176,8 @@ def create_collection():
     print(pymilvus_orm.utility.get_connection().list_collections())
 
     return collection`
+```
+
 
 collection还可以将数据存储在不同的分区。默认是有一个"Default partition"的分区，不指定分区的话，都会存储在default分区。
 
@@ -172,12 +187,16 @@ collection还可以将数据存储在不同的分区。默认是有一个"Defaul
     :param collection:
     :return:
     """
+
+```python
     partition_name = "example_partition"
     partition = collection.create_partition(partition_name)
 
     print(collection.partitions)
 
     print(collection.has_partition(partition_name))`
+```
+
 
 ### 插入数据
 
@@ -194,12 +213,16 @@ collection还可以将数据存储在不同的分区。默认是有一个"Defaul
     :return:
     """
     # 由于主键field_id设置自增，所以无需插入
+
+```python
     mr = collection.insert([
         # 只能是list
         np.random.random([10000, 8]).tolist(),  # 向量
         np.random.randint(0, 10, [10000]).tolist()  # cat_id
     ], partition_name=partition_name)
     print(mr.primary_keys)
+```
+
 
     # 插入的数据存储在内存，需要传输到磁盘
     pymilvus_orm.utility.get_connection().flush([collection.name])`
@@ -218,6 +241,8 @@ collection还可以将数据存储在不同的分区。默认是有一个"Defaul
     :param collection:
     :return:
     """
+
+```python
     index_param = {
         "metric_type": "L2",
         "index_type": "IVF_FLAT",
@@ -225,6 +250,8 @@ collection还可以将数据存储在不同的分区。默认是有一个"Defaul
     }
     collection.create_index(field_name=field_name, index_params=index_param)
     print(collection.index().params)`
+```
+
 
 ### 查询
 
@@ -244,6 +271,8 @@ collection还可以将数据存储在不同的分区。默认是有一个"Defaul
     :return:
     """
     # 将collection加载到内存
+
+```python
     collection.load()
     search_params = {"metric_type": "L2", "params": {"nprobe": 10}}
     # 向量搜索
@@ -252,13 +281,19 @@ collection还可以将数据存储在不同的分区。默认是有一个"Defaul
                                partition_names=[partition_name] if partition_name else None)
     print(result[0].ids)
     print(result[0].distances)
+```
+
 
     # 表达式：只检索cat_id为2的向量
+
+```python
     result = collection.search(data=np.random.random([5, 8]).tolist(),
                                anns_field=field_name, param=search_params, limit=10,
                                expr="cat_id==2")
     print(result[0].ids)
     print(result[0].distances)`
+```
+
 
 ### 删除数据
 
@@ -266,11 +301,15 @@ collection还可以将数据存储在不同的分区。默认是有一个"Defaul
 
 `def drop(collection: Collection):
     # 删除collection
+
+```text
     collection.drop()
     # 删除索引
     collection.drop_index()
     # 删除分区
     collection.drop_partition("partition_name")`
+```
+
 
 ### 释放
 

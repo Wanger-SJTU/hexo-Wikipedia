@@ -29,6 +29,7 @@ source_url: https://zhuanlan.zhihu.com/p/369780094
 
 `#coding=utf-8
 
+```python
 import os
 
 def cal(a, b, c):
@@ -37,12 +38,15 @@ def cal(a, b, c):
     return res
 
 print(cal(1.0, 2.0, 3.0))
+```
+
 `
 
 输出结果是9.0。然后我们使用tf1.31.1同样来实现这个过程：
 
 `import tensorflow as tf
 
+```python
 def cal(a, b, c):
     add_op = a + b
     print(add_op)
@@ -50,11 +54,13 @@ def cal(a, b, c):
 
     init = tf.global_variables_initializer()
     sess = tf.Session()
-    
+
     sess.run(init)
     mul_op_res = sess.run([mul_op])
 
     return mul_op_res
+```
+
 
 a = tf.constant(1.0)
 b = tf.constant(2.0)
@@ -175,6 +181,8 @@ tf.while_loop可以实现循环控制流解决RNN这种计算图结构的控制�
 在Pytorch这种动态图框架中，支持直接在Python端写Control Flow，并且可以将这些控制逻辑放到计算图中。这里以TorchScript为例，当我们尝试将Pytorch模型转为TorchScript时，有两种方式，一种是trace，另外一种是script。对于trace模式，适合Python层没有Control Flow的计算图，举例如下：
 
 `#coding=utf-8
+
+```python
 import torch
 import torch.nn as nn
 
@@ -185,6 +193,8 @@ class MyModule(nn.Module):
     def forward(self,x):
        x = self.conv1(x)
        return x
+```
+
 
 model = MyModule()  # 实例化模型
 trace_module = torch.jit.trace(model,torch.rand(1,1,224,224)) 
@@ -197,13 +207,19 @@ print(output)
 打印`trace_module`的代码可以看到：
 
 `def forward(self,
+
+```text
     input: Tensor) -> Tensor:
   return (self.conv1).forward(input, )
+```
+
 `
 
 而script模式则适用于计算图在Python层有Control Flow的情况，比如：
 
 `#coding=utf-8
+
+```python
 import torch
 import torch.nn as nn
 
@@ -220,6 +236,8 @@ class MyModule(nn.Module):
         else:
             x = self.conv2(x)
         return x
+```
+
 
 model = MyModule()
 
@@ -236,6 +254,8 @@ output = script_module(torch.rand(1,1,224,224))
 打印`script_module`的代码可以看到TorchScript模型包含了在上面Python层定义的Control Flow：
 
 `def forward(self,
+
+```text
     x: Tensor) -> Tensor:
   b, c, h, w, = torch.size(x)
   if torch.eq(c, 1):
@@ -243,6 +263,8 @@ output = script_module(torch.rand(1,1,224,224))
   else:
     x0 = (self.conv2).forward(x, )
   return x0
+```
+
 `
 
 然后我们来实验一下将上面带有Control Flow的Module导出ONNX，这里以Pytorch官方文档提供的一个带循环的Control Flow的示例为例：
@@ -251,11 +273,14 @@ output = script_module(torch.rand(1,1,224,224))
 
 # Trace-based only
 
+```python
 class LoopModel(torch.nn.Module):
     def forward(self, x, y):
         for i in range(y):
             x = x + i
         return x
+```
+
 
 model = LoopModel()
 dummy_input = torch.ones(2, 3, dtype=torch.long)
@@ -277,6 +302,8 @@ torch.onnx.export(model, (dummy_input, loop_count), 'loop.onnx', verbose=True)
 # Mixing tracing and scripting
 
 @torch.jit.script
+
+```python
 def loop(x, y):
     for i in range(int(y)):
         x = x + i
@@ -285,6 +312,8 @@ def loop(x, y):
 class LoopModel2(torch.nn.Module):
     def forward(self, x, y):
         return loop(x, y)
+```
+
 
 model = LoopModel2()
 dummy_input = torch.ones(2, 3, dtype=torch.long)

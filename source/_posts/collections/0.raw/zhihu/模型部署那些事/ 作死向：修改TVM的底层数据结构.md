@@ -30,6 +30,8 @@ source_url: https://zhuanlan.zhihu.com/p/151265644
 首先把`3rdparty/dlpack/include/dlpack/dlpack.h`的`DLDataType::lanes`改为`int32_t`（顺便把code和bits也都改成`uint16_t`，这样可以构成一个64-bits的packed-struct，方便跨域的传输）。
 
 `typedef struct {
+
+```text
   /*!
    * \brief Type code of base types.
    * We keep it uint8_t instead of DLDataTypeCode for minimal memory
@@ -42,6 +44,8 @@ source_url: https://zhuanlan.zhihu.com/p/151265644
   uint16_t bits; // MARK
   /*! \brief Number of lanes in the type, used for vector types. */
   int32_t lanes; // MARK
+```
+
 } DLDataType;
 `
 
@@ -50,6 +54,8 @@ source_url: https://zhuanlan.zhihu.com/p/151265644
 - `include/tvm/runtime/data_type.h:75`:
 
 `DataType(int code, int bits, int lanes) {
+
+```text
     data_.code = static_castuint16_t>(code); // MARK
     data_.bits = static_castuint16_t>(bits); // MARK
     data_.lanes = static_castint32_t>(lanes); // MARK
@@ -57,6 +63,8 @@ source_url: https://zhuanlan.zhihu.com/p/151265644
         CHECK_EQ(bits, 16);
     }
 }
+```
+
 `
 
 - `include/tvm/runtime/serializer.h:41,46`:
@@ -65,13 +73,21 @@ source_url: https://zhuanlan.zhihu.com/p/151265644
   Handleruint16_t>::Write(strm, dtype.code); // MARK
   Handleruint16_t>::Write(strm, dtype.bits); // MARK
   Handlerint32_t>::Write(strm, dtype.lanes); // MARK
+
+```text
 }
+```
+
 inline static bool Read(Stream* strm, DLDataType* dtype) {
+
+```text
     if (!Handleruint16_t>::Read(strm, &(dtype->code))) return false; // MARK
     if (!Handleruint16_t>::Read(strm, &(dtype->bits))) return false; // MARK
     if (!Handlerint32_t>::Read(strm, &(dtype->lanes))) return false; // MARK
     return true;
 }
+```
+
 `
 
 #### Cython相关
@@ -89,8 +105,12 @@ inline static bool Read(Stream* strm, DLDataType* dtype) {
 - `python/tvm/_ffi/runtime_ctypes.py:64`:
 
 `_fields_ = [("type_code", ctypes.c_uint16), # MARK
+
+```text
             ("bits", ctypes.c_uint16), # MARK
             ("lanes", ctypes.c_int32)] # MARK
+```
+
 `
 
 #### LLVM生成的Host端代码
@@ -120,11 +140,15 @@ fun(a, b)
 
 `  type_err_msg  arg_name  ".dtype is expected to be "  dtype;
   PrimExpr cond = (TVMArrayGet(DataType::UInt(16), handle, intrinsic::kArrTypeCode) ==
+
+```text
                        IntImm(DataType::UInt(16), dtype.code()) && // MARK
                    TVMArrayGet(DataType::UInt(16), handle, intrinsic::kArrTypeBits) ==
                        IntImm(DataType::UInt(16), dtype.bits()) && // MARK
                    TVMArrayGet(DataType::Int(32), handle, intrinsic::kArrTypeLanes) ==
                        IntImm(DataType::Int(32), dtype.lanes())); // MARK
+```
+
 `
 
 但是这样修改一下，甚至连`tvm.build`都运行不了了，在LLVM/CPU代码生成（Host端代码生成）时会出问题。这里困惑了我很久，之后我把`arg_binder.cc`的修改取消后，查看了一下生成的LLVM IR才发现问题：
@@ -149,12 +173,20 @@ t_tvm_context_ = llvm::StructType::create({t_int_, t_int_});
 t_tvm_type_ = llvm::StructType::create({t_int16_, t_int16_, t_int32_}); // MARK
 t_tvm_func_handle_ = t_void_p_;
 t_tvm_array_ = llvm::StructType::create({t_void_p_, t_tvm_context_, t_int_, t_tvm_type_,
+
+```text
                                          t_tvm_shape_index_->getPointerTo(),
                                          t_tvm_shape_index_->getPointerTo(), t_int64_});
+```
+
 t_tvm_value_ = llvm::StructType::create({t_float64_});
 t_tvm_parallel_group_env_ = llvm::StructType::create({t_int32_->getPointerTo(), t_int32_});
 ftype_tvm_parallel_lambda_ = llvm::FunctionType::get(
+
+```text
     t_int_, {t_int_, t_tvm_parallel_group_env_->getPointerTo(), t_void_p_}, false);
+```
+
 md_tbaa_ctx_ptr_ = md_builder_->createTBAAScalarTypeNode("ctx_ptr", md_tbaa_root_);
 `
 
@@ -165,20 +197,28 @@ md_tbaa_ctx_ptr_ = md_builder_->createTBAAScalarTypeNode("ctx_ptr", md_tbaa_root
 过了一段时间，用autotvm的时候又出了问题，根据报错信息溯源，问题似乎出在tvm的RPC模块，想必是跟`DLDataType`的数据读写有关。在RPC部分（`src/runtime/rpc/`）搜索`DLDataType`和`kTVMDataType`，很快就发现了问题源头，在`src/runtime/rpc/rpc_protocol:225,344`：
 
 `case kTVMDataType: {
+
+```text
     channel->Write(value.v_type);
     // padding
     int32_t padding = 0;
     channel->template Writeint32_t>(padding); // MARK
     break;
 }
+```
+
 `
 
 `case kTVMDataType: {
+
+```text
     channel->Read(&(value.v_type));
     int32_t padding = 0;
     channel->template Readint32_t>(&padding); // MARK
     break;
 }
+```
+
 `
 
 这里tvm传输`TVMValue`需要凑齐8字节，而它“知道”`DLDataType`的大小为4字节（又是一处擅自假设`DLDataType`的结构与大小的代码），所以再额外读/写了4字节的padding。这里我们直接吧padding部分删掉就行了（因为之前把`DLDataType`改成了一个8字节的packed-struct）。

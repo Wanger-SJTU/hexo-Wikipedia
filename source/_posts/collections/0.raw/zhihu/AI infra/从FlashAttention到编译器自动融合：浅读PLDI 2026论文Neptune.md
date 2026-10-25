@@ -40,8 +40,12 @@ z = relu(x) + 1
 score = QK^T / sqrt(d)
 P = softmax(score)
 O = P@V
+
+```text
 // 展开一点就是
 /*
+```
+
 1. QK^T: 矩阵乘法，得到attention score
 2. scale / mask / bias: 对score做elementwise修改
 3. softmax：对每一行做归一化
@@ -72,8 +76,12 @@ row 1: [6, 5, 7, 3]
 
 # s_max: 每一行求最大值
 for i in range(2):
+
+```text
     for j in range(4):
         xmax[i] = max(xmax[i], inp[i, j])
+```
+
 
 # s_exp: 每个元素减去行最大值后取 exp
 for i, j in grid(2, 4):
@@ -91,10 +99,14 @@ exp(2 - 2)  = e^0 = 1
 正确的xsum[0]是`e^-2 + e^-1 + e^-3 + 1` 。对应Fig. 1(a)和Fig. 1(d)。那为什么naive fusion会得到错误的结果呢？既然我们想fusion，一个自然想法就是把三段loop合成一段：
 
 for i in range(2):
+
+```text
     for j in range(4):
         xmax[i] = max(xmax[i], inp[i, j])
         xexp[i, j] = exp(inp[i, j] - xmax[i])
         xsum[i] += xexp[i, j]
+```
+
 
 这就是Fig. 1(b)里的naive fusion。但是它是错误的，因为在第 j 次迭代时，xmax[i] 只是目前看到的最大值，不是整行最终最大值。还是看第 0 行[0, 1, -1, 2]，j=0时当前只看到[0]，所以：
 
@@ -107,22 +119,34 @@ xexp = exp(0 - 0) = 1
 在softmax例子里，问题是前面的`xsum`是基于`old_max`算的，但现在`max`更新成了`new_max`。那么我们需要把旧的partial sum从`old_max`的坐标系转换到`new_max`的坐标系。修正公式是：
 
 new_sum =
+
+```text
     exp(old_max - new_max) * old_sum
   + exp(x - new_max)
+```
+
 也就是Fig. 1(c)里的代码：
 
 for i in range(2):
+
+```text
     xmax_0[i] = -inf
 
     for j in range(4):
         # 当前 max
         xmax_1[i] = max(xmax_0[i], inp[i, j])
+```
+
 
         # 修正旧 xsum，再加入当前项
+
+```text
         xsum[i] = (
             exp(xmax_0[i] - xmax_1[i]) * xsum[i]
             + exp(inp[i, j] - xmax_1[i])
         )
+```
+
 
         # 更新 old max
         xmax_0[i] = xmax_1[i]
@@ -239,9 +263,13 @@ Rolling Update的算法步骤
 第二步Naive Loop Fusion。Neptune 先故意做 naive fusion：
 
 for i in range(2):
+
+```text
     for j in range(4):
         xmax[i] = max(xmax[i], inp[i,j])
         xsum[i] += exp(inp[i,j] - xmax[i])
+```
+
 这个程序暂时是错的，但它给了Neptune一个可以repair的结构。
 
 第三步匹配`f`和`g` 。Neptune 从 fused loop 里识别出`xsum[i] = xsum[i] + exp(inp[i,j] - xmax[i])`，于是得到`f = + g(r, c) = exp(c - r) `。
@@ -286,19 +314,31 @@ chunk 0:
 
 local_max_0 = max(0, 1) = 1
 local_sum_0 =
+
+```text
     exp(0 - 1) + exp(1 - 1)
   = e^-1 + 1 
+```
+
 chunk 1:
 
 local_max_1 = max(-1, 2) = 2
 local_sum_1 =
+
+```text
     exp(-1 - 2) + exp(2 - 2)
   = e^-3 + 1
+```
+
 然后全局最大值：
 
 global_max = max(local_max_0, local_max_1)
+
+```text
            = max(1, 2)
            = 2
+```
+
 现在的问题是，`local_sum_0` 是基于 `local_max=1` 算的，但最终应该基于 `global_max=2`。所以要修正`local_sum_0_repaired = exp(local_max_0 - global_max) * local_sum_0`，也就是`(e^-1 + 1) * exp(1 - 2) = e^-2 + e^-1 `。chunk 1的local max等于global max，所以`local_sum_1_repaired = exp(2 - 2) * (e^-3 + 1) = e^-3 + 1 `，最后合并`global_sum = e^-2 + e^-1 + e^-3 + 1 `，正确。Fig. 3展示的就是这个程序结构：
 
 # local reductions
@@ -314,12 +354,20 @@ sum_g[i] += exp(max_l[i,j0] - max_g[i]) * sum_l[i,j0]
 可以这样理解，rolling update一边扫描一边修正旧 partial result，适合 prefill，局部性好，但 rolling 维并行性较差。split-k update先并行算多个 local partial result，再把 local 坐标系修正到 global 坐标系，适合 decoding，可以制造更多并行度。两者使用的是同一个核心`h(t, r, r&#39;)`，只不过:
 
 rolling update:
+
+```text
     r = old_max
     r&#39; = new_max
+```
+
 
 split-k update:
+
+```text
     r = local_max
     r&#39; = global_max 
+```
+
 所以 Neptune 把 FA 和 FD 背后的核心算法统一到了同一个 break-and-repair 框架里。
 
 六、Neptune的系统架构
@@ -352,8 +400,12 @@ decompose_reduction(...)
 Template-Guided Optimizer 会把 tensor expression 先转换成 <strong>loop-scalar IR</strong>。所谓 loop-scalar IR，就是普通的 loop nest + scalar expression。例如：
 
 for i in range(N):
+
+```text
     for j in range(M):
         xsum[i] += exp(inp[i,j] - xmax[i])
+```
+
 这个层次适合做loop fusion；rolling update；split-k update；reduction fusion；algebraic repair，因为它能清楚的看到循环结构；reduction变量；依赖关系；标量表达式。Neptune 的两个核心 transformation：rolling update 和 split-k update就是在这个层次完成的。
 
 八、Neptune支持哪些算子

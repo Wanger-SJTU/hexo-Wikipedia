@@ -40,6 +40,7 @@ DSA在MLA(Multi-Head Latent Attention)的基础上多了下图中红色框的模
 
 ![](https://pica.zhimg.com/v2-73d1f09795ee5ffef2ccb4029b2471be_r.jpg)使用DeepSeekV3.2 671B配置的参数：
 
+```text
 {
     &#34;vocab_size&#34;: 129280,
     &#34;dim&#34;: 7168,
@@ -66,6 +67,8 @@ DSA在MLA(Multi-Head Latent Attention)的基础上多了下图中红色框的模
     &#34;index_head_dim&#34;: 128,
     &#34;index_topk&#34;: 2048
 }
+```
+
 其中Indexer模块相关的参数：index_n_heads、index_head_dim、index_topk。以Prefill模式为例(序列长度为4096)，把Indexer加入细节后如下：
 
 ![](https://pic1.zhimg.com/v2-26c45155749feb57795e7a40f87d1ca0_r.jpg)
@@ -219,6 +222,8 @@ query序列长度为：q_seq_len； 序列总长度为：c_seq_len,
 - ke：list(range(c_seq_len_0 - q_seq_len_0), c_seq_len_0  , 1) +...
 附2：MLA+Indexer的简单版
 # 地址： https://huggingface.co/deepseek-ai/DeepSeek-V3.2-Exp/blob/main/inference/model.py
+
+```python
 class Indexer(torch.nn.Module):
     def __init__(self, args: ModelArgs):
         super().__init__()
@@ -345,8 +350,12 @@ class MLA(nn.Module):
             k_nope, v = torch.split(kv, [self.qk_nope_head_dim, self.v_head_dim], dim=-1)
             k = torch.cat([k_nope, k_pe.expand(-1, -1, self.n_local_heads, -1)], dim=-1)
             scores = torch.einsum(&#34;bshd,bthd->bsht&#34;, q.float(), k.float()) * self.softmax_scale
+```
+
 
             # indexer
+
+```text
             topk_indices = self.indexer(x, qr, start_pos, freqs_cis, mask)
             index_mask = torch.full((bsz, seqlen, seqlen), float(&#34;-inf&#34;), device=x.device).scatter_(-1, topk_indices, 0)
             index_mask += mask
@@ -362,8 +371,12 @@ class MLA(nn.Module):
             q_nope = torch.einsum(&#34;bshd,hdc->bshc&#34;, q_nope, wkv_b[:, :self.qk_nope_head_dim])
             scores = (torch.einsum(&#34;bshc,btc->bsht&#34;, q_nope.float(), self.kv_cache[:bsz, :end_pos].float()) +
                       torch.einsum(&#34;bshr,btr->bsht&#34;, q_pe.float(), self.pe_cache[:bsz, :end_pos].float())) * self.softmax_scale
+```
+
 
             # indexer
+
+```text
             topk_indices = self.indexer(x, qr, start_pos, freqs_cis, mask)
             index_mask = torch.full((bsz, 1, end_pos), float(&#34;-inf&#34;), device=x.device).scatter_(-1, topk_indices, 0)
             scores += index_mask.unsqueeze(2)
@@ -373,6 +386,8 @@ class MLA(nn.Module):
             x = torch.einsum(&#34;bshc,hdc->bshd&#34;, x, wkv_b[:, -self.v_head_dim:])
         x = self.wo(x.flatten(2))
         return x
+```
+
 参考内容：
 
 - [https://github.com/deepseek-ai/DeepSeek-V3.2-Exp/blob/main/DeepSeek_V3_2.pdf](https://link.zhihu.com/?target=https%3A//github.com/deepseek-ai/DeepSeek-V3.2-Exp/blob/main/DeepSeek_V3_2.pdf)

@@ -22,9 +22,13 @@ source_url: https://zhuanlan.zhihu.com/p/609483844
 首先需要实现高层IR的Index Mapping进行Infer Bounds, 这里我导入一个已经实现好的卷积的BoundsInfer. 
 
 `from TracedArray import TarcedArray, GlobalHierarchy
+
+```python
 from Conv2dBoundsInfer import Conv2dBoundsInfer, Segments
 import torch
 import numpy as np
+```
+
 
 Infer = Conv2dBoundsInfer(in_channels=2048, out_channels=512, kernel_size=1, groups=1, bias=True, padding=(
     0, 0), stride=(1, 1), dilation=(1, 1), intput_shape=(1, 2048, 56, 56), test=False)`
@@ -35,6 +39,7 @@ Infer = Conv2dBoundsInfer(in_channels=2048, out_channels=512, kernel_size=1, gro
 
 `L2SIZE = 1536 * 1024 #
 
+```python
 def demo1(imageArr: np.ndarray, weightArr: np.ndarray, outputArr: np.ndarray, targetOutput: np.ndarray):
   image = TarcedArray(imageArr)
   weight = TarcedArray(weightArr)
@@ -51,11 +56,16 @@ def demo1(imageArr: np.ndarray, weightArr: np.ndarray, outputArr: np.ndarray, ta
             imageTile = image[Infer.get_input_segment(b, oc, oh, ow)]
             weightTile = weight[Infer.get_w_segment(oc)]
             outputTile += np.sum((imageTile * weightTile), keepdims=True)
+```
+
 
   assert (np.allclose(output._array, targetOutput, atol=1e-5))
 
+```python
   print("demo1 total loaded :", GlobalHierarchy.TotalLoaded)
   GlobalHierarchy.Reset()
+```
+
 
 demo1 total loaded : 6578274304`
 
@@ -72,6 +82,7 @@ demo1 total loaded : 6578274304`
 `CORE_OC = 24 # TensorCore并行限制
 CORE_IC = 16
 
+```python
 def TensorCore(image: np.ndarray, weight: np.ndarray) -> np.ndarray:
   # 这里假设硬件可以自动循环
   return torch.conv2d(torch.tensor(image), torch.tensor(weight)).numpy()
@@ -90,11 +101,16 @@ def demo2(imageArr: np.ndarray, weightArr: np.ndarray, outputArr: np.ndarray, ta
             imageTile = image[Infer.get_input_segment(b, oc, oh, ow)]
             weightTile = weight[Infer.get_w_segment(oc)]
             outputTile += TensorCore(imageTile, weightTile)
+```
+
 
   assert (np.allclose(output._array, targetOutput, atol=1e-5))
 
+```python
   print("demo2 total loaded :", GlobalHierarchy.TotalLoaded)
   GlobalHierarchy.Reset()
+```
+
 
 demo2 total loaded : 179651584`
 
@@ -117,6 +133,8 @@ demo2 total loaded : 179651584`
   output = TarcedArray(outputArr)
   (B, OC, OH, OW) = outputArr.shape
   for b in Segments(0, B, 1):
+
+```text
     with GlobalHierarchy(L2SIZE):
       reuse = False # 为了简单起见, 添加reuse的参数来避免重复统计load的数据, 其实应该把allocate buffer和load/store的逻辑分离出来.
       weightTile = weight[Infer.get_w_segment(slice(0, OC))]  # 将weights加载移动到OC循环外 也就是一次加载所有的权重
@@ -129,10 +147,16 @@ demo2 total loaded : 179651584`
               reuse = True
             weightSubTile = weightTile[oc]
             outputTile += TensorCore(imageTile, weightSubTile)
+```
+
 
   assert (np.allclose(output._array, targetOutput, atol=1e-5))
+
+```python
   print("demo3-1 total loaded :", GlobalHierarchy.TotalLoaded)
   GlobalHierarchy.Reset()
+```
+
 
 demo3-1 We can't move load weights statement out of OC!`
 
@@ -148,6 +172,8 @@ demo3-1 We can't move load weights statement out of OC!`
   output = TarcedArray(outputArr)
   (B, OC, OH, OW) = outputArr.shape
   for b in Segments(0, B, 1):
+
+```text
     for oc in Segments(0, OC, CORE_OC):
       with GlobalHierarchy(L2SIZE):
         reuse = False
@@ -159,10 +185,16 @@ demo3-1 We can't move load weights statement out of OC!`
             if not reuse:
               reuse = True
             outputTile += TensorCore(imageTile, weightTile)
+```
+
 
   assert (np.allclose(output._array, targetOutput, atol=1e-5))
+
+```python
   print("demo3-2 total loaded :", GlobalHierarchy.TotalLoaded)
   GlobalHierarchy.Reset()
+```
+
 
 demo3-2 total loaded : 9586432`
 
@@ -179,6 +211,8 @@ demo3-2 total loaded : 9586432`
   (B, OC, OH, OW) = outputArr.shape
   IC = imageArr.shape[1]
   for b in Segments(0, B, 1):
+
+```text
     for oc in Segments(0, OC, 8):
       for oh in Segments(0, OH, OH):
         for ow in Segments(0, OW, OW):
@@ -195,10 +229,16 @@ demo3-2 total loaded : 9586432`
               outputTile += TensorCore(imageTile, weightTile)
               if reuse is False:
                 reuse = True  # reuse same buffer.
+```
+
 
   assert (np.allclose(output._array, targetOutput, atol=1e-5))
+
+```python
   print(prefix, "total loaded :", GlobalHierarchy.TotalLoaded)
   GlobalHierarchy.Reset()
+```
+
 
 demo3-3 total loaded : 4825088`
 
@@ -215,6 +255,8 @@ demo3-3 total loaded : 4825088`
   (B, OC, OH, OW) = outputArr.shape
   IC = imageArr.shape[1]
   for b in Segments(0, B, 1):
+
+```text
     with GlobalHierarchy(L2SIZE):
       reuse = False
       imageTile = image[Infer.get_input_segment(b, slice(0, OC), slice(0, OH), slice(0, OW))]
@@ -229,10 +271,16 @@ demo3-3 total loaded : 4825088`
               outputTile += TensorCore(imageTile[:, ic, :, :], weightTile)
               if reuse is False:
                 reuse = True  # reuse same buffer.
+```
+
 
   assert (np.allclose(output._array, targetOutput, atol=1e-5))
+
+```python
   print("demo4 total loaded :", GlobalHierarchy.TotalLoaded)
   GlobalHierarchy.Reset()
+```
+
 
 demo4 We can't move load image statement out of OC!`
 
@@ -251,6 +299,8 @@ demo4 We can't move load image statement out of OC!`
   # binary add
   (B, C, H, W) = imageArr.shape
   for b in Segments(0, B, 1):
+
+```text
     for c in Segments(0, C, 8):
       for h in Segments(0, H, H):
         for w in Segments(0, W, W):
@@ -259,6 +309,8 @@ demo4 We can't move load image statement out of OC!`
             biasTile = bias[b, c, h, w]
             midTile = mid[b, c, h, w]
             midTile += imageTile + biasTile
+```
+
 
   demo3_3(mid._array, weightArr, outputArr, targetOutput, "demo5-1")
 
@@ -278,6 +330,8 @@ demo5-1 total loaded : 30515200`
   (B, OC, OH, OW) = outputArr.shape
   IC = imageArr.shape[1]
   for b in Segments(0, B, 1):
+
+```text
     for oc in Segments(0, OC, 8):
       for oh in Segments(0, OH, OH):
         for ow in Segments(0, OW, OW):
@@ -295,10 +349,16 @@ demo5-1 total loaded : 30515200`
               outputTile += TensorCore(imageTile + biasTile, weightTile)
               if reuse is False:
                 reuse = True  # reuse same buffer.
+```
+
 
   assert (np.allclose(output._array, targetOutput, atol=1e-5))
+
+```python
   print("demo5-2 total loaded :", GlobalHierarchy.TotalLoaded)
   GlobalHierarchy.Reset()
+```
+
 
 demo5-2 total loaded : 8036352`
 
@@ -316,6 +376,8 @@ demo5-2 total loaded : 8036352`
   tempOutput = TarcedArray(np.zeros(Infer2.in_shape).astype(np.float32))
   (B, OC, OH, OW) = Infer2.in_shape
   with GlobalHierarchy(L2SIZE):
+
+```text
     reuse = False
     weight1Tile = weight1[:, :, :, :]
     for b in Segments(0, B, 1):
@@ -328,11 +390,15 @@ demo5-2 total loaded : 8036352`
             outputTile += TensorCore(imageTile, weight1Tile[oc])
             if reuse is False:
               reuse = True  # reuse same buffer.
+```
+
 
   weight2 = TarcedArray(weightArr2)
   output = TarcedArray(outputArr)
   (B, OC, OH, OW) = outputArr.shape
   with GlobalHierarchy(L2SIZE):
+
+```text
     reuse = False
     weight2Tile = weight2[:, :, :, :]
     for b in Segments(0, B, 1):
@@ -345,10 +411,16 @@ demo5-2 total loaded : 8036352`
             outputTile += TensorCore(imageTile, weight2Tile[oc])
             if reuse is False:
               reuse = True  # reuse same buffer.
+```
+
 
   assert (np.allclose(output._array, targetOutput, atol=1e-5))
+
+```python
   print("demo6 total loaded :", GlobalHierarchy.TotalLoaded)
   GlobalHierarchy.Reset()
+```
+
 
 demo6 total loaded : 722528`
 
@@ -364,6 +436,8 @@ demo6 total loaded : 722528`
   (B, OC, OH, OW) = outputArr.shape
   IC = imageArr.shape[1]
   with GlobalHierarchy(L2SIZE):
+
+```text
     reuse = False
     weight1Tile = weight1[:, :, :, :]
     weight2Tile = weight2[:, :, :, :]
@@ -380,10 +454,16 @@ demo6 total loaded : 722528`
             outputTile += TensorCore(imageTile2, weight2Tile[oc])
             if reuse is False:
               reuse = True  # reuse same buffer.
+```
+
 
   assert (np.allclose(output._array, targetOutput, atol=1e-5))
+
+```python
   print("demo6-1 total loaded :", GlobalHierarchy.TotalLoaded)
   GlobalHierarchy.Reset()
+```
+
 
 demo6-1 total loaded : 206432`
 

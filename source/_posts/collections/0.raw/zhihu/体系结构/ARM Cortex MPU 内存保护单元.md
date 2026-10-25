@@ -63,17 +63,19 @@ RegionBaseAddress[(N-1):0] = 0，其中 N 为 log2(SizeofRegion_in_bytes)
 `// ValidateAddress()
 // =================
 AddressDescriptor ValidateAddress(bits(32) address, AccType acctype, boolean iswrite)
+
+```text
     ispriv = acctype != AccType_UNPRIV && FindPriv();
-    
+
     AddressDescriptor result;
     Permissions perms;
-    
+
     result.physicaladdress = address;
     result.memattrs = DefaultMemoryAttributes(address);
     perms = DefaultPermissions(address);
 
     hit = FALSE; // assume no valid MPU region and not using default memory map
-    
+
     isPPBaccess = (address == ‘111000000000’);
 
     if acctype == AccType_VECTABLE || isPPBaccess then
@@ -86,12 +88,12 @@ AddressDescriptor ValidateAddress(bits(32) address, AccType acctype, boolean isw
     else if MPU_CTRL.HFNMIENA == ‘0’ && ExecutionPriority() ;
             bits(32) base_address = MPU_RBAR[r];
             bits(16) access_control = MPU_RASR[r];
-            
+
             if size_enable == ‘1’ then // MPU region enabled so perform checks
                 lsbit = UInt(size_enable) + 1;
-                
+
                 if lsbit )) then UNPREDICTABLE;
-                
+
                 if lsbit == 32 || address == base_address then
                     subregion = UInt(address);
                     if size_enable == ‘0’ then
@@ -104,8 +106,12 @@ AddressDescriptor ValidateAddress(bits(32) address, AccType acctype, boolean isw
 
     if address == ‘111’ then // enforce System space execute never
         perms.xn = ‘1’;
+```
+
 
     if hit then // perform check of acquired access permissions
+
+```text
         CheckPermission(perms, address, acctype, iswrite);
     else // generate fault if no MPU match or use of default not enabled
         if acctype == AccType_IFETCH then
@@ -120,10 +126,13 @@ AddressDescriptor ValidateAddress(bits(32) address, AccType acctype, boolean isw
     return result;
 // DefaultPermissions()
 // ====================
+```
+
 Permissions DefaultPermissions(bits(32) address)
     
+```text
     Permissions perms;
-    
+
     perms.ap = ‘011’;
 
     case address of
@@ -145,6 +154,8 @@ Permissions DefaultPermissions(bits(32) address)
             perms.xn = ‘1’;
 
     return perms;`
+```
+
 
 第 B2-587 页上的访问权限检查定义了 CheckPermission() 函数。
 4.4. MPU故障支持**<strong>指令或数据访问违规会导致生成 MemManage</strong> 异常。有关 <strong>MemManage</strong> 异常的更多详细信息，请参阅第B1-551页的故障行为。<strong>5. 在SCS中对PMSAv7的寄存器支持</strong><strong>表B3-11</strong>总结了系统控制空间SCS（<strong>System Control Space</strong>）中内存保护单元 (<strong>MPU</strong>) 的寄存器支持。一般来说，除非另有说明，寄存器仅支持字访问，字节和半字访问是不可预测。所有 <strong>MPU</strong> 寄存器地址都映射为小端（<strong>little endian</strong>）。<strong>MPU</strong> 寄存器需要特权存储器访问以进行读取和写入。任何非特权访问都会产生 <strong>BusFault</strong> 故障。<strong>共有三个通用 MPU</strong> 寄存器（<strong>General MPU registers</strong>）：**

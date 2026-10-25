@@ -145,8 +145,12 @@ Unsloth支持表格改编自官方仓库Unsloth与HuggingFace和vllm兼容，我
 我们将使用Google Colab Notebook环境。我们实验使用最高24GB VRAM的模型。首先，我们安装以下库。
 
 `pip install auto-gptq autoawq trl bitsandbytes>=0.39.0
+
+```bash
 pip install accelerate transformers optimum
 pip install git+https://github.com/unslothai/unsloth.git`
+```
+
 
 如果你遇到与fsspec库版本不兼容的错误，你可以忽略它。所有必要的库都已安装。我会在Colab notebook中附上库版本，所以你可以查看它。 
 
@@ -170,10 +174,14 @@ Mistral-GPTQ VRAM使用情况（作者提供）加载模型部分完成。
 我们可以按照与非量化模型相同的程序进行推理。在这种情况下，我们可以使用名为apply_chat_template的分词器函数来制作LLM输入。我问量化模型如何制作蛋黄酱。我们可以使用transformers API编写以下代码。
 
 `messages = [
+
+```text
     {"role": "user", "content": "What is your favourite condiment?"},
     {"role": "assistant", "content": "Well, I'm quite partial to a good squeeze of fresh lemon juice. It adds just the right amount of zesty flavour to whatever I'm cooking up in the kitchen!"},
     {"role": "user", "content": "Do you have mayonnaise recipes?"}
 ]
+```
+
 ​
 encodeds = tokenizer.apply_chat_template(messages, return_tensors="pt")
 ​
@@ -260,12 +268,16 @@ tokens = tokenizer(prompt_template, return_tensors="pt").input_ids.cuda()
 ​
 generated_ids = model.generate(
                                 tokens, 
+
+```text
                                 do_sample=True,
                                 temperature=0.7,
                                 top_p=0.95,
                                 top_k=40,
                                 max_new_tokens=512
                               )
+```
+
 decoded = tokenizer.decode(generated_ids[0])
 print(decoded)
 # 模型回答：
@@ -296,10 +308,14 @@ model.quantize(tokenizer, quant_config=quant_config)`
 
 `# modify the config file so that it is compatible with transformers integration
 quantization_config = AwqConfig(
+
+```text
     bits=quant_config["w_bit"],
     group_size=quant_config["q_group_size"],
     zero_point=quant_config["zero_point"],
     version=quant_config["version"].lower(),
+```
+
 ).to_dict()
 
 # the pretrained transformers model is stored in the model attribute + we need to pass a dict
@@ -346,6 +362,8 @@ model_nf4.gradient_checkpointing_enable()`
 接下来，我们需要为模型微调定义LoRA。LoraConfig中的以下参数是超参数，所以我们必须调整它们。我们可以通过应用get_peft_model函数获得LoRA模型。
 
 `config = LoraConfig(
+
+```text
     r=16, 
     lora_alpha=32, 
     target_modules=["q_proj", "k_proj", "v_proj", "o_proj",
@@ -354,6 +372,8 @@ model_nf4.gradient_checkpointing_enable()`
     bias="none", 
     task_type="CAUSAL_LM"
 )
+```
+
 
 model_nf4 = get_peft_model(model_nf4, config)`
 
@@ -376,11 +396,15 @@ model_nf4 = get_peft_model(model_nf4, config)`
 trl库存在于实现指令调整。我们想使用trl库中的监督微调(SFT) Trainer来方便使用，所以我们需要修改我们的数据格式以适应SFTTrainer。我们通过定义如下的格式函数来格式化我们的数据。
 
 `def formatting_prompts_func(example):
+
+```text
     output_texts = []
     for i in range(len(example['INSTRUCTION'])):
         text = f"### Question: {example['INSTRUCTION'][i]}\n ### Answer: {example['RESPONSE'][i]}"
         output_texts.append(text)
     return output_texts`
+```
+
 
 接下来，我们定义整理器来使模型只针对给定的数据集答案进行训练。有一个名为“DataCollatorForCompleionOnlyLM”的类可以完成这项工作，所以我们只需要用答案模板实例化这个类来区分给定输入中的答案部分。
 
@@ -402,6 +426,8 @@ warmup_ratio = 0.03
 lr_scheduler_type = "constant"
 
 training_arguments = TrainingArguments(
+
+```text
     output_dir=output_dir,
     per_device_train_batch_size=per_device_train_batch_size,
     gradient_accumulation_steps=gradient_accumulation_steps,
@@ -417,15 +443,21 @@ training_arguments = TrainingArguments(
     lr_scheduler_type=lr_scheduler_type,
     report_to=None
 )
+```
+
 
 trainer = SFTTrainer(
     model_nf4,
+
+```text
     args=training_arguments,
     train_dataset=dataset['train'],
     eval_dataset=dataset['test'],
     formatting_func=formatting_prompts_func,
     data_collator=collator,
 )
+```
+
 
 trainer.train()`
 
@@ -476,16 +508,22 @@ dtype = None # None用于自动检测。Tesla T4、V100使用Float16，Ampere+�
 load_in_4bit = True # 使用4位量化来减少内存使用。可以为False。
 
 model, tokenizer = FastLanguageModel.from_pretrained(
+
+```text
     model_name = "unsloth/Llama-3.2-3B-Instruct", # 或选择 "unsloth/Llama-3.2-1B-Instruct"
     max_seq_length = max_seq_length,
     dtype = dtype,
     load_in_4bit = load_in_4bit,
    )`
+```
+
 
 要加载LoRA适配器，我们也需要使用Unsloth包装器，如下所示。
 
 `model = FastLanguageModel.get_peft_model(
     model,
+
+```text
     r = 16, # 选择任何 > 0 的数字！建议 8, 16, 32, 64, 128
     target_modules = ["q_proj", "k_proj", "v_proj", "o_proj",
                       "gate_proj", "up_proj", "down_proj",],
@@ -497,6 +535,8 @@ model, tokenizer = FastLanguageModel.from_pretrained(
     random_state = 3407,
     use_rslora = False,  # 我们支持等级稳定化LoRA
     loftq_config = None, # 和LoftQ
+```
+
 )`
 
 你可以看到，我们可以只用~3GB VRAM就加载一个量化的3B模型。
@@ -507,11 +547,15 @@ Unsloth VRAM使用情况图片（作者提供）除了上述设置外，其余�
 
 `trainer = SFTTrainer(
     model,
+
+```text
     args=training_arguments,
     train_dataset=dataset['train'],
     formatting_func=formatting_prompts_func,
     data_collator=collator,
 )
+```
+
 
 trainer.train()`
 
@@ -526,11 +570,15 @@ tokenizer.save_pretrained(os.path.join(output_dir, "lora_model"))`
 保存目录图片（作者提供）这种方法保存了一个名为adapter_config.json的配置文件用于加载模型。在推理时，Unsloth会自动读取设置，我们只需要传递保存LoRA权重和配置的目录名称。
 
 `model, tokenizer = FastLanguageModel.from_pretrained(
+
+```text
         model_name = os.path.join(output_dir, "lora_model"), # 你用于训练的模型
         max_seq_length=512,
         dtype=None,
         load_in_4bit=True,
     )
+```
+
 FastLanguageModel.for_inference(model) # 启用原生2倍速推理`
 
 我们可以以与标准HuggingFace CausalLM相同的方式推理给定的句子。
@@ -540,12 +588,16 @@ prompt_template=f'''{prompt}'''
 ​
 tokens = tokenizer(prompt_template, return_tensors="pt").input_ids.cuda()
 outputs = model.generate(
+
+```python
     input_ids=tokens,
     temperature=0.2,
     top_p=0.95,
     max_new_tokens=512
 )
 print(tokenizer.batch_decode(outputs, skip_special_tokens=True)[0])`
+```
+
 
 这是BitsandBytes QLoRA部分中相同示例问题的结果。它可以正确回答问题！
 

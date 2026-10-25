@@ -18,6 +18,8 @@ source_url: https://zhuanlan.zhihu.com/p/553071153
 本文分享我自己造的trim，基于std ranges库，因为基于标准库开发，所以没有任何负担。
 
 `#include 
+
+```cpp
 #include 
 #include 
 #include 
@@ -25,16 +27,24 @@ source_url: https://zhuanlan.zhihu.com/p/553071153
 #include 
 
 // std = C++20 or C++23
+```
+
 
 enum class Direction {
+
+```cpp
 	Front = 0,
 	Back,
 	Both
 };
 
 namespace views = std::views;
+```
+
 
 auto drop(const std::string_view sand, const char droped_ch, const Direction direction) {
+
+```cpp
 	std::string tower;
 	auto is_the_char = [&](const char ch) { return ch == droped_ch; };
 
@@ -55,11 +65,19 @@ auto drop(const std::string_view sand, const char droped_ch, const Direction dir
 	}
 	return tower;
 }
+```
+
 
 auto trim(const std::string_view sand, const char droped_ch = ' ') {
+
+```text
 	return drop(sand, droped_ch, Direction::Both);
 }
+```
+
 auto filter(const std::string_view sand, const char droped_ch = ' ') {
+
+```cpp
 	auto is_the_char = [&](const char ch) { return ch == droped_ch; };
         /*
 	auto print_way = [](const auto& it) {
@@ -94,6 +112,8 @@ auto filter(const std::string_view sand, const char droped_ch = ' ') {
 	//});
 	return vec_str;
 }
+```
+
 `
 
 除了trim可以去除原串两边的特殊字符，还构造了一个filter函数用来去除字符串中出现的特殊字符，比如说你想去除一个字符串中的空格字符串，那么传一个参数给filter就可以返回一个vector string，里面就有你想要的“不含空格”的子串。

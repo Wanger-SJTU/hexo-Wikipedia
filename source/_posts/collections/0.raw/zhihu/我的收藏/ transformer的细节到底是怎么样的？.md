@@ -148,6 +148,8 @@ img
 Self-Attention的代码实现
 
 `# Muti-head Attention 机制的实现
+
+```python
 from math import sqrt
 import torch
 import torch.nn
@@ -174,6 +176,8 @@ class Self_Attention(nn.Module):
         output = torch.bmm(atten,V) # Q * K.T() * V # batch_size * seq_len * dim_v
 
         return output`
+```
+
 
 #### 不可小觑的位置编码
 

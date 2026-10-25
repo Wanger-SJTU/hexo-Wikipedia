@@ -35,6 +35,8 @@ FlashAttn2 Algorithm如下。由于中间结果P变量的size是N²量级，通�
 - 每个tile计算一组QKV block
 - Tile内使用local max计算，x/s/p的size只有block_size²
 - 最后通过global max rescaling调整到正确的结果。for h in range(0, nheads):    
+
+```text
     for i in range(0, Tr):
         m_g = -inf
         o_g = 0
@@ -57,6 +59,8 @@ FlashAttn2 Algorithm如下。由于中间结果P变量的size是N²量级，通�
             9. l_g = l_g * sf + l
             10. m_g = m
         11. O[i][h] = o_g / l_g
+```
+
 算法的前两重循环不存在data dependency, 可以完全并行。因此FA实现的核心是最内层循环，刨去数据initialize和prefetch, 计算部分只需要11个算子即可实现。不考虑任何优化，顺序执行11条宏指令就能拿到flash attention 在Memory I/O上的收益。
 
 很显然，事情没有那么简单。It is perf problem, stupid. 

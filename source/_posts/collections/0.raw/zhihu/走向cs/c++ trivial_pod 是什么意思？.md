@@ -34,10 +34,13 @@ POD类型代表可以直接使用memcpy()直接复制而不会出现任何问题
 
 1.
 
+```cpp
 struct Foo
 {
     int x;
 };
+```
+
 
 Foo 六个成员函数全部都是平凡的，因为：
 
@@ -51,6 +54,7 @@ Foo 六个成员函数全部都是平凡的，因为：
 
 2.
 
+```cpp
 struct Foo
 {
     int x;
@@ -61,11 +65,14 @@ struct Foo
     Foo& operator=(Foo &&) = default;
     ~Foo() = default;
 };
+```
+
 
 同上，六个成员函数全部为 Trivial
 
 3.
 
+```cpp
 struct Foo
 {
     int x;
@@ -76,11 +83,14 @@ struct Foo
     Foo& operator=(Foo &&) {}
     ~Foo() {}
 };
+```
+
 
 这个情况下，不好意思，六个全部都不是 Trivial。因为哪怕就是空的函数体，或是做了和默认提供的版本一样的操作，那我也认为你改变了默认的行为了，不能算 Trivial。
 
 4.
 
+```cpp
 struct Goo
 {
     Goo() = default;
@@ -99,6 +109,8 @@ struct Foo : Goo
     Foo& operator=(Foo &&) = default;
     ~Foo() = default;
 };
+```
+
 
 这种情况下，Foo 的拷贝构造函数一样是不平凡的。因为你拷贝一个 Foo 类对象就一定会调用到父类 Goo 的拷贝构造函数，打印一行 2333。
 
@@ -106,6 +118,7 @@ struct Foo : Goo
 
 5.
 
+```cpp
 struct Goo
 {
     Goo() = default;
@@ -126,6 +139,8 @@ struct Foo : Goo
     Foo& operator=(Foo &&) = default;
     ~Foo() = default;
 };
+```
+
 
 这种情况下，有了虚函数了。除了析构函数是 Trivial 的，不做任何事以外，其他五个全部阵亡。因为它们都会去对虚表指针进行一定的处理。
 
@@ -133,6 +148,7 @@ struct Foo : Goo
 
 其他种种繁琐的我上面没列全的情况还有很多，各位可以用以下的特征萃取工具分别去检测。
 
+```cpp
 #include <type_traits>
 #include <iostream>
 
@@ -147,9 +163,12 @@ int main()
     cout << is_trivially_move_assignable<Foo>::value << std::endl;
     cout << is_trivially_destructible<Foo>::value << std::endl;
 }
+```
+
 
 一般而言，在 C++ 库的底层，一个位于动态存储区的对象，它的生命周期里都会经历这四个步骤：
 
+```cpp
 #include <memory>
 
 template <typename T>
@@ -169,6 +188,8 @@ void life_of_an_object
     // 4. 通过分配函数的对应的解分配手段，解分配空间
     alloc.deallocate(p, 1);
 }
+```
+
 
 像 std::vector 中的每一个元素，链表 std::list、红黑数 std::set 中的每一个节点，归根结底都要经历这四个步骤。
 
@@ -186,6 +207,7 @@ void life_of_an_object
 
 <strong>但是情况要是复杂一些呢？如果被析构的是一段区间呢？</strong>
 
+```cpp
 struct Foo
 {
     ~Foo() = default;
@@ -208,6 +230,8 @@ void myDestroy(Iterator first, Iterator last)
 template void myDestroy(Foo*, Foo*);
 template void myDestroy(std::set<Foo>::iterator, std::set<Foo>::iterator);
 template void myDestroy(std::list<Foo>::iterator, std::list<Foo>::iterator);
+```
+
 
 gcc 9.4 生成的汇编是这样的：
 
@@ -253,6 +277,7 @@ clang 11 生成的汇编是这样的：
 
 见下例：
 
+```cpp
 struct Foo
 {
     int x;
@@ -267,6 +292,8 @@ struct Foo
     Foo& operator=(Foo &&) = default;
     ~Foo() = default;
 };
+```
+
 
 这种情况下，Foo 类型的默认构造函数就是不平凡的（因为有了清零的动作），而其他五个皆为平凡。Foo 类型可安全地被 memcpy 函数拷贝，而不用担心发生任何有关深浅拷贝的问题。
 
@@ -276,6 +303,7 @@ TriviallyCopyable 这一概念有何实际用处呢？
 
 让我们来写一个简易版本的 std::copy 模板函数来看看：
 
+```cpp
 struct Foo
 {
     int x;
@@ -293,7 +321,11 @@ struct Foo
 template Foo* std::copy(Foo*, Foo*, Foo*);
 
 template <typename Iterator, typename OutputIterator>
+```
+
 OutputIterator myCopy(Iterator first, Iterator last, OutputIterator to)
+
+```text
 {
     while (first != last) {
         *to = *first;
@@ -304,6 +336,8 @@ OutputIterator myCopy(Iterator first, Iterator last, OutputIterator to)
 }
 
 template Foo* myCopy(Foo*, Foo*, Foo*);
+```
+
 
 这是 g++ 生成的汇编：
 
@@ -311,6 +345,7 @@ template Foo* myCopy(Foo*, Foo*, Foo*);
 
 我们再把上一例 Foo 中的拷贝赋值函数换成手动的变量赋值，<strong>注意，我们只是做了这一处丝毫没有改变代码意义的变动</strong>，然后再看看有何改变：
 
+```cpp
 struct Foo
 {
     int x;
@@ -331,7 +366,11 @@ struct Foo
 template Foo* std::copy(Foo*, Foo*, Foo*);
 
 template <typename Iterator, typename OutputIterator>
+```
+
 OutputIterator myCopy(Iterator first, Iterator last, OutputIterator to)
+
+```text
 {
     while (first != last) {
         *to = *first;
@@ -342,6 +381,8 @@ OutputIterator myCopy(Iterator first, Iterator last, OutputIterator to)
 }
 
 template Foo* myCopy(Foo*, Foo*, Foo*);
+```
+
 
 这是 gcc 生成的汇编（左边是修改之后的，右边是修改以前的）：
 
@@ -372,6 +413,7 @@ template Foo* myCopy(Foo*, Foo*, Foo*);
 
 举个极端点的例子，哪怕 Foo 的六个成员函数都是不平凡的了：
 
+```cpp
 struct Foo
 {
     int x;
@@ -391,6 +433,8 @@ struct Foo
         x = 0;
     }
 };
+```
+
 
 它也是满足标准布局类型的。因为标准布局不对六个特殊成员函数做任何要求。
 
@@ -411,6 +455,7 @@ struct Foo
 
 比如自 C++98 起，Goo 就满足 POD 类型的要求。尽管它用到了方法、静态成员这些 C++ 中才有的东西。
 
+```cpp
 struct Goo
 {
     public:
@@ -421,9 +466,12 @@ struct Goo
 
         static int i;
 };
+```
+
 
 自 C++11 修改过定义后，下面的 Foo 也算是 POD 类型了。尽管它用到了多继承，甚至还有非 Trivial 的静态成员：
 
+```cpp
 struct Hoo
 {
     static std::string s;
@@ -432,6 +480,8 @@ struct Hoo
 struct Foo : public Goo, public Hoo
 {
 };
+```
+
 
 这都使得 POD 这一叫法充满着矛盾。
 

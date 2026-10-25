@@ -176,7 +176,11 @@ Agent Teams 默认关闭，需要手动启用。有两种方式：
 `{
   "env": {
     "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1"
+
+```text
   }
+```
+
 }`
 
 如果已有其他配置，将该字段合并到现有 `env` 节点中即可：
@@ -185,10 +189,14 @@ Agent Teams 默认关闭，需要手动启用。有两种方式：
   "env": {
     "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1",
     "OTHER_EXISTING_SETTING": "value"
+
+```text
   },
   "hooks": {
     ...
   }
+```
+
 }`
 
 保存后重启 Claude Code 使配置生效。
@@ -226,9 +234,13 @@ Agent Teams 提供两种显示模式：
 
 `{
   "teammateMode": "in-process"
+
+```text
 }
 {
   "teammateMode": "tmux"
+```
+
 }`
 
 也可以在启动时为单次会话覆盖：
@@ -380,6 +392,8 @@ Hooks 可以作为质量关卡，在队友完成工作的关键节点进行自�
 `{
   "hooks": {
     "TaskCompleted": [
+
+```text
       {
         "hooks": [
           {
@@ -390,6 +404,8 @@ Hooks 可以作为质量关卡，在队友完成工作的关键节点进行自�
       }
     ]
   }
+```
+
 }`
 
 配套的验证脚本 `./scripts/verify-task-quality.sh`：

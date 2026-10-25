@@ -17,11 +17,14 @@ source_url: https://www.zhihu.com/question/463875728/answer/1934003540
 
 请仔细观察如下两个的区别。第一个是参数包展开，第二个折叠表达式。
 
+```cpp
 template<typename ...Ts>
 void f(Ts&&... args) {
     auto v  = {g(args) ...}; // 参数包展开
     auto v_ = (g(args),...); // 折叠表达式
 }
+```
+
 
 关键在于<strong>逗号</strong>的区别，多了一个逗号(op)变成了<strong>折叠表达式</strong>：最终结果为<strong>一个值</strong>。而没有逗号则是<strong>参数包展开</strong>，结果是<strong>多个值</strong>。
 

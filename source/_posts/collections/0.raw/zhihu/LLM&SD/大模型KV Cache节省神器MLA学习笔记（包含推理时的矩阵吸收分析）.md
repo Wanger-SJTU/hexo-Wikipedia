@@ -162,6 +162,8 @@ $- \mathbf{W}^{QR} \in \mathbb{R}^{d_h^R n_h \times d_c'} 和 \mathbf{W}^{KR} \i
 首先来看初始化部分，为了快速理解代码直接忽略掉RoPE计算相关的代码部分。
 
 `# Copied from transformers.models.llama.modeling_llama.LlamaAttention with Llama->DeepseekV2
+
+```python
 class DeepseekV2Attention(nn.Module):
     """Multi-headed attention from 'Attention Is All You Need' paper"""
 
@@ -188,8 +190,12 @@ class DeepseekV2Attention(nn.Module):
         self.q_head_dim = config.qk_nope_head_dim + config.qk_rope_head_dim
 
         self.is_causal = True
+```
+
     
     # MLA 中对 Q 投影矩阵也做了一个低秩分解，对应生成 q_a_proj 和 q_b_proj 两个矩阵。
+
+```text
         # 其中 q_a_proj 大小为 [hidden_size, q_lora_rank] = [5120, 1536]，
         # 对应上面公式中的W^DQ
         self.q_a_proj = nn.Linear(
@@ -227,6 +233,8 @@ class DeepseekV2Attention(nn.Module):
             self.hidden_size,
             bias=config.attention_bias,
         )
+```
+
 `
 
 根据0x2节的原理介绍，现在已经可以把 DeepseekV2Attention 模块里面所有的权重矩阵都和初始化的代码对应起来了，如果你想继续看下去一定要理解到初始化的每行代码。
@@ -240,6 +248,8 @@ class DeepseekV2Attention(nn.Module):
 `def forward(
         self,
         hidden_states: torch.Tensor,
+
+```text
         attention_mask: Optional[torch.Tensor] = None,
         position_ids: Optional[torch.LongTensor] = None,
         past_key_value: Optional[Cache] = None,
@@ -254,21 +264,29 @@ class DeepseekV2Attention(nn.Module):
         # hidden_states对应公式中的h_t，的shape是(batch_size, seq_length,  
         # hidden_size)，其中 hidden_size 具体为 5120，假设batch_size和seq_length都为1
         bsz, q_len, _ = hidden_states.size()
+```
+
 
         # 计算Q：对应完整公式中的 37-39 行，先降维再升维，好处是相比直接使用大小为 [5120, 24576] 的矩阵
        # [5120, 1536] * [1536, 24576] 这样的低秩分解在存储空间和计算量上都大幅度降低
+
+```text
         q = self.q_b_proj(self.q_a_layernorm(self.q_a_proj(hidden_states)))
         q = q.view(bsz, q_len, self.num_heads, self.q_head_dim).transpose(1, 2)
         # 切分 rope 和非 rope 部分，完整公式中 40 行反过来
         q_nope, q_pe = torch.split(
             q, [self.qk_nope_head_dim, self.qk_rope_head_dim], dim=-1
         )
+```
+
 
         # 对应公式中的 41 和 43 行只是还没有加 rope
         # 一个优化的 MLA KVCache 实现只需要缓存这个 compressed_kv 就行
         # kv_a_proj_with_mqa shape 为[hidden_size， kv_lora_rank + qk_rope_head_dim]
   # = [5120, 512 + 64] = [5120, 576]
      # 所以compressed_kv的shape就是[1, 1, 576]
+
+```text
         compressed_kv = self.kv_a_proj_with_mqa(hidden_states)
         # 对应完整公式的 44 行反过来
         compressed_kv, k_pe = torch.split(
@@ -299,9 +317,13 @@ class DeepseekV2Attention(nn.Module):
         # 给需要 rope 的部分加 rope
         cos, sin = self.rotary_emb(value_states, seq_len=kv_seq_len)
         q_pe, k_pe = apply_rotary_pos_emb(q_pe, k_pe, cos, sin, position_ids)
+```
+
 
         # 更新和拼接历史 KVCache，可以看到这里存储的是展开后的 MHA KVCache
         # 其中 q_head_dim 等于 qk_nope_head_dim + qk_rope_head_dim
+
+```sql
         query_states = k_pe.new_empty(bsz, self.num_heads, q_len, self.q_head_dim)
         query_states[:, :, :, : self.qk_nope_head_dim] = q_nope
         query_states[:, :, :, self.qk_nope_head_dim :] = q_pe
@@ -315,6 +337,8 @@ class DeepseekV2Attention(nn.Module):
             key_states, value_states = past_key_value.update(
                 key_states, value_states, self.layer_idx, cache_kwargs
             )
+```
+
 
         # 后续就是标准的多头自注意力计算了，为了篇幅，忽略这部分代码
         ...
@@ -352,8 +376,12 @@ q = self.q_b_proj(self.q_a_layernorm(self.q_a_proj(hidden_states)))
 q = q.view(bsz, q_len, self.num_heads, self.q_head_dim).transpose(1, 2)
 # 切分 rope 和非 rope 部分，完整公式中 40 行反过来
 q_nope, q_pe = torch.split(
+
+```text
     q, [self.qk_nope_head_dim, self.qk_rope_head_dim], dim=-1
 )
+```
+
 
 # 对应公式中的 41 和 43 行只是还没有加 rope
 # 一个优化的 MLA KVCache 实现只需要缓存这个 compressed_kv 就行，不过后面实际上展开
@@ -364,8 +392,12 @@ q_nope, q_pe = torch.split(
 compressed_kv = self.kv_a_proj_with_mqa(hidden_states)
 # 对应完整公式的 44 行反过来
 compressed_kv, k_pe = torch.split(
+
+```text
     compressed_kv, [self.kv_lora_rank, self.qk_rope_head_dim], dim=-1
 )
+```
+
 # 这里的 k_pe 和 上面的 q_pe 要扔给 RoPE模块，所以需要重整下shape
 k_pe = k_pe.view(bsz, q_len, 1, self.qk_rope_head_dim).transpose(1, 2)
 `

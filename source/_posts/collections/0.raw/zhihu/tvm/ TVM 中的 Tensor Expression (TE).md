@@ -62,8 +62,11 @@ TE 中最重要的部分就是 te.compute 这个接口
 `def compute(shape, fcompute, name="compute", tag="", attrs=None, varargs_names=None):
     """Construct a new tensor by computing over the shape domain.
 
+```text
     The compute rule is result[axis] = fcompute(axis)
     """`
+```
+
 
 忽略掉不重要的参数，我们只需要关注 shape 和 fcompute。其中 shape 指的就是我们通过 compute 构造出来的这个 Tensor 的 shape，fcompute 就是计算用的函数。
 
@@ -119,9 +122,13 @@ fcompute 只是描述了 indices 之间的关系以及怎样把基本的运算�
 首先，对于传入的 shape，我们创建 len(shape) 个 tvm.tir.IterVar，range 为各自的维度大小。IterVar 本身代表对一个 int 范围内的 iteration。然后将这些 vars 和 fcompute(*vars) 传到 C++ 端（TVM 本身搞了一套很强大的 FFI）。
 
 `TVM_REGISTER_GLOBAL("te.ComputeOp")
+
+```cpp
     .set_body_typed([](std::string name, std::string tag, Map attrs,
                        Array axis,
                        Array body) { return ComputeOp(name, tag, attrs, axis, body); });`
+```
+
 
 Array axis 就是那些 vars。然后 body 是一个 Array，即 fcompute 的计算结果，统一为 Array 是考虑到多返回值情况（应该吧）。这在代码中以一个 ComputeOp 的整体存在。
 
@@ -131,8 +138,12 @@ PrimExpr 在 TVM 中的定位比较 low-level，它拥有基本的四则运算�
 然后 computation 的实现部分，实际上就是 ComputeOp -> TIR Stmt 的过程。这个过程比较复杂，就不详说了。核心部分在这个函数
 
 `Stmt MakeComputeStmt(const ComputeOpNode* self, const Stage& stage,
+
+```cpp
                      const std::unordered_map& dom_map,
                      bool debug_keep_trivial_loop) {`
+```
+
 
 ### TOPI
 

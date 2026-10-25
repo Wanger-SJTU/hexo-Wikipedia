@@ -50,6 +50,8 @@ Agent = LLM + 工具调用 + 循环
 
         if response.hasToolCalls:
             for toolCall in response.toolCalls:
+
+```text
                 result = execute(toolCall.name, toolCall.input)
                 messages.append(toolCall)       // 记录模型想调什么
                 messages.append(toolResult)     // 记录工具返回了什么
@@ -57,6 +59,8 @@ Agent = LLM + 工具调用 + 循环
             return response.text   // 模型不再调工具，输出最终回答
 
     return "达到最大步数，停止"`
+```
+
 
 #### 关键洞察
 
@@ -76,6 +80,8 @@ Agent = LLM + 工具调用 + 循环
 #### 2.1 基础版：单次工具调用
 
 `// src/manual-agent-basic.ts
+
+```python
 // 手写 agent 循环 - 理解 SDK 背后在做什么
 
 import "dotenv/config";
@@ -131,7 +137,11 @@ const toolImplementations: Record any> = {
 };
 
 // ----- 核心：Agent 循环 -----
+```
+
 async function callLLM(messages: any[]) {
+
+```js
   const response = await fetch(`${BASE_URL}/chat/completions`, {
     method: "POST",
     headers: {
@@ -147,8 +157,12 @@ async function callLLM(messages: any[]) {
   const data = await response.json();
   return data.choices[0].message;
 }
+```
+
 
 async function runAgent(userMessage: string, maxSteps = 10) {
+
+```cpp
   console.log(`\n🧑 用户: ${userMessage}\n`);
 
   // 这就是 agent 的全部状态 —— 一个 messages 数组
@@ -158,6 +172,8 @@ async function runAgent(userMessage: string, maxSteps = 10) {
   ];
 
   for (let step = 1; step 
+```
+
 
 运行这段代码，你会清楚看到：
 
@@ -222,8 +238,12 @@ async function runAgent(userMessage: string, maxSteps = 10) {
 `tool({
   description: "数据库操作",  // 太模糊，模型不知道什么时候该用
   inputSchema: z.object({
+
+```text
     sql: z.string(),  // 让模型写 SQL？灾难
   }),
+```
+
 })`
 
 <strong>好的设计：</strong>
@@ -231,8 +251,12 @@ async function runAgent(userMessage: string, maxSteps = 10) {
 `tool({
   description: "根据用户ID查询用户信息，返回姓名、邮箱、注册时间",
   inputSchema: z.object({
+
+```text
     userId: z.string().describe("用户的唯一标识符，格式如 user_123"),
   }),
+```
+
 })`
 
 #### 4.2 工具设计原则
@@ -344,6 +368,8 @@ DeepSeek 的 context window 大约 64K-128K tokens。看似很大，但在 agent
 
 `// 当 messages 太长时，用另一个 LLM 调用来压缩历史
 async function compressHistory(messages: Message[]): Promise {
+
+```js
   const summary = await generateText({
     model: deepseek("deepseek-chat"),
     prompt: `总结以下对话的关键信息，保留所有重要的事实和决策：
@@ -355,6 +381,8 @@ async function compressHistory(messages: Message[]): Promise {
     { role: "system", content: `之前的对话摘要：${summary.text}` },
     ...messages.slice(-4),  // 保留最近 4 条消息
   ];
+```
+
 }`
 
 #### 6.3 解法二：RAG (检索增强生成)
@@ -362,6 +390,8 @@ async function compressHistory(messages: Message[]): Promise {
 不把所有信息塞进 context，而是用向量数据库存储，需要时检索。
 
 `用户提问 → 向量搜索相关文档 → 把相关片段塞进 context → LLM 生成回答
+
+```js
 // 概念示意
 const relevantDocs = await vectorDB.search(userQuery, { topK: 5 });
 const context = relevantDocs.map((d) => d.content).join("\n");
@@ -370,6 +400,8 @@ const response = await generateText({
   model: deepseek("deepseek-chat"),
   system: `基于以下参考资料回答问题：\n${context}`,
   prompt: userQuery,
+```
+
 });`
 
 #### 6.4 记忆的三个层次
@@ -383,6 +415,8 @@ const response = await generateText({
 
 `Planner Agent → Executor Agent → Reviewer Agent
      规划            执行            检验
+
+```js
 // 概念示意
 const plan = await plannerAgent.generateText({
   prompt: "用户想要一个 Todo API，请制定实现计划",
@@ -394,6 +428,8 @@ const code = await executorAgent.generateText({
 
 const review = await reviewerAgent.generateText({
   prompt: `审查以下代码是否符合计划：\n计划：${plan.text}\n代码：${code.text}`,
+```
+
 });`
 
 #### 7.2 模式二：分层委托 (Delegation)
@@ -409,6 +445,8 @@ const review = await reviewerAgent.generateText({
 `const managerTools = {
   delegateToSearchAgent: tool({
     description: "将搜索任务委托给搜索专家",
+
+```js
     inputSchema: z.object({ query: z.string() }),
     execute: async ({ query }) => {
       const result = await searchAgent.generateText({ prompt: query });
@@ -423,6 +461,8 @@ const review = await reviewerAgent.generateText({
       return result.text;
     },
   }),
+```
+
 };`
 
 #### 7.3 模式三：辩论/共识 (Debate)
@@ -460,6 +500,8 @@ async function safeExecute(
   impl: Function
 ): Promise {
   try {
+
+```js
     const result = await Promise.race([
       impl(args),
       new Promise((_, reject) =>
@@ -475,11 +517,15 @@ async function safeExecute(
       message: `工具 ${toolName} 执行失败: ${error}`,
     });
   }
+```
+
 }`
 
 #### 8.3 输出校验
 
 `// 用 Zod 校验模型的最终输出
+
+```python
 import { z } from "zod/v4";
 import { generateObject } from "ai";
 
@@ -495,6 +541,8 @@ const { object } = await generateObject({
 });
 // object 一定是 { answer: string, confidence: number, sources: string[] }
 // 不符合 schema 的输出会被拒绝并重试`
+```
+
 
 #### 8.4 可靠性 Checklist
 
@@ -520,6 +568,8 @@ Agent 的输出是不确定的。同一个问题跑两次可能得到不同的�
   expectedToolCalls?: string[];    // 期望调用的工具名列表
   expectedOutputContains?: string[]; // 期望输出包含的关键词
   maxStepsAllowed?: number;          // 期望的最大步骤数
+
+```text
 }
 
 const testCases: TestCase[] = [
@@ -536,8 +586,12 @@ const testCases: TestCase[] = [
     maxStepsAllowed: 5,
   },
 ];
+```
+
 
 async function runEval(testCases: TestCase[]) {
+
+```cpp
   let passed = 0;
   for (const tc of testCases) {
     const { text, steps } = await runAgent(tc.input);
@@ -554,6 +608,8 @@ async function runEval(testCases: TestCase[]) {
     }
   }
   console.log(`\n结果: ${passed}/${testCases.length} 通过`);
+```
+
 }`
 
 #### 9.3 LLM-as-Judge

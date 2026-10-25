@@ -110,7 +110,11 @@ tf = TickFlow()  # 自动读取环境变量`
 - <strong>发起第一个请求</strong>
 `quotes = tf.quotes.get(symbols=["600000.SH", "000001.SZ"])
 for q in quotes:
+
+```python
     print(f"{q['symbol']}: {q['last_price']}")`
+```
+
 
 <strong>完整服务特点</strong>：
 
@@ -166,12 +170,16 @@ quotes_etf = tf.quotes.get(universes=["CN_ETF"], as_dataframe=True)`
 from tickflow import AsyncTickFlow
 
 async def main():
+
+```python
     async with AsyncTickFlow(api_key="your-api-key") as tf:
         df = await tf.klines.get("600000.SH", as_dataframe=True)
         print(df.tail())
 
         tasks = [tf.klines.get(s, as_dataframe=True) for s in ["600000.SH", "000001.SZ"]]
         results = await asyncio.gather(*tasks)
+```
+
 
 asyncio.run(main())`
 

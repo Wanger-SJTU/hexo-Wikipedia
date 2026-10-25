@@ -156,12 +156,16 @@ Tracing off-CPU time... Hit Ctrl-C to end.
 这意味着我们只需要获取一次程序的调用栈即可，这要么在进程进入`CPU`执行时进行，要么在进程切换出`CPU`时进行。一般在进程离开`CPU`时进行比较简单，因为我们可以记录时间间隔。下面就是基于调用栈计算`Off-CPU`时间的方法：
 
 `on context switch finish: # 上下文切换结束的时候
+
+```text
     sleeptime[prev_thread_id] = timestamp  # 记录上一个进程A的sleep时间是当前时间
     if !sleeptime[thread_id] # 如果当前进程（切换进来的进程）没有记录或为 就说明当前进程不存在阻塞 return
         return
     delta = timestamp - sleeptime[thread_id]  # 通过现在的时间减去上次被切换出CPU时记录的时间来计算当前进程被阻塞的时间
     totaltime[pid, execname, user stack, kernel stack] += delta # 对当前进程添加阻塞时间
     sleeptime[thread_id] = 0 # 清空当前进程的sleep时间，当当前进程切换走的时候就会由下个进程来记录当前进程的sleep时间
+```
+
 
 on tracer exit:
     for each key in totaltime:
@@ -192,16 +196,24 @@ Tracing off-CPU time (us) of PID 996942 by kernel stack... Hit Ctrl-C to end.
     __x64_sys_select
     do_syscall_64
     entry_SYSCALL_64_after_hwframe
+
+```text
     -                barad_agent (996972)
         350404`
+```
+
 
 这里我们通过`-K`来追踪了内核栈，我们也可以追踪用户栈：
 
 `[root@VM-16-2-centos ~]# /usr/share/bcc/tools/offcputime -U -p 996942
 Tracing off-CPU time (us) of PID 996942 by user stack... Hit Ctrl-C to end.
 ^C
+
+```text
     -                barad_agent (3101808)
         6`
+```
+
 
 具体的使用在这里就不讲解了，大家可以自行了解使用。
 

@@ -25,6 +25,7 @@ mmap基本概念
 
 ![](https://picx.zhimg.com/v2-7805ce43aa956d3c209ac31638759d5c_r.jpg?source=2c26e567)image.png
 
+```text
 struct vm_area_struct {
     unsigned long vm_start;     /* Our start address within vm_mm. */
     unsigned long vm_end;       /* The first byte after our end address */
@@ -34,6 +35,8 @@ struct vm_area_struct {
     struct file * vm_file;      /* File we map to (can be NULL). */
     unsigned long vm_pgoff;     /* Offset (within vm_file) in PAGE_SIZE */
 }
+```
+
 
 - `vm_star`t: 虚拟内存区域的起始地址。这是在关联的vm_mm（虚拟内存管理结构）中的起始地址。
 - `vm_end`: 虚拟内存区域的结束地址的后一个字节的地址。这意味着vm_end实际上指向了该区域之后的第一个地址，它自身并不属于这个区域。
@@ -68,6 +71,7 @@ mmap映射类型
 
 ![](https://picx.zhimg.com/v2-6a175557a007ea487207b5be884a8d7a_r.jpg?source=2c26e567) 当进程打开一个文件的时候，内核会为其创建一个 `struct file` 结构来描述被打开的文件, `struct file` 结构是和进程相关的，当多个进程打开同一个文件，那么内核会为每一个进程创建一个 `struct file` 结构，如上图中所示，进程 1 和 进程 2 都打开了同一个文件，那么内核也都会为进程 1 、进程 2 各创建一个 `struct file` 结构。 但描述文件的 `struct inode` 结构是内核中唯一的，`inode 结构` 和进程是没有关系的。`inode` 结构用于描述文件的元信息，比如，文件的权限，文件中包含多少个磁盘块，每个磁盘块位于磁盘中的什么位置等等。
 
+```text
 // ext4 文件系统中的 inode 结构
 struct ext4_inode {
     // 文件权限
@@ -77,6 +81,8 @@ struct ext4_inode {
     // 存放文件包含的磁盘块
     __le32  i_block[EXT4_N_BLOCKS];/* Pointers to blocks */
 };
+```
+
 只要我们找到了文件中的磁盘块，我们就可以寻址到文件在磁盘上的存储内容了，所以使用 `mmap` 进行内存文件映射的本质就是建立起虚拟内存区域 `VMA` 到文件磁盘块之间的映射关系 。 调用 `mmap` 进行内存文件映射的时候，内核首先会在进程的虚拟内存空间中创建一个新的虚拟内存区域 `VMA` 用于映射文件，通过 `vm_area_struct->vm_file` 将映射文件的 `struct flle` 结构与虚拟内存映射关联起来。根据 `vm_file->f_inode` 我们可以关联到映射文件的 `struct inode`，近而关联到映射文件在磁盘中的磁盘块 `i_block`。 
 
 ![](https://picx.zhimg.com/v2-691af27f8b89681e45aa96e5fb455b54_r.jpg?source=2c26e567) 站在文件系统的视角，映射文件中的数据是按照磁盘块来存储的，读写文件数据也是按照磁盘块为单位进行的，磁盘块大小为 `4K`。当进程读取磁盘块的内容到内存之后，站在内存管理系统的视角，磁盘块中的数据被 `DMA` 拷贝到了物理内存页中，这个物理内存页就是 `文件页`。 
@@ -85,6 +91,7 @@ struct ext4_inode {
 
  每一个文件在内核中都会有一个唯一的 `page cache` 与之对应，用于缓存文件中的数据，`page cache` 是和文件相关的，它和进程是没有关系的，多个进程可以打开同一个文件，每个进程中都有有一个 `struct file` 结构来描述这个文件，但是一个文件在内核中只会对应一个 `page cache`。文件的 `struct inode` 结构中除了有磁盘块的信息之外，还有指向文件 `page cache` 的 `i_mapping` 指针。
 
+```text
 struct inode {
     .......
     struct address_space *i_mapping;
@@ -97,6 +104,8 @@ struct address_space {
     struct radix_tree_root  page_tree; 
     ......
 }
+```
+
 当多个进程调用 `mmap` 对磁盘上同一个文件进行私有文件映射的时候，内核只是在每个进程的虚拟内存空间中创建出一段虚拟内存区域 `VMA` 出来，此时内核只是为进程申请了用于映射的虚拟内存，并将虚拟内存与文件映射起来，`mmap` 系统调用就返回了，全程并没有物理内存的影子出现。文件的 `page cache` 也是空的，没有包含任何的文件页。 
 
 当任意一个进程，比如上图中的进程 1 开始访问这段映射的虚拟内存时，CPU 会把虚拟内存地址送到 MMU 中进行地址翻译，因为 mmap 只是为进程分配了虚拟内存，并没有分配物理内存，所以这段映射的虚拟内存在页表中是没有页表项 PTE 的。 随后 `MMU` 就会触发缺页异常 `（page fault）`，进程切换到内核态，在内核缺页中断处理程序中会发现引起缺页的这段 VMA 是私有文件映射的，所以内核会首先通过 `vm_area_struct->vm_pgoff` 在文件 `page cache` 中查找是否有缓存相应的文件页。 

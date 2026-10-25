@@ -27,19 +27,25 @@ id: 73394124-4190-41ba-8c0e-32a3a7975351
 
 > 本文主要内容：  
 
+```text
 * 为什么一般情况下RAG的检索相关性存在问题？
 * Rerank为什么可以解决这个问题？
 * 几种常用Rerank组合评测；
 * 如何在自己的产品中使用Rerank？
+```
+
 
 检索增强生成（RAG）是解决大语言模型（LLM）实际使用中的一套完整的技术，它可以有效解决LLM的三个主要问题：<strong>数据时效性</strong>、<strong>幻觉</strong>和<strong>数据安全问题</strong>（在我之前的文章《大模型主流应用RAG的介绍——从架构到技术细节》中有详细介绍）。但是随着RAG越来越火热，使用者越来越多，我们也会发现用的好的人/团队其实还是不多的。这也是RAG常被人吐槽的一点：<strong>入门简单，用好却非常难！</strong>
 
 对于RAG的效果，我们之前已经做了很多方面的优化了，包括：
 
-* <strong>优化内容提取的方法</strong>：从源头解决内容提取的有效性，包括文本内容、表格内容（保留制表符）和图片内容（OCR识别）等，可以参看我之前的文章[《完全指南——使用python提取PDF中的文本信息（包括表格和图片OCR）》](https://www.luxiangdong.com/2023/10/05/extract/)；
-* <strong>优化chunking</strong>：从最开始的512固定长度切分，到后面的句切分，再到后面的NLTK和SpaCy，具体可参见我之前写的[《最详细的文本分块(Chunking)方法——可以直接影响基于LLM应用效果》](https://www.luxiangdong.com/2023/09/20/chunk/)；
-* <strong>再之后是优化embedding模型</strong>：Embedding模型的选择其实很魔性，我们在优化过程中也会不断否定之前的一些判断。比如我们最开始用m3e，后面用bge，再后面还用了通义千问的embedding模型。总体来说，收费的通义千问还是好一些，但是不明显，有些方面却不如bge。最近一朋友也向我推荐了Jina embedding模型，不过他们的中文模型需要12月份才出来；
-* <strong>我们还优化了其他一些过程</strong>：比如prompt模板、关键词摘要、元数据存储等。
+```text
+* **优化内容提取的方法**：从源头解决内容提取的有效性，包括文本内容、表格内容（保留制表符）和图片内容（OCR识别）等，可以参看我之前的文章[《完全指南——使用python提取PDF中的文本信息（包括表格和图片OCR）》](https://www.luxiangdong.com/2023/10/05/extract/)；
+* **优化chunking**：从最开始的512固定长度切分，到后面的句切分，再到后面的NLTK和SpaCy，具体可参见我之前写的[《最详细的文本分块(Chunking)方法——可以直接影响基于LLM应用效果》](https://www.luxiangdong.com/2023/09/20/chunk/)；
+* **再之后是优化embedding模型**：Embedding模型的选择其实很魔性，我们在优化过程中也会不断否定之前的一些判断。比如我们最开始用m3e，后面用bge，再后面还用了通义千问的embedding模型。总体来说，收费的通义千问还是好一些，但是不明显，有些方面却不如bge。最近一朋友也向我推荐了Jina embedding模型，不过他们的中文模型需要12月份才出来；
+* **我们还优化了其他一些过程**：比如prompt模板、关键词摘要、元数据存储等。
+```
+
 
 这些优化确实给我们带来了非常好的效果，但不够！我们在一些客户的实践过程中，还是发现相关性效果不佳，甚至造成了其中一个客户选择了其他方案（使用RAG+GPT-4的方案）。
 
@@ -71,9 +77,12 @@ id: 73394124-4190-41ba-8c0e-32a3a7975351
 
 ANN算法目前主要有三种：
 
-* <strong>基于图的算法创建数据的图</strong>表示，最主要的就是\*\*分层可导航小世界图算法(HNSW)\*\*。
-* <strong>基于哈希的算法</strong>：流行的算法包括:位置敏感哈希（LSH）、多索引哈希（MIH）；
-* <strong>基于树的算法</strong>：流行的是kd树、球树和随机投影树（RP树）。对于低维空间（≤10），基于树的算法是非常有效的。
+```text
+* **基于图的算法创建数据的图**表示，最主要的就是\*\*分层可导航小世界图算法(HNSW)\*\*。
+* **基于哈希的算法**：流行的算法包括:位置敏感哈希（LSH）、多索引哈希（MIH）；
+* **基于树的算法**：流行的是kd树、球树和随机投影树（RP树）。对于低维空间（≤10），基于树的算法是非常有效的。
+```
+
 
 HNSW借鉴了跳表（Skip List）的思路。跳表是一种数据结构，用于维护一组已排序的元素，并允许进行高效的搜索、插入和删除操作。它是由William Pugh在1989年发明的。图(3)显示了数字\[3、6、7、9、12、17、19、21、25、26\]的排序链表。假设我们想找到目标19。当值小于目标时，我们向右移动，如果是传统的方式，需要6步才能找到它。
 
@@ -115,8 +124,11 @@ _关于HNSW的内容，大家可以查看[像光速一样搜索——HNSW算法�
 
 为了衡量我们的检索系统的有效性，我们主要依赖于两个被广泛接受的指标:<strong>命中率</strong>和\*\*平均倒数排名(MRR)\*\*。让我们深入研究这些指标，了解它们的重要性以及它们是如何运作的。我们来解释一下这两个指标：
 
+```text
 * \*\*命中率:\*\*Hit rate计算在前k个检索文档中找到正确答案的查询比例。简单来说，它是关于我们的系统在前几次猜测中正确的频率。
 * \*\*平均倒数排名(MRR):\*\*对于每个查询，MRR通过查看排名最高的相关文档的排名来评估系统的准确性。具体来说，它是所有查询中这些秩的倒数的平均值。因此，如果第一个相关文档是顶部结果，则倒数排名为1;如果是第二个，倒数是1/2，以此类推。
+```
+
 
 ### <strong>评测结果</strong>
 
@@ -126,17 +138,23 @@ _关于HNSW的内容，大家可以查看[像光速一样搜索——HNSW算法�
 
 <strong>Embedding模型</strong>:
 
+```text
 * [OpenAI Embedding](https://platform.openai.com/docs/guides/embeddings)
 * [Voyage Embedding](https://www.voyageai.com/)
 * [CohereAI Embedding](https://txt.cohere.com/introducing-embed-v3/) (v2.0/ v3.0)
 * [Jina Embeddings](https://huggingface.co/jinaai/jina-embeddings-v2-small-en)
 * [BAAI/bge-large-en](https://huggingface.co/BAAI/bge-large-en)
+```
+
 
 <strong>Rerank模型</strong>:
 
+```text
 * [CohereAI](https://txt.cohere.com/rerank/)
 * [bge-reranker-base](https://huggingface.co/BAAI/bge-reranker-base)
 * [bge-reranker-large](https://huggingface.co/BAAI/bge-reranker-large)
+```
+
 
 > 值得一提的是，这些结果为这个特定数据集和任务的性能提供了坚实的见解。但是，实际结果可能会根据数据特征、数据集大小和其他变量(如chunk\_size、similarity\_top\_k等)而有所不同。
 
@@ -148,9 +166,12 @@ _关于HNSW的内容，大家可以查看[像光速一样搜索——HNSW算法�
 
 我对LlamaIndex的评测结果做一个简单总结：
 
-* <strong>目前rerank模型里面，最好的应该是cohere，不过它是收费的。开源的是智源发布的bge-reranker-base和bge-reranker-large。bge-reranker-large的能力基本上接近cohere，而且在一些方面还更好；</strong>
-* <strong>几乎所有的Embeddings都在重排之后显示出更高的命中率和MRR，所以rerank的效果是非常显著的；</strong>
-* <strong>embedding模型和rerank模型的组合也会有影响，可能需要开发者在实际过程中去调测最佳组合。</strong>
+```text
+* **目前rerank模型里面，最好的应该是cohere，不过它是收费的。开源的是智源发布的bge-reranker-base和bge-reranker-large。bge-reranker-large的能力基本上接近cohere，而且在一些方面还更好；**
+* **几乎所有的Embeddings都在重排之后显示出更高的命中率和MRR，所以rerank的效果是非常显著的；**
+* **embedding模型和rerank模型的组合也会有影响，可能需要开发者在实际过程中去调测最佳组合。**
+```
+
 
 ## 我们可以如何使用Rerank
 
@@ -164,8 +185,11 @@ _关于HNSW的内容，大家可以查看[像光速一样搜索——HNSW算法�
 
 其实还有一种比较简单的方式，这种方式其实是从上面的原理中得出来的：
 
+```text
 * 第一次召回不精确，是因为要对抗时间过长，所以使用了ANN等方法；
 * 那么，我们是否可以在已经得到top\_k的情况下，使用KNN这种暴力检索（逐个计算相似度，打分）来做一个精准排序，然后取top\_n。假设这里k=30，n=5.
+```
+
 
 ## 最后
 

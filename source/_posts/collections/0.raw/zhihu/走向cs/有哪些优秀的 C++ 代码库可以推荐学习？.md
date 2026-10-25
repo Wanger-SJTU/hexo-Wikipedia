@@ -67,28 +67,41 @@ xmake r co
 使用 coost 开发 C++ 项目
 最简单的，可以直接包含[co/all.h](https://link.zhihu.com/?target=https%3A//github.com/idealvin/coost/blob/master/include/co/all.h)，使用 coost 中的所有特性。如果担心影响编译速度，也可以只包含需要用到的头文件，如包含[co/co.h](https://link.zhihu.com/?target=https%3A//github.com/idealvin/coost/blob/master/include/co/co.h)，可以使用 co/flag, co/log 以及协程相关的所有特性。
 
+```cpp
 #include &#34;co/all.h&#34;
+```
+
 
 DEF_string(s, &#34;nice&#34;, &#34;&#34;);
 
+```cpp
 int main(int argc, char** argv) {
     flag::init(argc, argv);
     LOG << FLG_s;
     return 0;
 }
+```
+
 
 上面是一个简单的例子，main 函数第一行用于解析命令行参数及配置文件。coost 中的部分组件用 flag 定义配置项，因此需要在 main 函数开头调用 `flag::init()` 进行初始化。
 
 用户也可以用宏 `DEF_main` 定义 main 函数：
 
+```cpp
 #include &#34;co/all.h&#34;
+```
+
 
 DEF_string(s, &#34;nice&#34;, &#34;&#34;);
 
 DEF_main(argc, argv) {
+
+```text
     LOG << FLG_s;
     return 0;
 }
+```
+
 
 `DEF_main`将 main 函数中的代码放到协程中运行，内部已经调用了`flag::init()`，用户无需手动调用。
 
@@ -99,15 +112,19 @@ co/flag
 
 co/flag 为每个配置项提供一个默认值，在没有配置参数的情况下，程序可以按默认配置运行。用户也可以从<strong>命令行或配置文件</strong>传入配置参数，在需要配置文件时，可以执行 `./exe -mkconf` <strong>自动生成配置文件</strong>。
 
+```cpp
 // xx.cc
 #include &#34;co/flag.h&#34;
 #include &#34;co/log.h&#34;
+```
+
 
 DEF_bool(x, false, &#34;bool x&#34;);
 DEF_bool(y, false, &#34;bool y&#34;);
 DEF_uint32(u32, 0, &#34;...&#34;);
 DEF_string(s, &#34;hello world&#34;, &#34;string&#34;);
 
+```cpp
 int main(int argc, char** argv) {
     flag::init(argc, argv);
 
@@ -118,6 +135,8 @@ int main(int argc, char** argv) {
 
     return 0;
 }
+```
+
 
 上面是一个使用 co/flag 的例子，代码中 `DEF_` 开头的宏，定义了 4 个配置项，每个配置项相当于一个全局变量，变量名是 `FLG_` 加配置名。上面的代码编译完后，可以按下面的方式运行：
 
@@ -143,7 +162,10 @@ FLOG << &#34;hello &#34; << 23;  // fatal
 
 co/log 还提供了一系列 `CHECK` 宏，可以视为加强版的 `assert`，它们在 debug 模式下也不会被清除。
 
+```text
 void* p = malloc(32);
+```
+
 CHECK(p != NULL) << &#34;malloc failed..&#34;;
 CHECK_NE(p, NULL) << &#34;malloc failed..&#34;;
 
@@ -162,12 +184,17 @@ co/log 速度非常快，在程序运行稳定后，几乎不需要内存分配�
 co/unitest
 [unitest](https://link.zhihu.com/?target=https%3A//idealvin.gitee.io/cn/co/unitest/) 是一个简单易用的单元测试框架，cocoyaxi 中的很多组件会用它写单元测试代码，为 cocoyaxi 的稳定性提供了保障。
 
+```cpp
 #include &#34;co/unitest.h&#34;
 #include &#34;co/os.h&#34;
 
 namespace test {
+```
+
 
 DEF_test(os) {
+
+```text
     DEF_case(homedir) {
         EXPECT_NE(os::homedir(), &#34;&#34;);
     }
@@ -176,11 +203,14 @@ DEF_test(os) {
         EXPECT_GT(os::cpunum(), 0);
     }
 }
+```
+
 
 } // namespace test
 
 上面是一个简单的例子，`DEF_test` 宏定义了一个测试单元，实际上就是一个函数(类中的方法)。`DEF_case` 宏定义了测试用例，每个测试用例实际上就是一个代码块。多个测试单元可以放到同一个 C++ 项目中，main 函数一般只需要下面几行：
 
+```cpp
 #include &#34;co/unitest.h&#34;
 
 int main(int argc, char** argv) {
@@ -188,6 +218,8 @@ int main(int argc, char** argv) {
     unitest::run_all_tests();
     return 0;
 }
+```
+
 
 [unitest](https://link.zhihu.com/?target=https%3A//github.com/idealvin/cocoyaxi/tree/master/unitest) 目录下面是 cocoyaxi 中的单元测试代码，编译后可执行下述命令运行：
 
@@ -213,8 +245,12 @@ go(f, 7);          // void f(int);
 go(&T::f, &o);     // void T::f(); T o;
 go(&T::f, &o, 7);  // void T::f(int); T o;
 go([](){
+
+```text
     LOG << &#34;hello go&#34;;
 });
+```
+
 
 上面是用 `go()` 创建协程的例子，go() 是一个函数，它接受 1 到 3 个参数，第一个参数 `f` 是任意可调用的对象，这些参数只要满足 `f()`, `(*f)()`, `f(p)`, `(*f)(p)`, `(o->*f)()` 或者 `(o->*f)(p)` 能被调用就可以了。
 
@@ -227,16 +263,25 @@ s->go(f2);
 如果用户想在所有的调度线程中创建协程，可以用下面的方式：
 
 auto& s = co::all_schedulers();
+
+```cpp
 for (size_t i = 0; i < s.size(); ++i) {
     s[i]->go(f);
 }
+```
+
 
 channel
 [co::Chan](https://link.zhihu.com/?target=https%3A//idealvin.gitee.io/cn/co/coroutine/%23channelcochan)，类似于 golang 中的 channel，可用于在协程之间传递数据。
 
+```cpp
 #include &#34;co/co.h&#34;
+```
+
 
 DEF_main(argc, argv) {
+
+```cpp
     co::Chan<int> ch;
     go([ch]() {
         ch << 7;
@@ -248,6 +293,8 @@ DEF_main(argc, argv) {
 
     return 0;
 }
+```
+
 
 <strong>channel 的读写操作必须在协程中进行</strong>，因此上述代码中用 `DEF_main` 定义 main 函数，让 main 函数中的代码也运行在协程中。
 
@@ -264,9 +311,14 @@ cocoyaxi 中的 channel 基于内存拷贝实现，传递的数据类型可以�
 waitgroup
 [co::WaitGroup](https://link.zhihu.com/?target=https%3A//idealvin.gitee.io/cn/co/coroutine/%23waitgroupcowaitgroup)，类似于 golang 中的 `sync.WaitGroup`，可用于等待协程或线程的退出。
 
+```cpp
 #include &#34;co/co.h&#34;
+```
+
 
 DEF_main(argc, argv) {
+
+```cpp
     FLG_cout = true;
 
     co::WaitGroup wg;
@@ -282,18 +334,24 @@ DEF_main(argc, argv) {
     wg.wait();
     return 0;
 }
+```
+
 
 网络编程
 cocoyaxi 提供了一套协程化的 [socket API](https://link.zhihu.com/?target=https%3A//idealvin.gitee.io/cn/co/coroutine/%23%25E5%258D%258F%25E7%25A8%258B%25E5%258C%2596%25E7%259A%2584-socket-api)，它们大部分形式上与原生的 socket API 基本一致，熟悉 socket 编程的用户，可以轻松的用同步的方式写出高性能的网络程序。另外，cocoyaxi 也实现了更高层的网络编程组件，包括 [TCP](https://link.zhihu.com/?target=https%3A//idealvin.gitee.io/cn/co/net/tcp/)、[HTTP](https://link.zhihu.com/?target=https%3A//idealvin.gitee.io/cn/co/net/http/) 以及基于 [JSON](https://link.zhihu.com/?target=https%3A//idealvin.gitee.io/cn/co/json/) 的 [RPC](https://link.zhihu.com/?target=https%3A//idealvin.gitee.io/cn/co/net/rpc/) 框架，它们兼容 IPv6，同时支持 SSL，用起来比 socket API 更方便。这里只简单的展示一下 HTTP 的用法，其余的可以查看参考文档。
 
 <strong>静态 web server</strong>
 
+```cpp
 #include &#34;co/flag.h&#34;
 #include &#34;co/log.h&#34;
 #include &#34;co/so.h&#34;
+```
+
 
 DEF_string(d, &#34;.&#34;, &#34;root dir&#34;); // Specify the root directory of the web server
 
+```cpp
 int main(int argc, char** argv) {
     flag::init(argc, argv);
     log::init();
@@ -302,12 +360,16 @@ int main(int argc, char** argv) {
 
     return 0;
 }
+```
+
 
 <strong>HTTP server</strong>
 
 http::Server serv;
 
 serv.on_req(
+
+```text
     [](const http::Req& req, http::Res& res) {
         if (req.is_method_get()) {
             if (req.url() == &#34;/hello&#34;) {
@@ -321,12 +383,15 @@ serv.on_req(
         }
     }
 );
+```
+
 
 serv.start(&#34;0.0.0.0&#34;, 80);                                    // http
 serv.start(&#34;0.0.0.0&#34;, 443, &#34;privkey.pem&#34;, &#34;certificate.pem&#34;); // https
 
 <strong>HTTP client</strong>
 
+```cpp
 void f() {
     http::Client c(&#34;https://github.com&#34;);
 
@@ -339,5 +404,7 @@ void f() {
     c.post(&#34;/hello&#34;, &#34;data xxx&#34;);
     LOG << &#34;response code: &#34;<< c.response_code();
 }
+```
+
 
 go(f);

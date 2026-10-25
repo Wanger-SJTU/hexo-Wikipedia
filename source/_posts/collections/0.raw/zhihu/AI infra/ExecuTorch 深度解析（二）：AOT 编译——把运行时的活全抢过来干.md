@@ -57,12 +57,16 @@ ExecuTorch 的 AOT 编译器叫 EXIR（ExecuTorch IR）。它不是一步从 PyT
 
 import torch
 ​
+
+```python
 class MyModel(torch.nn.Module):
     def forward(self, x):
         x = self.conv1(x)
         x = torch.relu(x)
         x = self.conv2(x)
         return x
+```
+
 ​
 # trace 捕获计算图
 exported = torch.export.export(MyModel(), (dummy_input,))
@@ -114,8 +118,12 @@ Partitioner 遍历 FX 图，为可委托的节点打标签 `node.meta[&#34;deleg
 partitioner = XnnpackPartitioner()
 tagged_graph = partitioner.partition(edge_dialect_graph)  # 打标签
 for subgraph in extract_subgraphs(tagged_graph):          # 提取子图
+
+```text
     blob = backend.preprocess(subgraph)                    # 编译成 blob
     replace_with_delegate_call(subgraph, blob)             # 替换为 delegate 调用
+```
+
 `to_backend()` 函数用 Python 的 `singledispatch` 实现多态分发——传 backend_id 直接编译、传 Partitioner 先分区再编译、传多方法规格批量处理，统一入口不同行为。
 
 <strong>Step 4: ToOutVarPass——函数式变 out-variant，消灭动态分配</strong>
@@ -169,12 +177,15 @@ ExecuTorch 支持两种规划算法：naive（每个张量独立分配）和 gre
 <strong>走一遍完整例子：一个 conv → relu → linear 模型</strong>
 光说理论不够直观，让我们用一个微型模型走一遍完整流程。
 
+```python
 class TinyModel(nn.Module):
     def forward(self, x):
         x = self.conv(x)          # conv2d
         x = torch.relu(x)         # relu
         x = self.linear(x)        # linear = addmm
         return x
+```
+
 <strong>ATen Dialect（export 后）</strong>：
 
 %1 = placeholder[input]

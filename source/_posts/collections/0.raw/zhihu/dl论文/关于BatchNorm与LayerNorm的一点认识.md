@@ -100,6 +100,8 @@ nlp_embedding = nlp_layer_norm(nlp_embedding) # nlp_embedding: [B, S, D]`
 然后看huggingface开源的BERT代码如下，可以看到就是在BERT中的实现也就是传入toekn嵌入的维度hidden_size，对每个token的嵌入进行标准化：
 
 `class BertEmbeddings(nn.Module):
+
+```python
     def __init__(self, config):
         ...
         self.LayerNorm = nn.LayerNorm(config.hidden_size, eps=config.layer_norm_eps)
@@ -109,6 +111,8 @@ nlp_embedding = nlp_layer_norm(nlp_embedding) # nlp_embedding: [B, S, D]`
         ...
         embeddings = self.LayerNorm(embeddings)
         ...`
+```
+
 
 #### 一点想法
 

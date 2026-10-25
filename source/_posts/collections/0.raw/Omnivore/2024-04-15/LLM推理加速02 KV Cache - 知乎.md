@@ -37,6 +37,7 @@ LLM推理加速topic以下几部分组成
 
 <strong>相关参数</strong>
 
+```text
 * `bs`：数据批大小
 * `prompt_len`: 输入的prompt长度
 * `seq_len`：文本总长度（prompt+decoder）
@@ -45,6 +46,8 @@ LLM推理加速topic以下几部分组成
 * `head_num`：注意力头head的个数
 * `layer_num`：transformer layer的层数
 * `k_bits`: fp16为2字节， fp32为4字节
+```
+
 
 ## 1.1 传统生成解码
 
@@ -86,8 +89,11 @@ LLM推理加速topic以下几部分组成
 
 ### 1.2.2 计算量分析
 
+```text
 * 计算attention时，计算量减少。
 * 计算QKV时，计算量减少。
+```
+
 
 <strong>结论</strong>：文本长度越长，减少的计算量越明显。
 
@@ -227,10 +233,13 @@ step2:生成的token: tensor([46])
 
 <strong>LLM推理加速的优化方向</strong>：
 
+```text
 * **减少`seq_len`长度**：SWA（Sliding window attention），减少了注意力的长度。见“LLM推理加速06 attention设计-SWA和GQA”
 * **减少`head_num`个数**：MQA（multi-query attention)、GQA（Grouped-query attention），减少kv cache的head个数。见“LLM推理加速06 attention设计-SWA和GQA”
 * **减少`k_bits`** ：通过量化，模型参数由fp16-->int8/int4，每个参数占用的字节也由2byte --> 1byte/0.5byte。见“LLM推理加速05 量化 LLM.int8()/AWQ”
 * **`Kv cache`的显存管理**：PagedAttention。 见“LLM推理加速04 内存管理-PagedAttention和vllm ”
+```
+
 
 发布于 2024-04-12 19:47・IP 属地上海 ，编辑于 2024-04-13 09:58・IP 属地上海
 

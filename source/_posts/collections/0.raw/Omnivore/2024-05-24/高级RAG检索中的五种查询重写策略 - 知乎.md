@@ -41,11 +41,14 @@ id: e80bbbef-9848-434e-9b19-c39c38227efe
 
 查询重写是使查询与文档语义一致的关键技术。例如：
 
-* <strong>假设文档嵌入 (HyDE)</strong> ：通过创建虚拟文档来使查询和文档的语义空间保持一致。
-* <strong>重写-检索-阅读</strong>：提出了一种全新的框架，它颠覆了传统的检索-阅读顺序，将重点放在查询重写上。
-* <strong>回溯提示 (Step-Back Prompting)</strong>： 允许大语言模型 (LLM) 基于高层概念进行抽象推理和检索。
-* <strong>Query2Doc</strong>： 利用来自大语言模型 (LLM) 的少量提示生成伪文档，并将这些伪文档与原始查询合并，构建新的查询。
-* <strong>ITER-RETGEN</strong>：提出了一种迭代式检索生成方法。它将前一次生成的结果与之前的查询相结合，然后检索相关文档并生成新的结果。这个过程会重复多次，直到最终得到理想的结果。
+```text
+* **假设文档嵌入 (HyDE)** ：通过创建虚拟文档来使查询和文档的语义空间保持一致。
+* **重写-检索-阅读**：提出了一种全新的框架，它颠覆了传统的检索-阅读顺序，将重点放在查询重写上。
+* **回溯提示 (Step-Back Prompting)**： 允许大语言模型 (LLM) 基于高层概念进行抽象推理和检索。
+* **Query2Doc**： 利用来自大语言模型 (LLM) 的少量提示生成伪文档，并将这些伪文档与原始查询合并，构建新的查询。
+* **ITER-RETGEN**：提出了一种迭代式检索生成方法。它将前一次生成的结果与之前的查询相结合，然后检索相关文档并生成新的结果。这个过程会重复多次，直到最终得到理想的结果。
+```
+
 
 本文将介绍几种常用的查询重写策略，并探讨它们在实际项目中的应用场景。相信通过对查询重写的深入研究，能够进一步提升 RAG 系统的性能，为用户提供更加精准、高效的答案。
 
@@ -55,9 +58,12 @@ id: e80bbbef-9848-434e-9b19-c39c38227efe
 
 ![](https://proxy-prod.omnivore-image-cache.app/1400x267,sJJbmPGqOr9kHLytzEhMV7EF1ZFM51cQEh-ENj1NrFdA/https://pic4.zhimg.com/v2-ceced6cf72d01593f6c916737b7405d3_b.jpg)
 
+```text
 * 首先，子问题策略使用大语言模型 (LLM) 从用户查询中生成多个子问题。
 * 然后，每个子问题都经过 RAG 过程以获取其自身的答案（检索生成）。
 * 最后，将所有子问题的答案合并以获得最终答案。
+```
+
 
 ## 2.1、代码示例
 
@@ -109,9 +115,12 @@ Generated 2 sub questions.
 子问题查询结果: Harley Quinn is not mentioned in the provided background of the Avengers movie. Thanos is the primary antagonist in the Avengers movie, depicted as a powerful and ruthless enemy.
 ```
 
+```text
 * 首先，我们构建查询引擎工具，包括常规查询引擎，并设置它们的元数据。
 * 然后，我们使用 SubQuestionQueryEngine 类构建子问题查询引擎，传入查询引擎工具。
 * 查询结果显示了生成的子问题及其答案，最终答案基于所有子问题的答案。
+```
+
 
 从代码中，我们可以看到，对于复杂问题，子问题查询比常规查询能产生更准确的结果。
 
@@ -141,8 +150,11 @@ for i, (start_event, end_event) in enumerate(
     print("Answer: " + qa_pair.answer.strip())
 ```
 
+```text
 * 我们可以添加一个回调管理器来记录子问题查询的调试信息。
 * 查询之后，我们通过回调管理器检索调试信息，并获取子问题和答案。
+```
+
 
 ## 2.2、提示词
 
@@ -158,10 +170,13 @@ for key in prompts.keys():
     print(f'prompt: {template}')
 ```
 
+```text
 * 首先，我们使用 get\_prompts() 方法来检索查询引擎的提示对象，该对象对于大多数 LlamaIndex 对象都可用。
 * 提示对象是一个 JSON 对象，其中每个键代表一个提示模板。
 * 我们遍历提示对象的每个键，检索与每个键对应的提示模板，并将其打印出来。
 * 子问题查询将包含 2 个提示模板：一个用于子问题生成，另一个用于常规 RAG。
+```
+
 
 第二种方法是使用 <strong>set\_global\_handler</strong> 进行全局设置：
 
@@ -217,9 +232,12 @@ embedding 0: Loki used the Tesseract, also known as the Cosmic Cube, in his atte
 embedding 1: What mysterious item did Loki use in an attempt to conquer Earth?
 ```
 
-* 首先，实例化一个 <strong>HyDEQueryTransform</strong> (HyDEQueryTransform) 对象，并指定参数<strong>include\_original=True</strong>，表示包含原始问题。需要注意的是，<strong>include\_original</strong> 的默认值为 <strong>True</strong>，这里传递参数仅用于演示。
-* 然后，用问题调用 <strong>hyde</strong> 对象，返回一个 <strong>QueryBundle</strong> 对象。
-* QueryBundle 对象的 <strong>embedding\_strs</strong> 属性是一个数组，其中第一个元素是生成的假设文档。如果 <strong>include\_original</strong> 为 <strong>True</strong>，则数组的第二个元素将包含原始问题。
+```text
+* 首先，实例化一个 **HyDEQueryTransform** (HyDEQueryTransform) 对象，并指定参数**include\_original=True**，表示包含原始问题。需要注意的是，**include\_original** 的默认值为 **True**，这里传递参数仅用于演示。
+* 然后，用问题调用 **hyde** 对象，返回一个 **QueryBundle** 对象。
+* QueryBundle 对象的 **embedding\_strs** 属性是一个数组，其中第一个元素是生成的假设文档。如果 **include\_original** 为 **True**，则数组的第二个元素将包含原始问题。
+```
+
 
 我们发现，LLM 基于其知识，为用户提问提供了很好的答案，生成的假设文档也与电影情节摘要相符。
 
@@ -251,8 +269,11 @@ print(f"hyde query result: {response}")
 hyde query result: Loki used the Tesseract in his attempt to conquer Earth. This powerful artifact, also kn...
 ```
 
-* 构建一个基于 <strong>HyDEQueryTransform</strong> 和原始查询引擎的 <strong>TransformQueryEngine</strong>。
+```text
+* 构建一个基于 **HyDEQueryTransform** 和原始查询引擎的 **TransformQueryEngine**。
 * 查询引擎的查询方法首先为原始问题生成假设文档，然后基于这些假设文档进行搜索并生成答案。
+```
+
 
 虽然得到了正确结果，但我们无法确定 LlamaIndex 是否在检索过程中使用了假设文档，可以通过以下代码进行验证。
 
@@ -272,10 +293,13 @@ for node in nodes:
     print(f"node id: {node.id_}, score: {node.get_score()}")
 ```
 
-* 在第一部分，使用 <strong>TransformRetriever</strong> 基于原始检索器和 <strong>HyDEQueryTransform</strong> 构建一个新的检索器。
+```text
+* 在第一部分，使用 **TransformRetriever** 基于原始检索器和 **HyDEQueryTransform** 构建一个新的检索器。
 * 使用新的检索器检索用户问题，并打印出检索到的文档 ID 和得分。
 * 在第二部分，使用原始检索器检索假设文档。假设文档是从 QueryBundle 对象的 embedding\_strs 获取的，该对象包含两个元素：一个假设文档和原始问题。
 * 打印出假设文档的文档 ID 和得分。
+```
+
 
 显示的结果如下：
 
@@ -377,8 +401,11 @@ examples = [
     print(f"step_back_question: {step_back_question}")
 ```
 
+```text
 * 首先，我们定义一些回溯问题的示例，并将它们包含在 LLM 的系统提示中，让它了解生成问题的模式。
 * 然后，我们将用户问题和系统提示都提供给 LLM，让它生成一个回溯问题。
+```
+
 
 生成回溯问题后，我们分别检索与原始问题和回溯问题相关的文档：
 

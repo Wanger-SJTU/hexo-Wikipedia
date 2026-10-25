@@ -287,7 +287,11 @@ stride 从1开始，每层翻倍：1, 2, 4, 8, …, n/2。这意味着第一层�
 线程内蝶形是最内层的循环。对8个寄存器 x[0..7]，执行3层蝶形：
 
 `// 第0层，stride=1
+
+```cpp
 for (int j = 0; j 
+```
+
 
 这个循环可以展开，编译器会把它优化成一系列独立的加减指令。由于 x[0..7] 都在寄存器中，指令级并行（ILP）可以充分发挥，多个加法可以同时执行。
 
@@ -363,7 +367,10 @@ GPU的全局内存访问以128字节为粒度最高效。对于float类型（4�
 vec_t* input_ptr = reinterpret_cast(input);
 vec_t loaded = input_ptr[threadIdx.x];
 
+```text
 float x[4];
+```
+
 memcpy(x, &loaded, sizeof(vec_t));`
 
 这样一次全局内存读取就载入了4个float（或8个half）。warp内的32个线程同时读取，总共128字节，正好是一个内存事务。
@@ -395,9 +402,13 @@ if (global_idx
 对于half（fp16）和bfloat16输入，累加时容易出现精度损失。解决办法是在载入后立即升级为float进行计算：
 
 `__half loaded_half = input[idx];
+
+```text
 float x = __half2float(loaded_half);
 
 // 所有蝶形计算用float
+```
+
 
 __half result = __float2half(x);
 output[idx] = result;`

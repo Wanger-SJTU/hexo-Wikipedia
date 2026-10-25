@@ -105,6 +105,8 @@ source_url: https://www.zhihu.com/question/1907759496014571228/answer/2041310753
 
 .code
 main:
+
+```text
     # prepare the registers for matrix A, bank0 - bank3 (vb0-vb3), 4x8bits per bank
     # prepare the registers for matrix B, bank4 - bank7 (vb4-vb7), 4x8bits per bank
     # prepare the registers for matrix C, bank8 - bank11 (vb8-vb11), 4x8bits per bank
@@ -114,6 +116,8 @@ main:
     mma         vb2, vb6, vb10, vb14
     mma.last    vb3, vb7, vb11, vb15
     nop
+```
+
 这样我们可以有更加细粒度的矩阵乘法调度了。也就意味着，通过合理的调度设计，完全可以完成一个节拍 Load，一个节拍输入，（空闲调度，可以分配并行向量计算），一个节拍 Store。并且整个流水线可以完全转起来，并且中间的调度气泡的时间时完全确定的。
 
 ![](https://picx.zhimg.com/v2-df86f6d76f5b08aee0b049c635d874ab_r.jpg?source=2c26e567)理论上这个器件可以支持任意长度的矩阵乘法（ 

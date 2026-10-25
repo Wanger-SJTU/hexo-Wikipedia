@@ -70,27 +70,44 @@ $$ RQM = round(Q*min(V_x)) $$
 python 代码实现如下：
 
 `# 根据参数和原始浮点数量化为定点数
+
+```python
 def Quant(Vx, Q, RQM):
     return round(Q * Vx) - RQM
+```
+
 
 # 根据量化参数还原回浮点
+
+```python
 def QuantRevert(VxQuant, Q, RQM):
     return (VxQuant + RQM) / Q`
+```
+
 
 针对数组的量化和还原如下：
 
 `import numpy as np
 
+```python
 def ListQuant(data_list, quant_bits):
     # 数组范围估计
     data_min = min(data_list)
     data_max = max(data_list)
+```
+
 
     # 量化参数估计
+
+```text
     Q = ((1  quant_bits) - 1) * 1.0 / (data_max - data_min)
     RQM = (int)(round(Q*data_min))
+```
+
 
     # 产生量化后的数组
+
+```python
     quant_data_list = []
     for x in data_list:
         quant_data = Quant(x, Q, RQM)
@@ -106,6 +123,8 @@ def ListQuantRevert(quant_data_list, Q, RQM):
         quant_revert_data_list.append(revert_quant_data)
     quant_revert_data_list = np.array(quant_revert_data_list)
     return quant_revert_data_list`
+```
+
 
 下面两幅图，将原本在浮点分布的正弦曲线**，经过量化和还原得到了另外两条曲线。类似图像上的降采样结果，4 位量化方式还原后的曲线出现了明显的锯齿形状，如下图：
 
@@ -127,16 +146,20 @@ def ListQuantRevert(quant_data_list, Q, RQM):
 
 np.random.seed(41)
 
+```python
 def FindMaxMin(inputs):
   return np.min(inputs), np.max(inputs)
 
 def ChooseQuantizationParams(x_min, x_max, quant_bits=8):
   q_scale = (int)((1  quant_bits) - 1)
   q_shift = (int)(1  (quant_bits - 1))
+```
+
 
   Q = q_scale / (x_max - x_min);           
   RQM = (int)(round(Q * x_min) + q_shift);  
 
+```python
   return Q, RQM
 
 def Quantize(inputs, Q, RQM):
@@ -144,6 +167,8 @@ def Quantize(inputs, Q, RQM):
 
 def Dequantize(inputs, Q, RQM):
   return (inputs + RQM) / Q
+```
+
 
 if __name__ == '__main__':
   m = 2
@@ -155,8 +180,11 @@ if __name__ == '__main__':
   weight = np.random.uniform(low=-3, high=3, size=(k, n))
   res = np.dot(inputs, weight)
   
+```python
   print("Reference:")
   print(res)
+```
+
 
   # Quantized
   inputs_min, inputs_max = FindMaxMin(inputs)
@@ -169,8 +197,11 @@ if __name__ == '__main__':
 
   res = np.dot(Dequantize(quantized_inputs, inputs_Q, inputs_RQM), Dequantize(quantized_weight, weight_Q, weight_RQM))
 
+```python
   print("Quantize-Dequantize result:")
   print(res)
+```
+
 
 `
 
@@ -182,6 +213,7 @@ if __name__ == '__main__':
 
 `import numpy as np
 
+```python
 def get_mse(quant_bits=12,
             feature_range=(0.0, 100.0),
             weight_range=(-1.0, 1.0),
@@ -193,23 +225,37 @@ def get_mse(quant_bits=12,
         low=feature_range[0], high=feature_range[1], size=(feature_dim,))
     weight = np.random.uniform(
         low=weight_range[0], high=weight_range[1], size=(feature_dim*output_dim,))
+```
+
 
     # 获取量化后的定点数组及其参数
+
+```text
     feature_Q, feature_RQM, feature_quant = ListQuant(feature, quant_bits)
     weight_Q, weight_RQM, weight_quant = ListQuant(weight, quant_bits)
+```
+
 
     # 浮点数的点积
     float_dotprod = np.dot(feature, weight.reshape(feature_dim, output_dim))
 
     # 量化数的点积
+
+```text
     weight_quant = weight_quant + weight_RQM
     quant_dotprod = np.dot(feature_quant+feature_RQM,
                            weight_quant.reshape(feature_dim, output_dim))/(feature_Q*weight_Q)
+```
+
 
     # 均方差计算
+
+```text
     mean_squared_error = ((float_dotprod - quant_dotprod) ** 2).mean()
 
     return mean_squared_error`
+```
+
 
 下面代码是针对不同的<strong>权重取值范围</strong>以及<strong>量化位数</strong>进行绘图描述：
 
@@ -218,10 +264,16 @@ import matplotlib.pyplot as plt
 
 if __name__ == '__main__':
     # 权重范围列表
+
+```text
     weight_range_list = [(-1.0, 1.0), (-2.0, 2.0), (-3.0, 3.0),
                          (-4.0, 4.0), (-5.0, 5.0), (-6.0, 6.0), (-7.0, 7.0)]
+```
+
 
     for weight_range in weight_range_list:
+
+```text
         print "Weight Range: {}".format(weight_range)
         # 量化位数 8～16
         quant_bits_list = [i for i in xrange(8, 16+1)]
@@ -232,8 +284,12 @@ if __name__ == '__main__':
             mean_err = get_mse(quant_bits, weight_range=weight_range)
             print "\tMean Squared Error: {} ({} bits)".format(mean_err, quant_bits)
             mean_err_list.append(mean_err)
+```
+
 
         # 画出当前权重范围的量化误差曲线
+
+```text
         plt.plot(quant_bits_list, mean_err_list, label="Weight Range: {}".format(
             "~".join([str(i) for i in weight_range])))
 
@@ -241,6 +297,8 @@ if __name__ == '__main__':
     plt.ylabel('Mean Squared Error')
     plt.grid(True)
     plt.legend()
+```
+
 
     # 保存图片
     plt.savefig("q_mse.png")`
@@ -262,6 +320,8 @@ if __name__ == '__main__':
 前几个小节主要借鉴的是2016年的文章[On the efficient representation and execution of deep acoustic models](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/1607.04683)，然而，在2017年谷歌更近一步扩展到了全定点的计算， 参考 [Quantization and Training of Neural Networks for Efficient Integer-Arithmetic-Only Inference](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/1712.05877)，原理和之前分享的内容也基本上一致，将32位的 RQM 换成了 8 位的 zero_point，具体的量化反量化操作如下代码： 
 
 `def ChooseQuantizationParamsV2(xmin, xmax, num_bits=8):
+
+```cpp
     qmin = -(int)(1  (num_bits-1))
     qmax = (int)((1  (num_bits-1))-1)
 
@@ -287,12 +347,16 @@ def QuantizeV2(x, scale, nudged_zero_point, num_bits=8):
 
 def DequantizeV2(x, scale, nudged_zero_point):
     return (x.astype(np.float32) - (float)(nudged_zero_point)) * scale
+```
+
 `
 
 目前，既要保证识别效果，同时还要使用 8 bit 量化模型，一种比较完备的做法就是将推理阶段的量化操作迁移到训练阶段，如 Tensorflow 说明文档一章介绍 Fixed Point Quantization。采用 fake 的量化后的浮点来作为 input 和 weight 的替换，同时浮点范围采用了平滑最大最小值的方法，具体可以查看 TensorFlow 的官方代码 [MovingAvgQuantize](https://link.zhihu.com/?target=https%3A//github.com/tensorflow/tensorflow/blob/05ab6a2afa2959410d48aab2336cea9dc1e2c13e/tensorflow/contrib/quantize/python/quant_ops.py%23L186)，训练中平滑得到了全局的输入和权重的最大最小值（类似 batchnorm 的统计方式），代码段如下：
 
 `    if symmetric:
       if narrow_range:
+
+```text
         min_max_ratio = -1
       else:
         # In two's complement notation, the negative range is slightly larger
@@ -320,6 +384,8 @@ def DequantizeV2(x, scale, nudged_zero_point):
         per_channel=per_channel,
         num_bits=num_bits,
         narrow_range=narrow_range)`
+```
+
 
 关于 int8t 的推理过程，还有一个官方博客把推理过程也写出来了 TensorFlow Lite 8-bit quantization specification，细节之处让人不得不佩服谷歌的匠心，除了因式分解后的提前计算，还有将权重的最大最小值强制设计成对称，这样 zero_point 等于零，减少了两次计算，如下图所示。
 

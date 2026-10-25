@@ -566,11 +566,15 @@ source_url: https://zhuanlan.zhihu.com/p/320063653
 ### <strong>彩云小译-中英对照-中文字转换颜色和加粗</strong>
 
 <strong>F12开发者工具---Sources面板---Snippets</strong>`document.querySelectorAll(".cyxy-trs-target").forEach(item => {
+
+```text
     //颜色
     item.style.color = "rgb(236 57 0)";
     //加粗
     item.style.fontWeight = 'bold';
 })
+```
+
 `
 
 ### CS书籍对应课程

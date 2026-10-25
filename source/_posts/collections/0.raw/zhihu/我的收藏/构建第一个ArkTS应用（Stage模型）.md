@@ -67,10 +67,16 @@ img
 `// Index.ets   
 @Entry    
 @Component    
+
+```text
 struct Index {      
+```
+
  @State message: string = 'Hello World'
  build() {
    Row() {
+
+```text
      Column() {
        Text(this.message)
          .fontSize(50)
@@ -80,6 +86,8 @@ struct Index {
    }
    .height('100%')
  }
+```
+
 }  `
 
 - 添加按钮。
@@ -88,10 +96,16 @@ struct Index {
 `// Index.ets    
 @Entry    
 @Component    
+
+```text
 struct Index {      
+```
+
  @State message: string = 'Hello World'
  build() {
    Row() {
+
+```text
      Column() {
        Text(this.message)
          .fontSize(50)
@@ -114,6 +128,8 @@ struct Index {
    }
    .height('100%')
  }   
+```
+
 }`
 
 - 在编辑窗口右上角的侧边工具栏，点击Previewer，打开预览器。第一个页面效果如下图所示：
@@ -144,10 +160,16 @@ img
 ` // Second.ets    
 @Entry    
 @Component    
+
+```text
 struct Second {      
+```
+
  @State message: string = 'Hi there'
  build() {
    Row() {
+
+```text
      Column() {
        Text(this.message)
          .fontSize(50)
@@ -170,6 +192,8 @@ struct Second {
    .height('100%')
  }
 }  
+```
+
 `
 
 #### 实现页面间的跳转
@@ -182,11 +206,17 @@ struct Second {
 在第一个页面中，跳转按钮绑定onClick事件，点击按钮时跳转到第二页。“<strong>Index.ets</strong>”文件的示例如下：
 
 `// Index.ets    
+
+```python
 // 导入页面路由模块    
 import router from '@ohos.router';    
 import { BusinessError } from '@ohos.base';
+```
+
 @Entry    
 @Component    
+
+```js
 struct Index {      
   @State message: string = 'Hello World'
   build() {
@@ -224,6 +254,8 @@ struct Index {
    }
    .height('100%')
  }
+```
+
 }  `
 
 **
@@ -232,12 +264,18 @@ struct Index {
 在第二个页面中，返回按钮绑定onClick事件，点击按钮时返回到第一页。“Second.ets**”文件的示例如下：
 
 `  // Second.ets    
+
+```python
 // 导入页面路由模块    
 import router from '@ohos.router';    
 import { BusinessError } from '@ohos.base';
+```
+
 
 @Entry    
 @Component    
+
+```js
 struct Second {      
   @State message: string = 'Hi there'
   build() {
@@ -277,6 +315,8 @@ struct Second {
    .height('100%')
  }
 }  
+```
+
 `
 
 - 打开Index.ets文件，点击预览器中的

@@ -53,6 +53,8 @@ ActivityManager.MemoryInfo memoryInfo = new ActivityManager.MemoryInfo();`
 虽然获取方法不同，但这两种方式获取数据的原理完全一样，它们调用的都是 `android_os_Debug.cpp` 对象中的 `android_os_Debug_getDirtyPagesPid` 接口，它的源码如下：
 
 `static jboolean android_os_Debug_getDirtyPagesPid(JNIEnv *env, jobject clazz,
+
+```cpp
         jint pid, jobject object)
 {
     bool foundSwapPss;
@@ -80,6 +82,8 @@ ActivityManager.MemoryInfo memoryInfo = new ActivityManager.MemoryInfo();`
 
     //3\. 获取Unkonw区域数据
     for (int i=_NUM_CORE_HEAP; i
+```
+
 
 这段源码比较长，我们一起来梳理下里面的逻辑，主要分为 4 部分。
 
@@ -115,6 +119,8 @@ maps 文件是分析内存很重要的一个文件，通过 maps 文件我们可
 字段addressperms offsetoffsetdevinodepathname数据12c00000-32c00000rw-p0000000000:000main space (region space)]含义本段内存映射的虚拟地址空间范围读写权限本段映射地址在文件中的偏移所映射的文件所属设备的设备号文件的索引节点号对有名映射而言，pathname 是映射的文件名；对匿名映射来说，pathname 是此段内存在进程中的作用如果手机没有 root 也没关系，我们可以在运行时通过 native 层的 c++ 代码读取该文件，可以看一下`android_os_Debug_getMemInfo` 接口中调用的 load_maps 方法，该方法读取 maps 文件后，还做了一个详细的分类操作，分完类之后就是我们看到的数据 ① 中的数据，这个方法比较长，所以我精简了部分代码。
 
 `static bool load_maps(int pid, stats_t* stats, bool* foundSwapPss)
+
+```cpp
 {
     *foundSwapPss = false;
     uint64_t prev_end = 0;
@@ -268,6 +274,8 @@ maps 文件是分析内存很重要的一个文件，通过 maps 文件我们可
 
     //for循环函数，执行maps文件的读取
     return meminfo::ForEachVmaFromFile(smaps_path, vma_scan);
+```
+
 }`
 
 通过上面对 maps 的解析函数，我们不仅可以看到 maps 中的数据类型及格式，也可以知道 Dalvik Heap，Native Heap 等数据的组成。<strong>在做内存的线上异常监控时，异常情况下，也可以将 maps 文件上传到服务端，服务端对 maps 文件进行解析和分类，这样我们就能非常方便的定位和排查线上内存问题。</strong>
@@ -282,6 +290,8 @@ maps 文件是分析内存很重要的一个文件，通过 maps 文件我们可
 上面 1 的数据是通过 load_maps 函数解析获取的，2 和 3 的数据是通过 read_memtrack_memory 函数获取的。该函数会读取和解析路径为 <strong>/d/kgsl/proc/{</strong> <strong>pid</strong> <strong>}/mem</strong> 的文件，这个文件节点中的数据是gpu driver写入的，该方法的实现可以参考下面高通855源码中的 kgsl_memtrack_get_memory 函数，下面是这个函数的主体逻辑代码。（官方源码：`kgsl.c`）
 
 `int kgsl_memtrack_get_memory(pid_t pid, enum memtrack_type type,
+
+```text
                              struct memtrack_record *records,
                              size_t *num_records)
 {
@@ -293,10 +303,15 @@ maps 文件是分析内存很重要的一个文件，通过 maps 文件我们可
         // 2\. 读取并解析该文件
         ……
     }
+```
+
 
     ……
 
+```text
     return 0;
+```
+
 }`
 
 我们也可以在 root 手机中，查看 `kgsl_memtrack_get_memory` 函数读取到该应用进程的数据，下面是系统设置这个应用的部分 graphic 数据。
@@ -346,11 +361,17 @@ maps 文件是分析内存很重要的一个文件，通过 maps 文件我们可
 
 - 获取 Java 层申请的内存：会直接去 Art 虚拟机中获取虚拟机已经申请的内存大小。
 `Runtime runtime = Runtime.getRuntime();
+
+```text
 //获取已经申请的Java内存 long usedMemory=runtime.totalMemory() ;
 //获取申请但未使用Java内存 long freeMemory = runtime.freeMemory();`
+```
+
 
 - 获取 Native 申请的内存：会调用 android_os_Debug.cpp 对象中的android_os_Debug_getNativeHeapSize 接口获取数据，该接口又是调用的 mallinfo 函数，mallinfo 函数会返回 native 层已经申请的内存大小。
 `//获取已经申请的Native内存
+
+```text
 long nativeHeapSize = Debug.getNativeHeapSize()
 //获取申请但未使用Native内存
 long nativeHeapFreeSize = Debug.getNativeHeapFreeSize()
@@ -360,6 +381,8 @@ static jlong android_os_Debug_getNativeHeapSize(JNIEnv *env, jobject clazz)
 {
     struct mallinfo info = mallinfo();
     return (jlong) info.usmblks;
+```
+
 }`
 
 我们可以看下 `mallinfo` 函数的说明文档：

@@ -36,8 +36,12 @@ Choose your learning path to get started. The course is divided into theoretical
   </a>
   <a href="./resources/" class="card">
     <h3>Resource Library</h3>
+
+```text
     <p>Copy-ready templates (AGENTS.md, feature_list.json) to use in your own repositories.</p>
   </a>
+```
+
 </div>
 
 ## The Core Mechanism of a Harness

@@ -185,6 +185,7 @@ ragas_output_df.head()
 
 ## 资源
 
+```text
 * Github：<https://github.com/mcks2000/llm%5Fnotebooks/tree/main/notebooks/ragas>
 * Ragas：检索增强生成的自动评估：<https://arxiv.org/abs/2309.15217>
 * 使用 MT-Bench 和 Chatbot Arena 评审 LLM-as-a-Judge：<https://arxiv.org/pdf/2306.05685.pdf>
@@ -193,6 +194,8 @@ ragas_output_df.head()
 * Milvus 开源向量数据库：<https://github.com/milvus-io/milvus>
 * 矢量数据库的背景资料：<https://zilliz.com/learn/what-is-vector-database>
 * 矢量嵌入的背景资料：<https://zilliz.com/learn/Sentence-Transformers-for-Long-Form-Text>
+```
+
 
 ---
 

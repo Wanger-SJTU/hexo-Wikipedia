@@ -77,6 +77,8 @@ SC_METHOD()**
 
 `#include 
 SC_MODULE( and2 ) {
+
+```cpp
     sc_inDT> a, b;
     sc_outDT> f;
 
@@ -89,12 +91,16 @@ SC_MODULE( and2 ) {
         sensitive  a  b;
     }
 }
+```
+
 `
 
 假如模块是时序逻辑，输入是a、b，输出是f，时钟为clk并在上升沿采样，那么上述代码改为：
 
 `#include 
 SC_MODULE( and2 ) {
+
+```cpp
     sc_inDT> a, b;
     sc_outDT> f;
     sc_inbool> clk;
@@ -108,6 +114,8 @@ SC_MODULE( and2 ) {
         sensitive  clk.pos();
     }
 }
+```
+
 `
 
 #### 1.6. Integer Datatypes
@@ -163,6 +171,8 @@ SC_MODULE( and2 ) {
 <strong>Coefficients for each FIR</strong>
 
 `// Coefficients for each FIR
+
+```text
 const sc_uint8> coef[5] = {
     18,
     77,
@@ -170,6 +180,8 @@ const sc_uint8> coef[5] = {
     77,
     18
 };
+```
+
 `
 
 <strong>FIR Main thread</strong>
@@ -217,6 +229,8 @@ const sc_uint8> coef[5] = {
 SC_CTOR省略部分代码为：
 
 `SC_CTOR( SYSTEM ): clk_sig ("clk_sig", 10, SC_NS)
+
+```text
 {
     tb0 = new tb("tb0");
     tb0->clk( clk_sig );
@@ -228,6 +242,8 @@ SC_CTOR省略部分代码为：
     fir0->rst( rst_sig );
     fir0->inp( inp_sig );
 }
+```
+
 `
 
 - 时钟名字为“clk_sig”，频率为10ns
@@ -246,6 +262,8 @@ SC_CTOR省略部分代码为：
 省略部分代码为reset相关代码：
 
 `void tb::source() {
+
+```text
     // Reset
     inp.write( 0 );
     rst.write( 1 );
@@ -254,6 +272,8 @@ SC_CTOR省略部分代码为：
     wait();
     ...
 }
+```
+
 `
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_7c5429e25893.jpg)
@@ -372,6 +392,7 @@ SC_CTOR省略部分代码为：
 
 `#include "fir.h"
 
+```cpp
 // Coefficients for each FIR
 const sc_int16> coef[5] = {
     18,
@@ -430,16 +451,24 @@ void fir::fir_main(void)
         outp_vld.write( 0 );
     } // while
 }
+```
+
 `
 
 #### tb.h（第五课）
 
 `#ifndef TB_H
+
+```cpp
 #define TB_H
 
 #include 
+```
+
 
 SC_MODULE(tb)
+
+```cpp
 {
     sc_inbool>             clk;
     sc_outbool>            rst;
@@ -464,12 +493,15 @@ SC_MODULE(tb)
 }
 
 #endif
+```
+
 `
 
 #### http://tb.cc（第四课、第五课）
 
 `#include "tb.h"
 
+```cpp
 void tb::source()
 {
     sc_int16> tmp;
@@ -552,6 +584,8 @@ void tb::sink()
     fclose(outfp);
     sc_stop();
 }
+```
+
 `
 
 #### Makefile（第五课、第六课）
@@ -577,16 +611,24 @@ SOURCES = main.cc fir.cc tb.cc
 
 DEPENDENCIES = \
     Makefile \
+
+```text
     $(HEADERS) \
     $(SOURCES)
+```
+
 
 LIBS= -lsystemc -lstdc++ -lm
 
 TESTS= main
 
 all: $(TESTS)
+
+```text
     ./$(TESTS)
     @make cmp_result
+```
+
 
 $(TESTS): $(DEPENDENCIES)
     gcc -g -o $@ $(SOURCES) $(INCLUDE_DIRS) -L$(LIB_DIRS) $(LIBS)
@@ -599,10 +641,14 @@ GOLD_FILE = $(GOLD_DIR)/ref_output.dat
 
 cmp_result:
     @echo "*****************************************"
+
+```text
     @if diff -w $(GOLD_FILE) ./output.dat; then \
             echo "SIMULATION PASSED"; \
     else \
             echo "SIMULATION FAILED"; \
     fi
     @echo "*****************************************"
+```
+
 `

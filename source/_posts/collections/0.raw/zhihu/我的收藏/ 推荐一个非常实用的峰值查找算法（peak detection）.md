@@ -31,6 +31,7 @@ source_url: https://zhuanlan.zhihu.com/p/549588865
 
 `import numpy as np
 
+```python
 def AMPD(data):
     """
     实现AMPD算法
@@ -53,11 +54,14 @@ def AMPD(data):
             if data[i] > data[i - k] and data[i] > data[i + k]:
                 p_data[i] += 1
     return np.where(p_data == max_window_length)[0]`
+```
+
 
 我们先来合成一段数据看看效果：
 
 `import matplotlib.pyplot as plt
 
+```python
 def sim_data():
     N = 1000
     x = np.linspace(0, 200, N)
@@ -73,6 +77,8 @@ def vis():
     plt.scatter(px, y[px], color="red")
 
     plt.show()
+```
+
 
 vis()`
 

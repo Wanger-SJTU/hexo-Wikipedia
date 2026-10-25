@@ -65,6 +65,8 @@ futex\_wait的代码如下
 
 static __always_inline int
 futex_wait (unsigned int *futex_word, unsigned int expected, int private)
+
+```cpp
 {
   int err = lll_futex_timed_wait (futex_word, expected, NULL, private);
   switch (err)
@@ -85,6 +87,8 @@ futex_wait (unsigned int *futex_word, unsigned int expected, int private)
       futex_fatal_error ();
     }
 }
+```
+
 
 这几个错误是最值得关注的，按图索骥就行了  
 首先不是ETIMEDOUT，其次EFAULT和ENOSYS是比较难查的，EINVAL反而比较好查，先确认是不是wrong alignment 对齐问题，简单来说，就是查地址，思路有了，怎么查？切到frame 5
@@ -114,19 +118,25 @@ mov 0x8(%rsp),%rdi到lock\_wait，说明 退回去就是futex和private，对吧
 
 复现一下
 
+```cpp
 #include <stdlib.h>
 #include <stdio.h>
 #include <unistd.h>
 #include <pthread.h>
+```
+
 
 pthread_mutex_t mutex __attribute__((section(".reproducer"))) __attribute__ ((aligned(1)));
 
+```cpp
 int main(int argc, char **argv)
 {
 	printf("mutex %p\n", &mutex);
 	pthread_mutex_lock(&mutex);
 	pthread_mutex_lock(&mutex);
 }
+```
+
 
 为什么锁两次，因为锁一次不能复现,正常来说顶多死锁
 
@@ -156,6 +166,8 @@ The futex facility returned an unexpected error code.
 
 rusty@nuc10:~/futex$ sudo trace-cmd report
 ...
+
+```text
            a.out-867356 [004] 112365.616487: funcgraph_entry:        0.168 us   |  exit_to_user_mode_prepare();
            a.out-867356 [004] 112365.616487: funcgraph_entry:                   |  __x64_sys_futex() {
            a.out-867356 [004] 112365.616488: funcgraph_entry:                   |    do_futex() {
@@ -167,15 +179,20 @@ rusty@nuc10:~/futex$ sudo trace-cmd report
            a.out-867356 [004] 112365.616489: funcgraph_exit:         0.954 us   |      }         
            a.out-867356 [004] 112365.616489: funcgraph_exit:         1.205 us   |    }         
            a.out-867356 [004] 112365.616489: funcgraph_exit:         1.581 us   |  }
+```
+
 
 能看到死在get\_futex\_key里，看一下代码
 
+```text
          /*
           * The futex address must be "naturally" aligned.
           */
          key->both.offset = address % PAGE_SIZE;
          if (unlikely((address % sizeof(u32)) != 0))
                   return -EINVAL;
+```
+
 
 就是你了
 

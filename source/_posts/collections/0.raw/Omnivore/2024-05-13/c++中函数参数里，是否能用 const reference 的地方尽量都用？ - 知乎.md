@@ -111,8 +111,11 @@ Herb Sutter, “Back to the Basics! Essentials of Modern C++ Style” (CppCon 20
 
 总的来说：
 
+```text
 * 如果你是在考虑用普通引用vs常量引用，那么只要可能，就应该用常量引用。
 * 如果你是在考虑用值传递vs常量引用，那么只要数据尺寸够小，建议用值传递。
+```
+
 
 [发布于 2023-04-07 09:27 ，编辑于 2023-04-07 09:33](https://www.zhihu.com/question/594059514/answer/2972162847)
 

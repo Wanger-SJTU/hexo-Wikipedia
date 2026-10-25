@@ -153,6 +153,9 @@ For each query (or batch of queries), it is necessary to re-compute the embeddin
 
 RAG-Retrieval 提供了全链路的RAG检索微调(train)和推理(infer)代码。
 
+```text
 * 对于微调，支持微调任意开源的RAG检索模型，包括向量（embedding）、迟交互式模型（colbert）、交互式模型（cross encoder）。
 * 对于推理，RAG-Retrieval专注于排序(reranker)，开发了一个轻量级的python库rag-retrieval,提供统一的方式调用任意不同的RAG排序模型
+```
+
 

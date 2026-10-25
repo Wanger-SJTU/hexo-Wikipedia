@@ -81,17 +81,25 @@ source_url: https://zhuanlan.zhihu.com/p/2029894341162992606
 - <strong>首次编译</strong>：第一个 `Layer` 实例被执行时，TorchDynamo 捕获其计算图，TorchInductor 生成优化后的内核代码，并将结果缓存。
 - <strong>结构匹配</strong>：后续 `Layer` 实例执行时，TorchDynamo 检测到其计算图结构与缓存中的图完全一致（相同的算子序列、相同的张量形状关系）。
 - <strong>缓存命中</strong>：直接复用已缓存的编译产物，跳过图构建和代码生成阶段。# 伪代码：TorchDynamo 的缓存匹配逻辑
+
+```python
 def compile_and_cache(module, input):
     graph_signature = extract_graph_structure(module, input)
+```
+
     
     if graph_signature in compilation_cache:
         # 缓存命中 - 直接返回已编译的内核
+
+```text
         return compilation_cache[graph_signature]
     else:
         # 缓存未命中 - 执行完整编译流程
         compiled_fn = full_compile_pipeline(module, input)
         compilation_cache[graph_signature] = compiled_fn
         return compiled_fn
+```
+
 
 2.3 inline_inbuilt_nn_modules 配置的作用机制
 `torch._dynamo.config.inline_inbuilt_nn_modules` 是实现区域编译的关键配置项。其作用机制涉及 TorchDynamo 对 `nn.Module` 的处理方式：
@@ -147,8 +155,12 @@ RNN/LSTM/GRU 的循环单元在时间维度上重复执行，可视为特殊的�
 <strong>模式一：构造时编译（推荐）</strong>
 
 self.layers = nn.ModuleList([
+
+```text
     torch.compile(Layer()) for _ in range(N)
 ])
+```
+
 <strong>模式二：延迟编译</strong>
 
 self.layers = nn.ModuleList([Layer() for _ in range(N)])
@@ -158,12 +170,19 @@ for i, layer in enumerate(self.layers):
     self.layers[i] = torch.compile(layer)
 <strong>模式三：条件编译</strong>
 
+```python
 def maybe_compile(module, should_compile):
     return torch.compile(module) if should_compile else module
+```
+
 
 self.layers = nn.ModuleList([
+
+```text
     maybe_compile(Layer(), use_compile) for _ in range(N)
 ])
+```
+
 
 5. 性能优势量化分析
 
@@ -188,6 +207,7 @@ self.layers = nn.ModuleList([
 
 以示例代码为例：
 
+```python
 class Model(torch.nn.Module):
     def __init__(self, apply_regional_compilation):
         super().__init__()
@@ -195,6 +215,8 @@ class Model(torch.nn.Module):
         self.layers = torch.nn.ModuleList([
             torch.compile(Layer()) for _ in range(64)  # ← 编译边界内
         ])
+```
+
 <strong>应对策略</strong>：
 
 - 将关键的非重复算子也纳入编译范围
@@ -217,28 +239,39 @@ torch.compiler.reset()
 torch._inductor.utils.fresh_inductor_cache()
 <strong>正确的基准测试流程</strong>：
 
+```python
 def correct_benchmark():
     # 步骤 1：清除所有缓存
     torch.compiler.reset()
     torch._inductor.utils.fresh_inductor_cache()
+```
+
     
     # 步骤 2：创建模型
     model = create_compiled_model()
     
     # 步骤 3：测量首次推理时间（包含编译）
+
+```text
     start = time.time()
     model(input_data)
     torch.cuda.synchronize()
     cold_start_time = time.time() - start
+```
+
     
     # 步骤 4：测量稳态推理时间（不包含编译）
+
+```text
     start = time.time()
     for _ in range(100):
         model(input_data)
     torch.cuda.synchronize()
     warm_time = (time.time() - start) / 100
-    
+
     return cold_start_time, warm_time
+```
+
 
 6.4 版本兼容性
 PyTorch 版本区域编译支持状态所需配置< 2.4不支持—2.4支持（需手动配置）torch._dynamo.config.inline_inbuilt_nn_modules = True≥ 2.5原生支持无需额外配置（已默认启用）

@@ -119,8 +119,12 @@ self.tp_rank = tp_rank
 self.pp_rank = pp_rank
 # 省略一部分初始化代码
 self.attn_tp_rank, self.attn_tp_size, self.attn_dp_rank = (
+
+```text
     compute_dp_attention_world_info(...)
 )
+```
+
 
 - 目的: 将传入的 ServerArgs 对象中的配置项，持久化为 Scheduler 实例的属性。这使得在整个类的生命周期内，所有方法都能方便地访问这些配置。
 - 关键配置:
@@ -135,6 +139,8 @@ self.attn_tp_rank, self.attn_tp_size, self.attn_dp_rank = (
 context = zmq.Context(2)
 # ...
 if self.pp_rank == 0 and self.attn_tp_rank == 0:
+
+```text
     self.recv_from_tokenizer = get_zmq_socket(...)
     self.send_to_tokenizer = get_zmq_socket(...)
     self.send_to_detokenizer = get_zmq_socket(...)
@@ -143,6 +149,8 @@ if self.pp_rank == 0 and self.attn_tp_rank == 0:
         self.idle_sleeper = IdleSleeper(...)
 else:
     # ... dummy objects
+```
+
 
 - 目的: 建立 Scheduler 与其他管理进程（如 TokenizerManager, DetokenizerManager, RPC客户端）之间的通信管道。
 - 技术选型: 使用 ZeroMQ (ZMQ)。ZMQ是一个高性能的异步消息库，非常适合在底层构建复杂的、低延迟的分布式系统。
@@ -156,9 +164,13 @@ else:
 - 中止确认 (Abort Ack): 如果用户断开了连接，Tokenizer Manager 会通知 Scheduler “中止请求”。Scheduler 清理完内部状态后，可能通过此通道发送确认信号。
 3. 核心执行单元初始化
 if self.enable_overlap:
+
+```text
     TpWorkerClass = TpModelWorkerClient
 else:
     TpWorkerClass = TpModelWorker
+```
+
 
 self.tp_worker = TpWorkerClass(...)
 
@@ -174,9 +186,13 @@ self.init_memory_pool_and_cache()
 self.req_to_token_pool, self.token_to_kv_pool_allocator = self.tp_worker.get_memory_pool()
 # ...
 if self.enable_hierarchical_cache:
+
+```text
     self.tree_cache = HiRadixCache(...)
 else:
     self.tree_cache = RadixCache(...)
+```
+
 
 - 目的: 建立SGLang性能的基石——高效的KV缓存管理系统。
 - 关键组件:
@@ -209,6 +225,7 @@ t.start()
 - event_loop_overlap(): 优化的调度循环，它会重叠 CPU 处理（调度）和 GPU 计算（模型推理）。
 - event_loop_pp(): 针对流水线并行（Pipeline Parallelism）的特殊循环。以最简单的 event_loop_normal 为例，它的核心逻辑是：
 
+```python
 def event_loop_normal(self):
     """A normal scheduler loop."""
     while True:
@@ -216,13 +233,21 @@ def event_loop_normal(self):
         recv_reqs = self.recv_requests()
         # 2. 处理输入请求
         self.process_input_requests(recv_reqs)
+```
+
 
         # 3. 决定下一批要运行的请求
+
+```text
         batch = self.get_next_batch_to_run()
         self.cur_batch = batch
+```
+
 
         if batch:
             # 4. 运行这批请求（模型生成）
+
+```text
             result = self.run_batch(batch)
             # 5. 处理生成结果
             self.process_batch_result(batch, result)
@@ -231,6 +256,8 @@ def event_loop_normal(self):
             self.maybe_sleep_on_idle()
 
         self.last_batch = batch
+```
+
 
 获取请求数据 (recv_requests 和 process_input_requests)
 
@@ -266,6 +293,8 @@ def event_loop_normal(self):
         model_worker_batch = batch.get_model_worker_batch()
 
         # 调用工作进程执行模型前向传播
+
+```text
         logits_output, next_token_ids, can_run_cuda_graph = (
             self.tp_worker.forward_batch_generation(model_worker_batch)
         )
@@ -273,6 +302,8 @@ def event_loop_normal(self):
         ret = GenerationBatchResult(...)
     # ...
     return ret
+```
+
 
 结果处理 (process_batch_result)
 
@@ -304,6 +335,8 @@ recv_requests 的设计目标就是成为这个信息同步的枢纽。它确保
 - 单一入口点: 只有特定的一个进程（pp_rank=0, attn_tp_rank=0）负责从外部接收请求，避免了多个进程争抢或重复处理。
 - 状态一致性: 通过广播机制，所有需要协同工作的进程（例如，一个张量并行组内的所有 ranks）都会收到完全相同的一批请求，从而可以协同地为这些请求分配资源和执行计算。
 3. 代码分步解析
+
+```python
 def recv_requests(self) -  List[Req]:
     """Receive results at tp_rank = 0 and broadcast it to all other TP ranks."""
 
@@ -336,8 +369,12 @@ def recv_requests(self) -  List[Req]:
         else:
             # 同一个PP阶段但不是 leader 的其他TP rank，它们不直接接收，等待广播。
             recv_reqs = None
+```
+
 
     # --- Case B: 流水线并行的后续阶段 ---
+
+```text
     else:
         # 如果不是第一个PP阶段 (pp_rank   0)，请求不是从外部来，
         # 而是从上一个PP阶段的 worker 传递过来的。
@@ -353,10 +390,14 @@ def recv_requests(self) -  List[Req]:
     # Step 2: 分发/广播请求 (Request Distribution / Broadcast)
     # 将接收到的请求分发给组内的其他进程。
     # =========================================================================
+```
+
 
     # --- Case 1: 启用了 DP-Attention 的复杂情况 ---
     if self.server_args.enable_dp_attention:
         # 这种模式下，需要区分“工作请求”和“控制请求”，因为它们可能需要广播到不同的进程组。
+
+```text
         if self.attn_tp_rank == 0:
             # 将请求分为两类
             work_reqs = [req for req in recv_reqs if isinstance(req, (TokenizedGenerateReqInput, TokenizedEmbeddingReqInput))]
@@ -364,16 +405,28 @@ def recv_requests(self) -  List[Req]:
         else:
             work_reqs = None
             control_reqs = None
+```
+
 
         # 将“工作请求”广播给 Attention TP 组内的所有进程
+
+```text
         if self.attn_tp_size != 1:
             work_reqs = broadcast_pyobj(work_reqs, ..., group=self.attn_tp_cpu_group)
+```
+
 
         # 将“控制请求”广播给完整的 TP 组内的所有进程
+
+```text
         if self.tp_size != 1:
             control_reqs = broadcast_pyobj(control_reqs, ..., group=self.tp_cpu_group)
+```
+
 
         # 合并两类请求
+
+```text
         recv_reqs = work_reqs + control_reqs
 
     # --- Case 2: 标准的张量并行 (TP) 情况 ---
@@ -385,11 +438,17 @@ def recv_requests(self) -  List[Req]:
             self.tp_cpu_group,
             src=self.tp_group.ranks[0],
         )
+```
+
 
     # --- Case 3: 单GPU，无并行 ---
+
+```text
     # 如果 tp_size == 1，则不需要任何广播，直接返回接收到的请求。
 
     return recv_reqs
+```
+
 
 - pp_rank (Pipeline Parallelism Rank): 流水线并行的阶段编号。pp_rank=0 是第一个阶段，负责接收外部请求。后续阶段从前一个阶段接收中间结果和请求信息。
 - tp_rank (Tensor Parallelism Rank): 张量并行的编号。一个TP组内的所有进程协同完成一个层的计算。
@@ -421,6 +480,8 @@ A. 处理分块请求 (Chunked Request) 与资源释放
 chunked_req_to_exclude = set()
 if self.chunked_req:
     # 1. 暂时移出分块请求
+
+```text
     chunked_req_to_exclude.add(self.chunked_req)
     self.tree_cache.cache_unfinished_req(self.chunked_req, chunked=True)
 
@@ -432,6 +493,8 @@ if self.chunked_req:
         )
     else:
         self.req_to_token_pool.free(self.chunked_req.req_pool_idx)
+```
+
 
 - 背景：Chunked Prefill 是指当 Prompt 太长（超过显存限制或为了避免阻塞），将其拆分成多次前向传播。
 - 逻辑：如果当前有一个正在处理的分块请求（self.chunked_req），它不能直接进入解码阶段。必须先把它“踢出”当前批次，保存其中间状态（KV Cache 或 SSM State），并释放其在当前批次中的占位符（req_pool_idx），以便下一轮重新调度它的下一个分块。
@@ -441,6 +504,8 @@ if self.last_batch and self.last_batch.forward_mode.is_extend():
     # ... (省略分块请求的额外过滤逻辑) ...
 
     # 1. 过滤已完成或被移出的请求
+
+```text
     last_bs = self.last_batch.batch_size()
     self.last_batch.filter_batch(
         chunked_req_to_exclude=list(chunked_req_to_exclude)
@@ -448,13 +513,19 @@ if self.last_batch and self.last_batch.forward_mode.is_extend():
     # 如果过滤后变小了，说明 Running Batch 可能有空位了
     if self.last_batch.batch_size()   last_bs:
         self.running_batch.batch_is_full = False
+```
+
 
     # 2. 将预填充完成的请求合并到解码队列
+
+```text
     if not self.last_batch.is_empty() and not self.last_batch.is_prefill_only:
         if self.running_batch.is_empty():
             self.running_batch = self.last_batch
         else:
             self.running_batch.merge_batch(self.last_batch)
+```
+
 
 - 状态流转：这是请求生命周期的关键一步：Prefill -  Decode。
 - self.last_batch 通常是刚刚跑完预填充的新请求。
@@ -467,6 +538,8 @@ new_batch = self.get_new_batch_prefill()
 D. 最终决策 (Run Prefill or Decode?)
 if new_batch is not None:
     # 优先级 1: 跑 Prefill
+
+```text
     ret = new_batch
 else:
     # 优先级 2: 跑 Decode
@@ -476,6 +549,8 @@ else:
     else:
         # 无事可做
         ret = None
+```
+
 
 - 决策：
 - 如果成功拿到了 new_batch（预填充），就返回它。这能最大化吞吐量。
@@ -499,8 +574,12 @@ if self.chunked_req:
 
 # 核心动作：把分块请求从 last_batch 里剔除
 self.last_batch.filter_batch(
+
+```text
     chunked_req_to_exclude=list(chunked_req_to_exclude)
 )
+```
+
 结果：如果上一轮的批次里 只包含 这一个分块请求，经过 filter_batch 剔除后，self.last_batch 就变成了一个空壳（对象还在，但里面的请求列表空了）。
 
 为什么这么做：
@@ -587,6 +666,8 @@ if self.last_batch and self.last_batch.forward_mode.is_extend():
     # ... (省略过滤逻辑) ...
 
     # 2. 检查 Running Batch 是否为空
+
+```text
     if self.running_batch.is_empty():
         # 这里 Running Batch 不为空，因为里面有 Req A
         self.running_batch = self.last_batch
@@ -594,6 +675,8 @@ if self.last_batch and self.last_batch.forward_mode.is_extend():
         # 3. 命中这里！合并！
         # 把 Req B (last_batch) 合并进 Req A (running_batch)
         self.running_batch.merge_batch(self.last_batch) 
+```
+
 合并后的结果：self.running_batch 现在包含了 [Req A, Req B]。
 
 4. 时间步 T=2 (后续)：执行 Decode
@@ -619,11 +702,19 @@ for req in self.waiting_queue:
 2. 第一道关卡：LoRA 资源限制
 if self.enable_lora and not self.tp_worker.can_run_lora_batch(
     lora_set
+
+```text
     | set([req.lora_id for req in adder.can_run_list])
     | set([req.lora_id])
+```
+
 ):
+
+```text
     self.running_batch.batch_is_full = True
     break
+```
+
 
 - 目的：检查显存中的 LoRA 模型适配器数量是否超标。
 - 逻辑：它计算了三个集合的并集：
@@ -645,9 +736,13 @@ if len(adder.can_run_list)  = self.get_num_allocatable_reqs(running_bs):
 4. 第三道关卡：满员处理与抢占 (Preemption)
 if self.running_batch.batch_is_full:
     if not self.try_preemption:
+
+```text
         break
     if not adder.preempt_to_schedule(req, self.server_args):
         break
+```
+
 
 - 触发条件：上面的并发检查将 batch_is_full 设为了 True。
 - 分支 1：不抢占 (not self.try_preemption)
@@ -661,15 +756,21 @@ if self.running_batch.batch_is_full:
 req.init_next_round_input(self.tree_cache)
 res = adder.add_one_req(
     req,
+
+```text
     has_chunked_req=(self.chunked_req is not None),
     truncation_align_size=self.truncation_align_size,
 )
+```
+
 
 - 动作：调用 adder.add_one_req。这是最“重”的一步。
 - 内部逻辑：adder 会模拟将该请求加入后，Token 数量是否超标？显存（KV Cache）是否足够？
 - Chunked 标记：传入 has_chunked_req，告诉计算器是否需要预留分块请求的资源。
 结果处理与退出
 if res != AddReqResult.CONTINUE:
+
+```text
     if res == AddReqResult.NO_TOKEN:
         if self.enable_hierarchical_cache:
              # 复杂的 full 逻辑...
@@ -677,6 +778,8 @@ if res != AddReqResult.CONTINUE:
         else:
             self.running_batch.batch_is_full = True
     break
+```
+
 
 - AddReqResult.CONTINUE：成功加入！进入下一次循环。
 - AddReqResult.NO_TOKEN：显存或 Token 配额不足。

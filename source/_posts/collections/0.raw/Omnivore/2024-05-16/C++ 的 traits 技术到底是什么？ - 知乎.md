@@ -61,9 +61,12 @@ id: 7952795c-3428-49c8-8c5d-6114fd428fae
 
 在编写泛型代码时（比如使用模板），经常会遇到这样的情况：
 
+```text
 * 需要根据类型的不同特性（如是否为指针、是否支持某种运算符、是否有特定的成员函数等）来选择不同的实现路径。
 * 想要提供一套通用的接口，使其能够适应不同类型的特殊要求，如容器类可能需要知道其元素类型的大小以便高效分配内存。
 * 希望在编译阶段就能够发现某些类型不满足特定条件（如不支持某个操作）导致的错误，而不是等到运行时出错。
+```
+
 
 Traits 技术就是为了满足这些需求而诞生的，它提供了一种机制，使得编译器可以根据类型特质而非类型本身来做出编译时决策，生成最合适的代码。
 
@@ -103,11 +106,14 @@ C++ 标准库 `<type_traits>` 头文件包含了大量预定义的 traits，涵�
 
 这些 traits 可以分为几大类：
 
-* <strong>类型分类</strong>：如 `std::is_integral<>`、`std::is_floating_point<>`、`std::is_pointer<>` 等，用于判断类型属于哪种类别。
-* <strong>属性检查</strong>：如 `std::is_const<>`、`std::is_volatile<>`、`std::is_trivially_copyable<>` 等，检查类型是否具有特定属性。
-* <strong>类型转换</strong>：如 `std::remove_const<>`、`std::remove_volatile<>`、`std::add_lvalue_reference<>` 等，提供类型修饰符的添加或去除。
-* <strong>算术和位操作</strong>：如 `std::make_signed<>`、`std::make_unsigned<>`、`std::integral_constant<>` 等，用于进行类型相关的算术和位操作。
-* <strong>其他实用 traits</strong>：如 `std::decay<>`、`std::underlying_type<>`、`std::result_of<>` 等，提供特定场景下的类型处理。
+```cpp
+* **类型分类**：如 `std::is_integral<>`、`std::is_floating_point<>`、`std::is_pointer<>` 等，用于判断类型属于哪种类别。
+* **属性检查**：如 `std::is_const<>`、`std::is_volatile<>`、`std::is_trivially_copyable<>` 等，检查类型是否具有特定属性。
+* **类型转换**：如 `std::remove_const<>`、`std::remove_volatile<>`、`std::add_lvalue_reference<>` 等，提供类型修饰符的添加或去除。
+* **算术和位操作**：如 `std::make_signed<>`、`std::make_unsigned<>`、`std::integral_constant<>` 等，用于进行类型相关的算术和位操作。
+* **其他实用 traits**：如 `std::decay<>`、`std::underlying_type<>`、`std::result_of<>` 等，提供特定场景下的类型处理。
+```
+
 
 ## traits 的应用场景
 
@@ -182,33 +188,48 @@ traits，又被叫做特性萃取技术，说得简单点就是提取“被传�
 
  解决方法是：利用function template的参数推导机制。
 
+```text
 template <class I, class T>
 
 void func\_impl(I iter, T t) {
+```
+
 
  T tmp; // 这里就是迭代器所指物的类型新建的对象
 
+```text
  // ... 功能实现
 
 }
 
 template <class I>
+```
+
 
 inline
 
+```cpp
 void func(I iter) {
+```
+
 
  func\_impl(iter, \*iter); // 传入iter和iter所指的值，class自动推导
 
+```cpp
 }
 
 int main() {
 
  int i;
+```
+
 
  func(&i);
 
+```text
 }
+```
+
 
 这里已经可以看出<strong>封装</strong>的意思了，没有一层impl的封装的话，每次你都要显式地说明迭代器指向对象型别，才能新建tmp变量。加一层封装显得清爽很多。
 
@@ -218,6 +239,7 @@ int main() {
 
  2\. 声明内嵌型别似乎是个好主意，这样我们就可以直接获取。
 
+```text
 template <class T>
 
 struct MyIter {
@@ -229,16 +251,21 @@ struct MyIter {
 };
 
 template <class I>
+```
+
 
 typename I::value\_type
 
 func(I ite) {
 
+```text
  return \*ite;
 
 }
 
 // ...
+```
+
 
 MyIter<int> ite(new int(8));
 
@@ -294,11 +321,14 @@ func在调用 I 的时候，首先把 I 传到萃取器中，然后萃取器就�
 
  现在，当客端调用func()的时候，我们可能需要做一个判断：
 
+```cpp
 template<class Iterator>
 
 void func(Iterator& i) {
 
  if (is\_random\_access\_iterator(i))
+```
+
 
  func\_RAI(i);
 
@@ -310,12 +340,16 @@ void func(Iterator& i) {
 
  func\_II(i);
 
+```text
 }
+```
+
 
 但这样在执行时期才决定使用哪一个版本，会<strong>影响程序效率</strong>。最好能够在编译期就选择正确的版本。
 
 <strong>重载</strong>这个函数机制可以达成这个目标。
 
+```text
 struct input\_iterator\_tag {};
 
 struct output\_iterator\_tag {};
@@ -327,6 +361,8 @@ struct forward\_iterator\_tag : public input\_iterator\_tag {};
 // 继承的好处就是，当函数需要用 input\_iterator\_tag 的时候
 
 // 假设你传进一个forward\_iterator\_tag，它会沿继承向上找，知道符合条件
+```
+
 
 声明了一些列 tag 之后，我们就可以重载 func函数： func(tag)。
 
@@ -336,13 +372,19 @@ template<class Iterator>
 
 inline void func(Iterator& i)
 
+```text
 {
 
  typedef typename Iterator\_traits<Iterator>::iterator\_category category;
+```
+
 
  \_\_func(i, category()); // 各型别的重载
 
+```text
 }
+```
+
 
 ## 简单实例代码 
 
@@ -362,11 +404,14 @@ inline typename unknown\_class\_traits<unknown\_class>::return\_type // 萃取�
 
 func(unknown\_class u) {
 
+```text
  typedef typename unknown\_class\_traits<unknown\_class>::return\_type return\_type;
 
  return \_\_func(u, return\_type()); // 需要调用构造函数当tag
 
 }
+```
+
 
 先 return\_type 的构造函数
 
@@ -374,6 +419,7 @@ template <class unknown\_class>
 
 inline typename unknown\_class\_traits<unknown\_class>::return\_type
 
+```text
 return\_type(unknown\_class) {
 
  typedef typename unknown\_class\_traits<unknown\_class>::return\_type RT;
@@ -381,6 +427,8 @@ return\_type(unknown\_class) {
  return RT();
 
 }
+```
+
 
 然后是实现设定的 tag ，用来模仿前面说的 II，RAI等
 
@@ -393,6 +441,7 @@ return\_type(unknown\_class) {
 
 /\*特性萃取器\*/
 
+```text
 template <class unknown\_class>
 
 struct unknown\_class\_traits {
@@ -400,9 +449,12 @@ struct unknown\_class\_traits {
  typedef typename unknown\_class::return\_type return\_type;
 
 };
+```
+
 
 /\*特性萃取器 —— 针对原生指针\*/
 
+```text
 template <class T>
 
 struct unknown\_class\_traits<T\*> {
@@ -410,9 +462,12 @@ struct unknown\_class\_traits<T\*> {
  typedef T return\_type;
 
 };
+```
+
 
 /\*特性萃取其 —— 针对指向常数\*/
 
+```text
 template <class T>
 
 struct unknown\_class\_traits<const T\*> {
@@ -422,6 +477,8 @@ struct unknown\_class\_traits<const T\*> {
 };
 
 * 突然忘记了交代 unknown\_class 的结构，自定义的类，必须要 typedef。
+```
+
 
 ```basic
 1 template <class AorB>
@@ -440,11 +497,14 @@ inline typename unknown\_class\_traits<unknown\_class>::return\_type
 
  cout << "use A flag" << endl;
 
+```text
  return A();
 
 }
 
 template <class unknown\_class>
+```
+
 
 inline typename unknown\_class\_traits<unknown\_class>::return\_type
 
@@ -452,11 +512,14 @@ inline typename unknown\_class\_traits<unknown\_class>::return\_type
 
  cout << "use B flag" << endl;
 
+```text
  return B();
 
 }
 
 template <class unknown\_class, class T>
+```
+
 
 T
 
@@ -464,33 +527,45 @@ T
 
  cout << "use origin ptr" << endl;
 
+```text
  return T();
 
 }
+```
+
 
 有了这些我们就可以测试了
 
+```cpp
 int main() {
+```
+
 
  unknown\_class<B> b;
 
  unknown\_class<A> a;
 
+```cpp
  //unknown\_class<int> i;
 
  int value = 1;
 
  int \*p = &value;
+```
+
 
  A v1 = func(a);
 
  B v2 = func(b);
 
+```cpp
  int v3 = func(p);
 
  char ch = getchar();
 
 }
+```
+
 
 可以看到，对于用自定义类传入同一个接口，它会自动使用对应的函数，而且返回值也合适。对原始指针也适用，完美！
 
@@ -498,20 +573,27 @@ int main() {
 
 下面是完整代码：
 
+```cpp
 #include <iostream>
 
 using namespace std;
+```
+
 
 /\*先定义一些tag\*/
 
+```text
 struct A {};
 
 struct B : A{}; // 继承的好处就是，当函数需要参数为A，
 
  // 而你传入的参数为B的时候，可以往上一直找到适合的对象
+```
+
 
 /\*假设有一个未知类\*/
 
+```text
 template <class AorB>
 
 struct unknown\_class {
@@ -519,9 +601,12 @@ struct unknown\_class {
  typedef AorB return\_type;
 
 };
+```
+
 
 /\*特性萃取器\*/
 
+```text
 template <class unknown\_class>
 
 struct unknown\_class\_traits {
@@ -529,9 +614,12 @@ struct unknown\_class\_traits {
  typedef typename unknown\_class::return\_type return\_type;
 
 };
+```
+
 
 /\*特性萃取器 —— 针对原生指针\*/
 
+```text
 template <class T>
 
 struct unknown\_class\_traits<T\*> {
@@ -539,9 +627,12 @@ struct unknown\_class\_traits<T\*> {
  typedef T return\_type;
 
 };
+```
+
 
 /\*特性萃取其 —— 针对指向常数\*/
 
+```text
 template <class T>
 
 struct unknown\_class\_traits<const T\*> {
@@ -549,6 +640,8 @@ struct unknown\_class\_traits<const T\*> {
  typedef const T return\_type;
 
 };
+```
+
 
 /\*决定使用哪一个类型\*/
 
@@ -556,6 +649,7 @@ template <class unknown\_class>
 
 inline typename unknown\_class\_traits<unknown\_class>::return\_type
 
+```text
 return\_type(unknown\_class) {
 
  typedef typename unknown\_class\_traits<unknown\_class>::return\_type RT;
@@ -565,6 +659,8 @@ return\_type(unknown\_class) {
 }
 
 template <class unknown\_class>
+```
+
 
 inline typename unknown\_class\_traits<unknown\_class>::return\_type
 
@@ -572,11 +668,14 @@ inline typename unknown\_class\_traits<unknown\_class>::return\_type
 
  cout << "use A flag" << endl;
 
+```text
  return A();
 
 }
 
 template <class unknown\_class>
+```
+
 
 inline typename unknown\_class\_traits<unknown\_class>::return\_type
 
@@ -584,11 +683,14 @@ inline typename unknown\_class\_traits<unknown\_class>::return\_type
 
  cout << "use B flag" << endl;
 
+```text
  return B();
 
 }
 
 template <class unknown\_class, class T>
+```
+
 
 T
 
@@ -596,16 +698,20 @@ T
 
  cout << "use origin ptr" << endl;
 
+```text
  return T();
 
 }
 
 template <class unknown\_class>
+```
+
 
 inline typename unknown\_class\_traits<unknown\_class>::return\_type
 
 func(unknown\_class u) {
 
+```cpp
  typedef typename unknown\_class\_traits<unknown\_class>::return\_type return\_type;
 
  return \_\_func(u, return\_type());
@@ -613,26 +719,34 @@ func(unknown\_class u) {
 }
 
 int main() {
+```
+
 
  unknown\_class<B> b;
 
  unknown\_class<A> a;
 
+```cpp
  //unknown\_class<int> i;
 
  int value = 1;
 
  int \*p = &value;
+```
+
 
  A v1 = func(a);
 
  B v2 = func(b);
 
+```cpp
  int v3 = func(p);
 
  char ch = getchar();
 
 }
+```
+
 
 展开阅读全文​
 

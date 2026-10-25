@@ -26,6 +26,8 @@ source_url: https://zhuanlan.zhihu.com/p/64423753
 Talk is cheap, show me the code. 网上基本都有实现好的faster-cnn版本的，这里只是了解算法，不关心性能，所以用python实现的方便一点：
 
 `import numpy as np
+
+```python
 def nms(dets, thresh):
     """Pure Python NMS baseline."""
     x1 = dets[:, 0]
@@ -50,8 +52,12 @@ def nms(dets, thresh):
         inds = np.where(ovr  thresh)[0]
         order = order[inds + 1]
     return keep`
+```
+
 
 可以看到，基本是按照上述思路去写的，按照score进行降序排序，然后每次拿到第一个框，也就是score最大的框，然后计算该框与其他框的IOU，最后留下`ioudef nms(dets, thresh):                   
+
+```text
     areas=np.prod(bbox[:,2:]-bbox[:,:2],axis=1)
     order = scores.argsort()[::-1]
     keep=[]
@@ -65,12 +71,16 @@ def nms(dets, thresh):
         inds=np.where(ovrthresh)[0]
         order=order[inds+1]
     return keep`
+```
+
 
 当然这里的思路还是要排序，只不过iou部分写的更精简了。
 
 好了，铺垫了这么久，说一下不排序怎么写。基本思路是，依次遍历每个框，计算这个框与其他框的iou,找到iou大于一定阈值的其他框，因为这个时候不能保证它一定是score最高的框，所以要进行判断，如果它的score小于其他框，那就把它去掉，因为它肯定不是要保留的框。如果它的score大于其他框，那应该保留它，同时可以去掉所有其他框了。最后保留的框就是结果。
 
 `def nms(bbox, scores, thresh):
+
+```text
     area=np.prod(bbox[:,2:]-bbox[:,:2],axis=1)
     keep=np.ones(len(bbox),dtype=bool)
     for i, b in enumerate(bbox):
@@ -86,6 +96,8 @@ def nms(dets, thresh):
         else:
             keep[i]=False
     return np.where(keep)[0].astype(np.int32)`
+```
+
 
 这是我按照上面思路写的，用keep表示框的去留，为True的框要保留。当然这个思路的效率不见得比前面排序的要好，只是作为其他角度思考。
 
@@ -94,6 +106,8 @@ def nms(dets, thresh):
 嗯，文字还是有点绕，直接看code更清楚：
 
 `def _non_maximum_suppression_cpu(bbox, thresh, score):
+
+```text
     order=np.argsort(score)[::-1]
     bbox=bbox[order]      
     bbox_area=np.prod(bbox[:, 2:]-bbox[:, :2],axis=1)
@@ -108,6 +122,8 @@ def nms(dets, thresh):
     	keep[i]=True
     keep = np.where(keep)[0]
     return keep.astype(np.int32)`
+```
+
 
 至此介绍了三种NMS算法的实现思路。即使作为常规的算法题考察也很好，因为这也不牵扯到目标检测的东西。而且还顺便考察了numpy的操作。这也提醒自己有时候要多深入想想，而不是简单copy网上现有的东西。
 

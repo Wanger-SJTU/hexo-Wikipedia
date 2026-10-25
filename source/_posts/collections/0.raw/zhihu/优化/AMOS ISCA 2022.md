@@ -30,6 +30,8 @@ AMOS这个工作，其实很早就开始做了，我们设计代码生成工作�
 在这个框架里，第一个要解决的问题就是如何从一个比较普通的输入compute里知道哪一部分是可以使用特殊指令的呢，其实这里就是一个匹配问题，比如说给定一个以下的NCHW卷积定义
 
 `def conv2d(N, C, H, W, K, R, S, stride, padding, dilation):
+
+```text
     kH = (R - 1) * dilation + 1
     kW = (S - 1) * dilation + 1
     pH = H + 2 * padding
@@ -65,6 +67,8 @@ AMOS这个工作，其实很早就开始做了，我们设计代码生成工作�
         name="Conv",
     )
     return [A, B, Conv]
+```
+
 
 N, H, W, K, C, R, S, stride, padding, dilation = batch, 28, 28, 128, 128, 3, 3, 1, 1, 1
 A, B, Conv = conv2d(N, C, H, W, K, R, S, stride, padding, dilation)`
@@ -78,18 +82,28 @@ A, B, Conv = conv2d(N, C, H, W, K, R, S, stride, padding, dilation)`
 有了自动生成映射的能力，下一个要解决的问题就是如何基于某个选定好的映射自动进行tensorize。tensorize有几个必要的操作：构建符合硬件存储层次的流水线，使用定制的数据搬移指令准备给特殊计算单元计算的数据，调用特殊计算单元的指令。这些步骤体现在Tensor Core GPU上就是从global memory把输入数据搬到shared memory，再从shared memory用load_matrix_sync搬到fragment，然后调用mma_sync进行计算，最后再store_matrix_sync到global memory。其它加速器基本都符合这种流程，而且更简单，比如Mali GPU可以不考虑搬移数据的特殊指令。这些流程不完全可以用TVM schedule primitive完成，而是需要结合compute的rewrite。为了解释这一点，我们可以看一下AMOS对上面二维卷积输入生成的CUDA代码
 
 `extern "C" __global__ void default_function_kernel3(float* __restrict__ Conv_vmap_output, float* __restrict__ memcpy_dst) {
+
+```cpp
   for (int n_output_k_output_fused_p_output_fused_q_output_fused_outer_outer_inner = 0; n_output_k_output_fused_p_output_fused_q_output_fused_outer_outer_inner  4; ++n_output_k_output_fused_p_output_fused_q_output_fused_outer_outer_inner) {
     Conv_vmap_output[(((((((int)blockIdx.x) * 512) + (n_output_k_output_fused_p_output_fused_q_output_fused_outer_outer_inner * 128)) + (((int)threadIdx.y) * 32)) + ((int)threadIdx.x)))] = memcpy_dst[(((((((((((((int)blockIdx.x) * 512) + (n_output_k_output_fused_p_output_fused_q_output_fused_outer_outer_inner * 128)) + (((int)threadIdx.y) * 32)) + ((int)threadIdx.x)) % 784) >> 3) * 1024) + ((((((((int)blockIdx.x) * 512) + (n_output_k_output_fused_p_output_fused_q_output_fused_outer_outer_inner * 128)) + (((int)threadIdx.y) * 32)) + ((int)threadIdx.x)) / 25088) * 256)) + ((((int)threadIdx.x) & 7) * 32)) + ((((((((int)blockIdx.x) * 512) + (n_output_k_output_fused_p_output_fused_q_output_fused_outer_outer_inner * 128)) + (((int)threadIdx.y) * 32)) + ((int)threadIdx.x)) % 25088) / 784)))];
   }
 }
+```
+
 
 extern "C" __global__ void default_function_kernel1(half* __restrict__ B_vmap_input_cmap_input, half* __restrict__ B) {
   for (int j_o_input_rk_o_input_fused_rs_main_input_fused_rk_input_fused_j_input_fused_outer_outer_inner = 0; j_o_input_rk_o_input_fused_rs_main_input_fused_rk_input_fused_j_input_fused_outer_outer_inner  4; ++j_o_input_rk_o_input_fused_rs_main_input_fused_rk_input_fused_j_input_fused_outer_outer_inner) {
     B_vmap_input_cmap_input[((((((((((((int)blockIdx.x) * 16) + (j_o_input_rk_o_input_fused_rs_main_input_fused_rk_input_fused_j_input_fused_outer_outer_inner * 4)) + ((int)threadIdx.y)) / 48) * 1536) + ((((int)blockIdx.x) % 3) * 512)) + (j_o_input_rk_o_input_fused_rs_main_input_fused_rk_input_fused_j_input_fused_outer_outer_inner * 128)) + (((int)threadIdx.y) * 32)) + ((int)threadIdx.x)))] = B[(((((((((((((int)blockIdx.x) * 16) + (j_o_input_rk_o_input_fused_rs_main_input_fused_rk_input_fused_j_input_fused_outer_outer_inner * 4)) + ((int)threadIdx.y)) / 1152) * 36864) + (((int)threadIdx.x) * 1152)) + ((((((((int)blockIdx.x) * 16) + (j_o_input_rk_o_input_fused_rs_main_input_fused_rk_input_fused_j_input_fused_outer_outer_inner * 4)) + ((int)threadIdx.y)) % 1152) / 48) * 48)) + (j_o_input_rk_o_input_fused_rs_main_input_fused_rk_input_fused_j_input_fused_outer_outer_inner * 12)) + (((int)threadIdx.y) * 3)) + (((int)blockIdx.x) % 3)))];
+
+```text
   }
 }
+```
+
 
 extern "C" __global__ void default_function_kernel2(half* __restrict__ Pad_vmap_input_cmap_input, half* __restrict__ B_vmap_input_cmap_input, float* __restrict__ memcpy_dst) {
+
+```cpp
     nvcuda::wmma::fragmentnvcuda::wmma::accumulator, 8, 32, 16, float> Conv_vmap_main_cmap_main[1];
   __shared__ half Pad_vmap_input_cmap_input_shared[1536];
   __shared__ half B_vmap_input_cmap_input_shared[6144];
@@ -151,6 +165,8 @@ extern "C" __global__ void default_function_kernel2(half* __restrict__ Pad_vmap_
     }
   }
   (void)nvcuda::wmma::store_matrix_sync(((float *)memcpy_dst + ((((((((int)blockIdx.x) >> 1) * 2048) + ((((int)threadIdx.y) >> 1) * 1024)) + ((((int)blockIdx.x) & 1) * 512)) + ((((int)threadIdx.y) & 1) * 256)))), Conv_vmap_main_cmap_main[0], 32, nvcuda::wmma::mem_row_major);
+```
+
 }`
 
 可以看到 生成了一些额外的kernel用于layout转换，比如NCHW layout的卷积转成矩阵乘法的过程中的layout变换，就是利用这些kernel完成的。这些kernel也可以inline，这样就是implicit的操作，也可以不inline，这样就是explicit的操作，AMOS在后面搜索的时候会探索该不该inline。这些layout转换的操作需要改compute才能实现，原始的compute里没有这些操作的。为了实现这个改compute的操作，我设计了两步变换过程（对应文章里介绍的virtual mapping和physical mapping）。用卷积的例子简单说就是第一步先把要转换为矩阵乘的循环都展开、合并了，第二步再进行张量切分，把这些合并的大矩阵切成适合Tensor Core的小块（也会处理一些padding问题，这样就不会限制输入的形状了）。compute rewrite实现好了，剩下的就是靠schedule primitive进行优化，所以我实现了一个auto-scheduler，专门针对特殊指令自动进行schedule。

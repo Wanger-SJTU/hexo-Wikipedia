@@ -39,13 +39,17 @@ source_url: https://www.zhihu.com/question/500409301/answer/2235878071
 
 例如以下代码
 
+```cpp
 for (int i=0; i n; i++)
 {
     b[i] = a[i] + 1;
 }
+```
+
 
 通过llvm优化，或者更广泛的说，通过编译优化技术，把循环体张开，如下
 
+```cpp
 for (int i=0; i n; i=i+8)
 {
     b[i] = a[i] + 1;
@@ -57,6 +61,8 @@ for (int i=0; i n; i=i+8)
     b[i + 6] = a[i + 6] + 1;
     b[i + 7] = a[i + 7] + 1;
 }
+```
+
 
 那么8发射的CPU就可以同时执行循环体的代码了
  

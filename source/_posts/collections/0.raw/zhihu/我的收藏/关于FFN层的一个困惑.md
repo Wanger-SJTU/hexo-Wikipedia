@@ -26,6 +26,7 @@ up_proj = torch.randn(H, 4*H, device="cuda")
 gate_proj = torch.randn(H, 4*H, device="cuda")
 down_proj = torch.randn(4*H, H, device="cuda")
 
+```python
 def ffn_native():
     up = torch.matmul(hidden, up_proj)
     gate = torch.matmul(hidden, gate_proj)
@@ -33,6 +34,8 @@ def ffn_native():
     immediate = up * gate
     down = torch.matmul(immediate, down_proj)
     return down`
+```
+
 
 $为了描述方便，下面我们用 H" role="presentation">HH 代表hidden_size，使用 4&#x22C5;H" role="presentation">4⋅H4\cdot H 代表immedate size，假设只有一个token做FFN，即hidden states的shape是 [1,H]" role="presentation">[1,H][1, H] 。 $
 
@@ -46,6 +49,8 @@ $为了描述方便，下面我们用 H" role="presentation">HH 代表hidden_siz
 
 `def ffn_absorb():
     # gate计算保持不变
+
+```text
     gate = torch.matmul(hidden, gate_proj)
     gate = torch.nn.functional.silu(gate)
 
@@ -56,5 +61,7 @@ $为了描述方便，下面我们用 H" role="presentation">HH 代表hidden_siz
     down = torch.matmul(gate, up_down)
 
     return down`
+```
+
 
 很容易验证上述两种计算的结果是一致的。当然上述吸收计算从工程上是非常不划算的，因为up_down_proj这个是一个shape非常大 [H, 4\cdot H, H] 的tensor。我的困惑点在于，通过上述方式，也可以让up_proj和down_proj两个权重在计算上可以做吸收，或者说他们可以直接做某种形式的交互。当然，up_proj和down_proj的吸收方式和attention层的吸收不太一样，attention层v_proj和o_proj的吸收就是一次矩阵乘法，但是up_proj和down_proj的吸收更接近于外积计算，所以shape直接变成了 [H, 4\cdot H, H] 这样一个非常大的tensor。所以我没有想明白的是，这种吸收从数学上是说明了FFN层的表达能力，还是意味着FFN层计算有一些改进空间，还是没有说明任何东西。

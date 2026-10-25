@@ -104,9 +104,12 @@ to be continued…
 
 在此翻译和总结了3篇本引用文献中的部分内容，抛砖引玉。下文大致分三部分：
 
+```text
    * 先介绍了内存系统coherence和consistency的行为表现, 并指出达成coherent的三个条件。
    * 其次，将内存一致性模型分为顺序一致性模型(sequential consistency model)和松弛一致性模型(relaxed consistency model), 并讨论这两种模型的概念、实现与代价；
    * 最后，讨论了原子操作间的关系(synchronized-with, happens-before等)，浅析C++11内存模型，将其提供的6种内存次序归类成三种内存模型。
+```
+
 
 <strong>I. Memory coherence and memory consistency</strong>  
 
@@ -124,17 +127,23 @@ to be continued…
 
 通俗地说，我们可以说一个内存系统是为Coherent, 如果任何一个对数据的读操作总是返回其最近被改写的值。这个模糊且过分简单的定义主要包含了内存系统两方面的行为表现：
 
+```text
    * Coherence定义了一个读操作能获得什么样的值。
    * Consitency定义了何时一个写操作的值会被读操作获得。
+```
+
 
 \[1\]中称，满足如下三个条件的内存系统是为coherent
 
+```text
    * 1\. 对于同一地址 X, 若处理器 P 在写后读，并且在 P 的写后没有别的处理器写 X，那么 P 的读总是能返回 P 写入的值。
       * 条件1要求系统提供我们在单处理器中已熟知的程序次序(program order)。
    * 2\. 处理器 P1 完成对 X 的写后，P2 读 X. 如果两者之间相隔时间足够长，并且没有其他处理器写 X, 那么 P2 可以获得 P1 写入的值。
       * 条件2要求写结果最终对别的处理器可见。
    * 3\. 对同一地址的写操作是串行的(serialized), 在所有处理器看来，通过不同处理器对X的写操作都是以相同次序进行的。举个例子，如果值 1 先被写入，值 2 后被写入，那么处理器不能先读到值 2, 然后再读到值 1.
       * 性质3要求系统提供写串行化(write serialization). 若这一性质不被满足，程序错误可能会被引发：考虑 P1 先写 P2 后写的情况，如果存在一些处理器先看到P2的写结果，后看到 P1 的值，那么这个处理器将无限期地保持P1写入的值。
+```
+
 
 虽然上述性质可以充分保证系统coherence的达成，但它仍然未对写操作何时对读操作可见进行描述：考虑P1先写P2后读的情况，如果写读操作间隔很短，P2可能无法获得P1写入的值。
 
@@ -150,8 +159,11 @@ to be continued…
 
 直观上，读操作应该返回“最后”一次写入的值。
 
+```text
    * 在单处理器系统中，“最后”由程序次序定义。
    * 在多处理器系统中，我们称之为顺序连贯(sequential consistency, SC).
+```
+
 
 通俗地说，SC要求所有内存操作表现为(appear)逐个执行（任一次的执行结果都像是所有处理器的操作都以某种次序执行），每个处理器中的操作都以其程序指定的次序执行。<strong>SC有两点要求</strong>：
 
@@ -186,12 +198,15 @@ to be continued…
 
 对于无缓存的体系结构，\[2\]以三个常见硬件优化为例，讨论了SC与它们间的冲突及解决办法：
 
+```text
    * 带有读旁路的写缓冲(Write buffers with read bypassing)
-      * 读操作可以不等待写操作，导致后续的读操作越过前面的写操作，<strong>违反程序次序</strong>
+      * 读操作可以不等待写操作，导致后续的读操作越过前面的写操作，**违反程序次序**
    * 重叠写(Overlapping writes)
-      * 对于不同地址的多个写操作同时进行，导致后续的写操作越过前面的读操作，<strong>违反程序次序</strong>
+      * 对于不同地址的多个写操作同时进行，导致后续的写操作越过前面的读操作，**违反程序次序**
    * 非阻塞读(Nonblocking reads)
-      * 多个读操作同时进行，导致后续的读操作越过前面的读操作先执行，<strong>违反程序次序</strong>
+      * 多个读操作同时进行，导致后续的读操作越过前面的读操作先执行，**违反程序次序**
+```
+
 
 为解决上述硬件优化对SC带来的问题，\[2\]提出了程序次序要求(program order requirement): 按照程序次序，处理器的上一次内存操作需要在下一次内存操作前完成。 （\[2\]中针对每个冲突提出了特定的解决方法，在此不展开）
 
@@ -199,6 +214,7 @@ to be continued…
 
 对于带有缓存的体系结构，这种数据的副本（缓存）的出现引入了三个额外的问题：
 
+```text
    * 缓存一致性协议(cache coherence protocols)
       * \[2\]指出cache coherence的定义是
          * 一个写操作最终要对所有处理器可见（\[1\]对cache coherence的条件1,2的结合）
@@ -213,17 +229,19 @@ to be continued…
          2. P1 没有等待 Data 的写结果传播到 P2 的缓存中,继续进行 Head 的写操作；
          3. P2 读取到了内存中 Head 的新值；
          4. P2 继续执行，读到了缓存中 Data 的旧值。
-      * 这<strong>违反SC</strong>，因此我们需要延后每个处理器发布写确认通知的时间：直至别的处理器发回写确认通知，才发射下一个写操作。
+      * 这**违反SC**，因此我们需要延后每个处理器发布写确认通知的时间：直至别的处理器发回写确认通知，才发射下一个写操作。
    * 维护写原子性(maintaining write atomicity): “写原子性”是我们在2.1.2中谈到的SC的两个要求之一。“将值的改变传播给多个处理器的缓存”这一操作是非原子操作（非瞬发完成的），因此需要采取特殊措施提供写原子性的假象。因此我们提出两个要求，这两个要求将共同保证写原子性的实现。
       * 要求1：针对同一地址的写操作被串行化(serialized). 图4阐述了对这个条件的需求：如果对 A 的写操作不是序列化的，那么 P3 和 P4 输出（寄存器 1,2）的结果将会不同,这违反了次序一致性。这种情况可以在基于网络（而不是总线）的系统中产生，由于消息可经不同路径传递，这种系统不 供它们传递次序的保证。  
       ![](https://proxy-prod.omnivore-image-cache.app/1272x0,sfsrB8ggf1PiPBMweVCsLlD7XeJVtarhvjE528ooEsZM/https://picx.zhimg.com/50/978a9e33a2cba304710e377c7bbc49ed_720w.jpg?source=1def8aca)  
       图4\. 引自\[2\] Figure 4\. Example for serialization of writes.
-  
+
       * 要求2：对一个新写的值的读操作，必须要等待所有（别的）缓存对该写操作都返回确认通知后才进行。考虑图2b中的程序
          1. P2 读 A 为 1
          2. “P2 对 B 的更新”先于“P1 对 A 的更新”到达 P3
          3. P3 获得 B 的新值，获得 A 的旧值
-         * 这使得 P2 和 P3 看到的对值 A, B 的写操作次序不同，<strong>违反的了写原子性要求</strong>。
+         * 这使得 P2 和 P3 看到的对值 A, B 的写操作次序不同，**违反的了写原子性要求**。
+```
+
 
 <strong>2.1.3 实现SC的总结</strong>
 
@@ -233,17 +251,23 @@ to be continued…
 
 为获得好的性能，我们可以引入放松内存一致性模型(relaxed memory consistency model<strong>s</strong>)，<strong>这些</strong>模型主要通过两种方式优化程序（读写）：
 
-   * 放松对程序次序的要求：这种放松与此前所述的“在无缓存的体系结构中采用的优化”类似，<strong>仅适用于</strong>对不同地址的操作对(opeartion pairs)间使用。
-   * 放松对写原子性的要求：一些模型允许读操作在“一个写操作未对所有处理器可见”前返回值。这种放松<strong>仅适用于</strong>基于缓存的体系结构。
+```text
+   * 放松对程序次序的要求：这种放松与此前所述的“在无缓存的体系结构中采用的优化”类似，**仅适用于**对不同地址的操作对(opeartion pairs)间使用。
+   * 放松对写原子性的要求：一些模型允许读操作在“一个写操作未对所有处理器可见”前返回值。这种放松**仅适用于**基于缓存的体系结构。
+```
+
 
 我们用A->B表示 A 先于 B 完成，\[1\] Chapter 5.6 根据放松的操作对次序，给出了多种内存模型：
 
+```text
    * 放松 W->R的模型, 称为total store ordering或processor consistency. 这种序列模型仍保持了写(store)操作间的次序；
    * 放松 W->W的模型, 称为partial store ordering
    * 放松 R->W 和 R->R的模型有很多种：
       * Weak ordering
       * Power PC consistency model
       * Release consistency
+```
+
 
 通过放松这些次序，处理器可能获得显著的性能提升。
 
@@ -295,18 +319,24 @@ Inter-thread happens-before 可以与 sequenced-before 关系结合:如果 A seq
 
 C++11 述了 6 种可以应用于原子变量的内存次序: 
 
+```text
    * momory\_order\_relaxed,
    * memory\_order\_consume,
    * memory\_order\_acquire,
    * memory\_order\_release,
    * memory\_order\_acq\_rel,
    * memory\_order\_seq\_cst.
+```
+
 
 虽然共有 6 个选项,但它们表示的是三种内存模型: 
 
+```text
    * sequential consistent(memory\_order\_seq\_cst),
    * relaxed(memory\_order\_seq\_cst).
    * acquire release(memory\_order\_consume, memory\_order\_acquire, memory\_order\_release, memory\_order\_acq\_rel),
+```
+
 
 这些不同的内存序模型在不同的CPU架构下会有不同的代价。这允许专家通过采用更合理的内存序获得更大的性能 升；同时允许在对性能要求不是那么严格的程序中采用默认的内存序,使得程序更容易理解。
 

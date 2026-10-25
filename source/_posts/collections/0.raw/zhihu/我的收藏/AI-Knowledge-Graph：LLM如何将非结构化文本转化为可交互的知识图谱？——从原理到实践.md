@@ -55,6 +55,8 @@ source_url: https://zhuanlan.zhihu.com/p/1911805939247486365
 对于每个文本块，该工具会要求LLM输出一个JSON数组，其中包含三元组以及信息提取自哪个文本块。示例如下：
 
 `[
+
+```text
   {
     "subject": "eli whitney",
     "predicate": "invented",
@@ -73,6 +75,8 @@ source_url: https://zhuanlan.zhihu.com/p/1911805939247486365
     "object": "retail",
     "chunk": 3
   }
+```
+
 ]`
 
 提示词鼓励LLM在实体命名上保持一致性，使用简短的关系短语（1-3个词），并避免使用代词指代。从所有文本块中提取的三元组随后会被组合成一个初始的原始知识图谱。
@@ -101,6 +105,8 @@ source_url: https://zhuanlan.zhihu.com/p/1911805939247486365
 这些推断出的边会用不同方式标记（例如虚线），以便与文本中明确陈述的事实区分开来。这个推理步骤通常会增加大量新关系，大大减少了孤立的子网络。如果您希望获得纯粹基于文本的图谱，可以在配置文件中禁用此功能。与文本块编号不同，推断出的关系包含一个属性，表明该关系是推断而来。此属性非常重要，因为它将在可视化过程中用于以虚线边表示推断关系。示例结构：
 
 `[
+
+```text
   {
     "subject": "electrification",
     "predicate": "enables",
@@ -113,6 +119,8 @@ source_url: https://zhuanlan.zhihu.com/p/1911805939247486365
     "object": "information sharing",
     "inferred": true
   }
+```
+
 ]`
 
 #### LLM提示词的艺术

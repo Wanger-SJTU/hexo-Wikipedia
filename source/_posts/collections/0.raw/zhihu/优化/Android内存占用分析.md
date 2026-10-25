@@ -36,11 +36,15 @@ MemTotal 即 /proc/meminfo 中的第一行的值, 可以认为是系统可供分
 memblock中两种类型的内存申请/添加函数如下:
 
 `//memory 类型的memblock申请/添加
+
+```cpp
 int __init_memblock memblock_add(phys_addr_t base, phys_addr_t size)
 int __init_memblock memblock_add_node(phys_addr_t base, phys_addr_t size, int nid)
 
 //reserved 类型的mblock申请/添加
 int __init_memblock memblock_reserve(phys_addr_t base, phys_addr_t size)`
+```
+
 
 #### 1.1.1 物理内存分布
 
@@ -50,6 +54,8 @@ kernel启动的过程中，从lk/uboot知道了DTB的加载地址, 在如下的�
 
 `setup_machine_fdt(__fdt_pointer)   //__fdt_pointer是传递的DTB加载地址
   |-->early_init_dt_scan()
+
+```text
     |-->early_init_dt_scan_memory() //解析memory node,遍历其下的所有单元
       |-->early_init_dt_add_memory_arch()
         |-->memblock_add(base, size) //每个单元的起始地址和大小添加到memblock的memory类型中
@@ -59,6 +65,8 @@ kernel启动的过程中，从lk/uboot知道了DTB的加载地址, 在如下的�
         device_type = "memory";
         reg = ;
     };`
+```
+
 
 可以通过 /sys/kernel/debug/memblock/ 下的节点查看两种内存的物理空间分布:
 
@@ -83,14 +91,21 @@ memblock构建了内存的物理空间分布, 之后在伙伴系统(buddy system
 Q1:<strong>memblock是怎么知道有些内存已经被占用的?</strong> A1:** lk/uboot/bootloade修改DTB中memory节点下的空间区段(reg), kernel中读取这些空间区段(reg),空间区段之间的内存空间就是被预申请已经占用了的.  
 
 `//kernel log 中的输出, 代码实现在 mem_init_print_info()
+
+```text
 //关系:2097152K(物理2GB) = 2045952K(memblock管理的内存) + 51200K(预申请内存)
 //关系:2045952K(memblock管理的内存) = 1982176K + 63776K + 0K
 //1982176K 是此时 totalram_pages*4K 的大小, 也即memblcok管理的`memory type` 部分
 //63776K 是memblcok管理的`reserved type` 部分
+```
+
 [    0.000000] -(0)[0:swapper]Memory: 1982176K/2045952K available (12924K kernel code, 1384K rwdata, 4392K rodata, 960K init, 5936K bss, 63776K reserved, 0K cma-reserved)
 
+```text
 ///proc/meminfo的输出
 //1983136 是此时 totalram_pages*4K 的大小
+```
+
 lsg@eebbk:~$adb shell cat /proc/meminfo
 MemTotal:        1983136 kB`
 
@@ -191,6 +206,8 @@ vmalloc 用于在内核中分配虚拟地址空间连续的内存，`/proc/vmall
 单个区间的信息展示代码在: 
 
 `//mm/vmalloc.c
+
+```cpp
 static int s_show(struct seq_file *m, void *p)
 {
     struct vmap_area *va;
@@ -210,6 +227,8 @@ static int s_show(struct seq_file *m, void *p)
 
     v = va->vm;
     ......
+```
+
 }`
 
 `/proc/vmallocinfo`中每行输出的最后一个字段表示这段区间的类型，kernel 4.14上显示的类型有：
@@ -278,19 +297,27 @@ Android P上binder的内存信息归为`vmalloc`，这就会统计到 `VmallocUs
 free 命令的代码见:
 
 `//external/toybox/toys/other/free.c
+
+```cpp
 void free_main(void)
 {
   struct sysinfo in; 
   //系统接口，获取内存信息，实质上与 /proc/meminfo 的内容相对应
   sysinfo(&in);
+```
+
 
   xprintf("\t\ttotal        used        free      shared     buffers\n"
     "Mem:%17s%12s%12s%12s%12s\n-/+ buffers/cache:%15s%12s\n"
+
+```text
     "Swap:%16s%12s%12s\n", convert(in.totalram),
     convert(in.totalram-in.freeram), convert(in.freeram), convert(in.sharedram),
     convert(in.bufferram), convert(in.totalram - in.freeram - in.bufferram),
     convert(in.freeram + in.bufferram), convert(in.totalswap),
     convert(in.totalswap - in.freeswap), convert(in.freeswap));
+```
+
 }`
 
 其展示的内容示例如下：
@@ -322,18 +349,26 @@ private final void dumpApplicationMemoryUsage()`
  Free RAM: 1,016,150K (   75,626K cached pss +   562,384K cached kernel +   378,140K free)
  Used RAM: 1,108,343K (  758,523K used pss +   349,820K kernel)
  Lost RAM:  -141,361K
+
+```text
      ZRAM:         4K physical used for         0K in swap (1,048,572K total swap)
    Tuning: 128 (large 256), oom   322,560K, restore limit   107,520K (high-end-gfx)`
+```
+
 
 约定几个变量的值: - `totalPss`: 是展示信息中`Total PSS by process:`下所有进程的内存占用之和. - `cachedPss`:是展示信息中 `Total PSS by OOM adjustment:`下的`Cached`部分进程的内存大小之和。
 
 使用了如下的调用关系主要读取 `/proc/meminfo`的信息，将对应字段放到 `MemInfoReader.mInfos[]`数组中，展示的信息就是`MemInfoReader.mInfos[]`中信息的组合。
 
 `MemInfoReader.readMemInfo()
+
+```text
     //frameworks/base/core/java/android/os/Debug.java
   --> Debug.getMemInfo()
     //frameworks/base/core/jni/android_os_Debug.cpp
     --> android_os_Debug_getMemInfo()`
+```
+
 
 以下涉及`/proc/meminfo`中字段的直接用其显示的字符串代指。
 
@@ -374,8 +409,12 @@ Lost RAM也与 `(Total RAM) - (Free RAM) - (Used RAM) - (zramtotal) + (SwapTotal
 上面说到kernel的内存占用包含`Shmem + SUnreclaim + VmallocUsed + PageTables + KernelStack`这几个部分，而`VmallocUsed` 是统计`/proc/vmallocinfo`输出中不含有`ioremap`,`map_lowmem`,`vm_map_ram`关键字的内存区间之和，详细见`Debug.get_allocated_vmalloc_memory()`。
 
 `//frameworks/base/core/jni/android_os_Debug.cpp
+
+```text
 static long get_allocated_vmalloc_memory() {
 }
+```
+
 `
 
 `VmallocUsed`在这里会有一些统计上的误差，这个误差就造成了kernel的统计误差。
@@ -395,21 +434,29 @@ binder占用的内存，在进程PSS中已经统计，又统计在了kernel中�
 详细的单个进程的内存占用统计可以查看 [第四章](https://zhuanlan.zhihu.com/p/90076117/edit#4%E4%BB%8E%E8%BF%9B%E7%A8%8B%E8%A7%92%E5%BA%A6%E7%9C%8B)。
 
 `//frameworks/base/services/core/java/com/android/server/am/ActivityManagerService.java
+
+```text
     Debug.MemoryInfo mi = new Debug.MemoryInfo();
     ......
     //调用到JNI中的 android_os_Debug_getDirtyPagesPid() --> read_mapinfo()
     //具体就是解析 /proc/pid/smaps 中的内存区间，按类型汇总信息
     Debug.getMemoryInfo(pid, mi);`
+```
+
 
 一个进程的PSS就是这些信息的相加：
 
 `//frameworks/base/core/java/android/os/Debug.java
+
+```cpp
 public int getTotalPss() {
     return dalvikPss + nativePss + otherPss + getTotalSwappedOutPss();
 }
 
 public int getTotalSwappedOutPss() {
     return dalvikSwappedOutPss + nativeSwappedOutPss + otherSwappedOutPss;
+```
+
 }`
 
 1、Total PSS by process**
@@ -515,6 +562,8 @@ procrank 主要展示所有用户态进程的VSS/RSS/PSS/USS情况，用到的�
 
 `int main(int argc, char *argv[]) {
     ....
+
+```cpp
     std::vectorproc_info> procs(num_procs);
     for (i = 0; i  num_procs; i++) {
         ....
@@ -527,6 +576,8 @@ procrank 主要展示所有用户态进程的VSS/RSS/PSS/USS情况，用到的�
         ....
     }
     //展示的VSS,RSS,PSS,USS 分别用到了 proc.usage.vss,proc.usage.rss,proc.usage.pss,proc.usage.uss
+```
+
 }`
 
 #### 4.2.1 /proc/pid/maps
@@ -552,6 +603,8 @@ pagemap具体实现代码在:
 procrank 流程中关键的转换  pagemap  就是在 `pm_map_usage_flags()`中，从其中可以看出VSS/RSS/PSS/USS的具体差异。
 
 `//map:描述一个VMA
+
+```cpp
 int pm_map_usage_flags(pm_map_t *map, pm_memusage_t *usage_out,
                         uint64_t flags_mask, uint64_t required_flags) {
     //使用 /proc/pid/pagemap 得到该VMA映射的物理页的信息，
@@ -578,6 +631,8 @@ int pm_map_usage_flags(pm_map_t *map, pm_memusage_t *usage_out,
         usage.uss += (count == 1) ? (map->proc->ker->pagesize) : (0);
         ....
     }
+```
+
 }`
 
 留个问题： 为什么 dumpsys meminfo pid 显示的进程PSS大小，比procrank展示的进程PSS大小多？ 是多统计了swap?

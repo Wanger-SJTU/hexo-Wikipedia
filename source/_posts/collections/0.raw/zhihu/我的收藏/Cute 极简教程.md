@@ -68,12 +68,20 @@ add_includedirs("path/to/cutlass/tools/util/include")
 add_cuflags("-arch=sm_80")
 
 target("reduce")
+
+```text
     set_kind("binary")
     add_files("src/reduce.cu")
+```
+
 
 target("vec_add")
+
+```text
     set_kind("binary")
     add_files("src/vec_add.cu")
+```
+
 
 vector add
 cute 程序的逻辑很直白，相对于传统的 cuda c 风格kernel，无非就是：
@@ -83,14 +91,17 @@ cute 程序的逻辑很直白，相对于传统的 cuda c 风格kernel，无非�
 - 切分每一个线程的负载
 - 线程内的计算。。。我们可以用一个简单的 vector add 来体会一下：
 
-#include  cuda_runtime.h 
+```cpp
+#include <cuda_runtime.h>
 #include  cute/tensor.hpp 
 #include  iostream 
-#include  thrust/device_vector.h 
-#include  thrust/host_vector.h 
+#include <thrust/device_vector.h>
+#include <thrust/host_vector.h>
 
 template  class T  __global__ void vec_add(T *a, T *b, T *c, int num) {
   using namespace cute;
+```
+
 
   Tensor gA = make_tensor(make_gmem_ptr(a), make_shape(num));
   Tensor gB = make_tensor(make_gmem_ptr(b), make_shape(num));
@@ -106,21 +117,29 @@ template  class T  __global__ void vec_add(T *a, T *b, T *c, int num) {
   auto tB = local_partition(bB, block_layout, threadIdx.x);
   auto tC = local_partition(bC, block_layout, threadIdx.x);
 
+```text
   //   auto rA = make_fragment_like(tA);
   //   auto rB = make_fragment_like(tB);
   //   auto rC = make_fragment_like(tC);
   auto rA = make_tensor T (tA.layout());
   auto rB = make_tensor T (tB.layout());
   auto rC = make_tensor T (tC.layout());
+```
+
 
   copy(tA, rA);
   copy(tB, rB);
 
+```cpp
   for (int i = 0; i   size 0 (rA); i++) {
     rC(i) = rA(i) + rB(i);
   }
+```
+
 
   copy(rC, tC);
+
+```cpp
 }
 
 int main() {
@@ -134,6 +153,8 @@ int main() {
     a[i] = static_cast float (i);
     b[i] = static_cast float (i * 2);
   }
+```
+
 
   thrust::device_vector float  d_a = a;
   thrust::device_vector float  d_b = b;
@@ -142,6 +163,8 @@ int main() {
   dim3 grid((num - 1 + 128) / 128, 1, 1);
   dim3 block(128, 1, 1);
   vec_add float    grid, block   (thrust::raw_pointer_cast(d_a.data()),
+
+```cpp
                                   thrust::raw_pointer_cast(d_b.data()),
                                   thrust::raw_pointer_cast(d_c.data()), num);
 
@@ -174,29 +197,43 @@ int main() {
 
   return 0;
 }
+```
+
 
 copy 这个函数其实就是一层 for 循环的封装，也可以自己实现例如：
 
+```cpp
 #pragma unroll
 for (int i=0;i rA.size();i++){
+```
+
 rA(i) = tA(i);
+
+```text
 }
+```
+
 当然我们这里的 copy 比较简单，如果要用到向量化等操作那么自己写就比较繁琐了，所以用 copy 这个函数会简单很多。
 
 reduce sum
 再来结合一个 reduce 的 kernel 看一下 copy 的用法
 
+```cpp
 #include  cub/cub.cuh 
-#include  cuda_runtime.h 
+#include <cuda_runtime.h>
 #include  cute/tensor.hpp 
 #include  iostream 
 #include  random 
-#include  thrust/device_vector.h 
-#include  thrust/host_vector.h 
+#include <thrust/device_vector.h>
+#include <thrust/host_vector.h>
 
 template  int block_size, typename CopyBlockShape, typename MyTiledCopy,
           typename T 
+```
+
 __global__ void reduce_kernel(T *input, T *output, int N) {
+
+```text
   using namespace cute;
   auto copy_block_shape = CopyBlockShape{};
   auto block_layout = make_layout(copy_block_shape);
@@ -207,9 +244,13 @@ __global__ void reduce_kernel(T *input, T *output, int N) {
   auto thr_copy = tiled_copy.get_slice(threadIdx.x);
   auto tInput = thr_copy.partition_S(bInput);
   auto rInput = make_fragment_like(tInput);
+```
+
 
   copy(tiled_copy, tInput, rInput);
   T tSum = 0.f;
+
+```cpp
 #pragma unroll
   for (int i = 0; i   rInput.size(); i++) {
     tSum += rInput(i);
@@ -229,8 +270,12 @@ int main() {
   int n = 1024;
   auto h_in = thrust::host_vector float (n);
   auto h_out = thrust::host_vector float (1);
+```
+
 
   auto expected_sum = 0.f;
+
+```cpp
   std::random_device rd;
   std::mt19937 gen(rd());
   std::uniform_real_distribution float  dis(-1.f, 1.f);
@@ -250,22 +295,31 @@ int main() {
 
   using CopyBlockShape =
       decltype(cute::make_shape(cute::Int block_size * vec_size {}));
+```
+
 
   reduce_kernel block_size, CopyBlockShape, MyTiledCopy 
+
+```text
          (n - 1 + block_size) / block_size, block_size   (
           thrust::raw_pointer_cast(d_in.data()),
           thrust::raw_pointer_cast(d_out.data()), n);
 
   // copy results to host
   h_out = d_out;
+```
+
 
   auto abs_err = std::abs(h_out[0] - expected_sum);
   auto rel_err = abs_err / std::abs(expected_sum);
 
+```cpp
   std::cout    (double)rel_err    "\n";
 
   return 0;
 }
+```
+
 这个例子中，稍微的复杂了一点，我们用了模板组合了一些稍微复杂的逻辑。
 
 在这个例子中，我们首先声明了一个 copy_atom，这个就是相当于咱们copy 的最基础操作，为什么要有这个 copy_atom？因为不同的架构上有不同的访存方法，封装起来对于用户来说就是抽象的，不必关心底层实现，
@@ -287,6 +341,8 @@ cuobjdump -sass reduce   reduce.sass
 
 arch = sm_80
 ....
+
+```text
         /*0090*/                   LDG.E R4, [R2.64] ;                                      /* 0x0000000402047981 */
                                                                                             /* 0x000ea8000c1e1900 */
         /*00a0*/                   LDG.E R5, [R2.64+0x4] ;                                  /* 0x0000040402057981 */
@@ -302,6 +358,8 @@ arch = sm_80
         /*00f0*/                   LDG.E R15, [R2.64+0x18] ;                                /* 0x00001804020f7981 */
                                                                                             /* 0x000f68000c1e1900 */
         /*0100*/                   LDG.E R17, [R2.64+0x1c] ;                                /* 0x00001c0402117981 */
+```
+
 发现并没有编译出我们预期的 LDG.E 128 指令，反而是很多条指令。
 
 可能是编译器认为寄存器分配更灵活，它可能不会强行使用一条指令覆盖 4 个寄存器，而是连续发射。但是，由于这些指令在同一个 Warp 内且地址是完美对齐的（float4 对齐），硬件的 L1 Cache / 内存控制器会自动将它们合并为一个 128 位的事务。
@@ -320,10 +378,13 @@ arch = sm_80
 
 草原小可汗
 
+```cpp
   for (int i = 0; i   h_out.size(); i++) {
     h_in[i] = dis(gen);
     expected_sum += h_in[i];
   }   这个写错吧？  应该是 i h_in.size()   才对吧
+```
+
 
 04-19 · 广东
 
@@ -341,9 +402,13 @@ arch = sm_80
 Ferdinand
 
 reduce_kernel block_size, CopyBlockShape, MyTiledCopy 
+
+```text
          (n - 1 + block_size) / block_size, block_size   (
           thrust::raw_pointer_cast(d_in.data()),
           thrust::raw_pointer_cast(d_out.data()), n);
+```
+
 这里是不是有点问题？一个block里面处理的是block_size * vec_size大小，启动block的话应该是(n+block_size * vec_size-1)/block_size * vec_size吧？
 
 01-29 · 山东

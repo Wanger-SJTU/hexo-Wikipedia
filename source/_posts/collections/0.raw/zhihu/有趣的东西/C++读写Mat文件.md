@@ -74,6 +74,7 @@ libeng.lib
 
 `#define _USE_MATH_DEFINES
 
+```cpp
 #include 
 #include 
 #include 
@@ -108,6 +109,8 @@ int main()
 	mxFree(pData2);
 	matClose(pMatFile);
 }
+```
+
 `
 
 在Matlab中load刚才保存的mat文件，并画图：
@@ -128,17 +131,25 @@ plot(time, wave)
 
 `......
 mxArray ** ppMxArr = (mxArray *)malloc(sizeof(mxArray *)*300);
+
+```cpp
 for (int i=0; i300; i++)
 {
 	ppMxArr[i] = mxCreateDoubleMatrix(300000, 1, mxREAL);
 }
+```
+
 ......
+
+```cpp
 char varName[] = "var000";
 for (int i=0; i300; i++)
 {
 	sprintf(varName, "var%03d", i);
 	matPutVariable(pMatFile, varName, ppMxArr[i]);
 }
+```
+
 ......
 `
 

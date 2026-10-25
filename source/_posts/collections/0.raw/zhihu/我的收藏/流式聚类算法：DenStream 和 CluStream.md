@@ -58,6 +58,7 @@ DBSCAN 的核心思想是通过密度来定义簇，它通过以下几个参数�
 
 `# !pip install scikit-learn
 
+```python
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -66,6 +67,8 @@ from sklearn.cluster import DBSCAN
 from sklearn.datasets import make_blobs
 from sklearn.neighbors import NearestNeighbors
 from sklearn.metrics import silhouette_score`
+```
+
 
 #### 2. DBSCAN 的简单示例
 
@@ -89,11 +92,15 @@ scatter = plt.scatter(X[:, 0], X[:, 1], c=labels, cmap='viridis')
 # 使用 set_unique_labels 来为不同的簇分配标签
 unique_labels = np.unique(labels)
 handles = [plt.Line2D([0], [0],
+
+```text
                       marker='o',
                       color='w',
                       markerfacecolor=scatter.cmap(i / len(unique_labels)),
                       markersize=10)
            for i in range(len(unique_labels))]
+```
+
 labels_for_legend = [f'Cluster {label}' for label in unique_labels]
 plt.legend(handles, labels_for_legend, title="Clusters", loc='center left', bbox_to_anchor=(1, 0.5))
 
@@ -104,9 +111,13 @@ plt.show()`
 
 `# 将样本和聚类结果存到一个 DataFrame
 cluster_df = pd.DataFrame({
+
+```text
     "sample": X.tolist(),
     "label": labels.tolist()
 })
+```
+
 
 # cluster_df`
 
@@ -175,7 +186,11 @@ plt.show()`
 param_grid = {
     'eps': [0.5, 0.6, 0.7, 0.8, 0.9],
     'min_samples': [6, 8, 10, 12, 14]
+
+```text
 }
+```
+
 
 # 创建 DBSCAN 实例
 dbscan = DBSCAN()
@@ -187,17 +202,29 @@ best_params = {}  # 用于存储最佳参数
 # 手动进行网格搜索
 for eps in param_grid['eps']:
     for min_samples in param_grid['min_samples']:
+
+```text
         dbscan.set_params(eps=eps, min_samples=min_samples)
         labels = dbscan.fit_predict(X)
+```
+
 
         # 计算轮廓系数
+
+```python
         if len(set(labels)) > 1:  # 确保至少有两个簇
             score = silhouette_score(X, labels)
             print(f"eps={eps}, min_samples={min_samples}, silhouette_score={score}")
+```
+
 
             if score > best_score:
+
+```text
                 best_score = score
                 best_params = {'eps': eps, 'min_samples': min_samples}
+```
+
 
 # 输出最佳参数
 print("Best parameters found:", best_params)
@@ -222,11 +249,15 @@ scatter = plt.scatter(X[:, 0], X[:, 1], c=labels, cmap='viridis')
 # 使用 set_unique_labels 来为不同的簇分配标签
 unique_labels = np.unique(labels)
 handles = [plt.Line2D([0], [0],
+
+```text
                       marker='o',
                       color='w',
                       markerfacecolor=scatter.cmap(i / len(unique_labels)),
                       markersize=10)
            for i in range(len(unique_labels))]
+```
+
 labels_for_legend = [f'Cluster {label}' for label in unique_labels]
 plt.legend(handles, labels_for_legend, title="Clusters", loc='center left', bbox_to_anchor=(1, 0.5))
 
@@ -243,29 +274,43 @@ plt.show()`
     """获取 DBSCAN 的最佳参数"""
     # 如果没有初始化 param_grid
     if param_grid is None:
+
+```text
         param_grid = {
             'eps': [0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9],
             'min_samples': [2, 4, 6, 8, 10, 12, 14]
         }
+```
+
 
     # 创建 DBSCAN 实例
     dbscan = DBSCAN()
 
     # 手动进行网格搜索
+
+```text
     best_score = -1  # 用于存储最佳轮廓系数
     best_params = {}  # 用于存储最佳参数
     for eps in param_grid['eps']:
         for min_samples in param_grid['min_samples']:
             dbscan.set_params(eps=eps, min_samples=min_samples)
             labels = dbscan.fit_predict(data)
+```
+
 
             # 计算轮廓系数
+
+```python
             if len(set(labels)) > 1:  # 确保至少有两个簇
                 score = silhouette_score(data, labels)
                 if verbose:
                     print(f"eps={eps}, min_samples={min_samples}, silhouette_score={score}")
+```
+
 
                 if score > best_score:
+
+```python
                     best_score = score
                     best_params = {'eps': eps, 'min_samples': min_samples}
 
@@ -275,22 +320,30 @@ def get_labels(data, best_params):
     """使用最优参数计算聚类标签"""
 
     dbscan = DBSCAN(**best_params)
+```
+
 
     # 进行聚类
     dbscan.fit(data)
 
     # 获取聚类标签
+
+```python
     labels = dbscan.labels_
 
     return labels
 
 def simple_scatter(data, labels, title='DBSCAN Clustering', is_show=True):
     """绘制聚类结果"""
+```
+
 
     # 绘制结果
     scatter = plt.scatter(data[:, 0], data[:, 1], c=labels, cmap='viridis')
 
     # 使用 set_unique_labels 来为不同的簇分配标签
+
+```python
     unique_labels = np.unique(labels)
     handles = [plt.Line2D([0], [0],
                           marker='o',
@@ -315,24 +368,38 @@ def auto_dbscan(data,
     """"自动对参数进行寻优的 DBSCAN 算法"""
     # 获取最优参数
     best_params = get_best_params(data, param_grid, verbose)
+```
+
 
     # 获取聚类标签
     labels = get_labels(data, best_params)
 
     # 绘制聚类结果
+
+```text
     simple_scatter(data, labels, title, is_show)
 
     return best_params, labels
+```
+
 
 test_data = np.concatenate([
+
+```text
     np.random.randn(100, 2) + np.array([5, 5]),
     np.random.randn(100, 2) + np.array([-1, -5]),
     np.random.randn(100, 2) + np.array([5, -3]),
     np.random.randn(100, 2) + np.array([-2.5, 5]),
     np.random.randn(100, 2) + np.array([0, 0]),
 ])
+```
+
 best_params, labels = auto_dbscan(data=test_data)
+
+```python
 print(f'best_params: {best_params}')`
+```
+
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_55faad10423a.jpg)
 
@@ -367,21 +434,28 @@ DenStream 的核心思想是使用“核心对象”和“边界对象”来定�
 
 `# !pip install river
 
+```python
 import numpy as np
 import utils
 
 from river import cluster, stream`
+```
+
 
 #### 2. DenStream 的简单示例
 
 `np.random.seed(67)
 X = np.concatenate([
+
+```text
     np.random.randn(100, 2) + np.array([5, 5]),
     np.random.randn(100, 2) + np.array([-1, -5]),
     np.random.randn(100, 2) + np.array([5, -3]),
     np.random.randn(100, 2) + np.array([-2.5, 5]),
     np.random.randn(100, 2) + np.array([0, 0]),
 ])
+```
+
 
 # 打乱数据
 np.random.shuffle(X)
@@ -391,21 +465,33 @@ np.random.shuffle(X)
 
 # 初始化 DenStream 聚类器
 denstream = cluster.DenStream(decaying_factor=0.01,
+
+```text
                               beta=0.5,
                               mu=2.5,
                               epsilon=0.5,
                               n_samples_init=10)
+```
+
 
 # 对数据流进行增量学习
 for x, _ in stream.iter_array(X):
+
+```text
     denstream.learn_one(x)
     # print(f"Data point: {x} -> Cluster: {denstream.predict_one(x)}")
+```
+
 
 # 预测新的数据点
 prediction = denstream.predict_one({0: -1, 1: -2})
 
 # 输出预测结果
+
+```python
 print(f"Predicted cluster for point (-1, -2): {prediction}")
+```
+
 # Predicted cluster for point (-1, -2): 8
 
 # 打印聚类中心点
@@ -430,29 +516,41 @@ x_train, x_test = X[:train_num], X[train_num:]
 
 # 初始化 DenStream 聚类器
 denstream = cluster.DenStream(decaying_factor=0.01,
+
+```text
                               beta=0.5,
                               mu=2.5,
                               epsilon=0.5,
                               n_samples_init=10)
+```
+
 
 # 用于存储数据点和学习过程中的簇号
 save_train = dict()
 
 # 对数据流进行增量学习
 for i, (x, _) in enumerate(stream.iter_array(x_train)):
+
+```text
     denstream.learn_one(x)
     prediction = denstream.predict_one(x)
     save_train[i] = {'data': x,
                      'cluster': prediction}
     # print(f'Train {i}: {x} -> {prediction}')
+```
+
 
 # 预测新的数据点
 save_test = dict()
 for i, (x, _) in enumerate(stream.iter_array(x_test)):
+
+```text
     prediction = denstream.predict_one(x)
     save_test[i] = {'data': x,
                     'cluster': prediction}
     # print(f'Test {i}: {x} -> {prediction}')`
+```
+
 
 **
 
@@ -461,29 +559,41 @@ for i, (x, _) in enumerate(stream.iter_array(x_test)):
 # 再次预测 训练数据
 new_save_train = dict()
 for i, (x, _) in enumerate(stream.iter_array(x_train)):
+
+```text
     prediction = denstream.predict_one(x)
     new_save_train[i] = {'data': x,
                          'cluster': prediction}
     # print(f'Train {i}: {x} -> {prediction}')
+```
+
 
 # 再次预测 测试数据
 new_save_test = dict()
 for i, (x, _) in enumerate(stream.iter_array(x_test)):
+
+```text
     prediction = denstream.predict_one(x)
     new_save_test[i] = {'data': x,
                     'cluster': prediction}
     # print(f'Test {i}: {x} -> {prediction}')`
+```
+
 
 `# 训练数据：初次预测与再次预测对比
 assert len(save_train) == len(new_save_train)
 cnt = 0
 for i in save_train.keys():
+
+```python
     is_data_equal = bool(save_train[0]['data'] == new_save_train[0]['data'])
     is_cluster_equal = bool(save_train[0]['cluster'] == new_save_train[0]['cluster'])
     if not (is_data_equal and is_cluster_equal):
         print(f'Train {i}: data_equal={is_data_equal}, cluster_equal={is_cluster_equal}')
         cnt += 1
     if cnt > 5: break`
+```
+
 
 输出：
 
@@ -497,10 +607,14 @@ Train 5: data_equal=True, cluster_equal=False`
 `# 测试数据：初次预测与再次预测对比
 assert len(save_test) == len(new_save_test)
 for i in save_test.keys():
+
+```python
     is_data_equal = bool(save_test[0]['data'] == new_save_test[0]['data'])
     is_cluster_equal = bool(save_test[0]['cluster'] == new_save_test[0]['cluster'])
     if not (is_data_equal and is_cluster_equal):
         print(f'Train {i}: data_equal={is_data_equal}, cluster_equal={is_cluster_equal}')`
+```
+
 
 （以上代码无输出）
 
@@ -511,7 +625,11 @@ for i in save_test.keys():
 对比使用 DBSCAN 做全量聚类与使用 DenStream 做流式聚类的效果。
 
 `dbscan_best_params, dbscan_labels = utils.auto_dbscan(data=X)
+
+```python
 print(f'best_params: {dbscan_best_params}')`
+```
+
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_4bc6571643cf.jpg)
 
@@ -520,25 +638,37 @@ print(f'best_params: {dbscan_best_params}')`
 # (500,)
 
 # 使用 DenStream 流式聚类
+
+```python
 def denstream_init(data,
                     decaying_factor=0.01,
                     beta=0.5,
                     mu=2.5,
                     epsilon=0.5,
                     n_samples_init=10):
+```
+
 
     # 初始化 DenStream 聚类器
+
+```text
     denstream = cluster.DenStream(decaying_factor=decaying_factor,
                                   beta=beta,
                                   mu=mu,
                                   epsilon=epsilon,
                                   n_samples_init=n_samples_init)
+```
+
 
     # 对数据流进行增量学习
+
+```text
     for x, _ in stream.iter_array(data):
         denstream.learn_one(x)
 
     return denstream
+```
+
 
 # 对全量数据做流式聚类
 denstream = denstream_init(X)
@@ -546,13 +676,21 @@ denstream = denstream_init(X)
 # 对全量数据做预测
 denstream_labels = list()
 for x, _ in stream.iter_array(X):
+
+```text
     prediction = denstream.predict_one(x)
     denstream_labels.append(prediction)
+```
+
 
 # 绘图
 utils.simple_scatter(data=X,
+
+```text
                      labels=denstream_labels,
                      title='DenStream Clustering')`
+```
+
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_9841ef073e3f.jpg)
 
@@ -567,22 +705,34 @@ denstream_epsilon = dbscan_best_params['eps']
 
 # 对全量数据做流式聚类
 denstream = denstream_init(X,
+
+```text
                             decaying_factor=0.01,
                             beta=0.75,
                             mu=2,
                             epsilon=denstream_epsilon,
                             n_samples_init=10)
+```
+
 
 # 对全量数据做预测
 denstream_labels = list()
 for x, _ in stream.iter_array(X):
+
+```text
     prediction = denstream.predict_one(x)
     denstream_labels.append(prediction)
+```
+
 
 # 绘图
 utils.simple_scatter(data=X,
+
+```text
                      labels=denstream_labels,
                      title='DenStream Clustering')`
+```
+
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_796a117b7b87.jpg)
 
@@ -622,11 +772,15 @@ CluStream算法的基本思想是通过以下两个主要步骤来对数据流�
 总体而言，CluStream 是一种能够高效处理动态数据流并适应实时聚类需求的算法，尤其适合那些数据量巨大且数据分布不断变化的应用场景。
 
 `import time
+
+```python
 import numpy as np
 import utils
 
 from sklearn.datasets import make_blobs
 from river import cluster, stream`
+```
+
 
 #### 2. CluStream 的简单示例
 
@@ -638,10 +792,14 @@ np.random.shuffle(X)
 
 # 初始化 CluStream 模型
 clustream = cluster.CluStream(n_macro_clusters=3,  # n_macro_clusters 是最终形成的宏簇（macro-clusters）的数量
+
+```text
                               max_micro_clusters=100,  # max_micro_clusters 是微簇（micro-clusters）的最大数量
                               micro_cluster_r_factor=2,  # micro_cluster_r_factor 是微簇半径的乘数因子
                               time_window=1000,  # time_window 是时间窗口的大小
                               time_gap=5)  # time_gap 是增量 K-Means 算法应用的时间间隔
+```
+
 
 # 对数据流进行增量学习
 for i, (x, _) in enumerate(stream.iter_array(X)):
@@ -671,10 +829,14 @@ clustream.predict_one({0: -1, 1: -2})
 
 # 初始化 CluStream 模型
 clustream = cluster.CluStream(n_macro_clusters=n_macro_clusters,
+
+```text
                               max_micro_clusters=100,
                               micro_cluster_r_factor=2,
                               time_window=1000,
                               time_gap=5)
+```
+
 
 # 对数据流进行增量学习
 for i, (x, _) in enumerate(stream.iter_array(X)):
@@ -683,13 +845,21 @@ for i, (x, _) in enumerate(stream.iter_array(X)):
 # 对全量数据做预测
 clustream_labels = list()
 for x, _ in stream.iter_array(X):
+
+```text
     prediction = clustream.predict_one(x)
     clustream_labels.append(prediction)
+```
+
 
 # 绘图
 utils.simple_scatter(data=X,
+
+```text
                      labels=clustream_labels,
                      title='CluStream Clustering')`
+```
+
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_2d2f03bc37a8.jpg)
 
@@ -702,10 +872,14 @@ assert n_macro_clusters != cluster_num
 
 # 初始化 CluStream 模型
 clustream = cluster.CluStream(n_macro_clusters=n_macro_clusters,
+
+```text
                               max_micro_clusters=100,
                               micro_cluster_r_factor=2,
                               time_window=1000,
                               time_gap=5)
+```
+
 
 # 对数据流进行增量学习
 for i, (x, _) in enumerate(stream.iter_array(X)):
@@ -714,13 +888,21 @@ for i, (x, _) in enumerate(stream.iter_array(X)):
 # 对全量数据做预测
 clustream_labels = list()
 for x, _ in stream.iter_array(X):
+
+```text
     prediction = clustream.predict_one(x)
     clustream_labels.append(prediction)
+```
+
 
 # 绘图
 utils.simple_scatter(data=X,
+
+```text
                      labels=clustream_labels,
                      title='CluStream Clustering')`
+```
+
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_3832498e75c9.jpg)
 
@@ -732,22 +914,34 @@ utils.simple_scatter(data=X,
 
 # 初始化 DenStream 聚类器
 denstream = cluster.DenStream(decaying_factor=0.01,
+
+```text
                               beta=0.75,
                               mu=2,
                               epsilon=0.9,
                               n_samples_init=10)
+```
+
 
 # 对数据流进行增量学习
 denstream_inc_lables = []
 for x, _ in stream.iter_array(X):
+
+```text
     denstream.learn_one(x)
     prediction = denstream.predict_one(x)
     denstream_inc_lables.append(prediction)
+```
+
 
 # 绘图
 utils.simple_scatter(data=X,
+
+```text
                      labels=denstream_inc_lables,
                      title='DenStream Clustering')`
+```
+
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_9b5f14d12e41.jpg)
 
@@ -755,26 +949,38 @@ utils.simple_scatter(data=X,
 
 # 初始化 CluStream 模型
 clustream = cluster.CluStream(n_macro_clusters=cluster_num,
+
+```text
                               max_micro_clusters=10,
                               micro_cluster_r_factor=2,
                               time_window=1000,
                               time_gap=3)
+```
+
 
 # 对数据流进行增量学习
 clustream_inc_lables = []
 for i, (x, _) in enumerate(stream.iter_array(X)):
     # 增加等待时间
+
+```text
     if i % 30 == 0:
         time.sleep(1)
 
     clustream.learn_one(x)
     prediction = clustream.predict_one(x)
     clustream_inc_lables.append(prediction)
+```
+
 
 # 绘图
 utils.simple_scatter(data=X,
+
+```text
                      labels=clustream_inc_lables,
                      title='CluStream Clustering')`
+```
+
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_e0e1d5b2f6ee.jpg)
 
@@ -792,7 +998,11 @@ utils.simple_scatter(data=X,
 
 - 定义为样本 i 到同簇内其他样本的平均距离，反映其与本簇的紧密程度。
 - 数值越小，说明样本 i 越靠近本簇的中心。  
+
+```text
     $$a(i) = \frac{1}{|C| - 1} \sum_{j \in C, j \neq i} d(i, j)     $$
+```
+
 
 其中， C 是样本 i 所属的簇， d(i, j) 是样本 i 和 j 之间的距离。
 
@@ -800,7 +1010,11 @@ utils.simple_scatter(data=X,
 
 - 定义为样本 i 到其最近的其他簇的所有样本的平均距离。
 - 最近簇是指与样本 i 的簇 C 之外的簇 C' 中，距离样本 i 最近的簇。
+
+```text
     $$b(i) = \min_{C' \neq C} \frac{1}{|C'|} \sum_{j \in C'} d(i, j)     $$
+```
+
 
 <strong>3）轮廓系数（</strong> s(i) <strong>）</strong>：
 

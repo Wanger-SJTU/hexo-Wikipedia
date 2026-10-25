@@ -153,17 +153,25 @@ LLM.int8() 方法的主要目的是在不降低性能的情况下降低大模型
 
 - 首先导入模块，如下。
 `import torch
+
+```python
 import torch.nn as nn
 
 import bitsandbytes as bnb
 from bnb.nn import Linear8bitLt
+```
+
 `
 
 - 然后就可以定义自己的模型了。请注意，我们支持将任何精度的 checkpoint 或模型转换为 8 位 (FP16、BF16 或 FP32)，但目前，仅当模型的输入张量数据类型为 FP16 时，我们的 Int8 模块才能工作。因此，这里我们称模型为 fp16 模型。
 `fp16_model = nn.Sequential(
+
+```text
     nn.Linear(64, 64),
     nn.Linear(64, 64)
 )
+```
+
 `
 
 - 假设你已经在你的数据集和任务上训完了你的模型！现在需要保存模型:
@@ -173,9 +181,13 @@ torch.save(fp16_model.state_dict(), "model.pt")
 
 - 至此，`state_dict` 已保存，我们需要定义一个 int8 模型:
 `int8_model = nn.Sequential(
+
+```text
     Linear8bitLt(64, 64, has_fp16_weights=False),
     Linear8bitLt(64, 64, has_fp16_weights=False)
 )
+```
+
 `
 
 此处标志变量 `has_fp16_weights` 非常重要。默认情况下，它设置为 `True`，用于在训练时使能 Int8/FP16 混合精度。但是，因为在推理中我们对内存节省更感兴趣，因此我们需要设置 `has_fp16_weights=False`。
@@ -273,6 +285,8 @@ module._parameters[name] = param_cls(module._parameters[name].to(torch.device("m
 现在这个问题已经解决了，我们可以轻松地在一个自定义函数中利用这个上下文管理器将所有 `nn.Linear` 模块替换为 `bnb.nn.Linear8bitLt` 而无需占用内存！
 
 `def replace_8bit_linear(model, threshold=6.0, module_to_not_convert="lm_head"):
+
+```text
     for name, module in model.named_children():
         if len(list(module.children())) > 0:
             replace_8bit_linear(module, threshold, module_to_not_convert)
@@ -287,6 +301,8 @@ module._parameters[name] = param_cls(module._parameters[name].to(torch.device("m
                     threshold=threshold,
                 )
     return model
+```
+
 `
 
 此函数递归地将 `meta` 设备上初始化的给定模型的所有 `nn.Linear` 层替换为 `Linear8bitLt` 模块。这里，必须将 `has_fp16_weights` 属性设置为 `False`，以便直接将权重加载为 `Int8`，并同时加载其量化统计信息。
@@ -334,8 +350,12 @@ CPU 不支持 8 位张量核心 [*]。 bitsandbytes 可以在支持 8 位张量�
 使用以下命令安装最新版本的库 (确保你的 python>=3.8)。
 
 `pip install accelerate
+
+```bash
 pip install bitsandbytes
 pip install git+https://github.com/huggingface/transformers.git
+```
+
 `
 
 #### <strong>演示示例 - 在 Google Colab 上运行 T5 11B</strong>

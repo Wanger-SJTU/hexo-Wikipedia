@@ -42,6 +42,8 @@ RDMA 用户态发送路径的基本约束:
 实际只需要<strong>一次</strong>。原因见下一节。
 
 伪代码:一条描述符的写入 + doorbell
+
+```cpp
 void post_desc(void)
 {
     void *dma_addr = xxx;          // 描述符在 host 内存(WB)里的地址,设备 DMA 会来读
@@ -67,11 +69,14 @@ void post_desc(void)
      * 注意:doorbell 是&#34;提示&#34;,正确性锚在上面的 flag/描述符本身。 */
     writeq(db, db_addr);
 }
+```
+
 要点:barrier <strong>只有一次</strong>(`dma_wmb`),夹在正文与 flag 之间。 `WRITE_ONCE` 防编译器把两次写重排/合并;doorbell 走 UC 保证独立有序发出。
 
 实例:一个常见的 dma_wmb 摆放陷阱(混合模型下的排序 bug)
 下面是一段<strong>简化示例</strong>(非任何真实驱动),演示一个很容易踩的坑: 描述符内部先写 `addr` 再写 `flag(OWN)`,两者之间<strong>没有屏障</strong>, 唯一的 `dma_wmb()` 摆在 `flag` 写完之后、doorbell 之前。
 
+```cpp
 /* 描述符:addr + flag,flag 的最高位是 OWN(1=软件已填好,归 HW) */
 struct tx_desc {
     __le64 addr;   /* 数据缓冲区 DMA 地址 */
@@ -106,6 +111,8 @@ static int xmit_one(struct tx_ring *ring, dma_addr_t dma, u32 len)
     ring_doorbell(ring);  /* 敲 doorbell */
     return 0;
 }
+```
+
 
 dma_wmb 想做什么
 它想保证 `fill_desc` 写的整条描述符(`addr` + `flag`,host WB 内存的 desc ring)在 敲 doorbell 之前对设备可见——设备被 doorbell 踢后 DMA 回读 desc,应读到完整新内容, 而不是 `OWN` 已置位但 `addr` 还是上一圈旧值。dma_wmb 只排 CPU 侧写序、不刷 cache, coherent DMA 靠 snoop 拿 cache 里最新值。
@@ -279,11 +286,14 @@ mlx5 关键代码
 udma_to_device_barrier();
 qp->db[MLX5_SND_DBR] = htobe32(qp->sq.cur_post & 0xffff);   // producer index 写进 dbrec
 
+```text
 // 两条路径:
 if (... size <= bf->buf_size / 16)
     mlx5_bf_copy(bf->reg + bf->offset, ctrl, align(size*16, 64), qp);  // BF:整条 WQE WC 推
 else
     mmio_write64_be(bf->reg + bf->offset, *(__be64 *)ctrl);            // DB:只推 8 字节 doorbell
+```
+
 
 mmio_flush_writes();     // sfence:把本条 WQE 的 WC buffer 全挤出
 bf->offset ^= bf->buf_size;   // 乒乓两个 BF buffer,防相邻 doorbell WC 合并
@@ -291,11 +301,14 @@ bf->offset ^= bf->buf_size;   // 乒乓两个 BF buffer,防相邻 doorbell WC �
 mlx5 的 doorbell 8 字节其实带 size
 控制段头 8 字节布局:
 
+```text
 struct mlx5_wqe_ctrl_seg {
     __be32 opmod_idx_opcode;   // byte 0-3: opmod(8) | wqe_index(16) | opcode(8)
     __be32 qpn_ds;             // byte 4-7: qpn(24) | ds(8)   ← ds = 描述符大小(16B 为单位)
     ...
 };
+```
+
 `mmio_write64_be(..., *(__be64*)ctrl)` 写的正是这 8 字节 = `{opcode, wqe_index, qpn, ds}`。 所以 <strong>DB 路径的 doorbell 就带着 size(ds)和 index</strong>。
 
 BF 路径的正确性锚点是 ring,不是 push
@@ -387,8 +400,11 @@ build_wqe_body(wqe);
 asm volatile(&#34;dmb ishst&#34; ::: &#34;memory&#34;);   // body 先于 owner(或 owner 用 STLR)
 wqe->ctrl.owner = OWN_HW;
 
+```cpp
 for (char *p = (char*)wqe; p < (char*)wqe + wqe_len; p += cache_line_size)
     asm volatile(&#34;dc cvac, %0&#34; :: &#34;r&#34;(p) : &#34;memory&#34;);   // clean 到 PoC(DRAM)
+```
+
 asm volatile(&#34;dsb osh&#34; ::: &#34;memory&#34;);                   // 等 clean 真完成
 
 *dbrec = producer_index;

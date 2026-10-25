@@ -39,30 +39,40 @@ id: 92ae0bf7-2dbd-4b06-a7af-a1a33029da3c
 
 FlagEmbedding专注于检索增强llm领域，目前包括以下项目:
 
-* <strong>Long-Context LLM</strong>: [Activation Beacon](https://github.com/FlagOpen/FlagEmbedding/tree/master/Long%5FLLM/activation%5Fbeacon), [LongLLM QLoRA](https://github.com/FlagOpen/FlagEmbedding/tree/master/Long%5FLLM/longllm%5Fqlora)
-* <strong>Fine-tuning of LM</strong> : [LM-Cocktail](https://github.com/FlagOpen/FlagEmbedding/tree/master/LM%5FCocktail)
+```text
+* **Long-Context LLM**: [Activation Beacon](https://github.com/FlagOpen/FlagEmbedding/tree/master/Long%5FLLM/activation%5Fbeacon), [LongLLM QLoRA](https://github.com/FlagOpen/FlagEmbedding/tree/master/Long%5FLLM/longllm%5Fqlora)
+* **Fine-tuning of LM** : [LM-Cocktail](https://github.com/FlagOpen/FlagEmbedding/tree/master/LM%5FCocktail)
+```
+
 * <strong>Embedding Model</strong>: [Visualized-BGE](https://github.com/FlagOpen/FlagEmbedding/tree/master/FlagEmbedding/visual), [BGE-M3](https://github.com/FlagOpen/FlagEmbedding/tree/master/FlagEmbedding/BGE%5FM3), [LLM Embedder](https://github.com/FlagOpen/FlagEmbedding/tree/master/FlagEmbedding/llm%5Fembedder), [BGE Embedding](https://github.com/FlagOpen/FlagEmbedding/tree/master/FlagEmbedding/baai%5Fgeneral%5Fembedding)
-* <strong>Reranker Model</strong>: [llm rerankers](https://github.com/FlagOpen/FlagEmbedding/tree/master/FlagEmbedding/llm%5Freranker), [BGE Reranker](https://github.com/FlagOpen/FlagEmbedding/tree/master/FlagEmbedding/reranker)
-* <strong>Benchmark</strong>: [C-MTEB](https://github.com/FlagOpen/FlagEmbedding/tree/master/C%5FMTEB)
+
+```text
+* **Reranker Model**: [llm rerankers](https://github.com/FlagOpen/FlagEmbedding/tree/master/FlagEmbedding/llm%5Freranker), [BGE Reranker](https://github.com/FlagOpen/FlagEmbedding/tree/master/FlagEmbedding/reranker)
+* **Benchmark**: [C-MTEB](https://github.com/FlagOpen/FlagEmbedding/tree/master/C%5FMTEB)
+```
+
 
 ## 更新
 
 [](#更新)
 
+```text
 * 4/30/2024: 发布[Llama-3-8B-Instruct-80K-QLoRA](https://huggingface.co/namespace-Pt/Llama-3-8B-Instruct-80K-QLoRA), 其通过在少量合成的长文本数据上的QLoRA训练，有效地将Llama-3-8B-Instruct的上下文长度从8K扩展到80K。详见[代码](https://github.com/FlagOpen/FlagEmbedding/tree/master/Long%5FLLM/longllm%5Fqlora) 🔥
 * 3/18/2024: 发布新的[rerankers](https://github.com/FlagOpen/FlagEmbedding/tree/master/FlagEmbedding/llm%5Freranker), 拥有更好的性能同时支持多语言和长文本。 🔥
 * 3/18/2024: 发布[Visualized-BGE](https://github.com/FlagOpen/FlagEmbedding/tree/master/FlagEmbedding/visual)，该项目通过引入image token embedding赋予BGE视觉编码能力。Visualized-BGE可以对混合图文数据进行编码，用于广泛的混合模态检索任务。 🔥
-* 1/30/2024: 发布<strong>BGE-M3</strong>, 第一个具有多功能、多语言和多粒度特性的文本检索模型，高效支持多语言（100+语言）、长文本（至多8192长度的输入文本）、和混合检索（稠密、稀疏、多向量）。 详见[report](https://github.com/FlagOpen/FlagEmbedding/blob/master/FlagEmbedding/BGE%5FM3/BGE%5FM3.pdf)和[代码](https://github.com/FlagOpen/FlagEmbedding/tree/master/FlagEmbedding/BGE%5FM3) 🔥
+* 1/30/2024: 发布**BGE-M3**, 第一个具有多功能、多语言和多粒度特性的文本检索模型，高效支持多语言（100+语言）、长文本（至多8192长度的输入文本）、和混合检索（稠密、稀疏、多向量）。 详见[report](https://github.com/FlagOpen/FlagEmbedding/blob/master/FlagEmbedding/BGE%5FM3/BGE%5FM3.pdf)和[代码](https://github.com/FlagOpen/FlagEmbedding/tree/master/FlagEmbedding/BGE%5FM3) 🔥
 * 1/9/2024: 发布[Activation-Beacon](https://github.com/FlagOpen/FlagEmbedding/tree/master/Long%5FLLM/activation%5Fbeacon), 一个有效、高效、兼容、低成本（训练）的扩展大预言模型上下文长度的方法。[技术报告](https://arxiv.org/abs/2401.03462)
-* 12/24/2023: 发布<strong>LLaRA</strong>, 一个基于LLaMA-7B的稠密检索模型, MS MARCO与BEIR上取得了迄今最好的实验结果. 模型与代码将会陆续开源. 敬请关注. [技术报告](https://arxiv.org/abs/2312.15503)
+* 12/24/2023: 发布**LLaRA**, 一个基于LLaMA-7B的稠密检索模型, MS MARCO与BEIR上取得了迄今最好的实验结果. 模型与代码将会陆续开源. 敬请关注. [技术报告](https://arxiv.org/abs/2312.15503)
 * 11/23/2023: 发布[LM-Cocktail](https://github.com/FlagOpen/FlagEmbedding/tree/master/LM%5FCocktail), 一种通过模型融合在微调时保持原有模型通用能力的方法. [技术报告](https://arxiv.org/abs/2311.13534)
-* 10/12/2023: 发布 [LLM-Embedder](https://github.com/FlagOpen/FlagEmbedding/tree/master/FlagEmbedding/llm%5Fembedder), 专为大语言模型<strong>各种检索增强任务设计</strong>的英文向量模型。[技术报告](https://arxiv.org/pdf/2310.07554.pdf)
+* 10/12/2023: 发布 [LLM-Embedder](https://github.com/FlagOpen/FlagEmbedding/tree/master/FlagEmbedding/llm%5Fembedder), 专为大语言模型**各种检索增强任务设计**的英文向量模型。[技术报告](https://arxiv.org/pdf/2310.07554.pdf)
 * 09/12/2023: 更新：  
-   * <strong>新增重排模型</strong>：开源交叉编码器模型bge-reranker，具有比向量模型更强大的排序能力。非常建议使用或者微调它来重新排序向量模型返回的top-k文档，提高最终结果的相关性。  
-   * <strong>更新向量模型</strong>：发布bge-\*-v1.5向量模型，缓解相似度分布问题，提升无指令情况下的检索能力（但检索任务仍建议使用指令）
+   * **新增重排模型**：开源交叉编码器模型bge-reranker，具有比向量模型更强大的排序能力。非常建议使用或者微调它来重新排序向量模型返回的top-k文档，提高最终结果的相关性。  
+   * **更新向量模型**：发布bge-\*-v1.5向量模型，缓解相似度分布问题，提升无指令情况下的检索能力（但检索任务仍建议使用指令）
 * 08/09/2023: BGE模型整合入Langchain, 可以在langchain中非常简单的[使用它](#using-langchain); C-MTEB中文榜单已[在线更新](https://huggingface.co/spaces/mteb/leaderboard).
-* 08/05/2023: 发布更小的模型(base, small), <strong>在同尺寸模型中取得最好的性能！ 🤗</strong>
-* 08/02/2023: 🎉 🎉 发布中英文向量模型BGE(BAAI General Embedding的缩写), <strong>在MTEB和C-MTEB榜单上取得最好的性能</strong>
+* 08/05/2023: 发布更小的模型(base, small), **在同尺寸模型中取得最好的性能！ 🤗**
+* 08/02/2023: 🎉 🎉 发布中英文向量模型BGE(BAAI General Embedding的缩写), **在MTEB和C-MTEB榜单上取得最好的性能**
+```
+
 
 ## 项目
 
@@ -70,9 +80,12 @@ FlagEmbedding专注于检索增强llm领域，目前包括以下项目:
 
 在这个项目中，我们发布了BGE-M3，它是第一个具有多功能、多语言和多粒度特性的文本检索模型。
 
+```text
 * 多功能:可以同时执行三种检索功能：单向量检索、多向量检索和稀疏检索。
 * 多语言:支持100多种工作语言。
 * 多粒度:它能够处理不同粒度的输入，从短句子到长达8192个词汇的长文档。
+```
+
 
 在本项目中，为了提高单一检索模式的性能，提出了一种新的自知识蒸馏方法。 我们优化了批处理策略，支持大批处理大小，这可以在对长文本或大型语言模型进行向量微调时简单使用。 我们还构建了一个用于文档检索的数据集，并提出了一个简单的策略来提高长文本的建模能力。<strong>训练代码和微调数据将在不久的将来开源。</strong>
 

@@ -64,9 +64,13 @@ os.environ['LANGCHAIN_PROJECT']='ragas-demo'`
 
 - 测试语料用 wikipedia 的，首先用 LangChain 的 wikipedia loader  载入内容，指定查询「Ney York City」相关的内容：
 `from langchain.document_loaders import WikipediaLoader
+
+```python
 from langchain.indexes import VectorstoreIndexCreator
 from langchain.chains import RetrievalQA
 from langchain.chat_models import ChatOpenAI
+```
+
 
 loader = WikipediaLoader('New York City')
 docs = loader.load()`
@@ -78,8 +82,12 @@ docs = loader.load()`
 llm = ChatOpenAI(temperature=0)
 qa_chain = RetrievalQA.from_chain_type(
     llm,
+
+```text
     retriever=index.vectorstore.as_retriever(),
     return_source_documents=True,
+```
+
 )`
 
 - 稍微测试一下检索效果：
@@ -111,9 +119,13 @@ eval_answers = [
 ]
 
 examples = [
+
+```text
     {"query": q, "ground_truths": [eval_answers[i]]}
     for i, q in enumerate(eval_questions)
 ]
+```
+
 
 # 再测试一下 retrieval 效果：
 result = qa_chain({"query": eval_questions[1]})
@@ -125,12 +137,16 @@ result["result"]
 
 - 正主终于要上场！从  ragas  引入 RagasEvaluatorChain(参考源码：[https://github.com/explodinggradients/ragas/blob/main/src/ragas/langchain/evalchain.py#L20](https://link.zhihu.com/?target=https%3A//github.com/explodinggradients/ragas/blob/main/src/ragas/langchain/evalchain.py%23L20))，
 `from ragas.langchain.evalchain import RagasEvaluatorChain
+
+```python
 from ragas.metrics import (
     faithfulness,
     answer_relevancy,
     context_precision,
     context_recall,
 )
+```
+
 
 # create evaluation chains
 faithfulness_chain = RagasEvaluatorChain(metric=faithfulness)
@@ -174,18 +190,27 @@ ragas 的评测需要先创建一个可信的、基准的数据集，langsmith  
 - 首先创建并上传  dataset：
 `# dataset creation
 
+```python
 from langsmith import Client
 from langsmith.utils import LangSmithError
+```
+
 
 client = Client()
 dataset_name = "NYC test"
 
 try:
     # check if dataset exists
+
+```python
     dataset = client.read_dataset(dataset_name=dataset_name)
     print("using existing dataset: ", dataset.name)
+```
+
 except LangSmithError:
     # if not create a new one with the generated query examples
+
+```python
     dataset = client.create_dataset(
         dataset_name=dataset_name, description="NYC test dataset"
     )
@@ -197,8 +222,12 @@ except LangSmithError:
         )
 
     print("Created a new dataset: ", dataset.name)
+```
+
 
 # factory function that return a new qa chain
+
+```python
 def create_qa_chain(return_context=True):
     qa_chain = RetrievalQA.from_chain_type(
         llm,
@@ -206,11 +235,15 @@ def create_qa_chain(return_context=True):
         return_source_documents=return_context,
     )
     return qa_chain
+```
+
 
 # 用上面这个工厂函数来创建要测试的 chain，
 from langchain.smith import RunEvalConfig, run_on_dataset
 
 evaluation_config = RunEvalConfig(
+
+```text
     custom_evaluators=[
         faithfulness_chain,
         answer_rel_chain,
@@ -219,13 +252,19 @@ evaluation_config = RunEvalConfig(
     ],
     prediction_key="result",
 )
+```
+
 
 result = run_on_dataset(
     client,
     dataset_name,
     create_qa_chain,
+
+```text
     evaluation=evaluation_config,
     input_mapper=lambda x: x,
+```
+
 )`
 
 执行到这里，创建好的  dataset、生成的结果都已经乖乖上传到了 smith.langchain.com:

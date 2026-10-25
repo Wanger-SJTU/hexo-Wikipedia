@@ -42,6 +42,8 @@ MNN在[1.1.0](https://link.zhihu.com/?target=https%3A//github.com/alibaba/MNN/re
 因此我们可以使用stride和offset来描述一段内存，指定张量的任意读取方式；同样的也可以描述任意张量对应的写方式。为了实现更加简单，同时考虑到GPU中的实现，这里我们将stride和offset的长度固定为3，对于不足3的高位补0即可；对于大于3的张量可以使用多组stride和offset来描述。因此我们使用如下数据结构来描述内存的映射关系，对于任意内存映射都可以通过改变这些这些参数来描述。
 
 `struct View {
+
+```cpp
     int32_t offset;        // 向量offset
     int32_t stride[3];	   // 向量stride
 };
@@ -55,6 +57,8 @@ class Raster {
     private:
        std::vectorRegion> regions;  // 向量的读写映射
 };
+```
+
 `
 
 #### 内存映射实现

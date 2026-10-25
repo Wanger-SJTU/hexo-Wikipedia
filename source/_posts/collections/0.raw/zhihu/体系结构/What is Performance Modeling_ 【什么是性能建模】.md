@@ -121,9 +121,12 @@ SW团队可以早早介入上图体现了SW团队可以早早介入，除此之�
 
 • <strong>Transaction Level Modeling (TLM)</strong>
 
+```text
     • Programmer's view (PV) model - register-based, bus generic, untimed
 
     • Programmer's view model with timing (PV/T) - bus architecture with protocol, timing approximate
+```
+
 
     • Cycle-accurate model
 
@@ -141,9 +144,12 @@ SW团队可以早早介入上图体现了SW团队可以早早介入，除此之�
 
 High-Level Languages
 
-    • <strong>High-level languages (C/C++)</strong>
+```text
+    • **High-level languages (C/C++)**
 
     • Scripting languages (Perl, Python, etc.)
+```
+
 
         • For functional/behavior model only, no timing/clock
 

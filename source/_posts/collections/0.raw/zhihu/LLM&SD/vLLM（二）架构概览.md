@@ -68,9 +68,13 @@ outputs = llm.generate(prompts, sampling_params)
 
 # Print the outputs.
 for output in outputs:
+
+```python
     prompt = output.prompt
     generated_text = output.outputs[0].text
     print(f"Prompt: {prompt!r}, Generated text: {generated_text!r}")`
+```
+
 
 运行上面的代码，可以看到下面的输入：
 

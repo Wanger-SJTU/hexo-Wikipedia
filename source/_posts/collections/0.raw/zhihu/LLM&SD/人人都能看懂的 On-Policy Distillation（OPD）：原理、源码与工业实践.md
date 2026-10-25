@@ -310,11 +310,19 @@ for batch in dataloader:
     batch = self.actor_rollout_wg.compute_log_prob(batch)
 
     # 第三步：teacher 一次 forward，算出 reverse KL，组装成 token-level reward
+
+```text
     teacher_data = self.rm_wg.compute_rm_score(batch)
     batch = batch.union(teacher_data)
+```
+
 
     # 第四步：advantage estimator —— OPD 直接用 token-level reward 当 advantage
+
+```text
     batch = compute_advantage(batch, adv_estimator=&#34;token_reward_direct&#34;)
+```
+
 
     # 第五步：正常的 PPO actor update（importance sampling loss）
     actor_output = self.actor_rollout_wg.update_actor(batch)
@@ -328,8 +336,12 @@ for batch in dataloader:
 # rm_logits_resp 就是 teacher 对 student 整条 response 做完一次 forward 后的 logits
 # shape = [B, T, V]
 teacher_on_student_log_probs = torch.gather(
+
+```text
     rm_logits_resp, dim=-1, index=student_top_k_ids
 )
+```
+
 teacher_logsumexp = torch.logsumexp(rm_logits_resp, dim=-1, keepdim=True)
 teacher_on_student_log_probs = teacher_on_student_log_probs - teacher_logsumexp
 
@@ -347,12 +359,16 @@ teacher_on_student_log_probs = teacher_on_student_log_probs - teacher_logsumexp
 
 # verl/workers/actor/dp_actor.py（关键代码段）
 if strategy == &#34;only_stu&#34;:
+
+```text
     # S_logp:  student 在 top-k token 上的 log-prob，shape (B, T, K)
     # T_on_S:  teacher 在 student 选出的同样这些 top-k token 上的 log-prob
     kl_val = S_logp - T_on_S          # 这就是 reverse KL 的逐 token 估计：log p - log q
     valid_mask = torch.ones_like(S_logp, dtype=torch.bool)
     norm_weights = compute_reward_weights(S_logp, T_on_S, valid_mask, reward_weight_mode)
     rm_scores = -kl_val * norm_weights   # reward = -reverse_KL，再用 student_p 做加权
+```
+
 
 我们逐行拆解：
 
@@ -376,12 +392,18 @@ Thinking Machines Lab 的博客也专门强调了这一点：
 
 # verl/trainer/ppo/core_algos.py
 @register_adv_est(&#34;token_reward_direct&#34;)
+
+```python
 def compute_token_reward_direct_advantage(
     token_level_rewards: torch.Tensor,    # (B, T) 或 (B, T, K)
     response_mask: torch.Tensor,          # (B, T)
     config: Optional[AlgoConfig] = None,
     **kwargs,
+```
+
 ) -> tuple[torch.Tensor, torch.Tensor]:
+
+```text
     &#34;&#34;&#34;直接把 token-level reward 当作 advantage 的最简 estimator。&#34;&#34;&#34;
     with torch.no_grad():
         if token_level_rewards.dim() == 3:
@@ -389,6 +411,8 @@ def compute_token_reward_direct_advantage(
         advantages = token_level_rewards * response_mask
         returns = advantages.clone()
     return advantages, returns
+```
+
 
 读到这里你可能会想：<strong>啊？这也太草率了吧？没有 critic？没有 GAE？甚至 returns 直接等于 advantages？</strong>
 
@@ -452,7 +476,11 @@ Stage 1 ── 对每个 domain 单独训练一个 specialist
 Stage 2 ── Multi-Teacher OPD
            student 自己 rollout
            10+ 个 specialist 同时当 teacher 给 student 的 token 打分
+
+```text
            Full-Vocabulary + reverse KL，把所有专家&#34;行为级&#34;地合并回 student
+```
+
 
 谨慎的你可能会问：<strong>为什么不像 V3.2 那样，对所有 domain 同时跑一次大 mix RL？这样不就一步到位了吗？</strong>
 

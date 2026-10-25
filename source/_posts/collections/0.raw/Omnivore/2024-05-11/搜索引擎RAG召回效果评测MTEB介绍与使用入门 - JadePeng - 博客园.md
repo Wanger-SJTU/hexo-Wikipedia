@@ -351,11 +351,14 @@ def compute_metrics(self, model, corpus_model=None, corpus_embeddings: torch.Ten
 
 ```
 
+```text
 * `model`（embedding模型），`corpus_model`（如果doc用单独的embedding模型，需要传入这个参数，否则默认使用和query一样的model）
 * 首先会计算query\_embedding `query_embeddings = np.asarray(model.encode(self.queries, batch_size=self.batch_size, **kwargs))`
 * 然后计算corpus\_embeddings
 * 通过score\_function，计算tok\_k， 结果放到queries\_result\_list
 * 根据召回结果计算指标`_compute_metrics`, 会计算"mrr@k", "ndcg@k", "accuracy@k", "precision\_recall@k", "map@k"等指标
+```
+
 
 ### Reranking 精排
 
@@ -392,12 +395,15 @@ class RerankingEvaluator(Evaluator):
 
 `__init__`方法接收以下参数：
 
+```text
 * `samples`：必须是一个列表，每个元素的形式为：  
    * {'query': '', 'positive': \[\], 'negative': \[\]}。查询是搜索查询，正文档是相关（正面）文档的列表，负文档是无关（负面）文档的列表。  
    * {'query': \[\], 'positive': \[\], 'negative': \[\]}。其中查询是一个字符串列表，我们将这些字符串的平均嵌入作为查询嵌入。
 * `mrr_at_k`：默认值为10，表示计算MRR时考虑的前k个结果。
 * `name`：默认值为空字符串，表示评估器的名称。
 * `similarity_fct`：默认值为`cos_sim`，表示用于计算相似度的函数。
+```
+
 
 在`compute_metrics_batched` 计算得分，还是计算的cos得分，这里相当于直接计算的embedding的排序能力，如果要计算cross模型的排序能力，默认的代码不适用，需要重新定制。
 
@@ -405,8 +411,11 @@ class RerankingEvaluator(Evaluator):
 
 说了这么多，现在切入正题：
 
+```text
 * 评测自研模型的召回能力 —— 自定义模型
 * 自定义评测集，对比开源模型和自研模型的效果 —— 自定义评测任务
+```
+
 
 ### 自研模型召回效果评测
 

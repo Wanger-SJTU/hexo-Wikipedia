@@ -100,6 +100,8 @@ PyTorch内置profile 核心代码
 
 `def profile(description: str, run: Callable, num_warmups: int = 1, with_stack: bool = False):
     # Warmup（预热迭代，避免启动开销影响计时）
+
+```text
     for _ in range(num_warmups):
         run()
     if torch.cuda.is_available():
@@ -122,6 +124,8 @@ PyTorch内置profile 核心代码
         svg_path = f"var/stacks_{description}.svg"
         prof.export_stacks(text_path, "self_cuda_time_total")
     return table`
+```
+
 
 剖析调用示例（矩阵乘法）：
 
@@ -172,11 +176,15 @@ GELU近似公式（所有实现均基于此，保证结果一致）：
 - 性能：8.1毫秒（最慢）。
 - 问题：启动多个CUDA内核，内存读写开销大，无内核融合。
 `import torch
+
+```python
 import math
 
 def manual_gelu(x: torch.Tensor):
     # 手动实现GELU，无内核融合，多个独立操作
     return 0.5 * x * (1 + torch.tanh(0.79788456 * (x + 0.044715 * x * x * x)))`
+```
+
 
 #### 5.1.2 PyTorch原生版（最优选择，简单高效）
 
@@ -185,9 +193,12 @@ def manual_gelu(x: torch.Tensor):
 - 优势：自动内核融合，仅启动一个CUDA内核，无多余内存开销。
 `import torch.nn.functional as F
 
+```python
 def pytorch_gelu(x: torch.Tensor):
     # 原生实现，自动内核融合，approximate='tanh'匹配手写公式
     return F.gelu(x, approximate="tanh")`
+```
+
 
 #### 5.1.3 CUDA版（C++编写，高性能）
 
@@ -195,20 +206,30 @@ def pytorch_gelu(x: torch.Tensor):
 - 性能：1.8毫秒（接近原生版）。
 - 优势：内核融合，可直接在Python中加载编译，无需命令行。
 `import os
+
+```python
 import torch
 from torch.utils.cpp_extension import load_inline
 
 def create_cuda_gelu():
     # 设置CUDA调试模式，便于定位错误
     os.environ["CUDA_LAUNCH_BLOCKING"] = "1"
+```
+
     
     # CUDA内核代码（GPU端执行计算）
+
+```cpp
     cuda_gelu_src = """
 #include 
 #include 
 #include
+```
+
 
 __global__ void gelu_kernel(float* in, float* out, int num_elements) {
+
+```cpp
     // 计算当前线程的全局索引
     int i = blockIdx.x * blockDim.x + threadIdx.x;
     // 越界检查，避免访问无效内存
@@ -218,12 +239,20 @@ __global__ void gelu_kernel(float* in, float* out, int num_elements) {
 }
 
 // 计算向上取整（ceil(a / b)）
+```
+
 inline unsigned int cdiv(unsigned int a, unsigned int b) {
+
+```text
     return (a + b - 1) / b;
 }
 
 // CPU端封装函数，调度GPU内核
+```
+
 torch::Tensor gelu(torch::Tensor x) {
+
+```cpp
     TORCH_CHECK(x.device().is_cuda());  // 确保输入在GPU上
     TORCH_CHECK(x.is_contiguous());     // 确保内存连续
     torch::Tensor y = torch::empty_like(x);  // 分配输出空间（不置零）
@@ -236,11 +265,19 @@ torch::Tensor gelu(torch::Tensor x) {
     return y;
 }
     """
+```
+
     
     # C++接口声明，用于Python绑定
+
+```text
     cpp_gelu_src = "torch::Tensor gelu(torch::Tensor x);"
+```
+
     
     # 编译CUDA代码并绑定到Python模块
+
+```text
     if not torch.cuda.is_available():
         return None
     module = load_inline(
@@ -254,6 +291,8 @@ torch::Tensor gelu(torch::Tensor x) {
     )
     # 返回Python可调用的GELU函数
     return getattr(module, "gelu")
+```
+
 
 # 调用示例
 cuda_gelu = create_cuda_gelu()
@@ -268,6 +307,8 @@ Triton：OpenAI 2021年开发，Python抽象，自动管理内存合并、共享
 - 性能：1.848毫秒（与CUDA基本一致）。
 - 优势：Python编写，易上手，无需手动管理GPU底层细节。
 `import torch
+
+```python
 import triton
 
 def triton_gelu(x: torch.Tensor):
@@ -280,9 +321,13 @@ def triton_gelu(x: torch.Tensor):
     # 启动Triton内核
     triton_gelu_kernel[(num_blocks,)](x, y, num_elements, BLOCK_SIZE=block_size)
     return y
+```
+
 
 # Triton内核函数（@triton.jit装饰器编译为GPU机器码）
 @triton.jit
+
+```python
 def triton_gelu_kernel(x_ptr, y_ptr, num_elements, BLOCK_SIZE: tl.constexpr):
     # 计算当前块的起始位置
     pid = tl.program_id(axis=0)
@@ -300,6 +345,8 @@ def triton_gelu_kernel(x_ptr, y_ptr, num_elements, BLOCK_SIZE: tl.constexpr):
     y = 0.5 * x * (1 + tanh)
     # 将计算结果写回全局内存
     tl.store(y_ptr + offsets, y, mask=mask)
+```
+
 
 # 调用示例
 x = torch.randn(16384, device="cuda")
@@ -333,8 +380,12 @@ torch.compile版GELU耗时1.47毫秒，略优于手写CUDA/Triton，接近原生
 import torch.nn.functional as F
 
 # 定义未优化的GELU函数（与手写版一致）
+
+```python
 def manual_gelu(x):
     return 0.5 * x * (1 + torch.tanh(0.79788456 * (x + 0.044715 * x ** 3)))
+```
+
 
 # 使用torch.compile自动优化
 compiled_gelu = torch.compile(manual_gelu)
@@ -366,6 +417,8 @@ softmax比GELU复杂，包含归约操作（跨元素求和），需对矩阵每
 import triton
 
 # 1. 手写版softmax（无内核融合，性能差）
+
+```python
 def manual_softmax(x: torch.Tensor):
     M, N = x.shape
     x_max = x.max(dim=1)[0]  # 每行最大值（MN reads, M writes）
@@ -374,12 +427,20 @@ def manual_softmax(x: torch.Tensor):
     denominator = numerator.sum(dim=1)  # 每行求和（MN reads, M writes）
     y = numerator / denominator[:, None]  # 归一化（MN reads, MN writes）
     return y
+```
+
 
 # 2. PyTorch原生版softmax
+
+```python
 def pytorch_softmax(x: torch.Tensor):
     return torch.nn.functional.softmax(x, dim=-1)
+```
+
 
 # 3. Triton版softmax（内核融合，性能优）
+
+```python
 def triton_softmax(x: torch.Tensor):
     y = torch.empty_like(x)
     M, N = x.shape  # M：行数，N：列数
@@ -392,9 +453,13 @@ def triton_softmax(x: torch.Tensor):
         num_cols=N, BLOCK_SIZE=block_size
     )
     return y
+```
+
 
 # Triton softmax内核函数
 @triton.jit
+
+```python
 def triton_softmax_kernel(x_ptr, y_ptr, x_row_stride, y_row_stride, num_cols, BLOCK_SIZE: tl.constexpr):
     assert num_cols  BLOCK_SIZE
     row_idx = tl.program_id(0)  # 每个块处理一行
@@ -413,6 +478,8 @@ def triton_softmax_kernel(x_ptr, y_ptr, x_row_stride, y_row_stride, num_cols, BL
     y_start_ptr = y_ptr + row_idx * y_row_stride
     y_ptrs = y_start_ptr + col_offsets
     tl.store(y_ptrs, y_row, mask=col_offsets  num_cols)
+```
+
 
 # 4. torch.compile优化版softmax
 compiled_softmax = torch.compile(manual_softmax)

@@ -25,6 +25,8 @@ SIMD 作为一种重要的并行化技术，在提升性能的同时也会增加
 *演示代码：*
 
 `void add(int *a, int *b, int n, int * restrict sum)
+
+```cpp
 {
     // it is assumed that the input n is an integer multiple of 4
     for (int i = 0; i  (n & ~3); ++i)
@@ -32,16 +34,22 @@ SIMD 作为一种重要的并行化技术，在提升性能的同时也会增加
         sum[i] = a[i] + b[i];
     }
 }
+```
+
 `
 
 - <strong>循环向量化</strong>：将循环进行展开，增加循环中的执行代码来减少循环次数。如以下代码将循环次数精简到之前的。
 `for (int i = 0; i  (n & ~3); i += 4)
+
+```text
 {
     sum[i]     = a[i    ] + b[i];
     sum[i + 1] = a[i + 1] + b[i + 1];
     sum[i + 2] = a[i + 2] + b[i + 2];
     sum[i + 3] = a[i + 3] + b[i + 3];
 }
+```
+
 `
 
 - <strong>SLP 向量化</strong>：编译器将多个标量运算绑定到一起，使其成为向量运算。下图将四次标量运算替换为一次向量运算。
@@ -134,10 +142,14 @@ arm-none-linux-gnueabihf-gcc -mfpu=neon -ftree-vectorize -O2 main.c -o avtest`
 下述代码中计算 a[i] 时依赖上一次循环的输出，无法被向量化。
 
 `// the output of a[i] depends on its last result
+
+```cpp
 for (int i = 1; i  n; ++i)
 {
     a[i] = a[i - 1] + 1;
 }
+```
+
 `
 
 - <strong>多级指针</strong>
@@ -146,10 +158,14 @@ for (int i = 1; i  n; ++i)
 下述代码通过 `idx` 进行了多级索引，无法被向量化。
 
 `// idx is unpredictable, so this code cannot be vectorized
+
+```cpp
 for (int i = 0; i  n; ++i)
 {
     sum[idx[i]] = a[idx[i]] + b[idx[i]];
 }
+```
+
 `
 
 - <strong>条件及跳转语句</strong>
@@ -161,6 +177,7 @@ for (int i = 0; i  n; ++i)
 
 __inline__ __attribute__((always_inline)) int add_single2(int a, int b);
 
+```cpp
 void add(const int *a, const int *b, int n, int * restrict sum)
 {
     for (int i = 0; i  (n & ~3); ++i)
@@ -170,6 +187,8 @@ void add(const int *a, const int *b, int n, int * restrict sum)
         sum[i] = add_single2(a[i], b[i]);
     }
 }
+```
+
 `
 
 - <strong>长数据类型</strong>
@@ -178,12 +197,16 @@ neon 对 64 位长数据类型的支持有限，且较小的数据位宽有更�
 下述代码指明1.0是浮点数据，否则编译器会优先将其理解为double。
 
 `// assume that array sum and a are floating-point arrays
+
+```cpp
 for (int i = 0; i  (n & ~3); ++i)
 {
     // replace 1.0 with 1.f
     // sum[i] = a[i] + 1.0;
     sum[i] = a[i] + 1.f;
 }
+```
+
 `
 
 #### <strong>B. 增加自动向量化信息</strong>
@@ -205,8 +228,12 @@ void add(const int *a, const int *b, int n, int * restrict sum)
 下述代码通过掩码操作表明处理循环次数是 4 的整数倍。
 
 `// make number of cycles is an integer multiple of 4, 
+
+```cpp
 for (int i = 0; i  (n & ~3); ++i)
 // don't forget to process the remaining data
+```
+
 `
 
 - <strong>循环展开</strong>
@@ -215,11 +242,15 @@ for (int i = 0; i  (n & ~3); ++i)
 下述代码告知 `armclang` 编译器希望将循环展开 4 次。
 
 `// #pragma unroll (4) // armcc
+
+```cpp
 #pragma clang loop interleave_count(4) //armclang
 for (int i = 0; i  n; ++i)
 {
     // ...
 }
+```
+
 `
 
 - <strong>结构体加载</strong>
@@ -228,6 +259,8 @@ for (int i = 0; i  n; ++i)
 下述代码中删除用于填充结构体的变量 padding 以避免无法向量化。
 
 `struct st_align  
+
+```sql
 {    
     char r;    
     char g;
@@ -235,24 +268,34 @@ for (int i = 0; i  n; ++i)
     // delete the data used to populate the structure
     // char padding;
 };
+```
+
 `
 
 - neon 加载指令要求结构体中的所有项有相同的大小。
 下述代码中结构体由于 `short` 类型与 `char` 类型不一致而不会被执行自动向量化。
 
 `struct st_align  
+
+```text
 {    
     short r; // change short to char to get auto-vectoration
     char g;
     char b;  
 };
+```
+
 `
 
 - <strong>循环构造</strong>
 尽量通过 `// use '// for(int i = 1; i for (int i = 1; i  n + 1; ++i)
+
+```text
 {
     // ...
 }
+```
+
 `
 
 - <strong>数组索引</strong>
@@ -261,7 +304,11 @@ for (int i = 0; i  n; ++i)
 下述代码通过 `sum[i]` 进行索引，而不是`*(sum + i)`。
 
 `// replace arrary with pointer
+
+```text
 // *(sum + i) = *(a + i) + *(b + i);
+```
+
 sum[i] = a[i] + b[i];
 `
 
@@ -275,6 +322,8 @@ sum[i] = a[i] + b[i];
 下述代码将 r、g、b 三个通道的处理合并到一个循环中。
 
 `// combine the rgb operation
+
+```cpp
 /*
 for (...)
 {
@@ -288,8 +337,11 @@ for (...)
 {
     pixels[i].b = ....;
 }
+```
+
 */
 
+```cpp
 // cache friendly code
 for (...) 
 {    
@@ -297,6 +349,8 @@ for (...)
     pixels[i].g = ....;    
     pixels[i].b = ....;  
 }
+```
+
 `
 
 ### <strong>四、总结</strong>

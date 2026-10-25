@@ -89,15 +89,21 @@ CPS的优点是让如下的信息显式化：过程返回（调用一个continua
 比如如下的一段python代码，求小于n的所有素数的积。
 
 `def prodprimes(n):
+
+```text
     if n == 1:
         return 1
     if isprime(n):
         return n * prodprimes(n - 1)
 return prodprimes(n - 1)`
+```
+
 
 当采用CPS形式表示时：
 
 `def prodprimes(n, c):
+
+```python
     def k(b):
         if b == True:
             m = n - 1
@@ -114,6 +120,8 @@ return prodprimes(n - 1)`
         c(1)
     else:
         isprime(n, k)`
+```
+
 
 从上面的代码中可以看到，“过程返回”都被调用c、j、k、h等continuation代替；中间值a、b、m、i都被给予了变量名称。
 
@@ -144,6 +152,8 @@ ANF形式将表达式划分为两类：原子表达式和复合表达式，原�
 
 `(define prodprimes
   (lambda (n)
+
+```text
     (let (a (= n 1))
       (if a 1 (let (b isprime(n))
                    (if b (let (m (- n 1))
@@ -152,12 +162,16 @@ ANF形式将表达式划分为两类：原子表达式和复合表达式，原�
                          (let (s (- n 1))
                            (prodprimes m))
                     ))))))`
+```
+
 
 这段ANF形式表达，如果翻译为python：
 
 应该类似于：
 
 `def prodprimes(n):
+
+```text
     r = n == 1
     if r:
         return 1
@@ -168,6 +182,8 @@ ANF形式将表达式划分为两类：原子表达式和复合表达式，原�
         return n * p
     s = n - 1
 return prodprimes(s)`
+```
+
 
 通过这段代码，也可以看出，ANF形式比CPS形式简单易懂。
 
@@ -254,6 +270,8 @@ AI的计算涉及大量的Tensor运算，对编译器来说就是Loop优化（�
 对于非控制流，计算AD的方法和上述的BB块内计算AD的方法相同。对于控制流，函数式IR采用了不同的处理方式，将迭代转换为递归，并且通过switch函数来进行分支的选择。例如上述相同的pow()函数：
 
 `def pow(x, n):
+
+```python
     return header_pow(n, 1, x)
 def header_pow(phi_n, phi_r, x):
     def body_pow():
@@ -264,6 +282,8 @@ def header_pow(phi_n, phi_r, x):
         return phi_r
     f = switch(phi_n > 0, header_pow, after_pow)
     f()`
+```
+
 
 以pow(5,3) 为例，其递归调用过程如下：
 
@@ -276,6 +296,8 @@ pow(5, 3) -> header_pow(3, 1, 5) -> body_pow() -> header_pow(2, 5, 5) -> body_po
 # 对x求导数
 
 `def x_grad_pow(x, n):
+
+```python
     phi_n = n
     phi_r = 1
     return x_bprop_header_pow(phi_n, phi_r, x, 1)
@@ -301,12 +323,18 @@ def phi_r_bprop_header_pow(phi_n, phi_r, x, sens):
 
     def env_phi_r_bprop_after_pow():
         return 1
+```
+
 
     if phi_n > 0:
+
+```text
         %5 = env_phi_r_bprop_body_pow()
     else:
         %5 = env_phi_r_bprop_after_pow()
 return %5`
+```
+
 
 总结：函数式IR的好处是对自动微分友好，比较适合做并行分析，不过挑战在于函数IR的副作用消除以及函数式IR在执行态的性能（含有递归对执行不友好）。
 
@@ -344,15 +372,21 @@ MindIR中CNode对应于ANF的复合表达式，表示一次函数调用。
  return x / y
 
 @ms_function
+
+```python
 def test_f(x, y):
     a = x - 1
     b = a + y
     c = b * func(a, b)
  return c`
+```
+
 
 这段Python代码对应的ANF表达为：
 
 `lambda (x, y)
+
+```text
     let a = x - 1 in
     let b = a + y in
     let func = lambda (x, y)
@@ -361,6 +395,8 @@ def test_f(x, y):
     let %1 = func(a, b) in
     let c = b * %1 in
     c end`
+```
+
 
 对应的MindIR为ir.dot：
 
@@ -379,6 +415,8 @@ MindIR较传统计算图的一个重要特性是不仅可以表达算子之间�
 在MindIR中，函数的定义是由一个子图来定义，但其本身可以是一个被传递的值，作为其他高阶函数的输入或输出。 例如下面一个简单的示例中，函数f作为参数传入了函数g，因此函数g是一个接收函数输入的高阶函数，函数f真正的调用点是在函数g内部。
 
 `@ms_function
+
+```python
 def hof(x):
  def f(x):
  return x + 3
@@ -386,6 +424,8 @@ def hof(x):
  return function(x) * function(x)
     res = g(f, x)
  return res`
+```
+
 
 对应的MindIR为hof.dot：
 
@@ -402,8 +442,12 @@ def hof(x):
 下面以一个简单的斐波那契用例来演示说明。
 
 `@ms_function
+
+```python
 def fibonacci(n):
  if(n 
+```
+
 
 对应的MindIR为cf.dot：
 
@@ -420,17 +464,25 @@ def fibonacci(n):
 一个典型的闭包用例如下：
 
 `@ms_function
+
+```python
 def func_outer(a, b):
  def func_inner(c):
  return a + b + c
  return func_inner
+```
+
 
 @ms_function
+
+```python
 def ms_closure():
     closure = func_outer(1, 2)
     out1 = closure(1)
     out2 = closure(2)
  return out1, out2`
+```
+
 
 对应的MindIR为closure.dot：
 

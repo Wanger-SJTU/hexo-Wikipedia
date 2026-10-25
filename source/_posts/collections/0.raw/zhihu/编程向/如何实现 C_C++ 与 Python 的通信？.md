@@ -40,6 +40,8 @@ Python 本身就是一个C库。你所看到的可执行体python只不过是个
 你也可以在自己的程序中调用Python，看起来非常容易：
 
 `//my_python.c
+
+```cpp
 #include 
 
 int main(int argc, char *argv[])
@@ -50,6 +52,8 @@ int main(int argc, char *argv[])
   Py_Finalize();
   return 0;
 }
+```
+
 `
 
 在Windows平台下，打开Visual Studio命令提示符，编译命令为
@@ -81,9 +85,13 @@ Python库函数PyRun_SimpleString可以执行字符串形式的Python代码。
 **接下来要把它包装成C语言的函数。我们期待的C语言的对应函数应该是这样的：
 
 `int great_function_from_python(int a) {
+
+```cpp
     int res; 
     // some magic
     return res;
+```
+
 }`
 
 首先，复用Python模块得做‘import’，这里也不例外。所以我们把great_function放到一个module里，比如说，这个module名字叫 great_module.py
@@ -92,26 +100,29 @@ Python库函数PyRun_SimpleString可以执行字符串形式的Python代码。
 
 `#include 
 
+```cpp
 int great_function_from_python(int a) {
     int res;
     PyObject *pModule,*pFunc;
     PyObject *pArgs, *pValue;
-    
+
     /* import */
     pModule = PyImport_Import(PyString_FromString("great_module"));
 
     /* great_module.great_function */
     pFunc = PyObject_GetAttrString(pModule, "great_function"); 
-    
+
     /* build args */
     pArgs = PyTuple_New(1);
     PyTuple_SetItem(pArgs,0, PyInt_FromLong(a));
-      
+
     /* call */
     pValue = PyObject_CallObject(pFunc, pArgs);
-    
+
     res = PyInt_AsLong(pValue);
     return res;
+```
+
 }`
 
 从上述代码可以窥见Python内部运行的方式：
@@ -125,12 +136,15 @@ int great_function_from_python(int a) {
 
 `#include 
 
+```cpp
 int great_function_from_python(int a); 
 
 int main(int argc, char *argv[]) {
     Py_Initialize();
     printf("%d",great_function_from_python(2));
     Py_Finalize();
+```
+
 }`
 
 编译的方式就用本节开头使用的方法。
@@ -152,8 +166,12 @@ csh:
 比如说，我们有一个功能强大的C函数：
 
 `int great_function(int a) {
+
+```text
     return a + 1;
 }
+```
+
 `
 
 期望在Python里这样使用：
@@ -166,6 +184,7 @@ csh:
 
 `#include 
 
+```cpp
 int great_function(int a) {
     return a + 1;
 }
@@ -190,9 +209,15 @@ static PyMethodDef GreateModuleMethods[] = {
     },
     {NULL, NULL, 0, NULL}
 };
+```
+
 
 PyMODINIT_FUNC initgreat_module(void) {
+
+```text
     (void) Py_InitModule("great_module", GreateModuleMethods);
+```
+
 }`
 
 除了功能强大的函数great_function外，这个文件中还有以下部分：
@@ -257,6 +282,8 @@ cdef public great_function(a,index):
 写一个main使用great_function。注意great_function并不规定a是何种类型，它的功能只是提取a的第index的成员而已，故使用great_function的时候，a可以传入Python String，也可以传入tuple之类的其他可迭代类型。仍然使用之前提到的类型转换函数PyXXX_FromYYY和PyXXX_AsYYY。
 
 `//main.c
+
+```cpp
 #include 
 #include "great_module.h"
 
@@ -284,6 +311,8 @@ int main(int argc, char *argv[]) {
                 )
             ));
     Py_Finalize();
+```
+
 }`
 
 编译命令和第一部分相同：
@@ -313,6 +342,8 @@ cython编译后得到的.h里，great_function的声明是这样的：
 这样的话，我们的main函数已经几乎看不到Python的痕迹了：
 
 `//main.c
+
+```cpp
 #include 
 #include "great_module.h"
 
@@ -321,6 +352,8 @@ int main(int argc, char *argv[]) {
     initgreat_module();
     printf("%c",great_function("Hello",2));
     Py_Finalize();
+```
+
 }`
 
 在这一部分的最后我们给一个看似实用的应用（仅限于Windows）：
@@ -328,14 +361,24 @@ int main(int argc, char *argv[]) {
 还是利用刚才的great_module.pyx，准备一个dllmain.c：
 
 `#include 
+
+```cpp
 #include 
 #include "great_module.h"
+```
+
 
 extern __declspec(dllexport) int __stdcall _great_function(const char * a, int b) {
+
+```text
     return great_function(a,b);
 }
+```
+
 
 BOOL WINAPI DllMain(HINSTANCE hinstDLL,DWORD fdwReason,LPVOID lpReserved) {
+
+```text
     switch( fdwReason ) { 
         case DLL_PROCESS_ATTACH:
             Py_Initialize();
@@ -346,6 +389,8 @@ BOOL WINAPI DllMain(HINSTANCE hinstDLL,DWORD fdwReason,LPVOID lpReserved) {
             break;
     }
     return TRUE;
+```
+
 }`
 
 在Visual Studio命令提示符下编译：
@@ -380,10 +425,13 @@ https://software.intel.com/en-us/node/514245**可以看到有6个函数。分析
 #include "nmmintrin.h"
 %}
 
+```cpp
 int _mm_popcnt_u32(unsigned int v);
 unsigned int _mm_crc32_u8 (unsigned int crc, unsigned char v);
 unsigned int _mm_crc32_u16(unsigned int crc, unsigned short v);
 unsigned int _mm_crc32_u32(unsigned int crc, unsigned int v);
+```
+
 `
 
 接下来使用SWIG将这个配置文件编译为所谓Python Module Wrapper
@@ -420,11 +468,19 @@ Linux：
 `/* great_module.i */
 %module great_module
 %{
+
+```cpp
 int great_function(int a) {
     return a + 1;
 }
+```
+
 %}
+
+```cpp
 int great_function(int a);
+```
+
 `
 
 换句话说，SWIG自动完成了诸如Python类型转换、module初始化、导出代码表生成的诸多工作。
@@ -432,6 +488,8 @@ int great_function(int a);
 对于C++，SWIG也可以应对。例如以下代码有C++类的定义：
 
 `//great_class.h
+
+```cpp
 #ifndef GREAT_CLASS
 #define GREAT_CLASS
 class Great {
@@ -442,6 +500,8 @@ class Great {
         int getWall () {return s;};
 };
 #endif // GREAT_CLASS
+```
+
 `
 
 对应的SWIG配置文件

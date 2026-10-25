@@ -36,8 +36,12 @@ docs = loader.load()
 md_file=docs[0].page_content
 # Let's create groups based on the section headers in our pagefrom langchain.text_splitter import MarkdownHeaderTextSplitter
 headers_to_split_on = [
+
+```text
     ("##", "Section"),
 ]
+```
+
 markdown_splitter = MarkdownHeaderTextSplitter(headers_to_split_on=headers_to_split_on)
 md_header_splits = markdown_splitter.split_text(md_file)
 `
@@ -67,13 +71,21 @@ all_splits
 
 `from milvus import default_server
 default_server.start()
+
+```python
 from langchain.vectorstores import Milvus
 from langchain.embeddings import OpenAIEmbeddings
+```
+
 
 vectordb = Milvus.from_documents(documents=all_splits,
+
+```text
     embedding=OpenAIEmbeddings(),
     connection_args={"host": "127.0.0.1", "port": default_server.listen_port},
     collection_name="EngineeringNotionDoc")
+```
+
 `
 
 ### <strong>03.查询 Notion 文档</strong>
@@ -88,16 +100,24 @@ vectordb = Milvus.from_documents(documents=all_splits,
 首先，我们定义元数据。随后，需要给自查询检索器提供文档的描述。本例中，描述即为“文档的主要部分”。在我们实例化自查询检索器前，现将 GPT 的温度（Temperature）设置为 0，并赋值给一个名为 llm 的变量。有了 LLM、向量数据库、文档描述和元数据字段后，我们就完成了自查询检索器定义。
 
 `from langchain.llms import OpenAI
+
+```python
 from langchain.retrievers.self_query.base import SelfQueryRetriever
 from langchain.chains.query_constructor.base import AttributeInfo
+```
+
 
 metadata_fields_info = [
+
+```text
     AttributeInfo(
         name="Section",
         description="Part of the document that the text comes from",
         type="string or list[string]"
     ),
 ]
+```
+
 document_content_description = "Major sections of the document"
 
 llm = OpenAI(temperature=0)

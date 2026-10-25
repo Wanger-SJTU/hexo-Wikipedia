@@ -191,6 +191,8 @@ input_ids = tokenizer(&#34;中国首都是哪里？&#34;, return_tensors=&#34;pt
 input_ids = input_ids.to(&#34;cuda:0&#34;)
     
 with torch.no_grad():
+
+```python
     output = model(input_ids, output_attentions=True, output_hidden_states=True)
 
 def get_qkv_matrix(output, model, layer: int = 0, is_split: bool = True):
@@ -206,6 +208,8 @@ def get_qkv_matrix(output, model, layer: int = 0, is_split: bool = True):
         k = k.view(batch_size, seq_len, num_key_value_heads, head_dim)
         v = v.view(batch_size, seq_len, num_key_value_heads, head_dim)
     return q, k, v
+```
+
 
 q, k, v = get_qkv_matrix(output, model, 20)
 同样取 Gemma2-9B 模型的第 20 层 Q、K、V，按照我们先前的结论，Gemma2 系列模型会在序列的开头添加 <bos> token，该 token 会作为 sink token。因此，我们单独查看 sink token 和非 sink token Q、K 的结果。

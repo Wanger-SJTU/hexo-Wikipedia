@@ -278,6 +278,8 @@ CHI协议允许（不强求）主存的数据不是实时更新，只有在所�
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_443ea24d675c.jpg)
 
 > 协议节点访问cacheline后所需要执行的动作是根据cacheline state决定的，CHI协议规定的每个cacheline状态如下，一个cache允许只实现如下这些cache state的子集：
+
+```text
     I：Invalid，该cache line不存在于当前cache中(present in the cache)，即cache中没有目标数据使cacheline有效；
     UC：Unique Clean，该cacheline的数据只在当前cache中，且和memory的数据一致，可以不知会其它RN就对该cacheline的数据进行修改。在收到snoop请求时，该cacheline不需要返回数据给HN或fwd data给RN；
     UCE：Unique Clean Empty，该cacheline的数据只在当前cache中，但是所有的数据都是无效的，可以不知会其它RN就对该cacheline的数据进行修改。在收到snoop请求时，该cacheline必须不能返回数据给HN或fwd data给RN；
@@ -285,6 +287,8 @@ CHI协议允许（不强求）主存的数据不是实时更新，只有在所�
     UDP：Unique Dirty Partial，该cacheline的数据只在当前cache中，且和memory的数据不一致，部分被修改且有效；如果该cacheline的数据不用了，那需要和下级cache或memory的数据组成一个完成有效的cacheline；可以不知会其它RN就对该cacheline的数据进行修改。在收到snoop请求时，该cacheline必须返回数据给HN，但不能直接将数据fwd给Requester；
     SC：Shared Clean，其它cache可能也存在该cacheline的拷贝；该cacheline可能已经被修改了；当不需要该cacheline数据时，cache没有义务必须将该数据写回到memory；必须对其它cache的该cacheline进行无效后，获得U态才能将该cacheline进行改写；在收到snoop请求时，该cacheline在RetToSrc没有置位时不需要返回数据，如果RetToSrc置位，则需要返回数据，可以直接fwd数据给Requester；
     SD：Shared Dirty，其它cache可能也存在该cacheline的拷贝；该cacheline相对于memory已经被修改了；当该cacheline不需要的时候，cache需要将它写回下游cache或memory；必须对其它cache的该cacheline进行无效后，获得U态后才能将该cacheline进行改写。在收到snoop请求时，该cacheline必须返回数据给HN和fwd data给Requester；
+```
+
 
 UCE态的获得：有两种情况UCE态发生，
 a. Requester故意产生UCE态，在Requester对cacheline写数据前，为了节省系统带宽，Requester获得UCE态而不是UC，就可以对该cacheline进行写操作；

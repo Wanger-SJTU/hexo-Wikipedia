@@ -83,6 +83,8 @@ A(thread_m_blocks*16,thread_k_blocks*16)*B(thread_k_blocks*16,thread_n_blocks*16
 具体的调度实现在：
 
 `__global__ void Marlin(
+
+```cpp
   const int4* __restrict__ A, // fp16 input matrix of shape mxk 
   const int4* __restrict__ B, // 4bit quantized weight matrix of shape kxn 
         int4* __restrict__ C, // fp16 output buffer of shape mxn
@@ -91,6 +93,8 @@ A(thread_m_blocks*16,thread_k_blocks*16)*B(thread_k_blocks*16,thread_n_blocks*16
   int  prob_n, // output dimension n
   int  prob_k, // reduction dimension k
   int* locks // extra global storage for barrier synchronization `
+```
+
 
 本文的重点就是该函数的具体实现。
 
@@ -103,10 +107,14 @@ CUDA可以通过
 同时m*n*k的计算就可以转化成k_tiles * n_tiles * parallel的计算：
 
 ` int k_tiles = prob_k / 16 / thread_k_blocks;
+
+```cpp
  int n_tiles = prob_n / 16 / thread_n_blocks;
  int iters = ceildiv(k_tiles * n_tiles * parallel, gridDim.x);
   // Ensure that the number of tiles in each stripe is a multiple of the groupsize; this avoids an annoying special case
   // where a stripe starts in the middle of group.`
+```
+
 
 如代码所示每个CUDA的计算资源需要进行iters次TILE的运算。
 
@@ -121,14 +129,18 @@ CUDA可以通过
 在实际处理中，这里会算好每个TILE块的A,C的起始地址偏移，用于后续的内存读取：
 
 `int slice_row = (iters * blockIdx.x) % k_tiles;
+
+```cpp
 int slice_col_par = (iters * blockIdx.x) / k_tiles;
- 
+
 if (slice_col_par >= n_tiles) {
     A += (slice_col_par / n_tiles) * 16 * thread_m_blocks * prob_k / 8;
     C += (slice_col_par / n_tiles) * 16 * thread_m_blocks * prob_n / 8;
     locks += (slice_col_par / n_tiles) * n_tiles;
     slice_col = slice_col_par % n_tiles;
   }`
+```
+
 
 ### 三、IO处理
 
@@ -182,12 +194,16 @@ constexpr int a_gl_rd_delta_o = 16 * thread_k_blocks / 8;`
 因此实际调用时的代码，会重复a_sh_wr_iters次进行调用。
 
 `for (int i = 0; i  a_sh_wr_iters; i++) {
+
+```text
         cp_async4_pred(
           &sh_a_stage[a_sh_wr_trans[i]],
           &A[a_gl_rd_delta_i * i + a_gl_rd + a_gl_rd_delta_o * a_off],
           a_sh_wr_pred[i]
         );
       }`
+```
+
 
 其他变量可以结合上述变量再做理解。
 
@@ -196,10 +212,14 @@ constexpr int a_gl_rd_delta_o = 16 * thread_k_blocks / 8;`
 代码中用如下结构记录共享内存：
 
 `  extern __shared__ int4 sh[];
+
+```text
   // Shared memory storage for global fetch pipelines. 
   int4* sh_a = sh;
   int4* sh_b = sh_a + (stages * a_sh_stage);
   int4* sh_s = sh_b + (stages * b_sh_stage);`
+```
+
 
 这里需要说明的是：
 
@@ -213,11 +233,19 @@ constexpr int b_sh_stage = b_sh_stride * thread_k_blocks;`
 A矩阵的BANK CONFLICT：
 
 `for (int i = 0; i  a_sh_wr_iters; i++)
+
+```text
     a_sh_wr_trans[i] = transform_a(a_sh_wr_delta * i + a_sh_wr);
+```
+
 
 auto transform_a = [&] (int i) {
+
+```cpp
  int row = i / a_gl_rd_delta_o;
  return a_gl_rd_delta_o * row + (i % a_gl_rd_delta_o) ^ row;
+```
+
 };`
 
 #### 3.1.2 B矩阵
@@ -248,8 +276,12 @@ SUBTILE重排对应的是：
  tile,
  awq_linear.out_features // tile,
  tile,
+
+```text
             )
         )
+```
+
  w = w.permute((0, 2, 1, 3))`
 
 这里共享内存读写B矩阵，也就是直接存写，也就不需要考虑bank conflict了。
@@ -270,6 +302,8 @@ SUBTILE重排对应的是：
 接着看调用链：
 
 `      for (int k = 0; k  b_sh_wr_iters; k++) {
+
+```text
         fetch_to_registers(k + 1, pipe % stages);
         if (k == b_sh_wr_iters - 2) {
           fetch_to_shared((pipe + stages - 1) % stages, pipe, slice_iters >= stages);
@@ -278,6 +312,8 @@ SUBTILE重排对应的是：
         }
         matmul(k);
       }`
+```
+
 
 为什么用b_sh_wr_iters做迭代？
 
@@ -322,7 +358,11 @@ ldmatrix.sync.aligned.m8n8.x4.shared.b16 指令来实现。
 说到这里，虽然有点绕，但还属于好理解的。具体到代码层面，核心需要理解的是下面这两行的寻址逻辑。
 
 `  // Shared read index.
+
+```cpp
 int a_sh_rd = a_sh_stride * ((threadIdx.x % 32) % 16) + (threadIdx.x % 32) / 16;
+```
+
 a_sh_rd += 2 * ((threadIdx.x / 32) / (thread_n_blocks / 4));`
 
 第一行结合上述关于ldmatrix的说明，在thread 0-32分别获取对应ldmatrix需要的地址。
@@ -375,6 +415,8 @@ B矩阵的读取指令在vllm库中为了支持H100，稍有修改，建议参�
 代码实现：
 
 `   for (int j = 0; j  4; j++) {
+
+```cpp
       int b_quant = frag_b_quant[k % 2][j];
       int b_quant_shift = b_quant >> 8;
       FragB frag_b0 = dequant(b_quant);
@@ -389,6 +431,8 @@ B矩阵的读取指令在vllm库中为了支持H100，稍有修改，建议参�
         mma(frag_a[k % 2][i], frag_b0, frag_c[i][j][0]);
         mma(frag_a[k % 2][i], frag_b1, frag_c[i][j][1]);
       }`
+```
+
 
 乘法计算主要分为两步：
 
@@ -434,6 +478,8 @@ B矩阵的偏移如上图所示。
 在AUTOAWQ得代码中是通过下面代码实现的。
 
 `def _get_perms():
+
+```text
     perm = []
     for i in range(32):
         perm1 = []
@@ -454,6 +500,8 @@ B矩阵的偏移如上图所示。
     interleave = np.array([0, 2, 4, 6, 1, 3, 5, 7])
     perm = perm.reshape((-1, 8))[:, interleave].ravel()
     perm = torch.from_numpy(perm)`
+```
+
 
 在AUTOAWQ中，B矩阵实际经过了如下5个步骤：
 
@@ -573,16 +621,22 @@ SM内部在TILE迭代时，对应块得乘加和都是放在frag_c中的（m,n�
 global归约实际上可以理解成是同步顺序处理。
 
 `      if (slice_count > 1) { // only globally reduce if there is more than one block in a slice
+
+```text
         barrier_acquire(&locks[slice_col], slice_idx);
         global_reduce(slice_idx == 0, last);
         barrier_release(&locks[slice_col], last);
       }`
+```
+
 
 具体来说就是靠：barrier_acquire传入的slice_idx参数。**
 
 该函数实现：
 
 `__device__ inline void barrier_acquire(int* lock, int count) {
+
+```cpp
   if (threadIdx.x == 0) {
     int state = -1;
     do
@@ -591,6 +645,8 @@ global归约实际上可以理解成是同步顺序处理。
     while (state != count);
   }
   __syncthreads();
+```
+
 }`
 
 当count=0，不会锁。

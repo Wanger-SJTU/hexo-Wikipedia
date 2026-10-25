@@ -96,7 +96,11 @@ VGS不同时根据（1）式得到的抛物线由图可知：
 - 器件的“电流能力”随着 V_{GS} 的增大而增加
 - 每条抛物线的极值发生在： V_{DS} = V_{GS}-V_{TH} 
 $$- 且峰值电流为： I_{D,max} = \frac{1}{2}\mu_{n}C_{ox}\frac{W}{L}(V_{GS}-V_{TH})^2 \tag{2} $$
+
+```text
      如果在式中 V_{DS} （当 V_{DS} 时，即靠近原点处，我们说器件工作在深三极管区），我们有：
+```
+
 
 $$I_{D}\approx \mu_{n}C_{ox}\frac{W}{L}(V_{GS}-V_{TH})V_{DS} $$
 
@@ -140,7 +144,10 @@ $$和 I_{D,max} = -\frac{1}{2}\mu_{n}C_{ox}\frac{W}{L'}(V_{GS}-V_{TH})^2 \tag{6}
 
 **
 
-      若L为常数，那么工作在饱和区的MOSFET构成一个链接源和漏的电流源。（注意：NMOS电流源向地注入电流而PMOS电流源从 <strong>V_{DD}</strong> 抽取电流）**
+```text
+      若L为常数，那么工作在饱和区的MOSFET构成一个链接源和漏的电流源。（注意：NMOS电流源向地注入电流而PMOS电流源从 **V_{DD}** 抽取电流）**
+```
+
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_701b67fea15e.jpg)
 

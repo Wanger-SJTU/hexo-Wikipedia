@@ -65,9 +65,12 @@ id: c563d7ac-9999-4fc2-9ad9-62df66dfea12
 
 从这个评估结果可以看出：
 
+```text
 * 无论使用哪种嵌入模型（embedding model），重排序技术都能够达到更高的 hit rate 和 MRR，表明重排序技术的影响显著。
 * 目前，最佳的重排序模型是 Cohere\[2\] ，但它是一项付费服务。开源的 bge-reranker-large 模型\[3\]具有与 Cohere 类似的能力。
 * 嵌入模型（embedding models）和重排序模型（re-ranking models）如何组合也可能对 RAG System 的性能产生一定的影响，因此开发者可能需要在实际开发过程中尝试不同的组合。
+```
+
 
 在本文中，将使用 bge-reranker-base 模型。
 

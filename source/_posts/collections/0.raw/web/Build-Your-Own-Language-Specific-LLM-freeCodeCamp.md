@@ -22,9 +22,13 @@ April 24, 2026
                         
                         
                             /
+
+```text
                             [
                                 #llm
                             ](/news/tag/llm/)
+```
+
                         
                     
                     
@@ -2365,7 +2369,10 @@ But even at this scale, you now have a concrete understanding of the full LLM pi
                             
                                 
                                     
+```text
                                     var localizedAdText = "ADVERTISEMENT";
+```
+
                                 
                             
                         

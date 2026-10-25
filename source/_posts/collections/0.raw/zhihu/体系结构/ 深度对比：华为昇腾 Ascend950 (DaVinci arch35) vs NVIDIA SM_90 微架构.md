@@ -301,15 +301,22 @@ cudaCtxResetPersistingL2Cache();  // 清除所有持久化缓存行`
 开发者可以通过 `GlobalTensor` 提供的 `SetL2CacheHint` 接口，<strong>逐 Tensor 粒度</strong>地控制 L2 Cache 行为，决定哪些数据进入 L2 Cache、哪些绕过（bypass）：
 
 `// 昇腾 Ascend C：显式配置 L2 Cache 亲和性
+
+```text
 // 场景：x 需要被 40 个核反复读取，y 和 z 只读写一次
 
 // 设置 GlobalBuffer
+```
+
 xGm.SetGlobalBuffer((__gm__ float *)x + blockIdx * TILE_N);
 yGm.SetGlobalBuffer((__gm__ float *)y + blockIdx * TILE_N);
 zGm.SetGlobalBuffer((__gm__ float *)z + blockIdx * TILE_N);
 
+```text
 // x 保持默认 CACHE_MODE_NORMAL —— 数据经过 L2 Cache（被频繁复用）
 // y 和 z 设置为 CACHE_MODE_DISABLE —— 数据绕过 L2 Cache（只访问一次）
+```
+
 yGm.SetL2CacheHint(AscendC::CacheMode::CACHE_MODE_DISABLE);
 zGm.SetL2CacheHint(AscendC::CacheMode::CACHE_MODE_DISABLE);`
 
@@ -320,12 +327,19 @@ CacheMode含义适用场景CACHE_MODE_NORMAL数据经过 L2 Cache（默认）需
 `// 来自 vLLM-Ascend 项目：Grouped MatMul 算子中的权重矩阵 L2 策略
 weightGM.SetGlobalBuffer(GetTensorAddr(groupIdx, weightTensorPtr) + offset);
 
+```text
 if (mnConfig.blockDimM == 1) {
     // M 维度只有 1 个分块 → 权重只被读取一次 → 绕过 L2
     weightGM.SetL2CacheHint(CacheMode::CACHE_MODE_DISABLE);
+```
+
 } else {
+
+```text
     // M 维度有多个分块 → 权重被多个核复用 → 进入 L2
     weightGM.SetL2CacheHint(CacheMode::CACHE_MODE_NORMAL);
+```
+
 }`
 
 <strong>💡 与 NVIDIA 对比</strong>：NVIDIA 的 `cudaAccessPolicyWindow` 是 <strong>Stream 级别</strong>的控制（指定一个连续内存区域 + hitRatio），粒度较粗；昇腾的 `SetL2CacheHint` 是 <strong>Tensor 级别</strong>的控制（每个 GlobalTensor 独立设置），粒度更细。但 NVIDIA 的 API 支持更丰富的策略（如 hitRatio 百分比控制、持久化缓存预留比例），昇腾目前是二元选择（进入/绕过）。**Kernel Launch 中的 `l2ctrl` 参数**：
@@ -393,6 +407,8 @@ SIMT 硬件实现细节**（来源：CANN Meetup 官方分享）：
 <strong>⚠️ 性能权衡</strong>：SIMD 模式下 UB 访存效率是 SIMT 模式的 <strong>4 倍</strong>（SIMD: 4×x B/s vs SIMT: x B/s），因此规则向量运算仍建议用 SIMD。`// Ascend950 独有：SIMT 编程（类 CUDA 体验）
 __simt_vf__ __aicore__ LAUNCH_BOUND(512)
 inline void SimtKernel(/* params */) {
+
+```text
     int64_t blockIdx  = Simt::GetBlockIdx();    // 类似 CUDA blockIdx.x
     int64_t threadIdx = Simt::GetThreadIdx();   // 类似 CUDA threadIdx.x
     int64_t threadNum = Simt::GetThreadNum();   // 类似 CUDA blockDim.x
@@ -403,6 +419,8 @@ inline void SimtKernel(/* params */) {
 // 启动：Simt::VF_CALL(Simt::Dim3{numThreads}, ...);
 // 同步：Simt::ThreadBarrier();   // 类似 __syncthreads()
 // 原子：Simt::AtomicAdd(&val, 1); // 类似 atomicAdd()`
+```
+
 
 CUDA APIAscend950 SIMT API说明threadIdx.xSimt::GetThreadIdx()线程索引blockIdx.xSimt::GetBlockIdx()块索引blockDim.xSimt::GetThreadNum()线程数__syncthreads()Simt::ThreadBarrier()线程同步atomicAdd()Simt::AtomicAdd()原子操作kernel>>()Simt::VF_CALL(Dim3{T})启动<strong>💡 开发策略</strong>：规则向量运算（Softmax、LayerNorm）用 <strong>SIMD</strong> 获最佳性能；不规则操作或 CUDA 迁移用 <strong>SIMT</strong> 降成本。两种模型可在同一算子中<strong>混合使用</strong>。<strong>参考</strong>：CANN Skills - NPU Arch Guide, arch35 SIMT 编程
 #### 6. 代码实战：向量加法 (Vector Add)
@@ -412,27 +430,35 @@ CUDA APIAscend950 SIMT API说明threadIdx.xSimt::GetThreadIdx()线程索引block
 #### 6.1 CUDA 实现
 
 `// ===== CUDA Vector Add =====
+
+```cpp
 // 文件: vector_add.cu
 
 #include 
 #include 
 
 // Kernel 函数：每个线程处理一个元素
+```
+
 __global__ void vectorAdd(const float *x, const float *y, 
+
+```cpp
                           float *z, int n) {
     // 计算全局线程索引
     int idx = blockIdx.x * blockDim.x + threadIdx.x;
     int stride = blockDim.x * gridDim.x;
-    
+
     // Grid-stride loop：一个线程可处理多个元素
     for (int i = idx; i >>(x, y, z, N);
-    
+
     // 4. 等待完成
     cudaDeviceSynchronize();
-    
+
     // 5. 释放内存
     cudaFree(x); cudaFree(y); cudaFree(z);
     return 0;
+```
+
 }`
 
 <strong>CUDA 代码特点</strong>：
@@ -445,6 +471,8 @@ __global__ void vectorAdd(const float *x, const float *y,
 #### 6.2 Ascend C 实现
 
 `// ===== Ascend C Vector Add =====
+
+```cpp
 // 文件: vector_add.cpp
 
 #include "kernel_operator.h"
@@ -455,7 +483,7 @@ using namespace AscendC;
 class VectorAddKernel {
 public:
     __aicore__ inline VectorAddKernel() {}
-    
+
     __aicore__ inline void Init(GM_ADDR x, GM_ADDR y, GM_ADDR z,
                                  uint32_t totalSize, uint32_t tileSize) {
         // 获取当前 AI Core 的工作范围
@@ -463,58 +491,58 @@ public:
         uint32_t coreNum = GetBlockNum();
         uint32_t perCoreSize = totalSize / coreNum;
         uint32_t offset = coreId * perCoreSize;
-        
+
         // 设置 Global Memory 指针
         xGm.SetGlobalBuffer((__gm__ float *)x + offset, perCoreSize);
         yGm.SetGlobalBuffer((__gm__ float *)y + offset, perCoreSize);
         zGm.SetGlobalBuffer((__gm__ float *)z + offset, perCoreSize);
-        
+
         this->tileSize = tileSize;
         this->tileNum = perCoreSize / tileSize;
-        
+
         // 初始化队列 (Double Buffer, depth=2)
         pipe.InitBuffer(inQueueX, 2, tileSize * sizeof(float));
         pipe.InitBuffer(inQueueY, 2, tileSize * sizeof(float));
         pipe.InitBuffer(outQueueZ, 2, tileSize * sizeof(float));
     }
-    
+
     __aicore__ inline void Process() {
         for (uint32_t i = 0; i  xLocal = inQueueX.AllocTensor();
         LocalTensor yLocal = inQueueY.AllocTensor();
-        
+
         // 异步 DMA：GM → UB
         DataCopy(xLocal, xGm[tileIdx * tileSize], tileSize);
         DataCopy(yLocal, yGm[tileIdx * tileSize], tileSize);
-        
+
         // 标记数据就绪（同步点）
         inQueueX.EnQue(xLocal);
         inQueueY.EnQue(yLocal);
     }
-    
+
     // ===== Stage 2: Compute (Vector 计算) =====
     __aicore__ inline void Compute(uint32_t tileIdx) {
         // 等待 MTE2 搬运完成（阻塞）
         LocalTensor xLocal = inQueueX.DeQue();
         LocalTensor yLocal = inQueueY.DeQue();
         LocalTensor zLocal = outQueueZ.AllocTensor();
-        
+
         // Vector 指令：逐元素加法
         Add(zLocal, xLocal, yLocal, tileSize);
-        
+
         // 标记结果就绪
         outQueueZ.EnQue(zLocal);
         inQueueX.FreeTensor(xLocal);
         inQueueY.FreeTensor(yLocal);
     }
-    
+
     // ===== Stage 3: CopyOut (MTE3 搬出) =====
     __aicore__ inline void CopyOut(uint32_t tileIdx) {
         // 等待 Vector 计算完成（阻塞）
         LocalTensor zLocal = outQueueZ.DeQue();
-        
+
         // 异步 DMA：UB → GM
         DataCopy(zGm[tileIdx * tileSize], zLocal, tileSize);
-        
+
         outQueueZ.FreeTensor(zLocal);
     }
 
@@ -528,12 +556,18 @@ private:
 };
 
 // Kernel 入口
+```
+
 extern "C" __global__ __aicore__ void vector_add_kernel(
     GM_ADDR x, GM_ADDR y, GM_ADDR z,
+
+```text
     uint32_t totalSize, uint32_t tileSize) {
     VectorAddKernel op;
     op.Init(x, y, z, totalSize, tileSize);
     op.Process();
+```
+
 }`
 
 <strong>Ascend C 代码特点</strong>：
@@ -562,29 +596,39 @@ extern "C" __global__ __aicore__ void vector_add_kernel(
 #### 7.1 CUDA 矩阵乘法（使用 Tensor Core）
 
 `// CUDA 矩阵乘法 - Tensor Core 版本 (WMMA API)
+
+```cpp
 #include 
 using namespace nvcuda;
+```
+
 
 __global__ void matmul_tensor_core(half *A, half *B, float *C,
+
+```cpp
                                     int M, int N, int K) {
     // 声明 Tensor Core 的 fragment
     wmma::fragment a_frag;
     wmma::fragment b_frag;
     wmma::fragment c_frag;
-    
+
     // 初始化累加器
     wmma::fill_fragment(c_frag, 0.0f);
-    
+
     // 计算当前 Warp 负责的矩阵块（简化示意：假设每个 Block 对应一个 Warp，blockDim.x=32）
     int warpM = blockIdx.x * 16;
     int warpN = blockIdx.y * 16;
-    
+
     // K 维度循环
     for (int k = 0; k 
+```
+
 
 #### 7.2 Ascend C 矩阵乘法思路
 
 `// Ascend C 矩阵乘法 - Cube Unit 版本 (概念示意)
+
+```cpp
 class MatMulKernel {
 public:
     __aicore__ inline void Process() {
@@ -594,13 +638,15 @@ public:
         LocalTensor aL0 = l0ABuf.Get();
         LoadData(aL0, aL1, loadParams);
     }
-    
+
     __aicore__ inline void CubeCompute(uint32_t tile) {
         // Cube 指令：矩阵乘加
         // mmad: L0A × L0B → L0C  (矩阵乘加)
         LocalTensor cL0 = l0CBuf.Get();
         Mmad(cL0, aL0Buf, bL0Buf, mmadParams);
     }
+```
+
 };`
 
 #### 7.3 矩阵乘法数据流对比
@@ -617,19 +663,26 @@ Ascend950 支持直接操作寄存器的编程模式（Regbase 架构），相�
 - <strong>OOO 指令双发</strong>：通过支持乱序执行（Out-of-Order）实现指令双发，提升 Vector 性能
 - <strong>非对齐友好</strong>：便于支持 Local Buffer 非 32B 对齐数据处理
 `// Regbase 编程：直接操作寄存器（仅 arch35）
+
+```text
 // 相比 Membase 编程方式，处理的数据由 block/repeat 参数
 // 换成 for-loop 形式，代码更容易编写和理解
 
 // Ascend C 类库 API 风格
+```
+
 AscendC::Reg::RegTensor vDstReg0;
 AscendC::Reg::RegTensor vSrcReg0, vSrcReg1;
 AscendC::Reg::MaskReg maskReg;
 
+```cpp
 for (uint16_t i = 0; i (calCount);
     AscendC::Reg::Load(vSrcReg0, src0Ptr + i * oneRepeatSize);
     AscendC::Reg::Load(vSrcReg1, src1Ptr + i * oneRepeatSize);
     AscendC::Reg::Add(vDstReg0, vSrcReg0, vSrcReg1, maskReg);
     AscendC::Reg::Store(dstPtr + i * oneRepeatSize, vDstReg0, maskReg);
+```
+
 }`
 
 <strong>适用场景</strong>：量化/反量化算子、动态量化、需要极致性能的热点路径

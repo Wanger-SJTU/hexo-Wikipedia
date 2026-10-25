@@ -33,11 +33,15 @@ PhantomData在2014年12月出现在RFC-0738提案<span class="wikilink wikilink-
 
 `struct AnimalT> {
     age: i32,
+
+```text
 }
 
 struct Item'a> {
 
 }
+```
+
 `
 
 看出来问题了吗？ `T` 或者 `'a` 都没有出现在 结构体定义中，这样会导致编译器有理由认为Animal 和 Animal 是可以互换的，毕竟 Animal 本身并没有真的使用 Dog 或者 Car(不是Cat， 用Car表示一个和动物完全没有关系的物品)，那它们不就是一样的吗？但是这种规则明显没有意义且可能出错，Dog 和 Car 类型之间没有任何联系，自然不能把 Animal 看成和 Animal 一样是可以互换使用的类型。但是在Rust早期，对于没有实际用到的生命周期参数，Rust确实是这么处理的，也造成了很多错误。
@@ -50,14 +54,22 @@ struct Item'a> {
 
 `struct CovariantStructT> {
      _field: PhantomDataT>
+
+```text
 }
+```
+
 `
 
 也可能看见`PhantomData`，比如下面
 
 `struct InvariantStructT> {
      _field: PhantomDatamut T>
+
+```text
 }
+```
+
 `
 
 虽然是在结构体中使用了PhantomData，但一个在 T 上是 covariant的，另一个在 T 上是invariant的，结构体关于 T 的variance property就是由PhantomData控制的。
@@ -92,8 +104,12 @@ PhantomData的规则是，只要 T 实现了上面某个trait，那么 PhantomDa
 有了这个特点，我们就可以通过PhantomData来排除一些我们不想要实现的trait，示例如下
 
 `struct MyStruct {
+
+```text
     _field: PhantomDataRc()>>,
 }
+```
+
 `
 
 因为Rc 是 !Send的，所以导致MyStruct 最后也是 !Send，但是我们如果直接写 `impl !Send for MyStruct`， 目前则需要使用nightly编译器，如果使用stable编译器，编译器就会提示 `negative trait bounds are not yet fully implemented; use marker types for now ` 证实了PhantomData可以用来排除不需要的auto trait。这里我们再一次体会到，PhantomData不只是用来占位的，即使 `MyStruct` 本身没有任何类型参数，也可以包含有PhantomData。
@@ -108,30 +124,45 @@ Rust的特点是宣称无需GC的前提下保证内存安全，其中一种方�
 
 `struct NodeT> {
     val: T,       //   T是类型参数, 称为 type parameter
+
+```text
 }
 struct Node'a> {  
     val: &'a i32, // 'a 也是类型参数，称为 lifetime parameter
 } 
+```
+
 `
 
 #### <strong>3.1 带有生命周期标注的drop方法</strong>
 
 `// 代码1
+
+```text
 struct Node'a> {
     val: Option'a i32>, // 'a 也是类型参数
 }
+```
+
 
 impl'a> Drop for Node'a> {
+
+```text
     fn drop(&mut self) {
          println!("{}", self.val.unwrap());
     }
 }
+```
+
 
 fn main() {
 
+```text
     let x = 123;
     let node = Node{val: Some(&x)}; // ok, 因为node比x先drop
 }
+```
+
 `
 
 上面这段代码是能正常编译的，因为按rust规则，在代码段中先声明的变量后drop，也就是说node比x先drop，那当node在执行自己的drop函数时，x一定还没有被释放，所以编译器编译成功。
@@ -139,22 +170,33 @@ fn main() {
 如果只是调换一下x和node位置，则编译失败
 
 `// 代码2
+
+```text
 struct Node'a> {
     val: Option'a i32>, // 'a 也是类型参数
 }
+```
+
 
 impl'a> Drop for Node'a> {
+
+```text
     fn drop(&mut self) {
         // drop函数不再访问&i32, 但也不能编译成功
     }
 }
+```
+
 
 fn main() {
 
+```text
     let mut node = Node{val: None};
     let x = 123;
     node.val = Some(&x);  // error, `x` does not live long enough
 }
+```
+
 `
 
 调换顺序后，编译器知道x比node先drop，也就是说x的生命周期比node更短，因此不满足Node的定义，因此编译失败。这也是drop check的成果，分析出drop函数中还存在资源引用，虽然实际上我们在drop函数中并没有访问i32的引用，但目前的rust编译器还没有智能到那一步，它只会预防我们访问所有可能的引用。
@@ -164,11 +206,15 @@ fn main() {
 我们知道，生命周期之间可以判断是否有包含关系，当我们说'a : 'b 的时候，说明 'a 的范围是<strong>大于等于</strong>'b 的，我们不关心到底是大于还是等于。但是现在引入一个"strictly outlives"的概念，要求一定要大于而不能等于。
 
 `{
+
+```text
     let a = 1;
     let (b, c);
     b = 2;
     c = 3;
 }
+```
+
 `
 
 在上面代码中，a的生命周期strictly outlives b和c的生命周期。而b和c的生命周期是相同的，不存在strictly outlives关系。因为rust规定，<strong>在一个let语句中的变量具有相同的生命周期。</strong>所以，同一个结构体中的变量也都有一样的生命周期。
@@ -178,19 +224,30 @@ fn main() {
 `struct Node'a> {
     val: Option'a i32>, 
     i: i32,
+
+```text
 }
+```
+
 
 impl'a> Drop for Node'a> {
+
+```text
     fn drop(&mut self) {
-       
+
     }
 }
+```
+
 
 fn main() {
 
+```text
     let mut node = Node{val: None, i: 1};
     node.val = Some(&node.i); // borrow may still be in use when destructor runs
 }
+```
+
 `
 
 在上面的代码中，按照drop order，变量val会先drop，然后才drop变量i，但这段代码仍然无法通过编译，原因就是没有Strictly outlives。
@@ -200,22 +257,33 @@ fn main() {
 如果结构体drop函数不再有 'a 这样的生命周期标注，只有表示类型的 T，是否就不存在生命周期的问题了呢，答案显然是No，因为T本身可以是任何类型，包括带生命周期的结构体，所以可能会隐式地包含生命周期的问题。
 
 `// 代码3
+
+```text
 struct NodeT> {
     val: OptionT>, // 'a 也是类型参数
 }
+```
+
 
 implT> Drop for NodeT> {
+
+```text
     fn drop(&mut self) {
         // drop函数不访问T, 但也不能编译成功
     }
 }
+```
+
 
 fn main() {
 
+```text
     let mut node = Node{val: None};
     let x = 123;
     node.val = Some(&x);  // error, `x` does not live long enough
 }
+```
+
 `
 
 我们把代码2中 `Node`  替换成 `Node` , `main` 函数中的内容不变，仍然编译失败。rust的drop check仍然检查出我们可能会访问到无效内存，即使这是个空的`drop`函数。
@@ -229,18 +297,25 @@ fn main() {
 如果一个结构体没有drop函数，则能证明在释放它的时候，一定不会访问它的任何成员变量，也就<strong>不需要有drop check</strong>，且我们还能将它的生命周期提前结束，这样更符合直觉一点。比如下面的代码4
 
 `// 代码4
+
+```text
 struct Node'a> {
     val: Option'a mut i32>, // 'a 也是类型参数
 }
 
 // Node 没有了drop方法
+```
+
 fn main() {
 
+```text
     let mut node = Node{val: None};
     let mut x = 123;
     node.val = Some(&mut x);
     println!("{}", x); // ok, 输出123
 }
+```
+
 `
 
  和代码3相比，我们不仅删除了Node的drop方法(其实这样就已经能编译成功了)，还修改Node的定义，要求传入一个可变引用，但最后能成功运行并打印出123，说明node的生命周期在打印 x 的值之前已经结束了。
@@ -253,23 +328,33 @@ fn main() {
 
 `#![feature(dropck_eyepatch)]
 
+```text
 struct Node'a> {
     val: Option'a i32>, // 'a 也是类型参数
 }
 
 // 在'a 前加#[may_dangle]，编译器不再检查关于'a 的任何访问，所以代码编译成功
+```
+
 unsafe impl#[may_dangle]'a> Drop for Node'a> {
+
+```text
     fn drop(&mut self) {
-        
+
     }
 }
+```
+
 
 fn main() {
 
+```text
     let mut node = Node{val: None};
     let x = 123;
     node.val = Some(&x);  
 }
+```
+
 `
 
 上面的代码可以通过编译，因为在Drop trait的生命周期参数 `'a` 前加了 `#[may_dangle]`，告诉编译器我们保证代码里不会访问包含生命周期为 `'a` 的任何类型的值，所以编译器会忽略对 `'a` 的生命周期检查，无论是访问带 `'a` 的变量，还是drop 带`'a` 的变量。 
@@ -301,12 +386,16 @@ rust doc关于drop check的检查过程是这样说的
 比如
 
 `struct OwnedVec {
+
+```text
     v: Veci32> // OwnedVec 包含(own) Vec，需要对Vec进行检查
 }
 
 struct UnownedVec {
     v: &mut Veci32> // 因为只持有Vec的引用，根据上面第2条，Stop at reference，因此不拥有Vec
 }
+```
+
 `
 
 那么到目前为止，drop check和PhantomData到底又有什么关系呢？ 讲述一个Jon Gjengset 的例子<span class="wikilink wikilink--missing" title="未导入的页面">8</span>(#ref_8) 就明白了。
@@ -322,44 +411,65 @@ Box&lt;T&gt; 的drop方法用到了#[may_dangle]   为什么呢？让我们尝�
 pub struct MyBoxT> {
     p: *mut T,
 
+```text
 }
+```
+
 
 implT> Drop for MyBoxT> {
+
+```text
     fn drop(&mut self) {
         // 用指针p重装一个Box，Boxdrop时会自动释放p的内存
         let _ = unsafe {Box::from_raw(self.p)}; 
     }
 }
+```
+
 
 implT> MyBoxT>{
+
+```text
     pub fn new(t: T) -> Self {
         MyBox {
             p: Box::into_raw(Box::new(t)), // 用原来的Box来申请内存，获取指针
         }
     }
 }
+```
+
 
 implT> Deref for MyBoxT> {
+
+```text
     type Target = T;
 
     fn deref(&self) -> &Self::Target {
         unsafe {&*self.p}
     }
 }
+```
+
 
 implT> DerefMut for MyBoxT> {
 
+```text
     fn deref_mut(&mut self) -> &mut Self::Target {
         unsafe {&mut *self.p}
     }
 }
+```
+
 
 fn main() {
 
+```text
     let x = 42;
     let b = MyBox::new(x);
     println!("{}", *b);
 }
+```
+
 `
 
 简易的MyBox如上所示，利用了原本的Box来管理内存。
@@ -368,19 +478,26 @@ fn main() {
 
 `fn main() {
 
+```text
     let mut x = 42;
     let b = MyBox::new(&mut x);
     println!("{}", x); //cannot borrow `x` as immutable because it is also borrowed as mutable
 }
+```
+
 `
 
 因为MyBox有drop函数，会一直持有 x 的可变引用到其执行drop 函数，所以无法在中间用x的不可变引用打印值。但是，我们在MyBox的drop函数中并不会访问指针p的内容，只是将其drop掉了。这时候，就可以在MyBox的drop函数签名上加上 `#[may_dangle]`，编译器不再检查 `T` 。
 
 `unsafe impl#[may_dangle] T> Drop for MyBoxT> { // 开启#[may_dangle]，编译器不再检查T的生命周期问题
+
+```text
     fn drop(&mut self) {
         let _ = unsafe {Box::from_raw(self.p)};
     }
 }
+```
+
 `
 
 然而，这样忽略 `T` 的所有行为，无论是访问`T`, 移动`T` 还是drop `T` ，编译器都不检查，又会产生新的如下问题 
@@ -388,19 +505,26 @@ fn main() {
 `struct WrapperT: Debug>(T);
 
 implT: Debug> Drop for WrapperT> {
+
+```text
     fn drop(&mut self) {
         // Wrapper在drop时真的会访问 T 
         println!("wrapper access inner {:?}", self.0);
     }
 }
+```
+
 
 fn main() {
 
+```text
     let mut x = 42;
     let wrapper = Wrapper(&mut x);
     let b = MyBox::new(wrapper);
     println!("{}", x);
 }
+```
+
 `
 
 在上面的代码中，我们新增了一个Wrapper结构，其在drop的时候真的会访问T，所以我们希望drop check能检查出 main 函数中的隐含错误: 变量 b 会在 main函数结束后执行MyBox::drop()，而MyBox又会隐式执行Wrapper::drop()，而在Wrapper::drop() 中会一直持有变量 x 的可变引用。因此我们希望 main 函数中不能成功打印 x 的值，否则违反borrow checker规则。但实际编译会发现，能编译成功，说明代码中还有问题。而这个问题就在于#[may_dangle]一下子把检查又放的太开了，我们只保证不会访问MyBox中的 T，并没有说不会drop T。(所以现在有关于修改#[may_dangle]的提案<span class="wikilink wikilink--missing" title="未导入的页面">9</span>(#ref_9))
@@ -410,13 +534,20 @@ fn main() {
 `pub struct MyBoxT> {
     p: *mut T,
 
+```text
 }
+```
+
 
 unsafe impl#[may_dangle] T> Drop for MyBoxT> {
+
+```text
     fn drop(&mut self) {
         let _ = unsafe {Box::from_raw(self.p)};
     }
 }
+```
+
 `
 
 根据drop checker规则，不会检查MyBox::drop() 中的T是否有效，同时，T不是其owned type，因为*mut T只是一个指针。但实际上，MyBox是包含 T 本身的，为了表达这个约定，本文的主角PhantomData终于又出场了，在MyBox中添加`_field: PhantomData` 即可让上面错误通过的代码编译失败。原因是根据drop checker规则， PhantomData 会让编译器认为 MyBox owns T，所以drop checker会检查T的drop 函数。

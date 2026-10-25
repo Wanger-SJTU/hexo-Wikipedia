@@ -23,6 +23,7 @@ source_url: https://www.zhihu.com/question/1149593088/answer/28326210352
 
 ![](https://picx.zhimg.com/v2-2d218b79582cbe649db0c2145b141f81_r.jpg?source=2c26e567)既然转换避免不了，能不能用自定义性能更好的xxx_cast，替换掉dynamic_cast呢？其实是可以的，ue和Qt里面都是这样做的。Qt的cast我不知道性能如何，但是ue的cast很多时候都比dynamic_cast更高效。它是这样实现的：
 
+```text
 // Engine/Source/Runtime/CoreUObject/Public/UObject/UObject.h
 template<class ToClass>
 static ToClass* Cast(UClass* ToClass, UObject* Object)
@@ -33,6 +34,8 @@ static ToClass* Cast(UClass* ToClass, UObject* Object)
     }
     return static_cast<ToClass*>(Object);
 }
+```
+
 
 总之自己实现dynamic_cast的替代品是可行的，有兴趣可以去它的源码中继续追踪了解IsA的实现，从而了解整个实现原理。
 

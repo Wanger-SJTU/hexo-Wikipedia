@@ -90,6 +90,8 @@ Paddle中实现显存重计算大体分为三步：
 
 import paddle.fluid as fluid
 # 定义MLP
+
+```python
 def mlp(input_x, input_y, hid_dim=128, label_dim=2):
     print(input_x)
     fc_1 = fluid.layers.fc(input=input_x, size=hid_dim)
@@ -97,6 +99,8 @@ def mlp(input_x, input_y, hid_dim=128, label_dim=2):
     cost = fluid.layers.cross_entropy(input=prediction, label=input_y)
     sum_cost = fluid.layers.reduce_mean(cost)
     return sum_cost, fc_1, prediction
+```
+
 
 input_x = fluid.layers.data(name=&#34;x&#34;, shape=[32], dtype=&#39;float32&#39;)
 input_y = fluid.layers.data(name=&#34;y&#34;, shape=[1], dtype=&#39;int64&#39;)

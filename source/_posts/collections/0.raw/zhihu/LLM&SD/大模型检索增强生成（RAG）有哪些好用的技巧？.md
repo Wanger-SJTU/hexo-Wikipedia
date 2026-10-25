@@ -65,9 +65,12 @@ Independent Health、LangChain 和 Unstructured 的协作努力。
 
 ![](https://picx.zhimg.com/v2-008d268e5fdb4ece83a52e2d8ddf99ba_r.jpg?source=2c26e567)​非结构化预处理工具经过微调，可以明确地解决这些问题。使用 partition_pdf，我们将原始 PDF 文档转换为 JSON，使表格和文本具有机器可读性。它还将丰富的元数据归因于文本和表格，这在后处理和下游 NLP 任务中特别有用。下面的代码就是这样做的。
 
+```python
 from pydantic import BaseModel
 from typing import Any, Optional
 from unstructured.partition.pdf import partition_pdf
+```
+
 
 # Load 
 path = &#34;/Users/rlm/Desktop/IH-Unstructured/&#34;
@@ -75,6 +78,8 @@ file = &#34;IH_Policy_Doc.pdf&#34;
 
 # Get elements
 raw_pdf_elements = partition_pdf(
+
+```sql
     filename=path+file,
     extract_images_in_pdf=False,
     infer_table_structure=True, 
@@ -89,19 +94,28 @@ raw_pdf_elements = partition_pdf(
     combine_text_under_n_chars=2000,
     image_output_dir_path=path
 )
+```
+
 输出是元素列表，每个元素都包含相应的文档文本和所有关联的元数据。非结构化按元素类型识别和标记所有元素（例如，文本与表格...等）。这允许用户或下游进程基于此属性进行筛选和操作。下面的代码演示如何按类型提取特定元素。
 
+```text
 class Element(BaseModel):
     type: str
     text: Any
+```
+
 
 # Categorize by type
 categorized_elements = []
 for element in raw_pdf_elements:
+
+```text
     if &#34;unstructured.documents.elements.Table&#34; in str(type(element)):
         categorized_elements.append(Element(type=&#34;table&#34;, text=str(element)))
     elif &#34;unstructured.documents.elements.CompositeElement&#34; in str(type(element)):
         categorized_elements.append(Element(type=&#34;text&#34;, text=str(element)))
+```
+
 
 # Tables
 table_elements = [e for e in categorized_elements if e.type == &#34;table&#34;]
@@ -121,9 +135,13 @@ print(len(text_elements))
 
 # The vectorstore to use to index the child chunks
 vectorstore = Chroma(
+
+```text
     collection_name=&#34;rag_with_summaries&#34;,
     embedding_function=OpenAIEmbeddings()
 )
+```
+
 
 # The storage layer for the parent documents
 store = InMemoryStore()
@@ -131,10 +149,14 @@ id_key = &#34;doc_id&#34;
 
 # The retriever (empty to start)
 retriever = MultiVectorRetriever(
+
+```text
     vectorstore=vectorstore, 
     docstore=store, 
     id_key=id_key,
 )
+```
+
 
 # Add texts
 doc_ids = [str(uuid.uuid4()) for _ in texts]
@@ -149,7 +171,11 @@ retriever.vectorstore.add_documents(summary_tables)
 retriever.docstore.mset(list(zip(table_ids, tables)))
 
 # Prompt template
+
+```text
 template = &#34;&#34;&#34;Answer the question based only on the following context, which can include text and tables:
+```
+
 {context}
 Question: {question}
 &#34;&#34;&#34;
@@ -160,26 +186,38 @@ model = ChatOpenAI(temperature=0,model=&#34;gpt-4&#34;)
 
 # RAG pipeline
 semi_structured_chain = (
+
+```text
     {&#34;context&#34;: retriever, &#34;question&#34;: RunnablePassthrough()} 
     | prompt 
     | model 
     | StrOutputParser()
 )
+```
+
 
 <strong>方法 2：基线向量存储（无表检索）</strong>
 基线向量存储代表了传统方法。存储文档时不明确考虑表。该方法在我们的评估中充当对照，提供了一个基准，我们将其与多向量检索器进行比较。
 
 # Baseline
 vectorstore_baseline = Chroma.from_documents(
+
+```text
     documents=all_splits,
     collection_name=&#34;baseline_rag&#34;,
     embedding=OpenAIEmbeddings()
 )
+```
+
 
 retriever_baseline = vectorstore_baseline.as_retriever()
 
 # Prompt template
+
+```text
 template = &#34;&#34;&#34;Answer the question based only on the following context, which can include text and tables:
+```
+
 {context}
 Question: {question}
 &#34;&#34;&#34;
@@ -190,11 +228,15 @@ model = ChatOpenAI(temperature=0,model=&#34;gpt-4&#34;)
 
 # RAG pipeline
 baseline_chain = (
+
+```text
     {&#34;context&#34;: retriever_baseline, &#34;question&#34;: RunnablePassthrough()} 
     | prompt 
     | model 
     | StrOutputParser()
 )
+```
+
 现在，我们可以使用相应链的 invoke 函数查询这两种方法。
 
 semi_structured_chain.invoke(&#34;Can you explain what medical necessity is in relation to coverage?&#34;)
@@ -209,8 +251,11 @@ df_curated.head(3)
 
 ![](https://pica.zhimg.com/v2-18f76241f9cb534bac674c0a701e359c_r.jpg?source=2c26e567)​构建 QA 对后，我们将数据集上传到 LangSmith。
 
+```python
 import uuid
 from langsmith import Client
+```
+
 
 # Dataset
 client = Client()
@@ -220,12 +265,16 @@ dataset = client.create_dataset(dataset_name=dataset_name)
 # Populate dataset
 for _, row in df_curated.iterrows():
     # Get Q, A
+
+```js
     q = row[&#39;question&#39;]
     a = row[&#39;answer&#39;]
     # Use the values in your function
     client.create_example(inputs={&#34;question&#34;: q}, 
                           outputs={&#34;answer&#34;: a}, 
                           dataset_id=dataset.id)
+```
+
 
 评估过程
 评估过程采用系统方法来衡量和比较基线和半结构化 RAG 的性能。此过程对于量化多向量检索器和表分区策略的优点至关重要。
@@ -250,15 +299,23 @@ LangSmith 的“run_on_dataset”函数将在数据集上运行链或语言模�
 from langchain.smith import RunEvalConfig
 
 eval_config = RunEvalConfig(
+
+```text
     evaluators=[&#34;qa&#34;],
 )
+```
+
 
 _ = client.run_on_dataset(
+
+```text
     dataset_name=dataset_name,
     llm_or_chain_factory=lambda: (lambda x: x[&#34;question&#34;]) | semi_structured_chain,
     evaluation=eval_config,
     project_name=&#34;IH Policy Doc: Semi-Structured RAG&#34;,
 )
+```
+
 
 比较分析：一个明显的赢家出现
 在测试中，我们用相同的问题提示基线 RAG 和半结构化 RAG。我们根据每个预期的正确解决方案评估了他们的反应。在四个问题中，Baseline RAG 只成功回答了其中一个问题。半结构化 RAG 对四个问题中的三个问题提供了正确的回答，这是一个明显的改进。对响应性质的更深入调查显示了多向量检索器方法的有效性，以及定制存储和检索策略以适应半结构化数据性质的重要性。
