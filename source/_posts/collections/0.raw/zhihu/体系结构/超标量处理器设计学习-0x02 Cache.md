@@ -1,17 +1,17 @@
 ---
-title: 超标量处理器设计学习-0x02 Cache
+title: "超标量处理器设计学习-0x02 Cache"
 date: "2022-03-02 00:00:00"
 updated: "2022-03-02 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/体系结构/超标量处理器设计学习-0x02-Cache/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/体系结构/超标量处理器设计学习-0x02-Cache/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/474001387
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/474001387"
 ---
 
 

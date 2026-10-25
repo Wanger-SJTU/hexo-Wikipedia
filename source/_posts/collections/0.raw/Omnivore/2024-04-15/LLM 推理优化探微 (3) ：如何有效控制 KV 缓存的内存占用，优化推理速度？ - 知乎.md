@@ -1,14 +1,14 @@
 ---
-title: LLM 推理优化探微 (3) ：如何有效控制 KV 缓存的内存占用，优化推理速度？ - 知乎
+title: "LLM 推理优化探微 (3) ：如何有效控制 KV 缓存的内存占用，优化推理速度？ - 知乎"
 date: "2026-04-11 21:40:28"
 updated: "2026-04-11 21:40:28"
-layout: post
-permalink: /collections/0.raw/Omnivore/2024-04-15/LLM-推理优化探微-(3)-如何有效控制-KV-缓存的内存占用,优化推理速度-知乎/
+layout: "post"
+permalink: "/collections/0.raw/Omnivore/2024-04-15/LLM-推理优化探微-(3)-如何有效控制-KV-缓存的内存占用,优化推理速度-知乎/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 ---
 
 ---

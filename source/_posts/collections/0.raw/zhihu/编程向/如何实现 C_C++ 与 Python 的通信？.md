@@ -1,17 +1,17 @@
 ---
-title: 如何实现 C/C++ 与 Python 的通信？
+title: "如何实现 C/C++ 与 Python 的通信？"
 date: "2026-04-15 00:00:00"
 updated: "2026-04-15 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/编程向/如何实现-C_C-与-Python-的通信/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/编程向/如何实现-C_C-与-Python-的通信/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://www.zhihu.com/question/23003213/answer/56121859
+  - "知乎"
+source_url: "https://www.zhihu.com/question/23003213/answer/56121859"
 ---
 
 

@@ -1,17 +1,17 @@
 ---
-title: 你在什么情况下必须用到 dynamic_cast ？
+title: "你在什么情况下必须用到 dynamic_cast ？"
 date: "2024-11-11 00:00:00"
 updated: "2024-11-11 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/我的收藏/你在什么情况下必须用到-dynamic_cast/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/我的收藏/你在什么情况下必须用到-dynamic_cast/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://www.zhihu.com/question/1149593088/answer/28326210352
+  - "知乎"
+source_url: "https://www.zhihu.com/question/1149593088/answer/28326210352"
 ---
 
 

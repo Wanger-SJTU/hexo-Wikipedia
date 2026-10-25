@@ -1,17 +1,17 @@
 ---
-title: 如何为GPT/LLM模型添加额外知识？
+title: "如何为GPT/LLM模型添加额外知识？"
 date: "2023-06-02 00:00:00"
 updated: "2023-06-02 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/LLM-SD/如何为GPT_LLM模型添加额外知识/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/LLM-SD/如何为GPT_LLM模型添加额外知识/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://www.zhihu.com/question/591935281/answer/3056126688
+  - "知乎"
+source_url: "https://www.zhihu.com/question/591935281/answer/3056126688"
 ---
 
 

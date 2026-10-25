@@ -1,17 +1,17 @@
 ---
-title: Tomasulo算法（《现代处理器设计-超标量处理器基础》笔记）
+title: "Tomasulo算法（《现代处理器设计-超标量处理器基础》笔记）"
 date: "2021-12-03 00:00:00"
 updated: "2021-12-03 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/体系结构/Tomasulo算法(《现代处理器设计-超标量处理器基础》笔记)/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/体系结构/Tomasulo算法(《现代处理器设计-超标量处理器基础》笔记)/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/440818804
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/440818804"
 ---
 
 

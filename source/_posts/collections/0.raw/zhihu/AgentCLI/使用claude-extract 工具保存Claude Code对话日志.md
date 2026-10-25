@@ -1,17 +1,17 @@
 ---
-title: 使用claude-extract 工具保存Claude Code对话日志
+title: "使用claude-extract 工具保存Claude Code对话日志"
 date: "2025-08-03 00:00:00"
 updated: "2025-08-03 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/AgentCLI/使用claude-extract-工具保存Claude-Code对话日志/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/AgentCLI/使用claude-extract-工具保存Claude-Code对话日志/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/1935277276905316391
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/1935277276905316391"
 ---
 
 

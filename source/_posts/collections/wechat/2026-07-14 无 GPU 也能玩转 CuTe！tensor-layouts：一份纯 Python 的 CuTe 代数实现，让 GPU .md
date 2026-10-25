@@ -1,14 +1,14 @@
 ---
-title: 无 GPU 也能玩转 CuTe！tensor-layouts：一份纯 Python 的 CuTe 代数实现，让 GPU 张量布局变成可读、可玩、可视
+title: "无 GPU 也能玩转 CuTe！tensor-layouts：一份纯 Python 的 CuTe 代数实现，让 GPU 张量布局变成可读、可玩、可视"
 date: "2026-07-14 17:57:46"
 updated: "2026-07-14 17:57:46"
-layout: post
-permalink: /collections/wechat/2026-07-14-无-GPU-也能玩转-CuTe-tensor-layouts-一份纯-Python-的-CuTe-代数实现,让-GPU/
+layout: "post"
+permalink: "/collections/wechat/2026-07-14-无-GPU-也能玩转-CuTe-tensor-layouts-一份纯-Python-的-CuTe-代数实现,让-GPU/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 ---
 
 # 无 GPU 也能玩转 CuTe！tensor-layouts：一份纯 Python 的 CuTe 代数实现，让 GPU 张量布局变成可读、可玩、可视

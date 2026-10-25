@@ -1,17 +1,17 @@
 ---
-title: Sora 的一些个人思考
+title: "Sora 的一些个人思考"
 date: "2024-02-16 00:00:00"
 updated: "2024-02-16 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/LLM-SD/Sora-的一些个人思考/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/LLM-SD/Sora-的一些个人思考/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/682430755
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/682430755"
 ---
 
 

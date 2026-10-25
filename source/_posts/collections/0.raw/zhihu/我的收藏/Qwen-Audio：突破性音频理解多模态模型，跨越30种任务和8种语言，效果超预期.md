@@ -1,17 +1,17 @@
 ---
-title: Qwen-Audio：突破性音频理解多模态模型，跨越30种任务和8种语言，效果超预期
+title: "Qwen-Audio：突破性音频理解多模态模型，跨越30种任务和8种语言，效果超预期"
 date: "2026-05-28 00:00:00"
 updated: "2026-05-28 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/我的收藏/Qwen-Audio-突破性音频理解多模态模型,跨越30种任务和8种语言,效果超预期-bd34f2/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/我的收藏/Qwen-Audio-突破性音频理解多模态模型,跨越30种任务和8种语言,效果超预期-bd34f2/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/667264146
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/667264146"
 ---
 
 

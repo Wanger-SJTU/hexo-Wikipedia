@@ -1,17 +1,17 @@
 ---
-title: gdb 的使用技巧有哪些？
+title: "gdb 的使用技巧有哪些？"
 date: "2026-04-15 00:00:00"
 updated: "2026-04-15 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/走向cs/gdb-的使用技巧有哪些/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/走向cs/gdb-的使用技巧有哪些/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://www.zhihu.com/question/586771392/answer/3229528090
+  - "知乎"
+source_url: "https://www.zhihu.com/question/586771392/answer/3229528090"
 ---
 
 

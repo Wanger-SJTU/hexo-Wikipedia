@@ -1,17 +1,17 @@
 ---
-title: 微信团队分享：详解iOS版微信视频号直播中因帧率异常导致的功耗问题
+title: "微信团队分享：详解iOS版微信视频号直播中因帧率异常导致的功耗问题"
 date: "2023-11-16 00:00:00"
 updated: "2023-11-16 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/优化/微信团队分享-详解iOS版微信视频号直播中因帧率异常导致的功耗问题/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/优化/微信团队分享-详解iOS版微信视频号直播中因帧率异常导致的功耗问题/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/667129554
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/667129554"
 ---
 
 

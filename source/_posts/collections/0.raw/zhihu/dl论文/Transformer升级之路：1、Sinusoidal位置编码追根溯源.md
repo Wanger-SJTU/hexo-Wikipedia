@@ -1,17 +1,17 @@
 ---
-title: Transformer升级之路：1、Sinusoidal位置编码追根溯源
+title: "Transformer升级之路：1、Sinusoidal位置编码追根溯源"
 date: "2021-03-24 00:00:00"
 updated: "2021-03-24 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/dl论文/Transformer升级之路-1、Sinusoidal位置编码追根溯源/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/dl论文/Transformer升级之路-1、Sinusoidal位置编码追根溯源/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/359500899
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/359500899"
 ---
 
 

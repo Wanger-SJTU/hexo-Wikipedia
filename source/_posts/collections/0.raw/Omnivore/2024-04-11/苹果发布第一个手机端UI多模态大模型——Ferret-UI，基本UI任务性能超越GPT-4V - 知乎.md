@@ -1,14 +1,14 @@
 ---
-title: 苹果发布第一个手机端UI多模态大模型——Ferret-UI，基本UI任务性能超越GPT-4V - 知乎
+title: "苹果发布第一个手机端UI多模态大模型——Ferret-UI，基本UI任务性能超越GPT-4V - 知乎"
 date: "2026-04-11 21:40:28"
 updated: "2026-04-11 21:40:28"
-layout: post
-permalink: /collections/0.raw/Omnivore/2024-04-11/苹果发布第一个手机端UI多模态大模型——Ferret-UI,基本UI任务性能超越GPT-4V-知乎/
+layout: "post"
+permalink: "/collections/0.raw/Omnivore/2024-04-11/苹果发布第一个手机端UI多模态大模型——Ferret-UI,基本UI任务性能超越GPT-4V-知乎/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 ---
 
 ---

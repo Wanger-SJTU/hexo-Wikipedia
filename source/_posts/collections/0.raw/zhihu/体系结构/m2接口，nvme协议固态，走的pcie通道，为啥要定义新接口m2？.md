@@ -1,17 +1,17 @@
 ---
-title: m2接口，nvme协议固态，走的pcie通道，为啥要定义新接口m2？
+title: "m2接口，nvme协议固态，走的pcie通道，为啥要定义新接口m2？"
 date: "2026-04-21 00:00:00"
 updated: "2026-04-21 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/体系结构/m2接口,nvme协议固态,走的pcie通道,为啥要定义新接口m2/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/体系结构/m2接口,nvme协议固态,走的pcie通道,为啥要定义新接口m2/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://www.zhihu.com/question/1969300323/answer/2016525685724828994
+  - "知乎"
+source_url: "https://www.zhihu.com/question/1969300323/answer/2016525685724828994"
 ---
 
 

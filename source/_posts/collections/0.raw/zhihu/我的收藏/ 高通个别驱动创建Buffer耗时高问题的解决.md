@@ -1,17 +1,17 @@
 ---
-title: (1 条消息) 高通个别驱动创建Buffer耗时高问题的解决
+title: "(1 条消息) 高通个别驱动创建Buffer耗时高问题的解决"
 date: "2023-07-12 00:00:00"
 updated: "2023-07-12 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/我的收藏/高通个别驱动创建Buffer耗时高问题的解决/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/我的收藏/高通个别驱动创建Buffer耗时高问题的解决/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/643075021
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/643075021"
 ---
 
 

@@ -1,17 +1,17 @@
 ---
-title: llm的检索rag-1-通过交互阅读突破上下文限制
+title: "llm的检索rag-1-通过交互阅读突破上下文限制"
 date: "2023-10-24 00:00:00"
 updated: "2023-10-24 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/LLM-SD/llm的检索rag-1-通过交互阅读突破上下文限制/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/LLM-SD/llm的检索rag-1-通过交互阅读突破上下文限制/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/662804785
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/662804785"
 ---
 
 

@@ -1,17 +1,17 @@
 ---
-title: PCIe 里的 I/O 空间和 MMIO 空间，到底有什么区别？
+title: "PCIe 里的 I/O 空间和 MMIO 空间，到底有什么区别？"
 date: "2026-04-13 00:00:00"
 updated: "2026-04-13 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/体系结构/PCIe-里的-I_O-空间和-MMIO-空间,到底有什么区别/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/体系结构/PCIe-里的-I_O-空间和-MMIO-空间,到底有什么区别/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/2026979978537973080
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/2026979978537973080"
 ---
 
 

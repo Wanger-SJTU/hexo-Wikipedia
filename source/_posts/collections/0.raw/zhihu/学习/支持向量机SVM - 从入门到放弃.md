@@ -1,17 +1,17 @@
 ---
-title: 支持向量机SVM - 从入门到放弃
+title: "支持向量机SVM - 从入门到放弃"
 date: "2017-11-01 00:00:00"
 updated: "2017-11-01 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/学习/支持向量机SVM-从入门到放弃/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/学习/支持向量机SVM-从入门到放弃/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/30596284
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/30596284"
 ---
 
 

@@ -1,17 +1,17 @@
 ---
-title: Code Simplifier：Claude Code团队自用的代码清理工具，开源了
+title: "Code Simplifier：Claude Code团队自用的代码清理工具，开源了"
 date: "2026-01-14 00:00:00"
 updated: "2026-01-14 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/AgentCLI/Code-Simplifier-Claude-Code团队自用的代码清理工具,开源了/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/AgentCLI/Code-Simplifier-Claude-Code团队自用的代码清理工具,开源了/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/1994888583312605256
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/1994888583312605256"
 ---
 
 

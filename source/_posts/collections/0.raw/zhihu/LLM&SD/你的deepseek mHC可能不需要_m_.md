@@ -1,14 +1,14 @@
 ---
-title: 你的deepseek mHC可能不需要_m_
+title: "你的deepseek mHC可能不需要_m_"
 date: "2026-05-06 16:32:04"
 updated: "2026-05-06 16:32:04"
-layout: post
-permalink: /collections/0.raw/zhihu/LLM-SD/你的deepseek-mHC可能不需要_m_/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/LLM-SD/你的deepseek-mHC可能不需要_m_/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 ---
 
 

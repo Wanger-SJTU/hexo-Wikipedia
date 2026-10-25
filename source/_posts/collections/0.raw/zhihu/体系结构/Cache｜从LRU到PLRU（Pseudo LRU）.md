@@ -1,17 +1,17 @@
 ---
-title: Cache｜从LRU到PLRU（Pseudo LRU）
+title: "Cache｜从LRU到PLRU（Pseudo LRU）"
 date: "2025-10-26 00:00:00"
 updated: "2025-10-26 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/体系结构/Cache-从LRU到PLRU(Pseudo-LRU)/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/体系结构/Cache-从LRU到PLRU(Pseudo-LRU)/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/1965749069306651453
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/1965749069306651453"
 ---
 
 

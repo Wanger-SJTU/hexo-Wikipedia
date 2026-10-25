@@ -1,14 +1,14 @@
 ---
-title: 【论文阅读】Learning Deep Features for Discriminative Localization
+title: "【论文阅读】Learning Deep Features for Discriminative Localization"
 date: "2026-04-11 21:40:28"
 updated: "2026-04-11 21:40:28"
-layout: post
-permalink: /collections/0.raw/归档/DeepLearning/【论文阅读】Learning-Deep-Features-for-Discriminative-Localization/
+layout: "post"
+permalink: "/collections/0.raw/归档/DeepLearning/【论文阅读】Learning-Deep-Features-for-Discriminative-Localization/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 ---
 
 这个是周博磊16年的文章。文章通过实验证明，即使没有位置标注，CNN仍是可以得到一些位置信息，（文章中的显著性图）

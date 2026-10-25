@@ -1,17 +1,17 @@
 ---
-title: 如何评价 Kimi 开源的稀疏注意力框架 MoBA？与DeepSeek的NSA相比，二者各有哪些亮点？
+title: "如何评价 Kimi 开源的稀疏注意力框架 MoBA？与DeepSeek的NSA相比，二者各有哪些亮点？"
 date: "2025-02-20 00:00:00"
 updated: "2025-02-20 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/LLM-SD/如何评价-Kimi-开源的稀疏注意力框架-MoBA-与DeepSeek的NSA相比,二者各有哪些亮点/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/LLM-SD/如何评价-Kimi-开源的稀疏注意力框架-MoBA-与DeepSeek的NSA相比,二者各有哪些亮点/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://www.zhihu.com/question/12696635711/answer/105709816990
+  - "知乎"
+source_url: "https://www.zhihu.com/question/12696635711/answer/105709816990"
 ---
 
 

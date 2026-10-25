@@ -1,17 +1,17 @@
 ---
-title: 现在LLM 的大小为什么都设计成6/7B、13B和130B几个档次？【Scaling Law】
+title: "现在LLM 的大小为什么都设计成6/7B、13B和130B几个档次？【Scaling Law】"
 date: "2023-12-10 00:00:00"
 updated: "2023-12-10 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/dl论文/现在LLM-的大小为什么都设计成6_7B、13B和130B几个档次-【Scaling-Law】/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/dl论文/现在LLM-的大小为什么都设计成6_7B、13B和130B几个档次-【Scaling-Law】/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/670046783
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/670046783"
 ---
 
 

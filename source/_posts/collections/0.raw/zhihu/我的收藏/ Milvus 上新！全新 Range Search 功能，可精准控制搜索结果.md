@@ -1,17 +1,17 @@
 ---
-title: (1 条消息) Milvus 上新！全新 Range Search 功能，可精准控制搜索结果
+title: "(1 条消息) Milvus 上新！全新 Range Search 功能，可精准控制搜索结果"
 date: "2023-11-14 00:00:00"
 updated: "2023-11-14 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/我的收藏/Milvus-上新-全新-Range-Search-功能,可精准控制搜索结果/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/我的收藏/Milvus-上新-全新-Range-Search-功能,可精准控制搜索结果/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/666825515
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/666825515"
 ---
 
 

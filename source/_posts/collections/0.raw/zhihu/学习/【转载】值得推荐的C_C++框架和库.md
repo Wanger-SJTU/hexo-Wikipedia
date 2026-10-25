@@ -1,17 +1,17 @@
 ---
-title: 【转载】值得推荐的C/C++框架和库
+title: "【转载】值得推荐的C/C++框架和库"
 date: "2017-02-26 00:00:00"
 updated: "2017-02-26 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/学习/【转载】值得推荐的C_C-框架和库/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/学习/【转载】值得推荐的C_C-框架和库/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/25443704
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/25443704"
 ---
 
 

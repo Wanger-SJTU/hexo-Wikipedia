@@ -1,17 +1,17 @@
 ---
-title: (1 条消息) LLM的智能只是压缩吗？
+title: "(1 条消息) LLM的智能只是压缩吗？"
 date: "2023-05-03 00:00:00"
 updated: "2023-05-03 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/我的收藏/LLM的智能只是压缩吗/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/我的收藏/LLM的智能只是压缩吗/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/626446776
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/626446776"
 ---
 
 

@@ -1,17 +1,17 @@
 ---
-title: im2col方法实现卷积算法
+title: "im2col方法实现卷积算法"
 date: "2019-06-23 00:00:00"
 updated: "2019-06-23 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/机器学习/im2col方法实现卷积算法/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/机器学习/im2col方法实现卷积算法/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/63974249
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/63974249"
 ---
 
 

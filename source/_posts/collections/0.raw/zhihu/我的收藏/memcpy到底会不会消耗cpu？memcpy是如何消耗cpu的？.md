@@ -1,17 +1,17 @@
 ---
-title: memcpy到底会不会消耗cpu？memcpy是如何消耗cpu的？
+title: "memcpy到底会不会消耗cpu？memcpy是如何消耗cpu的？"
 date: "2024-05-17 00:00:00"
 updated: "2024-05-17 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/我的收藏/memcpy到底会不会消耗cpu-memcpy是如何消耗cpu的/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/我的收藏/memcpy到底会不会消耗cpu-memcpy是如何消耗cpu的/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://www.zhihu.com/question/654514738/answer/3500963676
+  - "知乎"
+source_url: "https://www.zhihu.com/question/654514738/answer/3500963676"
 ---
 
 

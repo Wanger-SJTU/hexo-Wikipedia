@@ -1,17 +1,17 @@
 ---
-title: (2 条消息) moe为什么不把一个句子都放进一个专家，而是一个token呢？
+title: "(2 条消息) moe为什么不把一个句子都放进一个专家，而是一个token呢？"
 date: "2026-04-17 00:00:00"
 updated: "2026-04-17 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/我的收藏/moe为什么不把一个句子都放进一个专家,而是一个token呢/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/我的收藏/moe为什么不把一个句子都放进一个专家,而是一个token呢/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://www.zhihu.com/question/646173158/answer/1934378397942936809
+  - "知乎"
+source_url: "https://www.zhihu.com/question/646173158/answer/1934378397942936809"
 ---
 
 

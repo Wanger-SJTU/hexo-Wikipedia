@@ -1,17 +1,17 @@
 ---
-title: 深入内存/主存：解剖DRAM存储器
+title: "深入内存/主存：解剖DRAM存储器"
 date: "2024-11-05 00:00:00"
 updated: "2024-11-05 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/硬件/深入内存_主存-解剖DRAM存储器/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/硬件/深入内存_主存-解剖DRAM存储器/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/561501585
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/561501585"
 ---
 
 

@@ -1,17 +1,17 @@
 ---
-title: 如何评价框架共用的模型文件格式ONNX？
+title: "如何评价框架共用的模型文件格式ONNX？"
 date: "2023-02-06 00:00:00"
 updated: "2023-02-06 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/我的收藏/如何评价框架共用的模型文件格式ONNX/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/我的收藏/如何评价框架共用的模型文件格式ONNX/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://www.zhihu.com/question/65050141/answer/2879112334
+  - "知乎"
+source_url: "https://www.zhihu.com/question/65050141/answer/2879112334"
 ---
 
 

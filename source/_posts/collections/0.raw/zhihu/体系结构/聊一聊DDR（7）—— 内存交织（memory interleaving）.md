@@ -1,17 +1,17 @@
 ---
-title: 聊一聊DDR（7）—— 内存交织（memory interleaving）
+title: "聊一聊DDR（7）—— 内存交织（memory interleaving）"
 date: "2023-07-30 00:00:00"
 updated: "2023-07-30 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/体系结构/聊一聊DDR(7)——-内存交织(memory-interleaving)/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/体系结构/聊一聊DDR(7)——-内存交织(memory-interleaving)/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/646850159
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/646850159"
 ---
 
 

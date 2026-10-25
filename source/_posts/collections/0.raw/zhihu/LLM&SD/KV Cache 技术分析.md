@@ -1,17 +1,17 @@
 ---
-title: KV Cache 技术分析
+title: "KV Cache 技术分析"
 date: "2024-03-28 00:00:00"
 updated: "2024-03-28 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/LLM-SD/KV-Cache-技术分析/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/LLM-SD/KV-Cache-技术分析/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/689594333
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/689594333"
 ---
 
 

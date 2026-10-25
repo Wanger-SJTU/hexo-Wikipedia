@@ -1,17 +1,17 @@
 ---
-title: 众核处理器如何保证cache一致性?
+title: "众核处理器如何保证cache一致性?"
 date: "2026-04-21 00:00:00"
 updated: "2026-04-21 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/体系结构/众核处理器如何保证cache一致性_/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/体系结构/众核处理器如何保证cache一致性_/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://www.zhihu.com/question/359128582/answer/3437893189
+  - "知乎"
+source_url: "https://www.zhihu.com/question/359128582/answer/3437893189"
 ---
 
 

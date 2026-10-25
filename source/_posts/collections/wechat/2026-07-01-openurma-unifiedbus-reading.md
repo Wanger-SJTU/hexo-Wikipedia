@@ -1,23 +1,23 @@
 ---
-title: OpenURMA 深度解读：Unified Bus 的 clean-room 实现与远端内存访问成本拆解
+title: "OpenURMA 深度解读：Unified Bus 的 clean-room 实现与远端内存访问成本拆解"
 date: "2026-07-01 00:00:00"
 updated: "2026-07-01 00:00:00"
-layout: post
-permalink: /collections/wechat/2026-07-01-openurma-unifiedbus-reading/
+layout: "post"
+permalink: "/collections/wechat/2026-07-01-openurma-unifiedbus-reading/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - UB
-  - RDMA
-  - UnifiedBus
-  - 远端内存
-  - 华为
-  - Scale-up
-  - 网络架构
-source_url: https://mp.weixin.qq.com/s/0NXD0FadkjgO6uCS28Cvow
+  - "UB"
+  - "RDMA"
+  - "UnifiedBus"
+  - "远端内存"
+  - "华为"
+  - "Scale-up"
+  - "网络架构"
+source_url: "https://mp.weixin.qq.com/s/0NXD0FadkjgO6uCS28Cvow"
 ---
 
 

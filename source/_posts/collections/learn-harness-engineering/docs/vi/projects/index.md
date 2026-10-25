@@ -1,14 +1,14 @@
 ---
-title: Chào mừng đến với Dự án
+title: "Chào mừng đến với Dự án"
 date: "2026-05-28 11:34:14"
 updated: "2026-05-28 11:34:14"
-layout: post
-permalink: /collections/learn-harness-engineering/docs/vi/projects/index/
+layout: "post"
+permalink: "/collections/learn-harness-engineering/docs/vi/projects/index/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 ---
 
 # Chào mừng đến với Dự án

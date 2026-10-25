@@ -1,17 +1,17 @@
 ---
-title: SAM与GPT背后相同的逻辑（上）
+title: "SAM与GPT背后相同的逻辑（上）"
 date: "2023-05-04 00:00:00"
 updated: "2023-05-04 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/dl论文/SAM与GPT背后相同的逻辑(上)/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/dl论文/SAM与GPT背后相同的逻辑(上)/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/626510234
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/626510234"
 ---
 
 

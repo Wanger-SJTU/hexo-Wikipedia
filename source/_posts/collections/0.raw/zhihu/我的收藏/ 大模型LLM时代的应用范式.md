@@ -1,17 +1,17 @@
 ---
-title: (1 条消息) 大模型LLM时代的应用范式
+title: "(1 条消息) 大模型LLM时代的应用范式"
 date: "2023-07-12 00:00:00"
 updated: "2023-07-12 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/我的收藏/大模型LLM时代的应用范式/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/我的收藏/大模型LLM时代的应用范式/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/643065395
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/643065395"
 ---
 
 

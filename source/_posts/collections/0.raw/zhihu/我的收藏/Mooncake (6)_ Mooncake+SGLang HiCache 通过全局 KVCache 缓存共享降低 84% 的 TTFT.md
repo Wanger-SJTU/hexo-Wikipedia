@@ -2,16 +2,16 @@
 title: "(2 条消息) Mooncake (6): Mooncake+SGLang HiCache 通过全局 KVCache 缓存共享降低 84% 的 TTFT"
 date: "2025-10-08 00:00:00"
 updated: "2025-10-08 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/我的收藏/Mooncake-(6)_-Mooncake-SGLang-HiCache-通过全局-KVCache-缓存共享降低-84-的-TTFT/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/我的收藏/Mooncake-(6)_-Mooncake-SGLang-HiCache-通过全局-KVCache-缓存共享降低-84-的-TTFT/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/1959366095443064318
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/1959366095443064318"
 ---
 
 

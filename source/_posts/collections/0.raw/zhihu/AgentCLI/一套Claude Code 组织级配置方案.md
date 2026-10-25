@@ -1,17 +1,17 @@
 ---
-title: 一套Claude Code 组织级配置方案
+title: "一套Claude Code 组织级配置方案"
 date: "2026-02-23 00:00:00"
 updated: "2026-02-23 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/AgentCLI/一套Claude-Code-组织级配置方案/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/AgentCLI/一套Claude-Code-组织级配置方案/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/2009243481537811148
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/2009243481537811148"
 ---
 
 

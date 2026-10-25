@@ -1,17 +1,17 @@
 ---
-title: (2 条消息) 菜鸟读flash attention-序
+title: "(2 条消息) 菜鸟读flash attention-序"
 date: "2025-06-23 00:00:00"
 updated: "2025-06-23 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/我的收藏/菜鸟读flash-attention-序/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/我的收藏/菜鸟读flash-attention-序/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/1920426925765145060
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/1920426925765145060"
 ---
 
 

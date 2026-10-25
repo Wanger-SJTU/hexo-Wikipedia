@@ -1,17 +1,17 @@
 ---
-title: 为什么很多paper计算perceptual loss 都用VGG网络网络？
+title: "为什么很多paper计算perceptual loss 都用VGG网络网络？"
 date: "2026-04-15 00:00:00"
 updated: "2026-04-15 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/机器学习/为什么很多paper计算perceptual-loss-都用VGG网络网络/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/机器学习/为什么很多paper计算perceptual-loss-都用VGG网络网络/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://www.zhihu.com/question/341843217/answer/1981537479
+  - "知乎"
+source_url: "https://www.zhihu.com/question/341843217/answer/1981537479"
 ---
 
 

@@ -1,17 +1,17 @@
 ---
-title: 详解卷积中的Winograd加速算法
+title: "详解卷积中的Winograd加速算法"
 date: "2020-09-30 00:00:00"
 updated: "2020-09-30 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/优化/详解卷积中的Winograd加速算法/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/优化/详解卷积中的Winograd加速算法/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/260109670
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/260109670"
 ---
 
 

@@ -1,17 +1,17 @@
 ---
-title: Memory Bound、Compute Bound 和 Latency Bound
+title: "Memory Bound、Compute Bound 和 Latency Bound"
 date: "2023-12-27 00:00:00"
 updated: "2023-12-27 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/体系结构/Memory-Bound、Compute-Bound-和-Latency-Bound/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/体系结构/Memory-Bound、Compute-Bound-和-Latency-Bound/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/673957960
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/673957960"
 ---
 
 

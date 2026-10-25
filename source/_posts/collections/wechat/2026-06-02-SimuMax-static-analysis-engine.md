@@ -2,13 +2,13 @@
 title: "Compute MFU Without Running Training! Moore Threads' Static Analysis Engine SimuMax: Packing TP/PP/EP/CP into a Few Thousand Lines of Python"
 date: "2026-06-02 23:05:50"
 updated: "2026-06-02 23:05:50"
-layout: post
-permalink: /collections/wechat/2026-06-02-SimuMax-static-analysis-engine/
+layout: "post"
+permalink: "/collections/wechat/2026-06-02-SimuMax-static-analysis-engine/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 ---
 
 # Compute MFU Without Running Training! Moore Threads' Static Analysis Engine SimuMax: Packing TP/PP/EP/CP into a Few Thousand Lines of Python

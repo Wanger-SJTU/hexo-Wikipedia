@@ -1,17 +1,17 @@
 ---
-title: 大模型量化领域梳理（三）：重要的Hadamard变换
+title: "大模型量化领域梳理（三）：重要的Hadamard变换"
 date: "2025-11-10 00:00:00"
 updated: "2025-11-10 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/LLM-SD/大模型量化领域梳理(三)-重要的Hadamard变换/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/LLM-SD/大模型量化领域梳理(三)-重要的Hadamard变换/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/1971155871955399081
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/1971155871955399081"
 ---
 
 

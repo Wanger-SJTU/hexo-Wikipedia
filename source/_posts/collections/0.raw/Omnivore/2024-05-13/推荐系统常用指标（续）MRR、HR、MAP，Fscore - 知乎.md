@@ -1,14 +1,14 @@
 ---
-title: 推荐系统常用指标（续）MRR、HR、MAP，Fscore - 知乎
+title: "推荐系统常用指标（续）MRR、HR、MAP，Fscore - 知乎"
 date: "2026-04-11 21:40:28"
 updated: "2026-04-11 21:40:28"
-layout: post
-permalink: /collections/0.raw/Omnivore/2024-05-13/推荐系统常用指标(续)MRR、HR、MAP,Fscore-知乎/
+layout: "post"
+permalink: "/collections/0.raw/Omnivore/2024-05-13/推荐系统常用指标(续)MRR、HR、MAP,Fscore-知乎/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 ---
 
 ---

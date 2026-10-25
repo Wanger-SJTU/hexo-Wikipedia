@@ -1,17 +1,17 @@
 ---
-title: pd分离下decode请求被抢占再恢复
+title: "pd分离下decode请求被抢占再恢复"
 date: "2026-08-13 00:00:00"
 updated: "2026-08-13 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/AI-infra/pd分离下decode请求被抢占再恢复/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/AI-infra/pd分离下decode请求被抢占再恢复/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/2071256072153837666
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/2071256072153837666"
 ---
 
 

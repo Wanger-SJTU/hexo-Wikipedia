@@ -1,17 +1,17 @@
 ---
-title: 对ResNet本质的一些思考
+title: "对ResNet本质的一些思考"
 date: "2019-03-28 00:00:00"
 updated: "2019-03-28 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/机器学习/对ResNet本质的一些思考/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/机器学习/对ResNet本质的一些思考/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/60668529
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/60668529"
 ---
 
 

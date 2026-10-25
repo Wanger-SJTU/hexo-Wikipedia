@@ -1,17 +1,17 @@
 ---
-title: HPCA '26 论文解读：RoMe —— 专为 LLM 设计的4KB行粒度内存系统
+title: "HPCA '26 论文解读：RoMe —— 专为 LLM 设计的4KB行粒度内存系统"
 date: "2026-02-25 00:00:00"
 updated: "2026-02-25 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/体系结构/HPCA-'26-论文解读-RoMe-——-专为-LLM-设计的4KB行粒度内存系统-3e09c9/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/体系结构/HPCA-'26-论文解读-RoMe-——-专为-LLM-设计的4KB行粒度内存系统-3e09c9/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/2009786843592409877
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/2009786843592409877"
 ---
 
 

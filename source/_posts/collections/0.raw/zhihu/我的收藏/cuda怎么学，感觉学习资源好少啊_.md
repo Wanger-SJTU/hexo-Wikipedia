@@ -1,17 +1,17 @@
 ---
-title: cuda怎么学，感觉学习资源好少啊?
+title: "cuda怎么学，感觉学习资源好少啊?"
 date: "2025-07-04 00:00:00"
 updated: "2025-07-04 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/我的收藏/cuda怎么学,感觉学习资源好少啊_/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/我的收藏/cuda怎么学,感觉学习资源好少啊_/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://www.zhihu.com/question/1894064841192350642/answer/1924460524017516760
+  - "知乎"
+source_url: "https://www.zhihu.com/question/1894064841192350642/answer/1924460524017516760"
 ---
 
 

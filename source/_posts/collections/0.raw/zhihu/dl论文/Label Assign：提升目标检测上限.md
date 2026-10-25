@@ -1,17 +1,17 @@
 ---
-title: Label Assign：提升目标检测上限
+title: "Label Assign：提升目标检测上限"
 date: "2020-07-21 00:00:00"
 updated: "2020-07-21 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/dl论文/Label-Assign-提升目标检测上限/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/dl论文/Label-Assign-提升目标检测上限/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/160991530
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/160991530"
 ---
 
 

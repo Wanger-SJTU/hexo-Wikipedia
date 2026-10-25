@@ -1,17 +1,17 @@
 ---
-title: 以下C++代码怎么理解，这模板怎么推导的？
+title: "以下C++代码怎么理解，这模板怎么推导的？"
 date: "2021-06-11 00:00:00"
 updated: "2021-06-11 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/走向cs/以下C-代码怎么理解,这模板怎么推导的/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/走向cs/以下C-代码怎么理解,这模板怎么推导的/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://www.zhihu.com/question/463875728/answer/1934003540
+  - "知乎"
+source_url: "https://www.zhihu.com/question/463875728/answer/1934003540"
 ---
 
 

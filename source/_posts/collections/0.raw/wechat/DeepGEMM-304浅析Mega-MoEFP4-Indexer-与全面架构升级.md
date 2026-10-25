@@ -2,16 +2,16 @@
 title: "DeepGEMM #304浅析：Mega MoE、FP4 Indexer 与全面架构升级"
 date: "2026-04-29 00:00:00"
 updated: "2026-04-29 00:00:00"
-layout: post
-permalink: /collections/0.raw/wechat/DeepGEMM-304浅析Mega-MoEFP4-Indexer-与全面架构升级/
+layout: "post"
+permalink: "/collections/0.raw/wechat/DeepGEMM-304浅析Mega-MoEFP4-Indexer-与全面架构升级/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - wechat
-source_url: https://mp.weixin.qq.com/s/I3ijRMTp1Kz_iK7xqDJOkw
+  - "wechat"
+source_url: "https://mp.weixin.qq.com/s/I3ijRMTp1Kz_iK7xqDJOkw"
 ---
 
 

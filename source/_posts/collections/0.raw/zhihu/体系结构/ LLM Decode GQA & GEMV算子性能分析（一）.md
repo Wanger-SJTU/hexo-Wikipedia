@@ -1,17 +1,17 @@
 ---
-title: LLM Decode GQA & GEMV算子性能分析（一）
+title: "LLM Decode GQA & GEMV算子性能分析（一）"
 date: "2024-08-20 00:00:00"
 updated: "2024-08-20 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/体系结构/LLM-Decode-GQA-GEMV算子性能分析(一)/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/体系结构/LLM-Decode-GQA-GEMV算子性能分析(一)/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/715091838
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/715091838"
 ---
 
 

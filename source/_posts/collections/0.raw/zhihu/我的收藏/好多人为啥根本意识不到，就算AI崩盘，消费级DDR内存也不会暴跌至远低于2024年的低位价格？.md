@@ -1,17 +1,17 @@
 ---
-title: 好多人为啥根本意识不到，就算AI崩盘，消费级DDR内存也不会暴跌至远低于2024年的低位价格？
+title: "好多人为啥根本意识不到，就算AI崩盘，消费级DDR内存也不会暴跌至远低于2024年的低位价格？"
 date: "2026-07-11 00:00:00"
 updated: "2026-07-11 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/我的收藏/好多人为啥根本意识不到,就算AI崩盘,消费级DDR内存也不会暴跌至远低于2024年的低位价格/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/我的收藏/好多人为啥根本意识不到,就算AI崩盘,消费级DDR内存也不会暴跌至远低于2024年的低位价格/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://www.zhihu.com/question/2052018919150450628/answer/2059363567153985429
+  - "知乎"
+source_url: "https://www.zhihu.com/question/2052018919150450628/answer/2059363567153985429"
 ---
 
 

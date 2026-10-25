@@ -2,16 +2,16 @@
 title: "Speculative Decoding: 投机采样只能复用Hidden States吗？"
 date: "2026-05-11 00:00:00"
 updated: "2026-05-11 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/LLM-SD/Speculative-Decoding_-投机采样只能复用Hidden-States吗/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/LLM-SD/Speculative-Decoding_-投机采样只能复用Hidden-States吗/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/2036027467606012834
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/2036027467606012834"
 ---
 
 

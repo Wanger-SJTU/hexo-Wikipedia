@@ -1,17 +1,17 @@
 ---
-title: 通过 SSH 实现 TCP / IP 隧道（端口转发）：使用 OpenSSH 可能的 8 种场景
+title: "通过 SSH 实现 TCP / IP 隧道（端口转发）：使用 OpenSSH 可能的 8 种场景"
 date: "2017-10-10 00:00:00"
 updated: "2017-10-10 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/学习/通过-SSH-实现-TCP-_-IP-隧道(端口转发)-使用-OpenSSH-可能的-8-种场景/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/学习/通过-SSH-实现-TCP-_-IP-隧道(端口转发)-使用-OpenSSH-可能的-8-种场景/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/30000490
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/30000490"
 ---
 
 

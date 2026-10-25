@@ -1,14 +1,14 @@
 ---
-title: 一行配置，768 维记忆：OpenClaw 向量搜索升级实战
+title: "一行配置，768 维记忆：OpenClaw 向量搜索升级实战"
 date: "2026-04-20 07:56:40"
 updated: "2026-04-20 07:56:40"
-layout: post
-permalink: /collections/0.raw/web/OpenClaw向量搜索升级实战-caprompt/
+layout: "post"
+permalink: "/collections/0.raw/web/OpenClaw向量搜索升级实战-caprompt/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 ---
 
 # 一行配置，768 维记忆：OpenClaw 向量搜索升级实战

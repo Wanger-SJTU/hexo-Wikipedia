@@ -1,19 +1,19 @@
 ---
-title: Everyone Should Know SIMD
+title: "Everyone Should Know SIMD"
 date: "2026-07-23 00:00:00"
 updated: "2026-07-23 00:00:00"
-layout: post
-permalink: /collections/0.raw/everyone-should-know-simd/
+layout: "post"
+permalink: "/collections/0.raw/everyone-should-know-simd/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - SIMD
-  - performance
-  - Zig
-  - low-level
+  - "SIMD"
+  - "performance"
+  - "Zig"
+  - "low-level"
 ---
 
 

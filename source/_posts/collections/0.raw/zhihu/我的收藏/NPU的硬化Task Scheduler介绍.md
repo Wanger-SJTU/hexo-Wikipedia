@@ -1,17 +1,17 @@
 ---
-title: (2 条消息) NPU的硬化Task Scheduler介绍
+title: "(2 条消息) NPU的硬化Task Scheduler介绍"
 date: "2025-08-20 00:00:00"
 updated: "2025-08-20 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/我的收藏/NPU的硬化Task-Scheduler介绍/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/我的收藏/NPU的硬化Task-Scheduler介绍/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/7071414585
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/7071414585"
 ---
 
 

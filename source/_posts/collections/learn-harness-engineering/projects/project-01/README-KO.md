@@ -2,13 +2,13 @@
 title: "프로젝트 01: 기준선 대 최소 하네스"
 date: "2026-05-28 11:34:14"
 updated: "2026-05-28 11:34:14"
-layout: post
-permalink: /collections/learn-harness-engineering/projects/project-01/README-KO/
+layout: "post"
+permalink: "/collections/learn-harness-engineering/projects/project-01/README-KO/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 ---
 
 [English](./README.md) · <strong>한국어</strong>

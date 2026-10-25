@@ -1,14 +1,14 @@
 ---
-title: プロジェクト 03. セッション再起動後もエージェントが作業を続けられるようにする
+title: "プロジェクト 03. セッション再起動後もエージェントが作業を続けられるようにする"
 date: "2026-05-28 11:34:14"
 updated: "2026-05-28 11:34:14"
-layout: post
-permalink: /collections/learn-harness-engineering/docs/ja/projects/project-03-multi-session-continuity/index/
+layout: "post"
+permalink: "/collections/learn-harness-engineering/docs/ja/projects/project-03-multi-session-continuity/index/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 ---
 
 [中文版本 →](../../../zh/projects/project-03-multi-session-continuity/)

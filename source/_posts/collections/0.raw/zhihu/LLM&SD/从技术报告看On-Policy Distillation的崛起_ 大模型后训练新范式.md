@@ -2,16 +2,16 @@
 title: "从技术报告看On-Policy Distillation的崛起: 大模型后训练新范式"
 date: "2026-04-24 00:00:00"
 updated: "2026-04-24 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/LLM-SD/从技术报告看On-Policy-Distillation的崛起_-大模型后训练新范式/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/LLM-SD/从技术报告看On-Policy-Distillation的崛起_-大模型后训练新范式/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/2031101471563962191
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/2031101471563962191"
 ---
 
 

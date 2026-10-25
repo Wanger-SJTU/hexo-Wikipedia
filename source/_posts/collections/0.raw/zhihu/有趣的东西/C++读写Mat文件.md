@@ -1,17 +1,17 @@
 ---
-title: C++读写Mat文件
+title: "C++读写Mat文件"
 date: "2016-11-01 00:00:00"
 updated: "2016-11-01 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/有趣的东西/C-读写Mat文件/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/有趣的东西/C-读写Mat文件/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/23334508
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/23334508"
 ---
 
 

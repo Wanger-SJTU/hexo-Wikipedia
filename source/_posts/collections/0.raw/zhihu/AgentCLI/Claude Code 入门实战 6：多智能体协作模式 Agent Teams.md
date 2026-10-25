@@ -1,17 +1,17 @@
 ---
-title: Claude Code 入门实战 6：多智能体协作模式 Agent Teams
+title: "Claude Code 入门实战 6：多智能体协作模式 Agent Teams"
 date: "2026-02-28 00:00:00"
 updated: "2026-02-28 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/AgentCLI/Claude-Code-入门实战-6-多智能体协作模式-Agent-Teams/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/AgentCLI/Claude-Code-入门实战-6-多智能体协作模式-Agent-Teams/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/2011022749984896597
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/2011022749984896597"
 ---
 
 

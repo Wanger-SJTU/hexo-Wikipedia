@@ -1,17 +1,17 @@
 ---
-title: Claude Code Agent Teams：多 Agent 协作的正确打开方式
+title: "Claude Code Agent Teams：多 Agent 协作的正确打开方式"
 date: "2026-02-06 00:00:00"
 updated: "2026-02-06 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/AgentCLI/Claude-Code-Agent-Teams-多-Agent-协作的正确打开方式/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/AgentCLI/Claude-Code-Agent-Teams-多-Agent-协作的正确打开方式/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/2003061730788521596
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/2003061730788521596"
 ---
 
 

@@ -1,17 +1,17 @@
 ---
-title: 详解CUDA的Context、Stream、Warp、SM、SP、Kernel、Block、Grid
+title: "详解CUDA的Context、Stream、Warp、SM、SP、Kernel、Block、Grid"
 date: "2023-05-20 00:00:00"
 updated: "2023-05-20 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/优化/详解CUDA的Context、Stream、Warp、SM、SP、Kernel、Block、Grid/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/优化/详解CUDA的Context、Stream、Warp、SM、SP、Kernel、Block、Grid/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/266633373
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/266633373"
 ---
 
 

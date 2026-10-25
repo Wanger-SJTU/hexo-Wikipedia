@@ -1,17 +1,17 @@
 ---
-title: Registration配准 @CVPR2013-2017
+title: "Registration配准 @CVPR2013-2017"
 date: "2019-08-28 00:00:00"
 updated: "2019-08-28 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/dl论文/Registration配准-CVPR2013-2017/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/dl论文/Registration配准-CVPR2013-2017/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/80071766
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/80071766"
 ---
 
 

@@ -1,14 +1,14 @@
 ---
-title: المشروع 06. ابنِ harness كاملًا للوكيل (Capstone)
+title: "المشروع 06. ابنِ harness كاملًا للوكيل (Capstone)"
 date: "2026-05-28 11:34:14"
 updated: "2026-05-28 11:34:14"
-layout: post
-permalink: /collections/learn-harness-engineering/docs/ar/projects/project-06-runtime-observability-and-debugging/index/
+layout: "post"
+permalink: "/collections/learn-harness-engineering/docs/ar/projects/project-06-runtime-observability-and-debugging/index/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 ---
 
 [中文版本 →](../../../zh/projects/project-06-runtime-observability-and-debugging/)

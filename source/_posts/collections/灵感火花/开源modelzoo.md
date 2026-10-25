@@ -1,14 +1,14 @@
 ---
-title: 开源modelzoo
+title: "开源modelzoo"
 date: "2026-04-11 21:40:17"
 updated: "2026-04-11 21:40:17"
-layout: post
-permalink: /collections/灵感火花/开源modelzoo/
+layout: "post"
+permalink: "/collections/灵感火花/开源modelzoo/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 ---
 
 #ai #dev

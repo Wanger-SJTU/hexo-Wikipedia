@@ -1,14 +1,14 @@
 ---
-title: SVE  Introduction
+title: "SVE  Introduction"
 date: "2026-04-11 21:40:28"
 updated: "2026-04-11 21:40:28"
-layout: post
-permalink: /collections/0.raw/随笔/XPU-优化/SVE-Introduction/
+layout: "post"
+permalink: "/collections/0.raw/随笔/XPU-优化/SVE-Introduction/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 ---
 
 #sve #arm

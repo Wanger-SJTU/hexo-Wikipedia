@@ -1,17 +1,17 @@
 ---
-title: (2 条消息) 28种缓存替换策略的分类整理｜《Cache Replacement Policies》Chapter 2
+title: "(2 条消息) 28种缓存替换策略的分类整理｜《Cache Replacement Policies》Chapter 2"
 date: "2021-07-15 00:00:00"
 updated: "2021-07-15 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/我的收藏/28种缓存替换策略的分类整理-《Cache-Replacement-Policies》Chapter-2/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/我的收藏/28种缓存替换策略的分类整理-《Cache-Replacement-Policies》Chapter-2/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/387985644
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/387985644"
 ---
 
 

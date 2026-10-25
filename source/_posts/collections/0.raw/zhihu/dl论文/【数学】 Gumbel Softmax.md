@@ -1,17 +1,17 @@
 ---
-title: 【数学】 Gumbel Softmax
+title: "【数学】 Gumbel Softmax"
 date: "2020-03-23 00:00:00"
 updated: "2020-03-23 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/dl论文/【数学】-Gumbel-Softmax/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/dl论文/【数学】-Gumbel-Softmax/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/115386452
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/115386452"
 ---
 
 

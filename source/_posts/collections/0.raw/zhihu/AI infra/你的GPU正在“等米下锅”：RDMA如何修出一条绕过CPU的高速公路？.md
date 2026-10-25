@@ -1,17 +1,17 @@
 ---
-title: 你的GPU正在“等米下锅”：RDMA如何修出一条绕过CPU的高速公路？
+title: "你的GPU正在“等米下锅”：RDMA如何修出一条绕过CPU的高速公路？"
 date: "2026-03-18 00:00:00"
 updated: "2026-03-18 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/AI-infra/你的GPU正在“等米下锅”-RDMA如何修出一条绕过CPU的高速公路/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/AI-infra/你的GPU正在“等米下锅”-RDMA如何修出一条绕过CPU的高速公路/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/2017534731764377452
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/2017534731764377452"
 ---
 
 

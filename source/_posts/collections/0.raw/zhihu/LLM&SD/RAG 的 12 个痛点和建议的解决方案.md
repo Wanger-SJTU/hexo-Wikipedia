@@ -1,17 +1,17 @@
 ---
-title: RAG 的 12 个痛点和建议的解决方案
+title: "RAG 的 12 个痛点和建议的解决方案"
 date: "2024-02-02 00:00:00"
 updated: "2024-02-02 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/LLM-SD/RAG-的-12-个痛点和建议的解决方案/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/LLM-SD/RAG-的-12-个痛点和建议的解决方案/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/681066379
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/681066379"
 ---
 
 

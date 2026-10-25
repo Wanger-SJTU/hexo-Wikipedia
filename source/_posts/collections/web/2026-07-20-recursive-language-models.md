@@ -1,14 +1,14 @@
 ---
-title: Recursive Language Models (RLMs)
+title: "Recursive Language Models (RLMs)"
 date: "2026-07-20 15:26:13"
 updated: "2026-07-20 15:26:13"
-layout: post
-permalink: /collections/web/2026-07-20-recursive-language-models/
+layout: "post"
+permalink: "/collections/web/2026-07-20-recursive-language-models/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 ---
 
 # Recursive Language Models (RLMs)

@@ -1,17 +1,17 @@
 ---
-title: 【LangChain笔记25】Kor文本格式化抽取，韦小宝和哪个老婆互动多
+title: "【LangChain笔记25】Kor文本格式化抽取，韦小宝和哪个老婆互动多"
 date: "2023-07-31 00:00:00"
 updated: "2023-07-31 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/LLM-SD/【LangChain笔记25】Kor文本格式化抽取,韦小宝和哪个老婆互动多/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/LLM-SD/【LangChain笔记25】Kor文本格式化抽取,韦小宝和哪个老婆互动多/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/646948797
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/646948797"
 ---
 
 

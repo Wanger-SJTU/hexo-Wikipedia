@@ -1,14 +1,14 @@
 ---
-title: llm推理能力是真的吗
+title: "llm推理能力是真的吗"
 date: "2026-04-11 21:40:17"
 updated: "2026-04-11 21:40:17"
-layout: post
-permalink: /collections/草稿/llm推理能力是真的吗/
+layout: "post"
+permalink: "/collections/草稿/llm推理能力是真的吗/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 ---
 
 【LLM到底能不能进行推理&规划？】

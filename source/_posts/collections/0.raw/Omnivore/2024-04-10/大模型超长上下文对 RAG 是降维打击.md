@@ -1,14 +1,14 @@
 ---
-title: 大模型超长上下文对 RAG 是降维打击
+title: "大模型超长上下文对 RAG 是降维打击"
 date: "2026-04-11 21:40:28"
 updated: "2026-04-11 21:40:28"
-layout: post
-permalink: /collections/0.raw/Omnivore/2024-04-10/大模型超长上下文对-RAG-是降维打击/
+layout: "post"
+permalink: "/collections/0.raw/Omnivore/2024-04-10/大模型超长上下文对-RAG-是降维打击/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 ---
 
 ---

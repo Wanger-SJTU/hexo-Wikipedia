@@ -1,17 +1,17 @@
 ---
-title: 打造 Claude Code 并行自主开发环境：Auto Claude + GLM 4.7
+title: "打造 Claude Code 并行自主开发环境：Auto Claude + GLM 4.7"
 date: "2026-01-26 00:00:00"
 updated: "2026-01-26 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/AgentCLI/打造-Claude-Code-并行自主开发环境-Auto-Claude-GLM-4.7/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/AgentCLI/打造-Claude-Code-并行自主开发环境-Auto-Claude-GLM-4.7/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/1999079916122183598
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/1999079916122183598"
 ---
 
 

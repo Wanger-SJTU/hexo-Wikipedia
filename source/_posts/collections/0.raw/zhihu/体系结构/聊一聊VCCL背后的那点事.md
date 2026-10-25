@@ -1,17 +1,17 @@
 ---
-title: 聊一聊VCCL背后的那点事
+title: "聊一聊VCCL背后的那点事"
 date: "2025-09-24 00:00:00"
 updated: "2025-09-24 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/体系结构/聊一聊VCCL背后的那点事/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/体系结构/聊一聊VCCL背后的那点事/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/1953950437062456356
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/1953950437062456356"
 ---
 
 

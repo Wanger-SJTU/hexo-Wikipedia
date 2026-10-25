@@ -2,19 +2,19 @@
 title: "SonicMoE: A Hardware-Efficient and Software-Extensible Blueprint for Fine-Grained MoEs"
 date: "2026-05-05 00:00:00"
 updated: "2026-05-05 00:00:00"
-layout: post
-permalink: /collections/0.raw/papers/sonicmoe/
+layout: "post"
+permalink: "/collections/0.raw/papers/sonicmoe/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - MoE
-  - GPU Kernels
-  - Blackwell
-  - Grouped GEMM
-  - Tri Dao
+  - "MoE"
+  - "GPU Kernels"
+  - "Blackwell"
+  - "Grouped GEMM"
+  - "Tri Dao"
 ---
 
 

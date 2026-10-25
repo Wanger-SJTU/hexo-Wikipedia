@@ -1,17 +1,17 @@
 ---
-title: 【LLM】大模型能够推理和规划吗?
+title: "【LLM】大模型能够推理和规划吗?"
 date: "2024-03-11 00:00:00"
 updated: "2024-03-11 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/LLM-SD/【LLM】大模型能够推理和规划吗_/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/LLM-SD/【LLM】大模型能够推理和规划吗_/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/686166023
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/686166023"
 ---
 
 

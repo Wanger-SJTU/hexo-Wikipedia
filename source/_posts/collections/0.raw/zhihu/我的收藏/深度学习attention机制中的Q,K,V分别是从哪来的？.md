@@ -1,17 +1,17 @@
 ---
-title: (2 条消息) 深度学习attention机制中的Q,K,V分别是从哪来的？
+title: "(2 条消息) 深度学习attention机制中的Q,K,V分别是从哪来的？"
 date: "2026-04-17 00:00:00"
 updated: "2026-04-17 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/我的收藏/深度学习attention机制中的Q,K,V分别是从哪来的/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/我的收藏/深度学习attention机制中的Q,K,V分别是从哪来的/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://www.zhihu.com/question/325839123/answer/81065042040
+  - "知乎"
+source_url: "https://www.zhihu.com/question/325839123/answer/81065042040"
 ---
 
 

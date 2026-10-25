@@ -1,14 +1,14 @@
 ---
-title: 한국어 용어집 (Glossary)
+title: "한국어 용어집 (Glossary)"
 date: "2026-05-28 11:34:14"
 updated: "2026-05-28 11:34:14"
-layout: post
-permalink: /collections/learn-harness-engineering/docs/ko/resources/reference/glossary/
+layout: "post"
+permalink: "/collections/learn-harness-engineering/docs/ko/resources/reference/glossary/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 ---
 
 

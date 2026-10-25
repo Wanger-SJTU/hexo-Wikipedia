@@ -1,14 +1,14 @@
 ---
-title: TK快速学习法
+title: "TK快速学习法"
 date: "2026-04-11 21:40:17"
 updated: "2026-04-11 21:40:17"
-layout: post
-permalink: /collections/0.raw/收藏/TK快速学习法/
+layout: "post"
+permalink: "/collections/0.raw/收藏/TK快速学习法/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 ---
 
 

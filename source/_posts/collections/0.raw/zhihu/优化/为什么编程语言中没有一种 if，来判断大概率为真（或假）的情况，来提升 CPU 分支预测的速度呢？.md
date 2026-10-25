@@ -1,17 +1,17 @@
 ---
-title: 为什么编程语言中没有一种 if，来判断大概率为真（或假）的情况，来提升 CPU 分支预测的速度呢？
+title: "为什么编程语言中没有一种 if，来判断大概率为真（或假）的情况，来提升 CPU 分支预测的速度呢？"
 date: "2026-04-21 00:00:00"
 updated: "2026-04-21 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/优化/为什么编程语言中没有一种-if,来判断大概率为真(或假)的情况,来提升-CPU-分支预测的速度呢/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/优化/为什么编程语言中没有一种-if,来判断大概率为真(或假)的情况,来提升-CPU-分支预测的速度呢/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://www.zhihu.com/question/511712316/answer/2446726818
+  - "知乎"
+source_url: "https://www.zhihu.com/question/511712316/answer/2446726818"
 ---
 
 

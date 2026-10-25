@@ -2,16 +2,16 @@
 title: "(2 条消息) Mooncake: A KVCache-centric Disaggregated Architecture for LLM Serving"
 date: "2024-06-29 00:00:00"
 updated: "2024-06-29 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/我的收藏/Mooncake_-A-KVCache-centric-Disaggregated-Architecture-for-LLM-Serving/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/我的收藏/Mooncake_-A-KVCache-centric-Disaggregated-Architecture-for-LLM-Serving/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/706109023
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/706109023"
 ---
 
 

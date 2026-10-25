@@ -1,17 +1,17 @@
 ---
-title: 同一页面中，多个logo如何排版才能好看？
+title: "同一页面中，多个logo如何排版才能好看？"
 date: "2026-04-21 00:00:00"
 updated: "2026-04-21 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/有趣的东西/同一页面中,多个logo如何排版才能好看/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/有趣的东西/同一页面中,多个logo如何排版才能好看/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://www.zhihu.com/question/52068486/answer/224637779
+  - "知乎"
+source_url: "https://www.zhihu.com/question/52068486/answer/224637779"
 ---
 
 

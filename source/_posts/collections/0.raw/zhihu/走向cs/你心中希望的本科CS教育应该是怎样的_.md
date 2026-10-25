@@ -1,17 +1,17 @@
 ---
-title: 你心中希望的本科CS教育应该是怎样的?
+title: "你心中希望的本科CS教育应该是怎样的?"
 date: "2016-03-17 00:00:00"
 updated: "2016-03-17 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/走向cs/你心中希望的本科CS教育应该是怎样的_/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/走向cs/你心中希望的本科CS教育应该是怎样的_/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://www.zhihu.com/question/41147552/answer/91066033
+  - "知乎"
+source_url: "https://www.zhihu.com/question/41147552/answer/91066033"
 ---
 
 

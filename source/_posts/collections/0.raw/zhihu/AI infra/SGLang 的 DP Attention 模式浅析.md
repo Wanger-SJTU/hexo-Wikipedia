@@ -1,17 +1,17 @@
 ---
-title: SGLang 的 DP Attention 模式浅析
+title: "SGLang 的 DP Attention 模式浅析"
 date: "2025-11-30 00:00:00"
 updated: "2025-11-30 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/AI-infra/SGLang-的-DP-Attention-模式浅析/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/AI-infra/SGLang-的-DP-Attention-模式浅析/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/1978594821250783074
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/1978594821250783074"
 ---
 
 

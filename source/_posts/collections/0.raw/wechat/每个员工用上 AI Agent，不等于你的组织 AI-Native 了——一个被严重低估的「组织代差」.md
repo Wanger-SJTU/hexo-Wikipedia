@@ -1,18 +1,18 @@
 ---
-title: 每个员工用上 AI Agent，不等于你的组织 AI-Native 了——一个被严重低估的「组织代差」
+title: "每个员工用上 AI Agent，不等于你的组织 AI-Native 了——一个被严重低估的「组织代差」"
 date: "2026-04-29 00:00:00"
 updated: "2026-04-29 00:00:00"
-layout: post
-permalink: /collections/0.raw/wechat/每个员工用上-AI-Agent,不等于你的组织-AI-Native-了——一个被严重低估的「组织代差」/
+layout: "post"
+permalink: "/collections/0.raw/wechat/每个员工用上-AI-Agent,不等于你的组织-AI-Native-了——一个被严重低估的「组织代差」/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - wechat
-  - AI
-source_url: https://mp.weixin.qq.com/s/X7k-RuTGxrAY8BlX82frMQ
+  - "wechat"
+  - "AI"
+source_url: "https://mp.weixin.qq.com/s/X7k-RuTGxrAY8BlX82frMQ"
 ---
 
 

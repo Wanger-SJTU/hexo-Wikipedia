@@ -1,17 +1,17 @@
 ---
-title: CPU学习笔记：CHI协议-1.Introduction
+title: "CPU学习笔记：CHI协议-1.Introduction"
 date: "2026-05-28 00:00:00"
 updated: "2026-05-28 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/我的收藏/CPU学习笔记-CHI协议-1.Introduction-c3e04a/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/我的收藏/CPU学习笔记-CHI协议-1.Introduction-c3e04a/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/647841067
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/647841067"
 ---
 
 

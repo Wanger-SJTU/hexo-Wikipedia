@@ -1,17 +1,17 @@
 ---
-title: 简单讲解C++内存池原理与实现（通俗易懂）
+title: "简单讲解C++内存池原理与实现（通俗易懂）"
 date: "2021-11-20 00:00:00"
 updated: "2021-11-20 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/走向cs/简单讲解C-内存池原理与实现(通俗易懂)/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/走向cs/简单讲解C-内存池原理与实现(通俗易懂)/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/434087002
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/434087002"
 ---
 
 

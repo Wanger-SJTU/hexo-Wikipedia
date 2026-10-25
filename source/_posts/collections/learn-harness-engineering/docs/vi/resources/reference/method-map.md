@@ -1,14 +1,14 @@
 ---
-title: Bản đồ Phương pháp
+title: "Bản đồ Phương pháp"
 date: "2026-05-28 11:34:14"
 updated: "2026-05-28 11:34:14"
-layout: post
-permalink: /collections/learn-harness-engineering/docs/vi/resources/reference/method-map/
+layout: "post"
+permalink: "/collections/learn-harness-engineering/docs/vi/resources/reference/method-map/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 ---
 
 # Bản đồ Phương pháp

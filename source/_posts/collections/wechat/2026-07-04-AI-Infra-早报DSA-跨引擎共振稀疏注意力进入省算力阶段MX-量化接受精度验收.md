@@ -1,14 +1,14 @@
 ---
-title: AI Infra 早报｜DSA 跨引擎共振：稀疏注意力进入省算力阶段，MX 量化接受精度验收
+title: "AI Infra 早报｜DSA 跨引擎共振：稀疏注意力进入省算力阶段，MX 量化接受精度验收"
 date: "2026-07-04 13:46:23"
 updated: "2026-07-04 13:46:23"
-layout: post
-permalink: /collections/wechat/2026-07-04-AI-Infra-早报DSA-跨引擎共振稀疏注意力进入省算力阶段MX-量化接受精度验收/
+layout: "post"
+permalink: "/collections/wechat/2026-07-04-AI-Infra-早报DSA-跨引擎共振稀疏注意力进入省算力阶段MX-量化接受精度验收/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 ---
 
 # AI Infra 早报｜DSA 跨引擎共振：稀疏注意力进入省算力阶段，MX 量化接受精度验收

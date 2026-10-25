@@ -1,14 +1,14 @@
 ---
-title: Quality Document -- Project 06 Capstone
+title: "Quality Document -- Project 06 Capstone"
 date: "2026-05-28 11:34:14"
 updated: "2026-05-28 11:34:14"
-layout: post
-permalink: /collections/learn-harness-engineering/projects/project-06/starter/quality-document/
+layout: "post"
+permalink: "/collections/learn-harness-engineering/projects/project-06/starter/quality-document/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 ---
 
 # Quality Document -- Project 06 Capstone

@@ -1,17 +1,17 @@
 ---
-title: 内存优化之掌握 APP 运行时的内存模型
+title: "内存优化之掌握 APP 运行时的内存模型"
 date: "2022-12-11 00:00:00"
 updated: "2022-12-11 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/编程向/内存优化之掌握-APP-运行时的内存模型/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/编程向/内存优化之掌握-APP-运行时的内存模型/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/591043079
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/591043079"
 ---
 
 

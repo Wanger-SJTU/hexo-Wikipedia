@@ -1,17 +1,17 @@
 ---
-title: 【RAG研究综述】高级 RAG 技术：图解概述（精华版）
+title: "【RAG研究综述】高级 RAG 技术：图解概述（精华版）"
 date: "2025-06-25 00:00:00"
 updated: "2025-06-25 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/LLM-SD/【RAG研究综述】高级-RAG-技术-图解概述(精华版)/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/LLM-SD/【RAG研究综述】高级-RAG-技术-图解概述(精华版)/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/674906924
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/674906924"
 ---
 
 

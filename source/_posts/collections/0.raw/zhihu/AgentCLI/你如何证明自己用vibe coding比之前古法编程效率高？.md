@@ -1,17 +1,17 @@
 ---
-title: 你如何证明自己用vibe coding比之前古法编程效率高？
+title: "你如何证明自己用vibe coding比之前古法编程效率高？"
 date: "2026-04-23 00:00:00"
 updated: "2026-04-23 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/AgentCLI/你如何证明自己用vibe-coding比之前古法编程效率高/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/AgentCLI/你如何证明自己用vibe-coding比之前古法编程效率高/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://www.zhihu.com/question/2018018595418980371/answer/2027039762708541878
+  - "知乎"
+source_url: "https://www.zhihu.com/question/2018018595418980371/answer/2027039762708541878"
 ---
 
 

@@ -1,17 +1,17 @@
 ---
-title: gpu 调度问题
+title: "gpu 调度问题"
 date: "2025-05-02 00:00:00"
 updated: "2025-05-02 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/体系结构/gpu-调度问题/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/体系结构/gpu-调度问题/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/25685241636
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/25685241636"
 ---
 
 

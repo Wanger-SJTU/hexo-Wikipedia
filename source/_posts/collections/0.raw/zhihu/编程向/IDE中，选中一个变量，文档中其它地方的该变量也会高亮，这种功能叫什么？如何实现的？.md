@@ -1,17 +1,17 @@
 ---
-title: IDE中，选中一个变量，文档中其它地方的该变量也会高亮，这种功能叫什么？如何实现的？
+title: "IDE中，选中一个变量，文档中其它地方的该变量也会高亮，这种功能叫什么？如何实现的？"
 date: "2026-04-15 00:00:00"
 updated: "2026-04-15 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/编程向/IDE中,选中一个变量,文档中其它地方的该变量也会高亮,这种功能叫什么-如何实现的/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/编程向/IDE中,选中一个变量,文档中其它地方的该变量也会高亮,这种功能叫什么-如何实现的/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://www.zhihu.com/question/39441111/answer/81626593
+  - "知乎"
+source_url: "https://www.zhihu.com/question/39441111/answer/81626593"
 ---
 
 

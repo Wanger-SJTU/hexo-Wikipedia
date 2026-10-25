@@ -1,17 +1,17 @@
 ---
-title: (2 条消息) 模集第二章：MOS器件基础（总结）
+title: "(2 条消息) 模集第二章：MOS器件基础（总结）"
 date: "2024-12-24 00:00:00"
 updated: "2024-12-24 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/我的收藏/模集第二章-MOS器件基础(总结)/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/我的收藏/模集第二章-MOS器件基础(总结)/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/720969530
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/720969530"
 ---
 
 

@@ -1,17 +1,17 @@
 ---
-title: 后训练量化——Data free quantization
+title: "后训练量化——Data free quantization"
 date: "2021-12-24 00:00:00"
 updated: "2021-12-24 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/dl论文/后训练量化——Data-free-quantization/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/dl论文/后训练量化——Data-free-quantization/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/393556057
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/393556057"
 ---
 
 

@@ -1,14 +1,14 @@
 ---
-title: Project 03. 讓代理重啟後還能繼續執行
+title: "Project 03. 讓代理重啟後還能繼續執行"
 date: "2026-05-28 11:34:14"
 updated: "2026-05-28 11:34:14"
-layout: post
-permalink: /collections/learn-harness-engineering/docs/zh-TW/projects/project-03-multi-session-continuity/index/
+layout: "post"
+permalink: "/collections/learn-harness-engineering/docs/zh-TW/projects/project-03-multi-session-continuity/index/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 ---
 
 # Project 03. 讓代理重啟後還能繼續執行

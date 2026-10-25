@@ -1,17 +1,17 @@
 ---
-title: Tensor的简易实现
+title: "Tensor的简易实现"
 date: "2020-12-28 00:00:00"
 updated: "2020-12-28 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/dl论文/Tensor的简易实现/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/dl论文/Tensor的简易实现/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/340228853
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/340228853"
 ---
 
 

@@ -1,17 +1,17 @@
 ---
-title: 【研究综述】浅谈GPU通信和PCIe P2P DMA
+title: "【研究综述】浅谈GPU通信和PCIe P2P DMA"
 date: "2021-11-09 00:00:00"
 updated: "2021-11-09 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/我的收藏/【研究综述】浅谈GPU通信和PCIe-P2P-DMA/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/我的收藏/【研究综述】浅谈GPU通信和PCIe-P2P-DMA/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/430101220
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/430101220"
 ---
 
 

@@ -1,17 +1,17 @@
 ---
-title: Transformer（转换器）系列 5 - 下一代AI模型：Transformer的未来与挑战
+title: "Transformer（转换器）系列 5 - 下一代AI模型：Transformer的未来与挑战"
 date: "2024-03-04 00:00:00"
 updated: "2024-03-04 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/dl论文/Transformer(转换器)系列-5-下一代AI模型-Transformer的未来与挑战/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/dl论文/Transformer(转换器)系列-5-下一代AI模型-Transformer的未来与挑战/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/685138505
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/685138505"
 ---
 
 

@@ -1,17 +1,17 @@
 ---
-title: 从 MLA 到 High-Rank MQA
+title: "从 MLA 到 High-Rank MQA"
 date: "2026-04-25 00:00:00"
 updated: "2026-04-25 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/LLM-SD/从-MLA-到-High-Rank-MQA/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/LLM-SD/从-MLA-到-High-Rank-MQA/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/2031149621397935813
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/2031149621397935813"
 ---
 
 

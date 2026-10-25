@@ -1,17 +1,17 @@
 ---
-title: (2 条消息) Pytorch Pin Memory, async ckpt save
+title: "(2 条消息) Pytorch Pin Memory, async ckpt save"
 date: "2024-12-13 00:00:00"
 updated: "2024-12-13 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/我的收藏/Pytorch-Pin-Memory,-async-ckpt-save/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/我的收藏/Pytorch-Pin-Memory,-async-ckpt-save/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/9616453650
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/9616453650"
 ---
 
 

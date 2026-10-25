@@ -1,17 +1,17 @@
 ---
-title: 了解下 FlashInfer SKILLS 写法
+title: "了解下 FlashInfer SKILLS 写法"
 date: "2026-05-12 00:00:00"
 updated: "2026-05-12 00:00:00"
-layout: post
-permalink: /collections/wechat/2026-05-12-了解下-FlashInfer-SKILLS-写法/2026-05-12-了解下-FlashInfer-SKILLS-写法/
+layout: "post"
+permalink: "/collections/wechat/2026-05-12-了解下-FlashInfer-SKILLS-写法/2026-05-12-了解下-FlashInfer-SKILLS-写法/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 微信文章
-source_url: https://mp.weixin.qq.com/s/rb9-m1IiuzOdZQfNU1nSIA
+  - "微信文章"
+source_url: "https://mp.weixin.qq.com/s/rb9-m1IiuzOdZQfNU1nSIA"
 ---
 
 

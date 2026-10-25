@@ -1,17 +1,17 @@
 ---
-title: 如果你是一位cuda面试官，你会问哪些问题？
+title: "如果你是一位cuda面试官，你会问哪些问题？"
 date: "2026-04-14 00:00:00"
 updated: "2026-04-14 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/LLM-SD/如果你是一位cuda面试官,你会问哪些问题/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/LLM-SD/如果你是一位cuda面试官,你会问哪些问题/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://www.zhihu.com/question/10951382954/answer/1991904219184263333
+  - "知乎"
+source_url: "https://www.zhihu.com/question/10951382954/answer/1991904219184263333"
 ---
 
 

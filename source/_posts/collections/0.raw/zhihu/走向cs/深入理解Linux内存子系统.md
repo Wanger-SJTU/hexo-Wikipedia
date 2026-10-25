@@ -1,17 +1,17 @@
 ---
-title: 深入理解Linux内存子系统
+title: "深入理解Linux内存子系统"
 date: "2022-07-21 00:00:00"
 updated: "2022-07-21 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/走向cs/深入理解Linux内存子系统/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/走向cs/深入理解Linux内存子系统/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/525373501
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/525373501"
 ---
 
 

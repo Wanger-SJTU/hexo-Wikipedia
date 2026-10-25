@@ -1,17 +1,17 @@
 ---
-title: 浮了吗？如浮——ISSCC2024浮点存算秘辛
+title: "浮了吗？如浮——ISSCC2024浮点存算秘辛"
 date: "2024-08-12 00:00:00"
 updated: "2024-08-12 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/体系结构/浮了吗-如浮——ISSCC2024浮点存算秘辛-0afd38/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/体系结构/浮了吗-如浮——ISSCC2024浮点存算秘辛-0afd38/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/714015098
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/714015098"
 ---
 
 

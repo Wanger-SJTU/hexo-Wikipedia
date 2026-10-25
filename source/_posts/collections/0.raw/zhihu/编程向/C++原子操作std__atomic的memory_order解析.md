@@ -1,17 +1,17 @@
 ---
-title: C++原子操作std::atomic的memory_order解析
+title: "C++原子操作std::atomic的memory_order解析"
 date: "2023-02-27 00:00:00"
 updated: "2023-02-27 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/编程向/C-原子操作std__atomic的memory_order解析/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/编程向/C-原子操作std__atomic的memory_order解析/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/609771875
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/609771875"
 ---
 
 

@@ -1,17 +1,17 @@
 ---
-title: 为什么 larger batch size 对对比学习的影响比对监督学习的影响要大？
+title: "为什么 larger batch size 对对比学习的影响比对监督学习的影响要大？"
 date: "2026-04-23 00:00:00"
 updated: "2026-04-23 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/dl论文/为什么-larger-batch-size-对对比学习的影响比对监督学习的影响要大/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/dl论文/为什么-larger-batch-size-对对比学习的影响比对监督学习的影响要大/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://www.zhihu.com/question/483524293/answer/2327482420
+  - "知乎"
+source_url: "https://www.zhihu.com/question/483524293/answer/2327482420"
 ---
 
 

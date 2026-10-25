@@ -1,17 +1,17 @@
 ---
-title: LLM 推理系统、Code Agent 与电网
+title: "LLM 推理系统、Code Agent 与电网"
 date: "2026-02-27 00:00:00"
 updated: "2026-02-27 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/AgentCLI/LLM-推理系统、Code-Agent-与电网/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/AgentCLI/LLM-推理系统、Code-Agent-与电网/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/2006506955775169424
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/2006506955775169424"
 ---
 
 

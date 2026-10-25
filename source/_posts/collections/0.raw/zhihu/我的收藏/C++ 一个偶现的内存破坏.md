@@ -1,17 +1,17 @@
 ---
-title: (2 条消息) C++ 一个偶现的内存破坏
+title: "(2 条消息) C++ 一个偶现的内存破坏"
 date: "2022-11-04 00:00:00"
 updated: "2022-11-04 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/我的收藏/C-一个偶现的内存破坏/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/我的收藏/C-一个偶现的内存破坏/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/578290634
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/578290634"
 ---
 
 

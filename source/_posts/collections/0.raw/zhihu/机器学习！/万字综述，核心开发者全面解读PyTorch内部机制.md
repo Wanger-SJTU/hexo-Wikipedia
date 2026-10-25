@@ -1,17 +1,17 @@
 ---
-title: 万字综述，核心开发者全面解读PyTorch内部机制
+title: "万字综述，核心开发者全面解读PyTorch内部机制"
 date: "2019-06-02 00:00:00"
 updated: "2019-06-02 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/机器学习/万字综述,核心开发者全面解读PyTorch内部机制/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/机器学习/万字综述,核心开发者全面解读PyTorch内部机制/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/67834038
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/67834038"
 ---
 
 

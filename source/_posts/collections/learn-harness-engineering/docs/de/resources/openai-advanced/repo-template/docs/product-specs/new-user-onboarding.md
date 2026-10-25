@@ -1,14 +1,14 @@
 ---
-title: Onboarding neuer Benutzer
+title: "Onboarding neuer Benutzer"
 date: "2026-05-28 11:34:14"
 updated: "2026-05-28 11:34:14"
-layout: post
-permalink: /collections/learn-harness-engineering/docs/de/resources/openai-advanced/repo-template/docs/product-specs/new-user-onboarding/
+layout: "post"
+permalink: "/collections/learn-harness-engineering/docs/de/resources/openai-advanced/repo-template/docs/product-specs/new-user-onboarding/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 ---
 
 # Onboarding neuer Benutzer

@@ -1,17 +1,17 @@
 ---
-title: KV Cache压缩新阶段:走向问题指令无关下的压缩探索
+title: "KV Cache压缩新阶段:走向问题指令无关下的压缩探索"
 date: "2025-02-04 00:00:00"
 updated: "2025-02-04 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/LLM-SD/KV-Cache压缩新阶段_走向问题指令无关下的压缩探索/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/LLM-SD/KV-Cache压缩新阶段_走向问题指令无关下的压缩探索/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/21106979890
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/21106979890"
 ---
 
 

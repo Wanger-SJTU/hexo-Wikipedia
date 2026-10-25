@@ -2,13 +2,13 @@
 title: "Advanced RAG 01: Small-to-Big Retrieval | by Sophia Yang, Ph.D. | Towards Data Science"
 date: "2026-04-11 21:40:28"
 updated: "2026-04-11 21:40:28"
-layout: post
-permalink: /collections/0.raw/Omnivore/2024-05-13/Advanced-RAG-01-Small-to-Big-Retrieval-by-Sophia-Yang,-Ph.D.-Towards-Data-Science/
+layout: "post"
+permalink: "/collections/0.raw/Omnivore/2024-05-13/Advanced-RAG-01-Small-to-Big-Retrieval-by-Sophia-Yang,-Ph.D.-Towards-Data-Science/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 ---
 
 

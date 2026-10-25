@@ -1,14 +1,14 @@
 ---
-title: Proje 02. Projeyi okunabilir kılın ve kaldığınız yerden devam edin
+title: "Proje 02. Projeyi okunabilir kılın ve kaldığınız yerden devam edin"
 date: "2026-05-28 11:34:14"
 updated: "2026-05-28 11:34:14"
-layout: post
-permalink: /collections/learn-harness-engineering/docs/tr/projects/project-02-agent-readable-workspace/index/
+layout: "post"
+permalink: "/collections/learn-harness-engineering/docs/tr/projects/project-02-agent-readable-workspace/index/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 ---
 
 [中文版本 →](../../../zh/projects/project-02-agent-readable-workspace/)

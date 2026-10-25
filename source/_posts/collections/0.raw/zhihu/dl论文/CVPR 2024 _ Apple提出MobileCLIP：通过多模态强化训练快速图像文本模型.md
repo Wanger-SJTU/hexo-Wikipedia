@@ -1,17 +1,17 @@
 ---
-title: CVPR 2024 | Apple提出MobileCLIP：通过多模态强化训练快速图像文本模型
+title: "CVPR 2024 | Apple提出MobileCLIP：通过多模态强化训练快速图像文本模型"
 date: "2024-03-08 00:00:00"
 updated: "2024-03-08 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/dl论文/CVPR-2024-_-Apple提出MobileCLIP-通过多模态强化训练快速图像文本模型/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/dl论文/CVPR-2024-_-Apple提出MobileCLIP-通过多模态强化训练快速图像文本模型/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/685965289
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/685965289"
 ---
 
 

@@ -1,15 +1,15 @@
 ---
-title: RRAttention：基于逐头轮询移位的动态块稀疏注意力用于长上下文推理
+title: "RRAttention：基于逐头轮询移位的动态块稀疏注意力用于长上下文推理"
 date: "2026-04-29 00:01:38"
 updated: "2026-04-29 00:01:38"
-layout: post
-permalink: /collections/0.raw/papers/RRAttention动态块稀疏注意力-arXiv2602.05853/
+layout: "post"
+permalink: "/collections/0.raw/papers/RRAttention动态块稀疏注意力-arXiv2602.05853/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
-source_url: https://arxiv.org/abs/2602.05853
+  - "文档"
+source_url: "https://arxiv.org/abs/2602.05853"
 ---
 
 

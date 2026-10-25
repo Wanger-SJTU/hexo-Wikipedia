@@ -1,14 +1,14 @@
 ---
-title: 为什么会出现cpu使用率偶数核比奇数核高 - 知乎
+title: "为什么会出现cpu使用率偶数核比奇数核高 - 知乎"
 date: "2026-04-11 21:40:28"
 updated: "2026-04-11 21:40:28"
-layout: post
-permalink: /collections/0.raw/Omnivore/2024-05-16/为什么会出现cpu使用率偶数核比奇数核高-知乎/
+layout: "post"
+permalink: "/collections/0.raw/Omnivore/2024-05-16/为什么会出现cpu使用率偶数核比奇数核高-知乎/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 ---
 
 ---

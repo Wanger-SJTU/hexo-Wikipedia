@@ -1,19 +1,19 @@
 ---
-title: 存储寡头游说白宫背后：短缺要扛到2027！
+title: "存储寡头游说白宫背后：短缺要扛到2027！"
 date: "2026-07-06 00:00:00"
 updated: "2026-07-06 00:00:00"
-layout: post
-permalink: /collections/wechat/2026-07-06-存储寡头游说白宫背后-短缺要扛到2027/index/
+layout: "post"
+permalink: "/collections/wechat/2026-07-06-存储寡头游说白宫背后-短缺要扛到2027/index/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 存储
-  - 半导体
-  - 供应链
-source_url: https://mp.weixin.qq.com/s/PEelQrXWJnJMupmmLsUTUA
+  - "存储"
+  - "半导体"
+  - "供应链"
+source_url: "https://mp.weixin.qq.com/s/PEelQrXWJnJMupmmLsUTUA"
 ---
 
 

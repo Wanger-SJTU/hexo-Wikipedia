@@ -11796,7 +11796,7 @@
           "date": "2026-04-15"
         },
         {
-          "title": "(1 封私信) 模型性能不及预期时的分析思路",
+          "title": "模型性能不及预期时的分析思路",
           "url": "/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/%E6%A8%A1%E5%9E%8B%E6%80%A7%E8%83%BD%E4%B8%8D%E5%8F%8A%E9%A2%84%E6%9C%9F%E6%97%B6%E7%9A%84%E5%88%86%E6%9E%90%E6%80%9D%E8%B7%AF/",
           "date": "2026-04-14"
         },
@@ -11806,7 +11806,7 @@
           "date": "2026-04-14"
         },
         {
-          "title": "(1 封私信) 拆解RDMA的麻雀—— RDMA核心技术理解入门篇",
+          "title": "拆解RDMA的麻雀—— RDMA核心技术理解入门篇",
           "url": "/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/%E6%8B%86%E8%A7%A3RDMA%E7%9A%84%E9%BA%BB%E9%9B%80%E2%80%94%E2%80%94-RDMA%E6%A0%B8%E5%BF%83%E6%8A%80%E6%9C%AF%E7%90%86%E8%A7%A3%E5%85%A5%E9%97%A8%E7%AF%87/",
           "date": "2026-04-13"
         },
@@ -11826,7 +11826,7 @@
           "date": "2026-04-13"
         },
         {
-          "title": "(1 封私信) PD分离 vs AF分离的底层理论(roofline)基础（二）",
+          "title": "PD分离 vs AF分离的底层理论(roofline)基础（二）",
           "url": "/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/PD%E5%88%86%E7%A6%BB-vs-AF%E5%88%86%E7%A6%BB%E7%9A%84%E5%BA%95%E5%B1%82%E7%90%86%E8%AE%BA(roofline)%E5%9F%BA%E7%A1%80(%E4%BA%8C)/",
           "date": "2026-04-12"
         },
@@ -11836,13 +11836,8 @@
           "date": "2026-04-12"
         },
         {
-          "title": "(1 封私信) 一致性域：理解所有计算机互联架构的第一性原理",
+          "title": "一致性域：理解所有计算机互联架构的第一性原理",
           "url": "/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/%E4%B8%80%E8%87%B4%E6%80%A7%E5%9F%9F-%E7%90%86%E8%A7%A3%E6%89%80%E6%9C%89%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%BA%92%E8%81%94%E6%9E%B6%E6%9E%84%E7%9A%84%E7%AC%AC%E4%B8%80%E6%80%A7%E5%8E%9F%E7%90%86/",
-          "date": "2026-04-11"
-        },
-        {
-          "title": "(1 封私信) TinyGPU：用最小化硬件实现讲清 GPU 的“并行 + 内存 + 控制流”",
-          "url": "/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/TinyGPU-%E7%94%A8%E6%9C%80%E5%B0%8F%E5%8C%96%E7%A1%AC%E4%BB%B6%E5%AE%9E%E7%8E%B0%E8%AE%B2%E6%B8%85-GPU-%E7%9A%84%E2%80%9C%E5%B9%B6%E8%A1%8C-%E5%86%85%E5%AD%98-%E6%8E%A7%E5%88%B6%E6%B5%81%E2%80%9D/",
           "date": "2026-04-11"
         },
         {
@@ -11852,11 +11847,16 @@
         },
         {
           "title": "TinyGPU：用最小化硬件实现讲清 GPU 的“并行 + 内存 + 控制流”",
+          "url": "/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/TinyGPU-%E7%94%A8%E6%9C%80%E5%B0%8F%E5%8C%96%E7%A1%AC%E4%BB%B6%E5%AE%9E%E7%8E%B0%E8%AE%B2%E6%B8%85-GPU-%E7%9A%84%E2%80%9C%E5%B9%B6%E8%A1%8C-%E5%86%85%E5%AD%98-%E6%8E%A7%E5%88%B6%E6%B5%81%E2%80%9D/",
+          "date": "2026-04-11"
+        },
+        {
+          "title": "TinyGPU：用最小化硬件实现讲清 GPU 的“并行 + 内存 + 控制流”",
           "url": "/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/TinyGPU-%E7%94%A8%E6%9C%80%E5%B0%8F%E5%8C%96%E7%A1%AC%E4%BB%B6%E5%AE%9E%E7%8E%B0%E8%AE%B2%E6%B8%85-GPU-%E7%9A%84%E2%80%9C%E5%B9%B6%E8%A1%8C-%E5%86%85%E5%AD%98-%E6%8E%A7%E5%88%B6%E6%B5%81%E2%80%9D-03f7dd/",
           "date": "2026-04-11"
         },
         {
-          "title": "(1 封私信) 国产AI芯片厂商新突破！论文入选 ISCA 2026，破解 AI 芯片静态调度困局",
+          "title": "国产AI芯片厂商新突破！论文入选 ISCA 2026，破解 AI 芯片静态调度困局",
           "url": "/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/%E5%9B%BD%E4%BA%A7AI%E8%8A%AF%E7%89%87%E5%8E%82%E5%95%86%E6%96%B0%E7%AA%81%E7%A0%B4-%E8%AE%BA%E6%96%87%E5%85%A5%E9%80%89-ISCA-2026,%E7%A0%B4%E8%A7%A3-AI-%E8%8A%AF%E7%89%87%E9%9D%99%E6%80%81%E8%B0%83%E5%BA%A6%E5%9B%B0%E5%B1%80/",
           "date": "2026-04-09"
         },
@@ -11866,7 +11866,7 @@
           "date": "2026-04-09"
         },
         {
-          "title": "(1 封私信) [深挖FA4] FA4的优化思想和代码解析",
+          "title": "[深挖FA4] FA4的优化思想和代码解析",
           "url": "/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/%5B%E6%B7%B1%E6%8C%96FA4%5D-FA4%E7%9A%84%E4%BC%98%E5%8C%96%E6%80%9D%E6%83%B3%E5%92%8C%E4%BB%A3%E7%A0%81%E8%A7%A3%E6%9E%90/",
           "date": "2026-04-04"
         },
@@ -11876,7 +11876,7 @@
           "date": "2026-04-04"
         },
         {
-          "title": "(1 封私信) 深度对比：华为昇腾 Ascend950 (DaVinci arch35) vs NVIDIA SM_90 微架构",
+          "title": "深度对比：华为昇腾 Ascend950 (DaVinci arch35) vs NVIDIA SM_90 微架构",
           "url": "/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/%E6%B7%B1%E5%BA%A6%E5%AF%B9%E6%AF%94-%E5%8D%8E%E4%B8%BA%E6%98%87%E8%85%BE-Ascend950-(DaVinci-arch35)-vs-NVIDIA-SM_90-%E5%BE%AE%E6%9E%B6%E6%9E%84/",
           "date": "2026-04-02"
         },
@@ -11886,7 +11886,7 @@
           "date": "2026-04-02"
         },
         {
-          "title": "(1 封私信) 谈一谈AI芯片研发路上的困难",
+          "title": "谈一谈AI芯片研发路上的困难",
           "url": "/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/%E8%B0%88%E4%B8%80%E8%B0%88AI%E8%8A%AF%E7%89%87%E7%A0%94%E5%8F%91%E8%B7%AF%E4%B8%8A%E7%9A%84%E5%9B%B0%E9%9A%BE/",
           "date": "2026-03-28"
         },
@@ -11901,7 +11901,7 @@
           "date": "2026-03-25"
         },
         {
-          "title": "(1 封私信) PCIe 里的地址，为什么一会儿是 CPU 地址，一会儿又成了 DMA 地址？",
+          "title": "PCIe 里的地址，为什么一会儿是 CPU 地址，一会儿又成了 DMA 地址？",
           "url": "/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/PCIe-%E9%87%8C%E7%9A%84%E5%9C%B0%E5%9D%80,%E4%B8%BA%E4%BB%80%E4%B9%88%E4%B8%80%E4%BC%9A%E5%84%BF%E6%98%AF-CPU-%E5%9C%B0%E5%9D%80,%E4%B8%80%E4%BC%9A%E5%84%BF%E5%8F%88%E6%88%90%E4%BA%86-DMA-%E5%9C%B0%E5%9D%80/",
           "date": "2026-03-20"
         },
@@ -11916,13 +11916,8 @@
           "date": "2026-03-18"
         },
         {
-          "title": "(1 封私信) 《CS336 Spring 2025 Lecture 6：Kernels, Triton》学习笔记",
+          "title": "《CS336 Spring 2025 Lecture 6：Kernels, Triton》学习笔记",
           "url": "/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/%E3%80%8ACS336-Spring-2025-Lecture-6-Kernels,-Triton%E3%80%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/",
-          "date": "2026-03-12"
-        },
-        {
-          "title": "(1 封私信) RDMA技术-RDMA over Commodity Ethernet at Scale【22】",
-          "url": "/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/RDMA%E6%8A%80%E6%9C%AF-RDMA-over-Commodity-Ethernet-at-Scale%E3%80%9022%E3%80%91/",
           "date": "2026-03-12"
         },
         {
@@ -11932,11 +11927,16 @@
         },
         {
           "title": "RDMA技术-RDMA over Commodity Ethernet at Scale【22】",
+          "url": "/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/RDMA%E6%8A%80%E6%9C%AF-RDMA-over-Commodity-Ethernet-at-Scale%E3%80%9022%E3%80%91/",
+          "date": "2026-03-12"
+        },
+        {
+          "title": "RDMA技术-RDMA over Commodity Ethernet at Scale【22】",
           "url": "/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/RDMA%E6%8A%80%E6%9C%AF-RDMA-over-Commodity-Ethernet-at-Scale%E3%80%9022%E3%80%91-7c0975/",
           "date": "2026-03-12"
         },
         {
-          "title": "(1 封私信) Load/Store/Atomic vs RDMA:鱼和熊掌能否兼得？技术约束及竞合分析",
+          "title": "Load/Store/Atomic vs RDMA:鱼和熊掌能否兼得？技术约束及竞合分析",
           "url": "/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/Load_Store_Atomic-vs-RDMA_%E9%B1%BC%E5%92%8C%E7%86%8A%E6%8E%8C%E8%83%BD%E5%90%A6%E5%85%BC%E5%BE%97-%E6%8A%80%E6%9C%AF%E7%BA%A6%E6%9D%9F%E5%8F%8A%E7%AB%9E%E5%90%88%E5%88%86%E6%9E%90/",
           "date": "2026-03-11"
         },
@@ -11946,7 +11946,7 @@
           "date": "2026-03-11"
         },
         {
-          "title": "(1 封私信) RDMA技术-RDMA Send-Recv/Write/Read/Atomic操作【21】",
+          "title": "RDMA技术-RDMA Send-Recv/Write/Read/Atomic操作【21】",
           "url": "/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/RDMA%E6%8A%80%E6%9C%AF-RDMA-Send-Recv_Write_Read_Atomic%E6%93%8D%E4%BD%9C%E3%80%9021%E3%80%91/",
           "date": "2026-03-09"
         },
@@ -11956,7 +11956,7 @@
           "date": "2026-03-09"
         },
         {
-          "title": "(1 封私信) HPCA '26 论文解读：RoMe —— 专为 LLM 设计的4KB行粒度内存系统",
+          "title": "HPCA '26 论文解读：RoMe —— 专为 LLM 设计的4KB行粒度内存系统",
           "url": "/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/HPCA-'26-%E8%AE%BA%E6%96%87%E8%A7%A3%E8%AF%BB-RoMe-%E2%80%94%E2%80%94-%E4%B8%93%E4%B8%BA-LLM-%E8%AE%BE%E8%AE%A1%E7%9A%844KB%E8%A1%8C%E7%B2%92%E5%BA%A6%E5%86%85%E5%AD%98%E7%B3%BB%E7%BB%9F/",
           "date": "2026-02-25"
         },
@@ -11966,7 +11966,7 @@
           "date": "2026-02-25"
         },
         {
-          "title": "(1 封私信) 基石—计算核指令集与微架构的协同设计",
+          "title": "基石—计算核指令集与微架构的协同设计",
           "url": "/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/%E5%9F%BA%E7%9F%B3%E2%80%94%E8%AE%A1%E7%AE%97%E6%A0%B8%E6%8C%87%E4%BB%A4%E9%9B%86%E4%B8%8E%E5%BE%AE%E6%9E%B6%E6%9E%84%E7%9A%84%E5%8D%8F%E5%90%8C%E8%AE%BE%E8%AE%A1/",
           "date": "2026-02-22"
         },
@@ -11981,13 +11981,8 @@
           "date": "2026-01-20"
         },
         {
-          "title": "(1 封私信) 软件看见什么，硬件隐藏什么？——ISA与微架构的“状态”分界",
+          "title": "软件看见什么，硬件隐藏什么？——ISA与微架构的“状态”分界",
           "url": "/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/%E8%BD%AF%E4%BB%B6%E7%9C%8B%E8%A7%81%E4%BB%80%E4%B9%88,%E7%A1%AC%E4%BB%B6%E9%9A%90%E8%97%8F%E4%BB%80%E4%B9%88-%E2%80%94%E2%80%94ISA%E4%B8%8E%E5%BE%AE%E6%9E%B6%E6%9E%84%E7%9A%84%E2%80%9C%E7%8A%B6%E6%80%81%E2%80%9D%E5%88%86%E7%95%8C/",
-          "date": "2026-01-01"
-        },
-        {
-          "title": "(1 封私信) Softmax 算法近似与硬件实现",
-          "url": "/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/Softmax-%E7%AE%97%E6%B3%95%E8%BF%91%E4%BC%BC%E4%B8%8E%E7%A1%AC%E4%BB%B6%E5%AE%9E%E7%8E%B0/",
           "date": "2026-01-01"
         },
         {
@@ -11997,11 +11992,16 @@
         },
         {
           "title": "Softmax 算法近似与硬件实现",
+          "url": "/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/Softmax-%E7%AE%97%E6%B3%95%E8%BF%91%E4%BC%BC%E4%B8%8E%E7%A1%AC%E4%BB%B6%E5%AE%9E%E7%8E%B0/",
+          "date": "2026-01-01"
+        },
+        {
+          "title": "Softmax 算法近似与硬件实现",
           "url": "/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/Softmax-%E7%AE%97%E6%B3%95%E8%BF%91%E4%BC%BC%E4%B8%8E%E7%A1%AC%E4%BB%B6%E5%AE%9E%E7%8E%B0-adbc93/",
           "date": "2026-01-01"
         },
         {
-          "title": "(1 封私信) 【性能】【案例】输出维度不亲和场景下的Matmul性能优化",
+          "title": "【性能】【案例】输出维度不亲和场景下的Matmul性能优化",
           "url": "/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/%E3%80%90%E6%80%A7%E8%83%BD%E3%80%91%E3%80%90%E6%A1%88%E4%BE%8B%E3%80%91%E8%BE%93%E5%87%BA%E7%BB%B4%E5%BA%A6%E4%B8%8D%E4%BA%B2%E5%92%8C%E5%9C%BA%E6%99%AF%E4%B8%8B%E7%9A%84Matmul%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/",
           "date": "2025-12-31"
         },
@@ -12016,7 +12016,7 @@
           "date": "2025-12-27"
         },
         {
-          "title": "(1 封私信) AI/Architecture/System/Hardware优质课程资源",
+          "title": "AI/Architecture/System/Hardware优质课程资源",
           "url": "/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/AI_Architecture_System_Hardware%E4%BC%98%E8%B4%A8%E8%AF%BE%E7%A8%8B%E8%B5%84%E6%BA%90/",
           "date": "2025-12-26"
         },
@@ -12026,13 +12026,13 @@
           "date": "2025-12-26"
         },
         {
-          "title": "(1 封私信) 【Triton】 入门学习与matmul个人解读",
-          "url": "/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/%E3%80%90Triton%E3%80%91-%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0%E4%B8%8Ematmul%E4%B8%AA%E4%BA%BA%E8%A7%A3%E8%AF%BB/",
+          "title": "[笔记]NVSHMEM IBRC实现",
+          "url": "/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/%5B%E7%AC%94%E8%AE%B0%5DNVSHMEM-IBRC%E5%AE%9E%E7%8E%B0/",
           "date": "2025-12-14"
         },
         {
-          "title": "[笔记]NVSHMEM IBRC实现",
-          "url": "/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/%5B%E7%AC%94%E8%AE%B0%5DNVSHMEM-IBRC%E5%AE%9E%E7%8E%B0/",
+          "title": "【Triton】 入门学习与matmul个人解读",
+          "url": "/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/%E3%80%90Triton%E3%80%91-%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0%E4%B8%8Ematmul%E4%B8%AA%E4%BA%BA%E8%A7%A3%E8%AF%BB/",
           "date": "2025-12-14"
         },
         {
@@ -12051,13 +12051,13 @@
           "date": "2025-11-02"
         },
         {
-          "title": "(1 封私信) nvidia tensor core 祛魅",
-          "url": "/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/nvidia-tensor-core-%E7%A5%9B%E9%AD%85/",
+          "title": "Cache｜从LRU到PLRU（Pseudo LRU）",
+          "url": "/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/Cache-%E4%BB%8ELRU%E5%88%B0PLRU(Pseudo-LRU)/",
           "date": "2025-10-26"
         },
         {
-          "title": "Cache｜从LRU到PLRU（Pseudo LRU）",
-          "url": "/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/Cache-%E4%BB%8ELRU%E5%88%B0PLRU(Pseudo-LRU)/",
+          "title": "nvidia tensor core 祛魅",
+          "url": "/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/nvidia-tensor-core-%E7%A5%9B%E9%AD%85/",
           "date": "2025-10-26"
         },
         {
@@ -12066,7 +12066,7 @@
           "date": "2025-10-26"
         },
         {
-          "title": "(1 封私信) GPU微结构逆向 (MICRO 2025)：《Analyzing Modern NVIDIA GPU cores》",
+          "title": "GPU微结构逆向 (MICRO 2025)：《Analyzing Modern NVIDIA GPU cores》",
           "url": "/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/GPU%E5%BE%AE%E7%BB%93%E6%9E%84%E9%80%86%E5%90%91-(MICRO-2025)-%E3%80%8AAnalyzing-Modern-NVIDIA-GPU-cores%E3%80%8B/",
           "date": "2025-10-15"
         },
@@ -12076,7 +12076,7 @@
           "date": "2025-10-15"
         },
         {
-          "title": "(1 封私信) GPU中计算与访存的斗争",
+          "title": "GPU中计算与访存的斗争",
           "url": "/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/GPU%E4%B8%AD%E8%AE%A1%E7%AE%97%E4%B8%8E%E8%AE%BF%E5%AD%98%E7%9A%84%E6%96%97%E4%BA%89/",
           "date": "2025-10-14"
         },
@@ -12086,7 +12086,7 @@
           "date": "2025-10-14"
         },
         {
-          "title": "(1 封私信) 端侧大模型芯片化的若干趋势思考",
+          "title": "端侧大模型芯片化的若干趋势思考",
           "url": "/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/%E7%AB%AF%E4%BE%A7%E5%A4%A7%E6%A8%A1%E5%9E%8B%E8%8A%AF%E7%89%87%E5%8C%96%E7%9A%84%E8%8B%A5%E5%B9%B2%E8%B6%8B%E5%8A%BF%E6%80%9D%E8%80%83/",
           "date": "2025-10-08"
         },
@@ -12096,7 +12096,7 @@
           "date": "2025-10-08"
         },
         {
-          "title": "(1 封私信) [A-10]ARMv8/ARMv9-Memory-页表的概念和使用场景",
+          "title": "[A-10]ARMv8/ARMv9-Memory-页表的概念和使用场景",
           "url": "/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/%5BA-10%5DARMv8_ARMv9-Memory-%E9%A1%B5%E8%A1%A8%E7%9A%84%E6%A6%82%E5%BF%B5%E5%92%8C%E4%BD%BF%E7%94%A8%E5%9C%BA%E6%99%AF/",
           "date": "2025-10-04"
         },
@@ -12111,7 +12111,7 @@
           "date": "2025-09-24"
         },
         {
-          "title": "(1 封私信) DDR的bank，die，rank，channel的概念及关系",
+          "title": "DDR的bank，die，rank，channel的概念及关系",
           "url": "/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/DDR%E7%9A%84bank,die,rank,channel%E7%9A%84%E6%A6%82%E5%BF%B5%E5%8F%8A%E5%85%B3%E7%B3%BB/",
           "date": "2025-09-17"
         },
@@ -12136,7 +12136,7 @@
           "date": "2025-08-20"
         },
         {
-          "title": "(1 封私信) DeepEP，nvshmem 和 IBGDA 二三事（1）",
+          "title": "DeepEP，nvshmem 和 IBGDA 二三事（1）",
           "url": "/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/DeepEP,nvshmem-%E5%92%8C-IBGDA-%E4%BA%8C%E4%B8%89%E4%BA%8B(1)/",
           "date": "2025-07-28"
         },
@@ -12161,7 +12161,7 @@
           "date": "2025-06-05"
         },
         {
-          "title": "(1 封私信) AI处理器架构应该长什么样子？",
+          "title": "AI处理器架构应该长什么样子？",
           "url": "/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/AI%E5%A4%84%E7%90%86%E5%99%A8%E6%9E%B6%E6%9E%84%E5%BA%94%E8%AF%A5%E9%95%BF%E4%BB%80%E4%B9%88%E6%A0%B7%E5%AD%90/",
           "date": "2025-05-08"
         },
@@ -12176,7 +12176,7 @@
           "date": "2025-05-02"
         },
         {
-          "title": "(1 封私信) 不同数据流的NPU微架构综合对比",
+          "title": "不同数据流的NPU微架构综合对比",
           "url": "/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/%E4%B8%8D%E5%90%8C%E6%95%B0%E6%8D%AE%E6%B5%81%E7%9A%84NPU%E5%BE%AE%E6%9E%B6%E6%9E%84%E7%BB%BC%E5%90%88%E5%AF%B9%E6%AF%94/",
           "date": "2025-04-21"
         },
@@ -12186,7 +12186,7 @@
           "date": "2025-04-21"
         },
         {
-          "title": "(1 封私信) 芯片总线架构设计1 - 闲话ROB",
+          "title": "芯片总线架构设计1 - 闲话ROB",
           "url": "/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/%E8%8A%AF%E7%89%87%E6%80%BB%E7%BA%BF%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A11-%E9%97%B2%E8%AF%9DROB/",
           "date": "2025-04-08"
         },
@@ -12201,13 +12201,13 @@
           "date": "2025-03-20"
         },
         {
-          "title": "(1 封私信) 《GPGPU的性能分析和调优》",
-          "url": "/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/%E3%80%8AGPGPU%E7%9A%84%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90%E5%92%8C%E8%B0%83%E4%BC%98%E3%80%8B/",
+          "title": "《多核Cache层次》",
+          "url": "/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/%E3%80%8A%E5%A4%9A%E6%A0%B8Cache%E5%B1%82%E6%AC%A1%E3%80%8B/",
           "date": "2025-03-07"
         },
         {
-          "title": "《多核Cache层次》",
-          "url": "/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/%E3%80%8A%E5%A4%9A%E6%A0%B8Cache%E5%B1%82%E6%AC%A1%E3%80%8B/",
+          "title": "《GPGPU的性能分析和调优》",
+          "url": "/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/%E3%80%8AGPGPU%E7%9A%84%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90%E5%92%8C%E8%B0%83%E4%BC%98%E3%80%8B/",
           "date": "2025-03-07"
         },
         {
@@ -12316,7 +12316,7 @@
           "date": "2024-08-23"
         },
         {
-          "title": "(1 封私信) LLM Decode GQA & GEMV算子性能分析（一）",
+          "title": "LLM Decode GQA & GEMV算子性能分析（一）",
           "url": "/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/LLM-Decode-GQA-GEMV%E7%AE%97%E5%AD%90%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90(%E4%B8%80)/",
           "date": "2024-08-20"
         },
@@ -12331,7 +12331,7 @@
           "date": "2024-08-18"
         },
         {
-          "title": "(1 封私信) 浮了吗？如浮——ISSCC2024浮点存算秘辛",
+          "title": "浮了吗？如浮——ISSCC2024浮点存算秘辛",
           "url": "/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/%E6%B5%AE%E4%BA%86%E5%90%97-%E5%A6%82%E6%B5%AE%E2%80%94%E2%80%94ISSCC2024%E6%B5%AE%E7%82%B9%E5%AD%98%E7%AE%97%E7%A7%98%E8%BE%9B/",
           "date": "2024-08-12"
         },
@@ -12356,7 +12356,7 @@
           "date": "2024-07-22"
         },
         {
-          "title": "(1 封私信) fp16*int4计算kernel--MARLIN代码走读",
+          "title": "fp16*int4计算kernel--MARLIN代码走读",
           "url": "/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/fp16_int4%E8%AE%A1%E7%AE%97kernel-MARLIN%E4%BB%A3%E7%A0%81%E8%B5%B0%E8%AF%BB/",
           "date": "2024-05-20"
         },
@@ -12426,13 +12426,13 @@
           "date": "2023-11-16"
         },
         {
-          "title": "(1 封私信) UFS 学习笔记（概念入门篇）",
-          "url": "/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/UFS-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(%E6%A6%82%E5%BF%B5%E5%85%A5%E9%97%A8%E7%AF%87)/",
+          "title": "【PCIe】P2P功能介绍",
+          "url": "/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/%E3%80%90PCIe%E3%80%91P2P%E5%8A%9F%E8%83%BD%E4%BB%8B%E7%BB%8D/",
           "date": "2023-11-01"
         },
         {
-          "title": "【PCIe】P2P功能介绍",
-          "url": "/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/%E3%80%90PCIe%E3%80%91P2P%E5%8A%9F%E8%83%BD%E4%BB%8B%E7%BB%8D/",
+          "title": "UFS 学习笔记（概念入门篇）",
+          "url": "/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/UFS-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(%E6%A6%82%E5%BF%B5%E5%85%A5%E9%97%A8%E7%AF%87)/",
           "date": "2023-11-01"
         },
         {
@@ -12696,7 +12696,7 @@
           "date": "2022-01-04"
         },
         {
-          "title": "(1 封私信) 6. RDMA之Memory Region",
+          "title": "6. RDMA之Memory Region",
           "url": "/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/6.-RDMA%E4%B9%8BMemory-Region/",
           "date": "2021-12-24"
         },
@@ -12896,7 +12896,7 @@
           "date": "2020-04-12"
         },
         {
-          "title": "(1 封私信) [转载] （一）ARMv8 MMU及Linux页表映射",
+          "title": "[转载] （一）ARMv8 MMU及Linux页表映射",
           "url": "/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/%5B%E8%BD%AC%E8%BD%BD%5D-(%E4%B8%80)ARMv8-MMU%E5%8F%8ALinux%E9%A1%B5%E8%A1%A8%E6%98%A0%E5%B0%84/",
           "date": "2020-02-21"
         },
@@ -12916,7 +12916,7 @@
           "date": "2019-12-26"
         },
         {
-          "title": "(1 封私信) GDDR6 vs DDR4 vs HBM2?为什么CPU还不用GDDR？异构内存的未来在哪里？",
+          "title": "GDDR6 vs DDR4 vs HBM2?为什么CPU还不用GDDR？异构内存的未来在哪里？",
           "url": "/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/GDDR6-vs-DDR4-vs-HBM2_%E4%B8%BA%E4%BB%80%E4%B9%88CPU%E8%BF%98%E4%B8%8D%E7%94%A8GDDR-%E5%BC%82%E6%9E%84%E5%86%85%E5%AD%98%E7%9A%84%E6%9C%AA%E6%9D%A5%E5%9C%A8%E5%93%AA%E9%87%8C/",
           "date": "2019-11-10"
         },
@@ -15203,7 +15203,7 @@
           "date": "2026-01-11"
         },
         {
-          "title": "(1 封私信) Softmax 算法近似与硬件实现",
+          "title": "Softmax 算法近似与硬件实现",
           "url": "/collections/0.raw/zhihu/AI-infra/Softmax-%E7%AE%97%E6%B3%95%E8%BF%91%E4%BC%BC%E4%B8%8E%E7%A1%AC%E4%BB%B6%E5%AE%9E%E7%8E%B0/",
           "date": "2026-01-01"
         },
@@ -15273,7 +15273,7 @@
           "date": "2025-04-26"
         },
         {
-          "title": "(1 封私信) Deepseek MLA 一定要做吸收吗？",
+          "title": "Deepseek MLA 一定要做吸收吗？",
           "url": "/collections/0.raw/zhihu/AI-infra/Deepseek-MLA-%E4%B8%80%E5%AE%9A%E8%A6%81%E5%81%9A%E5%90%B8%E6%94%B6%E5%90%97/",
           "date": "2025-03-25"
         },
@@ -15293,7 +15293,7 @@
           "date": "2025-03-05"
         },
         {
-          "title": "(1 封私信) DeepSeek-V2 高性能推理 (1)：通过矩阵吸收十倍提速 MLA 算子",
+          "title": "DeepSeek-V2 高性能推理 (1)：通过矩阵吸收十倍提速 MLA 算子",
           "url": "/collections/0.raw/zhihu/AI-infra/DeepSeek-V2-%E9%AB%98%E6%80%A7%E8%83%BD%E6%8E%A8%E7%90%86-(1)-%E9%80%9A%E8%BF%87%E7%9F%A9%E9%98%B5%E5%90%B8%E6%94%B6%E5%8D%81%E5%80%8D%E6%8F%90%E9%80%9F-MLA-%E7%AE%97%E5%AD%90/",
           "date": "2025-03-04"
         },
@@ -15303,7 +15303,7 @@
           "date": "2025-03-04"
         },
         {
-          "title": "(1 封私信) 从零开始写一个简单的乱序双发核(四) 实现rename/RAT/ROB/issue_queue等模块",
+          "title": "从零开始写一个简单的乱序双发核(四) 实现rename/RAT/ROB/issue_queue等模块",
           "url": "/collections/0.raw/zhihu/AI-infra/%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E5%86%99%E4%B8%80%E4%B8%AA%E7%AE%80%E5%8D%95%E7%9A%84%E4%B9%B1%E5%BA%8F%E5%8F%8C%E5%8F%91%E6%A0%B8(%E5%9B%9B)-%E5%AE%9E%E7%8E%B0rename_RAT_ROB_issue_queue%E7%AD%89%E6%A8%A1%E5%9D%97/",
           "date": "2025-02-20"
         },
@@ -15313,7 +15313,7 @@
           "date": "2025-02-20"
         },
         {
-          "title": "(1 封私信) Cache的50问，您能回答上几个",
+          "title": "Cache的50问，您能回答上几个",
           "url": "/collections/0.raw/zhihu/AI-infra/Cache%E7%9A%8450%E9%97%AE,%E6%82%A8%E8%83%BD%E5%9B%9E%E7%AD%94%E4%B8%8A%E5%87%A0%E4%B8%AA/",
           "date": "2025-01-07"
         },
@@ -15333,7 +15333,7 @@
           "date": "2024-07-25"
         },
         {
-          "title": "(1 封私信) 流水线并行论文总结",
+          "title": "流水线并行论文总结",
           "url": "/collections/0.raw/zhihu/AI-infra/%E6%B5%81%E6%B0%B4%E7%BA%BF%E5%B9%B6%E8%A1%8C%E8%AE%BA%E6%96%87%E6%80%BB%E7%BB%93/",
           "date": "2024-01-26"
         },
@@ -15353,7 +15353,7 @@
           "date": "2023-06-21"
         },
         {
-          "title": "(1 封私信) [阅读笔记] BOLT @MLSys 2022",
+          "title": "[阅读笔记] BOLT @MLSys 2022",
           "url": "/collections/0.raw/zhihu/AI-infra/%5B%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0%5D-BOLT-MLSys-2022/",
           "date": "2022-05-31"
         },
@@ -15368,7 +15368,7 @@
           "date": "2020-05-25"
         },
         {
-          "title": "(1 封私信) 推荐一款纳秒级的C++日志Nanolog",
+          "title": "推荐一款纳秒级的C++日志Nanolog",
           "url": "/collections/0.raw/zhihu/AI-infra/%E6%8E%A8%E8%8D%90%E4%B8%80%E6%AC%BE%E7%BA%B3%E7%A7%92%E7%BA%A7%E7%9A%84C-%E6%97%A5%E5%BF%97Nanolog/",
           "date": "2020-05-06"
         },
@@ -17446,17 +17446,17 @@
           "date": "2026-04-21"
         },
         {
-          "title": "(1 封私信) 如何在谷歌校招网测 Kick Start 中取得高分？",
+          "title": "如何在谷歌校招网测 Kick Start 中取得高分？",
           "url": "/collections/0.raw/zhihu/%E6%9C%89%E7%94%A8%E7%9A%84%E6%96%B9%E5%90%91%E6%80%9D%E8%80%83/%E5%A6%82%E4%BD%95%E5%9C%A8%E8%B0%B7%E6%AD%8C%E6%A0%A1%E6%8B%9B%E7%BD%91%E6%B5%8B-Kick-Start-%E4%B8%AD%E5%8F%96%E5%BE%97%E9%AB%98%E5%88%86/",
           "date": "2026-04-14"
         },
         {
-          "title": "(1 封私信) 为什么国家要在教材上设置反自学模式，难道非要老师教吗？就不能自己学吗？",
+          "title": "为什么国家要在教材上设置反自学模式，难道非要老师教吗？就不能自己学吗？",
           "url": "/collections/0.raw/zhihu/%E6%9C%89%E7%94%A8%E7%9A%84%E6%96%B9%E5%90%91%E6%80%9D%E8%80%83/%E4%B8%BA%E4%BB%80%E4%B9%88%E5%9B%BD%E5%AE%B6%E8%A6%81%E5%9C%A8%E6%95%99%E6%9D%90%E4%B8%8A%E8%AE%BE%E7%BD%AE%E5%8F%8D%E8%87%AA%E5%AD%A6%E6%A8%A1%E5%BC%8F,%E9%9A%BE%E9%81%93%E9%9D%9E%E8%A6%81%E8%80%81%E5%B8%88%E6%95%99%E5%90%97-%E5%B0%B1%E4%B8%8D%E8%83%BD%E8%87%AA%E5%B7%B1%E5%AD%A6%E5%90%97/",
           "date": "2026-04-14"
         },
         {
-          "title": "(1 封私信) 中华民国以前的一块大洋相当于现在人民币多少啊？",
+          "title": "中华民国以前的一块大洋相当于现在人民币多少啊？",
           "url": "/collections/0.raw/zhihu/%E6%9C%89%E7%94%A8%E7%9A%84%E6%96%B9%E5%90%91%E6%80%9D%E8%80%83/%E4%B8%AD%E5%8D%8E%E6%B0%91%E5%9B%BD%E4%BB%A5%E5%89%8D%E7%9A%84%E4%B8%80%E5%9D%97%E5%A4%A7%E6%B4%8B%E7%9B%B8%E5%BD%93%E4%BA%8E%E7%8E%B0%E5%9C%A8%E4%BA%BA%E6%B0%91%E5%B8%81%E5%A4%9A%E5%B0%91%E5%95%8A/",
           "date": "2026-04-14"
         },
@@ -17466,7 +17466,7 @@
           "date": "2026-03-30"
         },
         {
-          "title": "(1 封私信) 反直觉的软件设计洞察：为什么你可能想不到它们",
+          "title": "反直觉的软件设计洞察：为什么你可能想不到它们",
           "url": "/collections/0.raw/zhihu/%E6%9C%89%E7%94%A8%E7%9A%84%E6%96%B9%E5%90%91%E6%80%9D%E8%80%83/%E5%8F%8D%E7%9B%B4%E8%A7%89%E7%9A%84%E8%BD%AF%E4%BB%B6%E8%AE%BE%E8%AE%A1%E6%B4%9E%E5%AF%9F-%E4%B8%BA%E4%BB%80%E4%B9%88%E4%BD%A0%E5%8F%AF%E8%83%BD%E6%83%B3%E4%B8%8D%E5%88%B0%E5%AE%83%E4%BB%AC/",
           "date": "2026-02-25"
         },
@@ -17491,7 +17491,7 @@
           "date": "2026-01-07"
         },
         {
-          "title": "(1 封私信) 工作价值观 v.s. 学生价值观",
+          "title": "工作价值观 v.s. 学生价值观",
           "url": "/collections/0.raw/zhihu/%E6%9C%89%E7%94%A8%E7%9A%84%E6%96%B9%E5%90%91%E6%80%9D%E8%80%83/%E5%B7%A5%E4%BD%9C%E4%BB%B7%E5%80%BC%E8%A7%82-v.s.-%E5%AD%A6%E7%94%9F%E4%BB%B7%E5%80%BC%E8%A7%82/",
           "date": "2025-12-11"
         },
@@ -17506,7 +17506,7 @@
           "date": "2025-04-05"
         },
         {
-          "title": "(1 封私信) 工作五年反思",
+          "title": "工作五年反思",
           "url": "/collections/0.raw/zhihu/%E6%9C%89%E7%94%A8%E7%9A%84%E6%96%B9%E5%90%91%E6%80%9D%E8%80%83/%E5%B7%A5%E4%BD%9C%E4%BA%94%E5%B9%B4%E5%8F%8D%E6%80%9D/",
           "date": "2021-05-24"
         },
@@ -17516,7 +17516,7 @@
           "date": "2021-05-24"
         },
         {
-          "title": "(1 封私信) GAN研究方向汇总（附源码）",
+          "title": "GAN研究方向汇总（附源码）",
           "url": "/collections/0.raw/zhihu/%E6%9C%89%E7%94%A8%E7%9A%84%E6%96%B9%E5%90%91%E6%80%9D%E8%80%83/GAN%E7%A0%94%E7%A9%B6%E6%96%B9%E5%90%91%E6%B1%87%E6%80%BB(%E9%99%84%E6%BA%90%E7%A0%81)/",
           "date": "2020-05-10"
         },
@@ -17526,7 +17526,7 @@
           "date": "2020-05-10"
         },
         {
-          "title": "(1 封私信) CVPR2019 语义分割论文1-Structured Knowledge Distillation",
+          "title": "CVPR2019 语义分割论文1-Structured Knowledge Distillation",
           "url": "/collections/0.raw/zhihu/%E6%9C%89%E7%94%A8%E7%9A%84%E6%96%B9%E5%90%91%E6%80%9D%E8%80%83/CVPR2019-%E8%AF%AD%E4%B9%89%E5%88%86%E5%89%B2%E8%AE%BA%E6%96%871-Structured-Knowledge-Distillation/",
           "date": "2019-07-22"
         },
@@ -17536,7 +17536,7 @@
           "date": "2019-07-22"
         },
         {
-          "title": "(1 封私信) OpenCV视频分析-光流分析",
+          "title": "OpenCV视频分析-光流分析",
           "url": "/collections/0.raw/zhihu/%E6%9C%89%E7%94%A8%E7%9A%84%E6%96%B9%E5%90%91%E6%80%9D%E8%80%83/OpenCV%E8%A7%86%E9%A2%91%E5%88%86%E6%9E%90-%E5%85%89%E6%B5%81%E5%88%86%E6%9E%90/",
           "date": "2019-06-20"
         },
@@ -17546,7 +17546,7 @@
           "date": "2019-06-20"
         },
         {
-          "title": "(1 封私信) 卷积网络的可视化与可解释性（资料整理）",
+          "title": "卷积网络的可视化与可解释性（资料整理）",
           "url": "/collections/0.raw/zhihu/%E6%9C%89%E7%94%A8%E7%9A%84%E6%96%B9%E5%90%91%E6%80%9D%E8%80%83/%E5%8D%B7%E7%A7%AF%E7%BD%91%E7%BB%9C%E7%9A%84%E5%8F%AF%E8%A7%86%E5%8C%96%E4%B8%8E%E5%8F%AF%E8%A7%A3%E9%87%8A%E6%80%A7(%E8%B5%84%E6%96%99%E6%95%B4%E7%90%86)/",
           "date": "2019-01-09"
         },
@@ -17556,7 +17556,7 @@
           "date": "2019-01-09"
         },
         {
-          "title": "(1 封私信) 计算机视觉方向简介：深度图补全",
+          "title": "计算机视觉方向简介：深度图补全",
           "url": "/collections/0.raw/zhihu/%E6%9C%89%E7%94%A8%E7%9A%84%E6%96%B9%E5%90%91%E6%80%9D%E8%80%83/%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%A7%86%E8%A7%89%E6%96%B9%E5%90%91%E7%AE%80%E4%BB%8B-%E6%B7%B1%E5%BA%A6%E5%9B%BE%E8%A1%A5%E5%85%A8/",
           "date": "2018-08-15"
         },
@@ -17566,7 +17566,7 @@
           "date": "2018-08-15"
         },
         {
-          "title": "(1 封私信) 计算机视觉方向简介（一）| 从全景图恢复三维结构",
+          "title": "计算机视觉方向简介（一）| 从全景图恢复三维结构",
           "url": "/collections/0.raw/zhihu/%E6%9C%89%E7%94%A8%E7%9A%84%E6%96%B9%E5%90%91%E6%80%9D%E8%80%83/%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%A7%86%E8%A7%89%E6%96%B9%E5%90%91%E7%AE%80%E4%BB%8B(%E4%B8%80)_-%E4%BB%8E%E5%85%A8%E6%99%AF%E5%9B%BE%E6%81%A2%E5%A4%8D%E4%B8%89%E7%BB%B4%E7%BB%93%E6%9E%84/",
           "date": "2018-01-16"
         },
@@ -18191,87 +18191,87 @@
       "children": [],
       "docs": [
         {
-          "title": "(1 封私信) 为什么要压缩模型，而不是直接训练一个小的CNN？",
+          "title": "为什么要压缩模型，而不是直接训练一个小的CNN？",
           "url": "/collections/0.raw/zhihu/%E6%A8%A1%E5%9E%8B%E9%83%A8%E7%BD%B2%E9%82%A3%E4%BA%9B%E4%BA%8B/%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E5%8E%8B%E7%BC%A9%E6%A8%A1%E5%9E%8B,%E8%80%8C%E4%B8%8D%E6%98%AF%E7%9B%B4%E6%8E%A5%E8%AE%AD%E7%BB%83%E4%B8%80%E4%B8%AA%E5%B0%8F%E7%9A%84CNN/",
           "date": "2026-04-14"
         },
         {
-          "title": "(1 封私信) 【编译器】传统编译器和AI/ML编译器总结",
+          "title": "【编译器】传统编译器和AI/ML编译器总结",
           "url": "/collections/0.raw/zhihu/%E6%A8%A1%E5%9E%8B%E9%83%A8%E7%BD%B2%E9%82%A3%E4%BA%9B%E4%BA%8B/%E3%80%90%E7%BC%96%E8%AF%91%E5%99%A8%E3%80%91%E4%BC%A0%E7%BB%9F%E7%BC%96%E8%AF%91%E5%99%A8%E5%92%8CAI_ML%E7%BC%96%E8%AF%91%E5%99%A8%E6%80%BB%E7%BB%93/",
           "date": "2023-12-22"
         },
         {
-          "title": "(1 封私信) 工程实现 ｜加速神经网络推理之 8bit Quantization （模型量化压缩）",
+          "title": "工程实现 ｜加速神经网络推理之 8bit Quantization （模型量化压缩）",
           "url": "/collections/0.raw/zhihu/%E6%A8%A1%E5%9E%8B%E9%83%A8%E7%BD%B2%E9%82%A3%E4%BA%9B%E4%BA%8B/%E5%B7%A5%E7%A8%8B%E5%AE%9E%E7%8E%B0-%E5%8A%A0%E9%80%9F%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E6%8E%A8%E7%90%86%E4%B9%8B-8bit-Quantization-(%E6%A8%A1%E5%9E%8B%E9%87%8F%E5%8C%96%E5%8E%8B%E7%BC%A9)/",
           "date": "2022-08-22"
         },
         {
-          "title": "(1 封私信) 【AI不惑境】模型量化技术原理及其发展现状和展望",
+          "title": "【AI不惑境】模型量化技术原理及其发展现状和展望",
           "url": "/collections/0.raw/zhihu/%E6%A8%A1%E5%9E%8B%E9%83%A8%E7%BD%B2%E9%82%A3%E4%BA%9B%E4%BA%8B/%E3%80%90AI%E4%B8%8D%E6%83%91%E5%A2%83%E3%80%91%E6%A8%A1%E5%9E%8B%E9%87%8F%E5%8C%96%E6%8A%80%E6%9C%AF%E5%8E%9F%E7%90%86%E5%8F%8A%E5%85%B6%E5%8F%91%E5%B1%95%E7%8E%B0%E7%8A%B6%E5%92%8C%E5%B1%95%E6%9C%9B/",
           "date": "2022-04-22"
         },
         {
-          "title": "(1 封私信) 深度学习模型大小与模型推理速度的探讨",
+          "title": "深度学习模型大小与模型推理速度的探讨",
           "url": "/collections/0.raw/zhihu/%E6%A8%A1%E5%9E%8B%E9%83%A8%E7%BD%B2%E9%82%A3%E4%BA%9B%E4%BA%8B/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B%E5%A4%A7%E5%B0%8F%E4%B8%8E%E6%A8%A1%E5%9E%8B%E6%8E%A8%E7%90%86%E9%80%9F%E5%BA%A6%E7%9A%84%E6%8E%A2%E8%AE%A8/",
           "date": "2021-10-03"
         },
         {
-          "title": "(1 封私信) 也谈 MegFlow 开源",
+          "title": "也谈 MegFlow 开源",
           "url": "/collections/0.raw/zhihu/%E6%A8%A1%E5%9E%8B%E9%83%A8%E7%BD%B2%E9%82%A3%E4%BA%9B%E4%BA%8B/%E4%B9%9F%E8%B0%88-MegFlow-%E5%BC%80%E6%BA%90/",
           "date": "2021-09-22"
         },
         {
-          "title": "(1 封私信) 不论是训练还是部署都会让你踩坑的Batch Normalization",
+          "title": "不论是训练还是部署都会让你踩坑的Batch Normalization",
           "url": "/collections/0.raw/zhihu/%E6%A8%A1%E5%9E%8B%E9%83%A8%E7%BD%B2%E9%82%A3%E4%BA%9B%E4%BA%8B/%E4%B8%8D%E8%AE%BA%E6%98%AF%E8%AE%AD%E7%BB%83%E8%BF%98%E6%98%AF%E9%83%A8%E7%BD%B2%E9%83%BD%E4%BC%9A%E8%AE%A9%E4%BD%A0%E8%B8%A9%E5%9D%91%E7%9A%84Batch-Normalization/",
           "date": "2021-07-11"
         },
         {
-          "title": "(1 封私信) AI软件栈的一些思考",
+          "title": "AI软件栈的一些思考",
           "url": "/collections/0.raw/zhihu/%E6%A8%A1%E5%9E%8B%E9%83%A8%E7%BD%B2%E9%82%A3%E4%BA%9B%E4%BA%8B/AI%E8%BD%AF%E4%BB%B6%E6%A0%88%E7%9A%84%E4%B8%80%E4%BA%9B%E6%80%9D%E8%80%83/",
           "date": "2021-06-06"
         },
         {
-          "title": "(1 封私信) 矩阵乘法的并行优化（3）：共享内存多核CPU优化",
+          "title": "矩阵乘法的并行优化（3）：共享内存多核CPU优化",
           "url": "/collections/0.raw/zhihu/%E6%A8%A1%E5%9E%8B%E9%83%A8%E7%BD%B2%E9%82%A3%E4%BA%9B%E4%BA%8B/%E7%9F%A9%E9%98%B5%E4%B9%98%E6%B3%95%E7%9A%84%E5%B9%B6%E8%A1%8C%E4%BC%98%E5%8C%96(3)-%E5%85%B1%E4%BA%AB%E5%86%85%E5%AD%98%E5%A4%9A%E6%A0%B8CPU%E4%BC%98%E5%8C%96/",
           "date": "2021-05-18"
         },
         {
-          "title": "(1 封私信) 深度学习编译系列之 ANSOR 技术分享",
+          "title": "深度学习编译系列之 ANSOR 技术分享",
           "url": "/collections/0.raw/zhihu/%E6%A8%A1%E5%9E%8B%E9%83%A8%E7%BD%B2%E9%82%A3%E4%BA%9B%E4%BA%8B/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%BC%96%E8%AF%91%E7%B3%BB%E5%88%97%E4%B9%8B-ANSOR-%E6%8A%80%E6%9C%AF%E5%88%86%E4%BA%AB/",
           "date": "2021-05-14"
         },
         {
-          "title": "(1 封私信) 模型压缩：模型量化打怪升级之路 - 0 序章",
+          "title": "模型压缩：模型量化打怪升级之路 - 0 序章",
           "url": "/collections/0.raw/zhihu/%E6%A8%A1%E5%9E%8B%E9%83%A8%E7%BD%B2%E9%82%A3%E4%BA%9B%E4%BA%8B/%E6%A8%A1%E5%9E%8B%E5%8E%8B%E7%BC%A9-%E6%A8%A1%E5%9E%8B%E9%87%8F%E5%8C%96%E6%89%93%E6%80%AA%E5%8D%87%E7%BA%A7%E4%B9%8B%E8%B7%AF-0-%E5%BA%8F%E7%AB%A0/",
           "date": "2021-02-08"
         },
         {
-          "title": "(1 封私信) TFRT的开源代码分析",
+          "title": "TFRT的开源代码分析",
           "url": "/collections/0.raw/zhihu/%E6%A8%A1%E5%9E%8B%E9%83%A8%E7%BD%B2%E9%82%A3%E4%BA%9B%E4%BA%8B/TFRT%E7%9A%84%E5%BC%80%E6%BA%90%E4%BB%A3%E7%A0%81%E5%88%86%E6%9E%90/",
           "date": "2021-01-28"
         },
         {
-          "title": "(1 封私信) 详解卷积中的Winograd加速算法",
+          "title": "详解卷积中的Winograd加速算法",
           "url": "/collections/0.raw/zhihu/%E6%A8%A1%E5%9E%8B%E9%83%A8%E7%BD%B2%E9%82%A3%E4%BA%9B%E4%BA%8B/%E8%AF%A6%E8%A7%A3%E5%8D%B7%E7%A7%AF%E4%B8%AD%E7%9A%84Winograd%E5%8A%A0%E9%80%9F%E7%AE%97%E6%B3%95/",
           "date": "2020-09-30"
         },
         {
-          "title": "(1 封私信) 作死向：修改TVM的底层数据结构",
+          "title": "作死向：修改TVM的底层数据结构",
           "url": "/collections/0.raw/zhihu/%E6%A8%A1%E5%9E%8B%E9%83%A8%E7%BD%B2%E9%82%A3%E4%BA%9B%E4%BA%8B/%E4%BD%9C%E6%AD%BB%E5%90%91-%E4%BF%AE%E6%94%B9TVM%E7%9A%84%E5%BA%95%E5%B1%82%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/",
           "date": "2020-07-09"
         },
         {
-          "title": "(1 封私信) Roofline Model与深度学习模型的性能分析",
+          "title": "Roofline Model与深度学习模型的性能分析",
           "url": "/collections/0.raw/zhihu/%E6%A8%A1%E5%9E%8B%E9%83%A8%E7%BD%B2%E9%82%A3%E4%BA%9B%E4%BA%8B/Roofline-Model%E4%B8%8E%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B%E7%9A%84%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90/",
           "date": "2020-05-17"
         },
         {
-          "title": "(1 封私信) 深度学习编译器",
+          "title": "深度学习编译器",
           "url": "/collections/0.raw/zhihu/%E6%A8%A1%E5%9E%8B%E9%83%A8%E7%BD%B2%E9%82%A3%E4%BA%9B%E4%BA%8B/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%BC%96%E8%AF%91%E5%99%A8/",
           "date": "2019-10-21"
         },
         {
-          "title": "(1 封私信) CS217课程解析：剖析QNNPACK的矩阵运算优化思路",
+          "title": "CS217课程解析：剖析QNNPACK的矩阵运算优化思路",
           "url": "/collections/0.raw/zhihu/%E6%A8%A1%E5%9E%8B%E9%83%A8%E7%BD%B2%E9%82%A3%E4%BA%9B%E4%BA%8B/CS217%E8%AF%BE%E7%A8%8B%E8%A7%A3%E6%9E%90-%E5%89%96%E6%9E%90QNNPACK%E7%9A%84%E7%9F%A9%E9%98%B5%E8%BF%90%E7%AE%97%E4%BC%98%E5%8C%96%E6%80%9D%E8%B7%AF/",
           "date": "2019-09-26"
         },
@@ -18315,17 +18315,17 @@
           "date": "2026-04-21"
         },
         {
-          "title": "(1 封私信) 为什么相机拍的反而感觉没有手机拍的清晰？",
+          "title": "为什么相机拍的反而感觉没有手机拍的清晰？",
           "url": "/collections/0.raw/zhihu/ISP-%E8%AE%A1%E7%AE%97%E6%91%84%E5%BD%B1/%E4%B8%BA%E4%BB%80%E4%B9%88%E7%9B%B8%E6%9C%BA%E6%8B%8D%E7%9A%84%E5%8F%8D%E8%80%8C%E6%84%9F%E8%A7%89%E6%B2%A1%E6%9C%89%E6%89%8B%E6%9C%BA%E6%8B%8D%E7%9A%84%E6%B8%85%E6%99%B0/",
           "date": "2026-04-14"
         },
         {
-          "title": "(1 封私信) 我好像发现了一个统计学上的规律，有人能给出证明吗？",
+          "title": "我好像发现了一个统计学上的规律，有人能给出证明吗？",
           "url": "/collections/0.raw/zhihu/ISP-%E8%AE%A1%E7%AE%97%E6%91%84%E5%BD%B1/%E6%88%91%E5%A5%BD%E5%83%8F%E5%8F%91%E7%8E%B0%E4%BA%86%E4%B8%80%E4%B8%AA%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B8%8A%E7%9A%84%E8%A7%84%E5%BE%8B,%E6%9C%89%E4%BA%BA%E8%83%BD%E7%BB%99%E5%87%BA%E8%AF%81%E6%98%8E%E5%90%97/",
           "date": "2026-04-14"
         },
         {
-          "title": "(1 封私信) NTIRE2024 | 修复一切图像RAIM: Restore All Image Model Challenge报告分析",
+          "title": "NTIRE2024 | 修复一切图像RAIM: Restore All Image Model Challenge报告分析",
           "url": "/collections/0.raw/zhihu/ISP-%E8%AE%A1%E7%AE%97%E6%91%84%E5%BD%B1/NTIRE2024-_-%E4%BF%AE%E5%A4%8D%E4%B8%80%E5%88%87%E5%9B%BE%E5%83%8FRAIM_-Restore-All-Image-Model-Challenge%E6%8A%A5%E5%91%8A%E5%88%86%E6%9E%90/",
           "date": "2024-06-08"
         },
@@ -18335,7 +18335,7 @@
           "date": "2024-06-08"
         },
         {
-          "title": "(1 封私信) 文献阅读：You Only Need One Color Space: An Efficient Network for Low-light Image Enhancement",
+          "title": "文献阅读：You Only Need One Color Space: An Efficient Network for Low-light Image Enhancement",
           "url": "/collections/0.raw/zhihu/ISP-%E8%AE%A1%E7%AE%97%E6%91%84%E5%BD%B1/%E6%96%87%E7%8C%AE%E9%98%85%E8%AF%BB-You-Only-Need-One-Color-Space_-An-Efficient-Network-for-Low-light-Image-Enhancement/",
           "date": "2024-05-27"
         },
@@ -18345,18 +18345,8 @@
           "date": "2024-05-27"
         },
         {
-          "title": "(1 封私信) 基于AI的ISP（图像信号处理）相关研究",
+          "title": "基于AI的ISP（图像信号处理）相关研究",
           "url": "/collections/0.raw/zhihu/ISP-%E8%AE%A1%E7%AE%97%E6%91%84%E5%BD%B1/%E5%9F%BA%E4%BA%8EAI%E7%9A%84ISP(%E5%9B%BE%E5%83%8F%E4%BF%A1%E5%8F%B7%E5%A4%84%E7%90%86)%E7%9B%B8%E5%85%B3%E7%A0%94%E7%A9%B6/",
-          "date": "2023-11-30"
-        },
-        {
-          "title": "(1 封私信) 色彩、色彩恒常性、色温、色彩空间—相关知识",
-          "url": "/collections/0.raw/zhihu/ISP-%E8%AE%A1%E7%AE%97%E6%91%84%E5%BD%B1/%E8%89%B2%E5%BD%A9%E3%80%81%E8%89%B2%E5%BD%A9%E6%81%92%E5%B8%B8%E6%80%A7%E3%80%81%E8%89%B2%E6%B8%A9%E3%80%81%E8%89%B2%E5%BD%A9%E7%A9%BA%E9%97%B4%E2%80%94%E7%9B%B8%E5%85%B3%E7%9F%A5%E8%AF%86/",
-          "date": "2023-11-30"
-        },
-        {
-          "title": "(1 封私信) 相机图像信号处理流程（ISP）",
-          "url": "/collections/0.raw/zhihu/ISP-%E8%AE%A1%E7%AE%97%E6%91%84%E5%BD%B1/%E7%9B%B8%E6%9C%BA%E5%9B%BE%E5%83%8F%E4%BF%A1%E5%8F%B7%E5%A4%84%E7%90%86%E6%B5%81%E7%A8%8B(ISP)/",
           "date": "2023-11-30"
         },
         {
@@ -18366,7 +18356,17 @@
         },
         {
           "title": "色彩、色彩恒常性、色温、色彩空间—相关知识",
+          "url": "/collections/0.raw/zhihu/ISP-%E8%AE%A1%E7%AE%97%E6%91%84%E5%BD%B1/%E8%89%B2%E5%BD%A9%E3%80%81%E8%89%B2%E5%BD%A9%E6%81%92%E5%B8%B8%E6%80%A7%E3%80%81%E8%89%B2%E6%B8%A9%E3%80%81%E8%89%B2%E5%BD%A9%E7%A9%BA%E9%97%B4%E2%80%94%E7%9B%B8%E5%85%B3%E7%9F%A5%E8%AF%86/",
+          "date": "2023-11-30"
+        },
+        {
+          "title": "色彩、色彩恒常性、色温、色彩空间—相关知识",
           "url": "/collections/0.raw/zhihu/ISP-%E8%AE%A1%E7%AE%97%E6%91%84%E5%BD%B1/%E8%89%B2%E5%BD%A9%E3%80%81%E8%89%B2%E5%BD%A9%E6%81%92%E5%B8%B8%E6%80%A7%E3%80%81%E8%89%B2%E6%B8%A9%E3%80%81%E8%89%B2%E5%BD%A9%E7%A9%BA%E9%97%B4%E2%80%94%E7%9B%B8%E5%85%B3%E7%9F%A5%E8%AF%86-84c613/",
+          "date": "2023-11-30"
+        },
+        {
+          "title": "相机图像信号处理流程（ISP）",
+          "url": "/collections/0.raw/zhihu/ISP-%E8%AE%A1%E7%AE%97%E6%91%84%E5%BD%B1/%E7%9B%B8%E6%9C%BA%E5%9B%BE%E5%83%8F%E4%BF%A1%E5%8F%B7%E5%A4%84%E7%90%86%E6%B5%81%E7%A8%8B(ISP)/",
           "date": "2023-11-30"
         },
         {
@@ -18375,7 +18375,7 @@
           "date": "2023-11-30"
         },
         {
-          "title": "(1 封私信) 手机中的计算摄影1-人像模式(双摄虚化)",
+          "title": "手机中的计算摄影1-人像模式(双摄虚化)",
           "url": "/collections/0.raw/zhihu/ISP-%E8%AE%A1%E7%AE%97%E6%91%84%E5%BD%B1/%E6%89%8B%E6%9C%BA%E4%B8%AD%E7%9A%84%E8%AE%A1%E7%AE%97%E6%91%84%E5%BD%B11-%E4%BA%BA%E5%83%8F%E6%A8%A1%E5%BC%8F(%E5%8F%8C%E6%91%84%E8%99%9A%E5%8C%96)/",
           "date": "2021-09-18"
         },
@@ -18385,7 +18385,7 @@
           "date": "2021-09-18"
         },
         {
-          "title": "(1 封私信) 基于卷积神经网络的图像去噪",
+          "title": "基于卷积神经网络的图像去噪",
           "url": "/collections/0.raw/zhihu/ISP-%E8%AE%A1%E7%AE%97%E6%91%84%E5%BD%B1/%E5%9F%BA%E4%BA%8E%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E7%9A%84%E5%9B%BE%E5%83%8F%E5%8E%BB%E5%99%AA/",
           "date": "2019-11-29"
         },
@@ -18528,7 +18528,7 @@
       "children": [],
       "docs": [
         {
-          "title": "(1 封私信) [AI编译器后端优化] 计算与调度",
+          "title": "[AI编译器后端优化] 计算与调度",
           "url": "/collections/0.raw/zhihu/tvm/%5BAI%E7%BC%96%E8%AF%91%E5%99%A8%E5%90%8E%E7%AB%AF%E4%BC%98%E5%8C%96%5D-%E8%AE%A1%E7%AE%97%E4%B8%8E%E8%B0%83%E5%BA%A6/",
           "date": "2024-04-01"
         },
@@ -18538,7 +18538,7 @@
           "date": "2024-04-01"
         },
         {
-          "title": "(1 封私信) 【编译器】传统编译器和AI/ML编译器总结",
+          "title": "【编译器】传统编译器和AI/ML编译器总结",
           "url": "/collections/0.raw/zhihu/tvm/%E3%80%90%E7%BC%96%E8%AF%91%E5%99%A8%E3%80%91%E4%BC%A0%E7%BB%9F%E7%BC%96%E8%AF%91%E5%99%A8%E5%92%8CAI_ML%E7%BC%96%E8%AF%91%E5%99%A8%E6%80%BB%E7%BB%93/",
           "date": "2023-12-22"
         },
@@ -18548,7 +18548,7 @@
           "date": "2023-12-22"
         },
         {
-          "title": "(1 封私信) TVM 中的 Tensor Expression (TE)",
+          "title": "TVM 中的 Tensor Expression (TE)",
           "url": "/collections/0.raw/zhihu/tvm/TVM-%E4%B8%AD%E7%9A%84-Tensor-Expression-(TE)/",
           "date": "2023-12-10"
         },
@@ -18558,7 +18558,7 @@
           "date": "2023-12-10"
         },
         {
-          "title": "(1 封私信) 深度学习编译器 TVM 代码串讲",
+          "title": "深度学习编译器 TVM 代码串讲",
           "url": "/collections/0.raw/zhihu/tvm/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%BC%96%E8%AF%91%E5%99%A8-TVM-%E4%BB%A3%E7%A0%81%E4%B8%B2%E8%AE%B2/",
           "date": "2022-11-01"
         },
@@ -18568,7 +18568,7 @@
           "date": "2022-11-01"
         },
         {
-          "title": "(1 封私信) [阅读笔记] BOLT @MLSys 2022",
+          "title": "[阅读笔记] BOLT @MLSys 2022",
           "url": "/collections/0.raw/zhihu/tvm/%5B%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0%5D-BOLT-MLSys-2022/",
           "date": "2022-05-31"
         },
@@ -18578,7 +18578,7 @@
           "date": "2022-05-31"
         },
         {
-          "title": "(1 封私信) MLIR 文章视频汇总",
+          "title": "MLIR 文章视频汇总",
           "url": "/collections/0.raw/zhihu/tvm/MLIR-%E6%96%87%E7%AB%A0%E8%A7%86%E9%A2%91%E6%B1%87%E6%80%BB/",
           "date": "2022-01-28"
         },
@@ -18588,7 +18588,7 @@
           "date": "2022-01-28"
         },
         {
-          "title": "(1 封私信) 【我与TVM二三事 中篇（1）】VirtualMachine",
+          "title": "【我与TVM二三事 中篇（1）】VirtualMachine",
           "url": "/collections/0.raw/zhihu/tvm/%E3%80%90%E6%88%91%E4%B8%8ETVM%E4%BA%8C%E4%B8%89%E4%BA%8B-%E4%B8%AD%E7%AF%87(1)%E3%80%91VirtualMachine/",
           "date": "2022-01-17"
         },
@@ -18642,12 +18642,12 @@
           "date": "2026-04-21"
         },
         {
-          "title": "(1 封私信) 为什么学文科是女生居多，但是官员大多数都是男性？",
+          "title": "为什么学文科是女生居多，但是官员大多数都是男性？",
           "url": "/collections/0.raw/zhihu/%E6%8A%BD%E8%B1%A1%E6%80%9D%E8%80%83/%E4%B8%BA%E4%BB%80%E4%B9%88%E5%AD%A6%E6%96%87%E7%A7%91%E6%98%AF%E5%A5%B3%E7%94%9F%E5%B1%85%E5%A4%9A,%E4%BD%86%E6%98%AF%E5%AE%98%E5%91%98%E5%A4%A7%E5%A4%9A%E6%95%B0%E9%83%BD%E6%98%AF%E7%94%B7%E6%80%A7/",
           "date": "2026-04-14"
         },
         {
-          "title": "(1 封私信) 现在年轻人最缺的是什么？",
+          "title": "现在年轻人最缺的是什么？",
           "url": "/collections/0.raw/zhihu/%E6%8A%BD%E8%B1%A1%E6%80%9D%E8%80%83/%E7%8E%B0%E5%9C%A8%E5%B9%B4%E8%BD%BB%E4%BA%BA%E6%9C%80%E7%BC%BA%E7%9A%84%E6%98%AF%E4%BB%80%E4%B9%88/",
           "date": "2026-04-14"
         },
@@ -18662,18 +18662,18 @@
           "date": "2023-03-20"
         },
         {
-          "title": "(1 封私信) 抽象的幻觉（1）",
+          "title": "抽象的幻觉（1）",
           "url": "/collections/0.raw/zhihu/%E6%8A%BD%E8%B1%A1%E6%80%9D%E8%80%83/%E6%8A%BD%E8%B1%A1%E7%9A%84%E5%B9%BB%E8%A7%89(1)/",
-          "date": "2022-08-12"
-        },
-        {
-          "title": "(1 封私信) 抽象的幻觉（2）",
-          "url": "/collections/0.raw/zhihu/%E6%8A%BD%E8%B1%A1%E6%80%9D%E8%80%83/%E6%8A%BD%E8%B1%A1%E7%9A%84%E5%B9%BB%E8%A7%89(2)/",
           "date": "2022-08-12"
         },
         {
           "title": "抽象的幻觉（1）",
           "url": "/collections/0.raw/zhihu/%E6%8A%BD%E8%B1%A1%E6%80%9D%E8%80%83/%E6%8A%BD%E8%B1%A1%E7%9A%84%E5%B9%BB%E8%A7%89(1)-c24601/",
+          "date": "2022-08-12"
+        },
+        {
+          "title": "抽象的幻觉（2）",
+          "url": "/collections/0.raw/zhihu/%E6%8A%BD%E8%B1%A1%E6%80%9D%E8%80%83/%E6%8A%BD%E8%B1%A1%E7%9A%84%E5%B9%BB%E8%A7%89(2)/",
           "date": "2022-08-12"
         },
         {
@@ -18711,12 +18711,12 @@
           "date": "2026-04-24"
         },
         {
-          "title": "(1 封私信) 有哪些轻量级适合阅读的优秀 C++ 开源项目？",
+          "title": "有哪些轻量级适合阅读的优秀 C++ 开源项目？",
           "url": "/collections/0.raw/zhihu/%E7%AC%94%E8%AF%95%E9%9D%A2%E8%AF%95/%E6%9C%89%E5%93%AA%E4%BA%9B%E8%BD%BB%E9%87%8F%E7%BA%A7%E9%80%82%E5%90%88%E9%98%85%E8%AF%BB%E7%9A%84%E4%BC%98%E7%A7%80-C-%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE/",
           "date": "2026-04-14"
         },
         {
-          "title": "(1 封私信) 至少需要几名死囚犯才能找出毒酒是哪一桶？",
+          "title": "至少需要几名死囚犯才能找出毒酒是哪一桶？",
           "url": "/collections/0.raw/zhihu/%E7%AC%94%E8%AF%95%E9%9D%A2%E8%AF%95/%E8%87%B3%E5%B0%91%E9%9C%80%E8%A6%81%E5%87%A0%E5%90%8D%E6%AD%BB%E5%9B%9A%E7%8A%AF%E6%89%8D%E8%83%BD%E6%89%BE%E5%87%BA%E6%AF%92%E9%85%92%E6%98%AF%E5%93%AA%E4%B8%80%E6%A1%B6/",
           "date": "2026-04-14"
         },
@@ -18731,22 +18731,22 @@
           "date": "2025-06-10"
         },
         {
-          "title": "(1 封私信) 一道机器学习岗位面试题：平均要抛多少次硬币，才能出现连续两次正面向上？",
+          "title": "一道机器学习岗位面试题：平均要抛多少次硬币，才能出现连续两次正面向上？",
           "url": "/collections/0.raw/zhihu/%E7%AC%94%E8%AF%95%E9%9D%A2%E8%AF%95/%E4%B8%80%E9%81%93%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E5%B2%97%E4%BD%8D%E9%9D%A2%E8%AF%95%E9%A2%98-%E5%B9%B3%E5%9D%87%E8%A6%81%E6%8A%9B%E5%A4%9A%E5%B0%91%E6%AC%A1%E7%A1%AC%E5%B8%81,%E6%89%8D%E8%83%BD%E5%87%BA%E7%8E%B0%E8%BF%9E%E7%BB%AD%E4%B8%A4%E6%AC%A1%E6%AD%A3%E9%9D%A2%E5%90%91%E4%B8%8A/",
           "date": "2022-03-08"
         },
         {
-          "title": "(1 封私信) 从硬件层面理解memory barrier",
+          "title": "从硬件层面理解memory barrier",
           "url": "/collections/0.raw/zhihu/%E7%AC%94%E8%AF%95%E9%9D%A2%E8%AF%95/%E4%BB%8E%E7%A1%AC%E4%BB%B6%E5%B1%82%E9%9D%A2%E7%90%86%E8%A7%A3memory-barrier/",
           "date": "2020-08-15"
         },
         {
-          "title": "(1 封私信) 由前序遍历和中序遍历重建二叉树",
+          "title": "由前序遍历和中序遍历重建二叉树",
           "url": "/collections/0.raw/zhihu/%E7%AC%94%E8%AF%95%E9%9D%A2%E8%AF%95/%E7%94%B1%E5%89%8D%E5%BA%8F%E9%81%8D%E5%8E%86%E5%92%8C%E4%B8%AD%E5%BA%8F%E9%81%8D%E5%8E%86%E9%87%8D%E5%BB%BA%E4%BA%8C%E5%8F%89%E6%A0%91/",
           "date": "2018-05-24"
         },
         {
-          "title": "(1 封私信) 刷题笔记6（浅谈单调栈）",
+          "title": "刷题笔记6（浅谈单调栈）",
           "url": "/collections/0.raw/zhihu/%E7%AC%94%E8%AF%95%E9%9D%A2%E8%AF%95/%E5%88%B7%E9%A2%98%E7%AC%94%E8%AE%B06(%E6%B5%85%E8%B0%88%E5%8D%95%E8%B0%83%E6%A0%88)/",
           "date": "2017-04-21"
         }
@@ -18800,22 +18800,22 @@
           "date": "2026-04-21"
         },
         {
-          "title": "(1 封私信) 提高手机摄影水平，有什么心得？",
+          "title": "提高手机摄影水平，有什么心得？",
           "url": "/collections/0.raw/zhihu/%E6%91%84%E5%BD%B1/%E6%8F%90%E9%AB%98%E6%89%8B%E6%9C%BA%E6%91%84%E5%BD%B1%E6%B0%B4%E5%B9%B3,%E6%9C%89%E4%BB%80%E4%B9%88%E5%BF%83%E5%BE%97/",
           "date": "2026-04-14"
         },
         {
-          "title": "(1 封私信) 为什么网上有些照片放大看分辨率其实很低，但整体看起来却很锐很舒服？",
+          "title": "为什么网上有些照片放大看分辨率其实很低，但整体看起来却很锐很舒服？",
           "url": "/collections/0.raw/zhihu/%E6%91%84%E5%BD%B1/%E4%B8%BA%E4%BB%80%E4%B9%88%E7%BD%91%E4%B8%8A%E6%9C%89%E4%BA%9B%E7%85%A7%E7%89%87%E6%94%BE%E5%A4%A7%E7%9C%8B%E5%88%86%E8%BE%A8%E7%8E%87%E5%85%B6%E5%AE%9E%E5%BE%88%E4%BD%8E,%E4%BD%86%E6%95%B4%E4%BD%93%E7%9C%8B%E8%B5%B7%E6%9D%A5%E5%8D%B4%E5%BE%88%E9%94%90%E5%BE%88%E8%88%92%E6%9C%8D/",
           "date": "2026-04-14"
         },
         {
-          "title": "(1 封私信) 新手如何系统性地学习摄影？",
+          "title": "新手如何系统性地学习摄影？",
           "url": "/collections/0.raw/zhihu/%E6%91%84%E5%BD%B1/%E6%96%B0%E6%89%8B%E5%A6%82%E4%BD%95%E7%B3%BB%E7%BB%9F%E6%80%A7%E5%9C%B0%E5%AD%A6%E4%B9%A0%E6%91%84%E5%BD%B1/",
           "date": "2026-04-14"
         },
         {
-          "title": "(1 封私信) 有哪些适合摄影新手学习的摄影网站？",
+          "title": "有哪些适合摄影新手学习的摄影网站？",
           "url": "/collections/0.raw/zhihu/%E6%91%84%E5%BD%B1/%E6%9C%89%E5%93%AA%E4%BA%9B%E9%80%82%E5%90%88%E6%91%84%E5%BD%B1%E6%96%B0%E6%89%8B%E5%AD%A6%E4%B9%A0%E7%9A%84%E6%91%84%E5%BD%B1%E7%BD%91%E7%AB%99/",
           "date": "2026-04-14"
         }
@@ -18844,37 +18844,37 @@
       "children": [],
       "docs": [
         {
-          "title": "(1 封私信) 深度学习对图像的处理，为什么大多基于RGB，而没有其他色彩空间，比如HSV？",
+          "title": "深度学习对图像的处理，为什么大多基于RGB，而没有其他色彩空间，比如HSV？",
           "url": "/collections/0.raw/zhihu/%E7%9B%B8%E6%9C%BA%E7%AE%97%E6%B3%95%E7%9B%B8%E5%85%B3/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AF%B9%E5%9B%BE%E5%83%8F%E7%9A%84%E5%A4%84%E7%90%86,%E4%B8%BA%E4%BB%80%E4%B9%88%E5%A4%A7%E5%A4%9A%E5%9F%BA%E4%BA%8ERGB,%E8%80%8C%E6%B2%A1%E6%9C%89%E5%85%B6%E4%BB%96%E8%89%B2%E5%BD%A9%E7%A9%BA%E9%97%B4,%E6%AF%94%E5%A6%82HSV/",
           "date": "2026-04-14"
         },
         {
-          "title": "(1 封私信) 为什么网上有些照片放大看分辨率其实很低，但整体看起来却很锐很舒服？",
+          "title": "为什么网上有些照片放大看分辨率其实很低，但整体看起来却很锐很舒服？",
           "url": "/collections/0.raw/zhihu/%E7%9B%B8%E6%9C%BA%E7%AE%97%E6%B3%95%E7%9B%B8%E5%85%B3/%E4%B8%BA%E4%BB%80%E4%B9%88%E7%BD%91%E4%B8%8A%E6%9C%89%E4%BA%9B%E7%85%A7%E7%89%87%E6%94%BE%E5%A4%A7%E7%9C%8B%E5%88%86%E8%BE%A8%E7%8E%87%E5%85%B6%E5%AE%9E%E5%BE%88%E4%BD%8E,%E4%BD%86%E6%95%B4%E4%BD%93%E7%9C%8B%E8%B5%B7%E6%9D%A5%E5%8D%B4%E5%BE%88%E9%94%90%E5%BE%88%E8%88%92%E6%9C%8D/",
           "date": "2026-04-14"
         },
         {
-          "title": "(1 封私信) 我好像发现了一个统计学上的规律，有人能给出证明吗？",
+          "title": "我好像发现了一个统计学上的规律，有人能给出证明吗？",
           "url": "/collections/0.raw/zhihu/%E7%9B%B8%E6%9C%BA%E7%AE%97%E6%B3%95%E7%9B%B8%E5%85%B3/%E6%88%91%E5%A5%BD%E5%83%8F%E5%8F%91%E7%8E%B0%E4%BA%86%E4%B8%80%E4%B8%AA%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B8%8A%E7%9A%84%E8%A7%84%E5%BE%8B,%E6%9C%89%E4%BA%BA%E8%83%BD%E7%BB%99%E5%87%BA%E8%AF%81%E6%98%8E%E5%90%97/",
           "date": "2026-04-14"
         },
         {
-          "title": "(1 封私信) 有哪些数学定理或者数学知识惊呆了你？",
+          "title": "有哪些数学定理或者数学知识惊呆了你？",
           "url": "/collections/0.raw/zhihu/%E7%9B%B8%E6%9C%BA%E7%AE%97%E6%B3%95%E7%9B%B8%E5%85%B3/%E6%9C%89%E5%93%AA%E4%BA%9B%E6%95%B0%E5%AD%A6%E5%AE%9A%E7%90%86%E6%88%96%E8%80%85%E6%95%B0%E5%AD%A6%E7%9F%A5%E8%AF%86%E6%83%8A%E5%91%86%E4%BA%86%E4%BD%A0/",
           "date": "2026-04-14"
         },
         {
-          "title": "(1 封私信) 100. DEPTHOR++——让低成本传感器也能超越极限",
+          "title": "100. DEPTHOR++——让低成本传感器也能超越极限",
           "url": "/collections/0.raw/zhihu/%E7%9B%B8%E6%9C%BA%E7%AE%97%E6%B3%95%E7%9B%B8%E5%85%B3/100.-DEPTHOR-%E2%80%94%E2%80%94%E8%AE%A9%E4%BD%8E%E6%88%90%E6%9C%AC%E4%BC%A0%E6%84%9F%E5%99%A8%E4%B9%9F%E8%83%BD%E8%B6%85%E8%B6%8A%E6%9E%81%E9%99%90/",
           "date": "2026-02-23"
         },
         {
-          "title": "(1 封私信) 图像处理入门 100 题，有人把它翻译成了中文版！",
+          "title": "图像处理入门 100 题，有人把它翻译成了中文版！",
           "url": "/collections/0.raw/zhihu/%E7%9B%B8%E6%9C%BA%E7%AE%97%E6%B3%95%E7%9B%B8%E5%85%B3/%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86%E5%85%A5%E9%97%A8-100-%E9%A2%98,%E6%9C%89%E4%BA%BA%E6%8A%8A%E5%AE%83%E7%BF%BB%E8%AF%91%E6%88%90%E4%BA%86%E4%B8%AD%E6%96%87%E7%89%88/",
           "date": "2019-10-31"
         },
         {
-          "title": "(1 封私信) 图像处理：从 bilateral filter 到 HDRnet",
+          "title": "图像处理：从 bilateral filter 到 HDRnet",
           "url": "/collections/0.raw/zhihu/%E7%9B%B8%E6%9C%BA%E7%AE%97%E6%B3%95%E7%9B%B8%E5%85%B3/%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86-%E4%BB%8E-bilateral-filter-%E5%88%B0-HDRnet/",
           "date": "2018-05-28"
         }
@@ -18903,37 +18903,37 @@
       "children": [],
       "docs": [
         {
-          "title": "(1 封私信) cache coherency model如何深层理解？",
+          "title": "cache coherency model如何深层理解？",
           "url": "/collections/0.raw/zhihu/%E7%A1%AC%E4%BB%B6/cache-coherency-model%E5%A6%82%E4%BD%95%E6%B7%B1%E5%B1%82%E7%90%86%E8%A7%A3/",
           "date": "2026-04-14"
         },
         {
-          "title": "(1 封私信) 深入内存/主存：解剖DRAM存储器",
+          "title": "深入内存/主存：解剖DRAM存储器",
           "url": "/collections/0.raw/zhihu/%E7%A1%AC%E4%BB%B6/%E6%B7%B1%E5%85%A5%E5%86%85%E5%AD%98_%E4%B8%BB%E5%AD%98-%E8%A7%A3%E5%89%96DRAM%E5%AD%98%E5%82%A8%E5%99%A8/",
           "date": "2024-11-05"
         },
         {
-          "title": "(1 封私信) SMMU和IOMMU技术 [一]",
+          "title": "SMMU和IOMMU技术 [一]",
           "url": "/collections/0.raw/zhihu/%E7%A1%AC%E4%BB%B6/SMMU%E5%92%8CIOMMU%E6%8A%80%E6%9C%AF-%5B%E4%B8%80%5D/",
           "date": "2023-03-26"
         },
         {
-          "title": "(1 封私信) 华为鲲鹏920 TSV110微架构评测（上）:初露锋芒，砥砺前行",
+          "title": "华为鲲鹏920 TSV110微架构评测（上）:初露锋芒，砥砺前行",
           "url": "/collections/0.raw/zhihu/%E7%A1%AC%E4%BB%B6/%E5%8D%8E%E4%B8%BA%E9%B2%B2%E9%B9%8F920-TSV110%E5%BE%AE%E6%9E%B6%E6%9E%84%E8%AF%84%E6%B5%8B(%E4%B8%8A)_%E5%88%9D%E9%9C%B2%E9%94%8B%E8%8A%92,%E7%A0%A5%E7%A0%BA%E5%89%8D%E8%A1%8C/",
           "date": "2023-03-18"
         },
         {
-          "title": "(1 封私信) ARM SMMU学习笔记（超详细~）",
+          "title": "ARM SMMU学习笔记（超详细~）",
           "url": "/collections/0.raw/zhihu/%E7%A1%AC%E4%BB%B6/ARM-SMMU%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(%E8%B6%85%E8%AF%A6%E7%BB%86~)/",
           "date": "2022-07-07"
         },
         {
-          "title": "(1 封私信) 【目录序言翻译】硬件预取技术导论《A Primer on Hardware Prefetching》",
+          "title": "【目录序言翻译】硬件预取技术导论《A Primer on Hardware Prefetching》",
           "url": "/collections/0.raw/zhihu/%E7%A1%AC%E4%BB%B6/%E3%80%90%E7%9B%AE%E5%BD%95%E5%BA%8F%E8%A8%80%E7%BF%BB%E8%AF%91%E3%80%91%E7%A1%AC%E4%BB%B6%E9%A2%84%E5%8F%96%E6%8A%80%E6%9C%AF%E5%AF%BC%E8%AE%BA%E3%80%8AA-Primer-on-Hardware-Prefetching%E3%80%8B/",
           "date": "2021-07-20"
         },
         {
-          "title": "(1 封私信) BOOM微架构学习(1)——取指单元与分支预测",
+          "title": "BOOM微架构学习(1)——取指单元与分支预测",
           "url": "/collections/0.raw/zhihu/%E7%A1%AC%E4%BB%B6/BOOM%E5%BE%AE%E6%9E%B6%E6%9E%84%E5%AD%A6%E4%B9%A0(1)%E2%80%94%E2%80%94%E5%8F%96%E6%8C%87%E5%8D%95%E5%85%83%E4%B8%8E%E5%88%86%E6%94%AF%E9%A2%84%E6%B5%8B/",
           "date": "2020-09-12"
         }
@@ -18972,7 +18972,7 @@
           "date": "2026-04-21"
         },
         {
-          "title": "(1 封私信) 你最近想通了什么事情？",
+          "title": "你最近想通了什么事情？",
           "url": "/collections/0.raw/zhihu/%E6%95%85%E4%BA%8B/%E4%BD%A0%E6%9C%80%E8%BF%91%E6%83%B3%E9%80%9A%E4%BA%86%E4%BB%80%E4%B9%88%E4%BA%8B%E6%83%85/",
           "date": "2026-04-14"
         }
@@ -19006,7 +19006,7 @@
           "date": "2026-05-17"
         },
         {
-          "title": "(1 封私信) 殖民地人民没有购买力，列强如何把殖民地当做产品倾销地？",
+          "title": "殖民地人民没有购买力，列强如何把殖民地当做产品倾销地？",
           "url": "/collections/0.raw/zhihu/%E6%8A%95%E8%B5%84%E5%AD%A6%E4%B9%A0/%E6%AE%96%E6%B0%91%E5%9C%B0%E4%BA%BA%E6%B0%91%E6%B2%A1%E6%9C%89%E8%B4%AD%E4%B9%B0%E5%8A%9B,%E5%88%97%E5%BC%BA%E5%A6%82%E4%BD%95%E6%8A%8A%E6%AE%96%E6%B0%91%E5%9C%B0%E5%BD%93%E5%81%9A%E4%BA%A7%E5%93%81%E5%80%BE%E9%94%80%E5%9C%B0/",
           "date": "2026-04-15"
         },
@@ -19045,7 +19045,7 @@
           "date": "2026-05-17"
         },
         {
-          "title": "(1 封私信) protobuf 中 UB 行为的表现",
+          "title": "protobuf 中 UB 行为的表现",
           "url": "/collections/0.raw/zhihu/%E5%AE%89%E5%85%A8/protobuf-%E4%B8%AD-UB-%E8%A1%8C%E4%B8%BA%E7%9A%84%E8%A1%A8%E7%8E%B0/",
           "date": "2022-06-09"
         }
@@ -19108,7 +19108,7 @@
       "children": [],
       "docs": [
         {
-          "title": "(1 封私信) 在你心目中，火锅中的素菜之王是什么？",
+          "title": "在你心目中，火锅中的素菜之王是什么？",
           "url": "/collections/0.raw/zhihu/%E9%A5%AE%E9%A3%9F/%E5%9C%A8%E4%BD%A0%E5%BF%83%E7%9B%AE%E4%B8%AD,%E7%81%AB%E9%94%85%E4%B8%AD%E7%9A%84%E7%B4%A0%E8%8F%9C%E4%B9%8B%E7%8E%8B%E6%98%AF%E4%BB%80%E4%B9%88/",
           "date": "2026-04-14"
         }
@@ -19137,7 +19137,7 @@
       "children": [],
       "docs": [
         {
-          "title": "(1 封私信) 如何注销知乎帐号？",
+          "title": "如何注销知乎帐号？",
           "url": "/collections/0.raw/zhihu/%E6%B3%A8%E9%94%80/%E5%A6%82%E4%BD%95%E6%B3%A8%E9%94%80%E7%9F%A5%E4%B9%8E%E5%B8%90%E5%8F%B7/",
           "date": "2026-04-14"
         }

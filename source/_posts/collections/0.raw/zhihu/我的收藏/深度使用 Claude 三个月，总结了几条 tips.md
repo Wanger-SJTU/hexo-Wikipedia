@@ -1,17 +1,17 @@
 ---
-title: 深度使用 Claude 三个月，总结了几条 tips
+title: "深度使用 Claude 三个月，总结了几条 tips"
 date: "2025-12-27 00:00:00"
 updated: "2025-12-27 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/我的收藏/深度使用-Claude-三个月,总结了几条-tips/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/我的收藏/深度使用-Claude-三个月,总结了几条-tips/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/1987816072250955700
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/1987816072250955700"
 ---
 
 

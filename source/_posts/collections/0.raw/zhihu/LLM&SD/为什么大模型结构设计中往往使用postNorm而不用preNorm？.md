@@ -1,17 +1,17 @@
 ---
-title: 为什么大模型结构设计中往往使用postNorm而不用preNorm？
+title: "为什么大模型结构设计中往往使用postNorm而不用preNorm？"
 date: "2024-02-23 00:00:00"
 updated: "2024-02-23 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/LLM-SD/为什么大模型结构设计中往往使用postNorm而不用preNorm/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/LLM-SD/为什么大模型结构设计中往往使用postNorm而不用preNorm/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/682747135
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/682747135"
 ---
 
 

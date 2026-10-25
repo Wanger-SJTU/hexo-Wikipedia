@@ -1,17 +1,17 @@
 ---
-title: CS61C 完结记录
+title: "CS61C 完结记录"
 date: "2022-03-07 00:00:00"
 updated: "2022-03-07 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/体系结构/CS61C-完结记录/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/体系结构/CS61C-完结记录/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/476562056
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/476562056"
 ---
 
 

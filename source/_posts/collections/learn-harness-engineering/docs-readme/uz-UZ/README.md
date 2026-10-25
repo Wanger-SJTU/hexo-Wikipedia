@@ -1,14 +1,14 @@
 ---
-title: Learn Harness Engineering
+title: "Learn Harness Engineering"
 date: "2026-05-28 11:34:14"
 updated: "2026-05-28 11:34:14"
-layout: post
-permalink: /collections/learn-harness-engineering/docs-readme/uz-UZ/README/
+layout: "post"
+permalink: "/collections/learn-harness-engineering/docs-readme/uz-UZ/README/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 ---
 
 <p align="center">

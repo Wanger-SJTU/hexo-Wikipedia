@@ -1,17 +1,17 @@
 ---
-title: transformer如何处理长文本？
+title: "transformer如何处理长文本？"
 date: "2024-01-22 00:00:00"
 updated: "2024-01-22 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/LLM-SD/transformer如何处理长文本/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/LLM-SD/transformer如何处理长文本/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://www.zhihu.com/question/635395282/answer/3372320028
+  - "知乎"
+source_url: "https://www.zhihu.com/question/635395282/answer/3372320028"
 ---
 
 

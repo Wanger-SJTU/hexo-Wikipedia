@@ -1,14 +1,14 @@
 ---
-title: TVM 代码生成——TIR to LLVM IR
+title: "TVM 代码生成——TIR to LLVM IR"
 date: "2026-04-11 21:40:28"
 updated: "2026-04-11 21:40:28"
-layout: post
-permalink: /collections/0.raw/归档/TVM/TVM-代码生成——TIR-to-LLVM-IR/
+layout: "post"
+permalink: "/collections/0.raw/归档/TVM/TVM-代码生成——TIR-to-LLVM-IR/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 ---
 
 #TVM 

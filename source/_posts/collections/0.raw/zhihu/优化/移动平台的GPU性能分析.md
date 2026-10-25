@@ -1,17 +1,17 @@
 ---
-title: 移动平台的GPU性能分析
+title: "移动平台的GPU性能分析"
 date: "2022-09-02 00:00:00"
 updated: "2022-09-02 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/优化/移动平台的GPU性能分析/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/优化/移动平台的GPU性能分析/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/560738175
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/560738175"
 ---
 
 

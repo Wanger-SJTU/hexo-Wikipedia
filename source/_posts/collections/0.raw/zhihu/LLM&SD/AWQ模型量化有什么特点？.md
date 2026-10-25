@@ -1,17 +1,17 @@
 ---
-title: AWQ模型量化有什么特点？
+title: "AWQ模型量化有什么特点？"
 date: "2026-04-14 00:00:00"
 updated: "2026-04-14 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/LLM-SD/AWQ模型量化有什么特点/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/LLM-SD/AWQ模型量化有什么特点/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://www.zhihu.com/question/645963779/answer/4841384841
+  - "知乎"
+source_url: "https://www.zhihu.com/question/645963779/answer/4841384841"
 ---
 
 

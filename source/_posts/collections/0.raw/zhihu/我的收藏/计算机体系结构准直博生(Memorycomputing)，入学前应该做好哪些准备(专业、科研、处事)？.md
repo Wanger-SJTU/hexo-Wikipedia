@@ -1,17 +1,17 @@
 ---
-title: 计算机体系结构准直博生(Memorycomputing)，入学前应该做好哪些准备(专业、科研、处事)？
+title: "计算机体系结构准直博生(Memorycomputing)，入学前应该做好哪些准备(专业、科研、处事)？"
 date: "2021-11-07 00:00:00"
 updated: "2021-11-07 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/我的收藏/计算机体系结构准直博生(Memorycomputing),入学前应该做好哪些准备(专业、科研、处事)/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/我的收藏/计算机体系结构准直博生(Memorycomputing),入学前应该做好哪些准备(专业、科研、处事)/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://www.zhihu.com/question/496186443/answer/2211102106
+  - "知乎"
+source_url: "https://www.zhihu.com/question/496186443/answer/2211102106"
 ---
 
 

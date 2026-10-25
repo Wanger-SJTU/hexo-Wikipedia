@@ -1,14 +1,14 @@
 ---
-title: LLM之RAG实战（二十八）| 探索RAG query重写 - 知乎
+title: "LLM之RAG实战（二十八）| 探索RAG query重写 - 知乎"
 date: "2026-04-11 21:40:28"
 updated: "2026-04-11 21:40:28"
-layout: post
-permalink: /collections/0.raw/Omnivore/2024-05-14/LLM之RAG实战(二十八)-探索RAG-query重写-知乎/
+layout: "post"
+permalink: "/collections/0.raw/Omnivore/2024-05-14/LLM之RAG实战(二十八)-探索RAG-query重写-知乎/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 ---
 
 ---

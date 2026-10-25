@@ -1,17 +1,17 @@
 ---
-title: 编译器领域的多面体模型（Polyhderal Model）
+title: "编译器领域的多面体模型（Polyhderal Model）"
 date: "2020-11-24 00:00:00"
 updated: "2020-11-24 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/体系结构/编译器领域的多面体模型(Polyhderal-Model)/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/体系结构/编译器领域的多面体模型(Polyhderal-Model)/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/310142893
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/310142893"
 ---
 
 

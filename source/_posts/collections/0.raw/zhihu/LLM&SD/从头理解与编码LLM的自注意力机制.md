@@ -1,17 +1,17 @@
 ---
-title: 从头理解与编码LLM的自注意力机制
+title: "从头理解与编码LLM的自注意力机制"
 date: "2024-02-18 00:00:00"
 updated: "2024-02-18 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/LLM-SD/从头理解与编码LLM的自注意力机制/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/LLM-SD/从头理解与编码LLM的自注意力机制/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/682016587
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/682016587"
 ---
 
 

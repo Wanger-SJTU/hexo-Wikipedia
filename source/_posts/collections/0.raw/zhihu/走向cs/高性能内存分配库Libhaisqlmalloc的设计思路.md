@@ -1,17 +1,17 @@
 ---
-title: 高性能内存分配库Libhaisqlmalloc的设计思路
+title: "高性能内存分配库Libhaisqlmalloc的设计思路"
 date: "2021-12-08 00:00:00"
 updated: "2021-12-08 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/走向cs/高性能内存分配库Libhaisqlmalloc的设计思路/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/走向cs/高性能内存分配库Libhaisqlmalloc的设计思路/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/352938740
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/352938740"
 ---
 
 

@@ -1,17 +1,17 @@
 ---
-title: 为什么 MobileNet、ShuffleNet 在理论上速度很快，工程上并没有特别大的提升？
+title: "为什么 MobileNet、ShuffleNet 在理论上速度很快，工程上并没有特别大的提升？"
 date: "2026-04-21 00:00:00"
 updated: "2026-04-21 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/优化/为什么-MobileNet、ShuffleNet-在理论上速度很快,工程上并没有特别大的提升/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/优化/为什么-MobileNet、ShuffleNet-在理论上速度很快,工程上并没有特别大的提升/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://www.zhihu.com/question/343343895/answer/2437588261
+  - "知乎"
+source_url: "https://www.zhihu.com/question/343343895/answer/2437588261"
 ---
 
 

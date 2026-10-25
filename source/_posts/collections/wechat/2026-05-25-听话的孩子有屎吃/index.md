@@ -1,14 +1,14 @@
 ---
-title: 听话的孩子有屎吃
+title: "听话的孩子有屎吃"
 date: "2026-05-25 13:35:04"
 updated: "2026-05-25 13:35:04"
-layout: post
-permalink: /collections/wechat/2026-05-25-听话的孩子有屎吃/index/
+layout: "post"
+permalink: "/collections/wechat/2026-05-25-听话的孩子有屎吃/index/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 ---
 
 # 听话的孩子有屎吃

@@ -1,17 +1,17 @@
 ---
-title: LangChain - RAG：线上系统多文档要频繁更新，每次都要重新花钱做一次 embedding，老板不批预算，批我...
+title: "LangChain - RAG：线上系统多文档要频繁更新，每次都要重新花钱做一次 embedding，老板不批预算，批我..."
 date: "2023-09-15 00:00:00"
 updated: "2023-09-15 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/LLM-SD/LangChain-RAG-线上系统多文档要频繁更新,每次都要重新花钱做一次-embedding,老板不批预算,批我/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/LLM-SD/LangChain-RAG-线上系统多文档要频繁更新,每次都要重新花钱做一次-embedding,老板不批预算,批我/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/655221620
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/655221620"
 ---
 
 

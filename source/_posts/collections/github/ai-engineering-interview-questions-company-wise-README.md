@@ -1,14 +1,14 @@
 ---
-title: AI Engineering Interview Questions Company Wise
+title: "AI Engineering Interview Questions Company Wise"
 date: "2026-09-20 10:15:53"
 updated: "2026-09-20 10:15:53"
-layout: post
-permalink: /collections/github/ai-engineering-interview-questions-company-wise-README/
+layout: "post"
+permalink: "/collections/github/ai-engineering-interview-questions-company-wise-README/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 ---
 
 <p align="center">

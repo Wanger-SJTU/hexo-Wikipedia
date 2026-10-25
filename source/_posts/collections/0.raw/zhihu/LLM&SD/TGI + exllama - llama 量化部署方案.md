@@ -1,17 +1,17 @@
 ---
-title: TGI + exllama - llama 量化部署方案
+title: "TGI + exllama - llama 量化部署方案"
 date: "2023-07-29 00:00:00"
 updated: "2023-07-29 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/LLM-SD/TGI-exllama-llama-量化部署方案/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/LLM-SD/TGI-exllama-llama-量化部署方案/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/646716367
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/646716367"
 ---
 
 

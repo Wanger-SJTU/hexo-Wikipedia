@@ -1,20 +1,20 @@
 ---
-title: Popping the GPU Bubble - Moondream Photon 推理引擎优化
+title: "Popping the GPU Bubble - Moondream Photon 推理引擎优化"
 date: "2026-06-06 00:00:00"
 updated: "2026-06-06 00:00:00"
-layout: post
-permalink: /collections/moondream/popping-the-gpu-bubble/
+layout: "post"
+permalink: "/collections/moondream/popping-the-gpu-bubble/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - inference
-  - gpu-optimization
-  - pipelining
-  - vlm
-source_url: https://moondream.ai/blog/popping-the-gpu-bubble
+  - "inference"
+  - "gpu-optimization"
+  - "pipelining"
+  - "vlm"
+source_url: "https://moondream.ai/blog/popping-the-gpu-bubble"
 ---
 
 

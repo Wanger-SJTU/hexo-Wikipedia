@@ -1,17 +1,17 @@
 ---
-title: 为什么交叉熵（cross-entropy）可以用于计算代价？
+title: "为什么交叉熵（cross-entropy）可以用于计算代价？"
 date: "2026-04-15 00:00:00"
 updated: "2026-04-15 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/机器学习/为什么交叉熵(cross-entropy)可以用于计算代价/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/机器学习/为什么交叉熵(cross-entropy)可以用于计算代价/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://www.zhihu.com/question/65288314/answer/244557337
+  - "知乎"
+source_url: "https://www.zhihu.com/question/65288314/answer/244557337"
 ---
 
 

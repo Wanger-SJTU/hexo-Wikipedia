@@ -1,17 +1,17 @@
 ---
-title: (2 条消息) 压缩率90%效果依然坚挺？通过蒸馏kv-cache降低部署成本
+title: "(2 条消息) 压缩率90%效果依然坚挺？通过蒸馏kv-cache降低部署成本"
 date: "2025-03-18 00:00:00"
 updated: "2025-03-18 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/我的收藏/压缩率90-效果依然坚挺-通过蒸馏kv-cache降低部署成本/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/我的收藏/压缩率90-效果依然坚挺-通过蒸馏kv-cache降低部署成本/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/30901350014
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/30901350014"
 ---
 
 

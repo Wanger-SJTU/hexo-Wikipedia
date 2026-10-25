@@ -1,17 +1,17 @@
 ---
-title: (2 条消息) 多模态大模型里面的语义一致性Tokenization
+title: "(2 条消息) 多模态大模型里面的语义一致性Tokenization"
 date: "2024-06-16 00:00:00"
 updated: "2024-06-16 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/我的收藏/多模态大模型里面的语义一致性Tokenization/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/我的收藏/多模态大模型里面的语义一致性Tokenization/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/703711019
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/703711019"
 ---
 
 

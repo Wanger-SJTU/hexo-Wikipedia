@@ -1,17 +1,17 @@
 ---
-title: (2 条消息) LLM：旋转位置编码（RoPE）的通俗理解
+title: "(2 条消息) LLM：旋转位置编码（RoPE）的通俗理解"
 date: "2024-12-03 00:00:00"
 updated: "2024-12-03 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/我的收藏/LLM-旋转位置编码(RoPE)的通俗理解/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/我的收藏/LLM-旋转位置编码(RoPE)的通俗理解/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/690610231
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/690610231"
 ---
 
 

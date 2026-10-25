@@ -1,17 +1,17 @@
 ---
-title: Roofline Model与深度学习模型的性能分析
+title: "Roofline Model与深度学习模型的性能分析"
 date: "2020-05-17 00:00:00"
 updated: "2020-05-17 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/模型部署那些事/Roofline-Model与深度学习模型的性能分析/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/模型部署那些事/Roofline-Model与深度学习模型的性能分析/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/34204282
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/34204282"
 ---
 
 

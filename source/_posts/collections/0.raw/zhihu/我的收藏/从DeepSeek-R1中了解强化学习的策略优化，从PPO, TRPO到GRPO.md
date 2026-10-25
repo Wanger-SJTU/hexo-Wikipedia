@@ -1,17 +1,17 @@
 ---
-title: (2 条消息) 从DeepSeek-R1中了解强化学习的策略优化，从PPO, TRPO到GRPO
+title: "(2 条消息) 从DeepSeek-R1中了解强化学习的策略优化，从PPO, TRPO到GRPO"
 date: "2025-02-10 00:00:00"
 updated: "2025-02-10 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/我的收藏/从DeepSeek-R1中了解强化学习的策略优化,从PPO,-TRPO到GRPO/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/我的收藏/从DeepSeek-R1中了解强化学习的策略优化,从PPO,-TRPO到GRPO/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/20858086974
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/20858086974"
 ---
 
 

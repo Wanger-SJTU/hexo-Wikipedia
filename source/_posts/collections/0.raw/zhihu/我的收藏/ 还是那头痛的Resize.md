@@ -1,17 +1,17 @@
 ---
-title: (1 条消息) 还是那头痛的Resize
+title: "(1 条消息) 还是那头痛的Resize"
 date: "2023-11-17 00:00:00"
 updated: "2023-11-17 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/我的收藏/还是那头痛的Resize/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/我的收藏/还是那头痛的Resize/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/666296180
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/666296180"
 ---
 
 

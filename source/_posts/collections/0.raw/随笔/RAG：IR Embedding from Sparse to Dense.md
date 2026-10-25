@@ -1,14 +1,14 @@
 ---
-title: RAG：IR Embedding from Sparse to Dense
+title: "RAG：IR Embedding from Sparse to Dense"
 date: "2026-04-11 21:40:18"
 updated: "2026-04-11 21:40:18"
-layout: post
-permalink: /collections/0.raw/随笔/RAG-IR-Embedding-from-Sparse-to-Dense/
+layout: "post"
+permalink: "/collections/0.raw/随笔/RAG-IR-Embedding-from-Sparse-to-Dense/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 ---
 
 RAG可以看作是IR的进阶，从信息检索（IR）的角度来看，从文本中要检索获取相关信息，有很多方法。传统方法如关键词、标签等，NN类的方法各种embeding模型叠加向量数据库，当然还有另外一类方法就是稀疏向量检索，这类方法既有BM25这种基于统计的，也有BGE、splade这种与NN结合的。

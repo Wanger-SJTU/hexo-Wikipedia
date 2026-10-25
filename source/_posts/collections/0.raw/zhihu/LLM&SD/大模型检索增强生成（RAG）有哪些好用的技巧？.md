@@ -1,17 +1,17 @@
 ---
-title: 大模型检索增强生成（RAG）有哪些好用的技巧？
+title: "大模型检索增强生成（RAG）有哪些好用的技巧？"
 date: "2023-12-08 00:00:00"
 updated: "2023-12-08 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/LLM-SD/大模型检索增强生成(RAG)有哪些好用的技巧/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/LLM-SD/大模型检索增强生成(RAG)有哪些好用的技巧/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://www.zhihu.com/question/625481187/answer/3318443854
+  - "知乎"
+source_url: "https://www.zhihu.com/question/625481187/answer/3318443854"
 ---
 
 

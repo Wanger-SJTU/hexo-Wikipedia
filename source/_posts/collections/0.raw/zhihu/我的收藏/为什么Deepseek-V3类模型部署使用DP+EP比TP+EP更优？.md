@@ -1,17 +1,17 @@
 ---
-title: (2 条消息) 为什么Deepseek-V3类模型部署使用DP+EP比TP+EP更优？
+title: "(2 条消息) 为什么Deepseek-V3类模型部署使用DP+EP比TP+EP更优？"
 date: "2025-04-10 00:00:00"
 updated: "2025-04-10 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/我的收藏/为什么Deepseek-V3类模型部署使用DP-EP比TP-EP更优/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/我的收藏/为什么Deepseek-V3类模型部署使用DP-EP比TP-EP更优/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/1893454979878085947
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/1893454979878085947"
 ---
 
 

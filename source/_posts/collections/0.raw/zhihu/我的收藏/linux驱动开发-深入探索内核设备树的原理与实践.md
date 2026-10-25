@@ -1,17 +1,17 @@
 ---
-title: (2 条消息) linux驱动开发-深入探索内核设备树的原理与实践
+title: "(2 条消息) linux驱动开发-深入探索内核设备树的原理与实践"
 date: "2024-10-12 00:00:00"
 updated: "2024-10-12 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/我的收藏/linux驱动开发-深入探索内核设备树的原理与实践/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/我的收藏/linux驱动开发-深入探索内核设备树的原理与实践/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/972681787
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/972681787"
 ---
 
 

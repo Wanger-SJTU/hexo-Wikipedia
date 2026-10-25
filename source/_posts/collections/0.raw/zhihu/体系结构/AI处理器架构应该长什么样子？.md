@@ -1,17 +1,17 @@
 ---
-title: AI处理器架构应该长什么样子？
+title: "AI处理器架构应该长什么样子？"
 date: "2025-05-08 00:00:00"
 updated: "2025-05-08 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/体系结构/AI处理器架构应该长什么样子-e06311/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/体系结构/AI处理器架构应该长什么样子-e06311/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/1903135541765054828
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/1903135541765054828"
 ---
 
 

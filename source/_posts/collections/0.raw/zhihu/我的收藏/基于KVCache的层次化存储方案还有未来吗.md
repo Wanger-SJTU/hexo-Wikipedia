@@ -1,17 +1,17 @@
 ---
-title: 基于KVCache的层次化存储方案还有未来吗
+title: "基于KVCache的层次化存储方案还有未来吗"
 date: "2026-03-16 00:00:00"
 updated: "2026-03-16 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/我的收藏/基于KVCache的层次化存储方案还有未来吗/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/我的收藏/基于KVCache的层次化存储方案还有未来吗/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/2015743850526844804
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/2015743850526844804"
 ---
 
 

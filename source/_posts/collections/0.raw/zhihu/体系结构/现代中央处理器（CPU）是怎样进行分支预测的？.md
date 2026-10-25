@@ -1,17 +1,17 @@
 ---
-title: 现代中央处理器（CPU）是怎样进行分支预测的？
+title: "现代中央处理器（CPU）是怎样进行分支预测的？"
 date: "2021-09-16 00:00:00"
 updated: "2021-09-16 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/体系结构/现代中央处理器(CPU)是怎样进行分支预测的/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/体系结构/现代中央处理器(CPU)是怎样进行分支预测的/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://www.zhihu.com/question/486239354/answer/2124789791
+  - "知乎"
+source_url: "https://www.zhihu.com/question/486239354/answer/2124789791"
 ---
 
 

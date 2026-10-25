@@ -1,17 +1,17 @@
 ---
-title: 如果OPPO把当初做哲库（zeku）的钱拿去造车，会不会有更好的结果？
+title: "如果OPPO把当初做哲库（zeku）的钱拿去造车，会不会有更好的结果？"
 date: "2026-04-22 00:00:00"
 updated: "2026-04-22 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/我的收藏/如果OPPO把当初做哲库(zeku)的钱拿去造车,会不会有更好的结果/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/我的收藏/如果OPPO把当初做哲库(zeku)的钱拿去造车,会不会有更好的结果/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://www.zhihu.com/question/6169319755/answer/51384529666
+  - "知乎"
+source_url: "https://www.zhihu.com/question/6169319755/answer/51384529666"
 ---
 
 

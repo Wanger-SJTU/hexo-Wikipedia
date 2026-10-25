@@ -1,17 +1,17 @@
 ---
-title: 从理解XGBoost到实现TGBoost
+title: "从理解XGBoost到实现TGBoost"
 date: "2016-12-08 00:00:00"
 updated: "2016-12-08 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/学习/从理解XGBoost到实现TGBoost/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/学习/从理解XGBoost到实现TGBoost/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/24247616
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/24247616"
 ---
 
 

@@ -1,17 +1,17 @@
 ---
-title: 有没有什么比TPU更好的实现矩阵乘法的脉动阵列？
+title: "有没有什么比TPU更好的实现矩阵乘法的脉动阵列？"
 date: "2026-05-23 00:00:00"
 updated: "2026-05-23 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/体系结构/有没有什么比TPU更好的实现矩阵乘法的脉动阵列/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/体系结构/有没有什么比TPU更好的实现矩阵乘法的脉动阵列/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://www.zhihu.com/question/1907759496014571228/answer/2041310753362371733
+  - "知乎"
+source_url: "https://www.zhihu.com/question/1907759496014571228/answer/2041310753362371733"
 ---
 
 

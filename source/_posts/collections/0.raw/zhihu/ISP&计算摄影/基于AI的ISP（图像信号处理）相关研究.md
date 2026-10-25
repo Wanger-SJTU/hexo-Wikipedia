@@ -1,17 +1,17 @@
 ---
-title: 基于AI的ISP（图像信号处理）相关研究
+title: "基于AI的ISP（图像信号处理）相关研究"
 date: "2023-11-30 00:00:00"
 updated: "2023-11-30 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/ISP-计算摄影/基于AI的ISP(图像信号处理)相关研究-8237ed/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/ISP-计算摄影/基于AI的ISP(图像信号处理)相关研究-8237ed/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/669664082
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/669664082"
 ---
 
 

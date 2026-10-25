@@ -1,17 +1,17 @@
 ---
-title: 有哪些轻量级适合阅读的优秀 C++ 开源项目？
+title: "有哪些轻量级适合阅读的优秀 C++ 开源项目？"
 date: "2026-04-21 00:00:00"
 updated: "2026-04-21 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/体系结构/有哪些轻量级适合阅读的优秀-C-开源项目/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/体系结构/有哪些轻量级适合阅读的优秀-C-开源项目/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://www.zhihu.com/question/40131963/answer/2189473621
+  - "知乎"
+source_url: "https://www.zhihu.com/question/40131963/answer/2189473621"
 ---
 
 

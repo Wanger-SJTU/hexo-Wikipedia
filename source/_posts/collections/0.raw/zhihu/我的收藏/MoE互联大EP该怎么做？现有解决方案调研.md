@@ -1,17 +1,17 @@
 ---
-title: (2 条消息) MoE互联大EP该怎么做？现有解决方案调研
+title: "(2 条消息) MoE互联大EP该怎么做？现有解决方案调研"
 date: "2025-09-26 00:00:00"
 updated: "2025-09-26 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/我的收藏/MoE互联大EP该怎么做-现有解决方案调研/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/我的收藏/MoE互联大EP该怎么做-现有解决方案调研/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/1953822416083089354
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/1953822416083089354"
 ---
 
 

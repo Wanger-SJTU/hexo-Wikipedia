@@ -1,17 +1,17 @@
 ---
-title: 详解 CacheBlend：RAG 场景 KV 复用，打破前缀相同的限制
+title: "详解 CacheBlend：RAG 场景 KV 复用，打破前缀相同的限制"
 date: "2024-11-19 00:00:00"
 updated: "2024-11-19 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/LLM-SD/详解-CacheBlend-RAG-场景-KV-复用,打破前缀相同的限制/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/LLM-SD/详解-CacheBlend-RAG-场景-KV-复用,打破前缀相同的限制/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/7781800255
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/7781800255"
 ---
 
 

@@ -1,17 +1,17 @@
 ---
-title: YouTube 上有哪些计算机方面的值得推荐的公开课？
+title: "YouTube 上有哪些计算机方面的值得推荐的公开课？"
 date: "2026-04-15 00:00:00"
 updated: "2026-04-15 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/学习/YouTube-上有哪些计算机方面的值得推荐的公开课/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/学习/YouTube-上有哪些计算机方面的值得推荐的公开课/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://www.zhihu.com/question/49071324/answer/153213375
+  - "知乎"
+source_url: "https://www.zhihu.com/question/49071324/answer/153213375"
 ---
 
 

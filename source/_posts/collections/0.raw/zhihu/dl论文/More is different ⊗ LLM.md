@@ -1,17 +1,17 @@
 ---
-title: More is different ⊗ LLM
+title: "More is different ⊗ LLM"
 date: "2023-04-09 00:00:00"
 updated: "2023-04-09 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/dl论文/More-is-different-⊗-LLM/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/dl论文/More-is-different-⊗-LLM/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/617433844
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/617433844"
 ---
 
 

@@ -1,17 +1,17 @@
 ---
-title: PD分离 vs AF分离的底层理论(roofline)基础（二）
+title: "PD分离 vs AF分离的底层理论(roofline)基础（二）"
 date: "2026-04-12 00:00:00"
 updated: "2026-04-12 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/体系结构/PD分离-vs-AF分离的底层理论(roofline)基础(二)-0d152b/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/体系结构/PD分离-vs-AF分离的底层理论(roofline)基础(二)-0d152b/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/2026612737929684371
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/2026612737929684371"
 ---
 
 

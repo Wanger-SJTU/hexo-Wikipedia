@@ -1,17 +1,17 @@
 ---
-title: ARM底层汇编优化之NEON优化 - 概述（基础入门 ）
+title: "ARM底层汇编优化之NEON优化 - 概述（基础入门 ）"
 date: "2019-04-04 00:00:00"
 updated: "2019-04-04 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/体系结构/ARM底层汇编优化之NEON优化-概述(基础入门-)/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/体系结构/ARM底层汇编优化之NEON优化-概述(基础入门-)/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/61356656
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/61356656"
 ---
 
 

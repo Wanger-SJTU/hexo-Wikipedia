@@ -1,17 +1,17 @@
 ---
-title: (2 条消息) 如何将带capture的lambda 转化为一个 函数指针？
+title: "(2 条消息) 如何将带capture的lambda 转化为一个 函数指针？"
 date: "2026-04-17 00:00:00"
 updated: "2026-04-17 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/我的收藏/如何将带capture的lambda-转化为一个-函数指针/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/我的收藏/如何将带capture的lambda-转化为一个-函数指针/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://www.zhihu.com/question/57184661/answer/19648995610
+  - "知乎"
+source_url: "https://www.zhihu.com/question/57184661/answer/19648995610"
 ---
 
 

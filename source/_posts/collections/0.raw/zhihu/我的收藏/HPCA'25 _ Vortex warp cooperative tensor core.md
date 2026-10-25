@@ -2,16 +2,16 @@
 title: "HPCA'25 : Vortex warp cooperative tensor core"
 date: "2025-10-10 00:00:00"
 updated: "2025-10-10 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/我的收藏/HPCA'25-_-Vortex-warp-cooperative-tensor-core/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/我的收藏/HPCA'25-_-Vortex-warp-cooperative-tensor-core/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/1959984548457709872
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/1959984548457709872"
 ---
 
 

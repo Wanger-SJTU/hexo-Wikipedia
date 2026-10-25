@@ -1,17 +1,17 @@
 ---
-title: 从 Online Softmax 到 FlashAttention
+title: "从 Online Softmax 到 FlashAttention"
 date: "2026-03-16 00:00:00"
 updated: "2026-03-16 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/AI-infra/从-Online-Softmax-到-FlashAttention/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/AI-infra/从-Online-Softmax-到-FlashAttention/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/2016897558933426874
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/2016897558933426874"
 ---
 
 

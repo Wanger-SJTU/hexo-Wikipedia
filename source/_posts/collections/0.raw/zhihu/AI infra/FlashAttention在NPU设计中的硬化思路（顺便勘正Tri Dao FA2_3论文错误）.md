@@ -1,17 +1,17 @@
 ---
-title: FlashAttention在NPU设计中的硬化思路（顺便勘正Tri Dao FA2/3论文错误）
+title: "FlashAttention在NPU设计中的硬化思路（顺便勘正Tri Dao FA2/3论文错误）"
 date: "2026-06-20 00:00:00"
 updated: "2026-06-20 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/AI-infra/FlashAttention在NPU设计中的硬化思路(顺便勘正Tri-Dao-FA2_3论文错误)/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/AI-infra/FlashAttention在NPU设计中的硬化思路(顺便勘正Tri-Dao-FA2_3论文错误)/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/2051636583225468285
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/2051636583225468285"
 ---
 
 

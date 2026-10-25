@@ -1,17 +1,17 @@
 ---
-title: (2 条消息) LLM最大能力密度100天翻一倍！清华刘知远团队提出Densing Law
+title: "(2 条消息) LLM最大能力密度100天翻一倍！清华刘知远团队提出Densing Law"
 date: "2024-12-09 00:00:00"
 updated: "2024-12-09 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/我的收藏/LLM最大能力密度100天翻一倍-清华刘知远团队提出Densing-Law/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/我的收藏/LLM最大能力密度100天翻一倍-清华刘知远团队提出Densing-Law/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/11562967966
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/11562967966"
 ---
 
 

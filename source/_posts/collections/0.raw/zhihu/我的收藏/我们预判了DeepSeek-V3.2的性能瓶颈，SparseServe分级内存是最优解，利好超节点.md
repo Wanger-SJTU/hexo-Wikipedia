@@ -1,17 +1,17 @@
 ---
-title: (2 条消息) 我们预判了DeepSeek-V3.2的性能瓶颈，SparseServe分级内存是最优解，利好超节点
+title: "(2 条消息) 我们预判了DeepSeek-V3.2的性能瓶颈，SparseServe分级内存是最优解，利好超节点"
 date: "2025-10-01 00:00:00"
 updated: "2025-10-01 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/我的收藏/我们预判了DeepSeek-V3.2的性能瓶颈,SparseServe分级内存是最优解,利好超节点/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/我的收藏/我们预判了DeepSeek-V3.2的性能瓶颈,SparseServe分级内存是最优解,利好超节点/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/1956407490485940573
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/1956407490485940573"
 ---
 
 

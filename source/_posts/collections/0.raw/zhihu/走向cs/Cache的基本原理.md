@@ -1,17 +1,17 @@
 ---
-title: Cache的基本原理
+title: "Cache的基本原理"
 date: "2022-07-01 00:00:00"
 updated: "2022-07-01 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/走向cs/Cache的基本原理/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/走向cs/Cache的基本原理/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/102293437
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/102293437"
 ---
 
 

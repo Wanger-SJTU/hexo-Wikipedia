@@ -1,17 +1,17 @@
 ---
-title: Agentic RL 时代的 Infra 重构：以Forge、ROLL、Seer 、Slime为例
+title: "Agentic RL 时代的 Infra 重构：以Forge、ROLL、Seer 、Slime为例"
 date: "2026-04-01 00:00:00"
 updated: "2026-04-01 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/AI-infra/Agentic-RL-时代的-Infra-重构-以Forge、ROLL、Seer-、Slime为例/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/AI-infra/Agentic-RL-时代的-Infra-重构-以Forge、ROLL、Seer-、Slime为例/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/2022786148087464077
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/2022786148087464077"
 ---
 
 

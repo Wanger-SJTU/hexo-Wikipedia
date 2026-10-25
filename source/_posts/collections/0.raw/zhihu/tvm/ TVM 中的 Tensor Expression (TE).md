@@ -1,17 +1,17 @@
 ---
-title: TVM 中的 Tensor Expression (TE)
+title: "TVM 中的 Tensor Expression (TE)"
 date: "2023-12-10 00:00:00"
 updated: "2023-12-10 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/tvm/TVM-中的-Tensor-Expression-(TE)/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/tvm/TVM-中的-Tensor-Expression-(TE)/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/609249571
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/609249571"
 ---
 
 

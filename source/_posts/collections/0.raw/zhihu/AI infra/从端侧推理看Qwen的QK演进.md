@@ -1,17 +1,17 @@
 ---
-title: 从端侧推理看Qwen的QK演进
+title: "从端侧推理看Qwen的QK演进"
 date: "2025-06-20 00:00:00"
 updated: "2025-06-20 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/AI-infra/从端侧推理看Qwen的QK演进/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/AI-infra/从端侧推理看Qwen的QK演进/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/1919340508637016870
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/1919340508637016870"
 ---
 
 

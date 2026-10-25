@@ -1,17 +1,17 @@
 ---
-title: (2 条消息) 一文搞定 Linux 设备树
+title: "(2 条消息) 一文搞定 Linux 设备树"
 date: "2021-10-25 00:00:00"
 updated: "2021-10-25 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/我的收藏/一文搞定-Linux-设备树/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/我的收藏/一文搞定-Linux-设备树/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/425420889
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/425420889"
 ---
 
 

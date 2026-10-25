@@ -1,17 +1,17 @@
 ---
-title: Prefix Grouper：加速GRPO训练，即插即用，长上下文场景计算效率跃升！
+title: "Prefix Grouper：加速GRPO训练，即插即用，长上下文场景计算效率跃升！"
 date: "2025-06-09 00:00:00"
 updated: "2025-06-09 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/LLM-SD/Prefix-Grouper-加速GRPO训练,即插即用,长上下文场景计算效率跃升/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/LLM-SD/Prefix-Grouper-加速GRPO训练,即插即用,长上下文场景计算效率跃升/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/1913646405106529974
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/1913646405106529974"
 ---
 
 

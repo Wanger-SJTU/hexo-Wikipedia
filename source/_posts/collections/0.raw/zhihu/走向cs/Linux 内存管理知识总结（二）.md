@@ -1,17 +1,17 @@
 ---
-title: Linux 内存管理知识总结（二）
+title: "Linux 内存管理知识总结（二）"
 date: "2021-04-26 00:00:00"
 updated: "2021-04-26 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/走向cs/Linux-内存管理知识总结(二)/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/走向cs/Linux-内存管理知识总结(二)/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/367993367
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/367993367"
 ---
 
 

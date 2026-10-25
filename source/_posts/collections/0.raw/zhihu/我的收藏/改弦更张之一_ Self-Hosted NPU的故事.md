@@ -2,16 +2,16 @@
 title: "改弦更张之一: Self-Hosted NPU的故事"
 date: "2026-05-09 00:00:00"
 updated: "2026-05-09 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/我的收藏/改弦更张之一_-Self-Hosted-NPU的故事/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/我的收藏/改弦更张之一_-Self-Hosted-NPU的故事/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/2036562897107674669
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/2036562897107674669"
 ---
 
 

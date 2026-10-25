@@ -1,17 +1,17 @@
 ---
-title: 训练100多个语言模型后，EvoLM告诉你：预训练、CPT、SFT、RL，每一步到底在干什么？
+title: "训练100多个语言模型后，EvoLM告诉你：预训练、CPT、SFT、RL，每一步到底在干什么？"
 date: "2026-04-06 00:00:00"
 updated: "2026-04-06 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/LLM-SD/训练100多个语言模型后,EvoLM告诉你-预训练、CPT、SFT、RL,每一步到底在干什么/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/LLM-SD/训练100多个语言模型后,EvoLM告诉你-预训练、CPT、SFT、RL,每一步到底在干什么/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/2024394597879619874
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/2024394597879619874"
 ---
 
 

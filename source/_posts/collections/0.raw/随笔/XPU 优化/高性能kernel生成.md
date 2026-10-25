@@ -1,14 +1,14 @@
 ---
-title: 高性能kernel生成
+title: "高性能kernel生成"
 date: "2026-04-11 21:40:28"
 updated: "2026-04-11 21:40:28"
-layout: post
-permalink: /collections/0.raw/随笔/XPU-优化/高性能kernel生成/
+layout: "post"
+permalink: "/collections/0.raw/随笔/XPU-优化/高性能kernel生成/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 ---
 
 <span class="wikilink wikilink--missing" title="未导入的页面">随笔/XPU 优化/用满l1cache 的micro kernel</span>

@@ -1,17 +1,17 @@
 ---
-title: NCCL和NVSHMEM的主要区别是什么？
+title: "NCCL和NVSHMEM的主要区别是什么？"
 date: "2025-10-20 00:00:00"
 updated: "2025-10-20 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/AI-infra/NCCL和NVSHMEM的主要区别是什么/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/AI-infra/NCCL和NVSHMEM的主要区别是什么/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://www.zhihu.com/question/1963176103897179405/answer/1963537895559247799
+  - "知乎"
+source_url: "https://www.zhihu.com/question/1963176103897179405/answer/1963537895559247799"
 ---
 
 

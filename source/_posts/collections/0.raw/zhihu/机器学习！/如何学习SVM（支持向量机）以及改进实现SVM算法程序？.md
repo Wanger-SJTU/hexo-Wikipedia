@@ -1,17 +1,17 @@
 ---
-title: 如何学习SVM（支持向量机）以及改进实现SVM算法程序？
+title: "如何学习SVM（支持向量机）以及改进实现SVM算法程序？"
 date: "2026-04-15 00:00:00"
 updated: "2026-04-15 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/机器学习/如何学习SVM(支持向量机)以及改进实现SVM算法程序/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/机器学习/如何学习SVM(支持向量机)以及改进实现SVM算法程序/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://www.zhihu.com/question/31211585/answer/640501555
+  - "知乎"
+source_url: "https://www.zhihu.com/question/31211585/answer/640501555"
 ---
 
 

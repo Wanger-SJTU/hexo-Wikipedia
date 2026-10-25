@@ -1,17 +1,17 @@
 ---
-title: 如何评价KIMI K3正式开源，以及同步发布出技术报告？
+title: "如何评价KIMI K3正式开源，以及同步发布出技术报告？"
 date: "2026-07-29 00:00:00"
 updated: "2026-07-29 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/AI-infra/如何评价KIMI-K3正式开源,以及同步发布出技术报告/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/AI-infra/如何评价KIMI-K3正式开源,以及同步发布出技术报告/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://www.zhihu.com/question/2065214142915654338/answer/2065751772568852174
+  - "知乎"
+source_url: "https://www.zhihu.com/question/2065214142915654338/answer/2065751772568852174"
 ---
 
 

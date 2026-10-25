@@ -2,16 +2,16 @@
 title: "[KDD'23] 对检索增强引入稠密表示：Dense Representation Learning and Retrieval for Tabular Data Prediction(DERT)"
 date: "2024-10-24 00:00:00"
 updated: "2024-10-24 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/LLM-SD/[KDD'23]-对检索增强引入稠密表示-Dense-Representation-Learning-and-Retrieval-for-Tabular-Data-Predicti/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/LLM-SD/[KDD'23]-对检索增强引入稠密表示-Dense-Representation-Learning-and-Retrieval-for-Tabular-Data-Predicti/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/667183064
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/667183064"
 ---
 
 

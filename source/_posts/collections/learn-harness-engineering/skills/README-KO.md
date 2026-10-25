@@ -1,14 +1,14 @@
 ---
-title: 스킬(Skills)
+title: "스킬(Skills)"
 date: "2026-05-28 11:34:14"
 updated: "2026-05-28 11:34:14"
-layout: post
-permalink: /collections/learn-harness-engineering/skills/README-KO/
+layout: "post"
+permalink: "/collections/learn-harness-engineering/skills/README-KO/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 ---
 
 <p align="center">

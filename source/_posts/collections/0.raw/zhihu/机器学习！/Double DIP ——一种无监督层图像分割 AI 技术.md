@@ -1,17 +1,17 @@
 ---
-title: Double DIP ——一种无监督层图像分割 AI 技术
+title: "Double DIP ——一种无监督层图像分割 AI 技术"
 date: "2019-06-03 00:00:00"
 updated: "2019-06-03 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/机器学习/Double-DIP-——一种无监督层图像分割-AI-技术/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/机器学习/Double-DIP-——一种无监督层图像分割-AI-技术/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/67926513
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/67926513"
 ---
 
 

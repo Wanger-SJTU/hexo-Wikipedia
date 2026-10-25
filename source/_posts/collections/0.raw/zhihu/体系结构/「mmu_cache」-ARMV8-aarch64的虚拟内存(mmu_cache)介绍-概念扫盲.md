@@ -1,17 +1,17 @@
 ---
-title: 「mmu/cache」-ARMV8-aarch64的虚拟内存(mmu/cache)介绍-概念扫盲
+title: "「mmu/cache」-ARMV8-aarch64的虚拟内存(mmu/cache)介绍-概念扫盲"
 date: "2025-01-14 00:00:00"
 updated: "2025-01-14 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/体系结构/「mmu_cache」-ARMV8-aarch64的虚拟内存(mmu_cache)介绍-概念扫盲/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/体系结构/「mmu_cache」-ARMV8-aarch64的虚拟内存(mmu_cache)介绍-概念扫盲/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/18242294800
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/18242294800"
 ---
 
 

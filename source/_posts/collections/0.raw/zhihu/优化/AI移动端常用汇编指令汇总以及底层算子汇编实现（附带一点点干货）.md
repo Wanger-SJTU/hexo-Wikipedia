@@ -1,17 +1,17 @@
 ---
-title: AI移动端常用汇编指令汇总以及底层算子汇编实现（附带一点点干货）
+title: "AI移动端常用汇编指令汇总以及底层算子汇编实现（附带一点点干货）"
 date: "2019-05-05 00:00:00"
 updated: "2019-05-05 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/优化/AI移动端常用汇编指令汇总以及底层算子汇编实现(附带一点点干货)/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/优化/AI移动端常用汇编指令汇总以及底层算子汇编实现(附带一点点干货)/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/64025085
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/64025085"
 ---
 
 

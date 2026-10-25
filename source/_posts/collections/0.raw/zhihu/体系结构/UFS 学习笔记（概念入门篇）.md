@@ -1,17 +1,17 @@
 ---
-title: UFS 学习笔记（概念入门篇）
+title: "UFS 学习笔记（概念入门篇）"
 date: "2023-11-01 00:00:00"
 updated: "2023-11-01 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/体系结构/UFS-学习笔记(概念入门篇)-fe1ae4/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/体系结构/UFS-学习笔记(概念入门篇)-fe1ae4/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/663057180
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/663057180"
 ---
 
 

@@ -1,14 +1,14 @@
 ---
-title: TVM－MLC LLM 调优方案
+title: "TVM－MLC LLM 调优方案"
 date: "2026-04-11 21:40:28"
 updated: "2026-04-11 21:40:28"
-layout: post
-permalink: /collections/0.raw/归档/TVM/TVM-MLC-LLM-调优方案/
+layout: "post"
+permalink: "/collections/0.raw/归档/TVM/TVM-MLC-LLM-调优方案/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 ---
 
 #TVM #llm 

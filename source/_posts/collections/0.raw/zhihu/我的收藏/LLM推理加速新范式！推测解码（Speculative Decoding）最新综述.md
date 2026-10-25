@@ -1,17 +1,17 @@
 ---
-title: (2 条消息) LLM推理加速新范式！推测解码（Speculative Decoding）最新综述
+title: "(2 条消息) LLM推理加速新范式！推测解码（Speculative Decoding）最新综述"
 date: "2024-01-22 00:00:00"
 updated: "2024-01-22 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/我的收藏/LLM推理加速新范式-推测解码(Speculative-Decoding)最新综述/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/我的收藏/LLM推理加速新范式-推测解码(Speculative-Decoding)最新综述/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/678404136
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/678404136"
 ---
 
 

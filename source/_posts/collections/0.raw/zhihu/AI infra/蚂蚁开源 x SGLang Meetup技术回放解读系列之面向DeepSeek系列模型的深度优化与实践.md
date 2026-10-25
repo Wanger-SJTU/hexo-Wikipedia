@@ -1,17 +1,17 @@
 ---
-title: 蚂蚁开源 x SGLang Meetup技术回放解读系列之面向DeepSeek系列模型的深度优化与实践
+title: "蚂蚁开源 x SGLang Meetup技术回放解读系列之面向DeepSeek系列模型的深度优化与实践"
 date: "2026-05-06 00:00:00"
 updated: "2026-05-06 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/AI-infra/蚂蚁开源-x-SGLang-Meetup技术回放解读系列之面向DeepSeek系列模型的深度优化与实践/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/AI-infra/蚂蚁开源-x-SGLang-Meetup技术回放解读系列之面向DeepSeek系列模型的深度优化与实践/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/2035331396995129665
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/2035331396995129665"
 ---
 
 

@@ -1,17 +1,17 @@
 ---
-title: 不同数据流的NPU微架构综合对比
+title: "不同数据流的NPU微架构综合对比"
 date: "2025-04-21 00:00:00"
 updated: "2025-04-21 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/体系结构/不同数据流的NPU微架构综合对比-c2a6bd/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/体系结构/不同数据流的NPU微架构综合对比-c2a6bd/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/1897065837141133197
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/1897065837141133197"
 ---
 
 

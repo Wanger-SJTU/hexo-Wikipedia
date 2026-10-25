@@ -1,17 +1,17 @@
 ---
-title: 从PTX修饰符看看GPU的弱内存模型
+title: "从PTX修饰符看看GPU的弱内存模型"
 date: "2026-01-10 00:00:00"
 updated: "2026-01-10 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/我的收藏/从PTX修饰符看看GPU的弱内存模型/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/我的收藏/从PTX修饰符看看GPU的弱内存模型/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/1987244050529661562
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/1987244050529661562"
 ---
 
 

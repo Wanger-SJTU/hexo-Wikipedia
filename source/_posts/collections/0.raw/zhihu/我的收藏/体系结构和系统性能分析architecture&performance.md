@@ -1,17 +1,17 @@
 ---
-title: 体系结构和系统性能分析architecture&performance
+title: "体系结构和系统性能分析architecture&performance"
 date: "2026-05-28 00:00:00"
 updated: "2026-05-28 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/我的收藏/体系结构和系统性能分析architecture-performance-c7400f/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/我的收藏/体系结构和系统性能分析architecture-performance-c7400f/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/672024071
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/672024071"
 ---
 
 

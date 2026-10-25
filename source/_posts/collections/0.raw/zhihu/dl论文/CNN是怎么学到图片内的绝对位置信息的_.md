@@ -1,17 +1,17 @@
 ---
-title: CNN是怎么学到图片内的绝对位置信息的?
+title: "CNN是怎么学到图片内的绝对位置信息的?"
 date: "2019-12-27 00:00:00"
 updated: "2019-12-27 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/dl论文/CNN是怎么学到图片内的绝对位置信息的_/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/dl论文/CNN是怎么学到图片内的绝对位置信息的_/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/99766566
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/99766566"
 ---
 
 

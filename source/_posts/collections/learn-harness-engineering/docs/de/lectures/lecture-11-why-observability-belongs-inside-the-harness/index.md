@@ -1,14 +1,14 @@
 ---
-title: Lektion 11. Die Runtime des Agenten beobachtbar machen
+title: "Lektion 11. Die Runtime des Agenten beobachtbar machen"
 date: "2026-05-28 11:34:14"
 updated: "2026-05-28 11:34:14"
-layout: post
-permalink: /collections/learn-harness-engineering/docs/de/lectures/lecture-11-why-observability-belongs-inside-the-harness/index/
+layout: "post"
+permalink: "/collections/learn-harness-engineering/docs/de/lectures/lecture-11-why-observability-belongs-inside-the-harness/index/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 ---
 
 [中文版本 →](../../../zh/lectures/lecture-11-why-observability-belongs-inside-the-harness/)

@@ -1,17 +1,17 @@
 ---
-title: ARM架构的GPU和台式机的GPU最核心的区别是什么？
+title: "ARM架构的GPU和台式机的GPU最核心的区别是什么？"
 date: "2026-04-15 00:00:00"
 updated: "2026-04-15 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/体系结构/ARM架构的GPU和台式机的GPU最核心的区别是什么/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/体系结构/ARM架构的GPU和台式机的GPU最核心的区别是什么/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://www.zhihu.com/question/25419183/answer/151339808
+  - "知乎"
+source_url: "https://www.zhihu.com/question/25419183/answer/151339808"
 ---
 
 

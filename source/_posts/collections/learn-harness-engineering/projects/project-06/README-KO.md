@@ -2,13 +2,13 @@
 title: "프로젝트 06: 런타임 가관측성과 디버깅 (캡스톤)"
 date: "2026-05-28 11:34:14"
 updated: "2026-05-28 11:34:14"
-layout: post
-permalink: /collections/learn-harness-engineering/projects/project-06/README-KO/
+layout: "post"
+permalink: "/collections/learn-harness-engineering/projects/project-06/README-KO/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 ---
 
 [English](./README.md) · <strong>한국어</strong>

@@ -1,19 +1,19 @@
 ---
-title: LLM近期重大架构进化一览：从Gemma 4到DeepSeek V4
+title: "LLM近期重大架构进化一览：从Gemma 4到DeepSeek V4"
 date: "2026-05-19 00:00:00"
 updated: "2026-05-19 00:00:00"
-layout: post
-permalink: /collections/wechat/2026-05-19-LLM近期重大架构进化一览-从Gemma-4到DeepSeek-V4/
+layout: "post"
+permalink: "/collections/wechat/2026-05-19-LLM近期重大架构进化一览-从Gemma-4到DeepSeek-V4/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - LLM
-  - 架构
-  - Gemma
-  - DeepSeek
+  - "LLM"
+  - "架构"
+  - "Gemma"
+  - "DeepSeek"
 ---
 
 

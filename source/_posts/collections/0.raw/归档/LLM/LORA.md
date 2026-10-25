@@ -1,14 +1,14 @@
 ---
-title: LORA
+title: "LORA"
 date: "2026-04-11 21:40:28"
 updated: "2026-04-11 21:40:28"
-layout: post
-permalink: /collections/0.raw/归档/LLM/LORA/
+layout: "post"
+permalink: "/collections/0.raw/归档/LLM/LORA/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 ---
 
 #llm #lora

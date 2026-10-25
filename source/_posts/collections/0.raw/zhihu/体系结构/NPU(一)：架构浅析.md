@@ -1,17 +1,17 @@
 ---
-title: NPU(一)：架构浅析
+title: "NPU(一)：架构浅析"
 date: "2025-02-01 00:00:00"
 updated: "2025-02-01 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/体系结构/NPU(一)-架构浅析/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/体系结构/NPU(一)-架构浅析/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/20851746736
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/20851746736"
 ---
 
 

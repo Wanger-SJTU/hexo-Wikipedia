@@ -1,17 +1,17 @@
 ---
-title: 2026, 人的巧思和 AI Infra
+title: "2026, 人的巧思和 AI Infra"
 date: "2026-02-17 00:00:00"
 updated: "2026-02-17 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/AgentCLI/2026,-人的巧思和-AI-Infra/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/AgentCLI/2026,-人的巧思和-AI-Infra/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/2007160770979440329
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/2007160770979440329"
 ---
 
 

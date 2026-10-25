@@ -1,17 +1,17 @@
 ---
-title: (2 条消息) 关于vs code无法远程连接至centos7服务器的解决方案
+title: "(2 条消息) 关于vs code无法远程连接至centos7服务器的解决方案"
 date: "2025-05-29 00:00:00"
 updated: "2025-05-29 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/我的收藏/关于vs-code无法远程连接至centos7服务器的解决方案/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/我的收藏/关于vs-code无法远程连接至centos7服务器的解决方案/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/1909663308669260068
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/1909663308669260068"
 ---
 
 

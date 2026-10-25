@@ -1,14 +1,14 @@
 ---
-title: 第九讲. 防止 agent 提前宣告完成
+title: "第九讲. 防止 agent 提前宣告完成"
 date: "2026-05-28 11:34:14"
 updated: "2026-05-28 11:34:14"
-layout: post
-permalink: /collections/learn-harness-engineering/docs/zh/lectures/lecture-09-why-agents-declare-victory-too-early/index/
+layout: "post"
+permalink: "/collections/learn-harness-engineering/docs/zh/lectures/lecture-09-why-agents-declare-victory-too-early/index/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 ---
 
 [English Version →](../../../en/lectures/lecture-09-why-agents-declare-victory-too-early/)

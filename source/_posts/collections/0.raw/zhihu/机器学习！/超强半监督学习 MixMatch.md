@@ -1,17 +1,17 @@
 ---
-title: 超强半监督学习 MixMatch
+title: "超强半监督学习 MixMatch"
 date: "2019-05-21 00:00:00"
 updated: "2019-05-21 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/机器学习/超强半监督学习-MixMatch/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/机器学习/超强半监督学习-MixMatch/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/66281890
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/66281890"
 ---
 
 

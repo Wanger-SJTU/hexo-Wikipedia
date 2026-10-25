@@ -1,14 +1,14 @@
 ---
-title: 从词到数：Tokenizer与Embedding串讲 - 知乎
+title: "从词到数：Tokenizer与Embedding串讲 - 知乎"
 date: "2026-04-11 21:40:28"
 updated: "2026-04-11 21:40:28"
-layout: post
-permalink: /collections/0.raw/Omnivore/2024-05-15/从词到数-Tokenizer与Embedding串讲-知乎/
+layout: "post"
+permalink: "/collections/0.raw/Omnivore/2024-05-15/从词到数-Tokenizer与Embedding串讲-知乎/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 ---
 
 ---

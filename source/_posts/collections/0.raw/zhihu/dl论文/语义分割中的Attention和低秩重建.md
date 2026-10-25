@@ -1,17 +1,17 @@
 ---
-title: 语义分割中的Attention和低秩重建
+title: "语义分割中的Attention和低秩重建"
 date: "2019-08-16 00:00:00"
 updated: "2019-08-16 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/dl论文/语义分割中的Attention和低秩重建/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/dl论文/语义分割中的Attention和低秩重建/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/77834369
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/77834369"
 ---
 
 

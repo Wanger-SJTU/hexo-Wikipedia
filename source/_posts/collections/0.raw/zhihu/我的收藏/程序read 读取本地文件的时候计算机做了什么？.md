@@ -1,17 +1,17 @@
 ---
-title: 程序read 读取本地文件的时候计算机做了什么？
+title: "程序read 读取本地文件的时候计算机做了什么？"
 date: "2024-09-21 00:00:00"
 updated: "2024-09-21 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/我的收藏/程序read-读取本地文件的时候计算机做了什么/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/我的收藏/程序read-读取本地文件的时候计算机做了什么/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://www.zhihu.com/question/60562135/answer/3631302453
+  - "知乎"
+source_url: "https://www.zhihu.com/question/60562135/answer/3631302453"
 ---
 
 

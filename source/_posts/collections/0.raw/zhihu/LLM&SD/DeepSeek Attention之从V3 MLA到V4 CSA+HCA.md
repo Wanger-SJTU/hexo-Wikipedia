@@ -1,17 +1,17 @@
 ---
-title: DeepSeek Attention之从V3 MLA到V4 CSA+HCA
+title: "DeepSeek Attention之从V3 MLA到V4 CSA+HCA"
 date: "2026-04-25 00:00:00"
 updated: "2026-04-25 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/LLM-SD/DeepSeek-Attention之从V3-MLA到V4-CSA-HCA/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/LLM-SD/DeepSeek-Attention之从V3-MLA到V4-CSA-HCA/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/2031133178354716993
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/2031133178354716993"
 ---
 
 

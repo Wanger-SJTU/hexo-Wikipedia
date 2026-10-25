@@ -1,17 +1,17 @@
 ---
-title: transformer硬件加速器总结
+title: "transformer硬件加速器总结"
 date: "2023-05-31 00:00:00"
 updated: "2023-05-31 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/体系结构/transformer硬件加速器总结/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/体系结构/transformer硬件加速器总结/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/633571685
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/633571685"
 ---
 
 

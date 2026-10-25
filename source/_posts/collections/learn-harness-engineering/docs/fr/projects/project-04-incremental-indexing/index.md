@@ -1,14 +1,14 @@
 ---
-title: Projet 04. Utiliser le feedback runtime pour corriger le comportement de l'agent
+title: "Projet 04. Utiliser le feedback runtime pour corriger le comportement de l'agent"
 date: "2026-05-28 11:34:14"
 updated: "2026-05-28 11:34:14"
-layout: post
-permalink: /collections/learn-harness-engineering/docs/fr/projects/project-04-incremental-indexing/index/
+layout: "post"
+permalink: "/collections/learn-harness-engineering/docs/fr/projects/project-04-incremental-indexing/index/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 ---
 
 [中文版本 →](../../../zh/projects/project-04-incremental-indexing/)

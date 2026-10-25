@@ -1,17 +1,17 @@
 ---
-title: AMOS ISCA 2022
+title: "AMOS ISCA 2022"
 date: "2022-06-19 00:00:00"
 updated: "2022-06-19 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/优化/AMOS-ISCA-2022/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/优化/AMOS-ISCA-2022/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/530626092
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/530626092"
 ---
 
 

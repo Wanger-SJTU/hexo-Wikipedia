@@ -1,17 +1,17 @@
 ---
-title: pattern recognition and machine learning这本书怎么看？
+title: "pattern recognition and machine learning这本书怎么看？"
 date: "2026-04-15 00:00:00"
 updated: "2026-04-15 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/机器学习/pattern-recognition-and-machine-learning这本书怎么看/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/机器学习/pattern-recognition-and-machine-learning这本书怎么看/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://www.zhihu.com/question/20970802/answer/23105951
+  - "知乎"
+source_url: "https://www.zhihu.com/question/20970802/answer/23105951"
 ---
 
 

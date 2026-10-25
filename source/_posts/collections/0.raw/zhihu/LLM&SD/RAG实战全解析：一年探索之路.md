@@ -1,17 +1,17 @@
 ---
-title: RAG实战全解析：一年探索之路
+title: "RAG实战全解析：一年探索之路"
 date: "2024-04-17 00:00:00"
 updated: "2024-04-17 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/LLM-SD/RAG实战全解析-一年探索之路/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/LLM-SD/RAG实战全解析-一年探索之路/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/682253496
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/682253496"
 ---
 
 

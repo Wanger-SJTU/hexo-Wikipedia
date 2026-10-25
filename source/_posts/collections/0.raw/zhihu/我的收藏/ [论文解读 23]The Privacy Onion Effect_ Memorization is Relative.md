@@ -2,16 +2,16 @@
 title: "(1 条消息) [论文解读 23]The Privacy Onion Effect: Memorization is Relative"
 date: "2023-06-25 00:00:00"
 updated: "2023-06-25 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/我的收藏/[论文解读-23]The-Privacy-Onion-Effect_-Memorization-is-Relative/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/我的收藏/[论文解读-23]The-Privacy-Onion-Effect_-Memorization-is-Relative/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/639242511
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/639242511"
 ---
 
 

@@ -1,17 +1,17 @@
 ---
-title: Hermes 进阶 ②：多Agent 协作
+title: "Hermes 进阶 ②：多Agent 协作"
 date: "2026-07-07 00:00:00"
 updated: "2026-07-07 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/我的收藏/Hermes-进阶-2-多Agent-协作/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/我的收藏/Hermes-进阶-2-多Agent-协作/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/2056075324220248780
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/2056075324220248780"
 ---
 
 

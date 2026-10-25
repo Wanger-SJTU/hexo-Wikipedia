@@ -1,17 +1,17 @@
 ---
-title: LLM(17)：从 FlashAttention 到 PagedAttention, 如何进一步优化 Attention 性能
+title: "LLM(17)：从 FlashAttention 到 PagedAttention, 如何进一步优化 Attention 性能"
 date: "2023-06-21 00:00:00"
 updated: "2023-06-21 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/AI-infra/LLM(17)-从-FlashAttention-到-PagedAttention,-如何进一步优化-Attention-性能/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/AI-infra/LLM(17)-从-FlashAttention-到-PagedAttention,-如何进一步优化-Attention-性能/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/638468472
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/638468472"
 ---
 
 

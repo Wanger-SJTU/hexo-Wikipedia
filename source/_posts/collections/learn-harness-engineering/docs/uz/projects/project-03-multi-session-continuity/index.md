@@ -1,14 +1,14 @@
 ---
-title: Loyiha 03. Agentning ishlashini sessiyalar boʻylab uzluksiz taʼminlang
+title: "Loyiha 03. Agentning ishlashini sessiyalar boʻylab uzluksiz taʼminlang"
 date: "2026-05-28 11:34:14"
 updated: "2026-05-28 11:34:14"
-layout: post
-permalink: /collections/learn-harness-engineering/docs/uz/projects/project-03-multi-session-continuity/index/
+layout: "post"
+permalink: "/collections/learn-harness-engineering/docs/uz/projects/project-03-multi-session-continuity/index/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 ---
 
 [English version →](../../../en/projects/project-03-multi-session-continuity/)

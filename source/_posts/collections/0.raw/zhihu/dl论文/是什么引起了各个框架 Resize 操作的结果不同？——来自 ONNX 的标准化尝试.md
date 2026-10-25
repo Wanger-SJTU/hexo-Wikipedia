@@ -1,17 +1,17 @@
 ---
-title: 是什么引起了各个框架 Resize 操作的结果不同？——来自 ONNX 的标准化尝试
+title: "是什么引起了各个框架 Resize 操作的结果不同？——来自 ONNX 的标准化尝试"
 date: "2021-02-19 00:00:00"
 updated: "2021-02-19 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/dl论文/是什么引起了各个框架-Resize-操作的结果不同-——来自-ONNX-的标准化尝试/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/dl论文/是什么引起了各个框架-Resize-操作的结果不同-——来自-ONNX-的标准化尝试/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/107761106
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/107761106"
 ---
 
 

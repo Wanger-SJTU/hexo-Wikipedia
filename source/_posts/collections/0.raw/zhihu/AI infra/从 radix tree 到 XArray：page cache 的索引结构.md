@@ -1,17 +1,17 @@
 ---
-title: 从 radix tree 到 XArray：page cache 的索引结构
+title: "从 radix tree 到 XArray：page cache 的索引结构"
 date: "2026-07-27 00:00:00"
 updated: "2026-07-27 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/AI-infra/从-radix-tree-到-XArray-page-cache-的索引结构/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/AI-infra/从-radix-tree-到-XArray-page-cache-的索引结构/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/2064991908477277255
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/2064991908477277255"
 ---
 
 

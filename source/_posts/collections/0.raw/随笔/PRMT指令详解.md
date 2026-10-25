@@ -1,14 +1,14 @@
 ---
-title: PRMT指令详解
+title: "PRMT指令详解"
 date: "2026-04-11 21:40:18"
 updated: "2026-04-11 21:40:18"
-layout: post
-permalink: /collections/0.raw/随笔/PRMT指令详解/
+layout: "post"
+permalink: "/collections/0.raw/随笔/PRMT指令详解/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 ---
 
 ### 0x01 PRMT指令详解-通用模式

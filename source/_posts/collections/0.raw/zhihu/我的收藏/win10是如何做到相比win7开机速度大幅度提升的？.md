@@ -1,17 +1,17 @@
 ---
-title: win10是如何做到相比win7开机速度大幅度提升的？
+title: "win10是如何做到相比win7开机速度大幅度提升的？"
 date: "2022-11-10 00:00:00"
 updated: "2022-11-10 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/我的收藏/win10是如何做到相比win7开机速度大幅度提升的/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/我的收藏/win10是如何做到相比win7开机速度大幅度提升的/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://www.zhihu.com/question/38604081/answer/2752869354
+  - "知乎"
+source_url: "https://www.zhihu.com/question/38604081/answer/2752869354"
 ---
 
 

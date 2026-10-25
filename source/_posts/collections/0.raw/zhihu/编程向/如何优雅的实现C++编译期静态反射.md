@@ -1,17 +1,17 @@
 ---
-title: 如何优雅的实现C++编译期静态反射
+title: "如何优雅的实现C++编译期静态反射"
 date: "2020-09-16 00:00:00"
 updated: "2020-09-16 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/编程向/如何优雅的实现C-编译期静态反射/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/编程向/如何优雅的实现C-编译期静态反射/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/165993590
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/165993590"
 ---
 
 

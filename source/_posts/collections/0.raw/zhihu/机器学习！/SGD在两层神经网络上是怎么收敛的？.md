@@ -1,17 +1,17 @@
 ---
-title: SGD在两层神经网络上是怎么收敛的？
+title: "SGD在两层神经网络上是怎么收敛的？"
 date: "2018-05-10 00:00:00"
 updated: "2018-05-10 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/机器学习/SGD在两层神经网络上是怎么收敛的/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/机器学习/SGD在两层神经网络上是怎么收敛的/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/36624193
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/36624193"
 ---
 
 

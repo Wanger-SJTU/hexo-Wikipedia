@@ -1,20 +1,20 @@
 ---
-title: 前Google TPU架构师访谈：从批大小经济学到MoE物理布局
+title: "前Google TPU架构师访谈：从批大小经济学到MoE物理布局"
 date: "2026-05-17 00:00:00"
 updated: "2026-05-17 00:00:00"
-layout: post
-permalink: /collections/0.raw/wechat/2026-05-17/前Google-TPU架构师访谈-批大小经济学到MoE物理布局/
+layout: "post"
+permalink: "/collections/0.raw/wechat/2026-05-17/前Google-TPU架构师访谈-批大小经济学到MoE物理布局/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - AI Infra
-  - LLM
-  - MoE
-  - 推理优化
-source_url: https://mp.weixin.qq.com/s/3OjIawy4sKoGzrrHUtsWqA
+  - "AI Infra"
+  - "LLM"
+  - "MoE"
+  - "推理优化"
+source_url: "https://mp.weixin.qq.com/s/3OjIawy4sKoGzrrHUtsWqA"
 ---
 
 

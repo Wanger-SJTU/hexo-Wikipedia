@@ -1,17 +1,17 @@
 ---
-title: NPU部署缺乏InstanceNorm的解决方案
+title: "NPU部署缺乏InstanceNorm的解决方案"
 date: "2023-12-15 00:00:00"
 updated: "2023-12-15 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/dl论文/NPU部署缺乏InstanceNorm的解决方案/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/dl论文/NPU部署缺乏InstanceNorm的解决方案/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/672424212
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/672424212"
 ---
 
 

@@ -1,17 +1,17 @@
 ---
-title: (2 条消息) kimi chat大模型的200万长度无损上下文可能是如何做到的？
+title: "(2 条消息) kimi chat大模型的200万长度无损上下文可能是如何做到的？"
 date: "2026-04-17 00:00:00"
 updated: "2026-04-17 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/我的收藏/kimi-chat大模型的200万长度无损上下文可能是如何做到的/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/我的收藏/kimi-chat大模型的200万长度无损上下文可能是如何做到的/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://www.zhihu.com/question/649192998/answer/3546745976
+  - "知乎"
+source_url: "https://www.zhihu.com/question/649192998/answer/3546745976"
 ---
 
 

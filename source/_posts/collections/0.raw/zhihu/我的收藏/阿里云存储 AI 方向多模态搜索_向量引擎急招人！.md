@@ -1,17 +1,17 @@
 ---
-title: 阿里云存储 AI 方向多模态搜索/向量引擎急招人！
+title: "阿里云存储 AI 方向多模态搜索/向量引擎急招人！"
 date: "2026-01-12 00:00:00"
 updated: "2026-01-12 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/我的收藏/阿里云存储-AI-方向多模态搜索_向量引擎急招人/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/我的收藏/阿里云存储-AI-方向多模态搜索_向量引擎急招人/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/1993976513884873675
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/1993976513884873675"
 ---
 
 

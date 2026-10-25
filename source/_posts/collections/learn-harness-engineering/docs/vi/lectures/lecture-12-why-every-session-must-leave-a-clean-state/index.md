@@ -1,14 +1,14 @@
 ---
-title: Bài 12. Bàn giao Sạch Sẽ ở Cuối Mỗi Phiên
+title: "Bài 12. Bàn giao Sạch Sẽ ở Cuối Mỗi Phiên"
 date: "2026-05-28 11:34:14"
 updated: "2026-05-28 11:34:14"
-layout: post
-permalink: /collections/learn-harness-engineering/docs/vi/lectures/lecture-12-why-every-session-must-leave-a-clean-state/index/
+layout: "post"
+permalink: "/collections/learn-harness-engineering/docs/vi/lectures/lecture-12-why-every-session-must-leave-a-clean-state/index/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 ---
 
 [English Version →](../../../en/lectures/lecture-12-why-every-session-must-leave-a-clean-state/) | [中文版本 →](../../../zh/lectures/lecture-12-why-every-session-must-leave-a-clean-state/)

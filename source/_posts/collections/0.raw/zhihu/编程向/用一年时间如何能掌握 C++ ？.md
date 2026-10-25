@@ -1,17 +1,17 @@
 ---
-title: 用一年时间如何能掌握 C++ ？
+title: "用一年时间如何能掌握 C++ ？"
 date: "2026-04-15 00:00:00"
 updated: "2026-04-15 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/编程向/用一年时间如何能掌握-C/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/编程向/用一年时间如何能掌握-C/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://www.zhihu.com/question/23933514/answer/26393521
+  - "知乎"
+source_url: "https://www.zhihu.com/question/23933514/answer/26393521"
 ---
 
 

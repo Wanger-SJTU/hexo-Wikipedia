@@ -1,17 +1,17 @@
 ---
-title: 最近霸占 GitHub Trending 榜单的开源项目：CLI-Anything
+title: "最近霸占 GitHub Trending 榜单的开源项目：CLI-Anything"
 date: "2026-03-12 00:00:00"
 updated: "2026-03-12 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/AgentCLI/最近霸占-GitHub-Trending-榜单的开源项目-CLI-Anything/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/AgentCLI/最近霸占-GitHub-Trending-榜单的开源项目-CLI-Anything/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/2015432759355668382
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/2015432759355668382"
 ---
 
 

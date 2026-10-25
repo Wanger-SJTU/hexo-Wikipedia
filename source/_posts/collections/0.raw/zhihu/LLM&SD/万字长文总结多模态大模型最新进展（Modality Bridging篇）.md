@@ -1,17 +1,17 @@
 ---
-title: 万字长文总结多模态大模型最新进展（Modality Bridging篇）
+title: "万字长文总结多模态大模型最新进展（Modality Bridging篇）"
 date: "2025-03-19 00:00:00"
 updated: "2025-03-19 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/LLM-SD/万字长文总结多模态大模型最新进展(Modality-Bridging篇)/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/LLM-SD/万字长文总结多模态大模型最新进展(Modality-Bridging篇)/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/688215018
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/688215018"
 ---
 
 

@@ -2,16 +2,16 @@
 title: "[AI][昇腾950]NVMe驱动方式分析"
 date: "2026-07-28 00:00:00"
 updated: "2026-07-28 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/AI-infra/[AI][昇腾950]NVMe驱动方式分析/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/AI-infra/[AI][昇腾950]NVMe驱动方式分析/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/2065534316545937587
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/2065534316545937587"
 ---
 
 

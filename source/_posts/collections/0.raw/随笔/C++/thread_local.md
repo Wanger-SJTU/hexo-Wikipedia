@@ -1,14 +1,14 @@
 ---
-title: thread_local
+title: "thread_local"
 date: "2026-04-11 21:40:28"
 updated: "2026-04-11 21:40:28"
-layout: post
-permalink: /collections/0.raw/随笔/C/thread_local/
+layout: "post"
+permalink: "/collections/0.raw/随笔/C/thread_local/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 ---
 
 #cpp

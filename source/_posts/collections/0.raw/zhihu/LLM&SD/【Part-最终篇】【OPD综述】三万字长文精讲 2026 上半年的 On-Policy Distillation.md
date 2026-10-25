@@ -1,17 +1,17 @@
 ---
-title: 【Part-最终篇】【OPD综述】三万字长文精讲 2026 上半年的 On-Policy Distillation
+title: "【Part-最终篇】【OPD综述】三万字长文精讲 2026 上半年的 On-Policy Distillation"
 date: "2026-06-23 00:00:00"
 updated: "2026-06-23 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/LLM-SD/【Part-最终篇】【OPD综述】三万字长文精讲-2026-上半年的-On-Policy-Distillation/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/LLM-SD/【Part-最终篇】【OPD综述】三万字长文精讲-2026-上半年的-On-Policy-Distillation/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/2052723229110820946
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/2052723229110820946"
 ---
 
 

@@ -1,17 +1,17 @@
 ---
-title: CVPR 2018：用于图像分割网络的Lovasz loss学习笔记
+title: "CVPR 2018：用于图像分割网络的Lovasz loss学习笔记"
 date: "2019-08-06 00:00:00"
 updated: "2019-08-06 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/dl论文/CVPR-2018-用于图像分割网络的Lovasz-loss学习笔记/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/dl论文/CVPR-2018-用于图像分割网络的Lovasz-loss学习笔记/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/76825379
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/76825379"
 ---
 
 

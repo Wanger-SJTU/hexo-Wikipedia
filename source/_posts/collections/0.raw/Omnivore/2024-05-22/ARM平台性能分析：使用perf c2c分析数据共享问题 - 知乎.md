@@ -1,14 +1,14 @@
 ---
-title: ARM平台性能分析：使用perf c2c分析数据共享问题 - 知乎
+title: "ARM平台性能分析：使用perf c2c分析数据共享问题 - 知乎"
 date: "2026-04-11 21:40:28"
 updated: "2026-04-11 21:40:28"
-layout: post
-permalink: /collections/0.raw/Omnivore/2024-05-22/ARM平台性能分析-使用perf-c2c分析数据共享问题-知乎/
+layout: "post"
+permalink: "/collections/0.raw/Omnivore/2024-05-22/ARM平台性能分析-使用perf-c2c分析数据共享问题-知乎/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 ---
 
 ---

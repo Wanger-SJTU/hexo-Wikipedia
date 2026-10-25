@@ -1,17 +1,17 @@
 ---
-title: 解析大模型中的Scaling Law
+title: "解析大模型中的Scaling Law"
 date: "2023-12-25 00:00:00"
 updated: "2023-12-25 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/LLM-SD/解析大模型中的Scaling-Law/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/LLM-SD/解析大模型中的Scaling-Law/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/667489780
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/667489780"
 ---
 
 

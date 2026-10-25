@@ -1,17 +1,17 @@
 ---
-title: 深度学习中的batch的大小对学习效果有何影响？
+title: "深度学习中的batch的大小对学习效果有何影响？"
 date: "2026-04-23 00:00:00"
 updated: "2026-04-23 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/dl论文/深度学习中的batch的大小对学习效果有何影响/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/dl论文/深度学习中的batch的大小对学习效果有何影响/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://www.zhihu.com/question/32673260/answer/675161450
+  - "知乎"
+source_url: "https://www.zhihu.com/question/32673260/answer/675161450"
 ---
 
 

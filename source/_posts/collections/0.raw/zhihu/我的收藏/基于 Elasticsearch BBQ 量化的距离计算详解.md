@@ -1,17 +1,17 @@
 ---
-title: 基于 Elasticsearch BBQ 量化的距离计算详解
+title: "基于 Elasticsearch BBQ 量化的距离计算详解"
 date: "2025-11-04 00:00:00"
 updated: "2025-11-04 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/我的收藏/基于-Elasticsearch-BBQ-量化的距离计算详解/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/我的收藏/基于-Elasticsearch-BBQ-量化的距离计算详解/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/1969089197756379225
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/1969089197756379225"
 ---
 
 

@@ -2,21 +2,21 @@
 title: "Inside the Transformer: The Life of a Token"
 date: "2026-05-27 00:00:00"
 updated: "2026-05-27 00:00:00"
-layout: post
-permalink: /collections/blog/2026-05-27-inside-the-transformer-life-of-a-token/
+layout: "post"
+permalink: "/collections/blog/2026-05-27-inside-the-transformer-life-of-a-token/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - transformer
-  - deep-learning
-  - attention
-  - LLM
-  - YaRN
-  - RoPE
-source_url: https://www.aleksagordic.com/blog/transformer
+  - "transformer"
+  - "deep-learning"
+  - "attention"
+  - "LLM"
+  - "YaRN"
+  - "RoPE"
+source_url: "https://www.aleksagordic.com/blog/transformer"
 ---
 
 

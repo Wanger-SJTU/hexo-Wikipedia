@@ -1,17 +1,17 @@
 ---
-title: LLM对信息检索的影响
+title: "LLM对信息检索的影响"
 date: "2023-11-12 00:00:00"
 updated: "2023-11-12 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/LLM-SD/LLM对信息检索的影响/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/LLM-SD/LLM对信息检索的影响/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/666381742
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/666381742"
 ---
 
 

@@ -1,17 +1,17 @@
 ---
-title: 超全整理！Linux性能分析工具汇总合集
+title: "超全整理！Linux性能分析工具汇总合集"
 date: "2018-12-11 00:00:00"
 updated: "2018-12-11 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/体系结构/超全整理-Linux性能分析工具汇总合集/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/体系结构/超全整理-Linux性能分析工具汇总合集/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/52107689
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/52107689"
 ---
 
 

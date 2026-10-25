@@ -1,17 +1,17 @@
 ---
-title: AI框架中图层IR的分析
+title: "AI框架中图层IR的分析"
 date: "2021-08-25 00:00:00"
 updated: "2021-08-25 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/走向cs/AI框架中图层IR的分析/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/走向cs/AI框架中图层IR的分析/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/263420069
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/263420069"
 ---
 
 

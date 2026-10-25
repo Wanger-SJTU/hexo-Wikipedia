@@ -1,20 +1,20 @@
 ---
-title: Running Codex safely at OpenAI
+title: "Running Codex safely at OpenAI"
 date: "2026-05-10 01:37:08"
 updated: "2026-05-10 01:37:08"
-layout: post
-permalink: /collections/other/harness-engineering/2026-05-09-running-codex-safely/
+layout: "post"
+permalink: "/collections/other/harness-engineering/2026-05-09-running-codex-safely/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - Codex
-  - 安全
-  - 软件工程
-  - Agent
-  - Harness
+  - "Codex"
+  - "安全"
+  - "软件工程"
+  - "Agent"
+  - "Harness"
 ---
 
 

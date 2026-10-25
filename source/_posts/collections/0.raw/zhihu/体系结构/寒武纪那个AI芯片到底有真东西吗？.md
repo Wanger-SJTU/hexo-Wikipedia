@@ -1,17 +1,17 @@
 ---
-title: 寒武纪那个AI芯片到底有真东西吗？
+title: "寒武纪那个AI芯片到底有真东西吗？"
 date: "2026-04-15 00:00:00"
 updated: "2026-04-15 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/体系结构/寒武纪那个AI芯片到底有真东西吗/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/体系结构/寒武纪那个AI芯片到底有真东西吗/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://www.zhihu.com/question/64843679/answer/3395444932
+  - "知乎"
+source_url: "https://www.zhihu.com/question/64843679/answer/3395444932"
 ---
 
 

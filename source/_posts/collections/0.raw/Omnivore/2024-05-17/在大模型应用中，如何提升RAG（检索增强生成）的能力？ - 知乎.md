@@ -1,14 +1,14 @@
 ---
-title: 在大模型应用中，如何提升RAG（检索增强生成）的能力？ - 知乎
+title: "在大模型应用中，如何提升RAG（检索增强生成）的能力？ - 知乎"
 date: "2026-04-11 21:40:28"
 updated: "2026-04-11 21:40:28"
-layout: post
-permalink: /collections/0.raw/Omnivore/2024-05-17/在大模型应用中,如何提升RAG(检索增强生成)的能力-知乎/
+layout: "post"
+permalink: "/collections/0.raw/Omnivore/2024-05-17/在大模型应用中,如何提升RAG(检索增强生成)的能力-知乎/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 ---
 
 ---

@@ -1,17 +1,17 @@
 ---
-title: Using the Visual Studio Emulator for Android from Android Studio
+title: "Using the Visual Studio Emulator for Android from Android Studio"
 date: "2016-09-24 00:00:00"
 updated: "2016-09-24 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/编程向/Using-the-Visual-Studio-Emulator-for-Android-from-Android-Studio/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/编程向/Using-the-Visual-Studio-Emulator-for-Android-from-Android-Studio/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/22593417
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/22593417"
 ---
 
 

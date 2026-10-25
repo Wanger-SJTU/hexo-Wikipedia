@@ -1,17 +1,17 @@
 ---
-title: 2026年RL Infra 碎碎念 [系列 1]
+title: "2026年RL Infra 碎碎念 [系列 1]"
 date: "2026-02-26 00:00:00"
 updated: "2026-02-26 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/LLM-SD/2026年RL-Infra-碎碎念-[系列-1]/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/LLM-SD/2026年RL-Infra-碎碎念-[系列-1]/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/2006100992429688731
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/2006100992429688731"
 ---
 
 

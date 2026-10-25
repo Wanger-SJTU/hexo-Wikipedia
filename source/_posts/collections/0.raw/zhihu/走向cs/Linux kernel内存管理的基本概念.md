@@ -1,17 +1,17 @@
 ---
-title: Linux kernel内存管理的基本概念
+title: "Linux kernel内存管理的基本概念"
 date: "2022-04-22 00:00:00"
 updated: "2022-04-22 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/走向cs/Linux-kernel内存管理的基本概念/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/走向cs/Linux-kernel内存管理的基本概念/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/503379456
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/503379456"
 ---
 
 

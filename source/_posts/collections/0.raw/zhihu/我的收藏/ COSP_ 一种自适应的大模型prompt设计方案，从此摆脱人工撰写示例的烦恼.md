@@ -2,16 +2,16 @@
 title: "(1 条消息) COSP: 一种自适应的大模型prompt设计方案，从此摆脱人工撰写示例的烦恼"
 date: "2023-11-11 00:00:00"
 updated: "2023-11-11 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/我的收藏/COSP_-一种自适应的大模型prompt设计方案,从此摆脱人工撰写示例的烦恼/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/我的收藏/COSP_-一种自适应的大模型prompt设计方案,从此摆脱人工撰写示例的烦恼/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/666358822
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/666358822"
 ---
 
 

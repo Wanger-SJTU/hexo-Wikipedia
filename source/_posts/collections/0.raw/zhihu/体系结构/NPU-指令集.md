@@ -1,17 +1,17 @@
 ---
-title: NPU-指令集
+title: "NPU-指令集"
 date: "2024-03-07 00:00:00"
 updated: "2024-03-07 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/体系结构/NPU-指令集/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/体系结构/NPU-指令集/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/685735679
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/685735679"
 ---
 
 

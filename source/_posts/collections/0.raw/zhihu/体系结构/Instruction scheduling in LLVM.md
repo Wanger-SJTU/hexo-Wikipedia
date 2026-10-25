@@ -1,17 +1,17 @@
 ---
-title: Instruction scheduling in LLVM
+title: "Instruction scheduling in LLVM"
 date: "2023-10-17 00:00:00"
 updated: "2023-10-17 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/体系结构/Instruction-scheduling-in-LLVM/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/体系结构/Instruction-scheduling-in-LLVM/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/360364235
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/360364235"
 ---
 
 

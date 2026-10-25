@@ -1,17 +1,17 @@
 ---
-title: 盘点在人脸识别领域现今主流的loss
+title: "盘点在人脸识别领域现今主流的loss"
 date: "2019-04-30 00:00:00"
 updated: "2019-04-30 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/机器学习/盘点在人脸识别领域现今主流的loss/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/机器学习/盘点在人脸识别领域现今主流的loss/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/64314762
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/64314762"
 ---
 
 

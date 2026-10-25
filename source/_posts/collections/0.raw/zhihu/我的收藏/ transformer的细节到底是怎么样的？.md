@@ -1,17 +1,17 @@
 ---
-title: (1 条消息) transformer的细节到底是怎么样的？
+title: "(1 条消息) transformer的细节到底是怎么样的？"
 date: "2026-04-15 00:00:00"
 updated: "2026-04-15 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/我的收藏/transformer的细节到底是怎么样的/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/我的收藏/transformer的细节到底是怎么样的/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://www.zhihu.com/question/362131975/answer/3297483297
+  - "知乎"
+source_url: "https://www.zhihu.com/question/362131975/answer/3297483297"
 ---
 
 

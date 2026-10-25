@@ -1,17 +1,17 @@
 ---
-title: Chunkwise Parallel 详解：如何将 O(L) 顺序计算变成 O(L/C)
+title: "Chunkwise Parallel 详解：如何将 O(L) 顺序计算变成 O(L/C)"
 date: "2026-04-03 00:00:00"
 updated: "2026-04-03 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/LLM-SD/Chunkwise-Parallel-详解-如何将-O(L)-顺序计算变成-O(L_C)/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/LLM-SD/Chunkwise-Parallel-详解-如何将-O(L)-顺序计算变成-O(L_C)/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/2022071052365301640
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/2022071052365301640"
 ---
 
 

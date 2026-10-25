@@ -1,17 +1,17 @@
 ---
-title: 自己收藏的自学编程CS计算机科学和国外四大计算机名校路线课程计算机科班专业基础架构程序抽象数据结构算法
+title: "自己收藏的自学编程CS计算机科学和国外四大计算机名校路线课程计算机科班专业基础架构程序抽象数据结构算法"
 date: "2022-05-13 00:00:00"
 updated: "2022-05-13 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/走向cs/自己收藏的自学编程CS计算机科学和国外四大计算机名校路线课程计算机科班专业基础架构程序抽象数据结构算法/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/走向cs/自己收藏的自学编程CS计算机科学和国外四大计算机名校路线课程计算机科班专业基础架构程序抽象数据结构算法/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/320063653
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/320063653"
 ---
 
 

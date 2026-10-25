@@ -1,17 +1,17 @@
 ---
-title: 史上最全词向量讲解（LSA/word2vec/Glove/FastText/ELMo/BERT）
+title: "史上最全词向量讲解（LSA/word2vec/Glove/FastText/ELMo/BERT）"
 date: "2019-07-27 00:00:00"
 updated: "2019-07-27 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/dl论文/史上最全词向量讲解(LSA_word2vec_Glove_FastText_ELMo_BERT)/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/dl论文/史上最全词向量讲解(LSA_word2vec_Glove_FastText_ELMo_BERT)/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/75391062
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/75391062"
 ---
 
 

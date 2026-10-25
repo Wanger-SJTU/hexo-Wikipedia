@@ -1,17 +1,17 @@
 ---
-title: 在K40小破卡训练50层BERT Large的宝藏trick
+title: "在K40小破卡训练50层BERT Large的宝藏trick"
 date: "2020-04-21 00:00:00"
 updated: "2020-04-21 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/dl论文/在K40小破卡训练50层BERT-Large的宝藏trick/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/dl论文/在K40小破卡训练50层BERT-Large的宝藏trick/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/134008239
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/134008239"
 ---
 
 

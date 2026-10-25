@@ -1,17 +1,17 @@
 ---
-title: (1 条消息) mimalloc设计解析
+title: "(1 条消息) mimalloc设计解析"
 date: "2023-09-25 00:00:00"
 updated: "2023-09-25 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/我的收藏/mimalloc设计解析/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/我的收藏/mimalloc设计解析/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/658307892
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/658307892"
 ---
 
 

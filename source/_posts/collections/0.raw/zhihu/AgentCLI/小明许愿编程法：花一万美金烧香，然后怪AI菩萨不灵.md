@@ -1,17 +1,17 @@
 ---
-title: 小明许愿编程法：花一万美金烧香，然后怪AI菩萨不灵
+title: "小明许愿编程法：花一万美金烧香，然后怪AI菩萨不灵"
 date: "2026-02-19 00:00:00"
 updated: "2026-02-19 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/AgentCLI/小明许愿编程法-花一万美金烧香,然后怪AI菩萨不灵/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/AgentCLI/小明许愿编程法-花一万美金烧香,然后怪AI菩萨不灵/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/2007656505554511663
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/2007656505554511663"
 ---
 
 

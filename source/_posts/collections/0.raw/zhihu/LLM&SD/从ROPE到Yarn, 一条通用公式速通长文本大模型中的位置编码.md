@@ -1,17 +1,17 @@
 ---
-title: 从ROPE到Yarn, 一条通用公式速通长文本大模型中的位置编码
+title: "从ROPE到Yarn, 一条通用公式速通长文本大模型中的位置编码"
 date: "2025-03-22 00:00:00"
 updated: "2025-03-22 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/LLM-SD/从ROPE到Yarn,-一条通用公式速通长文本大模型中的位置编码/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/LLM-SD/从ROPE到Yarn,-一条通用公式速通长文本大模型中的位置编码/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/15311461897
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/15311461897"
 ---
 
 

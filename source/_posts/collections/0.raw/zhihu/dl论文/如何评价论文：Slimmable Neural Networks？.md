@@ -1,17 +1,17 @@
 ---
-title: 如何评价论文：Slimmable Neural Networks？
+title: "如何评价论文：Slimmable Neural Networks？"
 date: "2026-04-23 00:00:00"
 updated: "2026-04-23 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/dl论文/如何评价论文-Slimmable-Neural-Networks/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/dl论文/如何评价论文-Slimmable-Neural-Networks/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://www.zhihu.com/question/306865592/answer/872860400
+  - "知乎"
+source_url: "https://www.zhihu.com/question/306865592/answer/872860400"
 ---
 
 

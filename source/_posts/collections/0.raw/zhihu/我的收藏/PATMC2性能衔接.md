@@ -1,17 +1,17 @@
 ---
-title: PATMC2性能衔接
+title: "PATMC2性能衔接"
 date: "2026-07-14 00:00:00"
 updated: "2026-07-14 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/我的收藏/PATMC2性能衔接/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/我的收藏/PATMC2性能衔接/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/2060461467506365061
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/2060461467506365061"
 ---
 
 

@@ -1,17 +1,17 @@
 ---
-title: claude.md怎么写才能让Claude Code更高效？
+title: "claude.md怎么写才能让Claude Code更高效？"
 date: "2026-04-23 00:00:00"
 updated: "2026-04-23 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/AgentCLI/claude.md怎么写才能让Claude-Code更高效/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/AgentCLI/claude.md怎么写才能让Claude-Code更高效/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://www.zhihu.com/question/1979609139266213083/answer/2009429788666909340
+  - "知乎"
+source_url: "https://www.zhihu.com/question/1979609139266213083/answer/2009429788666909340"
 ---
 
 

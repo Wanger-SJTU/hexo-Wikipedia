@@ -1,21 +1,21 @@
 ---
-title: 培风客 - 生成式AI投资与技术周期
+title: "培风客 - 生成式AI投资与技术周期"
 date: "2026-05-30 00:00:00"
 updated: "2026-05-30 00:00:00"
-layout: post
-permalink: /collections/wechat/2026-05-30-peifengke-gai-investment/
+layout: "post"
+permalink: "/collections/wechat/2026-05-30-peifengke-gai-investment/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 投资
-  - AI
-  - 周期
-  - 地缘政治
-  - 商品
-source_url: https://mp.weixin.qq.com/s/ZKnGAGqQPe_QOnRWiIJsAQ
+  - "投资"
+  - "AI"
+  - "周期"
+  - "地缘政治"
+  - "商品"
+source_url: "https://mp.weixin.qq.com/s/ZKnGAGqQPe_QOnRWiIJsAQ"
 ---
 
 

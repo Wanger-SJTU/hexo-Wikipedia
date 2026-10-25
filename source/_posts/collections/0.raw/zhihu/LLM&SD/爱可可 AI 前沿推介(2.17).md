@@ -1,17 +1,17 @@
 ---
-title: 爱可可 AI 前沿推介(2.17)
+title: "爱可可 AI 前沿推介(2.17)"
 date: "2024-02-17 00:00:00"
 updated: "2024-02-17 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/LLM-SD/爱可可-AI-前沿推介(2.17)/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/LLM-SD/爱可可-AI-前沿推介(2.17)/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/682480353
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/682480353"
 ---
 
 

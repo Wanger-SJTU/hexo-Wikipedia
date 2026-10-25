@@ -2,16 +2,16 @@
 title: "(2 条消息) AI Infra: PyTorch Offload技术优化实践"
 date: "2026-01-18 00:00:00"
 updated: "2026-01-18 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/我的收藏/AI-Infra_-PyTorch-Offload技术优化实践/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/我的收藏/AI-Infra_-PyTorch-Offload技术优化实践/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/1949075068694013367
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/1949075068694013367"
 ---
 
 

@@ -1,17 +1,17 @@
 ---
-title: (2 条消息) 2024年MLSys推荐关注列表 - 算法篇
+title: "(2 条消息) 2024年MLSys推荐关注列表 - 算法篇"
 date: "2025-01-05 00:00:00"
 updated: "2025-01-05 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/我的收藏/2024年MLSys推荐关注列表-算法篇/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/我的收藏/2024年MLSys推荐关注列表-算法篇/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/13960662604
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/13960662604"
 ---
 
 

@@ -1,14 +1,14 @@
 ---
-title: Coding-Agent-Startflow
+title: "Coding-Agent-Startflow"
 date: "2026-05-28 11:34:14"
 updated: "2026-05-28 11:34:14"
-layout: post
-permalink: /collections/learn-harness-engineering/docs/de/resources/reference/coding-agent-startup-flow/
+layout: "post"
+permalink: "/collections/learn-harness-engineering/docs/de/resources/reference/coding-agent-startup-flow/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 ---
 
 # Coding-Agent-Startflow

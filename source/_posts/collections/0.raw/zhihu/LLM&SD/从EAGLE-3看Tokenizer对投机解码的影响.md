@@ -1,17 +1,17 @@
 ---
-title: 从EAGLE-3看Tokenizer对投机解码的影响
+title: "从EAGLE-3看Tokenizer对投机解码的影响"
 date: "2025-06-14 00:00:00"
 updated: "2025-06-14 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/LLM-SD/从EAGLE-3看Tokenizer对投机解码的影响/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/LLM-SD/从EAGLE-3看Tokenizer对投机解码的影响/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/1916965162755285553
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/1916965162755285553"
 ---
 
 

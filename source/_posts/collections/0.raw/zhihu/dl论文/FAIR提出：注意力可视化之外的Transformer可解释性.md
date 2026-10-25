@@ -1,17 +1,17 @@
 ---
-title: FAIR提出：注意力可视化之外的Transformer可解释性
+title: "FAIR提出：注意力可视化之外的Transformer可解释性"
 date: "2020-12-19 00:00:00"
 updated: "2020-12-19 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/dl论文/FAIR提出-注意力可视化之外的Transformer可解释性/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/dl论文/FAIR提出-注意力可视化之外的Transformer可解释性/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/338156132
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/338156132"
 ---
 
 

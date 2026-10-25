@@ -1,17 +1,17 @@
 ---
-title: （七）SGLang Radix Cache
+title: "（七）SGLang Radix Cache"
 date: "2026-08-01 00:00:00"
 updated: "2026-08-01 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/AI-infra/(七)SGLang-Radix-Cache/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/AI-infra/(七)SGLang-Radix-Cache/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/2066173524881019817
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/2066173524881019817"
 ---
 
 

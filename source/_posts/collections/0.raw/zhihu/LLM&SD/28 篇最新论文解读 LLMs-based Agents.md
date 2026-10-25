@@ -1,17 +1,17 @@
 ---
-title: 28 篇最新论文解读 LLMs-based Agents
+title: "28 篇最新论文解读 LLMs-based Agents"
 date: "2023-11-02 00:00:00"
 updated: "2023-11-02 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/LLM-SD/28-篇最新论文解读-LLMs-based-Agents/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/LLM-SD/28-篇最新论文解读-LLMs-based-Agents/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/662506575
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/662506575"
 ---
 
 

@@ -1,17 +1,17 @@
 ---
-title: (1 条消息) C++内存池的简单原理及实现(纯代码解析)
+title: "(1 条消息) C++内存池的简单原理及实现(纯代码解析)"
 date: "2021-11-19 00:00:00"
 updated: "2021-11-19 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/我的收藏/C-内存池的简单原理及实现(纯代码解析)/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/我的收藏/C-内存池的简单原理及实现(纯代码解析)/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/434081696
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/434081696"
 ---
 
 

@@ -1,14 +1,14 @@
 ---
-title: 在bash高效匹配历史命令的技巧 | 横云断岭的专栏
+title: "在bash高效匹配历史命令的技巧 | 横云断岭的专栏"
 date: "2026-04-11 21:40:28"
 updated: "2026-04-11 21:40:28"
-layout: post
-permalink: /collections/0.raw/Omnivore/2024-04-12/在bash高效匹配历史命令的技巧-横云断岭的专栏/
+layout: "post"
+permalink: "/collections/0.raw/Omnivore/2024-04-12/在bash高效匹配历史命令的技巧-横云断岭的专栏/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 ---
 
 ---

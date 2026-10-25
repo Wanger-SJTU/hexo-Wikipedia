@@ -1,17 +1,17 @@
 ---
-title: (2 条消息) 如何理解 Transformers 中 FFNs 的作用？
+title: "(2 条消息) 如何理解 Transformers 中 FFNs 的作用？"
 date: "2026-04-17 00:00:00"
 updated: "2026-04-17 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/我的收藏/如何理解-Transformers-中-FFNs-的作用/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/我的收藏/如何理解-Transformers-中-FFNs-的作用/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://www.zhihu.com/question/622085869/answer/3518358912
+  - "知乎"
+source_url: "https://www.zhihu.com/question/622085869/answer/3518358912"
 ---
 
 

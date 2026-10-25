@@ -1,17 +1,17 @@
 ---
-title: Agent 递归自我改进（RSI）的 Harness 工程
+title: "Agent 递归自我改进（RSI）的 Harness 工程"
 date: "2026-08-02 00:00:00"
 updated: "2026-08-02 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/我的收藏/Agent-递归自我改进(RSI)的-Harness-工程/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/我的收藏/Agent-递归自我改进(RSI)的-Harness-工程/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/2067214030054467237
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/2067214030054467237"
 ---
 
 

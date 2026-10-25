@@ -1,17 +1,17 @@
 ---
-title: 线性注意力机制：Linear Attention->Lightning Attention->Minimax模型
+title: "线性注意力机制：Linear Attention->Lightning Attention->Minimax模型"
 date: "2025-04-21 00:00:00"
 updated: "2025-04-21 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/LLM-SD/线性注意力机制-Linear-Attention-_Lightning-Attention-_Minimax模型/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/LLM-SD/线性注意力机制-Linear-Attention-_Lightning-Attention-_Minimax模型/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/1896380352202794899
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/1896380352202794899"
 ---
 
 

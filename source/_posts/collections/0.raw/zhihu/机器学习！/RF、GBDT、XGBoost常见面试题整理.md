@@ -1,17 +1,17 @@
 ---
-title: RF、GBDT、XGBoost常见面试题整理
+title: "RF、GBDT、XGBoost常见面试题整理"
 date: "2018-05-28 00:00:00"
 updated: "2018-05-28 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/机器学习/RF、GBDT、XGBoost常见面试题整理/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/机器学习/RF、GBDT、XGBoost常见面试题整理/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/34679467
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/34679467"
 ---
 
 

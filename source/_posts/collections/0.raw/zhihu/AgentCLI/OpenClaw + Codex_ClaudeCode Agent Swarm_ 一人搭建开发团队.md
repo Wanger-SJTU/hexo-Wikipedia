@@ -2,16 +2,16 @@
 title: "OpenClaw + Codex/ClaudeCode Agent Swarm: 一人搭建开发团队"
 date: "2026-02-26 00:00:00"
 updated: "2026-02-26 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/AgentCLI/OpenClaw-Codex_ClaudeCode-Agent-Swarm_-一人搭建开发团队/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/AgentCLI/OpenClaw-Codex_ClaudeCode-Agent-Swarm_-一人搭建开发团队/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/2010324070751826756
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/2010324070751826756"
 ---
 
 

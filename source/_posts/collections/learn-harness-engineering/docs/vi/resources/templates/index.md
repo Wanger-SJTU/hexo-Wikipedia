@@ -1,14 +1,14 @@
 ---
-title: Thư viện Mẫu
+title: "Thư viện Mẫu"
 date: "2026-05-28 11:34:14"
 updated: "2026-05-28 11:34:14"
-layout: post
-permalink: /collections/learn-harness-engineering/docs/vi/resources/templates/index/
+layout: "post"
+permalink: "/collections/learn-harness-engineering/docs/vi/resources/templates/index/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 ---
 
 [English Version →](../../../en/resources/templates/) | [中文版本 →](../../../zh/resources/templates/)

@@ -1,14 +1,14 @@
 ---
-title: 신규 사용자 온보딩(New User Onboarding)
+title: "신규 사용자 온보딩(New User Onboarding)"
 date: "2026-05-28 11:34:14"
 updated: "2026-05-28 11:34:14"
-layout: post
-permalink: /collections/learn-harness-engineering/docs/ko/resources/openai-advanced/repo-template/docs/product-specs/new-user-onboarding/
+layout: "post"
+permalink: "/collections/learn-harness-engineering/docs/ko/resources/openai-advanced/repo-template/docs/product-specs/new-user-onboarding/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 ---
 
 # 신규 사용자 온보딩(New User Onboarding)

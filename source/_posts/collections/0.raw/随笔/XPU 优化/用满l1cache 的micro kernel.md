@@ -1,14 +1,14 @@
 ---
-title: 用满l1cache 的micro kernel
+title: "用满l1cache 的micro kernel"
 date: "2026-04-11 21:40:28"
 updated: "2026-04-11 21:40:28"
-layout: post
-permalink: /collections/0.raw/随笔/XPU-优化/用满l1cache-的micro-kernel/
+layout: "post"
+permalink: "/collections/0.raw/随笔/XPU-优化/用满l1cache-的micro-kernel/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 ---
 
 

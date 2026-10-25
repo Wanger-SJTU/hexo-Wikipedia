@@ -1,17 +1,17 @@
 ---
-title: Hydragen：共享前缀既能省 KV Cache，也能把 Attention 从访存瓶颈拉回矩阵乘
+title: "Hydragen：共享前缀既能省 KV Cache，也能把 Attention 从访存瓶颈拉回矩阵乘"
 date: "2026-07-18 00:00:00"
 updated: "2026-07-18 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/AI-infra/Hydragen-共享前缀既能省-KV-Cache,也能把-Attention-从访存瓶颈拉回矩阵乘/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/AI-infra/Hydragen-共享前缀既能省-KV-Cache,也能把-Attention-从访存瓶颈拉回矩阵乘/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/2061773314687868962
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/2061773314687868962"
 ---
 
 

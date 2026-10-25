@@ -1,17 +1,17 @@
 ---
-title: AI Agent 性能优化和成本控制
+title: "AI Agent 性能优化和成本控制"
 date: "2026-02-25 00:00:00"
 updated: "2026-02-25 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/AgentCLI/AI-Agent-性能优化和成本控制/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/AgentCLI/AI-Agent-性能优化和成本控制/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/2009938845945328180
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/2009938845945328180"
 ---
 
 

@@ -1,14 +1,14 @@
 ---
-title: 10-maʼruza. Faqatgina End-to-End testlash chinakam tekshiruvdir
+title: "10-maʼruza. Faqatgina End-to-End testlash chinakam tekshiruvdir"
 date: "2026-05-28 11:34:14"
 updated: "2026-05-28 11:34:14"
-layout: post
-permalink: /collections/learn-harness-engineering/docs/uz/lectures/lecture-10-why-end-to-end-testing-changes-results/index/
+layout: "post"
+permalink: "/collections/learn-harness-engineering/docs/uz/lectures/lecture-10-why-end-to-end-testing-changes-results/index/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 ---
 
 [English version →](../../../en/lectures/lecture-10-why-end-to-end-testing-changes-results/)

@@ -1,17 +1,17 @@
 ---
-title: 让CPU黑盒不再黑——【TMA_自顶向下的CPU架构性能瓶颈分析方法】（三）Frontend
+title: "让CPU黑盒不再黑——【TMA_自顶向下的CPU架构性能瓶颈分析方法】（三）Frontend"
 date: "2020-05-08 00:00:00"
 updated: "2020-05-08 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/优化/让CPU黑盒不再黑——【TMA_自顶向下的CPU架构性能瓶颈分析方法】(三)Frontend/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/优化/让CPU黑盒不再黑——【TMA_自顶向下的CPU架构性能瓶颈分析方法】(三)Frontend/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/61015720
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/61015720"
 ---
 
 

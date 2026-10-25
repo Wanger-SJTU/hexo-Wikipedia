@@ -1,14 +1,14 @@
 ---
-title: 将所有阅读数据同步到 Obsidian | Omnivore 使用文档
+title: "将所有阅读数据同步到 Obsidian | Omnivore 使用文档"
 date: "2026-04-11 21:40:28"
 updated: "2026-04-11 21:40:28"
-layout: post
-permalink: /collections/0.raw/Omnivore/2024-04-09/将所有阅读数据同步到-Obsidian-Omnivore-使用文档/
+layout: "post"
+permalink: "/collections/0.raw/Omnivore/2024-04-09/将所有阅读数据同步到-Obsidian-Omnivore-使用文档/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 ---
 
 ---

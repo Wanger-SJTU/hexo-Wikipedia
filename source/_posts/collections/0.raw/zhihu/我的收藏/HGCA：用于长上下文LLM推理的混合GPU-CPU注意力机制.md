@@ -1,17 +1,17 @@
 ---
-title: (2 条消息) HGCA：用于长上下文LLM推理的混合GPU-CPU注意力机制
+title: "(2 条消息) HGCA：用于长上下文LLM推理的混合GPU-CPU注意力机制"
 date: "2025-09-20 00:00:00"
 updated: "2025-09-20 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/我的收藏/HGCA-用于长上下文LLM推理的混合GPU-CPU注意力机制/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/我的收藏/HGCA-用于长上下文LLM推理的混合GPU-CPU注意力机制/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/1952746463860855206
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/1952746463860855206"
 ---
 
 

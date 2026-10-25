@@ -1,17 +1,17 @@
 ---
-title: Linux C++ 服务器端这条线怎么走？一年半能做出什么？
+title: "Linux C++ 服务器端这条线怎么走？一年半能做出什么？"
 date: "2014-01-27 00:00:00"
 updated: "2014-01-27 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/走向cs/Linux-C-服务器端这条线怎么走-一年半能做出什么/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/走向cs/Linux-C-服务器端这条线怎么走-一年半能做出什么/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://www.zhihu.com/question/22608820/answer/21968467
+  - "知乎"
+source_url: "https://www.zhihu.com/question/22608820/answer/21968467"
 ---
 
 

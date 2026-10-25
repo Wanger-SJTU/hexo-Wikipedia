@@ -1,17 +1,17 @@
 ---
-title: (2 条消息) Linux内核应该怎么去学习？
+title: "(2 条消息) Linux内核应该怎么去学习？"
 date: "2026-04-17 00:00:00"
 updated: "2026-04-17 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/我的收藏/Linux内核应该怎么去学习/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/我的收藏/Linux内核应该怎么去学习/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://www.zhihu.com/question/58121772/answer/1914708043062556662
+  - "知乎"
+source_url: "https://www.zhihu.com/question/58121772/answer/1914708043062556662"
 ---
 
 

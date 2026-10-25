@@ -1,17 +1,17 @@
 ---
-title: GM以色列研究中心最新发表的3-D车道线检测论文
+title: "GM以色列研究中心最新发表的3-D车道线检测论文"
 date: "2020-04-20 00:00:00"
 updated: "2020-04-20 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/dl论文/GM以色列研究中心最新发表的3-D车道线检测论文/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/dl论文/GM以色列研究中心最新发表的3-D车道线检测论文/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/133623737
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/133623737"
 ---
 
 

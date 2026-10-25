@@ -1,17 +1,17 @@
 ---
-title: MoE的top-p routing
+title: "MoE的top-p routing"
 date: "2024-07-15 00:00:00"
 updated: "2024-07-15 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/LLM-SD/MoE的top-p-routing/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/LLM-SD/MoE的top-p-routing/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/708995369
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/708995369"
 ---
 
 

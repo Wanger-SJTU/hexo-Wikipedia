@@ -1,14 +1,14 @@
 ---
-title: MemSifter：用4B小模型给大模型当_记忆管家_，检索又快又准
+title: "MemSifter：用4B小模型给大模型当_记忆管家_，检索又快又准"
 date: "2026-04-18 21:55:45"
 updated: "2026-04-18 21:55:45"
-layout: post
-permalink: /collections/0.raw/zhihu/AgentCLI/MemSifter-用4B小模型给大模型当_记忆管家_,检索又快又准/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/AgentCLI/MemSifter-用4B小模型给大模型当_记忆管家_,检索又快又准/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 ---
 
 

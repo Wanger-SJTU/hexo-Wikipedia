@@ -1,17 +1,17 @@
 ---
-title: 临界区互斥实现：Dekker互斥算法
+title: "临界区互斥实现：Dekker互斥算法"
 date: "2020-04-01 00:00:00"
 updated: "2020-04-01 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/编程向/临界区互斥实现-Dekker互斥算法/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/编程向/临界区互斥实现-Dekker互斥算法/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/122544351
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/122544351"
 ---
 
 

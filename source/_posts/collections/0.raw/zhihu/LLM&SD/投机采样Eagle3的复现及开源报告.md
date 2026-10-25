@@ -1,17 +1,17 @@
 ---
-title: 投机采样Eagle3的复现及开源报告
+title: "投机采样Eagle3的复现及开源报告"
 date: "2026-02-25 00:00:00"
 updated: "2026-02-25 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/LLM-SD/投机采样Eagle3的复现及开源报告/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/LLM-SD/投机采样Eagle3的复现及开源报告/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/1923763301432662012
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/1923763301432662012"
 ---
 
 

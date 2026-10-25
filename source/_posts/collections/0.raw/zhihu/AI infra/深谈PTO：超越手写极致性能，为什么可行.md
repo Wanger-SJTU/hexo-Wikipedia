@@ -1,17 +1,17 @@
 ---
-title: 深谈PTO：超越手写极致性能，为什么可行
+title: "深谈PTO：超越手写极致性能，为什么可行"
 date: "2026-05-06 00:00:00"
 updated: "2026-05-06 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/AI-infra/深谈PTO-超越手写极致性能,为什么可行/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/AI-infra/深谈PTO-超越手写极致性能,为什么可行/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/2035084143629955119
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/2035084143629955119"
 ---
 
 

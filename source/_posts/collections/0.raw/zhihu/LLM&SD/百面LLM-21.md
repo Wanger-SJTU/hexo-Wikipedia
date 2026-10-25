@@ -1,17 +1,17 @@
 ---
-title: 百面LLM-21
+title: "百面LLM-21"
 date: "2024-04-04 00:00:00"
 updated: "2024-04-04 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/LLM-SD/百面LLM-21/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/LLM-SD/百面LLM-21/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/688369625
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/688369625"
 ---
 
 

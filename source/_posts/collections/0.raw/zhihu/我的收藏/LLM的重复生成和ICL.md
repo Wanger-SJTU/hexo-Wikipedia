@@ -1,17 +1,17 @@
 ---
-title: (2 条消息) LLM的重复生成和ICL
+title: "(2 条消息) LLM的重复生成和ICL"
 date: "2024-06-19 00:00:00"
 updated: "2024-06-19 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/我的收藏/LLM的重复生成和ICL/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/我的收藏/LLM的重复生成和ICL/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/704232156
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/704232156"
 ---
 
 

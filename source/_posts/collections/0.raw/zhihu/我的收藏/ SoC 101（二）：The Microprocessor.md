@@ -1,17 +1,17 @@
 ---
-title: (1 条消息) SoC 101（二）：The Microprocessor
+title: "(1 条消息) SoC 101（二）：The Microprocessor"
 date: "2024-01-14 00:00:00"
 updated: "2024-01-14 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/我的收藏/SoC-101(二)-The-Microprocessor/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/我的收藏/SoC-101(二)-The-Microprocessor/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/677006556
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/677006556"
 ---
 
 

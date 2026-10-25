@@ -1,17 +1,17 @@
 ---
-title: (2 条消息) MoE Inference On AnyScale
+title: "(2 条消息) MoE Inference On AnyScale"
 date: "2025-03-07 00:00:00"
 updated: "2025-03-07 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/我的收藏/MoE-Inference-On-AnyScale/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/我的收藏/MoE-Inference-On-AnyScale/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/28680264165
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/28680264165"
 ---
 
 

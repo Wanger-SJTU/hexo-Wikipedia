@@ -1,17 +1,17 @@
 ---
-title: ARM Cortex MPU 内存保护单元
+title: "ARM Cortex MPU 内存保护单元"
 date: "2023-10-27 00:00:00"
 updated: "2023-10-27 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/体系结构/ARM-Cortex-MPU-内存保护单元/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/体系结构/ARM-Cortex-MPU-内存保护单元/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/663730490
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/663730490"
 ---
 
 

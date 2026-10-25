@@ -1,17 +1,17 @@
 ---
-title: 10种常用降维算法源代码(python)
+title: "10种常用降维算法源代码(python)"
 date: "2019-12-29 00:00:00"
 updated: "2019-12-29 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/机器学习/10种常用降维算法源代码(python)/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/机器学习/10种常用降维算法源代码(python)/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/68754729
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/68754729"
 ---
 
 

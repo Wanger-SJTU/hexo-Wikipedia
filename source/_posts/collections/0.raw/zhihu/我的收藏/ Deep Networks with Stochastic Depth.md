@@ -1,17 +1,17 @@
 ---
-title: (1 条消息) Deep Networks with Stochastic Depth
+title: "(1 条消息) Deep Networks with Stochastic Depth"
 date: "2017-11-28 00:00:00"
 updated: "2017-11-28 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/我的收藏/Deep-Networks-with-Stochastic-Depth/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/我的收藏/Deep-Networks-with-Stochastic-Depth/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/31200098
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/31200098"
 ---
 
 

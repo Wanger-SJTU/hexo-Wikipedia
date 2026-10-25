@@ -1,20 +1,20 @@
 ---
-title: 调教DeepSeek超过 Opus 4.7 的经验 - Ahmad Awais
+title: "调教DeepSeek超过 Opus 4.7 的经验 - Ahmad Awais"
 date: "2026-05-05 00:00:00"
 updated: "2026-05-05 00:00:00"
-layout: post
-permalink: /collections/0.raw/微博收藏/2026-05-05-deepseek-beats-opus/
+layout: "post"
+permalink: "/collections/0.raw/微博收藏/2026-05-05-deepseek-beats-opus/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - AI
-  - DeepSeek
-  - 工具调用
-  - Agent
-source_url: https://twitter.com/AhmadAwais/status/1919018375371633030
+  - "AI"
+  - "DeepSeek"
+  - "工具调用"
+  - "Agent"
+source_url: "https://twitter.com/AhmadAwais/status/1919018375371633030"
 ---
 
 

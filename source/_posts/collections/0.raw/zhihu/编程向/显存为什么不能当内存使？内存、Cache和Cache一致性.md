@@ -1,17 +1,17 @@
 ---
-title: 显存为什么不能当内存使？内存、Cache和Cache一致性
+title: "显存为什么不能当内存使？内存、Cache和Cache一致性"
 date: "2021-05-08 00:00:00"
 updated: "2021-05-08 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/编程向/显存为什么不能当内存使-内存、Cache和Cache一致性/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/编程向/显存为什么不能当内存使-内存、Cache和Cache一致性/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/63494668
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/63494668"
 ---
 
 

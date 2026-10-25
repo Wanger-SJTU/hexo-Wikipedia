@@ -2,16 +2,16 @@
 title: "(1 条消息) Search Anything: 给本地搜索插上大模型的翅膀—语义搜索你的电脑、手机和云端的任何信息"
 date: "2023-09-07 00:00:00"
 updated: "2023-09-07 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/我的收藏/Search-Anything_-给本地搜索插上大模型的翅膀—语义搜索你的电脑、手机和云端的任何信息/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/我的收藏/Search-Anything_-给本地搜索插上大模型的翅膀—语义搜索你的电脑、手机和云端的任何信息/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/641128049
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/641128049"
 ---
 
 

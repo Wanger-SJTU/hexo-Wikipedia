@@ -1,20 +1,20 @@
 ---
-title: Learning Beyond Gradients
+title: "Learning Beyond Gradients"
 date: "2026-05-09 11:25:53"
 updated: "2026-05-09 11:25:53"
-layout: post
-permalink: /collections/other/learning-beyond-gradients/2026-05-09-learning-beyond-gradients/
+layout: "post"
+permalink: "/collections/other/learning-beyond-gradients/2026-05-09-learning-beyond-gradients/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 博客
-  - RL
-  - Heuristic Learning
-  - Continual Learning
-source_url: https://trinkle23897.github.io/learning-beyond-gradients/
+  - "博客"
+  - "RL"
+  - "Heuristic Learning"
+  - "Continual Learning"
+source_url: "https://trinkle23897.github.io/learning-beyond-gradients/"
 ---
 
 

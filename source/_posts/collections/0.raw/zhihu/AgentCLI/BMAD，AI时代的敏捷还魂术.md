@@ -1,17 +1,17 @@
 ---
-title: BMAD，AI时代的敏捷还魂术
+title: "BMAD，AI时代的敏捷还魂术"
 date: "2026-02-20 00:00:00"
 updated: "2026-02-20 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/AgentCLI/BMAD,AI时代的敏捷还魂术/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/AgentCLI/BMAD,AI时代的敏捷还魂术/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/2008038879446467609
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/2008038879446467609"
 ---
 
 

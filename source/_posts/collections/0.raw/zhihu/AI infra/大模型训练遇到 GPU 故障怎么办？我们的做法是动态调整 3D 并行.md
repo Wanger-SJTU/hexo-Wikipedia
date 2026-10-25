@@ -1,17 +1,17 @@
 ---
-title: 大模型训练遇到 GPU 故障怎么办？我们的做法是动态调整 3D 并行
+title: "大模型训练遇到 GPU 故障怎么办？我们的做法是动态调整 3D 并行"
 date: "2026-05-11 00:00:00"
 updated: "2026-05-11 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/AI-infra/大模型训练遇到-GPU-故障怎么办-我们的做法是动态调整-3D-并行/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/AI-infra/大模型训练遇到-GPU-故障怎么办-我们的做法是动态调整-3D-并行/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/2036192731547035544
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/2036192731547035544"
 ---
 
 

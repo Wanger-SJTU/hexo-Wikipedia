@@ -1,17 +1,17 @@
 ---
-title: 图像语义分割(Semantic segmentation) Survey
+title: "图像语义分割(Semantic segmentation) Survey"
 date: "2018-05-13 00:00:00"
 updated: "2018-05-13 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/机器学习/图像语义分割(Semantic-segmentation)-Survey/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/机器学习/图像语义分割(Semantic-segmentation)-Survey/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/36801104
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/36801104"
 ---
 
 

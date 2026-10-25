@@ -1,17 +1,17 @@
 ---
-title: Codex在推理框架上能蹬出什么优化
+title: "Codex在推理框架上能蹬出什么优化"
 date: "2026-04-22 00:00:00"
 updated: "2026-04-22 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/我的收藏/Codex在推理框架上能蹬出什么优化/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/我的收藏/Codex在推理框架上能蹬出什么优化/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/2028172692533068285
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/2028172692533068285"
 ---
 
 

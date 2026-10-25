@@ -1,17 +1,17 @@
 ---
-title: Vibe Coding 核心：管 Agent，如带团队
+title: "Vibe Coding 核心：管 Agent，如带团队"
 date: "2026-03-10 00:00:00"
 updated: "2026-03-10 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/AgentCLI/Vibe-Coding-核心-管-Agent,如带团队/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/AgentCLI/Vibe-Coding-核心-管-Agent,如带团队/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/2008273917891076619
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/2008273917891076619"
 ---
 
 

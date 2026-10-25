@@ -2,13 +2,13 @@
 title: "프로젝트 01. 프롬프트 단독 vs. 규칙 우선(Rules-First): 차이는 얼마나 클까"
 date: "2026-05-28 11:34:14"
 updated: "2026-05-28 11:34:14"
-layout: post
-permalink: /collections/learn-harness-engineering/docs/ko/projects/project-01-baseline-vs-minimal-harness/index/
+layout: "post"
+permalink: "/collections/learn-harness-engineering/docs/ko/projects/project-01-baseline-vs-minimal-harness/index/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 ---
 
 [English Version →](../../../en/projects/project-01-baseline-vs-minimal-harness/)

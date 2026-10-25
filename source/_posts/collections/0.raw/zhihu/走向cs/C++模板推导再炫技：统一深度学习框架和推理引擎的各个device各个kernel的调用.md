@@ -1,17 +1,17 @@
 ---
-title: C++模板推导再炫技：统一深度学习框架和推理引擎的各个device各个kernel的调用
+title: "C++模板推导再炫技：统一深度学习框架和推理引擎的各个device各个kernel的调用"
 date: "2024-03-20 00:00:00"
 updated: "2024-03-20 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/走向cs/C-模板推导再炫技-统一深度学习框架和推理引擎的各个device各个kernel的调用/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/走向cs/C-模板推导再炫技-统一深度学习框架和推理引擎的各个device各个kernel的调用/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/688135917
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/688135917"
 ---
 
 

@@ -1,17 +1,17 @@
 ---
-title: 偷懒的BTB ？ARM Cortex X1 初探
+title: "偷懒的BTB ？ARM Cortex X1 初探"
 date: "2023-02-04 00:00:00"
 updated: "2023-02-04 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/体系结构/偷懒的BTB-ARM-Cortex-X1-初探/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/体系结构/偷懒的BTB-ARM-Cortex-X1-初探/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/595585895
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/595585895"
 ---
 
 

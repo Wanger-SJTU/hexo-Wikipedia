@@ -1,17 +1,17 @@
 ---
-title: OpenAI 上线新功能力捧 RAG，开发者真的不需要向量数据库了？
+title: "OpenAI 上线新功能力捧 RAG，开发者真的不需要向量数据库了？"
 date: "2023-11-15 00:00:00"
 updated: "2023-11-15 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/LLM-SD/OpenAI-上线新功能力捧-RAG,开发者真的不需要向量数据库了/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/LLM-SD/OpenAI-上线新功能力捧-RAG,开发者真的不需要向量数据库了/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/667003209
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/667003209"
 ---
 
 

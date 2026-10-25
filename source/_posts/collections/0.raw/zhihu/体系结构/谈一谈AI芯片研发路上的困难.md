@@ -1,17 +1,17 @@
 ---
-title: 谈一谈AI芯片研发路上的困难
+title: "谈一谈AI芯片研发路上的困难"
 date: "2026-03-28 00:00:00"
 updated: "2026-03-28 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/体系结构/谈一谈AI芯片研发路上的困难-676c86/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/体系结构/谈一谈AI芯片研发路上的困难-676c86/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/2021262593088582678
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/2021262593088582678"
 ---
 
 

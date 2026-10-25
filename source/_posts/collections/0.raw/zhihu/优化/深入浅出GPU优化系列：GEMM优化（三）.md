@@ -1,17 +1,17 @@
 ---
-title: 深入浅出GPU优化系列：GEMM优化（三）
+title: "深入浅出GPU优化系列：GEMM优化（三）"
 date: "2022-09-01 00:00:00"
 updated: "2022-09-01 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/优化/深入浅出GPU优化系列-GEMM优化(三)/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/优化/深入浅出GPU优化系列-GEMM优化(三)/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/481600052
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/481600052"
 ---
 
 

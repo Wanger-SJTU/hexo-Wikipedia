@@ -1,14 +1,14 @@
 ---
-title: Clean State Checklist
+title: "Clean State Checklist"
 date: "2026-05-28 11:34:14"
 updated: "2026-05-28 11:34:14"
-layout: post
-permalink: /collections/learn-harness-engineering/projects/project-05/solution/gen-eval/clean-state-checklist/
+layout: "post"
+permalink: "/collections/learn-harness-engineering/projects/project-05/solution/gen-eval/clean-state-checklist/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 ---
 
 # Clean State Checklist

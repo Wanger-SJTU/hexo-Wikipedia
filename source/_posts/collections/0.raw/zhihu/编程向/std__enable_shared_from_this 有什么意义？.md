@@ -1,17 +1,17 @@
 ---
-title: std::enable_shared_from_this 有什么意义？
+title: "std::enable_shared_from_this 有什么意义？"
 date: "2026-04-15 00:00:00"
 updated: "2026-04-15 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/编程向/std__enable_shared_from_this-有什么意义/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/编程向/std__enable_shared_from_this-有什么意义/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://www.zhihu.com/question/30957800/answer/2700292012
+  - "知乎"
+source_url: "https://www.zhihu.com/question/30957800/answer/2700292012"
 ---
 
 

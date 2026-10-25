@@ -2,16 +2,16 @@
 title: "Roberta: Bert调优"
 date: "2020-09-30 00:00:00"
 updated: "2020-09-30 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/dl论文/Roberta_-Bert调优/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/dl论文/Roberta_-Bert调优/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/260693956
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/260693956"
 ---
 
 

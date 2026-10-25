@@ -1,17 +1,17 @@
 ---
-title: 矩阵乘法的并行优化（3）：共享内存多核CPU优化
+title: "矩阵乘法的并行优化（3）：共享内存多核CPU优化"
 date: "2021-05-18 00:00:00"
 updated: "2021-05-18 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/模型部署那些事/矩阵乘法的并行优化(3)-共享内存多核CPU优化/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/模型部署那些事/矩阵乘法的并行优化(3)-共享内存多核CPU优化/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/371893547
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/371893547"
 ---
 
 

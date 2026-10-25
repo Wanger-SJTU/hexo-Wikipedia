@@ -1,17 +1,17 @@
 ---
-title: C++中外部函数如何访问私有变量？
+title: "C++中外部函数如何访问私有变量？"
 date: "2026-04-15 00:00:00"
 updated: "2026-04-15 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/编程向/C-中外部函数如何访问私有变量/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/编程向/C-中外部函数如何访问私有变量/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://www.zhihu.com/question/521898260/answer/2399058597
+  - "知乎"
+source_url: "https://www.zhihu.com/question/521898260/answer/2399058597"
 ---
 
 

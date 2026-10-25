@@ -1,17 +1,17 @@
 ---
-title: valgrind-android
+title: "valgrind-android"
 date: "2021-02-21 00:00:00"
 updated: "2021-02-21 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/体系结构/valgrind-android/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/体系结构/valgrind-android/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/351827480
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/351827480"
 ---
 
 

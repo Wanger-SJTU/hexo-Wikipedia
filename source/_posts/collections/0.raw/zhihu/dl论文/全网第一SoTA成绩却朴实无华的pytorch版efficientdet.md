@@ -1,17 +1,17 @@
 ---
-title: 全网第一SoTA成绩却朴实无华的pytorch版efficientdet
+title: "全网第一SoTA成绩却朴实无华的pytorch版efficientdet"
 date: "2020-04-11 00:00:00"
 updated: "2020-04-11 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/dl论文/全网第一SoTA成绩却朴实无华的pytorch版efficientdet/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/dl论文/全网第一SoTA成绩却朴实无华的pytorch版efficientdet/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/129016081
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/129016081"
 ---
 
 

@@ -1,17 +1,17 @@
 ---
-title: 计算机是如何计算 log 函数的？
+title: "计算机是如何计算 log 函数的？"
 date: "2026-04-15 00:00:00"
 updated: "2026-04-15 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/走向cs/计算机是如何计算-log-函数的/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/走向cs/计算机是如何计算-log-函数的/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://www.zhihu.com/question/333371020/answer/1686069171
+  - "知乎"
+source_url: "https://www.zhihu.com/question/333371020/answer/1686069171"
 ---
 
 

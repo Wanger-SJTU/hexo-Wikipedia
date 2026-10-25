@@ -1,17 +1,17 @@
 ---
-title: AC自动机
+title: "AC自动机"
 date: "2019-08-29 00:00:00"
 updated: "2019-08-29 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/编程向/AC自动机/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/编程向/AC自动机/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/80325757
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/80325757"
 ---
 
 

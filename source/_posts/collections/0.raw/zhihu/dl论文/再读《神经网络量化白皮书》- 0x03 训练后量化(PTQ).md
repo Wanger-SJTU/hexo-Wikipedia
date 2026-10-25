@@ -1,17 +1,17 @@
 ---
-title: 再读《神经网络量化白皮书》- 0x03 训练后量化(PTQ)
+title: "再读《神经网络量化白皮书》- 0x03 训练后量化(PTQ)"
 date: "2022-02-15 00:00:00"
 updated: "2022-02-15 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/dl论文/再读《神经网络量化白皮书》-0x03-训练后量化(PTQ)/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/dl论文/再读《神经网络量化白皮书》-0x03-训练后量化(PTQ)/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/463198140
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/463198140"
 ---
 
 

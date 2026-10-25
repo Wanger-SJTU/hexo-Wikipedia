@@ -1,17 +1,17 @@
 ---
-title: 从零读懂QPC Cache Miss的乱序响应：多QP并发下的“不堵车”设计
+title: "从零读懂QPC Cache Miss的乱序响应：多QP并发下的“不堵车”设计"
 date: "2026-07-04 00:00:00"
 updated: "2026-07-04 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/AI-infra/从零读懂QPC-Cache-Miss的乱序响应-多QP并发下的“不堵车”设计/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/AI-infra/从零读懂QPC-Cache-Miss的乱序响应-多QP并发下的“不堵车”设计/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/2056804151368193445
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/2056804151368193445"
 ---
 
 

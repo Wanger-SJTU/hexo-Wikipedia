@@ -1,17 +1,17 @@
 ---
-title: Agentic RL：解耦 Reasoning 与 Tool-use
+title: "Agentic RL：解耦 Reasoning 与 Tool-use"
 date: "2026-04-11 00:00:00"
 updated: "2026-04-11 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/LLM-SD/Agentic-RL-解耦-Reasoning-与-Tool-use/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/LLM-SD/Agentic-RL-解耦-Reasoning-与-Tool-use/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/2009946011120971848
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/2009946011120971848"
 ---
 
 

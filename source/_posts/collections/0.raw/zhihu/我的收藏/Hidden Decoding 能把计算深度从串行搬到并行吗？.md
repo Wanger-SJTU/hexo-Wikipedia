@@ -1,17 +1,17 @@
 ---
-title: Hidden Decoding 能把计算深度从串行搬到并行吗？
+title: "Hidden Decoding 能把计算深度从串行搬到并行吗？"
 date: "2026-08-09 00:00:00"
 updated: "2026-08-09 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/我的收藏/Hidden-Decoding-能把计算深度从串行搬到并行吗/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/我的收藏/Hidden-Decoding-能把计算深度从串行搬到并行吗/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/2069875199235843606
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/2069875199235843606"
 ---
 
 

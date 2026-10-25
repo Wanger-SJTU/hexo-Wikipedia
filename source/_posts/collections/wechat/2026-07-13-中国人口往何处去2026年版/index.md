@@ -1,14 +1,14 @@
 ---
-title: 中国人口往何处去？（2026年版）
+title: "中国人口往何处去？（2026年版）"
 date: "2026-07-13 01:57:09"
 updated: "2026-07-13 01:57:09"
-layout: post
-permalink: /collections/wechat/2026-07-13-中国人口往何处去2026年版/index/
+layout: "post"
+permalink: "/collections/wechat/2026-07-13-中国人口往何处去2026年版/index/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 ---
 
 # 中国人口往何处去？（2026年版）

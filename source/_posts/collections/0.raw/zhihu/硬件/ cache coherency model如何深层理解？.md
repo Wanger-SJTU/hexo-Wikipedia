@@ -1,17 +1,17 @@
 ---
-title: cache coherency model如何深层理解？
+title: "cache coherency model如何深层理解？"
 date: "2026-04-14 00:00:00"
 updated: "2026-04-14 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/硬件/cache-coherency-model如何深层理解/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/硬件/cache-coherency-model如何深层理解/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://www.zhihu.com/question/590540790/answer/2943285963
+  - "知乎"
+source_url: "https://www.zhihu.com/question/590540790/answer/2943285963"
 ---
 
 

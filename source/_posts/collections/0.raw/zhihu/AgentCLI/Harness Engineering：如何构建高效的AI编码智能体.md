@@ -1,17 +1,17 @@
 ---
-title: Harness Engineering：如何构建高效的AI编码智能体
+title: "Harness Engineering：如何构建高效的AI编码智能体"
 date: "2026-03-22 00:00:00"
 updated: "2026-03-22 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/AgentCLI/Harness-Engineering-如何构建高效的AI编码智能体/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/AgentCLI/Harness-Engineering-如何构建高效的AI编码智能体/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/2019061294423126127
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/2019061294423126127"
 ---
 
 

@@ -1,17 +1,17 @@
 ---
-title: 理解图神经网络：从CNN到GNN
+title: "理解图神经网络：从CNN到GNN"
 date: "2022-07-12 00:00:00"
 updated: "2022-07-12 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/dl论文/理解图神经网络-从CNN到GNN/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/dl论文/理解图神经网络-从CNN到GNN/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/463666907
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/463666907"
 ---
 
 

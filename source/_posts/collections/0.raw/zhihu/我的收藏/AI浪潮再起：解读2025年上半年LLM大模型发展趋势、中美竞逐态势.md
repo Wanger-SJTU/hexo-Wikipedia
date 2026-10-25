@@ -1,17 +1,17 @@
 ---
-title: (2 条消息) AI浪潮再起：解读2025年上半年LLM大模型发展趋势、中美竞逐态势
+title: "(2 条消息) AI浪潮再起：解读2025年上半年LLM大模型发展趋势、中美竞逐态势"
 date: "2025-06-17 00:00:00"
 updated: "2025-06-17 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/我的收藏/AI浪潮再起-解读2025年上半年LLM大模型发展趋势、中美竞逐态势/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/我的收藏/AI浪潮再起-解读2025年上半年LLM大模型发展趋势、中美竞逐态势/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/1916088746731877690
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/1916088746731877690"
 ---
 
 

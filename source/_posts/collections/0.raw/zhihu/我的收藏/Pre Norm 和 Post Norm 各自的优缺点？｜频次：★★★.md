@@ -1,17 +1,17 @@
 ---
-title: (2 条消息) Pre Norm 和 Post Norm 各自的优缺点？｜频次：★★★
+title: "(2 条消息) Pre Norm 和 Post Norm 各自的优缺点？｜频次：★★★"
 date: "2025-01-16 00:00:00"
 updated: "2025-01-16 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/我的收藏/Pre-Norm-和-Post-Norm-各自的优缺点-频次-★★★/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/我的收藏/Pre-Norm-和-Post-Norm-各自的优缺点-频次-★★★/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/18753164849
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/18753164849"
 ---
 
 

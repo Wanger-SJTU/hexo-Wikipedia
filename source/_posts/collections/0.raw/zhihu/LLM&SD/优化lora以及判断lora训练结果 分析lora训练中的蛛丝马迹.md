@@ -1,17 +1,17 @@
 ---
-title: 优化lora以及判断lora训练结果 分析lora训练中的蛛丝马迹
+title: "优化lora以及判断lora训练结果 分析lora训练中的蛛丝马迹"
 date: "2023-08-22 00:00:00"
 updated: "2023-08-22 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/LLM-SD/优化lora以及判断lora训练结果-分析lora训练中的蛛丝马迹/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/LLM-SD/优化lora以及判断lora训练结果-分析lora训练中的蛛丝马迹/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/641153468
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/641153468"
 ---
 
 

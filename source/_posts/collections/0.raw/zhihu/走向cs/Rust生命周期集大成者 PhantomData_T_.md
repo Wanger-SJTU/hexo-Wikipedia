@@ -1,17 +1,17 @@
 ---
-title: Rust生命周期集大成者 PhantomData<T>
+title: "Rust生命周期集大成者 PhantomData<T>"
 date: "2024-07-13 00:00:00"
 updated: "2024-07-13 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/走向cs/Rust生命周期集大成者-PhantomData_T_/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/走向cs/Rust生命周期集大成者-PhantomData_T_/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/686143745
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/686143745"
 ---
 
 

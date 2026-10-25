@@ -1,17 +1,17 @@
 ---
-title: BOOM微架构学习(1)——取指单元与分支预测
+title: "BOOM微架构学习(1)——取指单元与分支预测"
 date: "2020-09-12 00:00:00"
 updated: "2020-09-12 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/硬件/BOOM微架构学习(1)——取指单元与分支预测/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/硬件/BOOM微架构学习(1)——取指单元与分支预测/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/168755384
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/168755384"
 ---
 
 

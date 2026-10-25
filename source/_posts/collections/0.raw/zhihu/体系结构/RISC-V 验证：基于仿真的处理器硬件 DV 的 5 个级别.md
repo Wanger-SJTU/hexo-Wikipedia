@@ -1,17 +1,17 @@
 ---
-title: RISC-V 验证：基于仿真的处理器硬件 DV 的 5 个级别
+title: "RISC-V 验证：基于仿真的处理器硬件 DV 的 5 个级别"
 date: "2022-03-23 00:00:00"
 updated: "2022-03-23 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/体系结构/RISC-V-验证-基于仿真的处理器硬件-DV-的-5-个级别/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/体系结构/RISC-V-验证-基于仿真的处理器硬件-DV-的-5-个级别/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/486090856
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/486090856"
 ---
 
 

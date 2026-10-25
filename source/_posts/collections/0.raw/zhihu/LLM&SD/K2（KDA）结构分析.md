@@ -1,17 +1,17 @@
 ---
-title: K2（KDA）结构分析
+title: "K2（KDA）结构分析"
 date: "2025-11-09 00:00:00"
 updated: "2025-11-09 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/LLM-SD/K2(KDA)结构分析/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/LLM-SD/K2(KDA)结构分析/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/1968379856455701416
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/1968379856455701416"
 ---
 
 

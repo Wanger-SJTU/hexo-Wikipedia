@@ -1,17 +1,17 @@
 ---
-title: (2 条消息) 超长文本加速summary
+title: "(2 条消息) 超长文本加速summary"
 date: "2024-11-29 00:00:00"
 updated: "2024-11-29 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/我的收藏/超长文本加速summary/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/我的收藏/超长文本加速summary/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/8925826414
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/8925826414"
 ---
 
 

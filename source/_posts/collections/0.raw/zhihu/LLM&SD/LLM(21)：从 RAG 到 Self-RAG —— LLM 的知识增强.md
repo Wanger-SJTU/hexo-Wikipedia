@@ -1,17 +1,17 @@
 ---
-title: LLM(21)：从 RAG 到 Self-RAG —— LLM 的知识增强
+title: "LLM(21)：从 RAG 到 Self-RAG —— LLM 的知识增强"
 date: "2025-03-14 00:00:00"
 updated: "2025-03-14 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/LLM-SD/LLM(21)-从-RAG-到-Self-RAG-——-LLM-的知识增强/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/LLM-SD/LLM(21)-从-RAG-到-Self-RAG-——-LLM-的知识增强/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/661465330
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/661465330"
 ---
 
 

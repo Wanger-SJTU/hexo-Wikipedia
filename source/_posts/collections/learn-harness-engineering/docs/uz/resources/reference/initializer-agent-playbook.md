@@ -1,14 +1,14 @@
 ---
-title: Inisializatsiya agenti boʻyicha qoʻllanma (Initializer Agent Playbook)
+title: "Inisializatsiya agenti boʻyicha qoʻllanma (Initializer Agent Playbook)"
 date: "2026-05-28 11:34:14"
 updated: "2026-05-28 11:34:14"
-layout: post
-permalink: /collections/learn-harness-engineering/docs/uz/resources/reference/initializer-agent-playbook/
+layout: "post"
+permalink: "/collections/learn-harness-engineering/docs/uz/resources/reference/initializer-agent-playbook/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 ---
 
 # Inisializatsiya agenti boʻyicha qoʻllanma (Initializer Agent Playbook)

@@ -1,19 +1,19 @@
 ---
-title: 在 AI 时代，我是如何深入学习一个技术领域的
+title: "在 AI 时代，我是如何深入学习一个技术领域的"
 date: "2026-04-06 00:00:00"
 updated: "2026-04-06 00:00:00"
-layout: post
-permalink: /collections/0.raw/web/在AI时代如何深入学习技术-tw93/
+layout: "post"
+permalink: "/collections/0.raw/web/在AI时代如何深入学习技术-tw93/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 学习
-  - AI
-  - 方法论
-source_url: https://tw93.fun/2026-04-06/learn.html
+  - "学习"
+  - "AI"
+  - "方法论"
+source_url: "https://tw93.fun/2026-04-06/learn.html"
 ---
 
 

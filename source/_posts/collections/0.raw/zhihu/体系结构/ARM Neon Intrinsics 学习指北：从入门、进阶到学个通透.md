@@ -1,17 +1,17 @@
 ---
-title: ARM Neon Intrinsics 学习指北：从入门、进阶到学个通透
+title: "ARM Neon Intrinsics 学习指北：从入门、进阶到学个通透"
 date: "2021-03-21 00:00:00"
 updated: "2021-03-21 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/体系结构/ARM-Neon-Intrinsics-学习指北-从入门、进阶到学个通透/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/体系结构/ARM-Neon-Intrinsics-学习指北-从入门、进阶到学个通透/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/358603760
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/358603760"
 ---
 
 

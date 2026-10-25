@@ -1,17 +1,17 @@
 ---
-title: Prompt Tuning 相比于 Fine Tuning 在哪些场景下表现更好？
+title: "Prompt Tuning 相比于 Fine Tuning 在哪些场景下表现更好？"
 date: "2022-08-08 00:00:00"
 updated: "2022-08-08 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/LLM-SD/Prompt-Tuning-相比于-Fine-Tuning-在哪些场景下表现更好/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/LLM-SD/Prompt-Tuning-相比于-Fine-Tuning-在哪些场景下表现更好/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://www.zhihu.com/question/504324484/answer/2615221419
+  - "知乎"
+source_url: "https://www.zhihu.com/question/504324484/answer/2615221419"
 ---
 
 

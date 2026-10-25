@@ -1,17 +1,17 @@
 ---
-title: 从 Claude Code 看 Harness Engineer 的设计
+title: "从 Claude Code 看 Harness Engineer 的设计"
 date: "2026-04-13 00:00:00"
 updated: "2026-04-13 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/LLM-SD/从-Claude-Code-看-Harness-Engineer-的设计/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/LLM-SD/从-Claude-Code-看-Harness-Engineer-的设计/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/2021603278606087058
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/2021603278606087058"
 ---
 
 

@@ -1,17 +1,17 @@
 ---
-title: Fine Grained Activation Offloading
+title: "Fine Grained Activation Offloading"
 date: "2025-12-11 00:00:00"
 updated: "2025-12-11 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/我的收藏/Fine-Grained-Activation-Offloading/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/我的收藏/Fine-Grained-Activation-Offloading/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/1982516191567311623
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/1982516191567311623"
 ---
 
 

@@ -1,14 +1,14 @@
 ---
-title: 2026-05-11-sft-rl-opd-distillation
+title: "2026-05-11-sft-rl-opd-distillation"
 date: "2026-05-11 13:04:00"
 updated: "2026-05-11 13:04:00"
-layout: post
-permalink: /collections/blog/2026-05-11-sft-rl-opd-distillation/
+layout: "post"
+permalink: "/collections/blog/2026-05-11-sft-rl-opd-distillation/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 ---
 
 SFT, RL, and On-Policy Distillation Through a Distributional Lens*On forgetting, generalization, and what connects RL to on-policy distillation*I have been thinking about post-training methods in terms of distributions. A language model is a distribution over sequences. When we post-train it and attempt to teach it a task, we are reshaping this distribution. Different post-training methods differ in how they reshape this distribution, what they treat as the target and how directly they define this target.

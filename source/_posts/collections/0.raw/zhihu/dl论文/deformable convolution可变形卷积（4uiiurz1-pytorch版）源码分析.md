@@ -1,17 +1,17 @@
 ---
-title: deformable convolution可变形卷积（4uiiurz1-pytorch版）源码分析
+title: "deformable convolution可变形卷积（4uiiurz1-pytorch版）源码分析"
 date: "2020-01-18 00:00:00"
 updated: "2020-01-18 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/dl论文/deformable-convolution可变形卷积(4uiiurz1-pytorch版)源码分析/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/dl论文/deformable-convolution可变形卷积(4uiiurz1-pytorch版)源码分析/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/102707081
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/102707081"
 ---
 
 

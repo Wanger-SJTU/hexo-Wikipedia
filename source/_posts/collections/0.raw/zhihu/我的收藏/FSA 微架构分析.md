@@ -1,17 +1,17 @@
 ---
-title: FSA 微架构分析
+title: "FSA 微架构分析"
 date: "2026-02-13 00:00:00"
 updated: "2026-02-13 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/我的收藏/FSA-微架构分析/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/我的收藏/FSA-微架构分析/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/1967289223154496010
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/1967289223154496010"
 ---
 
 

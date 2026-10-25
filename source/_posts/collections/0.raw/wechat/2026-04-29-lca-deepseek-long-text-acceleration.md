@@ -1,19 +1,19 @@
 ---
-title: ACL 2026 | LCA：DeepSeek 长文本加速神器，90% KV 缓存缩减 + 2.5 倍推理提速
+title: "ACL 2026 | LCA：DeepSeek 长文本加速神器，90% KV 缓存缩减 + 2.5 倍推理提速"
 date: "2026-04-29 00:00:00"
 updated: "2026-04-29 00:00:00"
-layout: post
-permalink: /collections/0.raw/wechat/2026-04-29-lca-deepseek-long-text-acceleration/
+layout: "post"
+permalink: "/collections/0.raw/wechat/2026-04-29-lca-deepseek-long-text-acceleration/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - wechat
-  - LLM
-  - attention
-source_url: https://mp.weixin.qq.com/s/HtqtOyKKDpoBu4bQqpgPew
+  - "wechat"
+  - "LLM"
+  - "attention"
+source_url: "https://mp.weixin.qq.com/s/HtqtOyKKDpoBu4bQqpgPew"
 ---
 
 

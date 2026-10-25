@@ -1,14 +1,14 @@
 ---
-title: 使用RAG-Fusion和RRF让RAG在意图搜索方面更进一步 | 我的学习笔记 | 土猛的员外
+title: "使用RAG-Fusion和RRF让RAG在意图搜索方面更进一步 | 我的学习笔记 | 土猛的员外"
 date: "2026-04-11 21:40:28"
 updated: "2026-04-11 21:40:28"
-layout: post
-permalink: /collections/0.raw/Omnivore/2024-05-21/使用RAG-Fusion和RRF让RAG在意图搜索方面更进一步-我的学习笔记-土猛的员外/
+layout: "post"
+permalink: "/collections/0.raw/Omnivore/2024-05-21/使用RAG-Fusion和RRF让RAG在意图搜索方面更进一步-我的学习笔记-土猛的员外/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 ---
 
 ---

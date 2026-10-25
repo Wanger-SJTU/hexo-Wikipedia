@@ -1,15 +1,15 @@
 ---
-title: 时间扩展的混合专家模型
+title: "时间扩展的混合专家模型"
 date: "2026-04-22 00:00:00"
 updated: "2026-04-22 00:00:00"
-layout: post
-permalink: /collections/0.raw/papers/时间扩展的混合专家模型-arXiv2604.20156/
+layout: "post"
+permalink: "/collections/0.raw/papers/时间扩展的混合专家模型-arXiv2604.20156/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
-source_url: https://arxiv.org/abs/2604.20156
+  - "文档"
+source_url: "https://arxiv.org/abs/2604.20156"
 ---
 
 

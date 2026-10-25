@@ -1,14 +1,14 @@
 ---
-title: youtuber
+title: "youtuber"
 date: "2026-04-11 21:40:18"
 updated: "2026-04-11 21:40:18"
-layout: post
-permalink: /collections/0.raw/随笔/youtuber/
+layout: "post"
+permalink: "/collections/0.raw/随笔/youtuber/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 ---
 
 #youtuber

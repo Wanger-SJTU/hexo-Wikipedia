@@ -1,17 +1,17 @@
 ---
-title: 有做过嵌入式ota升级的大佬嘛？
+title: "有做过嵌入式ota升级的大佬嘛？"
 date: "2024-05-12 00:00:00"
 updated: "2024-05-12 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/我的收藏/有做过嵌入式ota升级的大佬嘛/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/我的收藏/有做过嵌入式ota升级的大佬嘛/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://www.zhihu.com/question/571903144/answer/3495840731
+  - "知乎"
+source_url: "https://www.zhihu.com/question/571903144/answer/3495840731"
 ---
 
 

@@ -1,17 +1,17 @@
 ---
-title: HBM浅析：架构、协议、产业格局，以及与DDR/LPDDR/GDDR的区别
+title: "HBM浅析：架构、协议、产业格局，以及与DDR/LPDDR/GDDR的区别"
 date: "2026-08-10 00:00:00"
 updated: "2026-08-10 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/我的收藏/HBM浅析-架构、协议、产业格局,以及与DDR_LPDDR_GDDR的区别/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/我的收藏/HBM浅析-架构、协议、产业格局,以及与DDR_LPDDR_GDDR的区别/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/2070193978914378884
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/2070193978914378884"
 ---
 
 

@@ -1,17 +1,17 @@
 ---
-title: (1 条消息) 强大的向量数据库：Milvus
+title: "(1 条消息) 强大的向量数据库：Milvus"
 date: "2023-08-04 00:00:00"
 updated: "2023-08-04 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/我的收藏/强大的向量数据库-Milvus/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/我的收藏/强大的向量数据库-Milvus/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/405186060
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/405186060"
 ---
 
 

@@ -1,17 +1,17 @@
 ---
-title: 译文：DDR4 - Initialization, Training and Calibration
+title: "译文：DDR4 - Initialization, Training and Calibration"
 date: "2020-10-04 00:00:00"
 updated: "2020-10-04 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/体系结构/译文-DDR4-Initialization,-Training-and-Calibration/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/体系结构/译文-DDR4-Initialization,-Training-and-Calibration/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/261747940
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/261747940"
 ---
 
 

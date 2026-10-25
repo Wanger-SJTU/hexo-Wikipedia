@@ -1,17 +1,17 @@
 ---
-title: Attention Sink 那些事儿
+title: "Attention Sink 那些事儿"
 date: "2026-01-01 00:00:00"
 updated: "2026-01-01 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/LLM-SD/Attention-Sink-那些事儿/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/LLM-SD/Attention-Sink-那些事儿/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/1990116555888035411
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/1990116555888035411"
 ---
 
 

@@ -1,17 +1,17 @@
 ---
-title: 从各家技术文章看26年Agentic RL Infra优化方向
+title: "从各家技术文章看26年Agentic RL Infra优化方向"
 date: "2026-02-21 00:00:00"
 updated: "2026-02-21 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/AgentCLI/从各家技术文章看26年Agentic-RL-Infra优化方向/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/AgentCLI/从各家技术文章看26年Agentic-RL-Infra优化方向/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/2007250216227729670
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/2007250216227729670"
 ---
 
 

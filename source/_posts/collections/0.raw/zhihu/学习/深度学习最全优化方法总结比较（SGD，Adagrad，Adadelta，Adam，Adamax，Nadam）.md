@@ -1,17 +1,17 @@
 ---
-title: 深度学习最全优化方法总结比较（SGD，Adagrad，Adadelta，Adam，Adamax，Nadam）
+title: "深度学习最全优化方法总结比较（SGD，Adagrad，Adadelta，Adam，Adamax，Nadam）"
 date: "2016-09-06 00:00:00"
 updated: "2016-09-06 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/学习/深度学习最全优化方法总结比较(SGD,Adagrad,Adadelta,Adam,Adamax,Nadam)/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/学习/深度学习最全优化方法总结比较(SGD,Adagrad,Adadelta,Adam,Adamax,Nadam)/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/22252270
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/22252270"
 ---
 
 

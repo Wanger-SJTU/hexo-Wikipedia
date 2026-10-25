@@ -1,17 +1,17 @@
 ---
-title: (2 条消息) 寒武纪-LLM：基于chiplet混合架构的70B LLM端侧推理
+title: "(2 条消息) 寒武纪-LLM：基于chiplet混合架构的70B LLM端侧推理"
 date: "2025-08-17 00:00:00"
 updated: "2025-08-17 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/我的收藏/寒武纪-LLM-基于chiplet混合架构的70B-LLM端侧推理/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/我的收藏/寒武纪-LLM-基于chiplet混合架构的70B-LLM端侧推理/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/1940510069310621270
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/1940510069310621270"
 ---
 
 

@@ -1,14 +1,14 @@
 ---
-title: Rerank——RAG中百尺竿头更进一步的神器，从原理到解决方案 | 我的学习笔记 | 土猛的员外
+title: "Rerank——RAG中百尺竿头更进一步的神器，从原理到解决方案 | 我的学习笔记 | 土猛的员外"
 date: "2026-04-11 21:40:28"
 updated: "2026-04-11 21:40:28"
-layout: post
-permalink: /collections/0.raw/Omnivore/2024-05-17/Rerank——RAG中百尺竿头更进一步的神器,从原理到解决方案-我的学习笔记-土猛的员外/
+layout: "post"
+permalink: "/collections/0.raw/Omnivore/2024-05-17/Rerank——RAG中百尺竿头更进一步的神器,从原理到解决方案-我的学习笔记-土猛的员外/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 ---
 
 ---

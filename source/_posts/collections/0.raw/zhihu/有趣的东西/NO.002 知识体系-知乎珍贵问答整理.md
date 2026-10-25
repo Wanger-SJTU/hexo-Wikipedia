@@ -1,17 +1,17 @@
 ---
-title: NO.002 知识体系-知乎珍贵问答整理
+title: "NO.002 知识体系-知乎珍贵问答整理"
 date: "2021-03-09 00:00:00"
 updated: "2021-03-09 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/有趣的东西/NO.002-知识体系-知乎珍贵问答整理/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/有趣的东西/NO.002-知识体系-知乎珍贵问答整理/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/352546929
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/352546929"
 ---
 
 

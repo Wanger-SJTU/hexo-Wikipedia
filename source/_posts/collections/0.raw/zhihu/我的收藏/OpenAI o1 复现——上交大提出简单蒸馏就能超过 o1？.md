@@ -1,17 +1,17 @@
 ---
-title: (2 条消息) OpenAI o1 复现——上交大提出简单蒸馏就能超过 o1？
+title: "(2 条消息) OpenAI o1 复现——上交大提出简单蒸馏就能超过 o1？"
 date: "2025-09-27 00:00:00"
 updated: "2025-09-27 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/我的收藏/OpenAI-o1-复现——上交大提出简单蒸馏就能超过-o1/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/我的收藏/OpenAI-o1-复现——上交大提出简单蒸馏就能超过-o1/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/10180139030
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/10180139030"
 ---
 
 

@@ -1,17 +1,17 @@
 ---
-title: 2024年你最喜欢的MLSys相关的工作是什么?
+title: "2024年你最喜欢的MLSys相关的工作是什么?"
 date: "2024-12-27 00:00:00"
 updated: "2024-12-27 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/LLM-SD/2024年你最喜欢的MLSys相关的工作是什么_/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/LLM-SD/2024年你最喜欢的MLSys相关的工作是什么_/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://www.zhihu.com/question/7370558713/answer/65109878557
+  - "知乎"
+source_url: "https://www.zhihu.com/question/7370558713/answer/65109878557"
 ---
 
 

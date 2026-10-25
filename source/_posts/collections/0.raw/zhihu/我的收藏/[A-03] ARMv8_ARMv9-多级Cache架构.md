@@ -1,17 +1,17 @@
 ---
-title: (2 条消息) [A-03] ARMv8/ARMv9-多级Cache架构
+title: "(2 条消息) [A-03] ARMv8/ARMv9-多级Cache架构"
 date: "2024-11-13 00:00:00"
 updated: "2024-11-13 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/我的收藏/[A-03]-ARMv8_ARMv9-多级Cache架构/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/我的收藏/[A-03]-ARMv8_ARMv9-多级Cache架构/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/6571624318
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/6571624318"
 ---
 
 

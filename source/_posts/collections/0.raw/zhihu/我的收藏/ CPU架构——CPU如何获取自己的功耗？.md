@@ -1,17 +1,17 @@
 ---
-title: (1 条消息) CPU架构——CPU如何获取自己的功耗？
+title: "(1 条消息) CPU架构——CPU如何获取自己的功耗？"
 date: "2023-07-23 00:00:00"
 updated: "2023-07-23 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/我的收藏/CPU架构——CPU如何获取自己的功耗/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/我的收藏/CPU架构——CPU如何获取自己的功耗/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/645372042
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/645372042"
 ---
 
 

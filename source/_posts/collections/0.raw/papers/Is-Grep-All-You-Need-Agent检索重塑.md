@@ -1,19 +1,19 @@
 ---
-title: Is Grep All You Need? Agent检索如何重塑Agentic Search
+title: "Is Grep All You Need? Agent检索如何重塑Agentic Search"
 date: "2026-05-14 00:00:00"
 updated: "2026-05-14 00:00:00"
-layout: post
-permalink: /collections/0.raw/papers/Is-Grep-All-You-Need-Agent检索重塑/
+layout: "post"
+permalink: "/collections/0.raw/papers/Is-Grep-All-You-Need-Agent检索重塑/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - Agent
-  - RAG
-  - 检索
-  - Tool-Calling
+  - "Agent"
+  - "RAG"
+  - "检索"
+  - "Tool-Calling"
 ---
 
 

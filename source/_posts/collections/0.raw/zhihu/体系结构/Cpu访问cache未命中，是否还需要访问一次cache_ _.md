@@ -1,17 +1,17 @@
 ---
-title: Cpu访问cache未命中，是否还需要访问一次cache? ?
+title: "Cpu访问cache未命中，是否还需要访问一次cache? ?"
 date: "2021-11-19 00:00:00"
 updated: "2021-11-19 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/体系结构/Cpu访问cache未命中,是否还需要访问一次cache_-_/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/体系结构/Cpu访问cache未命中,是否还需要访问一次cache_-_/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://www.zhihu.com/question/419394566/answer/2232250294
+  - "知乎"
+source_url: "https://www.zhihu.com/question/419394566/answer/2232250294"
 ---
 
 

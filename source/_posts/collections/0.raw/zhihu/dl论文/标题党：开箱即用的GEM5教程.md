@@ -1,17 +1,17 @@
 ---
-title: 标题党：开箱即用的GEM5教程
+title: "标题党：开箱即用的GEM5教程"
 date: "2019-12-26 00:00:00"
 updated: "2019-12-26 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/dl论文/标题党-开箱即用的GEM5教程/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/dl论文/标题党-开箱即用的GEM5教程/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/99604481
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/99604481"
 ---
 
 

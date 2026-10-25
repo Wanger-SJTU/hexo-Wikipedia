@@ -1,17 +1,17 @@
 ---
-title: 大模型RL训练框架的进化之路
+title: "大模型RL训练框架的进化之路"
 date: "2025-07-20 00:00:00"
 updated: "2025-07-20 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/AI-infra/大模型RL训练框架的进化之路/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/AI-infra/大模型RL训练框架的进化之路/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/1930280222068053288
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/1930280222068053288"
 ---
 
 

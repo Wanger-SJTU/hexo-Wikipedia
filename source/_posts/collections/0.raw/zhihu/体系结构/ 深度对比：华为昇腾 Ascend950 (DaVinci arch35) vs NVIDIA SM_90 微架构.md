@@ -1,17 +1,17 @@
 ---
-title: 深度对比：华为昇腾 Ascend950 (DaVinci arch35) vs NVIDIA SM_90 微架构
+title: "深度对比：华为昇腾 Ascend950 (DaVinci arch35) vs NVIDIA SM_90 微架构"
 date: "2026-04-02 00:00:00"
 updated: "2026-04-02 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/体系结构/深度对比-华为昇腾-Ascend950-(DaVinci-arch35)-vs-NVIDIA-SM_90-微架构/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/体系结构/深度对比-华为昇腾-Ascend950-(DaVinci-arch35)-vs-NVIDIA-SM_90-微架构/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/2020921487947736363
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/2020921487947736363"
 ---
 
 

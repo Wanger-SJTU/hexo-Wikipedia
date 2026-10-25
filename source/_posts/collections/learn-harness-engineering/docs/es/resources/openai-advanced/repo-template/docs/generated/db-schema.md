@@ -1,14 +1,14 @@
 ---
-title: Esquema de Base de Datos
+title: "Esquema de Base de Datos"
 date: "2026-05-28 11:34:14"
 updated: "2026-05-28 11:34:14"
-layout: post
-permalink: /collections/learn-harness-engineering/docs/es/resources/openai-advanced/repo-template/docs/generated/db-schema/
+layout: "post"
+permalink: "/collections/learn-harness-engineering/docs/es/resources/openai-advanced/repo-template/docs/generated/db-schema/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 ---
 
 # Esquema de Base de Datos

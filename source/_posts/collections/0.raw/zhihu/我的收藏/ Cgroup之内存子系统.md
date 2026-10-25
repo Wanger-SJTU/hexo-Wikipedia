@@ -1,17 +1,17 @@
 ---
-title: (1 条消息) Cgroup之内存子系统
+title: "(1 条消息) Cgroup之内存子系统"
 date: "2023-07-23 00:00:00"
 updated: "2023-07-23 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/我的收藏/Cgroup之内存子系统/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/我的收藏/Cgroup之内存子系统/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/645416263
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/645416263"
 ---
 
 

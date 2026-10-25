@@ -1,17 +1,17 @@
 ---
-title: MoE 笔记：从数学推导到 SonicMoE 的极致优化
+title: "MoE 笔记：从数学推导到 SonicMoE 的极致优化"
 date: "2025-12-27 00:00:00"
 updated: "2025-12-27 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/我的收藏/MoE-笔记-从数学推导到-SonicMoE-的极致优化/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/我的收藏/MoE-笔记-从数学推导到-SonicMoE-的极致优化/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/1987208541124202922
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/1987208541124202922"
 ---
 
 

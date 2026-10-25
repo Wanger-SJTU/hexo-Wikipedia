@@ -1,17 +1,17 @@
 ---
-title: 从硬件上浅谈Compute Shader
+title: "从硬件上浅谈Compute Shader"
 date: "2022-06-17 00:00:00"
 updated: "2022-06-17 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/体系结构/从硬件上浅谈Compute-Shader/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/体系结构/从硬件上浅谈Compute-Shader/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/468861191
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/468861191"
 ---
 
 

@@ -1,17 +1,17 @@
 ---
-title: 探秘 AMD NPU 的底层编程接口，对比和高通 NPU 的差异
+title: "探秘 AMD NPU 的底层编程接口，对比和高通 NPU 的差异"
 date: "2026-03-26 00:00:00"
 updated: "2026-03-26 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/我的收藏/探秘-AMD-NPU-的底层编程接口,对比和高通-NPU-的差异/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/我的收藏/探秘-AMD-NPU-的底层编程接口,对比和高通-NPU-的差异/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/2020396235404617501
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/2020396235404617501"
 ---
 
 

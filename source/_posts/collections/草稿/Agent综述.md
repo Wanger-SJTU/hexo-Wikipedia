@@ -1,13 +1,13 @@
 ---
-title: Agent综述
+title: "Agent综述"
 date: "2026-04-11 21:39:08"
 updated: "2026-04-11 21:39:08"
-layout: post
-permalink: /collections/草稿/Agent综述/
+layout: "post"
+permalink: "/collections/草稿/Agent综述/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 ---
 

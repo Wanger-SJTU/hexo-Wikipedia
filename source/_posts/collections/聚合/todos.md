@@ -1,14 +1,14 @@
 ---
-title: 聚合
+title: "聚合"
 date: "2026-04-11 21:40:17"
 updated: "2026-04-11 21:40:17"
-layout: post
-permalink: /collections/聚合/todos/
+layout: "post"
+permalink: "/collections/聚合/todos/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 ---
 
 ```dataview

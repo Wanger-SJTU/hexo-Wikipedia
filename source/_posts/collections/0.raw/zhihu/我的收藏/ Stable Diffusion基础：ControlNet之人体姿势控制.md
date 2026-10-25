@@ -1,17 +1,17 @@
 ---
-title: (1 条消息) Stable Diffusion基础：ControlNet之人体姿势控制
+title: "(1 条消息) Stable Diffusion基础：ControlNet之人体姿势控制"
 date: "2024-12-03 00:00:00"
 updated: "2024-12-03 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/我的收藏/Stable-Diffusion基础-ControlNet之人体姿势控制/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/我的收藏/Stable-Diffusion基础-ControlNet之人体姿势控制/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/649325629
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/649325629"
 ---
 
 

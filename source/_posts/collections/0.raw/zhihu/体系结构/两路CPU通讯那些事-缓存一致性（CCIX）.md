@@ -1,17 +1,17 @@
 ---
-title: 两路CPU通讯那些事-缓存一致性（CCIX）
+title: "两路CPU通讯那些事-缓存一致性（CCIX）"
 date: "2023-10-08 00:00:00"
 updated: "2023-10-08 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/体系结构/两路CPU通讯那些事-缓存一致性(CCIX)/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/体系结构/两路CPU通讯那些事-缓存一致性(CCIX)/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/659199436
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/659199436"
 ---
 
 

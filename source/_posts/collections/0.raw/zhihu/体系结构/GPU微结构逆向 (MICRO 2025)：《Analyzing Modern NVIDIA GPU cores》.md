@@ -1,17 +1,17 @@
 ---
-title: GPU微结构逆向 (MICRO 2025)：《Analyzing Modern NVIDIA GPU cores》
+title: "GPU微结构逆向 (MICRO 2025)：《Analyzing Modern NVIDIA GPU cores》"
 date: "2025-10-15 00:00:00"
 updated: "2025-10-15 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/体系结构/GPU微结构逆向-(MICRO-2025)-《Analyzing-Modern-NVIDIA-GPU-cores》-d12aee/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/体系结构/GPU微结构逆向-(MICRO-2025)-《Analyzing-Modern-NVIDIA-GPU-cores》-d12aee/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/1929593678864847592
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/1929593678864847592"
 ---
 
 

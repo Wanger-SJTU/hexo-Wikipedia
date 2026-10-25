@@ -1,17 +1,17 @@
 ---
-title: 有哪些优秀的 C++ 代码库可以推荐学习？
+title: "有哪些优秀的 C++ 代码库可以推荐学习？"
 date: "2019-11-24 00:00:00"
 updated: "2019-11-24 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/走向cs/有哪些优秀的-C-代码库可以推荐学习/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/走向cs/有哪些优秀的-C-代码库可以推荐学习/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://www.zhihu.com/question/281276664/answer/907647528
+  - "知乎"
+source_url: "https://www.zhihu.com/question/281276664/answer/907647528"
 ---
 
 

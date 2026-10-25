@@ -1,22 +1,22 @@
 ---
-title: Rebuilding Agentic AI for AMD GPU
+title: "Rebuilding Agentic AI for AMD GPU"
 date: "2026-07-23 00:00:00"
 updated: "2026-07-23 00:00:00"
-layout: post
-permalink: /collections/0.raw/rebuilding-agentic-ai-for-amd-gpu/
+layout: "post"
+permalink: "/collections/0.raw/rebuilding-agentic-ai-for-amd-gpu/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - AI
-  - GPU
-  - AMD
-  - KV Cache
-  - Agentic
-  - Serving
-  - SGLang
+  - "AI"
+  - "GPU"
+  - "AMD"
+  - "KV Cache"
+  - "Agentic"
+  - "Serving"
+  - "SGLang"
 ---
 
 

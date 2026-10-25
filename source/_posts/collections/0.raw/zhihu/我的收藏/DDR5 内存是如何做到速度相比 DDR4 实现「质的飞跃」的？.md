@@ -1,17 +1,17 @@
 ---
-title: (2 条消息) DDR5 内存是如何做到速度相比 DDR4 实现「质的飞跃」的？
+title: "(2 条消息) DDR5 内存是如何做到速度相比 DDR4 实现「质的飞跃」的？"
 date: "2026-04-17 00:00:00"
 updated: "2026-04-17 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/我的收藏/DDR5-内存是如何做到速度相比-DDR4-实现「质的飞跃」的/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/我的收藏/DDR5-内存是如何做到速度相比-DDR4-实现「质的飞跃」的/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://www.zhihu.com/question/9218009141/answer/75908553761
+  - "知乎"
+source_url: "https://www.zhihu.com/question/9218009141/answer/75908553761"
 ---
 
 

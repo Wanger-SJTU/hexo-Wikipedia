@@ -1,16 +1,16 @@
 ---
-title: Text Elements
+title: "Text Elements"
 date: "2026-04-11 21:40:28"
 updated: "2026-04-11 21:40:28"
-layout: post
-permalink: /collections/Excalidraw/arxiv-agent/pipeline-arxiv-fetcher.excalidraw/
+layout: "post"
+permalink: "/collections/Excalidraw/arxiv-agent/pipeline-arxiv-fetcher.excalidraw/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - excalidraw
+  - "excalidraw"
 ---
 
 ==⚠  Switch to EXCALIDRAW VIEW in the MORE OPTIONS menu of this document. ⚠==

@@ -1,17 +1,17 @@
 ---
-title: 论VLM近代史
+title: "论VLM近代史"
 date: "2025-08-26 00:00:00"
 updated: "2025-08-26 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/LLM-SD/论VLM近代史/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/LLM-SD/论VLM近代史/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/1941628951534470646
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/1941628951534470646"
 ---
 
 

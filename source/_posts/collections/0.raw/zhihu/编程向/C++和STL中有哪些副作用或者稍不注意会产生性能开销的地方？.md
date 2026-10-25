@@ -1,17 +1,17 @@
 ---
-title: C++和STL中有哪些副作用或者稍不注意会产生性能开销的地方？
+title: "C++和STL中有哪些副作用或者稍不注意会产生性能开销的地方？"
 date: "2026-04-15 00:00:00"
 updated: "2026-04-15 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/编程向/C-和STL中有哪些副作用或者稍不注意会产生性能开销的地方/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/编程向/C-和STL中有哪些副作用或者稍不注意会产生性能开销的地方/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://www.zhihu.com/question/355171938/answer/2173582004
+  - "知乎"
+source_url: "https://www.zhihu.com/question/355171938/answer/2173582004"
 ---
 
 

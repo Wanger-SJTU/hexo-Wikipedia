@@ -1,14 +1,14 @@
 ---
-title: 8-maʼruza. Agent nima qilishini cheklash uchun funksiyalar roʻyxatidan foydalaning
+title: "8-maʼruza. Agent nima qilishini cheklash uchun funksiyalar roʻyxatidan foydalaning"
 date: "2026-05-28 11:34:14"
 updated: "2026-05-28 11:34:14"
-layout: post
-permalink: /collections/learn-harness-engineering/docs/uz/lectures/lecture-08-why-feature-lists-are-harness-primitives/index/
+layout: "post"
+permalink: "/collections/learn-harness-engineering/docs/uz/lectures/lecture-08-why-feature-lists-are-harness-primitives/index/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 ---
 
 [English version →](../../../en/lectures/lecture-08-why-feature-lists-are-harness-primitives/)

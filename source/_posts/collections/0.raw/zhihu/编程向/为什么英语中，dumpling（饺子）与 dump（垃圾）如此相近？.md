@@ -1,17 +1,17 @@
 ---
-title: 为什么英语中，dumpling（饺子）与 dump（垃圾）如此相近？
+title: "为什么英语中，dumpling（饺子）与 dump（垃圾）如此相近？"
 date: "2026-04-15 00:00:00"
 updated: "2026-04-15 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/编程向/为什么英语中,dumpling(饺子)与-dump(垃圾)如此相近/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/编程向/为什么英语中,dumpling(饺子)与-dump(垃圾)如此相近/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://www.zhihu.com/question/450757961/answer/1798166598
+  - "知乎"
+source_url: "https://www.zhihu.com/question/450757961/answer/1798166598"
 ---
 
 

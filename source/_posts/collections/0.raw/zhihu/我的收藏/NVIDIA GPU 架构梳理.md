@@ -1,17 +1,17 @@
 ---
-title: (2 条消息) NVIDIA GPU 架构梳理
+title: "(2 条消息) NVIDIA GPU 架构梳理"
 date: "2023-04-28 00:00:00"
 updated: "2023-04-28 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/我的收藏/NVIDIA-GPU-架构梳理/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/我的收藏/NVIDIA-GPU-架构梳理/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/394352476
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/394352476"
 ---
 
 

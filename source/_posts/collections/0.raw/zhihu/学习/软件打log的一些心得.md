@@ -1,17 +1,17 @@
 ---
-title: 软件打log的一些心得
+title: "软件打log的一些心得"
 date: "2017-01-09 00:00:00"
 updated: "2017-01-09 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/学习/软件打log的一些心得/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/学习/软件打log的一些心得/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/24785018
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/24785018"
 ---
 
 

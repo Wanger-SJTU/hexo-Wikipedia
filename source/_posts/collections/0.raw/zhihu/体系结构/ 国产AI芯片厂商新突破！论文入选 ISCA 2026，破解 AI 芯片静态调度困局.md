@@ -1,17 +1,17 @@
 ---
-title: 国产AI芯片厂商新突破！论文入选 ISCA 2026，破解 AI 芯片静态调度困局
+title: "国产AI芯片厂商新突破！论文入选 ISCA 2026，破解 AI 芯片静态调度困局"
 date: "2026-04-09 00:00:00"
 updated: "2026-04-09 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/体系结构/国产AI芯片厂商新突破-论文入选-ISCA-2026,破解-AI-芯片静态调度困局/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/体系结构/国产AI芯片厂商新突破-论文入选-ISCA-2026,破解-AI-芯片静态调度困局/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/2025500292049847493
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/2025500292049847493"
 ---
 
 

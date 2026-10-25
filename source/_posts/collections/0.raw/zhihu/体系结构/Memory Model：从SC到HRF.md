@@ -1,17 +1,17 @@
 ---
-title: Memory Model：从SC到HRF
+title: "Memory Model：从SC到HRF"
 date: "2024-12-22 00:00:00"
 updated: "2024-12-22 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/体系结构/Memory-Model-从SC到HRF/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/体系结构/Memory-Model-从SC到HRF/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/13980513759
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/13980513759"
 ---
 
 

@@ -1,17 +1,17 @@
 ---
-title: DRAM专题介绍
+title: "DRAM专题介绍"
 date: "2026-05-28 00:00:00"
 updated: "2026-05-28 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/我的收藏/DRAM专题介绍-b1e107/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/我的收藏/DRAM专题介绍-b1e107/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/676313032
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/676313032"
 ---
 
 

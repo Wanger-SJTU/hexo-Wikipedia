@@ -1,17 +1,17 @@
 ---
-title: 【RAG技术论文】《从局部信息到全局理解：一种基于图结构的RAG方法用于查询聚焦型摘要生成》——GraphRAG技术论文
+title: "【RAG技术论文】《从局部信息到全局理解：一种基于图结构的RAG方法用于查询聚焦型摘要生成》——GraphRAG技术论文"
 date: "2025-06-26 00:00:00"
 updated: "2025-06-26 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/我的收藏/【RAG技术论文】《从局部信息到全局理解-一种基于图结构的RAG方法用于查询聚焦型摘要生成》——GraphRAG技术论文/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/我的收藏/【RAG技术论文】《从局部信息到全局理解-一种基于图结构的RAG方法用于查询聚焦型摘要生成》——GraphRAG技术论文/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/707181221
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/707181221"
 ---
 
 

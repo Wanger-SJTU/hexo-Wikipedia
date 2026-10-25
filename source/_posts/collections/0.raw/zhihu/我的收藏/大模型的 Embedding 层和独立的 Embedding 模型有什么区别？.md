@@ -1,17 +1,17 @@
 ---
-title: (2 条消息) 大模型的 Embedding 层和独立的 Embedding 模型有什么区别？
+title: "(2 条消息) 大模型的 Embedding 层和独立的 Embedding 模型有什么区别？"
 date: "2026-04-17 00:00:00"
 updated: "2026-04-17 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/我的收藏/大模型的-Embedding-层和独立的-Embedding-模型有什么区别/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/我的收藏/大模型的-Embedding-层和独立的-Embedding-模型有什么区别/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://www.zhihu.com/question/663835334/answer/1937600628709896563
+  - "知乎"
+source_url: "https://www.zhihu.com/question/663835334/answer/1937600628709896563"
 ---
 
 

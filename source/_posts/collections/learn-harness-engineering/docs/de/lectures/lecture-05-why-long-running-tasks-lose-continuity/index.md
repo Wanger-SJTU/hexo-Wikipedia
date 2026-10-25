@@ -1,14 +1,14 @@
 ---
-title: Lektion 05. Kontext über Sessions hinweg erhalten
+title: "Lektion 05. Kontext über Sessions hinweg erhalten"
 date: "2026-05-28 11:34:14"
 updated: "2026-05-28 11:34:14"
-layout: post
-permalink: /collections/learn-harness-engineering/docs/de/lectures/lecture-05-why-long-running-tasks-lose-continuity/index/
+layout: "post"
+permalink: "/collections/learn-harness-engineering/docs/de/lectures/lecture-05-why-long-running-tasks-lose-continuity/index/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 ---
 
 [中文版本 →](../../../zh/lectures/lecture-05-why-long-running-tasks-lose-continuity/)

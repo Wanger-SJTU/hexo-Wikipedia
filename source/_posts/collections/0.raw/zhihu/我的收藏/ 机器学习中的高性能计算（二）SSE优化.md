@@ -1,17 +1,17 @@
 ---
-title: (1 条消息) 机器学习中的高性能计算（二）SSE优化
+title: "(1 条消息) 机器学习中的高性能计算（二）SSE优化"
 date: "2021-09-14 00:00:00"
 updated: "2021-09-14 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/我的收藏/机器学习中的高性能计算(二)SSE优化/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/我的收藏/机器学习中的高性能计算(二)SSE优化/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/409973153
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/409973153"
 ---
 
 

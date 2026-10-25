@@ -1,17 +1,17 @@
 ---
-title: 浅析ShadowRadix：DeepSeek V4 & SGLang
+title: "浅析ShadowRadix：DeepSeek V4 & SGLang"
 date: "2026-04-26 00:00:00"
 updated: "2026-04-26 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/LLM-SD/浅析ShadowRadix-DeepSeek-V4-SGLang/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/LLM-SD/浅析ShadowRadix-DeepSeek-V4-SGLang/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/2031708802161046746
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/2031708802161046746"
 ---
 
 

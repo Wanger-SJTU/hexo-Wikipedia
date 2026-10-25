@@ -1,17 +1,17 @@
 ---
-title: AArch64指令集动画（五）SME/SME2/SVE2p1访存指令
+title: "AArch64指令集动画（五）SME/SME2/SVE2p1访存指令"
 date: "2025-11-28 00:00:00"
 updated: "2025-11-28 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/我的收藏/AArch64指令集动画(五)SME_SME2_SVE2p1访存指令/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/我的收藏/AArch64指令集动画(五)SME_SME2_SVE2p1访存指令/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/1956467180234318221
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/1956467180234318221"
 ---
 
 

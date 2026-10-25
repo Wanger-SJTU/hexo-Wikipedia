@@ -1,17 +1,17 @@
 ---
-title: (1 条消息) GitHub Tips：统一管理 Repo 配置
+title: "(1 条消息) GitHub Tips：统一管理 Repo 配置"
 date: "2022-12-18 00:00:00"
 updated: "2022-12-18 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/我的收藏/GitHub-Tips-统一管理-Repo-配置/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/我的收藏/GitHub-Tips-统一管理-Repo-配置/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/592708303
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/592708303"
 ---
 
 

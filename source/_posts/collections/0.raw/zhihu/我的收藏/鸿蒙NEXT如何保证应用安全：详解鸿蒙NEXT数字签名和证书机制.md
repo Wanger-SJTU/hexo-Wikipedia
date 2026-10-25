@@ -1,17 +1,17 @@
 ---
-title: (2 条消息) 鸿蒙NEXT如何保证应用安全：详解鸿蒙NEXT数字签名和证书机制
+title: "(2 条消息) 鸿蒙NEXT如何保证应用安全：详解鸿蒙NEXT数字签名和证书机制"
 date: "2025-04-09 00:00:00"
 updated: "2025-04-09 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/我的收藏/鸿蒙NEXT如何保证应用安全-详解鸿蒙NEXT数字签名和证书机制/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/我的收藏/鸿蒙NEXT如何保证应用安全-详解鸿蒙NEXT数字签名和证书机制/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/1893267164884080586
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/1893267164884080586"
 ---
 
 

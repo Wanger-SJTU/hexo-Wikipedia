@@ -1,17 +1,17 @@
 ---
-title: (1 条消息) DSA后端Compute Schedule与Buffer Schedule
+title: "(1 条消息) DSA后端Compute Schedule与Buffer Schedule"
 date: "2023-02-27 00:00:00"
 updated: "2023-02-27 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/我的收藏/DSA后端Compute-Schedule与Buffer-Schedule/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/我的收藏/DSA后端Compute-Schedule与Buffer-Schedule/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/609483844
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/609483844"
 ---
 
 

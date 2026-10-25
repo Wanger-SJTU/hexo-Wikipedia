@@ -1,17 +1,17 @@
 ---
-title: 阿里整合国内和海外电商，成立电商事业群，任命蒋凡担任 CEO，此举出于哪些考量？将给阿里带来哪些改变？
+title: "阿里整合国内和海外电商，成立电商事业群，任命蒋凡担任 CEO，此举出于哪些考量？将给阿里带来哪些改变？"
 date: "2024-11-22 00:00:00"
 updated: "2024-11-22 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/我的收藏/阿里整合国内和海外电商,成立电商事业群,任命蒋凡担任-CEO,此举出于哪些考量-将给阿里带来哪些改变/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/我的收藏/阿里整合国内和海外电商,成立电商事业群,任命蒋凡担任-CEO,此举出于哪些考量-将给阿里带来哪些改变/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://www.zhihu.com/question/4756298571/answer/38064773060
+  - "知乎"
+source_url: "https://www.zhihu.com/question/4756298571/answer/38064773060"
 ---
 
 

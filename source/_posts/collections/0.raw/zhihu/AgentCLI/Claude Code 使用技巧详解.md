@@ -1,17 +1,17 @@
 ---
-title: Claude Code 使用技巧详解
+title: "Claude Code 使用技巧详解"
 date: "2026-03-02 00:00:00"
 updated: "2026-03-02 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/AgentCLI/Claude-Code-使用技巧详解/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/AgentCLI/Claude-Code-使用技巧详解/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/2011882791802004093
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/2011882791802004093"
 ---
 
 

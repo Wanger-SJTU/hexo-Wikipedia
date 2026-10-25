@@ -1,17 +1,17 @@
 ---
-title: 巨人之肩上的关键少数：深入解析MoE大模型中的“超级专家”
+title: "巨人之肩上的关键少数：深入解析MoE大模型中的“超级专家”"
 date: "2025-08-02 00:00:00"
 updated: "2025-08-02 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/LLM-SD/巨人之肩上的关键少数-深入解析MoE大模型中的“超级专家”/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/LLM-SD/巨人之肩上的关键少数-深入解析MoE大模型中的“超级专家”/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/1934938787022083701
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/1934938787022083701"
 ---
 
 

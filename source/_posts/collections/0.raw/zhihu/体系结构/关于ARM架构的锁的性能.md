@@ -1,17 +1,17 @@
 ---
-title: 关于ARM架构的锁的性能
+title: "关于ARM架构的锁的性能"
 date: "2020-04-12 00:00:00"
 updated: "2020-04-12 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/体系结构/关于ARM架构的锁的性能/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/体系结构/关于ARM架构的锁的性能/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/129276779
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/129276779"
 ---
 
 

@@ -1,17 +1,17 @@
 ---
-title: (1 条消息) 大规模 Transformer 模型 8 比特矩阵乘简介 - 基于 Hugging Face Transformers、Accelerate 以及 bitsandbytes
+title: "(1 条消息) 大规模 Transformer 模型 8 比特矩阵乘简介 - 基于 Hugging Face Transformers、Accelerate 以及 bitsandbytes"
 date: "2023-04-25 00:00:00"
 updated: "2023-04-25 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/我的收藏/大规模-Transformer-模型-8-比特矩阵乘简介-基于-Hugging-Face-Transformers、Accelerate-以及-bitsandbytes/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/我的收藏/大规模-Transformer-模型-8-比特矩阵乘简介-基于-Hugging-Face-Transformers、Accelerate-以及-bitsandbytes/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/624929178
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/624929178"
 ---
 
 

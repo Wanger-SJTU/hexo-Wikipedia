@@ -1,21 +1,21 @@
 ---
-title: GitHub Spec Kit 尝鲜：规格驱动开发让 AI 帮你写代码
+title: "GitHub Spec Kit 尝鲜：规格驱动开发让 AI 帮你写代码"
 date: "2026-05-08 16:39:30"
 updated: "2026-05-08 16:39:30"
-layout: post
-permalink: /collections/0.raw/papers/spec-kit-spec-driven-development/
+layout: "post"
+permalink: "/collections/0.raw/papers/spec-kit-spec-driven-development/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 翻译
-  - AI
-  - Coding Agent
-  - GitHub
-  - Spec-Driven Development
-source_url: https://github.com/github/spec-kit
+  - "翻译"
+  - "AI"
+  - "Coding Agent"
+  - "GitHub"
+  - "Spec-Driven Development"
+source_url: "https://github.com/github/spec-kit"
 ---
 
 

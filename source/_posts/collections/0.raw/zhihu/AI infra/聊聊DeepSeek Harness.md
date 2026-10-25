@@ -1,17 +1,17 @@
 ---
-title: 聊聊DeepSeek Harness
+title: "聊聊DeepSeek Harness"
 date: "2026-08-14 00:00:00"
 updated: "2026-08-14 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/AI-infra/聊聊DeepSeek-Harness/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/AI-infra/聊聊DeepSeek-Harness/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/2071643452820001725
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/2071643452820001725"
 ---
 
 

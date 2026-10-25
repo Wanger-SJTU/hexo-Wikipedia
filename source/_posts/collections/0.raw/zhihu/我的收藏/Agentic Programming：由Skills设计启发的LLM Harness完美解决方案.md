@@ -1,17 +1,17 @@
 ---
-title: Agentic Programming：由Skills设计启发的LLM Harness完美解决方案
+title: "Agentic Programming：由Skills设计启发的LLM Harness完美解决方案"
 date: "2026-04-04 00:00:00"
 updated: "2026-04-04 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/我的收藏/Agentic-Programming-由Skills设计启发的LLM-Harness完美解决方案/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/我的收藏/Agentic-Programming-由Skills设计启发的LLM-Harness完美解决方案/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/2023791484751679788
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/2023791484751679788"
 ---
 
 

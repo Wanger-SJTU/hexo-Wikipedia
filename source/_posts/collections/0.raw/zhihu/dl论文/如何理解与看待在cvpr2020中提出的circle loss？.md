@@ -1,17 +1,17 @@
 ---
-title: 如何理解与看待在cvpr2020中提出的circle loss？
+title: "如何理解与看待在cvpr2020中提出的circle loss？"
 date: "2026-04-23 00:00:00"
 updated: "2026-04-23 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/dl论文/如何理解与看待在cvpr2020中提出的circle-loss/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/dl论文/如何理解与看待在cvpr2020中提出的circle-loss/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://www.zhihu.com/question/382802283/answer/1114719159
+  - "知乎"
+source_url: "https://www.zhihu.com/question/382802283/answer/1114719159"
 ---
 
 

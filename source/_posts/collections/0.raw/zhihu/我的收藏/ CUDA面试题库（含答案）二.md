@@ -1,17 +1,17 @@
 ---
-title: (1 条消息) CUDA面试题库（含答案）二
+title: "(1 条消息) CUDA面试题库（含答案）二"
 date: "2023-06-15 00:00:00"
 updated: "2023-06-15 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/我的收藏/CUDA面试题库(含答案)二/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/我的收藏/CUDA面试题库(含答案)二/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/636214248
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/636214248"
 ---
 
 

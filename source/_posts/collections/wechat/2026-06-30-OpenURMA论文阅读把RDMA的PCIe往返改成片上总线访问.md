@@ -1,14 +1,14 @@
 ---
-title: OpenURMA 论文阅读：把 RDMA 的 PCIe 往返改成片上总线访问
+title: "OpenURMA 论文阅读：把 RDMA 的 PCIe 往返改成片上总线访问"
 date: "2026-07-04 13:45:37"
 updated: "2026-07-04 13:45:37"
-layout: post
-permalink: /collections/wechat/2026-06-30-OpenURMA论文阅读把RDMA的PCIe往返改成片上总线访问/
+layout: "post"
+permalink: "/collections/wechat/2026-06-30-OpenURMA论文阅读把RDMA的PCIe往返改成片上总线访问/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 ---
 
 # OpenURMA 论文阅读：把 RDMA 的 PCIe 往返改成片上总线访问

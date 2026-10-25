@@ -1,17 +1,17 @@
 ---
-title: deep learning初学该怎么入门？是要先好好学习神经网络吗？
+title: "deep learning初学该怎么入门？是要先好好学习神经网络吗？"
 date: "2026-04-15 00:00:00"
 updated: "2026-04-15 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/再入门系列/deep-learning初学该怎么入门-是要先好好学习神经网络吗/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/再入门系列/deep-learning初学该怎么入门-是要先好好学习神经网络吗/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://www.zhihu.com/question/21476523/answer/19019910
+  - "知乎"
+source_url: "https://www.zhihu.com/question/21476523/answer/19019910"
 ---
 
 

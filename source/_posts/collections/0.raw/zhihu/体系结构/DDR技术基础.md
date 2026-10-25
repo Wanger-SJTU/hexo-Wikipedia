@@ -1,17 +1,17 @@
 ---
-title: DDR技术基础
+title: "DDR技术基础"
 date: "2020-08-20 00:00:00"
 updated: "2020-08-20 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/体系结构/DDR技术基础/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/体系结构/DDR技术基础/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/20940759
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/20940759"
 ---
 
 

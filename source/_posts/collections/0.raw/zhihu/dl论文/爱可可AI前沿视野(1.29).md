@@ -1,17 +1,17 @@
 ---
-title: 爱可可AI前沿视野(1.29)
+title: "爱可可AI前沿视野(1.29)"
 date: "2021-01-29 00:00:00"
 updated: "2021-01-29 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/dl论文/爱可可AI前沿视野(1.29)/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/dl论文/爱可可AI前沿视野(1.29)/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/347829527
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/347829527"
 ---
 
 

@@ -1,17 +1,17 @@
 ---
-title: GPU 优化技术-OpenCL kernel 开发
+title: "GPU 优化技术-OpenCL kernel 开发"
 date: "2022-07-29 00:00:00"
 updated: "2022-07-29 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/优化/GPU-优化技术-OpenCL-kernel-开发/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/优化/GPU-优化技术-OpenCL-kernel-开发/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/542361443
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/542361443"
 ---
 
 

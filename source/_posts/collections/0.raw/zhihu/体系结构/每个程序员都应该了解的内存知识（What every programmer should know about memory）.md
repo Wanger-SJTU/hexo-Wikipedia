@@ -1,17 +1,17 @@
 ---
-title: 每个程序员都应该了解的内存知识（What every programmer should know about memory）
+title: "每个程序员都应该了解的内存知识（What every programmer should know about memory）"
 date: "2023-04-03 00:00:00"
 updated: "2023-04-03 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/体系结构/每个程序员都应该了解的内存知识(What-every-programmer-should-know-about-memory)/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/体系结构/每个程序员都应该了解的内存知识(What-every-programmer-should-know-about-memory)/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/611133924
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/611133924"
 ---
 
 

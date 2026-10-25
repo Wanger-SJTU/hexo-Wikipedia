@@ -1,17 +1,17 @@
 ---
-title: (1 条消息) RAG探索之路的血泪史及曙光
+title: "(1 条消息) RAG探索之路的血泪史及曙光"
 date: "2023-11-10 00:00:00"
 updated: "2023-11-10 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/我的收藏/RAG探索之路的血泪史及曙光/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/我的收藏/RAG探索之路的血泪史及曙光/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/664921095
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/664921095"
 ---
 
 

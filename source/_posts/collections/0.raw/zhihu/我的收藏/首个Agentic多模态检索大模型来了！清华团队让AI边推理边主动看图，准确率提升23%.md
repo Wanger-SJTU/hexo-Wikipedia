@@ -1,17 +1,17 @@
 ---
-title: 首个Agentic多模态检索大模型来了！清华团队让AI边推理边主动看图，准确率提升23%
+title: "首个Agentic多模态检索大模型来了！清华团队让AI边推理边主动看图，准确率提升23%"
 date: "2026-03-23 00:00:00"
 updated: "2026-03-23 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/我的收藏/首个Agentic多模态检索大模型来了-清华团队让AI边推理边主动看图,准确率提升23/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/我的收藏/首个Agentic多模态检索大模型来了-清华团队让AI边推理边主动看图,准确率提升23/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/2019480851155530722
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/2019480851155530722"
 ---
 
 

@@ -1,17 +1,17 @@
 ---
-title: 从理论角度理解Adam算法的自适应性
+title: "从理论角度理解Adam算法的自适应性"
 date: "2022-08-24 00:00:00"
 updated: "2022-08-24 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/dl论文/从理论角度理解Adam算法的自适应性/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/dl论文/从理论角度理解Adam算法的自适应性/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/556290131
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/556290131"
 ---
 
 

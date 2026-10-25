@@ -1,14 +1,14 @@
 ---
-title: Skills（技能集）
+title: "Skills（技能集）"
 date: "2026-05-28 11:34:14"
 updated: "2026-05-28 11:34:14"
-layout: post
-permalink: /collections/learn-harness-engineering/skills/README-ZH-TW/
+layout: "post"
+permalink: "/collections/learn-harness-engineering/skills/README-ZH-TW/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 ---
 
 <p align="center">

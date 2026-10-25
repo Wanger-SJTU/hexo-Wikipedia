@@ -1,17 +1,17 @@
 ---
-title: CS217课程解析：剖析QNNPACK的矩阵运算优化思路
+title: "CS217课程解析：剖析QNNPACK的矩阵运算优化思路"
 date: "2019-09-26 00:00:00"
 updated: "2019-09-26 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/体系结构/CS217课程解析-剖析QNNPACK的矩阵运算优化思路/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/体系结构/CS217课程解析-剖析QNNPACK的矩阵运算优化思路/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/84336417
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/84336417"
 ---
 
 

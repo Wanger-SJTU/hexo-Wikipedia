@@ -1,17 +1,17 @@
 ---
-title: Linux内核代码大佬们如何观看的？
+title: "Linux内核代码大佬们如何观看的？"
 date: "2023-08-21 00:00:00"
 updated: "2023-08-21 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/我的收藏/Linux内核代码大佬们如何观看的/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/我的收藏/Linux内核代码大佬们如何观看的/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://www.zhihu.com/question/439569498/answer/3175425607
+  - "知乎"
+source_url: "https://www.zhihu.com/question/439569498/answer/3175425607"
 ---
 
 

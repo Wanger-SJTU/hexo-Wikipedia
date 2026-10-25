@@ -1,17 +1,17 @@
 ---
-title: 对研发leader、总监、GM的能力模型拆解
+title: "对研发leader、总监、GM的能力模型拆解"
 date: "2025-03-09 00:00:00"
 updated: "2025-03-09 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/AgentCLI/对研发leader、总监、GM的能力模型拆解/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/AgentCLI/对研发leader、总监、GM的能力模型拆解/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/29011063345
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/29011063345"
 ---
 
 

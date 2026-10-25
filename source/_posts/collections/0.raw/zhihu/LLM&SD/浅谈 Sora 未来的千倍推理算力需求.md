@@ -1,17 +1,17 @@
 ---
-title: 浅谈 Sora 未来的千倍推理算力需求
+title: "浅谈 Sora 未来的千倍推理算力需求"
 date: "2024-03-08 00:00:00"
 updated: "2024-03-08 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/LLM-SD/浅谈-Sora-未来的千倍推理算力需求/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/LLM-SD/浅谈-Sora-未来的千倍推理算力需求/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/683636677
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/683636677"
 ---
 
 

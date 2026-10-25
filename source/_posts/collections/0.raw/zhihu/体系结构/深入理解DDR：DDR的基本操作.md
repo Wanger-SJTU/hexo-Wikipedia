@@ -1,17 +1,17 @@
 ---
-title: 深入理解DDR：DDR的基本操作
+title: "深入理解DDR：DDR的基本操作"
 date: "2024-11-04 00:00:00"
 updated: "2024-11-04 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/体系结构/深入理解DDR-DDR的基本操作/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/体系结构/深入理解DDR-DDR的基本操作/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/4822260489
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/4822260489"
 ---
 
 

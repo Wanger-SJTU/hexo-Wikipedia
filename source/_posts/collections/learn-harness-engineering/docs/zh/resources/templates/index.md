@@ -1,14 +1,14 @@
 ---
-title: 模板使用指南
+title: "模板使用指南"
 date: "2026-05-28 11:34:14"
 updated: "2026-05-28 11:34:14"
-layout: post
-permalink: /collections/learn-harness-engineering/docs/zh/resources/templates/index/
+layout: "post"
+permalink: "/collections/learn-harness-engineering/docs/zh/resources/templates/index/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 ---
 
 # 模板使用指南

@@ -1,14 +1,14 @@
 ---
-title: 高性能计算论文分享：GEMM 性能的_崎岖地形_ —— 为什么相邻问题尺寸会有 30% 的吞吐差异
+title: "高性能计算论文分享：GEMM 性能的_崎岖地形_ —— 为什么相邻问题尺寸会有 30% 的吞吐差异"
 date: "2026-07-18 16:32:07"
 updated: "2026-07-18 16:32:07"
-layout: post
-permalink: /collections/0.raw/zhihu/AI-infra/高性能计算论文分享-GEMM-性能的_崎岖地形_-——-为什么相邻问题尺寸会有-30-的吞吐差异/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/AI-infra/高性能计算论文分享-GEMM-性能的_崎岖地形_-——-为什么相邻问题尺寸会有-30-的吞吐差异/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 ---
 
 

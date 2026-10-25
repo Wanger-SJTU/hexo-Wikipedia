@@ -1,17 +1,17 @@
 ---
-title: (2 条消息) csapp 缓冲区溢出攻击(stackoverflow)
+title: "(2 条消息) csapp 缓冲区溢出攻击(stackoverflow)"
 date: "2024-12-27 00:00:00"
 updated: "2024-12-27 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/我的收藏/csapp-缓冲区溢出攻击(stackoverflow)/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/我的收藏/csapp-缓冲区溢出攻击(stackoverflow)/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/14909748283
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/14909748283"
 ---
 
 

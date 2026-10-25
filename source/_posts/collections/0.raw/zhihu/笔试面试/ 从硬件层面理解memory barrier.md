@@ -1,17 +1,17 @@
 ---
-title: 从硬件层面理解memory barrier
+title: "从硬件层面理解memory barrier"
 date: "2020-08-15 00:00:00"
 updated: "2020-08-15 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/笔试面试/从硬件层面理解memory-barrier/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/笔试面试/从硬件层面理解memory-barrier/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/184912992
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/184912992"
 ---
 
 

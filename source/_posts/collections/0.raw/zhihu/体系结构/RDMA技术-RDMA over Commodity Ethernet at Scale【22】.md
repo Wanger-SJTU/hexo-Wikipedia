@@ -1,17 +1,17 @@
 ---
-title: RDMA技术-RDMA over Commodity Ethernet at Scale【22】
+title: "RDMA技术-RDMA over Commodity Ethernet at Scale【22】"
 date: "2026-03-12 00:00:00"
 updated: "2026-03-12 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/体系结构/RDMA技术-RDMA-over-Commodity-Ethernet-at-Scale【22】-7c0975/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/体系结构/RDMA技术-RDMA-over-Commodity-Ethernet-at-Scale【22】-7c0975/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/2003878941946028302
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/2003878941946028302"
 ---
 
 

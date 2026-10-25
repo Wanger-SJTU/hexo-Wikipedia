@@ -1,17 +1,17 @@
 ---
-title: (1 条消息) 【奇技淫巧】最小的 Hello World
+title: "(1 条消息) 【奇技淫巧】最小的 Hello World"
 date: "2023-05-17 00:00:00"
 updated: "2023-05-17 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/我的收藏/【奇技淫巧】最小的-Hello-World/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/我的收藏/【奇技淫巧】最小的-Hello-World/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/623724335
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/623724335"
 ---
 
 

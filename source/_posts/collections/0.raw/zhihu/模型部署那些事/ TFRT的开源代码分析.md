@@ -1,17 +1,17 @@
 ---
-title: TFRT的开源代码分析
+title: "TFRT的开源代码分析"
 date: "2021-01-28 00:00:00"
 updated: "2021-01-28 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/模型部署那些事/TFRT的开源代码分析/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/模型部署那些事/TFRT的开源代码分析/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/347599203
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/347599203"
 ---
 
 

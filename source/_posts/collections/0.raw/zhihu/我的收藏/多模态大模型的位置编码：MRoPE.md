@@ -1,17 +1,17 @@
 ---
-title: 多模态大模型的位置编码：MRoPE
+title: "多模态大模型的位置编码：MRoPE"
 date: "2025-11-30 00:00:00"
 updated: "2025-11-30 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/我的收藏/多模态大模型的位置编码-MRoPE/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/我的收藏/多模态大模型的位置编码-MRoPE/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/1978600727963276994
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/1978600727963276994"
 ---
 
 

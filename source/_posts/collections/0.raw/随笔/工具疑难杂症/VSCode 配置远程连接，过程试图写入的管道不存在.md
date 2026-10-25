@@ -1,14 +1,14 @@
 ---
-title: 解决
+title: "解决"
 date: "2026-04-11 21:40:28"
 updated: "2026-04-11 21:40:28"
-layout: post
-permalink: /collections/0.raw/随笔/工具疑难杂症/VSCode-配置远程连接,过程试图写入的管道不存在/
+layout: "post"
+permalink: "/collections/0.raw/随笔/工具疑难杂症/VSCode-配置远程连接,过程试图写入的管道不存在/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 ---
 
 #vscode

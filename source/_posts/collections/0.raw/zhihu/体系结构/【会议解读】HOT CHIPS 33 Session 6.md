@@ -1,17 +1,17 @@
 ---
-title: 【会议解读】HOT CHIPS 33 Session 6
+title: "【会议解读】HOT CHIPS 33 Session 6"
 date: "2021-10-28 00:00:00"
 updated: "2021-10-28 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/体系结构/【会议解读】HOT-CHIPS-33-Session-6/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/体系结构/【会议解读】HOT-CHIPS-33-Session-6/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/426809681
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/426809681"
 ---
 
 

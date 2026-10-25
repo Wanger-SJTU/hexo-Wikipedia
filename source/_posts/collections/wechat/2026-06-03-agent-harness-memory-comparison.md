@@ -1,14 +1,14 @@
 ---
-title: 主流Agent Harness实现对比——Memory篇
+title: "主流Agent Harness实现对比——Memory篇"
 date: "2026-06-03 15:02:31"
 updated: "2026-06-03 15:02:31"
-layout: post
-permalink: /collections/wechat/2026-06-03-agent-harness-memory-comparison/
+layout: "post"
+permalink: "/collections/wechat/2026-06-03-agent-harness-memory-comparison/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 ---
 
 # 主流Agent Harness实现对比——Memory篇

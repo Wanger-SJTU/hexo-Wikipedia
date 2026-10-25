@@ -1,17 +1,17 @@
 ---
-title: 为什么avx设计时，sse指令要维持向量寄存器上半部分不变？
+title: "为什么avx设计时，sse指令要维持向量寄存器上半部分不变？"
 date: "2025-05-30 00:00:00"
 updated: "2025-05-30 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/我的收藏/为什么avx设计时,sse指令要维持向量寄存器上半部分不变/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/我的收藏/为什么avx设计时,sse指令要维持向量寄存器上半部分不变/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://www.zhihu.com/question/1911139500630980467/answer/1911820717328171672
+  - "知乎"
+source_url: "https://www.zhihu.com/question/1911139500630980467/answer/1911820717328171672"
 ---
 
 

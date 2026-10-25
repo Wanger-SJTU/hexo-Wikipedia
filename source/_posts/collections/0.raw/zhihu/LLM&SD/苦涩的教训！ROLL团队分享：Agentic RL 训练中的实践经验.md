@@ -1,17 +1,17 @@
 ---
-title: 苦涩的教训！ROLL团队分享：Agentic RL 训练中的实践经验
+title: "苦涩的教训！ROLL团队分享：Agentic RL 训练中的实践经验"
 date: "2026-02-15 00:00:00"
 updated: "2026-02-15 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/LLM-SD/苦涩的教训-ROLL团队分享-Agentic-RL-训练中的实践经验/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/LLM-SD/苦涩的教训-ROLL团队分享-Agentic-RL-训练中的实践经验/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/2006389553703982040
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/2006389553703982040"
 ---
 
 

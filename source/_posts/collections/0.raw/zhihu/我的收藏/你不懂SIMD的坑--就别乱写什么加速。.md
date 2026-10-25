@@ -1,17 +1,17 @@
 ---
-title: (2 条消息) 你不懂SIMD的坑--就别乱写什么加速。
+title: "(2 条消息) 你不懂SIMD的坑--就别乱写什么加速。"
 date: "2026-02-05 00:00:00"
 updated: "2026-02-05 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/我的收藏/你不懂SIMD的坑-就别乱写什么加速。/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/我的收藏/你不懂SIMD的坑-就别乱写什么加速。/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/1910713130323021966
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/1910713130323021966"
 ---
 
 

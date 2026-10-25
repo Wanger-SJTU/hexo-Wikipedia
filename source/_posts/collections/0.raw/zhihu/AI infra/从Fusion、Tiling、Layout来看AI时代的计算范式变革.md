@@ -1,17 +1,17 @@
 ---
-title: 从Fusion、Tiling、Layout来看AI时代的计算范式变革
+title: "从Fusion、Tiling、Layout来看AI时代的计算范式变革"
 date: "2026-05-08 00:00:00"
 updated: "2026-05-08 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/AI-infra/从Fusion、Tiling、Layout来看AI时代的计算范式变革/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/AI-infra/从Fusion、Tiling、Layout来看AI时代的计算范式变革/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/2035814498754372533
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/2035814498754372533"
 ---
 
 

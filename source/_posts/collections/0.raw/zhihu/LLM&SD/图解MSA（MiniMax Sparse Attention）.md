@@ -1,17 +1,17 @@
 ---
-title: 图解MSA（MiniMax Sparse Attention）
+title: "图解MSA（MiniMax Sparse Attention）"
 date: "2026-07-11 00:00:00"
 updated: "2026-07-11 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/LLM-SD/图解MSA(MiniMax-Sparse-Attention)/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/LLM-SD/图解MSA(MiniMax-Sparse-Attention)/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/2059278715834652015
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/2059278715834652015"
 ---
 
 

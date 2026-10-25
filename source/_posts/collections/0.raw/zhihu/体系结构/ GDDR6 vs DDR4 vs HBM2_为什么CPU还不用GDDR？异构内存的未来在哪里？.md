@@ -1,17 +1,17 @@
 ---
-title: GDDR6 vs DDR4 vs HBM2?为什么CPU还不用GDDR？异构内存的未来在哪里？
+title: "GDDR6 vs DDR4 vs HBM2?为什么CPU还不用GDDR？异构内存的未来在哪里？"
 date: "2019-11-10 00:00:00"
 updated: "2019-11-10 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/体系结构/GDDR6-vs-DDR4-vs-HBM2_为什么CPU还不用GDDR-异构内存的未来在哪里/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/体系结构/GDDR6-vs-DDR4-vs-HBM2_为什么CPU还不用GDDR-异构内存的未来在哪里/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/83935084
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/83935084"
 ---
 
 

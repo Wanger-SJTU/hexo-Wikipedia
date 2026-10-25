@@ -1,17 +1,17 @@
 ---
-title: 大型C++工程的构建技术：Modern CMake vs Bazel
+title: "大型C++工程的构建技术：Modern CMake vs Bazel"
 date: "2020-03-18 00:00:00"
 updated: "2020-03-18 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/走向cs/大型C-工程的构建技术-Modern-CMake-vs-Bazel/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/走向cs/大型C-工程的构建技术-Modern-CMake-vs-Bazel/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/112712537
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/112712537"
 ---
 
 

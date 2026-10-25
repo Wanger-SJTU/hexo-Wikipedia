@@ -1,17 +1,17 @@
 ---
-title: 自蒸馏RLVR，但跟老师反着来
+title: "自蒸馏RLVR，但跟老师反着来"
 date: "2026-05-18 00:00:00"
 updated: "2026-05-18 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/LLM-SD/自蒸馏RLVR,但跟老师反着来/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/LLM-SD/自蒸馏RLVR,但跟老师反着来/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/2039831154942006308
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/2039831154942006308"
 ---
 
 

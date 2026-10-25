@@ -1,17 +1,17 @@
 ---
-title: 怎么成为一个 ai agent 工程师？
+title: "怎么成为一个 ai agent 工程师？"
 date: "2026-04-23 00:00:00"
 updated: "2026-04-23 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/AgentCLI/怎么成为一个-ai-agent-工程师/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/AgentCLI/怎么成为一个-ai-agent-工程师/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://www.zhihu.com/question/1936375725931361485/answer/1982833664812413939
+  - "知乎"
+source_url: "https://www.zhihu.com/question/1936375725931361485/answer/1982833664812413939"
 ---
 
 

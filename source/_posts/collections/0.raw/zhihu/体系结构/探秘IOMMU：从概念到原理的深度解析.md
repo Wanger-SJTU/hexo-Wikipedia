@@ -1,17 +1,17 @@
 ---
-title: 探秘IOMMU：从概念到原理的深度解析
+title: "探秘IOMMU：从概念到原理的深度解析"
 date: "2025-01-13 00:00:00"
 updated: "2025-01-13 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/体系结构/探秘IOMMU-从概念到原理的深度解析/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/体系结构/探秘IOMMU-从概念到原理的深度解析/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/18100038357
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/18100038357"
 ---
 
 

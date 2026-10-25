@@ -2,16 +2,16 @@
 title: "[CVPR 2022] NeRF(神经辐射场)大放送"
 date: "2022-04-17 00:00:00"
 updated: "2022-04-17 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/dl论文/[CVPR-2022]-NeRF(神经辐射场)大放送/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/dl论文/[CVPR-2022]-NeRF(神经辐射场)大放送/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/476220544
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/476220544"
 ---
 
 

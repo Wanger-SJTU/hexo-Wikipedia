@@ -1,17 +1,17 @@
 ---
-title: 【从零开始学深度学习编译器】番外一，Data Flow和Control Flow
+title: "【从零开始学深度学习编译器】番外一，Data Flow和Control Flow"
 date: "2021-05-04 00:00:00"
 updated: "2021-05-04 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/dl论文/【从零开始学深度学习编译器】番外一,Data-Flow和Control-Flow/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/dl论文/【从零开始学深度学习编译器】番外一,Data-Flow和Control-Flow/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/369780094
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/369780094"
 ---
 
 

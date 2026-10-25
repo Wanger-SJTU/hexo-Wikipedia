@@ -2,16 +2,16 @@
 title: "LangChain - RAG: 做 RAG 的天选打工人，拿这几个指标找老板加薪！"
 date: "2023-11-15 00:00:00"
 updated: "2023-11-15 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/LLM-SD/LangChain-RAG_-做-RAG-的天选打工人,拿这几个指标找老板加薪/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/LLM-SD/LangChain-RAG_-做-RAG-的天选打工人,拿这几个指标找老板加薪/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/656990524
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/656990524"
 ---
 
 

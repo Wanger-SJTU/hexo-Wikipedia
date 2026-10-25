@@ -1,17 +1,17 @@
 ---
-title: 为什么AI芯片都想使用HBM而不是6/8/12通道的内存？
+title: "为什么AI芯片都想使用HBM而不是6/8/12通道的内存？"
 date: "2025-03-20 00:00:00"
 updated: "2025-03-20 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/体系结构/为什么AI芯片都想使用HBM而不是6_8_12通道的内存/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/体系结构/为什么AI芯片都想使用HBM而不是6_8_12通道的内存/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://www.zhihu.com/question/1885434213853012121/answer/1886004845925877347
+  - "知乎"
+source_url: "https://www.zhihu.com/question/1885434213853012121/answer/1886004845925877347"
 ---
 
 

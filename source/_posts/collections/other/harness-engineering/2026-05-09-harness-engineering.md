@@ -2,19 +2,19 @@
 title: "Harness engineering: leveraging Codex in an agent-first world"
 date: "2026-05-10 01:34:20"
 updated: "2026-05-10 01:34:20"
-layout: post
-permalink: /collections/other/harness-engineering/2026-05-09-harness-engineering/
+layout: "post"
+permalink: "/collections/other/harness-engineering/2026-05-09-harness-engineering/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - AI编程
-  - Codex
-  - 软件工程
-  - Agent
-  - Harness
+  - "AI编程"
+  - "Codex"
+  - "软件工程"
+  - "Agent"
+  - "Harness"
 ---
 
 

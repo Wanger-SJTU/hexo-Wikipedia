@@ -1,17 +1,17 @@
 ---
-title: (2 条消息) 目前主流的attention方法都有哪些？
+title: "(2 条消息) 目前主流的attention方法都有哪些？"
 date: "2026-04-17 00:00:00"
 updated: "2026-04-17 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/我的收藏/目前主流的attention方法都有哪些/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/我的收藏/目前主流的attention方法都有哪些/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://www.zhihu.com/question/68482809/answer/79951615941
+  - "知乎"
+source_url: "https://www.zhihu.com/question/68482809/answer/79951615941"
 ---
 
 

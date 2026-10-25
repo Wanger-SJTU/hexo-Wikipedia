@@ -1,17 +1,17 @@
 ---
-title: (2 条消息) 如何系统性定位并分析 PyTorch 模型训练/推理中的性能瓶颈？
+title: "(2 条消息) 如何系统性定位并分析 PyTorch 模型训练/推理中的性能瓶颈？"
 date: "2026-04-17 00:00:00"
 updated: "2026-04-17 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/我的收藏/如何系统性定位并分析-PyTorch-模型训练_推理中的性能瓶颈/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/我的收藏/如何系统性定位并分析-PyTorch-模型训练_推理中的性能瓶颈/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://www.zhihu.com/question/1927112862976972744/answer/1927113899741779156
+  - "知乎"
+source_url: "https://www.zhihu.com/question/1927112862976972744/answer/1927113899741779156"
 ---
 
 

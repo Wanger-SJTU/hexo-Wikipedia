@@ -1,17 +1,17 @@
 ---
-title: Long-Tailed Classification (2) 长尾分布下分类问题的最新研究
+title: "Long-Tailed Classification (2) 长尾分布下分类问题的最新研究"
 date: "2020-07-11 00:00:00"
 updated: "2020-07-11 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/dl论文/Long-Tailed-Classification-(2)-长尾分布下分类问题的最新研究/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/dl论文/Long-Tailed-Classification-(2)-长尾分布下分类问题的最新研究/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/158638078
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/158638078"
 ---
 
 

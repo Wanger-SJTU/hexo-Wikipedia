@@ -1,17 +1,17 @@
 ---
-title: LLM(30)：scaling law 与词表大小之关系
+title: "LLM(30)：scaling law 与词表大小之关系"
 date: "2025-03-14 00:00:00"
 updated: "2025-03-14 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/LLM-SD/LLM(30)-scaling-law-与词表大小之关系/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/LLM-SD/LLM(30)-scaling-law-与词表大小之关系/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/710813718
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/710813718"
 ---
 
 

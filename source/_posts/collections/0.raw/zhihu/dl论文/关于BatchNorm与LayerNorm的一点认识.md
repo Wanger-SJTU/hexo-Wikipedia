@@ -1,17 +1,17 @@
 ---
-title: 关于BatchNorm与LayerNorm的一点认识
+title: "关于BatchNorm与LayerNorm的一点认识"
 date: "2022-08-23 00:00:00"
 updated: "2022-08-23 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/dl论文/关于BatchNorm与LayerNorm的一点认识/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/dl论文/关于BatchNorm与LayerNorm的一点认识/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/556630201
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/556630201"
 ---
 
 

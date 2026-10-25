@@ -1,17 +1,17 @@
 ---
-title: 从词到数：Tokenizer与Embedding串讲
+title: "从词到数：Tokenizer与Embedding串讲"
 date: "2023-07-23 00:00:00"
 updated: "2023-07-23 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/dl论文/从词到数-Tokenizer与Embedding串讲/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/dl论文/从词到数-Tokenizer与Embedding串讲/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/631463712
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/631463712"
 ---
 
 

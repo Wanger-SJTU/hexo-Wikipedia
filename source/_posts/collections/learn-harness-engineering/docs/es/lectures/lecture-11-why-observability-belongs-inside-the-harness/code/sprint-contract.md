@@ -1,14 +1,14 @@
 ---
-title: Ejemplo de Contrato de Sprint
+title: "Ejemplo de Contrato de Sprint"
 date: "2026-05-28 11:34:14"
 updated: "2026-05-28 11:34:14"
-layout: post
-permalink: /collections/learn-harness-engineering/docs/es/lectures/lecture-11-why-observability-belongs-inside-the-harness/code/sprint-contract/
+layout: "post"
+permalink: "/collections/learn-harness-engineering/docs/es/lectures/lecture-11-why-observability-belongs-inside-the-harness/code/sprint-contract/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 ---
 
 # Ejemplo de Contrato de Sprint

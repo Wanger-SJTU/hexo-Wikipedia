@@ -1,17 +1,17 @@
 ---
-title: (1 条消息) 太牛了！h2oGPT直接操作本地PDF、Excel、Word、图像、等文件！
+title: "(1 条消息) 太牛了！h2oGPT直接操作本地PDF、Excel、Word、图像、等文件！"
 date: "2023-08-02 00:00:00"
 updated: "2023-08-02 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/我的收藏/太牛了-h2oGPT直接操作本地PDF、Excel、Word、图像、等文件/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/我的收藏/太牛了-h2oGPT直接操作本地PDF、Excel、Word、图像、等文件/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/647580415
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/647580415"
 ---
 
 

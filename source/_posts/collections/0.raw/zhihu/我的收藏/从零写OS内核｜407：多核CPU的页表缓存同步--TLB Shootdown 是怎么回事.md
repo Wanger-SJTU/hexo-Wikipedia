@@ -1,17 +1,17 @@
 ---
-title: 从零写OS内核｜407：多核CPU的页表缓存同步--TLB Shootdown 是怎么回事
+title: "从零写OS内核｜407：多核CPU的页表缓存同步--TLB Shootdown 是怎么回事"
 date: "2026-08-10 00:00:00"
 updated: "2026-08-10 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/我的收藏/从零写OS内核-407-多核CPU的页表缓存同步-TLB-Shootdown-是怎么回事/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/我的收藏/从零写OS内核-407-多核CPU的页表缓存同步-TLB-Shootdown-是怎么回事/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/2070270846145401677
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/2070270846145401677"
 ---
 
 

@@ -1,17 +1,17 @@
 ---
-title: 大模型已有文本表征能力，为什么还需要向量表征（embedding）模型？
+title: "大模型已有文本表征能力，为什么还需要向量表征（embedding）模型？"
 date: "2024-01-05 00:00:00"
 updated: "2024-01-05 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/LLM-SD/大模型已有文本表征能力,为什么还需要向量表征(embedding)模型/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/LLM-SD/大模型已有文本表征能力,为什么还需要向量表征(embedding)模型/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://www.zhihu.com/question/637789621/answer/3351386560
+  - "知乎"
+source_url: "https://www.zhihu.com/question/637789621/answer/3351386560"
 ---
 
 

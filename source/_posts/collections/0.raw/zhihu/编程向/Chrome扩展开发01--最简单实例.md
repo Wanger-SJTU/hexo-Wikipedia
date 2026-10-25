@@ -1,17 +1,17 @@
 ---
-title: Chrome扩展开发01--最简单实例
+title: "Chrome扩展开发01--最简单实例"
 date: "2017-07-25 00:00:00"
 updated: "2017-07-25 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/编程向/Chrome扩展开发01-最简单实例/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/编程向/Chrome扩展开发01-最简单实例/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/27863494
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/27863494"
 ---
 
 

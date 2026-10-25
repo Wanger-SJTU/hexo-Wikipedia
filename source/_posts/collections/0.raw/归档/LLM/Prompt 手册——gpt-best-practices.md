@@ -1,14 +1,14 @@
 ---
-title: 优质promt
+title: "优质promt"
 date: "2026-04-11 21:40:28"
 updated: "2026-04-11 21:40:28"
-layout: post
-permalink: /collections/0.raw/归档/LLM/Prompt-手册——gpt-best-practices/
+layout: "post"
+permalink: "/collections/0.raw/归档/LLM/Prompt-手册——gpt-best-practices/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 ---
 
 #prompt

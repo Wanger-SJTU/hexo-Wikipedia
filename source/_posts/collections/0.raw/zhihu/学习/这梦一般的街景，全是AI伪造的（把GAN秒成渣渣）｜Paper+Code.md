@@ -1,17 +1,17 @@
 ---
-title: 这梦一般的街景，全是AI伪造的（把GAN秒成渣渣）｜Paper+Code
+title: "这梦一般的街景，全是AI伪造的（把GAN秒成渣渣）｜Paper+Code"
 date: "2017-08-15 00:00:00"
 updated: "2017-08-15 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/学习/这梦一般的街景,全是AI伪造的(把GAN秒成渣渣)-Paper-Code/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/学习/这梦一般的街景,全是AI伪造的(把GAN秒成渣渣)-Paper-Code/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/28527379
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/28527379"
 ---
 
 

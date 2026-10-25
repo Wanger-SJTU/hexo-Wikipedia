@@ -2,16 +2,16 @@
 title: "[社区开源项目] MLIR-Playground: 探索下一代编译软件栈工程的新范式"
 date: "2022-09-04 00:00:00"
 updated: "2022-09-04 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/优化/[社区开源项目]-MLIR-Playground_-探索下一代编译软件栈工程的新范式/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/优化/[社区开源项目]-MLIR-Playground_-探索下一代编译软件栈工程的新范式/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/560810344
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/560810344"
 ---
 
 

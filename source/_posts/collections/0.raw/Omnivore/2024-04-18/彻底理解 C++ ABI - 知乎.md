@@ -1,14 +1,14 @@
 ---
-title: 彻底理解 C++ ABI - 知乎
+title: "彻底理解 C++ ABI - 知乎"
 date: "2026-04-11 21:40:28"
 updated: "2026-04-11 21:40:28"
-layout: post
-permalink: /collections/0.raw/Omnivore/2024-04-18/彻底理解-C-ABI-知乎/
+layout: "post"
+permalink: "/collections/0.raw/Omnivore/2024-04-18/彻底理解-C-ABI-知乎/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 ---
 
 ---

@@ -1,17 +1,17 @@
 ---
-title: CMU团队解析CNN泛化能力：一切秘密都在数据中
+title: "CMU团队解析CNN泛化能力：一切秘密都在数据中"
 date: "2020-09-16 00:00:00"
 updated: "2020-09-16 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/dl论文/CMU团队解析CNN泛化能力-一切秘密都在数据中/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/dl论文/CMU团队解析CNN泛化能力-一切秘密都在数据中/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/248068207
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/248068207"
 ---
 
 

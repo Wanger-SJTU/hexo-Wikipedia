@@ -1,17 +1,17 @@
 ---
-title: 理论与实操兼备：深入揭秘InternVL-2.5训练细节
+title: "理论与实操兼备：深入揭秘InternVL-2.5训练细节"
 date: "2025-02-05 00:00:00"
 updated: "2025-02-05 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/LLM-SD/理论与实操兼备-深入揭秘InternVL-2.5训练细节/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/LLM-SD/理论与实操兼备-深入揭秘InternVL-2.5训练细节/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/14527170215
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/14527170215"
 ---
 
 

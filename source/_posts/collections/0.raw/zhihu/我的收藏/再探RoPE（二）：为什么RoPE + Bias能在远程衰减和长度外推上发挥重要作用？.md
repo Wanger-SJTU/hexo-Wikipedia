@@ -1,17 +1,17 @@
 ---
-title: 再探RoPE（二）：为什么RoPE + Bias能在远程衰减和长度外推上发挥重要作用？
+title: "再探RoPE（二）：为什么RoPE + Bias能在远程衰减和长度外推上发挥重要作用？"
 date: "2025-01-09 00:00:00"
 updated: "2025-01-09 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/我的收藏/再探RoPE(二)-为什么RoPE-Bias能在远程衰减和长度外推上发挥重要作用/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/我的收藏/再探RoPE(二)-为什么RoPE-Bias能在远程衰减和长度外推上发挥重要作用/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/17397790476
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/17397790476"
 ---
 
 

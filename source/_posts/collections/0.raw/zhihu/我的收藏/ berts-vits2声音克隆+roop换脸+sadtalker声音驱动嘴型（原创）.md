@@ -1,17 +1,17 @@
 ---
-title: (1 条消息) berts-vits2声音克隆+roop换脸+sadtalker声音驱动嘴型（原创）
+title: "(1 条消息) berts-vits2声音克隆+roop换脸+sadtalker声音驱动嘴型（原创）"
 date: "2023-12-07 00:00:00"
 updated: "2023-12-07 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/我的收藏/berts-vits2声音克隆-roop换脸-sadtalker声音驱动嘴型(原创)/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/我的收藏/berts-vits2声音克隆-roop换脸-sadtalker声音驱动嘴型(原创)/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/670203996
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/670203996"
 ---
 
 

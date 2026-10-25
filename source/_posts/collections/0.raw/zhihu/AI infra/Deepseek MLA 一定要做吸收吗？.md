@@ -1,17 +1,17 @@
 ---
-title: Deepseek MLA 一定要做吸收吗？
+title: "Deepseek MLA 一定要做吸收吗？"
 date: "2025-03-25 00:00:00"
 updated: "2025-03-25 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/AI-infra/Deepseek-MLA-一定要做吸收吗-9f7adc/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/AI-infra/Deepseek-MLA-一定要做吸收吗-9f7adc/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/24013149030
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/24013149030"
 ---
 
 

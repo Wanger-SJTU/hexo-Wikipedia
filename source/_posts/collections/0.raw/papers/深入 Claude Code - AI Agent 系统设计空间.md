@@ -1,14 +1,14 @@
 ---
-title: 论文信息
+title: "论文信息"
 date: "2026-04-18 23:25:15"
 updated: "2026-04-18 23:25:15"
-layout: post
-permalink: /collections/0.raw/papers/深入-Claude-Code-AI-Agent-系统设计空间/
+layout: "post"
+permalink: "/collections/0.raw/papers/深入-Claude-Code-AI-Agent-系统设计空间/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 ---
 
 # 论文信息

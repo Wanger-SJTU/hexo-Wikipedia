@@ -1,17 +1,17 @@
 ---
-title: Cache的50问，您能回答上几个
+title: "Cache的50问，您能回答上几个"
 date: "2025-01-07 00:00:00"
 updated: "2025-01-07 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/AI-infra/Cache的50问,您能回答上几个/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/AI-infra/Cache的50问,您能回答上几个/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/16921952423
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/16921952423"
 ---
 
 

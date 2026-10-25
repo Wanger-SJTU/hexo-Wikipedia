@@ -1,17 +1,17 @@
 ---
-title: 你见过最漂亮的 Excel 表格什么样？
+title: "你见过最漂亮的 Excel 表格什么样？"
 date: "2026-04-15 00:00:00"
 updated: "2026-04-15 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/再入门系列/你见过最漂亮的-Excel-表格什么样/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/再入门系列/你见过最漂亮的-Excel-表格什么样/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://www.zhihu.com/question/56375334/answer/148978333
+  - "知乎"
+source_url: "https://www.zhihu.com/question/56375334/answer/148978333"
 ---
 
 

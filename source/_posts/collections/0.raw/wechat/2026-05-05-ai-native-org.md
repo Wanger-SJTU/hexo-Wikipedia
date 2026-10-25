@@ -1,19 +1,19 @@
 ---
-title: 你用AI效率翻倍了，为什么团队还是慢如蜗牛？｜AI Native 组织的7个核心洞察
+title: "你用AI效率翻倍了，为什么团队还是慢如蜗牛？｜AI Native 组织的7个核心洞察"
 date: "2026-05-05 00:00:00"
 updated: "2026-05-05 00:00:00"
-layout: post
-permalink: /collections/0.raw/wechat/2026-05-05-ai-native-org/
+layout: "post"
+permalink: "/collections/0.raw/wechat/2026-05-05-ai-native-org/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - AI
-  - 组织管理
-  - Agent
-source_url: https://mp.weixin.qq.com/s/SU_E3Wir_eFw10yQGwAYdg
+  - "AI"
+  - "组织管理"
+  - "Agent"
+source_url: "https://mp.weixin.qq.com/s/SU_E3Wir_eFw10yQGwAYdg"
 ---
 
 

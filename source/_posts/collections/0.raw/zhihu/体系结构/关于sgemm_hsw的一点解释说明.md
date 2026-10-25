@@ -1,17 +1,17 @@
 ---
-title: 关于sgemm_hsw的一点解释说明
+title: "关于sgemm_hsw的一点解释说明"
 date: "2022-08-16 00:00:00"
 updated: "2022-08-16 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/体系结构/关于sgemm_hsw的一点解释说明/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/体系结构/关于sgemm_hsw的一点解释说明/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/426127316
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/426127316"
 ---
 
 

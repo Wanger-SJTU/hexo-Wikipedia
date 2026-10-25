@@ -2,16 +2,16 @@
 title: "[论文尝鲜]VALL-E: codec语言模型是0-shot文本到语音合成器"
 date: "2023-04-27 00:00:00"
 updated: "2023-04-27 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/dl论文/[论文尝鲜]VALL-E_-codec语言模型是0-shot文本到语音合成器/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/dl论文/[论文尝鲜]VALL-E_-codec语言模型是0-shot文本到语音合成器/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/624876242
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/624876242"
 ---
 
 

@@ -1,17 +1,17 @@
 ---
-title: Hotchips 37 (2025) 有哪些看点？
+title: "Hotchips 37 (2025) 有哪些看点？"
 date: "2026-04-22 00:00:00"
 updated: "2026-04-22 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/我的收藏/Hotchips-37-(2025)-有哪些看点/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/我的收藏/Hotchips-37-(2025)-有哪些看点/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://www.zhihu.com/question/1944159022283485382/answer/1946289971049784808
+  - "知乎"
+source_url: "https://www.zhihu.com/question/1944159022283485382/answer/1946289971049784808"
 ---
 
 

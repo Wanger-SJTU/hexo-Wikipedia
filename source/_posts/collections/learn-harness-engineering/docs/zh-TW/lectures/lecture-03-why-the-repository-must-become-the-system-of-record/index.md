@@ -1,14 +1,14 @@
 ---
-title: 第三講. 讓程式碼儲存庫成為唯一的事實來源
+title: "第三講. 讓程式碼儲存庫成為唯一的事實來源"
 date: "2026-05-28 11:34:14"
 updated: "2026-05-28 11:34:14"
-layout: post
-permalink: /collections/learn-harness-engineering/docs/zh-TW/lectures/lecture-03-why-the-repository-must-become-the-system-of-record/index/
+layout: "post"
+permalink: "/collections/learn-harness-engineering/docs/zh-TW/lectures/lecture-03-why-the-repository-must-become-the-system-of-record/index/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 ---
 
 [English Version →](../../../en/lectures/lecture-03-why-the-repository-must-become-the-system-of-record/)

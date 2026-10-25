@@ -1,17 +1,17 @@
 ---
-title: PCIe 里的地址，为什么一会儿是 CPU 地址，一会儿又成了 DMA 地址？
+title: "PCIe 里的地址，为什么一会儿是 CPU 地址，一会儿又成了 DMA 地址？"
 date: "2026-03-20 00:00:00"
 updated: "2026-03-20 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/体系结构/PCIe-里的地址,为什么一会儿是-CPU-地址,一会儿又成了-DMA-地址/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/体系结构/PCIe-里的地址,为什么一会儿是-CPU-地址,一会儿又成了-DMA-地址/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/2018310591131960250
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/2018310591131960250"
 ---
 
 

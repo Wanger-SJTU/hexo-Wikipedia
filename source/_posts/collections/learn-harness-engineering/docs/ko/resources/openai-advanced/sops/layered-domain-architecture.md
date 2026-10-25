@@ -2,13 +2,13 @@
 title: "SOP: 계층형 도메인 아키텍처(Layered Domain Architecture)"
 date: "2026-05-28 11:34:14"
 updated: "2026-05-28 11:34:14"
-layout: post
-permalink: /collections/learn-harness-engineering/docs/ko/resources/openai-advanced/sops/layered-domain-architecture/
+layout: "post"
+permalink: "/collections/learn-harness-engineering/docs/ko/resources/openai-advanced/sops/layered-domain-architecture/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 ---
 
 # SOP: 계층형 도메인 아키텍처(Layered Domain Architecture)

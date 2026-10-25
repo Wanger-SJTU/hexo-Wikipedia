@@ -1,17 +1,17 @@
 ---
-title: 有哪些高质量的探索linux内核的博客文章?
+title: "有哪些高质量的探索linux内核的博客文章?"
 date: "2023-04-12 00:00:00"
 updated: "2023-04-12 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/我的收藏/有哪些高质量的探索linux内核的博客文章_/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/我的收藏/有哪些高质量的探索linux内核的博客文章_/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://www.zhihu.com/question/55755035/answer/2980910200
+  - "知乎"
+source_url: "https://www.zhihu.com/question/55755035/answer/2980910200"
 ---
 
 

@@ -1,17 +1,17 @@
 ---
-title: Lasso—原理及最优解
+title: "Lasso—原理及最优解"
 date: "2020-03-25 00:00:00"
 updated: "2020-03-25 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/dl论文/Lasso—原理及最优解/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/dl论文/Lasso—原理及最优解/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/116869931
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/116869931"
 ---
 
 

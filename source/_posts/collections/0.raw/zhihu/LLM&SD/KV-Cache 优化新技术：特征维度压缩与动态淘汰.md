@@ -1,17 +1,17 @@
 ---
-title: KV-Cache 优化新技术：特征维度压缩与动态淘汰
+title: "KV-Cache 优化新技术：特征维度压缩与动态淘汰"
 date: "2024-10-22 00:00:00"
 updated: "2024-10-22 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/LLM-SD/KV-Cache-优化新技术-特征维度压缩与动态淘汰/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/LLM-SD/KV-Cache-优化新技术-特征维度压缩与动态淘汰/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/2424812967
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/2424812967"
 ---
 
 

@@ -2,16 +2,16 @@
 title: "[Paper Reading]Learning with Noisy Label-深度学习廉价落地"
 date: "2020-03-05 00:00:00"
 updated: "2020-03-05 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/dl论文/[Paper-Reading]Learning-with-Noisy-Label-深度学习廉价落地/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/dl论文/[Paper-Reading]Learning-with-Noisy-Label-深度学习廉价落地/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/110959020
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/110959020"
 ---
 
 

@@ -1,17 +1,17 @@
 ---
-title: 通用矩阵乘（GEMM）优化与卷积计算
+title: "通用矩阵乘（GEMM）优化与卷积计算"
 date: "2020-05-25 00:00:00"
 updated: "2020-05-25 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/体系结构/通用矩阵乘(GEMM)优化与卷积计算/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/体系结构/通用矩阵乘(GEMM)优化与卷积计算/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/66958390
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/66958390"
 ---
 
 

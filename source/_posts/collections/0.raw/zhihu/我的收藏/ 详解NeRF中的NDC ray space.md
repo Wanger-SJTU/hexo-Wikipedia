@@ -1,17 +1,17 @@
 ---
-title: (1 条消息) 详解NeRF中的NDC ray space
+title: "(1 条消息) 详解NeRF中的NDC ray space"
 date: "2023-10-17 00:00:00"
 updated: "2023-10-17 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/我的收藏/详解NeRF中的NDC-ray-space/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/我的收藏/详解NeRF中的NDC-ray-space/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/628675070
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/628675070"
 ---
 
 

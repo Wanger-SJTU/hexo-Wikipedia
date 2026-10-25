@@ -1,17 +1,17 @@
 ---
-title: TinyGPU：用最小化硬件实现讲清 GPU 的“并行 + 内存 + 控制流”
+title: "TinyGPU：用最小化硬件实现讲清 GPU 的“并行 + 内存 + 控制流”"
 date: "2026-04-11 00:00:00"
 updated: "2026-04-11 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/体系结构/TinyGPU-用最小化硬件实现讲清-GPU-的“并行-内存-控制流”-03f7dd/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/体系结构/TinyGPU-用最小化硬件实现讲清-GPU-的“并行-内存-控制流”-03f7dd/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/2001389056492319761
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/2001389056492319761"
 ---
 
 

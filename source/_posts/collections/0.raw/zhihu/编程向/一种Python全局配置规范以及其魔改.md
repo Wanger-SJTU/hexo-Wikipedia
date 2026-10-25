@@ -1,17 +1,17 @@
 ---
-title: 一种Python全局配置规范以及其魔改
+title: "一种Python全局配置规范以及其魔改"
 date: "2017-12-25 00:00:00"
 updated: "2017-12-25 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/编程向/一种Python全局配置规范以及其魔改/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/编程向/一种Python全局配置规范以及其魔改/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/31669135
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/31669135"
 ---
 
 

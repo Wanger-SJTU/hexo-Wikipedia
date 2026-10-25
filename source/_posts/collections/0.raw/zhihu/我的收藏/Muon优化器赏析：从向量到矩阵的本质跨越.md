@@ -1,17 +1,17 @@
 ---
-title: (2 条消息) Muon优化器赏析：从向量到矩阵的本质跨越
+title: "(2 条消息) Muon优化器赏析：从向量到矩阵的本质跨越"
 date: "2024-12-18 00:00:00"
 updated: "2024-12-18 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/我的收藏/Muon优化器赏析-从向量到矩阵的本质跨越/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/我的收藏/Muon优化器赏析-从向量到矩阵的本质跨越/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/13401683661
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/13401683661"
 ---
 
 

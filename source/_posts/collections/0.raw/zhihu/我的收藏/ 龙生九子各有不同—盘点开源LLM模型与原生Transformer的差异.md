@@ -1,17 +1,17 @@
 ---
-title: (1 条消息) 龙生九子各有不同—盘点开源LLM模型与原生Transformer的差异
+title: "(1 条消息) 龙生九子各有不同—盘点开源LLM模型与原生Transformer的差异"
 date: "2023-09-11 00:00:00"
 updated: "2023-09-11 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/我的收藏/龙生九子各有不同—盘点开源LLM模型与原生Transformer的差异/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/我的收藏/龙生九子各有不同—盘点开源LLM模型与原生Transformer的差异/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/637837856
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/637837856"
 ---
 
 

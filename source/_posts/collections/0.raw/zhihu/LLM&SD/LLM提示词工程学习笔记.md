@@ -1,17 +1,17 @@
 ---
-title: LLM提示词工程学习笔记
+title: "LLM提示词工程学习笔记"
 date: "2023-12-04 00:00:00"
 updated: "2023-12-04 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/LLM-SD/LLM提示词工程学习笔记/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/LLM-SD/LLM提示词工程学习笔记/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/666572032
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/666572032"
 ---
 
 

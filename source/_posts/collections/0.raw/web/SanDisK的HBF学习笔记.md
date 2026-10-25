@@ -1,18 +1,18 @@
 ---
-title: SanDisK的HBF学习笔记 - Winnie shao
+title: "SanDisK的HBF学习笔记 - Winnie shao"
 date: "2026-04-23 00:00:00"
 updated: "2026-04-23 00:00:00"
-layout: post
-permalink: /collections/0.raw/web/SanDisK的HBF学习笔记/
+layout: "post"
+permalink: "/collections/0.raw/web/SanDisK的HBF学习笔记/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 微信
-  - 存储
-source_url: https://mp.weixin.qq.com/s/R4mMgZdQXtpTaaIThxwLew
+  - "微信"
+  - "存储"
+source_url: "https://mp.weixin.qq.com/s/R4mMgZdQXtpTaaIThxwLew"
 ---
 
 

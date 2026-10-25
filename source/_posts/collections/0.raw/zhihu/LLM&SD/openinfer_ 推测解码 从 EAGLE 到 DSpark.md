@@ -2,16 +2,16 @@
 title: "openinfer: 推测解码 从 EAGLE 到 DSpark"
 date: "2026-07-17 00:00:00"
 updated: "2026-07-17 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/LLM-SD/openinfer_-推测解码-从-EAGLE-到-DSpark/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/LLM-SD/openinfer_-推测解码-从-EAGLE-到-DSpark/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/2061569158689698340
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/2061569158689698340"
 ---
 
 

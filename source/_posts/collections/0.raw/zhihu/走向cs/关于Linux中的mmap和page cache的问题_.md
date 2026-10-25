@@ -1,17 +1,17 @@
 ---
-title: 关于Linux中的mmap和page cache的问题?
+title: "关于Linux中的mmap和page cache的问题?"
 date: "2024-03-28 00:00:00"
 updated: "2024-03-28 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/走向cs/关于Linux中的mmap和page-cache的问题_/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/走向cs/关于Linux中的mmap和page-cache的问题_/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://www.zhihu.com/question/545026509/answer/3445935948
+  - "知乎"
+source_url: "https://www.zhihu.com/question/545026509/answer/3445935948"
 ---
 
 

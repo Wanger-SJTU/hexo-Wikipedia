@@ -2,16 +2,16 @@
 title: "文献阅读：You Only Need One Color Space: An Efficient Network for Low-light Image Enhancement"
 date: "2024-05-27 00:00:00"
 updated: "2024-05-27 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/ISP-计算摄影/文献阅读-You-Only-Need-One-Color-Space_-An-Efficient-Network-for-Low-light-Image-Enhancement-22b276/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/ISP-计算摄影/文献阅读-You-Only-Need-One-Color-Space_-An-Efficient-Network-for-Low-light-Image-Enhancement-22b276/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/699934490
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/699934490"
 ---
 
 

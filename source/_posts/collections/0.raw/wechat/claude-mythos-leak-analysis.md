@@ -1,14 +1,14 @@
 ---
-title: Claude Mythos泄露草稿深度解读
+title: "Claude Mythos泄露草稿深度解读"
 date: "2026-04-04 23:00:34"
 updated: "2026-04-04 23:00:34"
-layout: post
-permalink: /collections/0.raw/wechat/claude-mythos-leak-analysis/
+layout: "post"
+permalink: "/collections/0.raw/wechat/claude-mythos-leak-analysis/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 ---
 
 # Claude Mythos泄露草稿深度解读

@@ -1,17 +1,17 @@
 ---
-title: (2 条消息) ISSCC2025：IBM Telum II L2 Cache优化
+title: "(2 条消息) ISSCC2025：IBM Telum II L2 Cache优化"
 date: "2025-03-15 00:00:00"
 updated: "2025-03-15 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/我的收藏/ISSCC2025-IBM-Telum-II-L2-Cache优化/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/我的收藏/ISSCC2025-IBM-Telum-II-L2-Cache优化/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/30500573727
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/30500573727"
 ---
 
 

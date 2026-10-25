@@ -1,17 +1,17 @@
 ---
-title: CPU优化技术 - NEON 开发进阶
+title: "CPU优化技术 - NEON 开发进阶"
 date: "2022-07-29 00:00:00"
 updated: "2022-07-29 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/优化/CPU优化技术-NEON-开发进阶/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/优化/CPU优化技术-NEON-开发进阶/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/479398400
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/479398400"
 ---
 
 

@@ -1,17 +1,17 @@
 ---
-title: 关于NV的3.5层存储，和英特尔与谷歌合作IPU—ODCC与股票上涨 - [Y26W15][解析]
+title: "关于NV的3.5层存储，和英特尔与谷歌合作IPU—ODCC与股票上涨 - [Y26W15][解析]"
 date: "2026-04-13 00:00:00"
 updated: "2026-04-13 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/体系结构/关于NV的3.5层存储,和英特尔与谷歌合作IPU—ODCC与股票上涨-[Y26W15][解析]/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/体系结构/关于NV的3.5层存储,和英特尔与谷歌合作IPU—ODCC与股票上涨-[Y26W15][解析]/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/2027149317765363051
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/2027149317765363051"
 ---
 
 

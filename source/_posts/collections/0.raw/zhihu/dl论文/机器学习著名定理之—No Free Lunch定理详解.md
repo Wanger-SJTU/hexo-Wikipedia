@@ -1,17 +1,17 @@
 ---
-title: 机器学习著名定理之—No Free Lunch定理详解
+title: "机器学习著名定理之—No Free Lunch定理详解"
 date: "2022-03-11 00:00:00"
 updated: "2022-03-11 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/dl论文/机器学习著名定理之—No-Free-Lunch定理详解/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/dl论文/机器学习著名定理之—No-Free-Lunch定理详解/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/479235186
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/479235186"
 ---
 
 

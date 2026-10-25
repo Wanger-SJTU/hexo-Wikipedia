@@ -1,17 +1,17 @@
 ---
-title: (1 条消息) 体系结构和系统性能分析architecture&performance
+title: "(1 条消息) 体系结构和系统性能分析architecture&performance"
 date: "2023-12-14 00:00:00"
 updated: "2023-12-14 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/我的收藏/体系结构和系统性能分析architecture-performance/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/我的收藏/体系结构和系统性能分析architecture-performance/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/672024071
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/672024071"
 ---
 
 

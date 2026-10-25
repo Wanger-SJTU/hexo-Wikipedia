@@ -1,17 +1,17 @@
 ---
-title: LD/ST？ 内存语义？ 傻傻分不清
+title: "LD/ST？ 内存语义？ 傻傻分不清"
 date: "2025-04-21 00:00:00"
 updated: "2025-04-21 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/我的收藏/LD_ST-内存语义-傻傻分不清/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/我的收藏/LD_ST-内存语义-傻傻分不清/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/1888313027880808563
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/1888313027880808563"
 ---
 
 

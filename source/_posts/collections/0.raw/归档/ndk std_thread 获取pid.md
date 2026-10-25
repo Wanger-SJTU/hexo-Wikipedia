@@ -1,14 +1,14 @@
 ---
-title: ndk std_thread 获取pid
+title: "ndk std_thread 获取pid"
 date: "2026-04-11 21:40:17"
 updated: "2026-04-11 21:40:17"
-layout: post
-permalink: /collections/0.raw/归档/ndk-std_thread-获取pid/
+layout: "post"
+permalink: "/collections/0.raw/归档/ndk-std_thread-获取pid/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 ---
 
 #cpp #ndk

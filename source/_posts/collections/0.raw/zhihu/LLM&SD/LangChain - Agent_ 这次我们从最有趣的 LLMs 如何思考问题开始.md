@@ -2,16 +2,16 @@
 title: "LangChain - Agent: 这次我们从最有趣的 LLMs 如何思考问题开始"
 date: "2023-09-17 00:00:00"
 updated: "2023-09-17 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/LLM-SD/LangChain-Agent_-这次我们从最有趣的-LLMs-如何思考问题开始/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/LLM-SD/LangChain-Agent_-这次我们从最有趣的-LLMs-如何思考问题开始/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/655038870
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/655038870"
 ---
 
 

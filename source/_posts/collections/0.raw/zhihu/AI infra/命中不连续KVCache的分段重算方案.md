@@ -1,17 +1,17 @@
 ---
-title: 命中不连续KVCache的分段重算方案
+title: "命中不连续KVCache的分段重算方案"
 date: "2026-07-24 00:00:00"
 updated: "2026-07-24 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/AI-infra/命中不连续KVCache的分段重算方案/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/AI-infra/命中不连续KVCache的分段重算方案/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/2063989921711501424
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/2063989921711501424"
 ---
 
 

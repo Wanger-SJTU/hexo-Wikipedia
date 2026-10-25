@@ -1,17 +1,17 @@
 ---
-title: 作死向：修改TVM的底层数据结构
+title: "作死向：修改TVM的底层数据结构"
 date: "2020-07-09 00:00:00"
 updated: "2020-07-09 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/模型部署那些事/作死向-修改TVM的底层数据结构/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/模型部署那些事/作死向-修改TVM的底层数据结构/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/151265644
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/151265644"
 ---
 
 

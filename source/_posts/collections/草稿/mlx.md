@@ -1,14 +1,14 @@
 ---
-title: mlx
+title: "mlx"
 date: "2026-04-11 21:40:17"
 updated: "2026-04-11 21:40:17"
-layout: post
-permalink: /collections/草稿/mlx/
+layout: "post"
+permalink: "/collections/草稿/mlx/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 ---
 
 [cp]@咕猫猫: import mlx.core as torch， import mlx.nn as nn[/cp]

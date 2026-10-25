@@ -1,17 +1,17 @@
 ---
-title: MNN量化工具分析
+title: "MNN量化工具分析"
 date: "2020-07-03 00:00:00"
 updated: "2020-07-03 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/dl论文/MNN量化工具分析/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/dl论文/MNN量化工具分析/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/153562409
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/153562409"
 ---
 
 

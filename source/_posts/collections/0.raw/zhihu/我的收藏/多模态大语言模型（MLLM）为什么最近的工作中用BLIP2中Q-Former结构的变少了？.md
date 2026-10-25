@@ -1,17 +1,17 @@
 ---
-title: 多模态大语言模型（MLLM）为什么最近的工作中用BLIP2中Q-Former结构的变少了？
+title: "多模态大语言模型（MLLM）为什么最近的工作中用BLIP2中Q-Former结构的变少了？"
 date: "2024-05-11 00:00:00"
 updated: "2024-05-11 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/我的收藏/多模态大语言模型(MLLM)为什么最近的工作中用BLIP2中Q-Former结构的变少了/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/我的收藏/多模态大语言模型(MLLM)为什么最近的工作中用BLIP2中Q-Former结构的变少了/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://www.zhihu.com/question/626796690/answer/3494816721
+  - "知乎"
+source_url: "https://www.zhihu.com/question/626796690/answer/3494816721"
 ---
 
 

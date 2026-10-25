@@ -1,17 +1,17 @@
 ---
-title: HyperDFlash：给DeepSeek-V4的MHC架构量身定制的块级投机解码
+title: "HyperDFlash：给DeepSeek-V4的MHC架构量身定制的块级投机解码"
 date: "2026-06-26 00:00:00"
 updated: "2026-06-26 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/LLM-SD/HyperDFlash-给DeepSeek-V4的MHC架构量身定制的块级投机解码/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/LLM-SD/HyperDFlash-给DeepSeek-V4的MHC架构量身定制的块级投机解码/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/2053896212118499517
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/2053896212118499517"
 ---
 
 

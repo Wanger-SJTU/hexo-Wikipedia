@@ -1,17 +1,17 @@
 ---
-title: 给IT行业年轻人的职业建议2(处理好职业困惑)
+title: "给IT行业年轻人的职业建议2(处理好职业困惑)"
 date: "2026-05-28 00:00:00"
 updated: "2026-05-28 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/我的收藏/给IT行业年轻人的职业建议2(处理好职业困惑)-2395c6/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/我的收藏/给IT行业年轻人的职业建议2(处理好职业困惑)-2395c6/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/685689541
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/685689541"
 ---
 
 

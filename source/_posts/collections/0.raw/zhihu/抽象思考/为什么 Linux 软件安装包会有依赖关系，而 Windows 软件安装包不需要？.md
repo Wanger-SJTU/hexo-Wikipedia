@@ -1,17 +1,17 @@
 ---
-title: 为什么 Linux 软件安装包会有依赖关系，而 Windows 软件安装包不需要？
+title: "为什么 Linux 软件安装包会有依赖关系，而 Windows 软件安装包不需要？"
 date: "2026-04-21 00:00:00"
 updated: "2026-04-21 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/抽象思考/为什么-Linux-软件安装包会有依赖关系,而-Windows-软件安装包不需要/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/抽象思考/为什么-Linux-软件安装包会有依赖关系,而-Windows-软件安装包不需要/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://www.zhihu.com/question/56086360/answer/1915769192050831577
+  - "知乎"
+source_url: "https://www.zhihu.com/question/56086360/answer/1915769192050831577"
 ---
 
 

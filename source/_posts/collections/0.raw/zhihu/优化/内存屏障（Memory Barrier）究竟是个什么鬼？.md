@@ -1,17 +1,17 @@
 ---
-title: 内存屏障（Memory Barrier）究竟是个什么鬼？
+title: "内存屏障（Memory Barrier）究竟是个什么鬼？"
 date: "2022-01-27 00:00:00"
 updated: "2022-01-27 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/优化/内存屏障(Memory-Barrier)究竟是个什么鬼/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/优化/内存屏障(Memory-Barrier)究竟是个什么鬼/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/460780133
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/460780133"
 ---
 
 

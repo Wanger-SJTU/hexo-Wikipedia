@@ -2,16 +2,16 @@
 title: "【CLIP系列Paper解读】CLIP: Learning Transferable Visual Models From Natural Language Supervision"
 date: "2023-02-27 00:00:00"
 updated: "2023-02-27 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/dl论文/【CLIP系列Paper解读】CLIP_-Learning-Transferable-Visual-Models-From-Natural-Language-Supervision/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/dl论文/【CLIP系列Paper解读】CLIP_-Learning-Transferable-Visual-Models-From-Natural-Language-Supervision/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/486857682
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/486857682"
 ---
 
 

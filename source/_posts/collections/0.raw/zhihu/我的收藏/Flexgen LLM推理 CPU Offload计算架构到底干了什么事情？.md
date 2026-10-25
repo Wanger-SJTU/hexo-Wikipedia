@@ -1,17 +1,17 @@
 ---
-title: Flexgen LLM推理 CPU Offload计算架构到底干了什么事情？
+title: "Flexgen LLM推理 CPU Offload计算架构到底干了什么事情？"
 date: "2023-03-22 00:00:00"
 updated: "2023-03-22 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/我的收藏/Flexgen-LLM推理-CPU-Offload计算架构到底干了什么事情/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/我的收藏/Flexgen-LLM推理-CPU-Offload计算架构到底干了什么事情/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/615021309
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/615021309"
 ---
 
 

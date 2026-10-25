@@ -1,17 +1,17 @@
 ---
-title: 套娃加速：当 Speculative Decoding 开始投机自己
+title: "套娃加速：当 Speculative Decoding 开始投机自己"
 date: "2026-04-13 00:00:00"
 updated: "2026-04-13 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/LLM-SD/_套娃加速-当-Speculative-Decoding-开始投机自己_/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/LLM-SD/_套娃加速-当-Speculative-Decoding-开始投机自己_/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/2026747951905613706
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/2026747951905613706"
 ---
 
 

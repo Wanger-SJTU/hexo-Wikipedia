@@ -1,17 +1,17 @@
 ---
-title: 从 flag 到 barrier：cp.async 的 wait 演进
+title: "从 flag 到 barrier：cp.async 的 wait 演进"
 date: "2026-05-17 00:00:00"
 updated: "2026-05-17 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/体系结构/从-flag-到-barrier-cp.async-的-wait-演进/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/体系结构/从-flag-到-barrier-cp.async-的-wait-演进/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/2039299082934543521
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/2039299082934543521"
 ---
 
 

@@ -1,17 +1,17 @@
 ---
-title: 如何理解 Tomasulo 算法？
+title: "如何理解 Tomasulo 算法？"
 date: "2026-04-15 00:00:00"
 updated: "2026-04-15 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/走向cs/如何理解-Tomasulo-算法/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/走向cs/如何理解-Tomasulo-算法/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://www.zhihu.com/question/275648655/answer/2190658050
+  - "知乎"
+source_url: "https://www.zhihu.com/question/275648655/answer/2190658050"
 ---
 
 

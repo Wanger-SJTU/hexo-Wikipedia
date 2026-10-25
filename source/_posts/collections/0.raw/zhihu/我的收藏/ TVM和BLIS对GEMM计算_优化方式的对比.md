@@ -1,17 +1,17 @@
 ---
-title: (1 条消息) TVM和BLIS对GEMM计算/优化方式的对比
+title: "(1 条消息) TVM和BLIS对GEMM计算/优化方式的对比"
 date: "2022-04-21 00:00:00"
 updated: "2022-04-21 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/我的收藏/TVM和BLIS对GEMM计算_优化方式的对比/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/我的收藏/TVM和BLIS对GEMM计算_优化方式的对比/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/494347227
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/494347227"
 ---
 
 

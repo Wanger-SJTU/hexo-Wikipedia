@@ -2,16 +2,16 @@
 title: "Large Language Models for Information Retrieval: A Survey 大模型用于信息检索综述-论文阅读"
 date: "2023-11-12 00:00:00"
 updated: "2023-11-12 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/LLM-SD/Large-Language-Models-for-Information-Retrieval_-A-Survey-大模型用于信息检索综述-论文阅读/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/LLM-SD/Large-Language-Models-for-Information-Retrieval_-A-Survey-大模型用于信息检索综述-论文阅读/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/666414155
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/666414155"
 ---
 
 

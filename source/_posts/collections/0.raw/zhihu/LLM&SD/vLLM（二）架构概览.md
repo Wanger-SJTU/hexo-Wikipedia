@@ -1,17 +1,17 @@
 ---
-title: vLLM（二）架构概览
+title: "vLLM（二）架构概览"
 date: "2025-04-22 00:00:00"
 updated: "2025-04-22 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/LLM-SD/vLLM(二)架构概览/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/LLM-SD/vLLM(二)架构概览/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/681716326
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/681716326"
 ---
 
 

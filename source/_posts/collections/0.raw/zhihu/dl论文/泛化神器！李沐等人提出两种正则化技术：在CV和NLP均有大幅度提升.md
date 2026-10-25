@@ -1,17 +1,17 @@
 ---
-title: 泛化神器！李沐等人提出两种正则化技术：在CV和NLP均有大幅度提升
+title: "泛化神器！李沐等人提出两种正则化技术：在CV和NLP均有大幅度提升"
 date: "2021-02-08 00:00:00"
 updated: "2021-02-08 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/dl论文/泛化神器-李沐等人提出两种正则化技术-在CV和NLP均有大幅度提升/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/dl论文/泛化神器-李沐等人提出两种正则化技术-在CV和NLP均有大幅度提升/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/350067666
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/350067666"
 ---
 
 

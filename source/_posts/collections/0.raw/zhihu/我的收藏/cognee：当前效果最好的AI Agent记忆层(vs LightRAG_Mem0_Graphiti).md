@@ -1,17 +1,17 @@
 ---
-title: (2 条消息) cognee：当前效果最好的AI Agent记忆层(vs LightRAG/Mem0/Graphiti)
+title: "(2 条消息) cognee：当前效果最好的AI Agent记忆层(vs LightRAG/Mem0/Graphiti)"
 date: "2025-08-25 00:00:00"
 updated: "2025-08-25 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/我的收藏/cognee-当前效果最好的AI-Agent记忆层(vs-LightRAG_Mem0_Graphiti)/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/我的收藏/cognee-当前效果最好的AI-Agent记忆层(vs-LightRAG_Mem0_Graphiti)/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/1943451926181164200
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/1943451926181164200"
 ---
 
 

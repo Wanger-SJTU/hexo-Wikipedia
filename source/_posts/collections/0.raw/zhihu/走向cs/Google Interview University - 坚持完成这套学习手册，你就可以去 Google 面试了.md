@@ -1,17 +1,17 @@
 ---
-title: Google Interview University - 坚持完成这套学习手册，你就可以去 Google 面试了
+title: "Google Interview University - 坚持完成这套学习手册，你就可以去 Google 面试了"
 date: "2016-10-26 00:00:00"
 updated: "2016-10-26 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/走向cs/Google-Interview-University-坚持完成这套学习手册,你就可以去-Google-面试了/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/走向cs/Google-Interview-University-坚持完成这套学习手册,你就可以去-Google-面试了/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/22881223
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/22881223"
 ---
 
 

@@ -1,14 +1,14 @@
 ---
-title: Skill Runtime Pattern
+title: "Skill Runtime Pattern"
 date: "2026-05-28 11:34:14"
 updated: "2026-05-28 11:34:14"
-layout: post
-permalink: /collections/learn-harness-engineering/skills/harness-creator/references/skill-runtime-pattern/
+layout: "post"
+permalink: "/collections/learn-harness-engineering/skills/harness-creator/references/skill-runtime-pattern/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 ---
 
 # Skill Runtime Pattern

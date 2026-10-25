@@ -1,17 +1,17 @@
 ---
-title: 【论文】ICCV美文：从过拟合到欠拟合？
+title: "【论文】ICCV美文：从过拟合到欠拟合？"
 date: "2020-09-17 00:00:00"
 updated: "2020-09-17 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/dl论文/【论文】ICCV美文-从过拟合到欠拟合/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/dl论文/【论文】ICCV美文-从过拟合到欠拟合/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/242304519
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/242304519"
 ---
 
 

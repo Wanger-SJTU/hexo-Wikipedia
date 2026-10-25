@@ -1,20 +1,20 @@
 ---
-title: Agent Skills
+title: "Agent Skills"
 date: "2026-05-06 00:00:00"
 updated: "2026-05-06 00:00:00"
-layout: post
-permalink: /collections/0.raw/articles/2026-05-06-agent-skills/
+layout: "post"
+permalink: "/collections/0.raw/articles/2026-05-06-agent-skills/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - AI
-  - Agent
-  - Engineering
-  - Claude
-source_url: https://addyosmani.com/blog/agent-skills/
+  - "AI"
+  - "Agent"
+  - "Engineering"
+  - "Claude"
+source_url: "https://addyosmani.com/blog/agent-skills/"
 ---
 
 

@@ -1,17 +1,17 @@
 ---
-title: 深度解读 AGI-Next 2026：分化、新范式、Agent 与全球 AI 竞赛的 40 条重要判断
+title: "深度解读 AGI-Next 2026：分化、新范式、Agent 与全球 AI 竞赛的 40 条重要判断"
 date: "2026-01-13 00:00:00"
 updated: "2026-01-13 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/我的收藏/深度解读-AGI-Next-2026-分化、新范式、Agent-与全球-AI-竞赛的-40-条重要判断/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/我的收藏/深度解读-AGI-Next-2026-分化、新范式、Agent-与全球-AI-竞赛的-40-条重要判断/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/1994519630664990775
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/1994519630664990775"
 ---
 
 

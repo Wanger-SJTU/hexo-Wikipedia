@@ -1,17 +1,17 @@
 ---
-title: 简单两步加速PyTorch里的Dataloader
+title: "简单两步加速PyTorch里的Dataloader"
 date: "2019-06-05 00:00:00"
 updated: "2019-06-05 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/编程向/简单两步加速PyTorch里的Dataloader/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/编程向/简单两步加速PyTorch里的Dataloader/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/68191407
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/68191407"
 ---
 
 

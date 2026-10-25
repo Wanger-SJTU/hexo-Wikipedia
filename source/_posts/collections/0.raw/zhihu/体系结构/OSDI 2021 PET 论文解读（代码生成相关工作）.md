@@ -1,17 +1,17 @@
 ---
-title: OSDI 2021 PET 论文解读（代码生成相关工作）
+title: "OSDI 2021 PET 论文解读（代码生成相关工作）"
 date: "2022-06-25 00:00:00"
 updated: "2022-06-25 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/体系结构/OSDI-2021-PET-论文解读(代码生成相关工作)/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/体系结构/OSDI-2021-PET-论文解读(代码生成相关工作)/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/533807811
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/533807811"
 ---
 
 

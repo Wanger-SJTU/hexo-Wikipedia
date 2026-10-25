@@ -1,17 +1,17 @@
 ---
-title: 各家芯片厂商 Triton编译路径选择深度分析
+title: "各家芯片厂商 Triton编译路径选择深度分析"
 date: "2026-07-05 00:00:00"
 updated: "2026-07-05 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/AI-infra/各家芯片厂商-Triton编译路径选择深度分析/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/AI-infra/各家芯片厂商-Triton编译路径选择深度分析/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/2057073142737137777
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/2057073142737137777"
 ---
 
 

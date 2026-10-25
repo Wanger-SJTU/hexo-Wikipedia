@@ -1,14 +1,14 @@
 ---
-title: Пример недоопределённой задачи
+title: "Пример недоопределённой задачи"
 date: "2026-05-28 11:34:14"
 updated: "2026-05-28 11:34:14"
-layout: post
-permalink: /collections/learn-harness-engineering/docs/ru/lectures/lecture-01-why-capable-agents-still-fail/code/underspecified-task/
+layout: "post"
+permalink: "/collections/learn-harness-engineering/docs/ru/lectures/lecture-01-why-capable-agents-still-fail/code/underspecified-task/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 ---
 
 # Пример недоопределённой задачи

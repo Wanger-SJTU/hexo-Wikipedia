@@ -1,17 +1,17 @@
 ---
-title: 详解深度学习中的Normalization，BN/LN/WN
+title: "详解深度学习中的Normalization，BN/LN/WN"
 date: "2021-09-11 00:00:00"
 updated: "2021-09-11 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/机器学习/详解深度学习中的Normalization,BN_LN_WN/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/机器学习/详解深度学习中的Normalization,BN_LN_WN/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/33173246
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/33173246"
 ---
 
 

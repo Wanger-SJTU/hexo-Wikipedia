@@ -1,14 +1,14 @@
 ---
-title: SOP：分層領域架構
+title: "SOP：分層領域架構"
 date: "2026-05-28 11:34:14"
 updated: "2026-05-28 11:34:14"
-layout: post
-permalink: /collections/learn-harness-engineering/docs/zh-TW/resources/openai-advanced/sops/layered-domain-architecture/
+layout: "post"
+permalink: "/collections/learn-harness-engineering/docs/zh-TW/resources/openai-advanced/sops/layered-domain-architecture/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 ---
 
 # SOP：分層領域架構

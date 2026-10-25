@@ -1,17 +1,17 @@
 ---
-title: Understanding Transformer from the Perspective of Associative Memory 论文学习笔记
+title: "Understanding Transformer from the Perspective of Associative Memory 论文学习笔记"
 date: "2026-01-12 00:00:00"
 updated: "2026-01-12 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/LLM-SD/Understanding-Transformer-from-the-Perspective-of-Associative-Memory-论文学习笔记/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/LLM-SD/Understanding-Transformer-from-the-Perspective-of-Associative-Memory-论文学习笔记/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/1986946791497819070
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/1986946791497819070"
 ---
 
 

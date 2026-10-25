@@ -1,17 +1,17 @@
 ---
-title: GPU中计算与访存的斗争
+title: "GPU中计算与访存的斗争"
 date: "2025-10-14 00:00:00"
 updated: "2025-10-14 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/体系结构/GPU中计算与访存的斗争-88d42f/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/体系结构/GPU中计算与访存的斗争-88d42f/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/1961543955842830601
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/1961543955842830601"
 ---
 
 

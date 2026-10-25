@@ -1,17 +1,17 @@
 ---
-title: 奇异值分解（SVD）有哪些很厉害的应用？
+title: "奇异值分解（SVD）有哪些很厉害的应用？"
 date: "2026-04-23 00:00:00"
 updated: "2026-04-23 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/dl论文/奇异值分解(SVD)有哪些很厉害的应用/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/dl论文/奇异值分解(SVD)有哪些很厉害的应用/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://www.zhihu.com/question/31167170/answer/1484774828
+  - "知乎"
+source_url: "https://www.zhihu.com/question/31167170/answer/1484774828"
 ---
 
 

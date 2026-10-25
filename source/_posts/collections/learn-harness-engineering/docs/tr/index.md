@@ -1,14 +1,14 @@
 ---
-title: Learn Harness Engineering'e hoş geldiniz
+title: "Learn Harness Engineering'e hoş geldiniz"
 date: "2026-05-28 11:34:14"
 updated: "2026-05-28 11:34:14"
-layout: post
-permalink: /collections/learn-harness-engineering/docs/tr/index/
+layout: "post"
+permalink: "/collections/learn-harness-engineering/docs/tr/index/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 ---
 
 # Learn Harness Engineering'e hoş geldiniz

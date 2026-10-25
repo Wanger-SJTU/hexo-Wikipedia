@@ -1,17 +1,17 @@
 ---
-title: 推荐一个非常实用的峰值查找算法（peak detection）
+title: "推荐一个非常实用的峰值查找算法（peak detection）"
 date: "2022-08-04 00:00:00"
 updated: "2022-08-04 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/编程向/推荐一个非常实用的峰值查找算法(peak-detection)/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/编程向/推荐一个非常实用的峰值查找算法(peak-detection)/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/549588865
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/549588865"
 ---
 
 

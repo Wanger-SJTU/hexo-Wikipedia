@@ -1,17 +1,17 @@
 ---
-title: 大规模 EP 优化
+title: "大规模 EP 优化"
 date: "2025-08-29 00:00:00"
 updated: "2025-08-29 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/我的收藏/大规模-EP-优化/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/我的收藏/大规模-EP-优化/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/1944715179439924643
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/1944715179439924643"
 ---
 
 

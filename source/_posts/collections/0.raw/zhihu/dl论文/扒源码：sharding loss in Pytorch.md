@@ -1,17 +1,17 @@
 ---
-title: 扒源码：sharding loss in Pytorch
+title: "扒源码：sharding loss in Pytorch"
 date: "2019-12-06 00:00:00"
 updated: "2019-12-06 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/dl论文/扒源码-sharding-loss-in-Pytorch/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/dl论文/扒源码-sharding-loss-in-Pytorch/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/95687913
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/95687913"
 ---
 
 

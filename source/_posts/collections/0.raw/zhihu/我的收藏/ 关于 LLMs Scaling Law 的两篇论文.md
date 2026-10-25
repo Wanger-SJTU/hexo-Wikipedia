@@ -1,17 +1,17 @@
 ---
-title: (1 条消息) 关于 LLMs Scaling Law 的两篇论文
+title: "(1 条消息) 关于 LLMs Scaling Law 的两篇论文"
 date: "2023-10-26 00:00:00"
 updated: "2023-10-26 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/我的收藏/关于-LLMs-Scaling-Law-的两篇论文/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/我的收藏/关于-LLMs-Scaling-Law-的两篇论文/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/663524611
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/663524611"
 ---
 
 

@@ -1,17 +1,17 @@
 ---
-title: Deformable Convolution  v1, v2 总结
+title: "Deformable Convolution  v1, v2 总结"
 date: "2019-08-18 00:00:00"
 updated: "2019-08-18 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/dl论文/Deformable-Convolution-v1,-v2-总结/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/dl论文/Deformable-Convolution-v1,-v2-总结/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/77644792
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/77644792"
 ---
 
 

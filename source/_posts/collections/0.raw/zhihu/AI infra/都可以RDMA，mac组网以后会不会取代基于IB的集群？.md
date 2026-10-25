@@ -1,17 +1,17 @@
 ---
-title: 都可以RDMA，mac组网以后会不会取代基于IB的集群？
+title: "都可以RDMA，mac组网以后会不会取代基于IB的集群？"
 date: "2026-07-14 00:00:00"
 updated: "2026-07-14 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/AI-infra/都可以RDMA,mac组网以后会不会取代基于IB的集群/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/AI-infra/都可以RDMA,mac组网以后会不会取代基于IB的集群/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://www.zhihu.com/question/2005348116719744112/answer/2060501186130743304
+  - "知乎"
+source_url: "https://www.zhihu.com/question/2005348116719744112/answer/2060501186130743304"
 ---
 
 

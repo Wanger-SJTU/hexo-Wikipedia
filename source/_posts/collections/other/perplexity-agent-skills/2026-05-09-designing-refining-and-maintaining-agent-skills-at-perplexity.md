@@ -1,20 +1,20 @@
 ---
-title: Designing, Refining, and Maintaining Agent Skills at Perplexity
+title: "Designing, Refining, and Maintaining Agent Skills at Perplexity"
 date: "2026-05-09 13:24:59"
 updated: "2026-05-09 13:24:59"
-layout: post
-permalink: /collections/other/perplexity-agent-skills/2026-05-09-designing-refining-and-maintaining-agent-skills-at-perplexity/
+layout: "post"
+permalink: "/collections/other/perplexity-agent-skills/2026-05-09-designing-refining-and-maintaining-agent-skills-at-perplexity/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 博客
-  - Agent
-  - Skill
-  - Perplexity
-source_url: https://research.perplexity.ai/articles/designing-refining-and-maintaining-agent-skills-at-perplexity
+  - "博客"
+  - "Agent"
+  - "Skill"
+  - "Perplexity"
+source_url: "https://research.perplexity.ai/articles/designing-refining-and-maintaining-agent-skills-at-perplexity"
 ---
 
 

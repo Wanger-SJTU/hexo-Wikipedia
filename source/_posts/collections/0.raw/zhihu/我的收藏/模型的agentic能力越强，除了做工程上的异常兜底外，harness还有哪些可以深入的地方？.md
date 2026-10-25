@@ -1,17 +1,17 @@
 ---
-title: 模型的agentic能力越强，除了做工程上的异常兜底外，harness还有哪些可以深入的地方？
+title: "模型的agentic能力越强，除了做工程上的异常兜底外，harness还有哪些可以深入的地方？"
 date: "2026-07-27 00:00:00"
 updated: "2026-07-27 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/我的收藏/模型的agentic能力越强,除了做工程上的异常兜底外,harness还有哪些可以深入的地方/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/我的收藏/模型的agentic能力越强,除了做工程上的异常兜底外,harness还有哪些可以深入的地方/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://www.zhihu.com/question/2063218151018518325/answer/2064984156581389572
+  - "知乎"
+source_url: "https://www.zhihu.com/question/2063218151018518325/answer/2064984156581389572"
 ---
 
 

@@ -1,17 +1,17 @@
 ---
-title: (2 条消息) ARM架构学习-SMMU(2) Distributed Translation Interface
+title: "(2 条消息) ARM架构学习-SMMU(2) Distributed Translation Interface"
 date: "2025-05-28 00:00:00"
 updated: "2025-05-28 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/我的收藏/ARM架构学习-SMMU(2)-Distributed-Translation-Interface/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/我的收藏/ARM架构学习-SMMU(2)-Distributed-Translation-Interface/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/16724045320
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/16724045320"
 ---
 
 

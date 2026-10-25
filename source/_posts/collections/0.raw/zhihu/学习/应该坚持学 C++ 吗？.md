@@ -1,17 +1,17 @@
 ---
-title: 应该坚持学 C++ 吗？
+title: "应该坚持学 C++ 吗？"
 date: "2026-04-15 00:00:00"
 updated: "2026-04-15 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/学习/应该坚持学-C-吗/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/学习/应该坚持学-C-吗/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://www.zhihu.com/question/36456036/answer/2297226410
+  - "知乎"
+source_url: "https://www.zhihu.com/question/36456036/answer/2297226410"
 ---
 
 

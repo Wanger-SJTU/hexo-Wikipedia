@@ -1,17 +1,17 @@
 ---
-title: 来看 Meta 的新论文：大语言模型能记住多少东西？
+title: "来看 Meta 的新论文：大语言模型能记住多少东西？"
 date: "2025-06-04 00:00:00"
 updated: "2025-06-04 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/我的收藏/来看-Meta-的新论文-大语言模型能记住多少东西/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/我的收藏/来看-Meta-的新论文-大语言模型能记住多少东西/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/1913718792497918000
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/1913718792497918000"
 ---
 
 

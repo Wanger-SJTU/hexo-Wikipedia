@@ -1,17 +1,17 @@
 ---
-title: Is SIMD all you need?
+title: "Is SIMD all you need?"
 date: "2021-11-06 00:00:00"
 updated: "2021-11-06 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/优化/Is-SIMD-all-you-need_/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/优化/Is-SIMD-all-you-need_/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/430223278
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/430223278"
 ---
 
 

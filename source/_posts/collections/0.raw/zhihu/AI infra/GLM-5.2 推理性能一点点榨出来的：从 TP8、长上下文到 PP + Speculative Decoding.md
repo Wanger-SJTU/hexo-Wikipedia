@@ -1,17 +1,17 @@
 ---
-title: GLM-5.2 推理性能一点点榨出来的：从 TP8、长上下文到 PP + Speculative Decoding
+title: "GLM-5.2 推理性能一点点榨出来的：从 TP8、长上下文到 PP + Speculative Decoding"
 date: "2026-08-14 00:00:00"
 updated: "2026-08-14 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/AI-infra/GLM-5.2-推理性能一点点榨出来的-从-TP8、长上下文到-PP-Speculative-Decoding/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/AI-infra/GLM-5.2-推理性能一点点榨出来的-从-TP8、长上下文到-PP-Speculative-Decoding/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/2071678642959258406
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/2071678642959258406"
 ---
 
 

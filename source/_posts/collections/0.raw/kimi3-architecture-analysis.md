@@ -2,13 +2,13 @@
 title: "Understanding Kimi3 (1): Linear Attention, Sparse Attention, and the Architecture War at Million-Token Scale"
 date: "2026-07-23 08:38:18"
 updated: "2026-07-23 08:38:18"
-layout: post
-permalink: /collections/0.raw/kimi3-architecture-analysis/
+layout: "post"
+permalink: "/collections/0.raw/kimi3-architecture-analysis/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 ---
 
 

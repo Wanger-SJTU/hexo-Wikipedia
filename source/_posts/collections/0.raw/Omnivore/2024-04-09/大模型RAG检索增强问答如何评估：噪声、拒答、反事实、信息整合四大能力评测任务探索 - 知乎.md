@@ -1,14 +1,14 @@
 ---
-title: 大模型RAG检索增强问答如何评估：噪声、拒答、反事实、信息整合四大能力评测任务探索 - 知乎
+title: "大模型RAG检索增强问答如何评估：噪声、拒答、反事实、信息整合四大能力评测任务探索 - 知乎"
 date: "2026-04-11 21:40:28"
 updated: "2026-04-11 21:40:28"
-layout: post
-permalink: /collections/0.raw/Omnivore/2024-04-09/大模型RAG检索增强问答如何评估-噪声、拒答、反事实、信息整合四大能力评测任务探索-知乎/
+layout: "post"
+permalink: "/collections/0.raw/Omnivore/2024-04-09/大模型RAG检索增强问答如何评估-噪声、拒答、反事实、信息整合四大能力评测任务探索-知乎/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 ---
 
 ---

@@ -1,17 +1,17 @@
 ---
-title: 神经网络中，设计loss function有哪些技巧?
+title: "神经网络中，设计loss function有哪些技巧?"
 date: "2026-04-23 00:00:00"
 updated: "2026-04-23 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/dl论文/神经网络中,设计loss-function有哪些技巧_/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/dl论文/神经网络中,设计loss-function有哪些技巧_/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://www.zhihu.com/question/268105631/answer/333738561
+  - "知乎"
+source_url: "https://www.zhihu.com/question/268105631/answer/333738561"
 ---
 
 

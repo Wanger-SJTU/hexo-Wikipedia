@@ -1,17 +1,17 @@
 ---
-title: 深入理解io_uring（三）一个完整请求
+title: "深入理解io_uring（三）一个完整请求"
 date: "2024-12-12 00:00:00"
 updated: "2024-12-12 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/编程向/深入理解io_uring(三)一个完整请求/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/编程向/深入理解io_uring(三)一个完整请求/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/12097798333
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/12097798333"
 ---
 
 

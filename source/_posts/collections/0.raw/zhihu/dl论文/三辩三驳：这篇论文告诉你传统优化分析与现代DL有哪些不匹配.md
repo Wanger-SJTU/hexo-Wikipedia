@@ -1,17 +1,17 @@
 ---
-title: 三辩三驳：这篇论文告诉你传统优化分析与现代DL有哪些不匹配
+title: "三辩三驳：这篇论文告诉你传统优化分析与现代DL有哪些不匹配"
 date: "2020-11-07 00:00:00"
 updated: "2020-11-07 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/dl论文/三辩三驳-这篇论文告诉你传统优化分析与现代DL有哪些不匹配/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/dl论文/三辩三驳-这篇论文告诉你传统优化分析与现代DL有哪些不匹配/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/277462904
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/277462904"
 ---
 
 

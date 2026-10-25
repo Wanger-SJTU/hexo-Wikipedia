@@ -1,17 +1,17 @@
 ---
-title: 聊一聊Transformer中的FFN
+title: "聊一聊Transformer中的FFN"
 date: "2024-03-08 00:00:00"
 updated: "2024-03-08 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/dl论文/聊一聊Transformer中的FFN/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/dl论文/聊一聊Transformer中的FFN/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/685943779
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/685943779"
 ---
 
 

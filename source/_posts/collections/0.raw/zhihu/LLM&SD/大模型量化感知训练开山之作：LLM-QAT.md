@@ -1,17 +1,17 @@
 ---
-title: 大模型量化感知训练开山之作：LLM-QAT
+title: "大模型量化感知训练开山之作：LLM-QAT"
 date: "2023-08-03 00:00:00"
 updated: "2023-08-03 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/LLM-SD/大模型量化感知训练开山之作-LLM-QAT/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/LLM-SD/大模型量化感知训练开山之作-LLM-QAT/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/647589650
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/647589650"
 ---
 
 

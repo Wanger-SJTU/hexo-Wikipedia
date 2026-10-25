@@ -1,17 +1,17 @@
 ---
-title: vLLM 分布式并行与通信全景
+title: "vLLM 分布式并行与通信全景"
 date: "2026-07-28 00:00:00"
 updated: "2026-07-28 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/AI-infra/vLLM-分布式并行与通信全景/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/AI-infra/vLLM-分布式并行与通信全景/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/2065444514379178422
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/2065444514379178422"
 ---
 
 

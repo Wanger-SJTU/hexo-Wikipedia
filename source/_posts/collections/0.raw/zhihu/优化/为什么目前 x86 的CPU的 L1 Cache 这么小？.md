@@ -1,17 +1,17 @@
 ---
-title: 为什么目前 x86 的CPU的 L1 Cache 这么小？
+title: "为什么目前 x86 的CPU的 L1 Cache 这么小？"
 date: "2026-04-21 00:00:00"
 updated: "2026-04-21 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/优化/为什么目前-x86-的CPU的-L1-Cache-这么小/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/优化/为什么目前-x86-的CPU的-L1-Cache-这么小/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://www.zhihu.com/question/546380221/answer/2608464435
+  - "知乎"
+source_url: "https://www.zhihu.com/question/546380221/answer/2608464435"
 ---
 
 

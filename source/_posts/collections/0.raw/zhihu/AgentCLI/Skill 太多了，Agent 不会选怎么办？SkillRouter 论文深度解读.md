@@ -1,17 +1,17 @@
 ---
-title: Skill 太多了，Agent 不会选怎么办？SkillRouter 论文深度解读
+title: "Skill 太多了，Agent 不会选怎么办？SkillRouter 论文深度解读"
 date: "2026-03-26 00:00:00"
 updated: "2026-03-26 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/AgentCLI/Skill-太多了,Agent-不会选怎么办-SkillRouter-论文深度解读/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/AgentCLI/Skill-太多了,Agent-不会选怎么办-SkillRouter-论文深度解读/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/2020599834457940987
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/2020599834457940987"
 ---
 
 

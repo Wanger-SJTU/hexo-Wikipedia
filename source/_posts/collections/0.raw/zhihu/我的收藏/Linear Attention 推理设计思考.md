@@ -1,17 +1,17 @@
 ---
-title: Linear Attention 推理设计思考
+title: "Linear Attention 推理设计思考"
 date: "2025-11-08 00:00:00"
 updated: "2025-11-08 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/我的收藏/Linear-Attention-推理设计思考/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/我的收藏/Linear-Attention-推理设计思考/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/1970421781090268661
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/1970421781090268661"
 ---
 
 

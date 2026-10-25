@@ -1,17 +1,17 @@
 ---
-title: 半监督深度学习训练和实现小Tricks
+title: "半监督深度学习训练和实现小Tricks"
 date: "2019-12-30 00:00:00"
 updated: "2019-12-30 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/dl论文/半监督深度学习训练和实现小Tricks/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/dl论文/半监督深度学习训练和实现小Tricks/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/100252944
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/100252944"
 ---
 
 

@@ -1,17 +1,17 @@
 ---
-title: (2 条消息) [ICML 2024 Oral] ExCP：大模型Checkpoint极致压缩，精度无损存储降低70倍
+title: "(2 条消息) [ICML 2024 Oral] ExCP：大模型Checkpoint极致压缩，精度无损存储降低70倍"
 date: "2024-06-19 00:00:00"
 updated: "2024-06-19 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/我的收藏/[ICML-2024-Oral]-ExCP-大模型Checkpoint极致压缩,精度无损存储降低70倍/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/我的收藏/[ICML-2024-Oral]-ExCP-大模型Checkpoint极致压缩,精度无损存储降低70倍/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/704158815
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/704158815"
 ---
 
 

@@ -1,14 +1,14 @@
 ---
-title: Your Agent Spends 99% of Its Tokens Carrying the Workshop, Not Doing the Work
+title: "Your Agent Spends 99% of Its Tokens Carrying the Workshop, Not Doing the Work"
 date: "2026-07-15 12:55:18"
 updated: "2026-07-15 12:55:18"
-layout: post
-permalink: /collections/substack/your-agent-spends-99-of-its-tokens/
+layout: "post"
+permalink: "/collections/substack/your-agent-spends-99-of-its-tokens/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 ---
 
 # Your Agent Spends 99% of Its Tokens Carrying the Workshop, Not Doing the Work

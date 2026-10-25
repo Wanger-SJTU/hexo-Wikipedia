@@ -1,17 +1,17 @@
 ---
-title: SLO感知的PD分离最佳配比计算SLO-Aware Compute Resource Allocation for Prefill-Decode Disaggregated LLM Inference
+title: "SLO感知的PD分离最佳配比计算SLO-Aware Compute Resource Allocation for Prefill-Decode Disaggregated LLM Inference"
 date: "2026-03-06 00:00:00"
 updated: "2026-03-06 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/LLM-SD/SLO感知的PD分离最佳配比计算SLO-Aware-Compute-Resource-Allocation-for-Prefill-Decode-Disaggregated-LLM/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/LLM-SD/SLO感知的PD分离最佳配比计算SLO-Aware-Compute-Resource-Allocation-for-Prefill-Decode-Disaggregated-LLM/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/2004998208758252289
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/2004998208758252289"
 ---
 
 

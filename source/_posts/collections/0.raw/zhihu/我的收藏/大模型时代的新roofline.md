@@ -1,17 +1,17 @@
 ---
-title: 大模型时代的新roofline
+title: "大模型时代的新roofline"
 date: "2026-04-21 00:00:00"
 updated: "2026-04-21 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/我的收藏/大模型时代的新roofline/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/我的收藏/大模型时代的新roofline/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/2029981166191780212
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/2029981166191780212"
 ---
 
 

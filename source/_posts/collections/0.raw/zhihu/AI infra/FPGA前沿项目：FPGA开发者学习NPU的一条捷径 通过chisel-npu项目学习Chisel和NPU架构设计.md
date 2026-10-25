@@ -1,17 +1,17 @@
 ---
-title: FPGA前沿项目：FPGA开发者学习NPU的一条捷径 通过chisel-npu项目学习Chisel和NPU架构设计
+title: "FPGA前沿项目：FPGA开发者学习NPU的一条捷径 通过chisel-npu项目学习Chisel和NPU架构设计"
 date: "2024-07-25 00:00:00"
 updated: "2024-07-25 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/AI-infra/FPGA前沿项目-FPGA开发者学习NPU的一条捷径-通过chisel-npu项目学习Chisel和NPU架构设计/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/AI-infra/FPGA前沿项目-FPGA开发者学习NPU的一条捷径-通过chisel-npu项目学习Chisel和NPU架构设计/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/710852593
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/710852593"
 ---
 
 

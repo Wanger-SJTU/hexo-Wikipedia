@@ -1,17 +1,17 @@
 ---
-title: 证伪：CNN中的图片平移不变性
+title: "证伪：CNN中的图片平移不变性"
 date: "2018-06-13 00:00:00"
 updated: "2018-06-13 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/机器学习/证伪-CNN中的图片平移不变性/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/机器学习/证伪-CNN中的图片平移不变性/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/38024868
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/38024868"
 ---
 
 

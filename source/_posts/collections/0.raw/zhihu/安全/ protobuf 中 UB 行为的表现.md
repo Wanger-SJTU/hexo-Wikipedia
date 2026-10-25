@@ -1,17 +1,17 @@
 ---
-title: protobuf 中 UB 行为的表现
+title: "protobuf 中 UB 行为的表现"
 date: "2022-06-09 00:00:00"
 updated: "2022-06-09 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/安全/protobuf-中-UB-行为的表现/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/安全/protobuf-中-UB-行为的表现/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/526558967
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/526558967"
 ---
 
 

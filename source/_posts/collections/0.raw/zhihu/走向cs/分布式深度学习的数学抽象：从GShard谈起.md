@@ -1,17 +1,17 @@
 ---
-title: 分布式深度学习的数学抽象：从GShard谈起
+title: "分布式深度学习的数学抽象：从GShard谈起"
 date: "2021-11-16 00:00:00"
 updated: "2021-11-16 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/走向cs/分布式深度学习的数学抽象-从GShard谈起/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/走向cs/分布式深度学习的数学抽象-从GShard谈起/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/433869519
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/433869519"
 ---
 
 

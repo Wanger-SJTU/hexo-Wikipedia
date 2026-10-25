@@ -1,17 +1,17 @@
 ---
-title: 推荐一款纳秒级的C++日志Nanolog
+title: "推荐一款纳秒级的C++日志Nanolog"
 date: "2020-05-06 00:00:00"
 updated: "2020-05-06 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/AI-infra/推荐一款纳秒级的C-日志Nanolog-0b904a/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/AI-infra/推荐一款纳秒级的C-日志Nanolog-0b904a/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/136208506
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/136208506"
 ---
 
 

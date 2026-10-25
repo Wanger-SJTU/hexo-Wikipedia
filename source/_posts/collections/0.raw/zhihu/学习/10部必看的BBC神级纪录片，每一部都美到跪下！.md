@@ -1,17 +1,17 @@
 ---
-title: 10部必看的BBC神级纪录片，每一部都美到跪下！
+title: "10部必看的BBC神级纪录片，每一部都美到跪下！"
 date: "2017-09-09 00:00:00"
 updated: "2017-09-09 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/学习/10部必看的BBC神级纪录片,每一部都美到跪下/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/学习/10部必看的BBC神级纪录片,每一部都美到跪下/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/29177369
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/29177369"
 ---
 
 

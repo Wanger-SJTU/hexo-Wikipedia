@@ -1,16 +1,16 @@
 ---
-title: Text Elements
+title: "Text Elements"
 date: "2026-04-11 21:40:17"
 updated: "2026-04-11 21:40:17"
-layout: post
-permalink: /collections/Excalidraw/PQ量化-.excalidraw/
+layout: "post"
+permalink: "/collections/Excalidraw/PQ量化-.excalidraw/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - excalidraw
+  - "excalidraw"
 ---
 
 ==⚠  Switch to EXCALIDRAW VIEW in the MORE OPTIONS menu of this document. ⚠==

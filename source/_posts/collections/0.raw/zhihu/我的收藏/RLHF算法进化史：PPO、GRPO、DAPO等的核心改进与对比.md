@@ -1,17 +1,17 @@
 ---
-title: RLHF算法进化史：PPO、GRPO、DAPO等的核心改进与对比
+title: "RLHF算法进化史：PPO、GRPO、DAPO等的核心改进与对比"
 date: "2025-10-13 00:00:00"
 updated: "2025-10-13 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/我的收藏/RLHF算法进化史-PPO、GRPO、DAPO等的核心改进与对比/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/我的收藏/RLHF算法进化史-PPO、GRPO、DAPO等的核心改进与对比/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/1959981457079506045
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/1959981457079506045"
 ---
 
 

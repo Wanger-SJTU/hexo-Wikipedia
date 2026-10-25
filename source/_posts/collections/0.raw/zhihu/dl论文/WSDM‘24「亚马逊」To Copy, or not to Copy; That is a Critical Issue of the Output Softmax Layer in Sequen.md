@@ -1,17 +1,17 @@
 ---
-title: WSDM‘24「亚马逊」To Copy, or not to Copy; That is a Critical Issue of the Output Softmax Layer in Sequen
+title: "WSDM‘24「亚马逊」To Copy, or not to Copy; That is a Critical Issue of the Output Softmax Layer in Sequen"
 date: "2024-02-28 00:00:00"
 updated: "2024-02-28 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/dl论文/WSDM‘24「亚马逊」To-Copy,-or-not-to-Copy;-That-is-a-Critical-Issue-of-the-Output-Softmax-Layer-/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/dl论文/WSDM‘24「亚马逊」To-Copy,-or-not-to-Copy;-That-is-a-Critical-Issue-of-the-Output-Softmax-Layer-/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/684422968
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/684422968"
 ---
 
 

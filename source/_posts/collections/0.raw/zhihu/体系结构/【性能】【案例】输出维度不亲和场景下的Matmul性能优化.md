@@ -1,17 +1,17 @@
 ---
-title: 【性能】【案例】输出维度不亲和场景下的Matmul性能优化
+title: "【性能】【案例】输出维度不亲和场景下的Matmul性能优化"
 date: "2025-12-31 00:00:00"
 updated: "2025-12-31 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/体系结构/【性能】【案例】输出维度不亲和场景下的Matmul性能优化-26941c/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/体系结构/【性能】【案例】输出维度不亲和场景下的Matmul性能优化-26941c/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/1989667023207303012
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/1989667023207303012"
 ---
 
 

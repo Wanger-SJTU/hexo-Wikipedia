@@ -2,16 +2,16 @@
 title: "闻名世界的经典演讲《You and Your Research》: 为什么只有少数科学家能做出重大科研成果，而大部分都会被历史遗忘？"
 date: "2025-03-19 00:00:00"
 updated: "2025-03-19 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/我的收藏/闻名世界的经典演讲《You-and-Your-Research》_-为什么只有少数科学家能做出重大科研成果,而大部分都会被历史遗忘/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/我的收藏/闻名世界的经典演讲《You-and-Your-Research》_-为什么只有少数科学家能做出重大科研成果,而大部分都会被历史遗忘/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/31283972369
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/31283972369"
 ---
 
 

@@ -1,17 +1,17 @@
 ---
-title: (2 条消息) LLMs量化系列|LLM量化方法小结
+title: "(2 条消息) LLMs量化系列|LLM量化方法小结"
 date: "2025-06-03 00:00:00"
 updated: "2025-06-03 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/我的收藏/LLMs量化系列_LLM量化方法小结/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/我的收藏/LLMs量化系列_LLM量化方法小结/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/12568191406
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/12568191406"
 ---
 
 

@@ -1,17 +1,17 @@
 ---
-title: ResNet为什么不用Dropout?
+title: "ResNet为什么不用Dropout?"
 date: "2026-04-15 00:00:00"
 updated: "2026-04-15 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/机器学习/ResNet为什么不用Dropout_/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/机器学习/ResNet为什么不用Dropout_/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://www.zhihu.com/question/325139089/answer/688743474
+  - "知乎"
+source_url: "https://www.zhihu.com/question/325139089/answer/688743474"
 ---
 
 

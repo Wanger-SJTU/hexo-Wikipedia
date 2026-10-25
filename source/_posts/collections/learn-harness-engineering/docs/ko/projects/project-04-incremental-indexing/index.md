@@ -1,14 +1,14 @@
 ---
-title: 프로젝트 04. 런타임 피드백을 사용하여 에이전트 동작 수정하기
+title: "프로젝트 04. 런타임 피드백을 사용하여 에이전트 동작 수정하기"
 date: "2026-05-28 11:34:14"
 updated: "2026-05-28 11:34:14"
-layout: post
-permalink: /collections/learn-harness-engineering/docs/ko/projects/project-04-incremental-indexing/index/
+layout: "post"
+permalink: "/collections/learn-harness-engineering/docs/ko/projects/project-04-incremental-indexing/index/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 ---
 
 [English Version →](../../../en/projects/project-04-incremental-indexing/)

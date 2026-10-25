@@ -2,16 +2,16 @@
 title: "NTIRE2024 | 修复一切图像RAIM: Restore All Image Model Challenge报告分析"
 date: "2024-06-08 00:00:00"
 updated: "2024-06-08 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/ISP-计算摄影/NTIRE2024-_-修复一切图像RAIM_-Restore-All-Image-Model-Challenge报告分析/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/ISP-计算摄影/NTIRE2024-_-修复一切图像RAIM_-Restore-All-Image-Model-Challenge报告分析/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/701048076
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/701048076"
 ---
 
 

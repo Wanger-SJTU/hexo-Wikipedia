@@ -1,17 +1,17 @@
 ---
-title: 常用的模型集成方法介绍：bagging、boosting 、stacking
+title: "常用的模型集成方法介绍：bagging、boosting 、stacking"
 date: "2019-05-15 00:00:00"
 updated: "2019-05-15 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/机器学习/常用的模型集成方法介绍-bagging、boosting-、stacking/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/机器学习/常用的模型集成方法介绍-bagging、boosting-、stacking/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/65888174
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/65888174"
 ---
 
 

@@ -1,14 +1,14 @@
 ---
-title: DeepSeek-V4：迈向高效百万 Token 上下文智能
+title: "DeepSeek-V4：迈向高效百万 Token 上下文智能"
 date: "2026-04-24 11:58:59"
 updated: "2026-04-24 11:58:59"
-layout: post
-permalink: /collections/0.raw/papers/DeepSeek-V4-Pro-技术报告/
+layout: "post"
+permalink: "/collections/0.raw/papers/DeepSeek-V4-Pro-技术报告/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 ---
 
 # DeepSeek-V4：迈向高效百万 Token 上下文智能

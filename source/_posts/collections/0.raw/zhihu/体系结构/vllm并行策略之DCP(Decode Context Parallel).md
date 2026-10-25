@@ -1,17 +1,17 @@
 ---
-title: vllm并行策略之DCP(Decode Context Parallel)
+title: "vllm并行策略之DCP(Decode Context Parallel)"
 date: "2026-03-25 00:00:00"
 updated: "2026-03-25 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/体系结构/vllm并行策略之DCP(Decode-Context-Parallel)/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/体系结构/vllm并行策略之DCP(Decode-Context-Parallel)/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/2020086868914499979
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/2020086868914499979"
 ---
 
 

@@ -1,17 +1,17 @@
 ---
-title: GitHub狂飙3万star的LLM公开资料 - 大模型入门教程
+title: "GitHub狂飙3万star的LLM公开资料 - 大模型入门教程"
 date: "2024-12-29 00:00:00"
 updated: "2024-12-29 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/LLM-SD/GitHub狂飙3万star的LLM公开资料-大模型入门教程/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/LLM-SD/GitHub狂飙3万star的LLM公开资料-大模型入门教程/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/686277638
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/686277638"
 ---
 
 

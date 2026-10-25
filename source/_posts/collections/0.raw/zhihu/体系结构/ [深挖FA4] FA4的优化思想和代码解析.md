@@ -1,17 +1,17 @@
 ---
-title: [深挖FA4] FA4的优化思想和代码解析
+title: "[深挖FA4] FA4的优化思想和代码解析"
 date: "2026-04-04 00:00:00"
 updated: "2026-04-04 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/体系结构/[深挖FA4]-FA4的优化思想和代码解析/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/体系结构/[深挖FA4]-FA4的优化思想和代码解析/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/2023356213597929481
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/2023356213597929481"
 ---
 
 

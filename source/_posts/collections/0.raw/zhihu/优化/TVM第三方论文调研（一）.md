@@ -1,17 +1,17 @@
 ---
-title: TVM第三方论文调研（一）
+title: "TVM第三方论文调研（一）"
 date: "2022-10-21 00:00:00"
 updated: "2022-10-21 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/优化/TVM第三方论文调研(一)/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/优化/TVM第三方论文调研(一)/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/573512820
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/573512820"
 ---
 
 

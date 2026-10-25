@@ -1,17 +1,17 @@
 ---
-title: Rethinking “Batch” in BatchNorm
+title: "Rethinking “Batch” in BatchNorm"
 date: "2021-05-19 00:00:00"
 updated: "2021-05-19 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/dl论文/Rethinking-“Batch”-in-BatchNorm/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/dl论文/Rethinking-“Batch”-in-BatchNorm/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/373674481
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/373674481"
 ---
 
 

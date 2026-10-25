@@ -1,17 +1,17 @@
 ---
-title: 【编译器】传统编译器和AI/ML编译器总结
+title: "【编译器】传统编译器和AI/ML编译器总结"
 date: "2023-12-22 00:00:00"
 updated: "2023-12-22 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/tvm/【编译器】传统编译器和AI_ML编译器总结-2477a6/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/tvm/【编译器】传统编译器和AI_ML编译器总结-2477a6/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/673452222
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/673452222"
 ---
 
 

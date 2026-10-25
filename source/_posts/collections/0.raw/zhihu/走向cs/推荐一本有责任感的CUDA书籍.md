@@ -1,17 +1,17 @@
 ---
-title: 推荐一本有责任感的CUDA书籍
+title: "推荐一本有责任感的CUDA书籍"
 date: "2021-01-22 00:00:00"
 updated: "2021-01-22 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/走向cs/推荐一本有责任感的CUDA书籍/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/走向cs/推荐一本有责任感的CUDA书籍/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/342934660
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/342934660"
 ---
 
 

@@ -1,17 +1,17 @@
 ---
-title: Softmax 算法近似与硬件实现
+title: "Softmax 算法近似与硬件实现"
 date: "2026-01-01 00:00:00"
 updated: "2026-01-01 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/AI-infra/Softmax-算法近似与硬件实现/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/AI-infra/Softmax-算法近似与硬件实现/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/1948746945867802457
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/1948746945867802457"
 ---
 
 

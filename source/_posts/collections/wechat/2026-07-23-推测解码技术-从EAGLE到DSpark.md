@@ -1,21 +1,21 @@
 ---
-title: draft model 怎么训练、DSpark 如何做动态 verify？从 EAGLE 到 DSpark，拆解最新的推测解码技术
+title: "draft model 怎么训练、DSpark 如何做动态 verify？从 EAGLE 到 DSpark，拆解最新的推测解码技术"
 date: "2026-07-23 00:00:00"
 updated: "2026-07-23 00:00:00"
-layout: post
-permalink: /collections/wechat/2026-07-23-推测解码技术-从EAGLE到DSpark/
+layout: "post"
+permalink: "/collections/wechat/2026-07-23-推测解码技术-从EAGLE到DSpark/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 推测解码
-  - speculative-decoding
-  - EAGLE
-  - DSpark
-  - draft-model
-  - LLM-inference
+  - "推测解码"
+  - "speculative-decoding"
+  - "EAGLE"
+  - "DSpark"
+  - "draft-model"
+  - "LLM-inference"
 ---
 
 

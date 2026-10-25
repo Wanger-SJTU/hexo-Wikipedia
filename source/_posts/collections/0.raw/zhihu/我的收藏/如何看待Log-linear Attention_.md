@@ -1,17 +1,17 @@
 ---
-title: (2 条消息) 如何看待Log-linear Attention?
+title: "(2 条消息) 如何看待Log-linear Attention?"
 date: "2026-04-17 00:00:00"
 updated: "2026-04-17 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/我的收藏/如何看待Log-linear-Attention_/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/我的收藏/如何看待Log-linear-Attention_/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://www.zhihu.com/question/1914749108511540671/answer/1919954084464685369
+  - "知乎"
+source_url: "https://www.zhihu.com/question/1914749108511540671/answer/1919954084464685369"
 ---
 
 

@@ -2,13 +2,13 @@
 title: "Project 02: Agent-Readable Workspace"
 date: "2026-05-28 11:34:14"
 updated: "2026-05-28 11:34:14"
-layout: post
-permalink: /collections/learn-harness-engineering/projects/project-02/README-CN/
+layout: "post"
+permalink: "/collections/learn-harness-engineering/projects/project-02/README-CN/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 ---
 
 # Project 02: Agent-Readable Workspace

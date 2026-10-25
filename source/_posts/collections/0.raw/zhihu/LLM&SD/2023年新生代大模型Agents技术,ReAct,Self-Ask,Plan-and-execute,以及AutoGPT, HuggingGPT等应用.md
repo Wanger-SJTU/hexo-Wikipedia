@@ -1,17 +1,17 @@
 ---
-title: 2023年新生代大模型Agents技术,ReAct,Self-Ask,Plan-and-execute,以及AutoGPT, HuggingGPT等应用
+title: "2023年新生代大模型Agents技术,ReAct,Self-Ask,Plan-and-execute,以及AutoGPT, HuggingGPT等应用"
 date: "2024-01-14 00:00:00"
 updated: "2024-01-14 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/LLM-SD/2023年新生代大模型Agents技术,ReAct,Self-Ask,Plan-and-execute,以及AutoGPT,-HuggingGPT等应用/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/LLM-SD/2023年新生代大模型Agents技术,ReAct,Self-Ask,Plan-and-execute,以及AutoGPT,-HuggingGPT等应用/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/642357544
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/642357544"
 ---
 
 

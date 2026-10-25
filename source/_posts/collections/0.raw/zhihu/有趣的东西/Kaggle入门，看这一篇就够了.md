@@ -1,17 +1,17 @@
 ---
-title: Kaggle入门，看这一篇就够了
+title: "Kaggle入门，看这一篇就够了"
 date: "2021-05-14 00:00:00"
 updated: "2021-05-14 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/有趣的东西/Kaggle入门,看这一篇就够了/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/有趣的东西/Kaggle入门,看这一篇就够了/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/25686876
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/25686876"
 ---
 
 

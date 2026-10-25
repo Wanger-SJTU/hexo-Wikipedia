@@ -1,14 +1,14 @@
 ---
-title: 参考文档
+title: "参考文档"
 date: "2026-04-11 21:40:18"
 updated: "2026-04-11 21:40:18"
-layout: post
-permalink: /collections/草稿/端侧动态shape问题的现状和挑战/
+layout: "post"
+permalink: "/collections/草稿/端侧动态shape问题的现状和挑战/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 ---
 
 

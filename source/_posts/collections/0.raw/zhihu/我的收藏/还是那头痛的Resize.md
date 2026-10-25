@@ -1,17 +1,17 @@
 ---
-title: 还是那头痛的Resize
+title: "还是那头痛的Resize"
 date: "2026-05-28 00:00:00"
 updated: "2026-05-28 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/我的收藏/还是那头痛的Resize-88cbab/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/我的收藏/还是那头痛的Resize-88cbab/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/666296180
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/666296180"
 ---
 
 

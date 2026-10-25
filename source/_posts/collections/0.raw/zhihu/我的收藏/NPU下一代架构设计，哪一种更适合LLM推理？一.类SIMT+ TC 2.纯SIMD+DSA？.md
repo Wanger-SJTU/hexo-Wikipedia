@@ -1,17 +1,17 @@
 ---
-title: NPU下一代架构设计，哪一种更适合LLM推理？一.类SIMT+ TC 2.纯SIMD+DSA？
+title: "NPU下一代架构设计，哪一种更适合LLM推理？一.类SIMT+ TC 2.纯SIMD+DSA？"
 date: "2026-04-22 00:00:00"
 updated: "2026-04-22 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/我的收藏/NPU下一代架构设计,哪一种更适合LLM推理-一.类SIMT-TC-2.纯SIMD-DSA/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/我的收藏/NPU下一代架构设计,哪一种更适合LLM推理-一.类SIMT-TC-2.纯SIMD-DSA/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://www.zhihu.com/question/1932387258159301620/answer/1938565811720687969
+  - "知乎"
+source_url: "https://www.zhihu.com/question/1932387258159301620/answer/1938565811720687969"
 ---
 
 

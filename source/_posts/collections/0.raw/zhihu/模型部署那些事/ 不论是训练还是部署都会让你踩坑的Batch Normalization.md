@@ -1,17 +1,17 @@
 ---
-title: 不论是训练还是部署都会让你踩坑的Batch Normalization
+title: "不论是训练还是部署都会让你踩坑的Batch Normalization"
 date: "2021-07-11 00:00:00"
 updated: "2021-07-11 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/模型部署那些事/不论是训练还是部署都会让你踩坑的Batch-Normalization/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/模型部署那些事/不论是训练还是部署都会让你踩坑的Batch-Normalization/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/388730276
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/388730276"
 ---
 
 

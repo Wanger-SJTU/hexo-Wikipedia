@@ -1,14 +1,14 @@
 ---
-title: 详细分析一下Attention, Sparse or Linear?
+title: "详细分析一下Attention, Sparse or Linear?"
 date: "2026-07-31 22:38:30"
 updated: "2026-07-31 22:38:30"
-layout: post
-permalink: /collections/wechat/详细分析一下Attention-Sparse-or-Linear/
+layout: "post"
+permalink: "/collections/wechat/详细分析一下Attention-Sparse-or-Linear/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 ---
 
 # 详细分析一下Attention, Sparse or Linear?

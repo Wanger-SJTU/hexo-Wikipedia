@@ -1,17 +1,17 @@
 ---
-title: TQ x Mooncake RDMA 内存注册优化总结
+title: "TQ x Mooncake RDMA 内存注册优化总结"
 date: "2026-04-29 00:00:00"
 updated: "2026-04-29 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/AI-infra/TQ-x-Mooncake-RDMA-内存注册优化总结/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/AI-infra/TQ-x-Mooncake-RDMA-内存注册优化总结/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/2032862444796785454
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/2032862444796785454"
 ---
 
 

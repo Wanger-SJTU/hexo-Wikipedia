@@ -1,17 +1,17 @@
 ---
-title: 为什么simdjson这么快?
+title: "为什么simdjson这么快?"
 date: "2020-03-11 00:00:00"
 updated: "2020-03-11 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/优化/为什么simdjson这么快_/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/优化/为什么simdjson这么快_/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://www.zhihu.com/question/313943804/answer/1072237671
+  - "知乎"
+source_url: "https://www.zhihu.com/question/313943804/answer/1072237671"
 ---
 
 

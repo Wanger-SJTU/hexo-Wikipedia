@@ -1,17 +1,17 @@
 ---
-title: AI ISP发展应用与落地的机遇与挑战
+title: "AI ISP发展应用与落地的机遇与挑战"
 date: "2022-08-11 00:00:00"
 updated: "2022-08-11 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/优化/AI-ISP发展应用与落地的机遇与挑战/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/优化/AI-ISP发展应用与落地的机遇与挑战/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/552097768
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/552097768"
 ---
 
 

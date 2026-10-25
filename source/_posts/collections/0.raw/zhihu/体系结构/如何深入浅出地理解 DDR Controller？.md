@@ -1,17 +1,17 @@
 ---
-title: 如何深入浅出地理解 DDR Controller？
+title: "如何深入浅出地理解 DDR Controller？"
 date: "2026-04-21 00:00:00"
 updated: "2026-04-21 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/体系结构/如何深入浅出地理解-DDR-Controller/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/体系结构/如何深入浅出地理解-DDR-Controller/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://www.zhihu.com/question/1994715466967569570/answer/1994732734350905372
+  - "知乎"
+source_url: "https://www.zhihu.com/question/1994715466967569570/answer/1994732734350905372"
 ---
 
 

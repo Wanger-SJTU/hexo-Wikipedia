@@ -1,17 +1,17 @@
 ---
-title: 堪比Focal Loss！解决目标检测中样本不平衡的无采样方法
+title: "堪比Focal Loss！解决目标检测中样本不平衡的无采样方法"
 date: "2019-11-25 00:00:00"
 updated: "2019-11-25 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/dl论文/堪比Focal-Loss-解决目标检测中样本不平衡的无采样方法/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/dl论文/堪比Focal-Loss-解决目标检测中样本不平衡的无采样方法/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/93658728
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/93658728"
 ---
 
 

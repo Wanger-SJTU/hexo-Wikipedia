@@ -1,17 +1,17 @@
 ---
-title: tvm算子优化schedule（一）--CPU篇
+title: "tvm算子优化schedule（一）--CPU篇"
 date: "2021-09-24 00:00:00"
 updated: "2021-09-24 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/体系结构/tvm算子优化schedule(一)-CPU篇/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/体系结构/tvm算子优化schedule(一)-CPU篇/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/403163009
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/403163009"
 ---
 
 

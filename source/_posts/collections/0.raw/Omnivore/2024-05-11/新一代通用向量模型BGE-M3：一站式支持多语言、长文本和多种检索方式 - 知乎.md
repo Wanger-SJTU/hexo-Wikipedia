@@ -1,14 +1,14 @@
 ---
-title: 新一代通用向量模型BGE-M3：一站式支持多语言、长文本和多种检索方式 - 知乎
+title: "新一代通用向量模型BGE-M3：一站式支持多语言、长文本和多种检索方式 - 知乎"
 date: "2026-04-11 21:40:28"
 updated: "2026-04-11 21:40:28"
-layout: post
-permalink: /collections/0.raw/Omnivore/2024-05-11/新一代通用向量模型BGE-M3-一站式支持多语言、长文本和多种检索方式-知乎/
+layout: "post"
+permalink: "/collections/0.raw/Omnivore/2024-05-11/新一代通用向量模型BGE-M3-一站式支持多语言、长文本和多种检索方式-知乎/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 ---
 
 ---

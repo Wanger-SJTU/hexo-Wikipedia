@@ -1,17 +1,17 @@
 ---
-title: 如何评价华为的IPD体系？
+title: "如何评价华为的IPD体系？"
 date: "2026-04-22 00:00:00"
 updated: "2026-04-22 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/我的收藏/如何评价华为的IPD体系/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/我的收藏/如何评价华为的IPD体系/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://www.zhihu.com/question/655172534/answer/1930425514658624254
+  - "知乎"
+source_url: "https://www.zhihu.com/question/655172534/answer/1930425514658624254"
 ---
 
 

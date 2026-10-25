@@ -1,17 +1,17 @@
 ---
-title: 为什么现在的LLM都是Decoder only的架构？
+title: "为什么现在的LLM都是Decoder only的架构？"
 date: "2024-03-07 00:00:00"
 updated: "2024-03-07 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/LLM-SD/为什么现在的LLM都是Decoder-only的架构/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/LLM-SD/为什么现在的LLM都是Decoder-only的架构/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://www.zhihu.com/question/588325646/answer/3422090041
+  - "知乎"
+source_url: "https://www.zhihu.com/question/588325646/answer/3422090041"
 ---
 
 

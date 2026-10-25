@@ -1,14 +1,14 @@
 ---
-title: Loyiha 05. Agentga oʻz ishini oʻzi tekshirishiga imkon bering
+title: "Loyiha 05. Agentga oʻz ishini oʻzi tekshirishiga imkon bering"
 date: "2026-05-28 11:34:14"
 updated: "2026-05-28 11:34:14"
-layout: post
-permalink: /collections/learn-harness-engineering/docs/uz/projects/project-05-grounded-qa-verification/index/
+layout: "post"
+permalink: "/collections/learn-harness-engineering/docs/uz/projects/project-05-grounded-qa-verification/index/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 ---
 
 [English version →](../../../en/projects/project-05-grounded-qa-verification/)

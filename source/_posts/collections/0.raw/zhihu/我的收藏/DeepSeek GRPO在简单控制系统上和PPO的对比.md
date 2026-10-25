@@ -1,17 +1,17 @@
 ---
-title: DeepSeek GRPO在简单控制系统上和PPO的对比
+title: "DeepSeek GRPO在简单控制系统上和PPO的对比"
 date: "2025-02-03 00:00:00"
 updated: "2025-02-03 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/我的收藏/DeepSeek-GRPO在简单控制系统上和PPO的对比/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/我的收藏/DeepSeek-GRPO在简单控制系统上和PPO的对比/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/21131372654
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/21131372654"
 ---
 
 

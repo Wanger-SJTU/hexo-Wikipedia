@@ -1,17 +1,17 @@
 ---
-title: 配置不同的学习率，LoRA还能再涨一点？
+title: "配置不同的学习率，LoRA还能再涨一点？"
 date: "2024-03-18 00:00:00"
 updated: "2024-03-18 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/LLM-SD/配置不同的学习率,LoRA还能再涨一点/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/LLM-SD/配置不同的学习率,LoRA还能再涨一点/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/687660397
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/687660397"
 ---
 
 

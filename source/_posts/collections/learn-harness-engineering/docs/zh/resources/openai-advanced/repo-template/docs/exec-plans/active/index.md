@@ -1,14 +1,14 @@
 ---
-title: 当前执行计划
+title: "当前执行计划"
 date: "2026-05-28 11:34:14"
 updated: "2026-05-28 11:34:14"
-layout: post
-permalink: /collections/learn-harness-engineering/docs/zh/resources/openai-advanced/repo-template/docs/exec-plans/active/index/
+layout: "post"
+permalink: "/collections/learn-harness-engineering/docs/zh/resources/openai-advanced/repo-template/docs/exec-plans/active/index/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 ---
 
 # 当前执行计划

@@ -1,17 +1,17 @@
 ---
-title: 从权重、KV Cache 与激活切分理解 DP、TP、PP、EP、PCP 与 DCP
+title: "从权重、KV Cache 与激活切分理解 DP、TP、PP、EP、PCP 与 DCP"
 date: "2026-08-13 00:00:00"
 updated: "2026-08-13 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/AI-infra/从权重、KV-Cache-与激活切分理解-DP、TP、PP、EP、PCP-与-DCP/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/AI-infra/从权重、KV-Cache-与激活切分理解-DP、TP、PP、EP、PCP-与-DCP/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/2071278362212021889
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/2071278362212021889"
 ---
 
 

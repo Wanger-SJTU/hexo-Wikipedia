@@ -1,20 +1,20 @@
 ---
-title: TokenSpeed 把 LLM 推理拆成可控流水线，为智能体编码时代重写 LLM 推理引擎的控制平面
+title: "TokenSpeed 把 LLM 推理拆成可控流水线，为智能体编码时代重写 LLM 推理引擎的控制平面"
 date: "2026-05-08 08:55:45"
 updated: "2026-05-08 08:55:45"
-layout: post
-permalink: /collections/wechat/2026-05-08-TokenSpeed-LLM推理流水线/
+layout: "post"
+permalink: "/collections/wechat/2026-05-08-TokenSpeed-LLM推理流水线/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 微信
-  - LLM
-  - 推理优化
-  - TokenSpeed
-source_url: https://mp.weixin.qq.com/s/vuGdWLUf1cELqnuOIZxtvQ
+  - "微信"
+  - "LLM"
+  - "推理优化"
+  - "TokenSpeed"
+source_url: "https://mp.weixin.qq.com/s/vuGdWLUf1cELqnuOIZxtvQ"
 ---
 
 

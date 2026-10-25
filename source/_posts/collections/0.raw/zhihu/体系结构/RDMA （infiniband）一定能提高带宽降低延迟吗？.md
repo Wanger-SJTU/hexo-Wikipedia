@@ -1,17 +1,17 @@
 ---
-title: RDMA （infiniband）一定能提高带宽降低延迟吗？
+title: "RDMA （infiniband）一定能提高带宽降低延迟吗？"
 date: "2026-04-21 00:00:00"
 updated: "2026-04-21 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/体系结构/RDMA-(infiniband)一定能提高带宽降低延迟吗/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/体系结构/RDMA-(infiniband)一定能提高带宽降低延迟吗/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://www.zhihu.com/question/445362521/answer/1962570618877744923
+  - "知乎"
+source_url: "https://www.zhihu.com/question/445362521/answer/1962570618877744923"
 ---
 
 

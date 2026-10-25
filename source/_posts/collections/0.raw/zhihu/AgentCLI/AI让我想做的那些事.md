@@ -1,17 +1,17 @@
 ---
-title: AI让我想做的那些事
+title: "AI让我想做的那些事"
 date: "2026-04-28 00:00:00"
 updated: "2026-04-28 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/AgentCLI/AI让我想做的那些事/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/AgentCLI/AI让我想做的那些事/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/2032462395763856843
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/2032462395763856843"
 ---
 
 

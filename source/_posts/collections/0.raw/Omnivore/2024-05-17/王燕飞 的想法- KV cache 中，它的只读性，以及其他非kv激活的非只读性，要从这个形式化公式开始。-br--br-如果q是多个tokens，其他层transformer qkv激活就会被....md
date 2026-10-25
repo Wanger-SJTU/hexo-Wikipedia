@@ -2,13 +2,13 @@
 title: "王燕飞 的想法: KV cache 中，它的只读性，以及其他非kv激活的非只读性，要从这个形式化公式开始。<br><br>如果q是多个tokens，其他层transformer qkv激活就会被修改，但是推理阶段解码过程，q是一个token，其他层transformer kv不会被修改，而且只有它们具有不被修改，即只读性。<br><br>可以推演试试<br><br>理解它们存储读写特性、时空性、读写频率、访存颗粒度，是内存系统优化的开始。。。 - 知乎"
 date: "2026-04-11 21:40:28"
 updated: "2026-04-11 21:40:28"
-layout: post
-permalink: /collections/0.raw/Omnivore/2024-05-17/王燕飞-的想法-KV-cache-中,它的只读性,以及其他非kv激活的非只读性,要从这个形式化公式开始。-br-br-如果q是多个tokens,其他层transformer-qkv/
+layout: "post"
+permalink: "/collections/0.raw/Omnivore/2024-05-17/王燕飞-的想法-KV-cache-中,它的只读性,以及其他非kv激活的非只读性,要从这个形式化公式开始。-br-br-如果q是多个tokens,其他层transformer-qkv/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 ---
 
 ---

@@ -1,17 +1,17 @@
 ---
-title: (2 条消息) [LLM量化系列]从StreamingLLM到Massive Outlier、IntactKV和PrefixQuant
+title: "(2 条消息) [LLM量化系列]从StreamingLLM到Massive Outlier、IntactKV和PrefixQuant"
 date: "2024-12-02 00:00:00"
 updated: "2024-12-02 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/我的收藏/[LLM量化系列]从StreamingLLM到Massive-Outlier、IntactKV和PrefixQuant/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/我的收藏/[LLM量化系列]从StreamingLLM到Massive-Outlier、IntactKV和PrefixQuant/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/9814639857
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/9814639857"
 ---
 
 

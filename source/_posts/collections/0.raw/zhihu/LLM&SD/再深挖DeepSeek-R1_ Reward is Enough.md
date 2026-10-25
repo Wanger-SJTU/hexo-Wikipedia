@@ -2,16 +2,16 @@
 title: "再深挖DeepSeek-R1: Reward is Enough"
 date: "2025-11-01 00:00:00"
 updated: "2025-11-01 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/LLM-SD/再深挖DeepSeek-R1_-Reward-is-Enough/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/LLM-SD/再深挖DeepSeek-R1_-Reward-is-Enough/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/20053834500
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/20053834500"
 ---
 
 

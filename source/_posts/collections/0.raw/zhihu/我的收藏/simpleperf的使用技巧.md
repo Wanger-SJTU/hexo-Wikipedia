@@ -1,17 +1,17 @@
 ---
-title: (2 条消息) simpleperf的使用技巧
+title: "(2 条消息) simpleperf的使用技巧"
 date: "2025-03-11 00:00:00"
 updated: "2025-03-11 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/我的收藏/simpleperf的使用技巧/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/我的收藏/simpleperf的使用技巧/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/29449785427
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/29449785427"
 ---
 
 

@@ -1,17 +1,17 @@
 ---
-title: 如果只用一个公式来讲AI芯片的设计逻辑
+title: "如果只用一个公式来讲AI芯片的设计逻辑"
 date: "2026-07-12 00:00:00"
 updated: "2026-07-12 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/体系结构/如果只用一个公式来讲AI芯片的设计逻辑/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/体系结构/如果只用一个公式来讲AI芯片的设计逻辑/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/2059736823258158913
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/2059736823258158913"
 ---
 
 

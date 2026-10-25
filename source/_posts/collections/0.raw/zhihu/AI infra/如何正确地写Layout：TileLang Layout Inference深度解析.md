@@ -1,17 +1,17 @@
 ---
-title: 如何正确地写Layout：TileLang Layout Inference深度解析
+title: "如何正确地写Layout：TileLang Layout Inference深度解析"
 date: "2026-06-27 00:00:00"
 updated: "2026-06-27 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/AI-infra/如何正确地写Layout-TileLang-Layout-Inference深度解析/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/AI-infra/如何正确地写Layout-TileLang-Layout-Inference深度解析/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/2054144124052415821
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/2054144124052415821"
 ---
 
 

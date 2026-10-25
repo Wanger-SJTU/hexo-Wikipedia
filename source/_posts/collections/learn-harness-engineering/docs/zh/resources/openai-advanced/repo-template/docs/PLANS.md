@@ -1,14 +1,14 @@
 ---
-title: PLANS.md
+title: "PLANS.md"
 date: "2026-05-28 11:34:14"
 updated: "2026-05-28 11:34:14"
-layout: post
-permalink: /collections/learn-harness-engineering/docs/zh/resources/openai-advanced/repo-template/docs/PLANS/
+layout: "post"
+permalink: "/collections/learn-harness-engineering/docs/zh/resources/openai-advanced/repo-template/docs/PLANS/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 ---
 
 # PLANS.md

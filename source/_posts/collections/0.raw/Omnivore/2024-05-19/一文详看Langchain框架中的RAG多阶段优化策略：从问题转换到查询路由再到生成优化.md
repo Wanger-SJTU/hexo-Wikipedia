@@ -1,14 +1,14 @@
 ---
-title: 一文详看Langchain框架中的RAG多阶段优化策略：从问题转换到查询路由再到生成优化
+title: "一文详看Langchain框架中的RAG多阶段优化策略：从问题转换到查询路由再到生成优化"
 date: "2026-04-11 21:40:28"
 updated: "2026-04-11 21:40:28"
-layout: post
-permalink: /collections/0.raw/Omnivore/2024-05-19/一文详看Langchain框架中的RAG多阶段优化策略-从问题转换到查询路由再到生成优化/
+layout: "post"
+permalink: "/collections/0.raw/Omnivore/2024-05-19/一文详看Langchain框架中的RAG多阶段优化策略-从问题转换到查询路由再到生成优化/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 ---
 
 ---

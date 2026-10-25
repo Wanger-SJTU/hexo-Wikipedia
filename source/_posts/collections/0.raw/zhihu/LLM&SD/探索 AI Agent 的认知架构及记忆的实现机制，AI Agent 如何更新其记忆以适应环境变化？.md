@@ -1,17 +1,17 @@
 ---
-title: 探索 AI Agent 的认知架构及记忆的实现机制，AI Agent 如何更新其记忆以适应环境变化？
+title: "探索 AI Agent 的认知架构及记忆的实现机制，AI Agent 如何更新其记忆以适应环境变化？"
 date: "2025-10-14 00:00:00"
 updated: "2025-10-14 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/LLM-SD/探索-AI-Agent-的认知架构及记忆的实现机制,AI-Agent-如何更新其记忆以适应环境变化/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/LLM-SD/探索-AI-Agent-的认知架构及记忆的实现机制,AI-Agent-如何更新其记忆以适应环境变化/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://www.zhihu.com/question/663077797/answer/1961431306731754778
+  - "知乎"
+source_url: "https://www.zhihu.com/question/663077797/answer/1961431306731754778"
 ---
 
 

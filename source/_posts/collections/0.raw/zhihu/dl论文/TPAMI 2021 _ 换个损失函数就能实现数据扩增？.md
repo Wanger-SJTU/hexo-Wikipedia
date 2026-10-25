@@ -1,17 +1,17 @@
 ---
-title: TPAMI 2021 | 换个损失函数就能实现数据扩增？
+title: "TPAMI 2021 | 换个损失函数就能实现数据扩增？"
 date: "2021-01-19 00:00:00"
 updated: "2021-01-19 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/dl论文/TPAMI-2021-_-换个损失函数就能实现数据扩增/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/dl论文/TPAMI-2021-_-换个损失函数就能实现数据扩增/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/344953635
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/344953635"
 ---
 
 

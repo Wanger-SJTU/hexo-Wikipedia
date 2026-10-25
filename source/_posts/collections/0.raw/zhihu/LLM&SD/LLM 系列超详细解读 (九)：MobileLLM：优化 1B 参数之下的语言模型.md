@@ -1,17 +1,17 @@
 ---
-title: LLM 系列超详细解读 (九)：MobileLLM：优化 1B 参数之下的语言模型
+title: "LLM 系列超详细解读 (九)：MobileLLM：优化 1B 参数之下的语言模型"
 date: "2024-07-03 00:00:00"
 updated: "2024-07-03 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/LLM-SD/LLM-系列超详细解读-(九)-MobileLLM-优化-1B-参数之下的语言模型/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/LLM-SD/LLM-系列超详细解读-(九)-MobileLLM-优化-1B-参数之下的语言模型/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/689006901
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/689006901"
 ---
 
 

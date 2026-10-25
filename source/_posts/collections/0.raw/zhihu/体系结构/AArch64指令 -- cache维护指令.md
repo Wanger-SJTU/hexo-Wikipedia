@@ -1,17 +1,17 @@
 ---
-title: AArch64指令 -- cache维护指令
+title: "AArch64指令 -- cache维护指令"
 date: "2024-04-20 00:00:00"
 updated: "2024-04-20 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/体系结构/AArch64指令-cache维护指令/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/体系结构/AArch64指令-cache维护指令/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/677750807
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/677750807"
 ---
 
 

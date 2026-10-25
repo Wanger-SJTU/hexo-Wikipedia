@@ -1,17 +1,17 @@
 ---
-title: (1 条消息) Transformer模型的基础演算
+title: "(1 条消息) Transformer模型的基础演算"
 date: "2023-05-19 00:00:00"
 updated: "2023-05-19 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/我的收藏/Transformer模型的基础演算/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/我的收藏/Transformer模型的基础演算/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/628820408
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/628820408"
 ---
 
 

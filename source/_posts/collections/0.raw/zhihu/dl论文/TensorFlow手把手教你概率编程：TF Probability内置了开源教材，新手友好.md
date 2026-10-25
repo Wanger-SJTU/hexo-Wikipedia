@@ -1,17 +1,17 @@
 ---
-title: TensorFlow手把手教你概率编程：TF Probability内置了开源教材，新手友好
+title: "TensorFlow手把手教你概率编程：TF Probability内置了开源教材，新手友好"
 date: "2018-12-13 00:00:00"
 updated: "2018-12-13 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/dl论文/TensorFlow手把手教你概率编程-TF-Probability内置了开源教材,新手友好/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/dl论文/TensorFlow手把手教你概率编程-TF-Probability内置了开源教材,新手友好/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/52329022
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/52329022"
 ---
 
 

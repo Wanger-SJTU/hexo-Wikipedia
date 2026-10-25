@@ -1,17 +1,17 @@
 ---
-title: (2 条消息) Arm SMMU，AMD IOMMU，Intel VT-d设计
+title: "(2 条消息) Arm SMMU，AMD IOMMU，Intel VT-d设计"
 date: "2025-02-12 00:00:00"
 updated: "2025-02-12 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/我的收藏/Arm-SMMU,AMD-IOMMU,Intel-VT-d设计/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/我的收藏/Arm-SMMU,AMD-IOMMU,Intel-VT-d设计/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/22616569807
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/22616569807"
 ---
 
 

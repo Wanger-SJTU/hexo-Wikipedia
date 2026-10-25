@@ -1,14 +1,14 @@
 ---
-title: Willkommen bei den Projekten
+title: "Willkommen bei den Projekten"
 date: "2026-05-28 11:34:14"
 updated: "2026-05-28 11:34:14"
-layout: post
-permalink: /collections/learn-harness-engineering/docs/de/projects/index/
+layout: "post"
+permalink: "/collections/learn-harness-engineering/docs/de/projects/index/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 ---
 
 # Willkommen bei den Projekten

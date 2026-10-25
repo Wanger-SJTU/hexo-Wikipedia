@@ -1,17 +1,17 @@
 ---
-title: CLIPPO：纯图像的 CLIP，参数减半且更强大！
+title: "CLIPPO：纯图像的 CLIP，参数减半且更强大！"
 date: "2023-01-12 00:00:00"
 updated: "2023-01-12 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/dl论文/CLIPPO-纯图像的-CLIP,参数减半且更强大/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/dl论文/CLIPPO-纯图像的-CLIP,参数减半且更强大/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/598308737
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/598308737"
 ---
 
 

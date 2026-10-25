@@ -1,14 +1,14 @@
 ---
-title: OpenAI İleri Düzey SOP'lar
+title: "OpenAI İleri Düzey SOP'lar"
 date: "2026-05-28 11:34:14"
 updated: "2026-05-28 11:34:14"
-layout: post
-permalink: /collections/learn-harness-engineering/docs/tr/resources/openai-advanced/sops/index/
+layout: "post"
+permalink: "/collections/learn-harness-engineering/docs/tr/resources/openai-advanced/sops/index/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 ---
 
 # OpenAI İleri Düzey SOP'lar

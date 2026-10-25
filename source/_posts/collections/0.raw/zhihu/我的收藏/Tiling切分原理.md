@@ -1,17 +1,17 @@
 ---
-title: Tiling切分原理
+title: "Tiling切分原理"
 date: "2024-03-07 00:00:00"
 updated: "2024-03-07 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/我的收藏/Tiling切分原理/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/我的收藏/Tiling切分原理/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/685761148
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/685761148"
 ---
 
 

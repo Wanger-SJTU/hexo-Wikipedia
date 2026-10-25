@@ -1,17 +1,17 @@
 ---
-title: 【笔记】Stable Diffusion模型优化入门级介绍 - LoRA vs Dreambooth vs Textural Inversion vs Hypernetworks
+title: "【笔记】Stable Diffusion模型优化入门级介绍 - LoRA vs Dreambooth vs Textural Inversion vs Hypernetworks"
 date: "2023-03-13 00:00:00"
 updated: "2023-03-13 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/dl论文/【笔记】Stable-Diffusion模型优化入门级介绍-LoRA-vs-Dreambooth-vs-Textural-Inversion-vs-Hypernetworks/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/dl论文/【笔记】Stable-Diffusion模型优化入门级介绍-LoRA-vs-Dreambooth-vs-Textural-Inversion-vs-Hypernetworks/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/612992813
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/612992813"
 ---
 
 

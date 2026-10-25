@@ -1,17 +1,17 @@
 ---
-title: LLM关于PD分离的最新实测
+title: "LLM关于PD分离的最新实测"
 date: "2025-08-20 00:00:00"
 updated: "2025-08-20 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/我的收藏/LLM关于PD分离的最新实测/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/我的收藏/LLM关于PD分离的最新实测/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/1919794916504114120
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/1919794916504114120"
 ---
 
 

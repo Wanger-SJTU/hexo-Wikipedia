@@ -1,17 +1,17 @@
 ---
-title: Write Combine 和 Cache 是什么关系
+title: "Write Combine 和 Cache 是什么关系"
 date: "2023-03-05 00:00:00"
 updated: "2023-03-05 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/体系结构/Write-Combine-和-Cache-是什么关系/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/体系结构/Write-Combine-和-Cache-是什么关系/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/607637105
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/607637105"
 ---
 
 

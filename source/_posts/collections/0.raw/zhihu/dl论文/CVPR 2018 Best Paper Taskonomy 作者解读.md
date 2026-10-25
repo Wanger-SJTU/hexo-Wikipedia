@@ -1,17 +1,17 @@
 ---
-title: CVPR 2018 Best Paper Taskonomy 作者解读
+title: "CVPR 2018 Best Paper Taskonomy 作者解读"
 date: "2018-06-25 00:00:00"
 updated: "2018-06-25 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/dl论文/CVPR-2018-Best-Paper-Taskonomy-作者解读/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/dl论文/CVPR-2018-Best-Paper-Taskonomy-作者解读/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/38425434
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/38425434"
 ---
 
 

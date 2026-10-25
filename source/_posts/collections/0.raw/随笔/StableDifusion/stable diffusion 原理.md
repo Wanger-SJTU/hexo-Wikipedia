@@ -1,14 +1,14 @@
 ---
-title: stable diffusion 原理
+title: "stable diffusion 原理"
 date: "2026-04-11 21:40:28"
 updated: "2026-04-11 21:40:28"
-layout: post
-permalink: /collections/0.raw/随笔/StableDifusion/stable-diffusion-原理/
+layout: "post"
+permalink: "/collections/0.raw/随笔/StableDifusion/stable-diffusion-原理/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 ---
 
 https://jalammar.github.io/illustrated-stable-diffusion/

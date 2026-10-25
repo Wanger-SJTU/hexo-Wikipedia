@@ -1,14 +1,14 @@
 ---
-title: tvm relay IR 可视化
+title: "tvm relay IR 可视化"
 date: "2026-04-11 21:40:28"
 updated: "2026-04-11 21:40:28"
-layout: post
-permalink: /collections/0.raw/归档/TVM/tvm-relay-IR-可视化/
+layout: "post"
+permalink: "/collections/0.raw/归档/TVM/tvm-relay-IR-可视化/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 ---
 
 #TVM 

@@ -1,17 +1,17 @@
 ---
-title: 怎样的 PPT 配色会让人觉得舒服？
+title: "怎样的 PPT 配色会让人觉得舒服？"
 date: "2026-04-15 00:00:00"
 updated: "2026-04-15 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/再入门系列/怎样的-PPT-配色会让人觉得舒服/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/再入门系列/怎样的-PPT-配色会让人觉得舒服/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://www.zhihu.com/question/30709836/answer/103524500
+  - "知乎"
+source_url: "https://www.zhihu.com/question/30709836/answer/103524500"
 ---
 
 

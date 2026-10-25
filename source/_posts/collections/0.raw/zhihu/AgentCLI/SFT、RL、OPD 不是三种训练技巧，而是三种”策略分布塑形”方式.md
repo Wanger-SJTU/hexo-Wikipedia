@@ -1,17 +1,17 @@
 ---
-title: SFT、RL、OPD 不是三种训练技巧，而是三种”策略分布塑形”方式
+title: "SFT、RL、OPD 不是三种训练技巧，而是三种”策略分布塑形”方式"
 date: "2026-05-30 00:00:00"
 updated: "2026-05-30 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/AgentCLI/SFT、RL、OPD-不是三种训练技巧,而是三种”策略分布塑形”方式/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/AgentCLI/SFT、RL、OPD-不是三种训练技巧,而是三种”策略分布塑形”方式/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/2044017882586206645
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/2044017882586206645"
 ---
 
 

@@ -1,17 +1,17 @@
 ---
-title: (2 条消息) LUT in AI Accelerator
+title: "(2 条消息) LUT in AI Accelerator"
 date: "2025-07-08 00:00:00"
 updated: "2025-07-08 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/我的收藏/LUT-in-AI-Accelerator/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/我的收藏/LUT-in-AI-Accelerator/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/1914357817042801846
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/1914357817042801846"
 ---
 
 

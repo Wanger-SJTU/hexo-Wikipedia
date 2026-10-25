@@ -2,16 +2,16 @@
 title: "逐层量化时直接追随原值：GPTAQ: Efficient Finetuning-Free Quantization for Asymmetric Calibration"
 date: "2025-07-31 00:00:00"
 updated: "2025-07-31 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/LLM-SD/逐层量化时直接追随原值-GPTAQ_-Efficient-Finetuning-Free-Quantization-for-Asymmetric-Calibration/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/LLM-SD/逐层量化时直接追随原值-GPTAQ_-Efficient-Finetuning-Free-Quantization-for-Asymmetric-Calibration/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/1928814340871549979
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/1928814340871549979"
 ---
 
 

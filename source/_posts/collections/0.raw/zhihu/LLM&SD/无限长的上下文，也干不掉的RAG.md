@@ -1,17 +1,17 @@
 ---
-title: 无限长的上下文，也干不掉的RAG
+title: "无限长的上下文，也干不掉的RAG"
 date: "2024-03-22 00:00:00"
 updated: "2024-03-22 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/LLM-SD/无限长的上下文,也干不掉的RAG/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/LLM-SD/无限长的上下文,也干不掉的RAG/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/688370566
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/688370566"
 ---
 
 

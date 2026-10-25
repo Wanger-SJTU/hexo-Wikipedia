@@ -1,17 +1,17 @@
 ---
-title: 基于Roofline模型的模型&算子推理瓶颈识别方案调研
+title: "基于Roofline模型的模型&算子推理瓶颈识别方案调研"
 date: "2023-11-16 00:00:00"
 updated: "2023-11-16 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/体系结构/基于Roofline模型的模型-算子推理瓶颈识别方案调研/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/体系结构/基于Roofline模型的模型-算子推理瓶颈识别方案调研/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/665990267
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/665990267"
 ---
 
 

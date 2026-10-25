@@ -1,17 +1,17 @@
 ---
-title: 读博总结的总结：整理优质的CS读博(PhD)总结和建议文章
+title: "读博总结的总结：整理优质的CS读博(PhD)总结和建议文章"
 date: "2021-01-26 00:00:00"
 updated: "2021-01-26 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/dl论文/读博总结的总结-整理优质的CS读博(PhD)总结和建议文章/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/dl论文/读博总结的总结-整理优质的CS读博(PhD)总结和建议文章/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/347223193
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/347223193"
 ---
 
 

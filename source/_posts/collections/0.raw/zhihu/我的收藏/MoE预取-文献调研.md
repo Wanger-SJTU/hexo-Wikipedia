@@ -1,17 +1,17 @@
 ---
-title: MoE预取-文献调研
+title: "MoE预取-文献调研"
 date: "2026-06-02 00:00:00"
 updated: "2026-06-02 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/我的收藏/MoE预取-文献调研/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/我的收藏/MoE预取-文献调研/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/2045187571597174770
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/2045187571597174770"
 ---
 
 

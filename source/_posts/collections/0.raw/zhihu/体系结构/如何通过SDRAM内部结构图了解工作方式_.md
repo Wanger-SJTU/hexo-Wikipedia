@@ -1,17 +1,17 @@
 ---
-title: 如何通过SDRAM内部结构图了解工作方式?
+title: "如何通过SDRAM内部结构图了解工作方式?"
 date: "2024-02-01 00:00:00"
 updated: "2024-02-01 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/体系结构/如何通过SDRAM内部结构图了解工作方式_/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/体系结构/如何通过SDRAM内部结构图了解工作方式_/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/649771760
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/649771760"
 ---
 
 

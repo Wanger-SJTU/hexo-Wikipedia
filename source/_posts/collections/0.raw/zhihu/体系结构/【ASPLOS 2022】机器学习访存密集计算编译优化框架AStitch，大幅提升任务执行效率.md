@@ -1,17 +1,17 @@
 ---
-title: 【ASPLOS 2022】机器学习访存密集计算编译优化框架AStitch，大幅提升任务执行效率
+title: "【ASPLOS 2022】机器学习访存密集计算编译优化框架AStitch，大幅提升任务执行效率"
 date: "2022-03-08 00:00:00"
 updated: "2022-03-08 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/体系结构/【ASPLOS-2022】机器学习访存密集计算编译优化框架AStitch,大幅提升任务执行效率/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/体系结构/【ASPLOS-2022】机器学习访存密集计算编译优化框架AStitch,大幅提升任务执行效率/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/475898491
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/475898491"
 ---
 
 

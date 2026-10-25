@@ -1,17 +1,17 @@
 ---
-title: RDMA 系列（一）- 总览
+title: "RDMA 系列（一）- 总览"
 date: "2023-11-25 00:00:00"
 updated: "2023-11-25 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/我的收藏/RDMA-系列(一)-总览/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/我的收藏/RDMA-系列(一)-总览/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/668265698
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/668265698"
 ---
 
 

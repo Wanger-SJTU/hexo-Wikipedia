@@ -1,17 +1,17 @@
 ---
-title: 仰望的云辇-Z、云辇-X、云辇-P技术差异在哪？在行业上是什么水平？
+title: "仰望的云辇-Z、云辇-X、云辇-P技术差异在哪？在行业上是什么水平？"
 date: "2026-05-28 00:00:00"
 updated: "2026-05-28 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/我的收藏/仰望的云辇-Z、云辇-X、云辇-P技术差异在哪-在行业上是什么水平/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/我的收藏/仰望的云辇-Z、云辇-X、云辇-P技术差异在哪-在行业上是什么水平/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://www.zhihu.com/question/1918674311633437317/answer/1919370813662016613
+  - "知乎"
+source_url: "https://www.zhihu.com/question/1918674311633437317/answer/1919370813662016613"
 ---
 
 

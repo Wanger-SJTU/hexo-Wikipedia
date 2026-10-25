@@ -1,17 +1,17 @@
 ---
-title: 【解读】DeepSeek-R1：RL前真的不需要SFT了吗???
+title: "【解读】DeepSeek-R1：RL前真的不需要SFT了吗???"
 date: "2025-10-26 00:00:00"
 updated: "2025-10-26 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/LLM-SD/【解读】DeepSeek-R1-RL前真的不需要SFT了吗___/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/LLM-SD/【解读】DeepSeek-R1-RL前真的不需要SFT了吗___/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/19623772462
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/19623772462"
 ---
 
 

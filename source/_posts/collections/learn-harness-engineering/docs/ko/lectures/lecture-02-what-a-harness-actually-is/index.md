@@ -1,14 +1,14 @@
 ---
-title: 강의 02. 하네스란 실제로 무엇인가
+title: "강의 02. 하네스란 실제로 무엇인가"
 date: "2026-05-28 11:34:14"
 updated: "2026-05-28 11:34:14"
-layout: post
-permalink: /collections/learn-harness-engineering/docs/ko/lectures/lecture-02-what-a-harness-actually-is/index/
+layout: "post"
+permalink: "/collections/learn-harness-engineering/docs/ko/lectures/lecture-02-what-a-harness-actually-is/index/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 ---
 
 [中文版本 →](../../../zh/lectures/lecture-02-what-a-harness-actually-is/)

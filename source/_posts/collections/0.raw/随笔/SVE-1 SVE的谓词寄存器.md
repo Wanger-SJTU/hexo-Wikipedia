@@ -1,14 +1,14 @@
 ---
-title: SVE-1 SVE的谓词寄存器
+title: "SVE-1 SVE的谓词寄存器"
 date: "2026-04-11 21:40:18"
 updated: "2026-04-11 21:40:18"
-layout: post
-permalink: /collections/0.raw/随笔/SVE-1-SVE的谓词寄存器/
+layout: "post"
+permalink: "/collections/0.raw/随笔/SVE-1-SVE的谓词寄存器/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 ---
 
 #sve 

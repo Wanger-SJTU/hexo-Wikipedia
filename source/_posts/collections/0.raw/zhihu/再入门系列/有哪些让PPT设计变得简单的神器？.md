@@ -1,17 +1,17 @@
 ---
-title: 有哪些让PPT设计变得简单的神器？
+title: "有哪些让PPT设计变得简单的神器？"
 date: "2026-04-15 00:00:00"
 updated: "2026-04-15 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/再入门系列/有哪些让PPT设计变得简单的神器/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/再入门系列/有哪些让PPT设计变得简单的神器/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://www.zhihu.com/question/38277014/answer/103206552
+  - "知乎"
+source_url: "https://www.zhihu.com/question/38277014/answer/103206552"
 ---
 
 

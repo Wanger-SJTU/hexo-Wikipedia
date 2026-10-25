@@ -1,14 +1,14 @@
 ---
-title: 編碼代理啟動流程
+title: "編碼代理啟動流程"
 date: "2026-05-28 11:34:14"
 updated: "2026-05-28 11:34:14"
-layout: post
-permalink: /collections/learn-harness-engineering/docs/zh-TW/resources/reference/coding-agent-startup-flow/
+layout: "post"
+permalink: "/collections/learn-harness-engineering/docs/zh-TW/resources/reference/coding-agent-startup-flow/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 ---
 
 # 編碼代理啟動流程

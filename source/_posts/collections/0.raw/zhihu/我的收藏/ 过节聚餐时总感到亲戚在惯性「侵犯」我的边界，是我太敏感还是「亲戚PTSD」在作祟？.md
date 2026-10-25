@@ -1,17 +1,17 @@
 ---
-title: (1 条消息) 过节聚餐时总感到亲戚在惯性「侵犯」我的边界，是我太敏感还是「亲戚PTSD」在作祟？
+title: "(1 条消息) 过节聚餐时总感到亲戚在惯性「侵犯」我的边界，是我太敏感还是「亲戚PTSD」在作祟？"
 date: "2026-04-15 00:00:00"
 updated: "2026-04-15 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/我的收藏/过节聚餐时总感到亲戚在惯性「侵犯」我的边界,是我太敏感还是「亲戚PTSD」在作祟/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/我的收藏/过节聚餐时总感到亲戚在惯性「侵犯」我的边界,是我太敏感还是「亲戚PTSD」在作祟/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://www.zhihu.com/question/621684259/answer/3234807746
+  - "知乎"
+source_url: "https://www.zhihu.com/question/621684259/answer/3234807746"
 ---
 
 

@@ -1,17 +1,17 @@
 ---
-title: CXLMemUring：面向 CXL 系统的编译器驱动异构内存访问
+title: "CXLMemUring：面向 CXL 系统的编译器驱动异构内存访问"
 date: "2025-11-04 00:00:00"
 updated: "2025-11-04 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/体系结构/CXLMemUring-面向-CXL-系统的编译器驱动异构内存访问/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/体系结构/CXLMemUring-面向-CXL-系统的编译器驱动异构内存访问/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/1968840336215376258
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/1968840336215376258"
 ---
 
 

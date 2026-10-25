@@ -1,17 +1,17 @@
 ---
-title: ARM L2 cache RAM
+title: "ARM L2 cache RAM"
 date: "2025-02-05 00:00:00"
 updated: "2025-02-05 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/体系结构/ARM-L2-cache-RAM/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/体系结构/ARM-L2-cache-RAM/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/21286535032
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/21286535032"
 ---
 
 

@@ -1,17 +1,17 @@
 ---
-title: 第107篇 - GPU UVA 与 UVM 解析
+title: "第107篇 - GPU UVA 与 UVM 解析"
 date: "2026-01-29 00:00:00"
 updated: "2026-01-29 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/我的收藏/第107篇-GPU-UVA-与-UVM-解析/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/我的收藏/第107篇-GPU-UVA-与-UVM-解析/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/1987302295352939853
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/1987302295352939853"
 ---
 
 

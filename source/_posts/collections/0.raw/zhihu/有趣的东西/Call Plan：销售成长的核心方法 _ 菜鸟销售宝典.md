@@ -1,17 +1,17 @@
 ---
-title: Call Plan：销售成长的核心方法 | 菜鸟销售宝典
+title: "Call Plan：销售成长的核心方法 | 菜鸟销售宝典"
 date: "2016-12-05 00:00:00"
 updated: "2016-12-05 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/有趣的东西/Call-Plan-销售成长的核心方法-_-菜鸟销售宝典/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/有趣的东西/Call-Plan-销售成长的核心方法-_-菜鸟销售宝典/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/24181984
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/24181984"
 ---
 
 

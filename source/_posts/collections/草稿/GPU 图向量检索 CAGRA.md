@@ -1,14 +1,14 @@
 ---
-title: GPU 图向量检索 CAGRA
+title: "GPU 图向量检索 CAGRA"
 date: "2026-04-11 21:40:17"
 updated: "2026-04-11 21:40:17"
-layout: post
-permalink: /collections/草稿/GPU-图向量检索-CAGRA/
+layout: "post"
+permalink: "/collections/草稿/GPU-图向量检索-CAGRA/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 ---
 
 [CAGRA](https://docs.rapids.ai/api/raft/nightly/pylibraft_api/neighbors/#cagra) 是 N社在RAFT项目中 最新的 ANN 向量索引。这是一种高性能的、 GPU 加速的、基于图的方法，尤其是针对<strong>小批量情况进行了优化</strong>，其中每次查找只包含一个或几个查询向量。

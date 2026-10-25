@@ -1,21 +1,21 @@
 ---
-title: CAISI 对 DeepSeek V4 Pro 的评估
+title: "CAISI 对 DeepSeek V4 Pro 的评估"
 date: "2026-05-04 00:00:00"
 updated: "2026-05-04 00:00:00"
-layout: post
-permalink: /collections/0.raw/web/nist-deepseek-v4-pro/CAISI评估DeepSeek-V4-Pro/
+layout: "post"
+permalink: "/collections/0.raw/web/nist-deepseek-v4-pro/CAISI评估DeepSeek-V4-Pro/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - AI评估
-  - DeepSeek
-  - NIST
-  - CAISI
-  - benchmark
-source_url: https://www.nist.gov/news-events/news/2026/05/caisi-evaluation-deepseek-v4-pro
+  - "AI评估"
+  - "DeepSeek"
+  - "NIST"
+  - "CAISI"
+  - "benchmark"
+source_url: "https://www.nist.gov/news-events/news/2026/05/caisi-evaluation-deepseek-v4-pro"
 ---
 
 

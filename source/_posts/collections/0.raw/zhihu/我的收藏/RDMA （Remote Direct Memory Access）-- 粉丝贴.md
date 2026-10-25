@@ -1,17 +1,17 @@
 ---
-title: RDMA （Remote Direct Memory Access）-- 粉丝贴
+title: "RDMA （Remote Direct Memory Access）-- 粉丝贴"
 date: "2022-10-02 00:00:00"
 updated: "2022-10-02 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/我的收藏/RDMA-(Remote-Direct-Memory-Access)-粉丝贴/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/我的收藏/RDMA-(Remote-Direct-Memory-Access)-粉丝贴/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/569493187
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/569493187"
 ---
 
 

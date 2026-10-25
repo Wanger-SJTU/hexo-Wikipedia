@@ -1,14 +1,14 @@
 ---
-title: Project 02. 讓代理看懂專案、銜接上次的工作
+title: "Project 02. 讓代理看懂專案、銜接上次的工作"
 date: "2026-05-28 11:34:14"
 updated: "2026-05-28 11:34:14"
-layout: post
-permalink: /collections/learn-harness-engineering/docs/zh-TW/projects/project-02-agent-readable-workspace/index/
+layout: "post"
+permalink: "/collections/learn-harness-engineering/docs/zh-TW/projects/project-02-agent-readable-workspace/index/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 ---
 
 # Project 02. 讓代理看懂專案、銜接上次的工作

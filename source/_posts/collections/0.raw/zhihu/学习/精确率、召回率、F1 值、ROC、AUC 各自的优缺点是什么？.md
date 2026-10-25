@@ -1,17 +1,17 @@
 ---
-title: 精确率、召回率、F1 值、ROC、AUC 各自的优缺点是什么？
+title: "精确率、召回率、F1 值、ROC、AUC 各自的优缺点是什么？"
 date: "2026-04-15 00:00:00"
 updated: "2026-04-15 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/学习/精确率、召回率、F1-值、ROC、AUC-各自的优缺点是什么/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/学习/精确率、召回率、F1-值、ROC、AUC-各自的优缺点是什么/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://www.zhihu.com/question/30643044/answer/222274170
+  - "知乎"
+source_url: "https://www.zhihu.com/question/30643044/answer/222274170"
 ---
 
 

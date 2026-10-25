@@ -1,17 +1,17 @@
 ---
-title: (2 条消息) 从零开始写一个简单的乱序双发核(四) 实现rename/RAT/ROB/issue_queue等模块
+title: "(2 条消息) 从零开始写一个简单的乱序双发核(四) 实现rename/RAT/ROB/issue_queue等模块"
 date: "2025-02-20 00:00:00"
 updated: "2025-02-20 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/我的收藏/从零开始写一个简单的乱序双发核(四)-实现rename_RAT_ROB_issue_queue等模块/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/我的收藏/从零开始写一个简单的乱序双发核(四)-实现rename_RAT_ROB_issue_queue等模块/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/23898837254
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/23898837254"
 ---
 
 

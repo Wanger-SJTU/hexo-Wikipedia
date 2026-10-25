@@ -1,14 +1,14 @@
 ---
-title: 编码：从Embeding 到 Rerank
+title: "编码：从Embeding 到 Rerank"
 date: "2026-04-11 21:40:18"
 updated: "2026-04-11 21:40:18"
-layout: post
-permalink: /collections/草稿/编码-从Embeding-到-Rerank/
+layout: "post"
+permalink: "/collections/草稿/编码-从Embeding-到-Rerank/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 ---
 
 

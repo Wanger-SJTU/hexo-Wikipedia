@@ -1,17 +1,17 @@
 ---
-title: Triton学习笔记
+title: "Triton学习笔记"
 date: "2023-12-13 00:00:00"
 updated: "2023-12-13 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/AI-infra/Triton学习笔记/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/AI-infra/Triton学习笔记/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/672086654
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/672086654"
 ---
 
 

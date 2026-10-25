@@ -2,16 +2,16 @@
 title: "【检索增强大模型】Chain-of-Note: Enhancing Robustness in Retrieval-Augmented Language Models | 鲁棒性改进"
 date: "2023-11-27 00:00:00"
 updated: "2023-11-27 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/LLM-SD/【检索增强大模型】Chain-of-Note_-Enhancing-Robustness-in-Retrieval-Augmented-Language-Models-_-鲁棒性改/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/LLM-SD/【检索增强大模型】Chain-of-Note_-Enhancing-Robustness-in-Retrieval-Augmented-Language-Models-_-鲁棒性改/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/669043394
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/669043394"
 ---
 
 

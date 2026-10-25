@@ -1,17 +1,17 @@
 ---
-title: 有没有介绍DDR Jedec的书或者介绍dram的书，想学习一下?
+title: "有没有介绍DDR Jedec的书或者介绍dram的书，想学习一下?"
 date: "2021-12-10 00:00:00"
 updated: "2021-12-10 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/我的收藏/有没有介绍DDR-Jedec的书或者介绍dram的书,想学习一下_/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/我的收藏/有没有介绍DDR-Jedec的书或者介绍dram的书,想学习一下_/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://www.zhihu.com/question/500592402/answer/2264306252
+  - "知乎"
+source_url: "https://www.zhihu.com/question/500592402/answer/2264306252"
 ---
 
 

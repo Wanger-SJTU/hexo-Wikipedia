@@ -1,17 +1,17 @@
 ---
-title: ARM64中的内存屏障指令
+title: "ARM64中的内存屏障指令"
 date: "2022-05-30 00:00:00"
 updated: "2022-05-30 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/体系结构/ARM64中的内存屏障指令/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/体系结构/ARM64中的内存屏障指令/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/521802930
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/521802930"
 ---
 
 

@@ -1,17 +1,17 @@
 ---
-title: RNN - LSTM - GRU
+title: "RNN - LSTM - GRU"
 date: "2019-04-12 00:00:00"
 updated: "2019-04-12 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/机器学习/RNN-LSTM-GRU/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/机器学习/RNN-LSTM-GRU/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/60915302
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/60915302"
 ---
 
 

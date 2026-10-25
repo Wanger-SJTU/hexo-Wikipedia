@@ -1,17 +1,17 @@
 ---
-title: (1 条消息) [分析] ROPE的不同实现：llama&palm
+title: "(1 条消息) [分析] ROPE的不同实现：llama&palm"
 date: "2023-05-07 00:00:00"
 updated: "2023-05-07 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/我的收藏/[分析]-ROPE的不同实现-llama-palm/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/我的收藏/[分析]-ROPE的不同实现-llama-palm/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/627536105
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/627536105"
 ---
 
 

@@ -1,17 +1,17 @@
 ---
-title: (2 条消息) 8张图讲清楚mmap实现原理
+title: "(2 条消息) 8张图讲清楚mmap实现原理"
 date: "2024-01-05 00:00:00"
 updated: "2024-01-05 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/我的收藏/8张图讲清楚mmap实现原理/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/我的收藏/8张图讲清楚mmap实现原理/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/676167319
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/676167319"
 ---
 
 

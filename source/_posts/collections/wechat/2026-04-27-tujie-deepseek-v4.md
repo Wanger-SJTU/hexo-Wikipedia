@@ -1,20 +1,20 @@
 ---
-title: 图解DeepSeek V4：详细计算流程解析
+title: "图解DeepSeek V4：详细计算流程解析"
 date: "2026-04-27 00:00:00"
 updated: "2026-04-27 00:00:00"
-layout: post
-permalink: /collections/wechat/2026-04-27-tujie-deepseek-v4/
+layout: "post"
+permalink: "/collections/wechat/2026-04-27-tujie-deepseek-v4/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - DeepSeek
-  - AI
-  - 大模型
-  - 架构
-source_url: https://mp.weixin.qq.com/s/DGrJnqGmkMWxI77mvUMlXg
+  - "DeepSeek"
+  - "AI"
+  - "大模型"
+  - "架构"
+source_url: "https://mp.weixin.qq.com/s/DGrJnqGmkMWxI77mvUMlXg"
 ---
 
 

@@ -1,17 +1,17 @@
 ---
-title: 深入解析现代 CPU 微架构：统一 PRF 架构与 ROB 暂存架构
+title: "深入解析现代 CPU 微架构：统一 PRF 架构与 ROB 暂存架构"
 date: "2026-07-04 00:00:00"
 updated: "2026-07-04 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/体系结构/深入解析现代-CPU-微架构-统一-PRF-架构与-ROB-暂存架构/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/体系结构/深入解析现代-CPU-微架构-统一-PRF-架构与-ROB-暂存架构/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/2056670865467634847
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/2056670865467634847"
 ---
 
 

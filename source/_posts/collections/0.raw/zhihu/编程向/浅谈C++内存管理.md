@@ -1,17 +1,17 @@
 ---
-title: 浅谈C++内存管理
+title: "浅谈C++内存管理"
 date: "2018-12-17 00:00:00"
 updated: "2018-12-17 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/编程向/浅谈C-内存管理/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/编程向/浅谈C-内存管理/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/51855842
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/51855842"
 ---
 
 

@@ -1,17 +1,17 @@
 ---
-title: 英特尔携手 AMD 发布 ACE 架构，x86 矩阵计算密度提升 16 倍，这对行业意味着什么？
+title: "英特尔携手 AMD 发布 ACE 架构，x86 矩阵计算密度提升 16 倍，这对行业意味着什么？"
 date: "2026-05-17 00:00:00"
 updated: "2026-05-17 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/体系结构/英特尔携手-AMD-发布-ACE-架构,x86-矩阵计算密度提升-16-倍,这对行业意味着什么/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/体系结构/英特尔携手-AMD-发布-ACE-架构,x86-矩阵计算密度提升-16-倍,这对行业意味着什么/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://www.zhihu.com/question/2033219016886589368/answer/2039315084518875316
+  - "知乎"
+source_url: "https://www.zhihu.com/question/2033219016886589368/answer/2039315084518875316"
 ---
 
 

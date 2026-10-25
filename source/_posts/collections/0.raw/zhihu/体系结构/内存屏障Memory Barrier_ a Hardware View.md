@@ -2,16 +2,16 @@
 title: "内存屏障Memory Barrier: a Hardware View"
 date: "2019-05-19 00:00:00"
 updated: "2019-05-19 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/体系结构/内存屏障Memory-Barrier_-a-Hardware-View/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/体系结构/内存屏障Memory-Barrier_-a-Hardware-View/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/66085562
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/66085562"
 ---
 
 

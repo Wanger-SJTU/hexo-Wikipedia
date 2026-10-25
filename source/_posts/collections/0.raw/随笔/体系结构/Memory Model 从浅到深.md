@@ -1,14 +1,14 @@
 ---
-title: Memory Model 从浅到深
+title: "Memory Model 从浅到深"
 date: "2026-04-11 21:40:28"
 updated: "2026-04-11 21:40:28"
-layout: post
-permalink: /collections/0.raw/随笔/体系结构/Memory-Model-从浅到深/
+layout: "post"
+permalink: "/collections/0.raw/随笔/体系结构/Memory-Model-从浅到深/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 ---
 
 C++11开始对内存模型做了统一的约束。

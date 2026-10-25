@@ -1,17 +1,17 @@
 ---
-title: 如何评价NeurIPS 2025获奖论文，通过IDR 机制解释「扩散模型泛化性」来源？
+title: "如何评价NeurIPS 2025获奖论文，通过IDR 机制解释「扩散模型泛化性」来源？"
 date: "2025-12-25 00:00:00"
 updated: "2025-12-25 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/LLM-SD/如何评价NeurIPS-2025获奖论文,通过IDR-机制解释「扩散模型泛化性」来源/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/LLM-SD/如何评价NeurIPS-2025获奖论文,通过IDR-机制解释「扩散模型泛化性」来源/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://www.zhihu.com/question/1986478344796141172/answer/1987570602341597426
+  - "知乎"
+source_url: "https://www.zhihu.com/question/1986478344796141172/answer/1987570602341597426"
 ---
 
 

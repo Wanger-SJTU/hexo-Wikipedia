@@ -1,17 +1,17 @@
 ---
-title: 吐血整理C++书单，萌新到大牛，要看哪些书？
+title: "吐血整理C++书单，萌新到大牛，要看哪些书？"
 date: "2019-08-02 00:00:00"
 updated: "2019-08-02 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/编程向/吐血整理C-书单,萌新到大牛,要看哪些书/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/编程向/吐血整理C-书单,萌新到大牛,要看哪些书/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/76369741
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/76369741"
 ---
 
 

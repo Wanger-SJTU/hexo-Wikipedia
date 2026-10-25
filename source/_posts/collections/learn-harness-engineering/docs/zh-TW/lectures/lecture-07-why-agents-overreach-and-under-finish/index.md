@@ -1,14 +1,14 @@
 ---
-title: 第七講. 給 agent 劃清每次任務的邊界
+title: "第七講. 給 agent 劃清每次任務的邊界"
 date: "2026-05-28 11:34:14"
 updated: "2026-05-28 11:34:14"
-layout: post
-permalink: /collections/learn-harness-engineering/docs/zh-TW/lectures/lecture-07-why-agents-overreach-and-under-finish/index/
+layout: "post"
+permalink: "/collections/learn-harness-engineering/docs/zh-TW/lectures/lecture-07-why-agents-overreach-and-under-finish/index/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 ---
 
 [English Version →](../../../en/lectures/lecture-07-why-agents-overreach-and-under-finish/)

@@ -1,17 +1,17 @@
 ---
-title: sglang中的scheduler调度原理和代码解析
+title: "sglang中的scheduler调度原理和代码解析"
 date: "2025-12-08 00:00:00"
 updated: "2025-12-08 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/我的收藏/sglang中的scheduler调度原理和代码解析/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/我的收藏/sglang中的scheduler调度原理和代码解析/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/1980655792655972282
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/1980655792655972282"
 ---
 
 

@@ -1,17 +1,17 @@
 ---
-title: (2 条消息) 零基础入门PLUTO的自动循环变换算法
+title: "(2 条消息) 零基础入门PLUTO的自动循环变换算法"
 date: "2023-06-14 00:00:00"
 updated: "2023-06-14 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/我的收藏/零基础入门PLUTO的自动循环变换算法/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/我的收藏/零基础入门PLUTO的自动循环变换算法/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/631634938
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/631634938"
 ---
 
 

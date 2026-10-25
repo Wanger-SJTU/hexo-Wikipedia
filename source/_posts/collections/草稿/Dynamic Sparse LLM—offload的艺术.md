@@ -1,14 +1,14 @@
 ---
-title: transformer block
+title: "transformer block"
 date: "2026-04-11 21:40:17"
 updated: "2026-04-11 21:40:17"
-layout: post
-permalink: /collections/草稿/Dynamic-Sparse-LLM—offload的艺术/
+layout: "post"
+permalink: "/collections/草稿/Dynamic-Sparse-LLM—offload的艺术/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 ---
 
 

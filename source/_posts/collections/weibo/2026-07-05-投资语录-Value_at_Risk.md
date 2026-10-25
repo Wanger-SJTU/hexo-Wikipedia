@@ -2,13 +2,13 @@
 title: "@ValueatRisk 的微博：投资语录"
 date: "2026-07-06 12:09:08"
 updated: "2026-07-06 12:09:08"
-layout: post
-permalink: /collections/weibo/2026-07-05-投资语录-Value_at_Risk/
+layout: "post"
+permalink: "/collections/weibo/2026-07-05-投资语录-Value_at_Risk/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 ---
 
 # @Value_at_Risk 的微博：投资语录

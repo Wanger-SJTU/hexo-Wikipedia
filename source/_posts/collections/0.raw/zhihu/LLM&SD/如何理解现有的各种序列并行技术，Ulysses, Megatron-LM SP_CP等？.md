@@ -1,17 +1,17 @@
 ---
-title: 如何理解现有的各种序列并行技术，Ulysses, Megatron-LM SP/CP等？
+title: "如何理解现有的各种序列并行技术，Ulysses, Megatron-LM SP/CP等？"
 date: "2024-12-09 00:00:00"
 updated: "2024-12-09 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/LLM-SD/如何理解现有的各种序列并行技术,Ulysses,-Megatron-LM-SP_CP等/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/LLM-SD/如何理解现有的各种序列并行技术,Ulysses,-Megatron-LM-SP_CP等/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://www.zhihu.com/question/4130491572/answer/51095129472
+  - "知乎"
+source_url: "https://www.zhihu.com/question/4130491572/answer/51095129472"
 ---
 
 

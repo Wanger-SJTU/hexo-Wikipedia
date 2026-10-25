@@ -1,14 +1,14 @@
 ---
-title: MLX 框架浅析
+title: "MLX 框架浅析"
 date: "2026-04-11 21:40:17"
 updated: "2026-04-11 21:40:17"
-layout: post
-permalink: /collections/草稿/MLX-框架浅析/
+layout: "post"
+permalink: "/collections/草稿/MLX-框架浅析/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 ---
 
 最近Apple 新发布了一个MLX的DL框架，这是继 ML Compute 可用于在 Mac 上进行 TensorFlow 模型的训练，PyTorch 在 M1芯片后可使用 Metal Performance Shaders (MPS) 作为GPU 加速的 PyTorch 机器学习模型训练之后，进一步的尝试。

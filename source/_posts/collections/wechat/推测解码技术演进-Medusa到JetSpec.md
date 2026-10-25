@@ -1,14 +1,14 @@
 ---
-title: 推测解码技术演进
+title: "推测解码技术演进"
 date: "2026-07-10 10:01:27"
 updated: "2026-07-10 10:01:27"
-layout: post
-permalink: /collections/wechat/推测解码技术演进-Medusa到JetSpec/
+layout: "post"
+permalink: "/collections/wechat/推测解码技术演进-Medusa到JetSpec/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 ---
 
 # 推测解码技术演进

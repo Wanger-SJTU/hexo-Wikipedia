@@ -1,17 +1,17 @@
 ---
-title: 网络inference阶段conv层和BN层的融合
+title: "网络inference阶段conv层和BN层的融合"
 date: "2018-10-30 00:00:00"
 updated: "2018-10-30 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/dl论文/网络inference阶段conv层和BN层的融合/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/dl论文/网络inference阶段conv层和BN层的融合/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/48005099
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/48005099"
 ---
 
 

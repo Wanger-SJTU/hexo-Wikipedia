@@ -1,17 +1,17 @@
 ---
-title: 为什么我还是无法理解transformer？
+title: "为什么我还是无法理解transformer？"
 date: "2023-10-24 00:00:00"
 updated: "2023-10-24 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/LLM-SD/为什么我还是无法理解transformer/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/LLM-SD/为什么我还是无法理解transformer/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://www.zhihu.com/question/596771388/answer/3263001703
+  - "知乎"
+source_url: "https://www.zhihu.com/question/596771388/answer/3263001703"
 ---
 
 

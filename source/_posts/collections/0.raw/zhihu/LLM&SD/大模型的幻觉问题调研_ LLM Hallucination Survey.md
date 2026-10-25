@@ -2,16 +2,16 @@
 title: "大模型的幻觉问题调研: LLM Hallucination Survey"
 date: "2023-07-19 00:00:00"
 updated: "2023-07-19 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/LLM-SD/大模型的幻觉问题调研_-LLM-Hallucination-Survey/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/LLM-SD/大模型的幻觉问题调研_-LLM-Hallucination-Survey/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/644541524
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/644541524"
 ---
 
 

@@ -1,17 +1,17 @@
 ---
-title: ResRep：剪枝SOTA！用结构重参数化实现CNN无损压缩（ICCV）
+title: "ResRep：剪枝SOTA！用结构重参数化实现CNN无损压缩（ICCV）"
 date: "2021-09-27 00:00:00"
 updated: "2021-09-27 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/dl论文/ResRep-剪枝SOTA-用结构重参数化实现CNN无损压缩(ICCV)/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/dl论文/ResRep-剪枝SOTA-用结构重参数化实现CNN无损压缩(ICCV)/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/402106979
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/402106979"
 ---
 
 

@@ -1,17 +1,17 @@
 ---
-title: CVPR2020|小样本学习中的实例可信度推断|ICI
+title: "CVPR2020|小样本学习中的实例可信度推断|ICI"
 date: "2020-03-30 00:00:00"
 updated: "2020-03-30 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/dl论文/CVPR2020_小样本学习中的实例可信度推断_ICI/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/dl论文/CVPR2020_小样本学习中的实例可信度推断_ICI/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/120354934
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/120354934"
 ---
 
 

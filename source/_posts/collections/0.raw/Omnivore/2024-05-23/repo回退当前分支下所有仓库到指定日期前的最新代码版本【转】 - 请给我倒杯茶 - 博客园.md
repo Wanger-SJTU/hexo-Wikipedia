@@ -1,14 +1,14 @@
 ---
-title: repo回退当前分支下所有仓库到指定日期前的最新代码版本【转】 - 请给我倒杯茶 - 博客园
+title: "repo回退当前分支下所有仓库到指定日期前的最新代码版本【转】 - 请给我倒杯茶 - 博客园"
 date: "2026-04-11 21:40:28"
 updated: "2026-04-11 21:40:28"
-layout: post
-permalink: /collections/0.raw/Omnivore/2024-05-23/repo回退当前分支下所有仓库到指定日期前的最新代码版本【转】-请给我倒杯茶-博客园/
+layout: "post"
+permalink: "/collections/0.raw/Omnivore/2024-05-23/repo回退当前分支下所有仓库到指定日期前的最新代码版本【转】-请给我倒杯茶-博客园/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 ---
 
 ---

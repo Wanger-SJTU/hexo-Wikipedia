@@ -1,17 +1,17 @@
 ---
-title: 后注意力时代：Sparse is all you need
+title: "后注意力时代：Sparse is all you need"
 date: "2025-11-28 00:00:00"
 updated: "2025-11-28 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/LLM-SD/后注意力时代-Sparse-is-all-you-need/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/LLM-SD/后注意力时代-Sparse-is-all-you-need/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/1977884110639890643
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/1977884110639890643"
 ---
 
 

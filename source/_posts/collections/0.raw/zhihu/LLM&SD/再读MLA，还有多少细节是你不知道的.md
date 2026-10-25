@@ -1,17 +1,17 @@
 ---
-title: 再读MLA，还有多少细节是你不知道的
+title: "再读MLA，还有多少细节是你不知道的"
 date: "2025-01-21 00:00:00"
 updated: "2025-01-21 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/LLM-SD/再读MLA,还有多少细节是你不知道的/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/LLM-SD/再读MLA,还有多少细节是你不知道的/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/19585986234
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/19585986234"
 ---
 
 

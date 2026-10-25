@@ -1,17 +1,17 @@
 ---
-title: conv_transpose depth-wise优化技巧
+title: "conv_transpose depth-wise优化技巧"
 date: "2020-11-21 00:00:00"
 updated: "2020-11-21 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/dl论文/conv_transpose-depth-wise优化技巧/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/dl论文/conv_transpose-depth-wise优化技巧/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/283091528
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/283091528"
 ---
 
 

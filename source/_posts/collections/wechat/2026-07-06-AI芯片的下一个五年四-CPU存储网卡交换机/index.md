@@ -1,14 +1,14 @@
 ---
-title: AI芯片的下一个五年（四）：CPU，存储，网卡和交换机
+title: "AI芯片的下一个五年（四）：CPU，存储，网卡和交换机"
 date: "2026-07-06 20:17:39"
 updated: "2026-07-06 20:17:39"
-layout: post
-permalink: /collections/wechat/2026-07-06-AI芯片的下一个五年四-CPU存储网卡交换机/index/
+layout: "post"
+permalink: "/collections/wechat/2026-07-06-AI芯片的下一个五年四-CPU存储网卡交换机/index/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 ---
 
 # AI芯片的下一个五年（四）：CPU，存储，网卡和交换机

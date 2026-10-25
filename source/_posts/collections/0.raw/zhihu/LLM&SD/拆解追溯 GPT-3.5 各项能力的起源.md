@@ -1,17 +1,17 @@
 ---
-title: 拆解追溯 GPT-3.5 各项能力的起源
+title: "拆解追溯 GPT-3.5 各项能力的起源"
 date: "2023-02-18 00:00:00"
 updated: "2023-02-18 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/LLM-SD/拆解追溯-GPT-3.5-各项能力的起源/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/LLM-SD/拆解追溯-GPT-3.5-各项能力的起源/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/607522540
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/607522540"
 ---
 
 

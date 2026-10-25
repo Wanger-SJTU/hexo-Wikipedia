@@ -1,14 +1,14 @@
 ---
-title: 講義 12. すべてのセッションをきれいな引き継ぎで終える
+title: "講義 12. すべてのセッションをきれいな引き継ぎで終える"
 date: "2026-05-28 11:34:14"
 updated: "2026-05-28 11:34:14"
-layout: post
-permalink: /collections/learn-harness-engineering/docs/ja/lectures/lecture-12-why-every-session-must-leave-a-clean-state/index/
+layout: "post"
+permalink: "/collections/learn-harness-engineering/docs/ja/lectures/lecture-12-why-every-session-must-leave-a-clean-state/index/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 ---
 
 [中文版本 →](../../../zh/lectures/lecture-12-why-every-session-must-leave-a-clean-state/)

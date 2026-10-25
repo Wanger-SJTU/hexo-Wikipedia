@@ -1,14 +1,14 @@
 ---
-title: Project 06. 搭建完整的代理工作環境
+title: "Project 06. 搭建完整的代理工作環境"
 date: "2026-05-28 11:34:14"
 updated: "2026-05-28 11:34:14"
-layout: post
-permalink: /collections/learn-harness-engineering/docs/zh-TW/projects/project-06-runtime-observability-and-debugging/index/
+layout: "post"
+permalink: "/collections/learn-harness-engineering/docs/zh-TW/projects/project-06-runtime-observability-and-debugging/index/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 ---
 
 # Project 06. 搭建完整的代理工作環境

@@ -1,17 +1,17 @@
 ---
-title: 【PCIe】PCIE的地址映射
+title: "【PCIe】PCIE的地址映射"
 date: "2024-12-06 00:00:00"
 updated: "2024-12-06 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/体系结构/【PCIe】PCIE的地址映射/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/体系结构/【PCIe】PCIE的地址映射/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/11129034854
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/11129034854"
 ---
 
 

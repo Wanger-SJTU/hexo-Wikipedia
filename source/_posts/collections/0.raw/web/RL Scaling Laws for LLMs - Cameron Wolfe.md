@@ -1,14 +1,14 @@
 ---
-title: RL Scaling Laws for LLMs
+title: "RL Scaling Laws for LLMs"
 date: "2026-04-21 00:37:04"
 updated: "2026-04-21 00:37:04"
-layout: post
-permalink: /collections/0.raw/web/RL-Scaling-Laws-for-LLMs-Cameron-Wolfe/
+layout: "post"
+permalink: "/collections/0.raw/web/RL-Scaling-Laws-for-LLMs-Cameron-Wolfe/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 ---
 
 # RL Scaling Laws for LLMs

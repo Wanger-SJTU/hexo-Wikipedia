@@ -1,17 +1,17 @@
 ---
-title: CVPR 2024 | SinSR：单步基于扩散的图像超分辨率
+title: "CVPR 2024 | SinSR：单步基于扩散的图像超分辨率"
 date: "2024-03-02 00:00:00"
 updated: "2024-03-02 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/LLM-SD/CVPR-2024-_-SinSR-单步基于扩散的图像超分辨率/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/LLM-SD/CVPR-2024-_-SinSR-单步基于扩散的图像超分辨率/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/684896250
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/684896250"
 ---
 
 

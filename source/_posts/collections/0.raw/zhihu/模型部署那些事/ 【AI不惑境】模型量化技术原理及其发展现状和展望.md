@@ -1,17 +1,17 @@
 ---
-title: 【AI不惑境】模型量化技术原理及其发展现状和展望
+title: "【AI不惑境】模型量化技术原理及其发展现状和展望"
 date: "2022-04-22 00:00:00"
 updated: "2022-04-22 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/模型部署那些事/【AI不惑境】模型量化技术原理及其发展现状和展望/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/模型部署那些事/【AI不惑境】模型量化技术原理及其发展现状和展望/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/141641433
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/141641433"
 ---
 
 

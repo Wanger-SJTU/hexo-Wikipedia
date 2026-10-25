@@ -1,14 +1,14 @@
 ---
-title: AI Performance Engineering
+title: "AI Performance Engineering"
 date: "2026-09-21 10:52:34"
 updated: "2026-09-21 10:52:34"
-layout: post
-permalink: /collections/github/gpu-perf-engineering-resources-raw/
+layout: "post"
+permalink: "/collections/github/gpu-perf-engineering-resources-raw/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 ---
 
 <p align="center">

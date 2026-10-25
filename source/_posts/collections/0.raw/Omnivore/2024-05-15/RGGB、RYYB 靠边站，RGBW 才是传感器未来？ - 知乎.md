@@ -1,14 +1,14 @@
 ---
-title: RGGB、RYYB 靠边站，RGBW 才是传感器未来？ - 知乎
+title: "RGGB、RYYB 靠边站，RGBW 才是传感器未来？ - 知乎"
 date: "2026-04-11 21:40:28"
 updated: "2026-04-11 21:40:28"
-layout: post
-permalink: /collections/0.raw/Omnivore/2024-05-15/RGGB、RYYB-靠边站,RGBW-才是传感器未来-知乎/
+layout: "post"
+permalink: "/collections/0.raw/Omnivore/2024-05-15/RGGB、RYYB-靠边站,RGBW-才是传感器未来-知乎/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 ---
 
 ---

@@ -1,17 +1,17 @@
 ---
-title: PyTorch Internals 5：Autograd的实现
+title: "PyTorch Internals 5：Autograd的实现"
 date: "2020-02-26 00:00:00"
 updated: "2020-02-26 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/再入门系列/PyTorch-Internals-5-Autograd的实现/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/再入门系列/PyTorch-Internals-5-Autograd的实现/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/109338369
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/109338369"
 ---
 
 

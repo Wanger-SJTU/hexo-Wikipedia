@@ -1,17 +1,17 @@
 ---
-title: ExecuTorch 深度解析（二）：AOT 编译——把运行时的活全抢过来干
+title: "ExecuTorch 深度解析（二）：AOT 编译——把运行时的活全抢过来干"
 date: "2026-05-04 00:00:00"
 updated: "2026-05-04 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/AI-infra/ExecuTorch-深度解析(二)-AOT-编译——把运行时的活全抢过来干/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/AI-infra/ExecuTorch-深度解析(二)-AOT-编译——把运行时的活全抢过来干/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/2034782380385359322
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/2034782380385359322"
 ---
 
 

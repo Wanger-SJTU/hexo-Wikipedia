@@ -1,17 +1,17 @@
 ---
-title: CNN中，增加Padding过后，为我们带来的那些负面影响。
+title: "CNN中，增加Padding过后，为我们带来的那些负面影响。"
 date: "2019-05-19 00:00:00"
 updated: "2019-05-19 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/机器学习/CNN中,增加Padding过后,为我们带来的那些负面影响。/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/机器学习/CNN中,增加Padding过后,为我们带来的那些负面影响。/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/66289618
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/66289618"
 ---
 
 

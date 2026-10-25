@@ -1,17 +1,17 @@
 ---
-title: C++ 后台开发面试时一般考察什么？
+title: "C++ 后台开发面试时一般考察什么？"
 date: "2020-12-05 00:00:00"
 updated: "2020-12-05 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/走向cs/C-后台开发面试时一般考察什么/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/走向cs/C-后台开发面试时一般考察什么/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://www.zhihu.com/question/34574154/answer/1612013803
+  - "知乎"
+source_url: "https://www.zhihu.com/question/34574154/answer/1612013803"
 ---
 
 

@@ -1,17 +1,17 @@
 ---
-title: (2 条消息) 为什么顺序 SIMD 无法高效地处理 softmax，草稿
+title: "(2 条消息) 为什么顺序 SIMD 无法高效地处理 softmax，草稿"
 date: "2025-03-12 00:00:00"
 updated: "2025-03-12 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/我的收藏/为什么顺序-SIMD-无法高效地处理-softmax,草稿/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/我的收藏/为什么顺序-SIMD-无法高效地处理-softmax,草稿/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/29575167617
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/29575167617"
 ---
 
 

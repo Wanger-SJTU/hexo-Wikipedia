@@ -1,17 +1,17 @@
 ---
-title: Attention综述
+title: "Attention综述"
 date: "2019-04-12 00:00:00"
 updated: "2019-04-12 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/机器学习/Attention综述/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/机器学习/Attention综述/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/62136754
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/62136754"
 ---
 
 

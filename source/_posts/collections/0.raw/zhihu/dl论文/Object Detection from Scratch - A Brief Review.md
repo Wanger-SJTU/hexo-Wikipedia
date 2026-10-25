@@ -1,17 +1,17 @@
 ---
-title: Object Detection from Scratch - A Brief Review
+title: "Object Detection from Scratch - A Brief Review"
 date: "2020-05-02 00:00:00"
 updated: "2020-05-02 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/dl论文/Object-Detection-from-Scratch-A-Brief-Review/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/dl论文/Object-Detection-from-Scratch-A-Brief-Review/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/137410354
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/137410354"
 ---
 
 

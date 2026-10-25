@@ -1,17 +1,17 @@
 ---
-title: 缓存一致性在GPU中实现了吗？
+title: "缓存一致性在GPU中实现了吗？"
 date: "2023-10-31 00:00:00"
 updated: "2023-10-31 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/我的收藏/缓存一致性在GPU中实现了吗/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/我的收藏/缓存一致性在GPU中实现了吗/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://www.zhihu.com/question/51186122/answer/3271081374
+  - "知乎"
+source_url: "https://www.zhihu.com/question/51186122/answer/3271081374"
 ---
 
 

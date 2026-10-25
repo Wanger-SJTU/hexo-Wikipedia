@@ -1,17 +1,17 @@
 ---
-title: 为什么现在的llm大模型主要都是用RoPE位置编码而非其他？
+title: "为什么现在的llm大模型主要都是用RoPE位置编码而非其他？"
 date: "2025-12-18 00:00:00"
 updated: "2025-12-18 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/我的收藏/为什么现在的llm大模型主要都是用RoPE位置编码而非其他/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/我的收藏/为什么现在的llm大模型主要都是用RoPE位置编码而非其他/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://www.zhihu.com/question/1821771428/answer/1984941851405472205
+  - "知乎"
+source_url: "https://www.zhihu.com/question/1821771428/answer/1984941851405472205"
 ---
 
 

@@ -1,17 +1,17 @@
 ---
-title: RDMA技术-RDMA Send-Recv/Write/Read/Atomic操作【21】
+title: "RDMA技术-RDMA Send-Recv/Write/Read/Atomic操作【21】"
 date: "2026-03-09 00:00:00"
 updated: "2026-03-09 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/体系结构/RDMA技术-RDMA-Send-Recv_Write_Read_Atomic操作【21】-f9e799/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/体系结构/RDMA技术-RDMA-Send-Recv_Write_Read_Atomic操作【21】-f9e799/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/2012287560865576638
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/2012287560865576638"
 ---
 
 

@@ -1,17 +1,17 @@
 ---
-title: 工程实现 ｜加速神经网络推理之 8bit Quantization （模型量化压缩）
+title: "工程实现 ｜加速神经网络推理之 8bit Quantization （模型量化压缩）"
 date: "2022-08-22 00:00:00"
 updated: "2022-08-22 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/模型部署那些事/工程实现-加速神经网络推理之-8bit-Quantization-(模型量化压缩)/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/模型部署那些事/工程实现-加速神经网络推理之-8bit-Quantization-(模型量化压缩)/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/38328685
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/38328685"
 ---
 
 

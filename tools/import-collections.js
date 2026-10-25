@@ -145,6 +145,7 @@ function parseDoc(abs) {
   let title = data && data.title != null ? String(data.title).trim() : '';
   if (!title) title = firstHeading(body).replace(/[*_`]/g, '').trim();
   if (!title) title = stem.replace(/^[\s._-]+/, '').trim() || '未命名文档';
+  title = title.replace(/^\(\s*1\s*封私信\s*\)\s*/, '').trim() || title;
 
   let date = data && data.date ? data.date : null;
   if (!(date instanceof Date) || Number.isNaN(date.getTime())) {
@@ -825,7 +826,7 @@ function main() {
     if (doc.tags.length) fm.tags = doc.tags;
     if (doc.sourceUrl) fm.source_url = doc.sourceUrl;
 
-    const yamlText = yaml.dump(fm, { lineWidth: -1, noRefs: true, quotingType: '"', forceQuotes: false });
+    const yamlText = yaml.dump(fm, { lineWidth: -1, noRefs: true, quotingType: '"', forceQuotes: true });
     const output = `---\n${yamlText}---\n\n${body}`;
 
     if (!DRY) {

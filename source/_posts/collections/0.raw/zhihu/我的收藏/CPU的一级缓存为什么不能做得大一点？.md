@@ -1,17 +1,17 @@
 ---
-title: CPU的一级缓存为什么不能做得大一点？
+title: "CPU的一级缓存为什么不能做得大一点？"
 date: "2024-01-05 00:00:00"
 updated: "2024-01-05 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/我的收藏/CPU的一级缓存为什么不能做得大一点/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/我的收藏/CPU的一级缓存为什么不能做得大一点/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://www.zhihu.com/question/21132822/answer/3350331430
+  - "知乎"
+source_url: "https://www.zhihu.com/question/21132822/answer/3350331430"
 ---
 
 

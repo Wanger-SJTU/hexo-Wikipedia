@@ -1,17 +1,17 @@
 ---
-title: 谷歌撰文复盘TPU：ASIC大有可为
+title: "谷歌撰文复盘TPU：ASIC大有可为"
 date: "2026-06-18 00:00:00"
 updated: "2026-06-18 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/AI-infra/谷歌撰文复盘TPU-ASIC大有可为/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/AI-infra/谷歌撰文复盘TPU-ASIC大有可为/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/2051004999463973376
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/2051004999463973376"
 ---
 
 

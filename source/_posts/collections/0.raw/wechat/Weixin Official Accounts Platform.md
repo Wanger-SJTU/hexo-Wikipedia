@@ -1,14 +1,14 @@
 ---
-title: Weixin Official Accounts Platform
+title: "Weixin Official Accounts Platform"
 date: "2026-04-14 10:52:29"
 updated: "2026-04-14 10:52:29"
-layout: post
-permalink: /collections/0.raw/wechat/Weixin-Official-Accounts-Platform/
+layout: "post"
+permalink: "/collections/0.raw/wechat/Weixin-Official-Accounts-Platform/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 ---
 
 # Weixin Official Accounts Platform

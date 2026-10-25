@@ -2,16 +2,16 @@
 title: "Decoupled DiLoCo: 谷歌革命性分布式训练技术"
 date: "2026-04-25 00:00:00"
 updated: "2026-04-25 00:00:00"
-layout: post
-permalink: /collections/0.raw/web/Decoupled-DiLoCo-谷歌分布式训练/
+layout: "post"
+permalink: "/collections/0.raw/web/Decoupled-DiLoCo-谷歌分布式训练/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 微信
-source_url: https://mp.weixin.qq.com/s/VCtSLapQKucVpqlvJp-48g
+  - "微信"
+source_url: "https://mp.weixin.qq.com/s/VCtSLapQKucVpqlvJp-48g"
 ---
 
 

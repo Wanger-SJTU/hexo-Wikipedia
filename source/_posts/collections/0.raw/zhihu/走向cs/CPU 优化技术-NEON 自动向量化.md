@@ -1,17 +1,17 @@
 ---
-title: CPU 优化技术-NEON 自动向量化
+title: "CPU 优化技术-NEON 自动向量化"
 date: "2021-11-22 00:00:00"
 updated: "2021-11-22 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/走向cs/CPU-优化技术-NEON-自动向量化/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/走向cs/CPU-优化技术-NEON-自动向量化/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/435342281
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/435342281"
 ---
 
 

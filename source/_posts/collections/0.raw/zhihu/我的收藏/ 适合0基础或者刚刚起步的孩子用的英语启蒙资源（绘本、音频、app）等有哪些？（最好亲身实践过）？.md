@@ -1,17 +1,17 @@
 ---
-title: (1 条消息) 适合0基础或者刚刚起步的孩子用的英语启蒙资源（绘本、音频、app）等有哪些？（最好亲身实践过）？
+title: "(1 条消息) 适合0基础或者刚刚起步的孩子用的英语启蒙资源（绘本、音频、app）等有哪些？（最好亲身实践过）？"
 date: "2026-04-15 00:00:00"
 updated: "2026-04-15 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/我的收藏/适合0基础或者刚刚起步的孩子用的英语启蒙资源(绘本、音频、app)等有哪些-(最好亲身实践过)/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/我的收藏/适合0基础或者刚刚起步的孩子用的英语启蒙资源(绘本、音频、app)等有哪些-(最好亲身实践过)/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://www.zhihu.com/question/54564426/answer/632107582
+  - "知乎"
+source_url: "https://www.zhihu.com/question/54564426/answer/632107582"
 ---
 
 

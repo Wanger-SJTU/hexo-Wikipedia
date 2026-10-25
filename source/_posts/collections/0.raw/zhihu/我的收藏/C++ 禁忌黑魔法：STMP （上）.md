@@ -1,17 +1,17 @@
 ---
-title: (2 条消息) C++ 禁忌黑魔法：STMP （上）
+title: "(2 条消息) C++ 禁忌黑魔法：STMP （上）"
 date: "2026-03-29 00:00:00"
 updated: "2026-03-29 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/我的收藏/C-禁忌黑魔法-STMP-(上)/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/我的收藏/C-禁忌黑魔法-STMP-(上)/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/646752343
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/646752343"
 ---
 
 

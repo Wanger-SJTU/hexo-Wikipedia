@@ -1,17 +1,17 @@
 ---
-title: [A-10]ARMv8/ARMv9-Memory-页表的概念和使用场景
+title: "[A-10]ARMv8/ARMv9-Memory-页表的概念和使用场景"
 date: "2025-10-04 00:00:00"
 updated: "2025-10-04 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/体系结构/[A-10]ARMv8_ARMv9-Memory-页表的概念和使用场景/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/体系结构/[A-10]ARMv8_ARMv9-Memory-页表的概念和使用场景/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/1952691669196574910
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/1952691669196574910"
 ---
 
 

@@ -2,16 +2,16 @@
 title: "(2 条消息) 如何从头训练大语言模型: A simple technical report"
 date: "2024-10-12 00:00:00"
 updated: "2024-10-12 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/我的收藏/如何从头训练大语言模型_-A-simple-technical-report/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/我的收藏/如何从头训练大语言模型_-A-simple-technical-report/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/906819356
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/906819356"
 ---
 
 

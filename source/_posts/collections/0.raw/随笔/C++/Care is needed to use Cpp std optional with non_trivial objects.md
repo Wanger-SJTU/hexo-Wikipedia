@@ -1,14 +1,14 @@
 ---
-title: Care is needed to use Cpp std optional with non_trivial objects
+title: "Care is needed to use Cpp std optional with non_trivial objects"
 date: "2026-04-11 21:40:28"
 updated: "2026-04-11 21:40:28"
-layout: post
-permalink: /collections/0.raw/随笔/C/Care-is-needed-to-use-Cpp-std-optional-with-non_trivial-objects/
+layout: "post"
+permalink: "/collections/0.raw/随笔/C/Care-is-needed-to-use-Cpp-std-optional-with-non_trivial-objects/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 ---
 
 We often have to represent in software a value that might be missing. Different programming languages have abstraction for this purpose.

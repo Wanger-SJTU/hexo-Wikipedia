@@ -1,17 +1,17 @@
 ---
-title: 如何正确使用 sizeof 来计算汉字的长度？
+title: "如何正确使用 sizeof 来计算汉字的长度？"
 date: "2026-04-15 00:00:00"
 updated: "2026-04-15 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/学习/如何正确使用-sizeof-来计算汉字的长度/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/学习/如何正确使用-sizeof-来计算汉字的长度/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://www.zhihu.com/question/25375744/answer/30584976
+  - "知乎"
+source_url: "https://www.zhihu.com/question/25375744/answer/30584976"
 ---
 
 

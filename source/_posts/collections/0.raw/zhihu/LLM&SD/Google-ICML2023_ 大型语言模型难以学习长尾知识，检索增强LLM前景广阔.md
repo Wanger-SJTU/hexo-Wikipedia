@@ -2,16 +2,16 @@
 title: "Google-ICML2023: 大型语言模型难以学习长尾知识，检索增强LLM前景广阔"
 date: "2023-07-30 00:00:00"
 updated: "2023-07-30 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/LLM-SD/Google-ICML2023_-大型语言模型难以学习长尾知识,检索增强LLM前景广阔/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/LLM-SD/Google-ICML2023_-大型语言模型难以学习长尾知识,检索增强LLM前景广阔/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/646876000
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/646876000"
 ---
 
 

@@ -1,17 +1,17 @@
 ---
-title: 大模型-推理Reasoning能力（持续更新）
+title: "大模型-推理Reasoning能力（持续更新）"
 date: "2025-03-19 00:00:00"
 updated: "2025-03-19 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/我的收藏/大模型-推理Reasoning能力(持续更新)/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/我的收藏/大模型-推理Reasoning能力(持续更新)/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/6928807952
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/6928807952"
 ---
 
 

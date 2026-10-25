@@ -1,20 +1,20 @@
 ---
-title: How I use LLMs as a staff engineer in 2026
+title: "How I use LLMs as a staff engineer in 2026"
 date: "2026-05-17 00:00:00"
 updated: "2026-05-17 00:00:00"
-layout: post
-permalink: /collections/0.raw/articles/2026-05-17-how-i-use-llms-staff-engineer-2026/
+layout: "post"
+permalink: "/collections/0.raw/articles/2026-05-17-how-i-use-llms-staff-engineer-2026/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - AI
-  - LLM
-  - staff engineer
-  - agent workflow
-source_url: https://www.seangoedecke.com/how-i-use-llms-in-2026/
+  - "AI"
+  - "LLM"
+  - "staff engineer"
+  - "agent workflow"
+source_url: "https://www.seangoedecke.com/how-i-use-llms-in-2026/"
 ---
 
 

@@ -1,14 +1,14 @@
 ---
-title: Project 03. 让 agent 关掉再打开还能接着干
+title: "Project 03. 让 agent 关掉再打开还能接着干"
 date: "2026-05-28 11:34:14"
 updated: "2026-05-28 11:34:14"
-layout: post
-permalink: /collections/learn-harness-engineering/docs/zh/projects/project-03-multi-session-continuity/index/
+layout: "post"
+permalink: "/collections/learn-harness-engineering/docs/zh/projects/project-03-multi-session-continuity/index/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 ---
 
 # Project 03. 让 agent 关掉再打开还能接着干

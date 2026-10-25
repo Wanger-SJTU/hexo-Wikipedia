@@ -1,17 +1,17 @@
 ---
-title: (1 条消息) 分析transformer模型的参数量、计算量、中间激活、KV cache
+title: "(1 条消息) 分析transformer模型的参数量、计算量、中间激活、KV cache"
 date: "2024-01-01 00:00:00"
 updated: "2024-01-01 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/我的收藏/分析transformer模型的参数量、计算量、中间激活、KV-cache/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/我的收藏/分析transformer模型的参数量、计算量、中间激活、KV-cache/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/624740065
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/624740065"
 ---
 
 

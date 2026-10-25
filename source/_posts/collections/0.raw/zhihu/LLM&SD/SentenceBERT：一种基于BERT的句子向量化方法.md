@@ -1,17 +1,17 @@
 ---
-title: SentenceBERT：一种基于BERT的句子向量化方法
+title: "SentenceBERT：一种基于BERT的句子向量化方法"
 date: "2021-02-09 00:00:00"
 updated: "2021-02-09 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/LLM-SD/SentenceBERT-一种基于BERT的句子向量化方法/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/LLM-SD/SentenceBERT-一种基于BERT的句子向量化方法/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/350228423
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/350228423"
 ---
 
 

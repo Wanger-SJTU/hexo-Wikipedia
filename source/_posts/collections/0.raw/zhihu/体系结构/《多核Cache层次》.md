@@ -1,17 +1,17 @@
 ---
-title: 《多核Cache层次》
+title: "《多核Cache层次》"
 date: "2025-03-07 00:00:00"
 updated: "2025-03-07 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/体系结构/《多核Cache层次》/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/体系结构/《多核Cache层次》/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/24638786450
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/24638786450"
 ---
 
 

@@ -1,17 +1,17 @@
 ---
-title: 深度学习编译系列之 ANSOR 技术分享
+title: "深度学习编译系列之 ANSOR 技术分享"
 date: "2021-05-14 00:00:00"
 updated: "2021-05-14 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/模型部署那些事/深度学习编译系列之-ANSOR-技术分享/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/模型部署那些事/深度学习编译系列之-ANSOR-技术分享/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/360041136
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/360041136"
 ---
 
 

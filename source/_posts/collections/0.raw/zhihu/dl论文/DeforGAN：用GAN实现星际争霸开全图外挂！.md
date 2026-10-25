@@ -1,17 +1,17 @@
 ---
-title: DeforGAN：用GAN实现星际争霸开全图外挂！
+title: "DeforGAN：用GAN实现星际争霸开全图外挂！"
 date: "2020-04-02 00:00:00"
 updated: "2020-04-02 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/dl论文/DeforGAN-用GAN实现星际争霸开全图外挂/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/dl论文/DeforGAN-用GAN实现星际争霸开全图外挂/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/123303841
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/123303841"
 ---
 
 

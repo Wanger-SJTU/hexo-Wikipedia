@@ -1,17 +1,17 @@
 ---
-title: AttrPrompt：让LLM生成的数据更加多样、更少Bias的一种思路
+title: "AttrPrompt：让LLM生成的数据更加多样、更少Bias的一种思路"
 date: "2023-10-25 00:00:00"
 updated: "2023-10-25 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/LLM-SD/AttrPrompt-让LLM生成的数据更加多样、更少Bias的一种思路/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/LLM-SD/AttrPrompt-让LLM生成的数据更加多样、更少Bias的一种思路/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/663371079
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/663371079"
 ---
 
 

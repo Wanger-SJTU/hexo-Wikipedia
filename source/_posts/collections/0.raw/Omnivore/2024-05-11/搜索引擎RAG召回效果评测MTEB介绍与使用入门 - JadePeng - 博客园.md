@@ -1,14 +1,14 @@
 ---
-title: 搜索引擎RAG召回效果评测MTEB介绍与使用入门 - JadePeng - 博客园
+title: "搜索引擎RAG召回效果评测MTEB介绍与使用入门 - JadePeng - 博客园"
 date: "2026-04-11 21:40:28"
 updated: "2026-04-11 21:40:28"
-layout: post
-permalink: /collections/0.raw/Omnivore/2024-05-11/搜索引擎RAG召回效果评测MTEB介绍与使用入门-JadePeng-博客园/
+layout: "post"
+permalink: "/collections/0.raw/Omnivore/2024-05-11/搜索引擎RAG召回效果评测MTEB介绍与使用入门-JadePeng-博客园/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 ---
 
 ---

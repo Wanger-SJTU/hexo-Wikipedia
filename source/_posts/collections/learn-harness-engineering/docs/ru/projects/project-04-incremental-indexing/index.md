@@ -1,14 +1,14 @@
 ---
-title: Проект 04. Используйте runtime-обратную связь, чтобы корректировать поведение агента
+title: "Проект 04. Используйте runtime-обратную связь, чтобы корректировать поведение агента"
 date: "2026-05-28 11:34:14"
 updated: "2026-05-28 11:34:14"
-layout: post
-permalink: /collections/learn-harness-engineering/docs/ru/projects/project-04-incremental-indexing/index/
+layout: "post"
+permalink: "/collections/learn-harness-engineering/docs/ru/projects/project-04-incremental-indexing/index/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 ---
 
 [中文版本 →](../../../zh/projects/project-04-incremental-indexing/)

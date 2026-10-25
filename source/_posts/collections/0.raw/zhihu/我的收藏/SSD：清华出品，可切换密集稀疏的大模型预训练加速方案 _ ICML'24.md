@@ -1,17 +1,17 @@
 ---
-title: (2 条消息) SSD：清华出品，可切换密集稀疏的大模型预训练加速方案 | ICML'24
+title: "(2 条消息) SSD：清华出品，可切换密集稀疏的大模型预训练加速方案 | ICML'24"
 date: "2024-11-29 00:00:00"
 updated: "2024-11-29 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/我的收藏/SSD-清华出品,可切换密集稀疏的大模型预训练加速方案-_-ICML'24/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/我的收藏/SSD-清华出品,可切换密集稀疏的大模型预训练加速方案-_-ICML'24/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/9478276812
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/9478276812"
 ---
 
 

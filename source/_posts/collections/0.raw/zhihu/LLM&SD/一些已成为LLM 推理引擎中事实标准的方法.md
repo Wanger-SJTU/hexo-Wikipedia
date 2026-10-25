@@ -1,17 +1,17 @@
 ---
-title: 一些已成为LLM 推理引擎中事实标准的方法
+title: "一些已成为LLM 推理引擎中事实标准的方法"
 date: "2024-10-18 00:00:00"
 updated: "2024-10-18 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/LLM-SD/一些已成为LLM-推理引擎中事实标准的方法/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/LLM-SD/一些已成为LLM-推理引擎中事实标准的方法/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/685706549
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/685706549"
 ---
 
 

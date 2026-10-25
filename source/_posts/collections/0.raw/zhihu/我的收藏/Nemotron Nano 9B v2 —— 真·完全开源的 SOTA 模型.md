@@ -1,17 +1,17 @@
 ---
-title: (2 条消息) Nemotron Nano 9B v2 —— 真·完全开源的 SOTA 模型
+title: "(2 条消息) Nemotron Nano 9B v2 —— 真·完全开源的 SOTA 模型"
 date: "2025-08-28 00:00:00"
 updated: "2025-08-28 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/我的收藏/Nemotron-Nano-9B-v2-——-真·完全开源的-SOTA-模型/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/我的收藏/Nemotron-Nano-9B-v2-——-真·完全开源的-SOTA-模型/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/1944321797139985921
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/1944321797139985921"
 ---
 
 

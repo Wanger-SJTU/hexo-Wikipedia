@@ -1,14 +1,14 @@
 ---
-title: 这份报告信息量有点大
+title: "这份报告信息量有点大"
 date: "2026-05-29 23:40:25"
 updated: "2026-05-29 23:40:25"
-layout: post
-permalink: /collections/wechat/2026-05-29-这份报告信息量有点大/index/
+layout: "post"
+permalink: "/collections/wechat/2026-05-29-这份报告信息量有点大/index/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 ---
 
 # 这份报告信息量有点大

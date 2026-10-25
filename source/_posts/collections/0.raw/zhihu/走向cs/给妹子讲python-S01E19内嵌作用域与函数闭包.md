@@ -1,17 +1,17 @@
 ---
-title: 给妹子讲python-S01E19内嵌作用域与函数闭包
+title: "给妹子讲python-S01E19内嵌作用域与函数闭包"
 date: "2018-06-24 00:00:00"
 updated: "2018-06-24 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/走向cs/给妹子讲python-S01E19内嵌作用域与函数闭包/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/走向cs/给妹子讲python-S01E19内嵌作用域与函数闭包/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/33136325
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/33136325"
 ---
 
 

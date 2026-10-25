@@ -1,17 +1,17 @@
 ---
-title: NAND flash 学习笔记 (1)
+title: "NAND flash 学习笔记 (1)"
 date: "2025-09-02 00:00:00"
 updated: "2025-09-02 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/体系结构/NAND-flash-学习笔记-(1)/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/体系结构/NAND-flash-学习笔记-(1)/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/1946154917942268996
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/1946154917942268996"
 ---
 
 

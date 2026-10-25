@@ -1,14 +1,14 @@
 ---
-title: Bài 10. Chỉ Testing End-to-End mới là Xác minh Thực sự
+title: "Bài 10. Chỉ Testing End-to-End mới là Xác minh Thực sự"
 date: "2026-05-28 11:34:14"
 updated: "2026-05-28 11:34:14"
-layout: post
-permalink: /collections/learn-harness-engineering/docs/vi/lectures/lecture-10-why-end-to-end-testing-changes-results/index/
+layout: "post"
+permalink: "/collections/learn-harness-engineering/docs/vi/lectures/lecture-10-why-end-to-end-testing-changes-results/index/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 ---
 
 [English Version →](../../../en/lectures/lecture-10-why-end-to-end-testing-changes-results/) | [中文版本 →](../../../zh/lectures/lecture-10-why-end-to-end-testing-changes-results/)

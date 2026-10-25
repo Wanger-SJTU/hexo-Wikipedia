@@ -1,17 +1,17 @@
 ---
-title: 深度学习实验总结(tricks)
+title: "深度学习实验总结(tricks)"
 date: "2020-10-06 00:00:00"
 updated: "2020-10-06 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/dl论文/深度学习实验总结(tricks)/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/dl论文/深度学习实验总结(tricks)/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/261999668
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/261999668"
 ---
 
 

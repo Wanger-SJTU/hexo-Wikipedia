@@ -1,20 +1,20 @@
 ---
-title: 债务型经济与现金流困境
+title: "债务型经济与现金流困境"
 date: "2026-07-01 00:00:00"
 updated: "2026-07-01 00:00:00"
-layout: post
-permalink: /collections/wechat/2026-07-01-debt-economy-cashflow/
+layout: "post"
+permalink: "/collections/wechat/2026-07-01-debt-economy-cashflow/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 经济
-  - 债务
-  - 房地产
-  - 宏观分析
-source_url: https://mp.weixin.qq.com/s/6CFTBSwRzGILaJkAZQRSOQ
+  - "经济"
+  - "债务"
+  - "房地产"
+  - "宏观分析"
+source_url: "https://mp.weixin.qq.com/s/6CFTBSwRzGILaJkAZQRSOQ"
 ---
 
 

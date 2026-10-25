@@ -2,16 +2,16 @@
 title: "[NeurIPS'25 Spotlight] 清华/MIT/伯克利联合推出，自适应、层级化的Top-p 稀疏注意力 Twilight"
 date: "2025-11-04 00:00:00"
 updated: "2025-11-04 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/LLM-SD/[NeurIPS'25-Spotlight]-清华_MIT_伯克利联合推出,自适应、层级化的Top-p-稀疏注意力-Twilight/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/LLM-SD/[NeurIPS'25-Spotlight]-清华_MIT_伯克利联合推出,自适应、层级化的Top-p-稀疏注意力-Twilight/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/1965053340472809384
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/1965053340472809384"
 ---
 
 

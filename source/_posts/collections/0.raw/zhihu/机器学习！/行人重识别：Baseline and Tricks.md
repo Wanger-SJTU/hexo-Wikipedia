@@ -1,17 +1,17 @@
 ---
-title: 行人重识别：Baseline and Tricks
+title: "行人重识别：Baseline and Tricks"
 date: "2019-03-27 00:00:00"
 updated: "2019-03-27 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/机器学习/行人重识别-Baseline-and-Tricks/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/机器学习/行人重识别-Baseline-and-Tricks/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/60546887
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/60546887"
 ---
 
 

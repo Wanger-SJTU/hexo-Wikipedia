@@ -1,17 +1,17 @@
 ---
-title: 再谈类别不平衡问题：调节权重与魔改Loss的综合分析
+title: "再谈类别不平衡问题：调节权重与魔改Loss的综合分析"
 date: "2020-09-14 00:00:00"
 updated: "2020-09-14 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/dl论文/再谈类别不平衡问题-调节权重与魔改Loss的综合分析/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/dl论文/再谈类别不平衡问题-调节权重与魔改Loss的综合分析/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/242763826
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/242763826"
 ---
 
 

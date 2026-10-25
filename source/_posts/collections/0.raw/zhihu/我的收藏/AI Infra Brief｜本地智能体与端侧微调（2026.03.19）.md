@@ -1,17 +1,17 @@
 ---
-title: AI Infra Brief｜本地智能体与端侧微调（2026.03.19）
+title: "AI Infra Brief｜本地智能体与端侧微调（2026.03.19）"
 date: "2026-03-19 00:00:00"
 updated: "2026-03-19 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/我的收藏/AI-Infra-Brief-本地智能体与端侧微调(2026.03.19)/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/我的收藏/AI-Infra-Brief-本地智能体与端侧微调(2026.03.19)/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/2018054684783428859
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/2018054684783428859"
 ---
 
 

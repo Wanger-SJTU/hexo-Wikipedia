@@ -1,17 +1,17 @@
 ---
-title: 研究人员怎么订阅更新和使用arXiv?
+title: "研究人员怎么订阅更新和使用arXiv?"
 date: "2023-04-01 00:00:00"
 updated: "2023-04-01 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/我的收藏/研究人员怎么订阅更新和使用arXiv_/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/我的收藏/研究人员怎么订阅更新和使用arXiv_/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://www.zhihu.com/question/538284979/answer/2963471337
+  - "知乎"
+source_url: "https://www.zhihu.com/question/538284979/answer/2963471337"
 ---
 
 

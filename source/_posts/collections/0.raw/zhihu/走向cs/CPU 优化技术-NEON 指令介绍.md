@@ -1,17 +1,17 @@
 ---
-title: CPU 优化技术-NEON 指令介绍
+title: "CPU 优化技术-NEON 指令介绍"
 date: "2022-02-28 00:00:00"
 updated: "2022-02-28 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/走向cs/CPU-优化技术-NEON-指令介绍/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/走向cs/CPU-优化技术-NEON-指令介绍/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/441686632
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/441686632"
 ---
 
 

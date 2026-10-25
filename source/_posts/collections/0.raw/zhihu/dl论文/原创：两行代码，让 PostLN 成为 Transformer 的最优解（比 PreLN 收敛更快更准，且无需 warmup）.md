@@ -1,17 +1,17 @@
 ---
-title: 原创：两行代码，让 PostLN 成为 Transformer 的最优解（比 PreLN 收敛更快更准，且无需 warmup）
+title: "原创：两行代码，让 PostLN 成为 Transformer 的最优解（比 PreLN 收敛更快更准，且无需 warmup）"
 date: "2022-02-18 00:00:00"
 updated: "2022-02-18 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/dl论文/原创-两行代码,让-PostLN-成为-Transformer-的最优解(比-PreLN-收敛更快更准,且无需-warmup)/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/dl论文/原创-两行代码,让-PostLN-成为-Transformer-的最优解(比-PreLN-收敛更快更准,且无需-warmup)/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/466943663
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/466943663"
 ---
 
 

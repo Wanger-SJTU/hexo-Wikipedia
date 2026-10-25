@@ -1,17 +1,17 @@
 ---
-title: Cache OR Load First？Rethink LLM Scheduling
+title: "Cache OR Load First？Rethink LLM Scheduling"
 date: "2026-07-11 00:00:00"
 updated: "2026-07-11 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/我的收藏/Cache-OR-Load-First-Rethink-LLM-Scheduling/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/我的收藏/Cache-OR-Load-First-Rethink-LLM-Scheduling/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/2059354689678862105
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/2059354689678862105"
 ---
 
 

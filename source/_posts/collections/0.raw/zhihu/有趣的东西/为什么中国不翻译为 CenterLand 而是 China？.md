@@ -1,17 +1,17 @@
 ---
-title: 为什么中国不翻译为 CenterLand 而是 China？
+title: "为什么中国不翻译为 CenterLand 而是 China？"
 date: "2024-03-16 00:00:00"
 updated: "2024-03-16 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/有趣的东西/为什么中国不翻译为-CenterLand-而是-China/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/有趣的东西/为什么中国不翻译为-CenterLand-而是-China/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://www.zhihu.com/question/555469180/answer/2705013175
+  - "知乎"
+source_url: "https://www.zhihu.com/question/555469180/answer/2705013175"
 ---
 
 

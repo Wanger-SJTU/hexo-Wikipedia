@@ -1,17 +1,17 @@
 ---
-title: 【LLM系列】开源模型和闭源模型之争--写在LLaMA2 开源之后
+title: "【LLM系列】开源模型和闭源模型之争--写在LLaMA2 开源之后"
 date: "2023-07-21 00:00:00"
 updated: "2023-07-21 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/LLM-SD/【LLM系列】开源模型和闭源模型之争-写在LLaMA2-开源之后/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/LLM-SD/【LLM系列】开源模型和闭源模型之争-写在LLaMA2-开源之后/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/644892671
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/644892671"
 ---
 
 

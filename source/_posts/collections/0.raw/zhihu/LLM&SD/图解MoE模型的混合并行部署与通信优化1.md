@@ -1,17 +1,17 @@
 ---
-title: 图解MoE模型的混合并行部署与通信优化1
+title: "图解MoE模型的混合并行部署与通信优化1"
 date: "2026-03-24 00:00:00"
 updated: "2026-03-24 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/LLM-SD/图解MoE模型的混合并行部署与通信优化1/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/LLM-SD/图解MoE模型的混合并行部署与通信优化1/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/2019814309815927081
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/2019814309815927081"
 ---
 
 

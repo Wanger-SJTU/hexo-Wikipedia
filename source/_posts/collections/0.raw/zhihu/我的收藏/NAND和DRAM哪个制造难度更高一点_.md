@@ -1,17 +1,17 @@
 ---
-title: (2 条消息) NAND和DRAM哪个制造难度更高一点?
+title: "(2 条消息) NAND和DRAM哪个制造难度更高一点?"
 date: "2026-04-17 00:00:00"
 updated: "2026-04-17 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/我的收藏/NAND和DRAM哪个制造难度更高一点_/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/我的收藏/NAND和DRAM哪个制造难度更高一点_/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://www.zhihu.com/question/400623480/answer/25628328546
+  - "知乎"
+source_url: "https://www.zhihu.com/question/400623480/answer/25628328546"
 ---
 
 

@@ -1,17 +1,17 @@
 ---
-title: 测试是如何跟进和管理 bug？
+title: "测试是如何跟进和管理 bug？"
 date: "2026-04-22 00:00:00"
 updated: "2026-04-22 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/我的收藏/测试是如何跟进和管理-bug/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/我的收藏/测试是如何跟进和管理-bug/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://www.zhihu.com/question/20218119/answer/2011784238316398046
+  - "知乎"
+source_url: "https://www.zhihu.com/question/20218119/answer/2011784238316398046"
 ---
 
 

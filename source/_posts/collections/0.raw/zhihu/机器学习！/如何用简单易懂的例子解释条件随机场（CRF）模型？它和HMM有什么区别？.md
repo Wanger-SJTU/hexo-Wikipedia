@@ -1,17 +1,17 @@
 ---
-title: 如何用简单易懂的例子解释条件随机场（CRF）模型？它和HMM有什么区别？
+title: "如何用简单易懂的例子解释条件随机场（CRF）模型？它和HMM有什么区别？"
 date: "2026-04-15 00:00:00"
 updated: "2026-04-15 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/机器学习/如何用简单易懂的例子解释条件随机场(CRF)模型-它和HMM有什么区别/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/机器学习/如何用简单易懂的例子解释条件随机场(CRF)模型-它和HMM有什么区别/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://www.zhihu.com/question/35866596/answer/236886066
+  - "知乎"
+source_url: "https://www.zhihu.com/question/35866596/answer/236886066"
 ---
 
 

@@ -1,17 +1,17 @@
 ---
-title: CXL协议 -- 总体架构介绍
+title: "CXL协议 -- 总体架构介绍"
 date: "2025-06-05 00:00:00"
 updated: "2025-06-05 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/体系结构/CXL协议-总体架构介绍/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/体系结构/CXL协议-总体架构介绍/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/742496727
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/742496727"
 ---
 
 

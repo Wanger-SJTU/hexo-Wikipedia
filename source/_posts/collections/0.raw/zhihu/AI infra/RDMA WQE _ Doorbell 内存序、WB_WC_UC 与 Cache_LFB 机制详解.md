@@ -1,17 +1,17 @@
 ---
-title: RDMA WQE / Doorbell 内存序、WB/WC/UC 与 Cache/LFB 机制详解
+title: "RDMA WQE / Doorbell 内存序、WB/WC/UC 与 Cache/LFB 机制详解"
 date: "2026-07-16 00:00:00"
 updated: "2026-07-16 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/AI-infra/RDMA-WQE-_-Doorbell-内存序、WB_WC_UC-与-Cache_LFB-机制详解/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/AI-infra/RDMA-WQE-_-Doorbell-内存序、WB_WC_UC-与-Cache_LFB-机制详解/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/2061100810134623162
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/2061100810134623162"
 ---
 
 

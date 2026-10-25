@@ -1,17 +1,17 @@
 ---
-title: 你见过哪些令你瞠目结舌的C/C++代码技巧？
+title: "你见过哪些令你瞠目结舌的C/C++代码技巧？"
 date: "2026-04-15 00:00:00"
 updated: "2026-04-15 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/编程向/你见过哪些令你瞠目结舌的C_C-代码技巧/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/编程向/你见过哪些令你瞠目结舌的C_C-代码技巧/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://www.zhihu.com/question/37692782/answer/74130797
+  - "知乎"
+source_url: "https://www.zhihu.com/question/37692782/answer/74130797"
 ---
 
 

@@ -1,17 +1,17 @@
 ---
-title: 如何评价Google新发布的magma优化器？
+title: "如何评价Google新发布的magma优化器？"
 date: "2026-02-22 00:00:00"
 updated: "2026-02-22 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/LLM-SD/如何评价Google新发布的magma优化器/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/LLM-SD/如何评价Google新发布的magma优化器/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://www.zhihu.com/question/2007567354108870967/answer/2009051174364542849
+  - "知乎"
+source_url: "https://www.zhihu.com/question/2007567354108870967/answer/2009051174364542849"
 ---
 
 

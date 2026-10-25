@@ -1,18 +1,18 @@
 ---
-title: 老登对AI时代的思考：盛世与先驱
+title: "老登对AI时代的思考：盛世与先驱"
 date: "2026-07-05 00:00:00"
 updated: "2026-07-05 00:00:00"
-layout: post
-permalink: /collections/wechat/2026-07-05-老登对AI时代的思考-盛世与先驱/index/
+layout: "post"
+permalink: "/collections/wechat/2026-07-05-老登对AI时代的思考-盛世与先驱/index/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - AI
-  - 思考
-source_url: https://mp.weixin.qq.com/s/PgH2sdI6ZS6hM_WM5vwxMA
+  - "AI"
+  - "思考"
+source_url: "https://mp.weixin.qq.com/s/PgH2sdI6ZS6hM_WM5vwxMA"
 ---
 
 

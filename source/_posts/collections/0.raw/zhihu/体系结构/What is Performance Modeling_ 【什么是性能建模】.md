@@ -1,17 +1,17 @@
 ---
-title: What is Performance Modeling? 【什么是性能建模】
+title: "What is Performance Modeling? 【什么是性能建模】"
 date: "2021-05-22 00:00:00"
 updated: "2021-05-22 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/体系结构/What-is-Performance-Modeling_-【什么是性能建模】/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/体系结构/What-is-Performance-Modeling_-【什么是性能建模】/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/374331876
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/374331876"
 ---
 
 

@@ -1,17 +1,17 @@
 ---
-title: (2 条消息) MMU、SMMU、IOMMU对比分析
+title: "(2 条消息) MMU、SMMU、IOMMU对比分析"
 date: "2024-09-08 00:00:00"
 updated: "2024-09-08 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/我的收藏/MMU、SMMU、IOMMU对比分析/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/我的收藏/MMU、SMMU、IOMMU对比分析/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/706779113
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/706779113"
 ---
 
 

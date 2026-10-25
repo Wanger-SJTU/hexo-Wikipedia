@@ -2,16 +2,16 @@
 title: "停止在旧基准刷分: KV Cache压缩改进空间在哪里？"
 date: "2026-02-06 00:00:00"
 updated: "2026-02-06 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/我的收藏/停止在旧基准刷分_-KV-Cache压缩改进空间在哪里/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/我的收藏/停止在旧基准刷分_-KV-Cache压缩改进空间在哪里/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/2003133660560377265
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/2003133660560377265"
 ---
 
 
@@ -105,7 +105,7 @@ CriticalKV: Identify Critical KV Cache in LLM Inference from an Output Perturbat
 DefensiveKV: Taming the Fragility of KV Cache Eviction in LLM Inference | OpenReview ICLR 2026
 
 ref: 之前关于KV Cache压缩的文章分享
-KV Cache压缩新阶段:走向问题指令无关下的压缩探索 - 知乎
+(1 封私信) KV Cache压缩新阶段:走向问题指令无关下的压缩探索 - 知乎
 
 分享最新ICLR25 Submissions中LLM KV Cache压缩领域部分工作（Budget Allocation in KV Cache Compression） - 知乎 (zhihu.com)
 

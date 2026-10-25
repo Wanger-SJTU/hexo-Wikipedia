@@ -1,17 +1,17 @@
 ---
-title: 投机解码之EAGLE：轻量级草稿模型实现3-4倍推理加速
+title: "投机解码之EAGLE：轻量级草稿模型实现3-4倍推理加速"
 date: "2025-07-04 00:00:00"
 updated: "2025-07-04 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/我的收藏/投机解码之EAGLE-轻量级草稿模型实现3-4倍推理加速/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/我的收藏/投机解码之EAGLE-轻量级草稿模型实现3-4倍推理加速/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/1924418553764901931
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/1924418553764901931"
 ---
 
 

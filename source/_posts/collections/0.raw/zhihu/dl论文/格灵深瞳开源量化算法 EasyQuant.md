@@ -1,17 +1,17 @@
 ---
-title: 格灵深瞳开源量化算法 EasyQuant
+title: "格灵深瞳开源量化算法 EasyQuant"
 date: "2020-06-28 00:00:00"
 updated: "2020-06-28 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/dl论文/格灵深瞳开源量化算法-EasyQuant/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/dl论文/格灵深瞳开源量化算法-EasyQuant/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/151383244
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/151383244"
 ---
 
 

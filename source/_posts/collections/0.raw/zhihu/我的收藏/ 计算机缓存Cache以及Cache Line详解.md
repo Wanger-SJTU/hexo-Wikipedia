@@ -1,17 +1,17 @@
 ---
-title: (1 条消息) 计算机缓存Cache以及Cache Line详解
+title: "(1 条消息) 计算机缓存Cache以及Cache Line详解"
 date: "2018-06-06 00:00:00"
 updated: "2018-06-06 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/我的收藏/计算机缓存Cache以及Cache-Line详解/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/我的收藏/计算机缓存Cache以及Cache-Line详解/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/37749443
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/37749443"
 ---
 
 

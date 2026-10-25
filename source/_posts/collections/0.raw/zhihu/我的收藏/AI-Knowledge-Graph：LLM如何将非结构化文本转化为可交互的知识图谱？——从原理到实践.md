@@ -1,17 +1,17 @@
 ---
-title: (2 条消息) AI-Knowledge-Graph：LLM如何将非结构化文本转化为可交互的知识图谱？——从原理到实践
+title: "(2 条消息) AI-Knowledge-Graph：LLM如何将非结构化文本转化为可交互的知识图谱？——从原理到实践"
 date: "2025-09-25 00:00:00"
 updated: "2025-09-25 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/我的收藏/AI-Knowledge-Graph-LLM如何将非结构化文本转化为可交互的知识图谱-——从原理到实践/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/我的收藏/AI-Knowledge-Graph-LLM如何将非结构化文本转化为可交互的知识图谱-——从原理到实践/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/1911805939247486365
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/1911805939247486365"
 ---
 
 

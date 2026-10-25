@@ -1,17 +1,17 @@
 ---
-title: (2 条消息) ASearcher：大规模异步RL解锁Agent长程工具使用能力
+title: "(2 条消息) ASearcher：大规模异步RL解锁Agent长程工具使用能力"
 date: "2025-08-24 00:00:00"
 updated: "2025-08-24 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/我的收藏/ASearcher-大规模异步RL解锁Agent长程工具使用能力/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/我的收藏/ASearcher-大规模异步RL解锁Agent长程工具使用能力/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/1938984840797087554
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/1938984840797087554"
 ---
 
 

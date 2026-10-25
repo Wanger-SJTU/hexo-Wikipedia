@@ -1,17 +1,17 @@
 ---
-title: nvidia tensor core 祛魅
+title: "nvidia tensor core 祛魅"
 date: "2025-10-26 00:00:00"
 updated: "2025-10-26 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/体系结构/nvidia-tensor-core-祛魅-cdea43/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/体系结构/nvidia-tensor-core-祛魅-cdea43/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/1940518023904601791
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/1940518023904601791"
 ---
 
 

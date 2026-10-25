@@ -1,17 +1,17 @@
 ---
-title: 如何解决 LLM 的 hallucination 幻觉问题 ?
+title: "如何解决 LLM 的 hallucination 幻觉问题 ?"
 date: "2023-07-16 00:00:00"
 updated: "2023-07-16 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/LLM-SD/如何解决-LLM-的-hallucination-幻觉问题-_/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/LLM-SD/如何解决-LLM-的-hallucination-幻觉问题-_/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://www.zhihu.com/question/604881501/answer/3120771940
+  - "知乎"
+source_url: "https://www.zhihu.com/question/604881501/answer/3120771940"
 ---
 
 

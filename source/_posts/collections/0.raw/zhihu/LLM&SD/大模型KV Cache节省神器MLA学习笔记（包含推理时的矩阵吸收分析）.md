@@ -1,17 +1,17 @@
 ---
-title: 大模型KV Cache节省神器MLA学习笔记（包含推理时的矩阵吸收分析）
+title: "大模型KV Cache节省神器MLA学习笔记（包含推理时的矩阵吸收分析）"
 date: "2024-06-17 00:00:00"
 updated: "2024-06-17 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/LLM-SD/大模型KV-Cache节省神器MLA学习笔记(包含推理时的矩阵吸收分析)/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/LLM-SD/大模型KV-Cache节省神器MLA学习笔记(包含推理时的矩阵吸收分析)/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/703862723
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/703862723"
 ---
 
 

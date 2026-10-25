@@ -1,17 +1,17 @@
 ---
-title: (2 条消息) 北大发布ConsisID：无需训练Lora，就可以定制化个人视频写真
+title: "(2 条消息) 北大发布ConsisID：无需训练Lora，就可以定制化个人视频写真"
 date: "2024-11-30 00:00:00"
 updated: "2024-11-30 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/我的收藏/北大发布ConsisID-无需训练Lora,就可以定制化个人视频写真/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/我的收藏/北大发布ConsisID-无需训练Lora,就可以定制化个人视频写真/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/10004384702
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/10004384702"
 ---
 
 

@@ -1,17 +1,17 @@
 ---
-title: 进阶详解KL散度
+title: "进阶详解KL散度"
 date: "2026-05-28 00:00:00"
 updated: "2026-05-28 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/我的收藏/进阶详解KL散度-72de3e/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/我的收藏/进阶详解KL散度-72de3e/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/372835186
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/372835186"
 ---
 
 

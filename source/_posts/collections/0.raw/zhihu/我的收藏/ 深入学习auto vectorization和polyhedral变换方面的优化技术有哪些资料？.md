@@ -1,17 +1,17 @@
 ---
-title: (1 条消息) 深入学习auto vectorization和polyhedral变换方面的优化技术有哪些资料？
+title: "(1 条消息) 深入学习auto vectorization和polyhedral变换方面的优化技术有哪些资料？"
 date: "2026-04-15 00:00:00"
 updated: "2026-04-15 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/我的收藏/深入学习auto-vectorization和polyhedral变换方面的优化技术有哪些资料/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/我的收藏/深入学习auto-vectorization和polyhedral变换方面的优化技术有哪些资料/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://www.zhihu.com/question/65708935/answer/475572657
+  - "知乎"
+source_url: "https://www.zhihu.com/question/65708935/answer/475572657"
 ---
 
 

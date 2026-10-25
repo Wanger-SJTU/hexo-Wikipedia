@@ -1,17 +1,17 @@
 ---
-title: 堆状态分析的利器——valgrind的DHAT
+title: "堆状态分析的利器——valgrind的DHAT"
 date: "2024-07-22 00:00:00"
 updated: "2024-07-22 00:00:00"
-layout: post
-permalink: /collections/0.raw/zhihu/优化/堆状态分析的利器——valgrind的DHAT/
+layout: "post"
+permalink: "/collections/0.raw/zhihu/优化/堆状态分析的利器——valgrind的DHAT/"
 disableNunjucks: true
 wiki: false
 nav_hidden: true
 categories:
-  - 文档
+  - "文档"
 tags:
-  - 知乎
-source_url: https://zhuanlan.zhihu.com/p/682037394
+  - "知乎"
+source_url: "https://zhuanlan.zhihu.com/p/682037394"
 ---
 
 
