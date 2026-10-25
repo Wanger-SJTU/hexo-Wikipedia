@@ -1225,7 +1225,7 @@ a.tabs__item:hover {
 }
 
 .article__content figure.highlight .line {
-  display: block;
+  display: inline;
 }
 
 .article__content .highlight .keyword,
