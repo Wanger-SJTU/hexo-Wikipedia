@@ -36,8 +36,14 @@ function extractInline(text, store) {
   out = out.replace(/(?<!\\)\\\(([\s\S]+?)\\\)/g, (whole, tex) => addToken(store, tex, false) || whole);
   // $...$（行内；拒绝首尾空白，避免把 “$5 and $10” 当公式）
   out = out.replace(/(?<!\\)\$([^$\n]+?)\$/g, (whole, tex) => {
-    if (!tex.trim() || /^\s|\s$/.test(tex)) return whole;
-    return addToken(store, tex, false) || whole;
+    const text = tex.trim();
+    if (!text) return whole;
+    // 纯数字/价格（$5.00$）不当公式
+    if (/^[\d.,]+$/.test(text)) return whole;
+    const mathLike = /[\\^_{}=<>]|\b(sum|frac|sqrt|int|cdot|times|alpha|beta|gamma|theta|lambda|sigma|omega|prod|lim|log|sin|cos|tan)\b/.test(text);
+    // 内侧有空格时，要求内容像公式，避免把 “$5 and $10” 当公式
+    if ((/^\s|\s$/.test(tex)) && !mathLike) return whole;
+    return addToken(store, text, false) || whole;
   });
 
   return out;

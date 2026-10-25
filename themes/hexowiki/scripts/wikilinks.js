@@ -32,7 +32,8 @@ const {
   buildSearchIndex,
   decorateTree,
   linkifyHtml,
-  escapeHtml
+  escapeHtml,
+  stripHtml
 } = require('../lib/wiki-graph');
 
 const DEFAULT_ROUTES = {
@@ -481,11 +482,51 @@ hexo.extend.generator.register('hexowiki-routes', function generateWikiRoutes(lo
   const searchIndex = buildSearchIndex(state.pages, state.options);
   const root = state.root || hexo.config.root || '/';
 
+  // collections 文档是 wiki:false 的普通文章，单独补进搜索索引（只取标题+摘要，控制体积）
+  const docSearch = (locals && locals.posts ? locals.posts.toArray() : [])
+    .filter((post) => {
+      if (!post || post.published === false) return false;
+      const path = String(post.path || '');
+      const permalink = String(post.permalink || '');
+      return path.indexOf('collections/') === 0 || permalink.indexOf('/collections/') !== -1;
+    })
+    .map((post) => {
+      let tags = [];
+      try { tags = post.tags ? post.tags.toArray().map((tag) => String(tag.name)) : []; } catch (err) { tags = []; }
+      const text = stripHtml(String(post.excerpt || post.content || '')).replace(/\s+/g, ' ').trim();
+      return {
+        title: String(post.title || ''),
+        url: toUrl(post.path || '', root),
+        summary: truncate(text, 180),
+        tags,
+        headings: [],
+        text: '',
+        updated: formatDate(post.updated || post.date),
+        section: '文档'
+      };
+    });
+  const fullSearch = searchIndex.concat(docSearch);
+
   const pageRoute = (base, layout, data) => ({
     path: String(base).replace(/^\/+|\/+$/g, '') + '/index.html',
     layout,
     data
   });
+
+  const redirectRoutes = (docSearch.length ? Object.entries(hexo.config.wiki_redirects || {}) : [])
+    .filter(([from, to]) => from && to)
+    .map(([from, to]) => {
+      const target = encodeURI(String(to));
+      const html = '<!doctype html><html lang="zh-CN"><head><meta charset="utf-8">' +
+        '<meta http-equiv="refresh" content="0; url=' + target.replace(/"/g, '%22') + '">' +
+        '<link rel="canonical" href="' + target.replace(/"/g, '%22') + '">' +
+        '<title>重定向</title></head><body><p>正在跳转到 <a href="' + target.replace(/"/g, '%22') + '">' +
+        target.replace(/&/g, '&amp;') + '</a>…</p></body></html>';
+      return {
+        path: String(from).replace(/^\/+/, '').replace(/\/?$/, '/') + 'index.html',
+        data: html
+      };
+    });
 
   const tagList = (locals && locals.tags ? locals.tags.toArray() : [])
     .map((tag) => ({
@@ -498,7 +539,7 @@ hexo.extend.generator.register('hexowiki-routes', function generateWikiRoutes(lo
 
   return [
     { path: routes.graphJson, data: safeJson(state.graphJson) },
-    { path: routes.searchJson, data: safeJson(searchIndex) },
+    { path: routes.searchJson, data: safeJson(fullSearch) },
     { path: routes.statsJson, data: safeJson(state.stats) },
     pageRoute(routes.graph, 'wiki_graph', {
       title: '关系图谱',
@@ -518,6 +559,7 @@ hexo.extend.generator.register('hexowiki-routes', function generateWikiRoutes(lo
       type: 'wiki_allpages',
       description: '按首字排序的全部条目索引。'
     }),
+    ...redirectRoutes,
     pageRoute(routes.tags, 'wiki_tags', {
       title: '标签',
       layout: 'wiki_tags',

@@ -8,7 +8,7 @@ brand:
   # 顶栏显示的名字；留空则使用站点 _config.yml 的 title
   title: HexWiki
   # 字标下方的小字（Vector 2022 的 tagline）
-  tagline: 自由的知识库
+  tagline: 文档与笔记
   # 顶栏/浏览器图标（放在 theme/source/images/ 下）
   logo: /images/hexowiki/logo.svg
 
@@ -26,19 +26,19 @@ nav:
   # 是否默认展开所有一级分组
   open_first_level: true
   # 是否在侧栏底部显示站点统计
-  show_stats: true
+  show_stats: false
 
 # 功能开关（false 即关闭对应入口；关闭 graph 后正文中的局部图谱也隐藏）
 features:
-  graph: true          # /graph/ 全站关系图谱 + 局部图谱
-  local_graph: true    # 条目页底部的 2 跳局部图谱
-  stats: true          # /stats/ 统计页
+  graph: false         # /graph/ 全站关系图谱 + 局部图谱
+  local_graph: false   # 条目页底部的 2 跳局部图谱
+  stats: false         # /stats/ 统计页
   search: true         # 顶栏搜索 + /wiki-search.json 建议
   dark_mode: true      # 深色模式切换按钮
-  random: true         # 「随机页面」链接
+  random: false        # 「随机页面」链接
   sidebar_filter: true # 侧栏目录筛选框
   table_scroll: true   # 自动为宽表格加横向滚动容器
-  recent: 8            # 首页「最近更新」条数
+  recent: 10           # 首页「最近更新」条数
 
 # 数学公式（KaTeX 本地资源；页面内容含 $...$ / $$...$$ / \(...\) 时自动加载）
 math:
@@ -85,35 +85,26 @@ footer:
   license_url: https://creativecommons.org/licenses/by-sa/4.0/deed.zh
   text: 除非另有说明，本站内容均采用 CC BY-SA 4.0 许可协议授权。
   # 额外页脚链接（可选）
-  links:
-    - label: 关于本站
-      url: /wiki/about/
-    - label: 数据格式
-      url: /wiki/data-format/
-    - label: 参与贡献
-      url: /wiki/contributing/
+  links: []
 
 # 首页文案
 home:
-  headline: 一个像维基百科一样生长的知识库
-  intro: >-
-    HexWiki 是一个 Wikipedia 风格的 Hexo 主题演示站：左侧是多级目录，
-    正文用 [[双链]] 编织成网，每一页都能查看反链、断链与两跳关系图。
+  headline: 知识库
+  intro: 按目录整理的文档与笔记，保留原始层级；每篇有独立 URL，支持代码高亮与数学公式。
   primary:
-    label: 开始阅读
-    url: /wiki/intro/
-  # 首页功能卡片（可增删）
-  features:
-    - title: 双向链接
-      text: 用 [[页面]] 语法连接条目，自动统计反链、出链与红链。
-      url: /wiki/wikilinks/
-      image: /images/hexowiki/wikilinks-diagram.svg
-    - title: 关系图谱
-      text: 零依赖 Canvas 力导向图，支持拖拽、缩放、搜索与分组着色。
-      url: /graph/
-      image: /images/hexowiki/graph-diagram.svg
+    label: 进入文档库
+    url: /collections/
+  features: []
 
 # 静态资源版本号
 # 修改 source/css 或 source/js 后，把这里 +1，可强制浏览器加载新文件（避免旧缓存造成“改了没生效”）
 assets:
-  version: '0.2.4'
+  version: '0.3.0'
+
+# 文档库入口（collections 导入分支）
+docs:
+  enable: true
+  title: 文档库
+  url: /collections/
+  headline: 知识库
+  intro: 按原始目录整理的文档与笔记；每篇有独立 URL，代码使用高亮并支持一键复制，数学公式由 KaTeX 渲染。

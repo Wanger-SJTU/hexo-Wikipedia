@@ -8,6 +8,8 @@
   const _statsUrl = _urls.stats || url_for('/stats/');
   const _allUrl = _urls.all || url_for('/wiki/all/');
   const _num = function (v) { return (v === 0 || v) ? String(v) : '—'; };
+  const _docsData = (typeof site !== 'undefined' && site && site.data && site.data.collections) ? site.data.collections : null;
+  const _docsMode = !!(_theme.docs && _theme.docs.enable && _docsData && _docsData.count);
 %>
 <aside class="wiki-sidebar" id="wiki-sidebar" aria-label="<%= __('site_sub', (typeof siteTitle !== 'undefined' ? siteTitle : '')) %>">
   <div class="wiki-sidebar__inner">
@@ -63,10 +65,18 @@
         <span><%= __('graph') %></span>
       </a>
       <% } %>
+      <% if (!_docsMode) { %>
       <a class="sidebar-tools__link" href="<%- _allUrl %>">
         <svg width="13" height="13" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M3 3h10M3 8h10M3 13h10" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
         <span><%= __('all_pages') %></span>
       </a>
+      <% } %>
+      <% if (_docsMode) { %>
+      <a class="sidebar-tools__link" href="<%- url_for(_theme.docs.url || '/collections/') %>">
+        <svg width="13" height="13" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M2.5 3.5h4.2c.7 0 1.3.6 1.3 1.3v8.7c0-.8-.6-1.4-1.3-1.4H2.5zM13.5 3.5H9.3c-.7 0-1.3.6-1.3 1.3v8.7c0-.8.6-1.4 1.3-1.4h4.2z" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/></svg>
+        <span><%- _theme.docs.title || '文档库' %></span>
+      </a>
+      <% } %>
       <a class="sidebar-tools__link" href="<%- _urls.tags || url_for('/tags/') %>">
         <svg width="13" height="13" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M2.5 2.5h5.2L14 8.8 8.8 14 2.5 7.7z" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/><circle cx="5.6" cy="5.6" r="1.1" fill="currentColor"/></svg>
         <span><%= __('tags') %></span>

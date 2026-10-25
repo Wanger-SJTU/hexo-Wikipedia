@@ -43,14 +43,20 @@
   const _allUrl = _urls.all || url_for('/wiki/all/');
   const _maxStat = _site ? Math.max(_site.pages || 0, _site.links || 0, _site.orphans || 0, _site.broken || 0, 1) : 1;
   const _barWidth = function (value) { return Math.max(2, Math.round(((value || 0) / _maxStat) * 100)); };
+  const _docsData = (typeof site !== 'undefined' && site && site.data && site.data.collections) ? site.data.collections : null;
+  const _docsMode = !!(theme.docs && theme.docs.enable && _docsData && _docsData.count);
+  const _primaryUrl = (!_docsMode && _primary.url === '/collections/') ? '/wiki/all/' : (_primary.url || '/');
 %>
+<% if (_docsMode) { %>
+<%- partial('partial/home-docs') %>
+<% } else { %>
 <div class="home">
   <section class="home-hero" aria-labelledby="home-title">
     <p class="home-hero__eyebrow">HexWiki · WIKIPEDIA STYLE KNOWLEDGE BASE</p>
     <h1 class="home-hero__title" id="home-title"><%- _headline %></h1>
     <p class="home-hero__lead"><%- _intro %></p>
     <div class="home-actions">
-      <a class="home-actions__primary" href="<%- url_for(_primary.url || '/') %>"><%- _primary.label || __('read_more') %></a>
+      <a class="home-actions__primary" href="<%- url_for(_primaryUrl) %>"><%- _primary.label || __('read_more') %></a>
       <% if (_features.graph !== false) { %><a class="home-actions__link" href="<%- _graphUrl %>"><%= __('graph') %></a><% } %>
       <% if (_features.stats !== false) { %><a class="home-actions__link" href="<%- _statsUrl %>"><%= __('statistics') %></a><% } %>
       <a class="home-actions__link" href="<%- _allUrl %>"><%= __('all_pages') %></a>
@@ -166,3 +172,4 @@
   <%- include('partial/pagination', { base: url_for('/') }) %>
   <% } %>
 </div>
+<% } %>

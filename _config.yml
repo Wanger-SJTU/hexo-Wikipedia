@@ -3,9 +3,9 @@
 # 主题：themes/hexowiki
 # ---------------------------------------------------------------
 # Site
-title: HexWiki
-subtitle: '一个像维基百科一样生长的知识库'
-description: 'Wikipedia 风格的 Hexo 主题：多级目录导航、双向链接、关系图谱与链接统计。'
+title: HexWiki 知识库
+subtitle: '文档与笔记'
+description: '按目录整理的知识库：文档、笔记与代码片段。'
 keywords: 'wiki, hexo, 双链, 知识库, 关系图谱'
 author: HexWiki
 language: zh-CN
@@ -104,3 +104,7 @@ ignore:
 theme: hexowiki
 
 # 主题级配置见 themes/hexowiki/_config.yml
+
+# 旧链接重定向（导入 collections 后保留原 /wiki/<文件名>/ 链接）
+wiki_redirects:
+  "/wiki/ protobuf 中 UB 行为的表现/": "/collections/0.raw/zhihu/安全/protobuf-中-UB-行为的表现/"

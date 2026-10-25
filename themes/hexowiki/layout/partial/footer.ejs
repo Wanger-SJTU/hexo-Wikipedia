@@ -12,6 +12,9 @@
   const _graphUrl = _urls.graph || url_for('/graph/');
   const _statsUrl = _urls.stats || url_for('/stats/');
   const _allUrl = _urls.all || url_for('/wiki/all/');
+  const _docsData = (typeof site !== 'undefined' && site && site.data && site.data.collections) ? site.data.collections : null;
+  const _docsMode = !!(_theme.docs && _theme.docs.enable && _docsData && _docsData.count);
+  const _docsUrl = url_for((_theme.docs && _theme.docs.url) || '/collections/');
 %>
 <footer class="wiki-footer" role="contentinfo">
   <div class="wiki-footer__inner">
@@ -23,13 +26,19 @@
       </p>
     </div>
     <nav class="wiki-footer__links" aria-label="<%= __('sidebar_tools') %>">
-      <% _links.forEach(function (link) { if (link && link.label) { %>
+      <% if (!_docsMode) { _links.forEach(function (link) { if (link && link.label) { %>
       <a class="wiki-footer__link" href="<%- /^https?:/.test(link.url || '') ? link.url : url_for(link.url || '/') %>"><%- link.label %></a>
-      <% } }); %>
+      <% } }); } %>
+      <% if (_docsMode) { %>
+      <a class="wiki-footer__link" href="<%- _docsUrl %>"><%- (theme.docs && theme.docs.title) || '文档库' %></a>
+      <a class="wiki-footer__link" href="<%- _urls.tags || url_for('/tags/') %>"><%= __('tags') %></a>
+      <a class="wiki-footer__link" href="<%- url_for('/archives/') %>"><%= __('archive_title') %></a>
+      <% } else { %>
       <% if (_features.graph !== false) { %><a class="wiki-footer__link" href="<%- _graphUrl %>"><%= __('graph') %></a><% } %>
       <% if (_features.stats !== false) { %><a class="wiki-footer__link" href="<%- _statsUrl %>"><%= __('statistics') %></a><% } %>
       <a class="wiki-footer__link" href="<%- _urls.tags || url_for('/tags/') %>"><%= __('tags') %></a>
       <a class="wiki-footer__link" href="<%- _allUrl %>"><%= __('all_pages') %></a>
+      <% } %>
     </nav>
     <p class="wiki-footer__meta">由 <a href="https://hexo.io" rel="noopener" target="_blank">Hexo</a> 生成 · HexWiki 主题</p>
   </div>
