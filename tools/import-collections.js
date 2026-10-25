@@ -436,6 +436,9 @@ function main() {
     if (/^`[^`]*`$/.test(text)) return false;
     if (/^(#include|#define|#pragma|#if|#endif|using\s+|namespace\s+|template\b|typedef\b|struct\b|class\b|void\b|int\b|float\b|double\b|char\b|long\b|short\b|unsigned\b|signed\b|bool\b|const\b|static\b|public\b|private\b|protected\b|for\s*\(|while\s*\(|if\s*\(|else\b|switch\s*\(|case\b|return\b|break\b|continue\b|import\s+|from\s+|def\s+|print\s*\(|console\.|function\b|let\b|var\b|SELECT\b|INSERT\b|UPDATE\b|DELETE\b|CREATE\b|curl\b|pip\b|npm\b|git\b|docker\b|cmake\b|make\b|__m\d+|std::|Var\b|Func\b|Buffer\b|Expr\b|Image\b|Param\b|RVar\b|FuncRef\b|Halide::|gradient\b)/.test(text)) return true;
     if (/^[A-Za-z_]\w*\.[A-Za-z_]\w*\s*\(/.test(text)) return true;
+    if (/^\.(LC\d+|L\d+|string|text|globl|section|data|align|type|size)\b/.test(text)) return true;
+    if (/^[A-Za-z_]\w*::/.test(text) || /^[A-Za-z_]\w*\s*\[[^\]]*\]:$/.test(text)) return true;
+    if (/^(sub|mov|add|call|ret|push|pop|lea|cmp|jne|je|jmp|test|xor|and|or|imul|movzx|movsx|nop|endbr64|inc|dec|shl|shr|neg|not)\b/.test(text)) return true;
     if (/^--?[A-Za-z]/.test(text)) return true;
     if (/^(docker|tokenspeed|pip|npm|yarn|curl|wget|cd|export|git|bash|sh|make|cmake|sudo)\b/.test(text)) return true;
     if (/\\\s*$/.test(raw)) return true;
@@ -446,6 +449,7 @@ function main() {
   }
 
   function detectLang(text) {
+    if (/^\s*\.(LC\d+|L\d+|string|text|globl|section|data)\b|^\s*(mov|sub|add|call|ret|lea|cmp|push|pop)\b/m.test(text)) return 'x86asm';
     // Halide / C++ 特征优先
     if (/(^|\n)\s*(Var|Func|Buffer|Expr|Image|Param|RVar|FuncRef)\b|gradient\.|#include|std::|__m\d+/.test(text)) return 'cpp';
     const jsLike = /(console\.|=>|\bfunction\s+\w+\s*\(|\b(const|let)\s+\w+\s*=)/.test(text);
@@ -473,19 +477,23 @@ function main() {
         out.push(line);
         continue;
       }
-      const trimmed = line.trim();
+      let clean = line;
+      const trimmed = clean.trim();
       if (trimmed === '`') continue;
       if (/^`(?!``)/.test(trimmed)) {
         const rest = trimmed.slice(1);
         // 单行完整的 `inline code` 保留
         if (rest.length > 1 && rest.endsWith('`')) {
-          out.push(line);
+          out.push(clean);
           continue;
         }
-        out.push(line.replace(/^(\s*)`/, '$1'));
-        continue;
+        clean = clean.replace(/^(\s*)`/, '$1');
       }
-      out.push(line);
+      // 行尾单独一个反引号（多行代码块的收尾）
+      if (/`\s*$/.test(clean) && (clean.match(/`/g) || []).length === 1) {
+        clean = clean.replace(/`\s*$/, '');
+      }
+      out.push(clean);
     }
     return out.join('\n');
   }
@@ -530,7 +538,7 @@ function main() {
           }
           break;
         }
-        if (looksLikeCode(next) || /^( {2,}|\t)/.test(next)) {
+        if (looksLikeCode(next) || /^( {2,}|\t)/.test(next) || /^\s+#/.test(next)) {
           group.push(next);
           j += 1;
           continue;
