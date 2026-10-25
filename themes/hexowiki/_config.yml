@@ -99,7 +99,7 @@ home:
 # 静态资源版本号
 # 修改 source/css 或 source/js 后，把这里 +1，可强制浏览器加载新文件（避免旧缓存造成“改了没生效”）
 assets:
-  version: '0.3.0'
+  version: '0.3.1'
 
 # 文档库入口（collections 导入分支）
 docs:

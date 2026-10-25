@@ -41,6 +41,37 @@
     }).join('') + '</ul>';
   };
   const _treeHtml = _children(_nav, 0);
+  let _docSeq = 0;
+  const _docTree = (_docsData && _docsData.tree && _docsData.tree.length)
+    ? _docsData.tree
+    : ((_docsData && _docsData.groups) || []).map(function (group) {
+        return { name: group.name, url: _docsUrl, count: group.count, children: [] };
+      });
+  const _docMaxDepth = 2; // 侧栏只展开两级，更深层进入目录页
+  const _docTreeHtml = function (nodes, depth) {
+    if (!nodes || !nodes.length) return '';
+    return nodes.map(function (node) {
+      const hasChildren = !!(node.children && node.children.length);
+      const canExpand = hasChildren && depth < _docMaxDepth;
+      const id = 'docs-children-' + (_docSeq++);
+      const open = depth === 0 && _navCfg.open_first_level !== false;
+      const chevron = '<svg class="nav-tree__chevron" width="10" height="10" viewBox="0 0 10 10" aria-hidden="true" focusable="false"><path d="M2 3.25 5 6.25 8 3.25" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+      return '<li class="nav-tree__item nav-tree__group' + (open ? ' is-open' : '') + '" data-nav-type="group">'
+        + '<div class="nav-tree__docs-head">'
+        + (canExpand
+            ? '<button class="nav-tree__toggle" type="button" aria-expanded="' + (open ? 'true' : 'false') + '" aria-controls="' + id + '" data-nav-key="doc:' + _esc(node.path) + '">' + chevron + '</button>'
+            : '<span class="nav-tree__toggle-spacer" aria-hidden="true"></span>')
+        + '<a class="nav-tree__link" href="' + _esc(node.url) + '">'
+        + '<span class="nav-tree__link-text">' + _esc(node.name) + '</span>'
+        + '<span class="nav-tree__badge">' + _esc(node.count) + '</span>'
+        + '</a>'
+        + '</div>'
+        + (canExpand
+            ? '<div class="nav-tree__children" id="' + id + '"' + (open ? '' : ' hidden') + '><ul class="nav-tree__list" data-depth="' + (depth + 1) + '">' + _docTreeHtml(node.children, depth + 1) + '</ul></div>'
+            : '')
+        + '</li>';
+    }).join('');
+  };
 %>
 <% if ((!_nav || !_nav.length) && !(_docsData && _docsData.count)) { %>
 <p class="nav-tree__empty"><%= __('sidebar_empty') %></p>
@@ -53,14 +84,7 @@
         <span class="nav-tree__badge"><%- _docsData.count %></span>
       </a>
     </li>
-    <% (_docsData.groups || []).forEach(function (group) { %>
-    <li class="nav-tree__item" data-nav-type="page">
-      <a class="nav-tree__link" href="<%- _docsUrl %>">
-        <span class="nav-tree__link-text"><%- group.name %></span>
-        <span class="nav-tree__badge"><%- group.count %></span>
-      </a>
-    </li>
-    <% }); %>
+    <%- _docTreeHtml(_docTree, 0) %>
   </ul>
 </div>
 <% } else { %>
