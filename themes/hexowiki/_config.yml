@@ -1,0 +1,115 @@
+# ===============================================================
+# HexWiki 主题配置
+# 所有字段均可省略，模板会使用内置默认值。
+# ===============================================================
+
+# 站点字标（顶栏左侧）
+brand:
+  # 顶栏显示的名字；留空则使用站点 _config.yml 的 title
+  title: HexWiki
+  # 字标下方的小字（Vector 2022 的 tagline）
+  tagline: 自由的知识库
+  # 顶栏/浏览器图标（放在 theme/source/images/ 下）
+  logo: /images/hexowiki/logo.svg
+
+# 左侧多级目录
+nav:
+  # 一级分组显示顺序；未列出的分组按内容中出现的顺序排在后面
+  order:
+    - 开始
+    - 指南
+    - 参考
+    - 知识库
+    - 关于
+  # 是否在目录项右侧显示「链入次数」徽标
+  show_badges: true
+  # 是否默认展开所有一级分组
+  open_first_level: true
+  # 是否在侧栏底部显示站点统计
+  show_stats: true
+
+# 功能开关（false 即关闭对应入口；关闭 graph 后正文中的局部图谱也隐藏）
+features:
+  graph: true          # /graph/ 全站关系图谱 + 局部图谱
+  local_graph: true    # 条目页底部的 2 跳局部图谱
+  stats: true          # /stats/ 统计页
+  search: true         # 顶栏搜索 + /wiki-search.json 建议
+  dark_mode: true      # 深色模式切换按钮
+  random: true         # 「随机页面」链接
+  sidebar_filter: true # 侧栏目录筛选框
+  table_scroll: true   # 自动为宽表格加横向滚动容器
+  recent: 8            # 首页「最近更新」条数
+
+# 搜索
+search:
+  limit: 8             # 建议下拉最多显示条数
+
+# 关系图谱参数
+graph:
+  full_height: 72vh    # 全站图谱画布高度（CSS 长度）
+  local_height: 360px  # 条目页局部图谱高度
+  show_labels: true    # 默认显示节点标题
+  # 初始力导向动画强度：gentle（默认，缓慢漂移，单帧 ≤1px）/ normal（较快）/ none（无动画）
+  motion: gentle
+  labels_min_zoom: 0.55  # 缩放小于该值时只显示“度数 Top N”节点标签
+  labels_top: 12       # 无论缩放比例都始终显示标签的高连接节点数量
+  colors:              # 分组配色（按分组出现顺序取色，可自行覆盖；红色保留给红链）
+    - '#3366cc'
+    - '#14866d'
+    - '#ac6600'
+    - '#8a4b9c'
+    - '#0b6e8a'
+    - '#6b4ba1'
+    - '#3f6e3f'
+
+# 统计页
+stats:
+  generated_note: 数据由 Hexo 在生成站点时即时计算。
+
+# 编辑 / 历史链接
+# :path 会被替换为源文件路径，例如 source/_posts/intro.md
+edit:
+  enable: false
+  url: https://github.com/example/hexo-wiki/edit/main/:path
+history:
+  enable: false
+  url: https://github.com/example/hexo-wiki/commits/main/:path
+
+# 页脚
+footer:
+  license: CC BY-SA 4.0
+  license_url: https://creativecommons.org/licenses/by-sa/4.0/deed.zh
+  text: 除非另有说明，本站内容均采用 CC BY-SA 4.0 许可协议授权。
+  # 额外页脚链接（可选）
+  links:
+    - label: 关于本站
+      url: /wiki/about/
+    - label: 数据格式
+      url: /wiki/data-format/
+    - label: 参与贡献
+      url: /wiki/contributing/
+
+# 首页文案
+home:
+  headline: 一个像维基百科一样生长的知识库
+  intro: >-
+    HexWiki 是一个 Wikipedia 风格的 Hexo 主题演示站：左侧是多级目录，
+    正文用 [[双链]] 编织成网，每一页都能查看反链、断链与两跳关系图。
+  primary:
+    label: 开始阅读
+    url: /wiki/intro/
+  # 首页功能卡片（可增删）
+  features:
+    - title: 双向链接
+      text: 用 [[页面]] 语法连接条目，自动统计反链、出链与红链。
+      url: /wiki/wikilinks/
+      image: /images/hexowiki/wikilinks-diagram.svg
+    - title: 关系图谱
+      text: 零依赖 Canvas 力导向图，支持拖拽、缩放、搜索与分组着色。
+      url: /graph/
+      image: /images/hexowiki/graph-diagram.svg
+
+# 静态资源版本号
+# 修改 source/css 或 source/js 后，把这里 +1，可强制浏览器加载新文件（避免旧缓存造成“改了没生效”）
+assets:
+  version: '0.2.1'

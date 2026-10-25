@@ -1,0 +1,42 @@
+<%
+  const _theme = (typeof themeCfg !== 'undefined' && themeCfg) ? themeCfg : ((typeof theme !== 'undefined' && theme) ? theme : {});
+  const _brand = (typeof brand !== 'undefined' && brand) ? brand : (_theme.brand || {});
+  const _siteTitle = (typeof siteTitle !== 'undefined' && siteTitle) ? siteTitle : (_brand.title || (typeof config !== 'undefined' && config.title) || 'HexWiki');
+  const _pageTitle = (typeof page !== 'undefined' && page && page.title) ? (page.title + ' - ' + _siteTitle) : _siteTitle;
+  const _pageDesc = (typeof page !== 'undefined' && page && (page.summary || page.description)) || _brand.tagline || (typeof config !== 'undefined' && config.description) || '';
+  const _logo = _brand.logo || '/images/hexowiki/logo.svg';
+  const _canonical = (typeof page !== 'undefined' && page && page.permalink) ? page.permalink : '';
+%>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title><%- _pageTitle %></title>
+<meta name="description" content="<%- _pageDesc %>">
+<% if (_canonical) { %><link rel="canonical" href="<%- _canonical %>">
+<% } %>
+<meta property="og:site_name" content="<%- _siteTitle %>">
+<meta property="og:title" content="<%- (typeof page !== 'undefined' && page && page.title) ? page.title : _siteTitle %>">
+<meta property="og:description" content="<%- _pageDesc %>">
+<meta property="og:type" content="article">
+<% if (_canonical) { %><meta property="og:url" content="<%- _canonical %>">
+<% } %>
+<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#101418" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/svg+xml" href="<%- url_for(_logo) %>">
+<link rel="stylesheet" href="<%- url_for('/css/style.css') %><%- (theme.assets && theme.assets.version) ? ('?v=' + theme.assets.version) : '' %>">
+<script>
+  /* 在首次绘制前应用主题，避免闪白 */
+  (function () {
+    var root = document.documentElement;
+    var theme = null;
+    try { theme = localStorage.getItem('hexowiki.theme'); } catch (e) {}
+    if (theme !== 'light' && theme !== 'dark') {
+      theme = (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) ? 'dark' : 'light';
+    }
+    root.setAttribute('data-theme', theme);
+    root.style.colorScheme = theme;
+    try {
+      var sidebar = localStorage.getItem('hexowiki.sidebar');
+      if (sidebar === 'collapsed') root.setAttribute('data-sidebar', 'collapsed');
+    } catch (e) {}
+  })();
+</script>

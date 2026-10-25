@@ -1,0 +1,41 @@
+<%
+  let _headings = [];
+  if (typeof headings !== 'undefined' && Array.isArray(headings)) {
+    _headings = headings.filter(function (item) { return item && item.id; });
+  }
+
+  // 优先从已渲染正文中提取带 id 的 h2/h3 —— 这是最终 DOM 的权威来源
+  let _parsed = [];
+  if (typeof page !== 'undefined' && page && page.content) {
+    const _re = /<h([23])\s+id="([^"]+)"[^>]*>([\s\S]*?)<\/h\1>/gi;
+    let _m;
+    while ((_m = _re.exec(page.content)) !== null) {
+      _parsed.push({
+        id: _m[2],
+        text: _m[3].replace(/<[^>]+>/g, '').trim(),
+        level: Number(_m[1])
+      });
+    }
+  }
+  if (_parsed.length) _headings = _parsed;
+
+  if (!_headings.length && typeof wiki_headings === 'function') {
+    try {
+      _headings = (wiki_headings() || []).filter(function (item) { return item && item.id; });
+    } catch (err) { _headings = []; }
+  }
+%>
+<% if (_headings && _headings.length) { %>
+<details class="toc-box" id="wiki-toc" open>
+  <summary class="toc-box__head"><%= __('toc') %></summary>
+  <div class="toc-box__body">
+    <ul class="toc-box__list">
+      <% _headings.forEach(function (heading) { if (heading && heading.id) { %>
+      <li class="toc-box__item toc-box__item--h<%- heading.level || 2 %>">
+        <a class="toc-box__link" href="#<%- heading.id %>"><%- heading.text %></a>
+      </li>
+      <% } }); %>
+    </ul>
+  </div>
+</details>
+<% } %>

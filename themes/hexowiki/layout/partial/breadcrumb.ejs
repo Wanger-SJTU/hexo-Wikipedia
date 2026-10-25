@@ -1,0 +1,27 @@
+<%
+  let _items = [];
+  if (typeof breadcrumb !== 'undefined' && Array.isArray(breadcrumb) && breadcrumb.length) {
+    _items = breadcrumb;
+  } else if (typeof wiki_breadcrumb === 'function') {
+    try { _items = wiki_breadcrumb() || []; } catch (err) { _items = []; }
+  }
+  if (!_items.length) {
+    _items = [{ label: __('breadcrumb_home'), url: url_for('/'), isCurrent: false }];
+    if (typeof page !== 'undefined' && page && page.title) {
+      _items.push({ label: page.title, url: null, isCurrent: true });
+    }
+  }
+%>
+<nav class="breadcrumb" aria-label="<%= __('breadcrumb_home') %>">
+  <ol class="breadcrumb__list">
+    <% _items.forEach(function (item, i) { %>
+    <li class="breadcrumb__item<%- item.isCurrent || (!item.url && i === _items.length - 1) ? ' is-current' : '' %>">
+      <% if (item.url && !(item.isCurrent || i === _items.length - 1)) { %>
+      <a class="breadcrumb__link" href="<%- item.url %>"><%- item.label %></a>
+      <% } else { %>
+      <span class="breadcrumb__current" aria-current="page"><%- item.label %></span>
+      <% } %>
+    </li>
+    <% }); %>
+  </ol>
+</nav>

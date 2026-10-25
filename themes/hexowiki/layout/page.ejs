@@ -1,0 +1,34 @@
+<%
+  const _theme = (typeof theme !== 'undefined' && theme) ? theme : {};
+  const _brand = _theme.brand || {};
+  const _siteTitle = _brand.title || config.title || 'HexWiki';
+  const _siteSub = __('site_sub', _siteTitle);
+  let _bc = [];
+  if (typeof wiki_breadcrumb === 'function') {
+    try { _bc = wiki_breadcrumb() || []; } catch (err) { _bc = []; }
+  }
+  if (!_bc.length) {
+    _bc = [{ label: __('breadcrumb_home'), url: url_for('/'), isCurrent: false }];
+    if (page.title) _bc.push({ label: page.title, url: null, isCurrent: true });
+  }
+  const _updated = page.updated ? String(page.updated).slice(0, 10) : (page.date ? String(page.date).slice(0, 10) : '');
+%>
+<article class="article article--page">
+  <%- include('partial/breadcrumb', { breadcrumb: _bc }) %>
+  <header class="article__header">
+    <h1 class="article__title"><%- page.title || __('breadcrumb_home') %></h1>
+    <div class="site-sub"><%= _siteSub %></div>
+    <% if (page.summary || page.description) { %><div class="hatnote"><%- page.summary || page.description %></div><% } %>
+    <% if (page.subtitle) { %><p class="article__subtitle"><%- page.subtitle %></p><% } %>
+    <% if (_updated) { %>
+    <div class="article__meta"><span class="article__meta-item"><%= __('updated_at') %> <time datetime="<%- page.updated || page.date %>"><%- _updated %></time></span></div>
+    <% } %>
+  </header>
+  <div class="article__content" id="article-content">
+    <%- page.content %>
+  </div>
+  <footer class="article__footer" id="page-footer">
+    <% if (_updated) { %><p class="article__footer-line"><%= __('last_edited', _updated) %></p><% } %>
+    <p class="article__footer-line"><a href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="license noopener" target="_blank"><%= __('license_note') %></a></p>
+  </footer>
+</article>

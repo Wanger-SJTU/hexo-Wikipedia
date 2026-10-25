@@ -1,0 +1,113 @@
+<%
+  const _theme = (typeof theme !== 'undefined' && theme) ? theme : {};
+  const _brand = _theme.brand || {};
+  const _features = _theme.features || {};
+  const _siteTitle = _brand.title || config.title || 'HexWiki';
+  const _siteSub = __('site_sub', _siteTitle);
+
+  const p = (function () {
+    if (typeof wiki_page === 'function') {
+      try { const result = wiki_page(); if (result && result.title) return result; } catch (err) {}
+    }
+    return {
+      key: (page.source || page.path || '').replace(/\.md$/, ''),
+      title: page.title || '',
+      url: page.permalink || url_for(page.path || '/'),
+      path: page.path || '',
+      source: page.source || '',
+      summary: page.summary || page.description || '',
+      subtitle: page.subtitle || '',
+      aliases: Array.isArray(page.aliases) ? page.aliases : [],
+      tags: (page.tags && page.tags.toArray) ? page.tags.toArray().map(function (t) { return t.name; }) : (page.tags || []),
+      categories: (page.categories && page.categories.toArray) ? page.categories.toArray().map(function (c) { return c.name; }) : (page.categories || []),
+      date: page.date ? String(page.date).slice(0, 10) : '',
+      updated: page.updated ? String(page.updated).slice(0, 10) : '',
+      in_count: 0, out_count: 0, broken_count: 0,
+      in: [], out: [], broken: [], headings: [],
+      section: '', nav: {}, infobox: page.infobox || null, graph: { nodes: [], links: [] }
+    };
+  })();
+
+  let _bc = [];
+  if (typeof wiki_breadcrumb === 'function') {
+    try { _bc = wiki_breadcrumb() || []; } catch (err) { _bc = []; }
+  }
+  if (!_bc.length) {
+    _bc = [{ label: __('breadcrumb_home'), url: url_for('/'), isCurrent: false }];
+    if (p.section) _bc.push({ label: p.section, url: null, isCurrent: false });
+    _bc.push({ label: p.title, url: null, isCurrent: true });
+  }
+
+  const _aliases = Array.isArray(p.aliases) ? p.aliases : [];
+  const _categories = Array.isArray(p.categories) ? p.categories : [];
+  const _tags = Array.isArray(p.tags) ? p.tags : [];
+  const _headingList = Array.isArray(p.headings) ? p.headings : [];
+  const _updated = p.updated || p.date || '';
+  const _edit = _theme.edit || {};
+  const _source = p.source || '';
+  const _sourcePath = _source ? ('source/' + _source) : '';
+  const _editUrl = (_edit.enable !== false && _edit.url && _sourcePath) ? String(_edit.url).replace(':path', _sourcePath) : '';
+  const _categoryUrl = function (name) { return url_for('/categories/' + encodeURIComponent(name) + '/'); };
+  const _tagUrl = function (name) { return url_for('/tags/' + encodeURIComponent(name) + '/'); };
+%>
+<article class="article" data-page-key="<%- p.key %>" data-page-title="<%- p.title %>">
+  <%- include('partial/breadcrumb', { breadcrumb: _bc }) %>
+  <%- include('partial/tabs', { p: p, themeCfg: _theme }) %>
+
+  <header class="article__header">
+    <h1 class="article__title"><%- p.title %></h1>
+    <div class="site-sub"><%= _siteSub %></div>
+    <% if (_aliases.length) { %>
+    <div class="hatnote">“<%- _aliases.join('”“') %>”重定向至此。<% if (p.summary) { %>本条目介绍：<%- p.summary %><% } %></div>
+    <% } else { %>
+    <div class="hatnote">本条目介绍<% if (p.summary) { %>：<%- p.summary %><% } else { %> <%- p.title %> 的相关内容<% } %></div>
+    <% } %>
+    <% if (p.subtitle) { %><p class="article__subtitle"><%- p.subtitle %></p><% } %>
+    <div class="article__meta">
+      <span class="article__meta-item"><%= __('updated_at') %> <time datetime="<%- p.updated || p.date %>"><%- _updated %></time></span>
+      <% if (p.section) { %><span class="article__meta-item article__meta-section"><%= p.section %></span><% } %>
+    </div>
+    <div class="link-stats" aria-label="<%= __('link_stats') %>">
+      <a class="link-stats__item" href="#backlinks"><%= __('backlinks_count') %> <strong><%- p.in_count || 0 %></strong></a>
+      <a class="link-stats__item" href="#outlinks"><%= __('outlinks_count') %> <strong><%- p.out_count || 0 %></strong></a>
+      <a class="link-stats__item<%- (p.broken_count || 0) > 0 ? ' is-missing' : '' %>" href="#broken-links"><%= __('broken_count') %> <strong><%- p.broken_count || 0 %></strong></a>
+    </div>
+  </header>
+
+  <%- include('partial/infobox', { info: p.infobox, p: p }) %>
+  <%- include('partial/toc', { headings: _headingList }) %>
+
+  <div class="article__content" id="article-content">
+    <%- page.content.replace(/\sdata-wikilink="[^"]*"/g, '') %>
+  </div>
+
+  <% if (_categories.length || _tags.length) { %>
+  <div class="article__categories">
+    <% if (_categories.length) { %>
+    <div class="article__categories-row">
+      <span class="article__categories-label"><%= __('categories') %>：</span>
+      <% _categories.forEach(function (category, i) { %><% if (i) { %><span class="article__categories-sep">|</span><% } %><a href="<%- _categoryUrl(category) %>"><%- category %></a><% }); %>
+    </div>
+    <% } %>
+    <% if (_tags.length) { %>
+    <div class="article__categories-row">
+      <span class="article__categories-label"><%= __('tags') %>：</span>
+      <% _tags.forEach(function (tag, i) { %><% if (i) { %><span class="article__categories-sep">|</span><% } %><a href="<%- _tagUrl(tag) %>"><%- tag %></a><% }); %>
+    </div>
+    <% } %>
+  </div>
+  <% } %>
+
+  <%- include('partial/links', { p: p }) %>
+  <%- include('partial/local-graph', { p: p, graph: p.graph, themeCfg: _theme }) %>
+
+  <footer class="article__footer" id="page-footer">
+    <p class="article__footer-line"><%= __('last_edited', _updated) %></p>
+    <p class="article__footer-line">
+      <a href="<%- (config.footer && config.footer.license_url) || 'https://creativecommons.org/licenses/by-sa/4.0/deed.zh' %>" rel="license noopener" target="_blank"><%= __('license_note') %></a>
+    </p>
+    <% if (_editUrl) { %>
+    <p class="article__footer-line"><a href="<%- _editUrl %>" rel="nofollow noopener" target="_blank"><%= __('view_source') %></a></p>
+    <% } %>
+  </footer>
+</article>

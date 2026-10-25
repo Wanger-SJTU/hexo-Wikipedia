@@ -1,0 +1,10 @@
+<%
+  const s = (typeof stats !== 'undefined' && stats) ? stats : {};
+%>
+<ul class="graph-meta">
+  <li class="graph-meta__item"><span class="graph-meta__label"><%= __('stats_pages') %></span><span class="graph-meta__value"><%- (s.pages === 0 || s.pages) ? s.pages : '—' %></span></li>
+  <li class="graph-meta__item"><span class="graph-meta__label"><%= __('stats_links') %></span><span class="graph-meta__value"><%- (s.links === 0 || s.links) ? s.links : '—' %></span></li>
+  <li class="graph-meta__item"><span class="graph-meta__label"><%= __('stats_orphans') %></span><span class="graph-meta__value"><%- (s.orphans === 0 || s.orphans) ? s.orphans : '—' %></span></li>
+  <li class="graph-meta__item"><span class="graph-meta__label"><%= __('stats_broken') %></span><span class="graph-meta__value"><%- (s.broken === 0 || s.broken) ? s.broken : '—' %></span></li>
+  <li class="graph-meta__item"><span class="graph-meta__label"><%= __('stats_avg_out') %></span><span class="graph-meta__value"><%- (s.avg_out === 0 || s.avg_out) ? s.avg_out : '—' %></span></li>
+</ul>

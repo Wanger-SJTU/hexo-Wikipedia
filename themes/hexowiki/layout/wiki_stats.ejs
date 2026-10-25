@@ -1,0 +1,175 @@
+<%
+  const _theme = (typeof theme !== 'undefined' && theme) ? theme : {};
+  const _brand = _theme.brand || {};
+  const _siteTitle = _brand.title || config.title || 'HexWiki';
+  let s = null;
+  if (typeof wiki_stats === 'function') {
+    try { s = wiki_stats(); } catch (err) { s = null; }
+  }
+  if (!s) s = {};
+  const _arr = function (value) { return Array.isArray(value) ? value : []; };
+  const _num = function (value) { return (value === 0 || value) ? value : '—'; };
+  const _title = (page && page.title) ? page.title : __('stats_title');
+  const _desc = (page && page.description) ? page.description : __('stats_desc');
+  const _orphans = _arr(s.orphan_pages);
+  const _deadends = _arr(s.deadend_pages);
+  const _broken = _arr(s.broken_links);
+  const _sections = _arr(s.sections);
+  const _tags = _arr(s.tags);
+  const _topIn = _arr(s.top_in);
+  const _topOut = _arr(s.top_out);
+  const _recent = _arr(s.recent);
+  const _tagChunks = [];
+  if (_tags.length) {
+    const _tagCols = _tags.length > 14 ? 3 : (_tags.length > 6 ? 2 : 1);
+    const _perCol = Math.ceil(_tags.length / _tagCols);
+    for (let _i = 0; _i < _tagCols; _i += 1) {
+      const _chunk = _tags.slice(_i * _perCol, (_i + 1) * _perCol);
+      if (_chunk.length) _tagChunks.push(_chunk);
+    }
+  }
+%>
+<div class="stats-page">
+  <header class="list-page__header">
+    <h1 class="list-page__title"><%- _title %></h1>
+    <p class="graph-page__desc"><%- _desc %></p>
+    <p class="site-sub"><%= __('site_sub', _siteTitle) %></p>
+    <% if (s.generated_at) { %><p class="list-page__meta"><%= __('stats_generated', s.generated_at) %></p><% } %>
+  </header>
+
+  <section class="stats-grid" aria-label="<%= __('stats_title') %>">
+    <div class="stat-card"><span class="stat-card__value"><%- _num(s.pages) %></span><span class="stat-card__label"><%= __('stats_pages') %></span></div>
+    <div class="stat-card"><span class="stat-card__value"><%- _num(s.links) %></span><span class="stat-card__label"><%= __('stats_links') %></span></div>
+    <div class="stat-card"><span class="stat-card__value"><%- _num(s.avg_out) %></span><span class="stat-card__label"><%= __('stats_avg_out') %></span></div>
+    <div class="stat-card"><span class="stat-card__value"><%- _num(s.orphans) %></span><span class="stat-card__label"><%= __('stats_orphans') %></span></div>
+    <div class="stat-card"><span class="stat-card__value"><%- _num(s.deadends) %></span><span class="stat-card__label"><%= __('stats_deadends') %></span></div>
+    <div class="stat-card stat-card--danger"><span class="stat-card__value"><%- _num(s.broken) %></span><span class="stat-card__label"><%= __('stats_broken') %></span></div>
+  </section>
+
+  <div class="stats-columns">
+    <section class="stats-section">
+      <h2 class="stats-section__title"><%= __('stats_top_in') %></h2>
+      <% if (_topIn.length) { %>
+      <table class="stats-table">
+        <thead><tr><th scope="col"><%= __('stats_col_page') %></th><th scope="col" class="stats-table__num"><%= __('stats_col_count') %></th></tr></thead>
+        <tbody>
+          <% _topIn.forEach(function (item) { if (!item) return; %>
+          <tr><td><a href="<%- item.url %>"><%- item.title %></a></td><td class="stats-table__num"><%- item.value %></td></tr>
+          <% }); %>
+        </tbody>
+      </table>
+      <% } else { %><p class="stats-empty"><%= __('stats_none') %></p><% } %>
+    </section>
+
+    <section class="stats-section">
+      <h2 class="stats-section__title"><%= __('stats_top_out') %></h2>
+      <% if (_topOut.length) { %>
+      <table class="stats-table">
+        <thead><tr><th scope="col"><%= __('stats_col_page') %></th><th scope="col" class="stats-table__num"><%= __('stats_col_count') %></th></tr></thead>
+        <tbody>
+          <% _topOut.forEach(function (item) { if (!item) return; %>
+          <tr><td><a href="<%- item.url %>"><%- item.title %></a></td><td class="stats-table__num"><%- item.value %></td></tr>
+          <% }); %>
+        </tbody>
+      </table>
+      <% } else { %><p class="stats-empty"><%= __('stats_none') %></p><% } %>
+    </section>
+  </div>
+
+  <div class="stats-columns">
+    <section class="stats-section">
+      <h2 class="stats-section__title"><%= __('stats_sections') %></h2>
+      <% if (_sections.length) { %>
+      <table class="stats-table">
+        <thead><tr><th scope="col"><%= __('stats_col_page') %></th><th scope="col" class="stats-table__num"><%= __('stats_col_count') %></th></tr></thead>
+        <tbody>
+          <% _sections.forEach(function (item) { if (!item) return; %>
+          <tr><td><%- item.name %></td><td class="stats-table__num"><%- item.count %></td></tr>
+          <% }); %>
+        </tbody>
+      </table>
+      <% } else { %><p class="stats-empty"><%= __('stats_none') %></p><% } %>
+    </section>
+
+    <section class="stats-section">
+      <h2 class="stats-section__title"><%= __('stats_orphan_list') %></h2>
+      <% if (_orphans.length) { %>
+      <ul class="orphan-list">
+        <% _orphans.forEach(function (item) { if (!item) return; %>
+        <li class="orphan-list__item">
+          <a class="orphan-list__link" href="<%- item.url %>"><%- item.title %></a>
+          <span class="orphan-list__meta"><%= __('outlinks_count') %> <%- item.out_count %></span>
+          <% if (item.summary) { %><p class="orphan-list__summary"><%- item.summary %></p><% } %>
+        </li>
+        <% }); %>
+      </ul>
+      <% } else { %><p class="stats-empty"><%= __('stats_none') %></p><% } %>
+    </section>
+  </div>
+
+  <section class="stats-section stats-section--tags">
+    <h2 class="stats-section__title"><%= __('stats_tags') %></h2>
+    <% if (_tagChunks.length) { %>
+    <div class="stats-tag-columns">
+      <% _tagChunks.forEach(function (chunk) { %>
+      <table class="stats-table">
+        <thead><tr><th scope="col"><%= __('stats_col_tag') %></th><th scope="col" class="stats-table__num"><%= __('stats_col_refs') %></th></tr></thead>
+        <tbody>
+          <% chunk.forEach(function (item) { if (!item) return; %>
+          <tr><td><a href="<%- url_for('/tags/' + encodeURIComponent(item.name) + '/') %>"><%- item.name %></a></td><td class="stats-table__num"><%- item.count %></td></tr>
+          <% }); %>
+        </tbody>
+      </table>
+      <% }); %>
+    </div>
+    <% } else { %><p class="stats-empty"><%= __('stats_none') %></p><% } %>
+  </section>
+
+  <section class="stats-section">
+    <h2 class="stats-section__title"><%= __('stats_deadend_list') %></h2>
+    <% if (_deadends.length) { %>
+    <ul class="orphan-list orphan-list--deadend">
+      <% _deadends.forEach(function (item) { if (!item) return; %>
+      <li class="orphan-list__item">
+        <a class="orphan-list__link" href="<%- item.url %>"><%- item.title %></a>
+        <span class="orphan-list__meta"><%= __('backlinks_count') %> <%- item.in_count %></span>
+      </li>
+      <% }); %>
+    </ul>
+    <% } else { %><p class="stats-empty"><%= __('stats_none') %></p><% } %>
+  </section>
+
+  <section class="stats-section">
+    <h2 class="stats-section__title"><%= __('stats_broken_list') %></h2>
+    <% if (_broken.length) { %>
+    <ul class="broken-list">
+      <% _broken.forEach(function (item) { if (!item) return; %>
+      <li class="broken-list__item">
+        <code class="broken-list__target wikilink is-missing"><%- (function (raw, label) { if (!raw) return '[[' + (label || '') + ']]'; raw = String(raw); return raw.indexOf('[[') === 0 ? raw : '[[' + raw + ']]'; })(item.raw, item.label) %></code>
+        <% if (item.sources && item.sources.length) { %>
+        <span class="broken-list__sources"><%= __('stats_col_sources') %>：
+          <% item.sources.forEach(function (source, i) { if (source) { %><% if (i) { %>、<% } %><a href="<%- source.url %>"><%- source.title %></a><% } }); %>
+        </span>
+        <% } %>
+      </li>
+      <% }); %>
+    </ul>
+    <% } else { %><p class="stats-empty"><%= __('no_broken') %></p><% } %>
+  </section>
+
+  <section class="stats-section">
+    <h2 class="stats-section__title"><%= __('stats_recent') %></h2>
+    <% if (_recent.length) { %>
+    <ul class="recent-list">
+      <% _recent.forEach(function (item) { if (!item) return; %>
+      <li class="recent-list__item">
+        <a class="recent-list__link" href="<%- item.url %>"><%- item.title %></a>
+        <% if (item.updated) { %><time class="recent-list__date" datetime="<%- item.updated %>"><%- item.updated %></time><% } %>
+      </li>
+      <% }); %>
+    </ul>
+    <% } else { %><p class="stats-empty"><%= __('stats_none') %></p><% } %>
+  </section>
+
+  <p class="stats-note"><%= (theme.stats && theme.stats.generated_note) || __('stats_generated', s.generated_at || '') %></p>
+</div>

@@ -1,0 +1,14 @@
+<%
+  const _name = (typeof page !== 'undefined' && page && page.category) ? page.category : '';
+  const _base = (typeof page !== 'undefined' && page && page.base) ? page.base : url_for('/categories/');
+  const _count = (typeof page !== 'undefined' && page && page.posts) ? (page.posts.length || 0) : 0;
+%>
+<div class="list-page">
+  <header class="list-page__header">
+    <h1 class="list-page__title"><%= __('category_title') %>：<%- _name %></h1>
+    <p class="site-sub"><%= __('site_sub', (theme.brand && theme.brand.title) || config.title || 'HexWiki') %></p>
+    <p class="list-page__meta"><%= __('posts_count', _count) %></p>
+  </header>
+  <%- include('partial/post-list', { posts: page.posts }) %>
+  <%- include('partial/pagination', { base: _base }) %>
+</div>

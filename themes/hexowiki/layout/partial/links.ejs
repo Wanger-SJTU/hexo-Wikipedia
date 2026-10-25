@@ -1,0 +1,68 @@
+<%
+  const _p = (typeof p !== 'undefined' && p) ? p : {};
+  const _in = (typeof inLinks !== 'undefined' && Array.isArray(inLinks)) ? inLinks : ((_p && Array.isArray(_p.in)) ? _p.in : []);
+  const _out = (typeof outLinks !== 'undefined' && Array.isArray(outLinks)) ? outLinks : ((_p && Array.isArray(_p.out)) ? _p.out : []);
+  const _broken = (typeof brokenLinks !== 'undefined' && Array.isArray(brokenLinks)) ? brokenLinks : ((_p && Array.isArray(_p.broken)) ? _p.broken : []);
+%>
+<section class="article__links" aria-label="<%= __('link_stats') %>">
+  <section class="links-panel" id="backlinks" aria-labelledby="backlinks-head">
+    <div class="links-panel__head" id="backlinks-head">
+      <span class="links-panel__title"><%= __('backlinks') %></span>
+      <span class="links-panel__count"><%- _p.in_count !== undefined ? _p.in_count : _in.length %></span>
+    </div>
+    <% if (_in.length) { %>
+    <ul class="links-panel__list">
+      <% _in.forEach(function (item) { if (item) { %>
+      <li class="links-panel__item">
+        <a class="wikilink" href="<%- item.url || '#' %>"><%- item.title || item.label %></a>
+        <% if (item.snippet) { %><p class="links-panel__snippet"><%- item.snippet %></p><% } %>
+      </li>
+      <% } }); %>
+    </ul>
+    <% } else { %>
+    <p class="links-panel__empty"><%= __('no_backlinks') %></p>
+    <% } %>
+  </section>
+
+  <section class="links-panel" id="outlinks" aria-labelledby="outlinks-head">
+    <div class="links-panel__head" id="outlinks-head">
+      <span class="links-panel__title"><%= __('outlinks') %></span>
+      <span class="links-panel__count"><%- _p.out_count !== undefined ? _p.out_count : _out.length %></span>
+    </div>
+    <% if (_out.length) { %>
+    <ul class="links-panel__list">
+      <% _out.forEach(function (item) { if (item) { %>
+      <li class="links-panel__item<%- item.exists === false ? ' is-missing' : '' %>">
+        <a class="wikilink<%- item.exists === false ? ' is-missing' : '' %>" href="<%- item.url || '#' %>"><%- item.title || item.label %><%- item.anchor ? (' § ' + item.anchor) : '' %></a>
+        <% if (item.snippet) { %><p class="links-panel__snippet"><%- item.snippet %></p><% } %>
+      </li>
+      <% } }); %>
+    </ul>
+    <% } else { %>
+    <p class="links-panel__empty"><%= __('no_outlinks') %></p>
+    <% } %>
+  </section>
+
+  <section class="links-panel links-panel--broken" id="broken-links" aria-labelledby="broken-head">
+    <div class="links-panel__head" id="broken-head">
+      <span class="links-panel__title"><%= __('broken_links') %></span>
+      <span class="links-panel__count<%- _broken.length ? ' is-missing' : '' %>"><%- _p.broken_count !== undefined ? _p.broken_count : _broken.length %></span>
+    </div>
+    <% if (_broken.length) { %>
+    <ul class="links-panel__list">
+      <% _broken.forEach(function (item) { if (item) { %>
+      <li class="links-panel__item is-missing">
+        <code class="wikilink is-missing"><%- (function (raw, label) { if (!raw) return '[[' + (label || '') + ']]'; raw = String(raw); return raw.indexOf('[[') === 0 ? raw : '[[' + raw + ']]'; })(item.raw, item.label) %></code>
+        <% if (item.candidates && item.candidates.length) { %>
+        <span class="links-panel__candidates">你可能想找：
+          <% item.candidates.forEach(function (candidate, i) { if (candidate) { %><% if (i) { %>、<% } %><a href="<%- candidate.url %>"><%- candidate.title %></a><% } }); %>
+        </span>
+        <% } %>
+      </li>
+      <% } }); %>
+    </ul>
+    <% } else { %>
+    <p class="links-panel__empty"><%= __('no_broken') %></p>
+    <% } %>
+  </section>
+</section>

@@ -1,0 +1,78 @@
+<%
+  const _theme = (typeof themeCfg !== 'undefined' && themeCfg) ? themeCfg : ((typeof theme !== 'undefined' && theme) ? theme : {});
+  const _features = _theme.features || {};
+  const _navCfg = _theme.nav || {};
+  const _stats = (typeof wiki_site === 'function') ? wiki_site() : null;
+  const _urls = (typeof wiki_urls === 'function') ? (wiki_urls() || {}) : {};
+  const _graphUrl = _urls.graph || url_for('/graph/');
+  const _statsUrl = _urls.stats || url_for('/stats/');
+  const _allUrl = _urls.all || url_for('/wiki/all/');
+  const _num = function (v) { return (v === 0 || v) ? String(v) : '—'; };
+%>
+<aside class="wiki-sidebar" id="wiki-sidebar" aria-label="<%= __('site_sub', (typeof siteTitle !== 'undefined' ? siteTitle : '')) %>">
+  <div class="wiki-sidebar__inner">
+    <div class="wiki-sidebar__top">
+      <span class="wiki-sidebar__heading"><%= __('sidebar_tools') === 'sidebar_tools' ? '导航' : '导航' %></span>
+      <button class="sidebar-collapse" type="button" data-sidebar-collapse aria-label="<%= __('sidebar_hide') %>" title="<%= __('sidebar_hide') %>">
+        <svg width="14" height="14" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+          <path d="M10.5 3.5 6 8l4.5 4.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+    </div>
+
+    <% if (_features.sidebar_filter !== false) { %>
+    <div class="nav-tree__filter-wrap">
+      <label class="visually-hidden" for="nav-tree-filter"><%= __('sidebar_filter_label') %></label>
+      <input class="nav-tree__filter" id="nav-tree-filter" type="search" placeholder="<%= __('sidebar_filter') %>" aria-label="<%= __('sidebar_filter_label') %>" autocomplete="off" data-nav-filter>
+    </div>
+    <% } %>
+
+    <nav class="wiki-sidebar__nav" aria-label="<%= __('sidebar_tools') %>">
+      <%- include('nav-tree', { themeCfg: _theme, navCfg: _navCfg }) %>
+    </nav>
+
+    <% if (_features.stats !== false) { %>
+    <section class="sidebar-stats" aria-label="<%= __('sidebar_stats') %>">
+      <h2 class="sidebar-stats__head"><%= __('sidebar_stats') %></h2>
+      <dl class="sidebar-stats__grid">
+        <div class="sidebar-stats__item">
+          <dt><%= __('sidebar_stat_pages') %></dt>
+          <dd><%- _num(_stats && _stats.pages) %></dd>
+        </div>
+        <div class="sidebar-stats__item">
+          <dt><%= __('sidebar_stat_links') %></dt>
+          <dd><%- _num(_stats && _stats.links) %></dd>
+        </div>
+        <div class="sidebar-stats__item">
+          <dt><%= __('sidebar_stat_orphans') %></dt>
+          <dd><%- _num(_stats && _stats.orphans) %></dd>
+        </div>
+        <div class="sidebar-stats__item">
+          <dt><%= __('sidebar_stat_broken') %></dt>
+          <dd><%- _num(_stats && _stats.broken) %></dd>
+        </div>
+      </dl>
+      <a class="sidebar-stats__more" href="<%- _statsUrl %>"><%= __('sidebar_stats_more') %></a>
+    </section>
+    <% } %>
+
+    <div class="sidebar-tools">
+      <% if (_features.graph !== false) { %>
+      <a class="sidebar-tools__link" href="<%- _graphUrl %>">
+        <svg width="13" height="13" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><circle cx="3.5" cy="8" r="2" fill="currentColor"/><circle cx="12.5" cy="3.5" r="2" fill="currentColor"/><circle cx="12.5" cy="12.5" r="2" fill="currentColor"/><path d="M5.2 7.2 10.8 4M5.2 8.8l5.6 3.2" stroke="currentColor" stroke-width="1.2"/></svg>
+        <span><%= __('graph') %></span>
+      </a>
+      <% } %>
+      <a class="sidebar-tools__link" href="<%- _allUrl %>">
+        <svg width="13" height="13" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M3 3h10M3 8h10M3 13h10" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+        <span><%= __('all_pages') %></span>
+      </a>
+      <a class="sidebar-tools__link" href="<%- url_for('/archives/') %>">
+        <svg width="13" height="13" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><rect x="2.5" y="3" width="11" height="10" rx="1" fill="none" stroke="currentColor" stroke-width="1.2"/><path d="M2.5 6.5h11M5.5 3v3.5" stroke="currentColor" stroke-width="1.2"/></svg>
+        <span><%= __('archive_title') %></span>
+      </a>
+    </div>
+
+    <p class="wiki-sidebar__license"><%= __('sidebar_license') %></p>
+  </div>
+</aside>

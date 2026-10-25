@@ -1,0 +1,9 @@
+node_modules/
+public/
+db.json
+.deploy*/_toc.yml
+.deploy_git/
+*.log
+.DS_Store
+tmp/
+preview/

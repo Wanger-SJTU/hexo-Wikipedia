@@ -1,0 +1,151 @@
+# HexWiki 主题界面文案（简体中文）
+
+skip_link: 跳到正文
+site_sub: '来自 %s，自由的知识库'
+menu_open: 打开导航
+menu_close: 关闭导航
+sidebar_hide: 隐藏导航
+sidebar_show: 显示导航
+sidebar_filter: 筛选目录…
+sidebar_filter_label: 筛选目录
+sidebar_empty: 目录尚未生成。
+sidebar_stats: 站点统计
+sidebar_stat_pages: 条目
+sidebar_stat_links: 链接
+sidebar_stat_orphans: 孤立页
+sidebar_stat_broken: 断链
+sidebar_stats_more: 查看统计
+sidebar_tools: 工具
+sidebar_license: 内容采用 CC BY-SA 4.0 许可。
+
+search: 搜索
+search_placeholder: 搜索 HexWiki
+search_label: 搜索本站
+search_button: 搜索
+search_empty: 没有找到匹配的条目
+search_loading: 正在搜索…
+search_hint: 输入关键词以搜索条目
+
+random_page: 随机页面
+statistics: 统计
+graph: 关系图谱
+all_pages: 全部条目
+dark_mode: 深色模式
+light_mode: 浅色模式
+theme_toggle: 切换深色模式
+
+breadcrumb_home: 首页
+article_tab: 条目
+discussion_tab: 讨论
+read_tab: 阅读
+edit_tab: 编辑
+history_tab: 查看历史
+edit_disabled: 未配置编辑链接
+discussion_disabled: 演示站点未启用讨论页
+history_anchor: 页面信息
+toc: 目录
+toc_label: 文内目录
+infobox: 信息框
+categories: 分类
+tags: 标签
+aliases: 别名
+backlinks: 链入页面
+outlinks: 链出页面
+broken_links: 断链
+link_stats: 链接统计
+no_backlinks: 暂无其他页面链接到这里。
+no_outlinks: 本页没有链出到其他条目。
+no_broken: 没有断链，所有链接均有效。
+backlinks_count: 链入
+outlinks_count: 链出
+broken_count: 断链
+in_count_short: 入
+out_count_short: 出
+updated_at: 最后更新于
+published_at: 创建于
+page_footer: 页面信息
+last_edited: 本页面最后修改于 %s。
+license_note: 除非另有说明，本站内容采用 CC BY-SA 4.0 许可协议授权。
+view_source: 查看源文件
+local_graph: 局部关系图谱
+local_graph_desc: 显示本文 2 跳以内的邻居页面。
+local_graph_empty: 暂无邻居页面。
+view_full_graph: 查看全站图谱
+graph_title: 关系图谱
+graph_desc: 站点全部条目及其双链关系。拖拽节点、滚轮缩放、点击跳转。
+graph_search: 搜索节点…
+graph_search_label: 搜索图谱节点
+graph_legend: 分组
+graph_zoom_in: 放大
+graph_zoom_out: 缩小
+graph_fit: 适应画布
+graph_reset: 重置视图
+graph_labels: 显示标题
+graph_status_ready: '共 %s 个节点、%s 条链接'
+graph_header_counts: '共 %s 个条目 · %s 条链接'
+graph_status_ready_js: '共 {nodes} 个节点 · {links} 条连线（含 {missing} 个未创建）'
+graph_status_ready_basic_js: '共 {nodes} 个节点 · {links} 条连线'
+graph_status_match_js: '匹配 {count} 个节点'
+graph_status_match: '匹配 %s 个节点'
+graph_status_no_match: 没有匹配的节点
+graph_loading: 正在加载图谱…
+graph_error: 图谱数据加载失败，请确认站点已生成 /wiki-graph.json。
+graph_noscript: 关系图谱需要启用 JavaScript。
+graph_tooltip_in: 链入
+graph_tooltip_out: 链出
+graph_tooltip_group: 分组
+graph_legend_missing: 虚线红圈 = 未创建页面
+
+stats_title: 链接统计
+stats_desc: 全站双链网络的概览：页面、链接、孤立页面与断链。
+stats_pages: 页面总数
+stats_links: 链接总数
+stats_avg_out: 平均出链
+stats_orphans: 孤立页面
+stats_deadends: 无出链页面
+stats_broken: 断链
+stats_sections: 按分组
+stats_tags: 按标签
+stats_top_in: 被链入最多
+stats_top_out: 链出最多
+stats_orphan_list: 孤立页面列表
+stats_deadend_list: 无出链页面
+stats_broken_list: 断链列表
+stats_recent: 最近更新
+stats_generated: 生成于 %s
+stats_none: 暂无数据
+stats_col_page: 页面
+stats_col_tag: 标签
+stats_col_refs: 引用页面数
+stats_col_count: 数量
+stats_col_sources: 引用页面
+stats_col_links: 链接
+stats_count: 数量
+stats_view_page: 查看
+
+allpages_title: 全部条目
+allpages_desc: 按拼音/字母顺序排列的全部 Wiki 条目。
+allpages_count: '共 %s 个条目'
+allpages_empty: 暂无条目。
+allpages_filter: 筛选条目…
+allpages_no_match: 没有匹配的条目。
+
+archive_title: 归档
+category_title: 分类
+tag_title: 标签
+posts_count: '%s 篇'
+read_more: 阅读
+pagination_prev: 上一页
+pagination_next: 下一页
+pagination_label: 分页
+home_topics: 按主题浏览
+home_recent: 最近更新
+home_stats: 站点概览
+home_features: 主题特性
+home_all_pages: 全部条目
+home_no_pages: 内容尚未生成。
+view_all: 查看全部
+newer: 较新
+older: 较旧
+missing_link_toast: 红链：该条目尚未创建，欢迎参与贡献。
+graph_search_status: 匹配 %s 个节点

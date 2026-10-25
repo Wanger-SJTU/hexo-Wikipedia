@@ -1,0 +1,29 @@
+<%
+  const _theme = (typeof themeCfg !== 'undefined' && themeCfg) ? themeCfg : ((typeof theme !== 'undefined' && theme) ? theme : {});
+  const _edit = _theme.edit || {};
+  const _hist = _theme.history || {};
+  const _p = (typeof p !== 'undefined' && p) ? p : {};
+  const _source = _p.source || ((typeof page !== 'undefined' && page && page.source) ? page.source : '');
+  const _sourcePath = _source ? ('source/' + _source) : '';
+  const _editUrl = (_edit.enable !== false && _edit.url && _sourcePath) ? String(_edit.url).replace(':path', _sourcePath) : '';
+  const _historyUrl = (_hist.enable !== false && _hist.url && _sourcePath) ? String(_hist.url).replace(':path', _sourcePath) : '';
+%>
+<nav class="article__tabs" aria-label="<%= __('article_tab') %>">
+  <div class="tabs__group">
+    <span class="tabs__item is-active" aria-current="page"><%= __('article_tab') %></span>
+    <span class="tabs__item is-disabled" aria-disabled="true" title="<%= __('discussion_disabled') %>"><%= __('discussion_tab') %></span>
+  </div>
+  <div class="tabs__group tabs__group--actions">
+    <span class="tabs__item is-active" aria-current="page"><%= __('read_tab') %></span>
+    <% if (_editUrl) { %>
+    <a class="tabs__item" href="<%- _editUrl %>" rel="nofollow noopener" target="_blank"><%= __('edit_tab') %></a>
+    <% } else { %>
+    <span class="tabs__item is-disabled" aria-disabled="true" title="<%= __('edit_disabled') %>"><%= __('edit_tab') %></span>
+    <% } %>
+    <% if (_historyUrl) { %>
+    <a class="tabs__item" href="<%- _historyUrl %>" rel="nofollow noopener" target="_blank"><%= __('history_tab') %></a>
+    <% } else { %>
+    <a class="tabs__item" href="#page-footer"><%= __('history_tab') %></a>
+    <% } %>
+  </div>
+</nav>

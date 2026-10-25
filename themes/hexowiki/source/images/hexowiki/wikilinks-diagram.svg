@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 260" width="640" height="260" role="img" aria-labelledby="wl-title wl-desc">
+  <title id="wl-title">双向链接示意图</title>
+  <desc id="wl-desc">两个 Wiki 页面之间的双链：页面 A 链出到页面 B，页面 B 的反链面板中回指页面 A。</desc>
+  <style>
+    .card { fill: #ffffff; stroke: #a2a9b1; stroke-width: 1.5; }
+    .card-head { fill: #eaecf0; stroke: #a2a9b1; stroke-width: 1.5; }
+    .t { font-family: Georgia, "Noto Serif CJK SC", "Songti SC", serif; fill: #202122; }
+    .s { font-family: -apple-system, "Segoe UI", "Noto Sans CJK SC", "Microsoft YaHei", sans-serif; fill: #54595d; }
+    .link { font-family: "SFMono-Regular", Consolas, monospace; fill: #3366cc; }
+    .arrow { stroke: #3366cc; stroke-width: 2; fill: none; }
+    .back { stroke: #d73333; stroke-width: 1.5; fill: none; stroke-dasharray: 5 4; }
+  </style>
+  <rect width="640" height="260" fill="#f8f9fa"/>
+  <g>
+    <rect class="card" x="32" y="52" width="190" height="132" rx="2"/>
+    <path class="card-head" d="M32 54a2 2 0 0 1 2-2h186a2 2 0 0 1 2 2v30H32z"/>
+    <text class="t" x="127" y="76" font-size="15" text-anchor="middle">页面 A</text>
+    <text class="s" x="48" y="112" font-size="13">正文：参见</text>
+    <text class="link" x="108" y="112" font-size="13">[[页面 B]]</text>
+    <rect x="44" y="130" width="150" height="1" fill="#eaecf0"/>
+    <text class="s" x="48" y="152" font-size="12">— 双链语法 —</text>
+    <text class="s" x="48" y="170" font-size="12">页面 A → 页面 B</text>
+  </g>
+  <g>
+    <rect class="card" x="418" y="52" width="190" height="132" rx="2"/>
+    <path class="card-head" d="M418 54a2 2 0 0 1 2-2h186a2 2 0 0 1 2 2v30H418z"/>
+    <text class="t" x="513" y="76" font-size="15" text-anchor="middle">页面 B</text>
+    <text class="s" x="434" y="112" font-size="13">链入页面</text>
+    <text class="link" x="500" y="112" font-size="13">← 页面 A</text>
+    <rect x="430" y="130" width="150" height="1" fill="#eaecf0"/>
+    <text class="s" x="434" y="152" font-size="12">反链面板自动生成</text>
+    <text class="s" x="434" y="170" font-size="12">页面 B ← 页面 A</text>
+  </g>
+  <path class="arrow" d="M228 108h160" marker-end="url(#wl-arrow)"/>
+  <path class="back" d="M388 158H228" marker-end="url(#wl-back)"/>
+  <defs>
+    <marker id="wl-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0 0 10 5 0 10z" fill="#3366cc"/>
+    </marker>
+    <marker id="wl-back" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0 0 10 5 0 10z" fill="#d73333"/>
+    </marker>
+  </defs>
+  <text class="s" x="320" y="100" font-size="12" text-anchor="middle">链出</text>
+  <text class="s" x="320" y="182" font-size="12" text-anchor="middle">反链</text>
+  <text class="s" x="320" y="228" font-size="11" text-anchor="middle" opacity="0.8">[[页面 B]] 解析为可点击链接；不存在的页面显示为红色断链。</text>
+</svg>

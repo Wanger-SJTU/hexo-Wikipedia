@@ -1,0 +1,106 @@
+# ---------------------------------------------------------------
+# HexWiki 演示站 · Hexo 站点配置
+# 主题：themes/hexowiki
+# ---------------------------------------------------------------
+# Site
+title: HexWiki
+subtitle: '一个像维基百科一样生长的知识库'
+description: 'Wikipedia 风格的 Hexo 主题：多级目录导航、双向链接、关系图谱与链接统计。'
+keywords: 'wiki, hexo, 双链, 知识库, 关系图谱'
+author: HexWiki
+language: zh-CN
+timezone: 'Asia/Shanghai'
+
+# URL
+url: https://example.com
+root: /
+# :name = 源文件名（ASCII），保证 URL 干净、可分享
+permalink: wiki/:name/
+permalink_defaults:
+pretty_urls:
+  trailing_index: false
+  trailing_html: false
+
+# Directory
+source_dir: source
+public_dir: public
+tag_dir: tags
+archive_dir: archives
+category_dir: categories
+code_dir: downloads/code
+i18n_dir: :lang
+skip_render:
+
+# Writing
+new_post_name: :title.md
+default_layout: post
+titlecase: false
+external_link:
+  enable: true
+  field: site
+  exclude: ''
+filename_case: 0
+render_drafts: false
+post_asset_folder: false
+relative_link: false
+future: true
+highlight:
+  enable: true
+  line_number: true
+  auto_detect: false
+  wrap: true
+  hljs: false
+prismjs:
+  enable: false
+
+# Home page setting
+index_generator:
+  path: ''
+  per_page: 0   # 首页为 wiki 首页，不做文章分页
+  order_by: -updated
+
+# Archive / Category / Tag（统一按“最后更新”倒序，列表列显示 updated，避免排序与显示不一致）
+archive_generator:
+  enable: true
+  per_page: 12
+  order_by: -updated
+  yearly: true
+  monthly: true
+  daily: false
+
+category_generator:
+  enable: true
+  per_page: 12
+  order_by: -updated
+
+tag_generator:
+  enable: true
+  per_page: 12
+  order_by: -updated
+
+# Category & Tag
+default_category: uncategorized
+category_map:
+tag_map:
+
+# Metadata elements
+meta_generator: true
+
+# Date / Time format
+date_format: YYYY-MM-DD
+time_format: HH:mm:ss
+updated_option: 'mtime'
+
+# Pagination
+per_page: 12
+pagination_dir: page
+
+# Include / Exclude file(s)
+include:
+exclude:
+ignore:
+
+# Extensions
+theme: hexowiki
+
+# 主题级配置见 themes/hexowiki/_config.yml

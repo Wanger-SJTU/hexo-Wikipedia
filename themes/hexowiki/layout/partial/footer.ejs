@@ -1,0 +1,35 @@
+<%
+  const _theme = (typeof themeCfg !== 'undefined' && themeCfg) ? themeCfg : ((typeof theme !== 'undefined' && theme) ? theme : {});
+  const _brand = (typeof brand !== 'undefined' && brand) ? brand : (_theme.brand || {});
+  const _footer = _theme.footer || {};
+  const _features = _theme.features || {};
+  const _siteTitle = (typeof siteTitle !== 'undefined' && siteTitle) ? siteTitle : (_brand.title || (typeof config !== 'undefined' && config.title) || 'HexWiki');
+  const _license = _footer.license || 'CC BY-SA 4.0';
+  const _licenseUrl = _footer.license_url || 'https://creativecommons.org/licenses/by-sa/4.0/deed.zh';
+  const _footerText = _footer.text || __('license_note');
+  const _links = Array.isArray(_footer.links) ? _footer.links : [];
+  const _urls = (typeof wiki_urls === 'function') ? (wiki_urls() || {}) : {};
+  const _graphUrl = _urls.graph || url_for('/graph/');
+  const _statsUrl = _urls.stats || url_for('/stats/');
+  const _allUrl = _urls.all || url_for('/wiki/all/');
+%>
+<footer class="wiki-footer" role="contentinfo">
+  <div class="wiki-footer__inner">
+    <div class="wiki-footer__brand-col">
+      <p class="wiki-footer__brand"><%- _siteTitle %></p>
+      <p class="wiki-footer__text"><%- _footerText %></p>
+      <p class="wiki-footer__license">
+        <a href="<%- _licenseUrl %>" rel="license noopener" target="_blank"><%- _license %></a>
+      </p>
+    </div>
+    <nav class="wiki-footer__links" aria-label="<%= __('sidebar_tools') %>">
+      <% _links.forEach(function (link) { if (link && link.label) { %>
+      <a class="wiki-footer__link" href="<%- /^https?:/.test(link.url || '') ? link.url : url_for(link.url || '/') %>"><%- link.label %></a>
+      <% } }); %>
+      <% if (_features.graph !== false) { %><a class="wiki-footer__link" href="<%- _graphUrl %>"><%= __('graph') %></a><% } %>
+      <% if (_features.stats !== false) { %><a class="wiki-footer__link" href="<%- _statsUrl %>"><%= __('statistics') %></a><% } %>
+      <a class="wiki-footer__link" href="<%- _allUrl %>"><%= __('all_pages') %></a>
+    </nav>
+    <p class="wiki-footer__meta">由 <a href="https://hexo.io" rel="noopener" target="_blank">Hexo</a> 生成 · HexWiki 主题</p>
+  </div>
+</footer>

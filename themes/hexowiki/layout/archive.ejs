@@ -1,0 +1,16 @@
+<%
+  const _title = (typeof page !== 'undefined' && page && page.year)
+    ? (page.year + ' 年' + (page.month ? ' ' + page.month + ' 月' : '') + '归档')
+    : __('archive_title');
+  const _base = (typeof page !== 'undefined' && page && page.base) ? page.base : url_for('/archives/');
+  const _count = (typeof page !== 'undefined' && page && page.posts) ? (page.posts.length || 0) : 0;
+%>
+<div class="list-page">
+  <header class="list-page__header">
+    <h1 class="list-page__title"><%- _title %></h1>
+    <p class="site-sub"><%= __('site_sub', (theme.brand && theme.brand.title) || config.title || 'HexWiki') %></p>
+    <p class="list-page__meta"><%= __('posts_count', _count) %></p>
+  </header>
+  <%- include('partial/post-list', { posts: page.posts }) %>
+  <%- include('partial/pagination', { base: _base }) %>
+</div>

@@ -1,0 +1,29 @@
+<%
+  const _theme = (typeof theme !== 'undefined' && theme) ? theme : {};
+  const _brand = _theme.brand || {};
+  const _siteTitle = _brand.title || (typeof config !== 'undefined' && config.title) || 'HexWiki';
+  const _root = (typeof config !== 'undefined' && config.root) || '/';
+  const _layout = (typeof page !== 'undefined' && page && page.layout) ? page.layout : 'page';
+  const _isWide = (_layout === 'wiki_graph' || _layout === 'wiki_stats' || _layout === 'wiki_allpages');
+%><!DOCTYPE html>
+<html lang="<%- (config && config.language) || 'zh-CN' %>">
+<head>
+  <%- include('partial/head', { themeCfg: _theme, brand: _brand, siteTitle: _siteTitle }) %>
+</head>
+<body class="wiki-body<%- _isWide ? ' wiki-body--wide' : '' %>" data-root="<%- _root %>" data-layout="<%- _layout %>" data-table-scroll="<%- (_theme.features && _theme.features.table_scroll === false) ? 'off' : 'on' %>" data-missing-toast="<%= __('missing_link_toast') %>">
+  <a class="skip-link" href="#wiki-main"><%= __('skip_link') === 'skip_link' ? '跳到正文' : __('skip_link') %></a>
+
+  <%- include('partial/header', { themeCfg: _theme, brand: _brand, siteTitle: _siteTitle }) %>
+
+  <div class="wiki-shell" id="wiki-shell">
+    <%- include('partial/sidebar', { themeCfg: _theme, siteTitle: _siteTitle }) %>
+    <div class="wiki-sidebar-overlay" data-sidebar-overlay hidden></div>
+    <main class="wiki-main<%- _isWide ? ' wiki-main--wide' : '' %>" id="wiki-main" tabindex="-1">
+      <%- body %>
+    </main>
+  </div>
+
+  <%- include('partial/footer', { themeCfg: _theme, brand: _brand, siteTitle: _siteTitle }) %>
+  <%- include('partial/scripts', { themeCfg: _theme }) %>
+</body>
+</html>

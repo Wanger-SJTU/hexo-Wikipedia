@@ -1,0 +1,29 @@
+<%
+  const _rawPosts = (typeof posts !== 'undefined' && posts) ? posts : (typeof page !== 'undefined' && page && page.posts ? page.posts : []);
+  const _posts = (_rawPosts && typeof _rawPosts.toArray === 'function') ? _rawPosts.toArray() : (Array.isArray(_rawPosts) ? _rawPosts : []);
+  const _fmtDate = function (value) {
+    if (!value) return '';
+    try {
+      if (typeof date === 'function') return date(value, 'YYYY-MM-DD');
+    } catch (err) {}
+    return String(value).slice(0, 10);
+  };
+%>
+<% if (!_posts.length) { %>
+<p class="list-empty"><%= __('no_posts') %></p>
+<% } else { %>
+<ul class="post-list">
+  <% _posts.forEach(function (post) { if (!post) return; const _date = post.updated || post.date; %>
+  <li class="post-list__item">
+    <div class="post-list__main">
+      <a class="post-list__title" href="<%- url_for(post.path) %>"><%- post.title %></a>
+      <% if (_date) { %><time class="post-list__date" datetime="<%- _fmtDate(_date) %>"><%- _fmtDate(_date) %></time><% } %>
+    </div>
+    <% if (post.summary || post.description) { %><p class="post-list__summary"><%- post.summary || post.description %></p><% } %>
+    <% if (post.tags && post.tags.length) { %>
+    <p class="post-list__tags"><% post.tags.each(function (tag) { %><a class="post-list__tag" href="<%- url_for(tag.path) %>"><%- tag.name %></a><% }); %></p>
+    <% } %>
+  </li>
+  <% }); %>
+</ul>
+<% } %>

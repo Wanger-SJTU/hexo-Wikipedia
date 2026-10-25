@@ -1,0 +1,61 @@
+<%
+  const _theme = (typeof theme !== 'undefined' && theme) ? theme : {};
+  const _brand = _theme.brand || {};
+  const _siteTitle = _brand.title || config.title || 'HexWiki';
+  const urls = (typeof wiki_urls === 'function') ? (wiki_urls() || {}) : {};
+  const _graphSrc = urls.graph_json || url_for('/wiki-graph.json');
+  const _title = (page && page.title) ? page.title : __('graph_title');
+  const _desc = (page && page.description) ? page.description : __('graph_desc');
+  const _stats = (typeof wiki_site === 'function') ? wiki_site() : null;
+%>
+<div class="graph-page" data-graph data-graph-mode="full" data-motion="<%- (theme.graph && theme.graph.motion) || 'gentle' %>" data-src="<%- _graphSrc %>"
+  style="--graph-height: <%- (theme.graph && theme.graph.full_height) || '72vh' %>"
+  data-msg-loading="<%= __('graph_loading') %>"
+  data-msg-error="<%= __('graph_error') %>"
+  data-msg-ready="<%= __('graph_status_ready_js') %>"
+  data-msg-ready-basic="<%= __('graph_status_ready_basic_js') %>"
+  data-msg-match="<%= __('graph_status_match_js') %>"
+  data-msg-no-match="<%= __('graph_status_no_match') %>"
+  data-label-in="<%= __('graph_tooltip_in') %>"
+  data-label-out="<%= __('graph_tooltip_out') %>"
+  data-label-group="<%= __('graph_tooltip_group') %>"
+  data-label-ungrouped="<%= __('graph_ungrouped') %>"
+  data-label-current="当前条目"
+  data-label-missing="<%= __('graph_legend_missing') %>"
+  data-labels-min-zoom="<%- (theme.graph && theme.graph.labels_min_zoom) || 0.55 %>"
+  data-labels-top="<%- (theme.graph && theme.graph.labels_top) || 12 %>"
+  data-labels="<%- (theme.graph && theme.graph.show_labels !== false) ? 'true' : 'false' %>"
+  data-colors="<%- ((theme.graph && theme.graph.colors) || []).join(',') %>">
+  <header class="graph-page__header">
+    <h1 class="graph-page__title"><%- _title %></h1>
+    <p class="graph-page__desc"><%- _desc %></p>
+    <p class="site-sub"><%= __('site_sub', _siteTitle) %></p>
+    <% if (_stats) { %>
+    <p class="graph-page__meta"><%= __('graph_header_counts', _stats.pages, _stats.links) %></p>
+    <% } %>
+  </header>
+
+  <div class="graph-toolbar">
+    <div class="graph-search">
+      <label class="visually-hidden" for="graph-search-input"><%= __('graph_search_label') %></label>
+      <svg class="graph-search__icon" width="15" height="15" viewBox="0 0 20 20" aria-hidden="true" focusable="false">
+        <circle cx="8.5" cy="8.5" r="5.5" fill="none" stroke="currentColor" stroke-width="1.7"/>
+        <path d="m12.8 12.8 4 4" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
+      </svg>
+      <input class="graph-search__input" id="graph-search-input" type="search" placeholder="<%= __('graph_search') %>" autocomplete="off" spellcheck="false" data-graph-search>
+      <span class="graph-search__status" data-graph-search-status aria-live="polite"></span>
+    </div>
+    <div class="graph-legend" data-graph-legend aria-label="<%= __('graph_legend') %>"></div>
+  </div>
+
+  <%- include('partial/graph-canvas', { full: true }) %>
+
+  <p class="graph-page__help">
+    拖拽节点调整布局 · 滚轮缩放 · 拖动空白处平移 · 点击节点打开条目 · 输入关键词高亮节点，按 Enter 打开第一个匹配项。
+  </p>
+  <noscript><p class="graph-noscript"><%= __('graph_noscript') %></p></noscript>
+
+  <section class="graph-page__summary" aria-label="<%= __('statistics') %>">
+    <%- include('partial/graph-canvas-meta', { stats: _stats }) %>
+  </section>
+</div>

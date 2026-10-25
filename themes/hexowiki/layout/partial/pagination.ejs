@@ -1,0 +1,32 @@
+<%
+  const _total = Number(page && page.total ? page.total : 1);
+  const _current = Number(page && page.current ? page.current : 1);
+  const _base = (typeof base !== 'undefined' && base) ? base : ((page && page.base) ? page.base : url_for('/'));
+  const _pageUrl = function (index) {
+    if (index <= 1) return _base;
+    return String(_base).replace(/\/?$/, '/') + 'page/' + index + '/';
+  };
+%>
+<% if (_total > 1) { %>
+<nav class="pagination" aria-label="<%= __('pagination_label') %>">
+  <% if (_current > 1) { %>
+  <a class="pagination__item pagination__item--prev" href="<%- _pageUrl(_current - 1) %>" rel="prev">← <%= __('pagination_prev') %></a>
+  <% } else { %>
+  <span class="pagination__item is-disabled" aria-disabled="true">← <%= __('pagination_prev') %></span>
+  <% } %>
+  <span class="pagination__pages">
+    <% for (let i = 1; i <= _total; i++) { %>
+    <% if (i === _current) { %>
+    <span class="pagination__item is-current" aria-current="page"><%- i %></span>
+    <% } else { %>
+    <a class="pagination__item" href="<%- _pageUrl(i) %>"><%- i %></a>
+    <% } %>
+    <% } %>
+  </span>
+  <% if (_current < _total) { %>
+  <a class="pagination__item pagination__item--next" href="<%- _pageUrl(_current + 1) %>" rel="next"><%= __('pagination_next') %> →</a>
+  <% } else { %>
+  <span class="pagination__item is-disabled" aria-disabled="true"><%= __('pagination_next') %> →</span>
+  <% } %>
+</nav>
+<% } %>

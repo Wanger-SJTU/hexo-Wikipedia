@@ -1,0 +1,57 @@
+<%
+  const _theme = (typeof theme !== 'undefined' && theme) ? theme : {};
+  const _brand = _theme.brand || {};
+  const _siteTitle = _brand.title || config.title || 'HexWiki';
+  let _groups = [];
+  if (typeof wiki_all_pages === 'function') {
+    try { _groups = wiki_all_pages() || []; } catch (err) { _groups = []; }
+  }
+  const _count = _groups.reduce(function (sum, group) { return sum + ((group && group.pages && group.pages.length) || 0); }, 0);
+  const _title = (page && page.title) ? page.title : __('allpages_title');
+  const _desc = (page && page.description) ? page.description : __('allpages_desc');
+  const _letterId = function (letter) {
+    return 'letter-' + String(letter || '').toLowerCase().replace(/[^a-z0-9\u4e00-\u9fa5]/g, '') || 'other';
+  };
+%>
+<div class="allpages" data-allpages>
+  <header class="list-page__header">
+    <h1 class="list-page__title"><%- _title %></h1>
+    <p class="graph-page__desc"><%- _desc %></p>
+    <p class="site-sub"><%= __('site_sub', _siteTitle) %></p>
+    <p class="list-page__meta"><%= __('allpages_count', _count) %></p>
+  </header>
+
+  <div class="allpages__toolbar">
+    <label class="visually-hidden" for="allpages-filter"><%= __('allpages_filter') %></label>
+    <input class="allpages__filter" id="allpages-filter" type="search" placeholder="<%= __('allpages_filter') %>" autocomplete="off" data-allpages-filter>
+    <span class="allpages__filter-status" data-allpages-status aria-live="polite"></span>
+  </div>
+
+  <% if (_groups.length && _count) { %>
+  <nav class="allpages__letters" aria-label="<%= __('allpages_title') %>">
+    <% _groups.forEach(function (group) { if (!group) return; %>
+    <a class="allpages__letter-link" href="#<%- _letterId(group.letter) %>"><%- group.letter %></a>
+    <% }); %>
+  </nav>
+
+  <div class="allpages__groups" data-allpages-groups>
+    <% _groups.forEach(function (group) { if (!group || !group.pages || !group.pages.length) return; %>
+    <section class="allpages__group" id="<%- _letterId(group.letter) %>" data-allpages-group>
+      <h2 class="allpages__letter"><%- group.letter %></h2>
+      <ul class="allpages__list">
+        <% group.pages.forEach(function (item) { if (!item) return; %>
+        <li class="allpages__item" data-allpages-item data-search="<%- (item.title + ' ' + (item.summary || '')).replace(/"/g, '&quot;') %>">
+          <a class="allpages__link" href="<%- item.url %>"><%- item.title %></a>
+          <% if (item.in_count !== undefined) { %><span class="allpages__badge" title="<%= __('backlinks_count') %>"><%- item.in_count %></span><% } %>
+          <% if (item.summary) { %><p class="allpages__summary"><%- item.summary %></p><% } %>
+        </li>
+        <% }); %>
+      </ul>
+    </section>
+    <% }); %>
+  </div>
+  <p class="allpages__empty" data-allpages-empty hidden><%= __('allpages_no_match') %></p>
+  <% } else { %>
+  <p class="list-empty"><%= __('allpages_empty') %></p>
+  <% } %>
+</div>

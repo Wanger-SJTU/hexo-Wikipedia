@@ -1,0 +1,30 @@
+<%
+  const _info = (typeof info !== 'undefined' && info) ? info : null;
+  const _p = (typeof p !== 'undefined' && p) ? p : {};
+  const _fields = (_info && Array.isArray(_info.fields)) ? _info.fields : [];
+  const _hasImage = !!(_info && _info.image);
+  const _caption = (_info && _info.caption) || '图示';
+%>
+<% if (_info && (_hasImage || _fields.length)) { %>
+<aside class="article__infobox infobox" aria-label="<%= __('infobox') %>">
+  <div class="infobox__head"><%- ((typeof p !== 'undefined' && p && p.title) ? p.title : __('infobox')) %></div>
+  <% if (_hasImage) { %>
+  <figure class="infobox__image">
+    <img src="<%- url_for(_info.image) %>" alt="<%- (_info.caption || _p.title || '') %>" loading="lazy" decoding="async">
+    <% if (_info.caption) { %><figcaption class="infobox__caption"><%- _info.caption %></figcaption><% } %>
+  </figure>
+  <% } %>
+  <% if (_fields.length) { %>
+  <table class="infobox__table">
+    <tbody>
+      <% _fields.forEach(function (field) { if (field && field.label) { %>
+      <tr>
+        <th scope="row"><%- field.label %></th>
+        <td><%- field.value %></td>
+      </tr>
+      <% } }); %>
+    </tbody>
+  </table>
+  <% } %>
+</aside>
+<% } %>

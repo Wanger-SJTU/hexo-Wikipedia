@@ -1,0 +1,168 @@
+<%
+  const _theme = (typeof theme !== 'undefined' && theme) ? theme : {};
+  const _brand = _theme.brand || {};
+  const _home = _theme.home || {};
+  const _features = _theme.features || {};
+  const _siteTitle = _brand.title || config.title || 'HexWiki';
+  const _siteSub = __('site_sub', _siteTitle);
+  const _headline = _home.headline || (_brand.tagline || config.subtitle) || _siteTitle;
+  const _intro = _home.intro || config.description || '';
+
+  let _nav = [];
+  if (typeof wiki_nav === 'function') {
+    try { _nav = wiki_nav() || []; } catch (err) { _nav = []; }
+  }
+  let _recent = [];
+  if (typeof wiki_recent === 'function') {
+    try { _recent = wiki_recent(Number(_features.recent) || 8) || []; } catch (err) { _recent = []; }
+  }
+  let _site = null;
+  if (typeof wiki_site === 'function') {
+    try { _site = wiki_site(); } catch (err) { _site = null; }
+  }
+  let _all = [];
+  if (typeof wiki_all_pages === 'function') {
+    try { _all = wiki_all_pages() || []; } catch (err) { _all = []; }
+  }
+  const _allCount = _all.reduce(function (sum, group) { return sum + (group.pages ? group.pages.length : 0); }, 0);
+  const _flatten = function (nodes, depth, out) {
+    out = out || [];
+    (nodes || []).forEach(function (node) {
+      if (!node) return;
+      if (node.type === 'page' && node.url) out.push(node);
+      else if (node.children) _flatten(node.children, (depth || 0) + 1, out);
+    });
+    return out;
+  };
+  const _groups = (_nav || []).filter(function (node) { return node && (node.type === 'group' || node.children); });
+  const _homeFeatures = Array.isArray(_home.features) ? _home.features : [];
+  const _primary = _home.primary || { label: '开始阅读', url: '/wiki/intro/' };
+  const _urls = (typeof wiki_urls === 'function') ? (wiki_urls() || {}) : {};
+  const _graphUrl = _urls.graph || url_for('/graph/');
+  const _statsUrl = _urls.stats || url_for('/stats/');
+  const _allUrl = _urls.all || url_for('/wiki/all/');
+  const _maxStat = _site ? Math.max(_site.pages || 0, _site.links || 0, _site.orphans || 0, _site.broken || 0, 1) : 1;
+  const _barWidth = function (value) { return Math.max(2, Math.round(((value || 0) / _maxStat) * 100)); };
+%>
+<div class="home">
+  <section class="home-hero" aria-labelledby="home-title">
+    <p class="home-hero__eyebrow">HexWiki · WIKIPEDIA STYLE KNOWLEDGE BASE</p>
+    <h1 class="home-hero__title" id="home-title"><%- _headline %></h1>
+    <p class="home-hero__lead"><%- _intro %></p>
+    <div class="home-actions">
+      <a class="home-actions__primary" href="<%- url_for(_primary.url || '/') %>"><%- _primary.label || __('read_more') %></a>
+      <% if (_features.graph !== false) { %><a class="home-actions__link" href="<%- _graphUrl %>"><%= __('graph') %></a><% } %>
+      <% if (_features.stats !== false) { %><a class="home-actions__link" href="<%- _statsUrl %>"><%= __('statistics') %></a><% } %>
+      <a class="home-actions__link" href="<%- _allUrl %>"><%= __('all_pages') %></a>
+    </div>
+    <dl class="home-hero__stats">
+      <div class="home-hero__stat"><dt><%= __('stats_pages') %></dt><dd><%- _site ? _site.pages : '—' %></dd></div>
+      <div class="home-hero__stat"><dt><%= __('stats_links') %></dt><dd><%- _site ? _site.links : '—' %></dd></div>
+      <div class="home-hero__stat"><dt><%= __('stats_orphans') %></dt><dd><%- _site ? _site.orphans : '—' %></dd></div>
+      <div class="home-hero__stat"><dt><%= __('stats_broken') %></dt><dd><%- _site ? _site.broken : '—' %></dd></div>
+    </dl>
+  </section>
+
+  <% if (_groups.length) { %>
+  <section class="home-section" aria-labelledby="home-topics-title">
+    <div class="home-section__head">
+      <h2 class="home-section__title" id="home-topics-title"><%= __('home_topics') %></h2>
+      <a class="home-section__more" href="<%- _allUrl %>"><%= __('view_all') %> →</a>
+    </div>
+    <div class="home-topics">
+      <% _groups.forEach(function (group) { const pages = _flatten(group.children || []).slice(0, 8); %>
+      <section class="topic-card">
+        <h3 class="topic-card__title">
+          <%- group.label || group.title %>
+          <span class="topic-card__count"><%- _flatten(group.children || []).length %></span>
+        </h3>
+        <ul class="topic-card__list">
+          <% pages.forEach(function (item) { %>
+          <li class="topic-card__item"><a class="topic-card__link" href="<%- item.url %>"><%- item.label || item.title %></a></li>
+          <% }); %>
+        </ul>
+      </section>
+      <% }); %>
+    </div>
+  </section>
+  <% } %>
+
+  <div class="home-columns">
+    <section class="home-section home-section--recent" aria-labelledby="home-recent-title">
+      <div class="home-section__head">
+        <h2 class="home-section__title" id="home-recent-title"><%= __('home_recent') %></h2>
+      </div>
+      <% if (_recent.length) { %>
+      <ul class="recent-list">
+        <% _recent.forEach(function (item) { %>
+        <li class="recent-list__item">
+          <a class="recent-list__link" href="<%- item.url %>"><%- item.title %></a>
+          <% if (item.updated) { %><time class="recent-list__date" datetime="<%- item.updated %>"><%- item.updated %></time><% } %>
+          <% if (item.summary) { %><p class="recent-list__summary"><%- item.summary %></p><% } %>
+        </li>
+        <% }); %>
+      </ul>
+      <% } else { %>
+      <p class="home-empty"><%= __('home_no_pages') %></p>
+      <% } %>
+    </section>
+
+    <section class="home-section home-section--stats" aria-labelledby="home-stats-title">
+      <div class="home-section__head">
+        <h2 class="home-section__title" id="home-stats-title"><%= __('home_stats') %></h2>
+        <a class="home-section__more" href="<%- _statsUrl %>"><%= __('sidebar_stats_more') %> →</a>
+      </div>
+      <ul class="home-bars">
+        <li class="home-bars__item">
+          <span class="home-bars__label"><%= __('stats_pages') %></span>
+          <span class="home-bars__track"><span class="home-bars__fill" style="width: <%- _barWidth(_site && _site.pages) %>%"></span></span>
+          <span class="home-bars__value"><%- _site ? _site.pages : '—' %></span>
+        </li>
+        <li class="home-bars__item">
+          <span class="home-bars__label"><%= __('stats_links') %></span>
+          <span class="home-bars__track"><span class="home-bars__fill" style="width: <%- _barWidth(_site && _site.links) %>%"></span></span>
+          <span class="home-bars__value"><%- _site ? _site.links : '—' %></span>
+        </li>
+        <li class="home-bars__item">
+          <span class="home-bars__label"><%= __('stats_orphans') %></span>
+          <span class="home-bars__track"><span class="home-bars__fill home-bars__fill--warn" style="width: <%- _barWidth(_site && _site.orphans) %>%"></span></span>
+          <span class="home-bars__value"><%- _site ? _site.orphans : '—' %></span>
+        </li>
+        <li class="home-bars__item">
+          <span class="home-bars__label"><%= __('stats_broken') %></span>
+          <span class="home-bars__track"><span class="home-bars__fill home-bars__fill--danger" style="width: <%- _barWidth(_site && _site.broken) %>%"></span></span>
+          <span class="home-bars__value"><%- _site ? _site.broken : '—' %></span>
+        </li>
+      </ul>
+      <p class="home-stats__note"><%= __('stats_avg_out') %>：<strong><%- _site ? (_site.avg_out !== undefined ? _site.avg_out : '—') : '—' %></strong> · <%= __('allpages_title') %>：<a href="<%- _allUrl %>"><%- _allCount || '—' %></a></p>
+    </section>
+  </div>
+
+  <% if (_homeFeatures.length) { %>
+  <section class="home-section home-features" aria-labelledby="home-features-title">
+    <div class="home-section__head">
+      <h2 class="home-section__title" id="home-features-title"><%= __('home_features') %></h2>
+    </div>
+    <div class="home-features__grid">
+      <% _homeFeatures.forEach(function (feature) { if (!feature) return; %>
+      <article class="feature-card">
+        <% if (feature.image) { %>
+        <figure class="feature-card__media"><img src="<%- url_for(feature.image) %>" alt="<%- feature.title || '' %>" loading="lazy" decoding="async"></figure>
+        <% } %>
+        <div class="feature-card__body">
+          <h3 class="feature-card__title"><%- feature.title %></h3>
+          <p class="feature-card__text"><%- feature.text %></p>
+          <% if (feature.url) { %><a class="feature-card__link" href="<%- url_for(feature.url) %>"><%= __('read_more') %> →</a><% } %>
+        </div>
+      </article>
+      <% }); %>
+    </div>
+  </section>
+  <% } %>
+
+  <p class="home-all"><a class="home-actions__link" href="<%- _allUrl %>"><%= __('all_pages') %> →</a></p>
+
+  <% if (page && page.current > 1) { %>
+  <%- include('partial/pagination', { base: url_for('/') }) %>
+  <% } %>
+</div>

@@ -1,0 +1,44 @@
+{
+  "name": "hexo-theme-hexowiki",
+  "version": "0.1.0",
+  "description": "Wikipedia-style Hexo theme: multi-level sidebar, [[bidirectional links]], backlinks and an Obsidian-like graph view.",
+  "keywords": [
+    "hexo",
+    "theme",
+    "wiki",
+    "wikipedia",
+    "backlinks",
+    "bidirectional-links",
+    "graph",
+    "knowledge-base"
+  ],
+  "license": "MIT",
+  "author": "HexWiki",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/example/hexo-theme-hexowiki"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "peerDependencies": {
+    "hexo": ">=7.0.0"
+  },
+  "devDependencies": {
+    "hexo": "^8.1.2",
+    "hexo-renderer-ejs": "^2.0.0",
+    "hexo-renderer-marked": "^7.0.0"
+  },
+  "scripts": {
+    "test": "node --test test/*.test.js"
+  },
+  "files": [
+    "layout",
+    "source",
+    "scripts",
+    "lib",
+    "languages",
+    "_config.yml",
+    "README.md"
+  ]
+}

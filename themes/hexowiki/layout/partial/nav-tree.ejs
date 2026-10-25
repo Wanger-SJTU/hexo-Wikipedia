@@ -1,0 +1,49 @@
+<%
+  const _theme = (typeof themeCfg !== 'undefined' && themeCfg) ? themeCfg : ((typeof theme !== 'undefined' && theme) ? theme : {});
+  const _navCfg = (typeof navCfg !== 'undefined' && navCfg) ? navCfg : (_theme.nav || {});
+  const _showBadges = _navCfg.show_badges !== false;
+  let _nav = [];
+  if (typeof wiki_nav === 'function') {
+    try { _nav = wiki_nav() || []; } catch (err) { _nav = []; }
+  }
+  const _esc = function (value) {
+    return String(value === undefined || value === null ? '' : value)
+      .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+  };
+  let _seq = 0;
+  const _children = function (nodes, depth) {
+    if (!nodes || !nodes.length) return '';
+    return '<ul class="nav-tree__list" data-depth="' + depth + '">' + nodes.map(function (node) {
+      if (!node) return '';
+      if (node.type === 'group' || (!node.url && node.children)) {
+        const key = node.key || ('group-' + (depth) + '-' + (node.label || node.title || (_seq++)));
+        const id = 'nav-children-' + (_seq++);
+        const open = !!node.open || (depth === 0 && _navCfg.open_first_level !== false);
+        const hasActive = !!(node.active || (node.children || []).some(function (child) { return child && child.active; }));
+        return '<li class="nav-tree__item nav-tree__group' + (open ? ' is-open' : '') + (hasActive ? ' has-active' : '') + '" data-nav-type="group">'
+          + '<button class="nav-tree__toggle" type="button" aria-expanded="' + (open ? 'true' : 'false') + '" aria-controls="' + id + '" data-nav-key="' + _esc(key) + '">'
+          + '<svg class="nav-tree__chevron" width="10" height="10" viewBox="0 0 10 10" aria-hidden="true" focusable="false"><path d="M2 3.25 5 6.25 8 3.25" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>'
+          + '<span class="nav-tree__label">' + _esc(node.label || node.title || '') + '</span>'
+          + '</button>'
+          + '<div class="nav-tree__children" id="' + id + '"' + (open ? '' : ' hidden') + '>' + _children(node.children || [], depth + 1) + '</div>'
+          + '</li>';
+      }
+      const url = node.url || '#';
+      const active = !!node.active;
+      const badge = (_showBadges && node.backlinks) ? '<span class="nav-tree__badge" title="' + _esc(__('backlinks') + ': ' + node.backlinks) + '">' + _esc(node.backlinks) + '</span>' : '';
+      return '<li class="nav-tree__item" data-nav-type="page">'
+        + '<a class="nav-tree__link' + (active ? ' is-active' : '') + '" href="' + _esc(url) + '"' + (active ? ' aria-current="page"' : '') + '>'
+        + '<span class="nav-tree__link-text">' + _esc(node.label || node.title || '') + '</span>' + badge + '</a>'
+        + '</li>';
+    }).join('') + '</ul>';
+  };
+  const _treeHtml = _children(_nav, 0);
+%>
+<% if (!_nav || !_nav.length) { %>
+<p class="nav-tree__empty"><%= __('sidebar_empty') %></p>
+<% } else { %>
+<div class="nav-tree" data-nav-tree>
+  <%- _treeHtml %>
+</div>
+<% } %>

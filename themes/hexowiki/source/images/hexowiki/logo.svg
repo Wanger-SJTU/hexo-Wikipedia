@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="48" height="48" role="img" aria-label="HexWiki logo">
+  <circle cx="24" cy="24" r="21" fill="#f8f9fa" stroke="#54595d" stroke-width="2"/>
+  <ellipse cx="24" cy="24" rx="9.5" ry="21" fill="none" stroke="#a2a9b1" stroke-width="1.2"/>
+  <ellipse cx="24" cy="24" rx="21" ry="8.5" fill="none" stroke="#a2a9b1" stroke-width="1.2"/>
+  <path d="M3.6 18h40.8M3.6 30h40.8" stroke="#a2a9b1" stroke-width="1.2"/>
+  <circle cx="24" cy="24" r="9.5" fill="#ffffff" stroke="#3366cc" stroke-width="1.5"/>
+  <text x="24" y="29.5" font-family="Georgia, 'Times New Roman', serif" font-size="14" font-weight="600" fill="#202122" text-anchor="middle">W</text>
+</svg>

@@ -1,0 +1,152 @@
+# HexWiki theme UI strings (default / English fallback)
+
+skip_link: Skip to content
+site_sub: 'From %s, the free knowledge base'
+menu_open: Open navigation
+menu_close: Close navigation
+sidebar_hide: Hide navigation
+sidebar_show: Show navigation
+sidebar_filter: Filter navigation…
+sidebar_filter_label: Filter navigation
+sidebar_empty: Navigation has not been generated yet.
+sidebar_stats: Site statistics
+sidebar_stat_pages: Pages
+sidebar_stat_links: Links
+sidebar_stat_orphans: Orphans
+sidebar_stat_broken: Broken
+sidebar_stats_more: View statistics
+sidebar_tools: Tools
+sidebar_license: Content is available under CC BY-SA 4.0.
+
+search: Search
+search_placeholder: Search HexWiki
+search_label: Search this site
+search_button: Search
+search_empty: No matching page found
+search_loading: Searching…
+search_hint: Type a keyword to search pages
+
+random_page: Random page
+statistics: Statistics
+graph: Graph
+all_pages: All pages
+dark_mode: Dark mode
+light_mode: Light mode
+theme_toggle: Toggle dark mode
+
+breadcrumb_home: Home
+article_tab: Article
+discussion_tab: Discussion
+read_tab: Read
+edit_tab: Edit
+history_tab: View history
+edit_disabled: Edit link is not configured
+discussion_disabled: Discussion pages are not enabled in this demo
+history_anchor: Page information
+toc: Contents
+toc_label: Table of contents
+infobox: Infobox
+categories: Categories
+tags: Tags
+aliases: Aliases
+backlinks: What links here
+outlinks: Outgoing links
+broken_links: Broken links
+link_stats: Link statistics
+no_backlinks: No other page links here yet.
+no_outlinks: This page has no outgoing links.
+no_broken: No broken links.
+backlinks_count: In
+outlinks_count: Out
+broken_count: Broken
+in_count_short: in
+out_count_short: out
+updated_at: Last updated
+published_at: Created
+page_footer: Page information
+last_edited: This page was last edited on %s.
+license_note: Content is available under CC BY-SA 4.0 unless otherwise noted.
+view_source: View source
+local_graph: Local graph
+local_graph_desc: Pages within two hops of this article.
+local_graph_empty: No neighbouring pages.
+view_full_graph: View full graph
+graph_title: Graph
+graph_desc: All pages and their wiki links. Drag nodes, scroll to zoom, click to open.
+graph_search: Search nodes…
+graph_search_label: Search graph nodes
+graph_legend: Groups
+graph_zoom_in: Zoom in
+graph_zoom_out: Zoom out
+graph_fit: Fit to canvas
+graph_reset: Reset view
+graph_labels: Show labels
+graph_status_ready: '%s nodes, %s links'
+graph_header_counts: '%s pages · %s links'
+graph_status_ready_js: '{nodes} nodes · {links} links ({missing} missing)'
+graph_status_ready_basic_js: '{nodes} nodes · {links} links'
+graph_status_match_js: '{count} matching nodes'
+graph_status_match: '%s matching nodes'
+graph_status_no_match: No matching nodes
+graph_loading: Loading graph…
+graph_error: Failed to load graph data. Make sure /wiki-graph.json was generated.
+graph_noscript: The graph requires JavaScript.
+graph_tooltip_in: In
+graph_tooltip_out: Out
+graph_tooltip_group: Group
+graph_ungrouped: Ungrouped
+graph_legend_missing: Dashed red = missing page
+
+stats_title: Link statistics
+stats_desc: An overview of the wiki link network.
+stats_pages: Pages
+stats_links: Links
+stats_avg_out: Average outlinks
+stats_orphans: Orphans
+stats_deadends: Dead ends
+stats_broken: Broken links
+stats_sections: By section
+stats_tags: By tag
+stats_top_in: Most linked
+stats_top_out: Most outgoing
+stats_orphan_list: Orphan pages
+stats_deadend_list: Dead-end pages
+stats_broken_list: Broken links
+stats_recent: Recently updated
+stats_generated: Generated at %s
+stats_none: No data
+stats_col_page: Page
+stats_col_tag: Tag
+stats_col_refs: Referencing pages
+stats_col_count: Count
+stats_col_sources: Sources
+stats_col_links: Links
+stats_count: Count
+stats_view_page: View
+
+allpages_title: All pages
+allpages_desc: Every wiki page, alphabetically.
+allpages_count: '%s pages'
+allpages_empty: No pages yet.
+allpages_filter: Filter pages…
+allpages_no_match: No matching pages.
+
+archive_title: Archive
+category_title: Category
+tag_title: Tag
+posts_count: '%s posts'
+read_more: Read
+pagination_prev: Previous
+pagination_next: Next
+pagination_label: Pagination
+home_topics: Browse by topic
+home_recent: Recently updated
+home_stats: Site overview
+home_features: Theme features
+home_all_pages: All pages
+home_no_pages: No content yet.
+view_all: View all
+newer: Newer
+older: Older
+missing_link_toast: 'Red link: this page does not exist yet.'
+graph_search_status: '%s matching nodes'

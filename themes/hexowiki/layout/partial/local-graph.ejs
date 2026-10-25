@@ -1,0 +1,38 @@
+<%
+  const _theme = (typeof themeCfg !== 'undefined' && themeCfg) ? themeCfg : ((typeof theme !== 'undefined' && theme) ? theme : {});
+  const _graphCfg = _theme.graph || {};
+  const _features = _theme.features || {};
+  const _p = (typeof p !== 'undefined' && p) ? p : {};
+  let _graph = (typeof graph !== 'undefined' && graph) ? graph : null;
+  if (!_graph && typeof wiki_local_graph === 'function') {
+    try { _graph = wiki_local_graph() || null; } catch (err) { _graph = null; }
+  }
+  if (!_graph) _graph = { nodes: [], links: [] };
+  const _localHeight = _graphCfg.local_height || '360px';
+%>
+<% if (_features.local_graph !== false && _features.graph !== false) { %>
+<section class="local-graph" data-graph data-graph-mode="local" data-motion="<%- _graphCfg.motion || 'gentle' %>" style="--graph-height: <%- _localHeight %>" aria-labelledby="local-graph-head"
+  data-msg-loading="<%= __('graph_loading') %>"
+  data-msg-empty="<%= __('local_graph_empty') %>"
+  data-label-in="<%= __('graph_tooltip_in') %>"
+  data-label-out="<%= __('graph_tooltip_out') %>"
+  data-label-group="<%= __('graph_tooltip_group') %>"
+  data-label-ungrouped="<%= __('graph_ungrouped') %>"
+  data-label-current="当前条目"
+  data-label-missing="<%= __('graph_legend_missing') %>"
+  data-labels-min-zoom="<%- _graphCfg.labels_min_zoom || 0.55 %>"
+  data-labels-top="<%- _graphCfg.labels_top || 12 %>"
+  data-labels="<%- _graphCfg.show_labels !== false ? 'true' : 'false' %>"
+  data-colors="<%- (_graphCfg.colors || []).join(',') %>">
+  <div class="local-graph__head">
+    <h2 class="local-graph__title" id="local-graph-head"><%= __('local_graph') %></h2>
+    <span class="local-graph__desc"><%= __('local_graph_desc') %></span>
+    <a class="local-graph__more" href="<%- (typeof wiki_urls === 'function' && wiki_urls().graph) || url_for('/graph/') %>"><%= __('view_full_graph') %> →</a>
+  </div>
+  <div class="local-graph__body">
+    <%- include('graph-canvas', { full: false }) %>
+    <div class="graph-legend" data-graph-legend aria-label="<%= __('graph_legend') %>"></div>
+  </div>
+  <script type="application/json" id="wiki-local-graph"><%- (typeof wiki_local_graph_json === 'function') ? wiki_local_graph_json() : JSON.stringify(_graph) %></script>
+</section>
+<% } %>
