@@ -134,9 +134,9 @@ from tqdm import tqdm
 
 n, m, T = 1024, 1024, 5
 key, data = jax.random.key(42), jnp.array([])
-for _ in tqdm(range(1000), ncols=0, desc='SVD'):
 
 ```text
+for _ in tqdm(range(1000), ncols=0, desc='SVD'):
     key, subkey = jax.random.split(key)
     M = jax.random.normal(subkey, shape=(n, m))
     S = jnp.linalg.svd(M, full_matrices=False)[1]
@@ -152,14 +152,14 @@ def f(w, x):
     for _ in range(T):
         x = x + k * x * (x**2 - x1**2) * (x**2 - x2**2)
     return ((x - 1)**2).mean()
-```
-
 
 f_grad = jax.grad(f)
+```
+
 w, u = jnp.array([1, 0.9, 1.1]), jnp.zeros(3)
-for _ in tqdm(range(100000), ncols=0, desc='SGD'):
 
 ```text
+for _ in tqdm(range(100000), ncols=0, desc='SGD'):
     u = 0.9 * u + f_grad(w, data)  # 动量加速
     w = w - 0.01 * u
 ```

@@ -37,9 +37,12 @@ struct Tensor {
 - `Tensor::shape`，可以与`Tensor::ndim`配合，视为一个整型数组，存储着Tensor的形状。
 - `Tensor::stride`，与`Tensor::shape`类似，表示Tensor每一维的步长。下面举一个形状为`(2,3,4)`的Tensor为例子进行说明：
 
+```text
 Tensor t;
 
 // data指向包含24个元素的double数组，元素为0到23.
+```
+
 t.data = new double[24];
 
 ```cpp
@@ -85,15 +88,11 @@ void init_stride(Tensor& t) {
 ```cpp
 int array3d[2][3][4];
 int* array1d = reinterpret_cast<int*>(array);
-```
-
 ASSERT(array3d[i][j][k] == array1d[i*12 + j*4 + k])
 
 Tensor::stride`就是一样的东西，记录了如何把一维的`Tensor::data`解释成多维。
 
 data_t& get_value(Tensor& t, const std::vector<int>& inds) {
-
-```cpp
     int offset = t.offset;
     for(int i = 0; i < t.ndim; ++i)
         offset += inds[i] * t.stride[i];
@@ -109,9 +108,8 @@ data_t& get_value(Tensor& t, const std::vector<int>& inds) {
 
 如果说取值时对于`Tensor::stride`的使用很自然，那么在transpose中就稍微有点惊喜了。在`Tensor::stride`的帮助下，transpose变得格外简单：仅需要交换`t.shape`和`t.stride`对应两个维度的元素即可得到结果。代码如下，同样地，这里省略了对参数的检查。
 
-Tensor tranpose(const Tensor& t, int dim0, int dim1) {
-
 ```cpp
+Tensor tranpose(const Tensor& t, int dim0, int dim1) {
     Tensor nt {
         /*data=*/t.data, /*offset=*/t.offset, /*ndim=*/t.ndim, 
         /*shape=*/new int[t.ndim], 
@@ -137,9 +135,8 @@ nt[i, j, k] == t[j, i, k]
 
 同样地，`torch.permute(*dims)`也是这个道理，将`t.shape`和`t.stride`的元素按照对应的顺序重新排列即可得到结果。
 
-Tensor permute(const Tensor& t, const std::vector<int>& dims) {
-
 ```cpp
+Tensor permute(const Tensor& t, const std::vector<int>& dims) {
     Tensor nt {
         /*data=*/t.data, /*offset=*/t.offset, /*ndim=*/t.ndim,
         /*shape=*/new int[t.ndim],
@@ -160,9 +157,13 @@ Tensor permute(const Tensor& t, const std::vector<int>& dims) {
 view和transpose有很大不同。在Pytorch中，view只能在连续（contiguous）的维度上进行，而transpose会把Tensor变成不连续的（uncontiguous）。比如下面的代码就会得到Error：
 
 # python code
+
+```text
 t0 = torch.rand(3, 4)
 t1 = t0.transpose(1, 0)
 t2 = t1.view(3, 4)  # RuntimeError
+```
+
 这里连续与不连续的定义也是通过`Tensor::stride`来定义的。
 
 ```cpp
@@ -186,9 +187,8 @@ bool is_contiguous(const Tensor& t) {
 
 如果已知view前后的Tensor都是连续的（Pytorch里好像可以对局部连续的Tensor做view，这里就不探讨了），那么view操作就同样简单了，只需根据新的shape初始化stride就行。
 
-Tensor view(const Tensor& t, const std::vector<int>& shape) {
-
 ```cpp
+Tensor view(const Tensor& t, const std::vector<int>& shape) {
     Tensor nt {
         /*data=*/t.data, /*offset=*/t.offset, /*ndim=*/shape.size(),
         /*shape=*/new int[shape.size()],
@@ -218,9 +218,8 @@ Tensor view(const Tensor& t, const std::vector<int>& shape) {
 - `nt.shape[0] = t.shape[0], nt.shape[1] = t.shape[2]`，跳过了`t.shape[1]`
 - `nt.stride[0] = t.stride[0], nt.stride[1] = t.stride[2]`，同样跳过了`t.stride[1]`具体的代码如下：
 
-Tensor slice(const Tensor& t, int idx, int dim) {
-
 ```cpp
+Tensor slice(const Tensor& t, int idx, int dim) {
     Tensor nt {
         /*data=*/t.data, 
         /*offset=*/t.offset + idx * t.stride[dim],
@@ -248,9 +247,8 @@ Tensor slice(const Tensor& t, int idx, int dim) {
 
 实现起来也和索引类似，`nt.stride`完全复制`t.stride`；`nt.shape`基本复制`t.shape`，只在做索引的维度上，根据`j0:j1`确定新值，这一维度上的尺寸通常会缩小。具体实现代码如下：
 
-Tensor slice(const Tensor& t, int start_idx, int end_idx, int dim) {
-
 ```cpp
+Tensor slice(const Tensor& t, int start_idx, int end_idx, int dim) {
     Tensor nt {
         /*data=*/t.data, 
         /*offset=*/t.offset + start_idx * t.stride[dim],

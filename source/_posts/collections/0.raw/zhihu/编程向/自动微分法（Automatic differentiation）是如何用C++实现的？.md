@@ -191,9 +191,9 @@ The Art of Differentiating Computer Programs
 ```text
 y^{1} &=&f^{1}\left( x\right)  \\
 y^{i} &=&f^{i}\left( x,y^{1},\cdots ,y^{i-1}\right) ,i=2,\cdots ,n \\
+z &=&\bar{f}\left( x,y^{1},\cdots ,y^{n}\right) 
 ```
 
-z &=&\bar{f}\left( x,y^{1},\cdots ,y^{n}\right) 
 \end{eqnarray*}
 
 其中x是自变量 y是中间变量 z是因变量 他们可以是任意维度

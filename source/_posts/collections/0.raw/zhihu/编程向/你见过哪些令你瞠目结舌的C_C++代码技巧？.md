@@ -292,11 +292,7 @@ class LambdaMapFn : public MapFn {
 };
 
 template
-```
-
 LambdaMapFn map_lambda(F f) {
-
-```cpp
     return LambdaMapFn();
 }
 

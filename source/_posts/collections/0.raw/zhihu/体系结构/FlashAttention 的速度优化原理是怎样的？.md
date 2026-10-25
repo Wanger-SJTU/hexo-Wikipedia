@@ -96,9 +96,12 @@ Softmax （element-size 操作）这是导致 memory wall 的主因，S 大小 N
 
 下面分析访存量：
 
+```text
 Read S matrix = NxNx2 = 2,097,152 Bytes
 
 Write P matrix = NxNx2 = 2,097,152 Bytes
+```
+
 
 (这里如果考虑反向传播，还需要保存 P, 写入量 double，推理不用管）
 

@@ -88,9 +88,8 @@ source_url: https://zhuanlan.zhihu.com/p/310142893
 
 这里面先引入一个概念，就是我们如何通过仿射变换描述对于某个statement，循环向量和访存之间的关系。
 
-for i in range(N):
-
 ```text
+for i in range(N):
     for j in range(N):
         f(X[i-1]) # S1
         f(Y[i, j]) # S2
@@ -120,9 +119,8 @@ for i in range(N):
 
 除了self-temporal的例子，我们再来看一个group-spatial的例子
 
-for i in range(N):
-
 ```text
+for i in range(N):
     for j in range(N):
         f1(A[i, j])
         f2(A[i+1, j)
@@ -144,11 +142,10 @@ for i in range(N):
 
 上面说的有点抽象，实际上如果我们做下面的一个变化呢，就可以得到group-spatial
 
+```text
 for j in range(N):
     f1(A[0, j])
 for i in range(1, N):
-
-```text
     for j in range(N):
         f1(A[i, j])
         f2(A[i, j)

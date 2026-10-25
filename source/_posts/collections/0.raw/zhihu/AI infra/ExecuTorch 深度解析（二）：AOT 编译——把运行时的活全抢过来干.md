@@ -82,9 +82,13 @@ EXIR 做的第一件事是<strong>分解</strong>——把这些大算子拆成�
 y = torch.nn.functional.batch_norm(x, weight, bias, running_mean, running_var)
 ​
 # 分解后
+
+```text
 inv_std = 1.0 / torch.sqrt(running_var + eps)
 x_norm = (x - running_mean) * inv_std
 y = weight * x_norm + bias
+```
+
 为什么要拆？两个原因。
 
 <strong>硬件覆盖率</strong>。端侧硬件百花齐放，NPU 可能不认识 `batch_norm`，但几乎所有硬件都认识 `add/mul/sub/div`。分解后天然适配更多硬件。
@@ -115,16 +119,16 @@ Partitioner 遍历 FX 图，为可委托的节点打标签 `node.meta["delegatio
 然后按标签提取子图，交给对应后端的 `BackendDetails.preprocess()` 编译成二进制 blob。XNNPACK 后端编译出 XNNGraph FlatBuffer，CoreML 后端编译出 CoreML 模型，CUDA 后端编译出 AOTInductor 产物。
 
 # 后端委托流程（简化）
+
+```text
 partitioner = XnnpackPartitioner()
 tagged_graph = partitioner.partition(edge_dialect_graph)  # 打标签
 for subgraph in extract_subgraphs(tagged_graph):          # 提取子图
-
-```text
     blob = backend.preprocess(subgraph)                    # 编译成 blob
     replace_with_delegate_call(subgraph, blob)             # 替换为 delegate 调用
+to_backend()` 函数用 Python 的 `singledispatch` 实现多态分发——传 backend_id 直接编译、传 Partitioner 先分区再编译、传多方法规格批量处理，统一入口不同行为。
 ```
 
-to_backend()` 函数用 Python 的 `singledispatch` 实现多态分发——传 backend_id 直接编译、传 Partitioner 先分区再编译、传多方法规格批量处理，统一入口不同行为。
 
 <strong>Step 4: ToOutVarPass——函数式变 out-variant，消灭动态分配</strong>
 这一步是降阶过程中最关键的一步。

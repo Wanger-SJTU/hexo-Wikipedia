@@ -165,9 +165,8 @@ IRModule VMCompiler::OptimizeModule(IRModule mod, const TargetsMap& targets_arg,
 
 @ tvm/src/relay/backend/vm/http://inline_primitives.cc
 
-Pass InlinePrimitives() {
-
 ```cpp
+Pass InlinePrimitives() {
   runtime::TypedPackedFuncIRModule(IRModule, PassContext)> pass_func =
       [=](IRModule m, PassContext pc) { return relay::vm::PrimitiveInliner(m).Inline(); };
   auto inline_pass = CreateModulePass(pass_func, 1, "Inline", {});
@@ -263,9 +262,8 @@ transform::Sequential MemoryOpt(tvm::Target host_target, TargetsMap targets) {
 
 @ tvm/src/relay/transforms/http://memory_alloc.cc
 
-Pass ManifestAlloc(Target target_host, Maptvm::Integer, tvm::Target> targets) {
-
 ```cpp
+Pass ManifestAlloc(Target target_host, Maptvm::Integer, tvm::Target> targets) {
   return tvm::transform::CreateModulePass(
       [=](IRModule mod, const PassContext& pass_ctx) {
         ...
@@ -296,12 +294,11 @@ Pass ManifestAlloc(Target target_host, Maptvm::Integer, tvm::Target> targets) {
 
 @ tvm/src/relay/analysis/http://context_analysis.cc
 
+```cpp
 AnalysisResultMap ContextAnalysis(const IRModule& mod, const Device& default_device) {
   auto entry = mod->GetGlobalVar("main");
   auto ca = analysis::ContextAnalyzer(mod, entry, default_device);
   auto expr = mod->Lookup(entry);
-
-```cpp
   ca.VisitExpr(expr);
   return ca.Results();
 }
@@ -316,12 +313,8 @@ class ContextAnalyzer : public MixedModeVisitor {
     }
     MixedModeVisitor::VisitExpr(fn->body);
   }
-```
 
-  
   DeviceDomainPtr DeviceFor(const Expr& expr) {
-
-```text
     auto it = expr_to_device_.find(expr);
     if (it == expr_to_device_.end()) {
       auto bottom = Bottom();
@@ -331,12 +324,8 @@ class ContextAnalyzer : public MixedModeVisitor {
       return it->second;
     }
   }
-```
 
-  
   DeviceDomainPtr Unify(DeviceDomainPtr lhs, DeviceDomainPtr rhs) {
-
-```text
     lhs = Lookup(lhs);
     rhs = Lookup(rhs);
     auto unified_device = Join(lhs, rhs);
@@ -351,10 +340,9 @@ class ContextAnalyzer : public MixedModeVisitor {
 
 @ tvm/src/relay/analysis/http://context_analysis.cc
 
+```x86asm
 AnalysisResultMap ContextAnalysis(const IRModule& mod, const Device& default_device) {
   AnalysisResultMap Results() {
-
-```x86asm
     AnalysisResultMap ret;
     for (const auto& it : expr_to_device_) {
       auto device = Lookup(it.second);
@@ -418,10 +406,10 @@ MakeStaticAllocation对输出进行Malloc操作，添加AllocStorage和AllocTens
 @ tvm/src/relay/backend/vm/http://compiler.cc
 
 ExprDeviceMap VMCompiler::AnalyzeContext() const {
-  Device default_device;
-  ExprDeviceMap expr_device_map;
 
 ```text
+  Device default_device;
+  ExprDeviceMap expr_device_map;
   if (targets_.size() > 1) {
     ...
   } else {
@@ -507,11 +495,7 @@ void EmitInvokeTVMOp(const Function& func, const Expr& inputs, const Expr& outpu
       auto pfunc = Downcasttir::PrimFunc>((*cfunc->funcs->functions.begin()).second);
       if (context_->seen_funcs.find(pfunc) == context_->seen_funcs.end()) {
         op_index = context_->cached_funcs.size();
-```
-
  context_->cached_funcs.push_back(cfunc);
-
-```text
         context_->seen_funcs[pfunc] = op_index;
       } ...
     }
@@ -835,10 +819,10 @@ PackedFunc VirtualMachine::GetFunction(const std::string& name, const ObjectPtrO
 
 ObjectRef VirtualMachine::Invoke(const VMFunction& func, const std::vectorObjectRef>& args) {
   ...
-  InvokeGlobal(func, args);
-  RunLoop();
 
 ```text
+  InvokeGlobal(func, args);
+  RunLoop();
   return return_register_;
 }
 ```

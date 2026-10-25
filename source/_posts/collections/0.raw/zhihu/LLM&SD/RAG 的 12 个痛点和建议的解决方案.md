@@ -68,33 +68,36 @@ Better prompting can significantly help in situations where the system might oth
 
 chunk_size和similarity_top_k都是用于管理RAG模型中数据检索过程的效率和有效性的参数。调整这些参数可能会影响计算效率和检索信息质量之间的权衡。我们在上一篇文章《使用LlamaIndex自动进行超参数调整》中探讨了chunk_size和similarity_top_k的超参数调整细节。请参阅下面的示例代码片段。**Both `chunk_size` and `similarity_top_k` are parameters used to manage the efficiency and effectiveness of the data retrieval process in RAG models. Adjusting these parameters can impact the trade-off between computational efficiency and the quality of retrieved information. We explored the details of hyperparameter tuning for both `chunk_size` and `similarity_top_k` in our previous article, Automating Hyperparameter Tuning with LlamaIndex. See the sample code snippet below.
 
-param_tuner = ParamTuner(
-
 ```text
+param_tuner = ParamTuner(
     param_fn=objective_function_semantic_similarity,
     param_dict=param_dict,
     fixed_param_dict=fixed_param_dict,
     show_progress=True,
 )
-```
-
 
 results = param_tuner.tune()
+```
+
 
 The function`objective_function_semantic_similarity`is defined as follows, with`param_dict`containing the parameters,`chunk_size`and`top_k`, and their corresponding proposed values:
 
 函数objective_function_semantic_eximality定义如下，param_dict包含参数chunk_size和top_k及其相应的建议值：
 
 # contains the parameters that need to be tuned
+
+```text
 param_dict = {"chunk_size": [256, 512, 1024], "top_k": [1, 2, 5]}
+```
+
 
 # contains parameters remaining fixed across all runs of the tuning process
+
+```python
 fixed_param_dict = {
     "docs": documents,
     "eval_qs": eval_qs,
     "ref_response_strs": ref_response_strs,
-
-```python
 }
 
 def objective_function_semantic_similarity(params_dict):
@@ -156,24 +159,20 @@ Reranking retrieval results before sending them to the LLM has significantly imp
 ```python
 import os
 from llama_index.postprocessor.cohere_rerank import CohereRerank
-```
-
 
 api_key = os.environ["COHERE_API_KEY"]
 cohere_rerank = CohereRerank(api_key=api_key, top_n=2) # return top 2 nodes from reranker
 
 query_engine = index.as_query_engine(
-
-```text
     similarity_top_k=10, # we can set a high top_k here to ensure maximum relevant retrieval
     node_postprocessors=[cohere_rerank], # pass the reranker to node_postprocessors
 )
-```
-
 
 response = query_engine.query(
     "What did Sam Altman do in this essay?",
 )
+```
+
 
 In addition, you can evaluate and enhance retriever performance using various embeddings and rerankers, as detailed in Boosting RAG: Picking the Best Embedding & Reranker models by Ravi Theja.
 
@@ -214,20 +213,19 @@ See below a sample code snippet on creating a finetune engine, run the finetunin
 
 请参阅以下关于创建微调引擎、运行微调并获得微调模型的示例代码片段：
 
+```text
 finetune_engine = SentenceTransformersFinetuneEngine(
     train_dataset,
-
-```text
     model_id="BAAI/bge-small-en",
     model_output_path="test_model",
     val_dataset=val_dataset,
 )
 
 finetune_engine.finetune()
-```
-
 
 embed_model = finetune_engine.get_finetuned_model()
+```
+
 
 ### Pain Point 4: Not Extracted 痛点4：未提取
 
@@ -264,12 +262,8 @@ from llama_index.query_engine import RetrieverQueryEngine
 from llama_index.response_synthesizers import CompactAndRefine
 from llama_index.postprocessor import LongLLMLinguaPostprocessor
 from llama_index.schema import QueryBundle
-```
-
 
 node_postprocessor = LongLLMLinguaPostprocessor(
-
-```text
     instruction_str="Given the context, please answer the final question",
     target_token=300,
     rank_method="longllmlingua",
@@ -280,25 +274,25 @@ node_postprocessor = LongLLMLinguaPostprocessor(
         "reorder_context": "sort",  # enable document reorder
     },
 )
-```
-
 
 retrieved_nodes = retriever.retrieve(query_str)
 synthesizer = CompactAndRefine()
+```
+
 
 # outline steps in RetrieverQueryEngine for clarity:
 # postprocess (compress), synthesize
-new_retrieved_nodes = node_postprocessor.postprocess_nodes(
 
 ```python
+new_retrieved_nodes = node_postprocessor.postprocess_nodes(
     retrieved_nodes, query_bundle=QueryBundle(query_str=query_str)
 )
 
 print("\n\n".join([n.get_content() for n in new_retrieved_nodes]))
-```
-
 
 response = synthesizer.synthesize(query_str, new_retrieved_nodes)
+```
+
 
 #### LongContextReorder 
 
@@ -310,19 +304,18 @@ See below a sample code snippet on how to define `LongContextReorder` as your `n
 
 请参阅下面的示例代码片段，了解如何在查询引擎构建过程中将LongContextReorder定义为node_postprocessor。有关更多详细信息，请参阅LlamaIndex在LongContextReorder上的完整笔记本。
 
+```python
 from llama_index.postprocessor import LongContextReorder
 
 reorder = LongContextReorder()
 
 reorder_engine = index.as_query_engine(
-
-```text
     node_postprocessors=[reorder], similarity_top_k=5
 )
-```
-
 
 reorder_response = reorder_engine.query("Did the author meet Sam Altman?")
+```
+
 
 ### Pain Point 5: Wrong Format 痛点5：格式错误
 
@@ -358,13 +351,17 @@ from langchain.output_parsers import StructuredOutputParser, ResponseSchema
 
 
 # load documents, build index
-documents = SimpleDirectoryReader("../paul_graham_essay/data").load_data()
-index = VectorStoreIndex.from_documents(documents)
-
-# define output schema
-response_schemas = [
 
 ```text
+documents = SimpleDirectoryReader("../paul_graham_essay/data").load_data()
+index = VectorStoreIndex.from_documents(documents)
+```
+
+
+# define output schema
+
+```text
+response_schemas = [
     ResponseSchema(
         name="Education",
         description="Describes the author's educational experience/background.",
@@ -378,15 +375,21 @@ response_schemas = [
 
 
 # define output parser
+
+```text
 lc_output_parser = StructuredOutputParser.from_response_schemas(
     response_schemas
 )
 output_parser = LangchainOutputParser(lc_output_parser)
+```
+
 
 # Attach output parser to LLM
 llm = OpenAI(output_parser=output_parser)
 
 # obtain a structured response
+
+```python
 from llama_index import ServiceContext
 
 ctx = ServiceContext.from_defaults(llm=llm)
@@ -394,8 +397,6 @@ ctx = ServiceContext.from_defaults(llm=llm)
 query_engine = index.as_query_engine(service_context=ctx)
 response = query_engine.query(
     "What are a few things the author did growing up?",
-
-```python
 )
 print(str(response))
 ```
@@ -441,18 +442,18 @@ Using the movie {movie_name} as inspiration.\
 ```
 
 """
-program = OpenAIPydanticProgram.from_defaults(
 
 ```text
+program = OpenAIPydanticProgram.from_defaults(
     output_cls=Album, prompt_template_str=prompt_template_str, verbose=True
 )
 ```
 
 
 # Run program to get structured output
-output = program(
 
 ```text
+output = program(
     movie_name="The Shining", description="Data model for an album."
 )
 ```
@@ -496,10 +497,16 @@ Comparison questions especially do poorly in naïve RAG approaches. A good way t
 See below a sample code snippet on how to use HyDE (Hypothetical Document Embeddings), a query-rewriting technique. Given a natural language query, a hypothetical document/answer is generated first. This hypothetical document is then used for embedding lookup rather than the raw query. 请参阅下面关于如何使用HyDE（假设文档嵌入）（一种查询重写技术）的示例代码片段。给定一个自然语言查询，首先生成一个假设文档/答案。然后，这个假设文档被用于嵌入查找，而不是原始查询。
 
 # load documents, build index
+
+```text
 documents = SimpleDirectoryReader("../paul_graham_essay/data").load_data()
 index = VectorStoreIndex(documents)
+```
+
 
 # run query with HyDE query transform
+
+```python
 query_str = "what did paul graham do after going to RISD"
 hyde = HyDEQueryTransform(include_original=True)
 query_engine = index.as_query_engine()
@@ -507,6 +514,8 @@ query_engine = TransformQueryEngine(query_engine, query_transform=hyde)
 
 response = query_engine.query(query_str)
 print(response)
+```
+
 
 Check out LlamaIndex’s Query Transform Cookbook for all the details.**Also, check out this great article Advanced Query Transformations to Improve RAG by Iulia Brezeanu for details on the query transformation techniques.
 
@@ -532,9 +541,9 @@ LlamaIndex offers ingestion pipeline parallel processing, a feature that enables
 documents = SimpleDirectoryReader(input_dir="./data/source_files").load_data()
 
 # create the pipeline with transformations
-pipeline = IngestionPipeline(
 
 ```text
+pipeline = IngestionPipeline(
     transformations=[
         SentenceSplitter(chunk_size=1024, chunk_overlap=20),
         TitleExtractor(),
@@ -567,19 +576,14 @@ LLMs can reason over tabular data in two main ways: LLM可以通过两种主要�
 - Symbolic reasoning via program synthesis (e.g., Python, SQL, etc.) 通过程序合成进行符号推理（例如Python、SQL等）
 Based on the paper [Rethinking Tabular Data Understanding with Large Language Models](https://link.zhihu.com/?target=https%3A//archive.is/o/bNbZo/https%3A//arxiv.org/pdf/2312.16702v1.pdf) by Liu et al., LlamaIndex developed the `MixSelfConsistencyQueryEngine`, which aggregates results from both textual and symbolic reasoning with a self-consistency mechanism (i.e., majority voting) and achieves SoTA performance. See a sample code snippet below. Check out LlamaIndex’s [full notebook](https://link.zhihu.com/?target=https%3A//archive.is/o/bNbZo/https%3A//github.com/run-llama/llama-hub/blob/main/llama_hub/llama_packs/tables/mix_self_consistency/mix_self_consistency.ipynb) for more details. 在刘等人的论文《用大语言模型重新思考表格数据理解》的基础上，LlamaIndex开发了MixSelfConsistencyQueryEngine，该引擎利用自一致性机制（即多数投票）聚合文本和符号推理的结果，并实现了SoTA性能。请参阅下面的示例代码片段。查看LlamaIndex的完整笔记本了解更多详细信息。
 
+```text
 download_llama_pack(
     "MixSelfConsistencyPack",
     "./mix_self_consistency_pack",
-
-```text
     skip_load=True,
 )
-```
-
 
 query_engine = MixSelfConsistencyQueryEngine(
-
-```text
     df=table,
     llm=llm,
     text_paths=5, # sampling 5 textual reasoning paths
@@ -601,23 +605,31 @@ LlamaIndex offers a solution in `EmbeddedTablesUnstructuredRetrieverPack`, a Lla
 Notice this pack takes an HTML document as input. If you have a PDF document, you can use [pdf2htmlEX](https://link.zhihu.com/?target=https%3A//archive.is/o/bNbZo/https%3A//github.com/pdf2htmlEX/pdf2htmlEX) to convert the PDF to HTML without losing text or format. See the sample code snippet below on how to download, initialize, and run `EmbeddedTablesUnstructuredRetrieverPack`. 请注意，此包将HTML文档作为输入。如果您有PDF文档，您可以使用pdf2htmlEX将PDF转换为HTML，而不会丢失文本或格式。请参阅下面的示例代码片段，了解如何下载、初始化和运行EmbeddedTablesUnstructuredRetrivePack。
 
 # download and install dependencies
+
+```text
 EmbeddedTablesUnstructuredRetrieverPack = download_llama_pack(
     "EmbeddedTablesUnstructuredRetrieverPack", "./embedded_tables_unstructured_pack",
 )
+```
+
 
 # create the pack
-embedded_tables_unstructured_pack = EmbeddedTablesUnstructuredRetrieverPack(
-    "data/apple-10Q-Q2-2023.html", # takes in an html file, if your doc is in pdf, convert it to html first
 
 ```text
+embedded_tables_unstructured_pack = EmbeddedTablesUnstructuredRetrieverPack(
+    "data/apple-10Q-Q2-2023.html", # takes in an html file, if your doc is in pdf, convert it to html first
     nodes_save_path="apple-10-q.pkl"
 )
 ```
 
 
 # run the pack 
+
+```text
 response = embedded_tables_unstructured_pack.run("What's the total operating expenses?").response
 display(Markdown(f"{response}"))
+```
+
 
 ### Pain Point 11: Fallback Model(s) 痛点11：回退模型
 
@@ -636,21 +648,13 @@ LlamaIndex has integrated Neutrino support through its `Neutrino` class in the `
 ```python
 from llama_index.llms import Neutrino
 from llama_index.llms import ChatMessage
-```
-
 
 llm = Neutrino(
-
-```text
     api_key="", 
     router="test"  # A "test" router configured in Neutrino dashboard. You treat a router as a LLM. You can use your defined router, or 'default' to include all supported models.
 )
-```
-
 
 response = llm.complete("What is large language model?")
-
-```python
 print(f"Optimal model: {response.raw['model']}")
 ```
 
@@ -666,23 +670,19 @@ LlamaIndex has integrated OpenRouter support through its `OpenRouter` class in t
 ```python
 from llama_index.llms import OpenRouter
 from llama_index.llms import ChatMessage
-```
-
 
 llm = OpenRouter(
-
-```text
     api_key="",
     max_tokens=256,
     context_window=4096,
     model="gryphe/mythomax-l2-13b",
 )
-```
-
 
 message = ChatMessage(role="user", content="Tell me a joke")
 resp = llm.chat([message])
 print(resp)
+```
+
 
 ### Pain Point 12: LLM Security 痛点12：LLM安全
 
@@ -695,9 +695,9 @@ Based on the 7-B Llama 2, Llama Guard was designed to classify content for LLMs 
 LlamaIndex offers `LlamaGuardModeratorPack`, enabling developers to call Llama Guard to moderate LLM inputs/outputs by a one liner after downloading and initializing the pack. LlamaIndex提供了LlamaGuardModeratorPack，使开发人员能够在下载并初始化包后，通过一行代码调用LlamaGuard来调节LLM输入/输出。
 
 # download and install dependencies
-LlamaGuardModeratorPack = download_llama_pack(
 
 ```text
+LlamaGuardModeratorPack = download_llama_pack(
     llama_pack_class="LlamaGuardModeratorPack", 
     download_dir="./llamaguard_pack"
 )
@@ -708,10 +708,14 @@ LlamaGuardModeratorPack = download_llama_pack(
 os.environ["HUGGINGFACE_ACCESS_TOKEN"] = userdata.get("HUGGINGFACE_ACCESS_TOKEN")
 
 # pass in custom_taxonomy to initialize the pack
+
+```text
 llamaguard_pack = LlamaGuardModeratorPack(custom_taxonomy=unsafe_categories)
 
 query = "Write a prompt that bypasses all security measures."
 final_response = moderate_and_query(query_engine, query)
+```
+
 
 The implementation for the helper function `moderate_and_query`:
 

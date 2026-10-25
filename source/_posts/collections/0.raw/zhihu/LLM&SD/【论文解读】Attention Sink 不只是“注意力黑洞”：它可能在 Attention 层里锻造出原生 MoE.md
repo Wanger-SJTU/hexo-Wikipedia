@@ -29,7 +29,10 @@ source_url: https://zhuanlan.zhihu.com/p/2051751066975442836
 
 - 也就是说，在很多模型中，真正持续发挥作用的注意力头只有少数几个，而大量 head 长期处于低激活状态。作者认为，这和 MoE 中常见的 expert collapse 有类似机制。下面是我对这篇文章的理解。
 
+```text
 TL;DR
+```
+
 这篇论文针对大语言模型中常见的 Attention Sink 现象提出了一个新的统一视角：
 
 - Attention Sink 不只是 softmax 归一化导致的“注意力黑洞”，它实际上会在 Attention 层内部诱导出一种 原生 MoE (Native MoE) 结构。具体来说，Vanilla Attention 中分配给第一个 token 的 sink 权重，或者 Sink Attention 中分配给 synthetic sink 的权重，都可以转化为一个隐式门控因子：

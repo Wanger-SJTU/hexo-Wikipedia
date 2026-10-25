@@ -45,9 +45,8 @@ Flash Attention 在训练阶段和推理的预填充（Prefill）阶段表现出
 
 下面是两层循环的伪代码，GPU 可以在外层循环的分块上并行执行：
 
-for bq in range(0, n, Bm):       # 外层循环：遍历 Q 的分块，可并行
-
 ```text
+for bq in range(0, n, Bm):       # 外层循环：遍历 Q 的分块，可并行
     bQ = Q[bq:bq+Bm, :]
     for bk in range(0, n, Bn):   # 内层循环：遍历 K/V 的分块，串行
         bK = K[bk:bk+Bn, :]
@@ -167,7 +166,10 @@ LSE 本质上是 softmax 归一化分母的对数形式。阅读后文你就会�
 
  LSE_\text{merge} = \log(\exp({LSE_1}) + \exp({LSE_2})) 
 
+```text
  O = O_1 \cdot \exp({LSE_1 - LSE_\text{merge}}) + O_2 \cdot \exp({LSE_2 - LSE_\text{merge}}) 
+```
+
 
 初次看这个计算公式的时候，大概难以看明白，但只要稍微展开一下，就很容易看懂。
 
@@ -243,8 +245,6 @@ def flash_decoding(q: torch.Tensor, k: torch.Tensor, v: torch.Tensor):
 
     out = flash_decoding_reduce(splits)
     return out
-```
-
 
 q = torch.randn(1, 128)
 k = torch.randn(1024, 128)
@@ -252,6 +252,8 @@ v = torch.randn(1024, 128)
 
 out = flash_decoding(q, k, v)
 print(out)
+```
+
 
 # 简单的 attention 实现，用于结果对比
 
@@ -262,11 +264,11 @@ def attention(q: torch.Tensor, k: torch.Tensor, v: torch.Tensor):
     exp_s = (s - row_max).exp()
     expsum = exp_s.sum(dim=-1, keepdim=True)
     return (exp_s / expsum) @ v
-```
-
 
 out = attention(q, k, v)
 print(out)
+```
+
 
 ### 总结
 
@@ -274,6 +276,9 @@ Flash Decoding 解决了 LLM 解码阶段 Flash Attention 并行度不足的问�
 
  LSE_\text{merge} = \log(\exp({LSE_1}) + \exp({LSE_2})) 
 
+```text
  O = O_1 \cdot \exp({LSE_1 - LSE_\text{merge}}) + O_2 \cdot \exp({LSE_2 - LSE_\text{merge}}) 
+```
+
 
 你可以将其展开，然后试着推导，就很容易明白其中的原理。在 Flash Attention 的实现中，之所以对指数和取对数，保存 LSE 而非直接保存指数和，我想这是为了避免指数和过大导致的数值溢出问题。

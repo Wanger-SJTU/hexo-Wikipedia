@@ -187,8 +187,11 @@ Massive value 在每个注意力头中，某些维度呈现出显著的巨大值
 
 遗憾的是，论文没有针对 sink token 和非 sink token 的 Q、K 嵌入向量进行统计。因此，笔者在 notebook 上用 Gemma2-9b-It-SimPo 尝试复现结果。
 
+```text
 input_ids = tokenizer("中国首都是哪里？", return_tensors="pt")["input_ids"]
 input_ids = input_ids.to("cuda:0")
+```
+
     
 with torch.no_grad():
 

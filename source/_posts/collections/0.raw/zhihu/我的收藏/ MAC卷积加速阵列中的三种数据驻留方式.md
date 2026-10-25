@@ -36,8 +36,12 @@ https://vv4vfmb5mk.feishu.cn/docx/GLZydDSP3oGIQexFJqdcfOxGnfb?from=from_copylink
 
 # Padding表示填充的元素行或者列数
 # Stride表示步长
+
+```text
 R = (H + 2*Padding - K)/Stride + 1
 S = (W + 2*Padding - Q)/Stride + 1
+```
+
 
 在硬件实现上，不能做到无限制的并行化，因此Conv的计算通常被展开成7层循环：
 

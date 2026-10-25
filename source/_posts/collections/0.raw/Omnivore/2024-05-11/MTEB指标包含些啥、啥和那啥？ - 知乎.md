@@ -172,7 +172,10 @@ cosine_spearman, _ = spearmanr([0,0,1,0,1], cosine_scores) # 这里假定有5对
 
 其中，准确率的公式如下：
 
+```text
 accuracy(y,ˆy)\=1nsamples∑nsamples−1i\=01(ˆyi\=yi) \\texttt{accuracy}(y, \\hat{y}) = \\frac{1}{n\_\\text{samples}} \\sum\_{i=0}^{n\_\\text{samples}-1} 1(\\hat{y}\_i = y\_i) 
+```
+
 
 代码如下：
 

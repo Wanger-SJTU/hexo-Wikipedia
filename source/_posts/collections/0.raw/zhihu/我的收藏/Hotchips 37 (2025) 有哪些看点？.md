@@ -65,6 +65,7 @@ tensor core中有MXU，VPU，XLU等等模块
 
 它本身就是一个独立的小单元，里面有16个叫“Tile”的东西 。这些“Tile”才是干活的，每个“Tile”里又有好几个专门的处理器： 
 
+```text
 TVPU (Tile Vector Programmable Unit): 向量可编程单元，这名字听着就有点像GPU里的SIMD（单指令多数据）或SIMT（单指令多线程）核心 。它负责执行向量运算，这部分和GPU是相似的。 
 
 XPU (Cross-lane Processing Unit): 跨通道处理单元，这听起来就是为了处理不同数据流之间复杂的交互而设计的 。 
@@ -74,6 +75,8 @@ SGE (Scatter-Gather Engine): 分发-汇聚引擎，因为稀疏计算最大的�
 LSU (Load Store Unit): 加载-存储单元，负责数据进出 。 
 
 Core Sequencer (SCS): 核心序列器，就像个“指挥官”，它负责调度这些“Tile”，并与芯片上的其他部分（On-Chip Fabric）通信 。 
+```
+
 
 SparseCore的用途，专门处理大模型预训练中的集合通信和超大型推荐模型中的嵌入（embeddings） 。
 

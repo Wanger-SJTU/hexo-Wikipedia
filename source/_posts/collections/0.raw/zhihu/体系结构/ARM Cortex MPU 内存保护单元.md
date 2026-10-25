@@ -61,11 +61,7 @@ RegionBaseAddress[(N-1):0] = 0，其中 N 为 log2(SizeofRegion_in_bytes)
 ```text
 // ValidateAddress()
 // =================
-```
-
 AddressDescriptor ValidateAddress(bits(32) address, AccType acctype, boolean iswrite)
-
-```text
     ispriv = acctype != AccType_UNPRIV && FindPriv();
 
     AddressDescriptor result;
@@ -127,11 +123,8 @@ AddressDescriptor ValidateAddress(bits(32) address, AccType acctype, boolean isw
     return result;
 // DefaultPermissions()
 // ====================
-```
-
 Permissions DefaultPermissions(bits(32) address)
-    
-```text
+
     Permissions perms;
 
     perms.ap = ‘011’;

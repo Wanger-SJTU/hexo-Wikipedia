@@ -369,8 +369,12 @@ bsz, q_len, _ = hidden_states.size()
 
 # 计算Q：对应完整公式中的 37-39 行，先降维再升维，好处是相比直接使用大小为 [5120, 24576] 的矩阵
 # [5120, 1536] * [1536, 24576] 这样的低秩分解在存储空间和计算量上都大幅度降低
+
+```text
 q = self.q_b_proj(self.q_a_layernorm(self.q_a_proj(hidden_states)))
 q = q.view(bsz, q_len, self.num_heads, self.q_head_dim).transpose(1, 2)
+```
+
 # 切分 rope 和非 rope 部分，完整公式中 40 行反过来
 q_nope, q_pe = torch.split(
 
@@ -401,17 +405,25 @@ k_pe = k_pe.view(bsz, q_len, 1, self.qk_rope_head_dim).transpose(1, 2)
 以下部分是W^{UK}的吸收需要做的改动，省略掉了把compressed_kv和k_pe加入到Transformers KV Cache的改动：
 
 # 从 kv_b_proj 中分离的 W^{UK} 和 W^{UV} 两部分，他们要分别在不同的地方吸收
+
+```text
 kv_b_proj = self.kv_b_proj.weight.view(self.num_heads, -1, self.kv_lora_rank)
 q_absorb = kv_b_proj[:, :self.qk_nope_head_dim,:]
 out_absorb = kv_b_proj[:, self.qk_nope_head_dim:, :]
+```
+
 
 cos, sin = self.rotary_emb(q_pe)
 q_pe = apply_rotary_pos_emb(q_pe, cos, sin, q_position_ids)
 # W^{UK} 即 q_absorb 被 q_nope 吸收
 q_nope = torch.einsum('hdc,bhqd->bhqc', q_absorb, q_nope) 
 # 吸收后 attn_weights 直接基于 compressed_kv 计算不用展开。
+
+```text
 attn_weights = torch.matmul(q_pe, k_pe.transpose(2, 3)) + torch.einsum('bhqc,blc->bhql', q_nope, compressed_kv)
 attn_weights *= self.softmax_scale
+```
+
 
 主要是吸收这里的代码需要仔细理解：
 
@@ -436,15 +448,24 @@ key_states[:, :, :, self.qk_nope_head_dim :] = k_pe
 
 对于W^{UV}我们有：
 
+```text
 v= W^{UV}c_t^{KV} (对应公式的45行) u= attn_weights 和 v 的矩阵乘法 o = uW_o
+```
+
 
 这里把 attn_weights 记作 M，那么有：
 
+```text
 o = MW^{UV}c_t^{KV}W_o
+```
+
 
 和W^{UK}的吸收过程类似，利用结合律改变计算顺序，那么有：
 
+```text
 o = Mc_t^{KV}W^{UV}W_o
+```
+
 
 我们可以把W^{UV}吸收到W_o中，对应的代码实现：
 

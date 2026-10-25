@@ -631,11 +631,14 @@ dtb可以以两种形式编译到uboot的镜像中
 - 1.dtb和uboot的bin文件分离
 现在的uboot已经做得和kernel很像，最主要的一点是，uboot也使用了dtb的方法，将设备树和代码分离开来（当然可以通过宏来控制）。
 
+```text
 CONFIG_OF_CONTROL=y
 // 用于表示是否使用了dtb的方式
 
 CONFIG_OF_SEPARATE=y
 // 是否将dtb和uboot分离表一
+```
+
 
 - 2.dtb集成到uboot的bin文件内部
 - 3.通过fdtcontroladdr环境变量来指定dtb的地址
@@ -852,6 +855,7 @@ r2一般设置ATAGS或DTB的开始地址；
 
 对于启动的流程代码如下：
 
+```text
 ENTRY(stext)
  ARM_BE8(setend	be )			@ ensure we are in BE8 mode
 
@@ -860,7 +864,6 @@ ENTRY(stext)
  THUMB(	.thumb			)	@ switch to Thumb now.
  THUMB(1:			)
 
-```text
 #ifdef CONFIG_ARM_VIRT_EXT
 	bl	__hyp_stub_install
 #endif
@@ -871,25 +874,18 @@ ENTRY(stext)
 
 	mrc	p15, 0, r9, c0, c0		@ get processor id
 
-```text
+```x86asm
 	bl	__lookup_processor_type		@ r5=procinfo r9=cpuid
 	movs	r10, r5				@ invalid processor (r5=0)?
-```
-
  THUMB( it	eq )		@ force fixup-able long branch encoding
 	beq	__error_p			@ yes, error 'p'
 
-```x86asm
 #ifdef CONFIG_ARM_LPAE
 	mrc	p15, 0, r3, c0, c1, 4		@ read ID_MMFR0
 	and	r3, r3, #0xf			@ extract VMSA support
 	cmp	r3, #5				@ long-descriptor translation table format?
-```
-
  THUMB( it	lo )				@ force fixup-able long branch encoding
 	blo	__error_lpae			@ only classic page table format
-
-```x86asm
 #endif
 
 #ifndef CONFIG_XIP_KERNEL
@@ -929,15 +925,19 @@ ENTRY(stext)
 						@ mmu has been enabled
 	adr	lr, BSYM(1f)			@ return (PIC) address
 	mov	r8, r4				@ set TTBR1 to swapper_pg_dir
-```
-
  ARM(	add	pc, r10, #PROCINFO_INITFUNC	)
  THUMB(	add	r12, r10, #PROCINFO_INITFUNC	)
  THUMB(	ret	r12				)
+```
+
 1:	b	__enable_mmu
+
+```text
 ENDPROC(stext)
 	.ltorg
 #ifndef CONFIG_XIP_KERNEL
+```
+
 2:	.long	.
 	.long	PAGE_OFFSET
 #endif
@@ -950,9 +950,8 @@ ENDPROC(stext)
 
 进入到start_kernel的处理流程中
 
-asmlinkage void __init start_kernel(void)
-
 ```text
+asmlinkage void __init start_kernel(void)
 {
     ...
     setup_arch(&command_line); //设置架构相关的内容
@@ -1432,9 +1431,9 @@ static int __init of_init(void)
 
 	return 0;
 }
+core_initcall(of_init);
 ```
 
-core_initcall(of_init);
 
 该函数比较简单，其主要完成下面三件事情：
 
@@ -1462,9 +1461,12 @@ struct device_node *of_find_compatible_node(struct device_node *from,
 
 使用方法可以如下
 
+```text
 np = of_find_compatible_node(NULL, NULL, “fsl,imx23-digctl”);
 
 digctrl = of_iomap(np, 0);
+```
+
 
 digctl: digctl@8001c000 {
 
@@ -1499,10 +1501,10 @@ static const struct of_device_id exynos_dt_mcpm_match[] = {
 struct device_node *of_find_node_by_path(const char *path);
 
 /* 参数：	const char *path - 带全路径的节点名，也可以是节点的别名 */
-```
-
 
 data->current_node = of_find_node_by_path("/");
+```
+
 
 - 通过节点名查找指定节点
 

@@ -27,9 +27,8 @@ source_url: https://zhuanlan.zhihu.com/p/87516875
 
 一开始能想到的中值滤波最直观的实现就是，把每个滤波窗口的内的值放进一个数组里面，然后排序，排序结果的排中间的值就是滤波结果。下面给出中值滤波的一般实现的示例代码（下面展示的所有代码只是为了用于说明，不保证能运行，实际代码以github上的代码为准）：
 
-median_filter(const float  *input,
-
 ```cpp
+median_filter(const float  *input,
               const int     radius,
               const int     height,
               const int     width,

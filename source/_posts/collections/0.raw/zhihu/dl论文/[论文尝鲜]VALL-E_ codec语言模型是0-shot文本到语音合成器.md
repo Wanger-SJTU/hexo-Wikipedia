@@ -131,7 +131,10 @@ speech-to-speech翻译里面的 unit to unit翻译的常规操作而已。
 
 #### 问题定义
 
-D = {xi, yi}
+```text
+D = {xi, yi}**
+```
+
 
 其中，<strong>y是一个语音样本；</strong>
 

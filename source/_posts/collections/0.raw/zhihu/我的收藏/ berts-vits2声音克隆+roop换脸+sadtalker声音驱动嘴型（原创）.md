@@ -73,11 +73,10 @@ lab文件的内容（4）然后，我们要开始根据这些训练数据集。�
 
 标注的代码如下：
 
+```python
 import os
 
 out_file = f"filelists/genshin_out.txt"
-
-```python
 def process():
     rootPathName='./raw/yuanshen'
     dirNames = os.listdir(rootPathName)
@@ -92,11 +91,11 @@ def process():
                         line = perFile.readline() 
                         result = f"./resampled/yuanshen/{ch_name}/{f.split('.')[0]}.wav|{ch_name}|{ch_language}|{line}"
                         wf.write(f"{result}\n")
-```
-
 
 if __name__ == "__main__":
     process()
+```
+
 
 查看生成后的标注文件genshin_out.txt，里面的内容如下：
 

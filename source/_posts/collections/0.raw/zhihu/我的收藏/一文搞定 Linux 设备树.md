@@ -66,7 +66,10 @@ compatible 属性也叫做 “兼容性” 属性，这是非常重要的一个�
 - ② model : 一般是模块对应的驱动名字。
 例如：
 
+```text
 compatible = "fsl,mpc8641", "ns16550";
+```
+
 
 上面的compatible有两个属性，分别是 "fsl,mpc8641" 和 "ns16550"；其中 "fsl,mpc8641" 的厂商是 fsl；设备首先会使用第一个属性值在 Linux 内核里面查找，看看能不能找到与之匹配的驱动文件；
 
@@ -77,7 +80,10 @@ compatible = "fsl,mpc8641", "ns16550";
 
 model 属性值也是一个字符串，一般 model 属性描述设备模块信息，比如名字什么的，例如：
 
+```text
 model = "Samsung S3C2416 SoC";
+```
+
 
 #### 2.2.1.3 phandle 属性
 
@@ -132,7 +138,10 @@ reg 属性的值一般是 (address， length) 对，reg 属性一般用于描述
 
 例如：一个设备有两个寄存器块，一个的地址是0x3000，占据32字节；另一个的地址是0xFE00，占据256字节，表示如下：
 
+```text
 reg = ;
+```
+
 
 注：上述对应#address-cells = ; #size-cells = ;。
 #### 2.2.1.7 ranges 属性

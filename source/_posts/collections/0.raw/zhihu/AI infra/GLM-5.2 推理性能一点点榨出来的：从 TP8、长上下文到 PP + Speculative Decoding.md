@@ -35,8 +35,11 @@ GLM-5.2 这种超大 MoE 模型的推理性能，本质上是：
 一、第一版：TP=8，能跑，但不是最优解
 最开始采用的是非常自然的方案：
 
+```text
 TP = 8
 PP = 1
+```
+
 也就是把整个模型 Tensor Parallel 到 8 张 H200 上。
 
 在 NVLink 机器上，这通常没有太大问题。
@@ -240,12 +243,18 @@ GLM-5.2 上我也花了不少时间折腾 Speculative Decoding。
 
 早期配置比较激进：
 
+```text
 speculative steps = 5
 draft tokens      = 6
+```
+
 后来逐渐收缩到：
 
+```text
 steps = 1
 draft = 2
+```
+
 原因很现实。
 
 Speculative Decoding 的收益可以粗略理解成：

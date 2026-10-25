@@ -40,8 +40,12 @@ BBQ (Better Binary Quantization) 是 Elasticsearch 中实现的一种高级向�
 BBQ 量化过程包含以下关键步骤：
 
 1. 向量中心化 (Centering)
+
+```text
    residual = vector - centroid
    ↓
+```
+
 2. 初始化量化区间 (Init Interval)
    使用 MSE 最优网格初始化 [a, b]
    ↓
@@ -356,8 +360,12 @@ score = ax * ay * dims + ay * lx * x1 + ax * ly * y1 + lx * ly * qcDist
 由于量化是在中心化后的 residual 上进行的，需要纠正回原始向量：
 
 原始向量：
+
+```text
 q = centroid + q_residual
 d = centroid + d_residual
+```
+
 
 原始点积：
  q, d  =  centroid + q_residual, centroid + d_residual 
@@ -389,9 +397,8 @@ score += queryCorrections.additionalCorrection()
 
 欧氏距离：
 
-score = queryCorrections.additionalCorrection() 
-
 ```text
+score = queryCorrections.additionalCorrection() 
       + indexCorrections.additionalCorrection() 
       - 2 * score;
 ```
@@ -438,10 +445,10 @@ distance² = ||q - d||²
           = ||q_residual - d_residual||²
           = ||q_residual||² + ||d_residual||² - 2 *  q_residual, d_residual 
           ≈ additionalCorrection_q + additionalCorrection_d - 2 * quantized_score
-```
-
 
 similarity = 1 / (1 + distance²)
+```
+
 
 6.2 点积 (DOT_PRODUCT)
 计算流程：
@@ -463,15 +470,14 @@ else {
 
 数学推导：
 
-dot_product =  q, d 
-
 ```text
+dot_product =  q, d 
             =  centroid + q_residual, centroid + d_residual 
             ≈ quantized_score + corrections - centroidDp
-```
-
 
 similarity = (1 + dot_product) / 2  (归一化到 [0, 1])
+```
+
 
 6.3 最大内积 (MAXIMUM_INNER_PRODUCT)
 计算流程：

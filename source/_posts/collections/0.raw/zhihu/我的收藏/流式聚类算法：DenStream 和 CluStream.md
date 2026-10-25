@@ -90,20 +90,16 @@ labels = dbscan.labels_
 scatter = plt.scatter(X[:, 0], X[:, 1], c=labels, cmap='viridis')
 
 # 使用 set_unique_labels 来为不同的簇分配标签
-unique_labels = np.unique(labels)
-handles = [plt.Line2D([0], [0],
 
 ```text
+unique_labels = np.unique(labels)
+handles = [plt.Line2D([0], [0],
                       marker='o',
                       color='w',
                       markerfacecolor=scatter.cmap(i / len(unique_labels)),
                       markersize=10)
            for i in range(len(unique_labels))]
-```
-
 labels_for_legend = [f'Cluster {label}' for label in unique_labels]
-
-```text
 plt.legend(handles, labels_for_legend, title="Clusters", loc='center left', bbox_to_anchor=(1, 0.5))
 
 plt.title('DBSCAN Clustering')
@@ -114,9 +110,9 @@ plt.show()
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_862832183ad9.jpg)
 
 # 将样本和聚类结果存到一个 DataFrame
-cluster_df = pd.DataFrame({
 
 ```text
+cluster_df = pd.DataFrame({
     "sample": X.tolist(),
     "label": labels.tolist()
 })
@@ -157,9 +153,13 @@ cluster_df = pd.DataFrame({
 - 按照距离从小到大排序，并绘制距离图。
 - 寻找图中的“肘部”，即距离增长速度开始加快的点，作为 eps 值。
 # 使用 NearestNeighbors 计算 k 距离
+
+```text
 k = 4  # min_samples 设置为 4，选择其邻域的第四个最近邻
 neighbors = NearestNeighbors(n_neighbors=k)
 neighbors_fit = neighbors.fit(X)
+```
+
 distances, indices = neighbors_fit.kneighbors(X)
 
 # 计算每个点到其第 k 个最近邻的距离，并按升序排列
@@ -191,11 +191,11 @@ plt.show()
 对于 DBSCAN，虽然没有直接的 score 方法来评估聚类效果，但你可以使用 轮廓系数（Silhouette Score）来评估聚类质量。通过网格搜索来选择不同的 eps 和 min_samples，并通过轮廓系数来评估其效果。
 
 # 定义参数搜索空间
+
+```text
 param_grid = {
     'eps': [0.5, 0.6, 0.7, 0.8, 0.9],
     'min_samples': [6, 8, 10, 12, 14]
-
-```text
 }
 ```
 
@@ -204,8 +204,12 @@ param_grid = {
 dbscan = DBSCAN()
 
 # 假设 X 是你的数据集
+
+```text
 best_score = -1  # 用于存储最佳轮廓系数
 best_params = {}  # 用于存储最佳参数
+```
+
 
 # 手动进行网格搜索
 for eps in param_grid['eps']:
@@ -255,20 +259,16 @@ labels = dbscan.labels_
 scatter = plt.scatter(X[:, 0], X[:, 1], c=labels, cmap='viridis')
 
 # 使用 set_unique_labels 来为不同的簇分配标签
-unique_labels = np.unique(labels)
-handles = [plt.Line2D([0], [0],
 
 ```text
+unique_labels = np.unique(labels)
+handles = [plt.Line2D([0], [0],
                       marker='o',
                       color='w',
                       markerfacecolor=scatter.cmap(i / len(unique_labels)),
                       markersize=10)
            for i in range(len(unique_labels))]
-```
-
 labels_for_legend = [f'Cluster {label}' for label in unique_labels]
-
-```text
 plt.legend(handles, labels_for_legend, title="Clusters", loc='center left', bbox_to_anchor=(1, 0.5))
 
 plt.title('DBSCAN Clustering')
@@ -391,12 +391,8 @@ def auto_dbscan(data,
     simple_scatter(data, labels, title, is_show)
 
     return best_params, labels
-```
-
 
 test_data = np.concatenate([
-
-```text
     np.random.randn(100, 2) + np.array([5, 5]),
     np.random.randn(100, 2) + np.array([-1, -5]),
     np.random.randn(100, 2) + np.array([5, -3]),
@@ -456,9 +452,9 @@ from river import cluster, stream
 #### 2. DenStream 的简单示例
 
 np.random.seed(67)
-X = np.concatenate([
 
 ```text
+X = np.concatenate([
     np.random.randn(100, 2) + np.array([5, 5]),
     np.random.randn(100, 2) + np.array([-1, -5]),
     np.random.randn(100, 2) + np.array([5, -3]),
@@ -475,9 +471,9 @@ np.random.shuffle(X)
 # (500, 2)
 
 # 初始化 DenStream 聚类器
-denstream = cluster.DenStream(decaying_factor=0.01,
 
 ```text
+denstream = cluster.DenStream(decaying_factor=0.01,
                               beta=0.5,
                               mu=2.5,
                               epsilon=0.5,
@@ -495,7 +491,11 @@ for x, _ in stream.iter_array(X):
 
 
 # 预测新的数据点
+
+```text
 prediction = denstream.predict_one({0: -1, 1: -2})
+```
+
 
 # 输出预测结果
 
@@ -521,14 +521,18 @@ print(f"Predicted cluster for point (-1, -2): {prediction}")
 在学习过程中，把预测产生的簇号保存下来。当学习和预测完成以后，再将之前用于学习和预测的数据点预测一遍，对比前后簇号是否发生变化。
 
 # 划分训练数据和测试数据
+
+```text
 test_rate = 0.2
 train_num = int(len(X) * (1 - test_rate))
+```
+
 x_train, x_test = X[:train_num], X[train_num:]
 
 # 初始化 DenStream 聚类器
-denstream = cluster.DenStream(decaying_factor=0.01,
 
 ```text
+denstream = cluster.DenStream(decaying_factor=0.01,
                               beta=0.5,
                               mu=2.5,
                               epsilon=0.5,
@@ -591,8 +595,12 @@ for i, (x, _) in enumerate(stream.iter_array(x_test)):
 
 
 # 训练数据：初次预测与再次预测对比
+
+```text
 assert len(save_train) == len(new_save_train)
 cnt = 0
+```
+
 for i in save_train.keys():
 
 ```python
@@ -714,9 +722,9 @@ utils.simple_scatter(data=X,
 denstream_epsilon = dbscan_best_params['eps']
 
 # 对全量数据做流式聚类
-denstream = denstream_init(X,
 
 ```text
+denstream = denstream_init(X,
                             decaying_factor=0.01,
                             beta=0.75,
                             mu=2,
@@ -800,9 +808,9 @@ X, _ = make_blobs(n_samples=500, centers=cluster_num, cluster_std=0.60, random_s
 np.random.shuffle(X)
 
 # 初始化 CluStream 模型
-clustream = cluster.CluStream(n_macro_clusters=3,  # n_macro_clusters 是最终形成的宏簇（macro-clusters）的数量
 
 ```text
+clustream = cluster.CluStream(n_macro_clusters=3,  # n_macro_clusters 是最终形成的宏簇（macro-clusters）的数量
                               max_micro_clusters=100,  # max_micro_clusters 是微簇（micro-clusters）的最大数量
                               micro_cluster_r_factor=2,  # micro_cluster_r_factor 是微簇半径的乘数因子
                               time_window=1000,  # time_window 是时间窗口的大小
@@ -841,9 +849,9 @@ clustream.predict_one({0: -1, 1: -2})
 n_macro_clusters = cluster_num
 
 # 初始化 CluStream 模型
-clustream = cluster.CluStream(n_macro_clusters=n_macro_clusters,
 
 ```text
+clustream = cluster.CluStream(n_macro_clusters=n_macro_clusters,
                               max_micro_clusters=100,
                               micro_cluster_r_factor=2,
                               time_window=1000,
@@ -884,9 +892,9 @@ n_macro_clusters = 5
 assert n_macro_clusters != cluster_num
 
 # 初始化 CluStream 模型
-clustream = cluster.CluStream(n_macro_clusters=n_macro_clusters,
 
 ```text
+clustream = cluster.CluStream(n_macro_clusters=n_macro_clusters,
                               max_micro_clusters=100,
                               micro_cluster_r_factor=2,
                               time_window=1000,
@@ -926,9 +934,9 @@ utils.simple_scatter(data=X,
 # DenStream 增量训练
 
 # 初始化 DenStream 聚类器
-denstream = cluster.DenStream(decaying_factor=0.01,
 
 ```text
+denstream = cluster.DenStream(decaying_factor=0.01,
                               beta=0.75,
                               mu=2,
                               epsilon=0.9,
@@ -961,9 +969,9 @@ utils.simple_scatter(data=X,
 # CluStream 增量训练
 
 # 初始化 CluStream 模型
-clustream = cluster.CluStream(n_macro_clusters=cluster_num,
 
 ```text
+clustream = cluster.CluStream(n_macro_clusters=cluster_num,
                               max_micro_clusters=10,
                               micro_cluster_r_factor=2,
                               time_window=1000,

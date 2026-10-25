@@ -65,8 +65,6 @@ CUDA toolkit 提供了相对于host同步或者异步的数据搬移方法。在
 import contextlib
 import torch
 from torch.cuda import Stream
-```
-
 
 s = Stream()
 
@@ -74,6 +72,8 @@ torch.manual_seed(42)
 t1_cpu_pinned = torch.randn(1024**2 * 5, pin_memory=True)
 t2_cpu_paged = torch.randn(1024**2 * 5, pin_memory=False)
 t3_cuda = torch.randn(1024**2 * 5, device="cuda:0")
+```
+
 
 assert torch.cuda.is_available()
 device = torch.device("cuda", torch.cuda.current_device())
@@ -130,10 +130,14 @@ def benchmark_with_profiler(
 
     
 # main
+
+```text
 benchmark_with_profiler(pinned=0, streamed=0)
 benchmark_with_profiler(pinned=0, streamed=1)
 benchmark_with_profiler(pinned=1, streamed=0)
 benchmark_with_profiler(pinned=1, streamed=1)
+```
+
 
 在上面的实验中，在满足条件1的gpu上调用`to(non_blocking=True)`进行数据搬移，并控制变量，模拟了条件2（非默认流）和条件3（锁页内存）的有无，并观察了执行的trace，我在A800上的实验结果如下：
 
@@ -311,11 +315,11 @@ def main():
 
     plt.tight_layout()
     plt.show()
-```
-
 
 if __name__ == "__main__":
     main()
+```
+
 
 画图结果如下：
 
@@ -518,10 +522,14 @@ def test_memory_transfer_performance():
         del gpu_tensors
         del stored_tensors
         del retrieved_tensors
+
+```text
         torch.cuda.empty_cache()
 
 if __name__ == "__main__":
     test_memory_transfer_performance()
+```
+
 
 运行结果如下：
 
@@ -717,10 +725,14 @@ def test_overlap_performance(num_layers=30, compute_intensity=10):
 
     # 清理内存
     del cpu_sources, cpu_dests, gpu_tensors
+
+```text
     torch.cuda.empty_cache()
 
 if __name__ == "__main__":
     # test_memory_transfer_performance() 
+```
+
     
     # 运行新的重叠性能测试
     test_overlap_performance(num_layers=30, compute_intensity=20)

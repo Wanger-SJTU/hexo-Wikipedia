@@ -164,13 +164,13 @@ _<strong>更详细的转载事宜请参考：</strong>_[《科学空间FAQ》](h
 苏剑林. (May. 13, 2024). 《缓存与效果的极限拉扯：从MHA、MQA、GQA到MLA 》\[Blog post\]. Retrieved from <https://kexue.fm/archives/10091>
 
  @online{kexuefm-10091,  
+
+```text
  title={缓存与效果的极限拉扯：从MHA、MQA、GQA到MLA},  
  author={苏剑林},  
  year={2024},  
  month={May},  
  url={\\url{https://kexue.fm/archives/10091}},  
-
-```text
  }
 ```
 

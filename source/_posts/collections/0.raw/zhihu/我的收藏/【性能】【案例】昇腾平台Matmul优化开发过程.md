@@ -21,7 +21,10 @@ source_url: https://zhuanlan.zhihu.com/p/1989667615744995635
 
 <strong>通用矩阵乘</strong>（General Matrix Multiplication，GEMM）运算最初是<strong>基本线性代数子程序</strong>（Basic Linear Algebra Subprogram，BLAS）库中的一个函数，用于实现矩阵与矩阵之间的乘法。在过去的数十年中，通用矩阵乘在图像处理，流体动力学和航空航天等诸多科学计算领域扮演着至关重要的角色。随着深度学习和大语言模型的兴起，通用矩阵乘也广泛的应用于计算机视觉和自然语言处理等领域。因此，通用矩阵乘算法的性能优化是高性能计算领域一个重要课题。业界常用的计算公式如下：
 
+```text
  D = \textrm{op(}A) \times \textrm{op(}B) + \textrm{op(}C) 
+```
+
 
 其中，\rm op(X) = X 或 XT\rm X^T。
 
@@ -36,7 +39,10 @@ source_url: https://zhuanlan.zhihu.com/p/1989667615744995635
 
 通用矩阵乘<strong>（General Matrix Multiplication，GEMM）运算最初是</strong>基本线性代数子程序**（Basic Linear Algebra Subprogram，BLAS）库中的一个函数，用于实现矩阵与矩阵之间的乘法。在过去的数十年中，通用矩阵乘在图像处理，流体动力学和航空航天等诸多科学计算领域扮演着至关重要的角色。随着深度学习和大语言模型的兴起，通用矩阵乘也广泛的应用于计算机视觉和自然语言处理等领域。因此，通用矩阵乘算法的性能优化是高性能计算领域一个重要课题。业界常用的计算公式如下：
 
+```text
  D = \textrm{op(}A) \times \textrm{op(}B) + \textrm{op(}C) 
+```
+
 
 其中，\rm op(X) = X 或 \rm X^T。
 

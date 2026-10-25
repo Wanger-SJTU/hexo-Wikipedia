@@ -1,0 +1,22 @@
+---
+title: 클린업 루프 예제
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/ko/lectures/lecture-12-why-every-session-must-leave-a-clean-state/code/cleanup-loop/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
+# 클린업 루프 예제
+
+반복적인 정리 작업:
+
+- 오래된 문서 스캔
+- 구조적 위반 스캔
+- 품질 등급 업데이트
+- 목표 지향 정리 PR 오픈
+- 정리 후 고정 벤치마크 슬라이스 재실행

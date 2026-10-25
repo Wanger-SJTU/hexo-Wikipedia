@@ -114,9 +114,8 @@ PS：压入栈的got.plt[1]中的值和0会用于辅助got.plt[2]中保存的函
 
 除了对.rela.plt节进行简单的重定位外，动态链接器在加载动态库时还需要向got.plt[1]（对应着0x5d980）填入辅助延迟绑定的结构体的地址，向got.plt[2]（对应着0x5d988）处填入延迟绑定的处理函数dl_runtime_resolve的地址。需要注意的是这里的填充与CPU指令集架构有关，不同指令集的填充位置不一样。
 
-pub(crate) fn prepare_lazy_bind(got: *mut usize, dylib: usize) {
-
 ```text
+pub(crate) fn prepare_lazy_bind(got: *mut usize, dylib: usize) {
     extern "C" {
         fn dl_runtime_resolve();
     }

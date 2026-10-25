@@ -26,12 +26,8 @@ PyTorch中通过Dataloader加载图片，使用十分方便。但当加载图片
 ```python
 import jpeg4py as jpeg
 import cv2
-```
-
 
 if __name__ == "__main__":
-
-```text
     img_path = '1.jpg'
     img = jpeg.JPEG(img_path).decode()
     cv2.imshow('img', img)
@@ -81,9 +77,12 @@ class data_prefetcher():
 正常定义train_loader
 ###
 
+```text
 prefetcher = data_prefetcher(train_loader)
 data = prefetcher.next()
 i = 0
+```
+
 while data is not None:
 
 ```python

@@ -58,14 +58,14 @@ def cal(a, b, c):
     mul_op_res = sess.run([mul_op])
 
     return mul_op_res
-```
-
 
 a = tf.constant(1.0)
 b = tf.constant(2.0)
 c = tf.constant(3.0)
 
 print(cal(a, b, c))
+```
+
 
 同样代码的输出是9.0。然后这两个示例是为了解释像TensorFlow这种框架，它的计算图是一个计算流图，是由数据来驱动的。在上面的程序中我们可以发现如果打印`add_op`我们获得的结果是一个`Tensor`：
 
@@ -184,14 +184,14 @@ class MyModule(nn.Module):
     def forward(self,x):
        x = self.conv1(x)
        return x
-```
-
 
 model = MyModule()  # 实例化模型
 trace_module = torch.jit.trace(model,torch.rand(1,1,224,224)) 
 print(trace_module.code)  # 查看模型结构
 output = trace_module (torch.ones(1, 1, 224, 224)) # 测试
 print(output)
+```
+
 # trace_modult('model.pt') 
 
 打印`trace_module`的代码可以看到：
@@ -224,18 +224,22 @@ class MyModule(nn.Module):
         else:
             x = self.conv2(x)
         return x
-```
-
 
 model = MyModule()
+```
+
 
 # 这样写会报错，因为有控制流
 # trace_module = torch.jit.trace(model,torch.rand(1,1,224,224)) 
 
 # 此时应该用script方法
+
+```python
 script_module = torch.jit.script(model) 
 print(script_module.code)
 output = script_module(torch.rand(1,1,224,224))
+```
+
 
 
 打印`script_module`的代码可以看到TorchScript模型包含了在上面Python层定义的Control Flow：
@@ -264,12 +268,12 @@ class LoopModel(torch.nn.Module):
         for i in range(y):
             x = x + i
         return x
-```
-
 
 model = LoopModel()
 dummy_input = torch.ones(2, 3, dtype=torch.long)
 loop_count = torch.tensor(5, dtype=torch.long)
+```
+
 
 torch.onnx.export(model, (dummy_input, loop_count), 'loop.onnx', verbose=True)
 
@@ -295,12 +299,12 @@ def loop(x, y):
 class LoopModel2(torch.nn.Module):
     def forward(self, x, y):
         return loop(x, y)
-```
-
 
 model = LoopModel2()
 dummy_input = torch.ones(2, 3, dtype=torch.long)
 loop_count = torch.tensor(5, dtype=torch.long)
+```
+
 torch.onnx.export(model, (dummy_input, loop_count), 'loop.onnx', verbose=True,
                   input_names=['input_data', 'loop_range'])
 

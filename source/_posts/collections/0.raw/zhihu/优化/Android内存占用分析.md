@@ -51,10 +51,9 @@ memblock是如何知道物理内存的分布的呢?
 
 kernel启动的过程中，从lk/uboot知道了DTB的加载地址, 在如下的调用流程中解析DTB下的memroy节点，将节点下的物理内存区间使用`memblock_add()`添加给memblock维护。  由于lk/uboot中可能使用内存，lk/uboot也可以修改DTB，所以这里memory节点下可能有多个物理内存区间。 多个物理区间中不连续的部分就是已经被lk/uboot占用的部分。
 
+```text
 setup_machine_fdt(__fdt_pointer)   //__fdt_pointer是传递的DTB加载地址
   |-->early_init_dt_scan()
-
-```text
     |-->early_init_dt_scan_memory() //解析memory node,遍历其下的所有单元
       |-->early_init_dt_add_memory_arch()
         |-->memblock_add(base, size) //每个单元的起始地址和大小添加到memblock的memory类型中
@@ -303,13 +302,9 @@ void free_main(void)
   struct sysinfo in; 
   //系统接口，获取内存信息，实质上与 /proc/meminfo 的内容相对应
   sysinfo(&in);
-```
-
 
   xprintf("\t\ttotal        used        free      shared     buffers\n"
     "Mem:%17s%12s%12s%12s%12s\n-/+ buffers/cache:%15s%12s\n"
-
-```text
     "Swap:%16s%12s%12s\n", convert(in.totalram),
     convert(in.totalram-in.freeram), convert(in.freeram), convert(in.sharedram),
     convert(in.bufferram), convert(in.totalram - in.freeram - in.bufferram),

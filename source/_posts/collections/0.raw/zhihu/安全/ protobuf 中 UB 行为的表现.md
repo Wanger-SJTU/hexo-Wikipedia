@@ -21,9 +21,12 @@ source_url: https://zhuanlan.zhihu.com/p/526558967
 看如下例子：
 hello.proto
 
+```text
 syntax = "proto2";
 
 package helloworld;
+```
+
 
 message HelloRequest {
 

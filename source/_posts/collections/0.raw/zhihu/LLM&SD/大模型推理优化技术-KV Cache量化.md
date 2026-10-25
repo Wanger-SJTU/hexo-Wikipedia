@@ -164,8 +164,6 @@ Transformers 中的 KV Cache 量化很大程度上受启发于 [KIVI: A Tuning-F
 ```python
 import torch
 from transformers import AutoTokenizer, AutoModelForCausalLM, set_seed, BitsAndBytesConfig
-```
-
 
 set_seed(1234)  # For reproducibility
 
@@ -174,27 +172,29 @@ prompt = "The best tomato sauce is"
 model_id = "meta-llama/Meta-Llama-3-8B-Instruct"
 
 bnb_config = BitsAndBytesConfig(
-
-```text
         load_in_4bit=True,
         bnb_4bit_quant_type="nf4",
         bnb_4bit_compute_dtype=torch.float16,
         bnb_4bit_use_double_quant=True,
 )
-```
-
 
 tokenizer = AutoTokenizer.from_pretrained(model_id)
 model = AutoModelForCausalLM.from_pretrained(model_id, quantization_config=bnb_config, attn_implementation="flash_attention_2", torch_dtype=torch.float16, device_map="cuda:0")
 
 inputs = tokenizer(prompt, return_tensors="pt").to(model.device)
+```
+
 # quanto后端
 # model.generate(**inputs, do_sample=False, max_new_tokens=20, cache_implementation="quantized", cache_config={"backend": "quanto", "nbits": 4})
 # hqq后端
+
+```python
 outputs = model.generate(**inputs, max_new_tokens=150, cache_implementation="quantized", cache_config={"backend": "HQQ", "nbits": 4, "q_group_size": 128, "residual_length": 64, "device":model.device})
 result = tokenizer.decode(outputs[0], skip_special_tokens=True)
 
 print(result)
+```
+
 
 cache_config`中量化涉及的超参数如下：
 
@@ -221,9 +221,9 @@ import pandas as pd
 
 
 # Sample prompts.
-prompts = [
 
 ```text
+prompts = [
   {
     "ability": "语言理解能力",
     "question": "请解释“双关语”是什么，并给出一个例子。"
@@ -251,8 +251,11 @@ sampling_params = SamplingParams(temperature=0.8, top_p=0.95, max_tokens=512)
 llm = LLM(model="/workspace/models/Qwen2-7B-Instruct", kv_cache_dtype="fp8")
 #llm = LLM(model="/workspace/models/Qwen2-7B-Instruct")
 
+```text
 infer_times = []
 gen_lens = []
+```
+
 # 根据提示生成文本。输出是一个RequestOutput对象列表，其中包含提示、生成的文本和其他信息。
 # Print the outputs.
 for prompt in prompts:
@@ -275,8 +278,6 @@ for prompt in prompts:
 
 print(infer_times)
 print(gen_lens)
-```
-
 avg_infer_time = round(sum(infer_times) / len(infer_times), 4)
 print("avg_infer_time: ", round(sum(infer_times) / len(infer_times), 4))
 
@@ -288,6 +289,8 @@ print("avg_infer_time_per_token: ", avg_infer_time_per_token)
 
 df = pd.DataFrame(prompts)
 df.to_excel('vllm-fp8-e5m2.xlsx', index=False)
+```
+
 
 
 #### TensorRT-LLM
@@ -425,9 +428,9 @@ import pandas as pd
 
 
 # Sample prompts.
-prompts = [
 
 ```text
+prompts = [
   {
     "ability": "语言理解能力",
     "question": "请解释“双关语”是什么，并给出一个例子。"
@@ -441,13 +444,17 @@ prompts = [
     "question": "在一个假设的情景中，如果一个人工智能系统必须在保护多数人和保护一个无辜者之间做出选择，它应该如何决定？"
   }
 ]
-```
-
 
 engine_config = TurbomindEngineConfig(quant_policy=4)
+```
+
 #engine_config = TurbomindEngineConfig(quant_policy=0)
+
+```text
 gen_config = GenerationConfig(top_p= 0.95 , temperature= 0.8 , max_new_tokens= 512 ,  random_seed= 1 )
 pipe = pipeline("/workspace/models/Qwen1.5-7B-Chat", backend_config=engine_config)
+```
+
 
 # 根据提示生成文本。输出是一个RequestOutput对象列表，其中包含提示、生成的文本和其他信息。
 # Print the outputs.

@@ -113,8 +113,11 @@ int main()
 
 在Matlab中load刚才保存的mat文件，并画图：
 
+```text
 load('E:\VSProjects\MatFileReadWrite\MatFileReadWrite\test_mat_file.mat')
 plot(time, wave)
+```
+
 
 ![](/images/collections/0.raw/zhihu/%E6%9C%89%E8%B6%A3%E7%9A%84%E4%B8%9C%E8%A5%BF/asset/img_d5ba40e81fc0.png)
 
@@ -127,9 +130,9 @@ plot(time, wave)
 我写入mat文件的变量比较多，大概有300多个单列的向量，这些向量的长度相同，都有三十多万行，整个mat文件大概有不到500M。在写入变量的时候，我用循环遍历指针组：
 
 ......
-mxArray ** ppMxArr = (mxArray *)malloc(sizeof(mxArray *)*300);
 
 ```cpp
+mxArray ** ppMxArr = (mxArray *)malloc(sizeof(mxArray *)*300);
 for (int i=0; i300; i++)
 {
 	ppMxArr[i] = mxCreateDoubleMatrix(300000, 1, mxREAL);

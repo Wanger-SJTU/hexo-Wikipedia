@@ -360,13 +360,12 @@ private:
 
 有了实现了Serializable接口的IntSerializable，就可以实现通过Network发送int类型的数据了：
 
-Network* network = Network::New();
-
 ```cpp
+Network* network = Network::New();
 int i = 1;
+network->send(ip, port, IntSerializable(i));
 ```
 
-network->send(ip, port, IntSerializable(i));
 
 Rust编译器通过impl关键字记录了每个类实现了哪些Trait，因此在赋值时编译器可以自动实现将对象转换为相应的Trait类型，但C++编译器并没有记录这些转换信息，需要手动转换类型。
 

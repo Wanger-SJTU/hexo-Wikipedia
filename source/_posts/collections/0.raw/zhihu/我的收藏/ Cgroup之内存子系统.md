@@ -94,6 +94,8 @@ tasks
 - memory.numa_stat：每个 numa 节点的内存使用量，单位 bytes，以下是一个样例：
 
 > cat memory.numa_stat
+
+```text
 total=5940 N0=5944 N1=220
 file=1947 N0=1980 N1=220
 anon=66 N0=1 N1=0
@@ -102,6 +104,8 @@ hierarchical_total=5940 N0=5944 N1=220
 hierarchical_file=1947 N0=1980 N1=220
 hierarchical_anon=66 N0=1 N1=0
 hierarchical_unevictable=3927 N0=3963 N1=0
+```
+
 
 anno：匿名页和 swap 缓存的大小；
 
@@ -297,7 +301,10 @@ memhog 100M
 
 使用以下脚本，每 2 秒使用 100 MB 内存资源：
 
+```text
 while true; do memhog 100M; sleep 2; done
+```
+
 
 
 使用`cgroup-tools`工具管理 cgroup，安装方式：
@@ -339,7 +346,11 @@ memory.kmem.tcp.lim
 
 tee memhogtest.sh  EOF
 echo "PID: \$\$"
+
+```text
 while true; do memhog 100M; sleep 2; done
+```
+
 EOF
 chmod +x memhogtest.sh
 
@@ -598,6 +609,8 @@ thp_collapse_alloc（npn）：为允许折叠现有页面范围而分配的透�
 - memory.numa_stat：只读，存在非 root cgroup 中。包含不同类型内存的详细信息，以及每个 node 的其它内存管理信息。
 
 ❯ cat memory.numa_stat
+
+```text
 anon N0=0
 file N0=0
 kernel_stack N0=0
@@ -620,6 +633,8 @@ workingset_activate_file N0=0
 workingset_restore_anon N0=0
 workingset_restore_file N0=0
 workingset_nodereclaim N0=0
+```
+
 
 
 #### 交换空间大小限制和统计

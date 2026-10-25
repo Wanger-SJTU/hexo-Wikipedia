@@ -83,21 +83,16 @@ CPU cache 在 golang 中的实践
 
 - 按行列对应相加：这是最直接的方法，我们遍历矩阵的每个元素，将矩阵A的元素与矩阵B的对应元素相加。const matrixLength = 6400
 
-func createMatrix(size int) [][]int64 {
-
 ```text
+func createMatrix(size int) [][]int64 {
     matrix := make([][]int64, size)
     for i := 0; i   size; i++ {
         matrix[i] = make([]int64, size)
     }
     return matrix
 }
-```
-
 
 func BenchmarkMatrixCombination(b *testing.B) {
-
-```text
     matrixA := createMatrix(matrixLength)
     matrixB := createMatrix(matrixLength)
 
@@ -179,12 +174,8 @@ type CacheLinePad struct {
 }
 
 const CacheLinePadSize = 64
-```
-
 
 func BenchmarkStructureFalseSharing(b *testing.B) {
-
-```text
     structA := SimpleStruct{}
     structB := SimpleStruct{}
     wg := sync.WaitGroup{}
@@ -207,12 +198,8 @@ func BenchmarkStructureFalseSharing(b *testing.B) {
         wg.Wait()
     }
 }
-```
-
 
 func BenchmarkStructurePadding(b *testing.B) {
-
-```text
     structA := PaddedStruct{}
     structB := SimpleStruct{}
     wg := sync.WaitGroup{}

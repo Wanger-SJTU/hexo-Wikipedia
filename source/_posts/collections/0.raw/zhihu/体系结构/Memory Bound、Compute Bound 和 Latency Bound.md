@@ -42,8 +42,12 @@ GPU 上的内存分为全局内存（DRAM）和共享内存（SRAM）两种，�
 比如说，下面是对 x 计算两次 cos 函数的两种方式：
 
 # Method 1
+
+```text
 x1 = x.cos() # Read from x in global memory, write to x1
 x2 = x1.cos() # Read from x1 in global memory, write to x2
+```
+
 
 # Method 2
 x2 = x.cos().cos() # Read from x in global memory, write to x2

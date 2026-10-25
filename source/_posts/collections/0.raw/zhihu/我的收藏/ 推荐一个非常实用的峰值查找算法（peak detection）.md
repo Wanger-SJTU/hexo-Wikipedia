@@ -77,10 +77,10 @@ def vis():
     plt.scatter(px, y[px], color="red")
 
     plt.show()
-```
-
 
 vis()
+```
+
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_9996097782c3.jpg)
 

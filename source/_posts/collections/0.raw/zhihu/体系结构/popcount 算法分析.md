@@ -26,11 +26,7 @@ popcount<span class="wikilink wikilink--missing" title="未导入的页面">1</s
 ```cpp
 template std::unsigned_integral T>
 //    requires unsigned integral type
-```
-
 constexpr bool has_single_bit(T x) noexcept
-
-```text
 {
 #if 1
     return x != 0 && (x & (x - 1)) == 0;

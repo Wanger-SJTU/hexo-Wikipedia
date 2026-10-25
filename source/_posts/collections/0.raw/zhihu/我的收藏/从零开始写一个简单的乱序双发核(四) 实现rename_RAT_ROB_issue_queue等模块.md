@@ -108,29 +108,17 @@ Spec_RAT / Arch_RAT就是两张32entry的表，0-31个entry的内容分别是0-3
 ```text
 // RAW Hazard Detection for rs1
 // A RAW hazard occurs if Instruction 1's rs1 reads a register that Instruction 0 writes to.
-```
-
 assign raw_hazard_rs1 = instr0_lrd_valid && instr1_lrs1_valid && 
-
-```text
                         (instr0_lrd == instr1_lrs1) && (instr0_lrd != 5'd0);
 
 // RAW Hazard Detection for rs2
 // A RAW hazard occurs if Instruction 1's rs2 reads a register that Instruction 0 writes to.
-```
-
 assign raw_hazard_rs2 = instr0_lrd_valid && instr1_lrs2_valid && 
-
-```text
                         (instr0_lrd == instr1_lrs2) && (instr0_lrd != 5'd0);
 
 // WAW Hazard Detection
 // A WAW hazard occurs if both Instruction 0 and Instruction 1 write to the same register.
-```
-
 assign waw_hazard = instr0_lrd_valid && instr1_lrd_valid &&
-
-```text
                    (instr0_lrd == instr1_lrd) && (instr0_lrd != 5'd0);
 ```
 
@@ -184,13 +172,13 @@ age matrix就是一个矩阵，它的核心意思是这样的，如果有一个�
 Age matrix的控制模块还有点意思，我们单独包装了一下，如下：
 
  `include "defines.sv"
+
+```text
 module age_deq_policy_ooo (
     input wire                           clock,
     input wire                           reset_n,
     input wire [ `ISSUE_QUEUE_DEPTH-1:0] iq_entries_ready_to_go,
     input wire [ `ISSUE_QUEUE_DEPTH-1:0] iq_entries_valid,
-
-```text
     /* ------------------------------ enqueue fire ------------------------------ */
     input wire [ `ISSUE_QUEUE_DEPTH-1:0] iq_entries_wren_oh,
     input wire [`ISSUE_QUEUE_LOG -1 : 0] enq_ptr,

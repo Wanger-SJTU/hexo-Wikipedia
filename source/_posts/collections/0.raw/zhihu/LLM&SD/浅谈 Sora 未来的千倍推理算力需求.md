@@ -92,7 +92,10 @@ Sora 的 Video Encoder 部分参考 Diffusion Transformer， 256x256 的图片�
 
 关于一分钟的视频具体有多少 patch 有多种推导方法，如果没有下采样的话，一帧 1920x1080 经过 VAE Encoder 可能会得到  120x68=8k patch。 即使 FPS=1 也会有 480k。 如果 FPS = 6 的话就有 3M patch 了。而 Diffusion Transformer 把整个 video 切成 m*n*t 三维的 patch （仍是 RGB 像素空间）阵列后，经过空间映射会得到 latent 空间中的一维序列，一个 patch 对应的一个 latent 元素，等价于 LLM 中的一个 token（经过字符空间映射过来的 token 空间基本单元）。 因此保守估计 1 分钟的视频有 1M tokens。
 
+```text
 D=10^{8}*10^{6}=10^{14}=100T 
+```
+
 
 则基于 Sora 1亿分钟 video ，估计 Sora 的训练 token 量是 100T tokens
 
@@ -106,7 +109,10 @@ context length 很大时，Attention 部分的计算不能忽略因此，如果 
 
 我个人倾向于后者。   LLM 里的 long context 也不是全量数据都用这么长的 seq len 训练的，更经济的做法是用 4k 训练完之后，再扩展到 100k 继续训练一小部分数据。假设 Sora 训练时是一个 32k 的模型，则： Sora 训练所需的计算量是 1.2 * 10^25
 
+```text
 FLOPs = 6*N*D = 6 * 20 * 10^{9}*10^{14}=1.2*10^{25} 
+```
+
 
 相比于 GPT-4 训练所需算力的 4.8 * 10^25 FLOPs，seq len = 32k 的 Sora 训练所需算力 1.2 * 10^25 FLOPs 是 GPT-4 的 。**由于 GPT-4 的成本是 25000 张 A100 训练了 6 个月，因此 Sora 只需要 6000 张 A100 训练 6 个月。
 

@@ -307,10 +307,14 @@ uint8x8_t vhadd_u8 (uint8x8_t __a, uint8x8_t __b);
 uint16x4_t vhadd_u16 (uint16x4_t __a, uint16x4_t __b);  
 uint32x2_t vhadd_u32 (uint32x2_t __a, uint32x2_t __b);  
 int8x16_t vhaddq_s8 (int8x16_t __a, int8x16_t __b);  
+
+```text
 int16x8_t vhaddq_s16 (int16x8_t __a, int16x8_t __b)  
 int32x4_t vhaddq_s32 (int32x4_t __a, int32x4_t __b)  
 uint8x16_t vhaddq_u8 (uint8x16_t __a, uint8x16_t __b)  
 uint16x8_t vhaddq_u16 (uint16x8_t __a, uint16x8_t __b)  
+```
+
 uint32x4_t vhaddq_u32 (uint32x4_t __a, uint32x4_t __b);  
 
 ```text
@@ -371,10 +375,14 @@ uint32x2_t vaddhn_u64 (uint64x2_t __a, uint64x2_t __b);
 
 selecting High half, The results are rounded--*/  
 int8x8_t vraddhn_s16 (int16x8_t __a, int16x8_t __b);  
+
+```text
 int16x4_t vraddhn_s32 (int32x4_t __a, int32x4_t __b)  
 int32x2_t vraddhn_s64 (int64x2_t __a, int64x2_t __b)  
 uint8x8_t vraddhn_u16 (uint16x8_t __a, uint16x8_t __b)  
 uint16x4_t vraddhn_u32 (uint32x4_t __a, uint32x4_t __b)  
+```
+
 uint32x2_t vraddhn_u64 (uint64x2_t __a, uint64x2_t __b);  
 
 ```text
@@ -746,31 +754,47 @@ uint32x4_t vcltq_f32 (float32x4_t __a, float32x4_t __b);
 uint8x16_t vcltq_u8 (uint8x16_t __a, uint8x16_t __b);  
 uint16x8_t vcltq_u16 (uint16x8_t __a, uint16x8_t __b);  
 uint32x4_t vcltq_u32 (uint32x4_t __a, uint32x4_t __b);  
+
+```text
 /*--6、Vector compare absolute greater-than or equal(正常指令):  
 vcage -> ri = |ai| >= |bi| ? 1...1:0...0; 
+```
+
 compares the absolute value of each element in a vector with the absolute value of the  
 corresponding element of a second vector. If it is greater than or equal to it,  
 the corresponding element in the destination vector is set to all ones. 
 Otherwise, it is set to all zeros.--*/  
 uint32x2_t vcage_f32 (float32x2_t __a, float32x2_t __b);  
 uint32x4_t vcageq_f32 (float32x4_t __a, float32x4_t __b);  
+
+```text
 /*--7、Vector compare absolute less-than or equal(正常指令): 
 vcale -> ri = |ai| compares the absolute value of each element in a vector with the absolute value of the  
+```
+
 corresponding element of a second vector. If it is less than or equal to it,  
 the corresponding element in the destination vector is set to all ones. 
 Otherwise, it is set to all zeros--*/  
 uint32x2_t vcale_f32 (float32x2_t __a, float32x2_t __b);  
 uint32x4_t vcaleq_f32 (float32x4_t __a, float32x4_t __b);  
+
+```text
 /*--8、Vector compare absolute greater-than(正常指令): 
 vcage -> ri = |ai| > |bi| ? 1...1:0...0; 
+```
+
 compares the absolute value of each element in a vector with the absolute value of the 
 corresponding element of a second vector. If it is greater than it,  
 the corresponding element in the destination vector is set to all ones.  
 Otherwise, it is set to all zeros.--*/  
 uint32x2_t vcagt_f32 (float32x2_t __a, float32x2_t __b);  
 uint32x4_t vcagtq_f32 (float32x4_t __a, float32x4_t __b);  
+
+```text
 /*--9、Vector compare absolute less-than(正常指令): 
 vcalt -> ri = |ai| compares the absolute value of each element in a vector with the absolute value of the 
+```
+
 corresponding element of a second vector.If it is less than it, the corresponding  
 element in the destination vector is set to all ones. Otherwise,it is set to all zeros--*/  
 uint32x2_t vcalt_f32 (float32x2_t __a, float32x2_t __b);  
@@ -904,9 +928,9 @@ uint32x4_t vminq_u32 (uint32x4_t __a, uint32x4_t __b);//_mm_min_epu32
 ```text
 /*******************************************Pairwise addition***************************/  
 /*--1、Pairwise add(正常指令):  
+vpadd -> r0 = a0 + a1, ..., r3 = a6 + a7, r4 = b0 + b1, ..., r7 = b6 + b7 
 ```
 
-vpadd -> r0 = a0 + a1, ..., r3 = a6 + a7, r4 = b0 + b1, ..., r7 = b6 + b7 
 adds adjacent pairs of elements of two vectors,  
 
 ```text
@@ -940,8 +964,12 @@ int64x2_t vpaddlq_s32 (int32x4_t __a);
 uint16x8_t vpaddlq_u8 (uint8x16_t __a);  
 uint32x4_t vpaddlq_u16 (uint16x8_t __a);  
 uint64x2_t vpaddlq_u32 (uint32x4_t __a);  
+
+```text
 /*--3、Long pairwise add and accumulate:  
 vpadal -> r0 = a0 + (b0 + b1), ..., r3 = a3 + (b6 + b7); 
+```
+
 adds adjacent pairs of elements in the second vector, sign extends or zero extends the 
 results to twice the original width.  It then accumulates this with the corresponding  
 element in the first vector and places the final results in the destination vector--*/  
@@ -1033,8 +1061,12 @@ uint8x16_t vshlq_u8 (uint8x16_t __a, int8x16_t __b);
 uint16x8_t vshlq_u16 (uint16x8_t __a, int16x8_t __b);  
 uint32x4_t vshlq_u32 (uint32x4_t __a, int32x4_t __b);  
 uint64x2_t vshlq_u64 (uint64x2_t __a, int64x2_t __b);  
+
+```text
 /*--2、Vector saturating shift left(饱和指令):  
 vqshl -> ri = ai If the shift value is positive, the operation is a left shift. Otherwise, it is a  
+```
+
 truncating right shift. left shifts each element in a vector of integers and places 
 the results in the destination vector. It is similar to VSHL.  
 The difference is that the sticky QC flag is set if saturation occurs--*/  
@@ -1054,8 +1086,12 @@ uint8x16_t vqshlq_u8 (uint8x16_t __a, int8x16_t __b);
 uint16x8_t vqshlq_u16 (uint16x8_t __a, int16x8_t __b);  
 uint32x4_t vqshlq_u32 (uint32x4_t __a, int32x4_t __b);  
 uint64x2_t vqshlq_u64 (uint64x2_t __a, int64x2_t __b);  
+
+```text
 /*--3、Vector rounding shift left(饱和指令):  
 vrshl -> ri = ai If the shift value is positive, the operation is a left shift. Otherwise, it is a 
+```
+
 rounding right shift. left shifts each element in a vector of integers and places 
 the results in the destination vector. It is similar to VSHL.  
 The difference is that the shifted value is then rounded.--*/  
@@ -1075,8 +1111,12 @@ uint8x16_t vrshlq_u8 (uint8x16_t __a, int8x16_t __b);
 uint16x8_t vrshlq_u16 (uint16x8_t __a, int16x8_t __b);  
 uint32x4_t vrshlq_u32 (uint32x4_t __a, int32x4_t __b);  
 uint64x2_t vrshlq_u64 (uint64x2_t __a, int64x2_t __b);  
+
+```text
 /*--4、Vector saturating rounding shift left(饱和指令): 
 vqrshl -> ri = ai left shifts each element in a vector of integers and places the results in the  
+```
+
 destination vector.It is similar to VSHL. The difference is that the shifted value 
 is rounded, and the sticky QC flag is set if saturation occurs.--*/  
 int8x8_t vqrshl_s8 (int8x8_t __a, int8x8_t __b);  
@@ -1183,8 +1223,12 @@ uint8x16_t vsraq_n_u8 (uint8x16_t __a, uint8x16_t __b, const int __c);
 uint16x8_t vsraq_n_u16 (uint16x8_t __a, uint16x8_t __b, const int __c);  
 uint32x4_t vsraq_n_u32 (uint32x4_t __a, uint32x4_t __b, const int __c);  
 uint64x2_t vsraq_n_u64 (uint64x2_t __a, uint64x2_t __b, const int __c);  
+
+```text
 /*--5、Vector rounding shift right by constant and accumulate:  
 vrsra -> ri = (ai >> c) + (bi >> c); 
+```
+
 The results are rounded.right shifts each element in a vector by an immediate value,  
 and accumulates the rounded results into the destination vector.--*/  
 int8x8_t vrsra_n_s8 (int8x8_t __a, int8x8_t __b, const int __c);  
@@ -1246,16 +1290,24 @@ int32x2_t vshrn_n_s64 (int64x2_t __a, const int __b);
 uint8x8_t vshrn_n_u16 (uint16x8_t __a, const int __b);  
 uint16x4_t vshrn_n_u32 (uint32x4_t __a, const int __b);  
 uint32x2_t vshrn_n_u64 (uint64x2_t __a, const int __b);  
+
+```text
 /*--9、Vector signed->unsigned narrowing saturating shift right by constant:  
 vqshrun -> ri = ai >> b;  
+```
+
 Results are truncated. right shifts each element in a quadword vector of integers by an 
 immediate value, and places the results in a doubleword vector. The results are unsigned,  
 although the operands are signed. The sticky QC flag is set if saturation occurs.--*/  
 uint8x8_t vqshrun_n_s16 (int16x8_t __a, const int __b);  
 uint16x4_t vqshrun_n_s32 (int32x4_t __a, const int __b);  
 uint32x2_t vqshrun_n_s64 (int64x2_t __a, const int __b);  
+
+```text
 /*--10、Vector signed->unsigned rounding narrowing saturating shift right by constant:  
 vqrshrun -> ri = ai >> b; Results are rounded. right shifts each element in a quadword  
+```
+
 vector of integers by an immediate value, and places the rounded results in a doubleword  
 vector. The results are unsigned, although the operands are signed.--*/  
 uint8x8_t vqrshrun_n_s16 (int16x8_t __a, const int __b);  
@@ -1288,8 +1340,12 @@ int32x2_t vrshrn_n_s64 (int64x2_t __a, const int __b);
 uint8x8_t vrshrn_n_u16 (uint16x8_t __a, const int __b);  
 uint16x4_t vrshrn_n_u32 (uint32x4_t __a, const int __b);  
 uint32x2_t vrshrn_n_u64 (uint64x2_t __a, const int __b);  
+
+```text
 /*--13、Vector rounding narrowing saturating shift right by constant: 
 vqrshrn -> ri = ai >> b; 
+```
+
 Results are rounded. right shifts each element in a quadword vector of integers by an  
 immediate value,and places the rounded,narrowed results in a doubleword vector.  
 The sticky QC flag is set if saturation occurs.--*/  
@@ -1518,9 +1574,9 @@ uint64x2_t veorq_u64 (uint64x2_t __a, uint64x2_t __b);//_mm_xor_si128
 
 ```text
 /*--5、Bit Clear(正常指令): vbic -> ri = ~ai & bi; 
+VBIC (Vector Bitwise Clear) performs a bitwise logical AND complement operation between 
 ```
 
-VBIC (Vector Bitwise Clear) performs a bitwise logical AND complement operation between 
 values in two registers, and places the results in the destination register.--*/  
 int8x8_t vbic_s8 (int8x8_t __a, int8x8_t __b);//_mm_andnot_si128  
 int16x4_t vbic_s16 (int16x4_t __a, int16x4_t __b);//_mm_andnot_si128  
@@ -2028,8 +2084,12 @@ int16x4_t vqdmulh_n_s16 (int16x4_t __a, int16_t __b);
 int32x2_t vqdmulh_n_s32 (int32x2_t __a, int32_t __b);  
 int16x8_t vqdmulhq_n_s16 (int16x8_t __a, int16_t __b);  
 int32x4_t vqdmulhq_n_s32 (int32x4_t __a, int32_t __b);  
+
+```text
 /*--8、Vector saturating doubling multiply high by scalar:  
 vqdmulh -> ri = sat(ai * b[c]); 
+```
+
 multiplies the elements of the first vector by a scalar, and doubles the results. It then 
 returns only the high half of the results. The scalar has index n in the second vector. 
 If any of the results overflow, they are saturated and the sticky QC flag is set.--*/  
@@ -2037,8 +2097,12 @@ int16x4_t vqdmulh_lane_s16 (int16x4_t __a, int16x4_t __b, const int __c);
 int32x2_t vqdmulh_lane_s32 (int32x2_t __a, int32x2_t __b, const int __c);  
 int16x8_t vqdmulhq_lane_s16 (int16x8_t __a, int16x4_t __b, const int __c);  
 int32x4_t vqdmulhq_lane_s32 (int32x4_t __a, int32x2_t __b, const int __c);  
+
+```text
 /*--9、Vector saturating rounding doubling multiply high with scalar:  
 vqqrdmulh -> ri = sat(ai * b); 
+```
+
 multiplies the elements of the vector by a scalar and doubles the results.  
 It then returns only the high half of the rounded results.  
 If any of the results overflow, they are saturated and the sticky QC flag is set.--*/  
@@ -2046,8 +2110,12 @@ int16x4_t vqrdmulh_n_s16 (int16x4_t __a, int16_t __b);
 int32x2_t vqrdmulh_n_s32 (int32x2_t __a, int32_t __b);  
 int16x8_t vqrdmulhq_n_s16 (int16x8_t __a, int16_t __b);  
 int32x4_t vqrdmulhq_n_s32 (int32x4_t __a, int32_t __b);  
+
+```text
 /*--10、Vector rounding saturating doubling multiply high by scalar:  
 vqrdmulh -> ri = sat(ai * b[c]); 
+```
+
 multiplies the elements of the first vector by a scalar and doubles the results. 
 It then returns only the high half of the rounded results. 
 The scalar has index n in the second vector. If any of the results overflow,  
@@ -2083,9 +2151,9 @@ and adds the results to the corresponding elements of the first vector.
 The scalar has index d in the third vector.--*/  
 int16x4_t vmla_lane_s16 (int16x4_t __a, int16x4_t __b, int16x4_t __c, const int __d);  
 int32x2_t vmla_lane_s32 (int32x2_t __a, int32x2_t __b, int32x2_t __c, const int __d);  
-float32x2_t vmla_lane_f32 (float32x2_t __a, float32x2_t __b, float32x2_t __c,  
 
 ```cpp
+float32x2_t vmla_lane_f32 (float32x2_t __a, float32x2_t __b, float32x2_t __c,  
     const int __d);  
 ```
 
@@ -2093,9 +2161,9 @@ uint16x4_t vmla_lane_u16 (uint16x4_t __a, uint16x4_t __b, uint16x4_t __c, const 
 uint32x2_t vmla_lane_u32 (uint32x2_t __a, uint32x2_t __b, uint32x2_t __c, const int __d);  
 int16x8_t vmlaq_lane_s16 (int16x8_t __a, int16x8_t __b, int16x4_t __c, const int __d);  
 int32x4_t vmlaq_lane_s32 (int32x4_t __a, int32x4_t __b, int32x2_t __c, const int __d);  
-float32x4_t vmlaq_lane_f32 (float32x4_t __a, float32x4_t __b, float32x2_t __c,  
 
 ```cpp
+float32x4_t vmlaq_lane_f32 (float32x4_t __a, float32x4_t __b, float32x2_t __c,  
     const int __d);  
 ```
 
@@ -2125,15 +2193,23 @@ int32x4_t vmlal_lane_s16 (int32x4_t __a, int16x4_t __b, int16x4_t __c, const int
 int64x2_t vmlal_lane_s32 (int64x2_t __a, int32x2_t __b, int32x2_t __c, const int __d);  
 uint32x4_t vmlal_lane_u16 (uint32x4_t __a, uint16x4_t __b, uint16x4_t __c, const int __d);  
 uint64x2_t vmlal_lane_u32 (uint64x2_t __a, uint32x2_t __b, uint32x2_t __c, const int __d);  
+
+```text
 /*--15、Vector widening saturating doubling multiply accumulate with scalar:  
 vqdmlal -> ri = sat(ai + bi * c); 
+```
+
 multiplies the elements in the second vector by a scalar, and doubles the results.  
 It then adds the results to the elements in the first vector. 
 If any of the results overflow, they are saturated and the sticky QC flag is set.--*/  
 int32x4_t vqdmlal_n_s16 (int32x4_t __a, int16x4_t __b, int16_t __c);  
 int64x2_t vqdmlal_n_s32 (int64x2_t __a, int32x2_t __b, int32_t __c);  
+
+```text
 /*--16、Vector widening saturating doubling multiply accumulate by scalar:  
 vqdmlal -> ri = sat(ai + bi * c[d]) 
+```
+
 multiplies each element in the second vector by a scalar, doubles the results and adds  
 them to the corresponding elements of the first vector. The scalar has index d in the  
 third vector. If any of the results overflow, 
@@ -2168,9 +2244,9 @@ corresponding elements of the first vector.
 The scalar has index d in the third vector.--*/  
 int16x4_t vmls_lane_s16 (int16x4_t __a, int16x4_t __b, int16x4_t __c, const int __d);  
 int32x2_t vmls_lane_s32 (int32x2_t __a, int32x2_t __b, int32x2_t __c, const int __d);  
-float32x2_t vmls_lane_f32 (float32x2_t __a, float32x2_t __b, float32x2_t __c,  
 
 ```cpp
+float32x2_t vmls_lane_f32 (float32x2_t __a, float32x2_t __b, float32x2_t __c,  
     const int __d);  
 ```
 
@@ -2178,9 +2254,9 @@ uint16x4_t vmls_lane_u16 (uint16x4_t __a, uint16x4_t __b, uint16x4_t __c, const 
 uint32x2_t vmls_lane_u32 (uint32x2_t __a, uint32x2_t __b, uint32x2_t __c, const int __d);  
 int16x8_t vmlsq_lane_s16 (int16x8_t __a, int16x8_t __b, int16x4_t __c, const int __d);  
 int32x4_t vmlsq_lane_s32 (int32x4_t __a, int32x4_t __b, int32x2_t __c, const int __d);  
-float32x4_t vmlsq_lane_f32 (float32x4_t __a, float32x4_t __b, float32x2_t __c,  
 
 ```cpp
+float32x4_t vmlsq_lane_f32 (float32x4_t __a, float32x4_t __b, float32x2_t __c,  
     const int __d);  
 ```
 
@@ -2209,15 +2285,23 @@ int32x4_t vmlsl_lane_s16 (int32x4_t __a, int16x4_t __b, int16x4_t __c, const int
 int64x2_t vmlsl_lane_s32 (int64x2_t __a, int32x2_t __b, int32x2_t __c, const int __d);  
 uint32x4_t vmlsl_lane_u16 (uint32x4_t __a, uint16x4_t __b, uint16x4_t __c, const int __d)  
 uint64x2_t vmlsl_lane_u32 (uint64x2_t __a, uint32x2_t __b, uint32x2_t __c, const int __d);  
+
+```text
 /*--21、Vector widening saturating doubling multiply subtract with scalar:  
 vqdmlsl -> ri = sat(ai - bi * c); 
+```
+
 multiplies the elements of the second vector with a scalar and doubles the results.  
 It then subtracts the results from the elements in the first vector. 
 If any of the results overflow, they are saturated and the sticky QC flag is set.--*/  
 int32x4_t vqdmlsl_n_s16 (int32x4_t __a, int16x4_t __b, int16_t __c);  
 int64x2_t vqdmlsl_n_s32 (int64x2_t __a, int32x2_t __b, int32_t __c);  
+
+```text
 /*--22、Vector widening saturating doubling multiply subtract by scalar: 
 vqdmlsl -> ri = sat(ai - bi * c[[d]); 
+```
+
 multiplies each element in the second vector by a scalar, doubles the results and subtracts 
 them from the corresponding elements of the first vector. The scalar has index n in the  
 third vector.If any of the results overflow,  
@@ -2355,6 +2439,8 @@ uint8x8x2_t vtrn_u8 (uint8x8_t __a, uint8x8_t __b);
 uint16x4x2_t vtrn_u16 (uint16x4_t __a, uint16x4_t __b);  
 poly8x8x2_t vtrn_p8 (poly8x8_t __a, poly8x8_t __b);  
 poly16x4x2_t vtrn_p16 (poly16x4_t __a, poly16x4_t __b);  
+
+```text
 int32x2x2_t vtrn_s32 (int32x2_t __a, int32x2_t __b)  
 float32x2x2_t vtrn_f32 (float32x2_t __a, float32x2_t __b)  
 uint32x2x2_t vtrn_u32 (uint32x2_t __a, uint32x2_t __b)  
@@ -2364,11 +2450,17 @@ int32x4x2_t vtrnq_s32 (int32x4_t __a, int32x4_t __b)
 float32x4x2_t vtrnq_f32 (float32x4_t __a, float32x4_t __b)  
 uint8x16x2_t vtrnq_u8 (uint8x16_t __a, uint8x16_t __b)  
 uint16x8x2_t vtrnq_u16 (uint16x8_t __a, uint16x8_t __b)  
+```
+
 uint32x4x2_t vtrnq_u32 (uint32x4_t __a, uint32x4_t __b);  
 poly8x16x2_t vtrnq_p8 (poly8x16_t __a, poly8x16_t __b);  
 poly16x8x2_t vtrnq_p16 (poly16x8_t __a, poly16x8_t __b);  
+
+```text
 /*--2、Interleave elements(Zip elements):  
 vzip ->  (Vector Zip) interleaves the elements of two vectors.--*/  
+```
+
 int8x8x2_t vzip_s8 (int8x8_t __a, int8x8_t __b);  
 int16x4x2_t vzip_s16 (int16x4_t __a, int16x4_t __b);  
 uint8x8x2_t vzip_u8 (uint8x8_t __a, uint8x8_t __b);  
@@ -2387,8 +2479,12 @@ uint16x8x2_t vzipq_u16 (uint16x8_t __a, uint16x8_t __b);
 uint32x4x2_t vzipq_u32 (uint32x4_t __a, uint32x4_t __b);  
 poly8x16x2_t vzipq_p8 (poly8x16_t __a, poly8x16_t __b);  
 poly16x8x2_t vzipq_p16 (poly16x8_t __a, poly16x8_t __b);  
+
+```text
 /*--3、De-Interleave elements(Unzip elements):  
 vuzp -> (Vector Unzip) de-interleaves the elements of two vectors. 
+```
+
 De-interleaving is the inverse process of interleaving.--*/  
 int8x8x2_t vuzp_s8 (int8x8_t __a, int8x8_t __b);  
 int16x4x2_t vuzp_s16 (int16x4_t __a, int16x4_t __b);  
@@ -2445,109 +2541,57 @@ from memory and returns this in the result vector. Elements of the vector that a
 loaded are returned in the result vector unaltered.  
 c is the index of the element to load.--*/  
 int8x8_t vld1_lane_s8 (const int8_t * __a, int8x8_t __b, const int __c);//_mm_insert_epi8  
+
+```cpp
 int16x4_t vld1_lane_s16 (const int16_t * __a, int16x4_t __b,  
-
-```cpp
     const int __c);//_mm_insert_epi16  
-```
-
 int32x2_t vld1_lane_s32 (const int32_t * __a, int32x2_t __b,   
-
-```cpp
     const int __c);//_mm_insert_epi32  
 ```
 
 float32x2_t vld1_lane_f32 (const float32_t * __a, float32x2_t __b, const int __c);  
+
+```cpp
 uint8x8_t vld1_lane_u8 (const uint8_t * __a, uint8x8_t __b,   
-
-```cpp
     const int __c);//_mm_insert_epi8  
-```
-
 uint16x4_t vld1_lane_u16 (const uint16_t * __a, uint16x4_t __b,   
-
-```cpp
     const int __c);//_mm_insert_epi16  
-```
-
 uint32x2_t vld1_lane_u32 (const uint32_t * __a, uint32x2_t __b,   
-
-```cpp
     const int __c);//_mm_insert_epi32  
-```
-
 poly8x8_t vld1_lane_p8 (const poly8_t * __a, poly8x8_t __b,   
-
-```cpp
     const int __c);//_mm_insert_epi8  
-```
-
 poly16x4_t vld1_lane_p16 (const poly16_t * __a, poly16x4_t __b,   
-
-```cpp
     const int __c);//_mm_insert_epi16  
 ```
 
 int64x1_t vld1_lane_s64 (const int64_t * __a, int64x1_t __b, const int __c);  
 uint64x1_t vld1_lane_u64 (const uint64_t * __a, uint64x1_t __b, const int __c);  
+
+```cpp
 int8x16_t vld1q_lane_s8 (const int8_t * __a, int8x16_t __b,   
-
-```cpp
     const int __c);//_mm_insert_epi8  
-```
-
 int16x8_t vld1q_lane_s16 (const int16_t * __a, int16x8_t __b,   
-
-```cpp
     const int __c);//_mm_insert_epi16  
-```
-
 int32x4_t vld1q_lane_s32 (const int32_t * __a, int32x4_t __b,   
-
-```cpp
     const int __c);//_mm_insert_epi32  
 ```
 
 float32x4_t vld1q_lane_f32 (const float32_t * __a, float32x4_t __b, const int __c);  
+
+```cpp
 uint8x16_t vld1q_lane_u8 (const uint8_t * __a, uint8x16_t __b,   
-
-```cpp
     const int __c);//_mm_insert_epi8  
-```
-
 uint16x8_t vld1q_lane_u16 (const uint16_t * __a, uint16x8_t __b,   
-
-```cpp
     const int __c);//_mm_insert_epi16  
-```
-
 uint32x4_t vld1q_lane_u32 (const uint32_t * __a, uint32x4_t __b,   
-
-```cpp
     const int __c);//_mm_insert_epi32  
-```
-
 poly8x16_t vld1q_lane_p8 (const poly8_t * __a, poly8x16_t __b,   
-
-```cpp
     const int __c);//_mm_insert_epi8  
-```
-
 poly16x8_t vld1q_lane_p16 (const poly16_t * __a, poly16x8_t __b,   
-
-```cpp
     const int __c);//_mm_insert_epi16  
-```
-
 int64x2_t vld1q_lane_s64 (const int64_t * __a, int64x2_t __b,   
-
-```cpp
     const int __c);//_mm_insert_epi64  
-```
-
 uint64x2_t vld1q_lane_u64 (const uint64_t * __a, uint64x2_t __b,   
-
-```cpp
     const int __c);//_mm_insert_epi64  
 /*--3、Load all lanes of vector with same value from memory: vld1 ->  
 ```

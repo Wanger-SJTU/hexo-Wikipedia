@@ -19,14 +19,16 @@ source_url: https://zhuanlan.zhihu.com/p/95687913
 
 写一点小代码来演示一下。比如 一个简单的网络，输入 x，输入 y：
 
+```python
 import torch
 x = torch.tensor([1.0, 2.0, 3.0], requires_grad=True)
 y = x ** 2 + 2
+```
+
 定义 loss 为求和，梯度回退后打印 x 的梯度出来看看：
 
-loss = torch.sum(y)
-
 ```python
+loss = torch.sum(y)
 loss.backward()
 print(x.grad)
 ```
@@ -49,8 +51,11 @@ for z in y_list:
 
 正确的做法是，每个 shard 单独计算 loss，但是只回溯到 y，阻断到网络内部（即 x）的更新。在遍历结束后，统一更新。请看注释。
 
+```text
 v_list = []
 g_list = []
+```
+
 
 for z in torch.split(y, 1):
 

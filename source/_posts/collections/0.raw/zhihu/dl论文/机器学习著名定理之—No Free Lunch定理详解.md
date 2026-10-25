@@ -29,9 +29,10 @@ $- 对于子列 S∼Dn" role="presentation">S∼Dn\mathcal{S\sim D}^n，则概�
 证明：
 
 $- 令 C" role="presentation">C\mathcal{C} 表示域 X" role="presentation">X\mathcal{X} 中大小为 2n" role="presentation">2n2n 的一个子集。主要的证明思路是只利用数据集 C" role="presentation">C\mathcal{C} 一半的数据样本点并不能给出剩下一半数据点的信息。假定 H" role="presentation">H\mathcal{H} 表示数据集 C" role="presentation">C\mathcal{C} 到标签集合 {0,1}" role="presentation">{0,1}\{0,1\} 所有可能的函数集合，且 T" role="presentation">TT 表示的是函数集合的基数，其中 H={f1,⋯,fT}" role="presentation">H={f1,⋯,fT}\mathcal{H}=\{f_1,\cdots,f_T\}，T=22n" role="presentation">T=22nT=2^{2n}。对于 H" role="presentation">H\mathcal{H} 中每一个函数假设，令 Di" role="presentation">Di\mathcal{D}_i 是 C×{0,1}" role="presentation">C×{0,1}\mathcal{C}\times\{0,1\} 中的分布：$
-Di({(x,y)})={mif y=fi(x)0otherwise
 
 ```text
+Di({(x,y)})={mif y=fi(x)0otherwise
+
 \mathcal{D}_i(\{(x,y)\})=\left\{\begin{array}{ll}m & \mathrm{if}\text{ } y=f_i(x)\\0& \mathrm{otherwise}\end{array}\right. \\
 ```
 

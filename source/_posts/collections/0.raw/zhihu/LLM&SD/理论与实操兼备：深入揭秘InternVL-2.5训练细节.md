@@ -232,8 +232,12 @@ def simulate_jpeg_degradation(quality):
 
 
 # Define the JPEG compression quality range, pre-create all JPEG compression functions
+
+```text
 qualities = list(range(75, 101))
 jpeg_degrade_functions = {quality: simulate_jpeg_degradation(quality) for quality in qualities}
+```
+
 
 2. <strong>Loss Reweighting</strong>
 

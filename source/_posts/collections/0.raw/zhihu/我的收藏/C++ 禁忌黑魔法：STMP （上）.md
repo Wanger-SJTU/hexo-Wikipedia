@@ -21,32 +21,44 @@ source_url: https://zhuanlan.zhihu.com/p/646752343
 
 但事实真的如此吗？在不违背 C++ 标准的情况下，下面的代码可能通过编译吗？
 
+```text
 constexpr auto a = value();
 constexpr auto b = value();
 static_assert(a != b);
+```
+
 
 下面这样的编译期计数器可能实现吗？
 
+```text
 constexpr auto a = next();
 constexpr auto b = next();
 constexpr auto c = next();
 static_assert(a == 0 && b == 1 && c == 2);
+```
+
 
 每次常量求值得到的结果不同，说明求值改变了全局的状态。这种有状态的元编程，就叫做状态元编程。如果再与模板联系起来，就叫做 <strong>Stateful Template Meta Programming(STMP)</strong>。
 
 其实借助一些编译器内置的宏，我们是可以实现这样的效果的，比如
 
+```text
 constexpr auto a = __COUNTER__;
 constexpr auto b = __COUNTER__;
 constexpr auto c = __COUNTER__;
 static_assert(a == 0 && b == 1 && c == 2);
+```
+
 
 编译器在预处理的时候，会对 `__COUNTER__` 宏的替换结果进行递增。如果你对源文件执行预处理，会发现源文件变成了这样
 
+```text
 constexpr auto a = 0;
 constexpr auto b = 1;
 constexpr auto c = 2;
 static_assert(a == 0 && b == 1 && c == 2);
+```
+
 
 这与我们想要实现的效果还是有很大区别的，毕竟预处理并不涉及到 C++ 程序的语义部分。而且这样的计数器是全局唯一的，我们并不能创建很多个计数器，那还有别的办法吗？
 
@@ -62,8 +74,11 @@ static_assert(a == 0 && b == 1 && c == 2);
 
 而 C++ 标准规定 `sizeof` 只能对完整类型使用（毕竟不完整类型没有定义无法计算 `size`）。如果对不完整类型使用会导致编译错误，并且这个错误不是一个<strong>硬错误 (hard error)</strong>，所以可以利用 `SFINAE` 或 `requires` 来捕获到这个错误。于是我们就能通过如下的方式检测类的完整性
 
+```text
 template typename T>
 constexpr inline bool is_complete_v = requires { sizeof(T); };
+```
+
 
 > 可能有读者会问，都 C++20 了为什么不使用 concept 呢？这里用 concept 会有一些奇怪的效果，是标准中有关原子约束 (atomic constraint) 的措辞导致的。就不深究了，感兴趣的读者可以自行尝试。
 
@@ -71,60 +86,51 @@ constexpr inline bool is_complete_v = requires { sizeof(T); };
 
 ```text
 struct X;
-```
-
 
 static_assert(!is_complete_vX>);
 
-```text
 struct X {};
-```
-
 
 static_assert(is_complete_vX>);
+```
+
 
 实际上，上面的代码会编译错误，第二个静态断言失败了。太奇怪了，怎么回事呢？分开试一下
 
 ```text
 // first time
 struct X;
-```
-
 
 static_assert(!is_complete_vX>);
 
-```text
 struct X {};
 
 // second time
 struct X;
 
 struct X {};
-```
-
 
 static_assert(is_complete_vX>);
+```
+
 
 分开试发现都行，但是放一起就不行了，究竟为什么会这样呢？这其实是因为编译器会缓存模板第一次实例化的结果，之后再遇到相同的模板就会直接使用第一次实例化的结果。在最开始的那个例子中，第二个 `is_complete_v` 仍然使用了第一次模板实例化的结果，所以仍然求值为 `false` 导致编译失败。
 
 编译器这样做合理吗？是合理的。因为模板最终可能会产生外部链接的符号，如果两次实例化的结果不同，在链接的时候选哪一个呢。但这确实影响到了我们去观测编译期的状态，如何解决呢？答案是加一个模板参数作为种子，每次求值的时候填入不同的参数，从而让编译器实例化新的模板
 
+```cpp
 template typename T, int seed = 0>
 constexpr inline bool is_complete_v = requires { sizeof(T); };
 
-```text
 struct X;
-```
-
 
 static_assert(!is_complete_vX, 0>);
 
-```text
 struct X {};
-```
-
 
 static_assert(is_complete_vX, 1>);
+```
+
 
 每次都手动填入一个不同的参数是很麻烦的，有没有什么办法能自动填入呢？
 
@@ -151,25 +157,22 @@ int main() {
 
 ```text
 template typename T, auto seed = [] {}>
+constexpr inline bool is_complete_v = requires { sizeof(T); };
 ```
 
-constexpr inline bool is_complete_v = requires { sizeof(T); };
 
 再次尝试使用它来观测类型完整性
 
 ```text
 struct X;
-```
-
 
 static_assert(!is_complete_vX>);
 
-```text
 struct X {};
-```
-
 
 static_assert(is_complete_vX>);
+```
+
 
 编译通过！至此，我们成功观察到了编译期全局状态的变化。
 
@@ -183,23 +186,22 @@ static_assert(is_complete_vX>);
 
 ```text
 template auto seed = [] {}>
+constexpr inline bool is_complete_v = requires { foo(seed); };
 ```
 
-constexpr inline bool is_complete_v = requires { foo(seed); };
 
 auto foo(auto);
 
+```text
 static_assert(!is_complete_v<>);
 
 auto foo(auto value) {
-
-```text
     return sizeof(value);
 }
-```
-
 
 static_assert(is_complete_v<>);
+```
+
 
 接下来让我们谈谈如何通过友元函数来改变全局的状态。
 
@@ -248,18 +250,14 @@ static_assert(is_complete_v<>);  // #3
 
 auto flag(auto);
 
-```text
+```cpp
 template auto value>
 struct setter {
     friend auto flag(auto) {}
 };
 
 template auto N = 0, auto seed = [] {}>
-```
-
 consteval auto value() {
-
-```cpp
     constexpr bool exist = requires { flag(N); };
     if constexpr(!exist) {
         setterexist> setter;
@@ -295,11 +293,7 @@ struct setter {
 };
 
 template int N = 0, auto seed = [] {}>
-```
-
 consteval auto next() {
-
-```cpp
     constexpr bool exist = requires { flag(readerN>{}); };
     if constexpr(!exist) {
         setterN> setter;

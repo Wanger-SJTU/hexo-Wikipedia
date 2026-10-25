@@ -124,11 +124,11 @@ key-value 检索基准测试旨在评估模型的上下文检索能力，下图�
 
 下面是使用 SGLang 中测试离线推理吞吐量的脚本，基于此，可以直接测试 Double Sparsity 的具体吞吐性能。基于SGLang最新版本实测下来，通过Triton实现的Double Sparsity相比于FA3或FlashInfer后端，其性能稍微要更差一些，不过GPU型号（A800、H20、H200）差异不一致。
 
+```text
 model_path=/global/models/Qwen2.5-32B-Instruct
 dataset_path=/workspace/data/ShareGPT_V3_unfiltered_cleaned_split.json
 ds_channel_path=/workspace/outputs/DoubleSparse-qwen25/models/Qwen2.5-32B-Instruct.json
 
-```text
 CUDA_VISIBLE_DEVICES=3 python3 -m sglang.bench_offline_throughput \
     --model-path ${model_path} \
     --dataset-name random \

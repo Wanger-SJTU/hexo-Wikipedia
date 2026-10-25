@@ -101,9 +101,13 @@ Word-Piece和BPE非常相似，BPE使用<strong>出现最频繁的组合</strong
 from transformers import AutoTokenizer, AutoModel
 
 # pick the model type
+
+```text
 model_type = "roberta-base"
 tokenizer = AutoTokenizer.from_pretrained(model_type)
 model = AutoModel.from_pretrained(model_type)
+```
+
 
 # new tokens
 new_tokens = ["new_token"]
@@ -131,9 +135,12 @@ LMTokenizerVocabulary SizeBERTWord-Piece30kALBERTSentence-Piece30kRoBERTaBPE50kX
 
 tokenize完的下一步就是将token的one-hot编码转换成更dense的embedding编码。在ELMo之前的模型中，embedding模型很多是单独训练的，而ELMo之后则爆发了直接将embedding层和上面的语言模型层共同训练的浪潮（ELMo的全名就是<strong>Embeddings from Language Model</strong>）。不管是哪种方法，Embedding层的形状都是一样的。我们举个例子来看看embedding层是怎么工作的。在huggingface中，seq2seq模型往往是这样调用的：
 
+```text
 input_ids = tokenizer.encode('Hello World!', return_tensors='pt')
 output = model.generate(input_ids, max_length=50)
 tokenizer.decode(output[0])
+```
+
 
 上面的代码主要涉及三个操作：tokenizer将输入encode成数字输入给模型，模型generate出输出数字输入给tokenizer，tokenizer将输出数字decode成token并返回。
 

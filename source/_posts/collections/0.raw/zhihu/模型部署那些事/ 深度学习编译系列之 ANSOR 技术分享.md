@@ -89,7 +89,10 @@ $$\frac{\partial f}{\partial t_i} \approx \frac{\part f}{\part g_i}\frac{\part g
 
 $$\frac{\partial f}{\partial t_i} \approx \frac{\partial f}{\partial g_i}(\alpha (\frac{g_i(t_i) - g_i(t_i - \Delta t)}{\Delta t}) + (1 - \alpha)(min(-\frac{g_i(t_i)}{t_i}, \beta \frac{C_i}{max_{k\in N(i)}V_k} - g_i(t_i))) $$
 
+```text
 g_i(t_i) 和 g_i(t_i - \Delta t) 根据历史记录获得， N(i) 是相似子图构成的集合， C_i 是当前子图的浮点运算数量， V_k 是与 i 相似的子图 k 的浮点运算数量， \alpha 和 \beta 是预测值的信任度。实际 ANSOR 运行的过程中，会选择 \frac{\partial f}{\partial t_i} 值最小的（该值为负数）子图作为待优化的子图。
+```
+
 
 #### 2.2 Sketch
 

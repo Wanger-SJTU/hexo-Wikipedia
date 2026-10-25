@@ -136,11 +136,11 @@ $ wc -c hello_world
 C 代码显然还是太重型了。一切优化的尽头是汇编，所以我们使用汇编重写程序：
 
 ; hello_world.asm
+
+```x86asm
   BITS 64                 ; change to 64-bit mode
   GLOBAL main
   SECTION .data
-
-```x86asm
     hello db "Hello World!", 10 ; 10 is the ASCII code for newline
   SECTION .text
   main:
@@ -178,11 +178,11 @@ $ wc -c hello_world
 这是因为它会自动链接到 `crt` 库。我们的目标是不用这个库，定义自己的函数入口：
 
 ; hello_world.asm
+
+```x86asm
   BITS 64                 ; change to 64-bit mode
   GLOBAL nomainhere
   SECTION .data
-
-```x86asm
     hello db "Hello World!", 10 ; 10 is the ASCII code for newline
   SECTION .text
   nomainhere:

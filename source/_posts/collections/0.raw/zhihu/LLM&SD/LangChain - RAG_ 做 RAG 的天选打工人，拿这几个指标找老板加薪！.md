@@ -69,21 +69,21 @@ from langchain.document_loaders import WikipediaLoader
 from langchain.indexes import VectorstoreIndexCreator
 from langchain.chains import RetrievalQA
 from langchain.chat_models import ChatOpenAI
-```
-
 
 loader = WikipediaLoader('New York City')
 docs = loader.load()
+```
+
 
 - 默认是用  Chroma  来保存向量，OpenAI  的  emb api  生成  embedding，组合成一个  qa chain：
 index = VectorstoreIndexCreator().from_loaders([loader])
 
 # temperature 设成 0，尽量让 llm 不要乱讲话
+
+```text
 llm = ChatOpenAI(temperature=0)
 qa_chain = RetrievalQA.from_chain_type(
     llm,
-
-```text
     retriever=index.vectorstore.as_retriever(),
     return_source_documents=True,
 )
@@ -91,8 +91,12 @@ qa_chain = RetrievalQA.from_chain_type(
 
 
 - 稍微测试一下检索效果：
+
+```text
 question = "How did New York City get its name?"
 result = qa_chain({"query": question})
+```
+
 result["result"]
 
 结果还成：
@@ -102,6 +106,8 @@ result["result"]
 图一：qa retrieval  结果 测试
 
 - 接下来生成测试对照用的「标准答案」：
+
+```text
 eval_questions = [
     "What is the population of New York City as of 2020?",
     "Which borough of New York City has the highest population?",
@@ -119,8 +125,6 @@ eval_answers = [
 ]
 
 examples = [
-
-```text
     {"query": q, "ground_truths": [eval_answers[i]]}
     for i, q in enumerate(eval_questions)
 ]
@@ -128,7 +132,11 @@ examples = [
 
 
 # 再测试一下 retrieval 效果：
+
+```text
 result = qa_chain({"query": eval_questions[1]})
+```
+
 result["result"]
 
 # >>The borough of Brooklyn has the highest population in New York City.
@@ -149,10 +157,14 @@ from ragas.metrics import (
 
 
 # create evaluation chains
+
+```text
 faithfulness_chain = RagasEvaluatorChain(metric=faithfulness)
 answer_rel_chain = RagasEvaluatorChain(metric=answer_relevancy)
 context_rel_chain = RagasEvaluatorChain(metric=context_precision)
 context_recall_chain = RagasEvaluatorChain(metric=context_recall)
+```
+
 
 参考文首开始的图，还记得 ragas  对 RAG  的几个评测指标吗？
 
@@ -177,8 +189,12 @@ eval_result["context_recall_score"]
 predictions = qa_chain.batch(examples)
 
 # evaluate
+
+```python
 print("evaluating...")
 r = faithfulness_chain.evaluate(examples, predictions)
+```
+
 r
 
 ![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_32d115f16b5c.jpg)
@@ -193,11 +209,11 @@ ragas 的评测需要先创建一个可信的、基准的数据集，langsmith  
 ```python
 from langsmith import Client
 from langsmith.utils import LangSmithError
-```
-
 
 client = Client()
 dataset_name = "NYC test"
+```
+
 
 try:
     # check if dataset exists
@@ -239,11 +255,11 @@ def create_qa_chain(return_context=True):
 
 
 # 用上面这个工厂函数来创建要测试的 chain，
+
+```python
 from langchain.smith import RunEvalConfig, run_on_dataset
 
 evaluation_config = RunEvalConfig(
-
-```text
     custom_evaluators=[
         faithfulness_chain,
         answer_rel_chain,
@@ -252,15 +268,11 @@ evaluation_config = RunEvalConfig(
     ],
     prediction_key="result",
 )
-```
-
 
 result = run_on_dataset(
     client,
     dataset_name,
     create_qa_chain,
-
-```text
     evaluation=evaluation_config,
     input_mapper=lambda x: x,
 )

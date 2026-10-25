@@ -77,8 +77,12 @@ Step 1: φ 投影（跨流信息融合已在此发生）
    φ 的输入包含了全部 4 条流的信息
 
 Step 2: 激活
+
+```text
    h_pre = sigmoid(α_pre · proj[:n] + b[:n])      ← 动态聚合权重
    h_post = 2·sigmoid(α_post · proj[n:2n] + b[n:2n])  ← 动态扩展权重
+```
+
 
 Step 3: 聚合（跨流融合的显式体现）
    aggregated = Σ h_pre_i · x_stream_i    ← [s, b, C]

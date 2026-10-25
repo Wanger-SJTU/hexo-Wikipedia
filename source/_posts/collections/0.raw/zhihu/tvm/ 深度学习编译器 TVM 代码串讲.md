@@ -42,12 +42,15 @@ typedef void* TVMObjectHandle;
 
 我们以 Python API 展示 Runtime 的运行示例
 
+```python
 import tvm
 mod = tvm.runtime.load_module("compiled_artifact.so") # tvm.runtime.Module
 arr = tvm.nd.array([1, 2, 3], device=tvm.cuda(0)) # tvm.runtime.NDArray
 fun = mod["addone"] # tvm.runtime.PackedFunc
 fun(a)
 print(a.numpy())
+```
+
 
 由上面的代码我们可以解释一些概念，编译的产物称为`tvm.runtime.Module`, 可以从`tvm.runtime.Module`中根据名字查询到一个类型为`PackedFunc`的函数。关于`PackedFunc`后面会细讲，暂时把其理解为一个函数即可。
 
@@ -149,9 +152,13 @@ void CallPacked() {
 TVM_REGISTER_GLOBAL("myadd").set_body(MyAdd);
 
 # python
+
+```python
 import tvm
 myadd = tvm.get_global_func("myadd")
 print(myadd(1, 2))
+```
+
 
 显而易见地，TVMArgs 和 TVMRetValue 只接受限定的类型，比如基本类型和一些TVM自定义的类型（包括PackedFunc这个类型）。
 
@@ -443,12 +450,8 @@ class OpNode : public RelayExprNode {
 ```cpp
 struct BiasAddAttrs : public tvm::AttrsNodeBiasAddAttrs> {
   int axis;
-```
-
 
   TVM_DECLARE_ATTRS(BiasAddAttrs, "relay.attrs.BiasAddAttrs") {
-
-```text
     TVM_ATTR_FIELD(axis).describe("The axis to add the bias").set_default(1);
   }
 };
@@ -490,8 +493,11 @@ bool BiasAddRel(const ArrayType>& types, int num_inputs, const Attrs& attrs,
 
 然后注册到全局表中
 
+```text
 RELAY_REGISTER_OP("nn.bias_add")
     .describe(R"code(Add bias to an axis of the input.
+```
+
 
 )code" TVM_ADD_FILELINE)
 
@@ -638,8 +644,11 @@ class PassContextNode : public Object {
 
 通过`PassContext::Current()`可以获得一个 thread local 的当前生效的 PassContext，也可以通过类似 Python With 的语法覆盖当前生效的 PassContext, 如下
 
+```sql
 auto new_ctx = PassContext::Create();
 ctx->opt_level = 2;
+```
+
 WithPassContext> scope(ctx);
 // pass context in effect.
 
@@ -1006,10 +1015,10 @@ class Add : public Expr {
 在上面的例子中，也就意味着 lhs 成员和 rhs 成员指向了同一个表达式。在传统的计算图模式中，我们会按照拓扑序求值，1% 只会计算一次。但是从做编译的角度来说，实现的 codegen 大概率是这样
 
 auto Add::Codegen() {
-  auto lhs_val = lhs->Codegen();
-  auto rhs_val = rhs->Codegen();
 
 ```text
+  auto lhs_val = lhs->Codegen();
+  auto rhs_val = rhs->Codegen();
   return add(lhs_val, rhs_val);
 }
 ```
@@ -1046,11 +1055,10 @@ class LetNode : public ExprNode {
 
 如果看文本格式，我们会觉得 %1 应该在 if 表达式外计算，但看 AST/IR, 我们又迷惑了，在下面这个例子中，这个迷惑就更明显了
 
+```x86asm
 fn (%x) {
   %1 = log(%x)
   %2 = fn(%y) {
-
-```x86asm
     add(%y, %1)
   }
   %2
@@ -1541,11 +1549,15 @@ class BatchnormCallback(DFPatternCallback):
 pattern = is_op("nn.relu")(is_op("nn.conv2d")(wildcard(), wildcard()))
 
 # A graph.
+
+```python
 x = relay.var('input')
 w = relay.var('weight')
 conv2d = relay.op.nn.conv2d(x, w)
 relu = relay.op.nn.relu(conv2d)
 print('relu')
+```
+
 # free_var %x: Tensor[(1, 3, 224, 224), float32]
 # free_var %w: Tensor[(3, 3, 3, 3), float32]
 # %0 = nn.conv2d(%x, %w, padding=[0, 0, 0, 0]) /* ty=Tensor[(1, 3, 222, 222), float32] */;
@@ -1871,12 +1883,8 @@ Expr FuseOps(const Expr& expr, int fuse_opt_level, size_t max_fuse_depth, const 
 }
 
 namespace transform {
-```
-
 
 Pass FuseOps(int fuse_opt_level) {
-
-```cpp
   runtime::TypedPackedFuncFunction(Function, IRModule, PassContext)> pass_func =
       [=](Function f, IRModule m, PassContext pc) {
         int opt_level = fuse_opt_level == -1 ? pc->opt_level : fuse_opt_level;
@@ -1913,9 +1921,8 @@ Pass FuseOps(int fuse_opt_level) {
 - 根据 gmap_ 遍历 body 返回新表达式
 跟踪一下建立 IndexedForwardGraph 的流程会走到 IndexedForwardGraph::Creator 内如下代码，注意 IndexedForwardGraph::Creator 继承自上一节提到的 ExprVisitor
 
-  IndexedForwardGraph Prepare(const Expr& body) {
-
 ```cpp
+  IndexedForwardGraph Prepare(const Expr& body) {
     this->Update(body, nullptr, kOpaque);
     this->VisitExpr(body);
     return std::move(graph_);
@@ -2068,9 +2075,8 @@ std::vectorGraphPartitioner::Group*> GraphPartitioner::Partition(
 
 可以看到，简单地把每个Node初始化为一个Group, 接着是建立支配树，我添加了注释，从 PostDom 开始
 
-  Node* GetNode(support::Arena* arena, IndexedForwardGraph::Node* gnode) {
-
 ```text
+  Node* GetNode(support::Arena* arena, IndexedForwardGraph::Node* gnode) {
     Node* tnode = arena->makeNode>();
     tnode->gnode = gnode; // 记录 Graph 中对应的 node
     if (gnode->extern_ref) { // 没有支配节点，比如根节点
@@ -2434,10 +2440,10 @@ def build(
 
 Executor 有两种实现，本文关注默认的 GraphExecutor, 代码中主要通过 codegen 这个步骤完成 IR 下降。中间经过多次封装调用，核心的逻辑落在 GraphExecutorCodegen::Codegen ，这个函数比较长，忽略非关键代码
 
+```text
   LoweredOutput Codegen(IRModule mod, relay::Function func, String mod_name) {
     ...
 
-```text
     IRModule lowered_mod = tec::LowerTEPass(
         mod_name_,
         [this](BaseFunc func) {
@@ -2484,9 +2490,8 @@ Executor 有两种实现，本文关注默认的 GraphExecutor, 代码中主要�
 
 代码主要有两个部分，一个是 LowerTEPass 下降到 TIR，一个是 MemoryPlan. 本文不关注 MemoryPlan ，继续追踪 LowerTEPass 走到 LowerTE
 
-IRModule LowerTE(const IRModule& module, const String& module_name, ProcessFn process_fn,
-
 ```cpp
+IRModule LowerTE(const IRModule& module, const String& module_name, ProcessFn process_fn,
                  VirtualDevice host_virtual_device) {
   TECompiler compiler(module);
 
@@ -2524,9 +2529,8 @@ IRModule LowerTE(const IRModule& module, const String& module_name, ProcessFn pr
 
   ...
 
-  updated_module = WithAttrs(updated_module, {{"external_mods", std::move(external_mods)},
-
 ```cpp
+  updated_module = WithAttrs(updated_module, {{"external_mods", std::move(external_mods)},
                                               {"device_contexts", std::move(device_contexts)}});
 ```
 
@@ -2549,9 +2553,8 @@ IRModule LowerTE(const IRModule& module, const String& module_name, ProcessFn pr
 - LowerExternalFunctions 把 Cache 中带 Compiler 标记的 Function 使用外部工具编译
 本文不关注 Compiler 标记的函数，所以继续追踪 LowerTensorExpr
 
-Pass LowerTensorExpr(const String& module_name, TECompiler compiler, ProcessFn process_fn,
-
 ```text
+Pass LowerTensorExpr(const String& module_name, TECompiler compiler, ProcessFn process_fn,
                      VirtualDevice host_virtual_device) {
   runtime::TypedPackedFuncFunction(Function, IRModule, PassContext)> pass_func =
       [=](Function func, IRModule module, PassContext ctx) {
@@ -2630,10 +2633,10 @@ Lower 发生在 MakeLoweredCall 中，继续追踪
 
 可以看到首先 Lower 然后换为 CallLowered 表达式，继续追踪 Lower 会走到 LowerInternal 函数
 
+```cpp
   CCacheValue LowerInternal(const CCacheKey& key, std::functionString(String)> mangle_fn) {
     ...
 
-```cpp
     value->cached_func = PrimFuncFor(key->source_func, key->target, [&](std::string name) {
       auto mangled = mangle_fn(name);
       return GetUniqueName(mangled, &name_map_);
@@ -2680,10 +2683,9 @@ Lower 发生在 MakeLoweredCall 中，继续追踪
 
 PrimFuncFor 实际是 ScheduleBuilder::Create 负责生成 Schedule, 在一些情况下会直接生成 PrimFunc, 在更普遍的情况下则是由下面的 LowerSchedule 负责生成最终的 PrimFunc. 先追踪 ScheduleBuilder::Create, 需要注意 ScheduleBuilder 也继承自前文提到的 ExprFunctor
 
+```cpp
   CachedFunc Create(const Function& relay_func, std::functionstd::string(std::string)> renamer) {
     ...
-
-```cpp
     auto outputs = this->VisitExpr(relay_func->body);
     ...
 

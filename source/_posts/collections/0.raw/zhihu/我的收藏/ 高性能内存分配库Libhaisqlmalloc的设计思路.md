@@ -86,9 +86,12 @@ Libhaisqlmalloc 库的key值范围是10000 ---10030。
 
 配置参数范例：
 
+```text
 uint_microseconds_thread_background_sleep=100
 
 uint_wait_microseconds_between_release_2m=4000
+```
+
 
 配置参数介绍如下：
 
@@ -932,14 +935,14 @@ Libhaisqlmalloc 库目前接管了下列内存相关的函数接口实现内存�
  void malloc_stats( void )  __THROW
 
  int mallopt( int int_key, int int_value )  __THROW
-```
-
 
  size_t malloc_size( void* p )  __THROW
 
  int malloc_trim( size_t sizet_pad_in )  __THROW
 
 size_t malloc_usable_size( void* ptr_void_in )  __THROW   
+```
+
 
 相关主要函数简单介绍：
 
@@ -1097,6 +1100,7 @@ void malloc_stats(void);
 
 Libhaisqlmalloc 库中的内存分配是很复杂的一个体系，这个体系首先区分了两大类内存，一种是自身消耗的内存，用于管理数据，这种内存我们称为Metadata, 第二种是给用户分配的内存，这种内存以NUMA node和Thread Local为核心，从系统申请的块大小是2M块，再切成小内存分配给用户。下面是一个malloc_stats()调用后的显示案例：
 
+```text
 Libhaisqlmalloc os_byte=( 14.566406 MiB ), os_page_byte=( 8.566406 MiB ), os_hugepage_2M_byte=( 6 MiB )
 
 Libhaisqlmalloc sbrk_shared_page all_byte=( 384 KiB ), use_byte=( 111.3125 KiB ), free_byte=( 272.6875 KiB ), free_rate=71%
@@ -1130,6 +1134,8 @@ Libhaisqlmalloc numa_node_count=1
 libhaisqlmalloc thread_local_data vt_all_size=8, vt_wait_reuse_size=7
 
 libhaisqlmalloc thread_id=00007fd0e1284740, ptr_thread_local=00007fd0dfc2e000, all_byte=( 2 MiB ), page_byte=( 2 MiB ), all_bit=512, use_bit=216, free_bit=296, free_rate=57%
+```
+
 
  在上面的例子中，os_byte表示向系统(OS)申请的内存总量，os_page_byte表示向系统(OS)申请的4K Page的内存总量，os_hugepage_2M_byte表示向系统(OS)申请的Hugepage2M的内存总量。
 
@@ -1190,6 +1196,7 @@ Notice: This software ( libhaisqlmalloc.so ) test time has 23 hours 15 minutes 1
 
 配置文件的一个范例：
 
+```text
 str_mac=00e07096a61a
 
 str_device=enp2s0
@@ -1203,6 +1210,8 @@ uint_version=101
 ulong_create_id=1101081971070163
 
 ulong_verify_id=12739876336654934
+```
+
 
  这些配置内容主要是依据用户机器的网卡的MAC地址，so文件自身参数生成的一系列编码, 标识了每一个so文件的拷贝，用于防盗版，每一份拷贝都有单独的验证码。
 

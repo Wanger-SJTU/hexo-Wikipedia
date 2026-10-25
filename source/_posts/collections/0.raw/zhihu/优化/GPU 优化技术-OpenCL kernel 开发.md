@@ -102,23 +102,19 @@ std::string ClReadString(const std::string &filename)
 std::string source_name = "gaussian.cl";
 std::string program_source = ClReadString(source_name);
 char *cl_str   = (char *)program_source.c_str();
+program        = clCreateProgramWithSource(context, 1, (const char **)&cl_str, NULL, NULL);
 ```
 
-program        = clCreateProgramWithSource(context, 1, (const char **)&cl_str, NULL, NULL);
 
 - 字符串保存
 
-```text
+```cpp
 #define CL_KERNEL(...)  #__VA_ARGS__
 static const MI_CHAR *add_cl_kernel_str = CL_KERNEL(
-```
-
 
 __kernel void add(__global uchar *a,
                   __global uchar *b,
                   __global uchar *dst,
-
-```cpp
                   __private const int length)
 {
     int idx = get_global_id(0);
@@ -132,10 +128,10 @@ __kernel void add(__global uchar *a,
 }
 
 );
-```
-
 
 program = clCreateProgramWithSource(context, 1, (const char **)& add_cl_kernel_str , NULL, NULL);
+```
+
 
 ### 三、 OpenCL C 语言介绍
 
@@ -158,11 +154,7 @@ OpenCL C严格遵循C99标准，不支持标准C99头文件、函数指针、递
 
 ```cpp
 int device_flag = 1;
-```
-
 err = clGetDeviceInfo(device,CL_DEVICE_HALF_FP_CONFIG, sizeof(cl_device_fp_config),
-
-```text
                       &device_flag, NULL);
 ```
 
@@ -182,11 +174,7 @@ err = clGetDeviceInfo(device,CL_DEVICE_HALF_FP_CONFIG, sizeof(cl_device_fp_confi
 
 ```cpp
 int device_flag = 1;
-```
-
 err = clGetDeviceInfo(device,CL_DEVICE_DOUBLE_FP_CONFIG, sizeof(cl_device_fp_config),
-
-```text
                       &device_flag, NULL);
 ```
 
@@ -214,6 +202,7 @@ err = clGetDeviceInfo(device,CL_DEVICE_DOUBLE_FP_CONFIG, sizeof(cl_device_fp_con
 
 可以由一组标量、矢量或标量和矢量的组合来初始化一个矢量的值。矢量初始化写法：
 
+```text
 float4 v0 = (float4)(1.0f, 2.0f, 3.0f, 4.0f);
 
 //如果标量值都相等
@@ -227,6 +216,8 @@ float4 v4 = (float4)(v2, v3);
 //矢量标量结合初始化矢量
 float3 vrgb = (float3)(0.25, 0.5, 0.75);
 float4 rgba = (float4)(vrgb, 1.0f);
+```
+
 
 矢量分量：OpenCL提供三种方式来访问矢量分量：数值索引、字母索引和hi/lo/even/odd方式。它们都是通过点(.)方式来访问分量。数值索引和字母索引对比使用如下所示：
 
@@ -234,28 +225,37 @@ float4 rgba = (float4)(vrgb, 1.0f);
 
 实例代码
 
+```text
 //实例代码
 int8 data = (int8)(1, 2, 3, 4, 5, 6, 7, 8);
 int4 a = data.s1234; // a = (2, 3, 4, 5)
 int4 b = data.s3456; // b = (4, 5, 6, 7)
+```
+
 
 需要注意对于数值索引和字母索引，两个不能混用。例如：
 
+```text
 float4 f;
 float4 A = f.xy34;
 float4 B = f.s01yw;
 //上述两种用法都是错误的，两种不同的索引不能混用
+```
+
 
 hi/lo/even/odd：主要用来访问一半矢量分量，具体访问的分量如下：
 
 矢量分量v.lov.hiv.oddv.evenfloat2 vv.x,v.s0v.y,v.s1v.y,v.s1v.x,v.s0float3 vv.s01,v.xyv.s23,v.zwv.s13,v.ywv.s02,v.xzfloat4 vv.s01,v.xyv.s23,v.zwv.s13,v.ywv.s02,v.xzfloat8 vv.s0123v.s4567v.s1357v.s0246float16 vv.s01234567v.s89abcdefv.s13579bdfv.s02468ace实例代码
 
+```text
 //实例代码
 int8 data = (int8)(1, 2, 3, 4, 5, 6, 7, 8);
 int4 a = data.hi; // a = (5, 6, 7, 8)
 int4 b = data.lo; // b = (1, 2, 3, 4)
 int4 c = data.even; // c = (2, 4, 6, 8)
 int4 d = data.odd; // d = (1, 3, 5, 7)
+```
+
 
 3.1.3 其他内置类型
 
@@ -281,11 +281,10 @@ int4 d = data.odd; // d = (1, 3, 5, 7)
 
 具体示例代码如下：
 
+```cpp
 //标量load/store 代码
 __kernel void MatrixCopy(__global uchar *src, 
                          __global uchar *dst, 
-
-```cpp
                          int width, int height)
 {
     int g_idx = get_global_id(0);
@@ -296,12 +295,8 @@ __kernel void MatrixCopy(__global uchar *src,
 }
 
 // 向量load/store代码：
-```
-
 __kernel void MatrixCopyVector(__global uchar *src, 
                                __global uchar *dst, 
-
-```cpp
                                int width, int height)
 {
     int g_idx = get_global_id(0) = width) || (g_idy >= height))
@@ -344,25 +339,20 @@ __private参数的数据将存储在私有内存中（默认）。
 - kernel修饰符 
 __kernel（kernel）修饰符声明一个函数为内核函数，在OpenCL设备上执行。
 
+```cpp
 //kernel修饰符
 __kernel void MatrixMatrixAdd(__global float *mtx_a,
                               __global float *mtx_b,
                               __global float *mtx_c，  
-
-```cpp
                               const int rows,
                               const int cols)
 {
 }
 
 //或者
-```
-
 kernel void MatrixMatrixAdd(global float *mtx_a,
                             global float *mtx_b,
                             global float *mtx_c，  
-
-```cpp
                             const int rows,
                             const int cols)
 {
@@ -373,6 +363,7 @@ kernel void MatrixMatrixAdd(global float *mtx_a,
 - 内核可选属性修饰符 
 kernel修饰符可以和属性修饰符__attribute__结合使用，主要有三种组合方式。
 
+```text
 //提示编译器内核正在处理数据类型的大小
 __kernel __attribute__((vec_type_hint(typen)))
 
@@ -381,14 +372,15 @@ __kernel __attribute__((work_group_size_hint(16, 16, 1)))
 
 // 指定必须使用的工作组大小，local_work_size的大小
 __kernel __attribute__((reqd_work_group_size(16, 16, 1)))
+```
+
 
 <strong>3.3.3 对象访问修饰符</strong>
 
 访问修饰符用于指定图像类型的参数, 内核参数中的图像对象可以声明为只读、只写或者读写。 __read_only(或read_only)和__write_only(或write_only)来修饰图像对象参数。__read_write(或read_write)只能在内核中对又读又写的图像对象参数进行修饰。默认修饰符为read_only。
 
+```cpp
 __kernel void add(__read_only image2d_t img_a,
-
-```text
                   __write_only image2d_t img_d)
 {
     ......
@@ -399,17 +391,29 @@ __kernel void add(__read_only image2d_t img_a,
 3.3.4 属性限定符
 
 - 指定 enum、struct 和 union 类型的特殊属性
+
+```text
 __attribute__((aligned(n))) __attribute__((endian(host)))
 __attribute__((aligned)) __attribute__((endian(device)))
 __attribute__((packed)) __attribute__((endian))
+```
+
 
 - 指定变量或结构体的特殊属性
+
+```text
 __attribute__((aligned(alignment)))
 __attribute__((nosvm))
+```
+
 
 - 指定可以展开循环（for、while 和 do ）
+
+```text
 __attribute__((OpenCL_unroll_hint(n)))
 __attribute__((OpenCL_unroll_hint))
+```
+
 
 #### 3.4 运算符
 
@@ -426,21 +430,16 @@ int b = 2;
 float c = a * b;
 
 // 操作数一个为矢量数据，另一个为标量数据，标量数据会被转换为矢量
-```
-
 int4 v_d = (int4)(1, 2, 3, 4);
-
-```cpp
 int s_d = 3;
+int4 v_sum = v_d * d;// (1, 2, 3, 4) * (3, 3，3，3) = (3, 6, 9, 12)
 ```
 
-int4 v_sum = v_d * d;// (1, 2, 3, 4) * (3, 3，3，3) = (3, 6, 9, 12)
 
 运算符的多种使用方式
 
+```cpp
 __kernel void op_sample(__global int4 *output)
-
-```text
 {
     // 向量元素加4
     int4 vec = (int4)(1, 2, 3, 4);
@@ -467,26 +466,18 @@ build-in：内建函数通俗的理解就是OpenCL c标准中自带的内部函�
 
 对于工作项的数目、ID及维度OpenCL内核提供了一下几个内置查询函数。如下表所示。
 
+```cpp
 uint get_work_dim()返回内核中使用的维度数size_t get_global_size(uint dimindx)返回dim指定维度上全局工作项数目size_t get_global_id(uint dimindx)返回dim指定维度上全局工作项idsize_t get_global_offset()返回dim指定维度上全局工作项id初始偏移量为了能够明白上述函数的使用方法，我们以遍历一张56x56的灰度图像为例子展开说明：
 
-```text
 //开发者使用外部API设置全局工作项和偏移量
 const size_t global_size[2] = {56, 56};
 const size_t offset[2] = {0, 10};
-```
-
 err = clEnqueueNDRangeKernel(cmdqueue, kernel, 2, offset,
-
-```text
                              global_size, NULL, 0, NULL, NULL);
 
 // kernel 代码
-```
-
 __kernel void image_process(__global uchar *src,
                             __global uchar *dst,
-
-```cpp
                             int rows,
                             int cols)
 {
@@ -505,25 +496,17 @@ __kernel void image_process(__global uchar *src,
 
 当工作项需要同步它们的执行时，工作组变得很重要。工作组内的工作项可以共享局部存储器。对于工作组的信息，OpenCL内核提供了一下几个内置查询函数。如下表所示：
 
+```cpp
 size_t get_num_groups(uint dim)返回dim指定维度上工作组数目size_t get_group_id(uint dim)返回dim指定维度上工作组idsize_t get_local_id(uint dim)返回工作组内dim指定维度上的工作项idsize_t get_local_size(uint dim)返回工作组内dim指定维度上的工作项数目为了能够明白上述函数的使用方法，我们以遍历一张56x56的灰度图像为例子展开说明：
 
-```cpp
 const int global_offset[2] = {3, 5};
 const int global_size[2] = {6, 4};
 const int local_size[2] = {3, 2};
-```
-
 err = clEnqueueNDRangeKernel(cmdqueue, kernel, 2, offset,
-
-```text
                              global_size, local_size, 0, NULL, NULL);
 
 //kernel 代码
-```
-
 __kernel void group_sample(__global float *dst)
-
-```cpp
 {
     int gid_x     = get_global_id(0);
     int gid_y     = get_global_id(1);
@@ -560,11 +543,10 @@ OpenCL 的浮点函数分为五类：算术和舍入、比较、指数和对数�
 
 针对舍入函数：rint 舍入到最接近的偶数， round 返回最接近的整数，如果两个最接近的整数同样接近，则返回距离 0 更远的整数。 针对算术函数的乘加函数：“mad 优势是速度优于准确性，fma 优势是精度更高。 样例示意:
 
+```cpp
 __kernel void mod_round(__global float *mod_input,
                         __global float *mod_output,
                         __global float4 *round_input,
-
-```text
                         __global float4 *round_output) 
 {
     mod_output[0] = fmod(mod_input[0], mod_input[1]);
@@ -577,10 +559,10 @@ __kernel void mod_round(__global float *mod_input,
 }
 
 //输出结果
-```
-
 fmod(317.0, 23.0)          = 18.0
 remainder(317.0, 23.0)     = -5.0
+```
+
 
 Rounding input: -6.5 -3.5 3.5 6.5
 rint: -6.0, -4.0, 4.0, 6.0
@@ -601,9 +583,8 @@ trunc: -6.0, -3.0, 3.0, 6.0
 
 OpenCL提供了更多的三角函数，可以帮助我们更好的实现某些算法优化。 样例示意:
 
+```cpp
 __kernel void sin_cal(__global float4 *angle,
-
-```text
                       __global float4 *dst) 
 {
     *dst = sin(*angle);
@@ -622,18 +603,25 @@ __kernel void sin_cal(__global float4 *angle,
 类型转换主要分为标量类型转换和向量类型转换及饱和四舍五入操作。 
 
 - 标量类型转换：主要是标量到标量的转换和标量到向量的转换操作
+
+```text
 // 标量到标量转换
 T a = (T)b;
 
 // 标量到向量转换
 Tn a = (Tn)(b);
+```
+
 
 - 向量类型转换：主要是标量到标量的转换和标量到向量的转换操作 
 函数原型
 
+```text
 destType convert_destType(srcType)
 destType convert_destType(srcType)
 destTypeN convert_destTypeN(srcTypeN)
+```
+
 
 饱和处理：<strong>_sat</strong>是饱和溢出处理,例如int转uchar, 限幅在0-255之间; 
 
@@ -649,9 +637,12 @@ destTypeN convert_destTypeN(srcTypeN)
 
 <strong>默认</strong>：convert默认舍入为rtz
 
+```text
 float4 vin = (float4)(1.3, 2.6, 3.4, 5.6);
 uchar4 vot = convert_uchar4_sat_rte(vin);
 // 输出
+```
+
 1 2 3 6
 
 <strong>3.5.3 整数数学函数</strong>
@@ -664,10 +655,9 @@ OpenCL 提供了广泛的整数运算，本节将它们分为三类：加减法�
 
 加法计算中经常会出现两个整数相加时发生溢出，或者在减法中因为操作数的不同导致相减发生溢出。样例示意：
 
+```cpp
 __kernel void inter_arithmetic(__global int *x,
                                __global int *y,
-
-```cpp
                                __global int *dst)
 {
     int add0 = add_sat(x, y);
@@ -678,14 +668,14 @@ __kernel void inter_arithmetic(__global int *x,
 }
 
 //输入
-```
-
 x = 1,968,526,677 y = 1,914,839,586
 //输出
 add_sum = –411,601,033 (0xE7777777)
 add0    = 2,147,483,647 (0x7FFFFFFF) //饱和
 sub_sum = –393,705,336 (0xE8888888)
 sub0    = 2,147,483,647 (0x7FFFFFFF) //饱和
+```
+
 
 <strong>乘法</strong>
 
@@ -693,9 +683,8 @@ sub0    = 2,147,483,647 (0x7FFFFFFF) //饱和
 
 示例代码
 
-__kernel void inter_mul(__global uint *dst)
-
 ```cpp
+__kernel void inter_mul(__global uint *dst)
 {
     int x = 0x71111111, y = 0x72222222;
     uint a = 0x123456;
@@ -722,9 +711,8 @@ dst[2] = ;
 
 示例代码
 
+```cpp
 __kernel void inter_opera(__global uint *dst)
-
-```text
 {
     uchar a = 252;
     uchar b = 0x95;
@@ -769,10 +757,10 @@ shuffle2 示意图
 
 ```cpp
 const int mask = (uint4)(1, 2, 0, 1);
-```
-
 float4 d4;
 float4 res = shuffle(d4, mask);
+```
+
 
 select 函数：
 
@@ -840,9 +828,8 @@ int Gaussian3x3Sigma0U8C1(uint8_t *src, int width, int height, int istride,
 
 OpenCL  kernel内核代码采用buffer的方式进行读写操作，每个工作项处理4个元素，利用向量化方式处理可以多个工作项并行运算。如果读采用image2d_t的方式，性能会更好，以后会介绍。
 
-__kernel void Gauss3x3u8c1Buffer(__global uchar *src, int row, int col,
-
 ```cpp
+__kernel void Gauss3x3u8c1Buffer(__global uchar *src, int row, int col,
                                  int src_pitch, int dst_pitch,
                                  __global uchar *dst)
 {

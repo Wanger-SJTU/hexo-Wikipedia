@@ -80,7 +80,10 @@ void matMultCPU_parallel(const float* a, const float* b, float* c, int n)
 
 分块矩阵的原理：
 
+```text
 A=\left[ \begin{matrix} A_{00}&A_{01}\\ A_{10}&A_{11} \end{matrix} \right],  B=\left[ \begin{matrix} B_{00}&B_{01}\\ B_{10}&B_{11} \end{matrix} \right], C=\left[ \begin{matrix} C_{00}&C_{01}\\ C_{10}&C_{11} \end{matrix} \right]\\ \tag{1} 
+```
+
 
 $$C=\left[ \begin{matrix} C_{00}&C_{01}\\ C_{10}&C_{11} \end{matrix} \right]= \left[ \begin{matrix} A_{00}&A_{01}\\ A_{10}&A_{11} \end{matrix} \right] \bullet \left[ \begin{matrix} B_{00}&B_{01}\\ B_{10}&B_{11} \end{matrix} \right]\\ \tag{2}$$
 

@@ -204,12 +204,8 @@ static PyMethodDef GreateModuleMethods[] = {
     },
     {NULL, NULL, 0, NULL}
 };
-```
-
 
 PyMODINIT_FUNC initgreat_module(void) {
-
-```text
     (void) Py_InitModule("great_module", GreateModuleMethods);
 }
 ```
@@ -254,8 +250,12 @@ easy_install -U cython
 继续以例子说明：
 
 #great_module.pyx
+
+```text
 cdef public great_function(a,index):
     return a[index]
+```
+
 
 这其中有非Python关键字cdef和public。这些关键字属于Cython。由于我们需要在C语言中使用“编译好的Python代码”，所以得让great_function从外面变得可见，方法就是以“public”修饰。而cdef类似于Python的def，只有使用cdef才可以使用Cython的关键字public。
 
@@ -317,8 +317,12 @@ gcc main.c great_module.c -o main -I/usr/include/python2.7/ -lpython2.7
 这个例子中我们使用了Python的动态类型特性。如果你想指定类型，可以利用Cython的静态类型关键字。例子如下：
 
 #great_module.pyx
+
+```cpp
 cdef public char great_function(const char * a,int index):
     return a[index]
+```
+
 
 cython编译后得到的.h里，great_function的声明是这样的：
 
@@ -350,20 +354,12 @@ int main(int argc, char *argv[]) {
 #include 
 #include 
 #include "great_module.h"
-```
-
 
 extern __declspec(dllexport) int __stdcall _great_function(const char * a, int b) {
-
-```text
     return great_function(a,b);
 }
-```
-
 
 BOOL WINAPI DllMain(HINSTANCE hinstDLL,DWORD fdwReason,LPVOID lpReserved) {
-
-```text
     switch( fdwReason ) { 
         case DLL_PROCESS_ATTACH:
             Py_Initialize();

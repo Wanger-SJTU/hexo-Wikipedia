@@ -84,10 +84,10 @@ python3 disagg_pd_proxy_server.py
 核心代码如下：
 
 @app.route('/v1/completions', methods=['POST'])
-async def handle_request():
-    try:
 
 ```text
+async def handle_request():
+    try:
         original_request_data = await request.get_json()
         prefill_request = original_request_data.copy()
 
@@ -375,12 +375,15 @@ vllm
 
 set -xe
 
+```text
 MODEL_NAME="/opt/llm/input/pretrain/Qwen--QwQ-32B"
 MAX_MODEL_LEN=32768
 GPU_MEMORY_UTILIZATION=0.95
 gpu_id_prefill="0,1"
 gpu_id_decoder="2,3"
 kv_cache_type="SharedStorageConnector"  # SharedStorageConnector/ LMCacheConnectorV1 / NixlConnector
+```
+
 
 # Trap the SIGINT signal (triggered by Ctrl+C)
 trap 'cleanup' INT
@@ -391,11 +394,11 @@ export VLLM_HOST_IP=$(hostname -I | awk '{print $1}')
 
 
 # a function that waits vLLM server to start
+
+```text
 wait_for_server() {
   local port=$1
   timeout 1200 bash -c "
-
-```text
     until curl -s localhost:${port}/v1/completions   /dev/null; do
       sleep 1
     done"    return 0 || return 1
@@ -404,8 +407,12 @@ wait_for_server() {
 
 
 # You can also adjust --kv-ip and --kv-port for distributed inference.
+
+```text
 gpu_count_prefill=$(echo "$gpu_id_prefill" | tr ',' '\n' | wc -l)
 gpu_count_decode=$(echo "$gpu_id_decoder" | tr ',' '\n' | wc -l)
+```
+
 
     echo "Using LMCacheConnectorV1 for kv cache"
         # prefilling instance, which is the KV producer
@@ -464,11 +471,14 @@ sglang
 
 #!/bin/bash
 
+```text
 MODEL_NAME="Qwen/Qwen3-0.6B"
 MAX_MODEL_LEN=32768
 gpu_id_prefill=0,1
 gpu_id_decoder=2,3
 GPU_MEMORY_UTILIZATION=0.95
+```
+
 
 # prefill
 echo "async start prefill server."

@@ -184,12 +184,20 @@ KV纯实验现在更清楚地解决了第2.5节的预测模式。<strong>预测1
 如图3(b)所示，我们用跨注意力路径补充EAGLE-3自注意力路径到目标KV，通过门控delta规则合并。设计直觉很简单：隐藏状态路径应该保持EAGLE-3的强短程行为，而KV路径应该在更长范围重新注意力变得有用时提供校正。给定草稿token表示 \(x_i\)，我们计算：
 
 $$
+
+```text
 n_i = \text{SelfAttn}(x_i) \quad \text{（EAGLE-3路径）}
+```
+
 \tag{6}
 $$
 
 $$
+
+```text
 o_i = \text{CrossAttn}(x_i, M_i) \quad \text{（KV路径）}
+```
+
 \tag{7}
 $$
 
@@ -203,7 +211,11 @@ $$
 共享门控控制应用多少这种校正：
 
 $$
+
+```text
 g_i = \sigma(W_g [n_i; o_i; \Delta_i] + b_g)
+```
+
 \tag{9}
 $$
 

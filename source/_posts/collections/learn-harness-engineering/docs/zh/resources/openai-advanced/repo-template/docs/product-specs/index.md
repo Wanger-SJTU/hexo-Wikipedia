@@ -1,0 +1,26 @@
+---
+title: 产品规格索引
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/zh/resources/openai-advanced/repo-template/docs/product-specs/index/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
+# 产品规格索引
+
+这个目录用来放当前仍然有效的用户可见行为规格。
+
+## 当前有效规格
+
+- `new-user-onboarding.md`
+
+## 规则
+
+- spec 重点描述用户可见行为和验收标准。
+- 如果实现和 spec 不一致，要在同一轮会话里更新其中一方。
+- 保持这份索引是最新的，让新 agent 能快速发现产品范围。

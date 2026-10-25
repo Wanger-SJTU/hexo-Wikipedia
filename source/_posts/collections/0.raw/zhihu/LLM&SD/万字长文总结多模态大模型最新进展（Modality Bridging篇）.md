@@ -288,7 +288,10 @@ InternLM-XComposer的架构和训练方案。预训练阶段对齐了视觉和�
 
 ### CogVLM: Visual Expert for Pretrained Language Models
 
+```text
 tl;nr: 使用已经训练好的LLM，然后给它添加图像的功能。方法上，引入vit 做图像的encoder和MLP adapter, 来将图像编码到和text一样的embedding空间中，然后是在LLM的各层添加visual expert，它具有独立的QKV和FFN相关的参数， 并使用LLM中的层来做初始化，训练的时候冻结已经训练好的LLM部分，训练图像相关的部分。这就是作者探讨的deep fusion方法。最后的效果提升很大。 除了很少的任务没有超过Pali-x之外，其他全部sota。
+```
+
 
 浅层对齐的方法： blip-2中，把已经训练好的image encoder冻结，然后加一个Q-former或者linear layer，把image feature映射到语言模型的input embedding space中, BLIP-2 NoCaps CIDEr 121.6。收敛很快，但是结果没有联合训练的模型效果好，e.g., PaLI-X. 用浅层对齐的方法训练的chat-style模型, e.g., MiniGPT-4, LLAVA, and VisualGLM , 视觉理解能力弱表现为幻觉。
 

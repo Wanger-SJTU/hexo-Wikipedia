@@ -51,10 +51,14 @@ $得到 X′=(0000001020000000304000000)" role="presentation">X′=(000000102000
 >>> F = torch.Tensor([[[[5, 6], [7, 8]]]])
 >>> Y = torch.nn.functional.conv_transpose2d(X, F, stride=2, padding=0)
 >>> print(Y)
+
+```text
 tensor([[[[ 5.,  6., 10., 12.],
           [ 7.,  8., 14., 16.],
           [15., 18., 20., 24.],
           [21., 24., 28., 32.]]]])
+```
+
 
 <strong>case 2: stride = 1, pad = 1</strong>
 
@@ -71,9 +75,13 @@ tensor([[[[ 5.,  6., 10., 12.],
 >>> F=torch.Tensor([[[[10, 11, 12], [13, 14, 15], [16, 17, 18]]]])
 >>> Y = torch.nn.functional.conv_transpose2d(X,F,stride=1,padding=1)
 >>> print(Y)
+
+```text
 tensor([[[[134., 245., 198.],
           [327., 570., 441.],
           [350., 587., 438.]]]])
+```
+
 
 ### gemm+col2im 计算 conv_transpose
 
@@ -89,9 +97,8 @@ gemm+col2im计算conv_transpose假设输入feature_map的layout是C*H*W(假设ba
 
 下面给出caffe中col2im的cpu代码实现，比较简单，我们先来消化一下：
 
+```cpp
 inline bool is_a_ge_zero_and_a_lt_b(int a, int b) {
-
-```text
   return static_castunsigned>(a)  static_castunsigned>(b);
 }
 ```
@@ -242,15 +249,15 @@ for (int c = 0； c  channel; ++c)
 
 ![](/images/collections/0.raw/zhihu/dl%E8%AE%BA%E6%96%87/asset/img_b14dbdab6c90.jpg)
 
-kx=0,ky=0时的反卷积计算示意图![](/images/collections/0.raw/zhihu/dl%E8%AE%BA%E6%96%87/asset/img_8c7849ff7131.jpg)
+```cpp
+kx=0,ky=0时的反卷积计算示意图![](asset/img_8c7849ff7131.jpg)
 
-kx=0, ky=1时反卷积计算示意图![](/images/collections/0.raw/zhihu/dl%E8%AE%BA%E6%96%87/asset/img_119c40fb96a1.jpg)
+kx=0, ky=1时反卷积计算示意图![](asset/img_119c40fb96a1.jpg)
 
-kx=1,ky=0时反卷积计算示意图![](/images/collections/0.raw/zhihu/dl%E8%AE%BA%E6%96%87/asset/img_d57d8adf59d3.jpg)
+kx=1,ky=0时反卷积计算示意图![](asset/img_d57d8adf59d3.jpg)
 
 kx=1,ky=1时反卷积计算示意图第二版代码：
 
-```cpp
 template <>
 void conv_transpose_depthwisefloat>(const float* dst,
                                     const float* weights,
@@ -468,9 +475,8 @@ void conv_transpose_depthwise_s1float>(const float* dst,
 
 第四个版本与第三个版本相比，在w方向上改为一次处理16个float数据增加并行性，把伪SIMD的代码改为调用ARM neon intrinsic 的形式来实现，先把要处理的16个w方向上的数据横向坐标放到一个连续空间的数组变量iw_data中，下面这条语句实现的是4个数据的SIMD比较：
 
-uint32x4_t boundray0 = vandq_u32(vcgeq_s32(vld1q_s32(iw_data), vdupq_n_s32(0)),
-
 ```text
+uint32x4_t boundray0 = vandq_u32(vcgeq_s32(vld1q_s32(iw_data), vdupq_n_s32(0)),
                             vcltq_s32(vld1q_s32(iw_data), vdupq_n_s32(width)));
 ```
 

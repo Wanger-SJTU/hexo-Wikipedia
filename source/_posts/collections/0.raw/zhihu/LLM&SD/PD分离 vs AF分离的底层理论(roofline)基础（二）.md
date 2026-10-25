@@ -27,13 +27,17 @@ source_url: https://zhuanlan.zhihu.com/p/2026612737929684371
 attention的详细计算见[PD分离 vs AF分离的底层理论(roofline)基础](https://zhuanlan.zhihu.com/p/2026224424043430871)。为了详细说明prefill和decode阶段的差异，现在我们假设input_tokens=[I am a researcher],是一个seq_len=4的数组。经过prefill计算后，生成第一个新token，假设是“and”，那么现在送给decode的输入就是prefill阶段生成的kv cache以及新token--“and”的embedding矩阵，见上图。我们知道kv cache里存的是经过线性投影后的K,V，所以现在对于前4个token我们是不需要再计算K,V的，而attention计算的本质是每个token的Q与自身以及其他token去计算自注意力，那么现在要做的就是用新token的Q去计算self-attention，而历史的4个token的自注意力已经算完了，不会再进行计算。这里，计算量就是：计算新token的Q,K,V，然后用新token的Q与历史所有token的K,V进行注意力计算，得到新token的注意力权重。
 
 - QKV线性投影计算
+
+```text
 x_new = [B, 1, H], 这里seq_len = 1了
 
-Q_new = x_new x q_proj = [B, 1, H] x [H, H] = [B, 1, H]，<strong>QFLOPS = BH^2</strong>
+Q_new = x_new x q_proj = [B, 1, H] x [H, H] = [B, 1, H]，**QFLOPS = BH^2**
 
-K_new = x_new x k_proj = [B, 1, H] x [H, H] = [B, 1, H],  <strong>KFLOPS=BH^2</strong>
+K_new = x_new x k_proj = [B, 1, H] x [H, H] = [B, 1, H],  **KFLOPS=BH^2**
 
-V_new = x_new x v_proj = [B, 1, H] x [H, H] = [B, 1, H], <strong>VFLOPS=BH^2</strong>
+V_new = x_new x v_proj = [B, 1, H] x [H, H] = [B, 1, H], **VFLOPS=BH^2**
+```
+
 
 将K_new和V_new加入到kv cache里，更新kv cache，K = [B, L+1, H], V = [B, L+1, H]
 
@@ -51,7 +55,11 @@ V-->reshaped_V: <span class="wikilink wikilink--missing" title="未导入的页�
 s = QK^T=[B,d,1,h]x[B,d,h,L+1] = [B,d,1,L+1], <strong>sFLOPS=BH(L+1)</strong>
 
 - 自注意力计算
-attn = softmax(s/ \sqrt{d} )V = [B,d,1,L+1] x [B, d, L+1, h] = [B,d,1,h], <strong>attnFLOPS=BH(L+1)</strong>,因为我们关注的是flops，所以softmax这种算子的计算我们暂且忽略。
+
+```text
+attn = softmax(s/ \sqrt{d} )V = [B,d,1,L+1] x [B, d, L+1, h] = [B,d,1,h], **attnFLOPS=BH(L+1)**,因为我们关注的是flops，所以softmax这种算子的计算我们暂且忽略。
+```
+
 
 - 多头合并以及输出矩阵线性投影
 attn_out = concat（attn）x Wo = concat([B,d,1,h]) x [H,H] = [B,1,H]x[H,H] = [B,1,H],
@@ -71,13 +79,16 @@ attn_out = concat（attn）x Wo = concat([B,d,1,h]) x [H,H] = [B,1,H]x[H,H] = [B
 
 Decode阶段我们只需要计算新token的QKV。
 
+```text
 x = [B, 1, H], q_proj=[H,H], v_proj=[H,H], k_proj=[H,H]
 
-Q=x*q_proj=[B,1,H], 读访存量：<strong>BH+H^2</strong>, 写访存量：<strong>BH</strong>
+Q=x*q_proj=[B,1,H], 读访存量：**BH+H^2**, 写访存量：**BH**
 
-K=x*k_proj=[B,1,H], 读访存量：<strong>BH+H^2</strong>, 写访存量：<strong>BH</strong>
+K=x*k_proj=[B,1,H], 读访存量：**BH+H^2**, 写访存量：**BH**
 
-V=x*v_proj=[B,1,H], 读访存量：<strong>BH+H^2</strong>, 写访存量：<strong>BH</strong>
+V=x*v_proj=[B,1,H], 读访存量：**BH+H^2**, 写访存量：**BH**
+```
+
 
 QKV计算阶段的总访存量=<strong>6BH+3H^2</strong>
 
@@ -91,7 +102,11 @@ s = reshaped_Q x reshaped_K^T=[B,d,1,h]x[B,d,h,L+1] = [B,d,1,L+1]
 读访存量：<strong>B(L+1)H+BH</strong>，写访存量：<strong>Bd(L+1)</strong>
 
 - softmax计算
-sf = softmax(s/ \sqrt{d}\ )，读访存量：<strong>Bd(L+1)</strong>， 写访存量：<strong>Bd(L+1)</strong>
+
+```text
+sf = softmax(s/ \sqrt{d}\ )，读访存量：**Bd(L+1)**， 写访存量：**Bd(L+1)**
+```
+
 
 - 自注意力分数计算
 attn = sf x V = [B,d,1,L+1] x [B, d, L+1, h] = [B,d,1,h],
@@ -114,17 +129,23 @@ out = concat(attn) x Wo = [B, 1, H] x [H,H] = [B, 1, H]
 
 令intermediate_size = I
 
+```text
 ffn_input = attn_out+res=[B, 1, H], gate_proj=[H,I], up_proj=[H,I], down_proj=[I,H]
 
 GATE=ffn_input x gate_proj = [B, 1, H] x [H,I] = [B, 1, I], gateFLOPS=BHI, 读访存：BH+HI，写访存：BI
 
 UP=ffn_input x up_proj = [B, 1, H] x [H,I] = [B, 1, I], upFLOPS=BHI, 读访存：BH+HI，写访存：BI
+```
+
 
 GATE过激活以及GATE和UP逐元素点积 mul=act(GATE) \odot UP=[B, 1, I] \odot [B, 1, I]=[B, 1, I]
 
+```text
 FLOPS=BI, 读访存：2BI，写访存：BI
 
 DOWN=mul x down_proj = [B, 1, I] x [I,H] = [B, 1, H], downFLOPS= BHI, 读访存：BI+HI，写访存：BH
+```
+
 
 FFN阶段FLPOS=BHI+BHI+BI+BHI=3BHI+BI , FFN阶段访存= BH+HI +BI+BH+HI+BI+2BI+BI+BI+HI+BH=3BH+3HI +6BI
 

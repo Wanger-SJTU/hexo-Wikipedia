@@ -109,10 +109,9 @@ CUDA线程层级
 
 下面是一段简单的内核函数，用于求两个数组的和：
 
+```cpp
 // Kernel definition
 __global__ void VecAdd(float* A, float* B, float* C)
-
-```cpp
 {
     int i = threadIdx.x;
     C[i] = A[i] + B[i];
@@ -136,10 +135,9 @@ threadIdx.x`是线程在所处线程块中的X方向的ID。由于本例中是�
 
 下面举一个2维排布的例子，用于做矩阵加法：
 
+```cpp
 // Kernel definition
 __global__ void MatAdd(float A[N][N], float B[N][N],
-
-```cpp
 float C[N][N])
 {
     int i = blockIdx.x * blockDim.x + threadIdx.x;
@@ -249,11 +247,7 @@ using namespace cv;
 using namespace std;
 
 //内核函数
-```
-
 __global__ void rgb2grayincuda(uchar3 * const d_in, unsigned char * const d_out, 
-
-```cpp
                                 uint imgheight, uint imgwidth)
 {
     const unsigned int idx = blockIdx.x * blockDim.x + threadIdx.x;
@@ -343,12 +337,15 @@ CUDA、CPU、OPENCV执行时间对比速度：CUDA>OPENCV>CPU。其中OPENCV快�
 
 附上CMakeLists.txt：
 
+```text
 cmake_minimum_required(VERSION 2.8)
 project(testcuda)
 find_package(CUDA REQUIRED)
 find_package(OpenCV REQUIRED)
 cuda_add_executable(testcuda main.cu)
 target_link_libraries(testcuda ${OpenCV_LIBS})
+```
+
 
 水水的介绍到此结束，剩下的我就要放飞自我了，看不懂别怪我*
 
@@ -471,17 +468,15 @@ float data[256];
 cudaMemcpyToSymbol(constData, data, sizeof(data));
 cudaMemcpyFromSymbol(data, constData, sizeof(data));
 
-__device__ float devData;
-
 ```text
+__device__ float devData;
 float value = 3.14f;
 ```
 
 cudaMemcpyToSymbol(devData, &value, sizeof(float));
 
-__device__ float* devPointer;
-
 ```text
+__device__ float* devPointer;
 float* ptr;
 ```
 
@@ -498,9 +493,8 @@ cudaMemcpyToSymbol(devPointer, &ptr, sizeof(ptr));
 
 __shared__ unsigned int hist_shared[256];   //共享内存仅在线程块内共享
 
-__global__ void getGrayHistincuda_usesharemem(unsigned char * const grayData, 
-
 ```cpp
+__global__ void getGrayHistincuda_usesharemem(unsigned char * const grayData, 
                                             unsigned int * const hist,
                                             uint imgheight,
                                             uint imgwidth)  //使用共享内存加速
@@ -653,11 +647,8 @@ cudaStream_t stream[2];
 for (int i = 0; i  2; ++i)
     cudaStreamCreate(&stream[i]);
 float* hostPtr;
-```
-
 cudaMallocHost(&hostPtr, 2 * size);
 
-```cpp
 for (int i = 0; i  2; ++i) {
     cudaMemcpyAsync(inputDevPtr + i * size, hostPtr + i * size,
                     size, cudaMemcpyHostToDevice, stream[i]);
@@ -747,11 +738,19 @@ for (size_t i = 0; i  2; ++i) {
 ### 3.2.5.6.1 事件的创建和销毁
 
 cudaEvent_t start, stop;    //创建
+
+```text
 cudaEventCreate(&start);
 cudaEventCreate(&stop);
+```
+
 ...
 cudaEventDestroy(start);    //销毁
+
+```text
 cudaEventDestroy(stop);
+```
+
 
 ### 3.2.5.6.2 计算时间
 
@@ -765,12 +764,8 @@ for (int i = 0; i  2; ++i) {
     MyKernel100, 512, 0, stream[i]>>>(outputDev + i * size, inputDev + i * size, size);
     cudaMemcpyAsync(outputHost + i * size, outputDev + i * size, size, cudaMemcpyDeviceToHost, stream[i]);
 }
-```
-
 cudaEventRecord(stop, 0);
 cudaEventSynchronize(stop);
-
-```text
 float elapsedTime;
 ```
 
@@ -806,7 +801,10 @@ for (device = 0; device  deviceCount; ++device) {
 
 下例是一个设备选择的例子：
 
+```text
 size_t size = 1024 * sizeof(float);
+```
+
 cudaSetDevice(0);   // Set device 0 as current
 
 ```text
@@ -830,11 +828,19 @@ MyKernel1000, 128>>>(p1); // Launch kernel on device 1
 
 - 内核启动**(will fail)：如果将内核压入不属于当前设备的流中，则内核会启动失败。也就是说，如果要向一个流中压入内核，必须先切换到流所在的设备：
 cudaSetDevice(0);   // Set device 0 as current
+
+```text
 cudaStream_t s0;
+```
+
 cudaStreamCreate(&s0);  // Create stream s0 on device 0
 MyKernel100, 64, 0, s0>>>(); // Launch kernel on device 0 in s0
 cudaSetDevice(1);   // Set device 1 as current
+
+```text
 cudaStream_t s1;
+```
+
 cudaStreamCreate(&s1);  // Create stream s1 on device 1
 MyKernel100, 64, 0, s1>>>(); // Launch kernel on device 1 in s1
 
@@ -860,9 +866,9 @@ cudaSetDevice(0);   // Set device 0 as current
 
 ```text
 float* p0;
+size_t size = 1024 * sizeof(float);
 ```
 
-size_t size = 1024 * sizeof(float);
 cudaMalloc(&p0, size);      // Allocate memory on device 0
 MyKernel1000, 128>>>(p0);    // Launch kernel on device 0
 cudaSetDevice(1);               // Set device 1 as current
@@ -883,13 +889,13 @@ cudaSetDevice(0);   // Set device 0 as current
 
 ```text
 float* p0;
+size_t size = 1024 * sizeof(float);
 ```
 
-size_t size = 1024 * sizeof(float);
 cudaMalloc(&p0, size);  // Allocate memory on device 0
-cudaSetDevice(1);
 
 ```text
+cudaSetDevice(1);
 float* p1;
 ```
 
@@ -1189,12 +1195,8 @@ CUDA具有Occupancy Calculator，帮助程序员设计。
 ```cpp
 //假设gpuData是一个二维数组，尺寸为32x32
 int gpuData[32][32];  //这样是不合法的，因为这么定义实际上是在主机端，还需要拷贝到设备端，这里只是为了方便说明问题
-```
-
 
 __global__ void Kernel1(int gpuData[][32])
-
-```cpp
 {
     const int tid = blockIdx.x * blockDim.x + threadIdx.x;
     int sum = 0;
@@ -1202,12 +1204,8 @@ __global__ void Kernel1(int gpuData[][32])
         sum += gpuData[i][tid]; //行访问
     ...
 }
-```
-
 
 __global__ void Kernel2(int gpu[][32])
-
-```cpp
 {
     const int tid = blockIdx.x * blockDim.x + threadIdx.x;
     int sum = 0;

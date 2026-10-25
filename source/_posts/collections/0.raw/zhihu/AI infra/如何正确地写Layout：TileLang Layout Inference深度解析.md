@@ -473,12 +473,8 @@ for i, j in T.Parallel(...):
 ```text
 // ...
   PrimExpr loop_thread_extent = loop_layout_->ThreadExtent();
-```
-
 
   auto block_size = T.thread_bounds->extent;
-
-```text
   if (loop_layout_.defined()) {
     if (loop_layout_->ThreadRange().defined()) {
       auto thread_range = loop_layout_->ThreadRange();
@@ -546,8 +542,11 @@ Layout Model
 
 对于普通`Layout`来说，`forward_index`将逻辑输入坐标映射到变换后输出shape中的坐标。它不一定是byte offset，也不一定是最终flatten后的内存地址。实际内存offset会在之后根据输出坐标和buffer strides计算出来。比如：
 
+```text
 Layout((M, N) -> (M / 16, N, 16),
        (i, j) -> (i / 16, j, i % 16))
+```
+
 
 表示`A[i, j] -> B[i / 16, j, i % 16]`这个映射。如果输出buffer是compact row-major，那么最终地址之后可能变成（我们在Triton中喜闻乐见的）`(i / 16) * stride0 + j * stride1 + (i % 16) * stride2`
 
@@ -558,12 +557,8 @@ class Layout : public ObjectRef {
 public:
   TVM_DLL Layout(Array<IterVar> forward_var, Array<PrimExpr> forward_index);
   TVM_DLL Layout(Array<PrimExpr> input_size, Array<PrimExpr> forward_index);
-```
-
 
   TVM_FFI_DEFINE_OBJECT_REF_METHODS_NULLABLE(Layout, ObjectRef, LayoutNode);
-
-```text
 };
 ```
 
@@ -575,13 +570,9 @@ class Fragment : public Layout {
 public:
   TVM_DLL Fragment(Array<IterVar> forward_var, Array<PrimExpr> forward_index,
                    PrimExpr forward_thread, IterVar thread_replicate);
-```
-
 
   TVM_DLL Fragment(Array<PrimExpr> input_size, Array<PrimExpr> forward_index,
                    PrimExpr forward_thread, PrimExpr replicate_size,
-
-```text
                    Optional<Var> replicate_var);
 }
 ```
@@ -714,9 +705,8 @@ Fragment ParallelOpNode::ComputePlanCandidate(const LayoutInferArgs &T) const {
 计算loop迭代总数
 通过计算parallel loops的extent来计算拍平后的loop size。例如`for i, j in T.Parallel(4, 16):`的loop size就是64。
 
-PrimExpr loop_total_size = 1;
-
 ```cpp
+PrimExpr loop_total_size = 1;
   for (Stmt l = root_; l.as<For>().has_value(); l = l.as<For>().value()->body)
     loop_total_size = loop_total_size * l.as<For>().value()->extent;
 ```
@@ -725,9 +715,8 @@ PrimExpr loop_total_size = 1;
 调用`PlanLoopPartition`构造layout
 实际layout构造发生在`PlanLoopPartition`中。源码如下：
 
-Fragment Partition(const For &op, int num_thread, int vectorize_size) {
-
 ```cpp
+Fragment Partition(const For &op, int num_thread, int vectorize_size) {
     this->VisitStmt(op);
     DataType dtype = DataType::Int(32);
     if (!loop_vars_.empty()) {
@@ -761,12 +750,15 @@ Fragment Partition(const For &op, int num_thread, int vectorize_size) {
 
 对于`T.Parallel(4, 16)`、`threads=64`、`vector_size=4`：
 
+```text
 flattened(i, j) = i * 16 + j
 access_index(i, j) = (i * 16 + j) / 4
 thread         = ((i * 16 + j) / 4) % 64 
                = (i * 16 + j) / 4 (因为总小于64)
 local_idx      = (i * 16 + j) / 64 +  (i * 16 + j) % 4 
                = (i * 16 + j) % 4 （因为前一项恒等于0）
+```
+
 
 Fragment buffer的特殊检查
 Fragment loop比普通copy/shared-memory loop更严格。对于fragment access，TileLang会尽量避免padded logical points，因为padding会制造假的fragment ownership。对于非fragment的SIMT loop，padding可以在lowering时通过guard跳过。
@@ -869,49 +861,35 @@ analyzer.Bind(rep_small,
               Range(IntImm(small_frag->ReplicateExtent()->dtype, 0),
                     small_frag->ReplicateExtent()),
               true);
+auto thread = small_frag->ForwardThread(small_frag_indices, rep_small);
 ```
 
-auto thread = small_frag->ForwardThread(small_frag_indices, rep_small);
 
 这表示：对于candidate layout的任意合法replica，计算执行这次access的thread。
 
 下一步，函数会问large fragment：“如果我使用large fragment的物理local index，再加上small fragment的thread，那么这个物理坐标对应large fragment中的哪个逻辑元素？”
 
-auto large_frag_physical_and_thread = large_frag->Forward(large_frag_indices);
-
 ```text
+auto large_frag_physical_and_thread = large_frag->Forward(large_frag_indices);
 large_frag_physical_and_thread.push_back(thread);
-```
-
 auto inv_large_frag = large_frag->Inverse();
 auto inv_large_frag_logical_and_rep =
-
-```text
     inv_large_frag->Forward(large_frag_physical_and_thread);
-```
-
 
 large_frag->Forward(large_frag_indices)`给出local index，结合推理出的thread，形成物理坐标`(large local index, candidate thread)`。Large fragment的inverse会把这个物理坐标映射回`(large logical indices, large replica)`。最后一个元素就是恢复出的replica。
 
 auto inv_large_frag_rep =
-
-```text
     inv_large_frag_logical_and_rep[inv_large_frag_logical_and_rep.size() - 1];
 ```
 
 
 最后，函数使用这个恢复出的replica重新计算large fragment的owning thread：
 
-auto check_thread =
-
 ```text
+auto check_thread =
     large_frag->ForwardThread(large_frag_indices, inv_large_frag_rep);
-```
-
 
 auto diff = analyzer.Simplify(thread - check_thread);
-
-```text
 return analyzer.CanProve(diff == 0);
 ```
 
@@ -935,12 +913,18 @@ if (access.is_write &&
 
 例如，在`for i, j in T.Parallel(2, 2):`中，假设buffer layout是
 
+```text
 forward_thread(i, j) = i * 2 + j
 forward_index(i, j) = 0
+```
+
 candidate layout 是
 
+```text
 forward_thread(i, j) = i
 forward_index(i, j) = j
+```
+
 
 ![](https://pic1.zhimg.com/v2-492a0416795fb90d8f0642578f6f86be_r.jpg)Layout visualizatioinCandidate layout可能覆盖相同的逻辑shape（比如thread0 和thread1想要读取的时候，总是可以读取），但由于把每个元素存到了不同的物理thread/local slot，所以会存在读写不一致性，应该被拒绝。
 
@@ -1004,8 +988,11 @@ for row, col in T.Parallel(4, 16):
 
 - `forward_thread(group, row_in_group) = group * 32 + row_in_group * 16`四个逻辑iteration分别映射到thread 0, thread 16, thread 32, thread 48。问题是，<strong>这个layout是稀疏的</strong>。从数学角度看，这个映射仍然是单射：没有两个逻辑iteration映射到同一个物理位置。然而，当前inverse-lowering路径很难表示它。Lowering需要从物理thread坐标反推出逻辑loop变量，但推导过程需要整除约束：
 
+```text
 group = thread / 32
 row_in_group = (thread % 32) / 16
+```
+
 当前路径会走TVM的affine inverse machinery，而这个稀疏single-component map可能会产生一个source scale不是`1`或`-1`的`IterSplitExpr`。这就是失败来源：
 
 TVM_FFI_ICHECK(analyzer_->CanProveEqual(abs(source->scale), 1));
@@ -1029,8 +1016,11 @@ T.annotate_layout({
 
 于是`forward_thread(row, col) = col`。那么读取`fragment[row, 0]`会得到：
 
+```text
 thread = 0
 local  = row
+```
+
 这就是一种replicated或single-thread风格的access，而不是稀疏的`{0, 16, 32, 48}`模式。不一定是性能最好的layout，但它能跑。
 
 收尾

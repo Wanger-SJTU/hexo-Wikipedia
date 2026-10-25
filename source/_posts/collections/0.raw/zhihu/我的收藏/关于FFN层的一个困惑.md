@@ -21,12 +21,12 @@ source_url: https://zhuanlan.zhihu.com/p/1942160792649721494
 
 在FFN层，对于hidden_states输入来说，先经过一个up_proj和gate_proj，然后将二者的结果做elementwise乘法，得到的immediate tensor再执行一次down_proj。对应如下的计算：
 
+```python
 hidden =  torch.randn(1, H, device="cuda")
 up_proj = torch.randn(H, 4*H, device="cuda")
 gate_proj = torch.randn(H, 4*H, device="cuda")
 down_proj = torch.randn(4*H, H, device="cuda")
 
-```python
 def ffn_native():
     up = torch.matmul(hidden, up_proj)
     gate = torch.matmul(hidden, gate_proj)

@@ -136,17 +136,14 @@ struct Node'a> {
 
 impl'a> Drop for Node'a> {
 
-```text
+```js
     fn drop(&mut self) {
          println!("{}", self.val.unwrap());
     }
 }
-```
-
 
 fn main() {
 
-```js
     let x = 123;
     let node = Node{val: Some(&x)}; // ok, 因为node比x先drop
 }
@@ -167,17 +164,14 @@ struct Node'a> {
 
 impl'a> Drop for Node'a> {
 
-```text
+```js
     fn drop(&mut self) {
         // drop函数不再访问&i32, 但也不能编译成功
     }
 }
-```
-
 
 fn main() {
 
-```js
     let mut node = Node{val: None};
     let x = 123;
     node.val = Some(&x);  // error, `x` does not live long enough
@@ -220,12 +214,9 @@ impl'a> Drop for Node'a> {
 
     }
 }
-```
-
 
 fn main() {
 
-```text
     let mut node = Node{val: None, i: 1};
     node.val = Some(&node.i); // borrow may still be in use when destructor runs
 }
@@ -248,17 +239,14 @@ struct NodeT> {
 
 implT> Drop for NodeT> {
 
-```text
+```js
     fn drop(&mut self) {
         // drop函数不访问T, 但也不能编译成功
     }
 }
-```
-
 
 fn main() {
 
-```js
     let mut node = Node{val: None};
     let x = 123;
     node.val = Some(&x);  // error, `x` does not live long enough
@@ -283,11 +271,8 @@ struct Node'a> {
 }
 
 // Node 没有了drop方法
-```
-
 fn main() {
 
-```text
     let mut node = Node{val: None};
     let mut x = 123;
     node.val = Some(&mut x);
@@ -316,17 +301,14 @@ struct Node'a> {
 
 unsafe impl#[may_dangle]'a> Drop for Node'a> {
 
-```text
+```js
     fn drop(&mut self) {
 
     }
 }
-```
-
 
 fn main() {
 
-```js
     let mut node = Node{val: None};
     let x = 123;
     node.val = Some(&x);  
@@ -428,17 +410,14 @@ implT> Deref for MyBoxT> {
 
 implT> DerefMut for MyBoxT> {
 
-```text
+```js
     fn deref_mut(&mut self) -> &mut Self::Target {
         unsafe {&mut *self.p}
     }
 }
-```
-
 
 fn main() {
 
-```js
     let x = 42;
     let b = MyBox::new(x);
     println!("{}", *b);
@@ -450,9 +429,9 @@ fn main() {
 
 看上去没有什么问题，但下面的代码会报错
 
+```js
 fn main() {
 
-```js
     let mut x = 42;
     let b = MyBox::new(&mut x);
     println!("{}", x); //cannot borrow `x` as immutable because it is also borrowed as mutable
@@ -481,18 +460,15 @@ struct WrapperT: Debug>(T);
 
 implT: Debug> Drop for WrapperT> {
 
-```text
+```js
     fn drop(&mut self) {
         // Wrapper在drop时真的会访问 T 
         println!("wrapper access inner {:?}", self.0);
     }
 }
-```
-
 
 fn main() {
 
-```js
     let mut x = 42;
     let wrapper = Wrapper(&mut x);
     let b = MyBox::new(wrapper);

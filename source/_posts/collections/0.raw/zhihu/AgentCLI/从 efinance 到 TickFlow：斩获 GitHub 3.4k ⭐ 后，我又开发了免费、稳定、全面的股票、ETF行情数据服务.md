@@ -66,17 +66,28 @@ pip install tickflow
 
 #### 免费服务（无需注册）
 
+```python
 from tickflow import TickFlow
 
 tf = TickFlow.free()  # 免费服务
+```
+
 
 # 获取日K线
+
+```python
 df = tf.klines.get("600000.SH", period="1d", count=100, as_dataframe=True)
 print(df.tail())
+```
+
 
 # 获取标的信息
+
+```python
 instruments = tf.instruments.batch(symbols=["600000.SH", "000001.SZ"])
 print(instruments)
+```
+
 
 特点**：
 
@@ -92,9 +103,12 @@ print(instruments)
 - 配置认证
 <strong>方式一：直接传入</strong>
 
+```python
 from tickflow import TickFlow
 
 tf = TickFlow(api_key="your-api-key")
+```
+
 
 <strong>方式二：环境变量（Windows / Linux / Mac）</strong>
 
@@ -102,10 +116,14 @@ tf = TickFlow(api_key="your-api-key")
 export TICKFLOW_API_KEY="your-api-key"
 
 # Windows CMD
+
+```python
 set TICKFLOW_API_KEY=your-api-key
 from tickflow import TickFlow
 
 tf = TickFlow()  # 自动读取环境变量
+```
+
 
 - <strong>发起第一个请求</strong>
 quotes = tf.quotes.get(symbols=["600000.SH", "000001.SZ"])
@@ -137,23 +155,39 @@ for q in quotes:
 #### K 线
 
 # 单标的获取日K线
+
+```python
 klines = tf.klines.get("600000.SH", period="1d", count=10000, as_dataframe=True)
 print(klines.tail(5))
+```
+
 
 # 批量获取多标的
+
+```python
 symbols = ["600000.SH", "000001.SZ", "600519.SH"]
 dfs = tf.klines.batch(symbols, period="1d", count=10000, as_dataframe=True, show_progress=True)
 print(list(dfs.keys()))
+```
+
 
 #### 日内分时 K 线
 
 # 单标的 1 分钟 K 线
+
+```python
 df = tf.klines.intraday("600000.SH", period="1m", as_dataframe=True)
 print(df.tail())
+```
+
 
 # 批量
+
+```python
 dfs = tf.klines.intraday_batch(["600000.SH", "000001.SZ"], as_dataframe=True, show_progress=True)
 print(dfs["600000.SH"].tail())
+```
+
 
 #### 实时行情
 
@@ -161,20 +195,20 @@ print(dfs["600000.SH"].tail())
 quotes = tf.quotes.get(symbols=["600000.SH", "000001.SZ"], as_dataframe=True)
 
 # 按标的池查询
+
+```text
 quotes_a = tf.quotes.get(universes=["CN_Equity_A"], as_dataframe=True)
 quotes_etf = tf.quotes.get(universes=["CN_ETF"], as_dataframe=True)
+```
+
 
 #### 异步使用
 
 ```python
 import asyncio
 from tickflow import AsyncTickFlow
-```
-
 
 async def main():
-
-```python
     async with AsyncTickFlow(api_key="your-api-key") as tf:
         df = await tf.klines.get("600000.SH", as_dataframe=True)
         print(df.tail())

@@ -24,7 +24,10 @@ Employee* findEmployee(const std::string& fullName, bool retired = false);
 
 那么
 
+```text
 Employee* e = findEmployee("Chen", "Shuo");
+```
+
 
 对应哪个？
 

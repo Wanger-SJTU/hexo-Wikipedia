@@ -47,7 +47,10 @@ dumpsys meminfo 进程名/pid
 
 ② 线上通过代码获取，一般用于收集线上的内存数据：
 
+```text
 ActivityManager am = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+```
+
 ActivityManager.MemoryInfo memoryInfo = new ActivityManager.MemoryInfo();
 
 虽然获取方法不同，但这两种方式获取数据的原理完全一样，它们调用的都是 `android_os_Debug.cpp` 对象中的 `android_os_Debug_getDirtyPagesPid` 接口，它的源码如下：
@@ -357,9 +360,9 @@ int kgsl_memtrack_get_memory(pid_t pid, enum memtrack_type type,
 在<strong>内存描述指标</strong>这一部分，我们已经知道数据 ③ 中的数据是调用 malloc、mmap、calloc 等内存申请函数时积累的数据，想要获取这个数据，可以通过下面的接口实现。
 
 - 获取 Java 层申请的内存：会直接去 Art 虚拟机中获取虚拟机已经申请的内存大小。
-Runtime runtime = Runtime.getRuntime();
 
 ```text
+Runtime runtime = Runtime.getRuntime();
 //获取已经申请的Java内存 long usedMemory=runtime.totalMemory() ;
 //获取申请但未使用Java内存 long freeMemory = runtime.freeMemory();
 ```

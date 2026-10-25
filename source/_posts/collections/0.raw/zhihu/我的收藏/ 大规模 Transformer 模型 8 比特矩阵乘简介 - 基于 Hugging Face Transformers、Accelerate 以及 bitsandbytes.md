@@ -163,9 +163,9 @@ from bnb.nn import Linear8bitLt
 
 
 - 然后就可以定义自己的模型了。请注意，我们支持将任何精度的 checkpoint 或模型转换为 8 位 (FP16、BF16 或 FP32)，但目前，仅当模型的输入张量数据类型为 FP16 时，我们的 Int8 模块才能工作。因此，这里我们称模型为 fp16 模型。
-fp16_model = nn.Sequential(
 
 ```text
+fp16_model = nn.Sequential(
     nn.Linear(64, 64),
     nn.Linear(64, 64)
 )
@@ -177,9 +177,9 @@ fp16_model = nn.Sequential(
 torch.save(fp16_model.state_dict(), "model.pt")
 
 - 至此，`state_dict` 已保存，我们需要定义一个 int8 模型:
-int8_model = nn.Sequential(
 
 ```text
+int8_model = nn.Sequential(
     Linear8bitLt(64, 64, has_fp16_weights=False),
     Linear8bitLt(64, 64, has_fp16_weights=False)
 )
@@ -189,13 +189,19 @@ int8_model = nn.Sequential(
 此处标志变量 `has_fp16_weights` 非常重要。默认情况下，它设置为 `True`，用于在训练时使能 Int8/FP16 混合精度。但是，因为在推理中我们对内存节省更感兴趣，因此我们需要设置 `has_fp16_weights=False`。
 
 - 现在加载 8 位模型！
+
+```text
 int8_model.load_state_dict(torch.load("model.pt"))
 int8_model = int8_model.to(0) # 量化发生在此处
+```
+
 
 请注意，一旦将模型的设备设置为 GPU，量化过程就会在第二行代码中完成。如果在调用 `.to` 函数之前打印 `int8_model[0].weight`，你会看到:
 
 int8_model[0].weight
 Parameter containing:
+
+```text
 tensor([[ 0.0031, -0.0438, 0.0494, ..., -0.0046, -0.0410, 0.0436],
         [-0.1013, 0.0394, 0.0787, ..., 0.0986, 0.0595, 0.0162],
         [-0.0859, -0.1227, -0.1209, ..., 0.1158, 0.0186, -0.0530],
@@ -204,11 +210,15 @@ tensor([[ 0.0031, -0.0438, 0.0494, ..., -0.0046, -0.0410, 0.0436],
         [-0.0200, -0.0406, 0.0663, ..., 0.0123, 0.0551, -0.0121],
         [-0.0041, 0.0865, -0.0013, ..., -0.0427, -0.0764, 0.1189]],
        dtype=torch.float16)
+```
+
 
 而如果你在第二行之后打印它，你会看到:
 
 int8_model[0].weight
 Parameter containing:
+
+```text
 tensor([[ 3, -47, 54, ..., -5, -44, 47],
         [-104, 40, 81, ..., 101, 61, 17],
         [ -89, -127, -125, ..., 120, 19, -55],
@@ -217,6 +227,8 @@ tensor([[ 3, -47, 54, ..., -5, -44, 47],
         [ -21, -42, 68, ..., 13, 57, -12],
         [ -4, 88, -1, ..., -43, -78, 121]],
         device='cuda:0', dtype=torch.int8, requires_grad=True)
+```
+
 
 正如我们在前面部分解释量化方法时所讲，权重值被“截断”了。此外，这些值的分布看上去在 [-127, 127] 之间。
 
@@ -226,6 +238,7 @@ tensor([[ 3, -47, 54, ..., -5, -44, 47],
 
 你会看到:
 
+```text
 tensor([[ 0.0028, -0.0459, 0.0522, ..., -0.0049, -0.0428, 0.0462],
         [-0.0960, 0.0391, 0.0782, ..., 0.0994, 0.0593, 0.0167],
         [-0.0822, -0.1240, -0.1207, ..., 0.1181, 0.0185, -0.0541],
@@ -234,12 +247,18 @@ tensor([[ 0.0028, -0.0459, 0.0522, ..., -0.0049, -0.0428, 0.0462],
         [-0.0194, -0.0410, 0.0657, ..., 0.0128, 0.0554, -0.0118],
         [-0.0037, 0.0859, -0.0010, ..., -0.0423, -0.0759, 0.1190]],
        device='cuda:0')
+```
+
 
 这跟第一次打印的原始 FP16 值很接近！
 
 - 现在你只需将输入推给正确的 GPU 并确保输入数据类型是 FP16 的，你就可以使用该模型进行推理了:
+
+```text
 input_ = torch.randn(64, dtype=torch.float16)
 hidden_states = int8_model(input_.to(torch.device('cuda', 0)))
+```
+
 
 你可以查看 <strong>[示例脚本](https://zhuanlan.zhihu.com/blog/assets/96_hf_bitsandbytes_integration/example.py)</strong>，获取完整的示例代码！
 
@@ -254,11 +273,11 @@ hidden_states = int8_model(input_.to(torch.device('cuda', 0)))
 ```python
 import torch.nn as nn
 from accelerate import init_empty_weights
-```
-
 
 with init_empty_weights():
     model = nn.Sequential([nn.Linear(100000, 100000) for _ in range(1000)]) # This will take ~0 RAM!
+```
+
 
 初始化过的模型将放在 PyTorch 的  `meta` 设备上，这是一种用于表征向量的形状和数据类型而无需实际的内存分配的超酷的底层机制。
 
@@ -268,8 +287,11 @@ module._parameters[name] = nn.Parameter(module._parameters[name].to(torch.device
 
 修改成:
 
+```text
 param_cls = type(module._parameters[name])
 kwargs = module._parameters[name].__dict__
+```
+
 module._parameters[name] = param_cls(module._parameters[name].to(torch.device("meta")), **kwargs)
 
 现在这个问题已经解决了，我们可以轻松地在一个自定义函数中利用这个上下文管理器将所有 `nn.Linear` 模块替换为 `bnb.nn.Linear8bitLt` 而无需占用内存！

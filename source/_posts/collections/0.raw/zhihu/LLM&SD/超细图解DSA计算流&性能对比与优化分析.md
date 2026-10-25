@@ -109,19 +109,29 @@ a> 矩阵乘法KV_scores、PV计算复杂度从
 ![](https://www.zhihu.com/equation?tex=O%28L%5E%7B2%7D%29) 到 
 ![](https://www.zhihu.com/equation?tex=O%28Lk%29) ，其中L是序列长度，k是topk长度。这个两个乘法的flops计算式：
 
+```text
 kv_scores = 2 * bs * heads * seq_len * (seq_len + cache_len) * (qk_head_dim + qk_rope_head_dim) / causal_mask_cof
 qkv = 2 * bs * heads * seq_len * (seq_len + cache_len) * v_head_dim / causal_mask_cof
+```
+
 其中(seq_len + cache_len)表示序列总长度，cache_len是指缓存序列长度。将该项换成top_k，得到DSA中对应的算式为：
 
+```text
 kv_scores = 2 * bs * heads * seq_len * top_k * (qk_head_dim + qk_rope_head_dim) / causal_mask_cof
 qkv = 2 * bs * heads * seq_len * top_k * v_head_dim / causal_mask_cof
+```
+
 b> 增加Indexer计算模块。忽略一次项计算（比例/加法/量化），主要考虑几个线性映射计算、logits矩阵乘法求解,flops计算式如下：
 
 # 线性投影flops：
+
+```text
 q_linear = 2 * bs * seq_len * q_lora_rank * index_n_heads * index_head_dim
 k_linear = 2 * bs * seq_len * h_dim * index_head_dim
 w_linear = 2 * bs * seq_len * h_dim * index_n_heads
 context_len = seq_len + cache_len
+```
+
 # FP8 logits flops：
 logits = 1 * bs * index_n_heads * seq_len * context_len * index_head_dim / causal_mask_cof
 prefill阶段cache_len为常数，linear(q_linear 、k_linear 、w_linear)与seq_len成线性关系，复杂度

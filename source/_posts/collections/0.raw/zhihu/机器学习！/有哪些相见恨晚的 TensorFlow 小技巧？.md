@@ -32,35 +32,50 @@ from tensorflow.contrib.lookup import IdTableWithHashBuckets
 
 
 # files looks like: key a b c\n ...
+
+```text
 dataset = tf.data.TextLineDataset(files)
 dataset = dataset.map(lambda x: tf.string_split(x, "\t").values[1:fix_len])
 feature = dataset.batch(batch_size)
 iterator = dataset.make_one_shot_iterator()
 feature = iterator.get_next() # feature.shape = [batch_size, fix_len]
+```
+
 
 # vocab_file looks like: item id\n ...
+
+```text
 table_file = TextFileIdTableInitializer(vocab_file)
 hash_table = HashTable(table_file)
 table = IdTableWithHashBuckets(hash_table)
 feature = table.lookup(feature) # feature has shape [batch, fix_len]
+```
+
 
 # n is the number of sampled pairs, skip_win is context window
 # e.g. n = 3, skip_win = 5
+
+```text
 ff = [feature[:, k:-skip_win + k] for k in range(skip_win)]
 feature = tf.stack([ff[skip_win//2]]*skip_win, axis=2)
 feature = tf.reshape(feature, [-1, skip_win])[:, 0:n]
+```
+
 # not the best way to sample target, but simple
+
+```text
 targets = tf.reshape(tf.stack(ff, axis=2), [-1, skip_win])
 targets = tf.random_shuffle(tf.transpose(targets))
 targets = tf.transpose(targets)[:, 0:n]
+```
+
 # mask the unwanted pair in the following way if needed
 # feature = tf.boolean_mask(feature, mask)
 # label = tf.boolean_mask(label, mask)
 
+```text
 embedding = tf.nn.embedding_lookup(tf.Variable(init_emb>), feature)
 loss = tf.nn.nce_loss(
-
-```text
     weights=tf.Variable(init_weight>),
     biases=tf.Variable(init_bias>),
     labels=targets,
@@ -72,24 +87,36 @@ loss = tf.nn.nce_loss(
 - 指定调某几层 weight 的学习率，没必要构造 learning-rate placeholder，每个 layer 写个 lr-multipler，如下。
 import tensorflow as tf
 # a is a decay factor
+
+```text
 weight = tf.Variable(, "some_name")
 weight = a * tf.stop_gradient(weight) + (1 - a) * weight。
+```
+
 
 - tf 做矩阵 A 的 pairwise-distance ，没有库函数咋办，还是 batch 模式的 pairwise -distance 计算。当然，搞成笛卡尔乘积然后 map_fn 也可以，不过后者似乎慢多了。
 import tensorflow as tf
 # compute the pairwise Euclidean distance of the given matrix
+
+```text
 A = tf.Variable(init_value>, "name") # A has shape [batch, N, M]
 r = tf.reduce_sum(A, -1, keep_dims=True) 
 K = - 2.0 * tf.matmul(A, A, transposed_b=True)
 D = r + K + tf.transposed(r, [0, 2, 1])
 D = tf.sqrt(tf.abs(D))
+```
+
 
 - 在 tf.summary.image() 中，将多个图像， 也即 x=[batch, H, W, 3] 的 tensor ，输出成一个大拼图形式，有着简单粗暴的做法：
+
+```python
 import tensorflow as tf
 x = ... # [64, H, W, 3]
 x = tf.reshape(x, [8, 8, H, W, 3])
 x = tf.transpose(x, [0, 2, 1, 3, 4])
 x = tf.reshape(x, [8*H, 8*W, 3])
+```
+
 tf.summary.image(x, ..)
 
 先写一点打发一下时间骗赞，后面想起啥补啥。。。

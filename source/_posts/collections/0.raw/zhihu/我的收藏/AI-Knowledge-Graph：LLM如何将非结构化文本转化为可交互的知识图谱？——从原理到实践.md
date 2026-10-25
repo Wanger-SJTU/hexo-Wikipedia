@@ -212,24 +212,40 @@ cd ai-knowledge-graph
 编辑`config.toml`文件以适应您的情况。您可以在此处配置LLM模型、端点（URL）、最大上下文窗口长度和LLM的温度。在下面的示例中，我使用Google的开源<strong>Gemma 3</strong>模型，该模型通过Ollama托管在我的本地计算机上。您还可以在此处调整文档分块大小和重叠量，以及是否启用实体标准化和关系推理：
 
 [llm]
+
+```text
 model = "gemma3"
 api_key = "sk-1234"
 base_url = "http://localhost:11434/v1/chat/completions"
 max_tokens = 8192
 temperature = 0.2
+```
+
 
 [chunking]
+
+```text
 chunk_size = 200    # 每块的单词数
 overlap = 20        # 块之间的重叠单词数
+```
+
 
 [standardization]
+
+```text
 enabled = true          # 是否启用实体标准化
 use_llm_for_entities = true # 是否使用LLM进行额外的实体解析
+```
+
 
 [inference]
+
+```text
 enabled = true          # 是否启用关系推理
 use_llm_for_inference = true    # 是否使用LLM进行关系推理
 apply_transitive = true     # 是否应用传递性推理规则
+```
+
 
 [visualization]
 edge_smooth = false # 边缘线是否平滑（true或false）

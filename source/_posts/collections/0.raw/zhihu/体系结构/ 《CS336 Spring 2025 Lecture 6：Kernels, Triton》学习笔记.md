@@ -128,9 +128,12 @@ def profile(description: str, run: Callable, num_warmups: int = 1, with_stack: b
 
 剖析调用示例（矩阵乘法）：
 
+```text
 matmul_function_128 = lambda a, b: a @ b
 matmul_profile_128 = profile("matmul(dim=128)", run_operation2(dim=128, operation=matmul_function_128))
 matmul(dim=128)
+```
+
 
 #### 4.2.2 NVIDIA Nsight Systems（作业2必用）
 
@@ -223,12 +226,8 @@ def create_cuda_gelu():
 #include 
 #include 
 #include
-```
-
 
 __global__ void gelu_kernel(float* in, float* out, int num_elements) {
-
-```cpp
     // 计算当前线程的全局索引
     int i = blockIdx.x * blockDim.x + threadIdx.x;
     // 越界检查，避免访问无效内存
@@ -238,11 +237,7 @@ __global__ void gelu_kernel(float* in, float* out, int num_elements) {
 }
 
 // 计算向上取整（ceil(a / b)）
-```
-
 inline unsigned int cdiv(unsigned int a, unsigned int b) {
-
-```cpp
     return (a + b - 1) / b;
 }
 
@@ -290,9 +285,13 @@ torch::Tensor gelu(torch::Tensor x) {
 
 
 # 调用示例
+
+```text
 cuda_gelu = create_cuda_gelu()
 x = torch.randn(16384, device="cuda")
 y = cuda_gelu(x)
+```
+
 
 #### 5.1.4 Triton版（Python编写，作业2重点）
 
@@ -344,8 +343,12 @@ def triton_gelu_kernel(x_ptr, y_ptr, num_elements, BLOCK_SIZE: tl.constexpr):
 
 
 # 调用示例
+
+```text
 x = torch.randn(16384, device="cuda")
 y = triton_gelu(x)
+```
+
 
 #### 5.2 Q&A
 
@@ -389,8 +392,12 @@ def manual_gelu(x):
 compiled_gelu = torch.compile(manual_gelu)
 
 # 测试性能
+
+```text
 x = torch.randn(16384, device="cuda")
 y = compiled_gelu(x)  # 优化后的执行
+```
+
 
 #### 6.3 适用场景与局限性
 
@@ -487,11 +494,15 @@ def triton_softmax_kernel(x_ptr, y_ptr, x_row_stride, y_row_stride, num_cols, BL
 compiled_softmax = torch.compile(manual_softmax)
 
 # 调用示例
+
+```text
 x = torch.randn(1024, 16384, device="cuda")
 y1 = manual_softmax(x)
 y2 = pytorch_softmax(x)
 y3 = triton_softmax(x)
 y4 = compiled_softmax(x)
+```
+
 
 ### 八、课程总结
 

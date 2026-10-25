@@ -82,7 +82,11 @@ p_{i \mid j}=e^{- \frac{d \left( x_{i}, x_{j} \right) - \rho_{i} }{\sigma_{i}}} 
 ρ参数是UMAP论文第2节和第3节之间的唯一桥梁。否则，我看不到模糊简单集的构造（即第2节中的奇特拓扑数据分析）与第3节中的UMAP的算法实现有什么关系。
 - UMAP并未对高维（或低维）概率进行归一化，这与tSNE有很大不同。仅从高维（或低维）概率的函数形式（公式5）可以看出，它们已经针对段[0，1]进行了缩放，结果证明去掉归一化步骤（意味着不计算等式（1）中的分母部分）大大减少了计算高维图的时间。
 - UMAP使用最近邻居的数量而不是困惑度。与之不同的是tSNE根据式（2）定义了困惑度。UMAP定义了没有log2函数的最近邻居k的数量，即：
+
+```text
 k=2^{\sum_{i} p_{i j}} \;\;\;\;(6)
+```
+
 - UMAP使用高维概率的对称化稍有不同:
 p_{i j}=p_{i \mid j}+p_{j \mid i}-p_{i \mid j} p_{j \mid i} \;\;\;\;(7)
 高维概率对称化是必要的，因为在UMAP将具有局部变化的度量的点粘合在一起（通过参数\rho）之后，可能会发生A和B节点之间的图的权重不等于B和A节点之间的权重的情况。不过我还不清楚，为什么UMAP使用这种对称，而没有使用tSNE的对称形式。
@@ -91,12 +95,12 @@ q_{i j}=\left(1+a\left(y_{i}-y_{j}\right)^{2 b}\right)^{-1} \;\;\;\;(8)
 其中默认UMAP超参数的a≈1.93和b≈0.79（实际上，对于min\_dist = 0.001），我们可以将公式写成如下的形式：
 \left(1+a\left(y_{i}-y_{j}\right)^{2 b}\right)^{-1} \approx\left\{\begin{array}{ll}1   \text { if } y_{i}-y_{j} \leq \text {min_dist } , e^{-\left(y_{i}-y_{j}\right)-\text {min_dist}}   \text { if } y_{i}-y_{j} \text {min_dist }\end{array}\right. \;\;\;\;(9)
 为了更好地理解曲线1 /(1 + a \cdot y ^{(2b)})的行为，让我们为不同的a和b绘制一些曲线：
+
+```text
 plt.figure(figsize=(20, 15))
 y = np.linspace(0, 10, 1000)
 
 my_prob = lambda y, a, b: np.power(1 + a*y**(2*b), -1)
-
-```text
 plt.plot(y, my_prob(y, a = 1, b = 1))
 plt.plot(y, my_prob(y, a = 1.93, b = 0.79))
 plt.plot(y, my_prob(y, a = 1.93, b = 5))
@@ -116,14 +120,11 @@ plt.show()
   from scipy import optimize
   import matplotlib.pyplot as plt
   import numpy as np
-```
-
 
   MIN_DIST = 1
 
   x = np.linspace(0, 10, 300)
 
-```python
   def f(x, min_dist):
       y = []
       for i in range(len(x)):
@@ -132,10 +133,10 @@ plt.show()
           else:
               y.append(np.exp(- x[i] + min_dist))
       return y
-```
-
 
   dist_low_dim = lambda x, a, b: 1 / (1 + a*x**(2*b))
+```
+
  
   p , _ = optimize.curve_fit(dist_low_dim, x, f(x, MIN_DIST))
 
@@ -160,13 +161,17 @@ C E(X, Y)=\sum_{i} \sum_{j}\left[p_{i j}(X) \log \left(\frac{p_{i j}(X)}{q_{i j}
 在下一节中，我们将显示CE成本函数中的这个附加项（第二项）使UMAP能够捕获全局数据结构，而tSNE只能以中等的困惑度值对局部结构进行建模。由于我们需要知道交叉熵的梯度才能在以后实现“梯度下降”，因此让我们快速进行计算。忽略仅包含p（X）的常数项，我们可以重写交叉熵并将其区分如下：
 C E\left(X, d_{i j}\right)=\sum_{j}\left[-P(X) \log Q\left(d_{i j}\right)+(1-P(X)) \log \left(1-Q\left(d_{i j}\right)\right)\right], \quad \text { where } d_{i j}=y_{i}-y_{j} \;\;\;\;(11)
 与tSNE使用的随机法线初始化相反，UMAP使用Graph Laplacian分配初始低维坐标。但是，这对于最终的结果影响不大。图拉普拉斯算子，谱聚类，拉普拉斯算子，扩散图，谱嵌入等方法，实际上是将矩阵分解和近邻图方法结合在一起以解决降维问题的方法。在这种方法中，我们首先构造一个图（或knn图），然后通过构造拉普拉斯矩阵用矩阵代数（邻接度和度矩阵）对其进行形式化，最后我们对拉普拉斯矩阵进行分解，即解决特征值分解问题。
+
+```text
 L=D^{1 / 2}(D-A) D^{1 / 2} \;\;\;\;(12)
+```
+
 我们可以使用scikit-learn Python库，并在演示数据集上使用SpectralEmbedding函数（谱嵌入）轻松显示初始的低维坐标，该演示数据集是与癌症相关的成纤维细胞（CAF）scRNAseq数据：
+
+```python
 from sklearn.manifold import SpectralEmbedding
 model = SpectralEmbedding(n_components = 2, n_neighbors = 50)
 se = model.fit_transform(np.log(X_train + 1))
-
-```text
 plt.figure(figsize=(20,15))
 plt.scatter(se[:, 0], se[:, 1], c = y_train.astype(int), cmap = 'tab10', s = 50)
 plt.title('Laplacian Eigenmap', fontsize = 20)
@@ -180,9 +185,12 @@ plt.show()
 4. 为什么tSNE仅保留本地结构？
 现在让我们简短地讨论为什么他们确切地说tSNE只保留数据的局部结构。可以从不同的角度来了解tSNE的局部性。首先，我们在等式中有\sigma参数。 （1）设置数据点在本地如何相互“感觉”。由于成对的欧几里得距离的概率呈指数衰减，因此在较小的\sigma值下，距离远的点的概率基本上为零，而仅对于距离近的邻居概率非常快地增长。相反，在\sigma比较大时，相距较近和距离较远的点的概率变得可比，并且在极限\sigma\to \infty中，对于任意一对点之间的所有距离，该概率均等于1，即，点变为等距。
 
+```text
 plt.figure(figsize=(20, 15))
 x = np.linspace(0, 10, 1000)
 sigma_list = [0.1, 1, 5, 10]
+```
+
 
 for sigma in sigma_list:
 
@@ -227,23 +235,27 @@ import matplotlib.pyplot as plt
 from matplotlib import cm
 from mpl_toolkits.mplot3d import Axes3D
 from matplotlib.ticker import LinearLocator, FormatStrFormatter
-```
-
 
 fig = plt.figure(figsize=(20, 15))
 ax = fig.gca(projection = '3d')
+```
+
 # Set rotation angle to 30 degrees
+
+```text
 ax.view_init(azim=30)
 
 X = np.arange(0, 3, 0.1)
 Y = np.arange(0, 3, 0.1)
+```
+
 X, Y = np.meshgrid(X, Y)
 Z = np.exp(-X**2)*np.log(1 + Y**2)
 
 # Plot the surface.
-surf = ax.plot_surface(X, Y, Z, cmap=cm.coolwarm,linewidth=0, antialiased=False)
 
 ```text
+surf = ax.plot_surface(X, Y, Z, cmap=cm.coolwarm,linewidth=0, antialiased=False)
 ax.set_xlabel('X', fontsize = 20)
 ax.set_ylabel('Y', fontsize = 20)
 ax.set_zlabel('KL (X, Y)', fontsize = 20)
@@ -288,23 +300,27 @@ import matplotlib.pyplot as plt
 from matplotlib import cm
 from mpl_toolkits.mplot3d import Axes3D
 from matplotlib.ticker import LinearLocator, FormatStrFormatter
-```
-
 
 fig = plt.figure(figsize=(20, 15))
 ax = fig.gca(projection = '3d') 
+```
+
 # Set rotation angle to 30 degrees
+
+```text
 ax.view_init(azim=30)
 
 X = np.arange(0, 3, 0.001)
 Y = np.arange(0, 3, 0.001)
+```
+
 X, Y = np.meshgrid(X, Y)
 Z = np.exp(-X**2)*np.log(1 + Y<strong>2) + (1 - np.exp(-X</strong>2))*np.log((1 + Y<strong>2) / (Y</strong>2+0.01))
 
 # Plot the surface.
-surf = ax.plot_surface(X, Y, Z, cmap=cm.coolwarm,linewidth=0, antialiased=False)
 
 ```text
+surf = ax.plot_surface(X, Y, Z, cmap=cm.coolwarm,linewidth=0, antialiased=False)
 ax.set_xlabel('X', fontsize = 20)
 ax.set_ylabel('Y', fontsize = 20)
 ax.set_zlabel('CE (X, Y)', fontsize = 20)

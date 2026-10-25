@@ -51,26 +51,38 @@ for i, cate_layer in enumerate(self.cate_convs):
         cate_feat = F.interpolate(cate_feat, size=seg_num_grid, mode='bilinear')
         # 将FPN最高层的特征从H*W*feat_channel 对齐到 S*S*feat_channel
     cate_feat = cate_layer(cate_feat) # 7个卷积 
+cate_pred = self.solo_cate(cate_feat) # 从 S*S*feat_channel 到 S*S*num_classes
 ```
 
-cate_pred = self.solo_cate(cate_feat) # 从 S*S*feat_channel 到 S*S*num_classes
 （3）对于Mask分支，首先对FPN最高层的特征做一个CoordConv，然后同样经过一系列卷积（7个3×3卷积）提取特征，此时维度为H×W×256，再做一步上采样至2H×2W×256，最后就是对齐到2H×2W×S^2的输出（Decoupled SOLO此处则为2H×2W×S）
 
 # ins branch
 # concat coord
+
+```text
 x_range = torch.linspace(-1, 1, ins_feat.shape[-1], device=ins_feat.device)
 y_range = torch.linspace(-1, 1, ins_feat.shape[-2], device=ins_feat.device)
+```
+
 y, x = torch.meshgrid(y_range, x_range)
+
+```text
 y = y.expand([ins_feat.shape[0], 1, -1, -1])
 x = x.expand([ins_feat.shape[0], 1, -1, -1])
 coord_feat = torch.cat([x, y], 1)
 ins_feat = torch.cat([ins_feat, coord_feat], 1) # CoordConv
+```
+
 
 for i, ins_layer in enumerate(self.ins_convs): # 7个3*3 Conv 提取特征
+
+```text
     ins_feat = ins_layer(ins_feat)  # H*W*feat_channel
 
 ins_feat = F.interpolate(ins_feat, scale_factor=2, mode='bilinear') # 上采样到2H*2W*feat_channel
 ins_pred = self.solo_ins_list[idx](ins_feat) 
+```
+
 # 从2H*2W*feat_channel到2H*2W*(S^2) S^2的复杂度，这里也是Decoupled 和 Solo v2的优化之处
 
 改进空间

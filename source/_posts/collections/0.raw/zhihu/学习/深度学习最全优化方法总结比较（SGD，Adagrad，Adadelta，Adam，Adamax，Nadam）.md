@@ -77,7 +77,10 @@ $m_t=\mu*m_{t-1}+g_t$
 
 Adagrad其实是对学习率进行了一个约束。即： 
 
+```text
 n_t=n_{t-1}+g_t^2
+```
+
 
 $$\Delta{\theta_t}=-\frac{\eta}{\sqrt{n_t+\epsilon}}*g_t此处，对g_t从1到t进行一个递推形成一个约束项regularizer，-\frac{1}{\sqrt{\sum_{r=1}^t(g_r)^2+\epsilon}}，\epsilon用来保证分母非0 $$
 

@@ -85,9 +85,9 @@ NDCG\=DCGIDCGNDCG=\\frac{DCG}{IDCG} \\\\IDCG\=∑i\=1|REL|2reli−1log2(i+1)IDCG
 
 AUC（area under Curve），是ROC曲线下的面积，具体概念这里不赘述了。<strong>AUC能反映模型的排序能力，他反应的是一个相对性，即item a排在item b之前的能力；但是它不反应绝对性，例如，0.9排在0.1前面和0.5排在0.1前面对他来说是一样的</strong>。推荐系统中AUC可以通过下式计算，其中R为推荐的item集合，δ(x)\\delta(x)表示当x为true时，它为1；反之为0。
 
+```text
 AUC(R)n\=1|R|(n−|R|)∑r∈R∑r′∈({1,…,n}∖R)δ(r<r′)\=n−|R|−12−1|R|∑r∈Rrn−|R|
 
-```text
 \\begin{aligned} \\operatorname{AUC}(R)\_{n} &=\\frac{1}{|R|(n-|R|)} \\sum\_{r \\in R} \\sum\_{r^{\\prime} \\in(\\{1, \\ldots, n\\} \\backslash R)} \\delta\\left(r < r^{\\prime}\\right) \\\\ &=\\frac{n-\\frac{|R|-1}{2}-\\frac{1}{|R|} \\sum\_{r \\in R} r}{n-|R|} \\end{aligned}\\\\
 ```
 

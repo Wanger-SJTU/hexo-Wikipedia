@@ -33,12 +33,11 @@ SVM 的问题就变成：求解一系列满足约束的 alpha 值，使得上面
 
 现在大部分的 SVM 开源实现，源头都是 platt 的 smo 算法，读完他的文章和推导，然后照着伪代码写就行了，核心代码没几行：
 
+```cpp
 target = desired output vector
 point = training point matrix
 
 procedure takeStep(i1,i2)
-
-```text
 	if (i1 == i2) return 0
 	alph1 = Lagrange multiplier for i1
 	y1 = target[i1]

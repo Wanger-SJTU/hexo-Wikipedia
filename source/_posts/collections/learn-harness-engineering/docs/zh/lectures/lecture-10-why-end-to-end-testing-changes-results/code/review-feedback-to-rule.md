@@ -1,0 +1,23 @@
+---
+title: 示例：将审查反馈转化为规则
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/zh/lectures/lecture-10-why-end-to-end-testing-changes-results/code/review-feedback-to-rule/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
+# 示例：将审查反馈转化为规则
+
+反复出现的审查意见：
+
+> 不要从渲染器调用文件系统工具。使用预加载桥接。
+
+提升为 harness 规则：
+
+- 添加一个 lint 或 import 规则，阻止在渲染器代码中使用 `fs`
+- 添加修复文本，解释预加载边界

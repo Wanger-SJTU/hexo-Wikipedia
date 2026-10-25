@@ -90,11 +90,10 @@ Case 1
 
 代码：
 
+```cpp
 __global__ void smem_1(uint32_t *a) {
   __shared__ uint32_t smem[128];
   uint32_t tid = threadIdx.x;
-
-```cpp
   for (int i = 0; i < 4; i++) {
     smem[i * 32 + tid] = tid;
   }
@@ -119,11 +118,10 @@ Case 2
 
 代码：
 
+```cpp
 __global__ void smem_2(uint32_t *a) {
   __shared__ uint32_t smem[128];
   uint32_t tid = threadIdx.x;
-
-```cpp
   for (int i = 0; i < 4; i++) {
     smem[i * 32 + tid] = tid;
   }
@@ -155,11 +153,10 @@ Case 1
 
 注：这两个 quarter-warp 属于两个不同的 half warp，所以不会合并访问。
 
+```cpp
 __global__ void smem_1(uint32_t *a) {
   __shared__ uint32_t smem[128];
   uint32_t tid = threadIdx.x;
-
-```cpp
   for (int i = 0; i < 4; i++) {
     smem[i * 32 + tid] = tid;
   }
@@ -177,11 +174,10 @@ Case 2
 
 ![](https://pic4.zhimg.com/v2-62072d3cfb73ebd4370e6900429a8e25_r.jpg)这是满足合并条件第一条，所以前两个 quarter warp 的访存请求合并成 1 次 memory transaction。没有 bank conflict。
 
+```cpp
 __global__ void smem_2(uint32_t *a) {
   __shared__ uint32_t smem[128];
   uint32_t tid = threadIdx.x;
-
-```cpp
   for (int i = 0; i < 4; i++) {
     smem[i * 32 + tid] = tid;
   }
@@ -198,11 +194,10 @@ Case 3
 
 ![](https://pica.zhimg.com/v2-0686017ed02d7524ee9a661f574ac300_r.jpg)满足合并条件第一条，前两个 quarter warp 和后两个 quarter warp 分别合并，分别需要 1 个 memory transaction（即每个 half warp 需要 1 个 transaction）。一共 2 个 transaction，没有 bank conflict。
 
+```cpp
 __global__ void smem_3(uint32_t *a) {
   __shared__ uint32_t smem[128];
   uint32_t tid = threadIdx.x;
-
-```cpp
   for (int i = 0; i < 4; i++) {
     smem[i * 32 + tid] = tid;
   }
@@ -221,11 +216,10 @@ Case 4
 
 所以这里仍然是每个 quarter warp 需要 1 次 memory transaction，一共 4 次。没有 bank conflict。
 
+```cpp
 __global__ void smem_4(uint32_t *a) {
   __shared__ uint32_t smem[128];
   uint32_t tid = threadIdx.x;
-
-```cpp
   for (int i = 0; i < 4; i++) {
     smem[i * 32 + tid] = tid;
   }
@@ -259,11 +253,10 @@ thread 8 - 11 访问第 1 个 uint4， thread 12 - 15 访问第 9 个 uint4（�
 
 即一共 2 个 bank conflict， 4 次 transaction。
 
+```cpp
 __global__ void smem_5(uint32_t *a) {
   __shared__ uint32_t smem[128];
   uint32_t tid = threadIdx.x;
-
-```cpp
   for (int i = 0; i < 4; i++) {
     smem[i * 32 + tid] = tid;
   }

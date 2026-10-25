@@ -153,13 +153,10 @@ def FindMaxMin(inputs):
 def ChooseQuantizationParams(x_min, x_max, quant_bits=8):
   q_scale = (int)((1  quant_bits) - 1)
   q_shift = (int)(1  (quant_bits - 1))
-```
-
 
   Q = q_scale / (x_max - x_min);           
   RQM = (int)(round(Q * x_min) + q_shift);  
 
-```python
   return Q, RQM
 
 def Quantize(inputs, Q, RQM):
@@ -167,20 +164,21 @@ def Quantize(inputs, Q, RQM):
 
 def Dequantize(inputs, Q, RQM):
   return (inputs + RQM) / Q
-```
-
 
 if __name__ == '__main__':
   m = 2
   n = 3
   k = 4
+```
+
   
   # Reference
+
+```python
   inputs = np.random.uniform(low=-12, high=12, size=(m, k))
   weight = np.random.uniform(low=-3, high=3, size=(k, n))
   res = np.dot(inputs, weight)
-  
-```python
+
   print("Reference:")
   print(res)
 ```
@@ -192,12 +190,12 @@ if __name__ == '__main__':
   inputs_Q, inputs_RQM = ChooseQuantizationParams(inputs_min, inputs_max)
   weight_Q, weight_RQM = ChooseQuantizationParams(weight_min, weight_max)
 
+```python
   quantized_inputs = Quantize(inputs, inputs_Q, inputs_RQM)
   quantized_weight = Quantize(weight, weight_Q, weight_RQM)
 
   res = np.dot(Dequantize(quantized_inputs, inputs_Q, inputs_RQM), Dequantize(quantized_weight, weight_Q, weight_RQM))
 
-```python
   print("Quantize-Dequantize result:")
   print(res)
 ```
@@ -261,13 +259,9 @@ def get_mse(quant_bits=12,
 ```python
 import numpy as np
 import matplotlib.pyplot as plt
-```
-
 
 if __name__ == '__main__':
     # 权重范围列表
-
-```text
     weight_range_list = [(-1.0, 1.0), (-2.0, 2.0), (-3.0, 3.0),
                          (-4.0, 4.0), (-5.0, 5.0), (-6.0, 6.0), (-7.0, 7.0)]
 ```

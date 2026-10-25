@@ -504,9 +504,9 @@ public:
 
 为了<strong>保证锁期间的修改对后续加锁的线程可见，Unlock操作应当 synchronized-with Lock操作</strong>，如下列代码中线程1的Unlock操作前的修改应当对线程2的Lock操作可见。这可以通过release-acquire模型实现，因此解锁时使用memory_order_release内存序，加锁时使用memory_order_acquire内存序。
 
+```cpp
 SpinLock lock;
 
-```cpp
 void thread1() {
     lock.Lock(); 
     //修改共享数据

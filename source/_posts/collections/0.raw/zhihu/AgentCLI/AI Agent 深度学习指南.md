@@ -139,11 +139,7 @@ const toolImplementations: Record any> = {
 };
 
 // ----- 核心：Agent 循环 -----
-```
-
 async function callLLM(messages: any[]) {
-
-```js
   const response = await fetch(`${BASE_URL}/chat/completions`, {
     method: "POST",
     headers: {
@@ -159,12 +155,8 @@ async function callLLM(messages: any[]) {
   const data = await response.json();
   return data.choices[0].message;
 }
-```
-
 
 async function runAgent(userMessage: string, maxSteps = 10) {
-
-```js
   console.log(`\n🧑 用户: ${userMessage}\n`);
 
   // 这就是 agent 的全部状态 —— 一个 messages 数组
@@ -237,11 +229,10 @@ async function runAgent(userMessage: string, maxSteps = 10) {
 
 <strong>差的设计：</strong>
 
+```text
 tool({
   description: "数据库操作",  // 太模糊，模型不知道什么时候该用
   inputSchema: z.object({
-
-```text
     sql: z.string(),  // 让模型写 SQL？灾难
   }),
 })
@@ -250,11 +241,10 @@ tool({
 
 <strong>好的设计：</strong>
 
+```text
 tool({
   description: "根据用户ID查询用户信息，返回姓名、邮箱、注册时间",
   inputSchema: z.object({
-
-```text
     userId: z.string().describe("用户的唯一标识符，格式如 user_123"),
   }),
 })
@@ -368,10 +358,9 @@ System Prompt:        ~500 tokens
 
 #### 6.2 解法一：对话压缩
 
+```js
 // 当 messages 太长时，用另一个 LLM 调用来压缩历史
 async function compressHistory(messages: Message[]): Promise {
-
-```js
   const summary = await generateText({
     model: deepseek("deepseek-chat"),
     prompt: `总结以下对话的关键信息，保留所有重要的事实和决策：
@@ -474,9 +463,12 @@ const managerTools = {
 
 多个 agent 从不同角度分析同一个问题，最后综合。
 
+```text
 Agent A (乐观视角) ──┐
   Agent B (悲观视角) ──┤→ Synthesizer Agent → 最终结论
   Agent C (技术视角) ──┘
+```
+
 
 #### 7.4 模式四：自主协作 (Swarm)
 
@@ -498,11 +490,14 @@ Task Pool: [task1, task2, task3, task4, task5]
 错误类型示例防御措施幻觉编造工具不存在的参数Zod schema 验证输入格式错误工具参数不是合法 JSONtry-catch + 重试选错工具该搜索时去算数改善工具 description忽略错误工具报错但模型当没看见在 prompt 里强调错误处理无限循环反复调同一个工具maxSteps + 重复检测过度调用简单问题也调一堆工具在 prompt 里引导”先思考是否需要”
 #### 8.2 防御性编程
 
+```js
 // 工具执行的 wrapper
 async function safeExecute(
   toolName: string,
   args: unknown,
   impl: Function
+```
+
 ): Promise {
   try {
 
@@ -573,7 +568,7 @@ interface TestCase {
   expectedOutputContains?: string[]; // 期望输出包含的关键词
   maxStepsAllowed?: number;          // 期望的最大步骤数
 
-```text
+```js
 }
 
 const testCases: TestCase[] = [
@@ -590,12 +585,8 @@ const testCases: TestCase[] = [
     maxStepsAllowed: 5,
   },
 ];
-```
-
 
 async function runEval(testCases: TestCase[]) {
-
-```js
   let passed = 0;
   for (const tc of testCases) {
     const { text, steps } = await runAgent(tc.input);
@@ -670,10 +661,13 @@ const judgment = await generateText({
 - 错误恢复
 <strong>工具示例：</strong>
 
+```text
 readFile(path) → 读文件
 writeFile(path, content) → 写文件
 runCommand(cmd) → 执行命令（需要确认）
 listFiles(dir) → 列目录
+```
+
 
 #### 项目 3：多 Agent 研究助手
 

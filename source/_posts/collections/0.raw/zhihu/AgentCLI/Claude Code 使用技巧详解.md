@@ -127,11 +127,14 @@ Claude Code 底部的 <strong>状态栏</strong> 可以高度定制化，用于�
 
 由于 Claude Code 是终端工具，设置短别名可以 <strong>大幅加速</strong> 日常操作：
 
+```text
 alias c='claude'           # 最常用
 alias ch='claude --chrome'  # 带浏览器集成
 alias gb='github'           # GitHub Desktop
 alias co='code'             # VS Code
 alias q='cd ~/Desktop/projects'  # 快速跳转到项目目录
+```
+
 
 #### 与参数组合
 
@@ -497,11 +500,10 @@ gh run watch` 会 **持续输出大量行** ，浪费 Token。而手动指数退
 
 命令说明/fork在当前会话中 分叉--fork-session配合 --resume 或 --continue 使用，如 claude -c --fork-session由于 `--fork-session` 没有短选项，可以在 `~/.zshrc` 或 `~/.bashrc` 中添加函数将 `--fs` 映射为 `--fork-session`：
 
+```text
 claude() {
   local args=()
   for arg in "$@"; do
-
-```text
     if [[ "$arg" == "--fs" ]]; then
       args+=("--fork-session")
     else

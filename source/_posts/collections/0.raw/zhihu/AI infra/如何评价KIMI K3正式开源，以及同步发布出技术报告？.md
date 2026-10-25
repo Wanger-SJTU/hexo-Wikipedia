@@ -24,14 +24,21 @@ source_url: https://www.zhihu.com/question/2065214142915654338/answer/2065751772
 1.1 一个 GPT-2 长什么样
 GPT-2 是一个 decoder-only（纯解码器）架构。原文给出了它最核心的前向传播代码：
 
+```text
 tok_emb = self.transformer.wte(idx)   # token 嵌入，形状 (b, t, n_embd)
 pos_emb = self.transformer.wpe(pos)   # 位置嵌入，形状 (t, n_embd)
 x = self.transformer.drop(tok_emb + pos_emb)
+```
+
 for block in self.transformer.h:
+
+```text
     x = block(x)
 x = self.transformer.ln_f(x)
 logits = self.lm_head(x)
 return logits
+```
+
 整个过程可以这样理解：输入是一串 token ID（比如 `[42, 307, 634, ...]`），先查表得到每个 token 的向量表示，再加上位置向量告诉模型“谁在前面”，然后依次过若干个 Transformer Block，最后用一个线性层把隐藏状态映射回词表大小的 logits——每个位置对应一个“下一个词是什么”的概率分布。
 
 输入先获得 token 嵌入和位置嵌入，两者相加后送入 Block 堆栈。
@@ -63,11 +70,17 @@ B, T, C = x.size()  # batch, 序列长度, 嵌入维度
 
 # 一步算出 Q、K、V
 q, k, v = self.c_attn(x).split(self.n_embd, dim=2)
+
+```text
 k = k.view(B, T, self.n_head, C // self.n_head).transpose(1, 2)  # (B, nh, T, hs)
 q = q.view(B, T, self.n_head, C // self.n_head).transpose(1, 2)
 v = v.view(B, T, self.n_head, C // self.n_head).transpose(1, 2)
+```
+
 
 # 手动实现的注意力
+
+```text
 att = (q @ k.transpose(-2, -1)) * (1.0 / math.sqrt(k.size(-1)))
 att = att.masked_fill(self.bias[:,:,:T,:T] == 0, float('-inf'))  # 因果 mask
 att = F.softmax(att, dim=-1)
@@ -76,6 +89,8 @@ y = y.transpose(1, 2).contiguous().view(B, T, C)  # 拼回所有头
 
 y = self.resid_dropout(self.c_proj(y))
 return y
+```
+
 关键步骤拆解：`q @ k.transpose(-2, -1)` 算出每个位置对其他所有位置的关注分数，得到一个 
 ![](https://www.zhihu.com/equation?tex=T+%5C%5Ctimes+T) 的矩阵；`masked_fill` 把上三角（未来位置）填成 
 ![](https://www.zhihu.com/equation?tex=-%5C%5Cinfty)，保证只看过去；`softmax` 把分数归一化成权重；最后 `att @ v` 用权重对 Value 加权求和。这就是自注意力的全部。
@@ -281,11 +296,10 @@ Q 也是一个学习到的“指针”：
 4.1 问题：Delta 规则是串行的
 上面的 Delta 规则看起来很优雅，但有一个工程问题：<strong>它是逐 token 串行的</strong>。
 
+```text
 S = torch.zeros(b, h, dh, dh) if cache is None else cache
 outs = []
 for i in range(t):
-
-```text
     k_i = k[:, :, i:i+1]
     v_i = v[:, :, i:i+1]
     b_i = beta[:, :, i:i+1]
@@ -293,16 +307,15 @@ for i in range(t):
     u_i  = b_i * (v_i - v_old)        # 算 delta
     S = S + k_i.transpose(-1, -2) @ u_i  # 写
     outs.append(q[:, :, i:i+1] @ S)   # 用更新后的 S 读
+o = torch.cat(outs, dim=2)
 ```
 
-o = torch.cat(outs, dim=2)
 每个 token 的更新都依赖前一个 token 更新后的状态 S——这没法并行。即使没有 Delta 规则，纯线性注意力的 prefill 也是串行的：
 
+```text
 S = torch.zeros(b, h, dh, dh) if cache is None else cache
 outs = []
 for i in range(t):
-
-```text
     q_i = q[:, :, i:i+1]
     k_i = k[:, :, i:i+1]
     v_i = v[:, :, i:i+1]
@@ -310,19 +323,18 @@ for i in range(t):
     o = q_i @ S
     o = self.norm(o)
     outs.append(o)
+o = torch.cat(outs, dim=2)
 ```
 
-o = torch.cat(outs, dim=2)
 GPU 最擅长的是大规模矩阵乘法，而逐 token 的串行循环完全浪费了这种能力。
 
 4.2 分块：在串行和并行之间找平衡
 解法是<strong>分块（Chunking）</strong>。把序列切成大小为 C 的块，块内做标准注意力（可以并行），块间做递归状态更新（串行但次数少）。
 
+```text
 S = torch.zeros(b, h, dh, dh) if cache is None else cache
 outs = []
 for i in range(t // C):
-
-```text
     q_c = q[:, :, i*C:(i+1)*C]
     k_c = k[:, :, i*C:(i+1)*C]
     v_c = v[:, :, i*C:(i+1)*C]
@@ -337,10 +349,10 @@ for i in range(t // C):
     S_new = k_c.transpose(-1, -2) @ v_c        # 递归状态更新
     S = S + S_new
     outs.append(o)
-```
-
 
 o = torch.cat(outs, dim=2)
+```
+
 原文的解释非常清晰：<strong>块内做</strong>`q(kᵀv)`<strong>——先算分数，是带 mask 的标准注意力顺序。块间做</strong>`(kᵀv)q`<strong>——先更新状态再读取，是递归顺序。</strong>
 
 计算量分两部分：固定部分 
@@ -357,13 +369,19 @@ o = torch.cat(outs, dim=2)
 
 作者的解法是<strong>数学重参数化</strong>。把原来的 Delta 更新：
 
+```text
 u = v_new - v_old
 S_t = S_{t-1} + Kᵀ @ u
 o = q @ S_T
+```
+
 改写成 Householder 矩阵的形式：
 
+```text
 S_t = S_{t-1}(I − β_t k_t k_tᵀ) + β_t v_t k_tᵀ
 o_t = S_t q_t
+```
+
 这个形式允许一个块内所有 C 个 delta 一次性算出来。完整代码如下：
 
 ```python
@@ -421,8 +439,11 @@ DeltaNet 能精确更新单个关联——但它只能替换有对应替代品�
 5.2 Mamba 的解法：加一个遗忘门
 如果做的是纯加法线性注意力，加遗忘能力很简单——只需要一个参数控制状态的衰减：
 
+```text
 S_old = cache
 S_new = k @ v
+```
+
 # 原来：cache = S_old + S_new
 cache = alpha * S_old + S_new   # 新：旧状态衰减后再加新状态
 这就是 Mamba-2 的贡献：先衰减旧缓存，再以满强度加入新缓存，防止状态无限增长。
@@ -493,10 +514,13 @@ Gated MLA 决定从 MLA 检索到的特征有多少进入残差流——通过�
 
 Kimi K3 还改变了专家的激活方式，用 SiTU 替代 SiLU：
 
+```text
 d = x.shape[-1] // 2
 gate = x[..., :d].to(torch.float32)
 up = x[..., d:].to(torch.float32)
 situ_a = self.beta * torch.tanh(gate / self.beta) * torch.sigmoid(gate)
+```
+
 if self.linear_beta is not None:
 
 ```text
@@ -542,11 +566,14 @@ AttnRes 不是把所有前层输出等权相加，而是给每一项乘一个<st
 
 核心伪代码非常简洁：
 
+```text
 V = torch.stack(blocks + [partial_block])  # [N+1, B, T, D]
 K = norm(V)
 logits = torch.einsum('d, n b t d -> n b t', proj.weight.squeeze(), K)
 h = torch.einsum('n b t, n b t d -> b t d', logits.softmax(0), V)
 return h
+```
+
 把多个 block 的表示堆叠成 V，归一化后做 query-key 点积得到 logits，softmax 后加权求和。一个 block 是 12 个解码器层（注意力和 MLP 输出的逐元素和）累积的单一深度表示，用于后续的 AttnRes 混合。
 
 ![](https://picx.zhimg.com/v2-cc4a95b3debf79ba9511c676a903284e_r.jpg?source=2c26e567)

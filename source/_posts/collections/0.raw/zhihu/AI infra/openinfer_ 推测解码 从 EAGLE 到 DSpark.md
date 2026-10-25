@@ -219,11 +219,14 @@ draft 提得比主模型想要的少（
 
 损失函数是这样定义的
 
+```text
 L = L_reg + 0.1 * L_cls
 
 L_reg = SmoothL1(f, f̂)
 
 L_cls = CE(p, p̂) = - Σ_k p[k] * log(p̂[k])
+```
+
 前者保证 hidden state 预测的准确性，后者保证 draft model 和 target model 的 token 分布接近。两者都是为了同一个目的：提高接受率。我觉得这里 loss 没有走第一性原理去定义，这也是后面 EAGLE-3 的一个动机。
 
 这里还有一个问题：draft 生成的是一条链，token 1、2、3、4。如果 token 1 就被拒绝，2、3、4 也就作废了。我们可以一个位置猜多个，生成一个 tree，也就是多条链，这样提升被接受的可能，见这篇[解释](https://zhuanlan.zhihu.com/p/1908249002421511962)。

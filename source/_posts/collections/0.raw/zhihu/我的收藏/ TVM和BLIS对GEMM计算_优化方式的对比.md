@@ -97,10 +97,10 @@ Auto Scheduler调优IR和TVM How to中的IR对比        因为上述三份TVM�
 下面是auto scheduler调优后的生成的IR
 
 @main = primfn(A_1: handle, B_1: handle, C_1: handle) -> ()
-  attr = {"from_legacy_te_schedule": True, "global_symbol": "main", "tir.noalias": True}
-  buffers = {C: Buffer(C_2: Pointer(float32), float32, [1024, 1024], []),
 
 ```cpp
+  attr = {"from_legacy_te_schedule": True, "global_symbol": "main", "tir.noalias": True}
+  buffers = {C: Buffer(C_2: Pointer(float32), float32, [1024, 1024], []),
              B: Buffer(B_2: Pointer(float32), float32, [1024, 1024], []),
              A: Buffer(A_2: Pointer(float32), float32, [1024, 1024], [])}
   buffer_map = {A_1: A, B_1: B, C_1: C} {
@@ -412,8 +412,12 @@ BLIS 影响线程的环境变量
 编辑于2022.4.19                下面代码是矩阵乘法与 SIMD文章使用144x144x144的MKN搜索出的6x16的kernel。
 
 vbroadcastss    -2324(%rdx,%rbx), %ymm14
+
+```text
 vmovaps (%rbp), %ymm13
 vmovaps 32(%rbp), %ymm12
+```
+
 vfmadd231ps     %ymm13, %ymm14, %ymm10
 vfmadd231ps     %ymm14, %ymm12, %ymm11
 vbroadcastss    -1748(%rdx,%rbx), %ymm14

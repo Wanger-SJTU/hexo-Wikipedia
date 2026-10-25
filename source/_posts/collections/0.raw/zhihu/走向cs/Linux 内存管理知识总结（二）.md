@@ -86,9 +86,9 @@ enum zone_type {
 void __init setup_arch(char **cmdline_p)
 {
     ......
+ max_pfn = e820__end_of_ram_pfn(); //max_pfn初始化
 ```
 
- max_pfn = e820__end_of_ram_pfn(); //max_pfn初始化
  ......
  find_low_pfn_range(); //max_low_pfn、高端内存初始化
  ......
@@ -126,19 +126,17 @@ void __init setup_arch(char **cmdline_p)
 void __init initmem_init(void)
 {
 #ifdef CONFIG_HIGHMEM
-```
-
  highstart_pfn = highend_pfn = max_pfn;
-
-```text
  if (max_pfn > max_low_pfn)
   highstart_pfn = max_low_pfn;
-```
-
  printk(KERN_NOTICE "%ldMB HIGHMEM available.\n",
   pages_to_mb(highend_pfn - highstart_pfn));
  high_memory = (void *) __va(highstart_pfn * PAGE_SIZE - 1) + 1;
+```
+
 #else
+
+```text
  high_memory = (void *) __va(max_low_pfn * PAGE_SIZE - 1) + 1;
 #endif
 
@@ -153,8 +151,6 @@ void __init initmem_init(void)
    pages_to_mb(max_low_pfn));
 
  setup_bootmem_allocator();
-
-```text
 }
 #endif /* !CONFIG_NEED_MULTIPLE_NODES */
 ```
@@ -175,12 +171,8 @@ int __init_memblock memblock_set_node(phys_addr_t base, phys_addr_t size,
   return ret;
 
  for (i = start_rgn; i regions[i], nid);
-```
-
 
  memblock_merge_regions(type);
-
-```text
 #endif
  return 0;
 }
@@ -200,11 +192,7 @@ static int __init_memblock memblock_isolate_range(struct memblock_type *type,
      phys_addr_t base, phys_addr_t size,
      int *start_rgn, int *end_rgn)
 {
-```
-
  phys_addr_t end = base + memblock_cap_size(base, &size);
-
-```cpp
  int idx;
  struct memblock_region *rgn;
 ```
@@ -262,11 +250,7 @@ static int __init_memblock memblock_isolate_range(struct memblock_type *type,
 ```cpp
 static inline void memblock_set_region_node(struct memblock_region *r, int nid)
 {
-```
-
  r->nid = nid;
-
-```cpp
 }
 static inline int memblock_get_region_node(const struct memblock_region *r)
 {
@@ -279,19 +263,19 @@ static void __init_memblock memblock_insert_region(struct memblock_type *type,
          int nid, unsigned long flags)
 {
  struct memblock_region *rgn = &type->regions[idx];
-```
-
 
  BUG_ON(type->cnt >= type->max);
+```
+
  memmove(rgn + 1, rgn, (type->cnt - idx) * sizeof(*rgn));
+
+```text
  rgn->base = base;
  rgn->size = size;
  rgn->flags = flags;
  memblock_set_region_node(rgn, nid);
  type->cnt++;
  type->total_size += size;
-
-```text
 }
 ```
 
@@ -305,10 +289,10 @@ static void __init_memblock memblock_insert_region(struct memblock_type *type,
 ```text
 void __init setup_bootmem_allocator(void)
 {
-```
-
  printk(KERN_INFO "  mapped low ram: 0 - %08lx\n",
    max_pfn_mapped
+```
+
 
 原来该函数是用来初始化 bootmem 管理算法的，但现在 x86 的环境已经使用了 memblock 管理算法，所以这里仅作保留，打印部分信息。
 
@@ -322,9 +306,9 @@ void __init setup_bootmem_allocator(void)
 void __init setup_arch(char **cmdline_p)
 {
     ......
+ max_pfn = e820__end_of_raCm_pfn(); //max_pfn初始化
 ```
 
- max_pfn = e820__end_of_raCm_pfn(); //max_pfn初始化
  ......
  find_low_pfn_range(); //max_low_pfn、高端内存初始化
  ......
@@ -376,31 +360,25 @@ struct x86_init_ops x86_init __initdata = {
 
 ```text
 }
-```
-
 
 native_pagetable_init()函数内容如下：
 
-```text
 void __init native_pagetable_init(void)
 {
  unsigned long pfn, va;
 ```
 
  pgd_t *pgd, *base = swapper_pg_dir;
+
+```cpp
  p4d_t *p4d;
  pud_t *pud;
  pmd_t *pmd;
  pte_t *pte;
 
-```cpp
     //循环 低端内存最大物理页号~最大物理页号
  for (pfn = max_low_pfn; pfn > PAGE_SHIFT);
-```
-
  paging_init();
-
-```text
 }
 ```
 
@@ -411,28 +389,21 @@ void __init native_pagetable_init(void)
 
 接着看 native_pagetable_init()调用的最后一个函数：<strong>paging_init</strong>()。
 
-```text
+```cpp
 void __init paging_init(void)
 {
-```
-
  pagetable_init();
 
  __flush_tlb_all();
 
  kmap_init();
 
-```cpp
  /*
   * NOTE: at this point the bootmem allocator is fully available.
   */
-```
-
  olpc_dt_build_devicetree();
  sparse_init();
  zone_sizes_init();
-
-```text
 }
 ```
 
@@ -446,35 +417,27 @@ void __init paging_init(void)
 ```text
 static void __init pagetable_init(void)
 {
-```
-
  pgd_t *pgd_base = swapper_pg_dir;
 
  permanent_kmaps_init(pgd_base);
-
-```text
 }
 
 static void __init permanent_kmaps_init(pgd_t *pgd_base)
 {
  unsigned long vaddr = PKMAP_BASE;
-```
-
 
  page_table_range_init(vaddr, vaddr + PAGE_SIZE*LAST_PKMAP, pgd_base);
 
  pkmap_page_table = virt_to_kpte(vaddr);
-
-```text
 }
 ```
 
 
 <strong>该函数为建立持久映射区（KMAP 区）的页表</strong>，page_table_range_init 函数前面固定映射区页表初始化时已经分析过了（初始化 pgd_base 指向的页全局目录中 start 到 end 这个范围的线性地址，整个函数结束后只是初始化好了页中间目录项对应的页表，但是页表中的页表项并没有初始化），这里建立页表范围为 PKMAP_BASE 到 PKMAP_BASE + PAGE_SIZE*LAST_PKMAP，<strong>建好页表后将页表地址赋值给给持久映射区页表变量 pkmap_page_table</strong>。
 
+```text
 __flush_tlb_all()为刷新全部 TLB，这里不做介绍，接着看 paging_init()调用的下一个函数 kmap_init()。
 
-```text
 static void __init kmap_init(void)
 {
  unsigned long kmap_vstart;
@@ -482,12 +445,8 @@ static void __init kmap_init(void)
  /*
   * Cache the first kmap pte:
   */
-```
-
  kmap_vstart = __fix_to_virt(FIX_KMAP_BEGIN);
  kmap_pte = virt_to_kpte(kmap_vstart);
-
-```text
 }
 ```
 
@@ -610,11 +569,11 @@ void __init zone_sizes_init(void)
  max_zone_pfns[ZONE_NORMAL] = max_low_pfn;
 #ifdef CONFIG_HIGHMEM
  max_zone_pfns[ZONE_HIGHMEM] = max_pfn;
+
+```text
 #endif
 
  free_area_init(max_zone_pfns);
-
-```text
 }
 ```
 
@@ -631,41 +590,26 @@ void __init free_area_init(unsigned long *max_zone_pfn)
  /* Record where the zone boundaries are */
     //全局数组arch_zone_lowest_possible_pfn用来存储各个内存域可使用的最低内存页帧编号
     //全局数组arch_zone_highest_possible_pfn用来存储各个内存域可使用的最高内存页帧编号
-```
-
  memset(arch_zone_lowest_possible_pfn, 0,
-
-```text
     sizeof(arch_zone_lowest_possible_pfn));
-```
-
  memset(arch_zone_highest_possible_pfn, 0,
-
-```text
     sizeof(arch_zone_highest_possible_pfn));
 
     //用于最低内存区域中可用的编号最小的页帧，即memblock.memory.regions[0].base
-```
-
  start_pfn = find_min_pfn_with_active_regions();
     //return false
  descending = arch_has_descending_max_zone_pfns();
 
-```cpp
     //根据max_zone_pfn和start_pfn初始化arch_zone_lowest_possible_pfn和arch_zone_highest_possible_pfn
  for (i = 0; i 虚拟内存域，不与真正的硬件内存域关联，该内存域的边界总是设置为0
   if (zone == ZONE_MOVABLE)
    continue;
-```
-
 
   end_pfn = max(max_zone_pfn[zone], start_pfn);
   arch_zone_lowest_possible_pfn[zone] = start_pfn;
   arch_zone_highest_possible_pfn[zone] = end_pfn;
 
   start_pfn = end_pfn;
-
-```text
  }
 
  /* Find the PFNs that ZONE_MOVABLE begins at in each node */
@@ -676,9 +620,9 @@ void __init free_area_init(unsigned long *max_zone_pfn)
 ```text
     //用于计算ZONE_MOVABLE的内存数量
     //在内存较多的32位系统上, 这通常会是ZONE_HIGHMEM, 但是对于64位系统，将使用ZONE_NORMAL或ZONE_DMA32，这里计算也比较复杂，感兴趣的话可以去看一下源码，这里便不做介绍了
+ find_zone_movable_pfns_for_nodes();
 ```
 
- find_zone_movable_pfns_for_nodes();
 
  ......
 
@@ -688,8 +632,6 @@ void __init free_area_init(unsigned long *max_zone_pfn)
 
  /* Initialise every node */
     //为系统中的每个节点调用free_area_init_node()
-```
-
  mminit_verify_pageflags_layout();
  setup_nr_node_ids();
  init_unavailable_mem();
@@ -697,7 +639,6 @@ void __init free_area_init(unsigned long *max_zone_pfn)
   pg_data_t *pgdat = NODE_DATA(nid);
   free_area_init_node(nid);
 
-```text
   /* Any memory on that node */
   if (pgdat->node_present_pages)
    node_set_state(nid, N_MEMORY);
@@ -710,9 +651,13 @@ void __init free_area_init(unsigned long *max_zone_pfn)
 <strong>free_area_init_node()函数会计算每个节点中每个区域的大小及其空洞的大小</strong>，如果两个相邻区域之间的最大 PFN 匹配，则可以假定后面的区域为空。例如 arch_max_dma_pfn == arch_max_dma32_pfn，则假定 arch_max_dma32_pfn 该区域为空。
 
 pg_data_t node_data[MAX_NUMNODES];
+
+```text
 EXPORT_SYMBOL(node_data);
 
 #ifdef CONFIG_NUMA
+```
+
 extern struct pglist_data *node_data[];
 
 ```cpp
@@ -722,17 +667,11 @@ extern struct pglist_data *node_data[];
 static void __init free_area_init_node(int nid)
 {
     //从全局节点数组中获取一个节点
-```
-
  pg_data_t *pgdat = NODE_DATA(nid);
-
-```text
  unsigned long start_pfn = 0;
  unsigned long end_pfn = 0;
 
  /* pg_data_t should be reset to zero when it's allocated */
-```
-
  WARN_ON(pgdat->nr_zones || pgdat->kswapd_highest_zoneidx);
  //根据节点id获取起始pfn和结束pfn，前面node初始化时，memblock处已经设置好节点ID了
  get_pfn_range_for_nid(nid, &start_pfn, &end_pfn);
@@ -743,6 +682,8 @@ static void __init free_area_init_node(int nid)
 
  pr_info("Initmem setup node %d [mem %#018Lx-%#018Lx]\n", nid,
   (u64)start_pfn 
+```
+
 
 在进入 calculate_node_totalpages 之前，这里还是先简单介绍一下<strong>node</strong>的数据结构。
 
@@ -789,57 +730,46 @@ typedef struct pglist_data {
     //内存回收相关的数据结构
  ......
 
+```text
  ZONE_PADDING(_pad1_)
     ......
-
-```text
  unsigned long  flags;
-```
-
 
  ZONE_PADDING(_pad2_)
     ......
+```
+
 } pg_data_t;
 
 ZONE_PADDING 的作用，通过添加大量的填充把经常被访问的“热门”数据分到了单独的 cache line 上，可以理解为空间换时间。
 
 <strong>calculate_node_totalpages</strong>()实现：
 
-```text
+```cpp
 static void __init calculate_node_totalpages(struct pglist_data *pgdat,
       unsigned long node_start_pfn,
       unsigned long node_end_pfn)
 {
  unsigned long realtotalpages = 0, totalpages = 0;
-```
-
  enum zone_type i;
 
-```cpp
  for (i = 0; i node_zones + i;
   unsigned long zone_start_pfn, zone_end_pfn;
   unsigned long spanned, absent;
   unsigned long size, real_size;
-```
-
 
   spanned = zone_spanned_pages_in_node(pgdat->node_id, i,
            node_start_pfn,
            node_end_pfn,
            &zone_start_pfn,
-
-```text
            &zone_end_pfn);
   absent = zone_absent_pages_in_node(pgdat->node_id, i,
          node_start_pfn,
          node_end_pfn);
-```
-
 
   size = spanned;
   real_size = size - absent;
 
-```text
   if (size)
    zone->zone_start_pfn = zone_start_pfn;
   else
@@ -854,14 +784,10 @@ static void __init calculate_node_totalpages(struct pglist_data *pgdat,
 
 ```text
  }
-```
-
 
  pgdat->node_spanned_pages = totalpages;
  pgdat->node_present_pages = realtotalpages;
  printk(KERN_DEBUG "On node %d totalpages: %lu\n", pgdat->node_id,
-
-```text
        realtotalpages);
 }
 ```
@@ -889,10 +815,10 @@ static unsigned long __init zone_spanned_pages_in_node(int nid,
 
  *zone_start_pfn = clamp(node_start_pfn, zone_low, zone_high);
  *zone_end_pfn = clamp(node_end_pfn, zone_low, zone_high);
- adjust_zone_range_for_zone_movable(nid, zone_type,
-    node_start_pfn, node_end_pfn,
 
 ```text
+ adjust_zone_range_for_zone_movable(nid, zone_type,
+    node_start_pfn, node_end_pfn,
     zone_start_pfn, zone_end_pfn);
 
  /* Check that this node has pages within the zone's required range */
@@ -924,15 +850,11 @@ unsigned long __init __absent_pages_in_range(int nid,
  unsigned long nr_absent = range_end_pfn - range_start_pfn;
  unsigned long start_pfn, end_pfn;
  int i;
-```
-
 
  for_each_mem_pfn_range(i, nid, &start_pfn, &end_pfn, NULL) {
   start_pfn = clamp(start_pfn, range_start_pfn, range_end_pfn);
   end_pfn = clamp(end_pfn, range_start_pfn, range_end_pfn);
   nr_absent -= end_pfn - start_pfn;
-
-```cpp
  }
  return nr_absent;
 }
@@ -950,8 +872,6 @@ static unsigned long __init zone_absent_pages_in_node(int nid,
  /* When hotadd a new node from cpu_up(), the node should be empty */
  if (!node_start_pfn && !node_end_pfn)
   return 0;
-```
-
 
  zone_start_pfn = clamp(node_start_pfn, zone_low, zone_high);
  zone_end_pfn = clamp(node_end_pfn, zone_low, zone_high);
@@ -961,7 +881,6 @@ static unsigned long __init zone_absent_pages_in_node(int nid,
    &zone_start_pfn, &zone_end_pfn);
  nr_absent = __absent_pages_in_range(nid, zone_start_pfn, zone_end_pfn);
 
-```text
  /*
   * ZONE_MOVABLE handling.
   * Treat pages to be ZONE_MOVABLE in ZONE_NORMAL as absent pages
@@ -970,13 +889,9 @@ static unsigned long __init zone_absent_pages_in_node(int nid,
  if (mirrored_kernelcore && zone_movable_pfn[nid]) {
   unsigned long start_pfn, end_pfn;
   struct memblock_region *r;
-```
-
 
   for_each_mem_region(r) {
    start_pfn = clamp(memblock_region_memory_base_pfn(r),
-
-```text
        zone_start_pfn, zone_end_pfn);
    end_pfn = clamp(memblock_region_memory_end_pfn(r),
      zone_start_pfn, zone_end_pfn);
@@ -1026,34 +941,27 @@ struct zone {
  //该zone的第一个页的页号
  unsigned long  zone_start_pfn;
     //伙伴系统管理的page数，这是除去了在初始化阶段被申请的页面（比如memblock）
-```
-
  atomic_long_t  managed_pages;
-
-```text
     //zone大小，含空洞，即zone_end_pfn - zone_start_pfn
  unsigned long  spanned_pages;
     //zone实际大小，不含空洞
  unsigned long  present_pages;
  //zone的名称，如“DMA”“Normal”“Highmem”，这些名称定义于page_alloc.c的zone_names[MAX_NR_ZONES]
  const char  *name;
-```
-
 
  ZONE_PADDING(_pad1_)
 
-```text
  //包含所有空闲页面，伙伴系统使用，里面有数量为MIGRATE_TYPES个的free_list链表，分别用于管理不同迁移类型的内存页面
  struct free_area free_area[MAX_ORDER];
     //描述zone的当前状态
  unsigned long  flags;
     /* Primarily protects free_area */
     //与伙伴算法的碎片迁移算法有关
-```
-
  spinlock_t  lock;
 
  ZONE_PADDING(_pad2_)
+```
+
 
  ......
 
@@ -1063,32 +971,22 @@ struct zone {
 
 回到 free_area_init_node()函数，紧接在 calculate_node_totalpages()后的函数调用的为<strong>alloc_node_mem_map()，这个函数是用于申请 node 节点的 node_mem_map 相应的内存空间</strong>，如果是 sparse memory 内存模型，则该函数实现为空，这里便不做过多介绍了，直接看最后的初始化工作：<strong>free_area_init_core</strong>()。
 
-```text
+```cpp
 static void __init free_area_init_core(struct pglist_data *pgdat)
 {
-```
-
  enum zone_type j;
-
-```cpp
  int nid = pgdat->node_id;
  //对节点的一些锁和队列进行初始化
-```
-
  pgdat_init_internals(pgdat);
  pgdat->per_cpu_nodestats = &boot_nodestats;
 
-```cpp
  for (j = 0; j node_zones + j;
   unsigned long size, freesize, memmap_pages;
   unsigned long zone_start_pfn = zone->zone_start_pfn;
-```
-
 
   size = zone->spanned_pages;
   freesize = zone->present_pages;
 
-```text
   //memmap_pages,每一个4k物理页都对应一个mem_map_t来管理
   memmap_pages = calc_memmap_size(size, freesize);
   if (!is_highmem_idx(j)) {
@@ -1128,15 +1026,11 @@ static void __init free_area_init_core(struct pglist_data *pgdat)
 
   if (!size)
    continue;
-```
-
 
   set_pageblock_order();
   setup_usemap(pgdat, zone, zone_start_pfn, size);
   init_currently_empty_zone(zone, zone_start_pfn, size);
   memmap_init(size, nid, j, zone_start_pfn);
-
-```text
  }
 }
 ```
@@ -1177,14 +1071,11 @@ void __meminit __weak memmap_init(unsigned long size, int nid,
  unsigned long start_pfn, end_pfn;
  unsigned long range_end_pfn = range_start_pfn + size;
  int i;
-```
-
 
  for_each_mem_pfn_range(i, nid, &start_pfn, &end_pfn, NULL) {
   start_pfn = clamp(start_pfn, range_start_pfn, range_end_pfn);
   end_pfn = clamp(end_pfn, range_start_pfn, range_end_pfn);
 
-```cpp
   if (end_pfn > start_pfn) {
    size = end_pfn - start_pfn;
    memmap_init_zone(size, nid, zone, start_pfn,
@@ -1387,9 +1278,12 @@ enum pageflags {
 
 内核定义了一些<strong>标准宏，用于检查页面是否设置了某个特定的标志位或者用于操作某些特定的标志位</strong>，比如
 
+```text
 PageXXX()（检查是否设置）
 SetPageXXX()
 ClearPageXXX()
+```
+
 
 <strong>伙伴系统</strong>，内存被分成含有很多页面的大块，每一块都是 2 个页面大小的方幂。如果找不到想要的块, 一个大块会被分成两部分，这两部分彼此就成为伙伴。其中一半被用来分配，而另一半则空闲。这些块在以后分配的过程中会继续被二分直至产生一个所需大小的块。当一个块被最终释放时, 其伙伴将被检测出来, 如果伙伴也空闲则合并两者
 
@@ -1440,9 +1334,9 @@ static void __meminit __init_single_page(struct page *page, unsigned long pfn,
 void __init setup_arch(char **cmdline_p)
 {
     ......
+ max_pfn = e820__end_of_raCm_pfn(); //max_pfn初始化
 ```
 
- max_pfn = e820__end_of_raCm_pfn(); //max_pfn初始化
  ......
  find_low_pfn_range(); //max_low_pfn、高端内存初始化
  ......

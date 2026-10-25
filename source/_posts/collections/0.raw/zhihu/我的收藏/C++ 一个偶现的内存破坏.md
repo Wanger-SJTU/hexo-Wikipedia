@@ -28,9 +28,9 @@ source_url: https://zhuanlan.zhihu.com/p/578290634
 下面这段代码读取 `payload` 的 结果正确**：
 
 BufferReader reader(response.buffer().data());
-int32_t payload = 0;
 
 ```text
+int32_t payload = 0;
 if (reader.ReadInt32(&payload)) {
   // Use |payload|
 }
@@ -40,9 +40,9 @@ if (reader.ReadInt32(&payload)) {
 下面这段代码读取 `payload1`/`payload2` 的 <strong>结果错误</strong>：
 
 BufferReader reader(response.buffer().data());
-int32_t payload1 = 0, payload2 = 0;
 
 ```text
+int32_t payload1 = 0, payload2 = 0;
 if (reader.ReadInt32(&payload1) && reader.ReadInt32(&payload2)) {
   // Use |payload1| and |payload2|
 }
@@ -212,11 +212,11 @@ READ of size 4 at 0x7ffd7bc8d2d4 thread T0
 
 
 Address 0x7ffd7bc8d2d4 is located in stack of thread T0 at offset 180 in frame
+
+```text
     #0 0x50e8ef in Foo(unsigned long) /app/example.cpp:53
 
   This frame has 4 object(s):
-
-```text
     [32, 64) 'response' (line 54)
     [96, 120) 'reader' (line 56)
     [160, 192) 'ref.tmp' (line 56) 

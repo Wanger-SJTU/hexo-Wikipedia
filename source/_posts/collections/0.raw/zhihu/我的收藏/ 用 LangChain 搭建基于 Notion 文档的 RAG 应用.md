@@ -30,31 +30,39 @@ source_url: https://zhuanlan.zhihu.com/p/669896230
 接下来，用 LangChain 的 markdown 标题文本分割器。我们向其提供一个分割符列表，然后传入之前命名的 md_file 来获取分割内容。在实际定义`headers_to_split_on`列表时，请使用自己 Notion 文档的标题。
 
 # Load Notion page as a markdownfile filefrom langchain.document_loaders import NotionDirectoryLoader
+
+```text
 path='./notion_docs'
 loader = NotionDirectoryLoader(path)
 docs = loader.load()
 md_file=docs[0].page_content
-# Let's create groups based on the section headers in our pagefrom langchain.text_splitter import MarkdownHeaderTextSplitter
-headers_to_split_on = [
-
-```text
-    ("##", "Section"),
-]
 ```
 
+# Let's create groups based on the section headers in our pagefrom langchain.text_splitter import MarkdownHeaderTextSplitter
+
+```text
+headers_to_split_on = [
+    ("##", "Section"),
+]
 markdown_splitter = MarkdownHeaderTextSplitter(headers_to_split_on=headers_to_split_on)
 md_header_splits = markdown_splitter.split_text(md_file)
+```
+
 
 分割任务并检查分割结果。用 LangChain 的 `RecursiveCharacterTextSplitter`，使用一些不同的字符来进行分割。四个默认的检查字符是换行符、双换行符、空格或无空格。也可以选择传入自己的 `separators` 参数。
 
 将 Notion文档进行分块时，我们还需要定义两个关键超参数——分块大小（chunk size）和分块重叠（chunk overlap）。本例中，分块大小为 64，重叠为 8。随后，我们就可以调用 split_documents 函数将所有文档进行分割。
 
 # Define our text splitter
+
+```python
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 chunk_size = 64
 chunk_overlap = 8
 text_splitter = RecursiveCharacterTextSplitter(chunk_size=chunk_size, chunk_overlap=chunk_overlap)
 all_splits = text_splitter.split_documents(md_header_splits)
+```
+
 all_splits
 
 下图展示了部分分割的 document 对象，其中包含了页面内容和元数据。元数据显示了内容是从哪个章节中提取出来的。
@@ -72,12 +80,8 @@ from milvus import default_server
 default_server.start()
 from langchain.vectorstores import Milvus
 from langchain.embeddings import OpenAIEmbeddings
-```
-
 
 vectordb = Milvus.from_documents(documents=all_splits,
-
-```text
     embedding=OpenAIEmbeddings(),
     connection_args={"host": "127.0.0.1", "port": default_server.listen_port},
     collection_name="EngineeringNotionDoc")
@@ -99,25 +103,21 @@ vectordb = Milvus.from_documents(documents=all_splits,
 from langchain.llms import OpenAI
 from langchain.retrievers.self_query.base import SelfQueryRetriever
 from langchain.chains.query_constructor.base import AttributeInfo
-```
-
 
 metadata_fields_info = [
-
-```text
     AttributeInfo(
         name="Section",
         description="Part of the document that the text comes from",
         type="string or list[string]"
     ),
 ]
-```
-
 document_content_description = "Major sections of the document"
 
 llm = OpenAI(temperature=0)
 retriever = SelfQueryRetriever.from_llm(llm, vectordb, document_content_description, metadata_fields_info, verbose=True)
 retriever.get_relevant_documents("What makes a distinguished engineer?")
+```
+
 
 以下例子中我们提出了一个问题：“一名优秀工程师有哪些品质？”（What makes a distinguished engineer?）
 

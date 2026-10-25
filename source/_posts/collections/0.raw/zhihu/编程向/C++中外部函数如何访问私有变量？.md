@@ -80,9 +80,9 @@ int main() {
 
 // 定义一个函数模板 steal，模板形参 p 是指向成员的指针，指向的是 Bank_t 类类型中 Money_t 类型的成员
 templatetypename Bank_t, typename Money_t, Money_t Bank_t::* p> 
-Money_t& steal(Bank_t& bank) {
 
 ```text
+Money_t& steal(Bank_t& bank) {
     return bank.*p;
 }
 
@@ -162,7 +162,7 @@ struct Offset {
 
 templatetypename Bank_t, typename Money_t, typename OffsetBank_t, Money_t>::type offset>
 
-```text
+```cpp
 struct Thief {
     Thief() {
         OffsetBank_t, Money_t>::value = offset;
@@ -180,11 +180,7 @@ template class ThiefBank, int, &Bank::money>;
 // int& steal(Bank& bank) { reteurn bank.*Offset::value; }
 // “代入” Offset::value = &Bank::money 得：
 // int& steal(Bank& bank) { reteurn bank.*&Bank::money; } templatetypename Bank_t, typename Money_t>
-```
-
 Money_t& steal(Bank_t& bank) {
-
-```cpp
     return bank.*OffsetBank_t, Money_t>::value;
 }
 
@@ -237,9 +233,8 @@ int main() {
 
 同样，还是用 godbolt 查一下生成的汇编代码，但这次不要开 -O1 优化，因为友元声明定义的全局函数默认是 inline 的，开了会被内联掉（x86-64 gcc 11.2，-O0）
 
-steal(Bank&):
-
 ```x86asm
+steal(Bank&):
         push    rbp
         mov     rbp, rsp
         mov     QWORD PTR [rbp-8], rdi #

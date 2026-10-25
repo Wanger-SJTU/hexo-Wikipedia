@@ -23,7 +23,10 @@ source_url: https://zhuanlan.zhihu.com/p/64933417
 
 首先，从最简单的例子开始，设有一矩阵X：
 
+```text
 X=[123456789]" role="presentation">X=[123456789]X = \left[ \begin{array}{lll}{1} & {2} & {3} \\ {4} & {5} & {6} \\ {7} & {8} & {9}\end{array}\right] 
+```
+
 
 如果卷积核的大小是2x2，stride为1，那么就需要把矩阵X转换为包含如下4个小矩阵的新矩阵A：
 
@@ -41,8 +44,11 @@ shape很好理解，用的也比较多
 
 至于strides属性，先看下面的代码：
 
+```python
 a = np.arange(9, dtype=np.int32).reshape(3,3)
 print(a)
+```
+
 '''
 [[0 1 2]
  [3 4 5]
@@ -67,12 +73,18 @@ strides是numpy数组对象的一个属性，官方手册给出的解释是跨�
 
 弄清楚原理后，下面的例子就更好理解了：
 
+```python
 b = np.arange(16, dtype=np.float).reshape(4,4)
 print(b.strides)
+```
+
 #(32, 8)
 
+```python
 c = np.arange(27, dtype=np.int32).reshape(3,3,3)
 print(c.strides)
+```
+
 #(36, 12, 4)
 
 现在，再回过头来看as_strided函数，要从X得到A：
@@ -91,7 +103,10 @@ A = \left[ \begin{array}{ll}{\left[ \begin{array}{ll}{1} & {2} \\ {4} & {5}\end{
 
 然后确定更高一个维度的距离：A[i, j, k, x]和A[i, j, k+1, x]，对比它们在X上的情况：
 
+```text
 X = \left[ \begin{array}{lll}{1} & {2} & {3} \\ {4} & {5} & {6} \\ {7} & {8} & {9}\end{array}\right] 
+```
+
 
 可以确定距离为12，（如果A是原生数组的话，那么就是该是8）
 
@@ -109,15 +124,22 @@ X = \left[ \begin{array}{lll}{1} & {2} & {3} \\ {4} & {5} & {6} \\ {7} & {8} & {
 
 这里就不用多说了吧，最后可以strides =（12，4，12，4），运行代码：
 
+```python
 X = np.arange(9, dtype=np.int32).reshape(3,3)
 print(X)
+```
+
 '''
 [[0 1 2]
  [3 4 5]
  [6 7 8]]
 '''
+
+```python
 A = np.lib.stride_tricks.as_strided(X, shape=(2,2,2,2), strides=(12,4,12,4))
 print(A)
+```
+
 '''
 [[[[0 1]
    [3 4]]
@@ -134,20 +156,30 @@ print(A)
 
 果然，再来看一个例子
 
+```text
 X=\left[ \begin{array}{cccc}{10} & {11} & {12} & {13} \\ {14} & {15} & {16} & {17} \\ {18} & {19} & {20} & {21} \\ {22} & {23} & {24} & {25}\end{array}\right] 
+```
+
 
 X的strides为：（16，4），如果卷积核大小为3x3，那么要得到新矩阵A：
 
+```python
 X = np.arange(16, dtype=np.int32).reshape(4,4)
 print(X)
+```
+
 '''
 [[ 0  1  2  3]
  [ 4  5  6  7]
  [ 8  9 10 11]
  [12 13 14 15]]
 '''
+
+```python
 A = np.lib.stride_tricks.as_strided(X, shape=(2,2,3,3), strides=(16,4,16,4))
 print(A)
+```
+
 '''
 [[[[ 0  1  2]
    [ 4  5  6]
@@ -168,7 +200,10 @@ print(A)
 
 以上，是2维的情况，再来看3维的情况，设有一矩阵：
 
+```text
 X_1 = \left[ \begin{array}{lll}{\left[ \begin{array}{lll}{1} & {2} & {3} \\ {4} & {5} & {6} \\ {7} & {8} & {9}\end{array}\right]} & {\left[ \begin{array}{lll}{10} & {11} & {12} \\ {13} & {14} & {15} \\ {16} & {17} & {18}\end{array}\right]}\end{array}\right] 
+```
+
 
 `X1 = np.arange(1,19, dtype=np.int32).reshape(2,3,3)`
 
@@ -198,8 +233,11 @@ A_1=\left[ \begin{array}{ll}{\left[ \begin{array}{ll}{\left[ \begin{array}{ll}{1
 
 运行一遍代码验证一下：
 
+```python
 X1 = np.arange(1,19, dtype=np.int32).reshape(2,3,3)
 print(X1)
+```
+
 '''
 [[[ 1  2  3]
   [ 4  5  6]
@@ -209,8 +247,12 @@ print(X1)
   [13 14 15]
   [16 17 18]]]
 '''
+
+```python
 A1 = as_strided(X1, shape=(2,2,2,2,2), strides=(*X1.strides, *X1.strides[-2:]))
 print(A1)
+```
+
 '''
 [[[[[ 1  2]
     [ 4  5]]
@@ -280,8 +322,12 @@ def split_by_strides(X, kh, kw, s):
 设卷积核的shape为：（kh，kw，C，kn），X.shape：（N，H，W，C），计算feature_map的代码如下：
 
 kh, kw, C, kn = self.filters.shape
+
+```text
 X_split = split_by_strides(X, kh, kw, s)   # X_split.shape: (N, oh, ow, kh, kw, C)
 feature_map = np.tensordot(X_split, self.filters, axes=[(3,4,5), (0,1,2)]) + self.bias
+```
+
 
 可以检验一下，featrue_map的shape为：（N，oh，ow，kn）
 
@@ -297,23 +343,37 @@ feature_map = np.tensordot(X_split, self.filters, axes=[(3,4,5), (0,1,2)]) + sel
 >>> C.shape
 (3, 5)
 >>> C
+
+```text
 array([[ 37,  23,  77,  19,  16],
        [ 83,  32, 116,  40,  51],
        [ 86,  43, 127,  47,  47]])
+```
+
 >>> np.dot(A, B)
+
+```text
 array([[ 37,  23,  77,  19,  16],
        [ 83,  32, 116,  40,  51],
        [ 86,  43, 127,  47,  47]])
+```
+
 
 这个和np.dot的结果虽然没有区别，不过为了说明其中的不同，还是用另一种角度来进行抽象，先将上面的两个二维数组分别抽象成一个列向量和一个行向量：
 
+```text
 A=\left[ \begin{array}{l}{a_{1}} \\ {a_{2}} \\ {a_{3}}\end{array}\right] 
 
 B=\left[ \begin{array}{lllll}{b_{1}} & {b_{2}} & {b_{3}} & {b_{4}} & {b_{5}}\end{array}\right] 
+```
+
 
 所以矩阵C为：
 
+```text
 C=\left[ \begin{array}{lllll}{a_{1} b_{1}} & {a_{1} b_{2}} & {a_{1} b_{3}} & {a_{1} b_{4}} & {a_{1} b_{5}} \\ {a_{2} b_{1}} & {a_{2} b_{2}} & {a_{2} b_{3}} & {a_{2} b_{4}} & {a_{2} b_{5}} \\ {a_{3} b_{1}} & {a_{3} b_{2}} & {a_{3} b_{3}} & {a_{3} b_{4}} & {a_{3} b_{5}}\end{array}\right] 
+```
+
 
 其中C的各个元素都是 a_x b_x 进行点乘的运算的结果
 
@@ -336,9 +396,13 @@ $a \cdot b=a_{1} b_{1}+\dots+a_{n} b_{n} $
 >>> A = np.random.randint(0,9,(3,4,5))
 >>> B = np.random.randint(0,9,(4,5,2))
 >>> np.tensordot(A, B, [(1,2), (0,1)])
+
+```text
 array([[290, 146],
        [308, 164],
        [316, 205]])
+```
+
 
 经过上面的解释，想必你肯定知道这些数值是怎么来的了，来验证一下：
 
@@ -359,11 +423,15 @@ array([[290, 146],
 >>> c.shape
 (5, 2)
 >>> c
+
+```text
 array([[ 4400.,  4730.],
        [ 4532.,  4874.],
        [ 4664.,  5018.],
        [ 4796.,  5162.],
        [ 4928.,  5306.]])
+```
+
 >>> # A slower but equivalent way of computing the same...  一个更慢但效果一样的方法
 >>> d = np.zeros((5,2))
 >>> for i in range(5):

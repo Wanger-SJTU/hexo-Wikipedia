@@ -63,10 +63,9 @@ libc_hidden_def (__lll_lock_wait)
 
 futex\_wait的代码如下
 
+```cpp
 static __always_inline int
 futex_wait (unsigned int *futex_word, unsigned int expected, int private)
-
-```cpp
 {
   int err = lll_futex_timed_wait (futex_word, expected, NULL, private);
   switch (err)

@@ -51,9 +51,8 @@ typedef struct {
 
 - `include/tvm/runtime/data_type.h:75`:
 
+```cpp
 DataType(int code, int bits, int lanes) {
-
-```text
     data_.code = static_castuint16_t>(code); // MARK
     data_.bits = static_castuint16_t>(bits); // MARK
     data_.lanes = static_castint32_t>(lanes); // MARK
@@ -66,18 +65,13 @@ DataType(int code, int bits, int lanes) {
 
 - `include/tvm/runtime/serializer.h:41,46`:
 
+```cpp
 inline static void Write(Stream* strm, const DLDataType& dtype) {
   Handleruint16_t>::Write(strm, dtype.code); // MARK
   Handleruint16_t>::Write(strm, dtype.bits); // MARK
   Handlerint32_t>::Write(strm, dtype.lanes); // MARK
-
-```text
 }
-```
-
 inline static bool Read(Stream* strm, DLDataType* dtype) {
-
-```text
     if (!Handleruint16_t>::Read(strm, &(dtype->code))) return false; // MARK
     if (!Handleruint16_t>::Read(strm, &(dtype->bits))) return false; // MARK
     if (!Handlerint32_t>::Read(strm, &(dtype->lanes))) return false; // MARK
@@ -99,9 +93,8 @@ ctypedef struct DLDataType:
 
 - `python/tvm/_ffi/runtime_ctypes.py:64`:
 
-_fields_ = [("type_code", ctypes.c_uint16), # MARK
-
 ```text
+_fields_ = [("type_code", ctypes.c_uint16), # MARK
             ("bits", ctypes.c_uint16), # MARK
             ("lanes", ctypes.c_int32)] # MARK
 ```
@@ -111,6 +104,7 @@ _fields_ = [("type_code", ctypes.c_uint16), # MARK
 
 之后可以正常地进行代码生成了（`tvm.build`），但一旦部署运行就会出问题，比如运行下面的代码：
 
+```text
 A = te.placeholder((101,), dtype="float32", name="A")
 B = te.compute((101,), lambda i: A[i] + 1, name="B")
 s = te.create_schedule([B.op])
@@ -121,6 +115,8 @@ a_np = np.random.uniform(size=(101,)).astype(A.dtype)
 a = tvm.nd.array(a_np, ctx)
 b = tvm.nd.array(np.zeros((101,), dtype=B.dtype), ctx)
 fun(a, b)
+```
+
 
 会报错：
 
@@ -131,9 +127,9 @@ TVMError: Check failed: ret == 0 (-1 vs. 0) : Assert fail: (((tvm_struct_get(arg
 用`grep`搜索`dtype is expected to be`，发现了错误的可能来源：`src/tir/transforms/arg_binder.cc:170`，修改之：
 
   type_err_msg  arg_name  ".dtype is expected to be "  dtype;
-  PrimExpr cond = (TVMArrayGet(DataType::UInt(16), handle, intrinsic::kArrTypeCode) ==
 
 ```text
+  PrimExpr cond = (TVMArrayGet(DataType::UInt(16), handle, intrinsic::kArrTypeCode) ==
                        IntImm(DataType::UInt(16), dtype.code()) && // MARK
                    TVMArrayGet(DataType::UInt(16), handle, intrinsic::kArrTypeBits) ==
                        IntImm(DataType::UInt(16), dtype.bits()) && // MARK
@@ -145,9 +141,13 @@ TVMError: Check failed: ret == 0 (-1 vs. 0) : Assert fail: (((tvm_struct_get(arg
 但是这样修改一下，甚至连`tvm.build`都运行不了了，在LLVM/CPU代码生成（Host端代码生成）时会出问题。这里困惑了我很久，之后我把`arg_binder.cc`的修改取消后，查看了一下生成的LLVM IR才发现问题：
 
 ; ModuleID = 'TVMMod'
+
+```text
 source_filename = "TVMMod"
 target datalayout = "e-m:e-i64:64-f80:128-n8:16:32:64-S128"
 target triple = "x86_64-pc-linux-gnu"
+```
+
 
 %0 = type { i8*, %1, i32, %2, i64*, i64*, i64 }
 %1 = type { i32, i32 }
@@ -157,27 +157,22 @@ target triple = "x86_64-pc-linux-gnu"
 
 这样一来就很好找了，直接用`grep`搜索`StructType::create`，很快就发现了错误来源：`src/target/llvm/codegen_cpu.c:47`，修改之：
 
+```sql
 // TVM runtime types
 t_tvm_shape_index_ = llvm::Type::getIntNTy(*ctx, DataType::ShapeIndex().bits());
 t_tvm_context_ = llvm::StructType::create({t_int_, t_int_});
 t_tvm_type_ = llvm::StructType::create({t_int16_, t_int16_, t_int32_}); // MARK
 t_tvm_func_handle_ = t_void_p_;
 t_tvm_array_ = llvm::StructType::create({t_void_p_, t_tvm_context_, t_int_, t_tvm_type_,
-
-```text
                                          t_tvm_shape_index_->getPointerTo(),
                                          t_tvm_shape_index_->getPointerTo(), t_int64_});
-```
-
 t_tvm_value_ = llvm::StructType::create({t_float64_});
 t_tvm_parallel_group_env_ = llvm::StructType::create({t_int32_->getPointerTo(), t_int32_});
 ftype_tvm_parallel_lambda_ = llvm::FunctionType::get(
-
-```text
     t_int_, {t_int_, t_tvm_parallel_group_env_->getPointerTo(), t_void_p_}, false);
+md_tbaa_ctx_ptr_ = md_builder_->createTBAAScalarTypeNode("ctx_ptr", md_tbaa_root_);
 ```
 
-md_tbaa_ctx_ptr_ = md_builder_->createTBAAScalarTypeNode("ctx_ptr", md_tbaa_root_);
 
 改完之后就可以正常进行代码生成以及运行了。
 

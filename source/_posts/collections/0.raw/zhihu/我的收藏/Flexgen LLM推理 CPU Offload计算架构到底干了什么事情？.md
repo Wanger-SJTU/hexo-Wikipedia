@@ -61,9 +61,12 @@ Flexgen（[https://github.com/FMInference/FlexGen](https://link.zhihu.com/?targe
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_5f1ef1dd60c5.png)
 
-dtoc(g), 即GPU在计算generating 下一个token的时候，需要pipeline给GPU输送数据时，disk到磁盘这个环节需要耗费的延迟*<strong>简单解释一下这个量化公式</strong>*（*<strong>上面图里的公式gd应该写错了，应该是wd，:-)</strong>*）： 
+```text
+dtoc(g), 即GPU在计算generating 下一个token的时候，需要pipeline给GPU输送数据时，disk到磁盘这个环节需要耗费的延迟***简单解释一下这个量化公式***（***上面图里的公式gd应该写错了，应该是wd，:-)***）： 
 
 dtoc(g)进行generating token的时候，需要下一层的activation、KV cache、parameter，这些参数有一部分可能存放在disk，那么存放在disk上搬移到CPU端，
+```
+
 
 [https://zhuanlan.zhihu.com/p/615327112](https://zhuanlan.zhihu.com/p/615327112) LLM推理计算量化分析，建议没有LLM量化背景的先揣摩下，基本上量化细节弄清楚了，后文的思路理解起来比较简单直接了
 

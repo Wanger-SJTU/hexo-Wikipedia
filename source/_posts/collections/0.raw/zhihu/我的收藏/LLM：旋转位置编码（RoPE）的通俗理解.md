@@ -47,9 +47,9 @@ $偶数位 ： x_{k,2t}=x_{k,2t}+\text{sin}(k\theta_t) \\ 奇数位 ： x_{k,2t+
 
 普通的检索过程 q^\textsf{T}k 是位置无关的。要在其中引入相对距离，即对于位置为 m 的 q_m 和位置为 n 的 k_n ， q_m^\textsf{T}k_n 需要和 m-n 获得关联。沿用传统方式，在 q 和 k 上加入位置向量，可以获得如下多项式展开（省略权重矩阵）：
 
+```text
 q_m=x_m+p_m,k_n=x_n+p_n \\ q_m^\textsf{T}k_n=x_m^\textsf{T}x_n+x_m^\textsf{T}p_n+p_m^\textsf{T}x_n+p_m^\textsf{T}p_n \\接下来，使用相对位置向量 p_{m-n} 去替换 p_n ,并将 p_m 退化为位置无关的模型参数矩阵。各个相对位置编码算法采用的形式不尽相同，举一个极简的例子做参考：
 
-```text
 q_m^\textsf{T}k_n=x_m^\textsf{T}x_n+x_m^\textsf{T}p_{m-n}+p_{m-n}^\textsf{T}x_n \\
 ```
 

@@ -65,9 +65,12 @@ f_W(x_m, g(m), h(\theta_d)) = W(x_m + \text{PE}_m) \\
 
 ROPE的定义可以直接映射到通用公式：
 
+```text
 g(m) = m 
 
 h(\theta_d) = \theta_d 
+```
+
 
 因此，ROPE的具体实现为（这里求简只考虑二维情况）：
 

@@ -19,16 +19,22 @@ source_url: https://zhuanlan.zhihu.com/p/157649253
 
 在开始之前，先看看如下的代码：
 
+```text
 //1.按钮存在背景图片
 UIButton *btn1 = [UIButton buttonWithType:UIButtonTypeCustom
+```
+
 btn1.frame = CGRectMake(100, 30, 100, 100);
 btn1.layer.cornerRadius = 50;
 [self.view addSubview:btn1];
 [btn1 setImage:[UIImage imageNamed:@"image.png"] forState:UI
 btn1.clipsToBounds = YES;
 
+```text
 //2.按钮不存在背景图片
 UIButton *btn2 = [UIButton buttonWithType:UIButtonTypeCustom
+```
+
 btn2.frame = CGRectMake(100, 180, 100, 100);
 btn2.layer.cornerRadius = 50;
 btn2.backgroundColor = [UIColor blueColor];
@@ -37,9 +43,9 @@ btn2.clipsToBounds = YES;
 
 ```text
 //3.UIImageView 设置了图片+背景色;
+UIImageView *img1 = [[UIImageView alloc]init];
 ```
 
-UIImageView *img1 = [[UIImageView alloc]init];
 img1.frame = CGRectMake(100, 320, 100, 100);
 img1.backgroundColor = [UIColor blueColor];
 [self.view addSubview:img1];
@@ -49,9 +55,9 @@ img1.image = [UIImage imageNamed:@"image.png"];
 
 ```text
 //4.UIImageView 只设置了图片,无背景色;
+UIImageView *img2 = [[UIImageView alloc]init];
 ```
 
-UIImageView *img2 = [[UIImageView alloc]init];
 img2.frame = CGRectMake(100, 480, 100, 100);
 [self.view addSubview:img2];
 img2.layer.cornerRadius = 50;

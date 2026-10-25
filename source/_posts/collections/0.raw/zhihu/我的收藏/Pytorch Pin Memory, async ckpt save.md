@@ -23,10 +23,9 @@ source_url: https://zhuanlan.zhihu.com/p/9616453650
 
 python有一些自带的ram相关log打印，可以用来分析模型内存详细信息：
 
+```python
 import psutil
 virtual_mem = psutil.virtual_memory()
-
-```python
 print(f"RAM - Total: {virtual_mem.total / 1024**3:.2f} GB, "
               f"Available: {virtual_mem.available / 1024**3:.2f} GB, "
               f"Buffers: {virtual_mem.buffers / 1024**3:.2f} GB, "

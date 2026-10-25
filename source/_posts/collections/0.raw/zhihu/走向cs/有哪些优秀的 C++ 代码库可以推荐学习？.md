@@ -67,11 +67,11 @@ xmake r co
 使用 coost 开发 C++ 项目
 最简单的，可以直接包含[co/all.h](https://link.zhihu.com/?target=https%3A//github.com/idealvin/coost/blob/master/include/co/all.h)，使用 coost 中的所有特性。如果担心影响编译速度，也可以只包含需要用到的头文件，如包含[co/co.h](https://link.zhihu.com/?target=https%3A//github.com/idealvin/coost/blob/master/include/co/co.h)，可以使用 co/flag, co/log 以及协程相关的所有特性。
 
+```cpp
 #include "co/all.h"
 
 DEF_string(s, "nice", "");
 
-```cpp
 int main(int argc, char** argv) {
     flag::init(argc, argv);
     LOG << FLG_s;
@@ -84,13 +84,12 @@ int main(int argc, char** argv) {
 
 用户也可以用宏 `DEF_main` 定义 main 函数：
 
+```cpp
 #include "co/all.h"
 
 DEF_string(s, "nice", "");
 
 DEF_main(argc, argv) {
-
-```text
     LOG << FLG_s;
     return 0;
 }
@@ -110,15 +109,12 @@ co/flag 为每个配置项提供一个默认值，在没有配置参数的情况
 // xx.cc
 #include "co/flag.h"
 #include "co/log.h"
-```
-
 
 DEF_bool(x, false, "bool x");
 DEF_bool(y, false, "bool y");
 DEF_uint32(u32, 0, "...");
 DEF_string(s, "hello world", "string");
 
-```cpp
 int main(int argc, char** argv) {
     flag::init(argc, argv);
 
@@ -183,12 +179,8 @@ co/unitest
 #include "co/os.h"
 
 namespace test {
-```
-
 
 DEF_test(os) {
-
-```text
     DEF_case(homedir) {
         EXPECT_NE(os::homedir(), "");
     }
@@ -238,9 +230,9 @@ go(ku);            // void ku();
 go(f, 7);          // void f(int);
 go(&T::f, &o);     // void T::f(); T o;
 go(&T::f, &o, 7);  // void T::f(int); T o;
-go([](){
 
 ```text
+go([](){
     LOG << "hello go";
 });
 ```
@@ -248,17 +240,19 @@ go([](){
 
 上面是用 `go()` 创建协程的例子，go() 是一个函数，它接受 1 到 3 个参数，第一个参数 `f` 是任意可调用的对象，这些参数只要满足 `f()`, `(*f)()`, `f(p)`, `(*f)(p)`, `(o->*f)()` 或者 `(o->*f)(p)` 能被调用就可以了。
 
+```text
 go()` 创建的协程会均匀的分配到不同的调度线程中。如果用户想让某些协程运行在同一个线程下，可以用下面的方式创建协程：
 
 auto s = co::next_scheduler();
 s->go(f1);
 s->go(f2);
+```
+
 
 如果用户想在所有的调度线程中创建协程，可以用下面的方式：
 
-auto& s = co::all_schedulers();
-
 ```cpp
+auto& s = co::all_schedulers();
 for (size_t i = 0; i < s.size(); ++i) {
     s[i]->go(f);
 }
@@ -268,11 +262,10 @@ for (size_t i = 0; i < s.size(); ++i) {
 channel
 [co::Chan](https://link.zhihu.com/?target=https%3A//idealvin.gitee.io/cn/co/coroutine/%23channelcochan)，类似于 golang 中的 channel，可用于在协程之间传递数据。
 
+```cpp
 #include "co/co.h"
 
 DEF_main(argc, argv) {
-
-```cpp
     co::Chan<int> ch;
     go([ch]() {
         ch << 7;
@@ -305,11 +298,10 @@ cocoyaxi 中的 channel 基于内存拷贝实现，传递的数据类型可以�
 waitgroup
 [co::WaitGroup](https://link.zhihu.com/?target=https%3A//idealvin.gitee.io/cn/co/coroutine/%23waitgroupcowaitgroup)，类似于 golang 中的 `sync.WaitGroup`，可用于等待协程或线程的退出。
 
+```cpp
 #include "co/co.h"
 
 DEF_main(argc, argv) {
-
-```cpp
     FLG_cout = true;
 
     co::WaitGroup wg;
@@ -394,7 +386,6 @@ void f() {
     c.post("/hello", "data xxx");
     LOG << "response code: "<< c.response_code();
 }
-```
-
 
 go(f);
+```

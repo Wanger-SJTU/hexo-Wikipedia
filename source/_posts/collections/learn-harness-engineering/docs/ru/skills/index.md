@@ -1,0 +1,72 @@
+---
+title: Skills
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/ru/skills/index/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
+# Skills
+
+Эта директория содержит встроенные скилы AI-агентов, которые поставляются с курсом. Скилы — это самодостаточные шаблоны промптов, которые могут быть загружены AI-агентами для написания кода (Claude Code, Codex, Cursor, Windsurf и т. д.) для выполнения специализированных задач.
+
+## harness-creator
+
+Production-grade скил по harness-инжинирингу для AI-агентов. Помогает создавать, оценивать и улучшать пять ключевых подсистем harness: инструкции, состояние, верификация, скоуп и жизненный цикл сессии.
+
+### Что он делает
+
+- <strong>Создаёт harness с нуля</strong> — AGENTS.md, списки фич, флоу верификации
+- <strong>Улучшает существующие harness</strong> — оценка по пяти подсистемам с приоритизированными улучшениями
+- <strong>Проектирует непрерывность сессий</strong> — персистентность памяти, отслеживание прогресса, процедуры handoff
+- <strong>Применяет production-паттерны</strong> — память, контекст-инжиниринг, безопасность инструментов, координация мульти-агентов
+
+### Быстрый старт
+
+Файлы скила лежат в репозитории по пути [`skills/harness-creator/`](https://github.com/walkinglabs/learn-harness-engineering/tree/main/skills/harness-creator).
+
+```bash
+npx skills add walkinglabs/learn-harness-engineering --skill harness-creator
+```
+
+Чтобы использовать его с Claude Code, скопируйте директорию `harness-creator/` в путь скилов вашего проекта или направьте агент на файл SKILL.md.
+
+### Референсные паттерны
+
+Скил включает 7 сфокусированных референсных документов:
+
+| Паттерн | Когда применять |
+|---------|-------------|
+| Memory Persistence | Агент забывает между сессиями |
+| Skill Runtime | Упаковка переиспользуемых workflow как skills |
+| Context Engineering | Управление бюджетом контекста, JIT-загрузка |
+| Tool Registry | Безопасность инструментов, контроль конкурентности |
+| Multi-Agent Coordination | Параллелизм, флоу со специализацией |
+| Lifecycle & Bootstrap | Хуки, фоновые задачи, инициализация |
+| Gotchas | 15 неочевидных режимов отказа с фиксами |
+
+### Шаблоны
+
+Скил содержит готовые к использованию шаблоны:
+
+- `agents.md` — каркас AGENTS.md с рабочими правилами
+- `feature-list.json` — JSON Schema + пример списка фич
+- `init.sh` — стандартный инициализационный скрипт
+- `progress.md` — шаблон лога прогресса сессии
+- `session-handoff.md` — шаблон handoff сессии
+
+### Скрипты
+
+Скил также включает чистые Node.js-скрипты для scaffold, валидации, HTML-отчётов оценки и структурных benchmark-отчётов.
+
+### Как был построен этот скил
+
+harness-creator` был разработан с использованием методологии <strong>skill-creator</strong> — официальной мета-скила Anthropic для создания, тестирования и итерации над скилами агентов. skill-creator предоставляет структурированный воркфлоу (draft → test → evaluate → iterate) со встроенными eval-runner'ами, грейдерами и средством просмотра бенчмарков.
+
+- <strong>Исходник skill-creator</strong>: [anthropics/skills — skill-creator](https://github.com/anthropics/skills/tree/main/skills/skill-creator)
+- <strong>Документация по скилам Claude Code</strong>: [anthropics/claude-code — plugin-dev/skills](https://github.com/anthropics/claude-code/tree/main/plugins/plugin-dev/skills)

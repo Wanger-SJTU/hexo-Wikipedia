@@ -36,9 +36,9 @@ track : (Γ → Γ) × (Γ → Γ) → (∂Γ → ∂Γ)
 track (f, g)(γ, φ) = (f(γ), φ ∘ g)
 
 effect : 𝔈Γ → (∂Γ → ∂²Γ)
-effect (e)(γ, φ) = 
 
 ```text
+effect (e)(γ, φ) = 
     let (δ, g) = e(γ) in
     ((δ, φ ∘ g), track(g, pr1 ∘ e))
 ```

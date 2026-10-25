@@ -65,6 +65,8 @@ import numpy as np
 
 
 np.random.seed(0)
+
+```text
 np_x = np.random.randn(1, 1, 5, 5).astype(np.float32)
 np_w1 = np.random.randn(1, 1, 3, 3).astype(np.float32)
 np_w2 = np.random.randn(1, 1, 3, 3).astype(np.float32)
@@ -74,9 +76,12 @@ lr = 0.1
 
 conv1 = torch.nn.Conv2d(1, 1, kernel_size=3, padding=1, bias=False)
 conv2 = torch.nn.Conv2d(1, 1, kernel_size=3, padding=1, bias=False)
+```
+
 conv1.weight.data = torch.nn.Parameter(torch.tensor(np_w1))
 conv2.weight.data = torch.nn.Parameter(torch.tensor(np_w2))
 
+```python
 torch_x = torch.tensor(np_x, requires_grad=True)
 out = alpha1 * conv1(torch_x) + alpha2 * conv2(torch_x)
 
@@ -86,7 +91,6 @@ loss.backward()
 torch_w1_updated = conv1.weight.detach().numpy() - conv1.weight.grad.numpy() * lr
 torch_w2_updated = conv2.weight.detach().numpy() - conv2.weight.grad.numpy() * lr
 
-```python
 print(torch_w1_updated + torch_w2_updated)
 
 import torch
@@ -95,6 +99,8 @@ import numpy as np
 
 
 np.random.seed(0)
+
+```text
 np_x = np.random.randn(1, 1, 5, 5).astype(np.float32)
 np_w1 = np.random.randn(1, 1, 3, 3).astype(np.float32)
 np_w2 = np.random.randn(1, 1, 3, 3).astype(np.float32)
@@ -103,16 +109,21 @@ alpha2 = 1.0
 lr = 0.1
 
 fused_conv = torch.nn.Conv2d(1, 1, kernel_size=3, padding=1, bias=False)
+```
+
 fused_conv.weight.data = torch.nn.Parameter(torch.tensor(alpha1 * np_w1 + alpha2 * np_w2))
 
+```python
 torch_x = torch.tensor(np_x, requires_grad=True)
 out = fused_conv(torch_x)
 
 loss = out.sum()
 loss.backward()
 
-torch_fused_w_updated = fused_conv.weight.detach().numpy() - (alpha1<strong>2 + alpha2</strong>2) * fused_conv.weight.grad.numpy() * lr
+torch_fused_w_updated = fused_conv.weight.detach().numpy() - (alpha1**2 + alpha2**2) * fused_conv.weight.grad.numpy() * lr
 print(torch_fused_w_updated)
+```
+
 
 在RepOptVGG中，对应的CSLA块则是将RepVGG块中的3x3卷积，1x1卷积，bn层替换为<strong>带可学习缩放参数的3x3卷积，1x1卷积</strong>
 
@@ -153,9 +164,8 @@ print(torch_fused_w_updated)
 
 在`reinitialize` 方法中，它做的就是repvgg的工作，将1x1卷积权重和identity分支给融到3x3卷积中：
 
-if len(scales) == 2:
-
 ```text
+if len(scales) == 2:
     conv3x3.weight.data = conv3x3.weight * scales[1].view(-1, 1, 1, 1) \
                           + F.pad(kernel_1x1.weight, [1, 1, 1, 1]) * scales[0].view(-1, 1, 1, 1)
 else:

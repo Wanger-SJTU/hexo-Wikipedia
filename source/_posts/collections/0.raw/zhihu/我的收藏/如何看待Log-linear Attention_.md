@@ -17,7 +17,10 @@ source_url: https://www.zhihu.com/question/1914749108511540671/answer/1919954084
 
 作为和两个一作都非常熟的朋友，来客观的评价下这篇文章。希望不要破坏大家的友情哈哈哈哈
 
+```text
 TL;DR. 和sonta说的比较一样，很大的一个价值是揭示了如何用attention mask+decay就可以很清晰的表达出不同的softmax/linear attention变体具体是怎么定义的。同时也某种程度上体现出了state可以一种更灵活的方式组合，从而可以动态的在softmax and linear attention间寻找平衡点。
+```
+
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_674ee74263e4.jpg)
 

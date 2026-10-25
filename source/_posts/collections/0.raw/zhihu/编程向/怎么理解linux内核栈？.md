@@ -252,24 +252,18 @@ static int igb_poll(struct napi_struct *napi, int budget)
 
 - poll() 调用 netif_receive_skb() 开始从 sk_buff 空间中收包，并将它传递给 TCP/IP 网络协议栈进行处理。
 
-```cpp
+```x86asm
 // linux/net/core/dev.c
 
 int netif_receive_skb(struct sk_buff *skb)
 {
  int ret;
-```
-
 
  trace_netif_receive_skb_entry(skb);
 
-```x86asm
  ret = netif_receive_skb_internal(skb);
-```
-
  trace_netif_receive_skb_exit(ret);
 
-```text
  return ret;
 }
 ```

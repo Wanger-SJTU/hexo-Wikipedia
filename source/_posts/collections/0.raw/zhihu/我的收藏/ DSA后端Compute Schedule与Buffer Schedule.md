@@ -26,19 +26,19 @@ from TracedArray import TarcedArray, GlobalHierarchy
 from Conv2dBoundsInfer import Conv2dBoundsInfer, Segments
 import torch
 import numpy as np
-```
-
 
 Infer = Conv2dBoundsInfer(in_channels=2048, out_channels=512, kernel_size=1, groups=1, bias=True, padding=(
     0, 0), stride=(1, 1), dilation=(1, 1), intput_shape=(1, 2048, 56, 56), test=False)
+```
+
 
 ### 1. 最简单的卷积实现
 
 假设我们的DSA有一个比较大的SRAM, 并且可以在这个SRAM上执行Tensor级别的操作, 约定好SRAM大小为`L2SIZE`. 这里引入GlobalHierarchy作为多级内存存储抽象,用于计算数据加载次数, 检查存储是否溢出. 那么考虑在上面编写一个最Navie的卷积. 为了匹配Tensor级别的计算操作, 我们将原本按1进行for循环执行的逻辑看作为按tile大小为1取tensor进行计算.
 
+```python
 L2SIZE = 1536 * 1024 #
 
-```python
 def demo1(imageArr: np.ndarray, weightArr: np.ndarray, outputArr: np.ndarray, targetOutput: np.ndarray):
   image = TarcedArray(imageArr)
   weight = TarcedArray(weightArr)
@@ -55,12 +55,9 @@ def demo1(imageArr: np.ndarray, weightArr: np.ndarray, outputArr: np.ndarray, ta
             imageTile = image[Infer.get_input_segment(b, oc, oh, ow)]
             weightTile = weight[Infer.get_w_segment(oc)]
             outputTile += np.sum((imageTile * weightTile), keepdims=True)
-```
-
 
   assert (np.allclose(output._array, targetOutput, atol=1e-5))
 
-```python
   print("demo1 total loaded :", GlobalHierarchy.TotalLoaded)
   GlobalHierarchy.Reset()
 ```
@@ -78,10 +75,10 @@ demo1 total loaded : 6578274304
  
 接下来就可以来改造compute schedule:
 
+```python
 CORE_OC = 24 # TensorCore并行限制
 CORE_IC = 16
 
-```python
 def TensorCore(image: np.ndarray, weight: np.ndarray) -> np.ndarray:
   # 这里假设硬件可以自动循环
   return torch.conv2d(torch.tensor(image), torch.tensor(weight)).numpy()
@@ -100,12 +97,9 @@ def demo2(imageArr: np.ndarray, weightArr: np.ndarray, outputArr: np.ndarray, ta
             imageTile = image[Infer.get_input_segment(b, oc, oh, ow)]
             weightTile = weight[Infer.get_w_segment(oc)]
             outputTile += TensorCore(imageTile, weightTile)
-```
-
 
   assert (np.allclose(output._array, targetOutput, atol=1e-5))
 
-```python
   print("demo2 total loaded :", GlobalHierarchy.TotalLoaded)
   GlobalHierarchy.Reset()
 ```
@@ -145,12 +139,8 @@ def demo3_1(imageArr: np.ndarray, weightArr: np.ndarray, outputArr: np.ndarray, 
               reuse = True
             weightSubTile = weightTile[oc]
             outputTile += TensorCore(imageTile, weightSubTile)
-```
-
 
   assert (np.allclose(output._array, targetOutput, atol=1e-5))
-
-```python
   print("demo3-1 total loaded :", GlobalHierarchy.TotalLoaded)
   GlobalHierarchy.Reset()
 ```
@@ -182,12 +172,8 @@ def demo3_2(imageArr: np.ndarray, weightArr: np.ndarray, outputArr: np.ndarray, 
             if not reuse:
               reuse = True
             outputTile += TensorCore(imageTile, weightTile)
-```
-
 
   assert (np.allclose(output._array, targetOutput, atol=1e-5))
-
-```python
   print("demo3-2 total loaded :", GlobalHierarchy.TotalLoaded)
   GlobalHierarchy.Reset()
 ```
@@ -225,12 +211,8 @@ def demo3_3(imageArr: np.ndarray, weightArr: np.ndarray, outputArr: np.ndarray, 
               outputTile += TensorCore(imageTile, weightTile)
               if reuse is False:
                 reuse = True  # reuse same buffer.
-```
-
 
   assert (np.allclose(output._array, targetOutput, atol=1e-5))
-
-```python
   print(prefix, "total loaded :", GlobalHierarchy.TotalLoaded)
   GlobalHierarchy.Reset()
 ```
@@ -266,12 +248,8 @@ def demo4(imageArr: np.ndarray, weightArr: np.ndarray, outputArr: np.ndarray, ta
               outputTile += TensorCore(imageTile[:, ic, :, :], weightTile)
               if reuse is False:
                 reuse = True  # reuse same buffer.
-```
-
 
   assert (np.allclose(output._array, targetOutput, atol=1e-5))
-
-```python
   print("demo4 total loaded :", GlobalHierarchy.TotalLoaded)
   GlobalHierarchy.Reset()
 ```
@@ -303,10 +281,10 @@ def demo5_1(imageArr: np.ndarray, biasArr: np.ndarray, weightArr: np.ndarray, ou
             biasTile = bias[b, c, h, w]
             midTile = mid[b, c, h, w]
             midTile += imageTile + biasTile
-```
-
 
   demo3_3(mid._array, weightArr, outputArr, targetOutput, "demo5-1")
+```
+
 
 demo5-1 total loaded : 30515200
 
@@ -342,12 +320,8 @@ def demo5_2(imageArr: np.ndarray, biasArr: np.ndarray, weightArr: np.ndarray, ou
               outputTile += TensorCore(imageTile + biasTile, weightTile)
               if reuse is False:
                 reuse = True  # reuse same buffer.
-```
-
 
   assert (np.allclose(output._array, targetOutput, atol=1e-5))
-
-```python
   print("demo5-2 total loaded :", GlobalHierarchy.TotalLoaded)
   GlobalHierarchy.Reset()
 ```
@@ -382,15 +356,11 @@ def demo6(Infer1: Conv2dBoundsInfer, Infer2: Conv2dBoundsInfer, imageArr: np.nda
             outputTile += TensorCore(imageTile, weight1Tile[oc])
             if reuse is False:
               reuse = True  # reuse same buffer.
-```
-
 
   weight2 = TarcedArray(weightArr2)
   output = TarcedArray(outputArr)
   (B, OC, OH, OW) = outputArr.shape
   with GlobalHierarchy(L2SIZE):
-
-```text
     reuse = False
     weight2Tile = weight2[:, :, :, :]
     for b in Segments(0, B, 1):
@@ -403,12 +373,8 @@ def demo6(Infer1: Conv2dBoundsInfer, Infer2: Conv2dBoundsInfer, imageArr: np.nda
             outputTile += TensorCore(imageTile, weight2Tile[oc])
             if reuse is False:
               reuse = True  # reuse same buffer.
-```
-
 
   assert (np.allclose(output._array, targetOutput, atol=1e-5))
-
-```python
   print("demo6 total loaded :", GlobalHierarchy.TotalLoaded)
   GlobalHierarchy.Reset()
 ```
@@ -445,12 +411,8 @@ def demo6_1(Infer1: Conv2dBoundsInfer, Infer2: Conv2dBoundsInfer, imageArr: np.n
             outputTile += TensorCore(imageTile2, weight2Tile[oc])
             if reuse is False:
               reuse = True  # reuse same buffer.
-```
-
 
   assert (np.allclose(output._array, targetOutput, atol=1e-5))
-
-```python
   print("demo6-1 total loaded :", GlobalHierarchy.TotalLoaded)
   GlobalHierarchy.Reset()
 ```

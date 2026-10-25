@@ -1,0 +1,22 @@
+---
+title: 失败信号检查清单
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/docs/zh/lectures/lecture-01-why-capable-agents-still-fail/code/failure-signals-checklist/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
+# 失败信号检查清单
+
+在审查一次弱 harness 运行结果时使用此清单。
+
+- Agent 是否询问了如何启动应用，或者做出了错误的推断？
+- 它是否创建了与预期产品不匹配的目录或抽象？
+- 它是否在完成一个可见的 UI 外壳后就停止了，而没有完成完整的工作流？
+- 它是否留下了有助于后续运行继续的笔记或产物？
+- 一个全新的会话是否能在五分钟内理解之前发生了什么？

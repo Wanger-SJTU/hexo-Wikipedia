@@ -40,7 +40,10 @@ Point p { 1, 2 };
 
 那么你可能会这样写：
 
+```cpp
 printf("Point x = %d y = %d", p.x, p.y);
+```
+
 
 如果有成千上百个结构体，对应的打印函数（序列化到字符串）也就成千上百个，如果利用反射手段，只需要写一次，就能给所有反射对象自动生成打印函数（转换）代码。
 
@@ -48,18 +51,14 @@ printf("Point x = %d y = %d", p.x, p.y);
 
 后来我在C++社区看到一个讨论，说`C++20`在元编程方面提供了很多便利，其中最大的遍历就是`if-constexpr`，再也不用模式匹配写一堆`enable_if`了，然后题主给了一个例子，用`C++20`的模板元求结构体的字段数量，代码如下：
 
-```text
+```cpp
 struct AnyType {
     template typename T>
     operator T();
 };
 
 template typename T>
-```
-
 consteval size_t CountMember(auto&&... Args) {
-
-```cpp
     if constexpr (! requires { T{ Args... }; }) { // (1)
         return sizeof...(Args) - 1;
     } else {
@@ -120,47 +119,37 @@ int main(int argc, char** argv) {
         48, 47, 46, 45, 44, 43, 42, 41, 40, 39, 38, 37, 36, 35, 34, 33, \
         32, 31, 30, 29, 28, 27, 26, 25, 24, 23, 22, 21, 20, 19, 18, 17, \
         16, 15, 14, 13, 12, 11, 10, 9,  8,  7,  6,  5,  4,  3,  2,  1)
-```
-
 
 GET_ARG_COUNT(a, b, c)`展开后，会调用`GET_NTH_ARG`，然后得到`GET_NTH_ARG(a, b, c, 64, 63, ..., 3, 2, 1) 3`，从而得到最终长度3，进一步延伸，这个宏有什么作用呢？那就是对结构体进行反射，用宏提供结构体的元数据信息，从而生成一些类型信息代码。
+```
+
 
 结合之前看到的那个框架，与大师进一步交流，发现新世界，解决多年来cpp静态反射问题，一下子让很多事变成了可能。（后来找到这个实现方法的最早出处：http://pfultz2.com/blog//reflection-in-under-100-lines/）
 
 来看看大师`actor`框架中的反射例子：
 
-CAF_begin_message_def(Point)
-
 ```text
+CAF_begin_message_def(Point)
     CAF_msg_field(x, double)
     CAF_msg_field(y, double)
-```
-
 CAF_end_message_def()
 
 CAF_begin_message_def(Rect)
-
-```text
     CAF_msg_field(p1, Point)
     CAF_msg_field(p2, Point)
     CAF_msg_field(color, uint32_t)
+CAF_end_message_def()
 ```
 
-CAF_end_message_def()
 
 现在可以做到这样：
 
-DEFINE_STRUCT(Point,
-
 ```text
+DEFINE_STRUCT(Point,
     (double) x,
     (double) y)
-```
-
 
 DEFINE_STRUCT(Rect,
-
-```text
     (Point) p1,
     (Point) p2,
     (uint32_t) color)
@@ -174,11 +163,7 @@ Rect rect {
     {5.6, 7.8},
     12345678,
 };
-```
-
 dumpObj(rect);
-
-```text
 /* output:
 {
     p1: {
@@ -252,7 +237,7 @@ _field_count`信息就是由之前提到的求宏变参个数获取的：`GET_AR
 - 当前字段声明信息，例如`(double) x`（用于定义`double x`，并实现`FIELD`内容）
 先来看看`FIELD_EACH`的定义：
 
-```text
+```js
 #define FIELD_EACH(i, arg)                    \
     PAIR(arg);                                \
     template                      \
@@ -266,12 +251,9 @@ _field_count`信息就是由之前提到的求宏变参个数获取的：`GET_AR
             return STRING(STRIP(arg));        \
         }                                     \
     }                                         \
-```
-
 
 PAIR(arg)`这个宏比较有意思，定义如下：
 
-```js
 #define PAIR(x) PARE x // PAIR((double) x) => PARE(double) x => double x
 #define PARE(...) __VA_ARGS__
 ```
@@ -294,12 +276,9 @@ PAIR(arg)`这个宏比较有意思，定义如下：
 ```text
 #define STRING(x) STR(x)
 #define STR(x) #x
-```
-
 
 PASTE(FOR_EACH_, GET_ARG_COUNT(__VA_ARGS__))`这句是为了拼出`FOR_EACH_N`，`PASTE`实现如下：
 
-```text
 #define PASTE(x, y) CONCATE(x, y)
 #define CONCATE(x, y) x ## y
 ```
@@ -328,9 +307,9 @@ FIELD_EACH(0 + 1, (double) y);
 - 传递反射的对象`T&& obj`
 - 一个函数`f`，对对象各个字段进行访问、操作，签名为`void(const char* fieldName, FieldT& value)`
 templatetypename T, typename F, size_t... Is> // (1)
-inline constexpr void forEach(T&& obj, F&& f, std::index_sequenceIs...>) {
 
 ```cpp
+inline constexpr void forEach(T&& obj, F&& f, std::index_sequenceIs...>) {
     using TDECAY = std::decay_tT>;
     (void(f(typename TDECAY::template FIELDTDECAY, Is>(obj).name(),
             typename TDECAY::template FIELDTDECAY, Is>(obj).value())), ...);
@@ -339,9 +318,9 @@ inline constexpr void forEach(T&& obj, F&& f, std::index_sequenceIs...>) {
 
 
 templatetypename T, typename F> // (2)
-inline constexpr void forEach(T&& obj, F&& f) {
 
 ```cpp
+inline constexpr void forEach(T&& obj, F&& f) {
     forEach(std::forwardT>(obj),
             std::forwardF>(f),
             std::make_index_sequencestd::decay_tT>::_field_count_>{});

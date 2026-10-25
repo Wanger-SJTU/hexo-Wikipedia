@@ -54,9 +54,9 @@ from torch.utils.cpp_extension import load_inline
 # ============================================================
 # CUDA kernel: SM120 Tensor Core GEMM (HMMA via mma.sync)
 # ============================================================
-CUDA_SOURCE = r"""
 
 ```cpp
+CUDA_SOURCE = r"""
 #include <torch/extension.h>
 #include <cuda_fp16.h>
 #include <cuda_bf16.h>
@@ -84,12 +84,8 @@ using namespace nvcuda;
 #define WARPS_N 4
 #define TILES_PER_WARP_N 2  // each warp handles 2 tiles in N-dim
 #define THREADS_PER_WARP 32
-```
-
 
 __global__ void hgemm_sm120_kernel(
-
-```cpp
     const half* __restrict__ A,
     const half* __restrict__ B,
     half* __restrict__ C,
@@ -205,9 +201,8 @@ torch::Tensor hgemm_sm120(torch::Tensor A, torch::Tensor B) {
 
 """
 
-CPP_SOURCE = """
-
 ```cpp
+CPP_SOURCE = """
 #include <torch/extension.h>
 torch::Tensor hgemm_sm120(torch::Tensor A, torch::Tensor B);
 ```
@@ -304,17 +299,16 @@ def main():
     print("  💡 这个 kernel 用 wmma::mma_sync 在 SM120 的 HMMA 路径上跑。")
     print("     SM120 不支持 tcgen05/TMEM，但支持 mma.sync (HMMA/QMMA/OMMA)。")
     print("     相比 03_matmul.py 的 shared-memory tiling，这个版本用了 Tensor Core。")
-```
-
 
 if __name__ == "__main__":
     main()
+```
+
 
 核心 kernel 结构：
 
-__global__ void hgemm_sm120_kernel(
-
 ```cpp
+__global__ void hgemm_sm120_kernel(
     const half* __restrict__ A,
     const half* __restrict__ B,
     half* __restrict__ C,

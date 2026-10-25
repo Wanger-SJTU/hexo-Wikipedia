@@ -51,13 +51,19 @@ $H⋅HT=n⋅I" role="presentation">H⋅HT=n⋅IH \cdot H^T = n \cdot I$
 
 最简单的例子是2阶哈达玛矩阵：
 
+```text
 H_2 = \begin{pmatrix} 1 & 1 \\ 1 & -1 \end{pmatrix}
+```
+
 
 验证一下：H₂·H₂^T = [[2, 0], [0, 2]] = 2I。归一化后 Q₂ = H₂/√2，对向量(a, b)做变换得到 ((a+b)/√2, (a-b)/√2)。需要注意的是，Q₂的行列式为-1，它不是纯旋转（旋转矩阵行列式为+1），而是旋转与反射的组合。
 
 4阶的西尔维斯特构造：
 
+```text
 H_4 = \begin{pmatrix} H_2 & H_2 \\ H_2 & -H_2 \end{pmatrix} = \begin{pmatrix} 1 & 1 & 1 & 1 \\ 1 & -1 & 1 & -1 \\ 1 & 1 & -1 & -1 \\ 1 & -1 & -1 & 1 \end{pmatrix}
+```
+
 
 递归关系是 H₂ₙ = [[Hₙ, Hₙ], [Hₙ, -Hₙ]]。这个结构可以一直递归下去，构造出所有2^k阶的哈达玛矩阵。
 
@@ -369,13 +375,10 @@ GPU的全局内存访问以128字节为粒度最高效。对于float类型（4�
 
 ```text
 using vec_t = uint4;  // 16字节，4个float或8个half
-```
-
 
 vec_t* input_ptr = reinterpret_cast(input);
 vec_t loaded = input_ptr[threadIdx.x];
 
-```text
 float x[4];
 ```
 
@@ -385,7 +388,10 @@ memcpy(x, &loaded, sizeof(vec_t));
 
 写回时也是同样的操作：
 
+```text
 vec_t to_store;
+```
+
 memcpy(&to_store, x, sizeof(vec_t));
 output_ptr[threadIdx.x] = to_store;
 
@@ -412,16 +418,15 @@ if (global_idx
 
 对于half（fp16）和bfloat16输入，累加时容易出现精度损失。解决办法是在载入后立即升级为float进行计算：
 
-__half loaded_half = input[idx];
-
 ```text
+__half loaded_half = input[idx];
 float x = __half2float(loaded_half);
 
 // 所有蝶形计算用float
-```
-
 
 __half result = __float2half(x);
+```
+
 output[idx] = result;
 
 这样保证了中间计算的精度，只在最后转换回半精度。现代GPU的fp16到fp32转换延迟很低（1-2个周期），不会成为瓶颈。

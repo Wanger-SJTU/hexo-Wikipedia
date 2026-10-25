@@ -159,11 +159,7 @@ IA-64不成功，但另一个64位架构却火了，这就是AMD公司在1999年
 std::byte mem[1024 * 1024]; // 用于模拟1MB的内存
 // 执行将内存数据读取到rax中的指令
 void load_mem_to_rax(std::ptrdiff_t address) {
-```
-
   rax = *reinterpret_cast<uint64_t *>(mem + address);
-
-```text
 }
 ```
 

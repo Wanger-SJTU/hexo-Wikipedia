@@ -121,10 +121,9 @@ Welford 算法也是一种 single pass 方法，且数值稳定性很好，因�
 
 WelfordWarpAllReduce 由 WelfordWarpReduce 和 Broadcast 操作完成，WelfordWarpReduce 借助 Warp 级别同步原语 `__shfl_down_sync` 实现，Broadcast操作借助 `__shfl_sync` 实现，代码如下：
 
+```cpp
 template
 __inline__ __device__ void WelfordWarpReduce(T thread_mean, T thread_m2, T thread_count, T* mean,
-
-```cpp
                                              T* m2, T* count) {
   *mean = thread_mean;
   *m2 = thread_m2;
@@ -138,11 +137,7 @@ __inline__ __device__ void WelfordWarpReduce(T thread_mean, T thread_m2, T threa
 }
 
 template
-```
-
 __inline__ __device__ void WelfordWarpAllReduce(T thread_mean, T thread_m2, T thread_count, T* mean,
-
-```text
                                                 T* m2, T* count) {
   WelfordWarpReduce(thread_mean, thread_m2, thread_count, mean, m2, count);
   *mean = __shfl_sync(0xffffffff, *mean, 0, thread_group_width);
@@ -158,20 +153,19 @@ __inline__ __device__ void WelfordWarpAllReduce(T thread_mean, T thread_m2, T th
 
 template
 union Pack {
-  PackType storage;
-  T elem[N];
 
 ```text
+  PackType storage;
+  T elem[N];
 };
 ```
 
 
 LayerNormWarpImpl Kernel 代码如下：
 
+```cpp
 template
 __global__ void LayerNormWarpImpl(LOAD load, STORE store, const int64_t rows, const int64_t cols,
-
-```cpp
                                   const double epsilon, ComputeType* mean,
                                   ComputeType* inv_variance) {
   static_assert(cols_per_thread % pack_size == 0, "");
@@ -227,10 +221,9 @@ WelfordBlockAllReduce 是借助 WelfordWarpReduce 操作完成的，具体逻辑
 
 LayerNormBlockSMemImpl Kernel的代码如下：
 
+```cpp
 template
 __global__ void LayerNormBlockSMemImpl(LOAD load, STORE store, const int64_t rows,
-
-```cpp
                                        const int64_t cols, const double epsilon, ComputeType* mean,
                                        ComputeType* inv_variance) {
   extern __shared__ __align__(sizeof(double)) unsigned char shared_buf[];
@@ -263,10 +256,9 @@ __global__ void LayerNormBlockSMemImpl(LOAD load, STORE store, const int64_t row
 
 LayerNormBlockUncachedImpl 代码如下：
 
+```cpp
 template
 __global__ void LayerNormBlockUncachedImpl(LOAD load, STORE store, const int64_t rows,
-
-```cpp
                                            const int64_t cols, const double epsilon,
                                            ComputeType* mean, ComputeType* inv_variance) {
   const int tid = threadIdx.x;

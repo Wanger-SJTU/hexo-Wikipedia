@@ -154,9 +154,9 @@ connections.connect(host='localhost', port='19530')
 
 collection必须要有一个field是主键，一个field是存储向量，另外还可以创建其他类型的field
 
+```python
 field_name = "example_field"
 
-```python
 def create_collection():
     """
     创建集合collection

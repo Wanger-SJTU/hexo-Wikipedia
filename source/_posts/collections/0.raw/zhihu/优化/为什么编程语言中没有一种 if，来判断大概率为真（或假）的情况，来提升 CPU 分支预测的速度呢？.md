@@ -50,11 +50,10 @@ v = test-expr ? then-expr : else-expr
 
 会转换为下列伪代码：
 
+```text
 v = then-expr;
 ve = else-expr;
 t = test-expr;
-
-```text
 if(!t) v=ve;
 ```
 

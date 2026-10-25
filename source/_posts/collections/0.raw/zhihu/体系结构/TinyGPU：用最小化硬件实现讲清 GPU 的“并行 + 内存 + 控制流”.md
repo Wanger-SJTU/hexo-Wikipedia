@@ -33,9 +33,8 @@ tiny-gpu` 是一个**面向教学的最小化 GPU 硬件实现**，目标是从�
 
 下面这段译码器定义展示了指令 opcode（便于对照 ISA 图与测试用例中的二进制程序）：
 
-localparam NOP = 4'b0000,
-
 ```text
+localparam NOP = 4'b0000,
         BRnzp = 4'b0001,
         CMP = 4'b0010,
         ADD = 4'b0011,
@@ -253,9 +252,8 @@ wire [7:0] total_blocks;
 
 Scheduler 是整个 Core 的“拍点”（每拍推进哪个阶段）。状态定义：
 
-localparam IDLE = 3'b000,
-
 ```sql
+localparam IDLE = 3'b000,
         FETCH = 3'b001,
         DECODE = 3'b010,
         REQUEST = 3'b011,

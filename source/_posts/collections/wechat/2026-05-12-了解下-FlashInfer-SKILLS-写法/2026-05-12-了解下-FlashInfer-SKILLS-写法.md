@@ -209,15 +209,11 @@ median_time, std_time = bench_gpu_time(
 
 创建 `include/flashinfer/scale.cuh`，要求是<strong>框架无关的</strong>（不依赖 Torch 头文件），使用原始指针和模板来支持多种 dtype：
 
-```text
+```cpp
 namespace flashinfer {
 
 template <typename T>
-```
-
 __global__ void ScaleKernel(const T* input, T* output, T factor, int n) {
-
-```cpp
 int idx = blockIdx.x * blockDim.x + threadIdx.x;
 if (idx < n) {
     output[idx] = input[idx] * factor;
@@ -225,19 +221,11 @@ if (idx < n) {
 }
 
 template <typename T>
-```
-
 cudaError_t ScaleLauncher(const T* input, T* output, T factor, int n,
-
-```text
                           cudaStream_t stream = nullptr) {
-```
-
 constint threads = 256;
 constint blocks = (n + threads - 1) / threads;
   ScaleKernel<T><<<blocks, threads, 0, stream>>>(input, output, factor, n);
-
-```text
 return cudaGetLastError();
 }
 ```

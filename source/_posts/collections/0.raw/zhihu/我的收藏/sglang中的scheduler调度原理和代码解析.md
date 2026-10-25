@@ -208,8 +208,12 @@ self.running_batch: ScheduleBatch = ScheduleBatch(...)
 # ...
 self.policy = SchedulePolicy(...)
 # ...
+
+```text
 t = threading.Thread(target=self.watchdog_thread, daemon=True)
 t.start()
+```
+
 
 - 目的: 初始化调度器在事件循环中需要的所有动态数据结构和辅助工具。
 - 组件:
@@ -723,9 +727,13 @@ if self.enable_lora and not self.tp_worker.can_run_lora_batch(
 - req.lora_id：当前正在考察的这个请求的 LoRA。
 - 结果：如果这三者加起来超过了 Worker 支持的最大 LoRA 数量（例如 GPU 显存只能存 4 个不同的 LoRA），则停止调度，标记批次已满并跳出循环。
 3. 第二道关卡：并发数量限制 (Slot Limit)
+
+```text
 running_bs = len(self.running_batch.reqs)
 if len(adder.can_run_list)  = self.get_num_allocatable_reqs(running_bs):
     self.running_batch.batch_is_full = True
+```
+
 
 - 目的：防止请求数量过多，超过系统的最大并发处理能力。
 - 逻辑：
@@ -753,11 +761,11 @@ if self.running_batch.batch_is_full:
 - 如果是，踢掉一个低优先级的，让当前 req 进来（虽然代码里没写踢掉的过程，通常是在 preempt_to_schedule 内部标记或返回 True 表示可行）。
 - 如果不行（当前请求优先级不够高），则 break，调度结束。
 核心动作：尝试添加请求 (Memory Allocation)
+
+```text
 req.init_next_round_input(self.tree_cache)
 res = adder.add_one_req(
     req,
-
-```text
     has_chunked_req=(self.chunked_req is not None),
     truncation_align_size=self.truncation_align_size,
 )

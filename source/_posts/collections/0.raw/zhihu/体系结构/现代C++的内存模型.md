@@ -63,9 +63,9 @@ void foo()
 // 编译器重排后的代码
 // 注意第一句汇编，已经将B最初的值存到了
 // 寄存器eax，而后将该eax的值加1，再赋给A
+movl  B(%rip), %eax
 ```
 
-movl  B(%rip), %eax
 movl  $1, B(%rip)          // B = 1
 addl  $1, %eax             // A = B + 1
 movl  %eax, A(%rip)
@@ -80,12 +80,8 @@ movl  %eax, A(%rip)
 if( cond ) x = 42;
 
 // 优化后代码
-```
-
 r1 = x;// read what's there
 x = 42;// oops: optimistic write is not conditional
-
-```text
 if( !cond)// check if we guessed wrong
     x = r1;// oops: back-out write is not SC
 ```
@@ -114,6 +110,8 @@ if( !cond)// check if we guessed wrong
 
 则内存顺序也需要先读a再读b
 后面的规则同理。*/
+
+```text
 if L(a) p L(b) ⇒ L(a) m L(b) 
 
 /* Load→Store */
@@ -124,6 +122,8 @@ if S(a) p S(b) ⇒ S(a) m S(b)
 
  /* Store→Load */
 if S(a) p L(b) ⇒ S(a) m L(b)	
+```
+
 
 既然顺序一致这么严格，其显然会限制编译器和CPU的优化，所以业界提出了很多宽松的模型，例如在X86中使用的TSO（Total Store Order）便允许某些条件下的重排。
 

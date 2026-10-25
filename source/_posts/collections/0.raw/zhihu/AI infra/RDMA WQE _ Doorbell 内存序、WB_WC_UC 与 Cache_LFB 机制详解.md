@@ -130,9 +130,16 @@ dma_wmb 想做什么
 修法
 在 `addr` 与 `flag` 之间补一个 `dma_wmb`(模型 A 要求的那个屏障):
 
+```text
 desc->addr = cpu_to_le64(dma);
+```
+
 dma_wmb();                                       /* addr 必须先于 OWN 可见(修复点) */
+
+```text
 desc->flag = cpu_to_le32(DESC_FLAG_OWN | len);
+```
+
 补上后,xmit 里原来那个 `dma_wmb` 可保留(排 doorbell,无害)也可去掉—— 混合模型下正确性已由这个 “OWN 置位前 addr 已可见” 的屏障保证,doorbell 只是加速通知。 稳妥起见建议<strong>保留</strong> xmit 的 `dma_wmb`。
 
 顺带:doorbell 那侧没问题
@@ -162,10 +169,18 @@ doorbell 前 HW 根本不看 WQE。所以 <strong>WQE 内部各字段的写入�
 
 mlx5 实际的两个 barrier
 udma_to_device_barrier();          // (1) 所有 WQE 写入 先于 doorbell-record 写入(host mem)
+
+```text
 qp->db[MLX5_SND_DBR] = producer_idx;  // host mem 里的 doorbell record
+```
+
 mmio_wc_start();                   // (2) 排序 dbrec+WQE 相对 MMIO doorbell,并 flush WC
 mmio_write64_be(bf_reg, ...);      // 敲 doorbell 到 UAR(设备 MMIO)
+
+```text
 mmio_flush_writes();
+```
+
 
 - barrier (1):排序<strong>整个 WQE</strong> vs doorbell-record 写。<strong>不是</strong> body vs flags。
 - barrier (2):处理 <strong>MMIO / write-combining</strong> 的 doorbell 写(设备内存,规则与 host DRAM 不同)。即两个 barrier 是 <strong>WQE-vs-doorbell</strong> 和 <strong>host-vs-MMIO</strong>,从来不是 WQE 内部的 body-vs-flag。
@@ -220,10 +235,14 @@ WB cache line 的结构
 一条 WB line 只有:<strong>1 个 valid 位(整行)+ 1 个 dirty 位(整行)+ tag + MESI 态(M/E/S/I)+ 64B 数据</strong>。 <strong>整行要么全 valid,要么 invalid,没有”部分有效”</strong>,也没有 per-8B 的 valid 位。 (per-byte 的 mask 是 WC 的 LFB 才有,不是 WB。)
 
 地址拆解(以 32KB / 8-way / 64B line → 64 组为例)
+
+```text
 PA = 0x12340
   offset = PA[5:0]   = 0        (64B 行内偏移)
   set    = PA[11:6]  = 13 (0xD) (选第 13 组)
   tag    = PA[12+]   = 0x12     (存进行里认身份)
+```
+
 
 L1D 查询查什么
 1. TLB 把 VA→PA(L1D 是 VIPT:index 用 VA 低位,tag 用 PA;页内低 12 位 VA==PA,不冲突)
@@ -286,11 +305,12 @@ UC store 不进 cache、不做 write-combining、不合并: `store buffer → �
 - <strong>普通 doorbell(DB)</strong>:WQE 写进 host DRAM 的 SQ ring → 敲 8B doorbell → 设备 DMA 回读 WQE。有一次 PCIe 读往返延迟。
 - <strong>BlueFlame(BF)</strong>:CPU 把整条 WQE 用 <strong>WC MMIO 写直接推进设备 BAR 的 BF 寄存器</strong>。 WQE 本身就是 doorbell,省掉 DMA 回读。WC 刷向<strong>设备 MMIO</strong>,不经过 DRAM/cache。
 mlx5 关键代码
+
+```text
 // post_send_db 分支之前无条件执行:
 udma_to_device_barrier();
 qp->db[MLX5_SND_DBR] = htobe32(qp->sq.cur_post & 0xffff);   // producer index 写进 dbrec
 
-```text
 // 两条路径:
 if (... size <= bf->buf_size / 16)
     mlx5_bf_copy(bf->reg + bf->offset, ctrl, align(size*16, 64), qp);  // BF:整条 WQE WC 推
@@ -300,7 +320,11 @@ else
 
 
 mmio_flush_writes();     // sfence:把本条 WQE 的 WC buffer 全挤出
+
+```text
 bf->offset ^= bf->buf_size;   // 乒乓两个 BF buffer,防相邻 doorbell WC 合并
+```
+
 
 mlx5 的 doorbell 8 字节其实带 size
 控制段头 8 字节布局:
@@ -311,9 +335,9 @@ struct mlx5_wqe_ctrl_seg {
     __be32 qpn_ds;             // byte 4-7: qpn(24) | ds(8)   ← ds = 描述符大小(16B 为单位)
     ...
 };
+mmio_write64_be(..., *(__be64*)ctrl)` 写的正是这 8 字节 = `{opcode, wqe_index, qpn, ds}`。 所以 **DB 路径的 doorbell 就带着 size(ds)和 index**。
 ```
 
-mmio_write64_be(..., *(__be64*)ctrl)` 写的正是这 8 字节 = `{opcode, wqe_index, qpn, ds}`。 所以 <strong>DB 路径的 doorbell 就带着 size(ds)和 index</strong>。
 
 BF 路径的正确性锚点是 ring,不是 push
 
@@ -392,19 +416,28 @@ barrier 指令
 指令作用DMB排序内存访问,不等完成。域:ISH/OSH/SY;方向:ST/LDDSB更强,等访问真正完成才放行。敲设备前常用STLR/LDARstore-release / load-acquire,单向序,比全 DMB 便宜
 流程对比
 x86:                              ARM:
+
+```text
 build WQE (WB)   // TSO 自动排序     build WQE (Normal)
 compiler_barrier                   dmb oshst   (真指令)
+```
+
 write dbrec                        write dbrec
 sfence  // 仅 WC BF                 dsb oshst / dsb sy
 write doorbell                     write doorbell (Device-nGnRnE)
 owner-last` 在 ARM 需要 `dmb ishst` 或用 `STLR`(store-release)保证 body 先于 owner。
 
 非一致 DMA 上的完整发送流程(描述符若为 cacheable)
+
+```text
 build_wqe_body(wqe);
+```
+
 asm volatile("dmb ishst" ::: "memory");   // body 先于 owner(或 owner 用 STLR)
-wqe->ctrl.owner = OWN_HW;
 
 ```cpp
+wqe->ctrl.owner = OWN_HW;
+
 for (char *p = (char*)wqe; p < (char*)wqe + wqe_len; p += cache_line_size)
     asm volatile("dc cvac, %0" :: "r"(p) : "memory");   // clean 到 PoC(DRAM)
 ```

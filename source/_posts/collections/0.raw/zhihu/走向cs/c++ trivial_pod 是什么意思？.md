@@ -321,11 +321,7 @@ struct Foo
 template Foo* std::copy(Foo*, Foo*, Foo*);
 
 template <typename Iterator, typename OutputIterator>
-```
-
 OutputIterator myCopy(Iterator first, Iterator last, OutputIterator to)
-
-```text
 {
     while (first != last) {
         *to = *first;
@@ -366,11 +362,7 @@ struct Foo
 template Foo* std::copy(Foo*, Foo*, Foo*);
 
 template <typename Iterator, typename OutputIterator>
-```
-
 OutputIterator myCopy(Iterator first, Iterator last, OutputIterator to)
-
-```text
 {
     while (first != last) {
         *to = *first;

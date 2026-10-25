@@ -482,8 +482,11 @@ BlBHJs0myI7ntYpEAjBbm8eDMZY5zq5iMZUC6H7UzYSix4Uy1YlsLVV738PtKP9h
 FTjgDHctXJlC5L7+ZDY=
 -----END CERTIFICATE-----
  
+```text
 subject=C = CN, O = Huawei, OU = HOS AppGallery, CN = HOS Profile Management
 issuer=C = CN, O = Huawei, OU = Huawei CBG, CN = Huawei CBG Software Signing Service CA
+```
+
 -----BEGIN CERTIFICATE-----
 MIIC7TCCAnOgAwIBAgIIV5nKqt2oGmwwCgYIKoZIzj0EAwMwZDELMAkGA1UEBhMC
 Q04xDzANBgNVBAoMBkh1YXdlaTETMBEGA1UECwwKSHVhd2VpIENCRzEvMC0GA1UE
@@ -503,8 +506,11 @@ zMemerx5oG4F6Uq/3ARPfowvdrEu5Ss+njPMG0FFAjEA0s7YhO7Ktm60mkuHuxQS
 46fqIHh/PAPJ2ozg1yDSD771bAGn7mDeGjaAFXEtKzU5
 -----END CERTIFICATE-----
  
+```text
 subject=C = CN, O = Huawei, OU = Huawei CBG, CN = Huawei CBG Software Signing Service CA
 issuer=C = CN, O = Huawei, OU = Huawei CBG, CN = Huawei CBG Root CA G2
+```
+
 -----BEGIN CERTIFICATE-----
 MIIDADCCAoegAwIBAgIIJGDixWQS3MkwCgYIKoZIzj0EAwMwUzELMAkGA1UEBhMC
 Q04xDzANBgNVBAoMBkh1YXdlaTETMBEGA1UECwwKSHVhd2VpIENCRzEeMBwGA1UE

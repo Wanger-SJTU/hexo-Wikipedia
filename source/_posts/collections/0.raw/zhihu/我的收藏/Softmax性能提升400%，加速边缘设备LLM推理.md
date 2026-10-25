@@ -33,9 +33,8 @@ Turbo-Softmaxgithub.com/LongWeihan/Turbo-Softmax
 1. softmax 在 CPU 推理里常常是热点
 softmax 的定义：
 
-softmax(xi)=exi∑jexj
-
 ```text
+softmax(xi)=exi∑jexj
 \mathrm{softmax}(x_i)=\frac{e^{x_i}}{\sum_j e^{x_j}} \\
 ```
 
@@ -158,8 +157,11 @@ gcc -O3 -std=c11 -Wall -Wextra -pedantic bench.c qsoftmax_poly5_div/qsoftmax.c -
 - qsoftmax.h
 - qsoftmax.c调用方式：
 
+```text
 qsoftmax_params p = qsoftmax_default_params();
 qsoftmax_poly5_div(x, n, out, p);
+```
+
 编译建议：
 
 - -O3 必开
@@ -307,30 +309,19 @@ int main(int argc, char** argv) {
       sizes[i] = defaults[i];
     }
   }
-```
-
 
   FILE* f = fopen(out_path, "wb");
-
-```text
   if (!f) {
     perror("fopen");
     return 1;
   }
-```
-
 
   fprintf(f,
-
-```text
           "n,batch,scale,min_ms,ref_ns_per_elem,q_ns_per_elem,speedup,ref_melems_s,q_melems_s,mean_abs,max_abs,max_sum_err,top1_mismatch\\n");
-```
-
 
   qsoftmax_params p = qsoftmax_default_params();
   uint32_t seed = 1;
 
-```cpp
   for (int si = 0; si   size_count; si++) {
     int n = sizes[si];
     size_t bytes = (size_t)batch * (size_t)n * sizeof(float);
@@ -441,13 +432,9 @@ int main(int argc, char** argv) {
     free(r);
     free(q);
   }
-```
-
 
   fclose(f);
   fprintf(stdout, "wrote %s (sink=%g)\\n", out_path, (double)g_sink);
-
-```text
   return 0;
 }
 ```

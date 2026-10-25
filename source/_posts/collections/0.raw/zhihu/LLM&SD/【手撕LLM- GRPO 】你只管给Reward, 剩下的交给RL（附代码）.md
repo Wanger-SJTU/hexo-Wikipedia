@@ -227,8 +227,11 @@ def accuracy_reward(completions, solution, **kwargs):
 
 # simple-evals/common.py
 
+```text
 EQUALITY_TEMPLATE = r"""
 Look at the following two expressions (answers to a math problem) and judge whether they are equivalent. Only perform trivial simplifications
+```
+
 
 Examples:
 
@@ -329,11 +332,16 @@ A = grpo_advantage([1,1,1,1,1,1])
 
 reward_batch = [0] * 64
 reward_batch[0] = 1
+
+```python
 A = grpo_advantage(reward_batch)
 print(A)
+```
+
 
 输出
 
+```text
 tensor([ 7.8887, -0.1252, -0.1252, -0.1252, -0.1252, -0.1252, -0.1252, -0.1252,
         -0.1252, -0.1252, -0.1252, -0.1252, -0.1252, -0.1252, -0.1252, -0.1252,
         -0.1252, -0.1252, -0.1252, -0.1252, -0.1252, -0.1252, -0.1252, -0.1252,
@@ -342,6 +350,8 @@ tensor([ 7.8887, -0.1252, -0.1252, -0.1252, -0.1252, -0.1252, -0.1252, -0.1252,
         -0.1252, -0.1252, -0.1252, -0.1252, -0.1252, -0.1252, -0.1252, -0.1252,
         -0.1252, -0.1252, -0.1252, -0.1252, -0.1252, -0.1252, -0.1252, -0.1252,
         -0.1252, -0.1252, -0.1252, -0.1252, -0.1252, -0.1252, -0.1252, -0.1252])
+```
+
 
 #### 3.4 格式奖励
 
@@ -382,22 +392,25 @@ GRPO KL是token-level的
 ```python
 def grpo_kl(pi_logprob, pi_ref_logprob):
     return pi_ref_logprob.exp() / pi_logprob.exp()- (pi_ref_logprob - pi_logprob) - 1
-```
-
 
 pi = torch.randn(3, 5) # batch, sequence
 pi_ref = torch.randn(3, 5) # batch, sequence
 pi_logprob = torch.nn.functional.log_softmax(pi, dim = 1)
 pi_ref_logprob = torch.nn.functional.log_softmax(pi_ref, dim = 1)
 print(grpo_kl(pi_logprob, pi_ref_logprob))
+```
+
 
 实现上，我们通常存储logprob，而不需要完整的输出分布来计算KL，减少存储占用。
 
 输出
 
+```text
 tensor([[0.1465, 0.0457, 0.5321, 0.0793, 0.0728],
         [1.1576, 3.0678, 0.5285, 0.3712, 0.0817],
         [0.0031, 0.8179, 2.4575, 0.1597, 0.0221]])
+```
+
 
 均为正数。与PPO不同，不产生reward shaping： R = r-KL
 
@@ -427,6 +440,7 @@ $$- k2（low variance estimator）：\frac{1}{2}(\log \frac{p(x)}{q(x)})^2 = \fr
 
 #### 4.4 手撕KL
 
+```python
 import torch.distributions as dis
 p = dis.Normal(loc=0, scale=1)
 q = dis.Normal(loc=0.1, scale=1)
@@ -439,6 +453,8 @@ k2 = logr ** 2 / 2
 k3 = (logr.exp() - 1) - logr
 for k in (k1, k2, k3):
     print((k.mean() - truekl) / truekl, k.std() / truekl)
+```
+
 
 打印
 
@@ -523,26 +539,42 @@ def grpo_loss(pi_logprob, pi_old_logprob, pi_ref_logprob, advantage, input_len, 
 调用输出
 
 # 输出分布
+
+```text
 pi_logits = torch.randn(3, 5, 32) # batch, seq_len, vocab_size
 pi_ref_logits = torch.randn(3, 5, 32)
 pi_old_logits = torch.randn(3, 5, 32)
+```
+
 
 # 获取log prob
+
+```text
 pi_logprob = F.log_softmax(pi_logits, dim = -1)
 pi_ref_logprob = F.log_softmax(pi_ref_logits, dim = -1)
 pi_old_logprob = F.log_softmax(pi_old_logits, dim = -1)
+```
+
 
 # group data
+
+```text
 token_ids = torch.tensor([[11, 12, 13, 14, 15], # 输入为11,12,13, 输出为:14, 15
                           [11, 12, 13, 15, 16],
                           [11, 12, 13, 16, 17],])
+```
+
 
 # 获取policy
+
+```python
 pi_logprob = torch.gather(pi_logprob, dim=-1, index=token_ids.unsqueeze(-1)).squeeze(-1)
 pi_ref_logprob = torch.gather(pi_ref_logprob, dim=-1, index=token_ids.unsqueeze(-1)).squeeze(-1)
 pi_old_logprob = torch.gather(pi_old_logprob, dim=-1, index=token_ids.unsqueeze(-1)).squeeze(-1)
 loss = grpo_loss(pi_logprob, pi_old_logprob, pi_ref_logprob, A, 3, 2)
 print(loss)
+```
+
 
 输出
 
@@ -563,9 +595,13 @@ $$\mathcal{L}_{\text{GRPO}}(\theta) = - \frac{1}{G} \sum_{i=1}^G \frac{1}{|o_i|}
 advantages = inputs["advantages"]
 # x - x.detach() allows for preserving gradients from x 
 # 这段代码能否计算出梯度？
+
+```text
 per_token_loss = torch.exp(per_token_logps - per_token_logps.detach()) * advantages.unsqueeze(1)
 per_token_loss = -(per_token_loss - self.beta * per_token_kl)
 loss = ((per_token_loss * completion_mask).sum(dim=1) / completion_mask.sum(dim=1)).mean()
+```
+
 
 首先模型得到的是`per_token_logps`, 这里概率是`logprob` 形式的, 工程上不容易溢出。
 
@@ -578,29 +614,33 @@ per_token_logps - per_token_logps.detach() == 0
 ratio = torch.exp(per_token_logps - per_token_logps.detach())
 
 # 等价于
+
+```text
 per_token_prob = torch.exp(per_token_logps)
 per_token_prob_old = torch.exp(per_token_logps.detach())
 ratio = per_token_prob / per_token_prob_old
+```
+
 
  这里我们来分析关键代码`x-x.detach()`，是否无法更新梯度。 
 
 - 前向时：ratio恒为1， 那么前向如果advantage不为0，那么 `ratio*advantage` 不为0
 - 反向时：由于 `per_token_prob_old` 已经detach，那么如果有梯度的话，我们可以参考[GitHub - dhcode-cpp/grpo-loss](https://link.zhihu.com/?target=https%3A//github.com/dhcode-cpp/grpo-loss) ， 可以计算出`per_token_logps` 是有梯度的。 
+
+```python
 policy = torch.tensor([0.5])
 old_policy = torch.tensor([0.5])
 ratio = policy/old_policy
 print(ratio)
 
 ratio = torch.exp( policy.log() - old_policy.log())
-
-```python
 print(ratio)
 
 gradient = -0.2 # 假设反传误差
-```
-
 policy_gradient = - gradient * ( 1 / old_policy)
 print(policy_gradient)
+```
+
 
 那么我们可以看见，在x-x.detach()是能正常计算梯度的。但是相当于new-policy只更新一次。
 

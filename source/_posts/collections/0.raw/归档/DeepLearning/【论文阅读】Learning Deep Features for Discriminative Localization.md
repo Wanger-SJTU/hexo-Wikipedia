@@ -47,7 +47,11 @@ $$
 通过上面的公式，我们可以将 $s_{c}$ 展开，如下所示：
 
 $$
+
+```text
 S_c=\sum_kw_k^c\sum_{x,y}f_k(x,y)=\sum_{x,y}\sum_kw_k^cf_k(x,y)
+```
+
 $$
 
 定义属于某个类别`c`的`CAM`为

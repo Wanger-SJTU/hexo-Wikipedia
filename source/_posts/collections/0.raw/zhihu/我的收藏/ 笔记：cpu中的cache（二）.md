@@ -108,19 +108,14 @@ Store Buffers
 
 即便新增加了Store Bufferes 和  invalidate queue，但是对于存在变量顺序依赖的情况，也还是没法处理的。
 
+```text
 //假定b在cpu0
 voidexecutedOnCpu0(){
-
-```text
     a = 1;
     b = 1;
  } 
 //假定a在cpu1
-```
-
 voidexecutedOnCpu1(){  
-
-```text
    while (b == 0) {};
    assert(a == 1);
 }
@@ -149,21 +144,16 @@ memory barrier（内存屏障）
 
 读屏障Load Memory Barrier (a.k.a. LD, RMB, smp_rmb)是一条告诉处理器在执行任何的加载前，先应用所有已经在失效队列中的失效操作的指令。
 
+```text
 //假定在cpu0
 voidexecutedOnCpu0(){
-
-```text
     a = 1;
     //在更新数据之前必须将所有存储缓存（store buffer）中的指令执行完毕。
     storeMemoryBarrier();
     b = 1;
  } 
 //假定在cpu1
-```
-
 voidexecutedOnCpu1(){  
-
-```text
    while (b == 0) {
 };
     //在读取之前将所有失效队列中关于该数据的指令执行完毕。

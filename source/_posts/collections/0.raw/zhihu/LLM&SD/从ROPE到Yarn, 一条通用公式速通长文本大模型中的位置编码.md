@@ -56,9 +56,12 @@ $- PEm" role="presentation">PEm \text{PE}_m : 位置编码，具体由 sin" role
 
 ROPE的定义可以直接映射到通用公式：
 
+```text
 g(m) = m 
 
 h(\theta_d) = \theta_d 
+```
+
 
 因此，ROPE的具体实现为（这里求简只考虑二维情况）：
 

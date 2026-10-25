@@ -97,10 +97,10 @@ Restrict the questions to the context information provided.\
 ```
 
 """  
-llm = Anthropic(api_key=anthropic_api_key)  
-qa_dataset = generate_question_context_pairs(  
 
 ```text
+llm = Anthropic(api_key=anthropic_api_key)  
+qa_dataset = generate_question_context_pairs(  
     nodes, llm=llm, num_questions_per_chunk=2  
 )  
 ```

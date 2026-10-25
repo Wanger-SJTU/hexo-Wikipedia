@@ -81,12 +81,20 @@ Android NDK 从 r13 开始以 clang 为默认编译器，本节通过 cmake 调�
 
 - 在 CMake 中配置自动向量化方式如下：
 # method 1
+
+```text
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O1 -fvectorize")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O1 -fvectorize")
+```
+
 
 # method 2
+
+```text
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O2")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O2")
+```
+
 
 #### C. GCC 中使能自动向量化
 

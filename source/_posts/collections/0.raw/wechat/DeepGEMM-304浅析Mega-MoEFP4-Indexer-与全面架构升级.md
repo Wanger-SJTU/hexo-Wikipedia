@@ -129,17 +129,17 @@ Mega MoE 的核心创新是将上述五步<strong>融合进单个 mega-kernel</s
 // deep_gemm/include/deep_gemm/layout/sym_buffer.cuh
 template <uint32_t kNumRanks = kNumMaxRanks>
 struct SymBuffer {
+    int64_t base;
 ```
 
-    int64_t base;
     int64_t offsets[kNumMaxRanks];
+
+```text
     uint32_t rank_idx;
 
     template <typename ptr_t>
     CUTLASS_DEVICE ptr_t map(const ptr_t& ptr, const uint32_t& dst_rank_idx) const {
         int64_t mapped_ptr = offsets[dst_rank_idx] + reinterpret_cast<int64_t>(ptr);
-
-```text
         return *reinterpret_cast<ptr_t*>(&mapped_ptr);
     }
 };
@@ -174,11 +174,7 @@ const int num_epilogue_threads = 256;
 ```cpp
 // csrc/jit_kernels/heuristics/mega_moe.hpp#L83-L110
 static int get_num_experts_per_wave_for_mega_moe(...) {
-```
-
     constexpr int kImbalanceFactor = 2;
-
-```cpp
     // ...
     int num_experts_per_wave = num_l1_blocks_per_expert > 0
 ```
@@ -203,13 +199,13 @@ static int get_num_experts_per_wave_for_mega_moe(...) {
 
 在 deep_gemm/include/deep_gemm/comm/barrier.cuh 中，实现了完整的 NVLink 跨 rank 同步原语，包括 grid 内同步和基于 ptx::red_add_rel_sys 的跨节点原子信号通知，并设有 30 秒超时检测：
 
-```text
+```cpp
 // deep_gemm/include/deep_gemm/comm/barrier.cuh
 template <uint32_t kNumRanks, uint32_t kNumSMs, ...>
-```
-
 CUTLASS_DEVICE void nvlink_barrier(...) {
     // Grid sync before NVLink signaling
+```
+
     grid_sync<kNumSMs, kGridSyncIndex>(workspace, sm_idx, thread_idx, sync_scope);
 
 ```text
@@ -303,14 +299,10 @@ if (desc.gemm_type == GemmType::MGroupedContiguous || ...) {
 ```text
 // csrc/jit_kernels/heuristics/config.hpp#L134-L140
 struct GemmConfig {
-```
-
     Layout layout;              // block_m/n/k, swap_ab, cluster_m/n
     StorageConfig storage_config;  // load/store block sizes, swizzle modes
     PipelineConfig pipeline_config; // num_stages, smem_size
     LaunchConfig launch_config;    // num_sms, num_threads
-
-```text
 };
 ```
 
@@ -324,16 +316,12 @@ SM90 的配置选择从"波数最小化"升级为基于 <strong>L1/L2 带宽建
 const int l2_bandwidth_per_cycle = std::min(64. * desc.num_sms, 8e6 / 1.3e3);
 const int l1_bandwidth_per_cycle = 128 * desc.num_sms;
 // ...
-```
-
 int64_t num_l2_cycles = (num_bytes_l2_ab + num_bytes_l1_l2_cd) * num_blocks / l2_bandwidth_per_cycle;
 int64_t num_l1_cycles = (num_bytes_l1_ab + num_bytes_l1_tc + ...) * num_blocks / l1_bandwidth_per_cycle;
-
-```text
 float wave_efficiency = static_cast<float>(num_blocks) / (num_waves * desc.num_sms);
+int64_t num_cycles = std::max(num_l1_cycles, num_l2_cycles) / wave_efficiency;
 ```
 
-int64_t num_cycles = std::max(num_l1_cycles, num_l2_cycles) / wave_efficiency;
 
 这使得 SM90 在小矩阵场景下能更准确地选择 block size 和 multicast 策略。
 
@@ -346,9 +334,9 @@ int64_t num_cycles = std::max(num_l1_cycles, num_l2_cycles) / wave_efficiency;
 ```text
 // csrc/jit/handle.hpp#L92-L98
 if (enable_pdl) {
+    auto& attr = attrs[config.numAttrs ++];
 ```
 
-    auto& attr = attrs[config.numAttrs ++];
     attr.id = cudaLaunchAttributeProgrammaticStreamSerialization;
     attr.val.programmaticStreamSerializationAllowed = 1;
 

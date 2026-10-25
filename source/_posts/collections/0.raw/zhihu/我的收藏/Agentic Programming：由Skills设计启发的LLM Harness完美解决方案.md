@@ -110,9 +110,12 @@ login_flow ✓ 8.8s
 
 运行时创建新函数，出了 bug 还能自动修复：
 
+```python
 from agentic.meta_function import create, fix
 
 summarize = create("把文本总结成3个要点", runtime=runtime)
+```
+
 # 如果有 bug
 fixed = fix(fn=summarize, runtime=runtime, instruction="输出用 markdown 列表")
 

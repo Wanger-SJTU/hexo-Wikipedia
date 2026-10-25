@@ -38,12 +38,8 @@ enum class Direction {
 };
 
 namespace views = std::views;
-```
-
 
 auto drop(const std::string_view sand, const char droped_ch, const Direction direction) {
-
-```cpp
 	std::string tower;
 	auto is_the_char = [&](const char ch) { return ch == droped_ch; };
 
@@ -64,19 +60,11 @@ auto drop(const std::string_view sand, const char droped_ch, const Direction dir
 	}
 	return tower;
 }
-```
-
 
 auto trim(const std::string_view sand, const char droped_ch = ' ') {
-
-```text
 	return drop(sand, droped_ch, Direction::Both);
 }
-```
-
 auto filter(const std::string_view sand, const char droped_ch = ' ') {
-
-```cpp
 	auto is_the_char = [&](const char ch) { return ch == droped_ch; };
         /*
 	auto print_way = [](const auto& it) {

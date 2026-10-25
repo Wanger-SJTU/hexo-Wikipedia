@@ -15,7 +15,11 @@ categories:
 ## 关于llama稀疏性的观察
 llama原始模型的FFN计算过程为：
 $$
+
+```text
 f(x) = \text{silu}(xW_{Gate}) \odot xW_{UP} \times W_{Down}
+```
+
 $$
 ```python
 class FeedForward(nn.Module):

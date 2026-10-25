@@ -54,15 +54,11 @@ def get_args() -> argparse.ArgumentParser:
     parser.add_argument("--rdt", type=float, default=0.12)
     parser.add_argument("--warmup-steps", type=int, default=8)
     return parser.parse_args()
-```
-
 
 args = get_args()
 print(args)
 
 pipe = QwenImagePipeline.from_pretrained(
-
-```text
     os.environ.get(
         "QWEN_IMAGE_DIR",
         "Qwen/Qwen-Image",
@@ -109,13 +105,13 @@ else:
 
 
 # Enable memory savings
+
+```text
 pipe.enable_model_cpu_offload()
 
 positive_magic = {
     "en": "Ultra HD, 4K, cinematic composition.",  # for english prompt,
     "zh": "超清，4K，电影级构图",  # for chinese prompt,
-
-```text
 }
 ```
 
@@ -123,14 +119,17 @@ positive_magic = {
 # Generate image
 prompt = """A coffee shop entrance features a chalkboard sign reading "Qwen Coffee   $2 per cup," with a neon light beside it displaying "通义千问". Next to it hangs a poster showing a beautiful Chinese woman, and beneath the poster is written "π≈3.1415926-53589793-23846264-33832795-02384197". Ultra HD, 4K, cinematic composition"""
 
+```text
 negative_prompt = (
     " "  # using an empty string if you do not have specific concept to remove
 )
+```
+
 
 # Generate with different aspect ratios
-aspect_ratios = {
 
 ```text
+aspect_ratios = {
     "1:1": (1328, 1328),
     "16:9": (1664, 928),
     "9:16": (928, 1664),
@@ -147,9 +146,9 @@ width, height = aspect_ratios["16:9"]
 start = time.time()
 
 # do_true_cfg = true_cfg_scale > 1 and has_neg_prompt
-image = pipe(
 
 ```text
+image = pipe(
     prompt=prompt + positive_magic["en"],
     negative_prompt=negative_prompt,
     width=width,
@@ -161,33 +160,24 @@ image = pipe(
 
 ).images[0]
 
+```python
 end = time.time()
 
 if hasattr(pipe.transformer, "_cached_steps"):
-
-```python
     cached_steps = pipe.transformer._cached_steps
     residual_diffs = pipe.transformer._residual_diffs
     print(f"Cache Steps: {len(cached_steps)}, {cached_steps}")
     print(f"Residual Diffs: {len(residual_diffs)}, {residual_diffs}")
-```
-
 if hasattr(pipe.transformer, "_cfg_cached_steps"):
-
-```python
     cfg_cached_steps = pipe.transformer._cfg_cached_steps
     cfg_residual_diffs = pipe.transformer._cfg_residual_diffs
     print(f"CFG Cache Steps: {len(cfg_cached_steps)}, {cfg_cached_steps} ")
     print(
         f"CFG Residual Diffs: {len(cfg_residual_diffs)}, {cfg_residual_diffs}"
     )
-```
-
 
 time_cost = end - start
 save_path = f"qwen-image.{cache_type_str}.png"
-
-```python
 print(f"Time cost: {time_cost:.2f}s")
 print(f"Saving image to {save_path}")
 image.save(save_path)

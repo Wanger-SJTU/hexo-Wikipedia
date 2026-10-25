@@ -216,9 +216,9 @@ type-erased可以简化代码，比如`BEFExecutor`在Kernel间传递AsyncValue�
 ```text
 // Prefer AsyncValueRef for TensorHandle's constructor because the AsyncValues 
 // must contain specific types. 
+TensorHandle(AsyncValueRef async_metadata,              
 ```
 
-TensorHandle(AsyncValueRef async_metadata,              
 AsyncValueRef tensor);
 
 ##### ConcreteAsyncValue

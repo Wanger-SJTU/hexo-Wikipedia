@@ -247,9 +247,12 @@ nn对正常工作温度**下的dark shading差异还是具有鲁棒性的。“�
 - <strong>过拟合于训练场景</strong><strong>表现为神经网络通常会学习到不完善的数据采集过程所导致的数据偏置</strong>（空间错位<strong>3</strong>和亮度错位<strong>4</strong>），这导致去噪结果不准确
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_905cd51dd02c.jpg)
 
-CAGAN (ECCV 2020). Noise中显著的边缘残差应当是SIDD非参考帧噪图和GT之间的空间错位，而不是噪声![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_73fa4caeae33.jpg)
+```text
+CAGAN (ECCV 2020). Noise中显著的边缘残差应当是SIDD非参考帧噪图和GT之间的空间错位，而不是噪声![](asset/img_73fa4caeae33.jpg)
 
 Starlights (CVPR 2022). 网络疑似是学到了训练数据集中的某种亮度错位诶嘿？有没有闻到“可学习性增强”的味道？没错，这也是我们下一个工作的方法论。
+```
+
 
 新的工作和期刊版PMN的增量部分拥有相同的故事背景，但是这回我们换了一种技术路线——直接改造学习类噪声建模。我们将在新的工作中直面数据质量与分布度量的问题，一一破除前文所提到的“纯噪声建模的困境”！这个纯噪声建模的工作已经投稿出去了，效果上比PMN更具特色，敬请期待~~
 

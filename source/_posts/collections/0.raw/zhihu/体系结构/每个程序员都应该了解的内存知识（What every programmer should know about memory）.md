@@ -514,15 +514,19 @@ int b = 0;
 ```
 
 t1:                          |           t2:
-a = 1;                       |           b = 1;
 
 ```text
+a = 1;                       |           b = 1;
 if (b == 0) {                |           if (a == 0) {
   // do something            |             // do something
 ```
 
 } else {                     |           } else {
+
+```text
   goto t1; // retry          |             goto t2; // retry
+```
+
 }                            |           }
 
 // http://gavinchou.github.io/summary/c++/memory-ordering/

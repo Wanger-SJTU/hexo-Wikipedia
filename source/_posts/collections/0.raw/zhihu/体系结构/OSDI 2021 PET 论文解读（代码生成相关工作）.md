@@ -135,7 +135,10 @@ Table2
 
 ![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_092f010a9bb7.jpg)
 
+```text
 Figure6Figure6(a)表示一个标准的卷积过程。然后Figure6(b)表示在Figure6(a)上应用一个部分等效变换。Conv-2是校正Kernel，这里和Conv-1是共享权重的，所以我们可以把conv1-conv2融合起来变成一个conv-1-2，如Figire6(c)所示。具体来说这个融合操作就是将T_1和T_0^{'} 联合到一个单独的Tensor并将Conv-1-2的输出结果分解成T^2和T_3^{'}。这里的联合和分解只包含数据拷贝，可以用reshape和transpose来做到。
+```
+
 
 ### 0x8. Program Optimizer
 

@@ -243,9 +243,9 @@ export SGL_CHUNKED_PREFIX_CACHE_THRESHOLD=0
 
 当前代码里，attention backend handler 会在 `fa3`、`flashinfer`、`flashmla` 这些 backend 上判断是否能走 `MHA_ONE_SHOT`：
 
+```python
 MHA_ONE_SHOT_SUPPORTED_BACKENDS = ["fa3", "flashinfer", "flashmla"]
 
-```python
 def _support_mha_one_shot(attn, forward_batch, backend_name):
     attn_supported = backend_name in MHA_ONE_SHOT_SUPPORTED_BACKENDS
     sum_seq_lens = (
@@ -341,11 +341,7 @@ config, (down_config, _) = try_get_optimal_moe_config(
     per_channel_quant=per_channel_quant,
     return_down_config=True,
 )
-```
-
 down_moe_use_tma = (
-
-```text
     _down_moe_use_tma()
     and down_config is not None
     and down_config.pop("USE_TMA", False)
@@ -355,14 +351,13 @@ down_moe_use_tma = (
 
 如果启用 TMA，up projection 的输出会按 down projection 想要的顺序写好：
 
+```text
 invoke_fused_moe_kernel(
     hidden_states,
     w1,
     ...,
     config,
     ...,
-
-```text
     c_sorted=down_moe_use_tma,
 )
 ```
@@ -370,14 +365,13 @@ invoke_fused_moe_kernel(
 
 随后 down projection 的 kernel 调用会把输入 A 和权重 B 都交给 TMA descriptor 路径：
 
+```text
 invoke_fused_moe_kernel(
     intermediate_cache2,
     w2,
     ...,
     down_config or config,
     ...,
-
-```text
     a_use_tma=down_moe_use_tma,
     b_use_tma=down_moe_use_tma,
 )
@@ -524,30 +518,21 @@ if envs.SGLANG_DEEPEP_LL_COMBINE_SEND_NUM_SMS.is_set():
     communicate_num_sms = envs.SGLANG_DEEPEP_LL_COMBINE_SEND_NUM_SMS.get()
 else:
     communicate_num_sms = 32 if is_blackwell() else 3
+compute_num_sms = total_num_sms - communicate_num_sms
 ```
 
-compute_num_sms = total_num_sms - communicate_num_sms
 
 如果启用 Down GEMM + Combine Send overlap，就创建 signal，并把 signal 同时传给 combine 和 down gemm：
 
-combine_signal_size = num_local_experts * (
-
 ```text
+combine_signal_size = num_local_experts * (
     (num_tokens_static + MIN_BLOCK_M - 1) // MIN_BLOCK_M
 )
-```
-
 combine_signal = torch.zeros(
-
-```text
     combine_signal_size, dtype=torch.int32, device=hidden_states.device
 )
-```
-
 
 down_gemm_overlap_args = DownGemmOverlapArgs(
-
-```text
     signal=combine_signal,
     start_event=combine_wait_event,
     num_sms=compute_num_sms,
@@ -578,9 +563,8 @@ def _post_dispatch_hook(dispatcher: BaseDispatcher, dispatch_output: DispatchOut
 
 DeepEP combine 侧会把这些参数传给 `low_latency_combine`：
 
-overlap_args_dict = dict(
-
 ```text
+overlap_args_dict = dict(
     overlap=overlap_args.overlap,
     packed_recv_count=self.packed_recv_count,
     comp_signal=overlap_args.signal,
@@ -607,9 +591,8 @@ combined_hidden_states, event, hook = buffer.low_latency_combine(
 
 DeepGEMM runner 侧则会从 signal GEMM 的返回值里拿到动态 `block_m` 和 `threshold`，再写回 `meta_overlap_args`，供 combine 使用：
 
-deep_gemm_return_value = deep_gemm_wrapper.grouped_gemm_nt_f8f8bf16_masked(
-
 ```text
+deep_gemm_return_value = deep_gemm_wrapper.grouped_gemm_nt_f8f8bf16_masked(
     (down_input, down_input_scale),
     (w2_weight, w2_scale),
     down_output,
@@ -617,9 +600,9 @@ deep_gemm_return_value = deep_gemm_wrapper.grouped_gemm_nt_f8f8bf16_masked(
     expected_m,
     **gemm_overlap_args_dict,
 )
+meta_overlap_args = running_state.get("meta_overlap_args", None)
 ```
 
-meta_overlap_args = running_state.get("meta_overlap_args", None)
 if meta_overlap_args is not None:
 
 ```text
@@ -810,12 +793,11 @@ Ant 开源了 [DeepXTrace](https://link.zhihu.com/?target=https%3A//github.com/a
 
 README 里给的 DeepEP LL mode 接入方式大致是：
 
+```text
 _diagnose = ds.Diagnose(group=group, enable_async=True)
 _diagnose.start_async_diagnose()
 
 dispatch_wait_recv_cost_stats = _diagnose.get_stats_ll_stats_tensor()[0]
-
-```text
 _buffer.low_latency_dispatch(
     hidden_states,
     topk_idx,
@@ -824,12 +806,8 @@ _buffer.low_latency_dispatch(
     dispatch_wait_recv_cost_stats=dispatch_wait_recv_cost_stats,
     use_fp8=True,
 )
-```
-
 
 combine_wait_recv_cost_stats = _diagnose.get_stats_ll_stats_tensor()[1]
-
-```text
 _buffer.low_latency_combine(
     hidden_states,
     topk_idx,

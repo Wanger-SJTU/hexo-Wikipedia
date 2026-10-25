@@ -206,6 +206,7 @@ return BinaryVec<Mul>(op);
 ```
 这里的处理逻辑与Add基本一致。只是在计算RampNode的时候有点区别。
 
+```text
 vectorize_vector()
 vectorize_with_if()
 vectorize_loop()
@@ -214,5 +215,7 @@ vectorize_with_le_cond()
 vectorize_with_ge_cond()
 vectorize_let()
 vectorize_while_fail()
+```
+
 
 

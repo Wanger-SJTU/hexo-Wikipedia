@@ -183,11 +183,14 @@ static int __init pci_iommu_init(void)
 
 如下的调用链：
 
+```text
 kernel_init ->
 	kernel_init_freeable ->
 		do_one_initcall ->
 			pci_iommu_init ->
 				x86_init.iommu.iommu_init
+```
+
 
 以上就是intel 的iommu 初始化调用链分析。
 
@@ -199,29 +202,61 @@ kernel_init ->
 
 crash> list -H dmar_drhd_units -s dmar_drhd_unit.segment,devices_cnt
 ffff8b83ff078780
+
+```text
   segment = 0
   devices_cnt = 0
+```
+
 ffff8b83ff078060
+
+```text
   segment = 0
   devices_cnt = 0
+```
+
 ffff8b83ff065680---------管理了三个设备
+
+```text
   segment = 0
   devices_cnt = 3
+```
+
 ffff8b83ff078ae0
+
+```text
   segment = 0
   devices_cnt = 0
+```
+
 ffff8b83ff078c60
+
+```text
   segment = 0
   devices_cnt = 0
+```
+
 ffff8b83ff078480
+
+```text
   segment = 0
   devices_cnt = 0
+```
+
 ffff8b83ff072180--------------管理了8个设备
+
+```text
   segment = 0
   devices_cnt = 8
+```
+
 ffff8b83ff078240
+
+```text
   segment = 0
   devices_cnt = 0
+```
+
 
 我们可以看到，bios/uefi至少枚举了8个iommu的硬件，其中两个intel_iommu设备 分别管理的3个和8个设备。
 
@@ -229,10 +264,9 @@ ffff8b83ff078240
 
 实际单板上，pci设备就远远不止11个设备，那么其他设备怎么办，devices_cnt 为0，不代表它就不管理设备，相反，还得继续看include_all标志，事实上，这个在如下函数有体现：
 
+```text
 struct dmar_drhd_unit *
 dmar_find_matched_drhd_unit(struct pci_dev *dev)//caq:pci设备找归属的drhd_unit 硬件
-
-```text
 {
 	struct dmar_drhd_unit *dmaru;
 	struct acpi_dmar_hardware_unit *drhd;
@@ -269,9 +303,13 @@ out:
 也就是说，通过一个dmar硬件，支持include_all属性，将很多设备收纳了其中，比如看的其他一个服务器的打印：
 
 crash> dmar_drhd_unit.iommu,include_all,devices_cnt ffff8d1240078360
+
+```text
   iommu = 0xffff8d42ff043500
   include_all = 1 '\001'
   devices_cnt = 0
+```
+
 crash> intel_iommu.name 0xffff8d42ff043500
   name = "dmar7\000\000\000\000\000\000\000"
 上面可以看到，dmar7的 devices_cnt  为0，但是真实的管理设备个数却很多，如下：
@@ -438,45 +476,77 @@ crash> dis -l 0xffffffff952ebcc0
 具备iommu功能的硬件打印：
 crash> list -H dmar_drhd_units -s dmar_drhd_unit.segment,devices_cnt,include_all,ignored
 ffff8d1240078e40
+
+```text
   segment = 0
   devices_cnt = 0
   include_all = 0 '\000'
   ignored = 1 '\001'
+```
+
 ffff8d1240078240
+
+```text
   segment = 0
   devices_cnt = 1
   include_all = 0 '\000'
   ignored = 0 '\000'
+```
+
 ffff8d1240065000
+
+```text
   segment = 0
   devices_cnt = 3
   include_all = 0 '\000'
   ignored = 0 '\000'
+```
+
 ffff8d1240078780
+
+```text
   segment = 0
   devices_cnt = 0
   include_all = 0 '\000'
   ignored = 1 '\001'
+```
+
 ffff8d12400783c0
+
+```text
   segment = 0
   devices_cnt = 0
   include_all = 0 '\000'
   ignored = 1 '\001'
+```
+
 ffff8d1240078960
+
+```text
   segment = 0
   devices_cnt = 0
   include_all = 0 '\000'
   ignored = 1 '\001'
+```
+
 ffff8d1240072fc0
+
+```text
   segment = 0
   devices_cnt = 8
   include_all = 0 '\000'
-  <strong>ignored = 1</strong> '\001'//caq:虽然 devices_cnt  不为0，但是依然被ignored。
+  **ignored = 1** '\001'//caq:虽然 devices_cnt  不为0，但是依然被ignored。
+```
+
 ffff8d1240078360
+
+```text
   segment = 0
   devices_cnt = 0
   include_all = 1 '\001'
   ignored = 0 '\000'
+```
+
 除掉这些ignored为1的，可以看到active的iommu设备，
 angus@jm212:/sys/class/iommu$ pwd
 /sys/class/iommu

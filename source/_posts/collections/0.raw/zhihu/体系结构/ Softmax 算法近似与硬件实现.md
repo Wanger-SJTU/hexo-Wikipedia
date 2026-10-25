@@ -152,7 +152,10 @@ $err_1 = \ln(2) - \ln(2)_h,\\ \ln(S) = (\ln(2)_h + err_1) \cdot \log_2(u \cdot 2
 
 $x′_i = x_i − x_{max}\\ f_{p_0p_1}(x_i) = exp_{p_0}\left(x'_i - \ln_{p_1}\left(\sum_{j=0}^{N-1} exp_{p_0}(x'_j)\right)\right)\\ 其中 p_0,p_1 可以通过分析输入数据特征而 offline 地确定。本文设定$
 
+```text
 p_0=4\\ p_1 = \begin{cases}     0, & \text{if } v 
+```
+
 
 #### 3.2 跳零
 

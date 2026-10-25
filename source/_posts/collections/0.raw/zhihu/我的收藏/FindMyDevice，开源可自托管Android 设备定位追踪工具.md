@@ -17,11 +17,14 @@ source_url: https://zhuanlan.zhihu.com/p/2101721601
 
 2024年3月份，Google针对Android用户推出了 [Google Find My Device](https://link.zhihu.com/?target=https%3A//blog.google/products/android/android-find-my-device/) 服务，但由于依赖于Google Play及Google Account，因此国内用户无法直接使用此服务，同时在隐私数据上会被Google获取。
 
+```text
 FindMyDevice (FMD) 是一个开源 Android 设备定位追踪工具，它的目标是成为 Google FindMyDevice 的安全开源替代品。
 
 FindMyDevice (FMD) 可通过短信、即时通信工具或可自托管 Web 界面查找设备，并允许在设备丢失时跟踪、擦除数据和向设备发出其他命令。
 
 FindMyDevice (FMD) 的主要功能如下：
+```
+
 
 - 定位设备（使用 GPS 或蜂窝定位）
 - 锁定设备

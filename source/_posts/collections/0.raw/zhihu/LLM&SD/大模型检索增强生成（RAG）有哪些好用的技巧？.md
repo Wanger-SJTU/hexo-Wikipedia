@@ -73,13 +73,17 @@ from unstructured.partition.pdf import partition_pdf
 
 
 # Load 
+
+```text
 path = "/Users/rlm/Desktop/IH-Unstructured/"
 file = "IH_Policy_Doc.pdf"
+```
+
 
 # Get elements
-raw_pdf_elements = partition_pdf(
 
 ```sql
+raw_pdf_elements = partition_pdf(
     filename=path+file,
     extract_images_in_pdf=False,
     infer_table_structure=True, 
@@ -118,13 +122,21 @@ for element in raw_pdf_elements:
 
 
 # Tables
+
+```python
 table_elements = [e for e in categorized_elements if e.type == "table"]
 print(len(table_elements)) 
+```
+
 # output: 28 elements in the PDF file
 
 # Text
+
+```python
 text_elements = [e for e in categorized_elements if e.type == "text"]
 print(len(text_elements)) 
+```
+
 # output: 127 elements in the PDF file
 
 存储文档：两种方法的故事
@@ -134,9 +146,9 @@ print(len(text_elements))
 使用多向量检索器将原始表和文本与摘要一起存储，这更有利于检索，有助于解决半结构化数据的复杂性。这战略性地构建了存储，以便于更有效的检索。
 
 # The vectorstore to use to index the child chunks
-vectorstore = Chroma(
 
 ```text
+vectorstore = Chroma(
     collection_name="rag_with_summaries",
     embedding_function=OpenAIEmbeddings()
 )
@@ -144,13 +156,17 @@ vectorstore = Chroma(
 
 
 # The storage layer for the parent documents
-store = InMemoryStore()
-id_key = "doc_id"
-
-# The retriever (empty to start)
-retriever = MultiVectorRetriever(
 
 ```text
+store = InMemoryStore()
+id_key = "doc_id"
+```
+
+
+# The retriever (empty to start)
+
+```text
+retriever = MultiVectorRetriever(
     vectorstore=vectorstore, 
     docstore=store, 
     id_key=id_key,
@@ -159,14 +175,22 @@ retriever = MultiVectorRetriever(
 
 
 # Add texts
+
+```text
 doc_ids = [str(uuid.uuid4()) for _ in texts]
 summary_texts = [Document(page_content=s,metadata={id_key: doc_ids[i]}) for i, s in enumerate(text_summaries)]
+```
+
 retriever.vectorstore.add_documents(summary_texts)
 retriever.docstore.mset(list(zip(doc_ids, texts)))
 
 # Add tables
+
+```text
 table_ids = [str(uuid.uuid4()) for _ in tables]
 summary_tables = [Document(page_content=s,metadata={id_key: table_ids[i]}) for i, s in enumerate(table_summaries)]
+```
+
 retriever.vectorstore.add_documents(summary_tables)
 retriever.docstore.mset(list(zip(table_ids, tables)))
 
@@ -181,9 +205,9 @@ prompt = ChatPromptTemplate.from_template(template)
 model = ChatOpenAI(temperature=0,model="gpt-4")
 
 # RAG pipeline
-semi_structured_chain = (
 
 ```text
+semi_structured_chain = (
     {"context": retriever, "question": RunnablePassthrough()} 
     | prompt 
     | model 
@@ -196,17 +220,17 @@ semi_structured_chain = (
 基线向量存储代表了传统方法。存储文档时不明确考虑表。该方法在我们的评估中充当对照，提供了一个基准，我们将其与多向量检索器进行比较。
 
 # Baseline
-vectorstore_baseline = Chroma.from_documents(
 
 ```text
+vectorstore_baseline = Chroma.from_documents(
     documents=all_splits,
     collection_name="baseline_rag",
     embedding=OpenAIEmbeddings()
 )
-```
-
 
 retriever_baseline = vectorstore_baseline.as_retriever()
+```
+
 
 # Prompt template
 template = """Answer the question based only on the following context, which can include text and tables:
@@ -219,9 +243,9 @@ prompt = ChatPromptTemplate.from_template(template)
 model = ChatOpenAI(temperature=0,model="gpt-4")
 
 # RAG pipeline
-baseline_chain = (
 
 ```text
+baseline_chain = (
     {"context": retriever_baseline, "question": RunnablePassthrough()} 
     | prompt 
     | model 
@@ -238,8 +262,11 @@ semi_structured_chain.invoke("Can you explain what medical necessity is in relat
 构建评估数据集
 LangSmith 是一个用于构建生产 LLM 应用程序的平台。它还具有测试和评估它们的嵌入式功能。为了评估我们方法的性能，我们首先使用问答 （QA） 对在 LangSmith 中构建一个评估集。下面可以看到一个示例及其输出。
 
+```text
 df_curated = pd.read_json('../cleaned_json/curated_subset_table_eval_pairs_dbc_passport.json')
 df_curated.head(3)
+```
+
 
 ![](https://pica.zhimg.com/v2-18f76241f9cb534bac674c0a701e359c_r.jpg?source=2c26e567)​构建 QA 对后，我们将数据集上传到 LangSmith。
 
@@ -250,9 +277,13 @@ from langsmith import Client
 
 
 # Dataset
+
+```text
 client = Client()
 dataset_name = f"IH Policy Doc Curated QA {str(uuid.uuid4())}"
 dataset = client.create_dataset(dataset_name=dataset_name)
+```
+
 
 # Populate dataset
 for _, row in df_curated.iterrows():
@@ -288,19 +319,14 @@ for _, row in df_curated.iterrows():
 
 LangSmith 的“run_on_dataset”函数将在数据集上运行链或语言模型，并将跟踪存储到指定的项目名称。以下是运行该过程的方法：
 
+```python
 from langchain.smith import RunEvalConfig
 
 eval_config = RunEvalConfig(
-
-```text
     evaluators=["qa"],
 )
-```
-
 
 _ = client.run_on_dataset(
-
-```text
     dataset_name=dataset_name,
     llm_or_chain_factory=lambda: (lambda x: x["question"]) | semi_structured_chain,
     evaluation=eval_config,

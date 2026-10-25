@@ -87,10 +87,10 @@ void Widget::process()
 {
     processedWidgets.emplace_back(shared_from_this());
 }
-```
-
 
 shared_from_this()`会查找当前对象控制块，然后创建一个新的`std::shared_ptr`关联这个控制块。用这个函数之前，是假设当前对象已经存在一个关联的控制块。因此，必须已经存在一个指向当前对象的`std::shared_ptr`。如果没有`std::shared_ptr`指向当前对象（即当前对象没有关联控制块），那么`shared_from_this`会抛出一个异常。
+```
+
 
 Reference:
 

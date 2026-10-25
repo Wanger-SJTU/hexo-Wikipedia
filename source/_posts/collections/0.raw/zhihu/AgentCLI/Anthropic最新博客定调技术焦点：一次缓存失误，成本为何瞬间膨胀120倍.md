@@ -154,13 +154,12 @@ Claude Code作为一个需要与用户进行<strong>数十轮甚至上百轮交�
 Anthropic 的 `cache_control` 用法
 Anthropic的prompt caching通过一个JSON参数 `cache_control` 控制。这是目前生产环境使用最广泛的机制。
 
+```python
 import anthropic
 
 client = anthropic.Anthropic()
 
 response = client.messages.create(
-
-```text
     model="claude-sonnet-4-6",
     max_tokens=1024,
     system=[
@@ -206,9 +205,9 @@ response = client.messages.create(
 2026年2月起，Anthropic在Messages API上默认启用<strong>自动缓存</strong>——系统会自动识别长且稳定的前缀并在最后一个可缓存block上放置断点，无需手动标记。
 
 # 自动缓存：无需任何标记，系统自行判断
-response = client.messages.create(
 
-```text
+```sql
+response = client.messages.create(
     model="claude-opus-4-6",
     max_tokens=1024,
     system="你是一个客服助手...",
@@ -457,10 +456,9 @@ OpenClaw项目在2026年3月记录了一个教科书级的缓存失败案例（1
 - Claude Opus系列: 4,096 tokens
 - 低于阈值 → 缓存不会激活（静默不缓存，无报错）<strong>Step 2: 检查前缀逐字节一致性</strong>
 
+```python
 import difflib
 diff = list(difflib.unified_diff(
-
-```text
     request1_system.encode(), request2_system.encode(), lineterm=''
 ))
 ```

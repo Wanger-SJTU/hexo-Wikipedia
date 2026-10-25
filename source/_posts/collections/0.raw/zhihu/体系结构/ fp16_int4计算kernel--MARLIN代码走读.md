@@ -81,9 +81,8 @@ A(thread_m_blocks*16,thread_k_blocks*16)*B(thread_k_blocks*16,thread_n_blocks*16
 
 具体的调度实现在：
 
-__global__ void Marlin(
-
 ```cpp
+__global__ void Marlin(
   const int4* __restrict__ A, // fp16 input matrix of shape mxk 
   const int4* __restrict__ B, // 4bit quantized weight matrix of shape kxn 
         int4* __restrict__ C, // fp16 output buffer of shape mxn
@@ -153,8 +152,11 @@ if (slice_col_par >= n_tiles) {
 
 实现在：
 
+```cpp
   // Asynchronously fetch the next A, B and s tile from global to the next shared memory pipeline location.
  auto fetch_to_shared = [&] (int pipe, int a_off, bool pred = true) {
+```
+
 
 实际上复杂的是内存偏移的计算。
 
@@ -164,9 +166,9 @@ if (slice_col_par >= n_tiles) {
 
 ```cpp
 int a_gl_stride = prob_k / 8; // stride of the A matrix in global memory
+constexpr int a_gl_rd_delta_o = 16 * thread_k_blocks / 8;
 ```
 
-constexpr int a_gl_rd_delta_o = 16 * thread_k_blocks / 8;
 
 这里用INT4表示4*int的数据结构，后面大写的INT4都表示这种数据结构。
 
@@ -186,8 +188,11 @@ constexpr int a_gl_rd_delta_o = 16 * thread_k_blocks / 8;
 
 这里还需要注意a_sh_wr_iters这个变量。
 
+```cpp
  constexpr int a_sh_stage = a_sh_stride * (16 * thread_m_blocks); // overall size of a tile
  constexpr int a_sh_wr_iters = ceildiv(a_sh_stage, a_sh_wr_delta); // number of shared write iterations for a tile
+```
+
 
 256个线程调用cp.async.cg.shared.global是无法获取到TILE的A矩阵的。需要a_sh_wr_iters次才能处理完成。
 
@@ -222,10 +227,13 @@ for (int i = 0; i  a_sh_wr_iters; i++) {
 
 这里需要说明的是：
 
+```cpp
 constexpr int a_sh_stride = 16 * thread_k_blocks / 8; 
 constexpr int a_sh_stage = a_sh_stride * (16 * thread_m_blocks); // overall size of a tile
 constexpr int b_sh_stride = 32 * thread_n_blocks / 4;
 constexpr int b_sh_stage = b_sh_stride * thread_k_blocks;
+```
+
 
 这里会计算A,B矩阵TILE的空间，用于缓存。
 
@@ -234,12 +242,8 @@ A矩阵的BANK CONFLICT：
 ```cpp
 for (int i = 0; i  a_sh_wr_iters; i++)
     a_sh_wr_trans[i] = transform_a(a_sh_wr_delta * i + a_sh_wr);
-```
-
 
 auto transform_a = [&] (int i) {
-
-```cpp
  int row = i / a_gl_rd_delta_o;
  return a_gl_rd_delta_o * row + (i % a_gl_rd_delta_o) ^ row;
 };
@@ -268,8 +272,11 @@ B矩阵的存储是int4(小写)，只是INT4的。
 
 SUBTILE重排对应的是：
 
+```text
  w = w.reshape(
             (
+```
+
  awq_linear.in_features // tile,
  tile,
  awq_linear.out_features // tile,
@@ -278,9 +285,9 @@ SUBTILE重排对应的是：
 ```text
             )
         )
+ w = w.permute((0, 2, 1, 3))
 ```
 
- w = w.permute((0, 2, 1, 3))
 
 这里共享内存读写B矩阵，也就是直接存写，也就不需要考虑bank conflict了。
 
@@ -393,10 +400,10 @@ thread_k_blocks/b_sh_wr_iters = threads/8/thread_n_blocks
 
 ```cpp
  for (int i = 0; i  thread_m_blocks; i++)
-```
-
  ldsm4(frag_a[k % 2][i], &sh_a_stage[a_sh_rd_trans[k % b_sh_wr_iters][i]]);
  int4* sh_b_stage = sh_b + b_sh_stage * pipe;
+```
+
  frag_b_quant[k % 2] = *reinterpret_castI4*>(&sh_b_stage[b_sh_rd_delta * (k % b_sh_wr_iters) + b_sh_rd]);
 
 在SHARED->REG的过程中还会有一次transform_a的调用，我个人理解，在ROW不变的前提下，transform_a是一个可逆变换。这样就可以轻松从SHARED内存位置回到原始位置。
@@ -519,8 +526,11 @@ PERM1.
 
 因此通过：
 
+```text
 interleave = np.array([0, 2, 4, 6, 1, 3, 5, 7])
  perm = perm.reshape((-1, 8))[:, interleave].ravel()
+```
+
 
 将8BIT的数据进行混插。
 
@@ -542,8 +552,11 @@ interleave = np.array([0, 2, 4, 6, 1, 3, 5, 7])
 
 每8个数据融合成一个INT32:
 
+```text
 for i in range(8):
     q |= res[:, i::8] 
+```
+
 
 经过上述5步操作，将B矩阵封装成可以使用MMA计算的矩阵。
 
@@ -559,11 +572,14 @@ for i in range(8):
 
 设：
 
+```text
 A = A00|A01 ,B=B00|B10
 
 C = A*B
 
 C = A00*B00+A01*B10
+```
+
 
 因此frag_c首先会在b_sh_wr_iters层面做归约。
 
@@ -625,9 +641,8 @@ global归约实际上可以理解成是同步顺序处理。
 
 该函数实现：
 
-__device__ inline void barrier_acquire(int* lock, int count) {
-
 ```cpp
+__device__ inline void barrier_acquire(int* lock, int count) {
   if (threadIdx.x == 0) {
     int state = -1;
     do

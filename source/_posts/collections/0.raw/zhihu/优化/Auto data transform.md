@@ -44,9 +44,9 @@ DataTransformer类有三个私有成员变量，target_表示要进行数据排�
 ```cpp
 std::string target_;
 Func replace_func_;
+T op_;
 ```
 
-T op_;
 
 在DataTransformer中，我们仅考虑了四则运算，即加，减，乘，除和除余，这里以加法运算做说明：
 
@@ -57,11 +57,7 @@ void visit(const Add *add) override {
  if (const Halide::Internal::Call *v= node->a.asHalide::Internal::Call>()) {
  if (v->name==target_)
         {
-```
-
  auto expr = v->args;
-
-```text
             op_(expr);
             node->a = replace_func_(expr);
         }
@@ -69,11 +65,7 @@ void visit(const Add *add) override {
  if (const Halide::Internal::Call *v= node->b.asHalide::Internal::Call>()) {
  if (v->name==target_)
         {
-```
-
  auto expr = v->args;
-
-```text
             op_(expr);
             node->b = replace_func_(expr);
         }
@@ -118,30 +110,33 @@ enum class DataTransformMethod{
 
 DataOP需要重载三个函数，两个括号运算符重载和一个命名函数,命名规则是$+算子名。
 
-```text
+```cpp
 class DataOP
 {
 public:
     // operate the vector
-```
-
  virtual void operator()(std::vector &args){}
  virtual void operator()(Func &lfunc,Func &rfunc){}
- virtual std::string name(){return "$NULL";}
-
-```text
-};
 ```
 
+ virtual std::string name(){return "$NULL";}
+
+```cpp
+};
 
 virtual void operator()(std::vector &args){}`这个重载是用于在定义中将目标函数的参数进行重新排布的，以matmul.cpp为例：
+```
+
 
 `func(x,y,b)=input_a(k,y,b)*input_b(x,k,b)`
 
 执行reorder操作得到：
 
+```text
 Br(x,y,b) = input_b(y,x,b)
 func(x,y,b)=input_a(k,y,b)*Br(k,x,b)
+```
+
 
 - `operator()(std::vector &args) `用于在func表达式中将input_b(x,k,b)替换为Br(k,x,b)
 - `operator()(Func &lfunc,Func &rfunc)`用于构造Br(x,y,b)=input_b(y,x,b)表达式。
@@ -163,8 +158,11 @@ reorder cost****对于一个这样的表达式：
 
 对于上述表达式，如果我们增加一个定义：
 
+```text
 Reorder(x,y,z) = input(y,x,z)
 func(x,y,z,b) = Reorder(x,y,z)*b
+```
+
 
 可以看到，结果一样，func(x,y,z,b)这个表达式没有发生cache miss，只有上面的Reorder(x,y,z)发生了cache miss，其miss次数为x<strong>y</strong>z，可以看到，miss次数减少了b倍。所以我们定义reorder cost为发生数据读取顺序不一致的表达式的数据总量。
 

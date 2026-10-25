@@ -129,6 +129,7 @@ RoMe（<strong>Ro</strong>w-granularity-access <strong>Me</strong>mory system）
 
 为了直观理解命令生成器的工作原理，我们可以将其逻辑抽象为如下的硬件描述语言：
 
+```cpp
 // 概念性伪代码：RoMe 命令生成器 (Command Generator) 状态机抽象
 module CommandGenerator (
     input wire clk,
@@ -136,8 +137,6 @@ module CommandGenerator (
     input wire [15:0] row_addr,
     input wire vba_id,            // 虚拟 Bank ID
     output reg dram_cmd_out       // 输出给底层 DRAM Die 的标准命令
-
-```cpp
 );
 
     // 内部时序常量

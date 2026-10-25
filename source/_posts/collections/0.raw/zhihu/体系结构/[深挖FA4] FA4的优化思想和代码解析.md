@@ -142,10 +142,10 @@ SHARED MEMORY
     │
     │ TMEM Load / Store
     ▼
-TENSOR MEMORY (TMEM)
-    │
 
 ```text
+TENSOR MEMORY (TMEM)
+    │
     ├── tS: Attention scores S = Q × K^T (128 × 256 elements)
     ├── tP: Softmax probabilities P = exp2(S - row_max)
     └── tO: 累积输出 O (m_block × head_dim_v)
@@ -217,11 +217,15 @@ for k_block in range(n_block_min, n_block_max):
 #### 4.3 MMA Warp 操作 (Warp 12)
 
 S_{0, n-1} S_{1, n-1}
+
+```text
 loop(i, 0, n-1):
   O_{0, n-1-i}
   O_{1, n-1-i}
   S_{0, n-2-i}
   S_{1, n-2-i}
+```
+
 O_{0, 0} O_{1, 0}
 
 - 自定义的gemm：

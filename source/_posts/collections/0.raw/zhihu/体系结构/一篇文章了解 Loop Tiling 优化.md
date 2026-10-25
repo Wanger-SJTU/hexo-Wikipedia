@@ -25,9 +25,12 @@ Loop Tiling，是优化循环的一种非常重要的策略。而在深度学习
 
 所以，上述例子中，如果 `N` 非常大，那么当你访问到 `N-1` 的时候，`A[0-15]` 所在的 Cache Line 已经被 evict 了，这时如果你再回头访问 `A[0]`，就得重新把这个 Cache Line 从 memory 给 fetch 到 cache 中，速度就比较慢了。 
 
+```text
 for i in range(0, N):
   for j in range(0, M):
     A[i] += B[j]
+```
+
 
 就如同上面的这个双层循环的例子，如果 `M` 很大，那么每次 `i` 加一 时，就得重新从 memory 访问，访存速度就会很慢。 因此，我们引入 Loop Tiling 去尝试解决上述问题。
 
@@ -42,9 +45,12 @@ Loop Tiling 的目的是 <strong>确保一个 Cache Line 在被用过以后，�
 - 当我们把内层循环给变成更小的 inner loop，那么整个待访问数组 fit in cache，外层开始循环时就不会出现 cache miss 了。
 以前面的例子来考虑，假设每个 Cache Line 只能容纳 `b` 个数组元素（`j_i` 代表 `inner_j`，`j_o` 代表 `outer_j`）
 
+```text
 for i in range(0, N):
   for j in range(0, M):
     A[i] += B[j]
+```
+
 
 # 对于 B[0] 来说，i=0,1,2... 时其都会被重新访问。如果 M 太大，那么 i=0 时存放在 cache 中的 B[0] 可能已经被 evict 了，i=1 时再访问就出现 cache miss。
 # 尝试量化分析 cache miss 的次数，
@@ -54,10 +60,9 @@ for i in range(0, N):
 
 # 因此我们把内层循环 j in range(0, M) 按 T 给 tile，变成 j_o in range(0, M, T) 和 j_i in range(outer_j, outer_j + T) 两个循环，并把 j_o 放到更外层
 
+```text
 for j_o in range(0, M, T):
   for i in range(0, N):
-
-```text
     for j_i in range(j_o, j_o+T):
       A[i] += B[j_i]
 ```
@@ -73,10 +78,9 @@ for j_o in range(0, M, T):
 
 同样，因为变换后循环 `i` 从最外层循环变成了内层循环，所以当 `j_o=0,1...` 时，其也会被重复访问，也可以 tile，结果如下
 
+```text
 for i_o in range(0, N, T_i):
   for j_o in range(0, M, T_j):
-
-```text
     for i_i in range(i_o, i_o + T_i):
 	for j_i in range(j_o, j_o + T_j):
 	  A[i_i] += B[j_i]
@@ -87,10 +91,9 @@ for i_o in range(0, N, T_i):
 
 令 `C = A*B`，一个普通的经过 Loop Reordering 优化后实现代码如下
 
+```text
 for i in range(0, N):
   for k in range(0, N):
-
-```text
     for j in range(0, N):
       C[i][j] += A[i][k] * B[k][j]
 ```
@@ -101,20 +104,16 @@ for i in range(0, N):
 # 对于循环 i 来说，B[k][j] 被反复读取，也可以 tile 循环 k
 
 # 优化如下
-for j_o in range(0, N, T_j):
-  for i in range(0, N):
 
 ```text
+for j_o in range(0, N, T_j):
+  for i in range(0, N):
     for k in range(0, N):
       for j_i in range(j_o, j_o + T_j):
         C[i][j_i] += A[i][k] * B[k][j_i]
-```
 
-				
 for k_o in range(0, N, T_k):
   for j_o in range(0, N, T_j):
-
-```text
     for i in range(0, N):
       for k_i in range(k_o, k_o + T_k):
         for j_i in range(j_o, j_o + T_j):
@@ -124,10 +123,10 @@ for k_o in range(0, N, T_k):
 # 这样，k_i=0,1... 时，C[i_i][j] 始终在 cache 中；i=0,1.. 时，B[k_i][j_i] 也始终在 cache 中
 
 # 又因为循环 i 从最外层循环变成了内循环，对于其上层循环 j_o 来说，当 j_o=0,1,...时，A[i][k_i] 是被反复读取的，因此也可以 tile 循环 i
-for i_o in range(0, N, T_i):
-  for k_o in range(0, N, T_k):
 
 ```text
+for i_o in range(0, N, T_i):
+  for k_o in range(0, N, T_k):
     for j_o in range(0, N, T_j):
       for i_i in range(i_o, i_o + T_i):
         for k_i in range(k_o, k_o + T_k):
@@ -150,10 +149,9 @@ for i_o in range(0, N, T_i):
 - 即 `k_o=0` 时存在 cache 里的 `C[i_i][j_i]` ，在 `k_o=T_k` 时必然已经被 evict 了
 - 因此，我们可以用<strong>更大的缓存</strong>再对下一层循环 `j_o` 进行 tile
 
+```text
 for j_oo in range(0, N, T2_j):
   for i_o in range(0, N, T_i):
-
-```text
     for k_o in range(0, N, T_k):
       for j_oi in range(j_oo, j_oo + T2_j, T_j):
         for i_i in range(0, N, T_i):

@@ -59,6 +59,7 @@ Cute 只看三个函数
 xmake create cute
 然后在 xmake.lua 中填入：
 
+```text
 add_rules("mode.debug", "mode.release")
 set_languages("c++20")
 
@@ -68,16 +69,10 @@ add_includedirs("path/to/cutlass/tools/util/include")
 add_cuflags("-arch=sm_80")
 
 target("reduce")
-
-```text
     set_kind("binary")
     add_files("src/reduce.cu")
-```
-
 
 target("vec_add")
-
-```text
     set_kind("binary")
     add_files("src/vec_add.cu")
 ```
@@ -100,8 +95,6 @@ cute 程序的逻辑很直白，相对于传统的 cuda c 风格kernel，无非�
 
 template  class T  __global__ void vec_add(T *a, T *b, T *c, int num) {
   using namespace cute;
-```
-
 
   Tensor gA = make_tensor(make_gmem_ptr(a), make_shape(num));
   Tensor gB = make_tensor(make_gmem_ptr(b), make_shape(num));
@@ -117,29 +110,21 @@ template  class T  __global__ void vec_add(T *a, T *b, T *c, int num) {
   auto tB = local_partition(bB, block_layout, threadIdx.x);
   auto tC = local_partition(bC, block_layout, threadIdx.x);
 
-```text
   //   auto rA = make_fragment_like(tA);
   //   auto rB = make_fragment_like(tB);
   //   auto rC = make_fragment_like(tC);
   auto rA = make_tensor T (tA.layout());
   auto rB = make_tensor T (tB.layout());
   auto rC = make_tensor T (tC.layout());
-```
-
 
   copy(tA, rA);
   copy(tB, rB);
 
-```cpp
   for (int i = 0; i   size 0 (rA); i++) {
     rC(i) = rA(i) + rB(i);
   }
-```
-
 
   copy(rC, tC);
-
-```cpp
 }
 
 int main() {
@@ -229,11 +214,7 @@ reduce sum
 
 template  int block_size, typename CopyBlockShape, typename MyTiledCopy,
           typename T 
-```
-
 __global__ void reduce_kernel(T *input, T *output, int N) {
-
-```text
   using namespace cute;
   auto copy_block_shape = CopyBlockShape{};
   auto block_layout = make_layout(copy_block_shape);
@@ -244,13 +225,9 @@ __global__ void reduce_kernel(T *input, T *output, int N) {
   auto thr_copy = tiled_copy.get_slice(threadIdx.x);
   auto tInput = thr_copy.partition_S(bInput);
   auto rInput = make_fragment_like(tInput);
-```
-
 
   copy(tiled_copy, tInput, rInput);
   T tSum = 0.f;
-
-```cpp
 #pragma unroll
   for (int i = 0; i   rInput.size(); i++) {
     tSum += rInput(i);
@@ -270,12 +247,8 @@ int main() {
   int n = 1024;
   auto h_in = thrust::host_vector float (n);
   auto h_out = thrust::host_vector float (1);
-```
-
 
   auto expected_sum = 0.f;
-
-```cpp
   std::random_device rd;
   std::mt19937 gen(rd());
   std::uniform_real_distribution float  dis(-1.f, 1.f);
@@ -300,20 +273,17 @@ int main() {
 
   reduce_kernel block_size, CopyBlockShape, MyTiledCopy 
 
-```text
+```cpp
          (n - 1 + block_size) / block_size, block_size   (
           thrust::raw_pointer_cast(d_in.data()),
           thrust::raw_pointer_cast(d_out.data()), n);
 
   // copy results to host
   h_out = d_out;
-```
-
 
   auto abs_err = std::abs(h_out[0] - expected_sum);
   auto rel_err = abs_err / std::abs(expected_sum);
 
-```cpp
   std::cout    (double)rel_err    "\n";
 
   return 0;

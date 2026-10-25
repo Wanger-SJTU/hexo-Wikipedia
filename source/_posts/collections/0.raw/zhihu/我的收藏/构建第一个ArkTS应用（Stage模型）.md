@@ -71,10 +71,10 @@ struct Index {
 ```
 
  @State message: string = 'Hello World'
- build() {
-   Row() {
 
 ```text
+ build() {
+   Row() {
      Column() {
        Text(this.message)
          .fontSize(50)
@@ -100,10 +100,10 @@ struct Index {
 ```
 
  @State message: string = 'Hello World'
- build() {
-   Row() {
 
 ```text
+ build() {
+   Row() {
      Column() {
        Text(this.message)
          .fontSize(50)
@@ -162,10 +162,10 @@ struct Second {
 ```
 
  @State message: string = 'Hi there'
- build() {
-   Row() {
 
 ```text
+ build() {
+   Row() {
      Column() {
        Text(this.message)
          .fontSize(50)

@@ -91,11 +91,15 @@ from langchain.embeddings import OpenAIEmbeddings
 
 
 # Prepare retriever
+
+```text
 vector_db = Milvus(
    embedding_function=OpenAIEmbeddings(),
    connection_args = {'host': 'localhost', 'port': '19530'}
    )
 retriever = vector_db.as_retriever(search_kwargs={'k': 5})  # change top_k here
+```
+
 
 - 将文档导入 Milvus。LangChain 会解析文档、将其切分成片段，并转换为向量。随后这些文档片段和相应的向量会被导入 Milvus 向量数据库。当然，我们也可以自定义每个步骤，进一步提高检索质量。
 
@@ -106,10 +110,14 @@ from langchain.text_splitter import RecursiveCharacterTextSplitter
 
 
 # Parsing and chunking the document.
+
+```text
 filepath = 'path/to/your/file'
 doc_data = TextLoader(filepath).load_and_split(
    RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200)
    )
+```
+
 
 # Embedding and insert chunks into the vector database.
 vector_db.add_texts([doc.page_content for doc in doc_data])
@@ -128,12 +136,12 @@ from openai import OpenAI
 client = OpenAI(api_key=os.getenv('OPENAI_API_KEY'))
 
 # Create an Assistant.
+
+```sql
 my_assistant = client.beta.assistants.create(
    name='Chat with a custom retriever',
    instructions='You will search for relevant information via retriever and answer questions based on retrieved information.',
    tools=[
-
-```text
      {
        'type': 'function',
        'function': {
@@ -157,10 +165,10 @@ my_assistant = client.beta.assistants.create(
 QUERY = 'ENTER YOUR QUESTION HERE'
 
 # Create a thread.
+
+```sql
 my_thread = client.beta.threads.create(
  messages=[
-
-```text
    {
      'role': 'user',
      'content': QUERY,
@@ -171,25 +179,33 @@ my_thread = client.beta.threads.create(
 
 
 # Invoke a run of my_assistant on my_thread.
+
+```sql
 my_run = client.beta.threads.runs.create(
    thread_id=my_thread.id,
    assistant_id=my_assistant.id
 )
+```
+
 
 # Wait until my_thread halts.
 while True:
+
+```text
    my_run = client.beta.threads.runs.retrieve(thread_id=thread.id, run_id=my_run.id)
    if my_run.status != 'queued':
        break
+```
+
 
 - 当查询到 Assistant 正在等待函数调用结果，即可对查询语句进行向量搜索并通过 Run 提交结果至 Assistant，让其继续进行内容生成。
 
 # Conduct vector search and parse results when OpenAI Run ready for the next action
 if my_run.status == 'requires_action':
-   tool_outputs = []
-   for tool_call in my_run.required_action.submit_tool_outputs.tool_calls:
 
 ```text
+   tool_outputs = []
+   for tool_call in my_run.required_action.submit_tool_outputs.tool_calls:
        if tool_call.function.name == 'Custom Retriever':
            search_res = retriever.get_relevant_documents(QUERY)
            tool_outputs.append({

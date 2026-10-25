@@ -58,8 +58,6 @@ id: e505d4b9-448a-4747-a5e9-a169bab4522c
 ```python
 import cv2
 from paddleocr import PPStructure,draw_structure_result,save_structure_res
-```
-
 table_engine = PPStructure(show_log=True, image_orientation=True)
 
 save_folder = './output'
@@ -67,6 +65,8 @@ img_path = 'ppstructure/docs/table/1.png'
 img = cv2.imread(img_path)
 result = table_engine(img)
 save_structure_res(result, save_folder,os.path.basename(img_path).split('.')[0])
+```
+
 
 for line in result:
 
@@ -75,14 +75,14 @@ for line in result:
     print(line)
 
 from PIL import Image
-```
-
 
 font_path = 'doc/fonts/simfang.ttf' # PaddleOCR下提供字体包
 image = Image.open(img_path).convert('RGB')
 im_show = draw_structure_result(image, result,font_path=font_path)
 im_show = Image.fromarray(im_show)
 im_show.save('result.jpg')
+```
+
 
 地址：https://github.com/PaddlePaddle/PaddleOCR/blob/133d67f27dc8a241d6b2e30a9f047a0fb75bebbe/ppstructure/layout/README\_ch.md
 

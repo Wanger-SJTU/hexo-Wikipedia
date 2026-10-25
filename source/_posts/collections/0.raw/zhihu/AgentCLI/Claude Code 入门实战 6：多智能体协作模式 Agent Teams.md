@@ -408,8 +408,12 @@ Hooks 可以作为质量关卡，在队友完成工作的关键节点进行自�
 
 #!/bin/bash
 # 读取任务信息
+
+```text
 INPUT=$(cat)
 TASK_SUBJECT=$(echo "$INPUT" | jq -r '.task.subject // empty')
+```
+
 
 echo "正在验证任务：$TASK_SUBJECT" >&2
 

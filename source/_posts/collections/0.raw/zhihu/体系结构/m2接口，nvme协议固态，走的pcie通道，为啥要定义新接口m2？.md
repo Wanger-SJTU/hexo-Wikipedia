@@ -186,11 +186,7 @@ NVMe（Non-Volatile Memory Express）是一种高性能通信协议，专为PCIe
 struct spdk_nvme ns *g_ns;
 
 // 读写完成回调函数
-```
-
 voidnvme_i o_ completeCB ( struct spdknvme_qpair *qpair, void *cbArg, int status, struct spdknvme_cpl *cpl )
-
-```text
 {
     if ( status != 0 ) {
         SPDKLOGERROR ( "I/O request failed: %d/n", status );
@@ -233,12 +229,8 @@ voidinitiate控制器 ( void )
     // 提交写入请求
     spdk nvme ns cmd write (g_ns, qpair, write_buffer, lba, lba_count, nvme_io_ completeCB, NULL, 0);
 }
-```
-
 
 intmain ( void )
-
-```text
 {
     spdk app启动 ( NULL, NULL, initiate控制器 );
     return0;
@@ -366,12 +358,9 @@ SPI NOR Flash和SPI NAND Flash在操作和应用场景上有显著差异：
 #include "GPIO.h"
 
 // 定义SPI参数
-```
-
 SPI_HandleTypeDef hspi1;
 GPIO_InitTypeDef GPIO_Initure;
 
-```cpp
 // 初始化SPI
 void SPI_Init ( void )
 {

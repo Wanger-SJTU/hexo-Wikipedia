@@ -172,14 +172,10 @@ struct cm_data {
     uint32_t rkey;
     uint64_t raddr;
 };
-```
-
 
 Server(内存提供端)代码
 
 MAIN():
-
-```text
 //---------------Step1.1 建立 RDMA 需要的各项资源，包括 mr/cq/qp 等----------------
     // --- a 资源初始化 ---
     dev_list = ibv_get_device_list(NULL)
@@ -240,9 +236,8 @@ MAIN():
 
 client （内存访问端）代码
 
-MAIN():
-
 ```text
+MAIN():
 //---------------Step1.1 建立 RDMA 上下文(context)，包括 mr/cq/qp 等----------------
     // --- a 资源初始化 ---
     dev_list = ibv_get_device_list(NULL)

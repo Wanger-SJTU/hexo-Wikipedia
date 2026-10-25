@@ -232,12 +232,11 @@ def flash_attention_forward(Q, K, V, block_size=256):
 
 在pytorch2.0以上的版本F.scaled_dot_product_attention融合了Flash Attention的算子，不过经过评论区大佬 [@shenjingwa33](https://www.zhihu.com/people/fdb860fe88410c80c6106880bd6eaa22) 的指正这里的适用范围很其实狭窄，合适的硬件和对应的编译文件都配套才可以，看来还是不能偷懒了：
 
+```python
 import torch.nn.functional as F
 
 output = F.scaled_dot_product_attention(
     query, key, value,
-
-```text
     attn_mask=None,
     dropout_p=0.0,
     is_causal=False

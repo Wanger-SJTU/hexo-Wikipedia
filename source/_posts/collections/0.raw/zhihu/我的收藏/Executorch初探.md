@@ -50,25 +50,41 @@ from executorch.backends.xnnpack.partition.xnnpack_partitioner import XnnpackPar
 
 
 # 1. Export your PyTorch model
+
+```text
 model = MyModel().eval()
 example_inputs = (torch.randn(1, 3, 224, 224),)
 exported_program = torch.export.export(model, example_inputs)
+```
+
 
 # 2. Optimize for target hardware (switch backends with one line)
+
+```text
 program = to_edge_transform_and_lower(
     exported_program,
     partitioner=[XnnpackPartitioner()]  # CPU | CoreMLPartitioner() for iOS | QnnPartitioner() for Qualcomm
+```
+
 ).to_executorch()
 
 # 3. Save for deployment
+
+```text
 with open("model.pte", "wb") as f:
     f.write(program.buffer)
+```
+
 
 # Test locally via ExecuTorch runtime's pybind API (optional)
+
+```python
 from executorch.runtime import Runtime
 runtime = Runtime.get()
 method = runtime.load_program("model.pte").load_method("forward")
 outputs = method.execute([torch.randn(1, 3, 224, 224)])
+```
+
 从代码可以看出分为三部分：导出、优化并保存优化后的序列化的图、使用executorch pybind的api的运行时进行推理。当然也提供了c++、swift(ios)、Kotlin (Android)等语言。
 
 C++
@@ -80,23 +96,24 @@ C++
 
 
 Module module("model.pte");
+
+```python
 auto tensor = make_tensor_ptr({2, 2}, {1.0f, 2.0f, 3.0f, 4.0f});
 auto outputs = module.forward(tensor);
 Swift (iOS)
 
-```python
 import ExecuTorch
 
 let module = Module(filePath: "model.pte")
 let input = Tensor Float ([1.0, 2.0, 3.0, 4.0], shape: [2, 2])
 let outputs = try module.forward(input)
-```
-
 Kotlin (Android)
 
 val module = Module.load("model.pte")
 val inputTensor = Tensor.fromBlob(floatArrayOf(1.0f, 2.0f, 3.0f, 4.0f), longArrayOf(2, 2))
 val outputs = module.forward(EValue.from(inputTensor))
+```
+
 LLM Example: Llama
 
 Export Llama models using the export_llm script or Optimum-ExecuTorch:
@@ -118,19 +135,19 @@ Run on-device with the LLM runner API:
 
 C++
 
-#include  executorch/extension/llm/runner/text_llm_runner.h 
+```cpp
+#include <executorch/extension/llm/runner/text_llm_runner.h>
 
 auto runner = create_llama_runner("llama.pte", "tiktoken.bin");
-
-```text
 executorch::extension::llm::GenerationConfig config{
     .seq_len = 128, .temperature = 0.8f};
 ```
 
 runner- generate("Hello, how are you?", config);
-Swift (iOS)
 
 ```python
+Swift (iOS)
+
 import ExecuTorchLLM
 
 let runner = TextRunner(modelPath: "llama.pte", tokenizerPath: "tiktoken.bin")
@@ -143,13 +160,9 @@ try runner.generate("Hello, how are you?", Config {
 ```python
     print(token, terminator: "")
 }
-```
-
 Kotlin (Android) — API Docs • Demo App
 
 val llmModule = LlmModule("llama.pte", "tiktoken.bin", 0.8f)
-
-```text
 llmModule.load()
 llmModule.generate("Hello, how are you?", 128, object : LlmCallback {
     override fun onResult(result: String) { print(result) }

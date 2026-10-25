@@ -142,9 +142,8 @@ Header中记录了指向下一块内存的指针和一个size_t类型的flag，f
 
 Header的结构这里定义了一些简单的函数来帮助读取或设置flag中的信息：
 
+```cpp
 inline bool SimpleBlockIsValid(const BlockNode *pNode)
-
-```text
 {
 	if (pNode != nullptr)
 	{
@@ -157,21 +156,13 @@ inline bool SimpleBlockIsValid(const BlockNode *pNode)
 
 	return false;
 }
-```
-
 
 inline size_t GetSimpleBlockSize(const BlockNode *pNode)
-
-```text
 {
 	return pNode->m_flag >> 4;
 }
-```
-
 
 inline void SetSimpleBlockSize(BlockNode *pNode, size_t pSize)
-
-```text
 {
 	size_t flag = (pSize m_flag = flag;
 }
@@ -570,10 +561,9 @@ new，delete与malloc，free之间的关系与差别(引用7)：
 
 这里我们可以借助与之前实现的Malloc和palcement new来实现一个简单的New与Delete函数：
 
+```cpp
 template
 T *New(SimpleAllocator &pAllocator, Args&&... pArgs)
-
-```cpp
 {
 	return new (pAllocator.Malloc(sizeof(T))) T(std::forward(pArgs)...);
 }
@@ -591,8 +581,11 @@ void Delete(SimpleAllocator &pAllocator, T *pPtr)
 
 SimpleAllocator allocator(16 * 1024 * 1024, SEARCH_MODE::FIRST_FIT);
 
+```sql
 VinClass *temp = New(allocator, 16);
 Delete(allocator, temp);
+```
+
 
 这里没有实现new[]，delete[]，可以在块内存的Header中添加信息记录分配的内存是否被数组使用，若是则在new[] 和delete[]中为数组中的所有对象调用构造或析构函数。
 

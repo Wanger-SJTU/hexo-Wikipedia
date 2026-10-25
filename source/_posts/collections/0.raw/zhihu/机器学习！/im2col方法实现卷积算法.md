@@ -45,19 +45,31 @@ x^{(1)}=\left[\begin{array}{llllllll}{x_{1,1}} & {x_{1,2}} & {x_{1,3}} & {x_{2,1
 
 对这四个子集都进行同样的操作，然后并在一起得到一个<strong>矩阵</strong>：
 
+```text
 X=\left[\begin{array}{l}{x^{(1)}} \\ {x^{(2)}} \\ {x^{(3)}} \\ {x^{(4)}}\end{array}\right] 
+```
+
 
 同样的，再将卷积核如法炮制，只不过这次是展开成<strong>列向量</strong>：
 
+```text
 W=\left[\begin{array}{llllllllll}{w_{1,1}} & {w_{1,2}} & {w_{1,3}} & {w_{2,1}} & {w_{2,2}} & {w_{2,3}} & {w_{3,1}} & {w_{3,2}} & {w_{3,3}}\end{array}\right]^{T} 
+```
+
 
 然后将 X,W 相乘，得到：
 
+```text
 A=X W=\left[\begin{array}{l}{x^{(1)}} \\ {x^{(2)}} \\ {x^{(3)}} \\ {x^{(4)}}\end{array}\right] W=\left[\begin{array}{c}{x^{(1)} W} \\ {x^{(2)} W} \\ {x^{(3)} W} \\ {x^{(4)} W}\end{array}\right]=\left[\begin{array}{c}{a_{1}} \\ {a_{2}} \\ {a_{3}} \\ {a_{4}}\end{array}\right] 
+```
+
 
 最后将A变形，就得到了卷积的结果：
 
+```text
 A=\left[\begin{array}{l}{a_{1}} \\ {a_{2}} \\ {a_{3}} \\ {a_{4}}\end{array}\right] \rightarrow\left[\begin{array}{ll}{a_{1}} & {a_{2}} \\ {a_{3}} & {a_{4}}\end{array}\right]=\left[\begin{array}{ll}{a_{1,1}} & {a_{1,2}} \\ {a_{2,1}} & {a_{2,2}}\end{array}\right] 
+```
+
 
 以上，就是输入和卷积核都是矩阵时的情况，用一个公式总结一下：
 
@@ -83,7 +95,10 @@ x^{(1)}=\left[\begin{array}{ccc}{x_{1,1,1}} & {x_{1,1,2}} & {x_{1,1,3}} \\ {x_{1
 
 $然后同样的将其展开成一个<strong>横向量</strong>： x^{(1)}=\left[\begin{array}{lll}{x_{1}} & {\cdots} & {x_{18}}\end{array}\right] ，剩下的就是重复上述两步，得到4个横向量，得到一个<strong>矩阵</strong>：$
 
+```text
 X=\left[\begin{array}{l}{x^{(1)}} \\ {x^{(2)}} \\ {x^{(3)}} \\ {x^{(4)}}\end{array}\right] 
+```
+
 
 接下来，同样将卷积核也给展开，还是变成一个<strong>列向量</strong>，卷积核两个通道的元素之间的顺序处理与输入是一样的：
 
@@ -91,7 +106,10 @@ $$W=\left[\begin{array}{c}{w_{1}} \\ {\vdots} \\ {w_{18}}\end{array}\right] $$
 
 然后，计算卷积结果：
 
+```text
 A=X W=\left[\begin{array}{c}{x^{(1)}} \\ {x^{(2)}} \\ {x^{(3)}} \\ {x^{(4)}}\end{array}\right] W=\left[\begin{array}{c}{x^{(1)} W} \\ {x^{(2)} W} \\ {x^{(3)} W} \\ {x^{(4)} W}\end{array}\right]=\left[\begin{array}{c}{a_{1}} \\ {a_{2}} \\ {a_{3}} \\ {a_{4}}\end{array}\right] 
+```
+
 
 可以看到，多通道的情况与单通道的情况基本上是没有区别的；然后，还是公式：
 
@@ -105,7 +123,10 @@ $a_{i, j}=\sum_{h=0}^{k H-1} \sum_{w=0}^{k W-1} \sum_{c} w_{h, w, c} x_{i+h, j+w
 
 因为输入没有变化，所以划分出来的矩阵还是与之前一样：
 
+```text
 X=\left[\begin{array}{l}{x^{(1)}} \\ {x^{(2)}} \\ {x^{(3)}} \\ {x^{(4)}}\end{array}\right] 
+```
+
 
 然后，对于第一个卷积核，处理的方式也和之前一样，展开成一个列向量，不过这里命名为 W_1 ：
 
@@ -117,7 +138,10 @@ $W=\left[W_{1} \quad W_{2}\right] $
 
 然后是结算卷积结果：
 
+```text
 A=X W=\left[\begin{array}{c}{x^{(1)}} \\ {x^{(2)}} \\ {x^{(3)}} \\ {x^{(4)}}\end{array}\right]\left[\begin{array}{ll}{W_{1}} & {W_{2}}\end{array}\right]=\left[\begin{array}{cc}{a_{1}} & {a_{5}} \\ {a_{2}} & {a_{6}} \\ {a_{3}} & {a_{7}} \\ {a_{4}} & {a_{8}}\end{array}\right] 
+```
+
 
 从上式可以得知，各个每个卷积核是独立与输入进行卷积计算，相互之间并不影响；然后，将计算结果变形，就得到了输出：
 
@@ -139,11 +163,17 @@ $a_{i, j, d}=\sum_{h=0}^{k H-1} \sum_{w=0}^{k W-1} \sum_{c} w_{d, h, w, c} x_{i+
 
 批量输入还是来看栗子吧，设输入的批量为2，对第一个输入采用与前面一样的操作，变换为一个矩阵：
 
+```text
 X_1=\left[\begin{array}{l}{x^{(1)}} \\ {x^{(2)}} \\ {x^{(3)}} \\ {x^{(4)}}\end{array}\right] 
+```
+
 
 第二个输入变换为：
 
+```text
 X_2=\left[\begin{array}{l}{x^{(5)}} \\ {x^{(6)}} \\ {x^{(7)}} \\ {x^{(8)}}\end{array}\right] 
+```
+
 
 然后<strong>将两个矩阵拼接在一起</strong>，组成一个大矩阵：
 

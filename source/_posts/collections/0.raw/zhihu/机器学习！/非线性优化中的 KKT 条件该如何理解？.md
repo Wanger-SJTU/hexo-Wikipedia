@@ -141,11 +141,17 @@ $\nabla f(x^*) \subset R^n-F(x^*)=\left( \cup_j N_{h_j} \right)\cup\left( \cup_i
 
 假设有两个（从 x^* 出发的）方向的集合 A 和 B ，我们可以定义它们的并集是 \{u+v,u\in A,v\in B\}，举一个简单的例子，假设在 R^3 中， A 是与x轴平行的所有方向，那么 
 
+```text
 A=\{(\alpha, 0, 0)|\alpha\in R\} ，
+```
+
 
 是三维线性空间的一个一维子空间。 B 是yz平面上的所有方向，那么 
 
+```text
 B=\{(0, \beta, \gamma)|\beta,\gamma\in R\} ，是一个二维子空间。因为二者的并集是全空间：
+```
+
 
 A\cup B=\{(\alpha, \beta, \gamma)|\alpha,\beta,\gamma\in R\}=R^3
 

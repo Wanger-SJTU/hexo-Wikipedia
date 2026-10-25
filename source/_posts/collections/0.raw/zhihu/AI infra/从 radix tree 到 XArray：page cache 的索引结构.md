@@ -88,8 +88,11 @@ mapping->i_pages` 不是全系统唯一的一棵树，而是某个 `address_spac
       mapping->i_pages[index] = struct folio *
 例如页大小是 4 KiB：
 
+```text
 file offset = 172032
    index       = 172032 / 4096 = 42
+```
+
 
    查询就是:
       在这个文件的 mapping->i_pages 里查 index 42
@@ -102,11 +105,14 @@ file A 的 mapping->i_pages[42] -> page X
    file B 的 mapping->i_pages[42] -> page Y
 正常 page cache entry 还会反向记录自己属于谁：
 
+```text
 page->mapping = mapping
    page->index   = index
 
    folio->mapping = mapping
    folio->index   = index
+```
+
 所以正常情况下，这两边能对上：
 
 mapping->i_pages[index] -> page / folio
@@ -245,6 +251,8 @@ struct address_space
 文件 offset
         │
         ▼
+
+```text
    page index = offset >> PAGE_SHIFT
         │
         ▼
@@ -252,8 +260,11 @@ struct address_space
         │
         ▼
    struct page *
+```
+
 举例：
 
+```text
 offset = 0
       index = 0
 
@@ -262,6 +273,8 @@ offset = 0
 
    offset = 8192
       index = 2
+```
+
 也就是说，page cache 不是挂在进程 VMA 下面，而是挂在文件的 `address_space` 下面。
 
 inode
@@ -516,11 +529,14 @@ public class SimpleRadixTreeDemo {
 
 输出是：
 
+```text
 path(5)  = 0 -> 1 -> 1
    path(42) = 2 -> 2 -> 2
    path(47) = 2 -> 3 -> 3
    get(42) = B
    get(6)  = null
+```
+
 这段代码里最关键的是这一句：
 
 ```text
@@ -678,16 +694,22 @@ child
 
 前面的 Java 小例子是：
 
+```text
 put(5,  "A")
    put(42, "B")
    put(47, "C")
 
    get(42) -> "B"
+```
+
 换成老内核 page cache，就是：
 
+```text
 mapping->i_pages[5]  = page for file offset 5  * PAGE_SIZE
    mapping->i_pages[42] = page for file offset 42 * PAGE_SIZE
    mapping->i_pages[47] = page for file offset 47 * PAGE_SIZE
+```
+
 
    lookup index 42 -> page for file offset 42 * PAGE_SIZE
 也就是把通用例子里的名字换一下：
@@ -696,10 +718,14 @@ SimpleRadixTreeDemo              Linux 老 page cache
    ----------------------------------------------------------
    key                              page index
    value                            struct page *
+
+```text
    put(key, value)                  把 page 插入 mapping->i_pages
    get(key)                         按 index 查 page cache
    mark DIRTY                       PAGECACHE_TAG_DIRTY
    findMarked(DIRTY)                找 dirty page 做 writeback
+```
+
 如果继续用前面的 `42`：
 
 通用 radix tree:
@@ -887,6 +913,7 @@ mapping->i_pages[page->index] = page
 这个文件的 index=N 的 page 是否已经在内存里？
 老内核会沿着 `mapping->i_pages` 查：
 
+```text
 find_get_entry(mapping, index)
         │
         ▼
@@ -897,6 +924,8 @@ find_get_entry(mapping, index)
         │
         ├─ 有 page：page cache 命中
         └─ 没有 page：page cache 未命中，后续可能读盘创建 page
+```
+
 压缩成一句话：
 
 read offset
@@ -929,13 +958,12 @@ radix tree 支持从某个 index 开始继续往后遍历。这样内核可以�
 
 简化流程是：
 
+```text
 page_cache_tree_delete(mapping, page, shadow)
         │
         ▼
    __radix_tree_lookup(&mapping->i_pages, page->index, &node, &slot)
         │
-
-```text
         ├─ radix_tree_clear_tags(...)
         │      清掉这个 slot 上的 dirty/writeback/towrite 等 tag
         │
@@ -972,12 +1000,11 @@ mapping->i_pages[page->index] = NULL
 
 page 第一次变脏时，路径里会做：
 
+```text
 page dirty flag = 1
         │
         ▼
    radix_tree_tag_set(&mapping->i_pages,
-
-```text
                       page_index(page),
                       PAGECACHE_TAG_DIRTY)
         │
@@ -987,9 +1014,8 @@ page dirty flag = 1
 
 writeback 要找脏页时，就不是从头检查所有 page，而是按 tag 找：
 
-find_get_pages_range_tag(mapping, &index, end,
-
 ```text
+find_get_pages_range_tag(mapping, &index, end,
                             PAGECACHE_TAG_DIRTY, ...)
         │
         ▼
@@ -1009,6 +1035,7 @@ find_get_pages_range_tag(mapping, &index, end,
    找带 PAGECACHE_TAG_DIRTY 的 page。
 所以老内核对 radix tree 的使用可以压缩成一张图：
 
+```text
 address_space->i_pages: radix tree
    │
    ├─ 插入:
@@ -1025,6 +1052,8 @@ address_space->i_pages: radix tree
    │
    └─ tag 查询:
         找 DIRTY / WRITEBACK / TOWRITE page
+```
+
 这就是番外五里说的“按 tag 快速找到脏页”：
 
 它不是全文件扫描。
@@ -1069,26 +1098,29 @@ XArray 的逻辑接口：
 从 page cache 视角看，迁移前后主线是：
 
 老内核：
-      mapping->i_pages: radix_tree_root
 
 ```text
+      mapping->i_pages: radix_tree_root
       pagevec_lookup_range_tag(...)
       radix_tree_tag_set(...)
 ```
 
 
    新内核：
-      mapping->i_pages: xarray
 
 ```text
+      mapping->i_pages: xarray
       filemap_get_folios_tag(...)
       xa_set_mark / xas_set_mark / __xa_set_mark(...)
 ```
 
 概念没有变：
 
+```text
 index -> page/folio
    tag/mark -> dirty/writeback/towrite 快速过滤
+```
+
 变的是实现和 API。
 
 八、XArray 作为普通数据结构怎么理解
@@ -1119,8 +1151,11 @@ xarray
    └─ slots[63]
 常见配置下，XArray 每层也是 64 个 slot：
 
+```text
 XA_CHUNK_SHIFT = 6
    XA_CHUNK_SIZE  = 64
+```
+
 每个 `xa_node` 可以抽象成：
 
 xa_node
@@ -1610,16 +1645,22 @@ page cache 的 value 也从老文章常说的 `struct page` 逐渐过渡到 `str
 mapping->i_pages[index] -> folio
 普通 4 KiB folio 时：
 
+```text
 index=N
       对应文件 offset = N * PAGE_SIZE
+```
+
 如果是大 folio，一个 folio 可以覆盖多个连续 index。这个细节先不影响主线：
 
 i_pages 仍然按文件 offset index 组织 page cache。
 新内核里 page cache tags 直接定义成 XArray marks：
 
+```text
 PAGECACHE_TAG_DIRTY    -> XA_MARK_0
    PAGECACHE_TAG_WRITEBACK -> XA_MARK_1
    PAGECACHE_TAG_TOWRITE   -> XA_MARK_2
+```
+
 所以番外五里的这句话：
 
 在 mapping->i_pages 的 xarray 上打 PAGECACHE_TAG_DIRTY
@@ -1646,9 +1687,8 @@ folio B dirty flag = 1
    inode I_DIRTY_PAGES = 1
 writeback 后续找脏 folio：
 
-filemap_get_folios_tag(mapping, &index, end,
-
 ```text
+filemap_get_folios_tag(mapping, &index, end,
                           PAGECACHE_TAG_DIRTY, &fbatch)
         │
         ▼
@@ -1707,6 +1747,7 @@ writeback_index
    从上次写到的位置附近继续往后找。
 于是组合起来：
 
+```text
 mapping->writeback_index
         │
         ▼
@@ -1714,6 +1755,8 @@ mapping->writeback_index
         │
         ▼
    找下一个 PAGECACHE_TAG_DIRTY / TOWRITE folio
+```
+
 第一层模型可以这样记：
 
 writeback_index 决定从哪里开始找。

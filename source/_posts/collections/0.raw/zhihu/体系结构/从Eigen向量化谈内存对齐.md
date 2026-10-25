@@ -49,12 +49,9 @@ int main() {
   __m256d a = _mm256_load_pd(input1);
   __m256d b = _mm256_load_pd(input2);
   __m256d c = _mm256_add_pd(a, b);
-```
-
 
   _mm256_store_pd(result, c);
 
-```cpp
   std::cout  result[0]  " "  result[1]  " "  result[2]  " "  result[3]  std::endl;
 
   return 0;
@@ -91,12 +88,9 @@ int main() {
   __m256d a = _mm256_load_pd(input1);
   __m256d b = _mm256_load_pd(input2);
   __m256d c = _mm256_add_pd(a, b);
-```
-
 
   _mm256_store_pd(result, c);
 
-```cpp
   std::cout  result[0]  " "  result[1]  " "  result[2]  " "  result[3]  std::endl;
 
   return 0;
@@ -121,12 +115,12 @@ address of input2: 0x7ffc5ca2e660
 
 ```text
   using aligned_double4 = __attribute__ ((aligned (32))) double[4];
-```
-
 
   aligned_double4 input1 = {1, 1, 1, 1};
   aligned_double4 input2 = {1, 2, 3, 4};
   aligned_double4 result;
+```
+
 
 这样看起来清爽多了。更进一步，如果4个double是一种经常使用的数据类型的话，我们就可以把它封装为一个`Vector4d`类，这样，用户就完全看不到内存对齐的具体实现了，像下面这样。
 
@@ -139,23 +133,15 @@ class Vector4d {
 public:
   Vector4d() {
   }
-```
-
 
   Vector4d(double d1, double d2, double d3, double d4) {
-
-```text
     data[0] = d1;
     data[1] = d2;
     data[2] = d3;
     data[3] = d4;
   }
-```
-
 
   aligned_double4 data;
-
-```text
 };
 ```
 
@@ -200,20 +186,13 @@ int main() {
 
   std::cout  "address of input1: "  input1->data  std::endl;
   std::cout  "address of input2: "  input2->data  std::endl;
-```
-
 
   Vector4d result = *input1 + *input2;
 
-```cpp
   std::cout  result  std::endl;
-```
-
 
   delete input1;
   delete input2;
-
-```text
   return 0;
 }
 // unaligned_heap_vectorization.cpp
@@ -233,18 +212,14 @@ address of input2: 0x1ceaea0
 
 C++提供的`new`关键字是个好东西，它避免了C语言中丑陋的`malloc`操作，但同时也隐藏了实现细节。如果我们翻看C++官方文档，可以发现`new Vector4d`实际上做了两件事情，第一步申请`sizeof(Vector4d)`大小的空间，第二步调用`Vector4d`的构造函数。要想实现内存对齐，我们必须修改第一步申请空间的方式才行。好在第一步其实调用了`operator new`这个函数，我们只需要重写这个函数，就可以实现自定义的内存申请，下面是添加了该函数后的`Vector4d`类。 
 
-```text
+```cpp
 class Vector4d {
   using aligned_double4 = __attribute__ ((aligned (32))) double[4];
 public:
   Vector4d() {
   }
-```
-
 
   Vector4d(double d1, double d2, double d3, double d4) {
-
-```cpp
     data[0] = d1;
     data[1] = d2;
     data[2] = d3;
@@ -261,12 +236,8 @@ public:
   void operator delete (void* ptr) {
     ::operator delete(*(reinterpret_castvoid**>(ptr) - 1));
   }
-```
-
 
   aligned_double4 data;
-
-```text
 };
 // aligned_heap_vectorization.cpp
 ```
@@ -284,47 +255,33 @@ operator new`的实现还是有些技巧的，我们来详细解释一下。 首
 
 如果你以为到这里就圆满结束了，那可是大错特错。还有个天坑没展示给大家，下面的代码中，我的自定义类`Point`包含了一个`Vector4d`的成员，这时候，噩梦又出现了。
 
-```text
+```cpp
 class Point {
 public:
   Point(Vector4d position) : position(position) {
   }
-```
-
 
   Vector4d position;
-
-```cpp
 };
 
 int main() {
   Vector4d* input1 = new Vector4d{1, 1, 1, 1};
   Vector4d* input2 = new Vector4d{1, 2, 3, 4};
-```
-
 
   Point* point1 = new Point{*input1};
   Point* point2 = new Point{*input2};
 
-```cpp
   std::cout  "address of point1: "  point1->position.data  std::endl;
   std::cout  "address of point2: "  point2->position.data  std::endl;
-```
-
 
   Vector4d result = point1->position + point2->position;
 
-```cpp
   std::cout  result  std::endl;
-```
-
 
   delete input1;
   delete input2;
   delete point1;
   delete point2;
-
-```text
   return 0;
 }
 // malicious_aligned_heap_vectorization.cpp
@@ -355,12 +312,8 @@ class Vector4d {
 public:
   Vector4d() {
   }
-```
-
 
   Vector4d(double d1, double d2, double d3, double d4) {
-
-```text
     data[0] = d1;
     data[1] = d2;
     data[2] = d3;
@@ -371,9 +324,8 @@ public:
 
   ALIGNED_OPERATOR_NEW
 
-  aligned_double4 data;
-
 ```text
+  aligned_double4 data;
 };
 ```
 
@@ -403,39 +355,28 @@ public:
 
   ALIGNED_OPERATOR_NEW
 
-  Vector4d position;
-
 ```cpp
+  Vector4d position;
 };
 
 int main() {
   Vector4d* input1 = new Vector4d{1, 1, 1, 1};
   Vector4d* input2 = new Vector4d{1, 2, 3, 4};
-```
-
 
   Point* point1 = new Point{*input1};
   Point* point2 = new Point{*input2};
 
-```cpp
   std::cout  "address of point1: "  point1->position.data  std::endl;
   std::cout  "address of point2: "  point2->position.data  std::endl;
-```
-
 
   Vector4d result = point1->position + point2->position;
 
-```cpp
   std::cout  result  std::endl;
-```
-
 
   delete input1;
   delete input2;
   delete point1;
   delete point2;
-
-```text
   return 0;
 }
 // antimalicious_aligned_heap_vectorization.cpp

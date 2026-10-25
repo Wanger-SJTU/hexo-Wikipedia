@@ -33,9 +33,13 @@ Pytorch 代码如下，只增加少量参数：
 
 self.time_weighting = nn.Parameter(torch.ones(self.n_head, config.window_len, config.window_len))
 ...
+
+```text
 att = F.softmax(att, dim=-1) # 这是原始代码
 att = att * self.time_weighting[:,:T,:T] # 只需增加这句
 att = self.attn_drop(att) # 这是原始代码
+```
+
 
 这个改进，有两个原因。
 
@@ -72,10 +76,14 @@ att = self.attn_drop(att) # 这是原始代码
 
 self.time_shift = nn.ZeroPad2d((0,0,1,0))
 ......
+
+```text
 x = torch.cat([self.time_shift(x)[:,:T,:C//2], x[:,:T,C//2:]], dim=2) # 只需增加这句
 q = self.query(x).view(B, T, self.n_head, C // self.n_head).transpose(1, 2) # 这是原始代码
 k = self.key(x).view(B, T, self.n_head, C // self.n_head).transpose(1, 2) # 这是原始代码
 v = self.value(x).view(B, T, self.n_head, C // self.n_head).transpose(1, 2) # 这是原始代码
+```
+
 
 你能看出来它在干什么吗？
 

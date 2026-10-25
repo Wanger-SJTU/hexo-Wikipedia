@@ -334,15 +334,15 @@ for batch in dataloader:
 # verl/workers/fsdp_workers.py（节选）
 # rm_logits_resp 就是 teacher 对 student 整条 response 做完一次 forward 后的 logits
 # shape = [B, T, V]
-teacher_on_student_log_probs = torch.gather(
 
 ```text
+teacher_on_student_log_probs = torch.gather(
     rm_logits_resp, dim=-1, index=student_top_k_ids
 )
-```
-
 teacher_logsumexp = torch.logsumexp(rm_logits_resp, dim=-1, keepdim=True)
 teacher_on_student_log_probs = teacher_on_student_log_probs - teacher_logsumexp
+```
+
 
 <strong>这段代码就是整个 OPD 训练里 teacher 唯一做的事情</strong>：
 
@@ -357,9 +357,9 @@ teacher_on_student_log_probs = teacher_on_student_log_probs - teacher_logsumexp
 接下来看最核心的那一行。在 `verl/workers/actor/dp_actor.py` 中，针对 `only_stu` 策略（也就是 top-k 从 student 选），reward 的计算公式是：
 
 # verl/workers/actor/dp_actor.py（关键代码段）
-if strategy == "only_stu":
 
 ```text
+if strategy == "only_stu":
     # S_logp:  student 在 top-k token 上的 log-prob，shape (B, T, K)
     # T_on_S:  teacher 在 student 选出的同样这些 top-k token 上的 log-prob
     kl_val = S_logp - T_on_S          # 这就是 reverse KL 的逐 token 估计：log p - log q
@@ -421,8 +421,12 @@ def compute_token_reward_direct_advantage(
  但 OPD 的 reward 信号本身就是 dense 的——<strong>每个 token 都已经有了一个独立、有意义的 reward 值</strong>（就是那个 -KL）。这种情况下根本不需要 GAE 来"拼凑"出 token-level advantage，直接拿 reward 当 advantage 用就行。Thinking Machines Lab 也用了同样的思路，他们博客里的伪代码是：
 
 # 来自 Thinking Machines Lab 博客（精简版）
+
+```text
 teacher_logprobs = teacher_client.compute_logprobs(trajectories)
 reverse_kl = sampled_logprobs - teacher_logprobs
+```
+
 trajectories["advantages"] = -reverse_kl
 training_client.forward_backward(trajectories, loss_fn="importance_sampling")
 

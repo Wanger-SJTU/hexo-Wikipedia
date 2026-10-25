@@ -84,12 +84,16 @@ class SmartModelSelector:
 
 
 # 使用示例
+
+```text
 selector = SmartModelSelector()
 
 task = "帮我查看今天的邮件"
 model = selector.select_model(task)  # 返回 "claude-3-haiku"
 
 cost = selector.estimate_cost(model, 100, 200)  # 约 $0.00028
+```
+
 
 <strong>节省效果：</strong> 70-90%
 
@@ -198,9 +202,10 @@ class CacheManager:
         self.redis_client.setex(cache_key, ttl, json.dumps(response))
 
 # 使用示例
-cache = CacheManager()
 
 ```python
+cache = CacheManager()
+
 def call_llm_with_cache(prompt: str, model: str) -> str:
     """带缓存的 LLM 调用"""
     # 尝试从缓存获取
@@ -228,8 +233,11 @@ def call_llm_with_cache(prompt: str, model: str) -> str:
 
 <strong>❌ 非流式（用户等待时间长）：</strong>
 
+```python
 response = llm.invoke(prompt)  # 等待 10 秒
 print(response)  # 一次性输出
+```
+
 
 <strong>✅ 流式（用户体验好）：</strong>
 
@@ -260,10 +268,10 @@ for i, email in enumerate(emails, 1):
 
 ```text
     batch_prompt += f"{i}. {email}\n"
-```
-
 
 response = llm.invoke(batch_prompt)
+```
+
 # 10 封邮件 = 1 次 API 调用
 
 <strong>节省效果：</strong> 90%
@@ -315,11 +323,10 @@ def process_emails(emails):
 
 <strong>✅ 异步（快）：</strong>
 
+```python
 import asyncio
 
 async def process_emails_async(emails):
-
-```text
     tasks = [agent.arun(email) for email in emails]
     results = await asyncio.gather(*tasks)  # 并行处理
     return results
@@ -342,10 +349,10 @@ from sqlalchemy.pool import QueuePool
 engine = create_engine(DATABASE_URL)
 
 # ✅ 使用连接池
-engine = create_engine(
-    DATABASE_URL,
 
 ```text
+engine = create_engine(
+    DATABASE_URL,
     poolclass=QueuePool,
     pool_size=20,        # 连接池大小
     max_overflow=10,     # 最大溢出连接
@@ -397,6 +404,8 @@ import time
 
 
 # Prometheus 指标
+
+```python
 API_CALLS = Counter(
     'llm_api_calls_total',
     'Total LLM API calls',
@@ -413,8 +422,6 @@ TOKEN_USAGE = Histogram(
     'llm_token_usage',
     'LLM token usage',
     ['model', 'type']  # type: input/output
-
-```python
 )
 
 class CostTracker:
@@ -457,9 +464,10 @@ class CostTracker:
 
 
 # 使用示例
-tracker = CostTracker()
 
 ```python
+tracker = CostTracker()
+
 def call_llm_with_tracking(prompt: str, model: str) -> str:
     """带成本追踪的 LLM 调用"""
     response = llm.invoke(prompt)

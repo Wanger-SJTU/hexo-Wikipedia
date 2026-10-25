@@ -54,11 +54,7 @@ from kor.nodes import Object, Text, Number
 from langchain.chat_models import ChatOpenAI
 
 from langchain.llms import OpenAI
-```
-
 llm = ChatOpenAI(
-
-```text
     model_name="gpt-3.5-turbo",
     temperature=0
 )
@@ -67,9 +63,8 @@ llm = ChatOpenAI(
 
 然后我们可以定义kor中一个称为抽取schema的数据结构
 
-schema = Object(
-
 ```text
+schema = Object(
     id="script",
     description="Adapted from the novel into script",
     attributes=[
@@ -112,8 +107,11 @@ schema = Object(
 
 我们先看看运行结果吧。我们随便找一段鹿鼎记中间的段落
 
+```text
 response = chain.run(
         """黄龙使殷锦忙道：“夫人高见。取经之事，想来和福份大小，干系极大。黑龙使也不是不努力。不肯替教主立功，可是始终阻难重重，多半是福气不够，因此宝经难以到手。”洪夫人微笑道：“依你之见，谁的福份够呢”殷锦道：“本教福气最大的，自然是教主他老人家，其次是夫人。不过总不能劳动两位大驾亲自出马。更其次福份最大的，首推白龙使。他识得碣文，又立下大功，印堂隐隐透出红光，福份之大，教主属下无人能出其右。”
+```
+
 
     教主捻须微笑，道：“但他小小孩童，能担当这件大任么”
 
@@ -122,8 +120,11 @@ response = chain.run(
 
 这个抽取完因为`many=True`的原因，所以会抽取成一个list，我们把list中的元素依次打印出来看看
 
+```python
 for chat in (response['script']):
     print(chat)
+```
+
 
 输出结果
 
@@ -143,8 +144,11 @@ Kor的原理其实还是挺简单的，其实Kor的整个库都是围绕一个pr
 
 我们可以通过以下方式打印出Kor的prompt
 
+```python
 chain = create_extraction_chain(llm, schema)
 print(chain.prompt.format_prompt(text="[user input]").to_string())
+```
+
 
 打印出来是这样的哈
 

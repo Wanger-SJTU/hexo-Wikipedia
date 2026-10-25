@@ -1,0 +1,49 @@
+---
+title: Clean State Checklist
+date: "2026-05-28 11:34:14"
+updated: "2026-05-28 11:34:14"
+layout: post
+permalink: /collections/learn-harness-engineering/projects/project-05/solution/plan-gen-eval/clean-state-checklist/
+disableNunjucks: true
+wiki: false
+nav_hidden: true
+categories:
+  - 文档
+---
+
+# Clean State Checklist
+
+Run this checklist before committing and at the end of each session.
+
+## Build
+
+- [ ] `npm run check` passes with no type errors
+- [ ] `npm run build` completes successfully
+
+## Architecture
+
+- [ ] `bash scripts/check-architecture.sh` passes with no violations
+- [ ] No `fs` or `path` imports in renderer code
+- [ ] No Electron IPC in service code
+- [ ] No React imports in services or main process
+
+## Runtime
+
+- [ ] Application starts without errors (`npm run dev`)
+- [ ] Structured log output appears in console at startup
+- [ ] Document import works (check logs for IMPORT_DOCUMENT event)
+- [ ] Indexing works for documents of all sizes
+- [ ] Q&A returns answers with citations (check logs for ASK_QUESTION event)
+
+## Data Integrity
+
+- [ ] No empty chunks in indexed documents (verify with GET_CHUNKS)
+- [ ] Q&A history persists across restarts
+- [ ] Document metadata is consistent with actual files
+
+## Repository
+
+- [ ] No unintended files in git status
+- [ ] No sensitive data (.env, credentials) staged
+- [ ] Final summary records current state, verification run, and any unresolved risk
+- [ ] `sprint-contract.md` and `evaluator-rubric.md` still match the implemented ConversationHistory variant

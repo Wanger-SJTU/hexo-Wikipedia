@@ -46,9 +46,12 @@ import torch
 MAX_NUM_OF_MEM_EVENTS_PER_SNAPSHOT: int = 100000
 torch.cuda.memory._record_memory_history(max_entries=MAX_NUM_OF_MEM_EVENTS_PER_SNAPSHOT)
 
+```text
 input = torch.randn(10, 4096, 4096, requires_grad=True).to("cuda")
 weight = torch.randn(4096, 4096).to("cuda")
 out = input @ weight
+```
+
 
 torch.cuda.memory._dump_snapshot("my_snapshot.pickle")
 
@@ -127,12 +130,12 @@ def trace_handler(prof: torch.profiler.profile, dir=""):
                 sort_by="cuda_time_total", row_limit=-1
             )
         )
-```
-
 
 N = 10
 input = torch.randn(10, 4096, 4096, requires_grad=True).to("cuda")
 weight = torch.randn(4096, 4096).to("cuda")
+```
+
 with torch.profiler.profile(
 
 ```text
@@ -188,9 +191,12 @@ html：显存占用还有用于耗时分析的trace文件json.gz，trace文件�
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_cefa1cb7187f.jpg)
 
-select * from slice where cat = 'kernel'![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_3a24fa96d920.jpg)
+```sql
+select * from slice where cat = 'kernel'![](asset/img_3a24fa96d920.jpg)
 
 select sum(dur)/1e6 as total_kernel_ms from slice where category = 'kernel'
+```
+
 
 送礼物
 

@@ -115,7 +115,10 @@ $其中 W^{d\times d} .$
 - Label-aware interaction layer
 RIM对 \mathbb{S}_t 和 \mathbb{Y}_t 分别执行聚合操作，这导致缺乏了样本特征和标签间的成对交互，检索样本的特征-标签对的特征交互定义如下：
 
+```text
 e_i=\text{interaction}(x_i,y_i) 
+```
+
 
 其中(,)操作使用PNN模型的操作方式。
 

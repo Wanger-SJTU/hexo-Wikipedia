@@ -99,22 +99,14 @@ Access: <strong>THTensor</strong>. It provides access to the user.
 
 #### Data Storage
 
-```text
+```cpp
 typedef struct THStorage
 {
-```
-
  real *data;
  ptrdiff_t size;
-
-```cpp
  int refcount;
  char flag;
-```
-
  THAllocator *allocator;
-
-```text
  void *allocatorContext;
  struct THStorage *view;
 ```
@@ -134,12 +126,8 @@ typedef struct THTensor
  int nDimension;
 
  // Attention: storage->size might be bigger than the size of tensor.
-```
-
  THStorage *storage;
  ptrdiff_t storageOffset;
-
-```cpp
  int refcount;
 
  char flag;
@@ -167,9 +155,9 @@ struct C10_API Allocator {
 
 
   virtual DataPtr allocate(size_t n) const = 0;
-  virtual DeleterFnPtr raw_deleter() const {
 
 ```cpp
+  virtual DeleterFnPtr raw_deleter() const {
     return nullptr;
   }
   void* raw_allocate(size_t n) {
@@ -311,16 +299,12 @@ Here's a simplified example:
 
 #### generic/add.h
 
-```text
+```cpp
 // generic/add.h
 
 typedef struct Vector
 {
-```
-
 num *data;
-
-```cpp
 int n;
 ```
 
@@ -336,18 +320,10 @@ extern void Vector_(add)(Vector *C, Vector *A, Vector *B);
 void Vector_(add)(Vector *C, Vector *A, Vector *B)
 {
 int i, n;
-```
-
 n = C->n;
-
-```cpp
 for(i=0;in;i++)
 {
-```
-
 C->data[i] = A->data[i] + B->data[i];
-
-```text
 }
 }
 ```
@@ -421,11 +397,10 @@ The declaration of function `THStorage_(NAME)` lives in `TH/generic/THStorage.h`
 
 (BTW, if using Cuda, the declaration of  `#define THWStorage_(NAME) THCStorage_(NAME)`lie in `THC/generic/THCStorage.h` and `THC/generic/THCStorageCopy.h`)
 
+```text
 Take THStorage_(newWithSize) function as an example, look into `TH/generic/THStorage.cpp` and we can find the definition:
 
 THStorage* THStorage_(newWithSize)(ptrdiff_t size)
-
-```text
 {
   THStorage* storage = c10::make_instrusiveat::StorageImpl>(
 #ifdef THQUANTIZED
@@ -447,9 +422,8 @@ THStorage* THStorage_(newWithSize)(ptrdiff_t size)
 
 It's not hard to infer from this code block that it new a `StorageImpl`, and add an intrusive pointer pointing to one of them, at last return a pointer pointing to `StorageImpl` and destroy the intrusive pointer. Macro THStorage is `at::StorageImpl`, so this method simply new a `StorageImpl and return a pointer pointing to it. According to the definition of`c10::make_instrusive`, this work will actually be done by the constructor of StorageImpl' and it is:
 
-StorageImpl(
-
 ```text
+StorageImpl(
     caffe2::TypeMeta data_type,
     int64_4 numel,
     at::Allocator* allocator,
@@ -634,9 +608,12 @@ int myFunction(int num)
 
 <strong>function.py</strong>
 
+```python
 import ctypes 
 NUM = 16      
 fun = ctypes.CDLL(libfun.so)   
+```
+
 fun.myFunction.argtypes=[ctypes.c_int] 
 returnVale = fun.myFunction(NUM)
 
@@ -674,10 +651,10 @@ g++ -shared -Wl,-install_name,libfoo.so -o libfoo.so  foo.o
 
 Afterward, things in Python code are similar as those in C.
 
+```python
 from ctypes import cdll
 lib = cdll.LoadLibrary('./libfoo.so')
 
-```python
 class Foo(object):
     def __init__(self):
         self.obj = lib.Foo_new()
@@ -688,8 +665,11 @@ class Foo(object):
 
 # Once you have that you can call it like
 
+```text
 f = Foo()
 f.bar() #and you will see "Hello" on the screen
+```
+
 
 #### C++ file includes module and Expose
 
@@ -704,12 +684,8 @@ char const* greet()
 {
    return "hello, world";
 }
-```
-
 
 BOOST_PYTHON_MODULE(hello_ext)
-
-```text
 {
     using namespace boost::python;
     def("greet", greet);
@@ -736,12 +712,8 @@ For the “ahead of time” flavor, we build our C++ extension by writing a `set
 ```python
 from setuptools import setup, Extension
 from torch.utils import cpp_extension
-```
-
 
 setup(name='lltm_cpp',
-
-```text
       ext_modules=[cpp_extension.CppExtension('lltm_cpp', ['lltm.cpp'])],
       cmdclass={'build_ext': cpp_extension.BuildExtension})
 ```
@@ -749,9 +721,12 @@ setup(name='lltm_cpp',
 
 The JIT compilation mechanism provides you with a way of compiling and loading your extensions on the fly by calling a simple function in PyTorch’s API called `torch.utils.cpp_extension.load()`. For the LLTM, this would look as simple as this:
 
+```python
 from torch.utils.cpp_extension import load
 
 lltm_cpp = load(name="lltm_cpp", sources=["lltm.cpp"])
+```
+
 
 #### CUDA Integration
 
@@ -760,12 +735,8 @@ The integration of our CUDA-enabled op with PyTorch is again very straightforwar
 ```python
 from setuptools import setup
 from torch.utils.cpp_extension import BuildExtension, CUDAExtension
-```
-
 
 setup(
-
-```text
     name='lltm',
     ext_modules=[
         CUDAExtension('lltm_cuda', [
@@ -781,9 +752,12 @@ setup(
 
 Instead of `CppExtension()`, we now use `CUDAExtension()`. We can just specify the `.cu` file along with the `.cpp` files – the library takes care of all the hassle this entails for you. The JIT mechanism is even simpler:
 
+```python
 from torch.utils.cpp_extension import load
 
 lltm = load(name='lltm', sources=['lltm_cuda.cpp', 'lltm_cuda_kernel.cu'])
+```
+
 
 ### Conclusion
 

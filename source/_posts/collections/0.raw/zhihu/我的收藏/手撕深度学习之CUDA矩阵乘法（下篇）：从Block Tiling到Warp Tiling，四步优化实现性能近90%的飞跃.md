@@ -70,13 +70,19 @@ ROW_BLOCK_SIZE表示一个Block（线程块）负责计算的C的行数，COL_BL
 
 接下来再把焦点放到每个线程上，我们可以由此计算出这个线程所在的Block负责的C的左上角的坐标：
 
+```text
 outTopLeftX = blockIdx.x * ROW_BLOCK_SIZE
 outTopLeftY = blockIdx.y * COL_BLOCK_SIZE
+```
+
 
 同时还可以计算出这个线程在Block内的坐标
 
+```text
 threadX = threadIdx.x / COL_BLOCK_SIZE
 threadY = threadIdx.x % COL_BLOCK_SIZE
+```
+
 
 这时候，我们就已经知道：
 
@@ -96,9 +102,8 @@ regM[wSubRowIdx * TM + i] =As[(dotIdx * BM) + warpRow * WM + wSubRowIdx * WSUBM 
 
 我们可以用C++的lambda表达式做一个自己的语法糖，来让坐标到下标的转换更可读，如下所示：
 
-__device__ inline uint32_t idx(uint32_t x, uint32_t y, uint32_t row_num, uint32_t col_num) {
-
 ```text
+__device__ inline uint32_t idx(uint32_t x, uint32_t y, uint32_t row_num, uint32_t col_num) {
         return x * col_num + y;
 }
 
@@ -284,9 +289,8 @@ V6: Vectorize
 
 下面这段代码展示了float4的基本用法：可以访问其每个分量，也可以直接一整个地进行赋值操作
 
-float4 tmp =
-
 ```text
+float4 tmp =
     reinterpret_cast float4 * ( A[innerRowA * K + innerColA * 4])[0];
 ```
 
@@ -295,9 +299,8 @@ As[(innerColA * 4 + 1) * BM + innerRowA] = tmp.y;
 As[(innerColA * 4 + 2) * BM + innerRowA] = tmp.z;
 As[(innerColA * 4 + 3) * BM + innerRowA] = tmp.w;
 
-reinterpret_cast float4 * ( Bs[innerRowB * BN + innerColB * 4])[0] =
-
 ```text
+reinterpret_cast float4 * ( Bs[innerRowB * BN + innerColB * 4])[0] =
     reinterpret_cast float4 * ( B[innerRowB * N + innerColB * 4])[0];
 ```
 

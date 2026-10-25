@@ -105,7 +105,10 @@ A_k 是第 k 类的adjustment weight， D_k 是第 k 类的所有D值。这个we
 
 那么根据上面的adjustment weight得到的 the refined detected map如下：
 
+```text
 M(i, j)= \begin{cases}0, & D(i, j) / A_k \geq \text { threshold } \\ 1, & D(i, j) / A_k 
+```
+
 
 相对而言，A的值较小，意味着容易出现伪影，但其perceptual tolerance rate较大，那么其伪影的判别条件也应该更为宽松，用A对D进行scale，会使得D值相对增大，不容易低于threshhold，那么就不容易被判定为伪影。
 

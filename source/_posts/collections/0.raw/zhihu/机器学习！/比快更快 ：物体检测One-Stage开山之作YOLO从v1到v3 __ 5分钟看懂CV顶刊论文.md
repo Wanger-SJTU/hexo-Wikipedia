@@ -94,7 +94,10 @@ YOLOv2做出的改变还是挺多的，比较重要的有以下几点：
 
 具体对于每一个格子预测的每一种类别的置信度的计算方式如下：
 
+```text
 P(Obj)*P(Class_i|Obj)*IOU^{truth}_{pred}=P(Class_i)*IOU^{truth}_{pred} 
+```
+
 
 损失函数的设计
 

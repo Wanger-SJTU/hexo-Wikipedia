@@ -124,9 +124,16 @@ nvme_irq
 
 有人疑惑为什么不直接在io_complete_rw处理完成请求流程？需要注意的是，以上流程是在中断上下文的，不适宜处理比较耗时操作，这里应该是类似中断下半部的实现，通过task work将耗时操作放到进程上下文去处理。task work的基本原理是将一些异步任务绑定到一个任务上（*io_uring中一般是创建io_uring线程或者sq_thread线程*），有点类似给该任务发了一个（伪）信号。io_uring为了进一步优化，还可以指定task work的处理时机，有如下两种设置：
 
+```text
 ctx->notify_method = TWA_SIGNAL_NO_IPI;
+```
+
 和
+
+```text
 ctx->notify_method = TWA_SIGNAL;
+```
+
 
 - <strong>TWA_SIGNAL_NO_IPI：</strong>表示不要强制发送IPI信号唤醒指定task，这是避免打扰正在运行的其他任务
 - <strong>TWA_SIGNAL：</strong>类似信号处理模式，正常处理，可能会打扰其他任务

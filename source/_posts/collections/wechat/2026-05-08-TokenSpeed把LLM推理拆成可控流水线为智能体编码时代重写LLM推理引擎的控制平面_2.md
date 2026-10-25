@@ -80,10 +80,10 @@ tokenspeed serve nvidia/Kimi-K2.5-NVFP4 \
 ```
 
 OpenAI 兼容客户端可以这样访问：from openai import OpenAI
-client = OpenAI(api_key="EMPTY", base_url="http://localhost:8000/v1")
-response = client.chat.completions.create(
 
 ```python
+client = OpenAI(api_key="EMPTY", base_url="http://localhost:8000/v1")
+response = client.chat.completions.create(
     model="kimi-k2.5",
     messages=[{"role": "user", "content": "Write a concise deployment checklist."}],
     max_tokens=256,
@@ -140,9 +140,9 @@ class Engine(EngineBase):
 ```
 
 在 Engine.generate 中，用户输入被封装成 GenerateReqInput，再根据是否流式返回进入不同路径。# 来源：python/tokenspeed/runtime/entrypoints/engine.py
-obj = GenerateReqInput(
 
 ```text
+obj = GenerateReqInput(
     text=prompt,
     input_ids=input_ids,
     sampling_params=sampling_params,
@@ -205,9 +205,13 @@ def generate_stream(self, obj: GenerateReqInput) -> Iterator[dict]:
 
 这层设计的价值在于：业务侧可以用同步接口，内部仍保持 AsyncLLM 单主干，避免同步/异步双路径导致状态分裂。unsetunset五、请求主路径：从 tokenize 到调度器再回到用户unsetunset
 AsyncLLM 是主进程异步前端，拥有请求接入、请求状态、scheduler IPC 和输出分发循环。生成路径集中在 generate_request：# 来源：python/tokenspeed/runtime/engine/async_llm.py
+
+```text
 asyncdef generate_request(
     self,
     obj: GenerateReqInput | EmbeddingReqInput,
+```
+
 ):
 
 ```text
@@ -225,11 +229,11 @@ asyncdef generate_request(
         else:
             asyncfor response in self._handle_batch_request(obj, created_time):
                 yield response
-```
-
 asyncdef _tokenize_one_request(
     self,
     obj: GenerateReqInput | EmbeddingReqInput,
+```
+
 ) -> TokenizedGenerateReqInput | TokenizedEmbeddingReqInput:
     returnawait self.input_processor.tokenize_one_request(obj)
 注意这里的 model_update_lock.reader_lock。它说明 TokenSpeed 把在线权重更新和请求生成纳入同一套并发控制，避免推理过程中模型权重被不安全地切换。
@@ -496,6 +500,8 @@ def _get_backend_cls(name: str, arch: AttentionArch) -> type[AttentionBackend]:
 ```
 
 创建 attention components 时，系统会先 profile 可用 KV cache 页数，再创建 backend 和 pool：# 来源：python/tokenspeed/runtime/layers/attention/registry.py
+
+```text
 max_total_num_pages = profile_max_num_pages(
     config,
     gpu_id,
@@ -504,8 +510,6 @@ max_total_num_pages = profile_max_num_pages(
     server_args.block_size,
     num_layers,
     gpu_memory,
-
-```text
     world_group=server_args.mapping.world_group,
     draft_attn_config=draft_attn_config if draft_attn_config elseNone,
     draft_num_attention_layers=(
@@ -513,13 +517,13 @@ max_total_num_pages = profile_max_num_pages(
     ),
     cache_cell_size=profile_cache_cell_size,
 )
-```
-
 max_num_tokens = _resolve_max_num_tokens(
     max_total_num_pages,
     server_args.block_size,
     server_args.max_total_tokens,
 )
+```
+
 这体现出 TokenSpeed 的一个重要取舍：不是让用户手动理解所有底层细节，而是把硬件、模型结构、显存预算和 backend 选择集中到 runtime 的组件构造阶段。unsetunset十、Kernel 系统：把异构硬件优化变成可注册、可解释、可覆盖的机制unsetunset
 官方博客强调 TokenSpeed kernel layer 将 kernel 从核心引擎中分离出来，作为一等模块化子系统。
 tokenspeed-kernel README 也给出了清晰分层：public API → select_kernel → KernelRegistry → 各 op family 下的 Triton、Gluon、CuTe DSL、vendor wrapper、reference 实现。

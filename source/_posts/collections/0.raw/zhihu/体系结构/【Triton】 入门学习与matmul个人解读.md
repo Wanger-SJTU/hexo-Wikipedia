@@ -142,9 +142,8 @@ triton.Config 是 Triton中用于配置内核的对象，允许用户设置不�
 
 在API函数中定义的 grid 通常为：（以 matmul函数为例）
 
-grid = lambda META: (
-
 ```text
+grid = lambda META: (
         triton.cdiv(M, META['BLOCK_SIZE_M']) * triton.cdiv(N, META['BLOCK_SIZE_N']),
     )
 ```

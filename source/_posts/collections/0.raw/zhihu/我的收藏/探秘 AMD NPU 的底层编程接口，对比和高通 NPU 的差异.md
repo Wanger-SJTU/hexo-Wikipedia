@@ -124,7 +124,11 @@ AIE2 的指令是变长的：
 
 c0 03 00 88 03 00 18 12 82 cd 0c 02 00 00 00 00
 # 反汇编为:
+
+```text
 nopb; nopa; vst.srs.s32.s64 bml3, s0, [p2, #0x0]; add r1, r1, #0x10; nopm; nopv
+```
+
 #  ↑     ↑    ↑                                    ↑                   ↑     ↑
 # 控制  地址  向量存储+饱和右移                     标量加法            移动  向量
 
@@ -314,18 +318,24 @@ NPU 上的数据搬运全部由 DMA 硬件完成，和计算完全解耦。这�
 
 #### 三级存储层次
 
+```text
 Host DDR (GB 级)
     ↕  Shim Tile DMA
 Memory Tile SRAM (512 KB/tile, 共 2560 KB)
     ↕  Memory Tile DMA (6 个引擎/tile)
 Compute Tile SRAM (64 KB/tile)
+```
+
 
 #### ObjectFIFO：抽象 DMA 的 Buffer 描述符
 
 在 IRON 框架中，数据搬运通过 ObjectFIFO 抽象：
 
+```text
 of_in = ObjectFifo(tile_ty, name="in")    # Host → Compute Tile
 of_out = ObjectFifo(tile_ty, name="out")   # Compute Tile → Host
+```
+
 
 编译后，这变成 DMA buffer 描述符配置和硬件锁。在 LLVM IR 中可以看到：
 
@@ -374,6 +384,7 @@ DMA 在后台搬运数据，计算核心只需要等锁。这种计算/通信重
 
 一个 NPU 程序的编译过程涉及多个阶段，最终产出两个二进制文件：
 
+```text
 Python (IRON)
     ↓  iron.jit / aiecc
 MLIR (aie dialect)           ← 中间表示：tile 拓扑 + 数据流
@@ -382,6 +393,8 @@ LLVM IR (.ll)                ← 每个 tile 的控制流 + 内核调用
     ↓  Peano (llvm-aie)
 AIE ELF (.elf)               ← 每个 tile 的机器码
     ↓  打包
+```
+
 XCLBIN                       ← 最终二进制（ELF + DMA 配置 + 路由表）
 
 #### 阶段 1: Python → MLIR
@@ -632,12 +645,20 @@ Strix PointStrix HaloKrackan Point品牌Ryzen AI 300Ryzen AI MAXRyzen AI 300（�
 XDNA2 的编程模型和 XDNA1 完全一致——同样的 IRON Python API，同样的 ObjectFIFO 数据流，同样的 Peano 编译器。区别仅在于：
 
 # XDNA1
+
+```python
 from aie.iron.device import NPU1Col1
 dev = NPU1Col1()
+```
+
 
 # XDNA2
+
+```python
 from aie.iron.device import NPU2
 dev = NPU2()
+```
+
 
 编译时目标从 `aie2` 变成 `aie2p`：
 
@@ -667,15 +688,18 @@ AMD 的编程模型是<strong>空间 + 数据流</strong>：你要想好数据�
 
 Qualcomm 的编程模型是<strong>传统 DSP + 显式 scratchpad</strong>：
 
+```text
 // Hexagon: 标准 C + intrinsic，跟写 CPU SIMD 差不多
 HVX_VectorPair wp = Q6_Wh_vunpack_Vb(v_i8);        // int8 → int16 (HVX)
 HVX_Vector v_f16 = Q6_Vhf_equals_Vh(Q6_V_lo_W(wp)); // int16 → f16 (HVX)
+```
+
 hexkl_micro_hmx_mm_f16(vtcm, act_off, wt_off);       // 矩阵乘 (HMX)
 # AMD: 空间计算 + 数据流编排
-of_in = ObjectFifo(tile_ty, name="in")    # 定义 DMA 通道
-of_out = ObjectFifo(tile_ty, name="out")
 
 ```python
+of_in = ObjectFifo(tile_ty, name="in")    # 定义 DMA 通道
+of_out = ObjectFifo(tile_ty, name="out")
 def core_body():                           # tile 上的计算
     elem = of_in.acquire(1)                # 等待 DMA 填好数据
     scale_fn(elem, out, factor)            # 调用 C++ 内核
@@ -696,9 +720,13 @@ Q6_dmstart_A((void *)&desc);              // 启动 DMA（立即返回）
 hvx_compute(compute_buf, size);            // HVX 同时计算（重叠！）
 Q6_R_dmwait();                             // 等 DMA 完成
 # AMD: 硬件锁同步 DMA
+
+```text
 elem = of_in.acquire(1)    # acq 指令：等 DMA 填好
 kernel(elem, out)           # 计算
 of_in.release(1)           # rel 指令：通知 DMA 可以搬下一块
+```
+
 
 #### HMX 矩阵乘法 vs AIE MAC 单元
 
@@ -706,17 +734,13 @@ HMX 的使用方式很特别——<strong>必须用内联汇编</strong>，因�
 
 // Hexagon HMX: 内联汇编是唯一途径
 asm volatile("mxclracc.hf" ::: "memory");                       // 清零累加器
-asm volatile(
 
 ```text
+asm volatile(
     "{ activation.hf = mxmem(%0, %1)\n"                         // 加载激活值
     "  weight.hf = mxmem(%2, %3) }\n"                           // 加载权重（必须同一 packet！）
     :: "r"(act), "r"(2047), "r"(wt), "r"(2047) : "memory");
-```
-
 asm volatile("mxmem(%0, %1):after.hf = acc\n"                   // 存储累加器到 VTCM
-
-```text
     :: "r"(out), "r"(0) : "memory");
 // AMD AIE: C++ intrinsic 即可
 aie::vector a = aie::load_v(in);    // 512-bit 向量加载

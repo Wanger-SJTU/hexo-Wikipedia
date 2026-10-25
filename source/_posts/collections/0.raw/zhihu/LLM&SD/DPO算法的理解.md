@@ -99,8 +99,11 @@ $b=log(πθ(yl|x))−log(πref(yl|x))" role="presentation">b=log(πθ(yl|x))−l
 
 <strong>向量形状转化流转换：</strong>
 
+```text
 policy_model = llama13b
 ref_model = deepcopy(llama13b).eval()
+```
+
 
 model:
 batch为4

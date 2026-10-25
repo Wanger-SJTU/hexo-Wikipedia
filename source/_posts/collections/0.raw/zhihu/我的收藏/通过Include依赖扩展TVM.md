@@ -29,9 +29,9 @@ if with_scaling:
           ("read", offset + 1),
           get_param_indices(intra_index_map),
       )
+with_zeros = bool(weight_dequantize_info["with_zeros"])
 ```
 
-with_zeros = bool(weight_dequantize_info["with_zeros"])
 if with_zeros:
 
 ```text
@@ -59,8 +59,12 @@ import tvm  # upstream
 ​
 relax_mod = relax_transform(relax_mod)
 ​
+
+```python
 import welder
 relax_mod = welder.tune(relax_mod)
+```
+
 # something bad happened
 
 程序会Segment Fault，最后Trace的时候发现，当welder被import的时候, welder会引入自己的tvm，这个时候会load相关的library, 比如说`cutlass`,覆盖了之前的tvm的library(使用的cutlass commit不一致)，导致了segment fault。
@@ -103,9 +107,9 @@ else()
   message(STATUS "TVM_PREBUILD_PATH NOT SET, will build TVM from source")
   message(STATUS "TVM_SOURCE_DIR: ${TVM_SOURCE_DIR}")
   add_subdirectory(${TVM_SOURCE_DIR} tvm EXCLUDE_FROM_ALL)
+endif()
 ```
 
-endif()
 
 这里的配置通过检查 TVM_PREBUILD_PATH 变量，判断是否需要从源码进行编译，还是直接使用预编译好的TVM二进制文件。对于开发者来说，这种方式能够极大地简化扩展模块与核心模块的构建流程，也能避免在不同版本之间切换时出现的编译问题。
 
@@ -141,11 +145,17 @@ make -j 16 # build the source under src folder and tvm
 # which may take a while
 
 # 定义 TileLang 模块的源文件
+
+```text
 tilelang_file_glob(GLOB_RECURSE TILE_LANG_SRCS src/*.cc)
 message(STATUS "TILE_LANG_SRCS: ${TILE_LANG_SRCS}")
 add_library(tilelang_objs OBJECT ${TILE_LANG_SRCS})
+```
+
 ​
 # 设置 TileLang 模块的 include 路径
+
+```text
 set(
   TILE_LANG_INCLUDES
   ${TVM_SOURCE_DIR}/include
@@ -153,14 +163,20 @@ set(
   ${TVM_SOURCE_DIR}/3rdparty/dlpack/include
   ${TVM_SOURCE_DIR}/3rdparty/dmlc-core/include
 )
+```
+
 
 这一段代码将 TileLang 扩展模块的所有源文件（.cc 文件）添加到对象库 tilelang_objs 中，并设置了与TVM共享的 include 路径。对象库的使用能够让我们在不同的目标中重复利用相同的源文件，而不需要重新编译。
 
 `# 生成共享库 `tilelang`
+
+```text
 add_library(tilelang SHARED $TARGET_OBJECTS:tilelang_objs>)
 add_library(tilelang_static STATIC $TARGET_OBJECTS:tilelang_objs>)
 add_dependencies(tilelang_static tvm_runtime)
 target_link_libraries(tilelang PUBLIC tvm_runtime)
+```
+
 
 通过生成共享库 tilelang 以及静态库 tilelang_static，用户可以根据需要灵活地选择不同的链接方式（静态链接或动态链接），并且 tilelang 模块会自动依赖 tvm_runtime，保证在编译时能够正确地找到相关符号和依赖项。
 

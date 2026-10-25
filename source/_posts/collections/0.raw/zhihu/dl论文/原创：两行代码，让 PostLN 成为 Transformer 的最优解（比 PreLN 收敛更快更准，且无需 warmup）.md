@@ -28,10 +28,13 @@ source_url: https://zhuanlan.zhihu.com/p/466943663
 
 解决方法是，应将嵌入层初始化为很小的随机值：
 
+```text
 if isinstance(module, (nn.Linear)):
 	module.weight.data.normal_(mean=0.0, std=0.01) # I always use 0.01 instead of 0.02
 if isinstance(module, (nn.Embedding)):
 	module.weight.data.normal_(mean=0.0, std=1e-5) # tiny values, instead of 0.01
+```
+
 
 然后优化器一步就可以跳出初始的噪音嵌入，立即走上正轨（虽然值也只改变一点，但是方向明显变化）。
 
@@ -43,15 +46,21 @@ if isinstance(module, (nn.Embedding)):
 
 这里的 PreLN 代码。PreLN 有个缺陷，|x| 会逐层增大，因此我一直认为它并非完美。
 
+```text
 x = x + self.att(self.ln1(x))
 x = x + self.ffn(self.ln2(x))
+```
+
 
 这里的 PostLN 代码。注意 ln1 ln2 都放在层前面，最后还会有个额外的输出 ln。这样所有层都拥有 ln。
 
+```text
 x = self.ln1(x) # 根据更多朋友的测试，把整个模型的第一个这个 LayerNorm 改成 FixedNorm 有时效果更好
 x = x + self.att(x)
 x = self.ln2(x)
 x = x + self.ffn(x)
+```
+
 (there will be another layernorm after the final ffn)
 
 <strong>另外，这个方法对于 PreLN 也有效，只需在使用 stdev=1e-5 初始化的 emb 之后加上 LayerNorm（请试试 FixedNorm/ScaleNorm/RMSNorm/... 有时效果更好）。</strong>

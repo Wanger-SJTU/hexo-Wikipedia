@@ -57,14 +57,10 @@ C
 // ==========================================
 char buffer[8192];
 // 将数据填入buffer
-```
-
 populate_data(buffer); 
 
 // 系统调用1：陷入内核，拷贝数据到内核缓冲区
 ssize_t sent_bytes = send(socket_fd, buffer, sizeof(buffer), 0);
-
-```text
 if (sent_bytes < 0) {
     handle_error();
 }
@@ -94,13 +90,13 @@ wr.num_sge = 1;
 wr.opcode  = IBV_WR_SEND; // 也可以是 IBV_WR_RDMA_WRITE 直接写远端内存
 wr.send_flags = IBV_SEND_SIGNALED;
 
+```text
 // 敲击网卡门铃，让网卡去干活，CPU直接走人
 ibv_post_send(queue_pair, &wr, &bad_wr); 
 
 // 3. 应用程序做自己的高价值计算...
 do_heavy_tensor_computation();
 
-```text
 // 4. 轮询完成队列，查看网卡是否搬运完毕 (无中断开销)
 struct ibv_wc wc;
 while (ibv_poll_cq(completion_queue, 1, &wc) == 0) {
@@ -155,14 +151,18 @@ mooncake_engine = MooncakeEngine.initialize(topology_config="cluster.json")
 
 # 2. Prefill 节点计算完毕，产生 KV Cache 张量
 # 这个张量直接在 Mooncake 的预注册内存池中分配
+
+```text
 kv_cache_tensor = mooncake_engine.allocate_tensor(shape=(32, 128, 4096), dtype=float16)
 fill_data_from_gpu(kv_cache_tensor)
+```
+
 
 # 3. 业务层只需调用一行异步发送接口
 # 无需关心 QP, WR, CQ 等底层 Verbs 概念
-transfer_handle = mooncake_engine.async_send(
 
 ```text
+transfer_handle = mooncake_engine.async_send(
     destination_node="decode-node-042",
     data=kv_cache_tensor,
     priority=HIGH

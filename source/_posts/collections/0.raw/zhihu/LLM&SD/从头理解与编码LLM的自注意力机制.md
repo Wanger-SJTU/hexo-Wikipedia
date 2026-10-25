@@ -65,9 +65,9 @@ source_url: https://zhuanlan.zhihu.com/p/682016587
 
 sentence = 'Life is short, eat dessert first'
 ​
-dc = {s:i for i,s 
 
 ```text
+dc = {s:i for i,s 
       in enumerate(sorted(sentence.replace(',', '').split()))}
 ```
 
@@ -84,9 +84,9 @@ print(dc)
 
 import torch
 ​
-sentence_int = torch.tensor(
 
 ```python
+sentence_int = torch.tensor(
     [dc[s] for s in sentence.replace(',', '').split()]
 )
 print(sentence_int)
@@ -107,9 +107,13 @@ print(sentence_int)
 
 vocab_size = 50_000
 ​
+
+```text
 torch.manual_seed(123)
 embed = torch.nn.Embedding(vocab_size, 3)
 embedded_sentence = embed(sentence_int).detach()
+```
+
 ​
 
 ```python
@@ -120,13 +124,12 @@ print(embedded_sentence.shape)
 
 输出：
 
+```text
 tensor([[ 0.3374, -0.1778, -0.3035],
         [ 0.1794,  1.8951,  0.4954],
         [ 0.2692, -0.0770, -1.0205],
         [-0.2196, -0.3792,  0.7671],
         [-0.5880,  0.3486,  0.6603],
-
-```text
         [-1.1925,  0.6984, -1.4097]])
 torch.Size([6, 3])
 ```
@@ -167,9 +170,13 @@ d = embedded_sentence.shape[1]
 ​
 d_q, d_k, d_v = 2, 2, 4
 ​
+
+```text
 W_query = torch.nn.Parameter(torch.rand(d, d_q))
 W_key = torch.nn.Parameter(torch.rand(d, d_k))
 W_value = torch.nn.Parameter(torch.rand(d, d_v))
+```
+
 
 （与之前的词嵌入向量类似，维度*dq、dk、dv*通常要大得多，但
 
@@ -188,10 +195,13 @@ W_value = torch.nn.Parameter(torch.rand(d, d_v))
 
 输入：
 
+```text
 x_2 = embedded_sentence[1]
 query_2 = x_2 @ W_query
 key_2 = x_2 @ W_key
 value_2 = x_2 @ W_value
+```
+
 ​
 
 ```python
@@ -214,8 +224,11 @@ torch.Size([4])
 
 输入：
 
+```text
 keys = embedded_sentence @ W_key
 values = embedded_sentence @ W_value
+```
+
 ​
 
 ```python
@@ -239,8 +252,11 @@ values.shape: torch.Size([6, 4])
 
 输入：
 
+```python
 omega_24 = query_2.dot(keys[4])
 print(omega_24)
+```
+
 
 （请注意，ω是希腊字母“omega”的符号，因此上面的代码变量也使用了相同的名称。）
 
@@ -252,8 +268,11 @@ print(omega_24)
 
 输入：
 
+```python
 omega_2 = query_2 @ keys.T
 print(omega_2)
+```
+
 
 输出：
 
@@ -275,8 +294,12 @@ print(omega_2)
 
 import torch.nn.functional as F
 ​
+
+```python
 attention_weights_2 = F.softmax(omega_2 / d_k**0.5, dim=0)
 print(attention_weights_2)
+```
+
 
 输出：
 
@@ -354,17 +377,24 @@ torch.manual_seed(123)
 # reduce d_out_v from 4 to 1, because we have 4 heads
 d_in, d_out_kq, d_out_v = 3, 2, 4
 ​
+
+```python
 sa = SelfAttention(d_in, d_out_kq, d_out_v)
 print(sa(embedded_sentence))
+```
+
 
 输出：
 
+```text
 tensor([[-0.1564,  0.1028, -0.0763, -0.0764],
         [ 0.5313,  1.3607,  0.7891,  1.3110],
         [-0.3542, -0.1234, -0.2627, -0.3706],
         [ 0.0071,  0.3345,  0.0969,  0.1998],
         [ 0.1008,  0.4780,  0.2021,  0.3674],
         [-0.5296, -0.2799, -0.4107, -0.6006]], grad_fn=)
+```
+
 
 查看第二行，可以看到它与上一节context_vector_2中的值完全匹配：tensor([0.5313, 1.3607, 0.7891, 1.3110])。
 
@@ -430,17 +460,24 @@ torch.manual_seed(123)
 ​
 ​d_in, d_out_kq, d_out_v = 3, 2, 1
 ​
+
+```python
 sa = SelfAttention(d_in, d_out_kq, d_out_v)
 print(sa(embedded_sentence))
+```
+
 
 输出：
 
+```text
 tensor([[-0.0185],
         [ 0.4003],
         [-0.1103],
         [ 0.0668],
         [ 0.1180],
         [-0.1827]], grad_fn=)
+```
+
 
 现在，将其扩展到4个注意力头：
 
@@ -448,10 +485,10 @@ tensor([[-0.0185],
 
 torch.manual_seed(123)
 ​
-block_size = embedded_sentence.shape[1]
-mha = MultiHeadAttentionWrapper(
 
 ```text
+block_size = embedded_sentence.shape[1]
+mha = MultiHeadAttentionWrapper(
     d_in, d_out_kq, d_out_v, num_heads=4
 )
 ```
@@ -468,12 +505,15 @@ print("context_vecs.shape:", context_vecs.shape)
 
 输出：
 
+```text
 tensor([[-0.0185,  0.0170,  0.1999, -0.0860],
         [ 0.4003,  1.7137,  1.3981,  1.0497],
         [-0.1103, -0.1609,  0.0079, -0.2416],
         [ 0.0668,  0.3534,  0.2322,  0.1008],
         [ 0.1180,  0.6949,  0.3157,  0.2807],
         [-0.1827, -0.2060, -0.2393, -0.3167]], grad_fn=)
+```
+
 context_vecs.shape: torch.Size([6, 4])
 
 根据以上输出可以发现，之前创建的单个自注意力头现在代表上面输出张量的第一列。
@@ -563,8 +603,12 @@ d_in, d_out_kq, d_out_v = 3, 2, 4
 ​
 crossattn = CrossAttention(d_in, d_out_kq, d_out_v)
 ​
+
+```text
 first_input = embedded_sentence
 second_input = torch.rand(8, d_in)
+```
+
 ​
 
 ```python
@@ -593,12 +637,15 @@ print("Output shape:", context_vectors.shape)
 
 输出：
 
+```text
 tensor([[0.4231, 0.8665, 0.6503, 1.0042],
         [0.4874, 0.9718, 0.7359, 1.1353],
         [0.4054, 0.8359, 0.6258, 0.9667],
         [0.4357, 0.8886, 0.6678, 1.0311],
         [0.4429, 0.9006, 0.6775, 1.0460],
         [0.3860, 0.8021, 0.5985, 0.9250]], grad_fn=)
+```
+
 Output shape: torch.Size([6, 4])
 
 以上讨论了很多关于语言Transformer的内容。在原始Transformer架构中，当我们从输入句子转换为输出句子时，交叉注意力在语言翻译的上下文中非常有用。输入句子代表一个输入序列，翻译代表第二个输入序列（两个句子的单词数量可以不同）。
@@ -630,15 +677,23 @@ torch.manual_seed(123)
 ​
 d_in, d_out_kq, d_out_v = 3, 2, 4
 ​
+
+```text
 W_query = nn.Parameter(torch.rand(d_in, d_out_kq))
 W_key   = nn.Parameter(torch.rand(d_in, d_out_kq))
 W_value = nn.Parameter(torch.rand(d_in, d_out_v))
+```
+
 ​
 x = embedded_sentence
 ​
+
+```text
 keys = x @ W_key
 queries = x @ W_query
 values = x @ W_value
+```
+
 ​
 # attn_scores are the "omegas", 
 # the unnormalized attention weights
@@ -653,14 +708,13 @@ print(attn_scores.shape)
 
 输出：
 
+```text
 tensor([[ 0.0613, -0.3491,  0.1443, -0.0437, -0.1303,  0.1076],
         [-0.6004,  3.4707, -1.5023,  0.4991,  1.2903, -1.3374],
         [ 0.2432, -1.3934,  0.5869, -0.1851, -0.5191,  0.4730],
         [-0.0794,  0.4487, -0.1807,  0.0518,  0.1677, -0.1197],
         [-0.1510,  0.8626, -0.3597,  0.1112,  0.3216, -0.2787],
         [ 0.4344, -2.5037,  1.0740, -0.3509, -0.9315,  0.9265]],
-
-```text
        grad_fn=)
 torch.Size([6, 6])
 ```
@@ -672,11 +726,15 @@ torch.Size([6, 6])
 
 输入：
 
+```python
 attn_weights = torch.softmax(attn_scores / d_out_kq**0.5, dim=1)
 print(attn_weights)
+```
+
 
 输出：
 
+```text
 tensor([[0.1772, 0.1326, 0.1879, 0.1645, 0.1547, 0.1831],
         [0.0386, 0.6870, 0.0204, 0.0840, 0.1470, 0.0229],
         [0.1965, 0.0618, 0.2506, 0.1452, 0.1146, 0.2312],
@@ -684,6 +742,8 @@ tensor([[0.1772, 0.1326, 0.1879, 0.1645, 0.1547, 0.1831],
         [0.1347, 0.2758, 0.1162, 0.1621, 0.1881, 0.1231],
         [0.1973, 0.0247, 0.3102, 0.1132, 0.0751, 0.2794]],
        grad_fn=)
+```
+
 
 上面的6×6输出表示注意力权重，我们之前在自注意力部分也计算过。
 
@@ -705,28 +765,38 @@ tensor([[0.1772, 0.1326, 0.1879, 0.1645, 0.1547, 0.1831],
 
 输入：
 
+```python
 block_size = attn_scores.shape[0]
 mask_simple = torch.tril(torch.ones(block_size, block_size))
 print(mask_simple)
+```
+
 
 输出：
 
+```text
 tensor([[1., 0., 0., 0., 0., 0.],
         [1., 1., 0., 0., 0., 0.],
         [1., 1., 1., 0., 0., 0.],
         [1., 1., 1., 1., 0., 0.],
         [1., 1., 1., 1., 1., 0.],
         [1., 1., 1., 1., 1., 1.]])
+```
+
 
 接下来，我们将注意力权重与这个掩码相乘，将所有对角线以上的注意力权重归零：
 
 输入：
 
+```python
 masked_simple = attn_weights*mask_simple
 print(masked_simple)
+```
+
 
 输出：
 
+```text
 tensor([[0.1772, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000],
         [0.0386, 0.6870, 0.0000, 0.0000, 0.0000, 0.0000],
         [0.1965, 0.0618, 0.2506, 0.0000, 0.0000, 0.0000],
@@ -734,6 +804,8 @@ tensor([[0.1772, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000],
         [0.1347, 0.2758, 0.1162, 0.1621, 0.1881, 0.0000],
         [0.1973, 0.0247, 0.3102, 0.1132, 0.0751, 0.2794]],
        grad_fn=)
+```
+
 
 尽管上述方法是掩码处理未来词元的一种方式，但请注意，每行中的注意力权重的总和不再为1。为解决这一问题，我们可以归一化这些行，使它们的总和再次为1，这是注意力权重的标准惯例：
 
@@ -745,6 +817,7 @@ print(masked_simple_norm)
 
 输出：
 
+```text
 tensor([[1.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000],
         [0.0532, 0.9468, 0.0000, 0.0000, 0.0000, 0.0000],
         [0.3862, 0.1214, 0.4924, 0.0000, 0.0000, 0.0000],
@@ -752,6 +825,8 @@ tensor([[1.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000],
         [0.1536, 0.3145, 0.1325, 0.1849, 0.2145, 0.0000],
         [0.1973, 0.0247, 0.3102, 0.1132, 0.0751, 0.2794]],
        grad_fn=)
+```
+
 
 可以看到，现在每行注意力权重相加为1。
 
@@ -774,9 +849,12 @@ tensor([[1.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000],
 
 输入：
 
+```python
 mask = torch.triu(torch.ones(block_size, block_size), diagonal=1)
 masked = attn_scores.masked_fill(mask.bool(), -torch.inf)
 print(masked)
+```
+
 
 上述代码首先创建一个掩码，在对角线以下为0，在对角线以上为1。这里，torch.triu（上三角）保留矩阵主对角线及其以上的元素，将其下方的元素置零，因此保留了上三角部分。相反，torch.tril（下三角）保留了主对角线及其下方的元素。
 
@@ -784,6 +862,7 @@ print(masked)
 
 输出：
 
+```text
 tensor([[ 0.0613,    -inf,    -inf,    -inf,    -inf,    -inf],
         [-0.6004,  3.4707,    -inf,    -inf,    -inf,    -inf],
         [ 0.2432, -1.3934,  0.5869,    -inf,    -inf,    -inf],
@@ -791,16 +870,22 @@ tensor([[ 0.0613,    -inf,    -inf,    -inf,    -inf,    -inf],
         [-0.1510,  0.8626, -0.3597,  0.1112,  0.3216,    -inf],
         [ 0.4344, -2.5037,  1.0740, -0.3509, -0.9315,  0.9265]],
        grad_fn=)
+```
+
 
 接下来，我们只需像往常一样应用softmax函数，即可获得归一化和掩码注意力权重。
 
 输入：
 
+```python
 attn_weights = torch.softmax(masked / d_out_kq**0.5, dim=1)
 print(attn_weights)
+```
+
 
 输出：
 
+```text
 tensor([[1.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000],
         [0.0532, 0.9468, 0.0000, 0.0000, 0.0000, 0.0000],
         [0.3862, 0.1214, 0.4924, 0.0000, 0.0000, 0.0000],
@@ -808,6 +893,8 @@ tensor([[1.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000],
         [0.1536, 0.3145, 0.1325, 0.1849, 0.2145, 0.0000],
         [0.1973, 0.0247, 0.3102, 0.1132, 0.0751, 0.2794]],
        grad_fn=)
+```
+
 
 为什么这会生效呢？在最后一步应用softmax函数时，它将输入值转换为概率分布。当输入中存在-inf时，softmax会有效地将其视为零概率。因为 e^(-inf) 趋近于0，所以这些位置对输出概率没有任何影响。
 

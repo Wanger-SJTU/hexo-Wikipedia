@@ -90,12 +90,20 @@ nlp: 根据之前的讨论，`[B, S, D]`看作S组的`[B,D]`，自然LN就是“
 参照Pytorch的`torch.nn.LayerNorm`,cv和nlp的LayerNorm的实现如下：
 
 # initialize
+
+```text
 cv_layer_norm = nn.LayerNorm([C, H, W])
 nlp_layer_norm = nn.LayerNorm(D)
+```
+
 
 # normalize embedding
+
+```text
 cv_embedding = cv_layer_norm(cv_embedding) # cv_embedding: [B, C, H, W]
 nlp_embedding = nlp_layer_norm(nlp_embedding) # nlp_embedding: [B, S, D]
+```
+
 
 然后看huggingface开源的BERT代码如下，可以看到就是在BERT中的实现也就是传入toekn嵌入的维度hidden_size，对每个token的嵌入进行标准化：
 

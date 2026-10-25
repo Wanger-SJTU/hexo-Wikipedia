@@ -259,6 +259,7 @@ H100 L2 Cache 特点**：
 - 支持 <strong>L2 Persistent Cache Control</strong>（CUDA 11.0+，compute capability 8.0+），允许开发者<strong>显式配置 L2 Cache 亲和性</strong>
 <strong>NVIDIA L2 Cache 开发者控制 API</strong>：
 
+```text
 // 1. 预留 L2 Cache 空间给持久化数据
 cudaDeviceProp prop;
 cudaGetDeviceProperties(&prop, device_id);
@@ -267,16 +268,26 @@ cudaDeviceSetLimit(cudaLimitPersistingL2CacheSize, persistSize);
 
 // 2. 设置 Stream 级别的 L2 访问策略窗口
 cudaStreamAttrValue attr;
+```
+
 attr.accessPolicyWindow.base_ptr  = reinterpret_cast(data_ptr);  // 需要驻留的数据地址
 attr.accessPolicyWindow.num_bytes = data_size;                          // 驻留数据大小
 attr.accessPolicyWindow.hitRatio  = 0.6;                                // 命中率提示（防止缓存抖动）
 attr.accessPolicyWindow.hitProp   = cudaAccessPropertyPersisting;       // 命中时：保持驻留
 attr.accessPolicyWindow.missProp  = cudaAccessPropertyStreaming;        // 未命中时：流式访问（优先驱逐）
+
+```text
 cudaStreamSetAttribute(stream, cudaStreamAttributeAccessPolicyWindow, &attr);
 
 // 3. 使用完毕后重置
+```
+
 attr.accessPolicyWindow.num_bytes = 0;
+
+```text
 cudaStreamSetAttribute(stream, cudaStreamAttributeAccessPolicyWindow, &attr);
+```
+
 cudaCtxResetPersistingL2Cache();  // 清除所有持久化缓存行
 
 <strong>三种访问属性</strong>：
@@ -394,10 +405,10 @@ SIMT 硬件实现细节**（来源：CANN Meetup 官方分享）：
 - <strong>DCache</strong>：最大 128KB，直接复用 UB 作为 Cacheline，SIMT 模式下可通过 DCache 直接读写 GM
 - <strong>SIMD/SIMT 共享组件</strong>：ICache（指令缓存）、ALU（计算单元）、UB（SIMT 当 Shared Memory / SIMD 直接操作）、GSU（Gather Scatter Unit）
 <strong>⚠️ 性能权衡</strong>：SIMD 模式下 UB 访存效率是 SIMT 模式的 <strong>4 倍</strong>（SIMD: 4×x B/s vs SIMT: x B/s），因此规则向量运算仍建议用 SIMD。`// Ascend950 独有：SIMT 编程（类 CUDA 体验）
+
+```cpp
 __simt_vf__ __aicore__ LAUNCH_BOUND(512)
 inline void SimtKernel(/* params */) {
-
-```text
     int64_t blockIdx  = Simt::GetBlockIdx();    // 类似 CUDA blockIdx.x
     int64_t threadIdx = Simt::GetThreadIdx();   // 类似 CUDA threadIdx.x
     int64_t threadNum = Simt::GetThreadNum();   // 类似 CUDA blockDim.x
@@ -426,11 +437,7 @@ CUDA APIAscend950 SIMT API说明threadIdx.xSimt::GetThreadIdx()线程索引block
 #include 
 
 // Kernel 函数：每个线程处理一个元素
-```
-
 __global__ void vectorAdd(const float *x, const float *y, 
-
-```cpp
                           float *z, int n) {
     // 计算全局线程索引
     int idx = blockIdx.x * blockDim.x + threadIdx.x;
@@ -585,12 +592,8 @@ extern "C" __global__ __aicore__ void vector_add_kernel(
 // CUDA 矩阵乘法 - Tensor Core 版本 (WMMA API)
 #include 
 using namespace nvcuda;
-```
-
 
 __global__ void matmul_tensor_core(half *A, half *B, float *C,
-
-```cpp
                                     int M, int N, int K) {
     // 声明 Tensor Core 的 fragment
     wmma::fragment a_frag;
@@ -671,8 +674,12 @@ for (uint16_t i = 0; i (calCount);
 #### 8.2 FP8/MxFP4 低精度支持
 
 特性NVIDIA H100 (Hopper)Ascend950 (arch35)FP8 E5M2（训练梯度）✅ Tensor Core 原生✅ Cube/Vector 支持FP8 E4M3（推理激活）✅ Tensor Core 原生✅ Cube/Vector 支持自定义 FP8❌✅ HiFloat8 hifloat8_t（华为自定义锥形精度格式，38 阶码值接近 FP16）MxFP4（4-bit 微缩浮点）✅ (Blackwell 新增，Hopper 不支持)✅ MxFP4(E2M1/E1M2)MXFP8✅✅ MXFP8(E4M3/E5M2)混合精度FP8 计算 + FP32 累加FP8 计算 + FP32 累加编程接口cuDNN / WMMA / MMAAscend C 内建类型 fp8_e5m2_t / fp8_e4m3fn_t`// FP8 条件编译示例
+
+```text
 if constexpr (IsSameType::value) {
     // FP8 E5M2 处理路径
+```
+
 } else if constexpr (IsSameType::value) {
     // FP8 E4M3FN 处理路径
 } else if constexpr (IsSameType::value) {

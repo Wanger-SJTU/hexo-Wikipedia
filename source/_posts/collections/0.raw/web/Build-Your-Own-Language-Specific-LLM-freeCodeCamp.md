@@ -211,9 +211,12 @@ regex, BeautifulSoup4, requests (for data cleaning)
 
 tqdm, matplotlib (for training utilities)
 
+```text
 Gradio (for chat UI deployment)
 
 Google Colab (free T4 GPU for training)
+```
+
 
 <strong>Note:</strong> Make sure to install all the dependencies listed in the `requirements.txt` file of the repository before getting started.
 
@@ -793,9 +796,12 @@ The other option is using Google Colab. This is the one I used – the free vers
 
 Upload the dataset JSONL file and tokenizer to Google Drive.
 
+```text
 Set the model configuration (vocab size, layers, heads, and so on).
 
 Define the transformer architecture (attention, feed-forward, blocks).
+```
+
 
 Load and tokenize the corpus into training/validation splits.
 
@@ -1432,9 +1438,12 @@ optimizer.step()               # θ_new = θ_old - lr × adam_adjusted_gradient 
 
 ```
 
-zero_grad()`<strong>:</strong> PyTorch accumulates gradients by default (useful for gradient accumulation across micro-batches). We must manually clear them before each new backward pass.
+```text
+zero_grad()`**:** PyTorch accumulates gradients by default (useful for gradient accumulation across micro-batches). We must manually clear them before each new backward pass.
 
-loss.backward()`<strong>:</strong> Backpropagation traverses the computation graph in reverse, computing ∂loss/∂θ for every parameter using the chain rule. This is the most compute-intensive step alongside the forward pass.
+loss.backward()`**:** Backpropagation traverses the computation graph in reverse, computing ∂loss/∂θ for every parameter using the chain rule. This is the most compute-intensive step alongside the forward pass.
+```
+
 
 <strong>Gradient clipping:</strong> Computes the L2 norm across all parameter gradients concatenated into one vector. If the norm exceeds 1.0, every gradient is multiplied by `1.0/norm`, preserving direction but capping magnitude. This prevents rare batches (unusual token distributions) from causing catastrophically large updates that destabilize training.
 
@@ -1513,9 +1522,12 @@ Repeat ~5000 times, save the best checkpoint → done
 
 PPL 32,000 = random guessing
 
+```text
 PPL 100 = narrowed to ~100 candidates
 
 PPL 10 = quite confident predictions
+```
+
 
 Once training is completed and we've saved the model in Drive, the next step is to download the model to your local system to perform the next steps.
 
@@ -1753,9 +1765,12 @@ sft_loader = DataLoader(sft_dataset, batch_size=4, shuffle=True)
 
 ```
 
-batch_size=4`<strong>:</strong> Small batch because we only have 79 examples. Larger batches would mean fewer gradient updates per epoch.
+```text
+batch_size=4`**:** Small batch because we only have 79 examples. Larger batches would mean fewer gradient updates per epoch.
 
-shuffle=True`<strong>:</strong> Randomize order each epoch so the model doesn't memorize a fixed sequence of examples.
+shuffle=True`**:** Randomize order each epoch so the model doesn't memorize a fixed sequence of examples.
+```
+
 
 ## Loading the Pre-trained Model
 
@@ -2005,13 +2020,16 @@ with torch.no_grad():
 
 ```
 
-torch.no_grad()`<strong>:</strong> No gradients needed for inference, which saves memory and speed
+```text
+torch.no_grad()`**:** No gradients needed for inference, which saves memory and speed
 
-temperature=0.7`<strong>:</strong> Slightly sharpened distribution for coherent but not robotic output
+temperature=0.7`**:** Slightly sharpened distribution for coherent but not robotic output
 
-top_k=50`<strong>:</strong> Only sample from top 50 tokens to avoid low-probability noise
+top_k=50`**:** Only sample from top 50 tokens to avoid low-probability noise
 
-top_p=0.9`<strong>:</strong> Nucleus sampling that dynamically selects the smallest set of tokens whose cumulative probability ≥ 0.9
+top_p=0.9`**:** Nucleus sampling that dynamically selects the smallest set of tokens whose cumulative probability ≥ 0.9
+```
+
 
 eos_token_id`**:** Stop generating when `<eos>` is produced
 
@@ -2356,9 +2374,12 @@ The model is tiny and the dataset is small, but every concept here (attention, n
 
 If you want to improve on this, the highest-impact next steps would be:
 
+```text
 more SFT data (thousands of examples instead of 79),
 
 a larger model (100M+ parameters), and
+```
+
 
 RLHF/DPO alignment.
 

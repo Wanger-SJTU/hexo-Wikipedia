@@ -1298,9 +1298,12 @@ optimizer.step()               # θ_new = θ_old - lr × adam_adjusted_gradient 
 
 ```
 
+```text
 zero_grad()`：PyTorch默认累积梯度（适用于微批次间的梯度累积）。我们必须在每次新的反向传播之前手动清除它们。
 
 loss.backward()`：反向传播通过链式法则反向遍历计算图，为每个参数计算∂loss/∂θ。这是与正向传播并列的计算量最大的步骤。
+```
+
 
 <strong>梯度裁剪：</strong> 计算所有参数梯度拼接成一个向量的L2范数。如果范数超过1.0，每个梯度乘以`1.0/范数`，保持方向但限制幅度。这防止罕见的批次（不寻常的token分布）导致灾难性的巨大更新，使训练不稳定。
 
@@ -1373,9 +1376,12 @@ AdamW用动量+衰减更新参数 → 实际的学习过程
 
 PPL 32,000 = 随机猜测
 
+```text
 PPL 100 = 缩小到约100个候选
 
 PPL 10 = 相当自信的预测
+```
+
 
 训练完成并将模型保存在Drive中后，下一步是将模型下载到你的本地系统以执行后续步骤。
 
@@ -1589,9 +1595,12 @@ sft_loader = DataLoader(sft_dataset, batch_size=4, shuffle=True)
 
 ```
 
+```text
 batch_size=4`：小批次，因为我们只有79个示例。更大的批次意味着每个epoch的梯度更新更少。
 
 shuffle=True`：每个epoch随机化顺序，使模型不会记住固定的示例序列。
+```
+
 
 ## 加载预训练模型
 
@@ -1823,6 +1832,7 @@ with torch.no_grad():
 
 ```
 
+```text
 torch.no_grad()`：推理不需要梯度，节省内存和速度
 
 temperature=0.7`：略微尖锐的分布，输出连贯但不机械
@@ -1830,6 +1840,8 @@ temperature=0.7`：略微尖锐的分布，输出连贯但不机械
 top_k=50`：只从top 50个token中采样，避免低概率噪声
 
 top_p=0.9`：核采样，动态选择累计概率 ≥ 0.9的最小token集合
+```
+
 
 eos_token_id`：当产生`<eos>`时停止生成
 

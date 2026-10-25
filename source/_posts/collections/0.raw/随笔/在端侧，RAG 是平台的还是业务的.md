@@ -49,7 +49,11 @@ TODO：这里插入一个流程图。
 上面的优化的算法也可以看出，为了应对更高复杂度的任务，整个RAG 流程也变复杂了，从系统优化的视角来看，这些流程之中，串行的比例还不低。很难去在做并行的优化。那么优化的点应该在哪儿？
 > Amdahl 定律。我们定义性能优化程度 S (Speedup) 为优化后性能与优化前性能的比值：
 > $$
+
+```text
 S = \frac{Performance\ using\ the\ enhancement}{Performance\ not\ using\ the\ enhancemanet}
+```
+
 $$
 >当然是主要因素的部分。
 

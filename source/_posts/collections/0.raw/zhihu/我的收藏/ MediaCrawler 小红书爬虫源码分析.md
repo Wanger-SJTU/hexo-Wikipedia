@@ -41,10 +41,9 @@ MediaCrawler 是最近冲上 Github 热搜的开源多社交平台爬虫。虽�
 
 实现代码为 `login_by_qrcode` 方法。代码为:
 
+```text
 async def login_by_qrcode(self):
     """Login to Xiaohongshu website and keep webdriver login state."""
-
-```text
     utils.logger.info("[XHSLogin.login_by_qrcode] Begin login to Xiaohongshu by QR code...")
     qrcode_img_selector = "xpath=//img[@class='qrcode-img']"
 ```
@@ -118,9 +117,9 @@ async def login_by_qrcode(self):
  
 - 如果获取到了，则等待用户扫码完成登录。
 - 其中可能会出现验证码的情况，此时会提示需要手动验证，没有实现自动验证，需要人工手动操作干预。
- async def check_login_state(self, no_logged_in_session: str) -> bool:
 
 ```text
+ async def check_login_state(self, no_logged_in_session: str) -> bool:
      if "请通过验证" in await self.context_page.content():
         utils.logger.info("[XHSLogin.check_login_state] A verification code appeared during the login process, please verify manually.")
 ```
@@ -130,10 +129,9 @@ async def login_by_qrcode(self):
 
 实现代码为 `login_by_mobile` 方法。代码为:
 
+```text
 async def login_by_mobile(self):
     """Login xiaohongshu by mobile"""
-
-```text
     utils.logger.info("[XHSLogin.login_by_mobile] Begin login xiaohongshu by mobile ...")
     await asyncio.sleep(1)
     try:
@@ -213,8 +211,12 @@ async def login_by_mobile(self):
  
 - 点击 `login_button_ele`  , 弹出登录对话框
 - 获取phone input_ele，并填入手机号
+
+```text
 login_container_ele = await self.context_page.wait_for_selector("div.login-container")
 input_ele = await login_container_ele.query_selector("label.phone > input")
+```
+
 await input_ele.fill(self.login_phone)
 
 - 点击`send_btn_ele`， 发送验证码
@@ -232,9 +234,8 @@ await input_ele.fill(self.login_phone)
 
 实现代码为 `login_by_cookies` 方法。就是将用户提供的 `cookie(web_session)`信息放到`browser_context` 中
 
-async def login_by_cookies(self):
-
 ```text
+async def login_by_cookies(self):
     for key, value in utils.convert_str_cookie_to_dict(self.cookie_str).items():
         if key != "web_session":  # Only set web_session cookie attribute
             continue
@@ -255,9 +256,8 @@ async def login_by_cookies(self):
 
 小红书浏览器端接口有做`sign`验签，MediaCrawler 生成 `sign`相关参数的代码位于 `media_platform/xhs/client.py` 文件中的 `_pre_headers` 方法。代码如下:
 
-async def _pre_headers(self, url: str, data=None) -> Dict:
-
 ```js
+async def _pre_headers(self, url: str, data=None) -> Dict:
     encrypt_params = await self.playwright_page.evaluate("([url, data]) => window._webmsxyw(url,data)", [url, data])
     local_storage = await self.playwright_page.evaluate("() => window.localStorage")
     signs = sign(

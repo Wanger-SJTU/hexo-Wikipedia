@@ -220,16 +220,12 @@ inline __device__ void compute_attn_1rowblock(const Params &params, const int bi
 
 其中flash对copy进行了封装，在tiling化后的两层循环上进行了数据拷贝，如下所示。看懂这里基本上对cute的数据拷贝过程应该了解的差不多了。
 
-```text
+```cpp
 template bool Is_even_MN=true, bool Is_even_K=true, bool Clear_OOB_MN=false, bool Clear_OOB_K=true,
           typename TiledCopy, typename Engine0, typename Layout0, typename Engine1, typename Layout1,
           typename Engine2, typename Layout2, typename Engine3, typename Layout3>
-```
-
 __forceinline__ __device__ void copy(TiledCopy tiled_copy, TensorEngine0, Layout0> const &S,
                             TensorEngine1, Layout1> &D, TensorEngine2, Layout2> const &identity_MN,
-
-```cpp
                             TensorEngine3, Layout3> const &predicate_K, const int max_MN=0) {
     CUTE_STATIC_ASSERT_V(rank(S) == Int3>{});
     CUTE_STATIC_ASSERT_V(rank(D) == Int3>{});

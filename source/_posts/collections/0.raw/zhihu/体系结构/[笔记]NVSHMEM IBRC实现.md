@@ -116,10 +116,14 @@ nvshmem_transport
 
 用户调用 nvshmem_init() 或 nvshmemx_init_attr()
     ↓
+
+```text
 nvshmemi_common_init() (init.cu:995)
     ↓
 nvshmemi_transport_init() (init.cu:1118)
     ↓
+```
+
 transport.cpp:nvshmemi_transport_init() (transport.cpp:50)
     ↓
 根据 NVSHMEM_REMOTE_TRANSPORT 环境变量选择传输层
@@ -356,19 +360,22 @@ nvshmemt_ibrc_get_mem_handle
   输出: mem_handle (包含 lkey, rkey)
 用处主要是在init时候完成内存注册
 
+```text
 nvshmem_init()
     ↓
 nvshmemi_setup_symmetric_heap()
     ↓
+```
+
 对每块对称堆内存调用:
 
 ```text
     transport->host_ops.get_mem_handle()
     ↓
-```
-
 nvshmemt_ibrc_get_mem_handle()
     ↓
+```
+
 返回的 rkey 通过 bootstrap 广播给所有 PE
 
 nvshmemt_ibrc_release_mem_handle
@@ -773,10 +780,9 @@ nvshmemi_packLL
 
 内部实现的API用来实现用户API，比如常用的nvshmem_putmem_signal_nbi的实现如下：
 
+```cpp
 /*__device__ nvshmem_putmem_signal_nbi*/
 NVSHMEMI_DEVICE_PREFIX NVSHMEMI_DEVICE_ALWAYS_INLINE void nvshmem_putmem_signal_nbi(
-
-```cpp
     void *dest, const void *source, size_t bytes, uint64_t *sig_addr, uint64_t signal, int sig_op,
     int pe) {
     nvshmemi_put_signal<char, NVSHMEMI_THREADGROUP_THREAD>((char *)dest, (const char *)source,
@@ -787,11 +793,10 @@ NVSHMEMI_DEVICE_PREFIX NVSHMEMI_DEVICE_ALWAYS_INLINE void nvshmem_putmem_signal_
 
 走到内部API就是
 
+```cpp
 template <typename T, threadgroup_t SCOPE>
 __device__ NVSHMEMI_DEVICE_ALWAYS_INLINE void nvshmemi_put_signal(
     T *dest, const T *source, size_t nelems, uint64_t *sig_addr, uint64_t signal, int sig_op,
-
-```cpp
     int pe, bool is_nbi, nvshmemx_qp_handle_t qp_index = NVSHMEMX_QP_DEFAULT) {
     nvshmemi_threadgroup_sync<SCOPE>();
     nvshmemii_put_signal<T, SCOPE>(dest, source, nelems, sig_addr, signal, sig_op, pe, is_nbi,
@@ -803,11 +808,10 @@ __device__ NVSHMEMI_DEVICE_ALWAYS_INLINE void nvshmemi_put_signal(
 
 再追踪下去
 
+```cpp
 template <typename T, threadgroup_t SCOPE>
 __device__ NVSHMEMI_DEVICE_ALWAYS_INLINE void nvshmemii_put_signal(
     T *dest, const T *source, size_t nelems, uint64_t *sig_addr, uint64_t signal, int sig_op,
-
-```cpp
     int pe, bool is_nbi, nvshmemx_qp_handle_t qp_index = NVSHMEMX_QP_DEFAULT) {
     int myIdx = nvshmemi_thread_id_in_threadgroup<SCOPE>();
     void *peer_base_addr =
@@ -924,12 +928,16 @@ Step 3: 交换 IPC Handle
 Step 4: 用 IPC Handle 建立 P2P 映射
          │                                       │
          ▼                                       ▼
+
+```text
 cudaIpcOpenMemHandle(                   cudaIpcOpenMemHandle(
   &peer_heap_base_p2p_[1],                &peer_heap_base_p2p_[0],
   ipc_handle_B)                           ipc_handle_A)
   → 0xC000 (PE1的heap在PE0的映射)          → 0xD000 (PE0的heap在PE1的映射)
          │                                       │
          ▼                                       ▼
+```
+
 ┌────────────────────────────────────────────────────────────┐
 │           peer_heap_base_p2p_[] (最终结果)                   │
 │  PE0: [0xA000(自己), 0xC000(PE1的映射)]                      │
@@ -988,10 +996,9 @@ nvshmemi_proxy_amo_fetch            # fetch 类原子操作（如 FADD, FCAS）
 nvshmemi_proxy_global_exit          # 请求全局退出
 以我们上面讨论的putmem_signal_nbi为例子继续看，跨机用到的nvshmemi_transfer_put_signal在nvshmem/src/include/non_abi/device/pt-to-pt/[http://transfer_device.cuh.in](https://link.zhihu.com/?target=http%3A//transfer_device.cuh.in)里
 
+```cpp
 template <threadgroup_t SCOPE>
 NVSHMEMI_TRANSFER_STATIC NVSHMEMI_TRANSFER_INLINE __device__ void nvshmemi_transfer_put_signal(
-
-```cpp
     void *rptr, void *lptr, size_t bytes, void *sig_addr, uint64_t signal, nvshmemi_amo_t sig_op,
     int pe, bool is_nbi, nvshmemx_qp_handle_t qp_index) {
 #ifdef NVSHMEM_IBGDA_SUPPORT
@@ -1020,9 +1027,8 @@ NVSHMEMI_TRANSFER_STATIC NVSHMEMI_TRANSFER_INLINE __device__ void nvshmemi_trans
 
 其中IBGDA部分之后再学习，如果不是IBGDA，就会走到IBRC的nvshmem_proxy_put_signal_nbi，它的代码实现如下
 
-NVSHMEMI_STATIC __device__ NVSHMEMI_DEVICE_ALWAYS_FORCE_INLINE void nvshmemi_proxy_put_signal_nbi(
-
 ```cpp
+NVSHMEMI_STATIC __device__ NVSHMEMI_DEVICE_ALWAYS_FORCE_INLINE void nvshmemi_proxy_put_signal_nbi(
     void *rwrite_ptr, void *lwrite_ptr, size_t write_bytes, int pe, nvshmemi_op_t channel_op,
     void *sig_addr, uint64_t sig_val, nvshmemi_amo_t sig_op,
     nvshmemx_qp_handle_t qp_index = NVSHMEMX_QP_DEFAULT) {

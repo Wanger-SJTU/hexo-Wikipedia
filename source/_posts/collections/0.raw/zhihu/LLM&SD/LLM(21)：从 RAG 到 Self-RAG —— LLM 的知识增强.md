@@ -118,12 +118,12 @@ LLM, SFT, RAG 之间的关系通过以上讨论，也能总结出 RAG 具有一�
 ```python
 from langchain.chat_models import ChatOpenAI
 from langchain.schema.runnable import RunnablePassthrough
-```
-
 
 llm = ChatOpenAI(model_name="gpt-3.5-turbo", temperature=0)
 rag_chain = {"context": retriever, "question": RunnablePassthrough()} | rag_prompt | llm
 rag_chain.invoke("What is Task Decomposition?")
+```
+
 
 #### 2.2 RAG 典型案例
 
@@ -236,23 +236,23 @@ Self-RAG 使用反思字符来自我评估输出，使其在推理过程中具�
 
 下面对开源的 Self-RAG 进行推理测试，可在这里下载模型 [selfrag_llama2_13b](https://link.zhihu.com/?target=https%3A//huggingface.co/selfrag/selfrag_llama2_13b) ，按照官方指导使用 vllm 进行推理服务
 
+```python
 from vllm import LLM, SamplingParams
 
 model = LLM("selfrag/selfrag_llama2_7b", download_dir="/gscratch/h2lab/akari/model_cache", dtype="half")
 sampling_params = SamplingParams(temperature=0.0, top_p=1.0, max_tokens=100, skip_special_tokens=False)
 
-```python
 def format_prompt(input, paragraph=None):
   prompt = "### Instruction:\n{0}\n\n### Response:\n".format(input)
   if paragraph is not None:
     prompt += "[Retrieval]{0}".format(paragraph)
   return prompt
-```
-
 
 query_1 = "Leave odd one out: twitter, instagram, whatsapp."
 query_2 = "What is China?"
 queries = [query_1, query_2]
+```
+
 
 # for a query that doesn't require retrieval
 preds = model.generate([format_prompt(query) for query in queries], sampling_params)
@@ -272,8 +272,12 @@ Model prediction: China is a country located in East Asia.[Retrieval]It is the m
 
 # for a query that needs factual grounding
 prompt = format_prompt("Can you tell me the difference between llamas and alpacas?", "The alpaca (Lama pacos) is a species of South American camelid mammal. It is similar to, and often confused with, the llama. Alpacas are considerably smaller than llamas, and unlike llamas, they were not bred to be working animals, but were bred specifically for their fiber.")
+
+```python
 preds = model.generate([prompt], sampling_params)
 print([pred.outputs[0].text for pred in preds])
+```
+
 
 输出结果如下，Self-RAG 找到相关的插入文档并生成有证据支持的答案。
 

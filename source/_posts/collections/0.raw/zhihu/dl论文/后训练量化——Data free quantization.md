@@ -105,7 +105,10 @@ $$E[\widetilde{y_j}-y_j]\approx\frac{1}{N}(\sum_n(\widetilde{W}x_n)_j-(Wx_n)_j) 
 
 卷积层和全连接层，本质上都是加权求和 (线性映射)，因此都满足下式：
 
+```text
 f(sx)=sf(x) \tag{2} 
+```
+
 
 (注意这个式子的 s 必须是正数)
 
@@ -115,7 +118,10 @@ f(sx)=sf(x) \tag{2}
 
 如果卷积后跟着一个类 ReLU 的激活函数 (ReLU、LeakyReLU 等)，那么 (2) 式也是成立的，因为 ReLU 这类激活函数本质上也是分段线性的。
 
+```text
 ReLU(sx)=sReLU(x) \tag{3} 
+```
+
 
 ![](/images/collections/0.raw/zhihu/dl%E8%AE%BA%E6%96%87/asset/img_157b4441cc02.jpg)
 
@@ -168,13 +174,9 @@ $$s_i=\frac{1}{r_i^{(2)}}\sqrt{r_i^{(1)}r_i^{(2)}} \tag{9} $$
 ```python
 def equalize(weight1, bias1, weight2):
  # 重排列
-```
-
  weight2 = weight2.permute(1, 0, 2, 3)
  out_channel = weight1.shape[0]
  for i in range(out_channel):
-
-```text
     r1 = compute_range(weight1, i)  # 计算kernel数值范围
     r2 = compute_range(weight2, i)
     s =  r1 / sqrt(r1 * r2)
@@ -182,10 +184,10 @@ def equalize(weight1, bias1, weight2):
     weight2[i] = weight2[i] * s
     bias1[i] = bias1[i] * (1. / s)
   # 调整回之前的数据排布
-```
-
  weight2 = weight2.permute(1, 0, 2, 3)
  return weight1, weight2
+```
+
 
 在实际操作中，我们会以两个相邻的 conv 为一组 (比如 conv1、conv2 为一组，conv2、conv3 为一组)，按顺序逐个计算每一组的缩放系数，逐层逐层地做 weight equalize 直到结尾。
 

@@ -224,9 +224,8 @@ sparse 的计算逻辑如下：
 
 1. qkv proj
 
-query_states = (
-
 ```text
+query_states = (
         self.q_proj(hidden_states)
         .view(bsz, q_len, self.num_heads, self.head_dim)
         .transpose(1, 2)
@@ -247,8 +246,12 @@ query_states = (
 2. 从 kv cache 获取 kv_seq_len
 
 # 新缓存格式
+
+```text
 if isinstance(past_key_value, DynamicCache):
     kv_seq_len = past_key_value.get_seq_length()
+```
+
 # 旧缓存格式
 
 ```text
@@ -270,9 +273,13 @@ query_states, key_states = apply_rotary_pos_emb(
 4. 更新 kv cache
 
 # New cache format
+
+```sql
 if isinstance(past_key_value, DynamicCache):
     if use_cache:
         key_states, value_states = past_key_value.update(key_states, value_states, layer_idx=self.layer_idx)
+```
+
 # Legacy cache format
 
 ```text
@@ -287,23 +294,33 @@ else:
 
 5. GQA 适配
 
+```text
 key_states = repeat_kv(key_states, self.num_key_value_groups)
 value_states = repeat_kv(value_states, self.num_key_value_groups)
+```
+
 
 6. 计算原始注意力权重
 
 # query_states ([1, 32, 1, 128])
 # key_states  ([1, 32, 4008, 128])
+
+```text
 attn_weights = torch.matmul(query_states, key_states.transpose(2, 3)) / math.sqrt(
     self.head_dim  # 128
 )
+```
+
 # attn_weights [1, 32, 1, 4008]
 
 7. 正负处理
 
+```text
 sign = (query_states > 0) + (~(query_states > 0)) * -1
 max_key = key_states * sign  # [1, 32, 4008, 128]
 postive_query = query_states * sign   #[1, 32, 1, 4008]
+```
+
 
 实现论文中的Ui = max(Qi*mi, Qi*Mi)：
 
@@ -315,20 +332,26 @@ postive_query = query_states * sign   #[1, 32, 1, 4008]
 
 9. 计算每个page 的最大值
 
+```text
 chunk_max_key = max_key.reshape(
     max_key.shape[0],
     max_key.shape[1],
     max_key.shape[2] // self.chunk_size,
     self.chunk_size,
     max_key.shape[3],
+```
+
 ).amax(dim=-2)
 # [1, 32, 251, 128]
 
 10. 恢复chunk_max_key 的原始 shape
 
+```text
 chunk_max_key = chunk_max_key.unsqueeze(-2).repeat(1, 1, 1, self.chunk_size, 1)
 chunk_max_key = chunk_max_key.reshape(
     chunk_max_key.shape[0], chunk_max_key.shape[1], -1, chunk_max_key.shape[-1]
+```
+
 )[:, :, :seq_length, :]
 # [1, 32, 4008, 128]
 
@@ -336,9 +359,8 @@ chunk_max_key = chunk_max_key.reshape(
 - 恢复到原始序列形状
 11. 计算query 和 max_key 的权重
 
-quantized_weight = torch.matmul(
-
 ```text
+quantized_weight = torch.matmul(
     postive_query.float(),    # [1, 32, 1, 128]
     chunk_max_key.transpose(2, 3),    # [1, 32, 128, 4008]
 )  
@@ -364,8 +386,11 @@ if attention_mask is not None:
 
 13. 选择 top-k
 
+```text
 token_budget = min(kv_seq_len, self.token_budget)  # 512
 attn_weights_for_selection = quantized_weight  #(1, 32, 1, 4008)
+```
+
 
 if token_budget > 0:
 
@@ -388,17 +413,23 @@ else:
 
 16. 计算 softmax 和 PV 矩阵乘
 
+```text
 attn_weights = nn.functional.softmax(attn_weights, dim=-1, dtype=torch.float32).to(
     query_states.dtype
 )
 attn_output = torch.matmul(attn_weights, value_states)
+```
+
 
 17. 计算 o_proj
 
+```text
 attn_output = attn_output.transpose(1, 2)
 attn_output = attn_output.reshape(bsz, q_len, self.hidden_size)
 
 attn_output = self.o_proj(attn_output)
+```
+
 
 #### bench_textgen (速度测试)
 

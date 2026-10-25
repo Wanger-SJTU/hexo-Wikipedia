@@ -269,9 +269,12 @@ C/C++11编程语言当使用low-level原子操作时暴露出一种软件层面�
 
 简单看一下data dependency barriers，它是read barrier的一种较弱的形式，在大多数处理器中，data dependency barriers会比read barrier更轻量。Linux的RCU机制会比较严重地依赖它。
 
+```text
 Q = &P;
 
 D = *Q;
+```
+
 
 这两个load中，第二个load依赖前一个的结果，data dependency barriers要求第二个load的结果值与Q的值一样新。
 

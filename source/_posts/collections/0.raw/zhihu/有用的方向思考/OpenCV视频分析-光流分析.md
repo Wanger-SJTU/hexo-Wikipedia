@@ -41,11 +41,17 @@ JimmyHua
 
 ✔️  第一帧的像素 I(x,y,t)I(x,y,t) ，表示在 t 时刻的像素值，那么经过 dtd_t 时间后，像素在下一帧移动的距离为 (dx,dy)(d_x,d_y) 。基于像素相同，亮度不变，可得：
 
+```text
 I(x,y,t)=I(x+dx,y+dy,t+dt)I(x, y, t)=I\left(x+d_{x}, y+d_{y}, t+d_{t}\right) 
+```
+
 
 假设移动很小，使用泰勒公式得：
 
+```text
 I(x+\Delta x, y+\Delta y, t+\Delta t)=I(x, y, t)+\frac{\partial I}{\partial x} \Delta x+\frac{\partial I}{\partial y} \Delta y+\frac{\partial I}{\partial t} \Delta t + \varepsilon 
+```
+
 
 其中 \varepsilon 为无穷小，由第一个假设得：
 
@@ -104,9 +110,9 @@ nextPts,status,err = cv2.calcOpticalFlowPyrLK(prevImg,   #上一帧图片
 import numpy as np
 import cv2 as cv
 import math
+cap = cv.VideoCapture('car_flow.mp4')
 ```
 
-cap = cv.VideoCapture('car_flow.mp4')
 
 #角点检测参数
 feature_params = dict(maxCorners=100, qualityLevel=0.1, minDistance=7, blockSize=7)
@@ -118,18 +124,19 @@ lk_params = dict(winSize=(15, 15), maxLevel=2, criteria=(cv.TERM_CRITERIA_EPS | 
 color = np.random.randint(0,255,(100,3))
 
 # 读取第一帧
+
+```x86asm
 ret, old_frame = cap.read()
 old_gray = cv.cvtColor(old_frame, cv.COLOR_BGR2GRAY)
 p0 = cv.goodFeaturesToTrack(old_gray, mask=None, **feature_params,useHarrisDetector=False,k=0.04)
 good_ini=p0.copy()
 
-```python
 def caldist(a,b,c,d):
     return abs(a-c)+abs(b-d)
-```
-
 
 mask = np.zeros_like(old_frame)
+```
+
 # 光流跟踪
 while True:
 
@@ -208,26 +215,34 @@ cap.release()
 import numpy as np
 import cv2 as cv
 import math
+cap = cv.VideoCapture('car_flow.mp4')
 ```
 
-cap = cv.VideoCapture('car_flow.mp4')
 
 #角点检测参数
 feature_params = dict(maxCorners=100, qualityLevel=0.1, minDistance=7, blockSize=7)
 
 #KLT光流参数
+
+```text
 lk_params = dict(winSize=(15, 15), maxLevel=2, criteria=(cv.TERM_CRITERIA_EPS | cv.TERM_CRITERIA_COUNT, 10, 0.02))
 
 height = cap.get(cv.CAP_PROP_FRAME_HEIGHT)
 width = cap.get(cv.CAP_PROP_FRAME_WIDTH)
 fps = cap.get(cv.CAP_PROP_FPS)
+```
+
 #out = cv.VideoWriter("reslut.avi", cv.VideoWriter_fourcc('D', 'I', 'V', 'X'), fps,
+
+```text
                      #(np.int(width), np.int(height)), True)
 
 tracks = []
 track_len = 15
 frame_idx = 0
 detect_interval = 5
+```
+
 while True:
 
 ```x86asm
@@ -333,11 +348,14 @@ cap.release()
 
 ✔️ 方向与Hue值相关，大小与Value值相关。
 
+```text
 flow=cv.calcOpticalFlowFarneback(
         prev, 
         next, flow, 
         pyr_scale, levels, winsize, 
         iterations, poly_n, poly_sigma, flags)
+```
+
  输入
 - prev--  前一帧图片 
 - next--  下一帧图片，格式与prev相同 
@@ -352,15 +370,15 @@ flow=cv.calcOpticalFlowFarneback(
 - 一个两通道的光流向量，实际上是每个点的像素位移值
 示例代码
 
-```python
+```x86asm
 import cv2 as cv
 import numpy as np
-```
-
 cap = cv.VideoCapture("vtest.avi")
 ret, frame1 = cap.read()
 prvs = cv.cvtColor(frame1,cv.COLOR_BGR2GRAY)
 hsv = np.zeros_like(frame1)
+```
+
 hsv[...,1] = 255
 
 ```x86asm

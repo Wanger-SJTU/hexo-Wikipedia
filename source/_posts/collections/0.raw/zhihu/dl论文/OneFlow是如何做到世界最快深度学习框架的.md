@@ -251,12 +251,15 @@ OneFlow内部使用多种方法减少global memory的访问从而加速计算过
 
 在坐标变换时，通常会遇到先除后取模的情形，此时如果把取模运算改写成乘法运算可以提升性能。如下所示：
 
+```text
 // before
 row = offset / row_size;
 col = offset % row_size;
 // after
 row = offset / row_size;
 col = offset - row * row_size;
+```
+
 
 <strong>OneFlow GPU性能优化方法四：延迟隐藏</strong>
 <strong>指令延迟</strong>指从指令发出到完成之间的时钟周期。<strong>指令吞吐</strong>指每个时钟周期可以完成多少条指令。如何尽可能掩盖指令延迟从而达到最快性能称之为延迟隐藏。在GPU硬件架构中，我们可以借由利特尔法则(Little‘s Law)估算出: 

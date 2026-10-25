@@ -95,8 +95,12 @@ def ReadIALU  : SchedRead;  // 32-bit integer ALU operations
 
 
 - 将其填充到真实的指令中
+
+```python
 def MUL : ALU_rr,
  Sched;
+```
+
 
 - 设置调度模型
 
@@ -142,9 +146,9 @@ SubTarget::overrideSchedPolicy(MachineSchedPolicy &Policy,
 list scheduling ：本质上是拓扑排序，针对有向无环图做序列化排序，同时在选择下一条指令的过程会有一些启发式算法。 算法会模拟每个cycle 的流水线的状态，会维护一个readlist，存放当前时间节点可以参与调度的指令。通常可以被调度的指令是没有前驱的，他不依赖于任何指令 ，可以立刻被调度。（Heuristic 启发式算法，表示可以从一系列可以被调度的指令，选择其中一个进行调度）。列表调度结合启发式 ，主要调整启发式Fucntion算法（通常大部分情况下给不出最优，但是能够接近最优解），调整更通用的算法，对于各种各样的输入指令能够达到更优解，一般启发式算法，可以根据以下属性，选择当前优先级最高的指令进行调度：1）节点是否在关键路径上，关键路径上表示执行的时间最长，关键路径上的指令赋予更高的优先级。2）指令测周期更长。给他更高的优先级 ；3）可以选择有更多后继节点的指令进行调度（这样参与调度的机会更多）4）寄存器压力等
 
 Class customestragy : public GenericScheduler {
-  Sunit *pickNode(bool &IsTopNode) override{
 
 ```text
+  Sunit *pickNode(bool &IsTopNode) override{
     // heuristic alogorithm 
     return GenericScheduler::pickNode(IsTopNode);
   }

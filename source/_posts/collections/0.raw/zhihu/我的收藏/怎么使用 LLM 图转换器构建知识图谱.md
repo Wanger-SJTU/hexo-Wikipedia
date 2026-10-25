@@ -108,7 +108,10 @@ graph =Neo4jGraph(  url="bolt://54.87.130.140:7687",  username="neo4j",  passwor
 
 以下是一个`Node`类的示例，用于描述知识图谱中的节点：
 
-classNode(BaseNode): id:str=Field(..., description="名称或人类可读的唯一标识符")  label:str=Field(..., description=f"可选项包括{enum_values}")  properties:Optional[List[Property]]`Node 类说明每个<strong>节点（Node）</strong>都包含以下部分：
+```text
+classNode(BaseNode): id:str=Field(..., description="名称或人类可读的唯一标识符")  label:str=Field(..., description=f"可选项包括{enum_values}")  properties:Optional[List[Property]]`Node 类说明每个**节点（Node）**都包含以下部分：
+```
+
 
 •`id`：节点唯一标识符（要求是<strong>人类可读的唯一名称</strong>）。•说明：有些 LLM 会将 ID 理解为随机字符串或自增整数，但我们更希望 ID 能直接表示实体的名称。•`label`：节点标签（通过描述中列出可选项来限制标签类型）。•`properties`：可选的属性（用于存放节点的额外信息）。
 
@@ -130,7 +133,10 @@ classRelationship(BaseRelationship):  source_node_id:str  source_node_label:str=
 定义属性类（Property）在<strong>工具驱动提取</strong>模式下，我们可以为节点和关系都定义属性。
 以下是用于定义属性的`Property`类：
 
-classProperty(BaseModel):"""由键值对组成的单个属性"""  key:str=Field(..., description=f"可选项包括{enum_values}")  value:str`属性（Property）的局限性每个<strong>Property</strong>都是以<strong>键值对（key-value pair）</strong>的形式定义。
+```text
+classProperty(BaseModel):"""由键值对组成的单个属性"""  key:str=Field(..., description=f"可选项包括{enum_values}")  value:str`属性（Property）的局限性每个**Property**都是以**键值对（key-value pair）**的形式定义。
+```
+
 这种方式虽然灵活，但也存在一些局限：
 
 •无法为每个属性单独提供唯一的描述。•无法区分哪些属性是<strong>必填</strong>，哪些是<strong>可选</strong>—— 因此所有属性都被统一定义为可选。•属性并不是针对每种节点或关系类型分别定义的，而是<strong>在所有节点和关系之间共享</strong>。
@@ -199,9 +205,13 @@ os.environ["OPENAI_API_KEY"]= getpass.getpass("OpenAI api key")
 llm =ChatOpenAI(model='gpt-4o')`下面先看看在未定义任何图谱 schema 的情况下，抽取流程是如何工作的。
 
 fromlangchain_experimental.graph_transformersimportLLMGraphTransformer
+
+```text
 no_schema =LLMGraphTransformer(llm=llm)`接下来使用异步的`aconvert_to_graph_documents`来处理文档。 推荐在 LLM 抽取中使用 async：它可以并行处理多个文档，显著缩短等待时间、提升吞吐量，尤其适合批量场景。
 
 data= await no_schema.aconvert_to_graph_documents(documents)`LLM Graph Transformer 的返回结果是一个图文档（graph document），其结构大致如下：
+```
+
 
 [GraphDocument(    nodes=[Node(id="Marie Curie",type="Person", properties={}),Node(id="Pierre Curie",type="Person", properties={}),Node(id="Nobel Prize",type="Award", properties={}),Node(id="University Of Paris",type="Organization", properties={}),Node(id="Robin Williams",type="Person", properties={}),],    relationships=[Relationship(       source=Node(id="Marie Curie",type="Person", properties={}),        target=Node(id="Nobel Prize",type="Award", properties={}),       type="WON",        properties={},),Relationship(       source=Node(id="Marie Curie",type="Person", properties={}),        target=Node(id="Nobel Prize",type="Award", properties={}),       type="WON",        properties={},),Relationship(       source=Node(id="Marie Curie",type="Person", properties={}),        target=Node(         id="University Of Paris",type="Organization", properties={}),       type="PROFESSOR",        properties={},),Relationship(       source=Node(id="Pierre Curie",type="Person", properties={}),        target=Node(id="Nobel Prize",type="Award", properties={}),       type="WON",        properties={},),],   source=Document(      metadata={"id":"de3c93515e135ac0e47ca82a4f9b82d8"},      page_content="\nMarie Curie, 7 November 1867 – 4 July 1934, was a Polish and naturalised-French physicist and chemist who conducted pioneering research on radioactivity.\nShe was the first woman to win a Nobel Prize, the first person to win a Nobel Prize twice, and the only person to win a Nobel Prize in two scientific fields.\nHer husband, Pierre Curie, was a co-winner of her first Nobel Prize, making them the first-ever married couple to win the Nobel Prize and launching the Curie family legacy of five Nobel Prizes.\nShe was, in 1906, the first woman to become a professor at the University of Paris.\nAlso, Robin Williams!\n",),)]`图文档与可视化图文档（graph document）中不仅描述了抽取出的**节点（nodes）**与**关系（relationships）**， 还会在`source`字段下附上<strong>抽取所依据的源文档</strong>，便于溯源与校验。
 
@@ -250,9 +260,12 @@ allowed_nodes=["Person","Organization","Location","Award","ResearchField"]nodes_
 
 第一种做法是以<strong>枚举列表</strong>的方式，指定允许的关系类型：
 
+```text
 allowed_nodes =["Person","Organization","Location","Award","ResearchField"]allowed_relationships =["SPOUSE","AWARD","FIELD_OF_RESEARCH","WORKS_AT","IN_LOCATION"]
 rels_defined =LLMGraphTransformer( llm=llm, allowed_nodes=allowed_nodes, allowed_relationships=allowed_relationships)
 data = await rels_defined.aconvert_to_graph_documents(documents)`随后，可以再次对两次独立抽取进行对比可视化，观察在限定了节点与关系之后，输出在结构与语义上的一致性是否显著提升。
+```
+
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_be132623d740.jpg)
 
@@ -268,9 +281,12 @@ data = await rels_defined.aconvert_to_graph_documents(documents)`随后，可以
 
 新增：关系的三元组约束（限定端点与方向）为了解决<strong>无法指定关系可连接的节点类型</strong>以及<strong>无法强制方向</strong>的问题，我们引入了新的关系定义方式，如下所示：
 
+```text
 allowed_nodes =["Person","Organization","Location","Award","ResearchField"]allowed_relationships =[("Person","SPOUSE","Person"),("Person","AWARD","Award"),("Person","WORKS_AT","Organization"),("Organization","IN_LOCATION","Location"),("Person","FIELD_OF_RESEARCH","ResearchField")]
 rels_defined =LLMGraphTransformer( llm=llm, allowed_nodes=allowed_nodes, allowed_relationships=allowed_relationships)
-data = await rels_defined.aconvert_to_graph_documents(documents)`使用三元组格式定义关系与之前用<strong>字符串列表</strong>定义关系不同，现在我们采用<strong>三元组（tuple）</strong>的格式来描述关系：
+data = await rels_defined.aconvert_to_graph_documents(documents)`使用三元组格式定义关系与之前用**字符串列表**定义关系不同，现在我们采用**三元组（tuple）**的格式来描述关系：
+```
+
 
 •<strong>第 1 个元素</strong>：源节点类型（Source Node）•<strong>第 2 个元素</strong>：关系类型（Relationship Type）•<strong>第 3 个元素</strong>：目标节点类型（Target Node）
 
@@ -304,10 +320,13 @@ data = await rels_defined.aconvert_to_graph_documents(documents)`使用三元组
 
 示例代码：
 
+```text
 allowed_nodes =["Person","Organization","Location","Award","ResearchField"]allowed_relationships =[("Person","SPOUSE","Person"),("Person","AWARD","Award"),("Person","WORKS_AT","Organization"),("Organization","IN_LOCATION","Location"),("Person","FIELD_OF_RESEARCH","ResearchField")]
 node_properties =Truerelationship_properties =True
 props_defined =LLMGraphTransformer( llm=llm, allowed_nodes=allowed_nodes, allowed_relationships=allowed_relationships, node_properties=node_properties, relationship_properties=relationship_properties)
 data = await props_defined.aconvert_to_graph_documents(documents)graph.add_graph_documents(data)`接下来即可查看结果，评估在属性启用后，节点与关系是否携带了更丰富的上下文信息（如时间、职位、地点、获奖年份等）。
+```
+
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_6ebe340a171e.jpg)
 
@@ -322,10 +341,13 @@ data = await props_defined.aconvert_to_graph_documents(documents)graph.add_graph
 
 第二种做法是<strong>明确列出</strong>我们希望抽取的<strong>节点属性</strong>与<strong>关系属性</strong>，从而让输出<strong>更可控、更一致</strong>。
 
+```text
 allowed_nodes =["Person","Organization","Location","Award","ResearchField"]allowed_relationships =[("Person","SPOUSE","Person"),("Person","AWARD","Award"),("Person","WORKS_AT","Organization"),("Organization","IN_LOCATION","Location"),("Person","FIELD_OF_RESEARCH","ResearchField")]
 node_properties =["birth_date","death_date"]relationship_properties =["start_date"]
 props_defined =LLMGraphTransformer( llm=llm, allowed_nodes=allowed_nodes, allowed_relationships=allowed_relationships, node_properties=node_properties, relationship_properties=relationship_properties)
 data = await props_defined.aconvert_to_graph_documents(documents)graph.add_graph_documents(data)`接下来即可查看 LLM 的抽取结果，验证是否正确填充了：
+```
+
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_6ad39d97332b.jpg)
 

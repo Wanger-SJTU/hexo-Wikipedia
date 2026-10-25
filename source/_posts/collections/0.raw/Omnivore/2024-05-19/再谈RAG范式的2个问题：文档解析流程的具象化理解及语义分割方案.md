@@ -86,14 +86,14 @@ id: ae58d270-a08f-40fa-9265-1cca07f744bc
 ```python
 from modelscope.pipelines import pipeline
 from modelscope.utils.constant import Tasks
-```
-
  p = pipeline(
     task=Tasks.document_segmentation,
     model='damo/nlp_bert_document-segmentation_chinese-base')
 
  result = p(documents='......')
 print(result[OutputKeys.TEXT])
+```
+
 
 当然，效果并不是很好，如下一个badcase:
 

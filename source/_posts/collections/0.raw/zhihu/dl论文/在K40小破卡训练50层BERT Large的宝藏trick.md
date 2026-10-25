@@ -99,17 +99,20 @@ def mlp(input_x, input_y, hid_dim=128, label_dim=2):
     cost = fluid.layers.cross_entropy(input=prediction, label=input_y)
     sum_cost = fluid.layers.reduce_mean(cost)
     return sum_cost, fc_1, prediction
-```
-
 
 input_x = fluid.layers.data(name="x", shape=[32], dtype='float32')
 input_y = fluid.layers.data(name="y", shape=[1], dtype='int64')
+```
+
 cost, fc_1, pred = mlp(input_x, input_y)
 
 # 定义RecomputeOptimizer
 
+```text
 sgd = fluid.optimizer.SGD(learning_rate=0.01)
 recompute_optimizer = fluid.optimizer.RecomputeOptimizer(sgd)
+```
+
 # 设置checkpoints
 recompute_optimizer._set_checkpoints([fc_1, pred])
 # 运行优化算法

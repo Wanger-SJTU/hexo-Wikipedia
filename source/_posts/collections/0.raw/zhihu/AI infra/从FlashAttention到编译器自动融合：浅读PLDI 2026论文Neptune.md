@@ -22,8 +22,11 @@ source_url: https://zhuanlan.zhihu.com/p/2040074326905462952
 一、Motivation
 深度学习模型通常写成很多tensor operators的组合，例如一个非常简单的程序：
 
+```text
 y = relu(x)
 z = y + 1
+```
+
 如果按照普通框架执行，它可能会变成两个kernel：
 
 kernel 1: y = relu(x)
@@ -37,11 +40,10 @@ z = relu(x) + 1
 
 标准attention大概是：
 
+```text
 score = QK^T / sqrt(d)
 P = softmax(score)
 O = P@V
-
-```text
 // 展开一点就是
 /*
 ```
@@ -55,14 +57,20 @@ O = P@V
 
 稳定版softmax通常写成：
 
+```text
 m_i = max_j x_ij // 沿着j维度对x_ij取最大值
 p_ij = exp(x_ij - m_i)
 s_i = sum_j p_ij // 沿着j维度对p_ij求和
 out_ij = p_ij / s_i
+```
+
 这里有两个reduction：
 
+```text
 m_i = max_j x_ij
 s_i = sum_j p_ij
+```
+
 第二个reduction sum依赖第一个reduction max的最终结果，也就是说，只有当整行最大值m_i算完之后，才能正确计算每个exp(x_ij - m_i)。这就是普通编译器很难自动融合attention的根本原因。
 
 ![](https://pic2.zhimg.com/v2-4fc6335103414043c22aa06c2b30f7cf_r.jpg)Neptune用Fig. 1给了一个非常小的例子，这个例子是理解全文的关键。
@@ -75,9 +83,9 @@ row 1: [6, 5, 7, 3]
 原始程序分三步：
 
 # s_max: 每一行求最大值
-for i in range(2):
 
 ```text
+for i in range(2):
     for j in range(4):
         xmax[i] = max(xmax[i], inp[i, j])
 ```
@@ -92,15 +100,17 @@ for i, j in grid(2, 4):
     xsum[i] += xexp[i, j]
 这就是softmax的前半部分`max → exp → sum` 。对第0行[0, 1, -1, 2]来说，最终最大值是xmax[0] = 2，所以正确的xexp是：
 
+```text
 exp(0 - 2)  = e^-2
 exp(1 - 2)  = e^-1
 exp(-1 - 2) = e^-3
 exp(2 - 2)  = e^0 = 1
+```
+
 正确的xsum[0]是`e^-2 + e^-1 + e^-3 + 1` 。对应Fig. 1(a)和Fig. 1(d)。那为什么naive fusion会得到错误的结果呢？既然我们想fusion，一个自然想法就是把三段loop合成一段：
 
-for i in range(2):
-
 ```text
+for i in range(2):
     for j in range(4):
         xmax[i] = max(xmax[i], inp[i, j])
         xexp[i, j] = exp(inp[i, j] - xmax[i])
@@ -110,26 +120,27 @@ for i in range(2):
 
 这就是Fig. 1(b)里的naive fusion。但是它是错误的，因为在第 j 次迭代时，xmax[i] 只是目前看到的最大值，不是整行最终最大值。还是看第 0 行[0, 1, -1, 2]，j=0时当前只看到[0]，所以：
 
+```text
 xmax = 0
 xexp = exp(0 - 0) = 1
+```
+
 但正确结果应该是`exp(0 - 2) = e^-2`。 因为最终最大值是`2`。`j=1`时，当前看到`[0, 1]`，所以`xmax = 1, xexp = exp(1 - 1) = 1` ，但正确结果是`exp(1 - 2) = e^-1` 。`j = 2`时当前看到`[0, 1, -1]` , 所以`xmax = 1, xexp = exp(-1 - 1) = e^-2` , 但正确结果应该是`exp(-1 - 2) = e^-3` . `j = 3`时当前看到完整行`[0, 1, -1, 2]` , 所以`xmax = 2, xexp = exp(2 - 2) = 1` . 这一项才是正确的，因为naive fusion得到的`xsum[0]`是`1 + 1 + e^-2 + 1`, 而正确结果是`e^-2 + e^-1 + e^-3 + 1`, 不一样。这就是Fig. 1(e)里橙色部分展示的错误依赖：`xexp`太早读取了`xmax`，读到的是中间值，而不是最终值。传统tensor compiler看到这种依赖关系，会认为这个fusion不合法，于是拒绝融合。
 
 <strong>而Neptune的核心思想是先打破依赖，允许fusion暂时算错，再用代数公式构造一个repair term把结果修复回来。</strong>
 
 在softmax例子里，问题是前面的`xsum`是基于`old_max`算的，但现在`max`更新成了`new_max`。那么我们需要把旧的partial sum从`old_max`的坐标系转换到`new_max`的坐标系。修正公式是：
 
-new_sum =
-
 ```text
+new_sum =
     exp(old_max - new_max) * old_sum
   + exp(x - new_max)
 ```
 
 也就是Fig. 1(c)里的代码：
 
-for i in range(2):
-
 ```text
+for i in range(2):
     xmax_0[i] = -inf
 
     for j in range(4):
@@ -152,9 +163,12 @@ for i in range(2):
         xmax_0[i] = xmax_1[i]
 其中:
 
+```text
 xmax_0 = old_max
 xmax_1 = new_max
 exp(old_max - new_max) = repair term
+```
+
 Fig. 1(f)中绿色部分展示的就是修正项和修正后的`xsum`。
 
 <strong>现在问题变成了为什么这个repair term是正确的？</strong>
@@ -166,8 +180,11 @@ Fig. 1(f)中绿色部分展示的就是修正项和修正后的`xsum`。
 二、Neptune的一般化：f、g、h分别是什么？
 论文4.1节把这个例子推广到一般的reduction fusion。它考虑一种模式consumer reduction依赖producer reduction，写成公式：
 
+```text
 t = reduce_f g(r, c)
 /*
+```
+
 r：producer reduction 的结果
 c：普通输入，不是 reduction 产生的值
 g(r, c)：consumer reduction 的每一项
@@ -176,10 +193,13 @@ t：consumer reduction 的 partial result
 */
 在softmax例子中xsum = sum_j exp(inp[i,j] - xmax[i])对应：
 
+```text
 f(x, y) = x + y
 g(r, c) = exp(c - r)
 r = xmax[i]
 c = inp[i,j]
+```
+
 Neptune要找一个repair function：h(t, r, r')，含义是：
 
 t 原来是基于旧 r 算出来的 partial result；
@@ -194,8 +214,11 @@ Neptune要求repair function h满足两个条件。
 h(g(r, c), r, r') = g(r', c)
 意思是如果一个单项原来是用旧 r 算的，h 可以把它改成用新 r' 算的。对softmax：
 
+```text
 g(r, c) = exp(c - r)
 h(t, r, r') = t * exp(r - r')
+```
+
 所以：
 
 h(exp(c - r), r, r')
@@ -227,11 +250,17 @@ h(x + y, r, r')
 t = g(r, c)
 而且`g(r, c)` 对 `c` 可逆，也就是说我们能从 `t` 和 `r` 反推出 `c`，那么：
 
+```text
 c = g_c^{-1}(r, t)
+```
+
 然后：
 
+```text
 h(t, r, r') = g(r', g_c^{-1}(r, t))
 /*
+```
+
 1. t 是旧 r 下的结果；
 2. 先从 t 和旧 r 反推出原始输入 c；
 3. 再用新 r' 重新计算 g。
@@ -241,8 +270,11 @@ h(t, r, r') = g(r', g_c^{-1}(r, t))
 t = exp(c - r)
 反推：
 
+```text
 log(t) = c - r
 c = r + log(t)
+```
+
 所以：
 
 h(t, r, r')
@@ -262,9 +294,8 @@ Rolling Update的算法步骤
 
 第二步Naive Loop Fusion。Neptune 先故意做 naive fusion：
 
-for i in range(2):
-
 ```text
+for i in range(2):
     for j in range(4):
         xmax[i] = max(xmax[i], inp[i,j])
         xsum[i] += exp(inp[i,j] - xmax[i])
@@ -282,24 +313,33 @@ for i in range(2):
 
 Attention的核心公式可以写成：
 
+```text
 score_ij = q_i · k_j
 m_i = max_j score_ij
 p_ij = exp(score_ij - m_i)
 s_i = sum_j p_ij
 o_i = sum_j p_ij v_j
 out_i = o_i / s_i
+```
+
 这里不仅 `s_i` 依赖 `m_i`，`o_i` 也依赖 `m_i`。因为`o_i = sum_j exp(score_ij - m_i) v_j`。如果 max 从 `old_m` 变成 `new_m`，那么 `o_i` 也要修`o_i = exp(old_m - new_m) * o_i + sum_j exp(score_ij - new_m) v_j `，所以 rolling update 维护三个量：
 
+```text
 m = 当前 max
 s = 当前 exp sum
 o = 当前 weighted value sum 
+```
+
 每处理一个 key/value block：
 
+```text
 new_m = max(old_m, block_max)
 alpha = exp(old_m - new_m)
 s = alpha * s + sum(exp(score_block - new_m))
 o = alpha * o + sum(exp(score_block - new_m) * V_block)
 m = new_m
+```
+
 最后`out = o / s`，这正是 FA 的 online softmax 结构。Neptune 的关键贡献是它不是直接写一个 FA kernel，而是通过 rolling update 这个通用编译器 transformation，从 plain attention expression 生成出类似 FA 的 fused operator。
 
 Rolling Update的好处非常明显：1. 不需要 materialize attention score；2. 不需要 materialize softmax matrix；3. 减少 HBM 读写；4. 提高 tile 内数据复用；5. 降低中间 tensor 显存占用。代价也很明显：1. 每次迭代要多算 repair term；2. 要保存 old/current reduction result；3. rolling loop 变成带依赖的循环，并行性变差。第三点很关键，rolling update的更新是`j0 → j1 → j2 → ...`，后一步依赖前一步的 `m`、`s`、`o`，所以不容易沿着这个维度大规模并行。 这就是为什么Neptune还需要第二个transformation：split-K update。
@@ -312,29 +352,26 @@ Rolling Update的好处非常明显：1. 不需要 materialize attention score�
 
 chunk 0:
 
+```text
 local_max_0 = max(0, 1) = 1
 local_sum_0 =
-
-```text
     exp(0 - 1) + exp(1 - 1)
   = e^-1 + 1 
 ```
 
 chunk 1:
 
+```text
 local_max_1 = max(-1, 2) = 2
 local_sum_1 =
-
-```text
     exp(-1 - 2) + exp(2 - 2)
   = e^-3 + 1
 ```
 
 然后全局最大值：
 
-global_max = max(local_max_0, local_max_1)
-
 ```text
+global_max = max(local_max_0, local_max_1)
            = max(1, 2)
            = 2
 ```
@@ -376,6 +413,7 @@ split-k update:
 
 输入一tensor expression，描述的是算什么。比如attention的计算可以写成：
 
+```text
 p = batch_matmul(q, k, trans_b=True)
 score = score_mod(p)
 s_max = max(score, axis=j)
@@ -383,15 +421,20 @@ s_exp = exp(score - s_max)
 s_expsum = sum(s_exp, axis=j)
 sv = batch_matmul(s_exp, v)
 out = sv / s_expsum
+```
+
 论文appendix A的fig 12给出了attention的compute definition，38行代码覆盖了大多数attention variants。
 
 ![](https://pic1.zhimg.com/v2-5072ce8e99ef10f4e72690c2c720c3fc_r.jpg)输入二schedule template。这个输入描述的是如何优化，例如:
 
+```text
 tile(...)
 rolling_update(...)
 cache_read(...)
 set_scope(...)
 decompose_reduction(...)
+```
+
 论文 Appendix A 的 Figure 13 给了 attention 的 schedule，大约 28 行。
 
 ![](https://pic1.zhimg.com/v2-092dd187054f6604e9add6b441a53cb2_r.jpg)Neptune 不是完全自动发现所有 schedule。它仍然需要用户提供一个 high-level schedule template。但是相比手写 Triton FlashAttention kernel，这已经抽象了很多。论文提到，Tri Dao 的 Triton attention kernel 大约 650 行，而 Neptune 的 attention 输入是 38 行 compute definition + 28 行 schedule。
@@ -399,9 +442,8 @@ decompose_reduction(...)
 七、Template-Guided Optimizer做什么
 Template-Guided Optimizer 会把 tensor expression 先转换成 <strong>loop-scalar IR</strong>。所谓 loop-scalar IR，就是普通的 loop nest + scalar expression。例如：
 
-for i in range(N):
-
 ```text
+for i in range(N):
     for j in range(M):
         xsum[i] += exp(inp[i,j] - xmax[i])
 ```

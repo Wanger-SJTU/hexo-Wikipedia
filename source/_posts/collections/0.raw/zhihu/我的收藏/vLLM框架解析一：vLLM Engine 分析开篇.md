@@ -79,7 +79,7 @@ PageAttention SlopMapping
   dim3 grid(num_tokens);
   dim3 block(std::min(num_heads * head_size, 512));
 
-```text
+```cpp
   const at::cuda::OptionalCUDAGuard device_guard(device_of(key));
   const cudaStream_t stream = at::cuda::getCurrentCUDAStream();
   VLLM_DISPATCH_FLOATING_TYPES(
@@ -94,11 +94,7 @@ PageAttention SlopMapping
 }
 
 template  typename scalar_t 
-```
-
 __global__ void reshape_and_cache_flash_kernel(
-
-```cpp
     const scalar_t* __restrict__ key,    // [num_tokens, num_heads, head_size]
     const scalar_t* __restrict__ value,  // [num_tokens, num_heads, head_size]
     scalar_t* __restrict__ k_cache,      // [num_blocks, block_size, num_heads,

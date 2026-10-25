@@ -73,9 +73,12 @@ Verbs API 的设计是硬件无关的，这意味着理论上，使用 Verbs 编
 
 <strong>关键属性：</strong>
 
+```text
 lkey (local key): 用于本地 HCA 访问该 MR。
 
 rkey (remote key): 用于远程 HCA 访问该 MR (建立连接后将 rkey 告知对方)。
+```
+
 
 操作：
 
@@ -316,25 +319,17 @@ static const struct ib_device_ops urdma_device_ops; // 定义在后续
 // 设备分配与释放的辅助函数
 static struct urdma_dev *urdma_alloc_device(const int id) {
   struct urdma_dev *urdma;
-```
-
 
   urdma = ib_alloc_device(urdma_dev, ibdev);
-
-```text
   if (!urdma) {
     pr_err("urdma: alloc_device failed for id: %d\n", id);
     return NULL;
   }
-```
-
 
   urdma->id = id;
   urdma->gid.global.subnet_prefix = cpu_to_be64(0xfe80000000000000);
   urdma->gid.global.interface_id  = cpu_to_be64(0x505400fffe123456);
   pr_info("urdma: allocated device for id: %d\n", id);
-
-```cpp
   return urdma;
 }
 
@@ -349,12 +344,8 @@ static void urdma_dealloc_device(struct urdma_dev *urdma) {
 static int __init urdma_init_module(void) {
   int err = 0;
   int i;
-```
-
 
   pr_info("urdma: loading module...\n");
-
-```cpp
   for (i = 0; i < NUM_DEV; i++) {
     urdma_devs[i] = urdma_alloc_device(i);
     if (!urdma_devs[i]) {
@@ -380,9 +371,9 @@ static int __init urdma_init_module(void) {
 
 
 err_cleanup:
-  pr_err("urdma: error during module initialization, cleaning up...\n");
 
 ```cpp
+  pr_err("urdma: error during module initialization, cleaning up...\n");
   // 清理已成功创建的设备
   for (i = i - 1; i >= 0; i--) { // 从最后一个成功分配/注册的开始清理
     if (urdma_devs[i]) {
@@ -408,12 +399,12 @@ static void __exit urdma_exit_module(void) {
   }
   pr_info("urdma: module unloaded.\n");
 }
-```
-
 module_init(urdma_init_module);
 module_exit(urdma_exit_module);
 
 // ib_device_ops 和 urdma_register_device 的定义将在后文给出
+```
+
 <strong>初始化流程 (urdma_init_module)：</strong>
 
 <strong>1. 创建设备:</strong>

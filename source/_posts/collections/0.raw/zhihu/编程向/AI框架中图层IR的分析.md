@@ -83,8 +83,11 @@ return x+1
 
 转换为CPS形式，k就是一个continuation：
 
+```python
 def foo(x,k):
 k(x+1)
+```
+
 
 直观上看，函数不“return”，而是“continue”;
 
@@ -132,10 +135,10 @@ CPS形式非常适合编译器进行分析和变换，比如tail-recursion elimi
 ```python
 def h(q):                         i = n - 1
     c(q)            ->           prodprimes(i, c)
-```
-
 i = n - 1
 prodprimes(i, h)
+```
+
 
 参考【3】
 
@@ -389,9 +392,8 @@ def test_f(x, y):
 
 这段Python代码对应的ANF表达为：
 
-lambda (x, y)
-
 ```x86asm
+lambda (x, y)
     let a = x - 1 in
     let b = a + y in
     let func = lambda (x, y)

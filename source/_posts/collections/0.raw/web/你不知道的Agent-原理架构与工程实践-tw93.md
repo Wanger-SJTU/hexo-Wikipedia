@@ -308,14 +308,10 @@ const systemPrompt =
 - code-review: 代码审查检查清单
 - git-workflow: 分支策略和 PR 规范
 
-```text
+```js
 ;
-```
-
 
 async function executeLoadSkill(name: string): Promise<string> {
-
-```text
   return fs.readFile(`./skills/${name}.md`, "utf-8");
 }
 ```
@@ -898,7 +894,7 @@ class ChannelAdapter {
 
 Channel 适配器把消息写入 MessageBus，AgentLoop 从 Bus 中消费消息，处理完成后再把结果发回去。
 
-```text
+```js
 // MessageBus：渠道和 Agent 之间的解耦层
 class MessageBus {
   async consumeInbound() { /* 从队列取下一条消息 */ }
@@ -914,23 +910,15 @@ class AgentLoop {
     this.sessions = new SessionManager(workspace);   // 持久化会话历史
     this.memory   = new MemoryConsolidator(workspace, provider); // 跨会话记忆整合
   }
-```
-
 
   async run() {
-
-```js
     while (true) {
       const msg = await this.bus.consumeInbound();
       this.dispatch(msg); // 不 await：不同 session 的消息并发处理，互不阻塞
     }
   }
-```
-
 
   async dispatch(msg) {
-
-```js
     const session = this.sessions.getOrCreate(msg.sessionKey);
     await this.memory.maybeConsolidate(session); // token 超阈值时自动整合记忆
 
@@ -940,12 +928,8 @@ class AgentLoop {
     session.save(allMessages);
     await this.bus.publishOutbound({ channel: msg.channel, content: text });
   }
-```
-
 
   async runLoop(messages) {
-
-```js
     for (let i = 0; i < MAX_ITER; i++) {
       const resp = await this.provider.chat(messages, this.tools.definitions());
       if (resp.hasToolCalls) {
@@ -1042,7 +1026,7 @@ interface TaskState {
   status: "pending" | "in-progress" | "completed" | "failed";
   progress: {
 
-```text
+```js
     completedSteps: string[];
     currentStep: string;
     remainingSteps: string[];
@@ -1050,22 +1034,14 @@ interface TaskState {
   context: { key: string; value: string }[];
   lastUpdated: number;
 }
-```
-
 
 async function saveProgress(state: TaskState): Promise<void> {
-
-```js
   const path = `.openclaw/tasks/${state.taskId}.json`;
   await fs.writeFile(path, JSON.stringify(state, null, 2));
 }
-```
-
 
 async function resumeTask(taskId: string): Promise<TaskState | null> {
   try {
-
-```js
     const content = await fs.readFile(`.openclaw/tasks/${taskId}.json`, "utf-8");
     return JSON.parse(content);
   } catch {
@@ -1088,12 +1064,8 @@ git push、rm、数据库写入这类操作都可能被触发，安全边界要�
 
 ```js
 const AUTHORIZED_USERS = new Set(["user_id_tang", "user_id_other"]);
-```
-
 
 async function handleMessage(msg: InboundMessage): Promise<void> {
-
-```text
   if (!AUTHORIZED_USERS.has(msg.userId)) {
     await sendReply(msg.userId, "未授权");
     return;
@@ -1107,12 +1079,8 @@ async function handleMessage(msg: InboundMessage): Promise<void> {
 
 ```js
 const WORKSPACE = path.resolve("/Users/tang/workspace");
-```
-
 
 async function executeShell(args: string[], cwd?: string): Promise<string> {
-
-```js
   // realpath 解析符号链接，path.relative 检查是否在工作空间内
   const workDir = path.resolve(cwd ?? WORKSPACE);
   const rel = path.relative(WORKSPACE, workDir);
@@ -1132,9 +1100,8 @@ async function executeShell(args: string[], cwd?: string): Promise<string> {
 
 <strong>操作审计日志</strong>，每次执行都记一笔，方便后续审计和排查：
 
+```js
 async function auditedShell(args: string[], userId: string): Promise<string> {
-
-```text
   // 执行前记录：时间、用户、命令
   await fs.appendFile(
     ".openclaw/audit.jsonl",
@@ -1183,12 +1150,8 @@ const prompt = wrapUntrustedContent(
 
 ```js
 const providers = ["Anthropic", "OpenAI", "Anthropic Sonnet"];
-```
-
 
 async function runWithFallback(task) {
-
-```cpp
   for (const provider of providers) {
     try {
       return await runTask(provider, task);

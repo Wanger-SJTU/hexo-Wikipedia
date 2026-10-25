@@ -23,7 +23,10 @@ Mike zheng
 
 谈谈RDMA和ScaleUP的可靠传输
 
+```text
 TL;DR
+```
+
 *本文大概有16000字, 阅读时间估计会很长, 建议耐心读完. 另外本文仅代表个人观点, 与作者所任职的机构无关. 
 Hotchip上AMD的RNIC和Intel Mt.Morgan正式支持Google Falcon, Nvidia又在CX8中增加了PSA配合DPA. 发生了一些变化. 另一方面BRCM的SUE也有一个不需要可靠传输的SUE-lite, 其实实际问题都指向了一点:可靠传输做多少, 可靠传输带来Die面积的占用, 是否坚持Lossless?
 其实这是一个工程上的TradeOff. 但是很多人忘记的Ethernet成功的关键是保持简单, 并提供尽力而为的传输, 由此推导出Smart Edge, Dumb Core的原则. 但是这也有很多难处, 特别是在ScaleUP上, 可靠传输显著占用了GPU的die面积, 这又是另一个TradeOff.然后还有一个问题是延迟的容忍程度, 这和GPU这些芯片本身的微架构是紧密相关的. 带着这些问题, 本文来做一个详细的阐述.

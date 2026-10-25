@@ -221,6 +221,7 @@ void DownscaleUvNeonScalar(uint8_t *src, uint8_t *dst, int32_t src_width, int32_
 
 ![](/images/collections/0.raw/zhihu/%E4%BC%98%E5%8C%96/asset/img_2397f69cd8c1.jpg)
 
+```text
 //dup指令生成pading向量
 uint8x16_t v8_const_pad = vdupq_n_u8(pad_val);
 //-1行数据
@@ -233,6 +234,8 @@ uint8x16_t v8_row_cur_data = vextq_u8(v8_const_pad, v8_tmp_data, 15);
 v8_tmp_data = vld1q_u8(pt_row1);
 //第1行带有左padding的数据
 uint8x16_t v8_next_row_data = vextq_u8(v8_const_pad, v8_tmp_data, 15); 
+```
+
 
 #### 3.2 复制填充
 
@@ -242,6 +245,7 @@ uint8x16_t v8_next_row_data = vextq_u8(v8_const_pad, v8_tmp_data, 15);
 - 左右边界的方法一样，对于左边界，我们可以使用VLD1_DUP指令提取边界数据，然后使用vext来组建新的向量，参考代码如下。
 ![](/images/collections/0.raw/zhihu/%E4%BC%98%E5%8C%96/asset/img_e089ccb03480.jpg)
 
+```text
 //提取0行padding数据
 uint8x16_t v8_dup_pad = vld1q_dup_u8(pt_row0);
 //提取第0行数据
@@ -255,6 +259,8 @@ v8_dup_pad = vld1q_dup_u8(pt_row1);
 v8_tmp_data = vld1q_u8(pt_row1);
 //第1行带有左padding的数据
 uint8x16_t v8_next_row_data = vextq_u8(v8_dup_pad, v8_tmp_data, 15);
+```
+
 
 #### 3.3 反射填充
 
@@ -266,6 +272,7 @@ uint8x16_t v8_next_row_data = vextq_u8(v8_dup_pad, v8_tmp_data, 15);
 
 参考代码：
 
+```text
 uint8x8_t v8_ref_pad = vld1_u8(pt_row0 + 1);
 uint8x8_t v8_ref_pad1;
 uint8x8_t v8_tmp_data = vld1q_u8(pt_row0);
@@ -281,6 +288,8 @@ v8_ref_pad1 = vrev64_u8(v8_ref_pad);
 uint8x8_t v8_next_row_data = vextq_u8(vcombine_u8(v8_ref_pad, v8_ref_pad1), v8_tmp_data, 15);
 //-1行数据
 uint8x8_t v8_pre_row_data = v8_next_row_data;
+```
+
 
 ### 四、优化实例
 
@@ -298,9 +307,8 @@ Gaussian3x3Sigma0NeonU8C1是主函数
 
 第一次处理上边边界，然后是中间处理，最后是下边界处理
 
-int32_t Gaussian3x3Sigma0NeonU8C1(const uint8_t *src, uint8_t *dst, int32_t height, int32_t width, int32_t istride, int32_t ostride)
-
 ```cpp
+int32_t Gaussian3x3Sigma0NeonU8C1(const uint8_t *src, uint8_t *dst, int32_t height, int32_t width, int32_t istride, int32_t ostride)
 {
     if ((NULL == src) || (NULL == dst))
     {

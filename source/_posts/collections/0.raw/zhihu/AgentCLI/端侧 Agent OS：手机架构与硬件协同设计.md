@@ -193,12 +193,15 @@ Decode        → NPU (带宽密集)
 <strong>2.3.1 四级功耗分层</strong>
 因为<strong>不分层 = 移动端死局</strong>（电池 2-4 小时耗空、芯片 60℃+），所以我们依据功耗把模型使用进行分层。
 
+```text
 Tier 0 (mW 级)  : VAD/唤醒词/IMU/2B 极小模型                          ← always-on (DSP)
                                                                    ← 触发条件满足
 Tier 1 (峰值 3-5W / 会话平均 300-500mW): 7B 端侧 NPU + 简单 capability ← 主力工作模式
                                                                    ← 复杂任务
 Tier 2 (5-10W) : 大模型 + 多模态融合                                  ← 短暂爆发 (≤30s)
                                                                    ← 极复杂/端侧不够
+```
+
 Tier 3         : 云端 (无功耗约束, 有延迟和隐私代价)                    ← 卸载
 
 <strong>2.3.2 与 Agent 任务的映射</strong>
@@ -597,10 +600,14 @@ User → Harness: "给朋友转账 500 元"
  ↓
 Harness: "这需要 Grant, 我来请求"
  ↓
+
+```text
 TEE (Grant Service):
     - 检查 Grant 历史：上次转账给这个人是何时？
     - 检查金额: 500 元超过今日额度吗？
     - 展示 UI: 询问用户 "确认转账？"
+```
+
  ↓ 
 User: 生物识别 (人脸 + 指纹)
  ↓
@@ -631,11 +638,14 @@ TEE: 写入审计日志，哈希链防篡改
 <strong>5.2.2 三层状态指示架构</strong>
 我们也可以提供用户状态信息，让用户心安。
 
+```text
 System Status Bar (OS 层, Always-on)
   · 活动 Agent 数量/图标
   · 当前 Tier 级别
   · 安全域指示（TEE 活跃/普通）
           ↓ 展开
+```
+
 Agent Activity Panel（快速查看）
   · 每个 Agent 的当前 Step
   · 执行进度/等待原因

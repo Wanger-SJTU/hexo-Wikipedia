@@ -21,6 +21,7 @@ source_url: https://zhuanlan.zhihu.com/p/451209295
 
 <strong>视频教程：</strong>
 
+```text
 Learn SystemC (1) - Introduction
 
 Learn SystemC (2) - SC_CTHREAD Clocked Threads
@@ -32,6 +33,8 @@ Learn SystemC (4) - Handshaking
 Learn SystemC (5) - Testbench Measurements
 
 Learn SystemC (6) - Compiling and Running Simulations
+```
+
 
 <strong>参考书籍：</strong>
 
@@ -75,10 +78,9 @@ SC_METHOD()
 
 假如模块是组合逻辑，输入是a、b，输出是f，那么上述代码改为：
 
+```cpp
 #include 
 SC_MODULE( and2 ) {
-
-```cpp
     sc_inDT> a, b;
     sc_outDT> f;
 
@@ -96,10 +98,9 @@ SC_MODULE( and2 ) {
 
 假如模块是时序逻辑，输入是a、b，输出是f，时钟为clk并在上升沿采样，那么上述代码改为：
 
+```cpp
 #include 
 SC_MODULE( and2 ) {
-
-```cpp
     sc_inDT> a, b;
     sc_outDT> f;
     sc_inbool> clk;
@@ -224,9 +225,8 @@ const sc_uint8> coef[5] = {
 
 SC_CTOR省略部分代码为：
 
-SC_CTOR( SYSTEM ): clk_sig ("clk_sig", 10, SC_NS)
-
 ```text
+SC_CTOR( SYSTEM ): clk_sig ("clk_sig", 10, SC_NS)
 {
     tb0 = new tb("tb0");
     tb0->clk( clk_sig );
@@ -454,12 +454,8 @@ void fir::fir_main(void)
 #define TB_H
 
 #include 
-```
-
 
 SC_MODULE(tb)
-
-```cpp
 {
     sc_inbool>             clk;
     sc_outbool>            rst;
@@ -596,19 +592,20 @@ INCLUDE_DIRS = -I. -I$(SYSTEMC)/include
 HEADERS = fir.h tb.h
 
 # source files used, for dependency checking
-SOURCES = main.cc fir.cc tb.cc
 
 ```text
+SOURCES = main.cc fir.cc tb.cc
+
 DEPENDENCIES = \
     Makefile \
     $(HEADERS) \
     $(SOURCES)
-```
-
 
 LIBS= -lsystemc -lstdc++ -lm
 
 TESTS= main
+```
+
 
 all: $(TESTS)
 
@@ -622,10 +619,14 @@ $(TESTS): $(DEPENDENCIES)
     gcc -g -o $@ $(SOURCES) $(INCLUDE_DIRS) -L$(LIB_DIRS) $(LIBS)
 
 clean:
+
+```text
     rm -f $(TESTS)
 
 GOLD_DIR = ./golden
 GOLD_FILE = $(GOLD_DIR)/ref_output.dat
+```
+
 
 cmp_result:
     @echo "*****************************************"

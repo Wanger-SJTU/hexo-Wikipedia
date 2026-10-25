@@ -98,18 +98,18 @@ TEXT
 Linux 内核用一套通用的 <strong>smp_call_function</strong> 机制做跨核调用，关键函数：
 
 C
-// 向其他所有核心发送函数调用请求
-smp_call_function(func, info, wait);
 
 ```text
+// 向其他所有核心发送函数调用请求
+smp_call_function(func, info, wait);
 // func: 要执行的函数（这里是 TLB flush 函数）
 // info: 传递给函数的参数（要 flush 的地址）
 // wait: 是否等待所有核心完成
 
 // 同时刷新本地
+on_each_cpu(flush_func, addr, 1);
 ```
 
-on_each_cpu(flush_func, addr, 1);
 
 Linux 4.0 之前，多核 TLB flush 用的是<strong>全局中断屏蔽</strong>（`call_data_lock` + 调度 IPI），开销很大。
 
@@ -148,11 +148,7 @@ CPP
 
 // 注册 shootdown 中断处理函数
 void arch_register_tlb_shootdown() {
-```
-
  set_intr_handler(TLB_SHOOTDOWN_VECTOR, tlb_shootdown_handler);
-
-```text
 }
 ```
 
@@ -167,28 +163,23 @@ CPP
 // 向单个核心发送 TLB flush 请求
 void send_tlb_shootdown_ipi(int target_cpu, uintptr_t addr) {
  // 使用 APIC ICR（Interrupt Command Register）
+ uint32_t icr_low = 0;
 ```
 
- uint32_t icr_low = 0;
  icr_low |= (target_cpu << 24); // 目标 CPU 逻辑 ID
  icr_low |= (TLB_SHOOTDOWN_VECTOR); // 中断向量号
  icr_low |= APIC_ICR_INIT; // IPI 类型：Init
 
+```cpp
  // 实际发送时用 Fixed 类型
  outl(APIC_ICR_REG, icr_low | APIC_ICR_FIXED | APIC_ICR_ASSERT);
-
-```cpp
 }
 
 // 向所有其他核心广播 shootdown
 void broadcast_tlb_shootdown(uintptr_t addr) {
  for (int i = 0; i < num_cpus; i++) {
  if (i != current_cpu_id) {
-```
-
  send_tlb_shootdown_ipi(i, addr);
-
-```text
  }
  }
 }
@@ -206,11 +197,8 @@ CPP
 void tlb_shootdown_handler(uintptr_t addr) {
  // 用 INVLPG 让本地 TLB 里这条地址的映射失效
  // 注意：这里不能直接写汇编，要通过封装好的函数
-```
-
  arch_invlpg(addr);
 
-```cpp
  // 如果 flush 整个 CR3（wandos 早期简化实现）
  // arch_flush_tlb();
 }
@@ -218,9 +206,9 @@ void tlb_shootdown_handler(uintptr_t addr) {
 // 简化实现：整个 TLB flush（wandos 还没实现细粒度 flush）
 void arch_flush_tlb() {
  // 重新加载 CR3，触发整个 TLB flush
+ uint64_t cr3_val = read_cr3();
 ```
 
- uint64_t cr3_val = read_cr3();
  write_cr3(cr3_val); // x86 只要写 CR3 就 flush TLB
 
 ```cpp
@@ -245,23 +233,16 @@ CPP
 
 int do_munmap(uintptr_t addr, size_t len) {
  // 1. 从页表中撤销这段虚拟地址的映射
-```
-
  unmap_range(addr, len);
 
  // 2. 本地 TLB flush（修改页表的核心自己也要刷新）
  arch_invlpg(addr);
 
-```text
  // 3. 向其他所有核心广播 shootdown
  //  wandos 目前没有 SMP，所以 broadcast_tlb_shootdown 是空操作
  //  未来支持多核后，这里要调用 broadcast_tlb_shootdown(addr)
  if (smp_enabled) {
-```
-
  broadcast_tlb_shootdown(addr);
-
-```text
  }
 
  return 0;

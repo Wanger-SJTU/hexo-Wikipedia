@@ -744,11 +744,14 @@ vget_low_s32 \ vget_high_s32 intrinsics 指令操作
 
 使用 `vld3q` 以解交织的方式加载 RGB 图像；`vst3q` 以交织的方式存储 RGB 图像。
 
+```text
 // 输入地址为 in_ptr, 输出向量为 vec
 uint8x16x3_t vec = vld3q(in_ptr);
 
 // 输出地址为 out_ptr, 输入为 uint8x16x3_t 类型的 RGB 向量
 vst3q(out_ptr, vec);
+```
+
 
 ![](/images/collections/0.raw/zhihu/%E8%B5%B0%E5%90%91cs/asset/img_905e3b0cd0d6.jpg)
 
@@ -780,6 +783,8 @@ NEON 开发中，可以使用`DUP`指令将常数填充到向量中，然后使�
 例如 7x7 的 boxfilter，处理边界时需要填充 3 个像素的值。
 
 - EXT指令还常常用于滤波向量的重组操作。
+
+```text
 // 构造边界填充向量
 uint8_t c_0 =0;
 uint8x8_t v_c0 = v_dup_n_u8(c_0);
@@ -789,6 +794,8 @@ uint8x8_t v_1 = vext_u8(v_c0, v_0, 5)
 
 // 使用 vext 构建边界向量，v0 表示从纵坐标为 0 起始的向量
 uint8x8_t v_border = vext_u8(v_1, v_c0, 3)
+```
+
 
 ![](/images/collections/0.raw/zhihu/%E8%B5%B0%E5%90%91cs/asset/img_38aa22611bda.jpg)
 
@@ -799,22 +806,27 @@ uint8x8_t v_border = vext_u8(v_1, v_c0, 3)
 
 - 首先使用vabd做差的绝对值计算。
 - 然后使用vdot将上面的结果做累加。
+
+```text
 // 初始化 v_sum 和 v_c1  
 uint32x4_t v_sum = vmovq_n_u32(0);
 uint8x16_t v_c1  = vmovq_n_u8(1);
 
-```text
 // v_src0, v_src1为两幅图的输入
 // 将做差的绝对值计算
-```
-
 uint8x16_t v_abd_res = vabdq_u8(v_src0, v_src1);
 
 // 做 vdot操作
 v_sum = vdotq_u32(v_sum , v_abd_res, v_c1);
+```
+
 ...
+
+```text
 // 将最后的结果累加
 uint32_t res = vaddvq_u32(v_sum);
+```
+
 
 ![](/images/collections/0.raw/zhihu/%E8%B5%B0%E5%90%91cs/asset/img_f4fbe5024544.jpg)
 

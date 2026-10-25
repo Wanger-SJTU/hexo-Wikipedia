@@ -54,6 +54,7 @@ LLM 主要的两个接口是初始化方法和 generate 方法，前者用于实
 
 下面是使用 LLM 接口的示例：
 
+```python
 from vllm import LLM, SamplingParams
 
 prompts = [
@@ -65,6 +66,8 @@ sampling_params = SamplingParams(temperature=0.8, top_p=0.95)
 llm = LLM(model="meta-llama/Llama-2-7b-chat-hf")
 
 outputs = llm.generate(prompts, sampling_params)
+```
+
 
 # Print the outputs.
 for output in outputs:

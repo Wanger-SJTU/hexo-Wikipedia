@@ -212,17 +212,24 @@ $$atten\_weights = {q_t}^\top k_t = (W^{UQ} c_t^Q)^{\top} W^{UK} c_t^{KV} = {c_t
 
 对于V的吸收，情况稍微复杂。为表述的清楚性，我们采用Einstein求和约定描述该过程：
 
+```text
 v_t = einsum('hdc,blc->blhd', W_UV, c_t_KV) # (1)
 o   = einsum('bqhl,blhd->bqhd', attn_weights, v_t)     # (2)
 u   = einsum('hdD,bhqd->bhD', W_o, o)       # (3)
+```
+
 
 # 将上述三式合并，得到总的计算过程
 u   = einsum('hdc,blc,bqhl,hdD->bhD', W_UV, c_t_KV, attn_weights, W_o)
 
 # 利用结合律改变计算顺序
+
+```text
 o_  = einsum('bhql,blc->bhqc', attn_weights, c_t_KV) # (4)
 o   = einsum('bhqc,hdc->bhqd', o_, W_UV)  # (5)
 u   = einsum('hdD,bhqd->bqD', W_o, o)     # (6)
+```
+
 
 #### 实验结果
 

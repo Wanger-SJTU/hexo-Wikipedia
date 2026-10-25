@@ -33,18 +33,18 @@ source_url: https://zhuanlan.zhihu.com/p/33136325
 
 python有一个很有意思的地方，就是def函数可以嵌套在另一个def函数之中。调用外层函数时，运行到的内层def语句仅仅是完成对内层函数的定义，而不会去调用内层函数，除非在嵌套函数之后又显式的对其进行调用。
 
+```python
 x = 99
 
-```python
 def f1():
     x = 88
     def f2():
         print(x)
     f2()
-```
-
 
 f1()
+```
+
 
 88
 
@@ -60,11 +60,11 @@ def f1():
     def f2():
         print(x)
     return f2
-```
-
 
 action = f1()
 action()
+```
+
 
 88
 
@@ -80,12 +80,8 @@ def maker(n):
     def action(x):
         return x ** n + k
     return action
-```
-
 
 f = maker(2)
-
-```python
 print(f)
 
 function maker.locals>.action at 0x00000000021C51E0>
@@ -100,11 +96,11 @@ def maker(n):
     def action(x):
         return x ** n + k
     return action
-```
-
 
 f = maker(2)
 print(f(4))
+```
+
 
 24
 
@@ -122,13 +118,13 @@ def test(num):
         in_num += 1
         print(label, in_num)
     return nested
-```
-
 
 F = test(0)
 F('a')
 F('b')
 F('c')
+```
+
 
 a 1
 b 2
@@ -146,8 +142,6 @@ def test(num):
         in_num += 1
         print(label, in_num)
     return nested
-```
-
 
 F = test(0)
 F('a')
@@ -156,6 +150,8 @@ F('c')
 
 G = test(100)
 G('mm')
+```
+
 
 a 1
 b 2

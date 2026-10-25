@@ -181,9 +181,8 @@ class BasicConv2d(nn.Module):
 
 我们在利用TensorRT进行模型解析时，比如从ONNX中解析成TensorRT的网络结构，我们会提前对BN层的一些操作进行合并和融合。来看看<strong>[ONNX-TensorRT](https://link.zhihu.com/?target=https%3A//github.com/onnx/onnx-tensorrt)</strong>是怎么做的吧:
 
-DEFINE_BUILTIN_OP_IMPORTER(BatchNormalization)
-
 ```cpp
+DEFINE_BUILTIN_OP_IMPORTER(BatchNormalization)
 {
     // ...省略部分代码
     // 从ONNX中BN层中会取到四个参数，分别是权重、偏置、mean和var
@@ -380,12 +379,9 @@ std::tupleTensor, Tensor, Tensor> batch_norm_cpu(const Tensor& self, const c10::
   const Tensor& bias = c10::value_or_else(bias_opt, [] {return Tensor();});
   const Tensor& running_mean = c10::value_or_else(running_mean_opt, [] {return Tensor();});
   const Tensor& running_var = c10::value_or_else(running_var_opt, [] {return Tensor();});
-```
-
 
   checkBackend("batch_norm_cpu", {self, weight, bias, running_mean, running_var}, Backend::CPU);
 
-```cpp
   return AT_DISPATCH_FLOATING_TYPES(self.scalar_type(), "batch_norm", [&] {
       if (!train) {
         return batch_norm_cpu_transform_input_templatescalar_t>(self, weight, bias, {}, {}, running_mean, running_var, train, eps);
@@ -412,24 +408,16 @@ std::tupleTensor,Tensor> batch_norm_cpu_update_stats_template(
   // 计算channel维度
   int64_t n_input = input.size(1);
   int64_t n = input.numel() / n_input;
-```
-
 
   Tensor save_mean = at::empty({n_input}, input.options());
   Tensor save_var_transform = at::empty({n_input}, input.options());
   auto save_mean_a = save_mean.accessorscalar_t, 1>();
   auto save_var_transform_a = save_var_transform.accessorscalar_t, 1>();
-
-```text
   // 得到running_mean_a 和 running_var_a
   auto running_mean_a = conditional_accessor_1dscalar_t>(running_mean);
   auto running_var_a = conditional_accessor_1dscalar_t>(running_var);
-```
-
 
   parallel_for(0, n_input, 1, [&](int64_t b_begin, int64_t b_end) {
-
-```cpp
     for (int64_t f = b_begin; f  b_end; ++f) {
       Tensor in = input.select(1, f);
 
@@ -480,8 +468,6 @@ std::tupleTensor,Tensor,Tensor> batch_norm_cpu_transform_input_template(
     bool train, double eps) {
   ...
   Tensor output = at::empty_like(input, LEGACY_CONTIGUOUS_MEMORY_FORMAT);
-```
-
 
   int64_t n_input = input.size(1);
 
@@ -492,8 +478,6 @@ std::tupleTensor,Tensor,Tensor> batch_norm_cpu_transform_input_template(
   auto running_var_a = conditional_accessor_1dscalar_t>(running_var);
 
   parallel_for(0, n_input, 1, [&](int64_t b_begin, int64_t b_end) {
-
-```cpp
     for (int64_t f = b_begin; f  b_end; ++f) {
       Tensor in = input.select(1, f);
       Tensor out = output.select(1, f);

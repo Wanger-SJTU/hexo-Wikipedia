@@ -161,12 +161,8 @@ function match(ac, text) {
 }
 
 var ac = new Trie();
-```
-
 createGoto(ac, ["she", "shr", "say", "he", "her"]);
 createFail(ac);
-
-```js
 console.log(match(ac, "one day she say her has eaten many shrimps"));
 ```
 

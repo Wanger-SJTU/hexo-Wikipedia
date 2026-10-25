@@ -42,9 +42,12 @@ Qualcomm SA8295P SoC
 
 ![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_b9daf97f038e.jpg)
 
-Hexagon NPU(HC2023)![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_56d8380c9ea3.jpg)
+```text
+Hexagon NPU(HC2023)![](asset/img_56d8380c9ea3.jpg)
 
 Hexagon Tensor(HC2023)Hexagon NPU Tensor，Tensor内部对矩阵乘加/激活/convert做了专门的设计，也是现在NPU的主要设计理念，把LLM的运算拆开和硬件对上去，此外ISA优化了一系列算子。在高通的世界里，你甚至无法知道SA8295P V68 NPU的核心频率，也无法知道Tensor内部对不同数据类型的计算支持分配，你只知道它能提供30TOPS的算力。
+```
+
 
 （2）编程模型
 

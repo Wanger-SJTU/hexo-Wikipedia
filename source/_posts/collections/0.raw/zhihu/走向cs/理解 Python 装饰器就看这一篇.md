@@ -27,10 +27,10 @@ def foo():
 
 def bar(func):
     func()
-```
-
 
 bar(foo)
+```
+
 
 正式回到我们的主题。装饰器本质上是一个 Python 函数或类，它可以让其他函数或类在不需要做任何代码修改的前提下增加额外功能，装饰器的返回值也是一个函数/类对象。它经常用于有切面需求的场景，比如：插入日志、性能测试、事务处理、缓存、权限校验等场景，装饰器是解决这类问题的绝佳设计。有了装饰器，我们就可以抽离出大量与函数功能本身无关的雷同代码到装饰器中并继续重用。概括的讲，装饰器的作用就是为已经存在的对象添加额外的功能。
 
@@ -60,10 +60,10 @@ def use_logging(func):
 
 def foo():
     print('i am foo')
-```
-
 
 use_logging(foo)
+```
+
 
 这样做逻辑上是没问题的，功能是实现了，但是我们调用的时候不再是调用真正的业务逻辑 foo 函数，而是换成了 use_logging 函数，这就破坏了原有的代码结构， 现在我们不得不每次都要把原来的那个 foo 函数作为参数传递给 use_logging 函数，那么有没有更好的方式的呢？当然有，答案就是装饰器。
 
@@ -79,11 +79,11 @@ def use_logging(func):
 
 def foo():
     print('i am foo')
-```
-
 
 foo = use_logging(foo)  # 因为装饰器 use_logging(foo) 返回的时函数对象 wrapper，这条语句相当于  foo = wrapper
 foo()                    # 执行foo()就相当于执行 wrapper()
+```
+
 
 use_logging 就是一个装饰器，它一个普通的函数，它把执行真正业务逻辑的函数 func 包裹在其中，看起来像 foo 被 use_logging 装饰了一样，use_logging 返回的也是一个函数，这个函数的名字叫 wrapper。在这个例子中，函数进入和退出时 ，被称为一个横切面，这种编程方式被称为面向切面的编程。
 
@@ -106,10 +106,10 @@ def use_logging(func):
 ```python
 def foo():
     print("i am foo")
-```
-
 
 foo()
+```
+
 
 如上所示，有了 @ ，我们就可以省去foo = use_logging(foo)这一句了，直接调用 foo() 即可得到想要的结果。你们看到了没有，foo() 函数不需要做任何修改，只需在定义的地方加上装饰器，调用的时候还是和以前一样，如果我们有其他的类似函数，我们可以继续调用装饰器来修饰函数，而不用重复修改函数或者增加新的封装。这样，我们就提高了程序的可重复利用性，并增加了程序的可读性。
 
@@ -188,10 +188,10 @@ def use_logging(level):
 ```python
 def foo(name='foo'):
     print("i am %s" % name)
-```
-
 
 foo()
+```
+
 
 上面的 use_logging 是允许带参数的装饰器。它实际上是对原有装饰器的一个函数封装，并返回一个装饰器。我们可以将它理解为一个含有参数的闭包。当我
 们使用@use_logging(level="warn")调用的时候，Python 能够发现这一层的封装，并把参数传递到装饰器的环境中。
@@ -219,10 +219,10 @@ class Foo(object):
 ```python
 def bar():
     print ('bar')
-```
-
 
 bar()
+```
+
 
 #### functools.wraps
 
@@ -247,10 +247,10 @@ def logged(func):
 def f(x):
    """does some math"""
    return x + x * x
-```
-
 
 logged(f)
+```
+
 
 不难发现，函数 f 被with_logging取代了，当然它的docstring，__name__就是变成了with_logging函数的信息了。好在我们有functools.wraps，wraps本身也是一个装饰器，它能把原函数的元信息拷贝到装饰器里面的 func 函数中，这使得装饰器里面的 func 函数也有和原函数 foo 一样的元信息了。
 

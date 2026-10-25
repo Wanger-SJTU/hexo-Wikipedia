@@ -234,8 +234,6 @@ FlashAttention 的 向后传递需要
 import torch
 from xformers import ops as xops
 import time
-```
-
 
 bs = 32
 seq_len = 512
@@ -253,8 +251,6 @@ flash_value_states = value_states.transpose(1, 2)
 start_time = time.time()
 flash_attn_output = xops.memory_efficient_attention(
     flash_query_states, flash_key_states, flash_value_states,
-
-```python
     attn_bias=xops.LowerTriangularMask()
 )
 print(f'flash attention time: {(time.time()-start_time)*1000} ms')
@@ -265,14 +261,11 @@ print(f'flash attention time: {(time.time()-start_time)*1000} ms')
 ```python
 import math
 import torch.nn as nn
-```
-
 
 attention_mask = torch.tril(torch.ones((seq_len, seq_len), dtype=torch.bool)).view(1, 1, seq_len, seq_len)
 attention_mask = attention_mask.to(dtype=torch.float16).cuda()  # fp16 compatibility
 attention_mask = (1.0 - attention_mask) * torch.finfo(torch.float16).min
 
-```python
 def standard_attention(query_states, key_states, value_states, attention_mask):
     attn_weights = torch.matmul(query_states, key_states.transpose(2, 3)) / math.sqrt(head_dim)
     attn_weights = attn_weights + attention_mask
@@ -281,18 +274,14 @@ def standard_attention(query_states, key_states, value_states, attention_mask):
 
     # upcast attention to fp32
 
-```text
+```python
     attn_weights = nn.functional.softmax(attn_weights, dim=-1, dtype=torch.float32).to(query_states.dtype)
     attn_output = torch.matmul(attn_weights, value_states)
     attn_output = attn_output.transpose(1, 2)
     return attn_output
-```
-
 
 start_time = time.time()
 attn_output = standard_attention(query_states, key_states, value_states, attention_mask)
-
-```python
 print(f'standard attention time: {(time.time()-start_time)*1000} ms')
 
 print(torch.allclose(attn_output, flash_attn_output, rtol=2e-3, atol=2e-3))
@@ -416,12 +405,16 @@ def run_single_query_cached_kv_attention(
 from vllm import LLM, SamplingParams
 
 # Sample prompts.
+
+```text
 prompts = [
     "Hello, my name is",
     "The president of the United States is",
     "The capital of France is",
     "The future of AI is",
 ]
+```
+
 # Create a sampling params object.
 sampling_params = SamplingParams(temperature=0.8, top_p=0.95, max_tokens=128)
 

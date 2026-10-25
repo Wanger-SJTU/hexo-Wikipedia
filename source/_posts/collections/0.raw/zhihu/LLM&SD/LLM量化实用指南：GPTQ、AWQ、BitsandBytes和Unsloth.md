@@ -160,8 +160,12 @@ pip install git+https://github.com/unslothai/unsloth.git
 
 from transformers import AutoModelForCausalLM
 ​
+
+```text
 model_name_or_path = "TheBloke/Mistral-7B-Instruct-v0.1-GPTQ"
 model = AutoModelForCausalLM.from_pretrained(model_name_or_path, device_map="auto")
+```
+
 
 你可以看到，我们可以只用~5GB VRAM就加载一个量化的7B模型。
 
@@ -172,9 +176,8 @@ Mistral-GPTQ VRAM使用情况（作者提供）加载模型部分完成。
 - <strong>如何使用GPTQ预量化模型进行推理</strong>
 我们可以按照与非量化模型相同的程序进行推理。在这种情况下，我们可以使用名为apply_chat_template的分词器函数来制作LLM输入。我问量化模型如何制作蛋黄酱。我们可以使用transformers API编写以下代码。
 
-messages = [
-
 ```text
+messages = [
     {"role": "user", "content": "What is your favourite condiment?"},
     {"role": "assistant", "content": "Well, I'm quite partial to a good squeeze of fresh lemon juice. It adds just the right amount of zesty flavour to whatever I'm cooking up in the kitchen!"},
     {"role": "user", "content": "Do you have mayonnaise recipes?"}
@@ -184,12 +187,20 @@ messages = [
 ​
 encodeds = tokenizer.apply_chat_template(messages, return_tensors="pt")
 ​
+
+```text
 model_inputs = encodeds.to(device)
 model.to(device)
+```
+
 ​
+
+```python
 generated_ids = model.generate(model_inputs, max_new_tokens=1000, do_sample=False)
 decoded = tokenizer.batch_decode(generated_ids)
 print(decoded[0])
+```
+
 # 模型回答：
 # Oh, certainly! Here's a quick and easy recipe for classic mayonnaise that I'm sure you'll enjoy:
 #
@@ -216,9 +227,13 @@ print(decoded[0])
 from transformers import GPTQConfig, AutoModelForCausalLM, AutoTokenizer
 ​
 # setting 
+
+```text
 model_id = "meta-llama/Llama-3.2-3B"
 tokenizer = AutoTokenizer.from_pretrained(model_id)
 gptq_config = GPTQConfig(bits=4, dataset="wikitext2", tokenizer=tokenizer)
+```
+
 ​
 # run quantization
 quantized_model = AutoModelForCausalLM.from_pretrained(model_id, device_map="auto", quantization_config=gptq_config)
@@ -249,8 +264,11 @@ tokenizer.save_pretrained(result_dir)
 - <strong>如何加载AWQ预量化模型</strong>
 要加载AWQ预量化模型，你只需要将你想使用的模型名称传递给AutoModelForCausalLM类。当你将device_map设置为“auto”时，系统会自动利用可用的GPU。让我们使用以下代码加载Mistral 7B模型。
 
+```text
 model_name_or_path = "TheBloke/Mistral-7B-Instruct-v0.1-AWQ"
 model = AutoModelForCausalLM.from_pretrained(model_name_or_path, device_map="auto")
+```
+
 
 你可以看到，我们可以只用~5GB VRAM就加载一个量化的7B模型。
 
@@ -262,26 +280,29 @@ Mistral AWQ VRAM使用情况（作者提供）
 - 如何使用AWQ预量化模型进行推理
 我们可以像正常的CausalLM推理一样使用预量化模型进行推理。在这种情况下，分词器没有chat_template，所以我们必须传递模板。推理代码如下所示。
 
+```text
 prompt = "Tell me about blackhole."
 prompt_template=f'''{prompt}'''
+```
+
 ​
 ​
 tokens = tokenizer(prompt_template, return_tensors="pt").input_ids.cuda()
 ​
+
+```python
 generated_ids = model.generate(
                                 tokens, 
-
-```text
                                 do_sample=True,
                                 temperature=0.7,
                                 top_p=0.95,
                                 top_k=40,
                                 max_new_tokens=512
                               )
-```
-
 decoded = tokenizer.decode(generated_ids[0])
 print(decoded)
+```
+
 # 模型回答：
 # A black hole is a region in space-time where gravity is so strong that nothing, not even light, can escape. 
 # Black holes are formed from the collapse of massive stars and are characterized by their event horizon, 
@@ -296,12 +317,19 @@ print(decoded)
 - <strong>如何量化和保存我们自己的AWQ模型？</strong>
 现在，让我们量化Llama3.2 3B。首先，我们需要以字典格式定义AWQ量化的配置。我选择了4位量化和零点量化。此外，AWQ模型有一个特定的类，所以我们需要用模型名称加载它。以下代码显示了AWQ量化。
 
+```text
 model_path = "meta-llama/Llama-3.2-3B"
 quant_config = {"zero_point": True, "q_group_size": 128, "w_bit": 4, "version":"GEMM"}
+```
+
 ​
 # Load model
+
+```text
 model = AutoAWQForCausalLM.from_pretrained(model_path)
 tokenizer = AutoTokenizer.from_pretrained(model_path, trust_remote_code=True)
+```
+
 ​
 # Quantize
 model.quantize(tokenizer, quant_config=quant_config)
@@ -309,9 +337,9 @@ model.quantize(tokenizer, quant_config=quant_config)
 对3B模型进行量化需要15分钟。要保存AWQ量化的模型，我们需要修改模型和配置的某些部分，使其与transformers兼容。
 
 # modify the config file so that it is compatible with transformers integration
-quantization_config = AwqConfig(
 
 ```text
+quantization_config = AwqConfig(
     bits=quant_config["w_bit"],
     group_size=quant_config["q_group_size"],
     zero_point=quant_config["zero_point"],
@@ -350,6 +378,8 @@ AWQ输出目录图片（作者提供）
 在本节中，我们将使用BitsandBytes 4位量化实现QLoRA。现在，我们将微调llama3.2 3B使其成为指令调整的聊天机器人。首先，我们需要配置BitsandBytes 4位配置。我们使用与QLoRA论文相同的设置，它具有NormalFloat4数据类型和双重量化。
 
 # configure BitsandBytes configuration for 4-bit quantization
+
+```text
 bnb_config = BitsAndBytesConfig(
    load_in_4bit=True,
    bnb_4bit_quant_type="nf4",
@@ -360,6 +390,8 @@ bnb_config = BitsAndBytesConfig(
 model_id = "meta-llama/Llama-3.2-3B"
 model_nf4 = AutoModelForCausalLM.from_pretrained(model_id, quantization_config=bnb_config, device_map={"":0})
 model_nf4.gradient_checkpointing_enable()
+```
+
 
 我们需要为4位量化训练应用以下准备函数。
 
@@ -367,9 +399,8 @@ model_nf4.gradient_checkpointing_enable()
 
 接下来，我们需要为模型微调定义LoRA。LoraConfig中的以下参数是超参数，所以我们必须调整它们。我们可以通过应用get_peft_model函数获得LoRA模型。
 
-config = LoraConfig(
-
 ```text
+config = LoraConfig(
     r=16, 
     lora_alpha=32, 
     target_modules=["q_proj", "k_proj", "v_proj", "o_proj",
@@ -378,10 +409,10 @@ config = LoraConfig(
     bias="none", 
     task_type="CAUSAL_LM"
 )
-```
-
 
 model_nf4 = get_peft_model(model_nf4, config)
+```
+
 
 你可以看到，我们可以只用~4GB VRAM就加载一个量化的3B模型。
 
@@ -412,11 +443,15 @@ def formatting_prompts_func(example):
 
 接下来，我们定义整理器来使模型只针对给定的数据集答案进行训练。有一个名为“DataCollatorForCompleionOnlyLM”的类可以完成这项工作，所以我们只需要用答案模板实例化这个类来区分给定输入中的答案部分。
 
+```text
 response_template = " ### Answer:"
 collator = DataCollatorForCompletionOnlyLM(response_template=response_template, tokenizer=tokenizer, mlm=False)
+```
+
 
 最后，在我们定义了训练参数之后，我们可以开始训练！处理整个数据集大约需要2小时。在这篇博客中，为了训练速度，数据量被限制了。
 
+```text
 output_dir = os.path.join(base_dir, "llama3.2-3B-qlora")
 per_device_train_batch_size = 8
 gradient_accumulation_steps = 4
@@ -430,8 +465,6 @@ warmup_ratio = 0.03
 lr_scheduler_type = "constant"
 
 training_arguments = TrainingArguments(
-
-```text
     output_dir=output_dir,
     per_device_train_batch_size=per_device_train_batch_size,
     gradient_accumulation_steps=gradient_accumulation_steps,
@@ -447,13 +480,9 @@ training_arguments = TrainingArguments(
     lr_scheduler_type=lr_scheduler_type,
     report_to=None
 )
-```
-
 
 trainer = SFTTrainer(
     model_nf4,
-
-```text
     args=training_arguments,
     train_dataset=dataset['train'],
     eval_dataset=dataset['test'],
@@ -497,8 +526,11 @@ Find the solution.
 
 QLoRA模型的推理如下所示。
 
+```text
 Aliyah packs her lunch =90 days.
 Becky packs her lunch =45 days.
+```
+
 
 如你所见，即使使用小数据集，我们也可以微调模型！当我们有限的计算资源和数据时，QLoRA真的很有用。 
 
@@ -507,9 +539,12 @@ Becky packs her lunch =45 days.
 - <strong>如何使用Unsloth实现QLoRA？</strong>
 当我们使用Unsloth应用QLoRA时，过程与使用BitsandBytes的QLoRA非常相似。不同的部分是如何加载模型和分词器。当我们使用Unsloth加载模型时，我们需要使用Unsloth包装器和Unsloth定义的模型，如下所示。你可以看到模型类和模型名称与前一节不同。
 
+```text
 max_seq_length = 2048 # 选择任意值！我们内部自动支持RoPE缩放！
 dtype = None # None用于自动检测。Tesla T4、V100使用Float16，Ampere+使用Bfloat16
 load_in_4bit = True # 使用4位量化来减少内存使用。可以为False。
+```
+
 
 model, tokenizer = FastLanguageModel.from_pretrained(
 
@@ -524,10 +559,9 @@ model, tokenizer = FastLanguageModel.from_pretrained(
 
 要加载LoRA适配器，我们也需要使用Unsloth包装器，如下所示。
 
+```text
 model = FastLanguageModel.get_peft_model(
     model,
-
-```text
     r = 16, # 选择任何 > 0 的数字！建议 8, 16, 32, 64, 128
     target_modules = ["q_proj", "k_proj", "v_proj", "o_proj",
                       "gate_proj", "up_proj", "down_proj",],
@@ -549,10 +583,9 @@ model = FastLanguageModel.get_peft_model(
 
 Unsloth VRAM使用情况图片（作者提供）除了上述设置外，其余部分几乎相同。我们使用SFTTrainer进行微调。处理整个数据集大约需要2小时。在这篇博客中，为了训练速度，数据量被限制了。
 
+```text
 trainer = SFTTrainer(
     model,
-
-```text
     args=training_arguments,
     train_dataset=dataset['train'],
     formatting_func=formatting_prompts_func,
@@ -591,13 +624,16 @@ FastLanguageModel.for_inference(model) # 启用原生2倍速推理
 
 我们可以以与标准HuggingFace CausalLM相同的方式推理给定的句子。
 
+```text
 prompt = f"###Question: {dataset['test']['INSTRUCTION'][idx]}\n ### Answer:"
 prompt_template=f'''{prompt}'''
+```
+
 ​
-tokens = tokenizer(prompt_template, return_tensors="pt").input_ids.cuda()
-outputs = model.generate(
 
 ```python
+tokens = tokenizer(prompt_template, return_tensors="pt").input_ids.cuda()
+outputs = model.generate(
     input_ids=tokens,
     temperature=0.2,
     top_p=0.95,
@@ -609,8 +645,11 @@ print(tokenizer.batch_decode(outputs, skip_special_tokens=True)[0])
 
 这是BitsandBytes QLoRA部分中相同示例问题的结果。它可以正确回答问题！
 
+```text
 Aliyah packs her lunch  = 90 days.
 Becky packs her lunch  = 45 days.
+```
+
 
 在这篇博客中，我们从基础开始学习了最近流行的量化技术的概念。随着最近LLMs规模的增长，量化的重要性变得越来越高。这种技术对实际的AI应用很有帮助，我希望这篇博客能帮助你进入量化领域。下面的代码可以用来复现这篇博客的结果。
 

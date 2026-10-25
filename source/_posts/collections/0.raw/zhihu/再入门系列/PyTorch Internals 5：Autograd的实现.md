@@ -25,6 +25,7 @@ source_url: https://zhuanlan.zhihu.com/p/109338369
 
 从下往上即为前向传播的过程，如果想要计算L相对于x1和x2的梯度则可以从上往下进行求导，上述过程用PyTorch实现为：
 
+```python
 import torch
 
 x1 = torch.rand((2,2), requires_grad=True)
@@ -33,8 +34,6 @@ x2 = torch.rand((2,2), requires_grad=True)
 y=torch.mm(x1,x2)
 z=torch.sin(y+x2)
 L=z.mean()
-
-```python
 L.backward()
 print(x1.grad, x2.grad)
 ```
@@ -58,12 +57,8 @@ print(x1.grad, x2.grad)
 
 struct TORCH_API Variable::AutogradMeta : public c10::AutogradMetaInterface {
   std::string name;
-```
-
 
   Variable grad_;   //存储梯度
-
-```cpp
   std::shared_ptrNode> grad_fn_;   //中间节点梯度计算的方式
   std::weak_ptrNode> grad_accumulator_;    //叶子结点负责将梯度进行累加
 
@@ -85,12 +80,8 @@ struct TORCH_API Variable::AutogradMeta : public c10::AutogradMetaInterface {
   // state are still thread-safe. Used by grad_fn() and
   // grad_accumulator().
   std::mutex mutex_;
-```
-
 
   AutogradMeta(
-
-```text
     at::TensorImpl* self_impl,
     bool requires_grad = false,
     Edge gradient_edge = Edge());
@@ -100,13 +91,12 @@ struct TORCH_API Variable::AutogradMeta : public c10::AutogradMetaInterface {
 
 可以看到，AutogradMeta不仅存储了该节点的梯度值，还保存了数据通过该节点时梯度的计算function。当我们使用PyTorch构建神经网络时，直接定义的是其前向计算图，而反向计算图则是PyTorch在进行前向操作时帮我们偷偷构建的，以sin算子为例，当我们在python中使用`y=torch.sin(x)`时，实际执行的代码为
 
+```cpp
 // pytorch/torch/csrc/autograd/generated/VariableType_0.cpp
 
 Tensor sin(const Tensor & self) {
   RECORD_FUNCTION("sin", std::vectorc10::IValue>({self}), Node::peek_at_next_sequence_nr());
   auto& self_ = unpack(self, "self", 0);
-
-```cpp
   std::shared_ptrSinBackward> grad_fn;
   if (compute_requires_grad( self )) { //如果需要计算梯度，则在这里偷偷建立反向计算图
     grad_fn = std::shared_ptrSinBackward>(new SinBackward(), deleteNode);  //反向计算时使用的函数为SinBackward
@@ -153,12 +143,8 @@ Tensor sin(const Tensor & self) {
 }
 
 // pytorch/torch/csrc/autograd/functions/utils.h
-```
-
 
 inline void set_history(
-
-```cpp
     at::Tensor& variable,
     const std::shared_ptrNode>& grad_fn) {
   AT_ASSERT(grad_fn);
@@ -170,12 +156,8 @@ inline void set_history(
     grad_fn->add_input_metadata(Node::undefined_input());
   }
 }
-```
-
 
 inline void set_history(
-
-```cpp
     std::vectorVariable>&& variables,
     const std::shared_ptrNode>& grad_fn) {
   for (auto& variable : variables) {
@@ -207,12 +189,8 @@ struct TORCH_API Node : std::enable_shared_from_thisNode> {
       metadata()->store_stack();
     }
   }
-```
-
 
   explicit Node(edge_list&& next_edges = edge_list())
-
-```cpp
       : Node(get_next_sequence_nr()++, std::move(next_edges)) {}
 
   /// Nodes不可拷贝和移动
@@ -257,12 +235,8 @@ struct TORCH_API Node : std::enable_shared_from_thisNode> {
     input_metadata_.emplace_back(type, shape, device);
     return input_nr;
   }
-```
-
 
   uint32_t add_input_metadata(const at::Tensor& t) noexcept {
-
-```text
     uint32_t input_nr = input_metadata_.size();
     input_metadata_.emplace_back(t);
     return input_nr;
@@ -274,12 +248,8 @@ struct TORCH_API Node : std::enable_shared_from_thisNode> {
     input_metadata_.emplace_back();
     return input_nr;
   }
-```
-
 
   uint32_t num_inputs() const noexcept {
-
-```cpp
     return input_metadata_.size();
   }
 
@@ -329,20 +299,12 @@ struct TORCH_API Node : std::enable_shared_from_thisNode> {
   const edge_list& next_edges() const noexcept {
     return next_edges_;
   }
-```
-
 
   edge_list& next_edges() noexcept {
-
-```text
     return next_edges_;
   }
-```
-
 
   uint32_t num_outputs() const noexcept {
-
-```cpp
     return next_edges_.size();
   }
 
@@ -392,12 +354,8 @@ struct TORCH_API Node : std::enable_shared_from_thisNode> {
 
   // Hook API，一些钩子方法，当该算子在计算时需要对variable进行预处理和后处理时
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-```
-
 
   uintptr_t add_post_hook(std::unique_ptrFunctionPostHook>&& post_hook) {
-
-```cpp
     post_hooks_.push_back(std::move(post_hook));
     // Use the raw pointer as the unique key to identify this hook. This key
     // can then be used in del_post_hook(key) to remove this hook.
@@ -482,13 +440,9 @@ struct TORCH_API Node : std::enable_shared_from_thisNode> {
   // Since `Node`s are neither copyable nor moveable, we can have const
   // fields.
   const uint64_t sequence_nr_;
-```
-
 
   edge_list next_edges_;
   PyObject* pyobj_ = nullptr; // weak reference
-
-```cpp
   std::unique_ptrAnomalyMetadata> anomaly_metadata_ = nullptr;
   std::vectorstd::unique_ptrFunctionPreHook>> pre_hooks_;
   std::vectorstd::unique_ptrFunctionPostHook>> post_hooks_;
@@ -503,13 +457,12 @@ struct TORCH_API Node : std::enable_shared_from_thisNode> {
 
 variable_list SinBackward::apply(variable_list&& grads) {
 
+```text
   IndexRangeGenerator gen;
   auto self_ix = gen.range(1);
   variable_list grad_inputs(gen.size());
   auto& grad = grads[0];
   auto self = self_.unpack();
-
-```text
   if (should_compute_output({ self_ix })) {
     auto grad_result = grad * self.cos();
     copy_range(grad_inputs, self_ix, grad_result);
@@ -521,17 +474,13 @@ variable_list SinBackward::apply(variable_list&& grads) {
 
 sin的导数为cos，与我们的常识是相符的。接下去我们再来看看next_edges_，它的类型edge_list其实是std::vector的别名，代表一系列的Edge。Edge的定义则相对要简单不少：
 
-```text
+```cpp
 // pytorch/torch/csrc/autograd/edge.h
 
 struct Edge {
   Edge() noexcept : function(nullptr), input_nr(0) {}
-```
-
 
   Edge(std::shared_ptrNode> function_, uint32_t input_nr_) noexcept
-
-```cpp
       : function(std::move(function_)), input_nr(input_nr_) {}
 
   /// Convenience method to test if an edge is valid.
@@ -562,11 +511,11 @@ struct Edge {
 目前我们已经介绍了Variable，AutogradMeta，Node，Edge几种建立计算图需要用到的数据结构。本节将正式介绍PyTorch的自动微分引擎是如何进行工作的。当我们在python中通过`L.backward()`进行反向传播时，在python中最后调用的方式是pytorch/torch/autograd/<strong>init</strong>.py中的`Variable._execution_engine.run_backward(tensors, grad_tensors, retain_graph, create_graph, allow_unreachable=True)`。`Variable._execution_engine.run_backward`在后端c++中对应的代码为pytorch/torch/csrc/autograd/python_engine.cpp中的THPEngine_run_backward。THPEngine_run_backward方法的代码比较长，为此我们将按照其功能分成几部分来讲解。首先代码的第一部分对输入的参数进行解析，初始化相关的变量：
 
 HANDLE_TH_ERRORS
+
+```text
   _maybe_reinitialize_engine_after_fork();
   PyObject *tensors = nullptr;
   PyObject *grad_tensors = nullptr;
-
-```text
   unsigned char keep_graph = 0;
   unsigned char create_graph = 0;
   PyObject *inputs = nullptr;
@@ -578,12 +527,8 @@ HANDLE_TH_ERRORS
   if (!PyArg_ParseTupleAndKeywords(args, kwargs, "OObb|Ob", (char**)accepted_kwargs,
         &tensors, &grad_tensors, &keep_graph, &create_graph, &inputs, &allow_unreachable))
     return nullptr;
-```
-
 
   THPUtils_assert(PyTuple_Check(tensors), "tensors argument is expected to "
-
-```text
       "be a tuple, but got %s", THPUtils_typename(tensors));
   THPUtils_assert(PyTuple_Check(grad_tensors), "grad_tensors argument is "
       "expected to be a tuple, but got %s", THPUtils_typename(grad_tensors));
@@ -592,18 +537,13 @@ HANDLE_TH_ERRORS
 
 第二部分为新建`edge_list roots`和`variable_list grads`，其实就是把网络最终输出节点的信息放入roots和grads作为后续反向求导的开始：
 
+```cpp
 Py_ssize_t num_tensors = PyTuple_GET_SIZE(tensors);
   Py_ssize_t num_gradients = PyTuple_GET_SIZE(grad_tensors);
   THPUtils_assert(num_tensors == num_gradients, "got %ld tensors and %ld "
-
-```text
       "gradients", num_tensors, num_gradients);
-```
-
 
   edge_list roots;
-
-```cpp
   roots.reserve(num_tensors);
   variable_list grads;
   grads.reserve(num_tensors);
@@ -865,12 +805,9 @@ auto Engine::start_threads() -> void {
   ready_queues_ = std::vectorstd::shared_ptrReadyQueue>>(num_threads);
   for (auto& queue : ready_queues_)
     queue.reset(new ReadyQueue());
-```
-
 
   thread_pool_shared_ = std::make_sharedThreadPoolShared>();
 
-```cpp
   for (int i = 0; i  num_threads; ++i) {
     std::thread t(&Engine::thread_init, this, i - 1);
     t.detach();
@@ -1010,12 +947,8 @@ struct NodeTask {
   bool isShutdownTask_;
 
   int getReentrantDepth() const;
-```
-
 
   NodeTask(GraphTask* base, std::shared_ptrNode> fn, InputBuffer inputs, bool isShutdownTask = false)
-
-```cpp
     : base_(base)
     , fn_(std::move(fn))
     , inputs_(std::move(inputs))
@@ -1029,9 +962,9 @@ struct NodeTask {
 // pytorch/torch/csrc/autograd/engine.cpp
 
 auto Engine::thread_main(GraphTask *graph_task) -> void {
-  auto queue = ready_queues_[worker_device + 1];
 
 ```cpp
+  auto queue = ready_queues_[worker_device + 1];
   // Why the test on graph_task->outstanding_tasks_?  See
   // Note [Reentrant backwards]
   while (!graph_task || graph_task->outstanding_tasks_ > 0) {
@@ -1122,14 +1055,10 @@ auto Engine::evaluate_function(NodeTask& task) -> void {
   // Switches to a function's CUDA stream (if applicable) before calling it
   const auto opt_parent_stream = (*task.fn_).stream(c10::DeviceType::CUDA);
   c10::OptionalStreamGuard parent_stream_guard{opt_parent_stream};
-```
-
 
   auto outputs = call_function(task);   //进行反向计算
 
   auto& fn = *task.fn_;
-
-```cpp
   if (!task.base_->keep_graph_) {
     fn.release_variables();
   }
@@ -1259,12 +1188,8 @@ static variable_list call_function(NodeTask& task) {
       outputs = fn(std::move(inputs));
     }
   }
-```
-
 
   validate_outputs(fn.next_edges(), outputs, [&](const std::string& msg) {
-
-```cpp
     std::ostringstream ss;
     ss  "Function "   fn.name()  " returned an "  msg;
     return ss.str();

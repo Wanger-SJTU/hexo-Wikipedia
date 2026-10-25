@@ -54,6 +54,8 @@ Host CPU                          昇腾950
 - NVMe 完成后 MSI-X 中断上报 Host<strong>优点</strong>：成熟、标准、大块数据高效 <strong>缺点</strong>：依赖 Host CPU，Device 侧不能自治
 
 路径 2：AIV PCIE-THROUGH 直接搬运（AIV 自治）
+
+```text
 AIV Kernel (昇腾950)
   │
   │  DataCopy<AIV>::Copy(ubBuf, nvmeBufVA_in_PCIE_window, size)
@@ -65,6 +67,8 @@ AIV Kernel (昇腾950)
   │    → PCIe RC ATU → PCIe TLP → NVMe
   │
   └─ 绕过 STARS / SDMA / PCIe DMA / AICPU
+```
+
 <strong>硬件支撑</strong>：
 
 - AIV MTE2/MTE3 PCIE-THROUGH mode 完整支持

@@ -61,9 +61,9 @@ page_aligned() 是把自己按照页面大小裁剪一下，毕竟只有完整�
 
 <strong>match() 是核心的函数</strong>，它的作用是比较最长公共前缀。令 a=RadixKey([1, 2, 3, 4, 5])，b=RadixKey([1, 2, 3, 9])，则 a.match(b) = 3。使用“二分比较”的算法，比较的还是 O(n) 个 token，但是相较于循环查询 python 循环次数从 O(n) 变为了 O(log n)。
 
+```python
 child_key() 为了找路径用的。比如当前进入父节点 token 都对上了。现在要选进入到父节点的哪个子节点时，取出第一块（由 page size 决定块大小）和请求的第一块比较。
 
-```python
 class RadixKey:
     """is_bigram=True: token_ids holds raw tokens (N+1 for N bigrams); slices share one boundary token."""
 
@@ -286,9 +286,10 @@ class RadixCache(SessionRadixCacheMixin, KVCacheEventMixin, BasePrefixCache):
 
 
 Cache 的请求与释放
-cache_unfinished_req() 在一个 prefill chunk 完成时调用。将当前已经完整计算的 page 提前交给 Radix Cache，并把请求的 token→KV slot 映射切换到树里的规范索引，然后让请求继续执行。请仔细看完下方代码注释后再回来看一遍这句话。
 
 ```python
+cache_unfinished_req() 在一个 prefill chunk 完成时调用。将当前已经完整计算的 page 提前交给 Radix Cache，并把请求的 token→KV slot 映射切换到树里的规范索引，然后让请求继续执行。请仔细看完下方代码注释后再回来看一遍这句话。
+
     def cache_unfinished_req(self, req: Req, chunked=False):
         token_ids = req.get_fill_ids()
         kv_indices = self.req_to_token_pool.req_to_token[
@@ -356,7 +357,7 @@ cache_unfinished_req() 在一个 prefill chunk 完成时调用。将当前已经
 
         # 更新一下 Request 内部管理的 KV slot 状态信息
 
-```text
+```python
         if len(new_indices) < len(kv_indices):
             req.prefix_indices = torch.cat(
                 [new_indices, kv_indices[len(new_indices) :]]
@@ -367,11 +368,8 @@ cache_unfinished_req() 在一个 prefill chunk 完成时调用。将当前已经
         req.last_node = new_last_node
 
         self._tag_session_leaf(req, radix_key, node=new_last_node)
-```
-
 cache_finished_req() 在请求彻底结束时调用。执行逻辑很简单：（1）如果没有启动 KV Cache 就在这里进行 KV slot 释放；（2）否则，如果开启了 is_insert 就最后再更新一下 Radix Tree，然后释放尾部不整齐的 KV slot；（3）如果关闭了 is_insert 就释放没有进 Radix Cache 的 KV slot。
 
-```python
     def cache_finished_req(self, req: Req, is_insert: bool = True):
         # 推测解码等场景可能生成过临时 token
         # 只有 commit 过的才是确定的 token
@@ -540,24 +538,40 @@ hit:  [  3, 2048] × [2048, 1024]
 
 cold:
 tensorop_bf16_s16816...64x64_32x6
+
+```text
 grid  = [32, 2, 2]
 block = [128, 1, 1]
+```
+
 
 hit:
 wmma_tensorop_bf16_s161616...16x16_128x2
+
+```text
 grid  = [8, 8, 1]
 block = [32, 1, 1]
+```
+
 除此之外，CUDA profile 显示 FlashInfer 选择了不同的 FA2 kernel traits：
 
 cold:
 BatchPrefillWithPagedKVCacheKernel<...64u...4u,1u...>
+
+```text
 grid  = [26, 1, 2]
 block = [32, 4, 1]
+```
+
 
 hit:
 BatchPrefillWithPagedKVCacheKernel<...16u...1u,4u...>
+
+```text
 grid  = [2, 1, 2]
 block = [32, 1, 4]
+```
+
 所以完整答案是：
 
 - 默认路径最早由 `M=195` 与 `M=3` 选择不同 CUTLASS BF16 GEMM 而产生误差。
@@ -577,8 +591,11 @@ block = [32, 1, 4]
 #!/usr/bin/env bash
 set -euo pipefail
 
+```text
 MODEL_PATH=/home/zeke/sglearn/models/Qwen3.5-0.8B
 PORT=30000
+```
+
 
 # 不添加 --disable-radix-cache，Radix Cache 默认开启。
 
@@ -592,16 +609,12 @@ python3 -m sglang.launch_server \
   --max-running-requests 4 \
   --chunked-prefill-size -1 \
   >sglang_radix_cache.log 2>&1 &
-```
-
 
 SERVER_PID=$!
 cleanup() {
   echo "停止 SGLang Server……"
   kill -TERM "$SERVER_PID" 2>/dev/null || true
   wait "$SERVER_PID" 2>/dev/null || true
-
-```text
 }
 ```
 
@@ -631,13 +644,9 @@ curl -fsS "http://127.0.0.1:${PORT}/v1/chat/completions" \
   -H "Authorization: Bearer empty" \
   -d "$REQUEST_BODY" \
   >response2.json
-```
-
 
 extract_output() {
   python3 -c 'import json,sys; m=json.load(open(sys.argv[1]))["choices"][0]["message"]; print(json.dumps({"reasoning_content":m.get("reasoning_content"),"content":m.get("content")},ensure_ascii=False,sort_keys=True))' "$1"
-
-```text
 }
 
 if diff -u \

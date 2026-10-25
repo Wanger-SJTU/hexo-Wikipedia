@@ -36,9 +36,12 @@ $- kt,vt∈Rd" role="presentation">kt,vt∈Rdk_t, v_t \in \mathbb{R}^d 是 key �
 
 $关键问题在于 Δt" role="presentation">Δt\Delta_t 的计算：$
 
+```text
 old_v = S_{t-1} @ k_t     # 必须知道 S_{t-1}
 delta = beta * (v - old_v) # 依赖 old_v
 S_t = g * S_{t-1} + outer(delta, k)  # 更新状态
+```
+
 
 这形成了严格的依赖链：
 
@@ -316,8 +319,12 @@ def compute_deltas_iterative(K, V, G, B, S_init):
 $这仍然是 O© 顺序，但 C \gamma_t = \prod_{i=1}^{t} g_i 可能非常小（当 g  时）。建议：$
 
 # 使用 log-space 计算
+
+```text
 log_gamma = cumsum(log(G))
 gamma = exp(log_gamma)
+```
+
 
 # 或使用 float32 累积
 gamma = cumprod(G.float()).to(G.dtype)
@@ -537,9 +544,9 @@ _prefill_kernel[(N, num_v_heads, V_BLOCKS)](...)
 
 我们发现不同 batch size 下，最优的 BLOCK_V 不同：
 
-Batch SizeBLOCK_V=16BLOCK_V=32最优选择N=1✅ 更多并行❌ SM 占用低16N=4✅ 刚好⚠️ 略低16N=8+⚠️ 过多 programs✅ 平衡32<strong>实现</strong>：
-
 ```python
+Batch SizeBLOCK_V=16BLOCK_V=32最优选择N=1✅ 更多并行❌ SM 占用低16N=4✅ 刚好⚠️ 略低16N=8+⚠️ 过多 programs✅ 平衡32**实现**：
+
 def kernel(q, k, v, state, ...):
     N = cu_seqlens.shape[0] - 1
 ```
@@ -559,8 +566,12 @@ Qwen3 使用 <strong>Grouped Value Attention (GVA)</strong>：
 qk_h = h // 2  # h 是 v_head 索引 (0-7)，qk_h 是 qk_head 索引 (0-3)
 
 # 加载 Q 和 K 时使用 qk_h
+
+```text
 qv = tl.load(Q_ptr + t * stride_q_t + qk_h * stride_q_h + di)
 kv = tl.load(K_ptr + t * stride_k_t + qk_h * stride_k_h + di)
+```
+
 
 # 加载 V 时使用 h
 vv = tl.load(V_ptr + t * stride_v_t + h * stride_v_h + v0 + vd)

@@ -60,19 +60,23 @@ B矩阵二分(<strong>列切</strong>)后，子矩阵B1、B2的尺寸为<strong>
 import numpy as np
 # 1. 定义整数输入矩阵 (M, N) 和 (N, K)
 M, N, K = 3, 4, 6
-A = np.random.randint(0, 10, size=(M, N))  # 随机整数矩阵 [0, 10)
-B = np.random.randint(0, 10, size=(N, K))
 
 ```python
+A = np.random.randint(0, 10, size=(M, N))  # 随机整数矩阵 [0, 10)
+B = np.random.randint(0, 10, size=(N, K))
 print("A:\n", A, "\nshape:", A.shape)
 print("\nB:\n", B, "\nshape:", B.shape)
 ```
 
 
 # 2. 对 B 按列切分（均分）
+
+```python
 num_splits = 3  # 切分块数
 B_splits = np.split(B, num_splits, axis=1)  # 沿列切分
 print("\nB 分块结果:")
+```
+
 for i, B_i in enumerate(B_splits):
 
 ```python
@@ -81,8 +85,12 @@ for i, B_i in enumerate(B_splits):
 
 
 # 3. 模拟并行计算：每个进程计算 A @ B_i
+
+```python
 local_results = [A @ B_i for B_i in B_splits]
 print("\n局部乘积结果:")
+```
+
 for i, C_i in enumerate(local_results):
 
 ```python
@@ -91,13 +99,17 @@ for i, C_i in enumerate(local_results):
 
 
 # 4. 模拟 allgather：拼接所有局部结果
-C_final = np.concatenate(local_results, axis=1)
-print("\n合并后的 C_final:\n", C_final, "\nshape:", C_final.shape)
-
-# 5. 验证结果与直接乘法的等价性
-C_ground_truth = A @ B
 
 ```python
+C_final = np.concatenate(local_results, axis=1)
+print("\n合并后的 C_final:\n", C_final, "\nshape:", C_final.shape)
+```
+
+
+# 5. 验证结果与直接乘法的等价性
+
+```python
+C_ground_truth = A @ B
 print("\n标准乘法结果 (A @ B):\n", C_ground_truth)
 print("\n验证一致性:", np.array_equal(C_final, C_ground_truth))
 ```
@@ -240,25 +252,45 @@ np.random.seed(42)
 bs, heads, seq_len, hidden_dim = 1, 1, 4, 3
 
 # 随机生成 Q, K, V
+
+```text
 Q = np.random.randn(bs, heads, seq_len, hidden_dim)
 K = np.random.randn(bs, heads, seq_len, hidden_dim)
 V = np.random.randn(bs, heads, seq_len, hidden_dim)
+```
+
 
 # 全局注意力计算
+
+```python
 global_out = attention(Q, K, V)
 print("全局注意力输出:\n", global_out)
+```
+
 
 # 将 Q 按 seq_len 切分为两部分
+
+```text
 Q1 = Q[:, :, :2, :]  # 前两行
 Q2 = Q[:, :, 2:, :]  # 后两行
+```
+
 
 # 分片计算注意力（K/V 保持完整）
+
+```text
 local_out1 = attention(Q1, K, V)
 local_out2 = attention(Q2, K, V)
+```
+
 
 # 合并分片结果（模拟 all_gather）
+
+```python
 local_out = np.concatenate([local_out1, local_out2], axis=2)
 print("分片注意力输出:\n", local_out)
+```
+
 
 # 验证一致性
 print("结果是否一致:", np.allclose(global_out, local_out, atol=1e-6))

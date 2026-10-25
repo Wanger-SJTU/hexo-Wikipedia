@@ -216,10 +216,14 @@ QuartzCore 提供了一个系统级的面板工具，它可以很方便的显示
 我们可以在越狱后给 app 自签名 com.apple.QuartzCore.debug 这个 entitlement 后，再调用如下代码所示的私有 api 即可全局打开这个面板，可以方便的在手机端查看 Render Server 上的实际 FPS。
 
 extern"C"{
+
+```text
 intCARenderServerGetDebugOption(mach_port_t port, intkey);
 intCARenderServerGetDebugValue(mach_port_t port, intkey);
 voidCARenderServerSetDebugOption(mach_port_t port, intkey, intvalue);
 voidCARenderServerSetDebugValue(mach_port_t port, intkey, intvalue);
+```
+
 }由于以上能力无法在非越狱设备上开启，所以实际上我们无法检测 app 在任意时刻的 FPS 变化情况。
 
 不过经过分析，我们发现只要触发了以下行为就可能代表要帧率要变化了。如下。

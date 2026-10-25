@@ -100,10 +100,13 @@ conv 相比于上面的算符，它复杂在 source 的 indices 之间本身还�
 
 在 te 中，spatial axis 不需要我们特地创建，因为它们都是 fcompute 的参数。而 reduce axis 需要我们在事先创建，因此 matmul 完整的程序应该写为
 
+```text
 A = te.placeholder((n, m), name="A")
 B = te.placeholder((m, l), name="B")
 k = te.reduce_axis((0, m), name="k") # te.reduce_axis 第一个参数表示 range
 C = te.compute((n, l), lambda i, j: te.sum(A[i, k] * B[k, j], axis=k), name="C")
+```
+
 
 te.placeholder 就是 TE 这个层面上对 Tensor / NDArray 这种东西的表示。可以看出我们的实现依赖于 te.sum 这个更加基本的算子。
 
@@ -121,9 +124,8 @@ fcompute 只是描述了 indices 之间的关系以及怎样把基本的运算�
 
 首先，对于传入的 shape，我们创建 len(shape) 个 tvm.tir.IterVar，range 为各自的维度大小。IterVar 本身代表对一个 int 范围内的 iteration。然后将这些 vars 和 fcompute(*vars) 传到 C++ 端（TVM 本身搞了一套很强大的 FFI）。
 
-TVM_REGISTER_GLOBAL("te.ComputeOp")
-
 ```cpp
+TVM_REGISTER_GLOBAL("te.ComputeOp")
     .set_body_typed([](std::string name, std::string tag, Map attrs,
                        Array axis,
                        Array body) { return ComputeOp(name, tag, attrs, axis, body); });
@@ -137,9 +139,8 @@ PrimExpr 在 TVM 中的定位比较 low-level，它拥有基本的四则运算�
 
 然后 computation 的实现部分，实际上就是 ComputeOp -> TIR Stmt 的过程。这个过程比较复杂，就不详说了。核心部分在这个函数
 
-Stmt MakeComputeStmt(const ComputeOpNode* self, const Stage& stage,
-
 ```cpp
+Stmt MakeComputeStmt(const ComputeOpNode* self, const Stage& stage,
                      const std::unordered_map& dom_map,
                      bool debug_keep_trivial_loop) {
 ```

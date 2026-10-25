@@ -333,9 +333,9 @@ remain_images, remain_videos = image_nums, video_nums
     h.item() // spatial_merge_size,  # 高度除以合并大小
     w.item() // spatial_merge_size,  # 宽度除以合并大小
 )
+text_len = ed - st  # 计算当前文本片段的长度（st到ed之间的文本token数）
 ```
 
-text_len = ed - st  # 计算当前文本片段的长度（st到ed之间的文本token数）
 
 - 计算文本片段的位置ID# 计算起始位置ID：如果已有位置列表，取最后一个的最大值+1，否则从0开始
 # 这确保了文本和视觉片段之间的位置ID连续递增

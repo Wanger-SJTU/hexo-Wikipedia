@@ -107,15 +107,18 @@ vllm serve MODEL \
       "fuse_gemm_comms": true
     }
   }'
+fuse_gemm_comms=true` 会自动令 `enable_sp=true`，示例同时写出两项是为了明确意图。需要注意：尽管本版本默认优化级别是 `-O2`，`IS_DENSE` 当前被硬编码为 `False`，因此 `-O2/-O3` **不会自动打开**这两个 pass，必须像上面一样显式配置。
 ```
 
-fuse_gemm_comms=true` 会自动令 `enable_sp=true`，示例同时写出两项是为了明确意图。需要注意：尽管本版本默认优化级别是 `-O2`，`IS_DENSE` 当前被硬编码为 `False`，因此 `-O2/-O3` <strong>不会自动打开</strong>这两个 pass，必须像上面一样显式配置。
 
 实际进入优化路径的条件
 条件当前工作区版本的具体判断TPtensor_parallel_size > 1；TP=1 时 vLLM 会关闭 enable_sp 和 fuse_gemm_comms编译模式必须进入 vLLM 的 TorchInductor 编译路径，并满足 full-graph 要求：use_inductor_graph_partition=true，或 splitting_ops=[]；显式开启上述 pass 后，vLLM 会在需要时把 splitting_ops 清空token 阈值只有当前 compiled range 的 batched-token 数达到 sp_min_token_num 才应用；低于阈值仍保留普通 AR[TP]自动阈值未显式设置 sp_min_token_num 时，当前启发式覆盖 CUDA SM90/H100、SM100-family Blackwell 和 XPU；设备与模型未命中对应 policy 时关闭该优化shapetoken 数必须能被 TP 整除；GPU model runner 会把 batched tokens 向上 padding 到 TP 的整数倍计算图模式必须实际匹配 AllReduce -> RMSNorm、AllReduce -> fused_add_RMSNorm，或其支持的静态 FP8 quantization 变体；没有匹配到的层不会改写融合支持fuse_gemm_comms 依赖 CUDA symmetric-memory collective；普通 FP16/BF16 GEMM 有对应模式，scaled-matmul 变体只在模型 dtype 为 BF16 时注册自动阈值统一按下面的公式计算：
 
+```text
 sp_min_token_num =
     floor(per_device_min_bytes × TP / (hidden_size × element_size))
+```
+
 当前 policy 为：
 
 平台最小 hidden sizeper_device_min_bytesCUDA SM90 / H10081928 MiBCUDA SM100-family / Blackwell819232 MiBXPU40968 MiB例如 H100 上使用 BF16/FP16、`hidden_size=8192` 时，`TP=2/4/8` 的阈值分别为 `1024/2048/4096` tokens；相同 shape 在 Blackwell policy 下阈值是其 4 倍。该值还会被 `max_num_batched_tokens` 封顶。未命中自动 policy，或希望覆盖默认启发式时，可以在 `pass_config` 中显式加入 `"sp_min_token_num": N`；这是强制选择优化区间的调优旋钮，不能代表该设备和负载一定更快，应通过基准测试确定 `N`。
@@ -230,10 +233,9 @@ DeepSeek MLA 在 decode 中将每个 token 的单份 MLA cache entry（压缩 `k
 2.2.2 Decode Context Parallel
 DCP 不增加 worker 数。它的 rank 来源取决于是否同时启用 PCP。
 
+```text
 PCP=1：
     DCP 复用 TP ranks
-
-```text
     TP % DCP == 0
     每个 TP group 被划成 TP/DCP 个 DCP groups
 ```
@@ -416,8 +418,11 @@ Connector数据路径适用范围ECExampleConnectorGPU tensor 先复制到 CPU�
 
 当 Encoder、Prefill、Decode 三段同时分离时，至少存在两条不同的跨实例状态流：
 
+```text
 E -> P/D：encoder cache（EC Connector）
 P -> D：attention KV cache（KV Connector）
+```
+
 两者都不属于 NCCL model-parallel collective，容量模型、key、生命周期和失败恢复也不同。
 
 4. Forward 之外仍会出现的分布式通信

@@ -233,9 +233,9 @@ NEON寄存器用V来表示（后缀为8B/16B/4H/8H/2S/4S/2D）；
 
 ```text
  const float* bias = _bias;
+ float32x4_t _bias0 = bias ? vld1q_f32(bias+g*4) : vdupq_n_f32(0.f);
 ```
 
- float32x4_t _bias0 = bias ? vld1q_f32(bias+g*4) : vdupq_n_f32(0.f);
 
 然后在占位符那里表明我这个_bias0需要用一个浮点寄存器缓存起来；
 
@@ -252,7 +252,10 @@ NEON寄存器用V来表示（后缀为8B/16B/4H/8H/2S/4S/2D）；
 
 首先定义的是int16x4，就是D寄存器，因此在访问的时候就是直接%P14了m，用P指明是D寄存器；
 
+```text
 int16x4_t _k4 = vld1_s16(k0 + 16);
+```
+
  "vmlal.s16   q13, %P14, d3[3]   \n" //_k4 ==> %14
 
 <strong>V8：</strong>
@@ -263,10 +266,13 @@ int16x4_t _k4 = vld1_s16(k0 + 16);
 
 v8的int16操作：以int16 的方式加载一个D寄存器的_k0出来，然后v0.8h表示加载8个int16，然后v0.h[7]跟%6以4h的方式相乘，最后拓展输出到V4寄存器，以4s的格式，也就是4个32位；
 
+```text
   int16x4_t _k0 = vld1_s16(k0     );
   "ld1    {v0.8h, v1.8h}, [%2], #32     \n" // input int16x4_t
   "smull   v4.4s, %6.4h, v0.h[7]        \n" 
   "w"(_k0),    // %6 
+```
+
 
 ### 四、AI底层常见算子汇编实现
 
@@ -284,12 +290,11 @@ v8的int16操作：以int16 的方式加载一个D寄存器的_k0出来，然后
 
 其具体形式如下：
 
+```text
 __asm__ __volatile__ ( "instruction 1\n\t"   
            "instruction  \n"  
            ......  
            "last instruction  \n"  
-
-```text
            );
 ```
 
@@ -304,9 +309,8 @@ __asm__ __volatile__ ( "instruction 1\n\t"
 
 可以再前面的汇编代码模板中直接应用定义的输出操作数和输入操作数，其用法是使用百分号（“%”）后面接一个数字，0表示定义的第一个操作数，1表示定义的第二个操作数，依次类推。
 
-__asm__ __violate__ ("movl %1,%0"
-
 ```text
+__asm__ __violate__ ("movl %1,%0"
              : "=r" (result)
              : "m" (input));
 ```
@@ -338,9 +342,8 @@ GCC中定义了三个修改符，分别是：
 
 如果想让一个C变量既作为输入操作数，也作为输出操作数的话，可以使用“+”限定符，并且这个操作数只需要在输出操作数列表中列出就行了。例如：
 
-__asm__("mov %0, %0, ror #1"
-
 ```text
+__asm__("mov %0, %0, ror #1"
         : "+r"(y)
         );
 ```
@@ -419,11 +422,7 @@ PowerPerf::Mat inMat   = PowerPerf::Mat::from_float_array(&datas_float0[0], 64,6
 PowerPerf::Mat outMat = PowerPerf::Mat::from_float_array(&datas_float1[0], 64,64,64);
 
 int n = inMat.shape.h*inMat.shape.w ;
-```
-
 assert( inMat.shape.h*inMat.shape.w % 4 == 0);
-
-```cpp
 int inch = inMat.shape.c;
 int outw = outMat.shape.w;
 int outh = outMat.shape.h;

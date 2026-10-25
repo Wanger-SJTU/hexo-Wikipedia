@@ -222,9 +222,9 @@ acquire用于Load操作，release用于Store操作，acq_rel用于RMW操作。C+
 flag，x 初始为0
 
 线程1
-flag = 1;
 
 ```text
+flag = 1;
 a.store(1, release);
 ```
 

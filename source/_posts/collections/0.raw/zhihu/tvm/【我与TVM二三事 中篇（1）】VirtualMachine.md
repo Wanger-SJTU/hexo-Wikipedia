@@ -123,10 +123,10 @@ Step2.1.1 VMCompiler::OptimizeModule
 
 IRModule VMCompiler::OptimizeModule(IRModule mod, const TargetsMap  targets_arg, const Target  target_host_arg) {
   …
-  Array Pass  pass_seqs;
-  Array runtime::String  entry_functions{"main"};
 
 ```text
+  Array Pass  pass_seqs;
+  Array runtime::String  entry_functions{"main"};
   pass_seqs.push_back(transform::RemoveUnusedFunctions(entry_functions));
   pass_seqs.push_back(transform::ToBasicBlockNormalForm());
   …
@@ -160,9 +160,8 @@ Step2.1.1.2 InlinePrimitives
 
 @ tvm/src/relay/backend/vm/http://inline_primitives.cc
 
-Pass InlinePrimitives() {
-
 ```cpp
+Pass InlinePrimitives() {
   runtime::TypedPackedFunc IRModule(IRModule, PassContext)  pass_func =
       [=](IRModule m, PassContext pc) { return relay::vm::PrimitiveInliner(m).Inline(); };
   auto inline_pass = CreateModulePass(pass_func, 1, "Inline", {});
@@ -253,9 +252,8 @@ transform::Sequential MemoryOpt(tvm::Target host_target, TargetsMap targets) {
 
 @ tvm/src/relay/transforms/http://memory_alloc.cc
 
-Pass ManifestAlloc(Target target_host, Map tvm::Integer, tvm::Target  targets) {
-
 ```cpp
+Pass ManifestAlloc(Target target_host, Map tvm::Integer, tvm::Target  targets) {
   return tvm::transform::CreateModulePass(
       [=](IRModule mod, const PassContext  pass_ctx) {
         ...
@@ -285,12 +283,11 @@ Step2.1.1.3.1 ContextAnalysis
 
 @ tvm/src/relay/analysis/http://context_analysis.cc
 
+```cpp
 AnalysisResultMap ContextAnalysis(const IRModule  mod, const Device  default_device) {
   auto entry = mod- GetGlobalVar("main");
   auto ca = analysis::ContextAnalyzer(mod, entry, default_device);
   auto expr = mod- Lookup(entry);
-
-```cpp
   ca.VisitExpr(expr);
   return ca.Results();
 }
@@ -305,12 +302,8 @@ class ContextAnalyzer : public MixedModeVisitor {
     }
     MixedModeVisitor::VisitExpr(fn- body);
   }
-```
 
-  
   DeviceDomainPtr DeviceFor(const Expr  expr) {
-
-```text
     auto it = expr_to_device_.find(expr);
     if (it == expr_to_device_.end()) {
       auto bottom = Bottom();
@@ -320,12 +313,8 @@ class ContextAnalyzer : public MixedModeVisitor {
       return it- second;
     }
   }
-```
 
-  
   DeviceDomainPtr Unify(DeviceDomainPtr lhs, DeviceDomainPtr rhs) {
-
-```text
     lhs = Lookup(lhs);
     rhs = Lookup(rhs);
     auto unified_device = Join(lhs, rhs);
@@ -340,10 +329,9 @@ class ContextAnalyzer : public MixedModeVisitor {
 
 @ tvm/src/relay/analysis/http://context_analysis.cc
 
+```x86asm
 AnalysisResultMap ContextAnalysis(const IRModule  mod, const Device  default_device) {
   AnalysisResultMap Results() {
-
-```x86asm
     AnalysisResultMap ret;
     for (const auto  it : expr_to_device_) {
       auto device = Lookup(it.second);
@@ -405,10 +393,10 @@ Step2.1.2 VMCompiler::AnalyzeContext
 @ tvm/src/relay/backend/vm/http://compiler.cc
 
 ExprDeviceMap VMCompiler::AnalyzeContext() const {
-  Device default_device;
-  ExprDeviceMap expr_device_map;
 
 ```text
+  Device default_device;
+  ExprDeviceMap expr_device_map;
   if (targets_.size()   1) {
     ...
   } else {
@@ -807,10 +795,10 @@ PackedFunc VirtualMachine::GetFunction(const std::string  name, const ObjectPtr 
 
 ObjectRef VirtualMachine::Invoke(const VMFunction  func, const std::vector ObjectRef   args) {
   ...
-  InvokeGlobal(func, args);
-  RunLoop();
 
 ```text
+  InvokeGlobal(func, args);
+  RunLoop();
   return return_register_;
 }
 ```

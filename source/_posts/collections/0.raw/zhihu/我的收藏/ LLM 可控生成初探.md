@@ -50,9 +50,9 @@ source_url: https://zhuanlan.zhihu.com/p/642690763
 
 官网给的第一个案例是特定 json 格式的生成。我们可以来看下这个`RAIL` spec 的具体定义：
 
+```text
  version="0.1">
 
-```text
      name="patient_info">
          name="gender" description="Patient's gender" />
          name="age" format="valid-range: 0 100" />
@@ -148,8 +148,11 @@ Help me correct the incorrect values based on the given error messages.
 
 除了 json 格式的检查外，`RAIL` spec 中还提供了通过脚本检查的扩展支持，可以用来检查更加复杂的内容，例如 Python 代码是否合法，结果中是否有敏感信息，甚至通过 LLM 再来检查生成的内容是否有害，做结果过滤等。官网上有很多例子，比如下面这个是用来检查生成的摘要是否与原文相似：
 
+```text
  language='python'>
 document = open("data/article1.txt", "r").read()
+```
+
 
     
 ```text

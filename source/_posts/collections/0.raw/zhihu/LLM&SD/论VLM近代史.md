@@ -439,9 +439,9 @@ freqs = (inv_freq_expanded.float() @ position_ids_expanded.float()).transpose(2,
 # freqs[0]->T, freqs[1]->H, freqs[2]->W
 
 第三步：Interleave
-reqs = self.apply_interleaved_mrope(freqs, self.mrope_section)
 
 ```python
+reqs = self.apply_interleaved_mrope(freqs, self.mrope_section)
 def apply_interleaved_mrope(self, freqs, mrope_section):
     freqs_t = freqs[0]  # 以T为主干
     for dim, offset in enumerate((1, 2), start=1):  # H=1, W=2
@@ -685,13 +685,10 @@ import os
 from pathlib import Path
 
 from PIL import Image, ImageDraw, ImageFont
-```
-
 
 cur_directory = Path(__file__).parent.absolute()
 FONT_PATH = os.path.join(cur_directory, "Roboto-Regular.ttf")
 
-```python
 def render_single_image_with_timestamp(
     image: Image, number: str, rate: float, font_path: str = FONT_PATH
 ```

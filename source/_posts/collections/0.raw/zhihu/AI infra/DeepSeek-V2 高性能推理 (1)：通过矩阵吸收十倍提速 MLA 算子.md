@@ -31,7 +31,10 @@ ZHANG Mingxing
 ,  @ZHANG Mingxing
 , MadSys @ TsinghuaUpdate： 已更新兼容 transformers 库的 MLA 优化实现，相关 pull request 在 https://huggingface.co/deepseek-ai/DeepSeek-V2-Chat/discussions/12
 
+```text
 TL;DR
+```
+
 之前在回答 如何看待 DeepSeek 发布的 MoE 大模型 DeepSeek-V2？  中有提到，从系统的角度 MLA 是一个非常优秀的、能够充分利用显卡算力的设计。然而可惜的是可能是为了兼容现有生态，现有的开源代码是将 MLA 展开成 MHA 进行的计算，虽然数学等价但既不省显存也不增加计算强度，性能堪忧。
 
 为了充分发挥 MLA 的优势，本文首先详细分析了现有的开源实现，并探索了一种简单易改的“矩阵吸收”技巧的实现方法。测试结果显示优化后的 DeepseekV2Attention 算子实现可以实现单算子十倍以上的提速。
@@ -204,17 +207,24 @@ atten\_weights = {q_t}^\top k_t = (W^{UQ} c_t^Q)^{\top} W^{UK} c_t^{KV} = {c_t^Q
 W^{UV}  吸收
 对于V的吸收，情况稍微复杂。为表述的清楚性，我们采用Einstein求和约定描述该过程：
 
+```text
 v_t = einsum('hdc,blc- blhd', W_UV, c_t_KV) # (1)
 o   = einsum('bqhl,blhd- bqhd', attn_weights, v_t)     # (2)
 u   = einsum('hdD,bhqd- bhD', W_o, o)       # (3)
+```
+
 
 # 将上述三式合并，得到总的计算过程
 u   = einsum('hdc,blc,bqhl,hdD- bhD', W_UV, c_t_KV, attn_weights, W_o)
 
 # 利用结合律改变计算顺序
+
+```text
 o_  = einsum('bhql,blc- bhqc', attn_weights, c_t_KV) # (4)
 o   = einsum('bhqc,hdc- bhqd', o_, W_UV)  # (5)
 u   = einsum('hdD,bhqd- bqD', W_o, o)     # (6)
+```
+
 
 实验结果
 通过上述实现，我们实际上得到了三个版本的 算子实现，分别是原始的解压缩版本CacheDecompressed (CD)，吸收后直接使用 compressed_kv 计算的 Absorbed_CacheCompressed (A_CC) 版本，和增加了 move elision 优化的最终版本 Absorbed_CacheCompressed_MoveElision (A_CC_ME)。
@@ -333,9 +343,12 @@ yelp
 
 其实建议涉及到一些transpose的地方可以显式标出来，比如
 
+```text
 o   = einsum('bqhl,blhd- bqhd', attn_weights, v_t)     # (2)
 
 o_  = einsum('bhql,blc- bhqc', attn_weights, c_t_KV) # (4)
+```
+
 
 这两个地方的attn_weights维度不同，可以改成
 

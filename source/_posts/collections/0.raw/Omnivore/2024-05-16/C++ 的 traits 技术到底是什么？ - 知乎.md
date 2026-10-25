@@ -192,12 +192,9 @@ traits，又被叫做特性萃取技术，说得简单点就是提取“被传�
 template <class I, class T>
 
 void func\_impl(I iter, T t) {
-```
-
 
  T tmp; // 这里就是迭代器所指物的类型新建的对象
 
-```text
  // ... 功能实现
 
 }
@@ -221,12 +218,9 @@ void func(I iter) {
 int main() {
 
  int i;
-```
-
 
  func(&i);
 
-```text
 }
 ```
 
@@ -256,9 +250,9 @@ template <class I>
 
 typename I::value\_type
 
+```text
 func(I ite) {
 
-```text
  return \*ite;
 
 }
@@ -368,11 +362,11 @@ struct forward\_iterator\_tag : public input\_iterator\_tag {};
 
  到这里，各个型别的具体重载实现已经写好，但是需要一个统一的接口，这时候 traits 就可以出场了。
 
+```cpp
 template<class Iterator>
 
 inline void func(Iterator& i)
 
-```text
 {
 
  typedef typename Iterator\_traits<Iterator>::iterator\_category category;
@@ -402,9 +396,9 @@ template <class unknown\_class>
 
 inline typename unknown\_class\_traits<unknown\_class>::return\_type // 萃取器取得对应型别
 
+```text
 func(unknown\_class u) {
 
-```text
  typedef typename unknown\_class\_traits<unknown\_class>::return\_type return\_type;
 
  return \_\_func(u, return\_type()); // 需要调用构造函数当tag
@@ -551,14 +545,11 @@ int main() {
  int value = 1;
 
  int \*p = &value;
-```
-
 
  A v1 = func(a);
 
  B v2 = func(b);
 
-```cpp
  int v3 = func(p);
 
  char ch = getchar();
@@ -709,9 +700,9 @@ template <class unknown\_class>
 
 inline typename unknown\_class\_traits<unknown\_class>::return\_type
 
+```cpp
 func(unknown\_class u) {
 
-```cpp
  typedef typename unknown\_class\_traits<unknown\_class>::return\_type return\_type;
 
  return \_\_func(u, return\_type());
@@ -732,14 +723,11 @@ int main() {
  int value = 1;
 
  int \*p = &value;
-```
-
 
  A v1 = func(a);
 
  B v2 = func(b);
 
-```cpp
  int v3 = func(p);
 
  char ch = getchar();

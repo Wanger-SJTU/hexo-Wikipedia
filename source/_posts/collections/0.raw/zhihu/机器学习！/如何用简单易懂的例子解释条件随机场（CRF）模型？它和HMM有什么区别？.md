@@ -456,9 +456,13 @@ MEMM讨论的最多的是他的labeling bias 问题。
 用Viterbi算法解码MEMM，状态1倾向于转换到状态2，同时状态2倾向于保留在状态2。 解码过程细节（需要会viterbi算法这个前提）：
 
 P(1-> 1-> 1-> 1)= 0.4 x 0.45 x 0.5 = 0.09 ，
+
+```text
 P(2->2->2->2)= 0.2 X 0.3 X 0.3 = 0.018，
 P(1->2->1->2)= 0.6 X 0.2 X 0.5 = 0.06，
 P(1->1->2->2)= 0.4 X 0.55 X 0.3 = 0.066 但是得到的最优的状态转换路径是1->1->1->1，为什么呢？因为状态2可以转换的状态比状态1要多，从而使转移概率降低,即MEMM倾向于选择拥有更少转移的状态。
+```
+
 
 2. 解释原因
 
@@ -667,9 +671,13 @@ B 所以，U00 - U09 我定义了10个模板。
 ……（数量非常庞大） 其实也就是对应了这样些个特征函数：
 
 > func1 = if (output = B and feature="U02:一") return 1 else return 0
+
+```text
 func2 = if (output = M and feature="U02:一") return 1 else return 0
 func3 = if (output = E and feature="U02:一") return 1 else return 0
 func4 = if (output = S and feature="U02:一") return 1 else return 0 
+```
+
 
 比如模板U06会从语料中one by one逐句抽出这些各个特征：
 

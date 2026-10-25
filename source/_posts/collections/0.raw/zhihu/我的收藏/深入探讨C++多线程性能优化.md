@@ -27,12 +27,9 @@ source_url: https://zhuanlan.zhihu.com/p/4245202423
 #include 
 #include 
 #include 
-```
-
 
 constexpr int kSetSize = 10000;
 
-```cpp
 class MyBenchmark : public benchmark::Fixture {
  public:
   void SetUp(const ::benchmark::State& state) override {
@@ -49,12 +46,8 @@ class MyBenchmark : public benchmark::Fixture {
   std::shared_ptr> s;
   std::once_flag flag;
 };
-```
-
 
 BENCHMARK_DEFINE_F(MyBenchmark, MultiThreadedWork)(benchmark::State& state) {
-
-```cpp
   for (auto _ : state) {
     int size_sum = kSetSize * 2;
     int size_per_thread = (size_sum + state.threads() - 1) / state.threads();
@@ -76,7 +69,10 @@ BENCHMARK_REGISTER_F(MyBenchmark, MultiThreadedWork)->Threads(2);
 BENCHMARK_REGISTER_F(MyBenchmark, MultiThreadedWork)->Threads(4);
 BENCHMARK_REGISTER_F(MyBenchmark, MultiThreadedWork)->Threads(8);
 
+```text
 BENCHMARK_MAIN();
+```
+
 
 跑出来的结果如下：
 
@@ -124,12 +120,9 @@ Lock Contention对应使用锁来处理多线程同步问题的场景，而Cache
 #include 
 #include 
 #include 
-```
-
 
 constexpr int kSetSize = 10000;
 
-```cpp
 class MyBenchmark : public benchmark::Fixture {
  public:
   void SetUp(const ::benchmark::State& state) override {
@@ -140,12 +133,8 @@ class MyBenchmark : public benchmark::Fixture {
   std::unordered_set s;
   std::once_flag flag;
 };
-```
-
 
 BENCHMARK_DEFINE_F(MyBenchmark, MultiThreadedWork)(benchmark::State& state) {
-
-```cpp
   for (auto _ : state) {
     int size_sum = kSetSize * 2;
     int size_per_thread = (size_sum + state.threads() - 1) / state.threads();
@@ -167,7 +156,10 @@ BENCHMARK_REGISTER_F(MyBenchmark, MultiThreadedWork)->Threads(2);
 BENCHMARK_REGISTER_F(MyBenchmark, MultiThreadedWork)->Threads(4);
 BENCHMARK_REGISTER_F(MyBenchmark, MultiThreadedWork)->Threads(8);
 
+```text
 BENCHMARK_MAIN();
+```
+
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_46e693c0c07a.jpg)
 
@@ -184,12 +176,9 @@ BENCHMARK_MAIN();
 #include 
 #include 
 #include 
-```
-
 
 constexpr int kSetSize = 10000;
 
-```cpp
 class MyBenchmark : public benchmark::Fixture {
  public:
   void SetUp(const ::benchmark::State& state) override {
@@ -206,12 +195,8 @@ class MyBenchmark : public benchmark::Fixture {
   std::once_flag flag;
   std::vector> sums;
 };
-```
-
 
 BENCHMARK_DEFINE_F(MyBenchmark, MultiThreadedWork)(benchmark::State& state) {
-
-```cpp
   for (auto _ : state) {
     int size_sum = kSetSize;
     int size_per_thread = (size_sum + state.threads() - 1) / state.threads();
@@ -233,7 +218,10 @@ BENCHMARK_REGISTER_F(MyBenchmark, MultiThreadedWork)->Threads(2);
 BENCHMARK_REGISTER_F(MyBenchmark, MultiThreadedWork)->Threads(4);
 BENCHMARK_REGISTER_F(MyBenchmark, MultiThreadedWork)->Threads(8);
 
+```text
 BENCHMARK_MAIN();
+```
+
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_53b17c606f2f.jpg)
 
@@ -248,12 +236,9 @@ BENCHMARK_MAIN();
 #include 
 #include 
 #include 
-```
-
 
 constexpr int kSetSize = 10000;
 
-```cpp
 struct alignas(64) PaddedCounter {
   std::atomic value{0};
   char padding[64 - sizeof(std::atomic)];  // 填充到缓存行大小
@@ -275,12 +260,8 @@ class MyBenchmark : public benchmark::Fixture {
   std::once_flag flag;
   std::vector sums;
 };
-```
-
 
 BENCHMARK_DEFINE_F(MyBenchmark, MultiThreadedWork)(benchmark::State& state) {
-
-```cpp
   for (auto _ : state) {
     int size_sum = kSetSize;
     int size_per_thread = (size_sum + state.threads() - 1) / state.threads();
@@ -302,7 +283,10 @@ BENCHMARK_REGISTER_F(MyBenchmark, MultiThreadedWork)->Threads(2);
 BENCHMARK_REGISTER_F(MyBenchmark, MultiThreadedWork)->Threads(4);
 BENCHMARK_REGISTER_F(MyBenchmark, MultiThreadedWork)->Threads(8);
 
+```text
 BENCHMARK_MAIN();
+```
+
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_eda41320c0ae.jpg)
 
@@ -326,30 +310,18 @@ class Sleeper {
 
  public:
   constexpr Sleeper() noexcept : spin_count_(0) {}
-```
-
 
   inline __attribute__((always_inline)) static void sleep() noexcept {
-
-```text
     struct timespec ts = {0, 500000};
     nanosleep(&ts, nullptr);
   }
-```
-
 
   inline __attribute__((always_inline)) void wait() noexcept {
-
-```cpp
     if (spin_count_ load(std::memory_order_relaxed) == LOCKED);
     }
   }
-```
-
 
   inline __attribute__((always_inline)) void unlock() noexcept {
-
-```cpp
     AtomicCast(&lock_)->store(FREE, std::memory_order_release);
   }
 
@@ -358,12 +330,8 @@ class Sleeper {
     return AtomicCast(&lock_)->compare_exchange_strong(compare, new_val, std::memory_order_acquire,
                                                        std::memory_order_relaxed);
   }
-```
-
 
   inline __attribute__((always_inline)) static std::atomic* AtomicCast(uint8_t* value) {
-
-```text
     return reinterpret_cast*>(value);
   }
 
@@ -383,12 +351,9 @@ class Sleeper {
 #include 
 #include 
 #include "spin_lock.h"
-```
-
 
 constexpr int kSetSize = 10000;
 
-```cpp
 // struct alignas(64) PaddedCounter {
 //   std::atomic value{0};
 //   char padding[64 - sizeof(std::atomic)];  // 填充到缓存行大小
@@ -418,13 +383,9 @@ class MyBenchmark : public benchmark::Fixture {
   std::vector sums_atomic;
   std::vector sum_lock;
 };
-```
-
 
 BENCHMARK_DEFINE_F(MyBenchmark, MultiThreadedWorkAtomic)(benchmark::State& state) {
   SpinLock m;
-
-```cpp
   for (auto _ : state) {
     int size_sum = kSetSize;
     int size_per_thread = (size_sum + state.threads() - 1) / state.threads();
@@ -438,12 +399,8 @@ BENCHMARK_DEFINE_F(MyBenchmark, MultiThreadedWorkAtomic)(benchmark::State& state
     }
   }
 }
-```
-
 
 BENCHMARK_DEFINE_F(MyBenchmark, MultiThreadedWorkLock)(benchmark::State& state) {
-
-```cpp
   std::mutex m;
   for (auto _ : state) {
     int size_sum = kSetSize;
@@ -472,7 +429,10 @@ BENCHMARK_REGISTER_F(MyBenchmark, MultiThreadedWorkLock)->Threads(2);
 BENCHMARK_REGISTER_F(MyBenchmark, MultiThreadedWorkLock)->Threads(4);
 BENCHMARK_REGISTER_F(MyBenchmark, MultiThreadedWorkLock)->Threads(8);
 
+```text
 BENCHMARK_MAIN();
+```
+
 
 benchmark结果：
 
@@ -488,12 +448,9 @@ benchmark结果：
 #include 
 #include 
 #include "spin_lock.h"
-```
-
 
 constexpr int kSetSize = 10000;
 
-```cpp
 class MyBenchmark : public benchmark::Fixture {
  public:
   void SetUp(const ::benchmark::State& state) override {
@@ -516,12 +473,8 @@ class MyBenchmark : public benchmark::Fixture {
   SpinLock m1_;
   std::mutex m2_;
 };
-```
-
 
 BENCHMARK_DEFINE_F(MyBenchmark, MultiThreadedWorkAtomic)(benchmark::State& state) {
-
-```cpp
   for (auto _ : state) {
     int size_sum = kSetSize;
     int size_per_thread = (size_sum + state.threads() - 1) / state.threads();
@@ -534,12 +487,8 @@ BENCHMARK_DEFINE_F(MyBenchmark, MultiThreadedWorkAtomic)(benchmark::State& state
     }
   }
 }
-```
-
 
 BENCHMARK_DEFINE_F(MyBenchmark, MultiThreadedWorkLock)(benchmark::State& state) {
-
-```cpp
   for (auto _ : state) {
     int size_sum = kSetSize;
     int size_per_thread = (size_sum + state.threads() - 1) / state.threads();
@@ -566,7 +515,10 @@ BENCHMARK_REGISTER_F(MyBenchmark, MultiThreadedWorkLock)->Threads(2);
 BENCHMARK_REGISTER_F(MyBenchmark, MultiThreadedWorkLock)->Threads(4);
 BENCHMARK_REGISTER_F(MyBenchmark, MultiThreadedWorkLock)->Threads(8);
 
+```text
 BENCHMARK_MAIN();
+```
+
 
 benchmark结果：
 
@@ -592,12 +544,9 @@ case 1如下:
 #include 
 #include 
 #include "spin_lock.h"
-```
-
 
 constexpr int kSetSize = 10000;
 
-```cpp
 class MyBenchmark : public benchmark::Fixture {
  public:
   void SetUp(const ::benchmark::State& state) override {
@@ -608,12 +557,8 @@ class MyBenchmark : public benchmark::Fixture {
   std::unordered_set s;
   std::once_flag flag;
 };
-```
-
 
 BENCHMARK_DEFINE_F(MyBenchmark, MultiThreadedWorkAtomic)(benchmark::State& state) {
-
-```cpp
   std::atomic sum = 0;
   for (auto _ : state) {
     int size_sum = kSetSize;
@@ -627,12 +572,8 @@ BENCHMARK_DEFINE_F(MyBenchmark, MultiThreadedWorkAtomic)(benchmark::State& state
     }
   }
 }
-```
-
 
 BENCHMARK_DEFINE_F(MyBenchmark, MultiThreadedWorkLock)(benchmark::State& state) {
-
-```cpp
   std::mutex m;
   uint32_t sum = 0;
   for (auto _ : state) {
@@ -662,7 +603,10 @@ BENCHMARK_REGISTER_F(MyBenchmark, MultiThreadedWorkLock)->Threads(2);
 BENCHMARK_REGISTER_F(MyBenchmark, MultiThreadedWorkLock)->Threads(4);
 BENCHMARK_REGISTER_F(MyBenchmark, MultiThreadedWorkLock)->Threads(8);
 
+```text
 BENCHMARK_MAIN();
+```
+
 
 benchmark结果：
 
@@ -678,12 +622,9 @@ case 2如下:
 #include 
 #include 
 #include "spin_lock.h"
-```
-
 
 constexpr int kSetSize = 10000;
 
-```cpp
 class MyBenchmark : public benchmark::Fixture {
  public:
   void SetUp(const ::benchmark::State& state) override {
@@ -702,12 +643,8 @@ class MyBenchmark : public benchmark::Fixture {
   std::atomic atomic_count_;
   std::mutex m;
 };
-```
-
 
 BENCHMARK_DEFINE_F(MyBenchmark, MultiThreadedWorkAtomic)(benchmark::State& state) {
-
-```cpp
   for (auto _ : state) {
     int size_sum = kSetSize;
     int size_per_thread = (size_sum + state.threads() - 1) / state.threads();
@@ -720,12 +657,8 @@ BENCHMARK_DEFINE_F(MyBenchmark, MultiThreadedWorkAtomic)(benchmark::State& state
     }
   }
 }
-```
-
 
 BENCHMARK_DEFINE_F(MyBenchmark, MultiThreadedWorkLock)(benchmark::State& state) {
-
-```cpp
   for (auto _ : state) {
     int size_sum = kSetSize;
     int size_per_thread = (size_sum + state.threads() - 1) / state.threads();
@@ -752,7 +685,10 @@ BENCHMARK_REGISTER_F(MyBenchmark, MultiThreadedWorkLock)->Threads(2);
 BENCHMARK_REGISTER_F(MyBenchmark, MultiThreadedWorkLock)->Threads(4);
 BENCHMARK_REGISTER_F(MyBenchmark, MultiThreadedWorkLock)->Threads(8);
 
+```text
 BENCHMARK_MAIN();
+```
+
 
 benchmark结果：
 
@@ -812,13 +748,10 @@ benchmark结果：
 #include 
 #include 
 #include 
-```
-
 
 constexpr uint8_t kEpochSize = 3;
 constexpr uint8_t kCacheLineSize = 64;
 
-```cpp
 template 
 class ThreadIDManager;
 
@@ -842,12 +775,8 @@ class ThreadIDManager {
     static ThreadIDManager inst;
     return inst;
   }
-```
-
 
   uint32_t AcquireThreadID() {
-
-```cpp
     std::lock_guard lock(tid_list_mutex_);
     auto tid = tid_list_.back();
     tid_list_.pop_back();
@@ -906,12 +835,8 @@ class EbrManager {
     thread_local ThreadID thread_id;
     return tls_list_[thread_id.tid];
   }
-```
-
 
   inline void TryGC() {
-
-```cpp
     auto epoch = global_epoch_.load(std::memory_order_acquire);
     // TODO 优化记录上一次搜索到的位置
     for (int i = 0; i obj);
@@ -1076,14 +1001,10 @@ class MyBenchmark : public benchmark::Fixture {
   MyList l;
   std::once_flag flag;
 };
-```
-
 
 constexpr int kKeySize = 10000;
 
 BENCHMARK_DEFINE_F(MyBenchmark, MultiThreadedWorkNoUseEbr)(benchmark::State &state) {
-
-```cpp
   for (auto _ : state) {
     auto &mylist = GetMyList();
     if (0 == state.thread_index()) {
@@ -1098,7 +1019,10 @@ BENCHMARK_REGISTER_F(MyBenchmark, MultiThreadedWorkUseEbr)->Threads(4);
 BENCHMARK_REGISTER_F(MyBenchmark, MultiThreadedWorkUseEbr)->Threads(8);
 BENCHMARK_REGISTER_F(MyBenchmark, MultiThreadedWorkUseEbr)->Threads(12);
 
+```text
 BENCHMARK_MAIN();
+```
+
 
 benchmark结果：
 

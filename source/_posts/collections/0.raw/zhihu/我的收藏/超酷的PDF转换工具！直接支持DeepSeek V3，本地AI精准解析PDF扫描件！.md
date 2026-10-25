@@ -59,6 +59,7 @@ PDF Craft 支持本地运行，安装和使用方式也非常简单，支持 Pyt
 
 此操作无需调用远程的 LLM，仅凭本地算力（CPU 或显卡）就可完成。第一次调用时会联网下载所需的模型。遇到文档中的插图、表格、公式，会直接截图插入到 MarkDown 文件中。
 
+```python
 from pdf_craft import PDFPageExtractor, MarkDownWriter
 
 extractor = PDFPageExtractor(
@@ -68,6 +69,8 @@ extractor = PDFPageExtractor(
 with MarkDownWriter(markdown_path, "images", "utf-8") as md:
   for block in extractor.extract(pdf="/path/to/pdf/file"):
     md.write(block)
+```
+
 
 执行完成后，会在指定的地址生成一个 `*.md` 文件。若原 PDF 中有插图（或表格、公式），则会在 *.md 同级创建一个 assets 文件夹，以保存图片。而 MarkDown 文件中将以相对地址的形式引用 assets 文件夹中的图片。
 
@@ -79,15 +82,19 @@ with MarkDownWriter(markdown_path, "images", "utf-8") as md:
 
 将使用 OCR 从 PDF 中扫描并识别文字。因此，也需要先构建 PDFPageExtractor 对象。（重复性操作代码省略掉了，可以参考上一步的）
 
+```python
 from pdf_craft import PDFPageExtractor
 
 extractor = PDFPageExtractor(
   device="cpu", # 如果希望使用 CUDA，请改为 device="cuda:0" 这样的格式。
   model_dir_path="/path/to/model/dir/path", # AI 模型下载和安装的文件夹地址
 )
+```
+
 
 之后，需要配置 LLM 对象。建议使用使用 DeepSeek，本库的 Prompt 基于最新的 V3 模型调试。
 
+```python
 from pdf_craft import LLM
 
 llm = LLM(
@@ -96,9 +103,12 @@ llm = LLM(
   model="deepseek-chat", # LLM 供应商提供的模型
   token_encoding="o200k_base", # 进行 tokens 估算的本地模型名（与 LLM 无关，若不关心就保留 "o200k_base"）
 )
+```
+
 
 如上两个对象准备好后，就可以开始扫描并分析 PDF 书籍了。
 
+```python
 from pdf_craft import analyse
 
 analyse(
@@ -108,15 +118,20 @@ analyse(
   analysing_dir_path="/path/to/analysing/dir", # analysing 文件夹地址
   output_dir_path="/path/to/output/files", # 分析结果将写入这个文件夹
 )
+```
+
 
 在分析结束后，将 output_dir_path 文件夹地址传给如下代码作为参数，即可最终生成 EPUB 文件。
 
+```python
 from pdf_craft import generate_epub_file
 
 generate_epub_file(
   from_dir_path=output_dir_path, # 来自上一步分析所产生的文件夹
   epub_file_path="/path/to/output/epub", # 生成的 EPUB 文件保存路径
 )
+```
+
 
 转化效果如下：
 

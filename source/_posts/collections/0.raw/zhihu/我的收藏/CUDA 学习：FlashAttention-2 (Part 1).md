@@ -138,8 +138,12 @@ col = (tid % 4) * 2
 
 这里不包含D参数，因为始终会累加到C template  typename value_t 
 __device__ void
+
+```text
 mma_m16n8k16_f32_accum(
 	float  d1, float  d2, float  d3, float  d4,
+```
+
  
     uint32_t const  a1, uint32_t const  a2,
     uint32_t const  a3, uint32_t const  a4,
@@ -188,12 +192,8 @@ asm voiatile内联部分的逻辑如下：
 // 假设：
 // A_regs[] 是 uint32_t 数组 (对应 input) -  使用 "r" 约束 (32-bit 通用寄存器)
 // C_regs[] 是 float 数组 (对应 accum)    -  使用 "f" 约束 (32-bit 浮点寄存器)
-```
-
 
 asm volatile(
-
-```text
     // 1. PTX 指令字符串
     // 必须显式列出所有涉及的寄存器占位符，例如 {%0, %1...} 代表 C 矩阵的寄存器组
     "mma.sync.aligned.m16n8k16.row.col.f32.f16.f16.f32 "
@@ -242,19 +242,14 @@ cp.async.wait() 仅等待当前线程完成加载。如果线程通过共享内�
 
 __device__ void cp_async_commit() { asm volatile("cp.async.commit_group;"); }
  
+```cpp
 template  int ngroups 
 __device__ void cp_async_wait() {
-
-```cpp
     asm volatile("cp.async.wait_group %0;" ::"n"(ngroups));
 }
 
 template  int size, typename T 
-```
-
 __device__ void cp_async(T *smem_to, T *gmem_from) {
-
-```text
     static_assert(size == 16);
 
     uint32_t smem_ptr = __cvta_generic_to_shared(smem_to);
@@ -274,8 +269,12 @@ __cvta_generic_to_shared：用于将通用指针转换为共享内存空间的�
 可以参考官方PTX文档： 
 
 Syntax: cp.async.cg.shared.global [dst], [src], size;
+
+```text
 dst (Destination):Shared memory destination address. Must be a 32-bit unsigned integer (offset).
 src (Source): Global memory source address. Must be a 64-bit address.
+```
+
 
 2.2、SMEM → GMEM: Vectorized Stores
 从共享内存到全局内存的传输中，与cp.async等效的st.async在安培架构上并不支持，因此将采用次优方案：16 字节向量化存储。我们只需确保指针指向 16 字节数据类型，且指针满足 16 字节对齐(addr % 16 == 0 reinterpret_cast uint4* (GMEM[dst])[0] = reinterpret_cast uint4* (SMEM[src])[0];
@@ -314,6 +313,7 @@ ldmatrix.x4 允许我们加载任意四个 8 \times 8 片段（fragments）。�
 
 （引用）一个Warp中通过ldmatrix连续加载4个Fragment到RF线程布局的示意图对应的ptx指令封装如下：
 
+```cpp
  template  typename T 
 __device__ void ldmatrix_x4(
 	T *load_from,
@@ -321,6 +321,8 @@ __device__ void ldmatrix_x4(
 	uint32_t  a2,
     uint32_t  a3,
     uint32_t  a4
+```
+
 ) {
 
 ```text

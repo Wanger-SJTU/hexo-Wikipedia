@@ -59,15 +59,15 @@ from safetensors.torch import save_file
 ```
 
 ​
-tensors = {
 
 ```text
+tensors = {
     "gptq_bits": torch.tensor(4),
     "gptq_groupsize": torch.tensor(128)
 }
+save_file(tensors, "/home/kevin/models/llama2-7b-chat-gptq-int4/gptq_config.safetensors")
 ```
 
-save_file(tensors, "/home/kevin/models/llama2-7b-chat-gptq-int4/gptq_config.safetensors")
 
 目前 TGI 中对量化权重的处理方法不是很兼容 AUTOGPTQ 等 GPTQ 采用的数据储存方式，但有几个 PR 中已经在对此优化。
 
