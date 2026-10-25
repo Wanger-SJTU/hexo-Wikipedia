@@ -24,7 +24,7 @@
 <link rel="icon" type="image/svg+xml" href="<%- url_for(_logo) %>">
 <%
   const _mathContent = (typeof page !== 'undefined' && page && page.content) ? String(page.content) : '';
-  const _hasMath = /(\$\$[\s\S]{1,6000}?\$\$|\$[^$\n]{1,300}\$|\\\(|\\\[|\\begin\{(equation|align|array|matrix|pmatrix|bmatrix|cases|split)\})/.test(_mathContent);
+  const _hasMath = /class="math-tex"/.test(_mathContent);
   const _mathEnabled = !(_theme.math && _theme.math.enable === false);
 %>
 <link rel="stylesheet" href="<%- url_for('/css/style.css') %><%- (theme.assets && theme.assets.version) ? ('?v=' + theme.assets.version) : '' %>">

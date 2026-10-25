@@ -8,30 +8,27 @@
 <% } %>
 <%
   const _mathContent = (typeof page !== 'undefined' && page && page.content) ? String(page.content) : '';
-  const _hasMath = /(\$\$[\s\S]{1,6000}?\$\$|\$[^$\n]{1,300}\$|\\\(|\\\[|\\begin\{(equation|align|array|matrix|pmatrix|bmatrix|cases|split)\})/.test(_mathContent);
+  const _hasMath = /class="math-tex"/.test(_mathContent);
   const _mathEnabled = !(theme.math && theme.math.enable === false);
 %>
 <% if (_hasMath && _mathEnabled) { %>
 <script src="<%- url_for('/vendor/katex/katex.min.js') %><%- (theme.assets && theme.assets.version) ? ('?v=' + theme.assets.version) : '' %>" defer></script>
-<script src="<%- url_for('/vendor/katex/auto-render.min.js') %><%- (theme.assets && theme.assets.version) ? ('?v=' + theme.assets.version) : '' %>" defer></script>
 <script>
   document.addEventListener('DOMContentLoaded', function () {
-    if (!window.renderMathInElement) return;
-    var target = document.querySelector('.article__content') || document.querySelector('#wiki-main');
-    if (!target) return;
-    try {
-      renderMathInElement(target, {
-        delimiters: [
-          { left: '$$', right: '$$', display: true },
-          { left: '\\[', right: '\\]', display: true },
-          { left: '$', right: '$', display: false },
-          { left: '\\(', right: '\\)', display: false }
-        ],
-        throwOnError: false,
-        strict: false,
-        ignoredTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code', 'option']
-      });
-    } catch (err) { /* 公式渲染失败不影响阅读 */ }
+    if (!window.katex) return;
+    var nodes = document.querySelectorAll('.math-tex');
+    for (var i = 0; i < nodes.length; i += 1) {
+      var node = nodes[i];
+      var tex = node.getAttribute('data-tex') || '';
+      if (!tex) continue;
+      try {
+        window.katex.render(tex, node, {
+          displayMode: node.getAttribute('data-display') === '1',
+          throwOnError: false,
+          strict: false
+        });
+      } catch (err) { /* 单条公式失败不影响正文 */ }
+    }
   });
 </script>
 <% } %>
