@@ -523,7 +523,18 @@ function main() {
         output.push(line);
         continue;
       }
-      output.push(line.replace(/(`[^`\n]*`)|([^`]+)/g, (segment, code, plain) => (
+      let clean = line;
+      if (!/^( {4}|\t)/.test(clean)) {
+        // 单边/悬空加粗标记：`**` 单独一行、标题结尾多一个 `**`、跨行 ** 等
+        if (/^\s*\*\*\s*$/.test(clean)) continue;
+        clean = clean.replace(/^(\s*#{1,6}\s+.*?)\s*\*\*\s*$/, '$1');
+        clean = clean.replace(/^(\s*#{1,6}\s+)\*\*\s*(.*)$/, '$1$2');
+        const markerCount = (clean.match(/\*\*/g) || []).length;
+        if (markerCount === 1) {
+          clean = clean.replace(/^\s*\*\*\s*/, '').replace(/\s*\*\*\s*$/, '');
+        }
+      }
+      output.push(clean.replace(/(`[^`\n]*`)|([^`]+)/g, (segment, code, plain) => (
         code ? segment : transformText(plain, doc)
       )));
     }
