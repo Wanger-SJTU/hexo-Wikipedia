@@ -40,13 +40,20 @@ Shared utils stay outside the domain and should not accumulate domain logic.
 
 ## Execution SOP
 
-1. Map the codebase into domains before touching implementation style.
-2. For each domain, identify the allowed layer sequence.
-3. Identify all cross-cutting concerns and route them through providers or adapters.
-4. Move ambiguous shared logic either into the owning domain or into truly generic utils.
-5. Document the rules in `ARCHITECTURE.md`.
-6. Add one executable guardrail for the highest-cost violation.
-7. Update quality scoring after the change.
+## 1. Map the codebase into domains before touching implementation style.
+
+## 2. For each domain, identify the allowed layer sequence.
+
+## 3. Identify all cross-cutting concerns and route them through providers or adapters.
+
+## 4. Move ambiguous shared logic either into the owning domain or into truly generic utils.
+
+## 5. Document the rules in `ARCHITECTURE.md`.
+
+## 6. Add one executable guardrail for the highest-cost violation.
+
+## 7. Update quality scoring after the change.
+
 
 ## Definition Of Done
 

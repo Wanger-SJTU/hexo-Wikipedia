@@ -23,9 +23,12 @@ Yangi foydalanuvchining ilova bilan birinchi marta ishlashdagi tajribasini (firs
 
 ## Foydalanuvchi Oqimi (User Flow)
 
-1. `[birinchi qadam]`
-2. `[ikkinchi qadam]`
-3. `[uchinchi qadam]`
+## 1. `[birinchi qadam]`
+
+## 2. `[ikkinchi qadam]`
+
+## 3. `[uchinchi qadam]`
+
 
 ## Qabul Qilish Mezonlari (Acceptance Criteria)
 

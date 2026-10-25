@@ -193,7 +193,8 @@ pld1kepp这个参数是可以改的，改为预取到L2中，不keep，而是流
 
 《ARM® Architecture Reference Manual ARMv8, for ARMv8-A architecture profile》p180
 
-3.3.2** **内存加载**
+### 3.3.2** **内存加载**
+
 
 <strong>V7：</strong>
 
@@ -515,7 +516,8 @@ Todo~
 
 （当然写这些东西很费时间的呀，我只能有时间慢慢写了~由于只是个人兴趣，不定期更新哈~）
 
-4.2  pooling （图纸only， now）
+### 4.2  pooling （图纸only， now）
+
 
 ![](/images/collections/0.raw/zhihu/%E4%BC%98%E5%8C%96/asset/img_6025da856370.jpg)
 

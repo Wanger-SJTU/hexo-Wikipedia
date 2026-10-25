@@ -114,7 +114,8 @@ kgsl：kernel/drivers/gpu/msm/adreno_dispatch.c
 
 crc_commit:[drivers/gpu/drm/msm/msm_drv.c](https://link.zhihu.com/?target=https%3A//android.googlesource.com/kernel/msm/%2B/f0acff6b93cfd7fc9960cce0e288622f2f51edfe/drivers/gpu/drm/msm/msm_drv.c)
 
-3.2 BLASTBufferQueue:
+### 3.2 BLASTBufferQueue:
+
 
 frameworks/native/libs/gui/BLASTBufferQueue.cpp
 

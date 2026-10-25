@@ -30,12 +30,18 @@ Bu bir metafor değil — matematiktir. Ajanın bağlam kapasitesinin C olduğun
 
 Claude Code'un gerçek davranışı söyleyicidir. Ona "kullanıcı kaydı ekle" deyin ve şunu yapabilir:
 
-1. Bir User modeli oluşturmak
-2. Kayıt rotasını yazmak
-3. E-posta doğrulamasına ihtiyaç duyduğunu fark etmek, bir posta servisi eklemek
-4. Şifrelerin hashlanması gerektiğini görmek, bcrypt getirmek
-5. Hata işlemenin tutarsız olduğunu fark etmek, genel hata middleware'ini yeniden yapılandırmak
-6. Test dosyası yapısının dağınık olduğunu görmek, dizini yeniden organize etmek
+## 1. Bir User modeli oluşturmak
+
+## 2. Kayıt rotasını yazmak
+
+## 3. E-posta doğrulamasına ihtiyaç duyduğunu fark etmek, bir posta servisi eklemek
+
+## 4. Şifrelerin hashlanması gerektiğini görmek, bcrypt getirmek
+
+## 5. Hata işlemenin tutarsız olduğunu fark etmek, genel hata middleware'ini yeniden yapılandırmak
+
+## 6. Test dosyası yapısının dağınık olduğunu görmek, dizini yeniden organize etmek
+
 
 Altı adım sonra her biri yarı tamamlandı. Uçtan uca doğrulama yok, yarı pişmiş kodlar arasında karmaşık bağlaşım var ve parçaları toplamak için bir sonraki oturum tamamen kayıp olacak. Aynı anda altı yemek pişiren biri gibi — her yemek tencerede ama hiçbiri tabağa konmadı. Hepsi yanıyor.
 

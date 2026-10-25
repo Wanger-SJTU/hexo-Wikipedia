@@ -19,21 +19,25 @@ source_url: https://zhuanlan.zhihu.com/p/624918286
 
 ### LLM基础
 
-1. 最主流的开源模型？
+## 1. 最主流的开源模型？
+
 
 ChatGLM-6B<span class="wikilink wikilink--missing" title="未导入的页面">1</span>(#ref_1)  prefix LM
 
 LLaMA-7B<span class="wikilink wikilink--missing" title="未导入的页面">2</span>(#ref_2)      causal LM
 
-2. prefix LM和causal LM的区别？
+## 2. prefix LM和causal LM的区别？
+
 
 attention mask不同，前者的prefix部分的token互相能看到，后者严格遵守只有后面的token才能看到前面的token的规则。
 
-3. 哪种架构是主流？
+## 3. 哪种架构是主流？
+
 
 GPT系列就是Causal LM，目前除了T5和GLM，其他大模型基本上都是Causal LM。
 
-4. 说一下LLM常见的问题？
+## 4. 说一下LLM常见的问题？
+
 
 出现复读机问题。比如：ABCABCABC不断循环输出到max length。
 
@@ -43,13 +47,15 @@ GPT系列就是Causal LM，目前除了T5和GLM，其他大模型基本上都是
 
 另外，可能出现重复用户问题的情况，原因未知。
 
-5. 如何缓解复读机问题？
+## 5. 如何缓解复读机问题？
+
 
 解码方式里增加不确定性，既然容易复读那我们就增加随机性，开启do_sample选项，调高temperature。
 
 如果学的太烂，do_sample也不顶用呢？加重复惩罚，设置repetition_penalty，注意别设置太大了。不然你会发现连标点符号都不会输出了。
 
-6. llama 输入句子长度理论上可以无限长吗？
+## 6. llama 输入句子长度理论上可以无限长吗？
+
 
 这里引用苏神（RoPE作者）在群里的回复。
 
@@ -62,23 +68,27 @@ python环境建议3.9，因为fastchat<span class="wikilink wikilink--missing" t
 
 cuda环境越高越好，c++版本建议直接装9.1.0以上。
 
-2. 安装环境的姿势？
+## 2. 安装环境的姿势？
+
 
 conda是个好东西，建议用conda构建环境，也可以用来快速安装cuda（不过可能会找不到include、lib64）
 
 ### 硬件基础
 
-1. 为什么大模型推理时显存涨的那么多还一直占着？
+## 1. 为什么大模型推理时显存涨的那么多还一直占着？
+
 
 首先，序列太长了，有很多Q/K/V。
 
 其次，因为是逐个预测next token，每次要缓存K/V加速解码。
 
-2. 大模型大概有多大，模型文件有多大?
+## 2. 大模型大概有多大，模型文件有多大?
+
 
 一般放出来的模型文件都是fp16的，假设是一个 n B的模型，那么模型文件占 2n G，fp16加载到显存里做推理也是占 2n G，对外的pr都是 10n 亿参数的模型。
 
-3. 大模型在gpu和cpu上推理速度如何？
+## 3. 大模型在gpu和cpu上推理速度如何？
+
 
 7B量级下，cpu推理速度约10token/s，单卡A6000和8核AMD的推理速度通常为 10:1。<span class="wikilink wikilink--missing" title="未导入的页面">5</span>(#ref_5)
 
@@ -94,21 +104,25 @@ conda是个好东西，建议用conda构建环境，也可以用来快速安装c
 
 （刚发现fastchat上可以通过调用train脚本训练vicuna而非train_mem，其实也是可以训练的）
 
-5. 建议用什么显卡？
+## 5. 建议用什么显卡？
+
 
 最好用 8*A100，保证显存充足。V100下不要进行 8bit 模式的训练，alpaca_lora的复现上很多人遇到了loss突变为0的bug。
 
-6. 如果想要在某个模型基础上做全参数微调，究竟需要多少显存？
+## 6. 如果想要在某个模型基础上做全参数微调，究竟需要多少显存？
+
 
 一般 n B的模型，最低需要 16-20 n G的显存。(cpu offload基本不开的情况下）
 
 vicuna-7B为例，官方样例配置为 4*A100 40G，测试了一下确实能占满显存。（global batch size 128，max length 2048）当然训练时用了FSDP、梯度累积、梯度检查点等方式降显存。
 
-7. 推理速度上，int8和fp16比起来怎么样？
+## 7. 推理速度上，int8和fp16比起来怎么样？
+
 
 根据实践经验，int8模式一般推理会明显变慢（huggingface的实现）
 
-8. 如果就是想要试试65b模型，但是显存不多怎么办？
+## 8. 如果就是想要试试65b模型，但是显存不多怎么办？
+
 
 最少大概50g显存，可以在llama-65b-int4（gptq）模型基础上LoRA<span class="wikilink wikilink--missing" title="未导入的页面">6</span>(#ref_6)，当然各种库要安装定制版本的。
 
@@ -117,23 +131,28 @@ vicuna-7B为例，官方样例配置为 4*A100 40G，测试了一下确实能占
 - LoRA权重是否可以合入原模型？
 可以，将训练好的低秩矩阵（B*A）+原模型权重合并（相加），计算出新的权重。
 
-2. ChatGLM-6B LoRA后的权重多大？
+## 2. ChatGLM-6B LoRA后的权重多大？
+
 
 rank 8 target_module query_key_value条件下，大约15M。
 
-3. SFT（有监督微调）的数据集格式？
+## 3. SFT（有监督微调）的数据集格式？
+
 
 一问一答
 
-4. RM（奖励模型）的数据格式？
+## 4. RM（奖励模型）的数据格式？
+
 
 一个问题 + 一条好回答样例 + 一条差回答样例
 
-5. PPO（强化学习）的数据格式？
+## 5. PPO（强化学习）的数据格式？
+
 
 理论上来说，不需要新增数据。需要提供一些prompt，可以直接用sft阶段的问。另外，需要限制模型不要偏离原模型太远（ptx loss），也可以直接用sft的数据。
 
-6. 奖励模型需要和基础模型一致吗？
+## 6. 奖励模型需要和基础模型一致吗？
+
 
 不同实现方式似乎限制不同。（待实践确认）colossal-ai的coati中需要模型有相同的tokenizer，所以选模型只能从同系列中找。在ppo算法实现方式上据说trlx是最符合论文的。
 
@@ -144,7 +163,8 @@ rank 8 target_module query_key_value条件下，大约15M。
 
 第二种方法，把领域知识构建成问答数据集，用SFT让LLM学习这部分知识。<span class="wikilink wikilink--missing" title="未导入的页面">7</span>(#ref_7)
 
-2. 为什么SFT之后感觉LLM傻了?
+## 2. 为什么SFT之后感觉LLM傻了?
+
 
 原版答案：
 
@@ -164,11 +184,13 @@ SFT的重点在于激发大模型的能力，SFT的数据量一般也就是万�
 
 同时，应该平衡不同任务的比例，并且限制整个数据集的容量（通常几千或几万），防止较大的数据集压倒整个分布。
 
-3. 如果想要快速体验各种模型，该怎么办？
+## 3. 如果想要快速体验各种模型，该怎么办？
+
 
 推荐fastchat<span class="wikilink wikilink--missing" title="未导入的页面">4</span>(#ref_4)，集成了各路开源模型，从自己的vicuna到stable AI的stableLM。
 
-4. 找数据集哪里找？
+## 4. 找数据集哪里找？
+
 
 推荐Alpaca-COT<span class="wikilink wikilink--missing" title="未导入的页面">8</span>(#ref_8)，数据集整理的非常全，眼花缭乱。
 

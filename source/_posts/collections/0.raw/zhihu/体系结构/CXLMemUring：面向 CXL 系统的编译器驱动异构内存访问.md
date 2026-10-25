@@ -48,7 +48,8 @@ CXLMemUring 的核心思想是：把<strong>数据获取与缓存管理外包</s
 - <strong>运行时</strong>：基于计数器与采样画像识别相位与模式，在线调节预取距离、安装速率与同步粒度，必要时切换函数版本以在“掩蔽延迟”与“污染控制”之间权衡。
 3 CIRA：面向异步协同的中间表示
 
-3.1 抽象与操作
+### 3.1 抽象与操作
+
 CIRA 构建于 MLIR 之上，提供以下<strong>一等公民</strong>类型与操作：
 
 - <strong>类型</strong>：`MemoryHandle`、`AsyncFuture`、`SyncToken` 等；
@@ -61,7 +62,8 @@ CIRA 构建于 MLIR 之上，提供以下<strong>一等公民</strong>类型与�
  
 ![](https://pic1.zhimg.com/v2-c783ae95c1abbe7d9f93adc61eff3ae6_r.jpg)通过上述抽象，<strong>“何时取、取到哪一层、由谁安装、何时消费”</strong>在 IR 层即被显式化，便于后端针对不同执行体做差异化生成。
 
-3.2 降阶与代码生成
+### 3.2 降阶与代码生成
+
 CIRA 程序被降到两个后端：
 
 - <strong>x86 后端</strong>：生成异步计算核，插入 `await` 与推测预取，构造“命中/回退”多版本热环路以稳态运行。
@@ -80,7 +82,8 @@ CIRA 程序被降到两个后端：
 ![](https://pic2.zhimg.com/v2-0bb7db76229ce3affbda6101e3104b2b_r.jpg)
 5 实验评估
 
-5.1 平台与基线
+### 5.1 平台与基线
+
 
 - <strong>主机</strong>：Intel Xeon 6 6787p（86 核，2.8 GHz），本地 DDR5-8000 256 GB；
  
@@ -91,7 +94,8 @@ CIRA 程序被降到两个后端：
 - <strong>硬件模块</strong>：预取仲裁、cacheline 追踪与轻量消息队列。
  <strong>基线</strong>包括：naïve CXL 访问、软件预取以及硬件预取器默认配置。
  
-5.2 工作负载
+### 5.2 工作负载
+
 覆盖<strong>指针追踪</strong>（链表/树/跳表）、<strong>图分析</strong>（BFS、PageRank、连通分量）、<strong>ML 推理</strong>（推荐系统大规模 embedding、BERT 注意力、稀疏网络）。
 
 6 讨论与比较

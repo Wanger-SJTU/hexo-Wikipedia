@@ -90,10 +90,10 @@ Flamingo根据这点去收集了图文交织的数据，如上面图所示，不
 image的编码也很简单，有点像Q-Former，也是用learnable query去增强img token的表达能力，具体如下：
 
 ![](https://pic1.zhimg.com/v2-415c941f3d4d89595ad18fbfdec4189e_r.jpg)Perceiver Resampler所有的图像（不管是视频各帧还是不同的图像）都经过Vision Encoder先获得 
-![](https://www.zhihu.com/equation?tex=X_f) 这个img token，如果是视频帧还会加绝对时间编码上去，然后learnable query 
-![](https://www.zhihu.com/equation?tex=X) （对应图中的learned latent queries）作为Q， 
-![](https://www.zhihu.com/equation?tex=X_f) 和 
-![](https://www.zhihu.com/equation?tex=X) 在length上拼接起来作为K和V，然后通过Self-attn综合特征，然后送到FFN，没什么特别的设计。输出的Query会送到LM里面的GATED-XATTN-DENSE，结构如下：
+$X_f$ 这个img token，如果是视频帧还会加绝对时间编码上去，然后learnable query 
+$X$ （对应图中的learned latent queries）作为Q， 
+$X_f$ 和 
+$X$ 在length上拼接起来作为K和V，然后通过Self-attn综合特征，然后送到FFN，没什么特别的设计。输出的Query会送到LM里面的GATED-XATTN-DENSE，结构如下：
 
 ![](https://pic1.zhimg.com/v2-79c59a2c9957895326405252e375656e_r.jpg)GATED-XATTN-DENSE也是很简单的一个结构，就是Self-attn block在前侧加上一个带Tanh的门控CrossAttn，没什么好说的，人家代码都给放论文里了，也就这么几行。
 
@@ -176,7 +176,8 @@ Vicuna接受的输入：图片+图片caption+Text（可选Text）
 
 <strong>InternVL-1.1</strong>
 
-1.1版本相对1.0，把Qllama取消了，换成了LLaVa一样的MLP（这里进化路线就基本一样了）
+### 1.1版本相对1.0，把Qllama取消了，换成了LLaVa一样的MLP（这里进化路线就基本一样了）
+
 
 ![](https://pic1.zhimg.com/v2-51974e2d2b735204b73275eee14b2d82_r.jpg)InternVL-1.1训练的vision encoder还是1.0的InternViT-6B，但是把训练整体的分辨率往上拉到了448，分辨率高带来的问题就是patch大小不变的同时token数量的成倍增长，为了提高计算的效率，1.1在encode后进行了Pixel Shuffle，这也是后续版本经常会使用到去减少视觉token的操作。另一个改动就是把Vicuna-13B的LLM换成了LLaMA2-13B（因为Vicuna真的是拉得一批。。）
 
@@ -202,7 +203,8 @@ def pixel_shuffle(self, x, scale_factor=0.5):
 
 其实就是在空间上压缩到四分之一，然后把这个空间上的压缩补到通道上，通道变成了以前的四倍。这样相当于更多的信息被压到了channel中，后续MLP会对齐需要的维度。在通道和token数的权衡中明显减少token数带来的运算量要少很多（主要考虑infer的成本）。
 
-1.1的训练则简化到了两个阶段
+### 1.1的训练则简化到了两个阶段
+
 
 ![](https://pica.zhimg.com/v2-1dfd951b68688807c8151c7269faeffa_r.jpg)InternVL-1.1的训练第一阶段只训练vision encoder+MLP，这一阶段用了72M的样本去训练vision encoder，第一是适应分辨率，第二是训练能对齐语义空间的MLP。
 
@@ -239,11 +241,11 @@ Trick1：结构小改动
 以论文形式发布的2.5版本引入了一些trick（但其实这些trick在1.5版本就有，只是当时都是blog形式发的，整合到2.5的论文里的）。首先是vision encoder，虽然仍然是6B和300M的尺寸，但是里面有一些结构修改。6B的vision encoder将QK-norm的LN改成了RMSnorm（RMSnorm也是目前主流的norm方式了），RMSnorm比起LN少了减去均值的步骤，可以提高norm的计算效率，除此之外不减去均值能够保证QK之间的方向关系，和RoPE、Attention的计算更加适配，可以更好地适配语义上的匹配，举个例子：
 
 假如有个向量q为 
-![](https://www.zhihu.com/equation?tex=%5B100%2C101%2C102%5D) ，这个方向其实差不多接近 
-![](https://www.zhihu.com/equation?tex=%5B1%2C1%2C1%5D) 的方向，如果减去均值，那就是 
-![](https://www.zhihu.com/equation?tex=%5B-1%2C0%2C1%5D) ，那么这个方向其实和 
-![](https://www.zhihu.com/equation?tex=%5B1%2C1%2C1%5D) 的差别就挺大的了，虽然这个例子比较极端但是确实存在这个问题。这样在计算attention中的 
-![](https://www.zhihu.com/equation?tex=QK%5E%7BT%7D%3D%7CQ%7C%2A%7CK%7C%2Acos%28%5Ctheta%29) 的时候就会引起比较大的偏差。
+$[100,101,102]$ ，这个方向其实差不多接近 
+$[1,1,1]$ 的方向，如果减去均值，那就是 
+$[-1,0,1]$ ，那么这个方向其实和 
+$[1,1,1]$ 的差别就挺大的了，虽然这个例子比较极端但是确实存在这个问题。这样在计算attention中的 
+$QK^{T}=|Q|*|K|*cos(\theta)$ 的时候就会引起比较大的偏差。
 
 当然，其实主要还是为了降低效率，LN也能训出来。而300M的Vision encoder仍然是用的LN。
 
@@ -266,17 +268,17 @@ token数量100，每个token的loss为0.5
 B：
 token数量10，每个token的loss为1.5
 我们来计算一下这个batch的总loss： 
-![](https://www.zhihu.com/equation?tex=L+%3D+100%5Ctimes0.5%2B10%5Ctimes1.5%3D65) ，A的loss占了 
-![](https://www.zhihu.com/equation?tex=%5Cfrac%7B50%7D%7B65%7D) 而B的loss只占了 
-![](https://www.zhihu.com/equation?tex=%5Cfrac%7B15%7D%7B65%7D) ，A占了这个batch的大部分loss，所以在反向传播的时候，模型会倾向去降低A的loss，B的作用被缩小了，但是其实B每个token的loss比A大得多，我们希望B也能得到足够的重视，但因为A的loss占了绝大部分，所以B这种loss大但是短的回答优化就会出现问题。
+$L = 100\times0.5+10\times1.5=65$ ，A的loss占了 
+$\frac{50}{65}$ 而B的loss只占了 
+$\frac{15}{65}$ ，A占了这个batch的大部分loss，所以在反向传播的时候，模型会倾向去降低A的loss，B的作用被缩小了，但是其实B每个token的loss比A大得多，我们希望B也能得到足够的重视，但因为A的loss占了绝大部分，所以B这种loss大但是短的回答优化就会出现问题。
 
 好了那么sample averaging呢？我们还是用上面的AB回答来举例，sample averaging是先计算整个样本内的平均loss，那么A的loss就是0.5，B的loss就是1.5，这个时候B的loss占了75%，模型会倾向于优化B回答，但是其实我们也不希望A被过分忽视。这里就引出了InternVL-2.5改进的Loss Reweighting。
 
 注意到上面的问题，loss reweighting的思路就是把上面公式的 
-![](https://www.zhihu.com/equation?tex=w%5E%7Bi%7D) 赋值为 
-![](https://www.zhihu.com/equation?tex=%5Cfrac%7B1%7D%7B%5Csqrt%7Bx%7D%7D) ，这个 
-![](https://www.zhihu.com/equation?tex=x) 就是token数量，还是以上面的例子算一下reweighting的loss， 
-![](https://www.zhihu.com/equation?tex=L%5E%7B%27%7D+%3D+%5Csqrt%7B100%7D%5Ctimes0.5%2B%5Csqrt%7B10%7D%5Ctimes1.5) ，算下来他们的占比都比较平均（至少比token averaging和sample averaging要均衡得多了）。
+$w^{i}$ 赋值为 
+$\frac{1}{\sqrt{x}}$ ，这个 
+$x$ 就是token数量，还是以上面的例子算一下reweighting的loss， 
+$L^{'} = \sqrt{100}\times0.5+\sqrt{10}\times1.5$ ，算下来他们的占比都比较平均（至少比token averaging和sample averaging要均衡得多了）。
 
 个人认为数据collection和filter就不需要讲了，follow一下最新版本的比较好。
 
@@ -287,14 +289,14 @@ Link：[2504.10479](https://link.zhihu.com/?target=https%3A//arxiv.org/pdf/2504.
 InternVL-3的结构和2.5几乎一样，vision encoder仍然采用了300M和6B两个参数级。LLM则采用了Qwen2.5和 InternLM3-8B，其中只有9B的模型用的InternLM3-8B，其他都是Qwen。
 
 此外采用了<strong>V2PE</strong>的位置编码，V2PE可以扩大vision token的外推能力，让mllm有更长的上下文。讲下这个V2PE，假如有一个sample为 
-![](https://www.zhihu.com/equation?tex=X%3D%28x_%7B1%7D%2C...%2Cx_%7Bn%7D%29)，在vlm里面这个 
-![](https://www.zhihu.com/equation?tex=X) 输入肯定是text or vision token的混合，正常来说PE编码就是如下：
+$X=(x_{1},...,x_{n})$，在vlm里面这个 
+$X$ 输入肯定是text or vision token的混合，正常来说PE编码就是如下：
 
 ![](https://pic3.zhimg.com/v2-5cbd891d0f7f0ae11daf67b3ed4a3478_r.jpg)PE计算索引正常的话，不管是text token还是vision token，只要位置往后都是正常的递增（也就是这个索引是没有区分text和vision的）。那么V2PE就把这个稍作区分，变成了：
 
 ![](https://pic3.zhimg.com/v2-ea74a0703c7bc732c916f7536b2aebf6_r.jpg)V2PE的index计算如果是text token就正常+1，如果是vision token就用一个更小的 
-![](https://www.zhihu.com/equation?tex=%5Cdelta) 来加到index上，这个 
-![](https://www.zhihu.com/equation?tex=%5Cdelta) 是从下面的值里面随便选的。
+$\delta$ 来加到index上，这个 
+$\delta$ 是从下面的值里面随便选的。
 
 ![](https://picx.zhimg.com/v2-bb16835bc228a99311cfc88cc8a4c3a3_r.jpg)vision token的smaller index<strong>训练流程的优化</strong>：InternVL-3直接采用交叉的多模态数据+纯文本数据（纯文本数据的加入是为了缓解多模态数据中短回答带来的问题）进行全参的微调，论文里说的是为了让模型直接适应多模态的各种任务，像之前使用的多阶段pretrain其实是将任务分离开始，一步一步从简单任务到复杂任务调整。而InternVL-3直接在2.5的基础上用多模态数据进行全参微调，直接力大砖飞了。
 
@@ -307,9 +309,9 @@ MPO（Mixed Preference Optimization）：提出的前提是一个普遍比较认
 为了应对这种现象，MPO将三个loss按各自的weight组合到一起，如下：
 
 ![](https://pic1.zhimg.com/v2-337210d0b49e9b00edfc7d2ab6866e82_r.jpg)MPO loss其中 
-![](https://www.zhihu.com/equation?tex=L_%7Bp%7D) 为偏好损失， 
-![](https://www.zhihu.com/equation?tex=L_%7Bq%7D) 为质量损失， 
-![](https://www.zhihu.com/equation?tex=L_%7Bg%7D) 为生成损失。
+$L_{p}$ 为偏好损失， 
+$L_{q}$ 为质量损失， 
+$L_{g}$ 为生成损失。
 
 偏好损失用的就是DPO的损失，如下：
 
@@ -319,7 +321,7 @@ MPO（Mixed Preference Optimization）：提出的前提是一个普遍比较认
 
 ![](https://pic4.zhimg.com/v2-f9c459aa4101fec152a43d50021621cf_1440w.jpg)BCO loss
 ![](https://pic4.zhimg.com/v2-fa3a3aa9e944cb7cd86c7b5f22f3dc77_r.jpg)BCO loss各项其中这个 
-![](https://www.zhihu.com/equation?tex=%5Cdelta) 叫做reward shift，以之前奖励的移动平均值计算，用来稳定训练，loss和DPO loss很像但又不同，BCO loss计算的是这个回答本身好不好，是一个绝对值。简而言之，BCO loss体现了一个回答好不好，而DPO loss是为了让模型选哪个更好，一个是填空题，一个是选择题。 为什么要这样设计？很简单的道理，假设有两个回答A和B，A的回答是烂，B的回答是很烂，我用DPO loss只会让我的模型倾向于选择A和B中没那么烂的B，而没办法判断这个回答本身是不是烂，加入BCO loss就相当于告诉模型：虽然A比B要好，但是A也很烂！。这种相对+绝对的判断方式会缓解模型摆烂负优化的问题（这个问题在GRPO中也出现）。
+$\delta$ 叫做reward shift，以之前奖励的移动平均值计算，用来稳定训练，loss和DPO loss很像但又不同，BCO loss计算的是这个回答本身好不好，是一个绝对值。简而言之，BCO loss体现了一个回答好不好，而DPO loss是为了让模型选哪个更好，一个是填空题，一个是选择题。 为什么要这样设计？很简单的道理，假设有两个回答A和B，A的回答是烂，B的回答是很烂，我用DPO loss只会让我的模型倾向于选择A和B中没那么烂的B，而没办法判断这个回答本身是不是烂，加入BCO loss就相当于告诉模型：虽然A比B要好，但是A也很烂！。这种相对+绝对的判断方式会缓解模型摆烂负优化的问题（这个问题在GRPO中也出现）。
 
 至于剩下的生成loss，就是单纯的NTP loss了，最基础的loss，没什么好说的。MPO的整体目标大概就是这样。所以MPO究极目的就是：假如前面的token预测得不好，通过DPO和BCO loss的打分和偏好，可以在预测中减少累计误差。
 
@@ -356,9 +358,9 @@ ps：reward hacking就是模型倾向于输出一个过程不一定对但结果�
 <strong>Router training：</strong>这部分是去训router，这个router是一个二分类器，输出结果决定这个patch以高或者低分辨率压缩。
 
 ![](https://pic4.zhimg.com/v2-289c4581408f48c98ab3251607d25db5_r.jpg)Router training先计算一个比率 
-![](https://www.zhihu.com/equation?tex=r_%7Bi%7D) ，这个算出来的值域是0-1，代表着压缩token的代价，越高则代表代价越大，这个patch就越不该被压缩。然后有一个动态阈值 
-![](https://www.zhihu.com/equation?tex=%5Ctau) ，这个基于历史 
-![](https://www.zhihu.com/equation?tex=r_%7Bi%7D) 值的滑动窗口，取第k百分位数来动态获得的。如果大于这个阈值那就给这个patch的router标签赋为1，代表不该被压缩，反之为0，代表该被压缩。然后训这个router就是把其他所有的参数都冻结，只训练这个部分，通过二分类的交叉熵loss去训就ok。由于这是个二分类器，基本不占参数和计算量，所以靠这个决定压缩可以明显提升推理速度。
+$r_{i}$ ，这个算出来的值域是0-1，代表着压缩token的代价，越高则代表代价越大，这个patch就越不该被压缩。然后有一个动态阈值 
+$\tau$ ，这个基于历史 
+$r_{i}$ 值的滑动窗口，取第k百分位数来动态获得的。如果大于这个阈值那就给这个patch的router标签赋为1，代表不该被压缩，反之为0，代表该被压缩。然后训这个router就是把其他所有的参数都冻结，只训练这个部分，通过二分类的交叉熵loss去训就ok。由于这是个二分类器，基本不占参数和计算量，所以靠这个决定压缩可以明显提升推理速度。
 
 <strong>Test-Time Scaling：</strong>在之前的基础上强制开启了Deep Thinking模式，强制生成CoT回答，必须一步一步获得。Deep Thinking的同时去获得Best-of-N的回答，然后用VisualPRM-v1.1去判断最优回答。这部分和3.0的区别也不太大。
 
@@ -392,8 +394,8 @@ Link：[2409.12191](https://link.zhihu.com/?target=https%3A//arxiv.org/pdf/2409.
 <strong>M-RoPE：</strong>为了适应多模态输入，Qwen2-VL还引入了M-RoPE对所有模态的token都采用这一套RoPE策略，这里不要和上面说的2D-RoPE搞混了，M-RoPE是送入LM的时候用的，而2D-RoPE只是vision encoder采用。直接用他的原图进行讲解：
 
 ![](https://pic4.zhimg.com/v2-b0078d904f14c8b2700fb781ca7a0fbf_r.jpg)M-RoPE示意图很简单，M-RoPE把所有模态的数据都看作有3个维度，T H W，对于单张图片来说T的index是不动的，H W随着位置变化会变二维index；对于视频的话，每一帧的T的index是往后递增的；对于文本来说，默认T H W都是相等的，就如同图中的This 和Video，This的index是 
-![](https://www.zhihu.com/equation?tex=%284%2C4%2C4%29) ，既然T H W都一样的话，那下一个单词Video就是所有维度往后加1，变成 
-![](https://www.zhihu.com/equation?tex=%285%2C5%2C5%29) 。通过把所有模态都统一到一种维度上赋index后，在PE上就可以统一编码了。
+$(4,4,4)$ ，既然T H W都一样的话，那下一个单词Video就是所有维度往后加1，变成 
+$(5,5,5)$ 。通过把所有模态都统一到一种维度上赋index后，在PE上就可以统一编码了。
 
 <strong>统一了image和video的理解：</strong>简而言之，Qwen2-VL是将image和video都当作video去处理。先说video，为了尽可能保持连续性，所有的视频都是每一秒采样2帧，30s的视频就会有60帧的信息，所以就排除了fps的影响。当然时长长的视频采样出来的帧就会变多，为了平等对待大部分的视频，Qwen2-VL对时长比较长的视频的分辨率进行了下采样，短视频就保持原本分辨率，每个视频token数量都严格限制在16384之内。并且Video是带有时间信息的，所以ViT其实是用的3D-Conv，在时间上也做了卷积，能够更多地保持时空关系。
 
@@ -770,8 +772,8 @@ def render_frame_timestamp(frame, timestamp, font_rate=0.1):
 进入<strong>预训练阶段</strong>，数据构建每个厂都有自己的一套pipeline，就不细讲了，量大+均衡+干净是最终目的。预训练主要分了三个部分：
 
 ![](https://pic3.zhimg.com/v2-419745fb41a422a905365995f7a3b1f2_r.jpg)三阶段pretraining<strong>stage1</strong>是主要用于训练LLM，首先是以8k的上下文对大量文本数据进行训练（这里的报告文字写的8K上下文，但是表里是4K上下文，应该是作者的笔误），然后把上下文提升到32K，rope的频率 
-![](https://www.zhihu.com/equation?tex=%5Ctheta) 从10k提升到160k，目的是为了防止上下文长度增加导致原本的rope出现周期性重复。最后再从32K的上下文扩充到128k的上下文，rope的频率 
-![](https://www.zhihu.com/equation?tex=%5Ctheta) 从160k提升到500k。
+$\theta$ 从10k提升到160k，目的是为了防止上下文长度增加导致原本的rope出现周期性重复。最后再从32K的上下文扩充到128k的上下文，rope的频率 
+$\theta$ 从160k提升到500k。
 
 <strong>stage2</strong>主要是训视觉表征，采用了三阶段渐进式对齐策略，首先预训练视觉编码器（配合小语言模型，利用大量图文对学习丰富视觉表征），接着进行视觉预对齐（冻结LLM与ViT，仅训练从头初始化的Adapter、由文本专家剪枝而来的视觉专家及路由模块，实现视觉模块与语言主干的无缝衔接）；最后进入视觉融合阶段（解冻视觉编码器，并对高质量图文对如标题、替代文本进行上采样，强化视觉与语言表征的空间对齐）。
 
@@ -788,15 +790,15 @@ erine4.5引入了几个改进来解决上面两个问题。
 对于负载不均衡：首先出现这个问题的原因就是expert之间的分工不明确，有一个相似的token可能被分给了很多个专家，那这些专家其实作用就重叠了，造成了计算的冗余。最后就导致了这几个专家FFN的权重其实是差不多的。并且在训练和推理中都会被同时激活。所以基于这个现象呢，erine4.5提出了Router Orthogonalization Loss，也就是让每个FFN的权重都要正交。整个loss的公式如下：
 
 ![](https://pic4.zhimg.com/v2-45b9a05d134bf4489c0c13ecaa7f4719_r.jpg)Router Orthogonalization Loss其中这个 
-![](https://www.zhihu.com/equation?tex=w) 就是这个专家的路由权重向量，然后对不同专家的
-![](https://www.zhihu.com/equation?tex=w)进行归一化之后做点积，计算两个向量的余弦角，然后 
-![](https://www.zhihu.com/equation?tex=%5Cdelta_%7Bij%7D) 就是一个Kronecker delta，通俗来讲就是i=j的时候这个值为1，i≠j的时候等于0。整个loss就是矩阵正交惩罚的公式，很简单。
+$w$ 就是这个专家的路由权重向量，然后对不同专家的
+$w$进行归一化之后做点积，计算两个向量的余弦角，然后 
+$\delta_{ij}$ 就是一个Kronecker delta，通俗来讲就是i=j的时候这个值为1，i≠j的时候等于0。整个loss就是矩阵正交惩罚的公式，很简单。
 
 对于梯度不稳定的问题，咱们先分析一下为什么多模训练相比于纯LLM训练会不稳定，对于原始的NTP loss也就是ce，公式是：
 
 ![](https://pic4.zhimg.com/v2-4922038d7f4dd816261c9dee4d882605_r.jpg)常规训练损失其中这个 
-![](https://www.zhihu.com/equation?tex=U_i) 就代表了有效token的集合，什么是有效的token，就是我输入img+prompt之后模型吐出来的response，在整个token序列（img token+prompt token+response token）中response token就是有效token。对于纯文本LLM预训练来说，很难出现有response比prompt短很多的情况，但不能说没有，只能说轻度存在。但是在多模训练里，举个极端例子，我输入一个高分辨率视频，prompt是：里面的人在做什么动作，response是：他在跳舞。但是这个时候img toke就占了整个序列的一大部分，response的比例占比就更少了！所以出现这个问题的根本原因就是在多模训练的时候img或者video占的token数量较多导致的。然后我们再倒回去看上面的公式，假设我们的response A有效token只有10个，相比于response B的1000个有效token的回答， 
-![](https://www.zhihu.com/equation?tex=%5Cfrac%7B1%7D%7BU_i%7D) 的系数就会导致A的梯度比B大100倍，短response的loss占主导就会让模型更倾向回答更短的response。
+$U_i$ 就代表了有效token的集合，什么是有效的token，就是我输入img+prompt之后模型吐出来的response，在整个token序列（img token+prompt token+response token）中response token就是有效token。对于纯文本LLM预训练来说，很难出现有response比prompt短很多的情况，但不能说没有，只能说轻度存在。但是在多模训练里，举个极端例子，我输入一个高分辨率视频，prompt是：里面的人在做什么动作，response是：他在跳舞。但是这个时候img toke就占了整个序列的一大部分，response的比例占比就更少了！所以出现这个问题的根本原因就是在多模训练的时候img或者video占的token数量较多导致的。然后我们再倒回去看上面的公式，假设我们的response A有效token只有10个，相比于response B的1000个有效token的回答， 
+$\frac{1}{U_i}$ 的系数就会导致A的梯度比B大100倍，短response的loss占主导就会让模型更倾向回答更短的response。
 
 这里其实我认为报告里没有说清楚的一点是：不管是不是多模训练，这个loss都和除了response的token没关系，那为什么LLM不用这个？其实也能用。但是从直觉上讲，img token偏多，我们是更需要response能够生成较长回答的，并且数据里面短回答可能是偏多的，在数据并没有这么精细的caption情况下，要想在pretraining阶段训出一个能够覆盖长短回答的model，这个loss是能起到作用的。
 

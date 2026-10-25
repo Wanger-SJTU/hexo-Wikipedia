@@ -23,7 +23,8 @@ arxiv：[https://arxiv.org/pdf/2401.13627.pdf](https://link.zhihu.com/?target=ht
 
 ### Scaling Up to Excellence: Practicing Model Scaling for Photo-Realistic Image Restoration In the Wild
 
-2024.1.25，董超XPixelGroup发布的一个新作。这篇文章用20M+张图像数据，结合SDXL模型进行了图像复原，使用64张A6000训练10天，可以看做是底层视觉领域迈向大模型的一个里程碑。本文对其进行详细的解读。
+### 2024.1.25，董超XPixelGroup发布的一个新作。这篇文章用20M+张图像数据，结合SDXL模型进行了图像复原，使用64张A6000训练10天，可以看做是底层视觉领域迈向大模型的一个里程碑。本文对其进行详细的解读。
+
 
 这是部分可视化结果，整体视觉效果还是很好的：
 

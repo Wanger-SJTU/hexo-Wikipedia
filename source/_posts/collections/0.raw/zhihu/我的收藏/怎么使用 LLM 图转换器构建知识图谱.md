@@ -84,7 +84,8 @@ graph =Neo4jGraph(  url="bolt://54.87.130.140:7687",  username="neo4j",  passwor
 
 <strong>LLM 图转换器</strong>提供了两种模式，用于在不同场景下从文档中生成知识图谱：
 
-1. 工具驱动模式（默认模式）•适用于 LLM 支持<strong>结构化输出</strong>或<strong>函数调用</strong>的情况。•此模式依赖LLM 内置的`with_structured_output`方法
+## 1. 工具驱动模式（默认模式）•适用于 LLM 支持**结构化输出**或**函数调用**的情况。•此模式依赖LLM 内置的`with_structured_output`方法
+
 
 > [6]
 

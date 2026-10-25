@@ -132,7 +132,8 @@ PageAttention是在vLLM 中提出的KV Cache优化方法，它将在操作系统
 - 内存分区：主要受到操作系统虚拟内存和分页思想启发的注意力算法。具体来说，PagedAttention 将每个序列的 KV cache 划分为块，每个块包含固定数量 token 的键和值。PagedAtention的KV cache显存管理主要分为逻辑内存区和物理内存区：
 ![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_4573d6bb3d83.jpg)
 
-2. 内存共享
+## 2. 内存共享
+
 
 ![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_5ec7a27ab85b.jpg)
 

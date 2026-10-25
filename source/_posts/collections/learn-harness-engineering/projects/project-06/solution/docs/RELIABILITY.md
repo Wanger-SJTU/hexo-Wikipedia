@@ -97,10 +97,14 @@ Clean state management ensures that testing and benchmarking start from a known,
 
 The application provides a `RESET_DATA` IPC channel that:
 
-1. Removes the entire data directory (`knowledge-base-data/`)
-2. Recreates the directory structure
-3. Returns a success response
-4. The renderer clears all React state and refreshes
+## 1. Removes the entire data directory (`knowledge-base-data/`)
+
+## 2. Recreates the directory structure
+
+## 3. Returns a success response
+
+## 4. The renderer clears all React state and refreshes
+
 
 ### When to Use Clean State
 

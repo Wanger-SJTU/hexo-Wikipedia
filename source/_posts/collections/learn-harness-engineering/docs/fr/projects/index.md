@@ -19,12 +19,16 @@ Voici la section pratique de Learn Harness Engineering. Lire les leçons ne suff
 
 Le cours propose 6 projets pratiques et progressifs qui vous apprennent à construire de zéro un environnement agentique fiable :
 
-1. <strong>Prompt seul vs règles d'abord</strong> : comparer les résultats d'un agent avec un simple prompt et avec un harness de base.
-2. <strong>Workspace lisible par l'agent</strong> : structurer le dépôt pour l'IA et établir des mécanismes de handoff.
-3. <strong>Continuité multi-session</strong> : concevoir des fichiers d'état et des scripts d'initialisation pour reprendre le travail entre sessions.
+## 1. **Prompt seul vs règles d'abord** : comparer les résultats d'un agent avec un simple prompt et avec un harness de base.
+
+## 2. **Workspace lisible par l'agent** : structurer le dépôt pour l'IA et établir des mécanismes de handoff.
+
+## 3. **Continuité multi-session** : concevoir des fichiers d'état et des scripts d'initialisation pour reprendre le travail entre sessions.
+
 4. <strong>Feedback runtime et contrôle du scope</strong> : introduire des outils permettant à l'agent de tester son code et de corriger les erreurs pendant l'exécution.
 5. <strong>Auto-vérification et séparation des rôles</strong> : construire un mécanisme de revue indépendant pour éviter les hallucinations et les déclarations de réussite trop précoces.
-6. <strong>Harness complet (capstone)</strong> : assembler un environnement final, observable et end-to-end pour le travail agentique.
+## 6. **Harness complet (capstone)** : assembler un environnement final, observable et end-to-end pour le travail agentique.
+
 
 ## Comment avancer
 

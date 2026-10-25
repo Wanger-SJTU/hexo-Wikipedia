@@ -441,13 +441,20 @@ Speculative Verify
 
 所以我现在调优基本按照这个顺序：
 
-1. 先看 GPU 拓扑
-2. 再确定 TP / PP / EP
-3. 控制 KV Cache 和并发
-4. 做 Chunked Prefill
-5. 优化 Decode CUDA Graph
-6. 调 Speculative Decoding acceptance
-7. 最后再深入 kernel / NCCL / PDL
+## 1. 先看 GPU 拓扑
+
+## 2. 再确定 TP / PP / EP
+
+## 3. 控制 KV Cache 和并发
+
+## 4. 做 Chunked Prefill
+
+## 5. 优化 Decode CUDA Graph
+
+## 6. 调 Speculative Decoding acceptance
+
+## 7. 最后再深入 kernel / NCCL / PDL
+
 而不是一上来就：
 
 换一个更快的 GEMM Kernel

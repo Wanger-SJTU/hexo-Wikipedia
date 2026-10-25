@@ -24,7 +24,8 @@ source_url: https://zhuanlan.zhihu.com/p/1919340508637016870
 - <strong>云端推理 (BF16):</strong> 服务器GPU（如A100/H100）主流使用 bfloat16。它有8位指数位，数值范围与float32相同，<strong>几乎不会溢出</strong>，但精度较低。
 - <strong>端侧推理 (FP16):</strong> 手机等移动端CPU、GPU、NPU普遍支持 float16。它只有5位指数位，<strong>最大只能表示约65504</strong>，非常容易溢出，但精度相对较高。bfloat16 在训练时的“宽容”掩盖了可能存在的巨大数值，而 float16 在推理时的“苛刻”，则让这个问题暴露。当时，我们通过将` (q @ k) / scale` 修改为 `q/scale @ k` 的<strong>缩放因子前移</strong>方案解决了溢出问题。其实同样的方案在其他attention实现中也有，例如torch的`sdpa`实现也是将scale前移到q和k来解决溢出问题，其修改如下：
 
-![](https://www.zhihu.com/equation?tex=%5Cfrac%7BQ+K%5ET%7D%7B%5Csqrt%7Bd_k%7D%7D++%5Crightarrow++%5Cfrac%7BQ%7D%7B%5Csqrt%7B%5Csqrt%7Bd_k%7D%7D%7D+%5Cfrac%7BK%5ET%7D%7B%5Csqrt%7B%5Csqrt%7Bd_k%7D%7D%7D+) 
+$$\frac{Q K^T}{\sqrt{d_k}}  \rightarrow  \frac{Q}{\sqrt{\sqrt{d_k}}} \frac{K^T}{\sqrt{\sqrt{d_k}}}$$
+
 
 从测试来看Qwen2模型更容易在float16上溢出，Qwen1也有QK-Bias但是不容易溢出（未发现），Qwen3使用了QK-Norm基本未发现溢出问题。为此我对Qwen系列的三代代表性模型进行了细致的测试，统计了它们每一层Attention中QK-Bias和q@k结果的最大值，从数据能够看出：
 

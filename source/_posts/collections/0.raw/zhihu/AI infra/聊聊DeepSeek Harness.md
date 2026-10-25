@@ -57,16 +57,17 @@ effect (e)(γ, φ) =
 可逆效果解决的是“组件做了什么”的问题，但组件还需要声明“组件需要什么”。在传统的依赖注入（Dependency Injection）框架中，一个组件通过接口声明它需要的服务，容器在初始化时将这些服务注入进来。然而，动态场景中，依赖的提供者可能来去自如——一个数据库连接可能在运行时断开，一个新服务可能在运行时上线。
 
 我们把“组件需要什么”建模为 <strong>Coeffect Context</strong>。给定一个键类型集合 
-![](https://www.zhihu.com/equation?tex=+K+) 和一个类型族 
-![](https://www.zhihu.com/equation?tex=+%5Cnu%3A+K+%5Cto+%5Ctext%7BType%7D+)，Coeffect Context 是一个有限部分函数
+$K$ 和一个类型族 
+$\nu: K \to \text{Type}$，Coeffect Context 是一个有限部分函数
 
-![](https://www.zhihu.com/equation?tex=+%5CSigma+%3A%3D+%28k%3A+K%29+%5Cto+%5Cmathcal%7BV%7D_k+)
+$$\Sigma := (k: K) \to \mathcal{V}_k$$
+
 
 即 
-![](https://www.zhihu.com/equation?tex=+%5Csigma%3A+%5CSigma+) 将每个键 
-![](https://www.zhihu.com/equation?tex=+k+%5Cin+%5Ctext%7Bdom%7D%28%5Csigma%29+) 映射到一个类型为 
-![](https://www.zhihu.com/equation?tex=+%5Cnu_k+) 的值。形象地说，
-![](https://www.zhihu.com/equation?tex=+%5CSigma+) 是一个<strong>类型安全的键值存储</strong>——每个键都“知道”自己应该存什么类型的值。
+$\sigma: \Sigma$ 将每个键 
+$k \in \text{dom}(\sigma)$ 映射到一个类型为 
+$\nu_k$ 的值。形象地说，
+$\Sigma$ 是一个<strong>类型安全的键值存储</strong>——每个键都“知道”自己应该存什么类型的值。
 
 基于这个上下文结构，我们定义两个核心操作：
 
@@ -76,14 +77,15 @@ get k σ = σ(k)         -- 前提：k ∈ dom(σ)
 set : (k : K) × 𝒱ₖ → Σ → Σ × (Σ → Σ)
 set (k, v) σ = (σ[k ↦ v], λσ'. σ' \ k)   -- 前提：k ∉ dom(σ)
 值得注意的是，`set` 的类型正是 
-![](https://www.zhihu.com/equation?tex=+%5Cmathfrak%7BE%7D_%5CSigma+) ——它是一个<strong>可逆效果</strong>！注册一个依赖与撤销它天然地配对在一起。
+$\mathfrak{E}_\Sigma$ ——它是一个<strong>可逆效果</strong>！注册一个依赖与撤销它天然地配对在一起。
 
 反应式规格说明
 一个组件声明它需要的依赖为一个<strong>规格说明</strong> 
-![](https://www.zhihu.com/equation?tex=+d+%5Csubseteq+K+)。给定当前上下文 
-![](https://www.zhihu.com/equation?tex=+%5Csigma+)，我们说依赖被满足当且仅当
+$d \subseteq K$。给定当前上下文 
+$\sigma$，我们说依赖被满足当且仅当
 
-![](https://www.zhihu.com/equation?tex=+%5Csigma+%5CVdash+d+%3A%3D+%5Cforall+k+%5Cin+d%2C%5C%3B+k+%5Cin+%5Ctext%7Bdom%7D%28%5Csigma%29+)
+$$\sigma \Vdash d := \forall k \in d,\; k \in \text{dom}(\sigma)$$
+
 
 当上下文发生变化时（一个 `set` 或它的逆被调用），系统对每个组件分类：
 
@@ -92,24 +94,27 @@ set (k, v) σ = (σ[k ↦ v], λσ'. σ' \ k)   -- 前提：k ∉ dom(σ)
 隔离与拦截
 在复杂系统中，同一个键在不同的上下文中可能需要绑定不同的值。例如，测试环境与生产环境使用不同的数据库。Coeffect Context 支持两层映射：
 
-![](https://www.zhihu.com/equation?tex=+%5CSigma%5E%7B%5Ctext%7Biso%7D%7D+%3A%3D+%28K+%5Cto+R%29+%5Ctimes+%28%28r%3A+R%29+%5Cto+%5Cmathcal%7BV%7D_r%29+)
+$$\Sigma^{\text{iso}} := (K \to R) \times ((r: R) \to \mathcal{V}_r)$$
+
 
 - 第一层 
-![](https://www.zhihu.com/equation?tex=+%5Crho%3A+K+%5Cto+R+)：将键映射到<strong>隔离域</strong>（Realm）
+$\rho: K \to R$：将键映射到<strong>隔离域</strong>（Realm）
 - 第二层 
-![](https://www.zhihu.com/equation?tex=+%5Csigma%3A+R+%5Cto+%5Cmathcal%7BV%7D_r+)：将隔离域映射到实际值访问流程：
-![](https://www.zhihu.com/equation?tex=+k+%5Cto+%5Crho%28k%29+%5Cto+%5Csigma%28%5Crho%28k%29%29+)。通过 `isolate(k, r)` 操作，我们可以将键 `k` 重定向到隔离域 `r`。
+$\sigma: R \to \mathcal{V}_r$：将隔离域映射到实际值访问流程：
+$k \to \rho(k) \to \sigma(\rho(k))$。通过 `isolate(k, r)` 操作，我们可以将键 `k` 重定向到隔离域 `r`。
 
 更进一步，<strong>拦截（Interception）</strong> 允许在依赖访问时附加元数据：
 
-![](https://www.zhihu.com/equation?tex=+%5CSigma%5E%7B%5Ctext%7Binter%7D%7D+%3A%3D+%28%28k%3A+K%29+%5Cto+%5Cmathcal%7BM%7D_k%29+%5Ctimes+%28%28k%3A+K%29+%5Cto+%28%5Cmathcal%7BM%7D_k+%5Cto+%5Cmathcal%7BV%7D_k%29%29+)
+$$\Sigma^{\text{inter}} := ((k: K) \to \mathcal{M}_k) \times ((k: K) \to (\mathcal{M}_k \to \mathcal{V}_k))$$
+
 
 intercept(k, metadata)` 将元数据合并到上下文中，后续对 `k` 的访问都会携带这份元数据。这构成了一个<strong>能力式访问控制</strong>系统：一个组件声明它需要什么，系统决定它能拿到什么版本、带什么权限。
 
 统一上下文：将 Effect 和 Coeffect 放在一起
 可逆效果（Revertible Effects）和反应式余效果（Reactive Coeffects）分别处理了“组件做了什么”和“组件需要什么”这两个维度。我们将它们统一为一个递归类型：
 
-![](https://www.zhihu.com/equation?tex=+%5CGamma_%5Cinfty+%3A%3D+%5Cmu%5CGamma.%5C%3B+%5CGamma+%5Ctimes+%28%5CGamma+%5Cto+%5CGamma%29+%5Ctimes+%5CSigma+)
+$$\Gamma_\infty := \mu\Gamma.\; \Gamma \times (\Gamma \to \Gamma) \times \Sigma$$
+
 
 这个统一上下文 `ctx` 承载了三件事：
 
@@ -121,14 +126,15 @@ intercept(k, metadata)` 将元数据合并到上下文中，后续对 `k` 的访
 组件与生命周期
 有了统一上下文之后，一个组件由三部分定义：
 
-![](https://www.zhihu.com/equation?tex=+%5Cmathfrak%7BC%7D_%5CGamma+%3A%3D+%5Cmathfrak%7BD%7D_%5CGamma+%5Ctimes+%5Cmathfrak%7BP%7D_%5CGamma+%5Ctimes+%5Cmathfrak%7BE%7D_%5CGamma%5E%2A+)
+$$\mathfrak{C}_\Gamma := \mathfrak{D}_\Gamma \times \mathfrak{P}_\Gamma \times \mathfrak{E}_\Gamma^*$$
+
 
 -
-![](https://www.zhihu.com/equation?tex=+d+)**：依赖规格说明（需要什么）
+$d$**：依赖规格说明（需要什么）
 -
-![](https://www.zhihu.com/equation?tex=+p+)**：提供声明（提供什么）
+$p$**：提供声明（提供什么）
 -
-![](https://www.zhihu.com/equation?tex=+e+)<strong>：有见证的效果函数（激活时做什么）一个组件在运行时的实例称为</strong>光纤（Fiber）**：
+$e$<strong>：有见证的效果函数（激活时做什么）一个组件在运行时的实例称为</strong>光纤（Fiber）**：
 
 ⟨d, p, e, π, σ, τ, θ⟩
 其中：
@@ -166,7 +172,8 @@ intercept(k, metadata)` 将元数据合并到上下文中，后续对 `k` 的访
 - <strong>Unloading</strong> 状态带有一个守卫（Guard）：只有当所有依赖方都已经停用后，才真正执行逆函数
 - <strong>惯性</strong>：一旦一个迭代开始（如异步 I/O），它必须完成，不能被中途取消`target_n(γ)` 是光纤的目标视图：
 
-![](https://www.zhihu.com/equation?tex=+%5Ctext%7Btarget%7D_n%28%5Cgamma%29+%3A%3D+%5Cbegin%7Bcases%7D+%5Cperp+%26+%5Ctext%7B%E5%A6%82%E6%9E%9C+%7D+%5Ctau_n+%5Ctext%7B+%E6%88%96+%7D+%5Cgamma+%5Cnot%5CVdash+d_n+%5C%5C+%28k+%5Cin+d_n%29+%5Cmapsto+%5Ctext%7Bprovider%7D_k%28%5Cgamma%29+%26+%5Ctext%7B%E5%90%A6%E5%88%99%7D+%5Cend%7Bcases%7D+)
+$$\text{target}_n(\gamma) := \begin{cases} \perp & \text{如果 } \tau_n \text{ 或 } \gamma \not\Vdash d_n \\ (k \in d_n) \mapsto \text{provider}_k(\gamma) & \text{否则} \end{cases}$$
+
 
 系统持续驱动每个光纤向它的目标视图收敛，直到达到<strong>静止状态</strong>：每个 `Inactive` 光纤的目标是 `⊥`，每个 `Active` 光纤的目标等于它提交的视图 `ω`。
 

@@ -40,13 +40,20 @@ Las utilidades compartidas permanecen fuera del dominio y no deben acumular lóg
 
 ## SOP de Ejecución
 
-1. Mapea el código base en dominios antes de tocar el estilo de implementación.
-2. Para cada dominio, identifica la secuencia de capas permitida.
-3. Identifica todas las preocupaciones transversales y enrútalas a través de proveedores o adaptadores.
-4. Mueve la lógica compartida ambigua al dominio propietario o a utilidades verdaderamente genéricas.
-5. Documenta las reglas en `ARCHITECTURE.md`.
-6. Añade una barrera de protección ejecutable para la violación de mayor costo.
-7. Actualiza la puntuación de calidad después del cambio.
+## 1. Mapea el código base en dominios antes de tocar el estilo de implementación.
+
+## 2. Para cada dominio, identifica la secuencia de capas permitida.
+
+## 3. Identifica todas las preocupaciones transversales y enrútalas a través de proveedores o adaptadores.
+
+## 4. Mueve la lógica compartida ambigua al dominio propietario o a utilidades verdaderamente genéricas.
+
+## 5. Documenta las reglas en `ARCHITECTURE.md`.
+
+## 6. Añade una barrera de protección ejecutable para la violación de mayor costo.
+
+## 7. Actualiza la puntuación de calidad después del cambio.
+
 
 ## Definición de Completado
 

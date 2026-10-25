@@ -73,8 +73,10 @@ La diferencia de eficiencia es 3x. Lo único que cambió fue la observabilidad.
 
 Podrías pensar: "¿no puede el agente imprimir sus propios logs?" Los problemas son:
 
-1. El agente no sabe lo que no sabe; no registrará señales que no sabe que necesita.
-2. Los formatos de log son inconsistentes; distintas sesiones usan distintos formatos, lo que impide análisis sistemático.
+## 1. El agente no sabe lo que no sabe; no registrará señales que no sabe que necesita.
+
+## 2. Los formatos de log son inconsistentes; distintas sesiones usan distintos formatos, lo que impide análisis sistemático.
+
 3. La observabilidad de proceso no se resuelve con logs; sprint contracts y rúbricas son artefactos estructurados que necesitan soporte a nivel de harness.
 
 ## Cómo hacerlo bien

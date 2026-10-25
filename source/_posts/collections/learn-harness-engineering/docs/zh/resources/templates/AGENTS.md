@@ -56,8 +56,13 @@ categories:
 
 结束会话前：
 
-1. 更新 `claude-progress.md`
-2. 更新 `feature_list.json`
-3. 记录仍未解决的风险或 blocker
-4. 在工作处于安全状态后，用清晰的提交信息提交
-5. 保证下一轮会话可以直接运行 `./init.sh`
+## 1. 更新 `claude-progress.md`
+
+## 2. 更新 `feature_list.json`
+
+## 3. 记录仍未解决的风险或 blocker
+
+## 4. 在工作处于安全状态后，用清晰的提交信息提交
+
+## 5. 保证下一轮会话可以直接运行 `./init.sh`
+

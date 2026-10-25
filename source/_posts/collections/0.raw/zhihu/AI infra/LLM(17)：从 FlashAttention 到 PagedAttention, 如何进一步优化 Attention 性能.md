@@ -17,7 +17,8 @@ source_url: https://zhuanlan.zhihu.com/p/638468472
 
 一、FlashAttention 基本原理
 
-1.1 GPU 硬件特点
+### 1.1 GPU 硬件特点
+
 由于 FlashAttention 计算 self-attention 的主要关键是有效的硬件使用，所以了解GPU内存和各种操作的性能特征是很有必要的。
 
 以 A100 (40GB HBM) 为例，下面显示其内存层次结构的粗略图。SRAM内存分布在108个流式多处理器(SMs)上，每个处理器192KB。片上SRAM比HBM快得多，但比HBM小得多，在计算方面，使用Tensor Core的BFLOAT16 的理论峰值吞吐量为 312 TFLOPS。GPU 的典型操作方式是使用大量的线程来执行一个操作，这个操作被称为内核。输入从HBM加载到寄存器和SRAM，并在计算后写回HBM。
@@ -25,51 +26,55 @@ source_url: https://zhuanlan.zhihu.com/p/638468472
 ![](https://pic1.zhimg.com/v2-38840cb168ef0be1afc3850fb3932dfc_1440w.jpg)算法对于内存带宽的需求通常使用 <strong>计算强度</strong> (arithmetic intensity) 来表示，单位是 OPs/byte。意思是在算法中平均每读入单位数据，能支持多少次运算操作。它有助于理解操作的瓶颈，即计算约束(Compute-bound)或带宽约束(Bandwidth-bound, or Memory-bound)。
 
 - <strong>算力</strong> 
-![](https://www.zhihu.com/equation?tex=%5Cpi) ：也称为计算平台的<strong>性能上限</strong>，指的是一个计算平台倾尽全力每秒钟所能完成的浮点运算数。单位是 `FLOPS` or `FLOP/s`。
+$\pi$ ：也称为计算平台的<strong>性能上限</strong>，指的是一个计算平台倾尽全力每秒钟所能完成的浮点运算数。单位是 `FLOPS` or `FLOP/s`。
 - <strong>带宽</strong> 
-![](https://www.zhihu.com/equation?tex=%5Cbeta+) ：也即计算平台的<strong>带宽上限</strong>，指的是一个计算平台倾尽全力每秒所能完成的内存交换量。单位是`Byte/s`。
+$\beta$ ：也即计算平台的<strong>带宽上限</strong>，指的是一个计算平台倾尽全力每秒所能完成的内存交换量。单位是`Byte/s`。
 - <strong>计算强度上限</strong> **
-![](https://www.zhihu.com/equation?tex=I_%7Bmax%7D+%3D+%5Cfrac%7B%5Cpi%7D%7B%5Cbeta%7D+)<strong>：两个指标相除即可得到计算平台的</strong>计算强度上限**。它描述的是在这个计算平台上，单位内存交换最多用来进行多少次计算。单位是`FLOPs/Byte`。
+$I_{max} = \frac{\pi}{\beta}$<strong>：两个指标相除即可得到计算平台的</strong>计算强度上限**。它描述的是在这个计算平台上，单位内存交换最多用来进行多少次计算。单位是`FLOPs/Byte`。
 - **模型的理论性能 
-![](https://www.zhihu.com/equation?tex=P)：<strong>我们最关心的指标，即模型</strong>在计算平台上所能达到的每秒浮点运算次数（理论值）**。单位是`FLOPS`or`FLOP/s`。如下图所示，Roof-line 描述了<strong>模型在一个计算平台的限制下，到底能达到多快的浮点计算速度</strong>，即<strong>算力</strong>决定“屋顶”的高度（绿色线段），<strong>带宽</strong>决定“房檐”的斜率（红色线段）。
+$P$：<strong>我们最关心的指标，即模型</strong>在计算平台上所能达到的每秒浮点运算次数（理论值）**。单位是`FLOPS`or`FLOP/s`。如下图所示，Roof-line 描述了<strong>模型在一个计算平台的限制下，到底能达到多快的浮点计算速度</strong>，即<strong>算力</strong>决定“屋顶”的高度（绿色线段），<strong>带宽</strong>决定“房檐”的斜率（红色线段）。
 
 ![](https://pica.zhimg.com/v2-5e0342538c21a35d7aba472e22a5b468_r.jpg)Roof-line 划分出的两个瓶颈区域，即
 
-![](https://www.zhihu.com/equation?tex=%5Cquad%5Cquad%5Cquad+%5Cquad%5Cquad%5Cquad+P+%3D+%5Cbegin%7Bcases%7D+%5Cbeta+%5Ccdot+I%2C+%26+~+when+~~+I+%3C+I_%7Bmax%7D+%5Cquad+%7B%5Ccolor%7Bred%7D%7B%5Ctextbf%7BMemory+Bound%7D%7D%7D%5C%5C%5B2ex%5D+%5Cpi%2C+%26+~+when+~~+I+%5Cgeqslant+I_%7Bmax%7D+%5Cquad+%7B%5Ccolor%7Bgreen%7D%7B%5Ctextbf%7BCompute+Bound%7D%7D%7D+%5Cend%7Bcases%7D+%5Cquad%5Cquad%5Cquad+%5Cquad%5Cquad%5Cquad+)
+$$\quad\quad\quad \quad\quad\quad P = \begin{cases} \beta \cdot I, & ~ when ~~ I < I_{max} \quad {\color{red}{\textbf{Memory Bound}}}\\[2ex] \pi, & ~ when ~~ I \geqslant I_{max} \quad {\color{green}{\textbf{Compute Bound}}} \end{cases} \quad\quad\quad \quad\quad\quad$$
+
 
 - <strong>计算约束</strong>——此时HBM访问所花费的时间相对较低，不管模型的计算强度 
-![](https://www.zhihu.com/equation?tex=I) 有多大，它的理论性能 
-![](https://www.zhihu.com/equation?tex=P) 最大只能等于计算平台的算力
-![](https://www.zhihu.com/equation?tex=%5Cpi)。例如，具有较大内维数的矩阵乘法和具有大量通道的卷积。
+$I$ 有多大，它的理论性能 
+$P$ 最大只能等于计算平台的算力
+$\pi$。例如，具有较大内维数的矩阵乘法和具有大量通道的卷积。
 - <strong>带宽约束</strong>——当模型的计算强度 
-![](https://www.zhihu.com/equation?tex=I) 小于计算平台的计算强度上限 
-![](https://www.zhihu.com/equation?tex=I_%7Bmax%7D) 时，由于此时模型位于“房檐”区间，因此模型理论性能 
-![](https://www.zhihu.com/equation?tex=P) 的大小完全由计算平台的带宽上限 
-![](https://www.zhihu.com/equation?tex=%5Cbeta)（房檐的斜率）以及模型自身的计算强度 
-![](https://www.zhihu.com/equation?tex=I+) 所决定。例如，elementwise 操作 (如activation, dropout 等)  和 规约操作 (如sum, softmax, batch normalization, layer normalization等)。在 self-attention 中，计算速度比内存速度快得多，因此进程(操作)越来越多地受到内存(HBM)访问的瓶颈。因此，FlashAttention论文的目标是尽可能高效地使用SRAM来加快计算速度
+$I$ 小于计算平台的计算强度上限 
+$I_{max}$ 时，由于此时模型位于“房檐”区间，因此模型理论性能 
+$P$ 的大小完全由计算平台的带宽上限 
+$\beta$（房檐的斜率）以及模型自身的计算强度 
+$I$ 所决定。例如，elementwise 操作 (如activation, dropout 等)  和 规约操作 (如sum, softmax, batch normalization, layer normalization等)。在 self-attention 中，计算速度比内存速度快得多，因此进程(操作)越来越多地受到内存(HBM)访问的瓶颈。因此，FlashAttention论文的目标是尽可能高效地使用SRAM来加快计算速度
 
-1.2 FlashAttention 的核心思想及细节推导
+### 1.2 FlashAttention 的核心思想及细节推导
+
 首先我们回顾一下标准 Attention 的操作:
 
-![](https://www.zhihu.com/equation?tex=%5Coperatorname%7BAttention%7D%28Q%2C+K%2C+V%29%3D%5Coperatorname%7Bsoftmax%7D%5Cleft%28%5Cfrac%7BQ+K%5E%7B%5Ctop%7D%7D%7B%5Csqrt%7Bd_k%7D%7D%5Cright%29+V+%5C%5C) 
+$$\operatorname{Attention}(Q, K, V)=\operatorname{softmax}\left(\frac{Q K^{\top}}{\sqrt{d_k}}\right) V \\$$
+
 
 其中 
-![](https://www.zhihu.com/equation?tex=Q%2C+K%2C+V+%5Cin+%5Cmathbb%7BR%7D%5E%7BN+%5Ctimes+d%7D) （ 
-![](https://www.zhihu.com/equation?tex=N) 表示序列长度， 
-![](https://www.zhihu.com/equation?tex=d) 表示维度），上述公式可拆解为：
+$Q, K, V \in \mathbb{R}^{N \times d}$ （ 
+$N$ 表示序列长度， 
+$d$ 表示维度），上述公式可拆解为：
 
-![](https://www.zhihu.com/equation?tex=%5Cmathbf%7BS%7D%3D%5Cmathbf%7BQ%7D+%5Cmathbf%7BK%7D%5E%7B%5Ctop%7D+%5Cin+%5Cmathbb%7BR%7D%5E%7BN+%5Ctimes+N%7D%2C+%5Cquad+%5Cmathbf%7BP%7D%3D%5Coperatorname%7Bsoftmax%7D%28%5Cmathbf%7BS%7D%29+%5Cin+%5Cmathbb%7BR%7D%5E%7BN+%5Ctimes+N%7D%2C+%5Cquad+%5Cmathbf%7BO%7D%3D%5Cmathbf%7BP+V%7D+%5Cin+%5Cmathbb%7BR%7D%5E%7BN+%5Ctimes+d%7D) 
+$$\mathbf{S}=\mathbf{Q} \mathbf{K}^{\top} \in \mathbb{R}^{N \times N}, \quad \mathbf{P}=\operatorname{softmax}(\mathbf{S}) \in \mathbb{R}^{N \times N}, \quad \mathbf{O}=\mathbf{P V} \in \mathbb{R}^{N \times d}$$
+
 
 其中 
-![](https://www.zhihu.com/equation?tex=%5Cmathbf%7BS%7D%2C+%5Cmathbf%7BP%7D) （对于decoder来说还有 mask）的空间复杂度都是 
-![](https://www.zhihu.com/equation?tex=O%28N%5E2%29) ，另外还有几个带宽约束的操作：对 
-![](https://www.zhihu.com/equation?tex=%5Cmathbf%7BS%7D) 的 scale, mask 和 softmax 操作，对 
-![](https://www.zhihu.com/equation?tex=%5Cmathbf%7BP%7D) 的 dropout 操作。下图算法展示了 HBM 与 SRAM 之间的数据传输过程。
+$\mathbf{S}, \mathbf{P}$ （对于decoder来说还有 mask）的空间复杂度都是 
+$O(N^2)$ ，另外还有几个带宽约束的操作：对 
+$\mathbf{S}$ 的 scale, mask 和 softmax 操作，对 
+$\mathbf{P}$ 的 dropout 操作。下图算法展示了 HBM 与 SRAM 之间的数据传输过程。
 
 ![](https://pic4.zhimg.com/v2-d80d34acc622ae03950cdb25d31fa665_r.jpg)<strong>1.2.1 FlashAttention 的优化思路</strong>
 
 从上面的分析可以看出，
-![](https://www.zhihu.com/equation?tex=O%28N%5E2%29)复杂度的矩阵对HBM及其重复读写是一个主要瓶颈。要解决这个问题，需要做两件主要的事情：
+$O(N^2)$复杂度的矩阵对HBM及其重复读写是一个主要瓶颈。要解决这个问题，需要做两件主要的事情：
 
 - 在不访问整个输入的情况下计算 softmax
 - 不为反向传播存储大的中间 attention 矩阵为此 FlashAttention 提出了两种方法来分布解决上述问题：<strong>tiling 和 recomputation</strong>。
@@ -85,145 +90,171 @@ source_url: https://zhuanlan.zhihu.com/p/638468472
 
 上述算法中除了线性操作和 elementwise 外，分块计算注意力的关键部分是 softmax 的分块计算。向量的 softmax 可以计算为
 
-![](https://www.zhihu.com/equation?tex=m%28x%29%3A%3D%5Cmax+_i+x_i%5C%5C) 
+$$m(x):=\max _i x_i\\$$
 
-![](https://www.zhihu.com/equation?tex=f%28x%29%3A%3D%5Cleft%5B%5Cbegin%7Barray%7D%7Blll%7D+e%5E%7Bx_1-m%28x%29%7D+%26+%5Cldots+%26+e%5E%7Bx_B-m%28x%29%7D+%5Cend%7Barray%7D%5Cright%5D%5C%5C) 
 
-![](https://www.zhihu.com/equation?tex=%5Cell%28x%29%3A%3D%5Csum_i+f%28x%29_i%5C%5C) 
+$$f(x):=\left[\begin{array}{lll} e^{x_1-m(x)} & \ldots & e^{x_B-m(x)} \end{array}\right]\\$$
 
-![](https://www.zhihu.com/equation?tex=+%5Coperatorname%7Bsoftmax%7D%28x%29%3A%3D%5Cfrac%7Bf%28x%29%7D%7B%5Cell%28x%29%7D%5C%5C) 
+
+$$\ell(x):=\sum_i f(x)_i\\$$
+
+
+$$\operatorname{softmax}(x):=\frac{f(x)}{\ell(x)}\\$$
+
 
 其中 
-![](https://www.zhihu.com/equation?tex=x) 可分解为 
-![](https://www.zhihu.com/equation?tex=x%3D%5Cleft%5Bx%5E%7B%281%29%7D+x%5E%7B%282%29%7D%5Cright%5D+%5Cin+%5Cmathbb%7BR%7D%5E%7B2+B%7D) ， 
-![](https://www.zhihu.com/equation?tex=x%5E%7B%281%29%7D+%2C+x%5E%7B%282%29%7D+%5Cin+%5Cmathbb%7BR%7D%5E%7B+B%7D) 那么则有
+$x$ 可分解为 
+$x=\left[x^{(1)} x^{(2)}\right] \in \mathbb{R}^{2 B}$ ， 
+$x^{(1)} , x^{(2)} \in \mathbb{R}^{ B}$ 那么则有
 
-![](https://www.zhihu.com/equation?tex=m%28x%29%3Dm%5Cleft%28%5Cleft%5Bx%5E%7B%281%29%7D+x%5E%7B%282%29%7D%5Cright%5D%5Cright%29%3D%5Cmax+%5Cleft%28m%5Cleft%28x%5E%7B%281%29%7D%5Cright%29%2C+m%5Cleft%28x%5E%7B%282%29%7D%5Cright%29%5Cright%29%5C%5C) 
+$$m(x)=m\left(\left[x^{(1)} x^{(2)}\right]\right)=\max \left(m\left(x^{(1)}\right), m\left(x^{(2)}\right)\right)\\$$
+
 
 那么可以通过如下构造的方式，使得 
-![](https://www.zhihu.com/equation?tex=f%28x%29) 的结果与分块前保持统一：
+$f(x)$ 的结果与分块前保持统一：
 
-![](https://www.zhihu.com/equation?tex=%5Cbegin%7Baligned%7D+f%28x%29%26%3D%5Cleft%5B%5Cbegin%7Barray%7D%7Bll%7D+e%5E%7Bm%5Cleft%28x%5E%7B%281%29%7D%5Cright%29-m%28x%29%7D+f%5Cleft%28x%5E%7B%281%29%7D%5Cright%29+%26+e%5E%7Bm%5Cleft%28x%5E%7B%282%29%7D%5Cright%29-m%28x%29%7D+f%5Cleft%28x%5E%7B%282%29%7D%5Cright%29+%5Cend%7Barray%7D%5Cright%5D+%5C%5C+%26%3D%5Cleft%5B%5Cbegin%7Barray%7D%7Bll%7D+e%5E%7Bm%5Cleft%28x%5E%7B%281%29%7D%5Cright%29-m%28x%29%7D+%5Cleft%5B%5Cbegin%7Barray%7D%7Blll%7D+e%5E%7Bx_1%5E%7B%281%29%7D-m%28x%5E%7B%281%29%7D%29%7D+%26+%5Cldots+%26+e%5E%7Bx_B%5E%7B%281%29%7D-m%28x%5E%7B%281%29%7D%29%7D+%5Cend%7Barray%7D%5Cright%5D+%26+e%5E%7Bm%5Cleft%28x%5E%7B%282%29%7D%5Cright%29-m%28x%29%7D+%5Cleft%5B%5Cbegin%7Barray%7D%7Blll%7D+e%5E%7Bx_1%5E%7B%282%29%7D-m%28x%5E%7B%282%29%7D%29%7D+%26+%5Cldots+%26+e%5E%7Bx_B%5E%7B%282%29%7D-m%28x%5E%7B%282%29%7D%29%7D+%5Cend%7Barray%7D%5Cright%5D+%5Cend%7Barray%7D%5Cright%5D+%5C%5C+%26%3D+%5Cleft%5B%5Cbegin%7Barray%7D%7Bll%7D+%5Cleft%5B%5Cbegin%7Barray%7D%7Blll%7D+e%5E%7Bx_1%5E%7B%281%29%7D-m%28x%29%7D+%26+%5Cldots+%26+e%5E%7Bx_B%5E%7B%281%29%7D-m%28x%29%7D+%5Cend%7Barray%7D%5Cright%5D+%26++%5Cleft%5B%5Cbegin%7Barray%7D%7Blll%7D+e%5E%7Bx_1%5E%7B%282%29%7D-m%28x%29%7D+%26+%5Cldots+%26+e%5E%7Bx_B%5E%7B%282%29%7D-m%28x%29%7D+%5Cend%7Barray%7D%5Cright%5D+%5Cend%7Barray%7D%5Cright%5D+%5C%5C+%26%3D%5Cleft%5B%5Cbegin%7Barray%7D%7Blll%7D+e%5E%7Bx_1-m%28x%29%7D+%26+%5Cldots+%26+e%5E%7Bx_B-m%28x%29%7D+%5Cend%7Barray%7D%5Cright%5D+%5Cend%7Baligned%7D+) 
+$$\begin{aligned} f(x)&=\left[\begin{array}{ll} e^{m\left(x^{(1)}\right)-m(x)} f\left(x^{(1)}\right) & e^{m\left(x^{(2)}\right)-m(x)} f\left(x^{(2)}\right) \end{array}\right] \\ &=\left[\begin{array}{ll} e^{m\left(x^{(1)}\right)-m(x)} \left[\begin{array}{lll} e^{x_1^{(1)}-m(x^{(1)})} & \ldots & e^{x_B^{(1)}-m(x^{(1)})} \end{array}\right] & e^{m\left(x^{(2)}\right)-m(x)} \left[\begin{array}{lll} e^{x_1^{(2)}-m(x^{(2)})} & \ldots & e^{x_B^{(2)}-m(x^{(2)})} \end{array}\right] \end{array}\right] \\ &= \left[\begin{array}{ll} \left[\begin{array}{lll} e^{x_1^{(1)}-m(x)} & \ldots & e^{x_B^{(1)}-m(x)} \end{array}\right] &  \left[\begin{array}{lll} e^{x_1^{(2)}-m(x)} & \ldots & e^{x_B^{(2)}-m(x)} \end{array}\right] \end{array}\right] \\ &=\left[\begin{array}{lll} e^{x_1-m(x)} & \ldots & e^{x_B-m(x)} \end{array}\right] \end{aligned}$$
 
-![](https://www.zhihu.com/equation?tex=%5Cell%28x%29+) 的构造方式同理：
 
-![](https://www.zhihu.com/equation?tex=%5Cell%28x%29%3D%5Cell%5Cleft%28%5Cleft%5Bx%5E%7B%281%29%7D+x%5E%7B%282%29%7D%5Cright%5D%5Cright%29%3De%5E%7Bm%5Cleft%28x%5E%7B%281%29%7D%5Cright%29-m%28x%29%7D+%5Cell%5Cleft%28x%5E%7B%281%29%7D%5Cright%29%2Be%5E%7Bm%5Cleft%28x%5E%7B%282%29%7D%5Cright%29-m%28x%29%7D+%5Cell%5Cleft%28x%5E%7B%282%29%7D%5Cright%29%5C%5C) 
+$\ell(x)$ 的构造方式同理：
+
+$$\ell(x)=\ell\left(\left[x^{(1)} x^{(2)}\right]\right)=e^{m\left(x^{(1)}\right)-m(x)} \ell\left(x^{(1)}\right)+e^{m\left(x^{(2)}\right)-m(x)} \ell\left(x^{(2)}\right)\\$$
+
 
 由此 
-![](https://www.zhihu.com/equation?tex=+%5Coperatorname%7Bsoftmax%7D%28x%29) 的结果自然与分块前保持统一：
+$\operatorname{softmax}(x)$ 的结果自然与分块前保持统一：
 
-![](https://www.zhihu.com/equation?tex=+%5Coperatorname%7Bsoftmax%7D%28x%29%3D%5Cfrac%7Bf%28x%29%7D%7B%5Cell%28x%29%7D+%5C%5C) 
+$$\operatorname{softmax}(x)=\frac{f(x)}{\ell(x)} \\$$
+
 
 softmax 的分块计算解决后，实际上其他部分的分块计算就简单多了，那么我们可以看下完整的 decoder 的 attention 的计算过程：
 
-![](https://www.zhihu.com/equation?tex=%281%29+%5Cquad+%5Cmathbf%7BS%7D%3D+%5Cmathbf%7BQ%7D+%5Cmathbf%7BK%7D%5E%7B%5Ctop%7D%2F%5Csqrt%7Bd%7D+%5Cin+%5Cmathbb%7BR%7D%5E%7BN+%5Ctimes+N%7D) 
+$$(1) \quad \mathbf{S}= \mathbf{Q} \mathbf{K}^{\top}/\sqrt{d} \in \mathbb{R}^{N \times N}$$
 
-![](https://www.zhihu.com/equation?tex=%282%29+%5Cquad+%5Cmathbf%7BS%7D%5E%7B%5Ctext+%7Bmasked+%7D%7D%3D%5Coperatorname%7BMASK%7D%28%5Cmathbf%7BS%7D%29+%5Cin+%5Cmathbb%7BR%7D%5E%7BN+%5Ctimes+N%7D) 
 
-![](https://www.zhihu.com/equation?tex=%283%29+%5Cquad+%5Cmathbf%7BP%7D%3D%5Coperatorname%7Bsoftmax%7D%5Cleft%28%5Cmathbf%7BS%7D%5E%7B%5Ctext+%7Bmasked+%7D%7D%5Cright%29+%5Cin+%5Cmathbb%7BR%7D%5E%7BN+%5Ctimes+N%7D) 
+$$(2) \quad \mathbf{S}^{\text {masked }}=\operatorname{MASK}(\mathbf{S}) \in \mathbb{R}^{N \times N}$$
 
-![](https://www.zhihu.com/equation?tex=%284%29+%5Cquad+%5Cmathbf%7BP%7D%5E%7B%5Ctext+%7Bdropped+%7D%7D%3D%5Coperatorname%7Bdropout%7D%5Cleft%28%5Cmathbf%7BP%7D%2C+p_%7B%5Ctext+%7Bdrop+%7D%7D%5Cright%29%5Cin+%5Cmathbb%7BR%7D%5E%7BN+%5Ctimes+N%7D) 
 
-![](https://www.zhihu.com/equation?tex=%285%29%5Cquad+%5Cmathbf%7BO%7D%3D%5Cmathbf%7BP%7D%5E%7B%5Ctext+%7Bdropped+%7D%7D+%5Cmathbf%7BV%7D+%5Cin+%5Cmathbb%7BR%7D%5E%7BN+%5Ctimes+d%7D) 
+$$(3) \quad \mathbf{P}=\operatorname{softmax}\left(\mathbf{S}^{\text {masked }}\right) \in \mathbb{R}^{N \times N}$$
+
+
+$$(4) \quad \mathbf{P}^{\text {dropped }}=\operatorname{dropout}\left(\mathbf{P}, p_{\text {drop }}\right)\in \mathbb{R}^{N \times N}$$
+
+
+$$(5)\quad \mathbf{O}=\mathbf{P}^{\text {dropped }} \mathbf{V} \in \mathbb{R}^{N \times d}$$
+
 
 那么 FlashAttention 前向过程的算法可描述如下：
 
 ![](https://pic2.zhimg.com/v2-5a5338741dccd972ad8bf3578314c7c5_r.jpg)上述算法并没有增加额外计算（只是将大的操作拆成多个分块逐步计算），因此其算法复杂度仍为 
-![](https://www.zhihu.com/equation?tex=O%28N%5E2d%29) ，另外由于增加了变量 
-![](https://www.zhihu.com/equation?tex=%5Cell%2C+m) ，因此空间复杂度增加 
-![](https://www.zhihu.com/equation?tex=O%28N%29) 。
+$O(N^2d)$ ，另外由于增加了变量 
+$\ell, m$ ，因此空间复杂度增加 
+$O(N)$ 。
 
 其中第15行需要专门来推导一下，为简洁起见，先不考虑 mask 和 dropout 操作： 
 
-![](https://www.zhihu.com/equation?tex=%5Cbegin%7Baligned%7D++%5Cmathbf%7BO%7D_i%5E%7B%28j%2B1%29%7D+%26%3D%5Cmathbf%7BP%7D_%7Bi%2C%3A+j%2B1%7D+%5Cmathbf%7BV%7D_%7B%3A+j%2B1%7D%3D%5Coperatorname%7Bsoftmax%7D%5Cleft%28%5Cmathbf%7BS%7D_%7Bi%2C%3A+j%2B1%7D%5Cright%29+%5Cmathbf%7BV%7D_%7B%3A+j%2B1%7D++%5C%5C+%26+%3D%5Coperatorname%7Bdiag%7D%5Cleft%28%5Cell%5E%7B%28j%2B1%29%7D%5Cright%29%5E%7B-1%7D%5Cleft%28%5Cexp+%5Cleft%28%5Cleft%5B%5Cbegin%7Barray%7D%7Bll%7D+%5Cmathbf%7BS%7D_%7Bi%2C%3A+j%7D+%26+%5Cmathbf%7BS%7D_%7Bi%2Cj%3A+j%2B1%7D+%5Cend%7Barray%7D%5Cright%5D-m%5E%7B%28j%2B1%29%7D%5Cright%29%5Cright%29%5Cleft%5B%5Cbegin%7Barray%7D%7Bc%7D+%5Cmathbf%7BV%7D_%7B%3A+j%7D+%5C%5C+%5Cmathbf%7BV%7D_%7Bj%3A+j%2B1%7D+%5Cend%7Barray%7D%5Cright%5D+%5C%5C+%26+%3D%5Coperatorname%7Bdiag%7D%5Cleft%28%5Cell%5E%7B%28j%2B1%29%7D%5Cright%29%5E%7B-1%7D%5Cleft%28%5Cexp+%5Cleft%28%5Cmathbf%7BS%7D_%7Bi%2C+%3Aj%7D-m%5E%7B%28j%2B1%29%7D%5Cright%29+%5Cmathbf%7BV%7D_%7B%3A+j%7D%2B%5Cexp+%5Cleft%28%5Cmathbf%7BS%7D_%7Bi%2Cj%3A+j%2B1%7D-m%5E%7B%28j%2B1%29%7D%5Cright%29+%5Cmathbf%7BV%7D_%7Bj%3A+j%2B1%7D%5Cright%29+%5C%5C+%26+%3D%5Coperatorname%7Bdiag%7D%5Cleft%28%5Cell%5E%7B%28j%2B1%29%7D%5Cright%29%5E%7B-1%7D%5Cleft%28e%5E%7B-m%5E%7B%28j%2B1%29%7D%7D+%5Cexp+%5Cleft%28%5Cmathbf%7BS%7D_%7Bi%2C+%3A+j%7D%5Cright%29+%5Cmathbf%7BV%7D_%7B%3A+j%7D%2Be%5E%7B-m%5E%7B%28j%2B1%29%7D%7D+%5Cexp+%5Cleft%28%5Cmathbf%7BS%7D_%7Bi%2C+j%3A+j%2B1%7D%5Cright%29+%5Cmathbf%7BV%7D_%7Bj%3A+j%2B1%7D%5Cright%29+%5C%5C+%26%3D%5Coperatorname%7Bdiag%7D%5Cleft%28%5Cell%5E%7B%28j%2B1%29%7D%5Cright%29%5E%7B-1%7D%5Cleft%28%5Coperatorname%7Bdiag%7D%5Cleft%28%5Cell%5E%7B%28j%29%7D%5Cright%29+e%5E%7Bm%5E%7B%28j%29%7D-m%5E%7B%28j%2B1%29%7D%7D+%5Coperatorname%7Bdiag%7D%5Cleft%28%5Cell%5E%7B%28j%29%7D%5Cright%29%5E%7B-1%7D+%5Cexp+%5Cleft%28%5Cmathbf%7BS%7D_%7Bi%2C%3A+j%7D-m%5E%7B%28j%29%7D%5Cright%29+%5Cmathbf%7BV%7D_%7B%3A+j%7D%2Be%5E%7B-m%5E%7B%28j%2B1%29%7D%7D+%5Cexp+%5Cleft%28%5Cmathbf%7BS%7D_%7Bi%2Cj%3A+j%2B1%7D%5Cright%29+%5Cmathbf%7BV%7D_%7Bj%3A+j%2B1%7D%5Cright%29+%5C%5C+%26%3D%5Coperatorname%7Bdiag%7D%5Cleft%28%5Cell%5E%7B%28j%2B1%29%7D%5Cright%29%5E%7B-1%7D%5Cleft%28%5Coperatorname%7Bdiag%7D%5Cleft%28%5Cell%5E%7B%28j%29%7D%5Cright%29+e%5E%7Bm%5E%7B%28j%29%7D-m%5E%7B%28j%2B1%29%7D%7D+%5Cmathbf%7BP%7D_%7Bi%2C+%3A+j%7D+%5Cmathbf%7BV%7D_%7B%3A+j%7D%2Be%5E%7B-m%5E%7B%28j%2B1%29%7D%7D+%5Cexp+%5Cleft%28%5Cmathbf%7BS%7D_%7Bi%2Cj%3A+j%2B1%7D%5Cright%29+%5Cmathbf%7BV%7D_%7Bj%3A+j%2B1%7D%5Cright%29+%5C%5C++%26%3D%5Coperatorname%7Bdiag%7D%5Cleft%28%5Cell%5E%7B%28j%2B1%29%7D%5Cright%29%5E%7B-1%7D%5Cleft%28%5Coperatorname%7Bdiag%7D%5Cleft%28%5Cell%5E%7B%28j%29%7D%5Cright%29+e%5E%7Bm%5E%7B%28j%29%7D-m%5E%7B%28j%2B1%29%7D%7D+%5Cmathbf%7BO%7D_i%5E%7B%28j%29%7D%2Be%5E%7B%5Ctilde%7Bm%7D-m%5E%7B%28j%2B1%29%7D%7D+%5Cexp+%5Cleft%28%5Cmathbf%7BS%7D_%7Bi%2Cj%3A+j%2B1%7D-%5Ctilde%7Bm%7D%5Cright%29+%5Cmathbf%7BV%7D_%7Bj%3A+j%2B1%7D%5Cright%29+%5C%5C+%26%3D%5Coperatorname%7Bdiag%7D%5Cleft%28%5Cell%5E%7B%28j%2B1%29%7D%5Cright%29%5E%7B-1%7D%5Cleft%28%5Coperatorname%7Bdiag%7D%5Cleft%28%5Cell%5E%7B%28j%29%7D%5Cright%29+e%5E%7Bm%5E%7B%28j%29%7D-m%5E%7B%28j%2B1%29%7D%7D+%5Cmathbf%7BO%7D_i%5E%7B%28j%29%7D%2Be%5E%7B%5Ctilde%7Bm%7D-m%5E%7B%28j%2B1%29%7D%7D++%5Cmathbf%7BP%7D_%7Bi%2Cj%3A+j%2B1%7D+%5Cmathbf%7BV%7D_%7Bj%3A+j%2B1%7D%5Cright%29+%5C%5C+++%5Cend%7Baligned%7D) 
+$$\begin{aligned}  \mathbf{O}_i^{(j+1)} &=\mathbf{P}_{i,: j+1} \mathbf{V}_{: j+1}=\operatorname{softmax}\left(\mathbf{S}_{i,: j+1}\right) \mathbf{V}_{: j+1}  \\ & =\operatorname{diag}\left(\ell^{(j+1)}\right)^{-1}\left(\exp \left(\left[\begin{array}{ll} \mathbf{S}_{i,: j} & \mathbf{S}_{i,j: j+1} \end{array}\right]-m^{(j+1)}\right)\right)\left[\begin{array}{c} \mathbf{V}_{: j} \\ \mathbf{V}_{j: j+1} \end{array}\right] \\ & =\operatorname{diag}\left(\ell^{(j+1)}\right)^{-1}\left(\exp \left(\mathbf{S}_{i, :j}-m^{(j+1)}\right) \mathbf{V}_{: j}+\exp \left(\mathbf{S}_{i,j: j+1}-m^{(j+1)}\right) \mathbf{V}_{j: j+1}\right) \\ & =\operatorname{diag}\left(\ell^{(j+1)}\right)^{-1}\left(e^{-m^{(j+1)}} \exp \left(\mathbf{S}_{i, : j}\right) \mathbf{V}_{: j}+e^{-m^{(j+1)}} \exp \left(\mathbf{S}_{i, j: j+1}\right) \mathbf{V}_{j: j+1}\right) \\ &=\operatorname{diag}\left(\ell^{(j+1)}\right)^{-1}\left(\operatorname{diag}\left(\ell^{(j)}\right) e^{m^{(j)}-m^{(j+1)}} \operatorname{diag}\left(\ell^{(j)}\right)^{-1} \exp \left(\mathbf{S}_{i,: j}-m^{(j)}\right) \mathbf{V}_{: j}+e^{-m^{(j+1)}} \exp \left(\mathbf{S}_{i,j: j+1}\right) \mathbf{V}_{j: j+1}\right) \\ &=\operatorname{diag}\left(\ell^{(j+1)}\right)^{-1}\left(\operatorname{diag}\left(\ell^{(j)}\right) e^{m^{(j)}-m^{(j+1)}} \mathbf{P}_{i, : j} \mathbf{V}_{: j}+e^{-m^{(j+1)}} \exp \left(\mathbf{S}_{i,j: j+1}\right) \mathbf{V}_{j: j+1}\right) \\  &=\operatorname{diag}\left(\ell^{(j+1)}\right)^{-1}\left(\operatorname{diag}\left(\ell^{(j)}\right) e^{m^{(j)}-m^{(j+1)}} \mathbf{O}_i^{(j)}+e^{\tilde{m}-m^{(j+1)}} \exp \left(\mathbf{S}_{i,j: j+1}-\tilde{m}\right) \mathbf{V}_{j: j+1}\right) \\ &=\operatorname{diag}\left(\ell^{(j+1)}\right)^{-1}\left(\operatorname{diag}\left(\ell^{(j)}\right) e^{m^{(j)}-m^{(j+1)}} \mathbf{O}_i^{(j)}+e^{\tilde{m}-m^{(j+1)}}  \mathbf{P}_{i,j: j+1} \mathbf{V}_{j: j+1}\right) \\   \end{aligned}$$
+
 
 其核心思想仍是使用分块的计算更新迭代以得到全局的结果。那么至此我们厘清了前向计算的整个过程，接下来我们将考虑反向计算的过程。
 
 ![](https://pic4.zhimg.com/v2-cdde694230620937cfa09039d40ea009_r.jpg)<strong>1.2.3 Recomputation 与 反向计算</strong>
 
 FlashAttention 的 向后传递需要 
-![](https://www.zhihu.com/equation?tex=+%5Cmathbf%7BS%7D) 和 
-![](https://www.zhihu.com/equation?tex=+%5Cmathbf%7BP%7D) 矩阵来计算 
-![](https://www.zhihu.com/equation?tex=+%5Cmathbf%7BQ%7D%2C++%5Cmathbf%7BK%7D%2C++%5Cmathbf%7BV%7D) 的梯度。然而由于空间复杂度是 
-![](https://www.zhihu.com/equation?tex=O%28N%5E2%29) ，
-![](https://www.zhihu.com/equation?tex=+%5Cmathbf%7BS%7D) 和 
-![](https://www.zhihu.com/equation?tex=+%5Cmathbf%7BP%7D) 没有显式存储。解决办法是使用输出 
-![](https://www.zhihu.com/equation?tex=O) 和 softmax 归一化统计 
-![](https://www.zhihu.com/equation?tex=%28m%2C%5Cell%29) ，我们可以利用SRAM中的 
-![](https://www.zhihu.com/equation?tex=+%5Cmathbf%7BQ%7D%2C++%5Cmathbf%7BK%7D%2C++%5Cmathbf%7BV%7D)重新计算 
-![](https://www.zhihu.com/equation?tex=+%5Cmathbf%7BS%7D) 和 
-![](https://www.zhihu.com/equation?tex=+%5Cmathbf%7BP%7D) 矩阵。这个过程使用更多的flop，由于减少HBM访问，重新计算步长也加快了反向传播的速度。
+$\mathbf{S}$ 和 
+$\mathbf{P}$ 矩阵来计算 
+$\mathbf{Q},  \mathbf{K},  \mathbf{V}$ 的梯度。然而由于空间复杂度是 
+$O(N^2)$ ，
+$\mathbf{S}$ 和 
+$\mathbf{P}$ 没有显式存储。解决办法是使用输出 
+$O$ 和 softmax 归一化统计 
+$(m,\ell)$ ，我们可以利用SRAM中的 
+$\mathbf{Q},  \mathbf{K},  \mathbf{V}$重新计算 
+$\mathbf{S}$ 和 
+$\mathbf{P}$ 矩阵。这个过程使用更多的flop，由于减少HBM访问，重新计算步长也加快了反向传播的速度。
 
 首先回顾一下标准 Attention 的反向的求导过程：
 
 注意力机制的公式为 
-![](https://www.zhihu.com/equation?tex=+%5Cmathbf%7BO%7D%3D%5Ctext%7BSoftmax+%7D%7B%28%5Cfrac%7B%5Cbf+Q%5Cbf+K%5E%5Ctop%7D%7B%5Csqrt%7Bd_k%7D%7D%29%7D%5Cmathbf+V+) ，反向传播时，需要根据损失函数 
-![](https://www.zhihu.com/equation?tex=+%5Cphi) 对模块输出的导数 
-![](https://www.zhihu.com/equation?tex=%5Ctext+d%5Cmathbf+O) ( 即
-![](https://www.zhihu.com/equation?tex=%5Cfrac%7B%5Cpartial+%5Cphi%7D%7B%5Cpartial+%5Cmathbf%7BO%7D%7D) )，进而求出其对输入的导数 
-![](https://www.zhihu.com/equation?tex=%5Ctext+d%5Cmathbf+Q%2C+%5Ctext+d+%5Cmathbf+K+%2C%5Ctext+d+%5Cmathbf+V)(即 
-![](https://www.zhihu.com/equation?tex=%5Cfrac%7B%5Cpartial+%5Cphi%7D%7B%5Cpartial+%5Cmathbf%7BQ%7D%7D%2C+%5Cfrac%7B%5Cpartial+%5Cphi%7D%7B%5Cpartial+%5Cmathbf%7BK%7D%7D%2C+%5Cfrac%7B%5Cpartial+%5Cphi%7D%7B%5Cpartial+%5Cmathbf%7BV%7D%7D) )。这里，令 
-![](https://www.zhihu.com/equation?tex=%5Cmathbf%7BP%7D+%3D+%5Ctext%7BSoftmax%7D%28%5Cmathbf+S%29%2C+%5Cmathbf+S+%3D%7B%5Cfrac%7B%5Cmathbf+Q%5Cmathbf+K%5E%5Ctop%7D%7B%5Csqrt+%7Bd_k%7D%7D%7D)， 
-![](https://www.zhihu.com/equation?tex=%5Cmathbf++O+%3D+%5Cmathbf+P%5Cmathbf+V) ，则其求导过程如下：
+$\mathbf{O}=\text{Softmax }{(\frac{\bf Q\bf K^\top}{\sqrt{d_k}})}\mathbf V$ ，反向传播时，需要根据损失函数 
+$\phi$ 对模块输出的导数 
+$\text d\mathbf O$ ( 即
+$\frac{\partial \phi}{\partial \mathbf{O}}$ )，进而求出其对输入的导数 
+$\text d\mathbf Q, \text d \mathbf K ,\text d \mathbf V$(即 
+$\frac{\partial \phi}{\partial \mathbf{Q}}, \frac{\partial \phi}{\partial \mathbf{K}}, \frac{\partial \phi}{\partial \mathbf{V}}$ )。这里，令 
+$\mathbf{P} = \text{Softmax}(\mathbf S), \mathbf S ={\frac{\mathbf Q\mathbf K^\top}{\sqrt {d_k}}}$， 
+$\mathbf  O = \mathbf P\mathbf V$ ，则其求导过程如下：
 
 由 
-![](https://www.zhihu.com/equation?tex=%5Cfrac%7B%5Cpartial+%5Cmathbf%7BO%7D%7D%7B%5Cpartial+%5Cmathbf%7BV%7D%7D+%3D+P%5ET) 则 
-![](https://www.zhihu.com/equation?tex=%5Cfrac%7B%5Cpartial+%5Cphi%7D%7B%5Cpartial+%5Cmathbf%7BV%7D%7D%3DP%5ET%5Cfrac%7B%5Cpartial+%5Cphi%7D%7B%5Cpartial+%5Cmathbf%7BO%7D%7D) ，即 
-![](https://www.zhihu.com/equation?tex=%5Ctext+d%5Cmathbf%7BV%7D%3D%5Cmathbf+P%5E%5Ctop+%5Ctext+d%5Cmathbf+O+) ，其余算法类似
+$\frac{\partial \mathbf{O}}{\partial \mathbf{V}} = P^T$ 则 
+$\frac{\partial \phi}{\partial \mathbf{V}}=P^T\frac{\partial \phi}{\partial \mathbf{O}}$ ，即 
+$\text d\mathbf{V}=\mathbf P^\top \text d\mathbf O$ ，其余算法类似
 
 ![](https://pic3.zhimg.com/v2-9bc55010184d1e6c5f3261f571e778a6_r.jpg)FlashAttention将 
-![](https://www.zhihu.com/equation?tex=%5Ctext+d%5Cmathbf+V) 的计算拆分成若干个子部分 
-![](https://www.zhihu.com/equation?tex=%5Ctext+d%5Cmathbf+V_j) 的计算，以使得可以使用Tiling技术：
+$\text d\mathbf V$ 的计算拆分成若干个子部分 
+$\text d\mathbf V_j$ 的计算，以使得可以使用Tiling技术：
 
-![](https://www.zhihu.com/equation?tex=%5Ctext+d+%5Cmathbf+V_j%3D%5Cmathbf%28P%5E%5Ctop%29_j%5Ctextbf+d%5Cmathbf+O%3D%5Csum%5Climits_i%5Cmathbf+%28P%5E%5Ctop%29_%7Bji%7D%5Ctext+d+%5Cmathbf+O_i%3D%5Csum%5Climits_i%5Cmathbf++P_%7Bij%7D%5E%5Ctop%5Ctext+d+%5Cmathbf+O_i+%5C%5C)
+$$\text d \mathbf V_j=\mathbf(P^\top)_j\textbf d\mathbf O=\sum\limits_i\mathbf (P^\top)_{ji}\text d \mathbf O_i=\sum\limits_i\mathbf  P_{ij}^\top\text d \mathbf O_i \\$$
 
-![](https://www.zhihu.com/equation?tex=%5Cmathbf+P) 矩阵的大小是 
-![](https://www.zhihu.com/equation?tex=O%28N%5E2%29) 量级，为了减小内存的消耗，<strong>FlashAttention在反向传播时重新计算</strong> **
-![](https://www.zhihu.com/equation?tex=%5Cmathbf+P)** **而非在前向传播时保存：**
 
-![](https://www.zhihu.com/equation?tex=%5Cmathbf+P_%7Bij%7D+%3D+%28%5Ctext+%7BSoftmax%7D%28%5Cmathbf+S%29%29_%7Bij%7D%3D%5Cfrac%7Be%5E%7B%5Cmathbf+S_%7Bij%7D-%5Cdelta%5E%5Ctop%28%7B%5Cmathbf+S_i%5E%7B%5Ctext%7Bmax%7D%7D%5Ctext+%7B%2C+%7D++C_N+%29%7D%7D%7D%7B%5Cdelta%5E%5Ctop%28%5Cmathbf+S_i%5E%7B%5Ctext%7Bsum%7D%7D%5Ctext%7B%2C++%7DC_N%29%7D%5C%5C)
+$\mathbf P$ 矩阵的大小是 
+$O(N^2)$ 量级，为了减小内存的消耗，<strong>FlashAttention在反向传播时重新计算</strong> **
+$\mathbf P$** **而非在前向传播时保存：**
+
+$$\mathbf P_{ij} = (\text {Softmax}(\mathbf S))_{ij}=\frac{e^{\mathbf S_{ij}-\delta^\top({\mathbf S_i^{\text{max}}\text {, }  C_N )}}}{\delta^\top(\mathbf S_i^{\text{sum}}\text{,  }C_N)}\\$$
+
 
 式中 
-![](https://www.zhihu.com/equation?tex=%5Cmathbf+S_i%5E%5Ctext%7Bmax%7D%2C+%5Cmathbf+S_i%5E%5Ctext%7Bsum%7D) 由前向传播时保存，而 
-![](https://www.zhihu.com/equation?tex=%5Cmathbf+S_%7Bij%7D%3D%5Cfrac%7B%5Cmathbf+Q_i%28%5Cmathbf+K%5E%5Ctop%29_%7B.j%7D%7D%7B%5Csqrt%7Bd_k%7D%7D%3D%5Cfrac%7B%5Cmathbf+Q_i%5Cmathbf+K_%7Bj%7D%5E%5Ctop%7D%7B%5Csqrt%7Bd_k%7D%7D)
+$\mathbf S_i^\text{max}, \mathbf S_i^\text{sum}$ 由前向传播时保存，而 
+$$\mathbf S_{ij}=\frac{\mathbf Q_i(\mathbf K^\top)_{.j}}{\sqrt{d_k}}=\frac{\mathbf Q_i\mathbf K_{j}^\top}{\sqrt{d_k}}$$
+
 
 根据之前推到同理可得到中间变量 
-![](https://www.zhihu.com/equation?tex=%5Cmathbf+P) 的导数： 
-![](https://www.zhihu.com/equation?tex=%5Ctext+d%5Cmathbf+P%3D+%5Ctext+d+%5Cmathbf+O++%5Cmathbf+V%5E%5Ctop) 
+$\mathbf P$ 的导数： 
+$$\text d\mathbf P= \text d \mathbf O  \mathbf V^\top$$
+
 
 而 
-![](https://www.zhihu.com/equation?tex=%5Cmathbf+s_i+%3D+%5Cfrac%7B%5Cmathbf+q_i%5Cmathbf+K%5E%5Ctop%7D%7B%5Csqrt+%7Bd_k%7D%7D) ， 
-![](https://www.zhihu.com/equation?tex=%5Cmathbf+p_i+%3D+%5Ctext%7Bsoftmax%7D%28%7B%5Cmathbf+s_i%7D%29) ，于是：
+$\mathbf s_i = \frac{\mathbf q_i\mathbf K^\top}{\sqrt {d_k}}$ ， 
+$\mathbf p_i = \text{softmax}({\mathbf s_i})$ ，于是：
 
-![](https://www.zhihu.com/equation?tex=%5Ctext++d%5Cmathbf+q_i%3D%5Ctext++d%5Cmathbf+s_i+%5Ccdot+%5Cfrac%7B%5Cpartial+%5Cmathbf+s_i+%7D%7B%5Cpartial+%5Cmathbf+q_i+%7D%3D%5Ctext++d%5Cmathbf+s_i+%5Ccdot+%5Cfrac%7B%5Cmathbf+K%7D%7B%5Csqrt%7Bd_k%7D%7D)
+$$\text  d\mathbf q_i=\text  d\mathbf s_i \cdot \frac{\partial \mathbf s_i }{\partial \mathbf q_i }=\text  d\mathbf s_i \cdot \frac{\mathbf K}{\sqrt{d_k}}$$
 
-![](https://www.zhihu.com/equation?tex=%5Ctext+d%5Cmathbf+s_i+%3D+%5Ctext+d%5Cmathbf+p_i+%5Ccdot+%5Cfrac%7B%5Cpartial+%5Cmathbf+p_i%7D%7B%5Cpartial+%5Cmathbf+s_i%7D+%5C%5C%3D+%5Ctext+d%5Cmathbf+p_i+%28%5Ctext+%7Bdiag%7D%28%5Cmathbf+p_i%29-%5Cmathbf+p_i%5E%5Ctop%5Cmathbf+p_i%29%5C%5C%3Dd%5Cmathbf+p_i+%5Codot+%5Cmathbf+p_i-%5Ctext+d%5Cmathbf+o_i+%5Cmathbf+o_i%5E%5Ctop%5Cmathbf+p_i)
+
+$$\text d\mathbf s_i = \text d\mathbf p_i \cdot \frac{\partial \mathbf p_i}{\partial \mathbf s_i} \\= \text d\mathbf p_i (\text {diag}(\mathbf p_i)-\mathbf p_i^\top\mathbf p_i)\\=d\mathbf p_i \odot \mathbf p_i-\text d\mathbf o_i \mathbf o_i^\top\mathbf p_i$$
+
 
 拓展 
-![](https://www.zhihu.com/equation?tex=%5Ctext+d%5Cmathbf+q_i) 到 
-![](https://www.zhihu.com/equation?tex=%5Ctext+d%5Cmathbf+Q_i):
+$\text d\mathbf q_i$ 到 
+$\text d\mathbf Q_i$:
 
-![](https://www.zhihu.com/equation?tex=%5Ctext+d%5Cmathbf+Q+_i%3D+%5Ctext+d%5Cmathbf+S_i%5Ccdot+%5Cfrac%7B%5Cmathbf+K%7D%7B%5Csqrt%7Bd_k%7D%7D%3D%5Csum_j%5Ctext+d%5Cmathbf+S_%7Bij%7D%5Ccdot%5Cfrac%7B%5Cmathbf+K_j%7D%7B%5Csqrt%7Bd_k%7D%7D) 
+$$\text d\mathbf Q _i= \text d\mathbf S_i\cdot \frac{\mathbf K}{\sqrt{d_k}}=\sum_j\text d\mathbf S_{ij}\cdot\frac{\mathbf K_j}{\sqrt{d_k}}$$
+
 
 这里还需要求出 
-![](https://www.zhihu.com/equation?tex=%5Ctext+d%5Cmathbf+S_%7Bij%7D):
+$\text d\mathbf S_{ij}$:
 
-![](https://www.zhihu.com/equation?tex=%5Ctext+d%5Cmathbf+S_%7Bi%7D%3D%5Ctext+d%5Cmathbf+P_i+%5Codot+%5Cmathbf+P_i-%5Calpha%28%5Cbeta%5ET%28%5Ctext+d%5Cmathbf+O_i+%5Codot%5Cmathbf+O_i%29%2CN%29%5Codot%5Cmathbf+P_i%5C%5C%3D%28%5Ctext+d%5Cmathbf+P_i-%5Calpha%28%5Cbeta%5ET%28%5Ctext+d%5Cmathbf+O_i+%5Codot%5Cmathbf+O_i%29%2CN%29%29%5Codot%5Cmathbf+P_i)
+$$\text d\mathbf S_{i}=\text d\mathbf P_i \odot \mathbf P_i-\alpha(\beta^T(\text d\mathbf O_i \odot\mathbf O_i),N)\odot\mathbf P_i\\=(\text d\mathbf P_i-\alpha(\beta^T(\text d\mathbf O_i \odot\mathbf O_i),N))\odot\mathbf P_i$$
 
-![](https://www.zhihu.com/equation?tex=%5Ctext+d%5Cmathbf+S_%7Bij%7D%3D%28%5Ctext+d%5Cmathbf+P_%7Bij%7D-%5Calpha%28%5Cbeta%5ET%28%5Ctext+d%5Cmathbf+O_i+%5Codot%5Cmathbf+O_i%29%2CC_N%29%29%5Codot%5Cmathbf+P_%7Bij%7D) 
+
+$$\text d\mathbf S_{ij}=(\text d\mathbf P_{ij}-\alpha(\beta^T(\text d\mathbf O_i \odot\mathbf O_i),C_N))\odot\mathbf P_{ij}$$
+
 
 上式中， 
-![](https://www.zhihu.com/equation?tex=%5Cmathbf+P_%7Bij%7D) 由重计算得到， 
-![](https://www.zhihu.com/equation?tex=%5Ctext+d%5Cmathbf+P_%7Bij%7D) 则可更具体表示为：
+$\mathbf P_{ij}$ 由重计算得到， 
+$\text d\mathbf P_{ij}$ 则可更具体表示为：
 
-![](https://www.zhihu.com/equation?tex=%5Ctext+d%5Cmathbf+P_%7Bij%7D+%3D+%5Ctext+d%5Cmathbf+O_i%28%5Cmathbf+V%5E%5Ctop%29_%7B.j%7D%3D%5Ctext+d%5Cmathbf+O_i%5Cmathbf+V_j%5E%5Ctop)
+$$\text d\mathbf P_{ij} = \text d\mathbf O_i(\mathbf V^\top)_{.j}=\text d\mathbf O_i\mathbf V_j^\top$$
+
 
 最后是求 
-![](https://www.zhihu.com/equation?tex=%5Ctext+d%5Cmathbf+K_j) :
+$\text d\mathbf K_j$ :
 
-![](https://www.zhihu.com/equation?tex=%5Ctext+d%5Cmathbf+K%3D+%28%5Ctext+d%5Cmathbf+K%5E%5Ctop%29%5E%5Ctop%3D%5Ctext+d%5Cmathbf+S%5E%5Ctop%5Cfrac%7B%5Cmathbf+Q%7D%7B%5Csqrt%7Bd_k%7D%7D)
+$$\text d\mathbf K= (\text d\mathbf K^\top)^\top=\text d\mathbf S^\top\frac{\mathbf Q}{\sqrt{d_k}}$$
 
-![](https://www.zhihu.com/equation?tex=%5Ctext+d%5Cmathbf+K_j+%3D+%28%5Ctext+d%5Cmathbf+S%5E%5Ctop%29_%7Bj%7D%5Ccdot+%5Cfrac%7B%5Cmathbf+Q%7D%7B%5Csqrt%7Bd_k%7D%7D%3D%5Csum_%5Climits+i%28%5Ctext+d%5Cmathbf+S%5E%5Ctop%29_%7Bji%7D%5Ccdot+%5Cfrac%7B%5Cmathbf+Q%7D%7B%5Csqrt%7Bd_k%7D%7D%3D%5Csum_%5Climits+i%5Ctext+d%5Cmathbf+S_%7Bij%7D%5E%5Ctop+%5Ccdot+%5Cfrac%7B%5Cmathbf+Q%7D%7B%5Csqrt%7Bd_k%7D%7D+) 
+
+$$\text d\mathbf K_j = (\text d\mathbf S^\top)_{j}\cdot \frac{\mathbf Q}{\sqrt{d_k}}=\sum_\limits i(\text d\mathbf S^\top)_{ji}\cdot \frac{\mathbf Q}{\sqrt{d_k}}=\sum_\limits i\text d\mathbf S_{ij}^\top \cdot \frac{\mathbf Q}{\sqrt{d_k}}$$
+
 
 以上则完成反向过程的求导。
 
@@ -293,7 +324,8 @@ batch sizeseq_lenn_headhead_dimstandard latency (ms)flash latency (ms)speedup325
 三、PagedAttention 原理及实践
 vLLM 主要用于快速 LLM 推理和服务，其核心是 PagedAttention，这是一种新颖的注意力算法，它将在操作系统的虚拟内存中分页的经典思想引入到 LLM 服务中。在无需任何模型架构修改的情况下，可以做到比 HuggingFace Transformers 提供高达 24 倍的 Throughput。
 
-3.1 PagedAttention 的基本原理
+### 3.1 PagedAttention 的基本原理
+
 vLLM 具有诸多特点，其快速体现在:
 
 - 最好的服务吞吐性能
@@ -324,7 +356,8 @@ PagedAttention 还有另一个关键优势 —— 高效的内存共享。例如
 
 PageAttention 成为了 vLLM 背后的核心技术。vLLM 是 LLM 推理和服务引擎，为各种具有高性能和易用界面的模型提供支持。
 
-3.2 vLLM 及 PagedAttention 实践
+### 3.2 vLLM 及 PagedAttention 实践
+
 <strong>3.2.1 核心模块解读及单元测试</strong>
 
 vLLM 的核心是 PagedAttention ，而 PagedAttention 核心则是 `attention_ops.single_query_cached_kv_attention` op，下面首先了解该 op 的使用方法并验证其正确性，完整代码参见[vllm/tests/kernels/test_attention.py](https://link.zhihu.com/?target=https%3A//github.com/vllm-project/vllm/blob/665c48963be11b2e5cb7209cd25f884129e5c284/tests/kernels/test_attention.py%23L8) 。

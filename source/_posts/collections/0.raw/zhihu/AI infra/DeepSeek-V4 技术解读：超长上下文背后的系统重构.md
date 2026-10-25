@@ -30,7 +30,8 @@ source_url: https://zhuanlan.zhihu.com/p/2059328957376377036
 
 模型总参数激活参数原生上下文DeepSeek-V4-Pro1.6T49B1,048,576 tokenDeepSeek-V4-Flash284B13B1,048,576 token从名字看是“一个大模型 + 一个小模型”，从系统设计看，则是同一套长上下文路线在两个成本点上的实现：Pro 追能力上限，Flash 追常规服务成本。
 
-1. 长上下文很贵
+## 1. 长上下文很贵
+
 推理模型和 Agent 把 test-time scaling 推到了台前：模型在推理时可以写更长的思考链，调用更多工具，读更多检索材料，保留更多历史尝试，再用这些中间状态换取更强能力。
 
 标准 attention 里，每个 token 都要和历史 token 发生联系。序列越长，计算和 KV cache 压力都会快速上升。对 decode 来说，模型每生成一个新 token，都要带着前面所有 KV cache 继续工作。上下文从 128K 拉到 1M，推理系统的内存、带宽和调度压力也会一起上去。
@@ -48,7 +49,8 @@ source_url: https://zhuanlan.zhihu.com/p/2059328957376377036
 
 这组数字背后更值得追的是“为什么能省”。从报告看，答案更多来自整套设计的耦合，单个模块很难解释全部收益。
 
-2. V4 继承了 V3 的地基，但把目标函数换了
+## 2. V4 继承了 V3 的地基，但把目标函数换了
+
 DeepSeek-V3 的路线已经很清楚：用 MoE 降低激活参数，用 MLA 降低推理成本，用 auxiliary-loss-free load balancing 稳住专家负载，用 MTP 提供额外训练信号和投机解码空间，再用 DualPipe、定制 all-to-all、FP8 训练等 infra 支撑大规模训练。
 
 ![](https://pica.zhimg.com/v2-8e900a37398a7a5e9a4941de59cecd6a_r.jpg)DeepSeek-V3 Figure 2：MLA 与 DeepSeekMoE 基础架构V3 的基础架构可以看成两个核心部件：MLA 负责压缩 attention 侧的推理状态，DeepSeekMoE 负责在总参数规模很大的情况下控制每个 token 的激活成本。
@@ -61,10 +63,12 @@ V4 没有推翻这条路线。它仍然是 Transformer + MoE，也继续使用 D
 
 ![](https://pic1.zhimg.com/v2-9c13b5e85b778210b42a1d9635cfb682_r.jpg)PPT 总体架构一览这页把 V3/V4 的结构差异放在一起：主干仍然是 MoE Transformer，但 attention、residual path、routing、optimizer 和上下文配置都换成了更面向 1M context 的版本。
 
-3. CSA/HCA：长上下文 attention 的分层设计
+## 3. CSA/HCA：长上下文 attention 的分层设计
+
 V4 最核心的结构变化是 hybrid attention：CSA 和 HCA 交错出现，分别承担不同角色。
 
-3.1 CSA：压缩后做稀疏选择
+### 3.1 CSA：压缩后做稀疏选择
+
 CSA，全称 Compressed Sparse Attention。可以先粗略理解成四步：
 
 - 把连续 token 的 KV 沿序列维压缩成更少的 entry；
@@ -78,7 +82,8 @@ CSA 的直觉很朴素：长文档里，和当前 token 相关的远程信息通
 
 这里有一个重要的兜底设计：indexer 可能漏选，压缩也可能损失细节，所以 CSA 保留了局部原始窗口。也就是说，远距离信息走“压缩后检索”，近期信息仍然走未压缩 attention。这样做会保留一部分局部精度，同时把远距离访问成本降下来。
 
-3.2 HCA：低成本全局通道
+### 3.2 HCA：低成本全局通道
+
 HCA，全称 Heavily Compressed Attention。它压得更狠，典型压缩率是 `m' = 128`，压缩后不做 top-k 稀疏选择，直接在高度压缩后的 KV entry 上做 dense MQA。
 
 ![](https://pic3.zhimg.com/v2-9d049f04c29920db95d4691a6cc88c70_r.jpg)DeepSeek-V4 Figure 4：HCA 核心结构HCA 的压缩率比 CSA 激进得多。它牺牲细粒度定位能力，换取极低成本的全局覆盖；同时也保留 sliding window，避免近期 token 只经过重压缩路径。
@@ -89,7 +94,8 @@ HCA 不擅长保留精确细节，它更偏向低成本全局覆盖。它的价�
 
 机制压缩方式是否稀疏选择主要作用主要风险CSA每 4 个 token 级别压缩是，top-k远距离精确信息检索indexer 漏选、压缩损失HCA每 128 个 token 级别重压缩否，dense低成本全局覆盖细节损失明显Sliding window近期 token 不压缩不适用保留局部细粒度依赖窗口外仍依赖压缩机制V4 的 attention 设计可以这样理解：长上下文里，模型可以减少对所有 token 的均匀扫描，改为把“全局感知、远程检索、局部细节”分层处理。
 
-4. mHC：把 residual stream 拆成多路
+## 4. mHC：把 residual stream 拆成多路
+
 Transformer 里的标准残差连接可以写成：
 
 x_{l+1} = x_l + F_l(x_l)
@@ -124,7 +130,8 @@ Sinkhorn-Knopp 投影就是把一个非负矩阵反复做行归一、列归一�
 
 所以 mHC 解决的不是 token 间 attention 问题，而是跨层信息通路的问题：用多条 residual stream 增加表达容量，再用双随机约束把跨 stream 混合限制在一个尺度更可控的集合里。这一节更准确地说属于模型算法设计；它与 infra 的关系在于，模型结构越复杂，训练系统越需要稳定的数值路径，否则长上下文和 MoE 带来的 outlier 会更难处理。
 
-5. Muon 与训练稳定性
+## 5. Muon 与训练稳定性
+
 V4 大多数模块使用 Muon，embedding、prediction head、RMSNorm、mHC 的部分静态 bias 和 gate 等模块保留 AdamW。Muon 并不是 DeepSeek-V4 才提出的优化器，它来自近两年关于 matrix-aware optimization 的一条路线：对二维权重矩阵的更新方向做近似正交化，让更新更接近“旋转/重排特征子空间”，而不是在某些奇异方向上过度拉伸。
 
 传统 AdamW 对每个参数做逐元素自适应更新。Muon 关注的是矩阵整体结构：如果一个线性层权重是矩阵 `W`，梯度更新 `G` 也可以看成矩阵。Muon 会对 `G` 做近似正交化，得到一个谱范数和奇异值更受控的更新方向，再用它更新 `W`。这对大模型里的线性层很重要，因为线性层不是一堆互不相关的标量参数，而是在学习特征空间之间的映射。
@@ -142,7 +149,8 @@ V4 使用 hybrid Newton-Schulz 来做近似正交化：前 8 步快速把奇异�
 - <strong>Anticipatory Routing</strong>：用历史参数提前计算 routing indices，在 loss spike 出现时触发短 rollback 并启用该模式，从而打断 routing 和 outlier 之间的恶性循环；
 - <strong>SwiGLU Clamping</strong>：对 SwiGLU linear 分支 clamp 到 `[-10, 10]`，gate 分支上限为 10，用数值范围控制抑制异常值。这些方法有效，但理论机制仍不完整。很多大模型训练的稳定性技巧，本质上仍带有经验工程成分：它们能处理某些 loss spike，但对不稳定性的完整机制解释还不充分。
 
-6. MoE：通信优化 与 kernel fuse
+## 6. MoE：通信优化 与 kernel fuse
+
 MoE 的纸面效率很好看：每个 token 只激活少数专家，所以激活参数远小于总参数。但到了训练和推理系统里，还要处理另一个成本：专家分布在不同设备上，token 要 dispatch 到对应专家，算完还要 combine。
 
 这意味着 MoE 的效率不仅取决于矩阵乘有多快，也取决于跨节点通信能不能被计算覆盖。V3 已经在这个方向上做了很多工作：DualPipe、定制 all-to-all、FP8 训练，本质都是让大规模 MoE 在 H800 集群上可控。V4 继续往前推，尤其强调 Expert Parallelism 下的通信计算重叠。
@@ -159,7 +167,8 @@ V4 的做法是设计 fused mega-kernel，把 Dispatch、Linear-1、SwiGLU/FP8 c
 - <strong>FP4 QAT</strong>：用于 MoE expert weights 和 CSA indexer QK path；
 - <strong>index score 低精度化</strong>：从 FP32 到 BF16 可以加速 top-k selector，同时保持较高 KV entry recall。这些内容偏底层，但都和端到端可用性有关。CSA/HCA 和 MoE 这种复杂机制能不能落地，很大程度取决于 kernel、编译、量化、缓存和调度是否配套。
 
-7. 后训练策略与产品链路
+## 7. 后训练策略与产品链路
+
 V4 后训练保留了 V3.2 管线基础，但核心变化是用 On-Policy Distillation，简称 OPD，替代 mixed RL。
 
 流程可以概括成两步：
@@ -175,7 +184,8 @@ Quick Instruction 则把搜索触发、意图识别、query 生成、标题生�
 
 从产品工程视角看，一旦 1M context 和 KV cache 复用足够便宜，模型会更自然地进入工具调度链路。它读状态、改状态、调用工具、记录失败，再继续下一轮。落到 infra 上，就是缓存一致性、调用格式、成本控制和失败恢复等问题。
 
-8. 评测结果分析：agent仍然挑战重重
+## 8. 评测结果分析：agent仍然挑战重重
+
 Base Model 评测支持两个结论：
 
 - V4-Flash 虽然只有 13B 激活参数，但多项 benchmark 超过 V3.2-Base，说明架构和数据效率确实有效；
@@ -189,7 +199,8 @@ BenchmarkV3.2-BaseV4-Flash-BaseV4-Pro-BaseMMLU-Pro65.568.373.5SimpleQA verified2
 
 报告中的真实任务评测，包括中文写作、搜索、白领任务和代码 Agent，更接近产品场景，也暴露了格式约束、长文压缩、PPT 视觉设计和复杂指令遵循仍有改进空间。所以，更稳妥的读法是：V4 证明了 1M context 可以进入可用区间，但没有证明“有了 1M context，Agent 问题就结束了”。窗口变大以后，系统问题不会消失，只会拥有更大的状态空间。
 
-9. V4 的技术意义
+## 9. V4 的技术意义
+
 DeepSeek-V4 的一个重要启发是：百万 token context 更适合被看作一条系统链路，不能只看成孤立模型参数。
 
 在模型层，CSA/HCA 让远距离信息访问、全局概览和局部细节各司其职；mHC 让复杂深层结构有更稳定的信息通路；Muon、RMSNorm、clamping 等设计帮助控制训练动态。
@@ -202,7 +213,8 @@ DeepSeek-V4 的一个重要启发是：百万 token context 更适合被看作�
 
  CSA/HCA 让长上下文算得起，mHC 和 Muon 让复杂模型训得稳，MoE/TileLang/低精度 infra 让系统跑得动，OPD 和 Agent 设施让能力合得回一个统一模型。当模型复杂到一定程度，单点优化往往会牵动上下游。attention 变了，KV cache 变；KV cache 变，服务系统变；MoE 变，通信调度变；后训练目标变，数据和 rollout 系统也要变。
 
-10. 局限和后续问题
+## 10. 局限和后续问题
+
 V4 证明了一条强工程路线，但它也留下几个问题。
 
 第一，架构复杂度很高。CSA/HCA、mHC、Muon、MoE mega-kernel、FP4 QAT、Anticipatory Routing、Quick Instruction 叠加后，系统很强，但也更难解释、复现和迁移。后续研究需要把这些经验设计提炼成更简洁的理论和模块。

@@ -167,7 +167,8 @@ source_url: https://zhuanlan.zhihu.com/p/75391062
 - <strong>更新时：</strong>每一个Theta j都对应一个w的偏导，所以要求和，另外每一个上下文词u也对应一个w的偏导，再次求和。**
 ![](https://pic3.zhimg.com/v2-e4c5a3330aacbf2529f326c2929f7c46_r.jpg)
 
-4. 深入剖析nagative sampling（利用CBOW）：
+## 4. 深入剖析nagative sampling（利用CBOW）：
+
 
 - <strong>层次softmax的缺点：</strong>遇到生僻词的时候，在哈夫曼树中也要走很久，计算量也很大。
 - <strong>负采样算法：</strong>为带权采样，在语料库中计算每个词的词频，即某个词的count/语料库中所有单词总count（源码中分子分母都用的是count四分之三次方，并非直接用count），即为被采样到的概率。在word2vec里的具体做法是，经过概率的计算，可将所有词映射到一条线上，这条线是非等距划分的N份（因为N个词的概率不同），再对同样的线进行等距划分成M份，其中M<<N，在采样时，每次随机生成一个[1,M-1]之间的数，在对应到该小块所对应的单词区域，选区该单词（当选到正例单词自己时，跳过），具体如图：

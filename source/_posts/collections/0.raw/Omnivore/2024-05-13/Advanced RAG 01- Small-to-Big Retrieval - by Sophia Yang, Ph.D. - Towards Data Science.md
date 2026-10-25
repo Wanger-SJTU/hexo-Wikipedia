@@ -29,7 +29,8 @@ The first technique is called <strong>small-to-big retrieval</strong>. In basic 
 There are two primary techniques:
 
 1. <strong>Smaller Child Chunks Referring to Bigger Parent Chunks</strong>: Fetch smaller chunks during retrieval first, then reference the parent IDs, and return the bigger chunks.
-2. <strong>Sentence Window Retrieval:</strong> Fetch a single sentence during retrieval and return a window of text around the sentence.
+## 2. **Sentence Window Retrieval:** Fetch a single sentence during retrieval and return a window of text around the sentence.
+
 
 In this blog post, we will dive into the implementations of these two methods in LlamaIndex. Why am I not doing it in LangChain? Because there are already lots of resources out there on advanced RAG with LangChain. I’d rather not duplicate the effort. Also, I use both LangChain and LlamaIndex. It’s best to understand more tools and use them flexibly.
 

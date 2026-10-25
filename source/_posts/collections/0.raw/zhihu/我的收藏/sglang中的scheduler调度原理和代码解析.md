@@ -38,14 +38,16 @@ Lil2J
 可以把这个 Scheduler想象成一个繁忙机场的空中交通管制塔台。它需要决定哪些“飞机”（请求）可以“起飞”（进入预计算/Prefill 阶段），哪些可以“降落”（生成下一个token/Decode 阶段），同时要确保“跑道”（GPU）始终被高效利用，避免冲突和空闲。
 
 scheduler模块图
-1. 核心功能和目标
+## 1. 核心功能和目标
+
 该脚本的核心功能是实现一个高性能的 LLM 推理调度器，其主要目标是：
 
 - 高吞吐量 (High Throughput)：通过连续批处理 (Continuous Batching) 等技术，最大化单位时间内模型处理的token数量。
 - 低延迟 (Low Latency)：尽快响应用户请求，特别是对于流式输出的场景。
 - 高资源利用率 (High Resource Utilization)：确保 GPU 尽可能处于满负荷工作状态，减少空闲时间。
 - 灵活性和可扩展性 (Flexibility   Scalability)：支持多种并行策略（TP, PP, DP）、模型架构（MoE）、高级功能（Speculative Decoding, LoRA, Constrained Generation）和部署模式（Disaggregation）。
-2. 关键组件和设计模式
+## 2. 关键组件和设计模式
+
 这个调度器由多个紧密协作的组件构成：
 
 - Scheduler 类:  
@@ -66,7 +68,8 @@ scheduler模块图
 - 将调度决策逻辑（如基于 SRTF - 最短剩余时间优先的变种）从主调度器中分离出来，使得更换或调整调度算法更加容易。
 - ScheduleBatch:  
 - 一个数据类，代表了将要或正在被 GPU 处理的一批请求。它不仅仅是请求的列表，还包含了运行此次批处理所需的所有元数据，如 input_ids, req_pool_idx, seq_lens 等。
-3. 核心工作流程：事件循环 (Event Loop)
+## 3. 核心工作流程：事件循环 (Event Loop)
+
 sglang定义了三种不同的事件循环，以适应不同的并行和优化策略：
 
 - event_loop_normal() (常规循环)：  
@@ -83,7 +86,8 @@ sglang定义了三种不同的事件循环，以适应不同的并行和优化�
 - event_loop_pp() (流水线并行循环)：  
 - 专为流水线并行 (Pipeline Parallelism, PP) 设计。模型被切分到多个 GPU 上，形成一个流水线。
 - 此循环管理着多个微批次 (micro-batches)，确保数据在不同 PP 阶段的 GPU 之间顺畅流动，并正确地处理每个阶段的输入和输出。
-4. 关键技术和高级特性分析
+## 4. 关键技术和高级特性分析
+
 这个调度器集成了当前 LLM 推理领域的多种前沿技术：
 
 - 连续批处理 (Continuous Batching)：  
@@ -113,7 +117,8 @@ sglang定义了三种不同的事件循环，以适应不同的并行和优化�
 Scheduler初始化
 下面我们分模块来详细解析它的每一步：
 
-1. 参数解析与核心配置
+## 1. 参数解析与核心配置
+
 self.server_args = server_args
 self.tp_rank = tp_rank
 self.pp_rank = pp_rank
@@ -135,7 +140,8 @@ self.attn_tp_rank, self.attn_tp_size, self.attn_dp_rank = (
 - speculative_algorithm: 投机性解码的算法选择，是另一个重要的性能优化。
 - disaggregation_mode: 资源解耦模式，一个非常高级的部署选项。
 - compute_dp_attention_world_info: 这是一个精妙之处。对于某些特殊的模型或并行策略（如启用DP Attention），Attention层的并行方式可能与模型其他部分的TP（张量并行）方式不同。这个函数计算出专用于Attention模块的并行秩（rank）和大小（size），体现了系统对复杂并行方案的适应性。
-2. 进程间通信 (IPC) 初始化
+## 2. 进程间通信 (IPC) 初始化
+
 context = zmq.Context(2)
 # ...
 if self.pp_rank == 0 and self.attn_tp_rank == 0:
@@ -162,7 +168,8 @@ else:
 - 发送非文本的元数据 (Metadata/Stats): 用于发送统计信息，比如本次请求消耗了多少个 Prompt Token，生成了多少个 Output Token，生成速度等。这些信息用于日志记录或计费，不需要经过 Detokenizer 处理。
 - 错误处理 (Error Reporting): 如果在推理过程中发生错误（如显存溢出 OOM，输入过长等），调度器可以通过这个通道将错误信息回传给前端，以便前端向用户返回 HTTP 错误响应。
 - 中止确认 (Abort Ack): 如果用户断开了连接，Tokenizer Manager 会通知 Scheduler “中止请求”。Scheduler 清理完内部状态后，可能通过此通道发送确认信号。
-3. 核心执行单元初始化
+## 3. 核心执行单元初始化
+
 if self.enable_overlap:
 
 ```text
@@ -180,7 +187,8 @@ self.tp_worker = TpWorkerClass(...)
 - 根据 enable_overlap 配置，选择不同的 Worker 类。TpModelWorkerClient 是支持计算/通信重叠的客户端，它与一个在独立线程中运行的 TpModelWorker 通信，这是实现高性能流水线的关键。
 - tp_worker 封装了模型加载、KV缓存分配、前向传播等所有与GPU直接相关的操作。调度器通过调用 tp_worker 的方法来下达计算指令。2.配置同步: tp_worker.get_worker_info() 是一个至关重要的同步点。 Scheduler 不知道模型加载后确切的显存限制（如 max_total_num_tokens），这些信息由 tp_worker 在初始化时根据GPU显存和模型大小计算得出。Scheduler 必须从tp_worker获取这些权威信息，才能正确地进行调度和内存管理。
 
-4. 内存管理与 KV 缓存
+## 4. 内存管理与 KV 缓存
+
 self.init_memory_pool_and_cache()
 # Inside init_memory_pool_and_cache:
 self.req_to_token_pool, self.token_to_kv_pool_allocator = self.tp_worker.get_memory_pool()
@@ -222,7 +230,8 @@ t.start()
 - watchdog_thread: 启动一个后台“看门狗”线程。它会周期性地检查主循环是否卡住。如果一次前向传播耗时过长，它会认为系统已死锁，并强制退出进程。这大大提高了生产环境下的系统健壮性。
 事件循环（Event Loop）- 整个系统的“心跳”
 
-1. 事件循环的基本结构
+## 1. 事件循环的基本结构
+
 整个调度器运行在一个无限循环中。代码中有三个主要的事件循环，根据配置选择其一：
 
 - event_loop_normal(): 标准的、非重叠的调度循环。
@@ -326,19 +335,22 @@ def event_loop_normal(self):
 recv_requests 函数分析
 这是一个在分布式环境中至关重要的函数，它的核心任务是接收来自外部的请求，并在不同的并行工作进程（TP/PP/DP ranks）之间同步这些请求，以确保所有相关进程都有一致的待处理任务视图。
 
-1. 核心功能
+## 1. 核心功能
+
 recv_requests 函数的主要职责可以概括为两点：
 
 - 接收 (Receive): 从 ZMQ 消息队列中接收新的用户请求。这些请求可以是生成任务（来自TokenizerManager），也可以是控制命令（如清空缓存、性能分析等，来自RpcManager）。
 - 分发 (Distribute): 将接收到的请求广播或点对点传输给分布式系统中的其他工作进程，以确保状态同步。
-2. 设计目标
+## 2. 设计目标
+
 在像 SGLang 这样的分布式推理系统中，模型可能被拆分到多个 GPU 上运行（张量并行、流水线并行等）。当一个新请求到来时，所有参与计算这个请求的 GPU 进程都必须知道这个请求的存在和其详细信息。
 
 recv_requests 的设计目标就是成为这个信息同步的枢纽。它确保了：
 
 - 单一入口点: 只有特定的一个进程（pp_rank=0, attn_tp_rank=0）负责从外部接收请求，避免了多个进程争抢或重复处理。
 - 状态一致性: 通过广播机制，所有需要协同工作的进程（例如，一个张量并行组内的所有 ranks）都会收到完全相同的一批请求，从而可以协同地为这些请求分配资源和执行计算。
-3. 代码分步解析
+## 3. 代码分步解析
+
 
 ```python
 def recv_requests(self) -  List[Req]:
@@ -470,7 +482,8 @@ get_next_batch_to_run，调度决策与批处理
 
 它在“预填充（Prefill）”和“解码（Decode）”之间进行调度，同时处理复杂的显存管理、分块预填充（Chunked Prefill）以及分布式推理中的同步问题。
 
-1. 核心功能概述
+## 1. 核心功能概述
+
 这个函数遵循Prefill 优先的调度策略（通常称为 FCFS 或按需调度），其逻辑流如下：
 
 - 收尾与合并：处理上一步（last_batch）遗留的任务，将完成预填充的请求合并到解码队列（running_batch）中，并处理分块请求。
@@ -478,7 +491,8 @@ get_next_batch_to_run，调度决策与批处理
 - 决策：
 - 如果有新的预填充批次，直接返回它（优先执行 Prefill）。
 - 如果没有新预填充，则执行解码步骤（运行 running_batch）。
-2. 详细代码块分析
+## 2. 详细代码块分析
+
 A. 处理分块请求 (Chunked Request) 与资源释放
 
 chunked_req_to_exclude = set()
@@ -605,11 +619,13 @@ get_next_batch_to_run函数中merge_batch的作用是什么
 
 具体拆解如下：
 
-1. 场景背景
+## 1. 场景背景
+
 
 - self.last_batch (新请求)：刚刚跑完prefill一批请求。它们现在的状态是：已经理解了上下文了，准备好生成第一个字了。
 - self.running_batch (老请求)：当前显存里正在逐字decode生成的请求列表。比如有的生成了 10 个字，有的生成了 50 个字。
-2. 逻辑分支解释
+## 2. 逻辑分支解释
+
 
 情况 A：if self.running_batch.is_empty():
 
@@ -644,13 +660,15 @@ last_batch 本质上是 “上一个时间步（Step）刚刚在 GPU 上跑完�
 流程演示：新请求 Req B 来了
 假设 Req B 是：“1+1等于几？”
 
-1. 时间步 T=0：请求到达
+## 1. 时间步 T=0：请求到达
+
 
 - 用户发送 Req B。
 - Req B 经过 Tokenizer 处理，变成了 token IDs。
 - Req B 被放入 wait_queue（等候区）。
 - 此时，running_batch 还在跑 Req A。
-2. 时间步 T=1：调度器决定跑 Prefill
+## 2. 时间步 T=1：调度器决定跑 Prefill
+
 
 - 调度器（Scheduler）开始工作。
 - 它发现 wait_queue 里有新请求 Req B。
@@ -659,7 +677,8 @@ last_batch 本质上是 “上一个时间步（Step）刚刚在 GPU 上跑完�
 - 执行结束：这个刚刚跑完的 Req B 批次，被赋值给 self.last_batch。
 - 此时 last_batch 的状态：包含 Req B，状态为“Prefill 完成”，准备好生成第一个字。
 - last_batch.forward_mode 是 EXTEND (预填充模式)。
-3. 时间步 T=2：回到 get_next_batch_to_run
+## 3. 时间步 T=2：回到 get_next_batch_to_run
+
 
 - 状态检查：
 
@@ -683,7 +702,8 @@ if self.last_batch and self.last_batch.forward_mode.is_extend():
 
 合并后的结果：self.running_batch 现在包含了 [Req A, Req B]。
 
-4. 时间步 T=2 (后续)：执行 Decode
+## 4. 时间步 T=2 (后续)：执行 Decode
+
 
 - 函数继续往下走。
 - new_batch 为空（因为 Req B 已经被处理并合并了，队列里没新的了）。
@@ -699,11 +719,13 @@ get_new_batch_prefill 的作用是什么
 
 以下是详细的逐层分析：
 
-1. 核心循环结构
+## 1. 核心循环结构
+
 for req in self.waiting_queue:
 遍历顺序：按照队列顺序遍历。通常 waiting_queue 在进入此循环前已经被 self.policy 排序过（例如按 FCFS 先来先到，或优先级排序）。
 
-2. 第一道关卡：LoRA 资源限制
+## 2. 第一道关卡：LoRA 资源限制
+
 if self.enable_lora and not self.tp_worker.can_run_lora_batch(
     lora_set
 
@@ -726,7 +748,8 @@ if self.enable_lora and not self.tp_worker.can_run_lora_batch(
 - adder.can_run_list：本轮刚刚选中、准备上车的 Prefill 请求使用的 LoRA。
 - req.lora_id：当前正在考察的这个请求的 LoRA。
 - 结果：如果这三者加起来超过了 Worker 支持的最大 LoRA 数量（例如 GPU 显存只能存 4 个不同的 LoRA），则停止调度，标记批次已满并跳出循环。
-3. 第二道关卡：并发数量限制 (Slot Limit)
+## 3. 第二道关卡：并发数量限制 (Slot Limit)
+
 
 ```text
 running_bs = len(self.running_batch.reqs)
@@ -741,7 +764,8 @@ if len(adder.can_run_list)  = self.get_num_allocatable_reqs(running_bs):
 - 计算还能容纳多少新请求 (get_num_allocatable_reqs)。
 - 如果新选中的请求数 (len(adder.can_run_list)) 已经填满了剩余槽位，则标记 batch_is_full = True。
 - 注意：这里没有立即 break。为什么？为了给下面的“抢占逻辑”留机会。
-4. 第三道关卡：满员处理与抢占 (Preemption)
+## 4. 第三道关卡：满员处理与抢占 (Preemption)
+
 if self.running_batch.batch_is_full:
     if not self.try_preemption:
 

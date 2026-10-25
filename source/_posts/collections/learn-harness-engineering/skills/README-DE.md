@@ -50,9 +50,12 @@ harness-creator` wurde mit der <strong>skill-creator</strong>-Methodik entwickel
 
 Jeder skill folgt einer Standardstruktur:
 
-1. <strong>SKILL.md</strong> — Einstiegspunkt mit YAML frontmatter und Markdown-Anweisungen für den Agent.
-2. <strong>references/</strong> — Zusätzliche Dokumentation, die bei Bedarf in den Kontext geladen wird.
-3. <strong>templates/</strong> — Startvorlagen, die der skill erzeugen kann.
+## 1. **SKILL.md** — Einstiegspunkt mit YAML frontmatter und Markdown-Anweisungen für den Agent.
+
+## 2. **references/** — Zusätzliche Dokumentation, die bei Bedarf in den Kontext geladen wird.
+
+## 3. **templates/** — Startvorlagen, die der skill erzeugen kann.
+
 
 Skills verwenden progressive disclosure: Der Agent sieht zunächst nur Name und Beschreibung, lädt bei Auslösung die vollständige SKILL.md und liest gebündelte Ressourcen nur bei Bedarf.
 

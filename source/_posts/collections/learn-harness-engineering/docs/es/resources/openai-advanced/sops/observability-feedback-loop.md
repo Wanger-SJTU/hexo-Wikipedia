@@ -31,13 +31,20 @@ trabajo ejecutables para que pueda razonar desde la ejecución, no solo desde la
 
 ## SOP de Ejecución
 
-1. Define los recorridos dorados en tiempo de ejecución que más importan.
-2. Añade logs estructurados al inicio y a la ruta crítica.
-3. Añade métricas para latencia, conteos de fallos o profundidad de cola donde sea útil.
-4. Añade trazas o marcadores de tiempo para flujos lentos o de múltiples pasos.
-5. Haz que las señales sean consultables desde el entorno de desarrollo local.
-6. Proporciona al agente una carga de trabajo o escenario repetible para volver a ejecutar.
-7. Requiere el bucle: consultar -> correlacionar -> razonar -> implementar -> reiniciar ->
+## 1. Define los recorridos dorados en tiempo de ejecución que más importan.
+
+## 2. Añade logs estructurados al inicio y a la ruta crítica.
+
+## 3. Añade métricas para latencia, conteos de fallos o profundidad de cola donde sea útil.
+
+## 4. Añade trazas o marcadores de tiempo para flujos lentos o de múltiples pasos.
+
+## 5. Haz que las señales sean consultables desde el entorno de desarrollo local.
+
+## 6. Proporciona al agente una carga de trabajo o escenario repetible para volver a ejecutar.
+
+## 7. Requiere el bucle: consultar -> correlacionar -> razonar -> implementar -> reiniciar ->
+
    volver a ejecutar -> verificar.
 
 ## Lista de Verificación de Sesión de Depuración

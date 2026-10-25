@@ -354,6 +354,11 @@ function main() {
       return rendered == null ? whole : rendered;
     });
 
+    out = out.replace(/!\[[^\]]*\]\((https:\/\/www\.zhihu\.com\/equation\?[^)]+)\)/g, (whole, href) => {
+      const tex = zhihuEquationTex(href);
+      return tex ? '$' + tex + '$' : whole;
+    });
+
     out = out.replace(/!\[([^\]]*)\]\(([^)\n]+)\)/g, (whole, alt, rawHref) => {
       let href = String(rawHref).trim();
       if (/^https?:|^data:/i.test(href)) return whole;
@@ -628,6 +633,112 @@ function main() {
     return out.join('\n');
   }
 
+  function escapeTableCell(value) {
+    return String(value == null ? '' : value).replace(/\|/g, '\\|').replace(/\n+/g, ' ').trim();
+  }
+
+  function zhihuEquationTex(href) {
+    try {
+      const url = new URL(String(href));
+      if (!/(^|\.)zhihu\.com$/.test(url.hostname) || url.pathname !== '/equation') return '';
+      const tex = url.searchParams.get('tex');
+      return tex ? tex.trim() : '';
+    } catch (err) {
+      return '';
+    }
+  }
+
+  function fixCollapsedBlocks(body) {
+    const stageMarkers = [
+      '奠基：从静态模仿到学生分布', '工程化基线', '去除外部教师', '用反馈解释错误',
+      '按样本路由', '分离方向与强度', '离线化', '上下文自蒸馏', '结果级校准',
+      '按 advantage 分区', '解放教师接口', 'Agent 步级门控', '反向利用教师分歧',
+      '训练前诊断', 'PI 适用边界', '多轮 Agent 非对称门控', 'Token 信任区域', '对比去除风格漂移'
+    ];
+    const comparisonTable = [
+      '| 对比维度 | Forward KL | Reverse KL |',
+      '| --- | --- | --- |',
+      '| 形式 | D_KL(pT||pS) | D_KL(pS||pT) |',
+      '| 期望基于谁采样 | 教师分布 (p_T) | 学生分布 (p_S) |',
+      '| 核心关注 | 学生是否覆盖教师认为可能的 token | 学生是否把概率放到了教师低概率区域 |',
+      '| 最怕的问题 | 教师有概率，但学生几乎不给概率 | 学生有概率，但教师几乎不给概率 |',
+      '| 优化倾向 | Mode-covering，尽量覆盖教师分布 | Mode-seeking，集中于教师高概率区域 |',
+      '| 多峰分布表现 | 倾向覆盖多个模式 | 可能只选择其中一个主要模式 |',
+      '| 输出特点 | 分布更平滑、覆盖更广 | 分布更尖锐、更确定 |',
+      '| 潜在问题 | 可能给次优 token 分配较多概率 | 可能忽略教师的次要模式 |',
+      '| 蒸馏中的直观理解 | “不要漏掉老师认为合理的答案” | “不要生成老师认为不合理的答案” |',
+      '| 与 OPD 的关系 | 常用于教师固定轨迹上的分布匹配 | 常用于学生 on-policy 状态上的分布匹配 |'
+    ].join('\n');
+    const methodTable = [
+      '| 方法 | 轨迹由谁生成 | 反馈粒度 | 主要优势 | 主要缺陷 |',
+      '| --- | --- | --- | --- | --- |',
+      '| SFT / off-policy KD | 教师或静态数据 | token-level | 稳定、工程简单 | exposure bias，难学会从自身错误恢复 |',
+      '| RLVR / GRPO | 学生 | sequence-level | 目标直接与最终正确性一致 | 奖励稀疏、全错组无梯度、token 信用粗糙 |',
+      '| Vanilla OPD | 学生 | token-level | on-policy 且反馈密集，样本效率高 | 默认教师在所有学生状态、所有 token 上都可靠 |'
+    ].join('\n');
+
+    const lines = String(body == null ? '' : body).split('\n');
+    const out = [];
+    for (const line of lines) {
+      if (/^阶段时间代表工作主要问题/.test(line)) {
+        const rows = [];
+        const positions = stageMarkers
+          .map((name) => ({ name, index: line.indexOf(name) }))
+          .filter((item) => item.index >= 0)
+          .sort((a, b) => a.index - b.index);
+        for (let i = 0; i < positions.length; i += 1) {
+          const start = positions[i].index;
+          const end = i + 1 < positions.length ? positions[i + 1].index : line.length;
+          const chunk = line.slice(start, end);
+          const dm = chunk.match(/(20\d{2}(?:\.\d{2})?)/);
+          if (!dm) continue;
+          const stage = chunk.slice(0, dm.index).trim();
+          const time = dm[1];
+          const content = chunk.slice(dm.index + time.length).trim();
+          rows.push('| ' + escapeTableCell(stage) + ' | ' + time + ' | ' + escapeTableCell(content) + ' |');
+        }
+        if (rows.length >= 5) {
+          out.push('| 阶段 | 时间 | 代表工作 / 问题 / 改进 / 递进 |', '| --- | --- | --- |', ...rows, '');
+          continue;
+        }
+      }
+      if (/^对比维度Forward KLReverse KL/.test(line)) {
+        out.push(comparisonTable, '');
+        continue;
+      }
+      if (/^方法轨迹由谁生成反馈粒度主要优势主要缺陷/.test(line)) {
+        out.push(methodTable, '');
+        continue;
+      }
+      if (/^方法可靠性代理门控粒度主要场景保留的信息/.test(line)) {
+        const text = line.replace(/^方法可靠性代理门控粒度主要场景保留的信息/, '');
+        const names = ['SOD', 'SDAR'];
+        const pos = names.map((name) => ({ name, index: text.indexOf(name) })).filter((x) => x.index >= 0).sort((a, b) => a.index - b.index);
+        for (let i = 0; i < pos.length; i += 1) {
+          const start = pos[i].index;
+          const end = i + 1 < pos.length ? pos[i + 1].index : text.length;
+          out.push('- **' + pos[i].name + '**：' + text.slice(start + pos[i].name.length, end).trim());
+        }
+        out.push('');
+        continue;
+      }
+      if (/^方法轨迹级 outcome 锚点教师信号核心路由\/加权教师的作用主要代价或限制/.test(line)) {
+        const text = line.replace(/^方法轨迹级 outcome 锚点教师信号核心路由\/加权教师的作用主要代价或限制/, '');
+        const names = ['Vanilla OPD', 'AOPD', 'Uni-OPD', 'TrOPD', 'ROPD', 'OPSD', 'SDPO', 'SRPO', 'RLSD', 'RLRT', 'RLCSD', 'SOD', 'SDAR', 'Lightning OPD'];
+        const pos = names.map((name) => ({ name, index: text.indexOf(name) })).filter((x) => x.index >= 0).sort((a, b) => a.index - b.index);
+        for (let i = 0; i < pos.length; i += 1) {
+          const start = pos[i].index;
+          const end = i + 1 < pos.length ? pos[i + 1].index : text.length;
+          out.push('- **' + pos[i].name + '**：' + text.slice(start + pos[i].name.length, end).trim());
+        }
+        out.push('');
+        continue;
+      }
+      out.push(line);
+    }
+    return out.join('\n');
+  }
+
   function transformBody(body, doc) {
     const lines = String(body).split('\n');
     let fence = null;
@@ -645,6 +756,14 @@ function main() {
         continue;
       }
       let clean = line;
+      const aloneMath = clean.trim().match(/^!\[[^\]]*\]\((https:\/\/www\.zhihu\.com\/equation\?[^)]+)\)$/);
+      if (aloneMath) {
+        const tex = zhihuEquationTex(aloneMath[1]);
+        if (tex) {
+          output.push('$$' + tex + '$$', '');
+          continue;
+        }
+      }
       if (!/^( {4}|\t)/.test(clean)) {
         // 单边/悬空加粗标记：`**` 单独一行、标题结尾多一个 `**`、跨行 ** 等
         if (/^\s*\*\*\s*$/.test(clean)) continue;
@@ -654,6 +773,14 @@ function main() {
         if (markerCount === 1) {
           clean = clean.replace(/^\s*\*\*\s*/, '').replace(/\s*\*\*\s*$/, '');
         }
+      }
+      if (/^\d+\.\d+/.test(clean) && clean.length < 140) {
+        output.push('### ' + clean, '');
+        continue;
+      }
+      if (/^\d+\.\s/.test(clean) && clean.length < 140 && !/[。；;]$/.test(clean)) {
+        output.push('## ' + clean, '');
+        continue;
       }
       output.push(clean.replace(/(`[^`\n]*`)|([^`]+)/g, (segment, code, plain) => (
         code ? segment : transformText(plain, doc)
@@ -682,7 +809,7 @@ function main() {
   let replacedWiki = 0;
 
   for (const doc of docs) {
-    const prepared = wrapLanguageMarkers(splitEmbeddedCommands(decodeHtmlEntities(doc.body)));
+    const prepared = fixCollapsedBlocks(wrapLanguageMarkers(splitEmbeddedCommands(decodeHtmlEntities(doc.body))));
     const body = transformBody(autoFenceCode(stripStrayBackticks(prepared)), doc);
     const fm = {
       title: doc.title,

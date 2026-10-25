@@ -39,7 +39,8 @@ Di({(x,y)})={mif y=fi(x)0otherwise
 
 $进而可知存在函数 fi" role="presentation">fif_i，在数据分布 Di" role="presentation">Di\mathcal{D}_i 上则有 LDi(fi)=0" role="presentation">LDi(fi)=0L_{\mathcal{D}_i}(f_i)=0。$
 
-2. 主要证明的关键在于即对任意的学习算法 \mathcal{A} 有：
+## 2. 主要证明的关键在于即对任意的学习算法 \mathcal{A} 有：
+
 
 $\max\limits_{i \in [T]}\mathbb{E}_{\mathcal{S}\sim \mathcal{D}_i^n}[L_{\mathcal{D}_i}(\mathcal{A}(\mathcal{S}))]\ge 1 / 4 \\$
 

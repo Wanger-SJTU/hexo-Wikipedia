@@ -42,15 +42,22 @@ Paylaşılan utils'ler alanın dışında kalmalı ve alan mantığı biriktirme
 
 ## Yürütme SOP'u
 
-1. Uygulama biçimine dokunmadan önce kod tabanını alanlara eşleyin.
-2. Her alan için izin verilen katman dizisini belirleyin.
-3. Tüm kesişen kaygıları belirleyin ve onları sağlayıcılar ya da adaptörler
+## 1. Uygulama biçimine dokunmadan önce kod tabanını alanlara eşleyin.
+
+## 2. Her alan için izin verilen katman dizisini belirleyin.
+
+## 3. Tüm kesişen kaygıları belirleyin ve onları sağlayıcılar ya da adaptörler
+
    üzerinden yönlendirin.
-4. Belirsiz paylaşılan mantığı ya sahibi olan alana ya da gerçekten genel
+## 4. Belirsiz paylaşılan mantığı ya sahibi olan alana ya da gerçekten genel
+
    utils'lere taşıyın.
-5. Kuralları `ARCHITECTURE.md` içinde belgeleyin.
-6. En yüksek maliyetli ihlal için bir çalıştırılabilir korkuluk ekleyin.
-7. Değişiklikten sonra kalite puanlamasını güncelleyin.
+## 5. Kuralları `ARCHITECTURE.md` içinde belgeleyin.
+
+## 6. En yüksek maliyetli ihlal için bir çalıştırılabilir korkuluk ekleyin.
+
+## 7. Değişiklikten sonra kalite puanlamasını güncelleyin.
+
 
 ## Bitirme Tanımı
 

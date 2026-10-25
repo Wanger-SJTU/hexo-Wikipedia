@@ -25,17 +25,20 @@ source_url: https://zhuanlan.zhihu.com/p/683636677
 
 - 复现 Sora 的难度没有预想中的大，至少训练算力不是瓶颈； 国内靠 A800/H800 的余量仍可以满足
 - 国产芯片迎来一次机会，设计并量产 14nm 的中算力、大显存 LLM 推理芯片，可以绕开芯片制程的瓶颈迅速商业化
-3.8 13:00 更新:经评论区 [@程勇](//www.zhihu.com/people/3791f46565ab66ffdcae165a99650023)
+### 3.8 13:00 更新:经评论区 [@程勇](//www.zhihu.com/people/3791f46565ab66ffdcae165a99650023)
+
 
  $指正，  Scaling Laws 原论文中的 table 1 漏算了 Attention 部分 Attention Score * V 部分（跟 Mask 的开销一样），因此实际的公式应该是： Csora−forward/token=2N+4nlayernctxdattn=2(12nlayerdmodel2+2nlayernctxdattn)≈2(12nlayerdmodel2+2∗12nlayer∗14dmodel∗dmodel)=58N" role="presentation">Csora−forward/token=2N+4nlayernctxdattn=2(12nlayerdmodel2+2nlayernctxdattn)≈2(12nlayerdmodel2+2∗12nlayer∗14dmodel∗dmodel)=58NC_{sora-forward/token} = 2N + 4n_{layer}n_{ctx}d_{attn} = 2 (12n_{layer}d_{model}^{2} + 2n_{layer}n_{ctx}d_{attn} ) \approx 2(12n_{layer}d_{model}^{2} + 2*12n_{layer}*14d_{model}*d_{model}) = 58N $
 
 相当于 Sora 的推理成本如果是完整的 1M token 的话，需要 58N （之前的结论是 30N），训练则是 58N*3 = 174N。  推理成本还会将近翻一倍 （达到 GPT-4 生成 1k token 的 3000 倍**）。   不过也有可能是 Sora 的视频是由多段 30s 视频拼接起来，不是一次性生成 1min 的视频，这样可以使其单位 token 的成本减半，总成本和之前预估的持平。 因此我正文中就不再一一更改公式了。
 
-2.27 15:00 更新:经评论区 [@Victarry](//www.zhihu.com/people/b8fd114b56b395d247744cee40056139)
+### 2.27 15:00 更新:经评论区 [@Victarry](//www.zhihu.com/people/b8fd114b56b395d247744cee40056139)
+
 
  指正， Scaling Laws 里推导的 C≈6ND" role="presentation">C≈6NDC\approx6ND 成立的前提是 dmodel≫nctx/12" role="presentation">dmodel≫nctx/12d_{model} \gg n_{ctx}/12 。这个在超长的 context length （如 1M）时不再适用，因此 Sora 的训练推理成本均会更高，初步估算 Sora 的推理成本在原结论 100 倍的基础上还需要增加 15 倍。** 我更新到原文推导 Sora 所需算力的部分。 
 
-2.26 11:00 更新：经评论区 [@mackler](//www.zhihu.com/people/59f76a6c40b262c91e0e8b9dbb100168)
+### 2.26 11:00 更新：经评论区 [@mackler](//www.zhihu.com/people/59f76a6c40b262c91e0e8b9dbb100168)
+
 
  指正，以及和团队内负责多模态大模型的 黄君实 老师讨论，Sora 的 DiT 是 Encoder-Only 架构，而非 GPT 的 Decoder-Only 架构，导致 Sora 模型的推理访存需求要远小于 GPT， Sora 的推理计算量占推理的主要代价而非访存量**。 所以下一代推理芯片不能一味地追求低算力，算力提升会显著提升 Sora 的视频生成速度，但对 GPT 的推理速度提升有限。 具体分析我补充到原答案正文中的 Sora 推理算力需求估计部分。
 

@@ -19,10 +19,14 @@ Ushbu andozalar oʻzingizning loyihangizga nusxalash uchun tayyor. Ularning har 
 
 Avval quyidagi toʻrtta faylni loyihangizning asosiy (root) jildiga koʻchiring:
 
-1. `AGENTS.md` yoki `CLAUDE.md`
-2. `init.sh`
-3. `claude-progress.md`
-4. `feature_list.json`
+## 1. `AGENTS.md` yoki `CLAUDE.md`
+
+## 2. `init.sh`
+
+## 3. `claude-progress.md`
+
+## 4. `feature_list.json`
+
 
 Qolgan fayllarni loyihangiz kattalashgani sari qoʻshib borishingiz mumkin.
 
@@ -63,10 +67,14 @@ Ishga tushirish skripti. Bogʻliqliklarni (dependencies) oʻrnatish, tekshirish 
 
 <strong>U nima qiladi:</strong>
 
-1. Joriy katalogni koʻrsatadi (agent toʻgʻri joyda ishlayotganini tasdiqlashi uchun)
-2. Bogʻliqliklarni oʻrnatadi
-3. Tekshiruv buyrugʻini ishga tushiradi
-4. Ishga tushirish buyrugʻini koʻrsatadi (yoki agar `RUN_START_COMMAND=1` berilsa, uni bajaradi)
+## 1. Joriy katalogni koʻrsatadi (agent toʻgʻri joyda ishlayotganini tasdiqlashi uchun)
+
+## 2. Bogʻliqliklarni oʻrnatadi
+
+## 3. Tekshiruv buyrugʻini ishga tushiradi
+
+## 4. Ishga tushirish buyrugʻini koʻrsatadi (yoki agar `RUN_START_COMMAND=1` berilsa, uni bajaradi)
+
 
 Agar tekshiruv yiqilsa, agent boshqa hech narsa qilishdan oldin toʻxtab, bazaviy holatni (baseline) toʻgʻrilashi kerak.
 
@@ -175,12 +183,18 @@ Agent natijalari sifatini tekshirish (review) uchun baholash qogʻozi (scorecard
 
 <strong>Olti oʻlcham (dimensions):</strong>
 
-1. <strong>Toʻgʻrilik (Correctness)</strong> — qilingan ish maqsad qilingan xatti-harakatlarga (behavior) mos keladimi?
-2. <strong>Tekshiruv (Verification)</strong> — talab qilingan tekshiruvlar haqiqatda bajarilgan va dalili bormi?
-3. <strong>Skoup intizomi (Scope discipline)</strong> — agent tanlangan funksiya chegarasidan chiqmadimi?
-4. <strong>Ishonchlilik (Reliability)</strong> — natija restart yoki qayta ishga tushirilganda (re-run) ham ishlaydimi?
-5. <strong>Davomiylilik qulayligi (Maintainability)</strong> — kod va hujjatlar keyingi sessiya uchun yetarlicha tushunarlimi?
-6. <strong>Topshirishga tayyorlik (Handoff readiness)</strong> — yangi sessiya faqat repodagi artefaktlardan foydalanib davom eta oladimi?
+## 1. **Toʻgʻrilik (Correctness)** — qilingan ish maqsad qilingan xatti-harakatlarga (behavior) mos keladimi?
+
+## 2. **Tekshiruv (Verification)** — talab qilingan tekshiruvlar haqiqatda bajarilgan va dalili bormi?
+
+## 3. **Skoup intizomi (Scope discipline)** — agent tanlangan funksiya chegarasidan chiqmadimi?
+
+## 4. **Ishonchlilik (Reliability)** — natija restart yoki qayta ishga tushirilganda (re-run) ham ishlaydimi?
+
+## 5. **Davomiylilik qulayligi (Maintainability)** — kod va hujjatlar keyingi sessiya uchun yetarlicha tushunarlimi?
+
+## 6. **Topshirishga tayyorlik (Handoff readiness)** — yangi sessiya faqat repodagi artefaktlardan foydalanib davom eta oladimi?
+
 
 <strong>Xulosa variantlari:</strong>
 
@@ -190,11 +204,16 @@ Agent natijalari sifatini tekshirish (review) uchun baholash qogʻozi (scorecard
 
 <strong>Muhim: baholovchi sozlashga muhtoj.</strong> Avvalboshdan, agentlar oʻz-oʻzini baholashda noʻnoq (poor self-judges) — ular muammolarni koʻradi va baribir oʻzlarini-oʻzlari maqullab qabul qilishga koʻndirishadi. Siz buning ustida takror va takror ishlashingiz kerak:
 
-1. Baholovchini (evaluator) tugatilgan bitta sprint ustida ishga tushiring.
-2. Uning ballarini oʻzingizning shaxsiy (insoniy) bahoingiz bilan solishtiring.
-3. Ballar farq qilgan joylarda rubrikani oʻtish/yiqilish qoidalari boʻyicha yanada aniqroq qiling.
-4. Qayta ishga tushiring va mosligini (alignment) tekshiring.
-5. Baholovchi sizning (odam) xulosangiz bilan doimiy mos tushmagunicha buni takrorlang.
+## 1. Baholovchini (evaluator) tugatilgan bitta sprint ustida ishga tushiring.
+
+## 2. Uning ballarini oʻzingizning shaxsiy (insoniy) bahoingiz bilan solishtiring.
+
+## 3. Ballar farq qilgan joylarda rubrikani oʻtish/yiqilish qoidalari boʻyicha yanada aniqroq qiling.
+
+## 4. Qayta ishga tushiring va mosligini (alignment) tekshiring.
+
+## 5. Baholovchi sizning (odam) xulosangiz bilan doimiy mos tushmagunicha buni takrorlang.
+
 
 3-5 marta sozlash aylanishlarini reja qiling. Qanday oʻzgartirishlar moslikni yaxshilaganini bilish uchun barcha oʻzgarishlarni yozib boring.
 
@@ -232,8 +251,13 @@ Baholovchi rubrika (evaluator rubric) alohida agent natijalarini baholaydi. Sifa
 
 Sifat hujjati shuningdek harnessni soddalashtirishni qoʻllab-quvvatlaydi. Har bir harness komponenti model nimalarni mustaqil bajara olmasligi haqidagi taxminlarga asoslanadi. Modellar takomillashgani sari bu taxminlar eskiradi. Biror komponentga ehtiyoj qolgan-qolmaganini tekshirish uchun:
 
-1. Sifat hujjati snapshotʼini oling.
-2. Bitta harness komponentini olib tashlang.
-3. Benchmark vazifalarini ishlating.
-4. Yana bir snapshot oling.
-5. Taqqoslang — agar baholar tushmagan boʻlsa, u komponent ortiqcha yuk edi. Agar tushib ketsa, uni joyiga qaytaring.
+## 1. Sifat hujjati snapshotʼini oling.
+
+## 2. Bitta harness komponentini olib tashlang.
+
+## 3. Benchmark vazifalarini ishlating.
+
+## 4. Yana bir snapshot oling.
+
+## 5. Taqqoslang — agar baholar tushmagan boʻlsa, u komponent ortiqcha yuk edi. Agar tushib ketsa, uni joyiga qaytaring.
+

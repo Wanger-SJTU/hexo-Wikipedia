@@ -52,55 +52,68 @@ https://github.com/deepseek-ai/DeepGEMM/pull/304
 一、Mega MoE：通信与计算深度重叠的"超级内核"
 
 - 
-1.1 问题本质：MoE 推理的 NVLink 通信瓶颈
+### 1.1 问题本质：MoE 推理的 NVLink 通信瓶颈
+
 
 - 
-1.2 解决方案：五阶段融合 + 通信/计算重叠
+### 1.2 解决方案：五阶段融合 + 通信/计算重叠
+
 
 - 
-1.3 Buffer 布局设计
+### 1.3 Buffer 布局设计
+
 
 - 
 二、FP4 Indexer：低精度 MQA Logits 计算
 
 - 
-2.1 问题背景
+### 2.1 问题背景
+
 
 - 
-2.2 关键实现
+### 2.2 关键实现
+
 
 - 
 三、动态 Swap A/B：MoE GEMM 的关键性能优化
 
 - 
-3.1 问题：SM100 上 MoE 场景的 Multicast 失效
+### 3.1 问题：SM100 上 MoE 场景的 Multicast 失效
+
 
 - 
-3.2 解决方案：在 SM100 上交换 A/B 操作数
+### 3.2 解决方案：在 SM100 上交换 A/B 操作数
+
 
 - 
 四、全面的启发式重构
 
 - 
-4.1 从硬编码到结构化配置
+### 4.1 从硬编码到结构化配置
+
 
 - 
-4.2 SM90 引入 L1/L2 带宽建模
+### 4.2 SM90 引入 L1/L2 带宽建模
+
 
 - 
 五、其他重要改进
 
 - 
-5.1 PDL（Programmatic Dependent Launch）
+### 5.1 PDL（Programmatic Dependent Launch）
+
 
 - 
-5.2 JIT 编译加速与分布式文件系统修复
+### 5.2 JIT 编译加速与分布式文件系统修复
+
 
 - 
-5.3 FP8 × FP4 GEMM
+### 5.3 FP8 × FP4 GEMM
+
 
 - 
-5.4 C++20 标准升级
+### 5.4 C++20 标准升级
+
 
 - 
 总结

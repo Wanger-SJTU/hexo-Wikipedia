@@ -27,7 +27,8 @@ source_url: https://zhuanlan.zhihu.com/p/23334508
 
 由于读写mat文件需要用到由Matlab提供的库，因此需要一些额外的设置。如果你的电脑上安装了Matlab，那么所需的文件应当是齐全的。我的开发环境是Win10 x64 + VS2015 + Matlab R2016a，在XP x32 + VS2010 + Matlab R2011b上也成功过。
 
-1. 修改系统环境变量
+## 1. 修改系统环境变量
+
 
  在系统环境变量中添加：
 
@@ -36,7 +37,8 @@ source_url: https://zhuanlan.zhihu.com/p/23334508
 
 如果是32位系统，则修改为32位系统对应的路径。 
 
-2. 新建一个VS工程
+## 2. 新建一个VS工程
+
 
 打开工程属性页，将“配置”选择为‘所有配置’，“平台”选择为‘x64’，然后依次设置包含目录、链接附加库目录以及附加依赖库：
 
@@ -65,7 +67,8 @@ libeng.lib
 
 ![](/images/collections/0.raw/zhihu/%E6%9C%89%E8%B6%A3%E7%9A%84%E4%B8%9C%E8%A5%BF/asset/img_06ab19d58656.png)
 
-3. Mat文件的读写
+## 3. Mat文件的读写
+
 
 其实做到这一步，接下来的事情就很简单了。 Matlab提供的C++读写mat文件的接口函数非常简单易懂，在Matlab的帮助文档中搜索MAT-File API即可查看各个函数的帮助文档。
 

@@ -29,9 +29,11 @@ Dataflow is all u need.
 
 本文主要调研如何通过硬件实现 LLM 中的 softmax 函数
 
-1. Piecewise Linear Fitting (PLF)
+## 1. Piecewise Linear Fitting (PLF)
 
-1.1 一阶近似
+
+### 1.1 一阶近似
+
 参考《Hardware-efficient Softmax Approximation for  Self-Attention Networks》
 
 ```text
@@ -74,7 +76,8 @@ Round 模块将加法树的输出进行 round 到最近的 2 的 n 次幂( Line 
 
 Ours 1 为不剪枝，Ours 2 为剪枝可以看到这种近似计算方式在许多 LLM 中不会造成精度明显下降。
 
-1.2 高阶近似
+### 1.2 高阶近似
+
 参考《SystolicAttention: Fusing FlashAttention within a  Single Systolic Array》
 
 本文和《Hardware-efficient Softmax Approximation for  Self-Attention Networks》用的类似的方法，拆分为 integer 和 fraction 两部分，integer 通过移位实现。与之不同的是，fraction 部分本文采用了更精确的8段线性拟合的方式，而不是直接近似为n/2+1。
@@ -87,9 +90,11 @@ exp2(x) \approx 2^{x_i} \cdot (slope_k \cdot x_f + intercept_k), \quad k \in [0,
 因为本文是将 softmax 和 SA 做融合，因此进行8段线性拟合的计算也可以复用 SA 硬件电路。
 
 复用 SA 电路实现 softmax 线性拟合
-2. Log-Sum-Exp
+## 2. Log-Sum-Exp
 
-2.1 mod2 log-sum-exp
+
+### 2.1 mod2 log-sum-exp
+
 参考《Efficient Precision-Adjustable Architecture for  Softmax Function in Deep Learning》
 
  首先使用 Ln 域变换将除法干掉：softmax(x_i) = \frac{e^{x_i}}{\sum_{j=1}^{N}e^{x_j}} = \frac{e^{x_i - x_{max}}}{\sum_{j=1}^{N}e^{x_j - x_{max}}}\\ softmax(x_i) = exp(x_i - x_{max} - ln(\sum_{j=1}^{N}e^{x_j - x_{max}}))\\但仍然存在 exp 和 ln 两个硬件不友好的非线性函数
@@ -111,20 +116,24 @@ LNU 电路实现在本算法中 \ln F = \ln 2 \cdot (m - 1 + w) ，m-1 和 w 刚
 
 还有一个对于 1.0111 乘法的优化：
 
-1.0111\times A=A+(A  1)-(A  4)\\ =A+(A  1)+1+(\sim(A  4))\\ =A+(A  1)+(\sim(A  4))+1\\
+### 1.0111\times A=A+(A  1)-(A  4)\\ =A+(A  1)+1+(\sim(A  4))\\ =A+(A  1)+(\sim(A  4))+1\\
+
 
 电路实现
-2.2 兼容 systolic 数据流的电路实现
+### 2.2 兼容 systolic 数据流的电路实现
+
 参考《COSA:Co-Operative Systolic Arrays for  Multi-head Attention Mechanism in Neural  Network using Hybrid Data Reuse and Fusion  Methodologies》
 
  使用如下变换：softmax(x_i) = \frac{e^{x_i}}{\sum_{j=1}^{N}e^{x_j}} = \frac{e^{x_i - x_{max}}}{\sum_{j=1}^{N}e^{x_j - x_{max}}}\\ softmax(x_i) = exp(x_i - x_{max} - ln(\sum_{j=1}^{N}e^{x_j - x_{max}}))\\ ln(x) = ln(2^q s) = qln2 + lns = 0.1011*q+s-1+c \\变换后 s 的范围是(1,2]，c 是补偿项。
 
 电路结构本文使用了 SA 进行计算，为了兼容 SA 输出数据流，Softmax unit 也使用 systolic 式的数据流。LN 的电路由 LOD( leading 1 detector ), SF( shifter ), CM( constant multiplier ), LUT( 补偿值查表计算 ), ADD( 全部加起来 ) 构成。
 
-3. improved with penalties (ISP)
+## 3. improved with penalties (ISP)
+
 基于 Log-Sum-Exp 加入 penalty 进行精度优化。参考《SoftAct: A High-Precision Softmax Architecture for Transformers Supporting Nonlinear Functions》
 
-3.1 算法实现
+### 3.1 算法实现
+
 Log-Sum-Exp 的方法在硬件上有以下问题：
 
 - \log_2 m \approx m - 1 有 14.78% 的误差
@@ -149,7 +158,8 @@ p_0=4\\ p_1 = \begin{cases}     0,   \text{if } v   3 \\     th,   \text{if } v 
 ```
 
 
-3.2 跳零
+### 3.2 跳零
+
 QK^T 计算后经过量化执行 softmax 操作。
 
 ```text
@@ -173,7 +183,8 @@ stage3跳零的条件：
 ```
 
 
-3.3 整体算法
+### 3.3 整体算法
+
 
 还有一些使用 CORDIC/MacLaurin 进行 exp/division 的实现就比较过时了
 

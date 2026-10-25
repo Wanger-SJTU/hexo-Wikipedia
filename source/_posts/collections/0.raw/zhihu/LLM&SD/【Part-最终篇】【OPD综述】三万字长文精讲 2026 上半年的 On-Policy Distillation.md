@@ -46,7 +46,8 @@ source_url: https://zhuanlan.zhihu.com/p/2052723229110820946
 
 <strong>第6章：总结</strong>
 
-4. 建立OPD论文的坐标系：把任意一篇 OPD 论文塞进坐标系
+## 4. 建立OPD论文的坐标系：把任意一篇 OPD 论文塞进坐标系
+
 读完六个流派，你会发现不管哪篇论文，它的核心设计选择都可以投影到四条正交轴上。写这一章的目的也是，不管你读了哪一篇OPD论文，你都可以将它投影到下面这个坐标系中；
 
 这个坐标系的<strong>四个</strong>正交轴分别是：
@@ -61,22 +62,27 @@ reverse KL / forward KL / JSD / entropy-gated 混合 / truncated RKL / 对抗式
 
 full rollout 所有 token / prefix-only / entropy-gated mask / advantage-gated / error-span-only / trajectory-level下面这张大表把 18 篇各方向的<strong>代表论文</strong>填进这四个维度。<strong>看全部40+篇论文如何填入对比表中的，请看附录「附录 A：全量四轴归类表」；</strong>
 
-4.1 主对比表（代表作，18 篇）
+### 4.1 主对比表（代表作，18 篇）
+
 论文Teacher 是谁上下文对称性散度选择监督密度⭐ REOPOLD固定外部对称RKL + reward clippingentropy-gated mask⭐ EOPD固定外部对称RKL + entropy-gated FKLfull rollout（高熵处加 FKL）⭐ Many Faces固定 / RLVR对称TopK RKL（SG 修正）full rollout⭐ OPSD同参 + GT PI不对称（teacher 看 y^\star）JSD + clippingfull rollout⭐ SDFT同参 EMA + demo PI不对称（teacher 看 demo）reverse KLfull rollout⭐ π-Distill同参联合训练不对称（teacher 看 action trace）KL（联合目标）full rollout⭐ SDPO同参 + stopgrad不对称（teacher 看 feedback）reverse KLfull rollout⭐ Prefix-OPD固定外部对称reverse KLprefix-only + scheduling⭐ ROPD黑盒 API对称rubric 通过率（非 KL）sub-goal 级⭐ CRISP同参 + prompt 偏置不对称（teacher 看 "concise" 指令）reverse KLfull rollout⭐ Video-OPD固定外部 VLM对称token-level RKL（PG 形式）TVDF 课程选子集⭐ Medical Audit（审计对象，非方法）———DRKL固定外部对称修正 RKL（去上推梯度）full rolloutAOPD固定外部对称RKL + 局部散度（按 advantage 分支）advantage-gatedG-OPD可解耦（≠ teacher）对称RL + KL 正则（scaling factor）full rolloutOGLS-SD同参（self-distill）对称contrastive steering（非直接 KL）full rolloutOVD黑盒 verbal score对称trajectory-level rewardtrajectory 级Lightning OPD预计算 offline对称reverse KL（近似）full rollout（SFT rollout）
-4.2 四轴的"主流默认 + 缺乏探索"分布
+### 4.2 四轴的"主流默认 + 缺乏探索"分布
+
 我对40+篇OPD论文进行统计后，统计出了OPD工作四轴的「<strong>主流方案</strong>」和「<strong>非主流方案</strong>」，<strong>方便大家一眼就看出还有哪些技术点可以做</strong>；
 
 轴主流方案非主流方案（含不好归类的）Teacher同参 self-distill（含 EMA / frozen copy）20 篇（47%）；固定外部 14 篇（33%）黑盒 / verbal 2 篇（5%，ROPD/OVD）；多 teacher 辩论 1 篇（MAD-OPD）；大小模型协同 1 篇（CoDistill）；解耦 reference 1 篇（G-OPD）；对抗 discriminator 1 篇（PRISM）；未明确 2 篇 + 审计对象 1 篇对称性对称 25 篇（58%）；不对称（teacher 多看 PI）15 篇（35%）teacher 看更少信息 0 篇（0%，结构性空白）；未明确 2 篇（UniSD/Re-thinking）+ 审计对象 1 篇散度KL 家族 29 篇（67%），其中显式 reverse KL / RKL 17 篇（40%）、JSD 1 篇（OPSD）、其余 KL 变体 11 篇非 KL 类 8 篇（19%）= contrastive 2（OGLS-SD/CREDIT）+ SFT-CE 2（Self-Verified/Simple SSD）+ rubric 1（ROPD）+ error-localized 1（ROSD）+ verbal 1（OVD）+ 对抗 1（PRISM）；未明确 5 篇（12%）+ 审计对象 1 篇密度full rollout（含 token-level dense 变体）28 篇（65%）prefix-only 2 篇（5%，Prefix-OPD/Less-is-More）；非 token-level SFT 2 篇（5%，Self-Verified/Simple SSD）；entropy-gated 1（REOPOLD）；advantage-gated 1（AOPD）；correctness-gated 1（SCOPE）；error-span-only 1（ROSD）；sub-goal 级 1（ROPD）；trajectory 级 1（OVD）；token 级辩论 1（MAD-OPD）；response-level 1（PRISM）；课程选子集 1（Video-OPD）；未明确 1 篇 + 审计对象 1 篇
 
-5. 【个人看法】OPD还有的几个gap
+## 5. 【个人看法】OPD还有的几个gap
+
 基于 [part2-7](https://www.zhihu.com/column/c_2042743199710671372) 中讲的仍然没解决的gap + 上面两张表的 分析，我提炼出三个我认为<strong>还没人正面做</strong>的研究方向：
 
-5.1 gap-1：OPD 的"推理忠实度"监控 —— Medical CoT Audit 的推广
+### 5.1 gap-1：OPD 的"推理忠实度"监控 —— Medical CoT Audit 的推广
+
 <strong>现状</strong>：Medical CoT Audit 证明了"答案变好、推理变烂"在医学领域是真实存在的。但整个 OPD 社区目前只有这一篇 audit。
 
 <strong>Gap</strong>：我们需要一个<strong>通用的 step-level faithfulness monitor 嵌进 OPD 训练 loop</strong>。目前所有 OPD 方法（不管哪个流派）的 validation metric 都是 answer-level accuracy / pass@1 / reward score —— 没有一篇在训练过程中检查"推理步是否 faithful"。
 
-5.2 gap-2：多种稳定化技巧的组合 / 自适应选择
+### 5.2 gap-2：多种稳定化技巧的组合 / 自适应选择
+
 <strong>现状</strong>：[【Part-1】【OPD综述】三万字长文精讲 2026 上半年的 On-Policy Distillation](https://zhuanlan.zhihu.com/p/2045918254108095918)中训练稳定化的方法积累了至少 5 种互相正交的稳定化技巧：
 
 - reward clipping（REOPOLD）
@@ -87,7 +93,8 @@ full rollout 所有 token / prefix-only / entropy-gated mask / advantage-gated /
 
 <strong>Gap</strong>：(a) 它们能否叠加？叠加后是 additive gain 还是 diminishing return？(b) 不同数据集 / capacity gap 下哪种组合最优？(c) 能否做一个<strong>自适应选择器</strong>，在训练过程中动态切换稳定化策略？
 
-5.3 gap-3：OPD 的 rollout 策略，好像被集体忽视的设计维度
+### 5.3 gap-3：OPD 的 rollout 策略，好像被集体忽视的设计维度
+
 <strong>现状</strong>：[【Part-1】【OPD综述】三万字长文精讲 2026 上半年的 On-Policy Distillation](https://zhuanlan.zhihu.com/p/2045918254108095918)观察到一个惊人的 group think，<strong>10 篇训练稳定化工作里 0 篇尝试改"rollout 来源"</strong>。所有人默认 student 用 temperature 采样 / greedy 做 rollout，然后在 loss 端 / mask 端动刀。但 rollout 策略本身（temperature / top-p / beam search / best-of-N / MCTS / 混合策略 / curriculum 从简到难的 prompt 排序）是一个完全没被探索的维度。
 
 <strong>Gap</strong>：
@@ -96,7 +103,8 @@ full rollout 所有 token / prefix-only / entropy-gated mask / advantage-gated /
 - Rollout 的 temperature 是否应该随训练动态变化（类似 DAPO 在 RL 里做的 prompt-level dynamic sampling，但做到 token-level）？
 - 能否用 §3.5 Sparse-to-Dense 的思路：前期用 off-policy rollout（teacher 生成）warmup，后期渐进切到 on-policy？
 
-6. 一句话结论
+## 6. 一句话结论
+
 <strong>2026 上半年的 OPD 从"知识蒸馏的一个变种"变成了 LLM post-training 的主线工具：四条设计轴（teacher 是谁 / 对称性 / 散度 / 密度）可以把任何新论文定位到坐标系里。三个真空地带（推理忠实度监控 / 稳定化技巧组合 / rollout 策略探索）是我认为最值得下手的方向。</strong>
 
 <strong>最后要大家一个点赞+关注，不过分吧！手动比心！</strong>

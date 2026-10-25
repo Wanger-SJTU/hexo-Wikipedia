@@ -19,12 +19,17 @@ This is the hands-on section of Learn Harness Engineering. Reading the lectures 
 
 This course features 6 progressive, hands-on projects that teach you how to build a reliable agentic working environment from scratch:
 
-1. <strong>Prompt-Only vs. Rules-First</strong>: Compare how an agent performs with just a prompt versus a basic harness.
-2. <strong>Agent-Readable Workspace</strong>: Learn how to structure your repository to make it AI-friendly and establish handoff mechanisms.
-3. <strong>Multi-Session Continuity</strong>: Design state files and initialization scripts so your agent can resume work seamlessly across sessions.
-4. <strong>Runtime Feedback and Scope Control</strong>: Introduce tools that allow the agent to test its own code and correct errors during execution.
+## 1. **Prompt-Only vs. Rules-First**: Compare how an agent performs with just a prompt versus a basic harness.
+
+## 2. **Agent-Readable Workspace**: Learn how to structure your repository to make it AI-friendly and establish handoff mechanisms.
+
+## 3. **Multi-Session Continuity**: Design state files and initialization scripts so your agent can resume work seamlessly across sessions.
+
+## 4. **Runtime Feedback and Scope Control**: Introduce tools that allow the agent to test its own code and correct errors during execution.
+
 5. <strong>Self-Verification and Role Separation</strong>: Build an independent review mechanism to prevent hallucinations and early declarations of victory.
-6. <strong>Complete Harness (Capstone)</strong>: Assemble a final, observable, end-to-end agent working environment.
+## 6. **Complete Harness (Capstone)**: Assemble a final, observable, end-to-end agent working environment.
+
 
 ## How to Proceed
 

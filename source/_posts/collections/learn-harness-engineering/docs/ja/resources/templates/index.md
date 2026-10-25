@@ -19,10 +19,14 @@ categories:
 
 まず以下の4つのファイルをプロジェクトルートにコピーしてください：
 
-1. `AGENTS.md` または `CLAUDE.md`
-2. `init.sh`
-3. `claude-progress.md`
-4. `feature_list.json`
+## 1. `AGENTS.md` または `CLAUDE.md`
+
+## 2. `init.sh`
+
+## 3. `claude-progress.md`
+
+## 4. `feature_list.json`
+
 
 プロジェクトが成長するにつれて残りのファイルを追加してください。
 

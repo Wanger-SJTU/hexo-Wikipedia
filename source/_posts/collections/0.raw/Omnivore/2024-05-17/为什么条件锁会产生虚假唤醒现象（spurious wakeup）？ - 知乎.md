@@ -102,8 +102,10 @@ pthread_cond_signal(cond):
 
 参考资料：
 
-1. <https://pubs.opengroup.org/onlinepubs/009604599/functions/pthread%5Fcond%5Fsignal.html>
-2. <https://en.m.wikipedia.org/wiki/Spurious%5Fwakeup>
+## 1. <https://pubs.opengroup.org/onlinepubs/009604599/functions/pthread%5Fcond%5Fsignal.html>
+
+## 2. <https://en.m.wikipedia.org/wiki/Spurious%5Fwakeup>
+
 
 <strong>我把相当多的C++文章都整理到了[程序喵/cpp-learning](https://gitee.com/chengxumiaodaren/cpp-learning)上，想了解更多C++技术可以到[程序喵/cpp-learning](https://gitee.com/chengxumiaodaren/cpp-learning)来看。</strong>
 

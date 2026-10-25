@@ -36,11 +36,13 @@ categories:
 
 ### 核心论文
 
-1. <strong>Neural Scaling Laws [Kaplan et al., 2020]</strong>
+## 1. **Neural Scaling Laws [Kaplan et al., 2020]**
+
    - 发现性能随模型参数、数据量、计算量平滑提升
    - 在计算受限时，<strong>大模型 + 少数据</strong>（不完全收敛）效果最好
 
-2. <strong>Chinchilla [Hoffmann et al., 2022]</strong>
+## 2. **Chinchilla [Hoffmann et al., 2022]**
+
    - 模型参数和数据量应<strong>等比例增加</strong>
    - 之前的大多数模型都<strong>训练不足</strong>
 
@@ -122,10 +124,14 @@ L(N, X) = a × K(N)^(-1) × X^(-α)
   - 难题：无正则化
 
 <strong>实用建议</strong>：
-1. 低计算预算下 sweep B_p 和 n
-2. 拟合缩放律推断最优 n
-3. 选最小稳定 B_p
-4. 剩余计算用于增加训练步数 M
+## 1. 低计算预算下 sweep B_p 和 n
+
+## 2. 拟合缩放律推断最优 n
+
+## 3. 选最小稳定 B_p
+
+## 4. 剩余计算用于增加训练步数 M
+
 
 ## RL vs 预训练缩放定律对比
 
@@ -138,22 +144,38 @@ L(N, X) = a × K(N)^(-1) × X^(-α)
 
 ## 实用建议总结
 
-1. RL 缩放行为在给定设置下<strong>可预测</strong>
-2. 早期训练阶段可用于判断配置可行性
-3. 设计决策影响不同：效率 vs 渐近性能
-4. 大模型总是更好，但计算受限时小模型可能更优
-5. 增加采样计算（更多 rollout）比增加训练步数更有效
-6. RL 对数据复用鲁棒，受益于大 batch
-7. 每个 prompt 的 rollout 数是最关键的调参方向
+## 1. RL 缩放行为在给定设置下**可预测**
+
+## 2. 早期训练阶段可用于判断配置可行性
+
+## 3. 设计决策影响不同：效率 vs 渐近性能
+
+## 4. 大模型总是更好，但计算受限时小模型可能更优
+
+## 5. 增加采样计算（更多 rollout）比增加训练步数更有效
+
+## 6. RL 对数据复用鲁棒，受益于大 batch
+
+## 7. 每个 prompt 的 rollout 数是最关键的调参方向
+
 
 ## 参考文献
 
-1. Khatri et al. "The art of scaling RL compute for LLMs" (2025)
-2. Tan et al. "Scaling behaviors of LLM RL post-training" (2025)
-3. Cheng et al. "IsoCompute Playbook: Optimally Scaling Sampling Compute for LLM RL" (2026)
-4. Shao et al. "DeepSeekMath: GRPO" (2024)
-5. Zheng et al. "GSPO" (2025)
-6. Yu et al. "DAPO" (2025)
-7. Liu et al. "Dr. GRPO" (2025)
-8. Chen et al. "MiniMax-M1: CISPO" (2025)
-9. Yao et al. "TIS" (2025)
+## 1. Khatri et al. "The art of scaling RL compute for LLMs" (2025)
+
+## 2. Tan et al. "Scaling behaviors of LLM RL post-training" (2025)
+
+## 3. Cheng et al. "IsoCompute Playbook: Optimally Scaling Sampling Compute for LLM RL" (2026)
+
+## 4. Shao et al. "DeepSeekMath: GRPO" (2024)
+
+## 5. Zheng et al. "GSPO" (2025)
+
+## 6. Yu et al. "DAPO" (2025)
+
+## 7. Liu et al. "Dr. GRPO" (2025)
+
+## 8. Chen et al. "MiniMax-M1: CISPO" (2025)
+
+## 9. Yao et al. "TIS" (2025)
+

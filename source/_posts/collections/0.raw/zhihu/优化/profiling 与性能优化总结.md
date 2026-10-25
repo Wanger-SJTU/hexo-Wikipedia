@@ -259,7 +259,8 @@ flameprof xxx.cprof > flamegraph.svg
 
 更多信息请参考 cProfile 文档: https://docs.python.org/3/library/profile.html
 
-5.3 pyinstrument
+### 5.3 pyinstrument
+
 
 pyinstrument 是一个 sampling based profiler，功能上与 cProfile 类似，只支持 Sampling 纯 Python 调用栈，类似地只支持 wall clock time，但 overhead 相对 cProfile 低一些，且自带多种可视化方法。
 官方 repo 地址：[https://github.com/joerick/pyinstrument](https://link.zhihu.com/?target=https%3A//github.com/joerick/pyinstrument)
@@ -280,7 +281,8 @@ pyinstrument 是一个 sampling based profiler，功能上与 cProfile 类似，
  
 Program: train.py
  
-23.331   train.py:9
+### 23.331   train.py:9
+
 ├─ 22.641 main  train.py:29
 │  └─ 22.631 worker  train.py:114
 │     ├─ 10.077 item  megengine/core/tensor/array_method.py:391
@@ -420,7 +422,8 @@ stackcollapse-stap.pl /cpu.bt > cpu.fold
 # 将 perf.fold 转为 svg 文件
 flamegraph.pl cpu.fold > cpu.svg
 
-5.6 eu-stack
+### 5.6 eu-stack
+
 
 eu-stack 是 elfutils（https://sourceware.org/elfutils）工具集中的一员，它的基础功能是对一个程序的调用栈进行采样：
 

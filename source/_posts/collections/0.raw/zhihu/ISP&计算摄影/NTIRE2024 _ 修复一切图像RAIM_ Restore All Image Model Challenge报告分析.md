@@ -41,7 +41,8 @@ NTIRE2024 | 修复一切图像RAIM: Restore All Image Model Challenge报告分�
 
 数据集链接：https://drive.google.com/file/d/1DqbxUoiUqkAIkExu3jZAqoElr_nu1IXb/view
 
-1.1、数据集安排
+### 1.1、数据集安排
+
 一共3套数据集，分别对应比赛进程的3个阶段：
 
 - 模型设计与调试：提供100对paired的HQ（High-quality）-LQ（Low-quality）图像对和100个unpaired的LQ图像，model的效果由参赛队伍自行评判；
@@ -55,7 +56,8 @@ NTIRE2024 | 修复一切图像RAIM: Restore All Image Model Challenge报告分�
 - 亮度分布：在paired数据中比较少见连片的高光过曝，但在unpaired数据中却又较多夜间拍摄的灯牌。【笔者看法】
 数据集的这些特征，明确对应了challenge标题中的“all image”和“in the wild”两个要求：数据对之间像素都对不齐，而且劣化特征差别很大。因此对于算法研究者，如果alignment的数据集并不容易touch、且参数量又有限制，则算法将很难取得比较理想的效果。
 另外，这些图像未见亮度、对比度和色彩的调整，这意味着比赛主办方将这类处理归类到restoration之外，属于enhancement的范畴。笔者查看主办方信息，是OPPO研究院和港理工，张磊老师位列其中，也基本可以坐实这个猜想。
-1.2、图像质量的衡量
+### 1.2、图像质量的衡量
+
 paired数据的衡量方案： 20\times\frac{PSNR}{50}+15\times\frac{SSIM-0.5}{0.5}+20\times\frac{1-LPIPS}{0.4}+40\times\frac{1-DISTS}{0.3}+30\times\frac{1-NIQE}{10} 
 
 官方脚本：https://drive.google.com/file/d/1Q1CvlbGo-WOgqya5GulS5eYIi2Rgcj5l/view
@@ -72,7 +74,8 @@ IQA（Image Quality Assessment）图像质量评价也是笔者团队的研究�
 对于亮度、对比度和色彩，这些维度一来不在本次restoration的赛道范畴，二来作为enhancement的处理环节、更受个人主观的影响，在缺乏GT的情况下相对容易陷入争议。
 2、参赛队伍技术报告
 
-2.1、MiAlgo（小米）：万级自筹UHD数据集，“三年陈”技术照打天下
+### 2.1、MiAlgo（小米）：万级自筹UHD数据集，“三年陈”技术照打天下
+
 
 MiAlgo模型：上下采样处使用Harr小波，主要conv、高层有一个自注意力，最后加一个refinement2.1.1、模型结构
 
@@ -98,7 +101,8 @@ MW-ISPNet：主要采用小波变换和通道注意力机制提升图像处理�
 
 参数量341MB，显存占用7GB，一张4090GPU推理512x512x3图像耗时180ms。这个在我这个8年老本1060上跑不了。
 
-2.1.2、数据退化和GAN训练
+### 2.1.2、数据退化和GAN训练
+
 
 赛会提供的数据集并不足以支撑训练，团队训练了两个GAN来退化：
 
@@ -122,7 +126,8 @@ MW-ISPNet：主要采用小波变换和通道注意力机制提升图像处理�
 - 没有什么高大上的或者讳莫如深的tech，主要都是3年前的工作成果，也多数和小米不搭边。
 - 模型训练的关键还是在于数据，数据如何做好domain gap的跨越和易获取性，是衡量数据质量的重要指标。更何况小米自己的团队有万级的UHD数据库。
 - 训练过程的雕琢不可或缺，从上面的5个阶段就可以比照，其他团队或者我们自己的算法研究中是否穷尽一切策略？
-2.2、Xhs-IAG（小红书）：站在SUPIR巨人肩上但没能看得更远
+### 2.2、Xhs-IAG（小红书）：站在SUPIR巨人肩上但没能看得更远
+
 小红书团队在两个参赛阶段采用了全然不同的策略：
 
 阶段2虽然没有写明，但从上下文推测应该使用了SrFormer作为backbone，先用LSDIR的数据集进行训练，然后只用赛事官方提供个paired数据精调，结果在分数上达到了rank1的水平，只用了1个小section就完成了介绍。
@@ -156,7 +161,8 @@ DeSRA的思路挺好，但其模型不过精调直接使用，笔者估计并不
 
 Fusion部分：3个输入最终输出修复的结果这一步模型的训练，团队采用了inpainting任务的思路，随机生成mask区域并把GT的区域贴回，并采用了任务针对性的loss：valid_loss、hole_loss、perceptual_loss和gan_loss；在推理的时候GT的角色由SUPIR的输出替代，这样训练的fusion模块实则与阶段2的模型相近，区别在于GAN的大刀只挥向LQ的区域，SUPIR的结果予以保留。
 
-2.2.2、数据、训练和模型开销
+### 2.2.2、数据、训练和模型开销
+
 
 团队报告并未在此内容上着墨太多，笔者推测应是没有太多好说的，毕竟首先开销绝对不小（相比于目前已经分析过的MiAlgo的方案），且模型中的SUPIR并没有训练过。
 
@@ -169,7 +175,8 @@ LSDIR的数据domain和本次赛事给出的图像之间的gap还挺大的，因
 - 小红书在阶段3倒是想了不少法子，也用上了最新成果SUPIR，最后形成了一个大型组装怪。然而图像质量，尤其在带文字部分的处理上，相比朴素的拉对比效果还是有逊色的。也许未来diffusion在字符超分问题上有了比较好的表现，那么其团队的思路可以有更好的突破，但目前来看、最牛的方法并不一定是最适合的，SUPIR的引入并没有达成其最理想的效果。
 - 之所以称其为大型组装怪，在于其方案基本无视落地的轻量的实际落地诉求，sota的diffusion方案再加2个堆叠是transformer网络，推理一个图要个十几到几十秒那也没有太大意义。
 - 报告放入了较多的代码块，有凑字数篇幅之嫌，实则两行公式就能说得清楚。
-2.3、So Elegant（石油大学）：DiffIR开路，首步输出约束后续扩散过程的保真度
+### 2.3、So Elegant（石油大学）：DiffIR开路，首步输出约束后续扩散过程的保真度
+
 
 So Elegant模型：三段式，DiffIR开路，输出持续约束后续扩散，并在末段用DeSRA各取所长2.3.1、模型结构与训练
 
@@ -191,7 +198,8 @@ So Elegant模型：三段式，DiffIR开路，输出持续约束后续扩散，�
 
 训练：ps=1024x1024，bs=2，lr=1e-4，iter=20k。
 
-2.3.2、模型结构与训练
+### 2.3.2、模型结构与训练
+
 
 团队的数据主要采用BSRGAN（Designing a Practical Degradation Model for Deep Blind Image Super-Resolution）的方式自筹训练集，同时考虑到赛事提供的数据domain，又在BSRGAN已有的退化基础上补充了离焦模糊。
 
@@ -202,8 +210,10 @@ real-world的图像修复问题的关键挑战，就是兼顾好的泛化性与�
 - 高校团队自筹数据集，还是正视了domain gap这一核心关键，在degradation中补充加入了离焦模糊，进一步采用了其他方法来弥合训练数据与赛事数据的domain gap，这很关键。
 - 首阶段DiffIR的结果持续为后续扩散过程和修复过程提供引导，可见哪怕扩散模型给够了引导还是不够，不然也不会有stage 3，但囿于没有说明训练过程，也不太好判断是因为信息引导力度欠佳还是真的做不好。
 - DiffIR主要采用conv运算，笔者还未仔细研究过，可以抓紧学习下。
-2.4、IIP IR（武汉大学）：以deblur任务执行基础修复，x2上采样后SD再降采样输出
-2.4.1、模型结构
+### 2.4、IIP IR（武汉大学）：以deblur任务执行基础修复，x2上采样后SD再降采样输出
+
+### 2.4.1、模型结构
+
 
 【Stage 1：模糊核估计与SPADE注入】
 
@@ -221,12 +231,14 @@ IIP IR阶段2模型：stableSR超分后送入预训练的StableSR，输出再下
 
 团队采用论文Non-uniform Blur Kernel Estimation via Adaptive Basis Decomposition的方法进行数据退化，也重点是针对deblur问题设计的数据工程。
 
-2.4.3、小结
+### 2.4.3、小结
+
 
 - 虽然重新定位了问题，但怀疑数据劣化提供的结果并不是很match目标域，因此输出结果偏涂抹，更容易影响人眼主观感受。
 - 通过SPADE将劣化先验注入到Unet的每一层，这种操作可能在端侧实现会有些限制，但SPADE的技巧确有功效。
 - 对于去模糊问题研究得比较透彻，对于其中引用的一些工作，笔者也未曾涉猎、已经加入心愿单。
-2.5、DACLIP-IR（乌普萨拉大学）：自带军火参赛，backbone全为作者名下网络
+### 2.5、DACLIP-IR（乌普萨拉大学）：自带军火参赛，backbone全为作者名下网络
+
 作者罗梓巍（个人主页：https://algolzw.github.io/）目前在乌普萨拉大学攻读博士学位，本次参赛的算法方案建立在其此前发表工作之上：
 IR-SDE：Image Restoration with Mean-Reverting Stochastic Differential Equations
 DA-CLIP（Degradation-aware CLIP）：Controlling Vision-Language Models for Multi-Task Image Restoration
@@ -240,14 +252,17 @@ DA-CLIP（Degradation-aware CLIP）：Controlling Vision-Language Models for Mul
 【作者看法】
 这个参赛队主要IP都来自其本人的论文工作，首先respect。笔者会在后续进一步研究其publication。
 但是回过头来也能看到，作者不管是数据劣化、还是其IR-SDE、DA-CLIP的工作，都没有很好的解决domain gap的问题，才会出现其提到引入赛会数据精调后效果有显著的提升，并且主观效果并没有很理想，对比下来其模型输出还是高频信息偏弱、且对比度是最弱的。
-2.6、剩余4支队伍：主要都采用了扩散模型的DiffSR和StableSR
+### 2.6、剩余4支队伍：主要都采用了扩散模型的DiffSR和StableSR
+
 剩余4支队伍：TongJi-IPOE来自同济、ImagePhoneix和MARSHAL都来自港理工、HIT-IIL来自哈工大。介绍的篇幅不多，且在前几个队伍的技术框架下并没有太多的别样点，所以笔者就不再赘述，只挑选2个比较有意思的内容着以记录。
 
-2.6.1、ImagePhoneix团队采用了感知loss的替代方案
+### 2.6.1、ImagePhoneix团队采用了感知loss的替代方案
+
 
 本次参赛队伍的提交方案中普遍采用了感知loss来提升图像细节表现，但ImagePhoneix团队使用了Misalignment-Robust Frequency Distribution Loss for Image Transformation论文的方法，把图像FFT到频域，使用频域分布的Wasserstein距离来约束两个样本在感知层的loss。笔者评估，这样空域转频域的特征，在一定程度上应该能实现论文标题说指的misalignment-robust。该工作新鲜出炉，后续指的跟踪其他场景的应用情况。
 
-2.6.2、MARSHAL团队复验了字符纹理上采样后有利于预训练扩散模型的表现
+### 2.6.2、MARSHAL团队复验了字符纹理上采样后有利于预训练扩散模型的表现
+
 
 MARSHAL团队对赛事阶段2和3的图像倾向性进行了分析，并分别使用了遵照fidelity和人眼主观诉求的两阶段策略，后者采用扩散模型。考虑到扩散模型在字符细节上的短板，在最终推理环节，团队先把图像resize到2048输入到扩散模型，以此实现了稳定的字符纹理。
 

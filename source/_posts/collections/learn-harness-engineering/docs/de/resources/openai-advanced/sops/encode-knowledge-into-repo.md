@@ -30,18 +30,23 @@ Sitzung darauf reagieren kann, ohne sich auf vorherige Gespräche zu verlassen.
 
 ## Ausführungs-SOP
 
-1. Die unsichtbaren Wissensquellen auflisten: Docs, Chats, unausgesprochene Teamregeln, mündliche Entscheidungen.
-2. Für jede Quelle fragen: Ist das Architektur, Produktverhalten, Sicherheitsrichtlinie,
+## 1. Die unsichtbaren Wissensquellen auflisten: Docs, Chats, unausgesprochene Teamregeln, mündliche Entscheidungen.
+
+## 2. Für jede Quelle fragen: Ist das Architektur, Produktverhalten, Sicherheitsrichtlinie,
+
    Zuverlässigkeitserwartung, Plankontext oder Referenzmaterial?
-3. Im entsprechenden Repo-Artefakt codieren:
+## 3. Im entsprechenden Repo-Artefakt codieren:
+
    - Architektur -> `ARCHITECTURE.md`
    - Produktverhalten -> `docs/product-specs/`
    - Designbegründung -> `docs/design-docs/`
    - Ausführungszustand -> `docs/exec-plans/`
    - wiederholte externe Referenzen -> `docs/references/`
    - Qualitäts- oder Zuverlässigkeitserwartungen -> `docs/QUALITY_SCORE.md` oder `docs/RELIABILITY.md`
-4. Vage Aussagen durch operationell nützliche Formulierungen ersetzen.
-5. Veraltete Kopien entfernen oder als veraltet markieren, damit das Repo eine auffindbare Wahrheit behält.
+## 4. Vage Aussagen durch operationell nützliche Formulierungen ersetzen.
+
+## 5. Veraltete Kopien entfernen oder als veraltet markieren, damit das Repo eine auffindbare Wahrheit behält.
+
 
 ## Gute Codierungsregeln
 

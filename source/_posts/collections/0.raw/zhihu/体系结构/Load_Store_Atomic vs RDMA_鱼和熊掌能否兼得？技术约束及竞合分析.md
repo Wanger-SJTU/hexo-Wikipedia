@@ -22,13 +22,15 @@ source_url: https://zhuanlan.zhihu.com/p/2014996241344373641
 
 <strong>a)</strong>  <strong>双重需求的必要性</strong>
 
-1.  ​<strong>​细粒度访问（Load/Store/Atomic）的必要性​</strong>​
+## 1.  ​**​细粒度访问（Load/Store/Atomic）的必要性​**​
+
 
 ·  ​<strong>​场景需求​</strong>​：例如MoE（Mixture of Experts）模型中的门控决策（≤100B）、Attention机制中的权重重计算需原子操作保证实时性，需频繁更新小规模数据（≤512B），要求协议支持纳秒级延迟的原子操作（如GPU显存直接读写）。例如，ETH-X协议通过统一虚拟地址（UVA）和硬件级页表同步，实现GPU间细粒度内存直接访问（Direct Access），减少数据预处理开销。
 
 ·  ​<strong>​性能瓶颈​</strong>​：传统RDMA(如RoCE)需软件层Verbs语义交互，启动延迟高达微秒级，无法满足细粒度操作需求。
 
-2.  ​<strong>​粗粒度传输（RDMA）的核心价值​</strong>​
+## 2.  ​**​粗粒度传输（RDMA）的核心价值​**​
+
 
 ·  ​<strong>​大规模</strong>数据<strong>搬运​</strong>​：模型权重、梯度等批量数据（≥4K）传输依赖高带宽DMA引擎。例如，ETH-X的Direct Copy语义通过专用硬件（如ETH.DMA）实现TB级带宽的批量拷贝，优化结构化数据处理效率。
 
@@ -36,13 +38,15 @@ source_url: https://zhuanlan.zhihu.com/p/2014996241344373641
 
 <strong>b)</strong>  <strong>​​架构设计目标的分歧​​</strong>
 
-1.  ​<strong>​负载场景的差异​</strong>​
+## 1.  ​**​负载场景的差异​**​
+
 
 ·  ​<strong>​Load/Store/Atomic​</strong>​：针对​<strong>​节点内​</strong>​的细粒度通信（≤512B），如GPU间显存直接访问、原子操作同步（如AllReduce中的梯度更新），要求纳秒级延迟（通常InfiniBand），延迟在微秒级（1-10μs）。
 
 ·  ​<strong>​冲突点​</strong>​：两种语义对延迟、数据粒度、协议栈的要求截然不同，强行融合会导致硬件设计冗余和性能折中。
 
-2.  ​<strong>​协议栈分层矛盾​</strong>​
+## 2.  ​**​协议栈分层矛盾​**​
+
 
 ·  Load/Store需​<strong>​内存语义​</strong>​（直接地址访问+原子指令），依赖全局虚拟地址映射（如NVIDIA UVA）和硬件级页表同步。
 
@@ -52,7 +56,8 @@ source_url: https://zhuanlan.zhihu.com/p/2014996241344373641
 
 <strong>c)</strong>  <strong>物理层与芯片集成的技术瓶颈​​</strong>
 
-1.  ​<strong>​延迟与带宽的权衡​</strong>​
+## 1.  ​**​延迟与带宽的权衡​**​
+
 
 ·  Load/Store依赖​<strong>​超低延迟</strong>物理层<strong>​</strong>​：如NVLink采用高速SerDes（串行解串器）和直连拓扑。
 
@@ -60,7 +65,8 @@ source_url: https://zhuanlan.zhihu.com/p/2014996241344373641
 
 ·  ​<strong>​案例​</strong>​：NVLink 4.0延迟仅300ns，而RoCEv2延迟约1.5μs，因后者需经过网卡协议解析。
 
-2.  ​<strong>​流控机制的冲突​​</strong>
+## 2.  ​**​流控机制的冲突​​**
+
 
 ·  Load/Store使用​<strong>​基于信用的实时流控​</strong>​（Credit-based Flow Control），确保原子操作的即时响应。
 
@@ -68,7 +74,8 @@ source_url: https://zhuanlan.zhihu.com/p/2014996241344373641
 
 ·  ​<strong>​硬件冲突​</strong>​：若在芯片内整合两类流控，需双重缓冲区和调度器，显著增加设计复杂度。例如，AMD UALink仅支持Credit流控，而UEC（以太网联盟）仅优化RDMA的ECN机制。
 
-3.  ​<strong>​内存管理单元（MMU）限制​​</strong>
+## 3.  ​**​内存管理单元（MMU）限制​​**
+
 
 ·  Load/Store要求​<strong>​</strong>统一<strong>虚拟地址空间​</strong>​（如GPU Direct RDMA需GPU与网卡共享PCIe Root Complex）。
 
@@ -88,19 +95,22 @@ source_url: https://zhuanlan.zhihu.com/p/2014996241344373641
 
 <strong>​​二、商业竞争与合作逻辑​​</strong>
 
-1.  ​<strong>​NVIDIA的封闭生态策略​</strong>​
+## 1.  ​**​NVIDIA的封闭生态策略​**​
+
 
 ·  ​<strong>​技术控制​</strong>​：NVLink通过硬件一致性协议绑定GPU间通信，确保性能优势（如NVSwitch 900GB/s带宽）。开放RDMA支持可能削弱其交换机（NVSwitch）和DPU（BlueField）的附加值。
 
 ·  ​<strong>​授权限制​</strong>​：NVLink Fusion计划仅开放物理层/链路层IP，保留软件层控制权，强制客户使用至少一件NVIDIA产品（GPU/Switch/CPU），维护生态壁垒。
 
-2.  ​<strong>​AMD UALink的开放联盟博弈​</strong>​
+## 2.  ​**​AMD UALink的开放联盟博弈​**​
+
 
 ·  ​<strong>​差异化定位​</strong>​：UALink 1.0优先支持Load/Store，瞄准Scale Up域（如超节点内GPU互联），避开与UEC（RDMA优化）的直接竞争。通过联合微软、谷歌等巨头，构建开放标准对抗NVLink。
 
 ·  ​<strong>​战略妥协​</strong>​：UEC（由AMD等主导）专注Scale Out的RDMA优化，避免在协议层与UALink重叠，同时迎合以太网在大型集群的性价比优势（如Meta 24K GPU集群）。
 
-3.  ​<strong>​腾讯/字节的“应用驱动”设计​</strong>​
+## 3.  ​**​腾讯/字节的“应用驱动”设计​**​
+
 
 ·  ​<strong>​业务场景强需求​</strong>​：大模型训练需混合负载支持——细粒度操作处理参数更新，RDMA搬运权重数据。例如，字节跳动DeepSeek的日活爆发依赖高效异构计算，促使EthLink协议同时支持两类语义。
 

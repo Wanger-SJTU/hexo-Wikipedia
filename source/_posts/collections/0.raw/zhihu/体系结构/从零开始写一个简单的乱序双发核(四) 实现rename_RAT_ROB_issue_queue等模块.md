@@ -45,13 +45,17 @@ source_url: https://zhuanlan.zhihu.com/p/23898837254
 
 以上就是IRU的所有组件内容：
 
-1. rename模块
+## 1. rename模块
 
-2. Freelist
 
-3. Spec_RAT
+## 2. Freelist
 
-4. Arch_RAT
+
+## 3. Spec_RAT
+
+
+## 4. Arch_RAT
+
 
 如下图所示：
 

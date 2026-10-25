@@ -62,7 +62,8 @@ $- 使用 MixMatch 算法，对一个 Batch 的标记数据 \mathcal{X} 和一�
 
 MixMatch 算法。<strong>算法描述：</strong>for 循环对一个Batch的标记图片和未标记图片做数据增广。对标记图片，只做一次增广，标签不变，记为 p 。对未标记数据，做 K 次随机增广（文章中超参数K=2），输入分类器，得到平均分类概率，应用温度Sharpen 算法（T 是温度参数，此算法后面介绍），得到未标记数据的“猜测”标签 q 。此时增广后的标记数据 \mathcal{\hat{X}} 有一个Batch，增广后的未标记数据 \mathcal{\hat{U}} 有 K 个Batch。将 \mathcal{\hat{X}} 和 \mathcal{\hat{U}} 混合在一起，随机重排得到数据集 \mathcal{W} 。最终 MixMatch 增广算法输出的，是将 \mathcal{\hat{X}} 与 \mathcal{W} 做了MixUp() 的一个 Batch 的标记数据 \mathcal{X'} ，以及 \mathcal{\hat{U}} 与 \mathcal{W} 做了MixUp() 的 K 个Batch 的无标记增广数据 \mathcal{U'} 。
 
-2. 对增广后的标记数据 \mathcal{X'} ，和无标记增广数据 \mathcal{U'} 分别计算损失项，
+## 2. 对增广后的标记数据 \mathcal{X'} ，和无标记增广数据 \mathcal{U'} 分别计算损失项，
+
 
 $$### \begin{aligned} \mathcal{L}_{\mathcal{X}} &=\frac{1}{\left|\mathcal{X}^{\prime}\right|} \sum_{x, p \in \mathcal{X}^{\prime}} \mathrm{H}\left(p, \mathrm{p}_{\text { model }}(y | x ; \theta)\right) \\ \mathcal{L}_{\mathcal{U}} &=\frac{1}{L\left|\mathcal{U}^{\prime}\right|} \sum_{u, q \in \mathcal{U}^{\prime}}\left\|q-\mathrm{p}_{\text { model }}(y | u ; \theta)\right\|_{2}^{2} \\ \end{aligned} $$
 
@@ -78,7 +79,8 @@ $${\rm softmax} (z_i + c) = \frac{\exp(z_i + c)}{\sum_j \exp (z_j + c)} = \frac{
 
 因此，如果对未标记数据使用 Cross Entropy Loss, 由同一张图片增广得到的两张新图片，最后一个Dense Layer的输出被允许相差一个常数。使用 L2 Loss, 约束更加严格。
 
-3. 最终的整体损失函数是两者的加权，
+## 3. 最终的整体损失函数是两者的加权，
+
 
 $\mathcal{L} =\mathcal{L}_{\mathcal{X}}+\lambda_{\mathcal{U}} \mathcal{L}_{\mathcal{U}}  $
 

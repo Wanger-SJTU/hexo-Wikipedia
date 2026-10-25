@@ -32,7 +32,7 @@ source_url: https://zhuanlan.zhihu.com/p/102707081
 ![](https://pic4.zhimg.com/v2-b0de34148ccc4e788aec1c858e1a0677_r.jpg)可变卷积开始是对一些常规参数的设置(kernel_size,stride,padding)，后续定义了self.conv（最终输出的卷积层，设置输入通道数和输出通道数），self.p_conv（偏置层，学习之前公式(2)中说的偏移量），self.m_conv(权重学习层，这个是后来提出的第二个版本的卷积也就是公式(3)描述的卷积)。register_backward_hook是为了方便查看这几层学出来的结果，对网络结构无影响。
 
 self.p_conv和self.m_conv输入通道由我们自己设置，self.p_conv输出通道为2*kernel_size*kernel_size代表了卷积核中所有元素的偏移坐标(因为同时存在x和y的偏移，所以要乘以2)，而self.p_conv输出通道为(kernel_size*kernel_size)代表了卷积核每个元素的权重。他们的kernel_size为3，**stride可以由我们自己设置(这里涉及之前公式(1,2)对于 
-![](https://www.zhihu.com/equation?tex=p_0) 的查找)stride默认值为1
+$p_0$ 的查找)stride默认值为1
 
 接下来我们分析一下前传函数
 
@@ -42,14 +42,14 @@ self.p_conv和self.m_conv输入通道由我们自己设置，self.p_conv输出�
 ![](https://pica.zhimg.com/v2-9cbf2e3b90e7516f246f9e940be6d750_1440w.jpg)p_conv卷积后的feature map上每个元素恰好与卷积核中心是一一对应由图片可以知道通过p_conv后的feature map(上图全红的矩形)上每个元素恰好与卷积核中心是一一对应，也就是说通过该feature map的尺寸，卷积核的尺寸，步长可以推算出在卷积过程中卷积核的中心坐标。 如上图，我们可知卷积操作次数为6(由feature map的尺寸2*3得出)，第一次卷积，卷积核的中心坐标为(1,1)(由卷积核尺寸得出)，后续所有卷积核中心坐标(由第一次中心坐标和步长推出)。
 
 接下来通过self._get_p()这个函数获取所有卷积核中心坐标 
-![](https://www.zhihu.com/equation?tex=p_0) 具体操作如下
+$p_0$ 具体操作如下
 
 首先通过函数get_p_n()生成了卷积的相对坐标
 
 ![](https://pic1.zhimg.com/v2-8c8aa3e68ddb6b6cefec7fc2819ab9a2_r.jpg)生成卷积相对坐标把卷积的中心点定义为原点，其他点坐标都相对于原点而言，比如self.kernel_size为3，通过torch.meshgrid生成从（-1，-1）到（1，1）9个坐标。将坐标的x和y分别存储，然后再将x，y以(1,2N,1,1)的形式返回，这样我们就获取了一个卷积核的所有相对坐标。
 
  接下来获取卷积核在feature map上对应的中心坐标，也就是 
-![](https://www.zhihu.com/equation?tex=p_0) ，代码实现如下
+$p_0$ ，代码实现如下
 
 ![](https://pic3.zhimg.com/v2-9744aa8edc419841bf76b9fa046e0cf6_r.jpg)获取feature map上的坐标流程如同之前所说，通过torch.meshgrid生成所有中心坐标，通过kernel_size推断初始坐标通过self.stride推断所有中心坐标，(这里注意一下，代码默认torch.arange从1开始，实际上这是kernel_size为3时的情况，我认为代码这里是有那么一点小瑕疵的，torch.arange应当从kernel_size//2开始，已经向作者提出这个问题还没得到反馈)
 
@@ -66,7 +66,7 @@ self.p_conv和self.m_conv输入通道由我们自己设置，self.p_conv输出�
 ![](https://picx.zhimg.com/v2-1f75ded20059c06ef7468a209ccb10e9_r.jpg)获取坐标后进行线性插值根据线性插值理论我们需要获取4个整数坐标，所以在获取所有可变卷积核的坐标p后，通过floor()获取不超过本身的最大整数，也就是左上角坐标q_lt，同时为了防止偏移量过大移出feature map的范围通过torch.clamp对卷积核坐标做了限制。接下来只要通过左上角坐标就可以推出左下角(q_lb)，右上角(q_rt)，右下角(q_rb)坐标。
 
 ![](https://picx.zhimg.com/v2-2690d02e31c792ea4c21d41fc5341159_r.jpg)双线性插值算法示意图获取4个点的坐标后根据上图公式可以计算出像素值前面的系数(即 
-![](https://www.zhihu.com/equation?tex=%5Cfrac%7B%28x_0-x%29%28y_0-y%29%7D%7B%28x_1-x_0%29%28y_1-y_0%29%7D) 这部分)，代码中这4个系数分别为g_lt,g_rb,g_lb,g_rt。现在只获取了坐标值，我们最终木的是获取相应坐标上的值，这里我们通过self._get_x_q()获取相应值。
+$\frac{(x_0-x)(y_0-y)}{(x_1-x_0)(y_1-y_0)}$ 这部分)，代码中这4个系数分别为g_lt,g_rb,g_lb,g_rt。现在只获取了坐标值，我们最终木的是获取相应坐标上的值，这里我们通过self._get_x_q()获取相应值。
 
 ![](https://pica.zhimg.com/v2-a4cbb480f534c371d22d491d8eb6fe98_r.jpg)通过坐标获取相应值输入x是我们最早输入的数据x，q则是我们的坐标信息。首先我们获取q的相关尺寸信息(b,h,w,2N)，再获取x的w保存在padding_w中，将x(b,c,h,w)通过view变成(b,c,h*w)。这样子就把x的坐标信息压缩在了最后一个维度(h*w)，这样做的目的是为了使用tensor.gather()通过坐标来获取相应值。<strong>(这里注意下q的h,w和x的h,w不一定相同，比如stride不为1的时候)</strong>
 
@@ -81,8 +81,8 @@ self.p_conv和self.m_conv输入通道由我们自己设置，self.p_conv输出�
 ![](https://pic3.zhimg.com/v2-f8a8aa7b50126ba8d307b214bc1b3192_r.jpg)上述reshape操作的实际意义左图为卷积操作，第一次卷积时涉及9个元素的运算，右图把这个9个元素单独保存下来。这就是这个reshape函数的实际意义，把每一次卷积操作的所需要的数据信息单独保存(N=ks*ks)，当把最后一个维度(N)的信息通过这种方式保留到(h,w)这两个维度上后，自然就扩大了ks倍。(右图开始的3*3块储存第一次卷积所需的数据，后面的3*3块储存第二次卷积所需的数据)
 
 到这一步我们做的就是对输入数据x进行可变卷积，并且把每次卷积所需的数据单独作为一个小块保留得到了一张大的feature map(b,c,ks*h,ks*w)，**如同上图右边的大feature map，此时reshape出的这张大feature map上的每个ks*ks的小块代表的就是公式(2)中求和的元素** 
-![](https://www.zhihu.com/equation?tex=x%28p_0%2Bp_n%2B%5CDelta+p_n%29) <strong>！！</strong>最后再过一个普通卷积层以ks为stride这样得出的最终输出size为(b,c,h,w)，**最后一个卷积层的操作后，所有操作就与与公式(2) 
-![](https://www.zhihu.com/equation?tex=%5Csum_%7Bn%5Csubset+R%7D%7Bx%28p_0%2Bp_n%2B%5CDelta+p_n%29%7D) 完全符合！**这样可变卷积所有操作就完成了。
+$x(p_0+p_n+\Delta p_n)$ <strong>！！</strong>最后再过一个普通卷积层以ks为stride这样得出的最终输出size为(b,c,h,w)，**最后一个卷积层的操作后，所有操作就与与公式(2) 
+$\sum_{n\subset R}{x(p_0+p_n+\Delta p_n)}$ 完全符合！**这样可变卷积所有操作就完成了。
 
 至于那个modulation只是对每个元素加了偏置而已并不是很难理解，这里不展开讲
 

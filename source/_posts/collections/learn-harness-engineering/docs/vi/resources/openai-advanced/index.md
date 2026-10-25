@@ -61,11 +61,15 @@ docs/
 
 ## Cách Áp dụng Nó
 
-1. Bắt đầu từ gói tối giản nếu repo của bạn vẫn còn nhỏ.
-2. Sao chép các tệp trong [`repo-template/`](./repo-template/index.md) vào kho lưu trữ của bạn khi bạn cần cấu trúc mạnh hơn.
-3. Giữ `AGENTS.md` ngắn. Coi nó như bộ định tuyến vào các tài liệu sâu hơn, không phải như bách khoa toàn thư.
+## 1. Bắt đầu từ gói tối giản nếu repo của bạn vẫn còn nhỏ.
+
+## 2. Sao chép các tệp trong [`repo-template/`](./repo-template/index.md) vào kho lưu trữ của bạn khi bạn cần cấu trúc mạnh hơn.
+
+## 3. Giữ `AGENTS.md` ngắn. Coi nó như bộ định tuyến vào các tài liệu sâu hơn, không phải như bách khoa toàn thư.
+
 4. Cập nhật các tài liệu chất lượng, độ tin cậy và kế hoạch như một phần của công việc thông thường, không phải như một ngày dọn dẹp riêng biệt.
-5. Giữ các artifact được tạo ra và tài liệu tham khảo bên ngoài rõ ràng để agent có thể tìm thấy chúng mà không cần dựa vào lịch sử chat.
+## 5. Giữ các artifact được tạo ra và tài liệu tham khảo bên ngoài rõ ràng để agent có thể tìm thấy chúng mà không cần dựa vào lịch sử chat.
+
 
 ## Thư viện SOP
 

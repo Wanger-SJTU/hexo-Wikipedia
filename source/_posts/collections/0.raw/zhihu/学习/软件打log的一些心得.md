@@ -23,9 +23,11 @@ source_url: https://zhuanlan.zhihu.com/p/24785018
 
 打log的原则：
 
-1. 异常分支或错误处理一定要打log
+## 1. 异常分支或错误处理一定要打log
 
-2. 重大操作时一定要打log，下面打log场景会讲述
+
+## 2. 重大操作时一定要打log，下面打log场景会讲述
+
 
 log格式的原则： 
 
@@ -61,7 +63,8 @@ log格式的原则：
 
 打log的场景：
 
-1. 申请内存时，失败的话，要把申请大小打印出来。以前我申请内存失败也是简单地打印：
+## 1. 申请内存时，失败的话，要把申请大小打印出来。以前我申请内存失败也是简单地打印：
+
 
 [2017－01－09 12：16：30.541][network.c:541][pid=15529][thread=0x12345][Error]Failed to allocate memory
 
@@ -72,7 +75,8 @@ log格式的原则：
 
 当时就看那些代码引用的数据结构，最小也有64K，大的16M都有，基本一个结构包括很多个大数组。当时就把那些数组全改为指针，再进一步申请，代码繁琐了，但这种问题再也不会出现。再看bug系统，原来这个问题存在很多，在其它程序也存在，当时都找不到根因，只是用过一段时间重启进程来解决
 
-2. 函数参数非空判断时，要打印日志。原因不说，看对比：
+## 2. 函数参数非空判断时，要打印日志。原因不说，看对比：
+
 
 之前 
 
@@ -100,19 +104,22 @@ if ( ( pInfo == NULL ) || ( pHandler == NULL ) )
 
 [2017－01－09 12：16：30.588][modules.c:54][pid=15529][thread=0x12345][Error]Failed to load module libftp.so, error=module already loaded
 
-4.  操作文件目录时，失败要把文件名和错误码打印出来。如
+## 4.  操作文件目录时，失败要把文件名和错误码打印出来。如
+
 
 [2017－01－09 12：16：30.588][config.c:120][pid=15529][thread=0x12345][Error]Failed to open file conf/ftp.xml, errno=(13:Permission denied)
 
 假设这个错误导致进程初始化失败，且环境在客户那边，维护人员就可以确认并自己解决这个问题。
 
-5. 操作socket时，把IP，端口号或路径名（Unix socket ）和错误码打印出来。如
+## 5. 操作socket时，把IP，端口号或路径名（Unix socket ）和错误码打印出来。如
+
 
 `[2017－01－09 12：16：30.588][network.c:541][pid=15529][thread=0x12345][Error]Failed to connect to host (10.17.128.10:9981), errno=(111:Connection refused)`
 
 假设在客户环境出错，维护人员可以根据日志来确认10.17.128.10这台机器是否在线，是否开启了相应的服务，或者服务是开启了，可能只是端口配置错了（这种情况是扯皮最多的）
 
-6. 操作数据库时，把相应操作的IP，端口，库，用户名，sql语句和错误打印出来。如
+## 6. 操作数据库时，把相应操作的IP，端口，库，用户名，sql语句和错误打印出来。如
+
 
 [2017－01－09 12：16：30.588][dbmgr.c:781][pid=15529][thread=0x12345][Error]user tiger failed to operate in host (10.17.128.10:3365) with db test, sql="select * from users", error="no table users exists"
 
@@ -124,7 +131,8 @@ if ( ( pInfo == NULL ) || ( pHandler == NULL ) )
 
 往往在客户环境，由于运维人员水平参差不齐，可能误操作或漏操作，导致文件缺失或权限出错，这种错误在公司的模拟环境根本不会出现。如果日志够详细，能够减少很多工作量。
 
-8. 解析文件时，需要把文件名，字段，行号打印出来。如
+## 8. 解析文件时，需要把文件名，字段，行号打印出来。如
+
 
 [2017－01－09 12：16：30.588][config.c:120][pid=15529][thread=0x12345][Error]Failed to parse file conf/ftp.xml, line:20, tag  is not closed
 

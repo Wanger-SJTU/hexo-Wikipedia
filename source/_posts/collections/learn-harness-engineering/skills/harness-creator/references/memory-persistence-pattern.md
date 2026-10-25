@@ -28,8 +28,10 @@ Without persistent memory, an agent loses all user preferences, project context,
 ### Two-step save invariant
 
 Every memory write is a two-step operation:
-1. Write the full content to a dedicated topic file
-2. Append a one-line pointer to the index
+## 1. Write the full content to a dedicated topic file
+
+## 2. Append a one-line pointer to the index
+
 
 If the process crashes between steps, the worst outcome is an orphaned topic file — the index remains consistent.
 
@@ -66,20 +68,31 @@ Organization-wide → User-level → Project-level → Local override
 
 ## Implementation Patterns
 
-1. <strong>Define memory directory</strong> idempotently at startup (e.g., `.claude/memory/`)
-2. <strong>Create index file</strong> with hard caps enforced at read time
-3. <strong>Implement two-step save</strong>: topic file first, then index update
-4. <strong>Fire background extraction</strong> only after final response with no pending tool calls
-5. <strong>Enforce mutual exclusion</strong>: if main agent wrote to memory, skip extraction that turn
-6. <strong>Build review mechanism</strong> for cross-layer promotion proposals
+## 1. **Define memory directory** idempotently at startup (e.g., `.claude/memory/`)
+
+## 2. **Create index file** with hard caps enforced at read time
+
+## 3. **Implement two-step save**: topic file first, then index update
+
+## 4. **Fire background extraction** only after final response with no pending tool calls
+
+## 5. **Enforce mutual exclusion**: if main agent wrote to memory, skip extraction that turn
+
+## 6. **Build review mechanism** for cross-layer promotion proposals
+
 
 ## Gotchas
 
-1. <strong>Index truncation is silent until it fires</strong> — keep entries short
-2. <strong>Priority ordering is counterintuitive</strong> — local beats project beats user beats org
-3. <strong>Extraction timing creates a race window</strong> — user can start next turn before extraction completes
-4. <strong>Derivable content doesn't belong in memory</strong> — architecture and code patterns are re-derivable from the codebase
-5. <strong>Orphaned topic files accumulate</strong> — periodic cleanup recommended
+## 1. **Index truncation is silent until it fires** — keep entries short
+
+## 2. **Priority ordering is counterintuitive** — local beats project beats user beats org
+
+## 3. **Extraction timing creates a race window** — user can start next turn before extraction completes
+
+## 4. **Derivable content doesn't belong in memory** — architecture and code patterns are re-derivable from the codebase
+
+## 5. **Orphaned topic files accumulate** — periodic cleanup recommended
+
 
 ## Related Patterns
 

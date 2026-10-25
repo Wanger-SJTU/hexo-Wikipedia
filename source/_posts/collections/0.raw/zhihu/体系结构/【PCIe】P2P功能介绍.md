@@ -22,7 +22,8 @@ PCIe p2p功能在SPEC中没有明确的capability定义，实质上是由PCIe路
 
 ![](https://picx.zhimg.com/v2-582808555b8d13f50ef226139352ce85_r.jpg)P2P通信带来的收益 
 
-1. 减少了主存DRAM的使用 
+## 1. 减少了主存DRAM的使用 
+
 
 2.缩短了通信路径，提升了数据传输的效率。
 

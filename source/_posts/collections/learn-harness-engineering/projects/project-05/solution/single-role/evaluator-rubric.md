@@ -42,14 +42,22 @@ truncation of answers at 100 characters is a significant usability issue.
 
 ### Defects Found
 
-1. Answer text is truncated at 100 characters with no way to expand
-2. Citation data from QAResponse is completely ignored
-3. No visual distinction between user questions and assistant answers
-4. No follow-up question capability
+## 1. Answer text is truncated at 100 characters with no way to expand
+
+## 2. Citation data from QAResponse is completely ignored
+
+## 3. No visual distinction between user questions and assistant answers
+
+## 4. No follow-up question capability
+
 
 ### Recommended Improvements
 
-1. Show full answers with a toggle or scroll
-2. Display citations as expandable sections
-3. Add chat bubble styling to distinguish roles
-4. Add follow-up question suggestions
+## 1. Show full answers with a toggle or scroll
+
+## 2. Display citations as expandable sections
+
+## 3. Add chat bubble styling to distinguish roles
+
+## 4. Add follow-up question suggestions
+

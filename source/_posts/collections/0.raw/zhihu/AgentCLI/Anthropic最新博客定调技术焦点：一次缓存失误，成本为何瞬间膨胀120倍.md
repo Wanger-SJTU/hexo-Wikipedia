@@ -21,7 +21,8 @@ source_url: https://zhuanlan.zhihu.com/p/2034367229135937946
  
 一、What：Prompt Caching 是什么
 
-1.1 一句话定义
+### 1.1 一句话定义
+
 Prompt caching（提示词缓存）的本质是<strong>前缀复用</strong>：当多轮LLM请求共享相同的前缀内容（system prompt、工具定义、对话历史等）时，API提供商在第一次请求后把这些前缀对应的KV Cache（Key-Value缓存状态）保存下来，后续请求只需发送<strong>新增的部分</strong>，服务器直接复用已计算好的前缀状态，跳过最耗时的prefill阶段。
 
 一个通俗类比：模型处理长prompt就像<strong>组装一套复杂的乐高模型</strong>。第一遍你需要从零件袋里一个个找、一块块拼（prefill阶段，计算每个token的KV状态）。拼好后，你把成品拍照存起来（写入缓存）。下一轮有人让你在同一个模型基础上加几块新积木，你不需要重新拆开重拼——直接把照片调出来，从已有的成品继续往上搭（命中缓存，跳过prefill）。但如果有人说"把说明书第三页的某个字改一下"，你就得从头重拼（缓存失效）。
@@ -30,7 +31,8 @@ Prompt caching（提示词缓存）的本质是<strong>前缀复用</strong>：�
 
 <strong>"Cache Rules Everything Around Me"</strong> —— Anthropic工程师在博客开篇引用
  
-1.2 逐字节匹配：命中与否的唯一标准
+### 1.2 逐字节匹配：命中与否的唯一标准
+
 Prompt caching不是"意思差不多"就能命中。它的匹配规则极其严苛：<strong>你的请求前缀与服务器已缓存的前缀必须逐字节（byte-for-byte）完全一致。</strong>
 
 Request 1: "You are a helpful assistant."    → Cache created
@@ -106,7 +108,8 @@ Block 0: "The capital"       hash = hash("The capital")
 Block 1: "of France"         hash = hash(block0_hash + "of France")
 Block 2: "is Paris"          hash = hash(block1_hash + "is Paris")
 
-1.4 四大平台实现方式对比
+### 1.4 四大平台实现方式对比
+
 2026年，主流平台的prompt caching实现差异显著，选型直接影响工程复杂度：
 
 维度Anthropic ClaudeOpenAI GPTGoogle GeminiDeepSeek控制方式显式标记 (cache_control)全自动（无需标记）显式创建缓存对象内置前缀缓存最低Token阈值1,024-4,096（因模型而异）1,02432,768不明确最大断点数每请求4个无（自动管理）无限制不明确缓存命中折扣90%（读取=10%原价）50%75%98-99.2%写入溢价125%（5分钟）/ 200%（1小时）无溢价按小时收存储费不明确TTL5分钟（默认）/ 1小时（可选）5-10分钟（不保证）最长24小时不明确隔离级别Workspace级（2026.2起）Organization级Project级不明确<strong>选型建议</strong>：如果你需要精确控制缓存边界（Agent场景强烈推荐），Anthropic的显式标记是目前最成熟的方案——官方文档对`cache_control`的每个参数、限制条件和边界情况都有详尽说明。OpenAI的自动缓存适合快速上线但缺乏调优空间。Gemini的32K最低阈值使其更适合大文档分析而非对话式Agent。
@@ -115,7 +118,8 @@ Block 2: "is Paris"          hash = hash(block1_hash + "is Paris")
 
 二、Why：为什么说"Prompt Caching is Everything"
 
-2.1 成本经济学：从90%折扣到120倍杠杆
+### 2.1 成本经济学：从90%折扣到120倍杠杆
+
 Anthropic的定价给出了一个基准：缓存读取成本仅为基础输入成本的 10%（写入成本为125%）。一个100K token上下文、80%命中率的会话，每次请求成本仅为完全未缓存状态的 <strong>1/8</strong>。
 
 但这只是开始。2026年4月24日，DeepSeek发布V4系列，随后在<strong>48小时内连续两次降价</strong>：4月25日V4-Pro开启限时2.5折促销，4月26日又将全系列<strong>输入缓存命中价格降至首发价的1/10</strong>。
@@ -130,17 +134,20 @@ Anthropic的定价给出了一个基准：缓存读取成本仅为基础输入�
 
 场景月均Token数单价月均成本无缓存（每次全价计算）240M input$3.00/1M$72080%命中率（理想状态）48M未命中 + 192M命中3.00 + 0.30/1M$201.6<strong>命中率从80%跌到60%</strong>（一次架构失误）96M未命中 + 144M命中3.00 + 0.30/1M$331.2完全命中破坏（0%命中率）240M全价$3.00/1M$720从上表可以看到：<strong>命中率每下降10个百分点，月成本上升约20%。一次架构失误让命中率从80%跌到60%，每月多烧$130——这还只是中等规模的Agent。</strong> 当规模扩大到日均10万次请求时，这个差距会变成每月$13,000。对于按量付费的初创团队，这可能是生与死的差别。
 
-2.2 延迟改善：TTFT与用户体验
+### 2.2 延迟改善：TTFT与用户体验
+
 Prompt caching不仅省钱，还<strong>加速</strong>。复用KV Cache意味着跳过prefill阶段，首token延迟（Time-To-First-Token, TTFT）直接改善。PwC研究论文测得：<strong>13%-31%的TTFT改善</strong>，在长对话中这个差距会被用户直接感知。
 
-2.3 学术验证：PwC的独立对照实验
+### 2.3 学术验证：PwC的独立对照实验
+
 2026年1月PwC研究团队发表的论文《An Evaluation of Prompt Caching for Long-Horizon Agentic Tasks》提供了独立验证。
 
 研究团队在<strong>DeepResearch Bench</strong>（需要自主执行多轮网页搜索的Agent基准）上评估了三种策略：
 
 策略成本节省TTFT改善稳定性Full context caching41%-80%13%-31%动态工具结果写入缓存但几乎不复用，可能paradoxically增加延迟System prompt only caching41%-80%13%-31%最稳定收益Excluding dynamic tool results41%-80%13%-31%中等核心结论：<strong>仅缓存system prompt</strong>的策略在成本和延迟两个维度上提供了最稳定的收益。盲目启用full-context缓存有时反而增加延迟，因为动态工具调用结果被写入缓存但几乎不会被复用，产生纯写入开销而无读取收益。
 
-2.4 没有缓存就没有Agent产品：商业模式的根基
+### 2.4 没有缓存就没有Agent产品：商业模式的根基
+
 Claude Code作为一个需要与用户进行<strong>数十轮甚至上百轮交互</strong>的编程助手，每一次对话都可能携带数十万token的上下文。如果没有prompt caching，每一轮都要重新计算整个上下文——包括系统提示、工具定义、CLAUDE.md、历史对话和代码库快照。
 
 这种重复计算在经济学上几乎不可持续。Prompt caching从来不是"可选项"，它是Agent产品的<strong>经济生命线</strong>——直接决定了你的产品能否在定价上规模化，能否为用户提供足够慷慨的速率限制，能否在长会话中保持可用。
@@ -149,7 +156,8 @@ Claude Code作为一个需要与用户进行<strong>数十轮甚至上百轮交�
 
 三、How：从实现到生产的完整指南
 
-3.1 实现路径：代码层面的接入
+### 3.1 实现路径：代码层面的接入
+
 
 Anthropic 的 `cache_control` 用法
 Anthropic的prompt caching通过一个JSON参数 `cache_control` 控制。这是目前生产环境使用最广泛的机制。
@@ -293,16 +301,21 @@ AI SDK会自动将message-level的 `providerOptions` 转换为Anthropic API所�
 
  ⚠️ <strong>端点警告（极易踩坑）</strong>：无论使用Python SDK还是Vercel AI SDK，底层调用的必须是Anthropic原生 `/v1/messages` 端点。如果你通过OneAPI、New API等中转站，或显式指定了 `/v1/chat/completions`（OpenAI兼容端点），`cache_control` 会被<strong>静默丢弃</strong>——请求不会报错，缓存也不会生效，账单上永远看不到折扣。这是国内开发者最常遇到的"加了缓存但死活不生效"的根因。
  
-3.2 架构设计：Claude Code团队的六大反直觉教训
+### 3.2 架构设计：Claude Code团队的六大反直觉教训
+
 Anthropic在博客中分享的六条教训，每一条都来自真实的生产故障和SEV（Site Event）复盘。DeepSeek V4虽然定价激进，其缓存机制的本质与Claude完全一致（前缀匹配、字节级一致、逐token计费）——以下法则在全球所有Agent开发者中通用。
 
 教训1：提示词的「物理顺序」比内容更重要
 Claude Code的提示词结构被精心设计成四层递进：
 
-1. System instructions & Tools      ← 全局缓存（最稳定）
-2. CLAUDE.md & Memory               ← 按项目缓存（项目根目录的`CLAUDE.md`文件，类似项目专属的系统提示）
-3. Session context（env/MCP/风格）   ← 按会话缓存（MCP = Model Context Protocol，模型上下文协议标准）
-4. Messages（对话历史）              ← 每轮增长（动态部分）
+## 1. System instructions & Tools      ← 全局缓存（最稳定）
+
+## 2. CLAUDE.md & Memory               ← 按项目缓存（项目根目录的`CLAUDE.md`文件，类似项目专属的系统提示）
+
+## 3. Session context（env/MCP/风格）   ← 按会话缓存（MCP = Model Context Protocol，模型上下文协议标准）
+
+## 4. Messages（对话历史）              ← 每轮增长（动态部分）
+
 
 这个顺序遵循一条铁律：<strong>静态内容尽可能靠前，动态内容严格靠后。</strong>
 
@@ -372,7 +385,8 @@ Prompt cache并非永久有效，它有TTL（Time-To-Live）。根据2026年社�
 - 短暂离开前，发送一条轻量消息（如"总结我们目前的进度"），重置TTL计时器
 - 如果预计离开较久，主动结束会话，回来时开启新会话可能比重建缓存更划算
 - 避免在会话中途使用`/clear`——这会摧毁缓存并强制全额重建
-3.3 规模化生产实战：社区经验
+### 3.3 规模化生产实战：社区经验
+
 <strong>阅读提示</strong>：本节涉及子代理架构、多副本集群 Tiered Caching 等方案，属于<strong>进阶选修内容</strong>，适用于已跨越单 Agent 原型阶段、面临规模化成本与延迟瓶颈的团队。如果你的产品目前仍处于 MVP 阶段或月 API 费用未成为主要约束，可先通读建立直觉，不必急于落地——避免"为了省 100 块钱的缓存费，多雇一个架构师"。
  
 子代理架构中的缓存约束传播
@@ -411,7 +425,8 @@ Martin Kostov 2026年4月分享了一个完整的生产级成本优化案例，�
 
 <strong>关键洞察</strong>：这三级策略不是"选一个"，而是<strong>叠加使用</strong>——语义缓存兜底高频查询，前缀缓存优化长上下文，prompt压缩减少所有路径上的token基数。
 
-3.4 调试与避坑：怎样才算命中？
+### 3.4 调试与避坑：怎样才算命中？
+
 
 从API账单读取命中状态
 Anthropic API的响应包含三个关键字段，这是判断命中与否的唯一可靠方式：
@@ -477,7 +492,8 @@ if diff:
 "伪命中"陷阱
 如果`cache_creation_input_tokens`在多轮对话中持续>0，同时`cache_read_input_tokens`始终≈0，这就是"<strong>伪命中</strong>"状态：你的请求前缀在变化（比如system prompt中的时间戳），所以系统每次都在创建新缓存条目，但永远不会命中上一次的缓存。<strong>缓存池被动态内容污染，大量存储被浪费，但没有任何命中。</strong>
 
-3.5 监控与可观测性
+### 3.5 监控与可观测性
+
 生产级prompt caching必须有专门的监控体系。
 
 <strong>主流工具对比</strong>：
@@ -506,12 +522,14 @@ if diff:
 指标健康值警告严重Prefix Cache Hit Rate>80%75-80%<75%Semantic Cache Hit Rate30-60%20-30%<20%Cost per 1K requests基准20-30%30-50%>50%TTFT改善率50-85%30-50%<30%Cache重建频率<5%/天5-10%/天>10%/天
 四、行动清单与前瞻
 
-4.0 先诊断：你目前处于哪个阶段？
+### 4.0 先诊断：你目前处于哪个阶段？
+
 不必急于执行全部checklist。先对照下表定位你的产品成熟度，再决定优先级：
 
 阶段特征你的现状当前最优先的1-2件事预计投入阶段0：还没接入缓存月API费用<$200，或刚完成MVP① 接入provider-level自动缓存 ② 移除system prompt中的动态变量1-2天阶段1：已接入但命中率低cache_read长期≈0，cost居高不下① 逐字节diff排查前缀一致性 ② 实施system_and_3断点策略3-5天阶段2：命中但架构不灵活每次加功能都怕打破缓存① 画出缓存层级图 ② 建立prompt变更评审流程1-2周阶段3：多副本/子代理规模化集群部署，命中率随副本数衰减① 评估Tiered Caching必要性 ② 测量子代理冷启动成本占比2-4周阶段4：成本精细化运营月API费用>$10K，每1%命中率都值钱① 三级叠加策略（语义+前缀+压缩）② 引入Helicone/Braintrust监控持续迭代<strong>自测</strong>：如果你不确定自己处于哪个阶段，打开最近7天的API账单，计算 `cache_read_input_tokens / (cache_read + cache_creation + input_tokens)`。如果这个比例<50%，你大概率在阶段0或1；>75%且cost仍是痛点，你大概在阶段3或4。
  
-4.1 开发者行动清单
+### 4.1 开发者行动清单
+
 <strong>架构设计阶段</strong>
 
 - 画出prompt的「缓存层级图」，明确哪些块是绝对静态的
@@ -527,7 +545,8 @@ if diff:
 - 对prompt变更实施A/B测试，量化缓存影响后再全量上线
 - 定期审计第三方工具/integration的缓存行为，确保它们没有隐式破坏前缀匹配
 - 对子代理架构测量实际缓存命中率和冷启动成本占比
-4.2 2026年前沿演进
+### 4.2 2026年前沿演进
+
 
 - <strong>DeepSeek的激进定价重塑成本基准</strong>：2026年4月24日DeepSeek V4发布，26日将全系列输入缓存命中价格降至首发价的1/10。V4 Flash缓存命中低至$0.0028/1M tokens。这使得缓存失效的代价被放大到50-120倍，prompt caching从"优化项"升格为"生死线"
 - <strong>自动缓存（Auto-caching）</strong>：2026年2月19日，Anthropic宣布Messages API支持自动prompt caching，降低了正确实现的门槛

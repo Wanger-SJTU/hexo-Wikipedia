@@ -167,7 +167,8 @@ B. 当模型能够输出可读性好的reasoning数据（合成数据），才�
 - 提示词工程决定“deepthink”模式
 > we call DeepSeek-V3 to generate a potential chain-of-thought before answering the question by prompting. However, for simpler queries, such as “hello” we do not provide a CoT in response.
 
-2. 不用额外的模型， 即可做summarization
+## 2. 不用额外的模型， 即可做summarization
+
 
 <strong>we design a readable pattern</strong> that includes a summary at the end of each response and filters out responses that are not reader-friendly3. 虽然对prompt提示词敏感，但解决问题可以纯zero-shot
 

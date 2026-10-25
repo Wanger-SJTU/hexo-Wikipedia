@@ -21,13 +21,20 @@ gigantische Instruktionsablage.
 
 Bevor Code geändert wird:
 
-1. Das Repo-Root mit `pwd` bestätigen.
-2. `ARCHITECTURE.md` für die aktuelle Systemübersicht und harten Abhängigkeitsregeln lesen.
-3. `docs/QUALITY_SCORE.md` lesen, um zu sehen, welche Domänen oder Schichten am schwächsten sind.
-4. `docs/PLANS.md` lesen, dann den aktiven Plan öffnen, an dem gearbeitet wird.
-5. Die relevante Produktspezifikation in `docs/product-specs/` lesen.
-6. Den Standard-Bootstrap- und Verifikationspfad für dieses Repo ausführen.
-7. Wenn die Baseline-Verifikation fehlschlägt, die Baseline reparieren, bevor neuer Scope hinzugefügt wird.
+## 1. Das Repo-Root mit `pwd` bestätigen.
+
+## 2. `ARCHITECTURE.md` für die aktuelle Systemübersicht und harten Abhängigkeitsregeln lesen.
+
+## 3. `docs/QUALITY_SCORE.md` lesen, um zu sehen, welche Domänen oder Schichten am schwächsten sind.
+
+## 4. `docs/PLANS.md` lesen, dann den aktiven Plan öffnen, an dem gearbeitet wird.
+
+## 5. Die relevante Produktspezifikation in `docs/product-specs/` lesen.
+
+## 6. Den Standard-Bootstrap- und Verifikationspfad für dieses Repo ausführen.
+
+## 7. Wenn die Baseline-Verifikation fehlschlägt, die Baseline reparieren, bevor neuer Scope hinzugefügt wird.
+
 
 ## Routing-Map
 
@@ -63,8 +70,13 @@ Eine Änderung ist erst fertig, wenn all dies zutrifft:
 
 Vor dem Beenden einer Session:
 
-1. Den aktiven Ausführungsplan aktualisieren.
-2. `docs/QUALITY_SCORE.md` aktualisieren, falls sich eine Domäne oder Schicht signifikant geändert hat.
-3. Neue Schulden in `docs/exec-plans/tech-debt-tracker.md` dokumentieren, falls zurückgestellt.
-4. Fertige Planks nach `docs/exec-plans/completed/` verschieben, wenn angemessen.
-5. Das Repo in einem neustartfähigen Zustand mit klarer nächster Aktion hinterlassen.
+## 1. Den aktiven Ausführungsplan aktualisieren.
+
+## 2. `docs/QUALITY_SCORE.md` aktualisieren, falls sich eine Domäne oder Schicht signifikant geändert hat.
+
+## 3. Neue Schulden in `docs/exec-plans/tech-debt-tracker.md` dokumentieren, falls zurückgestellt.
+
+## 4. Fertige Planks nach `docs/exec-plans/completed/` verschieben, wenn angemessen.
+
+## 5. Das Repo in einem neustartfähigen Zustand mit klarer nächster Aktion hinterlassen.
+

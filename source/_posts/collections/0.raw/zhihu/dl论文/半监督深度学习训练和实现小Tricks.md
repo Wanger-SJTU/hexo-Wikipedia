@@ -22,7 +22,8 @@ source_url: https://zhuanlan.zhihu.com/p/100252944
 言归正传，本文旨在分享一些我在训练和实现半监督深度学习模型时所发现的一些小Tricks，并没有什么太多理论，只是一些经验，也没有太多实验去支持（毕竟也就写了一周，repo上的一些代码我自己都没完整跑过...orz），大家就看看，希望能对大家有所启发。
 
 注：下面给出的所有模型的实验结果，几乎都在同一实验参数下得出，以方便公平比较，并不是按照论文给出的最佳参数进行训练的。若想复现论文结果，请自行调参。
-1. 默认优化参数
+## 1. 默认优化参数
+
 第一个我想分享的是，默认优化参数，如下：
 
 - 优化器：SGD +lr =0.1+momentum =0.9；或 Adam+lr =1e-3
@@ -38,25 +39,26 @@ source_url: https://zhuanlan.zhihu.com/p/100252944
 2.两种数据输入方式
 讲这个内容前，请容我介绍一些半监督深度学习代价的基本形式：
 
-![](https://www.zhihu.com/equation?tex=Loss+%3D+L_%7Bsup%7D%2Bw%28t%29%5Ccdot+L_%7Busp%7D) 
+$$Loss = L_{sup}+w(t)\cdot L_{usp}$$
+
 
 其中， 
-![](https://www.zhihu.com/equation?tex=L_%7Bsup%7D) 为有监督代价函数，通常为交叉熵代价。 
-![](https://www.zhihu.com/equation?tex=L_%7Busp%7D) 为无监督代价函数，也是不同半监督深度学习模型的区别所在。
+$L_{sup}$ 为有监督代价函数，通常为交叉熵代价。 
+$L_{usp}$ 为无监督代价函数，也是不同半监督深度学习模型的区别所在。
 
 由于 
-![](https://www.zhihu.com/equation?tex=L_%7Busp%7D) 是无监督代价函数，可以作用于有标签数据和无标签数据，因此无监督代价函数的输入出现了两种不同实现方法。在一个batch中，令 
-![](https://www.zhihu.com/equation?tex=X_%7Busp%7D) 为输入 
-![](https://www.zhihu.com/equation?tex=L_%7Busp%7D) 的数据。
+$L_{usp}$ 是无监督代价函数，可以作用于有标签数据和无标签数据，因此无监督代价函数的输入出现了两种不同实现方法。在一个batch中，令 
+$X_{usp}$ 为输入 
+$L_{usp}$ 的数据。
 
 - <strong>方式v1</strong>：
-![](https://www.zhihu.com/equation?tex=X_%7Busp%7D) 中有标签数据和无标签数据按固定比例混合输入。即 
-![](https://www.zhihu.com/equation?tex=X_%7Busp%7D%3DConcat%28X_l%2C+X_u%29) ，其中 
-![](https://www.zhihu.com/equation?tex=X_l%2C+X_u) 为batch中的有标签数据和无标签数据。
+$X_{usp}$ 中有标签数据和无标签数据按固定比例混合输入。即 
+$X_{usp}=Concat(X_l, X_u)$ ，其中 
+$X_l, X_u$ 为batch中的有标签数据和无标签数据。
 
 - <strong>方式v2：</strong>
-![](https://www.zhihu.com/equation?tex=X_%7Busp%7D%3DRandomSubset%28Dataset%29) ，即 
-![](https://www.zhihu.com/equation?tex=X_%7Busp%7D) 为整个数据集的随机采样，因此不能保证有标签数据和无标签数据的比例，甚至会出现没有有标签数据的情况。
+$X_{usp}=RandomSubset(Dataset)$ ，即 
+$X_{usp}$ 为整个数据集的随机采样，因此不能保证有标签数据和无标签数据的比例，甚至会出现没有有标签数据的情况。
 
 从目前CIFAR-10实验情况来看，方式v2更好（并不保证orz）：
 
@@ -72,15 +74,18 @@ CIFAR-10的实验结果对比如下：
 
 ![](https://pic2.zhimg.com/v2-4dc11bd76435796c8c87a38dfe2b672b_r.jpg)Test error of CIFAR-10 with 4000 labeled samples可以看到，使用 epoch pseudo labels 有非常明显的提升。因此建议大家实现基于伪标签的半监督深度模型时使用 epoch pseudo labels 而不是 iteration pseudo labels。
 
-4. 使用 MixUp loss
+## 4. 使用 MixUp loss
+
 最近，使用 MixUp[7]+consistency regularization 成为了新的 SOTA 方法，代表有 ICT和MixMatch。半监督中使用的 Mixup 数据增强形式如下：
 
-![](https://www.zhihu.com/equation?tex=x%27%3D%5Clambda+x_a+%2B+%281-%5Clambda%29+x_b+%5C%5C+y%27%3D%5Clambda+y_a+%2B+%281-%5Clambda%29+y_b+%5C%5C+%5Clambda+%5Csim+Beta%28%5Calpha%2C+%5Calpha%29) 
+$$x'=\lambda x_a + (1-\lambda) x_b \\ y'=\lambda y_a + (1-\lambda) y_b \\ \lambda \sim Beta(\alpha, \alpha)$$
+
 
  即通过线性插值的方式产生新的数据。但是如何利用插值数据有4种方式，令模型为 
-![](https://www.zhihu.com/equation?tex=f) ：
+$f$ ：
 
-![](https://www.zhihu.com/equation?tex=L_1%3DCE%28f%28x%27%29%2C+y%27%29+%5C%5C+L_2%3DMSE%28f%28x%27%29%2C+y%27%29+%5C%5C+L_3%3D%5Clambda+%5Ccdot+CE%28f%28x%27%29%2C+y_a%29+%2B+%281-%5Clambda%29+%5Ccdot+CE%28f%28x%27%29%2C+y_b%29+%5C%5C+L_4%3D%5Clambda+%5Ccdot+MSE%28f%28x%27%29%2C+y_a%29+%2B+%281-%5Clambda%29+%5Ccdot+MSE%28f%28x%27%29%2C+y_b%29+) 
+$$L_1=CE(f(x'), y') \\ L_2=MSE(f(x'), y') \\ L_3=\lambda \cdot CE(f(x'), y_a) + (1-\lambda) \cdot CE(f(x'), y_b) \\ L_4=\lambda \cdot MSE(f(x'), y_a) + (1-\lambda) \cdot MSE(f(x'), y_b)$$
+
 
 其中，CE为交叉熵代价函数，MSE为均方误差代价函数。
 

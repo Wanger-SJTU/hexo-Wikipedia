@@ -19,11 +19,14 @@ source_url: https://zhuanlan.zhihu.com/p/678584093
 
 ### 0. 目录
 
-1. 垫话
+## 1. 垫话
 
-2. 综述
 
-3. 前置知识
+## 2. 综述
+
+
+## 3. 前置知识
+
 
 	3.1 Memory types
 
@@ -37,25 +40,34 @@ source_url: https://zhuanlan.zhihu.com/p/678584093
 
 		3.3.2 处理器真的会在不同 type 上有不同行为？
 
-4. 内存序（memory ordering）
+## 4. 内存序（memory ordering）
+
 
 	4.1 乱序的限制
 
-5. 内存屏障（memory barriers）
+## 5. 内存屏障（memory barriers）
 
-6. 啥是观察者（Observer）？
 
-7. 数据内存屏障（data memory barriers）
+## 6. 啥是观察者（Observer）？
 
-8. 内存同步屏障（data synchronization barriers）
 
-9. 一次访问何时被认为是“已完成”？
+## 7. 数据内存屏障（data memory barriers）
 
-10. 内存屏障范围的限制
 
-11. 各种观察者
+## 8. 内存同步屏障（data synchronization barriers）
 
-12. load-acquire 与 store-release 指令
+
+## 9. 一次访问何时被认为是“已完成”？
+
+
+## 10. 内存屏障范围的限制
+
+
+## 11. 各种观察者
+
+
+## 12. load-acquire 与 store-release 指令
+
 
 	12.1 Load-Acquire
 
@@ -69,15 +81,19 @@ source_url: https://zhuanlan.zhihu.com/p/678584093
 
 	12.6 Limited Ordering Regions
 
-13. 指令屏障（instruction barriers）
+## 13. 指令屏障（instruction barriers）
+
 
 	13.1 使用示例
 
-14. 知识检验
+## 14. 知识检验
 
-15. 相关信息
 
-16. 更进一步
+## 15. 相关信息
+
+
+## 16. 更进一步
+
 
 ### 1. 垫话
 

@@ -29,10 +29,14 @@ que puedes seguir o adaptar.
 
 ## Cómo Usarlos
 
-1. Elige el SOP que coincida con tu cuello de botella actual.
-2. Usa la lista de verificación para configurar los artefactos o herramientas faltantes.
-3. Codifica las reglas resultantes en los docs de tu copia de `repo-template/`.
-4. Convierte los comentarios de revisión repetidos en verificaciones, scripts o barreras de protección.
+## 1. Elige el SOP que coincida con tu cuello de botella actual.
+
+## 2. Usa la lista de verificación para configurar los artefactos o herramientas faltantes.
+
+## 3. Codifica las reglas resultantes en los docs de tu copia de `repo-template/`.
+
+## 4. Convierte los comentarios de revisión repetidos en verificaciones, scripts o barreras de protección.
+
 
 Estos no están pensados para seguirse a ciegas. Están pensados para hacer el harness
 más legible, enforcementable y repetible.

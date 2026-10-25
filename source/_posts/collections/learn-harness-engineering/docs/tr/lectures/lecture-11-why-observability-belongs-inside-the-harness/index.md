@@ -73,8 +73,10 @@ Bir harness gözlemlenebilirlikten yoksun olduğunda dört tür sorun sistematik
 
 Şöyle düşünebilirsiniz: "Ajan kendi günlüklerini yazdıramaz mı?" Sorunlar şunlardır:
 
-1. Ajan bilmediğini bilmez — ihtiyaç duyduğunu fark etmediği sinyalleri proaktif olarak kaydetmez.
-2. Günlük formatları tutarsızdır — farklı oturumlar farklı günlük formatları kullanır, sistematik analizi imkansız kılar.
+## 1. Ajan bilmediğini bilmez — ihtiyaç duyduğunu fark etmediği sinyalleri proaktif olarak kaydetmez.
+
+## 2. Günlük formatları tutarsızdır — farklı oturumlar farklı günlük formatları kullanır, sistematik analizi imkansız kılar.
+
 3. Süreç gözlemlenebilirliği günlüklerle çözülemez — sprint sözleşmeleri ve puanlama ölçütleri harness düzeyinde destek gerektiren yapılandırılmış artefaktlardır.
 
 ## Doğru nasıl yapılır

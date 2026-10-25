@@ -27,29 +27,41 @@ id: e5723f29-3338-420b-adda-9fa59ae629a5
 
 2 Langchain/Langchain-chatchat
 
-2.1 RecursiveCharacterTextSplitter：重叠滑窗分句方法
+### 2.1 RecursiveCharacterTextSplitter：重叠滑窗分句方法
 
-2.2 CharacterTextSplitter
 
-2.4 MarkdownHeaderTextSplitter
+### 2.2 CharacterTextSplitter
 
-2.6 spaCy（TokenTextSplitter变形）
 
-2.7 SentenceTransformersTokenTextSplitter（TokenTextSplitter变形）
+### 2.4 MarkdownHeaderTextSplitter
 
-2.8 NLTKTextSplitter（TokenTextSplitter变形）
 
-2.8.6 基于词性标记的命名实体识别 Using Named Entity Recognition (NER)
+### 2.6 spaCy（TokenTextSplitter变形）
 
-2.9 GPT2TokenizerFast : Hugging Face tokenizer（TokenTextSplitter变形）
 
-2.10 AliTextSplitter : Langchian-chatchat封装
+### 2.7 SentenceTransformersTokenTextSplitter（TokenTextSplitter变形）
 
-2.11 ChineseRecursiveTextSplitter : Langchian-chatchat封装
 
-2.12 ChineseTextSplitter : Langchian-chatchat封装
+### 2.8 NLTKTextSplitter（TokenTextSplitter变形）
 
-2.13 zh\_title\_enhance：标题增强
+
+### 2.8.6 基于词性标记的命名实体识别 Using Named Entity Recognition (NER)
+
+
+### 2.9 GPT2TokenizerFast : Hugging Face tokenizer（TokenTextSplitter变形）
+
+
+### 2.10 AliTextSplitter : Langchian-chatchat封装
+
+
+### 2.11 ChineseRecursiveTextSplitter : Langchian-chatchat封装
+
+
+### 2.12 ChineseTextSplitter : Langchian-chatchat封装
+
+
+### 2.13 zh\_title\_enhance：标题增强
+
 
 在上一篇【[悟乙己：大模型RAG 场景、数据、应用难点与解决（四）](https://zhuanlan.zhihu.com/p/673465732)】提到了RAG中文档数据不够干净，召回效果也不会好，同时在第2点提到了Langchian-Chatchat中提及到的一些文档预处理方法，包括更加规范的格式、小切片等。
 
@@ -77,16 +89,22 @@ id: e5723f29-3338-420b-adda-9fa59ae629a5
 
 由此RAG任务不擅长回答的几类问题：
 
-1. <strong>不擅长小范围的描述性问题回答</strong>。例如，哪个主体具有某些特征?
-2. <strong>不擅长关系推理</strong>，即寻找从实体A到实体B的路径或识别实体集团。
-3. <strong>不擅长时间跨度很长的总结</strong>。例如，“列出所有哈利波特的战斗”或“哈利波特有多少次战斗?”
+## 1. **不擅长小范围的描述性问题回答**。例如，哪个主体具有某些特征?
+
+## 2. **不擅长关系推理**，即寻找从实体A到实体B的路径或识别实体集团。
+
+## 3. **不擅长时间跨度很长的总结**。例如，“列出所有哈利波特的战斗”或“哈利波特有多少次战斗?”
+
 
 此时借由【[最详细的文本分块(Chunking)方法，直接影响LLM应用效果](https://luxiangdong.com/2023/09/20/chunk/#/Embedding%E9%95%BF%E7%9F%AD%E5%86%85%E5%AE%B9)】文章信息，在确定最佳分块策略时，有几个因素会对我们的选择起到至关重要的影响：
 
-1. <strong>被索引内容的性质是什么?</strong> 这可能差别会很大，是处理较长的文档(如文章或书籍)，还是处理较短的内容(如微博或即时消息)？答案将决定哪种模型更适合您的目标，从而决定应用哪种分块策略。
+## 1. **被索引内容的性质是什么?** 这可能差别会很大，是处理较长的文档(如文章或书籍)，还是处理较短的内容(如微博或即时消息)？答案将决定哪种模型更适合您的目标，从而决定应用哪种分块策略。
+
 2. <strong>您使用的是哪种Embedding模型，它在多大的块大小上表现最佳？</strong>例如，`sentence-transformer`模型在单个句子上工作得很好，但像**`text- embedt-ada -002`**这样的模型在包含256或512个tokens的块上表现得更好。
-3. <strong>你对用户查询的长度和复杂性有什么期望？</strong>用户输入的问题文本是简短而具体的还是冗长而复杂的？这也直接影响到我们选择分组内容的方式，以便在嵌入查询和嵌入文本块之间有更紧密的相关性。
-4. <strong>如何在您的特定应用程序中使用检索结果？</strong> 例如，它们是否用于<strong>语义搜索</strong>、<strong>问答</strong>、<strong>摘要</strong>或<strong>其他目的</strong>？例如，和你底层连接的LLM是有直接关系的，LLM的tokens限制会让你不得不考虑分块的大小。
+## 3. **你对用户查询的长度和复杂性有什么期望？**用户输入的问题文本是简短而具体的还是冗长而复杂的？这也直接影响到我们选择分组内容的方式，以便在嵌入查询和嵌入文本块之间有更紧密的相关性。
+
+## 4. **如何在您的特定应用程序中使用检索结果？** 例如，它们是否用于**语义搜索**、**问答**、**摘要**或**其他目的**？例如，和你底层连接的LLM是有直接关系的，LLM的tokens限制会让你不得不考虑分块的大小。
+
 
 没有最好的分块策略，只有适合的分块策略，为了确保查询结果更加准确，有时候我们甚至需要选择性的使用几种不同的策略。
 
@@ -278,8 +296,10 @@ tiktoken 是由 OpenAI 开源的快速 BPE 分词器。
 
 可以使用它来估算使用的token。对于 OpenAI 模型来说，它可能更准确。
 
-1. 文本如何拆分：按照传入的字符
-2. 块大小如何测量：通过 tiktoken 分词器
+## 1. 文本如何拆分：按照传入的字符
+
+## 2. 块大小如何测量：通过 tiktoken 分词器
+
 
 使用前需要先安装：
 
@@ -579,8 +599,10 @@ md_docs
 
 使用NLTK的替代方案是使用[spaCy分词器](https://spacy.io/api/tokenizer)。
 
-1. 文本如何拆分：通过`spaCy`分词器
-2. 如何测量块大小：按字符数计算
+## 1. 文本如何拆分：通过`spaCy`分词器
+
+## 2. 如何测量块大小：按字符数计算
+
 
 使用前需要安装：
 
@@ -677,8 +699,10 @@ print(text_chunks[1])
 
 按`\\n\\n`拆分文本，我们可以使用 `NLTK` 基于 [NLTK 分词器](https://www.nltk.org/api/nltk.tokenize.html) 进行拆分。
 
-1. 文本拆分方式：使用 `NLTK` 分词器。
-2. 块大小的测量方式：按字符数测量。
+## 1. 文本拆分方式：使用 `NLTK` 分词器。
+
+## 2. 块大小的测量方式：按字符数测量。
+
 
 ```routeros
 from langchain.text_splitter import NLTKTextSplitter
@@ -950,8 +974,10 @@ print(entity)
 
 我们使用Hugging Face分词器中的[GPT2TokenizerFast](https://huggingface.co/Ransaka/gpt2-tokenizer-fast)来计算文本长度的token数。
 
-1. 文本是如何分割的：按照传入的字符进行分割。
-2. 块的大小如何计算：由`Hugging Face`分词器计算得到的token数来衡量。
+## 1. 文本是如何分割的：按照传入的字符进行分割。
+
+## 2. 块的大小如何计算：由`Hugging Face`分词器计算得到的token数来衡量。
+
 
 ```makefile
 from transformers import GPT2TokenizerFast

@@ -32,7 +32,8 @@ source_url: https://zhuanlan.zhihu.com/p/2061100810134623162
 - [ARM 弱序架构上的差异](https://zhuanlan.zhihu.com/write#11-arm-%E5%BC%B1%E5%BA%8F%E6%9E%B6%E6%9E%84%E4%B8%8A%E7%9A%84%E5%B7%AE%E5%BC%82)
 - [LFB 资源竞争](https://zhuanlan.zhihu.com/write#12-lfb-%E8%B5%84%E6%BA%90%E7%AB%9E%E4%BA%89)
 - [核心结论速查](https://zhuanlan.zhihu.com/write#13-%E6%A0%B8%E5%BF%83%E7%BB%93%E8%AE%BA%E9%80%9F%E6%9F%A5)
-1. WQE 写入与 doorbell 的排序需求
+## 1. WQE 写入与 doorbell 的排序需求
+
 RDMA 用户态发送路径的基本约束:
 
 - WQE(Work Queue Element)先写进 Send Queue,再敲 doorbell 通知 HW。
@@ -145,7 +146,8 @@ desc->flag = cpu_to_le32(DESC_FLAG_OWN | len);
 顺带:doorbell 那侧没问题
 writel` 在弱序架构内部含前置 barrier,x86 上 doorbell 走 UC 天然有序, `dma_wmb + writel` 是标准惯用,足够。问题只出在 desc 内部 addr↔OWN 缺屏障那一处。
 
-2. 两种”通知设备”模型:各只需一次 barrier
+## 2. 两种”通知设备”模型:各只需一次 barrier
+
 
 模型 A —— 轮询 / ownership-bit(HW 主动扫 WQE,无 doorbell)
 HW 异步读 WQE,靠 valid/owner 位判有效:
@@ -185,7 +187,8 @@ mmio_flush_writes();
 - barrier (1):排序<strong>整个 WQE</strong> vs doorbell-record 写。<strong>不是</strong> body vs flags。
 - barrier (2):处理 <strong>MMIO / write-combining</strong> 的 doorbell 写(设备内存,规则与 host DRAM 不同)。即两个 barrier 是 <strong>WQE-vs-doorbell</strong> 和 <strong>host-vs-MMIO</strong>,从来不是 WQE 内部的 body-vs-flag。
 
-3. WB / WC / UC 三种内存类型
+## 3. WB / WC / UC 三种内存类型
+
 三者本质是 <strong>CPU 对某段地址在「缓存 + 合并 + 保序」三个维度上的策略</strong>。
 
 维度WB Write-BackWC Write-CombiningUC Uncacheable进 cache是(读写都缓存)否(不分配 cacheline)否写合并cacheline 粒度回写同 64B 区合并,LFB 间乱序不合并,一写一事务store 保序强(x86 TSO,store 不越 store)弱,可乱序/延迟,需 SFENCE强,严格串行读行为缓存,快不缓存,可投机预读不缓存,non-posted 阻塞,不投机写投递走 cacheposted,攒着,要 fence 才挤出去posted 到 PCIe,但 CPU 侧不进 WC buffer,立即按序发典型用途普通 RAM、SQ ring、数据 bufferBlueFlame、批量 MMIO 推数据doorbell、控制寄存器
@@ -199,7 +202,8 @@ barrier 的真正作用
 - barrier 是 <strong>CPU 内部的排序指令</strong>,不通知任何设备(<strong>doorbell 才通知设备</strong>)。
 - 它只保证顺序 / 可见性,<strong>不刷 DRAM</strong>。coherent DMA 会 snoop cache, 数据待 L1/L2 里设备也读得到。
 - x86 上对 WB 而言,`udma_to_device_barrier` 基本就是个编译器 barrier(TSO 已排好序)。 真正的硬件 `sfence` 只在 WC(BlueFlame)路径出现。
-4. 如何查看内存映射类型
+## 4. 如何查看内存映射类型
+
 x86 上内存类型由 <strong>MTRR + PAT</strong> 决定:
 
 # 1. PAT 已登记的范围(最有用,设备 BAR 的 WC/UC 基本都在这)
@@ -228,7 +232,8 @@ RDMA 场景:
 
 - <strong>SQ ring / dbrec</strong>:普通 `posix_memalign` 分的匿名内存 → <strong>WB</strong>。
 - <strong>UAR / BlueFlame</strong>:libmlx5 mmap 设备文件,内核驱动用 `pgprot_writecombine()`(BF) 或 `pgprot_noncached()`(doorbell)定 pgprot,先试 WC 失败退 UC。
-5. WB 写入 L1D 的真实机制:RFO
+## 5. WB 写入 L1D 的真实机制:RFO
+
 <strong>L1D = L1 数据 cache</strong>(与 L1I 指令 cache 分开)。
 
 WB cache line 的结构
@@ -245,10 +250,14 @@ PA = 0x12340
 
 
 L1D 查询查什么
-1. TLB 把 VA→PA(L1D 是 VIPT:index 用 VA 低位,tag 用 PA;页内低 12 位 VA==PA,不冲突)
-2. 用 set index 选中对应组
-3. 组内 N 个 way 并行比对:valid == 1 ? 且 tag 匹配 ?
-4. 命中还要看 MESI:写操作需 M/E 可写;S 需升级(RFO/Invalidate);无匹配 = miss
+## 1. TLB 把 VA→PA(L1D 是 VIPT:index 用 VA 低位,tag 用 PA;页内低 12 位 VA==PA,不冲突)
+
+## 2. 用 set index 选中对应组
+
+## 3. 组内 N 个 way 并行比对:valid == 1 ? 且 tag 匹配 ?
+
+## 4. 命中还要看 MESI:写操作需 M/E 可写;S 需升级(RFO/Invalidate);无匹配 = miss
+
 
 RFO(Read For Ownership)—— 以写一个 64B WQE 为例
 前提:WQE 对齐写到 WB 的 SQ ring 地址 A,slot 里是上一圈旧 WQE(或全 0,内存永远有某个值,不存在”空”)。
@@ -278,7 +287,8 @@ store#2 ~ #8 (写 offset 8/16/.../56):
 设备读 WQE —— 印证”不刷 DRAM”
 WQE 现在只在 L1D(M 态,脏),DRAM 还是旧的。coherent DMA 的读是一致性请求 → snoop CPU cache → 发现 L1D 脏行 → 从 L1D 取/转发给设备。<strong>DRAM 全程没参与。</strong>
 
-6. WC 与 LFB(Line Fill Buffer)
+## 6. WC 与 LFB(Line Fill Buffer)
+
 
 LFB 是什么
 <strong>LFB(Line Fill Buffer)是共享资源,Intel 上约 10-12 个/核</strong>,身兼两职:
@@ -298,7 +308,8 @@ WC 写 3 个 8B 后未写满会怎样
 UC 去哪
 UC store 不进 cache、不做 write-combining、不合并: `store buffer → 直接作为一笔独立总线事务发出`,按程序序,一写一事务,严格保序。 发事务时可能短暂占个 buffer 做总线接口,但<strong>没有合并语义</strong>。 UC 读是 non-posted(阻塞,等设备返回),所以读控制寄存器慢。
 
-7. BlueFame:WC 直推 WQE 与多 TLP 重组
+## 7. BlueFame:WC 直推 WQE 与多 TLP 重组
+
 
 两条投递路径
 
@@ -347,7 +358,8 @@ BF 路径的正确性锚点是 ring,不是 push
 驱动实际防的乱序
 代码注释防的<strong>不是 WQE 内部块乱序</strong>,而是<strong>跨 CPU 的 doorbell 之间乱序</strong>: CPU A 的 doorbell 卡在 WC buffer,CPU B 的先被 flush → HCA 先看到 2 再看到 1。 解法:`mmio_wc_spinlock` + flush 放锁内 + `bf->offset ^= buf_size`(buffer 乒乓)。
 
-8. PCIe TLP、MPS 与 write-coalescing
+## 8. PCIe TLP、MPS 与 write-coalescing
+
 
 三个不同层次,别串成一条流水线
 ① store 指令  →  ② WC fill buffer(64B/条)  →  ③ 根复合体 RC 打 PCIe TLP(≤MPS)
@@ -369,7 +381,8 @@ RC 何时把 4×64B 合并成 256B
 - MPS 协商 ≥ 256(取整条路径最小值)。
 - RC 实现支持 write-coalescing。<strong>全满足也只是”有机会”,软件不能依赖。合并只影响快慢,不影响对错。</strong>
 
-9. 设备侧完整性判断:乱序到达怎么办
+## 9. 设备侧完整性判断:乱序到达怎么办
+
 
 RC 靠地址,不靠身份
 LFB 发给 RC 的每笔写带 `[物理地址 + 数据 + 字节掩码]`,<strong>没有”这是 WQE #N”标签</strong>。 RC 纯看地址是否首尾相接来决定合并。地址是从 LFB → RC → TLP → 设备<strong>每一层唯一的钥匙</strong>。 乱序也不怕:每笔自带绝对地址,任意层都能<strong>按地址归位</strong>重组。
@@ -388,7 +401,8 @@ mlx5 实际更简单
 - <strong>dbrec 的 producer index</strong> → 独立权威给 size。
 - <strong>SQ ring 里有权威完整副本</strong> → 拼不齐就 DMA 回读。所以 header(控制段)晚到也只会让设备<strong>多等</strong>(没 size 不敢处理 = 安全), 绝不会”看见字段就取半截”。BF gate 在”数够字节”,不在”看见字段”。
 
-10. 一致性 DMA vs 非一致 DMA
+## 10. 一致性 DMA vs 非一致 DMA
+
 核心:cache 夹在 CPU 和设备中间。CPU 写先落 cache,DRAM 可能还是旧的。
 
 一致性 DMA(coherent)
@@ -407,7 +421,8 @@ mlx5 实际更简单
 - <strong>coherency(一致性)</strong> → 管数据值同步,决定要不要刷 cache。
 - <strong>barrier(内存屏障)</strong> → 管顺序 / 可见时机,决定 store 谁先谁后。**只有 non-coherent 才有”真刷 DRAM”这一步,而且是 `DC` cache 指令干的,不是 barrier 干的。**
 
-11. ARM 弱序架构上的差异
+## 11. ARM 弱序架构上的差异
+
 核心:<strong>x86 靠 TSO 白送的顺序,ARM 全部要显式 barrier</strong>。排序点数量一样,但在 ARM 上每个都是真指令。
 
 内存类型对照
@@ -451,7 +466,8 @@ asm volatile("dsb osh" ::: "memory");
 *doorbell_reg = db_val;                                 // Device-nGnRnE,无需 DC
 接收方向(CQ 轮询)读前要 `DC CIVAC`+DSB;`DC IVAC` 是 EL1 特权,用户态只能 CIVAC—— 所以<strong>实务一律把 SQ/CQ/dbrec 放 non-cacheable 绕开 cache maintenance,只对 payload 做 streaming sync</strong>。
 
-12. LFB 资源竞争
+## 12. LFB 资源竞争
+
 
 RFO 与 WC 抢同一个池
 LFB(~10-12/核)同时服务:load miss、store RFO、WC 合并、非临时写、prefetch。 <strong>RFO 和 WC 确实抢资源。</strong>
@@ -466,7 +482,8 @@ LFB(~10-12/核)同时服务:load miss、store RFO、WC 合并、非临时写、p
 规避
 WC 写<strong>地址集中</strong>(别散写 >12 个不同 64B 行)、<strong>及时 sfence</strong>、<strong>别跟大量 cache-miss 的 WB 流量混跑</strong>。
 
-13. 核心结论速查
+## 13. 核心结论速查
+
 
 - <strong>doorbell 前只需一次 barrier</strong>,不是两次。mlx5 SQ 走”doorbell 模型”, WQE 内部字段顺序 HW 看不到。
 - <strong>barrier 管顺序/可见性,不通知设备(doorbell 才通知)、不刷 DRAM</strong>。 x86 上 WB 的这条基本是编译器 barrier;真 sfence 只为 WC(BlueFlame)。

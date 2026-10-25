@@ -64,14 +64,19 @@ docs/
 
 ## Nasıl Benimsersiniz
 
-1. Deponuz hâlâ küçükse minimal paketten başlayın.
-2. Daha güçlü bir yapıya ihtiyaç duyduğunuzda [`repo-template/`](./repo-template/index.md)
+## 1. Deponuz hâlâ küçükse minimal paketten başlayın.
+
+## 2. Daha güçlü bir yapıya ihtiyaç duyduğunuzda [`repo-template/`](./repo-template/index.md)
+
    içindeki dosyaları kendi deponuza kopyalayın.
-3. `AGENTS.md`'yi kısa tutun. Onu derin dokümanlara giden bir yönlendirici
+## 3. `AGENTS.md`'yi kısa tutun. Onu derin dokümanlara giden bir yönlendirici
+
    olarak ele alın, bir ansiklopedi olarak değil.
-4. Kalite, güvenilirlik ve plan dokümanlarını ayrı bir temizlik günü olarak
+## 4. Kalite, güvenilirlik ve plan dokümanlarını ayrı bir temizlik günü olarak
+
    değil, normal işin parçası olarak güncelleyin.
-5. Üretilmiş çıktıları ve dış referansları açık tutun ki ajanlar sohbet
+## 5. Üretilmiş çıktıları ve dış referansları açık tutun ki ajanlar sohbet
+
    geçmişine bel bağlamadan onları bulabilsin.
 
 ## SOP Kütüphanesi

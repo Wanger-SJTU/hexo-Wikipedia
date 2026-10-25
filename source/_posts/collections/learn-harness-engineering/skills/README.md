@@ -79,9 +79,12 @@ skills/
 
 Each skill follows a standard structure:
 
-1. <strong>SKILL.md</strong> — The entry point. Contains YAML frontmatter (name, description for triggering) and Markdown instructions for the agent.
-2. <strong>references/</strong> — Additional docs loaded into context as needed.
-3. <strong>templates/</strong> — Starting templates that the skill can generate for users.
+## 1. **SKILL.md** — The entry point. Contains YAML frontmatter (name, description for triggering) and Markdown instructions for the agent.
+
+## 2. **references/** — Additional docs loaded into context as needed.
+
+## 3. **templates/** — Starting templates that the skill can generate for users.
+
 
 Skills use progressive disclosure — the agent first sees only the name + description, then loads the full SKILL.md body when triggered, and reads bundled resources only when needed.
 

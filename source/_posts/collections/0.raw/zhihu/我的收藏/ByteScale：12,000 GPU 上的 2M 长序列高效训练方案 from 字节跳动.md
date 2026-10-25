@@ -50,13 +50,15 @@ Background：序列维度上的并行方案
 - 把 dropout 和 LayerNorm 的激活沿序列维度切分了，减少了内存
 - TP：正向 f=NULL，g=all-reduce；反向 f=all-reduce，g=NULL
 - SP：正向 f=AG，g=RS；反向 f=RS，g=AG
-2. DeepSpeed Ulysses：https://zhuanlan.zhihu.com/p/4496065391
+## 2. DeepSpeed Ulysses：https://zhuanlan.zhihu.com/p/4496065391
+
 
 - Attention 层内是切 head，Attention 层外是切序列 
 - QKV 在进 Attention 之前是切 sequence，然后做了 a2a，变为切 hidden，送进 Attention
 - Attention 之后，再通过 a2a 变回切 sequence
 - 优缺点：通信量小。但序列并行在 attention 里面是和 tp 一起去切 head，对 GQA 不友好
-3.  Colossal AI / Ring Attention 方案：https://zhuanlan.zhihu.com/p/689067888
+## 3.  Colossal AI / Ring Attention 方案：https://zhuanlan.zhihu.com/p/689067888
+
 
 - 在 attention 之外，是实打实的切分了序列
 - 在 attention 内，按序列切分了 KV，利用 ring-self attention（RSA）的思想： 

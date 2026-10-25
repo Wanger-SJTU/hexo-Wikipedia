@@ -34,11 +34,13 @@ source_url: https://zhuanlan.zhihu.com/p/347223193
 - MIT 6.869 Advanced Computer Vision课程 的最后一课是讲How to do research, How to give a talk, 和Advices for PhD的，很多slide都非常得好，推荐所有的slide。我特别推荐这个How to do research，是他们找MIT CS所有的教授一人给PhD一条建议，超级好玩~ 而且因为我上过不少MIT的公开课，看到了好多熟面孔，感觉很亲切~另外也是因为觉得这样的最后一课非常有意义，所以我前段时间在给学生讲《机器学习》的时候，最后一课也讲了一些类似的内容，比如下面这张slide：
 ![](/images/collections/0.raw/zhihu/%E8%B5%B0%E5%90%91cs/asset/img_4351f318baba.jpg)
 
-6. 评论区小伙伴 @momento
+## 6. 评论区小伙伴 @momento
+
 
  补充：http://taoxie.cs.illinois.edu/advice/
 
-7. 评论区小伙伴Hydro(不知道为啥艾特不上）补充：超大规模英文advice集合，真的是超全，震惊了 Yuan Xie's Homepage 
+## 7. 评论区小伙伴Hydro(不知道为啥艾特不上）补充：超大规模英文advice集合，真的是超全，震惊了 Yuan Xie's Homepage 
+
 
 暂时先整理这些吧，其他的想到了再补充~
 

@@ -30,20 +30,25 @@ pour qu'une nouvelle session puisse agir dessus sans s'appuyer sur une conversat
 
 ## SOP d'exécution
 
-1. Lister les sources de connaissances invisibles : docs, chats, règles d'équipe implicites,
+## 1. Lister les sources de connaissances invisibles : docs, chats, règles d'équipe implicites,
+
    décisions verbales.
-2. Pour chaque source, se demander : s'agit-il d'architecture, de comportement produit,
+## 2. Pour chaque source, se demander : s'agit-il d'architecture, de comportement produit,
+
    de politique de sécurité, d'attente de fiabilité, de contexte de planification ou de
    matériel de référence ?
-3. L'encoder dans l'artefact de dépôt correspondant :
+## 3. L'encoder dans l'artefact de dépôt correspondant :
+
    - architecture -> `ARCHITECTURE.md`
    - comportement produit -> `docs/product-specs/`
    - justification de conception -> `docs/design-docs/`
    - état d'exécution -> `docs/exec-plans/`
    - références externes répétées -> `docs/references/`
    - attentes de qualité ou de fiabilité -> `docs/QUALITY_SCORE.md` ou `docs/RELIABILITY.md`
-4. Remplacer les formulations vagues par un langage opérationnellement utile.
-5. Supprimer ou déprécier les copies obsolètes pour que le dépôt conserve
+## 4. Remplacer les formulations vagues par un langage opérationnellement utile.
+
+## 5. Supprimer ou déprécier les copies obsolètes pour que le dépôt conserve
+
    une seule vérité découvrable.
 
 ## Règles de bon encodage

@@ -28,10 +28,14 @@ Context is not a dump. It's a budget that must be managed with explicit operatio
 
 Every token in the window should earn its place through one of four operations:
 
-1. <strong>SELECT</strong> — Load context just-in-time, not all-at-once
-2. <strong>WRITE</strong> — Agent writes back to persistent storage (memory, state, rules)
-3. <strong>COMPRESS</strong> — Reactive compaction of older turns mid-session
-4. <strong>ISOLATE</strong> — Delegated work must not pollute parent context
+## 1. **SELECT** — Load context just-in-time, not all-at-once
+
+## 2. **WRITE** — Agent writes back to persistent storage (memory, state, rules)
+
+## 3. **COMPRESS** — Reactive compaction of older turns mid-session
+
+## 4. **ISOLATE** — Delegated work must not pollute parent context
+
 
 ### Progressive Disclosure
 
@@ -95,10 +99,14 @@ Context builders (e.g., "load all recent git commits") should be memoized to avo
 
 Long sessions exhaust the window. Reactive compaction:
 
-1. <strong>Trigger</strong>: Context usage exceeds threshold (e.g., 80%)
-2. <strong>Summarize</strong>: Older turns (first 50% by token count)
-3. <strong>Preserve</strong>: Recent context (last 20% of turns)
-4. <strong>Label</strong>: Mark snapshot as "compacted at turn N"
+## 1. **Trigger**: Context usage exceeds threshold (e.g., 80%)
+
+## 2. **Summarize**: Older turns (first 50% by token count)
+
+## 3. **Preserve**: Recent context (last 20% of turns)
+
+## 4. **Label**: Mark snapshot as "compacted at turn N"
+
 
 ```markdown
 ## Session Summary (Turns 1-15, compacted)
@@ -126,10 +134,14 @@ Delegated work must not pollute parent context:
 
 ## Gotchas
 
-1. <strong>Most async work skips "pending" state</strong> — work units register directly as "running"
-2. <strong>Context builders are memoized but manually invalidated</strong> — add invalidation or face staleness
-3. <strong>Truncation is silent until it fires</strong> — hard caps enforced at read time
-4. <strong>Isolation boundary must be enforced at call time</strong> — don't just remove tools from prompt
+## 1. **Most async work skips "pending" state** — work units register directly as "running"
+
+## 2. **Context builders are memoized but manually invalidated** — add invalidation or face staleness
+
+## 3. **Truncation is silent until it fires** — hard caps enforced at read time
+
+## 4. **Isolation boundary must be enforced at call time** — don't just remove tools from prompt
+
 
 ## Related Patterns
 

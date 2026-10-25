@@ -24,10 +24,10 @@ RLVR(Reinforcement Learning with Verifiable Rewards)目前是reasoning模型的�
 ![](https://pic2.zhimg.com/v2-2055f18c3ed385d8b525a1f58714237f_r.jpg)如上表所示，近期出了多个标志性工作：
 
 - <strong>SDPO[1]：第一篇把自蒸馏接到RLVR上的工作。teacher的privileged context是学生自己写出的一条正确rollout</strong>——用"完成态"反过来教"过程态"。另外在代码生成等任务中，SDPO 、还可以用运行时错误、LLM judge的评价文本作为教师的上下文。loss形式是**logit-level KL散度
-![](https://www.zhihu.com/equation?tex=%5Ctext%7BKL%7D%28P_T+%5C%2C%5C%7C%5C%2C+P_S%29)，加到GRPO的surrogate loss上，在所有rollout**上apply。
+$\text{KL}(P_T \,\|\, P_S)$，加到GRPO的surrogate loss上，在所有rollout**上apply。
 - <strong>SRPO[2]：在SDPO基础上加了sample routing。teacher还是看正确rollout、loss还是logit KL，但只在错误轨迹（r=0）上用SDPO loss，正确轨迹（r=1）退回GRPO</strong>，配一个entropy-aware的动态权重。直觉很朴素：<strong>学生做错的时候才需要老师指，做对的时候让学生自己跑</strong>——其实已经预示了"成功轨迹上teacher该退场"的思路，但没把它当一等设计原则。
 - <strong>RLSD[3]：换了一种完全不同的写法。teacher的privileged context不再是rollout而是ground-truth answer</strong>——让teacher"知道标准答案后"重新对每个token打概率。loss也不用KL了，把师生token概率比直接当advantage上的per-token weight。这里
-![](https://www.zhihu.com/equation?tex=%5Ctext%7Bsign%7D%28A%29)是group-relative advantage的符号。即<strong>verifiable reward决定update方向，teacher只决定magnitude（每个token该被加权多少）</strong>，所有rollout都apply。到这里这条baseline谱系的三个关键设计已经穷举完一轮：teacher看rollout还是ground truth（SDPO/SRPO选rollout，RLSD选ground truth）、weight是logit KL还是token ratio（SDPO/SRPO选KL，RLSD选ratio）、在哪些rollout上apply（SDPO/RLSD全部，SRPO只在r=0）。但<strong>所有方法的update direction都指向同一个方向：把student往teacher拉</strong>——SDPO/SRPO是分布拉近，RLSD是token概率拉近，本质都是alignment。
+$\text{sign}(A)$是group-relative advantage的符号。即<strong>verifiable reward决定update方向，teacher只决定magnitude（每个token该被加权多少）</strong>，所有rollout都apply。到这里这条baseline谱系的三个关键设计已经穷举完一轮：teacher看rollout还是ground truth（SDPO/SRPO选rollout，RLSD选ground truth）、weight是logit KL还是token ratio（SDPO/SRPO选KL，RLSD选ratio）、在哪些rollout上apply（SDPO/RLSD全部，SRPO只在r=0）。但<strong>所有方法的update direction都指向同一个方向：把student往teacher拉</strong>——SDPO/SRPO是分布拉近，RLSD是token概率拉近，本质都是alignment。
 
 直到最近微软和KAIST联手出了一篇RLRT[4]，第一次把update direction整个反过来，把RLSD版token权重的分子分母对调，且<strong>只在正确轨迹（r=1）上apply</strong>——错误轨迹完全退回GRPO，不动。
 
@@ -44,24 +44,25 @@ RLSD在成功轨迹上加权教师偏好的token，逻辑是"教师条件了更�
 论文用"information asymmetry"（信息不对称）把这个机制讲清楚：
 
 - <strong>位置级不对称</strong> 
-![](https://www.zhihu.com/equation?tex=%5Cbar%7BD%7D_t+%3D+%5Ctext%7BKL%7D%28P_S+%5C%2C%5C%7C%5C%2C+P_T%29)：哪些token位置上师生分布差异最大——这些是critical positions，token选择对最终结果影响最大。
+$\bar{D}_t = \text{KL}(P_S \,\|\, P_T)$：哪些token位置上师生分布差异最大——这些是critical positions，token选择对最终结果影响最大。
 - <strong>Token级不对称</strong> 
-![](https://www.zhihu.com/equation?tex=%5Chat%7BD%7D_t+%3D+%5Clog%28P_S+%2F+P_T%29)：在采样的token上差异指向哪方。正数=学生选了教师没选的（self-driven），负数=教师选了学生没选的。
+$\hat{D}_t = \log(P_S / P_T)$：在采样的token上差异指向哪方。正数=学生选了教师没选的（self-driven），负数=教师选了学生没选的。
 ![](https://pic2.zhimg.com/v2-398bffddb3877d5fcbfea843bb4117d3_r.jpg)上图给了一个清晰的可视化：reasoning trajectory里大部分token的
-![](https://www.zhihu.com/equation?tex=%5Cbar%7BD%7D_t)都很小（无所谓的位置），但少数高
-![](https://www.zhihu.com/equation?tex=%5Cbar%7BD%7D_t)位置是真正的分水岭。比如分水岭上教师选`use`/`conclude`（exploit方向），学生选了`try`/`consider`（explore方向）。RLSD把学生的`try`/`consider`当噪声压掉。RLRT反过来——<strong>这是金矿，是学生独有的推理能力，必须重点强化</strong>。
+$\bar{D}_t$都很小（无所谓的位置），但少数高
+$\bar{D}_t$位置是真正的分水岭。比如分水岭上教师选`use`/`conclude`（exploit方向），学生选了`try`/`consider`（explore方向）。RLSD把学生的`try`/`consider`当噪声压掉。RLRT反过来——<strong>这是金矿，是学生独有的推理能力，必须重点强化</strong>。
 
 完整advantage重权公式
 开头给的是token权重的本体形式，落到GRPO的advantage上还要加mixing系数
-![](https://www.zhihu.com/equation?tex=%5Clambda)和clip范围
-![](https://www.zhihu.com/equation?tex=%5Cvarepsilon_w)。正确轨迹上advantage重写为：
+$\lambda$和clip范围
+$\varepsilon_w$。正确轨迹上advantage重写为：
 
-![](https://www.zhihu.com/equation?tex=A_t%5E%7B%5Ctext%7BRLRT%7D%7D+%3D+A+%5Ccdot+%5Cbig%5B%281-%5Clambda%29+%2B+%5Clambda+%5Ccdot+%5Ctext%7Bclip%7D%28w_%7B%5Ctext%7BRLRT%7D%7D%5Et%2C%5C%2C+1-%5Cvarepsilon_w%2C%5C%2C+1%2B%5Cvarepsilon_w%29%5Cbig%5D+%5C%5C)
+$$A_t^{\text{RLRT}} = A \cdot \big[(1-\lambda) + \lambda \cdot \text{clip}(w_{\text{RLRT}}^t,\, 1-\varepsilon_w,\, 1+\varepsilon_w)\big] \\$$
 
-![](https://www.zhihu.com/equation?tex=%5Clambda)控制反向信号强度（
-![](https://www.zhihu.com/equation?tex=%5Clambda%3D0)完全退回GRPO，
-![](https://www.zhihu.com/equation?tex=%5Clambda%3D1)完全用反向weight），
-![](https://www.zhihu.com/equation?tex=%5Cvarepsilon_w)控制每个token的扰动上限。错误轨迹完全退回vanilla GRPO。
+
+$\lambda$控制反向信号强度（
+$\lambda=0$完全退回GRPO，
+$\lambda=1$完全用反向weight），
+$\varepsilon_w$控制每个token的扰动上限。错误轨迹完全退回vanilla GRPO。
 
 <strong>学生做错的时候本来就缺少有效探索方向，GRPO自己能处理；做对的时候他独有的推理路径才是稀缺资源，必须保护</strong>。
 

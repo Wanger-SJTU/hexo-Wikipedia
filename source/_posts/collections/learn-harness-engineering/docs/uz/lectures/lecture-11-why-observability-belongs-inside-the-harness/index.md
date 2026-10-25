@@ -73,8 +73,10 @@ Faraz qiling, harness “rejalashtiruvchi-yaratuvchi-baholovchi (planner-generat
 
 Siz oʻylashingiz mumkin: “Agent shunchaki oʻzi loglarni chiqarib yozib qoldirsa boʻlmaydimi?” Muammolar quyidagicha:
 
-1. Agent oʻzi nimani bilmasligini bilmaydi — u oʻziga kerak boʻladigan signallarni avvaldan (proactively) bilib, yozib qoldirmaydi.
-2. Log formatlari har xil — turli sessiyalar har xil log formatlaridan foydalanadi, bu tizimli tahlil qilishni imkonsiz qiladi.
+## 1. Agent oʻzi nimani bilmasligini bilmaydi — u oʻziga kerak boʻladigan signallarni avvaldan (proactively) bilib, yozib qoldirmaydi.
+
+## 2. Log formatlari har xil — turli sessiyalar har xil log formatlaridan foydalanadi, bu tizimli tahlil qilishni imkonsiz qiladi.
+
 3. Jarayon kuzatuvchanligini loglar bilan hal qilib boʻlmaydi — sprint shartnomalari va baholash rubrikalari harness darajasidagi yordamni talab qiluvchi strukturaviy artefaktlardir.
 
 ## Buni qanday qilib toʻgʻri qilish kerak

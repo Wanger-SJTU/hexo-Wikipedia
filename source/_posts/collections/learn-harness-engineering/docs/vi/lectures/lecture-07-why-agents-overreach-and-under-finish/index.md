@@ -30,12 +30,18 @@ Blog kỹ thuật "Effective harnesses for long-running agents" của Anthropic 
 
 Hành vi thực tế của Claude Code rất rõ ràng. Yêu cầu nó "thêm đăng ký người dùng" và nó có thể:
 
-1. Tạo User model
-2. Viết route đăng ký
-3. Nhận thấy cần xác minh email, vậy thêm mail service
-4. Thấy mật khẩu cần được hash, vậy mang vào bcrypt
-5. Nhận thấy error handling không nhất quán, vậy tái cấu trúc global error middleware
-6. Thấy cấu trúc tệp test lộn xộn, vậy sắp xếp lại thư mục
+## 1. Tạo User model
+
+## 2. Viết route đăng ký
+
+## 3. Nhận thấy cần xác minh email, vậy thêm mail service
+
+## 4. Thấy mật khẩu cần được hash, vậy mang vào bcrypt
+
+## 5. Nhận thấy error handling không nhất quán, vậy tái cấu trúc global error middleware
+
+## 6. Thấy cấu trúc tệp test lộn xộn, vậy sắp xếp lại thư mục
+
 
 Sau sáu bước, mỗi cái đang làm dở. Không có xác minh end-to-end, mã nửa vời phức tạp cộng lẫn nhau, và phiên tiếp theo để dọn dẹp sẽ hoàn toàn bị lạc. Giống như ai đó đang nấu sáu món đồng thời — mỗi món đều đang trong chảo nhưng chưa cái nào được bày ra đĩa. Tất cả đều cháy.
 

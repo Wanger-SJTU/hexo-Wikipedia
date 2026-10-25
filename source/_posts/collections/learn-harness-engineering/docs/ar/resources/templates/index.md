@@ -19,10 +19,14 @@ categories:
 
 انسخ هذه الملفات الأربعة إلى جذر مشروعك أولاً:
 
-1. `AGENTS.md` أو `CLAUDE.md`
-2. `init.sh`
-3. `claude-progress.md`
-4. `feature_list.json`
+## 1. `AGENTS.md` أو `CLAUDE.md`
+
+## 2. `init.sh`
+
+## 3. `claude-progress.md`
+
+## 4. `feature_list.json`
+
 
 أضف الملفات المتبقية مع نمو مشروعك.
 

@@ -19,7 +19,8 @@ CXL的全称是Compute Express Link，是一种在<strong>PCIe物理层上构建
 
 2019年3月，英特尔牵头颁布了CXL开放互连技术和CXL 1.0规范，旨在解决数据中心内存扩展和性能瓶颈问题。CXL现在已经有几十家的会员，目前CXL协议的版本有1.0/1.1、2.0和3.0/3.1，CXL官网为[https://www.computeexpresslink.org/](https://link.zhihu.com/?target=https%3A//www.computeexpresslink.org/) 。
 
-1. CXL介绍
+## 1. CXL介绍
+
 CXL是基于<strong>PCIe 5.0的物理层</strong>发展而来的，CXL支持三种类型的协议，分别为<strong>[http://CXL.io](https://link.zhihu.com/?target=http%3A//CXL.io)，CXL.cache和CXL.memory</strong>。
 
 - [http://CXL.io](https://link.zhihu.com/?target=http%3A//CXL.io)用来发现、配置、寄存器访问、错误报告、主机物理地址（Host Physical Address，HPA）查找、中断等。
@@ -59,7 +60,8 @@ CXL事务（协议）层分为两个部分：处理[http://CXL.io](https://link.
 
 ![](https://picx.zhimg.com/v2-33d8135ae01b35f8589c25b07d093eff_r.jpg)此外，CXL可以选择是否实现PCIe事务层和数据链路层，如果实现，则允许分别与[http://CXL.io](https://link.zhihu.com/?target=http%3A//CXL.io)事务层和链路层聚合。作为链路训练过程的结果，事务层和链路层可以配置为在PCIe模式或CXL模式下运行。Flex Bus物理层的逻辑子块是一个融合的逻辑物理层，它可以在PCIe模式或CXL模式下运行，这取决于链路训练期间的模式协商的结果。
 
-3. CXL系统架构
+## 3. CXL系统架构
+
 CXL支持三种设备类型，如下图。
 
 - Type 1支持CXL.cache和[http://CXL.io](https://link.zhihu.com/?target=http%3A//CXL.io)；

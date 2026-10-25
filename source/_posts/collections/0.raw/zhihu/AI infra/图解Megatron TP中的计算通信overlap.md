@@ -53,7 +53,8 @@ source_url: https://zhuanlan.zhihu.com/p/16594218518
 
 ![](https://pic3.zhimg.com/v2-cf1eb407c4c5fc5b25a7a77fddaf6662_r.jpg)
 
-2.1 朴素all-gather
+### 2.1 朴素all-gather
+
 
 假设我们采取的是最朴素的，没有任何overlap的策略，那么红框中的计算流程应该是下图这样的，这里假设tp_size = 2：
 
@@ -66,7 +67,8 @@ source_url: https://zhuanlan.zhihu.com/p/16594218518
 
 <strong>针对这张图，我们额外说明一点：例如[A0, A1]这样的形式，不代表A一定就是按照列切割的，只代表我们以分块的视角看待A。而Enisum可理解为一种自适应式的矩阵乘。因此我们要根据实际应用的场景来理解这张图，后文同理。</strong>
 
-2.2 all-gather overlap p2p
+### 2.2 all-gather overlap p2p
+
 
 现在我们引入计算通信overlap，流程如下图所示：
 
@@ -95,7 +97,8 @@ source_url: https://zhuanlan.zhihu.com/p/16594218518
 ![](https://pic4.zhimg.com/v2-277ed51a2f00f149767e07a9d0debe6f_r.jpg)
 （备注：`tp_comm_overlap_rs_dgrad`，也就是右侧bwd中fc1_dgrad和下一个黄框中的RS做overlap的本质也是如此，所以后文不会再单独介绍它了）
 
-3.1 朴素reduce-scatter
+### 3.1 朴素reduce-scatter
+
 
 ![](https://pica.zhimg.com/v2-801a439a6722fbe45ec3457deeff6946_r.jpg)
 假设我们有2张gpu（tp_size = 2）
@@ -110,7 +113,8 @@ source_url: https://zhuanlan.zhihu.com/p/16594218518
 - 同样，在朴素reduce-scatter中，我们也需要等到[C00, C10]和[C01, C11]这个结果计算出来后，再做reduce-scatter，即计算通信没有overlap
 <strong>针对这张图，我们额外说明一点：之所以要修改原始图片中的[A0, A1]，是因为在tp mlp的fc2中，每张卡上的输入是不一样的，所以这里特别针对这个场景做了修改。</strong>
 
-3.2 reduce-scatter overlap p2p
+### 3.2 reduce-scatter overlap p2p
+
 
 ![](https://pic3.zhimg.com/v2-2ee7c77996725e074a60bd9ece23fe60_r.jpg)
 上图直接理解起来可能会有点头晕，我们不妨从一个更形象的视角理解一下：
@@ -139,7 +143,8 @@ source_url: https://zhuanlan.zhihu.com/p/16594218518
 
 相关的代码实践可以参考[这里](https://link.zhihu.com/?target=https%3A//github.com/NVIDIA/TransformerEngine/blob/c9ea6be92948e1ec553037f1a04900617b9f7f6b/transformer_engine/common/comm_gemm_overlap/comm_gemm_overlap.cpp%23L924)。注意代码里的A=weight, B=input。这个过程理解起来有点绕，大家可以多体会
 
-3.3 reduce-scatter overlap pipeline chunk
+### 3.3 reduce-scatter overlap pipeline chunk
+
 对于像fc2这种需要对输出结果做reduce-scatter的情况，<strong>除了p2p形式的overlap，megatron还提供了另外一种overlap的方法：pipeline chunk</strong>。
 
 ![](https://pica.zhimg.com/v2-3a841733a0f4b7c3a6e5137bab3f9628_1440w.jpg)

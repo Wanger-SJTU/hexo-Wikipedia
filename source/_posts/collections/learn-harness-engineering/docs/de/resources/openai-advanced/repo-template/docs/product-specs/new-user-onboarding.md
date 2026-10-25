@@ -23,9 +23,12 @@ Beschreiben Sie das Erlebnis bei der ersten Ausführung, das ein neuer Benutzer 
 
 ## Benutzerablauf
 
-1. `[Schritt eins]`
-2. `[Schritt zwei]`
-3. `[Schritt drei]`
+## 1. `[Schritt eins]`
+
+## 2. `[Schritt zwei]`
+
+## 3. `[Schritt drei]`
+
 
 ## Akzeptanzkriterien
 

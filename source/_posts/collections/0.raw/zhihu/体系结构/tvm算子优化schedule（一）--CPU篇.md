@@ -59,7 +59,8 @@ def add(n):
 
 这里的parallel中的括号就是对这个维度进行并行化。
 
-2. Vectorization
+## 2. Vectorization
+
 
 为了利用cpu的SIMD的特性，我们再添加一种schedule--vectorization。首先我们定义一个factor，将原来的维度拆分，也就是将原来的一级 for 循环拆分为二级嵌套 for 循环。factor就是内循环迭代的次数，这些迭代将相应地组合在一起以在内核上的 SIMD 指令中执行。 外循环中的迭代仍然并行运行。当我们的factor=8时，各个core处理的数据分配下，每个core都执行SIMD。
 
@@ -79,7 +80,8 @@ def vectorized(n):
 
 那么这里的factor该怎么确定呢，其实这就是auto schedule的意义所在啦，有了它可以帮你搜索出几乎最优的参数，而不需要手动实验。
 
-3. Reorder
+## 3. Reorder
+
 
 Reorder这种策略在矩阵乘法中用的比较多，比如在卷积神经网络中的卷积层的应用。它的原理也比较简单，我们以矩阵乘法为例，对于矩阵乘法C=A*B，它的初始实现为
 
@@ -111,7 +113,8 @@ def reorder(n):
 ```
 
 
-4. Blocking
+## 4. Blocking
+
 
 接下来我们介绍的策略叫Blocking，也是一种常见的策略，它的目的就是能够把数据放入缓存中计算。我们知道速度越快的存储器一般size也越小，所以当我们的数据在缓存中放不下时，需要采用tiling的方法，也就是分片，把大数据分成小数据逐个计算。这里我们还是以矩阵乘法C=A*B为例，对于C中的一个block，例如 C[x:x+tx, y:y+ty] ，可以通过 A 的相应行和 B 的列计算。 那么C[x:x+tx, y:y+ty] = np.dot(A[x:x+tx,:], B[:,y:y+ty])我们可以进一步将这个矩阵乘法分解成多个小的乘法C[x:x+tx, y:y+ty] = sum(np.dot(A[x:x+tx,k:k+tk], B[k:k+tk,y:y+ty] ) for k in range(0,n,tk))在每个子矩阵计算中，我们需要写一个[tx, ty]形状的矩阵，并得到两个形状为[tx, tk]和[tk, ty]的矩阵。这样的计算可以在单个 CPU core中进行。tvm中代码实现如下：
 

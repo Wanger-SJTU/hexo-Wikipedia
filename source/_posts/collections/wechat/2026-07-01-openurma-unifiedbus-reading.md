@@ -37,8 +37,10 @@ OpenURMA 这篇论文最醒目的数字，是 <strong>500 ns remote fetch</stron
 
 论文把 RoCE 和 UB 的差别落到两张账上：
 
-1. 一个 64B remote fetch，应用看起来只是读远端内存，底下却要把操作变成 WQE、doorbell、DMA fetch、completion，再让 CPU 和 PCIe 外设来回交接
-2. 在 1024×1024 端点规模下，RoCEv2 RC 的 per-QP 状态会涨到约 537 MB，UB / OpenURMA 同一规模只有约 110 KB
+## 1. 一个 64B remote fetch，应用看起来只是读远端内存，底下却要把操作变成 WQE、doorbell、DMA fetch、completion，再让 CPU 和 PCIe 外设来回交接
+
+## 2. 在 1024×1024 端点规模下，RoCEv2 RC 的 per-QP 状态会涨到约 537 MB，UB / OpenURMA 同一规模只有约 110 KB
+
 
 ## RDMA 小请求的税：PCIe 往返
 
@@ -83,9 +85,12 @@ RoCE RC 把 strict order 当默认语义，应用不一定每次都需要，却�
 OpenURMA 最该被珍惜的地方，是它把一个原本高度闭源的方向做成了可复现实验物。论文用 clean-room RTL、SystemC 和 gem5 scaffold 去复现 UB 的 transport / transaction 层，并把代码公开在 GitHub。
 
 但边界也要摆清楚：
-1. OpenURMA 是 clean-room implementation 和多层仿真/综合框架，还没有物理 FPGA 运行、没有生产驱动、没有真实线缆下 loss / contention 的首包延迟测量
-2. OpenRoCE 是 apples-to-apples baseline，无法代表 ConnectX-7 这类多代优化商用 RNIC 的完整产品力
-3. UB 也有弱区：16KB-64KB 大块传输、RoCE BF inline WRITE/SEND、小集群未触发 QP spill 的场景，差距都会收窄
+## 1. OpenURMA 是 clean-room implementation 和多层仿真/综合框架，还没有物理 FPGA 运行、没有生产驱动、没有真实线缆下 loss / contention 的首包延迟测量
+
+## 2. OpenRoCE 是 apples-to-apples baseline，无法代表 ConnectX-7 这类多代优化商用 RNIC 的完整产品力
+
+## 3. UB 也有弱区：16KB-64KB 大块传输、RoCE BF inline WRITE/SEND、小集群未触发 QP spill 的场景，差距都会收窄
+
 
 ## 延伸阅读
 

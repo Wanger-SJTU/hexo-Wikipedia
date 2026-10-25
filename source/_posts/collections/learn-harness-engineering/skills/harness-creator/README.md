@@ -49,11 +49,16 @@ create-harness.mjs` detects common project types and package managers. It suppor
 
 validate-harness.mjs` scores the five harness subsystems:
 
-1. Instructions
-2. State
-3. Verification
-4. Scope
-5. Lifecycle
+## 1. Instructions
+
+## 2. State
+
+## 3. Verification
+
+## 4. Scope
+
+## 5. Lifecycle
+
 
 The score is structural. It tells you whether the harness is present and coherent; it does not replace real before/after agent-session testing.
 

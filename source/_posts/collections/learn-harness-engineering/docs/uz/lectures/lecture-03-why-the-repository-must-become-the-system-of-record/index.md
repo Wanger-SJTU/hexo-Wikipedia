@@ -118,10 +118,14 @@ Bir jamoa ~30 ta mikroservisga ega e-tijorat platformasini boshqargan. Arxitektu
 AI agentlarini joriy etgandan soʻng, vazifalarning 70% inson aralashuvini talab qildi. Deyarli har bir muvaffaqiyatsizlik agentning “hamma biladi, lekin hech kim yozmagan” yashirin cheklovni buzishi bilan bogʻliq edi. Bu xuddi yangi xodimga hech kim “tushlik buyurtmasini guruh chatiga yozishing kerak” deb aytmaganiga oʻxshaydi — ular xato qilishadi, dakki eshitishadi, ammo gap eshitganidan keyin ham hech kim ularga qoidani tushuntirmaydi.
 
 Jamoa oʻzgarishlarni amalga oshirdi:
-1. Repo ildizida loyiha tavsifi, tech stack versiyalari va global qatʼiy cheklovlar kiritilgan `AGENTS.md` fayli yaratildi.
-2. Har bir mikroservis katalogida uning vazifalari, interfeyslari va bogʻliqliklarini taʼriflovchi `ARCHITECTURE.md` qoʻshildi.
-3. Aniq “SHART/MUMKIN EMAS” tili bilan markazlashgan qatʼiy cheklovlar (`CONSTRAINTS.md`) yaratildi.
-4. Har bir servis katalogiga joriy ish holatini kuzatuvchi `PROGRESS.md` qoʻshildi.
+## 1. Repo ildizida loyiha tavsifi, tech stack versiyalari va global qatʼiy cheklovlar kiritilgan `AGENTS.md` fayli yaratildi.
+
+## 2. Har bir mikroservis katalogida uning vazifalari, interfeyslari va bogʻliqliklarini taʼriflovchi `ARCHITECTURE.md` qoʻshildi.
+
+## 3. Aniq “SHART/MUMKIN EMAS” tili bilan markazlashgan qatʼiy cheklovlar (`CONSTRAINTS.md`) yaratildi.
+
+## 4. Har bir servis katalogiga joriy ish holatini kuzatuvchi `PROGRESS.md` qoʻshildi.
+
 
 Oʻzgarishlardan soʻng: xuddi shu agent sovuq ishga tushirishda barcha asosiy loyiha savollariga javob bera oldi va vazifani yakunlash sifati sezilarli darajada yaxshilandi.
 

@@ -55,13 +55,20 @@ Improved answer truncation to 120 chars with ellipsis indicator.
 
 ### Remaining Issues
 
-1. Full citations not expandable (count shown but no details)
-2. No follow-up question capability
-3. No copy-to-clipboard feature
-4. Date separators between sessions not implemented
+## 1. Full citations not expandable (count shown but no details)
+
+## 2. No follow-up question capability
+
+## 3. No copy-to-clipboard feature
+
+## 4. Date separators between sessions not implemented
+
 
 ### Recommended Next Steps
 
-1. Add expandable citation sections
-2. Add follow-up question suggestions for the most recent exchange
-3. Add date separators when conversation spans multiple days
+## 1. Add expandable citation sections
+
+## 2. Add follow-up question suggestions for the most recent exchange
+
+## 3. Add date separators when conversation spans multiple days
+

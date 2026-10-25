@@ -77,10 +77,14 @@ Tài liệu là để con người đọc; nguyên lý cơ bản là để hệ 
 
 Nghĩ về nó như ràng buộc trigger cơ sở dữ liệu vs. kiểm tra lớp ứng dụng: cái trước được thực thi bởi engine cơ sở dữ liệu, không có SQL nào có thể bỏ qua nó; cái sau phụ thuộc vào tính đúng đắn của mã ứng dụng và có thể vô tình bị vượt qua. Feature list như nguyên lý cơ bản harness phục vụ bốn thành phần harness cụ thể:
 
-1. <strong>Bộ lập lịch (Scheduler)</strong>: Đọc trạng thái, chọn tính năng `not_started` tiếp theo. Giống như hệ thống lập kế hoạch sản xuất nhà máy.
-2. <strong>Bộ xác minh (Verifier)</strong>: Thực thi lệnh xác minh, quyết định có cho phép chuyển đổi trạng thái không. Giống như kiểm tra chất lượng.
-3. <strong>Trình báo cáo bàn giao (Handoff Reporter)</strong>: Tự động tạo tóm tắt bàn giao phiên từ feature list. Giống như báo cáo ca tự động.
-4. <strong>Trình theo dõi tiến độ (Progress Tracker)</strong>: Đếm phân phối trạng thái, cung cấp số liệu sức khỏe dự án. Giống như dashboard.
+## 1. **Bộ lập lịch (Scheduler)**: Đọc trạng thái, chọn tính năng `not_started` tiếp theo. Giống như hệ thống lập kế hoạch sản xuất nhà máy.
+
+## 2. **Bộ xác minh (Verifier)**: Thực thi lệnh xác minh, quyết định có cho phép chuyển đổi trạng thái không. Giống như kiểm tra chất lượng.
+
+## 3. **Trình báo cáo bàn giao (Handoff Reporter)**: Tự động tạo tóm tắt bàn giao phiên từ feature list. Giống như báo cáo ca tự động.
+
+## 4. **Trình theo dõi tiến độ (Progress Tracker)**: Đếm phân phối trạng thái, cung cấp số liệu sức khỏe dự án. Giống như dashboard.
+
 
 ## Cách Làm Đúng
 

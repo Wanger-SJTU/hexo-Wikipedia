@@ -93,11 +93,16 @@ Ushbu hujjat barcha tarjimalarda atamalar bir xil qoʻllanishini taʼminlaydi. Y
 
 Bularning tarjimasi har joyda bir xil boʻlsin:
 
-1. <strong>Task specification</strong> → `vazifa spetsifikatsiyasi`
-2. <strong>Context provision</strong> → `kontekst taʼminoti`
-3. <strong>Execution environment</strong> → `bajarilish muhiti`
-4. <strong>Verification feedback</strong> → `tekshiruv qayta aloqasi`
-5. <strong>State management</strong> → `holat boshqaruvi`
+## 1. **Task specification** → `vazifa spetsifikatsiyasi`
+
+## 2. **Context provision** → `kontekst taʼminoti`
+
+## 3. **Execution environment** → `bajarilish muhiti`
+
+## 4. **Verification feedback** → `tekshiruv qayta aloqasi`
+
+## 5. **State management** → `holat boshqaruvi`
+
 
 > <strong>Diqqat:</strong> "feedback" har joyda bir xil tarjima qilinmaydi:
 > - "verification feedback" → `tekshiruv qayta aloqasi`
@@ -377,13 +382,17 @@ Istisno: oddiy ko'plik `lar/lar` — `ʼ`siz ham koʻp uchraydi (`agentlar` toʻ
 
 Tarjimon yangi atamaga duch kelganda:
 
-1. Avval ushbu glossary'ni qidirib chiqing.
-2. Mavjud bo'lmasa — quyidagi tartibda yondashing:
+## 1. Avval ushbu glossary'ni qidirib chiqing.
+
+## 2. Mavjud bo'lmasa — quyidagi tartibda yondashing:
+
    - <strong>Texnik atama</strong> (dasturlash, AI, devops) → inglizcha saqlang.
    - <strong>Umumiy soʻz</strong> → tabiiy oʻzbek tarjimasini bering.
    - <strong>Idioma/metafora</strong> → mazmunan, kalkasiz.
-3. Yangi qaror — bu hujjatga qoʻshing (Pull Request orqali).
-4. Toʻgʻri ma'noni LQA agent yordamida tasdiqlang.
+## 3. Yangi qaror — bu hujjatga qoʻshing (Pull Request orqali).
+
+## 4. Toʻgʻri ma'noni LQA agent yordamida tasdiqlang.
+
 
 ---
 

@@ -729,7 +729,8 @@ EAGLE/eagle/traineagle3/cnets.py
 
 改的地方如下：
 
-1. 两个py文件的preprocess_function要改成适配qwen的tokenizer的
+## 1. 两个py文件的preprocess_function要改成适配qwen的tokenizer的
+
 
 修改如下
 

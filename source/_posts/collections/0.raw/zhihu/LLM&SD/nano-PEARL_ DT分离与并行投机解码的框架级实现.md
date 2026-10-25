@@ -47,11 +47,13 @@ News:
 - nano‑PEARL 是在 <strong>nano‑vLLM</strong> 风格下重写的并行投机解码引擎（单机多卡）。
 - 通过 <strong>Draft‑Target Disaggregation（DT 分离）</strong>、<strong>Pre‑Verify / Post‑Verify</strong> 并行化、以及 <strong>Prefix KV Cache / Paged Attention / FlashAttention / CUDA Graph / Tensor Parallelism / Batch Inference</strong> 等系统优化，显著提升大模型在 <strong>高 batch × 长上下文</strong> 下的实际吞吐。
 - 70B 级模型在 <strong>BS=32</strong> 的 HumanEval 评测上，峰值吞吐 <strong>3546.72 tok/s</strong>，对 vanilla SD 约 <strong>3.06×</strong> 提升（维持无损一致性）。
-0. Introduction 简单回顾 PEARL
+## 0. Introduction 简单回顾 PEARL
+
 什么是 PEARL？PEARL: Parallel Speculative Decoding with Adaptive Draft Length 是 ICLR 2025 的一篇中稿文章。它识别了传统 speculative decoding 中的 mutual waiting problem: 即 drafting 阶段 target model 无法利用，verify 阶段 draft model 无法利用，从而提出 parallel speculative decoding, 让大小模型并行推理，以固定的频率进行进程间通信，从而实现更高的加速效果。
 
 [PEARL: 并行投机解码，推理加速最新SOTA（blog/paper/code均开源）](https://zhuanlan.zhihu.com/p/716769091)
-1. 为什么我们要做 nano-PEARL?
+## 1. 为什么我们要做 nano-PEARL?
+
 总的来说，我认为投机解码目前的发展存在以下问题：
 
 - 高 batch setting 下，投机解码效果显著下降。现有的投机解码算法几乎都只在 bs=1 的 setting 下做实验；
@@ -61,7 +63,8 @@ News:
 - 关于对 batch inference 的必要性：现在 Spec 算法的一个很广泛的应用就是加速 RL 算法的 Rollout 过程，但 RL 算法的 Rollout 过程天然就需要 batch inference；如果按照 bs=1 一条一条的 decode，反而速度还不如直接用 auto-regressive 的 batch inference；
 - 关于和其他技术结合的必要性：如果一个 spec 算法不支持 flash attention / cuda graph / TP 等加速技术，那实际场景下，单使用 spec 算法的加速收益，远小于框架自带的这些加速技术的收益；
 - 关于计算资源分配与利用的问题：以 EAGLE 为例，draft model 部署于 GPU 0, target model 部署于 GPU 0-7；当 target model 开启 TP，推理速度显著增加，draft model 的开销占比也会显著增大；同时 GPU 0 要同时存储 draft model 和 target model 的 kv cache，在上下文变长之后很容易 OOM
-2. 核心设计：Draft-Target Disaggregation (DT 分离)
+## 2. 核心设计：Draft-Target Disaggregation (DT 分离)
+
 起这个名字也有点蹭 PD 分离、AF 分离的嫌疑 :-)
 
 受 PD 分离 和 AF 分离的启发：draft model 和 target model 的推理路径，或者说推理行为本身就不一致: 
@@ -70,14 +73,16 @@ News:
 - draft model 通常要进行连续的 auto-regressive 的推理，而 target model 通常进行 一次性的，多 token 的 verification 的推理；
 - draft model 和 target model 都需要使用 GPU 推理，部署于同一张卡时，很容易发生抢占资源、或者资源分配不均以及炸显存的问题；基于这些分析，DT 分离也就很自然了：我们让 draft model 和 target model 分别位于不同的 device 上，每张 GPU 只运行一份模型，自然就可以分别操控每个模型的推理！
 
-3. Draft Model 的开销不可忽略
+## 3. Draft Model 的开销不可忽略
+
 正如我于之前的帖子 [Speculative Decoding: 总结、分析、展望](https://zhuanlan.zhihu.com/p/1904881828906668879) 中写的一样：随着 spec 的发展，draft model 的开销一定会越来越大。因为整个 speculative decoding 的核心思想就是：冗余算力换带宽！随着 batch size 和 context length 的逐渐增大，冗余算力越来越小，那么 对于 Spec 来说，最最最重要的事情就是，draft tokens 尽可能不被拒绝。
 
 那么从这个趋势来看，无论是 EAGLE 等复用 target hidden states 的方法，还是使用现有的、出厂自带的 SLM (例如 Qwen3-0.6B 作为 Qwen3-32B 的 drafter), draft model 的参数量都会逐渐 scaling 上去，draft 的 overhead 都会逐渐增大。
 
 从这方面来说，我认为 DT 分离 + DT 并行 是一个更优雅、更鲁棒、更有效的解决方案
 
-4. nano-PEARL 做了什么？
+## 4. nano-PEARL 做了什么？
+
 简而言之，就是在 nano-vllm 的基础上实现了 PEARL 算法，并且增加了一些新的 feature，比如 DT 分离、自动确定最优的 window size (gamma)等。直接放 benchmark 的结果：
 
 ![](https://pic4.zhimg.com/v2-e10c5a68259c9500ee2b5b790a967d73_r.jpg)bs=1, GSM8K, Llama-3.1-70B 最高可加速 6.27倍

@@ -21,14 +21,22 @@ UI validatsiyasini (tekshiruvini) agent qayta-qayta ishga tushira oladigan, va t
 
 ## Asosiy Sikl (Core Loop)
 
-1. Maqsad qilingan sahifa (page) yoki ilovani (app instance) tanlash.
-2. Consoleʼdagi eskirgan (stale) shovqinlarni (loglarni) tozalash.
-3. OLDINGI (BEFORE) holatni yozib olish (capture).
-4. UI yoʻlini (path) ishga tushirish.
-5. Harakatlanish davrida yuz bergan runtime hodisalarini (events) kuzatish.
-6. KEYINGI (AFTER) holatni yozib olish.
-7. Tuzatish kiritish va zarur boʻlsa ilovani qayta ishga tushirish.
-8. Jarayon mutlaqo toza (clean) boʻlgunicha validatsiyani qayta ishga tushirish.
+## 1. Maqsad qilingan sahifa (page) yoki ilovani (app instance) tanlash.
+
+## 2. Consoleʼdagi eskirgan (stale) shovqinlarni (loglarni) tozalash.
+
+## 3. OLDINGI (BEFORE) holatni yozib olish (capture).
+
+## 4. UI yoʻlini (path) ishga tushirish.
+
+## 5. Harakatlanish davrida yuz bergan runtime hodisalarini (events) kuzatish.
+
+## 6. KEYINGI (AFTER) holatni yozib olish.
+
+## 7. Tuzatish kiritish va zarur boʻlsa ilovani qayta ishga tushirish.
+
+## 8. Jarayon mutlaqo toza (clean) boʻlgunicha validatsiyani qayta ishga tushirish.
+
 
 ## Talab qilinadigan Kiritmalar (Inputs)
 
@@ -39,13 +47,18 @@ UI validatsiyasini (tekshiruvini) agent qayta-qayta ishga tushira oladigan, va t
 
 ## Bajarish SOPʼi (Execution SOP)
 
-1. Rejalashtirilayotgan maqsadli jarayonni (target journey) faol rejaga yozing.
+## 1. Rejalashtirilayotgan maqsadli jarayonni (target journey) faol rejaga yozing.
+
 2. Kuzatiladigan atamalarda nima muvaffaqiyat hisoblanishini yozing: matn koʻrinmoqda, tugma faollashgan (enabled), xato (error) yoʻqolgan, console toza, soʻrov (request) muvaffaqiyatli oʻtgan.
-3. Foydalanuvchi taʼsirigacha boʻlgan (before interaction) dastlabki holatni yozib (snapshot) oling.
-4. Bir vaqtning oʻzida aynan bitta yoʻlni (path) ishga tushiring.
-5. Runtime hodisalarini, DOM oʻzgarishlarini va koʻrinadigan natijalarni yozib oling.
+## 3. Foydalanuvchi taʼsirigacha boʻlgan (before interaction) dastlabki holatni yozib (snapshot) oling.
+
+## 4. Bir vaqtning oʻzida aynan bitta yoʻlni (path) ishga tushiring.
+
+## 5. Runtime hodisalarini, DOM oʻzgarishlarini va koʻrinadigan natijalarni yozib oling.
+
 6. Agar jarayon (journey) muvaffaqiyatsiz boʻlsa, xatoga sabab boʻlgan eng kichik qatlamni (layer) toʻgʻrilang va qayta ishga tushiring (restart).
-7. Xuddi shu yoʻlni qayta ishga tushiring va OLDINGI (BEFORE)/KEYINGI (AFTER) dalillarini taqqoslang.
+## 7. Xuddi shu yoʻlni qayta ishga tushiring va OLDINGI (BEFORE)/KEYINGI (AFTER) dalillarini taqqoslang.
+
 
 ## Tozalik Mezonlari (Clean Criteria)
 

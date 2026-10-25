@@ -68,11 +68,14 @@ Manifold-Constrained Hyper-Connections (mHC) 是 Deepseek 在 Deepseek v4 中实
 
 ## 核心发现
 
-1. <strong>Previous-token heads 在 mHC 模型中变成了 attention sinks</strong>：它们的行为从正常的 prev-token pattern 变成了 receiver heads，表现为高 kurtosis 分数
+## 1. **Previous-token heads 在 mHC 模型中变成了 attention sinks**：它们的行为从正常的 prev-token pattern 变成了 receiver heads，表现为高 kurtosis 分数
 
-2. <strong>残差流行为差异</strong>：mHC 的残差流 1,2,3 都预测相同的 token（floor），而 mHC-lite 的各残差流预测不同 token——获取双随机矩阵的方法影响了残差流的工作方式
 
-3. <strong>多层角色 attention head</strong>：mHC 模型中存在 attention head 同时扮演 3-4 个角色，这在非 mHC 模型中不存在
+## 2. **残差流行为差异**：mHC 的残差流 1,2,3 都预测相同的 token（floor），而 mHC-lite 的各残差流预测不同 token——获取双随机矩阵的方法影响了残差流的工作方式
+
+
+## 3. **多层角色 attention head**：mHC 模型中存在 attention head 同时扮演 3-4 个角色，这在非 mHC 模型中不存在
+
 
 ## 未来工作
 

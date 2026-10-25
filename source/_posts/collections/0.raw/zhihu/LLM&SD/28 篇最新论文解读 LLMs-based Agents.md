@@ -23,7 +23,8 @@ source_url: https://zhuanlan.zhihu.com/p/662506575
 4.  对每篇论文，本文从motivation + design + conclusions三个角度介绍。
 5.  本文不是一篇综述性质的文章。
 6.  错误在所难免，欢迎大家指正、交流。
-7.  本文选28篇论文的原因以及其它参考材料，见文末说明![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_5d88f664122e.jpg)
+## 7.  本文选28篇论文的原因以及其它参考材料，见文末说明![](asset/img_5d88f664122e.jpg)
+
 
 本文解读的28项工作：一个朴素分类
 ### Planning
@@ -369,7 +370,8 @@ LLMs on AgentBench
 
 1.  Agent相关的研究已超过200篇（2023-10-01），博主参考MetaAI的综述性论文*Augmented Language Models: a Survey*，从planning、tools、memory、multiagents、benchmark等维度各选了几篇代表性论文，共27篇。主要想法是，对Agent研究形成一个全局性的认识，又能了解到每个细分方向主要在关注什么问题。
 
-2.  Agent及相关方向综述论文：
+## 2.  Agent及相关方向综述论文：
+
 
 a)  Mialon, G., Dessì, R., Lomeli, M., Nalmpantis, C., Pasunuru, R., Raileanu, R., ... & Scialom, T. (2023). Augmented language models: a survey. *arXiv preprint arXiv:2302.07842*.
 
@@ -393,7 +395,8 @@ e)  Zhao, W. X., Zhou, K., Li, J., Tang, T., Wang, X., Hou, Y., ... & Wen, J. R.
 
 Notes: 这篇是关于LLMs本身的survey，也出自人大高瓴团队，对于大模型初学者来说非常友好，对于资深研究人员也是很有用的参考文献。内容几乎涵盖了LLMs的所有方面，且详略得当。其中Agent相关的内容主要见第6章。
 
-3.  其它材料：
+## 3.  其它材料：
+
 
 a)  LLM Powered Autonomous Agents, Lilian Weng (OpenAI) 的blog，非常值得一读。
 

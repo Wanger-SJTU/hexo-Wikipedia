@@ -18,12 +18,17 @@ agent-first estilo OpenAI en lugar de solo un harness mínimo.
 
 ## Orden de Copia
 
-1. Copia `AGENTS.md` y `ARCHITECTURE.md` a la raíz del repositorio.
-2. Copia todo el árbol `docs/`.
-3. Rellena `docs/PRODUCT_SENSE.md`, `docs/QUALITY_SCORE.md` y
+## 1. Copia `AGENTS.md` y `ARCHITECTURE.md` a la raíz del repositorio.
+
+## 2. Copia todo el árbol `docs/`.
+
+## 3. Rellena `docs/PRODUCT_SENSE.md`, `docs/QUALITY_SCORE.md` y
+
    docs/RELIABILITY.md` primero.
-4. Añade tu primer plan activo en `docs/exec-plans/active/`.
-5. Mantén los archivos de entrada cortos y enruta el detalle a los documentos enlazados.
+## 4. Añade tu primer plan activo en `docs/exec-plans/active/`.
+
+## 5. Mantén los archivos de entrada cortos y enruta el detalle a los documentos enlazados.
+
 
 ## Para Qué Optimiza Esta Plantilla
 

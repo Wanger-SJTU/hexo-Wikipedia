@@ -18,12 +18,17 @@ yüzeyi istediğinizde bu başlangıcı gerçek bir depoya kopyalayın.
 
 ## Kopyalama Sırası
 
-1. `AGENTS.md` ve `ARCHITECTURE.md` dosyalarını depo köküne kopyalayın.
-2. `docs/` ağacının tamamını kopyalayın.
-3. Önce `docs/PRODUCT_SENSE.md`, `docs/QUALITY_SCORE.md` ve
+## 1. `AGENTS.md` ve `ARCHITECTURE.md` dosyalarını depo köküne kopyalayın.
+
+## 2. `docs/` ağacının tamamını kopyalayın.
+
+## 3. Önce `docs/PRODUCT_SENSE.md`, `docs/QUALITY_SCORE.md` ve
+
    docs/RELIABILITY.md` dosyalarını doldurun.
-4. İlk aktif planınızı `docs/exec-plans/active/` altına ekleyin.
-5. Giriş dosyalarını kısa tutun ve detayı bağlantılı dokümanlara yönlendirin.
+## 4. İlk aktif planınızı `docs/exec-plans/active/` altına ekleyin.
+
+## 5. Giriş dosyalarını kısa tutun ve detayı bağlantılı dokümanlara yönlendirin.
+
 
 ## Bu Şablon Neyin İçin Optimize Edilmiş
 

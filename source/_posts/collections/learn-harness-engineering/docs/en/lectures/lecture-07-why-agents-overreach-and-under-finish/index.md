@@ -30,12 +30,18 @@ This isn't a metaphor — it's math. Assume the agent's context capacity is C an
 
 Claude Code's real behavior is telling. Ask it to "add user registration" and it might:
 
-1. Create a User model
-2. Write the registration route
-3. Notice it needs email verification, so add a mail service
-4. See that passwords need hashing, so bring in bcrypt
-5. Notice the error handling is inconsistent, so refactor the global error middleware
-6. See the test file structure is messy, so reorganize the directory
+## 1. Create a User model
+
+## 2. Write the registration route
+
+## 3. Notice it needs email verification, so add a mail service
+
+## 4. See that passwords need hashing, so bring in bcrypt
+
+## 5. Notice the error handling is inconsistent, so refactor the global error middleware
+
+## 6. See the test file structure is messy, so reorganize the directory
+
 
 Six steps later, every one is half-done. No end-to-end verification, complex coupling between the half-baked code, and the next session to pick up the pieces will be completely lost.
 

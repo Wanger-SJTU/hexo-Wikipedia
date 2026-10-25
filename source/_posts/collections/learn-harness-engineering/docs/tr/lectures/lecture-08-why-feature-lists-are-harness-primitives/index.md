@@ -77,10 +77,14 @@ Belgeler insanların okuması içindir; temel yapı taşları sistemlerin yürü
 
 Bunu veritabanı tetikleyici kısıtlamalarına karşı uygulama katmanı kontrolleri gibi düşünün: birincisi veritabanı motoru tarafından zorlanır, hiçbir SQL onu atlayamaz; ikincisi uygulama kodu doğruluğuna bağlıdır ve yanlışlıkla atlatılabilir. Harness temel yapı taşı olarak özellik listeleri Spesifik olarak özellik listesi dört harness bileşenine hizmet eder:
 
-1. <strong>Zamanlayıcı</strong>: Durumları okur, sonraki `not_started` özelliği seçer. Bir fabrika üretim planlama sistemi gibi.
-2. <strong>Doğrulayıcı</strong>: Doğrulama komutlarını yürütür, durum geçişlerine izin verip vermeyeceğine karar verir. Kalite denetimi gibi.
-3. <strong>Devir raportörü</strong>: Özellik listesinden otomatik olarak oturum devir özetleri oluşturur. Otomatik bir vardiya değişim raporu gibi.
-4. <strong>İlerleme takipçisi</strong>: Durum dağılımını sayar, proje sağlık metrikleri sağlar. Bir gösterge paneli gibi.
+## 1. **Zamanlayıcı**: Durumları okur, sonraki `not_started` özelliği seçer. Bir fabrika üretim planlama sistemi gibi.
+
+## 2. **Doğrulayıcı**: Doğrulama komutlarını yürütür, durum geçişlerine izin verip vermeyeceğine karar verir. Kalite denetimi gibi.
+
+## 3. **Devir raportörü**: Özellik listesinden otomatik olarak oturum devir özetleri oluşturur. Otomatik bir vardiya değişim raporu gibi.
+
+## 4. **İlerleme takipçisi**: Durum dağılımını sayar, proje sağlık metrikleri sağlar. Bir gösterge paneli gibi.
+
 
 ## Doğru nasıl yapılır
 

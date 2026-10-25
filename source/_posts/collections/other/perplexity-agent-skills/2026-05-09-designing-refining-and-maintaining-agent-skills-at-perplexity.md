@@ -164,10 +164,14 @@ Skill 是"几乎是只追加的"：
 ### Eval 套件
 
 Perplexity 运行多种 eval 套件：
-1. <strong>Skill loading evals</strong> — 检查路由的精确率、召回率
-2. <strong>Skill file reads evals</strong> — 检查正确的渐进加载
-3. <strong>End-to-end task evals</strong> — 在完整 agent 循环中用 LLM judge 评分
-4. <strong>跨模型测试</strong> — GPT、Claude Opus、Claude Sonnet 行为不同
+## 1. **Skill loading evals** — 检查路由的精确率、召回率
+
+## 2. **Skill file reads evals** — 检查正确的渐进加载
+
+## 3. **End-to-end task evals** — 在完整 agent 循环中用 LLM judge 评分
+
+## 4. **跨模型测试** — GPT、Claude Opus、Claude Sonnet 行为不同
+
 
 ## 关键结论
 

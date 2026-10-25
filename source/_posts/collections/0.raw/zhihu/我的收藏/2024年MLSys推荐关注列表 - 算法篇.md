@@ -47,7 +47,8 @@ source_url: https://zhuanlan.zhihu.com/p/13960662604
 
 7. [Weilin Zhao](https://link.zhihu.com/?target=https%3A//brawny-college-5b2.notion.site/Weilin-Zhao-11d20b7deb8280388213d5f5ed072992)：给ex-Mentor推一个，Ouroboros/CA-LoRA/Seq1F1B/BMTrain/作者，THUNLP PhD。
 
-7.5. [SageAttention2](https://link.zhihu.com/?target=https%3A//github.com/thu-ml/SageAttention)：Work很Nice，但作者们不怎么写东西，开一个7.5，THU-ML组。
+### 7.5. [SageAttention2](https://link.zhihu.com/?target=https%3A//github.com/thu-ml/SageAttention)：Work很Nice，但作者们不怎么写东西，开一个7.5，THU-ML组。
+
 
 8. Song Han（[主页](https://link.zhihu.com/?target=https%3A//hanlab.mit.edu/blog)）：AWQ/SVDQuant/EfficientViT/QServe/DuoAttention/StreamingLLM等作者（导师），量化/推理方面的专家，手下学生如Ligeng Zhu/Zhijian Liu/Hanrui Wang同样水平非常高，MIT AP。
 
@@ -65,7 +66,8 @@ source_url: https://zhuanlan.zhihu.com/p/13960662604
 
 15. Hao Zhang（[主页](https://link.zhihu.com/?target=https%3A//cseweb.ucsd.edu/~haozhang/)）：OSD等工作作者，UCSD AP。
 
-15.5 DeepSeek MLA：MLA今年表现亮眼。
+### 15.5 DeepSeek MLA：MLA今年表现亮眼。
+
 
 16. Lin Zhang：NLP/MLsys：系统/算法都有很多很好的文章。
 

@@ -17,11 +17,16 @@ Qachonki sizga faqatgina minimal harnessʼdan koʻra, OpenAI uslubidagi, hujjatl
 
 ## Nusxalash Tartibi (Copy Order)
 
-1. `AGENTS.md` va `ARCHITECTURE.md` ni reponing root (asosiy) jildiga koʻchiring.
-2. Butun `docs/` jild daraxtini (tree) koʻchiring.
-3. Birinchi navbatda `docs/PRODUCT_SENSE.md`, `docs/QUALITY_SCORE.md` va `docs/RELIABILITY.md` fayllarini toʻldiring.
-4. Oʻzingizning birinchi faol rejangizni (active plan) `docs/exec-plans/active/` papkasiga qoʻshing.
-5. Kirish nuqtasi (entrypoint) fayllarini qisqa tuting va barcha detallarni ulangan (linked) hujjatlar ichiga yoʻnaltiring.
+## 1. `AGENTS.md` va `ARCHITECTURE.md` ni reponing root (asosiy) jildiga koʻchiring.
+
+## 2. Butun `docs/` jild daraxtini (tree) koʻchiring.
+
+## 3. Birinchi navbatda `docs/PRODUCT_SENSE.md`, `docs/QUALITY_SCORE.md` va `docs/RELIABILITY.md` fayllarini toʻldiring.
+
+## 4. Oʻzingizning birinchi faol rejangizni (active plan) `docs/exec-plans/active/` papkasiga qoʻshing.
+
+## 5. Kirish nuqtasi (entrypoint) fayllarini qisqa tuting va barcha detallarni ulangan (linked) hujjatlar ichiga yoʻnaltiring.
+
 
 ## Ushbu Andoza Nimalarni Yaxshilaydi (Optimizes For)
 

@@ -127,19 +127,25 @@ RVWMO的ProcessorRVTSO的ProcessorRVWMO的程序合适低效但是不会错RVTSO
 
 4. FENCE指令约束a必须在b之前实现；
 
-5. a标记为acquire（aq）
+## 5. a标记为acquire（aq）
 
-6. b标记为release（rl）
 
-7. a和b都有aq和rl
+## 6. b标记为release（rl）
 
-8. a和b是配对出现的（lr/sc指令就是配对的）
+
+## 7. a和b都有aq和rl
+
+
+## 8. a和b是配对出现的（lr/sc指令就是配对的）
+
 
 <strong>Syntactic 依赖</strong>
 
-9. b对a有语法地址依赖，即：b指令访存的地址，依赖于a提供
+## 9. b对a有语法地址依赖，即：b指令访存的地址，依赖于a提供
 
-10. b对a有语法数据依赖，即：b指令访存要用到的data，依赖于a提供
+
+## 10. b对a有语法数据依赖，即：b指令访存要用到的data，依赖于a提供
+
 
 11. b是store，b对a有语法控制依赖（定义：在a和b之间有一个指令m，它是个branch or ijmp，m对a有语法依赖）。简单理解就是：m既然要跳转且依赖于a，那跳或者不跳，往哪里跳，都需要排在a后面决定。如果此时b作为一个store跑到a前面先store，可能造成功能错误。（b甚至都被跳过没执行的机会）
 
@@ -152,13 +158,15 @@ RVWMO的ProcessorRVTSO的ProcessorRVWMO的程序合适低效但是不会错RVTSO
 除了上述13条rule外，SPEC还定义了三大Axioms：
 
 - Load value Axiom: load读到的value，一定是global memory order/program order最近一次的store更新进去的。
-2. Atomicity Axiom
+## 2. Atomicity Axiom
+
 
 ![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_dc8aa368fc97.jpg)
 
 Atomicity Axiom示意LR-SC是RISCV A扩展中的显式指令，LR是load一个地址的value，同时形成一把锁，SC是store condition，也就是后面再来store该地址如果发现锁已经被破坏，返回store 失败信息。LR和SC必须成对出现。
 
-3. Progress Axiom
+## 3. Progress Axiom
+
 
   一个无限的内存操作序列，不能放在某个内存操作之前。**  简单理解就是：防止饿死后面的
 

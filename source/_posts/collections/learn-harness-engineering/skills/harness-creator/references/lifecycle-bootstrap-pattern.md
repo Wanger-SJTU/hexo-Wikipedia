@@ -59,13 +59,18 @@ async function dispatchHook(
 ### Long-Running Work: Typed State Machines with Two-Phase Eviction
 
 Each work unit gets:
-1. <strong>Typed, prefixed ID</strong> (e.g., `extractor-001`, `benchmark-002`)
-2. <strong>Strict lifecycle</strong> (running → completed | failed | killed)
-3. <strong>Disk-backed output</strong> (not just in-memory)
+## 1. **Typed, prefixed ID** (e.g., `extractor-001`, `benchmark-002`)
+
+## 2. **Strict lifecycle** (running → completed | failed | killed)
+
+## 3. **Disk-backed output** (not just in-memory)
+
 
 Eviction is two-phase:
-1. <strong>Disk output</strong> cleaned eagerly at terminal state
-2. <strong>In-memory records</strong> cleaned lazily after parent notified
+## 1. **Disk output** cleaned eagerly at terminal state
+
+## 2. **In-memory records** cleaned lazily after parent notified
+
 
 ### Bootstrap: Dependency-Ordered, Memoized Stages
 
@@ -217,11 +222,16 @@ class AgentBootstrap {
 
 ## Gotchas
 
-1. <strong>Hook trust is all-or-nothing</strong> — One untrusted hook disables entire extension system
-2. <strong>Most async work skips "pending" state</strong> — Work units register directly as "running"
-3. <strong>Eviction requires notification</strong> — Terminal work unit only GC-eligible after parent notified
-4. <strong>Fast-path dispatch</strong> — Memoized callers must handle concurrent calls without re-running stages
-5. <strong>Hook types must be disjoint</strong> — Don't create overlapping hook scopes
+## 1. **Hook trust is all-or-nothing** — One untrusted hook disables entire extension system
+
+## 2. **Most async work skips "pending" state** — Work units register directly as "running"
+
+## 3. **Eviction requires notification** — Terminal work unit only GC-eligible after parent notified
+
+## 4. **Fast-path dispatch** — Memoized callers must handle concurrent calls without re-running stages
+
+## 5. **Hook types must be disjoint** — Don't create overlapping hook scopes
+
 
 ## Related Patterns
 

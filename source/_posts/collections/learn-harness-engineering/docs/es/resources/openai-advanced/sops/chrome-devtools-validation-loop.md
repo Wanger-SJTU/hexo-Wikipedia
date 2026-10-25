@@ -23,14 +23,22 @@ que el recorrido esté limpio.
 
 ## Bucle Principal
 
-1. Selecciona la página objetivo o la instancia de la aplicación.
-2. Limpia el ruido obsoleto de la consola.
-3. Captura el estado ANTES.
-4. Dispara la ruta de UI.
-5. Observa los eventos en tiempo de ejecución durante la interacción.
-6. Captura el estado DESPUÉS.
-7. Aplica la corrección y reinicia la aplicación si es necesario.
-8. Vuelve a ejecutar la validación hasta que el recorrido esté limpio.
+## 1. Selecciona la página objetivo o la instancia de la aplicación.
+
+## 2. Limpia el ruido obsoleto de la consola.
+
+## 3. Captura el estado ANTES.
+
+## 4. Dispara la ruta de UI.
+
+## 5. Observa los eventos en tiempo de ejecución durante la interacción.
+
+## 6. Captura el estado DESPUÉS.
+
+## 7. Aplica la corrección y reinicia la aplicación si es necesario.
+
+## 8. Vuelve a ejecutar la validación hasta que el recorrido esté limpio.
+
 
 ## Entradas Requeridas
 
@@ -41,14 +49,21 @@ que el recorrido esté limpio.
 
 ## SOP de Ejecución
 
-1. Escribe el recorrido objetivo en el plan activo.
-2. Define el éxito en términos observables: texto presente, botón habilitado, error eliminado,
+## 1. Escribe el recorrido objetivo en el plan activo.
+
+## 2. Define el éxito en términos observables: texto presente, botón habilitado, error eliminado,
+
    consola limpia, solicitud exitosa.
-3. Captura el estado inicial antes de la interacción.
-4. Dispara exactamente una ruta a la vez.
-5. Registra los eventos en tiempo de ejecución, los cambios del DOM y la salida visible.
-6. Si el recorrido falla, corrige la capa responsable más pequeña y reinicia.
-7. Vuelve a ejecutar la misma ruta y compara la evidencia ANTES/DESPUÉS.
+## 3. Captura el estado inicial antes de la interacción.
+
+## 4. Dispara exactamente una ruta a la vez.
+
+## 5. Registra los eventos en tiempo de ejecución, los cambios del DOM y la salida visible.
+
+## 6. Si el recorrido falla, corrige la capa responsable más pequeña y reinicia.
+
+## 7. Vuelve a ejecutar la misma ruta y compara la evidencia ANTES/DESPUÉS.
+
 
 ## Criterios de Limpieza
 

@@ -23,9 +23,12 @@ Yeni bir kullanıcının yaşaması gereken ilk çalıştırma deneyimini tanım
 
 ## Kullanıcı Akışı
 
-1. `[adım bir]`
-2. `[adım iki]`
-3. `[adım üç]`
+## 1. `[adım bir]`
+
+## 2. `[adım iki]`
+
+## 3. `[adım üç]`
+
 
 ## Kabul Kriterleri
 

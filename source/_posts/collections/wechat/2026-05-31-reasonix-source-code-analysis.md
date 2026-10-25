@@ -154,10 +154,14 @@ readonly parallelSafe: boolean; // default false
 
 每个会话保存为 JSONL 文件。恢复时的关键设计：
 
-1. <strong>Heal-on-load</strong>：加载历史消息时自动修复过大的 tool result（避免下次请求 400）
-2. <strong>Stats carry-forward</strong>：恢复会话后，累计成本、token 计数从 meta 文件继续
-3. <strong>Reasoning retention</strong>：thinking 模式的 `reasoning_content` 在 tool-call turn 中保留（用于 repair），在纯文本 turn 中丢弃（节省 tokens）
-4. <strong>Session archive</strong>：`/new` 命令清空内存但归档磁盘，保持 session name 不变以维持前缀缓存热度
+## 1. **Heal-on-load**：加载历史消息时自动修复过大的 tool result（避免下次请求 400）
+
+## 2. **Stats carry-forward**：恢复会话后，累计成本、token 计数从 meta 文件继续
+
+## 3. **Reasoning retention**：thinking 模式的 `reasoning_content` 在 tool-call turn 中保留（用于 repair），在纯文本 turn 中丢弃（节省 tokens）
+
+## 4. **Session archive**：`/new` 命令清空内存但归档磁盘，保持 session name 不变以维持前缀缓存热度
+
 
 ## 8. Desktop 端现状与 PR 方向
 
@@ -169,11 +173,16 @@ readonly parallelSafe: boolean; // default false
 
 基于源码分析，以下是几个有价值 PR 方向：
 
-1. <strong>文件差异可视化</strong> — 目前 Desktop 右侧面板只显示 agent 读过的文件列表，可以增加 diff viewer，展示 SEARCH/REPLACE 的预览和 `/apply` 后的实际变更
-2. <strong>会话管理增强</strong> — 目前 session 只有 JSONL 格式，Desktop 可以添加 session 列表视图、搜索、标签
-3. <strong>MCP Server 可视化配置</strong> — 现在配置 MCP 需要手动编辑 JSON，可以做成 GUI 表单
-4. <strong>Memory 浏览器</strong> — `~/.reasonix/memory/` 的 `remember`/`recall_memory` 数据可视化
-5. <strong>Cost 分析面板</strong> — 利用已有的 `SessionStats` 和 `cacheDiagnostics` 数据，做按时间/按工具的成本分解图表
+## 1. **文件差异可视化** — 目前 Desktop 右侧面板只显示 agent 读过的文件列表，可以增加 diff viewer，展示 SEARCH/REPLACE 的预览和 `/apply` 后的实际变更
+
+## 2. **会话管理增强** — 目前 session 只有 JSONL 格式，Desktop 可以添加 session 列表视图、搜索、标签
+
+## 3. **MCP Server 可视化配置** — 现在配置 MCP 需要手动编辑 JSON，可以做成 GUI 表单
+
+## 4. **Memory 浏览器** — `~/.reasonix/memory/` 的 `remember`/`recall_memory` 数据可视化
+
+## 5. **Cost 分析面板** — 利用已有的 `SessionStats` 和 `cacheDiagnostics` 数据，做按时间/按工具的成本分解图表
+
 
 ## 9. 源码质量观察
 

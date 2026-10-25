@@ -19,13 +19,20 @@ Kho lưu trữ này được tối ưu hóa cho công việc coding-agent chạy
 
 Trước khi thay đổi mã:
 
-1. Xác nhận thư mục gốc repo bằng `pwd`.
-2. Đọc `ARCHITECTURE.md` để biết bản đồ hệ thống hiện tại và các quy tắc phụ thuộc cứng.
-3. Đọc `docs/QUALITY_SCORE.md` để xem domain hoặc lớp nào yếu nhất.
-4. Đọc `docs/PLANS.md`, sau đó mở kế hoạch active bạn đang làm việc từ đó.
-5. Đọc spec sản phẩm liên quan trong `docs/product-specs/`.
-6. Chạy đường dẫn bootstrap và xác minh chuẩn cho repo này.
-7. Nếu xác minh baseline đang thất bại, hãy sửa baseline trước khi thêm phạm vi.
+## 1. Xác nhận thư mục gốc repo bằng `pwd`.
+
+## 2. Đọc `ARCHITECTURE.md` để biết bản đồ hệ thống hiện tại và các quy tắc phụ thuộc cứng.
+
+## 3. Đọc `docs/QUALITY_SCORE.md` để xem domain hoặc lớp nào yếu nhất.
+
+## 4. Đọc `docs/PLANS.md`, sau đó mở kế hoạch active bạn đang làm việc từ đó.
+
+## 5. Đọc spec sản phẩm liên quan trong `docs/product-specs/`.
+
+## 6. Chạy đường dẫn bootstrap và xác minh chuẩn cho repo này.
+
+## 7. Nếu xác minh baseline đang thất bại, hãy sửa baseline trước khi thêm phạm vi.
+
 
 ## Bản đồ Định tuyến
 
@@ -61,8 +68,13 @@ Một thay đổi chỉ xong khi tất cả những điều sau đây là đúng
 
 Trước khi kết thúc phiên:
 
-1. Cập nhật kế hoạch thực thi active.
-2. Cập nhật `docs/QUALITY_SCORE.md` nếu bất kỳ domain hoặc lớp nào thay đổi có ý nghĩa.
-3. Ghi lại nợ mới trong `docs/exec-plans/tech-debt-tracker.md` nếu bạn đã hoãn nó.
-4. Di chuyển các kế hoạch đã hoàn thành sang `docs/exec-plans/completed/` khi phù hợp.
-5. Để repo ở trạng thái có thể khởi động lại với hành động tiếp theo rõ ràng.
+## 1. Cập nhật kế hoạch thực thi active.
+
+## 2. Cập nhật `docs/QUALITY_SCORE.md` nếu bất kỳ domain hoặc lớp nào thay đổi có ý nghĩa.
+
+## 3. Ghi lại nợ mới trong `docs/exec-plans/tech-debt-tracker.md` nếu bạn đã hoãn nó.
+
+## 4. Di chuyển các kế hoạch đã hoàn thành sang `docs/exec-plans/completed/` khi phù hợp.
+
+## 5. Để repo ở trạng thái có thể khởi động lại với hành động tiếp theo rõ ràng.
+

@@ -34,8 +34,10 @@ GPT族：Byte-Pair Encoding (BPE)
 如果大家用过huggingface，对tokenizer肯定不会陌生。在使用模型前，都需要将sequence过一遍tokenizer，进去的是word序列（句子），出来的是number序列。但是，HF的tokenizer到底在做什么？事实上，tokenizer总体上做三件事情：
 
 1. 分词。tokenizer将字符串<strong>分为一些sub-word token string</strong>，再将token string映射到id，并保留来回映射的mapping。从string映射到id为tokenizer encode过程，从id映射回token为tokenizer decode过程。映射方法有多种，例如BERT用的是WordPiece，GPT-2和RoBERTa用的是BPE等等，后面会详细介绍。
-2. 扩展词汇表。部分tokenizer会用一种统一的方法<strong>将训练语料出现的且词汇表中本来没有的token加入词汇表。</strong>对于不支持的tokenizer，用户也可以手动添加。
-3. <strong>识别并处理特殊token</strong>。特殊token包括\[MASK\], <|im\_start|>, <sos>, <s>等等。tokenizer会将它们加入词汇表中，并且保证它们在模型中不被切成sub-word，而是完整保留。
+## 2. 扩展词汇表。部分tokenizer会用一种统一的方法**将训练语料出现的且词汇表中本来没有的token加入词汇表。**对于不支持的tokenizer，用户也可以手动添加。
+
+## 3. **识别并处理特殊token**。特殊token包括\[MASK\], <|im\_start|>, <sos>, <s>等等。tokenizer会将它们加入词汇表中，并且保证它们在模型中不被切成sub-word，而是完整保留。
+
 
 ### 分词粒度
 
@@ -93,8 +95,10 @@ Word-Piece和BPE非常相似，BPE使用<strong>出现最频繁的组合</strong
 
 这个包主要是为了多语言模型设计的，它做了两个重要的转化：
 
-1. 以unicode方式编码字符，将所有的输入（英文、中文等不同语言）都转化为unicode字符，解决了多语言编码方式不同的问题。
-2. 将空格编码为‘\_’， 如'New York' 会转化为\['\_', 'New', '\_York'\]，这也是为了能够处理多语言问题，比如英文解码时有空格，而中文没有， 这种语言区别。
+## 1. 以unicode方式编码字符，将所有的输入（英文、中文等不同语言）都转化为unicode字符，解决了多语言编码方式不同的问题。
+
+## 2. 将空格编码为‘\_’， 如'New York' 会转化为\['\_', 'New', '\_York'\]，这也是为了能够处理多语言问题，比如英文解码时有空格，而中文没有， 这种语言区别。
+
 
 ### 词汇表不全问题
 
@@ -186,10 +190,13 @@ tokenizer.decode(output[0])
 
 例如，如果我们使用T5TokenizerFast来tokenize`'Hello World!'`，则：
 
-1. tokenizer会将token序列 \['Hello', 'World', '!'\] 编码成数字序列\[8774, 1150, 55, 1\]，也就是\['Hello', 'World', '!', '</s>'\]，然后在句尾加一个</s>表示句子结束。
+## 1. tokenizer会将token序列 \['Hello', 'World', '!'\] 编码成数字序列\[8774, 1150, 55, 1\]，也就是\['Hello', 'World', '!', '</s>'\]，然后在句尾加一个</s>表示句子结束。
+
 2. 这四个数字会变成四个one-hot向量，例如8774会变成\[0, 0, ..., 1, 0, 0..., 0, 0\]，其中向量的index为8774的位置为1，其他位置全部为0。假设词表里面一共有30k个可能出现的token，则向量长度也是30k，这样才能保证出现的每个单词都能被one-hot向量表示。
-3. 也就是说，一个形状为 (4)(4) 的输入序列向量，会变成形状为 (4,30k)(4, 30\\text{k}) 的输入one-hot向量。为了将每个单词转换为一个word embedding，每个向量都需要被被送到embedding层进行dense降维。
-4. 现在思考一下，多大的矩阵可以满足这个要求？没错，假设embedding size为768，则矩阵的形状应该为 (30k,768)(30\\text{k}, 768) ，与BERT的实现一致：
+## 3. 也就是说，一个形状为 (4)(4) 的输入序列向量，会变成形状为 (4,30k)(4, 30\\text{k}) 的输入one-hot向量。为了将每个单词转换为一个word embedding，每个向量都需要被被送到embedding层进行dense降维。
+
+## 4. 现在思考一下，多大的矩阵可以满足这个要求？没错，假设embedding size为768，则矩阵的形状应该为 (30k,768)(30\\text{k}, 768) ，与BERT的实现一致：
+
 
 ![](https://proxy-prod.omnivore-image-cache.app/1114x328,s1_tVALZYx26wQpPdFieVzzX6EPIBssBpIUA3D5uhAss/https://pic3.zhimg.com/v2-09879da03d88c685997b1a79ec6e257e_b.jpg)
 

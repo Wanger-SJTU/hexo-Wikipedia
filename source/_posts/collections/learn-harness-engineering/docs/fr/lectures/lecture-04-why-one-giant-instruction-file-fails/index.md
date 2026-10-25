@@ -113,10 +113,13 @@ Le `AGENTS.md` d'une équipe SaaS est passé de 50 à 600 lignes. Il mélangeait
 Les performances de l'agent ont commencé à décliner nettement : pendant de simples corrections de bugs, il dépensait beaucoup de contexte sur des instructions de déploiement sans rapport ; la contrainte de sécurité "toutes les requêtes de base de données doivent utiliser des requêtes paramétrées" était enfouie à la ligne 300 et souvent ignorée ; trois règles de style contradictoires provoquaient un comportement aléatoire.
 
 L'équipe a effectué une "réorganisation de valise" :
-1. `AGENTS.md` réduit à 80 lignes : seulement aperçu du projet, commandes d'exécution et 15 contraintes globales dures
+## 1. `AGENTS.md` réduit à 80 lignes : seulement aperçu du projet, commandes d'exécution et 15 contraintes globales dures
+
 2. Création de documents thématiques : `docs/api-patterns.md` (120 lignes), `docs/database-rules.md` (60 lignes), `docs/testing-standards.md` (80 lignes)
-3. Ajout de liens vers ces documents dans le fichier de routage
-4. Notes historiques converties en tests ou supprimées
+## 3. Ajout de liens vers ces documents dans le fichier de routage
+
+## 4. Notes historiques converties en tests ou supprimées
+
 
 Après refactorisation, le taux de réussite du même ensemble de tâches est passé de 45% à 72%. Le respect de la contrainte de sécurité est passé de 60% à 95%, parce qu'elle a été déplacée du milieu du fichier vers le haut du fichier de routage, et n'était plus "perdue au milieu".
 

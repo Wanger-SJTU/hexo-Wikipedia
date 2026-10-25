@@ -35,10 +35,17 @@ categories:
 
 ## 推奨読書順
 
-1. `method-map.md`
-2. `initializer-agent-playbook.md`
-3. `coding-agent-startup-flow.md`
-4. `prompt-calibration.md`
-5. OpenAI Harness engineering
-6. Anthropic Effective harnesses
-7. Anthropic Harness design
+## 1. `method-map.md`
+
+## 2. `initializer-agent-playbook.md`
+
+## 3. `coding-agent-startup-flow.md`
+
+## 4. `prompt-calibration.md`
+
+## 5. OpenAI Harness engineering
+
+## 6. Anthropic Effective harnesses
+
+## 7. Anthropic Harness design
+

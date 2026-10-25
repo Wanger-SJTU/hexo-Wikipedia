@@ -35,7 +35,8 @@ DSA的原理可参看：
 [用注意力知识分析DSA(DeepSeek Sparse Attention)的设计逻辑](https://zhuanlan.zhihu.com/p/1962162900111172920)
 2 DSA计算流细节
 
-2.1 Lightning Indexer
+### 2.1 Lightning Indexer
+
 DSA在MLA(Multi-Head Latent Attention)的基础上多了下图中红色框的模块（后面简称为Indexer），
 
 ![](https://pica.zhimg.com/v2-73d1f09795ee5ffef2ccb4029b2471be_r.jpg)使用DeepSeekV3.2 671B配置的参数：
@@ -82,7 +83,8 @@ DSA在MLA(Multi-Head Latent Attention)的基础上多了下图中红色框的模
 
 ![](https://picx.zhimg.com/v2-c4ae4653c1663b2d3791a099c0d93b4b_r.jpg)在Indexer最后选取的Topk会用于MLA部分的select计算，这就是DSA中提到的Top-k Selector模块。
 
-2.2 MLA部分
+### 2.2 MLA部分
+
 DSA的MLA部分与之前基本保持一致，主要的差异点是在KV通道上引入了一个选择操作，该操作对输入到MHA/MQA的序列tokens进行处理，选择Indexer算出来的topk个值。
 
 Prefill阶段，select的位置需要结合attention运算：
@@ -102,12 +104,13 @@ Prefill阶段，select的位置需要结合attention运算：
 ![](https://pic3.zhimg.com/v2-5a8c36675a510ac5cfd81062c57a0dd8_r.jpg)
 3 性能对比分析&优化
 
-3.1 计算量变化
+### 3.1 计算量变化
+
 DSA相比MLA的主要计算差异点：
 
 a> 矩阵乘法KV_scores、PV计算复杂度从 
-![](https://www.zhihu.com/equation?tex=O%28L%5E%7B2%7D%29) 到 
-![](https://www.zhihu.com/equation?tex=O%28Lk%29) ，其中L是序列长度，k是topk长度。这个两个乘法的flops计算式：
+$O(L^{2})$ 到 
+$O(Lk)$ ，其中L是序列长度，k是topk长度。这个两个乘法的flops计算式：
 
 ```text
 kv_scores = 2 * bs * heads * seq_len * (seq_len + cache_len) * (qk_head_dim + qk_rope_head_dim) / causal_mask_cof
@@ -135,11 +138,11 @@ context_len = seq_len + cache_len
 # FP8 logits flops：
 logits = 1 * bs * index_n_heads * seq_len * context_len * index_head_dim / causal_mask_cof
 prefill阶段cache_len为常数，linear(q_linear 、k_linear 、w_linear)与seq_len成线性关系，复杂度
-![](https://www.zhihu.com/equation?tex=O%28L%29)。logits计算与seq_len平方相关，复杂度 
-![](https://www.zhihu.com/equation?tex=O%28L%5E%7B2%7D%29) 。对比算量与序列关系，图中横坐标是序列总长度(sequence length或者context length)等于seq_len + cache_len长度。当序列超过~6.2k时，logits运算量占主导。
+$O(L)$。logits计算与seq_len平方相关，复杂度 
+$O(L^{2})$ 。对比算量与序列关系，图中横坐标是序列总长度(sequence length或者context length)等于seq_len + cache_len长度。当序列超过~6.2k时，logits运算量占主导。
 
 ![](https://pic2.zhimg.com/v2-7c6e3b3dad2e5a8ef87e2a965689ac63_r.jpg)decode阶段seq_len=1，linear计算量恒定，logits计算与cache_len线性相关，复杂度
-![](https://www.zhihu.com/equation?tex=O%28L%29)。
+$O(L)$。
 
 ![](https://picx.zhimg.com/v2-2b0c6e18abda942115a4220f299693b3_r.jpg)结合MLA的公式可以计算出整体的flops的差异：
 
@@ -161,7 +164,8 @@ MLA部分，静态存储不变，MHA/MQA attention的KV的输入激活值变为�
 
 Indexer部分：静态存储增加线性层权重w、q、k，按照默认参数配置，大小为(FP16)：
 
-![](https://www.zhihu.com/equation?tex=Mem+%3D+2+%2A+%287168%2A64+%2B+1536%2A64%2A128+%2B+7168%2A128%29%2F%281024%2A1024%29+M) 
+$$Mem = 2 * (7168*64 + 1536*64*128 + 7168*128)/(1024*1024) M$$
+
 
 大小约为26.6MB，而激活值主要关注prefill阶段的峰值位置：
 
@@ -169,13 +173,15 @@ Indexer部分：静态存储增加线性层权重w、q、k，按照默认参数�
 -  top-k计算：输入值是mask、index_scores大小与seq_len^2 相关；输出topk_indices大小与 seq_len* top_k相关。
 ![](https://picx.zhimg.com/v2-53517368b657a037072e2b77a21edd31_r.jpg)当输入序列值比较大时，这些值都不容忽视，取极端长度128K分析，FP32格式数据：
 
-![](https://www.zhihu.com/equation?tex=Mem_%7Blogits%7D+%3D+4+%2A+64+%2A+128%2A1000+%2A+128+%2A+1000+%2F+%281024%2A1024%2A1024%29+GB) 
+$$Mem_{logits} = 4 * 64 * 128*1000 * 128 * 1000 / (1024*1024*1024) GB$$
+
 
 大小达到了<strong>3906.25GB</strong>，若用<strong>FP8</strong>格式大小降低到1/4变为约976.6GB(<strong>很显然一张显卡放不下！</strong>)。
 
 indexer score是求和后的结果，按照量化后为<strong>FP16</strong>格式计算：
 
-![](https://www.zhihu.com/equation?tex=Mem_%7Bindex+scores%7D+%3D+2+%2A+128%2A1000+%2A+128+%2A+1000+%2F+%281024%2A1024%2A1024%29+GB) 
+$$Mem_{index scores} = 2 * 128*1000 * 128 * 1000 / (1024*1024*1024) GB$$
+
 
 计算得大小为30.51GB。虽然prefill输入序列长度很少取到128K，但<strong>超长序列情况下</strong>，Indexer激活值需要的存储空间大，影响<strong>不容忽视</strong>！
 
@@ -184,7 +190,8 @@ indexer score是求和后的结果，按照量化后为<strong>FP16</strong>格�
 - MLA部分：保持不变。
 - Indexer部分：增加k_cache和k_scale保存；KV cache访存：数据量变为之前的topk/seq_len倍；当过了topk拐点后访存大小维持恒定（Decode阶段），所以<strong>访存不再是MLA-Decode的瓶颈；</strong>但KV cache存储空间依然保持线性增长，这点与MLA一致。
 
-3.3 推理性能优化思路(浅谈)
+### 3.3 推理性能优化思路(浅谈)
+
 通常情况下，MLA的Prefill阶段的状态是算力受限(compute bound)，Decode是存储受限(memory bound)。<strong>变为DSA后算力和访存问题得到改善，但存储空间问题恶化</strong>。如果采用DSA，这里提几个推理相关的优化思路：
 
 <strong>算力方面</strong>：DSA算力需求相比之前的MLA有大幅下降，Prefill算力依然保持近似线性增长，Decode变化不大。算力优化主要关注Prefill。

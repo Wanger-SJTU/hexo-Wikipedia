@@ -37,20 +37,20 @@ Taskonomy的网站：[taskonomy.stanford.edu](https://link.zhihu.com/?target=htt
 <strong>问题定义：</strong>
 
 首先，我们来定义我们想要解决的问题。我们想在有限的<strong>监督预算</strong> 
-![](https://www.zhihu.com/equation?tex=%5Cgamma) 下最大化我们在一组<strong>目标任务</strong> (target tasks) 
-![](https://www.zhihu.com/equation?tex=%5Cmathcal%7BT%7D%3D%5C%7Bt_1%2C...%2Ct_n%5C%7D) 上的表现。同时，我们有一组<strong>起始任务</strong> (source tasks) 
-![](https://www.zhihu.com/equation?tex=%5Cmathcal%7BS%7D) ，其定义为我们可从零学习的任务。监督预算 
-![](https://www.zhihu.com/equation?tex=%5Cgamma) 的定义为多少起始任务我们愿意从零开始学习（从零开始学习需要收集大量数据，监督预算表达了我们所面对的金钱、计算力和时间上的限制）。那么， 
-![](https://www.zhihu.com/equation?tex=%5Cmathcal%7BT%7D%5C+%5Csetminus%5C+%5Cmathcal%7BS%7D) 代表了我们感兴趣但不能从零学习的任务，比如一个只能有少量数据的任务。 
-![](https://www.zhihu.com/equation?tex=%5Cmathcal%7BS%7D%5C+%5Csetminus%5C+%5Cmathcal%7BT%7D) 代表了我们不感兴趣但可以从零学习（来帮助我们更好的学习 
-![](https://www.zhihu.com/equation?tex=%5Cmathcal%7BT%7D) ）的任务，如jigsaw、colorization等自我监督的视觉任务。 
-![](https://www.zhihu.com/equation?tex=%5Cmathcal%7BT%7D%5C+%5Ccap%5C+%5Cmathcal%7BS%7D) 代表了我们感兴趣也能从零学习的任务，但因为从零学习会消耗监督预算，我们希望从中选择出符合预算的一组从零学习，余下的通过少量数据的迁移学习来实现。我们称 
-![](https://www.zhihu.com/equation?tex=%5Cmathcal%7BV%7D%3D+%5Cmathcal%7BT%7D%5C+%5Ccup%5C+%5Cmathcal%7BS%7D) 为我们的<strong>任务词典</strong> (task dictionary)。最后，我们对视觉任务 
-![](https://www.zhihu.com/equation?tex=t) 的定义为一个基于图片的方程 
-![](https://www.zhihu.com/equation?tex=f_t) 。
+$\gamma$ 下最大化我们在一组<strong>目标任务</strong> (target tasks) 
+$\mathcal{T}=\{t_1,...,t_n\}$ 上的表现。同时，我们有一组<strong>起始任务</strong> (source tasks) 
+$\mathcal{S}$ ，其定义为我们可从零学习的任务。监督预算 
+$\gamma$ 的定义为多少起始任务我们愿意从零开始学习（从零开始学习需要收集大量数据，监督预算表达了我们所面对的金钱、计算力和时间上的限制）。那么， 
+$\mathcal{T}\ \setminus\ \mathcal{S}$ 代表了我们感兴趣但不能从零学习的任务，比如一个只能有少量数据的任务。 
+$\mathcal{S}\ \setminus\ \mathcal{T}$ 代表了我们不感兴趣但可以从零学习（来帮助我们更好的学习 
+$\mathcal{T}$ ）的任务，如jigsaw、colorization等自我监督的视觉任务。 
+$\mathcal{T}\ \cap\ \mathcal{S}$ 代表了我们感兴趣也能从零学习的任务，但因为从零学习会消耗监督预算，我们希望从中选择出符合预算的一组从零学习，余下的通过少量数据的迁移学习来实现。我们称 
+$\mathcal{V}= \mathcal{T}\ \cup\ \mathcal{S}$ 为我们的<strong>任务词典</strong> (task dictionary)。最后，我们对视觉任务 
+$t$ 的定义为一个基于图片的方程 
+$f_t$ 。
 
 如下图所示，我们收集了一个有四百万张图片的数据题，每张图片均有26个不同视觉任务的标注(ground truth)。这26个任务涵盖了2D的、3D的和语义的任务，构成了本项research的任务词典。因为这26个任务均有标答， 
-![](https://www.zhihu.com/equation?tex=%5Cmathcal%7BS%7D) 也为这26个任务。
+$\mathcal{S}$ 也为这26个任务。
 
 ![](https://picx.zhimg.com/v2-6d874519299253ea222804d2729a70e1_r.jpg)
 
@@ -65,36 +65,37 @@ Taskonomy的网站：[taskonomy.stanford.edu](https://link.zhihu.com/?target=htt
 <strong>第二步：迁移学习</strong>
 
 如上图所示，对于一个起始任务 
-![](https://www.zhihu.com/equation?tex=s%5Cin%5Cmathcal%7BS%7D) 和一个目标任务 
-![](https://www.zhihu.com/equation?tex=t%5Cin%5Cmathcal%7BT%7D) ，我们将以 
-![](https://www.zhihu.com/equation?tex=s) 的representation作为输入来学习 
-![](https://www.zhihu.com/equation?tex=t) 。我们将freeze任务 
-![](https://www.zhihu.com/equation?tex=s) 的encoder 参数，并基于encoder的输出 (representations) 学习一个浅层神经网络read out function。严谨来讲，如果我们用 
-![](https://www.zhihu.com/equation?tex=E_s) 表示 
-![](https://www.zhihu.com/equation?tex=s) 的encoder， 
-![](https://www.zhihu.com/equation?tex=f_t) 表示 
-![](https://www.zhihu.com/equation?tex=t) 的标注， 
-![](https://www.zhihu.com/equation?tex=L_t) 表示 
-![](https://www.zhihu.com/equation?tex=t) 的loss函数， 
-![](https://www.zhihu.com/equation?tex=I%5Cin+%5Cmathcal%7BD%7D) 来表示图片和迁移训练集， 
-![](https://www.zhihu.com/equation?tex=D) 表示要迁移学习的浅层神经网络，学习目标为：
+$s\in\mathcal{S}$ 和一个目标任务 
+$t\in\mathcal{T}$ ，我们将以 
+$s$ 的representation作为输入来学习 
+$t$ 。我们将freeze任务 
+$s$ 的encoder 参数，并基于encoder的输出 (representations) 学习一个浅层神经网络read out function。严谨来讲，如果我们用 
+$E_s$ 表示 
+$s$ 的encoder， 
+$f_t$ 表示 
+$t$ 的标注， 
+$L_t$ 表示 
+$t$ 的loss函数， 
+$I\in \mathcal{D}$ 来表示图片和迁移训练集， 
+$D$ 表示要迁移学习的浅层神经网络，学习目标为：
 
-![](https://www.zhihu.com/equation?tex=%5C%5C+D_%7Bs+%5Crightarrow+t%7D+%3A%3D%5Carg+%5Cmin_%7B%5Ctheta%7D+%5Cmathbb%7BE%7D_%7BI+%5Cin+%5Cmathcal%7BD%7D%7D%5CBig%5BL_t%5CBig%28D_%7B%5Ctheta%7D%5Cbig%28E_s%28I%29%5Cbig%29%2C+f_t%28I%29%5CBig%29%5CBig%5D+%5C%5C)
+$$\\ D_{s \rightarrow t} :=\arg \min_{\theta} \mathbb{E}_{I \in \mathcal{D}}\Big[L_t\Big(D_{\theta}\big(E_s(I)\big), f_t(I)\Big)\Big] \\$$
+
 
 对于所有 
-![](https://www.zhihu.com/equation?tex=s) 和 
-![](https://www.zhihu.com/equation?tex=t) 组合，我们均训练了一个 
-![](https://www.zhihu.com/equation?tex=D_%7Bs+%5Crightarrow+t%7D) 。如下图所示，对于 
-![](https://www.zhihu.com/equation?tex=t) ，不同的 
-![](https://www.zhihu.com/equation?tex=E_s%28I%29) 会对 
-![](https://www.zhihu.com/equation?tex=D_%7Bs+%5Crightarrow+t%7D) 的表现造成不同的影响。更具关联的 
-![](https://www.zhihu.com/equation?tex=s) 会为 
-![](https://www.zhihu.com/equation?tex=t) 提供更有效的统计信息，从而仅用1/60的训练数据（相较于从零学习）就能取得不错的结果；相反不具备关联的 
-![](https://www.zhihu.com/equation?tex=s) 则并不能有此表现。因此，我们认为 
-![](https://www.zhihu.com/equation?tex=D_%7Bs+%5Crightarrow+t%7D) 在 
-![](https://www.zhihu.com/equation?tex=t) 任务中的<strong>表现</strong>可以很好地代表了 
-![](https://www.zhihu.com/equation?tex=s) 之于 
-![](https://www.zhihu.com/equation?tex=t) 的关联性。
+$s$ 和 
+$t$ 组合，我们均训练了一个 
+$D_{s \rightarrow t}$ 。如下图所示，对于 
+$t$ ，不同的 
+$E_s(I)$ 会对 
+$D_{s \rightarrow t}$ 的表现造成不同的影响。更具关联的 
+$s$ 会为 
+$t$ 提供更有效的统计信息，从而仅用1/60的训练数据（相较于从零学习）就能取得不错的结果；相反不具备关联的 
+$s$ 则并不能有此表现。因此，我们认为 
+$D_{s \rightarrow t}$ 在 
+$t$ 任务中的<strong>表现</strong>可以很好地代表了 
+$s$ 之于 
+$t$ 的关联性。
 
 ![](https://pica.zhimg.com/v2-24c5e1b2dd55f4f9a92ea573dac1f300_r.jpg)上述迁移代表了任务之间一对一的关联，我们称其为一阶关联。如下图，几个任务之间可能具有互补性，结合几个起始任务的representations会对解决目标任务起到帮助。因此，我们也研究了任务之间多对一的关联，我们称其问高阶关联。在这种情况下，我们将几个起始任务的representation结合起来当作目标任务的输入，其余细节跟上段类似。
 
@@ -107,44 +108,45 @@ Taskonomy的网站：[taskonomy.stanford.edu](https://link.zhihu.com/?target=htt
 ![](https://pic2.zhimg.com/v2-24b6712163fcd90335808a4afece4973_r.jpg)
 
 这一步的目标为用一个 affinity matrix 量化任务之间的关联。虽然从上步习得的迁移网络中我们获得了许多的loss值 
-![](https://www.zhihu.com/equation?tex=L_%7Bs%5Crightarrow+t%7D) ，但因这些loss值来自于不同的loss 函数，它们的值域有很大差别。如果我们把这些loss值直接放入一个矩阵（上图左，纵轴为目标任务、横轴为起始任务），那么这个矩阵内的值及其不均匀，并不能有效反应任务之间的关联。同时，简单的线性规范化也并不能解决问题，因为任务的loss值和表现并不构成线性关系（0.01的 
-![](https://www.zhihu.com/equation?tex=l_2+) loss并不代表其表现两倍好于0.02的loss）。由此，我们采用Ordinal Normalization（基于序数的规范化）来将loss值转换为关联度。该方法基于运筹学中的 AHP (Analytic Hierarchy Process)。概括来讲，affinity matrix中的第 
-![](https://www.zhihu.com/equation?tex=%28i%2Cj%29) 个值为利用第 
-![](https://www.zhihu.com/equation?tex=i) 个起始任务迁移后，其网络有多大的几率表现好于用第 
-![](https://www.zhihu.com/equation?tex=j) 个网络（我们在下文称其为 
-![](https://www.zhihu.com/equation?tex=i) 对于 
-![](https://www.zhihu.com/equation?tex=j) 的胜率）。
+$L_{s\rightarrow t}$ ，但因这些loss值来自于不同的loss 函数，它们的值域有很大差别。如果我们把这些loss值直接放入一个矩阵（上图左，纵轴为目标任务、横轴为起始任务），那么这个矩阵内的值及其不均匀，并不能有效反应任务之间的关联。同时，简单的线性规范化也并不能解决问题，因为任务的loss值和表现并不构成线性关系（0.01的 
+$l_2$ loss并不代表其表现两倍好于0.02的loss）。由此，我们采用Ordinal Normalization（基于序数的规范化）来将loss值转换为关联度。该方法基于运筹学中的 AHP (Analytic Hierarchy Process)。概括来讲，affinity matrix中的第 
+$(i,j)$ 个值为利用第 
+$i$ 个起始任务迁移后，其网络有多大的几率表现好于用第 
+$j$ 个网络（我们在下文称其为 
+$i$ 对于 
+$j$ 的胜率）。
 
 对于每个目标任务 
-![](https://www.zhihu.com/equation?tex=t) ，我们构建pairwise tournament矩阵 
-![](https://www.zhihu.com/equation?tex=W_t) ，其纵轴和横轴均对应所有的起始任务及我们计算过的高阶组合。给定一个测试集 
-![](https://www.zhihu.com/equation?tex=D_%7Btest%7D) ， 
-![](https://www.zhihu.com/equation?tex=W_t) 的 
-![](https://www.zhihu.com/equation?tex=%28i%2Cj%29) 项为 
-![](https://www.zhihu.com/equation?tex=s_i) 在 
-![](https://www.zhihu.com/equation?tex=D_%7Btest%7D) 的所有图片输入中有多大的几率表现好于 
-![](https://www.zhihu.com/equation?tex=s_j) (有几成 
-![](https://www.zhihu.com/equation?tex=I+%5Cin+D_%7Btest%7D) 会使 
-![](https://www.zhihu.com/equation?tex=L_t%28D_%7Bs_i+%5Crightarrow+t%7D%28I%29%29+%3C+L_t%28D_%7Bs_j+%5Crightarrow+t%7D%28I%29%29+) )。在将 
-![](https://www.zhihu.com/equation?tex=W_t) 的值clip到 
-![](https://www.zhihu.com/equation?tex=%5B0.001%2C0.999%5D) ，计算 
-![](https://www.zhihu.com/equation?tex=W%27_t+%3D+W_t+%2F+W_t%5ET) ， 
-![](https://www.zhihu.com/equation?tex=W%27_t) 的 
-![](https://www.zhihu.com/equation?tex=%28i%2Cj%29) 项 
-![](https://www.zhihu.com/equation?tex=w%27_%7Bi%2Cj%7D) 现在代表着 
-![](https://www.zhihu.com/equation?tex=s_i) 表现好于 
-![](https://www.zhihu.com/equation?tex=s_j) 几倍。这样： 
+$t$ ，我们构建pairwise tournament矩阵 
+$W_t$ ，其纵轴和横轴均对应所有的起始任务及我们计算过的高阶组合。给定一个测试集 
+$D_{test}$ ， 
+$W_t$ 的 
+$(i,j)$ 项为 
+$s_i$ 在 
+$D_{test}$ 的所有图片输入中有多大的几率表现好于 
+$s_j$ (有几成 
+$I \in D_{test}$ 会使 
+$L_t(D_{s_i \rightarrow t}(I)) < L_t(D_{s_j \rightarrow t}(I))$ )。在将 
+$W_t$ 的值clip到 
+$[0.001,0.999]$ ，计算 
+$W'_t = W_t / W_t^T$ ， 
+$W'_t$ 的 
+$(i,j)$ 项 
+$w'_{i,j}$ 现在代表着 
+$s_i$ 表现好于 
+$s_j$ 几倍。这样： 
 
-![](https://www.zhihu.com/equation?tex=%5C%5C+w%27_%7Bi%2Cj%7D+%3D+%5Cfrac%7B%5Cmathop%7B%5Cmathbb%7BE%7D%7D_%7BI+%5Cin+%5Cmathcal%7BD_%5Ctextit%7Btest%7D%7D%7D%5BD_%7Bs_i+%5Crightarrow+t%7D%28I%29+%3E+D_%7Bs_j+%5Crightarrow+t%7D%28I%29%5D+%7D%7B%5Cmathop%7B%5Cmathbb%7BE%7D%7D_%7BI+%5Cin+%5Cmathcal%7BD_%5Ctextit%7Btest%7D%7D%7D%5BD_%7Bs_i+%5Crightarrow+t%7D%28I%29+%3C+D_%7Bs_j+%5Crightarrow+t%7D%28I%29%5D+%7D+%5C%5C) 
+$$\\ w'_{i,j} = \frac{\mathop{\mathbb{E}}_{I \in \mathcal{D_\textit{test}}}[D_{s_i \rightarrow t}(I) > D_{s_j \rightarrow t}(I)] }{\mathop{\mathbb{E}}_{I \in \mathcal{D_\textit{test}}}[D_{s_i \rightarrow t}(I) < D_{s_j \rightarrow t}(I)] } \\$$
+
 
 在把 
-![](https://www.zhihu.com/equation?tex=W%27_t) 规范化成数值和为1的矩阵后，我们将 
-![](https://www.zhihu.com/equation?tex=s_i) 相对于 
-![](https://www.zhihu.com/equation?tex=t) 的关联性（抑或可迁移性）定义为 
-![](https://www.zhihu.com/equation?tex=W%27_t) 的第 
-![](https://www.zhihu.com/equation?tex=i) 项principal eigenvector。将所有目标任务的 
-![](https://www.zhihu.com/equation?tex=W%27_t) 合并起来，我们获得最终的affinity matrix 
-![](https://www.zhihu.com/equation?tex=P) ，见上图右。
+$W'_t$ 规范化成数值和为1的矩阵后，我们将 
+$s_i$ 相对于 
+$t$ 的关联性（抑或可迁移性）定义为 
+$W'_t$ 的第 
+$i$ 项principal eigenvector。将所有目标任务的 
+$W'_t$ 合并起来，我们获得最终的affinity matrix 
+$P$ ，见上图右。
 
 至此第一大阶段完结，我们通过上述affinity matrix量化了任务之间的关联性。
 
@@ -152,7 +154,8 @@ Taskonomy的网站：[taskonomy.stanford.edu](https://link.zhihu.com/?target=htt
 
 最后一步，我们要基于affinity matrix求得如何最有效地学习一组我们感兴趣的任务。我们可以这个问题想象成一个subgraph selection的问题：选择一些任务从零学习，剩下的任务用少量数据进行迁移学习，具体迁移学习的策略由subgraph中的edge来决定（对一条directed edge，起始点代表我们从零学习的一个任务，终点代表要进行迁移的目标任务）。基于此，我们可以通过解如下BIP最优化问题来得到最优解： 
 
-![](https://www.zhihu.com/equation?tex=+%5C%5C%5Cbegin%7Balign%2A%7D+%5Ctext%7Bmaximize+%7D+%26+c%5ET+x%5C%2C%2C%5C%5C+%5Ctext%7Bsubject+to+%7D+%26+Ax+%5Cpreceq+b%5C%5C+%5Ctext%7Band+%7D+%26+x+%5Cin+%5C%7B0%2C+1%5C%7D%5E%7B%7CE%7C+%2B+%7C%5Cmathcal%7BV%7D%7C%7D%5C%2C.+%5Cend%7Balign%2A%7D+%5C%5C) 
+$$\\\begin{align*} \text{maximize } & c^T x\,,\\ \text{subject to } & Ax \preceq b\\ \text{and } & x \in \{0, 1\}^{|E| + |\mathcal{V}|}\,. \end{align*} \\$$
+
 
  这个最优问题有三个限制条件：
 

@@ -206,8 +206,10 @@ Những câu hỏi mà khóa học này thực sự quan tâm:
 
 Giáo trình được chia thành ba phần:
 
-1. <strong>Bài giảng</strong>: 12 đơn vị khái niệm giải thích lý thuyết đằng sau harness engineering.
-2. <strong>Dự án</strong>: 6 dự án thực hành nơi bạn xây dựng một không gian làm việc agentic từ đầu.
+## 1. **Bài giảng**: 12 đơn vị khái niệm giải thích lý thuyết đằng sau harness engineering.
+
+## 2. **Dự án**: 6 dự án thực hành nơi bạn xây dựng một không gian làm việc agentic từ đầu.
+
 3. <strong>Thư viện tài nguyên</strong>: Các mẫu sẵn sàng sử dụng (`AGENTS.md`, `feature_list.json`, `init.sh`, v.v.) để sử dụng trong kho mã của riêng bạn ngay hôm nay.
 
 ---

@@ -58,7 +58,8 @@ App Server 既是客户端和服务器之间的 JSON-RPC 协议，也是一个�
 
 接下来，我们将分解对话原语——App Server 协议的构建块。为 agent 循环设计 API 很棘手，因为用户/agent 的交互不是简单的请求/响应。一个用户请求可以展开成一个结构化的动作序列，客户端需要忠实地表示：用户的输入、agent 的增量进度、沿途产生的 artifacts（例如 diffs）。为了让这种交互流易于集成并在 UI 间有弹性，我们确定了三个核心原语，边界和生命周期清晰：
 
-1. <strong>Item</strong>：Item 是 Codex 中输入/输出的原子单元。Item 是类型化的（例如用户消息、agent 消息、工具执行、批准请求、diff），每个都有明确的生命周期：
+## 1. **Item**：Item 是 Codex 中输入/输出的原子单元。Item 是类型化的（例如用户消息、agent 消息、工具执行、批准请求、diff），每个都有明确的生命周期：
+
    - `item/started` 当 item 开始时
    - 可选的 `item/*/delta` 事件随着内容流入（对于流式 item 类型）
    - `item/completed` 当 item 最终确定其最终 payload 时

@@ -24,7 +24,8 @@ source_url: https://www.zhihu.com/question/635395282/answer/3372320028
 - 引入 memory 机制，典型方法如 [Focused Transformer](https://link.zhihu.com/?target=https%3A//arxiv.org/pdf/2307.03170.pdf), [Memorizing Transformer](https://link.zhihu.com/?target=https%3A//arxiv.org/pdf/2203.08913.pdf)
 - 引入采样机制，典型方法如 [Hierarchical transformers](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2110.13711), [Dynamic-Pooling Transformer](https://link.zhihu.com/?target=https%3A//arxiv.org/pdf/2211.09761.pdf)由于笔者精力有限，下面仅选取其中部分方法加以介绍。
 
-4.1 序列并行(sequence parallel)
+### 4.1 序列并行(sequence parallel)
+
 在并行化算法大行其道的今天，使用改思想来解决长文本问题变得自然而言，实际上 SP 已逐渐成为 3D(DP, PP, TP)并行之外的第 4 个维度了。关于3D 并行，已经有很多文章介绍了，在此不予赘述。
 
 简单来说，SP 就是将一段完整的文本拆分到多个设备上进行计算，设备在适当的时候进行通信和信息交互，如下图(c) 所示。
@@ -39,36 +40,37 @@ source_url: https://www.zhihu.com/question/635395282/answer/3372320028
 - A: attention head size
 - Z: number of attention heads
 - N: number of GPUs对于 
-![](https://www.zhihu.com/equation?tex=Ring-Q+K%5E%5Ctop) **：
-![](https://www.zhihu.com/equation?tex=%5BB%2CZ%2C%5Cfrac%7BL%7D%7BN%7D%2CA%5D+%5Ctimes+%5BB%2CZ%2CA%2C%5Cfrac%7BL%7D%7BN%7D%5D+%5Crightarrow+%28all-gather%29%5BB%2CZ%2C%5Cfrac%7BL%7D%7BN%7D%2CL%5D)** **，**
+$Ring-Q K^\top$ **：
+$[B,Z,\frac{L}{N},A] \times [B,Z,A,\frac{L}{N}] \rightarrow (all-gather)[B,Z,\frac{L}{N},L]$** **，**
 
 切分后的每一个小块 
-![](https://www.zhihu.com/equation?tex=%5Cfrac%7BL%7D%7BN%7D) ，在和 
-![](https://www.zhihu.com/equation?tex=k%5E%7BT%7D) 矩阵乘后得到 
-![](https://www.zhihu.com/equation?tex=%5B%5Cfrac%7BL%7D%7BN%7D%2C+%5Cfrac%7BL%7D%7BN%7D%5D) 需要在切分维度做补全才可以得到每一个小块 
-![](https://www.zhihu.com/equation?tex=+%5Cfrac%7BL%7D%7BN%7D) 的完整结果，在后续进行 
-![](https://www.zhihu.com/equation?tex=softmax) 操作。故需要做 ring 操作达到一个 
-![](https://www.zhihu.com/equation?tex=concat) 的操作。
+$\frac{L}{N}$ ，在和 
+$k^{T}$ 矩阵乘后得到 
+$[\frac{L}{N}, \frac{L}{N}]$ 需要在切分维度做补全才可以得到每一个小块 
+$\frac{L}{N}$ 的完整结果，在后续进行 
+$softmax$ 操作。故需要做 ring 操作达到一个 
+$concat$ 的操作。
 
 对于 
-![](https://www.zhihu.com/equation?tex=Ring-AV) <strong>：</strong> 
-![](https://www.zhihu.com/equation?tex=%5BB%2CZ%2C%5Cfrac%7BL%7D%7BN%7D%2CL%5D%28reduce-scatter%29+%5Ctimes+%5BB%2CZ%2C%5Cfrac%7BL%7D%7BN%7D%2CA%5D+%5Crightarrow+%5BB%2CZ%2C%5Cfrac%7BL%7D%7BN%7D%2CA%5D) ，
+$Ring-AV$ <strong>：</strong> 
+$[B,Z,\frac{L}{N},L](reduce-scatter) \times [B,Z,\frac{L}{N},A] \rightarrow [B,Z,\frac{L}{N},A]$ ，
 
 需要完整对 
-![](https://www.zhihu.com/equation?tex=softmax) 结果进行 value 查询，需要对 
-![](https://www.zhihu.com/equation?tex=%5BB%2CZ%2C%5Cfrac%7BL%7D%7BN%7D%2CL%5D) 根据序列并行度进行分块，用对应的块在对应的 value 上查询并求和，故也需要做 ring 操作。
+$softmax$ 结果进行 value 查询，需要对 
+$[B,Z,\frac{L}{N},L]$ 根据序列并行度进行分块，用对应的块在对应的 value 上查询并求和，故也需要做 ring 操作。
 
 ![](https://pica.zhimg.com/v2-730a59eaf0676f46dd2a65857471efd1_r.jpg?source=2c26e567)MLP 部分的计算就更简单了，如下所示：
 
 ![](https://pic1.zhimg.com/v2-62bcfb50cc1c9436c428e877faacbdf0_r.jpg?source=2c26e567)
-4.2 LongLLaMA (Focused Transformer)
+### 4.2 LongLLaMA (Focused Transformer)
+
 LongLLaMA 通过引入 Focused Transformer（FOT）方法，在保持性能的同时，将 LLaMA 的上下文长度扩展到100k！在长文本的情况下，除了第一节所研究的显存和计算量的问题外，这篇论文还提出了一个分心问题（Distraction Issue），即随着文本长度的增加，其中相关的 tokens 对不相关 tokens 的比例会减少，从而导致与不相关 value 相关的 key 和与相关 value 相关的 key 发生重叠，致使模型需要额外区分不同语义的 key 。
 
 为此文章提出了 <strong>Focused Transformer</strong>（FOT）解决方案，其中主要使用了 Memory Attention Layers 以及 CrossBatch 技术，在 Inference 的过程中，绿色的 Memory Attention Layers 使用 kNN 对外部的 Memory 进行查询，从而有效延长了上下文长度，而 Memory Attention Layers 则主要使用 CrossBatch 进行训练。
 
 ![](https://picx.zhimg.com/v2-c37988cdcbd7814362c6815038c960b8_r.jpg?source=2c26e567)具体而言，Memory Attention Layers 中的每个 query 在 
-![](https://www.zhihu.com/equation?tex=+%5Cin++) 中会关注局部的上下文以及 Memory 中使用 kNN 计算出的最匹配的 
-![](https://www.zhihu.com/equation?tex=k) 个key，而整个 Memory 则根据 之前处理的 key，value 进行填充。而 CrossBatch 则期望使得 Memory Attention Layers 更加关注长文本之中的“相关 value 的 key” ，CrossBatch 的处理借鉴了对比学习的思想，以相关文档之中的 d-1 个上下文作为正样本，以不相关文档之中的 d-1 个上下文作为负样本，通过对比学习的方式使得 Memory Attention Layers 可以更好的分辨相关与无关的 key-value。
+$\in$ 中会关注局部的上下文以及 Memory 中使用 kNN 计算出的最匹配的 
+$k$ 个key，而整个 Memory 则根据 之前处理的 key，value 进行填充。而 CrossBatch 则期望使得 Memory Attention Layers 更加关注长文本之中的“相关 value 的 key” ，CrossBatch 的处理借鉴了对比学习的思想，以相关文档之中的 d-1 个上下文作为正样本，以不相关文档之中的 d-1 个上下文作为负样本，通过对比学习的方式使得 Memory Attention Layers 可以更好的分辨相关与无关的 key-value。
 
 与标准的 Transformer 相比，一般的 Transformer 的训练过程中，相关与不相关文档没有被得到有效区分（正负样本分散均匀），当文档数量扩展时，注意力变得越来越分散，而 Focused Transformer 则通过 CrossBatch 的训练目标使得模型有效的关注与区分的长文本下的相关与无关的 key-value 的空间结构，从而解决了分心的问题。
 

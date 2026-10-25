@@ -50,9 +50,12 @@ harness-creator` duoc phat trien bang phuong phap <strong>skill-creator</strong>
 
 Moi skill co cau truc chuan:
 
-1. <strong>SKILL.md</strong> — Diem vao, gom YAML frontmatter va huong dan Markdown cho agent.
-2. <strong>references/</strong> — Tai lieu bo sung duoc nap vao context khi can.
-3. <strong>templates/</strong> — Template khoi dau ma skill co the tao.
+## 1. **SKILL.md** — Diem vao, gom YAML frontmatter va huong dan Markdown cho agent.
+
+## 2. **references/** — Tai lieu bo sung duoc nap vao context khi can.
+
+## 3. **templates/** — Template khoi dau ma skill co the tao.
+
 
 Skills dung progressive disclosure: agent ban dau chi thay ten va mo ta, sau do nap SKILL.md khi duoc kich hoat va chi doc tai nguyen kem theo khi can thiet.
 

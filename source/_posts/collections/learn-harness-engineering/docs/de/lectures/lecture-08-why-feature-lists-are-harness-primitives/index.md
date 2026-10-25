@@ -81,10 +81,14 @@ Dokumente sind zum Lesen durch Menschen da; Primitives sind zur Ausführung durc
 
 Denke an Datenbank-Trigger-Constraints im Vergleich zu Checks auf Anwendungsebene: Erstere werden von der Datenbank-Engine erzwungen, kein SQL kann sie überspringen; Letztere hängen von der Korrektheit des Anwendungscodes ab und können versehentlich umgangen werden. Als Harness-Primitive dient die Feature-Liste vier Komponenten:
 
-1. <strong>Scheduler</strong>: Liest Zustände und wählt das nächste `not_started`-Feature. Wie ein Produktionsplanungssystem in einer Fabrik.
-2. <strong>Verifier</strong>: Führt Verifikationsbefehle aus und entscheidet, ob Zustandsübergänge erlaubt sind. Wie Qualitätskontrolle.
-3. <strong>Handoff reporter</strong>: Erzeugt automatisch Übergabezusammenfassungen aus der Feature-Liste. Wie ein automatischer Schichtwechselbericht.
-4. <strong>Progress tracker</strong>: Zählt Zustandsverteilungen und liefert Gesundheitsmetriken des Projekts. Wie ein Dashboard.
+## 1. **Scheduler**: Liest Zustände und wählt das nächste `not_started`-Feature. Wie ein Produktionsplanungssystem in einer Fabrik.
+
+## 2. **Verifier**: Führt Verifikationsbefehle aus und entscheidet, ob Zustandsübergänge erlaubt sind. Wie Qualitätskontrolle.
+
+## 3. **Handoff reporter**: Erzeugt automatisch Übergabezusammenfassungen aus der Feature-Liste. Wie ein automatischer Schichtwechselbericht.
+
+## 4. **Progress tracker**: Zählt Zustandsverteilungen und liefert Gesundheitsmetriken des Projekts. Wie ein Dashboard.
+
 
 ## Wie man es richtig macht
 

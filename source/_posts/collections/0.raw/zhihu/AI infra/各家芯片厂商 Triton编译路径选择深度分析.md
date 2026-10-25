@@ -17,9 +17,11 @@ source_url: https://zhuanlan.zhihu.com/p/2057073142737137777
 
 - [FlagTree之各家芯片triton Lower 过程整理（nvidia,AMD, 摩尔线程，sunrise, 华为Ascend, Enflame燧原）](https://zhuanlan.zhihu.com/p/2056693972614000814)<strong>从[FlagTree之各家芯片triton Lower 过程整理](https://zhuanlan.zhihu.com/p/2056693972614000814)这篇文章中，我们想想梳理了各家芯片厂商triton Lower过程整理，这篇文章主要从硬件架构设计角度，进行深度分析它们triton Lower策略这么选择的核心原因</strong>
 
-1. 各家芯片厂商编译路径选择总览
+## 1. 各家芯片厂商编译路径选择总览
 
-1.1 两条编译路径的根本分化
+
+### 1.1 两条编译路径的根本分化
+
 
 FlagTree 作为 fork 自 triton-lang/triton 的统一编译器，支持<strong>两条核心编译路径：TritonGPU dialect 路径和 Linalg dialect 路径</strong>。这种双路径设计是 FlagTree 多后端支持的核心，也是各家芯片厂商接入 Triton 生态时面临的第一个也是<strong>最关键的架构决策</strong>。
 
@@ -29,13 +31,15 @@ FlagTree 作为 fork 自 triton-lang/triton 的统一编译器，支持<strong>�
 - GPGPU 架构（如 NVIDIA、AMD、摩尔线程 MUSA）的编程模型基于<strong>线程块、warp、共享内存等 GPU 概念</strong>，可以直接复用 <strong>TritonGPU 的编译流水线</strong>；
 - 而非 GPGPU 架构（如华为昇腾达芬奇、寒武纪 MLU）的编程模型与 GPU 差异较大，需要通过 Linalg dialect 进行中间转换。
 - 值得注意的是，燧原（Enflame）作为 NPU 厂商，却选择了 TritonGPU 路径，这在 NPU 厂商中是独特的，值得深入分析。
-1.2 各家芯片厂商路径选择汇总
+### 1.2 各家芯片厂商路径选择汇总
+
 
 <strong>表 1-1 各家芯片厂商编译路径选择汇总</strong>
 
 芯片厂商硬件架构编译路径流水线最终产物核心优化层NVIDIAGPGPU（SM+Tensor Core）TritonGPUttir→ttgir→llir→ptx→cubincubinmake_ttgir（Hopper warpspec/Blackwell tmem）AMDGPGPU（CU+MFMA）TritonGPUttir→ttgir→llir→amdgcn→hsacohsacomake_ttgir（stream_pipeline/pingpong）摩尔线程GPGPU（MUSA，CUDA兼容）TritonGPUttir→ttgir→llir→mubinmubinmake_ttgir（SQMMA/TME）海光GPGPU（DCU，HIP兼容）TritonGPUttir→ttgir→llir→amdgcn→hsacohsacomake_ttgir（stream_pipeline/warp_spec）天数智芯GPGPU（CUDA兼容）TritonGPUttir→ttgir→llir→asm→cubincubinmake_ttgir（Hopper warpspec/tmem）燧原NPU（GPGPU-like）TritonGPU+自定义ttir→ttgir→gcuir→llir→fatbinfatbinmake_gcuir（TritonGCU Dialect）寒武纪NPU（MLU，NRAM/WRAM/SRAM）Linalgttir→linalg→linalgopt→mluir→mluiropt→mlisa→cnbincnbinmake_linalg+make_optimized_linalg+make_mluir华为昇腾NPU（达芬奇，Cube/Vector/Scalar）Linalgttir→ttadapter→npubinnpubinttir_to_linalg（HIVM/hfusion/DAG调度）
 
-1.3 类GPU与NPU的主要区别
+### 1.3 类GPU与NPU的主要区别
+
 
 从表 1-1 可以清晰看到，
 
@@ -50,11 +54,14 @@ FlagTree 作为 fork 自 triton-lang/triton 的统一编译器，支持<strong>�
 
 - 硬件架构基于专用的 AI 计算单元（如昇腾的 Cube/Vector/Scalar、寒武纪的 NRAM/WRAM/SRAM），编程模型是基于算子和数据流的，而不是基于线程并行的。
 - 这种架构无法直接映射到 TritonGPU 的线程块/warp/共享内存模型，因此需要通过 Linalg dialect 进行中间转换。Linalg 是 MLIR 的结构化操作 dialect，使用 tiling、fusion、bufferization 等通用优化，可以灵活映射到各种 AI 加速器架构。
-2. 类GPU架构与NPU架构基础概念
+## 2. 类GPU架构与NPU架构基础概念
 
-2.1 类GPU架构的核心概念
 
-2.1.1 SIMT编程模型
+### 2.1 类GPU架构的核心概念
+
+
+### 2.1.1 SIMT编程模型
+
 
 类GPU架构的编程基础是SIMT（Single Instruction, Multiple Threads，单指令多线程）。
 
@@ -62,7 +69,8 @@ FlagTree 作为 fork 自 triton-lang/triton 的统一编译器，支持<strong>�
 - 这种模型使得GPU编程比纯SIMD更灵活——开发者不需要手动管理向量宽度，硬件会自动将线程分组为warp（NVIDIA术语）或wavefront（AMD术语）来执行。在NVIDIA GPU中，<strong>一个warp包含32个线程，它们在同一时钟周期执行相同的指令，但可以有不同的寄存器状态和内存访问地址</strong>。AMD GPU的wavefront通常是64个线程。
 SIMT模型是类GPU架构能够高效执行数据并行任务（如矩阵乘法、卷积）的根本原因，<strong>也是Triton的TTGIR中间表示能够直接映射到GPU硬件的基础</strong>。
 
-2.1.2 流多处理器（SM/CU）
+### 2.1.2 流多处理器（SM/CU）
+
 
 <strong>流多处理器</strong>（Streaming Multiprocessor，<strong>SM</strong>，NVIDIA术语）或计算单元（<strong>Compute Unit，CU</strong>，AMD术语）是GPU的核心计算单元。
 一个GPU芯片包含<strong>多个SM/CU</strong>（例如NVIDIA H100有132个SM，AMD MI300X有304个CU），每个SM/CU内部包含<strong>多个流处理器核心（Streaming Processor，SP）、寄存器文件、共享内存、L1缓存、以及调度单元</strong>。
@@ -70,7 +78,8 @@ SIMT模型是类GPU架构能够高效执行数据并行任务（如矩阵乘法�
 - SM/CU是线程块（thread block）的调度单位，一个线程块被分配到一个SM/CU上执行，SM/CU内部的资源（寄存器、共享内存）决定了能同时驻留多少个线程块。
 - SM/CU内部还包含特殊的计算单元，如Tensor Core（NVIDIA）或Matrix Core（AMD），用于加速矩阵乘法运算。SM/CU的设计理念是通过大量并行线程来隐藏内存延迟，当一部分线程等待内存数据时，其他线程可以继续执行计算，从而保持计算单元的高利用率。
 
-2.1.3 线程块与网格
+### 2.1.3 线程块与网格
+
 
 线程块（thread block）是GPU编程中的基本调度单位。
 
@@ -80,7 +89,8 @@ SIMT模型是类GPU架构能够高效执行数据并行任务（如矩阵乘法�
 在Triton中，一个kernel对应一个grid网格，每个program（相当于一个线程块）处理一个数据分块.
 Triton的TTGIR中间表示中的BlockedEncodingAttr就是用来<strong>描述线程块内的线程如何映射到数据分块的</strong>。
 
-2.1.4 Warp与Warp Specialization
+### 2.1.4 Warp与Warp Specialization
+
 
 Warp是NVIDIA GPU中线程调度的基本单位，一个warp包含32个线程。AMD GPU中对应的概念是wavefront（通常64个线程）。
 
@@ -92,7 +102,8 @@ Warp是NVIDIA GPU中线程调度的基本单位，一个warp包含32个线程。
 - Warp Specialization是类GPU架构吸收NPU/数据流架构思想的一个例子——它允许更细粒度的任务分工，类似于NPU中不同计算单元（Cube/Vector）的分工。
 - 在FlagTree中，燧原GCU400和NVIDIA Hopper都实现了warp specialization，但实现方式不同：NVIDIA使用nvidia.passes.hopper.add_hopper_warpspec，
 - 燧原使用gcu_passes.gcu400.add_gcu_warp_specialization（pingpong模式）。
-2.1.5 共享内存与L1缓存
+### 2.1.5 共享内存与L1缓存
+
 
 共享内存（shared memory）是GPU中一种高速的片上内存，<strong>位于SM/CU内部，供同一线程块内的所有线程共享访问</strong>。
 
@@ -101,7 +112,8 @@ Warp是NVIDIA GPU中线程调度的基本单位，一个warp包含32个线程。
 - AMD GPU中对应的概念是LDS（Local Data Share），功能类似但实现细节不同。在Triton中，共享内存的管理由编译器自动完成，开发者不需要手动分配。<strong>Triton的TTGIR中的add_allocate_shared_memory pass就是用来为TTGIR操作分配共享内存的</strong>。
 共享内存是类GPU架构与NPU架构的一个重要区别——NPU通常使用专用的片上SRAM（如寒武纪的NRAM/WRAM），其管理方式与GPU的共享内存不同。
 
-2.1.6 Tensor Core与Matrix Core
+### 2.1.6 Tensor Core与Matrix Core
+
 
 Tensor Core（NVIDIA术语）或Matrix Core（AMD术语）是GPU中专门用于加速矩阵乘法的硬件单元。与传统流处理器的标量/向量运算不同，T<strong>ensor Core可以在一个时钟周期内执行一个小的矩阵乘加运算（如D = A × B + C）</strong>。
 
@@ -112,7 +124,8 @@ Tensor Core（NVIDIA术语）或Matrix Core（AMD术语）是GPU中专门用于�
 - 各家芯片厂商的Tensor Core实现不同：NVIDIA使用Tensor Core（支持FP4/FP6/FP8/FP16/BF16/TF32），
 - AMD使用MFMA，摩尔线程使用SQMMA，燧原使用Tensor Compute Kernel，天数智芯和天垓使用兼容CUDA/HIP的矩阵计算单元。这些差异是各家芯片在make_ttgir阶段使用不同专有pass的根本原因。
 
-2.1.7 TMA：Tensor Memory Accelerator
+### 2.1.7 TMA：Tensor Memory Accelerator
+
 
 TMA（Tensor Memory Accelerator）是NVIDIA Hopper架构引入的一个重要特性，它是一种硬件单元，<strong>专门用于在全局内存和共享内存之间高效传输多维张量数据</strong>。
 在传统GPU编程中，<strong>数据从全局内存加载到共享内存需要通过寄存器中转——每个线程执行load指令从全局内存读取数据到寄存器，再执行store指令将寄存器数据写入共享内存</strong>。
@@ -121,7 +134,8 @@ TMA（Tensor Memory Accelerator）是NVIDIA Hopper架构引入的一个重要特
 - TMA解决了这些问题——它允许开发者指定<strong>一个多维张量描述符（tensor descriptor），硬件自动从全局内存将整个张量分块加载到共享内存，完全绕过寄存器</strong>。TMA支持1D到5D的张量传输，支持各种分块和步长模式。
 - TMA的引入标志着<strong>GPU架构开始吸收数据流架构的思想</strong>——它将<strong>数据移动从线程级别提升到张量级别，更接近于NPU的DMA（Direct Memory Access）引擎</strong>。在FlagTree中，TMA相关的优化包括passes.ttir.add_rewrite_tensor_descriptor_to_pointer（将tensor descriptor转换为pointer以兼容旧架构）和nvidia.passes.ttnvgpuir.add_promote_lhs_to_tmem（Blackwell中将LHS提升到tensor memory）。TMA是类GPU架构吸收NPU特点的一个典型例子。
 
-2.1.8 Tensor Memory（tmem）
+### 2.1.8 Tensor Memory（tmem）
+
 
 Tensor Memory（tmem）是NVIDIA Blackwell架构引入的一种<strong>新型片上内存，专门用于存储Tensor Core的累加器（accumulator）数据</strong>。
 在Hopper及之前的架构中，<strong>Tensor Core的累加器存储在寄存器文件</strong>中，这会占用大量寄存器资源，限制了能同时<strong>驻留的warp数量</strong>。
@@ -132,9 +146,11 @@ Tensor Memory（tmem）是NVIDIA Blackwell架构引入的一种<strong>新型片
 
 - nvidia.passes.ttnvgpuir.add_allocate_tensor_memory（分配tensor memory
 - nvidia.passes.ttnvgpuir.add_promote_lhs_to_tmem（将矩阵乘法的LHS提升到tmem）。
-2.2 NPU架构的核心概念
+### 2.2 NPU架构的核心概念
 
-2.2.1 AI Core与计算单元分工
+
+### 2.2.1 AI Core与计算单元分工
+
 
 NPU（Neural Processing Unit）架构的核心特征是使用专用的AI计算单元，而不是通用的流处理器。以华为昇腾的达芬奇架构为例，其AI Core包含三种计算单元：<strong>Cube Unit（矩阵计算单元）、Vector Unit（向量计算单元）和Scalar Unit（标量计算单元）</strong>。
 
@@ -146,7 +162,8 @@ NPU（Neural Processing Unit）架构的核心特征是使用专用的AI计算�
 - <strong>GPU的所有计算（包括矩阵乘法和向量运算）都由相同的流处理器/Tensor Core执行，通过线程并行来隐藏延迟</strong>；
 - NPU则通过<strong>专用计算单元的流水线来提高效率</strong>。
 - 寒武纪的MLU也有类似的设计，使用MLU Core（包含张量计算单元和向量计算单元）作为基本计算单元。
-2.2.2 专用片上存储（NRAM/WRAM/SRAM）
+### 2.2.2 专用片上存储（NRAM/WRAM/SRAM）
+
 
 NPU通常使用<strong>分层的专用片上存储</strong>，而不是GPU的统一共享内存。
 以寒武纪MLU为例，其片上存储分为三层：
@@ -163,7 +180,8 @@ L0A/L0B/L0C用于存储矩阵乘法的A/B/C矩阵，这些缓冲区都是专用�
 - 两个bufferL0A和L0B作为输入，其中一个暂存activition，另一个暂存权重。红色的Cube模块，类似谷歌TPU脉动阵列结构，是一个乘累加阵列，
 - 计算结果输出存放在另外一个buffer L0CNPU的专用存储设计与GPU的通用共享内存形成鲜明对比——<strong>GPU的共享内存可以存储任何类型的数据，由开发者/编译器管理；NPU的存储是按数据类型分区的，由硬件自动管理</strong>。
 
-2.2.3 数据流驱动与算子调度
+### 2.2.3 数据流驱动与算子调度
+
 
 NPU的执行模型是基于数据流和算子调度的，而不是GPU的线程并行模型。
 
@@ -174,7 +192,8 @@ NPU的执行模型是基于数据流和算子调度的，而不是GPU的线程�
 - 当Cube Unit执行矩阵乘法时，Vector Unit可以同时执行前一个算子的后处理。
 - 华为昇腾的HIVM（Huawei Intermediate Virtual Machine）就是基于这种数据流模型设计的中间表示。砺算科技的DSA（Data Stream Architecture）也是类似的数据流架构。数据流驱动是NPU架构的核心特征，也是NPU无法直接使用TritonGPU的线程块/warp模型的根本原因。
 
-2.2.4 DMA引擎与数据预取
+### 2.2.4 DMA引擎与数据预取
+
 
 NPU通常使用专用的DMA（Direct Memory Access）引擎来管理数据传输，而不是GPU的基于线程的load/store指令。
 
@@ -183,7 +202,8 @@ NPU通常使用专用的DMA（Direct Memory Access）引擎来管理数据传输
 - 在NPU中，数据传输由DMA引擎独立完成，不占用计算资源。有趣的是，NVIDIA Hopper的TMA实际上就是吸收了NPU DMA引擎的思想——T<strong>MA可以独立于线程工作，将张量数据从全局内存异步传输到共享内存，不占用寄存器</strong>。这是类GPU架构吸收NPU特点的另一个典型例子。
 燧原GCU的make_gcuir中也有add_convert_triton_load_store_to_gcu_dma pass，将Triton的load/store操作转换为GCU的DMA操作，这表明燧原的GCU也使用了类似NPU的DMA引擎。
 
-2.3 类GPU架构与NPU架构的本质区别
+### 2.3 类GPU架构与NPU架构的本质区别
+
 
 <strong>表 1-1 类GPU架构与NPU架构的本质区别</strong>
 
@@ -193,11 +213,13 @@ NPU通常使用专用的DMA（Direct Memory Access）引擎来管理数据传输
 - 类GPU架构追求通用性和灵活性：通过大量并行线程来隐藏延迟，使用统一的编程模型（SIMT）来支持各种并行计算任务。
 - NPU架构追求专用性和能效比：通过专用计算单元和分层存储来优化AI计算，使用数据流模型来最大化计算单元的利用率。这两种设计哲学没有绝对的优劣，而是针对不同的应用场景做了不同的权衡。类GPU架构更适合需要灵活性的场景（如研究、原型开发、多样化工作负载），NPU架构更适合固定工作负载的大规模部署场景（如数据中心AI推理/训练）。
 
-2.4 类GPU架构对NPU特点的吸收
+### 2.4 类GPU架构对NPU特点的吸收
+
 
 一个值得注意的趋势是，现代类GPU架构正在逐步吸收NPU的设计思想，以提升AI计算的效率。这种融合趋势体现在以下几个方面。
 
-2.4.1 TMA：从线程级数据传输到张量级DMA
+### 2.4.1 TMA：从线程级数据传输到张量级DMA
+
 
 <strong>NVIDIA Hopper引入的TMA（Tensor Memory Accelerator）</strong>是类GPU架构吸收NPU DMA引擎思想的典型例子。
 
@@ -206,21 +228,24 @@ NPU通常使用专用的DMA（Direct Memory Access）引擎来管理数据传输
 
 - 它允许硬件自动将多维张量从全局内存传输到共享内存，完全绕过寄存器，不占用线程资源。这使得GPU的数据传输方式从线程级提升到张量级，更接近NPU的DMA模型。
 - TMA的引入使得GPU在执行矩阵乘法等AI计算时，可以更高效地重叠计算和数据传输，提升了整体性能。
-2.4.2 Tensor Memory：从通用寄存器到专用累加器存储
+### 2.4.2 Tensor Memory：从通用寄存器到专用累加器存储
+
 
 NVIDIA Blackwell引入的<strong>Tensor Memory（tmem）</strong>是类GPU架构吸收NPU专用存储思想的体现。
 
 - 在Hopper及之前的架构中，Tensor Core的累加器存储在通用寄存器文件中，与线程的其他数据共享寄存器空间。这导致了寄存器压力问题——复杂的计算kernel可能因为寄存器不足而无法充分利用Tensor Core。
 - NPU（如昇腾的Cube Unit）通常有专用的累加器寄存器（L0C），与通用寄存器分离。Blackwell的Tensor Memory采用了类似的设计——256KB的专用存储用于Tensor Core累加器，释放了通用寄存器资源。这种设计更接近NPU的专用存储模型，提高了数据复用效率。
 
-2.4.3 Warp Specialization：从纯SIMT到任务分工
+### 2.4.3 Warp Specialization：从纯SIMT到任务分工
+
 
 <strong>Warp Specialization</strong>是类GPU架构吸收NPU计算单元分工思想的体现。
 在传统SIMT模型中，<strong>同一线程块内的所有warp执行相同的指令序列，只是处理不同的数据</strong>。
 
 - NPU则通过专用计算单元（Cube/Vector/Scalar）实现任务分工：不同计算单元执行不同类型的操作。Warp Specialization打破了纯SIMT的限制——它允许同一线程块内的不同warp执行不同的任务（如producer warp负责数据加载，consumer warp负责计算），通过异步通信进行协调。这种设计更接近NPU的计算单元分工模型，使得GPU可以更灵活地组织计算。AMD的stream_pipeline和燧原GCU400的pingpong warp specialization也是类似的思想。
 
-2.4.4 异步执行与流水线
+### 2.4.4 异步执行与流水线
+
 
 NPU的<strong>DMA引擎天然支持异步执行</strong>——计算和数据传输可以并行进行。
 传统GPU的异步执行能力有限，主要通过软件流水线（software pipelining）来模拟。
@@ -228,7 +253,8 @@ NPU的<strong>DMA引擎天然支持异步执行</strong>——计算和数据传
 这种异步执行能力是NPU的核心优势之一，现在也被GPU架构吸收。
 在FlagTree中，各家芯片都实现了软件流水线优化（add_pipeline pass），但底层硬件支持的程度不同——NVIDIA Hopper/Blackwell和AMD CDNA有较强的硬件异步支持，其他芯片可能更多依赖软件模拟。
 
-2.4.5 融合趋势总结
+### 2.4.5 融合趋势总结
+
 
 <strong>表 1-2 类GPU架构对NPU特点的吸收</strong>
 
@@ -237,9 +263,11 @@ NPU特点类GPU的吸收方式引入时间代表架构DMA引擎TMA（Tensor Memo
 
 - AI计算的特点（矩阵乘法密集、数据复用高、计算-通信比高）更适合NPU的专用设计，
 - 而GPU的通用设计在AI计算上存在效率损失。通过吸收NPU的特点（DMA、专用存储、任务分工、异步执行），GPU可以在保持通用性的同时提升AI计算的效率。
-3. 各家芯片硬件架构详解
+## 3. 各家芯片硬件架构详解
 
-3.1 NVIDIA：GPGPU架构的标杆
+
+### 3.1 NVIDIA：GPGPU架构的标杆
+
 
 ![](https://picx.zhimg.com/v2-b4e4032b45b1af9a8a78d792a4190b2d_r.jpg)
 Ampere架构（capability 8x）:
@@ -290,9 +318,11 @@ NVIDIA Blackwell架构（如B200）是第五代Tensor Core架构：
 - Ampere 做的是"给通用 GPU 加上 AI 加速器"，Hopper 做的是"重新设计数据通路让 AI 计算成为一等公民"，Blackwell 做的是"引入专用存储分层让 GPU 的片上存储模型趋近于 NPU"。
 - 每一步都是在回答同一个问题：如何让越来越多的时钟周期花在真正的矩阵乘法上，而不是花在数据搬运、同步等待和地址计算上。
 
-3.2 AMD：CDNA架构与MFMA
+### 3.2 AMD：CDNA架构与MFMA
 
-3.2.1 CDNA架构概述
+
+### 3.2.1 CDNA架构概述
+
 AMD的CDNA（Compute DNA）架构是<strong>面向计算密集型工作负载的GPU架构</strong>，与RDNA（面向游戏）架构不同。
 
 - CDNA架构使用Matrix Core（矩阵核心）作为AI计算单元，执行MFMA（Matrix Fused Multiply Add）指令。
@@ -305,7 +335,8 @@ AMD的<strong>MFMA指令是Matrix Core的执行单元</strong>，支持多种数
 - 使用amd.passes.ttgpuir.add_stream_pipeline实现stream pipeline优化，
 - 使用passes.ttgpuir.add_warp_specialize实现pingpong warp specialization。AMD的MFMA设计与NVIDIA Tensor Core的设计理念不同——NVIDIA追求细粒度灵活性，AMD追求粗粒度效率，这反映了两种不同的架构哲学。
 
-3.3 摩尔线程：MUSA架构（CUDA兼容）
+### 3.3 摩尔线程：MUSA架构（CUDA兼容）
+
 
 摩尔线程的MUSA（Moore Threads Unified System Architecture）架构是CUDA兼容的GPGPU架构。MUSA的设计理念是与NVIDIA CUDA生态兼容，使得CUDA程序可以通过musify工具自动移植到MUSA平台。
 
@@ -318,7 +349,8 @@ MUSA架构包含<strong>通用计算核心和张量计算核心（Tensor Core）
 - add_tme_lowering（TME操作lowering）、
 - add_convert_sqmma_to_mtgpu（SQMMA到MTGPU转换）等。MUSA架构的特点是高度兼容CUDA生态，<strong>使得摩尔线程可以快速复用TritonGPU的优化成果，同时通过SQMMA等专有指令实现硬件特定优化</strong>。摩尔线程的MTT S80/S3000等芯片基于MUSA架构，支持128个MUSA核心和多个张量计算核心。
 
-3.4 天数智芯：（GPGPU + TLE深度集成）
+### 3.4 天数智芯：（GPGPU + TLE深度集成）
+
 
 天数智芯的架构是通用GPGPU架构，支持<strong>标准的线程块/warp/共享内存模型</strong>。
 
@@ -328,7 +360,8 @@ MUSA架构包含<strong>通用计算核心和张量计算核心（Tensor Core）
 
 ![](https://pica.zhimg.com/v2-1a3af847cd0fc8fa91de909c62ffed58_r.jpg)
 
-3.5 海光：DCU架构（HIP兼容）
+### 3.5 海光：DCU架构（HIP兼容）
+
 
 海光的DCU（Deep Computing Unit）架构是AMD HIP兼容的GPGPU架构。DCU的设计理念是与AMD ROCm/HIP生态兼容，可以直接使用LLVM AMDGPU后端生成机器码。
 [https://zhuanlan.zhihu.com/p/591017296](https://zhuanlan.zhihu.com/p/591017296)
@@ -348,7 +381,8 @@ DCU的硬件架构与AMD CDNA架构类似，使用Matrix Core/MFMA作为AI计算
 - add_mls_stream_pipeline（MLS stream pipeline）、
 - add_block_pingpong（block pingpong）等。这些pass是海光对AMD标准pass的定制化版本，反映了DCU架构在AMD CDNA基础上的特定优化。海光DCU的优势在于可以复用AMD ROCm生态，降低软件开发成本。
 
-3.6 燧原：GCU架构（NPU走GPGPU路径）
+### 3.6 燧原：GCU架构（NPU走GPGPU路径）
+
 
 ![](https://pic4.zhimg.com/v2-d31359f1919a33da16e511aa33a32139_r.jpg)燧原的GCU（Global Compute Unit）架构是一个有趣的特例——它本质上是NPU，但硬件设计足够接近GPGPU，使得燧原选择了TritonGPU编译路径。
 GCU的硬件架构基于Tensor Compute Kernel（张量计算核心），每个kernel支持1x32-bit MAC或4x16-bit/8-bit MAC，支持全精度和混合精度。GCU有256个Tensor Compute Kernel，具有类似GPU的线程块/共享内存模型。
@@ -358,7 +392,8 @@ GCU的硬件架构基于Tensor Compute Kernel（张量计算核心），每个ke
 - 在FlagTree中，燧原走TritonGPU + 自定义TritonGCU dialect路径，编译流水线为ttir→ttgir→gcuir→llir→fatbin。
 - 燧原的核心优化在make_gcuir阶段，使用gcu_passes.gcu300/gcu400.*系列pass，包括add_gcu_convert_triton_to_tritongpu、add_tritongcu_accelerate_matmul、add_gcu_warp_specialization等。燧原的选择反映了GCU架构的GPGPU特性——虽然有NPU的血统，但硬件设计足够接近GPU，可以复用TritonGPU生态。
 
-3.7 寒武纪：MLU架构（NRAM/WRAM/SRAM分层存储）
+### 3.7 寒武纪：MLU架构（NRAM/WRAM/SRAM分层存储）
+
 
 寒武纪硬件的基本组成单元是 MLU Core。每个 MLU Core 是具备完整计算、IO 和控制功能的处理器核心，可以独立完成一个计算任务，也可以与其他 MLU Core 协作完成一个计算任务。
 
@@ -376,7 +411,8 @@ GCU的硬件架构基于Tensor Compute Kernel（张量计算核心），每个ke
 
 寒武纪的make_linalg和make_mluir使用大量mlu.passes.*专有pass，包括add_triton_to_hivm（HIVM转换）、add_triton_to_hfusion（算子融合）、add_triton_to_linalg（Linalg转换）等。
 
-3.8 华为昇腾：达芬奇架构（Cube/Vector/Scalar）
+### 3.8 华为昇腾：达芬奇架构（Cube/Vector/Scalar）
+
 
 ![](https://pic2.zhimg.com/v2-41d9b9cf820d32b3f81c251cf1568a37_r.jpg)
 
@@ -395,7 +431,8 @@ Cube Unit（矩阵计算单元）、Vector Unit（向量计算单元）和Scalar
 - 昇腾使用triton_adapter_opt将TTIR转换为Linalg dialect，再使用bishengir-opt（毕昇编译器）将Linalg编译为npubin。
 - 昇腾的ttir_to_linalg函数包含大量ascend.passes.ttir.*专有pass，包括add_auto_blockify（自动分块）、add_dag_sync/add_dag_scope（DAG分析）、add_triton_to_hivm（HIVM转换）、add_triton_to_hfusion（算子融合）等。昇腾的达芬奇架构是NPU设计哲学的典型代表——通过专用计算单元和分层存储来最大化AI计算的效率。
 
-3.9 <strong>各家芯片架构对比总结</strong>
+### 3.9 **各家芯片架构对比总结**
+
 
 <strong>表 3-1 各家芯片架构分类汇总</strong>
 
@@ -413,7 +450,8 @@ Cube Unit（矩阵计算单元）、Vector Unit（向量计算单元）和Scalar
 - 燧原GCU选择了TritonGPU编译路径，因为GCU的硬件设计（Tensor Compute Kernel、线程块/共享内存模型）足够接近GPGPU；
 - 燧原GCU500进一步向标准GPGPU模型靠拢，在make_ttgir阶段直接做add_convert_to_ttgpuir（像NVIDIA/AMD一样），减少make_gcuir的定制化。
 
-3.9.2 对编译路径选择的影响
+### 3.9.2 对编译路径选择的影响
+
 
 架构融合趋势对编译路径选择有深远影响。
 
@@ -429,9 +467,11 @@ Cube Unit（矩阵计算单元）、Vector Unit（向量计算单元）和Scalar
 - TTIR → TTGIR 是核心优化层，<strong>各厂商在此阶段添加架构特定的优化 pass</strong>。
 - TTGIR → LLVM IR 是标准的 MLIR 到 LLVM 转换，各厂商主要在共享内存分配和 dialect 转换上做差异化。
 - LLVM IR → 机器码是后端代码生成，各厂商使用自己的工具链（如 NVIDIA 的 ptxas、AMD 的 clang、摩尔线程的 mcc、天数智芯的 clang/llc）。
-4.1 各家核心区别分析
+### 4.1 各家核心区别分析
 
-4.1.1 NVIDIA：架构代际分化优化
+
+### 4.1.1 NVIDIA：架构代际分化优化
+
 
 NVIDIA 的核心区别在于按 GPU 架构代际分化优化路径。make_ttgir 中通过 capability // 10 判断架构代号（8=Ampere, 9=Hopper, 10=Blackwell），走不同的 pass 流水线。
 
@@ -443,7 +483,8 @@ NVIDIA 的另一个核心区别是 Tensor Core 优化深度。
 - passes.ttgpuir.add_accelerate_matmul（矩阵乘法加速）是 NVIDIA 特有的 Tensor Core 优化 pass，
 - 这些 pass 直接利用 NVIDIA GPU 的 Tensor Core 硬件单元进行矩阵乘法加速。此外，make_llir 中的 nvidia.passes.ttgpuir.add_allocate_shared_memory_nv（NVIDIA 特定的共享内存分配）和 nvidia.passes.ttnvgpuir.add_allocate_tensor_memory（tmem 分配）也是 NVIDIA 独有的。
 
-4.1.2 AMD：CDNA/RDNA 架构分化与 LDS 优化
+### 4.1.2 AMD：CDNA/RDNA 架构分化与 LDS 优化
+
 
 AMD 的核心区别在于 CDNA（Compute DNA）和 RDNA（Radeon DNA）架构分化，以及 LDS（Local Data Share）内存模型。
 
@@ -456,13 +497,15 @@ AMD 的核心区别在于 CDNA（Compute DNA）和 RDNA（Radeon DNA）架构分
 - amd.passes.ttgpuir.add_allocate_shared_memory 实际上是为 LDS 分配内存
 - amd.passes.ttgpuir.add_optimize_lds_usage 优化 LDS 使用。此外，AMD 的 make_amdgcn 使用 amd.TARGET_TRIPLE（如 amdgcn-amd-amdhsa）和 arch 特定的 features（如 gfx11 系列使用 -real-true16 禁用真实 FP16），这些都与 NVIDIA 的 PTX 路径不同。
 
-3.1.3 摩尔线程：MUSA 架构的 SQMMA 与 TME 优化
+### 3.1.3 摩尔线程：MUSA 架构的 SQMMA 与 TME 优化
+
 
 摩尔线程的核心区别在于 MUSA（Moore Threads Unified System Architecture）架构的 SQMMA 和 TME 优化。MUSA 是 CUDA 兼容架构，因此其编译流水线与 NVIDIA 高度相似，但使用 mcc（MUSA 编译器）而非 ptxas，最终产物是 mubin 而非 cubin。
 
 - 摩尔线程在 make_ttgir 中使用 mthreads.passes.ttgpuir.add_accelerate_matmul 进行矩阵乘法加速，这可能将标准 dot 操作转换为 MUSA 特定的 SQMMA（Single-Quantum Matrix Multiply-Accumulate）指令。摩尔线程的另一个核心区别是 TLE（Triton Language Extension）的条件性使用。make_ttgir 中通过 hasattr 检查来条件执行 TLE 相关 pass（add_tle_optimize_local_pointer_async_stores、add_tle_early_assign_memory_space、add_tle_select_encodings 等），这种设计使得摩尔线程可以兼容不同版本的 FlagTree。
 
-4.1.4 海光与天垓：生态兼容性驱动
+### 4.1.4 海光与天垓：生态兼容性驱动
+
 
 海光（hcu）和天垓（iluvatar）的核心区别在于生态兼容性驱动。
 
@@ -475,9 +518,11 @@ AMD 的核心区别在于 CDNA（Compute DNA）和 RDNA（Radeon DNA）架构分
 
 - 其中 TTIR → Linalg 是核心转换层，各厂商在此阶段将 T<strong>riton 的 block-parallel IR 转换为 MLIR 的 Linalg 结构化操作</strong>。
 - Linalg → 厂商特定 IR 是各厂商的差异化优化层，使用各自的编译器（如寒武纪的 cnas、华为的 bishengir-opt、砺算的 thrive-opt）进行硬件特定优化。
-5.1 各家核心区别分析 
+### 5.1 各家核心区别分析 
 
-5.1.1 寒武纪：七阶段流水线与 MLUIR 自定义 IR
+
+### 5.1.1 寒武纪：七阶段流水线与 MLUIR 自定义 IR
+
 
 寒武纪的核心区别在于七阶段编译流水线和 MLUIR 自定义 IR。寒武纪的流水线是所有厂商中最长的：<strong>ttir → linalg → linalgopt → mluir → mluiropt → mlisa → cnbin</strong>。
 
@@ -491,7 +536,8 @@ AMD 的核心区别在于 CDNA（Compute DNA）和 RDNA（Radeon DNA）架构分
 make_cnbin 通过 cnas（寒武纪汇编器）和 cnlink（寒武纪链接器）编译为 cnfatbin。
 这种七阶段流水线反映了寒武纪 MLU 架构的复杂性——NRAM/WRAM/SRAM 三级内存层次需要精细的 tiling 和内存分配优化。
 
-5.1.2 华为昇腾：HIVM 中间表示与 DAG 调度
+### 5.1.2 华为昇腾：HIVM 中间表示与 DAG 调度
+
 
 华为昇腾的核心区别在于 <strong>HIVM（华为中间虚拟机）中间表示和 DAG 调度</strong>。昇腾的流水线有三种模式：
 
@@ -506,7 +552,8 @@ make_cnbin 通过 cnas（寒武纪汇编器）和 cnlink（寒武纪链接器）
 - add_triton_to_hivm 将 Triton IR 转换为 HIVM IR，这是毕昇编译器的中间表示。add_triton_to_hfusion 进行华为特定的算子融合优化。<strong>这些 pass 将 Triton 的 GPU 编程模型映射到 NPU 的 AI Core 编程模型（Cube/Vector/Scalar 三种计算单元），是昇腾后端最核心的转换。</strong>
 linalg_to_npubin 调用 bishengir-opt（毕昇编译器）将 Linalg dialect 转换为 NPU 特定的指令集，支持 910 和 910B/910C 两种 NPU 型号的编译路径。
 
-5.1.3 thrive阿里达摩院：ThriveIR + DSA 自定义路径
+### 5.1.3 thrive阿里达摩院：ThriveIR + DSA 自定义路径
+
 
 thrive的核心区别在于 ThriveIR 自定义 IR 和 DSA（Data Stream Architecture）模型。thrive的流水线是 ttir→thrir→thrmir→llir→dfcafb，其中 ThriveIR 和 ThriveMIR 是thrive自定义的中间表示。
 make_thrir 通过 thrive-opt 命令行工具（而非 MLIR pass manager）将 TTIR 转换为 ThriveIR，
@@ -524,7 +571,8 @@ make_thrmir 将 ThriveIR 转换为 ThriveMIR（Thrive Machine IR），核心 pas
 - triton-thrive-convert-simt-alloc（SIMT 分配转换）、
 - triton-thrive-lower-with-thread-id（使用 thread_id 进行 lowering）。make_llir 使用 thrive-opt 和 dfca-mlir-opt 两个工具将 ThriveMIR 转换为 LLVM IR，make_fatbin 使用 mlir-translate、llvm-link、opt、dfcacc 四个工具完成最终编译。thrive的 VPU（Vector Processing Unit）和 DSA 模型不是标准 GPGPU，因此需要自定义的 ThriveIR 和 DSA 表示，但最终仍然回到 Linalg 和 LLVM IR 路径。
 
-5.2 核心区别的根源分析
+### 5.2 核心区别的根源分析
+
 
 Linalg 路径各家的核心区别，根源在于三个维度：硬件内存层次差异、计算单元架构差异、厂商编译器工具链差异。
 <strong>表 3-1 Linalg 路径核心区别的根源分析</strong>
@@ -541,11 +589,13 @@ Linalg 路径各家的核心区别，根源在于三个维度：硬件内存层�
 - 寒武纪的 BANG 架构、昇腾的 Cube/Vector/Scalar、thrive的 VPU 都是各自硬件特定的计算单元，需要自定义 IR（MLUIR、HIVM、ThriveIR）来描述这些单元的操作。第三，厂商编译器工具链差异导致了最终代码生成的分化。
 
 - 寒武纪的 cnas/cnlink、昇腾的 bishengir-opt、thrive的 thrive-opt/dfcacc 都是各自厂商的专有编译器，这些编译器接收 Linalg 或自定义 IR，输出硬件特定的机器码。
-5.3 Linalg 路径面临的主要问题
+### 5.3 Linalg 路径面临的主要问题
+
 
 选择 Linalg 路径的芯片厂商面临一系列共同的问题，这些问题源于 Linalg dialect 的抽象层次与硬件特定优化之间的张力。
 
-5.3.1 TTIR → Linalg 转换的语义鸿沟
+### 5.3.1 TTIR → Linalg 转换的语义鸿沟
+
 
 Linalg 路径的第一个核心问题是 TTIR → Linalg 转换的语义鸿沟。
 
@@ -626,7 +676,8 @@ t<strong>hrive</strong>的路线本质和华为一致，都是引入自研中间
 - 第一步`triton-convert-to-triton-thrive`：将 TTIR 转换为自研 ThriveIR，这是介于 TTIR 和 Linalg 之间的中间层，既保留 Triton 的块并行、显式访存语义，又具备结构化张量的表达能力；
 - 第二步`triton-thrive-op-to-linalg`：从结构化的 ThriveIR 映射到标准 Linalg。这种 “单中间层” 的路线，复杂度介于寒武纪的纯标准方言路线和华为的多层自研 IR 路线之间，兼顾了硬件定制空间和转换复杂度。
 
-5.3.2 GPU 特定优化的缺失
+### 5.3.2 GPU 特定优化的缺失
+
 
 Linalg 路径的第二个核心问题是 GPU 特定优化的缺失。TritonGPU 路径有大量成熟的 GPU 特定优化 pass，
 
@@ -641,38 +692,45 @@ Linalg 路径的第二个核心问题是 GPU 特定优化的缺失。TritonGPU �
 - thrive通过 triton-thrive-software-pipeline 进行软件流水线优化。这些优化都是在 Linalg 或自定义 IR 层面进行的，不如 TritonGPU 的 GPU 特定优化精细。
 特别是对于矩阵乘法这种核心算子，TritonGPU 的 add_accelerate_matmul 可以直接利用 Tensor Core/MFMA/SQMMA 等硬件矩阵计算单元，而 Linalg 路径需要在自定义 IR 层面（如寒武纪的 MLUIR、昇腾的 HIVM）进行类似的优化，增加了实现难度。
 
-5.3.3 转换开销与编译时间
+### 5.3.3 转换开销与编译时间
+
 
 Linalg 路径的第三个核心问题是转换开销与编译时间。<strong>Linalg 路径需要额外的 TTIR → Linalg 转换步骤，以及可能的 Linalg → 厂商特定 IR 转换步骤（如寒武纪的 Linalg→MLUIR、昇腾的 Linalg→HIVM）</strong>。这些额外的转换步骤增加了编译时间和编译器的复杂性。
 从源码可以看到，寒武纪的七阶段流水线（ttir→linalg→linalgopt→mluir→mluiropt→mlisa→cnbin）比 TritonGPU 路径的五阶段流水线（ttir→ttgir→llir→ptx→cubin）多了两个阶段，每个阶段都有多个 pass，编译时间更长。
 华为昇腾的 ttir_to_linalg 使用了 triton_adapter_opt 外部工具（通过 subprocess 调用），这引入了进程启动开销和文件 I/O 开销。thrive的 make_thrir 和 make_thrmir 也使用 subprocess 调用 thrive-opt，同样有进程启动开销。
 
-5.3.4 与 Triton 社区优化的隔离
+### 5.3.4 与 Triton 社区优化的隔离
+
 
 Linalg 路径的第四个核心问题是与 Triton 社区优化的隔离。
 
 - Triton 社区的优化主要集中在 TritonGPU 路径上，新 pass、新优化、新特性通常首先在 TritonGPU 路径上实现。选择 Linalg 路径的厂商无法直接受益于这些社区优化，需要自己将社区优化移植到 Linalg 路径，或者在自定义 IR 层面重新实现。这导致了 Linalg 路径的厂商在跟随 Triton 社区迭代节奏方面存在滞后。
 - 例如，Triton 社区在 TritonGPU 路径上引入了 warp specialization、tensor memory、stream pipeline 等先进优化，这些优化在 Linalg 路径上没有对应的实现，选择 Linalg 路径的厂商需要自己实现类似功能。
-5.4 Linalg 生态的利用好处
+### 5.4 Linalg 生态的利用好处
+
 
 尽管 Linalg 路径面临上述问题，但利用 Linalg 生态也有显著的好处，这些好处是 TritonGPU 路径无法提供的。
 
-5.4.1 硬件无关性与架构灵活性
+### 5.4.1 硬件无关性与架构灵活性
+
 
 Linalg 生态的最大好处是硬件无关性与架构灵活性。Linalg dialect 是 MLIR 的核心 dialect 之一，设计目标就是提供与硬件无关的结构化操作抽象。
 
 - Linalg 的 tiling、fusion、bufferization 等通用优化可以灵活映射到各种 AI 加速器架构，包括 NPU、DSP、FPGA 等。这意味着选择 Linalg 路径的厂商可以更容易地支持新的硬件特性（如稀疏计算、动态形状等），因为 Linalg 的结构化操作可以灵活映射到各种硬件。
 - 相比之下，TritonGPU 路径的 GPU 特定性使得支持非 GPU 特性更加困难——如果硬件引入了 GPU 没有的新特性，TritonGPU 模型可能无法表达。
-5.4.2 结构化优化的稳定性
+### 5.4.2 结构化优化的稳定性
+
 
 Linalg 生态的第三个好处是结构化优化的稳定性。
 
 - Linalg 的 tiling、fusion、bufferization 等优化是基于结构化操作的，不依赖于特定的硬件参数（如 warp size、shared memory 大小），因此更加稳定和可预测。
 - 相比之下，TritonGPU 路径的性能高度依赖于布局选择（BlockedEncodingAttr）、warp 分配、共享内存使用等 GPU 特定参数，这些参数的调优需要深入理解硬件的微架构特性，调优不当会导致性能大幅下降。Linalg 路径的优化更通用，调优参数更少，性能更稳定。
 
-6. 燧原（Enflame）的策略深度分析
+## 6. 燧原（Enflame）的策略深度分析
 
-6.1 燧原的选择：NPU 走 TritonGPU 路径
+
+### 6.1 燧原的选择：NPU 走 TritonGPU 路径
+
 
 燧原是 FlagTree 生态中唯一选择 TritonGPU 路径的 NPU 厂商。其编译流水线为 ttir→ttgir→gcuir→llir→fatbin，
 
@@ -684,9 +742,11 @@ Linalg 生态的第三个好处是结构化优化的稳定性。
 - GCU400 使用 gcu_passes.gcu400.* 系列 pass（约 18+ 个），GCU400 侧重于 TLE 支持、Warp Specialization、矩阵乘加速和 wgdot 指令，
 - GCU500 跳过 make_gcuir 直接走标准 TritonGPU 路径。GCU500 则更接近标准 TritonGPU 路径。这种代际分化反映了燧原硬件架构的演进——从 GCU300 的基础 GPGPU-like 到 GCU400 的增强 GPGPU 特性，再到 GCU500 的标准 GPGPU 路径。
 
-6.2 选择 TritonGPU 路径的原因分析
+### 6.2 选择 TritonGPU 路径的原因分析
 
-6.2.1 GCU 硬件架构的 GPGPU 特性
+
+### 6.2.1 GCU 硬件架构的 GPGPU 特性
+
 
 燧原选择 TritonGPU 路径的首要原因是 GCU 硬件架构具有显著的 GPGPU 特性。
 
@@ -697,7 +757,8 @@ Linalg 生态的第三个好处是结构化优化的稳定性。
 - 华为昇腾 NPU 的达芬奇架构是一种完全不同的设计，它使用 AI Core（包含 Cube、Vector、Scalar 三种计算单元）和 AICPU 调度模型，没有传统 GPU 的线程块/warp/共享内存概念。
 - 达芬奇架构的编程模型是基于算子和数据流的，而不是基于线程并行的。因此，昇腾必须走 Linalg 路径，将 Triton 的 block-parallel IR 转换为 Linalg 的结构化操作，再映射到达芬奇的 Cube/Vector 计算单元。<strong>而燧原 GCU 的 GPGPU 特性使其可以直接复用 TritonGPU 的编程模型，无需经过 Linalg 转换</strong>。
 
-6.2.2 复用 TritonGPU 生态的技术红利
+### 6.2.2 复用 TritonGPU 生态的技术红利
+
 
 燧原选择 TritonGPU 路径的第二个原因是复用 TritonGPU 生态的技术红利。TritonGPU 是 Triton 生态中最成熟、最活跃的编译路径，NVIDIA、AMD、Intel 等主流 GPU 厂商都走 TritonGPU 路径，社区在此路径上投入了大量优化工作，包括 Tensor Core 加速、软件流水线、Warp Specialization、内存合并访问、布局优化等。如果燧原走 Linalg 路径，就需要自己实现这些优化，或者依赖 Linalg 生态的通用优化（这些优化不如 TritonGPU 的 GPU 特定优化精细）。
 通过走 TritonGPU 路径，燧原可以直接复用社区的优化成果。从源码可以看到，
@@ -705,7 +766,8 @@ Linalg 生态的第三个好处是结构化优化的稳定性。
 - make_ttgir 阶段使用了 passes.ttgpuir.add_fuse_nested_loops（循环融合）等社区 pass，make_gcuir 阶段也复用了 TritonGPU 的布局转换 pass（add_tritongpu_remove_layout_conversions）。这意味着燧原可以跟随 Triton 社区的迭代节奏，自动获得新的优化 pass，而不需要自己从头实现。
 这种生态红利是 Linalg 路径无法提供的，因为 Linalg 路径的优化主要由各厂商自己维护。
 
-6.2.3 TritonGCU Dialect 的设计意图
+### 6.2.3 TritonGCU Dialect 的设计意图
+
 
 燧原选择 TritonGPU 路径的第三个原因是 TritonGCU Dialect 的设计意图。燧原在 make_gcuir 阶段引入了 TritonGCU Dialect，这是理解其设计意图的关键。
 从源码可以看到:
@@ -720,12 +782,14 @@ TritonGCU Dialect 的核心价值在于它提供了一个 GCU 特定的优化空
 - add_triton_gcu_data_layout_optimize（数据布局优化）、
 - add_triton_gcu_pingpong（pingpong 流水线）等优化。这些优化都是在 TritonGPU 的抽象层次上进行的，可以利用 TritonGPU 的布局系统（BlockedEncodingAttr）、warp 模型、共享内存模型等概念。
 
-6.2.4 GCU500 的演进验证
+### 6.2.4 GCU500 的演进验证
+
 
 燧原选择 TritonGPU 路径的第四个原因是 GCU500 的演进验证了这个选择。从源码可以看到，GCU500 在 make_ttgir 阶段直接调用 passes.ttir.add_convert_to_ttgpuir（像 NVIDIA/AMD 一样），跳过了 make_gcuir 的 TritonGPU→TritonGCU 转换。这表明燧原的架构在向标准 GPGPU 模型靠拢，减少自研 Dialect 的维护负担。
 GCU500 的这种演进趋势表明燧原正在进一步拥抱 TritonGPU 生态，验证了最初选择 TritonGPU 路径的正确性——随着硬件架构的演进，燧原越来越接近标准 GPGPU，可以更多地复用 TritonGPU 的标准优化。
 
-6.3 选择是否正确？
+### 6.3 选择是否正确？
+
 
 综合以上分析，燧原选择 TritonGPU 路径是一个正确的战略决策，但也是一个有风险的决策。正确性体现在以下几个方面：
 
@@ -737,9 +801,11 @@ GCU500 的这种演进趋势表明燧原正在进一步拥抱 TritonGPU 生态�
 - 燧原作为 NPU 厂商走 TritonGPU 路径，意味着其硬件架构必须持续保持与 GPGPU 编程模型的兼容性。如果未来 GCU 架构演进偏离 GPGPU 模型（如引入新的计算单元类型、新的内存层次结构），TritonGPU 路径可能无法充分利用这些新特性。
 - 此外，TritonGCU Dialect 的维护负担和性能调优的复杂性也是需要持续关注的风险。总的来说，燧原需要持续评估 GCU 架构与 TritonGPU 模型的匹配度，确保硬件设计不偏离编程模型太远。
 
-6.4 未来可能遇到的问题
+### 6.4 未来可能遇到的问题
 
-6.4.1 硬件架构与编程模型不匹配的风险
+
+### 6.4.1 硬件架构与编程模型不匹配的风险
+
 
 燧原走 TritonGPU 路径的核心假设是 GCU 架构与 GPGPU 编程模型匹配。如果 GCU 硬件的某些特性与 TritonGPU 模型不匹配，就会导致性能损失或功能限制。例如，
 TritonGPU 假设硬件<strong>支持 warp 级别的同步和共享内存</strong>，如果 GCU 的 warp 模型与 NVIDIA GPU 不同（如 warp size 不同、同步机制不同），就需要在 TritonGCU 层进行适配，这会增加复杂性。
@@ -747,7 +813,8 @@ TritonGPU 假设硬件<strong>支持 warp 级别的同步和共享内存</strong
 
 - GCU400 限制 num_warps ≤ 4，而 GCU300 限制 num_warps ≤ 8，这暗示 GCU 的 warp 模型与标准 GPU（通常 num_warps ≤ 32）有差异
 - 更大的风险是，如果未来 GCU 架构演进偏离 GPGPU 模型（如引入新的计算单元类型、新的内存层次结构），TritonGPU 路径可能无法充分利用这些新特性。
-6.4.2 TritonGCU Dialect 的维护负担
+### 6.4.2 TritonGCU Dialect 的维护负担
+
 
 燧原在 TritonGPU 之上构建了 TritonGCU Dialect，这带来了额外的维护负担。
 
@@ -757,13 +824,15 @@ TritonGPU 假设硬件<strong>支持 warp 级别的同步和共享内存</strong
 
 - GCU300 和 GCU400 使用了不同的 pass 集合（gcu_passes.gcu300.* vs gcu_passes.gcu400.*），这意味着每代 GCU 硬件都需要维护一套独立的 pass。
 - 随着 GCU 架构的演进（GCU300 → GCU400 → GCU500），维护多套 pass 的负担会越来越重。
-6.4.3 性能调优的复杂性
+### 6.4.3 性能调优的复杂性
+
 
 TritonGPU 路径的性能调优比 Linalg 路径更复杂。TritonGPU 的性能高度依赖于布局选择（BlockedEncodingAttr）、warp 分配、共享内存使用等 GPU 特定参数。这些参数的调优需要深入理解 GCU 硬件的微架构特性（如 Tensor Compute Kernel 的调度、共享内存的带宽、DMA 的延迟等）。如果调优不当，TritonGPU 路径的性能可能不如 Linalg 路径——Linalg 的结构化优化（tiling、fusion）通常更稳定，不需要太多硬件特定调优。
 从源码可以看到，燧原在 make_gcuir 阶段实现了大量性能优化 pass（矩阵乘法加速、Warp Specialization、DMA 优化、数据布局优化、pingpong 流水线等），这些 pass 的参数调优（如 num_stages、num_warps、vector_length）需要针对不同的 GCU 型号和工作负载进行精细调整。
 这种调优的复杂性使得燧原的编译器性能高度依赖于工程经验，难以自动化。
 
-6.4.5 与上游 Triton 的同步风险
+### 6.4.5 与上游 Triton 的同步风险
+
 
 燧原的 make_ttgir 薄层设计依赖上游 TritonGPU pass 的稳定性。从源码可以看到，
 <strong>make_ttgir 只做 fuse_nested_loops、cse、symbol_dce、canonicalizer 等通用优化</strong>，不做 add_convert_to_ttgpuir（<strong>GCU300/400 将这一步推迟到 make_gcuir</strong>）。这种薄层设计意味着燧原有意识地保持 TTGIR 层的薄，让核心优化集中在 GCU 特定的 make_gcuir。
@@ -771,7 +840,8 @@ TritonGPU 路径的性能调优比 Linalg 路径更复杂。TritonGPU 的性能�
 GCU500 已经开始走不同路径（在 make_ttgir 阶段直接调用 add_convert_to_ttgpuir，跳过 make_gcuir 的 TritonGPU→TritonGCU 转换），这暗示燧原可能在简化编译路径，使其更接近标准 TritonGPU 路径。
 这种趋势表明燧原正在进一步拥抱 TritonGPU 生态，减少自研 Dialect 的维护负担，但这也意味着 GCU500 可能更依赖 TritonGPU 的标准优化，GCU 特定优化的空间可能缩小。
 
-6.5 燧原策略总结
+### 6.5 燧原策略总结
+
 
 <strong>表 4-1 燧原 TritonGPU 路径 vs 昇腾 Linalg 路径对比</strong>
 

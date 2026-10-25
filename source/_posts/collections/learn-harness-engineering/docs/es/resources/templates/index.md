@@ -19,10 +19,14 @@ Estas plantillas están listas para copiar en tu propio proyecto. Cada una cumpl
 
 Copia estos cuatro archivos en la raíz de tu proyecto primero:
 
-1. `AGENTS.md` o `CLAUDE.md`
-2. `init.sh`
-3. `claude-progress.md`
-4. `feature_list.json`
+## 1. `AGENTS.md` o `CLAUDE.md`
+
+## 2. `init.sh`
+
+## 3. `claude-progress.md`
+
+## 4. `feature_list.json`
+
 
 Añade los archivos restantes a medida que tu proyecto crece.
 
@@ -63,10 +67,14 @@ El script de inicio. Ejecuta la instalación de dependencias, verificación e im
 
 <strong>Qué hace:</strong>
 
-1. Imprime el directorio actual (para que puedas confirmar que se está ejecutando en el lugar correcto)
-2. Instala dependencias
-3. Ejecuta el comando de verificación
-4. Imprime el comando de inicio (o lo ejecuta si `RUN_START_COMMAND=1` está configurado)
+## 1. Imprime el directorio actual (para que puedas confirmar que se está ejecutando en el lugar correcto)
+
+## 2. Instala dependencias
+
+## 3. Ejecuta el comando de verificación
+
+## 4. Imprime el comando de inicio (o lo ejecuta si `RUN_START_COMMAND=1` está configurado)
+
 
 Si la verificación falla, el agente debe detenerse y corregir la línea base antes de hacer cualquier otra cosa.
 
@@ -175,12 +183,18 @@ Una tarjeta de puntuación para revisar la calidad de salida del agente. Usa est
 
 <strong>Las seis dimensiones:</strong>
 
-1. <strong>Corrección</strong> — ¿la implementación coincide con el comportamiento objetivo?
-2. <strong>Verificación</strong> — ¿las verificaciones requeridas se ejecutaron realmente, con evidencia?
-3. <strong>Disciplina de alcance</strong> — ¿el agente se mantuvo dentro de la característica seleccionada?
-4. <strong>Fiabilidad</strong> — ¿el resultado sobrevive un reinicio o reejecución?
-5. <strong>Mantenibilidad</strong> — ¿el código y la documentación son lo suficientemente claros para la próxima sesión?
-6. <strong>Preparación de entrega</strong> — ¿puede una sesión nueva continuar usando solo artefactos del repositorio?
+## 1. **Corrección** — ¿la implementación coincide con el comportamiento objetivo?
+
+## 2. **Verificación** — ¿las verificaciones requeridas se ejecutaron realmente, con evidencia?
+
+## 3. **Disciplina de alcance** — ¿el agente se mantuvo dentro de la característica seleccionada?
+
+## 4. **Fiabilidad** — ¿el resultado sobrevive un reinicio o reejecución?
+
+## 5. **Mantenibilidad** — ¿el código y la documentación son lo suficientemente claros para la próxima sesión?
+
+## 6. **Preparación de entrega** — ¿puede una sesión nueva continuar usando solo artefactos del repositorio?
+
 
 <strong>Opciones de conclusión:</strong>
 
@@ -190,11 +204,16 @@ Una tarjeta de puntuación para revisar la calidad de salida del agente. Usa est
 
 <strong>Importante: el evaluador necesita ajuste.</strong> De fábrica, los agentes son malos autojueces — identifican problemas y luego se convencen a sí mismos de aprobar. Necesitarás iterar:
 
-1. Ejecuta el evaluador en un sprint completado.
-2. Compara sus puntuaciones con tu propio juicio humano.
-3. Donde diverjan, haz la rúbrica más específica sobre los criterios de aprobación/fallo.
-4. Vuelve a ejecutar y verifica la alineación.
-5. Repite hasta que el evaluador coincida consistentemente con la revisión humana.
+## 1. Ejecuta el evaluador en un sprint completado.
+
+## 2. Compara sus puntuaciones con tu propio juicio humano.
+
+## 3. Donde diverjan, haz la rúbrica más específica sobre los criterios de aprobación/fallo.
+
+## 4. Vuelve a ejecutar y verifica la alineación.
+
+## 5. Repite hasta que el evaluador coincida consistentemente con la revisión humana.
+
 
 Planifica 3-5 rondas de ajuste. Registra cada cambio para que puedas rastrear qué mejoró la alineación.
 
@@ -232,8 +251,13 @@ La rúbrica del evaluador puntúa las salidas individuales del agente. El docume
 
 El documento de calidad también soporta la simplificación del harness. Cada componente del harness codifica un supuesto sobre lo que el modelo no puede hacer. A medida que los modelos mejoran, estos supuestos se vuelven obsoletos. Para verificar si un componente sigue siendo necesario:
 
-1. Toma una instantánea del documento de calidad.
-2. Elimina un componente del harness.
-3. Ejecuta el conjunto de tareas de benchmark.
-4. Toma otra instantánea.
-5. Compara — si las calificaciones no bajaron, el componente era sobrecarga. Si bajaron, restáuralo.
+## 1. Toma una instantánea del documento de calidad.
+
+## 2. Elimina un componente del harness.
+
+## 3. Ejecuta el conjunto de tareas de benchmark.
+
+## 4. Toma otra instantánea.
+
+## 5. Compara — si las calificaciones no bajaron, el componente era sobrecarga. Si bajaron, restáuralo.
+

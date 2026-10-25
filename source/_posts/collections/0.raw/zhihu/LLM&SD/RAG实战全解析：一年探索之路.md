@@ -87,7 +87,8 @@ RAG主要面临三个方面的挑战：检索质量、增强过程和生成质�
 
 该模块主要利用LLM重新措辞用户query，而不是直接使用原始的用户query进行检索。这是因为对于RAG系统来说，在现实世界中原始query不可能总是最佳的检索条件。
 
-4.2.1 HyDE
+### 4.2.1 HyDE
+
 
 Hypothetical Document Embeddings（HyDE）是一种生成文档嵌入以检索相关文档而不需要实际训练数据的技术。首先，LLM创建一个假设答案来响应query。虽然这个答案反映了与query相关的模式，但它包含的信息可能在事实上并不准确。接下来，query和生成的答案都被转换为嵌入。然后，系统从预定义的数据库中识别并检索在向量空间中最接近这些嵌入的实际文档。
 
@@ -115,7 +116,8 @@ Chain of Verification (CoVe) 旨在通过系统地验证和完善回答以尽量
 
 ![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_9b2849bf42a2.jpg)
 
-4.3.3 [RAG-Fusion](https://link.zhihu.com/?target=https%3A//github.com/Raudaschl/rag-fusion)
+### 4.3.3 [RAG-Fusion](https://link.zhihu.com/?target=https%3A//github.com/Raudaschl/rag-fusion)
+
 
 在这种方法中，原始query经过LLM 生成多个query。然后可以并行执行这些搜索查询，并将检索到的结果一并传递。当一个问题可能依赖于多个子问题时，这种方法就非常有用。RAG-Fusion便是这种方法的代表，它是一种搜索方法，旨在弥合传统搜索范式与人类查询的多面性之间的差距。这种方法先是采用LLM生成多重查询，之后使用倒数排名融合（Reciprocal Rank Fusion，RRF）来重新排序。
 
@@ -155,7 +157,8 @@ ReAct的模式如上图所示，它是将思维链提示（Chain of Thoughts，�
 
 检索的一个关键部分是只获取文档的相关部分。当加载文档后，通常需要对其进行转换，以便更好地适应应用程序。这涉及几个转换步骤，以便为检索文档做好准备。其中一个主要步骤是将大型文档分割（或分块）成较小的块，即文本转换器。最简单的例子是，当需要处理长篇文本时，有必要将文本分割成若干块，以便能放入模型的上下文窗口中。理想情况下，希望将语义相关的文本片段放在一起。这听起来很简单，但潜在的复杂性却很大。
 
-5.4.1 工作原理
+### 5.4.1 工作原理
+
 
 - 将文本分割成语义上有意义的小块（通常是句子）。
 - 开始将这些小块组合成一个大块，直到达到一定的大小（用某个函数来衡量）。
@@ -185,7 +188,8 @@ NameSplits OnAdds MetadataDescriptionRecursiveA list of user defined charactersR
 经过前面的数据读取和文本分块操作后，接着就需要对处理好的数据进行索引。索引是一种数据结构，用于快速检索出与用户查询相关的文本内容。它是检索增强 LLM 的核心基础组件之一。
 下面介绍几种常见的索引结构。为了说明不同的索引结构，引入节点(Node)的概念。在这里，节点就是前面步骤中对文档切分后生成的文本块(Chunk)。下面的索引结构图来自 LlamaIndex 的《 How Each Index Works》。
 
-5.7.1 摘要索引（以前称为链式索引）
+### 5.7.1 摘要索引（以前称为链式索引）
+
 
 摘要索引只是将节点存储为顺序链。在后续的检索和生成阶段，可以简单地顺序遍历所有节点，也可以基于关键词进行过滤。
 
@@ -198,14 +202,16 @@ NameSplits OnAdds MetadataDescriptionRecursiveA list of user defined charactersR
 ![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_f11f13fcdcef.jpg)
 
 
-5.7.3 关键词表索引
+### 5.7.3 关键词表索引
+
 
 关键词表索引从每个节点中提取关键词，构建了每个关键词到相应节点的多对多映射，意味着每个关键词可能指向多个节点，每个节点也可能包含多个关键词。在检索阶段，可以基于用户查询中的关键词对节点进行筛选。
 
 ![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_3d2658153ac9.jpg)
 
 
-5.7.4 向量索引
+### 5.7.4 向量索引
+
 
 向量索引是当前最流行的一种索引方法。这种方法一般利用文本嵌入模型将文本块映射成一个固定长度的向量，然后存储在向量数据库中。检索的时候，对用户查询文本采用同样的Embedding模型映射成向量，然后基于向量相似度计算获取最相似的一个或者多个节点。
 

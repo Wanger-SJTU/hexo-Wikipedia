@@ -71,7 +71,8 @@ source_url: https://zhuanlan.zhihu.com/p/691066049
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_91b76c3b604b.jpg)
 
 #### 
-1.1 Prefill
+### 1.1 Prefill
+
 
 <!-- TODO: 公式语法错误，需手动修复 -->
 预填充阶段。<strong>在这个阶段中，我们</strong>把整段prompt喂给模型做forward计算<strong>。如果</strong>采用KV cache技术，在这个阶段中我们会把prompt过<strong>$$W_{k}, W_{v}$$</strong>后得到的<strong>$$X_{k}, X_{v$$</strong>保存在cache_k和cache_v中<strong>。这样在对后面的token计算attention时，我们就不需要对前面的token重复计算$$X_{k}, X_{v$$了，可以帮助我们节省推理时间。</strong>
@@ -97,7 +98,8 @@ source_url: https://zhuanlan.zhihu.com/p/691066049
 
 #### 
 
-2.2 为什么能用滑动窗口
+### 2.2 为什么能用滑动窗口
+
 
 虽然滑动窗口的策略看起来很不错，不过你一定有这样的疑惑<strong>：</strong>虽然距离越远的token涵盖的信息量可能越少，但不意味着它们对当前token一点用处都没有。<strong>在传统的Attention中，我们通过Attention score，或多或少给这些远距离的token一定的参与度；但是在Sliding Window Attention中，却直接杜绝了它们的参与，这真的合理吗？</strong>
 为了回答这个问题，我们来看一个例子，在本例中W=4，num_layers = 4，num_tokens = 10。
@@ -117,7 +119,8 @@ source_url: https://zhuanlan.zhihu.com/p/691066049
 ### 三、Rolling Buffer Cache
 
 #### 
-3.1 原理
+### 3.1 原理
+
 
 当我们使用滑动窗口后，KV Cache就不需要保存所有tokens的KV信息了，你可以将其视为一个固定容量（W）的cache，随着token index增加，我们来“滚动更新” KV Cache。****
 下图给出了Rolling Buffer Cache的运作流程: 
@@ -132,7 +135,8 @@ source_url: https://zhuanlan.zhihu.com/p/691066049
 - 不难发现，prompt中第i个token在KV cache中的存储序号为：`i % W`
 
 #### 
-3.2 “旋转”从何而来
+### 3.2 “旋转”从何而来
+
 
 如果你读过Mixtral的源码，你可能会记得，在源码中管`Rolling Buffer Cache`叫`Rotary Buffer Cache`<strong>。而“Rotary”这个词很值得我们关注：为什么叫“旋转”呢“</strong>
 
@@ -186,7 +190,8 @@ source_url: https://zhuanlan.zhihu.com/p/691066049
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_267da4be75fd.jpg)
 
 #### 
-5.2 整体流程
+### 5.2 整体流程
+
 
 （1）chunk0****
 

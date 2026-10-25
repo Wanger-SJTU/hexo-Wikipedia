@@ -26,29 +26,29 @@ Intuition: 复用 hidden states vs 复用 kv cache
 复用KVCache的想法最早是由CunXiao哥 [@真实哥](https://www.zhihu.com/people/8f17fd3e7f806f3404eb7e959bf846ca)  的[Glide with a Cape](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2402.02082)提出, 后续的followup工作还有鹏辉哥的 [LongSpec](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2502.17421)。这两篇paper的时间都早于我对复用kvcache的探索，给了我很多启发，solute!这里只简要说明一下我认为复用 KV Cache可以缓解长距衰减的Intuition，具体分析可以check我们的paper.
 
 ![](https://pic1.zhimg.com/v2-ac2f912518b0d99fd1a9fd20bda33654_r.jpg)设想 target model 在推理 
-![](https://www.zhihu.com/equation?tex=x_1%2C+x_2%2C+x_3) , 并把 
-![](https://www.zhihu.com/equation?tex=x_3) 对应的 hidden states 
-![](https://www.zhihu.com/equation?tex=h_3) 传给了 draft model 去做复用。我们知道 
-![](https://www.zhihu.com/equation?tex=h_3) 是前3个token的kvcache的加权聚合，那自然就会有一种可能性：target model 给 
-![](https://www.zhihu.com/equation?tex=x_2) 的 value 
-![](https://www.zhihu.com/equation?tex=v_2) 分配的 attention weight 非常小 
-![](https://www.zhihu.com/equation?tex=%5Calpha_2+%3D+0.01) , 这表示对于当前的 next-token prediction 来说，target model 认为 
-![](https://www.zhihu.com/equation?tex=x_2) 的信息不重要。draft model 获取了 
-![](https://www.zhihu.com/equation?tex=h_3) 之后推理下一个token。这也就是说：draft model 预测下一个 token时，继承了 target model 上一轮的 attention bias. 由于 transformers的特性，相邻 token 之间的attention weights变化通常比较小，所以对于短距离的第1个draft token效果会很好. Qwen 3.5 的 MTP在第一个位置的接受率可以训到 0.85.
+$x_1, x_2, x_3$ , 并把 
+$x_3$ 对应的 hidden states 
+$h_3$ 传给了 draft model 去做复用。我们知道 
+$h_3$ 是前3个token的kvcache的加权聚合，那自然就会有一种可能性：target model 给 
+$x_2$ 的 value 
+$v_2$ 分配的 attention weight 非常小 
+$\alpha_2 = 0.01$ , 这表示对于当前的 next-token prediction 来说，target model 认为 
+$x_2$ 的信息不重要。draft model 获取了 
+$h_3$ 之后推理下一个token。这也就是说：draft model 预测下一个 token时，继承了 target model 上一轮的 attention bias. 由于 transformers的特性，相邻 token 之间的attention weights变化通常比较小，所以对于短距离的第1个draft token效果会很好. Qwen 3.5 的 MTP在第一个位置的接受率可以训到 0.85.
 
 但是随着预测距离的变长：来自 target model 的 attention bias 还是有益的吗？如果预测第3个token需要 
-![](https://www.zhihu.com/equation?tex=x_2) 的信息，draft model 能否从 
-![](https://www.zhihu.com/equation?tex=h_3) 中提取 
-![](https://www.zhihu.com/equation?tex=x_2) 的信息呢？很可惜，这是一个非常困难的事情—— 
-![](https://www.zhihu.com/equation?tex=h_3) 几乎不包含 
-![](https://www.zhihu.com/equation?tex=x_2) ，又怎么提取呢? 
+$x_2$ 的信息，draft model 能否从 
+$h_3$ 中提取 
+$x_2$ 的信息呢？很可惜，这是一个非常困难的事情—— 
+$h_3$ 几乎不包含 
+$x_2$ ，又怎么提取呢? 
 
 从上述这个例子我们可以看到，<strong>复用 hidden states 会携带 target model 在当前position的attention bias; 这种 attention bias 对于短距离的预测有帮助，但是对于长距离的预测反而有害。</strong>
 
 其实从这个角度也可以理解EAGLE-3为什么要用多层 hidden states: 因为不同层的hidden states通常带有不同的 attention bias; 最后一层的 
-![](https://www.zhihu.com/equation?tex=h_3) 或许不含 
-![](https://www.zhihu.com/equation?tex=x_2) 的信息，中间层/浅层的 
-![](https://www.zhihu.com/equation?tex=h_3) 很可能就包含了。
+$h_3$ 或许不含 
+$x_2$ 的信息，中间层/浅层的 
+$h_3$ 很可能就包含了。
 
 那换个角度想想看，如果我们复用kvcache，是不是就不存在这种attention bias了呢？当draft model 复用了target model 的kvcache，它只要产出一个质量足够好的 query, 就可以得到和 target model 完全相同的attn output. 
 
@@ -138,7 +138,7 @@ KV 的梯度太稀疏了 -> block-wise training:
 最后，Gemma 4 的 MTP 有一个所谓的 E2B / E4B. motivation 和 FR-Spec 完全一样，就是整个vocabulary 256k 个 token存在明显的长尾效应: 一小部分 token 的出现频率会主导整个 decoding 过程。因此，完全可以对 vocab 做剪枝。FR-Spec 是直接用 t2d 和 d2t 两个 mapping 来完成映射，Gemma 4这里的 E2B 就是先聚类再预测。说更直白一点：
 
 本来 LM head 的 shape 是 
-![](https://www.zhihu.com/equation?tex=d%5Ctimes+V) , 通过聚类算法把整个vocab 分成 
-![](https://www.zhihu.com/equation?tex=r) 类，把整个矩阵运算进行降维, 从而减少计算量的效果.
+$d\times V$ , 通过聚类算法把整个vocab 分成 
+$r$ 类，把整个矩阵运算进行降维, 从而减少计算量的效果.
 
 最后，内容写的有点随意，不足之处还请多多包涵。大家有问题的欢迎直接找我交流～

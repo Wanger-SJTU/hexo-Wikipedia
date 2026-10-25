@@ -54,35 +54,35 @@ Li 和 Liang (2021) 提出了“前缀调优”，并在生成任务上显示出
 ![](https://picx.zhimg.com/v2-dddfe759d107fc7ee0d12289348a61b5_r.jpg?source=2c26e567)图 2 模型调整需要为每个下游任务制作整个预训练模型的特定任务副本，并且必须分批执行推理。 提示调优只需要为每个任务存储一个特定于任务的小提示，并使用原始预训练模型启用混合任务推理。 使用 T5“XXL”模型，每个调优模型的副本需要 110 亿个参数。 相比之下，我们较之减少了超过五个数量级。
 Prompt Tuning
 遵循 T5 的“文本到文本”方法（Raffel 等人，2020），我们<strong>将所有任务都转换为文本生成</strong>。 传统的方法一般将模型分类建模成根据输入的输出类别概率 
-![](https://www.zhihu.com/equation?tex=Pr%28y%7CX%29) ，其中 
-![](https://www.zhihu.com/equation?tex=X) 是一个token的序列，而 
-![](https://www.zhihu.com/equation?tex=Y) 是单个class的标号。而T5提出的文本到文本方法，将分类问题建模为一个条件生成问题，使用概率 
-![](https://www.zhihu.com/equation?tex=Pr_%5Ctheta+%28Y%7CX%29) 来计算生成的标号。其中， 
-![](https://www.zhihu.com/equation?tex=Y) 代表一个class label的token序列， 
-![](https://www.zhihu.com/equation?tex=%5Ctheta) 代表一个由encoder和decoder决定的参数。
+$Pr(y|X)$ ，其中 
+$X$ 是一个token的序列，而 
+$Y$ 是单个class的标号。而T5提出的文本到文本方法，将分类问题建模为一个条件生成问题，使用概率 
+$Pr_\theta (Y|X)$ 来计算生成的标号。其中， 
+$Y$ 代表一个class label的token序列， 
+$\theta$ 代表一个由encoder和decoder决定的参数。
 
 Prompting的本质是往模型增加一些额外的信息，使得它在生成 
-![](https://www.zhihu.com/equation?tex=Y) 的时候能够获得一些“条件”（例如“分类”）。一般来说，Prompting通过往输入 
-![](https://www.zhihu.com/equation?tex=X) 前加入一串token 
-![](https://www.zhihu.com/equation?tex=P) 来完成，从而使得模型能够最大化得到正确的 
-![](https://www.zhihu.com/equation?tex=Y) 的可能性。注意，Prompting并不改变参数 
-![](https://www.zhihu.com/equation?tex=%5Ctheta) ，也就是不改变被冻结模型的任何参数。
+$Y$ 的时候能够获得一些“条件”（例如“分类”）。一般来说，Prompting通过往输入 
+$X$ 前加入一串token 
+$P$ 来完成，从而使得模型能够最大化得到正确的 
+$Y$ 的可能性。注意，Prompting并不改变参数 
+$\theta$ ，也就是不改变被冻结模型的任何参数。
 
 在GPT-3中，Prompt Token 
-![](https://www.zhihu.com/equation?tex=P%3D%5C%7Bp_1%2Cp_2%2C...%2Cp_n%5C%7D) 是模型的嵌入表(Embedding Table)的一部分，因此受模型的冻结参数 
-![](https://www.zhihu.com/equation?tex=%5Ctheta) 决定。由于参数是冻结的，找最优的Prompt一般需要人为搜索或者使用不可微自动化搜索方法。Prompt Tuning消除了提示 P 由 θ 参数化的限制； 相反，Prompt Tuning中的Prompt有自己的专用参数 
-![](https://www.zhihu.com/equation?tex=%CE%B8_P) ，可以通过反向传播算法更新。 Prompt <strong>Design</strong>可以看做从冻结嵌入的固定词汇表中选择Prompt Token，而Prompt <strong>Tuning</strong>可以看做token已经确定，但是embedding是可以学习的。如此一来，我们新的条件生成问题的概率就成为了 
-![](https://www.zhihu.com/equation?tex=Pr_%7B%5Ctheta%2C%5Ctheta_P%7D%28Y%7C%5BP%3BX%5D%29) ，而且可以使用反向传播算法最大化 
-![](https://www.zhihu.com/equation?tex=Y) 的置信度，而且这是通过更新一个很小的参数 
-![](https://www.zhihu.com/equation?tex=%5Ctheta_P) 来实现的。
+$P=\{p_1,p_2,...,p_n\}$ 是模型的嵌入表(Embedding Table)的一部分，因此受模型的冻结参数 
+$\theta$ 决定。由于参数是冻结的，找最优的Prompt一般需要人为搜索或者使用不可微自动化搜索方法。Prompt Tuning消除了提示 P 由 θ 参数化的限制； 相反，Prompt Tuning中的Prompt有自己的专用参数 
+$θ_P$ ，可以通过反向传播算法更新。 Prompt <strong>Design</strong>可以看做从冻结嵌入的固定词汇表中选择Prompt Token，而Prompt <strong>Tuning</strong>可以看做token已经确定，但是embedding是可以学习的。如此一来，我们新的条件生成问题的概率就成为了 
+$Pr_{\theta,\theta_P}(Y|[P;X])$ ，而且可以使用反向传播算法最大化 
+$Y$ 的置信度，而且这是通过更新一个很小的参数 
+$\theta_P$ 来实现的。
 
 通过人为输入一串长度为 
-![](https://www.zhihu.com/equation?tex=n) 的token序列 
-![](https://www.zhihu.com/equation?tex=%5C%7Bx_1%2Cx_2%2C...%2Cx_n%5C%7D) ，T5首先会将这些token进行嵌入，获得一个嵌入表 
-![](https://www.zhihu.com/equation?tex=X_e%5Cin+%5Cmathbb%7BR%7D%5E%7Bn%5Ctimes+e%7D) ，其中e为嵌入空间的维度。在应用这个嵌入表后，我们会得到一个soft prompt的表示 
-![](https://www.zhihu.com/equation?tex=P_e%5Cin+%5Cmathbb%7BR%7D%5E%7Bp%5Ctimes+e%7D) ，其中p是prompt的长度。接下来，我们将prompt concat到输入的前面，就能得到完整的输入 
-![](https://www.zhihu.com/equation?tex=%5BP_e%3BX_e%5D%5Cin+%5Cmathbb%7BR%7D%5E%7B%28p%2Bn%29%5Ctimes+e%7D) 。这个新的输入将会进入T5的encoder-decoder结构来训练和推理。注意，只有 
-![](https://www.zhihu.com/equation?tex=P_e) 在encoder-decoder结构中被被学习了。
+$n$ 的token序列 
+$\{x_1,x_2,...,x_n\}$ ，T5首先会将这些token进行嵌入，获得一个嵌入表 
+$X_e\in \mathbb{R}^{n\times e}$ ，其中e为嵌入空间的维度。在应用这个嵌入表后，我们会得到一个soft prompt的表示 
+$P_e\in \mathbb{R}^{p\times e}$ ，其中p是prompt的长度。接下来，我们将prompt concat到输入的前面，就能得到完整的输入 
+$[P_e;X_e]\in \mathbb{R}^{(p+n)\times e}$ 。这个新的输入将会进入T5的encoder-decoder结构来训练和推理。注意，只有 
+$P_e$ 在encoder-decoder结构中被被学习了。
 
 设计中的一些决定
 有许多可能的方法来初始化提示表示。 最简单的是从头开始训练，使用随机初始化。 一个更复杂的选项是将每个提示标记初始化为从模型词汇表中提取的嵌入。 从概念上讲，<strong>我们的软提示以与输入之前的文本相同的方式调节冻结网络的行为，因此类似单词的表示可以作为一个很好的初始化点</strong>。 对于分类任务，第三种选择是使用枚举输出类的嵌入来初始化提示，类似于 Schick 和 Schütze (2021) 的“verbalizers”。 由于我们希望模型在输出中生成这些标记，因此使用有效目标标记的嵌入初始化提示应该启动模型以将其输出限制为合法的输出类。

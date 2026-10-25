@@ -31,13 +31,20 @@ workloads so it can reason from execution, not only from code inspection.
 
 ## Execution SOP
 
-1. Define the golden runtime journeys that matter most.
-2. Add structured logs to startup and the critical path.
-3. Add metrics for latency, failure counts, or queue depth where useful.
-4. Add traces or timing markers for slow or multi-step flows.
-5. Make the signals queryable from the local dev environment.
-6. Give the agent one repeatable workload or scenario to rerun.
-7. Require the loop: query -> correlate -> reason -> implement -> restart ->
+## 1. Define the golden runtime journeys that matter most.
+
+## 2. Add structured logs to startup and the critical path.
+
+## 3. Add metrics for latency, failure counts, or queue depth where useful.
+
+## 4. Add traces or timing markers for slow or multi-step flows.
+
+## 5. Make the signals queryable from the local dev environment.
+
+## 6. Give the agent one repeatable workload or scenario to rerun.
+
+## 7. Require the loop: query -> correlate -> reason -> implement -> restart ->
+
    rerun -> verify.
 
 ## Debug Session Checklist

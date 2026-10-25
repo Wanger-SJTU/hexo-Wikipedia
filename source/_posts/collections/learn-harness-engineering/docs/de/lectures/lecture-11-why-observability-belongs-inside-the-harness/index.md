@@ -73,8 +73,10 @@ Stell dir einen harness mit planner-generator-evaluator-Workflow vor, der "Dark 
 
 Vielleicht denkst du: "Kann der Agent nicht einfach eigene Logs ausgeben?" Die Probleme sind:
 
-1. Der Agent weiß nicht, was er nicht weiß; er zeichnet Signale nicht proaktiv auf, deren Bedarf er nicht erkennt.
-2. Logformate sind inkonsistent; verschiedene Sessions nutzen unterschiedliche Formate, was systematische Analyse verhindert.
+## 1. Der Agent weiß nicht, was er nicht weiß; er zeichnet Signale nicht proaktiv auf, deren Bedarf er nicht erkennt.
+
+## 2. Logformate sind inkonsistent; verschiedene Sessions nutzen unterschiedliche Formate, was systematische Analyse verhindert.
+
 3. Prozess-Beobachtbarkeit lässt sich nicht mit Logs lösen; sprint contracts und Bewertungsrubriken sind strukturierte Artefakte auf harness-Ebene.
 
 ## Wie man es richtig macht

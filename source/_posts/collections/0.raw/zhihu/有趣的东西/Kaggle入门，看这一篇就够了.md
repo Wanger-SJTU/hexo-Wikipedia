@@ -52,15 +52,18 @@ Kaggle竞赛另一个有趣的地方在于每个人都有自己的Profile，上�
 当然，如果你从未独立做过一个项目，还是要从<strong>练习赛开始熟悉</strong>。因为竞赛模式中的任务是公司悬赏发布的实际案例，并没有标准的答案；而练习赛不仅项目难度低，而且是有官方给出的参考方案的，大家可以用来对比改善自己的测试结果，从中进行提高。
 
 所以呢，建议感兴趣的同学先去独立做一下101和playground的训练赛，至于做多少个案例才能上道，就要看个人素质啦。这里为大家推荐几篇非常好的文章，里面手把手的教了大家入门级的三个经典练习项目，供大家学习。
-1. Titanic（泰坦尼克之灾）
+## 1. Titanic（泰坦尼克之灾）
+
       中文教程： 逻辑回归应用之Kaggle泰坦尼克之灾 
       英文教程：An Interactive Data Science Tutorial
 
-2. House Prices: Advanced Regression Techniques（房价预测）
+## 2. House Prices: Advanced Regression Techniques（房价预测）
+
       中文教程：Kaggle竞赛 — 2017年房价预测
      英文教程：How to get to TOP 25% with Simple Model using sklearn
 
-3. Digital Recognition（数字识别）
+## 3. Digital Recognition（数字识别）
+
      中文教程：大数据竞赛平台—Kaggle 入门 
     英文教程：Interactive Intro to Dimensionality Reduction
 

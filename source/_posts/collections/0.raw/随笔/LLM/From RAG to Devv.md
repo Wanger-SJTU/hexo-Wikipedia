@@ -15,9 +15,12 @@ categories:
 ![Pasted image 20240313215833.png](/images/collections/assets/Pasted%20image%2020240313215833.png)
 
 一个最小的 RAG 系统就是由 3 个部分组成的： 
-1. 语言模型 
-2. 模型所需要的外部知识集合（以 vector 的形式存储） 
-3. 当前场景下需要的外部知识
+## 1. 语言模型 
+
+## 2. 模型所需要的外部知识集合（以 vector 的形式存储） 
+
+## 3. 当前场景下需要的外部知识
+
 
 ## 语言模型 
 为什么 2020 年的这篇论文直到今年才火起来？一个主要的原因就是之前的基座模型能力不够。 如果底层模型很笨，那么即使给到了 丰富的外部知识，模型也不能基于这些知识进行推演。 从论文的一些 benchmark 上也可以看出效果有提升，但是并没有特别显著。
@@ -28,8 +31,10 @@ categories:
 
 ![Pasted image 20240313220934.png](/images/collections/assets/Pasted%20image%2020240313220934.png)
 ### 这个模块分成两个部分： 
-1. embedding 模型 
-2. 存储 embedding vector 的数据库 
+## 1. embedding 模型 
+
+## 2. 存储 embedding vector 的数据库 
+
 
 前者基本上都使用 OpenAI 的 embedding 模型，后者可选方案非常多，包括 Pinecone，国内团队的 Zilliz，开源的 Chroma，在关系型数据库上构建的 pgvector 等。
 

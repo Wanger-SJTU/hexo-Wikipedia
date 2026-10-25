@@ -73,8 +73,10 @@ La différence d'efficacité est de 3x. Le seul changement est l'observabilité.
 
 Vous pourriez penser : « l'agent ne peut-il pas simplement imprimer ses propres logs ? » Les problèmes sont :
 
-1. L'agent ne sait pas ce qu'il ne sait pas ; il n'enregistrera pas spontanément des signaux dont il ignore avoir besoin.
-2. Les formats de logs sont incohérents ; différentes sessions utilisent différents formats, rendant l'analyse systématique impossible.
+## 1. L'agent ne sait pas ce qu'il ne sait pas ; il n'enregistrera pas spontanément des signaux dont il ignore avoir besoin.
+
+## 2. Les formats de logs sont incohérents ; différentes sessions utilisent différents formats, rendant l'analyse systématique impossible.
+
 3. L'observabilité de processus ne se résout pas par des logs ; sprint contracts et grilles de score sont des artefacts structurés nécessitant un support au niveau du harness.
 
 ## Comment bien le faire

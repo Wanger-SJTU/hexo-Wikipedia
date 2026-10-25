@@ -32,51 +32,52 @@ v2论文：[Lightning Attention-2: A Free Lunch for Handling Unlimited Sequence 
 
 背景
 众所周知，在传统的transformer注意力中，是Q和K先相乘，然后再和V相乘，一种kernel trick就是让K和V先相乘，然后再和Q相乘，两种计算方式输出的张量形状是一样。但因为QKV的张量形状不同，两种计算方式的计算量是不一样的，第一种的计算复杂度是 
-![](https://www.zhihu.com/equation?tex=O%28n%5E2d%29) ，第二种的计算复杂度是 
-![](https://www.zhihu.com/equation?tex=O%28nd%5E2%29) ，因为跟序列长度 
-![](https://www.zhihu.com/equation?tex=n) 呈线性关系，所以也被叫做线性注意力。
+$O(n^2d)$ ，第二种的计算复杂度是 
+$O(nd^2)$ ，因为跟序列长度 
+$n$ 呈线性关系，所以也被叫做线性注意力。
 
 你可能之前看到过有的文章说要在 
-![](https://www.zhihu.com/equation?tex=Q) 和 
-![](https://www.zhihu.com/equation?tex=K) 上面套上激活函数来代替softmax的非负性，还有，QK相乘之后还要除以分母 
-![](https://www.zhihu.com/equation?tex=%5Csqrt%7Bd%7D) 以使得分布的标准差仍然是1左右，但是我看DeltaNet的作者Songlin Yang在[这里](https://www.zhihu.com/question/9740764576/answer/80735153803)说：
+$Q$ 和 
+$K$ 上面套上激活函数来代替softmax的非负性，还有，QK相乘之后还要除以分母 
+$\sqrt{d}$ 以使得分布的标准差仍然是1左右，但是我看DeltaNet的作者Songlin Yang在[这里](https://www.zhihu.com/question/9740764576/answer/80735153803)说：
 
 在[The Devil in Linear Transforme](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2210.10340)r 中证明了分母带来数值问题，所以在最近的linear attention中几乎全部去掉了，取而代之的是加上output normalization。另外，[Fine-Tuning Pre-trained Transformers into Decaying Fast Weights](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2210.04243)发现QK的activation啥也不设就good enough，后续的RetNet/GLA也不用激活函数，所以这两个term都省掉了。假设 
-![](https://www.zhihu.com/equation?tex=K) 的形状是 
-![](https://www.zhihu.com/equation?tex=%28n+%5Ctimes+d%29)，
-![](https://www.zhihu.com/equation?tex=V) 的形状也是 
-![](https://www.zhihu.com/equation?tex=%28n+%5Ctimes+d%29) ，那么 
-![](https://www.zhihu.com/equation?tex=K%5ET+%5Ccdot+V) 的形状是 
-![](https://www.zhihu.com/equation?tex=d+%5Ctimes+d) ，可以看到序列长度 
-![](https://www.zhihu.com/equation?tex=n) 消去了，也就是说不管输入的序列长度是 1k 还是 100k，
-![](https://www.zhihu.com/equation?tex=K%5ET+%5Ccdot+V) 永远是一个 
-![](https://www.zhihu.com/equation?tex=d+%5Ctimes+d) 的固定大小矩阵。这个
-![](https://www.zhihu.com/equation?tex=d+%5Ctimes+d) 的矩阵就像是模型里的一块小脑，它的脑容量/记忆就是固定这么大，不会随着输入序列的增长而增长。像传统注意力里的kv cache，每次新生成的token都会添加到kv cache里，那kv cache记的东西就越来越多。
+$K$ 的形状是 
+$(n \times d)$，
+$V$ 的形状也是 
+$(n \times d)$ ，那么 
+$K^T \cdot V$ 的形状是 
+$d \times d$ ，可以看到序列长度 
+$n$ 消去了，也就是说不管输入的序列长度是 1k 还是 100k，
+$K^T \cdot V$ 永远是一个 
+$d \times d$ 的固定大小矩阵。这个
+$d \times d$ 的矩阵就像是模型里的一块小脑，它的脑容量/记忆就是固定这么大，不会随着输入序列的增长而增长。像传统注意力里的kv cache，每次新生成的token都会添加到kv cache里，那kv cache记的东西就越来越多。
 
 我们定义 
-![](https://www.zhihu.com/equation?tex=S+%3D+K%5ETV) ，叫S为状态矩阵，当预测完第t个token，我们就要更新这个状态矩阵，更新方法为：
+$S = K^TV$ ，叫S为状态矩阵，当预测完第t个token，我们就要更新这个状态矩阵，更新方法为：
 
-![](https://www.zhihu.com/equation?tex=%5Cmathbf%7BS%7D_%7Bt%7D%3D%5Cgamma+%5Cmathbf%7BS%7D_%7Bt-1%7D%2B++%5Cmathbf%7Bk%7D_%7Bt%7D%5E%7B%5Ctop%7D+%5Cmathbf%7Bv%7D_%7Bt%7D+%5Cquad+%5Cin+%5Cmathbb%7BR%7D%5E%7Bd+%5Ctimes+d%7D) 
+$$\mathbf{S}_{t}=\gamma \mathbf{S}_{t-1}+  \mathbf{k}_{t}^{\top} \mathbf{v}_{t} \quad \in \mathbb{R}^{d \times d}$$
+
 
 其中 
-![](https://www.zhihu.com/equation?tex=+0+%3C+%5Cgamma+%3C1) 是decay系数，如果不把 
-![](https://www.zhihu.com/equation?tex=%7BS%7D_%7Bt-1%7D) 乘以一个小于1的系数，那么随着不断累加， 
-![](https://www.zhihu.com/equation?tex=%5Cmathbf%7BS%7D_%7Bt%7D) 可能会大到爆炸。另外，因为 
-![](https://www.zhihu.com/equation?tex=%5Cgamma) 跟输入数据无关，所以叫data-independent decay。
+$0 < \gamma <1$ 是decay系数，如果不把 
+${S}_{t-1}$ 乘以一个小于1的系数，那么随着不断累加， 
+$\mathbf{S}_{t}$ 可能会大到爆炸。另外，因为 
+$\gamma$ 跟输入数据无关，所以叫data-independent decay。
 
 许多论文就是在如何更新 
-![](https://www.zhihu.com/equation?tex=S_t) 上下功夫。
+$S_t$ 上下功夫。
 
 然后在实现线性注意力的路上，还有一个问题，自回归训练时我们还要考虑加入casual mask后怎么办，这也是Lightning Attention要解决的一个问题。
 
 <strong>要解决什么问题</strong>
 线性注意力面临三个问题：1）效果较差，这个就不用多说了。 2.1）训练速度慢：GPU访存速度也是一个瓶颈，这个在Lightning Attention-1已经解决了。 2.2）训练速度慢：由于更新状态矩阵 
-![](https://www.zhihu.com/equation?tex=S) 需要使用累积求和操作（cumsum），而这个操作在因果场景中使它无法并行训练。其实这个问题在《[Transformer Quality in Linear Time](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2202.10447)》这篇论文就已经被提出来了，而且那时候作者也已经提出了解决方案，我猜Lightning Attention-v2应该就是借鉴了里面的解决方案。
+$S$ 需要使用累积求和操作（cumsum），而这个操作在因果场景中使它无法并行训练。其实这个问题在《[Transformer Quality in Linear Time](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2202.10447)》这篇论文就已经被提出来了，而且那时候作者也已经提出了解决方案，我猜Lightning Attention-v2应该就是借鉴了里面的解决方案。
 
 怎么解决问题
 Lightning Attention为了解决上面的2.2问题，采用了“分而治之”的思想，简单来说，就是先将QKV各自分成一块块的，然后将注意力计算分为块内和块间，对于块内使用传统的注意力，对于块间使用线性注意力。这样的话原本要做 
-![](https://www.zhihu.com/equation?tex=n) 次cumsum，现在只需要对块间进行累加求和，该操作次数降到了 
-![](https://www.zhihu.com/equation?tex=%5Cfrac%7Bn%7D%7BC%7D) ，C是chunk size，比如=256，那就是减少了256倍！此外，前向和后向过程都采用了平铺（tiling）技术，以充分利用 GPU 硬件的特性。整个算法过程如下所示：
+$n$ 次cumsum，现在只需要对块间进行累加求和，该操作次数降到了 
+$\frac{n}{C}$ ，C是chunk size，比如=256，那就是减少了256倍！此外，前向和后向过程都采用了平铺（tiling）技术，以充分利用 GPU 硬件的特性。整个算法过程如下所示：
 
 ![](https://picx.zhimg.com/v2-ec404d229974962a73956ef8cfe5598b_r.jpg)再配个文字版了解图中每个字母的含义：
 
@@ -118,36 +119,37 @@ NSA，全称是Native Sparse Attention，名字里的原生意思就是说：NSA
 同理，NSA 也是通过这3步来计算稀疏注意力，如下图所示：
 
 ![](https://pic1.zhimg.com/v2-9aa9db259a43877a20c85380a15802e6_r.jpg)NSA首先将 
-![](https://www.zhihu.com/equation?tex=k_%7B%3At%7D%2C+v_%7B%3At%7D) 原始token序列分割成一个个block块，然后执行三条分支的稀疏注意力计算，最后汇总输出，具体来说：
+$k_{:t}, v_{:t}$ 原始token序列分割成一个个block块，然后执行三条分支的稀疏注意力计算，最后汇总输出，具体来说：
 
 <strong>(1) Compression：粗看</strong>
 
 这一步NSA先使用MLP把每个block压缩成1个compressed token，而每个block里面其实是有多个（比如 
-![](https://www.zhihu.com/equation?tex=l%3D32) ）token的，表示为 
-![](https://www.zhihu.com/equation?tex=%5Cmathbb%7BR%7D%5E%7Bl+%5Ctimes+d%7D+%5Cxrightarrow%7B%5Ctext%7Bcompress%7D%7D+%5Cmathbb%7BR%7D%5E%7B1+%5Ctimes+d%7D) 。这里的MLP是可学习的，而且给block里的每个token都带上了位置编码，所以这里体现了NSA所说的原生可训练。
+$l=32$ ）token的，表示为 
+$\mathbb{R}^{l \times d} \xrightarrow{\text{compress}} \mathbb{R}^{1 \times d}$ 。这里的MLP是可学习的，而且给block里的每个token都带上了位置编码，所以这里体现了NSA所说的原生可训练。
 
 压缩得到每个block的compressed token之后，然后用Query去跟这些compressed token计算相似度，得到注意力分数，论文中也叫重要性分数。
 
 此时模型一目十行，快速扫描全局，脑海中大概知道了哪些位置含有比较重要的信息。
 
 对应论文里的Fig2，每8个蓝色小方块组成一个block，总共有4个block，压缩后得到了4个compressed token，对应图中蓝色深浅不一的矩形块，然后用橙色方块 
-![](https://www.zhihu.com/equation?tex=q_t) 去跟compressed tokens计算，得到4个重要性分数，对应图中绿色深浅不一的的矩形块。
+$q_t$ 去跟compressed tokens计算，得到4个重要性分数，对应图中绿色深浅不一的的矩形块。
 
 <strong>(2) Selection：挑着看</strong>
 
 利用上面计算得到的重要性分数，NSA会选出 Top-K 个它认为最重要的block的索引，然后用这些索引去原始序列中找到对应block里的原始token。接着将这几个block里的原始token concat起来，去和
-![](https://www.zhihu.com/equation?tex=q_t) 做attention。
+$q_t$ 做attention。
 
 压缩后的token是粗粒度的，原始token是细粒度的，NSA将两者相结合，实现了全局上下文感知和局部精度。从粗粒度到细粒度的检索策略，让模型能快速准确地定位到重要信息。
 
 对应论文里的Fig2，NSA挑出Top-2个最重要的block索引：1和3，然后找到1号block和3号block，把它们里面的原始token concat起来，去和 
-![](https://www.zhihu.com/equation?tex=q_t) 做attention。2号和4号block里的原始token则被忽略掉了。
+$q_t$ 做attention。2号和4号block里的原始token则被忽略掉了。
 
 <strong>3)Sliding：盯着眼前看</strong>
 
 我们肯定不能舍近求远，光顾着找远处的重要信息，不用说也知道，当前位置 
-![](https://www.zhihu.com/equation?tex=t) 前面的几百个（比如512）的token也是非常重要的信息。 这个窗口的截取的位置可以表示为 
-![](https://www.zhihu.com/equation?tex=%5Ctilde%7BK%7D_%7Bt%7D%5E%7B%5Ctext+%7Bwin+%7D%7D%3D%5Cmathbf%7Bk%7D_%7Bt-w%3A+t%7D%2C+%5Ctilde%7BV%7D_%7Bt%7D%5E%7B%5Ctext+%7Bwin+%7D%7D%3D%5Cmathbf%7Bv%7D_%7Bt-w%3A+t%7D) 
+$t$ 前面的几百个（比如512）的token也是非常重要的信息。 这个窗口的截取的位置可以表示为 
+$$\tilde{K}_{t}^{\text {win }}=\mathbf{k}_{t-w: t}, \tilde{V}_{t}^{\text {win }}=\mathbf{v}_{t-w: t}$$
+
 
 因为随着next token prediction的进行，这个窗口会一步一步往前滑动，所以叫滑动窗口。
 
@@ -156,15 +158,15 @@ NSA，全称是Native Sparse Attention，名字里的原生意思就是说：NSA
 <strong>Gated Output</strong>
 
 上面三步会用 
-![](https://www.zhihu.com/equation?tex=Q) 和稀疏的KV（ 
-![](https://www.zhihu.com/equation?tex=%5Ctilde%7BK%7D_t%5E%5Cmathrm%7Bcmp%7D%2C%5Ctilde%7BV%7D_t%5E%5Cmathrm%7Bcmp%7D%3B%5Ctilde%7BK%7D_t%5E%5Cmathrm%7Bslc%7D%2C%5Ctilde%7BV%7D_t%5E%5Cmathrm%7Bslc%7D%3B%5Ctilde%7BK%7D_t%5E%5Cmathrm%7Bwin%7D%2C%5Ctilde%7BV%7D_t%5E%5Cmathrm%7Bwin%7D) ）去计算出
-![](https://www.zhihu.com/equation?tex=%5Cmathbf%7BO%7D%5E%5Cmathrm%7Bcmp%7D) 、 
-![](https://www.zhihu.com/equation?tex=%5Cmathbf%7BO%7D%5E%5Cmathrm%7Bslc%7D) 和 
-![](https://www.zhihu.com/equation?tex=%5Cmathbf%7BO%7D%5E%5Cmathrm%7Bwin%7D)，然后到了这一步，可以表示为 
-![](https://www.zhihu.com/equation?tex=%5Cmathrm%7BOutput%7D%3Dg%5E%5Cmathrm%7Bcmp%7D%5Cmathbf%7BO%7D%5E%5Cmathrm%7Bcmp%7D%2Bg%5E%5Cmathrm%7Bslc%7D%5Cmathbf%7BO%7D%5E%5Cmathrm%7Bslc%7D%2Bg%5E%5Cmathrm%7Bwin%7D%5Cmathbf%7BO%7D%5E%5Cmathrm%7Bwin%7D) ，其中门控得分 
-![](https://www.zhihu.com/equation?tex=g%5E%5Cmathrm%7Bcmp%7D) 、 
-![](https://www.zhihu.com/equation?tex=g%5E%5Cmathrm%7Bslc%7D) 和 
-![](https://www.zhihu.com/equation?tex=g%5E%5Cmathrm%7Bwin%7D) 是通过 MLP 和 sigmoid 激活从输入特征 Q 生成的，所以这一步也是可训练学习的。
+$Q$ 和稀疏的KV（ 
+$\tilde{K}_t^\mathrm{cmp},\tilde{V}_t^\mathrm{cmp};\tilde{K}_t^\mathrm{slc},\tilde{V}_t^\mathrm{slc};\tilde{K}_t^\mathrm{win},\tilde{V}_t^\mathrm{win}$ ）去计算出
+$\mathbf{O}^\mathrm{cmp}$ 、 
+$\mathbf{O}^\mathrm{slc}$ 和 
+$\mathbf{O}^\mathrm{win}$，然后到了这一步，可以表示为 
+$\mathrm{Output}=g^\mathrm{cmp}\mathbf{O}^\mathrm{cmp}+g^\mathrm{slc}\mathbf{O}^\mathrm{slc}+g^\mathrm{win}\mathbf{O}^\mathrm{win}$ ，其中门控得分 
+$g^\mathrm{cmp}$ 、 
+$g^\mathrm{slc}$ 和 
+$g^\mathrm{win}$ 是通过 MLP 和 sigmoid 激活从输入特征 Q 生成的，所以这一步也是可训练学习的。
 
 <strong>Kernel Design</strong>
 
@@ -184,7 +186,7 @@ InfLLM-V2就是为了改良NSA存在的一些问题。
 
 - 如果输入的是一个短序列，这时候如果还强制计算所有三个模块，就有点矫枉过正了，不仅效果可能变差，还引入了额外的计算开销，试想一下，此时三个分支检索到的KV可能是一样的，那就重复计算了。
 - NSA的三个分支都会输出attention output，为此引入了三组KV projection（ 
-![](https://www.zhihu.com/equation?tex=%5Cmathbf%7BW%7D_%7BK%7D%5E%7B%5Cmathrm%7Bcmp%7D%7D%2C+%5Cmathbf%7BW%7D_%7BV%7D%5E%7B%5Cmathrm%7Bcmp%7D%7D%2C+%5Cmathbf%7BW%7D_%7BK%7D%5E%7B%5Cmathrm%7Bslc%7D%7D%2C+%5Cmathbf%7BW%7D_%7BV%7D%5E%7B%5Cmathrm%7Bslc%7D%7D%2C+%5Cmathbf%7BW%7D_%7BK%7D%5E%7B%5Cmathrm%7Bwin%7D%7D%2C+%5Cmathbf%7BW%7D_%7BV%7D%5E%7B%5Cmathrm%7Bwin%7D%7D) ）和gated output，迫使模型突然从单输出注意力切换到多输出注意力架构，这种不匹配会破坏训练的稳定性，消除模型已经学到的知识，而且还额外增加了计算量。计算三个attention output多此“两”举了。
+$\mathbf{W}_{K}^{\mathrm{cmp}}, \mathbf{W}_{V}^{\mathrm{cmp}}, \mathbf{W}_{K}^{\mathrm{slc}}, \mathbf{W}_{V}^{\mathrm{slc}}, \mathbf{W}_{K}^{\mathrm{win}}, \mathbf{W}_{V}^{\mathrm{win}}$ ）和gated output，迫使模型突然从单输出注意力切换到多输出注意力架构，这种不匹配会破坏训练的稳定性，消除模型已经学到的知识，而且还额外增加了计算量。计算三个attention output多此“两”举了。
 - 引入了太多可训练参数，除了上面的KV projection和gated output里的MLP，还有压缩分支里的MLP，坏处跟上面一样，会破坏训练的稳定性，多此一举。
 怎么解决问题
 针对以上问题，面壁智能的InfLLM-V2是这么解决的，搭配着下图看：
@@ -193,15 +195,17 @@ InfLLM-V2就是为了改良NSA存在的一些问题。
 
 2.将NSA里的“Compressed Attention”、“Selected  Attention”、“Sliding Attention”合三为一，也就是说InfLLM-V2只有一个attention output。具体来说，首先压缩阶段，就只提供重要性分数，不输出attention output了，接着就是把Sliding Attention融入到Selected  Attention，怎么做，很简单，最邻近的token肯定是重要的token，那就把sliding index也合并到top k index里面，所以上图中写了Fused Selected & Sliding。上图中还演示把Init block index也纳入重要token，论文中用以下等式来表示这个过程：
 
-![](https://www.zhihu.com/equation?tex=%5Cmathcal%7BI%7D_%7B%5Ctext+%7Binit+%7D%7D%3D%5Cleft%5C%7B1%2C2%2C+%5Cldots%2C+N_%7B%5Ctext+%7Binit+%7D%7D%5Cright%5C%7D%2C+%5Cquad+%5Cmathcal%7BI%7D_%7B%5Ctext+%7Blocal+%7D%7D%28i%29%3D%5Cleft%5C%7Bb_%7Bi%7D-N_%7B%5Ctext+%7Blocal+%7D%7D%2B1%2C+%5Cldots%2C+b_%7Bi%7D-1%2C+b_%7Bi%7D%5Cright%5C%7D+.) 
+$$\mathcal{I}_{\text {init }}=\left\{1,2, \ldots, N_{\text {init }}\right\}, \quad \mathcal{I}_{\text {local }}(i)=\left\{b_{i}-N_{\text {local }}+1, \ldots, b_{i}-1, b_{i}\right\} .$$
 
-![](https://www.zhihu.com/equation?tex=%5Cmathcal%7BI%7D%28i%29%3D%5Cmathcal%7BI%7D_%7B%5Cmathrm%7Binit%7D%7D%5Ccup%5Cmathcal%7BI%7D_%7B%5Cmathrm%7Blocal%7D%7D%28i%29%5Ccup%5Cmathcal%7BI%7D_%7B%5Cmathrm%7Btopk%7D%7D%28i%29) 
+
+$$\mathcal{I}(i)=\mathcal{I}_{\mathrm{init}}\cup\mathcal{I}_{\mathrm{local}}(i)\cup\mathcal{I}_{\mathrm{topk}}(i)$$
+
 
 其中 
-![](https://www.zhihu.com/equation?tex=b_%7Bi%7D%3D%5Clfloor%5Cfrac%7Bi-1%7D%7BB%7D%5Crfloor%2B1) 是block的索引， 
-![](https://www.zhihu.com/equation?tex=B) 是block size。为了让 
-![](https://www.zhihu.com/equation?tex=%5Cmathcal%7BI%7D_%7B%5Ctext+%7Blocal+%7D%7D%28i%29) 能覆盖到滑动窗口里的所有token，要求 
-![](https://www.zhihu.com/equation?tex=N_%7Blocal%7D+%E2%89%A5+%E2%8C%88+%5Cfrac%7Bw%7D%7BB%7D+%E2%8C%89+%2B+1) ，所以上图中写了More local。
+$b_{i}=\lfloor\frac{i-1}{B}\rfloor+1$ 是block的索引， 
+$B$ 是block size。为了让 
+$\mathcal{I}_{\text {local }}(i)$ 能覆盖到滑动窗口里的所有token，要求 
+$N_{local} ≥ ⌈ \frac{w}{B} ⌉ + 1$ ，所以上图中写了More local。
 
 论文中还用一张图描述了这个融合过程：
 
@@ -213,21 +217,25 @@ InfLLM-V2就是为了改良NSA存在的一些问题。
 
 ![](https://pic1.zhimg.com/v2-62aa06626b68ed45887fd70d06325dfa_r.jpg)上图的操作可以用以下等式表示：
 
-![](https://www.zhihu.com/equation?tex=%5Cmathbf%7BK%7D_i%5E%7BC_1%7D%3D%5Cmathrm%7BMean%7D%28%5Cmathbf%7BK%7D_%7Bi%5Ccdots_%7BC_1%7D%3Ai%5Ccdots_%7BC_1%7D%2Bl_%7BC_1%7D%7D%29.%5Cquad%284%29) 
+$$\mathbf{K}_i^{C_1}=\mathrm{Mean}(\mathbf{K}_{i\cdots_{C_1}:i\cdots_{C_1}+l_{C_1}}).\quad(4)$$
 
-![](https://www.zhihu.com/equation?tex=%5Cbegin%7Baligned%7D+%5Cmathbf%7BS%7D%5E%7BC_1%7D+%26+%3D%5Cmathrm%7BSoftmax%7D%28%5Cmathbf%7BQ%7D%28%5Cmathbf%7BK%7D%5E%7BC_1%7D%29%5E%5Ctop%29.+%26+%285%29+%5Cend%7Baligned%7D) 
 
-![](https://www.zhihu.com/equation?tex=%5Cbegin%7Baligned%7D+%5Cmathbf%7BS%7D%5E%7B%5Cmathrm%7Bshared%7D%7D+%26+%3D%5Csum_%7Bh%3D1%7D%5EG%5Cmathbf%7BS%7D%5E%7BC_1%7D%28h%29.+%26+%286%29+%5Cend%7Baligned%7D) 
+$$\begin{aligned} \mathbf{S}^{C_1} & =\mathrm{Softmax}(\mathbf{Q}(\mathbf{K}^{C_1})^\top). & (5) \end{aligned}$$
 
-![](https://www.zhihu.com/equation?tex=%5Cmathbf%7BS%7D_i%5E%5Cmathrm%7Bcmp%7D%3D%5Cmathrm%7BMax%7D%28%5Cmathbf%7BS%7D_%7Bi%5Ccdots%3Ai%5Ccdots%2Bl%7D%5E%5Cmathrm%7Bshared%7D%29.++%5Cquad+%287%29) 
+
+$$\begin{aligned} \mathbf{S}^{\mathrm{shared}} & =\sum_{h=1}^G\mathbf{S}^{C_1}(h). & (6) \end{aligned}$$
+
+
+$$\mathbf{S}_i^\mathrm{cmp}=\mathrm{Max}(\mathbf{S}_{i\cdots:i\cdots+l}^\mathrm{shared}).  \quad (7)$$
+
 
 以上计算步骤理论上看起来很简单，但真正实现时，为了最大化GPU利用率，就得对齐GPU硬件的特性。
 
 作者发现将第一阶段注意力分数 
-![](https://www.zhihu.com/equation?tex=S%5E%7BC1%7D) 存储到慢速 GPU HBM 中所需的大量 I/O。受到 FlashAttention的启发，作者设计了融合头组求和（Fused Head Group Summation），它将第二阶段压缩所需的头组求和直接融合到 FlashAttention 的基于 SRAM 的计算循环中。之后，我们只需要将注意力分数 
-![](https://www.zhihu.com/equation?tex=S%5E%7Bshared%7D) 存储到GPU HBM中，写入量变小了。为了解决online softmax（[介绍](https://zhuanlan.zhihu.com/p/638788074)） 与head group求和的计算顺序冲突，作者采用了一种两遍（two-pass）方法，也就是两个for循环：第一遍使用一个更加粗粒度（ 
-![](https://www.zhihu.com/equation?tex=s_%7BC_2%7D%3D4s_%7BC_1%7D%5Cmathrm%7B~and~%7Dl_%7BC_2%7D%3D4l_%7BC_1%7D) ）的键表示 
-![](https://www.zhihu.com/equation?tex=K%5E%7BC2%7D) 来近似计算 Softmax 的归一化项（log-sum-exp, lse），第二遍则利用这个 lse 来计算精确的注意力分数、在 SRAM 内完成头组求和，并最终只将聚合后的分数写回 HBM。这种LSE 近似（LSE Approximation）方法将计算开销从 2 倍降低到 1.25 倍。
+$S^{C1}$ 存储到慢速 GPU HBM 中所需的大量 I/O。受到 FlashAttention的启发，作者设计了融合头组求和（Fused Head Group Summation），它将第二阶段压缩所需的头组求和直接融合到 FlashAttention 的基于 SRAM 的计算循环中。之后，我们只需要将注意力分数 
+$S^{shared}$ 存储到GPU HBM中，写入量变小了。为了解决online softmax（[介绍](https://zhuanlan.zhihu.com/p/638788074)） 与head group求和的计算顺序冲突，作者采用了一种两遍（two-pass）方法，也就是两个for循环：第一遍使用一个更加粗粒度（ 
+$s_{C_2}=4s_{C_1}\mathrm{~and~}l_{C_2}=4l_{C_1}$ ）的键表示 
+$K^{C2}$ 来近似计算 Softmax 的归一化项（log-sum-exp, lse），第二遍则利用这个 lse 来计算精确的注意力分数、在 SRAM 内完成头组求和，并最终只将聚合后的分数写回 HBM。这种LSE 近似（LSE Approximation）方法将计算开销从 2 倍降低到 1.25 倍。
 
 算法流程如下：
 

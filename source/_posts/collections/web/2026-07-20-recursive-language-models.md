@@ -56,10 +56,14 @@ The model only generates text. It cannot run code by itself. So, we wrap the mod
 
 The loop runs as:
 
-1. The model writes Python code as its response — splits context and calls `call_llm` on each piece
-2. The code runs in the Python environment. Each `call_llm` call sends one piece to another language model and gets back a short answer
-3. The list is sent back to the model. The model now sees only the short answers, not the full transcript
-4. The model reads the list and returns the final answer
+## 1. The model writes Python code as its response — splits context and calls `call_llm` on each piece
+
+## 2. The code runs in the Python environment. Each `call_llm` call sends one piece to another language model and gets back a short answer
+
+## 3. The list is sent back to the model. The model now sees only the short answers, not the full transcript
+
+## 4. The model reads the list and returns the final answer
+
 
 The full transcript is <strong>never</strong> sent to the main model. Only the variable name `context` is sent in the prompt, not its actual content. This is what keeps the main model's context small even when the input is huge.
 

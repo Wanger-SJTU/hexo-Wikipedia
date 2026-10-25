@@ -206,8 +206,10 @@ Para ver todos los materiales del curso, visita el <strong>[Sitio de Documentaci
 
 El plan de estudios se divide en tres partes:
 
-1. <strong>Clases</strong>: 12 unidades conceptuales que explican la teoría detrás de Harness Engineering.
-2. <strong>Proyectos</strong>: 6 proyectos prácticos donde construyes un espacio de trabajo para agentes desde cero.
+## 1. **Clases**: 12 unidades conceptuales que explican la teoría detrás de Harness Engineering.
+
+## 2. **Proyectos**: 6 proyectos prácticos donde construyes un espacio de trabajo para agentes desde cero.
+
 3. <strong>Biblioteca de Recursos</strong>: Plantillas listas para copiar (`AGENTS.md`, `feature_list.json`, `init.sh`, etc.) para usar en tus propios repositorios hoy mismo.
 
 ---

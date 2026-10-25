@@ -144,7 +144,8 @@ CD我们对这张表格做一些说明：
 - <strong>最后总结一下，在CD中，单token KV cache = 80 KB ，单token KV相关的计算量为 0.08 MFLOPs</strong>。
 
 #### 
-2.2 CC<strong>(</strong>CacheCompressed**）
+### 2.2 CC** (**CacheCompressed**）
+
 
 好，在进入大家从第一部分开始就心心念念的“k/v_head信息向q转移（或者理解成被q吸收）”这个优化介绍前，我们先介绍基于原生实践和这个优化的一个中间态：<strong>CC</strong>(<strong>CacheCompressed</strong>）。<strong>在这个中间态中，我们终于是以compress_kv为kv cache了，但是我们没做任何吸收。之所以要介绍这个中间态，是方便大家更好感受“吸收”的好处</strong>。**
 
@@ -160,7 +161,8 @@ CC
 
 #### 
 
-2.3** **A_CC（AbsorbCacheCompressed）**
+### 2.3** **A_CC（AbsorbCacheCompressed）**
+
 
 现在，终于来到我们心心念念的涉及吸收的优化了
 
@@ -179,7 +181,8 @@ A_CC
 
 #### 
 
-2.4 A_CC_ME
+### 2.4 A_CC_ME
+
 
 最后，这个优化其实就是在A_CC的基础上，在计算attn_weights的时候，把nope和rope的部分拆开算，然后再求和。这样做是为了避开无用的数据拷贝和广播（可以看代码，你会发现A_CC为了做数据拼接，是先初始化一个一个拼接好的空张量，再往里塞数据，这样就是2倍的显存开销。而避开拼接各自算各自的，可以直接复用已有的数据）
 

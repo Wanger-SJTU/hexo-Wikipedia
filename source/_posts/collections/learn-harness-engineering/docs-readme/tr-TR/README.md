@@ -206,8 +206,10 @@ Tüm kurs materyalleri için lütfen <strong>[Dokümantasyon Sitesi](https://wal
 
 Müfredat üç bölüme ayrılmıştır:
 
-1. <strong>Dersler</strong>: Harness engineering'in arkasındaki teoriyi açıklayan 12 kavramsal birim.
-2. <strong>Projeler</strong>: Ajansal bir çalışma alanını sıfırdan inşa ettiğiniz 6 uygulamalı proje.
+## 1. **Dersler**: Harness engineering'in arkasındaki teoriyi açıklayan 12 kavramsal birim.
+
+## 2. **Projeler**: Ajansal bir çalışma alanını sıfırdan inşa ettiğiniz 6 uygulamalı proje.
+
 3. <strong>Kaynak Kütüphanesi</strong>: Kendi depolarınızda bugün kullanabileceğiniz kopya-yapıştır şablonlar (`AGENTS.md`, `feature_list.json`, `init.sh` vb.).
 
 ---

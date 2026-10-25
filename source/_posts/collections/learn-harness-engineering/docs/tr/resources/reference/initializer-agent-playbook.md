@@ -34,11 +34,16 @@ Başlatıcı, geride en azından şu dosyaları bırakmalıdır:
 
 ## Kontrol Listesi
 
-1. Standart başlatma yolunu tanımlayın.
-2. Standart doğrulama yolunu tanımlayın.
-3. İlerleme günlüğünü oluşturun ve başlangıç durumunu kaydedin.
-4. İşi, durumları belirtilmiş açık özelliklere ayırın.
-5. İlk temiz baseline commit'i oluşturun.
+## 1. Standart başlatma yolunu tanımlayın.
+
+## 2. Standart doğrulama yolunu tanımlayın.
+
+## 3. İlerleme günlüğünü oluşturun ve başlangıç durumunu kaydedin.
+
+## 4. İşi, durumları belirtilmiş açık özelliklere ayırın.
+
+## 5. İlk temiz baseline commit'i oluşturun.
+
 
 ## Başarı Testi
 

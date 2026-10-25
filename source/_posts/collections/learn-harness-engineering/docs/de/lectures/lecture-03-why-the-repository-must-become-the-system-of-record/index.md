@@ -118,10 +118,14 @@ Ein Team betreute eine E-Commerce-Plattform mit etwa 30 Microservices. Architekt
 Nach der Einführung von KI-Agenten erforderten 70% der Aufgaben menschliche Intervention. Fast jeder Fehler hing damit zusammen, dass der Agent gegen eine implizite Constraint verstieß, die "alle kennen, aber niemand aufgeschrieben hat". Wie bei einem neuen Mitarbeitenden, dem niemand gesagt hat: "Du musst deine Essensbestellung in den Gruppenchat posten." Er rät falsch, wird zurechtgewiesen, aber danach schreibt immer noch niemand die Regel auf.
 
 Das Team führte eine Transformation durch:
-1. `AGENTS.md` im Repo-Root erstellt, mit Projektüberblick, Tech-Stack-Versionen und globalen harten Constraints
-2. `ARCHITECTURE.md` in jedem Microservice-Verzeichnis hinzugefügt, mit Verantwortlichkeiten, Schnittstellen und Abhängigkeiten
-3. Zentrales `CONSTRAINTS.md` mit harten Constraints in expliziter "MUST/MUST NOT"-Sprache erstellt
-4. `PROGRESS.md` in jedem Service-Verzeichnis hinzugefügt, um aktuellen Arbeitsstatus zu verfolgen
+## 1. `AGENTS.md` im Repo-Root erstellt, mit Projektüberblick, Tech-Stack-Versionen und globalen harten Constraints
+
+## 2. `ARCHITECTURE.md` in jedem Microservice-Verzeichnis hinzugefügt, mit Verantwortlichkeiten, Schnittstellen und Abhängigkeiten
+
+## 3. Zentrales `CONSTRAINTS.md` mit harten Constraints in expliziter "MUST/MUST NOT"-Sprache erstellt
+
+## 4. `PROGRESS.md` in jedem Service-Verzeichnis hinzugefügt, um aktuellen Arbeitsstatus zu verfolgen
+
 
 Nach der Transformation konnte derselbe Agent beim Cold Start alle zentralen Projektfragen beantworten, und die Qualität der Aufgabenabschlüsse verbesserte sich deutlich.
 

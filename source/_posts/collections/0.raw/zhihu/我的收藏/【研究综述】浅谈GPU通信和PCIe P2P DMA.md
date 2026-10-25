@@ -408,7 +408,8 @@ NVLink与PCIe的对比学习
 寻龙记
 
 Linux内核DMA设备驱动架构
-1. 概述DMA是direct memory access的缩写，一般由DMA控制器来实现直接存储器存取。在没有DMA控制器的情况下，动态存储器不同区域之间的数据传输、存储器和IO设备之间的数据传输都需要CPU指…
+## 1. 概述DMA是direct memory access的缩写，一般由DMA控制器来实现直接存储器存取。在没有DMA控制器的情况下，动态存储器不同区域之间的数据传输、存储器和IO设备之间的数据传输都需要CPU指…
+
 
 Rydercoding
 

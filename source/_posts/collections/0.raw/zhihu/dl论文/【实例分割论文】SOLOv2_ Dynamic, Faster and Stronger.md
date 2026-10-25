@@ -143,14 +143,16 @@ Matrix NMS的思路是：
 对于一个预测得到的mask，它的decay factor主要受两部分影响：
 
 一是得分大于j点的所有i点对i的惩罚，这个很好实现，直接通过算一个包含IoU的衰减函数（线性衰减或高斯衰减） 
-![](https://www.zhihu.com/equation?tex=f%5Cleft%28%5Cmathrm%7Bi%7D+%5Cmathrm%7Bou%7D_%7Bi%2C+j%7D%5Cright%29) 就能得到；
+$f\left(\mathrm{i} \mathrm{ou}_{i, j}\right)$ 就能得到；
 
 二是整个mask被抑制的概率，这个概率就比较难直接算，但它通常与IoU有着正相关的关系。因此，Matrix NMS提出直接将最大重复的预测结果（对应最大的IoU值）的结果来近似这个抑制概率 
-![](https://www.zhihu.com/equation?tex=f%28i+o+u%2C+i%29%3D%5Cmin+_%7B%5Cforall+s_%7Bk%7D%3Es_%7Bi%7D%7D+f%5Cleft%28%5Cmathrm%7Bi%7D+%5Cmathrm%7Bou%7D_%7Bk%2C+i%7D%5Cright%29) 
+$$f(i o u, i)=\min _{\forall s_{k}>s_{i}} f\left(\mathrm{i} \mathrm{ou}_{k, i}\right)$$
+
 
 最后得到的decay factor就是 
-![](https://www.zhihu.com/equation?tex=%5Coperatorname%7Bdecay%7D_%7Bj%7D%3D%5Cmin+_%7B%5Cforall+s_%7Bi%7D%3Es_%7Bj%7D%7D+%5Cfrac%7Bf%5Cleft%28%5Cmathrm%7Bi%7D+%5Ccirc+%5Cmathrm%7Bu%7D_%7Bi%2C+j%7D%5Cright%29%7D%7Bf%28%5Cmathrm%7Bi%7D+0+%5Cmathrm%7Bu%7D%2C+i%29%7D) ，预测的分值就通过这个decay factor单步更新 
-![](https://www.zhihu.com/equation?tex=s_%7Bj%7D%3Ds_%7Bj%7D+%5Ccdot+d+e+c+a+y_%7Bj%7D)
+$\operatorname{decay}_{j}=\min _{\forall s_{i}>s_{j}} \frac{f\left(\mathrm{i} \circ \mathrm{u}_{i, j}\right)}{f(\mathrm{i} 0 \mathrm{u}, i)}$ ，预测的分值就通过这个decay factor单步更新 
+$$s_{j}=s_{j} \cdot d e c a y_{j}$$
+
 
 Matrix NMS实现可以一次性完成，不需要循环重复，具体的实现就不多说了，附上伪代码和对比实验结果。
 

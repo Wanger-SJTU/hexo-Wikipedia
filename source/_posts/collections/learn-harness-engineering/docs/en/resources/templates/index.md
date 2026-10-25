@@ -19,10 +19,14 @@ These templates are ready to copy into your own project. Each one serves a speci
 
 Copy these four files into your project root first:
 
-1. `AGENTS.md` or `CLAUDE.md`
-2. `init.sh`
-3. `claude-progress.md`
-4. `feature_list.json`
+## 1. `AGENTS.md` or `CLAUDE.md`
+
+## 2. `init.sh`
+
+## 3. `claude-progress.md`
+
+## 4. `feature_list.json`
+
 
 Add the remaining files as your project grows.
 
@@ -63,10 +67,14 @@ The startup script. Runs dependency installation, verification, and prints the s
 
 <strong>What it does:</strong>
 
-1. Prints the current directory (so you can confirm it's running in the right place)
-2. Installs dependencies
-3. Runs the verification command
-4. Prints the start command (or runs it if `RUN_START_COMMAND=1` is set)
+## 1. Prints the current directory (so you can confirm it's running in the right place)
+
+## 2. Installs dependencies
+
+## 3. Runs the verification command
+
+## 4. Prints the start command (or runs it if `RUN_START_COMMAND=1` is set)
+
 
 If verification fails, the agent should stop and fix the baseline before doing anything else.
 
@@ -175,12 +183,18 @@ A scorecard for reviewing agent output quality. Use this after a session or at p
 
 <strong>The six dimensions:</strong>
 
-1. <strong>Correctness</strong> — does the implementation match the target behavior?
-2. <strong>Verification</strong> — were the required checks actually run, with evidence?
-3. <strong>Scope discipline</strong> — did the agent stay within the selected feature?
-4. <strong>Reliability</strong> — does the result survive a restart or re-run?
-5. <strong>Maintainability</strong> — is the code and documentation clear enough for the next session?
-6. <strong>Handoff readiness</strong> — can a new session continue using only repo artifacts?
+## 1. **Correctness** — does the implementation match the target behavior?
+
+## 2. **Verification** — were the required checks actually run, with evidence?
+
+## 3. **Scope discipline** — did the agent stay within the selected feature?
+
+## 4. **Reliability** — does the result survive a restart or re-run?
+
+## 5. **Maintainability** — is the code and documentation clear enough for the next session?
+
+## 6. **Handoff readiness** — can a new session continue using only repo artifacts?
+
 
 <strong>Conclusion options:</strong>
 
@@ -190,11 +204,16 @@ A scorecard for reviewing agent output quality. Use this after a session or at p
 
 <strong>Important: the evaluator needs tuning.</strong> Out of the box, agents are poor self-judges — they identify issues then talk themselves into approving. You will need to iterate:
 
-1. Run the evaluator on a completed sprint.
-2. Compare its scores against your own human judgment.
-3. Where they diverge, make the rubric more specific about pass/fail criteria.
-4. Re-run and check alignment.
-5. Repeat until the evaluator consistently matches human review.
+## 1. Run the evaluator on a completed sprint.
+
+## 2. Compare its scores against your own human judgment.
+
+## 3. Where they diverge, make the rubric more specific about pass/fail criteria.
+
+## 4. Re-run and check alignment.
+
+## 5. Repeat until the evaluator consistently matches human review.
+
 
 Plan for 3-5 tuning rounds. Record each change so you can track what improved alignment.
 
@@ -232,8 +251,13 @@ The evaluator rubric scores individual agent outputs. The quality document score
 
 The quality document also supports harness simplification. Every harness component encodes an assumption about what the model cannot do. As models improve, these assumptions go stale. To check whether a component is still needed:
 
-1. Take a quality document snapshot.
-2. Remove one harness component.
-3. Run the benchmark task suite.
-4. Take another snapshot.
-5. Compare — if grades didn't drop, the component was overhead. If they did, restore it.
+## 1. Take a quality document snapshot.
+
+## 2. Remove one harness component.
+
+## 3. Run the benchmark task suite.
+
+## 4. Take another snapshot.
+
+## 5. Compare — if grades didn't drop, the component was overhead. If they did, restore it.
+

@@ -255,19 +255,32 @@ In upcoming posts, I'll dig deeper into MoE, Muon (the optimizer <span class="wi
 
 ## References
 
-1. "Attention Is All You Need", https://arxiv.org/abs/1706.03762
-2. RNJ 1.0, https://essential.ai/research/rnj-1
-3. "Efficient Training of Language Models to Fill in the Middle", https://arxiv.org/abs/2207.14255
-4. "Attention Residual Learning", https://arxiv.org/abs/2603.15031
-5. "DeepSeek-V2: A Strong, Economical, and Efficient Mixture-of-Experts Language Model", https://arxiv.org/abs/2405.04434
-6. "Kimi Linear: An Expressive, Efficient Attention Architecture", https://arxiv.org/abs/2510.26692
-7. "Root Mean Square Layer Normalization", https://arxiv.org/abs/1910.07467
-8. "GLU Variants Improve Transformer", https://arxiv.org/abs/2002.05202
-9. "YaRN: Efficient Context Window Extension of Large Language Models", https://arxiv.org/abs/2309.00071
-10. "RoFormer: Enhanced Transformer with Rotary Position Embedding", https://arxiv.org/abs/2104.09864
-11. "Eli5 Flash Attention", https://gordicaleksa.medium.com/eli5-flash-attention-5c44017022ad
-12. Muon, https://kellerjordan.github.io/posts/muon/
-13. "Dissecting Sparsity in Large Language Models: Intrinsic Data-Aware Sparse Attention", https://arxiv.org/abs/2512.02556
+## 1. "Attention Is All You Need", https://arxiv.org/abs/1706.03762
+
+## 2. RNJ 1.0, https://essential.ai/research/rnj-1
+
+## 3. "Efficient Training of Language Models to Fill in the Middle", https://arxiv.org/abs/2207.14255
+
+## 4. "Attention Residual Learning", https://arxiv.org/abs/2603.15031
+
+## 5. "DeepSeek-V2: A Strong, Economical, and Efficient Mixture-of-Experts Language Model", https://arxiv.org/abs/2405.04434
+
+## 6. "Kimi Linear: An Expressive, Efficient Attention Architecture", https://arxiv.org/abs/2510.26692
+
+## 7. "Root Mean Square Layer Normalization", https://arxiv.org/abs/1910.07467
+
+## 8. "GLU Variants Improve Transformer", https://arxiv.org/abs/2002.05202
+
+## 9. "YaRN: Efficient Context Window Extension of Large Language Models", https://arxiv.org/abs/2309.00071
+
+## 10. "RoFormer: Enhanced Transformer with Rotary Position Embedding", https://arxiv.org/abs/2104.09864
+
+## 11. "Eli5 Flash Attention", https://gordicaleksa.medium.com/eli5-flash-attention-5c44017022ad
+
+## 12. Muon, https://kellerjordan.github.io/posts/muon/
+
+## 13. "Dissecting Sparsity in Large Language Models: Intrinsic Data-Aware Sparse Attention", https://arxiv.org/abs/2512.02556
+
 
 ---
 

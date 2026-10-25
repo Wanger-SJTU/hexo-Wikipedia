@@ -34,15 +34,22 @@ değil, yürütmeden de akıl yürütebilsin.
 
 ## Yürütme SOP'u
 
-1. En çok önem taşıyan altın runtime yolculuklarını tanımlayın.
-2. Başlangıca ve kritik yola yapılandırılmış log'lar ekleyin.
-3. Yararlı olduğunda gecikme, hata sayısı ya da kuyruk derinliği için
+## 1. En çok önem taşıyan altın runtime yolculuklarını tanımlayın.
+
+## 2. Başlangıca ve kritik yola yapılandırılmış log'lar ekleyin.
+
+## 3. Yararlı olduğunda gecikme, hata sayısı ya da kuyruk derinliği için
+
    metrikler ekleyin.
-4. Yavaş ya da çok adımlı akışlar için izler ya da zamanlama işaretleyicileri
+## 4. Yavaş ya da çok adımlı akışlar için izler ya da zamanlama işaretleyicileri
+
    ekleyin.
-5. Sinyalleri yerel geliştirme ortamından sorgulanabilir hale getirin.
-6. Ajana yeniden çalıştırılabilir bir iş yükü ya da senaryo verin.
-7. Döngüyü zorunlu kılın: sorgula -> ilişkilendir -> akıl yürüt -> uygula
+## 5. Sinyalleri yerel geliştirme ortamından sorgulanabilir hale getirin.
+
+## 6. Ajana yeniden çalıştırılabilir bir iş yükü ya da senaryo verin.
+
+## 7. Döngüyü zorunlu kılın: sorgula -> ilişkilendir -> akıl yürüt -> uygula
+
    -> yeniden başlat -> tekrar çalıştır -> doğrula.
 
 ## Hata Ayıklama Oturumu Kontrol Listesi

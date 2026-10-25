@@ -568,7 +568,8 @@ static int urdma_register_device(struct urdma_dev *urdma)
 
 完成上述代码后，就可以编译、加载并测试我们的最小化 RDMA 驱动了。
 
-1. Makefile:
+## 1. Makefile:
+
 
 创建一个 Makefile 来编译 urdma_main.c (假设最终模块名为 urdma.ko)：
 
@@ -592,7 +593,8 @@ unload:
 
 log:
         sudo dmesg -T | tail -n 20
-2. 编译:
+## 2. 编译:
+
 
 ```text
 make
@@ -600,7 +602,8 @@ make
 ```
 
 
-3. 加载模块:
+## 3. 加载模块:
+
 
 ```text
 sudo insmod ./urdma.ko
@@ -609,7 +612,8 @@ sudo dmesg -T | tail -n 20
 
 检查 dmesg 的输出，相关的 pr_info 消息（如 "urdma: loading module...", "urdma: allocated device for id: 0", "urdma: successfully registered device urdma0" 等）按预期出现，可以确认模块加载成功。
 
-4. 验证:
+## 4. 验证:
+
 
 查看 sysfs:
 

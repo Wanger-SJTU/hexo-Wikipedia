@@ -41,7 +41,8 @@ source_url: https://zhuanlan.zhihu.com/p/1982479217628299773
 
 早期我简历上一直躺着两个项目：
 
-1. 模仿学长的仓用numpy 模拟的 pytorch的toy 级别的仓 
+## 1. 模仿学长的仓用numpy 模拟的 pytorch的toy 级别的仓 
+
 
 2.课程作业一周速通的基础的RAG pipeline
 

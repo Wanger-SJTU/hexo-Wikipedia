@@ -100,7 +100,8 @@ Stream Table是存放在内存中的一张表，在SMMU驱动初始化时由驱�
 
 Stream table有两种格式，一种是Linear Stream Table, 一种是2-level Stream Table.
 
-1. Linear Stream Table
+## 1. Linear Stream Table
+
 
 ![](/images/collections/0.raw/zhihu/%E7%A1%AC%E4%BB%B6/asset/img_eaf600541663.jpg)
 
@@ -108,7 +109,8 @@ Linear Stream Table是将整个stream table在内存中线性展开成一个数�
 
 Linear Stream Table 实现简单，只需要一次索引，速度快；但是平台上外设较少时，浪费连续的内存空间。
 
-2. 2-level Stream Table
+## 2. 2-level Stream Table
+
 
 ![](/images/collections/0.raw/zhihu/%E7%A1%AC%E4%BB%B6/asset/img_eb341c03f41f.jpg)
 

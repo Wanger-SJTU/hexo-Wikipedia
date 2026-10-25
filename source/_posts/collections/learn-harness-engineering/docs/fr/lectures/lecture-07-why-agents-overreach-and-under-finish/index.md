@@ -30,12 +30,18 @@ Ce n'est pas une métaphore — ce sont des mathématiques. Supposez que la capa
 
 Le comportement réel de Claude Code est révélateur. Demandez-lui d'« ajouter l'inscription utilisateur » et il pourrait :
 
-1. Créer un modèle User
-2. Écrire la route d'inscription
-3. Remarquer qu'il a besoin de vérification email, donc ajouter un service mail
-4. Voir que les mots de passe doivent être hachés, donc intégrer bcrypt
-5. Remarquer que la gestion des erreurs est incohérente, donc refactorer le middleware d'erreurs global
-6. Voir que la structure des fichiers de test est désordonnée, donc réorganiser le répertoire
+## 1. Créer un modèle User
+
+## 2. Écrire la route d'inscription
+
+## 3. Remarquer qu'il a besoin de vérification email, donc ajouter un service mail
+
+## 4. Voir que les mots de passe doivent être hachés, donc intégrer bcrypt
+
+## 5. Remarquer que la gestion des erreurs est incohérente, donc refactorer le middleware d'erreurs global
+
+## 6. Voir que la structure des fichiers de test est désordonnée, donc réorganiser le répertoire
+
 
 Six étapes plus tard, chacune est à moitié faite. Pas de vérification de bout en bout, couplage complexe entre le code à moitié cuit, et la session suivante qui devra ramasser les morceaux sera complètement perdue. Comme quelqu'un qui cuisine six plats simultanément — chaque plat est dans la poêle mais aucun n'est dressé. Ils brûlent tous.
 

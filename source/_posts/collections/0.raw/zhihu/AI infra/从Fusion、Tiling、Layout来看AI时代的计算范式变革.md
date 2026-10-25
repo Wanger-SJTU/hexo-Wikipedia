@@ -33,9 +33,11 @@ source_url: https://zhuanlan.zhihu.com/p/2035814498754372533
 
 技术维度对其他技术的约束对其他技术的使能Tiling限制可fusion算子的大小为fusion提供片上空间Fusion改变tiling的资源预算消除layout转换需求Layout影响tiling的访存效率使fusion的数据流更高效本文将以这三大优化技术为核心主线，探讨它们如何共同推动计算范式从传统通用计算向AI专用计算的转变，重点分析其在提升计算效率、降低内存开销和适配新型硬件架构方面的系统性作用。
 
-1. 背景：从CPU到GPU的计算范式迁移
+## 1. 背景：从CPU到GPU的计算范式迁移
 
-1.1 Linux Kernel
+
+### 1.1 Linux Kernel
+
 理解AI时代的计算范式变革，首先需要回顾CPU时代的成功经验。Linux Kernel真正伟大之处，不在于其功能齐全，而在于它找到了CPU通用计算时代最稳定的一组资源抽象。CPU时代的核心矛盾是：大量程序并发运行，竞争CPU时间、内存空间、I/O通道和设备访问权。围绕这一矛盾，内核建立了四大核心抽象体系：
 
 <strong>执行抽象（Process/Thread）：</strong> 进程提供资源所有权、隔离边界和故障传播边界；线程提供执行流和调度单元。用户程序通过进程和线程间接使用计算资源。
@@ -48,21 +50,25 @@ source_url: https://zhuanlan.zhihu.com/p/2035814498754372533
 
 ![](https://pic4.zhimg.com/v2-0709d3a6908fba545241d832e755f5ad_r.jpg)Linux Kernel四大核心抽象体系——执行、内存、持久化与硬件抽象的分层架构这套抽象延续几十年，是因为它们精准捕获了那个时代最重要的资源和冲突。这也构成理解操作系统的起点：<strong>OS从来不是固定子系统的名字集合，而是围绕主导计算范式建立起来的资源抽象、隔离与调度体系。</strong>
 
-1.2 AI计算：一等对象的根本迁移
+### 1.2 AI计算：一等对象的根本迁移
+
 然而，AI系统——尤其是GPU主导的大模型训练和推理——关键路径已发生根本性改变。决定系统表现的因素，不再是”进程拿到多少CPU时间片”，而是：计算图如何被lowering、算子如何被fusion、Kernel的tile大小如何选择、数据在HBM/Shared Memory/Register之间如何搬运、多卡之间的collective communication如何与计算重叠、KV cache如何分配复用与回收。
 
 这意味着系统真正操作的对象已不再是process/page/file体系，而是：<strong>tensor、layout、graph、kernel、stream、collective、KV cache、request、session、context。</strong>
 
 ![](https://picx.zhimg.com/v2-b4cb27ebd985298376f1d3bdd270fee1_r.jpg)CPU时代与AI时代系统一等对象的全面对比维度CPU时代一等对象AI时代一等对象执行单元Process/ThreadKernel/Stream/Graph内存对象Page/BufferTensor/KV Cache/Activation调度粒度时间片Token/Request/Batch通信抽象Socket/PipeCollective/AllReduce状态管理File DescriptorSession/ContextLinux仍然存在，但许多关键的调度和组织决策已不在其传统”热路径”中。真正决定性能的事情，正在被runtime、compiler、kernel DSL、serving system接管。这不是Linux的失败，而是工作负载变了，主语也变了——而Fusion、Tiling、Layout正是这个新主语下最核心的优化维度。
 
-2. GPU执行栈：新计算范式的硬件基础
+## 2. GPU执行栈：新计算范式的硬件基础
 
-2.1 从加速器到复杂计算域
+
+### 2.1 从加速器到复杂计算域
+
 过去将GPU称为accelerator，在当时语境下是准确的——GPU更像被CPU驱动的外设，负责加速特定计算后交回结果。但今天这个描述已明显不足。现代GPU不是简单的”加速设备”，而是一个拥有独立执行模型、内存层次、同步机制和并行结构的<strong>复杂计算域</strong>。
 
 理解这一点对于理解Fusion、Tiling、Layout至关重要：这三大技术之所以能发挥系统级作用，正是因为GPU提供了足够复杂的硬件层次结构供它们优化。
 
-2.2 GPU系统栈的层次结构
+### 2.2 GPU系统栈的层次结构
+
 从驱动层到runtime，再到compiler和kernel，GPU已形成完整的系统栈：
 
 <strong>驱动层（Driver）：</strong> GPU驱动需处理context、地址空间映射、命令提交、同步原语、设备内存管理、DMA、peer access、中断和错误处理。GPU背后有完整的命令队列体系、异步执行模型和多引擎协同。
@@ -73,14 +79,17 @@ source_url: https://zhuanlan.zhihu.com/p/2035814498754372533
 
 ![](https://pic2.zhimg.com/v2-aa4d089e0902e644081038beeada4f11_r.jpg)GPU执行栈层次架构——从Framework到Hardware的完整系统栈关键洞察是：<strong>GPU runtime暴露的不是”设备控制接口”，而是”执行组织接口”。</strong> 这为Fusion、Tiling、Layout提供了施展空间，使它们能够直接影响stream调度、显存分配和kernel执行模式。
 
-3. Tiling：片上资源的精细化分配
+## 3. Tiling：片上资源的精细化分配
 
-3.1 超越数学分块的系统视角
+
+### 3.1 超越数学分块的系统视角
+
 在传统应用开发中，tiling被视为简单的矩阵分块操作。但在AI系统中，这个理解已不再成立。Tiling本质上是在<strong>有限片上资源约束下寻找全局最优分配方案</strong>，它通过将大规模张量计算切分为适配硬件层次的小块，实现对GPU存储层次、并行结构和流水线的深度优化。
 
 表面上看，tiling只是将大矩阵切分为小块的数学操作；但从系统视角审视，tile尺寸的选择实际上是一个<strong>多维资源约束下的全局优化问题</strong>。
 
-3.2 Tiling的三维系统分析
+### 3.2 Tiling的三维系统分析
+
 <strong>计算效率提升维度：</strong>
 
 Tiling对计算效率的影响首先体现在并行度与Occupancy的平衡上。每个thread block消耗的寄存器数量、shared memory容量，与SM上能同时驻留多少block（即occupancy）形成直接的trade-off。Tile选大了单个block效率高但并行度受限；选小了并行度上去但单block效率下降。
@@ -101,17 +110,21 @@ Tiling的核心价值之一在于增加数据在片上的复用，从而减少�
 - <strong>H100架构</strong>：引入TMA（Tensor Memory Accelerator），支持异步tile预取，tiling策略需考虑prefetch时机
 - <strong>跨代适配</strong>：最优tile尺寸往往需要auto-tuning，在编译时或运行时根据硬件特性搜索
 ![](https://pic3.zhimg.com/v2-fc9911e761b1ebb33ee601ed7ad87ec0_r.jpg)Tiling资源权衡的系统视角——Tile尺寸选择如何在存储层次、并行模式、硬件占用与流水线重叠四个维度间形成全局约束
-3.3 Tiling与传统OS资源管理的同构性
+### 3.3 Tiling与传统OS资源管理的同构性
+
 从这个角度重新审视，tiling绝非编译器的局部优化技巧，而是在<strong>有限片上资源约束下寻找全局最优分配方案</strong>。这与传统操作系统管理页缓存、调度I/O队列、分配文件缓冲区的本质逻辑高度同构——区别仅在于管理对象从page/cache line/file buffer变成了tile/register block/shared memory slice/tensor fragment。
 
 tile的切分方式还决定了是否有足够的”时间窗口”让计算与访存、本地计算与跨卡通信实现流水线重叠（overlap），这往往是榨取最后10-20%性能的关键。
 
-4. Fusion：数据流边界的智能重构
+## 4. Fusion：数据流边界的智能重构
 
-4.1 超越”少launch一次kernel”的系统本质
+
+### 4.1 超越”少launch一次kernel”的系统本质
+
 Fusion（算子融合）在表面上是将多个算子合并为一个kernel执行，减少kernel launch开销。但这种理解严重低估了fusion的系统意义。Fusion真正改变的是：中间结果是否materialize、数据是否回写HBM、不同kernel之间的边界是否保留、调度粒度是否改变。换言之，<strong>Fusion实际上在重画运行时的数据流边界和执行边界</strong>。
 
-4.2 Fusion的三维系统分析
+### 4.2 Fusion的三维系统分析
+
 <strong>计算效率提升维度：</strong>
 
 每次kernel launch都伴随着CPU-GPU同步开销、kernel参数传递、SM调度初始化等固定代价。在细粒度算子图中（如典型Transformer层包含数十个小算子），launch overhead可能占据显著比例。Fusion通过合并算子，将多次launch压缩为一次，直接减少了这部分开销。
@@ -134,16 +147,20 @@ Fusion决策需要在多个相互约束的维度间权衡：fuse得越激进，�
 - <strong>带宽受限架构</strong>：aggressive fusion带来更显著的性能提升
 - <strong>Tensor Core优化</strong>：fusion需要保证合并后的kernel仍能充分利用专用计算单元这种trade-off空间的存在，使得fusion不再是一个可以静态最优解的编译问题，而成为一个需要考虑运行时状态的系统决策。
 
-4.3 Fusion模式的类型学
+### 4.3 Fusion模式的类型学
+
 根据融合的算子类型和数据流特征，fusion可分为几种典型模式：
 
 Fusion类型典型场景效率增益来源复杂度挑战Element-wise Fusion激活函数链消除中间tensor寄存器分配Reduction FusionLayerNorm、Softmax减少全局同步并行reduction设计Epilogue FusionGEMM+Bias+ReLU利用计算空闲周期与主计算流水线协调Attention FusionFlashAttention重构数据流拓扑算法级重新设计
-5. Layout：访存模式的全局优化
+## 5. Layout：访存模式的全局优化
 
-5.1 超越”数据格式选择”的系统视角
+
+### 5.1 超越”数据格式选择”的系统视角
+
 Layout不是格式选择题，而是整个系统性能的隐藏主轴。Layout决定访存模式 → 访存模式决定kernel写法 → kernel写法决定launch配置和同步方式 → 进一步影响通信切分、图编译和runtime调度。这种<strong>层层传导的因果链</strong>使得layout成为一个需要全局考量的系统级决策。
 
-5.2 Layout的三维系统分析
+### 5.2 Layout的三维系统分析
+
 <strong>计算效率提升维度：</strong>
 
 GPU的访存效率高度依赖于coalescing——即同一warp内的线程能否在一次memory transaction中访问连续地址。Layout直接决定了数据在内存中的排布方式，进而决定了计算时的访问模式是否能够触发coalescing。
@@ -166,14 +183,17 @@ Layout的影响往往具有”传染性”：一旦某个tensor选定了特定la
 - <strong>AMD Matrix Core</strong>：有不同的数据排布要求
 - <strong>TPU</strong>：XLA编译器内部使用特定的tile-based layout跨平台部署时，layout策略需要根据目标硬件调整。这也是为什么现代AI编译器（如MLIR、Triton）都将layout作为IR的一等属性来处理——它需要在整个编译流程中被追踪、推理和优化。
 
-5.3 Layout与系统其他部分的耦合
+### 5.3 Layout与系统其他部分的耦合
+
 Layout不仅影响单kernel效率，还与系统的其他关键组件深度耦合：
 
 系统组件与Layout的耦合点影响范围通信层Collective操作的切分方式跨卡带宽利用率内存分配器Tensor对齐与padding显存碎片率图编译器算子fusion的可行性全图优化空间Auto-tuning搜索空间维度编译时间与最优解质量
-6. 三大技术的协同演进
+## 6. 三大技术的协同演进
+
 
 ![](https://pic1.zhimg.com/v2-f0e1a7950076e6bdd19364521bba10c4_r.jpg)AI计算优化三元组——Fusion、Tiling、Layout三大技术的协同关系与三维优化效应
-6.1 编译器：从工具到系统组件
+### 6.1 编译器：从工具到系统组件
+
 在传统应用开发中，编译器被视为构建工具链的一环：源码进来，二进制出去，工作完成。但在AI系统中，这个理解已不再成立。
 
 从MLIR到Triton，再到CuTe这种更贴近kernel构造和布局表达的体系，它们的意义不只是”把代码变快一点”。更本质地说，<strong>它们在定义一件事：一个tensor program如何映射到GPU的并行层次和内存层次上。</strong>
@@ -182,7 +202,8 @@ Layout不仅影响单kernel效率，还与系统的其他关键组件深度耦�
 
 因此，MLIR的多层次IR设计、Triton的block-level编程模型、CuTe的layout algebra，本质上都在做同一件事：<strong>为tensor program到GPU硬件的映射提供可表达、可推理、可优化的中间形式</strong>。这已经超越了传统编译器”翻译”的职能，而进入了系统设计的范畴。
 
-6.2 编译器与Runtime的边界模糊化
+### 6.2 编译器与Runtime的边界模糊化
+
 在AI时代，编译器和runtime的边界正在变模糊：编译器在提前定义运行时要面对的资源形态；runtime反过来约束编译器能做什么、该做什么。
 
 这种边界模糊化体现在多个层面：
@@ -195,9 +216,11 @@ Layout不仅影响单kernel效率，还与系统的其他关键组件深度耦�
 
 从系统演化的视角看，这种边界模糊化并非偶然，而是计算密集型工作负载对系统软件提出的必然要求：<strong>当性能边界逼近硬件极限时，任何层次的孤立优化都会遇到瓶颈，唯有跨层协同才能继续挖掘空间</strong>。这与Linux内核中page cache、I/O scheduler、文件系统三者协同演化的历史，有着某种结构上的相似性。
 
-7. 技术实践验证
+## 7. 技术实践验证
 
-7.1 FlashAttention：Tiling与内存系统设计的典范
+
+### 7.1 FlashAttention：Tiling与内存系统设计的典范
+
 FlashAttention的重要性，从来不只是因为它让attention更快，而是因为它极其鲜明地揭示了一件事：<strong>在现代AI计算里，瓶颈往往不是FLOPs，而是数据在不同层次内存之间如何流动。</strong>
 
 FlashAttention将attention从一个”算术公式”问题，重新变成了一个”数据流与片上存储复用”问题。它综合运用了三大技术：
@@ -206,7 +229,8 @@ FlashAttention将attention从一个”算术公式”问题，重新变成了一
 - <strong>Fusion维度</strong>：将Scale、Mask、Softmax、MatMul等多个算子融合为一个kernel，消除所有中间结果的HBM访问
 - <strong>Layout维度</strong>：设计专门的数据排布方式，使得分块计算时的访存模式高度coalesced结果是将attention的复杂度从O(N²)的显存占用降低到O(N)，同时因为更好的访存模式而获得速度提升。这意味着AI kernel的核心不再只是指令层面的优化，而是开始接近一种<strong>内存系统设计</strong>。
 
-7.2 Triton与CuTe：三大技术的统一表达框架
+### 7.2 Triton与CuTe：三大技术的统一表达框架
+
 Triton、CuTe这类体系的重要性，不是因为”写kernel更方便了”，而是因为它们在提供一种新的表达方式，让开发者能够更直接地描述并行结构、数据布局和memory movement。
 
 <strong>Triton</strong>提供了block-level的编程抽象，开发者可以直接指定tiling策略和访存模式，编译器负责生成高效的底层代码。这使得fusion、tiling、layout的优化变得更加透明和可控。
@@ -216,7 +240,8 @@ Triton、CuTe这类体系的重要性，不是因为”写kernel更方便了”�
 某种意义上，它们像是GPU时代新的”中间语言”，介于高层图编译和底层ISA之间，<strong>把原来埋在极深处的硬件约束显式化了</strong>。
 
 ![](https://pic4.zhimg.com/v2-70200f9fe3f5542e04da9de9cc3fec5b_r.jpg)GPU Kernel开发抽象层次演进——从Hardware ISA到Framework，Triton/CuTe作为新中间层的桥接作用
-7.3 vLLM/PagedAttention：Serving层的范式创新
+### 7.3 vLLM/PagedAttention：Serving层的范式创新
+
 如果说FlashAttention展示了kernel层面的三大技术应用，vLLM则展示了这些思想如何延伸到serving系统层面。
 
 大模型serving的真正难点在于持续处理大量异构请求，而最稀缺的资源是KV cache占据的显存。vLLM的PagedAttention将OS页式管理的思想应用于KV cache管理：
@@ -225,11 +250,13 @@ Triton、CuTe这类体系的重要性，不是因为”写kernel更方便了”�
 - <strong>Fusion思想的延伸</strong>：Continuous batching将多请求的计算融合，提高吞吐
 - <strong>Layout思想的延伸</strong>：设计专门的KV cache布局，支持不连续物理块的高效访问从系统角度看，vLLM这类系统不是”普通框架优化”，它们是在为AI时代<strong>试探新的内存管理和调度边界</strong>。
 
-8. 展望：从优化技术到AI系统栈
+## 8. 展望：从优化技术到AI系统栈
+
 参考：
 
 [为什么 AI 时代值得重新讨论 OS：从 Linux Kernel 到 GPU 执行栈的系统重构](https://zhuanlan.zhihu.com/p/2024418152105214167)
-8.1 新系统栈的形成
+### 8.1 新系统栈的形成
+
 将以上分析综合起来，一条清晰的线索浮现：Fusion、Tiling、Layout的协同演进，正在推动形成一套新的系统软件栈：
 
 - <strong>驱动层</strong>：管理设备上下文、地址空间和命令执行
@@ -240,11 +267,13 @@ Triton、CuTe这类体系的重要性，不是因为”写kernel更方便了”�
 - <strong>Distributed Runtime层</strong>：协调collective、拓扑和跨卡执行这些模块表面上分散在不同位置，但本质上正在围绕同一件事收敛：<strong>为AI工作负载建立新的执行抽象</strong>
 
 ![](https://pic4.zhimg.com/v2-af664139c8921a059c5cf1292c214df9_r.jpg)AI OS分层架构全景——从Linux底座到执行内核层、运行时层、应用层的完整系统栈
-8.2 AI OS的本质
+### 8.2 AI OS的本质
+
 如果给出一个更收敛的判断：<strong>AI OS不是替代Linux的单体内核，而是建立在Linux之上的一层或几层新系统栈。</strong> Fusion、Tiling、Layout是这个新系统栈的灵魂——它们共同定义了tensor program如何高效利用异构算力和多层内存。
 
 层次职责三大技术的作用点应用层Agent/Workflow/Tool提供高层语义，屏蔽底层优化细节运行时层Serving/Session/MemoryFusion策略的运行时决策执行内核层Driver+Runtime+CompilerTiling/Layout的核心实现底座层Linux提供基础隔离与资源管理
-9. 结论
+## 9. 结论
+
 本文以Fusion、Tiling、Layout三大优化技术为主线，探讨了它们如何共同推动计算范式从传统通用计算向AI专用计算的转变。核心结论可归纳为以下几点：
 
 <strong>第一，三大技术的本质是资源组织，而非简单的性能优化。</strong> Tiling是片上资源的空间分配，Fusion是数据流边界的重构，Layout是访存模式的全局优化。它们共同回答一个核心问题：如何在有限的片上资源约束下实现全局最优。

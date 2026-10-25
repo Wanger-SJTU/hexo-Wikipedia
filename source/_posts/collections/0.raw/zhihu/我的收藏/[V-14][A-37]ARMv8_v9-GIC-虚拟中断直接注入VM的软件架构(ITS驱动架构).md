@@ -48,9 +48,11 @@ ver0.1
 
 正文
 
-1.1 ITS驱动架构(ITS Commands)
+### 1.1 ITS驱动架构(ITS Commands)
 
-1.1.1 背景
+
+### 1.1.1 背景
+
 在正式的介绍虚拟中断直接注入虚拟机的软件架构之前，我们花一点时间介绍一下GIC-ITS的驱动的架构。ITS作为MSI类型中断到达GIC的第一站肩负着将MSI(DeviceID，EventID)翻译成物理中断还是虚拟中断的重要任务。而这个翻译的过程需要借助基于内存的ITS Tables的深度参与，如图1-1所示：
 
 ![](https://pica.zhimg.com/v2-9e3c428ccd2af736f397fb9a35deb606_r.jpg)图1-1 An ITS forwarding an LPI to a Redistributor通过对这些ITS这些表的遍历，可以将EventID变成pINTID或者vINTID，然后依然是对这些表的遍历找对应GIC-Redistributor进行物理中断或者虚拟中断的直接投递。 通过上面的描述，可以看出ITS这些基于内存的表的初始化也是完成虚拟中断直接投递到vPE的重要组成部分。这些ITS Tables更加的具体的发挥作用的上下文如手册的描述如下：
@@ -59,7 +61,8 @@ ver0.1
 
 基于上面的背景，我们就要看到从软件层面看一下，到底是如何通过ITS Commands实现的一个MSI类型的中断经过映射成为虚拟中断然后找到一个目标GIC-Redistributor。
 
-1.1.2 ITS Commands
+### 1.1.2 ITS Commands
+
 先让我们来认识一下ITS 的Commands，看一下手册中的介绍：
 
  An ITS is controlled using a command queue in memory. The command queue is a circular buﬀer and it is deﬁned by the following three registers: <strong>GITS_CBASER</strong> This register speciﬁes the base address and size of the command queue. The command queue must be 64KB aligned and the size must be a multiple of 4KB. Each entry in the command queue is 32 bytes. GITS_CBASER also speciﬁes the cacheability and shareability settings that the ITS uses when accessing the command queue. <strong>GITS_CREADR</strong> This register points to the next command that the ITS will process. <strong>GITS_CWRITER</strong> This register points to the entry in the queue where the next new command should be written.GIC-ITS是收到内存中的一个Commands Queue控制，这是一个环形的Buffer，通过三个寄存器控制命令的执行时序，如图1-2所示： 
@@ -75,7 +78,8 @@ ver0.1
 GITS_CBASER的其他字段以及GITS_CREADR和GITS_CWRITER都比较好理解，就不展开讨论了，大家可以自行查阅手册进一步探索细节，其实搞懂了这3个寄存器的作用以及这部分内存的属性也就搞懂了ITS Commands Queue的工作原理。下面看一下ITS支持命令的集合(节选)，如图1-6所示： 
 
 ![](https://picx.zhimg.com/v2-5acedf0141a9af2d313b6a5ca608ea51_r.jpg)图1-6 ITS Commands
-1.1.3 GIC-ITS驱动架构
+### 1.1.3 GIC-ITS驱动架构
+
 通过上面的介绍我们清楚了ITS Commands在实现MSI类型中断注入ARM PE-Cores这个过程中的重要性。 而GIC-ITS驱动架构则扮演着控制ITS行为的角色，不但要在初始化阶段发送ITS指令初始ITS Tables，还要在运行时根据上下文的策略要求(例如vCPU线程在不同的PE-Core上迁移)通过ITS的命令重新配置ITS Tables。本节就对ITS的驱动的架构做一个简要的介绍，帮助我们从软件的视角重新审视虚拟中断的路由过程。 让我们先换上一个的视角再来重新认识一下GIC，看一下GIC的系统架构，如图1-7所示。 
 
 ![](https://pic3.zhimg.com/v2-069fee6903caeee02d33ed09cca197a2_r.jpg)图1-7 GIC top-level structure options通过上面的GIC系统架构图，我们能够更加清晰的看清楚GIC内部的结构(注意，这只是一种实现方式)，之所以GIC的驱动能够对GIC内部的各个核心组件(ITS、Distributor、Redistributor)进行编程的硬件基础就是从系统架构上这些组件都是通过一致性总线的接口连接在一条总线上，PE-Core可以通过总线对他们进行控制。那么对应的ITS驱动的架构也就比较清晰了： 
@@ -87,14 +91,17 @@ GITS_CBASER的其他字段以及GITS_CREADR和GITS_CWRITER都比较好理解，�
 ![](https://pic4.zhimg.com/v2-fa9aa40e33300545a0616805d8f9ab7b_r.jpg)图1-10 ITS-Commands(kernel)ITS 驱动发送命令的代码片段，如图1-11所示： 
 
 ![](https://pic1.zhimg.com/v2-7d903a2b815bb22f3573381af9c331aa_r.jpg)图1-11 ITS-Commands(Driver)
-1.2 虚拟中断直接注入虚拟机的软件架构
+### 1.2 虚拟中断直接注入虚拟机的软件架构
+
 前一个小节对GIC-ITS驱动架构的介绍，我们只完成了虚拟中断注入虚拟机的路由部分的软件实现的方案的了解。本节我们将完成虚拟中断直接注入VM之后的处理部分的介绍。
 
-1.2.1 传统虚拟中断软件架构
+### 1.2.1 传统虚拟中断软件架构
+
 
 ![](https://pic1.zhimg.com/v2-f796b751a843de62d6a58a9b0d31f9da_r.jpg)图1-12 ARM传统虚拟中断的软件架构 其实这里对ARM传统的虚拟中断的软件架构的设计重新提一下，主要有两个目的：一个是方便大家对比虚拟中断直接注入VM的软件架构方便理解；第二个目的是之前的文章的配图这块是有一些细节的错误的，关键的寄存器标错了，如VBAR_EL2和VBAR_EL3，这里也算是做一下澄清。
 
-1.2.2 虚拟中断直接注入虚拟机的软件架构
+### 1.2.2 虚拟中断直接注入虚拟机的软件架构
+
 ARM体系下所有的中断以及中断的处理其实都属于Exception的范畴，这个我们在前序的文章中反复提到过，这也是构成ARM体系的核心基础概念之一，这里我们就不再重复介绍了。回到中断虚拟化的体系，虚拟中断直接注入VM的软件架构如图1-13所示： 
 
 ![](https://pic3.zhimg.com/v2-25fbfdd34da758832f0a261ad5580b46_r.jpg)图1-13 ARM虚拟中断直接注入VM的软件架构通过与传统的虚拟中断的软件架构做对比，我们理解虚拟中断直接注入VM主要有如下几点需要关注： (1) 虚拟中断直接注入VM其实就是跳过了Hypervisor这个Level，避免了每个中断都要先陷入EL2层的情况出现，这也是提升整个中断虚拟化性能核心Feature。 (2) 因为是虚拟化系统，而虚拟中断的目的地是vPE，但是vPE线程是要接受Hypervisor的调度的，那么郎有情的时候，妾未必有意，就是vCPU当前的状态不一定能够及时的响应整个虚拟中断，此时虚拟中断只能Pending。对于一般的中断还好，对于一些紧急的高优先级的中断，这种情况就比较麻烦。因此，ARM搞了辅助的措施避免这种中断长时间的Pending，那就是Doorbell机制，其实就是通过GIC直接发射一个物理中断给Hypervisor，让它赶紧调度目标vPE重新获得物理CPU的时间片资源，尽快执行。这样，pending状态的虚拟中断就会被vPE尽快响应。 (3) 虚拟中断直接注入VM的软件架构和传统的虚拟中断的软件架构不是互斥的关系，而是兼容的互帮互助的关系。一方面目前的各种中断类型在SOC上都是同时存在的，并不是每个中断都可以变成可以直接注入VM的虚拟中断。另外一个方面，支持MSI类型中断的设备也需要一个发展的过程，这里面涉及到实现的难度和成本以及稳定性的因素需要考虑进去。

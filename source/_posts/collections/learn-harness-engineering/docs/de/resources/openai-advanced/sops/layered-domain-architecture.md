@@ -40,14 +40,21 @@ Gemeinsame Utils bleiben außerhalb der Domäne und sollten keine Domänenlogik 
 
 ## Ausführungs-SOP
 
-1. Die Codebasis in Domänen aufteilen, bevor der Implementierungsstil angefasst wird.
-2. Für jede Domäne die erlaubte Schichtenfolge identifizieren.
-3. Alle produktübergreifenden Concerns identifizieren und durch Provider oder Adapter routen.
-4. Mehrdeutige gemeinsame Logik entweder in die besitzende Domäne oder in wirklich
+## 1. Die Codebasis in Domänen aufteilen, bevor der Implementierungsstil angefasst wird.
+
+## 2. Für jede Domäne die erlaubte Schichtenfolge identifizieren.
+
+## 3. Alle produktübergreifenden Concerns identifizieren und durch Provider oder Adapter routen.
+
+## 4. Mehrdeutige gemeinsame Logik entweder in die besitzende Domäne oder in wirklich
+
    generische Utils verschieben.
-5. Die Regeln in `ARCHITECTURE.md` dokumentieren.
-6. Eine ausführbare Leitplanke für die teuerste Verletzung hinzufügen.
-7. Qualitätsbewertung nach der Änderung aktualisieren.
+## 5. Die Regeln in `ARCHITECTURE.md` dokumentieren.
+
+## 6. Eine ausführbare Leitplanke für die teuerste Verletzung hinzufügen.
+
+## 7. Qualitätsbewertung nach der Änderung aktualisieren.
+
 
 ## Definition von Fertig
 

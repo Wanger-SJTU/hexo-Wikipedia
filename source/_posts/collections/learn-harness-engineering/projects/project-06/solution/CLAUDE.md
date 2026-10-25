@@ -81,13 +81,20 @@ bash init.sh       # Full verification: install, check, build
 
 ## How to Add a Feature
 
-1. Define the IPC channel in `src/shared/types.ts`.
-2. Add the handler in `src/main/ipc-handlers.ts` with logging.
-3. Expose the API in `src/preload/preload.ts`.
-4. Add the type declaration in `src/renderer/types.d.ts`.
-5. Build the UI in `src/renderer/components/`.
-6. Add logging calls to the service method.
-7. Update `feature_list.json` with the result.
+## 1. Define the IPC channel in `src/shared/types.ts`.
+
+## 2. Add the handler in `src/main/ipc-handlers.ts` with logging.
+
+## 3. Expose the API in `src/preload/preload.ts`.
+
+## 4. Add the type declaration in `src/renderer/types.d.ts`.
+
+## 5. Build the UI in `src/renderer/components/`.
+
+## 6. Add logging calls to the service method.
+
+## 7. Update `feature_list.json` with the result.
+
 
 ## Testing
 

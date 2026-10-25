@@ -19,13 +19,20 @@ categories:
 
 코드를 변경하기 전에:
 
-1. `pwd`로 저장소 루트를 확인한다.
-2. 현재 시스템 지도와 의존성 규칙을 파악하기 위해 `ARCHITECTURE.md`를 읽는다.
-3. 어떤 도메인 또는 계층이 가장 취약한지 확인하기 위해 `docs/QUALITY_SCORE.md`를 읽는다.
-4. `docs/PLANS.md`를 읽고, 현재 작업 중인 활성 실행 계획(active execution plan)을 연다.
-5. `docs/product-specs/`에서 관련 제품 명세(product spec)를 읽는다.
-6. 이 저장소의 표준 부트스트랩(bootstrap) 및 검증(verification) 경로를 실행한다.
-7. 기준 검증이 실패하면 범위를 추가하기 전에 기준을 먼저 복구한다.
+## 1. `pwd`로 저장소 루트를 확인한다.
+
+## 2. 현재 시스템 지도와 의존성 규칙을 파악하기 위해 `ARCHITECTURE.md`를 읽는다.
+
+## 3. 어떤 도메인 또는 계층이 가장 취약한지 확인하기 위해 `docs/QUALITY_SCORE.md`를 읽는다.
+
+## 4. `docs/PLANS.md`를 읽고, 현재 작업 중인 활성 실행 계획(active execution plan)을 연다.
+
+## 5. `docs/product-specs/`에서 관련 제품 명세(product spec)를 읽는다.
+
+## 6. 이 저장소의 표준 부트스트랩(bootstrap) 및 검증(verification) 경로를 실행한다.
+
+## 7. 기준 검증이 실패하면 범위를 추가하기 전에 기준을 먼저 복구한다.
+
 
 ## 라우팅 지도
 
@@ -61,8 +68,13 @@ categories:
 
 세션을 종료하기 전에:
 
-1. 활성 실행 계획을 업데이트한다.
-2. 도메인 또는 계층이 의미 있게 변경된 경우 `docs/QUALITY_SCORE.md`를 업데이트한다.
-3. 미뤄진 사항이 있으면 `docs/exec-plans/tech-debt-tracker.md`에 새 기술 부채(tech debt)를 기록한다.
-4. 완료된 계획은 적절한 시점에 `docs/exec-plans/completed/`로 이동한다.
-5. 명확한 다음 행동이 있는 재시작 가능한 상태로 저장소를 남긴다.
+## 1. 활성 실행 계획을 업데이트한다.
+
+## 2. 도메인 또는 계층이 의미 있게 변경된 경우 `docs/QUALITY_SCORE.md`를 업데이트한다.
+
+## 3. 미뤄진 사항이 있으면 `docs/exec-plans/tech-debt-tracker.md`에 새 기술 부채(tech debt)를 기록한다.
+
+## 4. 완료된 계획은 적절한 시점에 `docs/exec-plans/completed/`로 이동한다.
+
+## 5. 명확한 다음 행동이 있는 재시작 가능한 상태로 저장소를 남긴다.
+

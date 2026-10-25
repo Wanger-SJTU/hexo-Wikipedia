@@ -42,7 +42,8 @@ source_url: https://zhuanlan.zhihu.com/p/352546929
 [有哪些大事小事要提前帮父母准备？ - 知乎](https://www.zhihu.com/question/28357550) 
 [我们有哪些错误的常识？ - 知乎](https://www.zhihu.com/question/61178074) 
 
-1.2.法律常识** **[一个普通人突然遭遇法律问题时，他应该如何做才不至于很被动？ - 知乎](https://www.zhihu.com/question/20398031/answer/15140896) 
+### 1.2.法律常识** **[一个普通人突然遭遇法律问题时，他应该如何做才不至于很被动？ - 知乎](https://www.zhihu.com/question/20398031/answer/15140896) 
+
 [有哪些以为是小罪，其实是重罪，判刑很重的案例？ - 知乎](https://www.zhihu.com/question/277996947/answer/567654547) 
 [哪些法律上的小常识可以保护自己？ - 知乎](https://www.zhihu.com/question/27486818/answer/115188036) 
 [大学生出来工作需要了解哪些必备的法律知识?](https://www.zhihu.com/question/338233388)
@@ -50,14 +51,16 @@ source_url: https://zhuanlan.zhihu.com/p/352546929
 [懂法的和不懂法的有何区别？](https://www.zhihu.com/question/28601869/answer/1179575092)
 [有哪些比较冷门但实际上很有用的法律常识？](https://www.zhihu.com/question/359034489/answer/920885068)
 
-1.3.保险选购** **[「保险」到底保险吗？ - 知乎](https://www.zhihu.com/question/19594639) 
+### 1.3.保险选购** **[「保险」到底保险吗？ - 知乎](https://www.zhihu.com/question/19594639) 
+
 [明知道重疾险很坑，为什么还有那么多人买？ - 知乎](https://www.zhihu.com/question/306404542) 
 [我爸52岁，只有农村医保，想给他买个保险，支付宝里的怎么样？ - 知乎](https://www.zhihu.com/question/333488427/answer/1098696487) 
 [怎么购买一份合适的重疾险组合？ - 知乎](https://www.zhihu.com/question/20745287/answer/22304813) 
 [如何用保险保障自己的一生？ - 知乎](https://www.zhihu.com/question/22316395/answer/60759628) 
 [是否有交五险一金的必要？](https://www.zhihu.com/question/35659389/answer/90942770)
 
-1.4.生活维权** **[有哪些你以为「举报了没用」但实际上有用的事情？ - 知乎](https://www.zhihu.com/question/264021021) 
+### 1.4.生活维权** **[有哪些你以为「举报了没用」但实际上有用的事情？ - 知乎](https://www.zhihu.com/question/264021021) 
+
 [与网络卖家发生纠纷后如何解决？](https://www.zhihu.com/question/28029257)
 [如果坐地铁的时候旁边一个女性突然暴起说你性骚扰，怎样才能证明自己清白？ - 知乎](https://www.zhihu.com/question/62083317/answer/983053042) 
 [社保断缴会清零吗？ - 知乎](https://www.zhihu.com/question/308761407/answer/1210424114) 
@@ -70,7 +73,8 @@ source_url: https://zhuanlan.zhihu.com/p/352546929
 [年轻人买房要注意什么？ - 知乎](https://www.zhihu.com/question/21731231)
 [征信报告中包含了哪些内容？](https://www.zhihu.com/question/37799092) 
 
-1.5.财务观念** **[男性在青年时期应为自己做哪些投资？ - 知乎](https://www.zhihu.com/question/59016496/answer/164735483) 
+### 1.5.财务观念** **[男性在青年时期应为自己做哪些投资？ - 知乎](https://www.zhihu.com/question/59016496/answer/164735483) 
+
 [为什么我退税是 0 ？ - 知乎](https://www.zhihu.com/question/384124002/answer/1126001932) 
 [有哪些专门为中产阶级量身定制的消费陷阱？ - 知乎](https://www.zhihu.com/question/59001664/answer/225437109) 
 [你有哪些内行人才知道的省钱诀窍？ - 知乎](https://www.zhihu.com/question/41854964/answer/108510091) 
@@ -80,12 +84,14 @@ source_url: https://zhuanlan.zhihu.com/p/352546929
 [日常生活中有哪些不为人知的宰客行为？](https://www.zhihu.com/question/36262386)
 [现在的年轻人到底有多容易被骗? - 知乎](https://www.zhihu.com/question/343251192/answer/985337496)
 
-1.6.隐私保护** **[信息泄露可以有多恐怖？ - 知乎](https://www.zhihu.com/question/269308945/answer/368138292) 
+### 1.6.隐私保护** **[信息泄露可以有多恐怖？ - 知乎](https://www.zhihu.com/question/269308945/answer/368138292) 
+
 [大数据时代下，你是如何进行隐私保护的？面对信息网络安全保护，你有哪些好建议？ - 知乎](https://www.zhihu.com/question/396233825/answer/1238655032) [中本聪是怎么做到在人肉搜索那么强大的互联网上隐藏自己的身份的？ - 知乎](https://www.zhihu.com/question/22199390) 
 [个人信息的泄露在今天已经严重到了什么地步？对普通人的生活有多大的影响？](https://www.zhihu.com/question/48804067)
 [养成哪些上网习惯可以避免泄露重要的个人隐私？](https://www.zhihu.com/question/27335909)
 
-1.7.习惯培养** **[在家总是控制不住自己而堕落，该怎么办？ - 知乎](https://www.zhihu.com/question/373422178) 
+### 1.7.习惯培养** **[在家总是控制不住自己而堕落，该怎么办？ - 知乎](https://www.zhihu.com/question/373422178) 
+
 [年轻人如何在独居时有效地保持自律？ - 知乎](https://www.zhihu.com/question/48749292) 
 [哪些实用的小方法、小技巧、好习惯能让人每天进步？ - 知乎](https://www.zhihu.com/question/22292474) 
 [哪些事做起来无聊但坚持越久意义越大？ - 知乎](https://www.zhihu.com/question/25365330) 
@@ -101,7 +107,8 @@ source_url: https://zhuanlan.zhihu.com/p/352546929
 [你是怎样变得不浮躁的？ - 知乎](https://www.zhihu.com/question/264122691)
 [是什么极小的细节让你对别人好感倍增？ - 知乎](https://www.zhihu.com/question/339460878/answer/874476311)
 
-1.8.提升生活品质的方法** **[有哪些很重要又被忽视的炒菜技巧？ - 知乎](https://www.zhihu.com/question/22467582) 
+### 1.8.提升生活品质的方法** **[有哪些很重要又被忽视的炒菜技巧？ - 知乎](https://www.zhihu.com/question/22467582) 
+
 [有哪些能给人带来极大幸福感的家用电器？ - 知乎](https://www.zhihu.com/question/36560129) 
 [洗碗机到底是鸡肋还是神器？ - 知乎](https://www.zhihu.com/question/336267047) 
 [如何煮一道简单美味的汤? - 知乎](https://www.zhihu.com/question/38279918) 
@@ -123,7 +130,8 @@ source_url: https://zhuanlan.zhihu.com/p/352546929
 [有什么可以提高大学寝室生活的质量？ - 知乎](https://www.zhihu.com/question/22945320)
 [你买过什么很贵但又很值的东西？ - 知乎](https://www.zhihu.com/question/342482043/answer/848276411)
 
-1.9.其他（涉及多个类别的问题）** **[年轻时候最应该注意的事情是什么？ - 知乎](https://www.zhihu.com/question/21064359) 
+### 1.9.其他（涉及多个类别的问题）** **[年轻时候最应该注意的事情是什么？ - 知乎](https://www.zhihu.com/question/21064359) 
+
 [怎样才能从点滴的生活细节中把孩子培养成为一个自律的人？ - 知乎](https://www.zhihu.com/question/383301465) 
 [40 岁的中年失业者怎么活下去？ - 知乎](https://www.zhihu.com/question/315391769) 
 [生活中有哪些残忍的真相？ - 知乎](https://www.zhihu.com/question/63894266/answer/628137102) 
@@ -138,20 +146,23 @@ source_url: https://zhuanlan.zhihu.com/p/352546929
 [开车使你感觉最可怕的一瞬间是什么？](https://www.zhihu.com/question/348293973)
 
 2.健康体系** **
-2.1.重大疾病的防治** **[得了癌症是一种怎样的经历？ - 知乎](https://www.zhihu.com/question/305748960) 
+### 2.1.重大疾病的防治** **[得了癌症是一种怎样的经历？ - 知乎](https://www.zhihu.com/question/305748960) 
+
 [有没有什么病比癌症还严重？ - 知乎](https://www.zhihu.com/question/327520860) 
 [你是如何发现早期癌症的？ - 知乎](https://www.zhihu.com/question/302514496) 
 [白血病，你给我站住！普通父母应当了解的白血病知识 - 知乎](https://zhuanlan.zhihu.com/p/24341929) 
 [为什么很多年轻人得尿毒症？ - 知乎](https://www.zhihu.com/question/23982516/answer/680644143) 
 [年轻时得了绝症或大病是如何面对的？](https://www.zhihu.com/question/22213153)
 
-2.2.体检项目的选择** **[去医院做常规体检可以查出癌症吗？ - 知乎](https://www.zhihu.com/question/27525988) 
+### 2.2.体检项目的选择** **[去医院做常规体检可以查出癌症吗？ - 知乎](https://www.zhihu.com/question/27525988) 
+
 [癌症是怎样被检查出来的，普通体检能查出癌症吗？](https://www.zhihu.com/question/19872681/answer/1298389716)
 [如何为自己制定一个体检计划，保证如果身体有任何癌症都可以在早期被检查出来？ - 知乎](https://www.zhihu.com/question/24867364)
 [在体检中心体检和直接去医院体检有什么不一样？](https://www.zhihu.com/question/24536825) 
 [人过了 30，哪些体检项目一定不能落下？](https://www.zhihu.com/question/265686383/answer/301112064)
 
-2.3.健康的生活习惯** **[从事食品行业和餐饮行业的人，不会去吃哪些食品？ - 知乎](https://www.zhihu.com/question/31092804) 
+### 2.3.健康的生活习惯** **[从事食品行业和餐饮行业的人，不会去吃哪些食品？ - 知乎](https://www.zhihu.com/question/31092804) 
+
 [有什么对身体很好的习惯或经验，你知道后你的世界马上就不一样了？ - 知乎](https://www.zhihu.com/question/39910834) 
 [我们吃的外卖有多「脏」？ - 知乎](https://www.zhihu.com/question/275682341) 
 [有哪些小技巧可以让自己每天坚持跑步？ - 知乎](https://www.zhihu.com/question/20600249) 
@@ -165,14 +176,16 @@ source_url: https://zhuanlan.zhihu.com/p/352546929
 [25 岁，有哪些健康的生活习惯值得养成？ - 知乎](https://www.zhihu.com/question/296374184/answer/522093551) 
 [有哪些可以保护自己的医学小常识？ - 知乎](https://www.zhihu.com/question/58939688) 
 
-2.4.各器官的监控与防治** **[肺结节有什么要紧？ - 知乎](https://www.zhihu.com/question/437327377) 
+### 2.4.各器官的监控与防治** **[肺结节有什么要紧？ - 知乎](https://www.zhihu.com/question/437327377) 
+
 [如果肝不好，最好少吃哪些食物？ - 知乎](https://www.zhihu.com/question/435738194) 
 [养肝最好的方式是什么？](https://www.zhihu.com/question/430487334)
 [请问幽门螺杆菌导致癌变的时间是多久？ - 知乎](https://www.zhihu.com/question/428507225/answer/1604533557) 
 [胃炎有什么好办法调理？ - 知乎](https://www.zhihu.com/question/428036773) 
 [结肠镜—40岁的特别礼物 - 知乎](https://zhuanlan.zhihu.com/p/101127259) 
 
-2.5.睡眠改善** **[有哪些可以高效休息的方法？ - 知乎](https://www.zhihu.com/question/20525198) 
+### 2.5.睡眠改善** **[有哪些可以高效休息的方法？ - 知乎](https://www.zhihu.com/question/20525198) 
+
 [怎么样能提高睡眠质量？ - 知乎 ](https://www.zhihu.com/question/19575624)
 [睡眠非常浅的人，该怎样改善睡眠质量？](https://www.zhihu.com/question/19575624)
 [有哪些快速入睡的妙招？ - 知乎](https://www.zhihu.com/question/19763541/answer/14145411) 
@@ -180,14 +193,16 @@ source_url: https://zhuanlan.zhihu.com/p/352546929
 [22:00 ~ 6:00 睡眠比 2:00 ~ 10:00 更健康吗？](https://www.zhihu.com/question/20078304/answer/29479734)
 [如何看待张朝阳回应一天睡四小时，并称「状态很好」，这种生活方式应当加以宣扬吗？](https://www.zhihu.com/question/415823374)
 
-2.6.眼病防治** **[30岁诊断为青光眼，特别崩溃。能否终生不失明？ - 知乎](https://www.zhihu.com/question/59142703) 
+### 2.6.眼病防治** **[30岁诊断为青光眼，特别崩溃。能否终生不失明？ - 知乎](https://www.zhihu.com/question/59142703) 
+
 [有哪些关于近视眼的冷知识？ - 知乎](https://www.zhihu.com/question/437446126) 
 [作为一名眼科医生，你有哪些「一般人我都告诉他，但他就是不听」的忠告？ - 知乎](https://www.zhihu.com/question/35993826/answer/1697022738) 
 [你有哪些实用的护眼（保养眼睛）方法？ - 知乎](https://www.zhihu.com/question/27960774/answer/1586860517) 
 [眼睛干涩，该怎么选择眼药水？](https://www.zhihu.com/question/20559317)
 [常戴隐形眼镜的人用什么眼药水比较好？](https://www.zhihu.com/question/21050791)
 
-2.7.口腔护理** **[午餐后如何洁齿护牙清理口腔，尤其是上班族？ - 知乎](https://www.zhihu.com/question/30359724) 
+### 2.7.口腔护理** **[午餐后如何洁齿护牙清理口腔，尤其是上班族？ - 知乎](https://www.zhihu.com/question/30359724) 
+
 [如何正确地刷牙？ - 知乎](https://www.zhihu.com/question/19785262) 
 [为什么牙龈萎缩了就长不出来了？ - 知乎](https://www.zhihu.com/question/304900841) 
 [关于保养牙齿有哪些常见误区？ - 知乎](https://www.zhihu.com/question/20483542/answer/26896853) 
@@ -196,7 +211,8 @@ source_url: https://zhuanlan.zhihu.com/p/352546929
 [如何正确使用牙线？](https://www.zhihu.com/question/20269949)
 [牙医碰见最烂的牙有多烂？](https://www.zhihu.com/question/54775154)
 
-2.8.体态矫治与维持** **[如何保持正确的坐姿？ - 知乎](https://www.zhihu.com/question/23238816) 
+### 2.8.体态矫治与维持** **[如何保持正确的坐姿？ - 知乎](https://www.zhihu.com/question/23238816) 
+
 [脖子前倾怎么矫正？ - 知乎](https://www.zhihu.com/question/29620130) 
 [怎样的跑姿可以最大程度的降低对膝盖的伤害？ - 知乎](https://www.zhihu.com/question/23921930) 
 [你们平时舌头是怎么放在嘴里的？ - 知乎](https://www.zhihu.com/question/351941602) 
@@ -206,7 +222,8 @@ source_url: https://zhuanlan.zhihu.com/p/352546929
 [电脑颈椎病到底是仰头还是低头造成的？ - 知乎](https://www.zhihu.com/question/24187790/answer/377346322) 
 [人能控制自己的长相吗？ - 知乎](https://www.zhihu.com/question/26497360) 
 
-2.9.传染病预防** **[整理：各类传染病防治知识（呼吸道传染病、肠道传染病、肝炎） - 知乎](https://zhuanlan.zhihu.com/p/111194552) 
+### 2.9.传染病预防** **[整理：各类传染病防治知识（呼吸道传染病、肠道传染病、肝炎） - 知乎](https://zhuanlan.zhihu.com/p/111194552) 
+
 [哪些传染病是可能通过一起吃饭传染的？ - 知乎](https://www.zhihu.com/question/20449935/answer/18313546) 
 [有哪些病是通过饮食传播的？ - 知乎](https://www.zhihu.com/question/33490979/answer/56608351) 
 [如果某天你发现室友对你隐瞒了患有传染性疾病的事实，你会怎么做，或者怎么想？](https://www.zhihu.com/question/317260960/answer/698280741)
@@ -214,7 +231,8 @@ source_url: https://zhuanlan.zhihu.com/p/352546929
 [女朋友是乙肝病毒携带者，我应该怎么办？](https://www.zhihu.com/question/21128053)
 [肺结核有多恐怖？](https://www.zhihu.com/question/23615673/answer/65409010)
 
-2.10.其他（涉及多个类别的问题）** **[身体上的哪些迹象表明你正在衰老？ - 知乎](https://www.zhihu.com/question/28237073) 
+### 2.10.其他（涉及多个类别的问题）** **[身体上的哪些迹象表明你正在衰老？ - 知乎](https://www.zhihu.com/question/28237073) 
+
 [肛裂是种怎样的体验？ - 知乎](https://www.zhihu.com/question/29214810/answer/843677065) 
 [有哪些普通大众难知道但医生大多清楚的事？ - 知乎](https://www.zhihu.com/question/34643605/answer/71436979) 
 [哪些运动可以锻炼腰背部肌肉，进而避免腰痛？ - 知乎](https://www.zhihu.com/question/20777355/answer/16184194) 
@@ -226,19 +244,22 @@ source_url: https://zhuanlan.zhihu.com/p/352546929
 [寄生虫病有多可怕？ - 知乎](https://www.zhihu.com/question/36205160) 
 
 3.知识学习** **
-3.1.思维能力** **[日常生活中如何提高逻辑思维能力和表达能力？ - 知乎](https://www.zhihu.com/question/20777633) 
+### 3.1.思维能力** **[日常生活中如何提高逻辑思维能力和表达能力？ - 知乎](https://www.zhihu.com/question/20777633) 
+
 [有哪些能提高逻辑思维能力的书或者资料值得推荐？ - 知乎](https://www.zhihu.com/question/19602470/answer/207719937) 
 [如何锻炼出强悍的分析能力？ - 知乎](https://www.zhihu.com/question/29035318) 
 [看似厉害的人是怎么分析问题的？ - 知乎](https://www.zhihu.com/question/304174916/answer/931799926) 
 [厉害的人遇到问题时的思维模式与普通人之间差别在哪？ - 知乎](https://www.zhihu.com/question/301459876/answer/528995439) 
 
-3.2.表达能力** **[一个人如果表达能力差、理解能力差，怎么改变？](https://www.zhihu.com/question/305368229)
+### 3.2.表达能力** **[一个人如果表达能力差、理解能力差，怎么改变？](https://www.zhihu.com/question/305368229)
+
 [如何解决思维混乱、讲话没条理的情况？ - 知乎](https://www.zhihu.com/question/30173526) 
 [无法直截了当地表达自己的想法，怎么办？ - 知乎](https://www.zhihu.com/question/20676902/answer/19668795) 
 [怎么提高表达能力？ - 知乎](https://www.zhihu.com/question/19727047/answer/522905472) 
 [如何培养说话的逻辑性？](https://www.zhihu.com/question/23980585)
 
-3.3.书籍推荐** **[有哪些「早读早超生」的书？ - 知乎](https://www.zhihu.com/question/19771045) 
+### 3.3.书籍推荐** **[有哪些「早读早超生」的书？ - 知乎](https://www.zhihu.com/question/19771045) 
+
 [最让你产生「相见恨晚」之感的一本书是什么？为什么？ - 知乎](https://www.zhihu.com/question/20961181) 
 [你读过最冷门，但「含金量极高」的书是什么？ - 知乎](https://www.zhihu.com/question/438708854) 
 [有哪些年轻人看完能用的上的书推荐？ - 知乎](https://www.zhihu.com/question/347408511) 
@@ -251,66 +272,78 @@ source_url: https://zhuanlan.zhihu.com/p/352546929
 [你最庆幸自己读过什么书? - 知乎](https://www.zhihu.com/question/62306995)
 [阅读书籍能否给人带来物质意义？ - 知乎](https://www.zhihu.com/question/352461208/answer/899425068) 
 
-3.4.自学平台** **[怎样充分借助互联网自学？ - 知乎](https://www.zhihu.com/question/21107510) 
+### 3.4.自学平台** **[怎样充分借助互联网自学？ - 知乎](https://www.zhihu.com/question/21107510) 
+
 [网络上有哪些免费的教育资源？ - 知乎](https://www.zhihu.com/question/19942068) 
 [B 站上有哪些很好的学习资源? - 知乎](https://www.zhihu.com/question/265883810/answer/990584633) 
 [有哪些值得推荐的学习网站？ - 知乎](https://www.zhihu.com/question/20285676) 
 [Coursera 上有哪些课程值得推荐？ - 知乎](https://www.zhihu.com/question/22436320/answer/32477238) 
 
-3.5.计算机** **[如何利用每日 4 小时的通勤时间阅读计算机专业书？有哪些方法？ - 知乎](https://www.zhihu.com/question/20409938) 
+### 3.5.计算机** **[如何利用每日 4 小时的通勤时间阅读计算机专业书？有哪些方法？ - 知乎](https://www.zhihu.com/question/20409938) 
+
 [自学简单编程可行吗？ - 知乎](https://www.zhihu.com/question/322693578/answer/933529176) 
 [计算机的书籍动辄几百上千页，作为学生真的有必要啃这些大书吗？如果有必要，该如何提高效率的看书？ - 知乎](https://www.zhihu.com/question/408882434) 
 [Python 的练手项目有哪些值得推荐？ - 知乎](https://www.zhihu.com/question/29372574) 
 
-3.6.经济金融** **[经济学入门必读书籍有哪些值得推荐？](https://www.zhihu.com/question/19661829)
+### 3.6.经济金融** **[经济学入门必读书籍有哪些值得推荐？](https://www.zhihu.com/question/19661829)
+
 [有哪些我们觉得荒谬的事，却有着合理的经济学解释？](https://www.zhihu.com/question/34406872)
 [想系统的学习一下金融经济方面的专业知识，请帮忙推荐一些精典的专业书籍？ - 知乎](https://www.zhihu.com/question/437825318/answer/1661259961) 
 [怎么样才能读懂经济类新闻，理解甚至理清国家相关经济政策的脉络和相关发展趋势？ - 知乎](https://www.zhihu.com/question/62822066/answer/202943327) 
 
-3.7.管理** **[商业分析能力是怎样炼成的？ - 知乎](https://www.zhihu.com/question/20603837/answer/761154817) 
+### 3.7.管理** **[商业分析能力是怎样炼成的？ - 知乎](https://www.zhihu.com/question/20603837/answer/761154817) 
+
 [哪些管理类的书籍值得推荐？ - 知乎](https://www.zhihu.com/question/20212656/answer/14351962) 
 [如何系统学习管理学？ - 知乎](https://www.zhihu.com/question/19890557/answer/140417368) 
 
-3.8.英语** **[学习英语的最系统的方法是什么？ - 知乎](https://www.zhihu.com/question/23315417/answer/24571693) 
+### 3.8.英语** **[学习英语的最系统的方法是什么？ - 知乎](https://www.zhihu.com/question/23315417/answer/24571693) 
+
 [怎样才能从英语很糟糕的人变成英语很厉害的人？ - 知乎](https://www.zhihu.com/question/22808635/answer/258783880) 
 [有什么相见恨晚的背单词方法？](https://www.zhihu.com/question/48040579)
 [每天坚持英语学习，为什么还是学不好？](https://www.zhihu.com/question/27702564)
 [在网上如何检查自己的英语语法是否正确，并能得到学习提升？](https://www.zhihu.com/question/37198909)
 [有没有一种让人很爽的英语学习方法？](https://www.zhihu.com/question/312501550)
 
-3.9.财务** **[知乎关于理财的精彩问答有哪些？ - 知乎](https://www.zhihu.com/question/20098032) 
+### 3.9.财务** **[知乎关于理财的精彩问答有哪些？ - 知乎](https://www.zhihu.com/question/20098032) 
+
 [有哪些金融领域的现象或事实，没有一定金融学知识的人不会相信，或者不能理解？ - 知乎](https://www.zhihu.com/question/288287043/answer/635120696) [怎样看公司财务报表？ - 知乎](https://www.zhihu.com/question/20324128/answer/1448256258) 
 [财务自由有多重要？ - 知乎](https://www.zhihu.com/question/40677000/answer/87886574) 
 [外行有哪些途径学习财税金融会计知识？ - 知乎](https://www.zhihu.com/question/20076530/answer/14127892) 
 [对于创业者来说，有哪些比较好的财务类入门书籍？ - 知乎](https://www.zhihu.com/question/19658256/answer/16191942) 
 [个人投资理财有什么值得推荐的网站？ - 知乎](https://www.zhihu.com/question/20068807/answer/1038022789) 
 
-3.10.数学** **[数学这门学科有多有趣？ - 知乎](https://www.zhihu.com/question/37799355/answer/514320170) 
+### 3.10.数学** **[数学这门学科有多有趣？ - 知乎](https://www.zhihu.com/question/37799355/answer/514320170) 
+
 [有什么学习数学的好网站？ - 知乎](https://www.zhihu.com/question/19559151) 
 [有哪些比较好的数学分析和高等代数的公开课（数学系）？](https://www.zhihu.com/question/30145281)
 
-3.11.法学** **[优秀的法学专业学生的一天是怎么度过的？ - 知乎](https://www.zhihu.com/question/319218635) 
+### 3.11.法学** **[优秀的法学专业学生的一天是怎么度过的？ - 知乎](https://www.zhihu.com/question/319218635) 
+
 [法学该怎么课下学习？ - 知乎](https://www.zhihu.com/question/429489854) 
 [有什么比较好的学习法律的网站？ - 知乎](https://www.zhihu.com/question/19708761) 
 [如何评价中国政法大学罗翔教授？](https://www.zhihu.com/question/378314247)
 
-3.12.历史** **[为什么人们会产生“历史上但凡通览和熟知二十四史的人都很强大”的印象？ - 知乎](https://www.zhihu.com/question/20368758) 
+### 3.12.历史** **[为什么人们会产生“历史上但凡通览和熟知二十四史的人都很强大”的印象？ - 知乎](https://www.zhihu.com/question/20368758) 
+
 [从零起步在脑中建立一套完善的世界历史时间线，应该如何入手？ - 知乎](https://www.zhihu.com/question/20032670/answer/13801771) 
 [有哪些我们习以为常，其实似是而非的历史观？](https://www.zhihu.com/question/29848086)
 [史书中有哪些看似轻描淡写实则很残酷的话？](https://www.zhihu.com/question/28558305)
 [如何阅读《二十四史》？](https://www.zhihu.com/question/49995099)
 [现代社会坚持读完《资治通鉴》的人有多少，以及有什么感受？](https://www.zhihu.com/question/278240384)
 
-3.13.心理** **[作为心理咨询师或精神科医生，你看到哪些非专业人士会惊讶的人性秘密？ - 知乎](https://www.zhihu.com/question/37654401/answer/79043708) 
+### 3.13.心理** **[作为心理咨询师或精神科医生，你看到哪些非专业人士会惊讶的人性秘密？ - 知乎](https://www.zhihu.com/question/37654401/answer/79043708) 
+
 [如何进入心理咨询专业领域？ - 知乎](https://www.zhihu.com/question/23672113/answer/31232473) 
 [心理学研究什么？ - 知乎](https://www.zhihu.com/question/20446764/answer/15164164) 
 
-3.14.设计** **[怎样的 PPT 配色会让人觉得舒服？ - 知乎](https://www.zhihu.com/question/30709836) 
+### 3.14.设计** **[怎样的 PPT 配色会让人觉得舒服？ - 知乎](https://www.zhihu.com/question/30709836) 
+
 [如何设计一张高品位高水准海报？ - 知乎](https://www.zhihu.com/question/22332149/answer/25705909) 
 [哪些 PPT 下载网站让你产生了重度依赖 ？ - 知乎](https://www.zhihu.com/question/330660887/answer/782246649) 
 [有哪些网站有高质量的排版设计素材可以参考？ - 知乎](https://www.zhihu.com/question/46467672/answer/570095281) 
 
-3.15.其他** **[哪些专业问题在本专业是常识，但在日常生活中却不被人所知？ - 知乎](https://www.zhihu.com/question/23421866) 
+### 3.15.其他** **[哪些专业问题在本专业是常识，但在日常生活中却不被人所知？ - 知乎](https://www.zhihu.com/question/23421866) 
+
 [如何快速地涉猎一个领域的知识？ - 知乎](https://www.zhihu.com/question/21541150) 
 [你写论文时发现了哪些非常神的网站？ - 知乎](https://www.zhihu.com/question/35931336/answer/71654690) 
 [哪些你熟知的重要知识或方法，外人却常常因不了解而陷入困境？ - 知乎](https://www.zhihu.com/question/19996012/answer/13647517) 
@@ -325,7 +358,8 @@ source_url: https://zhuanlan.zhihu.com/p/352546929
 [有哪些可以提升情商、判断力和谈话技巧的书籍？ - 知乎](https://www.zhihu.com/question/28070036/answer/39676252) 
 
 4.效率提升** **
-4.1.高效习惯** **[对你职业生涯帮助最大的习惯是什么？ - 知乎](https://www.zhihu.com/question/20024970) 
+### 4.1.高效习惯** **[对你职业生涯帮助最大的习惯是什么？ - 知乎](https://www.zhihu.com/question/20024970) 
+
 [你是如何强迫自己不断学习提升的？ - 知乎](https://www.zhihu.com/question/23475328) 
 [有哪些细微但是高效有用的习惯？ - 知乎](https://www.zhihu.com/question/27353387) 
 [如何高效利用早起后时间？ - 知乎](https://www.zhihu.com/question/20328135) 
@@ -339,7 +373,8 @@ source_url: https://zhuanlan.zhihu.com/p/352546929
 [对你职业生涯帮助最大的习惯是什么？ - 知乎](https://www.zhihu.com/question/20024970/answer/48376286) 
 [怎样自我检测有没有掌握所学知识？ - 知乎](https://www.zhihu.com/question/30550406/answer/48813296) 
 
-4.2.高效工具** **[有哪些堪称「神器」，却鲜为人知的软件/网站/互联网服务？ - 知乎](https://www.zhihu.com/question/36546814) 
+### 4.2.高效工具** **[有哪些堪称「神器」，却鲜为人知的软件/网站/互联网服务？ - 知乎](https://www.zhihu.com/question/36546814) 
+
 [如何使用平板电脑提高学习和生活的效率？ - 知乎](https://www.zhihu.com/question/20608916) 
 [你用哪些软件和方式来提高工作效率？ - 知乎](https://www.zhihu.com/question/20814897/answer/435490541) 
 [哪些工具或者习惯能极大提升产品经理的工作效率？ - 知乎](https://www.zhihu.com/question/24458648/answer/84885498) 
@@ -348,7 +383,8 @@ source_url: https://zhuanlan.zhihu.com/p/352546929
 高效率工具搜罗 - 知乎 
 [如何使用 Evernote 管理大量笔记？ - 知乎](https://www.zhihu.com/question/20766964/answer/28230462) 
 
-4.3.时间管理** **[有哪些时间管理的好习惯？ - 知乎](https://www.zhihu.com/question/19727341) 
+### 4.3.时间管理** **[有哪些时间管理的好习惯？ - 知乎](https://www.zhihu.com/question/19727341) 
+
 [时间管理，是否有必要去看时间管理的书？ - 知乎](https://www.zhihu.com/question/22656925/answer/30611160) 
 [你是怎么有效利用碎片时间的？ - 知乎](https://www.zhihu.com/question/19562330/answer/15072439) 
 [学霸的作息是怎样的，为什么都不会困？](https://www.zhihu.com/question/267346432)
@@ -356,31 +392,36 @@ source_url: https://zhuanlan.zhihu.com/p/352546929
 [下班后闲下来的时间可以干什么?](https://www.zhihu.com/question/345473425)
 [如何做到长时间（4 个小时以上）精神专注？](https://www.zhihu.com/question/20883403)
 
-4.4.精力管理** **[如何保持精力充沛，有效适应困、倦、疲、乏等周期型生理状况？ - 知乎](https://www.zhihu.com/question/21097892) 
+### 4.4.精力管理** **[如何保持精力充沛，有效适应困、倦、疲、乏等周期型生理状况？ - 知乎](https://www.zhihu.com/question/21097892) 
+
 [理论上每天有 8.5 ~ 11.5 小时的学习时间，但为什么最多只有 4 小时是有效的？如何改善？ - 知乎](https://www.zhihu.com/question/21781921) 
 [创业时如何在工作繁重、睡眠较少的情况下保持旺盛精力？ - 知乎](https://www.zhihu.com/question/23177623) 
 [有哪些介绍精力管理的书籍？ - 知乎](https://www.zhihu.com/question/20882251/answer/16488623) 
 [如何可以提高注意力? - 知乎](https://www.zhihu.com/question/19588014/answer/12811845) 
 
-4.5.记忆力提高** **[思维混乱，记忆力差，反应慢，怎么办？ - 知乎](https://www.zhihu.com/question/41748818/answer/1573005077) 
+### 4.5.记忆力提高** **[思维混乱，记忆力差，反应慢，怎么办？ - 知乎](https://www.zhihu.com/question/41748818/answer/1573005077) 
+
 [记忆力越来越差该如何改善？ - 知乎](https://www.zhihu.com/question/306960282) 
 [怎么有效锻炼自己的记忆力？](https://www.zhihu.com/question/36473108)
 [爱看历史书籍，但看完很容易忘记具体的细节，有什么好办法么？](https://www.zhihu.com/question/20391804)
 [有什么方法能通过训练提升人脑的工作记忆（短期同时记忆多件相对复杂的事）？](https://www.zhihu.com/question/25419140)
 
-4.6.拖延症改善** **[如何克服严重的拖延症，可以采取哪些行动？ - 知乎](https://www.zhihu.com/question/19553990/answer/12499684) 
+### 4.6.拖延症改善** **[如何克服严重的拖延症，可以采取哪些行动？ - 知乎](https://www.zhihu.com/question/19553990/answer/12499684) 
+
 [是什么让你开始放下手机去读书？ - 知乎](https://www.zhihu.com/question/303137880/answer/596726044) 
 [为什么嗑瓜子可以嗑半个小时甚至一个小时以上，看书学习却不可以？ - 知乎](https://www.zhihu.com/question/28184567/answer/39898658) 
 [如何克服严重的拖延症，可以采取哪些行动？ - 知乎](https://www.zhihu.com/question/19553990/answer/21785661) 
 
-4.7.需警惕的思维陷阱** **[怎样理解雷军“你不要用战术上的勤奋掩盖战略上的懒惰”？ - 知乎](https://www.zhihu.com/question/23453607) 
+### 4.7.需警惕的思维陷阱** **[怎样理解雷军“你不要用战术上的勤奋掩盖战略上的懒惰”？ - 知乎](https://www.zhihu.com/question/23453607) 
+
 [为什么心急如焚时间很紧的人反而更愿意选择游戏？ - 知乎](https://www.zhihu.com/question/22515072) 
 [哪些行为是浪费时间？ - 知乎](https://www.zhihu.com/question/22845785/answer/22853606) 
 [请问思维导图应该怎么用，我画完怎么感觉本末倒置了？ - 知乎](https://www.zhihu.com/question/383395554/answer/1126339348) 
 [如何告别「伪勤奋」？ - 知乎](https://www.zhihu.com/question/297080761/answer/708926834) 
 [时间管理最常见的误区有哪些？ - 知乎](https://www.zhihu.com/question/19983640/answer/13559452) 
 
-4.8.其他** **[如何高效地管理邮件？ - 知乎](https://www.zhihu.com/question/19600890) 
+### 4.8.其他** **[如何高效地管理邮件？ - 知乎](https://www.zhihu.com/question/19600890) 
+
 [你有哪些「做过某功能的改进之后，数据得到大幅提升」的经历？ - 知乎](https://www.zhihu.com/question/40500856) 
 [我想知道极简主义的人是怎么处理还没有极简时候的物品的？ - 知乎](https://www.zhihu.com/question/361851610/answer/1710870714) 
 [哪些思维方式是你刻意训练过的？ - 知乎](https://www.zhihu.com/question/23913984/answer/147141591) 
@@ -404,7 +445,8 @@ source_url: https://zhuanlan.zhihu.com/p/352546929
 [阅读专业书籍怎么做读书笔记？ - 知乎](https://www.zhihu.com/question/20350801/answer/14910973) 
 
 5.人生道理** **
-5.1.成长感悟** **[有哪些事情是你受了教训以后才学会的？ - 知乎](https://www.zhihu.com/question/22064528) 
+### 5.1.成长感悟** **[有哪些事情是你受了教训以后才学会的？ - 知乎](https://www.zhihu.com/question/22064528) 
+
 [人生中你经历过哪些顿悟？ - 知乎](https://www.zhihu.com/question/21014693) 
 [成长过程中，哪些道理让人懂之恨晚？ - 知乎](https://www.zhihu.com/question/20395761) 
 [有哪些你毕业后相见恨晚的道理？ - 知乎](https://www.zhihu.com/question/28690552)
@@ -426,7 +468,8 @@ source_url: https://zhuanlan.zhihu.com/p/352546929
 [有哪些道理你后悔没有早点知道？ - 知乎](https://www.zhihu.com/question/23819007/answer/107332874) 
 [人在什么时候会瞬间成长？ - 知乎](https://www.zhihu.com/question/325602627/answer/721312668) 
 
-5.2.前辈忠告** **[有哪些给年轻人的忠告？ - 知乎](https://www.zhihu.com/question/287309839) 
+### 5.2.前辈忠告** **[有哪些给年轻人的忠告？ - 知乎](https://www.zhihu.com/question/287309839) 
+
 [你有没有什么忠告想告诉 20 岁的年轻人？ - 知乎](https://www.zhihu.com/question/34225818) 
 [进入中年危机了怎么办？ - 知乎](https://www.zhihu.com/question/21589326) 
 [为什么人不听劝，非要吃了亏才会得到教训？ - 知乎](https://www.zhihu.com/question/29554817/answer/45033429) 
@@ -437,27 +480,31 @@ source_url: https://zhuanlan.zhihu.com/p/352546929
 [研三了，延毕了。当了一辈子的乖乖女，终于还是闹出了笑话。你不知道我每天活在怎样的地狱里，怎样才能解脱？ - 知乎](https://www.zhihu.com/question/59767069) 
 [有哪些简洁的人生建议？ - 知乎](https://www.zhihu.com/question/19869956/answer/924236679) 
 
-5.3.历史借鉴** **[为什么小小的沛县居然拥有萧何、曹参、樊哙这么多优质人才？ - 知乎](https://www.zhihu.com/question/346594066) 
+### 5.3.历史借鉴** **[为什么小小的沛县居然拥有萧何、曹参、樊哙这么多优质人才？ - 知乎](https://www.zhihu.com/question/346594066) 
+
 [为什么叔本华认为年轻人很早洞察人事、谙于世故预示着本性平庸？ - 知乎](https://www.zhihu.com/question/61134374/answer/1192481373) 
 [有哪些让你有感触的历史人物？](https://www.zhihu.com/question/285892075)
 [历史上有哪些难以应对的阳谋？](https://www.zhihu.com/question/21720435)
 [你曾经误解最大的一个历史人物是谁？](https://www.zhihu.com/question/33572627)
 
-5.4.需改正的不良思维** **[有哪些典型的学生思维？ - 知乎](https://www.zhihu.com/question/301464866/answer/936572408) 
+### 5.4.需改正的不良思维** **[有哪些典型的学生思维？ - 知乎](https://www.zhihu.com/question/301464866/answer/936572408) 
+
 [年轻人有哪些典型的幼稚病？ - 知乎](https://www.zhihu.com/question/54405230/answer/149390487) 
 [哪些事物会蒙蔽自己的心智？ - 知乎](https://www.zhihu.com/question/35536169/answer/65243196) 
 [老一辈给年轻人挖的最大的坑是什么？](https://www.zhihu.com/question/411517557)
 [为什么越来越多的年轻人感觉工作没有动力、职业发展没有希望，迷茫和中年危机等现象普遍发生？](https://www.zhihu.com/question/297726264)
 [消费主义是如何通过伪造文化来欺骗年轻人的？](https://www.zhihu.com/question/342318692)
 
-5.5.其他** **[体制内工作让自己越发的丢失了我本身，我想知道离开的勇气何时才来？ - 知乎](https://www.zhihu.com/question/348996062/answer/904930482) 
+### 5.5.其他** **[体制内工作让自己越发的丢失了我本身，我想知道离开的勇气何时才来？ - 知乎](https://www.zhihu.com/question/348996062/answer/904930482) 
+
 [怎样才能做到不在乎别人骂？ - 知乎](https://www.zhihu.com/question/20357839/answer/22241794) 
 [25 岁，开始害怕 30 岁还碌碌无为，却不知道如何前进，该怎么办？ - 知乎](https://www.zhihu.com/question/26344285/answer/32667955) 
 [生活有哪些残忍的真相？ - 知乎](https://www.zhihu.com/question/374554289/answer/1133360538) 
 [一个人彻底改变自己有多难？需要多大的勇气？ - 知乎](https://www.zhihu.com/question/47034512/answer/107157117) 
 
 6.为人处世** **
-6.1.人情往来** **[哪些行为容易得罪别人，自己却不容易察觉？ - 知乎](https://www.zhihu.com/question/19859632) 
+### 6.1.人情往来** **[哪些行为容易得罪别人，自己却不容易察觉？ - 知乎](https://www.zhihu.com/question/19859632) 
+
 [有哪些人际关系方面的小技巧可以保护自己？ - 知乎](https://www.zhihu.com/question/36343659) 
 [你经历过哪些事情让你觉得对方「不愧是老手，有智慧！」？ - 知乎](https://www.zhihu.com/question/37616118) 
 [人际交往中需要避免哪些自身不易认知的不良习惯？ - 知乎](https://www.zhihu.com/question/29535185) 
@@ -468,7 +515,8 @@ source_url: https://zhuanlan.zhihu.com/p/352546929
 [自由职业者如何避免别人觉得你很自由，可以占用你的时间？ - 知乎](https://www.zhihu.com/question/361913169/answer/947184871) 
 [领导把你单独叫过去然后让你评价同事该怎么办？ - 知乎](https://www.zhihu.com/question/408296958) 
 
-6.2.职场心得** **[你们听过领导最有水平的一句话是什么？ - 知乎](https://www.zhihu.com/question/357810812) 
+### 6.2.职场心得** **[你们听过领导最有水平的一句话是什么？ - 知乎](https://www.zhihu.com/question/357810812) 
+
 [有哪些大家不说，但需要知道的社会规则？ - 知乎](https://www.zhihu.com/question/64351318) 
 [常见的社会潜规则有哪些？ - 知乎](https://www.zhihu.com/question/19605307) 
 [与套路很深的人交往是种怎样的体验？ - 知乎](https://www.zhihu.com/question/50627142/answer/150264246) 
@@ -495,7 +543,8 @@ source_url: https://zhuanlan.zhihu.com/p/352546929
 [如何找到比你更厉害的人并让他愿意为你工作？ - 知乎](https://www.zhihu.com/question/20766065/answer/16108085) 
 [对比汪涵，央视主持人会如何救场？ - 知乎](https://www.zhihu.com/question/29158928/answer/616012486) 
 
-6.3.离职相关** **[离职的时候领导说你不知感恩你会怎么反驳他？ - 知乎](https://www.zhihu.com/question/439912923) 
+### 6.3.离职相关** **[离职的时候领导说你不知感恩你会怎么反驳他？ - 知乎](https://www.zhihu.com/question/439912923) 
+
 [公司不让辞职，给领导辞职信拒收怎么办？ - 知乎](https://www.zhihu.com/question/335194056/answer/764183083) 
 [公司可以不批准员工辞职吗？ - 知乎](https://zhuanlan.zhihu.com/p/35580926)
 [直接旷工，不办离职手续会怎样？ - 知乎](https://www.zhihu.com/question/309395451/answer/575749491) 
@@ -503,23 +552,27 @@ source_url: https://zhuanlan.zhihu.com/p/352546929
 [提离职被老板加薪挽留，该怎么办？ - 知乎](https://www.zhihu.com/question/21234709/answer/122164900) 
 [怎么说离职原因新的公司比较能接受？ - 知乎](https://www.zhihu.com/question/264639341/answer/1594789860) 
 
-6.4.识人技巧** **[如何掌握从细节看人识人的能力？从哪里练起？ - 知乎](https://www.zhihu.com/question/21930470) 
+### 6.4.识人技巧** **[如何掌握从细节看人识人的能力？从哪里练起？ - 知乎](https://www.zhihu.com/question/21930470) 
+
 [你在怎样的一瞬间认清了一个人？ - 知乎](https://www.zhihu.com/question/290287180) 
 [如何辨别和远离心理变态等极端人士？ - 知乎](https://www.zhihu.com/question/21190452) 
 [有哪些独到的识人技巧？ - 知乎](https://www.zhihu.com/question/47908341/answer/1595272229) 
 
-6.5.其他** **[那些在一个公司死磕了5~10年的人最后都怎么样了？ - 知乎](https://www.zhihu.com/question/295529432) 
+### 6.5.其他** **[那些在一个公司死磕了5~10年的人最后都怎么样了？ - 知乎](https://www.zhihu.com/question/295529432) 
+
 [要成就一番事业，在有能力的前提下到底是应该要正直还是应该厚黑？ - 知乎](https://www.zhihu.com/question/27167412/answer/60305135) 
 [范蠡为什么知道勾践可共患难不可共富贵？ - 知乎](https://www.zhihu.com/question/24583526/answer/28320333) 
 [这个社会中，有真才实学技术的人，是否总体不如「非常会来事」的万金油混得好？ - 知乎](https://www.zhihu.com/question/20940082/answer/55787562) 
 [常参加饭局的人，能获知哪些常人难知道的信息？ - 知乎](https://www.zhihu.com/question/62546926/answer/201804165) 
 
 7.价值观** **
-7.1.人生守则** **[你时刻提醒自己要奉行的人生守则是什么？ - 知乎](https://www.zhihu.com/question/22695085) 
+### 7.1.人生守则** **[你时刻提醒自己要奉行的人生守则是什么？ - 知乎](https://www.zhihu.com/question/22695085) 
+
 [人生应该活成什么样子，该以什么样的方式活着？ - 知乎](https://www.zhihu.com/question/290003248/answer/471656305) 
 [大格局的人是什么样的？ - 知乎](https://www.zhihu.com/question/68504463/answer/288503356) 
 
-7.2.人生目标** **[人这一生为什么要努力？ - 知乎](https://www.zhihu.com/question/22913650) 
+### 7.2.人生目标** **[人这一生为什么要努力？ - 知乎](https://www.zhihu.com/question/22913650) 
+
 [既然这个世界并不完美、充满痛苦，什么我们还要生育后代，让他们也受苦？ - 知乎](https://www.zhihu.com/question/21589318) 
 [如何确定你真正想做的事情到底是什么？ - 知乎](https://www.zhihu.com/question/24272298) 
 [如何找到人生目标？ - 知乎](https://www.zhihu.com/question/20054842) 
@@ -532,17 +585,20 @@ source_url: https://zhuanlan.zhihu.com/p/352546929
 [25 岁庸庸碌碌的我，人生的方向在哪？ - 知乎](https://www.zhihu.com/question/64277456/answer/219120458) 
 [如何确定你真正想做的事情到底是什么？ - 知乎](https://www.zhihu.com/question/24272298)
 
-7.3.自我认知** **[怎么知道自己是怎样的人？ - 知乎](https://www.zhihu.com/question/21650774) 
+### 7.3.自我认知** **[怎么知道自己是怎样的人？ - 知乎](https://www.zhihu.com/question/21650774) 
+
 [如何做到减少过度关注自我？ - 知乎](https://www.zhihu.com/question/23052778/answer/125665365) 
 [怎么认识自己？](https://www.zhihu.com/question/20289916)
 [从什么时候开始发现自己其实是个普通人？](https://www.zhihu.com/question/273968354)
 [什么叫「爱自己」？](https://www.zhihu.com/question/27278398)
 
-7.4.自我改进** **[如何让自己变得更加优秀？ - 知乎](https://www.zhihu.com/question/27712663/answer/78106585) 
+### 7.4.自我改进** **[如何让自己变得更加优秀？ - 知乎](https://www.zhihu.com/question/27712663/answer/78106585) 
+
 [人在年轻的时候一定要奋斗吗？ - 知乎](https://www.zhihu.com/question/28923765/answer/63148139) 
 [一个人太完美主义是好事还是坏事？ - 知乎](https://www.zhihu.com/question/40092331/answer/906412030) 
 
-7.5.其他** **[有哪些年轻人「千万不能碰」的东西？ - 知乎](https://www.zhihu.com/question/39004511/answer/257544487) 
+### 7.5.其他** **[有哪些年轻人「千万不能碰」的东西？ - 知乎](https://www.zhihu.com/question/39004511/answer/257544487) 
+
 [在你成长过程中对你影响最大的错误观念是什么，后来是怎么认识到，怎么改正的？ - 知乎](https://www.zhihu.com/question/20364468/answer/15263316) 
 [有哪些事情使你意识到「思维的局限性」？ - 知乎](https://www.zhihu.com/question/40498719/answer/103577768) 
 [年轻人怎样保持极度冷静，客观的看待生活？ - 知乎](https://www.zhihu.com/question/391891151/answer/1274801485) 
@@ -551,14 +607,16 @@ source_url: https://zhuanlan.zhihu.com/p/352546929
 [学习/工作真的坚持不下去了怎么办？ - 知乎](https://www.zhihu.com/question/63178949/answer/212159368) 
 
 8.思想与情感** **
-8.1.独立思考** **[什么叫做内心强大？怎样变成一个内心强大的人？ - 知乎](https://www.zhihu.com/question/27755599) 
+### 8.1.独立思考** **[什么叫做内心强大？怎样变成一个内心强大的人？ - 知乎](https://www.zhihu.com/question/27755599) 
+
 [认为「只有我完美了，别人才会喜欢我」的想法有什么错误，该怎么解决？ - 知乎](https://www.zhihu.com/question/31280604) 
 [世上最孤独的明星有哪些？ - 知乎](https://www.zhihu.com/question/348541762/answer/840860616) 
 [一个人心理成熟的具体表现都有哪些？ - 知乎](https://www.zhihu.com/question/37018317/answer/70366425) 
 [低自尊的人应当怎样自我治疗或调整？ - 知乎](https://www.zhihu.com/question/20620268/answer/139257069) 
 [心智越成熟的人是否越少「晒生活」？ - 知乎](https://www.zhihu.com/question/34794621/answer/111673869) 
 
-8.2.男女交往** **[男女之间真的存在思维方式的差异吗？如果有，影响因素是什么？ - 知乎](https://www.zhihu.com/question/20597323) 
+### 8.2.男女交往** **[男女之间真的存在思维方式的差异吗？如果有，影响因素是什么？ - 知乎](https://www.zhihu.com/question/20597323) 
+
 [谈恋爱什么时候觉得该及时止损分手了? - 知乎](https://www.zhihu.com/question/349743183) 
 [女朋友说一周只联系一次，期间不准联系，她要准备考编制，我该坚持吗？ - 知乎](https://www.zhihu.com/question/403485456) 
 [你最欣赏的性格是什么样的？ - 知乎](https://www.zhihu.com/question/268163243) 
@@ -586,7 +644,8 @@ source_url: https://zhuanlan.zhihu.com/p/352546929
 [女人除了性吸引之外还有什么男人无法替代的特质吸引异性？ - 知乎](https://www.zhihu.com/question/23491378/answer/825573807) 
 [你有没有想过，你可能一辈子寻找不到真爱，或者永远等不到合适的那个人出现？ - 知乎](https://www.zhihu.com/question/20011304/answer/16507618) 
 
-8.3.婚姻经营** **[为什么现在离婚率如此之高？ - 知乎](https://www.zhihu.com/question/22627059) 
+### 8.3.婚姻经营** **[为什么现在离婚率如此之高？ - 知乎](https://www.zhihu.com/question/22627059) 
+
 [读博士一直不能毕业，老婆嫌我没出息，怎么办？ - 知乎](https://www.zhihu.com/question/30774223) 
 [新婚家庭可能会遇到哪些典型的，恋爱时不会遇到的问题？ - 知乎](https://www.zhihu.com/question/35233811) 
 [你是从哪个细节发现男友/老公出轨的？ - 知乎](https://www.zhihu.com/question/25308230) 
@@ -603,14 +662,16 @@ source_url: https://zhuanlan.zhihu.com/p/352546929
 [男朋友残疾了，如何分手才不会刺激到他？ - 知乎](https://www.zhihu.com/question/430627660) 
 [女生出轨真的有第一次就会有第二次吗？ - 知乎](https://www.zhihu.com/question/375756852/answer/1641632790) 
 
-8.4.其他** **[在情商高的人眼中，这个世界是怎样的一个地方？ - 知乎](https://www.zhihu.com/question/24523635) 
+### 8.4.其他** **[在情商高的人眼中，这个世界是怎样的一个地方？ - 知乎](https://www.zhihu.com/question/24523635) 
+
 [王宝强的老婆出轨是否有其必然性？ - 知乎](https://www.zhihu.com/question/49583990/answer/116795411) 
 [为什么看见闺蜜嫁得好，心里不舒服？ - 知乎](https://www.zhihu.com/question/334182992/answer/746400150) 
 [《阿甘正传》中的珍妮频频离开阿甘是什么原因？ - 知乎](https://www.zhihu.com/question/19736701/answer/112807409) 
 [我把朋友的病史告诉她男朋友了，她婚事黄了，我是不是做错了？ - 知乎](https://www.zhihu.com/question/347389462/answer/1700242113) 
 
 9.调研报告** **
-9.1.社会现状** **[北京消费高在哪里? - 知乎](https://www.zhihu.com/question/330650455) 
+### 9.1.社会现状** **[北京消费高在哪里? - 知乎](https://www.zhihu.com/question/330650455) 
+
 [为什么美国程序员工作比中国程序员工作轻松、加班少？ - 知乎](https://www.zhihu.com/question/53613628) 
 [你后悔留在西安了吗？为什么？ - 知乎](https://www.zhihu.com/question/394769312) 
 [中国面对哪些隐秘的危险？ - 知乎](https://www.zhihu.com/question/387923618) 
@@ -623,7 +684,8 @@ source_url: https://zhuanlan.zhihu.com/p/352546929
 [为什么长辈都觉得去垄断行业国企好，工作稳定，而去私企就不靠谱？ - 知乎](https://www.zhihu.com/question/33273396/answer/69654350) 
 [哪个二线城市最宜居？ - 知乎](https://www.zhihu.com/question/23813855/answer/232053355) 
 
-9.2.时事热点** **[如何看待拼多多离职员工在脉脉上的吐槽？ - 知乎](https://www.zhihu.com/question/408873251) 
+### 9.2.时事热点** **[如何看待拼多多离职员工在脉脉上的吐槽？ - 知乎](https://www.zhihu.com/question/408873251) 
+
 [韩国首尔市长失联后被确认已身亡，发生了什么？ - 知乎](https://www.zhihu.com/question/405921968) 
 [如何看待马云称「未来每年将会向社会输出 1000 名在阿里工作 10 年以上的人才」 ？ - 知乎](https://www.zhihu.com/question/364834338) [如何看待初一女孩在学校扫雪 3 小时，手指被严重冻伤险遭截肢？校方是否应承担责任？ - 知乎](https://www.zhihu.com/question/364954873) 
 [社会都已经这么骂百度了，为什么百度还没有做出明显改变？ - 知乎](https://www.zhihu.com/question/335624180) 
@@ -658,7 +720,8 @@ source_url: https://zhuanlan.zhihu.com/p/352546929
 [武汉抗疫医生艾芬在爱尔眼科治疗致右眼近乎失明，爱尔眼科称「失明与手术无直接关联」，谁该承担相应责任？ - 知乎](https://www.zhihu.com/question/437443568) 
 [如何看待网传绿地集团高管被举报「谎称不孕不育致女下属怀孕并有不当经济腐败」的情况？ - 知乎](https://www.zhihu.com/question/395313453/answer/1227326359) 
 
-9.3.理论分析** **[业余和专业最大的区别是什么？ - 知乎](https://www.zhihu.com/question/21733358) 
+### 9.3.理论分析** **[业余和专业最大的区别是什么？ - 知乎](https://www.zhihu.com/question/21733358) 
+
 [你知道哪些「闷声发大财」的公司？ - 知乎](https://www.zhihu.com/question/20867158) 
 [能否说家庭经济状况越好的人越愿意努力，而家庭经济状况一般的人会安于平凡？ - 知乎](https://www.zhihu.com/question/19908102) 
 [那些年入上百万的人是如何做到的？他们的平均年龄是多少？白手起家的到底多不多？ - 知乎](https://www.zhihu.com/question/22706323) [如何透过身边小事发现某些大趋势？ - 知乎](https://www.zhihu.com/question/21179967) 
@@ -669,7 +732,8 @@ source_url: https://zhuanlan.zhihu.com/p/352546929
 [马克思的劳动价值论是假的么？如果是假的，如何证伪？ - 知乎](https://www.zhihu.com/question/47055877) 
 [有哪些我们觉得荒谬的事，却有着合理的经济学解释？ - 知乎](https://www.zhihu.com/question/34406872/answer/58582081) 
 
-9.4.其他
+### 9.4.其他
+
 [程序员们平时都喜欢逛什么论坛呢？ - 知乎](https://www.zhihu.com/question/27145069) 
 [没有钱真的可以创业吗？ - 知乎](https://www.zhihu.com/question/339834932) 
 [为什么很多女人生完孩子就会变成微商？ - 知乎](https://www.zhihu.com/question/324226565) 

@@ -117,7 +117,8 @@ SparseServe 的分层存储依赖在 HBM 与 DRAM 间数据的高效 Load 与 Sa
 
 图4：(a) 采用 CudaMemory 和 FlashH2D 的 KV Cache加载带宽对比；(a) 采用 CudaMemory 和 FlashD2H 的 KV Cache 保存带宽对比
 
-2.2.1 FlashH2D：GPU 直接加载
+### 2.2.1 FlashH2D：GPU 直接加载
+
 
 
 在每层注意力计算前，DSA 会基于每个头动态地从 DRAM 选择并加载所需 KV 块到 HBM。传统基于 cudaMemcpy 的加载方式需对每个离散块分别调用 memcpy，导致函数调用次数激增、PCIe 带宽利用率低下，尤其在块数量较多时问题更严重（见图 5）。
@@ -128,7 +129,8 @@ SparseServe 的分层存储依赖在 HBM 与 DRAM 间数据的高效 Load 与 Sa
 
 SparseServe 利用 统一虚拟寻址（Unified Virtual Addressing, UVA），使 GPU 核心能够直接访问 DRAM。通过一个融合的 GPU kernel 并行加载所有选定 KV 块，SparseServe 将多次 memcpy 调用合并为一次内核调用：为每个 KV 块分配一个线程块；根据实际选中块数量动态调整线程数；最大化 PCIe 带宽利用率并减少调用开销。如图 4a所示，FlashH2D 将KV Cache带宽从1~4 GB/s 提升到 22 GB/s。
 
-2.2.2 FlashD2H：CPU 辅助保存
+### 2.2.2 FlashD2H：CPU 辅助保存
+
 
 
 在每层开始时，上一层的隐藏状态被投影为形状为 (N, H, D) 的 KV 张量，并写入 HBM 中相应 KV 块。当块填满后，通过独立 CUDA 流异步写回 DRAM，与计算重叠执行。由于这些块在 HBM 中地址分散，直接保存同样面临碎片化问题。

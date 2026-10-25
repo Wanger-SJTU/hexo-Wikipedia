@@ -79,9 +79,11 @@ Les documents sont faits pour être lus par des humains ; les primitives sont fa
 Pensez à la différence entre les contraintes de trigger en base de données et les checks côté application : les premières sont imposées par le moteur de base de données, aucun SQL ne peut les éviter ; les secondes dépendent de la correction du code applicatif et peuvent être contournées par accident. Comme primitive du harness, la liste de fonctionnalités sert quatre composants :
 
 1. <strong>Scheduler</strong> : lit les états et choisit la prochaine fonctionnalité `not_started`. Comme un système de planification de production d'usine.
-2. <strong>Verifier</strong> : exécute les commandes de vérification et décide d'autoriser ou non les transitions d'état. Comme une inspection qualité.
+## 2. **Verifier** : exécute les commandes de vérification et décide d'autoriser ou non les transitions d'état. Comme une inspection qualité.
+
 3. <strong>Handoff reporter</strong> : génère automatiquement des résumés de passation de session depuis la liste de fonctionnalités. Comme un rapport automatique de changement d'équipe.
-4. <strong>Progress tracker</strong> : agrège la distribution des états et fournit des métriques de santé du projet. Comme un tableau de bord.
+## 4. **Progress tracker** : agrège la distribution des états et fournit des métriques de santé du projet. Comme un tableau de bord.
+
 
 ## Comment bien faire
 

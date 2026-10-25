@@ -206,8 +206,10 @@ Die vollständigen Kursmaterialien finden Sie auf der <strong>[Dokumentations-We
 
 Das Curriculum ist in drei Teile gegliedert:
 
-1. <strong>Vorlesungen</strong>: 12 konzeptionelle Einheiten, die die Theorie hinter dem Harness Engineering erklären.
-2. <strong>Projekte</strong>: 6 praktische Projekte, bei denen Sie einen agentenbasierten Arbeitsbereich von Grund auf neu aufbauen.
+## 1. **Vorlesungen**: 12 konzeptionelle Einheiten, die die Theorie hinter dem Harness Engineering erklären.
+
+## 2. **Projekte**: 6 praktische Projekte, bei denen Sie einen agentenbasierten Arbeitsbereich von Grund auf neu aufbauen.
+
 3. <strong>Vorlagen-Bibliothek</strong>: Kopierfertige Vorlagen (`AGENTS.md`, `feature_list.json`, `init.sh` usw.), die Sie noch heute in Ihren eigenen Repositories verwenden können.
 
 ---

@@ -661,9 +661,12 @@ int open_tombstone(std::string* out_path) {
 
 打开tombstone文件规则：
 
-1. 当已使用的tombstone文件个数小于10时，则创建新的tombstone文件；否则执行2；
-2. 获取修改时间最老的tombstone文件，并覆写该文件；
-3. 如果最老文件不存在，则默认使用文件`data/tombstones/tombstone_00`
+## 1. 当已使用的tombstone文件个数小于10时，则创建新的tombstone文件；否则执行2；
+
+## 2. 获取修改时间最老的tombstone文件，并覆写该文件；
+
+## 3. 如果最老文件不存在，则默认使用文件`data/tombstones/tombstone_00`
+
 
 #### 3.6.2 BacktraceMap::Create
 
@@ -937,7 +940,8 @@ debuggerd.main
 
 整个过程的核心方法为`worker_process()`，其流程如下：
 
-1. 根据请worker\_process()求中的不同action采取相应操作，除此之外则立即结束进程  
+## 1. 根据请worker\_process()求中的不同action采取相应操作，除此之外则立即结束进程  
+
 
 ```text
    * DEBUGGER\_ACTION\_DUMP\_TOMBSTONE，则调用open\_tombstone并继续执行；  
@@ -945,11 +949,16 @@ debuggerd.main
    * DEBUGGER\_ACTION\_DUMP\_BACKTRACE，则直接继续执行；
 ```
 
-2. 调用ptrace方法attach到目标进程;
-3. 调用BacktraceMap::Create来生成backtrace;
-4. 当Action=`DEBUGGER_ACTION_CRASH`，则执行activity\_manager\_connect；
-5. 调用drop\_privileges来取消特权模式；
-6. 通过perform\_dump执行dump操作：【见小节3.6.4】  
+## 2. 调用ptrace方法attach到目标进程;
+
+## 3. 调用BacktraceMap::Create来生成backtrace;
+
+## 4. 当Action=`DEBUGGER_ACTION_CRASH`，则执行activity\_manager\_connect；
+
+## 5. 调用drop\_privileges来取消特权模式；
+
+## 6. 通过perform\_dump执行dump操作：【见小节3.6.4】  
+
 
 ```text
    * SIGSTOP && `DEBUGGER_ACTION_DUMP_BACKTRACE`，则`dump_backtrace`()  
@@ -957,11 +966,16 @@ debuggerd.main
    * SIGBUS等致命信号，则`engrave_tombstone`()
 ```
 
-7. 当Action=`DEBUGGER_ACTION_DUMP_TOMBSTONE`，则将向client端写入tombstone数据；
-8. 调用activity\_manager\_write，将进程crash情况告知AMS；
-9. 调用ptrace方法detach到目标进程;
-10. 当Action=`DEBUGGER_ACTION_CRASH`，发送信号SIGKILL给目标进程tid
-11. 调用exit来结束进程。
+## 7. 当Action=`DEBUGGER_ACTION_DUMP_TOMBSTONE`，则将向client端写入tombstone数据；
+
+## 8. 调用activity\_manager\_write，将进程crash情况告知AMS；
+
+## 9. 调用ptrace方法detach到目标进程;
+
+## 10. 当Action=`DEBUGGER_ACTION_CRASH`，发送信号SIGKILL给目标进程tid
+
+## 11. 调用exit来结束进程。
+
 
 整个过程中，【见小节3.6.4】perform\_dump是核心过程：对于DEBUGGER\_ACTION\_DUMP\_BACKTRACE命令，则执行`dump_backtrace`；否则执行`engrave_tombstone`。接下来分别说说这两个过程
 
@@ -1583,9 +1597,12 @@ static void dump_thread(log_t* log, pid_t pid, pid_t tid, BacktraceMap* map, int
 
 兄弟线程dump\_thread的输出内容：
 
-1. 线程相关信息，包含pid/tid以及相应name
-2. 寄存器状态
-3. backtrace以及stack
+## 1. 线程相关信息，包含pid/tid以及相应name
+
+## 2. 寄存器状态
+
+## 3. backtrace以及stack
+
 
 ### 4.7 小节
 
@@ -1602,22 +1619,35 @@ static void dump_thread(log_t* log, pid_t pid, pid_t tid, BacktraceMap* map, int
 
 #### 4.7.1 主线程dump\_thread
 
-1. build相关头信息；
-2. 线程相关信息，包含pid/tid以及相应name
-3. signal相关信息，包含fault address
-4. 寄存器状态
-5. backtrace
-6. stack
-7. memory near
-8. code around
-9. memory map
+## 1. build相关头信息；
+
+## 2. 线程相关信息，包含pid/tid以及相应name
+
+## 3. signal相关信息，包含fault address
+
+## 4. 寄存器状态
+
+## 5. backtrace
+
+## 6. stack
+
+## 7. memory near
+
+## 8. code around
+
+## 9. memory map
+
 
 #### 4.7.2 兄弟线程dump\_thread
 
-1. 线程相关信息，包含pid/tid以及相应name
-2. 寄存器状态
-3. backtrace
-4. stack
+## 1. 线程相关信息，包含pid/tid以及相应name
+
+## 2. 寄存器状态
+
+## 3. backtrace
+
+## 4. stack
+
 
 兄弟线程调用dump\_thread也会输出的内容其实是主线程dump的第2，4，5，6项目。
 

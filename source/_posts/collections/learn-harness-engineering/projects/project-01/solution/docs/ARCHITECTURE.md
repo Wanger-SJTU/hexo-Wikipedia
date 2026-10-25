@@ -96,19 +96,29 @@ Business logic classes running in the main process:
 
 ## Data Flow
 
-1. User interacts with a React component (e.g., clicks "Ask").
-2. Component calls `window.knowledgeBase.qa.ask(question)`.
-3. Preload bridge invokes `ipcRenderer.invoke('qa:ask', question)`.
-4. Main process IPC handler delegates to `QaService.ask()`.
-5. QaService retrieves chunks, scores by keyword overlap, generates answer.
-6. Response flows back through IPC to the renderer.
-7. React component updates state and re-renders.
+## 1. User interacts with a React component (e.g., clicks "Ask").
+
+## 2. Component calls `window.knowledgeBase.qa.ask(question)`.
+
+## 3. Preload bridge invokes `ipcRenderer.invoke('qa:ask', question)`.
+
+## 4. Main process IPC handler delegates to `QaService.ask()`.
+
+## 5. QaService retrieves chunks, scores by keyword overlap, generates answer.
+
+## 6. Response flows back through IPC to the renderer.
+
+## 7. React component updates state and re-renders.
+
 
 ## Build Pipeline
 
-1. `tsc -p tsconfig.node.json` compiles main, preload, shared, and services to `dist/`.
-2. `vite build` bundles the renderer React app to `dist/renderer/`.
-3. Electron loads `dist/main/main.js` as the entry point.
+## 1. `tsc -p tsconfig.node.json` compiles main, preload, shared, and services to `dist/`.
+
+## 2. `vite build` bundles the renderer React app to `dist/renderer/`.
+
+## 3. Electron loads `dist/main/main.js` as the entry point.
+
 
 ## Data Storage
 

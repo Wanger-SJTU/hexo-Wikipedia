@@ -64,11 +64,15 @@ docs/
 
 ## Cómo Adoptarlo
 
-1. Comienza con el pack mínimo si tu repositorio aún es pequeño.
-2. Copia los archivos en [`repo-template/`](./repo-template/index.md) a tu
+## 1. Comienza con el pack mínimo si tu repositorio aún es pequeño.
+
+## 2. Copia los archivos en [`repo-template/`](./repo-template/index.md) a tu
+
    propio repositorio cuando necesites una estructura más fuerte.
-3. Mantén `AGENTS.md` corto. Trátalo como un enrutador hacia los docs más profundos, no como una enciclopedia.
-4. Actualiza los docs de calidad, fiabilidad y planes como parte del trabajo normal, no como un día de limpieza separado.
+## 3. Mantén `AGENTS.md` corto. Trátalo como un enrutador hacia los docs más profundos, no como una enciclopedia.
+
+## 4. Actualiza los docs de calidad, fiabilidad y planes como parte del trabajo normal, no como un día de limpieza separado.
+
 5. Mantén los artefactos generados y las referencias externas explícitos para que los agentes puedan encontrarlos sin depender del historial de chat.
 
 ## Biblioteca de SOPs

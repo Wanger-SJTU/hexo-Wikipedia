@@ -86,7 +86,8 @@ to be continued…
 工业界有很多最佳实践，有空我整理一下。
 
 1. [Maple Tree](https://github.com/torvalds/linux/blob/master/lib/maple%5Ftree.c). Linux Kernel MM新秀，接过了rbtree的接力棒，tree node更加地cache efficient，采用RCU保证reader lockless，writer lock是tree level coarse-grained而不是node level fine-grained。与普通BTree不同的是支持非重叠区间的增删改查（non-overlapping interval index），最神秘的地方是区间的覆盖写（overwrite multiple entries），此过程中删除多个leaf nodes和internal nodes同时维持Btree invariant，核心函数是_mas\_spanning\_rebalance。_阅读过程中可以结合[mailing list](https://lore.kernel.org/linux-mm/20230804165951.2661157-7-Liam.Howlett@oracle.com/)，有空的话我会单独写一篇文章讲解一下源码并简单分析一下能否采用skiplist。
-2. [DPDK QSBR Cuckoo Hash Table.](https://github.com/DPDK/dpdk/blob/main/lib/hash/rte%5Fcuckoo%5Fhash.c) 基于RCU的布谷鸟哈希表，代码结构清晰易懂，非常适合并发编程进阶。
+## 2. [DPDK QSBR Cuckoo Hash Table.](https://github.com/DPDK/dpdk/blob/main/lib/hash/rte%5Fcuckoo%5Fhash.c) 基于RCU的布谷鸟哈希表，代码结构清晰易懂，非常适合并发编程进阶。
+
 
 [发布于 2023-04-12 22:44 ，编辑于 2024-04-12 15:25](https://www.zhihu.com/question/24301047/answer/2980958431)・IP 属地美国
 

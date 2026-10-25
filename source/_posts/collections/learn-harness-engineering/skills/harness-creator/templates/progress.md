@@ -34,8 +34,10 @@ categories:
 
 ### What's Next
 
-1. [Next action item]
-2. [Following action item]
+## 1. [Next action item]
+
+## 2. [Following action item]
+
 
 ## Blockers / Risks
 

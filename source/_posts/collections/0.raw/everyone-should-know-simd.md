@@ -53,10 +53,14 @@ The only real requirement for this to pay off is that you need to be regularly p
 
 The common "process N values at a time" SIMD code follows the same five steps:
 
-1. <strong>Broadcast any constants</strong> you need and initialize vector accumulators, if any.
-2. <strong>Loop over input</strong> one vector-width chunk at a time.
-3. <strong>Perform the comparison or arithmetic</strong> across all lanes in parallel.
-4. <strong>Reduce or store</strong> the vector result as needed.
+## 1. **Broadcast any constants** you need and initialize vector accumulators, if any.
+
+## 2. **Loop over input** one vector-width chunk at a time.
+
+## 3. **Perform the comparison or arithmetic** across all lanes in parallel.
+
+## 4. **Reduce or store** the vector result as needed.
+
 5. <strong>Handle the remaining elements</strong> with a scalar tail. A scalar tail is just your normal loop from before vectorizing, but it only processes the remainder that doesn't fit into a full vector.
 
 ## A Real Example (Ghostty)
@@ -138,10 +142,14 @@ end += @ctz(~mask);
 break;
 ```
 
-1. `@reduce(.And, ...)` — if ALL lanes are true, continue to next vector.
-2. Otherwise, `@bitCast` turns booleans into a bitmask: `{ 1,1,1,0,1,1,1,1 }`
-3. `@ctz(~mask)` counts trailing zeros of inverted mask to find the first failing lane.
-4. `@ctz(~{0,0,0,1,0,0,0,0})` = 3, so `end += 3` points to the 0x0A control character.
+## 1. `@reduce(.And, ...)` — if ALL lanes are true, continue to next vector.
+
+## 2. Otherwise, `@bitCast` turns booleans into a bitmask: `{ 1,1,1,0,1,1,1,1 }`
+
+## 3. `@ctz(~mask)` counts trailing zeros of inverted mask to find the first failing lane.
+
+## 4. `@ctz(~{0,0,0,1,0,0,0,0})` = 3, so `end += 3` points to the 0x0A control character.
+
 
 ### Step 5: Scalar Tail
 

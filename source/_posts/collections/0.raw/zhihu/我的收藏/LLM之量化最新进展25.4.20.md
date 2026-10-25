@@ -151,15 +151,18 @@ QuEST在所有测试的精度和模型大小下都能稳定收敛，而PACT在�
 
 论文提出了一种名为 RSQ (Rotate, Scale, then Quantize)** 的方法，通过以下三个步骤来解决量化问题：
 
-1. <strong>Rotate（旋转）</strong>
+## 1. **Rotate（旋转）**
+
 
 - <strong>目标</strong>：减少权重中的异常值。
 - <strong>方法</strong>：利用 Transformer 的计算不变性（computational invariance），通过正交变换（旋转）来调整权重。具体来说，将权重矩阵 *W* 通过一个随机化的 Hadamard 矩阵 *Q* 进行旋转，即 *W*→*WQ*⊤。这种变换不会改变模型的输出，但可以减少权重的异常值，从而提高量化效果。
-2. <strong>Scale（缩放）</strong>
+## 2. **Scale（缩放）**
+
 
 - <strong>目标</strong>：根据标记的重要性对输入标记进行加权。
 - <strong>方法</strong>：传统的量化方法对所有标记的重建损失进行均匀优化，而 RSQ 通过引入一个对角矩阵 *R* 来对每个标记的特征进行缩放。具体来说，优化目标从 ∥*WX*−*W*~*X*∥22​ 改为 ∥(*WX*−*W*~*X*)*R*∥22​，其中 *R* 的对角元素 *ri*​ 表示第 *i* 个标记的重要性。论文探索了多种计算标记重要性的方法，最终选择了基于注意力分数的 <strong>AttnCon</strong> 方法。
-3. <strong>Quantize（量化）</strong>
+## 3. **Quantize（量化）**
+
 
 - <strong>目标</strong>：使用 GPTQ 框架对旋转和缩放后的权重进行量化。
 - <strong>方法</strong>：在量化过程中，使用缩放后的标记特征来计算 Hessian 矩阵 *H*RSQ​=2*XR*2*X*⊤，并将其应用于权重更新公式。最终，通过 GPTQ 框架对旋转后的权重进行量化，从而完成整个量化过程。

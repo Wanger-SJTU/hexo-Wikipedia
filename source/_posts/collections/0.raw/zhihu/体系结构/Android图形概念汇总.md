@@ -114,7 +114,8 @@ kgsl：kernel/drivers/gpu/msm/adreno_dispatch.c
 
 crc_commit:drivers/gpu/drm/msm/msm_drv.c
 
-3.2 BLASTBufferQueue:
+### 3.2 BLASTBufferQueue:
+
 
 frameworks/native/libs/gui/BLASTBufferQueue.cpp
 

@@ -17,7 +17,8 @@ source_url: https://zhuanlan.zhihu.com/p/1899538967348634456
 
 缓存的预取，场景应该针对memory bound。比如模型权重预取（尤其是decoding，KV cache），还有MOE预取等等。
 
-1. CPU到GPU的预取
+## 1. CPU到GPU的预取
+
 
 Deep Learning based Data Prefetching in CPU-GPU Unified Virtual Memory(JPDC23)
 找了一些科学计算的case。不过我感觉decoding可能更好。。。
@@ -30,7 +31,8 @@ InfiniGen: Efficient Generative Inference of Large Language Models with Dynamic 
 
 ![](https://pic3.zhimg.com/v2-32e29ef5f1f4f686ecf809c84276ba8c_r.jpg)
 ![](https://pica.zhimg.com/v2-ef355ebb2735f0513381aa802fc2cc86_r.jpg)这是说seq_len和batch小的时候，权重和KV cache差不多，之后就KV cache主导了
-2. HBM到L2的预取
+## 2. HBM到L2的预取
+
 
 PRESERVE: Prefetching Model Weights and KV-Cache in Distributed LLM Serving(arxiv 25)
 因为我熟单卡，我对这个挺感兴趣的。
@@ -55,7 +57,8 @@ GPU的L2-prefetch技术如何使用。（其实是唯一一篇利用了L2-prefet
 Snake: A Variable-length Chain-based Prefetching for GPUs
 图形处理单元 (GPU) 利用内存层次结构和线程级并行 (TLP) 来容忍片外内存延迟，这对于内存受限型应用程序而言是一个重大瓶颈。然而，并行线程会产生大量的内存请求，这会增加平均内存延迟，并因高争用而降低缓存性能。预取是降低内存访问延迟的有效技术，先前的研究表明基于步长的预取对 GPU 性能有积极的影响。然而，现有的预取方法仅依赖于固定步长。为了突破这一限制，本文提出了一种新的预取技术 Snake，它基于可变步长链构建，并采用节流和内存解耦策略。Snake 在预取按需内存请求方面实现了 80% 的覆盖率和 75% 的准确率，从而将内存受限型通用图形处理单元 (GPGPU) 应用程序的 GPU 整体性能和能耗提升了 17%。
 
-3. L2到L1的预取
+## 3. L2到L1的预取
+
 
 <strong>Alcop: Automatic load-compute pipelining in deep learning compiler for ai-gpus</strong>
 真要说的话，multi- stage也可以算是。那就参考MLSYS23的ALCOP。
@@ -78,7 +81,8 @@ Treelet Prefetching For Ray Tracing(MICRO23)
 How Does Software Prefetching Work on GPU Query Processing?(damon24)(ccf-none)
 Deng等人（2024）在数据库领域研究了常见的<strong>软件预取算法</strong>（如Group Prefetch、SPP、AMAC、IMV等）在GPU哈希连接和B树搜索中的效果。他们利用CUDA提供的`prefetch.global.L1`指令显式将数据预取到L1缓存，以重叠计算和内存访问。结果表明在这些数据分析任务上，软件预取可带来最高≈1.3×的速度提升
 
-4. L1到L0的预取
+## 4. L1到L0的预取
+
 
 Lightweight Register File Caching in Collector Units for GPUs(GPGPU23)(CCF-NONE)
 Mojtaba Abaie Shoushtary等人提出的Memento（又称Malekeh）是一种针对GPU寄存器文件（RF）的层次化缓存设计。该方案在GPU的操作数收集单元（Operand Collector Units, OCU）上虚拟出一个小容量的寄存器缓存，利用编译器分析的寄存器重用距离信息进行调度和分配，尽量在OCU中保留即将重用的数据。

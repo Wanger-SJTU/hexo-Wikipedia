@@ -31,11 +31,16 @@ Inisializatsiya agenti (initializer) oʻzidan keyin kamida quyidagi artefaktlarn
 
 ## Tekshiruv roʻyxati (Checklist)
 
-1. Standart ishga tushirish yoʻlini belgilang.
-2. Standart tekshiruv yoʻlini (verification path) belgilang.
-3. Jarayon jurnalini (progress log) yarating va boshlangʻich holatni yozib qoldiring.
-4. Ishni oʻz holatlariga ega boʻlgan aniq funksiyalarga ajrating.
-5. Birinchi toza bazaviy commitʼni (clean baseline commit) yarating.
+## 1. Standart ishga tushirish yoʻlini belgilang.
+
+## 2. Standart tekshiruv yoʻlini (verification path) belgilang.
+
+## 3. Jarayon jurnalini (progress log) yarating va boshlangʻich holatni yozib qoldiring.
+
+## 4. Ishni oʻz holatlariga ega boʻlgan aniq funksiyalarga ajrating.
+
+## 5. Birinchi toza bazaviy commitʼni (clean baseline commit) yarating.
+
 
 ## Muvaffaqiyat testi (Success Test)
 

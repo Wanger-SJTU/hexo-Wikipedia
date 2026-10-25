@@ -105,11 +105,16 @@ All IPC communication uses named channels defined in `src/shared/types.ts`:
 
 ## Data Flow
 
-1. User action in renderer triggers a call to `window.knowledgeBase.*`
-2. Preload bridge converts the call to `ipcRenderer.invoke(channel, ...args)`
-3. Main process IPC handler receives the call and delegates to the appropriate service
-4. Service executes business logic using PersistenceService for storage
-5. Result flows back through IPC to the renderer for display
+## 1. User action in renderer triggers a call to `window.knowledgeBase.*`
+
+## 2. Preload bridge converts the call to `ipcRenderer.invoke(channel, ...args)`
+
+## 3. Main process IPC handler receives the call and delegates to the appropriate service
+
+## 4. Service executes business logic using PersistenceService for storage
+
+## 5. Result flows back through IPC to the renderer for display
+
 
 ## Architecture Verification
 

@@ -19,12 +19,14 @@ Esta es la sección práctica de Learn Harness Engineering. Leer las lecciones n
 
 El curso incluye 6 proyectos prácticos y progresivos que enseñan a construir desde cero un entorno agentic fiable:
 
-1. <strong>Solo prompt vs reglas primero</strong>: compara el rendimiento de un agente con solo un prompt frente a un harness básico.
+## 1. **Solo prompt vs reglas primero**: compara el rendimiento de un agente con solo un prompt frente a un harness básico.
+
 2. <strong>Workspace legible para el agente</strong>: aprende a estructurar el repositorio para que sea cómodo para la IA y a establecer mecanismos de handoff.
 3. <strong>Continuidad entre sesiones</strong>: diseña archivos de estado y scripts de inicialización para que el agente pueda reanudar el trabajo entre sesiones.
 4. <strong>Feedback de runtime y control de alcance</strong>: introduce herramientas que permiten al agente probar su propio código y corregir errores durante la ejecución.
 5. <strong>Autoverificación y separación de roles</strong>: construye un mecanismo de revisión independiente para evitar alucinaciones y declaraciones prematuras de éxito.
-6. <strong>Harness completo (capstone)</strong>: ensambla un entorno final de trabajo agentic observable y end-to-end.
+## 6. **Harness completo (capstone)**: ensambla un entorno final de trabajo agentic observable y end-to-end.
+
 
 ## Cómo avanzar
 

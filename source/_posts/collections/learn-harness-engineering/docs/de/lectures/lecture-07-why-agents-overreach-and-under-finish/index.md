@@ -30,12 +30,18 @@ Das ist keine Metapher — es ist Mathematik. Angenommen, die Kontextkapazität 
 
 Claude Codes tatsächliches Verhalten ist aufschlussreich. Bitten Sie es, „Benutzerregistrierung hinzuzufügen", und es könnte:
 
-1. Ein User-Modell erstellen
-2. Die Registrierungsroute schreiben
-3. Bemerken, dass E-Mail-Verifizierung nötig ist, also einen Mail-Service hinzufügen
-4. Sehen, dass Passwörter gehasht werden müssen, also bcrypt einbinden
-5. Bemerken, dass die Fehlerbehandlung inkonsistent ist, also die globale Error-Middleware refactoren
-6. Sehen, dass die Testdateistruktur unordentlich ist, also das Verzeichnis reorganisieren
+## 1. Ein User-Modell erstellen
+
+## 2. Die Registrierungsroute schreiben
+
+## 3. Bemerken, dass E-Mail-Verifizierung nötig ist, also einen Mail-Service hinzufügen
+
+## 4. Sehen, dass Passwörter gehasht werden müssen, also bcrypt einbinden
+
+## 5. Bemerken, dass die Fehlerbehandlung inkonsistent ist, also die globale Error-Middleware refactoren
+
+## 6. Sehen, dass die Testdateistruktur unordentlich ist, also das Verzeichnis reorganisieren
+
 
 Sechs Schritte später ist jeder halb fertig. Keine End-to-End-Verifizierung, komplexe Kopplung zwischen dem halbfertigen Code, und die nächste Session, die alles aufarbeiten muss, wird völlig verloren sein. Wie jemand, der sechs Gerichte gleichzeitig kocht — jedes Gericht ist in der Pfanne, aber keines ist angerichtet. Sie alle verbrennen.
 

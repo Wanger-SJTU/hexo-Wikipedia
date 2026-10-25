@@ -58,10 +58,17 @@ Harness-Module.
 
 ## Empfohlene Lesereihenfolge
 
-1. `method-map.md`
-2. `initializer-agent-playbook.md`
-3. `coding-agent-startup-flow.md`
-4. `prompt-calibration.md`
-5. OpenAI Harness Engineering
-6. Anthropic Effective Harnesses
-7. Anthropic Harness Design
+## 1. `method-map.md`
+
+## 2. `initializer-agent-playbook.md`
+
+## 3. `coding-agent-startup-flow.md`
+
+## 4. `prompt-calibration.md`
+
+## 5. OpenAI Harness Engineering
+
+## 6. Anthropic Effective Harnesses
+
+## 7. Anthropic Harness Design
+

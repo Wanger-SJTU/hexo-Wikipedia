@@ -65,6 +65,9 @@ boundaries instead of reaching across layers directly.
 
 When you touch architecture-relevant code:
 
-1. Update this file if the domain map or allowed boundaries changed.
-2. Update the related design doc in `docs/design-docs/` if the reasoning changed.
-3. Add or update an executable check if the rule should be enforced mechanically.
+## 1. Update this file if the domain map or allowed boundaries changed.
+
+## 2. Update the related design doc in `docs/design-docs/` if the reasoning changed.
+
+## 3. Add or update an executable check if the rule should be enforced mechanically.
+

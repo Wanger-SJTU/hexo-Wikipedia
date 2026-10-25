@@ -23,11 +23,13 @@ id: 84378245-f5dc-4af1-a23f-582287fbbba7
 
 
 
-2.1 什么是Autonomous Agents？
+### 2.1 什么是Autonomous Agents？
+
 
 4\. Autonomous Agents和Agent Simulations依赖LLM的能力
 
-6.1 Retrieval Augmentation
+### 6.1 Retrieval Augmentation
+
 
 ## 1\. 为什么需要长期记忆？
 
@@ -50,7 +52,8 @@ id: 84378245-f5dc-4af1-a23f-582287fbbba7
 为了阅读的连续性，先简单地介绍一下Autonomous Agents以及流行的几个项目。如果对Autonomous Agents已经有认知了，可以直接本节进行阅读。
 
 ###   
-2.1 什么是Autonomous Agents？
+### 2.1 什么是Autonomous Agents？
+
 
   
 在这里，采用Matt Schlicht的[《The Complete Beginners Guide To Autonomous Agents》](https://www.mattprd.com/p/the-complete-beginners-guide-to-autonomous-agents)这篇文章里面的定义。
@@ -61,20 +64,28 @@ id: 84378245-f5dc-4af1-a23f-582287fbbba7
 大概就是你给Autonomous Agents一个任务，比如发一个关于Autonomous Agents最新进展的twitter。他会先去理解分解这个任务目标，然后设定实施计划以及这几个计划的优先级，同时去辩证『冷静』的反思计划有没有漏洞，并将反思应用到执行过程中，然后就是自己不断的去换着关键词搜索总结最近的报道文章，然后是汇总、反思，看看有没有什么遗漏，最后组织成适合推文的语言自动发送。全过程人类的输入可能就只有最开始不到100字的一个命令。是不是想象空间很大？  
 这边用一张BabyAGI的流程图来直观展现这个过程，具体如下。  
 
-1. agent查看目标，使用 OpenAI 的 GPT-4 等LLM模型，使其能够理解正在阅读的内容，并提出第一个任务。 “任务：在谷歌上搜索与 Twitter 相关的新闻”。
-2. 然后agent在谷歌上搜索 Twitter 新闻，找到热门文章，并返回一个链接列表。 第一个任务完成。
-3. 现在agent回顾它的主要目标（找到关于 Twitter 的最新消息，然后发送摘要）和它刚刚完成的事情（得到一堆关于 Twitter 的新闻链接）并决定它的下一个任务需要是什么 .
-4. agent提出了两个新任务。 1）写新闻摘要。 2) 阅读通过谷歌找到的新闻链接的内容。
-5. 现在agent在继续之前停止了一秒钟，它需要确保这些任务的顺序正确。 真的应该先写摘要吗？ 不，它决定了最优先阅读通过google找到的新闻链接的内容。
-6. agent从文章中读取内容，然后再次返回待办事项列表。 它想添加一个新任务来总结内容，但该任务已经在待办事项列表中，所以它没有添加它。
-7. agent检查待办事项列表，唯一剩下的项目是总结它阅读的内容，所以它这样做了。 它会按照您的要求向您发送摘要。
+## 1. agent查看目标，使用 OpenAI 的 GPT-4 等LLM模型，使其能够理解正在阅读的内容，并提出第一个任务。 “任务：在谷歌上搜索与 Twitter 相关的新闻”。
+
+## 2. 然后agent在谷歌上搜索 Twitter 新闻，找到热门文章，并返回一个链接列表。 第一个任务完成。
+
+## 3. 现在agent回顾它的主要目标（找到关于 Twitter 的最新消息，然后发送摘要）和它刚刚完成的事情（得到一堆关于 Twitter 的新闻链接）并决定它的下一个任务需要是什么 .
+
+## 4. agent提出了两个新任务。 1）写新闻摘要。 2) 阅读通过谷歌找到的新闻链接的内容。
+
+## 5. 现在agent在继续之前停止了一秒钟，它需要确保这些任务的顺序正确。 真的应该先写摘要吗？ 不，它决定了最优先阅读通过google找到的新闻链接的内容。
+
+## 6. agent从文章中读取内容，然后再次返回待办事项列表。 它想添加一个新任务来总结内容，但该任务已经在待办事项列表中，所以它没有添加它。
+
+## 7. agent检查待办事项列表，唯一剩下的项目是总结它阅读的内容，所以它这样做了。 它会按照您的要求向您发送摘要。
+
 
 ![](https://proxy-prod.omnivore-image-cache.app/680x475,s8dDr9TLDarXoab8tAs2R0KOtDKmwFGuqjMQqxSGV1yM/https://pic2.zhimg.com/v2-bd2202ab50e0896742ccdcdd099266c5_b.jpg)
 
 从上述的描述可以看出，Autonomous Agents核心技术点：<strong>LLM + Long-term Memory + 递归的思想</strong>。其中，LLM是其最核心的能力，无论推理还是问答以及后续的Prompt工程，都强依赖于LLM的能力。Long-term Memory是LLM固有的一个缺点，当然也是Autonomous Agents需要去克服的一个点，后续章节会详细介绍。
 
 ###   
-2.2 流行的Autonomous Agents  
+### 2.2 流行的Autonomous Agents  
+
 
   
 <strong>2.2.1 [Langchain](https://github.com/hwchase17/langchain)</strong>  
@@ -119,10 +130,14 @@ Auto-GPT 是一个实验性开源应用程序，展示了 GPT-4 语言模型的�
 BabyAGI 是一种将 OpenAI 最新的大型语言模型 GPT-4 转换为能够在互联网上执行一系列任务的数字助理的软件。与其他简单地根据提示生成单词的语言模型不同，BabyAGI 可以完成特定的操作，例如计划和执行活动以增加用户的 Twitter 关注或创建和运行内容营销业务。它是更广泛的开源软件 AutoGPT 的一部分。  
 如下图所示，通过执行以下步骤的无限循环来工作：
 
-1. 从任务列表中提取第一个任务。
-2. 将任务发送给执行智能体，执行智能体使用 OpenAI 的 API 根据上下文完成任务。
-3. 丰富结果并将其存储在Vector DB（Chroma/Weaviate） 中。
-4. 创建新任务并根据目标和先前任务的结果重新排列任务列表的优先级。
+## 1. 从任务列表中提取第一个任务。
+
+## 2. 将任务发送给执行智能体，执行智能体使用 OpenAI 的 API 根据上下文完成任务。
+
+## 3. 丰富结果并将其存储在Vector DB（Chroma/Weaviate） 中。
+
+## 4. 创建新任务并根据目标和先前任务的结果重新排列任务列表的优先级。
+
 
 ![](https://proxy-prod.omnivore-image-cache.app/2978x2205,siwR4OYWtZrofwhXPMORap26eXgdDBfNnkbQ_bZ3CvAU/https://pic4.zhimg.com/v2-d4c28ed908021a13211e61dafaffbda3_b.jpg)
 
@@ -146,7 +161,8 @@ NexusGPT——世界首个人工智能自由职业者平台！这里的自由职
 Agent Simulations（智能体模拟器）是通过计算机模拟来理解复杂的智能体交互的问题。它涉及多个智能体之间相互交互。 智能体模拟器通常涉及两个主要部分：长期记忆和仿真环境。
 
 ###   
-3.2 流行的Agent Simulations  
+### 3.2 流行的Agent Simulations  
+
 
 <strong>3.2.1 [CAMEL](https://github.com/lightaime/camel)</strong>  
 CAMEL提出了一个名为 "角色扮演 "的新型交际智能体框架，它利用LLM的理解能力，促进智能体之间的自主合作，并提供对其 "认知 "过程进行洞察的能力。该方法包括使用概念提示来引导聊天智能体完成任务，同时保持与人类意图的一致性。并展示了角色扮演如何被用来产生对话数据，为研究对话语言模型提供了宝贵的资源。此外，它也为研究多智能体系统的合作行为和能力提供一个可扩展的方法。  
@@ -174,7 +190,8 @@ Generative Agents是斯坦福和谷歌的研究者们利用人工智能创造出
 ![](https://proxy-prod.omnivore-image-cache.app/720x720,sQg4oZV4d2wh3Q3uzwayNe0DuyyyjAGXufdm6RWj7GOs/https://pic1.zhimg.com/v2-3d5968b0fd24f8aac748a7d3f346a0a4_b.jpg)
 
 ###   
-6.1 Retrieval Augmentation
+### 6.1 Retrieval Augmentation
+
 
   
 悟空采用的记忆方案是 Retrieval Augmentation，它通过外部储存来增强模型记忆。当模型需要记忆大量的聊天记录甚至一整个行业知识库时，将其储存在向量数据库中，后续按需去获取最相关的信息。每次用户输入 prompt 时，从外部记忆中找到最相关的内容和 prompt 一起输入给模型，得到的生成内容会更有针对性且减少了 <strong>hallucination 的问题</strong>。  
@@ -191,8 +208,10 @@ Generative Agents是斯坦福和谷歌的研究者们利用人工智能创造出
   
 短期记忆确实可以帮助我们打造不同性格和能力的LLM，但是存在两个问题：  
 
-1. 每次与 LLM 的交互都会带上之前的对话内容（除非重新开启一次对话，此时 LLM 的短期记忆相当于被清空）。随着对话轮数的增加，所需的 token 数量会越来越多。因为输入的提示（即历史对话）也会占用 token 的消耗量，因为它们将进入神经网络参与计算。
-2. 随着与LLM 的对话轮数增加，短期记忆的内容也会增加。然而，LLM 使用的神经网络结构的输入是有限的。目前，序列猴子最多只能包含 2048 个 token。
+## 1. 每次与 LLM 的交互都会带上之前的对话内容（除非重新开启一次对话，此时 LLM 的短期记忆相当于被清空）。随着对话轮数的增加，所需的 token 数量会越来越多。因为输入的提示（即历史对话）也会占用 token 的消耗量，因为它们将进入神经网络参与计算。
+
+## 2. 随着与LLM 的对话轮数增加，短期记忆的内容也会增加。然而，LLM 使用的神经网络结构的输入是有限的。目前，序列猴子最多只能包含 2048 个 token。
+
 
   
 要解决短期记忆持续膨胀的问题，可以采取尽可能减少短期记忆 token 数量的方法。但是需要确保尽可能保留短期记忆的核心内容。悟空是按最近的Memory的方式来组织短期机制。具体是选择一个窗口，只保留最近 k 轮对话内容。  
@@ -211,7 +230,8 @@ Generative Agents是斯坦福和谷歌的研究者们利用人工智能创造出
 那么，除了 finetune，还有其他的方法来存储长期记忆吗？答案是有的。最简单的方法是将长期记忆存储在外部数据库中，当与LLM开始对话时，从数据库中提取长期记忆，并将其作为提示(prompt)输入到LLM中。这种方法理论上可以解决长期记忆的问题，本质上是通过上下文学习完全代替 finetune。  
 下面以一个具体的案例介绍一下，悟空的做法。  
 
-1. 假设我们希望LLM记住的长期记忆是一个文档，首先我们将文档进行分片，将文档拆分成一份份的，每一份的 token 数不会太大，以保证每一份都能完全塞入LLM中。
+## 1. 假设我们希望LLM记住的长期记忆是一个文档，首先我们将文档进行分片，将文档拆分成一份份的，每一份的 token 数不会太大，以保证每一份都能完全塞入LLM中。
+
 2. 紧接着我们利用Embeddings API 将每一份文档进行编码。这个Embeddings API 输入的是文档，输出的是一个向量编码。这个向量编码可以理解为神经网络对文档内容进行了高度的压缩。然后我们将编码的结果存储在向量数据库（Faiss）中。向量数据库是一种特殊的数据库，它的键是向量而不是一个数。在我们的场景下，这个向量数据库的键是文档的向量，对应的值是对应的文档。
 3. 当用户向LLM提出一个问题时，我们先将他的提问文本塞入到之前的Embeddings API 中，该Embeddings API 将用户的提问编码成向量。然后将编码的向量去向量数据库中查询，查询的结果是和提问编码向量最相关的向量（这里的相关一般是指向量的余弦相似度或欧氏距离）。然后我们将查询到的向量对应的文档作为提示（prompt）给到LLM，至此我们完成了长期记忆的查询。
 
@@ -306,9 +326,12 @@ Generative Agents是斯坦福和谷歌的研究者们利用人工智能创造出
 
 ![](https://proxy-prod.omnivore-image-cache.app/720x1019,scTVhm2LN_D2wr_146dS2xJ4oaUAGTr90yZ2XK-ic52Q/https://pic2.zhimg.com/v2-adce4ae490285651eb4ffd7f6119a809_b.jpg)
 
-1. 对文档的检索结果进行截断，只保留一条，同时计算prompt长度，如果仍然超长；
-2. 对memory进行截断，只保留一轮对话内容，并计算prompt长度，如果仍然超长；
-3. 对memory进行summary，注意这里summary是预先计算，起到加速作用，之后计算prompt长度，如果仍然超长；
+## 1. 对文档的检索结果进行截断，只保留一条，同时计算prompt长度，如果仍然超长；
+
+## 2. 对memory进行截断，只保留一轮对话内容，并计算prompt长度，如果仍然超长；
+
+## 3. 对memory进行summary，注意这里summary是预先计算，起到加速作用，之后计算prompt长度，如果仍然超长；
+
 4. 只保留history，因为history是基于所有的对话历史记录构建的，本身也包括最新的k轮对话，区别在于基于history只召回最相关的问答对，而memory不考虑相关性，只保留最近的k轮对话。如果此时长度还超过了最大长度限制，则history也会丢弃，只保留一条文档检索结果。
 
 ###   6.2 重点
@@ -342,7 +365,8 @@ Generative Agents是斯坦福和谷歌的研究者们利用人工智能创造出
 理解了这个过程，我们会发现向量搜索和传统搜索的查找最大区别在于：传统搜索是精确的索引，查找到的内容是有正确答案的。也就是说，数据库中的数据只有两类，一类是符合查询要求、返回给用户的数据，另一类就是不符合要求。而<strong>向量搜索则是模糊的匹配，找到的是相对最符合需求的数据，并没有精确的标准答案。</strong>在某些需要精准记录聊天内容的场景（“帮我记录一下下午两点和XXX开会的内容”），向量搜索暴露出不足。因此，我们正在尝试将两种搜索模式进行融合。此外，我们还考虑进一步改进，融合第三方search API（Bing Search、Google Search），解决向量召回不足和时效性的问题。
 
 ###   
-6.3 一些思考
+### 6.3 一些思考
+
 
   
 单次的记忆增强很好的发挥了LLM 的信息整合能力，通过领域知识避免了 Hallucination。但这种方式没有充分挖掘其高阶的逻辑链（Chain of Thought）能力，因此最近的学术论文 ReAct、Reflexion，和开源项目 AutoGPT、BabyAGI 就在这个能力和记忆的结合下功夫。我们下一步准备尝试下相关方案。  

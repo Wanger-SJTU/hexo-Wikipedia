@@ -20,7 +20,7 @@ source_url: https://www.zhihu.com/question/7370558713/answer/65109878557
 大模型中，线性层的低比特量化已经逐步落地；然而，对于注意力模块，目前几乎各个模型都还在用高精度（例如FP16或FP32）的注意力运算进行训练和推理。并且，随着大型模型需要处理的序列长度不断增加，Attention（注意力运算）的时间开销逐渐成为主要开销。
 
 此前，清华大学陈键飞团队提出的8-Bit的即插即用Attention（SageAttention），将Attention中的 
-![](https://www.zhihu.com/equation?tex=QK%5E%5Ctop)量化至INT8，将PV保持为FP16精度并使用FP16精度的矩阵乘法累加器，同时提出Smooth K技术保持了量化Attention的精度。实现了2倍加速于 FlashAttention2，且在各类大模型上均保持了端到端的精度表现。SageAttention已经被业界及社区广泛的使用于各种开源及商业的大模型中，比如CogvideoX，Mochi，Flux，Llama3，Qwen等。
+$QK^\top$量化至INT8，将PV保持为FP16精度并使用FP16精度的矩阵乘法累加器，同时提出Smooth K技术保持了量化Attention的精度。实现了2倍加速于 FlashAttention2，且在各类大模型上均保持了端到端的精度表现。SageAttention已经被业界及社区广泛的使用于各种开源及商业的大模型中，比如CogvideoX，Mochi，Flux，Llama3，Qwen等。
 
 近日，清华大学陈键飞团队进一步提出了4-Bit的即插即用Attention（SageAttention2）。实现了<strong>3</strong>倍以及<strong>4.5</strong>倍相比于FlashAttention2和xformers的<strong>即插即用</strong>的推理加速，且在视频、图像、文本生成等大模型上<strong>均保持了端到端的精度表现</strong>。（注意FlashAttention3只能在Hopper显卡上运行，即使在Hopper显卡(无INT4)上，SageAttention2 8-bit版本也比 FlashAttention3 加速两倍；甚至比 FlashAttention3 的8-bit版本速度略快，更重要的是SageAttn2 8-bit的精度远好于FlashAttention3 的8-bit版本； 除Hopper外的显卡，SageAttn2就更是乱杀） 
 
@@ -86,8 +86,8 @@ SageAttention2实现了高效的Attention算子，可以实现即插即用的推
 矩阵Q平滑前后的数据分布可视化的结果如下，可以发现平滑后的Q对INT4数据范围的利用度更高：
 
 ![](https://picx.zhimg.com/v2-6ce2ebf0bf44009d388dd7e75b909dc1_r.jpg?source=2c26e567)（2） 对Q, K进行Per-thread量化。对于矩阵Q, K，SageAttention2 采用了根据 mma 指令对矩阵内存排布的要求，对 Q，K 中的 Token 按照 GPU 线程进行分组，使量化粒度比 SageAttention 中的 per-block 细化 16 倍，极大提高了4Bit的 
-![](https://www.zhihu.com/equation?tex=QK%5E%5Ctop)乘法的准确度的同时不引入任何额外开销。具体来说，在 SageAttention 中，每个Q的块将被划分为 c_w 个段，由GPU流处理器（SM）中的 c_w 个 GPU Warp 处理。然后，每个包含32个线程的 Warp 会使用NVIDIA的 mma.m16n8k64 PTX 指令来执行 
-![](https://www.zhihu.com/equation?tex=QK%5E%5Ctop)运算。根据这一指令的布局要求，研究团队发现一个 Warp 内的 Q[8×(n%8)] 可以共用一个量化缩放参数，而一个 Warp 内的 K[8×(n%8)] 和 K[8×(n%8+1)] 也可以共用一个量化缩放参数，其中 n 是 Token 索引。这种量化方法更为细致且不增加额外开销。这是因为它根据 MMA 指令的布局将不同的GPU线程分配到不同的量化Token组，每个线程只对应一个量化缩放参数进行反量化。而非 Per-token 量化那样，每个线程对应多个量化缩放参数。
+$QK^\top$乘法的准确度的同时不引入任何额外开销。具体来说，在 SageAttention 中，每个Q的块将被划分为 c_w 个段，由GPU流处理器（SM）中的 c_w 个 GPU Warp 处理。然后，每个包含32个线程的 Warp 会使用NVIDIA的 mma.m16n8k64 PTX 指令来执行 
+$QK^\top$运算。根据这一指令的布局要求，研究团队发现一个 Warp 内的 Q[8×(n%8)] 可以共用一个量化缩放参数，而一个 Warp 内的 K[8×(n%8)] 和 K[8×(n%8+1)] 也可以共用一个量化缩放参数，其中 n 是 Token 索引。这种量化方法更为细致且不增加额外开销。这是因为它根据 MMA 指令的布局将不同的GPU线程分配到不同的量化Token组，每个线程只对应一个量化缩放参数进行反量化。而非 Per-token 量化那样，每个线程对应多个量化缩放参数。
 
 ![](https://picx.zhimg.com/v2-4f2c57b272e5b42e6a1cf962af855d18_r.jpg?source=2c26e567)如下表所示，可以发现per-thread量化的准确度比SageAttention中采用的per-block量化高的多，准确度和per-token量化几乎没有差别。
 

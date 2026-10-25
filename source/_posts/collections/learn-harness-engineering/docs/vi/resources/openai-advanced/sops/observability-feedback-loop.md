@@ -29,13 +29,20 @@ Cung cấp cho agent một vòng lặp phản hồi cục bộ qua log, metrics,
 
 ## SOP Thực thi
 
-1. Định nghĩa các journey runtime vàng quan trọng nhất.
-2. Thêm các log có cấu trúc vào khởi động và đường dẫn quan trọng.
-3. Thêm metrics cho độ trễ, số lần thất bại hoặc độ sâu hàng đợi khi hữu ích.
-4. Thêm trace hoặc marker timing cho các luồng chậm hoặc nhiều bước.
-5. Làm cho các tín hiệu có thể truy vấn từ môi trường dev cục bộ.
-6. Cung cấp cho agent một workload hoặc kịch bản có thể lặp lại để chạy lại.
-7. Yêu cầu vòng lặp: truy vấn -> tương quan -> lý luận -> triển khai -> khởi động lại -> chạy lại -> xác minh.
+## 1. Định nghĩa các journey runtime vàng quan trọng nhất.
+
+## 2. Thêm các log có cấu trúc vào khởi động và đường dẫn quan trọng.
+
+## 3. Thêm metrics cho độ trễ, số lần thất bại hoặc độ sâu hàng đợi khi hữu ích.
+
+## 4. Thêm trace hoặc marker timing cho các luồng chậm hoặc nhiều bước.
+
+## 5. Làm cho các tín hiệu có thể truy vấn từ môi trường dev cục bộ.
+
+## 6. Cung cấp cho agent một workload hoặc kịch bản có thể lặp lại để chạy lại.
+
+## 7. Yêu cầu vòng lặp: truy vấn -> tương quan -> lý luận -> triển khai -> khởi động lại -> chạy lại -> xác minh.
+
 
 ## Danh sách Kiểm tra Phiên Debug
 

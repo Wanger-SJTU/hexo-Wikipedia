@@ -42,7 +42,8 @@ Yann LeCun 被 GPT4 的酸葡萄伤害之后，最近放出来的 PPT 有点极�
 
 ![](/images/collections/0.raw/zhihu/dl%E8%AE%BA%E6%96%87/asset/img_37d39645d651.jpg)
 
-2208.07339技术细节详见官方 Blog ——
+### 2208.07339技术细节详见官方 Blog ——
+
 
 [](https://link.zhihu.com/?target=https%3A//huggingface.co/blog/hf-bitsandbytes-integration)
 
@@ -50,7 +51,8 @@ Yann LeCun 被 GPT4 的酸葡萄伤害之后，最近放出来的 PPT 有点极�
 
 ![](/images/collections/0.raw/zhihu/dl%E8%AE%BA%E6%96%87/asset/img_86076e24a2dd.jpg)
 
-2210.17323技术细节请参考知乎大佬的专栏文章 ——
+### 2210.17323技术细节请参考知乎大佬的专栏文章 ——
+
 
 [](https://zhuanlan.zhihu.com/p/616969812)
 

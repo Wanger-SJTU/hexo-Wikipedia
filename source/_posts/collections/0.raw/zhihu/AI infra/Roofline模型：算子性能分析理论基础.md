@@ -22,78 +22,86 @@ source_url: https://zhuanlan.zhihu.com/p/1995487023952336382
 
  算力回答的是：<strong>“我最多能算多快？”</strong>, 计算强度回答的是：<strong>“我为了这些数据，值得算多久？”</strong>。在AI Infra工程领域，计算强度是判断一个算子到底是“访存瓶颈”还是“计算瓶颈”的<strong>最核心量化指标</strong>，也是连接算法与硬件（Roofline Model）的桥梁。以下将这个概念为核心，介绍算子运行的瓶颈（bottleneck）场景。
 
-1. 什么是计算强度？
+## 1. 什么是计算强度？
+
 <strong>定义</strong>：计算强度是指在执行算法过程中，<strong>“每从内存读取（或写入）一个字节的数据，需要进行多少次浮点运算”</strong>。
 
 <strong>公式</strong>： 
 
-![](https://www.zhihu.com/equation?tex=+%5Ctext%7B%E8%AE%A1%E7%AE%97%E5%BC%BA%E5%BA%A6+%28I%29%7D+%3D+%5Cfrac%7B%5Ctext%7B%E6%80%BB%E8%AE%A1%E7%AE%97%E9%87%8F+%28FLOPs%29%7D%7D%7B%5Ctext%7B%E6%80%BB%E8%AE%BF%E5%AD%98%E9%87%8F+%28Bytes%29%7D%7D+)
+$$\text{计算强度 (I)} = \frac{\text{总计算量 (FLOPs)}}{\text{总访存量 (Bytes)}}$$
+
 
 - <strong>单位</strong>：FLOPs/Byte（每字节浮点运算次数）。
 - <strong>通俗理解</strong>：  
 - <strong>做菜的比喻</strong>：访存量 = 这是一个厨师去冰箱拿食材的次数和重量；计算量 = 厨师切菜、炒菜的动作次数。
 - <strong>高计算强度</strong>：去一次冰箱拿回萝卜，要切一万刀（主要时间花在切菜上，冰箱门带宽无所谓）。
 - <strong>低计算强度</strong>：去一次冰箱拿回一根葱，切两刀就用完了，得马上去拿下一根（主要时间花在往返冰箱的路上，切菜很快）。
-2. 矩阵乘法（GEMM）的例子
+## 2. 矩阵乘法（GEMM）的例子
+
 矩阵乘法 
-![](https://www.zhihu.com/equation?tex=C%3DA%C3%97B)，其中：
-![](https://www.zhihu.com/equation?tex=A%5Cin%5Cmathbb%7BR%7D%5E%7BM+%5Ctimes+K%7D)， 
-![](https://www.zhihu.com/equation?tex=B%5Cin%5Cmathbb%7BR%7D%5E%7BK+%5Ctimes+N%7D)。
+$C=A×B$，其中：
+$A\in\mathbb{R}^{M \times K}$， 
+$B\in\mathbb{R}^{K \times N}$。
 
 - <strong>计算量</strong>：
-![](https://www.zhihu.com/equation?tex=%7B2+%5Ctimes+M+%5Ctimes+N+%5Ctimes+K%7D+%5Ctext%7BFLOPs%7D)（乘法和加法算两次，因此要乘以2）<strong>内存访问量（理想情况）</strong>：
-![](https://www.zhihu.com/equation?tex=%28MK+%2B+KN+%2B+MN%29+%5Ctimes+%5Ctext%7Bsizeof%28float%29%7D) 
+${2 \times M \times N \times K} \text{FLOPs}$（乘法和加法算两次，因此要乘以2）<strong>内存访问量（理想情况）</strong>：
+$$(MK + KN + MN) \times \text{sizeof(float)}$$
+
 
 因此 GEMM 的计算强度随 
-![](https://www.zhihu.com/equation?tex=K) 增大而显著提高，这也是其在 GPU 上性能极高的根本原因。
+$K$ 增大而显著提高，这也是其在 GPU 上性能极高的根本原因。
 
-3. 计算强度如何决定瓶颈（Roofline Model）
+## 3. 计算强度如何决定瓶颈（Roofline Model）
+
 任何硬件（GPU/NPU）都有一个固有的“<strong>机器平衡点</strong>”（Machine Balance），即硬件峰值计算能力与峰值内存带宽的比值：
 
-![](https://www.zhihu.com/equation?tex=+%5Ctext%7B%E6%9C%BA%E5%99%A8%E5%B9%B3%E8%A1%A1%E7%82%B9%7D+%3D+%5Cfrac%7B%5Ctext%7BPeak+FLOPs+%28%E6%AF%8F%E7%A7%92%E6%B5%AE%E7%82%B9%E5%B3%B0%E5%80%BC%29%7D%7D%7B%5Ctext%7BPeak+Memory+Bandwidth+%28%E6%AF%8F%E7%A7%92%E5%B8%A6%E5%AE%BD%E5%B3%B0%E5%80%BC%29%7D%7D+)
+$$\text{机器平衡点} = \frac{\text{Peak FLOPs (每秒浮点峰值)}}{\text{Peak Memory Bandwidth (每秒带宽峰值)}}$$
+
 
 根据算子的计算强度与机器平衡点的关系，我们可以将瓶颈一分为二：
 
 场景一：低计算强度（
-![](https://www.zhihu.com/equation?tex=I+%3C+%5Ctext%7B%E6%9C%BA%E5%99%A8%E5%B9%B3%E8%A1%A1%E7%82%B9%7D)） -> 访存瓶颈
+$I < \text{机器平衡点}$） -> 访存瓶颈
 
 - <strong>状态</strong>：数据供给速度跟不上计算速度。计算单元（ALU）“吃不饱”，大部分时间在空转等待数据。
 - <strong>典型算子</strong>：  
 - <strong>Element-wise (ReLU, Add, Mult)</strong>：  
 - 计算：
-![](https://www.zhihu.com/equation?tex=C+%3D+A+%2B+B)。1次加法。
+$C = A + B$。1次加法。
 - 访存：读A(4B) + 读B(4B) + 写C(4B) = 12 Bytes（FP32）。
 - 强度：
-![](https://www.zhihu.com/equation?tex=1+%2F+12+%5Capprox+0.08) FLOPs/Byte。
+$1 / 12 \approx 0.08$ FLOPs/Byte。
 - 结论：现在的GPU平衡点通常在 50~100+ FLOPs/Byte，0.08 远低于此，属于极端的<strong>访存瓶颈</strong>。
 - <strong>BatchNorm, LayerNorm</strong>：涉及大量的统计量读写，计算逻辑相对简单。
 - <strong>优化手段</strong>：  
 - <strong>算子融合（Fusion）</strong>：这是提高计算强度的最有效方法。将 `Conv -> Bias -> ReLU -> Add` 融合成一个 Kernel。数据读进片上缓存（Cache/Shared Mem）后，一次性做完这4步计算再写回，相当于分子变大（做了更多计算），分母不变（读写次数没变），从而提升了计算强度。
 场景二：高计算强度（
-![](https://www.zhihu.com/equation?tex=I+%3E+%5Ctext%7B%E6%9C%BA%E5%99%A8%E5%B9%B3%E8%A1%A1%E7%82%B9%7D)） -> 计算瓶颈
+$I > \text{机器平衡点}$） -> 计算瓶颈
 
 - <strong>状态</strong>：数据来得太快，或者数据复用率极高，计算单元（ALU）已经全速运转，但还是处理不完。
 - <strong>典型算子</strong>：  
 - <strong>GEMM (矩阵乘法)</strong>：  
 - 场景：两个 
-![](https://www.zhihu.com/equation?tex=N+%5Ctimes+N) 矩阵相乘。
+$N \times N$ 矩阵相乘。
 - 计算量：
-![](https://www.zhihu.com/equation?tex=2N%5E3)。
+$2N^3$。
 - 访存量：
-![](https://www.zhihu.com/equation?tex=3N%5E2+%5Ctimes+4) (Bytes)。
+$3N^2 \times 4$ (Bytes)。
 - 强度：
-![](https://www.zhihu.com/equation?tex=%5Capprox+N+%2F+6)。
+$\approx N / 6$。
 - 结论：当 
-![](https://www.zhihu.com/equation?tex=N) 很大时（例如 1024），计算强度高达 ≈170 FLOPs/Byte。这通常高于硬件的平衡点，因此是<strong>计算瓶颈</strong>。
+$N$ 很大时（例如 1024），计算强度高达 ≈170 FLOPs/Byte。这通常高于硬件的平衡点，因此是<strong>计算瓶颈</strong>。
 - <strong>3D Convolution (大Kernel)</strong>：多通道、大卷积核的卷积层。
 - <strong>优化手段</strong>：  
 - <strong>利用更强的指令</strong>：使用 Tensor Core / Matrix Core (FP16/INT8)，这本质上是提升硬件的 Peak FLOPs 上限。
 - <strong>近似计算</strong>：剪枝、稀疏化。
-4. 结合“计算强度”重看算子瓶颈的例子
+## 4. 结合“计算强度”重看算子瓶颈的例子
+
 我们可以用计算强度这个标尺，把一般的算子例子重新归类：
 
 算子类型计算过程描述计算强度分析瓶颈归属核心优化方向Transpose / Copy纯搬运，无计算0 FLOPs/Byte极致访存瓶颈消除不必要的转置，优化内存布局Vector Add / ReLU读两个数，加一下，写回~0.1 FLOPs/Byte (极低)访存瓶颈算子融合 (链式操作合并)，减少中间显存读写Depthwise Conv每个通道独立做卷积，复用度低中低倾向于访存瓶颈优化缓存命中率，通道合并Standard Conv2D多个通道累加，输入数据被多次复用高 (随通道数和Batch增加)计算瓶颈提升并行度，使用 Tensor CoreLarge GEMM大矩阵相乘极高计算瓶颈也是 Tensor Core，或 Tiling 分块策略优化
-5. 小结
+## 5. 小结
+
 在算子开发中，<strong>计算强度</strong>是我们的“体检表”：
 
 - <strong>开发前分析</strong>：先算一下这个数学公式的理论计算强度。  
@@ -105,7 +113,8 @@ Roofline Model 屋顶模型
 在了解完计算强度的完整概念后，可以引入<strong>Roofline Model（屋顶模型）</strong> ，这是是高性能计算领域最经典、最直观的性能分析模型。它由加州大学伯克利分校的研究人员（Williams et al.）在 2009 年提出。 简单来说，Roofline Model 将<strong>算力（GFLOPS）</strong>、<strong>带宽（Bandwidth）</strong> 和 <strong>计算强度（Arithmetic Intensity）</strong> 画在同一张图上，告诉我们在当前的硬件上，你的程序“<strong>理论上最快能跑多快</strong>”，以及“<strong>到底是谁卡住了脖子</strong>”。
 
 ![](https://pic2.zhimg.com/v2-2e08724207a8f83d46938cb3a4164c8d_r.jpg)
-1. 核心坐标系：怎么看这张图
+## 1. 核心坐标系：怎么看这张图
+
 Roofline Model 是一个二维坐标系，通常使用<strong>双对数坐标（Log-Log Scale）</strong>。
 
 - <strong>X 轴：计算强度 / 算术强度 (Computational Intensity)</strong> 
@@ -115,14 +124,15 @@ Roofline Model 是一个二维坐标系，通常使用<strong>双对数坐标（
 - 单位：GFLOPS 或 TFLOPS（每秒十亿/万亿次浮点运算）。
 - 含义：实际达到的运行速度。越往上越快。
 
-2. “屋顶”的形状：两条限制线
+## 2. “屋顶”的形状：两条限制线
+
 模型之所以叫“屋顶”，是因为硬件限制构成了形状像屋顶的两条线，任何程序的性能点（Dot）都不可能超过这个屋顶。
 
 第一部分：倾斜的房顶（斜率 = 内存带宽）
 
 - <strong>区域</strong>：图的左侧。
 - <strong>公式</strong>：
-![](https://www.zhihu.com/equation?tex=P+%3D+%5Ctext%7BBandwidth%7D+%5Ctimes+%5Ctext%7BIntensity%7D)。
+$P = \text{Bandwidth} \times \text{Intensity}$。
 - <strong>含义</strong>：当算子的计算强度（X轴）很低时，性能完全取决于能多快把数据搬运过来。
 - <strong>瓶颈</strong>：<strong>Memory Bound（访存瓶颈）</strong>。
 - <strong>现象</strong>：在这个区域，X轴每往右移动一点（提高计算强度），Y轴性能就会线性上升。
@@ -131,7 +141,7 @@ Roofline Model 是一个二维坐标系，通常使用<strong>双对数坐标（
 
 - <strong>区域</strong>：图的右侧。
 - <strong>公式</strong>：
-![](https://www.zhihu.com/equation?tex=P+%3D+%5Ctext%7BPeak+GFLOPS%7D)。
+$P = \text{Peak GFLOPS}$。
 - <strong>含义</strong>：当算子的计算强度足够大，内存带宽已经不是问题，性能上限被硬件的计算单元（ALU/Tensor Core）锁死，无法再提升。
 - <strong>瓶颈</strong>：<strong>Compute Bound（计算瓶颈）</strong>。
 - <strong>现象</strong>：在这个区域，无论怎么提高计算强度（往右移），性能（Y轴）都不会再上升了，因为已经顶到天花板了。
@@ -151,7 +161,7 @@ Roofline Model 是一个二维坐标系，通常使用<strong>双对数坐标（
 
 - <strong>条件</strong>：同时满足 <strong>指令级并行 (ILP) + SIMD (向量化) + FMA (融合乘加)</strong>。
 - 例子：
-![](https://www.zhihu.com/equation?tex=%5Ctext%7BPeak+GFLOPS%7D)。<strong>Level 2：无 FMA 天花板 (No-FMA Ceiling)</strong> 
+$\text{Peak GFLOPS}$。<strong>Level 2：无 FMA 天花板 (No-FMA Ceiling)</strong> 
 
 - <strong>原因</strong>：算法中只有加法或乘法，或者编译器没有生成 `FMA (a*b+c)` 指令，而是生成了分离的 `MUL` 和 `ADD`。
 - <strong>后果</strong>：性能直接减半（通常硬件执行 FMA 和执行单独 ADD 的周期是一样的，但 FMA 做了两件事）。
@@ -179,12 +189,13 @@ Roofline Model 是一个二维坐标系，通常使用<strong>双对数坐标（
 
 <strong>分析意义</strong>： 如果你的点卡在 Level 3 的斜线上，说明你虽然处于 Memory Bound 区域，但买更好的显卡也没用，因为是你代码里的<strong>访存模式</strong>（Pattern）太烂了，必须先优化数据布局。
 
-3. 一个具体的例子
+## 3. 一个具体的例子
+
 假设我们有一块显卡（GPU）：
 
 - <strong>峰值算力 (Peak Compute)</strong>：1000 GFLOPS
 - <strong>内存带宽 (Bandwidth)</strong>：100 GB/s <strong>脊点计算</strong>：
-![](https://www.zhihu.com/equation?tex=1000+%2F+100+%3D+10) FLOPs/Byte。
+$1000 / 100 = 10$ FLOPs/Byte。
  <strong>场景1：开发一个向量加法算子 (Vector Add)</strong>
 
 - 计算强度：0.1 FLOPs/Byte（非常低，远在脊点 10 的左边）。
@@ -192,7 +203,7 @@ Roofline Model 是一个二维坐标系，通常使用<strong>双对数坐标（
  
 - 它受到斜线限制。
 - 理论最大性能 = 
-![](https://www.zhihu.com/equation?tex=100+%5Ctext%7B+GB%2Fs%7D+%5Ctimes+0.1+%3D+10+%5Ctext%7B+GFLOPS%7D)。
+$100 \text{ GB/s} \times 0.1 = 10 \text{ GFLOPS}$。
 - <strong>分析</strong>：虽然显卡有 1000 GFLOPS 的能力，但因为你在这个算子上是“访存瓶颈”，你只能发挥出 1% 的算力。<strong>场景2：开发一个矩阵乘法算子 (GEMM)</strong>
 
 - 计算强度：100 FLOPs/Byte（很高，在脊点 10 的右边）。
@@ -234,23 +245,28 @@ Roofline Model 是一个二维坐标系，通常使用<strong>双对数坐标（
 我们需要两个关键数值来刻画出当前设备的 Roofline，查阅官方的技术文档参数：
 
 ![](https://pic1.zhimg.com/v2-a6a683c53d586ce900f206c18155a516_r.jpg)
-1. 带宽屋顶 (Bandwidth Roof)
+## 1. 带宽屋顶 (Bandwidth Roof)
+
 RTX 5070 使用 GDDR7 显存，位宽通常为 192-bit。标准显存带宽<strong>约 672 GB/s</strong> （NVIDIA 官网性能数据），相比 RTX 4070 (504 GB/s) 有巨大提升。
 
-2. 算力屋顶 (Compute Roof)
+## 2. 算力屋顶 (Compute Roof)
+
 <strong>FP32 (CUDA Cores)</strong> 预计 <strong>30 ~ 40 TFLOPS</strong>，计算方式采取<strong>传统光栅化算力</strong>（Shader / CUDA Core Performance）， 计算公式：
 
-![](https://www.zhihu.com/equation?tex=+%5Ctext%7BFP32+TFLOPS%7D+%3D+%5Ctext%7BCUDA+Cores+%E6%95%B0%E9%87%8F%7D+%5Ctimes+%5Ctext%7B%E6%A0%B8%E5%BF%83%E9%A2%91%E7%8E%87+%28GHz%29%7D+%5Ctimes+2+)
+$$\text{FP32 TFLOPS} = \text{CUDA Cores 数量} \times \text{核心频率 (GHz)} \times 2$$
+
 
  公式解释：
 
 - CUDA Cores，是显卡里的通用计算单元数量，对应表中 RTX 5070为 <strong>6144个</strong>；
 - 核心频率Boost Clock（加速频率），RTX 5070为 <strong>2.51 GHz</strong>；
 - 这里的<strong>× 2</strong>是因为现代 GPU 每个时钟周期能做一次 <strong>FMA (Fused Multiply-Add)</strong> 操作，这包含一次乘法和一次加法，等于 2 次浮点运算。 综合计算 `FP32 TFLOPS` 为 <strong>30.8 TFLOPS</strong>。 <strong>Tensor Cores (FP16/BF16)</strong> 是NVIDIA GPU用于极致加速的特性，Blackwell 的 Tensor Core 极快，理论峰值可能高达 <strong>100+ TFLOPS</strong> (甚至更高，取决于稀疏化)。
-3. 计算机器平衡点 (Ridge Point)
+## 3. 计算机器平衡点 (Ridge Point)
+
 计算：
 
-![](https://www.zhihu.com/equation?tex=+%5Ctext%7BRidge%7D+%3D+%5Cfrac%7B%5Ctext%7BPeak+FP32%7D%7D%7B%5Ctext%7BBandwidth%7D%7D+%5Capprox+%5Cfrac%7B30%2C000%7D%7B672%7D+%5Capprox+%5Cmathbf%7B45%7D+%5Ctext%7B+FLOPs%2FByte%7D+) 
+$$\text{Ridge} = \frac{\text{Peak FP32}}{\text{Bandwidth}} \approx \frac{30,000}{672} \approx \mathbf{45} \text{ FLOPs/Byte}$$
+
 
 <strong>含义</strong>：在 RTX 5070 上，算子必须每搬运 1 个字节数据，至少做 <strong>45 次</strong> 浮点运算，才能把 GPU 的计算单元跑满。如果低于 45，绝对是卡在带宽上（memory bound）。
 
@@ -437,7 +453,7 @@ print(f"分析: 这利用了 Tensor Cores FP16, Ultimate Roof line!")
 - <strong>Roofline 意义</strong>：
 - 这是 <strong>Roofline model</strong> 图中最左侧的<strong>斜率</strong>。
 - <strong>结论</strong>：以后写任何算子，如果计算密度（AI）低于 <strong>40 FLOPs/Byte</strong>（
-![](https://www.zhihu.com/equation?tex=23694+%5Cdiv+593+%5Capprox+40)），你的性能上限就被这个 593 GB/s 锁死了。
+$23694 \div 593 \approx 40$），你的性能上限就被这个 593 GB/s 锁死了。
 - 例子：以后跑 70B 大模型推理（主要也是搬运权重），这 593 GB/s 就是这块芯片的物理限速。
 <strong>2. 实验 B：标准算力的天花板 (Standard FP32 Ceiling)</strong>
 
@@ -455,7 +471,8 @@ print(f"分析: 这利用了 Tensor Cores FP16, Ultimate Roof line!")
 - <strong>原因 1（功耗墙）</strong>：Tensor Core 全力开启时非常吃电。RTX 5070 作为消费级显卡，可能有 TGP（整卡功耗）限制。当单元全开，频率可能会自动降低以保命。
 - <strong>原因 2（精度代价小）</strong>：TF32 毕竟还是处理 32 位数据（只是截断尾数），它的吞吐量通常是 FP32 的 2 倍理论值（在 Ampere/Hopper 上）。实测跑到 1.44 倍是一个非常典型的“实战折扣值”。
 - <strong>关键点</strong>：这多出来的 <strong>10,000 GFLOPS</strong> 相当于是白送的！没有改模型，没有改算法，只是允许了 TF32，就算力暴涨。
-4. 实验 D：终极天花板 (FP16 Tensor Core Ultimate Ceiling)
+## 4. 实验 D：终极天花板 (FP16 Tensor Core Ultimate Ceiling)
+
 
 - <strong>数据：62.2 TFLOPS</strong> (62, 200 GFLOPS)。
 - <strong>加速比: 2.61x</strong>。

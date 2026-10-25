@@ -65,6 +65,9 @@ ya da adaptör sınırları üzerinden girmelidir.
 
 Mimariyle ilgili koda dokunduğunuzda:
 
-1. Alan haritası ya da izin verilen sınırlar değiştiyse bu dosyayı güncelleyin.
-2. Gerekçe değiştiyse `docs/design-docs/` içindeki ilgili tasarım dokümanını güncelleyin.
-3. Kural mekanik olarak uygulanmalıysa çalıştırılabilir bir kontrol ekleyin ya da güncelleyin.
+## 1. Alan haritası ya da izin verilen sınırlar değiştiyse bu dosyayı güncelleyin.
+
+## 2. Gerekçe değiştiyse `docs/design-docs/` içindeki ilgili tasarım dokümanını güncelleyin.
+
+## 3. Kural mekanik olarak uygulanmalıysa çalıştırılabilir bir kontrol ekleyin ya da güncelleyin.
+

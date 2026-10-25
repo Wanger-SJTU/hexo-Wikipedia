@@ -81,10 +81,13 @@ Los documentos son para que los lean humanos; los primitives son para que los ej
 
 Piensa en restricciones de triggers de base de datos frente a checks en la capa de aplicación: las primeras las impone el motor de base de datos, ningún SQL puede saltarlas; las segundas dependen de la corrección del código de aplicación y pueden omitirse por accidente. Como primitive del harness, la lista de funciones sirve a cuatro componentes:
 
-1. <strong>Scheduler</strong>: Lee estados y elige la siguiente función `not_started`. Como un sistema de planificación de producción en fábrica.
-2. <strong>Verifier</strong>: Ejecuta comandos de verificación y decide si permite transiciones de estado. Como inspección de calidad.
+## 1. **Scheduler**: Lee estados y elige la siguiente función `not_started`. Como un sistema de planificación de producción en fábrica.
+
+## 2. **Verifier**: Ejecuta comandos de verificación y decide si permite transiciones de estado. Como inspección de calidad.
+
 3. <strong>Handoff reporter</strong>: Genera automáticamente resúmenes de traspaso de sesión desde la lista. Como un reporte automático de cambio de turno.
-4. <strong>Progress tracker</strong>: Cuenta la distribución de estados y ofrece métricas de salud del proyecto. Como un dashboard.
+## 4. **Progress tracker**: Cuenta la distribución de estados y ofrece métricas de salud del proyecto. Como un dashboard.
+
 
 ## Cómo hacerlo bien
 

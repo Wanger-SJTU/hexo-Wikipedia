@@ -17,7 +17,8 @@ source_url: https://zhuanlan.zhihu.com/p/2070270846145401677
 
 <strong>摘要</strong>：在一个多核 CPU 上，一个核心修改了页表——其他核心的 TLB 里还缓存着旧的映射，这个矛盾怎么解决？答案是 <strong>TLB Shootdown</strong>：向所有其他核心发送<strong>核间中断（IPI）</strong>，强制它们刷新 TLB。Linux 内核在每次进程切换、内存映射变更时都在默默做这件事，但你可能从来没注意过它。
 
-1. TLB 是什么复习一下
+## 1. TLB 是什么复习一下
+
 
 TLB（Translation Lookaside Buffer）是 CPU 内部的。
 
@@ -29,7 +30,8 @@ TLB 容量很小（通常 L1 TLB 只有 64-128 条指令、64-128 条数据）�
 
 <strong>问题来了</strong>：TLB 是每个 CPU 核心独立的。一个核心改了页表，其他核心的 TLB 里还有旧的映射——这时候该怎么办？
 
-2. 为什么需要 Shootdown
+## 2. 为什么需要 Shootdown
+
 
 看这个场景：
 
@@ -46,7 +48,8 @@ Core 1、Core 2、Core 3 当时正在执行同一个进程的代码
 
 解决方案：<strong>修改页表的那个核心，必须通知所有其他核心「你们的 TLB 这条映射已经作废了，请刷新」</strong>。这个动作叫 <strong>TLB Shootdown</strong>——一个核心开枪（修改页表），所有核心被迫刷新 TLB。
 
-3. TLB Shootdown 的完整流程
+## 3. TLB Shootdown 的完整流程
+
 
 TEXT
 ┌──────────────────────────────────────────────────────────┐
@@ -93,7 +96,8 @@ TEXT
 │ 等所有核心确认完成 → munmap() 返回           │
 └──────────────────────────────────────────────────────────┘
 
-4. Linux 里的 TLB Shootdown 实现
+## 4. Linux 里的 TLB Shootdown 实现
+
 
 Linux 内核用一套通用的 <strong>smp_call_function</strong> 机制做跨核调用，关键函数：
 
@@ -134,11 +138,13 @@ struct mmu_gather {
 ```
 
 
-5. 从零实现：wandos 怎么写
+## 5. 从零实现：wandos 怎么写
+
 
 wandos 目前还没有完整的 TLB shootdown 实现，以下是设计思路和关键代码框架：
 
-5.1 定义 shootdown IPI 中断向量
+### 5.1 定义 shootdown IPI 中断向量
+
 
 CPP
 
@@ -153,7 +159,8 @@ void arch_register_tlb_shootdown() {
 ```
 
 
-5.2 发送 shootdown IPI 到指定核心
+### 5.2 发送 shootdown IPI 到指定核心
+
 
 CPP
 
@@ -186,7 +193,8 @@ void broadcast_tlb_shootdown(uintptr_t addr) {
 ```
 
 
-5.3 中断处理函数
+### 5.3 中断处理函数
+
 
 CPP
 
@@ -224,7 +232,8 @@ void arch_invlpg(uintptr_t addr) {
 ```
 
 
-5.4 munmap 里的 shootdown 调用
+### 5.4 munmap 里的 shootdown 调用
+
 
 CPP
 
@@ -252,7 +261,8 @@ int do_munmap(uintptr_t addr, size_t len) {
 
 <strong>wandos 当前实现的差距</strong>：wandos 是单核操作系统，`smp_enabled` 始终为 false，所以 TLB shootdown 实际上不执行。但代码框架已经搭好，扩展到多核时只需要实现 `send_tlb_shootdown_ipi` 和 `arch_register_tlb_shootdown`。
 
-6. Linux 实践：观察 TLB shootdown
+## 6. Linux 实践：观察 TLB shootdown
+
 
 在真实 Linux 系统上，可以观察 TLB shootdown 的效果：
 
@@ -282,7 +292,8 @@ perf sched latency
 ```
 
 
-7. 为什么 Shootdown 是个性能瓶颈
+## 7. 为什么 Shootdown 是个性能瓶颈
+
 
 TLB shootdown 的开销主要在：
 
@@ -293,7 +304,8 @@ TLB shootdown 的开销主要在：
 
 对于性能敏感的服务器程序，<strong>减少系统调用频率</strong>（用 `mmap`/`munmap` 批量操作）比什么都有效。
 
-8. 踩坑与注意事项
+## 8. 踩坑与注意事项
+
 
 <strong>坑 1：SMP 关闭时 shootdown 不存在</strong>
 

@@ -17,7 +17,8 @@ source_url: https://www.zhihu.com/question/2005348116719744112/answer/2060501186
 
 你的理解其实抓住了一部分趋势，但有几个关键概念混在一起了。如果从现在（2026 年）的 HPC 和 AI 集群发展来看，可以这样理解：
 
-1. RoCE 会不会取代 IB？
+## 1. RoCE 会不会取代 IB？
+
 
 短期不会完全取代，但正在大量替代。
 
@@ -41,7 +42,8 @@ source_url: https://www.zhihu.com/question/2005348116719744112/answer/2060501186
 
 传统 HPC 继续大量使用 IB，AI 训练集群越来越偏向 RoCE。
 
-2. Thunderbolt 能不能组成集群？
+## 2. Thunderbolt 能不能组成集群？
+
 
 Thunderbolt（雷电）确实支持：
 
@@ -70,7 +72,8 @@ PCIe 延长线。
 
 数据中心网络。
 
-3. Apple 的统一内存是不是 RDMA？
+## 3. Apple 的统一内存是不是 RDMA？
+
 
 不是。
 
@@ -88,7 +91,8 @@ RDMA 则是：
 
 很多人第一次接触 Apple Silicon 都容易把两者混在一起。
 
-4. Mac 会进入 HPC 吗？
+## 4. Mac 会进入 HPC 吗？
+
 
 我认为可能用于科研、小规模 MPI、开发环境，但不会进入大型超算中心。
 
@@ -109,7 +113,8 @@ RDMA 则是：
 
 - Fujitsu A64FX几乎没有 Apple Silicon。
 
-5. 将来的趋势是什么？
+## 5. 将来的趋势是什么？
+
 
 真正的发展方向不是 “Thunderbolt 集群”，而是：
 

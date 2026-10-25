@@ -113,10 +113,13 @@ El `AGENTS.md` de un equipo SaaS creció de 50 a 600 líneas. Mezclaba versiones
 El rendimiento del agente empezó a caer de forma visible: durante arreglos de bugs simples gastaba mucho contexto procesando instrucciones de despliegue irrelevantes; la restricción de seguridad "todas las consultas de base de datos deben usar consultas parametrizadas" estaba enterrada en la línea 300 y se ignoraba con frecuencia; tres reglas contradictorias de estilo producían comportamiento aleatorio.
 
 El equipo ejecutó una "reorganización de maleta":
-1. `AGENTS.md` se redujo a 80 líneas: solo resumen del proyecto, comandos de ejecución y 15 restricciones globales duras
+## 1. `AGENTS.md` se redujo a 80 líneas: solo resumen del proyecto, comandos de ejecución y 15 restricciones globales duras
+
 2. Se crearon documentos temáticos: `docs/api-patterns.md` (120 líneas), `docs/database-rules.md` (60 líneas), `docs/testing-standards.md` (80 líneas)
-3. Se añadieron enlaces a esos documentos en el archivo de enrutamiento
-4. Las notas históricas se convirtieron en tests o se eliminaron
+## 3. Se añadieron enlaces a esos documentos en el archivo de enrutamiento
+
+## 4. Las notas históricas se convirtieron en tests o se eliminaron
+
 
 Después de refactorizar, la tasa de éxito del mismo conjunto de tareas pasó de 45% a 72%. El cumplimiento de la restricción de seguridad pasó de 60% a 95%, porque se movió del medio del archivo a la parte superior del archivo de enrutamiento y dejó de perderse en el medio.
 

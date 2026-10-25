@@ -34,11 +34,16 @@ Der Initializer sollte mindestens diese Artefakte hinterlassen:
 
 ## Checkliste
 
-1. Den Standard-Startpfad definieren.
-2. Den Standard-Verifikationspfad definieren.
-3. Das Fortschrittslog erstellen und den Startzustand dokumentieren.
-4. Die Arbeit in explizite Features mit Status zerlegen.
-5. Den ersten sauberen Baseline-Commit erstellen.
+## 1. Den Standard-Startpfad definieren.
+
+## 2. Den Standard-Verifikationspfad definieren.
+
+## 3. Das Fortschrittslog erstellen und den Startzustand dokumentieren.
+
+## 4. Die Arbeit in explizite Features mit Status zerlegen.
+
+## 5. Den ersten sauberen Baseline-Commit erstellen.
+
 
 ## Erfolgstest
 

@@ -54,11 +54,16 @@ Omnivore 通过 [obsidian-omnivore](https://github.com/omnivore-app/obsidian-omn
 
 ## 安装 
 
-1. 从Obsidian的社区插件部分安装并启用该插件，或者 [从源码构建该插件](https://github.com/omnivore-app/obsidian-omnivore) 并加载解压后的插件。
-2. 注册一个 [Omnivore 帐户](https://omnivore.app/)。
-3. 转到 [Omnivore](https://omnivore.app/settings/api) 并创建一个 API 密钥
-4. 在 Obsidian 中打开 Omnivore 插件设置，添加您的API密钥。
-5. 通过打开快捷键面板 (Ctrl + P 或 CMD + P)。输入 Omnivore 并选择 <strong>Omnivore: Sync</strong> 选项，以运行 Omnivore 同步。
+## 1. 从Obsidian的社区插件部分安装并启用该插件，或者 [从源码构建该插件](https://github.com/omnivore-app/obsidian-omnivore) 并加载解压后的插件。
+
+## 2. 注册一个 [Omnivore 帐户](https://omnivore.app/)。
+
+## 3. 转到 [Omnivore](https://omnivore.app/settings/api) 并创建一个 API 密钥
+
+## 4. 在 Obsidian 中打开 Omnivore 插件设置，添加您的API密钥。
+
+## 5. 通过打开快捷键面板 (Ctrl + P 或 CMD + P)。输入 Omnivore 并选择 **Omnivore: Sync** 选项，以运行 Omnivore 同步。
+
 
 ## 自定义从 Omnivore 同步到 Obsidian 的数据 
 
@@ -305,11 +310,18 @@ date_published: {{{datePublished}}}
 ## 另一种安装 obsidian-omnivore 插件方法 
 
 1. 从 [obsidian-omnivore 插件发布页面](https://github.com/omnivore-app/obsidian-omnivore/releases/tag/1.0.0)下载 `main.js`, `manifest.json`, 和 `styles.css` 。
-2. 找到您的 Obsidian Vault 目录 (您可以使用 File -> Open Vault 来查找 vault 的路径)。
-3. 创建一个 `<Vault 目录>/.obsidian/plugins/obsidian-omnivore` 目录。
-4. 将下载的文件移动到 `<Vault 目录>/.obsidian/plugins/obsidian-omnivore/`
-5. 解压压缩文件
-6. 重新启动 Obsidian 并在 Obsidian 设置中查找 Omnivore 插件。
-7. 转到插件设置并设置您的 API 密钥 (在 <https://omnivore.app/settings/api> 生成)。
-8. 点击工具栏上的 Omnivore 图标，将您的 Omnivore 数据同步到 Obsidian 中。
+## 2. 找到您的 Obsidian Vault 目录 (您可以使用 File -> Open Vault 来查找 vault 的路径)。
+
+## 3. 创建一个 `<Vault 目录>/.obsidian/plugins/obsidian-omnivore` 目录。
+
+## 4. 将下载的文件移动到 `<Vault 目录>/.obsidian/plugins/obsidian-omnivore/`
+
+## 5. 解压压缩文件
+
+## 6. 重新启动 Obsidian 并在 Obsidian 设置中查找 Omnivore 插件。
+
+## 7. 转到插件设置并设置您的 API 密钥 (在 <https://omnivore.app/settings/api> 生成)。
+
+## 8. 点击工具栏上的 Omnivore 图标，将您的 Omnivore 数据同步到 Obsidian 中。
+
 

@@ -23,9 +23,12 @@ Mô tả trải nghiệm lần chạy đầu tiên mà người dùng mới nên
 
 ## Luồng Người dùng
 
-1. `[bước một]`
-2. `[bước hai]`
-3. `[bước ba]`
+## 1. `[bước một]`
+
+## 2. `[bước hai]`
+
+## 3. `[bước ba]`
+
 
 ## Tiêu chí Chấp nhận
 

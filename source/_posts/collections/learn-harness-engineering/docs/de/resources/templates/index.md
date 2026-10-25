@@ -22,10 +22,14 @@ anzupassen.
 
 Kopieren Sie diese vier Dateien zuerst in Ihr Projektverzeichnis:
 
-1. `AGENTS.md` oder `CLAUDE.md`
-2. `init.sh`
-3. `claude-progress.md`
-4. `feature_list.json`
+## 1. `AGENTS.md` oder `CLAUDE.md`
+
+## 2. `init.sh`
+
+## 3. `claude-progress.md`
+
+## 4. `feature_list.json`
+
 
 Fügen Sie die restlichen Dateien hinzu, wenn Ihr Projekt wächst.
 
@@ -71,10 +75,14 @@ Startbefehls aus -- alles in einem Durchgang.
 
 <strong>Was es tut:</strong>
 
-1. Gibt das aktuelle Verzeichnis aus (damit Sie bestätigen können, dass es am richtigen Ort läuft)
-2. Installiert Abhängigkeiten
-3. Führt den Verifikationsbefehl aus
-4. Gibt den Startbefehl aus (oder führt ihn aus, wenn `RUN_START_COMMAND=1` gesetzt ist)
+## 1. Gibt das aktuelle Verzeichnis aus (damit Sie bestätigen können, dass es am richtigen Ort läuft)
+
+## 2. Installiert Abhängigkeiten
+
+## 3. Führt den Verifikationsbefehl aus
+
+## 4. Gibt den Startbefehl aus (oder führt ihn aus, wenn `RUN_START_COMMAND=1` gesetzt ist)
+
 
 Wenn die Verifikation fehlschlägt, sollte der Agent anhalten und die Baseline
 korrigieren, bevor er etwas anderes tut.
@@ -191,12 +199,18 @@ Anforderungen entspricht.
 
 <strong>Die sechs Dimensionen:</strong>
 
-1. <strong>Korrektheit</strong> -- entspricht die Implementierung dem Zielverhalten?
-2. <strong>Verifikation</strong> -- wurden die erforderlichen Prüfungen tatsächlich mit Nachweisen ausgeführt?
-3. <strong>Umfangdisziplin</strong> -- ist der Agent innerhalb des ausgewählten Features geblieben?
-4. <strong>Zuverlässigkeit</strong> -- übersteht das Ergebnis einen Neustart oder erneute Ausführung?
-5. <strong>Wartbarkeit</strong> -- sind Code und Dokumentation klar genug für die nächste Sitzung?
-6. <strong>Übergabebereitschaft</strong> -- kann eine neue Sitzung nur mit Repo-Artefakten fortgesetzt werden?
+## 1. **Korrektheit** -- entspricht die Implementierung dem Zielverhalten?
+
+## 2. **Verifikation** -- wurden die erforderlichen Prüfungen tatsächlich mit Nachweisen ausgeführt?
+
+## 3. **Umfangdisziplin** -- ist der Agent innerhalb des ausgewählten Features geblieben?
+
+## 4. **Zuverlässigkeit** -- übersteht das Ergebnis einen Neustart oder erneute Ausführung?
+
+## 5. **Wartbarkeit** -- sind Code und Dokumentation klar genug für die nächste Sitzung?
+
+## 6. **Übergabebereitschaft** -- kann eine neue Sitzung nur mit Repo-Artefakten fortgesetzt werden?
+
 
 <strong>Schlussfolgerungsoptionen:</strong>
 
@@ -208,11 +222,16 @@ Anforderungen entspricht.
 schlechte Selbstbewerter -- sie identifizieren Probleme und reden sich dann in eine
 Genehmigung. Sie müssen iterieren:
 
-1. Den Evaluator auf einen abgeschlossenen Sprint anwenden.
-2. Seine Bewertungen mit Ihrem eigenen menschlichen Urteil vergleichen.
-3. Wo sie abweichen, die Rubrik spezifischer zu Bestehen/Fehler-Kriterien machen.
-4. Erneut ausführen und die Übereinstimmung prüfen.
-5. Wiederholen, bis der Evaluator konsistent mit dem menschlichen Review übereinstimmt.
+## 1. Den Evaluator auf einen abgeschlossenen Sprint anwenden.
+
+## 2. Seine Bewertungen mit Ihrem eigenen menschlichen Urteil vergleichen.
+
+## 3. Wo sie abweichen, die Rubrik spezifischer zu Bestehen/Fehler-Kriterien machen.
+
+## 4. Erneut ausführen und die Übereinstimmung prüfen.
+
+## 5. Wiederholen, bis der Evaluator konsistent mit dem menschlichen Review übereinstimmt.
+
 
 Planen Sie 3-5 Kalibrierungsrunden. Dokumentieren Sie jede Änderung, damit Sie
 verfolgen können, was die Übereinstimmung verbessert hat.
@@ -264,9 +283,14 @@ Das Qualitätsdokument unterstützt auch die Harness-Vereinfachung. Jede Harness
 codiert eine Annahme darüber, was das Modell nicht kann. Wenn sich Modelle verbessern,
 veralten diese Annahmen. Um zu prüfen, ob eine Komponente noch benötigt wird:
 
-1. Eine Qualitätsdokument-Momentaufnahme erstellen.
-2. Eine Harness-Komponente entfernen.
-3. Die Benchmark-Aufgabensuite ausführen.
-4. Eine weitere Momentaufnahme erstellen.
-5. Vergleichen -- wenn die Noten nicht gefallen sind, war die Komponente Overhead.
+## 1. Eine Qualitätsdokument-Momentaufnahme erstellen.
+
+## 2. Eine Harness-Komponente entfernen.
+
+## 3. Die Benchmark-Aufgabensuite ausführen.
+
+## 4. Eine weitere Momentaufnahme erstellen.
+
+## 5. Vergleichen -- wenn die Noten nicht gefallen sind, war die Komponente Overhead.
+
    Wenn doch, wiederherstellen.

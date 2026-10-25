@@ -21,12 +21,18 @@ oturumun tahmin yürütmeden devam edebileceği bir durumda bırakmaktır.
 
 Kod yazmadan önce:
 
-1. Çalışma dizinini `pwd` ile doğrulayın.
-2. En son doğrulanmış durum ve sıradaki adım için `claude-progress.md` dosyasını okuyun.
-3. `feature_list.json` dosyasını okuyun ve en yüksek öncelikli, bitmemiş özelliği seçin.
-4. Son commit'leri `git log --oneline -5` ile inceleyin.
-5. `./init.sh` komutunu çalıştırın.
-6. Yeni işe başlamadan önce gerekli duman (smoke) veya uçtan uca doğrulamayı çalıştırın.
+## 1. Çalışma dizinini `pwd` ile doğrulayın.
+
+## 2. En son doğrulanmış durum ve sıradaki adım için `claude-progress.md` dosyasını okuyun.
+
+## 3. `feature_list.json` dosyasını okuyun ve en yüksek öncelikli, bitmemiş özelliği seçin.
+
+## 4. Son commit'leri `git log --oneline -5` ile inceleyin.
+
+## 5. `./init.sh` komutunu çalıştırın.
+
+## 6. Yeni işe başlamadan önce gerekli duman (smoke) veya uçtan uca doğrulamayı çalıştırın.
+
 
 Temel doğrulama zaten başarısız oluyorsa, önce bunu düzeltin. Bozuk bir
 başlangıç durumunun üzerine yeni özellik işi yığmayın.
@@ -60,9 +66,14 @@ Bir özellik yalnızca aşağıdakilerin tümü doğruysa tamamlanmış sayılı
 
 Bir oturumu bitirmeden önce:
 
-1. `claude-progress.md` dosyasını güncelleyin.
-2. `feature_list.json` dosyasını güncelleyin.
-3. Çözülmemiş riskleri veya engelleyicileri kaydedin.
-4. İş güvenli bir duruma geldiğinde açıklayıcı bir mesajla commit edin.
-5. Sıradaki oturumun anında `./init.sh` çalıştırabileceği kadar temiz bir depo
+## 1. `claude-progress.md` dosyasını güncelleyin.
+
+## 2. `feature_list.json` dosyasını güncelleyin.
+
+## 3. Çözülmemiş riskleri veya engelleyicileri kaydedin.
+
+## 4. İş güvenli bir duruma geldiğinde açıklayıcı bir mesajla commit edin.
+
+## 5. Sıradaki oturumun anında `./init.sh` çalıştırabileceği kadar temiz bir depo
+
    bırakın.

@@ -34,13 +34,20 @@ categories:
 
 ## Critical Gaps
 
-1. No feedback collection on Q&A responses
-2. No clean state reset functionality
-3. No benchmark scripts
-4. ConversationHistory is a flat list without chat styling
-5. Logger is basic -- no structured JSON output
-6. No test coverage at all
-7. Missing all advanced harness files (CLAUDE.md, feature_list.json, etc.)
+## 1. No feedback collection on Q&A responses
+
+## 2. No clean state reset functionality
+
+## 3. No benchmark scripts
+
+## 4. ConversationHistory is a flat list without chat styling
+
+## 5. Logger is basic -- no structured JSON output
+
+## 6. No test coverage at all
+
+## 7. Missing all advanced harness files (CLAUDE.md, feature_list.json, etc.)
+
 
 ## Action Items
 

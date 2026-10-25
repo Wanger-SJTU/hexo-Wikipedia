@@ -21,14 +21,22 @@ Biến xác minh UI thành một vòng lặp tương tác có thể lặp lại 
 
 ## Vòng lặp Cốt lõi
 
-1. Chọn trang mục tiêu hoặc phiên bản ứng dụng.
-2. Xóa noise console lỗi thời.
-3. Chụp trạng thái TRƯỚC.
-4. Kích hoạt đường dẫn UI.
-5. Quan sát các sự kiện runtime trong khi tương tác.
-6. Chụp trạng thái SAU.
-7. Áp dụng sửa chữa và khởi động lại ứng dụng nếu cần.
-8. Chạy lại xác minh cho đến khi journey sạch sẽ.
+## 1. Chọn trang mục tiêu hoặc phiên bản ứng dụng.
+
+## 2. Xóa noise console lỗi thời.
+
+## 3. Chụp trạng thái TRƯỚC.
+
+## 4. Kích hoạt đường dẫn UI.
+
+## 5. Quan sát các sự kiện runtime trong khi tương tác.
+
+## 6. Chụp trạng thái SAU.
+
+## 7. Áp dụng sửa chữa và khởi động lại ứng dụng nếu cần.
+
+## 8. Chạy lại xác minh cho đến khi journey sạch sẽ.
+
 
 ## Đầu vào Bắt buộc
 
@@ -39,13 +47,19 @@ Biến xác minh UI thành một vòng lặp tương tác có thể lặp lại 
 
 ## SOP Thực thi
 
-1. Viết journey mục tiêu trong kế hoạch active.
+## 1. Viết journey mục tiêu trong kế hoạch active.
+
 2. Định nghĩa thành công theo các thuật ngữ có thể quan sát: văn bản hiện diện, nút được bật, lỗi biến mất, console sạch, yêu cầu thành công.
-3. Snapshot trạng thái ban đầu trước khi tương tác.
-4. Kích hoạt chính xác một đường dẫn mỗi lần.
-5. Ghi lại các sự kiện runtime, thay đổi DOM và đầu ra có thể nhìn thấy.
-6. Nếu journey thất bại, hãy sửa lớp chịu trách nhiệm nhỏ nhất và khởi động lại.
-7. Chạy lại cùng đường dẫn và so sánh bằng chứng TRƯỚC/SAU.
+## 3. Snapshot trạng thái ban đầu trước khi tương tác.
+
+## 4. Kích hoạt chính xác một đường dẫn mỗi lần.
+
+## 5. Ghi lại các sự kiện runtime, thay đổi DOM và đầu ra có thể nhìn thấy.
+
+## 6. Nếu journey thất bại, hãy sửa lớp chịu trách nhiệm nhỏ nhất và khởi động lại.
+
+## 7. Chạy lại cùng đường dẫn và so sánh bằng chứng TRƯỚC/SAU.
+
 
 ## Tiêu chí Sạch sẽ
 

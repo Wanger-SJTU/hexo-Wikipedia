@@ -27,7 +27,8 @@ source_url: https://zhuanlan.zhihu.com/p/24638786450
 
 这一节将L2作为LLC，但和L3作为LLC是一样的道理。
 
-1.1.1 Shared Cache
+### 1.1.1 Shared Cache
+
 
 cache的出现引入了coherency的问题，主要包括两种解决方案：基于广播和基于directory。下图是基于shared bus和广播实现的L2 LLC，当在L1 miss后则向总线发起请求，此时所有core和L2都可以监听总线从而解决一致性问题。
 
@@ -47,7 +48,8 @@ Shared cache的劣势：
 - 不同core的工作负载可能会相互干扰从而影响miss rate，导致较差的QoS
 - shared cache需要引入一致性协议，会导致额外的开销
 - 大的shared cache具有相对更长的latency
-1.1.2 Private LLC
+### 1.1.2 Private LLC
+
 
 此时每个core将携带私有的unified L2 Cache，同时将一致性问题下移到下一级Cache处理。其优缺点也很明显，这里不再赘述。以下图private L2 Cache和directory 一致性协议为例，重点说明这种情况下的一致性问题解决需要更长的时间，一方面是因为增加了L2进行look-up的延迟，另一方面是L2的容量更大，也导致其Directory需要查找的范围更大，从而增加延迟。
 
@@ -118,15 +120,18 @@ L1和L2之间的关系：
 
 #### 2.1 大型Shared NUCA Cache的数据管理
 
-2.1.1 D-NUCA中的Placement/Migration/Search策略
+### 2.1.1 D-NUCA中的Placement/Migration/Search策略
+
 
 相对来说，D-NUCA比S-NUCA具有更好的性能，且本文介绍了多篇相关论文，没有详细阅读，有兴趣的读者可自行查看。
 
-2.1.2 Shared Cache的替换策略
+### 2.1.2 Shared Cache的替换策略
+
 
 相对Private L2来说，Shared L2中的数据可能距离所需的core距离较远，这是S-NUCA所面临的一个主要问题，一种解决方法是允许在Shared Cache中存在多个数据副本，从而需要额外的机制来保证这些副本间的一致性。同样，原文也介绍了几篇相关论文的详细设计，有兴趣的读者自行查看原文。
 
-2.1.3 基于OS的Page Placement
+### 2.1.3 基于OS的Page Placement
+
 
 早期的研究都提到S-NUCA的一大缺点是数据在所有Bank内随机分布，会导致有一半的数据位于对应core的另一侧，但是真实世界中的地址并不是随机均匀分布的。其可以被OS所控制进而提高数据的局部性，所以该方法和S-NUCA或D-NUCA结合能取得更好的效果。同样的，这里有几篇相关论文，有兴趣的读者自行阅读。
 
@@ -142,7 +147,8 @@ Private cache可以使一个core最常使用的数据位于其距离最近的cac
 
 #### 3.1 针对吞吐量和QoS的Cache Partitioning
 
-3.1.1 Introduction
+### 3.1.1 Introduction
+
 
 大多数论文通过将一个set-associative shared cache按way切分来实现cache partitioning，这对于小规模的core来说是合理的。随着core增多，distributed shared cache称为主流，此时除了按way或者set切分外还需要搭配额外的search机制以确定cache line具体位于哪个tile。
 
@@ -162,11 +168,13 @@ Private cache可以使一个core最常使用的数据位于其距离最近的cac
 
 一种新的技术称为Dynamic Set Sampling或者Set Dueling Monitors(SDMs)，可以帮助每个程序来动态的选择策略，比如cache共4096 set，通过绑定16 set为policy-A，16set为Policy-B，动态检测哪个效果好，则将其他set全部设置为更好的策略。
 
-3.1.2 吞吐量
+### 3.1.2 吞吐量
+
 
 这部分介绍了以吞吐量作为目标的cache partitioning方案，包括UCP、TADIP、PIPP算法，不做详细介绍，有兴趣的读者请阅读原文。
 
-3.1.3 QoS策略
+### 3.1.3 QoS策略
+
 
 该部分的内容对于一些需要提供一定程度程序运行的保证的系统比较重要，比如说数据中心或其他租借类型的服务平台。其中一些详细论文细节请阅读原文。
 
@@ -174,15 +182,18 @@ Private cache可以使一个core最常使用的数据位于其距离最近的cac
 
 这部分主要讨论cache中的哪些数据应该插入/保持/删除。
 
-3.2.1 Replacement/Insertion 策略
+### 3.2.1 Replacement/Insertion 策略
+
 
 在一些特殊场景，多个应用程序经L1滤除后再访问L2，此时LRU策略可能不是最优。这里也介绍了一些论文，不再详细介绍。
 
-3.2.2 新的associatibity组织形式
+### 3.2.2 新的associatibity组织形式
+
 
 一个观察是某些set可能会承担比其他set更大的压力，从而造成更大的conflict miss，所以一些新的方案尝试通过硬件的方案来实现set减负载均衡。同样，这些也可以通过OS软件手段缓解。
 
-3.2.3 Block级优化
+### 3.2.3 Block级优化
+
 
 本节内容尝试优化插入cache中内容的质量，包括prefetch、dead block prediction、compression。其中prefetch是一个发展非常久的话题，且对于LLC非常重要，因为LLC到DRAM的latency非常长；dead block prediction，可以通过trace每条指令的执行来提前预测某个block已经不再需要，从而提前预取；compression则通过压缩的方式增加cache容量，即只将所需的部分内容预取到cache。
 
@@ -190,19 +201,22 @@ Private cache可以使一个core最常使用的数据位于其距离最近的cac
 
 #### 4.1 大型cache设计基础
 
-4.1.1 Cache Array 设计
+### 4.1.1 Cache Array 设计
+
 
 简单cache的组织方式如下图所示，包含一个单独的Tag Array和一个Data Array，根据输入的地址进行译码激活一整个line，经放大器放大后将Tag中的值与地址再进行比较以确定具体命中哪一部分，从而确认是都hit以及读/写数据。其中cache的访问延迟主要是decoder、wordline、bitline和output bus组成。
 
 ![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_ce35fde3f53c.jpg)
 
-4.1.2 Cache互联
+### 4.1.2 Cache互联
+
 
 随着cache的增加，传统的单Array形式会造成严重的latency问题，所以大多大型的L2/L3都会分为多个bank，他们之前相互独立，且每个bank可以服务一个request。另外，一个bank内也可能包括多个Array，所以需要是有interconnect来互联这些sub-array，甚至是互联bank。
 
 对于中等规模的设计，大多数在core和LLC不同bank间使用crossbar连接，但是随着core增加到数十个，则需要使用scalable noc，主流是packet-switched routed network，即现在比较火的NoC。
 
-4.1.3 基于包交换路由的网络
+### 4.1.3 基于包交换路由的网络
+
 
 原文中介绍了一些NoC的基本概念，但不很全面，推荐大家可以阅读数据《On-Chip Networks, Second Edition》，也有中文翻译版《片上互联网络：多核众核关键技术》。
 
@@ -234,7 +248,8 @@ Private cache可以使一个core最常使用的数据位于其距离最近的cac
 
 #### 4.2 互联设计对NUCA和UCA Cache的影响
 
-4.2.1 NUCA Cache
+### 4.2.1 NUCA Cache
+
 
 早期的研究都假设了简单的Noc模型，认为每个router只会引入1 cycle延迟并忽略noc的功耗，这时的结果显示将cache分为64-256bank是最优的。随着意识到noc的重要性，考虑noc的延时和功耗后普遍认为分为少数几个bank是更优的，下图是一个trade-off。
 
@@ -246,7 +261,8 @@ Private cache可以使一个core最常使用的数据位于其距离最近的cac
 
 ![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_3a6a03cc6276.jpg)
 
-4.2.2 UCA Caches
+### 4.2.2 UCA Caches
+
 
 下图是UCA架构使用CACTI在32nm节点下不同组件的功耗占比，可以看到H-tree网路是最大的瓶颈。
 

@@ -206,8 +206,10 @@ Toʻliq kurs materiallarini <strong>[hujjatlar saytida](https://walkinglabs.gith
 
 Oʻquv dasturi uch qismdan iborat:
 
-1. <strong>Maʼruzalar</strong>: Harness Engineering ortidagi nazariyani tushuntiruvchi 12 konseptual blok.
-2. <strong>Loyihalar</strong>: Agent asosidagi ish muhitini noldan quradigan 6 ta amaliy loyiha.
+## 1. **Maʼruzalar**: Harness Engineering ortidagi nazariyani tushuntiruvchi 12 konseptual blok.
+
+## 2. **Loyihalar**: Agent asosidagi ish muhitini noldan quradigan 6 ta amaliy loyiha.
+
 3. <strong>Andozalar kutubxonasi</strong>: Bugunoq oʻz repozitoriyalaringizda ishlatish uchun nusxalashga tayyor andozalar (`AGENTS.md`, `feature_list.json`, `init.sh` va h.k.).
 
 ---

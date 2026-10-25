@@ -264,5 +264,6 @@ BGE模型的训练方法，来自C-Pack论文
 
 引用：
 
-1. C-Pack: Packaged Resources To Advance General Chinese Embedding
+## 1. C-Pack: Packaged Resources To Advance General Chinese Embedding
+
 

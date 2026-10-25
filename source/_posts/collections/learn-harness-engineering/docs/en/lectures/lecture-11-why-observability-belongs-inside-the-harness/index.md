@@ -78,7 +78,8 @@ flowchart LR
 You might be thinking: "Can't the agent just print its own logs?" The problem is:
 
 1. <strong>Agents don't know what they don't know.</strong> They won't proactively record signals they don't realize they need. Without harness-level constraints, agents only log what they think is important — and what they think is important is usually not enough.
-2. <strong>Log formats are inconsistent.</strong> Different sessions use different log formats, making systematic analysis impossible.
+## 2. **Log formats are inconsistent.** Different sessions use different log formats, making systematic analysis impossible.
+
 3. <strong>Process observability can't be solved by logging.</strong> Sprint contracts and scoring rubrics are structured artifacts that require harness-level support — adding a few print statements won't cut it.
 
 ## How to Build Observability

@@ -871,7 +871,8 @@ Larger: more computation power. Smaller: faster but weaker transformations
 
 `dropout`
 % of neurons dropped during training
-0.1
+### 0.1
+
 Higher: prevents overfitting but may underfit. Lower: better training fit but risk of overfitting
 
 `max_seq_len`
@@ -893,12 +894,14 @@ Larger: faster training but needs more memory. Smaller: stable but slower
 
 `learning_rate`
 Step size for updates
-0.0003
+### 0.0003
+
 Too high: unstable training. Too low: very slow learning
 
 `weight_decay`
 Regularization strength
-0.1
+### 0.1
+
 Higher: reduces overfitting. Lower: risk of overfitting
 
 `max_epochs`
@@ -913,7 +916,8 @@ More: smoother start, safer training. Less: risk of early instability
 
 `grad_clip`
 Max gradient value
-1.0
+### 1.0
+
 Lower: stable but slower learning. Higher: risk of exploding gradients
 
 ## Transformer Architecture
@@ -1595,7 +1599,8 @@ labels:    [-100, -100, -100, -100, -100, ..., -100, -100, -100,    -100,..., -1
 
 <strong>Step-by-step inside the function:</strong>
 
-1. Start with BOS:
+## 1. Start with BOS:
+
 
 ```
 input_ids = [BOS_ID]
@@ -1603,7 +1608,8 @@ labels = [IGNORE_INDEX]    # Don't learn to predict BOS
 
 ```
 
-2. For each turn, encode the content and strip auto-added BOS/EOS:
+## 2. For each turn, encode the content and strip auto-added BOS/EOS:
+
 
 ```
 content_ids = tokenizer.encode(content).ids
@@ -1614,7 +1620,8 @@ if content_ids[-1] == EOS_ID: content_ids = content_ids[:-1]
 
 We strip these because we're manually placing special tokens at exact positions, so we don't want duplicates.
 
-3. Build token sequence per role:
+## 3. Build token sequence per role:
+
 
 Role
 Token sequence
@@ -1638,7 +1645,8 @@ The assistant's role token (`<|assistant|>`) itself is masked because we don't w
 
 <strong>When to stop</strong> (predicting `<eos>`)
 
-4. Truncate and pad:
+## 4. Truncate and pad:
+
 
 ```
 input_ids = input_ids[:max_len]          # Cut to 256 tokens max
@@ -1874,8 +1882,10 @@ Epochs
 Only 79 examples vs millions of tokens. The model needs many passes to learn the conversation pattern
 
 Weight decay
-0.1
-0.01
+### 0.1
+
+### 0.01
+
 Less regularization needed since we want the model to fit these specific examples closely
 
 LR schedule

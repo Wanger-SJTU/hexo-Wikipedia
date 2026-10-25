@@ -59,7 +59,8 @@ chmod a+x /usr/bin/repo
 
 在$NDK_PATH\toolchains\llvm\prebuilt\windows-x86_64\AndroidVersion.txt中查看NDK使用的LLVM版本，在我使用的NDK中，AndroidVersion.txt 的内容是：
 
-12.0.8
+### 12.0.8
+
 based on r416183c1
 
 在https://android.googlesource.com/toolchain/llvm_android/中找到对应版本的 llvm-android 源码：

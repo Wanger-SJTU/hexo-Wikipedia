@@ -21,12 +21,18 @@ sobre la velocidad.
 
 Al comienzo de cada sesión:
 
-1. Ejecuta `pwd` y confirma que estás en la raíz del repositorio esperada.
-2. Lee `claude-progress.md`.
-3. Lee `feature_list.json`.
-4. Revisa los commits recientes con `git log --oneline -5`.
-5. Ejecuta `./init.sh`.
-6. Verifica si la ruta de smoke o end-to-end de referencia ya está rota.
+## 1. Ejecuta `pwd` y confirma que estás en la raíz del repositorio esperada.
+
+## 2. Lee `claude-progress.md`.
+
+## 3. Lee `feature_list.json`.
+
+## 4. Revisa los commits recientes con `git log --oneline -5`.
+
+## 5. Ejecuta `./init.sh`.
+
+## 6. Verifica si la ruta de smoke o end-to-end de referencia ya está rota.
+
 
 Luego selecciona exactamente una característica inacabada y trabaja solo en esa característica hasta
 que la verifiques o documentes por qué está bloqueada.
@@ -53,8 +59,13 @@ y el resultado esté registrado.
 
 ## Antes de Detenerte
 
-1. Actualiza el registro de progreso.
-2. Actualiza el estado de la característica.
-3. Registra qué sigue roto o sin verificar.
-4. Haz commit una vez que el repositorio sea seguro para reanudar.
-5. Deja una ruta de reinicio limpia para la próxima sesión.
+## 1. Actualiza el registro de progreso.
+
+## 2. Actualiza el estado de la característica.
+
+## 3. Registra qué sigue roto o sin verificar.
+
+## 4. Haz commit una vez que el repositorio sea seguro para reanudar.
+
+## 5. Deja una ruta de reinicio limpia para la próxima sesión.
+

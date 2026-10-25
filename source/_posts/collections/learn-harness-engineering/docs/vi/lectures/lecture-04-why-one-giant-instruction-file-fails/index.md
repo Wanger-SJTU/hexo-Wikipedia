@@ -113,10 +113,14 @@ Một nhóm SaaS có `AGENTS.md` phình từ 50 dòng lên 600. Nội dung trộ
 Hiệu suất agent bắt đầu giảm rõ rệt: trong khi sửa lỗi đơn giản, agent dành nhiều ngữ cảnh để xử lý các hướng dẫn triển khai không liên quan; ràng buộc bảo mật "tất cả truy vấn cơ sở dữ liệu phải sử dụng truy vấn được tham số hóa" bị chôn ở dòng 300 và thường xuyên bị bỏ qua; ba quy tắc phong cách mã mâu thuẫn gây ra hành vi agent ngẫu nhiên.
 
 Nhóm đã thực hiện "tái tổ chức vali":
-1. `AGENTS.md` được cắt xuống còn 80 dòng: chỉ tổng quan dự án, lệnh chạy và 15 ràng buộc cứng toàn cục
-2. Tạo các tài liệu chủ đề: `docs/api-patterns.md` (120 dòng), `docs/database-rules.md` (60 dòng), `docs/testing-standards.md` (80 dòng)
-3. Thêm liên kết tài liệu chủ đề trong tệp định tuyến
-4. Các ghi chú lịch sử được chuyển đổi thành test case hoặc bị xóa
+## 1. `AGENTS.md` được cắt xuống còn 80 dòng: chỉ tổng quan dự án, lệnh chạy và 15 ràng buộc cứng toàn cục
+
+## 2. Tạo các tài liệu chủ đề: `docs/api-patterns.md` (120 dòng), `docs/database-rules.md` (60 dòng), `docs/testing-standards.md` (80 dòng)
+
+## 3. Thêm liên kết tài liệu chủ đề trong tệp định tuyến
+
+## 4. Các ghi chú lịch sử được chuyển đổi thành test case hoặc bị xóa
+
 
 Sau tái cấu trúc: tỷ lệ thành công cùng bộ tác vụ tăng từ 45% lên 72%. Tuân thủ ràng buộc bảo mật tăng từ 60% lên 95% — vì nó di chuyển từ giữa tệp lên đầu tệp định tuyến, không còn "lạc giữa đường" nữa.
 

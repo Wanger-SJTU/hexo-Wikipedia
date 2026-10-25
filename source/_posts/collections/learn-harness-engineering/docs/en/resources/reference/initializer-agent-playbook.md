@@ -33,11 +33,16 @@ The initializer should leave behind at least these artifacts:
 
 ## Checklist
 
-1. Define the standard startup path.
-2. Define the standard verification path.
-3. Create the progress log and record the starting state.
-4. Decompose the work into explicit features with statuses.
-5. Create the first clean baseline commit.
+## 1. Define the standard startup path.
+
+## 2. Define the standard verification path.
+
+## 3. Create the progress log and record the starting state.
+
+## 4. Decompose the work into explicit features with statuses.
+
+## 5. Create the first clean baseline commit.
+
 
 ## Success Test
 

@@ -17,11 +17,13 @@ source_url: https://www.zhihu.com/question/419394566/answer/2232250294
 
 多年前工作原因参与Power多核系列CPU设计和验证，负责cache一致性工作，对MESI 等4状态至多13状态一致性协议有较为深入的理解。本文试图从最简单的MESI 4状态协议开始，直到IBM在Power6中开始使用13状态的一致性协议来进一步提升性能做一个知识梳理。
 
-1. cache一致性协议的目的
+## 1. cache一致性协议的目的
+
 可并行执行的程序会划分成不同的程序片段，被安排到不同的cpu core上去执行，不同的core会有独立的私有的cache，程序片段有局部性原则，如果能够让独立私有的cache间共享数据，而不是每个程序片段独立从外部存储器上取数据，那么程序性能就会好。cache coherence protocol就是为了解决这个问题的。
 
 ![](https://picx.zhimg.com/50/v2-bbc0c12f3820f57a636ba3accfd7f89d_720w.jpg?source=2c26e567)core发出数据请求1，总线会把该请求广播(2)到其它core，其它core如果有这个数据，会返回该数据(3)
-2. MESI协议介绍
+## 2. MESI协议介绍
+
 MESI是最基本的4状态（2bit）协议，该状态位位于每一个cacheline中。
 
 ![](https://pic1.zhimg.com/v2-1d8ac62b26f05a1b502ca36529aeadbd_r.jpg?source=2c26e567)Modified: 意思为此cache line的数据被当前cache隶属于的core更改了，此cacheline的数据和DDR中不一致，也说明其它core的cache不会有此cacheline的数据；
@@ -37,17 +39,20 @@ Invalid: 意思是cacheline为空；
 ![](https://picx.zhimg.com/v2-e520c071bd660315ec1a084eee4bbaf2_r.jpg?source=2c26e567)状态转化：
 
 ![](https://picx.zhimg.com/v2-0115912c90b1cdaaecab9cd50dbf0f4e_r.jpg?source=2c26e567)
-3. MOESI介绍
+## 3. MOESI介绍
+
 Owned：意思和上述的Shared类似，不同之处在于在多核系统为了方便总线仲裁，当多个cache拥有相同数据时，选一个负责相应，处于O状态的cache需要相应总线的读取，而处于S状态的不相应。
 
 ![](https://picx.zhimg.com/v2-af0891865f9a60c5e93a8c7b1124fe10_r.jpg?source=2c26e567)
-4. 13位协议介绍
+## 4. 13位协议介绍
+
 为了最大化性能，Power processor总是广播cache请求，收到请求的单位会相应，总线控制器会尽早的根据相应反馈给所有单位，被选中的单位做进一步的数据返回操作，没被选中的单位尽早结束相应。基于这种思想设计的一致性协议：
 
 ![](https://pic1.zhimg.com/v2-acae6664d6cecd974ed8dd53b543ddd3_r.jpg?source=2c26e567)power 5 的9个状态
 ![](https://pic1.zhimg.com/v2-c3226b75ecabdcd040ca33b6e83a90c2_r.jpg?source=2c26e567)power 6 再不上4个状态由于这些状态和总线控制器相关，不具有一般性，不做深入探讨了，希望大家可以有种体会即为了提升性能，计算机体系结构已经做到了不可思议的复杂。
 
-5. 总结
+## 5. 总结
+
 AI芯片又给做计算机体系结构的人打了一剂强心针，但是AI芯片相对于做了几十年的CPU架构，复杂度上真不是一个量级的。
 
 AI芯片的复杂度更多来自于软件。当芯片内部的很多部件都暴露给软件工程师时，如何写出高性能的库是工作的重点。笔者认为这样的思路是对的，而不应该像CPU那样，单单一个分支预测都可以做出来10级流水线...，硬件工程师搞的头秃，而软件工程师却又帮不上什么忙。

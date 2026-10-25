@@ -23,9 +23,12 @@ Décrire l'expérience de première utilisation qu'un nouvel utilisateur devrait
 
 ## Parcours utilisateur
 
-1. `[étape une]`
-2. `[étape deux]`
-3. `[étape trois]`
+## 1. `[étape une]`
+
+## 2. `[étape deux]`
+
+## 3. `[étape trois]`
+
 
 ## Critères d'acceptation
 

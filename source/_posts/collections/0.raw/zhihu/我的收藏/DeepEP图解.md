@@ -46,7 +46,8 @@ recv阶段需要将每个rank发送到本地的token按照expert的次序进行�
 
 ![](https://pic2.zhimg.com/v2-893fc8977d71d5cb068c89f87ffe86f3_r.jpg)Internode Low Latency Combine相较于dispatch，combine是逆过来的操作。如low_latency_combine所示，每个warp group负责expert内一个rank的数据发送。combine阶段comm buffer的数据布局为[num_global_experts][num_mas_dispatch_tokens_per_rank]，其中num_global_experts = num_local_experts * num_global_ranks。由此可见，combine阶段的comm buffer反应的是一个GPU rank本地的token选中expert的情况，最极端的情况是所有token都选中了同一个expert，因此每个expert预留的空间为num_mas_dispatch_tokens_per_rank。可见，combine和dispatch的comm buffer的大小是一样的。这样每个warp group根据recv_range和recv_src_info，将数据从recv_x搬运到comm buffer，在发送完成hidden数据后set flag告诉对端数据传输已经完成。不同于dispatch，combine阶段源端不需要告诉对端发送的数据量。这是因为在combine recv阶段，每个rank可以根据topk_idx遍历token选中的每个专家，去comm buffer的位置读comm buffer。比如假设某个token选中了expert 5，则只需要根据token_idx去索引comm buffer对应的位置。
 
-2. <strong>Internode</strong> <strong>Normal</strong>
+## 2. **Internode** **Normal**
+
 有时间再继续～
 
 ![](https://pic4.zhimg.com/v2-6399082badd0b11122e6383235f5c937_r.jpg)Internode Normal Dispatch

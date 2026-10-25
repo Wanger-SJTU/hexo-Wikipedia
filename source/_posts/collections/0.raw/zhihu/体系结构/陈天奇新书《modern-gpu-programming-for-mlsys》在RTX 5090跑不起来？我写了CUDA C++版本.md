@@ -24,12 +24,15 @@ source_url: https://zhuanlan.zhihu.com/p/2059730024626905589
 3 解决方案
 由于本人也是初学者（入门ai编译器1年左右），现在将自己能够通过的CUDA C++替代方案，放到网上，希望吸引志同道合的人交流。  
 
-3.1 原因
+### 3.1 原因
+
 由于租不到 B100/B200 GPU，而 RTX 5090 的 Tensor Core 硬件本身是完好的（通过 HMMA 路径走 `mma.sync`），我们写了一个 CUDA C++ 版本的 GEMM kernel，绕过 TIRx 框架直接在 SM120 上跑 Tensor Core。
 
-3.2 核心设计
+### 3.2 核心设计
+
 设计选择说明MMA 指令wmma::mma_sync（走 HMMA 路径，SM120 原生支持）累加器warp 级寄存器 fragment（wmma::fragment<accumulator, ...>）Shared MemoryA: [128][64] row-major；B: [64][128] 转置存储Warp 布局M 维 8 warps × N 维 4 warps = 32 warps = 1024 threads/blockTile 大小128×128×64（每个 warp 算 2 个 N-tile，128÷16=8 warps in M，128÷16÷2=4 warps in N）K 循环累加器在 K 循环外初始化，跨 K 分块累加
-3.2 代码
+### 3.2 代码
+
 """
 SM120 (RTX 5090) 兼容的 GEMM kernel。
 
@@ -347,7 +350,8 @@ __global__ void hgemm_sm120_kernel(
 ```
 
 
-3.3 B 矩阵转置存储的关键设计
+### 3.3 B 矩阵转置存储的关键设计
+
 B 的原始存储是 `B[N][K]`（row-major）。对于 `wmma::mma_sync`，matrix_b 是 `K×N` 的：
 
 MMA:  C[i][j] = Σ_k A[i][k] · B[k][j]
@@ -364,9 +368,11 @@ BsT[k_idx][n_idx] = B[(blk_n + n_idx) * K + (k_block + k_idx)];
 B[k][j] = BsT[k_inner + k][b_col + j] = B_orig[blk_n + b_col + j][k_block + k_inner + k]
 MM 的结果就是正确的 `C = A × Bᵀ`。
 
-4. 运行结果
+## 4. 运行结果
 
-4.1 环境配置
+
+### 4.1 环境配置
+
 运行前需要修复 CUDA 运行时库的版本兼容问题：
 
 # TVM 的 pip 包需要 libcudart.so.13，但系统只有 CUDA 12.8
@@ -384,18 +390,22 @@ export LD_LIBRARY_PATH="/root/miniconda3/lib/python3.12/site-packages/tvm/lib:$L
 
 python gemm.py
 
-4.2 正确性测试
+### 4.2 正确性测试
+
 矩阵大小max_error结果256×256×2560.000000✅ PASS
-4.3 性能测试
+### 4.3 性能测试
+
 矩阵: A(2048×2048) × B(2048×2048)ᵀ → C(2048×2048)，17.2 GFLOPS
 
 版本耗时TFLOPS相对 cuBLAShgemm_sm120 (mma.sync)0.534 ms32.218.2%PyTorch (cuBLAS)0.097 ms176.8100%
-4.4 性能差距分析
+### 4.4 性能差距分析
+
 cuBLAS 比本 kernel 快 5.5×，主要差距来自：
 
 优化技术cuBLAS本 kernel影响TMA（硬件异步拷贝）✅❌减少 global→shared 延迟Double/Triple Buffer✅❌掩盖访存延迟Warp Specialization✅❌Load/Compute 并行寄存器优化✅基础更高 occupancyBank Conflict 处理✅未处理Shared memory 吞吐这些正是后续迭代优化的方向。
 
-5. 总结
+## 5. 总结
+
 
 - <strong>TIRx 0.25 只支持 SM100（B100/B200）</strong>，原因是 `Tx.gemm_async` 的唯一调度实现（tcgen05）依赖 TMEM 和 warpgroup，这两者 RTX 5090（SM120）都不具备。
 - <strong>SM120 的 Tensor Core 硬件是完好的</strong>，通过 `wmma::mma_sync`（HMMA 路径）可以正确调用，只是 TIRx 还没有对接。

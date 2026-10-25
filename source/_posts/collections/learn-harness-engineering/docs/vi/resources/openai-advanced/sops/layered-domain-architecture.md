@@ -37,13 +37,20 @@ Các mối quan tâm xuyên suốt nên đi vào qua các provider hoặc adapte
 
 ## SOP Thực thi
 
-1. Ánh xạ codebase thành các domain trước khi chạm vào phong cách triển khai.
-2. Cho mỗi domain, xác định chuỗi lớp được phép.
-3. Xác định tất cả các mối quan tâm xuyên suốt và định tuyến chúng qua các provider hoặc adapter.
-4. Di chuyển logic dùng chung mơ hồ sang domain sở hữu hoặc sang utils thực sự chung chung.
-5. Ghi lại các quy tắc trong `ARCHITECTURE.md`.
-6. Thêm một guardrail có thể thực thi cho vi phạm có chi phí cao nhất.
-7. Cập nhật điểm chất lượng sau khi thay đổi.
+## 1. Ánh xạ codebase thành các domain trước khi chạm vào phong cách triển khai.
+
+## 2. Cho mỗi domain, xác định chuỗi lớp được phép.
+
+## 3. Xác định tất cả các mối quan tâm xuyên suốt và định tuyến chúng qua các provider hoặc adapter.
+
+## 4. Di chuyển logic dùng chung mơ hồ sang domain sở hữu hoặc sang utils thực sự chung chung.
+
+## 5. Ghi lại các quy tắc trong `ARCHITECTURE.md`.
+
+## 6. Thêm một guardrail có thể thực thi cho vi phạm có chi phí cao nhất.
+
+## 7. Cập nhật điểm chất lượng sau khi thay đổi.
+
 
 ## Định nghĩa Hoàn thành
 

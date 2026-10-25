@@ -118,10 +118,14 @@ Un equipo mantenía una plataforma de e-commerce con unos 30 microservicios. Las
 Después de introducir agentes de IA, el 70% de las tareas requería intervención humana. Casi todos los fallos implicaban que el agente violaba alguna restricción implícita de "todo el mundo lo sabe pero nadie lo escribió". Es como un empleado nuevo a quien nadie le dijo "tienes que publicar tu pedido de almuerzo en el chat del grupo": adivina mal, le regañan, pero después de regañarlo nadie escribe la regla.
 
 El equipo ejecutó una transformación:
-1. Creó `AGENTS.md` en la raíz del repo con resumen del proyecto, versiones del stack técnico y restricciones globales duras
-2. Añadió `ARCHITECTURE.md` en cada directorio de microservicio describiendo responsabilidades, interfaces y dependencias
-3. Creó un `CONSTRAINTS.md` centralizado con restricciones duras en lenguaje explícito "MUST/MUST NOT"
-4. Añadió `PROGRESS.md` en cada directorio de servicio para seguir el estado actual del trabajo
+## 1. Creó `AGENTS.md` en la raíz del repo con resumen del proyecto, versiones del stack técnico y restricciones globales duras
+
+## 2. Añadió `ARCHITECTURE.md` en cada directorio de microservicio describiendo responsabilidades, interfaces y dependencias
+
+## 3. Creó un `CONSTRAINTS.md` centralizado con restricciones duras en lenguaje explícito "MUST/MUST NOT"
+
+## 4. Añadió `PROGRESS.md` en cada directorio de servicio para seguir el estado actual del trabajo
+
 
 Después de la transformación, el mismo agente podía responder todas las preguntas clave del proyecto en arranque en frío, y la calidad de finalización de tareas mejoró significativamente.
 

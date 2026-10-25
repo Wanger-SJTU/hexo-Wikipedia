@@ -173,10 +173,14 @@ REGISTERS
 
 第一次迭代 (初始加载):
 ─────────────────────────────────
-1. 加载 K[n-1]    ← 最后一个 K block 先加载
-2. 加载 Q[0]      ← Q stage 0
-3. 加载 Q[1]      ← Q stage 1 (double buffering)
-4. 加载 V[n-1]    ← 最后一个 V block
+## 1. 加载 K[n-1]    ← 最后一个 K block 先加载
+
+## 2. 加载 Q[0]      ← Q stage 0
+
+## 3. 加载 Q[1]      ← Q stage 1 (double buffering)
+
+## 4. 加载 V[n-1]    ← 最后一个 V block
+
 
 后续迭代 (流水线):
 ─────────────────────────────────
@@ -238,29 +242,48 @@ MMA warp 执行两个主要矩阵乘法：
 #### GEMM_QK: Q × K^T → S
 
 Prologue
-1. 等待 Q[stage] 就绪 (pipeline_q)
-2. 等待 K[n-1] 就绪 (pipeline_kv)
-3. 执行 GEMM: S[stage] = Q[stage] × K[n-1]^T
-4. 通知 S[stage] 已就绪供 softmax 使用 (pipeline_s_p_o, s producer)
-5. 释放 K[n-1] (advance pipeline_kv consumer)
+## 1. 等待 Q[stage] 就绪 (pipeline_q)
+
+## 2. 等待 K[n-1] 就绪 (pipeline_kv)
+
+## 3. 执行 GEMM: S[stage] = Q[stage] × K[n-1]^T
+
+## 4. 通知 S[stage] 已就绪供 softmax 使用 (pipeline_s_p_o, s producer)
+
+## 5. 释放 K[n-1] (advance pipeline_kv consumer)
+
 
 对于每个 K/V block 迭代:
-1. 等待 V[i] 就绪 (pipeline_kv)
-2. 等待 P[i] 就绪 ( pipeline_s_p_o, o producer + p producer (实际上是 mma 是 consumer))
-3. 执行 GEMM: O[stage] += P[stage][i] × V[i] ( 等待 pipeline_p_lastsplit)
-4. 等待 K[i-1] 就绪 (pipeline_kv)
-5. 执行 GEMM: S[stage] = Q[stage] × K[i-1]^T
-6. 通知 S[stage] 已就绪供 softmax 使用 (pipeline_s_p_o, s producer)
-7. 释放 K[i-1] (advance pipeline_kv consumer)
-8. 释放 V[i] (advance pipeline_kv consumer)
+## 1. 等待 V[i] 就绪 (pipeline_kv)
+
+## 2. 等待 P[i] 就绪 ( pipeline_s_p_o, o producer + p producer (实际上是 mma 是 consumer))
+
+## 3. 执行 GEMM: O[stage] += P[stage][i] × V[i] ( 等待 pipeline_p_lastsplit)
+
+## 4. 等待 K[i-1] 就绪 (pipeline_kv)
+
+## 5. 执行 GEMM: S[stage] = Q[stage] × K[i-1]^T
+
+## 6. 通知 S[stage] 已就绪供 softmax 使用 (pipeline_s_p_o, s producer)
+
+## 7. 释放 K[i-1] (advance pipeline_kv consumer)
+
+## 8. 释放 V[i] (advance pipeline_kv consumer)
+
 
 Epilogue
-1. 释放 Q[0]Q[1]
-2. 等待 V[0] 就绪 (pipeline_kv)
-3. 等待 P[0] 就绪 (pipeline_s_p_o, o producer + p producer (实际上是 mma 是 consumer))
-4. 执行 GEMM: O[stage] += P[stage][0] × V[0] (等待 pipeline_p_lastsplit)
-5. 通知 O[stage] 已就绪供 O 最终 rescale 使用 (pipeline_o_acc)
-6. 释放 V[0] (advance pipeline_kv consumer)
+## 1. 释放 Q[0]Q[1]
+
+## 2. 等待 V[0] 就绪 (pipeline_kv)
+
+## 3. 等待 P[0] 就绪 (pipeline_s_p_o, o producer + p producer (实际上是 mma 是 consumer))
+
+## 4. 执行 GEMM: O[stage] += P[stage][0] × V[0] (等待 pipeline_p_lastsplit)
+
+## 5. 通知 O[stage] 已就绪供 O 最终 rescale 使用 (pipeline_o_acc)
+
+## 6. 释放 V[0] (advance pipeline_kv consumer)
+
 
 <strong>关键优化：</strong> `split_P_arrive` 特性允许部分 P 发送给 GEMM_PV，同时 softmax 仍在计算其余部分，实现计算重叠。
 
@@ -276,23 +299,31 @@ sm_stats_barrier:
 
 - 大小: q_stages=2 x warps=4
 Prologue
-1. 作为 producer 等待 pipeline_sm_stats
-2. 计算 softmax[n-1](is_first)
+## 1. 作为 producer 等待 pipeline_sm_stats
+
+## 2. 计算 softmax[n-1](is_first)
+
 
 对于每个 n block: softmax[i]
-1. 从 mma 等待 S[stage][i] (pipeline_s_p_o, s consumer)
-2. 从 tmem 加载 S → registers
-3. 应用 mask (causal/local/sliding window):
+## 1. 从 mma 等待 S[stage][i] (pipeline_s_p_o, s consumer)
+
+## 2. 从 tmem 加载 S → registers
+
+## 3. 应用 mask (causal/local/sliding window):
+
    - Causal: mask 未来位置
    - Local: mask 窗口外位置
    - mask_mod: 自定义 mask 函数
-4. 计算 row_max:
+## 4. 计算 row_max:
+
    - 第一次迭代: m = max(S)
    - 后续迭代: m = max(prev_m, new_m)
-5. 更新 sScale 中的 acc_scale
+## 5. 更新 sScale 中的 acc_scale
+
    - 如果 log2 max diff 小于 8，则 acc_scale = 1.0
    - 通过 sm_stats_barrier 通知 correction warp
-6. 应用 exp2 变换:
+## 6. 应用 exp2 变换:
+
    - P = exp2(S * scale - row_max * scale)
    - 用新的 row_max 更新 tSrS_t2r
    - 应用 exp2 并保存到 tSrP_r2t
@@ -307,7 +338,8 @@ Prologue
                - 4 (ex2_emu_res) 行在 ALU 上做模拟 exp2
 ```
 
-7. 存储 P 到 tmem
+## 7. 存储 P 到 tmem
+
    - 前 :
 
 ```text
@@ -318,17 +350,21 @@ Prologue
       - 释放供 P tmem 被 PV mma 使用 (pipeline_p_lastsplit)
 ```
 
-8. 计算 row_sum:
+## 8. 计算 row_sum:
+
    - 作为 producer 等待 pipeline_sm_stats
    - 第一次迭代: r = sum(P)
    - 后续迭代: r = prev_r * exp2(prev_m - new_m) + sum(new_P)
 
 Epilogue
-1. 更新 sScale[_, tidx, stage]
-2. 通过 sm_stats_barrier[stage][wid] 通知 correction warp
+## 1. 更新 sScale[_, tidx, stage]
+
+## 2. 通过 sm_stats_barrier[stage][wid] 通知 correction warp
+
 
 所有 work tile 完成后
-1. pipeline_sm_stats.producer_tail
+## 1. pipeline_sm_stats.producer_tail
+
 
 <strong>优化点</strong>:
 
@@ -343,20 +379,28 @@ Epilogue
 Correction warp 处理在线归一化和最终缩放：
 
 Prologue work_tile
-1. 第一个 O 不需要缩放，为 mma 释放 O (pipeline_s_p_o, o consumer, 实际上是 producer)
+## 1. 第一个 O 不需要缩放，为 mma 释放 O (pipeline_s_p_o, o consumer, 实际上是 producer)
+
 
 Prologue
-1. 第一个 O 不需要 correction，释放 sm stats (pipeline_sm_stats, sm_stats_barrier)
+## 1. 第一个 O 不需要 correction，释放 sm stats (pipeline_sm_stats, sm_stats_barrier)
+
 
 对于每个 block 迭代:
-1. 通过 named barrier 等待 softmax 统计数据 sScale(row_sum 现在是 acc_scale)
-2. 投票是否有线程需要 rescale (超过 rescale 阈值)
-3. 从 tmem 加载 O，乘以 scale，存回 (correction_rescale)
-4. 为 mma 释放 O (pipeline_s_p_o, o consumer (实际上是 producer))
-5. 释放 sm stats (pipeline_sm_stats)
+## 1. 通过 named barrier 等待 softmax 统计数据 sScale(row_sum 现在是 acc_scale)
+
+## 2. 投票是否有线程需要 rescale (超过 rescale 阈值)
+
+## 3. 从 tmem 加载 O，乘以 scale，存回 (correction_rescale)
+
+## 4. 为 mma 释放 O (pipeline_s_p_o, o consumer (实际上是 producer))
+
+## 5. 释放 sm stats (pipeline_sm_stats)
+
 
 Epilogue
-1. 对于最后一个 block:
+## 1. 对于最后一个 block:
+
    - 等待 row_sum (sm_stats_barrier)
    - 等待 row_max (如果输出 lse)
    - 计算最终 scale = 1.0 / row_sum
@@ -365,11 +409,13 @@ Epilogue
    - 从 tmem 加载 O，乘以 scale，存回 (correction_epilogue)
    - 释放 (pipeline_o_acc)
    - 提交 (pipeline_o_epi)
-2. 对于 LSE
+## 2. 对于 LSE
+
    - rescale row_sum 并存回 global
 
 Epilogue work_tile
-1. pipeline_o_epi.producer_tail
+## 1. pipeline_o_epi.producer_tail
+
 
 <strong>优化点</strong>
 
@@ -380,16 +426,20 @@ Epilogue work_tile
 Epilogue warp 将最终输出写入 global memory:
 
 对于每个 output stage:
-1. 等待 sO 中已校正的 O (pipeline_o_epi)
-2. 如果使用 TMA_O:
+## 1. 等待 sO 中已校正的 O (pipeline_o_epi)
+
+## 2. 如果使用 TMA_O:
+
    - 发起 TMA store 到 global memory
    - Commit async bulk group
    - 等待完成
-3. 否则 (非 TMA 路径):
+## 3. 否则 (非 TMA 路径):
+
    - 拷贝 sO → registers
    - 根据序列长度做 predicate
    - 存储到 global memory
-4. 通知 pipeline 释放 (pipeline_o_epi)
+## 4. 通知 pipeline 释放 (pipeline_o_epi)
+
 
 #### 5. Pipeline 同步
 

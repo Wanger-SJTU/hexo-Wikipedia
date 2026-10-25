@@ -21,12 +21,18 @@ hinterlassen, in dem die nächste Session ohne Raten weiterarbeiten kann.
 
 Bevor Code geschrieben wird:
 
-1. Arbeitsverzeichnis mit `pwd` bestätigen.
-2. `claude-progress.md` für den neuesten verifizierten Zustand und nächsten Schritt lesen.
-3. `feature_list.json` lesen und das Feature mit höchster Priorität auswählen.
-4. Letzte Commits mit `git log --oneline -5` überprüfen.
-5. `./init.sh` ausführen.
-6. Erforderlichen Smoke- oder End-to-End-Test vor neuer Arbeit ausführen.
+## 1. Arbeitsverzeichnis mit `pwd` bestätigen.
+
+## 2. `claude-progress.md` für den neuesten verifizierten Zustand und nächsten Schritt lesen.
+
+## 3. `feature_list.json` lesen und das Feature mit höchster Priorität auswählen.
+
+## 4. Letzte Commits mit `git log --oneline -5` überprüfen.
+
+## 5. `./init.sh` ausführen.
+
+## 6. Erforderlichen Smoke- oder End-to-End-Test vor neuer Arbeit ausführen.
+
 
 Wenn die Baseline-Verifikation bereits fehlschlägt, diese zuerst beheben. Keine neue
 Feature-Arbeit auf einen kaputten Startzustand stapeln.
@@ -60,9 +66,14 @@ Ein Feature ist erst fertig, wenn all dies zutrifft:
 
 Vor dem Beenden einer Session:
 
-1. `claude-progress.md` aktualisieren.
-2. `feature_list.json` aktualisieren.
-3. Alle ungelösten Risiken oder Blocker dokumentieren.
-4. Mit einer beschreibenden Nachricht committen, sobald die Arbeit in einem sicheren Zustand ist.
-5. Das Repo sauber genug hinterlassen, damit die nächste Session sofort `./init.sh`
+## 1. `claude-progress.md` aktualisieren.
+
+## 2. `feature_list.json` aktualisieren.
+
+## 3. Alle ungelösten Risiken oder Blocker dokumentieren.
+
+## 4. Mit einer beschreibenden Nachricht committen, sobald die Arbeit in einem sicheren Zustand ist.
+
+## 5. Das Repo sauber genug hinterlassen, damit die nächste Session sofort `./init.sh`
+
    ausführen kann.

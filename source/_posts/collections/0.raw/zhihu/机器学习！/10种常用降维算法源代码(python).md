@@ -84,10 +84,12 @@ source_url: https://zhuanlan.zhihu.com/p/68754729
 <strong>9. FastICA</strong>
 
 
-10. SVD
+## 10. SVD
 
 
-11. LE
+
+## 11. LE
+
 
 ![](/images/collections/0.raw/zhihu/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%EF%BC%81/asset/img_52f58d0db07a.jpg)
 

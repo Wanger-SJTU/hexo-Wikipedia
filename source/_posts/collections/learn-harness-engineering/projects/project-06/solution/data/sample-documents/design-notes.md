@@ -61,11 +61,16 @@ Business logic lives in service classes that run in the main process:
 
 ## Data Flow
 
-1. User action in renderer triggers IPC call via preload bridge
-2. IPC handler in main process delegates to appropriate service
-3. Service performs business logic using persistence layer
-4. Each service logs structured events with timestamps and data
-5. Result flows back through IPC to renderer for display
+## 1. User action in renderer triggers IPC call via preload bridge
+
+## 2. IPC handler in main process delegates to appropriate service
+
+## 3. Service performs business logic using persistence layer
+
+## 4. Each service logs structured events with timestamps and data
+
+## 5. Result flows back through IPC to renderer for display
+
 
 ## Observability
 

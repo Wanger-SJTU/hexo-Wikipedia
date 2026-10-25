@@ -38,14 +38,16 @@ core流水线前端的改进：
 
 ARM X4去掉了Mop Cache![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_ddd2d067d7c2.jpg)
 
-5. Malloc后的memset操作会把cacheline memset为0, 自动detect这种streaming write 写操作，对于这类store miss，不在L1和L2 cache中allocate, 避免污染cache, 直接写回memory或者SLC
+## 5. Malloc后的memset操作会把cacheline memset为0, 自动detect这种streaming write 写操作，对于这类store miss，不在L1和L2 cache中allocate, 避免污染cache, 直接写回memory或者SLC
+
 
 6. 从ARM V1 2B*256的SVE为何改为V2的4B*128? 原因是考虑到对于vector操作相同数据量, 前者使用更少的指令,后者更适合使用SVE运行non-vector-type的workload; scale down更方便, 可以很快改为2B*128，因此是设计的tradeoff
 
 
 ### AMD Zen4
 
-1. 前端流水线的Fetch stage:
+## 1. 前端流水线的Fetch stage:
+
 
 ```text
     a) Fetch做到单cycle出两个taken branch, 正常只能出一个，跟ARM N2类似
@@ -54,7 +56,8 @@ ARM X4去掉了Mop Cache![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E
 ```
 
 
-2. 执行单元部分:
+## 2. 执行单元部分:
+
 
 ```text
     a) Bit manipulation延迟执行降低
@@ -63,7 +66,8 @@ ARM X4去掉了Mop Cache![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E
 ```
 
 
-3. Cache部分:
+## 3. Cache部分:
+
 
 ```text
     a) L2 size更大，从1MB改为2MB.
@@ -74,7 +78,8 @@ ARM X4去掉了Mop Cache![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E
 ```
 
 
-4. AVX-512：
+## 4. AVX-512：
+
 
 ```text
     a) 增加指令处理机器学习, 加解密（包括VNNI、GFNI、BFLOAT16）
@@ -95,17 +100,21 @@ Veyron V1 流水线框图1. Icache 512KB, **dcache: 64KB, private L2 512KB
 ![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_adfbb72c4d8a.jpg)
 
 
-2. 流水线宽度8，相比Intel、AMD更激进
+## 2. 流水线宽度8，相比Intel、AMD更激进
 
-3. 面向商用的改动：CHI接口, Chiplet, 完全支持虚拟化, 微架构层防止测信道攻击，VA:48, PA52, AIA中断支持
+
+## 3. 面向商用的改动：CHI接口, Chiplet, 完全支持虚拟化, 微架构层防止测信道攻击，VA:48, PA52, AIA中断支持
+
 
 4.** **通过改进微结构，使得高频物理设计不依赖于定制memory（3.6G/5nm），相比而言，AMD和Intel的的高频设计依赖于k库定制**
 
-5. Fetch最多64B/cycle, 流水线中运行的是fused或者unfused ops，即decode后只存在uop，uop可能是fused也可能是unfused指令
+## 5. Fetch最多64B/cycle, 流水线中运行的是fused或者unfused ops，即decode后只存在uop，uop可能是fused也可能是unfused指令
+
 
 6. 所有整形执行单元都是对称的: 即每个cycle可以任意执行以下四个ops: reg/load/store/branch。<strong>注意这里可以同时执行4个load或者4个store指令，这个是非常激进的，每个pipe都是可以同时支持load/store的，猜测load优先级比store高，或者的load比store高</strong>
 
-7. Mul/div/pcnt/clmul/csr通过共享执行单元
+## 7. Mul/div/pcnt/clmul/csr通过共享执行单元
+
 
 <strong>8.</strong> <strong>Scheduler window: 128 entry，相比而言算很大的。</strong>
 
@@ -113,13 +122,17 @@ Veyron V1 流水线框图1. Icache 512KB, **dcache: 64KB, private L2 512KB
 
 <strong>10.</strong> <strong>分开Icache/Dcache，L0 I cache buffer + L2 512KB Icache,</strong> <strong>L1D 64KB, L2D 512KB, 分开后的好处是可以单独针对I/D的power/latency等定向优化，对于footprint大的负载还能做到性能隔离互不影响</strong>
 
-11. 4cycle load to use latency，没什么特殊
+## 11. 4cycle load to use latency，没什么特殊
 
-12. 15cycle branch mis-predict penalty，3cycle redirect on mispredict：：相对来讲可以进一步优化
 
-13. Pre-decode完成以下动作：解压缩C指令；找到下一个8条指令的边界；找到fuse指令对，pre-decode找到fusion pair
+## 12. 15cycle branch mis-predict penalty，3cycle redirect on mispredict：：相对来讲可以进一步优化
 
-14. LSU：
+
+## 13. Pre-decode完成以下动作：解压缩C指令；找到下一个8条指令的边界；找到fuse指令对，pre-decode找到fusion pair
+
+
+## 14. LSU：
+
 
 ```text
     a) 每个cycle可执行任意组合的4条load、store指令：相比而言，ARM、Intel、AMD等，都是2ld+1ldst+1st, 或者3ld+1ldst+2st等。
@@ -138,7 +151,8 @@ Veyron V1 流水线框图1. Icache 512KB, **dcache: 64KB, private L2 512KB
 ```
 
 
-15. L3是L2的victim cache，non-inclusve， NINE
+## 15. L3是L2的victim cache，non-inclusve， NINE
+
 
 <strong>16.</strong> <strong>为什么8-wide的流水线只有4个int执行单元? 答：考虑到Flexibility, 后端瓶颈主要来源于memory, 其他执行单元多了也没用(https://chipsandcheese.com/2023//hot-chips-2023-ventanas-unconventional-veyron-v1/)</strong>
 
@@ -147,14 +161,16 @@ Veyron V1 流水线框图1. Icache 512KB, **dcache: 64KB, private L2 512KB
 SandyBridge的端口利用率
 ### Intel Xeon E-core(Sierra Forest)
 
-1. 19个执行单元共享17个执行端口(Vector/FP共享)
+## 1. 19个执行单元共享17个执行端口(Vector/FP共享)
+
 
 序号1234567891011121314151617端口012310111213303108092829202122OpsALUALUALUALULDLDSTASTAJmpJmpSTDSTDVSTDVSTDVALUVALUVALUOpsShiftShiftShiftShiftAESAESMulMulFMULFMULDIVDIVFADDFADDSHAIMULFDIV其他乏善可陈，主要功力在功耗控制，Intel在HotChips很少深入介绍微结构
 
 
 ### AMD Ryzen 7040
 
-1. 13% IPC提升比Zen3，TSMC N4P，其他讲的很少
+## 1. 13% IPC提升比Zen3，TSMC N4P，其他讲的很少
+
 
 ### P870 RISC-V
 
@@ -162,10 +178,13 @@ SandyBridge的端口利用率
 
 ![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_3f0ea1b894ef.jpg)
 
-1. BP3和译码做到一起：猜测应该是Decode bypass，也就是microOp Cache hit时，不需要decode直接进入rename
+## 1. BP3和译码做到一起：猜测应该是Decode bypass，也就是microOp Cache hit时，不需要decode直接进入rename
 
-2. 4cycle Load-to-use：没什么特殊
+
+## 2. 4cycle Load-to-use：没什么特殊
+
 
 3.** **ROB：1120（4uop一个entry，一共280entry）典型的ROB合并**
 
-4. NINE L2
+## 4. NINE L2
+

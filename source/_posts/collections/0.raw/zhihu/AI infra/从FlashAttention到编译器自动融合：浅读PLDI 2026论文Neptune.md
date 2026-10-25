@@ -48,10 +48,14 @@ O = P@V
 /*
 ```
 
-1. QK^T: 矩阵乘法，得到attention score
-2. scale / mask / bias: 对score做elementwise修改
-3. softmax：对每一行做归一化
-4. P@V：再做一次矩阵乘法
+## 1. QK^T: 矩阵乘法，得到attention score
+
+## 2. scale / mask / bias: 对score做elementwise修改
+
+## 3. softmax：对每一行做归一化
+
+## 4. P@V：再做一次矩阵乘法
+
 */
 问题在于，score和P的形状通常是[sequence_length, sequence_length]，如果sequence_length比较大，那中间矩阵就非常大。FA的核心思想就是不要把完整attention score和softmax矩阵写到HBM，而是在tile内一边计算一边更新softmax统计量，最后直接得到输出。这听起来像operator fusion，但它不是普通的fusion，因为softmax里面有多个reduction，而且这些reduction之间有依赖。
 

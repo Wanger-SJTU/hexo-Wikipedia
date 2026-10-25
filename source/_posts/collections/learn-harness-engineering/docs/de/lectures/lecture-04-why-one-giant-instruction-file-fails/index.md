@@ -113,10 +113,13 @@ Die `AGENTS.md` eines SaaS-Teams wuchs von 50 auf 600 Zeilen. Der Inhalt mischte
 Die Agentenleistung sank spürbar: Bei einfachen Bugfixes verbrachte der Agent viel Kontext mit irrelevanten Deployment-Anweisungen; die Sicherheitsregel "alle Datenbankabfragen müssen parametrisierte Queries verwenden" war in Zeile 300 vergraben und wurde häufig ignoriert; drei widersprüchliche Code-Style-Regeln führten zu zufälligem Verhalten.
 
 Das Team führte eine "Koffer-Neuorganisation" durch:
-1. `AGENTS.md` auf 80 Zeilen gekürzt: nur Projektüberblick, Ausführungsbefehle und 15 globale harte Constraints
+## 1. `AGENTS.md` auf 80 Zeilen gekürzt: nur Projektüberblick, Ausführungsbefehle und 15 globale harte Constraints
+
 2. Themendokumente erstellt: `docs/api-patterns.md` (120 Zeilen), `docs/database-rules.md` (60 Zeilen), `docs/testing-standards.md` (80 Zeilen)
-3. Links zu Themendokumenten in der Routing-Datei ergänzt
-4. Historische Notizen entweder in Testfälle umgewandelt oder gelöscht
+## 3. Links zu Themendokumenten in der Routing-Datei ergänzt
+
+## 4. Historische Notizen entweder in Testfälle umgewandelt oder gelöscht
+
 
 Nach dem Refactoring stieg die Erfolgsrate desselben Aufgabensatzes von 45% auf 72%. Die Einhaltung der Sicherheitsregel stieg von 60% auf 95%, weil sie aus der Dateimitte an den Anfang der Routing-Datei verschoben wurde und nicht mehr "in der Mitte verloren" ging.
 

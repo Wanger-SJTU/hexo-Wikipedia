@@ -29,31 +29,42 @@ source_url: https://zhuanlan.zhihu.com/p/358603760
 
 <strong>1.入门：基本能上手写Intrinsics</strong>
 
-1.1  Neon介绍、简明案例与编程惯例
+### 1.1  Neon介绍、简明案例与编程惯例
 
-1.2  如何检索Intrinsics 
 
-1.3  优化效果案例
+### 1.2  如何检索Intrinsics 
 
-1.4  如何在Android应用Neon
+
+### 1.3  优化效果案例
+
+
+### 1.4  如何在Android应用Neon
+
 
 <strong>2. 进阶：注意细节处理，学习常用算子的实现</strong>
 
-2.1  与Neon相关的ARM体系结构
+### 2.1  与Neon相关的ARM体系结构
 
-2.2  对非整数倍元素个数(leftovers)的处理技巧
 
-2.3  算子源码学习（ncnn库，AI方向）
+### 2.2  对非整数倍元素个数(leftovers)的处理技巧
 
-2.4  算子源码学习（Nvidia carotene库，图像处理方向 ）
+
+### 2.3  算子源码学习（ncnn库，AI方向）
+
+
+### 2.4  算子源码学习（Nvidia carotene库，图像处理方向 ）
+
 
 <strong>3. 学个通透：了解原理</strong>
 
-3.1   SIMD加速原理
+### 3.1   SIMD加速原理
 
-3.2   了解硬件决定的速度极限：Software Optimization Guide
 
-3.3   反汇编分析生成代码质量
+### 3.2   了解硬件决定的速度极限：Software Optimization Guide
+
+
+### 3.3   反汇编分析生成代码质量
+
 
 <strong>4. 其他：相关的研讨会视频、库、文档等</strong>
 
@@ -170,7 +181,8 @@ SIMD相关目录摘录        笔者的学习总结如下：
 （2）执行SISD（single instruction, Single data，单指令流单数据流，这里可理解为标量计算）指令时，需要完成（时间开销大的）冒险（hazard，包括数据冒险和结构冒险）检查。SIMD指令计算的数据蕴含着这些数据之间无依赖性，也就从指令集层面回避了不必要的时间开销。
 
 
-3.2   了解硬件决定的速度极限：Software Optimization Guide
+### 3.2   了解硬件决定的速度极限：Software Optimization Guide
+
 
         我们可能还要关心，我们所编写的Neon Intrinsics，可以将手头上硬件的性能发挥到多少水平？是否还有提升空间？这些是好问题。
 

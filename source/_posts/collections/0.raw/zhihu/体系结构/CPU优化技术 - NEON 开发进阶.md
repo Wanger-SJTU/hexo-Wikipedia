@@ -68,7 +68,8 @@ void DownscaleUv(uint8_t *src, uint8_t *dst, int32_t src_stride, int32_t dst_wid
 ```
 
 
-2.2.1 内层循环向量化
+### 2.2.1 内层循环向量化
+
 
 内层循环是代码执行次数最多的部分，因此是向量化的重点。我们的输入和输出都是u8类型，NEON寄存器128bit，所以我们每次处理16个数据。
 

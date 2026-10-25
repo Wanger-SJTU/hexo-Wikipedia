@@ -25,7 +25,8 @@ vLLM变化实在太快，本文的版本基线是 <strong>vLLM v0.26.0</strong>�
 - <strong>模型数据面 P2P</strong>：PP stage 间 hidden states、EPLB/Elastic EP 的 expert 权重；
 - <strong>跨实例状态传输</strong>：P/D 分离、KV offload/persistence 使用的 KV Connector；
 - <strong>控制面通信</strong>：调度 RPC、元数据广播、DP 对齐、barrier、握手和完成通知。
-0. 先区分通信类型、逻辑阶段与实际 primitive
+## 0. 先区分通信类型、逻辑阶段与实际 primitive
+
 --enable-expert-parallel` 决定 MoE expert 权重采用 TP shard 还是 EP placement，但它不直接决定底层一定执行物理 AllToAll。
 
 本文使用以下记号：
@@ -40,7 +41,8 @@ SP 路径：              AGV[EP]  dispatch -> local expert compute -> RSV[EP]  
 非 SP、DP=1、PCP>1：   AGV[PCP] dispatch -> local expert compute -> RSV[PCP] combine
 纯 `TP+EP、DP=1、PCP=1` 在当前版本不会进入 MoE-SP；默认 backend 选择到的 PCP group 大小为 1，因此没有 token dispatch 通信，routed expert contributions 最后仍由 `AR[TP]` 合并。使用 DeepEP、FlashInfer、MoRI、NIXL 等 backend 时，逻辑阶段可以映射为相应的稀疏 A2A 式交换，但是否真的启用 dispatch/combine 仍受模型接入、并行组合和 backend gate 约束。后文图中统一标注逻辑阶段，并在图注中说明实际 backend 和通信域。
 
-0.1 稳态数据面、可选状态迁移和控制面
+### 0.1 稳态数据面、可选状态迁移和控制面
+
 源码中出现了某个 collective不等于每个 token 都会执行它。本文按触发频率进一步区分：
 
 - <strong>每层或每 step 的稳态数据面</strong>：TP 的 `AR`、MoE dispatch/combine、DCP attention combine、PP activation P2P；
@@ -48,7 +50,8 @@ SP 路径：              AGV[EP]  dispatch -> local expert compute -> RSV[EP]  
 - <strong>低频或按需状态迁移</strong>：EPLB expert 重排、Elastic EP 扩缩容、P/D KV transfer、KV offload；
 - <strong>初始化/析构</strong>：process-group 建立、IPC handle/object 收集、buffer reservation、barrier。性能分析时应分别统计这些路径。把初始化 barrier 或 P/D 的 RDMA 流量算进稳态 NCCL collective，会得到错误结论。
 
-0.2 vLLM 的通信域
+### 0.2 vLLM 的通信域
+
 工作区版本按下面的逻辑维度排列 ranks：
 
 ExternalDP × DP × PP × PCP × TP
@@ -63,13 +66,16 @@ EP 不跨 PP stage，因为每个 PP stage 只拥有自己那部分 MoE layers�
 
 当前 PCP 实现还有两个重要组合限制：`PCP>1` 不能同时使用 `DP>1`，MRV2 PCP 也暂不支持 PP。因此 `EP_SIZE=DP×PCP×TP` 是统一的 group 公式，不表示当前版本允许 DP、PCP、PP 任意同时取大于 1。
 
-1. 基础并行策略
+## 1. 基础并行策略
 
-1.1 单 GPU
+
+### 1.1 单 GPU
+
 模型权重和 KV cache 全部位于一个 GPU 上，不涉及 GPU 间 collective。
 
 ![](https://pic3.zhimg.com/v2-630d068b3311ab37ce446ba3e80fb23a_r.jpg)
-1.2 Tensor Parallel
+### 1.2 Tensor Parallel
+
 TP 将单层权重分布到多个 GPU，同一个请求由一个 TP group 协同计算：
 
 - vocab-parallel embedding 的局部结果通过 `AR[TP]` 合并；
@@ -128,7 +134,8 @@ enable_sp` 单独开启与再开启通信融合的优劣要分开看：
 
 配置优势代价和局限仅 enable_sp：RS -> local RMSNorm -> AG每个 rank 的 RMSNorm 只处理 T/TP tokens，减少重复点计算；RS～AG 区间的 residual/activation 占用约降为原来的 1/TP；为后续 GEMM-collective fusion 创建计算图边界RS+AG 与 ring AllReduce 的总通信量级相同，SP 本身不直接减少通信；拆分、聚合和同步存在额外调度开销，小 batch 可能变慢再开 fuse_gemm_comms：GEMM+RS、AG+GEMM使用 symmetric-memory fused op 按 token chunk 建立通信计算流水，减少独立 kernel launch，并让 GEMM 与通信重叠；这是主要性能收益来源要求 full-graph compilation、CUDA symmetric memory、足够大的 token 数和可匹配的计算图；需要额外通信 workspace，收益对模型形状、TP 大小和 GPU/NVLink 拓扑敏感总体上，这条优化更适合 hidden size 较大、batched-token 数较多且 TP 卡间互联较快的吞吐场景；小 batch decode、互联较弱或无法命中融合模式时，额外 padding、同步和调度成本可能抵消收益。vLLM 的 fusion 设计文档给 `fuse_gemm_comms` 的经验收益是约 <strong>7%～10% E2E</strong>，但这不是保证值，必须针对实际模型和负载做开启/关闭对照测试。
 
-1.3 Pipeline Parallel
+### 1.3 Pipeline Parallel
+
 PP 按层切模型。每个 PP stage 只保存分配给自己的层权重，并只维护这些层对应的 KV cache。以 `PP=2、TP=2` 为例，四个 GPU 的典型分组是：
 
 TP groups: {GPU0, GPU1}, {GPU2, GPU3}
@@ -136,7 +143,8 @@ PP groups: {GPU0, GPU2}, {GPU1, GPU3}
 也就是说，PP group 连接的是不同 stages 上具有相同 TP/PCP 坐标的 ranks。
 
 ![](https://pic3.zhimg.com/v2-aefa2843a3e16bb02365c50ff0553a32_r.jpg)
-1.3.1 Forward activation：相邻 stage P2P
+### 1.3.1 Forward activation：相邻 stage P2P
+
 一次 forward 的主路径是：
 
 - 第一个 PP stage 执行 embedding 和本 stage 的 Transformer layers；
@@ -144,7 +152,8 @@ PP groups: {GPU0, GPU2}, {GPU1, GPU3}
 - 下一个 stage 使用 `irecv_tensor_dict` 接收，再继续执行自己的 layers；
 - 最后一个 stage 执行 final norm、LMHead 和 sampling。这里的 PP 主数据流是相邻 stage 的 `P2P[PP]`，不是 `AR[PP]`。tensor metadata/object 走 PP CPU group，CUDA tensors 走 PP device group。
 
-1.3.2 TP-aware PP 传输优化
+### 1.3.2 TP-aware PP 传输优化
+
 这是一项 <strong>PP 边界重复数据去除</strong>，与前面的 Dense SP、`fuse_gemm_comms` 无关。当 PP 与 TP 组合时，stage 边界的 hidden tensor 通常已通过 TP collective 在各 TP ranks 上复制；如果每个 rank 都向下一 stage 发送完整 tensor，就会在不同 PP 链路上重复传输相同数据。vLLM 将它改为：
 
 发送端：每个 TP rank 从 replicated tensor 取一段 -> P2P 到下一 stage 的对应 TP rank
@@ -179,32 +188,38 @@ isend_tensor_dict/irecv_tensor_dict` 在传输前保留完整 tensor 的 shape m
 
 该优化通常适合 TP ranks 通过 NVLink 等高速互联连接、而 PP 边界更昂贵的拓扑；如果 PP 和 TP 使用相近的慢速链路，新增 `AG[TP]` 可能抵消节省的 P2P 流量。
 
-1.3.3 采样结果从末级返回前级
+### 1.3.3 采样结果从末级返回前级
+
 下一 decode step 的各 PP stages 都需要知道刚采样出的 token。工作区 V1/V2 路径会由最后一个 PP stage 执行：
 
 Bcast(sampled_token_ids, num_sampled, num_rejected)[PP]
 异步调度路径也会 broadcast `prev_sampled_token_ids`。少见的 `broadcast_pp_output` 模式还会从最后 PP rank 广播 logits tensor dict。它们与前向 activation P2P 方向相反，且 payload 通常远小于 hidden states。
 
-1.3.4 PP 与其他并行的叠加
+### 1.3.4 PP 与其他并行的叠加
+
 
 - 每个 stage 内的 dense/attention 层仍执行自己的 `AR/AG[TP]`；
 - stage 内若有 MoE layers，EP group 在该 PP stage 内展平 `DP×PCP×TP`，不会跨 PP stage；
 - 每个 stage 的 attention 只访问本 stage layers 的 KV cache；PP 不会在每个 decode token 上搬运全部 KV cache；
 - 多节点常见做法是节点内 TP、节点间 PP，以减少高频 TP collective 穿越慢链路，但实际最优布局取决于模型层大小、网络和 batch。
-1.4 Dense Data Parallel
+### 1.4 Dense Data Parallel
+
 对 dense 模型，或者只观察 MoE 模型中的 attention/dense 部分时，每个 DP rank 持有一份完整模型副本，处理不同请求，KV cache 也彼此独立。模型 forward 数据面没有跨 DP rank 的 activation collective。
 
 ![](https://pic3.zhimg.com/v2-e4b6f25fe930c96b0a45222f3d82ecbe_r.jpg)这张图不适用于 vLLM 的 coordinated MoE expert 层。MoE expert 权重和 token 通信会跨 DP ranks，详见第 2.3 节。
 
 DP 通常提升整体吞吐并降低排队压力，但“单请求 latency 完全不变”不是严格结论；batch、排队、负载不均和 MoE collective 都可能影响 latency。
 
-2. 组合并行策略
+## 2. 组合并行策略
 
-2.1 MoE：TP 与 EP 的权重布局
+
+### 2.1 MoE：TP 与 EP 的权重布局
+
 设 routed expert 数为 `E`，本节使用 `TP=4、DP=1、E=128`。
 
 ![](https://pic2.zhimg.com/v2-aa1adf13ca2990f81b1919d63959067f_r.jpg)
-2.1.1 不启用 EP
+### 2.1.1 不启用 EP
+
 每个 TP rank 都包含全部 128 个 expert ID，但每个 expert 的矩阵按 TP 切分：
 
 - 每卡都能看到 `E0...E127`；
@@ -212,7 +227,8 @@ DP 通常提升整体吞吐并降低排队压力，但“单请求 latency 完�
 - attention 输出经过 `AR[TP]` 后，token 在 TP ranks 上处于复制态；
 - 每个 rank 根据相同 routing 结果计算 expert 的局部矩阵分片；
 - expert 局部输出通过 `AR[TP]` 合并。
-2.1.2 启用 EP，DP=1
+### 2.1.2 启用 EP，DP=1
+
 启用 EP 后，MoE 层从 tensor-sharded experts 切换为 full-expert placement。在本文配置中：
 
 EP_SIZE = DP_SIZE × PCP_SIZE × TP_SIZE = 1 × 1 × 4 = 4
@@ -223,14 +239,17 @@ EP_SIZE = DP_SIZE × PCP_SIZE × TP_SIZE = 1 × 1 × 4 = 4
 - 所有 TP ranks 仍看到相同 token；
 - 每个 rank 只计算本地拥有的完整 experts；
 - 最后通过 `AR[TP]` 合并 routed expert contributions。
-2.2 KV cache 与 Context Parallel
+### 2.2 KV cache 与 Context Parallel
 
-2.2.1 DeepSeek MLA 中的有效 KV head
+
+### 2.2.1 DeepSeek MLA 中的有效 KV head
+
 DeepSeek MLA 在 decode 中将每个 token 的单份 MLA cache entry（压缩 `kv_c` 与 decoupled RoPE key `k_pe`）视为一个有效 KV head，即 `H_kv=1`。这不表示 query/attention head 只有一个。
 
 例如 `TP=4、DCP=1` 时，四个 TP ranks 会分别保存一份相同的压缩 KV cache，产生 4 路复制。
 
-2.2.2 Decode Context Parallel
+### 2.2.2 Decode Context Parallel
+
 DCP 不增加 worker 数。它的 rank 来源取决于是否同时启用 PCP。
 
 ```text
@@ -276,7 +295,8 @@ DCP 分片的是持久 KV cache，但 attention 本身仍需要通信。对于�
 - 默认 combine 使用 `AG(LSE)[DCP] + AR(O)[DCP]`，再恢复当前 TP rank 所需的 heads；
 - `dcp_comm_backend=a2a` 仍可替换上述 LSE/output combine。因此 DCP 不能概括为“gather KV cache”，也不能把 `PCP=1` 的 `AG(Q)+RS(O)` 流程无条件外推到 PCP+DCP。
 
-2.2.3 Prefill Context Parallel
+### 2.2.3 Prefill Context Parallel
+
 PCP 与 DCP 的资源语义不同：`PCP` 是 rank 布局中的独立维度，会把 worker 数乘以 `PCP_SIZE`，但不会增加 KV-cache shard 数；`DCP` 不增加 worker，负责持久 KV cache 的 token sharding。PCP 的目标是在 prefill 时沿新 token/context 维拆分长请求，降低单 rank 的 prefill 计算量。
 
 v0.26.0 已在 MRV2 中实现 MLA PCP。以 `PCP=4` 为例，实际数据流是：
@@ -297,11 +317,13 @@ v0.26.0 已在 MRV2 中实现 MLA PCP。以 `PCP=4` 为例，实际数据流是�
 - 只支持 eager 或 PIECEWISE CUDA Graph；sparse MLA PCP 暂不支持 CUDA Graph；
 - PCP+DCP 暂不支持 fused output quantization。MoE 的统一 placement 公式仍是 `EP_SIZE=DP×PCP×TP`。但在当前限制下，`PCP>1` 时实际没有 DP 轴；EP+PCP 的 dispatch/combine 通常由所选 all2all backend 处理。`moe_runner` 中显式的 `AG(hidden/router)[PCP]` 与 `RS(hidden)[PCP]` 只在没有使用 all2all kernels 时执行，不能视为所有 PCP+EP 配置的固定额外步骤。
 
-2.3 DP 与 MoE
+### 2.3 DP 与 MoE
+
 本节先使用 `TP=1、DP=4、E=128`。
 
 ![](https://pica.zhimg.com/v2-132157a835d82bdd2d2b61665215d4fc_r.jpg)
-2.3.1 不启用 EP
+### 2.3.1 不启用 EP
+
 vLLM coordinated MoE DP 会把 expert 层视为跨 DP ranks 的 tensor-sharded 层：
 
 - attention/dense 层仍按普通 DP 复制，各 rank 处理自己的请求；
@@ -318,7 +340,8 @@ local DP tokens
   -> local DP tokens
 这是 vLLM 的 MoE 特殊路径，不能据此推导普通 dense DP 也会 AllGather 各请求 token。
 
-2.3.2 启用 EP
+### 2.3.2 启用 EP
+
 此时 `EP=TP x DP=4`，每卡保存 32 个完整 routed experts。token 需要按 expert owner 进行逻辑 dispatch，expert 计算后再 combine 回 token 的 source rank。
 
 默认 backend 的实际流程是：
@@ -339,7 +362,8 @@ local DP tokens
   -> local DP tokens
 top-k routing 可能让一个 token fan-out 到多个 expert owners，因此不能简单描述成“发送到这个 token 选择的一个 GPU”。
 
-2.4 DP + TP + EP
+### 2.4 DP + TP + EP
+
 下面使用：
 
 DP=2, TP=2, EP=TP x DP=4
@@ -372,11 +396,13 @@ AGV[EP] -> local expert compute -> RSV[EP]
 A2A dispatch[EP] -> local expert compute -> A2A combine[EP]
 两个 backend 路径是互斥选择，不是依次执行。部分模型仍保留“本地 `SP-chunk[TP]`，MoE 后立即 `AG[TP]`”的 fallback；因此应区分模型级主路径和 `FusedMoE` 接收到 replicated input 时的兜底路径，不能把 DeepSeek 图无条件外推到所有 MoE 模型。
 
-3. Prefill/Decode 分离与 KV Connector
+## 3. Prefill/Decode 分离与 KV Connector
+
 P/D 分离把 prefill 和 decode 放进两套独立的 vLLM instances，使两边可以分别选择硬件、batch 策略和 `TP/PP/DP/EP/CP` 配置。它不是新的 process-group 维度，也不是一个 collective。
 
 ![](https://picx.zhimg.com/v2-bf206e44f24d1287e52002c65d154bab_r.jpg)
-3.1 一次请求的数据流
+### 3.1 一次请求的数据流
+
 典型 pull/lookup 流程为：
 
 - Router/Proxy 把请求发给 Prefill instance；
@@ -386,26 +412,30 @@ P/D 分离把 prefill 和 decode 放进两套独立的 vLLM instances，使两�
 - D 的 worker connector 将远端 KV blocks load 到自己的 block slots；
 - D 从已完成 prefill 的位置继续 decode，并把 token stream 返回 client。具体 connector 也可以采用 push、共享存储 lookup、双向传输或边计算边按 layer 保存/加载。抽象接口包含 `start_load_kv`、`wait_for_layer_load`、`save_kv_layer`、`wait_for_save` 和完成状态汇报，因此不能假设所有 connector 都是“P 主动一次性 send，D 一次性 recv”。
 
-3.2 数据面与控制面必须分开看
+### 3.2 数据面与控制面必须分开看
+
 P/D 至少包含三类流量：
 
 流量内容常见实现请求控制流prompt、sampling params、P/D 路由HTTP/RPC/ProxyConnector 控制流handshake、engine/rank、block IDs/地址、完成通知ZMQ、HTTP、msgpack 或 connector 自定义 side channelKV 数据流各 attention layer 的 KV blocks；部分 connector 也支持 hidden statesNIXL/RDMA transfer engine、cache service、GPU↔CPU offload、共享/分布式存储只有第三项是主要带宽负载。它通常不属于 P 或 D 内部已有的 `TP/PP/DP/EP` process group；P、D 各自在传输同时或前后执行自己的 collectives。
 
-3.3 工作区版本中的 connector 类型
+### 3.3 工作区版本中的 connector 类型
+
 KVTransferConfig` 使用 `kv_role=kv_producer/kv_consumer/kv_both` 区分角色，物理传输由 `kv_connector` 决定。v0.26.0 内置注册项可以按用途归类：
 
 类型Connector 示例通信特征注册内存/RDMANixlConnector、NixlPullConnector、NixlPushConnector、MooncakeConnector、MoRIIOConnector注册 KV memory region，异步 read/write；握手和通知另走 side channel外部 KV cache/存储LMCacheConnectorV1、LMCacheMPConnector、MooncakeStoreConnector、FlexKVConnectorV1、HF3FSKVConnector通过 cache service、共享或分布式存储按 key/block lookup本机 offloadOffloadingConnector、SimpleCPUOffloadConnectorGPU↔CPU/本地层级缓存，不一定用于 P/D 分离组合/测试MultiConnector、ExampleConnector、ExampleHiddenStatesConnector、DecodeBenchConnector串接多个 connector、KV/hidden-state 示例或性能仿真旧版本的 `P2pNcclConnector` 已从 v0.26.0 注册表和实现中删除，因此当前内置 Connector 不能再用它作为“NCCL GPU P2P”的示例。自定义 Connector 仍可自行选择传输协议。
 
 不同 connector 的 TP rank 映射能力不同。P 和 D 可以在架构上使用不同并行度，但异构 TP、KV layout、block size、attention backend 和模型类型是否兼容，必须以所选 connector 的校验为准，不能从 `KVTransferConfig` 接口本身推导。
 
-3.4 P/D 分离解决什么问题
+### 3.4 P/D 分离解决什么问题
+
 P/D 分离主要用于分别调优：
 
 - P 侧 TTFT、长 prompt 算力和高带宽 prefill；
 - D 侧 ITL、KV cache 容量和 decode batch throughput；
 - 避免长 prefill 插入 decode batch 时放大 tail ITL。它会额外引入 KV transfer、router 排队和跨实例失败处理，因此不保证提升总吞吐。对短 prompt 或低速网络，传输成本可能高于隔离收益。
 
-3.5 多模态 Encoder 分离：EC Connector
+### 3.5 多模态 Encoder 分离：EC Connector
+
 工作区版本还有一套独立的 `ec_transfer` 抽象，用于把图像/音频等多模态 encoder 与下游模型实例分离。它传输的是按 `mm_hash` 索引的 encoder cache/embedding tensor，而不是 Transformer attention KV blocks。
 
 Encoder instance
@@ -425,9 +455,11 @@ P -> D：attention KV cache（KV Connector）
 
 两者都不属于 NCCL model-parallel collective，容量模型、key、生命周期和失败恢复也不同。
 
-4. Forward 之外仍会出现的分布式通信
+## 4. Forward 之外仍会出现的分布式通信
 
-4.1 DP step 对齐和 CUDA Graph padding
+
+### 4.1 DP step 对齐和 CUDA Graph padding
+
 “Dense DP 的模型 forward 没有 activation collective”不表示整个 engine step 完全没有 DP 通信。在 coordinated DP、MoE DP、CUDA Graph 或 dual-batch-overlap 路径中，各 DP ranks 必须对齐是否执行 forward、token padding、microbatch 和 graph mode。
 
 工作区 V1 会构造很小的整型 tensor，并执行：
@@ -436,7 +468,8 @@ AR[DP] -> 汇总各 rank 的 token count、padding、ubatch decision、cudagraph
 默认可走 DP device group；`disable_nccl_for_dp_synchronization` 会切到 CPU/Gloo group。其他控制路径还会用 `MAX-AR[DP]` 判断是否仍有未完成请求，用 `MIN-AR[DP]` 对齐可用 KV cache memory。它们是小消息同步，不是把不同 DP 请求的 hidden states 混在一起。
 
 ![](https://pic2.zhimg.com/v2-6106bf541da3024ae34e8327552e2189_r.jpg)
-4.2 EPLB：load stats collective 与 expert 权重 P2P
+### 4.2 EPLB：load stats collective 与 expert 权重 P2P
+
 启用 Expert Parallel Load Balancer 后会增加两种不同通信：
 
 - <strong>统计聚合</strong>：按窗口记录每个 expert 的 token load，通过 `AR[EP]` 得到全局 load；开启 balancedness logging 也会增加这类开销；
@@ -449,7 +482,8 @@ torch NCCL isend/irecv
 EPLB group 与 EP group 成员相同，但 process group 独立，以避免后台权重迁移和前台 MoE collective 互相串流。v0.26.0 默认 `use_async=true`：未显式指定 communicator 时优先选择 NIXL；静态 EP 在没有 NIXL 时回退 CPU-staged Gloo。`torch_nccl` 和 `pynccl` 因多 stream 冲突不允许用于 async EPLB；Elastic EP 的 async EPLB 必须安装 NIXL，关闭 async 后才可回退 PyNccl。实现还可能使用 readiness `AR`、metadata `all_gather_object`、profile-time dummy `AG` 和 barrier；这些是低频协调，不应计入每层 MoE dispatch 流量。
 
 ![](https://pica.zhimg.com/v2-fe057bf79c9cfe7683779922eb3042ca_r.jpg)
-4.3 Elastic EP
+### 4.3 Elastic EP
+
 Elastic EP 在扩缩容时会建立新的 stateless DP/EP groups，并执行：
 
 - TCP store / `Barrier[DP]` 协调旧实例与新实例切换；
@@ -463,7 +497,8 @@ Elastic EP 在扩缩容时会建立新的 stateless DP/EP groups，并执行：
 - TP/PCP/PP 组成的单个 model replica 必须位于单节点，尚不支持 multi-node TP/PP；
 - async EPLB 必须使用 NIXL；否则需设置 `use_async=false`。
 ![](https://pic4.zhimg.com/v2-33ca652e7efcc8e91f0966a434015a65_r.jpg)
-4.4 执行器、RPC 与 KV events
+### 4.4 执行器、RPC 与 KV events
+
 vLLM 的 Ray/multiprocessing executor 会把 scheduler output、方法调用和结果分发给 workers：
 
 - multiprocessing 路径可使用共享内存/message queue/ZMQ broadcaster；
@@ -472,18 +507,22 @@ vLLM 的 Ray/multiprocessing executor 会把 scheduler output、方法调用和�
 - KV cache event publishing、P/D handshake 和健康检查通常走 ZMQ/HTTP 等控制面。这些流量会影响大规模部署的稳定性和尾延迟，但不应标成 NCCL `AR/AG/A2A`。
 
 ![](https://pic3.zhimg.com/v2-4bb6d39a975c9098756bc00431dcf52a_r.jpg)
-4.5 初始化、warmup 与模型特有 collective
+### 4.5 初始化、warmup 与模型特有 collective
+
 初始化阶段还会出现 process-group barrier、custom AllReduce IPC handle 的 object gather/broadcast、通信 buffer reservation 等一次性操作。模型实现也可能增加通用图之外的 TP collective，例如：
 
 - Mamba/linear-attention 的 state、variance 或卷积 workspace `AR/AG[TP]`；
 - 部分多模态模型对 variable-size vision embeddings 使用 `AG`；
 - 特定模型的 parallel residual、normalization 或 logits 路径增加 `AR/AG`。因此本文的“全景”覆盖 vLLM 核心通信机制和 process groups，但精确到某个模型时，仍应对目标 model implementation 做一次 `get_*_group()/torch.distributed` 调用扫描。
 
-5. 汇总
+## 5. 汇总
 
-5.1 按部署功能查看
+
+### 5.1 按部署功能查看
+
 配置/功能权重与状态布局稳态模型数据面额外或低频通信单 GPU完整模型和 KV cache无跨 GPU 通信无TPdense/attention/LMHead tensor shard；KV 按有效 KV heads 切分或复制通常为 row-parallel AR[TP]；dense SP 编译优化可改写为 RS+AG[TP]；需要完整 tensor/logits 时 AG/Gather[TP]custom AR 初始化可能有 object gather/broadcastDense DP每个 DP rank 完整副本、独立 KV无 hidden-state inter-DP collectivestep/padding/CUDA Graph 对齐可能有小消息 AR[DP]PP层权重和这些层的 KV cache 按 stage 切分相邻 P2P[PP]；接收端可追加 AG[TP]末级 Bcast(sampled tokens)[PP]PCP增加 workers；MRV2 把 MLA prefill token rows 跨 PCP ranks 切分，但 PCP 本身不增加 KV-cache shard 数prefill latent-cache inputs AG[PCP]；sampling 前 AG(hidden)[PCP] 恢复顺序decode rows 复制；当前仅 MLA，且不支持 DP/PP/MM/LoRA/spec decodeDCP不增加 workers；无 PCP 时复用 TP，有 PCP 时可跨 PCP 或完整 TP×PCP；按 token 交错分片持久 KVPCP=1 时 AG(Q)+AG(LSE)+RS(O)；PCP>1 时 Q gather 与 combine 变化；可选 A2A不 gather 完整 KV cache；FP8 支持取决于 backend/device/layoutTP，EP 关每卡有全部 expert IDs，每个矩阵 tensor shardexpert partials AR[TP]无逻辑 owner dispatchTP，EP 开，DP=1、PCP=1完整 experts 分布在 EP ranksv0.26.0 仍为 local expert compute + AR[TP]，不启用 MoE-SPSP gate 当前要求 DP>1DP，EP 关expert 矩阵跨有效 DP×TP 切分AGV[DP] -> tensor-shard expert -> RSV[DP]，另有 TP 归并DP step 对齐TP +（DP 或 PCP）+ EP完整 experts 分布在 EP=DP×PCP×TP；当前 DP>1 与 PCP>1 互斥logical dispatch/combine；默认 backend 按 SP/DP/PCP 选择 AGV/RSV 通信域，其他 backend 可为稀疏 A2AEPLB 可增加 load AR 和权重 P2PP/D 分离P、D 各自有独立模型实例和 paged KV；KV blocks 跨实例迁移各实例内部照常执行自己的并行通信KV-Xfer[P→D] + handshake/metadata；不是 collectiveEncoder 分离encoder cache/embedding 按 mm_hash 跨实例保存与加载下游实例内部通信不变EC-Xfer[E→P/D] + connector metadataEPLBredundant/full experts 可动态改 ownerMoE forward 路径不变AR[EP] load stats + P2P[EPLB] expert weightsElastic EPDP/EP membership 动态变化稳定后回到普通 EP 路径barrier、状态 AR、mapping broadcast、expert weight P2P
-5.2 按通信 primitive 查看
+### 5.2 按通信 primitive 查看
+
 Primitive主要出现位置典型 payload是否稳态高频AllReduceTP row-parallel；部分 CP output combine；DP 对齐；EPLB load stats；模型特有 statehidden states 或小型控制 tensorTP/部分 CP 高频；DP/EPLB 视配置AllGather/GatherTP logits/tensor 重建；dense TP SP restore；PP 接收端 TP 优化；DCP Q/LSE；PCP prefill cache inputs/hidden restore；默认 MoE dispatchlogits、Q/LSE、hidden states、MLA latent K/V视并行策略高频ReduceScatterdense TP SP token shard；默认 MoE combine；PCP=1 的 DCP output combine；部分 MoE/PCP fallbackhidden、expert 或 attention output视并行策略高频AllToAll(V)DeepEP、FlashInfer、MoRI、NIXL-EP 等 MoE backend 的 dispatch/combine按 expert owner 打包的 token/top-k metadataMoE 每层高频BroadcastPP sampled tokens/logits；少量 metadata/mapping；group 初始化token IDs、小 tensor 或 objectPP 每 step；其余低频P2P send/recvPP hidden states；EPLB/Elastic EP expert weightsactivation、expert weightsPP 高频；权重按需Barrier/object collective初始化、buffer/IPC handle 交换、EPLB/Elastic EP 协调metadata/同步信号低频，不是模型算子数据面外部 transfer/RPCKV/EC Connector、NIXL/Mooncake/MoRI/LMCache/HF3FS、Ray、ZMQ、HTTPKV/encoder cache、请求、调度与握手 metadata取决于 P/D、encoder 分离、offload 和执行器总体是：
 
 - 先确定当前流量属于 model collective、P2P、KV transfer 还是 control plane；

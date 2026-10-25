@@ -31,10 +31,14 @@ d'exécution concrets que vous pouvez suivre ou adapter.
 
 ## Comment les utiliser
 
-1. Choisissez la SOP qui correspond à votre goulot d'étranglement actuel.
-2. Utilisez la liste de contrôle pour mettre en place les artefacts ou outils manquants.
-3. Encodez les règles résultantes dans les docs de votre copie de `repo-template/`.
-4. Convertissez les commentaires de revue répétés en vérifications, scripts ou garde-fous.
+## 1. Choisissez la SOP qui correspond à votre goulot d'étranglement actuel.
+
+## 2. Utilisez la liste de contrôle pour mettre en place les artefacts ou outils manquants.
+
+## 3. Encodez les règles résultantes dans les docs de votre copie de `repo-template/`.
+
+## 4. Convertissez les commentaires de revue répétés en vérifications, scripts ou garde-fous.
+
 
 Ces SOP ne sont pas destinées à être suivies aveuglément. Elles ont pour but de rendre
 le harnais plus lisible, applicable et répétable.

@@ -63,6 +63,9 @@ Các mối quan tâm xuyên suốt nên đi vào qua các ranh giới provider h
 
 Khi bạn chạm vào mã liên quan đến kiến trúc:
 
-1. Cập nhật tệp này nếu bản đồ domain hoặc ranh giới được phép thay đổi.
-2. Cập nhật tài liệu thiết kế liên quan trong `docs/design-docs/` nếu lý luận thay đổi.
-3. Thêm hoặc cập nhật kiểm tra có thể thực thi nếu quy tắc nên được thực thi cơ học.
+## 1. Cập nhật tệp này nếu bản đồ domain hoặc ranh giới được phép thay đổi.
+
+## 2. Cập nhật tài liệu thiết kế liên quan trong `docs/design-docs/` nếu lý luận thay đổi.
+
+## 3. Thêm hoặc cập nhật kiểm tra có thể thực thi nếu quy tắc nên được thực thi cơ học.
+

@@ -46,10 +46,14 @@ https://github.com/ml-explore/mlx/issues/12
 
 ## 缺少哪些部分
 
-1. 图优化几近于无
-2. 序列化、反序列化功能
-3. JIT 编译
-4. INT量化
+## 1. 图优化几近于无
+
+## 2. 序列化、反序列化功能
+
+## 3. JIT 编译
+
+## 4. INT量化
+
 
 
 
@@ -63,6 +67,7 @@ FP16 10 token/s
 ![Pasted image 20231213220841.png](/images/collections/assets/Pasted%20image%2020231213220841.png)
 
 ## 可能的 Roadmap
-1. 有微调模型诉求的非算法人员。 比如lora、大模型的
+## 1. 有微调模型诉求的非算法人员。 比如lora、大模型的
+
 
 

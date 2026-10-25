@@ -33,14 +33,21 @@ de l'exécution, et non seulement de l'inspection du code.
 
 ## SOP d'exécution
 
-1. Définir les parcours d'exécution de référence les plus importants.
-2. Ajouter des journaux structurés au démarrage et sur le chemin critique.
-3. Ajouter des métriques pour la latence, les compteurs d'échecs ou la profondeur
+## 1. Définir les parcours d'exécution de référence les plus importants.
+
+## 2. Ajouter des journaux structurés au démarrage et sur le chemin critique.
+
+## 3. Ajouter des métriques pour la latence, les compteurs d'échecs ou la profondeur
+
    de file d'attente lorsque c'est utile.
-4. Ajouter des traces ou des marqueurs de temps pour les flux lents ou multi-étapes.
-5. Rendre les signaux interrogeables depuis l'environnement de développement local.
-6. Donner à l'agent une charge de travail ou un scénario répétable à relancer.
-7. Exiger la boucle : interroger -> corréler -> raisonner -> implémenter ->
+## 4. Ajouter des traces ou des marqueurs de temps pour les flux lents ou multi-étapes.
+
+## 5. Rendre les signaux interrogeables depuis l'environnement de développement local.
+
+## 6. Donner à l'agent une charge de travail ou un scénario répétable à relancer.
+
+## 7. Exiger la boucle : interroger -> corréler -> raisonner -> implémenter ->
+
    redémarrer -> relancer -> vérifier.
 
 ## Liste de contrôle de session de débogage

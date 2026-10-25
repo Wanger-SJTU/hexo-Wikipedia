@@ -42,12 +42,18 @@ The planner's upfront specification ensured that all features were scoped before
 implementation began. Three revision cycles were performed:
 
 <strong>Revision 0 (Planner):</strong> Created acceptance criteria:
-1. Chat bubbles with distinct user/assistant styling
-2. Timestamps in compact format with date separators
-3. Expandable citation sections with full details
-4. Copy-to-clipboard for answers
-5. Follow-up question suggestions based on context
-6. Empty state with helpful guidance
+## 1. Chat bubbles with distinct user/assistant styling
+
+## 2. Timestamps in compact format with date separators
+
+## 3. Expandable citation sections with full details
+
+## 4. Copy-to-clipboard for answers
+
+## 5. Follow-up question suggestions based on context
+
+## 6. Empty state with helpful guidance
+
 
 <strong>Revision 1:</strong> Initial implementation met 5 of 6 criteria. Evaluator found
 missing date separators and inconsistent citation styling.
@@ -68,16 +74,25 @@ criteria met.
 
 ### Feature Inventory
 
-1. Chat bubbles with right-aligned user messages (purple) and left-aligned
+## 1. Chat bubbles with right-aligned user messages (purple) and left-aligned
+
    assistant responses (dark blue)
-2. Date separators showing month and day
-3. Compact timestamps (HH:MM) below each exchange
-4. Expandable citations with document title, chunk index, and excerpt
-5. Copy-to-clipboard button with "Copied!" feedback
-6. Confidence score percentage display
-7. Follow-up question suggestions on the most recent exchange
-8. Empty state with icon and guidance text
-9. Context-aware suggestion generation based on question keywords
+## 2. Date separators showing month and day
+
+## 3. Compact timestamps (HH:MM) below each exchange
+
+## 4. Expandable citations with document title, chunk index, and excerpt
+
+## 5. Copy-to-clipboard button with "Copied!" feedback
+
+## 6. Confidence score percentage display
+
+## 7. Follow-up question suggestions on the most recent exchange
+
+## 8. Empty state with icon and guidance text
+
+## 9. Context-aware suggestion generation based on question keywords
+
 
 ### Comparison with Other Variants
 

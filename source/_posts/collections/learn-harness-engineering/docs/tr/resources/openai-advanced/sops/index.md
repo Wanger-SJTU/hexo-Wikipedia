@@ -31,10 +31,14 @@ uyarlayabileceğiniz somut yürütme kılavuzlarına dönüştürür.
 
 ## Nasıl Kullanılır
 
-1. Mevcut darboğazınıza uyan SOP'u seçin.
-2. Eksik çıktıları ya da araçları kurmak için kontrol listesini kullanın.
-3. Ortaya çıkan kuralları kopyaladığınız `repo-template/` dokümanlarına kodlayın.
-4. Tekrarlanan inceleme yorumlarını kontrollere, betiklere ya da korkuluklara
+## 1. Mevcut darboğazınıza uyan SOP'u seçin.
+
+## 2. Eksik çıktıları ya da araçları kurmak için kontrol listesini kullanın.
+
+## 3. Ortaya çıkan kuralları kopyaladığınız `repo-template/` dokümanlarına kodlayın.
+
+## 4. Tekrarlanan inceleme yorumlarını kontrollere, betiklere ya da korkuluklara
+
    dönüştürün.
 
 Bunlar körü körüne takip edilmek için değildir. Amaçları harness'ı daha

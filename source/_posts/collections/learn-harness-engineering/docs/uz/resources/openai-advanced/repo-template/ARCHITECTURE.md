@@ -63,6 +63,8 @@ Kesishuvchi (Cross-cutting) masalalar qatlamlararo bevosita ulanmasdan, balki an
 
 Qachonki arxitekturaga tegishli kodga qoʻl ursangiz:
 
-1. Agar domen xaritasi yoki ruxsat etilgan chegaralar (allowed boundaries) oʻzgarsa, ushbu faylni yangilang.
-2. Agar ishlash sababi (reasoning) oʻzgarsa, `docs/design-docs/` ichidagi tegishli dizayn hujjatini yangilang.
+## 1. Agar domen xaritasi yoki ruxsat etilgan chegaralar (allowed boundaries) oʻzgarsa, ushbu faylni yangilang.
+
+## 2. Agar ishlash sababi (reasoning) oʻzgarsa, `docs/design-docs/` ichidagi tegishli dizayn hujjatini yangilang.
+
 3. Agar qoidani mexanik ravishda (kod orqali) himoyalash kerak boʻlsa, bajariladigan (executable) tekshiruv (check) qoʻshing yoki yangilang.

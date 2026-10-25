@@ -17,11 +17,16 @@ categories:
 
 Before writing any code, complete these steps in order:
 
-1. <strong>Read this file completely.</strong> It defines the boundaries and conventions for this project.
-2. **Read `docs/ARCHITECTURE.md`** to understand the Electron layer structure.
-3. **Read `docs/PRODUCT.md`** to understand the feature requirements.
-4. **Run `bash init.sh`** to verify the project builds cleanly. If it fails, fix build errors before proceeding.
-5. **Read `feature_list.json`** to see the current state of all features.
+## 1. **Read this file completely.** It defines the boundaries and conventions for this project.
+
+## 2. **Read `docs/ARCHITECTURE.md`** to understand the Electron layer structure.
+
+## 3. **Read `docs/PRODUCT.md`** to understand the feature requirements.
+
+## 4. **Run `bash init.sh`** to verify the project builds cleanly. If it fails, fix build errors before proceeding.
+
+## 5. **Read `feature_list.json`** to see the current state of all features.
+
 
 ## Electron Layer Boundaries
 
@@ -59,11 +64,16 @@ This project has four strict layers. Code must respect these boundaries:
 
 A feature is "done" when all of the following are true:
 
-1. TypeScript compiles without errors (`npm run check`).
-2. The app launches and the window is visible (`npm run dev`).
-3. The feature appears in `feature_list.json` with status `"pass"` and evidence.
-4. The code respects Electron layer boundaries defined above.
-5. No console errors during normal operation.
+## 1. TypeScript compiles without errors (`npm run check`).
+
+## 2. The app launches and the window is visible (`npm run dev`).
+
+## 3. The feature appears in `feature_list.json` with status `"pass"` and evidence.
+
+## 4. The code respects Electron layer boundaries defined above.
+
+## 5. No console errors during normal operation.
+
 
 ## Working with the Feature List
 

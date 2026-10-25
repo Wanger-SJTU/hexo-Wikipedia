@@ -19,12 +19,18 @@ Kho lưu trữ này được thiết kế cho công việc coding-agent chạy l
 
 Trước khi viết mã:
 
-1. Xác nhận thư mục làm việc bằng `pwd`.
-2. Đọc `claude-progress.md` để biết trạng thái đã xác minh mới nhất và bước tiếp theo.
-3. Đọc `feature_list.json` và chọn tính năng chưa hoàn thành có mức ưu tiên cao nhất.
-4. Xem lại các commit gần đây bằng `git log --oneline -5`.
-5. Chạy `./init.sh`.
-6. Chạy xác minh smoke hoặc end-to-end cần thiết trước khi bắt đầu công việc mới.
+## 1. Xác nhận thư mục làm việc bằng `pwd`.
+
+## 2. Đọc `claude-progress.md` để biết trạng thái đã xác minh mới nhất và bước tiếp theo.
+
+## 3. Đọc `feature_list.json` và chọn tính năng chưa hoàn thành có mức ưu tiên cao nhất.
+
+## 4. Xem lại các commit gần đây bằng `git log --oneline -5`.
+
+## 5. Chạy `./init.sh`.
+
+## 6. Chạy xác minh smoke hoặc end-to-end cần thiết trước khi bắt đầu công việc mới.
+
 
 Nếu xác minh baseline đã thất bại, hãy sửa điều đó trước. Không chồng công việc tính năng mới lên trên trạng thái khởi đầu bị hỏng.
 
@@ -56,8 +62,13 @@ Một tính năng chỉ xong khi tất cả những điều sau đây là đúng
 
 Trước khi kết thúc phiên:
 
-1. Cập nhật `claude-progress.md`.
-2. Cập nhật `feature_list.json`.
-3. Ghi lại bất kỳ rủi ro hoặc sự cố chặn chưa được giải quyết nào.
-4. Commit với thông điệp mô tả khi công việc ở trạng thái an toàn.
-5. Để repo đủ sạch để phiên tiếp theo có thể chạy `./init.sh` ngay lập tức.
+## 1. Cập nhật `claude-progress.md`.
+
+## 2. Cập nhật `feature_list.json`.
+
+## 3. Ghi lại bất kỳ rủi ro hoặc sự cố chặn chưa được giải quyết nào.
+
+## 4. Commit với thông điệp mô tả khi công việc ở trạng thái an toàn.
+
+## 5. Để repo đủ sạch để phiên tiếp theo có thể chạy `./init.sh` ngay lập tức.
+

@@ -33,7 +33,7 @@ Decoder-Only 架构的 Infra 优势
 
 - 相同参数量的训练效率上：   Decoder-Only > Encoder-Only > Encoder-Decoder
 - 现行分布式并行策略下，可以扩展的 参数量上限 和 分布式集群规模的上限：   Decoder-Only  Encoder-Only 
-![](https://www.zhihu.com/equation?tex=%5Cgg) Encoder-Decoder Encoder-Only 其实并不太适合做 NLP 的生成式任务（Chat），目前在 CV 领域应用的比较多（ViT），输入/输出通常是固定像素大小的图片，token 之间没有非常强的先后依赖关系，因此先排除 BERT。 （理由跟最高赞的 [@Sam多吃青菜](https://www.zhihu.com/people/91a9276093edb7687d8be1df5c5f346b) 回答中的一样）
+$\gg$ Encoder-Decoder Encoder-Only 其实并不太适合做 NLP 的生成式任务（Chat），目前在 CV 领域应用的比较多（ViT），输入/输出通常是固定像素大小的图片，token 之间没有非常强的先后依赖关系，因此先排除 BERT。 （理由跟最高赞的 [@Sam多吃青菜](https://www.zhihu.com/people/91a9276093edb7687d8be1df5c5f346b) 回答中的一样）
 
 下面仅讨论两种架构的代表模型：  Encoder-Decoder 架构的 T5 和 Decoder-Only 的 GPT。
 

@@ -189,10 +189,14 @@ From the Kimi Linear paper:
 
 Even if the model supports 1M, the system stack may impose constraints <strong>that need verification</strong>:
 
-1. <strong>Client-side context window:</strong> Claude Code may limit input
-2. <strong>Memory bandwidth:</strong> At 1M tokens, reading recurrent state may saturate HBM bandwidth
-3. <strong>Latency:</strong> Linear attention's recurrent state processing adds sequential latency
-4. <strong>Cost:</strong> Storage cost scales linearly — at 1M tokens, $0.28/session for Kimi3
+## 1. **Client-side context window:** Claude Code may limit input
+
+## 2. **Memory bandwidth:** At 1M tokens, reading recurrent state may saturate HBM bandwidth
+
+## 3. **Latency:** Linear attention's recurrent state processing adds sequential latency
+
+## 4. **Cost:** Storage cost scales linearly — at 1M tokens, $0.28/session for Kimi3
+
 
 > <strong>Reality check:</strong> The gap between "supports 1M" and "usefully deploys at 1M" is vast. DeepSeek is the only vendor that has publicly demonstrated system-level scalability data.
 
@@ -277,10 +281,14 @@ This hybrid combines:
 
 DeepSeek remains the only vendor that has demonstrated:
 
-1. <strong>System-level scalability data</strong> — not just model claims
-2. <strong>Real-world deployment</strong> at scale
-3. <strong>DSA + MLA + MTP integration</strong> — all three innovations working together
-4. <strong>Industry adoption</strong> — competitors are adopting DSA principles
+## 1. **System-level scalability data** — not just model claims
+
+## 2. **Real-world deployment** at scale
+
+## 3. **DSA + MLA + MTP integration** — all three innovations working together
+
+## 4. **Industry adoption** — competitors are adopting DSA principles
+
 
 > <strong>Bottom line:</strong> The architecture war is not over, but DSA has a higher ceiling. Linear attention (Kimi3) is impressive but faces fundamental limits at extreme scales. The future likely belongs to hybrid architectures that combine DSA's sparse indexing with linear attention's efficiency — and DeepSeek is best positioned to deliver this.
 

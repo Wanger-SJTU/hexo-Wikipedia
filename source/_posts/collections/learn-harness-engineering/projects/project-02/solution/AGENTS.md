@@ -17,11 +17,16 @@ categories:
 
 Before writing any code, complete these steps in order:
 
-1. <strong>Read this file completely.</strong> It defines the boundaries and conventions for this project.
-2. **Read `docs/ARCHITECTURE.md`** to understand the Electron layer structure and import flow.
-3. **Read `docs/PRODUCT.md`** to understand the feature requirements.
-4. **Run `npm install && npm run check`** to verify the project builds cleanly.
-5. **Read `feature_list.json`** to see the current state of all features.
+## 1. **Read this file completely.** It defines the boundaries and conventions for this project.
+
+## 2. **Read `docs/ARCHITECTURE.md`** to understand the Electron layer structure and import flow.
+
+## 3. **Read `docs/PRODUCT.md`** to understand the feature requirements.
+
+## 4. **Run `npm install && npm run check`** to verify the project builds cleanly.
+
+## 5. **Read `feature_list.json`** to see the current state of all features.
+
 
 ## Docs Hierarchy
 
@@ -65,11 +70,16 @@ When adding new features, update the relevant doc before writing code. This help
 
 A feature is "done" when:
 
-1. TypeScript compiles without errors (`npm run check`).
-2. The app launches and the window is visible.
-3. The feature appears in `feature_list.json` with status `"pass"` and evidence.
-4. The code respects Electron layer boundaries.
-5. `docs/ARCHITECTURE.md` and/or `docs/PRODUCT.md` are updated to reflect the change.
+## 1. TypeScript compiles without errors (`npm run check`).
+
+## 2. The app launches and the window is visible.
+
+## 3. The feature appears in `feature_list.json` with status `"pass"` and evidence.
+
+## 4. The code respects Electron layer boundaries.
+
+## 5. `docs/ARCHITECTURE.md` and/or `docs/PRODUCT.md` are updated to reflect the change.
+
 
 ## Session Handoff
 

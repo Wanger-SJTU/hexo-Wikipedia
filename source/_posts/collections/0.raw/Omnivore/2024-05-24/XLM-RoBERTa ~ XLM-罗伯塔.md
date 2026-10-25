@@ -351,7 +351,8 @@ Example:例子：
 
 >>> outputs = model(**inputs, labels=labels)
 >>> round(outputs.loss.item(), 2)
-0.1
+### 0.1
+
 
 ## [](#transformers.XLMRobertaForSequenceClassification) XLMRobertaForSequenceClassificationXLMRobertaFor序列分类
 
@@ -405,7 +406,8 @@ Example of single-label classification:单标签分类示例：
 >>> labels = torch.tensor([1])
 >>> loss = model(**inputs, labels=labels).loss
 >>> round(loss.item(), 2)
-0.08
+### 0.08
+
 
 Example of multi-label classification:多标签分类示例：
 
@@ -536,7 +538,8 @@ Example:例子：
 >>> labels = predicted_token_class_ids
 >>> loss = model(**inputs, labels=labels).loss
 >>> round(loss.item(), 2)
-0.01
+### 0.01
+
 
 ## [](#transformers.XLMRobertaForQuestionAnswering) XLMRobertaForQuestionAnsweringXLMRobertaForQuestionAnswering
 
@@ -594,7 +597,8 @@ Example:例子：
 >>> outputs = model(**inputs, start_positions=target_start_index, end_positions=target_end_index)
 >>> loss = outputs.loss
 >>> round(loss.item(), 2)
-0.86
+### 0.86
+
 
 Hide TensorFlow content隐藏 TensorFlow 内容
 
@@ -791,7 +795,8 @@ Example:
 
 >>> outputs = model(**inputs, labels=labels)
 >>> round(float(outputs.loss), 2)
-0.1
+### 0.1
+
 
 ## [](#transformers.TFXLMRobertaForSequenceClassification) TFXLMRobertaForSequenceClassification
 
@@ -863,7 +868,8 @@ Example:
 >>> labels = tf.constant(1)
 >>> loss = model(**inputs, labels=labels).loss
 >>> round(float(loss), 2)
-0.08
+### 0.08
+
 
 ## [](#transformers.TFXLMRobertaForMultipleChoice) TFXLMRobertaForMultipleChoice
 
@@ -1003,7 +1009,8 @@ Example:
 >>> labels = predicted_token_class_ids
 >>> loss = tf.math.reduce_mean(model(**inputs, labels=labels).loss)
 >>> round(float(loss), 2)
-0.01
+### 0.01
+
 
 ## [](#transformers.TFXLMRobertaForQuestionAnswering) TFXLMRobertaForQuestionAnswering
 
@@ -1079,7 +1086,8 @@ Example:
 >>> outputs = model(**inputs, start_positions=target_start_index, end_positions=target_end_index)
 >>> loss = tf.math.reduce_mean(outputs.loss)
 >>> round(float(loss), 2)
-0.86
+### 0.86
+
 
 ## [](#transformers.FlaxXLMRobertaModel) FlaxXLMRobertaModel
 

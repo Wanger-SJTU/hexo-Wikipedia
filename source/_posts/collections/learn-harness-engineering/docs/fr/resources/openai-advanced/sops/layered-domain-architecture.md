@@ -43,15 +43,22 @@ accumuler de logique métier.
 
 ## SOP d'exécution
 
-1. Cartographier le codebase en domaines avant de toucher au style d'implémentation.
-2. Pour chaque domaine, identifier la séquence de couches autorisée.
-3. Identifier toutes les préoccupations transversales et les router via des fournisseurs
+## 1. Cartographier le codebase en domaines avant de toucher au style d'implémentation.
+
+## 2. Pour chaque domaine, identifier la séquence de couches autorisée.
+
+## 3. Identifier toutes les préoccupations transversales et les router via des fournisseurs
+
    ou adaptateurs.
-4. Déplacer la logique partagée ambiguë soit dans le domaine propriétaire,
+## 4. Déplacer la logique partagée ambiguë soit dans le domaine propriétaire,
+
    soit dans des utilitaires véritablement génériques.
-5. Documenter les règles dans `ARCHITECTURE.md`.
-6. Ajouter un garde-fou exécutable pour la violation au coût le plus élevé.
-7. Mettre à jour la notation de qualité après le changement.
+## 5. Documenter les règles dans `ARCHITECTURE.md`.
+
+## 6. Ajouter un garde-fou exécutable pour la violation au coût le plus élevé.
+
+## 7. Mettre à jour la notation de qualité après le changement.
+
 
 ## Définition du « fini »
 

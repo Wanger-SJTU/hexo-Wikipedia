@@ -88,15 +88,27 @@ fondamentale du cours.
 
 ## Ordre de lecture suggéré
 
-1. `method-map.md`
-2. `initializer-agent-playbook.md`
-3. `coding-agent-startup-flow.md`
-4. `prompt-calibration.md`
-5. OpenAI Harness engineering
-6. Anthropic Effective harnesses
-7. Anthropic Harness design for long-running application development
-8. OpenAI Codex agent loop
-9. Anthropic agent evals
-10. LangChain Improving Deep Agents
-11. Thoughtworks / Martin Fowler Harness engineering for coding agent users
-12. Cursor Continually improving our agent harness
+## 1. `method-map.md`
+
+## 2. `initializer-agent-playbook.md`
+
+## 3. `coding-agent-startup-flow.md`
+
+## 4. `prompt-calibration.md`
+
+## 5. OpenAI Harness engineering
+
+## 6. Anthropic Effective harnesses
+
+## 7. Anthropic Harness design for long-running application development
+
+## 8. OpenAI Codex agent loop
+
+## 9. Anthropic agent evals
+
+## 10. LangChain Improving Deep Agents
+
+## 11. Thoughtworks / Martin Fowler Harness engineering for coding agent users
+
+## 12. Cursor Continually improving our agent harness
+

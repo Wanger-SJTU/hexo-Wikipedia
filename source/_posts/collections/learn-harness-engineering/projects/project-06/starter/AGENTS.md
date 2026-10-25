@@ -15,9 +15,12 @@ categories:
 
 ## Startup Rules
 
-1. Read this file.
-2. Run `npm install && npm run check` to verify the build.
-3. The app should launch with `npm run dev`.
+## 1. Read this file.
+
+## 2. Run `npm install && npm run check` to verify the build.
+
+## 3. The app should launch with `npm run dev`.
+
 
 ## Project Description
 
@@ -35,11 +38,16 @@ scripts, or cleanup scripts. Use it as the baseline for comparison with
 
 The baseline should be evaluated against the solution on:
 
-1. ConversationHistory completeness
-2. Feedback buttons on Q&A responses (thumbs up/down)
-3. Structured logging coverage
-4. Clean state reset behavior
-5. Harness artifacts and benchmark automation that exist in `../solution/`
+## 1. ConversationHistory completeness
+
+## 2. Feedback buttons on Q&A responses (thumbs up/down)
+
+## 3. Structured logging coverage
+
+## 4. Clean state reset behavior
+
+## 5. Harness artifacts and benchmark automation that exist in `../solution/`
+
 
 ## Conventions
 

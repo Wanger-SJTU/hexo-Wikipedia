@@ -200,6 +200,9 @@ knowledge-base-data/
 
 ## Build Pipeline
 
-1. `tsc -p tsconfig.node.json` compiles main, preload, shared, and services to `dist/`.
-2. `vite build` bundles the renderer React app to `dist/renderer/`.
-3. Electron loads `dist/main/main.js` as the entry point.
+## 1. `tsc -p tsconfig.node.json` compiles main, preload, shared, and services to `dist/`.
+
+## 2. `vite build` bundles the renderer React app to `dist/renderer/`.
+
+## 3. Electron loads `dist/main/main.js` as the entry point.
+

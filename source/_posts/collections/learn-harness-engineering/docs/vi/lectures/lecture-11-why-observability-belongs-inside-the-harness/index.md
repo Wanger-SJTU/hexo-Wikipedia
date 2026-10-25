@@ -73,7 +73,8 @@ Khác biệt hiệu quả 3x. Thay đổi duy nhất là khả năng quan sát.
 
 Bạn có thể đang nghĩ: "Agent không thể tự in log của nó sao?" Các vấn đề là:
 
-1. Agent không biết những gì nó không biết — nó sẽ không chủ động ghi lại các tín hiệu mà nó không nhận ra là cần thiết.
+## 1. Agent không biết những gì nó không biết — nó sẽ không chủ động ghi lại các tín hiệu mà nó không nhận ra là cần thiết.
+
 2. Các định dạng log không nhất quán — các phiên khác nhau sử dụng các định dạng log khác nhau, làm cho phân tích có hệ thống không thể thực hiện.
 3. Quan sát quá trình không thể được giải quyết bằng log — sprint contract và rubric tính điểm là artifact có cấu trúc cần hỗ trợ cấp harness.
 

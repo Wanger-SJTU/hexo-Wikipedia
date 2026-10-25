@@ -33,7 +33,7 @@ Preliminary：MHA、MQA、GQA和MLA
 <strong>GQA</strong>：一个折中方案，一组Query共享一个KV。在Llama2/3中被使用，组大小为8。有趣的是，这个参数设置是软硬件codesign的结果。在LLM必须分布式部署的时候，g=8恰恰是最满足张量并行效率的组大小。
 
 <strong>MLA</strong>：在DeepSeek-v2中被使用，从投影的角度压缩了KV，带来了更灵活的显存精度调整，同时通过低秩进一步压缩KV Cache。同时，在压缩的
-![](https://www.zhihu.com/equation?tex=c_t)序列上，增加部分序列来添加RoPE位置编码。
+$c_t$序列上，增加部分序列来添加RoPE位置编码。
 
 <strong>稀疏 Attention（Sparse Attention）</strong> 的定义非常直观：<strong>在计算注意力权重时，不再让每个 Token 都与序列中所有的 Token 进行交互，而是根据某种规则，只选择一小部分“重要”的 Token 进行计算。</strong>
 实现稀疏化的最大挑战在于：<strong>我们如何预知哪些 Token 之间是重要的？</strong>
@@ -94,7 +94,7 @@ Evaluation解读
 ![](https://pic1.zhimg.com/v2-b2e6d35ef26ad105d024030d9aec6ee2_r.jpg)
 - X轴：序列越长，各种Attention计算的Latency都在增加，但Full Attention是二次的，Sparse Attention由于topk的KV，是线性的，因此序列越长，SA的优势就越明显。
 - Seq=8K，full Attention反而是最快的。因为sparse也要选择
-![](https://www.zhihu.com/equation?tex=64%5Ctimes16%3D8192)个KV，计算量没有减少，白白多算一次。
+$64\times16=8192$个KV，计算量没有减少，白白多算一次。
 - Seq=16K，GQA=1（第一列）。FSA在（64，16）时比Full快，在（128，8）时比Full慢，这个不太确定，感觉与压缩效率有关。NSA则都要更慢，因为Query的group太少了。
 - GQA=4的时候（第三列），NSA慢慢也能稳定优于Full了，但仍然弱于FSA，GQA=8（第四列，经典配置）时，性能基本持平，NSA没有了padding开销，那么FSA理论上限也就和NSA一致。
 MoBA: Mixture of Block Attention for Long-Context LLMs

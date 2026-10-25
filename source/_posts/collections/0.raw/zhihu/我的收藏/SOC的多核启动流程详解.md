@@ -20,12 +20,17 @@ source_url: https://zhuanlan.zhihu.com/p/18481479330
 2、启动流程
 3、ATF(TF-A)代码的剖析
 5、软件如何判断当前是cold reset/warm reset/primary boot/senondary boot
-5.1 cold reset和warm reset
-5.2 primary boot和secondary boot
+### 5.1 cold reset和warm reset
+
+### 5.2 primary boot和secondary boot
+
 6、mailbox的介绍
-6.1 mailbox是什么
-6.2 mailbox的作用
-6.3 mailbox的示例
+### 6.1 mailbox是什么
+
+### 6.2 mailbox的作用
+
+### 6.3 mailbox的示例
+
 7、具体场景的总结
 推荐
 
@@ -113,12 +118,14 @@ source_url: https://zhuanlan.zhihu.com/p/18481479330
 5、软件如何判断当前是cold reset/warm reset/primary boot/senondary boot
 TF-A中定义了多核的启动框架，如上一节框图所示，在启动的过程中会进行一些判断，是cold reset还是warm reset，是primary boot还是secondary boot？那么代码中是怎么知道这些状态的呢？
 
-5.1 cold reset和warm reset
+### 5.1 cold reset和warm reset
+
 这种判断方法由平台实现，其实就是读取mailbox的值。
 在第一个核cold boot时，会写mailbox内存（magic，entrypoint…）
 在第二个核启动时、或第一个核再次启动时(有可能是resume唤醒时)，会读取mailbox内存，如果读取到了符合期望的magic的值，则走warm流程，否则走cold流程。 注意这里所说的warm流程，只是软件上的warm流程，并非说当前是warm reset。
 
-5.2 primary boot和secondary boot
+### 5.2 primary boot和secondary boot
+
 这种判断方法由平台实现，看似也很简单，一般而言就说读取mpidr寄存器进行判断。
 
 - (trusted-firmware-a/plat/marvell/armada/a8k/common/aarch64/plat_helpers.S)
@@ -130,7 +137,8 @@ TF-A中定义了多核的启动框架，如上一节框图所示，在启动的�
 - ret
 - endfunc plat_is_my_cpu_primary
 6、mailbox的介绍
-6.1 mailbox是什么
+### 6.1 mailbox是什么
+
 mailbox就说一块内存，所有的core都能访问这块内存。
 第一次启动时，core会填充mailbox，将其下次resume时的地址、secondary core的启动地址、warm reset的地址写入到mailbox内存中，这几个地址其实是一个地址。同时也会将这个地址写入到SOC PMIC寄存器中，影响到RVBAR_EL3的值。
 
@@ -138,12 +146,14 @@ mailbox就说一块内存，所有的core都能访问这块内存。
 
 当SOC一上电，只有一个core上电的情况下，主核继续跑，从核未上电。当从核需要启动时，相当于cold reset，从核会直接从RVBAR_EL3处开始跑，也就是你设置的entrypoint。
 
-6.2 mailbox的作用
+### 6.2 mailbox的作用
+
 mailbox中定义了entrypoint地址，当core从BL1 BL2 BL31正常流程启动时，会在BL1、BL2 at EL3、BL31中，强制跳转到mailbox的地址，以跳过已初始化的部分。
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_cd4ebda16e5a.jpg)
 
-6.3 mailbox的示例
+### 6.3 mailbox的示例
+
 其实就是定义了一块内存，主核第一次跑时，会填充该内存。
 主核第二次跑时或从和跑时，检测该内存已经填充过了，则走warm启动流程，即强制跳转到mailbox中的address地址。
 

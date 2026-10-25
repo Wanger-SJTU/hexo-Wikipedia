@@ -33,11 +33,16 @@ El inicializador debería dejar atrás al menos estos artefactos:
 
 ## Lista de Verificación
 
-1. Define la ruta de inicio estándar.
-2. Define la ruta de verificación estándar.
-3. Crea el registro de progreso y registra el estado inicial.
-4. Descompone el trabajo en características explícitas con estados.
-5. Crea el primer commit de referencia limpio.
+## 1. Define la ruta de inicio estándar.
+
+## 2. Define la ruta de verificación estándar.
+
+## 3. Crea el registro de progreso y registra el estado inicial.
+
+## 4. Descompone el trabajo en características explícitas con estados.
+
+## 5. Crea el primer commit de referencia limpio.
+
 
 ## Test de Éxito
 

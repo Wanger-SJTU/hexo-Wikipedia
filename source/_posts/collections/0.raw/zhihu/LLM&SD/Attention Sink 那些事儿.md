@@ -23,7 +23,7 @@ Attention Sink 这一概念的正式出现，是 2023 年 9 月在 arxiv 上发�
 
 ![](https://pic2.zhimg.com/v2-b6a203cb4c92791caf0b1c6755c9abc7_r.jpg)如上图（左）所示，在 decoder-only 架构的 casual 注意力得分矩阵的可视化图中可以发现，序列中后续 token 对初始位置的 token 给予较高的注意力分数。换言之，<strong>后续 token 的 Q 与初始位置 token 的 K 的内积值很高，因此在经过 softmax 和 scale 之后，继续保持很高的占比</strong>。
 
-![](https://www.zhihu.com/equation?tex=Attention%28Q%2C+K%2C+V%29+%3D+softmax%28%5Cfrac%7BQK%5ET%7D%7B%5Csqrt%7Bd_k%7D%7D%29V+%5Ctag%7B1%7D) <strong>那么，StreamingLLM 是如何发现 attention sink？以及 attention sink 有什么影响？</strong>
+$Attention(Q, K, V) = softmax(\frac{QK^T}{\sqrt{d_k}})V \tag{1}$ <strong>那么，StreamingLLM 是如何发现 attention sink？以及 attention sink 有什么影响？</strong>
 
 [Efficient Streaming Language Models with Attention Sinks](https://link.zhihu.com/?target=https%3A//openreview.net/forum%3Fid%3DNG7sS51zVF) 这篇论文的核心并不是在介绍 attention sink，而是为了缓解 long context 场景下性能急剧下降的问题。<strong>在多轮对话等需要长互动的流式应用中部署 LLMs，迫切需要解决两个主要挑战。首先，在解码阶段，缓存先前 token 的状态</strong>（<strong>KV</strong>，self-attention 中的 K 和 V 向量，在 LLM 的推理优化中常被简称为 kv，与之相关的概念是 kv cache）<strong>会消耗大量显存</strong>（关于 LLM 显存的计算可参阅 [分析transformer模型的参数量、计算量、中间激活、KV cache](https://zhuanlan.zhihu.com/p/624740065)）。<strong>其次，流行的 LLMs 无法泛化到比训练序列长度更长的文本</strong>。
 
@@ -45,7 +45,8 @@ Attention Sink 这一概念的正式出现，是 2023 年 9 月在 arxiv 上发�
 
 ![](https://picx.zhimg.com/v2-d9bf2af0998ce41460ad7f866f1d864d_r.jpg)从 Llama2-7B 模型的所有层和头中可视化注意力矩阵，可以发现，在所有层和头中，除了最底层（layer 0）之外，模型一致地集中在初始 token 上。这意味着：<strong>去除这些初始 token 的 KV 将减少 softmax 函数中的分母部分，从而导致注意力分数分布发生显著变化</strong>，偏离正常推理设置下的预期分布。
 
-![](https://www.zhihu.com/equation?tex=SoftMax%28x%29_i+%3D+%5Cfrac%7Be%5E%7Bx_i%7D%7D%7Be%5E%7Bx1%7D+%2B+%5Csum_%7Bj%3D2%7D%5EN+e%5E%7Bx_j%7D%7D%2C+%5Cquad+x1+%3E%3E+x_j%2C+j+%5Cin+2%2C+%5Cldots%2C+N+) 
+$$SoftMax(x)_i = \frac{e^{x_i}}{e^{x1} + \sum_{j=2}^N e^{x_j}}, \quad x1 >> x_j, j \in 2, \ldots, N$$
+
 
 那么，这些初始 token 到底对当前位置 token 的注意力加权和带来了什么？有两种可能的解释：（1）它们的语义至关重要；（2）模型学习了对这些 token 绝对位置的偏爱。
 
@@ -57,8 +58,8 @@ Attention Sink 这一概念的正式出现，是 2023 年 9 月在 arxiv 上发�
 按照论文的方式，笔者在 Qwen2.5-14B-Instruct 上实践了下，也观察到类似的情况：
 
 ![](https://pica.zhimg.com/v2-e4e1211bf375a00ecaaf76626a3da10a_r.jpg)图：Qwen2.5-14B-Instruct sink token V hidden states L2-norm进一步研究为什么 attention sink token 的 
-![](https://www.zhihu.com/equation?tex=QK%5ET) 值很高，我们知道向量内积等于两个向量长度的乘积与它们之间夹角余弦值的乘积。在图（下）第二和第三张图的可视化结果上可以发现，后续 token Q 和首个 token K 这两个向量长度的乘积远小于 Q 和其他 token K 的乘积值，余弦值远大于其他 token。也就是说，是夹角起了主导作用，使得 attention sink token 的 
-![](https://www.zhihu.com/equation?tex=QK%5ET) 值很高。
+$QK^T$ 值很高，我们知道向量内积等于两个向量长度的乘积与它们之间夹角余弦值的乘积。在图（下）第二和第三张图的可视化结果上可以发现，后续 token Q 和首个 token K 这两个向量长度的乘积远小于 Q 和其他 token K 的乘积值，余弦值远大于其他 token。也就是说，是夹角起了主导作用，使得 attention sink token 的 
+$QK^T$ 值很高。
 
 ![](https://pica.zhimg.com/v2-06f195600973bd032f5970019034af44_r.jpg)论文[《MAGICPIG: LSH SAMPLING FOR EFFICIENT LLM GENERATION》](https://link.zhihu.com/?target=https%3A//openreview.net/pdf%3Fid%3DALzTQUgW8a)绘制了 attention sink token 的 K 向量和其他 token 平均 K 向量和 Q 向量的几何结构。attention sink token 的 K 向量几乎与其他 token 相反，且其方向对输入 token 的依赖性出人意料地不敏感。其他 token 的 Q 向量靠近 sink token K 向量，从而形成 attention sink，通常位于一个远离的狭窄锥体中。
 
@@ -83,8 +84,8 @@ Attention Sink 这一概念的正式出现，是 2023 年 9 月在 arxiv 上发�
 ![](https://pic1.zhimg.com/v2-969176d66a4a5379673f5b102a5667da_r.jpg)图：打乱前后 OLMo 第 24 层的注意力矩阵可视化结果论文[《Unveiling and Constrolling Anomalous Attention Distribution In Transformers》](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2407.01601)提到：在 MLP 中，由于权重固定，第一层（embedding 层）输出中首个 token 向量的特征分布应为有限值，更精确地说，应等于词汇表的大小。该分布应与其他 token 的分布存在显著差异，称之为非混合分布。因此，<strong>理论上，在注意力混合层之后的所有全连接层都能学习到使这些非混合分布与其他分布产生差异化的变化模式</strong>。
 
 上述加粗句子要如何理解呢？从目前的实验结论来看，所有 token 只要位于首位都会成为 sink token。在首位能够被其他 token attend，并且在 casual 注意力中，首位 token 只能看到自己，多层 transformer block 只是 MLP 的堆叠，<strong>它没有“变数”，不会因为 context 的不同以及 token 间的交互变得不一样</strong>。那么，模型完全可以将词汇表内的所有 embedding token 在经过 
-![](https://www.zhihu.com/equation?tex=W_K) 时将其转换为 
-![](https://www.zhihu.com/equation?tex=K_%7Bsink%7D) 。
+$W_K$ 时将其转换为 
+$K_{sink}$ 。
 
 注意力的蓄水池
 让我们来总结一下，attention sink token 通常位于首个或者初始几个位置上，且它的 K 与后续 token 的 Q 的内积值非常高，但 V 值非常小。那么，attention sink 的作用呼之欲出——“消耗多余的注意力权重”（sink token 的 V 值非常小，即使当前 token 给予 sink token 的注意力权重高，但 sink token 对最终的加权和结果的影响很小，这就起到了“消耗多余”注意力权重的作用）。
@@ -96,7 +97,8 @@ attention block 的恒等变换
 
 Transformer 的每个 block 都包含一个残差连接，其计算公式可简化为`Output = Input + Attention_Output + MLP_Output`。在某些情况下，模型可能判断一个 token 的当前表征（Input）已经足够完善，不需要通过 self-attention 进行 token 间的信息交互。此时，该 block 需要执行一次近似的“恒等变换”，即让`Attention_Output`的值等于 0。
 
-![](https://www.zhihu.com/equation?tex=MultiHead%28Q%2C+K%2C+V%29+%3D+Concat%28head_1%2C+%5Cldots%2C+head_h%29W%5EO+%5C%5C+where+head_i+%3D+Attention%28QW_i%5EQ%2C+KW_i%5EK%2C+VW_i%5EV%29) 
+$$MultiHead(Q, K, V) = Concat(head_1, \ldots, head_h)W^O \\ where head_i = Attention(QW_i^Q, KW_i^K, VW_i^V)$$
+
 
 由于每个 token 每一层是否要恒等的情况不一样（有些 token 不需要获取新的信息，有的 token 需要），所以不能靠 W_o = 0 这样的静态参数来一刀切。因此，必须靠 softmax attention 来实现 token 级别的精准识别，也就是 K 空间内必须存在一个特殊的 K0，在某个 token 想要输出 0 的时候可以被精确 attend 到。这也意味着模型必须给这个特殊的 K0 分配一个单独的子空间，和所有其他 token 的 K 都是正交或者负相关，这样可以保证 Q 和 K0 夹角很小时，QK0^T 的内积值最高，实现 attend 到 sink token 并输出 0。同时，K0 的模长也必须小，这样在不需要恒等变换时，对正常 attntion 结果产生尽量小的影响。—— [尝试终结Attention Sink起因的讨论](https://zhuanlan.zhihu.com/p/1932066570714215838)
 PS：2026-01-12 经 [Parachutes](https://www.zhihu.com/people/zheng-ming-wu-10) 大佬提醒，本处内容学习自 [尝试终结Attention Sink起因的讨论](https://zhuanlan.zhihu.com/p/1932066570714215838)，受益匪浅、所学内容经久不忘而落笔时多有雷同，遗漏引用非常抱歉。
@@ -120,8 +122,8 @@ SoftMax 函数的性质防止所有被关注的 token 都为 0，这需要在所
 ![](https://pic1.zhimg.com/v2-880e2b94eba5e14d22e723fbf09c8f88_r.jpg)论文[《WHEN ATTENTION SINK EMERGES IN LANGUAGE MODELS: AN EMPIRICAL VIEW》](https://link.zhihu.com/?target=https%3A//arxiv.org/pdf/2410.10781)提到，不存在 attention sink 机制的 LLMs 通常会放松 token 对注意力分数的内在依赖性。这些模型在预训练阶段的注意力分数可能为负值或总和不为 1。这表明 attention sink 机制（至少部分）源于此类内在依赖性。作者还观察到上述 LLMs 不存在 massive activations。
 
 ![](https://pic3.zhimg.com/v2-af694648e5e62f9d7ee88dcd2b7ece82_r.jpg)作者可视化了 
-![](https://www.zhihu.com/equation?tex=h_1%5El) 的 L2 范数比值与 
-![](https://www.zhihu.com/equation?tex=h_%7Bt+%5Cne+0%7D%5El) 的均值。
+$h_1^l$ 的 L2 范数比值与 
+$h_{t \ne 0}^l$ 的均值。
 
 - 左图：在注意力分数非负且总和为 1 的 LLMs 中存在 massive activations。
 - 中图：在注意力分数相互独立的 LLMs 中不存在 massive activations。
@@ -234,7 +236,7 @@ q, k, v = get_qkv_matrix(output, model, 20)
 作者基于现有的研究和实证证据，<strong>提出：集中式 massive value 是 RoPE 实现机制的内在结果</strong>。
 
 ![](https://pic3.zhimg.com/v2-8b6ef69ea4c20a0530e800f8ab3d2cda_r.jpg)让我们再次回到《Efficient Streaming Language Models with Attention Sinks》这篇论文的观察现象与实验结果。在滑动注意力窗口中，一旦 sink token 从滑动窗口中离开，模型的 PPL 就会爆炸。按照先前的分析和解释，我们知道是因为失去了 sink token，失去了吸收注意力的“黑洞”，从而无法实现恒等变换。而 RoPE 相对位置编码存在远程衰减的特性，一旦 Q、K 的相对位置变长，RoPE 位置编码的内积值会震荡衰减，持续变小。即使，sink token 仍然在“目之所及”的位置，但它们 Q、K 的内积值也已不是“彼此唯一”。<strong>为了“战胜”远程衰减的特性，Q、K 中必须在特定维度上存在 massive values，使其内积之后的值远大于其他 K，从而继续将大部分注意力消耗在 sink token</strong>。<strong>之所以选择高维，是因为高维特征的</strong> **
-![](https://www.zhihu.com/equation?tex=%5Ctheta_i) 的角度小、旋转地慢，相应的远程衰减也就更慢**。并且，RoPE 位置编码的设计初衷就是低维关注局部特征、高维特征关注远程依赖。
+$\theta_i$ 的角度小、旋转地慢，相应的远程衰减也就更慢**。并且，RoPE 位置编码的设计初衷就是低维关注局部特征、高维特征关注远程依赖。
 
 <strong>总结</strong>：Massive Activations 是模型为了“对抗” RoPE 的距离衰减特性，强行“留住” Attention SInk 而产生的一种补偿机制。
 
@@ -253,18 +255,19 @@ q, k, v = get_qkv_matrix(output, model, 20)
 <strong>问</strong>：不是说 sink token K 向量的 L2 范数比其他 token 小吗？但 sink token K 向量内存在 massive values，这不是自相矛盾吗？
 
 L2 范数（Norm）计算的是向量中所有元素平方和的平方根： 
-![](https://www.zhihu.com/equation?tex=%7C%7C+K+%7C%7C+%3D+%5Csqrt%7B%5Csum_%7Bk_i%5E2%7D%7D) 。
+$|| K || = \sqrt{\sum_{k_i^2}}$ 。
 
 - <strong>sink token：</strong>
 - <strong>特点：</strong> 存在 Massive Values，且极其集中（稀疏）。
 - <strong>假设：</strong> 维度 d = 4096。其中 2 个维度是 Massive Value（例如 20），其余 4094 个维度被 LayerNorm 挤压得极小（例如 0.01）。
 - <strong>范数计算</strong>： 
-![](https://www.zhihu.com/equation?tex=%5Csqrt%7B2+%5Ctimes+20%5E2+%2B+4094+%5Ctimes+0.01%5E2%7D+%3D+%5Csqrt%7B800+%2B+0.4%7D+%5Capprox+28.3) 
+$$\sqrt{2 \times 20^2 + 4094 \times 0.01^2} = \sqrt{800 + 0.4} \approx 28.3$$
+
 - <strong>普通 token</strong>：
 - <strong>特点</strong>：没有 Massive Values，语义丰富，信息分布稠密。
 - <strong>假设</strong>：维度 d = 4096。所有维度都承载语义信息，数值适中且分布均匀（例如平均为 0.5）。
 - <strong>范数计算</strong>： 
-![](https://www.zhihu.com/equation?tex=%5Csqrt%7B4096+%5Ctimes+0.5%5E2%7D+%3D+%5Csqrt%7B4096+%5Ctimes+0.25%7D+%5Capprox+32.0) 虽然 sink token 里有“20”这样惊人的 Massive Value（远超情形 B 的 0.5）。但普通 token 的<strong>整体 L2 范数（32.0）依然大于</strong> sink token（28.3）。
+$\sqrt{4096 \times 0.5^2} = \sqrt{4096 \times 0.25} \approx 32.0$ 虽然 sink token 里有“20”这样惊人的 Massive Value（远超情形 B 的 0.5）。但普通 token 的<strong>整体 L2 范数（32.0）依然大于</strong> sink token（28.3）。
 
 <strong>最后</strong>，让我们来将以上的内容都整合总结一下。
 
@@ -277,15 +280,15 @@ L2 范数（Norm）计算的是向量中所有元素平方和的平方根：
 - 第一阶段：LayerNorm 之前的 hidden states。模型在特定的特征维度上产生 massive values，这些大值是为了在 LayerNorm 中“生存”下来。由于 LayerNorm 是基于方差进行归一化，massive values 会拉高方差，导致其他普通语义特征被“挤压拍平”成接近 0 的数值。结果就是 sink token 的特征向量被“格式化”，变成了一个极其稀疏的信号——只有几个特定的维度有值，其他维度几乎空白。
 ![](https://pic1.zhimg.com/v2-4ee0d8d184ef818e0cde6d6afadfff30_r.jpg)
 - 第二阶段：
-![](https://www.zhihu.com/equation?tex=W_k) 投影与 RoPE。虽然经过了 Norm，但 
-![](https://www.zhihu.com/equation?tex=W_k) 矩阵通过学习，在输出的 K 向量中重新放大了特定的维度。这些被放大的维度不是随机的，而是精确集中在 RoPE 的高维特征（低频）上。而低频维度旋转极慢，几乎不受位置变化的影响。把 massive value 放在这里，就像在旋转木马上找到了圆心，无论序列多长，它都是一个<strong>永恒稳定的灯塔</strong>。<strong>推理过程：attention 是一种“锁与钥匙”</strong>
+$W_k$ 投影与 RoPE。虽然经过了 Norm，但 
+$W_k$ 矩阵通过学习，在输出的 K 向量中重新放大了特定的维度。这些被放大的维度不是随机的，而是精确集中在 RoPE 的高维特征（低频）上。而低频维度旋转极慢，几乎不受位置变化的影响。把 massive value 放在这里，就像在旋转木马上找到了圆心，无论序列多长，它都是一个<strong>永恒稳定的灯塔</strong>。<strong>推理过程：attention 是一种“锁与钥匙”</strong>
 
 当模型在推理时，如果当前 token 还需要语义（如找“苹果”），其 Q 向量会在低维高频特征活跃，去匹配普通 token。如果此时不需要再进行信息交互，Bias 会驱动 Q 向量在 RoPE 高维低频特征产生 massive values 来主导方向，与 sink token 的 K 角度一致 + 数值巨大，内积得到巨大的 attention score，并克服 RoPE 的远程衰减特性。
 
 sink token 拿走了 90% 的概率。
 
 - 加权求和： 
-![](https://www.zhihu.com/equation?tex=0.9+%5Ctimes+V_%7Bsink%7D%28%5Capprox+0%29+%2B+0.1+%5Ctimes+V_%7Bothers%7D) 。
+$0.9 \times V_{sink}(\approx 0) + 0.1 \times V_{others}$ 。
 - 最终效果： 模型安全地执行了“跳过”操作，输出了干净的 Hidden State 给下一层。<strong>Attention Sink 是模型为了对抗 RoPE 的长距离衰减并维持 Softmax 稳定性而进化出的一种机制：它通过 LayerNorm 筛选出稀疏特征，并在 K 向量的 RoPE 高维重构出 Massive Values，从而制造了一个“整体范数很小（不干扰语义）但局部数值极大（能被强力捕捉）”的稳定锚点</strong>。
 
 附录
@@ -307,10 +310,12 @@ sink token 拿走了 90% 的概率。
 SoftMax-Off-by-One 是标准 SoftMax 函数的一种改进形式，主要用于解决 Transformer 模型（如 LLM）中注意力机制的归一化约束问题。
 
 - <strong>标准 SoftMax</strong>：将输入向量转换为概率分布，要求所有输出值之和严格为 1。
-![](https://www.zhihu.com/equation?tex=SoftMax%28x%29_i+%3D+%5Cfrac%7Be%5E%7Bx_i%7D%7D%7B%5Csum_%7Bj%3D1%7D%5EN+e%5E%7Bx_j%7D%7D) 
+$$SoftMax(x)_i = \frac{e^{x_i}}{\sum_{j=1}^N e^{x_j}}$$
+
 
 - <strong>SoftMax-Off-by-One</strong>：在分母中添加常数 1，使输出值之和小于 1，不再强制归一化到 1。
-![](https://www.zhihu.com/equation?tex=SoftMax%28x%29_i+%3D+%5Cfrac%7Be%5E%7Bx_i%7D%7D%7B1+%2B+%5Csum_%7Bj%3D1%7D%5EN+e%5E%7Bx_j%7D%7D) 
+$$SoftMax(x)_i = \frac{e^{x_i}}{1 + \sum_{j=1}^N e^{x_j}}$$
+
 
 <strong>关键改进</strong>：允许模型在某些情况下不分配注意力（即输出可趋近于 0）。
 

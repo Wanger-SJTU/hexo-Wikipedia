@@ -36,7 +36,8 @@ Code传送门：
 （2）获取更多的数据（不要求高质量，也不要求full labeled）然后做弱监督预训练，就像谷歌使用的JFT-300M数据集进行预训练一样（在JFT数据集中，类别标签是有噪声的）。具体来说，JFT中一共有18291个类别，这能教模型的概念比ImageNet的1000类要多得多，但尽管已经有上万类了，其最后的分类器其实还是静态的、有限的，因为你最后还是得固定到18291个类别上进行分类，那么这样的类别限制还是限制了模型的zero-shot能力。
 这两条路线其实都展现了相当的潜力，前者证明paired text-image可以用来训练视觉表征，后者证明扩充数据能极大提升性能，即使数据有noise。于是high-level上，作者考虑从网上爬取大量的（text，image）pair以扩充数据，同时这样的pairs是可以用来训练视觉表征的。作者随即在互联网上采集了4亿个（text，image）对，准备开始训练模型。
 
-3. Model
+## 3. Model
+
 
 <strong>3.1 Objective</strong>**海量的（image，text）数据有了，问题是怎么设计并高效地训练模型。作者提出CLIP的模型，可以认为是ConVIRT<span class="wikilink wikilink--missing" title="未导入的页面">1</span>(#ref_1)的简化版。这里先简单回顾下ConVIRT (咋一看是不是觉得CLIP和ConVIRT一摸一样... ).
 
@@ -219,7 +220,8 @@ CLIP GOAT！！！
 
 CLIP的实验非常丰富，这里只是抛砖引玉地挑了几个我个人觉得比较有意思的实验讲，具体地还是推荐大家去看原文。
 
-5. Limitation
+## 5. Limitation
+
 
 这个部分往往容易被人忽略，但其实个人觉得，limitation和conclusion部分往往有作者们更深入的思考，这里简单总结下CLIP的limitation：
 

@@ -56,16 +56,20 @@ https://github.com/mlc-ai/mlc-llm
 
 ### 部署优化
 构建完以后，就进入到优化的阶段了。下面根据build.py过程描述一下过程。
-1. API构图构建了相关的模型，读取权重
-2. 量化
-3. 优化PASS
+## 1. API构图构建了相关的模型，读取权重
+
+## 2. 量化
+
+## 3. 优化PASS
+
 	1.  FuseTransposeMatmul
 	2. FuseDecodeMatmulEwise
 	3. DeadCodeElimination
 	4. LiftTransformParams
 	5. split_transform_deploy_mod
 	
-4. Codegen 生成代码
+## 4. Codegen 生成代码
+
 	1. DispatchTIROperatorAdreno/DispatchTIROperator/DefaultGPUSchedule 手动优化的sch
 	2. MetaScheduleApplyDatabase搜索的log生成固定shape的sch
 

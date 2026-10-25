@@ -16,9 +16,12 @@ categories:
 <strong>作者</strong>：Tianyu Liu<sup>1,2</sup>, Yuhao Shen<sup>1,3</sup>, Xinyi Hu<sup>1</sup>, Baolin Zhang<sup>1</sup>, Hengxin Zhang<sup>1</sup>, Jun Dai<sup>1</sup>, Jun Zhang<sup>1,3</sup>\*, Shuang Ge<sup>1</sup>\*, Lei Chen<sup>1</sup>, Yue Li<sup>1</sup>, Mingcheng Wan<sup>1</sup>
 
 <strong>机构</strong>：
-1. 阿里巴巴通义千问应用业务团队（Qwen Applications Business Group of Alibaba）
-2. 中国科学技术大学（University of Science and Technology of China）
-3. 浙江大学（Zhejiang University）
+## 1. 阿里巴巴通义千问应用业务团队（Qwen Applications Business Group of Alibaba）
+
+## 2. 中国科学技术大学（University of Science and Technology of China）
+
+## 3. 浙江大学（Zhejiang University）
+
 
 <strong>来源</strong>：https://arxiv.org/abs/2604.26412
 

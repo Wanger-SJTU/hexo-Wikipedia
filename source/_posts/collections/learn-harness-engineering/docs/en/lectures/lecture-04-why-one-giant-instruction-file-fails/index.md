@@ -113,10 +113,14 @@ A SaaS team's `AGENTS.md` ballooned from 50 lines to 600. The contents mixed tog
 Agent performance started declining noticeably: during simple bug fixes the agent spent significant context processing irrelevant deployment instructions; the security constraint "all database queries must use parameterized queries" was buried at line 300 and frequently ignored; three contradictory code style rules caused the agent to pick one at random.
 
 The team executed a split refactoring:
-1. `AGENTS.md` trimmed to 80 lines: only project overview, run commands, and 15 global hard constraints
-2. Created topic documents: `docs/api-patterns.md` (120 lines), `docs/database-rules.md` (60 lines), `docs/testing-standards.md` (80 lines)
-3. Added topic document links in the entry file
-4. Historical notes either converted to test cases or deleted outright
+## 1. `AGENTS.md` trimmed to 80 lines: only project overview, run commands, and 15 global hard constraints
+
+## 2. Created topic documents: `docs/api-patterns.md` (120 lines), `docs/database-rules.md` (60 lines), `docs/testing-standards.md` (80 lines)
+
+## 3. Added topic document links in the entry file
+
+## 4. Historical notes either converted to test cases or deleted outright
+
 
 After refactoring: success rate on the same task set improved from 45% to 72%. Security constraint compliance rose from 60% to 95%, because the rule moved from the middle of the file to the top of the entry file — no longer "lost in the middle."
 

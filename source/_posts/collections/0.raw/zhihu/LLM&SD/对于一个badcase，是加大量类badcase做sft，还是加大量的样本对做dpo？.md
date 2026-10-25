@@ -29,25 +29,28 @@ source_url: https://www.zhihu.com/question/9246153349/answer/90565674993
 
 [Direct Preference Optimization: Your Language Model is Secretly a Reward Model](https://link.zhihu.com/?target=https%3A//arxiv.org/html/2305.18290v3)DPO论文给出的梯度公式是：
 
-![](https://www.zhihu.com/equation?tex=%5Cnabla_%5Ctheta+%5Cmathcal%7BL%7D_%5Ctext%7BDPO%7D%28%5Cpi_%5Ctheta%3B%5Cpi_%7Bref%7D%29+%3D+%5C%5C+-%5Cbeta%5Cmathbb%7BE%7D_%7B%28x%2C+y_w%2C+y_l%29+%5Csim+%5Cmathcal%7BD%7D%7D+%5Cbigg%5B%5Cunderbrace%7B%5Csigma%28%5Chat%7Br%7D_%5Ctheta%28x%2C+y_l%29+-+%5Chat%7Br%7D_%5Ctheta+%28x%2C+y_w%29%29%7D_%5Ctext%7Bhigher+weight+when+reward+estimate+is+wrong%7D%5Cbigg%5B%5Cunderbrace%7B%5Cnabla_%5Ctheta%5Clog+%5Cpi%28y_w+%5Cmid+x%29%7D_%5Ctext%7Bincrease+likelihood+of+%24y_w%24%7D+-+%5Cunderbrace%7B%5Cnabla_%5Ctheta%5Clog%5Cpi%28y_l+%5Cmid+x%29%7D_%5Ctext%7Bdecrease+likelihood+of+%24y_l%24%7D%5Cbigg%5D%5Cbigg%5D%2C+) 
+$$\nabla_\theta \mathcal{L}_\text{DPO}(\pi_\theta;\pi_{ref}) = \\ -\beta\mathbb{E}_{(x, y_w, y_l) \sim \mathcal{D}} \bigg[\underbrace{\sigma(\hat{r}_\theta(x, y_l) - \hat{r}_\theta (x, y_w))}_\text{higher weight when reward estimate is wrong}\bigg[\underbrace{\nabla_\theta\log \pi(y_w \mid x)}_\text{increase likelihood of $y_w$} - \underbrace{\nabla_\theta\log\pi(y_l \mid x)}_\text{decrease likelihood of $y_l$}\bigg]\bigg],$$
+
 
 上述公式里，
-![](https://www.zhihu.com/equation?tex=x)是问题， 
-![](https://www.zhihu.com/equation?tex=y_w)是正确答案，
-![](https://www.zhihu.com/equation?tex=y_l)是错误答案， 
-![](https://www.zhihu.com/equation?tex=%5Chat%7Br%7D_%5Ctheta)是当前策略模型和参考模型的log概率之差（按论文里的说法，相当于强化学习的优势）。
+$x$是问题， 
+$y_w$是正确答案，
+$y_l$是错误答案， 
+$\hat{r}_\theta$是当前策略模型和参考模型的log概率之差（按论文里的说法，相当于强化学习的优势）。
 
 而SFT的梯度公式是：
 
-![](https://www.zhihu.com/equation?tex=%5Cnabla_%5Ctheta+%5Cmathcal%7BL%7D_%5Ctext%7BSFT%7D+%3D+-%5Cmathbb%7BE%7D+%5Cleft%5B+%5Cnabla_%5Ctheta+%5Clog+%5Cpi_%5Ctheta%28y+%7C+x%29+%5Cright%5D) 
+$$\nabla_\theta \mathcal{L}_\text{SFT} = -\mathbb{E} \left[ \nabla_\theta \log \pi_\theta(y | x) \right]$$
+
 
 如果我们把常数项
-![](https://www.zhihu.com/equation?tex=%5Cbeta)和取平均数的
-![](https://www.zhihu.com/equation?tex=%5Cmathbb%7BE%7D)省略，那么其实DPO的梯度公式里藏着两处SFT：
+$\beta$和取平均数的
+$\mathbb{E}$省略，那么其实DPO的梯度公式里藏着两处SFT：
 
-![](https://www.zhihu.com/equation?tex=%5Cnabla_%5Ctheta+%5Cmathcal%7BL%7D_%5Ctext%7BDPO%7D+%3D+%5Csigma%28...%29+%5Cleft%28+%5Cnabla_%5Ctheta+%5Cmathcal%7BL%7D_%5Ctext%7BSFT%7D%28y_w%29+-+%5Cnabla_%5Ctheta+%5Cmathcal%7BL%7D_%5Ctext%7BSFT%7D%28y_l%29+%5Cright%29) 
+$$\nabla_\theta \mathcal{L}_\text{DPO} = \sigma(...) \left( \nabla_\theta \mathcal{L}_\text{SFT}(y_w) - \nabla_\theta \mathcal{L}_\text{SFT}(y_l) \right)$$
 
-![](https://www.zhihu.com/equation?tex=%5Csigma%28...%29)在每个样本上是个标量，可以看成是给每个样本乘上一个系数的动态学习率，类似于learning rate decay但是能更精确的判断每个样本有没有被充分学过，而不是根据step数量无脑下降学习率。所以，整体而言，DPO在数学上等价于在同一个minibatch对正样本梯度下降SFT，对负样本梯度上升SFT，并随着训练动态调整每个样本的学习率。
+
+$\sigma(...)$在每个样本上是个标量，可以看成是给每个样本乘上一个系数的动态学习率，类似于learning rate decay但是能更精确的判断每个样本有没有被充分学过，而不是根据step数量无脑下降学习率。所以，整体而言，DPO在数学上等价于在同一个minibatch对正样本梯度下降SFT，对负样本梯度上升SFT，并随着训练动态调整每个样本的学习率。
 
 可以看到DPO的参考模型只在计算动态学习率时用到（这个动态学习率的作用是防止过度训练模型已经学会的东西，参见DPO原论文附录C.3的讨论）。
 
@@ -55,7 +58,8 @@ source_url: https://www.zhihu.com/question/9246153349/answer/90565674993
 
 这是因为，前面提到的SFT的梯度如果在词表维度展开是这样的。
 
-![](https://www.zhihu.com/equation?tex=%5Cnabla_%7Bz_i%7D+%5Cmathcal%7BL%7D_%5Ctext%7BSFT%7D++%3D++%5Cbegin%7Bcases%7D++%5Cpi_%7B%5Ctheta%7D%28i+%5Cmid+x%29+-+1%2C+%26+i+%3D+y+%5C+%28%5Ctext%7Blabel+token%7D%29%2C+%5C%5C+%5Cpi_%7B%5Ctheta%7D%28i+%5Cmid+x%29%2C+%26+i+%5Cneq+y+%5C+%28%5Ctext%7B%E9%9D%9Elabel+token%7D%29%2C+%5Cend%7Bcases%7D+) 
+$$\nabla_{z_i} \mathcal{L}_\text{SFT}  =  \begin{cases}  \pi_{\theta}(i \mid x) - 1, & i = y \ (\text{label token}), \\ \pi_{\theta}(i \mid x), & i \neq y \ (\text{非label token}), \end{cases}$$
+
 
 可以看到SFT的所有“非label token”的梯度都是正数，梯度下降时会倾向于减少这些token的log概率，效果上无非相当于某种正则化，并不会引发收敛性的问题。然而，如果对负样本单独跑梯度上升，所有在负样本中的“非label token”的log概率都会上升，这可能就会导致不收敛。
 
@@ -63,8 +67,10 @@ source_url: https://www.zhihu.com/question/9246153349/answer/90565674993
 
 DPO不炸的秘密就在于，在同一个minibatch里同时跑梯度上升和梯度下降，大致能抵消掉对整个词表log概率的上升和下降趋势。这也是为什么DPO的公式不能改成分别计算正样本和负样本的动态学习率，比如以下这样把动态学习率分开是不行的：
 
-![](https://www.zhihu.com/equation?tex=%5Cmathcal%7BL%7D_%5Ctext%7BDPO_variant%7D+%3D+%5Clog+%5Csigma%5Cbigl%28-%5Chat%7Br%7D_%5Ctheta%28x%2Cy_l%29%5Cbigr%29+-+%5Clog+%5Csigma%5Cbigl%28%5Chat%7Br%7D_%5Ctheta%28x%2Cy_w%29%5Cbigr%29) 
+$$\mathcal{L}_\text{DPO_variant} = \log \sigma\bigl(-\hat{r}_\theta(x,y_l)\bigr) - \log \sigma\bigl(\hat{r}_\theta(x,y_w)\bigr)$$
 
-![](https://www.zhihu.com/equation?tex=%5Cnabla_%5Ctheta+%5Cmathcal%7BL%7D_%5Ctext%7BDPO_variant%7D+%3D+%5Cbeta%5Csigma%28-%5Chat%7Br%7D_%5Ctheta%28x%2C+y_w%29%29+%5Cnabla_%5Ctheta+%5Cmathcal%7BL%7D_%5Ctext%7BSFT%7D%28y_w%29+-+%5Cbeta%5Csigma%28%5Chat%7Br%7D_%5Ctheta%28x%2C+y_l%29%29+%5Cnabla_%5Ctheta+%5Cmathcal%7BL%7D_%5Ctext%7BSFT%7D%28y_l%29+) 
+
+$$\nabla_\theta \mathcal{L}_\text{DPO_variant} = \beta\sigma(-\hat{r}_\theta(x, y_w)) \nabla_\theta \mathcal{L}_\text{SFT}(y_w) - \beta\sigma(\hat{r}_\theta(x, y_l)) \nabla_\theta \mathcal{L}_\text{SFT}(y_l)$$
+
 
 DPO只在负样本的动态学习率小于等于正样本的动态学习率时，才能保证整个词表log概率的上升趋势能被抵消。而改成分开计算二者的动态学习率不能提供这一保证。

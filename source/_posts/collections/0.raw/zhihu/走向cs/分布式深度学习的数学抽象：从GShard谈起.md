@@ -31,7 +31,8 @@ GShard is a module composed of a set of lightweight annotation APIs and an exten
 
 这要从数据并行和模型并行说起，先列一下我知道的在GShard之前的相关工作。
 
-1. One weird trick for parallelizing convolutional neural networks
+## 1. One weird trick for parallelizing convolutional neural networks
+
 
 这也许是最早探讨模型并行的文章，由Alex Krizhevsky (没错，就是AlexNet那位）在2014年发表在arXiv上（*[https://arxiv.org/pdf/1404.5997.pdf](https://link.zhihu.com/?target=https%3A//arxiv.org/pdf/1404.5997.pdf)*）。
 
@@ -42,7 +43,8 @@ GShard is a module composed of a set of lightweight annotation APIs and an exten
 
 这最早是在cuda-convnet这个史前的深度学习框架上实现的，现在知道这套软件的人比较少了。
 
-2. Exploring Hidden Dimensions in Parallelizing Convolutional Neural Networks
+## 2. Exploring Hidden Dimensions in Parallelizing Convolutional Neural Networks
+
 
 这篇由Zhihao Jia在2018年发在ICML（链接：https://cs.stanford.edu/~zhihao/papers/icml18.pdf），他在这个方向上发表过2篇很有影响力的文章。
 
@@ -79,7 +81,8 @@ Tofu与所有其它工作的不同之处在于，它的关注点是operator的�
 
 这篇文章讨论了这套解决办法的适用范围，以及有什么问题解决不了，这是同类工作中比较难得的。特别是限定了partition-n-reduce的模式，其实GShard也是这种模式。partition and reduce也包含小小的缺陷，其实partition之后，不见得”立刻“unreduced, 可以让中间的partial结果在系统里继续参与计算，这样反而有可能效率更优，OneFlow的SBP标注体系之所以引入了P（partial）的原因也在此。
 
-5. Mesh-TensorFlow: Deep Learning for Supercomputers
+## 5. Mesh-TensorFlow: Deep Learning for Supercomputers
+
 
 这篇是Google Brain在NIPS 2018上发表的Mesh-TensorFlow（*[https://arxiv.org/pdf/1811.02084.pdf](https://link.zhihu.com/?target=https%3A//arxiv.org/pdf/1811.02084.pdf)*）。需要注意的是，Mesh-TensorFlow的作者和GShard的作者几乎是重叠的，Mesh-TensorFlow甚至可以被看作GShard的前身。
 

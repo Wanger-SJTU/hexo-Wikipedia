@@ -42,20 +42,28 @@ _有效解析和理解非结构化文档中的表格时，设计 RAG 方案仍�
 
 这个模块的主要功能是从非结构化文档或图像中准确提取表格结构。最好能够提取相应的表格标题，并方便开发者将表格标题与表格关联起来。目前有以下几种方法:
 
-1. 使用多模态 LLM（multimodal LLM）如 GPT-4V 来识别表格并从每个 PDF 页面中提取信息
-2. 利用专门的标检测模型，如<strong>Table Transformer\[1\]</strong>来辨别表结构
-3. 使用开源框架，如<strong>unstructured\[2\]</strong>或者其他框架，这些框架允许对整个文档进行全面分析，并从分析的结果中提取与表相关的内容。
+## 1. 使用多模态 LLM（multimodal LLM）如 GPT-4V 来识别表格并从每个 PDF 页面中提取信息
+
+## 2. 利用专门的标检测模型，如**Table Transformer\[1\]**来辨别表结构
+
+## 3. 使用开源框架，如**unstructured\[2\]**或者其他框架，这些框架允许对整个文档进行全面分析，并从分析的结果中提取与表相关的内容。
+
 4. 使用端到端模型（如 Nougat、Donut 等）解析整个文档并提取与表格相关的内容。此方法不需要 OCR 模型。 值得一提的是，无论使用何种方法提取表格信息，都应包含表格标题。这是因为在大多数情况下，表格标题是文档或论文作者对表格的简要描述，可以在很大程度上总结整个表格。在以上几种方法中，第四种可以相对较容易地对表格标题进行检测以及和表格进行关联。
 
 ### Index Structure
 
 索引表格的方式大概可以分为以下几种
 
-1. 仅对图像格式的表格进行索引
-2. 仅对纯文本或 JSON 格式的表进行索引
-3. 仅索引 LaTeX 格式的表格
-4. 仅索引表的摘要（表的摘要通常可以使用 LLM 进行生成，也可以尝试使用多模态模型）
-5. 从小到大或按照文档摘要索引结构（小块内容可以是表中的行，大块内容是图像、文本或者 LaTeX 格式表格），如下图所示
+## 1. 仅对图像格式的表格进行索引
+
+## 2. 仅对纯文本或 JSON 格式的表进行索引
+
+## 3. 仅索引 LaTeX 格式的表格
+
+## 4. 仅索引表的摘要（表的摘要通常可以使用 LLM 进行生成，也可以尝试使用多模态模型）
+
+## 5. 从小到大或按照文档摘要索引结构（小块内容可以是表中的行，大块内容是图像、文本或者 LaTeX 格式表格），如下图所示
+
 
 ![](https://proxy-prod.omnivore-image-cache.app/1280x890,s6mVeWD2XSTWDY19KfgYCsxvZZ3fouVD7M8dpmYv-WIw/https://pic3.zhimg.com/v2-5528134c5146d23b7fb45c50ae2a84ea_b.jpg)
 
@@ -75,10 +83,14 @@ _有效解析和理解非结构化文档中的表格时，设计 RAG 方案仍�
 
 LlamaIndex 中提供了四种方法，其中前三种依赖多模态模型：
 
-1. 检索相关图像，并将其发送到 GPT-4V 进行回复
-2. 将每个 PDF 页面作为图像，让 GPT-4V 对每个页面进行 reasonings，并对其建立文本索引，然后根据 Image Reasoning Vector Store 进行查询答案
-3. 使用 Table Transformer 从检索到的图像中裁切表信息，然后使用 GPT-4V 进行回答
-4. 对裁剪后的表格图像 OCR 处理，将文本发送到 LLM 中进行回答 Langchain 中也有一些解决方案，有以下几类：
+## 1. 检索相关图像，并将其发送到 GPT-4V 进行回复
+
+## 2. 将每个 PDF 页面作为图像，让 GPT-4V 对每个页面进行 reasonings，并对其建立文本索引，然后根据 Image Reasoning Vector Store 进行查询答案
+
+## 3. 使用 Table Transformer 从检索到的图像中裁切表信息，然后使用 GPT-4V 进行回答
+
+## 4. 对裁剪后的表格图像 OCR 处理，将文本发送到 LLM 中进行回答 Langchain 中也有一些解决方案，有以下几类：
+
 * <strong>半结构化 RAG\[5\]</strong>：首先使用 Unstructured 从 pdf 中解析文本和表格，然后使用 multi-vector retriever 存储原始的表格和文本，同时对表格进行总结，最后用 LCEL 实现问答链路。主要流程如下所示（实际上这里的最后一个 LLM 并不是多模态 LLM）
 
 ![](https://proxy-prod.omnivore-image-cache.app/1656x386,srPPwlmsvY1nwzAybWg953Ia7ZV2OSiStqBlJv9Z4o0s/https://pic1.zhimg.com/v2-3ab799f2d4fd9534db5242f77b6bca94_b.jpg)

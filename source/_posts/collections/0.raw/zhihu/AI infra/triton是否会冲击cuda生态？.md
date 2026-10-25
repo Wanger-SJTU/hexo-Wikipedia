@@ -28,7 +28,8 @@ BobHuang
 作为一个Triton开发者+用户的角度来看，我认为是现在进行时。开发者层面我给Triton接入了一个backend，给upstream修复过bug；用户层面我写了四五十个Triton算子，进行过算子调优，诚然大多数情况是autotune和新feature的功劳。我有近3年编译器开发的经验，2023年5月我了解到Triton并开始关注，在此我写下我的看法。我去年的时候写了一篇Triton的执行流程分析文章，帮你揭秘下部分Triton源码，感兴趣可以去看看。
 
 浅析 Triton 执行流程368 赞同 · 22 评论 文章
-2025.7.5更
+### 2025.7.5更
+
 
 meta针对Triton再联合自己的Pytorch自研芯片MTIA的软件栈
 

@@ -22,10 +22,14 @@ de votre projet.
 
 Copiez d'abord ces quatre fichiers à la racine de votre projet :
 
-1. `AGENTS.md` ou `CLAUDE.md`
-2. `init.sh`
-3. `claude-progress.md`
-4. `feature_list.json`
+## 1. `AGENTS.md` ou `CLAUDE.md`
+
+## 2. `init.sh`
+
+## 3. `claude-progress.md`
+
+## 4. `feature_list.json`
+
 
 Ajoutez les fichiers restants au fur et à mesure que votre projet grandit.
 
@@ -71,10 +75,14 @@ et affiche la commande de lancement — le tout en une seule fois.
 
 <strong>Ce qu'il fait :</strong>
 
-1. Affiche le répertoire courant (pour confirmer qu'il s'exécute au bon endroit)
-2. Installe les dépendances
-3. Exécute la commande de vérification
-4. Affiche la commande de lancement (ou l'exécute si `RUN_START_COMMAND=1` est défini)
+## 1. Affiche le répertoire courant (pour confirmer qu'il s'exécute au bon endroit)
+
+## 2. Installe les dépendances
+
+## 3. Exécute la commande de vérification
+
+## 4. Affiche la commande de lancement (ou l'exécute si `RUN_START_COMMAND=1` est défini)
+
 
 Si la vérification échoue, l'agent doit s'arrêter et corriger la ligne de base avant
 de faire quoi que ce soit d'autre.
@@ -190,12 +198,18 @@ une session ou à des jalons du projet pour évaluer si le travail atteint le ni
 
 <strong>Les six dimensions :</strong>
 
-1. <strong>Correction</strong> — l'implémentation correspond-elle au comportement cible ?
-2. <strong>Vérification</strong> — les vérifications requises ont-elles réellement été exécutées, avec des preuves ?
-3. <strong>Discipline de périmètre</strong> — l'agent est-il resté dans la fonctionnalité sélectionnée ?
-4. <strong>Fiabilité</strong> — le résultat survit-il à un redémarrage ou à une relance ?
-5. <strong>Maintenabilité</strong> — le code et la documentation sont-ils suffisamment clairs pour la prochaine session ?
-6. <strong>Préparation à la passation</strong> — une nouvelle session peut-elle continuer en utilisant uniquement les artefacts du dépôt ?
+## 1. **Correction** — l'implémentation correspond-elle au comportement cible ?
+
+## 2. **Vérification** — les vérifications requises ont-elles réellement été exécutées, avec des preuves ?
+
+## 3. **Discipline de périmètre** — l'agent est-il resté dans la fonctionnalité sélectionnée ?
+
+## 4. **Fiabilité** — le résultat survit-il à un redémarrage ou à une relance ?
+
+## 5. **Maintenabilité** — le code et la documentation sont-ils suffisamment clairs pour la prochaine session ?
+
+## 6. **Préparation à la passation** — une nouvelle session peut-elle continuer en utilisant uniquement les artefacts du dépôt ?
+
 
 <strong>Options de verdict :</strong>
 
@@ -207,11 +221,16 @@ une session ou à des jalons du projet pour évaluer si le travail atteint le ni
 juges d'eux-mêmes — ils identifient des problèmes puis se convainquent d'approuver.
 Vous devrez itérer :
 
-1. Exécutez l'évaluateur sur un sprint terminé.
-2. Comparez ses scores avec votre propre jugement humain.
-3. Lorsqu'ils divergent, rendez la grille plus spécifique sur les critères de réussite/échec.
-4. Réexécutez et vérifiez l'alignement.
-5. Répétez jusqu'à ce que l'évaluateur corresponde systématiquement à la revue humaine.
+## 1. Exécutez l'évaluateur sur un sprint terminé.
+
+## 2. Comparez ses scores avec votre propre jugement humain.
+
+## 3. Lorsqu'ils divergent, rendez la grille plus spécifique sur les critères de réussite/échec.
+
+## 4. Réexécutez et vérifiez l'alignement.
+
+## 5. Répétez jusqu'à ce que l'évaluateur corresponde systématiquement à la revue humaine.
+
 
 Prévoyez 3 à 5 cycles de réglage. Enregistrez chaque changement pour suivre ce qui a
 amélioré l'alignement.
@@ -260,9 +279,14 @@ harnais encode une hypothèse sur ce que le modèle ne peut pas faire. À mesure
 modèles s'améliorent, ces hypothèses deviennent obsolètes. Pour vérifier si un composant
 est toujours nécessaire :
 
-1. Prenez un instantané du document qualité.
-2. Retirez un composant de harnais.
-3. Exécutez la suite de tâches de benchmark.
-4. Prenez un autre instantané.
-5. Comparez — si les notes n'ont pas baissé, le composant était superflu. Si elles ont baissé,
+## 1. Prenez un instantané du document qualité.
+
+## 2. Retirez un composant de harnais.
+
+## 3. Exécutez la suite de tâches de benchmark.
+
+## 4. Prenez un autre instantané.
+
+## 5. Comparez — si les notes n'ont pas baissé, le composant était superflu. Si elles ont baissé,
+
    restaurez-le.

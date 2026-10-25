@@ -118,10 +118,14 @@ Une équipe maintenait une plateforme e-commerce avec environ 30 microservices. 
 Après l'introduction d'agents IA, 70% des tâches nécessitaient une intervention humaine. Presque chaque échec impliquait que l'agent violait une contrainte implicite que "tout le monde connaît mais que personne n'a écrite". C'est comme un nouvel employé à qui personne n'a dit "tu dois poster ta commande de déjeuner dans le chat du groupe" : il devine mal, se fait reprendre, mais après la remarque personne n'écrit la règle.
 
 L'équipe a mené une transformation :
-1. Création d'un `AGENTS.md` à la racine du repo avec aperçu du projet, versions du stack technique et contraintes globales dures
-2. Ajout d'un `ARCHITECTURE.md` dans chaque répertoire de microservice décrivant responsabilités, interfaces et dépendances
-3. Création d'un `CONSTRAINTS.md` centralisé avec les contraintes dures en langage explicite "MUST/MUST NOT"
-4. Ajout d'un `PROGRESS.md` dans chaque répertoire de service pour suivre l'état de travail actuel
+## 1. Création d'un `AGENTS.md` à la racine du repo avec aperçu du projet, versions du stack technique et contraintes globales dures
+
+## 2. Ajout d'un `ARCHITECTURE.md` dans chaque répertoire de microservice décrivant responsabilités, interfaces et dépendances
+
+## 3. Création d'un `CONSTRAINTS.md` centralisé avec les contraintes dures en langage explicite "MUST/MUST NOT"
+
+## 4. Ajout d'un `PROGRESS.md` dans chaque répertoire de service pour suivre l'état de travail actuel
+
 
 Après transformation, le même agent pouvait répondre à toutes les questions clés du projet au démarrage à froid, et la qualité d'achèvement des tâches s'est nettement améliorée.
 

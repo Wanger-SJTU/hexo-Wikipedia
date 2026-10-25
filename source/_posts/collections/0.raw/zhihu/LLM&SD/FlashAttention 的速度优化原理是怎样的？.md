@@ -56,9 +56,9 @@ Attention 的数据流图分析
 
 Q 的维度是[N, d]
 
-![](https://www.zhihu.com/equation?tex=k%5ET) 维度是 [d, N]
+$k^T$ 维度是 [d, N]
 
-![](https://www.zhihu.com/equation?tex=S+%3D+Q%2AK%5ET) 维度是 [N, N]
+$S = Q*K^T$ 维度是 [N, N]
 
 QK GEMM
 下面分析计算量:
@@ -145,31 +145,38 @@ SRAM 通常只有 100-200KB，而我们的 NxN FP16 矩阵是 2MB，很自然的
 
 假设有两个块的数据 , 我们的目标是计算全局 softmax。为了防止数值移除，softmax 的计算都会在指数位置减去一个最大值 m, 因此分母如下所示：
 
-![](https://www.zhihu.com/equation?tex=%5Ctext%7BSoftmax%7D%28x%29_i+%3D+%5Cfrac%7Be%5E%7Bx_i+-+m%7D%7D%7B%5Csum_%7Bj%3D1%7D%5EN+e%5E%7Bx_j+-+m%7D%7D) 
+$$\text{Softmax}(x)_i = \frac{e^{x_i - m}}{\sum_{j=1}^N e^{x_j - m}}$$
+
 
 假设数据块 1 局部最大值是 m1, 那么数据块 1 的分母就是
 
-![](https://www.zhihu.com/equation?tex=%5Cell_1+%3D+%5Csum+%7Be%5E%7Bx%5E%7B%281%29%7D+-+m1%7D%7D) 
+$$\ell_1 = \sum {e^{x^{(1)} - m1}}$$
+
 
 数据块 2 的分母同理：
 
-![](https://www.zhihu.com/equation?tex=%5Cell_2+%3D+%5Csum+%7Be%5E%7Bx%5E%7B%282%29%7D+-+m2%7D%7D) 
+$$\ell_2 = \sum {e^{x^{(2)} - m2}}$$
+
 
 问题变为 m1, m2 不同，无法合并。现在我们需要统一到一个最大值，才能进行相加，这里
 
-![](https://www.zhihu.com/equation?tex=%5Cell_%7B%5Ctext%7Bnew%7D%7D+%3D+%5Cmax%28m_1%2C+m_2%29) 
+$$\ell_{\text{new}} = \max(m_1, m_2)$$
+
 
 继续推导
 
-![](https://www.zhihu.com/equation?tex=%5Cbegin%7Baligned%7D+%5Cell_%7B%5Ctext%7Bnew%7D%7D+%26%3D+%5Csum_%7Bk+%5Cin+B_1+%5Ccup+B_2%7D+e%5E%7Bx_k+-+m_%7B%5Ctext%7Bnew%7D%7D%7D+%5C%5C+%26%3D+%5Csum_%7Bi+%5Cin+B_1%7D+e%5E%7Bx_i+-+m_%7B%5Ctext%7Bnew%7D%7D%7D+%2B+%5Csum_%7Bj+%5Cin+B_2%7D+e%5E%7Bx_j+-+m_%7B%5Ctext%7Bnew%7D%7D%7D+%5C%5C+%26%3D+%5Csum_%7Bi+%5Cin+B_1%7D+e%5E%7Bx_i+-+m_1+%2B+m_1+-+m_%7B%5Ctext%7Bnew%7D%7D%7D+%2B+%5Csum_%7Bj+%5Cin+B_2%7D+e%5E%7Bx_j+-+m_2+%2B+m_2+-+m_%7B%5Ctext%7Bnew%7D%7D%7D+%5C%5C+%26%3D+e%5E%7Bm_1+-+m_%7B%5Ctext%7Bnew%7D%7D%7D+%5Cunderbrace%7B%5Csum_%7Bi+%5Cin+B_1%7D+e%5E%7Bx_i+-+m_1%7D%7D_%7B%5Cell_1%7D+%2B+e%5E%7Bm_2+-+m_%7B%5Ctext%7Bnew%7D%7D%7D+%5Cunderbrace%7B%5Csum_%7Bj+%5Cin+B_2%7D+e%5E%7Bx_j+-+m_2%7D%7D_%7B%5Cell_2%7D+%5C%5C+%26%3D+%5Cell_1+e%5E%7Bm_1+-+m_%7B%5Ctext%7Bnew%7D%7D%7D+%2B+%5Cell_2+e%5E%7Bm_2+-+m_%7B%5Ctext%7Bnew%7D%7D%7D+%5Cend%7Baligned%7D) 
+$$\begin{aligned} \ell_{\text{new}} &= \sum_{k \in B_1 \cup B_2} e^{x_k - m_{\text{new}}} \\ &= \sum_{i \in B_1} e^{x_i - m_{\text{new}}} + \sum_{j \in B_2} e^{x_j - m_{\text{new}}} \\ &= \sum_{i \in B_1} e^{x_i - m_1 + m_1 - m_{\text{new}}} + \sum_{j \in B_2} e^{x_j - m_2 + m_2 - m_{\text{new}}} \\ &= e^{m_1 - m_{\text{new}}} \underbrace{\sum_{i \in B_1} e^{x_i - m_1}}_{\ell_1} + e^{m_2 - m_{\text{new}}} \underbrace{\sum_{j \in B_2} e^{x_j - m_2}}_{\ell_2} \\ &= \ell_1 e^{m_1 - m_{\text{new}}} + \ell_2 e^{m_2 - m_{\text{new}}} \end{aligned}$$
+
 
 通过该推导，最终我们只需要在 SRAM 中维护 3 个变量：
 
-![](https://www.zhihu.com/equation?tex=m_1+%2C+m_2%2C+m_%7Bnew%7D) 
+$$m_1 , m_2, m_{new}$$
+
 
 最终结果 O = PV
 
-![](https://www.zhihu.com/equation?tex=%5Cbegin%7Baligned%7D+O_%7B%5Ctext%7Bnew%7D%7D+%26%3D+%5Cfrac%7B1%7D%7B%5Cell_%7B%5Ctext%7Bnew%7D%7D%7D+%5Csum_%7Bj+%5Cin+B_1+%5Ccup+B_2%7D+e%5E%7Bx_j+-+m_%7B%5Ctext%7Bnew%7D%7D%7D+V_j+%5C%5C+%26%3D+%5Cfrac%7B1%7D%7B%5Cell_%7B%5Ctext%7Bnew%7D%7D%7D+%5Cleft%5B+%5Csum_%7Bj+%5Cin+B_1%7D+e%5E%7Bx_j+-+m_%7B%5Ctext%7Bnew%7D%7D%7D+V_j+%2B+%5Csum_%7Bj+%5Cin+B_2%7D+e%5E%7Bx_j+-+m_%7B%5Ctext%7Bnew%7D%7D%7D+V_j+%5Cright%5D+%5C%5C+%26%3D+%5Cfrac%7B1%7D%7B%5Cell_%7B%5Ctext%7Bnew%7D%7D%7D+%5Cleft%5B+%5Csum_%7Bj+%5Cin+B_1%7D+e%5E%7Bx_j+-+m_1+%2B+m_1+-+m_%7B%5Ctext%7Bnew%7D%7D%7D+V_j+%2B+%5Csum_%7Bj+%5Cin+B_2%7D+e%5E%7Bx_j+-+m_2+%2B+m_2+-+m_%7B%5Ctext%7Bnew%7D%7D%7D+V_j+%5Cright%5D+%5C%5C+%26%3D+%5Cfrac%7B1%7D%7B%5Cell_%7B%5Ctext%7Bnew%7D%7D%7D+%5Cleft%5B+e%5E%7Bm_1+-+m_%7B%5Ctext%7Bnew%7D%7D%7D+%5Cunderbrace%7B%5Csum_%7Bj+%5Cin+B_1%7D+e%5E%7Bx_j+-+m_1%7D+V_j%7D_%7B%5Cell_1+O_1%7D+%2B+e%5E%7Bm_2+-+m_%7B%5Ctext%7Bnew%7D%7D%7D+%5Cunderbrace%7B%5Csum_%7Bj+%5Cin+B_2%7D+e%5E%7Bx_j+-+m_2%7D+V_j%7D_%7BP%5E%7B%282%29%7D+V%5E%7B%282%29%7D%7D+%5Cright%5D+%5C%5C+%26%3D+%5Ctext%7Bdiag%7D%28%5Cell_%7B%5Ctext%7Bnew%7D%7D%29%5E%7B-1%7D+%5Cleft%28+%5Ctext%7Bdiag%7D%28%5Cell_1%29+e%5E%7Bm_1+-+m_%7B%5Ctext%7Bnew%7D%7D%7D+O_1+%2B+e%5E%7Bm_2+-+m_%7B%5Ctext%7Bnew%7D%7D%7D+P%5E%7B%282%29%7D+V%5E%7B%282%29%7D+%5Cright%29+%5Cend%7Baligned%7D) 
+$$\begin{aligned} O_{\text{new}} &= \frac{1}{\ell_{\text{new}}} \sum_{j \in B_1 \cup B_2} e^{x_j - m_{\text{new}}} V_j \\ &= \frac{1}{\ell_{\text{new}}} \left[ \sum_{j \in B_1} e^{x_j - m_{\text{new}}} V_j + \sum_{j \in B_2} e^{x_j - m_{\text{new}}} V_j \right] \\ &= \frac{1}{\ell_{\text{new}}} \left[ \sum_{j \in B_1} e^{x_j - m_1 + m_1 - m_{\text{new}}} V_j + \sum_{j \in B_2} e^{x_j - m_2 + m_2 - m_{\text{new}}} V_j \right] \\ &= \frac{1}{\ell_{\text{new}}} \left[ e^{m_1 - m_{\text{new}}} \underbrace{\sum_{j \in B_1} e^{x_j - m_1} V_j}_{\ell_1 O_1} + e^{m_2 - m_{\text{new}}} \underbrace{\sum_{j \in B_2} e^{x_j - m_2} V_j}_{P^{(2)} V^{(2)}} \right] \\ &= \text{diag}(\ell_{\text{new}})^{-1} \left( \text{diag}(\ell_1) e^{m_1 - m_{\text{new}}} O_1 + e^{m_2 - m_{\text{new}}} P^{(2)} V^{(2)} \right) \end{aligned}$$
+
 
 Flash Attention Tiling 公式推导
 下面来理解 Paper 里面的伪代码。

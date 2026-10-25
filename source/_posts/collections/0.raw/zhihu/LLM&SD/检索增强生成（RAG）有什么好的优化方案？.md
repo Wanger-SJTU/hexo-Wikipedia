@@ -29,7 +29,8 @@ RAG优化分为两个方向：RAG基础功能优化、RAG架构优化。我们�
 
 二、RAG架构优化
 
-2.1 Vector+KG RAG
+### 2.1 Vector+KG RAG
+
 经典的RAG架构中，context增强只用到了向量数据库。这种方法有一些缺点，比如无法获取长程关联知识[3]、信息密度低（尤其当LLM context window较小时不友好）。
 
 ![](https://pic1.zhimg.com/v2-aecd70f39f76eb31371f5796708e76c2_r.jpg?source=2c26e567)图2  跨chunk的关联知识向量库无法获取那此题是否可解？答案是肯定的。一个比较好的方案是增加一路与向量库平行的KG（知识图谱）上下文增强策略。其技术架构图大致如下[4]：
@@ -38,7 +39,8 @@ RAG优化分为两个方向：RAG基础功能优化、RAG架构优化。我们�
 
  LangChain官网提供了一个通过Graph对RAG应用进行增强的DevOps的例子，感兴趣的读者可以详细研究[5]。
 
-2.2 Self-RAG
+### 2.2 Self-RAG
+
 经典的RAG架构中（包括KG进行上下文增强），对召回的上下文无差别地与query进行合并，然后访问大模型输出应答。但有时召回的上下文可能与query无关或者矛盾，此时就应舍弃这个上下文，尤其当大模型上下文窗口较小时非常必要（目前4k的窗口比较常见）。
 
 那有解决办法吗？答案又是肯定的，一个较好的解决方案是Self-RAG技术。由于篇幅所限，此处介绍其推理过程，训练过程需要借助GPT4进行辅助打标，就不展开说了。详细过程可参考我对Self-RAG的总结[6]。
@@ -48,21 +50,22 @@ RAG优化分为两个方向：RAG基础功能优化、RAG架构优化。我们�
 Self-RAG的推理过程相对训练较简单，其算法内容如下：
 
 ![](https://picx.zhimg.com/v2-075507ea3604369c0309bf6b896c6fd0_r.jpg?source=2c26e567)图5  Self-RAG推理算法推理过程输入是：prompt 
-![](https://www.zhihu.com/equation?tex=x)和前置生成 
-![](https://www.zhihu.com/equation?tex=y_%7B%3Ct%7D)，输出是下一时间步的segment 
-![](https://www.zhihu.com/equation?tex=y_t)。注意这里的生成任务是segment粒度，而不是token粒度，主要是出于计算性能方面的考量。
+$x$和前置生成 
+$y_{<t}$，输出是下一时间步的segment 
+$y_t$。注意这里的生成任务是segment粒度，而不是token粒度，主要是出于计算性能方面的考量。
 
 首先由语言模型M预测Retrieve token的值。如果为No，按标准语言模型范式由
-![](https://www.zhihu.com/equation?tex=x+)生成 
-![](https://www.zhihu.com/equation?tex=y_t)，当
-![](https://www.zhihu.com/equation?tex=y)生成完成或到达
-![](https://www.zhihu.com/equation?tex=y_T)时，再预测IsUSE token的值。如果Retrieve token为Yes的话，通过Retriever检索出若干个上下文，用D表示。针对每个上下文d，先预测IsREL token的值，以此表达上下文与prompt是否相关；同时生成下一时间步的segment 
-![](https://www.zhihu.com/equation?tex=y_t%E3%80%82)然后预测上下文d对
-![](https://www.zhihu.com/equation?tex=y_t)的支持程度，接着对每个d对应的输出
-![](https://www.zhihu.com/equation?tex=y_t)进行排序挑选出最优者。最后等
-![](https://www.zhihu.com/equation?tex=y)生成结束时，再预测IsUSE的值。
+$x$生成 
+$y_t$，当
+$y$生成完成或到达
+$y_T$时，再预测IsUSE token的值。如果Retrieve token为Yes的话，通过Retriever检索出若干个上下文，用D表示。针对每个上下文d，先预测IsREL token的值，以此表达上下文与prompt是否相关；同时生成下一时间步的segment 
+$y_t。$然后预测上下文d对
+$y_t$的支持程度，接着对每个d对应的输出
+$y_t$进行排序挑选出最优者。最后等
+$y$生成结束时，再预测IsUSE的值。
 
-2.3 多向量检索器多模态RAG
+### 2.3 多向量检索器多模态RAG
+
 本小节涉及三种工作模式[7]，具体为：
 
 - 半结构化RAG（文本+表格）

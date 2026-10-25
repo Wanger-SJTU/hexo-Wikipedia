@@ -104,7 +104,8 @@ nextPts,status,err = cv2.calcOpticalFlowPyrLK(prevImg,   #上一帧图片
 - 删除未移动的兴趣点。
 - 在两次移动的点之间绘制一条线段。
 示例代码
-1. 删除静止点的光流分析：
+## 1. 删除静止点的光流分析：
+
 
 ```python
 import numpy as np

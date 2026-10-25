@@ -32,9 +32,11 @@ Every useful coding-agent harness has five subsystems:
 
 ## First Move
 
-1. Inspect what already exists: instruction files, feature/state files, verification commands, docs, package manifests.
+## 1. Inspect what already exists: instruction files, feature/state files, verification commands, docs, package manifests.
+
 2. Ask only for missing context that cannot be inferred safely: target agent, desired file name, tolerance for structure, and whether overwriting is allowed.
-3. Prefer a minimal harness first. Add memory, tool safety, multi-agent, or benchmark details only when the user's problem calls for them.
+## 3. Prefer a minimal harness first. Add memory, tool safety, multi-agent, or benchmark details only when the user's problem calls for them.
+
 
 ## Common Tasks
 

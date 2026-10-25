@@ -44,7 +44,8 @@ source_url: https://zhuanlan.zhihu.com/p/33173246
 ### 1. 为什么需要 Normalization
 
 
-1.1  独立同分布与白化
+### 1.1  独立同分布与白化
+
 
 
 机器学习界的炼丹师们最喜欢的数据有什么特点？窃以为，莫过于“独立同分布**”了，即*independent and identically distributed*，简称为* i.i.d. * 独立同分布并非所有机器学习模型的必然要求（比如 Naive Bayes 模型就建立在特征彼此独立的基础之上，而Logistic Regression 和 神经网络 则在非独立的特征数据上依然可以训练出很好的模型），但独立同分布的数据可以简化常规机器学习模型的训练、提升机器学习模型的预测能力，已经是一个共识。
@@ -59,7 +60,8 @@ source_url: https://zhuanlan.zhihu.com/p/33173246
 白化最典型的方法就是PCA，可以参考阅读 PCAWhitening。
 
 
-1.2  深度学习中的 Internal Covariate Shift
+### 1.2  深度学习中的 Internal Covariate Shift
+
 
 
 深度神经网络模型的训练为什么会很困难？其中一个重要的原因是，深度神经网络涉及到很多层的叠加，而每一层的参数更新会导致上层的输入数据分布发生变化，通过层层叠加，高层的输入分布变化会非常剧烈，这就使得高层需要不断去重新适应底层的参数更新。为了训好模型，我们需要非常谨慎地去设定学习率、初始化权重、以及尽可能细致的参数更新策略。
@@ -70,7 +72,8 @@ Google 将这一现象总结为 Internal Covariate Shift，简称 ICS. 什么是
 
 > 大家都知道在统计机器学习中的一个经典假设是“源空间（source domain）和目标空间（target domain）的数据分布（distribution）是一致的”。如果不一致，那么就出现了新的机器学习问题，如 transfer learning / domain adaptation 等。而 covariate shift 就是分布不一致假设之下的一个分支问题，它是指源空间和目标空间的条件概率是一致的，但是其边缘概率不同，即：对所有x\in \mathcal{X},P_s(Y|X=x)=P_t(Y|X=x)\\但是P_s(X)\ne P_t(X)\\大家细想便会发现，的确，对于神经网络的各层输出，由于它们经过了层内操作作用，其分布显然与各层对应的输入信号分布不同，而且差异会随着网络深度增大而增大，可是它们所能“指示”的样本标记（label）仍然是不变的，这便符合了covariate shift的定义。由于是对层间信号的分析，也即是“internal”的来由。
 
-1.3  ICS 会导致什么问题？
+### 1.3  ICS 会导致什么问题？
+
 
 
 简而言之，每个神经元的输入数据不再是“独立同分布”。
@@ -153,7 +156,8 @@ $$h=f\left(\bold{g}\cdot\frac{\bold{x}-\bold{\mu}}{\bold{\sigma}}+\bold{b}\right
 
 对照于这一公式，我们来梳理主流的四种规范化方法。
 
-3.1  Batch Normalization —— 纵向规范化
+### 3.1  Batch Normalization —— 纵向规范化
+
 
 ![](/images/collections/0.raw/zhihu/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%EF%BC%81/asset/img_062ff59bb019.jpg)
 
@@ -172,7 +176,8 @@ BN 独立地规范化每一个输入维度 x_i ，但规范化的参数是一个
 
 另外，由于 BN 需要在运行过程中统计每个 mini-batch 的一阶统计量和二阶统计量，因此不适用于 动态的网络结构 和 RNN 网络。不过，也有研究者专门提出了适用于 RNN 的 BN 使用方法，这里先不展开了。
 
-3.2  Layer Normalization —— 横向规范化
+### 3.2  Layer Normalization —— 横向规范化
+
 
 ![](/images/collections/0.raw/zhihu/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%EF%BC%81/asset/img_922598eacfc7.jpg)
 
@@ -190,7 +195,8 @@ LN 针对单个训练样本进行，不依赖于其他数据，因此可以避�
 
 但是，BN 的转换是针对单个神经元可训练的——不同神经元的输入经过再平移和再缩放后分布在不同的区间，而 LN 对于一整层的神经元训练得到同一个转换——所有的输入都在同一个区间范围内。如果不同输入特征不属于相似的类别（比如颜色和大小），那么 LN 的处理可能会降低模型的表达能力。
 
-3.3  Weight Normalization —— 参数规范化
+### 3.3  Weight Normalization —— 参数规范化
+
 
 
 $$前面我们讲的模型框架 h=f\left(\bold{g}\cdot\frac{\bold{x}-\bold{\mu}}{\bold{\sigma}}+\bold{b}\right)\\ 中，经过规范化之后的\bold{y} 作为输入送到下一个神经元，应用以 \bold{w} 为参数的f_\bold{w}(\cdot) 函数定义的变换。最普遍的变换是线性变换，即 f_\bold{w}(\bold{x})=\bold{w}\cdot\bold{x}. $$
@@ -231,7 +237,8 @@ $$h=f\left(\bold{g}\cdot\frac{\bold{x}-\bold{\mu}}{\bold{\sigma}}+\bold{b}\right
 
 WN 的规范化不直接使用输入数据的统计量，因此避免了 BN 过于依赖 mini-batch 的不足，以及 LN 每层唯一转换器的限制，同时也可以用于动态网络结构。
 
-3.4 Cosine Normalization —— 余弦规范化
+### 3.4 Cosine Normalization —— 余弦规范化
+
 
 
 Normalization 还能怎么做？
@@ -274,7 +281,8 @@ CN 通过用余弦计算代替内积计算实现了规范化，但成也萧何�
 
 ![](/images/collections/0.raw/zhihu/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%EF%BC%81/asset/img_7b9863348e74.jpg)
 
-4.1 Normalization 的权重伸缩不变性
+### 4.1 Normalization 的权重伸缩不变性
+
 
 
 ```text
@@ -305,7 +313,8 @@ $$由于 \frac{\partial Norm(\bold{W'x})}{\partial \bold{W'}} =\frac{1}{ \lambda
 因此，下层的权重值越大，其梯度就越小。这样，参数的变化就越稳定，相当于实现了参数正则化的效果，避免参数的大幅震荡，提高网络的泛化性能。
 
 
-4.2 Normalization 的数据伸缩不变性
+### 4.2 Normalization 的数据伸缩不变性
+
 
 
 ```text

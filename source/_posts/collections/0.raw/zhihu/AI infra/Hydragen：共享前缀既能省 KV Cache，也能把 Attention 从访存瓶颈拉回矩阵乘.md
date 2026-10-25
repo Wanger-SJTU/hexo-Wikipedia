@@ -28,14 +28,16 @@ Hydragen 的核心设计是把 attention 拆成两部分：共享 prefix 上的 
 
 正文
 
-1. 问题：共享前缀让 KV 重复，也让内存读取重复
+## 1. 问题：共享前缀让 KV 重复，也让内存读取重复
+
 标准自回归解码每轮只为每个 sequence 生成一个新 token。对 Transformer attention 来说，这意味着 query 很少，K/V 很长。batch decoding 能让 MLP、projection 等模块形成更大的矩阵乘，但 attention 仍然常常是每个 sequence 独立读取自己的 KV cache，做 matrix-vector product。
 
 如果一个 batch 中 1024 个 sequence 共享同一段 2K 或 16K token 的前缀，朴素实现会为每个 sequence 读取一遍前缀 K/V。PagedAttention 能避免前缀 KV 的重复存储，提升显存利用率和 cache hit，但 attention kernel 在计算时仍要反复访问前缀。换句话说，存储层面共享了，计算层面还没有真正共享。
 
 这类场景在今天的 LLM 服务里很多。多用户聊天有相同 policy/system prompt；RAG 或长文档 QA 会让多个问题共享文档；self-consistency、best-of-n、代码生成会对同一 prompt 采样许多候选。batch 越大、共享前缀越长，attention 访存浪费越明显。
 
-2. 设计机制：Attention Decomposition + Inter-Sequence Batching
+## 2. 设计机制：Attention Decomposition + Inter-Sequence Batching
+
 Hydragen 的第一步是 attention decomposition。对每个 sequence，把 K/V 分成共享 prefix 和独有 suffix 两段，分别计算 prefix attention 和 suffix attention。难点在 softmax：完整 attention 的归一化分母跨 prefix 和 suffix，全序列 softmax 不能简单把两个输出相加。
 
 论文利用 blocked softmax 的思路。分别计算 prefix 和 suffix attention 时，同时保存各自 attention score 的 log-sum-exp。合并时用两个分区的 LSE 重建完整 softmax denominator，再对两个分区的输出做重新缩放，得到和完整 attention 一致的结果。因此 Hydragen 是 exact implementation，没有引入近似 attention。
@@ -44,7 +46,8 @@ Hydragen 的第一步是 attention decomposition。对每个 sequence，把 K/V 
 
 suffix attention 无法这样处理，因为每个 sequence 的 suffix 不同。Hydragen 的收益主要来自共享部分，所以共享前缀越长、batch 越大、独有 suffix 越短，收益越明显。若 suffix 很长，后续生成 token 越来越多，suffix KV 读取会逐渐成为主要成本，Hydragen 的加速也会下降。
 
-3. 实现细节：不用自定义 CUDA，但要知道哪里共享
+## 3. 实现细节：不用自定义 CUDA，但要知道哪里共享
+
 论文实现面向 Llama 系列模型。作者强调 proof-of-concept 没有写自定义 CUDA，而是用 PyTorch 加 fast attention primitive：prefix attention 使用 flash-attn 2.3.6，suffix attention 使用 xformers 的 Triton kernel。非层级输入中，作者还写了一个 Triton kernel 用于合并 softmax denominator。
 
 这个实现选择很有意思。PagedAttention 这类系统需要 bespoke GPU kernel 来管理 paged KV cache，Hydragen 则把优化放在 attention 分解和 batching 形式上。它更像一种 kernel 调用编排和数学重写，对硬件迁移更友好。论文也提到，TPU 这类有高速矩阵乘单元的平台也可能受益。
@@ -57,7 +60,8 @@ Hydragen 还支持树形共享。比如竞争性编程中，一批请求共享 f
 
 这层 metadata 会影响缓存系统。传统 prefix cache 常用 hash 匹配一段 token；Hydragen 需要知道共享 prefix 在 batch 内的拓扑，以及每个 sequence 当前 decode 位置。若再叠加 LoRA adapter、不同 sampling 参数、不同租户权限，合批条件会更复杂。两个请求 token 前缀相同，但 adapter 不同或安全上下文不同，也不能简单放进同一个 attention batch。
 
-4. 实验结果：长前缀、大 batch 场景收益最大
+## 4. 实验结果：长前缀、大 batch 场景收益最大
+
 端到端实验使用 CodeLlama-13B，在 8 张 A100-40GB 上做 tensor parallel。作者比较 FlashAttention、vLLM、去掉 detokenization 的 vLLM，以及 no-attention 上界。prefix 固定 2048、每个 completion 生成 128 token 时，小 batch 下各方法接近；batch 增大后，Hydragen 开始明显超过 baseline，因为 prefix attention 成本被摊薄。
 
 另一个实验固定 batch size 为 1024，增加共享 prefix 长度。vLLM 从 1024 token 前缀时接近 5K tokens/s，掉到 16256 token 前缀时低于 500 tokens/s；Hydragen 在同样前缀增长下吞吐下降很小，并且所有测量点都在 no-attention 上界的 70% 以内。论文摘要总结为：1K 到 16K prefix 时，Hydragen 吞吐下降小于 15%，baseline 下降超过 90%。
@@ -66,7 +70,8 @@ Hydragen 还支持树形共享。比如竞争性编程中，一批请求共享 f
 
 树形共享实验用 CodeLlama-7B 在 APPS 的 120 个编程题上采样，每题 128 个 candidate program。单级 Hydragen 只共享 few-shot prompt；两级 Hydragen 还共享每道题的问题描述。在相同 batch size 下，两级共享降低 18% 评估时间；因为减少冗余存储后可以增大 batch，最终额外降低 55% 推理时间。
 
-5. 边界与代价
+## 5. 边界与代价
+
 Hydragen 适合 attention 成为主要瓶颈的场景。小 batch、短上下文、短 prefix、模型参数读取占主导时，收益有限。使用 multi-query attention 或 grouped-query attention 的模型 KV cache 已经更小，Hydragen 仍可能有收益，但幅度取决于 batch size、prefix/suffix 比例和硬件 compute/memory bandwidth 比。
 
 Hydragen 当前只是 attention fast path。它不处理请求 admission、continuous batching、KV eviction、故障恢复、prefix cache 生命周期、多租户隔离，也不自动发现共享结构。它更适合成为 vLLM、TensorRT-LLM、SGLang 或内部推理框架里的一个加速模块。

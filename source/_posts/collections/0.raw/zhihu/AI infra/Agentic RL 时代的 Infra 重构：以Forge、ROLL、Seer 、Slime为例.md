@@ -23,24 +23,29 @@ source_url: https://zhuanlan.zhihu.com/p/2022786148087464077
 
 也正因为如此，Agentic RL 面对的问题不再只是长序列训练，而是整套系统问题：Agent 脚手架怎么接入，环境如何管理，多轮交互里的长尾 rollout 怎么调度，训练和部署怎么保持一致，奖励与测试如何避免被”投机取巧”。最近几家代表性的系统——MiniMax 的 Forge、阿里的 ROLL 、Moonshot 的 Seer、智谱的slime——虽然角度不同，但其实都在回答同一个问题：当我们开始训练”会行动”的模型时，RL 基础设施应该如何重构？
 
-0. 分析框架：Agentic RL Infra 在优化什么？
+## 0. 分析框架：Agentic RL Infra 在优化什么？
+
 Forge 博客在开篇给出了一个非常适合作为总纲的形式化目标。它把 Agent RL 系统抽象成”最大化有效训练收益”：
 
-![](https://www.zhihu.com/equation?tex=+%5Cmax_%7B%5Ctheta%7D+J%28%5Ctheta%29%3D%5Ctext%7BThroughput%7D%28%5Cmathcal%7BA%7D%29+%5Ctimes+%5Ctext%7BSample+Efficiency%7D%28%5Cmathcal%7BA%7D%29+)
+$$\max_{\theta} J(\theta)=\text{Throughput}(\mathcal{A}) \times \text{Sample Efficiency}(\mathcal{A})$$
+
 
 同时满足：
 
 系统能支持任意 Agent：
 
-![](https://www.zhihu.com/equation?tex=+%5Cforall+%5Cmathcal%7BA%7D%5Cin%5COmega_%7Bagent%7D+)
+$$\forall \mathcal{A}\in\Omega_{agent}$$
+
 
 更新方差受控：
 
-![](https://www.zhihu.com/equation?tex=+%5Cmathbb%7BE%7D%5B%5Ctext%7BUpdate+Variance%7D%5D%3C%5Cdelta+)
+$$\mathbb{E}[\text{Update Variance}]<\delta$$
+
 
 训练最终收敛：
 
-![](https://www.zhihu.com/equation?tex=+%5Cmathbb%7BE%7D%5B%7C%7CJ%5E%7B%28T%29%7D-J%5E%2A%7C%7C%5D%3C%5Cepsilon+)
+$$\mathbb{E}[||J^{(T)}-J^*||]<\epsilon$$
+
 
 Forge 原文里对这个公式后面的解释其实非常清楚。它指出，Throughput 指的是每秒处理的原始 token 数量，主要受 RL 系统中四部分控制：Rollout、Training、Data Processing 和 I/O。而 Sample Efficiency 指的是每个样本带来的平均性能提升，它取决于数据分布、数据质量、算法效率以及 off-policy 程度。稳定性和收敛性则需要通过训练过程中的监控指标来判断。
 
@@ -49,10 +54,11 @@ Forge 原文里对这个公式后面的解释其实非常清楚。它指出，Th
 - 为什么大家都在拼 rollout 吞吐？因为 rollout 往往是 Throughput 的主要瓶颈。
 - 为什么异步系统一边提速一边又让人担心？因为它可能提升吞吐，但损害 sample efficiency。
 - 为什么要强调任意 Agent、黑盒 Agent、上下文管理和工具协议？因为 
-![](https://www.zhihu.com/equation?tex=%5COmega_%7Bagent%7D) 的外延本身在不断扩大。
+$\Omega_{agent}$ 的外延本身在不断扩大。
 - 为什么同样是加速，有些优化会伤训练稳定性，有些不会？因为系统优化最终必须受 stability 和 convergence 约束。也就是说，今天讨论 Agentic RL Infra，与其说是在讨论某种单独的”工程技巧”，不如说是在不断处理这个目标函数里的几组张力：一边想把系统跑得更快，一边又不能把训练分布和策略更新搞坏；一边想接入更真实、更复杂的 Agent，一边又必须控制系统复杂度和稳定性。
 
-1. 如何让训练系统真正接住一个 Agent？
+## 1. 如何让训练系统真正接住一个 Agent？
+
 如果只从算法层面看，Agentic RL 相比传统 RLVR 的变化，似乎只是”轨迹更长、交互更多、奖励更稀疏”。但从基础设施角度看，真正第一个撞上的问题反而更底层：训练系统究竟该怎样接住一个真实的 Agent？
 
 Forge 在这里总结得很直接，当前常见的 RL 框架和范式对 Agent 的复杂度限制很大，主要体现在两个方面。
@@ -69,7 +75,8 @@ Forge 在这里总结得很直接，当前常见的 RL 框架和范式对 Agent 
 
 所以这类系统最终都走向了一个共同方向：不要再把 Agent 塞在 RL Framework 内部，而是把它独立出来，单独作为一层系统抽象来看待。
 
-1.1 Agent 独立之后，到底改变了什么？
+### 1.1 Agent 独立之后，到底改变了什么？
+
 Agent 独立出来之后，最大的区别是：训练系统不再试图”自己扮演 Agent”，而只是把 Agent 当成一个会持续发请求、收反馈、产出 trajectory 的外部系统。
 
 在没独立之前，RL 框架通常要自己做很多 Agent 该做的事，比如拼上下文、维护多轮历史、把工具调用组织成下一轮输入、决定哪些 observation 保留、哪些丢掉。这样一来，训练框架不仅负责 rollout 和 update，还得负责”模拟 Agent 的运行逻辑”。只要真实 Agent 的行为变了，训练框架这边就得跟着改。
@@ -87,7 +94,8 @@ Agent 独立出来之后，最大的区别是：训练系统不再试图”自�
 - “如何管理上下文”属于 Agent；
 - “如何根据 Agent 跑出来的数据训练模型”属于 RL 系统。这也是 Agent 独立之后最本质的变化：以前是 RL 框架里嵌一个”伪 Agent”，现在是一个真实 Agent 在外面跑，RL 系统在后面接住它。
 
-1.2 Forge：真正把 Agent 从框架内部逻辑变成系统外部对象
+### 1.2 Forge：真正把 Agent 从框架内部逻辑变成系统外部对象
+
 
 ![](https://pic3.zhimg.com/v2-723fc979cffe138c5fdd1e821642f5d0_r.jpg)
 
@@ -138,7 +146,8 @@ Forge 的核心设计并不复杂，但非常有代表性。为了实现真正�
 
 总而言之，Forge 真正做的，不是把 RL 框架”加上 Agent 支持”，而是承认 Agent 本来就是一个独立世界，然后在 RL 系统和 Agent 世界之间建立一条可扩展的桥。
 
-1.3 ROLL ：在 CLI-Native Mode 下，把 Agent、环境和训练真正拆开
+### 1.3 ROLL ：在 CLI-Native Mode 下，把 Agent、环境和训练真正拆开
+
 ROLL 工作的核心，也是在做分层：训练框架不应该再自己承担 Agent 的内部逻辑，而是要把 Agent、环境和训练系统拆成相对独立的部分，让它们通过明确的接口协同工作。不过这里要特别强调，这种”训练系统不再自己重建 Agent，而是直接接入真实 Agent runtime”的做法，主要对应的是它们的 CLI-Native Mode。
 
 ROLL 的 ALE （Agentic Learning Ecosystem）的整体设计由三部分组成：
@@ -160,7 +169,8 @@ iFlow CLI 则对应 Agent runtime。它负责组织上下文、工具、检索�
 
 报告对这种模式的总结很清楚：这种原生模式实现了一种干净的职责分离。ROLL 被简化为生成引擎，而 iFlow CLI 则保留对上下文管理的完整控制。这不仅消除了训练框架中的实现复杂度，也保证了训练和部署之间的完全一致性。
 
-1.4 slime ：把 rollout 做成服务层，并用 TITO 保证训练对齐
+### 1.4 slime ：把 rollout 做成服务层，并用 TITO 保证训练对齐
+
 如果说 Forge 强调的是把 Agent 从 RL framework 内部真正独立出来，ROLL 强调的是在 CLI-Native Mode 下把 Agent runtime、环境执行和训练系统拆开，那么 GLM-5 所基于的 slime，则更像是从服务化 rollout 的角度，把这种解耦推进到接口层。
 
 slime 的一个核心特点，是把 rollout 做成可以通过 HTTP API 调用的服务层。这样一来，外部 agent framework 和环境不需要嵌进 trainer 内部，而是通过 server-based rollout 直接接入统一的 post-training infrastructure。GLM-5报告里也明确提到，slime 支持 highly customizable rollouts，允许不同任务自定义多轮交互、工具调用、环境反馈处理和 verifier-guided branching，而不需要改底层训练框架本身。
@@ -169,10 +179,12 @@ slime 的一个核心特点，是把 rollout 做成可以通过 HTTP API 调用�
 
 slime 这里还有一个特别关键的点，是它对 TITO（Token-In-Token-Out） 的强调。异步、多轮、流式的 agent rollout 很容易在 text round-trip 里引入 re-tokenization mismatch：比如空白符、特殊 token、截断边界或 action 对齐发生偏差。GLM-5 的做法是引入 TITO Gateway，直接记录 rollout 过程中真实生成的 token IDs 和 metadata，训练侧直接消费这份 token-level 轨迹，而不是事后再从文本重建。这样做的核心价值，不只是省掉一次 tokenize，而是保证"被采样的动作"和"被优化的动作"严格对应。
 
-2. 长尾 rollout 怎么调度
+## 2. 长尾 rollout 怎么调度
+
 从目前公开的几类工作来看，Agentic RL Infra 最核心的工程矛盾几乎都集中在 rollout 这一段。而要理解 Forge 的 Windowed FIFO、ROLL和slime 的异步训练pipeline以及 Seer 的同步优化，最好先从一个更基本的问题开始：为什么 agentic RL 几乎天然会走向异步？
 
-2.1 Agentic RL 为何天然走向异步？
+### 2.1 Agentic RL 为何天然走向异步？
+
 在传统 RLVR 中，虽然 rollout 也可能很长，但任务结构通常比较规整：一轮生成完成，reward 给出，然后进入训练。整个流程虽然昂贵，但至少形态相对统一。
 
 但在 agentic RL 中，rollout 的时长方差会被明显放大。原因有：
@@ -185,7 +197,8 @@ slime 这里还有一个特别关键的点，是它对 TITO（Token-In-Token-Out
 
 严格同步会把这些尾部代价全部显式暴露出来。只要这一轮还剩一个极端慢 episode 没跑完，训练就必须等。所以对工业系统来说，一个非常自然的反应就是：既然长尾不可避免，那就不要让训练阻塞在 rollout 上，而是把 rollout 与 training 解耦，让它们异步推进。这也是为什么今天很多 agentic RL 系统都天然带有明显的异步色彩。
 
-2.2 异步的代价：off-policy、分布偏移与训练稳定性
+### 2.2 异步的代价：off-policy、分布偏移与训练稳定性
+
 异步很自然，但它带来的问题也同样严重。对 agentic RL 来说，真正的难点并不是简单地在”同步”与”异步”之间二选一，而是：一旦 rollout 和 training 解耦，系统就必须同时处理 off-policy、样本分布偏移和训练稳定性这几类问题。
 
 最保守的一端是严格同步 FIFO。也就是 rollout 请求按进入系统的顺序排队，训练阶段也严格按这个顺序消费。哪怕后面的样本已经完成了，只要前面的样本还没结束，训练器就不能跳过去先拿后面的数据。它的优点是数据最新鲜、on-policy 性更强、分布也更稳定；但缺点同样明显：只要前面卡住一个极端慢的长尾样本，后面一串已经完成的数据都得等着，形成典型的队头阻塞，系统吞吐会被严重拖慢，GPU 也容易空转。
@@ -200,11 +213,13 @@ slime 这里还有一个特别关键的点，是它对 TITO（Token-In-Token-Out
 
 所以从 infra 角度看，agentic RL 真正要解决的，并不是”同步还是异步”的二选一，而是如何在保证高吞吐的同时，把样本新鲜度、分布偏移和长尾影响控制在一个可接受范围内。Forge 的 Windowed FIFO，就是在这个背景下提出的：它既不接受严格 FIFO 的极端阻塞，也不接受纯贪心异步带来的分布失真，而是试图在两者之间找到一个更可控的中间态。
 
-2.3 Forge 的 Windowed FIFO：在两个极端之间找中间态
+### 2.3 Forge 的 Windowed FIFO：在两个极端之间找中间态
+
 Windowed FIFO 可以看成是严格 FIFO 和纯贪心之间的中间态。
 
 它的基本设定是：假设当前生成队列的头部是 H，训练调度器只能看到一个大小为 W 的窗口：
-![](https://www.zhihu.com/equation?tex=%5BH%2C+H%2BW%5D)
+$$[H, H+W]$$
+
 
 也就是说，即使总并发很大，训练器也只能在这个局部窗口里挑已经完成的轨迹。
 
@@ -215,7 +230,7 @@ Windowed FIFO 可以看成是严格 FIFO 和纯贪心之间的中间态。
 第二，窗口内局部贪婪。在窗口内部，谁先完成谁先被消费，这样可以避免单纯 FIFO 下的队头阻塞。
 
 第三，窗口外严格阻塞。就算 
-![](https://www.zhihu.com/equation?tex=H%2BW%2Bk) 位置上的任务已经完成，也不能越过窗口提前进入训练。
+$H+W+k$ 位置上的任务已经完成，也不能越过窗口提前进入训练。
 
 第四，窗口只有在头部任务被消费后才前移，也就是说，旧数据不能被无限跳过。
 
@@ -225,7 +240,8 @@ Windowed FIFO 可以看成是严格 FIFO 和纯贪心之间的中间态。
 - 它避免了完全异步的分布塌缩，因为窗口外数据不能乱取，所以系统不会一直优先训练那些”最快完成”的样本。
 - 它把 off-policyness 控制在一个局部范围内，数据虽然不是严格 FIFO，但也不会老到失控。从系统角度看，Windowed FIFO 本质上不是一个普通 scheduler，而是一个样本分布调节器。它的重点不是”谁快谁慢”，而是”哪些数据可以被允许提前训练，哪些不能”。
 
-2.4 ROLL：把整条 pipeline 当作异步分布式系统重构
+### 2.4 ROLL：把整条 pipeline 当作异步分布式系统重构
+
 和 Forge 相比，ROLL 的路线更偏工程化，也更彻底地拥抱异步。
 
 它的核心做法，不只是简单地把 rollout 和 training 分开，而是把整个 agentic RL 闭环拆成可以独立推进、相互流水的几个阶段。论文和技术报告里，ROLL 对整个训练流程的拆分是比较完整的：在逻辑上，一次 RL iteration 仍然包含 rollout、reward computation、experience construction，以及随后的 loss 计算、反向传播和参数更新；但在系统实现上，这几个阶段不再被强行串成一个严格同步的大批次流程。
@@ -255,19 +271,21 @@ ROLL 还进一步引入了 train-rollout multiplexing。ROLL团队注意到，�
 - asynchronous ratio 控制 staleness；
 - train-rollout multiplexing 的动态资源分配。从这个角度看，ROLL 不是只在某个局部环节做异步，而是把整个 agentic RL pipeline 当成一个异步分布式系统来重构。这也是为什么它非常适合长尾环境、高并发多环境 rollout 和工业规模训练。当然，这样做的代价就是它必须额外解决 stale sample、数据过滤、mask / reweight、policy mismatch，以及故障恢复等一系列问题。ROLL 选择先把系统跑起来，再用更多控制逻辑兜住稳定性。
 
-2.5 slime：在 fully asynchronous setting 下直接控制 off-policy 误差
+### 2.5 slime：在 fully asynchronous setting 下直接控制 off-policy 误差
+
 GLM-5 在 slime 上采用的是一种更彻底的 fully asynchronous training paradigm：inference engine 持续生成 trajectory，training engine 按样本到达节奏异步更新参数，rollout 侧权重再周期性与 training 侧同步。对这一类系统来说，最棘手的问题不是"要不要异步"，而是当一条长轨迹本身都可能跨越多个 policy version 时，off-policy 误差到底怎么控。
 
 GLM-5 的处理方式很有代表性。它没有尝试为每个 token 精确恢复对应的历史旧策略检查点，而是直接复用 rollout 阶段记录下来的 log-probability 作为行为策略代理，再与当前训练策略计算 importance ratio。也就是说，它放弃了显式维护完整的 πθoldπθold​​ 历史族，转而采用一种更工程化的近似。
 
 在这个基础上，GLM-5 使用了 direct double-sided importance clipping。具体来说，只保留 ratio 落在
-![](https://www.zhihu.com/equation?tex=%5B1-%5Cepsilon_l%2C%5C%3B1%2B%5Cepsilon_h%5D)范围内的 token；偏离过大的 token 直接 mask 掉，不参与梯度计算。这样做的核心目的，是把异步训练里最危险的那部分过度失配样本直接切掉，而不是强行让所有旧样本都进入优化。
+$[1-\epsilon_l,\;1+\epsilon_h]$范围内的 token；偏离过大的 token 直接 mask 掉，不参与梯度计算。这样做的核心目的，是把异步训练里最危险的那部分过度失配样本直接切掉，而不是强行让所有旧样本都进入优化。
 
 除了 token 级 clipping，GLM-5 还进一步在 sample 级别控制 staleness。系统会记录一条 response 在 rollout 时经历过的模型版本序列，如果其最早使用的版本与当前训练版本之间差距超过阈值，就直接将该样本丢弃。换句话说，它同时在 token 层和 sample 层各设了一道闸：前者限制局部策略漂移，后者限制整体样本陈旧度。
 
 GLM-5报告里还提到，coding-agent 场景下还有一类会明显破坏异步训练稳定性的数据：环境本身崩溃导致的失败样本。这类失败并不反映模型能力，因此 GLM-5 会记录 failure reason，并把环境 collapse 样本从训练中剔除；对于 group-based sampling，如果剩余有效样本过少，则直接丢掉整组。这样做本质上是在防止系统把"环境异常"误学成"策略负样本"。
 
-2.6 Seer：坚持同步，但把 rollout 本身做薄
+### 2.6 Seer：坚持同步，但把 rollout 本身做薄
+
 Seer 的意义恰恰在于它代表了另一种答案：
 
 如果我不想让异步带来更多 off-policy 偏移，而是尽量坚持同步 RL，那还能怎样提速？
@@ -305,10 +323,12 @@ Seer 的第三个优化点是把推理加速也做成 group-aware 的。传统 s
 
 这三点合在一起，构成了 Seer 的整体思路：它并没有像 ROLL 那样优先通过异步化去绕开长尾，而是在同步框架内部，把 rollout 单元拆细、把调度器做得更有上下文感知、再把 speculative decoding 也改造成利用 group 结构的版本。换句话说，Seer 代表的是另一条路线：不是先接受分布偏移再想办法兜住，而是尽可能坚持同步前提下，把长尾本身做薄、把阻塞本身拆散。
 
-3. 如何消除前缀冗余与重复计算？
+## 3. 如何消除前缀冗余与重复计算？
+
 Agentic RL 里一个特别昂贵、但又特别容易被忽视的问题是：同一条轨迹、多轮请求、group responses 之间存在大量共享前缀，但系统往往把它们当成独立样本处理。这会带来巨大的重复计算。
 
-3.1 Forge 的 Prefix Tree Merging
+### 3.1 Forge 的 Prefix Tree Merging
+
 Agentic RL 训练里，一个很容易被忽视的浪费来源是：不同 completions 往往共享很长的前缀。如果训练时仍然把它们当成彼此独立的序列处理，那么这些公共前缀就会在不同样本里被反复做前后向，造成大量重复计算。
 
 Forge 的 Prefix Tree Merging 做的就是这一步额外的复用：先把共享前缀的 completions 组织成一棵前缀树，再按树结构执行训练计算。这样一来，公共前缀部分只需要算一次。
@@ -317,7 +337,8 @@ Forge 的 Prefix Tree Merging 做的就是这一步额外的复用：先把共�
 
 在 Forge 讨论的 agent 场景里，这个收益尤其明显。因为真正大量重合的，不是同一个 group 内不同 trajectory 之间的前缀，而是同一个 trajectory 下多个 completions 之间的前缀。在多轮 agent 请求、长历史上下文、大量工具调用 的设置下，这部分共享前缀可能非常长。经过 tree merge 之后，原本会被反复重算的大段历史只保留一份计算，因此训练时的有效 token 计算量会显著下降，带来很高的实测加速。
 
-3.2 这类方法的本质：从序列批处理到树结构批处理
+### 3.2 这类方法的本质：从序列批处理到树结构批处理
+
 如果把 Forge 的 Prefix Tree Merging，以及 AReaL 提出的 Dynamic Tree Attention 再抽象一层，它们其实都不是在改某个具体的 RL 目标，而是在做一件更基础的事：把原本按多条独立序列组织的训练 batch，改成按共享前缀组织的树结构 batch。
 
 传统训练里，样本通常都是一条条线性序列，系统默认它们彼此独立，所以即使几条样本前面完全一样，也还是会分别计算。而在 agentic RL 里，这种表示方式并不总是合适。因为很多 rollout 天然就是“同一段历史，后面做几种不同尝试”，也就是先共享前缀，再向不同方向分叉。
@@ -330,7 +351,8 @@ Forge 的 Prefix Tree Merging 做的就是这一步额外的复用：先把共�
 
 这一点在 agentic RL 里尤其重要，因为“同一历史 + 不同后续尝试”的模式本来就非常常见。无论是同一个 trajectory 下采多个 completions，还是多轮交互后对下一步动作做不同探索，本质上都很适合这种树结构表示。
 
-3.3 推理侧的对应演化：全局 KV Cache Pool
+### 3.3 推理侧的对应演化：全局 KV Cache Pool
+
 除了训练端的计算图复用，推理阶段的共享前缀问题也越来越要求 infra 做更高层的 cache 管理。Forge 与 Seer 都在不同程度上强调了全局 KV cache pool 的必要性。
 
 agentic RL 比普通 RL更需要KV cache pool 是因为这里的请求往往具备以下特征：
@@ -351,7 +373,8 @@ agentic RL 比普通 RL更需要KV cache pool 是因为这里的请求往往具�
 - Seer：global KVCache pool，支持 divided rollout 的 chunk 迁移
 - slime： 通过 DP-aware routing 保持 rollout 级别的 prefix locality，减少多轮请求在不同 DP rank 间切换导致的 KV miss 和重复 prefill。这说明 KV cache 正在从推理引擎内部细节上升为agentic RL 基础设施层的共享资源。
 
-4. Rollout 推理怎么加速？
+## 4. Rollout 推理怎么加速？
+
 在 agentic RL 里，rollout 的主成本仍然大量集中在推理阶段，因此推理加速不是锦上添花，而是基础需求。和普通 serving 相比，这里的请求通常更长、轮次更多、长尾更重、上下文更大，因此单次 decode 的代价和尾部拖慢效应都更明显。更关键的是，RL 训练过程中 policy 本身还在持续变化，这会让很多在静态 serving 中成立的推理优化假设，在这里迅速失效。
 
 先从两类最常见的推理加速思路说起。第一类是传统 speculative decoding，也就是典型的 draft-target framework。它的基本形式是引入一个参数规模更小、推理成本更低的 draft model，先在当前前缀条件下自回归地生成一段 candidate continuation；然后再由参数更大的 target model 对这段候选 continuation 进行并行校验，并尽可能接受其中最长的可接受前缀。若 acceptance length 足够长，就相当于用一次 target model 的验证前向，替代原本多个逐 token 的串行 decode step，从而降低大模型在 decoding phase 的平均成本。这个 draft model 的来源通常有几种：要么直接使用一个更小的预训练模型，要么通过distillation 的方式，让小模型去拟合 target model 的 next-token distribution，从而提高 acceptance rate。
@@ -360,13 +383,15 @@ agentic RL 比普通 RL更需要KV cache pool 是因为这里的请求往往具�
 
 但无论是传统 speculative decoding 还是 MTP，在 agentic RL 里都会遇到一类共同的缺点。最核心的问题是：它们默认 target model 是相对稳定的。静态 serving 中，这个假设成立，所以只要把 draft model 或 MTP head 训好，它就能在较长时间里维持较高接受率；但在 RL 中，target policy 是持续更新的，之前还和 target 很接近的draft model，今天可能就已经明显不适配。除此之外，这些方法还会带来额外计算与显存开销，如果接受率下降，就可能出现”draft成本还在，但收益已经不明显”的情况。
 
-4.1 Forge：用持续训练的 MTP Head 跟上策略更新
+### 4.1 Forge：用持续训练的 MTP Head 跟上策略更新
+
 Forge 采用了 MTP 来加速 rollout 推理，并且做法不是简单挂一个静态 draft head，而是：
 
 - 在 RL 训练过程中持续训练 detached MTP head；
 - 用 Top-K KL Loss 保持它与当前 RL policy 对齐。更具体地说，Forge 做的是把 MTP 当成训练系统内部的一个持续协同模块，而不是一次性训练好的推理插件。Forge 采用持续训练的方式，让 MTP head 始终随着主策略的变化而更新；同时通过 Top-K KL 这样的对齐损失，把它的输出分布约束在当前 RL policy 的局部高概率区域附近，避免它逐渐偏向已经过时的旧分布。
 
-4.2 Seer：利用组内相似性做无 draft 模型的推测解码
+### 4.2 Seer：利用组内相似性做无 draft 模型的推测解码
+
 如前文所述，Seer 对传统 speculative decoding 的批评也很到位。它指出，经典的 draft-model-based speculation 在 RL 中有两个核心问题：第一，target model 在训练过程中持续更新，draft model 很快会与当前 policy distribution 发生漂移，acceptance rate 难以长期维持；第二，draft model 自身引入了额外的 compute overhead 和 memory footprint，在大 batch rollout 场景下，这部分额外成本并不低，甚至可能抵消 speculation 本身带来的收益。
 
 因此，Seer 没有继续沿用额外训练一个 draft model 的路线，而是转向了一种更贴合 RL workload 的 model-free speculation 思路：直接利用 GRPO 同组 responses 之间的 local pattern similarity 来构造 draft token。
@@ -389,21 +414,24 @@ Seer 的关键设计之一是 DGDS（Distributed Grouped Draft Server）。它�
 
 当然，这条路线也不是完全通用的。它的收益高度依赖 group 内部确实存在足够强的 local pattern similarity，因此更适合像 GRPO 这样天然按 prompt 分组采样的 setting。换句话说，它不是一个对所有 inference workload 都普适的 speculative method，而是一种高度 RL-aware、专门利用 rollout workload 内部结构特征的推理加速方案。
 
-4.3 slime：用 FP8 和 PD 解耦优化 rollout 推理
+### 4.3 slime：用 FP8 和 PD 解耦优化 rollout 推理
+
 和前面 Forge、Seer 主要从 decode 机制本身入手不同，slime 在 rollout acceleration 上更强调 serving 栈层面的优化。slime 支持 MTP，并使用 FP8 rollout inference 来进一步降低 rollout 路径上的 generation 成本；除此之外，更值得展开的是它对 Prefill-Decode Disaggregation（PD 解耦） 的使用。
 
 PD 解耦的核心做法，是把 prefill 和 decode 放到不同资源上执行，而不是继续混跑在同一套 serving 资源上。对多轮 agentic RL 来说，这一点尤其重要，因为 rollout 会不断把历史对话、工具调用记录、代码上下文和中间结果带回下一轮请求，导致长前缀 prefill 反复出现，而且往往比普通单轮 serving 更重。如果这些重 prefill 和正在进行中的 decode 竞争同一批资源，那么 decode 很容易被打断，长轨迹的推进会变得不连续，尾部样本也更容易被进一步拉长。
 
 把两者拆开之后，prefill 和 decode 的执行路径就被物理隔离了。这样一来，长前缀请求不会再频繁挤占 decode 路径，正在进行中的 rollout 能以更稳定的节奏向前推进；而 prefill 侧则可以按照自己的负载特征单独调度，不必和 decode 共用一套资源池。对于 agentic RL 这种长上下文、多轮交互、单条轨迹生命周期很长的 workload，这种拆分带来的收益通常不是平均 token/s 的小幅改善，而是长轨迹 completion time 的更稳定下降。
 
-5. 长时序信用分配与稳定优化
+## 5. 长时序信用分配与稳定优化
+
 在 agentic RL 中，优化对象不再是一段单轮 response，而是一条包含多次环境交互、工具调用、观察反馈和再决策的长轨迹。这样一来，传统 RLVR 里很多默认成立的做法就不再自然：reward 不能只落在最终结果上，policy optimization 的粒度也不应简单停留在 token 或整条 sequence 上。
 
 这一类问题上，Forge和ROLL分别给出了不同层面的做法：
 
 - Forge重点解决 reward 过于稀疏的问题，把最终结果扩展成更适合长轨迹优化的 dense reward；
 - ROLL 重点解决优化粒度与环境交互错位的问题，引入 Chunked MDP 和 IPA，把优化单元从 token / full trajectory 改成 interaction chunk。
-5.1 Forge：用 dense reward 缓解长轨迹上的稀疏监督
+### 5.1 Forge：用 dense reward 缓解长轨迹上的稀疏监督
+
 Forge 在博客里明确指出，复杂 Agent 任务常常包含上千步 trajectory。如果只依赖最终结果作为 sparse reward，会出现几个直接问题：中间行为没有训练信号，梯度方差会非常大，而且模型还可能通过拉长 CoT 或执行路径来”刷榜”，但真实用户体验反而变差。
 
 因此，Forge 设计了三类复合奖励。
@@ -415,9 +443,11 @@ Forge 在博客里明确指出，复杂 Agent 任务常常包含上千步 trajec
 <strong>（3）用于降低方差的后续奖励（Reward-to-Go）：</strong> 长周期任务的稀疏奖励容易引发高梯度方差。Forge使用 Reward-to-Go 来标准化回报，大幅提高了信用分配的精度，稳定了优化过程。
 
 公式：
-![](https://www.zhihu.com/equation?tex=G_t+%3D+%5Csum_%7Bk%3Dt%7D%5E%7BT%7D+%5Cgamma%5E%7Bk-t%7D+r_k)
+$$G_t = \sum_{k=t}^{T} \gamma^{k-t} r_k$$
 
-5.2 ROLL：Chunked MDP 与 IPA，把优化单元对齐交互边界
+
+### 5.2 ROLL：Chunked MDP 与 IPA，把优化单元对齐交互边界
+
 ROLL 的基本判断是，在多轮 agentic 任务里，传统优化粒度并不自然。
 
 首先，token-level 太细。大多数 token 并不会改变环境状态。token-level optimization 会把大量”无状态转移 token”和少数真正触发环境变化的动作混在一起。在这种情况下，最终 outcome reward 与 token 级 importance sampling / update 是错位的，因为 reward 反映的是环境层面的任务成败，而 token-level 更新却会作用在大量并不直接改变环境的 token 上。
@@ -429,33 +459,36 @@ ROLL 的基本判断是，在多轮 agentic 任务里，传统优化粒度并不
 在ROLL的技术报告中，interaction chunk 的定义写得很明确：一个 interaction chunk，是从一次环境交互到下一次环境交互之间的一段连续片段，通常以一次工具调用结束。也就是说，chunk 不是按固定 token 长度切的，也不是按句子切的，而是按环境交互边界切的。
 
 如果写成形式化表示，大致就是把原始 token 轨迹 
-![](https://www.zhihu.com/equation?tex=%5Ctau_%7B1%3AT%7D) 重新组织成：
+$\tau_{1:T}$ 重新组织成：
 
-![](https://www.zhihu.com/equation?tex=+%28s_1%2C+c_1%2C+o_1%29%2C+%28s_2%2C+c_2%2C+o_2%29%2C+%5Cdots%2C+%28s_K%2C+c_K%2C+o_K%29+)
+$$(s_1, c_1, o_1), (s_2, c_2, o_2), \dots, (s_K, c_K, o_K)$$
+
 
 其中，
-![](https://www.zhihu.com/equation?tex=s_k) 表示第 k 个 chunk 开始前的状态，
-![](https://www.zhihu.com/equation?tex=c_k) 表示该 chunk 内连续生成的片段，
-![](https://www.zhihu.com/equation?tex=o_k) 表示这一轮交互后环境返回的 observation。技术报告强调，这个粒度比 token 粗、但比 full trajectory 细，更贴近真实 Agent 的语义动作单元。
+$s_k$ 表示第 k 个 chunk 开始前的状态，
+$c_k$ 表示该 chunk 内连续生成的片段，
+$o_k$ 表示这一轮交互后环境返回的 observation。技术报告强调，这个粒度比 token 粗、但比 full trajectory 细，更贴近真实 Agent 的语义动作单元。
 
 在 Chunked MDP 基础上，ROME 提出了 Interaction-Perceptive Agentic Policy Optimization，也就是 IPA。报告中明确列出，IPA 主要围绕 chunk 做了几项改动：chunk-level discounted return、chunk-level importance sampling、chunk-level mismatch masking、chunk-level initialized resampling，以及 imitation + RL 混合训练。
 
 先看 chunk-level discounted return。ROLL 认为，token-level discounting 在长序列上会导致 reward 快速衰减，因此它把 return 的传播单位改成 chunk。也就是说，回报不再沿 token 时间轴传播，而是沿 interaction chunk 的时间轴传播。这样做的目的在论文里写得很直接：缩短有效 horizon，让 temporal credit assignment 对齐真实交互步长，并降低长时序上的梯度方差。如果写成 chunk 级累计回报，可以表示为：
 
-![](https://www.zhihu.com/equation?tex=+G_k+%3D+%5Csum_%7Bj%3Dk%7D%5E%7BK%7D+%5Cgamma%5E%7Bj-k%7D+r_j%5E%7Bchunk%7D+)
+$$G_k = \sum_{j=k}^{K} \gamma^{j-k} r_j^{chunk}$$
+
 
 其中，
-![](https://www.zhihu.com/equation?tex=G_k) 是第 k 个 chunk 的回报，
-![](https://www.zhihu.com/equation?tex=r_j%5E%7Bchunk%7D) 是第 j 个 chunk 对应的奖励，K 是整条轨迹被切成的 chunk 数。也就是说，discount 的基本单位从 token 变成了 interaction。
+$G_k$ 是第 k 个 chunk 的回报，
+$r_j^{chunk}$ 是第 j 个 chunk 对应的奖励，K 是整条轨迹被切成的 chunk 数。也就是说，discount 的基本单位从 token 变成了 interaction。
 
 接下来是 chunk-level importance sampling。ROLL 把 importance sampling 从 token-level 改成 chunk-level。做法是对一个 chunk 内所有 token 的新旧策略概率比做聚合，形成一个 chunk-level ratio。技术报告给出的形式是几何平均：
 
-![](https://www.zhihu.com/equation?tex=+%5Crho%28c%29+%3D+%5Cleft%28+%5Cprod_%7Bt+%5Cin+c%7D+%5Cfrac%7B%5Cpi_%5Ctheta%28%5Ctau_t+%5Cmid+%5Ctau_%7B%3Ct%7D%29%7D%7B%5Cpi_%7B%5Ctheta_%7Bold%7D%7D%28%5Ctau_t+%5Cmid+%5Ctau_%7B%3Ct%7D%29%7D+%5Cright%29%5E%7B1+%2F+%7Cc%7C%7D+)
+$$\rho(c) = \left( \prod_{t \in c} \frac{\pi_\theta(\tau_t \mid \tau_{<t})}{\pi_{\theta_{old}}(\tau_t \mid \tau_{<t})} \right)^{1 / |c|}$$
+
 
 这里，c 表示一个 interaction chunk，
-![](https://www.zhihu.com/equation?tex=%7Cc%7C) 表示该 chunk 包含的 token 数，
-![](https://www.zhihu.com/equation?tex=%5Cpi_%5Ctheta) 是当前策略，
-![](https://www.zhihu.com/equation?tex=%5Cpi_%7B%5Ctheta_%7Bold%7D%7D)是旧策略。这样做不是对每个 token 单独修正，而是直接衡量一个交互单元在新旧策略下的偏差。报告中对这一改动的动机很明确，就是让 off-policy 修正对齐 interaction 粒度。
+$|c|$ 表示该 chunk 包含的 token 数，
+$\pi_\theta$ 是当前策略，
+$\pi_{\theta_{old}}$是旧策略。这样做不是对每个 token 单独修正，而是直接衡量一个交互单元在新旧策略下的偏差。报告中对这一改动的动机很明确，就是让 off-policy 修正对齐 interaction 粒度。
 
 第三项是 chunk-level mismatch masking。ROLL 还把 inference / training mismatch 的 masking 提升到了 chunk 层级。逻辑是先算 chunk-level mismatch，如果该 chunk 的 mismatch 超过阈值，就 mask 整个 chunk，而不是逐 token mask。论文给出的理由是，agentic 任务中的 reward 和状态转移本来就是粗粒度的，因此 chunk-level masking 比 token-level masking 更匹配实际任务结构。
 
@@ -463,12 +496,14 @@ ROLL 的基本判断是，在多轮 agentic 任务里，传统优化粒度并不
 
 最后是 imitation + RL 混合训练。ROLL 技术报告也明确提到，IPA 不是纯 RL，而是结合了 imitation learning。原因很直接：困难 agentic task 的正轨迹本来就稀疏，单靠 RL 探索代价高，而一些关键 chunk 更适合先通过 imitation 提供 anchor，再由 RL 进一步优化和泛化。所以在 IPA 里，imitation learning 不是附属技巧，而是训练框架的一部分。
 
-6. 环境可靠性、测试可信度与奖励污染
+## 6. 环境可靠性、测试可信度与奖励污染
+
 在 agentic RL 里，reward 不是凭空给出的，而是通过”模型行动 → 环境执行 → 测试验证 → 奖励返回”这条链路构造出来的。只要这条链路里有任何一个环节不干净，模型就不会学会真正完成任务，而会优先学会利用漏洞、绕过约束、甚至主动作弊。
 
 这一类问题在 ROLL 的实践博客、技术报告，以及与其相关的环境和基建设计里都被反复强调。和很多只讨论算法公式的工作不同，这条线的一个非常强的结论是：环境清洁度、测试可信度和安全边界，不是训练之外的附属问题，而是 reward 正确性本身的一部分。
 
-6.1 环境必须保持干净
+### 6.1 环境必须保持干净
+
 ROLL 博客中对这一点说得非常明确：在终端类 agentic RL 中，只要环境中残留了额外信息，模型就会非常快地学会利用这些线索，而不是按任务要求去完成问题。
 
 这些残留信息可能包括：
@@ -503,7 +538,8 @@ ROLL 博客里给出的典型坏行为包括：
 
 这三点背后的核心逻辑非常统一：reward 的语义应该由任务本身决定，而不是由测试文件可见性、缓存残留或历史状态泄露决定。因此在 agentic RL 里，”环境清洁”实际上是 reward 正确性的前提条件，而不只是工程卫生。
 
-6.2 伪阳性会系统性毒化 RL
+### 6.2 伪阳性会系统性毒化 RL
+
 如果说环境污染会让模型”看见不该看见的东西”，那么 false positive 则更糟，因为它会直接把错误行为打成正样本。
 
 ROLL 博客明确提到，他们在早期合成实例中观察到 false positive 比例一度高达约 40%。这意味着：
@@ -532,7 +568,8 @@ ROLL 博客明确提到，他们在早期合成实例中观察到 false positive
 
 这些验证在传统数据构造里可能会被视作”清洗步骤”，但在 ROLL 的语境里，它们本质上是训练稳定性的一部分。因为只有测试可信，reward 才可信；而只有 reward 可信，RL 才不会被系统性带偏。
 
-6.3 环境不应只有干净，还要有多样性
+### 6.3 环境不应只有干净，还要有多样性
+
 ROLL 博客和 ROME 技术报告都强调了一点：环境治理不能只停留在”把环境清到一尘不染”，还需要有意识地引入多样性。否则，模型即便在一个标准化 sandbox 中训练得很好，也可能只是学会了针对固定环境配置的策略。
 
 ROLL 在实践中有意识地加入了环境差异，例如：

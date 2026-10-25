@@ -35,8 +35,13 @@ categories:
 
 ## ترتيب القراءة المقترح
 
-1. `method-map.md`
-2. `initializer-agent-playbook.md`
-3. `coding-agent-startup-flow.md`
-4. `prompt-calibration.md`
-5. مقالات OpenAI و Anthropic الأساسية
+## 1. `method-map.md`
+
+## 2. `initializer-agent-playbook.md`
+
+## 3. `coding-agent-startup-flow.md`
+
+## 4. `prompt-calibration.md`
+
+## 5. مقالات OpenAI و Anthropic الأساسية
+

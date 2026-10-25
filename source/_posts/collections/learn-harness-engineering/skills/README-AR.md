@@ -50,9 +50,12 @@ Skill لإنتاج harness engineering بجودة إنتاجية لوكلاء ا
 
 تتبع كل skill بنية قياسية:
 
-1. <strong>SKILL.md</strong> — نقطة الدخول، وتتضمن YAML frontmatter وتعليمات Markdown للوكيل.
-2. <strong>references/</strong> — مستندات إضافية يتم تحميلها عند الحاجة.
-3. <strong>templates/</strong> — قوالب بداية يمكن أن تولدها skill.
+## 1. **SKILL.md** — نقطة الدخول، وتتضمن YAML frontmatter وتعليمات Markdown للوكيل.
+
+## 2. **references/** — مستندات إضافية يتم تحميلها عند الحاجة.
+
+## 3. **templates/** — قوالب بداية يمكن أن تولدها skill.
+
 
 تستخدم skills أسلوب progressive disclosure: يرى الوكيل الاسم والوصف أولا، ثم يحمّل SKILL.md عند التفعيل، ويقرأ الموارد المرفقة فقط عند الحاجة.
 

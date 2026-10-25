@@ -30,7 +30,8 @@ AI-Infra入门中，求职ing
 0x0、前言
 本文旨在通过对从零开始实现 Flash Attention 第 2 部分：基础构建模块这篇博客的学习和思考过程进行整理，所有引用段落和图片都进行了标注，如有理解不对的地方希望能得到大家能够指正，强烈推荐大家阅读原文，良心文章！
 
-0.1、文章脉络
+### 0.1、文章脉络
+
 这篇博客是整个系列的第二部分，主要介绍了在A100上构建Flash-attention算子涉及到的最优数据搬运和矩阵计算相关PTX指令的封装，以及一些精度转换操作。 
 
 作者从一个典型的Flash-attention计算分块的出发，从单个 batch、单个 head 的情况简单分析了一下Attention操作的计算强度，这时 Q/K/V 都可以看成 2D 矩阵,这里不再进行赘述了。 
@@ -52,7 +53,8 @@ AI-Infra入门中，求职ing
 0x1、高吞吐量矩阵运算: MMA 
 Attention计算上无非是多几个矩阵相乘，核心仍然是分块矩阵乘法。 这里通过MMA指令对TensorCore进行编程。 这里有三个概念：操作数，fragment，线程映射
 
-1.1、How Attention Tensors Map to MMA Operands
+### 1.1、How Attention Tensors Map to MMA Operands
+
 \text{MMA 执行的操作是 } D = A B^T + C 
 
 A的形状为(m, k)  
@@ -63,7 +65,8 @@ C和D的形状为(m, n)，且可指向内存中的同一位置这里将 A, B, C,
 
 作者提到了这里选择不使用WMMA指令是因为MMA的fragment layout是透明的 。WMMA相关的资料推荐飞鸟哥的这个系列
 
-1.2、Fragment Definition
+### 1.2、Fragment Definition
+
 用 Tensor core 做矩阵乘法，硬件指令需要固定大小的一块矩阵。例如mma.sync.aligned.m16n8k16这条指令：一次只计算 A：16 \times 16、B：8 \times 16、C/D：16 \times 8，最后执行一小块乘加：D = A \times B^T + C。 
 
 每个线程需要传入那自己那2 个数据在这些 fragment中的位置对应的寄存器，组成这些 fragment 的完整数据，Tensor Core 才能完成一次 tile 级的乘加
@@ -72,7 +75,8 @@ C和D的形状为(m, n)，且可指向内存中的同一位置这里将 A, B, C,
 
 在本文中，fragment 特指：跨整个 warp 存在于寄存器文件中的一个矩阵 tile —— 每个线程只存 2 个元素，整个 warp 一起构成这个 Tile，但整个Warp协同执行乘法运算,这是 tensor core 操作的基本单位。Operand矩阵整体大小“Fragments” 维度A16 × 162 × 2 fragmentsB8 × 161 × 2 fragmentsC/D16 × 82 × 1 fragments
 
-1.3、How Attention Tensors Map to mma Operands
+### 1.3、How Attention Tensors Map to mma Operands
+
 现在需要将用于计算Flash Attention 的 Tensor映射到MMA指令的操作数上 
 
 Flash Attention 执行两个关键矩阵乘法：
@@ -85,7 +89,8 @@ Flash Attention 执行两个关键矩阵乘法：
 
 （引用）Tensor 在每一级存储中的布
 
-1.4、Fragment Storage and Distribution
+### 1.4、Fragment Storage and Distribution
+
 这里有一个至关重要的机制需要明确：张量运算（Tensor Operations）并非由单个线程独立完成，而是由整个 Warp 以“锁步（Lockstep）”模式协同执行。
 
 这意味着 Warp 内的所有线程必须同步执行同一条指令。鉴于 Fragment（片段）的数据是被分片存储在各个线程的寄存器中，我们必须深入理解 Fragment 在 Warp 线程间的分布布局（Layout）如果不涉及计算，单纯的内存搬运通常遵循“128字节对齐”原则（如每行8个线程）。但在 MMA指令部分，为了适配Tensor Core的输入要求，布局发生了变化
@@ -106,7 +111,8 @@ col = (tid % 4) * 2
 （引用）Warp中线程对应数据的示意图如果一行中存在多个fragment，那么布局如下 
 （引用）一行多个fragment的布局示意图
 
-1.5、Register Storage for Different Operands
+### 1.5、Register Storage for Different Operands
+
 接下来作者给出了MMA使用的操作数在RF(寄存器)中的存储映射。
 
 对于片段A和B，每个线程将 2 个元素存储在单个 32 位寄存器中。由于我们不需要直接修改它们，因此会将它们存储为单个uint32_t。对于操作数A和B，Tensor Core计算中，矩阵不是逐元素处理的，而是以Tile为单位进行处理
@@ -227,7 +233,8 @@ GCC扩展 asm 是按 “先输出、后输入” 的顺序给 %0, %1, %2, ... �
 0x2、高效内存操作：保持高带宽利用率的数据移动原语
 在解决完GEMM相关的操作后，需要考虑各个内存层级间的数据搬运，并且每一层级都需要考虑加载和写入的双向操作。在A100上，有些高效的内存拷贝指令对应的写回指令并不支持（作者在博客中强调），因此只能使用向量化访存的方式进行写回。
 
-2.1、GMEM → SMEM: cp.async 
+### 2.1、GMEM → SMEM: cp.async 
+
 这里直接引用博客中整理的相关ptx指令内容 ，cp.async相关的指令包括了以下内容
 
 cp.async：初始化拷贝操作 
@@ -276,7 +283,8 @@ src (Source): Global memory source address. Must be a 64-bit address.
 ```
 
 
-2.2、SMEM → GMEM: Vectorized Stores
+### 2.2、SMEM → GMEM: Vectorized Stores
+
 从共享内存到全局内存的传输中，与cp.async等效的st.async在安培架构上并不支持，因此将采用次优方案：16 字节向量化存储。我们只需确保指针指向 16 字节数据类型，且指针满足 16 字节对齐(addr % 16 == 0 reinterpret_cast uint4* (GMEM[dst])[0] = reinterpret_cast uint4* (SMEM[src])[0];
 
 上述的向量化写法是cuda编程中比较常见的向量化读取方式，很多时候也会单独写成一个宏定义使用 
@@ -288,13 +296,15 @@ src (Source): Global memory source address. Must be a 64-bit address.
 （引用）Comparing Synchronous vs Asynchronous Copy from Global Memory to Shared Memory
 cp.async和LSU方式加载不同数据量的指令时钟周期对比图
 
-2.3、Warp-Wide Transfers Between GMEM ↔ SMEM
+### 2.3、Warp-Wide Transfers Between GMEM ↔ SMEM
+
 这里需要考虑到warp 级别的访存合并，即 warp 内的连续的线程需要能够访问连续的地址空间，这样才能触发合并访存，因而布局方式以对齐128字节的缓存行为基准
 
 在考虑线程束级别的数据传输时，我们需要确保内存合并以获得最佳性能。由于 GPU 缓存行为 128 字节，每个线程传输 16 字节，将 8 个线程分配给单行即可访问整个缓存行。因此，每个包含 32 个线程的线程束，其单次束级指令可传输（4，64）个内存块
 （引用）GMEM ↔ SMEM 之间数据拷贝的线程布局
 
-2.4、Copying from SMEM → RF 
+### 2.4、Copying from SMEM → RF 
+
 我认为这里是整篇博客最核心的部分，SMEM到RF按照硬件加速的布局进行转换后进行了数据拷贝。理解这部分需要将 ldmatrix 指令的行为拆解为两个不对称的过程来看。
 
 要将数据片段从SMEM传输到寄存器，我们可以让每个线程读取它们存储的元素。虽然这种方法可行，但每个片段需要多条指令。幸运的是，存在更高效的方案：ldmatrix 指令可以一次性加载多达 4 个fragment。相比使用RF[dst] = SMEM[src]手动加载片段，它的速度更快，但具有不同的布局方式。如果我们还想对元素进行转置操作，这一点尤为明显ldmatrix 一次可以加载 1、2 或 4 个 8×8 fragment，在使用这条PTX指令时warp内的线程需要按照 4 个 八元组（octet）来看。
@@ -341,7 +351,8 @@ __device__ void ldmatrix_x4(
 - 2. 指令执行 首先使用 __cvta_generic_to_shared 将指针转换为共享内存偏移地址。随后执行 ldmatrix 核心指令，将 Warp划分为 4 个 线程组；每组从 SMEM 连续读取 8×8 的 16-bit 矩阵块，并自动按照 MMA 硬件布局重排，将 64 个元素分发至全 Warp 线程的寄存器 (a1..a4) 中。
 - 3. 输出结果 每个线程最终获得 4 个 32-bit寄存器，每个寄存器打包存储 2 个元素，精准对应 4 个 Fragment 中归属本线程的数据。这些数据随后即可直接作为 A/B 操作数传递给 mma.sync 指令进行计算。
 
-2.5、ldmatrix Transpose
+### 2.5、ldmatrix Transpose
+
 作者给出了针对 V分块的加载时，为了适配MMA指令的操作数而进行转置的处理。这里使用了ldmatrix的转置版本，来避免了显式的Transpose操作。
 
 指令封装好了我们需要的线性代数操作即：
@@ -352,7 +363,8 @@ __device__ void ldmatrix_x4(
 
 （引用）带有转置的ldmatrix连续加载4个Fragment到RF线程布局的示意图
 
-2.6、Copying from RF → SMEM
+### 2.6、Copying from RF → SMEM
+
 由于 Ampere 架构没有 stmatrix 指令，无法像 ldmatrix 那样“一键”将寄存器中的 Fragment 整块转存到共享内存。把数据从寄存器写回SMEM时，作者这边沿用了MMA的Fragment布局。每个线程将自己的两个16字节数据写回，即每个线程只做一次 4B 标准 store 就能把自己那 2 个元素写到共享内存里。
 （引用）数据从RF写回SMEM的线程布局示意图
 

@@ -25,7 +25,8 @@ fighting~~~
 
 2 人赞同了该文章
 
-1. 概述
+## 1. 概述
+
 BBQ (Better Binary Quantization) 是 Elasticsearch 中实现的一种高级向量量化方法，用于大规模相似度搜索。BBQ 通过将 float32 向量压缩到 bit 级别（1-bit、2-bit、4-bit），在保持较高搜索精度的同时实现极致的存储压缩和计算效率。
 
 核心优势：
@@ -34,31 +35,39 @@ BBQ (Better Binary Quantization) 是 Elasticsearch 中实现的一种高级向�
 - 计算高效：使用 bit 级别计算，大幅减少计算成本
 - 精度保持：通过优化的量化区间和纠正因子，保持较高的搜索相关性本文档重点：详细解析 BBQ 量化后的距离计算过程，包括量化向量点积计算、纠正因子应用和最终相似度分数计算。
 
-2. BBQ 量化流程回顾
+## 2. BBQ 量化流程回顾
 
-2.1 量化步骤
+
+### 2.1 量化步骤
+
 BBQ 量化过程包含以下关键步骤：
 
-1. 向量中心化 (Centering)
+## 1. 向量中心化 (Centering)
+
 
 ```text
    residual = vector - centroid
    ↓
 ```
 
-2. 初始化量化区间 (Init Interval)
+## 2. 初始化量化区间 (Init Interval)
+
    使用 MSE 最优网格初始化 [a, b]
    ↓
-3. 优化量化区间 (Optimize Intervals) ⭐
+## 3. 优化量化区间 (Optimize Intervals) ⭐
+
    使用坐标下降法最小化量化损失
    ↓
-4. 向量量化 (Quantization)
+## 4. 向量量化 (Quantization)
+
    将 residual 量化到 [0, 2^bits-1] 区间
    ↓
-5. 生成纠正因子 (Correction Factors)
+## 5. 生成纠正因子 (Correction Factors)
+
    存储量化区间和额外纠正项
 
-2.2 量化结果结构
+### 2.2 量化结果结构
+
 代码位置：OptimizedScalarQuantizer.java
 
 ```cpp
@@ -79,9 +88,11 @@ public record QuantizationResult(
 - 点积/余弦：存储 residual · centroid（质心点积）
 
 - quantizedComponentSum (x1 或 y1)：量化值之和
-3. 向量打包格式
+## 3. 向量打包格式
 
-3.1 文档向量打包（1-bit）
+
+### 3.1 文档向量打包（1-bit）
+
 代码位置：ESVectorUtil.packAsBinary()
 
 ```cpp
@@ -109,7 +120,8 @@ public static void packAsBinary(int[] vector, byte[] packed) {
 - 输入：[1, 0, 1, 1, 0, 0, 1, 0] (8个维度)
 - 输出：[0b10110010] = 0xB2 (1个字节)存储大小：dimensions / 8 字节
 
-3.2 查询向量打包（4-bit）
+### 3.2 查询向量打包（4-bit）
+
 代码位置：ESVectorUtil.transposeHalfByte()
 
 ```cpp
@@ -142,9 +154,11 @@ stripe[3] (最高位): [0, 1, 0, 1, 1, 0, 1, 0]  → 字节: 0b01011010
 - 转置后，每个 stripe 的所有位可以并行进行位运算
 - 便于使用 bitwise AND 操作计算点积
 - 支持高效的 SIMD 向量化计算
-4. 量化向量点积计算
+## 4. 量化向量点积计算
 
-4.1 核心算法：ipByteBinByte
+
+### 4.1 核心算法：ipByteBinByte
+
 代码位置：ESVectorUtil.ipByteBinByte() → DefaultESVectorUtilSupport.ipByteBinByteImpl()
 
 ```x86asm
@@ -185,9 +199,11 @@ public static long ipByteBinByteImpl(byte[] q, byte[] d) {
 ```
 
 
-4.2 算法原理详解
+### 4.2 算法原理详解
 
-4.2.1 数学推导
+
+### 4.2.1 数学推导
+
 对于量化向量，原始点积可以表示为：
 
 设：
@@ -209,7 +225,8 @@ d_reconstructed[i] = ax + lx * d_quant[i]
 ```
 
 
-4.2.2 Bit 级别计算
+### 4.2.2 Bit 级别计算
+
 关键观察：
 
 - q_quant[i] * d_quant[i] 的计算可以通过位运算实现
@@ -250,16 +267,19 @@ stripe[3]   d = [0, 1, ...]   [1, 0, ...] = [0, 0, ...]
 
 这正是 q_quant[0] * d_quant[0] = 5 * 1 = 5
 
-4.3 性能优化
+### 4.3 性能优化
+
 SIMD 向量化：
 
 - 使用 Integer.BYTES (4字节) 和 Long.BYTES (8字节) 批量处理
 - 利用 CPU 的 POPCNT (Population Count) 指令快速计算 bit count
 - 在支持的平台上，可以使用 SIMD 指令并行处理多个字节时间复杂度：O(dimensions)，比传统点积计算快得多（因为只需要位运算）
 
-5. 距离计算完整流程
+## 5. 距离计算完整流程
 
-5.1 核心函数：quantizedScore
+
+### 5.1 核心函数：quantizedScore
+
 代码位置：ES818BinaryFlatVectorsScorer.quantizedScore()
 
 ```cpp
@@ -312,9 +332,11 @@ private static float quantizedScore(
 ```
 
 
-5.2 点积重构公式推导
+### 5.2 点积重构公式推导
 
-5.2.1 量化值重构
+
+### 5.2.1 量化值重构
+
 对于量化后的向量，可以重构为：
 
 查询向量重构：
@@ -324,7 +346,8 @@ q_reconstructed[i] = ay + ly * (q_quant[i] / 15)
 文档向量重构：
 d_reconstructed[i] = ax + lx * d_quant[i]
 
-5.2.2 点积展开
+### 5.2.2 点积展开
+
  q, d  = Σ(q_reconstructed[i] * d_reconstructed[i])
 
 ```text
@@ -334,10 +357,14 @@ d_reconstructed[i] = ax + lx * d_quant[i]
 
        
 展开各项：
-1. Σ(ay * ax) = ay * ax * dims
-2. Σ(ay * lx * d_quant[i]) = ay * lx * Σ(d_quant[i]) = ay * lx * x1
-3. Σ(ax * ly * q_quant[i]/15) = ax * ly * Σ(q_quant[i])/15 = ax * ly * y1 * FOUR_BIT_SCALE
-4. Σ(lx * ly * q_quant[i] * d_quant[i]/15) = lx * ly * Σ(q_quant[i] * d_quant[i]) * FOUR_BIT_SCALE
+## 1. Σ(ay * ax) = ay * ax * dims
+
+## 2. Σ(ay * lx * d_quant[i]) = ay * lx * Σ(d_quant[i]) = ay * lx * x1
+
+## 3. Σ(ax * ly * q_quant[i]/15) = ax * ly * Σ(q_quant[i])/15 = ax * ly * y1 * FOUR_BIT_SCALE
+
+## 4. Σ(lx * ly * q_quant[i] * d_quant[i]/15) = lx * ly * Σ(q_quant[i] * d_quant[i]) * FOUR_BIT_SCALE
+
                                              = lx * ly * qcDist * FOUR_BIT_SCALE
 
 其中：
@@ -354,9 +381,11 @@ float ly = (queryCorrections.upperInterval() - ay) * FOUR_BIT_SCALE;
 
 score = ax * ay * dims + ay * lx * x1 + ax * ly * y1 + lx * ly * qcDist
 
-5.3 纠正因子应用
+### 5.3 纠正因子应用
 
-5.3.1 中心化纠正
+
+### 5.3.1 中心化纠正
+
 由于量化是在中心化后的 residual 上进行的，需要纠正回原始向量：
 
 原始向量：
@@ -376,7 +405,8 @@ d = centroid + d_residual
 ```
 
 
-5.3.2 量化误差纠正
+### 5.3.2 量化误差纠正
+
 量化后的点积是  q_residual_quantized, d_residual_quantized ，需要纠正为  q_residual, d_residual 。
 
 纠正项：
@@ -416,9 +446,11 @@ score = queryCorrections.additionalCorrection()
 ```
 
 
-6. 不同相似度函数的处理
+## 6. 不同相似度函数的处理
 
-6.1 欧氏距离 (EUCLIDEAN)
+
+### 6.1 欧氏距离 (EUCLIDEAN)
+
 计算流程：
 
 ```text
@@ -450,7 +482,8 @@ similarity = 1 / (1 + distance²)
 ```
 
 
-6.2 点积 (DOT_PRODUCT)
+### 6.2 点积 (DOT_PRODUCT)
+
 计算流程：
 
 ```text
@@ -479,7 +512,8 @@ similarity = (1 + dot_product) / 2  (归一化到 [0, 1])
 ```
 
 
-6.3 最大内积 (MAXIMUM_INNER_PRODUCT)
+### 6.3 最大内积 (MAXIMUM_INNER_PRODUCT)
+
 计算流程：
 
 ```text
@@ -491,7 +525,8 @@ if (similarityFunction == MAXIMUM_INNER_PRODUCT) {
 
 特点：使用 scaleMaxInnerProductScore 进行额外的缩放处理，确保分数范围合理。
 
-6.4 余弦相似度 (COSINE)
+### 6.4 余弦相似度 (COSINE)
+
 计算流程：
 
 ```text
@@ -501,9 +536,11 @@ if (similarityFunction == MAXIMUM_INNER_PRODUCT) {
 
 注意：余弦相似度要求向量已经归一化，因此在量化前向量必须是单位向量。
 
-7. 批量评分优化
+## 7. 批量评分优化
 
-7.1 批量评分函数
+
+### 7.1 批量评分函数
+
 代码位置：ESNextOSQVectorsScorer.scoreBulk()
 
 ```cpp
@@ -551,15 +588,18 @@ public float scoreBulk(
 ```
 
 
-7.2 性能优化策略
+### 7.2 性能优化策略
+
 
 - 批量 I/O：一次性读取多个向量的纠正因子，减少 I/O 开销
 - SIMD 优化：使用向量化指令并行计算多个量化点积
 - 缓存友好：纠正因子按顺序存储，提高缓存命中率
 - 批量大小：BULK_SIZE = 16，平衡内存使用和性能
-8. 不同量化编码策略
+## 8. 不同量化编码策略
 
-8.1 ONE_BIT_4BIT_QUERY (默认)
+
+### 8.1 ONE_BIT_4BIT_QUERY (默认)
+
 
 - 文档向量：1-bit 量化
 - 查询向量：4-bit 量化
@@ -568,19 +608,22 @@ public float scoreBulk(
 - 查询：transposeHalfByte() - 4 个 stripe
 
 - 适用场景：内存极度受限，优先考虑存储压缩
-8.2 TWO_BIT_4BIT_QUERY
+### 8.2 TWO_BIT_4BIT_QUERY
+
 
 - 文档向量：2-bit 量化
 - 查询向量：4-bit 量化
 - 打包：使用 packDibit 打包文档向量
 - 适用场景：平衡存储和精度
-8.3 FOUR_BIT_SYMMETRIC
+### 8.3 FOUR_BIT_SYMMETRIC
+
 
 - 文档向量：4-bit 量化
 - 查询向量：4-bit 量化
 - 打包：对称编码，都使用 transposeHalfByte
 - 适用场景：对精度要求较高
-8.4 距离计算的统一性
+### 8.4 距离计算的统一性
+
 无论使用哪种量化编码策略，距离计算的核心流程都是一致的：
 
 - 计算量化向量的点积（使用 bit 级别操作）
@@ -591,9 +634,11 @@ public float scoreBulk(
 - 量化 bit 数不同，影响 qcDist 的计算方式
 - 打包格式不同，但最终都通过 ipByteBinByte 或类似函数计算点积
 - 纠正因子的计算方式相同
-9. 实现细节与优化
+## 9. 实现细节与优化
 
-9.1 Bit 级别计算的 SIMD 优化
+
+### 9.1 Bit 级别计算的 SIMD 优化
+
 代码位置：PanamaESVectorUtilSupport.ipByteBinByteImpl() (Java 21+)
 
 在支持的平台上，可以使用 SIMD 指令优化：
@@ -605,7 +650,8 @@ public float scoreBulk(
 ```
 
 
-9.2 内存布局优化
+### 9.2 内存布局优化
+
 纠正因子存储顺序：
 
 [量化向量] [lowerInterval] [upperInterval] [quantizedComponentSum] [additionalCorrection]
@@ -614,7 +660,8 @@ public float scoreBulk(
 - 批量读取多个向量的纠正因子
 - 提高缓存命中率
 - 减少内存碎片
-9.3 精度与性能权衡
+### 9.3 精度与性能权衡
+
 量化 bit 数选择：
 
 - 1-bit：最高压缩率，但精度损失较大，需要更精确的纠正因子
@@ -624,7 +671,8 @@ public float scoreBulk(
 - 查询向量数量少，使用 4-bit 可以显著提高搜索精度
 - 文档向量数量大，使用 1-bit 可以最大化压缩率
 - 通过不对称量化策略实现最佳性能
-10. 总结
+## 10. 总结
+
 BBQ 量化的距离计算通过以下关键技术实现高效且精确的相似度搜索：
 
 - 量化向量打包：

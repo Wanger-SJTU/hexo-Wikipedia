@@ -17,13 +17,20 @@ categories:
 
 Before writing any code, complete these steps in order:
 
-1. <strong>Read this file completely.</strong> It defines the boundaries and conventions for this project.
-2. **Read `CLAUDE.md`** for the quick reference if using Claude Code.
-3. **Read `docs/ARCHITECTURE.md`** to understand the full Electron layer structure and data flow.
-4. **Read `docs/PRODUCT.md`** to understand the complete feature requirements.
-5. **Read `docs/RELIABILITY.md`** to understand logging, observability, and clean state requirements.
-6. **Run `bash init.sh`** to verify the project builds and initializes cleanly.
-7. **Read `feature_list.json`** to see the current state of all features.
+## 1. **Read this file completely.** It defines the boundaries and conventions for this project.
+
+## 2. **Read `CLAUDE.md`** for the quick reference if using Claude Code.
+
+## 3. **Read `docs/ARCHITECTURE.md`** to understand the full Electron layer structure and data flow.
+
+## 4. **Read `docs/PRODUCT.md`** to understand the complete feature requirements.
+
+## 5. **Read `docs/RELIABILITY.md`** to understand logging, observability, and clean state requirements.
+
+## 6. **Run `bash init.sh`** to verify the project builds and initializes cleanly.
+
+## 7. **Read `feature_list.json`** to see the current state of all features.
+
 
 ## Project Context
 
@@ -89,13 +96,20 @@ When adding new features, update the relevant doc before writing code.
 
 A feature is "done" when:
 
-1. TypeScript compiles without errors (`npm run check`).
-2. The app launches and the window is visible.
-3. The feature appears in `feature_list.json` with status `"pass"` and evidence.
-4. The code respects Electron layer boundaries.
-5. Structured logging covers all service operations.
-6. `docs/ARCHITECTURE.md` and/or `docs/PRODUCT.md` are updated.
-7. `clean-state-checklist.md` passes all checks.
+## 1. TypeScript compiles without errors (`npm run check`).
+
+## 2. The app launches and the window is visible.
+
+## 3. The feature appears in `feature_list.json` with status `"pass"` and evidence.
+
+## 4. The code respects Electron layer boundaries.
+
+## 5. Structured logging covers all service operations.
+
+## 6. `docs/ARCHITECTURE.md` and/or `docs/PRODUCT.md` are updated.
+
+## 7. `clean-state-checklist.md` passes all checks.
+
 
 ## Session Handoff
 
@@ -111,7 +125,11 @@ When resuming work, read `session-handoff.md` for context from the previous sess
 
 Before each major testing cycle:
 
-1. Run `bash scripts/cleanup-scanner.sh` to check for stale artifacts.
-2. Use the in-app Reset button or `RESET_DATA` IPC to clear all data.
-3. Verify `clean-state-checklist.md` passes.
-4. Run `bash scripts/benchmark.sh` to measure performance.
+## 1. Run `bash scripts/cleanup-scanner.sh` to check for stale artifacts.
+
+## 2. Use the in-app Reset button or `RESET_DATA` IPC to clear all data.
+
+## 3. Verify `clean-state-checklist.md` passes.
+
+## 4. Run `bash scripts/benchmark.sh` to measure performance.
+

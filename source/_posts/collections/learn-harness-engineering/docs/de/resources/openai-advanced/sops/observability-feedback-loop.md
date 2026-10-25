@@ -33,13 +33,20 @@ der Code-Inspektion.
 
 ## Ausführungs-SOP
 
-1. Die Golden Runtime-Journeys definieren, die am wichtigsten sind.
-2. Strukturierte Logs zum Start und zum kritischen Pfad hinzufügen.
-3. Metriken für Latenz, Fehleranzahlen oder Warteschlangentiefe hinzufügen, wo nützlich.
-4. Traces oder Timing-Marker für langsame oder mehrstufige Abläufe hinzufügen.
-5. Die Signale aus der lokalen Entwicklungsumgebung abfragbar machen.
-6. Dem Agenten einen wiederholbaren Workload oder ein Szenario zum erneuten Ausführen geben.
-7. Die Schleife einfordern: abfragen -> korrelieren -> argumentieren -> implementieren ->
+## 1. Die Golden Runtime-Journeys definieren, die am wichtigsten sind.
+
+## 2. Strukturierte Logs zum Start und zum kritischen Pfad hinzufügen.
+
+## 3. Metriken für Latenz, Fehleranzahlen oder Warteschlangentiefe hinzufügen, wo nützlich.
+
+## 4. Traces oder Timing-Marker für langsame oder mehrstufige Abläufe hinzufügen.
+
+## 5. Die Signale aus der lokalen Entwicklungsumgebung abfragbar machen.
+
+## 6. Dem Agenten einen wiederholbaren Workload oder ein Szenario zum erneuten Ausführen geben.
+
+## 7. Die Schleife einfordern: abfragen -> korrelieren -> argumentieren -> implementieren ->
+
    neustarten -> erneut ausführen -> verifizieren.
 
 ## Debug-Sitzungs-Checkliste

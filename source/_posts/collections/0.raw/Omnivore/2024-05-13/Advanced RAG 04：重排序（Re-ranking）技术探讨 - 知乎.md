@@ -48,8 +48,10 @@ id: c563d7ac-9999-4fc2-9ad9-62df66dfea12
 
 本文要介绍的重排序方法主要分为以下两种类型：
 
-1. <strong>重排序模型（Re-ranking models）</strong> ：这些重排序模型会分析用户提出的 query 与文档之间的交互特征，以便更准确地评估它们之间的相关性。
-2. <strong>LLM</strong>：通过使用 LLM 深入理解整个文档和用户提出的 query ，可以更全面地捕捉语义信息。
+## 1. **重排序模型（Re-ranking models）** ：这些重排序模型会分析用户提出的 query 与文档之间的交互特征，以便更准确地评估它们之间的相关性。
+
+## 2. **LLM**：通过使用 LLM 深入理解整个文档和用户提出的 query ，可以更全面地捕捉语义信息。
+
 
 ## 02 将 Re-ranking models 作为 reranker 使用
 

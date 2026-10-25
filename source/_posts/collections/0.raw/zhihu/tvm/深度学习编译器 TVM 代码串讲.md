@@ -29,14 +29,17 @@ Will Zhang
 
 随着深度学习应用的攻城略地，存在越来越多的需求需要将深度学习模型在各种各样的设备上高效运行起来。不同的设备上存在不同的内存结构以及计算原语，传统的做法是在图层面做一些优化，并配合专家实现的在特定设备上的高性能算子完成任务。这当中比较知名的就是Nvidia TensorRT，而即使是付出了大量工作的TensorRT，在面临用户自定义算子或者非常见的网络结构时，其图层面的优化也被迫打了折扣。深度学习编译器则是有别于传统方法的新思路，本文将会从比较基础的东西开始，深入代码层面解读 TVM 这一有着极大影响力的编译器。
 
-1. Overview
+## 1. Overview
+
 
 TVM是一个End2End的方案，接收来自Tensorflow/Pytorch等框架的 High Level 模型，转换为一个同样High Level的Graph IR，并对Graph IR进行Graph Level的优化得到优化后的Graph IR. 在Graph IR中的每个Operator则使用 TVM 定义的名为Tensor Expression的DSL来描述。Tensor Expression源于Halide中compute/schedule分离的思想，通俗地说，compute定义了算子的数学公式，schedule定义了如何把这个数学公式映射到硬件设备上。由于对特定的compute来说，其可能的schedule多种多样，于是TVM还存在一个基于机器学习的优化器负责找到最优的schedule. 确定schedule后，TVM就可以依据schedule生成Low Level的LLVM IR，之后就可以复用传统编译器的工作了。
 
-2. Runtime
+## 2. Runtime
+
 在深入比较复杂的编译流程之前，我们先了解编译的产物是什么，为此我们先解读 TVM Runtime. 
 
-2.1 Runtime API
+### 2.1 Runtime API
+
 TVM 给 Runtime 设计了极其精简且稳定的 C API （定义于 include/tvm/runtime/c_runtime_api.h ）, 为了保持 API 的稳定，在头文件中隐藏了具体的类型信息，如下
 
 ```text
@@ -69,7 +72,8 @@ print(a.numpy())
 - TVM Array（多维数组）相关
 - TVM Object相关
 - 对不同设备的公共抽象，Stream/内存分配/数据传输等
-2.2 Object
+### 2.2 Object
+
 对于类似 IR 这样的数据结构，天然就对其有 serialize/format/reflection 的需求，以往我们可以借助protobuf自动实现这些需求。在 TVM 中，额外还有 python binding/hash 等需求，于是 TVM 要求所有这样的数据结构继承自 Object 基类，并注册其内部所有成员，比如下面这个例子
 
 ```cpp
@@ -127,7 +131,8 @@ class TensorType(Type):
 
 额外的 serialize/format/reflection/python binding/hash 等功能则实现在 node 目录下，有兴趣可自行查阅。
 
-2.3 PackedFunc
+### 2.3 PackedFunc
+
 TVM 中另一个与 Object 同样底层的机制称为 FFI (Foreign Function Interface), 这个机制的目标是为了使得任意语言下定义的函数都可以被任意其他语言调用。而这个可以被任意语言调用的函数称为 PackedFunc. 一个示例如下
 
 ```cpp
@@ -170,7 +175,8 @@ import tvm._ffi
 tvm._ffi._init_api("relay.build_module", __name__)
 其作用是把所有注册到Global的且名字前缀为"relay.build_module"的PackedFunc注册到当前Python Module, 从而让其他 Python 代码调用。
 
-2.4 Module
+### 2.4 Module
+
 编译的产物就称为Runtime.Module, 可以简单将其视为 name, PackedFunc 的哈希表，接口定义在 include/tvm/runtime/module.h中。对应多种硬件设备有多种实现，我们就选取cuda实现仔细过一遍。
 
 CudaModule 定义在 src/runtime/cuda/cuda_module.cc 中，CudaModule接口中返回的PackedFunc则是CUfunction的一层封装。我们看核心的GetFunction 
@@ -231,17 +237,20 @@ PackedFunc CUDAModuleNode::GetFunction(const std::string  name,
 
 可以看到CUDAWrappedFunc里面首先根据名字在CUDAModuleNode（内含CUmodule）中找到CUfunction然后根据launch_param_config_进行Launch.
 
-3. Compilation Flow
+## 3. Compilation Flow
+
 在了解了 tvm runtime 之后，我们可以重新了解一下 TVM 的编译流程，大致步骤如下图
 
 上图的最后一个环节即是我们已经充分了解过的 tvm runtime. TVM 中存在两种类型的 IR, 对应于图中的 high level 的 relay 和 low level 的 tir, 且两种 IR 都对应于同一个类型 IRModule. IRModule 与 relay.Function/tir.PrimFunc 的关系类似于 runtime.Module 与 PackedFunc 的关系，即 IRModule 会包含多个 relay.Function/tir.PrimFunc。统一的 IRModule 类型使得其可以同时含有 relay.Function 和 tir.PrimFunc, 为优化提供便利。
 
 在这里可能有些同学会不了解 Graph 与 Function 的关系，实际上如果一个 IRModule 只有一个 Function，这个 Function 就对应于完整的 Graph, Function 中的每个语句对应于 Graph 的一个 Op. 如果有多个Function, 从一个入口的函数开始执行，中间可能有其他函数的调用，这样的过程也完整定义了一个Graph. 当然这样的说法并不严谨，但对于没有接触过 Function 概念的同学来说，暂时这样理解也没有问题。
 
-4. IR
+## 4. IR
+
 上一节中提到 relay 和 tir 都对应于 IRModule 这个统一的 Module 类型，自然也会有一套公共的 IR 基础设施。在 TVM 中这套基础设施实现在tvm/ir这个目录下，本节过一下这套基础设施的主要概念。
 
-4.1 Type and Expr
+### 4.1 Type and Expr
+
 如果将 IR 视为一种相对高级的编程语言，就会有两个关键的基础概念，类型 (Type) 和表达式 (Expr)。Type 包括基础的整型/浮点型等，也包括函数类型等相对复杂的类型。Expr 包括简单的定义一个字面值，也包括定义一个复杂的函数。先看 Type, 在include/tvm/type.h中定义了多个基础类型，其中，PrimType 是指可以直接映射到 low-level IR 的基本数据类型，代码如下
 
 ```text
@@ -371,7 +380,8 @@ class TensorTypeNode : public BaseTensorTypeNode {
 - 函数表达式，也即relay.Function和tir.PrimFunc的共同基类 BaseFunc, 定义于include/tvm/ir/function.h 
 - 量化相关的Type, 定义于 include/tvm/ir/affine_type.h 
 - ADT 相关，定义于 include/tvm/ir/adt.h ，后文有专门章节深入，本节略过
-4.2 Op
+### 4.2 Op
+
 在 TVM 中，无论是 relay 还是 tir 的 op 都定义为一种 RelayExpr，如下
 
 ```text
@@ -529,7 +539,8 @@ Expr MakeBiasAdd(Expr data, Expr bias, int axis) {
 
 TVM_REGISTER_GLOBAL("relay.op.nn._make.bias_add").set_body_typed(MakeBiasAdd);
 
-4.3 IRModule
+### 4.3 IRModule
+
 IRModule 可以大致视为 BaseFunc 的集合，代码如下
 
 ```text
@@ -566,7 +577,8 @@ class IRModuleNode : public Object {
 
 type_definitions 是 ADT 相关，我们在后文的 ADT 章节深入。
 
-4.4 Pass
+### 4.4 Pass
+
 在2021年的今天，几乎所有人都知道 Pass 是什么，所以我也不多解释什么了。我们具体看看 TVM 相关的代码设计，首先看所有 Pass 的基类
 
 ```text
@@ -724,10 +736,12 @@ class SequentialPassNode : PassNode {
 
 声明：本文原创于知乎 Will Zhang , 未经本人同意，拒绝任何形式地转载。
 
-5. Relay
+## 5. Relay
+
 在了解了 IR 的基础设计后，我们来看 TVM 中的 High Level IR, 也即 Relay 的细节。相比经典的基于 Graph 的 High Level IR, Relay 引入了不少函数式编程的概念，带来了强大的表达能力。
 
-5.1 ADT
+### 5.1 ADT
+
 我们先了解 ADT 的概念, Algebraic data types (ADTs) 的概念来自函数式编程，简单来说，一个ADT定义含有多个构造函数，每个构造函数有不同的参数类型，每个ADT实例构造出来后只是简单地包含其构造时的所有参数值。下面是一个ADT定义的具体例子
 
 # Defines an ADT named "Numbers"
@@ -980,7 +994,8 @@ class PatternConstructorNode : public PatternNode {
 
 最后，TVM 官方实现了一些 ADT 的常见操作作为标准库，实现在 python/tvm/relay/prelude.py, 有兴趣的同学可自行查阅。
 
-5.2 Let Binding
+### 5.2 Let Binding
+
 Let Binding 这个概念也来自函数式编程，为了理解引入 Let Binding 的原因，我们先看下面这个例子
 
 这是一个经典的计算图表达方式，唯一与传统不太一致的，就是使用 Function 来代替 Graph 的概念。在这个例子中，需要注意的是 add 的两个参数都是 1%，在 DAG 中出现了一个共享节点，我们假设 add 表达式的代码如下
@@ -1044,7 +1059,8 @@ fn (%x) {
 
 我们应该在闭包的外面还是里面做 %1 的计算呢？而 Let Binding 解决了这个问题，我们只要加上 Let 就能解决这个歧义。
 
-5.3 Expr
+### 5.3 Expr
+
 事实上，前面我们已经看了 ADT 和 Let Binding 相关的表达式，所以本小节简单过一下其他的表达式。首先我们明确 Relay 的基类 Expr 是 IR 公共模块的 RelayExpr
 
 ```text
@@ -1242,7 +1258,8 @@ class TempExprNode : public ExprNode {
 ```
 
 
-5.3 Op
+### 5.3 Op
+
 Relay 的 Op 机制完全复用了前文提到的公共 IR 模块的 Op 机制，可以回顾一下，Op 就是一种 Expr. 在本节我们补充一些前文没有提到的细节。
 
 我们知道 Relay Op 只是 High Level 表示，如何 Lower 呢，如前文所述需要定义其 compute/schedule. 暂时我们不去关心 compute/schedule 的内容，我们先看 TVM 中如何为每个 Relay Op 注册其 compute/schedule. 
@@ -1375,7 +1392,8 @@ reg.register_pattern("nn.softmax", OpPattern.OUT_ELEMWISE_FUSABLE)
 
 从代码中可以看到，除了 Strategy 还会注册其他属性用于后续优化，其他的属性读者可自行查阅代码，本文不再细究。
 
-5.4 Pattern Match
+### 5.4 Pattern Match
+
 TVM 定义了一套匹配语法便于 Pass 的编写，本小节简单看一下这套语法。首先看一个简单的匹配两个算子的例子
 
 ```python
@@ -1645,7 +1663,8 @@ Expr PartitionPattern(DFPattern pattern, Expr expr, Map String, ObjectRef  attrs
 ```
 
 
-5.5 AST Traversers
+### 5.5 AST Traversers
+
 编写 Pass 时最常做的操作就是遍历 AST/IR，TVM为此设计了专门的工具。我们首先看一个基类 ExprFunctor 如下
 
 ```cpp
@@ -1783,7 +1802,8 @@ Expr ExprMutator::VisitExpr_(const IfNode* if_node) {
 
 可以看到同样会递归子表达式，且返回一个新的表达式。与 MixedModeVisitor 一样也存在一个 MixedModeMutator 作为 ExprMutator 的替代来避免 Stack Overflow.
 
-5.6 Fuse
+### 5.6 Fuse
+
 Fuse 作为对性能影响最关键的一个 Pass, 本文会仔细过一遍 Fuse 的代码实现。
 
 在做 Fuse 之前，TVM 对每个 Relay Op 注册了一个称为 TOpPattern 的属性如下
@@ -2309,7 +2329,8 @@ struct Group {
 
 如代码所述，每个 group 都会变成一个新的带上 kPrimitive 属性的 relay.Function, 至此 Fuse Pass 的使命完成
 
-6. Lower
+## 6. Lower
+
 了解了 Relay 的 IRModule 后，我们跟踪一下编译 Relay IRModule 的流程，事实上这里面细节特别多，因此本文只关注最关键的路径。来到 python/tvm/relay/build_module.py ，忽略非关键代码
 
 ```python
@@ -2851,7 +2872,8 @@ def get_valid_implementations(op, attrs, inputs, out_type, target):
 
 如代码所述，直接由每个 Op 注册的 FTVMStrategy 来产生所有的 Implementations。
 
-7. Future
+## 7. Future
+
 文章写到这里，编辑器已经卡得不行了，但是 TVM 的细节还有很多。后面还是另起新文吧，比如以下话题都可以展开
 
 - MemoryPlan

@@ -30,7 +30,8 @@ Softmax性能提升400%，加速边缘设备LLM推理
 Turbo-Softmaxgithub.com/LongWeihan/Turbo-Softmax
 具体代码见我的Github，如果觉得有帮助的话可以点一下star
 
-1. softmax 在 CPU 推理里常常是热点
+## 1. softmax 在 CPU 推理里常常是热点
+
 softmax 的定义：
 
 ```text
@@ -51,7 +52,8 @@ softmax(xi)=exi∑jexj
 - expf()：高延迟、实现复杂（特殊值、精度保证、范围处理等）
 - 归一化：需要一次除法或求倒数如果模型里 softmax 很多（注意力、策略网络、排序、采样前概率计算），软硬件不变的情况下，softmax 优化往往立竿见影。
 
-2. 灵感来源：雷神之锤的位级结构 + 低成本修正
+## 2. 灵感来源：雷神之锤的位级结构 + 低成本修正
+
 Quake 的逆平方根之所以经典，是因为它利用 IEEE-754 的位级结构快速构造初值，再用 1~2 次 Newton 迭代修正。
 
 在 softmax 里，我们同样希望：
@@ -62,7 +64,8 @@ Quake 的逆平方根之所以经典，是因为它利用 IEEE-754 的位级结�
 - exp：poly5（范围归约 + 五阶多项式近似）
 - 1/sum：div（直接 1.0f/sum）它的特点是：误差已经接近 float32 的极限，同时仍能给出显著加速。
 
-3. 核心推导：把 exp(x) 写成 2^i * exp(t)
+## 3. 核心推导：把 exp(x) 写成 2^i * exp(t)
+
 关键等式：
 
 ```text
@@ -99,7 +102,8 @@ t=f\ln 2\in\left[-\frac{\ln2}{2},\frac{\ln2}{2}\right]\approx[-0.3466,0.3466] \\
 
 - 2^i 怎么算得快？
 - exp(t) 在很小的区间怎么高精度近似？
-4. 工程技巧：用 IEEE-754 位级构造 2^i
+## 4. 工程技巧：用 IEEE-754 位级构造 2^i
+
 float32 的指数位有 bias=127。2^i 对应的 float 可以直接把指数位设为 i+127，尾数为 0：
 
 ```text
@@ -108,7 +112,8 @@ float two_i = as_float((uint32_t)(i + 127)    23);
 
 这一步没有真正的指数运算，成本非常低。
 
-5. poly5 近似 exp(t)：在小区间里又快又准
+## 5. poly5 近似 exp(t)：在小区间里又快又准
+
 因为 t 的范围很小，可以用五阶多项式近似：
 
 ```text
@@ -126,7 +131,8 @@ float p = 1 + t*(1 + t*(0.5 + t*(1/6 + t*(1/24 + t*(1/120)))));
 
 exp(x) ≈ two_i * p
 
-6. 最终算法：poly5 + div softmax
+## 6. 最终算法：poly5 + div softmax
+
 两趟遍历：
 
 - m = max(x)
@@ -136,22 +142,26 @@ exp(x) ≈ two_i * p
 
 - 小于 -80 的部分按 -80 处理（对应非常小的概率）干净实现见：qsoftmax_poly5_div/qsoftmax.c
 
-7. Benchmark 
+## 7. Benchmark 
+
 你只需要准备一个 bench.c，把 qsoftmax_poly5_div/qsoftmax.c 参与编译即可（完整示例在附录 A）。
 
-7.1 跑基准，生成 CSV
+### 7.1 跑基准，生成 CSV
+
 Windows + MinGW gcc 示例：
 
 gcc -O3 -std=c11 -Wall -Wextra -pedantic bench.c qsoftmax_poly5_div/qsoftmax.c -I qsoftmax_poly5_div -lm -o bench.exe
 ./bench.exe --out bench.csv
 
-8. 结果
+## 8. 结果
+
 
 图 1：吞吐（MElem/s）对比
 图 2：加速比（speedup）随 n 的变化
 图 3：误差曲线（mean_abs / max_abs / max|sum-1|）
 图 4：不同 scale / batch 的对比
-9. 怎么把它用到你的工程里？
+## 9. 怎么把它用到你的工程里？
+
 拎走 qsoftmax_poly5_div/ 这个干净文件夹即可：
 
 - qsoftmax.h
@@ -166,7 +176,8 @@ qsoftmax_poly5_div(x, n, out, p);
 
 - -O3 必开
 - 不建议默认开启 -ffast-math（除非你确认可接受更激进的浮点语义）
-10. 还能怎么更快？（可选扩展）
+## 10. 还能怎么更快？（可选扩展）
+
 如果你还想更快：
 
 - 做 SIMD（AVX2/AVX-512/NEON）向量化：这套 2^i + poly 很适合向量化

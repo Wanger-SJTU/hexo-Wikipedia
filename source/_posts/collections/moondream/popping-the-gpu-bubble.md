@@ -51,9 +51,12 @@ slot 在 CPU 读取完结果后才释放（不是 GPU 完成就释放），防�
 
 但依赖在采样，不在 forward。所以：
 
-1. <strong>Launch</strong> forward t+1（不依赖 mask，立即执行）
-2. <strong>Commit</strong> step t（等待 D2H copy，推进解码状态，决定 t+1 的 mask）
-3. <strong>Finalize</strong> sampling t+1（基于更新后的状态构建 mask 并采样）
+## 1. **Launch** forward t+1（不依赖 mask，立即执行）
+
+## 2. **Commit** step t（等待 D2H copy，推进解码状态，决定 t+1 的 mask）
+
+## 3. **Finalize** sampling t+1（基于更新后的状态构建 mask 并采样）
+
 
 forward 先跑，sampling 等上一步 commit 完。GPU 闲不住。
 
@@ -87,9 +90,12 @@ Photon 不分离 prefill 和 decode。prefill 也走同一个 pipeline，短输�
 
 三个关键观察：
 
-1. <strong>GPU 越快收益越大</strong> — 3090 最多 +11.6%，B200 最多 +35.4%。bookkeeping 开销与 GPU 速度无关，forward 越短 bubble 占比越高
-2. <strong>僵尸税真实但小，且会摊薄</strong> — 单流约 1%，batch 时几乎为零
-3. <strong>只有 bubble 真的能被隐藏时才有效</strong> — 如果 copy stream 意外变成同步的，收益直接消失
+## 1. **GPU 越快收益越大** — 3090 最多 +11.6%，B200 最多 +35.4%。bookkeeping 开销与 GPU 速度无关，forward 越短 bubble 占比越高
+
+## 2. **僵尸税真实但小，且会摊薄** — 单流约 1%，batch 时几乎为零
+
+## 3. **只有 bubble 真的能被隐藏时才有效** — 如果 copy stream 意外变成同步的，收益直接消失
+
 
 ## 总结
 

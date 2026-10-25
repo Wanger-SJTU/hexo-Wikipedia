@@ -46,7 +46,8 @@ source_url: https://zhuanlan.zhihu.com/p/2039659658575656354
 
 一、为什么我们需要 OPD：从 SFT 和 RL 的两个原罪谈起
 
-1.1 先复习两种 post-training 范式的差别
+### 1.1 先复习两种 post-training 范式的差别
+
 在正式聊 OPD 之前，我们先把"训学生模型"的两种基本范式过一遍。这一节没啥新东西，纯粹为了帮大家把符号和概念对齐，<strong>有 RL 基础的朋友可以直接跳到 1.4</strong>。
 
 post-training（也就是把一个会说人话的预训练模型，进一步训练成一个会做题、会聊天、会调用工具的"专家"）大致可以分成两条主路：
@@ -58,7 +59,8 @@ post-training（也就是把一个会说人话的预训练模型，进一步训�
 
 我们先不急着回答这个问题，先来复习一下 SFT 和 RL 各自的原罪，这样后面看 OPD 的时候才会有"原来如此"的快感。
 
-1.2 SFT 的原罪：分布偏移 + 学到一身大师腔
+### 1.2 SFT 的原罪：分布偏移 + 学到一身大师腔
+
 SFT 大家都熟，不用多讲。它的训练流程极其简单：拿一批 `(prompt, response)`，把 response 当成标准答案，做一次极大似然估计（teacher-forcing 方式），就完了。
 
 但 SFT 有两个非常严重的问题，<strong>第一个问题是分布偏移（distribution shift）</strong>：
@@ -76,7 +78,8 @@ SFT 大家都熟，不用多讲。它的训练流程极其简单：拿一批 `(p
 
  这就好比一个新手棋手在反复观看大师的对局录像，棋谱看了上千张，确实能背出大师在每一种局面下的下法。但<strong>真到他自己下棋的时候，对手摆出的局面往往是大师从来不会陷入的</strong>——比如开局莫名其妙被偷一个兵——这时新手脑子里没有任何录像可以参考，只能瞎下。这就是 SFT 学生的真实处境。
  
-1.3 RL 的原罪：奖励太稀，token 算账靠瞎猜
+### 1.3 RL 的原罪：奖励太稀，token 算账靠瞎猜
+
 聊完 SFT，我们来看 RL（这里我们就用 PPO 系作为代表，DPO 这种 off-policy 的不在本节讨论范围）。
 
 RL 解决了 SFT 的第一个问题（分布偏移）：<strong>因为它的训练数据就是学生自己跑出来的</strong>。所以在训练时学生看到的状态分布，和它推理时看到的状态分布是同一个。这一点极其重要，是 PPO 等方法之所以能纠正"复合错误"的根本原因。
@@ -96,7 +99,8 @@ RL 解决了 SFT 的第一个问题（分布偏移）：<strong>因为它的训�
  RL 的训练方式相当于，你和别人下了一整盘棋，下完之后只有一个结果——赢或者输。<strong>没有任何人告诉你哪几步走得好，哪几步是昏招</strong>。你只能凭"我赢了"或"我输了"这一个信号，自己琢磨这盘棋的得失。
  这种学习方式当然有用，但效率确实拉胯。OpenAI o-系列、DeepSeek-R1 这些靠 RL 起家的推理模型，背后都是吃了<strong>几十万到几百万</strong>条 prompt 的 rollout 才把模型练出来的。算力账单是天文数字。
 
-1.4 OPD 的全新交易：on-policy 的轨迹 + dense 的反馈
+### 1.4 OPD 的全新交易：on-policy 的轨迹 + dense 的反馈
+
 现在我们终于可以聊 OPD 了。
 
 OPD 的核心 idea 极其朴素，几乎可以一句话讲完：
@@ -122,72 +126,76 @@ OPD 的核心 idea 极其朴素，几乎可以一句话讲完：
 
 二、OPD 的数学骨架
 
-2.1 一句话定义 OPD
+### 2.1 一句话定义 OPD
+
 为了避免歧义，我们先把符号定义清楚（这套符号在全文都用，绝不中途换）：
 
 - 
-![](https://www.zhihu.com/equation?tex=%5Cpi_%5Ctheta)：student 模型（待训练，参数 
-![](https://www.zhihu.com/equation?tex=%5Ctheta)）。
+$\pi_\theta$：student 模型（待训练，参数 
+$\theta$）。
 - 
-![](https://www.zhihu.com/equation?tex=%5Cpi_T)：teacher 模型（参数冻结）。
+$\pi_T$：teacher 模型（参数冻结）。
 - 
-![](https://www.zhihu.com/equation?tex=x+%5Csim+%5Cmathcal%7BD%7D)：来自训练集的 prompt。
+$x \sim \mathcal{D}$：来自训练集的 prompt。
 - 
-![](https://www.zhihu.com/equation?tex=%5Chat%7By%7D+%3D+%28%5Chat%7By%7D_1%2C+%5Cdots%2C+%5Chat%7By%7D_T%29+%5Csim+%5Cpi_%5Ctheta%28%5Ccdot+%5Cmid+x%29)：student 对 prompt 
-![](https://www.zhihu.com/equation?tex=x) 自回归采样出的一条完整 response。注意这里 
-![](https://www.zhihu.com/equation?tex=T) 是序列长度。
+$\hat{y} = (\hat{y}_1, \dots, \hat{y}_T) \sim \pi_\theta(\cdot \mid x)$：student 对 prompt 
+$x$ 自回归采样出的一条完整 response。注意这里 
+$T$ 是序列长度。
 - 
-![](https://www.zhihu.com/equation?tex=p_t%28v%29+%5Ctriangleq+%5Cpi_%5Ctheta%28v+%5Cmid+x%2C+%5Chat%7By%7D_%7B%3Ct%7D%29+)：student 在第 
-![](https://www.zhihu.com/equation?tex=t) 个位置上对词表中 token 
-![](https://www.zhihu.com/equation?tex=v) 的预测概率分布。
+$p_t(v) \triangleq \pi_\theta(v \mid x, \hat{y}_{<t})$：student 在第 
+$t$ 个位置上对词表中 token 
+$v$ 的预测概率分布。
 - 
-![](https://www.zhihu.com/equation?tex=q_t%28v%29+%5Ctriangleq+%5Cpi_T%28v+%5Cmid+x%2C+%5Chat%7By%7D_%7B%3Ct%7D%29+)：teacher 在<strong>同一个位置、同一个 prefix</strong> 下对 token 
-![](https://www.zhihu.com/equation?tex=v) 的预测概率分布。
+$q_t(v) \triangleq \pi_T(v \mid x, \hat{y}_{<t})$：teacher 在<strong>同一个位置、同一个 prefix</strong> 下对 token 
+$v$ 的预测概率分布。
 - 
-![](https://www.zhihu.com/equation?tex=V+%3D+%7C%5Cmathcal%7BV%7D%7C)：词表大小（论文里有时记作 
-![](https://www.zhihu.com/equation?tex=M)，本文统一用 
-![](https://www.zhihu.com/equation?tex=V)）。
+$V = |\mathcal{V}|$：词表大小（论文里有时记作 
+$M$，本文统一用 
+$V$）。
 - 
-![](https://www.zhihu.com/equation?tex=B)：batch size。上面这些定义里，<strong>有一个细节非常关键，请你停 5 秒钟读三遍</strong>：
+$B$：batch size。上面这些定义里，<strong>有一个细节非常关键，请你停 5 秒钟读三遍</strong>：
 
  teacher 算的是"在 student 自己生成的 prefix 上"的下一个 token 分布。也就是说，<strong>teacher 永远是在评判一个由 student 决定的状态</strong>，而不是在自由生成。
  理解了这一点，OPD 整个训练流程就剩三步：
 
 - <strong>Rollout（贵的一步）</strong>：student 拿到 prompt 
-![](https://www.zhihu.com/equation?tex=x)，自回归生成完整的 response 
-![](https://www.zhihu.com/equation?tex=%5Chat%7By%7D)。
+$x$，自回归生成完整的 response 
+$\hat{y}$。
 - <strong>Score（便宜的一步）</strong>：teacher 拿到 
-![](https://www.zhihu.com/equation?tex=%28x%2C+%5Chat%7By%7D%29)，做<strong>一次</strong> forward pass（也就是一次 prefill），就能并行地拿到所有 
-![](https://www.zhihu.com/equation?tex=t) 位置上的 
-![](https://www.zhihu.com/equation?tex=q_t%28%5Ccdot%29)。
+$(x, \hat{y})$，做<strong>一次</strong> forward pass（也就是一次 prefill），就能并行地拿到所有 
+$t$ 位置上的 
+$q_t(\cdot)$。
 - <strong>Update</strong>：用 
-![](https://www.zhihu.com/equation?tex=p_t) 和 
-![](https://www.zhihu.com/equation?tex=q_t) 之间的 KL 散度构造 token-level reward，反传更新 student。第 3 步是这篇文章后面的全部主菜。我们接下来就一节节啃。
+$p_t$ 和 
+$q_t$ 之间的 KL 散度构造 token-level reward，反传更新 student。第 3 步是这篇文章后面的全部主菜。我们接下来就一节节啃。
 
-2.2 KL 散度的两个方向：Forward KL vs Reverse KL
+### 2.2 KL 散度的两个方向：Forward KL vs Reverse KL
+
 KL 散度大家应该都熟，但它是一个<strong>有方向</strong>的距离度量，方向选错，行为就会完全不一样。
 
 我们先把两种方向的式子写清楚：
 
 <strong>Forward KL</strong>（从 teacher 到 student）：
 
-![](https://www.zhihu.com/equation?tex=D_%7B%5Ctext%7BKL%7D%7D%28q_t+%5C%2C%5C%7C%5C%2C+p_t%29+%3D+%5Cmathbb%7BE%7D_%7Bv+%5Csim+q_t%7D%5Cleft%5B%5Clog+%5Cfrac%7Bq_t%28v%29%7D%7Bp_t%28v%29%7D%5Cright%5D+%3D+%5Csum_%7Bv+%5Cin+%5Cmathcal%7BV%7D%7D+q_t%28v%29+%5Clog+%5Cfrac%7Bq_t%28v%29%7D%7Bp_t%28v%29%7D+%5C%5C)
+$$D_{\text{KL}}(q_t \,\|\, p_t) = \mathbb{E}_{v \sim q_t}\left[\log \frac{q_t(v)}{p_t(v)}\right] = \sum_{v \in \mathcal{V}} q_t(v) \log \frac{q_t(v)}{p_t(v)} \\$$
+
 
 <strong>Reverse KL</strong>（从 student 到 teacher）：
 
-![](https://www.zhihu.com/equation?tex=D_%7B%5Ctext%7BKL%7D%7D%28p_t+%5C%2C%5C%7C%5C%2C+q_t%29+%3D+%5Cmathbb%7BE%7D_%7Bv+%5Csim+p_t%7D%5Cleft%5B%5Clog+%5Cfrac%7Bp_t%28v%29%7D%7Bq_t%28v%29%7D%5Cright%5D+%3D+%5Csum_%7Bv+%5Cin+%5Cmathcal%7BV%7D%7D+p_t%28v%29+%5Clog+%5Cfrac%7Bp_t%28v%29%7D%7Bq_t%28v%29%7D+%5C%5C)
+$$D_{\text{KL}}(p_t \,\|\, q_t) = \mathbb{E}_{v \sim p_t}\left[\log \frac{p_t(v)}{q_t(v)}\right] = \sum_{v \in \mathcal{V}} p_t(v) \log \frac{p_t(v)}{q_t(v)} \\$$
+
 
 我相信你现在已经看出来了：两个式子最大的差别在于，<strong>期望是在哪个分布下取的</strong>。这一点决定了它们的"性格"完全不同。
 
 ![](https://pic3.zhimg.com/v2-37fe9242eccc0566c657866da8ebb08e_r.jpg)kBn01C<strong>先看 Forward KL，它的性格叫 Mean Seeking（找均值）</strong>：
 
 它要求 student 的分布 
-![](https://www.zhihu.com/equation?tex=p_t) 尽量"覆盖" teacher 分布 
-![](https://www.zhihu.com/equation?tex=q_t) 中所有非零的位置。原因是：只要某个 
-![](https://www.zhihu.com/equation?tex=v) 满足 
-![](https://www.zhihu.com/equation?tex=q_t%28v%29+%3E+0) 而 
-![](https://www.zhihu.com/equation?tex=p_t%28v%29+%5Capprox+0)，那 
-![](https://www.zhihu.com/equation?tex=%5Clog%28q_t+%2F+p_t%29) 就会爆炸成一个超大正数，loss 直接起飞。所以 Forward KL 的 student <strong>不敢"漏掉"任何一种 teacher 可能采纳的回答</strong>，结果就是它会把概率"均匀"地涂在 teacher 出现过的所有 mode 上——哪怕这些 mode 互相矛盾。
+$p_t$ 尽量"覆盖" teacher 分布 
+$q_t$ 中所有非零的位置。原因是：只要某个 
+$v$ 满足 
+$q_t(v) > 0$ 而 
+$p_t(v) \approx 0$，那 
+$\log(q_t / p_t)$ 就会爆炸成一个超大正数，loss 直接起飞。所以 Forward KL 的 student <strong>不敢"漏掉"任何一种 teacher 可能采纳的回答</strong>，结果就是它会把概率"均匀"地涂在 teacher 出现过的所有 mode 上——哪怕这些 mode 互相矛盾。
 
 谨慎的你可能此时想问：那这有什么不好？student 多吸收点知识不是好事吗？
 
@@ -196,8 +204,8 @@ KL 散度大家应该都熟，但它是一个<strong>有方向</strong>的距离
 <strong>再看 Reverse KL，它的性格叫 Mode Seeking（找众数）</strong>：
 
 期望是在 student 自己的分布 
-![](https://www.zhihu.com/equation?tex=p_t) 下取的，所以<strong>只要 student 自己不去采那个 token，teacher 在那个 token 上有多大概率根本不重要</strong>。反过来，只要 student 把概率压在某个 token 上，那 teacher 在那个 token 上的概率最好别太低，否则 
-![](https://www.zhihu.com/equation?tex=%5Clog%28p_t+%2F+q_t%29) 就要起飞了。
+$p_t$ 下取的，所以<strong>只要 student 自己不去采那个 token，teacher 在那个 token 上有多大概率根本不重要</strong>。反过来，只要 student 把概率压在某个 token 上，那 teacher 在那个 token 上的概率最好别太低，否则 
+$\log(p_t / q_t)$ 就要起飞了。
 
 直觉上看，Reverse KL 鼓励 student <strong>挑一个 teacher 也认可的 mode，然后 all-in 进去</strong>。这正是 LLM 后训练梦寐以求的效果——别贪心，挑一种最好的回答方式，然后稳定地输出。
 
@@ -206,44 +214,48 @@ KL 散度大家应该都熟，但它是一个<strong>有方向</strong>的距离
 不过 Reverse KL 还有一个非常工业化的好处，几乎被所有 OPD 实现选中：
 
  因为它的期望是在 
-![](https://www.zhihu.com/equation?tex=p_t) 下取的，所以可以用 student 自己采的那一个 token 
-![](https://www.zhihu.com/equation?tex=%5Chat%7By%7D_t) 直接做无偏的 Monte Carlo 估计：
+$p_t$ 下取的，所以可以用 student 自己采的那一个 token 
+$\hat{y}_t$ 直接做无偏的 Monte Carlo 估计：
  
-![](https://www.zhihu.com/equation?tex=%5Cwidehat%7BD_%7B%5Ctext%7BKL%7D%7D%7D%28p_t+%5C%7C+q_t%29+%5Capprox+%5Clog+p_t%28%5Chat%7By%7D_t%29+-+%5Clog+q_t%28%5Chat%7By%7D_t%29+%5C%5C)
+$$\widehat{D_{\text{KL}}}(p_t \| q_t) \approx \log p_t(\hat{y}_t) - \log q_t(\hat{y}_t) \\$$
+
 
 也就是说，<strong>Reverse KL 不需要你对整个词表求和，只需要 gather 出 student 实际生成的那一个 token 的 log-prob 就行</strong>。这正是下一节要讲的 Sampled-Token OPD 的合理性来源。Forward KL 因为期望在 
-![](https://www.zhihu.com/equation?tex=q_t) 下，用 student 采的样本就不再无偏了，所以工业实现里<strong>很难做出"sampled-token 版"的 forward KL</strong>——这一点后面我们会再回过头来强调。
+$q_t$ 下，用 student 采的样本就不再无偏了，所以工业实现里<strong>很难做出"sampled-token 版"的 forward KL</strong>——这一点后面我们会再回过头来强调。
 
-2.3 词表选择：Sampled-Token / Top-k / Full-Vocab，到底用哪个？
+### 2.3 词表选择：Sampled-Token / Top-k / Full-Vocab，到底用哪个？
+
 确定了用 Reverse KL 之后，我们还要面对一个非常工程化的决策：**算 KL 的时候，要不要把整个词表 
-![](https://www.zhihu.com/equation?tex=V) 都拿来求和？
+$V$ 都拿来求和？
 
 直觉上，词表越大、参与计算的 token 越多，KL 估计就越准。但 V 通常是 100k 量级（Qwen3 的词表是 151936），把整个词表都拉进 loss 计算意味着显存会爆炸。所以业界根据"取多少 token 进入 KL 求和"，演化出了三种 OPD 变体：
 
 - <strong>Sampled-Token OPD</strong>：只用 student 实际采到的那一个 token 
-![](https://www.zhihu.com/equation?tex=%5Chat%7By%7D_t) 做 Monte Carlo 估计。每个位置只看 1 个 token。
+$\hat{y}_t$ 做 Monte Carlo 估计。每个位置只看 1 个 token。
 - <strong>Top-k OPD</strong>：从 student 或 teacher 的分布中挑 top-k 个 token 进入 KL 求和。每个位置看 k 个 token。
 - <strong>Full-Vocabulary OPD</strong>：把整个词表都拿来求 KL 求和。每个位置看 
-![](https://www.zhihu.com/equation?tex=V) 个 token。直觉上你可能觉得"算的 token 越多越准"，所以应该上 Full。但<strong>实际工业默认却是 Sampled-Token</strong>。这背后的取舍很有意思，我们一项一项拆开来看。
+$V$ 个 token。直觉上你可能觉得"算的 token 越多越准"，所以应该上 Full。但<strong>实际工业默认却是 Sampled-Token</strong>。这背后的取舍很有意思，我们一项一项拆开来看。
 
-2.3.1 三者计算量 / 显存对比
+### 2.3.1 三者计算量 / 显存对比
+
 我们先搞清楚一个最容易被搞混的点：
 
  不论你选哪种变体，**teacher 都只需要对 student 的完整 response 
-![](https://www.zhihu.com/equation?tex=%5Chat%7By%7D) 做一次 forward pass（即 prefill）**，就能得到一个 shape 为 `[B, T, V]` 的 logits 张量，从中可以拿到所有位置 
-![](https://www.zhihu.com/equation?tex=t) 的完整 teacher 分布 
-![](https://www.zhihu.com/equation?tex=q_t%28%5Ccdot%29)。
+$\hat{y}$ 做一次 forward pass（即 prefill）**，就能得到一个 shape 为 `[B, T, V]` 的 logits 张量，从中可以拿到所有位置 
+$t$ 的完整 teacher 分布 
+$q_t(\cdot)$。
  teacher 不需要做 decode（autoregressive 生成），因为 prefix $\hat{y}_{ 
 
 所以三种变体在<strong>前向计算量</strong>（teacher forward 的 FLOPs）上完全一样。差别在于：拿到这个 `[B, T, V]` 张量之后，loss 计算阶段对它的处理方式不同。
 
 变体Teacher 前向 FLOPsLoss 计算 FLOPsLoss 计算显存Sampled-Token一次 prefillO(BT)（gather 即可）O(BT)Top-k一次 prefillO(BTk)O(BTk)Full-Vocab一次 prefillO(BTV)O(BTV)显存压力一目了然：**Full-Vocab 比 Sampled-Token 多消耗大约 
-![](https://www.zhihu.com/equation?tex=V) 倍的显存<strong>——以 Qwen3 那种 V≈150k 的词表，这是</strong>五个数量级**的差距。在 8×80G 的 A100 集群上，Full-Vocab 经常一上来就 OOM。
+$V$ 倍的显存<strong>——以 Qwen3 那种 V≈150k 的词表，这是</strong>五个数量级**的差距。在 8×80G 的 A100 集群上，Full-Vocab 经常一上来就 OOM。
 
 严格来说"计算量完全一样"略有出入：teacher 的 transformer forward FLOPs 三者一样，但 loss 部分 Full-Vocab 还要做 
-![](https://www.zhihu.com/equation?tex=O%28BTV%29) 的 element-wise 运算（reduce sum、log、subtract）。不过相对于 transformer forward 的 FLOPs，这部分通常被 forward 的开销主导，所以<strong>实际墙钟时间的差别主要来自显存而不是算力</strong>。
+$O(BTV)$ 的 element-wise 运算（reduce sum、log、subtract）。不过相对于 transformer forward 的 FLOPs，这部分通常被 forward 的开销主导，所以<strong>实际墙钟时间的差别主要来自显存而不是算力</strong>。
 
-2.3.2 Sampled-Token OPD 真的够用吗？
+### 2.3.2 Sampled-Token OPD 真的够用吗？
+
 读到这里你肯定有一个疑问：
 
 <strong>Sampled-Token OPD 一个 token 就能估出来？这未免也太省了，会不会损失精度？</strong>
@@ -253,21 +265,23 @@ KL 散度大家应该都熟，但它是一个<strong>有方向</strong>的距离
  也就是说，<strong>只要你不退化到 Top-1，Sampled-Token 在显存最省的同时几乎不损失最终效果</strong>。这是个非常香的结论，也是 Qwen3、MiMo-V2-Flash、Tinker（Thinking Machines Lab 自家训练框架）等大多数工业实现的默认选择。
 
 但凡事都有反例。<strong>DeepSeek V4 这次就头铁地用了 Full-Vocabulary OPD</strong>——也就是 
-![](https://www.zhihu.com/equation?tex=V+%5Capprox+130k) 量级的全词表逐 token 求和。这个选择我们在第四节展开聊，目前你只需要知道：他们这么选不是因为不知道 sampled-token 更省，而是因为 multi-teacher consolidation 的特殊场景下需要把多个 teacher 的完整分布对齐起来——sampled-token 的 Monte Carlo 估计在多 teacher 场景下方差会被放大，而 full-vocab 能给出"一锤定音"的精确 KL，省心。代价就是显存——不过对于 1.6T MoE 这种规模的训练集群来说，反正显存也不缺，不如把估计量做精。
+$V \approx 130k$ 量级的全词表逐 token 求和。这个选择我们在第四节展开聊，目前你只需要知道：他们这么选不是因为不知道 sampled-token 更省，而是因为 multi-teacher consolidation 的特殊场景下需要把多个 teacher 的完整分布对齐起来——sampled-token 的 Monte Carlo 估计在多 teacher 场景下方差会被放大，而 full-vocab 能给出"一锤定音"的精确 KL，省心。代价就是显存——不过对于 1.6T MoE 这种规模的训练集群来说，反正显存也不缺，不如把估计量做精。
 
-2.3.3 一个容易踩坑的事实：Forward KL 没有"sampled-token 版"
+### 2.3.3 一个容易踩坑的事实：Forward KL 没有"sampled-token 版"
+
 我在 2.2 节最后埋了一个伏笔，这里展开。
 
 Forward KL 的期望是在 
-![](https://www.zhihu.com/equation?tex=q_t)（teacher 分布）下取的：
+$q_t$（teacher 分布）下取的：
 
-![](https://www.zhihu.com/equation?tex=D_%7B%5Ctext%7BKL%7D%7D%28q_t+%5C%7C+p_t%29+%3D+%5Csum_v+q_t%28v%29+%5Clog+%5Cfrac%7Bq_t%28v%29%7D%7Bp_t%28v%29%7D+%5C%5C)
+$$D_{\text{KL}}(q_t \| p_t) = \sum_v q_t(v) \log \frac{q_t(v)}{p_t(v)} \\$$
+
 
 如果你想用 Monte Carlo 估计这个期望，**你需要从 
-![](https://www.zhihu.com/equation?tex=q_t) 里采样<strong>——也就是说，你需要让 teacher 自己采一个 token 来做 estimator。但 OPD 的整套设计是 student 来跑 rollout、teacher 不做 decode，</strong>你压根没有 teacher 采的 token**。
+$q_t$ 里采样<strong>——也就是说，你需要让 teacher 自己采一个 token 来做 estimator。但 OPD 的整套设计是 student 来跑 rollout、teacher 不做 decode，</strong>你压根没有 teacher 采的 token**。
 
 所以你只能强行用 student 采的 
-![](https://www.zhihu.com/equation?tex=%5Chat%7By%7D_t) 来代替（off-policy），但这是有偏的，估出来的不是真正的 forward KL。<strong>结果就是 forward KL 很难做出真正合理的 sampled-token 版</strong>，工业上一般只能做 full-vocab 或 top-k。
+$\hat{y}_t$ 来代替（off-policy），但这是有偏的，估出来的不是真正的 forward KL。<strong>结果就是 forward KL 很难做出真正合理的 sampled-token 版</strong>，工业上一般只能做 full-vocab 或 top-k。
 
 也就是说，KL 方向的选择和词表选择是耦合的：
 
@@ -300,7 +314,8 @@ export REWARD_MODEL_PATH=model/JustRL-DeepSeek-1.5B           # teacher（注意
 - <strong>整套训练脚本是 GRPO 风格</strong>（每条 prompt 跑 N 条 rollout）。
 - `LOG_PROB_TOP_K=0` 时退化为 Sampled-Token OPD，这一点和我们 2.3 节的结论完全对应。接下来我们沿着训练 loop 一步步看代码。
 
-3.1 整体训练 loop：verl 是怎么"复用 RL"做 OPD 的
+### 3.1 整体训练 loop：verl 是怎么"复用 RL"做 OPD 的
+
 verl 的训练主循环（`verl/trainer/ppo/ray_trainer.py`）是标准的 RL fit loop。OPD 在这个 loop 里只改了 reward 计算的那一段：
 
 # verl/trainer/ppo/ray_trainer.py（节选，伪代码化以便阅读）
@@ -328,7 +343,8 @@ for batch in dataloader:
 
 是不是很眼熟？这就是一个标准的 RL loop。OPD 的所有"特殊性"，都集中在第 3 步和第 4 步上。我们一步步来看。
 
-3.2 Teacher 只做一次 prefill，不做 decode
+### 3.2 Teacher 只做一次 prefill，不做 decode
+
 第 3 步是 OPD 的"成本秘密"。我们看 `verl/workers/fsdp_workers.py` 里 `compute_rm_score` 调用 teacher 的部分（节选关键代码）：
 
 # verl/workers/fsdp_workers.py（节选）
@@ -347,13 +363,14 @@ teacher_on_student_log_probs = teacher_on_student_log_probs - teacher_logsumexp
 <strong>这段代码就是整个 OPD 训练里 teacher 唯一做的事情</strong>：
 
 - 对 student 整条 response 
-![](https://www.zhihu.com/equation?tex=%5Chat%7By%7D) 做一次 prefill，拿到 logits 张量 `[B, T, V]`；
+$\hat{y}$ 做一次 prefill，拿到 logits 张量 `[B, T, V]`；
 - 用 `gather` 在词表维度上把 student 关心的那些 token id 挑出来；
 - 算一下 logsumexp 做归一化，得到这些 id 在 teacher 分布下的 log-prob。<strong>没有 decode，没有 autoregressive 生成，只有一次 prefill</strong>。这就是为什么我们说 teacher 在 OPD 里很便宜——它只承担了一次 forward 的成本，剩下的工作全在 student 那一侧。
 
 现在你应该能理解为什么前文反复强调"teacher 只做一次 prefill"了：这是 OPD 比"用 reward model 打分的 RL"省得多的根本原因——后者经常需要 reward model 也做 long-context decode（比如 process reward model 那种逐步打分）。
 
-3.3 reward 怎么算：`rm_scores = -kl_val * weights`
+### 3.3 reward 怎么算：`rm_scores = -kl_val * weights`
+
 接下来看最核心的那一行。在 `verl/workers/actor/dp_actor.py` 中，针对 `only_stu` 策略（也就是 top-k 从 student 选），reward 的计算公式是：
 
 # verl/workers/actor/dp_actor.py（关键代码段）
@@ -372,7 +389,7 @@ if strategy == "only_stu":
 我们逐行拆解：
 
 - `kl_val = S_logp - T_on_S` —— 这就是 2.2 节给出的 reverse KL 的逐 token Monte Carlo 估计 
-![](https://www.zhihu.com/equation?tex=%5Clog+p_t%28%5Chat%7By%7D_t%29+-+%5Clog+q_t%28%5Chat%7By%7D_t%29) 的多 token 推广。
+$\log p_t(\hat{y}_t) - \log q_t(\hat{y}_t)$ 的多 token 推广。
 - `rm_scores = -kl_val * norm_weights` —— <strong>reward 直接定义为负的 reverse KL</strong>。KL 越小（说明 student 的输出和 teacher 越像），reward 就越大；反之，reward 是个大负数，会狠狠惩罚 student。
 - `norm_weights` —— 在 top-k 的版本里，多个 token 之间需要加权。`reward_weight_mode = "student_p"` 时就用 student 自己的概率做归一化权重，相当于按 student 的"在意程度"加权——student 越在意的 token，KL 偏差对它的影响越大。谨慎的你可能想问：<strong>为什么用 student 的概率做加权，而不是 teacher 的？</strong>
 
@@ -386,7 +403,8 @@ Thinking Machines Lab 的博客也专门强调了这一点：
 
  Unlike most reward models in practice, the reverse KL is "unhackable" in the sense that low KL always corresponds to a high probability of desirable behavior from the teacher model's point of view.
  
-3.4 advantage 怎么算：直接令 `advantage = reward`
+### 3.4 advantage 怎么算：直接令 `advantage = reward`
+
 按照 PPO/GRPO 的常规设计，下一步应该是 GAE（Generalized Advantage Estimation）。但 OPD 在这里做了一个非常激进的简化——<strong>它直接让 advantage = reward</strong>。
 
 # verl/trainer/ppo/core_algos.py
@@ -432,20 +450,22 @@ training_client.forward_backward(trajectories, loss_fn="importance_sampling")
 
 完全一致。<strong>一句话总结</strong>：OPD 之所以可以省掉 critic 和 GAE，是因为它的 reward 已经稠密到了每个 token，不需要额外做折现。
 
-3.5 actor loss 怎么算：复用 PPO 的 importance sampling
+### 3.5 actor loss 怎么算：复用 PPO 的 importance sampling
+
 最后一步，actor 是怎么更新的？答案非常无聊——<strong>直接复用 PPO 的 importance sampling loss</strong>。OPD 在这一步几乎没做任何特殊处理。
 
 我们简单回忆一下 PPO 的 actor loss 长什么样（对 PPO 完全没概念的朋友强烈建议先翻一下猛猿的 [图解大模型 RLHF 系列：人人都能看懂的 PPO 原理与源码解读](https://zhuanlan.zhihu.com/p/677607581)，下面我只简短复述）：
 
-![](https://www.zhihu.com/equation?tex=%5Cmathcal%7BL%7D_%7B%5Ctext%7Bactor%7D%7D+%3D+-%5Cmathbb%7BE%7D_t%5CBig%5B%5Cmin%5Cbig%28r_t%28%5Ctheta%29+%5Ccdot+A_t%2C+%5C+%5Ctext%7Bclip%7D%28r_t%28%5Ctheta%29%2C+1-%5Cepsilon%2C+1%2B%5Cepsilon%29+%5Ccdot+A_t%5Cbig%29%5CBig%5D+%5C%5C)
+$$\mathcal{L}_{\text{actor}} = -\mathbb{E}_t\Big[\min\big(r_t(\theta) \cdot A_t, \ \text{clip}(r_t(\theta), 1-\epsilon, 1+\epsilon) \cdot A_t\big)\Big] \\$$
+
 
 其中：
 
 - 
-![](https://www.zhihu.com/equation?tex=r_t%28%5Ctheta%29+%3D+%5Cpi_%5Ctheta%28%5Chat%7By%7D_t+%5Cmid+x%2C+%5Chat%7By%7D_%7B%3C+t%7D%29+%2F+%5Cpi_%7B%5Ctheta_%7B%5Cmathrm%7Bold%7D%7D%7D%28%5Chat%7By%7D_t+%5Cmid+x%2C+%5Chat%7By%7D_%7B%3C+t%7D%29) 是 importance sampling 比率；
+$r_t(\theta) = \pi_\theta(\hat{y}_t \mid x, \hat{y}_{< t}) / \pi_{\theta_{\mathrm{old}}}(\hat{y}_t \mid x, \hat{y}_{< t})$ 是 importance sampling 比率；
 - 
-![](https://www.zhihu.com/equation?tex=A_t) 就是上一节的 advantage（在 OPD 里 = 
-![](https://www.zhihu.com/equation?tex=-%5Ctext%7BKL%7D_t)）。这个 loss 的直觉是：<strong>当 advantage 是正的（即 KL 小，student 表现得像 teacher），就提升这个 token 的概率；当 advantage 是负的（KL 大，student 偏离 teacher），就压低这个 token 的概率</strong>。clip 项的作用和 PPO 完全一致，是防止单步更新过猛。
+$A_t$ 就是上一节的 advantage（在 OPD 里 = 
+$-\text{KL}_t$）。这个 loss 的直觉是：<strong>当 advantage 是正的（即 KL 小，student 表现得像 teacher），就提升这个 token 的概率；当 advantage 是负的（KL 大，student 偏离 teacher），就压低这个 token 的概率</strong>。clip 项的作用和 PPO 完全一致，是防止单步更新过猛。
 
 有没有发现一件很有意思的事？
 
@@ -467,7 +487,8 @@ training_client.forward_backward(trajectories, loss_fn="importance_sampling")
 
 我把这五个 case 按"对工业的影响力"和"出现时间"重新排了一下顺序——从最新最重的 DeepSeek V4 讲起，回溯到去年 Thinking Machines Lab 那篇科普为这个方向做的奠基。
 
-4.1 DeepSeek-V4：直接把 mix RL 的位置交给 OPD
+### 4.1 DeepSeek-V4：直接把 mix RL 的位置交给 OPD
+
 DeepSeek V4 是这一波 OPD 风潮里<strong>最激进的玩家</strong>。如果说前面几家都还是把 OPD 当成 post-training pipeline 里的"补丁"或者"中间阶段"，那么 V4 干脆<strong>把 V3.2 时代用过的整套 mix RL 流程，整个换成了 OPD</strong>。
 
 它的整体思路可以画成两步：
@@ -492,7 +513,8 @@ DeepSeek V4 给出的解释（你也可以理解成它对工业界的暴论）�
 
 <strong>一句话总结</strong>：DeepSeek V4 的 post-training 哲学，就是用"独立 specialist + 多教师 OPD"这种"先分后合"的范式，去取代"一次性 mix RL"这种"all-in-one"的范式。这是今年 OPD 在工业落地里最重磅的一次背书。
 
-4.2 Qwen3：那张让所有人重新审视 OPD 的对比表
+### 4.2 Qwen3：那张让所有人重新审视 OPD 的对比表
+
 时间往回拨到 2025 年，Qwen3 大概是把 OPD"打"上工业舞台的关键玩家。他们的技术报告里 Table 21 给出了一组被反复转发的对比数字：
 
 方法AIME'24GPQA-DiamondGPU HoursOff-policy distillation（SFT）55.0%55.6%Unreported+ Reinforcement learning67.6%61.3%17,920+ On-policy distillation74.4%63.3%1,800注意中间那一行和最后一行：<strong>OPD 不仅在 AIME'24 上比 RL 高 6.8 个点，所用的 GPU 时数还只是 RL 的 1/10</strong>。
@@ -501,7 +523,8 @@ DeepSeek V4 给出的解释（你也可以理解成它对工业界的暴论）�
 
 不过 Qwen3 的 OPD 用法也带来了一些"传染病"。在 [Qwen3 GitHub Discussion #1798](https://link.zhihu.com/?target=https%3A//github.com/QwenLM/Qwen3/discussions/1798) 和 Issue #1799 里，社区反馈了 OPD 在 strong-to-weak 蒸馏（也就是大 teacher 教小 student）场景下，如果不加任何稳定化机制（比如 sentence-level importance weighting、ratio clipping），student 的错误会逐步放大，最终训练崩溃。这一点 Qwen3 团队在自己的实现里有处理，但具体细节没完全公开。后来这一系列稳定化技巧也成为后续多篇论文的重点（我们在第五节里再讲）。
 
-4.3 MiMo-V2-Flash：Multi-Teacher OPD（MOPD）
+### 4.3 MiMo-V2-Flash：Multi-Teacher OPD（MOPD）
+
 小米的 MiMo-V2-Flash（309B 总参 / 15B activated 的 MoE 模型）把 OPD 升级成了 <strong>Multi-Teacher On-Policy Distillation（MOPD）</strong>。
 
 ![](https://pic1.zhimg.com/v2-1c3ba6763a24d954cf57f71f8020205e_r.jpg)46qF1k它的玩法是这样的：
@@ -518,7 +541,8 @@ Pre-training → Mid-training → Multi-Teacher OPD → Agentic RL
 
 从 benchmark 上看，MOPD + 后续 Agentic RL 让 MiMo-V2-Flash 在 SWE-Bench、AIME 等任务上达到 SOTA，<strong>用 15B activated 的参数干掉了一系列 30B+ 的 dense 模型</strong>。
 
-4.4 GLM-5：on-policy 跨阶段蒸馏，专治"能力衰退"
+### 4.4 GLM-5：on-policy 跨阶段蒸馏，专治"能力衰退"
+
 智谱（z.ai）在 2026 年 2 月放出的 GLM-5（744B 参数 MoE）技术报告里，把 OPD 用在了一个非常聪明的位置：<strong>post-training 的最后一步，专门用来防止前面几个阶段训练之后产生的能力倒退（capability regression）</strong>。
 
 ![](https://picx.zhimg.com/v2-0ffe3d55a674310eeaa5cb3cd06a3aab_r.jpg)SlMUUxGLM-5 的 post-training pipeline 一共四个阶段：
@@ -532,7 +556,8 @@ Pre-training → Mid-training → Multi-Teacher OPD → Agentic RL
 
 GLM-5 的解法就是：<strong>在四个阶段之间，用 on-policy distillation 让模型"对齐"到自己之前的某个能力 snapshot 上，把丢掉的通用能力捞回来</strong>。这是 OPD 在工业链路里非常有代表性的一种用法——不是用来"学新东西"，而是用来"防止丢老东西"。
 
-4.5 Thinking Machines Lab：把 OPD 推到大众视野的那篇博客
+### 4.5 Thinking Machines Lab：把 OPD 推到大众视野的那篇博客
+
 最后回到这个方向的"科普源头"——Thinking Machines Lab（TML，Mira Murati 创立的那家）。他们在 2025 年 10 月那篇 [On-Policy Distillation 博客](https://link.zhihu.com/?target=https%3A//thinkingmachines.ai/blog/on-policy-distillation) 里，把 OPD 的整个原理用「下棋复盘」这种最朴素的类比讲了一遍，可以说是这一波 OPD 出圈的关键传播节点。
 
 除了科普价值，他们还提出了一个我个人觉得特别精妙的 use case——<strong>用模型旧版本的自己当 teacher</strong>。
@@ -563,7 +588,8 @@ GLM-5 的解法就是：<strong>在四个阶段之间，用 on-policy distillati
 
 论文时间角色核心贡献GKD（Agarwal et al.）2023.06，ICLR'24源头第一次系统性地把"on-policy + token-level KD"提出来，并讨论散度选择Rethinking OPD（清华）2026.04诊断指出 OPD 之所以能 work 的两条隐藏假设，给出失败救赎 recipeUni-OPD（腾讯×浙大）2026.05实践 recipe从"学生探索不足 + teacher 信号不可靠"两个角度做 dual-perspective 优化Learning to Foresee（中科大×腾讯）2026.05机理 + 加速用参数动力学解释"OPD 为啥这么快"，顺手提速 3×四篇刚好构成一个完整闭环：<strong>GKD 立起来这个范式 → Rethinking OPD 告诉你它什么时候会失败 → Uni-OPD 告诉你失败时怎么修 → Learning to Foresee 告诉你为啥它本身就快、顺便再加速 3 倍</strong>。下面一篇一篇讲。
 
-5.1 GKD（Agarwal et al., 2023）：OPD 范式的"源头活水"
+### 5.1 GKD（Agarwal et al., 2023）：OPD 范式的"源头活水"
+
 要讲 OPD 的"前世"，绕不开 Google DeepMind 在 2023 年 6 月放出的这篇 On-Policy Distillation of Language Models: Learning from Self-Generated Mistakes（[arxiv 2306.13649](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2306.13649)，后来被 ICLR 2024 接收）。这是历史上第一次有人<strong>把"on-policy + token-level KL"这套配方用现在我们熟悉的形式写下来</strong>——可以说今天工业界谈的所有 OPD，本质上都是这篇 paper 提出的 GKD（Generalized Knowledge Distillation）框架的某种特例。
 
 它要解决什么问题？
@@ -580,11 +606,13 @@ GKD 的两个核心创新
 
 <strong>改动 1：训练样本来自 student 自己</strong>。把传统 KD 的 loss
 
-![](https://www.zhihu.com/equation?tex=%5Cmathcal%7BL%7D%7B%5Cmathrm%7BSFT-KD%7D%7D+%3D+%5Cmathbb%7BE%7D%7B%28x%2Cy%29+%5Csim+%5Cmathcal%7BD%7D%7D+%5Cleft%5B+%5Cmathcal%7BD%7D%7B%5Cmathrm%7BKL%7D%7D+%28p_T%28%5Ccdot%7Cy%7B%3C+t%7D%2Cx%29+%5Cparallel+p_S%28%5Ccdot%7Cy_%7B%3C+t%7D%2Cx%29%29+%5Cright%5D+%5C%5C)
+$$\mathcal{L}{\mathrm{SFT-KD}} = \mathbb{E}{(x,y) \sim \mathcal{D}} \left[ \mathcal{D}{\mathrm{KL}} (p_T(\cdot|y{< t},x) \parallel p_S(\cdot|y_{< t},x)) \right] \\$$
+
 
 里的 `(x, y)` 数据集采样，换成 student 自己 rollout 的 on-policy 样本：
 
-![](https://www.zhihu.com/equation?tex=%5Cmathcal%7BL%7D%7B%5Cmathrm%7BGKD%7D%7D%5E%7B%5Cmathrm%7Bon-policy%7D%7D+%3D+%5Cmathbb%7BE%7D%7Bx+%5Csim+%5Cmathcal%7BX%7D%2C+y+%5Csim+p_S%28%5Ccdot%7Cx%29%7D+%5Cleft%5B+%5Cmathcal%7BD%7D%28p_T%28%5Ccdot%7Cy_%7B%3C+t%7D%2Cx%29+%5Cparallel+p_S%28%5Ccdot%7Cy_%7B%3C+t%7D%2Cx%29%29+%5Cright%5D+%5C%5C)
+$$\mathcal{L}{\mathrm{GKD}}^{\mathrm{on-policy}} = \mathbb{E}{x \sim \mathcal{X}, y \sim p_S(\cdot|x)} \left[ \mathcal{D}(p_T(\cdot|y_{< t},x) \parallel p_S(\cdot|y_{< t},x)) \right] \\$$
+
 
 注意区别：**外层期望里的 `y` 是从 student 自己采的**，但 inner 的 token-level loss 还是和传统 KD 一样——teacher 在每个 prefix 上给出一个分布，学生去对齐。这就是后来工业界所说的 OPD 的最简形态。
 
@@ -609,7 +637,8 @@ Agarwal 这篇 paper 概念上已经把今天的 OPD 讲明白了，但它真正
 
 <strong>一句话总结 GKD 这篇 paper</strong>：所有今天工业界用的 OPD = **GKD 论文里 `(on-policy 样本 + reverse KL + token-level)` 的那个特定配置**。读完它你才能真正理解现在的 OPD 不是凭空冒出来的，而是站在三年前那篇被低估的工作上长出来的。
 
-5.2 Rethinking OPD（2026.04，清华）：系统盘点失败模式 + 两条简单可操作的 Recipe
+### 5.2 Rethinking OPD（2026.04，清华）：系统盘点失败模式 + 两条简单可操作的 Recipe
+
 GKD 把 OPD 立起来之后，接下来一个非常自然的问题是：<strong>这玩意儿真的对所有场景都能 work 吗？什么时候会失败？</strong>
 
 清华 thunlp 团队 2026 年 4 月放出的 Rethinking On-Policy Distillation of Large Language Models: Phenomenology, Mechanism, and Recipe（[arxiv 2604.13016](https://link.zhihu.com/?target=https%3A//arxiv.org/pdf/2604.13016)，也就是 `thunlp/OPD` 仓库背后的论文）就是专门回答这个问题的。这篇 paper 的方法论很有意思——它<strong>不发明新算法</strong>，反而是用几十个对照实验，把 OPD 在工业里"什么时候 work、什么时候不 work"摸了个遍。
@@ -654,7 +683,8 @@ Recipe 2：teacher-aligned prompt selection
 
 <strong>一句话总结 Rethinking OPD</strong>：它把 OPD "什么时候能 work、什么时候不能" 用大量受控实验给摸出来了——给了你两条非常实用的 recipe（cold start + prompt selection），同时也提醒你 OPD 不是 RL 的全场替代品。
 
-5.3 Uni-OPD（2026.05，腾讯×浙大）：Dual-Perspective 救赎"探索不足 + teacher 信号不可靠"
+### 5.3 Uni-OPD（2026.05，腾讯×浙大）：Dual-Perspective 救赎"探索不足 + teacher 信号不可靠"
+
 Rethinking OPD 给了你"训不动的时候怎么办"的 recipe，但它聚焦在<strong>训练前置阶段</strong>（cold start、prompt selection）。一个很自然的下一步问题是：<strong>如果训练已经开始了，过程中又出现了问题，能不能在 loss / 数据层面动手脚去救？</strong>
 
 腾讯和浙大 2026 年 5 月放出的 Uni-OPD: Unifying On-Policy Distillation with a Dual-Perspective Recipe（[arxiv 2605.03677](https://link.zhihu.com/?target=https%3A//arxiv.org/pdf/2605.03677)，[代码](https://link.zhihu.com/?target=https%3A//github.com/WenjinHou/Uni-OPD)）就是来回答这个问题的。它的方法论比 Rethinking 更"工程化"——直接动 loss、动数据采样，而且把目标场景从单 LLM 扩展到了 <strong>MLLM（多模态 LLM）</strong>。
@@ -681,7 +711,8 @@ Recipe 教师侧：outcome-guided margin calibration
 
 具体操作如下。论文先定义了一个轨迹级的 OPD 回报：
 
-![](https://www.zhihu.com/equation?tex=G_%7B%5Cmathrm%7BOPD%7D%7D%28q%2C+%5Ctau%29+%3D+%5Cfrac%7B1%7D%7B%7C%5Ctau%7C%7D%5Csum_%7Bt%3D1%7D%5E%7B%7C%5Ctau%7C%7D%28%5Clog+%5Cpi_T%28o_t+%7C+q%2C+o_%7B%3C+t%7D%29+-+%5Clog+%5Cpi_%5Ctheta%28o_t+%7C+q%2C+o_%7B%3C+t%7D%29%29+%5C%5C)
+$$G_{\mathrm{OPD}}(q, \tau) = \frac{1}{|\tau|}\sum_{t=1}^{|\tau|}(\log \pi_T(o_t | q, o_{< t}) - \log \pi_\theta(o_t | q, o_{< t})) \\$$
+
 
 直觉上，`G_OPD > 0` 表示 teacher 在这条轨迹上给的 confidence 比 student 高（"teacher 鼓励学生学这条"），反之则是劝退。
 
@@ -689,7 +720,8 @@ Recipe 教师侧：outcome-guided margin calibration
 
 为了量化这种违反，他们定义了一个 prompt-level margin：
 
-![](https://www.zhihu.com/equation?tex=m%28q%29+%3D+%5Cmin_%7B%5Ctau+%5Cin+S_%2B%28q%29%7D+G_%7B%5Ctext%7BOPD%7D%7D%28q%2C+%5Ctau%29+-+%5Cmax_%7B%5Ctau+%5Cin+S_-%28q%29%7D+G_%7B%5Ctext%7BOPD%7D%7D%28q%2C+%5Ctau%29+%5C%5C)
+$$m(q) = \min_{\tau \in S_+(q)} G_{\text{OPD}}(q, \tau) - \max_{\tau \in S_-(q)} G_{\text{OPD}}(q, \tau) \\$$
+
 
 S_+` 是所有正确 rollout 的集合，`S_-` 是错误 rollout 的集合。`m(q) ≥ 0` 表示<strong>最差的正确轨迹也比最好的错误轨迹分高</strong>——这是 order consistency 的最严苛条件。
 
@@ -711,7 +743,8 @@ Uni-OPD 在 takeaways 里有一句话非常戳：
 
 <strong>一句话总结 Uni-OPD</strong>：当 OPD 在你的项目里训得不太对劲时，<strong>先看是不是 student 探索不足</strong>（用 dual data balancing 修），<strong>再看是不是 teacher 给的 token 信号方向是反的</strong>（用 outcome-guided margin calibration 修）。这两招几乎不增加额外算力，可以直接 plug-in 到现有 OPD pipeline 里。
 
-5.4 Learning to Foresee（2026.05，中科大×腾讯）：用参数动力学解释 OPD 的"预见性"，顺手提速 3×
+### 5.4 Learning to Foresee（2026.05，中科大×腾讯）：用参数动力学解释 OPD 的"预见性"，顺手提速 3×
+
 到目前为止我们讨论的都是"现象级"的问题——什么时候 OPD 能 work、不能 work、怎么修。还有一个非常基础的问题没人答：<strong>为什么 OPD 比 RL 高效？</strong>
 
 Qwen3 那张表的 1/10 算力，单纯靠"dense supervision 比 sparse 信息量大"是不足以解释的——dense 信号在 SFT 里也存在，但 SFT 并没有比 RL 高效 10 倍。所以一定还有别的什么在起作用。

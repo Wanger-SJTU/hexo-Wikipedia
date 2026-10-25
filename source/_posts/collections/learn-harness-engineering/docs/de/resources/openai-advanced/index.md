@@ -64,14 +64,19 @@ docs/
 
 ## Wie Sie es übernehmen
 
-1. Beginnen Sie mit dem minimalen Pack, wenn Ihr Repo noch klein ist.
-2. Kopieren Sie die Dateien aus [`repo-template/`](./repo-template/index.md) in
+## 1. Beginnen Sie mit dem minimalen Pack, wenn Ihr Repo noch klein ist.
+
+## 2. Kopieren Sie die Dateien aus [`repo-template/`](./repo-template/index.md) in
+
    Ihr eigenes Repository, sobald Sie eine stärkere Struktur benötigen.
-3. Halten Sie `AGENTS.md` kurz. Behandeln Sie sie als Router zu den tieferen Docs,
+## 3. Halten Sie `AGENTS.md` kurz. Behandeln Sie sie als Router zu den tieferen Docs,
+
    nicht als Enzyklopädie.
-4. Aktualisieren Sie die Qualitäts-, Zuverlässigkeits- und Plan-Dokumente als
+## 4. Aktualisieren Sie die Qualitäts-, Zuverlässigkeits- und Plan-Dokumente als
+
    Teil der normalen Arbeit, nicht an einem separaten Aufräumtag.
-5. Halten Sie generierte Artefakte und externe Referenzen explizit, damit Agenten
+## 5. Halten Sie generierte Artefakte und externe Referenzen explizit, damit Agenten
+
    sie finden können, ohne sich auf Chat-Verlauf zu verlassen.
 
 ## SOP-Bibliothek

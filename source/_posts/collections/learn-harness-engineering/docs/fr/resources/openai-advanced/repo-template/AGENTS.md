@@ -21,13 +21,20 @@ et non comme un dump géant d'instructions.
 
 Avant de modifier le code :
 
-1. Confirmez la racine du dépôt avec `pwd`.
-2. Lisez `ARCHITECTURE.md` pour la carte actuelle du système et les règles strictes de dépendance.
-3. Lisez `docs/QUALITY_SCORE.md` pour voir quels domaines ou couches sont les plus faibles.
-4. Lisez `docs/PLANS.md`, puis ouvrez le plan actif sur lequel vous travaillez.
-5. Lisez la spécification produit pertinente dans `docs/product-specs/`.
-6. Exécutez le chemin standard d'amorçage et de vérification pour ce dépôt.
-7. Si la vérification de base échoue, réparez la ligne de base avant d'ajouter du périmètre.
+## 1. Confirmez la racine du dépôt avec `pwd`.
+
+## 2. Lisez `ARCHITECTURE.md` pour la carte actuelle du système et les règles strictes de dépendance.
+
+## 3. Lisez `docs/QUALITY_SCORE.md` pour voir quels domaines ou couches sont les plus faibles.
+
+## 4. Lisez `docs/PLANS.md`, puis ouvrez le plan actif sur lequel vous travaillez.
+
+## 5. Lisez la spécification produit pertinente dans `docs/product-specs/`.
+
+## 6. Exécutez le chemin standard d'amorçage et de vérification pour ce dépôt.
+
+## 7. Si la vérification de base échoue, réparez la ligne de base avant d'ajouter du périmètre.
+
 
 ## Carte de routage
 
@@ -67,8 +74,13 @@ Une modification n'est terminée que lorsque toutes les conditions suivantes son
 
 Avant de terminer une session :
 
-1. Mettez à jour le plan d'exécution actif.
-2. Mettez à jour `docs/QUALITY_SCORE.md` si un domaine ou une couche a changé de manière significative.
-3. Enregistrez la nouvelle dette dans `docs/exec-plans/tech-debt-tracker.md` si vous l'avez différée.
-4. Déplacez les plans terminés vers `docs/exec-plans/completed/` si approprié.
-5. Laissez le dépôt dans un état redémarrable avec une prochaine action claire.
+## 1. Mettez à jour le plan d'exécution actif.
+
+## 2. Mettez à jour `docs/QUALITY_SCORE.md` si un domaine ou une couche a changé de manière significative.
+
+## 3. Enregistrez la nouvelle dette dans `docs/exec-plans/tech-debt-tracker.md` si vous l'avez différée.
+
+## 4. Déplacez les plans terminés vers `docs/exec-plans/completed/` si approprié.
+
+## 5. Laissez le dépôt dans un état redémarrable avec une prochaine action claire.
+

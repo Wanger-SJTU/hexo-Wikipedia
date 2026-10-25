@@ -106,7 +106,8 @@ img2.image = [UIImage imageNamed:@"image.png"];
 1.其主要原因是，有些特殊的效果，无法一次性得到最终的效果，必须使用offScreen Buffer来保存中间状态，就不的不使用，这时是系统自动触发，常见的圆角、阴影等；
 2.如果这个特殊效果会多次渲染到屏幕上，那么我们就可以提前渲染好，保存在offScreen Buffer中，从而达到复用的目的；这是手动触发的；
 
-1.4.毛玻璃渲染流程
+### 1.4.毛玻璃渲染流程
+
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_6ecd2dd0a5c0.jpg)
 
@@ -133,7 +134,8 @@ When the value of this property istrue, the layer is rendered as a bitmap in its
 - 如果layer不是静态的，需要频繁修改修改的，比如处于动画之中，那么开启离屏渲染反而会影响效率；
 - 离屏渲染缓存内容有时间限制，缓存内容在100ms内，如果内容没有被使用，那么它就会被丢弃，无法再进行复用了；
 - 离屏渲染缓存空间优先，超过2.5倍的屏幕像素大小的话，也会失效，且无法进行复用。
-2.2圆角导致
+### 2.2圆角导致
+
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_a049f73978a5.jpg)
 
@@ -173,7 +175,8 @@ When the value of this property istrue, the layer is rendered as a bitmap in its
 _imageView.clipsToBounds=YES;
 _imageView.layer.cornerRadius=4.0;
 
-4.2.方案二:
+### 4.2.方案二:
+
 
 贝塞尔曲线一
 
@@ -228,7 +231,8 @@ _imageView.layer.cornerRadius=4.0;
 ```
 
 
-4.3.方案三：
+### 4.3.方案三：
+
 
 图片覆盖遮罩
 
@@ -262,7 +266,8 @@ _imageView.layer.cornerRadius=4.0;
 
 @end
 
-4.4.方案四:
+### 4.4.方案四:
+
 
 iOS上的 YYImage 的圆⻆处理
 

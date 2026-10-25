@@ -536,7 +536,8 @@ struct MyStruct
 ```
 
 
-3. placement new，placement new可以实现在一块指定的内存上(这块内存可以由任意方式分配)构造对象(调用对象的构造函数)。如下所示：
+## 3. placement new，placement new可以实现在一块指定的内存上(这块内存可以由任意方式分配)构造对象(调用对象的构造函数)。如下所示：
+
 
 ```text
 	void *memory = malloc(sizeof(Test));

@@ -32,13 +32,16 @@ id: dded644a-5084-4a1a-a783-e22ec90d7c77
 基于这两种token，目前已有的speech LM建模范式大致可分为三类：
 
 1. <strong>Semantic language models:</strong> 基于semantic token的自回归模型，常外接一个unit-vocoder来恢复语音，比如SpeechGPT\[6\]。这类模型虽然可以完成一些语音内容相关的任务，但是它们产生的音质比较一般，并且无法完成一些副语言学相关的任务，比如音色转换等。
-2. <strong>Acoustic language models:</strong> 基于acoustic token的speech LM，比如VALL-E\[7\]。这类模型产生的语音音质比较好，并且可以较好地完成一些比如zero-shot TTS的任务，但是会存在内容不准确的问题。
+## 2. **Acoustic language models:** 基于acoustic token的speech LM，比如VALL-E\[7\]。这类模型产生的语音音质比较好，并且可以较好地完成一些比如zero-shot TTS的任务，但是会存在内容不准确的问题。
+
 3. <strong>Hierarchical speech language models:</strong> 这类模型由Semantic language models和Acoustic language models 级联而成，既可以产生比较精确的内容，也可以产生较好的音质，比如AudioPaLM\[8\]。但是这类模型，建模阶段太多，较为复杂，需要两种tokenizer的参与；而且在semantic token和acoustic token之间其实存在有很大的信息冗余，会带来一些不必要的建模难度。
 
 因此，如果想要打造好的speech LM，需要有一个理想的speech tokens，它应该具有以下两个特征：
 
-1. 和文本的对齐程度比较高
-2. 保留了语音中各个方面的信息
+## 1. 和文本的对齐程度比较高
+
+## 2. 保留了语音中各个方面的信息
+
 
 但是现有的speech tokens都不是专门为构建speech LM而设计的，并不清楚它们和speech LM的适配性。因此我们建立了SLMTokBench来评估不同类型speech token在构建speech LM方面的适用性。它从文本对齐程度和信息保留程度两个方面来量化分析speech tokens，具体评测方法可以看我们论文。通过SLMTokBench，我们发现semantic tokens和文本的对齐程度比较高，但是损失了语音中很大一部分说话人信息。acoustic tokens保留了语音中的各个方面信息，但是和文本的对齐程度不够高。因此，他们都不适合于构建speechLM。
 

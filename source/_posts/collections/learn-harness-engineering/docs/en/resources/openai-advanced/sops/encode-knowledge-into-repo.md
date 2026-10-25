@@ -30,18 +30,23 @@ can act on it without relying on prior conversation.
 
 ## Execution SOP
 
-1. List the invisible knowledge sources: docs, chats, tacit team rules, verbal decisions.
-2. For each source, ask: is this architecture, product behavior, security policy,
+## 1. List the invisible knowledge sources: docs, chats, tacit team rules, verbal decisions.
+
+## 2. For each source, ask: is this architecture, product behavior, security policy,
+
    reliability expectation, plan context, or reference material?
-3. Encode it into the matching repo artifact:
+## 3. Encode it into the matching repo artifact:
+
    - architecture -> `ARCHITECTURE.md`
    - product behavior -> `docs/product-specs/`
    - design rationale -> `docs/design-docs/`
    - execution state -> `docs/exec-plans/`
    - repeated external references -> `docs/references/`
    - quality or reliability expectations -> `docs/QUALITY_SCORE.md` or `docs/RELIABILITY.md`
-4. Replace vague statements with operationally useful wording.
-5. Remove or deprecate stale copies so the repo keeps one discoverable truth.
+## 4. Replace vague statements with operationally useful wording.
+
+## 5. Remove or deprecate stale copies so the repo keeps one discoverable truth.
+
 
 ## Good Encoding Rules
 

@@ -25,7 +25,8 @@ Researcher@DeepSeek
 
 最近看到有些问题说为什么Transformer中的FFN一直没有大的改动。21年刚入学做ViT的时候就想这个问题，现在读博生涯也快结束了，刚好看到这个问题，打算稍微写写, 也算是对这个地方做一个小总结吧。
 
-1. Transformer与FFN
+## 1. Transformer与FFN
+
 Transformer的基本单位就是一层block这里，一个block包含 MSA + FFN，目前公认的说法是，
 
 - Attention 作为token-mixer做spatial interaction。
@@ -34,14 +35,16 @@ Transformer的基本单位就是一层block这里，一个block包含 MSA + FFN�
 而FFN这里，自从Transformer提出基本就是一个 Linear Proj + Activation + Linear Proj的结构，整体改动十分incremental。
 
 Transformer Block示意图 + FFN内部
-2. Activation Function
+## 2. Activation Function
+
 经历了ReLU， GeLU，Swish， SwiGLU等等，基本都是empirical observations，但都是为了给representation加上非线性变换做增强。
 
 - ReLU 对pruning挺有帮助，尤其是过去对CNN做pruning的工作，激活值为0大致意味着某个channel不重要，可以去掉。相关工作可查这个repo。即便如此，ReLU造成dead neurons，因此在Transformer上逐渐被抛弃。
 - GeLU 在过去一段时间占比相当大，直到现在ViT上使用十分广泛，当然也有用Swish的，如MobileViT。
 - Gated Linear Units 目前在LLM上非常流行，其效果和分析来源于GLU Variants Improve Transformer。如PaLM和LLaMA都采用了SwiGLU, 谷歌的Gemma使用GeGLU。不过，从个人经验上来看（偏CV），改变FFN中间的activation function，基本不会有极大的性能差距，总体的性能提升会显得incremental。NLP上估计会帮助reduce overfitting, improve generalization，但是与其花时间改这个地方不如好好clean data。。。目前来说
 
-3. Linear Projections
+## 3. Linear Projections
+
 说白了就是一个matrix multiplication, 已经几乎是GPU上的大部分人改model的时候遇到的最小基本单位。dense matrix multiplication的加速很难，目前基本靠GPU更新迭代。
 
 不过有一个例外：小矩阵乘法可以结合软硬件同时加速，比如instant-ngp的tiny cuda nn, 64 x 64这种级别的matrix multiplication可以使得网络权重直接放到register， 激活值放到shared memory, 这样运算极快。
@@ -78,7 +81,8 @@ Source: Griffin: Mixing Gated Linear Recurrences with Local Attention for Effici
 - Soft MoE: From Sparse to Soft Mixtures of Experts
 - LoRA MoE: Alleviate World Knowledge Forgetting in Large Language Models via MoE-Style Plugin
 - DeepSeekMoE: Towards Ultimate Expert Specialization in Mixture-of-Experts Language Models
-5. 达到AGI需要什么结构？
+## 5. 达到AGI需要什么结构？
+
 目前这个阶段，没人知道一周以后会有什么大新闻，就像Sora悄无声息放出来，一夜之间干掉U-Net，我也没法说什么结构是最有效的。
 
 总体上，目前没有任何结构能真的完全beat Transformer，Mamba 目前 也不行，如这篇发现 copy and paste不太行，scaling和in-context能力也有待查看。

@@ -37,7 +37,8 @@ source_url: https://zhuanlan.zhihu.com/p/25832322272
 
 ![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_c04ced3f131a.jpg)
 
-1.2.1 GPU架构概述
+### 1.2.1 GPU架构概述
+
 
 下图是G80 GPGPU的主要组件，其中包含一系列的SM(streaming multiprocessors)连接到外部DRAM，每个SM中又包含很多SIMD单元，称为SP(Stream Processor)，并支持多线程和0开销线程切换。
 
@@ -57,7 +58,8 @@ GPGPU的两个重要基础范式：
 
 #### 1.3 GPGPU编程模型：CUDA
 
-1.3.1 Kernels
+### 1.3.1 Kernels
+
 
 CUDA程序包含运行在host上的代码以及运行在device侧(GPU)的kernel。下图是CUDA代码的编译过程。
 
@@ -67,7 +69,8 @@ CUDA程序包含运行在host上的代码以及运行在device侧(GPU)的kernel�
 
 ![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_169bcfa0e2c3.jpg)
 
-1.3.2 CUDA的Thread层次
+### 1.3.2 CUDA的Thread层次
+
 
 CUDA执行层次包括3级：Thread、Block和Grid，其中多个Thread组成Block，多个Block组成Grid。且该执行模型与memory space、Synchronization、dispatch/retirement granularity紧密耦合，且在真实的硬件中部分线程lock-step执行，称为Warp，即SIMD的执行方式(这是硬件实现的概念，不同于软件编程中的block，真实硬件中一般由多个硬件中的warp组成一个软件中的block)。
 
@@ -83,13 +86,15 @@ CUDA并不指定Block之间的执行顺序，所以任意数量的Block都可以
 
 ![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_ada4ea4f4c3d.jpg)
 
-1.3.3 内存层级
+### 1.3.3 内存层级
+
 
 每个线程都有自己私有的register和local memory，每个Block又自己的share memory，由自己内部的thread共享。整个kernel还共享global memory。另外还有constant memory和texture memory，它们都是只读，只能由Host写入，constant memory存储一些常数变量，texture memory 存储一些纹理数据用于图像处理。各级memory比较如下表。
 
 ![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_211ae5d821ef.jpg)
 
-1.3.4 SIMT执行
+### 1.3.4 SIMT执行
+
 
 高层次上看，GPU的编程模型属于SPMD(Single Program Multiple Data)，一个kernel函数定义的程序可以被成千上万个细粒度的线程所共用。这就需要大多数的线程都执行相同的工作，因此一组线程可以以lock-step的方式执行，对不同的数据执行同一个指令，从而引入了warp的概念。
 
@@ -97,7 +102,8 @@ SIMT在概念上则类似于SIMD，不过可以更加细粒度的控制线程执
 
 ![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_a56dc0f0dafe.jpg)
 
-1.3.5 CUDA语言扩展
+### 1.3.5 CUDA语言扩展
+
 
 CUDA扩展了C的函数声明语法，不同关键词如下表。`__global__`, `__device__`和`__host__`分别直到编译器生成kernel函数、device函数以及host函数。
 
@@ -105,7 +111,8 @@ CUDA扩展了C的函数声明语法，不同关键词如下表。`__global__`, `
 
 另外一个非常重要的拓展是使用内置变量来表示线程：`threadIdx`, `blockIdx`和`blockDim`。硬件中的不同线程看到不同的内置变量，并对应于不同的硬件寄存器。这些值可以使得不同线程计算自己不同的与data的映射，即寻址地址。
 
-1.3.6 向量加法示例
+### 1.3.6 向量加法示例
+
 
 传统的C语言实现的向量加法如下图，使用了for循环。
 
@@ -125,22 +132,26 @@ GPU侧代码如下，负责执行具体的向量加法kernel。
 
 ![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_cf8b859e20f5.jpg)
 
-1.3.7 PTX
+### 1.3.7 PTX
+
 
 PTX是NVIDIA GPU架构的虚拟ISA。编译器会再将PTX转为GPU特定的ISA。
 
-1.3.8 Consistenct模型和特数的内存运算
+### 1.3.8 Consistenct模型和特数的内存运算
+
 
 CUDA并没有指定一个memory consistency model。同时CUDA也提供了`_threadfence()`和原子操作用于同步，两种通常一起使用比如：
 
 - store data
 - `_threadfence()`
 - atomically mark a flag 这些步骤可以保证如果其他block可以看到flag，则它也可以正确的看到data。
-1.3.9 IEEE浮点支持
+### 1.3.9 IEEE浮点支持
+
 
 早期的GPU并不支持IEEE浮点，因为这对于图像处理不是必须的。之后GPGPU的出现，开始支持IEEE浮点，包括FP16, FP32, FP64等。另外还有近些年AI应用伴随的FP8，甚至FP4。
 
-1.3.10 OpenCL执行模型
+### 1.3.10 OpenCL执行模型
+
 
 OpenCL采用了类似CUDA的结果，但是承诺了跨平台的可移植性，包括NVIDIA GPU、AMD GOU和多核CPU等。下表则展示了OpenCL和CUDA的对比，两者模型很想，术语略有不同。
 
@@ -150,7 +161,8 @@ OpenCL采用了类似CUDA的结果，但是承诺了跨平台的可移植性，�
 
 本章主要以NVIDIA Tesla/Fermi架构为基础介绍，虽略有过时，但与现代主流GPU架构的基础是一样的。
 
-1.4.1 GPU 流水线
+### 1.4.1 GPU 流水线
+
 
 下图展示了一个SP的流水线架构，基于in-order调度，和传统的CPU架构很像，包括fetch、decode、scheduler、register read、exection和write back。
 
@@ -204,7 +216,8 @@ scoreboarding是一种用于实现动态调度的方法，由CDC6600首次引入
 
 用于实现一些特数的超越函数或者三角函数的计算，这些运算占比相对较低，对应执行单元的硬件配比也相对较低，可能几个cycle才执行一条指令。
 
-1.4.2 处理分支指令
+### 1.4.2 处理分支指令
+
 
 因为每个warp内的thread共用一个指令，所以，当该指令是branch时，warp内的指令会执行不同的指令路径。对于向量处理器，或者说RISCV的RVV扩展，通过predicated来mask掉部分SIMD执行单元，但是对于SIMT来说，还需要考虑另一个问题：<strong>需要从不同的路径取指</strong>。这个是SIMD和SIMT之间的主要区别。branch分支条件示例如下图。
 
@@ -223,7 +236,8 @@ stck中每个entry包含3个字段：
 - 下一个PC 当处理器执行到branch指令时jiangjoin entry 推入stack，之后处理器选择一条路径，同时将另一条路径的信息入栈（这里先执行B路径）。执行时，检查next PC和重聚点PC是否相等，相等则表示执行完分支。执行完B之后，发现下一个指令时C，继续执行，执行完C之后发现branch执行完毕。
 可以看到，在执行一层if分支时，性能会减半，因为warp内一些thread执行被mask掉，所以还有一些硬件/软件方案来避免性能下降，但在商用产品中上边传统方法的应用更多。
 
-1.4.3 GPU内存系统
+### 1.4.3 GPU内存系统
+
 
 现在主流的L1 Cache多是software-hardware混合管理方案，即一部分时传统cache，一部分是scratchpad cache，由软件显示搬移数据。Tesla和Fermi架构中不同memory如下表。
 
@@ -247,21 +261,25 @@ stck中每个entry包含3个字段：
 
 #### 1.5 其他GPU架构
 
-1.5.1 Fermi架构
+### 1.5.1 Fermi架构
+
 
 G80系列产品基于Fermi架构，发布于2010年。提供了两级cache、提升FP64性能、更快的原子操作、ECC。
 
-1.5.2 AMD 架构
+### 1.5.2 AMD 架构
+
 
 AMD架构的最大特点是融合了GPU和CPU，共用memory，并使用VLIW。
 
 这里介绍的还是AMD上一代GPU架构，其采用了VLIW。但目前最新的CDNA架构已经摒弃该设计，所以这些内容已过时。
 
-1.5.3 许多集成的core架构
+### 1.5.3 许多集成的core架构
+
 
 Intel MIC(Many Intergrated Core)利用x86 ISA和SIMD来做高性能处理。现在也被摒弃，使用新的Gaudi系列GPU。
 
-1.5.4 在同一个Die上集成CPU和GPU
+### 1.5.4 在同一个Die上集成CPU和GPU
+
 
 目前GPU受Die面积限制进而影响性能，所以也不是主流，但集成在一个电路板或者die间互连CPU和GPU是一个方向，比如NVIDIA Grace-Hopper系列。
 
@@ -357,7 +375,8 @@ Intel MIC(Many Intergrated Core)利用x86 ISA和SIMD来做高性能处理。现�
 
 #### 4.1 指令级分析和调优
 
-4.1.1 执行时间建模
+### 4.1.1 执行时间建模
+
 
 总的执行时间可以表示为T_{exec}=T_{comp}+T_{mem}-T_{overlap}.，如下图所示。
 
@@ -393,13 +412,15 @@ T_{overlap}表示有多少访存的成本可以被计算覆盖，具体的
 
 ![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_3b36167ebb9c.jpg)
 
-4.1.2 应用该模型到FMM
+### 4.1.2 应用该模型到FMM
+
 
 下图展示了不同优化方案下，上边analytical预测模型和真实硬件性能的结果对比，可以看到以上模型已经可以很好的拟合真实硬件的性能。
 
 ![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_949f38bdbba6.jpg)
 
-4.1.3 性能优化指南
+### 4.1.3 性能优化指南
+
 
 基于上边的性能模型，可以识别出性能的bottleneck以及消除这些bottleneck的收益。其中，4个潜在的潜在收益指标如下图。
 
@@ -427,21 +448,25 @@ baseline优化前的4种指标分别为：B_{itilp}=6068，B_{memlp}=0，B_{fp}9
 
 （这里笔者仅描述几个常用的）
 
-4.2.1 有效的性能可见性
+### 4.2.1 有效的性能可见性
+
 
 GPGPU里存在大量的DLP、ILP和MLP，如下图，最直接的就是通过程序员查看代码进行调优，是比较困难的。
 
 ![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_846e6c5f9199.jpg)
 
-4.2.2 WFG(Work Flow Graphs)
+### 4.2.2 WFG(Work Flow Graphs)
+
 
 类似于DAG的方式，比较低效，不够直接。
 
-4.2.3 Stochastic memory hierarchy model
+### 4.2.3 Stochastic memory hierarchy model
+
 
 通过硬件内置性能寄存器+软件测试和显示的方式显示具体bottleneck。
 
-4.2.4 Roofline 模型
+### 4.2.4 Roofline 模型
+
 
 CPU和GPU领域应用都很多，可以标识是memory bound还是compute bound，如下图。
 

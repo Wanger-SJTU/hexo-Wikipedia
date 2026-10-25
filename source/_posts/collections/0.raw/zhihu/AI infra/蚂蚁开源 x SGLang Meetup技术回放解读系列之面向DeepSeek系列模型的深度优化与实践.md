@@ -42,7 +42,8 @@ source_url: https://zhuanlan.zhihu.com/p/2035331396995129665
 目标：
 1. 先扫描 cookbook 中所有 LLM 模型配置，筛选出在单机 4x H100 范围内理论可运行的模型。
 2. 为这些模型建立一个进度表，包含：模型名、推荐精度/量化、预计 GPU 数、SGLang/vLLM/TensorRT-LLM 支持情况、当前状态、artifact 路径、是否需要 patch、PR 链接。
-3. 对每个可运行模型执行 $sglang-sota-performance 流程：
+## 3. 对每个可运行模型执行 $sglang-sota-performance 流程：
+
    - 分别让 SGLang、vLLM、TensorRT-LLM 搜索自己的最佳部署命令；
    - 在同一模型、同一 tokenizer、同一精度/量化、同一 H100 GPU 数下公平 benchmark；
    - workload 和 SLA 使用 $llm-serving-auto-benchmark 里的默认两个数据集场景，不要临时替换成更容易的数据集；
@@ -56,7 +57,8 @@ source_url: https://zhuanlan.zhihu.com/p/2035331396995129665
 4. 全程使用真实模型运行验证，不允许只用已有 trace 或 mock 数据证明功能。
 5. 每个模型都要保存完整 artifacts：启动命令、benchmark 命令、版本信息、日志、JSONL 结果、SGLang/vLLM/TensorRT-LLM profile trace、分析报告、before/after 对比。
 6. 注意不要泄露 HF_TOKEN 或任何 secret 到日志、PR、artifact 报告里。
-7. GPU 使用和清理规则：
+## 7. GPU 使用和清理规则：
+
    - 默认只使用 H100 机器的前 4 张物理 GPU，也就是 GPU 0,1,2,3；后 4 张 GPU 4,5,6,7 默认留给其他人，不要使用，除非用户明确授权。
    - 所有 GPU 相关任务开始前，必须检查 `nvidia-smi` 和相关进程，确认目标 GPU 上没有其他用户进程干扰。如果发现 GPU 0-3 上已有其他用户进程，不能混跑 benchmark/profile，需要暂停、选择前 4 卡中真正空闲的 GPU，或向用户报告。
    - 每次启动服务时显式设置 `CUDA_VISIBLE_DEVICES`，并在 artifact 中记录物理 GPU id、`CUDA_VISIBLE_DEVICES`、框架内可见 GPU 映射关系。

@@ -35,7 +35,8 @@ categories:
 4. 为慢路径或多阶段流程补 traces 或 timing 标记。
 5. 让这些信号能从本地开发环境查询到。
 6. 给 agent 一条可以反复重跑的 workload 或场景。
-7. 强制执行这条闭环：query -> correlate -> reason -> implement -> restart
+## 7. 强制执行这条闭环：query -> correlate -> reason -> implement -> restart
+
    -> rerun -> verify。
 
 ## 调试会话检查清单

@@ -118,10 +118,14 @@ Bir takım ~30 mikroservise sahip bir e-ticaret platformunu sürdürüyordu. Mim
 AI ajanlarını tanıttıktan sonra görevlerin %70'i insan müdahalesi gerektirdi. Hemen her başarısızlık ajanın "herkesin bildiği ama kimsenin yazmadığı" örtük bir kısıtlamayı ihlal etmesini içeriyordu. Kimsenin "öğle yemeği siparişini grup sohbetine yazmalısın" demediği yeni bir çalışan gibi — yanlış tahmin ederler, azarlanırlar ama azarlandıktan sonra hâlâ kimse kuralı söylemez.
 
 Takım bir dönüşüm gerçekleştirdi:
-1. Depo kökünde proje genel bakışı, teknoloji yığını sürümleri ve küresel sert kısıtlamalar içeren `AGENTS.md` oluşturuldu
-2. Her mikroservis dizinine sorumlulukları, arayüzleri ve bağımlılıkları açıklayan `ARCHITECTURE.md` eklendi
-3. Açık "OLMALI/OLMAMALI" dilinde sert kısıtlamalar içeren merkezi bir `CONSTRAINTS.md` oluşturuldu
-4. Mevcut iş durumunu takip eden `PROGRESS.md` her servis dizinine eklendi
+## 1. Depo kökünde proje genel bakışı, teknoloji yığını sürümleri ve küresel sert kısıtlamalar içeren `AGENTS.md` oluşturuldu
+
+## 2. Her mikroservis dizinine sorumlulukları, arayüzleri ve bağımlılıkları açıklayan `ARCHITECTURE.md` eklendi
+
+## 3. Açık "OLMALI/OLMAMALI" dilinde sert kısıtlamalar içeren merkezi bir `CONSTRAINTS.md` oluşturuldu
+
+## 4. Mevcut iş durumunu takip eden `PROGRESS.md` her servis dizinine eklendi
+
 
 Dönüşümden sonra: aynı ajan soğuk başlatmada tüm temel proje sorularına cevap verebildi ve görev tamamlanma kalitesi önemli ölçüde iyileşti.
 

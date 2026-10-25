@@ -63,8 +63,12 @@ Codex 可以为安全团队提供更具 agent 意识的视图。Codex 支持各�
 ---
 
 *AI 附注：这篇文章是 OpenAI 5月8日发布的最新 Codex 安全运营实践，延续了 Harness Engineering 系列。核心内容：
-1. <strong>沙箱+批准双重机制</strong>：沙箱定义物理边界，批准策略决定何时需要人工许可
-2. <strong>Auto-review 模式</strong>：用 subagent 自动批准低风险操作，减少人类中断
-3. <strong>网络策略白名单</strong>：不允许开放出口访问
-4. <strong>原生 agent 遥测</strong>：通过 OpenTelemetry 导出完整的行为日志，支持 AI 安全分类
-5. <strong>合规平台集成</strong>：企业级的审计追踪能力*
+## 1. **沙箱+批准双重机制**：沙箱定义物理边界，批准策略决定何时需要人工许可
+
+## 2. **Auto-review 模式**：用 subagent 自动批准低风险操作，减少人类中断
+
+## 3. **网络策略白名单**：不允许开放出口访问
+
+## 4. **原生 agent 遥测**：通过 OpenTelemetry 导出完整的行为日志，支持 AI 安全分类
+
+## 5. **合规平台集成**：企业级的审计追踪能力*

@@ -68,9 +68,12 @@ fournisseur ou d'adaptateur plutôt que d'atteindre directement à travers les c
 
 Lorsque vous modifiez du code pertinent pour l'architecture :
 
-1. Mettez à jour ce fichier si la carte des domaines ou les frontières autorisées
+## 1. Mettez à jour ce fichier si la carte des domaines ou les frontières autorisées
+
    ont changé.
-2. Mettez à jour le document de conception associé dans `docs/design-docs/` si le
+## 2. Mettez à jour le document de conception associé dans `docs/design-docs/` si le
+
    raisonnement a changé.
-3. Ajoutez ou mettez à jour un contrôle exécutable si la règle doit être appliquée
+## 3. Ajoutez ou mettez à jour un contrôle exécutable si la règle doit être appliquée
+
    mécaniquement.

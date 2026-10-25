@@ -32,7 +32,8 @@ Die-To-Die（D2D）Adapter负责以下工作：
 
 D2D Adapter必须遵循与协议层相同的规则以满足协议互操作性。图3-2展示了协议层和Adapter的配置示例，其中协议identifier (例如PCIe)仅表示协议类型，而不表示flit格式。为了权衡性能和面积，UCIe允许在同一个物理链路上复用两个协议栈。
 
-1. 栈复用（Stack Multiplexing）
+## 1. 栈复用（Stack Multiplexing）
+
 如果Multi_Protocol_Enable参数被协商了，当每个协议栈所需带宽为物理层提供带宽的一半时，支持在同一物理链路上复用两个协议栈。两个栈必须是具有相同协议能力的相同协议。当支持Multi_Protocol_Enable并进行协商时，Adapter必须保证它不会在链路上发送来自相同协议栈的连续数据包。这适用于所有情况，包括当Flit来自FDI、retry buffer，以及当数据流暂停和重新启动时。
 
 Adapter允许插入NOP Flit来保证这一点(这些Flit绕过TX Retry Buffer，并且不转发到接收端的协议层)。当从Retry Buffer发送Flit时，根据需要插入NOP Flit，以避免从同一协议栈发送连续的Flit。请注意，不同协议层之间没有固定的Flit交替模式。例如，一个来自协议栈0的Flit接一个NOP Flit，再接一个来自协议栈0的Flit是一个有效的传输模式。NOP Flit被定义为一个Flit，其中Flit Header中的协议identifier对应于D2D Adapter，并且Flit的主体填充了所有0数据(NOP Flit是为Adapter支持的所有Flit格式定义的，适用于以Raw格式操作的所有情况)。
@@ -46,7 +47,8 @@ Adapter允许插入NOP Flit来保证这一点(这些Flit绕过TX Retry Buffer，
 其他特定实现的仲裁方案是允许的，只要它们是每个Flit，并且不违反远程Adapter为给定栈发布的最大带宽百分比。Flit header有一个单比特的栈标识符，用于标识该Flit的目标栈。栈复用器为每个协议栈维护独立的链路状态机。与链路状态转换相关的边带消息具有唯一的消息代码，用于标识哪个栈的链路状态管理受该消息的影响。
 
 ![](https://pica.zhimg.com/v2-bb852da7e98b74717425c4cf822ea61c_r.jpg)
-2. 链路初始化
+## 2. 链路初始化
+
 在Flit能够在主带传输前，需要经过四个阶段的链路初始化。图3-3展示了UCIe链路初始化的流程。
 
 - 阶段0是die-specific并且独立发生在每个die上；图中的方框大小代表当前阶段花费的时间，不同die花费的时间可能不同。
@@ -75,7 +77,8 @@ capabilities需要在链路partner之间进行协商。这些特性会通过边�
 
 FDI上的数据宽度是UCIe栈运行频率的函数，也是UCIe物理链路上传输的总带宽的函数(这反过来又取决于lane数量和lane运行的速度)。RDI上的数据宽度固定为每个物理通道每个module至少一个字节，由Adapter控制。本章中的插图显示了一个RDI配置的示例，该配置映射到UCIe物理层上高级封装配置的64 Lane模块。
 
-3. 操作格式
+## 3. 操作格式
+
 当涉及到CRC计算时，提供了Flit到CRC消息的字节映射(CRC消息是CRC计算逻辑的128B输入)。
 
 <strong>Raw Format for all protocols</strong>
@@ -133,7 +136,8 @@ Latency-Optimized 256B Flit Format
 
 计算了两组CRC。CRC0使用CRC消息输入的相应字节的Flit Bytes 0到125来计算(包括Flit Header位，如果适用的话，Adapter插入DLP位)。CRC1使用Flit字节128到253作为消息输入，其中Flit字节128分配给CRC消息字节0，Flit字节129分配给CRC消息字节1，以此类推，直到Flit字节253分配给CRC消息字节125。如果不需要重试，Adapter仍然计算和驱动CRC字节，强烈建议接收端在这种情况下将CRC错误视为UIE。
 
-4. Flit格式和协议的Decision table
+## 4. Flit格式和协议的Decision table
+
 决定协议的真值表如表3-8。一旦协议和Flit格式在初始链路启动期间进行了协商，在UCIe物理层转换到复位状态之前，它们不能被更改。如果没有协商有效的协议和Flit格式，则Adapter将断开链接并报告错误。
 
 ![](https://pic2.zhimg.com/v2-75dae3b175b452bc8e15ccba1991a6d1_r.jpg)表3-9 (真值表1)显示了在协商PCIe或CXL协议时决定Flit格式的真值表，没有协商以下内容：
@@ -150,7 +154,8 @@ Latency-Optimized 256B Flit Format
 
 ![](https://picx.zhimg.com/v2-e01b53c52b52e4217118bb10a7669d49_r.jpg)
 ![](https://pic2.zhimg.com/v2-60f7cd67b4c6d97e62da18f064eaca77_r.jpg)
-5. State Machine Hierarchy
+## 5. State Machine Hierarchy
+
 UCIe采用层次化方法进行链路状态管理，以便在不同层之间进行功能划分，并支持在FDI和RDI进行公共状态转换或排序。
 
 不同配置的状态机结构如图3-27。对于CXL，ARB/MUX vLSM暴露在FDI的pl_state_sts上。Adapter LSM用于与远程链路伙伴协调链路状态，所有配置都需要Adapter LSM。每个协议栈都有其相应的Adapter LSM。对于PCIe或Streaming协议，Adapter LSM暴露在FDI pl_state_sts上。
@@ -168,7 +173,8 @@ RDI状态机(SM)用于抽象上层的物理层状态。Adapter数据路径和RDI
 - LinkError状态转换：RDI SM必须在Adapter LSM转换到LinkError之前处于LinkError状态。RDI SMs使用边带与远程链接伙伴协调LinkError转换，并且每个RDI SM将LinkError传播给所有启用的Adapter LSM。Adapter LSM在将LinkError传播到CXL的两个vSLM之前必须在LinkError中。LinkError转换优先于LinkReset或Disabled转换。在所有相关的Adapter LSM和CXL vLSM转换到LinkError之前，Adapter不得在RDI上请求LinkError退出。
 - LinkReset或Disabled状态转换：Adapter LSM使用边带消息与远程链路伙伴协商LinkReset或Disabled状态转换。只有当与之关联的所有Adapter LSM都转换为LinkReset或Disabled时，LinkReset或Disabled才会传播到RDI SM。Disabled转换优先于LinkReset转换。如果RDI SM移动到LinkReset或Disabled，则必须将其传播到所有Adapter LSM。如果Adapter LSM移动到LinkReset或Disabled，它必须将其传播到CXL协议的两个vLSM。对于UCIe Retimer，Retimer die负责与远程Retimer伙伴协商状态转换，并确保不同的UCIe die是同步的，并且不会超时等待响应。例如，如图1-14，如果UCIe Die 0向UCIe Retimer 0发送了Adapter LSM的Active Request消息，则UCIe Retimer 0必须与UCIe Retimer 1解析Active Request消息已被转发到UCIe Die 1，并且UCIe Die 1已经响应了Active Status消息，然后才向UCIe Die 0响应Active Status消息。除非UCIe Die 0和UCIe Die 1上的所有相关状态都达到低功耗状态，否则不能将Off Package Interconnect置于低功耗状态。在与远程计时器合作伙伴完成解析时，UCIe计时器必须每4毫秒响应一次“Stall”编码。
 
-6. Power Management Link States
+## 6. Power Management Link States
+
 对于PCIe和CXL协议，电源管理状态是必需的。FDI支持L1和L2电源状态，遵循CXL 256B Flit Mode的握手规则和状态转换。RDI支持物理层接口上的L1和L2进行电源管理优化，但允许物理层内部将L1和L2映射到公共状态。它们一起允许全局时钟门控，并使能系统级flow，如Package-Level Idle (C-state)。允许其他协议通过始终为来自远程Link伙伴的PM请求发送PMNAK来禁用PM flow。
 
 Power management状态进入顺序如下：
@@ -183,7 +189,8 @@ Power management状态进入顺序如下：
 - 物理层使用边带来协调物理链路的唤醒和再训练。
 - 一旦物理链路被重新训练，双方的RDI都处于Active状态，并且从两侧触发Adapter LSM PM退出(通过Adapter之间的边带消息进行协调，如FDI PM流中所述)。对于PCIe或流协议场景，这也会在FDI上将协议层转换为Active状态。
 - 对于CXL协议，这个步骤之后是ALMP交换，使所需的协议进入Active状态，然后可以开始协议Flit传输。
-7. CRC计算
+## 7. CRC计算
+
 CRC生成多项式为(x+1)*(x15 + x+1) = x16 + x15 + x2 +1。这为随机比特错误提供了3-bit检测保证：2位检测保证是由于本原多项式(x15 + x+1)，1位额外的比特错误检测保证是由于多项式中的(x+1)项使其成为奇校验。
 
 CRC总是在128字节的消息上进行计算。对于较小的消息，消息在MSB中为零扩展。作为128B CRC消息的一部分，但没有在链路上传输的任何字节都分配给0b。每当包含由Adapter填充的flit的非CRC字节以进行CRC计算时(例如，flit Header或DLP字节)，在Adapter为这些字节分配值之后，CRC将被计算。Flit的任何保留位都被分配为0b，用于CRC计算。
@@ -191,7 +198,8 @@ CRC总是在128字节的消息上进行计算。对于较小的消息，消息�
 CRC LFSR计算的CRC比特数初始值为0000h。CRC从消息的第0字节的第0位开始计算，从每个字节的第0位开始计算到第7位，如图3-29所示。图中，C[15]为CRC字节1的第7位，C[14]为CRC字节1的第6位，以此类推；C[7]是CRC字节0的第7位，C[6]是CRC字节0的第6位，以此类推。
 
 ![](https://pic3.zhimg.com/v2-5aa1bb0efbf4a73459b0e8d25c28b958_r.jpg)
-8. Retry规则
+## 8. Retry规则
+
 对于raw BER高于1e-27的配置，Adapter必须支持重试，除非操作的唯一格式是raw格式。如果Adapter不支持重试，在链路训练期间，除非操作格式是raw格式，否则物理层不能发布raw BER高于1e-27的链路速度。不同配置的原始BER特性如表5-23所示。一旦在链路初始化的stage 3的第2部分协商了重试，即使在运行时链路速度降低，重试也不能被禁用。重试只能在下一次链路初始化时重新协商(即RDI移动到复位状态)。对于具有公共Adapter的多个栈，Tx retry buffer在栈之间共享。
 
 UCIe上的重试机制是PCIe规范中定义的Flit模式下的重试机制的简化版。不适用的规则和相应的参数更改如下：
@@ -207,7 +215,8 @@ PCIe规范的Replay Schedule Rule 0必须检查REPLAY_TIMEOUT_FLIT_COUNT ≥ 375
 - IDLE Flit握手阶段不适用。因为过渡到Link Active(相当于PCIe的LTSSM处于L0)是通过边带握手来管理的，不需要交换IDLE flit。根据PCIe规则，任何在flit Header字节中为全0的flit都会被Adapter丢弃。
 - 序列号握手阶段超时和退出链路重新训练在没有退出序列号握手阶段的情况下发送128个Flit。如果没有要发送的Payload flit，Adapter必须生成NOP flit来完成序列号握手阶段。
 - “Prior Flit was Payload”总是设置为1b。该bit在Flit header中不存在，因此从重试的角度来看，实现必须假定该bit总是设置为1。
-9. Runtime Link Testing using Parity
+## 9. Runtime Link Testing using Parity
+
 UCIe定义了一种机制，当启用该机制时，通过周期性地在数据流中间注入校验字节来检测运行时链路的健康状况。接收端检查并记录插入的校验字节的校验错误。
 
 当启用该机制时，Adapter每256*256*N字节的数据插入64*N字节，其中N从Error and Link Testing Control寄存器(字段名：插入的64字节数量)获得。软件根据操作的当前链路宽度设置这个，包括与Adapter接口的Active模块的总数。插入的字节中只有bit 0有奇偶校验信息，其计算公式如下：

@@ -18,12 +18,17 @@ agenten-first Dokumentationsoberfläche anstelle von nur einem minimalen Harness
 
 ## Kopierreihenfolge
 
-1. `AGENTS.md` und `ARCHITECTURE.md` ins Repo-Root kopieren.
-2. Den gesamten `docs/`-Baum kopieren.
-3. Zuerst `docs/PRODUCT_SENSE.md`, `docs/QUALITY_SCORE.md` und
+## 1. `AGENTS.md` und `ARCHITECTURE.md` ins Repo-Root kopieren.
+
+## 2. Den gesamten `docs/`-Baum kopieren.
+
+## 3. Zuerst `docs/PRODUCT_SENSE.md`, `docs/QUALITY_SCORE.md` und
+
    docs/RELIABILITY.md` ausfüllen.
-4. Den ersten aktiven Plan unter `docs/exec-plans/active/` hinzufügen.
-5. Die Einstiegspunktdateien kurz halten und Detail in die verlinkten Docs routen.
+## 4. Den ersten aktiven Plan unter `docs/exec-plans/active/` hinzufügen.
+
+## 5. Die Einstiegspunktdateien kurz halten und Detail in die verlinkten Docs routen.
+
 
 ## Wofür dieses Template optimiert
 

@@ -29,12 +29,18 @@ Agentga loglar, metrikalar, treyslar va ishga tushirsa boʻladigan ish yuklamala
 
 ## Bajarish SOPʼi (Execution SOP)
 
-1. Eng muhim boʻlgan “oltin” runtime jarayonlarni (golden runtime journeys) aniqlab oling.
-2. Ishga tushish (startup) va muhim yoʻllarga (critical path) strukturaviy loglar (structured logs) qoʻshing.
-3. Kutilish vaqti (latency), muvaffaqiyatsizliklar soni yoki zarur boʻlsa navbat chuqurligi (queue depth) uchun metrikalar qoʻshing.
-4. Sekin yoki koʻp bosqichli jarayonlar uchun treyslar yoki vaqt belgilarini (timing markers) qoʻshing.
-5. Signallarni lokal dev muhitidan turib soʻrov qilish mumkinligini (queryable) taʼminlang.
-6. Agentga qayta ishga tushirishi uchun bitta takrorlanuvchi ish yuklamasi (workload) yoki ssenariy taqdim eting.
+## 1. Eng muhim boʻlgan “oltin” runtime jarayonlarni (golden runtime journeys) aniqlab oling.
+
+## 2. Ishga tushish (startup) va muhim yoʻllarga (critical path) strukturaviy loglar (structured logs) qoʻshing.
+
+## 3. Kutilish vaqti (latency), muvaffaqiyatsizliklar soni yoki zarur boʻlsa navbat chuqurligi (queue depth) uchun metrikalar qoʻshing.
+
+## 4. Sekin yoki koʻp bosqichli jarayonlar uchun treyslar yoki vaqt belgilarini (timing markers) qoʻshing.
+
+## 5. Signallarni lokal dev muhitidan turib soʻrov qilish mumkinligini (queryable) taʼminlang.
+
+## 6. Agentga qayta ishga tushirishi uchun bitta takrorlanuvchi ish yuklamasi (workload) yoki ssenariy taqdim eting.
+
 7. Ushbu siklni talab qiling: soʻrov (query) -> bogʻlash (correlate) -> xulosa qilish (reason) -> kod yozish (implement) -> qayta ishga tushirish (restart) -> qayta ishga tushirish (rerun) -> tekshirish (verify).
 
 ## Debug Sessiyasi Tekshiruvi (Checklist)

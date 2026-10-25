@@ -65,6 +65,9 @@ adaptador en lugar de alcanzar directamente a través de las capas.
 
 Cuando modifiques código relevante para la arquitectura:
 
-1. Actualiza este archivo si el mapa de dominios o los límites permitidos cambiaron.
-2. Actualiza el documento de diseño relacionado en `docs/design-docs/` si el razonamiento cambió.
-3. Agrega o actualiza una verificación ejecutable si la regla debe aplicarse mecánicamente.
+## 1. Actualiza este archivo si el mapa de dominios o los límites permitidos cambiaron.
+
+## 2. Actualiza el documento de diseño relacionado en `docs/design-docs/` si el razonamiento cambió.
+
+## 3. Agrega o actualiza una verificación ejecutable si la regla debe aplicarse mecánicamente.
+

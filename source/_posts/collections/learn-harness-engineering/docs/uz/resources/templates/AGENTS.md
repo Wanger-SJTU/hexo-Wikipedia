@@ -19,12 +19,18 @@ Ushbu repozitoriy kod yozuvchi agentlarning uzoq davom etadigan (long-running) i
 
 Kod yozishdan oldin:
 
-1. `pwd` yordamida ish katalogini (working directory) tasdiqlang.
-2. Oxirgi tasdiqlangan (verified) holat va keyingi qadamni bilish uchun `claude-progress.md` ni oʻqing.
-3. `feature_list.json` faylini oʻqing va eng yuqori ustuvorlikka ega boʻlgan tugallanmagan funksiyani (feature) tanlang.
-4. `git log --oneline -5` yordamida oxirgi commitlarni koʻrib chiqing.
-5. `./init.sh` ni ishga tushiring.
-6. Yangi ishni boshlashdan oldin talab qilinadigan smoke yoki end-to-end tekshiruvni ishga tushiring.
+## 1. `pwd` yordamida ish katalogini (working directory) tasdiqlang.
+
+## 2. Oxirgi tasdiqlangan (verified) holat va keyingi qadamni bilish uchun `claude-progress.md` ni oʻqing.
+
+## 3. `feature_list.json` faylini oʻqing va eng yuqori ustuvorlikka ega boʻlgan tugallanmagan funksiyani (feature) tanlang.
+
+## 4. `git log --oneline -5` yordamida oxirgi commitlarni koʻrib chiqing.
+
+## 5. `./init.sh` ni ishga tushiring.
+
+## 6. Yangi ishni boshlashdan oldin talab qilinadigan smoke yoki end-to-end tekshiruvni ishga tushiring.
+
 
 Agar bazaviy tekshiruv (baseline verification) allaqachon yiqilayotgan boʻlsa, avval shuni toʻgʻrilang. Buzilgan boshlangʻich holatning ustiga yangi funksiyani qurishga urinmang.
 
@@ -56,8 +62,13 @@ Funksiya quyidagilarning barchasi bajarilgandagina tugallangan deb hisoblanadi:
 
 Sessiyani yakunlashdan oldin:
 
-1. `claude-progress.md` ni yangilang.
-2. `feature_list.json` ni yangilang.
-3. Hal etilmagan xavf yoki blockerlarni (toʻsqinliklar) yozib qoldiring.
-4. Ish toza (safe) holatga kelgach, tushunarli xabar bilan commit qiling.
-5. Repozitoriyni keyingi sessiya toʻgʻridan-toʻgʻri `./init.sh` ni ishga tushira oladigan darajada toza qoldiring.
+## 1. `claude-progress.md` ni yangilang.
+
+## 2. `feature_list.json` ni yangilang.
+
+## 3. Hal etilmagan xavf yoki blockerlarni (toʻsqinliklar) yozib qoldiring.
+
+## 4. Ish toza (safe) holatga kelgach, tushunarli xabar bilan commit qiling.
+
+## 5. Repozitoriyni keyingi sessiya toʻgʻridan-toʻgʻri `./init.sh` ni ishga tushira oladigan darajada toza qoldiring.
+

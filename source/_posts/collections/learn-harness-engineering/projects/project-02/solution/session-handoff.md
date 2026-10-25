@@ -17,17 +17,20 @@ categories:
 
 ### What Was Accomplished
 
-1. <strong>Document Import</strong> -- Implemented full import flow:
+## 1. **Document Import** -- Implemented full import flow:
+
    - ImportPanel component with file picker for .txt and .md files
    - App.tsx toggles import view and refreshes document list after import
    - DocumentService.importDocument() copies file and stores content
 
-2. <strong>Document Detail with Content</strong> -- Enhanced DocumentDetail component:
+## 2. **Document Detail with Content** -- Enhanced DocumentDetail component:
+
    - Added `getContent` IPC channel for retrieving document text
    - "View Content" button loads and displays full document text
    - Delete button removes document from metadata and filesystem
 
-3. <strong>Basic Persistence</strong> -- Documents now persist across restarts:
+## 3. **Basic Persistence** -- Documents now persist across restarts:
+
    - App.tsx calls refreshDocuments() on mount via useEffect
    - PersistenceService reads documents-meta.json at startup
    - All document data stored under userData/knowledge-base-data/

@@ -17,7 +17,8 @@ source_url: https://zhuanlan.zhihu.com/p/340228853
 
 使用Pytorch等深度学习框架时，我们常常会用view、transpose等函数得到不同形状的Tensor，或者在某一维上进行索引、切片来截取部分数据。无论操作的Tensor含有多少数据，这些操作都可以很快地完成，时间复杂度几乎为常数。显然，要做到这一点，必须共享这些派生出来的Tensor底层的数据。那么形状各异的Tensor是如何共享数据的呢？下面来介绍Tensor内部的基本概念。
 
-1. Concepts
+## 1. Concepts
+
 不加额外要求的情况下，Tensor的成员变量可以简化如下：
 
 ```cpp
@@ -61,7 +62,8 @@ t.stride = new int[3]{12, 4, 1};
 - `t.stride[1] = 4`是从`t.shape[2] = 4`得到的；
 - `t.stride[0] = 12`是从`t.shape[2] * t.shape[1] = 12`得到的。也就是说，最后一维的stride设置为1，其他维数的stride等于把此维度后的每一维的尺寸乘起来。规范地把规律写出来就是：
 
-![](https://www.zhihu.com/equation?tex=t.stride%5Bi%5D+%3D+%5Cbegin%7Bcases%7D++1%2C+%26%5Ctext%7Bif+%7D+i%3Dt.ndim-1%2C++%5C%5C+%5Cprod_%7Bk%3Di%2B1%7D%5E%7Bndim-1%7Dt.shape%5Bk%5D%2C+%26%5Ctext%7Botherwise%7D.++%5Cend%7Bcases%7D+) 
+$$t.stride[i] = \begin{cases}  1, &\text{if } i=t.ndim-1,  \\ \prod_{k=i+1}^{ndim-1}t.shape[k], &\text{otherwise}.  \end{cases}$$
+
 
  用代码表示：
 
@@ -78,9 +80,11 @@ void init_stride(Tensor& t) {
 
 有了这个结构之后，下面结合具体的操作来进行说明如何使用。
 
-2. Operation
+## 2. Operation
 
-2.1 取值
+
+### 2.1 取值
+
 这里的取值，指的是取出Tensor中指定位置的元素，用Pytorch语句就是`t[i, j, k]`。
 
 这个过程主要是`Tensor::stride`在发挥作用，我们可以参考编译器是如何从多维数组里取值的。从一个多维数组里取值，可以转化为从一维数组里的某个位置取值。比如：
@@ -103,7 +107,8 @@ data_t& get_value(Tensor& t, const std::vector<int>& inds) {
 
 当然，我们可以在`get_value()`中加上一些Assert，对`inds`的长度及其取值进行约束，这时候才会用到`t.shape`。
 
-2.2 transpose
+### 2.2 transpose
+
 这里的transpose指的是交换Tensor的两个维度，用Pytorch的接口是`torch.transpose(t,dim0,dim1)`。
 
 如果说取值时对于`Tensor::stride`的使用很自然，那么在transpose中就稍微有点惊喜了。在`Tensor::stride`的帮助下，transpose变得格外简单：仅需要交换`t.shape`和`t.stride`对应两个维度的元素即可得到结果。代码如下，同样地，这里省略了对参数的检查。
@@ -151,7 +156,8 @@ Tensor permute(const Tensor& t, const std::vector<int>& dims) {
 ```
 
 
-2.3 view
+### 2.3 view
+
 这里的view指的是直接改变Tensor的形状，给一维的`Tensor::data`换一种解释方式，Pytorch的接口是`t.view(*shape)`。
 
 view和transpose有很大不同。在Pytorch中，view只能在连续（contiguous）的维度上进行，而transpose会把Tensor变成不连续的（uncontiguous）。比如下面的代码就会得到Error：
@@ -181,7 +187,8 @@ bool is_contiguous(const Tensor& t) {
 
 直观地说，如果`t.stride`满足前面讲的初始化公式，
 
-![](https://www.zhihu.com/equation?tex=t.stride%5Bi%5D+%3D+%5Cbegin%7Bcases%7D++1%2C+%26%5Ctext%7Bif+%7D+i%3Dt.ndim-1%2C++%5C%5C+%5Cprod_%7Bk%3Di%2B1%7D%5E%7Bndim-1%7Dt.shape%5Bk%5D%2C+%26%5Ctext%7Botherwise%7D.++%5Cend%7Bcases%7D+) 
+$$t.stride[i] = \begin{cases}  1, &\text{if } i=t.ndim-1,  \\ \prod_{k=i+1}^{ndim-1}t.shape[k], &\text{otherwise}.  \end{cases}$$
+
 
 那么，`t`就是连续的，否则就是不连续的。在Pytorch里，可以通过`t.contiguous()`来得到一个连续的Tensor，但是其中涉及到数据的拷贝，就无法在常数时间复杂度内完成了。
 
@@ -208,7 +215,8 @@ Tensor view(const Tensor& t, const std::vector<int>& shape) {
 
 如果想要对参数进行检查的话，需要检查`is_contiguous(t)`，以及`shape`对应的数据量和`t.shape`对应的数据量是否相等。
 
-2.4 索引
+### 2.4 索引
+
 这里的索引指的是在某一维度上取数据，用Pytorch语句更容易表述`t[:, j, :]`。
 
 这个操作对Tensor的改变比较大，首先维度减少了一维，那么对应的`Tensor::shape`和`Tensor::stride`也要变化，而且`Tensor::offset`也要调整。假设`nt=t[:, j, :]`，则具体变化如下：
@@ -242,7 +250,8 @@ Tensor slice(const Tensor& t, int idx, int dim) {
 ```
 
 
-2.5 切片
+### 2.5 切片
+
 这里所说的切片和上面的索引类似，只是不会让Tensor减少一维，对应的Pytorch语句是`t[:, j0:j1, :]`。
 
 实现起来也和索引类似，`nt.stride`完全复制`t.stride`；`nt.shape`基本复制`t.shape`，只在做索引的维度上，根据`j0:j1`确定新值，这一维度上的尺寸通常会缩小。具体实现代码如下：
@@ -265,7 +274,8 @@ Tensor slice(const Tensor& t, int start_idx, int end_idx, int dim) {
 ```
 
 
-2.6 Broadcasting
+### 2.6 Broadcasting
+
 广播机制也是Tensor运算的一大特色，可以使不具有相同形状的Tensor进行加减乘除运算。下面是[Pytorch官网的例子](https://link.zhihu.com/?target=https%3A//pytorch.org/docs/stable/notes/broadcasting.html%3Fhighlight%3Dbroadcasting)：
 
 # python code
@@ -286,7 +296,8 @@ torch.Size([3, 1, 7])
 >>> (x+y).size()  # Runtime Error
 为了支持广播机制，我们需要修改一下stride初始化的方式：在原有初始化的基础上，将size为1的维度对应的strde设为0。
 
-![](https://www.zhihu.com/equation?tex=+t.stride%5Bi%5D%3D%5Cbegin%7Bcases%7D++0%2C+%26%5Ctext%7Bif+%7D+t.shape%5Bi%5D+%3D+1%2C+%5C%5C+1%2C+%26%5Ctext%7Belif+%7D+i+%3Dt.ndim-1%2C+%5C%5C+%5Cprod%5E%7Bt.ndim-1%7D_%7Bk%3Di%2B1%7Dt.shape%5Bk%5D+%26%5Ctext%7Botherwise%7D.+%5Cend%7Bcases%7D+) 
+$$t.stride[i]=\begin{cases}  0, &\text{if } t.shape[i] = 1, \\ 1, &\text{elif } i =t.ndim-1, \\ \prod^{t.ndim-1}_{k=i+1}t.shape[k] &\text{otherwise}. \end{cases}$$
+
 
 用代码表示依然很简单：
 
@@ -321,7 +332,8 @@ t2[i, j, k] == t0[i, j, k] + t1[i, 0, k]
 t2[i, j, k] == t0[i, j, k] + t1[i, j, k]
 也就是说，可以使用相同的索引对结果和两个操作数取值，而无需多余的判断。
 
-3. My Implement
+## 3. My Implement
+
 在我自己实现的Simple-Tensor中，这部分对应的实现位于[include/tensor_impl.h](https://link.zhihu.com/?target=https%3A//github.com/XuHQ1997/simple-tensor/blob/main/include/tensor/tensor_impl.h)和[src/tensor_impl.cpp](https://link.zhihu.com/?target=https%3A//github.com/XuHQ1997/simple-tensor/blob/main/src/tensor/tensor_impl.cpp)中。因为用`Storage`封装了`Tensor::data`和`Tensor::offset`，用`Shape`封装了`Tensor::shape`，用`IndexArray`封装了`Tensor::stride`，并且进行了参数检查，所以代码稍有不同，但原理大致相同。还有其中关于自动求导的代码，放在其他文档中介绍。
 
 （注：原文档地址[simple-tensor](https://link.zhihu.com/?target=https%3A//github.com/XuHQ1997/simple-tensor/blob/main/docs/01_Basic_Ideas_for_Implementing_Tensor.md)，这其实最近做的小项目里的文档，来宣传一下。这个项目是c++实现的张量运算库，实现了自动求导。并在此基础上，实现了一些简单的神经网络模型，还有一些KaimingUniformInit、SGDwithMomentum等工具。卑微求star。）

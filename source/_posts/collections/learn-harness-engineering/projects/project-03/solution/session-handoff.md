@@ -17,26 +17,30 @@ categories:
 
 ### What Was Accomplished
 
-1. <strong>Metadata Extraction</strong> -- Enhanced DocumentService with metadata extraction on import:
+## 1. **Metadata Extraction** -- Enhanced DocumentService with metadata extraction on import:
+
    - Added `DocumentMetadata` interface to shared types (wordCount, lineCount, fileType, paragraphCount, charCount)
    - `DocumentService.extractMetadata()` analyzes content on import
    - DocumentDetail component displays metadata section
    - Feature implemented one at a time per AGENTS.md policy
 
-2. <strong>Document Chunking</strong> -- IndexingService chunking pipeline is fully working:
+## 2. **Document Chunking** -- IndexingService chunking pipeline is fully working:
+
    - `chunkDocument()` splits content into ~500-char chunks at paragraph boundaries
    - Each chunk includes charCount and wordCount metadata
    - Chunks stored as JSON in `chunks/<docId>.json`
    - Index meta tracks which documents have been indexed
    - Update to document status after indexing (imported -> indexed)
 
-3. <strong>Indexing Status UI</strong> -- StatusBar shows real-time indexing progress:
+## 3. **Indexing Status UI** -- StatusBar shows real-time indexing progress:
+
    - Color-coded status dot: gray (idle), yellow (indexing), green (ready), red (error)
    - Displays indexed document count and total chunk count
    - AppStatus type extended with indexedCount and totalChunks
    - App.tsx refreshes status after import and indexing operations
 
-4. <strong>Grounded Q&A with Citations</strong> -- QaService returns grounded answers:
+## 4. **Grounded Q&A with Citations** -- QaService returns grounded answers:
+
    - Keyword-based retrieval scores chunks by query overlap
    - Top 2 relevant chunks returned as citations with documentId, title, chunkIndex, excerpt
    - Mock answer patterns for common topics (design, import, indexing, meetings)

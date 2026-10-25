@@ -449,9 +449,9 @@ root
 那么对于请求 [1,2,3,4,9] 来说，最长 token 前缀匹配是 [1,2,3,4]。但最后一个可用 Mamba checkpoint 是[1,2]，状态 S2。而请求 [1,2,3,4,5,6,9] 则可直接从 S6 恢复。
 
 传统 KV Cache 的已缓存 K/V 是只读的，多个请求可以共享。但 Mamba state 是“接下来还会被更新”的状态。若请求直接在缓存的 
-![](https://www.zhihu.com/equation?tex=S_t) 上执行下一个 token 
-![](https://www.zhihu.com/equation?tex=S_%7Bt%2B1%7D+%3D+F%28S_t%2C+x_%7Bt%2B1%7D%29) 会修改共享缓存，破坏其他请求。所以命中 checkpoint 后，代码会做 Copy-on-Write。当请求命中后，forward stream 会把 
-![](https://www.zhihu.com/equation?tex=S_t) 从缓存 slot 拷贝到 dst slot。后续的更新只更新 dst slot 而不影响缓存。
+$S_t$ 上执行下一个 token 
+$S_{t+1} = F(S_t, x_{t+1})$ 会修改共享缓存，破坏其他请求。所以命中 checkpoint 后，代码会做 Copy-on-Write。当请求命中后，forward stream 会把 
+$S_t$ 从缓存 slot 拷贝到 dst slot。后续的更新只更新 dst slot 而不影响缓存。
 
 In Architecture
 当前的 Qwen3.5-0.8B 模型使用的是 HybridLinearAttnBackend 的后端，内部 full attn 使用的是 FlashInferAttnBackend，linear attn 用的是 GDNAttnBackend。

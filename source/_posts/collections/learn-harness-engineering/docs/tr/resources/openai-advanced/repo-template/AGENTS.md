@@ -21,15 +21,22 @@ sistemi dokümanlarına giden yönlendirme katmanı olarak kullanın.
 
 Kodu değiştirmeden önce:
 
-1. `pwd` ile depo kökünü onaylayın.
-2. Mevcut sistem haritası ve sıkı bağımlılık kuralları için
+## 1. `pwd` ile depo kökünü onaylayın.
+
+## 2. Mevcut sistem haritası ve sıkı bağımlılık kuralları için
+
    ARCHITECTURE.md`'yi okuyun.
-3. Hangi alanların veya katmanların en zayıf olduğunu görmek için
+## 3. Hangi alanların veya katmanların en zayıf olduğunu görmek için
+
    docs/QUALITY_SCORE.md`'yi okuyun.
-4. `docs/PLANS.md`'yi okuyun, ardından üzerinde çalıştığınız aktif planı açın.
-5. `docs/product-specs/` içindeki ilgili ürün spec'ini okuyun.
-6. Bu depo için standart bootstrap ve doğrulama yolunu çalıştırın.
-7. Temel doğrulama başarısızsa, kapsam eklemeden önce temeli onarın.
+## 4. `docs/PLANS.md`'yi okuyun, ardından üzerinde çalıştığınız aktif planı açın.
+
+## 5. `docs/product-specs/` içindeki ilgili ürün spec'ini okuyun.
+
+## 6. Bu depo için standart bootstrap ve doğrulama yolunu çalıştırın.
+
+## 7. Temel doğrulama başarısızsa, kapsam eklemeden önce temeli onarın.
+
 
 ## Yönlendirme Haritası
 
@@ -71,9 +78,14 @@ Bir değişiklik yalnızca aşağıdakilerin hepsi doğruysa bitmiştir:
 
 Oturumu bitirmeden önce:
 
-1. Aktif yürütme planını güncelleyin.
-2. Herhangi bir alan veya katman anlamlı biçimde değiştiyse
+## 1. Aktif yürütme planını güncelleyin.
+
+## 2. Herhangi bir alan veya katman anlamlı biçimde değiştiyse
+
    docs/QUALITY_SCORE.md`'yi güncelleyin.
-3. Ertelediyseniz yeni borcu `docs/exec-plans/tech-debt-tracker.md`'ye kaydedin.
-4. Uygun olduğunda biten planları `docs/exec-plans/completed/`'a taşıyın.
-5. Depoyu net bir sonraki eylemle yeniden başlatılabilir durumda bırakın.
+## 3. Ertelediyseniz yeni borcu `docs/exec-plans/tech-debt-tracker.md`'ye kaydedin.
+
+## 4. Uygun olduğunda biten planları `docs/exec-plans/completed/`'a taşıyın.
+
+## 5. Depoyu net bir sonraki eylemle yeniden başlatılabilir durumda bırakın.
+

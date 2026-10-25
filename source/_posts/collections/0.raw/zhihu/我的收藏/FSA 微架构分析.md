@@ -33,20 +33,24 @@ Dataflow is all u need.
 
 以往的 Attention 加速器大多将 GEMM 和 SFU 分离，导致数据搬运的能耗和延迟，虽然 FA3 引入异步机制，但问题依然存在。FSA 通过优化数据流在单个 SA 中即可执行完整 FA。创新性很强，但是很多微架构细节和 overlap 机制看论文没有看懂，好在开源FSA-github，因此阅读了一下源码，跑了一下仿真来学习。
 
-1. 架构
+## 1. 架构
 
-1.1 总体架构
+
+### 1.1 总体架构
+
 
 相对于传统 SA 增加了向上的数据通路和一排 CMP 模块。水平通路数据是低精度，垂直通路是高精度。ctrl 信号带 valid 指示。所有信号都是 systolic 地传播
 
-1.2 CMP
+### 1.2 CMP
+
 
 CMP 微架构ctrl_cmp 命令列表：
 
 命令编码描述UPDATE0更新最大值。将新的输入数据与当前 newMax 比较，更新 newMax，传播原输入数据PROP_MAX1传播 newMaxPROP_MAX_DIFF2传播 newMax - oldMax，更新 oldMax 为 newMaxPROP_ZERO3传播零值RESET4复位。将 oldMax 和 newMax 重置为最小值PROP_EXP2_INTERCEPTS5传播执行 e^x 时的截距序列val downCastDIn = ev.viewEasA(ev.cvtAtoE(io.d_input.bits))
 因此在 UPDATE 命令下 CMP 是对输入数据量化后再输出
 
-1.3 PE
+### 1.3 PE
+
 PE 的控制逻辑可以分为三部分：计算、本地低精度寄存器更新、输出传递
 
 命令描述计算命令mac执行 reg×left_input+acc 操作，并将计算结果向累加值方向相反的方向输出传递acc_ui累加值来自上方，0则来自下方寄存器更新命令load_reg_li从左侧接收数据加载到 reg 中load_reg_ui从上侧接收数据加载到 reg 中update_reg将 mac 计算结果更新到 reg 中exp2执行 exp2 计算并将结果更新到 reg 中输出传递命令flow_lrbypass 向右的数据通路flow_udbypass 向下的数据通路flow_dubypass 向上的数据通路exp2 部分的计算被拆分为：小数项线性近似( 复用 MAC )，整数项转化为移位操作来实现
@@ -56,7 +60,8 @@ PE 的控制逻辑可以分为三部分：计算、本地低精度寄存器更�
 - 发现 intercept 的值在[0.5,1]之间，所以 exp 只有0和-1两种情况，只占用一位指数位。因此可以通过剩下的指数位来编码其序号信息k。
 - 因为使用的是浮点数表示格式，因此移位操作转换为了对指数位的加减操作，无需桶形移位器。 
 
-2. 运行
+## 2. 运行
+
 github 的 readme 非常详细，按步骤进行后可以跑 FA 的仿真
 
 [fsa] Memory dump configured: /tmp/0x80000060.bin, start=0x80000060, size=64
@@ -70,9 +75,11 @@ FSA: mxInst =          5
 FSA: rawInst =         32
 *<strong>PASSED</strong>* Completed after                 4587 simulation cycles
 
-3. 波形
+## 3. 波形
 
-3.1 整体运行
+
+### 3.1 整体运行
+
 为 dump 波形要加入一些命令行参数
 
 make debug CONFIG=FSA4X4Fp16Config
@@ -81,15 +88,18 @@ uv run main.py --seq_q 4 --seq_kv 4 --config FSA4X4Fp16Config --vcdfile "path"
 
 接下来对应各 phase 分析一下
 
-3.2 phase1: Preload Q
+### 3.2 phase1: Preload Q
+
 预载Q，N_COLS 个时钟周期
 
-3.2 phase2: S=QK^T
+### 3.2 phase2: S=QK^T
+
 采用方形阵列时，花费 3*N_ROWS 个时钟周期。
 
 systolic 地输入K，pe 参数配置为 mac, flow_lr, acc_ui=0，所以执行 WS 式计算，输出向上数据流
 
-3.3 phase3: rowmax(S)
+### 3.3 phase3: rowmax(S)
+
 求值 rowmax(S), 并回填 systolic。
 
 在 phase2 启动 N_ROWS 个时钟周期后，即可得到S_00，此时 phase3 启动，共执行 2*N_ROWS 个时钟周期。
@@ -98,18 +108,22 @@ systolic 地输入K，pe 参数配置为 mac, flow_lr, acc_ui=0，所以执行 W
 
 注意回填之后矩阵是反的，不然的话就把 pe 寄存器的值覆盖了，而 pe 寄存器的值还需要运算。如下图：
 
-3.4 phase4: S-rowmax(S)
+### 3.4 phase4: S-rowmax(S)
+
 在 phase3 执行N_ROWS 个时钟周期，即最左侧列回填( load_reg_ui )完毕后开始 phase4，计算 S-rowmax(S)，执行 N_COLS 个时钟周期。pe 配置为 update_reg, acc_ui, flow_ud。 
 
-3.5 phase5: a=old_m-new_m   phase6: N*log2e/√d
+### 3.5 phase5: a=old_m-new_m   phase6: N*log2e/√d
+
 在 phase4 执行一个周期，即左上角的PE完成后即可开始 phase5 phase6，phase5使用向下的数据通路，phase6 使用向右的数据通路。共花费 N_ROWS 个周期。
 
 phase5 配置为 flow_ud，phase6 配置为 update_reg 和 flow_lr。
 
-3.6 phase7: exp2
+### 3.6 phase7: exp2
+
 在 phase5 和 phase6 开始后的下一拍即开始 phase7。exp2 每个 pe 接收8个周期的 k 和 b，根据小数的范围决定使用的 k 和 b。
 
-3.7 phase8: rowsum   phase9: O=PV
+### 3.7 phase8: rowsum   phase9: O=PV
+
 phase7 开始8拍后执行 phase8 和 phase9，计算结束。
 
 编辑于 2026-02-13 02:26・四川

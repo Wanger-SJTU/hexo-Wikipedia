@@ -138,7 +138,8 @@ inline __device__ void compute_attn_1rowblock(const Params  params, const int bi
 ```
 
 
-2. early exit处理
+## 2. early exit处理
+
 接着是early exit的处理，在对QK矩阵进行block分块后，对于某些block其实是不需要处理的。例如在window attention、causal mask等场景存在n_block_max  = n_block_min的情况(这里通过计算n_block_min和n_block_max来确定K方向上需要计算的最大块号和最小块号)，这种情况下这个线程块其实是不需要进行计算的，直接输出结果即可。比如下图causal mask场景下，深色Q block对应的ThreadBlock就不需要进行计算(因为全是0)，可以直接写入存储返回。
 
 其中n_block_min和n_block_max的计算逻辑如下，
@@ -259,7 +260,8 @@ __forceinline__ __device__ void copy(TiledCopy tiled_copy, Tensor Engine0, Layou
 ```
 
 
-3. QKVPS数据预处理
+## 3. QKVPS数据预处理
+
 接下来的代码对后续即将用到的QKVP数据进行Tensor化和partition划分，主要也是应用cute进行处理，这里有个小trick，就是后面会倒着block进行迭代，所以这里初始化时偏移量直接到了最后一个block。
 
 ```cpp
@@ -376,7 +378,8 @@ __forceinline__ __device__ void copy(TiledCopy tiled_copy, Tensor Engine0, Layou
 ```
 
 
-4. 数据拷贝
+## 4. 数据拷贝
+
 因为这里使用到了流水线的方式来overlap 数据拷贝和计算，所以在首次迭代前进行初始数据的异步拷贝。
 
 ```cpp
@@ -418,7 +421,8 @@ __forceinline__ __device__ void copy(TiledCopy tiled_copy, Tensor Engine0, Layou
 ```
 
 
-5. 带mask的主体计算
+## 5. 带mask的主体计算
+
 接下来进入到计算的主体，代码中拆成2个连续的循环，前一个循环处理有mask的block，后一个循环处理无mask的block。如下图简单例子所示，对于左下角block不需要mask(全部需要计算)，右下角block需要mask（部分参与计算）。
 
 首先介绍第一个循环，后一个循环流程差不太多，有些细节区别。循环里基本上就是QKVPS和output的相关计算，也就是P=Q*K，S=softmax(mask(P)), O=P*V，注释中有详细介绍。
@@ -700,7 +704,8 @@ mask部分的逻辑，这里要结合cute的拆分逻辑来看，四层for循环
 ```
 
 
-6. 不带mask的主体计算
+## 6. 不带mask的主体计算
+
 这块的代码其实和上个循环差不多，注意下最后单独对全局进行了数据校准，对应paper里这个部分。
 
 ```cpp
@@ -766,7 +771,8 @@ mask部分的逻辑，这里要结合cute的拆分逻辑来看，四层for循环
 ```
 
 
-7. 结果写入全局内存
+## 7. 结果写入全局内存
+
 最后将output输出到全局内存中，这里流程是 寄存器- 共享内存 -  寄存器 -  全局内存，这样做的目的是对数据重新排列后最大化寄存器输出到全局内存的写入带宽。
 
 ```cpp

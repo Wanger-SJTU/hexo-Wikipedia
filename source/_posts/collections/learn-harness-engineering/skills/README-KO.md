@@ -83,9 +83,12 @@ skills/
 
 각 스킬은 표준 구조를 따릅니다.
 
-1. <strong>SKILL.md</strong> — 진입점. YAML 프론트매터(frontmatter)(이름, 트리거를 위한 설명)와 에이전트를 위한 마크다운 지시사항이 포함됩니다.
-2. <strong>references/</strong> — 필요에 따라 컨텍스트로 로드되는 추가 문서.
-3. <strong>templates/</strong> — 스킬이 사용자를 위해 생성할 수 있는 시작 템플릿.
+## 1. **SKILL.md** — 진입점. YAML 프론트매터(frontmatter)(이름, 트리거를 위한 설명)와 에이전트를 위한 마크다운 지시사항이 포함됩니다.
+
+## 2. **references/** — 필요에 따라 컨텍스트로 로드되는 추가 문서.
+
+## 3. **templates/** — 스킬이 사용자를 위해 생성할 수 있는 시작 템플릿.
+
 
 스킬은 점진적 공개(progressive disclosure)를 사용합니다. 에이전트는 처음에 이름과 설명만 보고, 트리거되면 전체 SKILL.md 본문을 로드하며, 필요할 때만 번들된 리소스를 읽습니다.
 

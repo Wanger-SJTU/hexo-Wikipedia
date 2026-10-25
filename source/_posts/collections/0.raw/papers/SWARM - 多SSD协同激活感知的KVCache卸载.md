@@ -218,7 +218,8 @@ SWARM将KVCache聚类作为原子检索单元，并根据需要将它们从SSD�
 
 2. <strong>局部窗口条目（Local Window Entries）</strong>。SWARM将局部窗口内（如256个令牌）的KV条目保留在DRAM中，以在推理过程中保持上下文连续性。滑动缓冲区动态跟踪生成进展中的最新条目。
 
-3. <strong>热聚类（Hot Clusters）</strong>。为利用聚类级激活局部性，SWARM将最频繁激活的聚类缓存到DRAM中。为平衡空间开销与I/O减少，我们为聚类 $C_i$ 定义成本效益分数如下：
+## 3. **热聚类（Hot Clusters）**。为利用聚类级激活局部性，SWARM将最频繁激活的聚类缓存到DRAM中。为平衡空间开销与I/O减少，我们为聚类 $C_i$ 定义成本效益分数如下：
+
 
 $$
 

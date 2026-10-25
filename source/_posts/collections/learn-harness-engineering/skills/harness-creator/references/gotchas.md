@@ -156,8 +156,10 @@ async function editFile(path: string, content: string) {
 <strong>Cause</strong>: Work unit evicted before parent notified of completion. Race condition: parent tries to read result that's already GC'd.
 
 <strong>Fix</strong>: Two-phase eviction:
-1. Clean disk output at terminal state (eager)
-2. Clean in-memory record after parent notified (lazy)
+## 1. Clean disk output at terminal state (eager)
+
+## 2. Clean in-memory record after parent notified (lazy)
+
 
 ---
 

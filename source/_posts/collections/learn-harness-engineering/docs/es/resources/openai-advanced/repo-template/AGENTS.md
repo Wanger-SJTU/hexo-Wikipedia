@@ -21,13 +21,20 @@ volcado gigante de instrucciones.
 
 Antes de cambiar código:
 
-1. Confirma la raíz del repositorio con `pwd`.
-2. Lee `ARCHITECTURE.md` para el mapa actual del sistema y las reglas estrictas de dependencia.
-3. Lee `docs/QUALITY_SCORE.md` para ver qué dominios o capas son más débiles.
-4. Lee `docs/PLANS.md`, luego abre el plan activo en el que estás trabajando.
-5. Lee la especificación de producto relevante en `docs/product-specs/`.
-6. Ejecuta la ruta estándar de arranque y verificación para este repositorio.
-7. Si la verificación basal está fallando, repara la línea base antes de agregar alcance.
+## 1. Confirma la raíz del repositorio con `pwd`.
+
+## 2. Lee `ARCHITECTURE.md` para el mapa actual del sistema y las reglas estrictas de dependencia.
+
+## 3. Lee `docs/QUALITY_SCORE.md` para ver qué dominios o capas son más débiles.
+
+## 4. Lee `docs/PLANS.md`, luego abre el plan activo en el que estás trabajando.
+
+## 5. Lee la especificación de producto relevante en `docs/product-specs/`.
+
+## 6. Ejecuta la ruta estándar de arranque y verificación para este repositorio.
+
+## 7. Si la verificación basal está fallando, repara la línea base antes de agregar alcance.
+
 
 ## Mapa de enrutamiento
 
@@ -67,8 +74,13 @@ Un cambio está completo solo cuando todas las siguientes condiciones son verdad
 
 Antes de terminar una sesión:
 
-1. Actualiza el plan de ejecución activo.
-2. Actualiza `docs/QUALITY_SCORE.md` si algún dominio o capa cambió significativamente.
-3. Registra nueva deuda técnica en `docs/exec-plans/tech-debt-tracker.md` si la pospusiste.
-4. Mueve los planes terminados a `docs/exec-plans/completed/` cuando sea apropiado.
-5. Deja el repositorio en un estado reiniciable con una próxima acción clara.
+## 1. Actualiza el plan de ejecución activo.
+
+## 2. Actualiza `docs/QUALITY_SCORE.md` si algún dominio o capa cambió significativamente.
+
+## 3. Registra nueva deuda técnica en `docs/exec-plans/tech-debt-tracker.md` si la pospusiste.
+
+## 4. Mueve los planes terminados a `docs/exec-plans/completed/` cuando sea apropiado.
+
+## 5. Deja el repositorio en un estado reiniciable con una próxima acción clara.
+

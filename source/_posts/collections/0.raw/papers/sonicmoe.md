@@ -107,8 +107,10 @@ CUTLASS 的分层编程模型：mainloop（tile MMA） + epilogue（结果写回
 ### 可定制 Epilogue
 
 每个 Grouped GEMM kernel 的差异只在于：
-1. producer 如何加载数据（contiguous vs. gathered）
-2. epilogue consumer 对 accumulator 做什么
+## 1. producer 如何加载数据（contiguous vs. gathered）
+
+## 2. epilogue consumer 对 accumulator 做什么
+
 
 ```cpp
 epi_visit_subtile // 这一个方法是所有 fusion logic 的注入点
@@ -189,7 +191,10 @@ token rounding 在高稀疏设置下额外加速 1.16x。
 
 ## 核心 Takeaway
 
-1. <strong>Fine-grained MoE 时代需要新 kernel 设计</strong>：ScatterMoE/MoMoE 为粗粒度 MoE 设计，不适合现在的细粒度稀疏趋势
-2. <strong>算法重构比硬件技巧更根本</strong>：改反向传播的数据流路径，同时解决激活内存和 IO 成本两个问题，且不需要 GEMM 重算
-3. <strong>统一抽象降低维护成本</strong>：Hopper→Blackwell 的工作量从零开始重写 → ~500 行 override，代码量从 3k+ 降到 200 行
-4. <strong>硬件特性（TMEM、2CTA、CLC）配合算法特性（gather fusion、epilogue fusion）才能最大化性能</strong>
+## 1. **Fine-grained MoE 时代需要新 kernel 设计**：ScatterMoE/MoMoE 为粗粒度 MoE 设计，不适合现在的细粒度稀疏趋势
+
+## 2. **算法重构比硬件技巧更根本**：改反向传播的数据流路径，同时解决激活内存和 IO 成本两个问题，且不需要 GEMM 重算
+
+## 3. **统一抽象降低维护成本**：Hopper→Blackwell 的工作量从零开始重写 → ~500 行 override，代码量从 3k+ 降到 200 行
+
+## 4. **硬件特性（TMEM、2CTA、CLC）配合算法特性（gather fusion、epilogue fusion）才能最大化性能**

@@ -222,7 +222,8 @@ if q_len > 1 or self.layer_id
 
 sparse 的计算逻辑如下：
 
-1. qkv proj
+## 1. qkv proj
+
 
 ```text
 query_states = (
@@ -243,7 +244,8 @@ query_states = (
 ```
 
 
-2. 从 kv cache 获取 kv_seq_len
+## 2. 从 kv cache 获取 kv_seq_len
+
 
 # 新缓存格式
 
@@ -263,14 +265,16 @@ else:
 ```
 
 
-3. rope
+## 3. rope
+
 
 cos, sin = self.rotary_emb(value_states, position_ids.to(value_states.device))
 query_states, key_states = apply_rotary_pos_emb(
     query_states, key_states, cos, sin, position_ids
 )
 
-4. 更新 kv cache
+## 4. 更新 kv cache
+
 
 # New cache format
 
@@ -292,7 +296,8 @@ else:
 ```
 
 
-5. GQA 适配
+## 5. GQA 适配
+
 
 ```text
 key_states = repeat_kv(key_states, self.num_key_value_groups)
@@ -300,7 +305,8 @@ value_states = repeat_kv(value_states, self.num_key_value_groups)
 ```
 
 
-6. 计算原始注意力权重
+## 6. 计算原始注意力权重
+
 
 # query_states ([1, 32, 1, 128])
 # key_states  ([1, 32, 4008, 128])
@@ -313,7 +319,8 @@ attn_weights = torch.matmul(query_states, key_states.transpose(2, 3)) / math.sqr
 
 # attn_weights [1, 32, 1, 4008]
 
-7. 正负处理
+## 7. 正负处理
+
 
 ```text
 sign = (query_states > 0) + (~(query_states > 0)) * -1
@@ -330,7 +337,8 @@ postive_query = query_states * sign   #[1, 32, 1, 4008]
 - 将序列长度填充到chunk_size的整数倍
 - 填充值设为最小值，不影响max操作
 
-9. 计算每个page 的最大值
+## 9. 计算每个page 的最大值
+
 
 ```text
 chunk_max_key = max_key.reshape(
@@ -344,7 +352,8 @@ chunk_max_key = max_key.reshape(
 ).amax(dim=-2)
 # [1, 32, 251, 128]
 
-10. 恢复chunk_max_key 的原始 shape
+## 10. 恢复chunk_max_key 的原始 shape
+
 
 ```text
 chunk_max_key = chunk_max_key.unsqueeze(-2).repeat(1, 1, 1, self.chunk_size, 1)
@@ -357,7 +366,8 @@ chunk_max_key = chunk_max_key.reshape(
 
 - 将chunk最大值复制chunk_size次
 - 恢复到原始序列形状
-11. 计算query 和 max_key 的权重
+## 11. 计算query 和 max_key 的权重
+
 
 ```text
 quantized_weight = torch.matmul(
@@ -368,7 +378,8 @@ quantized_weight = torch.matmul(
 
 # (1, 32, 1, 4008)
 
-12. 应用 mask (当前没有）
+## 12. 应用 mask (当前没有）
+
 
 if attention_mask is not None:
 
@@ -384,7 +395,8 @@ if attention_mask is not None:
 ```
 
 
-13. 选择 top-k
+## 13. 选择 top-k
+
 
 ```text
 token_budget = min(kv_seq_len, self.token_budget)  # 512
@@ -403,15 +415,18 @@ else:
 ```
 
 
-14. 应用 叠加 casual mask
+## 14. 应用 叠加 casual mask
+
 
 `mask_bottom = torch.tril(mask_bottom, diagonal=position_ids[0][0].item())`
 
-15. 应用 mask
+## 15. 应用 mask
+
 
 `attn_weights[~mask_bottom] = torch.tensor(torch.finfo(attn_weights.dtype).min)`
 
-16. 计算 softmax 和 PV 矩阵乘
+## 16. 计算 softmax 和 PV 矩阵乘
+
 
 ```text
 attn_weights = nn.functional.softmax(attn_weights, dim=-1, dtype=torch.float32).to(
@@ -421,7 +436,8 @@ attn_output = torch.matmul(attn_weights, value_states)
 ```
 
 
-17. 计算 o_proj
+## 17. 计算 o_proj
+
 
 ```text
 attn_output = attn_output.transpose(1, 2)

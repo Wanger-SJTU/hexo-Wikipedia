@@ -33,13 +33,15 @@ source_url: https://zhuanlan.zhihu.com/p/667489780
 
 >  固定模型的总参数量，调整层数/深度/宽度，不同模型的性能差距很小，大部分在2%以内
 
-3. 对于计算量C" role="presentation">CC，模型参数量N" role="presentation">NN和数据大小D" role="presentation">DD，当不受其他两个因素制约时，模型性能与每个因素都呈现幂律关系
+## 3. 对于计算量C" role="presentation">CC，模型参数量N" role="presentation">NN和数据大小D" role="presentation">DD，当不受其他两个因素制约时，模型性能与每个因素都呈现幂律关系
+
 
 ![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_12f16681db78.jpg)
 
 4. 为了提升模型性能，模型参数量N和数据大小D需要同步放大，但模型和数据分别放大的比例还存在争议。
 
-5. Scaling Law不仅适用于语言模型，还适用于其他模态以及跨模态的任务[4]：
+## 5. Scaling Law不仅适用于语言模型，还适用于其他模态以及跨模态的任务[4]：
+
 
 ![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_66ace5d8e6f0.jpg)
 

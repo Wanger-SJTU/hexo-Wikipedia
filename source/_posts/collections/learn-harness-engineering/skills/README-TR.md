@@ -79,9 +79,12 @@ skills/
 
 Her skill standart bir yapıyı izler:
 
-1. <strong>SKILL.md</strong> — Giriş noktası. YAML ön madde (ad, tetikleme için açıklama) ve ajan için Markdown talimatları içerir.
-2. <strong>references/</strong> — Gerektiğinde bağlama yüklenen ek belgeler.
-3. <strong>templates/</strong> — Skill'in kullanıcılar için oluşturabileceği başlangıç şablonları.
+## 1. **SKILL.md** — Giriş noktası. YAML ön madde (ad, tetikleme için açıklama) ve ajan için Markdown talimatları içerir.
+
+## 2. **references/** — Gerektiğinde bağlama yüklenen ek belgeler.
+
+## 3. **templates/** — Skill'in kullanıcılar için oluşturabileceği başlangıç şablonları.
+
 
 Skill'ler aşamalı açıklama kullanır: ajan önce yalnızca adı ve açıklamayı görür, tetiklendiğinde tam SKILL.md gövdesini yükler ve paketlenmiş kaynakları yalnızca gerektiğinde okur.
 

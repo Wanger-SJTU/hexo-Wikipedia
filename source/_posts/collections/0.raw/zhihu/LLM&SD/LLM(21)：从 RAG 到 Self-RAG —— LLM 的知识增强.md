@@ -127,7 +127,8 @@ rag_chain.invoke("What is Task Decomposition?")
 
 #### 2.2 RAG 典型案例
 
-2.2.1 ChatPDF 及其 [复刻版](https://link.zhihu.com/?target=https%3A//github.com/shibing624/ChatPDF)
+### 2.2.1 ChatPDF 及其 [复刻版](https://link.zhihu.com/?target=https%3A//github.com/shibing624/ChatPDF)
+
 
 ChatPDF的实现流程如下：
 
@@ -143,19 +144,22 @@ ChatPDF的实现流程如下：
 
 [](https://zhuanlan.zhihu.com/p/636741983)
 
-2.2.2 Baichuan
+### 2.2.2 Baichuan
+
 
 百川大模型的搜索增强系统融合了多个模块，包括指令意图理解、智能搜索和结果增强等组件。该体系通过深入理解用户指令，精确驱动查询词的搜索，并结合大语言模型技术来优化模型结果生成的可靠性。通过这一系列协同作用，大模型实现了更精确、智能的模型结果回答，通过这种方式减少了模型的幻觉。
 
 ![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_9e19f63a93a1.jpg)
 
-2.2.3 Multi-modal retrieval-based LMs
+### 2.2.3 Multi-modal retrieval-based LMs
+
 
 RA-CM3 是一个检索增强的多模态模型，其包含了一个信息检索框架来从外部存储库中获取知识，具体来说，作者首先使用预训练的 CLIP 模型来实现一个检索器（retriever），然后使用 CM3 Transformer 架构来构成一个生成器（generator），其中检索器用来辅助模型从外部存储库中搜索有关于当前提示文本中的精确信息，然后将该信息连同文本送入到生成器中进行图像合成，这样设计的模型的准确性就会大大提高。
 
 ![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_984ecbd3d811.jpg)
 
-2.2.4 LeanDojo
+### 2.2.4 LeanDojo
+
 
 这是一个通过检索增强进行数学证明的案例，其中 Lean 是公式数学的编码语言。下图描述了实现过程：
 
@@ -175,13 +179,15 @@ RA-CM3 是一个检索增强的多模态模型，其包含了一个信息检索�
 
 针对上述的问题，也逐步发展出一些改进的方法，下面仅举几例：
 
-2.3.1 RAG 结合 SFT：[RA-DIT](https://link.zhihu.com/?target=https%3A//arxiv.org/pdf/2310.01352.pdf)
+### 2.3.1 RAG 结合 SFT：[RA-DIT](https://link.zhihu.com/?target=https%3A//arxiv.org/pdf/2310.01352.pdf)
+
 
 简单来说，RA-DIT 方法分别对 LLM 和检索器进行微调。 更新 LLM 以最大限度地提高在给定检索增强指令的情况下正确答案的概率，同时更新检索器以最大限度地减少文档与查询在语义上相似（相关）的程度。通过这种方式，使 LLM 更好地利用相关背景知识，并训练 LLM 即使在检索错误块的情况下也能产生准确的预测，从而使模型能够依赖自己的知识。
 
 ![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_d575267dc73b.jpg)
 
-2.3.2 多向量检索器（Multi-Vector Retriever）
+### 2.3.2 多向量检索器（Multi-Vector Retriever）
+
 
 多向量检索器 (Multi-Vector Retriever) 是 LangChain 推出的一个关键工具，用于优化 RAG 的过程。多向量检索器的核心想法是将我们想要用于答案合成的文档与我们想要用于检索的参考文献分开。这允许系统为搜索优化文档的版本而不失去答案合成时的上下文。
 
@@ -189,7 +195,8 @@ RA-CM3 是一个检索增强的多模态模型，其包含了一个信息检索�
 
 简单来说就是将一个文档分解为较长的几个逻辑较为完整和独立的部分，例如包括不同的文本、表格甚至是图片都可以，然后分解后的文档使用摘要的方式进行总结，这个摘要需要可以明确覆盖相关内容。然后摘要进行向量化，检索的时候直接检索摘要，一旦匹配，即可将摘要背后的完整文档作为上下文输入给大模型。
 
-2.3.3 查询转换（Query Transformations）
+### 2.3.3 查询转换（Query Transformations）
+
 
 在某些情况下，用户的 query 可能出现表述不清、需求复杂、内容无关等问题，为了解决这些问题，查询转换（Query Transformations）的方案利用了大型语言模型(LLM)的强大能力，通过某种提示或方法将原始的用户问题转换或重写为更合适的、能够更准确地返回所需结果的查询。LLM的能力确保了转换后的查询更有可能从文档或数据中获取相关和准确的答案。
 

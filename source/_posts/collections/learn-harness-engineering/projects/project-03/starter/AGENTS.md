@@ -15,10 +15,14 @@ categories:
 
 ## Quick Start
 
-1. Run `npm install && npm run check` to verify the build.
-2. Read `docs/ARCHITECTURE.md` for layer structure.
-3. Read `docs/PRODUCT.md` for feature requirements.
-4. Check `feature_list.json` for what needs to be done.
+## 1. Run `npm install && npm run check` to verify the build.
+
+## 2. Read `docs/ARCHITECTURE.md` for layer structure.
+
+## 3. Read `docs/PRODUCT.md` for feature requirements.
+
+## 4. Check `feature_list.json` for what needs to be done.
+
 
 ## Layers
 
@@ -37,10 +41,14 @@ categories:
 
 The new features for this project are:
 
-1. <strong>Document Chunking</strong> -- IndexingService splits documents into ~500 char chunks
-2. <strong>Metadata Extraction</strong> -- Extract word count, line count, file type on import
-3. <strong>Indexing Status UI</strong> -- StatusBar shows indexing progress with counts
-4. <strong>Grounded Q&A</strong> -- QaService returns answers with citations and confidence
+## 1. **Document Chunking** -- IndexingService splits documents into ~500 char chunks
+
+## 2. **Metadata Extraction** -- Extract word count, line count, file type on import
+
+## 3. **Indexing Status UI** -- StatusBar shows indexing progress with counts
+
+## 4. **Grounded Q&A** -- QaService returns answers with citations and confidence
+
 
 Check `feature_list.json` for current status.
 
@@ -48,9 +56,12 @@ Check `feature_list.json` for current status.
 
 A feature is "done" when:
 
-1. TypeScript compiles without errors (`npm run check`).
-2. The app launches and the feature works.
-3. The feature appears in `feature_list.json` with status `"pass"` and evidence.
+## 1. TypeScript compiles without errors (`npm run check`).
+
+## 2. The app launches and the feature works.
+
+## 3. The feature appears in `feature_list.json` with status `"pass"` and evidence.
+
 
 ## Session Handoff
 

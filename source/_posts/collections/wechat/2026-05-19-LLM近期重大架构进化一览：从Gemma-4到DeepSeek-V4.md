@@ -89,9 +89,12 @@ PLE 关注的是参数效率（parameter efficiency）：它让小尺寸的 Gemm
 
 <strong>PLE 的工作方式</strong>：
 
-1. token IDs 经过 per-layer embedding lookup
-2. 正常的 token embeddings 经过线性投影到同一个 PLE 空间
-3. 这两部分相加、缩放、reshape 成一个 tensor，每层一个 slice
+## 1. token IDs 经过 per-layer embedding lookup
+
+## 2. 正常的 token embeddings 经过线性投影到同一个 PLE 空间
+
+## 3. 这两部分相加、缩放、reshape 成一个 tensor，每层一个 slice
+
 
 每个 transformer block 仍然走相同的 attention 和 feed-forward 路径，但 Gemma 4 在 feed-forward 分支之后添加了一个小的 layer-specific token vector，通过 embedding 参数和小型投影来增加表征容量。这增加了计算开销，但避免了将整个 transformer stack 扩展到更大参数量所需的成本。
 

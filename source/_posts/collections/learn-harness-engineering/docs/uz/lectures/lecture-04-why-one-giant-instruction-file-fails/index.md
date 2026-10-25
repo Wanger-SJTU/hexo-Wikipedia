@@ -113,10 +113,13 @@ SaaS jamoasining `AGENTS.md` fayli 50 qatordan 600 qatorgacha shishib ketdi. Fay
 Agentʼning samaradorligi sezilarli darajada pasaya boshladi: oddiy bugʼlarni tuzatish jarayonida agent juda koʻp kontekstni aloqasi yoʻq deploy yoʻriqnomalarini oʻqishga sarfladi; “barcha maʼlumotlar bazasi soʻrovlari parametrlangan soʻrovlardan foydalanishi shart” degan xavfsizlik cheklovi 300-qatorda koʻmilib yotgani uchun tez-tez eʼtiborsiz qoldirildi; kod uslubidagi bir-biriga zid uchta qoida agentʼning tasodifiy xatti-harakatlanishiga sabab boʻldi.
 
 Jamoa “chamadonni qayta tartibga solish” ishini bajardi:
-1. `AGENTS.md` 80 qatorga qisqartirildi: faqat loyiha tavsifi, ishga tushirish buyruqlari va 15 ta global qatʼiy cheklovlar qoldirildi.
+## 1. `AGENTS.md` 80 qatorga qisqartirildi: faqat loyiha tavsifi, ishga tushirish buyruqlari va 15 ta global qatʼiy cheklovlar qoldirildi.
+
 2. Mavzu hujjatlari yaratildi: `docs/api-patterns.md` (120 qator), `docs/database-rules.md` (60 qator), `docs/testing-standards.md` (80 qator).
-3. Marshrutlash faylida mavzu hujjatlari havolalari qoʻshildi.
-4. Tarixiy eslatmalar test holatlariga oʻgirildi yoki oʻchirib tashlandi.
+## 3. Marshrutlash faylida mavzu hujjatlari havolalari qoʻshildi.
+
+## 4. Tarixiy eslatmalar test holatlariga oʻgirildi yoki oʻchirib tashlandi.
+
 
 Refaktoringdan soʻng: xuddi oʻsha vazifalar toʻplamini muvaffaqiyatli bajarish koʻrsatkichi 45% dan 72% gacha koʻtarildi. Xavfsizlik cheklovlariga rioya qilish 60% dan 95% gacha oshdi — chunki u faylning oʻrtasidan marshrutlash faylining eng tepasiga koʻchirildi, endi u “oʻrtada yoʻqolib” qolmaydi.
 

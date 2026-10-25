@@ -28,10 +28,10 @@ source_url: https://www.zhihu.com/question/1912123003191433189/answer/1931657139
 ![](https://pica.zhimg.com/v2-15a73d13b5a27e26e46e8d17f793b18f_r.jpg?source=2c26e567)在这公式中，内层是先对每条轨迹内的token计算平均值，然后再对外层每条轨迹计算平均值，这样的计算方式会导致一个问题：
 
 - 针对长的回复，因为轨迹内的token数量多， 
-![](https://www.zhihu.com/equation?tex=%7Co_i%7C) 比较大，除以轨迹长度得到平均之后，长回复内的token对loss的贡献相对较小
+$|o_i|$ 比较大，除以轨迹长度得到平均之后，长回复内的token对loss的贡献相对较小
 
 - 针对短的回复，因为轨迹内的token数量少， 
-![](https://www.zhihu.com/equation?tex=%7Co_i%7C) 小，除以轨迹长度得到平均之后，短回复内每个token对loss的贡献则比较大
+$|o_i|$ 小，除以轨迹长度得到平均之后，短回复内每个token对loss的贡献则比较大
 
 如果是答对的样本，因为模型鼓励正确的样本，短的回复token权重更高，这时候模型会倾向于回复更短
 
@@ -49,7 +49,8 @@ token mean公式：
 目前这种loss的计算方法已经在很多工作中应用了，verl框架内默认的agg mode也是token mean。
 
 当然还有另外一种解决方案，参考DrGRPO，每条轨迹拉平均，不对轨迹内的token 除 
-![](https://www.zhihu.com/equation?tex=%7CO_i%7C) 
+$$|O_i|$$
+
 
 ![](https://picx.zhimg.com/v2-2ae3b0d1a4f38dda9b3f5def666fb9c8_r.jpg?source=2c26e567)上面两种方法本质上都是为了避免GRPO中的长度偏好
 

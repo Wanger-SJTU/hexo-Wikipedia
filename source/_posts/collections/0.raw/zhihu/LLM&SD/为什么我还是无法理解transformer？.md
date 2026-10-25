@@ -52,7 +52,7 @@ Transformer最早是Google在2017年的[Attention Is All You Need](https://link.
 <strong>Step 3：</strong>最后，根据这些注意力权重，<strong>对每个词语的值（V）进行加权求和</strong>，得到一个新的表示，该表示会更加关注与查询相关的信息。
 
 ![](https://picx.zhimg.com/v2-9ef932222cef95f955df8f445dc3c54d_r.jpg?source=2c26e567)图源：[1]如图所示， 
-![](https://www.zhihu.com/equation?tex=%5Calpha_%7B1%EF%BC%8C1%7D) 是q1和k1点积计算并归一化后得到的关联程度，以此类推，最后再用关联程度与所有v进行加权求和，就能获得到与q1关联最大的信息b1,而其它的b2、b3、b4也是同样的计算方式。
+$\alpha_{1，1}$ 是q1和k1点积计算并归一化后得到的关联程度，以此类推，最后再用关联程度与所有v进行加权求和，就能获得到与q1关联最大的信息b1,而其它的b2、b3、b4也是同样的计算方式。
 
 最终，从矩阵的角度运算的角度，整个过程可以被表示为：
 

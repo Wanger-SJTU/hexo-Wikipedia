@@ -15,9 +15,12 @@ categories:
 
 ## Quick Start
 
-1. Run `npm install && npm run check` to verify the build.
-2. Read `docs/ARCHITECTURE.md` for layer structure.
-3. Check `feature_list.json` for what needs to be done.
+## 1. Run `npm install && npm run check` to verify the build.
+
+## 2. Read `docs/ARCHITECTURE.md` for layer structure.
+
+## 3. Check `feature_list.json` for what needs to be done.
+
 
 ## Layers
 

@@ -85,10 +85,14 @@ Think of it like database trigger constraints versus application-layer checks: t
 
 Specifically, the feature list serves four harness components:
 
-1. <strong>Scheduler</strong>: Reads states, picks the next `not_started` feature.
-2. <strong>Verifier</strong>: Executes verification commands, decides whether to allow state transitions.
-3. <strong>Handoff reporter</strong>: Automatically generates session handoff summaries from the feature list.
-4. <strong>Progress tracker</strong>: Tallies state distribution, provides project health metrics.
+## 1. **Scheduler**: Reads states, picks the next `not_started` feature.
+
+## 2. **Verifier**: Executes verification commands, decides whether to allow state transitions.
+
+## 3. **Handoff reporter**: Automatically generates session handoff summaries from the feature list.
+
+## 4. **Progress tracker**: Tallies state distribution, provides project health metrics.
+
 
 ## How to Do It
 

@@ -30,12 +30,18 @@ Bu qandaydir metafora emas — bu matematika. Aytaylik, agentʼning kontekst sig
 
 Claude Codeʼning haqiqiy xatti-harakati buni aniq koʻrsatadi. Unga “foydalanuvchi roʻyxatdan oʻtishini qoʻshish”ni soʻrang va u quyidagilarni qilishi mumkin:
 
-1. User modelini yaratish
-2. Roʻyxatdan oʻtish marshrutini yozish
-3. Elektron pochtani tasdiqlash kerakligini payqab, pochta xizmatini qoʻshish
-4. Parollarni heshlash (hashing) kerakligini koʻrib, bcrypt ni olib kirish
-5. Xatoliklarni qayta ishlash tizimi bir xil emasligini sezib, global xatolik middlewareʼini refaktoring qilish
-6. Test fayllarining strukturasi tartibsiz ekanligini koʻrib, katalogni qayta tashkil qilish
+## 1. User modelini yaratish
+
+## 2. Roʻyxatdan oʻtish marshrutini yozish
+
+## 3. Elektron pochtani tasdiqlash kerakligini payqab, pochta xizmatini qoʻshish
+
+## 4. Parollarni heshlash (hashing) kerakligini koʻrib, bcrypt ni olib kirish
+
+## 5. Xatoliklarni qayta ishlash tizimi bir xil emasligini sezib, global xatolik middlewareʼini refaktoring qilish
+
+## 6. Test fayllarining strukturasi tartibsiz ekanligini koʻrib, katalogni qayta tashkil qilish
+
 
 Oltita qadam oʻtgach, ularning har biri chala bajarilgan boʻladi. Hech qanday end-to-end tekshiruv (verification) yoʻq, chala pishgan kodlar oʻrtasida murakkab bogʻlanishlar mavjud boʻladi va chala ishlarni davom ettirishi kerak boʻlgan keyingi sessiya mutlaqo adashib qoladi. Xuddi bir vaqtning oʻzida oltita taom pishirayotgan odamga oʻxshaydi — hamma ovqat tovadadir, lekin birortasi ham tortilmagan (plated). Ularning hammasi kuyadi.
 

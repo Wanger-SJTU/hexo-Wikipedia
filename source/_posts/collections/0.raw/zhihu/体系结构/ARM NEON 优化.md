@@ -227,7 +227,8 @@ Btw: Sorry for the ugly syntax-highlighting. I’m still looking for a nice word
 
 4.  vmlal_u8(add, parm1, parm2):       在vmull_u8的基础上再加上第一个参数的值;
 
-5.  vshrn_n_u16(src, int):                     将第一个参数，即128位寄存器每16位右移第二个参数位，并将最终的结果存到一个64位寄存器里
+## 5.  vshrn_n_u16(src, int):                     将第一个参数，即128位寄存器每16位右移第二个参数位，并将最终的结果存到一个64位寄存器里
+
 
 http://gcc.gnu.org/onlinedocs/gcc/ARM-NEON-Intrinsics.html
 

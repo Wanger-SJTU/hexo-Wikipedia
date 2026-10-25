@@ -13,7 +13,8 @@ categories:
 
 
 # 背景
-1. 在transformer block中，主要的权重参数集中在FFN层，以llama结构为例，
+## 1. 在transformer block中，主要的权重参数集中在FFN层，以llama结构为例，
+
 
 ```text
 	1. attention部分的权重为 QKVO 变换的，大小约为 $2 * hidden * hidden = 4 * 4096 * 4096$
@@ -22,11 +23,13 @@ categories:
 ```
 
 
-3. DejaVu 
+## 3. DejaVu 
+
     - 高达 85% 的模型参数在推理阶段是上下文稀疏的，对于特定的输入，只有一小部分注意力头和前馈网络中的参数对模型输出有显著影响
     - MLP 层上的平均稀疏性则发现超过95%的MLP参数都可以不参与推理
     ![alt text](/images/collections/assets/image-3.png)
-3. LLM in a Flash 的论文通过实验表明，激活函数由 Silu 转换为 Relu时， 实际中间的激活稀疏度很高 <strong>大于 90%</strong> 
+## 3. LLM in a Flash 的论文通过实验表明，激活函数由 Silu 转换为 Relu时， 实际中间的激活稀疏度很高 **大于 90%** 
+
 	> Using active neurons of predictor would require about 10% of the DRAM memory capacity on average
 	
     - FFN部分，只有<strong>非稀疏段</strong>根据需要动态加载到RAM中
@@ -37,12 +40,14 @@ categories:
     - 滑动窗口和稀疏性预测可以仅需要Flash加载2%的FFN层。
     ![alt text](/images/collections/assets/image-2.png)
 
-4. Powerinfer
+## 4. Powerinfer
+
     - 幂律分布的神经元被类似的预测器分为 hot/cold 等类型，hot 神经元在 GPU 上算，cold 神经元在 CPU 上算
     - 数据分配到 GPU/CPU 是靠一个 offline 的 predictor 来完成
     ![alt text](/images/collections/assets/image-4.png)
 
-4. Flash memory到DRAM的带宽较低，且Flash 的功耗要比DDR高，频繁的换入换出需要极高的稀释比例
+## 4. Flash memory到DRAM的带宽较低，且Flash 的功耗要比DDR高，频繁的换入换出需要极高的稀释比例
+
 ![throughput random](/images/collections/assets/image-1.png)
 ![ddr bandwidth](/images/collections/assets/image.png)
 

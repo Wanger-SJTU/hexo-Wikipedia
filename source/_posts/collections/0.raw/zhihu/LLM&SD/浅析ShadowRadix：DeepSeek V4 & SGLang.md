@@ -62,7 +62,8 @@ DeepSeek V4 KV Cache Storage
 
 ![](https://pica.zhimg.com/v2-56f2b64b6bc1d65e475527090bf96bce_r.jpg)DeepSeek-V4 的 KV cache 分成两类：<strong>State Cache</strong> 和 <strong>Classical KV Cache</strong>。
 
-1. State Cache
+## 1. State Cache
+
 State Cache 存储与当前 sequence 状态相关的内容，每个请求分配一个固定大小的 cache block。
 
 主要包含：
@@ -76,7 +77,8 @@ State Cache 存储与当前 sequence 状态相关的内容，每个请求分配�
  
 - 存 CSA / HCA 中尚未形成完整压缩块的尾部 token
 - 这些 token 需要暂存，直到可以执行压缩
-2. Classical KV Cache
+## 2. Classical KV Cache
+
 Classical KV Cache 存储已经压缩完成的 CSA / HCA KV entries。
 
 主要包含：
@@ -93,7 +95,8 @@ Classical KV Cache 存储已经压缩完成的 CSA / HCA KV entries。
  
 - 每 `m'` 个原始 token 压缩成 1 个 KV entry
 - 其中 `m' >> m` 
-3. Block 对齐方式
+## 3. Block 对齐方式
+
 Classical KV Cache 中，每个 cache block 覆盖：
 
 L = lcm(m, m’)

@@ -19,12 +19,18 @@ Ushbu repozitoriy kod yozuvchi agentlarning uzoq davom etadigan (long-running) i
 
 Kodni oʻzgartirishdan oldin:
 
-1. `pwd` yordamida repo root jildini tasdiqlang.
-2. Joriy tizim xaritasi (system map) va qatʼiy bogʻliqlik (hard dependency) qoidalari bilan tanishish uchun `ARCHITECTURE.md` ni oʻqing.
-3. Qaysi domenlar yoki qatlamlar eng zaif ekanligini koʻrish uchun `docs/QUALITY_SCORE.md` ni oʻqing.
-4. `docs/PLANS.md` ni oʻqing, soʻngra hozir qaysi biri ustida ishlayotgan boʻlsangiz, oʻsha faol rejani (active plan) oching.
-5. `docs/product-specs/` dan tegishli mahsulot taʼrifini (product spec) oʻqing.
-6. Ushbu repo uchun standart ishga tushirish (bootstrap) va tekshirish (verification) yoʻlini ishga tushiring.
+## 1. `pwd` yordamida repo root jildini tasdiqlang.
+
+## 2. Joriy tizim xaritasi (system map) va qatʼiy bogʻliqlik (hard dependency) qoidalari bilan tanishish uchun `ARCHITECTURE.md` ni oʻqing.
+
+## 3. Qaysi domenlar yoki qatlamlar eng zaif ekanligini koʻrish uchun `docs/QUALITY_SCORE.md` ni oʻqing.
+
+## 4. `docs/PLANS.md` ni oʻqing, soʻngra hozir qaysi biri ustida ishlayotgan boʻlsangiz, oʻsha faol rejani (active plan) oching.
+
+## 5. `docs/product-specs/` dan tegishli mahsulot taʼrifini (product spec) oʻqing.
+
+## 6. Ushbu repo uchun standart ishga tushirish (bootstrap) va tekshirish (verification) yoʻlini ishga tushiring.
+
 7. Agar bazaviy tekshiruv (baseline verification) yiqilayotgan boʻlsa, skoupni (scope) kengaytirishdan avval bazaviy holatni (baseline) toʻgʻrilang.
 
 ## Marshrutizatsiya Xaritasi (Routing Map)
@@ -61,8 +67,13 @@ Oʻzgartirish quyidagilarning barchasi toʻgʻri boʻlgandagina tugatilgan deb h
 
 Sessiyani yakunlashdan oldin:
 
-1. Faol ishlash rejasini (active execution plan) yangilang.
-2. Agar biron domen yoki qatlam mazmunan oʻzgargan boʻlsa `docs/QUALITY_SCORE.md` ni yangilang.
-3. Agar yangi texnik qarz (technical debt) ni keyinga qoldirsangiz, uni `docs/exec-plans/tech-debt-tracker.md` da yozib qoʻying.
-4. Tugallangan rejalarni oʻz vaqtida `docs/exec-plans/completed/` papkasiga koʻchiring.
-5. Reponi qayta ishga tushib keta oladigan holatda (restartable state) hamda keyingi amal aniq koʻrsatilgan qilib qoldiring.
+## 1. Faol ishlash rejasini (active execution plan) yangilang.
+
+## 2. Agar biron domen yoki qatlam mazmunan oʻzgargan boʻlsa `docs/QUALITY_SCORE.md` ni yangilang.
+
+## 3. Agar yangi texnik qarz (technical debt) ni keyinga qoldirsangiz, uni `docs/exec-plans/tech-debt-tracker.md` da yozib qoʻying.
+
+## 4. Tugallangan rejalarni oʻz vaqtida `docs/exec-plans/completed/` papkasiga koʻchiring.
+
+## 5. Reponi qayta ishga tushib keta oladigan holatda (restartable state) hamda keyingi amal aniq koʻrsatilgan qilib qoldiring.
+

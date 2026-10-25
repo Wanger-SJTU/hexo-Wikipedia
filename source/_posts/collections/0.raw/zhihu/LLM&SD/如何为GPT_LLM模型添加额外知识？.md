@@ -34,20 +34,20 @@ source_url: https://www.zhihu.com/question/591935281/answer/3056126688
 - Perceived Utility 有用性
 - Citation Recall 全面性
 - Citation Precision 准确性如何建模这个问题？文章给出了评价指标的正式定义。观察图 1，我们发现引用是嵌入在回答中的。我们将用户的查询表示为 
-![](https://www.zhihu.com/equation?tex=q) ，将机器的回答表示为 
-![](https://www.zhihu.com/equation?tex=r) 。我们将机器的回答拆分为一个声明集 
-![](https://www.zhihu.com/equation?tex=S%3D%5C%7Bs_1%2C%5Ccdots%2Cs_n%5C%7D) ，然后对于每个声明 
-![](https://www.zhihu.com/equation?tex=s_i) ，我们构造一个可能存在的引用集 
-![](https://www.zhihu.com/equation?tex=C_i%3D%5C%7Bc_%7Bi1%7D%2C+c_%7Bi2%7D%2C+%5Ccdots%2C+c_%7Bik%7D%5C%7D) 。对于每个引用 
-![](https://www.zhihu.com/equation?tex=c_%7Bij%7D) ，存在两个信息：URL表示为 
-![](https://www.zhihu.com/equation?tex=u_%7Bij%7D) ，内容表示为 
-![](https://www.zhihu.com/equation?tex=p_%7Bij%7D) 。在进行评估的时候，我们希望声明集 
-![](https://www.zhihu.com/equation?tex=S) 越完整越好，但是必须是check-worthy的。也就是说，非常明显的事实不需要加入声明集。
+$q$ ，将机器的回答表示为 
+$r$ 。我们将机器的回答拆分为一个声明集 
+$S=\{s_1,\cdots,s_n\}$ ，然后对于每个声明 
+$s_i$ ，我们构造一个可能存在的引用集 
+$C_i=\{c_{i1}, c_{i2}, \cdots, c_{ik}\}$ 。对于每个引用 
+$c_{ij}$ ，存在两个信息：URL表示为 
+$u_{ij}$ ，内容表示为 
+$p_{ij}$ 。在进行评估的时候，我们希望声明集 
+$S$ 越完整越好，但是必须是check-worthy的。也就是说，非常明显的事实不需要加入声明集。
 
 下面是一个评估recall和precision的metric的展示：
 
 ![](https://pic1.zhimg.com/v2-7e484e6872c2d2f5d9a8eca98384f7bb_r.jpg?source=2c26e567)图 2 标注metric例子为什么第二张图和第三张图的recall是一样的呢？因为所有check-worthy的statement拼起来形成的set 
-![](https://www.zhihu.com/equation?tex=S) 会作为recall的分母，而评估者认为第二条statement并没有被它的citation支持，因此分数还是只能算一条的。因此recall的分子只能包含被支持的句子。
+$S$ 会作为recall的分母，而评估者认为第二条statement并没有被它的citation支持，因此分数还是只能算一条的。因此recall的分子只能包含被支持的句子。
 
 precision更简单一点，就是支持statement的citation总量除以所有的citation总量。
 

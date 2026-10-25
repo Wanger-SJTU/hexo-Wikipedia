@@ -34,11 +34,16 @@ L'initialiseur doit laisser au moins ces artefacts :
 
 ## Liste de contrôle
 
-1. Définir le chemin de démarrage standard.
-2. Définir le chemin de vérification standard.
-3. Créer le journal de progression et enregistrer l'état de départ.
-4. Décomposer le travail en fonctionnalités explicites avec des statuts.
-5. Créer le premier commit de référence propre.
+## 1. Définir le chemin de démarrage standard.
+
+## 2. Définir le chemin de vérification standard.
+
+## 3. Créer le journal de progression et enregistrer l'état de départ.
+
+## 4. Décomposer le travail en fonctionnalités explicites avec des statuts.
+
+## 5. Créer le premier commit de référence propre.
+
 
 ## Test de réussite
 

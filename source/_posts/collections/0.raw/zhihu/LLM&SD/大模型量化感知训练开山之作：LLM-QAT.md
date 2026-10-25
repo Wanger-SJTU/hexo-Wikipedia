@@ -77,8 +77,8 @@ QAT
 在 MinMax 量化中，量化过程可以用如下公式表示：
 
 ![](https://pic2.zhimg.com/v2-22b6d5bae2104a292cc97016ad0f9aed_r.jpg)这里 XQ 和 XR 分别表示量化的变量和全精度的变量。 i 指的是张量中的第 i 个元素。 α 是缩放因子，β 是零点（zero-point）值。 对于对称量化， 
-![](https://www.zhihu.com/equation?tex=%5Calpha+%3D+%5Cfrac%7B%5Cmax%28%7C%5Cmathbf%7BX%7D_%5Cmathbf%7BR%7D%7C%29%7D%7B2%5E%7BN-1%7D+-1%7D+%2C+%5C+%5Cbeta+%3D+0+) 。对于非对称量化， 
-![](https://www.zhihu.com/equation?tex=%5Calpha+%3D+%5Cfrac%7B%5Cmax%28%5Cmathbf%7BX%7D_%5Cmathbf%7BR%7D%29+-+%5Cmin%28%5Cmathbf%7BX%7D_%5Cmathbf%7BR%7D%29%7D%7B2%5EN+-1%7D+%2C+%5C+%5Cbeta+%3D+%5Cmin%28%5Cmathbf%7BX%7D_%5Cmathbf%7BR%7D%29) 。
+$\alpha = \frac{\max(|\mathbf{X}_\mathbf{R}|)}{2^{N-1} -1} , \ \beta = 0$ 。对于非对称量化， 
+$\alpha = \frac{\max(\mathbf{X}_\mathbf{R}) - \min(\mathbf{X}_\mathbf{R})}{2^N -1} , \ \beta = \min(\mathbf{X}_\mathbf{R})$ 。
 
 <strong>与 MinMax 量化相比，截断异常值有助于提高精度并为中间值分配更多位</strong>。 因此，最近的许多工作（Q-BERT、Ternarybert）对基于 Transformer 的语言模型采用了基于裁剪的量化。 量化可以表示为：
 

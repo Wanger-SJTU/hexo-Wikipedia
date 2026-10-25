@@ -1202,7 +1202,8 @@ marks[mark_id].bitN = 1
    每个 node 有 4 个 slot。
 它只演示三件事：
 
-1. put(index, value)
+## 1. put(index, value)
+
       按 index 分层存 entry。
 
    2. get(index)

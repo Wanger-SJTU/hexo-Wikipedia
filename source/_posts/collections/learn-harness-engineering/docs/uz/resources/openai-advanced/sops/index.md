@@ -24,9 +24,12 @@ Ushbu SOPʼlar (Standart Operatsion Protseduralar) maqoladagi ishlash andozalari
 
 ## Ulardan Qanday Foydalanish Kerak
 
-1. Joriy muammongizga (bottleneck) mos keladigan SOPʼni tanlang.
-2. Yetishmayotgan artefaktlar yoki vositalarni (tooling) oʻrnatish uchun tekshiruv roʻyxatidan (checklist) foydalaning.
-3. Hosil boʻlgan qoidalarni oʻzingiz koʻchirib olgan `repo-template/` hujjatlariga kiriting (encode).
+## 1. Joriy muammongizga (bottleneck) mos keladigan SOPʼni tanlang.
+
+## 2. Yetishmayotgan artefaktlar yoki vositalarni (tooling) oʻrnatish uchun tekshiruv roʻyxatidan (checklist) foydalaning.
+
+## 3. Hosil boʻlgan qoidalarni oʻzingiz koʻchirib olgan `repo-template/` hujjatlariga kiriting (encode).
+
 4. Qayta-qayta takrorlanadigan tekshiruv (review) izohlarini avtomatlashtirilgan testlar, skriptlar yoki himoya toʻsiqlariga (guardrails) aylantiring.
 
 Bularga koʻr-koʻrona amal qilish shart emas. Ular harnessʼni tushunishni osonlashtirish, qoidalarga majburlay olish (enforceable) va qayta-ishlanuvchan (repeatable) qilishga xizmat qiladi.

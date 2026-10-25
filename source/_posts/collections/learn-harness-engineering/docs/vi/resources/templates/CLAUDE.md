@@ -19,12 +19,18 @@ Bạn đang làm việc trong một kho lưu trữ được thiết kế cho cô
 
 Ở đầu mỗi phiên:
 
-1. Chạy `pwd` và xác nhận bạn đang ở trong thư mục gốc kho lưu trữ dự kiến.
-2. Đọc `claude-progress.md`.
-3. Đọc `feature_list.json`.
-4. Xem lại các commit gần đây bằng `git log --oneline -5`.
-5. Chạy `./init.sh`.
-6. Kiểm tra xem đường dẫn smoke hoặc end-to-end baseline có đã bị hỏng chưa.
+## 1. Chạy `pwd` và xác nhận bạn đang ở trong thư mục gốc kho lưu trữ dự kiến.
+
+## 2. Đọc `claude-progress.md`.
+
+## 3. Đọc `feature_list.json`.
+
+## 4. Xem lại các commit gần đây bằng `git log --oneline -5`.
+
+## 5. Chạy `./init.sh`.
+
+## 6. Kiểm tra xem đường dẫn smoke hoặc end-to-end baseline có đã bị hỏng chưa.
+
 
 Sau đó chọn chính xác một tính năng chưa hoàn thành và chỉ làm việc trên tính năng đó cho đến khi bạn xác minh nó hoặc ghi lại lý do tại sao nó bị chặn.
 
@@ -49,8 +55,13 @@ Một tính năng chỉ có thể chuyển sang `passing` sau khi xác minh cầ
 
 ## Trước khi Bạn Dừng
 
-1. Cập nhật nhật ký tiến độ.
-2. Cập nhật trạng thái tính năng.
-3. Ghi lại những gì vẫn bị hỏng hoặc chưa được xác minh.
-4. Commit khi kho lưu trữ an toàn để tiếp tục.
-5. Để lại đường dẫn khởi động lại sạch sẽ cho phiên tiếp theo.
+## 1. Cập nhật nhật ký tiến độ.
+
+## 2. Cập nhật trạng thái tính năng.
+
+## 3. Ghi lại những gì vẫn bị hỏng hoặc chưa được xác minh.
+
+## 4. Commit khi kho lưu trữ an toàn để tiếp tục.
+
+## 5. Để lại đường dẫn khởi động lại sạch sẽ cho phiên tiếp theo.
+

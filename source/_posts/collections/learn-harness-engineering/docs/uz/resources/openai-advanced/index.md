@@ -60,9 +60,12 @@ docs/
 
 ## Buni qanday qabul qilish (Adopt) mumkin
 
-1. Agar repongiz hali kichik boʻlsa, minimal toʻplamdan boshlang.
-2. Kuchliroq tuzilma kerak boʻlganda [`repo-template/`](./repo-template/index.md) ichidagi fayllarni oʻz repozitoriyingizga koʻchiring.
-3. `AGENTS.md` faylini qisqa saqlang. Unga ensiklopediya emas, balki chuqurroq hujjatlarga yoʻnaltiruvchi router sifatida qarang.
+## 1. Agar repongiz hali kichik boʻlsa, minimal toʻplamdan boshlang.
+
+## 2. Kuchliroq tuzilma kerak boʻlganda [`repo-template/`](./repo-template/index.md) ichidagi fayllarni oʻz repozitoriyingizga koʻchiring.
+
+## 3. `AGENTS.md` faylini qisqa saqlang. Unga ensiklopediya emas, balki chuqurroq hujjatlarga yoʻnaltiruvchi router sifatida qarang.
+
 4. Sifat, ishonchlilik va reja hujjatlarini alohida tozalash kuni sifatida emas, balki oddiy ishingizning bir qismi sifatida yangilab boring.
 5. Yaratilgan (generated) artefaktlar va tashqi maʼlumotnomalarni (external references) aniq saqlang, shunda agentlar chat tarixiga tayanmasdan ularni topa oladi.
 

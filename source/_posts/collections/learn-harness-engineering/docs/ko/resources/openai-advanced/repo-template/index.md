@@ -19,11 +19,16 @@ categories:
 
 ## 복사 순서
 
-1. `AGENTS.md`와 `ARCHITECTURE.md`를 저장소 루트에 복사한다.
-2. 전체 `docs/` 트리를 복사한다.
-3. `docs/PRODUCT_SENSE.md`, `docs/QUALITY_SCORE.md`, `docs/RELIABILITY.md`를 가장 먼저 채운다.
-4. `docs/exec-plans/active/` 아래에 첫 번째 활성 계획(active plan)을 추가한다.
-5. 진입점 파일은 짧게 유지하고 세부 사항은 연결된 문서로 라우팅한다.
+## 1. `AGENTS.md`와 `ARCHITECTURE.md`를 저장소 루트에 복사한다.
+
+## 2. 전체 `docs/` 트리를 복사한다.
+
+## 3. `docs/PRODUCT_SENSE.md`, `docs/QUALITY_SCORE.md`, `docs/RELIABILITY.md`를 가장 먼저 채운다.
+
+## 4. `docs/exec-plans/active/` 아래에 첫 번째 활성 계획(active plan)을 추가한다.
+
+## 5. 진입점 파일은 짧게 유지하고 세부 사항은 연결된 문서로 라우팅한다.
+
 
 ## 이 템플릿이 최적화하는 것
 

@@ -26,7 +26,11 @@ Các ghi chú này giải thích cách sử dụng các mẫu như một harness
 
 ## Thứ tự Đọc Đề nghị
 
-1. `method-map.md`
-2. `initializer-agent-playbook.md`
-3. `coding-agent-startup-flow.md`
-4. `prompt-calibration.md`
+## 1. `method-map.md`
+
+## 2. `initializer-agent-playbook.md`
+
+## 3. `coding-agent-startup-flow.md`
+
+## 4. `prompt-calibration.md`
+

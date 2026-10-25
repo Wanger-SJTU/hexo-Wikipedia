@@ -18,12 +18,17 @@ de documentation agent-first de style OpenAI au lieu d'un simple harnais minimal
 
 ## Ordre de copie
 
-1. Copiez `AGENTS.md` et `ARCHITECTURE.md` à la racine du dépôt.
-2. Copiez l'arborescence complète `docs/`.
-3. Remplissez d'abord `docs/PRODUCT_SENSE.md`, `docs/QUALITY_SCORE.md` et
+## 1. Copiez `AGENTS.md` et `ARCHITECTURE.md` à la racine du dépôt.
+
+## 2. Copiez l'arborescence complète `docs/`.
+
+## 3. Remplissez d'abord `docs/PRODUCT_SENSE.md`, `docs/QUALITY_SCORE.md` et
+
    docs/RELIABILITY.md`.
-4. Ajoutez votre premier plan actif sous `docs/exec-plans/active/`.
-5. Gardez les fichiers d'entrée courts et acheminez les détails vers les documents liés.
+## 4. Ajoutez votre premier plan actif sous `docs/exec-plans/active/`.
+
+## 5. Gardez les fichiers d'entrée courts et acheminez les détails vers les documents liés.
+
 
 ## Ce pour quoi ce modèle est optimisé
 

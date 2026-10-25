@@ -52,11 +52,13 @@ source_url: https://hwjiang1510.github.io/blogs/knowledge-is-the-new-representat
 
 <strong>评价的关键区别 · Two Axes of Evaluation</strong>
 
-1. <strong>"好" 由什么定义</strong> (标准 · Criterion)
+## 1. **"好" 由什么定义** (标准 · Criterion)
+
    - <strong>Old</strong>：在*单一 readout 接口*（linear probe、task head）上友好
    - <strong>New</strong>：同一份内部结构在*多条未被专门优化的接口*之间是否自洽地 zero-shot generalize
 
-2. <strong>学什么</strong> (能力 · Capability)
+## 2. **学什么** (能力 · Capability)
+
    - <strong>Old</strong>：在 *limited-domain、预设任务分布*里学到的特征（如 ImageNet 标签空间）
    - <strong>New</strong>：在 *open-world data* 上吸收本身就存在的结构，尽量做到 unbiased 而不预设要 cover 什么
 
@@ -125,14 +127,17 @@ source_url: https://hwjiang1510.github.io/blogs/knowledge-is-the-new-representat
 
 <strong>Three Axes of a Learning Paradigm</strong>
 
-1. <strong>Scalability</strong> — 随 data / compute 扩张持续压缩更多 knowledge
+## 1. **Scalability** — 随 data / compute 扩张持续压缩更多 knowledge
+
    - 取决于 <strong>minimal data curation</strong>：任何人工介入（labeling, filtering, etc.）都会随 data 增大而上涨，限制 scaling。
    - 以及 <strong>minimal inductive bias</strong>：不把模型锁在某个预设的 domain 上，否则一旦超出该 domain 就饱和。
 
-2. <strong>Effectiveness</strong> — 在给定 scale 下真正压出 knowledge，而非 superficial pattern
+## 2. **Effectiveness** — 在给定 scale 下真正压出 knowledge，而非 superficial pattern
+
    - 由 <strong>objective</strong> 决定。Next-token prediction 这类 self-supervised signal 与 data 本身同构，压出的是 data 的联合分布；task-specific (self-)supervised loss 只压出"对某个接口最有用的一小块"，错过绝大部份的 data 及其蕴含的 knowledge。
 
-3. <strong>Efficiency</strong> — 单位 compute / sample / param 能压出多少 knowledge
+## 3. **Efficiency** — 单位 compute / sample / param 能压出多少 knowledge
+
    - 由 <strong>objective</strong> 与 <strong>modality</strong> 共同决定。objective 决定每个样本能供出多少有效梯度：*dense objective*（如 NTP、pixel-level reconstruction）天然让每个 token / patch 都提供梯度，sparse objective（CLS-only contrastive 等）则一张图只回传一次。modality 决定 data 本身的信息密度，越密、冗余越少，越 sample-efficient。
 
 当理解了 knowledge 和 learning paradigm 的关系，回到 <strong>visual representation learning</strong>，它的终极答案呼之欲出：<strong>unified multimodal omni-model</strong>。每种模态都是同一 world 在不同 modality 接口下的不完整投影，而只有学习多模态的联合分布才能真正得到 compression of the world。

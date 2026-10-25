@@ -21,12 +21,18 @@ verification over speed.
 
 At the start of every session:
 
-1. Run `pwd` and confirm you are in the expected repository root.
-2. Read `claude-progress.md`.
-3. Read `feature_list.json`.
-4. Review recent commits with `git log --oneline -5`.
-5. Run `./init.sh`.
-6. Check whether the baseline smoke or end-to-end path is already broken.
+## 1. Run `pwd` and confirm you are in the expected repository root.
+
+## 2. Read `claude-progress.md`.
+
+## 3. Read `feature_list.json`.
+
+## 4. Review recent commits with `git log --oneline -5`.
+
+## 5. Run `./init.sh`.
+
+## 6. Check whether the baseline smoke or end-to-end path is already broken.
+
 
 Then select exactly one unfinished feature and work only on that feature until
 you either verify it or document why it is blocked.
@@ -53,8 +59,13 @@ and the result is recorded.
 
 ## Before You Stop
 
-1. Update the progress log.
-2. Update the feature state.
-3. Record what is still broken or unverified.
-4. Commit once the repository is safe to resume.
-5. Leave a clean restart path for the next session.
+## 1. Update the progress log.
+
+## 2. Update the feature state.
+
+## 3. Record what is still broken or unverified.
+
+## 4. Commit once the repository is safe to resume.
+
+## 5. Leave a clean restart path for the next session.
+

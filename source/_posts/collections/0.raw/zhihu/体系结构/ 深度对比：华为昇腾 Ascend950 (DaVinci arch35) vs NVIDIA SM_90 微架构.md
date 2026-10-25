@@ -725,22 +725,27 @@ operator/
 核心思路：用足够多的线程来隐藏访存延迟
 
 优化手段：
-1. 提高 Occupancy（SM_90 利用率）
+## 1. 提高 Occupancy（SM_90 利用率）
+
    - 减少每线程寄存器使用
    - 合理设置 Block Size
    
-2. 内存合并访问（Coalesced Access）
+## 2. 内存合并访问（Coalesced Access）
+
    - 相邻线程访问相邻内存地址
    
-3. Shared Memory 优化
+## 3. Shared Memory 优化
+
    - 减少 Global Memory 访问
    - Bank Conflict 避免
    
-4. Warp 级优化
+## 4. Warp 级优化
+
    - 避免 Warp Divergence（分支发散）
    - 使用 Warp Shuffle 指令
 
-5. Tensor Core 利用
+## 5. Tensor Core 利用
+
    - WMMA/MMA API 访问 Tensor Core
 
 #### 昇腾优化策略：”榨干带宽”
@@ -748,26 +753,31 @@ operator/
 核心思路：让搬运和计算完全重叠，充分利用每个时钟周期
 
 优化手段：
-1. Double Buffer 流水线
+## 1. Double Buffer 流水线
+
    - MTE2/Vector/MTE3 三级并行
    - depth=2 搬运与计算重叠
    
-2. Tiling 策略优化
+## 2. Tiling 策略优化
+
    - 最大化单次搬运量（减少搬运次数）
    - UB 空间精确规划
    - SWAT (Sliding Window Adaptive Tiling)：最大化多核 L2 命中率
    - StreamK：保持最优基本块的同时实现多核负载均衡
    
-3. 数据对齐
+## 3. 数据对齐
+
    - 32 字节对齐（硬件要求）
    - DataCopyPad 处理非对齐数据
    - 128B Sector Cache 持续优化离散/小包访问
    
-4. 核间负载均衡
+## 4. 核间负载均衡
+
    - Host 侧均匀分配任务
    - 动态核数适配
    
-5. 架构特定优化 (arch35)
+## 5. 架构特定优化 (arch35)
+
    - Regbase 编程（OOO 指令双发，寄存器内计算）
    - SIMT 编程（细粒度并行，离散访问友好）
    - CV 融合通路（L0C → UB 直通，DualDst 双目标）

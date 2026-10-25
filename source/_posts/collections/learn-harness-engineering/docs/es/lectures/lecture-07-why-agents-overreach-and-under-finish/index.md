@@ -30,12 +30,18 @@ Esto no es una metáfora — es matemática. Supón que la capacidad de contexto
 
 El comportamiento real de Claude Code es revelador. Pídele que "añada registro de usuarios" y podría:
 
-1. Crear un modelo de User
-2. Escribir la ruta de registro
-3. Notar que necesita verificación de email, así que añadir un servicio de correo
-4. Ver que las contraseñas necesitan hashing, así que incorporar bcrypt
-5. Notar que el manejo de errores es inconsistente, así que refactorizar el middleware de errores global
-6. Ver que la estructura de archivos de prueba está desordenada, así que reorganizar el directorio
+## 1. Crear un modelo de User
+
+## 2. Escribir la ruta de registro
+
+## 3. Notar que necesita verificación de email, así que añadir un servicio de correo
+
+## 4. Ver que las contraseñas necesitan hashing, así que incorporar bcrypt
+
+## 5. Notar que el manejo de errores es inconsistente, así que refactorizar el middleware de errores global
+
+## 6. Ver que la estructura de archivos de prueba está desordenada, así que reorganizar el directorio
+
 
 Seis pasos después, cada uno está a medio hacer. Sin verificación end-to-end, acoplamiento complejo entre el código a medio cocinar, y la siguiente sesión que tenga que recoger los pedazos estará completamente perdida. Como alguien cocinando seis platos simultáneamente — cada plato está en la sartén pero ninguno ha sido emplatado. Todos se queman.
 

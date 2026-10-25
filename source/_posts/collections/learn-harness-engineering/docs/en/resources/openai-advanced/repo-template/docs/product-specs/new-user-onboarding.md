@@ -23,9 +23,12 @@ Describe the first-run experience a new user should have.
 
 ## User Flow
 
-1. `[step one]`
-2. `[step two]`
-3. `[step three]`
+## 1. `[step one]`
+
+## 2. `[step two]`
+
+## 3. `[step three]`
+
 
 ## Acceptance Criteria
 

@@ -41,13 +41,19 @@ Umumiy (shared) yordamchi funksiyalar (utils) domendan tashqarida qolishi va oʻ
 
 ## Bajarish SOPʼi (Execution SOP)
 
-1. Kodni qanday uslubda implement qilishga (implementation style) tegishdan oldin kod bazasini (codebase) domenlarga xaritalang (map).
-2. Har bir domen uchun ruxsat etilgan qatlamlar ketma-ketligini (allowed layer sequence) aniqlang.
-3. Barcha kesishuvchi (cross-cutting) masalalarni toping va ularni providerʼlar yoki adapterʼlar orqali yoʻnaltiring.
+## 1. Kodni qanday uslubda implement qilishga (implementation style) tegishdan oldin kod bazasini (codebase) domenlarga xaritalang (map).
+
+## 2. Har bir domen uchun ruxsat etilgan qatlamlar ketma-ketligini (allowed layer sequence) aniqlang.
+
+## 3. Barcha kesishuvchi (cross-cutting) masalalarni toping va ularni providerʼlar yoki adapterʼlar orqali yoʻnaltiring.
+
 4. Tushunarsiz, bir nechta joyda ishlatiladigan mantiqni (shared logic) yo uning egasi boʻlgan domenga yoki haqiqiy umumiy yordamchi funksiyalar (generic utils) safiga koʻchiring.
-5. Qoidalarni `ARCHITECTURE.md` da hujjatlashtiring.
-6. Eng koʻp xarajat (cost) talab qiladigan qoidabuzilish (violation) uchun bitta bajariladigan (executable) himoya (guardrail) qoʻshing.
-7. Oʻzgarishlardan soʻng sifat bahosini (quality scoring) yangilang.
+## 5. Qoidalarni `ARCHITECTURE.md` da hujjatlashtiring.
+
+## 6. Eng koʻp xarajat (cost) talab qiladigan qoidabuzilish (violation) uchun bitta bajariladigan (executable) himoya (guardrail) qoʻshing.
+
+## 7. Oʻzgarishlardan soʻng sifat bahosini (quality scoring) yangilang.
+
 
 ## Tugallanganlik Taʼrifi (Definition Of Done)
 

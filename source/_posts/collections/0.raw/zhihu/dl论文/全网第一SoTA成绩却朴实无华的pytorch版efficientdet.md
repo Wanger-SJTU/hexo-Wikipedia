@@ -98,7 +98,8 @@ source_url: https://zhuanlan.zhihu.com/p/129016081
 
 5. 这个是最严重的问题了，和上一个人一样，他的backbone feature抽头抽错了，他抽的是stride为2的那一层，但是错了，应该抽stride为2的上一层的结果，以及backbone的最后一层。什么影响呢？原版是想把stride2卷积降维后的feature进行特征提取，然后作为输出。而这个版本的作者，则是把stride2卷积降维的当成结果直接输出了，还没有提取特征呢！所以特征提取能力上也会大打折扣。
 
-6. Conv和pooling，没有用到same padding。<strong>你的下一句话就是！这个也有影响？</strong>对！当然有影响！
+## 6. Conv和pooling，没有用到same padding。**你的下一句话就是！这个也有影响？**对！当然有影响！
+
 
 先不说前后尺寸差异的问题，只讨论两种paddin值上的差异。
 
@@ -106,7 +107,8 @@ source_url: https://zhuanlan.zhihu.com/p/129016081
 
 所以我们可以看出来，same padding在小feature map上是必要的，否则将会丢失将近过半的信息！
 
-7. 没有能正确理解BiFPN的流程
+## 7. 没有能正确理解BiFPN的流程
+
 
 ![](https://pic3.zhimg.com/v2-c14f9a62aba2d384b5cd4af7ddd44972_1440w.png)BiFPN的最小单元，来自EfficientDet论文 illustration of a minimal bifpn unit
      P7_0 -------------------------> P7_2 -------->

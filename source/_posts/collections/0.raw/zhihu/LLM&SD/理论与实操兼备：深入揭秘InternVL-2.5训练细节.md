@@ -239,7 +239,8 @@ jpeg_degrade_functions = {quality: simulate_jpeg_degradation(quality) for qualit
 ```
 
 
-2. <strong>Loss Reweighting</strong>
+## 2. **Loss Reweighting**
+
 
 <strong>背景：</strong>动态拼接是一种常用的提升训练效率的方法，在小于max token per sequence的情况下，将多条sample的tokens拼接到一条sequence中进行训练。于是，计算loss可以选择两种策略：token average和sample average
 

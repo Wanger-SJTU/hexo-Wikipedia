@@ -74,7 +74,8 @@ source_url: https://www.zhihu.com/question/645963779/answer/4841384841
 ### AWQ: activation-aware weight quantization
 
 - Quantization maps a floating-point number into lower-bit integers. 模型量化通常将浮点数映射到低位数的整数上，最简单 valina 的 baseline 就是直接把浮点参数 round to nearest integer。映射为整数的好处自然不少：硬件支持和计算效率更好，毕竟整形计算通常比浮点数更快更节能；存储效率更高...
-2. 虽然前文已经阐述了，PPL 不是个科学的指标。但是作者基于此得到的结果还是非常有趣，具体可以参考下表、基于参数的 L2 norm 进行 scaling 远逊色于基于激活值的 L2 norm 进行 scaling：
+## 2. 虽然前文已经阐述了，PPL 不是个科学的指标。但是作者基于此得到的结果还是非常有趣，具体可以参考下表、基于参数的 L2 norm 进行 scaling 远逊色于基于激活值的 L2 norm 进行 scaling：
+
 
 ![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_6b7375aac95c.jpg)
 

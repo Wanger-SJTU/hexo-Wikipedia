@@ -62,7 +62,8 @@ ATSS吸收了RetinaNet和FCOS的采样方式的优点，ATSS采样方式如下�
 下图中显示出了ATSS对于不同分布的样本可以自适应的调整阈值，挑选到合适尺度下的正样本。
 
 自适应阈值为：
-![](https://www.zhihu.com/equation?tex=t+_+%7B+g+%7D+%3D+m+_+%7B+g+%7D+%2B+v+_+%7B+g+%7D) 
+$$t _ { g } = m _ { g } + v _ { g }$$
+
 
 ![](https://pic1.zhimg.com/v2-2a12dbbcdfdc616c3e1c65555cf96cc6_r.jpg)RetinaNet和FCOS都可以叠加ATSS的采样方式，实验结果显示，RetinaNet和FCOS在ATSS的采样方式下，mAP基本上持平，缩小了Anchor-based和Anchor-Free之间的精度差异。验证了好的采样方式能够提升目标检测精度的上限。
 
@@ -70,21 +71,28 @@ ATSS吸收了RetinaNet和FCOS的采样方式的优点，ATSS采样方式如下�
 
 ![](https://picx.zhimg.com/v2-5a1c619b1633130562a892b9f9e11f9f_r.jpg)将检测训练过程看成一个极大似然估计问题
 
-![](https://www.zhihu.com/equation?tex=%5Cmathcal+%7B+L+%7D+%28+%5Ctheta+%29+%3D+%5Csum+_+%7B+a+_+%7B+j+%7D+%5Cin+A+_+%7B+%2B+%7D+%7D+%5Csum+_+%7B+b+_+%7B+i+%7D+%5Cin+B+%7D+C+_+%7B+i+j+%7D+%5Cmathcal+%7B+L+%7D+_+%7B+i+j+%7D+%5E+%7B+c+l+s+%7D+%28+%5Ctheta+%29+%2B+%5Cbeta+%5Csum+_+%7B+a+_+%7B+j+%7D+%5Cin+A+_+%7B+%2B+%7D+%7D+%5Csum+_+%7B+b+_+%7B+i+%7D+%5Cin+B+%7D+C+_+%7B+i+j+%7D+%5Cmathcal+%7B+L+%7D+_+%7B+i+j+%7D+%5E+%7B+l+o+c+%7D+%28+%5Ctheta+%29+%2B+%5Csum+_+%7B+a+_+%7B+j+%7D+%5Cin+A+_+%7B+-+%7D+%7D+%5Cmathcal+%7B+L+%7D+_+%7B+j+%7D+%5E+%7B+b+g+%7D+%28+%5Ctheta+%29%5C%5C) 
+$$\mathcal { L } ( \theta ) = \sum _ { a _ { j } \in A _ { + } } \sum _ { b _ { i } \in B } C _ { i j } \mathcal { L } _ { i j } ^ { c l s } ( \theta ) + \beta \sum _ { a _ { j } \in A _ { + } } \sum _ { b _ { i } \in B } C _ { i j } \mathcal { L } _ { i j } ^ { l o c } ( \theta ) + \sum _ { a _ { j } \in A _ { - } } \mathcal { L } _ { j } ^ { b g } ( \theta )\\$$
+
  
-![](https://www.zhihu.com/equation?tex=%5Cbegin%7Baligned%7D+%5Cmathcal+%7B+P+%7D+%28+%5Ctheta+%29+%26+%3D+e+%5E+%7B+-+%5Cmathcal+%7B+L+%7D+%28+%5Ctheta+%29+%7D+%5C%5C+%26+%3D+%5Cprod+_+%7B+a+_+%7B+j+%7D+%5Cin+A+_+%7B+%2B+%7D+%7D+%28+%5Csum+_+%7B+b+_+%7B+i+%7D+%5Cin+B+%7D+C+_+%7B+i+j+%7D+e+%5E+%7B+-+%5Cmathcal+%7B+L+%7D+_+%7B+i+j+%7D+%5E+%7B+c+l+s+%7D+%28+%5Ctheta+%29+%7D%29+%5Cprod+_+%7B+a+_+%7B+j+%7D+%5Cin+A+_+%7B+%2B+%7D+%7D+%28+%5Csum+_+%7B+b+_+%7B+i+%7D+%5Cin+B+%7D+C+_+%7B+i+j+%7D+e+%5E+%7B+-+%5Cbeta+%5Cmathcal+%7B+L+%7D+_+%7B+i+j+%7D+%5E+%7B+l+o+c+%7D+%28+%5Ctheta+%29+%7D%29+%5Cprod+_+%7B+a+_+%7B+j+%7D+%5Cin+A+_+%7B+-+%7D+%7D+e+%5E+%7B+-+%5Cmathcal+%7B+L+%7D+_+%7B+j+%7D+%5E+%7B+b+g+%7D+%28+%5Ctheta+%29+%7D+%5C%5C+%26+%3D+%5Cprod+_+%7B+a+_+%7B+j+%7D+%5Cin+A+_+%7B+%2B+%7D+%7D+%28+%5Csum+_+%7B+b+_+%7B+i+%7D+%5Cin+B+%7D+C+_+%7B+i+j+%7D+%5Cmathcal+%7B+P+%7D+_+%7B+i+j+%7D+%5E+%7B+c+l+s+%7D+%28+%5Ctheta+%29+%29+%5Cprod+_+%7B+a+_+%7B+j+%7D+%5Cin+A+_+%7B+%2B+%7D+%7D+%28+%5Csum+_+%7B+b+_+%7B+i+%7D+%5Cin+B+%7D+C+_+%7B+i+j+%7D+%5Cmathcal+%7B+P+%7D+_+%7B+i+j+%7D+%5E+%7B+l+o+c+%7D+%28+%5Ctheta+%29+%29+%5Cprod+_+%7B+a+_+%7B+j+%7D+%5Cin+A+_+%7B+-+%7D+%7D+%5Cmathcal+%7B+P+%7D+_+%7B+j+%7D+%5E+%7B+b+g+%7D+%28+%5Ctheta+%29+%5Cend%7Baligned%7D%5C%5C) 
+$$\begin{aligned} \mathcal { P } ( \theta ) & = e ^ { - \mathcal { L } ( \theta ) } \\ & = \prod _ { a _ { j } \in A _ { + } } ( \sum _ { b _ { i } \in B } C _ { i j } e ^ { - \mathcal { L } _ { i j } ^ { c l s } ( \theta ) }) \prod _ { a _ { j } \in A _ { + } } ( \sum _ { b _ { i } \in B } C _ { i j } e ^ { - \beta \mathcal { L } _ { i j } ^ { l o c } ( \theta ) }) \prod _ { a _ { j } \in A _ { - } } e ^ { - \mathcal { L } _ { j } ^ { b g } ( \theta ) } \\ & = \prod _ { a _ { j } \in A _ { + } } ( \sum _ { b _ { i } \in B } C _ { i j } \mathcal { P } _ { i j } ^ { c l s } ( \theta ) ) \prod _ { a _ { j } \in A _ { + } } ( \sum _ { b _ { i } \in B } C _ { i j } \mathcal { P } _ { i j } ^ { l o c } ( \theta ) ) \prod _ { a _ { j } \in A _ { - } } \mathcal { P } _ { j } ^ { b g } ( \theta ) \end{aligned}\\$$
+
 构造极大似然估计问题的recall和precision似然函数
 
-![](https://www.zhihu.com/equation?tex=%5Cmathcal+%7B+P+%7D+_+%7B+%5Ctext+%7Brecall%7D+%7D+%28+%5Ctheta+%29+%3D+%5Cprod+_+%7B+i+%7D+%5Cmax+_+%7B+a+_+%7B+j+%7D+%5Cin+A+_+%7B+i+%7D+%7D+%5Cleft%28+%5Cmathcal+%7B+P+%7D+_+%7B+i+j+%7D+%5E+%7B+c+l+s+%7D+%28+%5Ctheta+%29+%5Cmathcal+%7B+P+%7D+_+%7B+i+j+%7D+%5E+%7B+l+o+c+%7D+%28+%5Ctheta+%29+%5Cright%29%5C%5C) 
- 
-![](https://www.zhihu.com/equation?tex=%5Cmathcal+%7B+P+%7D+_+%7B+%5Ctext+%7Bprecision%7D+%7D+%28+%5Ctheta+%29+%3D+%5Cprod+_+%7B+j+%7D+%28+1+-+P+%5Cleft%5C%7B+a+_+%7B+j+%7D+%5Cin+A+_+%7B+-+%7D+%5Cright%5C%7D+%28+1+-+%5Cmathcal+%7B+P+%7D+_+%7B+j+%7D+%5E+%7B+b+g+%7D+%28+%5Ctheta+%29+%29+%29%5C%5C) 
+$$\mathcal { P } _ { \text {recall} } ( \theta ) = \prod _ { i } \max _ { a _ { j } \in A _ { i } } \left( \mathcal { P } _ { i j } ^ { c l s } ( \theta ) \mathcal { P } _ { i j } ^ { l o c } ( \theta ) \right)\\$$
 
-![](https://www.zhihu.com/equation?tex=%5Cbegin%7Baligned%7D+%5Cmathcal+%7B+P+%7D+%5E+%7B+%5Cprime+%7D+%28+%5Ctheta+%29+%26+%3D+%5Cmathcal+%7B+P+%7D+_+%7B+%5Ctext+%7Brecall%7D+%7D+%28+%5Ctheta+%29+%5Ctimes+%5Cmathcal+%7B+P+%7D+_+%7B+%5Ctext+%7Bprecision%7D+%7D+%28+%5Ctheta+%29+%5C%5C+%26+%3D+%5Cprod+_+%7B+i+%7D+%5Cmax+_+%7B+a+_+%7B+j+%7D+%5Cin+A+_+%7B+i+%7D+%7D+%5Cleft%28+%5Cmathcal+%7B+P+%7D+_+%7B+i+j+%7D+%5E+%7B+c+l+s+%7D+%28+%5Ctheta+%29+%5Cmathcal+%7B+P+%7D+_+%7B+i+j+%7D+%5E+%7B+l+o+c+%7D+%28+%5Ctheta+%29+%5Cright%29+%5Ctimes+%5Cprod+_+%7B+j+%7D+%28+1+-+P+%5C%7B+a+_+%7B+j+%7D+%5Cin+A+_+%7B+-+%7D+%5C%7D+%28+1+-+%5Cmathcal+%7B+P+%7D+_+%7B+j+%7D+%5E+%7B+b+g+%7D+%28+%5Ctheta+%29+%29%29+%5Cend%7Baligned%7D%5C%5C) 
+ 
+$$\mathcal { P } _ { \text {precision} } ( \theta ) = \prod _ { j } ( 1 - P \left\{ a _ { j } \in A _ { - } \right\} ( 1 - \mathcal { P } _ { j } ^ { b g } ( \theta ) ) )\\$$
+
+
+$$\begin{aligned} \mathcal { P } ^ { \prime } ( \theta ) & = \mathcal { P } _ { \text {recall} } ( \theta ) \times \mathcal { P } _ { \text {precision} } ( \theta ) \\ & = \prod _ { i } \max _ { a _ { j } \in A _ { i } } \left( \mathcal { P } _ { i j } ^ { c l s } ( \theta ) \mathcal { P } _ { i j } ^ { l o c } ( \theta ) \right) \times \prod _ { j } ( 1 - P \{ a _ { j } \in A _ { - } \} ( 1 - \mathcal { P } _ { j } ^ { b g } ( \theta ) )) \end{aligned}\\$$
+
 转变成损失函数
  
-![](https://www.zhihu.com/equation?tex=%5Cbegin%7Baligned%7D+%5Cmathcal+%7B+L+%7D+%5E+%7B+%5Cprime+%7D+%28+%5Ctheta+%29+%26+%3D+-+%5Clog+%5Cmathcal+%7B+P+%7D+%5E+%7B+%5Cprime+%7D+%28+%5Ctheta+%29+%5C%5C+%26+%3D+-+%5Csum+%5Clog+%28+%5Cmax+_+%7B+a+_+%7B+j+%7D+%5Cin+A+_+%7B+i+%7D+%7D+%28+%5Cmathcal+%7B+P+%7D+_+%7B+i+j+%7D+%5E+%7B+c+l+s+%7D+%28+%5Ctheta+%29+%5Cmathcal+%7B+P+%7D+_+%7B+i+j+%7D+%5E+%7B+l+o+c+%7D+%28+%5Ctheta+%29+%29+%29+-+%5Csum+%5Clog+%28+1+-+P+%5C%7B+a+_+%7B+j+%7D+%5Cin+A+_+%7B+-+%7D+%5C%7D+%28+1+-+%5Cmathcal+%7B+P+%7D+_+%7B+j+%7D+%5E+%7B+b+g+%7D+%28+%5Ctheta+%29+%29+%29+%5Cend%7Baligned%7D%5C%5C) 
+$$\begin{aligned} \mathcal { L } ^ { \prime } ( \theta ) & = - \log \mathcal { P } ^ { \prime } ( \theta ) \\ & = - \sum \log ( \max _ { a _ { j } \in A _ { i } } ( \mathcal { P } _ { i j } ^ { c l s } ( \theta ) \mathcal { P } _ { i j } ^ { l o c } ( \theta ) ) ) - \sum \log ( 1 - P \{ a _ { j } \in A _ { - } \} ( 1 - \mathcal { P } _ { j } ^ { b g } ( \theta ) ) ) \end{aligned}\\$$
+
  
-![](https://www.zhihu.com/equation?tex=%5Cmathcal+%7B+L+%7D+%5E+%7B+%5Cprime+%5Cprime+%7D+%28+%5Ctheta+%29+%3D+-+w+_+%7B+1+%7D+%5Csum+_+%7B+i+%7D+%5Clog+%5Cleft%28+%5Coperatorname+%7B+Mean-%7D%5Cmax+%5Cleft%28+X+_+%7B+i+%7D+%5Cright%29+%5Cright%29+%2B+w+_+%7B+2+%7D+%5Csum+_+%7B+j+%7D+F+L+%28+P+%5Cleft%5C%7B+a+_+%7B+j+%7D+%5Cin+A+_+%7B+-+%7D+%5Cright%5C%7D+%28+1+-+%5Cmathcal+%7B+P+%7D+_+%7B+j+%7D+%5E+%7B+b+g+%7D+%28+%5Ctheta+%29+%29+%29%5C%5C) 
+$$\mathcal { L } ^ { \prime \prime } ( \theta ) = - w _ { 1 } \sum _ { i } \log \left( \operatorname { Mean-}\max \left( X _ { i } \right) \right) + w _ { 2 } \sum _ { j } F L ( P \left\{ a _ { j } \in A _ { - } \right\} ( 1 - \mathcal { P } _ { j } ^ { b g } ( \theta ) ) )\\$$
+
 FreeAnchor在RetianNet的基础上，将检测器的训练过程定义成一个极大似然估计问题，通过优化recall和precision似然函数的loss，自适应的将匹配的anchor构建成bag of anchors。 
 
 将检测看成一个极大似然估计问题的好处是可以不用平衡分类和定位分支，通过一个loss来监督检测器的训练，并且可以自适应的调整匹配的anchor。 
@@ -110,34 +118,41 @@ FreeAnchor在RetianNet的基础上，将检测器的训练过程定义成一个�
 
 引入高斯中心先验，通过与gt中心点的距离学习出不同类别自适应的中心先验
 
-![](https://www.zhihu.com/equation?tex=G+%28+%5Cvec+%7B+d+%7D+%5Cmid+%5Cvec+%7B+%5Cmu+%7D+%2C+%5Cvec+%7B+%5Csigma+%7D+%29+%3D+e+%5E+%7B+%5Cfrac+%7B+-+%28+%5Cvec+%7B+d+%7D+-+%5Cvec+%7B+%5Cmu+%7D+%29+%5E+%7B+2+%7D+%7D+%7B+2+%5Cvec+%7B+%5Csigma+%7D+%5E+%7B+2+%7D+%7D+%7D%5C%5C) 
+$$G ( \vec { d } \mid \vec { \mu } , \vec { \sigma } ) = e ^ { \frac { - ( \vec { d } - \vec { \mu } ) ^ { 2 } } { 2 \vec { \sigma } ^ { 2 } } }\\$$
+
 <strong>Confidence Weighting</strong>
 
 ​通过ImpObj分支来避免引入大量背景位置
 
-![](https://www.zhihu.com/equation?tex=%5Cmathcal+%7B+P+%7D+_+%7B+i+%7D+%28+c+l+s+%5Cmid+%5Ctheta+%29+%3D+%5Cmathcal+%7B+P+%7D+_+%7B+i+%7D+%28+c+l+s+%5Cmid+o+b+j+%2C+%5Ctheta+%29+%5Cmathcal+%7B+P+%7D+_+%7B+i+%7D+%28+o+b+j+%5Cmid+%5Ctheta+%29%5C%5C) 
+$$\mathcal { P } _ { i } ( c l s \mid \theta ) = \mathcal { P } _ { i } ( c l s \mid o b j , \theta ) \mathcal { P } _ { i } ( o b j \mid \theta )\\$$
+
 与FreeAnchor相似，将分类和定位联合看成极大似然估计问题，学习出样本的置信度
 
-![](https://www.zhihu.com/equation?tex=%5Cbegin%7Baligned%7D+%5Cmathcal+%7B+L+%7D+_+%7B+i+%7D+%28+%5Ctheta+%29+%26+%3D+%5Cmathcal+%7B+L+%7D+_+%7B+i+%7D+%5E+%7B+c+l+s+%7D+%28+%5Ctheta+%29+%2B+%5Clambda+%5Cmathcal+%7B+L+%7D+_+%7B+i+%7D+%5E+%7B+l+o+c+%7D+%28+%5Ctheta+%29+%5C%5C+%26+%3D+-+%5Clog+%5Cleft%28+%5Cmathcal+%7B+P+%7D+_+%7B+i+%7D+%28+c+l+s+%5Cmid+%5Ctheta+%29+%5Cright%29+%2B+%5Clambda+%5Cmathcal+%7B+L+%7D+_+%7B+i+%7D+%5E+%7B+l+o+c+%7D+%28+%5Ctheta+%29+%5C%5C+%26+%3D+-+%5Clog+%28+%5Cmathcal+%7B+P+%7D+_+%7B+i+%7D+%28+c+l+s+%5Cmid+%5Ctheta+%29+e+%5E+%7B+-+%5Clambda+%5Cmathcal+%7B+L+%7D+_+%7B+i+%7D+%5E+%7B+l+o+c+%7D+%28+%5Ctheta+%29+%7D%29+%5C%5C+%26+%3D+-+%5Clog+%5Cleft%28+%5Cmathcal+%7B+P+%7D+_+%7B+i+%7D+%28+c+l+s+%5Cmid+%5Ctheta+%29+%5Cmathcal+%7B+P+%7D+_+%7B+i+%7D+%28+%5Coperatorname+%7B+loc+%7D+%5Cmid+%5Ctheta+%29+%5Cright%29+%5C%5C+%26+%3D+-+%5Clog+%5Cleft%28+%5Cmathcal+%7B+P+%7D+_+%7B+i+%7D+%28+%5Ctheta+%29+%5Cright%29+%5Cend%7Baligned%7D%5C%5C) 
+$$\begin{aligned} \mathcal { L } _ { i } ( \theta ) & = \mathcal { L } _ { i } ^ { c l s } ( \theta ) + \lambda \mathcal { L } _ { i } ^ { l o c } ( \theta ) \\ & = - \log \left( \mathcal { P } _ { i } ( c l s \mid \theta ) \right) + \lambda \mathcal { L } _ { i } ^ { l o c } ( \theta ) \\ & = - \log ( \mathcal { P } _ { i } ( c l s \mid \theta ) e ^ { - \lambda \mathcal { L } _ { i } ^ { l o c } ( \theta ) }) \\ & = - \log \left( \mathcal { P } _ { i } ( c l s \mid \theta ) \mathcal { P } _ { i } ( \operatorname { loc } \mid \theta ) \right) \\ & = - \log \left( \mathcal { P } _ { i } ( \theta ) \right) \end{aligned}\\$$
 
-![](https://www.zhihu.com/equation?tex=C+%5Cleft%28+%5Cmathcal+%7B+P+%7D+_+%7B+i+%7D+%5Cright%29+%3D+e+%5E+%7B+%5Cfrac+%7B+p+_+%7B+i+%7D+%28+%5Ctheta+%29+%7D+%7B+%5Ctau+%7D+%7D%5C%5C) 
+
+$$C \left( \mathcal { P } _ { i } \right) = e ^ { \frac { p _ { i } ( \theta ) } { \tau } }\\$$
+
 <strong>positive weights</strong>
 
 通过Center Weighting和Confidence Weighting得到Positive weights
 
-![](https://www.zhihu.com/equation?tex=w+_+%7B+i+%7D+%5E+%7B+%2B+%7D+%3D+%5Cfrac+%7B+C+%28+%5Cmathcal+%7B+P+%7D+_+%7B+i+%7D+%29+G+%28+%5Cvec+%7B+d+%7D+_+%7B+i+%7D+%29+%7D+%7B+%5Csum+_+%7B+j+%5Cin+S+_+%7B+n+%7D+%7D+C+%5Cleft%28+%5Cmathcal+%7B+P+%7D+_+%7B+i+%7D+%5Cright%29+G+%28+%5Cvec+%7B+d+%7D+_+%7B+i+%7D+%29+%7D%5C%5C) 
+$$w _ { i } ^ { + } = \frac { C ( \mathcal { P } _ { i } ) G ( \vec { d } _ { i } ) } { \sum _ { j \in S _ { n } } C \left( \mathcal { P } _ { i } \right) G ( \vec { d } _ { i } ) }\\$$
+
 <strong>negative weights</strong>
 
 通过最大IOU得到Negative weights
 
-![](https://www.zhihu.com/equation?tex=w+_+%7B+i+%7D+%5E+%7B+-+%7D+%3D+1+-+f+%28+%5Cfrac+%7B+1+%7D+%7B+1+-+%5Cmathrm+%7B+i+%7D+%5Cmathrm+%7B+ou+%7D+_+%7B+i+%7D+%7D+%29%5C%5C) 
+$$w _ { i } ^ { - } = 1 - f ( \frac { 1 } { 1 - \mathrm { i } \mathrm { ou } _ { i } } )\\$$
+
 对于前景和背景的 weighting function，有一个共同的特点是 “单调递增”；也就是说，一个位置预测 pos / neg 的置信度越高，那么他们当多前景 / 背景的权重就越大。
 
 <strong>loss function</strong>
 
 Positive weights和Negative weights在训练过程中动态调整达到平衡，像是在学一个正负样本的决策边界，而根据IOU阈值来定义正负样本的决策边界是人为定义的。
 
-![](https://www.zhihu.com/equation?tex=%5Cmathcal+%7B+L+%7D+%28+%5Ctheta+%29+%3D+-+%5Csum+_+%7B+n+%3D+1+%7D+%5E+%7B+N+%7D+%5Clog+%28+%5Csum+_+%7B+i+%5Cin+S+_+%7B+n+%7D+%7D+w+_+%7B+i+%7D+%5E+%7B+%2B+%7D+%5Cmathcal+%7B+P+%7D+_+%7B+i+%7D+%5E+%7B+%2B+%7D+%29+-+%5Csum+_+%7B+j+%5Cin+S+%7D+%5Clog+%28+w+_+%7B+j+%7D+%5E+%7B+-+%7D+%5Cmathcal+%7B+P+%7D+_+%7B+j+%7D+%5E+%7B+-+%7D+%29%5C%5C) 
+$$\mathcal { L } ( \theta ) = - \sum _ { n = 1 } ^ { N } \log ( \sum _ { i \in S _ { n } } w _ { i } ^ { + } \mathcal { P } _ { i } ^ { + } ) - \sum _ { j \in S } \log ( w _ { j } ^ { - } \mathcal { P } _ { j } ^ { - } )\\$$
+
 <strong>Ablation Studies</strong>
 
 ![](https://pic2.zhimg.com/v2-a4acd3a01d8aec3be433383f20242ed7_r.jpg)

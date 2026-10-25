@@ -65,6 +65,9 @@ eintreten, anstatt Schichten direkt zu überspringen.
 
 Wenn Sie architekturrelevanten Code berühren:
 
-1. Diese Datei aktualisieren, falls sich die Domänen-Map oder erlaubten Grenzen geändert haben.
-2. Das zugehörige Design-Doc in `docs/design-docs/` aktualisieren, falls sich die Begründung geändert hat.
-3. Einen ausführbaren Check hinzufügen oder aktualisieren, falls die Regel mechanisch durchgesetzt werden soll.
+## 1. Diese Datei aktualisieren, falls sich die Domänen-Map oder erlaubten Grenzen geändert haben.
+
+## 2. Das zugehörige Design-Doc in `docs/design-docs/` aktualisieren, falls sich die Begründung geändert hat.
+
+## 3. Einen ausführbaren Check hinzufügen oder aktualisieren, falls die Regel mechanisch durchgesetzt werden soll.
+

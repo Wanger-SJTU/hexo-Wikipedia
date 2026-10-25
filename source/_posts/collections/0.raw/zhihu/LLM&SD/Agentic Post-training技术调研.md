@@ -457,7 +457,8 @@ Query GenerationAnswer GenerationQA Pair Filtering从原始数据中提取用户
 
 ![](https://picx.zhimg.com/v2-7954ab531adce0ff82ba0e2aab99625d_r.jpg)Qwen2.5-1.5B 平均精度提升<strong>22.99 个点</strong>，<strong>相对提升 92.52%</strong>，全基准均大幅超越原生基座；
 
-0.5B 模型经 Tool-R0 训练后，性能超过原生 1.5B 模型；1.5B 模型超越原生 3B 模型，<strong>抹平模型规模差距</strong>；
+### 0.5B 模型经 Tool-R0 训练后，性能超过原生 1.5B 模型；1.5B 模型超越原生 3B 模型，**抹平模型规模差距**；
+
 
 ![](https://pic2.zhimg.com/v2-e5237fc51b454a2036d50835707da089_r.jpg)零数据训练的 Tool-R0，性能持平 / 超越基于海量人工数据训练的全监督工具学习基线。
 

@@ -1449,7 +1449,8 @@ labels:    [-100, -100, -100, -100, -100, ..., -100, -100, -100,    -100,..., -1
 
 <strong>函数内部的逐步过程：</strong>
 
-1. 从BOS开始：
+## 1. 从BOS开始：
+
 
 ```
 input_ids = [BOS_ID]
@@ -1457,7 +1458,8 @@ labels = [IGNORE_INDEX]    # Don't learn to predict BOS
 
 ```
 
-2. 对每个轮次，编码内容并去除自动添加的BOS/EOS：
+## 2. 对每个轮次，编码内容并去除自动添加的BOS/EOS：
+
 
 ```
 content_ids = tokenizer.encode(content).ids
@@ -1468,7 +1470,8 @@ if content_ids[-1] == EOS_ID: content_ids = content_ids[:-1]
 
 我们去除这些是因为我们在精确位置手动放置特殊token，所以不想要重复。
 
-3. 按角色构建token序列：
+## 3. 按角色构建token序列：
+
 
 | 角色 | Token序列 | Labels |
 |------|----------|--------|
@@ -1482,7 +1485,8 @@ if content_ids[-1] == EOS_ID: content_ids = content_ids[:-1]
 
 <strong>何时停止</strong>（预测`<eos>`）
 
-4. 截断和填充：
+## 4. 截断和填充：
+
 
 ```
 input_ids = input_ids[:max_len]          # Cut to 256 tokens max

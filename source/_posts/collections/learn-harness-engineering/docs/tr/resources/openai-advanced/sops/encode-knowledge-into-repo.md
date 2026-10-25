@@ -33,20 +33,25 @@ bir oturum önceki konuşmaya bel bağlamadan ona göre hareket edebilsin.
 
 ## Yürütme SOP'u
 
-1. Görünmez bilgi kaynaklarını listeleyin: dokümanlar, sohbetler, örtük
+## 1. Görünmez bilgi kaynaklarını listeleyin: dokümanlar, sohbetler, örtük
+
    takım kuralları, sözlü kararlar.
-2. Her kaynak için sorun: bu mimari mi, ürün davranışı mı, güvenlik
+## 2. Her kaynak için sorun: bu mimari mi, ürün davranışı mı, güvenlik
+
    politikası mı, güvenilirlik beklentisi mi, plan bağlamı mı yoksa
    referans materyali mi?
-3. Eşleşen depo çıktısına kodlayın:
+## 3. Eşleşen depo çıktısına kodlayın:
+
    - mimari -> `ARCHITECTURE.md`
    - ürün davranışı -> `docs/product-specs/`
    - tasarım gerekçesi -> `docs/design-docs/`
    - yürütme durumu -> `docs/exec-plans/`
    - tekrarlanan dış referanslar -> `docs/references/`
    - kalite veya güvenilirlik beklentileri -> `docs/QUALITY_SCORE.md` ya da `docs/RELIABILITY.md`
-4. Bulanık ifadeleri operasyonel olarak işe yarar bir dille değiştirin.
-5. Bayat kopyaları kaldırın ya da artık geçerli olmadığını işaretleyin ki
+## 4. Bulanık ifadeleri operasyonel olarak işe yarar bir dille değiştirin.
+
+## 5. Bayat kopyaları kaldırın ya da artık geçerli olmadığını işaretleyin ki
+
    depo tek bir keşfedilebilir gerçeği korusun.
 
 ## İyi Kodlama Kuralları

@@ -42,7 +42,8 @@ source_url: https://zhuanlan.zhihu.com/p/66406815
 
 backbone使用hourglass network，后接两个预测模块（top-left和bottom-right），每个模块有自己的corner pooling层，预测heatmap，embedding和offset三个部分。虽然当前的目标检测方法很多都是对不同scale的目标使用不同scale的feature（FPN），但是本文仅将预测模块应用到hourglass network的输出上。
 
-2. 检测corner
+## 2. 检测corner
+
 
 两组heatmaps分别负责预测top-left corners和bottom-right corners。每组heatmap有C个channel，其中C是category数量，heatmap的size为 H \times W 。没有 bg 对应的channel，因为预测为corner的则为正location，否则为负location，某个location的所有channel上的值预测可以均为负，表示这个location是bg，所以没有必要为bg增加单独的channel。每个channel就是一个binary mask，表示location是否是这个分类下的corner。
 

@@ -206,8 +206,10 @@ Pour l'ensemble des matériaux du cours, veuillez visiter le <strong>[Site de Do
 
 Le programme est divisé en trois parties :
 
-1. <strong>Cours magistraux</strong> : 12 unités conceptuelles expliquant la théorie derrière le Harness Engineering.
-2. <strong>Projets</strong> : 6 projets pratiques où vous construisez un espace de travail agentique à partir de zéro.
+## 1. **Cours magistraux** : 12 unités conceptuelles expliquant la théorie derrière le Harness Engineering.
+
+## 2. **Projets** : 6 projets pratiques où vous construisez un espace de travail agentique à partir de zéro.
+
 3. <strong>Bibliothèque de Ressources</strong> : Des modèles prêts à copier (`AGENTS.md`, `feature_list.json`, `init.sh`, etc.) à utiliser dans vos propres dépôts dès aujourd'hui.
 
 ---

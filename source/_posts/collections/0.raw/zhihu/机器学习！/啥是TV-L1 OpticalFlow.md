@@ -273,7 +273,8 @@ $其中 K 是\{div \varphi:\varphi \in C^{1}_{c}(\Omega; \mathbb{R}^2), |\varphi
 
 依据之前得证的，这里就有  = "> =  
 
-5.2** 下面就是对形如以下问题的推导了：
+### 5.2** 下面就是对形如以下问题的推导了：
+
 
 ![](/images/collections/0.raw/zhihu/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%EF%BC%81/asset/img_04170a899df6.jpg)
 

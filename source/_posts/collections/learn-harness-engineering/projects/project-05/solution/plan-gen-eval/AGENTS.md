@@ -22,14 +22,22 @@ harness files.
 
 Before writing code:
 
-1. Confirm the working directory with `pwd`.
-2. Read `sprint-contract.md` for scope and acceptance criteria.
-3. Read `evaluator-rubric.md` for final quality evidence.
-4. Read `docs/ARCHITECTURE.md` for the Electron layer boundaries.
-5. Read `clean-state-checklist.md`.
-6. Run `npm install` if dependencies are missing.
-7. Run `npm run check`.
-8. Run `bash scripts/check-architecture.sh`.
+## 1. Confirm the working directory with `pwd`.
+
+## 2. Read `sprint-contract.md` for scope and acceptance criteria.
+
+## 3. Read `evaluator-rubric.md` for final quality evidence.
+
+## 4. Read `docs/ARCHITECTURE.md` for the Electron layer boundaries.
+
+## 5. Read `clean-state-checklist.md`.
+
+## 6. Run `npm install` if dependencies are missing.
+
+## 7. Run `npm run check`.
+
+## 8. Run `bash scripts/check-architecture.sh`.
+
 
 If baseline verification is already failing, fix that first. Do not stack new
 feature work on top of a broken starting state.
@@ -92,8 +100,13 @@ A feature is done only when all of the following are true:
 
 Before ending a session:
 
-1. Record any unresolved risk or blocker in your final summary.
-2. Run `npm run check`.
-3. Run `bash scripts/check-architecture.sh`.
-4. Commit with a descriptive message once the work is in a safe state.
-5. Leave the repo clean enough for the next session to run the startup workflow.
+## 1. Record any unresolved risk or blocker in your final summary.
+
+## 2. Run `npm run check`.
+
+## 3. Run `bash scripts/check-architecture.sh`.
+
+## 4. Commit with a descriptive message once the work is in a safe state.
+
+## 5. Leave the repo clean enough for the next session to run the startup workflow.
+

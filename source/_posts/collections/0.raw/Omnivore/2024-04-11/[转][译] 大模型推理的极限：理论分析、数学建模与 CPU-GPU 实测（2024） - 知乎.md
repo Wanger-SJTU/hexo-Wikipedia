@@ -23,21 +23,27 @@ id: bfde4aa9-bc6f-430b-a330-899dfef57463
 
 
 
-1.1 transformer：逐 token 生成，无法并行
+### 1.1 transformer：逐 token 生成，无法并行
+
 
 2 以 Mistral-7B 为例，极限推理延迟的计算
 
-2.4 ChatGLM3-6B/Qwen-7B 实测推理延迟（译注）
+### 2.4 ChatGLM3-6B/Qwen-7B 实测推理延迟（译注）
 
-3.3.1 批处理使瓶颈发生变化：显存带宽 -> 算力
 
-3.3.2 批处理无法改善所需加载的 KV-cache 数据量
+### 3.3.1 批处理使瓶颈发生变化：显存带宽 -> 算力
+
+
+### 3.3.2 批处理无法改善所需加载的 KV-cache 数据量
+
 
 4 GQA (group query attention) 的影响
 
-4.3 多用户场景下 KV-cache 占用的显存规模
+### 4.3 多用户场景下 KV-cache 占用的显存规模
 
-4.4 GQA：减小从 KV-cache 加载的数据量
+
+### 4.4 GQA：减小从 KV-cache 加载的数据量
+
 
 在新浪微博上读到的，怕以后找不到了，转此处
 
@@ -130,8 +136,10 @@ A100-80GB PICe 推理延迟与吞吐
 
 广义上，当处理一个 token 时，模型执行两种类型的操作：
 
-1. <strong>矩阵-向量乘法</strong>：一个大矩阵（例如 8192x8192）乘以一个向量，得到另一个向量，
-2. <strong>attention 计算</strong>。  
+## 1. **矩阵-向量乘法**：一个大矩阵（例如 8192x8192）乘以一个向量，得到另一个向量，
+
+## 2. **attention 计算**。  
+
 在生成过程中，模型不仅可以看到当前 token 的状态，还可以看到序列中所有之前 token 的内部状态 —— 这些状态被存储在一个称为 **`KV-cache`<strong>的结构中， 它本质上是文本中每个之前位置的</strong>key 向量和 value 向量的集合**。  
 attention 为当前 token 生成一个 query 向量，计算它与所有之前位置的 key 向量之间的点积， 然后归一化得到的一组标量，并通过对所有之前的 value 向量进行加权求和来计算一个 value 向量，使用点积得到最终得分。
 
@@ -168,9 +176,12 @@ attention 为当前 token 生成一个 query 向量，计算它与所有之前�
 
 因此，transformer 这种<strong>只需要对每个元素执行两次操作</strong>的场景，必定受到访存带宽的限制。 所以，我们能从下面几个因素估计推理过程的最短耗时：
 
-1. 模型配置
-2. KV-cache 的大小
-3. 可用带宽
+## 1. 模型配置
+
+## 2. KV-cache 的大小
+
+## 3. 可用带宽
+
 
 下面以 [Mistral 7B](https://link.zhihu.com/?target=https%3A//mistral.ai/news/announcing-mistral-7b/) 模型为例。
 
@@ -182,7 +193,8 @@ Mistral-7B 有 72 亿参数（所有矩阵元素的总数是 72 亿个）。
 
 参数的组成如下：
 
-1. **`4096 * 32000 = 131M`** 用于 embedding 矩阵；
+## 1. **`4096 * 32000 = 131M`** 用于 embedding 矩阵；
+
 
 ```text
 * 4096: hidden size (tokens per hidden-vector)
@@ -192,9 +204,12 @@ Mistral-7B 有 72 亿参数（所有矩阵元素的总数是 72 亿个）。
 
 矩阵-向量乘法中不会使用这整个大矩阵，每个 token 只读取这个矩阵中的一行，因此数据量相对很小，后面的带宽计算中将忽略这个；
 
-1. **`32 * (4096 * (128 * 32 + 128 * 8 * 2) + 4096 * 128 * 32) = 1342M`** 用于计算与 attention 相关的向量；
-2. **`32 * (4096 * 14336 * 3) = 5637M`** 用于通过 feed-forward 转换 hidden states；
-3. **`4096 * 32000 = 131M`** 用于将 hidden states 转换为 token 概率；这与 embedding 矩阵不同，会用于矩阵乘法。
+## 1. **`32 * (4096 * (128 * 32 + 128 * 8 * 2) + 4096 * 128 * 32) = 1342M`** 用于计算与 attention 相关的向量；
+
+## 2. **`32 * (4096 * 14336 * 3) = 5637M`** 用于通过 feed-forward 转换 hidden states；
+
+## 3. **`4096 * 32000 = 131M`** 用于将 hidden states 转换为 token 概率；这与 embedding 矩阵不同，会用于矩阵乘法。
+
 
 以上加起来，大约有 **`7111M`** “活跃”参数用于矩阵乘法。
 
@@ -210,10 +225,14 @@ Mistral-7B 有 72 亿参数（所有矩阵元素的总数是 72 亿个）。
 
 attention 计算需要读取当前 token 及前面上下文中所有 tokens 对应的 KV-cache， 所以<strong>读取的数据量</strong>取决于<strong>生成新 token 时模型看到多少前面的 token</strong>， 这包括
 
-1. 系统提示词（通常对用户隐藏）
-2. 用户提示词
-3. 前面的模型输出
-4. 可能还包括长聊天会话中多个用户的提示词。
+## 1. 系统提示词（通常对用户隐藏）
+
+## 2. 用户提示词
+
+## 3. 前面的模型输出
+
+## 4. 可能还包括长聊天会话中多个用户的提示词。
+
 
 ### 2.2.2 KV-cache 部分的数据量
 
@@ -313,8 +332,10 @@ attention 计算需要读取当前 token 及前面上下文中所有 tokens 对�
 
 Mistral-7B 是一个非常平衡的模型；在上面的所有计算中，<strong>几乎都能忽略 KV-cache 部分的 IO 开销</strong>。 这背后的原因：
 
-1. 较短的上下文（Mistral-7B 使用 windowed attention，限制 4096 token 的窗口），
-2. 使用了 GQA，这个是更重要的原因。
+## 1. 较短的上下文（Mistral-7B 使用 windowed attention，限制 4096 token 的窗口），
+
+## 2. 使用了 GQA，这个是更重要的原因。
+
 
 > [LLaMA 2：开放基础和微调聊天模型（Meta/Facebook，2023）](https://link.zhihu.com/?target=http%3A//arthurchiao.art/blog/llama2-paper-zh/) 也使用了 GQA。
 

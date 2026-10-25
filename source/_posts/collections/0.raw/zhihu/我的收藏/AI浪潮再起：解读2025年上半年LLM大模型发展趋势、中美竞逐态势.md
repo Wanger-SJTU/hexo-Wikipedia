@@ -251,5 +251,6 @@ https://u.wechat.com/EGxJ70-xsYB9mm4XCHr3nJA?s=4 (二维码自动识别)
 
 2.《State of AI: China – Q2 2025》****[https://artificialanalysis.ai/downloads/china-report/2025/Artificial-Analysis-State-of-AI-China-Q2-2025-Highlights.pdf](https://link.zhihu.com/?target=https%3A//artificialanalysis.ai/downloads/china-report/2025/Artificial-Analysis-State-of-AI-China-Q2-2025-Highlights.pdf)
 
-3. Artificial Analysis Intelligence Benchmarking Methodology
+## 3. Artificial Analysis Intelligence Benchmarking Methodology
+
 [https://artificialanalysis.ai/methodology/intelligence-benchmarking](https://link.zhihu.com/?target=https%3A//artificialanalysis.ai/methodology/intelligence-benchmarking)

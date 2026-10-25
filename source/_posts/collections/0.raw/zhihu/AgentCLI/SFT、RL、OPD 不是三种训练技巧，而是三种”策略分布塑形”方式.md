@@ -65,23 +65,27 @@ source_url: https://zhuanlan.zhihu.com/p/2044017882586206645
 
 这条线的真实结论，已经慢慢收敛成什么样了？
 
-1. `RLVR` 更像”分布重加权”，不是凭空发明新策略
+## 1. `RLVR` 更像”分布重加权”，不是凭空发明新策略
+
 这点是争论中心。
 Does RL Really Incentivize...` 这类工作告诉我们，当前很多 RLVR 方法在大 `k` 上并没有显著扩大 base model 的支持集，更多是在已有路径里把正确答案的概率往上搬。
 Rewarding the Unlikely...` 则进一步说明，`GRPO` 甚至可能偏爱”本来就更容易被采样到”的高概率证明，忽略低概率但正确的解。
 
-2. 但 `RLVR` 也不是”只有分布锐化”
+## 2. 但 `RLVR` 也不是”只有分布锐化”
+
 RLVR Implicitly Incentivizes...` 的意义在于，它提醒我们不能只看最终答案。
 如果加入 `CoT-Pass@K`，RLVR 在正确推理链上的改善会更清楚。
 所以更准确的说法是：<strong>当前 RLVR 往往先改变概率质量分布，再逐步影响推理链质量；但它是否真的”扩展能力边界”，仍然依赖具体算法、训练长度和评估口径。</strong>
 
-3. `OPD / OPSD` 的关键，不是 teacher 多强，而是 state 属于谁
+## 3. `OPD / OPSD` 的关键，不是 teacher 多强，而是 state 属于谁
+
 OPD` 系列论文有一个非常统一的信号：
 只要训练发生在学生自己会访问的状态上，很多”老师与学生差很多”的现象都会被抹平。
 这就是为什么 `OPD` 的学生有时会比 teacher 更稳，甚至在 retention 上超过 teacher。
 换句话说，<strong>teacher 负责给信号，state distribution 负责决定信号打到哪里。</strong>
 
-4. 后训练未来真正的战场，是 `density × unbiasedness × on-policy × diversity`
+## 4. 后训练未来真正的战场，是 `density × unbiasedness × on-policy × diversity`
+
 现在的各条路线，基本都只占了其中两项：
 
 - `SFT`：密，但 off-policy。

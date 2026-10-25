@@ -25,7 +25,8 @@ MSA论文第2小节介绍了一些注意力机制的预备知识，本文我们�
 单头注意力
 我们先来看标准的（单头）注意力机制，这是2017年经典论文《Attention Is All You Need》提出的，是整个Transformer架构和现代LLM的基础。下面是论文里的公式（1）：
 
-![](https://www.zhihu.com/equation?tex=+%5Cbegin%7Baligned%7D+%5Cmathrm%7BAttention%7D%28Q%2C+K%2C+V%29+%3D+%5Cmathrm%7Bsoftmax%7D%5Cleft%28%5Cfrac%7BQK%5ET%7D%7B%5Csqrt%7Bd_k%7D%7D%5Cright%29V+%5Cend%7Baligned%7D+%5Ctag%7BA1%7D+)
+$$\begin{aligned} \mathrm{Attention}(Q, K, V) = \mathrm{softmax}\left(\frac{QK^T}{\sqrt{d_k}}\right)V \end{aligned} \tag{A1}$$
+
 
 本文假设读者已经对标准的Transformer架构和注意力机制非常熟悉了，如果还不熟悉的话，一定要先熟读2017年的那篇经典论文。为了简化讨论，我们用`d`来表示Q、K、V维度，用`n`来表示序列长度。取`d=3`，`n=8`，我们可以把上面这个公式画成下面这样（本文暂不考虑因果掩码）：
 
@@ -34,16 +35,18 @@ MSA论文第2小节介绍了一些注意力机制的预备知识，本文我们�
 多头注意力
 前面给出的是单个注意力头的计算公式，Transformer论文里推荐<strong>多头注意力</strong>（Multi-Head Attention，简称<strong>MHA</strong>）。其实就是多个注意力头分别算注意力，然后再拼接起来，下面是论文3.2.2小节给出的MHA公式：
 
-![](https://www.zhihu.com/equation?tex=+%5Cbegin%7Baligned%7D+%5Ctext%7BMultiHead%7D%28Q%2C+K%2C+V%29+%26%3D+%5Ctext%7BConcat%7D%28%5Ctext%7Bhead%7D_1%2C%5Cdots%2C%5Ctext%7Bhead%7D_h%29W%5EO+%5C%5C+%5Ctext%7Bwhere+%7D%5C+%5Ctext%7Bhead%7D_i+%26%3D+%5Ctext%7BAttention%7D%28XW_i%5EQ%2C+XW_i%5EK%2C+XW_i%5EV%29+%5Cend%7Baligned%7D+%5Ctag%7BA3.2.2%7D+)
+$$\begin{aligned} \text{MultiHead}(Q, K, V) &= \text{Concat}(\text{head}_1,\dots,\text{head}_h)W^O \\ \text{where }\ \text{head}_i &= \text{Attention}(XW_i^Q, XW_i^K, XW_i^V) \end{aligned} \tag{A3.2.2}$$
+
 
 我们用`h`来表示注意力头数。取`h=3`，上面的公式可以画成下面这样：
 
 ![](https://pic4.zhimg.com/v2-95ecd71f8b8f97681a1f78925e988881_r.jpg)在MSA论文2.1小节里，以另一种形式描述了标准注意力机制，也就是论文公式（1）：
 
-![](https://www.zhihu.com/equation?tex=+%5Cbegin%7Baligned%7D+%5Calpha_%7Bt%2Ci%7D%5E%7B%28h%29%7D+%26%3D+%5Cfrac%7B%5Ctext%7Bexp%7D%5Cbig%28%5Clangle+q_t%5E%7B%28h%29%7D%2C+k_i%5E%7B%28h%29%7D+%5Crangle+%2F+%5Csqrt%7Bd_h%7D%5Cbig%29%7D%7B%5Csum_%7Bj%5Cle+t%7D%5Ctext%7Bexp%7D%5Cbig%28%5Clangle+q_t%5E%7B%28h%29%7D%2C+k_j%5E%7B%28h%29%7D+%5Crangle+%2F+%5Csqrt%7Bd_h%7D%5Cbig%29%7D%2C+%5C%5C+o_t%5E%7B%28h%29%7D+%26%3D+%5Csum_%7Bi%5Cle+t%7D+%5Calpha_%7Bt%2Ci%7D%5E%7B%28h%29%7D+v_i%5E%7B%28h%29%7D.+%5Cend%7Baligned%7D+%5Ctag%7BM1%7D+)
+$$\begin{aligned} \alpha_{t,i}^{(h)} &= \frac{\text{exp}\big(\langle q_t^{(h)}, k_i^{(h)} \rangle / \sqrt{d_h}\big)}{\sum_{j\le t}\text{exp}\big(\langle q_t^{(h)}, k_j^{(h)} \rangle / \sqrt{d_h}\big)}, \\ o_t^{(h)} &= \sum_{i\le t} \alpha_{t,i}^{(h)} v_i^{(h)}. \end{aligned} \tag{M1}$$
+
 
 这个公式和2017年Transformer论文里的公式（1）是一致的，只是把Softmax计算体现出来了。公式里，`t`表示Q的索引，`i`表示K和V的索引， 
-![](https://www.zhihu.com/equation?tex=d_h) 表示注意力头的维度。这个公式比较好理解，其他细节这里就不展开介绍了。在本文中，我们统一用Q、K、V来表示矩阵，用<strong>q</strong>、<strong>k</strong>、<strong>v</strong>来表示向量，和公式保持一致。
+$d_h$ 表示注意力头的维度。这个公式比较好理解，其他细节这里就不展开介绍了。在本文中，我们统一用Q、K、V来表示矩阵，用<strong>q</strong>、<strong>k</strong>、<strong>v</strong>来表示向量，和公式保持一致。
 
 多查询注意力
 既然KV Cache是瓶颈，那么就想办法减少需要缓存的KV就行了。最简单的办法就是`h`个Q共用一组KV，这就是<strong>多查询注意力</strong>（Multi-Query Attention，简称<strong>MQA</strong>）提出的优化机制。MQA的基本架构如下图所示：
@@ -56,12 +59,13 @@ MSA论文第2小节介绍了一些注意力机制的预备知识，本文我们�
 MQA的问题是压缩得太狠了：不管注意力头数`h`是多少，就共用一组KV。那么一个折中的办法就是：把Q分组，每一组Q共用KV。这就是<strong>分组查询注意力</strong>（Grouped-Query Attention，简称<strong>GQA</strong>）提出的优化机制，如下图所示（两个Q一组）：
 
 ![](https://pic4.zhimg.com/v2-abce8353922b045eab5d3eb69e8f3d83_r.jpg)我们假设把每`g`个Q分为一组，那么需要的KV数量就是 
-![](https://www.zhihu.com/equation?tex=h_%7Bkv%7D%3Dh%2Fg) 。不难看出，GQA对于KV Cache的压缩率就是`1/g`。当`g=1`时，就是标准MHA；当`g=h`时，就是MQA。
+$h_{kv}=h/g$ 。不难看出，GQA对于KV Cache的压缩率就是`1/g`。当`g=1`时，就是标准MHA；当`g=h`时，就是MQA。
 
 稀疏注意力
 不管是标准 MHA 机制，还是 MQA、GQA 优化，每一个 Token 都要和它自身以及前面的所有 Token 计算注意力分数，这种覆盖全部允许位置进行交互的方式叫做<strong>稠密注意力机制</strong>（Dense / Full Attention）。与之相对应的，就是<strong>稀疏注意力机制</strong>（Sparse Attention，本文简称<strong>SA</strong>）。MSA论文2.2小节简要介绍了一种两阶段稀疏注意力机制，也就是公式（2）描述的机制：
 
-![](https://www.zhihu.com/equation?tex=+%5Cbegin%7Baligned%7D+%5Cmathcal%7BI%7D_i+%26%3D+%5Ctext%7BIndex%7D_%5Cphi%28q_i%2C+K_%7B%5Cleq+i%7D%29%2C+%5C%5C+%5Cquad+o_i+%26%3D+%5Ctext%7BAttn%7D%5Cbig%28q_i%2C+K%5B%5Cmathcal%7BI%7D_i%5D%2C+V%5B%5Cmathcal%7BI%7D_i%5D%5Cbig%29+%5Cend%7Baligned%7D+%5Ctag%7BM2%7D+)
+$$\begin{aligned} \mathcal{I}_i &= \text{Index}_\phi(q_i, K_{\leq i}), \\ \quad o_i &= \text{Attn}\big(q_i, K[\mathcal{I}_i], V[\mathcal{I}_i]\big) \end{aligned} \tag{M2}$$
+
 
 所谓的两阶段，就是索引+注意力计算。第一阶段，根据某个<strong>q</strong>算出一个索引表（这个表的大小，应该远小于输入序列长度），这个就是上面公式第一行的含义。第二阶段，从索引表里查出对应的<strong>kv</strong>，计算注意力，这就是上面公式里第二行的含义。
 
@@ -79,33 +83,38 @@ BSA和SA基本原理是差不多的，只是我们要把Q和K分块。然后第�
 
 我们先来看MSA论文里的公式（3），它的意思是每一个GQA组有其共享的BSA索引表：
 
-![](https://www.zhihu.com/equation?tex=+%5Cbegin%7Baligned%7D+%5Cmathcal%7BI%7D_i%5E%7B%28r%29%7D+%3D+%5Cmathcal%7BI%7D_i%5E%7B%28h%29%7D+%3D+%5Cmathcal%7BI%7D_i%5E%7B%28h%27%29%7D%2C+%5Cquad+h%2Ch%27%5Cin%5Cmathcal%7BH%7D_r.+%5Cend%7Baligned%7D+%5Ctag%7BM3%7D+)
+$$\begin{aligned} \mathcal{I}_i^{(r)} = \mathcal{I}_i^{(h)} = \mathcal{I}_i^{(h')}, \quad h,h'\in\mathcal{H}_r. \end{aligned} \tag{M3}$$
+
 
 再来看MSA论文公式（4），它描述了GQA分块策略。其中 
-![](https://www.zhihu.com/equation?tex=N) 是输入序列长度， 
-![](https://www.zhihu.com/equation?tex=B_k) 是块的大小， 
-![](https://www.zhihu.com/equation?tex=B) 是分块数， 
-![](https://www.zhihu.com/equation?tex=b) 是块索引， 
-![](https://www.zhihu.com/equation?tex=B_b) 是某个分块。
+$N$ 是输入序列长度， 
+$B_k$ 是块的大小， 
+$B$ 是分块数， 
+$b$ 是块索引， 
+$B_b$ 是某个分块。
 
-![](https://www.zhihu.com/equation?tex=+%5Cbegin%7Baligned%7D+B_b+%26%3D+%5C%7B%28b-1%29B_k+%2B+1%2C%5Cdots%2C%5Cmin%28bB_k%2CN%29%5C%7D%2C%5C%5C+b+%26%3D+1%2C%5Cdots%2CB%2C%5Cquad+B%3D%5Cleft%5Clceil+N%2FB_k%5Cright%5Crceil.+%5Cend%7Baligned%7D+%5Ctag%7BM4%7D+)
+$$\begin{aligned} B_b &= \{(b-1)B_k + 1,\dots,\min(bB_k,N)\},\\ b &= 1,\dots,B,\quad B=\left\lceil N/B_k\right\rceil. \end{aligned} \tag{M4}$$
+
 
 上面这个公式（4）可能不是很直观，我们来举个简单的例子：
 
 - 输入序列长度： 
-![](https://www.zhihu.com/equation?tex=N%3D100) 。
+$N=100$ 。
 - 分块大小： 
-![](https://www.zhihu.com/equation?tex=B_k+%3D+16) ，也就是16个<strong>k</strong>或者<strong>v</strong>一个块。
+$B_k = 16$ ，也就是16个<strong>k</strong>或者<strong>v</strong>一个块。
 - 分块数量： 
-![](https://www.zhihu.com/equation?tex=B%3D%5Cleft%5Clceil+N%2FB_k%5Cright%5Crceil+%3D+7) ，共7个块。
+$B=\left\lceil N/B_k\right\rceil = 7$ ，共7个块。
 - 分块索引： 
-![](https://www.zhihu.com/equation?tex=b+%3D+1%2C+2%2C+...%2C+7) ，从1到7。
+$b = 1, 2, ..., 7$ ，从1到7。
 - 第一个块： 
-![](https://www.zhihu.com/equation?tex=B_1+%3D+%5C%7B1%2C+2%2C+...%2C+16%5C%7D)
+$$B_1 = \{1, 2, ..., 16\}$$
+
 - 第二个块： 
-![](https://www.zhihu.com/equation?tex=B_2+%3D+%5C%7B17%2C+18%2C+...%2C+32%5C%7D)
+$$B_2 = \{17, 18, ..., 32\}$$
+
 - 最后一个块： 
-![](https://www.zhihu.com/equation?tex=B_7+%3D+%5C%7B97%2C+98%2C+99%2C+100%5C%7D)
+$$B_7 = \{97, 98, 99, 100\}$$
+
 MiniMax稀疏注意力
 如果前面介绍的一大堆内容你都理解了，那么MiniMax稀疏注意力机制（MiniMax Sparse Attention，简称MSA）就好懂了，因为它本质上就是前面说的GQA+BSA。下面是MSA论文图1，介绍了MSA的整体结构，贴在这里供大家参考：
 
@@ -114,23 +123,26 @@ MiniMax稀疏注意力
 索引表
 我们先来看索引表的计算，从MSA论文里的公式（5）入手：
 
-![](https://www.zhihu.com/equation?tex=+%5Cbegin%7Baligned%7D+Q%5E%7Bidx%7D+%26%3D+XW_q%5E%7Bidx%7D+%5Cin+%5Cmathbb%7BR%7D%5E%7BN%5Ctimes+H_%7Bkv%7D%5Ctimes+d_%7Bidx%7D%7D%2C%5C%5C+K%5E%7Bidx%7D+%26%3D+XW_k%5E%7Bidx%7D+%5Cin+%5Cmathbb%7BR%7D%5E%7BN%5Ctimes+1%5Ctimes+d_%7Bidx%7D%7D.+%5Cend%7Baligned%7D+%5Ctag%7BM5%7D+)
+$$\begin{aligned} Q^{idx} &= XW_q^{idx} \in \mathbb{R}^{N\times H_{kv}\times d_{idx}},\\ K^{idx} &= XW_k^{idx} \in \mathbb{R}^{N\times 1\times d_{idx}}. \end{aligned} \tag{M5}$$
+
 
 如果你熟悉标准注意力机制，一眼就能看出来，上面的公式非常眼熟。没错，和标准注意力机制一样，这里Q和K也是输入通过线性变换得来的，公式里的上标`idx`表示这个是索引表计算。由于MSA基于GQA，所以我们会得到 
-![](https://www.zhihu.com/equation?tex=h_%7Bkv%7D) 个 
-![](https://www.zhihu.com/equation?tex=Q%5E%7Bidx%7D) 矩阵，它们共享一个 
-![](https://www.zhihu.com/equation?tex=K%5E%7Bidx%7D) 矩阵。公式（5）的计算过程如下图所示：
+$h_{kv}$ 个 
+$Q^{idx}$ 矩阵，它们共享一个 
+$K^{idx}$ 矩阵。公式（5）的计算过程如下图所示：
 
 ![](https://pic4.zhimg.com/v2-e90298996215ef1c44befef35f878b8b_r.jpg)接下来是计算索引表分数，也就是MSA论文里的公式（6）。在这个公式里，下标`i`表示<strong>q</strong>的索引、下标`j`表示<strong>kv</strong>的索引、下标`b`表示BSA分块索引、上标`(r)`表示GQA分组索引。
 
-![](https://www.zhihu.com/equation?tex=+%5Cbegin%7Baligned%7D+S_%7Bi%2Cj%7D%5E%7Bidx%2C%28r%29%7D+%26%3D+%5Cfrac%7B%5Cbig%28Q%5E%7Bidx%7D%5Cbig%29_i%5E%7B%28r%29%7D+%5Cbig%28K%5E%7Bidx%7D%5Cbig%29_j%5E%5Ctop%7D%7B%5Csqrt%7Bd_%7Bidx%7D%7D%7D%2C+%5C%5C+M_%7Bi%2Cb%7D%5E%7Bidx%2C%28r%29%7D+%26%3D+%5Cmax_%7B%5Csubstack%7Bj%5Cin%5Cmathcal%7BB%7D_b+%5C%5C+j%5Cle+i%7D%7D+S_%7Bi%2Cj%7D%5E%7Bidx%2C%28r%29%7D.+%5Cend%7Baligned%7D+%5Ctag%7BM6%7D+)
+$$\begin{aligned} S_{i,j}^{idx,(r)} &= \frac{\big(Q^{idx}\big)_i^{(r)} \big(K^{idx}\big)_j^\top}{\sqrt{d_{idx}}}, \\ M_{i,b}^{idx,(r)} &= \max_{\substack{j\in\mathcal{B}_b \\ j\le i}} S_{i,j}^{idx,(r)}. \end{aligned} \tag{M6}$$
+
 
 上面公式（6）的S部分，是不是和注意力机制也很像？只是没有Softmax而已。而M部分，就是按BSA的思想，每个块取一个最大值。看起来，这就是一个简化版注意力机制。为了保持画图风格统一，我们临时用小写字母`b`来表示分块的数量，于是上面的公式可以画成下面这样：
 
 ![](https://pica.zhimg.com/v2-87a3bacc03964b144b0196c1781f630a_r.jpg)上面的公式（6）算出了索引表的分数，我们还需要一个TopK机制，对分数表进行筛选，只保留一小部分分数，其余全部筛除掉（设置成 
-![](https://www.zhihu.com/equation?tex=-%5Cinfty) ）。这就是MSA论文里公式（7）描述的计算：
+$-\infty$ ）。这就是MSA论文里公式（7）描述的计算：
 
-![](https://www.zhihu.com/equation?tex=+%5Cbegin%7Baligned%7D+%5Cmathcal%7BI%7D_i%5E%7B%28r%29%7D+%3D+%5Ctext%7BTopK%7D_%7Bb%5Cin%5C%7B1%2C%5Cdots%2CB%5C%7D%7D%5Cbig%28M_%7Bi%2C%5Ccdot%7D%5E%7B%5Ctext%7Bidx%7D%2C%28r%29%7D%2C%5C%2Ck%5Cbig%29.+%5Cend%7Baligned%7D+%5Ctag%7BM7%7D+)
+$$\begin{aligned} \mathcal{I}_i^{(r)} = \text{TopK}_{b\in\{1,\dots,B\}}\big(M_{i,\cdot}^{\text{idx},(r)},\,k\big). \end{aligned} \tag{M7}$$
+
 
 现在我们把完整的索引表计算过程画出来，如下图所示：
 
@@ -138,7 +150,8 @@ MiniMax稀疏注意力
 注意力
 有了索引表，现在可以进行GQA+BSA注意力计算了，这就是MSA论文里公式（8）描述的计算：
 
-![](https://www.zhihu.com/equation?tex=+%5Cbegin%7Baligned%7D+O_i%5E%7B%28h%29%7D+%3D+%5Ctext%7Bsoftmax%7D%5Cleft%28+%5Cfrac%7BQ_i%5E%7B%28h%29%7D+%5Cbig%28K%5E%7B%28r%29%7D%5B%5Cmathcal%7BI%7D_i%5E%7B%28r%29%7D%5D%5Cbig%29%5E%5Ctop%7D%7B%5Csqrt%7Bd_h%7D%7D+%5Cright%29+V%5E%7B%28r%29%7D%5B%5Cmathcal%7BI%7D_i%5E%7B%28r%29%7D%5D+%5Cend%7Baligned%7D+%5Ctag%7BM8%7D+)
+$$\begin{aligned} O_i^{(h)} = \text{softmax}\left( \frac{Q_i^{(h)} \big(K^{(r)}[\mathcal{I}_i^{(r)}]\big)^\top}{\sqrt{d_h}} \right) V^{(r)}[\mathcal{I}_i^{(r)}] \end{aligned} \tag{M8}$$
+
 
 上面这个几乎就是标准注意力公式，只是增加了GQA分组、BSA分块和查表细节，这里就不展开讨论了。
 

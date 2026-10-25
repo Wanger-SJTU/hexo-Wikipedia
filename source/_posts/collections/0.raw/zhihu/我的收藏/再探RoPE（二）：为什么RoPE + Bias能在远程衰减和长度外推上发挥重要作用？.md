@@ -161,7 +161,8 @@ $$= \sum_{i=1}^{\frac{d}{2}} \text{Re}\Bigl(z_i \,\overline{w_i}\Bigr) \;\exp\Bi
 
 $$\mathbf{q}^\text{rope}(p)\;\cdot\;\mathbf{k}^\text{rope}(p') \;=\; \sum_{i=1}^{\frac{d}{2}} \text{Re}\Bigl[\bigl(z_i\,\overline{w_i}\bigr) \,e^{j\,\Delta_i(p,p')}\Bigr]. \\$$
 
-4.2.2 若 \theta_i(p) 线性依赖于位置 p 
+### 4.2.2 若 \theta_i(p) 线性依赖于位置 p 
+
 
 在常见的RoPE中，\theta_i(p) = \alpha_i\,p，于是
 

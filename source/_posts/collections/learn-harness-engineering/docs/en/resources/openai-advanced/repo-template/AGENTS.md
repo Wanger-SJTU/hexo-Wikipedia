@@ -21,13 +21,20 @@ giant instruction dump.
 
 Before changing code:
 
-1. Confirm the repo root with `pwd`.
-2. Read `ARCHITECTURE.md` for the current system map and hard dependency rules.
-3. Read `docs/QUALITY_SCORE.md` to see which domains or layers are weakest.
-4. Read `docs/PLANS.md`, then open the active plan you are working from.
-5. Read the relevant product spec in `docs/product-specs/`.
-6. Run the standard bootstrap and verification path for this repo.
-7. If baseline verification is failing, repair the baseline before adding scope.
+## 1. Confirm the repo root with `pwd`.
+
+## 2. Read `ARCHITECTURE.md` for the current system map and hard dependency rules.
+
+## 3. Read `docs/QUALITY_SCORE.md` to see which domains or layers are weakest.
+
+## 4. Read `docs/PLANS.md`, then open the active plan you are working from.
+
+## 5. Read the relevant product spec in `docs/product-specs/`.
+
+## 6. Run the standard bootstrap and verification path for this repo.
+
+## 7. If baseline verification is failing, repair the baseline before adding scope.
+
 
 ## Routing Map
 
@@ -67,8 +74,13 @@ A change is done only when all of the following are true:
 
 Before ending a session:
 
-1. Update the active execution plan.
-2. Update `docs/QUALITY_SCORE.md` if any domain or layer meaningfully changed.
-3. Record new debt in `docs/exec-plans/tech-debt-tracker.md` if you deferred it.
-4. Move finished plans to `docs/exec-plans/completed/` when appropriate.
-5. Leave the repo in a restartable state with a clear next action.
+## 1. Update the active execution plan.
+
+## 2. Update `docs/QUALITY_SCORE.md` if any domain or layer meaningfully changed.
+
+## 3. Record new debt in `docs/exec-plans/tech-debt-tracker.md` if you deferred it.
+
+## 4. Move finished plans to `docs/exec-plans/completed/` when appropriate.
+
+## 5. Leave the repo in a restartable state with a clear next action.
+

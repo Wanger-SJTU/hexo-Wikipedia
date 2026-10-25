@@ -30,18 +30,23 @@ pueda actuar sobre él sin depender de una conversación previa.
 
 ## SOP de Ejecución
 
-1. Lista las fuentes de conocimiento invisible: docs, chats, reglas tácitas del equipo, decisiones verbales.
-2. Para cada fuente, pregunta: ¿es esto arquitectura, comportamiento de producto, política de seguridad,
+## 1. Lista las fuentes de conocimiento invisible: docs, chats, reglas tácitas del equipo, decisiones verbales.
+
+## 2. Para cada fuente, pregunta: ¿es esto arquitectura, comportamiento de producto, política de seguridad,
+
    expectativa de fiabilidad, contexto de plan o material de referencia?
-3. Codifícalo en el artefacto del repositorio correspondiente:
+## 3. Codifícalo en el artefacto del repositorio correspondiente:
+
    - arquitectura -> `ARCHITECTURE.md`
    - comportamiento de producto -> `docs/product-specs/`
    - razonamiento de diseño -> `docs/design-docs/`
    - estado de ejecución -> `docs/exec-plans/`
    - referencias externas repetidas -> `docs/references/`
    - expectativas de calidad o fiabilidad -> `docs/QUALITY_SCORE.md` o `docs/RELIABILITY.md`
-4. Reemplaza declaraciones vagas con redacción operacionalmente útil.
-5. Elimina o deprecia copias obsoletas para que el repositorio mantenga una única verdad descubrible.
+## 4. Reemplaza declaraciones vagas con redacción operacionalmente útil.
+
+## 5. Elimina o deprecia copias obsoletas para que el repositorio mantenga una única verdad descubrible.
+
 
 ## Buenas Reglas de Codificación
 

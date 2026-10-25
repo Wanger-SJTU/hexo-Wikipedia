@@ -113,10 +113,13 @@ Bir SaaS takımının `AGENTS.md`'si 50 satırdan 600'e şişti. İçerik teknol
 Ajan performansı dikkat çekici şekilde düşmeye başladı: basit hata düzeltmeleri sırasında ajan ilgisiz dağıtım talimatlarını işlemek için bolca bağlam harcadı; "tüm veritabanı sorguları parametreli sorgular kullanmalı" güvenlik kısıtlaması 300. satıra gömülmüştü ve sık sık göz ardı ediliyordu; üç çelişkili kod stili kuralı ajanın rastgele davranmasına neden oluyordu.
 
 Takım bir "bavul yeniden düzenleme" gerçekleştirdi:
-1. `AGENTS.md` 80 satıra indirildi: yalnızca proje genel bakışı, çalıştırma komutları ve 15 küresel sert kısıtlama
+## 1. `AGENTS.md` 80 satıra indirildi: yalnızca proje genel bakışı, çalıştırma komutları ve 15 küresel sert kısıtlama
+
 2. Konu dokümanları oluşturuldu: `docs/api-patterns.md` (120 satır), `docs/database-rules.md` (60 satır), `docs/testing-standards.md` (80 satır)
-3. Yönlendirme dosyasına konu dokümanı bağlantıları eklendi
-4. Tarihsel notlar ya test senaryolarına dönüştürüldü ya da silindi
+## 3. Yönlendirme dosyasına konu dokümanı bağlantıları eklendi
+
+## 4. Tarihsel notlar ya test senaryolarına dönüştürüldü ya da silindi
+
 
 Yeniden yapılandırmadan sonra: aynı görev setinin başarı oranı %45'ten %72'ye çıktı. Güvenlik kısıtlaması uyumu %60'tan %95'e çıktı — çünkü dosyanın ortasından yönlendirme dosyasının üstüne taşındı, artık "ortada kaybolmuyor."
 

@@ -215,9 +215,12 @@ For the full course materials, please visit the <strong>[Documentation Website](
 
 The curriculum is divided into three parts:
 
-1. <strong>Lectures</strong>: 12 conceptual units explaining the theory behind harness engineering.
-2. <strong>Projects</strong>: 6 hands-on projects where you build an agentic workspace from scratch.
-3. <strong>Resource Library</strong>: Copy-ready templates (`AGENTS.md`, `feature_list.json`, `init.sh`, etc.) to use in your own repositories today.
+## 1. **Lectures**: 12 conceptual units explaining the theory behind harness engineering.
+
+## 2. **Projects**: 6 hands-on projects where you build an agentic workspace from scratch.
+
+## 3. **Resource Library**: Copy-ready templates (`AGENTS.md`, `feature_list.json`, `init.sh`, etc.) to use in your own repositories today.
+
 
 ---
 

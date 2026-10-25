@@ -33,11 +33,16 @@ Use this pattern when you want to package reusable agent behavior as a skill ins
 
 A production skill should use progressive disclosure:
 
-1. `SKILL.md` frontmatter explains when the skill should trigger.
-2. The body gives the shortest reliable workflow.
-3. `references/` contains deeper material loaded only when relevant.
-4. `templates/` contains copyable artifacts.
-5. `evals/` captures representative quality checks.
+## 1. `SKILL.md` frontmatter explains when the skill should trigger.
+
+## 2. The body gives the shortest reliable workflow.
+
+## 3. `references/` contains deeper material loaded only when relevant.
+
+## 4. `templates/` contains copyable artifacts.
+
+## 5. `evals/` captures representative quality checks.
+
 
 ## Design Rules
 

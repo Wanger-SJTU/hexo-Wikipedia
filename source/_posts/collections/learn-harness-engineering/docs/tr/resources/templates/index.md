@@ -19,10 +19,14 @@ Bu şablonlar kendi projenize kopyalanmaya hazırdır. Her biri, ajanın iş ak�
 
 Önce şu dört dosyayı projenizin kök dizinine kopyalayın:
 
-1. `AGENTS.md` veya `CLAUDE.md`
-2. `init.sh`
-3. `claude-progress.md`
-4. `feature_list.json`
+## 1. `AGENTS.md` veya `CLAUDE.md`
+
+## 2. `init.sh`
+
+## 3. `claude-progress.md`
+
+## 4. `feature_list.json`
+
 
 Projeniz büyüdükçe geri kalan dosyaları ekleyin.
 
@@ -63,10 +67,14 @@ Başlangıç betiği. Bağımlılık kurulumunu, doğrulamayı çalıştırır v
 
 <strong>Ne yapar:</strong>
 
-1. Geçerli dizini yazdırır (doğru yerde çalıştığından emin olabilesiniz diye)
-2. Bağımlılıkları kurar
-3. Doğrulama komutunu çalıştırır
-4. Başlatma komutunu yazdırır (veya `RUN_START_COMMAND=1` ayarlıysa çalıştırır)
+## 1. Geçerli dizini yazdırır (doğru yerde çalıştığından emin olabilesiniz diye)
+
+## 2. Bağımlılıkları kurar
+
+## 3. Doğrulama komutunu çalıştırır
+
+## 4. Başlatma komutunu yazdırır (veya `RUN_START_COMMAND=1` ayarlıysa çalıştırır)
+
 
 Doğrulama başarısız olursa, ajan başka herhangi bir şey yapmadan önce durmalı ve temel başlangıç durumunu düzeltmelidir.
 
@@ -175,12 +183,18 @@ Ajan çıktısının kalitesini değerlendirmek için bir karne. Bir oturumdan s
 
 <strong>Altı boyut:</strong>
 
-1. <strong>Doğruluk</strong> — uygulama hedeflenen davranışla eşleşiyor mu?
-2. <strong>Doğrulama</strong> — gerekli kontroller gerçekten kanıtla birlikte çalıştırıldı mı?
-3. <strong>Kapsam disiplini</strong> — ajan seçilen özelliğin sınırları içinde kaldı mı?
-4. <strong>Güvenilirlik</strong> — sonuç bir yeniden başlatma veya yeniden çalıştırmadan sonra ayakta kalıyor mu?
-5. <strong>Sürdürülebilirlik</strong> — kod ve dokümantasyon sıradaki oturum için yeterince açık mı?
-6. <strong>Devir hazırlığı</strong> — yeni bir oturum yalnızca depo dosyalarını kullanarak devam edebilir mi?
+## 1. **Doğruluk** — uygulama hedeflenen davranışla eşleşiyor mu?
+
+## 2. **Doğrulama** — gerekli kontroller gerçekten kanıtla birlikte çalıştırıldı mı?
+
+## 3. **Kapsam disiplini** — ajan seçilen özelliğin sınırları içinde kaldı mı?
+
+## 4. **Güvenilirlik** — sonuç bir yeniden başlatma veya yeniden çalıştırmadan sonra ayakta kalıyor mu?
+
+## 5. **Sürdürülebilirlik** — kod ve dokümantasyon sıradaki oturum için yeterince açık mı?
+
+## 6. **Devir hazırlığı** — yeni bir oturum yalnızca depo dosyalarını kullanarak devam edebilir mi?
+
 
 <strong>Sonuç seçenekleri:</strong>
 
@@ -190,11 +204,16 @@ Ajan çıktısının kalitesini değerlendirmek için bir karne. Bir oturumdan s
 
 <strong>Önemli: değerlendiricinin ayarlanması gerekir.</strong> Hazır halleriyle ajanlar zayıf öz-değerlendiricilerdir — sorunları tespit edip sonra kendilerini onaylamaya ikna ederler. Yinelemeniz gerekir:
 
-1. Tamamlanmış bir sprint üzerinde değerlendiriciyi çalıştırın.
-2. Puanlarını kendi insan yargınızla karşılaştırın.
-3. Ayrıştıkları yerlerde, rubriği geçme/kalma kriterleri konusunda daha spesifik hale getirin.
-4. Yeniden çalıştırın ve uyumu kontrol edin.
-5. Değerlendirici, insan incelemesiyle tutarlı olarak eşleşene kadar tekrarlayın.
+## 1. Tamamlanmış bir sprint üzerinde değerlendiriciyi çalıştırın.
+
+## 2. Puanlarını kendi insan yargınızla karşılaştırın.
+
+## 3. Ayrıştıkları yerlerde, rubriği geçme/kalma kriterleri konusunda daha spesifik hale getirin.
+
+## 4. Yeniden çalıştırın ve uyumu kontrol edin.
+
+## 5. Değerlendirici, insan incelemesiyle tutarlı olarak eşleşene kadar tekrarlayın.
+
 
 3-5 ayar turu için plan yapın. Hangi değişikliğin uyumu iyileştirdiğini takip edebilmek için her değişikliği kaydedin.
 
@@ -232,8 +251,13 @@ Değerlendirici rubriği tek tek ajan çıktılarını puanlar. Kalite belgesi i
 
 Kalite belgesi aynı zamanda harness sadeleştirmeyi de destekler. Her harness bileşeni, modelin yapamadığı bir şeye dair bir varsayımı kodlar. Modeller geliştikçe bu varsayımlar eskir. Bir bileşenin hâlâ gerekli olup olmadığını kontrol etmek için:
 
-1. Bir kalite belgesi anlık görüntüsü alın.
-2. Bir harness bileşenini kaldırın.
-3. Karşılaştırma görev paketini çalıştırın.
-4. Başka bir anlık görüntü alın.
-5. Karşılaştırın — notlar düşmediyse bileşen fazladandı. Düştüyse geri getirin.
+## 1. Bir kalite belgesi anlık görüntüsü alın.
+
+## 2. Bir harness bileşenini kaldırın.
+
+## 3. Karşılaştırma görev paketini çalıştırın.
+
+## 4. Başka bir anlık görüntü alın.
+
+## 5. Karşılaştırın — notlar düşmediyse bileşen fazladandı. Düştüyse geri getirin.
+

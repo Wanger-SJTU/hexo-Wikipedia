@@ -57,9 +57,11 @@ CAGRA构建的图有几个不同之处：
 ![Pasted image 20240615220440.png](/images/collections/assets/Pasted%20image%2020240615220440.png)
 
 CAGRA算法的构建训练过程，先初始化一个knn graph，然后优化其中的边关系。
-1. 初始knn-graph创建：比较简单，这里实际上可以理论上依赖任何一种已有的算法，但在实现上选了IVF-PQ、和NN-Descent算法。这里就不过多展开了
+## 1. 初始knn-graph创建：比较简单，这里实际上可以理论上依赖任何一种已有的算法，但在实现上选了IVF-PQ、和NN-Descent算法。这里就不过多展开了
+
 	> 步骤一结束后，每个节点都有k个邻居节点，并且通常按距离排序
-2. 基于<strong>rank</strong>的重排序：这里每个节点出边按照初始rank重新排序，并且过滤掉一些边
+## 2. 基于**rank**的重排序：这里每个节点出边按照初始rank重新排序，并且过滤掉一些边
+
 	![Pasted image 20240616105302.png](/images/collections/assets/Pasted%20image%2020240616105302.png)
 	 - 左侧：来自节点X及其他相关边的初始排名。
 	 - 中间：可能的两跳路径（XAB、XBC、XCD、XAC、XDC），根据方程3被分类为可绕路和不可绕路的。我们使用排名代替距离。
@@ -73,9 +75,11 @@ CAGRA算法的构建训练过程，先初始化一个knn graph，然后优化其
 
 
 	 - 右侧：连接到节点X的每个节点的可绕路路径数量。根据可绕路路径数量，从列表末尾开始丢弃边。
-1. <strong>构建反向图</strong>
+## 1. **构建反向图**
+
 	同样的思路构建反向图。 
-4. 融合两张图 
+## 4. 融合两张图 
+
 ## 查找
 之前的HNSW一类算法之所以不能满足GPU计算主要原因就是并行度不够，很难去发挥GPU多线程计算的优势。CAGRA不同之处在于在构图的时候尽可能保证了任意两点的可达性，在查找的时候放弃了按照最近路径找到目标节点的优化思路，而是通过提高吞吐量来尽可能覆盖尽可能多的点来提高召回率和GPU利用率。
 
@@ -83,10 +87,14 @@ CAGRA算法的构建训练过程，先初始化一个knn graph，然后优化其
 ![Pasted image 20240616173848.png](/images/collections/assets/Pasted%20image%2020240616173848.png)
 
 计算过程：
-1. 随机选取E个节点，计算他们与 query 的距离，并存在 candidate buffer 中
-2. 在 top-M buffer（这里应该是上一轮的结果，初始阶段为空） 和 candidate buffer 中选取 top M 个结果存储在 Top-M buffer中  
-3. 在Top-M buffer中选取一个还没有被 traverse 的离 query 最近的节点  
-4. 选取与 Step 3 中选择的节点近邻的E个没有访问的节点，并计算他们与query的距离，然后存储在 Candidate buffer 中
+## 1. 随机选取E个节点，计算他们与 query 的距离，并存在 candidate buffer 中
+
+## 2. 在 top-M buffer（这里应该是上一轮的结果，初始阶段为空） 和 candidate buffer 中选取 top M 个结果存储在 Top-M buffer中  
+
+## 3. 在Top-M buffer中选取一个还没有被 traverse 的离 query 最近的节点  
+
+## 4. 选取与 Step 3 中选择的节点近邻的E个没有访问的节点，并计算他们与query的距离，然后存储在 Candidate buffer 中
+
 一直计算到收敛（topM buffer全部是已访问状态）
 
 ### 优化细节
@@ -116,6 +124,8 @@ CAGRA算法的构建训练过程，先初始化一个knn graph，然后优化其
 
 
 参考：
-1. https://github.dev/facebookresearch/faiss
-2. https://arxiv.org/pdf/2308.15136
-3. 
+## 1. https://github.dev/facebookresearch/faiss
+
+## 2. https://arxiv.org/pdf/2308.15136
+
+## 3. 

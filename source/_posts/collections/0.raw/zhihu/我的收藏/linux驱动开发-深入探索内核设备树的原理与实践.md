@@ -45,7 +45,8 @@ source_url: https://zhuanlan.zhihu.com/p/972681787
 
 #### 2. DTS基本知识
 
-2.1 dts
+### 2.1 dts
+
 
 硬件的相应信息都会写在.dts为后缀的文件中，每一款硬件可以单独写一份xxxx.dts，一般在Linux源码中存在大量的dts文件，对于arm架构可以在arch/arm/boot/dts找到相应的dts，一个dts文件对应一个ARM的machie。
 

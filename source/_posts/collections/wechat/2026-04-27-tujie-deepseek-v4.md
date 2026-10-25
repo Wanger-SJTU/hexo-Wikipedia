@@ -80,7 +80,8 @@ CSA（Compressed Sparse Attention）是一种压缩注意力机制，通过压�
 
 KV值长度<=window_size+topK，其中window_size是滑动窗口大小，topK是压缩通道输出的压缩token数量。Q通道计算与MLA的计算逻辑保持一致。
 
-2.1 Token level Compressor (C4A)
+### 2.1 Token level Compressor (C4A)
+
 
 Token level Compressor（C4A）是一种压缩token的模块，通过压缩token来减少计算量。
 
@@ -123,11 +124,13 @@ kv_state = torch.cat([kv_state[:bsz, :ratio, :d], kv_state[:bsz, ratio:, d:]
 
 kv_state[:bsz, :ratio] = kv_state[:bsz, ratio:]score_state[:bsz, :ratio] = score_state[:bsz, ratio:]
 
-2.2 Index模块
+### 2.2 Index模块
+
 
 Index模块负责从主通道压缩后的token中选择topK个token。与DSA的主要区别是，KV值计算也采用C4A压缩器。 压缩比例也为4:1。最后输出topK个压缩token的index。![](/images/collections/wechat/asset/img_09.jpg)
 
-2.3 其他细节
+### 2.3 其他细节
+
 
 Attention计算还有几个值得注意的细节：
 - 
@@ -147,7 +150,8 @@ O运算有上、下采样两次运算。![](/images/collections/wechat/asset/img
 
 HCA模块是一种重压缩注意力机制，通过重压缩注意力矩阵减少计算量。与CSA的主要区别是，HCA的压缩通道没有Index模块，压缩计算方式也不同。![](/images/collections/wechat/asset/img_11.jpg)
 
-3.1 Token level Compressor（C128A）
+### 3.1 Token level Compressor（C128A）
+
 
 压缩模块的压缩比例为128:1，state更新不采用交替轮转，而是直接拼接。累积数量达到128时，进行压缩计算。![](/images/collections/wechat/asset/img_12.jpg)
 

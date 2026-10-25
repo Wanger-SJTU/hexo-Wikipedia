@@ -23,9 +23,12 @@ Describe la experiencia de primera ejecución que debería tener un usuario nuev
 
 ## Flujo de Usuario
 
-1. `[step one]`
-2. `[step two]`
-3. `[step three]`
+## 1. `[step one]`
+
+## 2. `[step two]`
+
+## 3. `[step three]`
+
 
 ## Criterios de Aceptación
 

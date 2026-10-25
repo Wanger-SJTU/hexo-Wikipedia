@@ -18,12 +18,17 @@ agent-first documentation surface instead of only a minimal harness.
 
 ## Copy Order
 
-1. Copy `AGENTS.md` and `ARCHITECTURE.md` to the repo root.
-2. Copy the whole `docs/` tree.
-3. Fill in `docs/PRODUCT_SENSE.md`, `docs/QUALITY_SCORE.md`, and
+## 1. Copy `AGENTS.md` and `ARCHITECTURE.md` to the repo root.
+
+## 2. Copy the whole `docs/` tree.
+
+## 3. Fill in `docs/PRODUCT_SENSE.md`, `docs/QUALITY_SCORE.md`, and
+
    docs/RELIABILITY.md` first.
-4. Add your first active plan under `docs/exec-plans/active/`.
-5. Keep the entrypoint files short and route detail into the linked docs.
+## 4. Add your first active plan under `docs/exec-plans/active/`.
+
+## 5. Keep the entrypoint files short and route detail into the linked docs.
+
 
 ## What This Template Optimizes For
 

@@ -56,17 +56,20 @@ Telemetry（初识NCCL，蜜月期）
 无核
 无核的开发我参与了一点最早期的版本的开发（四月底前），再之后，由于各种莫名其妙的bug，无核进行了很大的重构，包括设计和细节等等，最新版的无核我也还没完全理解具体的代码细节变成啥样了，但可以确定的就是，这是个恶心程度还在容错之上的东西，因为要比效率，所以还得看tflops的提升比例，不同的并行配制下，为什么提升的不一样，为什么会奇妙的hang，为什么理论上有提升但是一跑没提升了？我虽然没有实际参与，但作为见证人看到了整个team在这个过程中付出的艰辛，无核的开发难度是要远远超出在paper上能看到那些high-level的东西的，我在询问了team中负责无核这一块开发的 [@Leo Da](https://www.zhihu.com/people/6c94a6951c16419e23d4b80f3735930e) 后，就大致列三个比较典型的tricky bug吧
 
-1. vccl无核p2p为什么不能解决训练的问题 现在存在哪些不足且暂时无解
+## 1. vccl无核p2p为什么不能解决训练的问题 现在存在哪些不足且暂时无解
+
 
 A：[机内在nccl的transport层走p2p.cc](https://link.zhihu.com/?target=http%3A//%25E6%259C%25BA%25E5%2586%2585%25E5%259C%25A8nccl%25E7%259A%2584transport%25E5%25B1%2582%25E8%25B5%25B0p2p.cc)，nccl用交换handle的方式跨进程（sender和receiver在不用rank上的进程）交互，在最后kernel内由某一侧去拿到双进程的sendbuff和recvbuff地址。然而，nccl为了减少sendbuff在显存中地址随机出现，在p2p.cc内用一块中转的buffer（recvDem+simple协议8Mb的地址上的内存）去降低整个过程的复杂度。而无核本质就是不用kernel，那么就只能使用memory拷贝的路线。这里就会面临两个问题，同步只能全部交给cpu去做，以及所有的操作需要是异步无阻塞的。问题1，cpu下任务很快，怎么保证数据正确性，这里cpu侧暂且只能cudaHostfunc去插在stream上，再让hostfunc去管理memory拷贝的开始和结束（opCount变为0），这里就会遇到hostfunc无解的问题（hostfunc不能间接关联异步的runtime的cuda api操作）。问题2，如果是阻塞同步，那么一定会大幅度降低性能，任务一定是cpu不停下发的，这里要想让runtime的api（cudaMemoryCopyAsync拿到执行时刻的地址才不会出现segment fault），这也是无解的。同理，机间也会面临这个问题。
 
 除了以上情况，在训练的时候还有有一些megatron在iteration结束的时候deallocate会调用cudafree，这里需要memory copy的stream完成和hostfunc的stream完成，这free就会导致这里有一方永远无法完成，最后导致三方四死锁。唉🤦
 
-2. 训练过程中还有什么问题阻碍了vccl
+## 2. 训练过程中还有什么问题阻碍了vccl
+
 
 A：在pipeline parallel的interleaving的1F1B中，一个rank通常会处于两个pp中，既要给下一个rank发又要给上一个rank发，这是出于两个comm的。到了nccl内，每个comm上的一次send 一次recv又分别在一次groupstart和gropuend内。同一时刻，这两个comm上的hostfunc都在等待发送完毕才能退出rwceiver的hostfunc结束退出（hostfunc是一个单线程操作）。唉🤦
 
-3. zerocopy怎么避免
+## 3. zerocopy怎么避免
+
 
 机内暂时无解🤦，只能通过保证机内通信全是TP的allreduce，然后机间sendrecv则直接让rnic去显存搬数据（cuMem的register注册完毕后的内存），直接不launch kernel也不用cudamemorycopy，再支持一个comm同时下发四个send recv，那么就能让训练玩起来了。至此就是vccl sm-free zerocopy。
 

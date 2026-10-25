@@ -64,14 +64,19 @@ docs/
 
 ## How To Adopt It
 
-1. Start from the minimal pack if your repo is still small.
-2. Copy the files in [`repo-template/`](./repo-template/index.md) into your
+## 1. Start from the minimal pack if your repo is still small.
+
+## 2. Copy the files in [`repo-template/`](./repo-template/index.md) into your
+
    own repository once you need stronger structure.
-3. Keep `AGENTS.md` short. Treat it as a router into the deeper docs, not as an
+## 3. Keep `AGENTS.md` short. Treat it as a router into the deeper docs, not as an
+
    encyclopedia.
-4. Update the quality, reliability, and plan docs as part of normal work, not
+## 4. Update the quality, reliability, and plan docs as part of normal work, not
+
    as a separate cleanup day.
-5. Keep generated artifacts and external references explicit so agents can find
+## 5. Keep generated artifacts and external references explicit so agents can find
+
    them without relying on chat history.
 
 ## SOP Library

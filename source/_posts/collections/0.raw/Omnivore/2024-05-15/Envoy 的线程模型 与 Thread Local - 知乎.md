@@ -112,10 +112,14 @@ _图: ThreadLocal Classes_ _[用 Draw.io 打开](https://app.diagrams.net/?ui=sk
 
 上图可以简述如下：
 
-1. main 线程 初始化 `ThreadLocal::InstanceImpl` 以及每个 `Dispatcher` 注册到 `ThreadLocal::InstanceImpl`
-2. main 线程 通知所有 worker 线程创建本地的 `ThreadLocalClusterManagerImpl`
-3. main 线程感知到一个 Cluster 被删除时，通知各个 worker 线程的 `ThreadLocalClusterManagerImpl` 删除这个 Cluster
-4. worker 线程上的 `TCPProxy` 尝试连接一个 `OnDemand Cluster(未知的 cluster）` 时，获取线程本地的 `ThreadLocalClusterManagerImpl`
+## 1. main 线程 初始化 `ThreadLocal::InstanceImpl` 以及每个 `Dispatcher` 注册到 `ThreadLocal::InstanceImpl`
+
+## 2. main 线程 通知所有 worker 线程创建本地的 `ThreadLocalClusterManagerImpl`
+
+## 3. main 线程感知到一个 Cluster 被删除时，通知各个 worker 线程的 `ThreadLocalClusterManagerImpl` 删除这个 Cluster
+
+## 4. worker 线程上的 `TCPProxy` 尝试连接一个 `OnDemand Cluster(未知的 cluster）` 时，获取线程本地的 `ThreadLocalClusterManagerImpl`
+
 
 ### Ref
 

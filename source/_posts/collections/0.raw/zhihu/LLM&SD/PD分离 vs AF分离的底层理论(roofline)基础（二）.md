@@ -70,7 +70,8 @@ attn_out = concat（attn）x Wo = concat([B,d,1,h]) x [H,H] = [B,1,H]x[H,H] = [B
 
 至此，decode阶段的attention模块flops计算完毕。接下来计算attention部分的访存量。
 
-2. Attention访存计算
+## 2. Attention访存计算
+
 
 我们还是先来梳理一下decode阶段attention的各个计算阶段在HBM和SRAM之间都要搬运哪些东西。
 
@@ -125,7 +126,8 @@ out = concat(attn) x Wo = [B, 1, H] x [H,H] = [B, 1, H]
 
 当长下文场景时，attn_AI是个非常小的数，远远低于硬件平衡AI，是访存瓶颈。
 
-3. FFN算力和访存计算
+## 3. FFN算力和访存计算
+
 
 令intermediate_size = I
 

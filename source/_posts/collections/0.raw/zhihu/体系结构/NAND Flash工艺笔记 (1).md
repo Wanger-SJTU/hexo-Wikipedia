@@ -23,7 +23,8 @@ source_url: https://zhuanlan.zhihu.com/p/1996879434335142892
 
 ![](https://pic1.zhimg.com/v2-be58b157dc5610705546fd024ed346e0_1440w.jpg)
 ![](https://pic3.zhimg.com/v2-db0545b3520d6bb0e0110fbbcdfd6cee_1440w.jpg)
-1. 有源区 (Active Area, AA) 与自对准浅沟槽隔离 (SA-STI)
+## 1. 有源区 (Active Area, AA) 与自对准浅沟槽隔离 (SA-STI)
+
 首先是Pwell implant，通常包含三个深度的B硼注入。最深的B implant能量>200keV，剂量~5e13，角度7°，形成约为1.0 µm的深结，主要作用是进行“倒掺杂”，减小CMOS器件的Latch-up。中能量B implant，能量~50keV，剂量~5e12，避免源/漏Punch-through。最浅的B implant用于精确调节Vt，能量~5keV，剂量~5E11，取决于器件的目标Vt。
 
 接着生长栅氧化层 (Gate Oxidation)，作为浮栅晶体管的隧道氧化层。GOX通常用高温氧化，如干氧、RTP、ISSG等。炉管工艺的温度为900℃。快速热氧化RTP温度达到1200℃，具有更光滑的界面、更低的界面态密度和更少的固定电荷。氧化层厚度在60~100A，既要足够薄以保证编程和擦除时电荷能够通过FN隧穿电子有效穿过，又要足够厚以保证数据在非操作状态下有足够的保持时间，并控制栅泄漏电流。

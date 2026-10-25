@@ -99,15 +99,18 @@ for i in range(N):
 
 ![](https://pica.zhimg.com/v2-f7e39057a073df4ad7e6c8d13322ecfc_1440w.jpg)那我们怎么用数学表达式表达self-temporal呢？其实很简单，如下所示，假设对于某个statement，我们分析可以把它的矩阵F和向量f拿出来
 
-![](https://www.zhihu.com/equation?tex=F%5Cvec+%7Bi1%7D+%2B+%5Cvec%7Bf+%7D%3D+F%5Cvec+%7Bi2%7D+%2B+%5Cvec%7Bf%7D) 
+$$F\vec {i1} + \vec{f }= F\vec {i2} + \vec{f}$$
 
-![](https://www.zhihu.com/equation?tex=abs%28%5Cvec%7Bi1%7D-%5Cvec%7Bi2%7D%29+%3D+%3C1%2C0%2C0%3E+or+%3C0%2C+1%2C+0%3E+or+%3C0%2C+0%2C+1%3E) 
+
+$$abs(\vec{i1}-\vec{i2}) = <1,0,0> or <0, 1, 0> or <0, 0, 1>$$
+
 
 如果某两个迭代(向量i1与向量i2)访问同样的元素，而且i1和i2之间只有一维差1（即同时满足上面两个条件，假设是3重循环），那么这就是一个self-temporal的例子
 
 进一步做数学变换，我们发现<strong>如果矩阵F的零空间里面存在只有一个1，剩下都是0的向量（实在抱歉我忘了他的学名是什么了），那么就说明我们可以通过仿射变换得到self-temporal</strong>
 
-![](https://www.zhihu.com/equation?tex=F%28%5Cvec+%7Bi1%7D+-++%5Cvec+%7Bi2%7D+%29+%3D+0) 
+$$F(\vec {i1} -  \vec {i2} ) = 0$$
+
 
 对于下面的例子，我们可以把这个Stmt对应的矩阵F直接列出来
 
@@ -128,15 +131,18 @@ for i in range(N):
 
 假设我们有上面的代码，那么很显然第一个Stmt的访存仿射变换就是
 
-![](https://www.zhihu.com/equation?tex=%5Cleft%5B+%5Cbegin%7Bmatrix%7D++++1+%26+0+%5C%5C++++0+%26+1+++%5Cend%7Bmatrix%7D+%5Cright%5D+%5C+%5Cleft%5B+%5Cbegin%7Bmatrix%7D++++i+%5C%5C++++j+++%5Cend%7Bmatrix%7D+%5Cright%5D+%5C++%2B+%5Cleft%5B+%5Cbegin%7Bmatrix%7D++++0+%5C%5C++++0+++%5Cend%7Bmatrix%7D+%5Cright%5D+%5C+) 
+$$\left[ \begin{matrix}    1 & 0 \\    0 & 1   \end{matrix} \right] \ \left[ \begin{matrix}    i \\    j   \end{matrix} \right] \  + \left[ \begin{matrix}    0 \\    0   \end{matrix} \right] \$$
+
 
 第二个矩阵就是
 
-![](https://www.zhihu.com/equation?tex=%5Cleft%5B+%5Cbegin%7Bmatrix%7D++++1+%26+0+%5C%5C++++0+%26+1+++%5Cend%7Bmatrix%7D+%5Cright%5D+%5C+%5Cleft%5B+%5Cbegin%7Bmatrix%7D++++i+%5C%5C++++j+++%5Cend%7Bmatrix%7D+%5Cright%5D+%5C++%2B+%5Cleft%5B+%5Cbegin%7Bmatrix%7D++++1+%5C%5C++++0+++%5Cend%7Bmatrix%7D+%5Cright%5D+%5C+) 
+$$\left[ \begin{matrix}    1 & 0 \\    0 & 1   \end{matrix} \right] \ \left[ \begin{matrix}    i \\    j   \end{matrix} \right] \  + \left[ \begin{matrix}    1 \\    0   \end{matrix} \right] \$$
+
 
 我们将两个式子联合在一起，去看当什么情况他们会访问同样的位置
 
-![](https://www.zhihu.com/equation?tex=%5Cleft%5B+%5Cbegin%7Bmatrix%7D++++1+%26+0+%5C%5C++++0+%26+1+++%5Cend%7Bmatrix%7D+%5Cright%5D+%5C+%5Cleft%5B+%5Cbegin%7Bmatrix%7D++++i1%5C%5C++++j1+++%5Cend%7Bmatrix%7D+%5Cright%5D+%5C++%2B+%5Cleft%5B+%5Cbegin%7Bmatrix%7D++++0+%5C%5C++++0+++%5Cend%7Bmatrix%7D+%5Cright%5D+%5C++%3D+%5Cleft%5B+%5Cbegin%7Bmatrix%7D++++1+%26+0+%5C%5C++++0+%26+1+++%5Cend%7Bmatrix%7D+%5Cright%5D+%5C+%5Cleft%5B+%5Cbegin%7Bmatrix%7D++++i2+%5C%5C++++j2+++%5Cend%7Bmatrix%7D+%5Cright%5D+%5C++%2B+%5Cleft%5B+%5Cbegin%7Bmatrix%7D++++1+%5C%5C++++0+++%5Cend%7Bmatrix%7D+%5Cright%5D+%5C+) 
+$$\left[ \begin{matrix}    1 & 0 \\    0 & 1   \end{matrix} \right] \ \left[ \begin{matrix}    i1\\    j1   \end{matrix} \right] \  + \left[ \begin{matrix}    0 \\    0   \end{matrix} \right] \  = \left[ \begin{matrix}    1 & 0 \\    0 & 1   \end{matrix} \right] \ \left[ \begin{matrix}    i2 \\    j2   \end{matrix} \right] \  + \left[ \begin{matrix}    1 \\    0   \end{matrix} \right] \$$
+
 
 <strong>解出来发现当i1=i2+1, j1=j2的时候，他们会访问一样的位置，也就是如果i1比i2少一轮，他们就可以同时在一次迭代访问相同的位置了</strong>
 

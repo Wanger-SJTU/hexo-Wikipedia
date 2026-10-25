@@ -70,7 +70,8 @@ P：欢迎自荐或者推荐哈哈哈！
 
 23. 初七123334：知乎著名MLSys/RL专家，OpenRLHF作者，Nvidia。
 
-24. ZOMI酱：著名MLSys专家，华为，有非常新手友好的MLSys科普视频：[ZOMI酱个人主页](https://link.zhihu.com/?target=https%3A//space.bilibili.com/517221395/)
+## 24. ZOMI酱：著名MLSys专家，华为，有非常新手友好的MLSys科普视频：[ZOMI酱个人主页](https://link.zhihu.com/?target=https%3A//space.bilibili.com/517221395/)
+
 
 25. 尘伊光：MAGIS/ArkVale作者，PKU PhD。
 
@@ -84,7 +85,8 @@ P：欢迎自荐或者推荐哈哈哈！
 
 30. SuSun：DB/MLSys，很有分享欲的同龄人（学习了www）。
 
-31. 拜月神使曌鹓鶵：鸟哥，分享欲也是超级强的！
+## 31. 拜月神使曌鹓鶵：鸟哥，分享欲也是超级强的！
+
 
 32. 进击的Killua：量化系列专家，SJTU。
 
@@ -96,7 +98,8 @@ P：欢迎自荐或者推荐哈哈哈！
 
 36. LeiWang1999：BitBLAS/SparTA作者，TVM专家，Microsoft Intern。
 
-37. 66RING：很多新手友好的知乎文章，强推！
+## 37. 66RING：很多新手友好的知乎文章，强推！
+
 
 38. LRY89757：MuxServe作者，Umich PhD。
 
@@ -114,7 +117,8 @@ P：欢迎自荐或者推荐哈哈哈！
 
 45. 猛猿：图解十分易懂，写作能力很强很细心。
 
-46. 紫气东来：解读非常细致！新手友好向！
+## 46. 紫气东来：解读非常细致！新手友好向！
+
 
 不久后，后面会更新一章算法篇，如果系统/算法同时都做的我会放到这个Part，非常感谢列表中的朋友们创作了这么多高质量的内容，希望这篇文章对MLSys学习者有所帮助，顺带提前预祝大家圣诞节/新年快乐~
 

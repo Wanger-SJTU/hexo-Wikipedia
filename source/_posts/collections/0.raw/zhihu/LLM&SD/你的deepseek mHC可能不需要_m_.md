@@ -15,11 +15,11 @@ categories:
 最近几周在学习deepseek mHC先进经验，捣鼓出一个令人啼笑皆非的实验结论：
 
 论文最关键的算法改进，便是把 
-![](https://www.zhihu.com/equation?tex=H%5E%7Bres%7D) 做了manifold constraint, sinkhorn_knopp约束到双随机矩阵，使得前反向传播稳定。
+$H^{res}$ 做了manifold constraint, sinkhorn_knopp约束到双随机矩阵，使得前反向传播稳定。
 一个自然而然的问题是， 
-![](https://www.zhihu.com/equation?tex=H%5E%7Bres%7D) 非要不可吗？
+$H^{res}$ 非要不可吗？
 我们发现，直接换成identity效果明显就更好, 
-![](https://www.zhihu.com/equation?tex=H%5E%7Bres%7D%3DI) 就行哈哈!
+$H^{res}=I$ 就行哈哈!
 ![](https://pic3.zhimg.com/v2-a11731a3dfe22054067127149f6b4674_r.jpg)qwen1.7B from scratch, 150B tokens,部分曲线截图<strong>目前结论是Identity HC > mHC > mHC lite > mHC orthogonal(例如cayley正交)。</strong>实验在qwen3 1.7B和8B dense上完成， 150B tokens, 希望没有megatron coding bug的问题(
 
 单位阵(对角线为1)，其实也是行列和各自为1，谱范数为1，完全norm preserving, 是最简单的“manifold constraint”。直观上，单位阵hres，意思是各个residual流都保留自己的信息，不与其他流交换。实际实验里，我们观察到原版mhc自己学出来的hres大概就是这个pattern:、
@@ -46,27 +46,29 @@ Identity 的优势可能在于所有层用同一个恒等置换?
 
 标准残差连接Transformer 的每一层是一个恒等映射加上一个变换输出(谢谢resnet)：
 
-![](https://www.zhihu.com/equation?tex=%5Cmathbf%7Bx%7D_%7Bl%2B1%7D+%3D+%5Cmathbf%7Bx%7D_l+%2B+f%28%5Cmathbf%7Bx%7D_l%2C+%5Cmathcal%7BW%7D_l%29)
+$$\mathbf{x}_{l+1} = \mathbf{x}_l + f(\mathbf{x}_l, \mathcal{W}_l)$$
+
 
 Hyper-Connections（HC）将残差流从 1 条扩展为 n 条（默认n=4），更新公式变为：
 
-![](https://www.zhihu.com/equation?tex=%5Cmathbf%7Bx%7D_%7Bl%2B1%7D+%3D+%5Cmathcal%7BH%7D%5E%7B%5Ctext%7Bres%7D%7D_l+%5Ccdot+%5Cmathbf%7Bx%7D_l+%2B+%5Cmathcal%7BH%7D%5E%7B%5Ctext%7Bpost%7D%5C%2C%5Ctop%7D_l+%5Ccdot+f%28%5Cmathcal%7BH%7D%5E%7B%5Ctext%7Bpre%7D%7D_l+%5Ccdot+%5Cmathbf%7Bx%7D_l%2C+%5Cmathcal%7BW%7D_l%29)
+$$\mathbf{x}_{l+1} = \mathcal{H}^{\text{res}}_l \cdot \mathbf{x}_l + \mathcal{H}^{\text{post}\,\top}_l \cdot f(\mathcal{H}^{\text{pre}}_l \cdot \mathbf{x}_l, \mathcal{W}_l)$$
+
 
 其中 
-![](https://www.zhihu.com/equation?tex=%5Cmathbf%7Bx%7D_l+%5Cin+%5Cmathbb%7BR%7D%5E%7Bn+%5Ctimes+C%7D) 是 n 条并行的残差流，三个可学习映射分别负责：
+$\mathbf{x}_l \in \mathbb{R}^{n \times C}$ 是 n 条并行的残差流，三个可学习映射分别负责：
 
 映射维度作用H_pren 流 → 1 流n 条流中读入H_post1 流 → n 流写回到 n 条流H_resn 流 → n 流流间信息混合而deepseek的核心创新是将 
-![](https://www.zhihu.com/equation?tex=%5Cmathcal%7BH%7D%5E%7B%5Ctext%7Bres%7D%7D) 约束到双随机流形上，矩阵行和列和为 1，来做 norm preserving，多层H连乘不会导致信号爆炸，不过也没保证信号不消失hhhh,虽然我实验里mHC谱范数是大致在1附近的。mhc论文里个人感觉最好的点在于，把HC公式给我写明白了，原HC论文属实看不懂；其次，激活函数从tanh换成sigmoid,值域非负是个好文明
+$\mathcal{H}^{\text{res}}$ 约束到双随机流形上，矩阵行和列和为 1，来做 norm preserving，多层H连乘不会导致信号爆炸，不过也没保证信号不消失hhhh,虽然我实验里mHC谱范数是大致在1附近的。mhc论文里个人感觉最好的点在于，把HC公式给我写明白了，原HC论文属实看不懂；其次，激活函数从tanh换成sigmoid,值域非负是个好文明
 
 ![](https://pica.zhimg.com/v2-8d668abf4fee3ab9888fa1170359e296_r.jpg)mHC核心计算过程，清晰简洁论文里sk迭代看起来还是蛮贵的。关键问题是：H_res 到底有多重要？
 
 <strong>实际上，</strong>
-![](https://www.zhihu.com/equation?tex=%5Cphi)<strong>才是跨流信息混合的关键。</strong>
+$\phi$<strong>才是跨流信息混合的关键。</strong>
 
 它是先把n条残差流flatten ( 
-![](https://www.zhihu.com/equation?tex=nC) )，然后全部投影到( 
-![](https://www.zhihu.com/equation?tex=n%5E2%2B2n) = 24 )的 
-![](https://www.zhihu.com/equation?tex=H) 融合矩阵里，随后再拆分出hpre, hpost, hres (4, 4, 4*4)矩阵
+$nC$ )，然后全部投影到( 
+$n^2+2n$ = 24 )的 
+$H$ 融合矩阵里，随后再拆分出hpre, hpost, hres (4, 4, 4*4)矩阵
 
 即使 H_res = I ，ϕ生成的 h_pre 也是<strong>input-dependent</strong>的
 
@@ -96,22 +98,24 @@ Step 5: 恒等残差 + 动态写回
 实际上H_res 做双随机约束不仅用处不大，可能还有害，双随机矩阵的累积乘积必然坍缩
 
 根据 Perron-Frobenius 定理，双随机矩阵 H 的特征值满足：最大特征值 
-![](https://www.zhihu.com/equation?tex=%5Clambda_1+%3D+1)，其余 
-![](https://www.zhihu.com/equation?tex=%7C%5Clambda_i%7C+%3C+1)（只要 H 不是可约的置换矩阵）。L 层累积乘积的最小奇异值：
+$\lambda_1 = 1$，其余 
+$|\lambda_i| < 1$（只要 H 不是可约的置换矩阵）。L 层累积乘积的最小奇异值：
 
-![](https://www.zhihu.com/equation?tex=%5Csigma_%7B%5Cmin%7D%5Cleft%28%5Cprod_%7Bl%3D1%7D%5EL+H_l%5Cright%29+%5Clesssim+%5Cprod_%7Bl%3D1%7D%5EL+%7C%5Clambda_%7B%5Cmin%7D%28H_l%29%7C)
+$$\sigma_{\min}\left(\prod_{l=1}^L H_l\right) \lesssim \prod_{l=1}^L |\lambda_{\min}(H_l)|$$
+
 
 当 
-![](https://www.zhihu.com/equation?tex=%7C%5Clambda_%7B%5Cmin%7D%7C+%3C+1) 时，这个乘积指数衰减到零。实验在 Qwen3-1.7B（28 层，56 个 HC 模块）上，Sinkhorn 版本的 H_res 最小特征值均值为 0.49。粗略估计：
+$|\lambda_{\min}| < 1$ 时，这个乘积指数衰减到零。实验在 Qwen3-1.7B（28 层，56 个 HC 模块）上，Sinkhorn 版本的 H_res 最小特征值均值为 0.49。粗略估计：
 
-![](https://www.zhihu.com/equation?tex=%5Csigma_%7B%5Cmin%7D+%5Csim+0.49%5E%7B56%7D+%5Capprox+10%5E%7B-17%7D)
+$$\sigma_{\min} \sim 0.49^{56} \approx 10^{-17}$$
+
 
 实测值为 <strong>9.2 × 10⁻¹⁸</strong>——与估计吻合。这意味着浅层信号经过 56 个 HC 模块后，除均值方向外信号很可能衰减没了。不过这也未尝不是一件好事(
 
 也可以看本文第一张累积Hres图：10 层之后，4 条流的信息完全坍缩为均值0.25 ——混合最终变成了同质化。
 
 20 步 Sinkhorn-Knopp 迭代来近似投影到双随机矩阵流形。但 20 步不保证收敛：我们实测行和的标准差为 0.12，这个误差会在多层中累积。mHC-lite也说，约 27.9% 的 Sinkhorn 输入的 relative range 
-![](https://www.zhihu.com/equation?tex=1%2F%5Cnu+%5Cgeq+10%5E%7B13%7D)，此时 20 步迭代后列和偏差可达 100%。
+$1/\nu \geq 10^{13}$，此时 20 步迭代后列和偏差可达 100%。
 
 所以，当我们取 H_res = I 时：
 
@@ -127,12 +131,14 @@ Step 5: 恒等残差 + 动态写回
 
 例如mHC里任意两层之间的有效信道大小, 衡量层 i 的变换输出有多少信号能传递到层 j 的变换输入。
 
-![](https://www.zhihu.com/equation?tex=c_%7Bij%7D+%3D+%5Cmathbf%7Bh%7D_j%5E%7B%5Ctext%7Bpre%7D%7D+%5Ccdot+%5Cleft%28%5Cprod_%7Bk%3Di%2B1%7D%5E%7Bj-1%7D+H_k%5E%7B%5Ctext%7Bres%7D%7D%5Cright%29+%5Ccdot+%5Cmathbf%7Bh%7D_i%5E%7B%5Ctext%7Bpost%7D%5C%2CT%7D) 
+$$c_{ij} = \mathbf{h}_j^{\text{pre}} \cdot \left(\prod_{k=i+1}^{j-1} H_k^{\text{res}}\right) \cdot \mathbf{h}_i^{\text{post}\,T}$$
+
 
 ![](https://pica.zhimg.com/v2-cc2c4c7f03ea9310d8d9e000cf88bb6a_r.jpg)layer gap 1-15）信道强度维持在 0.3~0.5// gap > 20 后明显衰减//log scale 下近似线性衰减
 ![](https://pic3.zhimg.com/v2-638c516d3d534a5bed674eb1c1cc2348_r.jpg)呈现"中间层辐射、深层汇聚"的模式：模块 20-40 是核心信息枢纽（outgoing 最强），最后几层（44-55）几乎不发射（outgoing ≈ 0）但大量接收，浅层（0-10）信号较弱。当 H_res = I 时，信道公式简化为：
 
-![](https://www.zhihu.com/equation?tex=c_%7Bij%7D+%3D+%5Cmathbf%7Bh%7D_j%5E%7B%5Ctext%7Bpre%7D%7D+%5Ccdot+I+%5Ccdot+%5Cmathbf%7Bh%7D_i%5E%7B%5Ctext%7Bpost%7D%5C%2CT%7D+%3D+%5Cmathbf%7Bh%7D_j%5E%7B%5Ctext%7Bpre%7D%7D+%5Ccdot+%5Cmathbf%7Bh%7D_i%5E%7B%5Ctext%7Bpost%7D%5C%2CT%7D)
+$$c_{ij} = \mathbf{h}_j^{\text{pre}} \cdot I \cdot \mathbf{h}_i^{\text{post}\,T} = \mathbf{h}_j^{\text{pre}} \cdot \mathbf{h}_i^{\text{post}\,T}$$
+
 
 任意两层之间的直达通信强度只取决于它们各自的 h_pre 和 h_post，不受中间层 H_res 的累积衰减影响
 

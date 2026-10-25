@@ -27,11 +27,16 @@ Documents are split into chunks using a paragraph-aware algorithm:
 ## Keyword Matching
 
 The retrieval system uses keyword-based matching:
-1. Tokenize the question into individual words
-2. Filter out stop words (words shorter than 3 characters)
-3. For each chunk, count how many question keywords appear in the content
-4. Rank chunks by keyword overlap score
-5. Return top 2 most relevant chunks as citations
+## 1. Tokenize the question into individual words
+
+## 2. Filter out stop words (words shorter than 3 characters)
+
+## 3. For each chunk, count how many question keywords appear in the content
+
+## 4. Rank chunks by keyword overlap score
+
+## 5. Return top 2 most relevant chunks as citations
+
 
 ## Citation Format
 

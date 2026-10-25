@@ -46,7 +46,8 @@ what is important?
 
 早期我简历上一直躺着两个项目：
 
-1. 模仿学长的仓用numpy 模拟的 pytorch的toy 级别的仓 
+## 1. 模仿学长的仓用numpy 模拟的 pytorch的toy 级别的仓 
+
 
 2.课程作业一周速通的基础的RAG pipeline
 

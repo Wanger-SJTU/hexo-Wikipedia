@@ -151,10 +151,14 @@ await swarm.dispatch({
 ## Gotchas
 
 1. <strong>Fork children must not fork</strong> — Recursive guard preserves single-level invariant. Keep fork tool in child's pool (for prompt cache sharing) but block at call time.
-2. <strong>Coordinator workers start with zero context</strong> — Only explicit prompt is passed. Don't assume child sees parent's accumulated research.
-3. <strong>Swarm teammates cannot spawn other teammates</strong> — Roster is flat to prevent uncontrolled growth.
-4. <strong>Write self-contained prompts</strong> — "Based on your findings" is an anti-pattern. Coordinator must digest first.
-5. <strong>Filter each worker's tool set</strong> — Researcher doesn't need write; implementer doesn't need broad search.
+## 2. **Coordinator workers start with zero context** — Only explicit prompt is passed. Don't assume child sees parent's accumulated research.
+
+## 3. **Swarm teammates cannot spawn other teammates** — Roster is flat to prevent uncontrolled growth.
+
+## 4. **Write self-contained prompts** — "Based on your findings" is an anti-pattern. Coordinator must digest first.
+
+## 5. **Filter each worker's tool set** — Researcher doesn't need write; implementer doesn't need broad search.
+
 
 ## Related Patterns
 

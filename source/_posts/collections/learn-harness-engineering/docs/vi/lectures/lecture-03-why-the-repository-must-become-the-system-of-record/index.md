@@ -118,10 +118,14 @@ Một nhóm duy trì một nền tảng thương mại điện tử với ~30 mi
 Sau khi giới thiệu AI agent, 70% tác vụ yêu cầu can thiệp của con người. Gần như mọi lỗi đều liên quan đến agent vi phạm một số ràng buộc ẩn "mọi người biết nhưng không ai viết xuống." Giống như nhân viên mới mà không ai nói với họ "bạn cần đăng lệnh ăn trưa trong nhóm chat" — họ đoán sai, bị mắng, nhưng sau khi bị mắng vẫn không ai nói với họ quy tắc.
 
 Nhóm đã thực hiện một cuộc chuyển đổi:
-1. Tạo `AGENTS.md` trong thư mục gốc repo với tổng quan dự án, phiên bản tech stack và các ràng buộc cứng toàn cục
-2. Thêm `ARCHITECTURE.md` trong mỗi thư mục microservice mô tả trách nhiệm, giao diện và phụ thuộc
-3. Tạo `CONSTRAINTS.md` tập trung với các ràng buộc cứng bằng ngôn ngữ "PHẢI/KHÔNG ĐƯỢC" rõ ràng
-4. Thêm `PROGRESS.md` trong mỗi thư mục dịch vụ theo dõi trạng thái công việc hiện tại
+## 1. Tạo `AGENTS.md` trong thư mục gốc repo với tổng quan dự án, phiên bản tech stack và các ràng buộc cứng toàn cục
+
+## 2. Thêm `ARCHITECTURE.md` trong mỗi thư mục microservice mô tả trách nhiệm, giao diện và phụ thuộc
+
+## 3. Tạo `CONSTRAINTS.md` tập trung với các ràng buộc cứng bằng ngôn ngữ "PHẢI/KHÔNG ĐƯỢC" rõ ràng
+
+## 4. Thêm `PROGRESS.md` trong mỗi thư mục dịch vụ theo dõi trạng thái công việc hiện tại
+
 
 Sau chuyển đổi: cùng agent có thể trả lời tất cả các câu hỏi dự án quan trọng khi khởi động lạnh, và chất lượng hoàn thành tác vụ cải thiện đáng kể.
 

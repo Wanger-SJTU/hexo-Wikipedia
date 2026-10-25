@@ -72,14 +72,18 @@ HBF的特性是只能写差不多100,000次，因此只适合存放read-only的�
 
 1. Scaling the Memory Wall: Behind Sandisk’s High Bandwidth Flash for AI Inferencing： https://www.sandisk.com/it-it/company/newsroom/blogs/2025/scaling-beyond-the-wall-inside-sandisks-high-bandwidth-flash-for-ai#:~:text=High%20Bandwidth%20Flash%20(HBF)%E2%80%94a%20new%20form%20of,while%20offering%20a%20significant%20increase%20in%20memory
 
-2. https://www.oscoo.com/news/hbf-a-high-bandwidth-flash-new-star-breaking-the-memory-wall-for-ai/
+## 2. https://www.oscoo.com/news/hbf-a-high-bandwidth-flash-new-star-breaking-the-memory-wall-for-ai/
 
-3. https://documents.sandisk.com/content/dam/asset-library/en_us/assets/public/sandisk/collateral/company/Sandisk-HBF-Fact-Sheet.pdf
 
-4. https://semiwiki.com/forum/threads/sk-hynix-proposes-hbm-and-hbf-hybrid-for-llm-inference.24754/
+## 3. https://documents.sandisk.com/content/dam/asset-library/en_us/assets/public/sandisk/collateral/company/Sandisk-HBF-Fact-Sheet.pdf
+
+
+## 4. https://semiwiki.com/forum/threads/sk-hynix-proposes-hbm-and-hbf-hybrid-for-llm-inference.24754/
+
 
 5. https://www.eetimes.com/nand-reimagined-in-high-bandwidth-flash-to-complement-hbm/#:~:text=In%20a%20recent%20IEEE%20paper%2C%20SK%20Hynix,HBF%20alongside%20the%20GPU%20responsible%20for%20computation.
 
-6. Challenges and Research Directions for Large Language Model Inference Hardwarehttps://arxiv.org/abs/2601.05047
+## 6. Challenges and Research Directions for Large Language Model Inference Hardwarehttps://arxiv.org/abs/2601.05047
+
 
 7. https://www.sandisk.com/company/newsroom/press-releases/2025/2025-07-24-sandisk-forms-hbf-technical-advisory-board-to-guide-development-and-strategy-for-high-bandwidth-flash-memory-technology

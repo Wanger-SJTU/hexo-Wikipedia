@@ -21,12 +21,18 @@ explicite plutôt que la vitesse.
 
 Au début de chaque session :
 
-1. Exécuter `pwd` et confirmer que vous êtes à la racine du dépôt attendu.
-2. Lire `claude-progress.md`.
-3. Lire `feature_list.json`.
-4. Examiner les commits récents avec `git log --oneline -5`.
-5. Exécuter `./init.sh`.
-6. Vérifier si le parcours de fumée ou de bout en bout de référence est déjà cassé.
+## 1. Exécuter `pwd` et confirmer que vous êtes à la racine du dépôt attendu.
+
+## 2. Lire `claude-progress.md`.
+
+## 3. Lire `feature_list.json`.
+
+## 4. Examiner les commits récents avec `git log --oneline -5`.
+
+## 5. Exécuter `./init.sh`.
+
+## 6. Vérifier si le parcours de fumée ou de bout en bout de référence est déjà cassé.
+
 
 Ensuite, sélectionner exactement une fonctionnalité inachevée et travailler uniquement
 sur cette fonctionnalité jusqu'à ce que vous la vérifiiez ou que vous documentiez
@@ -54,8 +60,13 @@ a réussi et que le résultat est enregistré.
 
 ## Avant de vous arrêter
 
-1. Mettre à jour le journal de progression.
-2. Mettre à jour l'état des fonctionnalités.
-3. Enregistrer ce qui est encore cassé ou non vérifié.
-4. Valider une fois que le dépôt est sûr à reprendre.
-5. Laisser un chemin de redémarrage propre pour la prochaine session.
+## 1. Mettre à jour le journal de progression.
+
+## 2. Mettre à jour l'état des fonctionnalités.
+
+## 3. Enregistrer ce qui est encore cassé ou non vérifié.
+
+## 4. Valider une fois que le dépôt est sûr à reprendre.
+
+## 5. Laisser un chemin de redémarrage propre pour la prochaine session.
+

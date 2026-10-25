@@ -167,7 +167,8 @@ Medusa-2
 
 联合训练 backbone + heads
 
-2.3-3.6x
+### 2.3-3.6x
+
 
 有算力、追求极致速度
 
@@ -257,35 +258,47 @@ Draft Model结构
 
 Vicuna 7B
 
-3.33x
+### 3.33x
 
-2.39x
 
-4.29
+### 2.39x
+
+
+### 4.29
+
 
 Vicuna 13B
 
-3.58x
+### 3.58x
 
-2.65x
 
-4.39
+### 2.65x
+
+
+### 4.39
+
 
 Vicuna 33B
 
-3.67x
+### 3.67x
 
-2.76x
 
-4.28
+### 2.76x
+
+
+### 4.28
+
 
 LLaMA2-Chat 70B
 
-3.52x
+### 3.52x
 
-2.92x
 
-4.42
+### 2.92x
+
+
+### 4.42
+
 
 • 训练成本极低：70B 模型用 4×A100 训练 1-2 天，仅需 2-4B tokens
 
@@ -371,41 +384,55 @@ EAGLE-2 加速比
 
 Vicuna 7B
 
-2.90x
+### 2.90x
 
-3.62x
 
-0.25
+### 3.62x
+
+
+### 0.25
+
 
 Vicuna 13B
 
-3.07x
+### 3.07x
 
-4.26x
 
-0.39
+### 4.26x
+
+
+### 0.39
+
 
 LLaMA2-Chat 7B
 
-2.78x
+### 2.78x
 
-3.43x
 
-0.23
+### 3.43x
+
+
+### 0.23
+
 
 LLaMA2-Chat 70B
 
-3.01x
+### 3.01x
 
-3.51x
 
-0.17
+### 3.51x
+
+
+### 0.17
+
 
 • 平均接受长度从 
 
-3.9 提升到 
+### 3.9 提升到 
 
-4.7
+
+### 4.7
+
 
 • 
 
@@ -449,13 +476,15 @@ LLM社区的趋势是扩大训练数据以提升模型能力而不增加推理�
 
 两个核心架构变革：
 
-5.1 放弃特征预测，直接预测 token
+### 5.1 放弃特征预测，直接预测 token
+
 
 • 移除特征预测损失（L_fea），只保留 token 预测损失
 
 • Draft model 的输出不再需要拟合目标模型的顶层特征，而是直接预测下一个 token 的分布
 
-5.2 Training-Time Test
+### 5.2 Training-Time Test
+
 
 放弃特征预测带来新问题：推理时 draft model 的输入可能是自身上一轮的预测输出（â），而非目标模型的真实特征（f）。训练时若只用真实特征，会导致训练-推理不一致。
 
@@ -469,7 +498,8 @@ LLM社区的趋势是扩大训练数据以提升模型能力而不增加推理�
 
 ...
 
-5.3 多层特征融合
+### 5.3 多层特征融合
+
 
 不再仅依赖顶层特征，而是融合目标模型的低、中、高层特征：
 
@@ -491,35 +521,47 @@ EAGLE-3
 
 Vicuna 13B
 
-4.26x
+### 4.26x
 
-5.58x
 
-0.31
+### 5.58x
+
+
+### 0.31
+
 
 LLaMA3.1 8B
 
-3.16x
+### 3.16x
 
-4.40x
 
-0.39
+### 4.40x
+
+
+### 0.39
+
 
 LLaMA3.3 70B
 
-2.83x
+### 2.83x
 
-4.11x
 
-0.45
+### 4.11x
+
+
+### 0.45
+
 
 DeepSeek-R1-Distill 8B
 
-2.92x
+### 2.92x
 
-4.05x
 
-0.39
+### 4.05x
+
+
+### 0.39
+
 
 • 
 
@@ -529,7 +571,8 @@ DeepSeek-R1-Distill 8B
 
 • HumanEval 上最高达到 
 
-6.47x
+### 6.47x
+
 
  加速，平均接受长度 7.54 tokens
 
@@ -541,7 +584,8 @@ DeepSeek-R1-Distill 8B
 
 • 在 vLLM 框架 batch_size=56 时仍有 
 
-1.01x
+### 1.01x
+
 
  吞吐提升
 
@@ -577,7 +621,8 @@ ICML 2026
 
 用 Block Diffusion 模型替代自回归模型作为 draft model。
 
-6.1 推理流程
+### 6.1 推理流程
+
 
 1.目标模型 prefill 后，提取多层隐藏状态 → 投影融合为 context feature
 
@@ -589,7 +634,8 @@ ICML 2026
 
 4.接受前缀后，继续下一个 block
 
-6.2 KV Injection
+### 6.2 KV Injection
+
 
 关键设计：将目标模型的 context feature 
 
@@ -601,7 +647,8 @@ ICML 2026
 
 • 接受长度可以随 draft 层数增加而有效扩展
 
-6.3 训练策略
+### 6.3 训练策略
+
 
 • 
 
@@ -635,37 +682,48 @@ DFlash 提升
 
 Qwen3-4B
 
-2.08x
+### 2.08x
 
-4.91x
 
-2.36x
+### 4.91x
+
+
+### 2.36x
+
 
 Qwen3-8B
 
-2.02x
+### 2.02x
 
-4.86x
 
-2.41x
+### 4.86x
+
+
+### 2.41x
+
 
 LLaMA3.1-8B (SGLang)
 
-1.9x
+### 1.9x
 
-2.4x
 
-2.6x
+### 2.4x
+
+
+### 2.6x
+
 
 • 在 SGLang 中 concurrency=1 时最高 
 
-5.1x
+### 5.1x
+
 
  加速
 
 • 即使在 concurrency=32 时仍保持 
 
-2.2x-3.1x
+### 2.2x-3.1x
+
 
  加速
 
@@ -711,7 +769,8 @@ Block间自回归（保证质量），block内并行（保证速度）。
 
 创新
 
-7.1 半自回归 Block 结构
+### 7.1 半自回归 Block 结构
+
 
 • 将 draft 序列分成多个 block（如 block_size=7）
 
@@ -719,7 +778,8 @@ Block间自回归（保证质量），block内并行（保证速度）。
 
 • Block 内并行：一个 block 内的所有 token 同时预测
 
-7.2 Markov Head
+### 7.2 Markov Head
+
 
 在标准Transformer backbone之上，引入
 
@@ -755,7 +815,8 @@ Markov Head 的输出作为 logits 偏置叠加到 backbone 的 logits 上：
 
 final_logits[k]=backbone_logits[k] + markov_bias(token_{k-1}, hidden_state_k)
 
-7.3 Confidence Head
+### 7.3 Confidence Head
+
 
 预测每个 draft token 的接受率，用于：
 
@@ -765,7 +826,8 @@ final_logits[k]=backbone_logits[k] + markov_bias(token_{k-1}, hidden_state_k)
 
 • 动态调整 block 大小
 
-7.4 训练设计
+### 7.4 训练设计
+
 
 • 从目标模型提取 5 层隐藏状态（均匀分布在浅层到深层），拼接融合
 
@@ -861,7 +923,8 @@ hc_head
 
 创新
 
-8.1 Pre-Collapse Residual Conditioning（预坍缩残差条件）
+### 8.1 Pre-Collapse Residual Conditioning（预坍缩残差条件）
+
 
 不使用中间层特征，而是复用目标模型最终层的 pre-collapse HC 残差状态
 
@@ -877,7 +940,8 @@ hc_head
 
 • 无需额外计算（MTP 推理时已存储）
 
-8.2 Inherited HC-Gate Reducer（继承式门控降维器）
+### 8.2 Inherited HC-Gate Reducer（继承式门控降维器）
+
 
 核心设计：
 
@@ -937,7 +1001,8 @@ Inherited HC-Gate Reducer
 
 天然对齐
 
-8.3 LM-Head KL Distillation（早期位置 KL 蒸馏）
+### 8.3 LM-Head KL Distillation（早期位置 KL 蒸馏）
+
 
 在标准 CE 损失之外，对 block 内前 P 个位置（P=2）添加 KL 蒸馏损失：
 
@@ -971,27 +1036,35 @@ Student
 
 MTP (3)
 
-2.93
+### 2.93
 
-2.25x
+
+### 2.25x
+
 
 MTP (6)
 
-3.08
+### 3.08
 
-1.76x
+
+### 1.76x
+
 
 Vanilla DFlash (6)
 
-2.14
+### 2.14
 
-1.73x
+
+### 1.73x
+
 
 HyperDFlash (6)
 
-3.69
+### 3.69
 
-2.80x
+
+### 2.80x
+
 
 关键发现：
 
@@ -1053,7 +1126,8 @@ arXiv: 2606.18394
 
 因果并行预测头（Causal Parallel Draft Head）+ Tree-Causal Attention Mask。
 
-9.1 核心架构
+### 9.1 核心架构
+
 
 JetSpec是一个 head-based 框架，从冻结的目标模型提取融合隐藏状态，用一个带
 
@@ -1079,7 +1153,8 @@ Tree-Causal Mask
 
 条件化，而非独立的per-position 分布。
 
-9.2 为什么因果性如此重要
+### 9.2 为什么因果性如此重要
+
 
 对于一条候选分支
 
@@ -1095,7 +1170,8 @@ Tree-Causal Mask
 
  对齐，使得更大的draft budget能有效转化为更长的接受前缀。
 
-9.3 训练：Forward KL 蒸馏
+### 9.3 训练：Forward KL 蒸馏
+
 
 采用 
 
@@ -1111,7 +1187,8 @@ Forward KL 蒸馏
 
 • 从目标模型生成训练序列（on-policy distillation），在 anchor 位置构建训练 block
 
-9.4 Parallel Tree Drafting+Verification
+### 9.4 Parallel Tree Drafting+Verification
+
 
 • 
 
@@ -1145,33 +1222,43 @@ MT-Bench
 
 EAGLE-3
 
-2.36x
+### 2.36x
 
-2.53x
 
-2.19x
+### 2.53x
+
+
+### 2.19x
+
 
 DDTree
 
-8.78x
+### 8.78x
 
-7.04x
 
-4.26x
+### 7.04x
+
+
+### 4.26x
+
 
 JetSpec
 
-9.64x
+### 9.64x
 
-7.82x
 
-4.58x
+### 7.82x
+
+
+### 4.58x
+
 
 • MATH-500 上平均接受长度 τ=10.76，远超 DDTree 的 9.81
 
 • 在 vLLM 中 batch_size=1 时达到 
 
-6.75x
+### 6.75x
+
 
  吞吐提升
 
@@ -1395,19 +1482,26 @@ HyperDFlash
 
 参考文献
 
-1. Cai et al. "Medusa: Simple LLM Inference Acceleration Framework with Multiple Decoding Heads." arXiv:2401.10774, 2024.
+## 1. Cai et al. "Medusa: Simple LLM Inference Acceleration Framework with Multiple Decoding Heads." arXiv:2401.10774, 2024.
 
-2. Li et al. "EAGLE: Speculative Sampling Requires Rethinking Feature Uncertainty." arXiv:2401.15077, 2024.
 
-3. Li et al. "EAGLE-2: Faster Inference of Language Models with Dynamic Draft Trees." arXiv:2406.16858, 2024.
+## 2. Li et al. "EAGLE: Speculative Sampling Requires Rethinking Feature Uncertainty." arXiv:2401.15077, 2024.
 
-4. Li et al. "EAGLE-3: Scaling up Inference Acceleration of Large Language Models via Training-Time Test." arXiv:2503.01840, 2025.
 
-5. Chen et al. "DFlash: Block Diffusion for Flash Speculative Decoding." arXiv:2602.06036, 2026. (ICML 2026)
+## 3. Li et al. "EAGLE-2: Faster Inference of Language Models with Dynamic Draft Trees." arXiv:2406.16858, 2024.
 
-6. DeepSeek AI. "DSpark: Confidence-Scheduled Speculative Decoding with Semi-Autoregressive Generation." DeepSpec Technical Report, 2026.
 
-7. Lin et al. "HyperDFlash: Hyper-Connection-Aligned Block Speculative Decoding with Gated Residual Reduction." arXiv:2606.26744, 2026.
+## 4. Li et al. "EAGLE-3: Scaling up Inference Acceleration of Large Language Models via Training-Time Test." arXiv:2503.01840, 2025.
+
+
+## 5. Chen et al. "DFlash: Block Diffusion for Flash Speculative Decoding." arXiv:2602.06036, 2026. (ICML 2026)
+
+
+## 6. DeepSeek AI. "DSpark: Confidence-Scheduled Speculative Decoding with Semi-Autoregressive Generation." DeepSpec Technical Report, 2026.
+
+
+## 7. Lin et al. "HyperDFlash: Hyper-Connection-Aligned Block Speculative Decoding with Gated Residual Reduction." arXiv:2606.26744, 2026.
+
 
  
 

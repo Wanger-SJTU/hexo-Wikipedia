@@ -24,14 +24,22 @@ répétable que l'agent peut exécuter jusqu'à ce que le parcours soit propre.
 
 ## Boucle principale
 
-1. Sélectionner la page cible ou l'instance de l'application.
-2. Effacer le bruit de console obsolète.
-3. Capturer l'état AVANT.
-4. Déclencher le parcours dans l'interface.
-5. Observer les événements d'exécution pendant l'interaction.
-6. Capturer l'état APRÈS.
-7. Appliquer le correctif et redémarrer l'application si nécessaire.
-8. Relancer la validation jusqu'à ce que le parcours soit propre.
+## 1. Sélectionner la page cible ou l'instance de l'application.
+
+## 2. Effacer le bruit de console obsolète.
+
+## 3. Capturer l'état AVANT.
+
+## 4. Déclencher le parcours dans l'interface.
+
+## 5. Observer les événements d'exécution pendant l'interaction.
+
+## 6. Capturer l'état APRÈS.
+
+## 7. Appliquer le correctif et redémarrer l'application si nécessaire.
+
+## 8. Relancer la validation jusqu'à ce que le parcours soit propre.
+
 
 ## Entrées requises
 
@@ -42,14 +50,21 @@ répétable que l'agent peut exécuter jusqu'à ce que le parcours soit propre.
 
 ## SOP d'exécution
 
-1. Écrire le parcours cible dans le plan actif.
-2. Définir le succès en termes observables : texte présent, bouton activé,
+## 1. Écrire le parcours cible dans le plan actif.
+
+## 2. Définir le succès en termes observables : texte présent, bouton activé,
+
    erreur disparue, console propre, requête réussie.
-3. Capturer l'état initial avant l'interaction.
-4. Déclencher exactement un seul parcours à la fois.
-5. Enregistrer les événements d'exécution, les changements du DOM et la sortie visible.
-6. Si le parcours échoue, corriger la couche responsable la plus petite et redémarrer.
-7. Relancer le même parcours et comparer les preuves AVANT/APRÈS.
+## 3. Capturer l'état initial avant l'interaction.
+
+## 4. Déclencher exactement un seul parcours à la fois.
+
+## 5. Enregistrer les événements d'exécution, les changements du DOM et la sortie visible.
+
+## 6. Si le parcours échoue, corriger la couche responsable la plus petite et redémarrer.
+
+## 7. Relancer le même parcours et comparer les preuves AVANT/APRÈS.
+
 
 ## Critères de propreté
 

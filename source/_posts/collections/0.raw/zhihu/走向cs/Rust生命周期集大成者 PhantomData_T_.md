@@ -336,10 +336,13 @@ rust doc关于drop check的检查过程是这样说的
 接下来说明如何计算包含(own)关系，这里直接搬运一下(如果你能坚持看到这里，下面这段原文也一定能大概理解)
 
 The set of owned types is determined by recursively traversing`T`:
-1. Recursively descend through `PhantomData`, `Box`, tuples, and arrays (including arrays of length 0).
-2. Stop at reference and raw pointer types as well as function pointers and function items; they do not own anything.
+## 1. Recursively descend through `PhantomData`, `Box`, tuples, and arrays (including arrays of length 0).
+
+## 2. Stop at reference and raw pointer types as well as function pointers and function items; they do not own anything.
+
 3. Stop at non-composite types (type parameters that remain generic in the current context and base types such as integers and `bool`); these types are owned.
-4. When hitting an ADT with `impl Drop`, stop there; this type is owned.
+## 4. When hitting an ADT with `impl Drop`, stop there; this type is owned.
+
 5. When hitting an ADT without `impl Drop`, recursively descend to its fields. (For an `enum`, consider all fields of all variants.)简单说，就是定义了 T 的成员变量的这些类型，哪些算包含，哪些不算包含。
 
 比如

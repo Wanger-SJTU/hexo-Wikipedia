@@ -33,7 +33,8 @@ source_url: https://zhuanlan.zhihu.com/p/663730490
 
 ![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_8484155b5328.jpg)
 
-3. 禁用 MPU 时的行为**<strong>通过将 MPU_CTRL.ENABLE</strong> 位设置为 <strong>0</strong> 来禁用 <strong>MPU</strong>，意味着特权和非特权访问使用默认的内存映射。<strong>当 MPU</strong>被禁用时：**
+## 3. 禁用 MPU 时的行为****通过将 MPU_CTRL.ENABLE** 位设置为 **0** 来禁用 **MPU**，意味着特权和非特权访问使用默认的内存映射。**当 MPU**被禁用时：**
+
 
 - 指令访问使用表B3-1中显示的默认内存映射和属性。访问 execute-never<strong>属性访问内存区域会生成</strong>MemManage<strong>故障，请参阅第 B3-642 页的</strong>Execute Never** 编码。无其他权限检查会被执行。缓存的额外控制是通过以下方式进行的：
 
@@ -169,19 +170,22 @@ MPU 区域编号寄存器会选择的相关区域寄存器：
 
 注意：**<strong>复位后的 MPU_RASR</strong> 寄存器的值是未知的。在使用 <strong>MPU_CTRL</strong> 寄存器启用 <strong>MPU</strong> 之前，必须将所有 <strong>MPU_RASR</strong> 寄存器编程为启用或禁用。<strong>6. MPU类型寄存器，MPU_TYPE</strong><strong>6.1. 功能介绍</strong><strong>1. 目的</strong><strong>MPU</strong>类型寄存器表示<strong>MPU</strong>支持多少个区域（<strong>Region</strong>）。软件可以使用它来确定处理器是否实现了<strong>MPU</strong>。<strong>2. 使用限制</strong>**没有使用限制。
 3. 配置****始终执行。
-6.2. 字段说明****
+### 6.2. 字段说明****
+
 
 ![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_c028edc9ce3e.jpg)
 
 1. Bits[31:24]****保留。
 2. IREGION，bits[23:16]**<strong>指令区域。RAZ。Armv7-M</strong>只支持统一的<strong>MPU</strong>。<strong>3. DREGION, bits[15:8]</strong><strong>MPU</strong>支持的区域数。如果该字段读取为零，则处理器不实现<strong>MPU</strong>。<strong>4. Bits[7:1]</strong>**保留。
 5. SEPARATE, bit[0]**<strong>表示支持单独的指令和数据地址映射。RAZ。Armv7-M</strong>只支持统一的<strong>MPU</strong>。<strong>7. MPU控制寄存器，MPU_CTRL</strong><strong>7.1. 功能介绍</strong><strong>1. 目的</strong><strong>启用 MPU</strong>。当 <strong>MPU</strong> 启用时，控制是否启用默认内存映射作为特权访问的背景区域，以及当 <strong>FAULTMASK</strong> 设置为 <strong>1</strong> 时是否启用 <strong>MPU</strong> 用于 <strong>HardFaults</strong>、<strong>NMI</strong> 和异常处理程序。<strong>2. 使用限制</strong>**没有使用限制。
-3. 配置**<strong>如果未实现 MPU</strong>，则该寄存器为 <strong>RAZ/WI</strong>。<strong>7.2. 字段说明</strong>**
+## 3. 配置****如果未实现 MPU**，则该寄存器为 **RAZ/WI**。**7.2. 字段说明****
+
 
 ![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_bf1337677329.jpg)
 
 1. Bits[31:3]****保留。
-2. PRIVDEFENA, bit[2]**<strong>当 ENABLE</strong> 位设置为 <strong>1</strong> 时，该位的含义是：**
+## 2. PRIVDEFENA, bit[2]****当 ENABLE** 位设置为 **1** 时，该位的含义是：**
+
 
 - 0**：禁用默认内存映射。任何不访问已定义区域的指令或数据访问都是错误的。
 - <strong>1</strong>：启用默认内存映射作为特权访问的背景区域。背景区域作为<strong>Region Number - 1</strong>。在 <strong>MPU</strong> 中配置的所有内存区域都优先于默认内存映射。B3-592页上的系统地址映射描述了默认的内存映射。
@@ -229,7 +233,8 @@ MPU 区域编号寄存器会选择的相关区域寄存器：
 ![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_d54066e7d7b5.jpg)
 
 1. ADDR, bits[31:5]****区域的基地址。
-2. VALID, bit[4]**<strong>在写入时，指示要更新的区域是由 MPU_RNR.REGION</strong> 指定，还是由此写入中指定的 <strong>REGION</strong> 值指定。当使用由此写入指定的 <strong>REGION</strong> 值时，<strong>MPU_RNR.REGION</strong> 会更新为此值。**
+## 2. VALID, bit[4]****在写入时，指示要更新的区域是由 MPU_RNR.REGION** 指定，还是由此写入中指定的 **REGION** 值指定。当使用由此写入指定的 **REGION** 值时，**MPU_RNR.REGION** 会更新为此值。**
+
 
 - 0<strong>：将基地址更新应用到</strong>MPU_RNR.REGION<strong>指定的区域。</strong>REGION** 字段值被忽略。
 - <strong>1</strong>：将 <strong>MPU_RNR.REGION</strong> 更新为对本次写入指定的 <strong>REGION</strong> 值进行零扩展得到的值，并将基地址更新应用到该区域。
@@ -241,7 +246,8 @@ MPU 区域编号寄存器会选择的相关区域寄存器：
 
 ![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_c48a3e9bc55c.jpg)
 
-1. ATTRS, bits[31:16]****MPU 区域属性字段，该字段具有以下子字段，在第B3-641页的区域属性控制中定义：
+## 1. ATTRS, bits[31:16]****MPU 区域属性字段，该字段具有以下子字段，在第B3-641页的区域属性控制中定义：
+
 
 - XN： MPU_RASR[28]**.
 - AP[2:0]：MPU_RASR[26:24].
@@ -249,12 +255,14 @@ MPU 区域编号寄存器会选择的相关区域寄存器：
 - S： MPU_RASR[18].
 - C： MPU_RASR[17].
 - B： MPU_RASR[16].
-2. SRD, bits[15:8]**<strong>子区域禁用。对于256</strong>字节或更大的区域，该字段的每一位控制是否启用<strong>8</strong>个相等的子区域之一，请参阅内存区域子区域：**
+## 2. SRD, bits[15:8]****子区域禁用。对于256**字节或更大的区域，该字段的每一位控制是否启用**8**个相等的子区域之一，请参阅内存区域子区域：**
+
 
 - 0**: 启用子区域。
 - <strong>1</strong>: 禁用子区域。
 <strong>3. Bits[7:6]</strong>**保留。
-4. SIZE, bits[5:1]**<strong>表示区域大小。区域大小（以字节为单位）为 2(SIZE+1)。因为支持的最小区域大小为 32</strong> 字节，所以<strong>SIZE</strong> 字段值小于 <strong>4</strong> 被保留。<strong>5. ENABLE, bit[0]</strong>**启用此区域：
+## 4. SIZE, bits[5:1]****表示区域大小。区域大小（以字节为单位）为 2(SIZE+1)。因为支持的最小区域大小为 32** 字节，所以**SIZE** 字段值小于 **4** 被保留。**5. ENABLE, bit[0]****启用此区域：
+
 
 - 0<strong>：启用</strong>MPU** 时，禁用此区域。
 - <strong>1</strong>：启用 <strong>MPU</strong> 时，启用此区域。
@@ -263,7 +271,8 @@ MPU 区域编号寄存器会选择的相关区域寄存器：
 - 该字段的最低有效位 MPU_RASR[8] 控制具有最低地址范围的子区域。
 - 该字段的最高有效位 MPU_RASR[15] 控制具有最高地址范围的子区域。
 对于 32<strong>、</strong>64<strong>和</strong>128<strong>字节的区域大小，将</strong>SRD<strong>字段的一位或多位设置为</strong>1<strong>的效果是不可预测的。</strong>有关详细信息，请参阅第 B3-633 页的子区域支持。
-10.4. 区域属性控制**<strong>MPU_RASR.ATTRS</strong> 字段定义内存类型，以及必需的内存区域的可缓存、可共享、访问以及特权的属性。寄存器图显示了该字段的子字段，其中：**
+### 10.4. 区域属性控制****MPU_RASR.ATTRS** 字段定义内存类型，以及必需的内存区域的可缓存、可共享、访问以及特权的属性。寄存器图显示了该字段的子字段，其中：**
+
 
 - TEX[2:0]<strong>、</strong>C<strong>和</strong>B<strong>位一起表示区域的内存类型，有关这些位的编码，请参见表</strong>B3-13**。并且：
 
@@ -280,7 +289,8 @@ AP 位 AP[2:0] 用于访问权限。 见表 B3-15
 
 ![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_b5e961bdf556.jpg)
 
-10.5. 从不执行编码****XN 位提供从不执行功能。为了让处理器执行一条指令，该指令必须位于以下内存区域中：
+### 10.5. 从不执行编码****XN 位提供从不执行功能。为了让处理器执行一条指令，该指令必须位于以下内存区域中：
+
 
 - 具有读取权限（Read access<strong>），由</strong>AP** 位指示，用于适当的特权级别。
 - <strong>XN</strong> 位设置为 <strong>0</strong>。

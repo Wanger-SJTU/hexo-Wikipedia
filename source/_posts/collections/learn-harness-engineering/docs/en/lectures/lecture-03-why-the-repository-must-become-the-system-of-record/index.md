@@ -118,10 +118,14 @@ A team maintained an e-commerce platform with roughly 30 microservices. Architec
 After introducing AI agents, 70% of tasks required human intervention. Nearly every failure involved the agent violating some implicit constraint that "everyone knows but nobody ever wrote down." The agent had no way to know what it didn't know — it could only act on its own understanding, and then step right into the trap.
 
 The team executed a transformation:
-1. Created `AGENTS.md` in the repo root with project overview, tech stack versions, and global hard constraints
-2. Added `ARCHITECTURE.md` in each microservice directory describing that service's responsibilities, interfaces, and dependencies
-3. Created a centralized `CONSTRAINTS.md` using explicit "MUST / MUST NOT" language for hard constraints
-4. Added `PROGRESS.md` in each service directory tracking current work status
+## 1. Created `AGENTS.md` in the repo root with project overview, tech stack versions, and global hard constraints
+
+## 2. Added `ARCHITECTURE.md` in each microservice directory describing that service's responsibilities, interfaces, and dependencies
+
+## 3. Created a centralized `CONSTRAINTS.md` using explicit "MUST / MUST NOT" language for hard constraints
+
+## 4. Added `PROGRESS.md` in each service directory tracking current work status
+
 
 After transformation: the same agent could answer all key project questions on a fresh session, and task completion quality improved significantly.
 

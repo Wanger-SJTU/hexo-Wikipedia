@@ -206,9 +206,12 @@ Harness engineering은 모델 주변에 안정적인 결과를 생성하는 완�
 
 과정은 세 부분으로 나뉩니다:
 
-1. <strong>강의(Lectures)</strong>: Harness engineering 이론을 설명하는 12개의 개념적 단원.
-2. <strong>프로젝트(Projects)</strong>: 처음부터 에이전트 작업 공간을 구축하는 6개의 실습 프로젝트.
-3. <strong>리소스 라이브러리</strong>: 여러분의 저장소에 오늘 바로 사용할 수 있는 복사 가능 템플릿(`AGENTS.md`, `feature_list.json`, `init.sh` 등).
+## 1. **강의(Lectures)**: Harness engineering 이론을 설명하는 12개의 개념적 단원.
+
+## 2. **프로젝트(Projects)**: 처음부터 에이전트 작업 공간을 구축하는 6개의 실습 프로젝트.
+
+## 3. **리소스 라이브러리**: 여러분의 저장소에 오늘 바로 사용할 수 있는 복사 가능 템플릿(`AGENTS.md`, `feature_list.json`, `init.sh` 등).
+
 
 ---
 

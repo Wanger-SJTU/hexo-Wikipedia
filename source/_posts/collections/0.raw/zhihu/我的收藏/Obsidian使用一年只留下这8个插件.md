@@ -19,22 +19,27 @@ source_url: https://zhuanlan.zhihu.com/p/2054247012590171646
 
 Obsidian有强大的第三方插件市场，但是没有必要瞎折腾，一年来装过几十款插件，最后使用率最高的只有这8个：
 
-1. Terminal
+## 1. Terminal
+
 在Obisidna中可以以cli的方式接入各类AI Agent 比如 Claude code& Codex 终端爱好者必备，极简但又强大，让AI看懂操作你的笔记
 
 2.Claudian
 侧边栏助手方式接入Claude Code，最新版又支持了Codex和OpenCode
 
-3. Notebook Navigator
+## 3. Notebook Navigator
+
 让你拥有更为精致PRO的目录到导航，一眼停不下来
 
-4. PDF++
+## 4. PDF++
+
 这个插件可以增强PDF在Obsidian中的功能，比如划线和高亮
 
-5. Git
+## 5. Git
+
 把笔记同步到Gitee、Github
 
-6. Remotoly Save
+## 6. Remotoly Save
+
 本地笔记同步，支持全类型终端
 
 7.Obsidian Web Clipper

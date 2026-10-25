@@ -23,14 +23,22 @@ ausführen kann, bis die Journey fehlerfrei ist.
 
 ## Kern-Schleife
 
-1. Zielseite oder App-Instanz auswählen.
-2. Veralteten Konsolenlärm bereinigen.
-3. Den VORHER-Zustand erfassen.
-4. Den UI-Pfad auslösen.
-5. Laufzeitereignisse während der Interaktion beobachten.
-6. Den NACHHER-Zustand erfassen.
-7. Den Fix anwenden und die App bei Bedarf neustarten.
-8. Validierung erneut ausführen, bis die Journey fehlerfrei ist.
+## 1. Zielseite oder App-Instanz auswählen.
+
+## 2. Veralteten Konsolenlärm bereinigen.
+
+## 3. Den VORHER-Zustand erfassen.
+
+## 4. Den UI-Pfad auslösen.
+
+## 5. Laufzeitereignisse während der Interaktion beobachten.
+
+## 6. Den NACHHER-Zustand erfassen.
+
+## 7. Den Fix anwenden und die App bei Bedarf neustarten.
+
+## 8. Validierung erneut ausführen, bis die Journey fehlerfrei ist.
+
 
 ## Erforderliche Eingaben
 
@@ -41,14 +49,21 @@ ausführen kann, bis die Journey fehlerfrei ist.
 
 ## Ausführungs-SOP
 
-1. Die Ziel-Journey im aktiven Plan aufschreiben.
-2. Erfolg in beobachtbaren Begriffen definieren: Text vorhanden, Button aktiviert,
+## 1. Die Ziel-Journey im aktiven Plan aufschreiben.
+
+## 2. Erfolg in beobachtbaren Begriffen definieren: Text vorhanden, Button aktiviert,
+
    Fehler verschwunden, Konsole sauber, Anfrage erfolgreich.
-3. Snapshot des Anfangszustands vor der Interaktion erstellen.
-4. Genau einen Pfad gleichzeitig auslösen.
-5. Laufzeitereignisse, DOM-Änderungen und sichtbare Ausgabe aufzeichnen.
-6. Wenn die Journey fehlschlägt, die kleinste verantwortliche Schicht reparieren und neustarten.
-7. Denselben Pfad erneut ausführen und VORHER/NACHHER-Nachweise vergleichen.
+## 3. Snapshot des Anfangszustands vor der Interaktion erstellen.
+
+## 4. Genau einen Pfad gleichzeitig auslösen.
+
+## 5. Laufzeitereignisse, DOM-Änderungen und sichtbare Ausgabe aufzeichnen.
+
+## 6. Wenn die Journey fehlschlägt, die kleinste verantwortliche Schicht reparieren und neustarten.
+
+## 7. Denselben Pfad erneut ausführen und VORHER/NACHHER-Nachweise vergleichen.
+
 
 ## Fehlerfreiheitskriterien
 

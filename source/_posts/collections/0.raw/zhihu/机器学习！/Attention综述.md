@@ -51,7 +51,8 @@ source_url: https://zhuanlan.zhihu.com/p/62136754
 
 ![](/images/collections/0.raw/zhihu/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%EF%BC%81/asset/img_741483139062.jpg)
 
-3.1 按Number of <strong>sequences</strong>分类：按输入输出的<strong>sequence个数</strong>分类
+### 3.1 按Number of **sequences**分类：按输入输出的**sequence个数**分类
+
 
 distinctive：candidate state和query state属于两个distinct输入序列和输出序列。这种attention大多用于MT、自动摘要、图像caption、语音识别等。
 
@@ -59,7 +60,8 @@ co-attention：包括多个输入序列，而且这些序列可以<strong>联合
 
 self：输入是序列，而输出不是序列（比如文本分类的输出是类别id，推荐系统推荐的是item的id等）。在这种情况下，就在input上做自注意力，也就是candidate state和query state都是input的encoder。这种注意力也叫内积注意力(inner attention)大多用于文本分类和推荐系统等。
 
-3.2 按Number of <strong>abstraction</strong> levels分类：按抽象的level分类，其实就是按包含的抽象粒度的个数分
+### 3.2 按Number of **abstraction** levels分类：按抽象的level分类，其实就是按包含的抽象粒度的个数分
+
 
 single-level：只是按原始输入序列算attention
 
@@ -67,7 +69,8 @@ multi- level：按输入的多种抽象level算attention（比如词粒度、短
 
 ![](/images/collections/0.raw/zhihu/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%EF%BC%81/asset/img_06d13c03b1b6.jpg)
 
-3.3 按Number of <strong>positions</strong>分类：按输入序列的不同<strong>position</strong>分类
+### 3.3 按Number of **positions**分类：按输入序列的不同**position**分类
+
 
 soft：使用输入序列的隐藏状态的平均权重来生成context的向量，这种attention的好处是可微（可以BP训练），但是计算复杂度较大。
 
@@ -77,7 +80,8 @@ global：跟soft基本一样。
 
 local：算是soft和hard的一种折中，它分为两步：在输入序列中找到attention的点或位置（可以自己设置，也可以通过算法或模型来学习）；然后around这个位置设置一个窗口，并在这个窗口上做soft的attention。在这个窗口中，他的计算开销变小（序列变短）而且是可微的（在这个窗口中肯定连续，因为是around）。
 
-3.4 按Number of <strong>representations</strong>分类：按输入的<strong>representation</strong>方式分类
+### 3.4 按Number of **representations**分类：按输入的**representation**方式分类
+
 
 multi- representational：有时候采用一种特征做表征学习并不能精准的刻画输入，这就导致一些下游的任务的性能受限，这就需要获取不同aspect的特征来组合表示输入。这种注意力就是为不同的表征来分配重要性的权重，这就可以决定最相关的aspect，而且可以消除输入中的噪音和冗余对表征的影响。最终的表征是多种特征表示的attention权重的加权和。这样的好处是显而易见的。这种表征可以通过在相同输入序列上学习基于不同的attention权重的embedding来获取更好的表征向量。
 

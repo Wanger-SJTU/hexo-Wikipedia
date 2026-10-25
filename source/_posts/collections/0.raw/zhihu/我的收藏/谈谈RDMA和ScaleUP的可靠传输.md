@@ -31,31 +31,54 @@ TL;DR
 Hotchip上AMD的RNIC和Intel Mt.Morgan正式支持Google Falcon, Nvidia又在CX8中增加了PSA配合DPA. 发生了一些变化. 另一方面BRCM的SUE也有一个不需要可靠传输的SUE-lite, 其实实际问题都指向了一点:可靠传输做多少, 可靠传输带来Die面积的占用, 是否坚持Lossless?
 其实这是一个工程上的TradeOff. 但是很多人忘记的Ethernet成功的关键是保持简单, 并提供尽力而为的传输, 由此推导出Smart Edge, Dumb Core的原则. 但是这也有很多难处, 特别是在ScaleUP上, 可靠传输显著占用了GPU的die面积, 这又是另一个TradeOff.然后还有一个问题是延迟的容忍程度, 这和GPU这些芯片本身的微架构是紧密相关的. 带着这些问题, 本文来做一个详细的阐述.
 9月8日在北京有一个很有趣的《超节点以太互连技术论坛》, 具体会议信息参考本文末. 在这里我对要讨论的众多话题做一个会前Overview, 主要目的还是希望工业界的各种争议尽快的收敛起来. 本文的目录如下:
-1. RDMA演进
-1.1 RDMA的一些历史
-1.2 关于Lossless
-1.3 关于Lossy
-1.4 RoCE的缺陷
-1.4.1 多路径和Out-of-order处理
-1.4.2 拥塞控制
-1.4.3 SACK和丢包重传
-1.4.4 Google Falcon的分析
-1.5 RDMA现代化的实质
-2.Ethernet base ScaleUP
-2.1 Overview
-2.2 内存语义的重要性
-2.3 在网计算
-2.4 内存语义和事务
-2.5 传输效率
-2.6 可靠传输
-2.6 ScaleUP域的规模
-2.7 从XPU的微架构谈谈延迟影响
-2.8 是否需要可靠传输
-3. ScaleUP的一些量化分析
-4. 谈谈ScaleUP和ScaleOut融合的方案
+## 1. RDMA演进
 
-1. RDMA演进
-1.1 RDMA的一些历史
+### 1.1 RDMA的一些历史
+
+### 1.2 关于Lossless
+
+### 1.3 关于Lossy
+
+### 1.4 RoCE的缺陷
+
+### 1.4.1 多路径和Out-of-order处理
+
+### 1.4.2 拥塞控制
+
+### 1.4.3 SACK和丢包重传
+
+### 1.4.4 Google Falcon的分析
+
+### 1.5 RDMA现代化的实质
+
+2.Ethernet base ScaleUP
+### 2.1 Overview
+
+### 2.2 内存语义的重要性
+
+### 2.3 在网计算
+
+### 2.4 内存语义和事务
+
+### 2.5 传输效率
+
+### 2.6 可靠传输
+
+### 2.6 ScaleUP域的规模
+
+### 2.7 从XPU的微架构谈谈延迟影响
+
+### 2.8 是否需要可靠传输
+
+## 3. ScaleUP的一些量化分析
+
+## 4. 谈谈ScaleUP和ScaleOut融合的方案
+
+
+## 1. RDMA演进
+
+### 1.1 RDMA的一些历史
+
 RDMA诞生于1995年，其中很重要的一个人物是现在AWS的CTO 沃纳·沃格尔斯 (Werner Vogels)，他的论文可以看看《Scalable Cluster Technologies for Mission-Critical Enterprise Computing》[1]，这段历史记录在Cornell的一个课程ppt内《High performance networking Unet and FaRM》[2]，还有一篇记录历史的文章《RDMA [1]: A short history of remote DMA networking》[3]
 可以看到早期RDMA的名字是U-Net，即发现Kernel处理数据包的种种缺陷, 最终设计出了RDMA的早期结构：
 
@@ -66,7 +89,8 @@ RDMA诞生于1995年，其中很重要的一个人物是现在AWS的CTO 沃纳·
 
 但后期Myrinet的管理和研发出现了很多问题, 很快在2004年开始就逐渐消亡, 而正是这时候Inifiband逐渐走向成功, 一度达到Top500 HPC的50%份额
 
-1.2 关于Lossless
+### 1.2 关于Lossless
+
 对于早期的HPC应用, 例如一些偏微分方程数值解, 这些应用对网络延迟是非常敏感的, 因此如何降低网络延迟对于一个数百台或者上千台服务器构成的大规模超算集群是非常重要的. 极度低延迟的需求下, 实际上就是应用本身会有大量的同步阻塞, 即消息传输时的Queue Depth=1的情况下, 网络中的inflight报文数量并不会太高.  所以在这些场景里, 基本上不太会出现丢包.
 那么在这种情况下构建一个简单的传输协议层, 相对于完善的L4可靠传输是有很大的收益的. Infiniband的实现其实就是简单的把PCIe那一套扩展出来, 紧接着又继续把它搬到了以太网上构成了RoCE.
 在此之前其实在存储路径上, 也有类似的一个演进. 当时大量的存储采用Fiber Channel协议构建独立的存储网络(SAN). 然后每个服务器实际上是需要两套网络构建的. 在2008年左右, Cisco开始用Fiber Channel over Ethernet的方式统一服务器接入网络
@@ -81,9 +105,11 @@ RDMA诞生于1995年，其中很重要的一个人物是现在AWS的CTO 沃纳·
 另一方面存储上, 特别是针对云的多租户存储, 伴随着全闪存(SSD)的存储部署下, 实际上整个系统I/O传输的inflight也增加了, 因此网络中的一些拥塞变得更加显著.因此出现了对RDMA现代化的需求, 产生了UEC
 
 其实还有另一个问题, 针对云上部署时, 通常云采用VPC部署的方式将多个租户隔离, 基于Overlay的网络下, PFC这些Lossless的机制是无法实施的. 对于云服务提供商, 或者说AI Cloud而言, 相对于AI Factory更需要一个Lossy的多租户的环境.
-1.4 RoCE的缺陷
+### 1.4 RoCE的缺陷
+
 前一节谈到了RoCE的一些缺陷, 客观来说从2016年到2020年这一段时间来看, RoCEv2 Lossless的路径确实解决了当时HPC和存储的一些问题. 但是也逐渐暴露出一些问题出来.
-1.4.1 多路径和Out-of-order处理
+### 1.4.1 多路径和Out-of-order处理
+
 首先RDMA Reliable Connection是一个strict order的传输, 要求数据包按序传输, 一旦出现sequence gap就可以判定为丢包触发Go-back-N的重传恢复. 当数据量越来越大, 同时数据流传输时间越来越长时, 网络中的ECMP冲突就成为一个必须要考虑的问题.
 
 例如上图所示, 蓝色和紫色的GPU的数据流量很可能被交换机Hash到同一个Link上(Link 1)导致性能减半, 而Link4又完全空闲没有流量. 当然我们可以注意到这种情况只在流量通过两层以上交换网时会存在, 那么能否通过拓扑变更把流量尽力约束到1层内, 降低hash冲突的概率呢? 这就是多轨道(Multi-Rail)的部署方式.
@@ -101,7 +127,8 @@ Nvidia CX8就在网卡中集成了一个Spectrum-X交换机的Port Logic, 然后
 当然网络这个圈子也有很懂这一块的人, 例如2002年发布的iWARP, 其中就提到了Direct Data Placement(DDP)的技术.
 
 DDP在每个数据分段中间添加了一个Message Sequence Number(MSN)和Message Offset(MO), 通过MSN和MO其实就非常容易的在多种语义上支持乱序接收, 并且可以在接受端判断消息是否完成, 然后完成Imm提交或者执行Fence flag更新, 这样相对于RoCE现有的实现还节省了一个Round-Trip-Time.
-1.4.2 拥塞控制
+### 1.4.2 拥塞控制
+
 下面再来看一下拥塞控制和丢包重传, 在传统的HPC应用中, 数据流的burst-size并不大, 而在新兴的AI应用中数据流持续的时间明显更长. 当我们采用Lossless时, 很大程度上需要交换机和网卡更深的buffer去控制, 但事实上这样也会导致E2E的传输延迟有显著增加.  当我们谈论延迟的时候, 很大程度上我们把空载延迟(静态延迟)和实际的延迟(动态延迟)混淆了. 谈论低延迟这个话题时, 需要考虑的是应用负荷高的时候延迟
 
 在传统HPC应用中, 消息并不大, 因此在整个网络中排队的延迟相对较低, 更加看重于静态延迟(Statci Latency). 但是针对AI应用, 高吞吐的时候, Lossless和相对不完善的拥塞控制会引入更高的队列延迟.
@@ -130,7 +157,8 @@ Second, RoCE does not have protocol support for multipathing. This causes compli
 这一条是在说RoCE本身无法支持多路径转发, 当 RoCE 与交换机上的自适应路由(Adaptive-Routing)结合使用以充分利用所有网络路径时, 会引发复杂的问题. 在多路径转发的场景下乱序是不可避免的, 同时实现SACK是有很大价值的, 类似于iWARP DDP的语义并不会显著的在接收端增加Buffer占用.
 Third, RoCE does not integrate congestion control with the datapath. Congestion control is implemented as an add-on, relying on out-of-band probes [6] to gather congestion signals. This separation makes its congestion response sluggish.
 最后是在讲RoCE并没有将拥塞控制和数据路径集成, 而是采用带外探测(Telemetry)的方式来收集拥塞信号, 这种分离导致其拥塞响应迟缓.最终的结论是, 我们需要在RoCE上进行改造, 支持Lossy, 支持SACK/RACK-TLP这些重传机制, 支持多路径转发等, 这一点上我们需要清晰的认知到可靠性和传输效率需要算力来置换. CX8实质上也是在数据路径上通过PSA增加了算力, 通过更加有效的带外Probe机制来获取更细粒度的拥塞信号, 但是这也使得整个拥塞控制响应反而变慢了.
-1.5 RDMA现代化的实质
+### 1.5 RDMA现代化的实质
+
 RDMA现代化的改造实质是为了配合AI这些新的应用而产生的. 本质上的需求其实Nvidia自己也很清楚, 2年多前跟我们交流CX8的Roadmap时也非常清楚的告诉我们了路标, 当时我们告诉他们这些功能我们已经完全实现时, 他们居然不信.... 下图是两年前内部汇报的一个表格.
 
 其实后续还有一些CX9/CX10的路标, Nvidia自己也应该清楚我说的都是对的, 你们不也在这么干么, 就不展开了. 事实上对于RDMA现代化的改造本质上就是如下几点:
@@ -153,7 +181,8 @@ RDMA现代化的改造实质是为了配合AI这些新的应用而产生的. 本
 - Incast 128打1这样的场景, 每个QP之间的带宽差额最大100Kbps.
 - 完全OS无感知的热迁移
 - 完善的RDMA虚拟化支持2.Ethernet base ScaleUP
-2.1 Overview
+### 2.1 Overview
+
 对于Ethernet ScaleUP这个领域, 我应该算是整个领域的最早的工作者了吧? 从2020年开始构建NetDAM, 实际上的问题也是处理Memory Wal. DDR的容量够但是带宽不足, 而HBM又有容量的限制.
 
 当时(2020年)一个很朴素的目标就是需要针对AI应用构建一个数Tbps的带宽和数TBytes的容量. 所以一个很朴素的想法就是能不构建一个内存抽象层, 使用内存语义来构建一个大规模互连系统
@@ -162,13 +191,15 @@ RDMA现代化的改造实质是为了配合AI这些新的应用而产生的. 本
 
 差不多整个工作领先工业界也4~5年了吧?  但是它落地的困难性也有几方面的原因, 首先GPU生态上, 过去几年除了Nvidia NVLink外, 其它公司对于ScaleUP的重视并不多, 直到Hopper和GB200的出现把它推向了一个很高的位置, 而AMD至今还没有带交换机的ScaleUP方案, Intel和Microsoft一些卡直接选用了RoCE来做ScaleUP也有一些问题, 实质上是RoCE这样的Message语义对GPU并不友好.  另一方面是GPU互连的标准上一直有很多的争议, 而CXL因为Intel的一些原因进展和商用一直非常缓慢...
 但至少我当时坚持内存语义, 使用以太网来做这两点的技术路线选择是正确的吧? 然后偷偷给大家说一句, 2年前BRCM还没有做Ethernet ScaleUP计划时, 我就和BRCM交换机事业部的CTO Mohan聊过Ethernet ScaleUP这事, 后面也和Tomhawk Ultra的架构师Surendra有很多沟通.
-2.2 内存语义的重要性
+### 2.2 内存语义的重要性
+
 其实很多人会说, 把ScaleOut的RDMA扩展到和ScaleUP相似的带宽就行了, 然后继续使用RoCE消息语义行不行? 事实上我们要从GPU本身的微架构来分析, 一方面是前述的RoCE的大量缺陷导致其协议栈同样需要现代化改造, 例如一个消息如果不拆分如何从多个ScaleUP Link负载均衡的发出去? 然后当ScaleUP需要两层以上交换机组网时, 一样会遇到Hash冲突的问题.而内存语义则可以很容易的将LD/ST通过Address interleaving的方式均衡的分散到多个Link上. 实质上也是实现了类似于RDMA现代化改造所需要的Weak Order的语义. 后面会详细展开.
 另一方面是RDMA ULP带来的开销, 标准的LD/ST对于计算核来说只需要issue一条指令, 而RDMA ULP你需要构造WQE, 然后写入, 并且敲doorbell带来了很多计算核不必要的指令开销.
 同时对于消息完成, 内存语义就是很简单的一个memory fence即可, GPU的计算核去Polling一个固定内存地址的flag即可. 而RDMA ULP通常还需要计算核去Polling CQ队列, 然后对CQE进行处理, 而我们需要注意到的是, GPGPU的架构并不是Cache Coherency的, 而且L1Cache的容量也是非常有限的, 因此对于CQ的处理需要多次访问HBM, 并且每次都是Cache miss的情况下, 整个处理伴随着Warp调度, 例如LD cache miss后调度到其它warp处理, 然后再切换回来, 并且整个GPU的Core通常还是单发射的架构, 因此会出现多次切换, 导致需要数个us的时间.
 还需要注意到类似于IBGDA的操作, 保存数据到Local HBM, 然后写WQE本身带来的延迟, 加上Kick doorbell的延迟, 再到ScaleUP的RDMA加载WQE, 然后加载数据再发送到对端, 然后写入, 总体来看延迟是非常大的.
 还有一点就是消息语义本身的一些问题, 首先你需要将数据从SMEM flush到HBM后, 才能使用消息语义去DMA到远端的HBM. 然后对一些Allreduce/Allgather的计算也涉及到大量的HBM读写, 这一部分的内存访问将极大的影响, 从而影响到其它算子的计算效率. 并且通常这类的ScaleUP还需要dedicated Core运行通信Kernel, 也很大程度上的影响了整个处理器的效率.
-2.3 在网计算
+### 2.3 在网计算
+
 Nvidia NVLS(Nvlink Sharp)功能有一篇论文讲述过《An in-network architecture for accelerating shared-memory multiprocessor collectives》[8],实际的原理是在Link MMU上构建一个Multicast Memory Region(MCR)
 
 然后针对它的LD/ST如果是multicast region, 则在交换机上实现广播, Reduce则是Push和Pull两种方式,
@@ -225,7 +256,8 @@ Nvidia NVLS(Nvlink Sharp)功能有一篇论文讲述过《An in-network architec
 当CUDA Core issue一个STS指令将数据从SMEM拷贝到GMEM时, 特别是某些场景下, 需要同时拷贝到Local GMEM和另一个Remote GMEM时, 从CUDA Core的角度来看, 我们并不知道哪个是Remote哪个是Local, 当Remote Memory的延迟显著高于Local时, outstanding的window很有可能被占满. 当然你会说可以先Write-back到L2Cache, 然后再写到对端去. 那么我们再考虑同样的场景下LDGSTS, 如果CUDA Core同时从Local GMEM以及Remote GMEM Load时, outstanding的窗口也会被占满.
 另一方面如果延迟非常大, 其实中间Cache的数据还无法释放, 或者LD的outstanding buffer需要allocate很多等待LD完成, 这些都会显著的影响到SM的设计. 显然在SM内部我们不可能放置更大的SMEM或者L1D Cache, 对于整个芯片我们也需要约束L2 Cache的大小. 实际上就构成了一个Trade-off. 在一颗芯片差不多800mm^2下, 放多少SRAM留多少给TensorCore留多少给CUDA Core的问题. 这是一个很难trade-off的事情. 例如Blackwell为了TensorCore的性能, 增加了TMEM, 同时单芯片内的CUDA Core数量减少了, 虽然理论上按照TC的性能, FLOPS增加了很多, 但在很多实际的workload上, 我们却发现了一些短板, 甚至很多时候不如H200. 看上去H200倒是一个各方面都很平衡的配置.
 然后你会继续说, 要不我们使用TMA来做一些异步的操作呢? 实际上也是同样的道理, 延迟大了, 如果同时要做一些可靠重传, 还会进一步的增加buffer的使用. 然后在Die内这些scaleUP的IP还会进一步抢占芯片面积.
-2.8 是否需要可靠传输
+### 2.8 是否需要可靠传输
+
 这也是一个非常有趣的话题, 在BRCM最新的SUE Spec中添加了非可靠传输的SUE-Lite方案
 
 正如Spec讲的那样, SUE-Lite IP占用的芯片面积会小一半. 知乎上也有一篇文章讨论这事《scale-up LLR+CBFC 是否可以保证永不丢包，不需要端到端重传？》[9]
@@ -238,7 +270,8 @@ SUE provides in-order delivery on each plane. Use of lossless traffic classes an
 E2E Go-back-N通常还需要维持超过1个BDP的带宽, 经验上讲为1.5~2BDP. 那么假设E2E的RTT延迟为2us, ScaleUP带宽为1TB/s那么也需要差不多2MB以上的Buffer, 然后还要spray到多个ScaleUP link上穿越多个交换机转发(MultiPlane), 同时要做到负载均衡没有长尾的影响, 设想这样一个问题, 中间某个交换机由于出现一些SDC(Silent Data Corruption)导致CRC校验失败而产生的丢包, 那么E2E的Go-back-N重传是否会导致一些Memory Order的问题呢? BRCM这事上只是简单的说了有一个Optional的Load Balance
 
 最后特别的来说, 对于现在比较激进的光互连的ScaleUP而言, 还是有很多问题需要去处理的.
-3. ScaleUP的一些量化分析
+## 3. ScaleUP的一些量化分析
+
 在以前一篇文章中的Section 4.2也引用了Nvidia在GTC2025的一个session
 《谈谈GPU的内存模型及互联网络设计》
 首先从Little's Law的角度来看,  在一个平稳系统中, 客户的长期平均数量L等于长期的平均有效到达率乘以平均客户在系统中花费的时间, 一个非常直观的公式.这就是Little's Law. 例如在一个扶梯上, 平均2s到达一个顾客(平均1s到达1/2个客户), 然后坐扶梯需要40s, 则系统可以承受的并发数为20个人
@@ -250,7 +283,8 @@ E2E Go-back-N通常还需要维持超过1个BDP的带宽, 经验上讲为1.5~2BD
 其中为到达速率, 为服务速率,即平均服务时间的倒数, 为系统的使用率. 为到达时间的变异系数,为服务时间的变异系数. 变异系数CV为标准差除以均值. 然后我们可以根据然后取不同的变异系数做出一个图来.
 
 所以整个Fabric的利用率在某个延迟约束下,可以看到变异系数CV越低时, 利用率越高. 对于DataLink层的报文长度, UALink是固定的640B FLIT, 而SUE很大程度上还要受到不同Dest XPU的队列影响以及变长的size和队列调度的影响. 同时写入对端HBM时, 还要受到对端的HBM和NOC的影响, 因为在通信和计算Overlap的过程中, 对端的算子通常需要打满HBM的带宽. 同时发送端的PE也会产生非常大burst的流量, 然后Link-layer的retry或者信号完整性的问题也会产生各种各样的抖动. 还有Fabric上也会产生很大的incast拥塞, 从而又影响了CV.
-4. 谈谈ScaleUP和ScaleOut融合的方案
+## 4. 谈谈ScaleUP和ScaleOut融合的方案
+
 其实在2020年做NetDAM的时候就分析的比较清楚了. Intra-host/NOC和Inter-host的互连总线有着显著的差异. 直接把任何一种技术渗透进入都会带来问题. 以太网带宽大价格又便宜的优势是建立在尽力而为的服务基础上的, 同时伴随着大量的规模效应. 那么可靠传输本身又会占用大量的Die面积, 直接集成或者合封到XPU上都会带来不少的问题.
 其实有一个看上去很朴素的想法, 既然ScaleUP都用了Ethernet直接连到ScaleOut做融合是否就好了呢? 例如ScaleUP做SUE, 然后再进一步ScaleOut上做SUE over IP/UDP? 那么可靠性的问题在端侧I/O Die上解决成本是巨大的, 正如前面第一章所分析的, 在一个巨大的ScaleOut网络中还是需要使用Lossy, 特别是在跨越多跳交换机时多路径负载均衡带来的乱序情况下. 此时I/O Die面积的开销会非常的大, 例如一个完备的可靠传输的RoCE IP无论是CX8/AMD/Falcon都在用算力去置换芯片面积做可靠传输, 目测一个800GB/s的ScaleUP这些die面积的消耗可能要接近到300~400mm^2, 那还做个啥算力了呢?
 其实我个人是比较反对ScaleUP和ScaleOut的定义的, 可能更好的定义是Local Network或者In-rack network, 然后再扩展到inter-rack network. In-rack内其实有足够的可靠性保障的, 并且本身也能维持大概1us的RTT, 然后在整个机柜内堆64卡~128卡也是可行的, 散热这些都能做到. 为了芯片面积的占用的考虑, 简单的做个Lossless也无妨.  而inter-rack很大程度上是需要一套完善的可靠传输协议的, 同时本来光纤跨机柜加上一些延迟上的约束, RTT延迟可能会到5us左右.

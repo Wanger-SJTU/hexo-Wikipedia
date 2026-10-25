@@ -31,11 +31,16 @@ Initializer nên để lại ít nhất các artifact này:
 
 ## Danh sách Kiểm tra
 
-1. Định nghĩa đường dẫn khởi động chuẩn.
-2. Định nghĩa đường dẫn xác minh chuẩn.
-3. Tạo nhật ký tiến độ và ghi lại trạng thái khởi đầu.
-4. Phân chia công việc thành các tính năng rõ ràng với trạng thái.
-5. Tạo commit baseline sạch đầu tiên.
+## 1. Định nghĩa đường dẫn khởi động chuẩn.
+
+## 2. Định nghĩa đường dẫn xác minh chuẩn.
+
+## 3. Tạo nhật ký tiến độ và ghi lại trạng thái khởi đầu.
+
+## 4. Phân chia công việc thành các tính năng rõ ràng với trạng thái.
+
+## 5. Tạo commit baseline sạch đầu tiên.
+
 
 ## Bài kiểm tra Thành công
 

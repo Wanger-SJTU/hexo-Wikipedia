@@ -1033,7 +1033,8 @@ void operator delete[]( void* ptr_void_in, size_t sizet_size_in, std::align_val_
 
 6)void  free_multi( void** ptr_ptr_void_in, const unsigned int uint_count_in )  noexcept;
 
-1.27及以后版本开始支持此功能点。
+### 1.27及以后版本开始支持此功能点。
+
 
 用于批量释放内存块，一次可以释放uint_count_in个同样大小的内存块（单个内存块大小限制小于等于2000KiB），这些内存块的大小必须相同（否则会有不可预料的后果），等待释放的内存块在ptr_ptr_void_in[0]开始的连续数据结构中。主要是用于malloc_multi申请的内存块，也可以用于同样大小的内存池的集中释放，支持跨线程的内存释放, 支持跨线程和本地线程内存的混用。由于是批处理释放同样大小的内存，只需要一次判断就跳到相应大小的内部函数中连续进行内存块的释放，因此这个函数的性能很高，远快于uint_count_in次调用free的性能，可以用于内存池释放和批量释放对象的场合等。
 
