@@ -3259,3 +3259,49 @@ html[data-theme="dark"] .pagination__item.is-current {
     grid-template-columns: 1fr;
   }
 }
+
+/* --------------------------------------------------------------------------
+   代码复制按钮 / KaTeX 数学公式
+   -------------------------------------------------------------------------- */
+.article__content figure.highlight,
+.article__content pre {
+  position: relative;
+}
+
+.code-copy {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  z-index: 3;
+  padding: 2px 8px;
+  border: 1px solid var(--border-subtle);
+  border-radius: 3px;
+  background: var(--bg);
+  color: var(--text-secondary);
+  font-family: var(--font-sans);
+  font-size: 11px;
+  line-height: 1.6;
+  cursor: pointer;
+  opacity: 0.82;
+}
+
+.code-copy:hover,
+.code-copy:focus-visible {
+  background: var(--bg-muted);
+  color: var(--text);
+  opacity: 1;
+}
+
+.katex {
+  font-size: 1.04em;
+}
+
+.katex-display {
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 2px 0;
+}
+
+html[data-theme="dark"] .katex {
+  color: var(--text);
+}

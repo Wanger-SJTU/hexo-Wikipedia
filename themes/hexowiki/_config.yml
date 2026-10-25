@@ -40,6 +40,10 @@ features:
   table_scroll: true   # 自动为宽表格加横向滚动容器
   recent: 8            # 首页「最近更新」条数
 
+# 数学公式（KaTeX 本地资源；页面内容含 $...$ / $$...$$ / \(...\) 时自动加载）
+math:
+  enable: true
+
 # 搜索
 search:
   limit: 8             # 建议下拉最多显示条数
@@ -112,4 +116,4 @@ home:
 # 静态资源版本号
 # 修改 source/css 或 source/js 后，把这里 +1，可强制浏览器加载新文件（避免旧缓存造成“改了没生效”）
 assets:
-  version: '0.2.2'
+  version: '0.2.3'
