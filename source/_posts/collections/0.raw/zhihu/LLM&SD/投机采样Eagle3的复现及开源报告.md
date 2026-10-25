@@ -701,7 +701,7 @@ def main():
     # 合并批次文件
     regenerator.merge_batches()
 if __name__ == "__main__":
-    main()`
+    main()
 
 上面数据生成的代码，推理框架使用的sglang部署
 

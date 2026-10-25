@@ -108,7 +108,7 @@ Off-CPU`时间指的是进程/线程被阻塞的时间，我们可以通过`/pro
 [root@VM-16-2-centos ~]# time ls
 real    0m0.102s
 user    0m0.007s
-sys     0m0.006s`
+sys     0m0.006s
 
 我们使用`time`来查看一个命令对应的时间占比。可以看到`ls`命令总共用了0.102秒，其中`user`和`sys`两个部分加起来一共用了`0.013`秒，剩下的时间就是所谓`Off-CPU`的时间，也就是被阻塞的时间。在0.102秒钟有0.089秒是被阻塞的时间，这个占比过于大了一点。
 
@@ -135,7 +135,7 @@ Tracing off-CPU time... Hit Ctrl-C to end.
      16384 -> 32767      : 54       |****************************************|
      32768 -> 65535      : 14       |**********                              |
      65536 -> 131071     : 11       |********                                |
-    131072 -> 262143     : 8        |*****                                   |`
+    131072 -> 262143     : 8        |*****                                   |
 
 这里会展示阻塞时间间隔内出现的次数，例如第一行的含义是0-1微秒的阻塞出现了19次。
 
@@ -170,7 +170,7 @@ on context switch finish: # 上下文切换结束的时候
 on tracer exit:
     for each key in totaltime:
         print key
-        print totaltime[key]`
+        print totaltime[key]
 
 简单来说，就是当上下文切换发生时，对于被切换走的进程`A`，记录它在当前时间进入了`sleep`；而对于切换进来的进程`B`，则基于`sleeptime`这个`map`去寻找`B`被切换走的时间，从而计算差值。如下图所示：
 
@@ -199,7 +199,7 @@ Tracing off-CPU time (us) of PID 996942 by kernel stack... Hit Ctrl-C to end.
 
 ```text
     -                barad_agent (996972)
-        350404`
+        350404
 ```
 
 
@@ -211,7 +211,7 @@ Tracing off-CPU time (us) of PID 996942 by user stack... Hit Ctrl-C to end.
 
 ```text
     -                barad_agent (3101808)
-        6`
+        6
 ```
 
 
@@ -243,7 +243,7 @@ Tracing off-CPU time (us) of PID 996942 by user stack... Hit Ctrl-C to end.
 
 /usr/share/bcc/tools/offcputime -df -p `pgrep -nx mysqld` 30 > out.stacks
 git clone https://github.com/brendangregg/FlameGraph
-./FlameGraph/flamegraph.pl --color=io --title="Off-CPU Time Flame Graph" --countname=us  out.svg`
+./FlameGraph/flamegraph.pl --color=io --title="Off-CPU Time Flame Graph" --countname=us  out.svg
 
 生成的火焰图如图所示：
 

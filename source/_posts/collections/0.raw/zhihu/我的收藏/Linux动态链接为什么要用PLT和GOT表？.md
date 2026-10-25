@@ -136,13 +136,17 @@ pub(crate) fn prepare_lazy_bind(got: *mut usize, dylib: usize) {
 
 global_asm!(
     "
+
+```x86asm
     .text
     .globl dl_runtime_resolve
 	.type dl_runtime_resolve, @function
 	.align 16
+```
+
 dl_runtime_resolve:
 
-```text
+```x86asm
 // 保存参数寄存器,这里多使用了8字节栈是为了栈的16字节对齐
     sub rsp,8*7
     mov [rsp+8*0],rdi

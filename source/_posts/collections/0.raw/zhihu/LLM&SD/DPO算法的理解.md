@@ -93,7 +93,7 @@ $b=log(πθ(yl|x))−log(πref(yl|x))" role="presentation">b=log(πθ(yl|x))−l
         chosen_rewards = self.beta * (policy_chosen_logps - reference_chosen_logps).detach()
         rejected_rewards = self.beta * (policy_rejected_logps - reference_rejected_logps).detach()
 
-        return losses, chosen_rewards, rejected_rewards`
+        return losses, chosen_rewards, rejected_rewards
 ```
 
 
@@ -110,7 +110,7 @@ per_token_logps = torch.gather(logits.log_softmax(-1), dim=2, index=labels.unsqu
 对all_logits求softmax获得每个token在词表分布的概率per_token_logps为([8, 101])
 return (per_token_logps * loss_mask).sum(-1)  ##([8])
 返回的是每个句子中所有的token的概率之和
-用此chosen概率shape:([4])和rejected概率shape:([4])，送入上面的dpo_loss函数中。用句子token的概率之和衡量模型对句子选择的概率。`
+用此chosen概率shape:([4])和rejected概率shape:([4])，送入上面的dpo_loss函数中。用句子token的概率之和衡量模型对句子选择的概率。
 
 <strong>缺点：</strong>
 

@@ -62,7 +62,7 @@ SASS代码比较可以从上面看到，512条FFMA和32条LDS指令，最核心�
 [R---:B------:R-:W-:-:S02]         /*0cd0*/                   FFMA R115, R39.reuse, R14, R115 ;
 [----:B------:R-:W-:-:S02]         /*0ce0*/                   FFMA R114, R39, R15, R114 ;
 [----:B------:R-:W1:-:S01]         /*0cf0*/                   LDS.U.128 R36, [R40+0x2410] ;
-[R---:B------:R-:W-:-:S02]         /*0d00*/                   FFMA R113, R32.reuse, R12, R113 ;`
+[R---:B------:R-:W-:-:S02]         /*0d00*/                   FFMA R113, R32.reuse, R12, R113 ;
 
 然后总结一下这小节的内容，从CUDA C和SASS代码的角度分析了现有sgemm实现的不足。进一步的优化工作可以从两个方面进行：1、shared memory->register，将8×8的读取变成4个4×4的读取。2、尽可能地减少非必要指令的开销，但是这个在CUDA C层面很难控制，毕竟编译器也没那么听话。
 
@@ -99,14 +99,14 @@ volta reg remapping3.2 指令重排
 重排的目的是为了更好地使用reuse标识，这个地方可以看看旷视写的[矩阵乘终极优化指南](https://zhuanlan.zhihu.com/p/410278370)，当然，基本上也就是scott的sgemm介绍内容。读取指令的操作数的时候，有一个寄存器的reuse cache。在指令中使用这个标识就代表这个数被hold住了，下一条指令可以直接使用。这个地方，大家都是这么说的，NV也没有官方的说明，那就这么理解吧。具体示意代码如下：
 
 FFMA R2, R64.reuse, R73, R2; # R64 进入 Reuse Cache
-FFMA R3, R64.reuse, R72, R3; # R64 从 Reuse Cache 中获取，避免与 R72 冲突`
+FFMA R3, R64.reuse, R72, R3; # R64 从 Reuse Cache 中获取，避免与 R72 冲突
 
 为了更好地利用这个reuse特性，scott给了一种非常奇怪的指令排列顺序，如下：
 
  1,  0,  2,  3,  5,  4,  6,  7, 33, 32, 34, 35, 37, 36, 38, 39, 
 45, 44, 46, 47, 41, 40, 42, 43, 13, 12, 14, 15,  9,  8, 10, 11,
 17, 16, 18, 19, 21, 20, 22, 23, 49, 48, 50, 51, 53, 52, 54, 55, 
-61, 60, 62, 63, 57, 56, 58, 59, 29, 28, 30, 31, 25, 24, 26, 27`
+61, 60, 62, 63, 57, 56, 58, 59, 29, 28, 30, 31, 25, 24, 26, 27
 
 通过CUDA C说的一系列优化手段，以及寄存器的remapping和指令重排，scott的sgemm在Maxwell架构的一些卡上能够达到98%的浮点计算效率，达到了优化的天花板。
 
@@ -133,7 +133,7 @@ shared memory详细解析总之，这个索引给我整不会了。作为一个�
 const int warp_id = tid / 32;
 const int lane_id = tid % 32;
 const int tile_index_b = (warp_id%4)*16 + (lane_id/16)*8 + (lane_id%2)*4;
-const int tile_index_a = (warp_id/4)*32 + ((lane_id%16)/2)*4;`
+const int tile_index_a = (warp_id/4)*32 + ((lane_id%16)/2)*4;
 ```
 
 
@@ -165,7 +165,7 @@ for (int thread_y = 0; thread_y
 FFMA R125, R52, R44, R72 ;
 FFMA R122, R53, R44.reuse, R73 ;
 FFMA R74, R54, R44.reuse, R74 ;
-FFMA R75, R55, R44.reuse, R75 ;`
+FFMA R75, R55, R44.reuse, R75 ;
 
 看看第一条指令，做R125=R52×R44+R72，R72的值被拿出来，然后存到了R125上。编译出来的代码有一大堆这样的指令。而我希望所有的指令都满足第3条的样子，R74=R54×R44+R74，从R74取就放回R74才最好。如果不能保证这个形式的话，就意味着，我们不能让固定的寄存器来存储矩阵C中的固定的值。这玩意做remapping的话，就不能简简单单地改寄存器号。毕竟我也不能确定不同的寄存器对应到哪个具体的值了。
 
@@ -225,7 +225,7 @@ FFMA R75, R55, R44.reuse, R75 ;`
 ```text
 //0    FFMA R74, R36, R62.reuse, R74 ;    
 //1    FFMA R78, R34, R62.reuse, R78 ;
-//2    FFMA R16, R35, R62, R54 ;`
+//2    FFMA R16, R35, R62, R54 ;
 ```
 
 
@@ -236,7 +236,7 @@ FFMA R75, R55, R44.reuse, R75 ;`
 //1    FFMA R78, R34, R62.reuse, R78 ; 
 ```
 
-/ 0    FFMA R74, R36, R62.reuse, R74 ;`
+/ 0    FFMA R74, R36, R62.reuse, R74 ;
 
 让指令2的R62放入reuse cache中，指令1和指令0继续使用这个数，从而减少bank冲突。更改前后的代码在我的[github repo](https://link.zhihu.com/?target=https%3A//github.com/Liu-xiandong/How_to_optimize_in_GPU/tree/master/sgemm/asm)中。但是改完之后，我发现性能提升并不是很明显，大概就是1%左右的性能提升。这可能是在sgemm_v2的基础上改的原因，当时4.1所说的shared memory bank冲突还比较明显。总之，实验大概就是这样子。
 

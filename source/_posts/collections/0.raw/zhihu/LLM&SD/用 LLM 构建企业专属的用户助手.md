@@ -155,7 +155,7 @@ answer: NO
 
 instruction: how to use TiDB Cloud? 
 question: is the instruction out of scope (not related with TiDB)? 
-answer: NO`
+answer: NO
 
 在判断完成后，LLM 会输出 “Yes” 或 “No”，其中 “Yes” 意味着问题有毒（和业务不相关），“No” 意味着问题无毒（和业务有关），以供后续流程处理。
 
@@ -223,7 +223,7 @@ TiDB Bot 的逻辑架构至此，我们成功开发出了一款具备特定企�
 
 instruction: {user's querstion}  
 question: is the instruction out of scope (not related with TiDB)? 
-answer: YES or NO`
+answer: YES or NO
 
 <strong>数据导入向量数据库中，支持搜索语义相似的结果</strong>
 

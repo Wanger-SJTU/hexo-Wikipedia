@@ -81,7 +81,7 @@ def Quant(Vx, Q, RQM):
 
 ```python
 def QuantRevert(VxQuant, Q, RQM):
-    return (VxQuant + RQM) / Q`
+    return (VxQuant + RQM) / Q
 ```
 
 
@@ -122,7 +122,7 @@ def ListQuantRevert(quant_data_list, Q, RQM):
         revert_quant_data = QuantRevert(quant_data, Q, RQM)
         quant_revert_data_list.append(revert_quant_data)
     quant_revert_data_list = np.array(quant_revert_data_list)
-    return quant_revert_data_list`
+    return quant_revert_data_list
 ```
 
 
@@ -252,7 +252,7 @@ def get_mse(quant_bits=12,
 ```text
     mean_squared_error = ((float_dotprod - quant_dotprod) ** 2).mean()
 
-    return mean_squared_error`
+    return mean_squared_error
 ```
 
 
@@ -303,7 +303,7 @@ if __name__ == '__main__':
 
 
     # 保存图片
-    plt.savefig("q_mse.png")`
+    plt.savefig("q_mse.png")
 
 通过绘图，我们可以观察量化后的误差情况，如下图：
 
@@ -383,7 +383,7 @@ def DequantizeV2(x, scale, nudged_zero_point):
         assign_max,
         per_channel=per_channel,
         num_bits=num_bits,
-        narrow_range=narrow_range)`
+        narrow_range=narrow_range)
 ```
 
 

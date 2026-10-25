@@ -20,7 +20,7 @@ source_url: https://www.zhihu.com/question/57184661/answer/19648995610
 ```cpp
 typedef void (*read_function_t)(const char* read_buf, int read_size, void* user_data);
 
-int register_read_callback(read_function_t on_read_function, void* user_data);`
+int register_read_callback(read_function_t on_read_function, void* user_data);
 ```
 
 
@@ -30,7 +30,7 @@ int register_read_callback(read_function_t on_read_function, void* user_data);`
 
 ```cpp
 typedef void (*read_callback_t)(const char* read_buf, int read_size);
-int set_read_callback(read_callback_t on_read);`
+int set_read_callback(read_callback_t on_read);
 ```
 
 
@@ -66,8 +66,12 @@ set_read_callback(static_castread_callback_t>(read_cb));
 
 new_cb_code:
     get_user_data_relative_to_InstructionPointer # 获取相对当前代码指针偏移了几个字节的 user_data
+
+```x86asm
     call real_cb_with_user_data
     db user_data 
+```
+
 
 这段代码，必须是 “可重定位的”，可以随便复制，任意放置执行。使用的时候，把这个代码作为模板，和 user_data 数据进行拼接。动态的在堆上创建出一个新的函数。
 
@@ -77,14 +81,14 @@ new_cb_code:
 
 dynamic_callback:
 
-```text
+```x86asm
     mov rax, [rip+17] ; 此指令 7 个字节，取得 user_data 存入 rax 寄存器
     nop ; 1 个字节
     jmp [rip+2]; // 此指令 6 个字节，直接跳转执行 cb_function_wrapper
     nop ; 1 个字节
     nop ; 1 个字节
     .qword cb_function_wrapper // 8 字节存储带 user_data 的回调
-    .qword user_data // 8 字节存储 user_data`
+    .qword user_data // 8 字节存储 user_data
 ```
 
 

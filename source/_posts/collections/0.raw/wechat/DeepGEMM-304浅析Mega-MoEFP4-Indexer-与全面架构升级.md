@@ -188,9 +188,9 @@ static int get_num_experts_per_wave_for_mega_moe(...) {
 ```text
     // Round up to nearest divisor of num_experts_per_rank
     while (num_experts_per_wave < max_num_experts_per_wave
+           and num_experts_per_rank % num_experts_per_wave != 0)
 ```
 
-           and num_experts_per_rank % num_experts_per_wave != 0)
         ++ num_experts_per_wave;
 
 ```text
@@ -216,11 +216,7 @@ CUTLASS_DEVICE void nvlink_barrier(...) {
     if (sm_idx == 0) {
         // Send signals to remote ranks
         if (thread_idx < kNumRanks)
-```
-
             ptx::red_add_rel_sys(sym_buffer.map(signal_ptr, thread_idx), ...);
-
-```text
         // Wait arrival with 30s timeout
         // ...
     }
@@ -290,11 +286,7 @@ if (desc.gemm_type == GemmType::MGroupedContiguous || ...) {
     const auto block_n = 128;
     const auto block_m = heuristics_runtime->get_mk_alignment_for_contiguous_layout();
     const auto cluster_n = ceil_div(desc.n, block_n) % 2 == 0
-```
-
                            and desc.num_sms % 2 == 0 ? 2 : 1;
-
-```text
     // ...
 }
 ```

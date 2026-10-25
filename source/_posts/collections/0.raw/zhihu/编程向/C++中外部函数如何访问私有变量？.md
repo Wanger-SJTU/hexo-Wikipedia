@@ -94,10 +94,10 @@ template int& stealBank, int, &Bank::money>(Bank&);
 
 用 godbolt 查一下上面实例化得到的汇编（x86-64 gcc 11.2，-O1）：
 
-```text
+```x86asm
 int& steal(Bank&):
         mov     rax, rdi
-        ret`
+        ret
 ```
 
 
@@ -131,6 +131,7 @@ int main() {
 
 上面程序会输出 `A's Ctor`。同样的，用 godbolt 查一下生成的汇编代码（x86-64 gcc 11.2，-std=c++17 -O1）：
 
+```x86asm
 .LC0:
         .string "A's Ctor"
 A::A() [base object constructor]:
@@ -141,7 +142,9 @@ A::A() [base object constructor]:
         mov     edi, OFFSET FLAT:.LC0
         call    puts
         add     rsp, 8
-        ret`
+        ret
+```
+
 
 #### Thief
 
@@ -235,13 +238,17 @@ int main() {
 同样，还是用 godbolt 查一下生成的汇编代码，但这次不要开 -O1 优化，因为友元声明定义的全局函数默认是 inline 的，开了会被内联掉（x86-64 gcc 11.2，-O0）
 
 steal(Bank&):
+
+```x86asm
         push    rbp
         mov     rbp, rsp
         mov     QWORD PTR [rbp-8], rdi #
         mov     edx, 0
         mov     rax, QWORD PTR [rbp-8] #
         pop     rbp
-        ret`
+        ret
+```
+
 
 可见，显式实例化类模板 `Thief` 确实生成了一个全局函数 `steal`。不过因为不能开优化，生成的汇编代码不够简洁，但从标了 `#` 的两条指令来看，不难发现其实就是 `mov rax, rdi`，具体含义前文也有分析过。 
 

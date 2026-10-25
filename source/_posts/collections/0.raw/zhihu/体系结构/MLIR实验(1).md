@@ -26,9 +26,9 @@ module {
     %0 = "tosa.matmul"(%arg0, %arg1) : (tensor1x14x19xf32>, tensor1x19x28xf32>) -> tensor1x14x28xf32>
     return %0 : tensor1x14x28xf32>
   }
+}
 ```
 
-}`
 
 我们把它转化成linalg表示。
 
@@ -46,9 +46,9 @@ module  {
     %2 = linalg.batch_matmul ins(%arg0, %arg1 : tensor1x14x19xf32>, tensor1x19x28xf32>) outs(%1 : tensor1x14x28xf32>) -> tensor1x14x28xf32>
     return %2 : tensor1x14x28xf32>
   }
+}
 ```
 
-}`
 
 这里的linalg算子是named op，我们把它转化成generic 表示。
 
@@ -79,9 +79,9 @@ module  {
     } -> tensor1x14x28xf32>
     return %2 : tensor1x14x28xf32>
   }
+}
 ```
 
-}`
 
 这个时候已经很有趣了，这是一个接近halide DSL描述。map里的d3也就是reduce维度，其他维度都是并行维度。
 
@@ -145,9 +145,9 @@ module  {
     }
     return %2 : tensor1x14x28xf32>
   }
+}
 ```
 
-}`
 
 我们再把linalg整体转化成affine方言，但是首先做一下bufferize，把tensor转化成memref。
 
@@ -204,9 +204,9 @@ module  {
     memref.dealloc %0 : memref1x14x28xf32>
     return %0 : memref1x14x28xf32>
   }
+}
 ```
 
-}`
 
 不过到这里发现先做了tiling，转化到affine的时候有个问题。我们暂时把tiling去掉，后面可以在affine里面做tiling。
 
@@ -245,9 +245,9 @@ module  {
     memref.dealloc %0 : memref1x14x28xf32>
     return %0 : memref1x14x28xf32>
   }
+}
 ```
 
-}`
 
 我们把上下两个loop做一下fusion。
 
@@ -281,9 +281,9 @@ module  {
     memref.dealloc %0 : memref1x14x28xf32>
     return %0 : memref1x14x28xf32>
   }
+}
 ```
 
-}`
 
 我们对于loop做一些简化。
 
@@ -323,9 +323,9 @@ module  {
     memref.dealloc %0 : memref1x14x28xf32>
     return %0 : memref1x14x28xf32>
   }
+}
 ```
 
-}`
 
 再对于affine for重新做一个tiling，我们最对外层loop做tiling。
 
@@ -365,9 +365,9 @@ module  {
     memref.dealloc %0 : memref1x14x28xf32>
     return %0 : memref1x14x28xf32>
   }
+}
 ```
 
-}`
 
 然后我们加入一级存储层次，然后做memory data copy。这里似乎有bug，我们必须把linalg-comprehensive-module-buffersize退回到linalg-bufferize。
 
@@ -447,9 +447,9 @@ module  {
     %7 = memref.tensor_load %3 : memref1x14x28xf32>
     return %7 : tensor1x14x28xf32>
   }
+}
 ```
 
-}`
 
 我们再试着做下software pipeline。
 
@@ -623,8 +623,8 @@ module  {
     %14 = memref.tensor_load %3 : memref1x14x28xf32>
     return %14 : tensor1x14x28xf32>
   }
+}
 ```
 
-}`
 
 To be continued...

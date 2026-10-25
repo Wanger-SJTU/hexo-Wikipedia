@@ -42,7 +42,7 @@ Kor是个支持LangChain的文本抽取库，可以把文本抽取成json格式�
 你可以点击 [这个笔记](https://link.zhihu.com/?target=https%3A//github.com/LC1332/Prophet-Andrew-Ng/blob/main/langchain/%25E6%259D%258E%25E9%25B2%2581%25E9%25B2%2581%25E5%25AD%25A6LangChain_25_Kor%25E4%25BF%25A1%25E6%2581%25AF%25E6%258A%25BD%25E5%258F%2596.ipynb) 查看notebook的版本，如果你有openAI的key应该可以直接运行。
 
 !pip -q install langchain openai tiktoken
-!pip -q install kor markdownify`
+!pip -q install kor markdownify
 
 这里我不知道markdownify这个为什么要安装，可能是kor库的依赖
 
@@ -61,9 +61,9 @@ llm = ChatOpenAI(
 ```text
     model_name="gpt-3.5-turbo",
     temperature=0
+)
 ```
 
-)`
 
 然后我们可以定义kor中一个称为抽取schema的数据结构
 
@@ -104,9 +104,9 @@ schema = Object(
         )
     ],
     many=True,
+)
 ```
 
-)`
 
 这里比较重要的是attributes和examples，这两者会以显著的形式出现在最终运行的pormpt中
 
@@ -118,12 +118,12 @@ response = chain.run(
     教主捻须微笑，道：“但他小小孩童，能担当这件大任么”
 
     白龙使一职，在神龙教虽然甚尊，在韦小宝心里，却半点份量也没有，他既陷身岛上，只好随遇而安，瞧着闭月羞花的洪夫人。自是过瘾之极，但瞧得多了，如给教主发觉自己色迷迷的神色，难免有杀身之祸，还是尽速回北京为妙，听教主这么说，正是脱身的良机，便道：“教主，夫人，承蒙提拔，属下十分感激，我本事是没有的，但托了两位大福气，混进皇宫中去偷这四部宝经，倒也有成功的指望。”洪教主点了点头。洪夫人喜道：“你肯自告奋勇，足见对教主忠心。我知你聪明伶俐，福份又大，恐怕正是上天派来给教主办成这件大事的。”"""
-)["data"]`
+)["data"]
 
 这个抽取完因为`many=True`的原因，所以会抽取成一个list，我们把list中的元素依次打印出来看看
 
 for chat in (response['script']):
-    print(chat)`
+    print(chat)
 
 输出结果
 
@@ -144,7 +144,7 @@ Kor的原理其实还是挺简单的，其实Kor的整个库都是围绕一个pr
 我们可以通过以下方式打印出Kor的prompt
 
 chain = create_extraction_chain(llm, schema)
-print(chain.prompt.format_prompt(text="[user input]").to_string())`
+print(chain.prompt.format_prompt(text="[user input]").to_string())
 
 打印出来是这样的哈
 

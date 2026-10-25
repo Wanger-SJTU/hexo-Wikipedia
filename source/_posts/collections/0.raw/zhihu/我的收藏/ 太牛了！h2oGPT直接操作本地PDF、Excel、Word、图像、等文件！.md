@@ -129,6 +129,8 @@ https://gpt.h2o.ai/
 
 4：安装依赖
  # Required for Doc Q/A: LangChain:
+
+```bash
  pip install -r reqs_optional/requirements_optional_langchain.txt
  # Required for CPU: LLaMa/GPT4All:
  pip install -r reqs_optional/requirements_optional_gpt4all.txt
@@ -137,6 +139,8 @@ https://gpt.h2o.ai/
  # Optional: Selenium/PlayWright:
  pip install -r reqs_optional/requirements_optional_langchain.urls.txt
  # Optional: for supporting unstructured package
+```
+
  python -m nltk.downloader all
 
 5：可选配置

@@ -56,7 +56,7 @@ for k in 256 big_loop:
 	// compute in read_SM
 	for iter in 8 small_loop:
 		prefecth next loop data to write_REG
-		compute in read_REG`
+		compute in read_REG
 ```
 
 
@@ -91,7 +91,7 @@ for k in 256 big_loop:
     const int THREAD_NUM_PER_BLOCK = THREAD_X_PER_BLOCK * THREAD_Y_PER_BLOCK;
 
     // thread id in cur Block
-    const int tid = ty * THREAD_X_PER_BLOCK + tx;`
+    const int tid = ty * THREAD_X_PER_BLOCK + tx;
 ```
 
 
@@ -110,7 +110,7 @@ for k in 256 big_loop:
     const int ldg_num_a = BLOCK_SIZE_M * BLOCK_SIZE_K / (THREAD_NUM_PER_BLOCK * 4);
     const int ldg_num_b = BLOCK_SIZE_K * BLOCK_SIZE_N / (THREAD_NUM_PER_BLOCK * 4);
     float ldg_a_reg[4*ldg_num_a];
-    float ldg_b_reg[4*ldg_num_b];`
+    float ldg_b_reg[4*ldg_num_b];
 ```
 
 
@@ -132,7 +132,7 @@ for k in 256 big_loop:
 
     // row stride that thread uses to load multiple rows of a tile
     const int A_TILE_ROW_STRIDE = THREAD_NUM_PER_BLOCK / A_TILE_THREAD_PER_ROW;
-    const int B_TILE_ROW_STRIDE = THREAD_NUM_PER_BLOCK / B_TILE_THREAD_PER_ROW;`
+    const int B_TILE_ROW_STRIDE = THREAD_NUM_PER_BLOCK / B_TILE_THREAD_PER_ROW;
 ```
 
 
@@ -142,7 +142,7 @@ for k in 256 big_loop:
 
 ```text
 #define OFFSET(row, col, ld) ((row) * (ld) + (col))
-#define FETCH_FLOAT4(pointer) (reinterpret_cast(&(pointer))[0])`
+#define FETCH_FLOAT4(pointer) (reinterpret_cast(&(pointer))[0])
 ```
 
 

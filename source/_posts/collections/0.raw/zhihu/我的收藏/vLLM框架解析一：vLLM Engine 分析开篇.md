@@ -52,13 +52,13 @@ PageAttention Cache存储方式
 PageAttention SlopMapping
 
 图3. slot_mapping中的token id 对应 slot_id，隐藏了层数的对应关系也就是一个token对应的是多层的slot_id，但是每一层Layer的KVCache组织形式是一样的（如图所示Layer 0的KV Cache和Layer n的KV Cache组织形式是一样的），所以等价于一个token id对应一个slot id。void reshape_and_cache_flash(
+
+```cpp
     torch::Tensor  key,      // [num_tokens, num_heads, head_size]
     torch::Tensor  value,    // [num_tokens, num_heads, head_size]
     torch::Tensor  k_cache,  // [num_blocks, block_size, num_heads, head_size]
     torch::Tensor  v_cache,  // [num_blocks, block_size, num_heads, head_size]
     torch::Tensor  slot_mapping,  // [num_tokens]
-
-```cpp
     const std::string  kv_cache_dtype) {
   // FIXME: only support auto datatype, does not support fp8
   if (kv_cache_dtype != "auto") {

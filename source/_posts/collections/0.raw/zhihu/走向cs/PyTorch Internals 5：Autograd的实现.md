@@ -36,7 +36,7 @@ L=z.mean()
 
 ```python
 L.backward()
-print(x1.grad, x2.grad)`
+print(x1.grad, x2.grad)
 ```
 
 
@@ -89,9 +89,9 @@ struct TORCH_API Variable::AutogradMeta : public c10::AutogradMetaInterface {
 
 
   AutogradMeta(
-    at::TensorImpl* self_impl,
 
 ```text
+    at::TensorImpl* self_impl,
     bool requires_grad = false,
     Edge gradient_edge = Edge());
 };
@@ -157,9 +157,9 @@ Tensor sin(const Tensor & self) {
 
 
 inline void set_history(
-    at::Tensor& variable,
 
 ```cpp
+    at::Tensor& variable,
     const std::shared_ptrNode>& grad_fn) {
   AT_ASSERT(grad_fn);
   if (variable.defined()) {

@@ -30,7 +30,7 @@ virtual_mem = psutil.virtual_memory()
 print(f"RAM - Total: {virtual_mem.total / 1024**3:.2f} GB, "
               f"Available: {virtual_mem.available / 1024**3:.2f} GB, "
               f"Buffers: {virtual_mem.buffers / 1024**3:.2f} GB, "
-              f"Cached: {virtual_mem.cached / 1024**3:.2f} GB")`
+              f"Cached: {virtual_mem.cached / 1024**3:.2f} GB")
 ```
 
 
@@ -54,7 +54,7 @@ pin_memory(）虽然是将tensor从CPU的固定内存（RAM）移动到GPU，加
 pageable_tensor = torch.randn(1_000_000)
 
 # A tensor in page-locked (pinned) memory
-pinned_tensor = torch.randn(1_000_000, pin_memory=True)`
+pinned_tensor = torch.randn(1_000_000, pin_memory=True)
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_6ad7c59ac642.jpg)
 

@@ -102,7 +102,7 @@ OpenCV:
  [25.5 27.5 29.5 31.5 33.5]
  [45.5 47.5 49.5 51.5 53.5]
  [65.5 67.5 69.5 71.5 73.5]
- [85.5 87.5 89.5 91.5 93.5]]`
+ [85.5 87.5 89.5 91.5 93.5]]
 
 Opencv的结果比较好理解，比如第一个点：5.5 = (0 + 1 + 10 +11) / 4 
 
@@ -122,7 +122,7 @@ Applying that horizontally,
 and then vertically,
 
 0.714285 * 0.428571 + 10.714275 * 0.428571 + 20.714265 * 0.142857 = 7.85712714287
-You suggest that Pillow should only consider 0, 1, 10 and 11 to get the first pixel value. Instead, Pillow is also considering 2, 12, 20, 21 and 22. That is different to OpenCV, but I see no reason why it should be thought of as incorrect. 0, 1, 10 and 11 are still all considered equally.`
+You suggest that Pillow should only consider 0, 1, 10 and 11 to get the first pixel value. Instead, Pillow is also considering 2, 12, 20, 21 and 22. That is different to OpenCV, but I see no reason why it should be thought of as incorrect. 0, 1, 10 and 11 are still all considered equally.
 
 [](https://link.zhihu.com/?target=https%3A//github.com/python-pillow/Pillow/blob/b4bf2885f365b23e16772380173e971f89b208bf/src/libImaging/Resample.c%23L655)
 

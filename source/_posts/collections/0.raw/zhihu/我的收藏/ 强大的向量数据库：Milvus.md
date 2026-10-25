@@ -117,7 +117,7 @@ services:
 
 networks:
   default:
-    name: milvus`
+    name: milvus
 
 <strong>2、拉取镜像并启动</strong>
 
@@ -148,7 +148,7 @@ https://milvus.io/cn/docs/v2.0.0/install_cluster-docker.md
 from pymilvus_orm import connections, FieldSchema, CollectionSchema, DataType, Collection
 
 # 连接milvus服务器
-connections.connect(host='localhost', port='19530')`
+connections.connect(host='localhost', port='19530')
 
 ### 创建collection
 
@@ -175,7 +175,7 @@ def create_collection():
     print(pymilvus_orm.utility.get_connection().has_collection(collection_name))
     print(pymilvus_orm.utility.get_connection().list_collections())
 
-    return collection`
+    return collection
 ```
 
 
@@ -193,7 +193,7 @@ def create_partition(collection: Collection):
 
     print(collection.partitions)
 
-    print(collection.has_partition(partition_name))`
+    print(collection.has_partition(partition_name))
 ```
 
 
@@ -224,7 +224,7 @@ def insert(collection: Collection, partition_name=None):
 
 
     # 插入的数据存储在内存，需要传输到磁盘
-    pymilvus_orm.utility.get_connection().flush([collection.name])`
+    pymilvus_orm.utility.get_connection().flush([collection.name])
 
 ### 创建索引
 
@@ -247,7 +247,7 @@ def create_index(collection: Collection):
         "params": {"nlist": 1024}
     }
     collection.create_index(field_name=field_name, index_params=index_param)
-    print(collection.index().params)`
+    print(collection.index().params)
 ```
 
 
@@ -288,7 +288,7 @@ def search(collection: Collection, partition_name=None):
                                anns_field=field_name, param=search_params, limit=10,
                                expr="cat_id==2")
     print(result[0].ids)
-    print(result[0].distances)`
+    print(result[0].distances)
 ```
 
 
@@ -303,7 +303,7 @@ def drop(collection: Collection):
     # 删除索引
     collection.drop_index()
     # 删除分区
-    collection.drop_partition("partition_name")`
+    collection.drop_partition("partition_name")
 ```
 
 
@@ -318,7 +318,7 @@ def release(collection: Collection = None):
 
 
     # 断开与服务器的连接，释放资源
-    connections.disconnect("default")`
+    connections.disconnect("default")
 
 ### 其他SDK
 

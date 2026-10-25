@@ -147,7 +147,7 @@ Unsloth支持表格改编自官方仓库Unsloth与HuggingFace和vllm兼容，我
 ```bash
 pip install auto-gptq autoawq trl bitsandbytes>=0.39.0
 pip install accelerate transformers optimum
-pip install git+https://github.com/unslothai/unsloth.git`
+pip install git+https://github.com/unslothai/unsloth.git
 ```
 
 
@@ -161,7 +161,7 @@ pip install git+https://github.com/unslothai/unsloth.git`
 from transformers import AutoModelForCausalLM
 ​
 model_name_or_path = "TheBloke/Mistral-7B-Instruct-v0.1-GPTQ"
-model = AutoModelForCausalLM.from_pretrained(model_name_or_path, device_map="auto")`
+model = AutoModelForCausalLM.from_pretrained(model_name_or_path, device_map="auto")
 
 你可以看到，我们可以只用~5GB VRAM就加载一个量化的7B模型。
 
@@ -206,7 +206,7 @@ print(decoded[0])
 # 2. With the machine running, slowly drizzle in the white wine vinegar or lemon juice until the mixture thickens.
 # 3. In a slow, steady stream, add the vegetable oil, followed by the olive oil, until the mixture is a smooth, creamy consistency.
 # 4. Taste the mayonnaise and adjust the salt and acid levels as needed.
-# 5. Transfer the mayonnaise to a tightly sealed container and chill in the fridge until ready to serve.`
+# 5. Transfer the mayonnaise to a tightly sealed container and chill in the fridge until ready to serve.
 
 如你所见，模型可以详细回答蛋黄酱的制作方法。即使我们将模型量化为4位，模型仍然能保持其准确性。
 
@@ -227,7 +227,7 @@ quantized_model = AutoModelForCausalLM.from_pretrained(model_id, device_map="aut
 
 ```text
 quantized_model.save_pretrained(result_dir)
-tokenizer.save_pretrained(result_dir)`
+tokenizer.save_pretrained(result_dir)
 ```
 
 
@@ -250,7 +250,7 @@ tokenizer.save_pretrained(result_dir)`
 要加载AWQ预量化模型，你只需要将你想使用的模型名称传递给AutoModelForCausalLM类。当你将device_map设置为“auto”时，系统会自动利用可用的GPU。让我们使用以下代码加载Mistral 7B模型。
 
 model_name_or_path = "TheBloke/Mistral-7B-Instruct-v0.1-AWQ"
-model = AutoModelForCausalLM.from_pretrained(model_name_or_path, device_map="auto")`
+model = AutoModelForCausalLM.from_pretrained(model_name_or_path, device_map="auto")
 
 你可以看到，我们可以只用~5GB VRAM就加载一个量化的7B模型。
 
@@ -289,7 +289,7 @@ print(decoded)
 # Black holes come in various sizes, with the smallest being only a few times the mass of the sun, 
 # and the largest being billions of times more massive than the sun. They are invisible, 
 # but their presence can be inferred from their gravitational effects on nearby objects, such as stars and galaxies. 
-# The study of black holes provides important insights into the nature of gravity, space, and time.`
+# The study of black holes provides important insights into the nature of gravity, space, and time.
 
 如你所见，模型可以详细回答关于黑洞的问题。它似乎保持了模型的准确性。
 
@@ -304,7 +304,7 @@ model = AutoAWQForCausalLM.from_pretrained(model_path)
 tokenizer = AutoTokenizer.from_pretrained(model_path, trust_remote_code=True)
 ​
 # Quantize
-model.quantize(tokenizer, quant_config=quant_config)`
+model.quantize(tokenizer, quant_config=quant_config)
 
 对3B模型进行量化需要15分钟。要保存AWQ量化的模型，我们需要修改模型和配置的某些部分，使其与transformers兼容。
 
@@ -327,7 +327,7 @@ model.model.config.quantization_config = quantization_config
 
 ```text
 model.save_quantized(result_dir)
-tokenizer.save_pretrained(result_dir)`
+tokenizer.save_pretrained(result_dir)
 ```
 
 
@@ -359,7 +359,7 @@ bnb_config = BitsAndBytesConfig(
 
 model_id = "meta-llama/Llama-3.2-3B"
 model_nf4 = AutoModelForCausalLM.from_pretrained(model_id, quantization_config=bnb_config, device_map={"":0})
-model_nf4.gradient_checkpointing_enable()`
+model_nf4.gradient_checkpointing_enable()
 
 我们需要为4位量化训练应用以下准备函数。
 
@@ -381,7 +381,7 @@ config = LoraConfig(
 ```
 
 
-model_nf4 = get_peft_model(model_nf4, config)`
+model_nf4 = get_peft_model(model_nf4, config)
 
 你可以看到，我们可以只用~4GB VRAM就加载一个量化的3B模型。
 
@@ -396,7 +396,7 @@ dataset = load_dataset("qwedsacf/grade-school-math-instructions", split='train')
 # Instruction:
 # 'This math problem has got me stumped: Natalia sold clips to 48 of her friends in April, and then she sold half as many clips in May. How many clips did Natalia sell altogether in April and May?\nCan you show me the way?',
 # Answer:
-# 'Natalia sold  = 24 clips in May.\nNatalia sold 48+24 = 72 clips altogether in April and May.')`
+# 'Natalia sold  = 24 clips in May.\nNatalia sold 48+24 = 72 clips altogether in April and May.')
 
 trl库存在于实现指令调整。我们想使用trl库中的监督微调(SFT) Trainer来方便使用，所以我们需要修改我们的数据格式以适应SFTTrainer。我们通过定义如下的格式函数来格式化我们的数据。
 
@@ -406,14 +406,14 @@ def formatting_prompts_func(example):
     for i in range(len(example['INSTRUCTION'])):
         text = f"### Question: {example['INSTRUCTION'][i]}\n ### Answer: {example['RESPONSE'][i]}"
         output_texts.append(text)
-    return output_texts`
+    return output_texts
 ```
 
 
 接下来，我们定义整理器来使模型只针对给定的数据集答案进行训练。有一个名为“DataCollatorForCompleionOnlyLM”的类可以完成这项工作，所以我们只需要用答案模板实例化这个类来区分给定输入中的答案部分。
 
 response_template = " ### Answer:"
-collator = DataCollatorForCompletionOnlyLM(response_template=response_template, tokenizer=tokenizer, mlm=False)`
+collator = DataCollatorForCompletionOnlyLM(response_template=response_template, tokenizer=tokenizer, mlm=False)
 
 最后，在我们定义了训练参数之后，我们可以开始训练！处理整个数据集大约需要2小时。在这篇博客中，为了训练速度，数据量被限制了。
 
@@ -461,14 +461,14 @@ trainer = SFTTrainer(
     data_collator=collator,
 )
 
-trainer.train()`
+trainer.train()
 ```
 
 
 训练后，我们需要保存模型。我们可以使用以下方法。
 
 # 保存模型
-trainer.save_model(output_dir)`
+trainer.save_model(output_dir)
 
 我们可以保存分词器和LoRA模型权重。保存的目录看起来如下图所示。
 
@@ -481,7 +481,7 @@ trainer.save_model(output_dir)`
 
 tokenizer = AutoTokenizer.from_pretrained(output_dir)
 tokenizer.pad_token = tokenizer.eos_token
-model = AutoModelForCausalLM.from_pretrained(output_dir, load_in_4bit=True, device_map="auto")`
+model = AutoModelForCausalLM.from_pretrained(output_dir, load_in_4bit=True, device_map="auto")
 
 现在，使用测试数据集检查微调结果。我们使用以下问题比较结果。
 
@@ -489,7 +489,7 @@ There are 180 school days in the academic year.
 Aliyah packs a lunch half the time. 
 Becky packs her lunch half as much as Aliyah. 
 How many days a year does Becky pack her lunch?
-Find the solution. `
+Find the solution. 
 
 基础模型的推理如下所示。它无法捕捉整个问题的上下文。
 
@@ -498,7 +498,7 @@ Find the solution. `
 QLoRA模型的推理如下所示。
 
 Aliyah packs her lunch =90 days.
-Becky packs her lunch =45 days.`
+Becky packs her lunch =45 days.
 
 如你所见，即使使用小数据集，我们也可以微调模型！当我们有限的计算资源和数据时，QLoRA真的很有用。 
 
@@ -518,7 +518,7 @@ model, tokenizer = FastLanguageModel.from_pretrained(
     max_seq_length = max_seq_length,
     dtype = dtype,
     load_in_4bit = load_in_4bit,
-   )`
+   )
 ```
 
 
@@ -539,9 +539,9 @@ model = FastLanguageModel.get_peft_model(
     random_state = 3407,
     use_rslora = False,  # 我们支持等级稳定化LoRA
     loftq_config = None, # 和LoftQ
+)
 ```
 
-)`
 
 你可以看到，我们可以只用~3GB VRAM就加载一个量化的3B模型。
 
@@ -559,7 +559,7 @@ trainer = SFTTrainer(
     data_collator=collator,
 )
 
-trainer.train()`
+trainer.train()
 ```
 
 
@@ -569,7 +569,7 @@ trainer.train()`
 
 ```text
 model.save_pretrained(os.path.join(output_dir, "lora_model"))
-tokenizer.save_pretrained(os.path.join(output_dir, "lora_model"))`
+tokenizer.save_pretrained(os.path.join(output_dir, "lora_model"))
 ```
 
 
@@ -585,7 +585,7 @@ model, tokenizer = FastLanguageModel.from_pretrained(
         dtype=None,
         load_in_4bit=True,
     )
-FastLanguageModel.for_inference(model) # 启用原生2倍速推理`
+FastLanguageModel.for_inference(model) # 启用原生2倍速推理
 ```
 
 
@@ -603,14 +603,14 @@ outputs = model.generate(
     top_p=0.95,
     max_new_tokens=512
 )
-print(tokenizer.batch_decode(outputs, skip_special_tokens=True)[0])`
+print(tokenizer.batch_decode(outputs, skip_special_tokens=True)[0])
 ```
 
 
 这是BitsandBytes QLoRA部分中相同示例问题的结果。它可以正确回答问题！
 
 Aliyah packs her lunch  = 90 days.
-Becky packs her lunch  = 45 days.`
+Becky packs her lunch  = 45 days.
 
 在这篇博客中，我们从基础开始学习了最近流行的量化技术的概念。随着最近LLMs规模的增长，量化的重要性变得越来越高。这种技术对实际的AI应用很有帮助，我希望这篇博客能帮助你进入量化领域。下面的代码可以用来复现这篇博客的结果。
 

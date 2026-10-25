@@ -162,19 +162,15 @@ void __init initmem_init(void)
 
 这个函数将<strong>high_memory</strong>初始化为低端内存最大页框<strong>max_low_pfn</strong>对应的地址大小，接着调用 memblock_set_node，通过 memblock 内存管理器<strong>设置 node 节点信息</strong>。
 
-```cpp
+```x86asm
 int __init_memblock memblock_set_node(phys_addr_t base, phys_addr_t size,
           struct memblock_type *type, int nid)
 {
 #ifdef CONFIG_NEED_MULTIPLE_NODES
  int start_rgn, end_rgn;
  int i, ret;
-```
-
 
  ret = memblock_isolate_range(type, base, size, &start_rgn, &end_rgn);
-
-```cpp
  if (ret)
   return ret;
 

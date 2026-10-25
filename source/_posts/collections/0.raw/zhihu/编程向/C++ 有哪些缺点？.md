@@ -20,7 +20,7 @@ C++ 的函数重载决议规则是所有语言中最复杂的，因为他允许�
 比如有下面两个函数：
 
 Employee* findEmployee(const std::string& surname, const std::string& givenName, bool retired = false);
-Employee* findEmployee(const std::string& fullName, bool retired = false);`
+Employee* findEmployee(const std::string& fullName, bool retired = false);
 
 那么
 

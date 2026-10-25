@@ -38,7 +38,7 @@ make_arm64_aapcs_elf_gas.S.o:
 0000000000000000 T make_fcontext
 
 ontop_arm64_aapcs_elf_gas.S.o:
-0000000000000000 T ontop_fcontext`
+0000000000000000 T ontop_fcontext
 
 直接`nm -C`来看这个静态库，发现出现一个文件无法识别格式。原本以为是编译的结果损坏了，拿cutter一看，llvm在lto时产生的.o文件是`LLVM-IR-bytecode`。几经搜索，发现用llvm-nm就能看到详情：
 
@@ -65,7 +65,7 @@ stack_traits.cpp.o:
                  U sysconf
 
 jump_arm64_aapcs_elf_gas.S.o:
-0000000000000000 T jump_fcontext`
+0000000000000000 T jump_fcontext
 
 所以编译出的静态库里符号是切实存在的，只是没被链接进去**。这更奇怪了……
 

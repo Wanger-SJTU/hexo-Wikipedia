@@ -117,9 +117,9 @@ void foo(void) {
 void bar(void) {   
   while(b==0) continue;   
   assert(a == 1); 
+}
 ```
 
-}`
 
 如下顺序的操作可能会发生：
 
@@ -147,9 +147,9 @@ void bar(void)
 {
   while(b==0) continue;
   assert(a == 1);
+}
 ```
 
-}`
 
 CPU执行smp_mb()时，后续的<strong>store</strong>必须等待store buffer刷到cache中才能存储到cache line中。CPU可能简单stall，直到store buffer清空，或者用store buffer保存后续的store直到之前的entries被应用。
 
@@ -205,9 +205,9 @@ void bar(void)
 {
   while(b==0) continue;
   assert(a == 1);
+}
 ```
 
-}`
 
 cpu1执行完while循环后执行smp_mb()，标记invalidate queue中的条目，当执行<strong>assert(a==1)</strong>时，必须等待队列中的条目被应用才能load，"a"的cache line失效，cpu1继续执行load发现"a"的cache line不在cache中，因此发送"read"消息，获取到"a"的最新值，assert成功。
 
@@ -231,9 +231,9 @@ void bar(void)
   while(b==0) continue;
   smp_mb();
   assert(a == 1);
+}
 ```
 
-}`
 
 一些计算机具有更多种类的memory barrier，但是了解这三种可以对memory barrier有一个比较好的理解。
 

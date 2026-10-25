@@ -170,7 +170,7 @@ class BatchDecodeWithSharedPrefixPagedKVCacheWrapper:
         )
         # Merge State
         merge_state_in_place(V_shared, S_shared, V_unique, S_unique)
-        return V_shared`
+        return V_shared
 ```
 
 

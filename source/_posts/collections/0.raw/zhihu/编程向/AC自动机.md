@@ -131,7 +131,7 @@ function createFail(ac) {
 
 代码如下：
 
-```js
+```x86asm
 function match(ac, text) {
     var root = ac.root, p = root, ret = [], unique = {};
     for (var i = 0; i  text.length; i++) {

@@ -894,13 +894,12 @@ Jayce
 
 可以这么理解，比如这个gemm
 
+```text
 // S=Q*K
 
 flash::gemm /*A_in_regs=*/Kernel_traits::Is_Q_in_regs (
             acc_s, tSrQ, tSrK, tSsQ, tSsK, tiled_mma, smem_tiled_copy_Q, smem_tiled_copy_K,
             smem_thr_copy_Q, smem_thr_copy_K
-
-```text
         );
 ```
 

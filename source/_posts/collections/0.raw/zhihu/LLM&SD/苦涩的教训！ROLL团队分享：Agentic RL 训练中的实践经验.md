@@ -201,7 +201,7 @@ And have this data then be pushed to a webserver running on port 8080 so if I ru
 
 curl 
 
-then I see the output "hello world"`
+then I see the output "hello world"
 
 但测试脚本只检查：`curl ` 是否返回 `"hello world"`.
 
@@ -294,7 +294,7 @@ def handle_rollout_with_mask(rollout, failure_type):
 
 
         # Normal rollout: keep as-is
-        return rollout`
+        return rollout
 
 <strong>偶发且可恢复错误</strong>（例如工具超时、网速延缓等）：这类样本会被 <strong>filter 掉</strong>，并在全局控制比例（例如 ≤50%）下丢弃，避免过度重试。
 
@@ -364,7 +364,7 @@ class GroupFilterTB:
 
 ```text
             self.global_filter_stats["filtered"] += 1
-            return True`
+            return True
 ```
 
 

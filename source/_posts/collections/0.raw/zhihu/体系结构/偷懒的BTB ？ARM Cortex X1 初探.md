@@ -70,21 +70,37 @@ BTB的设计维度很宽广，那么会影响BTB性能的除了物理上确定�
 让所有分支指令的PC的差值为16 Byte，只需在相邻分支指令间插入3条nop指令。
 
 1: b 1f // b即非条件跳转指令，1f（1 forward）即下一个标号1
+
+```text
    nop
    nop
    nop
+```
+
 1: b 1f
+
+```text
    nop
    nop
    nop
+```
+
 1: b 1f
+
+```text
    nop
    nop
    nop
+```
+
 1: b 1f
+
+```text
    nop
    nop
    nop
+```
+
 
 - 对于全相联的BTB，Tag Hash算法会影响其实际可用容量。倘若分支指令A与分支指令B的PC经过hash之后的值相等，那它们会被视为同一条分支指令，进而产生冲突。
 - 对于组相联的BTB，Index与Tag Hash算法会影响其实际可用容量。Index决定了指令会进入哪一个set；每一个set的容量上限为路数，下限由Tag的Hash算法决定，倘若分支指令A与分支指令B的PC经过hash之后的值相等，那它们会被视为同一条分支指令，进而产生冲突导致每个set的容量小于路数。

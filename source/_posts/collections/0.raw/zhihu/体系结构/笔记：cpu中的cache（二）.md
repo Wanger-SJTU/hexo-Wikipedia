@@ -169,9 +169,9 @@ voidexecutedOnCpu1(){
     //在读取之前将所有失效队列中关于该数据的指令执行完毕。
     loadMemoryBarrier();
    assert(a == 1);
+}
 ```
 
-}`
 
 ![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_1b3cf4d6bdf7.jpg)
 

@@ -85,7 +85,7 @@ dflash训练的注意力mask图既然我们现在有了dflash的推理过程了�
 
 ```bash
 cd SpecForge
-pip install -e ./`
+pip install -e ./
 ```
 
 
@@ -116,7 +116,7 @@ python scripts/regenerate_train_data.py \
     --temperature 0.8 \
     --server-address localhost:30000 \
     --input-file-path ./cache/dataset/perfectblend_train.jsonl \
-    --output-file-path ./cache/dataset/perfectblend_qwen3-8b_regen.jsonl`
+    --output-file-path ./cache/dataset/perfectblend_qwen3-8b_regen.jsonl
 ```
 
 

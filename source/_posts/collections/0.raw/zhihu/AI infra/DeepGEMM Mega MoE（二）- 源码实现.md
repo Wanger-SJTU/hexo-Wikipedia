@@ -856,9 +856,9 @@ if (is_leader_cta) {
 由于为2-SM UMMA，如图7所示，只有leader CTA会执行umma指令。 创建instr_desc指定各种元信息，比如ab的type等，可以看到交换了A和B，也就是说weight为A矩阵，token为B矩阵，猜测可能是为了方便调整BLOCK_M，因为2-SM场景的UMMA_M只能是128或者256，但是UMMA_N的调整范围较大。另外在block scaling场景不需要配置Dtype，猜测可能只支持输出为f32。
 
 CUTLASS_DEVICE
-cute::UMMA::SmemDescriptor make_sf_desc(void* smem_ptr) {
 
 ```text
+cute::UMMA::SmemDescriptor make_sf_desc(void* smem_ptr) {
     // NOTES: the UTCCP layout is K-major by default
     // Atom size: 8 x 128 bits
     // {SBO, LBO} means the byte stride between atoms on {MN, K}

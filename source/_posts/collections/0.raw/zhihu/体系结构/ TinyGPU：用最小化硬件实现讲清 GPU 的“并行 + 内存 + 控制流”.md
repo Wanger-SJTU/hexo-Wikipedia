@@ -45,7 +45,7 @@ localparam NOP = 4'b0000,
         LDR = 4'b0111,
         STR = 4'b1000,
         CONST = 4'b1001,
-        RET = 4'b1111;`
+        RET = 4'b1111;
 ```
 
 
@@ -61,7 +61,7 @@ localparam NOP = 4'b0000,
 // 5. EXECUTE - Execute computations on retrieved data from registers / memory
 // 6. UPDATE - Update register values (including NZP register) and program counter
 // > Each core has it's own scheduler where multiple threads can be processed with
-//   the same control flow at once.`
+//   the same control flow at once.
 ```
 
 
@@ -230,7 +230,7 @@ dispatch.sv` 用整除实现向上取整：
 wire [7:0] total_blocks;
 
 ```text
-    assign total_blocks = (thread_count + THREADS_PER_BLOCK - 1) / THREADS_PER_BLOCK;`
+    assign total_blocks = (thread_count + THREADS_PER_BLOCK - 1) / THREADS_PER_BLOCK;
 ```
 
 
@@ -262,7 +262,7 @@ localparam IDLE = 3'b000,
         WAIT = 3'b100,
         EXECUTE = 3'b101,
         UPDATE = 3'b110,
-        DONE = 3'b111;`
+        DONE = 3'b111;
 ```
 
 

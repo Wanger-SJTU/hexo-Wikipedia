@@ -376,9 +376,9 @@ __global__ void reduce7(float *d_in,float *d_out, unsigned int n){
     sum = (threadIdx.x (sum);
     // write result for this block to global mem
     if(tid==0)d_out[blockIdx.x]=sum;
+}
 ```
 
-}`
 
 #### 实验结果
 

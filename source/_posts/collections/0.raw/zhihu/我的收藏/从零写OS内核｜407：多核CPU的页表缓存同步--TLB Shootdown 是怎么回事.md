@@ -348,7 +348,7 @@ TLB shootdown 是多核操作系统里一个看不见的「交通管制」——
 ```bash
 bash
    git clone https://github.com/zhangfuwen/wandos.git
-   cd wandos`
+   cd wandos
 ```
 
 

@@ -29,7 +29,7 @@ Qwen-Image本文主要展示了如何使用cache-dit给Qwen-Image进行cache加�
 
 ```bash
 pip install git+https://github.com/huggingface/diffusers
-pip install -U cache-dit`
+pip install -U cache-dit
 ```
 
 
@@ -190,7 +190,7 @@ save_path = f"qwen-image.{cache_type_str}.png"
 ```python
 print(f"Time cost: {time_cost:.2f}s")
 print(f"Saving image to {save_path}")
-image.save(save_path)`
+image.save(save_path)
 ```
 
 
@@ -198,7 +198,7 @@ image.save(save_path)`
 
 python3 run_qwen_image.py # baseline
 python3 run_qwen_image.py --cache --Fn 8 --Bn 0 --rdt 0.12 --taylorseer --order 2
-python3 run_qwen_image.py --cache --Fn 8 --Bn 0 --rdt 0.12 --taylorseer --order 4`
+python3 run_qwen_image.py --cache --Fn 8 --Bn 0 --rdt 0.12 --taylorseer --order 4
 
 #### 0x02 加速效果
 

@@ -51,7 +51,7 @@ print(a)
 print(a.strides)
 '''
 (12, 4)
-'''`
+'''
 
 strides是numpy数组对象的一个属性，官方手册给出的解释是跨越数组各个维度所需要经过的字节数（bytes）
 
@@ -73,7 +73,7 @@ print(b.strides)
 
 c = np.arange(27, dtype=np.int32).reshape(3,3,3)
 print(c.strides)
-#(36, 12, 4)`
+#(36, 12, 4)
 
 现在，再回过头来看as_strided函数，要从X得到A：
 
@@ -130,7 +130,7 @@ print(A)
 
   [[4 5]
    [7 8]]]]
-'''`
+'''
 
 果然，再来看一个例子
 
@@ -164,7 +164,7 @@ print(A)
   [[ 5  6  7]
    [ 9 10 11]
    [13 14 15]]]]
-'''`
+'''
 
 以上，是2维的情况，再来看3维的情况，设有一矩阵：
 
@@ -235,7 +235,7 @@ print(A1)
 
    [[14 15]
     [17 18]]]]]
-'''`
+'''
 
 完全正确
 
@@ -249,7 +249,7 @@ def split_by_strides(X, kh, kw, s):
     oh = (H - kh) // s + 1
     ow = (W - kw) // s + 1
     strides = (*X.strides[:-2], X.strides[-2]*s, X.strides[-1]*s, *X.strides[-2:])
-    A = as_strided(X, shape=(N,C,oh,ow,kh,kw), strides=strides)`
+    A = as_strided(X, shape=(N,C,oh,ow,kh,kw), strides=strides)
 ```
 
 
@@ -265,7 +265,7 @@ def split_by_strides(X, kh, kw, s):
     shape = (N, oh, ow, kh, kw, C)
     strides = (X.strides[0], X.strides[1]*s, X.strides[2]*s, *X.strides[1:])
     A = as_strided(X, shape=shape, strides=strides)
-    return A`
+    return A
 ```
 
 
@@ -281,7 +281,7 @@ def split_by_strides(X, kh, kw, s):
 
 kh, kw, C, kn = self.filters.shape
 X_split = split_by_strides(X, kh, kw, s)   # X_split.shape: (N, oh, ow, kh, kw, C)
-feature_map = np.tensordot(X_split, self.filters, axes=[(3,4,5), (0,1,2)]) + self.bias`
+feature_map = np.tensordot(X_split, self.filters, axes=[(3,4,5), (0,1,2)]) + self.bias
 
 可以检验一下，featrue_map的shape为：（N，oh，ow，kn）
 
@@ -303,7 +303,7 @@ array([[ 37,  23,  77,  19,  16],
 >>> np.dot(A, B)
 array([[ 37,  23,  77,  19,  16],
        [ 83,  32, 116,  40,  51],
-       [ 86,  43, 127,  47,  47]])`
+       [ 86,  43, 127,  47,  47]])
 
 这个和np.dot的结果虽然没有区别，不过为了说明其中的不同，还是用另一种角度来进行抽象，先将上面的两个二维数组分别抽象成一个列向量和一个行向量：
 
@@ -338,14 +338,14 @@ $a \cdot b=a_{1} b_{1}+\dots+a_{n} b_{n} $
 >>> np.tensordot(A, B, [(1,2), (0,1)])
 array([[290, 146],
        [308, 164],
-       [316, 205]])`
+       [316, 205]])
 
 经过上面的解释，想必你肯定知道这些数值是怎么来的了，来验证一下：
 
 >>> np.sum(A[0] * B[:,:,0])
 290
 >>> np.sum(A[2] * B[:,:,1])
-205`
+205
 
 上面分别验证了（0，0）和（2，1）位置的值，都完全正确
 
@@ -370,4 +370,4 @@ array([[ 4400.,  4730.],
 ...   for j in range(2):
 ...     for k in range(3):
 ...       for n in range(4):
-...         d[i,j] += a[k,n,i] * b[n,k,j]`
+...         d[i,j] += a[k,n,i] * b[n,k,j]

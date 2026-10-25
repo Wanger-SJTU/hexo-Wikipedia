@@ -118,7 +118,7 @@ y[3] = -7.9
 y[4] = 8.5
 y[5] = -9.1
 y[6] = 7.9
-y[7] = -6.9`
+y[7] = -6.9
 
 所有输出分量的绝对值都在6.9到9.1之间，动态范围从原来的8.4（max - min）缩小到约2.2。原本集中在 x[1] 的能量 8² = 64 被分散到8个输出分量上。
 
@@ -320,7 +320,7 @@ GPU的共享内存通常分成32个bank（每个bank宽度4字节）。如果一
 int smem_write_idx = (threadIdx.x * k + i) XOR (threadIdx.x / 32);
 ```
 
-smem[smem_write_idx] = x[i];`
+smem[smem_write_idx] = x[i];
 
 这种XOR置换打破了规则的bank映射关系。原本连续的32个线程会访问bank 0, 1, 2, …, 31，如果数据排列不当可能集中到少数bank。XOR后，访问分散到不同bank，冲突概率大幅降低。
 
@@ -353,7 +353,7 @@ float y[12];
 y[0] = x[0] + x[1] + x[2] + x[3] + x[4] + x[5] + x[6] + x[7] + x[8] + x[9] + x[10] + x[11];
 y[1] = x[0] - x[1] + x[2] - x[3] + x[4] - x[5] + x[6] - x[7] + x[8] - x[9] + x[10] - x[11];
 y[2] = x[0] + x[1] - x[2] - x[3] + x[4] + x[5] - x[6] - x[7] + x[8] + x[9] - x[10] - x[11];
-// ... 共12行`
+// ... 共12行
 
 编译器会把这些全部展开成加减指令，利用指令级并行同时执行多个加法。虽然有12×12=144个操作，但因为没有乘法、没有循环、没有分支，实际执行非常快。
 
@@ -379,7 +379,7 @@ vec_t loaded = input_ptr[threadIdx.x];
 float x[4];
 ```
 
-memcpy(x, &loaded, sizeof(vec_t));`
+memcpy(x, &loaded, sizeof(vec_t));
 
 这样一次全局内存读取就载入了4个float（或8个half）。warp内的32个线程同时读取，总共128字节，正好是一个内存事务。
 
@@ -387,7 +387,7 @@ memcpy(x, &loaded, sizeof(vec_t));`
 
 vec_t to_store;
 memcpy(&to_store, x, sizeof(vec_t));
-output_ptr[threadIdx.x] = to_store;`
+output_ptr[threadIdx.x] = to_store;
 
 这种向量化访问不仅提高带宽利用率，还减少了访存指令的数量，降低了指令调度的压力。
 
@@ -422,7 +422,7 @@ float x = __half2float(loaded_half);
 
 
 __half result = __float2half(x);
-output[idx] = result;`
+output[idx] = result;
 
 这样保证了中间计算的精度，只在最后转换回半精度。现代GPU的fp16到fp32转换延迟很低（1-2个周期），不会成为瓶颈。
 

@@ -96,7 +96,7 @@ def process():
 
 
 if __name__ == "__main__":
-    process()`
+    process()
 
 查看生成后的标注文件genshin_out.txt，里面的内容如下：
 
@@ -107,7 +107,7 @@ if __name__ == "__main__":
 ./resampled/yuanshen/公主/vo_YYWQ003_6_princess_01.wav|公主|ZH|难道策士并不像他吹嘘的有手段，可现在我又该用什么计谋保卫王国平安？
 ./resampled/yuanshen/公主/vo_YYWQ005_1_princess_06.wav|公主|ZH|你的话语的确有理，且待我将他们的言行逐一回忆。
 ./resampled/yuanshen/公主/vo_YYWQ001_3_princess_01.wav|公主|ZH|为了守护王国，我将亲自讨伐这吞噬梦想的恶龙。
-./resampled/yuanshen/公主/vo_YYWQ001_3_princess_02.wav|公主|ZH|是什么让您出尔反尔，忘记您曾经的教诲：不要放弃崇高）`
+./resampled/yuanshen/公主/vo_YYWQ001_3_princess_02.wav|公主|ZH|是什么让您出尔反尔，忘记您曾经的教诲：不要放弃崇高）
 
 （5）打开bert-vits2-master下的config.ymal文件，里面的内容如下：
 
@@ -264,7 +264,7 @@ translate:
   # 你的APPID
   "app_key": ""
   # 你的密钥
-  "secret_key": ""`
+  "secret_key": ""
 
 几个比较重要的参数需要配置，dataset_path设置为""或"./"
 
@@ -281,7 +281,7 @@ preprocess_text是生成训练需要的train.txt和val.txt，同时对数据进�
 ./resampled/yuanshen/公主/vo_YYWQ001_7_princess_02.wav|公主|ZH|哦!看来是我愚钝,对这样的流行从未听闻.|_ OO o ! k an l ai sh ir w o y v d un , d ui zh e y ang d e l iu x ing c ong w ei t ing w en . _|0 5 5 0 4 4 2 2 4 4 3 3 2 2 4 4 0 4 4 4 4 4 4 5 5 2 2 2 2 2 2 4 4 1 1 2 2 0 0|1 2 1 2 2 2 2 2 2 1 2 2 2 2 2 2 2 2 2 2 1 1
 ./resampled/yuanshen/公主/vo_YYWQ003_6_princess_04.wav|公主|ZH|而本该在岗的守卫也影踪全无,城门大开竟无人守护.|_ EE er b en g ai z ai g ang d e sh ou w ei y E y ing z ong q van w u , ch eng m en d a k ai j ing w u r en sh ou h u . _|0 2 2 3 3 1 1 4 4 3 3 5 5 3 3 4 4 2 2 3 3 1 1 2 2 2 2 0 2 2 2 2 4 4 1 1 4 4 2 2 2 2 3 3 4 4 0 0|1 2 2 2 2 2 2 2 2 2 2 2 2 2 1 2 2 2 2 2 2 2 2 2 1 1
 ./resampled/yuanshen/公主/vo_YYWQ003_3_princess_02.wav|公主|ZH|多亏忠诚的侍从早早把握了恶龙的行踪,我们这才掌握了主动.|_ d uo k ui zh ong ch eng d e sh ir c ong z ao z ao b a w o l e EE e l ong d e x ing z ong , w o m en zh e c ai zh ang w o l e zh u d ong . _|0 1 1 1 1 1 1 2 2 5 5 4 4 2 2 2 2 3 3 3 3 4 4 5 5 4 4 2 2 5 5 2 2 1 1 0 3 3 5 5 4 4 2 2 3 3 4 4 5 5 3 3 4 4 0 0|1 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 1 2 2 2 2 2 2 2 2 2 1 1
-./resampled/yuanshen/公主/vo_YYWQ005_1_princess_03.wav|公主|ZH|富有盛名的勇者们轮番向恶龙发起挑战,到头来各个都无功而返.|_ f u y ou sh eng m ing d e y ong zh e m en l un f an x iang EE e l ong f a q i t iao zh an , d ao t ou l ai g e g e d ou w u g ong EE er f an . _|0 4 4 3 3 4 4 2 2 5 5 2 2 3 3 5 5 2 2 1 1 4 4 4 4 2 2 1 1 3 3 3 3 4 4 0 4 4 2 2 2 2 4 4 5 5 1 1 2 2 1 1 2 2 3 3 0 0|1 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 1 2 2 2 2 2 2 2 2 2 2 1 1`
+./resampled/yuanshen/公主/vo_YYWQ005_1_princess_03.wav|公主|ZH|富有盛名的勇者们轮番向恶龙发起挑战,到头来各个都无功而返.|_ f u y ou sh eng m ing d e y ong zh e m en l un f an x iang EE e l ong f a q i t iao zh an , d ao t ou l ai g e g e d ou w u g ong EE er f an . _|0 4 4 3 3 4 4 2 2 5 5 2 2 3 3 5 5 2 2 1 1 4 4 4 4 2 2 1 1 3 3 3 3 4 4 0 4 4 2 2 2 2 4 4 5 5 1 1 2 2 1 1 2 2 3 3 0 0|1 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 1 2 2 2 2 2 2 2 2 2 2 1 1
 
 然后是bert_gen的参数配置，将config_path设置为训练的配置文件config.json所在的路径，一般是“config/config.json”。如果有英伟达显卡，device设置为"CUDA"，否则设置为"CPU"。我们打开bert-vits2-master下的config文件夹下的config.json文件。找到"data"字段内容如下：
 
@@ -308,7 +308,7 @@ preprocess_text是生成训练需要的train.txt和val.txt，同时对数据进�
       "卡莉娜": 3,
       "麦娜尔": 4
     }
-  },`
+  },
 ```
 
 
@@ -344,7 +344,7 @@ webui:
   # 是否开启debug模式
   debug: false
   # 语种识别库，可选langid, fastlid
-  language_identification_library: "langid"`
+  language_identification_library: "langid"
 
 我们可以在bert-vits2根目录下运行python webui.py，会弹出网页。
 

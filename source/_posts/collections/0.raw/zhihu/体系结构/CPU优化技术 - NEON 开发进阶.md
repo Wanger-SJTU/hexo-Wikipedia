@@ -120,9 +120,9 @@ void DownscaleUvNeon(uint8_t *src, uint8_t *dst, int32_t src_width, int32_t src_
         }
         //process leftovers......
     }
+}
 ```
 
-}`
 
 #### 2.3 向量化剩余部分(leftovers)处理
 
@@ -173,9 +173,9 @@ void DownscaleUvNeon(uint8_t *src, uint8_t *dst, int32_t src_width, int32_t src_
             vst2_u8(dst_ptr, v8_dst);
         }
     }
+}
 ```
 
-}`
 
 以上这种方法我们平时用的比较多，不仅可以处理剩余元素，而且可以保持向量处理的高效性。
 
@@ -232,7 +232,7 @@ uint8x16_t v8_row_cur_data = vextq_u8(v8_const_pad, v8_tmp_data, 15);
 //读取第1行数据
 v8_tmp_data = vld1q_u8(pt_row1);
 //第1行带有左padding的数据
-uint8x16_t v8_next_row_data = vextq_u8(v8_const_pad, v8_tmp_data, 15); `
+uint8x16_t v8_next_row_data = vextq_u8(v8_const_pad, v8_tmp_data, 15); 
 
 #### 3.2 复制填充
 
@@ -254,7 +254,7 @@ uint8x16_t v8_pre_row_data = v8_row_cur_data;
 v8_dup_pad = vld1q_dup_u8(pt_row1);
 v8_tmp_data = vld1q_u8(pt_row1);
 //第1行带有左padding的数据
-uint8x16_t v8_next_row_data = vextq_u8(v8_dup_pad, v8_tmp_data, 15);`
+uint8x16_t v8_next_row_data = vextq_u8(v8_dup_pad, v8_tmp_data, 15);
 
 #### 3.3 反射填充
 
@@ -280,7 +280,7 @@ v8_ref_pad1 = vrev64_u8(v8_ref_pad);
 //第1行带有左padding的数据
 uint8x8_t v8_next_row_data = vextq_u8(vcombine_u8(v8_ref_pad, v8_ref_pad1), v8_tmp_data, 15);
 //-1行数据
-uint8x8_t v8_pre_row_data = v8_next_row_data;`
+uint8x8_t v8_pre_row_data = v8_next_row_data;
 
 ### 四、优化实例
 
@@ -365,9 +365,9 @@ static inline int32_t Gaussian3x3RowCalcu(const uint8_t *src0, const uint8_t *sr
     vs_1 = vextq_u16(vqn0, vqn1, 7);
 
     // for循环......
+}
 ```
 
-}`
 
 中间部分处理 
 
@@ -396,9 +396,9 @@ static inline int32_t Gaussian3x3RowCalcu(const uint8_t *src0, const uint8_t *sr
     }
 
     return 0;
+}
 ```
 
-}`
 
 #### 4.3 运行结果  
 

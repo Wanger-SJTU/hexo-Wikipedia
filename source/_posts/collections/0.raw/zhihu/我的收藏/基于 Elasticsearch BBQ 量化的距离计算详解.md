@@ -143,7 +143,7 @@ stripe[3] (最高位): [0, 1, 0, 1, 1, 0, 1, 0]  → 字节: 0b01011010
 4.1 核心算法：ipByteBinByte
 代码位置：ESVectorUtil.ipByteBinByte() → DefaultESVectorUtilSupport.ipByteBinByteImpl()
 
-```cpp
+```x86asm
 public static long ipByteBinByteImpl(byte[] q, byte[] d) {
     long ret = 0;
     int size = d.length;  // 文档向量的字节数

@@ -39,7 +39,7 @@ if (!(Test-Path -Path $PROFILE)) {
 }
 ```
 
-notepad $PROFILE`
+notepad $PROFILE
 
 这会打开你的 PowerShell 配置文件。配置文件的默认路径通常是： `C:\Users\你的用户名\Documents\WindowsPowerShell\Microsoft.PowerShell_profile.ps1`
 
@@ -70,9 +70,9 @@ function check-proxy {
     } else {
         Write-Host "No proxy is currently set." -ForegroundColor Cyan
     }
+}
 ```
 
-}`
 
 #### 步骤 3：保存并重新加载配置
 

@@ -41,9 +41,9 @@ void reference_convert (uint8_t * __restrict dest, uint8_t * __restrict src, int
     // undo the scale by 256 and write to memory:
     *dest++ = (y>>8);
   }
+}
 ```
 
-}`
 
 Optimization with NEON Intrinsics
 Lets start optimizing the code using the compiler intrinsics. Intrinsics are nice to use because you they behave just like C-functions but compile to a single assembler statement. At least in theory as I’ll show you later..
@@ -162,7 +162,7 @@ That’s only a speed-up of factor 1.5. I expected much more from the NEON imple
  1a8:   f2c80830        vshrn.i16       d16, q8, #8
  1ac:   f449070f        vst1.8  {d16}, [r9]
  1b0:   e2899008        add     r9, r9, #8      ; 0x8
- 1b4:   caffffe9        bgt     160`
+ 1b4:   caffffe9        bgt     160
 
 Note the store at offset 168? The compiler decides to write the three registers onto the stack. After a bit of useless memory accesses from the GPP side the compiler reloads them (offset 188, 190 and 1a0) in exactly the same physical NEON register.
 
@@ -178,7 +178,7 @@ convert_asm_neon:
       # r1: Ptr to source data
       # r2: Iteration count:
 
-```text
+```x86asm
      push        {r4-r5,lr}
       lsr         r2, r2, #3
       # build the three constants:
@@ -200,7 +200,7 @@ convert_asm_neon:
       vst1.8      {d6}, [r0]!
       subs        r2, r2, #1
       bne         .loop
-      pop         { r4-r5, pc }`
+      pop         { r4-r5, pc }
 ```
 
 
@@ -908,8 +908,12 @@ uint32x4_t vminq_u32 (uint32x4_t __a, uint32x4_t __b);//_mm_min_epu32
 
 vpadd -> r0 = a0 + a1, ..., r3 = a6 + a7, r4 = b0 + b1, ..., r7 = b6 + b7 
 adds adjacent pairs of elements of two vectors,  
+
+```text
 and places the results in the destination vector.--*/  
 //r0 = a0 + a1, ...,r3 = a6 + a7, r4 = b0 + b1, ...,r7 = b6 + b7  
+```
+
 int8x8_t vpadd_s8 (int8x8_t __a, int8x8_t __b);  
 int16x4_t vpadd_s16 (int16x4_t __a, int16x4_t __b);  
 int32x2_t vpadd_s32 (int32x2_t __a, int32x2_t __b);  
@@ -1295,8 +1299,12 @@ int32x2_t vqrshrn_n_s64 (int64x2_t __a, const int __b);
 uint8x8_t vqrshrn_n_u16 (uint16x8_t __a, const int __b);  
 uint16x4_t vqrshrn_n_u32 (uint32x4_t __a, const int __b);  
 uint32x2_t vqrshrn_n_u64 (uint64x2_t __a, const int __b);  
+
+```text
 /*--14、Vector widening shift left by constant: vshll -> ri = ai left shifts each element in a vector of integers by an immediate value,  
 and place the results in the destination vector. Bits shifted out of the left of each 
+```
+
 element are lost and values are sign extended or zero extended.--*/  
 int16x8_t vshll_n_s8 (int8x8_t __a, const int __b);  
 int32x4_t vshll_n_s16 (int16x4_t __a, const int __b);  
@@ -1590,9 +1598,9 @@ uint32x4_t vclzq_u32 (uint32x4_t __a);
 ```text
 /*******************************************Count number of set bits********************/  
 /*--正常指令, vcnt -> counts the number of bits that are one in each element in a vector,  
+and places the count in the result vector.--*/  
 ```
 
-and places the count in the result vector.--*/  
 int8x8_t vcnt_s8 (int8x8_t __a);  
 uint8x8_t vcnt_u8 (uint8x8_t __a);  
 poly8x8_t vcnt_p8 (poly8x8_t __a);  
@@ -1603,9 +1611,9 @@ poly8x16_t vcntq_p8 (poly8x16_t __a);
 ```text
 /*****************************************Reciprocal estimate***************************/  
 /*--正常指令, vrecpe -> ; finds an approximate reciprocal of each element in a vector,  
+and places it in the result vector.--*/  
 ```
 
-and places it in the result vector.--*/  
 float32x2_t vrecpe_f32 (float32x2_t __a);  
 uint32x2_t vrecpe_u32 (uint32x2_t __a);  
 float32x4_t vrecpeq_f32 (float32x4_t __a);  
@@ -2275,9 +2283,13 @@ uint16x8_t vrev64q_u16 (uint16x8_t __a);
 uint32x4_t vrev64q_u32 (uint32x4_t __a);  
 poly8x16_t vrev64q_p8 (poly8x16_t __a);  
 poly16x8_t vrev64q_p16 (poly16x8_t __a);  
+
+```text
 /*--2、Reverse vector elements (swap endianness): vrev32 -> reverses the order of 8-bit  
 or 16-bit elements within each word of the vector,  
 and places the result in the corresponding destination vector.--*/  
+```
+
 int8x8_t vrev32_s8 (int8x8_t __a);  
 int16x4_t vrev32_s16 (int16x4_t __a);  
 uint8x8_t vrev32_u8 (uint8x8_t __a);  
@@ -3160,4 +3172,4 @@ uint32x4_t vreinterpretq_u32_u8 (uint8x16_t __a);
 uint32x4_t vreinterpretq_u32_u16 (uint16x8_t __a);  
 uint32x4_t vreinterpretq_u32_u64 (uint64x2_t __a);  
 uint32x4_t vreinterpretq_u32_p8 (poly8x16_t __a);  
-uint32x4_t vreinterpretq_u32_p16 (poly16x8_t __a);  `
+uint32x4_t vreinterpretq_u32_p16 (poly16x8_t __a);  

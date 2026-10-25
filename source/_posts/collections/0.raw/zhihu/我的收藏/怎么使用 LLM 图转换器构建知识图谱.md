@@ -68,7 +68,7 @@ source_url: https://zhuanlan.zhihu.com/p/1943429453502980274
 ，在本地创建数据库实例。示例代码：
 
 fromlangchain_community.graphs importNeo4jGraph
-graph =Neo4jGraph(  url="bolt://54.87.130.140:7687",  username="neo4j",  password="cables-anchors-directories",  refresh_schema=False)`
+graph =Neo4jGraph(  url="bolt://54.87.130.140:7687",  username="neo4j",  password="cables-anchors-directories",  refresh_schema=False)
 ### LLM 图转换器
 
 <strong>LLM Graph Transformer</strong>的设计目标，是提供一个灵活的框架，让我们可以利用任意大语言模型（LLM）来构建知识图谱。 由于当下有众多不同的模型和服务提供商，这项任务远非简单。

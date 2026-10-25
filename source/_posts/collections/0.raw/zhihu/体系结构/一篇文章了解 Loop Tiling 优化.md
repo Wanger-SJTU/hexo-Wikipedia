@@ -27,7 +27,7 @@ Loop Tiling，是优化循环的一种非常重要的策略。而在深度学习
 
 for i in range(0, N):
   for j in range(0, M):
-    A[i] += B[j]`
+    A[i] += B[j]
 
 就如同上面的这个双层循环的例子，如果 `M` 很大，那么每次 `i` 加一 时，就得重新从 memory 访问，访存速度就会很慢。 因此，我们引入 Loop Tiling 去尝试解决上述问题。
 
@@ -67,7 +67,7 @@ for j_o in range(0, M, T):
 # 量化分析 cache miss 为
 #  - A[]: N/b * M/T
 #  - B[]: T/b * 1 * M/T = M/b
-# 总的 cache miss 数就是 N/b*M/T+M/b，与前面的相比大约少了 T 倍的 cache miss			`
+# 总的 cache miss 数就是 N/b*M/T+M/b，与前面的相比大约少了 T 倍的 cache miss			
 
 注意这样变化的，会导致 `i in range(0, N)` 变成内层循环，<strong>对于 A[] 来说，其 cache miss 反而增加了</strong>。这种变换被称为「strip-mine-and -interchange」
 
@@ -79,7 +79,7 @@ for i_o in range(0, N, T_i):
 ```text
     for i_i in range(i_o, i_o + T_i):
 	for j_i in range(j_o, j_o + T_j):
-	  A[i_i] += B[j_i]`
+	  A[i_i] += B[j_i]
 ```
 
 
@@ -135,7 +135,7 @@ for i_o in range(0, N, T_i):
             C[i_i][j_i] += A[i_i][k_i] * B[k_i][j_i]
 ```
 
-# 注意，内三层循环仍然是按照 i_i,k_i,j_i 的顺序，因此仍然满足 RowMajor 的顺序读取`
+# 注意，内三层循环仍然是按照 i_i,k_i,j_i 的顺序，因此仍然满足 RowMajor 的顺序读取
 
 
 #### 多级缓存 Tiling
@@ -163,7 +163,7 @@ for j_oo in range(0, N, T2_j):
 ```
 
 # 这样的话，内三层循环 i_i, k_i, j_i （对应的 Tile size 为 T_i, T_j, T_k）放到 L1 Cache 里。
-# 外层循环 j_oi （对应Tile size 为 T2_j） 就可以放到更大的 L2 Cache 里。于是便在 L2 里形成了对 C[i_i][j_i] 的复用`
+# 外层循环 j_oi （对应Tile size 为 T2_j） 就可以放到更大的 L2 Cache 里。于是便在 L2 里形成了对 C[i_i][j_i] 的复用
 
 同理，对于 `k_o`, `i_o` 也可以再 tile 去利用 L2 Cache。甚至再去搞搞利用 L3 Cache 也有可能。
 

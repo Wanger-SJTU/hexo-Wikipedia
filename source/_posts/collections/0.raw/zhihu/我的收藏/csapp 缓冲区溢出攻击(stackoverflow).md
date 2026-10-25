@@ -63,7 +63,7 @@ test
 苦思良久,不得其法。开始在网上找，发现一般防止栈溢出攻击，一个有力的措施就是让栈不可执行。找了一个其他人attack lab的分析，发现他level2的想法和我没什么区别。但是我的程序会崩溃（signal 11）,应该还是我这边环境的原因；网上找[怎么解决栈不可执行](https://link.zhihu.com/?target=https%3A//blog.csdn.net/a523442148/article/details/101253155),发现可以通过安装execstack 程序来检查栈执行状态并修改。
 
 # 修改为栈可执行
-execstack -s ./ctarget`
+execstack -s ./ctarget
 
 检查发现ctarget确实是栈不可执行的，调整之后发现不再出现之前的段错误(signal 11),但是还是会在ret的时候段错误崩溃（和之前不一样,没有11的错误码）.目前我的注入代码部分，是把修改rdi寄存器的逻辑放在栈上40个byte的buffer之外，在返回地址的区域之后，加上了汇编的指令；40 byte数据+ret地址+注入代码(其中ret地址指向栈上注入代码的起始位置)，反复检查并调试了逻辑，直到ret执行（崩溃之前）感觉都没什么问题。但是问题依旧，还是崩溃，我甚至怀疑是不是我的汇编写的有问题，又确认了一遍手册中给的生成汇编的机械码的方法。
 
@@ -94,7 +94,7 @@ Disassembly of section .text:
    c:   50                      push   %rax        # 入栈
    d:   48 89 e7                mov    %rsp,%rdi   # 将当前的栈指针(即cookie字符串的起点)赋值给rdi作为参数
   10:   68 fa 18 40 00          push   $0x4018fa   # push touch3函数的起始地址
-  15:   c3                      ret                # 跳转到touch3`
+  15:   c3                      ret                # 跳转到touch3
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_e8c1e279581f.jpg)
 
@@ -131,7 +131,10 @@ pop修改rax，再mov rax给rdi找到需要跳转的位置后，直接修改栈�
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_2d9da3e1e891.jpg)
 
+```x86asm
 mov rsp,rax 但实际操作的时候发现，存储的字符串地址，相对于rsp取值时会有一个偏移，mov rsp rdi时赋值的rdi，需要加上一个偏移才能指向实际的字符串,不然如果只是当前的rsp指向字符串，则这段代码ret的时候，会把字符串的内容作为地址ret，就会造成逻辑错误;继续观察指令对照表，发现仅靠mov和pop操作，应该根本构造不出来这个偏移.
+```
+
 
 重新看start_farm和end_farm之间的反汇编逻辑，不看不知道，一看发现了华点。 
 
@@ -142,18 +145,30 @@ mov rsp,rax 但实际操作的时候发现，存储的字符串地址，相对�
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_05261c419f65.jpg)
 
 原有逻辑中找到了6个可用片段`# 将rsp赋值给rdi
+
+```x86asm
 mov %rsp,%rax (48 89 e0)
 mov %rax,%rdi (48 89 c7)
+```
+
 
 # 事先在栈上写入偏移值，pop给rax，之后逐步赋值给rdi
+
+```x86asm
 pop %rax  (58)
 mov %eax,%edx (89 c2)
 mov %edx,%ecx (89 d1)
 mov %ecx,%esi (89 ce)
+```
+
 
 # rdi+rsi+1 赋值给rdi
+
+```x86asm
 lea (%rdi,%rsi,1),%rax
-mov %rax,%rdi (48 89 c7)`
+mov %rax,%rdi (48 89 c7)
+```
+
 
 上面的汇编省略了ret指令，把对应的代码片段地址放入栈上，整体放上之后，可知如果把字符串放在最后，pop rax时需要赋值的偏移为0x48,验证通过了测试。
 

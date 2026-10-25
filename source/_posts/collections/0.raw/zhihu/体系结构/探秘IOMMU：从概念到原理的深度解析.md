@@ -116,7 +116,7 @@ int __init intel_iommu_init(void)
 	struct intel_iommu *iommu;
 
 	/* VT-d is required for a TXT/tboot launch, so enforce that */
-	force_on = tboot_force_iommu();`
+	force_on = tboot_force_iommu();
 ```
 
 
@@ -127,7 +127,7 @@ int __init intel_iommu_init(void)
 int __init detect_intel_iommu(void)//caq:IOMMU_INIT_POST调用这个，有amd的，ibm大型机的
 {//caq:此时还没有memory allocator
 
-```cpp
+```x86asm
 	int ret;
 	struct dmar_res_callback validate_drhd_cb = {
 		.cb[ACPI_DMAR_TYPE_HARDWARE_UNIT] = &dmar_validate_one_drhd,
@@ -157,9 +157,9 @@ int __init detect_intel_iommu(void)//caq:IOMMU_INIT_POST调用这个，有amd的
 	up_write(&dmar_global_lock);
 
 	return ret ? ret : 1;
+}
 ```
 
-}`
 
 <strong>在 detect_intel_iommu 函数中，有一个关键行：</strong>
 
@@ -221,7 +221,7 @@ ffff8b83ff072180--------------管理了8个设备
   devices_cnt = 8
 ffff8b83ff078240
   segment = 0
-  devices_cnt = 0`
+  devices_cnt = 0
 
 我们可以看到，bios/uefi至少枚举了8个iommu的硬件，其中两个intel_iommu设备 分别管理的3个和8个设备。
 
@@ -262,9 +262,9 @@ out:
 	rcu_read_unlock();
 
 	return dmaru;
+}
 ```
 
-}`
 
 也就是说，通过一个dmar硬件，支持include_all属性，将很多设备收纳了其中，比如看的其他一个服务器的打印：
 
@@ -277,7 +277,7 @@ crash> intel_iommu.name 0xffff8d42ff043500
 上面可以看到，dmar7的 devices_cnt  为0，但是真实的管理设备个数却很多，如下：
 [root@localhost devices]# pwd
 /sys/class/iommu/dmar7/devices
-[root@localhost devices]# ll |wc -l`
+[root@localhost devices]# ll |wc -l
 
 #### 6.3如何查看一个设备归属的iommu?
 
@@ -364,9 +364,9 @@ static struct intel_iommu *device_to_iommu(struct device *dev, u8 *bus, u8 *devf
 	rcu_read_unlock();
 
 	return iommu;
+}
 ```
 
-}`
 
 从如上函数可以看出，跟iommu关联的设备数，可能会远远大于在drhd中看到的devices_cnt，事实上，这个devices_cnt很容易让人误解。
 
@@ -383,7 +383,7 @@ int dmar_disabled = 0;//caq:默认是否开启取决于 CONFIG_INTEL_IOMMU_DEFAU
 
 ```cpp
 int dmar_disabled = 1;
-#endif /*CONFIG_INTEL_IOMMU_DEFAULT_ON*/`
+#endif /*CONFIG_INTEL_IOMMU_DEFAULT_ON*/
 ```
 
 
@@ -421,7 +421,7 @@ if (no_iommu || dmar_disabled) {//caq:
 	}
 ```
 
-.....`
+.....
 
 所以我们经常能看到硬件上是有很多drhd的硬件，但是软件上并没有使能，当然也就没有注册到 iommu框架中的，iommu_device_register不会被调用，全局的 iommu_device_list 只是空的，留下寂寞空虚冷。而如果软件上使能了的话，iommu_device_list 就会保留有当前期active的 iommu device，如下：
 
@@ -431,7 +431,7 @@ ffff9994ff0709c8
 ffff99a53f043dc8
   ops = 0xffffffff952ebcc0
 crash> dis -l 0xffffffff952ebcc0
-0xffffffff952ebcc0 :   adcb   $0xff,-0x6b72(%rdi)`
+0xffffffff952ebcc0 :   adcb   $0xff,-0x6b72(%rdi)
 
 非active的iommu，不会展示在sysfs中，如下案例：
 
@@ -481,6 +481,6 @@ ffff8d1240078360
 angus@jm212:/sys/class/iommu$ pwd
 /sys/class/iommu
 angus@jm212:/sys/class/iommu$ ls
-dmar4  dmar5  dmar7`
+dmar4  dmar5  dmar7
 
 ![](/images/collections/0.raw/zhihu/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/asset/img_5f5aeb4e2a42.jpg)

@@ -47,7 +47,7 @@ mod = tvm.runtime.load_module("compiled_artifact.so") # tvm.runtime.Module
 arr = tvm.nd.array([1, 2, 3], device=tvm.cuda(0)) # tvm.runtime.NDArray
 fun = mod["addone"] # tvm.runtime.PackedFunc
 fun(a)
-print(a.numpy())`
+print(a.numpy())
 
 由上面的代码我们可以解释一些概念，编译的产物称为`tvm.runtime.Module`, 可以从`tvm.runtime.Module`中根据名字查询到一个类型为`PackedFunc`的函数。关于`PackedFunc`后面会细讲，暂时把其理解为一个函数即可。
 
@@ -112,7 +112,7 @@ class TensorTypeNode : public Object {
 
 ```text
 class TensorType(Type):
-    ...`
+    ...
 ```
 
 
@@ -151,14 +151,14 @@ TVM_REGISTER_GLOBAL("myadd").set_body(MyAdd);
 # python
 import tvm
 myadd = tvm.get_global_func("myadd")
-print(myadd(1, 2))`
+print(myadd(1, 2))
 
 显而易见地，TVMArgs 和 TVMRetValue 只接受限定的类型，比如基本类型和一些TVM自定义的类型（包括PackedFunc这个类型）。
 
 在 TVM Python 代码中，经常可以看到一些文件内容近乎为空，比如 `python/tvm/relay/_build_module.py`, 仅有下面两行代码
 
 import tvm._ffi
-tvm._ffi._init_api("relay.build_module", __name__)`
+tvm._ffi._init_api("relay.build_module", __name__)
 
 其作用是把所有注册到Global的且名字前缀为"relay.build_module"的PackedFunc注册到当前Python Module, 从而让其他 Python 代码调用。
 
@@ -762,7 +762,7 @@ def @sum(%n : Numbers[]) -> Tensor[(), int32] {
 
 @sum(Empty())    # evaluates to 0
 @sum(Single(3))  # evaluates to 3
-@sum(Pair(5, 6)) # evaluates to 11`
+@sum(Pair(5, 6)) # evaluates to 11
 
 因为特定的 ADT 通常有多个构造函数，所以经常需要根据构造函数来区分具体的 ADT 实例，于是就有对应的 Match 语法，如上面代码所示。
 
@@ -772,7 +772,11 @@ ADT 的定义可以带上类型参数，类似 C++ Template, 如下定义了一�
 data Optionala> {
   None : () -> Optional
   Some : (a) -> Optional
-}`
+
+```text
+}
+```
+
 
 Optional[type1] 和 Optional[Type2] 会被类型系统认为是两个类型，比如下面这个例子中，big 无法作为 inc_scalar 的参数。
 
@@ -807,7 +811,11 @@ ADT 支持递归定义，如下通过递归定义一个 List
 data ListT> {
    Nil : () -> List
    Cons : (T, List[T]) -> List
-}`
+
+```text
+}
+```
+
 
 我们可以很方便地对 List 进行求和，代码如下
 
@@ -818,9 +826,9 @@ def @list_sum(%l : List[Tensor[(), int32]]) -> Tensor[(), int32] {
     # add the head of the list to the sum of the tail
     case Cons(%h, %t) { %h + @list_sum(%t) }
   }
+}
 ```
 
-}`
 
 从上面的代码可以看出，match 语法可以直接获得 ADT 实例的内容，也就是代码中的 %h 和 %t, 实际上，连 match 语法本身都是可以递归的，如下
 
@@ -1042,13 +1050,13 @@ fn (%x) {
   %1 = log(%x)
   %2 = fn(%y) {
 
-```text
+```x86asm
     add(%y, %1)
   }
   %2
+}
 ```
 
-}`
 
 我们应该在闭包的外面还是里面做 %1 的计算呢？而 Let Binding 解决了这个问题，我们只要加上 Let 就能解决这个歧义。
 
@@ -1339,7 +1347,7 @@ AddImplementation 函数通过 FFI 机制暴露给 Python，Relay Op 大部分�
       print(my_func(2))
       # displays 4, because my_func_cuda is called
       with tvm.target.cuda():
-          print(my_func(2))`
+          print(my_func(2))
 ```
 
 
@@ -1381,7 +1389,7 @@ def softmax_strategy_cuda(attrs, inputs, out_type, target):
     return strategy
 
 reg.register_strategy("nn.softmax", strategy.softmax_strategy)
-reg.register_pattern("nn.softmax", OpPattern.OUT_ELEMWISE_FUSABLE)`
+reg.register_pattern("nn.softmax", OpPattern.OUT_ELEMWISE_FUSABLE)
 ```
 
 
@@ -1395,7 +1403,7 @@ TVM 定义了一套匹配语法便于 Pass 的编写，本小节简单看一下�
 def test_match_op_or():
     is_add_or_sub = is_op('add') | is_op('subtract')
     assert is_add_or_sub.match(relay.op.op.get("add"))
-    assert is_add_or_sub.match(relay.op.op.get("subtract"))`
+    assert is_add_or_sub.match(relay.op.op.get("subtract"))
 ```
 
 
@@ -1406,7 +1414,7 @@ def test_match_data_layout():
     is_conv2d = is_op('nn.conv2d')(wildcard(), wildcard()).has_attr({"data_layout": "NHWC"})
     x = relay.var('x')
     y = relay.var('y')
-    assert not is_conv2d.match(relay.op.nn.conv2d(x, y))`
+    assert not is_conv2d.match(relay.op.nn.conv2d(x, y))
 ```
 
 
@@ -1425,7 +1433,7 @@ def test_match_optional():
     bias = relay.op.nn.bias_add(conv2d, z)
     assert pat.match(bias)
     relu = relay.op.nn.relu(bias)
-    assert pat.match(relu)`
+    assert pat.match(relu)
 ```
 
 
@@ -1454,7 +1462,7 @@ def test_match_diamond():
 
 
     # Check
-    assert diamond.match(out)`
+    assert diamond.match(out)
 
 同样的菱形表达式也可以用支配关系来描述，如下
 
@@ -1480,7 +1488,7 @@ def test_match_dom_diamond():
 
 
     # Check
-    assert diamond.match(out)`
+    assert diamond.match(out)
 
 dominates 的三个参数分别是 Parent Path Child, 表示child 支配了 parent. 所谓支配的意思就是，从 Parent 出发任意路径都必定最终走到 Child, 并且路径中的所有 Op 都与 Path 的要求匹配. 
 
@@ -1523,7 +1531,7 @@ class BatchnormCallback(DFPatternCallback):
 
     from tvm.relay.dataflow_pattern import rewrite
     out = rewrite(BatchnormCallback(), BN)
-    assert tvm.ir.structural_equal(out, relay.op.nn.batch_norm(x, gamma, beta, mean, var, epsilon = 1e-5)[0])`
+    assert tvm.ir.structural_equal(out, relay.op.nn.batch_norm(x, gamma, beta, mean, var, epsilon = 1e-5)[0])
 ```
 
 
@@ -1554,7 +1562,7 @@ print(pattern.partition(relu))
 #   %0 = nn.conv2d(%FunctionVar_0_0, %FunctionVar_0_1, padding=[0, 0, 0, 0]);
 #   nn.bias_add(%0, %FunctionVar_0_2)
 # };
-# %1(%x, %w, %b)`
+# %1(%x, %w, %b)
 
 更多关于 Pattern Match 的用法可以参考官方文档，本文只选择了代表性的例子进行阐述，接下来看具体的代码。
 
@@ -1867,9 +1875,9 @@ namespace transform {
 
 
 Pass FuseOps(int fuse_opt_level) {
-  runtime::TypedPackedFuncFunction(Function, IRModule, PassContext)> pass_func =
 
 ```cpp
+  runtime::TypedPackedFuncFunction(Function, IRModule, PassContext)> pass_func =
       [=](Function f, IRModule m, PassContext pc) {
         int opt_level = fuse_opt_level == -1 ? pc->opt_level : fuse_opt_level;
         auto max_fuse_depth = pc->GetConfig("relay.FuseOps.max_depth", Integer(kMaxFusedOps));
@@ -2376,7 +2384,7 @@ def build(
             runtime=runtime,
             mod_name=mod_name,
         )
-        ...`
+        ...
 ```
 
 
@@ -2715,9 +2723,8 @@ PrimFuncFor 实际是 ScheduleBuilder::Create 负责生成 Schedule, 在一些�
 
 需要注意上述代码中的 VisitExpr 与 anchor_implementation_.Schedule，我们先看后者
 
-te::Schedule OpImplementation::Schedule(const Attrs& attrs, const Arrayte::Tensor>& outs,
-
 ```text
+te::Schedule OpImplementation::Schedule(const Attrs& attrs, const Arrayte::Tensor>& outs,
                                         const Target& target) {
   return (*this)->fschedule(attrs, outs, target);
 }
@@ -2726,9 +2733,8 @@ te::Schedule OpImplementation::Schedule(const Attrs& attrs, const Arrayte::Tenso
 
 可以看到直接调用前文提到的 fschedule 生成 schedule, 所以关键是 anchor_implementation_ ，而其是在 VisitExpr 的过程中设置的，所以我们追踪 VisitExpr_
 
-  Arrayte::Tensor> VisitExpr_(const CallNode* call_node) final {
-
 ```text
+  Arrayte::Tensor> VisitExpr_(const CallNode* call_node) final {
     static auto fpattern = Op::GetAttrMapTOpPattern>("TOpPattern");
     static auto flower_call = tvm::runtime::Registry::Get("relay.backend.lower_call");
 ```
@@ -2816,7 +2822,7 @@ def lower_call(call, inputs, target):
 
 ```text
         env.tracing = True
-    return LoweredOutput(outputs, best_impl)`
+    return LoweredOutput(outputs, best_impl)
 ```
 
 
@@ -2854,11 +2860,11 @@ def select_implementation(op, attrs, inputs, out_type, target, use_autotvm=True)
         return best_autotvm_impl, outputs[best_autotvm_impl]
 
     ...
-    return best_plevel_impl, outputs[best_plevel_impl]`
+    return best_plevel_impl, outputs[best_plevel_impl]
 
 先使用 get_valid_implementations 得到所有合法的实现，然后使用 autotvm 调优，我们继续看 get_valid_implementations
 
-```python
+```x86asm
 def get_valid_implementations(op, attrs, inputs, out_type, target):
     fstrategy = op.get_attr("FTVMStrategy")
     assert fstrategy is not None, (
@@ -2885,7 +2891,7 @@ def get_valid_implementations(op, attrs, inputs, out_type, target):
         else:
             for impl in spec.implementations:
                 ret.append(impl)
-    return ret`
+    return ret
 ```
 
 

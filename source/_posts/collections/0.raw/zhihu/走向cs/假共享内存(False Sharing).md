@@ -37,7 +37,7 @@ l2i-refill: 45.9m vs 16.6m
 前端stall: 3b vs 1.4b
 后端stall: 1b vs 0.6b。
 branch miss: 28m vs 15.8m
-br_mis_pred: 28m vs 15m`
+br_mis_pred: 28m vs 15m
 
 基本不变的：
 
@@ -46,7 +46,7 @@ l1d_tlb: 800m vs 739m
 l1i_tlb: 18.9m vs 17.9m
 exec_ret/exec_taken: 164k vs 144k
 mem_access: 663m vs 650m
-pagefault: 0 vs 0`
+pagefault: 0 vs 0
 
 由这个情况推想，程序并没有因为调度到多个核上多走了分支，也没有多访问了内存，但总线访问却大幅增加，看起来是因为这些线程间有很多“共享内存”访问，导致了很多的核间Cache同步消息在bus上传播，（这不需要经过内存访问，参考：《内存访问模型》）从而导致CPU在前后端执行上都发生了stall，最终拖慢了整个IPC（但为什么会导致branch miss上升我是没有想明白，可能和微架构的OoO队列使用有关吧）。
 

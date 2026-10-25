@@ -160,7 +160,7 @@ set(
 add_library(tilelang SHARED $TARGET_OBJECTS:tilelang_objs>)
 add_library(tilelang_static STATIC $TARGET_OBJECTS:tilelang_objs>)
 add_dependencies(tilelang_static tvm_runtime)
-target_link_libraries(tilelang PUBLIC tvm_runtime)`
+target_link_libraries(tilelang PUBLIC tvm_runtime)
 
 通过生成共享库 tilelang 以及静态库 tilelang_static，用户可以根据需要灵活地选择不同的链接方式（静态链接或动态链接），并且 tilelang 模块会自动依赖 tvm_runtime，保证在编译时能够正确地找到相关符号和依赖项。
 
@@ -179,9 +179,8 @@ target_link_libraries(tilelang PUBLIC tvm_runtime)`
 
 在最后，我们注册一个全局接口，以供python端进行调用:
 
-tvm::transform::Pass Simplify() {
-
 ```text
+tvm::transform::Pass Simplify() {
     auto pass_func = [=](PrimFunc f, IRModule m, PassContext ctx) {
         arith::Analyzer analyzer;
         auto cfg = ctx->GetConfigSimplifyConfig>("tl.Simplify");

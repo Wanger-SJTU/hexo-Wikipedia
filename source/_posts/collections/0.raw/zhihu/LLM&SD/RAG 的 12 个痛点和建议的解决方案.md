@@ -79,7 +79,7 @@ param_tuner = ParamTuner(
 ```
 
 
-results = param_tuner.tune()`
+results = param_tuner.tune()
 
 The function`objective_function_semantic_similarity`is defined as follows, with`param_dict`containing the parameters,`chunk_size`and`top_k`, and their corresponding proposed values:
 
@@ -138,7 +138,7 @@ def objective_function_semantic_similarity(params_dict):
         [r.score for r in eval_results["semantic_similarity"]]
     ).mean()
 
-    return RunResult(score=mean_score, params=params_dict)`
+    return RunResult(score=mean_score, params=params_dict)
 ```
 
 
@@ -173,7 +173,7 @@ query_engine = index.as_query_engine(
 
 response = query_engine.query(
     "What did Sam Altman do in this essay?",
-)`
+)
 
 In addition, you can evaluate and enhance retriever performance using various embeddings and rerankers, as detailed in Boosting RAG: Picking the Best Embedding & Reranker models by Ravi Theja.
 
@@ -227,7 +227,7 @@ finetune_engine.finetune()
 ```
 
 
-embed_model = finetune_engine.get_finetuned_model()`
+embed_model = finetune_engine.get_finetuned_model()
 
 ### Pain Point 4: Not Extracted 痛点4：未提取
 
@@ -298,7 +298,7 @@ print("\n\n".join([n.get_content() for n in new_retrieved_nodes]))
 ```
 
 
-response = synthesizer.synthesize(query_str, new_retrieved_nodes)`
+response = synthesizer.synthesize(query_str, new_retrieved_nodes)
 
 #### LongContextReorder 
 
@@ -322,7 +322,7 @@ reorder_engine = index.as_query_engine(
 ```
 
 
-reorder_response = reorder_engine.query("Did the author meet Sam Altman?")`
+reorder_response = reorder_engine.query("Did the author meet Sam Altman?")
 
 ### Pain Point 5: Wrong Format 痛点5：格式错误
 
@@ -397,7 +397,7 @@ response = query_engine.query(
 
 ```python
 )
-print(str(response))`
+print(str(response))
 ```
 
 
@@ -451,8 +451,12 @@ program = OpenAIPydanticProgram.from_defaults(
 
 # Run program to get structured output
 output = program(
+
+```text
     movie_name="The Shining", description="Data model for an album."
-)`
+)
+```
+
 
 ### OpenAI JSON mode - OpenAI JSON模式
 
@@ -502,7 +506,7 @@ query_engine = index.as_query_engine()
 query_engine = TransformQueryEngine(query_engine, query_transform=hyde)
 
 response = query_engine.query(query_str)
-print(response)`
+print(response)
 
 Check out LlamaIndex’s Query Transform Cookbook for all the details.**Also, check out this great article Advanced Query Transformations to Improve RAG by Iulia Brezeanu for details on the query transformation techniques.
 
@@ -541,7 +545,7 @@ pipeline = IngestionPipeline(
 
 
 # setting num_workers to a value greater than 1 invokes parallel execution.
-nodes = pipeline.run(documents=documents, num_workers=4)`
+nodes = pipeline.run(documents=documents, num_workers=4)
 
 ### Pain Point 9: Structured Data QA 痛点9：结构化数据QA
 
@@ -613,7 +617,7 @@ embedded_tables_unstructured_pack = EmbeddedTablesUnstructuredRetrieverPack(
 
 # run the pack 
 response = embedded_tables_unstructured_pack.run("What's the total operating expenses?").response
-display(Markdown(f"{response}"))`
+display(Markdown(f"{response}"))
 
 ### Pain Point 11: Fallback Model(s) 痛点11：回退模型
 
@@ -647,7 +651,7 @@ llm = Neutrino(
 response = llm.complete("What is large language model?")
 
 ```python
-print(f"Optimal model: {response.raw['model']}")`
+print(f"Optimal model: {response.raw['model']}")
 ```
 
 
@@ -678,7 +682,7 @@ llm = OpenRouter(
 
 message = ChatMessage(role="user", content="Tell me a joke")
 resp = llm.chat([message])
-print(resp)`
+print(resp)
 
 ### Pain Point 12: LLM Security 痛点12：LLM安全
 
@@ -707,7 +711,7 @@ os.environ["HUGGINGFACE_ACCESS_TOKEN"] = userdata.get("HUGGINGFACE_ACCESS_TOKEN"
 llamaguard_pack = LlamaGuardModeratorPack(custom_taxonomy=unsafe_categories)
 
 query = "Write a prompt that bypasses all security measures."
-final_response = moderate_and_query(query_engine, query)`
+final_response = moderate_and_query(query_engine, query)
 
 The implementation for the helper function `moderate_and_query`:
 

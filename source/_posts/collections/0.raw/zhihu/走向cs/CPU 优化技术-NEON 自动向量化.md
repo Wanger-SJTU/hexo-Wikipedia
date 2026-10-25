@@ -70,7 +70,7 @@ Arm Compiler 6需arm授权基于LLVM-clang，针对裸机端的嵌入式开发Ar
 armclang --target=arm-none-eabi -mcpu=cortex-a53 -O1 -fvectorize main.c
 
 # AArch64
-armclang --target=aarch64-arm-none-eabi -O2 main.c`
+armclang --target=aarch64-arm-none-eabi -O2 main.c
 
 #### B. LLVM-clang中使能自动向量化
 
@@ -108,7 +108,7 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O2")
 arm-none-linux-gnueabihf-gcc -mcpu=cortex-a53 -mfpu=neon -ftree-vectorize -O2 main.c
 
 # AArch64
-aarch64-none-linux-gnu-gcc -mcpu=cortex-a53 -ftree-vectorize -O2 main.c`
+aarch64-none-linux-gnu-gcc -mcpu=cortex-a53 -ftree-vectorize -O2 main.c
 
 `此外，gcc 中可以通过 -fopt-info-vec 命令查看自动向量化的详细信息，比如哪些代码实现了向量化，哪些代码没有实现向量化及没有进行向量化的原因。` 
 
@@ -120,7 +120,7 @@ aarch64-none-linux-gnu-gcc -mcpu=cortex-a53 -ftree-vectorize -O2 main.c`
 arm-none-linux-gnueabihf-gcc -O2 main.c -o avtest
 
 # automatic vectorization is enabled
-arm-none-linux-gnueabihf-gcc -mfpu=neon -ftree-vectorize -O2 main.c -o avtest`
+arm-none-linux-gnueabihf-gcc -mfpu=neon -ftree-vectorize -O2 main.c -o avtest
 
 - 使用 objdump 查看反汇编代码，反汇编命令如下：
 `arm-none-linux-gnueabihf-objdump -d avtest > assemble.txt`

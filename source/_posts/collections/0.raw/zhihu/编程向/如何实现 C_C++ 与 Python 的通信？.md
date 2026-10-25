@@ -76,7 +76,7 @@ Python库函数PyRun_SimpleString可以执行字符串形式的Python代码。
 
 ```python
 def great_function(a):
-    return a + 1`
+    return a + 1
 ```
 
 
@@ -87,9 +87,9 @@ int great_function_from_python(int a) {
     int res; 
     // some magic
     return res;
+}
 ```
 
-}`
 
 首先，复用Python模块得做‘import’，这里也不例外。所以我们把great_function放到一个module里，比如说，这个module名字叫 great_module.py
 
@@ -118,9 +118,9 @@ int great_function_from_python(int a) {
 
     res = PyInt_AsLong(pValue);
     return res;
+}
 ```
 
-}`
 
 从上述代码可以窥见Python内部运行的方式：
 
@@ -140,9 +140,9 @@ int main(int argc, char *argv[]) {
     Py_Initialize();
     printf("%d",great_function_from_python(2));
     Py_Finalize();
+}
 ```
 
-}`
 
 编译的方式就用本节开头使用的方法。
 
@@ -173,7 +173,7 @@ int great_function(int a) {
 
 >>> from great_module import great_function 
 >>> great_function(2)
-3`
+3
 
 考虑最简单的情况。我们把功能强大的函数放入C文件 great_module.c 中。
 
@@ -211,9 +211,9 @@ PyMODINIT_FUNC initgreat_module(void) {
 
 ```text
     (void) Py_InitModule("great_module", GreateModuleMethods);
+}
 ```
 
-}`
 
 除了功能强大的函数great_function外，这个文件中还有以下部分：
 
@@ -300,9 +300,9 @@ int main(int argc, char *argv[]) {
                 )
             ));
     Py_Finalize();
+}
 ```
 
-}`
 
 编译命令和第一部分相同：
 
@@ -318,7 +318,7 @@ gcc main.c great_module.c -o main -I/usr/include/python2.7/ -lpython2.7
 
 #great_module.pyx
 cdef public char great_function(const char * a,int index):
-    return a[index]`
+    return a[index]
 
 cython编译后得到的.h里，great_function的声明是这样的：
 
@@ -338,9 +338,9 @@ int main(int argc, char *argv[]) {
     initgreat_module();
     printf("%c",great_function("Hello",2));
     Py_Finalize();
+}
 ```
 
-}`
 
 在这一部分的最后我们给一个看似实用的应用（仅限于Windows）：
 
@@ -374,9 +374,9 @@ BOOL WINAPI DllMain(HINSTANCE hinstDLL,DWORD fdwReason,LPVOID lpReserved) {
             break;
     }
     return TRUE;
+}
 ```
 
-}`
 
 在Visual Studio命令提示符下编译：
 
@@ -437,7 +437,7 @@ Linux：
 
 >>> import mymodule
 >>> mymodule._mm_popcnt_u32(10)
-2`
+2
 
 回顾这个配置文件分为3个部分：
 
@@ -489,7 +489,7 @@ class Great {
 %{
 #include "great_class.h"
 %}
-%include "great_class.h"`
+%include "great_class.h"
 
 这里不再重新敲一遍class的定义了，直接使用SWIG的%include指令
 
@@ -511,7 +511,7 @@ Linux，使用C++的编译器
 >>> c = great_class.Great()
 >>> c.setWall(5)
 >>> c.getWall()
-5`
+5
 
 也就是说C++的class会直接映射到Python class
 

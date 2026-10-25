@@ -62,7 +62,7 @@ NVIDIA 和华为昇腾代表了两条截然不同的 AI 加速器设计哲学：
 └──────────────────────────────────────────────────────────┘
 
 H100 SXM5: 8 GPC, 共 132 SM (各 GPC 含 16~18 SM 不等)
-每个 SM: 128 FP32 CUDA Cores + 4 Tensor Cores`
+每个 SM: 128 FP32 CUDA Cores + 4 Tensor Cores
 
 > 参考**：NVIDIA Hopper Architecture In-Depth
 
@@ -105,7 +105,7 @@ H100 SXM5: 8 GPC, 共 132 SM (各 GPC 含 16~18 SM 不等)
 Ascend950: 2 × 计算 DIE × 16 AI Core = 32 AI Core（CANN Meetup 官方分享确认每计算 DIE 16 核）
 每个 AI Core: Scalar Unit + Vector Unit + Cube Unit + MTE2/MTE3
 UB (Unified Buffer): 248 KB per AI Core
-互联：18 × X4 UB 端口，支持 CCU1.0 集合通信加速器`
+互联：18 × X4 UB 端口，支持 CCU1.0 集合通信加速器
 
 <strong>参考</strong>：昇腾官方文档 - 基本架构
 #### 芯片架构代号与产品映射
@@ -161,7 +161,7 @@ UB (Unified Buffer): 248 KB per AI Core
 │  ┌───────────────────────────────────────────────────┐   │
 │  │          Tensor Memory Accelerator (TMA)          │   │
 │  └───────────────────────────────────────────────────┘   │
-└──────────────────────────────────────────────────────────┘`
+└──────────────────────────────────────────────────────────┘
 
 <strong>H100 SM_90 关键参数</strong>：
 
@@ -277,7 +277,7 @@ cudaStreamSetAttribute(stream, cudaStreamAttributeAccessPolicyWindow, &attr);
 // 3. 使用完毕后重置
 attr.accessPolicyWindow.num_bytes = 0;
 cudaStreamSetAttribute(stream, cudaStreamAttributeAccessPolicyWindow, &attr);
-cudaCtxResetPersistingL2Cache();  // 清除所有持久化缓存行`
+cudaCtxResetPersistingL2Cache();  // 清除所有持久化缓存行
 
 <strong>三种访问属性</strong>：
 
@@ -308,7 +308,7 @@ zGm.SetGlobalBuffer((__gm__ float *)z + blockIdx * TILE_N);
 // x 保持默认 CACHE_MODE_NORMAL —— 数据经过 L2 Cache（被频繁复用）
 // y 和 z 设置为 CACHE_MODE_DISABLE —— 数据绕过 L2 Cache（只访问一次）
 yGm.SetL2CacheHint(AscendC::CacheMode::CACHE_MODE_DISABLE);
-zGm.SetL2CacheHint(AscendC::CacheMode::CACHE_MODE_DISABLE);`
+zGm.SetL2CacheHint(AscendC::CacheMode::CACHE_MODE_DISABLE);
 ```
 
 
@@ -330,16 +330,16 @@ if (mnConfig.blockDimM == 1) {
 ```text
     // M 维度有多个分块 → 权重被多个核复用 → 进入 L2
     weightGM.SetL2CacheHint(CacheMode::CACHE_MODE_NORMAL);
+}
 ```
 
-}`
 
 <strong>💡 与 NVIDIA 对比</strong>：NVIDIA 的 `cudaAccessPolicyWindow` 是 <strong>Stream 级别</strong>的控制（指定一个连续内存区域 + hitRatio），粒度较粗；昇腾的 `SetL2CacheHint` 是 <strong>Tensor 级别</strong>的控制（每个 GlobalTensor 独立设置），粒度更细。但 NVIDIA 的 API 支持更丰富的策略（如 hitRatio 百分比控制、持久化缓存预留比例），昇腾目前是二元选择（进入/绕过）。**Kernel Launch 中的 `l2ctrl` 参数**：
 
 Ascend C 核函数启动符 `>` 中包含一个 `l2ctrl` 参数，用于 L2 Cache 控制。但根据 CANN 8.5 官方文档，该参数目前为保留参数，暂时设置为固定值 `nullptr`**：
 
 // 当前 l2ctrl 为保留参数，传 nullptr
-kernel_name>(argument_list);`
+kernel_name>(argument_list);
 
 这意味着 L2 Cache 的高层控制策略（如全局切分策略）目前主要通过 Tiling 切分 + SetL2CacheHint** 组合实现，而非通过 launch 参数。`l2ctrl` 参数的存在暗示华为未来可能开放更多 L2 Cache 控制能力。
 
@@ -407,7 +407,7 @@ inline void SimtKernel(/* params */) {
 
 // 启动：Simt::VF_CALL(Simt::Dim3{numThreads}, ...);
 // 同步：Simt::ThreadBarrier();   // 类似 __syncthreads()
-// 原子：Simt::AtomicAdd(&val, 1); // 类似 atomicAdd()`
+// 原子：Simt::AtomicAdd(&val, 1); // 类似 atomicAdd()
 ```
 
 
@@ -445,9 +445,9 @@ __global__ void vectorAdd(const float *x, const float *y,
     // 5. 释放内存
     cudaFree(x); cudaFree(y); cudaFree(z);
     return 0;
+}
 ```
 
-}`
 
 <strong>CUDA 代码特点</strong>：
 
@@ -553,9 +553,9 @@ extern "C" __global__ __aicore__ void vector_add_kernel(
     VectorAddKernel op;
     op.Init(x, y, z, totalSize, tileSize);
     op.Process();
+}
 ```
 
-}`
 
 <strong>Ascend C 代码特点</strong>：
 
@@ -629,9 +629,9 @@ public:
         LocalTensor cL0 = l0CBuf.Get();
         Mmad(cL0, aL0Buf, bL0Buf, mmadParams);
     }
+};
 ```
 
-};`
 
 #### 7.3 矩阵乘法数据流对比
 
@@ -647,27 +647,24 @@ Ascend950 支持直接操作寄存器的编程模式（Regbase 架构），相�
 - <strong>OOO 指令双发</strong>：通过支持乱序执行（Out-of-Order）实现指令双发，提升 Vector 性能
 - <strong>非对齐友好</strong>：便于支持 Local Buffer 非 32B 对齐数据处理
 
-```text
+```cpp
 // Regbase 编程：直接操作寄存器（仅 arch35）
 // 相比 Membase 编程方式，处理的数据由 block/repeat 参数
 // 换成 for-loop 形式，代码更容易编写和理解
 
 // Ascend C 类库 API 风格
-```
-
 AscendC::Reg::RegTensor vDstReg0;
 AscendC::Reg::RegTensor vSrcReg0, vSrcReg1;
 AscendC::Reg::MaskReg maskReg;
 
-```cpp
 for (uint16_t i = 0; i (calCount);
     AscendC::Reg::Load(vSrcReg0, src0Ptr + i * oneRepeatSize);
     AscendC::Reg::Load(vSrcReg1, src1Ptr + i * oneRepeatSize);
     AscendC::Reg::Add(vDstReg0, vSrcReg0, vSrcReg1, maskReg);
     AscendC::Reg::Store(dstPtr + i * oneRepeatSize, vDstReg0, maskReg);
+}
 ```
 
-}`
 
 <strong>适用场景</strong>：量化/反量化算子、动态量化、需要极致性能的热点路径
 
@@ -679,8 +676,12 @@ if constexpr (IsSameType::value) {
 } else if constexpr (IsSameType::value) {
     // FP8 E4M3FN 处理路径
 } else if constexpr (IsSameType::value) {
+
+```text
     // HiFloat8 处理路径（华为自定义）
-}`
+}
+```
+
 
 <strong>HiFloat8 格式技术细节</strong>（来源：CANN Meetup 官方分享）：
 
@@ -708,7 +709,7 @@ operator/
 │   ├── *tiling*.cpp         # 通用 Tiling
 │   └── arch35/              # 950 专用 Tiling
 │       └── *_tiling_arch35.cpp
-└── CMakeLists.txt`
+└── CMakeLists.txt
 
 #### 9. 性能优化哲学差异
 
@@ -733,7 +734,7 @@ operator/
    - 使用 Warp Shuffle 指令
 
 5. Tensor Core 利用
-   - WMMA/MMA API 访问 Tensor Core`
+   - WMMA/MMA API 访问 Tensor Core
 
 #### 昇腾优化策略：”榨干带宽”
 
@@ -764,7 +765,7 @@ operator/
    - SIMT 编程（细粒度并行，离散访问友好）
    - CV 融合通路（L0C → UB 直通，DualDst 双目标）
    - 利用更大的 UB (248KB vs 192KB) 和翻倍的 L0C Buffer
-   - 数据常驻优化（如 FIA 算子中 Query 常驻 + Key 小常驻）`
+   - 数据常驻优化（如 FIA 算子中 Query 常驻 + Key 小常驻）
 
 #### 10. 硬件参数横向对比表
 

@@ -66,7 +66,7 @@ import matplotlib.pyplot as plt
 from sklearn.cluster import DBSCAN
 from sklearn.datasets import make_blobs
 from sklearn.neighbors import NearestNeighbors
-from sklearn.metrics import silhouette_score`
+from sklearn.metrics import silhouette_score
 ```
 
 
@@ -107,7 +107,7 @@ labels_for_legend = [f'Cluster {label}' for label in unique_labels]
 plt.legend(handles, labels_for_legend, title="Clusters", loc='center left', bbox_to_anchor=(1, 0.5))
 
 plt.title('DBSCAN Clustering')
-plt.show()`
+plt.show()
 ```
 
 
@@ -123,7 +123,7 @@ cluster_df = pd.DataFrame({
 ```
 
 
-# cluster_df`
+# cluster_df
 
 注意：标记为 -1 的点是离群点，它们不构成一个簇。
 
@@ -143,7 +143,7 @@ cluster_df = pd.DataFrame({
 # DBSCAN??
 
 # 查看当前模型参数
-# dbscan.get_params()`
+# dbscan.get_params()
 
 #### 4. DBSCAN 自动调参
 
@@ -172,7 +172,7 @@ plt.plot(distances)
 plt.title("k-distance graph")
 plt.xlabel("Points sorted by distance")
 plt.ylabel("Distance to the k-th nearest neighbor")
-plt.show()`
+plt.show()
 ```
 
 
@@ -236,7 +236,7 @@ for eps in param_grid['eps']:
 
 # 输出最佳参数
 print("Best parameters found:", best_params)
-# Best parameters found: {'eps': 0.8, 'min_samples': 10}`
+# Best parameters found: {'eps': 0.8, 'min_samples': 10}
 
 #### 5. 使用 `best_params` 进行聚类
 
@@ -272,7 +272,7 @@ labels_for_legend = [f'Cluster {label}' for label in unique_labels]
 plt.legend(handles, labels_for_legend, title="Clusters", loc='center left', bbox_to_anchor=(1, 0.5))
 
 plt.title('DBSCAN Clustering')
-plt.show()`
+plt.show()
 ```
 
 
@@ -408,7 +408,7 @@ test_data = np.concatenate([
 best_params, labels = auto_dbscan(data=test_data)
 
 ```python
-print(f'best_params: {best_params}')`
+print(f'best_params: {best_params}')
 ```
 
 
@@ -449,7 +449,7 @@ DenStream 的核心思想是使用“核心对象”和“边界对象”来定�
 import numpy as np
 import utils
 
-from river import cluster, stream`
+from river import cluster, stream
 ```
 
 
@@ -506,7 +506,7 @@ print(f"Predicted cluster for point (-1, -2): {prediction}")
 # Predicted cluster for point (-1, -2): 8
 
 # 打印聚类中心点
-# denstream.centers`
+# denstream.centers
 
 #### 3. DenStream 的可选参数
 
@@ -514,7 +514,7 @@ print(f"Predicted cluster for point (-1, -2): {prediction}")
 
 参数默认值说明decaying_factor0.25决定流数据中历史信息的衰减速度，影响历史数据点的权重。beta0.75决定相对于核心微簇异常点的阈值，值域为 (0,1]。mu2决定相对于核心微簇异常点的阈值，值域为 (1/beta, inf)。epsilon0.02控制邻域的范围，影响数据点的相似性判定。n_samples_init1000初始样本数，用于初始化聚类器的微簇状态。stream_speed100单位时间内到达的点数。`# dir(denstream)
 # help(denstream)
-# denstream??`
+# denstream??
 
 #### 4. 验证：推理结果是否随时间变化
 
@@ -559,7 +559,7 @@ for i, (x, _) in enumerate(stream.iter_array(x_test)):
     prediction = denstream.predict_one(x)
     save_test[i] = {'data': x,
                     'cluster': prediction}
-    # print(f'Test {i}: {x} -> {prediction}')`
+    # print(f'Test {i}: {x} -> {prediction}')
 ```
 
 
@@ -586,7 +586,7 @@ for i, (x, _) in enumerate(stream.iter_array(x_test)):
     prediction = denstream.predict_one(x)
     new_save_test[i] = {'data': x,
                     'cluster': prediction}
-    # print(f'Test {i}: {x} -> {prediction}')`
+    # print(f'Test {i}: {x} -> {prediction}')
 ```
 
 
@@ -601,7 +601,7 @@ for i in save_train.keys():
     if not (is_data_equal and is_cluster_equal):
         print(f'Train {i}: data_equal={is_data_equal}, cluster_equal={is_cluster_equal}')
         cnt += 1
-    if cnt > 5: break`
+    if cnt > 5: break
 ```
 
 
@@ -612,7 +612,7 @@ Train 1: data_equal=True, cluster_equal=False
 Train 2: data_equal=True, cluster_equal=False
 Train 3: data_equal=True, cluster_equal=False
 Train 4: data_equal=True, cluster_equal=False
-Train 5: data_equal=True, cluster_equal=False`
+Train 5: data_equal=True, cluster_equal=False
 
 # 测试数据：初次预测与再次预测对比
 assert len(save_test) == len(new_save_test)
@@ -622,7 +622,7 @@ for i in save_test.keys():
     is_data_equal = bool(save_test[0]['data'] == new_save_test[0]['data'])
     is_cluster_equal = bool(save_test[0]['cluster'] == new_save_test[0]['cluster'])
     if not (is_data_equal and is_cluster_equal):
-        print(f'Train {i}: data_equal={is_data_equal}, cluster_equal={is_cluster_equal}')`
+        print(f'Train {i}: data_equal={is_data_equal}, cluster_equal={is_cluster_equal}')
 ```
 
 
@@ -637,7 +637,7 @@ for i in save_test.keys():
 dbscan_best_params, dbscan_labels = utils.auto_dbscan(data=X)
 
 ```python
-print(f'best_params: {dbscan_best_params}')`
+print(f'best_params: {dbscan_best_params}')
 ```
 
 
@@ -698,7 +698,7 @@ for x, _ in stream.iter_array(X):
 ```text
 utils.simple_scatter(data=X,
                      labels=denstream_labels,
-                     title='DenStream Clustering')`
+                     title='DenStream Clustering')
 ```
 
 
@@ -740,7 +740,7 @@ for x, _ in stream.iter_array(X):
 ```text
 utils.simple_scatter(data=X,
                      labels=denstream_labels,
-                     title='DenStream Clustering')`
+                     title='DenStream Clustering')
 ```
 
 
@@ -787,7 +787,7 @@ import numpy as np
 import utils
 
 from sklearn.datasets import make_blobs
-from river import cluster, stream`
+from river import cluster, stream
 ```
 
 
@@ -823,7 +823,7 @@ clustream.predict_one({0: -1, 1: -2})
 # 0
 
 # 输出聚类中心
-# clustream.centers`
+# clustream.centers
 
 #### 3. CluStream 的可选参数
 
@@ -870,7 +870,7 @@ for x, _ in stream.iter_array(X):
 ```text
 utils.simple_scatter(data=X,
                      labels=clustream_labels,
-                     title='CluStream Clustering')`
+                     title='CluStream Clustering')
 ```
 
 
@@ -913,7 +913,7 @@ for x, _ in stream.iter_array(X):
 ```text
 utils.simple_scatter(data=X,
                      labels=clustream_labels,
-                     title='CluStream Clustering')`
+                     title='CluStream Clustering')
 ```
 
 
@@ -952,7 +952,7 @@ for x, _ in stream.iter_array(X):
 ```text
 utils.simple_scatter(data=X,
                      labels=denstream_inc_lables,
-                     title='DenStream Clustering')`
+                     title='DenStream Clustering')
 ```
 
 
@@ -991,7 +991,7 @@ for i, (x, _) in enumerate(stream.iter_array(X)):
 ```text
 utils.simple_scatter(data=X,
                      labels=clustream_inc_lables,
-                     title='CluStream Clustering')`
+                     title='CluStream Clustering')
 ```
 
 

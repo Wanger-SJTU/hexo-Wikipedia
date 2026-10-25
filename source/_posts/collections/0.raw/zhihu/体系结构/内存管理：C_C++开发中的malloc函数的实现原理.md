@@ -57,9 +57,9 @@ struct mm_struct {
   unsigned dumpable:1;
   /* Architecture-specific MM context */
   mm_context_t context;
+};
 ```
 
-};`
 
 其中start_brk和brk分别是堆得起始和终止地址，我们使用malloc动态分配的内存就在这之间。start_stack是进程栈的起始地址，栈的大小是在编译时期确定的，在运行时不能改变。而堆的大小由start_brk 和brk决定，但是可以使用系统调用sbrk() 或brk()增加brk的值，达到增大堆空间的效果，但是系统调用代价太大，涉及到用户态和内核态的相互转换。所以，<strong>实际中系统分配较大的堆空间，进程通过malloc()库函数在堆上进行空间动态分配，堆如果不够用malloc可以进行系统调用，增大brk的值。</strong>
 
@@ -77,7 +77,7 @@ struct mm_struct {
 ```cpp
 #include 
 int brk(void *addr);
-void *sbrk(intptr_t increment);`
+void *sbrk(intptr_t increment);
 ```
 
 
@@ -94,9 +94,9 @@ brk函数将break指针直接设置为某个地址，而sbrk将break指针从当
 struct rlimit {
   rlim_t rlim_cur;  /* Soft limit */
   rlim_t rlim_max;  /* Hard limit (ceiling for rlim_cur) */
+};
 ```
 
-};`
 
 每种资源有软限制和硬限制，并且可以通过setrlimit对rlimit进行有条件设置。其中硬限制作为软限制的上限，非特权进程只能设置软限制，且不能超过硬限制。
 
@@ -105,7 +105,7 @@ struct rlimit {
 ```cpp
 #include 
 void *mmap(void *addr, size\_t length, int prot, int flags, int fd, off\_t offset);
-int munmap(void *addr, size_t length);`
+int munmap(void *addr, size_t length);
 ```
 
 

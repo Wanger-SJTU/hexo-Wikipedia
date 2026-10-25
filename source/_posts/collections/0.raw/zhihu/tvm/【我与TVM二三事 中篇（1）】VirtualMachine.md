@@ -161,9 +161,9 @@ Step2.1.1.2 InlinePrimitives
 @ tvm/src/relay/backend/vm/http://inline_primitives.cc
 
 Pass InlinePrimitives() {
-  runtime::TypedPackedFunc IRModule(IRModule, PassContext)  pass_func =
 
 ```cpp
+  runtime::TypedPackedFunc IRModule(IRModule, PassContext)  pass_func =
       [=](IRModule m, PassContext pc) { return relay::vm::PrimitiveInliner(m).Inline(); };
   auto inline_pass = CreateModulePass(pass_func, 1, "Inline", {});
   // Eliminate dead code for each function after inlining.
@@ -238,10 +238,9 @@ Step2.1.1.3 MemoryOpt
 
 @ tvm/src/relay/backend/vm/http://compiler.cc
 
+```text
 transform::Sequential MemoryOpt(tvm::Target host_target, TargetsMap targets) {
   Array Pass  pass_seqs;
-
-```text
   pass_seqs.push_back(transform::ManifestAlloc(host_target, targets));
   pass_seqs.push_back(transform::FoldConstant());
   ...
@@ -344,7 +343,7 @@ class ContextAnalyzer : public MixedModeVisitor {
 AnalysisResultMap ContextAnalysis(const IRModule  mod, const Device  default_device) {
   AnalysisResultMap Results() {
 
-```cpp
+```x86asm
     AnalysisResultMap ret;
     for (const auto  it : expr_to_device_) {
       auto device = Lookup(it.second);

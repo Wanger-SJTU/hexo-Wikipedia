@@ -348,7 +348,7 @@ project(testcuda)
 find_package(CUDA REQUIRED)
 find_package(OpenCV REQUIRED)
 cuda_add_executable(testcuda main.cu)
-target_link_libraries(testcuda ${OpenCV_LIBS})`
+target_link_libraries(testcuda ${OpenCV_LIBS})
 
 水水的介绍到此结束，剩下的我就要放飞自我了，看不懂别怪我*
 
@@ -412,7 +412,7 @@ nvcc x.cu
 ```text
     -gencode arch=compute_35,code=sm_35
     -gencode arch=compute_50,code=sm_50
-    -gencode arch=compute_60,code=\'compute_60,sm_60\'`
+    -gencode arch=compute_60,code=\'compute_60,sm_60\'
 ```
 
 

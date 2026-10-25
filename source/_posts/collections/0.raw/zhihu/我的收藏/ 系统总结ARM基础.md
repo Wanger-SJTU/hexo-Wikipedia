@@ -17,13 +17,13 @@ source_url: https://zhuanlan.zhihu.com/p/694757259
 
 一
 
-ARM汇编`
+ARM汇编
 
 
 一般的我们的电脑都是X86架构的机器，这里我们使用clang来对我们的文件进行编译，自己编译文件，放入ida中对照着学习更容易理解一点。  
 
 二
-关于clang的一些指令：`
+关于clang的一些指令：
 
 #### 使用clang直接编译成可执行文件
 
@@ -81,7 +81,7 @@ ARM处理器具有从ARM状态到Thumb状态和从Thumb状态到ARM状态的无�
 
 三
 
-ARM寄存器`
+ARM寄存器
 
 ### Arm-v7架构
 
@@ -188,7 +188,7 @@ Arm-v8架构有31个通用寄存器X0-X30 (64位长），而Arm-v7架构仅有16
 
 四
 
-ARM处理器几种工作模式`
+ARM处理器几种工作模式
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_9bfc9c41f269.jpg)
 
@@ -223,7 +223,7 @@ ARM处理器几种工作模式`
 
 五
 
-ARM架构下的函数调用约定`
+ARM架构下的函数调用约定
 
 ARM 架构下常见的函数调用约定有两种：
 
@@ -248,7 +248,7 @@ AAPCS-VFP 是在 AAPCS 的基础上添加了向量浮点扩展（Vector Floating
 
 六
 
-汇编指令`
+汇编指令
 
 ### ARM中的寻址方式：
 

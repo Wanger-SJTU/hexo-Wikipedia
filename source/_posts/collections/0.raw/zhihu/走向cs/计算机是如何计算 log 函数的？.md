@@ -30,9 +30,9 @@ $ab=m⇒eln⁡ab=m⇒ebln⁡a=m⇒ln⁡ebln⁡a=ln⁡m⇒bln⁡a=ln⁡m⇒b=ln�
 ```text
 double log10(double x) {
     return log(x) / log(10); // log == ln
+}
 ```
 
-}`
 
 我们只需要解决如何求 ln" role="presentation">ln\ln 函数就可以了。
 
@@ -129,9 +129,9 @@ static double zero   =  0.0;
 	    if(k==0) return f-s*(f-R); else
 		     return dk*ln2_hi-((s*(f-R)-dk*ln2_lo)-f);
 	}
+}
 ```
 
-}`
 
 这么艹的代码，是不是看一眼就不想看了。别急，咱个儿挑重点讲。
 

@@ -54,7 +54,7 @@ res = matmul(Q, K)/ sqrt(self.head_dim)
 #(B, H, 1, S) -> (B, H, 1, S)
 res = =softmax(res, dim=-1)
 #(B, H, 1, S) * (B, H, S, D) -> (B, H, 1, D)
-out = matmul(res, V)`
+out = matmul(res, V)
 
 在整个计算过程中，BiasAdd、Rotary Embedding相对计算量较小，对kernel的latency影响较小，因此下文省略这一部分的分析。
 
@@ -65,7 +65,7 @@ out = matmul(res, V)`
 涉及到GPU并行计算，我们首先需要考虑的是任务划分。对于这个场景，任务划分实际上是清晰的：B和H是并行维度，在执行过程中的Q*K和QK*V，都可以理解成一个batch size = B * H的Batch GEMV。而SoftMax又是一个Reduce操作，因此单个GEMV的计算最好尽量在一个block内完成。因此，MMHA比较基础的任务划分大概是：
 
 dim3 grid(B, H, 1);
-dim3 block(THREAD_PER_BLOCK, 1, 1);`
+dim3 block(THREAD_PER_BLOCK, 1, 1);
 
 这里的THREAD_PER_BLOCK是指每个block用多少threads来完成一个head在S上的计算。通常更多的threads会更提高每个SM的active warps以更好的利用计算资源，增加load指令以提高数据load效率，因此我们希望THREAD_PER_BLOCK越大越好（最好接近1024）。但由于kernel整体计算逻辑较为复杂，寄存器用量较大，threads可能会收到寄存器总量的限制；且在寄存器总量的限制下，我们可以简单的认为每个SM上只有一个active block。
 
@@ -96,7 +96,7 @@ Q乘K Cache的计算在D上累加。假设我们用half存KV Cache，用float做
 针对这种情况，我们把S也分配到grid dim上，资源分配也就改为：
 
 dim3 grid(B, H, S_tile);
-dim3 block(THREAD_PER_BLOCK, 1, 1);`
+dim3 block(THREAD_PER_BLOCK, 1, 1);
 
 在这种任务划分下，结合上文分析，假设长seq每个SM上仅有一个active block，则waves可以计算为：
 
@@ -109,7 +109,7 @@ dim3 block(THREAD_PER_BLOCK, 1, 1);`
 另一种需要做不同的任务划分的场景是GQA。在GQA的计算下，每个head的KV Cache会对应于多个head的Q，为了避免KV Cache的重复load，资源分配应该改为，并基于此做计算上的调整。
 
 dim3 grid(B, H_kv, S_tile);
-dim3 block(THREAD_PER_BLOCK, 1, 1);`
+dim3 block(THREAD_PER_BLOCK, 1, 1);
 
 除了优化任务划分，MMHA的优化还可以在以下方面继续展开：
 

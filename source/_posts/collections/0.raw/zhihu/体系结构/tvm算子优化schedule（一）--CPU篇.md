@@ -38,7 +38,7 @@ def add(n):
     B = te.placeholder((n,), name='b')
     C = te.compute(A.shape, lambda i: A[i] + B[i], name="C") # 也可通过topi调用
     s = te.create_schedule([C.op])
-    return s, A, B, C`
+    return s, A, B, C
 ```
 
 
@@ -53,7 +53,7 @@ def add(n):
      s, A, B, C = add(n)
      # add thread-level parallelism
      s[C].parallel(C.op.axis[0])
-     return s, (A, B, C)`
+     return s, (A, B, C)
 ```
 
 
@@ -73,7 +73,7 @@ def vectorized(n):
     outer, inner = s[C].split(C.op.axis[0], factor=8)
     s[C].parallel(outer)
     s[C].vectorize(inner)
-    return s, (A, B, C)`
+    return s, (A, B, C)
 ```
 
 
@@ -90,7 +90,7 @@ def matmul(n, m, l):
     B = te.placeholder((l, m), name='B')
     C = te.compute((n, m), lambda x, y: te.sum(A[x, k] * B[k, y], axis=k), name='C')
     s = te.create_schedule(C.op)
-    return s, A, B, C`
+    return s, A, B, C
 ```
 
 
@@ -107,7 +107,7 @@ def reorder(n):
     s, A, B, C = matmul(n, n, n)
     (x, y), (k,) = C.op.axis, C.op.reduce_axis
     s[C].reorder(x, k, y)
-    return s, (A, B, C)`
+    return s, (A, B, C)
 ```
 
 
@@ -127,7 +127,7 @@ def block(n, tx, ty, tk):
     s[C].reorder(ko, xi, ki, yi)
     s[C].vectorize(yi)
     s[C].unroll(ki) # 展开为顺序操作，以降低for循环成本 
-    return s, (A, B, C)`
+    return s, (A, B, C)
 ```
 
 
@@ -159,7 +159,7 @@ def cached_block(n):
     s[CachedC].reorder(ko, xc, ki, yc)
     s[CachedC].unroll(ki)
     s[CachedC].vectorize(yc)
-    returns,(A,B,C)`
+    returns,(A,B,C)
 ```
 
 

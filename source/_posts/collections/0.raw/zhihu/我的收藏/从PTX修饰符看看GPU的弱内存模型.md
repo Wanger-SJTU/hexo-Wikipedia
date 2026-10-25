@@ -87,7 +87,7 @@ st.global.b32 [flag], 1;  // 可能被重排到data之前！
 ld.global.b32 r1, [flag];
 setp.eq.s32 p1, r1, 1;
 @!p1 bra loop;
-ld.global.b32 r2, [data]; // 可能在flag之前被推测执行！`
+ld.global.b32 r2, [data]; // 可能在flag之前被推测执行！
 
 在弱内存模型下，P1可能读到 flag=1 但 data=0。原因可能是P0的写缓冲乱序刷出，或者P1的读取指令被乱序执行。
 
@@ -104,7 +104,7 @@ loop:
 ld.acquire.sys.b32 r1, [flag];
 setp.ne.s32 p1, r1, 1;
 @p1 bra loop;
-ld.global.b32 r2, [data];`
+ld.global.b32 r2, [data];
 
 在这里，通过st.release 和 ld.acquire保证了weak memory model下程序的功能正确性。
 

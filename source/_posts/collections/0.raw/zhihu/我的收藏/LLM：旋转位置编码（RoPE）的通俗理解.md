@@ -114,7 +114,7 @@ $\begin{bmatrix} \text{cos}m\theta,-\text{sin}m\theta \\ \text{sin}m\theta,\text
 def rotate_half(x):
     x1 = x[..., : x.shape[-1] // 2] # 实部, 对应x_2i-1
     x2 = x[..., x.shape[-1] // 2 :] # 虚部, 对应x_2i
-    return torch.cat((-x2, x1), dim=-1)`
+    return torch.cat((-x2, x1), dim=-1)
 ```
 
 
@@ -126,7 +126,7 @@ def apply_rotary_pos_emb(q, k, cos, sin, position_ids=None, unsqueeze_dim=1):
     sin = sin.unsqueeze(unsqueeze_dim)
     q_embed = (q * cos) + (rotate_half(q) * sin)
     k_embed = (k * cos) + (rotate_half(k) * sin)
-    return q_embed, k_embed`
+    return q_embed, k_embed
 ```
 
 

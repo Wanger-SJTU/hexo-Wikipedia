@@ -33,7 +33,7 @@ DO I = 1, N
   END DO
 ```
 
-END DO`
+END DO
 
 这样朴实的写法有什么问题？答：没有大问题，但是数据局部性可以再提高下，能跑得更快点。具体如何提高以及提高了多少见如下分析。
 
@@ -57,7 +57,7 @@ I=1: B(T+1), B(T+2), B(T+3) ... B(2T)
 I=2: B(T+1), B(T+2), B(T+3) ... B(2T)
 I=3: B(T+1), B(T+2), B(T+3) ... B(2T)
 ...
-I=N: B(T+1), B(T+2), B(T+3) ... B(2T)`
+I=N: B(T+1), B(T+2), B(T+3) ... B(2T)
 
 > 小灯泡：tile的本质当总的数据量无法fit in cache的时候，把数据分成一个一个tile，让每一个tile的数据fit in the cache。所以tiling一般从最内层循环开始（tile外层循环的话一个tile就包括整个内层循环，这样的tile太大）。
 
@@ -73,7 +73,7 @@ DO J = 1, M, T
   END DO
 ```
 
-END DO`
+END DO
 
 注意当我们tile J层循环的时候，tile以后J层循环就跑到了外层（loop interchange），这样又会影响A的缓存命中率。该变换又称为*strip-mine-and-interchange*。我们可以计算此时A的cache miss次数是(M/T) * (N/b)，B的cache miss次数是T/b * M/T = M/b（每一轮J层循环miss一次），所以总共的cache miss是MN/(bT) + M/b，tile之前是N/b+N*M/b。所以在M和N的大小也相当的情况下做tiling大约能将cache miss缩小T倍。
 
@@ -89,7 +89,7 @@ DO J = 1, M
   END DO
 ```
 
-END DO`
+END DO
 
 依然假设tile size=T，访问模式将变为：
 
@@ -102,7 +102,7 @@ J=1: A(T+1) B(1), A(T+2) B(1), A(T+3) B(1) ... A(2T) B(1)
 J=2: A(T+1) B(2), A(T+2) B(2), A(T+3) B(2) ... A(2T) B(2)
 ...
 J=M:A(T+1) B(M), A(T+2) B(M), A(T+3) B(M) ... A(2T) B(M)
-...`
+...
 
 此时循环变成：
 
@@ -116,7 +116,7 @@ DO I = 1, N, T
   END DO
 ```
 
-END DO`
+END DO
 
 此时A的cache miss次数是T/b * N/T，B的cache miss次数是M/b*(N/T)，加起来就是(MN)/(bT)+N/b，而tile J层循环得到的cache miss是(MN)/(bT)+M/b，所以对于该循环到底应该tile I层循环还是J层循环更好其实取决于M和N的相当大小。
 
@@ -132,7 +132,7 @@ DO J = 1, M
   END DO
 ```
 
-END DO`
+END DO
 
 > 注：fortran是column major layout，B(I, J)是访问二维数组，相当于C语言中的B[I][J]。不管是column major还是row major不影响tiling的原理。
 注：对于多维数组我们在计算cache miss时假设数据的存储是连续的。
@@ -151,7 +151,7 @@ DO I = 1, N, T
   END DO
 ```
 
-END DO`
+END DO
 
 tiling loop I 之后的cache miss是N/T * T/b + T/b * M * N/T（J层循环每一轮一开始都会miss B）= N/b + NM/b。
 
@@ -167,7 +167,7 @@ DO J = 1, M, T
   END DO
 ```
 
-END DO`
+END DO
 
 此时的cache miss是N/b * M/T + T*(N/b)*M/T = NM/(bT) + MN/b。跟tiling I循环相比，由于M一般远大于T，所以会有更高的cache miss。造成这个区别的本质原因在于D(I)在J层的重用没有被exploited。
 
@@ -183,7 +183,7 @@ DO J = 1, N
   ENDDO
 ```
 
-ENDDO`
+ENDDO
 
 这个例子之所以有趣是因为，无论是否做交换I、J循环（交换是合法的），cache miss都是N*N/b + N*N。下面是交换I、J循环后的情况：
 
@@ -195,7 +195,7 @@ DO I = 1, N
   ENDDO
 ```
 
-ENDDO`
+ENDDO
 
 如果I是内层循环，则A的miss是N*N/b，而B每次都是miss，所以一共miss N*N次。如果J是内层循环，则是A每次都是miss，而B miss N*N/b次。不管哪种情况，都有一个没有achieve locality。
 
@@ -213,7 +213,7 @@ DO I = 1, N, T
   ENDDO
 ```
 
-ENDDO`
+ENDDO
 
 这里的精髓在于tiling不仅可以利用temporal locality，也能用上空间局部性（spatial locality），缓存从内存中取数据的时候不是一个数一个数取的，而是一次以cache line为最小单位。譬如64字节就是L1 cache line的一个常见大小。除此之外还有prefetch，就是缓存可能一次还不止取一个cache line，譬如会取2个3个4个等。譬如当A(ii, jj)被从内存取到缓存中时，A(ii+1, jj)也会顺便一块儿被取入缓存。
 

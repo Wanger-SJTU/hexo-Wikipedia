@@ -122,7 +122,7 @@ def profile(description: str, run: Callable, num_warmups: int = 1, with_stack: b
         text_path = f"var/stacks_{description}.txt"
         svg_path = f"var/stacks_{description}.svg"
         prof.export_stacks(text_path, "self_cuda_time_total")
-    return table`
+    return table
 ```
 
 
@@ -130,7 +130,7 @@ def profile(description: str, run: Callable, num_warmups: int = 1, with_stack: b
 
 matmul_function_128 = lambda a, b: a @ b
 matmul_profile_128 = profile("matmul(dim=128)", run_operation2(dim=128, operation=matmul_function_128))
-matmul(dim=128)`
+matmul(dim=128)
 
 #### 4.2.2 NVIDIA Nsight Systems（作业2必用）
 
@@ -180,7 +180,7 @@ import math
 
 def manual_gelu(x: torch.Tensor):
     # 手动实现GELU，无内核融合，多个独立操作
-    return 0.5 * x * (1 + torch.tanh(0.79788456 * (x + 0.044715 * x * x * x)))`
+    return 0.5 * x * (1 + torch.tanh(0.79788456 * (x + 0.044715 * x * x * x)))
 ```
 
 
@@ -195,7 +195,7 @@ import torch.nn.functional as F
 
 def pytorch_gelu(x: torch.Tensor):
     # 原生实现，自动内核融合，approximate='tanh'匹配手写公式
-    return F.gelu(x, approximate="tanh")`
+    return F.gelu(x, approximate="tanh")
 ```
 
 
@@ -242,16 +242,12 @@ __global__ void gelu_kernel(float* in, float* out, int num_elements) {
 
 inline unsigned int cdiv(unsigned int a, unsigned int b) {
 
-```text
+```cpp
     return (a + b - 1) / b;
 }
 
 // CPU端封装函数，调度GPU内核
-```
-
 torch::Tensor gelu(torch::Tensor x) {
-
-```cpp
     TORCH_CHECK(x.device().is_cuda());  // 确保输入在GPU上
     TORCH_CHECK(x.is_contiguous());     // 确保内存连续
     torch::Tensor y = torch::empty_like(x);  // 分配输出空间（不置零）
@@ -296,7 +292,7 @@ torch::Tensor gelu(torch::Tensor x) {
 # 调用示例
 cuda_gelu = create_cuda_gelu()
 x = torch.randn(16384, device="cuda")
-y = cuda_gelu(x)`
+y = cuda_gelu(x)
 
 #### 5.1.4 Triton版（Python编写，作业2重点）
 
@@ -349,7 +345,7 @@ def triton_gelu_kernel(x_ptr, y_ptr, num_elements, BLOCK_SIZE: tl.constexpr):
 
 # 调用示例
 x = torch.randn(16384, device="cuda")
-y = triton_gelu(x)`
+y = triton_gelu(x)
 
 #### 5.2 Q&A
 
@@ -394,7 +390,7 @@ compiled_gelu = torch.compile(manual_gelu)
 
 # 测试性能
 x = torch.randn(16384, device="cuda")
-y = compiled_gelu(x)  # 优化后的执行`
+y = compiled_gelu(x)  # 优化后的执行
 
 #### 6.3 适用场景与局限性
 
@@ -495,7 +491,7 @@ x = torch.randn(1024, 16384, device="cuda")
 y1 = manual_softmax(x)
 y2 = pytorch_softmax(x)
 y3 = triton_softmax(x)
-y4 = compiled_softmax(x)`
+y4 = compiled_softmax(x)
 
 ### 八、课程总结
 

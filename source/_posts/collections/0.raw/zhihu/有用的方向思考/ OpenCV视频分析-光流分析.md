@@ -73,7 +73,7 @@ nextPts,status,err = cv2.calcOpticalFlowPyrLK(prevImg,   #上一帧图片
                                               nextPts    #与返回值中的nextPtrs相同
                                               [, status[, err[, winSize
                                               [, maxLevel[, criteria
-                                              [, flags[, minEigThreshold]]]]]]])`
+                                              [, flags[, minEigThreshold]]]]]]])
 
 >  输入值：
 
@@ -140,7 +140,7 @@ mask = np.zeros_like(old_frame)
 # 光流跟踪
 while True:
 
-```text
+```x86asm
     ret, frame = cap.read()
     if ret is False:
         break
@@ -205,7 +205,7 @@ while True:
         good_ini=p0.copy()
 
 cv.destroyAllWindows()
-cap.release()`
+cap.release()
 ```
 
 
@@ -239,7 +239,7 @@ frame_idx = 0
 detect_interval = 5
 while True:
 
-```text
+```x86asm
     ret, frame = cap.read()
     if ret:
         frame_gray = cv.cvtColor(frame, cv.COLOR_BGR2GRAY)
@@ -324,7 +324,7 @@ while True:
         break
 
 cv.destroyAllWindows()
-cap.release()`
+cap.release()
 ```
 
 
@@ -352,7 +352,7 @@ flow=cv.calcOpticalFlowFarneback(
         prev, 
         next, flow, 
         pyr_scale, levels, winsize, 
-        iterations, poly_n, poly_sigma, flags)`
+        iterations, poly_n, poly_sigma, flags)
 
 输入
 
@@ -383,7 +383,7 @@ prvs = cv.cvtColor(frame1,cv.COLOR_BGR2GRAY)
 hsv = np.zeros_like(frame1)
 hsv[...,1] = 255
 
-```text
+```x86asm
 while(1):
     ret, frame2 = cap.read()
     next = cv.cvtColor(frame2,cv.COLOR_BGR2GRAY)
@@ -411,7 +411,7 @@ while(1):
         cv.imwrite('opticalhsv.png',bgr)
     prvs = next
 cap.release()
-cv.destroyAllWindows()`
+cv.destroyAllWindows()
 ```
 
 

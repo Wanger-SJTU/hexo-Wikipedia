@@ -134,7 +134,7 @@ dims=[256,256,384,384,384,512]
 for i in range(5):
   curr_dim, next_dim =dims[i],dims[i+1]
   low1 = make_hg_layer(3, curr_dim, next_dim, ...)
-  low3 = make_hg_layer(3, next_dim, curr_dim, ...)`
+  low3 = make_hg_layer(3, next_dim, curr_dim, ...)
 
 上图中每个 box都包含若干个residual module，5个嵌套层的box所包含的residual module的数量都是2，除了一个特别情况，就是第5嵌套层（最内层）的中间的部分`low2` box包含4个residual module。 hourglass网络的其他细节设计就不一一说了，直接阅读论文。
 

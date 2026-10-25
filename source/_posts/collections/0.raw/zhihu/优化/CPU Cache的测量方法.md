@@ -57,7 +57,7 @@ Flush即clflush指令，Visual C++中定义如下：
         /* measure cache miss latency */
         ts = rdtscp(&ui);
         m |= data[0];
-        te = rdtscp(&ui);`
+        te = rdtscp(&ui);
 ```
 
 
@@ -96,7 +96,7 @@ msr[1a4] = 00000000`00000000
 1: kd> wrmsr 0x1a4 0x0f
 1: kd> rdmsr 0x1a4
 msr[1a4] = 00000000`0000000f
-1: kd> ~0`
+1: kd> ~0
 
 #### 实战：Cache不同分级的访问延时测量
 

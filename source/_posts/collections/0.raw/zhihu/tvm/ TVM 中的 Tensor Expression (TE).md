@@ -64,7 +64,7 @@ def compute(shape, fcompute, name="compute", tag="", attrs=None, varargs_names=N
     """Construct a new tensor by computing over the shape domain.
 
     The compute rule is result[axis] = fcompute(axis)
-    """`
+    """
 ```
 
 
@@ -103,7 +103,7 @@ conv 相比于上面的算符，它复杂在 source 的 indices 之间本身还�
 A = te.placeholder((n, m), name="A")
 B = te.placeholder((m, l), name="B")
 k = te.reduce_axis((0, m), name="k") # te.reduce_axis 第一个参数表示 range
-C = te.compute((n, l), lambda i, j: te.sum(A[i, k] * B[k, j], axis=k), name="C")`
+C = te.compute((n, l), lambda i, j: te.sum(A[i, k] * B[k, j], axis=k), name="C")
 
 te.placeholder 就是 TE 这个层面上对 Tensor / NDArray 这种东西的表示。可以看出我们的实现依赖于 te.sum 这个更加基本的算子。
 
@@ -126,7 +126,7 @@ TVM_REGISTER_GLOBAL("te.ComputeOp")
 ```cpp
     .set_body_typed([](std::string name, std::string tag, Map attrs,
                        Array axis,
-                       Array body) { return ComputeOp(name, tag, attrs, axis, body); });`
+                       Array body) { return ComputeOp(name, tag, attrs, axis, body); });
 ```
 
 
@@ -141,7 +141,7 @@ Stmt MakeComputeStmt(const ComputeOpNode* self, const Stage& stage,
 
 ```cpp
                      const std::unordered_map& dom_map,
-                     bool debug_keep_trivial_loop) {`
+                     bool debug_keep_trivial_loop) {
 ```
 
 

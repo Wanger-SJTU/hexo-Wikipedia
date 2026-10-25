@@ -73,7 +73,7 @@ loss = tf.nn.nce_loss(
 import tensorflow as tf
 # a is a decay factor
 weight = tf.Variable(, "some_name")
-weight = a * tf.stop_gradient(weight) + (1 - a) * weight。`
+weight = a * tf.stop_gradient(weight) + (1 - a) * weight。
 
 - tf 做矩阵 A 的 pairwise-distance ，没有库函数咋办，还是 batch 模式的 pairwise -distance 计算。当然，搞成笛卡尔乘积然后 map_fn 也可以，不过后者似乎慢多了。
 import tensorflow as tf
@@ -82,7 +82,7 @@ A = tf.Variable(init_value>, "name") # A has shape [batch, N, M]
 r = tf.reduce_sum(A, -1, keep_dims=True) 
 K = - 2.0 * tf.matmul(A, A, transposed_b=True)
 D = r + K + tf.transposed(r, [0, 2, 1])
-D = tf.sqrt(tf.abs(D))`
+D = tf.sqrt(tf.abs(D))
 
 - 在 tf.summary.image() 中，将多个图像， 也即 x=[batch, H, W, 3] 的 tensor ，输出成一个大拼图形式，有着简单粗暴的做法：
 import tensorflow as tf
@@ -90,7 +90,7 @@ x = ... # [64, H, W, 3]
 x = tf.reshape(x, [8, 8, H, W, 3])
 x = tf.transpose(x, [0, 2, 1, 3, 4])
 x = tf.reshape(x, [8*H, 8*W, 3])
-tf.summary.image(x, ..)`
+tf.summary.image(x, ..)
 
 先写一点打发一下时间骗赞，后面想起啥补啥。。。
 

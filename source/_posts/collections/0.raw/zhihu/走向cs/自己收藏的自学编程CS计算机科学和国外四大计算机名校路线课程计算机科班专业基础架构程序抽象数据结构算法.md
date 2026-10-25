@@ -121,7 +121,7 @@ source_url: https://zhuanlan.zhihu.com/p/320063653
 5、计算机网络：《计算机网络：自顶向下方法》
 ----相关课程看详细版 和 文末CS课程索引
 6、操作系统：《操作系统导论Operating Systems: Threee Easy Pieces》
-----相关课程看详细版 和 文末CS课程索引`
+----相关课程看详细版 和 文末CS课程索引
 
 <strong>详细版</strong>
 

@@ -174,9 +174,9 @@ inline void SetSimpleBlockSize(BlockNode *pNode, size_t pSize)
 ```text
 {
 	size_t flag = (pSize m_flag = flag;
+}
 ```
 
-}`
 
 定义一个SimpleAllocator类，类中维持一个指向所有空闲内存块的FreeList。在类的构造函数中通过_aligned_malloc申请一块8字节对齐的内存，并在析构函数中释放了这块内存。
 
@@ -208,9 +208,9 @@ private:
 	size_t m_numAllocations;
 	size_t m_remainSize;
 	SEARCH_MODE m_mode;
+}
 ```
 
-}`
 
 m_numAllocations记录了申请和释放内存的次数(每次申请内存时加一，释放时减一)，m_remainSize记录了空闲块数据区的总大小。
 
@@ -229,7 +229,7 @@ m_numAllocations记录了申请和释放内存的次数(每次申请内存时加
 		m_freeList = static_cast(pStart);
 		m_freeList->m_next = nullptr;
 		SetSimpleBlockSize(m_freeList, m_remainSize);
-	}`
+	}
 ```
 
 
@@ -253,9 +253,9 @@ bool GetProperBlock(size_t pSize, SEARCH_MODE pMode, BlockNode **pPrevNode, Bloc
 	}
 
 	return GetBestFitBlock(pSize, pPrevNode, pFoundNode);
+}
 ```
 
-}`
 
 First fit的查找实现如下：
 
@@ -281,7 +281,7 @@ First fit的查找实现如下：
 		*pPrevNode = prev;
 		*pFoundNode = curr;
 		return success;
-	}`
+	}
 ```
 
 
@@ -310,7 +310,7 @@ Best fit的查找实现如下：
 		*pPrevNode = bestPrev;
 		*pFoundNode = best;
 		return success;
-	}`
+	}
 ```
 
 
@@ -583,16 +583,16 @@ void Delete(SimpleAllocator &pAllocator, T *pPtr)
 {
 	pPtr->~T();
 	pAllocator.Free(pPtr);
+}
 ```
 
-}`
 
 可以通过如下方式进行调用：
 
 SimpleAllocator allocator(16 * 1024 * 1024, SEARCH_MODE::FIRST_FIT);
 
 VinClass *temp = New(allocator, 16);
-Delete(allocator, temp);`
+Delete(allocator, temp);
 
 这里没有实现new[]，delete[]，可以在块内存的Header中添加信息记录分配的内存是否被数组使用，若是则在new[] 和delete[]中为数组中的所有对象调用构造或析构函数。
 

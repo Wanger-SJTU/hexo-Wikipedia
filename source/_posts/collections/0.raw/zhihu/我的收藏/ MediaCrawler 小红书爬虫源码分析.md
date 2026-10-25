@@ -122,7 +122,7 @@ async def login_by_qrcode(self):
 
 ```text
      if "请通过验证" in await self.context_page.content():
-        utils.logger.info("[XHSLogin.check_login_state] A verification code appeared during the login process, please verify manually.")`
+        utils.logger.info("[XHSLogin.check_login_state] A verification code appeared during the login process, please verify manually.")
 ```
 
 
@@ -215,7 +215,7 @@ async def login_by_mobile(self):
 - 获取phone input_ele，并填入手机号
 login_container_ele = await self.context_page.wait_for_selector("div.login-container")
 input_ele = await login_container_ele.query_selector("label.phone > input")
-await input_ele.fill(self.login_phone)`
+await input_ele.fill(self.login_phone)
 
 - 点击`send_btn_ele`， 发送验证码
  
@@ -393,7 +393,7 @@ MediaCrawler 小红书爬虫，也做了一些反反爬虫措施，代码位于`
 
 - 通过注入stealthjs脚本，来反headless 浏览器检测
 # https://github.com/berstend/puppeteer-extra/tree/master/packages/extract-stealth-evasions
-await self.browser_context.add_init_script(path="libs/stealth.min.js")`
+await self.browser_context.add_init_script(path="libs/stealth.min.js")
 
 - 通过添加 `webId cookie` 来防止出现 `captcha` 滑块
 await self.browser_context.add_cookies([
@@ -409,9 +409,9 @@ await self.browser_context.add_cookies([
 
 ```text
     }
+])
 ```
 
-])`
 
 - 支持设置 ip 代理来更改 ip 地址
 if config.ENABLE_IP_PROXY:
@@ -419,7 +419,7 @@ if config.ENABLE_IP_PROXY:
 ```text
     ip_proxy_pool = await create_ip_pool(config.IP_PROXY_POOL_COUNT, enable_validate_ip=True)
     ip_proxy_info: IpInfoModel = await ip_proxy_pool.get_proxy()
-    playwright_proxy_format, httpx_proxy_format = self.format_proxy_info(ip_proxy_info)`
+    playwright_proxy_format, httpx_proxy_format = self.format_proxy_info(ip_proxy_info)
 ```
 
 

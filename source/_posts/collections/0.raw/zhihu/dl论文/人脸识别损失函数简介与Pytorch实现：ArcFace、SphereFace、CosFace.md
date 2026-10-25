@@ -223,7 +223,7 @@ class SphereProduct(nn.Module):
         return self.__class__.__name__ + '(' \
                + 'in_features=' + str(self.in_features) \
                + ', out_features=' + str(self.out_features) \
-               + ', m=' + str(self.m) + ')'`
+               + ', m=' + str(self.m) + ')'
 ```
 
 

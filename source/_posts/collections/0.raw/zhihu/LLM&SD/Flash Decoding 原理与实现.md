@@ -52,7 +52,7 @@ for bq in range(0, n, Bm):       # 外层循环：遍历 Q 的分块，可并行
     for bk in range(0, n, Bn):   # 内层循环：遍历 K/V 的分块，串行
         bK = K[bk:bk+Bn, :]
         bV = V[bk:bk+Bn, :]
-        ...`
+        ...
 ```
 
 
@@ -266,7 +266,7 @@ def attention(q: torch.Tensor, k: torch.Tensor, v: torch.Tensor):
 
 
 out = attention(q, k, v)
-print(out)`
+print(out)
 
 ### 总结
 

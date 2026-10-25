@@ -99,9 +99,9 @@ int main()
     unlink("/mnt/huge/hugepage1"); 
 
     return 0; 
+}
 ```
 
-}`
 
 #### 4.2 实现原理
 
@@ -250,9 +250,9 @@ static void __split_huge_pmd_locked(struct vm_area_struct *vma, pmd_t *pmd,
 			put_page(page + i);
 		}
 	}
+}
 ```
 
-}`
 
 实例推演一下页表分裂的过程。假设2个进程以PMD映射到一个thp大页，当进程A发生页表， 分裂前如下所示：
 
@@ -284,7 +284,7 @@ int split_huge_page_to_list(struct page *page, struct list_head *list)
 
 	。。。
 
-```text
+```x86asm
        //分裂页面
 		__split_huge_page(page, list, end, flags);
 		ret = 0;
@@ -294,7 +294,7 @@ int split_huge_page_to_list(struct page *page, struct list_head *list)
 
 fail:
 
-```text
+```x86asm
 		if (mapping)
 			xa_unlock(&mapping->i_pages);
 		spin_unlock_irqrestore(&pgdata->lru_lock, flags);
@@ -320,9 +320,9 @@ out:
 ```text
 	count_vm_event(!ret ? THP_SPLIT_PAGE : THP_SPLIT_PAGE_FAILED);
 	return ret;
+}
 ```
 
-}`
 
 进程页表分裂后，其实还是没能进行内存回收。当进程B也发生的页表分裂，那么由于THP大页没有大页映射，会在内存回收时拆分大页。如下所示：
 
@@ -371,9 +371,9 @@ out:
 
 ```text
 	unlock_page_memcg(page);
+}
 ```
 
-}`
 
 在反向映射时如果page已经没有进程映射了， 就会把page加到deferred_split的链表， 在下次内存紧张shrink时进分裂回收。通过deferred_split_huge_page进行。
 
@@ -414,9 +414,9 @@ void deferred_split_huge_page(struct page *page)
 #endif
 	}
 	spin_unlock_irqrestore(&ds_queue->split_queue_lock, flags);
+}
 ```
 
-}`
 
 在内存压力紧张时系统回调各驱动注册的shrink接口，就会调用到deferred_split_scan。这个回调会进程大页分裂和普通页释放。
 
@@ -483,9 +483,9 @@ next:
 	if (!split && list_empty(&ds_queue->split_queue))
 		return SHRINK_STOP;
 	return split;
+}
 ```
 
-}`
 
 我们再来看一下split_huge_page是如何进行大页分裂的. 它会调用到split_huge_page_to_list,传入的list参数为0,表示分裂后page加到LRU list. 最终调用到__split_huge_page进行分裂.
 

@@ -53,7 +53,7 @@ def AMPD(data):
         for i in range(k, count - k):
             if data[i] > data[i - k] and data[i] > data[i + k]:
                 p_data[i] += 1
-    return np.where(p_data == max_window_length)[0]`
+    return np.where(p_data == max_window_length)[0]
 ```
 
 
@@ -80,7 +80,7 @@ def vis():
 ```
 
 
-vis()`
+vis()
 
 ![](/images/collections/0.raw/zhihu/%E7%BC%96%E7%A8%8B%E5%90%91/asset/img_9996097782c3.jpg)
 

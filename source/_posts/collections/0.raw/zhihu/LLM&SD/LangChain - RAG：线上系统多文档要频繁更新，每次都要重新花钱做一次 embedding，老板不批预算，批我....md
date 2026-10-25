@@ -45,7 +45,7 @@ LangChain 提出的方案如下图所示，暂且称它为「增量更新」模�
 from langchain.indexes import index
 
 # 但要选一个「RecordManager」用来保存文档更新信息：
-from langchain.indexes import SQLRecordManager`
+from langchain.indexes import SQLRecordManager
 
 这里 _clear() 函数会把所有已有内容清空， index  带上  record_manager 之后会把新加入的 docs  在  embedding  之前都一一登记造册，记录在案：
 

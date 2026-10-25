@@ -160,7 +160,7 @@ typedef struct { pgdval_t pgd; } pgd_t;
 #define pmd_offset_phys(dir, addr)  (pud_page_paddr(*(dir)) + pmd_index(addr) * sizeof(pmd_t))
 #define pmd_offset(dir, addr)       ((pmd_t *)__va(pmd_offset_phys((dir), (addr))))
 #define pte_offset_phys(dir,addr)   (pmd_page_paddr(READ_ONCE(*(dir))) + pte_index(addr) * sizeof(pte_t))
-#define pte_offset_kernel(dir,addr) ((pte_t *)__va(pte_offset_phys((dir), (addr))))`
+#define pte_offset_kernel(dir,addr) ((pte_t *)__va(pte_offset_phys((dir), (addr))))
 ```
 
 
@@ -180,7 +180,7 @@ typedef struct { pgdval_t pgd; } pgd_t;
     . += SWAPPER_DIR_SIZE;
 /*  定义了连续的几个页，分别存放PGD，PMD，PTE等，连续在一起，这个也是head.S中填充的 */
 #define SWAPPER_DIR_SIZE    (SWAPPER_PGTABLE_LEVELS * PAGE_SIZE)
-#define IDMAP_DIR_SIZE      (IDMAP_PGTABLE_LEVELS * PAGE_SIZE)`
+#define IDMAP_DIR_SIZE      (IDMAP_PGTABLE_LEVELS * PAGE_SIZE)
 ```
 
 
@@ -222,7 +222,7 @@ Linux内核编译后，kernel image是需要进行映射的，包括`text，data
 #if SWAPPER_PGTABLE_LEVELS > 2
     create_table_entry \tbl, \virt, SWAPPER_TABLE_SHIFT, PTRS_PER_PTE, \tmp1, \tmp2
 #endif
-    .endm`
+    .endm
 ```
 
 
@@ -247,16 +247,24 @@ Linux内核编译后，kernel image是需要进行映射的，包括`text，data
     .macro  create_block_map, tbl, flags, phys, start, end
     lsr \phys, \phys, #SWAPPER_BLOCK_SHIFT
     lsr \start, \start, #SWAPPER_BLOCK_SHIFT
+
+```text
     and \start, \start, #PTRS_PER_PTE - 1   // table index
     orr \phys, \flags, \phys, lsl #SWAPPER_BLOCK_SHIFT  // table entry
     lsr \end, \end, #SWAPPER_BLOCK_SHIFT
     and \end, \end, #PTRS_PER_PTE - 1       // table end index
+```
+
 9999:   str \phys, [\tbl, \start, lsl #3]       // store the entry
+
+```x86asm
     add \start, \start, #1          // next entry
     add \phys, \phys, #SWAPPER_BLOCK_SIZE       // next block
     cmp \start, \end
     b.ls    9999b
-    .endm`
+    .endm
+```
+
 
 上述函数主要是往`block`中填充`pte entry`，真正创建虚拟地址到物理地址的映射，映射区域：`start ~ end`。
 
@@ -287,12 +295,16 @@ Linux内核编译后，kernel image是需要进行映射的，包括`text，data
  */
     .macro  create_table_entry, tbl, virt, shift, ptrs, tmp1, tmp2
     lsr \tmp1, \virt, #\shift
+
+```x86asm
     and \tmp1, \tmp1, #\ptrs - 1    // table index
     add \tmp2, \tbl, #PAGE_SIZE
     orr \tmp2, \tmp2, #PMD_TYPE_TABLE   // address of next table and entry type
     str \tmp2, [\tbl, \tmp1, lsl #3]
     add \tbl, \tbl, #PAGE_SIZE      // next level table page
-    .endm`
+    .endm
+```
+
 
 上述函数创建页表项，并且返回下一个Level的页表地址。
 

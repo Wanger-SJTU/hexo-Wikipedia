@@ -190,10 +190,9 @@ The `allocate` function is directly included from head file `memory`.
 
 #### `/aten/src/TH/THAllocator.cpp`
 
+```cpp
 at::DataPtr THMapAllocator::makeDataPtr(const char *filename, int flags, size_t size, size_t* actual_size_out) {
   auto* context = new THMapAllocator(filename, flags, size);
-
-```text
   if (actual_size_out) *actual_size_out = context->size();
   return {context->data(), context, &deleteTHMapAllocator, at::DeviceType::CPU};
 }
@@ -255,7 +254,7 @@ Here's a simplified example:
 ├── general.h # Including other header files
 └── generic
  ├── add.c # Definition of generic function add
- └── add.h # Definition of generic type Vector`
+ └── add.h # Definition of generic type Vector
 
 #### add.h
 
@@ -285,7 +284,7 @@ Here's a simplified example:
 ```
 
 #undef num
-#undef Num`
+#undef Num
 
 #### add.c
 
@@ -308,7 +307,7 @@ Here's a simplified example:
 ```
 
 #undef num
-#undef Num`
+#undef Num
 
 #### generic/add.h
 
@@ -327,7 +326,7 @@ int n;
 
 } Vector;
 
-extern void Vector_(add)(Vector *C, Vector *A, Vector *B);`
+extern void Vector_(add)(Vector *C, Vector *A, Vector *B);
 
 #### generic/add.c
 
@@ -350,9 +349,9 @@ C->data[i] = A->data[i] + B->data[i];
 
 ```text
 }
+}
 ```
 
-}`
 
 ### An Example finding THStorage
 
@@ -449,10 +448,14 @@ THStorage* THStorage_(newWithSize)(ptrdiff_t size)
 It's not hard to infer from this code block that it new a `StorageImpl`, and add an intrusive pointer pointing to one of them, at last return a pointer pointing to `StorageImpl` and destroy the intrusive pointer. Macro THStorage is `at::StorageImpl`, so this method simply new a `StorageImpl and return a pointer pointing to it. According to the definition of`c10::make_instrusive`, this work will actually be done by the constructor of StorageImpl' and it is:
 
 StorageImpl(
+
+```text
     caffe2::TypeMeta data_type,
     int64_4 numel,
     at::Allocator* allocator,
     bool resizable)
+```
+
 ...
 
 We will only trace here and this shows a representative example of how PyTorch inner code call and implement that method.
@@ -550,6 +553,8 @@ This context is inefficient because we have to do a dynamic allocation `Ineffici
 - There is a fake allocator in Aten(`aten/src/ATen/CPUFixedAllocator.h`), which just throws exceptions if some CPU fixed operation is actually used, like `cpu_fixed_malloc`, `cpu_fixed_realloc`, `cpu_fixed_free`.
 - `c10/core/CPUAllocator.cpp` contains functions: `alloc_cpu`, `free_cpu`, `memset_junk`,  `alloc_cpu` even has the code dealing with NUMA machine. And there is a class `MemoryAllocationReporter` which is used to report C10's memory allocation and deallocation status.
 - `c10/core/Allocator.cpp`: Set and get the allocator for the different device types.
+
+```text
 DeviceType::CPU
 DeviceType::CUDA
 DeviceType::OPENGL
@@ -560,6 +565,8 @@ DeviceType::HIP
 DeviceType::FPGA
 DeviceType::MSNPU
 DeviceType::XLA
+```
+
 
 - `c10/core/StorageImpl.h` & `c10/core/Storage.h`: Mainly allocates memory buffer using a given allocator and creates storage with it. Mark.
  
@@ -588,7 +595,7 @@ Yet another caching allocator for CUDA device allocations.
  The library provides a recordStream() function to help insert the correct
  synchronization when allocations are used on multiple streams. This will
  ensure that the block is not reused before each recorded stream completes
- work.`
+ work.
 
 ### How Python interact with C/C++
 
@@ -617,9 +624,9 @@ int myFunction(int num)
       else
           return 0;
     }
+}
 ```
 
-}`
 
 <strong>Compile</strong>
 
@@ -631,7 +638,7 @@ import ctypes
 NUM = 16      
 fun = ctypes.CDLL(libfun.so)   
 fun.myFunction.argtypes=[ctypes.c_int] 
-returnVale = fun.myFunction(NUM)`
+returnVale = fun.myFunction(NUM)
 
 #### Add wrapper in C++ file
 
@@ -663,7 +670,7 @@ extern "C" {
 And then compile:
 
 g++ -c -fPIC foo.cpp -o foo.o
-g++ -shared -Wl,-install_name,libfoo.so -o libfoo.so  foo.o`
+g++ -shared -Wl,-install_name,libfoo.so -o libfoo.so  foo.o
 
 Afterward, things in Python code are similar as those in C.
 
@@ -682,7 +689,7 @@ class Foo(object):
 # Once you have that you can call it like
 
 f = Foo()
-f.bar() #and you will see "Hello" on the screen`
+f.bar() #and you will see "Hello" on the screen
 
 #### C++ file includes module and Expose
 
@@ -706,15 +713,15 @@ BOOST_PYTHON_MODULE(hello_ext)
 {
     using namespace boost::python;
     def("greet", greet);
+}
 ```
 
-}`
 
 That's it. We're done. We can now build this as a shared library. The resulting DLL is now visible to Python. Here's a sample Python session:
 
 >>> import hello_ext
 >>> print hello_ext.greet()
-hello, world`
+hello, world
 
 ### Integrating a C++/CUDA Operation with PyTorch
 
@@ -736,7 +743,7 @@ setup(name='lltm_cpp',
 
 ```text
       ext_modules=[cpp_extension.CppExtension('lltm_cpp', ['lltm.cpp'])],
-      cmdclass={'build_ext': cpp_extension.BuildExtension})`
+      cmdclass={'build_ext': cpp_extension.BuildExtension})
 ```
 
 
@@ -744,7 +751,7 @@ The JIT compilation mechanism provides you with a way of compiling and loading y
 
 from torch.utils.cpp_extension import load
 
-lltm_cpp = load(name="lltm_cpp", sources=["lltm.cpp"])`
+lltm_cpp = load(name="lltm_cpp", sources=["lltm.cpp"])
 
 #### CUDA Integration
 
@@ -768,7 +775,7 @@ setup(
     ],
     cmdclass={
         'build_ext': BuildExtension
-    })`
+    })
 ```
 
 
@@ -776,7 +783,7 @@ Instead of `CppExtension()`, we now use `CUDAExtension()`. We can just specify t
 
 from torch.utils.cpp_extension import load
 
-lltm = load(name='lltm', sources=['lltm_cuda.cpp', 'lltm_cuda_kernel.cu'])`
+lltm = load(name='lltm', sources=['lltm_cuda.cpp', 'lltm_cuda_kernel.cu'])
 
 ### Conclusion
 

@@ -112,7 +112,7 @@ def dl_dv(V, Nnv, d, F):
     du_dV = F * d / (6 * (Nnv + V * d) ** 2)
     term4 = beta * B * du_dV / (u ** (beta + 1))
 
-    return term1 + term2 + term3 + term4 `
+    return term1 + term2 + term3 + term4 
 ```
 
 
@@ -127,7 +127,7 @@ def LSE(params, Nnv, V, d, H):
     term1_2 = a2 - alpha2 * np.log(V*d)
     term2 = b - beta * np.log(H_to_D(H,V))
     term3 = e
-    return (np.exp(term1_1) + np.exp(term1_2) + np.exp(term2) - np.exp(term3))`
+    return (np.exp(term1_1) + np.exp(term1_2) + np.exp(term2) - np.exp(term3))
 ```
 
 

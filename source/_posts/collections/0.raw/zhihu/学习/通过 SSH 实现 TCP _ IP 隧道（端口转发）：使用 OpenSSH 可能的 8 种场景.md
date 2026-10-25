@@ -53,7 +53,7 @@ Active Internet connections  (only servers)
 Proto Recv-Q  Send-Q  Local Address Foreign Address State 
 ...
 Tcp 0 0 127.0.0.1:7900 0.0.0.0:*  LISTEN  
-...`
+...
 
 我们只需要在 externo1 节点上执行如下命令即可访问 internal 节点的 VNC 服务：
 
@@ -80,7 +80,7 @@ Active Internet connections  (only servers)
 Proto Recv-Q  Send-Q  Local Address Foreign Address State 
 ...
 Tcp 0 0 0.0.0.0:7900 0.0.0.0:*  LISTEN
-... `
+... 
 
 所以现在在 externo2 节点上，我们可以执行：
 
@@ -105,7 +105,7 @@ Active Internet connections (only servers)
 Proto Recv-Q Send-Q Local Address Foreign Address State 
 ... 
 Tcp 0 0 192.168.24.80:7900 0.0.0.0:* LISTEN
-...`
+...
 
 ### 场景 3
 
@@ -128,7 +128,7 @@ Active Internet connections (only servers)
 Proto Recv-Q Send-Q Local Address Foreign Address State 
 ... 
 Tcp 0 0 127.0.0.1:7900 0.0.0.0:* LISTEN
-...`
+...
 
 现在在 interno1 节点上，我们可以使用如下命令来访问 externo1 上的 VNC 服务：
 
@@ -170,7 +170,7 @@ Active Internet connections (only servers)
 Proto Recv-Q Send-Q Local Address Foreign Address State 
 ... 
 Tcp 0 0 0.0.0.0:7900 0.0.0.0:* LISTEN
-...`
+...
 
 然后我们就可以在 interno2 节点上使用 VNC 服务了：
 
@@ -267,7 +267,7 @@ LocalForward 3392 serverwindows2: 3389
 
 # VNC redirects for systems with "vncserver"
 LocalForward 5902 serverlinux1: 5901
-LocalForward 5903 172.16.23.45:5901`
+LocalForward 5903 172.16.23.45:5901
 
 然后我们只需要执行如下命令：
 

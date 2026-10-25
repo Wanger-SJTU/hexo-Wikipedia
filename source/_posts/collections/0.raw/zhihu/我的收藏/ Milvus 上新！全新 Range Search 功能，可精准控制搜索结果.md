@@ -97,7 +97,7 @@ search_params = {"metric_type": "L2","limit": TOPK,
 }
 ```
 
-res = collection.search(vectors[:nq], "float_vector", search_params, limit)`
+res = collection.search(vectors[:nq], "float_vector", search_params, limit)
 
 ### 04.参数检查
 

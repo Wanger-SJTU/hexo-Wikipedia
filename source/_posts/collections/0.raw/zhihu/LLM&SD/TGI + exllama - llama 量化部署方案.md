@@ -39,7 +39,7 @@ docker run --rm --name tgi \
     --max-batch-total-tokens 30000 \
     --sharded false \
     --max-input-length 1024 \
-    --validation-workers 4`
+    --validation-workers 4
 ```
 
 
@@ -47,7 +47,7 @@ docker run --rm --name tgi \
 
 # git clone AUTOGPTQ 仓库后进入 `examples/quantization` 文件夹
 # 修改以下 pretrained_model_dir 和 quantized_model_dir 选择用 Llama-2-7b-chat-hf 量化
-python basic_usage_wikitext2.py`
+python basic_usage_wikitext2.py
 
 当然 TGI 和 GPTQ-for-LLaMa 也提供了 llama 量化脚本，但是对 llama v2 进行 GPTQ 量化时，AUTOGPTQ 的损失总是比较小，<strong>量化后的模型输出也更稳定一些</strong>，原因未知。
 
@@ -67,7 +67,7 @@ tensors = {
 }
 ```
 
-save_file(tensors, "/home/kevin/models/llama2-7b-chat-gptq-int4/gptq_config.safetensors")`
+save_file(tensors, "/home/kevin/models/llama2-7b-chat-gptq-int4/gptq_config.safetensors")
 
 目前 TGI 中对量化权重的处理方法不是很兼容 AUTOGPTQ 等 GPTQ 采用的数据储存方式，但有几个 PR 中已经在对此优化。
 
@@ -84,9 +84,9 @@ Content-Type: application/json
 {
     "inputs": "Once a upon time,",
     "parameters":{"max_new_tokens":100,"tempareture":0.6}
+}
 ```
 
-}`
 
 发送请求后，等待 853ms 得到预测结果，回复速度平均 117.23 tokens/s。比 TGI + AUTOGPTQ （约80 tokens/s）快。但还是不如 exllama 官方的推理速度（140+ tokens/s）。
 

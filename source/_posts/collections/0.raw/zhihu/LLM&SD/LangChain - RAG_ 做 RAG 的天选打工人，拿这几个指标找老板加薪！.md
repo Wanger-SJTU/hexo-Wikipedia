@@ -60,7 +60,7 @@ os.environ['OPENAI_API_KEY'] = "your-openai-key"
 os.environ['LANGCHAIN_TRACING_V2']='true'
 os.environ['LANGCHAIN_ENDPOINT']='https://api.smith.langchain.com'
 os.environ['LANGCHAIN_API_KEY'] = 'your-langsmith-key'
-os.environ['LANGCHAIN_PROJECT']='ragas-demo'`
+os.environ['LANGCHAIN_PROJECT']='ragas-demo'
 
 - 测试语料用 wikipedia 的，首先用 LangChain 的 wikipedia loader  载入内容，指定查询「Ney York City」相关的内容：
 
@@ -73,7 +73,7 @@ from langchain.chat_models import ChatOpenAI
 
 
 loader = WikipediaLoader('New York City')
-docs = loader.load()`
+docs = loader.load()
 
 - 默认是用  Chroma  来保存向量，OpenAI  的  emb api  生成  embedding，组合成一个  qa chain：
 index = VectorstoreIndexCreator().from_loaders([loader])
@@ -86,14 +86,14 @@ qa_chain = RetrievalQA.from_chain_type(
 ```text
     retriever=index.vectorstore.as_retriever(),
     return_source_documents=True,
+)
 ```
 
-)`
 
 - 稍微测试一下检索效果：
 question = "How did New York City get its name?"
 result = qa_chain({"query": question})
-result["result"]`
+result["result"]
 
 结果还成：
 
@@ -133,7 +133,7 @@ result["result"]
 
 # >>The borough of Brooklyn has the highest population in New York City.
 
-# 很满意！`
+# 很满意！
 
 - 正主终于要上场！从  ragas  引入 RagasEvaluatorChain(参考源码：[https://github.com/explodinggradients/ragas/blob/main/src/ragas/langchain/evalchain.py#L20](https://link.zhihu.com/?target=https%3A//github.com/explodinggradients/ragas/blob/main/src/ragas/langchain/evalchain.py%23L20))，
 
@@ -152,7 +152,7 @@ from ragas.metrics import (
 faithfulness_chain = RagasEvaluatorChain(metric=faithfulness)
 answer_rel_chain = RagasEvaluatorChain(metric=answer_relevancy)
 context_rel_chain = RagasEvaluatorChain(metric=context_precision)
-context_recall_chain = RagasEvaluatorChain(metric=context_recall)`
+context_recall_chain = RagasEvaluatorChain(metric=context_recall)
 
 参考文首开始的图，还记得 ragas  对 RAG  的几个评测指标吗？
 
@@ -179,7 +179,7 @@ predictions = qa_chain.batch(examples)
 # evaluate
 print("evaluating...")
 r = faithfulness_chain.evaluate(examples, predictions)
-r`
+r
 
 ![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_32d115f16b5c.jpg)
 
@@ -263,9 +263,9 @@ result = run_on_dataset(
 ```text
     evaluation=evaluation_config,
     input_mapper=lambda x: x,
+)
 ```
 
-)`
 
 执行到这里，创建好的  dataset、生成的结果都已经乖乖上传到了 smith.langchain.com:
 

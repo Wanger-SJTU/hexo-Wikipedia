@@ -78,7 +78,7 @@ class Speculator:
 ```text
                 spec_tokens = cache[verify_outcome]  # 零 draft 延迟
             else:  # Cache miss
-                spec_tokens = fallback_speculate(verify_outcome, ...)  # Sec 4.3`
+                spec_tokens = fallback_speculate(verify_outcome, ...)  # Sec 4.3
 ```
 
 

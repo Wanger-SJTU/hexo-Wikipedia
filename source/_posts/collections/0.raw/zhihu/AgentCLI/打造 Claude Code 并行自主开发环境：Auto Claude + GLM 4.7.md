@@ -55,7 +55,7 @@ project-repo/
 │   └── .git         # 指向主 .git 的指针
 └── testing/         # 工作树 3
     ├── src/, tests/
-    └── .git         # 指向主 .git 的指针`
+    └── .git         # 指向主 .git 的指针
 
 关键在于，这些目录本身就是完全隔离的工作环境。切换分支时，你只需要进入对应的目录（比如 `cd ../hotfix`），而不必反复执行 `git checkout`。不需要 stash，不会丢失未完成的工作状态，也不会和其他任务相互干扰。
 
@@ -79,7 +79,7 @@ git worktree add -b feature-auth ../feature-auth
 git worktree list
 
 # 不再需要时移除工作树
-git worktree remove ../hotfix`
+git worktree remove ../hotfix
 
 通过这种结构，Git 原生支持了真正的并行开发，而不再依赖频繁的分支切换或临时 stash。
 

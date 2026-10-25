@@ -1447,9 +1447,12 @@ root [0..63 shift=4]                                                 dirtyBits=[
       真正的树形结构。
       ├─ / └─ 表示这个 node 下面有哪些非空 slot。
 
+```text
    node [0..63 shift=4]:
       这个 node 覆盖 index 0..63。
       shift=4 表示这一层用 index >> 4 之后的低 2 bit 选 slot。
+```
+
 
    slot[N] -> node:
       slot[N] 指向下一层 node。

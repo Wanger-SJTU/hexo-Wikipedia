@@ -73,7 +73,7 @@ Dumping heap profile to /tmp/profile.0005.heap (5122 MB allocated cumulatively, 
 Dumping heap profile to /tmp/profile.0006.heap (6146 MB allocated cumulatively, 6144 MB currently in use)
 Dumping heap profile to /tmp/profile.0007.heap (7171 MB allocated cumulatively, 7168 MB currently in use)
 Dumping heap profile to /tmp/profile.0008.heap (8195 MB allocated cumulatively, 8192 MB currently in use)
-Dumping heap profile to /tmp/profile.0009.heap (Exiting, 4096 MB in use)`
+Dumping heap profile to /tmp/profile.0009.heap (Exiting, 4096 MB in use)
 
 第2到9行显示，每个快照都会增长1G的内存申请。第10行显示，释放了4G的内存，最终还有4G的内存没有被释放。这个分析结果和代码的逻辑是一致的： 第19行和第22行每次都申请1G空间，一共执行了4次，故8G的在用内存使用量。 第25行每次申请并释放了1M，故不会造成内存增长。 第29行每次释放1G的空间，共执行4次，释放了4G空间。最终有4G的内存泄漏。 我们先看下第一个快照的状态
 
@@ -87,7 +87,7 @@ Total: 1024.0 MB
   1024.0 100.0% 100.0%   1024.0 100.0% create
      0.0   0.0% 100.0%   1024.0 100.0% __libc_start_main
      0.0   0.0% 100.0%   1024.0 100.0% _start
-     0.0   0.0% 100.0%   1024.0 100.0% main`
+     0.0   0.0% 100.0%   1024.0 100.0% main
 
 第4到7行是调用堆栈，这段显示create方法申请了1G的空间，且该空间还是可用状态。 再查看快照2。
 
@@ -101,7 +101,7 @@ Total: 2048.0 MB
   1024.0  50.0%  50.0%   1024.0  50.0% create
   1024.0  50.0% 100.0%   2048.0 100.0% main
      0.0   0.0% 100.0%   2048.0 100.0% __libc_start_main
-     0.0   0.0% 100.0%   2048.0 100.0% _start`
+     0.0   0.0% 100.0%   2048.0 100.0% _start
 
 为了更方便解读这组信息，我们使用图形显示命令
 

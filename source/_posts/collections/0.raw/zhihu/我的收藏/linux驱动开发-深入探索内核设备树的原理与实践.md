@@ -88,9 +88,9 @@ dtb(Device Tree Blob)，dts经过dtc编译之后会得到dtb文件，dtb通过Bo
         child-node1 {
         };
     };
+};
 ```
 
-};`
 
 device tree的基本单元是node。这些node被组织成树状结构，除了root node，每个node都只有一个parent。一个device tree文件中只能有一个root node。每个node中包含了若干的property/value来描述该node的一些特性。每个node用节点名字（node name）标识，节点名字的格式是node-name@unit-address。如果该node没有reg属性（后面会描述这个property），那么该节点名字中必须不能包括@和unit-address。unit-address的具体格式是和设备挂在那个bus上相关。例如对于cpu，其unit-address就是从0开始编址，以此加一。而具体的设备，例如以太网控制器，其unit-address就是寄存器地址。root node的node name是确定的，必须是“/”。 也就是说设备树源文件的结构为
 
@@ -114,7 +114,11 @@ root节点下面含一系列子节点，“node1” and “node2”
 [label:] node-name[@unit-address] {
    [properties definitions]
    [child nodes]
-} `
+
+```text
+} 
+```
+
 
 “[]”表示option，因此可以定义一个只有node name的空节点，label方便在dts文件中引用
 
@@ -156,9 +160,9 @@ binary data 以方括号括起来，如：
 		linux,initrd-start = ;
 		linux,initrd-end = ;
 	};
+};
 ```
 
-};`
 
 - model属性值是，它指定制造商的设备型号。推荐的格式是：“manufacturer，model”，其中manufacturer是一个字符串描述制造商的名称，而型号指定型号。
 - compatible属性值是,指定了系统的名称，是一个字符串列表，它包含了一个“,”形式的字符串。重要的是要指定一个确切的设备，并且包括制造商的名字，以避免命名空间冲突。
@@ -179,9 +183,9 @@ soc {
 		interrupts = ;
 		interrupt-parent = ;
 	};
+};
 ```
 
-};`
 
 <strong>5.1.3 CPU addressing</strong>
 
@@ -200,7 +204,7 @@ soc {
             compatible = "arm,cortex-a9";
             reg = ;
         };
-    };`
+    };
 ```
 
 
@@ -245,9 +249,9 @@ soc {
         reg = ;
     };
     ...
+};
 ```
 
-};`
 
 <strong>5.1.5 Non Memory Mapped Devices</strong>
 
@@ -264,9 +268,9 @@ soc {
          compatible = "maxim,ds1338";
          reg = ;
      };
+ };
 ```
 
- };`
 
 <strong>5.1.6 Ranges (Address Translation)</strong>
 
@@ -308,9 +312,9 @@ soc {
             reg = ;
         };
     };
+};
 ```
 
-};`
 
 Ranges是一个地址转换列表。每个输入ranges表格的是包含子地址的元组，母地址和子地址空间的范围大小。每个字段的大小都由获取的子地址的#address-cells值，母地址的#address-cell值和子地址的#size-cells值而定。以外部总线为例，子地址是2 cells，母地址是1 cell,大小也为1 cell。转换三个ranges：
 
@@ -362,9 +366,9 @@ soc {
 		interrupt-map-mask = ;
 		interrupt-map = ;
 	};
+};
 ```
 
-};`
 
 #### 5.3 特殊节点
 
@@ -375,7 +379,7 @@ aliases {
 ```text
         ethernet0 = &eth0;
         serial0 = &serial0;
-    };`
+    };
 ```
 
 
@@ -410,7 +414,7 @@ Options: -[dshV]
   -d, --debug   Dump debug information while decoding the file
   -s, --scan    Scan for an embedded fdt in file
   -h, --help    Print this help and exit
-  -V, --version Print version and exit`
+  -V, --version Print version and exit
 ```
 
 
@@ -430,7 +434,7 @@ jz2440.dtb: found fdt at offset 0
 // last_comp_version:   16
 // boot_cpuid_phys:     0x0
 // size_dt_strings:     0x49
-// size_dt_struct:      0x140`
+// size_dt_struct:      0x140
 ```
 
 
@@ -510,9 +514,9 @@ struct  fdt_header  {
 // 017c: tag: 0x00000002 (FDT_END_NODE)
    };
 // 0180: tag: 0x00000002 (FDT_END_NODE)
+};
 ```
 
-};`
 
 fdtdump工具的输出信息即是以上结构中每一个成员的值，struct fdt_header结构体包含了Device Tree的私有信息，并且Device Tree的文件是以大端模式储存。并且，头部信息和fdtdump的输出信息一致。
 
@@ -558,7 +562,7 @@ r0,r1,r2三个寄存器的设置
 对于我们拿到一个新的bootloader，我们怎么能使代码支持dtb模式，我们需要配置#define CONFIG_OF_LIBFDT，可让u-boot支持内核设备树dts，加载命令如下：
 
   bootm   
-//bootm + uImage地址 + ramdisk地址 + 设备树镜像地址`
+//bootm + uImage地址 + ramdisk地址 + 设备树镜像地址
 
 比如：
 
@@ -567,7 +571,7 @@ tftp 0x30007FC0 uImage
 //2. 下载dtb到内存32000000
 tftp 0x30001000 s3c2440-smdk2440.dtb
 //3. - 表示不使用ramdisk加载，如果使用ramdisk则提供其加载地址
- bootm 0x30007FC0 - 0x30001000`
+ bootm 0x30007FC0 - 0x30001000
 
 对于我们下载dtb的地址0x32000000，这个地址有什么要求呢？是随意选的地址就可以，还是要遵循什么原则呢？
 
@@ -606,7 +610,7 @@ tftp 0x30001000 s3c2440-smdk2440.dtb
 	"fdt rsvmem add          - Add a mem reserve\n"
 	"fdt rsvmem delete            - Delete a mem reserves\n"
 	"fdt chosen [ ]          - Add/update the /chosen branch in the tree\n"
-	"                                        / - initrd start/end addr\n"`
+	"                                        / - initrd start/end addr\n"
 
 实例
 
@@ -618,7 +622,7 @@ print XXX                                                    // 打印环境变�
 fdt set /led pin                      // 设置/led节点的pin属性
 fdt print /led pin                                            // 打印/led节点的pin属性
 nand erase device_tree                              // 擦除flash分区
-nand write.jffs2 32000000 device_tree      // 把修改后的dtb文件写入flash分区`
+nand write.jffs2 32000000 device_tree      // 把修改后的dtb文件写入flash分区
 
 #### 3. u-boot对dtb的支持
 
@@ -631,7 +635,7 @@ CONFIG_OF_CONTROL=y
 // 用于表示是否使用了dtb的方式
 
 CONFIG_OF_SEPARATE=y
-// 是否将dtb和uboot分离表一`
+// 是否将dtb和uboot分离表一
 
 - 2.dtb集成到uboot的bin文件内部
 - 3.通过fdtcontroladdr环境变量来指定dtb的地址
@@ -662,7 +666,11 @@ static const init_fnc_t init_sequence_f[] = {
 ```
 
 ...
-}`
+
+```text
+}
+```
+
 
 对应代码如下： lib/fdtdec.c
 
@@ -732,9 +740,9 @@ int fdtdec_setup(void)
 ```text
 #endif
 	return fdtdec_prepare_fdt();
+}
 ```
 
-}`
 
 该函数主要做了一下几件事情
 
@@ -773,9 +781,9 @@ int fdtdec_prepare_fdt(void)
 		return -1;
 	}
 	return 0;
+}
 ```
 
-}`
 
 <strong>4.2 为dtb分配新的内存地址空间</strong>
 
@@ -815,9 +823,9 @@ static int reloc_fdt(void)
 #endif
 
 	return 0;
+}
 ```
 
-}`
 
 ### 四、kernel解析设备树
 
@@ -871,7 +879,7 @@ ENTRY(stext)
  THUMB( it	eq )		@ force fixup-able long branch encoding
 	beq	__error_p			@ yes, error 'p'
 
-```text
+```x86asm
 #ifdef CONFIG_ARM_LPAE
 	mrc	p15, 0, r3, c0, c1, 4		@ read ID_MMFR0
 	and	r3, r3, #0xf			@ extract VMSA support
@@ -881,7 +889,7 @@ ENTRY(stext)
  THUMB( it	lo )				@ force fixup-able long branch encoding
 	blo	__error_lpae			@ only classic page table format
 
-```text
+```x86asm
 #endif
 
 #ifndef CONFIG_XIP_KERNEL
@@ -893,7 +901,7 @@ ENTRY(stext)
 
 #else
 
-```text
+```x86asm
 	ldr	r8, =PLAT_PHYS_OFFSET		@ always constant in this case
 #endif
 
@@ -932,7 +940,7 @@ ENDPROC(stext)
 #ifndef CONFIG_XIP_KERNEL
 2:	.long	.
 	.long	PAGE_OFFSET
-#endif`
+#endif
 
 - __lookup_processor_type : 使用汇编指令读取CPU ID, 根据该ID找到对应的proc_info_list结构体(里面含有这类CPU的初始化函数、信息)
 - __vet_atags : 判断是否存在可用的ATAGS或DTB
@@ -949,9 +957,9 @@ asmlinkage void __init start_kernel(void)
     ...
     setup_arch(&command_line); //设置架构相关的内容
     ...
+}
 ```
 
-}`
 
 由于涉及的知识点内容实在太多，那么我们只是重点的关注fdt的处理，直接进到setup_ arch()函数。
 
@@ -971,7 +979,11 @@ void __init setup_arch(char **cmdline_p)
 ```
 
 ...
-}`
+
+```text
+}
+```
+
 
 首先通过set_machine_fdt来set_machine描述符，如果返回值是NULL，那么就采用传统的方式，如果u-boot传递了，就采用设备树方式
 
@@ -993,7 +1005,11 @@ struct machine_desc {
 ```
 
 ...
-}`
+
+```text
+}
+```
+
 
 nr成员就是过去使用的machine type ID。内核machine描述符的table有若干个entry，每个都有自己的ID。bootloader传递了machine type ID，指明使用哪一个machine描述符。而dtb方式中目前匹配machine描述符使用compatible strings，也就是dt_compat成员，这是一个string list，定义了这个machine所支持的列表。
 
@@ -1036,9 +1052,9 @@ const struct machine_desc * __init setup_machine_fdt(unsigned int dt_phys)
 	__machine_arch_type = mdesc->nr;
 
 	return mdesc;
+}
 ```
 
-}`
 
 setup_machine_fdt函数的功能就是根据Device Tree的信息，找到最适合的machine描述符。其主要做了下面几件事情
 
@@ -1058,9 +1074,9 @@ static const void * __init arch_get_next_mach(const char *const **match)
 	mdesc++;
 	*match = m->dt_compat;
 	return m;
+}
 ```
 
-}`
 
 _arch_info_begin指向machine描述符列表第一个entry。通过mdesc++不断的移动machine描述符指针（Note：mdesc是static的）。match返回了该machine描述符的compatible string list。具体匹配的算法倒是很简单，就是比较字符串而已，最终找到对应的machine type。 从该流程可以知道，内核是可以支持很多种不同类型的设备，只要在bootloader传递的时候，传递对应不同的dtb表即可。
 
@@ -1079,9 +1095,9 @@ void __init early_init_dt_scan_nodes(void)
 
 	/* Setup memory, calling early_init_dt_add_memory_arch */
 	of_scan_flat_dt(early_init_dt_scan_memory, NULL);
+}
 ```
 
-}`
 
 该函数主要完成3个工作：
 
@@ -1092,7 +1108,7 @@ void __init early_init_dt_scan_nodes(void)
 		bootargs = "earlycon=sprd_serial,0x70100000,115200n8 loglevel=8 console=ttyS1,115200n8 init=/init root=/dev/ram0 rw androidboot.hardware=sc9830";
 		linux,initrd-start = ;
 		linux,initrd-end = ;
-	};`
+	};
 ```
 
 
@@ -1129,9 +1145,9 @@ void __init early_init_fdt_scan_reserved_mem(void)
 
 	of_scan_flat_dt(__fdt_scan_reserved_mem, NULL);
 	fdt_init_reserved_mem();
+}
 ```
 
-}`
 
 - initial_boot_params实际上是dtb的虚拟地址，在early_init_dt_verify初始化的时候设定，首先进来就判断dtb是否存在，如果存在就将dtb的空间进行保留
 - 对fdt中的每一个节点调用__fdt_scan_reserved_mem函数，进行reserved-memory节点的扫描，之后调用fdt_init_reserved_mem函数进行内存预留的动作
@@ -1145,9 +1161,9 @@ void __init unflatten_device_tree(void)
 
 	/* Get pointer to "/chosen" and "/aliases" nodes for use everywhere */
 	of_alias_scan(early_init_dt_alloc_memory_arch);
+}
 ```
 
-}`
 
 分析以上代码，在unflatten_device_tree()中，调用函数__unflatten_device_tree()，参数initial_boot_params指向Device Tree在内存中的首地址，of_root在经过该函数处理之后，会指向根节点，early_init_dt_alloc_memory_arch是一个函数指针，为struct device_node和struct property结构体分配内存的回调函数（callback）。在__unflatten_device_tree()函数中，两次调用unflatten_dt_node()函数，第一次是为了得到Device Tree转换成struct device_node和struct property结构体需要分配的内存大小，第二次调用才是具体填充每一个struct device_node和struct property结构体。那么Device Tree中的每一个node节点经过kernel处理都会生成一个struct device_node的结构体，struct device_node最终一般会被挂接到具体的struct device结构体。struct device_node结构体描述如下：
 
@@ -1173,9 +1189,9 @@ struct device_node {
 	unsigned int unique_id;
 	struct of_irq_controller *irq_trans;
 #endif
+}
 ```
 
-}`
 
 对于dtb最后都存储在，其结构图如下
 
@@ -1202,9 +1218,9 @@ static int __init customize_machine(void)
 					NULL, NULL);
 #endif
 	return 0;
+}
 ```
 
-}`
 
 那么Linux系统是怎么知道哪些device node要注册为platform_device，哪些是用于i2c_client，哪些是用于spi_device？不知道你有没有注意到调用of_platform_populate的时候给它传递了一个参数of_default_bus_match_table
 
@@ -1215,9 +1231,9 @@ const struct of_device_id of_default_bus_match_table[] = {
 	{ .compatible = "arm,amba-bus", },
 #endif /* CONFIG_ARM_AMBA */
 	{} /* Empty terminated list */
+};
 ```
 
-};`
 
 那么在dts文件会也会对对应的驱动进行配置
 
@@ -1238,9 +1254,9 @@ ap-apb {
 				;
 			status = "disabled";
 		};
+}
 ```
 
-}`
 
 如果某个device node的compatible属性的值与数组of_default_bus_match_table中的任意一个元素的compatible的值match，那么这个device node的child device node（device_node的child成员变量指向的是这个device node的子节点，也是一个链表）仍旧会被注册为platform_device。下面来看看重点的解析过程
 
@@ -1265,9 +1281,9 @@ int of_platform_populate(struct device_node *root,
 
 	of_node_put(root);
 	return rc;
+}
 ```
 
-}`
 
 该函数主要完成完成：
 
@@ -1323,9 +1339,9 @@ static int of_platform_bus_create(struct device_node *bus,
 	}
 	of_node_set_flag(bus, OF_POPULATED_BUS);
 	return rc;
+}
 ```
 
-}`
 
 - 需要确定节点是否有"compatible"属性，如果没有"compatible"属性，则直接返回，即不会创建platform设备的。
 - 如果"compatible"属性值有"arm,primecell"，则会调用of_amba_device_create函数去创建amba_device，它设计了AMBA的总线来连接SOC内的各个block。符合这个总线标准的SOC上的外设叫做ARM Primecell Peripherals
@@ -1372,9 +1388,9 @@ err_clear_flag:
 ```text
 	of_node_clear_flag(np, OF_POPULATED);
 	return NULL;
+}
 ```
 
-}`
 
 - of_device_is_available函数，这个函数主要是用于检测"status"属性的，如果没有"status"属性，那还好说直接返回true。如果有"status"属性，而它的值又不是"okay"或"ok"，那么不好意思，返回false，否则还是返回true。所以"status"属性就是用来检测是否可用，是否需要创建platform_node
 - of_device_alloc除了分配struct platform_device的内存，还分配了该platform device需要的resource的内存。当然，这就需要解析该device node的interrupt资源以及memory address资源。
@@ -1418,7 +1434,7 @@ static int __init of_init(void)
 }
 ```
 
-core_initcall(of_init);`
+core_initcall(of_init);
 
 该函数比较简单，其主要完成下面三件事情：
 
@@ -1440,7 +1456,7 @@ core_initcall(of_init);`
 
 ```text
 struct device_node *of_find_compatible_node(struct device_node *from,
-							const char *type, const char *compat);`
+							const char *type, const char *compat);
 ```
 
 
@@ -1457,9 +1473,9 @@ digctl: digctl@8001c000 {
 	reg = ;
 	interrupts = ;
 	status = "disabled";
+};
 ```
 
-};`
 
 - 通过节点名查找指定节点
 
@@ -1473,7 +1489,7 @@ static const struct of_device_id exynos_dt_mcpm_match[] = {
 	node = of_find_matching_node(NULL, exynos_dt_mcpm_match);
 	if (!node)
 		return -ENODEV;
-	of_node_put(node);`
+	of_node_put(node);
 ```
 
 
@@ -1482,7 +1498,7 @@ static const struct of_device_id exynos_dt_mcpm_match[] = {
 ```text
 struct device_node *of_find_node_by_path(const char *path);
 
-/* 参数：	const char *path - 带全路径的节点名，也可以是节点的别名 */`
+/* 参数：	const char *path - 带全路径的节点名，也可以是节点的别名 */
 ```
 
 
@@ -1501,7 +1517,7 @@ data->current_node = of_find_node_by_path("/");
 	if (sscg_map == NULL) {
 		pr_err("cannot map SSCG register\n");
 		goto out;
-	}`
+	}
 ```
 
 

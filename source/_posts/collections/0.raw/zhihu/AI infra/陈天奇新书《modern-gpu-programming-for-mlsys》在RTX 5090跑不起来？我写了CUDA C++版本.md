@@ -176,12 +176,8 @@ __global__ void hgemm_sm120_kernel(
         }
     }
 }
-```
-
 
 torch::Tensor hgemm_sm120(torch::Tensor A, torch::Tensor B) {
-
-```cpp
     TORCH_CHECK(A.dtype() == torch::kFloat16, "A must be float16");
     TORCH_CHECK(B.dtype() == torch::kFloat16, "B must be float16");
     TORCH_CHECK(A.size(1) == B.size(1), "K dimension must match");
@@ -210,8 +206,12 @@ torch::Tensor hgemm_sm120(torch::Tensor A, torch::Tensor B) {
 """
 
 CPP_SOURCE = """
+
+```cpp
 #include <torch/extension.h>
 torch::Tensor hgemm_sm120(torch::Tensor A, torch::Tensor B);
+```
+
 """
 
 # ============================================================

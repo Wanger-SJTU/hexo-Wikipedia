@@ -36,12 +36,8 @@ Mooncake中的register_buffer实现
 int RealClient::register_buffer(void *buffer, size_t size) {
     return to_py_ret(register_buffer_internal(buffer, size));
 }
-```
-
 
 tl::expected<void, ErrorCode> RealClient::register_buffer_internal(
-
-```cpp
     void *buffer, size_t size) {
     if (!client_) {
         LOG(ERROR) << "Client is not initialized";

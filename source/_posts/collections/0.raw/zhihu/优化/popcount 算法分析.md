@@ -238,8 +238,12 @@ subtracting this from the original gives
     2a+b+c
 if we shift the original 2 bits right we get
     a
+
+```text
 and so with another subtraction we have
     a+b+c
+```
+
 which is the number of bits in the original number.
 
 Suitable masking  allows the sums of  the octal digits  in a 32 bit  number to
@@ -327,7 +331,7 @@ GNU编译器也内置了很多函数，也包括 int __builtin_popcount (unsigne
 5. method    nifty_popcnt uses 3.97232E-09s
 6. method   hacker_popcnt uses 3.42209E-09s
 7. method   hakmem_popcnt uses 4.68241E-09s
-8. method assembly_popcnt uses 2.10791E-09s`
+8. method assembly_popcnt uses 2.10791E-09s
 
 　　仅测试32位整形(uint32_t)，你可以修改测试一下64位整形(uint64_t)。Microsoft Visual C++的64位编译器不支持内嵌汇编，可以通过编译器提供的 intrinsic function 或者用32位分两次求和。注意先验证每种方法的正确与否后做benchmark。
 

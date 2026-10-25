@@ -76,7 +76,7 @@ typedef struct {
     uint32_t length;  // 数据长度
 ```
 
-} request_t;`
+} request_t;
 
 server （内存提供）端代码，注释中解释了每个步骤的功能
 

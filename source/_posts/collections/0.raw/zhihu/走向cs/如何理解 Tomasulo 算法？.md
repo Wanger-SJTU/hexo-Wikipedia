@@ -46,7 +46,7 @@ Precise exception(精确异常) 的意思是当指令出现异常时（除0、pa
 
 fdiv.d f0,f2,f4
 fadd.d f10,f10,f8
-fsub.d f12,f12,f14`
+fsub.d f12,f12,f14
 
 3条指令之间没有hazard，后两条指令会比除法指令先结束。如果在结束后除法指令发生了exception，操作系统在进行exception处理时，只能假设之前的指令执行完成，后面指令没有执行，exception恢复后，加法和减法指令还得再执行一次，结果就不对了。
 

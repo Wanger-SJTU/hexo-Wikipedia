@@ -37,7 +37,7 @@ https://vv4vfmb5mk.feishu.cn/docx/GLZydDSP3oGIQexFJqdcfOxGnfb?from=from_copylink
 # Padding表示填充的元素行或者列数
 # Stride表示步长
 R = (H + 2*Padding - K)/Stride + 1
-S = (W + 2*Padding - Q)/Stride + 1`
+S = (W + 2*Padding - Q)/Stride + 1
 
 在硬件实现上，不能做到无限制的并行化，因此Conv的计算通常被展开成7层循环：
 
@@ -101,7 +101,7 @@ OF[0,0,1,0] = KL[0,0,0,0] * IF[0,0,1,0] # k=0,q=0
             + KL[0,0,1,2] * IF[0,0,2,2] # k=1,q=2
             + KL[0,0,2,0] * IF[0,0,3,0] # k=2,q=0
             + KL[0,0,2,1] * IF[0,0,3,1] # k=2,q=1
-            + KL[0,0,2,2] * IF[0,0,3,2] # k=2,q=2 `
+            + KL[0,0,2,2] * IF[0,0,3,2] # k=2,q=2 
 ```
 
 

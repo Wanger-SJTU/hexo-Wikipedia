@@ -28,7 +28,7 @@ pipx install claude-conversation-extractor --force
 
 pipx list 
     - claude-extract 
-    - claude-start`
+    - claude-start
 
 #### 踩坑点：
 

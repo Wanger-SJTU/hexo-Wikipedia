@@ -19,7 +19,7 @@ source_url: https://zhuanlan.zhihu.com/p/686277638
 文章作者：Maxime Labonne
 Git链接：https://github.com/mlabonne/llm-course
 huggingface：https://huggingface.co/mlabonne
-作者博客：https://mlabonne.github.io/blog/`
+作者博客：https://mlabonne.github.io/blog/
 
 欢迎大家关注微信公众号：<strong>精博士论文小酒馆</strong>
 

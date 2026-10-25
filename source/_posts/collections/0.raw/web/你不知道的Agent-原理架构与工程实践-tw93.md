@@ -302,7 +302,7 @@ LLM 推理时，Transformer attention 会为每个 token 计算 Key-Value 对，
 
 Skills 是上下文工程里非常有效的一种模式，核心思路是：<strong>系统提示只保留索引，完整知识按需加载</strong>。
 
-const systemPrompt = `
+const systemPrompt = 
 可用 Skills：
 - deploy: 部署到生产环境的完整流程
 - code-review: 代码审查检查清单

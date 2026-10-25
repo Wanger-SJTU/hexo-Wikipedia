@@ -121,9 +121,9 @@ C++
 #include  executorch/extension/llm/runner/text_llm_runner.h 
 
 auto runner = create_llama_runner("llama.pte", "tiktoken.bin");
-executorch::extension::llm::GenerationConfig config{
 
 ```text
+executorch::extension::llm::GenerationConfig config{
     .seq_len = 128, .temperature = 0.8f};
 ```
 

@@ -33,7 +33,7 @@ RLFramework(Verl/Slime) -> RolloutEngine => [AsyncBuffer] -> Trainer
 
 加一个中间层变为
 
-RLFramework(Verl/Slime) -> [AgentServer  RolloutEngine] => [AsyncBuffer] -> Trainer`
+RLFramework(Verl/Slime) -> [AgentServer  RolloutEngine] => [AsyncBuffer] -> Trainer
 
 整体架构是这样的
 
@@ -160,7 +160,7 @@ ThunderAgent解决问题的思路非常直观：遇事不决加一层，ThunderA
 │  Step 2: 工具执行（编译器）──→ Kubernetes（无状态）    │
 │  Step 3: 推理请求 ──→ vLLM（不知道Step1的存在）       │
 │  Step 4: 工具执行（测试器）──→ Kubernetes（不知道历史）│
-└─────────────────────────────────────────────────────┘`
+└─────────────────────────────────────────────────────┘
 
 而引入独立的ThunerAgent层后，就可以完成对Agent任务抽象的流程管理，例如
 
@@ -174,7 +174,7 @@ ThunderAgent解决问题的思路非常直观：遇事不决加一层，ThunderA
 │                                                     │
 │  Step 1 → Step 2 → Step 3 → Step 4                 │
 │     ↑___________同一个程序P持续存在___________↑       │
-└─────────────────────────────────────────────────────┘`
+└─────────────────────────────────────────────────────┘
 
 #### State-Aware Pausing
 
@@ -221,7 +221,7 @@ Group → [req1, req2, ..., req8] → 绑定到Instance A，跑完为止
 Seer的方式：
 Group → req1 → chunk1(8K) → chunk2(8K) → chunk3(8K) → ...
               ↑              ↑              ↑
-           调度到A         调度到B         调度回A（按负载动态选）`
+           调度到A         调度到B         调度回A（按负载动态选）
 
 #### Context-Aware Scheduling (上下文感知调度)
 
@@ -239,7 +239,7 @@ Group → req1 → chunk1(8K) → chunk2(8K) → chunk3(8K) → ...
 
 阶段3：Approximate LFS调度
   └─ 对剩余请求按预测长度降序调度
-     → 长任务优先，与短任务并行执行，填满批次`
+     → 长任务优先，与短任务并行执行，填满批次
 
 #### Adaptive Grouped Speculative Decoding (自适应分组Spec)
 
@@ -267,4 +267,4 @@ Group → req1 → chunk1(8K) → chunk2(8K) → chunk3(8K) → ...
 │  Step 3: 周期性Fetch（各实例拉取）                            │
 │  Instance_A 只拉取自己正在处理的group的CST                   │
 │  支持增量同步：只传上次fetch之后的新增内容                     │
-└──────────────────────────────────────────────────────────────┘`
+└──────────────────────────────────────────────────────────────┘

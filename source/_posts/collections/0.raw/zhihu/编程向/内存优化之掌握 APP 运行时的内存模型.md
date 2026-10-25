@@ -43,12 +43,12 @@ source_url: https://zhuanlan.zhihu.com/p/591043079
 ① 线下通过 adb 命令获取，一般用于线下调试：
 
 adb shell
-dumpsys meminfo 进程名/pid`
+dumpsys meminfo 进程名/pid
 
 ② 线上通过代码获取，一般用于收集线上的内存数据：
 
 ActivityManager am = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
-ActivityManager.MemoryInfo memoryInfo = new ActivityManager.MemoryInfo();`
+ActivityManager.MemoryInfo memoryInfo = new ActivityManager.MemoryInfo();
 
 虽然获取方法不同，但这两种方式获取数据的原理完全一样，它们调用的都是 `android_os_Debug.cpp` 对象中的 `android_os_Debug_getDirtyPagesPid` 接口，它的源码如下：
 
@@ -272,9 +272,9 @@ static bool load_maps(int pid, stats_t* stats, bool* foundSwapPss)
 
     //for循环函数，执行maps文件的读取
     return meminfo::ForEachVmaFromFile(smaps_path, vma_scan);
+}
 ```
 
-}`
 
 通过上面对 maps 的解析函数，我们不仅可以看到 maps 中的数据类型及格式，也可以知道 Dalvik Heap，Native Heap 等数据的组成。<strong>在做内存的线上异常监控时，异常情况下，也可以将 maps 文件上传到服务端，服务端对 maps 文件进行解析和分类，这样我们就能非常方便的定位和排查线上内存问题。</strong>
 
@@ -307,9 +307,9 @@ int kgsl_memtrack_get_memory(pid_t pid, enum memtrack_type type,
 
 ```text
     return 0;
+}
 ```
 
-}`
 
 我们也可以在 root 手机中，查看 `kgsl_memtrack_get_memory` 函数读取到该应用进程的数据，下面是系统设置这个应用的部分 graphic 数据。
 
@@ -350,7 +350,7 @@ int kgsl_memtrack_get_memory(pid_t pid, enum memtrack_type type,
 0000000000000000 0             4096    33 -----pY--     gpumem               gl     0                1      0      0
 0000000000000000 0             4096    34 --w--pY--     gpumem           any(0)     0                1      0      0
 0000000000000000 0             4096    35 -----pY--     gpumem               gl     0                1      0      0
-……`
+……
 
 #### 数据③：Alloc 内存
 
@@ -361,7 +361,7 @@ Runtime runtime = Runtime.getRuntime();
 
 ```text
 //获取已经申请的Java内存 long usedMemory=runtime.totalMemory() ;
-//获取申请但未使用Java内存 long freeMemory = runtime.freeMemory();`
+//获取申请但未使用Java内存 long freeMemory = runtime.freeMemory();
 ```
 
 
@@ -378,9 +378,9 @@ static jlong android_os_Debug_getNativeHeapSize(JNIEnv *env, jobject clazz)
 {
     struct mallinfo info = mallinfo();
     return (jlong) info.usmblks;
+}
 ```
 
-}`
 
 我们可以看下 `mallinfo` 函数的说明文档：
 

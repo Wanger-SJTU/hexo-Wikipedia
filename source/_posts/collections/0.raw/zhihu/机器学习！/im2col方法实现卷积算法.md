@@ -190,7 +190,7 @@ def im2col(img, ksize, stride=1):
             x_min = x * stride
             x_max = x_min + ksize
             col[y_start+x::outsize, :] = img[:, y_min:y_max, x_min:x_max, :].reshape(N, -1)
-    return col`
+    return col
 ```
 
 
@@ -225,7 +225,7 @@ def conv(X, W, stride=1, padding='same'):
     z = np.dot(col, W.reshape(W.shape[0], -1).transpose())
     z = z.reshape(N, z.shape[0] / N, -1)
     out_h = (H - ksize) // stride + 1
-    return z.reshape(N, out_h, -1 , FN)`
+    return z.reshape(N, out_h, -1 , FN)
 ```
 
 

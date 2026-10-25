@@ -38,7 +38,7 @@ $关键问题在于 Δt" role="presentation">Δt\Delta_t 的计算：$
 
 old_v = S_{t-1} @ k_t     # 必须知道 S_{t-1}
 delta = beta * (v - old_v) # 依赖 old_v
-S_t = g * S_{t-1} + outer(delta, k)  # 更新状态`
+S_t = g * S_{t-1} + outer(delta, k)  # 更新状态
 
 这形成了严格的依赖链：
 
@@ -69,7 +69,7 @@ t₁ t₂ t₃ ... t₆₄ | t₆₅ t₆₆ ... t₁₂₈ | t₁₂₉ ... t�
 2. Chunk 2 内部：以 S₆₄ 为初始状态，顺序处理 → 得到 S₁₂₈
 3. ...依此类推
 
-顺序步骤: O(L) → O(L/C) = O(4) when C=64`
+顺序步骤: O(L) → O(L/C) = O(4) when C=64
 
 但这只是最朴素的分块，还没有利用并行。真正的 Chunkwise Parallel 更精妙。
 
@@ -190,7 +190,7 @@ def intra_chunk_parallel(chunks, S_init_per_chunk):
         outputs.append(O)
         S_finals.append(S_final)
 
-    return stack(outputs), stack(S_finals)`
+    return stack(outputs), stack(S_finals)
 ```
 
 
@@ -223,7 +223,7 @@ def inter_chunk_sequential(S_finals, initial_state):
         S_corrected.append(S_curr)
         S_prev = S_curr
 
-    return stack(S_corrected)`
+    return stack(S_corrected)
 ```
 
 
@@ -262,7 +262,7 @@ def inter_chunk_sequential(S_finals, initial_state):
 └─────────────────────────────────────────────────────────┘
         │
         ▼
-   最终输出 O`
+   最终输出 O
 
 #### 五、复杂度分析
 
@@ -309,7 +309,7 @@ def compute_deltas_iterative(K, V, G, B, S_init):
         deltas.append(delta)
         S = G[t] * S + outer(delta, K[t])
 
-    return stack(deltas)  # [C, d]`
+    return stack(deltas)  # [C, d]
 ```
 
 
@@ -320,7 +320,7 @@ log_gamma = cumsum(log(G))
 gamma = exp(log_gamma)
 
 # 或使用 float32 累积
-gamma = cumprod(G.float()).to(G.dtype)`
+gamma = cumprod(G.float()).to(G.dtype)
 
 #### 6.3 Memory-Efficient 实现
 
@@ -354,7 +354,7 @@ def memory_efficient_chunk(Q, K, V, G, B, S_init, BLOCK=16):
 
         O[i:i+BLOCK] = ...
 
-    return O`
+    return O
 ```
 
 
@@ -449,7 +449,7 @@ def _prefill_kernel_naive(Q, K, V, State, ...):
 
 ```text
         o = scale * tl.sum(S * q[None, :], axis=1)  # S @ q
-        tl.store(Out + t * stride_o + ..., o)`
+        tl.store(Out + t * stride_o + ..., o)
 ```
 
 
@@ -476,7 +476,7 @@ S[i,:] = g * S[i,:] + delta[i] * k[:]
 每一行的更新只依赖于:
 1. 自己的旧值 S[i,:]
 2. 标量 delta[i]
-3. 共享的 k[:]`
+3. 共享的 k[:]
 
 于是我们将 128 行分成多个 V-Block，每个 block 独立处理：
 
@@ -517,7 +517,7 @@ def _prefill_kernel(Q, K, V, State, ..., BLOCK_V: tl.constexpr):
 
 ```text
         ov = scale * tl.sum(S * qv[None, :], axis=1)
-        tl.store(Out + ... + v0 + tl.arange(0, BLOCK_V), ov)`
+        tl.store(Out + ... + v0 + tl.arange(0, BLOCK_V), ov)
 ```
 
 
@@ -526,7 +526,7 @@ def _prefill_kernel(Q, K, V, State, ..., BLOCK_V: tl.constexpr):
 # Grid: (N=num_seqs, H=8, V_BLOCKS)
 V_BLOCKS = D // BLOCK_V  # 128 // 16 = 8 或 128 // 32 = 4
 
-_prefill_kernel[(N, num_v_heads, V_BLOCKS)](...)`
+_prefill_kernel[(N, num_v_heads, V_BLOCKS)](...)
 
 <strong>效果</strong>：
 
@@ -563,7 +563,7 @@ qv = tl.load(Q_ptr + t * stride_q_t + qk_h * stride_q_h + di)
 kv = tl.load(K_ptr + t * stride_k_t + qk_h * stride_k_h + di)
 
 # 加载 V 时使用 h
-vv = tl.load(V_ptr + t * stride_v_t + h * stride_v_h + v0 + vd)`
+vv = tl.load(V_ptr + t * stride_v_t + h * stride_v_h + v0 + vd)
 
 #### 10.5 实测数据：优化效果
 
@@ -596,19 +596,19 @@ BatchTokens吞吐 (M tok/s)加速比N=140961.241.0xN=440964.703.8xN=16409611.389
 
 目标：将 Chunk 内的多个 token 合并成矩阵乘法
 预期收益：2-3x
-难点：正确处理 delta 的状态依赖`
+难点：正确处理 delta 的状态依赖
 
 <strong>2. TMA + Double Buffering（中收益，中难度）</strong>
 
 目标：异步预取下一 chunk 的数据
 预期收益：1.3-1.5x
-实现：cp.async.bulk.tensor 指令`
+实现：cp.async.bulk.tensor 指令
 
 <strong>3. State 量化（低-中收益，低难度）</strong>
 
 目标：FP32 状态 → FP8/BF16
 预期收益：2-4x 带宽减少
-风险：精度损失`
+风险：精度损失
 
 #### 十一、总结与建议
 

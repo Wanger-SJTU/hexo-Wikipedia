@@ -33,7 +33,7 @@ def ffn_native():
     gate = torch.nn.functional.silu(gate)
     immediate = up * gate
     down = torch.matmul(immediate, down_proj)
-    return down`
+    return down
 ```
 
 
@@ -59,7 +59,7 @@ def ffn_absorb():
     up_down = up_down.view(4*H, H)
     down = torch.matmul(gate, up_down)
 
-    return down`
+    return down
 ```
 
 

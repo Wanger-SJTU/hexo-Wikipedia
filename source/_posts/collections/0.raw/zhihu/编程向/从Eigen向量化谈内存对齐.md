@@ -66,7 +66,7 @@ int main() {
 这段代码使用AVX中的向量化加法指令，同时计算4对double的和。这4对数保存在`input1`和`input2`中。 `_mm256_load_pd`指令用来加载操作数，`_mm256_add_pd`指令进行向量化运算，最后， `_mm256_store_pd`指令读取运算结果到`result`中。可惜的是，程序运行到第一个`_mm256_load_pd`处就崩溃了。崩溃的原因正是因为输入变量没有内存对齐。我特意打印出了两个输入变量的地址，结果如下
 
 address of input1: 0x7ffeef431ef0
-address of input2: 0x7ffeef431f10 `
+address of input2: 0x7ffeef431f10 
 
 上一节提到了AVX要求32字节对齐，我们可以把这两个输入变量的地址除以32，看是否能够整除。结果发现`0x7ffeef431ef0`和 `0x7ffeef431f10`都不能整除。当然，其实直接看倒数第二位是否是偶数即可，是偶数就可以被32整除，是奇数则不能被32整除。 
 
@@ -109,7 +109,7 @@ int main() {
 
 address of input1: 0x7ffc5ca2e640
 address of input2: 0x7ffc5ca2e660
-2 3 4 5`
+2 3 4 5
 
 可以看到，这次的两个地址都是32的倍数，而且最终的运算结果也完全正确。
 
@@ -223,7 +223,7 @@ int main() {
 崩溃前的输出为
 
 address of input1: 0x1ceae70
-address of input2: 0x1ceaea0`
+address of input2: 0x1ceaea0
 
 很诡异吧，似乎刚才我们设置的内存对齐都失效了，这两个输入变量的内存首地址又不是32的倍数了。
 

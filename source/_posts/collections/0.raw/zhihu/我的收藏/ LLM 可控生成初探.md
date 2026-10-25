@@ -112,9 +112,9 @@ Given the following doctor's notes about a patient, please extract a dictionary 
         ],
         'current_meds': [{'medication': 'OTC steroid cream', 'response': 'Moderate response'}]
     }
+}
 ```
 
-}`
 
 接下来 validator 会将相关的错误找出来，形成下一次 ReAsk 的请求内容。注意到这里错误的信息的位置是和原来的 json 结构保持一致的，并且正确的部分被省略了：
 
@@ -142,7 +142,7 @@ I was given the following JSON response, which had problems due to incorrect val
 ```
 
 
-Help me correct the incorrect values based on the given error messages.`
+Help me correct the incorrect values based on the given error messages.
 
 后续 LLM 的返回可以仅针对这部分问题的修正，而不需要再重复生成整个 json。生成的新结果会由 guardrails 再自动填写回原来的位置，非常丝滑。
 
@@ -183,7 +183,7 @@ define flow
   bot inform capabilities
 
 define bot inform capabilities
-  "I am an AI assistant which helps answer questions based on a given knowledge base. For this interaction, I can answer question based on the job report published by US Bureau of Labor Statistics."`
+  "I am an AI assistant which helps answer questions based on a given knowledge base. For this interaction, I can answer question based on the job report published by US Bureau of Labor Statistics."
 
 乍一看是不是有点像 Python，但是很多地方又不像是编程语言，例如`define user ask capabilities`里后面的部分更像是自然语言，可以随意加空格。另外“函数体”的内容也比较诡异，有时候是一系列对话内容，有时候又好像是在引用一些其它流程操作。我初看的时候也是一头雾水，不知道为啥要这么设计。后面在讲到运作流程时或许就会更好理解这么设计的缘由。
 
@@ -221,7 +221,7 @@ define flow check hallucination
 
 define bot inform answer prone to hallucination
     "The previous answer is prone to hallucination and may not be accurate. Please double check the answer using additional sources."
-    "The above response may have been hallucinated, and should be independently verified."`
+    "The above response may have been hallucinated, and should be independently verified."
 
 当然这样的流程自己通过 LangChain 之类的来写也并不麻烦，这样集中定义的 flow 或许能提升一些管理和复用的效率。此外接近自然语言的形式，或许业务专家也能参与到开发过程中来。目前这个项目应该也还在比较早期，如果要在生产环境深入使用，估计也很容易碰到像 LangChain 那样封装比较复杂不容易做 debug 和灵活修改适配的问题。
 
@@ -296,7 +296,7 @@ program(description="A quick and nimble fighter.", valid_weapons=valid_weapons)`
 ```text
 {
     "description": "A quick and nimble fighter.",
-    "name": "`
+    "name": "
 ```
 
 

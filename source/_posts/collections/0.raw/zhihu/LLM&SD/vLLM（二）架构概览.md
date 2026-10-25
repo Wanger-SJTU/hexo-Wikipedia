@@ -72,14 +72,14 @@ for output in outputs:
 ```python
     prompt = output.prompt
     generated_text = output.outputs[0].text
-    print(f"Prompt: {prompt!r}, Generated text: {generated_text!r}")`
+    print(f"Prompt: {prompt!r}, Generated text: {generated_text!r}")
 ```
 
 
 运行上面的代码，可以看到下面的输入：
 
 Prompt: 'Hello, my name is', Generated text: ' Dustin Nelson and I’m going to be your tutor!\n'
-Prompt: 'The future of AI is', Generated text: ' bright, but it’s unclear how many of the blue-sky concepts we'`
+Prompt: 'The future of AI is', Generated text: ' bright, but it’s unclear how many of the blue-sky concepts we'
 
 在简单了解 vLLM 的用法后，我们接下来看一下 vLLM 的整体架构。
 

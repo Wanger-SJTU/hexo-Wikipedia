@@ -116,7 +116,7 @@ $- \textbf{r}=\{r_1,r_2,\ldots,r_G\} , 而\hat{A}_{i,t} 为组相对的优势。
 
 #SYSTEM:你需要友善的回答用户的问题
 #USER: 如何写python程序
-#ASSISTANT:`
+#ASSISTANT:
 
 对于数学问题我们可以如下定义模版，在问题后面附上``. 所以我们输入到模型里面的内容，也声明了回答的格式，仍要求模型具备一定的指令跟随能力。
 
@@ -133,7 +133,7 @@ $- \textbf{r}=\{r_1,r_2,\ldots,r_G\} , 而\hat{A}_{i,t} 为组相对的优势。
 上述四种情况都为未遵循指令要求的格式输出。正确的模型输出格式为：
 
 THINK>{SOLUTION} \THINK> 
-ANSWER> the final answer is $\boxed{}$ \answer>`
+ANSWER> the final answer is $\boxed{}$ \answer>
 
 #### 2.2 说明
 
@@ -170,7 +170,7 @@ Q2: 采样2的解答过程是否会随着RL训练，采样的解答过程越来�
 在模型的回答o_i里我们要提取 ，与最终的结果比较0.5
 
 {SOLUTION}  
- the final answer is $\boxed{}$ `
+ the final answer is $\boxed{}$ 
 
 这里涉及到答案的一致性判别，为了方便实现我们可以严格的要求字符串等同，但效率太差。
 
@@ -183,7 +183,7 @@ def accuracy_reward(completions, ground_truth, **kwargs):
     contents = [completion[0]["content"] for completion in completions]
     answers = [extract_boxed_content(content) for content in contents]
     # Reward 1 if the content is the same as the ground truth, 0 otherwise
-    return [1.0 if answer == gt else 0.0 for answer, gt in zip(answers, ground_truth)]`
+    return [1.0 if answer == gt else 0.0 for answer, gt in zip(answers, ground_truth)]
 ```
 
 
@@ -217,7 +217,7 @@ def accuracy_reward(completions, solution, **kwargs):
                 extraction_mode="first_match",
             )
             # Reward 1 if the content is the same as the ground truth, 0 otherwise
-            reward = float(verify(answer_parsed, gold_parsed)) # 进行正确性判别`
+            reward = float(verify(answer_parsed, gold_parsed)) # 进行正确性判别
 ```
 
 
@@ -304,7 +304,7 @@ def grpo_advantage(rewards):
     epsilon = 0.00001
     rewards = torch.tensor(rewards, dtype = torch.float) 
     A = (rewards - rewards.mean()) / (rewards.std() + epsilon)
-    return A`
+    return A
 ```
 
 
@@ -323,14 +323,14 @@ A = grpo_advantage([1,0,0,1,1,0])
 # A tensor([ 0.9094, -0.9094, -0.9094,  0.9094,  0.9094, -0.9094])
 
 A = grpo_advantage([1,1,1,1,1,1])
-# A tensor([0., 0., 0., 0., 0., 0.])`
+# A tensor([0., 0., 0., 0., 0., 0.])
 
 我们再测64个样本只有1个回答正确
 
 reward_batch = [0] * 64
 reward_batch[0] = 1
 A = grpo_advantage(reward_batch)
-print(A)`
+print(A)
 
 输出
 
@@ -341,7 +341,7 @@ tensor([ 7.8887, -0.1252, -0.1252, -0.1252, -0.1252, -0.1252, -0.1252, -0.1252,
         -0.1252, -0.1252, -0.1252, -0.1252, -0.1252, -0.1252, -0.1252, -0.1252,
         -0.1252, -0.1252, -0.1252, -0.1252, -0.1252, -0.1252, -0.1252, -0.1252,
         -0.1252, -0.1252, -0.1252, -0.1252, -0.1252, -0.1252, -0.1252, -0.1252,
-        -0.1252, -0.1252, -0.1252, -0.1252, -0.1252, -0.1252, -0.1252, -0.1252])`
+        -0.1252, -0.1252, -0.1252, -0.1252, -0.1252, -0.1252, -0.1252, -0.1252])
 
 #### 3.4 格式奖励
 
@@ -355,7 +355,7 @@ def format_reward_func(completions, **kwargs):
     pattern = r"^.*?.*?$"
     completion_contents = [completion[0]["content"] for completion in completions]
     matches = [re.match(pattern, content) for content in completion_contents]
-    return [1.0 if match else 0.0 for match in matches]`
+    return [1.0 if match else 0.0 for match in matches]
 ```
 
 
@@ -389,7 +389,7 @@ pi = torch.randn(3, 5) # batch, sequence
 pi_ref = torch.randn(3, 5) # batch, sequence
 pi_logprob = torch.nn.functional.log_softmax(pi, dim = 1)
 pi_ref_logprob = torch.nn.functional.log_softmax(pi_ref, dim = 1)
-print(grpo_kl(pi_logprob, pi_ref_logprob))`
+print(grpo_kl(pi_logprob, pi_ref_logprob))
 
 实现上，我们通常存储logprob，而不需要完整的输出分布来计算KL，减少存储占用。
 
@@ -397,7 +397,7 @@ print(grpo_kl(pi_logprob, pi_ref_logprob))`
 
 tensor([[0.1465, 0.0457, 0.5321, 0.0793, 0.0728],
         [1.1576, 3.0678, 0.5285, 0.3712, 0.0817],
-        [0.0031, 0.8179, 2.4575, 0.1597, 0.0221]])`
+        [0.0031, 0.8179, 2.4575, 0.1597, 0.0221]])
 
 均为正数。与PPO不同，不产生reward shaping： R = r-KL
 
@@ -438,7 +438,7 @@ k1 = -logr
 k2 = logr ** 2 / 2
 k3 = (logr.exp() - 1) - logr
 for k in (k1, k2, k3):
-    print((k.mean() - truekl) / truekl, k.std() / truekl)`
+    print((k.mean() - truekl) / truekl, k.std() / truekl)
 
 打印
 
@@ -516,7 +516,7 @@ def grpo_loss(pi_logprob, pi_old_logprob, pi_ref_logprob, advantage, input_len, 
     loss = (-1 / group_num ) * (1/len_oi.unsqueeze(dim = 1)) * loss  
     loss = loss.sum()
 
-    return loss`
+    return loss
 ```
 
 
@@ -542,7 +542,7 @@ pi_logprob = torch.gather(pi_logprob, dim=-1, index=token_ids.unsqueeze(-1)).squ
 pi_ref_logprob = torch.gather(pi_ref_logprob, dim=-1, index=token_ids.unsqueeze(-1)).squeeze(-1)
 pi_old_logprob = torch.gather(pi_old_logprob, dim=-1, index=token_ids.unsqueeze(-1)).squeeze(-1)
 loss = grpo_loss(pi_logprob, pi_old_logprob, pi_ref_logprob, A, 3, 2)
-print(loss)`
+print(loss)
 
 输出
 
@@ -565,7 +565,7 @@ advantages = inputs["advantages"]
 # 这段代码能否计算出梯度？
 per_token_loss = torch.exp(per_token_logps - per_token_logps.detach()) * advantages.unsqueeze(1)
 per_token_loss = -(per_token_loss - self.beta * per_token_kl)
-loss = ((per_token_loss * completion_mask).sum(dim=1) / completion_mask.sum(dim=1)).mean()`
+loss = ((per_token_loss * completion_mask).sum(dim=1) / completion_mask.sum(dim=1)).mean()
 
 首先模型得到的是`per_token_logps`, 这里概率是`logprob` 形式的, 工程上不容易溢出。
 
@@ -580,7 +580,7 @@ ratio = torch.exp(per_token_logps - per_token_logps.detach())
 # 等价于
 per_token_prob = torch.exp(per_token_logps)
 per_token_prob_old = torch.exp(per_token_logps.detach())
-ratio = per_token_prob / per_token_prob_old`
+ratio = per_token_prob / per_token_prob_old
 
  这里我们来分析关键代码`x-x.detach()`，是否无法更新梯度。 
 
@@ -600,7 +600,7 @@ gradient = -0.2 # 假设反传误差
 ```
 
 policy_gradient = - gradient * ( 1 / old_policy)
-print(policy_gradient)`
+print(policy_gradient)
 
 那么我们可以看见，在x-x.detach()是能正常计算梯度的。但是相当于new-policy只更新一次。
 

@@ -72,7 +72,7 @@ A: [In-Context Answer 1]
 .
 Q: [In-Context Question n]
 A: [In-Context Answer n]
-Q: [Test Question]`
+Q: [Test Question]
 
 我们通过贪婪解码生成答案，直到模型生成一个换行符，然后使用标准的 Exatch Match（EM）度量方法对照事实答案集进行评估。
 

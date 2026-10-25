@@ -158,7 +158,7 @@ matmul_kernel[grid](
         b.stride(0), b.stride(1),
         c.stride(0), c.stride(1),
         ACTIVATION=activation
-    )`
+    )
 ```
 
 

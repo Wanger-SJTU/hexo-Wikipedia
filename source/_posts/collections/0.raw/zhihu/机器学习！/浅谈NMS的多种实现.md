@@ -50,7 +50,7 @@ def nms(dets, thresh):
         ovr = inter / (areas[i] + areas[order[1:]] - inter)
         inds = np.where(ovr  thresh)[0]
         order = order[inds + 1]
-    return keep`
+    return keep
 ```
 
 
@@ -69,7 +69,7 @@ def nms(dets, thresh):
         ovr=inter/(areas[order[1:]]+areas[i]-inter)
         inds=np.where(ovrthresh)[0]
         order=order[inds+1]
-    return keep`
+    return keep
 ```
 
 
@@ -93,7 +93,7 @@ def nms(bbox, scores, thresh):
             keep[r]=False
         else:
             keep[i]=False
-    return np.where(keep)[0].astype(np.int32)`
+    return np.where(keep)[0].astype(np.int32)
 ```
 
 
@@ -118,7 +118,7 @@ def _non_maximum_suppression_cpu(bbox, thresh, score):
             continue
     	keep[i]=True
     keep = np.where(keep)[0]
-    return keep.astype(np.int32)`
+    return keep.astype(np.int32)
 ```
 
 

@@ -46,7 +46,7 @@ def apply_rotary_emb(
     freqs_cis = reshape_for_broadcast(freqs_cis, xq_)
     xq_out = torch.view_as_real(xq_ * freqs_cis).flatten(3)
     xk_out = torch.view_as_real(xk_ * freqs_cis).flatten(3)
-    return xq_out.type_as(xq), xk_out.type_as(xk)`
+    return xq_out.type_as(xq), xk_out.type_as(xk)
 ```
 
 
@@ -71,7 +71,7 @@ def rotate_half(x):
     return torch.cat((-x2, x1), dim=-1)
 
 def apply_rotary_pos_emb(pos, t):
-    return (t * pos.cos()) + (rotate_half(t) * pos.sin())`
+    return (t * pos.cos()) + (rotate_half(t) * pos.sin())
 ```
 
 

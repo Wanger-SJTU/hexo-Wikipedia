@@ -33,7 +33,7 @@ source_url: https://zhuanlan.zhihu.com/p/2023791484751679788
 🧠 "好像没反应？再看看"      → 又截图
 🧠 "换个坐标试试"           → 又点击 (x:720,y:360)
 🧠 "要不要先滚动页面？"      → 调了一个没预期的工具
-...（重复 10 轮）`
+...（重复 10 轮）
 
 设计的流程是 A → B → C → Done。实际走出来的是 A → D → A → B → E → …
 
@@ -65,7 +65,7 @@ source_url: https://zhuanlan.zhihu.com/p/2023791484751679788
 🐍 Python：点击 (200, 300)              ← 确定性代码
 🧠 LLM："登录成功"                      ← 推理
 
-完成。`
+完成。
 
 #### Agentic Programming：把这个思路系统化
 
@@ -89,7 +89,7 @@ def observe(task):
     return runtime.exec(content=[ # LLM：只做推理
         {"type": "text", "text": f"任务: {task}\nOCR: {ocr}"},
         {"type": "image", "path": img},
-    ])`
+    ])
 ```
 
 
@@ -102,7 +102,7 @@ def observe(task):
 login_flow ✓ 8.8s
 ├── observe ✓ 3.1s → "在 (200,300) 找到登录按钮"
 ├── click ✓ 2.5s → "点击了登录按钮"
-└── verify ✓ 3.2s → "确认进入仪表盘"`
+└── verify ✓ 3.2s → "确认进入仪表盘"
 
 不需要手动拼 prompt。而且每次只在末尾追加，前缀不变——天然利于 prompt caching。
 
@@ -114,7 +114,7 @@ from agentic.meta_function import create, fix
 
 summarize = create("把文本总结成3个要点", runtime=runtime)
 # 如果有 bug
-fixed = fix(fn=summarize, runtime=runtime, instruction="输出用 markdown 列表")`
+fixed = fix(fn=summarize, runtime=runtime, instruction="输出用 markdown 列表")
 
 #### 独特贡献在哪
 

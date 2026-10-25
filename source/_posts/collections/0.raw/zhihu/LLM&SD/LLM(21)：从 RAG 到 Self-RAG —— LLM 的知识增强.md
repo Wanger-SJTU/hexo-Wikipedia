@@ -123,7 +123,7 @@ from langchain.schema.runnable import RunnablePassthrough
 
 llm = ChatOpenAI(model_name="gpt-3.5-turbo", temperature=0)
 rag_chain = {"context": retriever, "question": RunnablePassthrough()} | rag_prompt | llm
-rag_chain.invoke("What is Task Decomposition?")`
+rag_chain.invoke("What is Task Decomposition?")
 
 #### 2.2 RAG 典型案例
 
@@ -259,21 +259,21 @@ preds = model.generate([format_prompt(query) for query in queries], sampling_par
 for pred in preds:
 
 ```python
-  print("Model prediction: {0}".format(pred.outputs[0].text))`
+  print("Model prediction: {0}".format(pred.outputs[0].text))
 ```
 
 
 输出结果如下，其中第一段结果不需要检索，第二段结果出现`[Retrieval]` 字段，因为这个问题需要更细粒度的事实依据。
 
 Model prediction: Twitter:[Utility:5]
-Model prediction: China is a country located in East Asia.[Retrieval]It is the most populous country in the world, with a population of over 1.4 billion people.[Retrieval]China is a diverse country with a rich history and culture.[Retrieval]It is home to many different ethnic groups and languages, and its cuisine, art, and architecture reflect this diversity.[Retrieval]China is also a major economic power, with a rapidly growing economy and a large manufacturing sector.[Utility:5]`
+Model prediction: China is a country located in East Asia.[Retrieval]It is the most populous country in the world, with a population of over 1.4 billion people.[Retrieval]China is a diverse country with a rich history and culture.[Retrieval]It is home to many different ethnic groups and languages, and its cuisine, art, and architecture reflect this diversity.[Retrieval]China is also a major economic power, with a rapidly growing economy and a large manufacturing sector.[Utility:5]
 
 我们还可以在输入中增加补充信息：
 
 # for a query that needs factual grounding
 prompt = format_prompt("Can you tell me the difference between llamas and alpacas?", "The alpaca (Lama pacos) is a species of South American camelid mammal. It is similar to, and often confused with, the llama. Alpacas are considerably smaller than llamas, and unlike llamas, they were not bred to be working animals, but were bred specifically for their fiber.")
 preds = model.generate([prompt], sampling_params)
-print([pred.outputs[0].text for pred in preds])`
+print([pred.outputs[0].text for pred in preds])
 
 输出结果如下，Self-RAG 找到相关的插入文档并生成有证据支持的答案。
 

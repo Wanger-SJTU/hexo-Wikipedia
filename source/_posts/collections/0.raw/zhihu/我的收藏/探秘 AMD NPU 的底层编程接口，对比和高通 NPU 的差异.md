@@ -48,7 +48,7 @@ $ xrt-smi examine
 Device(s) Present
 |BDF             |Name         |Architecture  |Topology  |
 |----------------|-------------|--------------|----------|
-|[0000:c4:00.1]  |NPU Phoenix  |aie2          |6x5       |`
+|[0000:c4:00.1]  |NPU Phoenix  |aie2          |6x5       |
 
 NPU 以 PCI 设备的形式挂在系统总线上。内核驱动 `amdxdna`（Linux 6.14+ 主线内核自带）创建了 `/dev/accel/accel0` 设备节点。固件版本 1.5.5.391。
 
@@ -74,7 +74,7 @@ Row 1   │MemTile │MemTile │MemTile │MemTile │  ← 内存 tile (L2, �
 Row 0   │  Shim  │  Shim  │  Shim  │  Shim  │  ← 接口 tile
         └────────┴────────┴────────┴────────┘
                               ↕
-                         Host DDR (L3)`
+                         Host DDR (L3)
 
 三种 tile 各司其职：
 
@@ -96,7 +96,7 @@ Row 0   │  Shim  │  Shim  │  Shim  │  Shim  │  ← 接口 tile
 ┌──────────┬──────────┬──────────┬──────────┬──────────┬──────────┐
 │  标量控制 │ 地址生成  │ 加载/存储 │ 标量运算  │ 数据移动  │ 向量运算  │
 │  (nopb)  │  (nopa)  │  (nops)  │  (nopx)  │  (nopm)  │  (nopv)  │
-└──────────┴──────────┴──────────┴──────────┴──────────┴──────────┘`
+└──────────┴──────────┴──────────┴──────────┴──────────┴──────────┘
 
 最关键的特性：<strong>暴露流水线（exposed pipeline）</strong>。加载指令发出后，数据不会立刻可用——硬件不会自动 stall。编译器必须在加载和使用之间静态插入正确数量的 nop（或其他不冲突的指令）。如果你插少了 nop，读到的是旧值，不是错误。这和 x86/ARM 的乱序执行完全相反。
 
@@ -126,7 +126,7 @@ c0 03 00 88 03 00 18 12 82 cd 0c 02 00 00 00 00
 # 反汇编为:
 nopb; nopa; vst.srs.s32.s64 bml3, s0, [p2, #0x0]; add r1, r1, #0x10; nopm; nopv
 #  ↑     ↑    ↑                                    ↑                   ↑     ↑
-# 控制  地址  向量存储+饱和右移                     标量加法            移动  向量`
+# 控制  地址  向量存储+饱和右移                     标量加法            移动  向量
 
 6 个槽位中，2 个在干活（向量存储 + 标量循环计数），4 个是 nop。这很正常——不是每个周期都能填满所有槽位。
 
@@ -149,7 +149,11 @@ void add_one_scalar(int32_t *in, int32_t *out, int32_t N) {
 最普通的 C 代码。编译后加载到计算 tile 的 16 KB 程序存储器中执行。反汇编出的核心循环：
 
 ; === 零开销硬件循环 ===
+
+```x86asm
 add.nc  lc, r0, #0x0         ; lc(loop count) = N
+```
+
 movxm   ls, #0x200            ; ls(loop start) = 循环体起始地址
 movxm   le, #0x270            ; le(loop end) = 循环体结束地址
 
@@ -184,9 +188,9 @@ void add_one_vector(int32_t *in, int32_t *out, int32_t N) {
     aie::store_v(out + i, r);
   }
 }
+}
 ```
 
-}`
 
 和实验 1 做同样的事（每个元素 +1），但用向量指令一次处理 16 个 int32。反汇编：
 
@@ -216,7 +220,11 @@ vadd.32  x4, x0, x2           ; 512-bit 向量加法: x4 = x0 + x2
 
 vst  wh4, [p2, #0x20]         ; 向量存储高半                        ← 256-bit
 vst  wl4, [p2, #0x0]          ; 向量存储低半                        ← 256-bit
-add  r1, r1, #0x10            ; i += 16`
+
+```x86asm
+add  r1, r1, #0x10            ; i += 16
+```
+
 
 <strong>关键观察</strong>：
 
@@ -243,9 +251,9 @@ void mul_vector(int32_t *in, int32_t *out, int32_t *factor, int32_t N) {
     aie::store_v(out + i, acc.template to_vector(0));
   }
 }
+}
 ```
 
-}`
 
 这里用了 `aie::mul` 返回 `acc64` 累加器——直接调用硬件 MAC 单元。反汇编出来比前两个复杂得多：
 
@@ -273,7 +281,7 @@ vmac   cm3, cm2, x10, x2, r6   ; 乘累加 #4
 
 ; === 累加器 → 内存（带饱和右移）===
 vst.srs.s32.s64  bmh3, s0, [p2, #0x20]  ; acc64 → int32 + 存储 (高半)
-vst.srs.s32.s64  bml3, s0, [p2, #0x0]   ; acc64 → int32 + 存储 (低半)`
+vst.srs.s32.s64  bml3, s0, [p2, #0x0]   ; acc64 → int32 + 存储 (低半)
 
 <strong>关键观察</strong>：
 
@@ -282,7 +290,7 @@ vst.srs.s32.s64  bml3, s0, [p2, #0x0]   ; acc64 → int32 + 存储 (低半)`
 
 - <strong>VLIW 并行执行</strong>：
 vshuffle  x10, x6, x0, r3   ; 向量重排单元
-   vmac   cm1, cm0, x8, x2, r2  ; MAC 单元`
+   vmac   cm1, cm0, x8, x2, r2  ; MAC 单元
 
 这两条在同一个 128-bit VLIW 指令字中，使用不同的功能单元，在同一个周期执行。
 
@@ -310,22 +318,25 @@ Host DDR (GB 级)
     ↕  Shim Tile DMA
 Memory Tile SRAM (512 KB/tile, 共 2560 KB)
     ↕  Memory Tile DMA (6 个引擎/tile)
-Compute Tile SRAM (64 KB/tile)`
+Compute Tile SRAM (64 KB/tile)
 
 #### ObjectFIFO：抽象 DMA 的 Buffer 描述符
 
 在 IRON 框架中，数据搬运通过 ObjectFIFO 抽象：
 
 of_in = ObjectFifo(tile_ty, name="in")    # Host → Compute Tile
-of_out = ObjectFifo(tile_ty, name="out")   # Compute Tile → Host`
+of_out = ObjectFifo(tile_ty, name="out")   # Compute Tile → Host
 
 编译后，这变成 DMA buffer 描述符配置和硬件锁。在 LLVM IR 中可以看到：
 
+```x86asm
 call void @llvm.aie2.acquire(i32 49, i32 -1)   ; 等 DMA 填好输入 buffer
 call void @llvm.aie2.acquire(i32 50, i32 -1)   ; 等输出 buffer 可用
 call void @add_one_scalar(...)                   ; 计算
 call void @llvm.aie2.release(i32 48, i32 1)     ; 通知 DMA: 输入已读完
-call void @llvm.aie2.release(i32 51, i32 1)     ; 通知 DMA: 输出已写好`
+call void @llvm.aie2.release(i32 51, i32 1)     ; 通知 DMA: 输出已写好
+```
+
 
 对应的机器码：
 
@@ -333,7 +344,7 @@ acq  #0x31, r16    ; acquire lock #49, value = -1 (等待)
 acq  #0x32, r16    ; acquire lock #50, value = -1 (等待)
 jl   #add_one_scalar  ; 调用内核
 rel  #0x30, r17    ; release lock #48, value = 1  (通知)
-rel  #0x33, r17    ; release lock #51, value = 1  (通知)`
+rel  #0x33, r17    ; release lock #51, value = 1  (通知)
 
 acq`（acquire）和 `rel`（release）是 tile 与 DMA 之间**唯一的同步原语**。没有中断，没有轮询，没有信号量——就是硬件锁。当锁不满足条件时，核心**阻塞**在 `acq` 指令上，硬件停止取指，直到 DMA 改变锁状态。
 
@@ -342,12 +353,20 @@ acq`（acquire）和 `rel`（release）是 tile 与 DMA 之间**唯一的同步�
 IRON 自动生成双缓冲：两组 buffer（`buff_0` 和 `buff_1`），两对锁。当计算 tile 处理 `buff_0` 时，DMA 可以同时填充 `buff_1`。从 LLVM IR 可以看到循环被展开成：
 
 acquire(49, -1); acquire(50, -1)
+
+```x86asm
 call @add_one_scalar(@in_cons_buff_0, @out_buff_0, 256)  ; 处理 buffer 0
+```
+
 release(48, 1);  release(51, 1)
 
 acquire(49, -1); acquire(50, -1)
+
+```x86asm
 call @add_one_scalar(@in_cons_buff_1, @out_buff_1, 256)  ; 处理 buffer 1
-release(48, 1);  release(51, 1)`
+```
+
+release(48, 1);  release(51, 1)
 
 DMA 在后台搬运数据，计算核心只需要等锁。这种计算/通信重叠是 NPU 高吞吐量的关键。
 
@@ -363,7 +382,7 @@ LLVM IR (.ll)                ← 每个 tile 的控制流 + 内核调用
     ↓  Peano (llvm-aie)
 AIE ELF (.elf)               ← 每个 tile 的机器码
     ↓  打包
-XCLBIN                       ← 最终二进制（ELF + DMA 配置 + 路由表）`
+XCLBIN                       ← 最终二进制（ELF + DMA 配置 + 路由表）
 
 #### 阶段 1: Python → MLIR
 
@@ -394,9 +413,9 @@ module {
       ...
     }
   }
+}
 ```
 
-}`
 
 这是一种空间数据流的声明式描述：哪些 tile 参与计算，数据怎么流动，每个 tile 跑什么代码。
 
@@ -431,7 +450,11 @@ enum amdxdna_drm_ioctl_id {
     DRM_AMDXDNA_EXEC_CMD,        // 提交执行命令
     DRM_AMDXDNA_GET_INFO,        // 查询设备信息
     DRM_AMDXDNA_SET_STATE,       // 设置设备状态
-};`
+
+```text
+};
+```
+
 
 执行流程：
 
@@ -455,7 +478,7 @@ typedef enum {
     XAIE_IO_CUSTOM_OP_DDR_PATCH, // DDR 地址补丁（运行时绑定）
 ```
 
-} XAie_TxnOpcode;`
+} XAie_TxnOpcode;
 
 这些操作码被 NPU 内部的 ERT（Embedded Runtime）微控制器解释执行。ERT 是 NPU 芯片内的一个小 ARM 核，负责管理 tile 启停、DMA 配置和同步。
 
@@ -505,7 +528,7 @@ typedef enum {
                    ┌──────────────▼───────────────┐
                    │          NPU 硬件             │
                    │   16/32 AIE tiles + DMA + ERT │
-                   └──────────────────────────────┘`
+                   └──────────────────────────────┘
 ```
 
 
@@ -533,7 +556,7 @@ Row 2   │Compute │Compute │Compute │Compute │  16 个计算 tile
 Row 1   │MemTile │MemTile │MemTile │MemTile │  4 × 512 KB = 2 MB L2
         ├────────┼────────┼────────┼────────┤
 Row 0   │  Shim  │  Shim  │  Shim  │  Shim  │
-        └────────┴────────┴────────┴────────┘`
+        └────────┴────────┴────────┴────────┘
 
 XDNA2（Strix Point）——8 列：
 
@@ -547,7 +570,7 @@ Row 2   │  C   │  C   │  C   │  C   │  C   │  C   │  C   │  C   
 Row 1   │  M   │  M   │  M   │  M   │  M   │  M   │  M   │  M   │  8 × 512 KB = 4 MB L2
         ├──────┼──────┼──────┼──────┼──────┼──────┼──────┼──────┤
 Row 0   │  D   │  D   │  D   │  D   │  D   │  D   │  D   │  D   │
-        └──────┴──────┴──────┴──────┴──────┴──────┴──────┴──────┘`
+        └──────┴──────┴──────┴──────┴──────┴──────┴──────┴──────┘
 
 #### AIE2P：不只是更多更快
 
@@ -558,14 +581,14 @@ XDNA2 的计算 tile 从 AIE2 升级到 <strong>AIE2P</strong>（AI Engine 2 Plu
 这是 XDNA2 最重要的新特性。传统量化中，每个元素独立存储完整的数值表示。BFP16 换了一种方式：
 
 传统 FP16:  每个元素 16 bit（1 sign + 5 exp + 10 mantissa）
-BFP16:      32 个元素共享 1 个 8-bit 指数 + 每个元素 8-bit 尾数`
+BFP16:      32 个元素共享 1 个 8-bit 指数 + 每个元素 8-bit 尾数
 
 32 个元素共享一个指数，每个元素只需 8 bit 尾数。存储密度接近 INT8，但精度接近 FP16。关键优势：<strong>不需要重新训练模型</strong>——直接把 FP16 权重转成 BFP16 格式，精度损失极小，吞吐量却和 INT8 一样。
 
 在指令级别，这体现为新的 MAC 配置：
 
 AIE2:   I512.I512.ACC1024.mac          ; INT8 × INT8 → ACC
-AIE2P:  BFP576.BFP576.ACC2048.mac.conf ; BFP16 × BFP16 → ACC（新！）`
+AIE2P:  BFP576.BFP576.ACC2048.mac.conf ; BFP16 × BFP16 → ACC（新！）
 
 AIE2P 的 MAC 单元原生理解 BFP 格式——硬件自动处理共享指数的对齐和累加。
 
@@ -580,7 +603,7 @@ AIE2P 支持 OCP 标准的 Microscaling 格式族：
 AIE2 上做 `tanh`、`exp`、`1/x` 需要查表 + 多项式逼近，消耗多个周期。AIE2P 加了专用硬件：
 
 AIE2:  tanh(x) → 查表 + 插值（几十个周期）
-AIE2P: tanh(x) → 单条 aievec.tanh 指令 → 硬件单元直接计算`
+AIE2P: tanh(x) → 单条 aievec.tanh 指令 → 硬件单元直接计算
 
 同样适用于 `exp2`（指数）和 `inv`（倒数）。这对 Transformer 的 softmax 和 LayerNorm 特别有意义——这些操作在 LLM 推理中占显著比例。
 
@@ -591,7 +614,7 @@ XDNA1 的 NPU 基本上是一整块给一个任务用。XDNA2 支持最多 <stro
 ┌──Col 0-1──┬──Col 2-5──┬──Col 6-7──┐
 │ 视频通话   │ LLM 推理   │ 背景降噪  │   3 个任务同时跑
 │ (2 列)    │ (4 列)     │ (2 列)    │
-└───────────┴───────────┴───────────┘`
+└───────────┴───────────┴───────────┘
 
 每个分区有独立的电源门控——不用的列可以关掉省电。
 
@@ -614,7 +637,7 @@ dev = NPU1Col1()
 
 # XDNA2
 from aie.iron.device import NPU2
-dev = NPU2()`
+dev = NPU2()
 
 编译时目标从 `aie2` 变成 `aie2p`：
 
@@ -622,7 +645,7 @@ dev = NPU2()`
 clang++ --target=aie2-none-unknown-elf -c kernel.cc -o kernel.o
 
 # XDNA2
-clang++ --target=aie2p-none-unknown-elf -c kernel.cc -o kernel.o`
+clang++ --target=aie2p-none-unknown-elf -c kernel.cc -o kernel.o
 
 但如果你要用 XDNA2 的新特性（BFP16、MX 格式、硬件 tanh），需要用 AIE2P 专有的 intrinsic 和数据类型。mlir-aie 仓库中已有 `aie_kernels/aie2p/` 目录，包含 AIE2P 专用的 GEMM 内核。
 
@@ -656,7 +679,7 @@ of_out = ObjectFifo(tile_ty, name="out")
 def core_body():                           # tile 上的计算
     elem = of_in.acquire(1)                # 等待 DMA 填好数据
     scale_fn(elem, out, factor)            # 调用 C++ 内核
-    of_out.release(1)                      # 通知 DMA 搬走结果`
+    of_out.release(1)                      # 通知 DMA 搬走结果
 ```
 
 
@@ -675,7 +698,7 @@ Q6_R_dmwait();                             // 等 DMA 完成
 # AMD: 硬件锁同步 DMA
 elem = of_in.acquire(1)    # acq 指令：等 DMA 填好
 kernel(elem, out)           # 计算
-of_in.release(1)           # rel 指令：通知 DMA 可以搬下一块`
+of_in.release(1)           # rel 指令：通知 DMA 可以搬下一块
 
 #### HMX 矩阵乘法 vs AIE MAC 单元
 
@@ -696,11 +719,11 @@ asm volatile("mxmem(%0, %1):after.hf = acc\n"                   // 存储累加�
 ```text
     :: "r"(out), "r"(0) : "memory");
 // AMD AIE: C++ intrinsic 即可
-```
-
 aie::vector a = aie::load_v(in);    // 512-bit 向量加载
 aie::accum acc = aie::mul(a, factor);       // 硬件 MAC
-aie::store_v(out, acc.to_vector());            // 存储（带饱和）`
+aie::store_v(out, acc.to_vector());            // 存储（带饱和）
+```
+
 
 两者的 MAC 单元都是 tile/block 粒度的，但 AMD 用 C++ intrinsic 封装得更好，Hexagon 在 HMX 层面必须用 inline asm 或 HexKL 库。
 
@@ -713,7 +736,7 @@ HMX 要求数据按 <strong>AH（Activation-Hexagon）</strong> 和 <strong>WH�
 // Hexagon: 必须转换为 HMX 专用布局
 hexkl_micro_hmx_rm_to_ah_f16(vtcm, dst, src);   // row-major → AH
 hexkl_micro_hmx_rm_to_wh_f16(vtcm, dst, wt, ...); // row-major → WH
-hexkl_micro_hmx_mm_f16(vtcm, act_off, wt_off);     // 只接受 AH/WH 数据`
+hexkl_micro_hmx_mm_f16(vtcm, act_off, wt_off);     // 只接受 AH/WH 数据
 
 AMD AIE 没有这个问题——数据按正常的线性顺序排列在 L1 scratchpad 中，向量加载/存储直接访问。
 
@@ -727,7 +750,7 @@ Hexagon 上一个 Transformer 层的执行模式（来自 hexagon-tutorial 实�
 │  (HVX)     (HMX)         (HVX)    (HMX+HVX)   (HMX)         │
 │                                                                │
 │  HVX 和 HMX 交替，零成本切换（同一个 DSP 线程内）             │
-└────────────────────────────────────────────────────────────────┘`
+└────────────────────────────────────────────────────────────────┘
 
 AMD 上的对应模式是：多个 compute tile 并行处理不同的算子，通过 ObjectFifo 构成数据流管道。
 

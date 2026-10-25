@@ -272,7 +272,7 @@ def len2weight(x, loss_reduction):
         return 1 / x
     if loss_reduction == 'square':
         return 1 / (x ** 0.5)
-    raise NotImplementedError(loss_reduction)`
+    raise NotImplementedError(loss_reduction)
 ```
 
 
@@ -288,7 +288,7 @@ if data_args.use_packed_ds:
         micro_num=training_args.train_batch_size,
         len2weight=partial(len2weight, loss_reduction=data_args.loss_reduction),
         loss_reduction_all_gather=data_args.loss_reduction_all_gather,
-    )`
+    )
 ```
 
 
@@ -302,7 +302,7 @@ for feat_idx, feat in enumerate(features):
         input_ids=feat['input_ids'],
         labels=feat['labels'],
         len2weight=len2weight,
-    )`
+    )
 ```
 
 
@@ -379,7 +379,7 @@ if labels is not None and loss_weight is not None:
     loss = loss * shift_weights
     loss = loss.sum() / shift_weights_sum
     if ignore_flag:
-        loss = loss * 0.0`
+        loss = loss * 0.0
 ```
 
 
@@ -433,7 +433,7 @@ def find_buffer(self, buffer_list, new_sample):
 
 ```text
         return buffer_list.pop(find_idx)
-    return None`
+    return None
 ```
 
 

@@ -40,7 +40,7 @@ struct Cluster
         std::vectorBasicReadPort*> readers = {};
     };
 
-    std::unordered_map map = { };`
+    std::unordered_map map = { };
 ```
 
 
@@ -55,7 +55,7 @@ ReadPort继承自BasicReadPort，这里维护了一个队列，元素类型为`s
 Cycle cycle_to_read = cycle + get_latency(); // 延迟计算
 
 ```cpp
- queue.emplace(std::move(what), cycle_to_read);`
+ queue.emplace(std::move(what), cycle_to_read);
 ```
 
 
@@ -63,13 +63,12 @@ WritePort继承自BasicWritePort，维护了一个ReadPort指针类型的数组�
 
 对应的port测试
 
+```x86asm
 pop.wp->write( 10, 0_cl);
-
-```text
     pop.wp->write( 11, 1_cl);
     CHECK( pop.rp->is_ready( 1_cl));
     CHECK( pop.rp->is_ready( 2_cl));
-    CHECK( pop.rp->read( 2_cl) == 11);`
+    CHECK( pop.rp->read( 2_cl) == 11);
 ```
 
 
@@ -119,8 +118,8 @@ private:
     ReadPort* from_B;
     ReadPort* init;
     WritePort* stop;
+};
 ```
 
-};`
 
 代码链接：[https://github.com/MIPT-ILab/mipt-mips/tree/main/simulator/infra/ports](https://link.zhihu.com/?target=https%3A//github.com/MIPT-ILab/mipt-mips/tree/main/simulator/infra/ports)

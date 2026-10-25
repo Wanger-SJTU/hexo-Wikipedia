@@ -48,7 +48,7 @@ cd claude-code-config
 
 ​
 # 启动 Claude 会话
-claude`
+claude
 
 进入会话后执行：
 

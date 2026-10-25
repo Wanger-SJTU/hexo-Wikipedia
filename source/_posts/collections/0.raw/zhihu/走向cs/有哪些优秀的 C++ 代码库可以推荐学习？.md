@@ -293,7 +293,10 @@ DEF_main(argc, argv) {
 
 创建 channel 时可以像下面这样加上超时时间：
 
+```text
 co::Chan<int> ch(8, 1000);
+```
+
 
 channel 读写操作结束后，可以调用 `co::timeout()` 判断是否超时，这种方式比 golang 中基于 select 的实现方式更简单。
 
@@ -353,9 +356,9 @@ int main(int argc, char** argv) {
 
 <strong>HTTP server</strong>
 
+```text
 http::Server serv;
 
-```text
 serv.on_req(
     [](const http::Req& req, http::Res& res) {
         if (req.is_method_get()) {

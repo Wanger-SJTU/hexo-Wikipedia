@@ -63,7 +63,7 @@ Claude Code 底部的 <strong>状态栏</strong> 可以高度定制化，用于�
 - 如果子任务仍然太难，继续拆分为 <strong>更小的子问题</strong>
 - 最后将所有解决方案 <strong>组合</strong> 起来
 直接方式：   A ────────────────→ B  （容易失败）
-分步方式：   A → A1 → A2 → A3 → B  （成功率高）`
+分步方式：   A → A1 → A2 → A3 → B  （成功率高）
 
 #### 实例
 
@@ -98,9 +98,9 @@ Claude Code 底部的 <strong>状态栏</strong> 可以高度定制化，用于�
     "commit": "",
     "pr": ""
   }
+}
 ```
 
-}`
 
 ### 六、上下文如同鲜奶——越新鲜越好
 
@@ -131,7 +131,7 @@ alias c='claude'           # 最常用
 alias ch='claude --chrome'  # 带浏览器集成
 alias gb='github'           # GitHub Desktop
 alias co='code'             # VS Code
-alias q='cd ~/Desktop/projects'  # 快速跳转到项目目录`
+alias q='cd ~/Desktop/projects'  # 快速跳转到项目目录
 
 #### 与参数组合
 
@@ -187,7 +187,7 @@ tmux send-keys -t test-session 'claude' Enter
 sleep 2
 tmux send-keys -t test-session '/context' Enter
 sleep 1
-tmux capture-pane -t test-session -p`
+tmux capture-pane -t test-session -p
 
 这种模式下，Claude Code 可以自动运行 **`git bisect`** ，逐个测试每个 commit 直到找到引入 bug 的那个。
 
@@ -202,7 +202,7 @@ tmux capture-pane -t test-session -p`
 - Use `read_page` to get element refs from the accessibility tree
 - Use `find` to locate elements by description
 - Click/interact using `ref`, not coordinates
-- NEVER take screenshots unless explicitly requested by the user`
+- NEVER take screenshots unless explicitly requested by the user
 
 #### 跨平台测试策略
 
@@ -278,7 +278,7 @@ grep -l -i "reddit" ~/.claude/projects/-Users-yk-Desktop-projects-*/*.jsonl
 find ~/.claude/projects/-Users-yk-Desktop-projects-*/*.jsonl -mtime 0 -exec grep -l -i "keyword" {} \;
 
 # 提取某对话中的用户消息（需要 jq）
-cat ~/.claude/projects/.../conversation-id.jsonl | jq -r 'select(.type=="user") | .message.content'`
+cat ~/.claude/projects/.../conversation-id.jsonl | jq -r 'select(.type=="user") | .message.content'
 
 <strong>更简单的方式</strong> ：直接问 Claude Code “今天我们讨论了关于 X 的什么内容？”，它会自动搜索历史记录。
 ### 五、终端标签页多任务管理
@@ -324,9 +324,9 @@ Claude Code 的 <strong>系统提示词 + 工具定义</strong> 在对话开始�
   "env": {
     "DISABLE_AUTOUPDATER": "1"
   }
+}
 ```
 
-}`
 
 将此配置添加到 `~/.claude/settings.json`，对所有 Claude Code 会话生效（包括交互式、非交互式、tmux）。
 
@@ -341,9 +341,9 @@ Claude Code 的 <strong>系统提示词 + 工具定义</strong> 在对话开始�
   "env": {
     "ENABLE_TOOL_SEARCH": "true"
   }
+}
 ```
 
-}`
 
 添加到 `~/.claude/settings.json`。Claude 会在 <strong>需要时才搜索和加载</strong> MCP 工具。从 v2.1.7 开始，当 MCP 工具描述超过上下文窗口的 10% 时会 <strong>自动启用</strong> 。
 
@@ -358,7 +358,7 @@ Claude Code 的 <strong>系统提示词 + 工具定义</strong> 在对话开始�
 
 Worktree 方式：
   原始项目文件夹 → main
-  新目录           → feature-branch-1  ← 可以同时工作！`
+  新目录           → feature-branch-1  ← 可以同时工作！
 
 #### 使用方式
 
@@ -377,7 +377,7 @@ Worktree 方式：
 检查 #2 → 等 2 分钟
 检查 #3 → 等 4 分钟
 检查 #4 → 等 8 分钟
-...持续直到任务完成`
+...持续直到任务完成
 
 #### 适用场景
 
@@ -458,7 +458,7 @@ gh run watch` 会 **持续输出大量行** ，浪费 Token。而手动指数退
 本地 Claude Code
   └── tmux 会话
         └── 连接到容器
-              └── Claude Code (--dangerously-skip-permissions)`
+              └── Claude Code (--dangerously-skip-permissions)
 
 - 外层通过 `tmux send-keys` 发送指令
 - 通过 `tmux capture-pane` 读取输出
@@ -509,9 +509,9 @@ claude() {
     fi
   done
   command claude "${args[@]}"
+}
 ```
 
-}`
 
 #### 自定义克隆脚本
 
@@ -548,9 +548,9 @@ claude() {
       }
     ]
   }
+}
 ```
 
-}`
 
 <strong>前提</strong> ：需要 <strong>关闭 auto-compact</strong> （`/config` > Auto-compact > false），否则 Claude Code 可能在 Hook 触发前就压缩了上下文。
 #### 克隆脚本的权限配置
@@ -562,9 +562,9 @@ claude() {
   "permissions": {
     "allow": ["Read(~/.claude)"]
   }
+}
 ```
 
-}`
 
 ### 三、用 realpath 获取绝对路径
 
@@ -714,7 +714,7 @@ Claude Code 本质上是一个 <strong>增强版的搜索/深度研究工具</st
   - 不关心每行代码              - 逐行检查代码
   - 一次性项目                  - 核心生产系统
   - 非关键部分                  - 检查依赖项
-  - 快速原型                    - 理解架构细节`
+  - 快速原型                    - 理解架构细节
 
 #### 冰山比喻
 
@@ -749,7 +749,7 @@ npm install -g cc-safe
 cc-safe ~/projects
 
 # 或直接使用 npx
-npx cc-safe .`
+npx cc-safe .
 
 - <strong>递归扫描</strong> 所有子目录，可以指向项目根目录一次性检查
 - 可手动运行，也可以让 Claude Code 代为执行
@@ -775,7 +775,7 @@ npx cc-safe .`
 - <strong>提交测试</strong> ：将测试固化为”合约”
 - <strong>编写代码使测试通过</strong> ：Claude Code 此时有了明确的 <strong>目标靶心</strong>
 传统流程：  写代码 → 写测试 → 修复 → 循环
-TDD 流程：  写测试 → 确认失败 → 提交 → 写代码通过测试 ✅`
+TDD 流程：  写测试 → 确认失败 → 提交 → 写代码通过测试 ✅
 
 <strong>作者用这种方式构建了 cc-safe</strong> 项目。通过在实现之前提交失败的测试，为代码应该做什么创建了 <strong>清晰的合约</strong> 。
 #### 额外保险
@@ -874,9 +874,9 @@ export EDITOR=vim      # 或 nano, code, nvim 等
   "env": {
     "EDITOR": "vim"
   }
+}
 ```
 
-}`
 
 #### 多行输入与图片粘贴
 
@@ -947,7 +947,7 @@ ChatGPT 复制粘贴命令 → 构建 Kaguya 插件自动执行
 → Claude Code 出现（无需自建工具）
 → 自动化打字过程 → 用 Claude Code 构建语音转录 App
 → 自动化重复指令 → 放入 CLAUDE.md
-→ 自动化重复命令 → 放入 Skills 或创建脚本`
+→ 自动化重复命令 → 放入 Skills 或创建脚本
 
 #### 识别自动化机会的信号
 
@@ -987,7 +987,7 @@ ChatGPT 复制粘贴命令 → 构建 Kaguya 插件自动执行
 #### 安装命令
 
 claude plugin marketplace add ykdojo/claude-code-tips
-claude plugin install dx@ykdojo`
+claude plugin install dx@ykdojo
 
 <strong>推荐搭配</strong> ： <strong>Playwright MCP</strong> 用于浏览器自动化：
 

@@ -96,7 +96,7 @@ Shared memory layout 使用 `make_smem_layout_a` (用于 Q/P/O) 和 `make_smem_l
 sQ_layout: ((128,16), 1, (4,2), 2)
 sK_layout: ((64,16), 1, (4,2), 6)  
 sV_layout: ((64,16), 1, 8, 6)
-sO_layout: ((8,16), (64,2), (1,2))`
+sO_layout: ((8,16), (64,2), (1,2))
 
 <strong>Inner Shape 解读：</strong>
 
@@ -159,7 +159,7 @@ REGISTERS
 ```text
     ├── tSrS: Score fragment (tmem → registers)
     ├── tSrP: Probability fragment (registers → tmem)
-    └── tSrO: Output fragment (tmem → registers)`
+    └── tSrO: Output fragment (tmem → registers)
 ```
 
 
@@ -222,7 +222,7 @@ loop(i, 0, n-1):
   O_{1, n-1-i}
   S_{0, n-2-i}
   S_{1, n-2-i}
-O_{0, 0} O_{1, 0}`
+O_{0, 0} O_{1, 0}
 
 - 自定义的gemm：
 
@@ -256,7 +256,7 @@ Epilogue
 3. 等待 P[0] 就绪 (pipeline_s_p_o, o producer + p producer (实际上是 mma 是 consumer))
 4. 执行 GEMM: O[stage] += P[stage][0] × V[0] (等待 pipeline_p_lastsplit)
 5. 通知 O[stage] 已就绪供 O 最终 rescale 使用 (pipeline_o_acc)
-6. 释放 V[0] (advance pipeline_kv consumer)`
+6. 释放 V[0] (advance pipeline_kv consumer)
 
 <strong>关键优化：</strong> `split_P_arrive` 特性允许部分 P 发送给 GEMM_PV，同时 softmax 仍在计算其余部分，实现计算重叠。
 
@@ -324,7 +324,7 @@ Epilogue
 2. 通过 sm_stats_barrier[stage][wid] 通知 correction warp
 
 所有 work tile 完成后
-1. pipeline_sm_stats.producer_tail`
+1. pipeline_sm_stats.producer_tail
 
 <strong>优化点</strong>:
 
@@ -365,7 +365,7 @@ Epilogue
    - rescale row_sum 并存回 global
 
 Epilogue work_tile
-1. pipeline_o_epi.producer_tail`
+1. pipeline_o_epi.producer_tail
 
 <strong>优化点</strong>
 
@@ -385,7 +385,7 @@ Epilogue warp 将最终输出写入 global memory:
    - 拷贝 sO → registers
    - 根据序列长度做 predicate
    - 存储到 global memory
-4. 通知 pipeline 释放 (pipeline_o_epi)`
+4. 通知 pipeline 释放 (pipeline_o_epi)
 
 #### 5. Pipeline 同步
 
@@ -421,7 +421,7 @@ Epilogue warp 将最终输出写入 global memory:
 │                       ▼                              │                  │
 │                 pipeline_o_acc────────────────────────                  │
 │                                                                         │
-└─────────────────────────────────────────────────────────────────────────┘`
+└─────────────────────────────────────────────────────────────────────────┘
 
 <strong>问题</strong>：
 
@@ -504,7 +504,7 @@ TIME ─────────────────────────
 MMA       ░░░░░░░░░░░░░│██████│██████│██████│██████│██████│██████│
                             
 
-SOFT  │░░░░░░│█████████████│█████████████│█████████████│█████████████│`
+SOFT  │░░░░░░│█████████████│█████████████│█████████████│█████████████│
 
 <strong>优化点</strong> 为什么 split P 有助于关键路径？ 我怀疑 tcgen05 mma issue 需要很长的 ALU 执行时间。
 
@@ -536,4 +536,4 @@ Tensor Memory 分配 (总共 512 列):
 ┌──────────────────────────────────────────────────────────┐
 │  tP (Softmax probabilities) 与 tS 共享存储               │
 │  tP[stage] = tS[stage] + 64 (偏移 n_block_size/2)       │
-└──────────────────────────────────────────────────────────┘`
+└──────────────────────────────────────────────────────────┘

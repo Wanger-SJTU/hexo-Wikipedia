@@ -479,7 +479,7 @@ Option 3: Directory-Based cc-NUMA
 怎么实现spinlock : 
 
 L1: tstst (r0)
-        jnz L1`
+        jnz L1
 
 每个厂商都有做 transcation memory , 就是别的thread不能访问 这个thread的transcation memory. read 都不行.  
 
@@ -544,9 +544,12 @@ add R1, R2, R0
 
  ld R3, (SP) 
 
+```x86asm
 add R1, #4 
 
 add R6, R3, R4
+```
+
 
  答案: only the first and second can be issued concurrently.   The third instruction needs the outcome of instruction 1, and also instructions 3, 4 and 5 are dependent in a sequential manner. 
 

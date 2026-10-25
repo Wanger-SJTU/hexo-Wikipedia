@@ -39,7 +39,7 @@ source_url: https://zhuanlan.zhihu.com/p/631463712
 2. 将所有单词拆成单字 -> {'h': 6, 'e': 10, 'l': 20, 'o': 14, 'w': 8, 'r': 8, 'd': 8, 'p': 2, 'a': 2, 'c': 2, '': 3}
 3. 合并最频繁出现的单字(l, o) -> {'h': 6, 'e': 10, 'lo': 14, 'l': 6, 'w': 8, 'r': 8, 'd': 8, 'p': 2, 'a': 2, 'c': 2, '': 3}
 4. 合并最频繁出现的单字(lo, e) -> {'h': 6, 'lo': 4, 'loe': 10, 'l': 6, 'w': 8, 'r': 8, 'd': 8, 'p': 2, 'a': 2, 'c': 2, '': 3}
-5. 反复迭代直到满足停止条件`
+5. 反复迭代直到满足停止条件
 
 显然，这是一种贪婪的算法。在上面的例子中，'loe'这样的子词貌似不会经常出现，但是当语料库很大的时候，诸如est，ist，sion，tion这样的特征会很清晰地显示出来。
 
@@ -55,7 +55,7 @@ source_url: https://zhuanlan.zhihu.com/p/631463712
 # 迭代结果
 "the" -> ["the"]
 "highest" -> ["high", "est"]
-"mountain" -> ["moun", "tain"]`
+"mountain" -> ["moun", "tain"]
 
 注意，在上述算法执行后，如果句子中仍然有子字符串没被替换但所有subword都已迭代完毕，则将剩余的子词替换为特殊token，如 。从这里大家也可以发现了，<strong>原则上这个token出现的越少越好</strong>，所以我们也往往用的数量来评价一个tokenizer的好坏程度，这个token出现的越少，tokenizer的效果往往越好。
 
@@ -115,7 +115,7 @@ new_tokens = set(new_tokens) - set(tokenizer.vocab.keys())
 tokenizer.add_tokens(list(new_tokens))
 
 # add new, random embeddings for the new tokens
-model.resize_token_embeddings(len(tokenizer))`
+model.resize_token_embeddings(len(tokenizer))
 
 词汇表不全的问题在Word-Piece和BPE中也存在，在使用tokenizer的时候要格外小心。
 
@@ -133,7 +133,7 @@ tokenize完的下一步就是将token的one-hot编码转换成更dense的embeddi
 
 input_ids = tokenizer.encode('Hello World!', return_tensors='pt')
 output = model.generate(input_ids, max_length=50)
-tokenizer.decode(output[0])`
+tokenizer.decode(output[0])
 
 上面的代码主要涉及三个操作：tokenizer将输入encode成数字输入给模型，模型generate出输出数字输入给tokenizer，tokenizer将输出数字decode成token并返回。
 

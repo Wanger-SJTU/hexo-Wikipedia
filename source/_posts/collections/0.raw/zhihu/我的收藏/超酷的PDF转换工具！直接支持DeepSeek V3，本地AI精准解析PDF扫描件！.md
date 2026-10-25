@@ -67,7 +67,7 @@ extractor = PDFPageExtractor(
 )
 with MarkDownWriter(markdown_path, "images", "utf-8") as md:
   for block in extractor.extract(pdf="/path/to/pdf/file"):
-    md.write(block)`
+    md.write(block)
 
 执行完成后，会在指定的地址生成一个 `*.md` 文件。若原 PDF 中有插图（或表格、公式），则会在 *.md 同级创建一个 assets 文件夹，以保存图片。而 MarkDown 文件中将以相对地址的形式引用 assets 文件夹中的图片。
 
@@ -84,7 +84,7 @@ from pdf_craft import PDFPageExtractor
 extractor = PDFPageExtractor(
   device="cpu", # 如果希望使用 CUDA，请改为 device="cuda:0" 这样的格式。
   model_dir_path="/path/to/model/dir/path", # AI 模型下载和安装的文件夹地址
-)`
+)
 
 之后，需要配置 LLM 对象。建议使用使用 DeepSeek，本库的 Prompt 基于最新的 V3 模型调试。
 
@@ -95,7 +95,7 @@ llm = LLM(
   url="https://api.deepseek.com", # LLM 供应商提供的 URL
   model="deepseek-chat", # LLM 供应商提供的模型
   token_encoding="o200k_base", # 进行 tokens 估算的本地模型名（与 LLM 无关，若不关心就保留 "o200k_base"）
-)`
+)
 
 如上两个对象准备好后，就可以开始扫描并分析 PDF 书籍了。
 
@@ -107,7 +107,7 @@ analyse(
   pdf_path="/path/to/pdf/file", # PDF 文件路径
   analysing_dir_path="/path/to/analysing/dir", # analysing 文件夹地址
   output_dir_path="/path/to/output/files", # 分析结果将写入这个文件夹
-)`
+)
 
 在分析结束后，将 output_dir_path 文件夹地址传给如下代码作为参数，即可最终生成 EPUB 文件。
 
@@ -116,7 +116,7 @@ from pdf_craft import generate_epub_file
 generate_epub_file(
   from_dir_path=output_dir_path, # 来自上一步分析所产生的文件夹
   epub_file_path="/path/to/output/epub", # 生成的 EPUB 文件保存路径
-)`
+)
 
 转化效果如下：
 

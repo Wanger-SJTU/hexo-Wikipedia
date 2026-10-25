@@ -61,7 +61,7 @@ function agent(userMessage, tools, maxSteps):
         else:
             return response.text   // 模型不再调工具，输出最终回答
 
-    return "达到最大步数，停止"`
+    return "达到最大步数，停止"
 ```
 
 
@@ -213,7 +213,7 @@ async function runAgent(userMessage: string, maxSteps = 10) {
 
 ## 限制
 - 不要编造工具不存在的功能
-- 不要在一次回答中调用超过 5 次工具`
+- 不要在一次回答中调用超过 5 次工具
 
 #### 3.2 常见问题与解法
 
@@ -225,7 +225,7 @@ async function runAgent(userMessage: string, maxSteps = 10) {
 1. 用户想知道什么？
 2. 我目前已经知道哪些信息？
 3. 还缺少什么信息？需要调用哪个工具？
-4. 如果信息足够了，直接回答。`
+4. 如果信息足够了，直接回答。
 
 这会让模型的工具选择更加可控和可解释。
 
@@ -244,9 +244,9 @@ tool({
 ```text
     sql: z.string(),  // 让模型写 SQL？灾难
   }),
+})
 ```
 
-})`
 
 <strong>好的设计：</strong>
 
@@ -257,9 +257,9 @@ tool({
 ```text
     userId: z.string().describe("用户的唯一标识符，格式如 user_123"),
   }),
+})
 ```
 
-})`
 
 #### 4.2 工具设计原则
 
@@ -269,7 +269,7 @@ tool({
 ✅ createUser(name, email)
 ✅ getUser(userId)
 ✅ updateUser(userId, fields)
-✅ deleteUser(userId)`
+✅ deleteUser(userId)
 
 <strong>原则 2：description 是给模型看的文档</strong>
 
@@ -279,7 +279,7 @@ tool({
 <strong>原则 3：参数设计要降低模型犯错概率</strong>
 
 ❌ date: z.string()  // 模型可能给出 "明天"、"2024-01-01"、"Jan 1" 等各种格式
-✅ year: z.number(), month: z.number(), day: z.number()  // 结构化，不容易出错`
+✅ year: z.number(), month: z.number(), day: z.number()  // 结构化，不容易出错
 
 <strong>原则 4：返回值要有足够的上下文</strong>
 
@@ -287,7 +287,7 @@ tool({
 ❌ return { temp: 5 }
 
 // 好：自包含，模型能正确理解和转述
-✅ return { temp: 5, unit: "°C", city: "北京", condition: "晴" }`
+✅ return { temp: 5, unit: "°C", city: "北京", condition: "晴" }
 
 #### 4.3 工具粒度的权衡
 
@@ -313,7 +313,7 @@ Action: getWeather(city="东京")
 Observation: {temp: 8, condition: "小雨"}
 
 Thought: 北京 5°C，东京 8°C，东京更热。我有足够信息了。
-Answer: 东京（8°C）比北京（5°C）更热，温差 3°C。`
+Answer: 东京（8°C）比北京（5°C）更热，温差 3°C。
 
 <strong>为什么重要：</strong> 目前所有主流 agent 框架的工具调用循环，本质上都是 ReAct 模式的实现。
 
@@ -333,7 +333,7 @@ Plan:
 Execute:
   Step 1: search("React 核心特点 2024") → ...
   Step 2: search("Vue 核心特点 2024") → ...
-  ...`
+  ...
 
 <strong>适用场景：</strong> 复杂任务、多步骤任务、需要全局规划的任务。
 
@@ -346,7 +346,7 @@ Attempt 1:
   Reflection: 搜索太宽泛，应该具体到算法名称
 
 Attempt 2:
-  Action: search("Python quicksort 实现") → 得到有效结果`
+  Action: search("Python quicksort 实现") → 得到有效结果
 
 #### 5.4 必读论文清单
 
@@ -362,7 +362,7 @@ System Prompt:        ~500 tokens
 用户消息:              ~100 tokens
 每轮工具调用+结果:      ~300-1000 tokens
 ─────────────────────────
-10 轮交互后:           ~5000-10000 tokens`
+10 轮交互后:           ~5000-10000 tokens
 
 如果是长期运行的 agent（比如编程助手），几十轮交互后就会逼近上限。
 
@@ -383,9 +383,9 @@ async function compressHistory(messages: Message[]): Promise {
     { role: "system", content: `之前的对话摘要：${summary.text}` },
     ...messages.slice(-4),  // 保留最近 4 条消息
   ];
+}
 ```
 
-}`
 
 #### 6.3 解法二：RAG (检索增强生成)
 
@@ -402,9 +402,9 @@ const response = await generateText({
   model: deepseek("deepseek-chat"),
   system: `基于以下参考资料回答问题：\n${context}`,
   prompt: userQuery,
+});
 ```
 
-});`
 
 #### 6.4 记忆的三个层次
 
@@ -430,9 +430,9 @@ const code = await executorAgent.generateText({
 
 const review = await reviewerAgent.generateText({
   prompt: `审查以下代码是否符合计划：\n计划：${plan.text}\n代码：${code.text}`,
+});
 ```
 
-});`
 
 #### 7.2 模式二：分层委托 (Delegation)
 
@@ -442,7 +442,7 @@ Manager Agent
 
 ```text
         /      |      \
-  Search Agent  Code Agent  Test Agent`
+  Search Agent  Code Agent  Test Agent
 ```
 
 
@@ -466,9 +466,9 @@ const managerTools = {
       return result.text;
     },
   }),
+};
 ```
 
-};`
 
 #### 7.3 模式三：辩论/共识 (Debate)
 
@@ -476,7 +476,7 @@ const managerTools = {
 
 Agent A (乐观视角) ──┐
   Agent B (悲观视角) ──┤→ Synthesizer Agent → 最终结论
-  Agent C (技术视角) ──┘`
+  Agent C (技术视角) ──┘
 
 #### 7.4 模式四：自主协作 (Swarm)
 
@@ -484,7 +484,7 @@ Agent A (乐观视角) ──┐
 
 Task Pool: [task1, task2, task3, task4, task5]
                     ↑
-  Agent A (领 task1) | Agent B (领 task2) | Agent C (领 task3)`
+  Agent A (领 task1) | Agent B (领 task2) | Agent C (领 task3)
 
 #### 7.5 选择哪种模式？
 
@@ -522,9 +522,9 @@ async function safeExecute(
       message: `工具 ${toolName} 执行失败: ${error}`,
     });
   }
+}
 ```
 
-}`
 
 #### 8.3 输出校验
 
@@ -544,7 +544,7 @@ const { object } = await generateObject({
   prompt: "...",
 });
 // object 一定是 { answer: string, confidence: number, sources: string[] }
-// 不符合 schema 的输出会被拒绝并重试`
+// 不符合 schema 的输出会被拒绝并重试
 ```
 
 
@@ -612,9 +612,9 @@ async function runEval(testCases: TestCase[]) {
     }
   }
   console.log(`\n结果: ${passed}/${testCases.length} 通过`);
+}
 ```
 
-}`
 
 #### 9.3 LLM-as-Judge
 
@@ -636,7 +636,11 @@ const judgment = await generateText({
 3. 简洁性：是否有多余的废话？
 
 请给出评分和理由。`,
-});`
+
+```text
+});
+```
+
 
 ### 10. 实战项目建议
 
@@ -669,7 +673,7 @@ const judgment = await generateText({
 readFile(path) → 读文件
 writeFile(path, content) → 写文件
 runCommand(cmd) → 执行命令（需要确认）
-listFiles(dir) → 列目录`
+listFiles(dir) → 列目录
 
 #### 项目 3：多 Agent 研究助手
 
@@ -718,6 +722,6 @@ SDK 调用        → 入门（你已经在这里了）
 Prompt 工程     → 决定 agent 稳定性
 多 agent 编排   → 处理复杂任务
 可靠性工程       → 从 demo 到生产
-评估体系        → 量化改进方向`
+评估体系        → 量化改进方向
 
 最重要的一条建议：<strong>做一个解决你自己真实需求的 agent。</strong> 在 demo 里一切都很美好，只有真实场景才会暴露真正的挑战。

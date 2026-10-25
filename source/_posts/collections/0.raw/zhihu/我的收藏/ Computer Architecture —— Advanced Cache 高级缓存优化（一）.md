@@ -52,7 +52,7 @@ INTR1           F   D   E   M   W
 SW3                             CHK WC
 
 WC  = Write Cache
-CHK = Check Tag`
+CHK = Check Tag
 
 来自 SW2 指令的数据一直停留在缓冲区中，直到第六个周期，下一条指令 SW3 开始了 CHK，这个时候这块 Buffer 检测到了，并把 SW2 的数据写入进了缓存。
 

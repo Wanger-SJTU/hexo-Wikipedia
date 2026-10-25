@@ -494,7 +494,7 @@ HugePages_Surp:        0
 Hugepagesize:       2048 kB
 DirectMap4k:      201472 kB
 DirectMap2M:     5967872 kB
-DirectMap1G:     3145728 kB`
+DirectMap1G:     3145728 kB
 
 - 查询内存总使用率：free
 ![](/images/collections/0.raw/zhihu/%E8%B5%B0%E5%90%91cs/asset/img_27775cda29c1.png)
@@ -516,7 +516,7 @@ DirectMap1G:     3145728 kB`
 cat /proc/buddyinfo 
 Node 0, zone      DMA     23     15      4      5      2      3      3      2      3      1      0 
 Node 0, zone   Normal    149    100     52     33     23      5     32      8     12      2     59 
-Node 0, zone  HighMem     11     21     23     49     29     15      8     16     12      2    142 `
+Node 0, zone  HighMem     11     21     23     49     29     15      8     16     12      2    142 
 
 - 查看slab信息
 
@@ -534,7 +534,7 @@ ib_mad                 0      0    448    8    1 : tunables   54   27    0 : sla
 fib6_nodes            22     59     64   59    1 : tunables  120   60    0 : slabdata      1      1      0
 ip6_dst_cache         13     24    320   12    1 : tunables   54   27    0 : slabdata      2      2      0
 ndisc_cache            1     10    384   10    1 : tunables   54   27    0 : slabdata      1      1      0
-ip6_mrt_cache          0      0    128   30    1 : tunables  120   60    0 : slabdata      0      0      0`
+ip6_mrt_cache          0      0    128   30    1 : tunables  120   60    0 : slabdata      0      0      0
 
 释放系统内存缓存
 
@@ -546,6 +546,6 @@ echo 1 > /proc/sys/vm/drop_caches
 echo 2 > /proc/sys/vm/drop_caches
 #To free pagecache, dentries and inodes, use
 echo 3 >/proc/sys/vm/drop_cache
-原文：https://cloud.tencent.com/developer/article/10056`
+原文：https://cloud.tencent.com/developer/article/10056
 
 ![](/images/collections/0.raw/zhihu/%E8%B5%B0%E5%90%91cs/asset/img_0fec43b81fe3.jpg)

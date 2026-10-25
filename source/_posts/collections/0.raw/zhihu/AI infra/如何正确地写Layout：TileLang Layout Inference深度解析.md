@@ -84,9 +84,8 @@ with T.Kernel(1, threads=32):
 
 Layout inference在TileLang中通过`tilelang.transform.LayoutInference`这个pass实现，通过FFI绑定到`tvm::tl::LayoutInference`。可以看到这个pass的目的就是将IR中的操作进行thread binding：
 
-tvm::transform::Pass LayoutInference() {
-
 ```cpp
+tvm::transform::Pass LayoutInference() {
   using namespace tirx::transform;
   auto pass_func = [=](PrimFunc f, const IRModule &m, const PassContext &ctx) {
     //...
@@ -603,9 +602,9 @@ for h, i, j in T.Parallel(2, 16, 32):
 此时循环变量是`(h, i, j)`，`Q`的access index也是`(h, i, j)`，完全一致，所以可以直接使用。
 
 Fragment
-ParallelOpNode::ComputeLoopLayoutFromBuffer(const Buffer &buffer,
 
 ```text
+ParallelOpNode::ComputeLoopLayoutFromBuffer(const Buffer &buffer,
                                             const LayoutInferArgs &T) const {
   Fragment src_layout = T.layout_map[buffer].as<Fragment>().value();
   Fragment result;

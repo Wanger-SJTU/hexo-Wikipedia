@@ -50,7 +50,7 @@ input = torch.randn(10, 4096, 4096, requires_grad=True).to("cuda")
 weight = torch.randn(4096, 4096).to("cuda")
 out = input @ weight
 
-torch.cuda.memory._dump_snapshot("my_snapshot.pickle")`
+torch.cuda.memory._dump_snapshot("my_snapshot.pickle")
 
 并在[pytorch.org/memory_viz](https://link.zhihu.com/?target=https%3A//pytorch.org/memory_viz)上进行交互式分析，快照的pickle文件记录了所有张量随时间的变化，可以查看对应堆栈调用的详细信息：
 
@@ -166,7 +166,7 @@ with torch.profiler.profile(
         with record_function("backward"):
             loss.backward()
         # send a signal to the profiler that the next iteration has started
-        p.step()`
+        p.step()
 ```
 
 

@@ -46,7 +46,7 @@ x1 = x.cos() # Read from x in global memory, write to x1
 x2 = x1.cos() # Read from x1 in global memory, write to x2
 
 # Method 2
-x2 = x.cos().cos() # Read from x in global memory, write to x2`
+x2 = x.cos().cos() # Read from x in global memory, write to x2
 
 第一种写法中，我们对全局内存进行了 4 次访问，而第二种写法中我们只进行了 2 次。在实际执行中，计算一次 x.cos().cos() 的时间和计算一次 x.cos() 的时间几乎一致（几乎所有的激活函数花费的时间都差不多），因此第二种写法可以获得更好的性能。
 

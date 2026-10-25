@@ -56,7 +56,7 @@ img2.frame = CGRectMake(100, 480, 100, 100);
 [self.view addSubview:img2];
 img2.layer.cornerRadius = 50;
 img2.layer.masksToBounds = YES;
-img2.image = [UIImage imageNamed:@"image.png"];`
+img2.image = [UIImage imageNamed:@"image.png"];
 
 打开模拟器的Color off-screen Rendered，看到的结果如下:
 
@@ -165,7 +165,7 @@ When the value of this property istrue, the layer is rendered as a bitmap in its
 <strong>4.1.方案一:</strong>
 
 _imageView.clipsToBounds=YES;
-_imageView.layer.cornerRadius=4.0;`
+_imageView.layer.cornerRadius=4.0;
 
 4.2.方案二:
 
@@ -192,9 +192,9 @@ _imageView.layer.cornerRadius=4.0;`
     UIGraphicsEndImageContext();
 
     return image;
+}
 ```
 
-}`
 
 贝塞尔曲线二
 
@@ -218,9 +218,9 @@ _imageView.layer.cornerRadius=4.0;`
     [self drawRect:imageFrame];
     image = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
+}
 ```
 
-}`
 
 4.3.方案三：
 
@@ -254,7 +254,7 @@ _imageView.layer.cornerRadius=4.0;`
 ```
 
 
-@end`
+@end
 
 4.4.方案四:
 
@@ -312,9 +312,9 @@ iOS上的 YYImage 的圆⻆处理
     UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
     return image;
+}
 ```
 
-}`
 
 ### 5.常见触发离屏渲染的几种情况
 

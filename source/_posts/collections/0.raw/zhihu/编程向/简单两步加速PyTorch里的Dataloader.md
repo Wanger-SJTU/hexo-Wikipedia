@@ -35,7 +35,7 @@ if __name__ == "__main__":
     img_path = '1.jpg'
     img = jpeg.JPEG(img_path).decode()
     cv2.imshow('img', img)
-    cv2.waitKey(0)`
+    cv2.waitKey(0)
 ```
 
 
@@ -89,7 +89,7 @@ while data is not None:
 ```python
     print(i, len(data))
     i += 1
-    data = prefetcher.next()`
+    data = prefetcher.next()
 ```
 
 

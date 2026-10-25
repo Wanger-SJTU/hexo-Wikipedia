@@ -89,7 +89,7 @@ selector = SmartModelSelector()
 task = "帮我查看今天的邮件"
 model = selector.select_model(task)  # 返回 "claude-3-haiku"
 
-cost = selector.estimate_cost(model, 100, 200)  # 约 $0.00028`
+cost = selector.estimate_cost(model, 100, 200)  # 约 $0.00028
 
 <strong>节省效果：</strong> 70-90%
 
@@ -108,7 +108,7 @@ prompt = """
 
 现在用户问：今天天气怎么样？
 """
-# Token 数：约 600`
+# Token 数：约 600
 
 <strong>✅ 高效 Prompt（节省 token）：</strong>
 
@@ -117,7 +117,7 @@ prompt = """
 
 用户问：今天天气怎么样？
 """
-# Token 数：约 30`
+# Token 数：约 30
 
 <strong>节省效果：</strong> 95%
 
@@ -131,7 +131,7 @@ prompt = """
 prompt = "请帮我分析这封邮件的情绪，并告诉我是积极的、消极的还是中性的。"
 
 # 优化后
-prompt = "情绪分析（积极/消极/中性）："`
+prompt = "情绪分析（积极/消极/中性）："
 
 #### 2.3 缓存策略
 
@@ -218,7 +218,7 @@ def call_llm_with_cache(prompt: str, model: str) -> str:
 ```text
     cache.set(prompt, model, response)
 
-    return response`
+    return response
 ```
 
 
@@ -229,7 +229,7 @@ def call_llm_with_cache(prompt: str, model: str) -> str:
 <strong>❌ 非流式（用户等待时间长）：</strong>
 
 response = llm.invoke(prompt)  # 等待 10 秒
-print(response)  # 一次性输出`
+print(response)  # 一次性输出
 
 <strong>✅ 流式（用户体验好）：</strong>
 
@@ -249,7 +249,7 @@ for email in emails:
 
 ```text
     response = llm.invoke(f"分析邮件：{email}")
-    # 10 封邮件 = 10 次 API 调用`
+    # 10 封邮件 = 10 次 API 调用
 ```
 
 
@@ -264,7 +264,7 @@ for i, email in enumerate(emails, 1):
 
 
 response = llm.invoke(batch_prompt)
-# 10 封邮件 = 1 次 API 调用`
+# 10 封邮件 = 1 次 API 调用
 
 <strong>节省效果：</strong> 90%
 
@@ -282,12 +282,12 @@ response = llm.invoke(batch_prompt)
 <strong>❌ 高维度（慢 + 贵）：</strong>
 
 embeddings = OpenAIEmbeddings(model="text-embedding-3-large")
-# 维度：3072，存储成本高`
+# 维度：3072，存储成本高
 
 <strong>✅ 低维度（快 + 便宜）：</strong>
 
 embeddings = OpenAIEmbeddings(model="text-embedding-3-small")
-# 维度：1536，存储成本降低 50%`
+# 维度：1536，存储成本降低 50%
 
 <strong>性能对比：</strong>
 
@@ -311,7 +311,7 @@ def process_emails(emails):
 ```
 
 
-# 10 封邮件 = 100 秒`
+# 10 封邮件 = 100 秒
 
 <strong>✅ 异步（快）：</strong>
 
@@ -326,7 +326,7 @@ async def process_emails_async(emails):
 ```
 
 
-# 10 封邮件 = 10 秒`
+# 10 封邮件 = 10 秒
 
 <strong>性能提升：</strong> 10 倍
 
@@ -351,9 +351,9 @@ engine = create_engine(
     max_overflow=10,     # 最大溢出连接
     pool_timeout=30,     # 获取连接超时
     pool_recycle=3600    # 连接回收时间
+)
 ```
 
-)`
 
 #### 4.3 预加载和预热
 
@@ -384,7 +384,7 @@ class PreloadedAgent:
 
 
 # 应用启动时预加载
-agent = PreloadedAgent()`
+agent = PreloadedAgent()
 
 ### 五、监控和成本追踪
 
@@ -475,7 +475,7 @@ def call_llm_with_tracking(prompt: str, model: str) -> str:
 
     print(f"💰 本次调用成本: ${cost:.6f}")
 
-    return response`
+    return response
 ```
 
 
@@ -512,9 +512,9 @@ def call_llm_with_tracking(prompt: str, model: str) -> str:
       }
     ]
   }
+}
 ```
 
-}`
 
 ### 六、实战案例
 
@@ -529,7 +529,7 @@ def call_llm_with_tracking(prompt: str, model: str) -> str:
 平均输出：300 tokens
 单次成本：( * $0.01) + ( * $0.03) = $0.014
 每日成本：10000 * $0.014 = $140
-每月成本：$140 * 30 = $4200`
+每月成本：$140 * 30 = $4200
 
 #### 6.2 优化方案
 
@@ -540,14 +540,14 @@ def call_llm_with_tracking(prompt: str, model: str) -> str:
 
 简单问题（80%）：8000 次 * $0.001 = $8
 复杂问题（20%）：2000 次 * $0.014 = $28
-每日成本：$36（节省 74%）`
+每日成本：$36（节省 74%）
 
 <strong>2. 缓存（节省 50%）</strong>
 
 # 重复问题命中缓存
 缓存命中率：50%
 实际调用：5000 次
-每日成本：$18（再节省 50%）`
+每日成本：$18（再节省 50%）
 
 <strong>3. Prompt 优化（节省 30%）</strong>
 
@@ -555,12 +555,12 @@ def call_llm_with_tracking(prompt: str, model: str) -> str:
 平均输入：300 tokens（-40%）
 平均输出：200 33%）
 单次成本：$0.009
-每日成本：$12.6（再节省 30%）`
+每日成本：$12.6（再节省 30%）
 
 <strong>4. 批量处理（节省 20%）</strong>
 
 # 批量处理相似问题
-每日成本：$10（再节省 20%）`
+每日成本：$10（再节省 20%）
 
 #### 6.3 优化后
 
@@ -568,7 +568,7 @@ def call_llm_with_tracking(prompt: str, model: str) -> str:
 
 每日成本：$10
 每月成本：$300
-节省：$4200 - $300 = $3900（93%）`
+节省：$4200 - $300 = $3900（93%）
 
 ### 七、成本优化检查清单
 
@@ -622,7 +622,7 @@ $353/月
 ↓ 其他优化（-15%）
 $300/月
 
-总节省：93%`
+总节省：93%
 
 #### 8.3 下一步
 

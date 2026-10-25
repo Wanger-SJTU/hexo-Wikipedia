@@ -153,12 +153,12 @@ int main() {
     a[i] = static_cast float (i);
     b[i] = static_cast float (i * 2);
   }
-```
-
 
   thrust::device_vector float  d_a = a;
   thrust::device_vector float  d_b = b;
   thrust::device_vector float  d_c = c;
+```
+
 
   dim3 grid((num - 1 + 128) / 128, 1, 1);
   dim3 block(128, 1, 1);

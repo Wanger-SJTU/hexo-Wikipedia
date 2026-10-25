@@ -44,7 +44,7 @@ $#### 第一步：下载并编译 glibc 2.28 到用户目录" role="presentation
 然后可以通过crosstool来编译了：
 
 unset LD_LIBRARY_PATH   #这个环境变量会导致build报错，所以要先删除掉
-ct-ng build`
+ct-ng build
 
 编译后 glibc 会安装在：当前目录`x86_64-linux-gnu/x86_64-linux-gnu/sysroot/`下的lib中。
 
@@ -96,14 +96,14 @@ else
   exec /usr/local/bin/patchelf "$@"
 ```
 
-fi `
+fi 
 
 然后在环境变量中指向这个fake-patchelf即可，我这里贴出我的环境变量以供参考：
 
 ```bash
 export VSCODE_SERVER_PATCHELF_PATH="$HOME/local/fake-patchelf"
 export VSCODE_SERVER_CUSTOM_GLIBC_PATH="$HOME/local/x86_64-linux-gnu/x86_64-linux-gnu/sysroot/lib"
-export VSCODE_SERVER_CUSTOM_GLIBC_LINKER="$HOME/local/x86_64-linux-gnu/x86_64-linux-gnu/sysroot/lib/ld-linux-x86-64.so.2"`
+export VSCODE_SERVER_CUSTOM_GLIBC_LINKER="$HOME/local/x86_64-linux-gnu/x86_64-linux-gnu/sysroot/lib/ld-linux-x86-64.so.2"
 ```
 
 

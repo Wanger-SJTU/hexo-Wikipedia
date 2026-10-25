@@ -208,7 +208,7 @@ def old_llama_decoder_layer_forward(
 ```text
         outputs += (present_key_value,)
 
-    return outputs`
+    return outputs
 ```
 
 
@@ -240,7 +240,7 @@ query_states = (
         self.v_proj(hidden_states)
         .view(bsz, q_len, self.num_key_value_heads, self.head_dim)
         .transpose(1, 2)
-    )`
+    )
 ```
 
 
@@ -256,7 +256,7 @@ else:
     kv_seq_len = key_states.shape[-2]   # 1 
     if past_key_value is not None:
         assert isinstance(past_key_value, tuple)
-        kv_seq_len += past_key_value[0].shape[-2]  #4008`
+        kv_seq_len += past_key_value[0].shape[-2]  #4008
 ```
 
 
@@ -265,7 +265,7 @@ else:
 cos, sin = self.rotary_emb(value_states, position_ids.to(value_states.device))
 query_states, key_states = apply_rotary_pos_emb(
     query_states, key_states, cos, sin, position_ids
-)`
+)
 
 4. 更新 kv cache
 
@@ -281,14 +281,14 @@ else:
         # reuse k, v, self_attention
         key_states = torch.cat([past_key_value[0], key_states], dim=2)
         value_states = torch.cat([past_key_value[1], value_states], dim=2)
-    past_key_value = (key_states, value_states) if use_cache else None`
+    past_key_value = (key_states, value_states) if use_cache else None
 ```
 
 
 5. GQA 适配
 
 key_states = repeat_kv(key_states, self.num_key_value_groups)
-value_states = repeat_kv(value_states, self.num_key_value_groups)`
+value_states = repeat_kv(value_states, self.num_key_value_groups)
 
 6. 计算原始注意力权重
 
@@ -297,13 +297,13 @@ value_states = repeat_kv(value_states, self.num_key_value_groups)`
 attn_weights = torch.matmul(query_states, key_states.transpose(2, 3)) / math.sqrt(
     self.head_dim  # 128
 )
-# attn_weights [1, 32, 1, 4008]`
+# attn_weights [1, 32, 1, 4008]
 
 7. 正负处理
 
 sign = (query_states > 0) + (~(query_states > 0)) * -1
 max_key = key_states * sign  # [1, 32, 4008, 128]
-postive_query = query_states * sign   #[1, 32, 1, 4008]`
+postive_query = query_states * sign   #[1, 32, 1, 4008]
 
 实现论文中的Ui = max(Qi*mi, Qi*Mi)：
 
@@ -322,7 +322,7 @@ chunk_max_key = max_key.reshape(
     self.chunk_size,
     max_key.shape[3],
 ).amax(dim=-2)
-# [1, 32, 251, 128]`
+# [1, 32, 251, 128]
 
 10. 恢复chunk_max_key 的原始 shape
 
@@ -330,7 +330,7 @@ chunk_max_key = chunk_max_key.unsqueeze(-2).repeat(1, 1, 1, self.chunk_size, 1)
 chunk_max_key = chunk_max_key.reshape(
     chunk_max_key.shape[0], chunk_max_key.shape[1], -1, chunk_max_key.shape[-1]
 )[:, :, :seq_length, :]
-# [1, 32, 4008, 128]`
+# [1, 32, 4008, 128]
 
 - 将chunk最大值复制chunk_size次
 - 恢复到原始序列形状
@@ -344,7 +344,7 @@ quantized_weight = torch.matmul(
 )  
 ```
 
-# (1, 32, 1, 4008)`
+# (1, 32, 1, 4008)
 
 12. 应用 mask (当前没有）
 
@@ -358,7 +358,7 @@ if attention_mask is not None:
     quantized_weight = quantized_weight + attention_mask
     quantized_weight = torch.max(
         quantized_weight, torch.tensor(torch.finfo(quantized_weight.dtype).min)
-    )`
+    )
 ```
 
 
@@ -374,7 +374,7 @@ if token_budget > 0:
         attn_weights_for_selection, token_budget, self.chunk_size
     )  # [1, 32, 1, 4008]  bool 格式
 else: 
-    mask_bottom = torch.zeros_like(attn_weights_for_selection, dtype=torch.bool)`
+    mask_bottom = torch.zeros_like(attn_weights_for_selection, dtype=torch.bool)
 ```
 
 
@@ -391,14 +391,14 @@ else:
 attn_weights = nn.functional.softmax(attn_weights, dim=-1, dtype=torch.float32).to(
     query_states.dtype
 )
-attn_output = torch.matmul(attn_weights, value_states)`
+attn_output = torch.matmul(attn_weights, value_states)
 
 17. 计算 o_proj
 
 attn_output = attn_output.transpose(1, 2)
 attn_output = attn_output.reshape(bsz, q_len, self.hidden_size)
 
-attn_output = self.o_proj(attn_output)`
+attn_output = self.o_proj(attn_output)
 
 #### bench_textgen (速度测试)
 

@@ -49,7 +49,7 @@ Mark occurrences - Tips and Tricks (JDT)
 					locations= finder.getOccurrences();
 				}
 			}
-		}`
+		}
 ```
 
 
@@ -78,9 +78,9 @@ class Foo {
     }
     return bar;           // local variable "bar" 1
   }
+}
 ```
 
-}`
 
 这段代码里一共出现了5次“bar”标识符，但其实背后是3个不同的符号：
 
@@ -116,7 +116,7 @@ ClassDeclaration "Foo"
                   - ConstantExpression 1
           - ReturnStatement
             - value
-              - VariableReference "bar" // 1`
+              - VariableReference "bar" // 1
 ```
 
 
@@ -131,7 +131,7 @@ ClassDeclaration "Foo"
 ```cpp
   public void setFoo(int foo) { // parameter "foo"
     this.foo = foo;             // field "foo" / paramater "foo"
-  }`
+  }
 ```
 
 

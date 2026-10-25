@@ -83,9 +83,9 @@ void blur_mat_sse(const vector> &input,
       output[y][x] /= 12;
     }
   }
+}
 ```
 
-}`
 
 看一下动图：
 

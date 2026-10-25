@@ -702,8 +702,12 @@ BIOS内部会具体执行哪些指令我们不得而知（虽然通过bochs确�
 在已经安装好`nasm`的前提下，我们在项目路径下新建一个文件，叫做`mbr.nas`，然后输入下面内容：
 
 ![](https://proxy-prod.omnivore-image-cache.app/0x0,s56UsqM5ZhjwwpVnzuHp9Y2FecE62BLbv4ldRqBGinp0/https://mmbiz.qpic.cn/mmbiz_svg/Iic9WLWEQMg2jTKicld7jhiahgW5maYNm1niaFWO3EXmBTo4NcLicwXholJeuk1iaq3REpicWhoVoRdDavmxdy0AMtCItfCMqJAK2qu/640?wx_fmt=svg&from=appmsg)`mov ax, 0xb800
+
+```x86asm
 mov ds, ax
 mov [0x0000], byte 'H'
+```
+
 hlt
 times 510-($-$$) db 0
 dw 0xaa55
@@ -763,6 +767,8 @@ bochs输出
 这里建议大家想看那种颜色，可以做一些尝试，还可以配合一下位置来编写代码，比如说，我想在屏幕第一排第一个、第二排第二个、第三排第三个分别显示`ABC`，然后随便用上点颜色看看效果，就可以写成：
 
 ![](https://proxy-prod.omnivore-image-cache.app/0x0,s56UsqM5ZhjwwpVnzuHp9Y2FecE62BLbv4ldRqBGinp0/https://mmbiz.qpic.cn/mmbiz_svg/Iic9WLWEQMg2jTKicld7jhiahgW5maYNm1niaFWO3EXmBTo4NcLicwXholJeuk1iaq3REpicWhoVoRdDavmxdy0AMtCItfCMqJAK2qu/640?wx_fmt=svg&from=appmsg)`mov ax, 0xb800
+
+```x86asm
 mov ds, ax
 mov [0x0000], byte 'A'
 mov [0x0001], byte 0xF0
@@ -770,6 +776,8 @@ mov [0x00A2], byte 'B'
 mov [0x00A3], byte 0x46
 mov [0x0144], byte 'C'
 mov [0x0145], byte 0x32
+```
+
 hlt
 
 times 510-($-$$) db 0
@@ -788,8 +796,12 @@ dw 0xaa55
 综合一下，前三行代码：
 
 ![](https://proxy-prod.omnivore-image-cache.app/0x0,s56UsqM5ZhjwwpVnzuHp9Y2FecE62BLbv4ldRqBGinp0/https://mmbiz.qpic.cn/mmbiz_svg/Iic9WLWEQMg2jTKicld7jhiahgW5maYNm1niaFWO3EXmBTo4NcLicwXholJeuk1iaq3REpicWhoVoRdDavmxdy0AMtCItfCMqJAK2qu/640?wx_fmt=svg&from=appmsg)`mov ax, 0xb800
+
+```x86asm
 mov ds, ax
 mov [0x0000], byte 'H'
+```
+
 
 表示的就是，在屏幕的最左上角的位置显示一个字母'H'，由于之前BIOS已经写入部分显存数据了，所以它的颜色会保持不变，当然，我们可以通过类似于`mov [0x0001], byte 0x0f`的语句把它的颜色变成白色。
 
@@ -857,10 +869,8 @@ BIOS中断可以提供很多功能，详细的情况只能去查BIOS手册了，
 mov ah, 0x00
 ; 也可以写作 mov ax, 0x0003
 
-```cpp
+```x86asm
 int 0x10 ; 调用0x10号BIOS中断，清屏
-```
-
 mov ax, 0xb800
 mov ds, ax
 mov [0x0000], byte 'H'
@@ -885,6 +895,8 @@ mov [0x0012], byte 'd'
 mov [0x0013], byte 0x70 
 mov [0x0014], byte '!'
 mov [0x0015], byte 0x70 
+```
+
 hlt
 
 times 510-($-$$) db 0
@@ -913,9 +925,13 @@ dw 0xaa55
 然而在汇编语言里，我们也不好手动去计算偏移量，因此这种时候就需要用到强大的汇编器预处理功能——标签。我们来看一个例子：
 
 ![](https://proxy-prod.omnivore-image-cache.app/0x0,s56UsqM5ZhjwwpVnzuHp9Y2FecE62BLbv4ldRqBGinp0/https://mmbiz.qpic.cn/mmbiz_svg/Iic9WLWEQMg2jTKicld7jhiahgW5maYNm1niaFWO3EXmBTo4NcLicwXholJeuk1iaq3REpicWhoVoRdDavmxdy0AMtCItfCMqJAK2qu/640?wx_fmt=svg&from=appmsg)`L1: 
+
+```x86asm
 mov ax, 1
 jmp L2
 mov bx, 2
+```
+
 L2:
 mov cx, 8
 
@@ -944,8 +960,12 @@ mov cx, 8
 ![](https://proxy-prod.omnivore-image-cache.app/0x0,s56UsqM5ZhjwwpVnzuHp9Y2FecE62BLbv4ldRqBGinp0/https://mmbiz.qpic.cn/mmbiz_svg/Iic9WLWEQMg2jTKicld7jhiahgW5maYNm1niaFWO3EXmBTo4NcLicwXholJeuk1iaq3REpicWhoVoRdDavmxdy0AMtCItfCMqJAK2qu/640?wx_fmt=svg&from=appmsg)`mov ax, 0
 mov bx, 1
 L1:
+
+```x86asm
 mov cx, 2
 jmp 0x0000:L1
+```
+
 
 上面例程中`jmp 0x0000:L1`就是远跳指令，这时的`L1`就会解析为这个标签相对于文件头的偏移量，实际上也就是`mov ax, 0`和`mov bx, 1`的指令长度和，也就是6。那么这条指令其实应该是`jmp 0x0000:0x0006`。
 
@@ -956,6 +976,8 @@ jmp 0x0000:L1
 到目前为止，我们的程序都挤在软盘的第一个扇区里，指望BIOS自动加载。不过显然这区区512字节的空间很容易捉襟见肘，那么如何把软盘中的其他扇区内容也加载到内存中呢？在8086模式下，BIOS中断可以替我们搞定。
 
 ![](https://proxy-prod.omnivore-image-cache.app/0x0,s56UsqM5ZhjwwpVnzuHp9Y2FecE62BLbv4ldRqBGinp0/https://mmbiz.qpic.cn/mmbiz_svg/Iic9WLWEQMg2jTKicld7jhiahgW5maYNm1niaFWO3EXmBTo4NcLicwXholJeuk1iaq3REpicWhoVoRdDavmxdy0AMtCItfCMqJAK2qu/640?wx_fmt=svg&from=appmsg)`; 加载一个扇区到0x08000的位置
+
+```x86asm
 mov ax, 0x0800
 mov es, ax
 mov bx, 0 ; 软盘中的内容会加载到es:bx的位置
@@ -965,8 +987,6 @@ mov ch, 0 ; ch表示第几柱面
 mov dh, 0 ; dh表示第几磁头
 mov cl, 2 ; cl表示第几扇区
 mov dl, 0 ; dl表示驱动器号，软盘会在0x00~0x7F，硬盘会在0x80~0xFF
-
-```cpp
 int 0x13  ; 执行0x13号中断的2号功能（读盘功能）
 ```
 
@@ -985,10 +1005,16 @@ BIOS如果设置为软盘启动，就会加载`0`号驱动器的`C0-H0-S1`到内
 
 ![](https://proxy-prod.omnivore-image-cache.app/0x0,s56UsqM5ZhjwwpVnzuHp9Y2FecE62BLbv4ldRqBGinp0/https://mmbiz.qpic.cn/mmbiz_svg/Iic9WLWEQMg2jTKicld7jhiahgW5maYNm1niaFWO3EXmBTo4NcLicwXholJeuk1iaq3REpicWhoVoRdDavmxdy0AMtCItfCMqJAK2qu/640?wx_fmt=svg&from=appmsg)`; C0H0S1
 ; 调用0x10号BIOS中断，清屏
+
+```x86asm
 mov al, 0x03
 mov ah, 0x00
 int 0x10 
+```
+
 ; 加载一个扇区到0x08000的位置
+
+```x86asm
 mov ax, 0x0800
 mov es, ax
 mov bx, 0 ; 软盘中的内容会加载到es:bx的位置
@@ -998,18 +1024,18 @@ mov ch, 0 ; ch表示第几柱面
 mov dh, 0 ; dh表示第几磁头
 mov cl, 2 ; cl表示第几扇区
 mov dl, 0 ; dl表示驱动器号，软盘会在0x00~0x7F，硬盘会在0x80~0xFF
-
-```cpp
 int 0x13  ; 执行0x13号中断的2号功能（读盘功能）
+jmp 0x0800:0x0000 ; 这里写成0x0000:0x8000也OK，只是CS和IP的值会不同，但CS:IP是相同的
 ```
 
-jmp 0x0800:0x0000 ; 这里写成0x0000:0x8000也OK，只是CS和IP的值会不同，但CS:IP是相同的
 
 times 510-($-$$) db 0 ; MBR剩余部分用0填充
 dw 0xaa55
 
 ; 现在已经是C0H0S2的内容了
 begin:
+
+```x86asm
 mov ax, 0xb800
 mov ds, ax
 mov [0x0000], byte 'H'
@@ -1022,6 +1048,8 @@ mov [0x0006], byte 'l'
 mov [0x0007], byte 0x0f
 mov [0x0008], byte 'o'
 mov [0x0009], byte 0x0f
+```
+
 hlt
 
 times 1024-($-begin) db 0 ; 补满2个扇区
@@ -1102,6 +1130,8 @@ boot: disk # 设置为硬盘启动
 首先先来测试一下MBR能否正常加载，所有我们把之前MBR中写的那些跳转语句、还有512B后面的部分都先删除，打印几个文字来验一验效果：
 
 ![](https://proxy-prod.omnivore-image-cache.app/0x0,s56UsqM5ZhjwwpVnzuHp9Y2FecE62BLbv4ldRqBGinp0/https://mmbiz.qpic.cn/mmbiz_svg/Iic9WLWEQMg2jTKicld7jhiahgW5maYNm1niaFWO3EXmBTo4NcLicwXholJeuk1iaq3REpicWhoVoRdDavmxdy0AMtCItfCMqJAK2qu/640?wx_fmt=svg&from=appmsg)`; 调用0x10号BIOS中断，清屏
+
+```x86asm
 mov al, 0x03
 mov ah, 0x00
 int 0x10 
@@ -1117,6 +1147,8 @@ mov [0x0006], byte 'l'
 mov [0x0007], byte 0x0f
 mov [0x0008], byte 'o'
 mov [0x0009], byte 0x0f
+```
+
 hlt
 
 times 510-($-$$) db 0 ; MBR剩余部分用0填充
@@ -1147,8 +1179,12 @@ LBA28是一种比较原始的方式，28表示用28位编号，也就是`0x00000
 首先要配置的是需要读取的端口数，这个数据要写入`0x01f2`端口中：
 
 ![](https://proxy-prod.omnivore-image-cache.app/0x0,s56UsqM5ZhjwwpVnzuHp9Y2FecE62BLbv4ldRqBGinp0/https://mmbiz.qpic.cn/mmbiz_svg/Iic9WLWEQMg2jTKicld7jhiahgW5maYNm1niaFWO3EXmBTo4NcLicwXholJeuk1iaq3REpicWhoVoRdDavmxdy0AMtCItfCMqJAK2qu/640?wx_fmt=svg&from=appmsg)`; 设置读取扇区的数量
+
+```x86asm
 mov dx, 0x01f2
 mov al, 2 ; 读取连续的几个扇区，每读取一个al就会减1
+```
+
 out dx, al
 
 然后我们来配置起始扇区号。1号扇区就是MBR，已经加载进来了，所以我们从第2号扇区开始加载。虽然只是一个简单的2号，但其实LBA28模式下扇区号是有28位的，因此我们要拆分成4次，分别写入不同的端口中。`0x01f3`需要传入扇区号的`0~7`位，`0x01f4`需要传入扇区号的`8~15`位，`0x01f5`需要传入扇区号的`16~23`位，`0x01f5`则拆分为3部分，低4位是扇区号的`24~27`位，第4位表示主从盘，高3位表示扇区编号的模式。
@@ -1156,23 +1192,43 @@ out dx, al
 这部分的代码如下，笔者已经加入了详细的注释，请读者仔细阅读：
 
 ![](https://proxy-prod.omnivore-image-cache.app/0x0,s56UsqM5ZhjwwpVnzuHp9Y2FecE62BLbv4ldRqBGinp0/https://mmbiz.qpic.cn/mmbiz_svg/Iic9WLWEQMg2jTKicld7jhiahgW5maYNm1niaFWO3EXmBTo4NcLicwXholJeuk1iaq3REpicWhoVoRdDavmxdy0AMtCItfCMqJAK2qu/640?wx_fmt=svg&from=appmsg)`; 设置起始扇区号，28位需要拆开
+
+```x86asm
 mov dx, 0x01f3
 mov al, 0x02 ; 从第2个扇区开始读（1起始，0留空），扇区号0~7位
+```
+
 out dx, al
+
+```x86asm
 mov dx, 0x01f4 ; 扇区号8~15位
 mov al, 0
+```
+
 out dx, al
+
+```x86asm
 mov dx, 0x01f5 ; 扇区号16~23位
 mov al, 0
+```
+
 out dx, al
+
+```x86asm
 mov dx, 0x01f6
 mov al, 111_0_0000b ; 低4位是扇区号24~27位，第4位是主从盘（0主1从），高3位表示磁盘模式（111表示LBA模式）
+```
+
 
 接下来要配置操作命令，我们要做「读盘」操作，对应的命令号是`0x20`，它要写入`0x01f7`端口：
 
 ![](https://proxy-prod.omnivore-image-cache.app/0x0,s56UsqM5ZhjwwpVnzuHp9Y2FecE62BLbv4ldRqBGinp0/https://mmbiz.qpic.cn/mmbiz_svg/Iic9WLWEQMg2jTKicld7jhiahgW5maYNm1niaFWO3EXmBTo4NcLicwXholJeuk1iaq3REpicWhoVoRdDavmxdy0AMtCItfCMqJAK2qu/640?wx_fmt=svg&from=appmsg)`; 配置命令
+
+```x86asm
 mov dx, 0x01f7
 mov al, 0x20 ; 0x20命令表示读盘
+```
+
 out dx, al
 
 一切就绪之后，控制器就会开始读盘了，但这需要一定的时间，所以此时程序要等待驱动器工作完成。`0x01f7`端口如果使用`in`命令，读取到的是硬盘控制器的状态数据，其中第`7`位表示是否忙碌，第`3`位表示是否就绪。那么也就是说，当第`7`位是`0`且第`3`位是`1`的话，说明驱动器已经完成，否则就要持续等待：
@@ -1181,9 +1237,13 @@ out dx, al
 ; 检测状态，是否读取完毕
 mov dx, 0x01f7
 in al, dx ; 通过该端口读取状态数据
+
+```x86asm
 and al, 1000_1000b ; 保留第7位和第3位
 cmp al, 0000_1000b ; 要检测第7位为0（表示不在忙碌状态）和第3位是否是1（表示已经读取完毕）
 jne wait_finish ; 如果不满足则循环等待
+```
+
 
 当驱动器就绪后，我们就可以通过`0x01f0`端口来加载数据到内存了。这个端口是个16位端口，因此每次可以读2字节。这里我们用一个循环语句来完成，循环语句的循环次数要写在`cx`中，每次循环时`cx`会自动减1，直到`cx`为0则跳出循环。
 
@@ -1194,71 +1254,124 @@ jne wait_finish ; 如果不满足则循环等待
 还是按照一开始的规划，我们把屏幕打印的部分放到第二扇区，然后把它加载到`0x08000`的内存位置：
 
 ![](https://proxy-prod.omnivore-image-cache.app/0x0,s56UsqM5ZhjwwpVnzuHp9Y2FecE62BLbv4ldRqBGinp0/https://mmbiz.qpic.cn/mmbiz_svg/Iic9WLWEQMg2jTKicld7jhiahgW5maYNm1niaFWO3EXmBTo4NcLicwXholJeuk1iaq3REpicWhoVoRdDavmxdy0AMtCItfCMqJAK2qu/640?wx_fmt=svg&from=appmsg)`mov dx, 0x01f0
+
+```x86asm
 mov ax, 0x0800
 mov ds, ax
 xor bx, bx ; [ds:bx] = 0x08000
+```
+
 read:
 in ax, dx ; 16位端口，所以要用16位寄存器
+
+```x86asm
 mov [bx], ax
 add bx, 2 ; 因为ax是16位，所以一次会写2字节
+```
+
 loop read
 
 最后通过跳转指令跳转过去，查看是否加载成功。下面给出完整代码：
 
 ![](https://proxy-prod.omnivore-image-cache.app/0x0,s56UsqM5ZhjwwpVnzuHp9Y2FecE62BLbv4ldRqBGinp0/https://mmbiz.qpic.cn/mmbiz_svg/Iic9WLWEQMg2jTKicld7jhiahgW5maYNm1niaFWO3EXmBTo4NcLicwXholJeuk1iaq3REpicWhoVoRdDavmxdy0AMtCItfCMqJAK2qu/640?wx_fmt=svg&from=appmsg)`; C0H0S1
 ; 调用0x10号BIOS中断，清屏
+
+```x86asm
 mov al, 0x03
 mov ah, 0x00
 int 0x10 
+```
+
 ; LBA28模式，逻辑扇区号28位，从0x0000000到0xFFFFFFF
 ; 设置读取扇区的数量
+
+```x86asm
 mov dx, 0x01f2
 mov al, 2 ; 读取连续的几个扇区，每读取一个al就会减1
+```
+
 out dx, al
 ; 设置起始扇区号，28位需要拆开
+
+```x86asm
 mov dx, 0x01f3
 mov al, 0x02 ; 从第2个扇区开始读（1起始，0留空），扇区号0~7位
+```
+
 out dx, al
+
+```x86asm
 mov dx, 0x01f4 ; 扇区号8~15位
 mov al, 0
+```
+
 out dx, al
+
+```x86asm
 mov dx, 0x01f5 ; 扇区号16~23位
 mov al, 0
+```
+
 out dx, al
+
+```x86asm
 mov dx, 0x01f6
 mov al, 111_0_0000b ; 低4位是扇区号24~27位，第4位是主从盘（0主1从），高3位表示磁盘模式（111表示LBA）
+```
+
 ; 配置命令
+
+```x86asm
 mov dx, 0x01f7
 mov al, 0x20 ; 0x20命令表示读盘
+```
+
 out dx, al
 
 wait_finish:
 ; 检测状态，是否读取完毕
 mov dx, 0x01f7
 in al, dx ; 通过该端口读取状态数据
+
+```x86asm
 and al, 1000_1000b ; 保留第7位和第3位
 cmp al, 0000_1000b ; 要检测第7位为0（表示不在忙碌状态）和第3位是否是1（表示已经读取完毕）
 jne wait_finish ; 如果不满足则循环等待
+```
+
 
 ; 从端口加载数据到内存
+
+```x86asm
 mov cx, 512 ; 一共要读的字节除以2（表示次数，因为每次会读2字节所以要除以2）
 mov dx, 0x01f0
 mov ax, 0x0800
 mov ds, ax
 xor bx, bx ; [ds:bx] = 0x08000
+```
+
 read:
 in ax, dx ; 16位端口，所以要用16位寄存器
+
+```x86asm
 mov [bx], ax
 add bx, 2 ; 因为ax是16位，所以一次会写2字节
+```
+
 loop read
 
+```text
 jmp 0x0800:0x0000 ; 这里写成0x0000:0x8000也OK，只是CS和IP的值会不同，但CS:IP是相同的
+```
+
 
 times 510-($-$$) db 0 ; MBR剩余部分用0填充
 dw 0xaa55
 
 ; 现在已经是C0H0S2的内容了
 begin:
+
+```x86asm
 mov ax, 0xb800
 mov ds, ax
 mov [0x0000], byte 'H'
@@ -1271,6 +1384,8 @@ mov [0x0006], byte 'l'
 mov [0x0007], byte 0x0f
 mov [0x0008], byte 'o'
 mov [0x0009], byte 0x0f
+```
+
 hlt
 
 times 1024-($-begin) db 0 ; 补满2个扇区

@@ -189,7 +189,7 @@ py-spy record --format speedscope -o output.json --native -- python3 xxx.py
 py-spy record -sti --rate 10 --format speedscope --native -o output.json -- python3 xxx.py
  
 # 除了在启动时运行 py-spy，还可以对一个已经运行的 python 进程进行采样，如：
-py-spy record --format speedscope -o output.json --native --pid 12345`
+py-spy record --format speedscope -o output.json --native --pid 12345
 
 其他功能：
 
@@ -232,7 +232,7 @@ ncalls  tottime  percall  cumtime  percall filename:lineno(function)
 ```
 
  
-....`
+....
 
 也可以指定输出文件：
 
@@ -245,7 +245,7 @@ ncalls  tottime  percall  cumtime  percall filename:lineno(function)
 # sudo apt install graphviz
 # pip3 install gprof2dot
   
-gprof2dot -f pstats xxx.cprof | dot -Tpng -o xxx.png && feh`
+gprof2dot -f pstats xxx.cprof | dot -Tpng -o xxx.png && feh
 
 转成 flamegraph
 
@@ -255,7 +255,7 @@ gprof2dot -f pstats xxx.cprof | dot -Tpng -o xxx.png && feh`
 # dependency: flameprof
 # pip3 install flameprof
  
-flameprof xxx.cprof > flamegraph.svg`
+flameprof xxx.cprof > flamegraph.svg
 
 更多信息请参考 cProfile 文档: https://docs.python.org/3/library/profile.html
 
@@ -293,7 +293,7 @@ Program: train.py
 │     │  │        └─ 5.239 forward  megengine/module/sequential.py:94
 │     │  │           └─ 5.198 __call__  megengine/module/module.py:120
 │     │  │              └─ 4.838 forward  model.py:87
-...`
+...
 
 也可以输出 html 文件在浏览器里查看上面的结果：
 
@@ -321,7 +321,7 @@ perf record -F 99 --call-graph dwarf python3 xxx.py
 # 或对给定线程 id(TID) 进行采样
 perf record -F 99 --call-graph dwarf --tid 
  
-# 其中-F 99 是采样频率，这里指每秒采样 99 次；也可以用--pid 指定采样的进程 id，此时 perf 会对该进程的所有线程进行采样`
+# 其中-F 99 是采样频率，这里指每秒采样 99 次；也可以用--pid 指定采样的进程 id，此时 perf 会对该进程的所有线程进行采样
 
 运行结束后会在当前的目录下产生一个名为 `perf.data`的文件
 
@@ -349,7 +349,7 @@ stackcollapse-perf.pl /perf.unfold > perf.fold
  
 # 可以直接在 speedscope 里打开 perf.fold，或者将其转化为 svg:
 # 将 perf.fold 转为 svg 文件
-flamegraph.pl perf.fold > perf.svg`
+flamegraph.pl perf.fold > perf.svg
 
 对 Linux kernel 版本大于等于 5.8 的用户，perf 支持直接将结果转为火焰图：
 
@@ -405,7 +405,7 @@ sudo ./sample_bt -u -t 10 -p PID > cpu.bt
 # 对程序 off cpu time 的调用栈进行采样，采样时间为 10s, 采样对象为 user space 调用栈，并将结果保存为 off_cpu.bt
 sudo ./sample_bt_off_cpu -u -t 10 -p PID > off_cpu.bt
  
-# 命令中的-u 选项指采样 user space 调用栈，还可以选择-k 来采样 kernel space 的调用栈；-t 指采样时间，这里都设置为 10s；-p 是待采样程序的 pid`
+# 命令中的-u 选项指采样 user space 调用栈，还可以选择-k 来采样 kernel space 的调用栈；-t 指采样时间，这里都设置为 10s；-p 是待采样程序的 pid
 
 与 perf 类似，systemtap 运行在内核态，overhead 非常低。且对于 python 线程，systemtap 采样的也是 CPython 解释器的调用栈，因此更适合观测 C/C++ 线程。
 
@@ -418,7 +418,7 @@ stackcollapse-stap.pl /cpu.bt > cpu.fold
  
 # 可以直接在 speedscope 里打开 cpu.fold，或者将其转化为 svg:
 # 将 perf.fold 转为 svg 文件
-flamegraph.pl cpu.fold > cpu.svg`
+flamegraph.pl cpu.fold > cpu.svg
 
 5.6 eu-stack
 
@@ -440,7 +440,7 @@ eu-stack -p
 #10 0x0000000000639671 Py_Main
 #11 0x00000000004b0e40 main
 #12 0x00007f5f96ac5bf7 __libc_start_main
-#13 0x00000000005b2f0a _start`
+#13 0x00000000005b2f0a _start
 
 与 perf 和 systemtap 不同的地方是，即使程序处于 off-CPU 的状态，eu-stack 依然可以获得它的 C/C++ 调用栈。因此我们可以写一个简单的脚本对一个线程的调用栈不断采样来实现一个 wall clock time 上的 sampling based profiler。
 一个简单的 profiler 实现：
@@ -451,7 +451,7 @@ for x in $(seq 0 1000)
 do
 eu-stack -p $pid > d_$x.txt || true
 sleep 0.2
-done`
+done
 
 eu-stack 执行时不需要 root 权限，运行一次的时间大约几十毫秒，对程序的影响不算太大。
 
@@ -461,7 +461,7 @@ eu-stack 执行时不需要 root 权限，运行一次的时间大约几十毫�
 sudo apt install elfutils
  
 # 2. 运行上面的脚本
-./profiler.sh `
+./profiler.sh 
 
 可视化方法：
 
@@ -476,7 +476,7 @@ stackcollapse-elfutils.pl /d*txt > eu_perf.txt
  
 # 方法 2: use flamegraph
 flamegraph.pl eu_perf.txt output.svg
-# 在浏览器里打开 output.svg`
+# 在浏览器里打开 output.svg
 
 ### 六、例子
 

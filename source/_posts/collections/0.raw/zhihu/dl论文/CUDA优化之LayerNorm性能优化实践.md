@@ -148,9 +148,9 @@ __inline__ __device__ void WelfordWarpAllReduce(T thread_mean, T thread_m2, T th
   *mean = __shfl_sync(0xffffffff, *mean, 0, thread_group_width);
   *m2 = __shfl_sync(0xffffffff, *m2, 0, thread_group_width);
   *count = __shfl_sync(0xffffffff, *count, 0, thread_group_width);
+}
 ```
 
-}`
 
 在这里有个模板参数 `thread_group_width`，当 `num_cols > pack_size * WarpSize` 时，`thread_group_width` 为 `WarpSize`。当 `num_cols` 太小，即 `num_cols![](/images/collections/0.raw/zhihu/dl%E8%AE%BA%E6%96%87/asset/img_581f0515ea81.jpg)
 
@@ -160,7 +160,11 @@ template
 union Pack {
   PackType storage;
   T elem[N];
-};`
+
+```text
+};
+```
+
 
 LayerNormWarpImpl Kernel 代码如下：
 
@@ -190,9 +194,9 @@ __global__ void LayerNormWarpImpl(LOAD load, STORE store, const int64_t rows, co
       }
     }
   }
+}
 ```
 
-}`
 
 LayerNormWarpImpl 的实现的模板参数的意义分别如下：
 
@@ -247,9 +251,9 @@ __global__ void LayerNormBlockSMemImpl(LOAD load, STORE store, const int64_t row
     for (int pack_id = tid; pack_id (pack, row, pack_id * pack_size);
     }
   }
+}
 ```
 
-}`
 
 #### *3.num_cols 较大时，不使用 Shared Memory 的情况*
 
@@ -283,9 +287,9 @@ __global__ void LayerNormBlockUncachedImpl(LOAD load, STORE store, const int64_t
       for (int i = 0; i (pack, row, pack_offset);
     }
   }
+}
 ```
 
-}`
 
 ### OneFlow Softmax 库
 
@@ -293,12 +297,11 @@ __global__ void LayerNormBlockUncachedImpl(LOAD load, STORE store, const int64_t
 
 在你的项目中 `include` 这个头文件后，就可以直接使用。比如，使用以下几行代码就可以实现一个 Softmax GPU Kernel。
 
-oneflow::cuda::softmax::DirectLoad load(in, cols);
-
 ```text
+oneflow::cuda::softmax::DirectLoad load(in, cols);
     oneflow::cuda::softmax::DirectStore store(out, cols);
     oneflow::cuda::softmax::DispatchSoftmax(
-        cuda_stream, load, store, rows, cols);`
+        cuda_stream, load, store, rows, cols);
 ```
 
 

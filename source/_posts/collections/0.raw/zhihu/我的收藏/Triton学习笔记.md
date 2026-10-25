@@ -352,7 +352,7 @@ M-Barrier有用到，其它的feature是尽量去避免这个访存的，比如�
 `Triton`的`autotune` 实际上它做的比较简陋，它大量的都在一个`thread block`内部。在`thread block`上面的那个`autotune` 就没有做到一个比较高端做法，比如引入一些AI模型去做。`根据硬件的分层设计，对每部分的加速单元可以做一个CostModel, 那加入CostModel后势必会延长搜索时间、搜索算法、
 以及对硬件资源有一定的要求。
 1、这部分对于部署模型的硬件有什么大致的要求，或者模型部署大致是什么流程
-2、基于搜索空间的设计，业界目前主流的做法或者落地的案例`
+2、基于搜索空间的设计，业界目前主流的做法或者落地的案例
 
 - 有用triton实现过flash attention吗？我们用openai的例子程序发觉结果和原始的flash attention结果不一致而且，更为费解的是，修改矩阵乘的block M和blockN导致最终计算结果不一致
 好像有`bug`，最后编译出来的计算行为与用`Triton`实现的逻辑行为有地方不一致，可以多关注社区
@@ -454,7 +454,7 @@ And of course there are all the stability issues :p Triton is a recent project a
 - `Triton`对`Fusion`算子貌似开发挺友好的，比如这篇[ Online normalizer calculation for softmax](https://link.zhihu.com/?target=https%3A//arxiv.org/pdf/1805.02867.pdf) ，这种前期快速创建一个demo,将整个流程串通起来。
 1、说到这里，那么对于Pytorch中，它的自定义算子是怎样一个流程
 2、对于机器学习框架，新增加一种硬件平台，Pytorch如何做
-3、TVM的BYOC是什么定位`
+3、TVM的BYOC是什么定位
 
 - 当然也要尽可能避免这种场景，为了更好封装和利用硬件的加速特性，`Triton`接口做了过多限制，看着接近`Python`的语法，但是两者不兼容，导致用`Triton`开发`Kernel`来说反而是一种负担。
 - `Triton`在编译流程上借助了`MLIR`生态，应用上集成到`Pytorch`生态，后续更好的发展还是要看NV和OpenAI的支持力度吧。Pytorch核心开发者[Horace He](https://link.zhihu.com/?target=https%3A//twitter.com/cHHillee)也在用Triton, 貌似还是挺受欢迎，比如这篇 [link ](https://link.zhihu.com/?target=https%3A//twitter.com/cHHillee/status/1732520724307526079)

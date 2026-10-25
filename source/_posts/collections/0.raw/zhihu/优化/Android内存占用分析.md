@@ -41,7 +41,7 @@ int __init_memblock memblock_add(phys_addr_t base, phys_addr_t size)
 int __init_memblock memblock_add_node(phys_addr_t base, phys_addr_t size, int nid)
 
 //reserved 类型的mblock申请/添加
-int __init_memblock memblock_reserve(phys_addr_t base, phys_addr_t size)`
+int __init_memblock memblock_reserve(phys_addr_t base, phys_addr_t size)
 ```
 
 
@@ -63,14 +63,14 @@ setup_machine_fdt(__fdt_pointer)   //__fdt_pointer是传递的DTB加载地址
     memory {
         device_type = "memory";
         reg = ;
-    };`
+    };
 ```
 
 
 可以通过 /sys/kernel/debug/memblock/ 下的节点查看两种内存的物理空间分布:
 
 lsg@eebbk:~$adb shell cat /sys/kernel/debug/memblock/memory
-lsg@eebbk:~$adb shell cat /sys/kernel/debug/memblock/reserved`
+lsg@eebbk:~$adb shell cat /sys/kernel/debug/memblock/reserved
 
 memblock构建了内存的物理空间分布, 之后在伙伴系统(buddy system)初始化的过程中,构建了物理内存分布到虚拟内存空间的映射.  memblock管理的`memory`类型的页框都添加到各ZONE中, `totalram_pages`统计了它的页框数目. 详细代码见 `free_all_bootmem()`
 
@@ -105,7 +105,7 @@ Q1:<strong>memblock是怎么知道有些内存已经被占用的?</strong> A1:**
 ```
 
 lsg@eebbk:~$adb shell cat /proc/meminfo
-MemTotal:        1983136 kB`
+MemTotal:        1983136 kB
 
 <strong>Q2:</strong> 为什么MemTotal的大小比实际物理内存小?<strong>A2:</strong> 这个部分比实际的物理内存小,就是少了上面说的两个部分:预申请内存和kernel reserved内存. 预申请内存: 这部分的大小可以查看`/d/memblock/memory`相对物理内存空闲的部分.  reserved内存: 这部分大小可以查看`/d/memblock/reserved`的大小,或者kernel log中的大小(上例中63776K)
 
@@ -224,9 +224,9 @@ static int s_show(struct seq_file *m, void *p)
 
     v = va->vm;
     ......
+}
 ```
 
-}`
 
 /proc/vmallocinfo`中每行输出的最后一个字段表示这段区间的类型，kernel 4.14上显示的类型有：
 
@@ -261,7 +261,7 @@ Size:               1016 kB
 KernelPageSize:        4 kB
 MMUPageSize:           4 kB
 Rss:                   4 kB
-Pss:                   4 kB`
+Pss:                   4 kB
 
 概括来说，binder占用的内存，在进程PSS中已经统计，又统计在了kernel中，而且统计的是整个VMA区间而非实际物理占用，这造成了统计上的误差。
 
@@ -290,7 +290,7 @@ Android P上binder的内存信息归为`vmalloc`，这就会统计到 `VmallocUs
 //unpurged vm_area
 0x0000000000000000-0x0000000000000000 1044480 unpurged vm_area
 //进程栈，实际只分配了4页，但地址空间有5页
-0x0000000000000000-0x0000000000000000   20480 _do_fork+0xdc/0x3ac pages=4 vmalloc`
+0x0000000000000000-0x0000000000000000   20480 _do_fork+0xdc/0x3ac pages=4 vmalloc
 
 #### 2.3 free命令
 
@@ -315,9 +315,9 @@ void free_main(void)
     convert(in.bufferram), convert(in.totalram - in.freeram - in.bufferram),
     convert(in.freeram + in.bufferram), convert(in.totalswap),
     convert(in.totalswap - in.freeswap), convert(in.freeswap));
+}
 ```
 
-}`
 
 其展示的内容示例如下：
 
@@ -325,7 +325,7 @@ H100:/ # free -k
         total        used        free      shared     buffers
 Mem:   1983136     1604832      378304        2240       71416
 -/+ buffers/cache: 1533416      449720
-Swap:  1048572           0     1048572`
+Swap:  1048572           0     1048572
 
 #### 3、从Android角度
 
@@ -337,7 +337,7 @@ dumpsys meminfo 是从Android的角度统计系统的内存占用情况。
 
 ```cpp
 //frameworks/base/services/core/java/com/android/server/am/ActivityManagerService.java
-private final void dumpApplicationMemoryUsage()`
+private final void dumpApplicationMemoryUsage()
 ```
 
 
@@ -354,7 +354,7 @@ Total RAM: 1,983,136K (status moderate)
 
 ```text
      ZRAM:         4K physical used for         0K in swap (1,048,572K total swap)
-   Tuning: 128 (large 256), oom   322,560K, restore limit   107,520K (high-end-gfx)`
+   Tuning: 128 (large 256), oom   322,560K, restore limit   107,520K (high-end-gfx)
 ```
 
 
@@ -367,7 +367,7 @@ MemInfoReader.readMemInfo()
     //frameworks/base/core/java/android/os/Debug.java
   --> Debug.getMemInfo()
     //frameworks/base/core/jni/android_os_Debug.cpp
-    --> android_os_Debug_getMemInfo()`
+    --> android_os_Debug_getMemInfo()
 ```
 
 
@@ -438,7 +438,7 @@ binder占用的内存，在进程PSS中已经统计，又统计在了kernel中�
     ......
     //调用到JNI中的 android_os_Debug_getDirtyPagesPid() --> read_mapinfo()
     //具体就是解析 /proc/pid/smaps 中的内存区间，按类型汇总信息
-    Debug.getMemoryInfo(pid, mi);`
+    Debug.getMemoryInfo(pid, mi);
 ```
 
 
@@ -452,9 +452,9 @@ public int getTotalPss() {
 
 public int getTotalSwappedOutPss() {
     return dalvikSwappedOutPss + nativeSwappedOutPss + otherSwappedOutPss;
+}
 ```
 
-}`
 
 1、Total PSS by process
 
@@ -479,7 +479,11 @@ Total PSS by OOM adjustment`下是以进程的`OOM ADJ`值(/proc/pid/oom_score_a
         ProcessList.PREVIOUS_APP_ADJ,      //ADJ在此区间的为 “Previous"
         ProcessList.SERVICE_B_ADJ,         //ADJ在此区间的为 “B Services"
         ProcessList.CACHED_APP_MIN_ADJ     //ADJ大于此值的为 “Cached"
-};`
+
+```text
+};
+```
+
 
 <strong>3、Total PSS by category</strong>
 
@@ -532,7 +536,7 @@ Swap:                  0 kB    //swap的页
 SwapPss:               0 kB    //swap的页按比例分配
 KernelPageSize:        4 kB   
 MMUPageSize:           4 kB
-Locked:                0 kB`
+Locked:                0 kB
 
 /proc/pid/smaps`展示的所有VMA的详细信息是 `dumpsys meminfo pid` 显示的基础。
 
@@ -572,9 +576,9 @@ int main(int argc, char *argv[]) {
         ....
     }
     //展示的VSS,RSS,PSS,USS 分别用到了 proc.usage.vss,proc.usage.rss,proc.usage.pss,proc.usage.uss
+}
 ```
 
-}`
 
 #### 4.2.1 /proc/pid/maps
 
@@ -583,7 +587,7 @@ int main(int argc, char *argv[]) {
 一行信息包括该VMA的起始地址，结束地址，权限，偏移量，路径等。示例如下：
 
 70d965c000-70d9662000 r--p 000fa000 fc:00 523                            /system/lib64/libc.so
-7fc89fe000-7fc8a1f000 rw-p 00000000 00:00 0                              [stack]`
+7fc89fe000-7fc8a1f000 rw-p 00000000 00:00 0                              [stack]
 
 #### 4.2.2 /proc/pid/pagemap
 
@@ -626,9 +630,9 @@ int pm_map_usage_flags(pm_map_t *map, pm_memusage_t *usage_out,
         usage.uss += (count == 1) ? (map->proc->ker->pagesize) : (0);
         ....
     }
+}
 ```
 
-}`
 
 留个问题： 为什么 dumpsys meminfo pid 显示的进程PSS大小，比procrank展示的进程PSS大小多？ 是多统计了swap?
 

@@ -41,7 +41,7 @@ kNN （k-nearest neighbors）作为一个入门级模型，因为既简单又可
 绿色是拟合出来的曲线，用的是 sklearn 里面的 KNeighborsRegressor，可以看得出对非线性回归问题处理的很好，但是还可以再优化一下，k 个邻居中，根据他们离测试点坐标 x 的距离 d 的倒数 1/d 进行加权处理：
 
 w = [ 1 / d[i] for i in range(k) ]
-y = sum([ (w[i] * y[i]) for i in range(k) ]) / sum(w)`
+y = sum([ (w[i] * y[i]) for i in range(k) ]) / sum(w)
 
 如果 x 刚好和某样本重合，di = 0 的话，1/d 就正无穷了，那么接取该样本的 y 值，不考虑其他点（sklearn的做法），这样得到的 Y 值就相对比较靠谱了：
 

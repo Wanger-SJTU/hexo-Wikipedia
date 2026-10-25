@@ -127,7 +127,7 @@ L1: r1 = y
 
 核2
 S2: y = NEW;
-L2: r2 = x;`
+L2: r2 = x;
 
 问，最后r1和r2的值是多少？
 
@@ -234,9 +234,9 @@ a.store(1, release);
 ```text
 if (a.load(acquire) == 1) {
     assert(flag == 1)
+}
 ```
 
-}`
 
 当线程2读到a的值是1时，就和线程1的store指令建立的同步关系，根据定义，线程2在load之后能看到线程1在store之前的操作，因此线程2在之后读flag时，读到的一定是1.
 
@@ -285,9 +285,9 @@ if (y.load(seq_cst) == 1) {
 while(y.load(seq_cst) == 0){}
 if (x.load(seq_cst) == 1) {
     z2 = 1;
+}
 ```
 
-}`
 
 在上面的代码中，如果最后z1是0，说明线程3观察到在某个时间段，x = 1且y = 0，也就是x先被修改。如果最后z2是0，说明线程4观察到在某个时间段，y = 1且x = 0，也就是y先被修改。即线程3和4观察到了不一样的修改顺序，但是因为全部使用了seq_cst，所以实际上不可能同时出现z1 = 0和z2 = 0的情况，这就是seq_cst相比release/acquire加强的地方。(但是x86/TSO即使不是seq_cst也不会出现z1和z2同时为0的情况，可以自行推导一下)
 
@@ -313,9 +313,9 @@ if (x.load(seq_cst) == 1 && y.load(seq_cst) == 1) {
 y.store(1, seq_cst);
 if (y.load(seq_cst) == 1 && x.load(seq_cst) == 1) {
     z2 = 1;
+}
 ```
 
-}`
 
 如果store指令不清空write buffer，假设x, y都在store buffer中停留了很长时间，那么在线程1通过bypassing读到x是1，但y还是0。同理，在线程2通过bypassing读到y是1但x还是0，这样线程1和线程2看到的修改顺序就不一样了，所以store也需要清空write buffer。 当然，存在另外一种实现方式是，在load的时候清空write buffer，store写的时候就是普通的mov，但一般写多读少，为了性能一般选择在写的时候清空write buffer。
 

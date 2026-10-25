@@ -91,7 +91,7 @@ __global__ void Marlin(
   int  prob_m, // batch dimension m
   int  prob_n, // output dimension n
   int  prob_k, // reduction dimension k
-  int* locks // extra global storage for barrier synchronization `
+  int* locks // extra global storage for barrier synchronization 
 ```
 
 
@@ -110,7 +110,7 @@ CUDA可以通过
  int n_tiles = prob_n / 16 / thread_n_blocks;
  int iters = ceildiv(k_tiles * n_tiles * parallel, gridDim.x);
   // Ensure that the number of tiles in each stripe is a multiple of the groupsize; this avoids an annoying special case
-  // where a stripe starts in the middle of group.`
+  // where a stripe starts in the middle of group.
 ```
 
 
@@ -135,7 +135,7 @@ if (slice_col_par >= n_tiles) {
     C += (slice_col_par / n_tiles) * 16 * thread_m_blocks * prob_n / 8;
     locks += (slice_col_par / n_tiles) * n_tiles;
     slice_col = slice_col_par % n_tiles;
-  }`
+  }
 ```
 
 
@@ -154,7 +154,7 @@ if (slice_col_par >= n_tiles) {
 实现在：
 
   // Asynchronously fetch the next A, B and s tile from global to the next shared memory pipeline location.
- auto fetch_to_shared = [&] (int pipe, int a_off, bool pred = true) {`
+ auto fetch_to_shared = [&] (int pipe, int a_off, bool pred = true) {
 
 实际上复杂的是内存偏移的计算。
 
@@ -166,7 +166,7 @@ if (slice_col_par >= n_tiles) {
 int a_gl_stride = prob_k / 8; // stride of the A matrix in global memory
 ```
 
-constexpr int a_gl_rd_delta_o = 16 * thread_k_blocks / 8;`
+constexpr int a_gl_rd_delta_o = 16 * thread_k_blocks / 8;
 
 这里用INT4表示4*int的数据结构，后面大写的INT4都表示这种数据结构。
 
@@ -187,7 +187,7 @@ constexpr int a_gl_rd_delta_o = 16 * thread_k_blocks / 8;`
 这里还需要注意a_sh_wr_iters这个变量。
 
  constexpr int a_sh_stage = a_sh_stride * (16 * thread_m_blocks); // overall size of a tile
- constexpr int a_sh_wr_iters = ceildiv(a_sh_stage, a_sh_wr_delta); // number of shared write iterations for a tile`
+ constexpr int a_sh_wr_iters = ceildiv(a_sh_stage, a_sh_wr_delta); // number of shared write iterations for a tile
 
 256个线程调用cp.async.cg.shared.global是无法获取到TILE的A矩阵的。需要a_sh_wr_iters次才能处理完成。
 
@@ -200,7 +200,7 @@ for (int i = 0; i  a_sh_wr_iters; i++) {
           &A[a_gl_rd_delta_i * i + a_gl_rd + a_gl_rd_delta_o * a_off],
           a_sh_wr_pred[i]
         );
-      }`
+      }
 ```
 
 
@@ -216,7 +216,7 @@ for (int i = 0; i  a_sh_wr_iters; i++) {
   // Shared memory storage for global fetch pipelines. 
   int4* sh_a = sh;
   int4* sh_b = sh_a + (stages * a_sh_stage);
-  int4* sh_s = sh_b + (stages * b_sh_stage);`
+  int4* sh_s = sh_b + (stages * b_sh_stage);
 ```
 
 
@@ -225,7 +225,7 @@ for (int i = 0; i  a_sh_wr_iters; i++) {
 constexpr int a_sh_stride = 16 * thread_k_blocks / 8; 
 constexpr int a_sh_stage = a_sh_stride * (16 * thread_m_blocks); // overall size of a tile
 constexpr int b_sh_stride = 32 * thread_n_blocks / 4;
-constexpr int b_sh_stage = b_sh_stride * thread_k_blocks;`
+constexpr int b_sh_stage = b_sh_stride * thread_k_blocks;
 
 这里会计算A,B矩阵TILE的空间，用于缓存。
 
@@ -242,9 +242,9 @@ auto transform_a = [&] (int i) {
 ```cpp
  int row = i / a_gl_rd_delta_o;
  return a_gl_rd_delta_o * row + (i % a_gl_rd_delta_o) ^ row;
+};
 ```
 
-};`
 
 #### 3.1.2 B矩阵
 
@@ -280,7 +280,7 @@ SUBTILE重排对应的是：
         )
 ```
 
- w = w.permute((0, 2, 1, 3))`
+ w = w.permute((0, 2, 1, 3))
 
 这里共享内存读写B矩阵，也就是直接存写，也就不需要考虑bank conflict了。
 
@@ -294,7 +294,7 @@ SUBTILE重排对应的是：
  FragA frag_a[2][thread_m_blocks];
  I4 frag_b_quant[2];
  FragC frag_c[thread_m_blocks][4][2];
- FragS frag_s[2][4];`
+ FragS frag_s[2][4];
 
 接着看调用链：
 
@@ -307,7 +307,7 @@ SUBTILE重排对应的是：
           wait_for_stage();
         }
         matmul(k);
-      }`
+      }
 ```
 
 
@@ -358,7 +358,7 @@ ldmatrix.sync.aligned.m8n8.x4.shared.b16 指令来实现。
 int a_sh_rd = a_sh_stride * ((threadIdx.x % 32) % 16) + (threadIdx.x % 32) / 16;
 ```
 
-a_sh_rd += 2 * ((threadIdx.x / 32) / (thread_n_blocks / 4));`
+a_sh_rd += 2 * ((threadIdx.x / 32) / (thread_n_blocks / 4));
 
 第一行结合上述关于ldmatrix的说明，在thread 0-32分别获取对应ldmatrix需要的地址。
 
@@ -397,7 +397,7 @@ thread_k_blocks/b_sh_wr_iters = threads/8/thread_n_blocks
 
  ldsm4(frag_a[k % 2][i], &sh_a_stage[a_sh_rd_trans[k % b_sh_wr_iters][i]]);
  int4* sh_b_stage = sh_b + b_sh_stage * pipe;
- frag_b_quant[k % 2] = *reinterpret_castI4*>(&sh_b_stage[b_sh_rd_delta * (k % b_sh_wr_iters) + b_sh_rd]);`
+ frag_b_quant[k % 2] = *reinterpret_castI4*>(&sh_b_stage[b_sh_rd_delta * (k % b_sh_wr_iters) + b_sh_rd]);
 
 在SHARED->REG的过程中还会有一次transform_a的调用，我个人理解，在ROW不变的前提下，transform_a是一个可逆变换。这样就可以轻松从SHARED内存位置回到原始位置。
 
@@ -426,7 +426,7 @@ B矩阵的读取指令在vllm库中为了支持H100，稍有修改，建议参�
       for (int i = 0; i  thread_m_blocks; i++) {
         mma(frag_a[k % 2][i], frag_b0, frag_c[i][j][0]);
         mma(frag_a[k % 2][i], frag_b1, frag_c[i][j][1]);
-      }`
+      }
 ```
 
 
@@ -493,7 +493,7 @@ def _get_perms():
     perm = np.array(perm)
     interleave = np.array([0, 2, 4, 6, 1, 3, 5, 7])
     perm = perm.reshape((-1, 8))[:, interleave].ravel()
-    perm = torch.from_numpy(perm)`
+    perm = torch.from_numpy(perm)
 ```
 
 
@@ -520,7 +520,7 @@ PERM1.
 因此通过：
 
 interleave = np.array([0, 2, 4, 6, 1, 3, 5, 7])
- perm = perm.reshape((-1, 8))[:, interleave].ravel()`
+ perm = perm.reshape((-1, 8))[:, interleave].ravel()
 
 将8BIT的数据进行混插。
 
@@ -617,7 +617,7 @@ global归约实际上可以理解成是同步顺序处理。
         barrier_acquire(&locks[slice_col], slice_idx);
         global_reduce(slice_idx == 0, last);
         barrier_release(&locks[slice_col], last);
-      }`
+      }
 ```
 
 
@@ -636,9 +636,9 @@ __device__ inline void barrier_acquire(int* lock, int count) {
     while (state != count);
   }
   __syncthreads();
+}
 ```
 
-}`
 
 当count=0，不会锁。
 

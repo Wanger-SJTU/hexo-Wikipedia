@@ -40,11 +40,14 @@ AI框架本质的作用在于把一个把用户的模型表达翻译到可执行
 
 线性IR的一个例子是堆栈机代码（Stack-Machine Code），它是一种单地址代码，假定操作数存在一个栈中。大多数操作从栈获得操作数，并将其结果推入栈中。例如：表达式 b-a*3对应的堆栈机代码如下：
 
+```x86asm
 push 3
 push a
+```
+
 multiply
 push b
-substract`
+substract
 
 LLVM IR是一个典型的混合IR，它包含了两个层次（CFG+BB）：
 
@@ -74,14 +77,14 @@ Continuation-passing style（CPS）直译为：连续传递风格。CPS 表示�
 
 ```python
 def foo(x):
-return x+1`
+return x+1
 ```
 
 
 转换为CPS形式，k就是一个continuation：
 
 def foo(x,k):
-k(x+1)`
+k(x+1)
 
 直观上看，函数不“return”，而是“continue”;
 
@@ -95,7 +98,7 @@ def prodprimes(n):
         return 1
     if isprime(n):
         return n * prodprimes(n - 1)
-return prodprimes(n - 1)`
+return prodprimes(n - 1)
 ```
 
 
@@ -118,7 +121,7 @@ def prodprimes(n, c):
     if n == 1:
         c(1)
     else:
-        isprime(n, k)`
+        isprime(n, k)
 ```
 
 
@@ -132,7 +135,7 @@ def h(q):                         i = n - 1
 ```
 
 i = n - 1
-prodprimes(i, h)`
+prodprimes(i, h)
 
 参考【3】
 
@@ -148,7 +151,7 @@ ANF形式将表达式划分为两类：原子表达式和复合表达式，原�
           |  (lambda (VAR …) )
  ::= (  …)
           |  (if   )
- ::= (let ([VAR ]) ) |  | `
+ ::= (let ([VAR ]) ) |  | 
 
 例如上面的prodprimes函数，如果用上述的文法表示，应该为：
 
@@ -163,7 +166,7 @@ ANF形式将表达式划分为两类：原子表达式和复合表达式，原�
                              (* n p)))
                          (let (s (- n 1))
                            (prodprimes m))
-                    ))))))`
+                    ))))))
 ```
 
 
@@ -182,7 +185,7 @@ def prodprimes(n):
         p = prodprimes(m)
         return n * p
     s = n - 1
-return prodprimes(s)`
+return prodprimes(s)
 ```
 
 
@@ -281,7 +284,7 @@ def header_pow(phi_n, phi_r, x):
     def after_pow():
         return phi_r
     f = switch(phi_n > 0, header_pow, after_pow)
-    f()`
+    f()
 ```
 
 
@@ -331,7 +334,7 @@ def phi_r_bprop_header_pow(phi_n, phi_r, x, sens):
         %5 = env_phi_r_bprop_body_pow()
     else:
         %5 = env_phi_r_bprop_after_pow()
-return %5`
+return %5
 ```
 
 
@@ -357,7 +360,7 @@ MindIR文法继承于ANF，其定义如下所示：
  ::= Scalar | Named | Tensor | Type | Shape
                | Primitive | MetaFuncGraph | FuncGraph 
  ::= ( …)
- ::=  | `
+ ::=  | 
 
 MindIR中的ANode对应于ANF的原子表达式，ANode有两个子类分别为ValueNode和ParameterNode。ValueNode表示常数节点，可承载一个常数值（标量、符号、张量、类型、维度等），也可以是一个原语函数（Primitive）或一个元函数（MetaFuncGraph）或一个普通函数（FuncGraph），因为在函数式编程中函数定义本身也是一个值。ParameterNode是参数节点，表示函数的形参。
 
@@ -380,7 +383,7 @@ def test_f(x, y):
     a = x - 1
     b = a + y
     c = b * func(a, b)
- return c`
+ return c
 ```
 
 
@@ -388,7 +391,7 @@ def test_f(x, y):
 
 lambda (x, y)
 
-```js
+```x86asm
     let a = x - 1 in
     let b = a + y in
     let func = lambda (x, y)
@@ -396,7 +399,7 @@ lambda (x, y)
         ret end in
     let %1 = func(a, b) in
     let c = b * %1 in
-    c end`
+    c end
 ```
 
 
@@ -425,7 +428,7 @@ def hof(x):
  def g(function, x):
  return function(x) * function(x)
     res = g(f, x)
- return res`
+ return res
 ```
 
 
@@ -480,7 +483,7 @@ def ms_closure():
     closure = func_outer(1, 2)
     out1 = closure(1)
     out2 = closure(2)
- return out1, out2`
+ return out1, out2
 ```
 
 

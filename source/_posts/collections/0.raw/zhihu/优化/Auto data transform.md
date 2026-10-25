@@ -33,7 +33,7 @@ auto data transform的基本流程是，对应一个计算过程，也就是一�
 
 ```text
 template 
-class DataTransformer : public IRVisitor`
+class DataTransformer : public IRVisitor
 ```
 
 
@@ -46,7 +46,7 @@ std::string target_;
 Func replace_func_;
 ```
 
-T op_;`
+T op_;
 
 在DataTransformer中，我们仅考虑了四则运算，即加，减，乘，除和除余，这里以加法运算做说明：
 
@@ -90,7 +90,7 @@ void visit(const Add *add) override {
 template
 void data_transform(std::vector &outputs,Func target,DataTransformMethod method)
 
-void auto_data_transform(std::vector &outputs)`
+void auto_data_transform(std::vector &outputs)
 ```
 
 
@@ -110,7 +110,11 @@ enum class DataTransformMethod{
  REORDER,
  INTERLEAVE,
  SPLITY
-};`
+
+```text
+};
+```
+
 
 DataOP需要重载三个函数，两个括号运算符重载和一个命名函数,命名规则是$+算子名。
 
@@ -124,7 +128,11 @@ public:
  virtual void operator()(std::vector &args){}
  virtual void operator()(Func &lfunc,Func &rfunc){}
  virtual std::string name(){return "$NULL";}
-};`
+
+```text
+};
+```
+
 
 virtual void operator()(std::vector &args){}`这个重载是用于在定义中将目标函数的参数进行重新排布的，以matmul.cpp为例：
 
@@ -133,7 +141,7 @@ virtual void operator()(std::vector &args){}`这个重载是用于在定义中�
 执行reorder操作得到：
 
 Br(x,y,b) = input_b(y,x,b)
-func(x,y,b)=input_a(k,y,b)*Br(k,x,b)`
+func(x,y,b)=input_a(k,y,b)*Br(k,x,b)
 
 - `operator()(std::vector &args) `用于在func表达式中将input_b(x,k,b)替换为Br(k,x,b)
 - `operator()(Func &lfunc,Func &rfunc)`用于构造Br(x,y,b)=input_b(y,x,b)表达式。
@@ -156,7 +164,7 @@ reorder cost****对于一个这样的表达式：
 对于上述表达式，如果我们增加一个定义：
 
 Reorder(x,y,z) = input(y,x,z)
-func(x,y,z,b) = Reorder(x,y,z)*b`
+func(x,y,z,b) = Reorder(x,y,z)*b
 
 可以看到，结果一样，func(x,y,z,b)这个表达式没有发生cache miss，只有上面的Reorder(x,y,z)发生了cache miss，其miss次数为x<strong>y</strong>z，可以看到，miss次数减少了b倍。所以我们定义reorder cost为发生数据读取顺序不一致的表达式的数据总量。
 
@@ -167,13 +175,13 @@ use_distacne cost****use_distance比reorder更加难理解一些，它是基于�
 具体看如下实例：
 
 Rdom k(0,K);
-func(x,y,b) += input_A(k,y,b)*input_b(x,k,b);`
+func(x,y,b) += input_A(k,y,b)*input_b(x,k,b);
 
 在这个例子中，input_b的数据需求始终是第二维优先的，我们可以通过reroder使其变成第一维，也可以使用划分的操作。我们对x进行划分,形成新的表达式：
 
 Rdom k(0,K);
 Bi(x,y,xo,b) = input_b(xo*16+x,y,b)
-func(x,y,b) += input_A(k,y,b)*Bi(x%16,k,x/16,b);`
+func(x,y,b) += input_A(k,y,b)*Bi(x%16,k,x/16,b);
 
 新增加的Bi表达式的数据产生顺序是x,y,xo,b，其中x的范围为0~16，因此x*y的大小缩小了，这部分数据可以在一个cache中放下，而在func表达式中，我们需求的数据顺序对应到Bi中是y,x,xo,b。
 

@@ -32,7 +32,7 @@ __NR_exit_group 94
 __NR_exit 93 
 __NR_pidfd_send_signal 424
 __NR_kill 129
-__NR_tgkill 130`
+__NR_tgkill 130
 
 查看记录： `report_sample.py --symfs ./binary_cache -i perf.data`
 
@@ -53,7 +53,7 @@ Google最近在simpleperf中增加了对uprobe的支持。 [simpleperf: Add --up
   PC 0x69e64-0x69e94 
   PC 0x6fcbc-0x6fd40 
   PC 0xbfea0-0xbfeb8 
-  PC 0xbfec0-0xbfed8 `
+  PC 0xbfec0-0xbfed8 
 
 第二步：通过simpleperf设置uprobe 事件，如我们跟踪kill调用
 

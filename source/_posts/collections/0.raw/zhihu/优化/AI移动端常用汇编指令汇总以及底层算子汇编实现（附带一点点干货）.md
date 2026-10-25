@@ -85,9 +85,13 @@ BEGIN_FUNCTION q8gemm_ukernel_4x8__aarch32_neon
 #ifndef __APPLE__
  .arch armv7-a
  .fpu neon
+
+```text
 #endif
  # Load bias
  # - ip = bias
+```
+
  LDR ip, [sp, 8]
  PUSH {r4, r5, r6, r7}
  
@@ -112,9 +116,12 @@ BEGIN_FUNCTION q8gemm_ukernel_4x8__aarch32_neon
  BX lr
 END_FUNCTION q8gemm_ukernel_4x8__aarch32_neon
  
+```x86asm
 #ifdef __ELF__
 .section ".note.GNU-stack","",%progbits
 #endif
+```
+
 
  看到没，有前处理后处理入栈出栈操作的呀，一个不小心可是很容易出错的哟~
 
@@ -228,7 +235,7 @@ NEON寄存器用V来表示（后缀为8B/16B/4H/8H/2S/4S/2D）；
  const float* bias = _bias;
 ```
 
- float32x4_t _bias0 = bias ? vld1q_f32(bias+g*4) : vdupq_n_f32(0.f);`
+ float32x4_t _bias0 = bias ? vld1q_f32(bias+g*4) : vdupq_n_f32(0.f);
 
 然后在占位符那里表明我这个_bias0需要用一个浮点寄存器缓存起来；
 
@@ -241,12 +248,12 @@ NEON寄存器用V来表示（后缀为8B/16B/4H/8H/2S/4S/2D）；
 因为q0是按照s16的方式导进来，因此，d0相当于有4个int16，因此能索引到d[3]
 
   "vld1.s16 {q0, q1}, [%2]!       \n" // input int16x4_t
-  "vmull.s16   q10,  %P6, d0[3]   \n" // `
+  "vmull.s16   q10,  %P6, d0[3]   \n" // 
 
 首先定义的是int16x4，就是D寄存器，因此在访问的时候就是直接%P14了m，用P指明是D寄存器；
 
 int16x4_t _k4 = vld1_s16(k0 + 16);
- "vmlal.s16   q13, %P14, d3[3]   \n" //_k4 ==> %14`
+ "vmlal.s16   q13, %P14, d3[3]   \n" //_k4 ==> %14
 
 <strong>V8：</strong>
 
@@ -259,7 +266,7 @@ v8的int16操作：以int16 的方式加载一个D寄存器的_k0出来，然后
   int16x4_t _k0 = vld1_s16(k0     );
   "ld1    {v0.8h, v1.8h}, [%2], #32     \n" // input int16x4_t
   "smull   v4.4s, %6.4h, v0.h[7]        \n" 
-  "w"(_k0),    // %6 `
+  "w"(_k0),    // %6 
 
 ### 四、AI底层常见算子汇编实现
 
@@ -301,7 +308,7 @@ __asm__ __violate__ ("movl %1,%0"
 
 ```text
              : "=r" (result)
-             : "m" (input));`
+             : "m" (input));
 ```
 
 
@@ -335,7 +342,7 @@ __asm__("mov %0, %0, ror #1"
 
 ```text
         : "+r"(y)
-        );`
+        );
 ```
 
 
@@ -344,7 +351,11 @@ __asm__("mov %0, %0, ror #1"
 __asm__("mov %0, %0, ror #1"
 : "=r" (y)
 : "0" (y)
-);`
+
+```text
+);
+```
+
 
 如果GCC编译器支持的话，这个例子的效果和前面的例子是相同的。本例不同的是，先定义了一个可写的输出变量，同时在输入变量列表中，明确用数字0指出了前面定义的第一个操作数<strong>同时也要用来作为输入操作数</strong>。 
 
@@ -354,7 +365,7 @@ __asm__ __volatile__("ldr %0, [%1]\n\t"
 "str %2, [%1, #4]"  
 : "=&r" (rdv)  
 : "r" (&table), "r" (wdv)  
-: "memory");`
+: "memory");
 
 本例中，将操作一个table数组，读出它的第一个数存放到rdv中，然后修改第二个数为wdv中存放的值。乍看一下没什么问题，但是如果编译器用同一个寄存器来表示输入操作数&table（%1）和输出操作数rdv（%0）怎么办呢？执行完第一条语句之后，table数组的地址就被修改掉了。所以，可以在输出操作数中加上一个“&”修改符，强制保证输出操作数不能和输入操作数复用同一个寄存器，这个问题就解决了。如果汇编代码中有输入寄存器还没有使用完毕，就对输出操作数进行修改的情况，则特别需要用“&”修改符，保证不复用。 
 
@@ -404,12 +415,9 @@ for (int x = 0; x  datas_float0.size(); ++x){
 
 const float* ptr_w = &weights[0];
 const float* ptr_b = &bias[0];
-```
-
 PowerPerf::Mat inMat   = PowerPerf::Mat::from_float_array(&datas_float0[0], 64,64,64);
 PowerPerf::Mat outMat = PowerPerf::Mat::from_float_array(&datas_float1[0], 64,64,64);
 
-```cpp
 int n = inMat.shape.h*inMat.shape.w ;
 ```
 
@@ -420,24 +428,17 @@ int inch = inMat.shape.c;
 int outw = outMat.shape.w;
 int outh = outMat.shape.h;
 int outch = outMat.shape.c;
-```
-
 
 PowerPerf::EventMonitor cruiser0;
-
-```cpp
 cruiser0.GET_RawEvent_TICK(setRawEvent);
 for(int ii = 0; ii  outch / 4; ++ii){
  int i = ii * 4;
-```
-
 
  PowerPerf::Mat outMat0 = outMat.channel(i);
  PowerPerf::Mat outMat1 = outMat.channel(i + 1);
  PowerPerf::Mat outMat2 = outMat.channel(i + 2);
  PowerPerf::Mat outMat3 = outMat.channel(i + 3);
 
-```cpp
  const float bias0 = ptr_b[i];
  const float bias1 = ptr_b[i + 1];
  const float bias2 = ptr_b[i + 2];

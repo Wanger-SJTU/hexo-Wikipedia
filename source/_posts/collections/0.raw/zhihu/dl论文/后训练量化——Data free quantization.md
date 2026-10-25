@@ -165,8 +165,11 @@ $$s_i=\frac{1}{r_i^{(2)}}\sqrt{r_i^{(1)}r_i^{(2)}} \tag{9} $$
 
 至此，两个卷积核的 equalization 算法可以通过下面的代码实现：
 
+```python
 def equalize(weight1, bias1, weight2):
  # 重排列
+```
+
  weight2 = weight2.permute(1, 0, 2, 3)
  out_channel = weight1.shape[0]
  for i in range(out_channel):
@@ -182,7 +185,7 @@ def equalize(weight1, bias1, weight2):
 ```
 
  weight2 = weight2.permute(1, 0, 2, 3)
- return weight1, weight2`
+ return weight1, weight2
 
 在实际操作中，我们会以两个相邻的 conv 为一组 (比如 conv1、conv2 为一组，conv2、conv3 为一组)，按顺序逐个计算每一组的缩放系数，逐层逐层地做 weight equalize 直到结尾。
 

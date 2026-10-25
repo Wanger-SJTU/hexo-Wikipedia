@@ -131,9 +131,9 @@ Auto Scheduler调优IR和TVM How to中的IR对比        因为上述三份TVM�
       }
     }
   }
+}
 ```
 
-}`
 
 #### 4. BLIS GEMM计算的算法简介
 
@@ -173,7 +173,7 @@ Auto Scheduler调优IR和TVM How to中的IR对比        因为上述三份TVM�
 
  BLIS将需要计算的矩阵按照前述方式分成大块后，在我的机器上将每块再次分成多个6x16小块，并调用手工优化的内核对每个小块进行计算。核心计算代码如下：
 
-```text
+```x86asm
 	mov(var(k_iter), rsi) // i = k_iter;
 	test(rsi, rsi) // check i via logical AND.
 	je(.SCONSIDKLEFT) // if i == 0, jump to code that
@@ -328,7 +328,7 @@ BLIS Kernel做如下计算![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84
 	vfmadd231ps	%ymm8, %ymm10, %ymm0
 	addq	$64, %rsi
 	addq	$4, %rbx
-	jne	.LBB3_8`
+	jne	.LBB3_8
 
         在一个C(4x16)的计算中，C的所有数据常驻寄存器ymm0~ymm7；k从0到1024，对每一个k值ki，将b（1x16)的值加载到ymm8和ymm9中；将ki对应的a(4x1)中的4个a值，分4次load到ymm10中，与ymm8和ymm9相乘后加回C对应行数据所在的寄存器中。
 
@@ -431,7 +431,7 @@ vfmadd231ps     %ymm14, %ymm12, %ymm3
 vbroadcastss    556(%rdx,%rbx), %ymm14
 vfmadd231ps     %ymm13, %ymm14, %ymm0
 vbroadcastss    -2320(%rdx,%rbx), %ymm13
-vfmadd231ps     %ymm12, %ymm14, %ymm1`
+vfmadd231ps     %ymm12, %ymm14, %ymm1
 
 -         Pack方式对比：
                 1. BLIS对A矩阵数据按照访问顺序做了重排，而TVM没有。

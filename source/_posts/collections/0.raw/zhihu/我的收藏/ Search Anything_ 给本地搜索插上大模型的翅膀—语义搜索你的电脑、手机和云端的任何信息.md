@@ -75,7 +75,7 @@ SearchAnything将最先进的AI模型下载至本地运行，因此，无需担�
 然后使用如下的conda命令创建本地environment：
 
 conda env create -f env.yaml
-conda activate anything`
+conda activate anything
 
 ### 使用方法
 
@@ -93,7 +93,7 @@ SearchAnything v1.0 Type 'exit' to exit.
 Type 'insert' to parse file.   
 Type 'search' to search file.   
 Type 'delete' to delete file. 
-Instruction:`
+Instruction:
 
 键入`insert`并回车，然后输入需要处理的文件地址/文件夹地址，如果给定的是一个文件夹地址，则该文件夹中所有支持的文件类型的文件都将被解析并保存到数据库中。
 

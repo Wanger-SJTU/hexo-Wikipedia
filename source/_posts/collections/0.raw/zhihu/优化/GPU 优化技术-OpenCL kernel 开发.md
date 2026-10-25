@@ -56,9 +56,9 @@ OpenCL kernel函数的整体结构和C函数像似，由函数名、形参列表
 
     // 存储结算结果
     vstore8(c_ln, 0, dst + idx);
+}
 ```
 
-}`
 
 - 函数名
 __kernel是必须要有，函数声明为可由OpenCL设备上的应用程序执行的内核，告诉编译器这是一个OpenCL 内核函数。
@@ -104,7 +104,7 @@ std::string program_source = ClReadString(source_name);
 char *cl_str   = (char *)program_source.c_str();
 ```
 
-program        = clCreateProgramWithSource(context, 1, (const char **)&cl_str, NULL, NULL);`
+program        = clCreateProgramWithSource(context, 1, (const char **)&cl_str, NULL, NULL);
 
 - 字符串保存
 
@@ -135,7 +135,7 @@ __kernel void add(__global uchar *a,
 ```
 
 
-program = clCreateProgramWithSource(context, 1, (const char **)& add_cl_kernel_str , NULL, NULL);`
+program = clCreateProgramWithSource(context, 1, (const char **)& add_cl_kernel_str , NULL, NULL);
 
 ### 三、 OpenCL C 语言介绍
 
@@ -163,7 +163,7 @@ int device_flag = 1;
 err = clGetDeviceInfo(device,CL_DEVICE_HALF_FP_CONFIG, sizeof(cl_device_fp_config),
 
 ```text
-                      &device_flag, NULL);`
+                      &device_flag, NULL);
 ```
 
 
@@ -172,7 +172,7 @@ err = clGetDeviceInfo(device,CL_DEVICE_HALF_FP_CONFIG, sizeof(cl_device_fp_confi
 ```text
 #ifdef FP16
 #pragma OpenCL EXTENSION cl_khr_fp16 : enable
-#endif`
+#endif
 ```
 
 
@@ -196,7 +196,7 @@ err = clGetDeviceInfo(device,CL_DEVICE_DOUBLE_FP_CONFIG, sizeof(cl_device_fp_con
 ```text
 #ifdef FP64
 #pragma OpenCL EXTENSION cl_khr_fp64 : enable
-#endif`
+#endif
 ```
 
 
@@ -226,7 +226,7 @@ float4 v4 = (float4)(v2, v3);
 
 //矢量标量结合初始化矢量
 float3 vrgb = (float3)(0.25, 0.5, 0.75);
-float4 rgba = (float4)(vrgb, 1.0f);`
+float4 rgba = (float4)(vrgb, 1.0f);
 
 矢量分量：OpenCL提供三种方式来访问矢量分量：数值索引、字母索引和hi/lo/even/odd方式。它们都是通过点(.)方式来访问分量。数值索引和字母索引对比使用如下所示：
 
@@ -237,14 +237,14 @@ float4 rgba = (float4)(vrgb, 1.0f);`
 //实例代码
 int8 data = (int8)(1, 2, 3, 4, 5, 6, 7, 8);
 int4 a = data.s1234; // a = (2, 3, 4, 5)
-int4 b = data.s3456; // b = (4, 5, 6, 7)`
+int4 b = data.s3456; // b = (4, 5, 6, 7)
 
 需要注意对于数值索引和字母索引，两个不能混用。例如：
 
 float4 f;
 float4 A = f.xy34;
 float4 B = f.s01yw;
-//上述两种用法都是错误的，两种不同的索引不能混用`
+//上述两种用法都是错误的，两种不同的索引不能混用
 
 hi/lo/even/odd：主要用来访问一半矢量分量，具体访问的分量如下：
 
@@ -255,7 +255,7 @@ int8 data = (int8)(1, 2, 3, 4, 5, 6, 7, 8);
 int4 a = data.hi; // a = (5, 6, 7, 8)
 int4 b = data.lo; // b = (1, 2, 3, 4)
 int4 c = data.even; // c = (2, 4, 6, 8)
-int4 d = data.odd; // d = (1, 3, 5, 7)`
+int4 d = data.odd; // d = (1, 3, 5, 7)
 
 3.1.3 其他内置类型
 
@@ -310,9 +310,9 @@ __kernel void MatrixCopyVector(__global uchar *src,
     int offset = mad24(g_idy, width, g_idx);
     uchar4 v_ln0 = vload4(0, src + offset);
     vstore4(v_ln0, 0, dst + offset);
+}
 ```
 
-}`
 
 - 实测性能差异：在高通8450 Adreno GPUs上kernel的start->end执行时间如下图所示，向量化代码时间为1.17ms，标量代码时间为2.17ms，可以看出性能有接近1倍的提升。
 ![](/images/collections/0.raw/zhihu/%E4%BC%98%E5%8C%96/asset/img_b5db5acc9f8d.jpg)
@@ -337,7 +337,7 @@ OpenCL的存储器模型分别为：全局存储器、局部存储器、常量�
 __global参数的数据将被放置在全局内存中。
 __constant参数的数据将存储在全局只读内存中（有效）。
 __local参数的数据将存储在本地内存中。
-__private参数的数据将存储在私有内存中（默认）。`
+__private参数的数据将存储在私有内存中（默认）。
 
 <strong>3.3.2 函数修饰符</strong>
 
@@ -366,9 +366,9 @@ kernel void MatrixMatrixAdd(global float *mtx_a,
                             const int rows,
                             const int cols)
 {
+}
 ```
 
-}`
 
 - 内核可选属性修饰符 
 kernel修饰符可以和属性修饰符__attribute__结合使用，主要有三种组合方式。
@@ -380,7 +380,7 @@ __kernel __attribute__((vec_type_hint(typen)))
 __kernel __attribute__((work_group_size_hint(16, 16, 1)))
 
 // 指定必须使用的工作组大小，local_work_size的大小
-__kernel __attribute__((reqd_work_group_size(16, 16, 1)))`
+__kernel __attribute__((reqd_work_group_size(16, 16, 1)))
 
 <strong>3.3.3 对象访问修饰符</strong>
 
@@ -392,24 +392,24 @@ __kernel void add(__read_only image2d_t img_a,
                   __write_only image2d_t img_d)
 {
     ......
+}
 ```
 
-}`
 
 3.3.4 属性限定符
 
 - 指定 enum、struct 和 union 类型的特殊属性
 __attribute__((aligned(n))) __attribute__((endian(host)))
 __attribute__((aligned)) __attribute__((endian(device)))
-__attribute__((packed)) __attribute__((endian))`
+__attribute__((packed)) __attribute__((endian))
 
 - 指定变量或结构体的特殊属性
 __attribute__((aligned(alignment)))
-__attribute__((nosvm))`
+__attribute__((nosvm))
 
 - 指定可以展开循环（for、while 和 do ）
 __attribute__((OpenCL_unroll_hint(n)))
-__attribute__((OpenCL_unroll_hint))`
+__attribute__((OpenCL_unroll_hint))
 
 #### 3.4 运算符
 
@@ -434,7 +434,7 @@ int4 v_d = (int4)(1, 2, 3, 4);
 int s_d = 3;
 ```
 
-int4 v_sum = v_d * d;// (1, 2, 3, 4) * (3, 3，3，3) = (3, 6, 9, 12)`
+int4 v_sum = v_d * d;// (1, 2, 3, 4) * (3, 3，3，3) = (3, 6, 9, 12)
 
 运算符的多种使用方式
 
@@ -453,9 +453,9 @@ __kernel void op_sample(__global int4 *output)
     //对向量vec中的第一个和第二个元素赋值
     vec.s01 = vec.s23  7 && (vec.s0 >= 1;
     *output = vec;
+}
 ```
 
-}`
 
 #### 3.5 build-in 函数
 
@@ -497,9 +497,9 @@ __kernel void image_process(__global uchar *src,
     int ofst_x = get_global_offset(0); // 值为 0
     int ofst_y = get_global_offset(1); // 值为 10
     int dim_size = get_work_dim; //当前设置工作组为2维， 值为 2
+}
 ```
 
-}`
 
 <strong>工作组</strong>
 
@@ -546,7 +546,7 @@ __kernel void group_sample(__global float *dst)
 35.00 45.10 55.20 65.00 75.10 85.20
 36.01 46.11 56.21 66.01 76.11 86.21
 37.00 47.10 57.20 67.00 77.10 87.20
-38.01 48.11 58.21 68.01 78.11 88.21`
+38.01 48.11 58.21 68.01 78.11 88.21
 
 上述样例详细说明了 clEnqueueNDRangeKernel 如何为工作项配置本地和全局 ID等信息，相信大家能有一个直观的认识。
 
@@ -587,7 +587,7 @@ rint: -6.0, -4.0, 4.0, 6.0
 round: -7.0, -4.0, 4.0, 7.0
 ceil: -6.0, -3.0, 4.0, 7.0
 floor: -7.0, -4.0, 3.0, 6.0
-trunc: -6.0, -3.0, 3.0, 6.0`
+trunc: -6.0, -3.0, 3.0, 6.0
 
 <strong>比较函数</strong>
 
@@ -615,7 +615,7 @@ __kernel void sin_cal(__global float4 *angle,
 
 (30, 60, 90, 120)
 //输出
-(0.5, 0.866025, 1, 0.866025)`
+(0.5, 0.866025, 1, 0.866025)
 
 <strong>类型转换</strong> 
 
@@ -626,14 +626,14 @@ __kernel void sin_cal(__global float4 *angle,
 T a = (T)b;
 
 // 标量到向量转换
-Tn a = (Tn)(b);`
+Tn a = (Tn)(b);
 
 - 向量类型转换：主要是标量到标量的转换和标量到向量的转换操作 
 函数原型
 
 destType convert_destType(srcType)
 destType convert_destType(srcType)
-destTypeN convert_destTypeN(srcTypeN)`
+destTypeN convert_destTypeN(srcTypeN)
 
 饱和处理：<strong>_sat</strong>是饱和溢出处理,例如int转uchar, 限幅在0-255之间; 
 
@@ -652,7 +652,7 @@ destTypeN convert_destTypeN(srcTypeN)`
 float4 vin = (float4)(1.3, 2.6, 3.4, 5.6);
 uchar4 vot = convert_uchar4_sat_rte(vin);
 // 输出
-1 2 3 6`
+1 2 3 6
 
 <strong>3.5.3 整数数学函数</strong>
 
@@ -685,7 +685,7 @@ x = 1,968,526,677 y = 1,914,839,586
 add_sum = –411,601,033 (0xE7777777)
 add0    = 2,147,483,647 (0x7FFFFFFF) //饱和
 sub_sum = –393,705,336 (0xE8888888)
-sub0    = 2,147,483,647 (0x7FFFFFFF) //饱和`
+sub0    = 2,147,483,647 (0x7FFFFFFF) //饱和
 
 <strong>乘法</strong>
 
@@ -712,7 +712,7 @@ __kernel void inter_mul(__global uint *dst)
 
 dst[0] = 0x3268ACF1;
 dst[1] = ;
-dst[2] = ;`
+dst[2] = ;
 
 <strong>其它整数函数</strong>
 
@@ -738,7 +738,7 @@ __kernel void inter_opera(__global uint *dst)
 ```
 
 dst[0] = 224;
-dst[1] = 0x9531;`
+dst[1] = 0x9531;
 
 #### 3.6 shuffle 和 select 函数
 
@@ -772,7 +772,7 @@ const int mask = (uint4)(1, 2, 0, 1);
 ```
 
 float4 d4;
-float4 res = shuffle(d4, mask);`
+float4 res = shuffle(d4, mask);
 
 select 函数：
 
@@ -808,7 +808,7 @@ native函数
 
 native_cos, native_divide, native_exp, native_exp2, native_exp10, native_log,
 native_log2, native_log10, native_powr, native_recip, native_rsqrt, native_sin,
-native_sqrt, native_tan`
+native_sqrt, native_tan
 
 <strong>native和build-in函数比较</strong>
 
@@ -834,9 +834,9 @@ int Gaussian3x3Sigma0U8C1(uint8_t *src, int width, int height, int istride,
     }
 
     return 0;
+}
 ```
 
-}`
 
 OpenCL  kernel内核代码采用buffer的方式进行读写操作，每个工作项处理4个元素，利用向量化方式处理可以多个工作项并行运算。如果读采用image2d_t的方式，性能会更好，以后会介绍。
 
@@ -862,9 +862,9 @@ __kernel void Gauss3x3u8c1Buffer(__global uchar *src, int row, int col,
     int dst_index = mad24(y, dst_pitch, x + 1);
     // 写入到目的地址中
     vstore4(v_dst, 0, dst + dst_index);
+}
 ```
 
-}`
 
 <strong>4.2 结果展示</strong> 
 

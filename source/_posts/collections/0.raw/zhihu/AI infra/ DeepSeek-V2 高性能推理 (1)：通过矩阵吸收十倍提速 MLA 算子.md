@@ -58,7 +58,7 @@ q_b_proj 大小为 [q_lora_rank, num_heads * q_head_dim] = [q_lora_rank, num_att
     # 切分 rope 和非 rope 部分，公式中 40 行反过来
     q_nope, q_pe = torch.split(
         q, [self.qk_nope_head_dim, self.qk_rope_head_dim], dim=-1
-    )`
+    )
 ```
 
 
@@ -93,7 +93,7 @@ kv_b_proj 大小为  [kv_lora_rank， num_heads * (q_head_dim - qk_rope_head_dim
         # 因为 kv_b_proj 打包了 W^{UK} 和 W^{UV} 把他们分离出来
         k_nope, value_states = torch.split(
             kv, [self.qk_nope_head_dim, self.v_head_dim], dim=-1
-        )`
+        )
 ```
 
 
@@ -147,7 +147,7 @@ kv_b_proj 大小为  [kv_lora_rank， num_heads * (q_head_dim - qk_rope_head_dim
         attn_output = torch.matmul(attn_weights, value_states)
         ....
         attn_output = self.o_proj(attn_output)
-        ....`
+        ....
 ```
 
 
@@ -194,7 +194,7 @@ $$atten\_weights = {q_t}^\top k_t = (W^{UQ} c_t^Q)^{\top} W^{UK} c_t^{KV} = {c_t
         q_nope = torch.einsum('hdc,bhqd->bhqc', q_absorb, q_nope) 
         # 吸收后 attn_weights 直接基于 compressed_kv 计算不用展开。
         attn_weights = torch.matmul(q_pe, k_pe.transpose(2, 3)) + torch.einsum('bhqc,blc->bhql', q_nope, compressed_kv)
-        attn_weights *= self.softmax_scale`
+        attn_weights *= self.softmax_scale
 ```
 
 
@@ -222,7 +222,7 @@ u   = einsum('hdc,blc,bqhl,hdD->bhD', W_UV, c_t_KV, attn_weights, W_o)
 # 利用结合律改变计算顺序
 o_  = einsum('bhql,blc->bhqc', attn_weights, c_t_KV) # (4)
 o   = einsum('bhqc,hdc->bhqd', o_, W_UV)  # (5)
-u   = einsum('hdD,bhqd->bqD', W_o, o)     # (6)`
+u   = einsum('hdD,bhqd->bqD', W_o, o)     # (6)
 
 #### 实验结果
 

@@ -55,7 +55,7 @@ source_url: https://zhuanlan.zhihu.com/p/457693496
       3.3.1.3 code_ = func.instructions.data()(更新指令信息)
     3.3.2 VirtualMachine::RunLoop(按顺序执行指令)
       3.3.2.1 InvokePacked/InvokeGlobal/ReadRegister/…(根据指令进行处理)
-      3.3.2.2 pc++ && goto main_loop(指令记数++，处理下一条指令)`
+      3.3.2.2 pc++ && goto main_loop(指令记数++，处理下一条指令)
 ```
 
 
@@ -77,7 +77,7 @@ def compile(mod, target=None, target_host=None, params=None):
         compiler.set_params(params)
     compiler.lower(mod, target)
     compiler.codegen()
-    return compiler.get_exec()`
+    return compiler.get_exec()
 ```
 
 
@@ -119,9 +119,9 @@ void VMCompiler::Lower(IRModule mod, const TargetsMap& targets, const tvm::Targe
 IRModule VMCompiler::OptimizeModule(IRModule mod, const TargetsMap& targets_arg, const Target& target_host_arg) {
   …
   ArrayPass> pass_seqs;
-  Arrayruntime::String> entry_functions{"main"};
 
 ```text
+  Arrayruntime::String> entry_functions{"main"};
   pass_seqs.push_back(transform::RemoveUnusedFunctions(entry_functions));
   pass_seqs.push_back(transform::ToBasicBlockNormalForm());
   …
@@ -151,7 +151,7 @@ IRModule VMCompiler::OptimizeModule(IRModule mod, const TargetsMap& targets_arg,
 调用流程：
 1 PrimitiveInliner::Inline()
   1.1 VisitExpr_(LetNode)(将var：value关系保存到var_map)
-  1.2 VisitExpr_(CallNode)(去除var：value对，直接链接function)`
+  1.2 VisitExpr_(CallNode)(去除var：value对，直接链接function)
 
 ![](/images/collections/0.raw/zhihu/tvm/asset/img_0c666bc76858.jpg)
 
@@ -166,9 +166,9 @@ IRModule VMCompiler::OptimizeModule(IRModule mod, const TargetsMap& targets_arg,
 @ tvm/src/relay/backend/vm/http://inline_primitives.cc
 
 Pass InlinePrimitives() {
-  runtime::TypedPackedFuncIRModule(IRModule, PassContext)> pass_func =
 
 ```cpp
+  runtime::TypedPackedFuncIRModule(IRModule, PassContext)> pass_func =
       [=](IRModule m, PassContext pc) { return relay::vm::PrimitiveInliner(m).Inline(); };
   auto inline_pass = CreateModulePass(pass_func, 1, "Inline", {});
   // Eliminate dead code for each function after inlining.
@@ -234,7 +234,7 @@ struct PrimitiveInliner : ExprMutator {
 
 2 transform::FoldConstant
 3 transform::FuseOps
-4 重复1-3多次`
+4 重复1-3多次
 
 ![](/images/collections/0.raw/zhihu/tvm/asset/img_7050073b58b9.jpg)
 
@@ -248,10 +248,9 @@ struct PrimitiveInliner : ExprMutator {
 
 @ tvm/src/relay/backend/vm/http://compiler.cc
 
+```text
 transform::Sequential MemoryOpt(tvm::Target host_target, TargetsMap targets) {
   ArrayPass> pass_seqs;
-
-```text
   pass_seqs.push_back(transform::ManifestAlloc(host_target, targets));
   pass_seqs.push_back(transform::FoldConstant());
   ...
@@ -355,7 +354,7 @@ class ContextAnalyzer : public MixedModeVisitor {
 AnalysisResultMap ContextAnalysis(const IRModule& mod, const Device& default_device) {
   AnalysisResultMap Results() {
 
-```cpp
+```x86asm
     AnalysisResultMap ret;
     for (const auto& it : expr_to_device_) {
       auto device = Lookup(it.second);
@@ -529,7 +528,7 @@ load_const $1 Const[0]
 alloc_storage $2 $1 64 float32 1
 load_const $3 Const[1]
 alloc_tensor $4 $2 $3 [1, 1, 224, 224, 3] float32
-invoke_packed PackedFunc[0] (in: $0, out: $4)`
+invoke_packed PackedFunc[0] (in: $0, out: $4)
 
 也就是指令集的一种抽象。最后通过VMFunction记录指令集，为后面的过程作准备
 
@@ -577,7 +576,7 @@ class VirtualMachine(object):
         self._exec = exe
         ...
         self._set_input = self.module["set_input"]
-        self._setup_device(device, memory_cfg)`
+        self._setup_device(device, memory_cfg)
 ```
 
 
@@ -637,7 +636,7 @@ class VirtualMachine(object):
             init_args.append(device.device_id)
             alloc_type = memory_cfg[device] if device in memory_cfg else default_alloc_type
             init_args.append(alloc_type)
-        self._init(*init_args)`
+        self._init(*init_args)
 ```
 
 
@@ -701,7 +700,7 @@ class VirtualMachine(object):
                     new_args[idx] = kwargs[k]
                     cnt += 1
             ...
-        self._set_input(func_name, *cargs)`
+        self._set_input(func_name, *cargs)
 ```
 
 
@@ -722,7 +721,7 @@ class Executable(object):
             assert p
             params.append(p)
         self._function_params[func_name] = params
-        return params`
+        return params
 ```
 
 
@@ -808,7 +807,7 @@ class VirtualMachine(object):
         return self.invoke("main", *args, **kwargs)
     def invoke(self, func_name, *args, **kwargs):
         ...
-        return self._invoke(func_name)`
+        return self._invoke(func_name)
 ```
 
 

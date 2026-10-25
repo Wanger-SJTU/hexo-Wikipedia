@@ -225,12 +225,12 @@ Armv8-A 是个弱内存序体系结构，其所支持的内存访问，不会强
 再举一个因为存在地址依赖（Address Dependencies）而必须按序执行的例子。地址依赖的一个具体场景是，一个 load 或 store 使用前面的一个 load 的结果作为地址。下面是例子：
 
 LDR X0, [X1] 
-STR X2, [X0]  ; Result of previous load is the address in this store.`
+STR X2, [X0]  ; Result of previous load is the address in this store.
 
 	下面是另一个例子：
 
 LDR X0, [X1] 
-STR X2, [X5, X0] ; Result of previous load is used to calculate the address.`
+STR X2, [X5, X0] ; Result of previous load is used to calculate the address.
 
 如果两个内存访问之间存在地址依赖，则处理器会按其 program order 执行。
 
@@ -238,7 +238,7 @@ STR X2, [X5, X0] ; Result of previous load is used to calculate the address.`
 
 LDR X0, [X1] 
 CBZ X0, somewhere_else 
-LDR X2, [X5]      ; The control dependency on X0 does not guarantee ordering.`
+LDR X2, [X5]      ; The control dependency on X0 does not guarantee ordering.
 
 	有些情况下，需要对 Normal 内存的访问之间或对 Normal 和 Device 内存的访问之间进行保序，这时候就需要使用屏障指令。
 
@@ -277,7 +277,7 @@ DMB 指令接受一个参数，该参数指明所需保序的 explicit 访问所
 以下代码展示了在弱内存序模型下可能的乱序。X1 和 X3 地址处的内存初始为 0x0：
 
 STR #1, [X1] 
-STR #1, [X3]  ; Might be observed before the previous STR.`
+STR #1, [X3]  ; Might be observed before the previous STR.
 
 该例子中，X3 地址处内存的更新和被观察到，可以发生在 X1 地址之前。现在假设另一个 Observer 以相同顺序读取两个相同的内存地址，下表展示了内存系统可能会返回的观察值组合：
 
@@ -287,7 +287,7 @@ X1X30x00x00x00x10x10x00x10x1表 1
 
 STR #1, [X1]       
 DMB 
-STR #1, [X3]  ; Cannot observe this STR without first observing the previous STR.`
+STR #1, [X3]  ; Cannot observe this STR without first observing the previous STR.
 
 该例子中，X3 地址处内存如果被观察到已更新，则 X1 地址处内存必然也被观察到已更新。现在假设另一个 Observer 以相同顺序读取两个相同的内存地址，下表展示了内存系统可能会返回的观察值组合：
 
@@ -317,7 +317,7 @@ DSB 内存屏障用于确保在此 DSB <strong>之前</strong>的内存访问，
 STR X0, [X1]     ; Must complete before the DSB can retire. 
 DSB 
 ADD X1, X2, X3   ; Must NOT be executed before the first STR completes.
-STR X4, [X5]     ; Must NOT be executed until the first STR completes.`
+STR X4, [X5]     ; Must NOT be executed until the first STR completes.
 
 上面代码中的 DSB，可以确保第二条 STR 以及 ADD 指令不会在第一个 STR 以及 DSB 执行完成<strong>之前</strong>执行。
 
@@ -332,7 +332,7 @@ read 的完成解释起来要比 write 的完成要简单一些。这是因为�
 下面的例子中，DSB 指令会一直阻塞执行，直到对 Device-nGnRnE 内存的 STR 操作从 end 外设收到对指定内存地址的 write response：
 
 STR X0, [Device-nGnRnE]  ; Must receive a write response from the end-peripheral  
-DSB SY`
+DSB SY
 
 ### 10. 内存屏障范围的限制
 
@@ -355,7 +355,7 @@ PE0
 LDR x0, [X4]  ; Can be observed out-of-order 
 STR #1, [X1]       
 DMB ISHST
-STR #1, [X3]`
+STR #1, [X3]
 
 如果 PE0 和 PE1 不属于同一 Shareable domain，那么架构上是允许 PE1 在观察到 X1 地址处内存被更新<strong>之前先</strong>观察到 X3 地址处内存被更新的。另外，所有 PEs（包括 PE0）会观察到 X4 的 load 相对 X1 和 X3 的 write 是乱序的。
 
@@ -373,13 +373,13 @@ STR #1, [X3]`
 AArch64 不会对不同 Observer 所发起的访问进行保序，即使访问间存在地址依赖。举例来说，以下指令序列可能会乱序，即使它们之间存在依赖：
 
 DC CVAU, X0 ; Operations are executed in any order
-IC IVAU, X0 ; despite address dependency.`
+IC IVAU, X0 ; despite address dependency.
 
 如果这些指令被乱序，指令 cache 可能会被填充进数据 cache 中的过期数据。为解决此问题，需要一个内存屏障。例子如下：
 
 DC CVAU, X0 ; Operations are executed in any order
 DSB ISH
-IC IVAU, X0 ; despite address dependency.`
+IC IVAU, X0 ; despite address dependency.
 
 该例子中，数据 cache clean(DC CVAU) 会在指令 cache invalidate(IC IVAU) 执行<strong>之前</strong>完成。DC CVAU 保证了在执行 invalidate 之前，新的数据总是对指令 cache 可见。
 
@@ -396,14 +396,14 @@ Shareability domain 定义了这些指令保序所能影响的 Observers 范围�
 PE0
 
 STR  #1, [X1]       
-STLR #1, [X3]`
+STLR #1, [X3]
 
 下面是关于 Load-Acquire 和 Store-Release 指令的一些更多信息：
 
 - 对于 Load-Acquire、Load-AcquirePC 以及 Store-Release 指令，所传入的数据地址必须对齐到所要访问的数据长度，否则访问会触发 Alignment fault。
 - 对于 Load-Acquire Exclusive Pair 以及 Store-Release Exclusive Pair，所传入的数据地址必须对齐到所要 load 的数据长度的两倍。否则访问会触发 Alignment fault。如下面代码所示：
 LDAXP x0, x1, [0x08]  ; Alignment fault       
-LDAXP x0, x1  [0x10]`
+LDAXP x0, x1  [0x10]
 
 - Load-Acquire 和 Store-Release 还有各自的独家变体。
 
@@ -436,7 +436,7 @@ Store-Release STLR 指令的保序规则如下：
 下面的示例代码，展示如何通过 STLR 来保序。X1 和 X3 地址处的内存初始为 0x0：
 
 STR  #1, [X1] 
-STLR #1, [X3]  ; Cannot observe this STLR without observing the previous STR.`
+STLR #1, [X3]  ; Cannot observe this STLR without observing the previous STR.
 
 该示例中，如果 X3 地址处的内存被观察到被更新了，则 X1 必然也被观察到被更新了。现在假设另一个 Observer 以相同顺序读取两个相同的内存地址，下表展示了内存系统可能会返回的观察值组合：
 
@@ -501,7 +501,7 @@ ISB
 MSR  LORSA_EL1, x1
 MSR  LOREA_EL1, x2
 MSR  LORC_EL1, x3
-ISB`
+ISB
 
 下图中，只有对相同 LORegion 中地址（由 LDLAR 或 STLLR 指令指定）的访问才会受影响，对 LORegion 之外的内存访问不受影响。举例来说，对 C 的 store 会先于<strong>LDLAR 被观察到。如果软件使用了一个 LDAR，则对 C 的 store 会在 LDAR</strong>之后**被观察到，如图中所示：
 

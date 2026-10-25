@@ -74,9 +74,9 @@ source_url: https://zhuanlan.zhihu.com/p/1911805939247486365
     "object": "retail",
     "chunk": 3
   }
+]
 ```
 
-]`
 
 提示词鼓励LLM在实体命名上保持一致性，使用简短的关系短语（1-3个词），并避免使用代词指代。从所有文本块中提取的三元组随后会被组合成一个初始的原始知识图谱。
 
@@ -117,9 +117,9 @@ source_url: https://zhuanlan.zhihu.com/p/1911805939247486365
     "object": "information sharing",
     "inferred": true
   }
+]
 ```
 
-]`
 
 #### LLM提示词的艺术
 
@@ -129,7 +129,7 @@ source_url: https://zhuanlan.zhihu.com/p/1911805939247486365
 
 您是一个专注于知识提取和知识图谱生成的高级AI系统。
 您的专长包括识别文本中一致的实体引用和有意义的关系。
-关键指令：所有关系（谓语）必须最多3个词。理想情况下是1-2个词。这是硬性限制。`
+关键指令：所有关系（谓语）必须最多3个词。理想情况下是1-2个词。这是硬性限制。
 
 <strong>提取用户提示词：</strong>
 
@@ -157,7 +157,7 @@ source_url: https://zhuanlan.zhihu.com/p/1911805939247486365
 
 - 除了JSON之外，不要包含任何文本或评论。
 - 只返回JSON数组，每个三元组作为一个对象，包含“subject”、“predicate”和“object”。
-- 确保JSON有效且格式正确。`
+- 确保JSON有效且格式正确。
 
 还有另外三个提示词未在此列出，它们指导LLM进行标准化和关系推理。您可以在源文件中查看（和调整）所有提示词。
 
@@ -195,7 +195,7 @@ source_url: https://zhuanlan.zhihu.com/p/1911805939247486365
 
 ```bash
 git clone https://github.com/robert-mcdermott/ai-knowledge-graph.git
-cd ai-knowledge-graph`
+cd ai-knowledge-graph
 ```
 
 
@@ -232,7 +232,7 @@ use_llm_for_inference = true    # 是否使用LLM进行关系推理
 apply_transitive = true     # 是否应用传递性推理规则
 
 [visualization]
-edge_smooth = false # 边缘线是否平滑（true或false）`
+edge_smooth = false # 边缘线是否平滑（true或false）
 
 <strong>注意：</strong> 对于本地LLM的使用，您可以使用Ollama或LM Studio API端点；对于访问任何商业LLM提供商（AWS Bedrock、Azure、Anthropic、OpenAI等），可以使用LiteLLM。如果您需要有关运行Ollama本地或LiteLLM访问其他LLM服务的帮助，请参阅我之前的文章：《LLM零到英雄：Ollama实践指南》或《使用LiteLLM Proxy集中管理多个AI服务》。
 
@@ -256,7 +256,7 @@ options:
   --input INPUT     输入文本文件路径（必需，除非使用--test）
   --debug           启用调试输出（原始LLM响应和提取的JSON）
   --no-standardize  禁用实体标准化
-  --no-inference    禁用关系推理`
+  --no-inference    禁用关系推理
 ```
 
 
@@ -330,7 +330,7 @@ Edges: 116 (55 inferred)
 Communities: 12
 
 To view the visualization, open the following file in your browser:
-file:///Users/robertm/mycode/ai-knowledge-graph/mydocument.html`
+file:///Users/robertm/mycode/ai-knowledge-graph/mydocument.html
 
 现在，在您的网络浏览器中打开生成的HTML文件，即可探索知识图谱。如果您只是阅读本文，想直接查看并与该系统创建的知识图谱进行交互，无需自行创建，请点击以下链接查看一个关于工业革命的文档生成的示例可视化：[Industrial-Revolutions.html](https://link.zhihu.com/?target=https%3A//robert-mcdermott.github.io/ai-knowledge-graph/) (请注意，此链接是示例，实际链接需要替换为真实的托管地址)。
 

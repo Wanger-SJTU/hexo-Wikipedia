@@ -59,9 +59,9 @@ int rmp_make_shared(u64 pfn, enum pg_level level)
 	state.pagesize = PG_LEVEL_TO_RMP(level);
 
 	return rmpupdate(pfn, &state);
+}
 ```
 
-}`
 
 在 AMD 的方案中，如果在虚拟机（guest）端调用 `dma_alloc_coherent`，这一过程最终会触发 VMEXIT 中断，将控制权交还给 Hypervisor。接下来，Hypervisor 会使用特定的 SNP 指令（例如 `SNP_PAGE_STATE_CHANGE`）来处理内存共享请求，将相应的内存页面从私有状态转换为共享状态。种机制使得内存共享操作更加简洁和高效，不需要额外的内存映射或中间层，简化了 DMA 的操作流程。使用这种方法，还可以将复杂的内存管理逻辑从虚拟机内部转移到 Hypervisor 层，使得虚拟机可以更加高效地执行 DMA 操作，同时确保数据的安全性。
 

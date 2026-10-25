@@ -133,7 +133,7 @@ mask = np.zeros_like(old_frame)
 # 光流跟踪
 while True:
 
-```text
+```x86asm
     ret, frame = cap.read()
     if ret is False:
         break
@@ -230,7 +230,7 @@ frame_idx = 0
 detect_interval = 5
 while True:
 
-```text
+```x86asm
     ret, frame = cap.read()
     if ret:
         frame_gray = cv.cvtColor(frame, cv.COLOR_BGR2GRAY)
@@ -363,7 +363,7 @@ prvs = cv.cvtColor(frame1,cv.COLOR_BGR2GRAY)
 hsv = np.zeros_like(frame1)
 hsv[...,1] = 255
 
-```text
+```x86asm
 while(1):
     ret, frame2 = cap.read()
     next = cv.cvtColor(frame2,cv.COLOR_BGR2GRAY)

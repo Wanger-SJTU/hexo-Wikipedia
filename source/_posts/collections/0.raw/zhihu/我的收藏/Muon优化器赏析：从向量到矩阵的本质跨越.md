@@ -169,7 +169,7 @@ k, x1, x2 = w
 a, b, c = 1 + k * x1**2 * x2**2, -k * (x1<strong>2 + x2</strong>2), k
 
 ```python
-print(f'{n} & {m} & {T} & {k:.3f} & {x1:.3f} & {x2:.3f} & {a:.3f} & {b:.3f} & {c:.3f} & {f(w, data):.5f}')`
+print(f'{n} & {m} & {T} & {k:.3f} & {x1:.3f} & {x2:.3f} & {a:.3f} & {b:.3f} & {c:.3f} & {f(w, data):.5f}')
 ```
 
 

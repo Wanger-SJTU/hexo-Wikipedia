@@ -30,7 +30,7 @@ import numpy as np
 
 
 Infer = Conv2dBoundsInfer(in_channels=2048, out_channels=512, kernel_size=1, groups=1, bias=True, padding=(
-    0, 0), stride=(1, 1), dilation=(1, 1), intput_shape=(1, 2048, 56, 56), test=False)`
+    0, 0), stride=(1, 1), dilation=(1, 1), intput_shape=(1, 2048, 56, 56), test=False)
 
 ### 1. 最简单的卷积实现
 
@@ -66,7 +66,7 @@ def demo1(imageArr: np.ndarray, weightArr: np.ndarray, outputArr: np.ndarray, ta
 ```
 
 
-demo1 total loaded : 6578274304`
+demo1 total loaded : 6578274304
 
 ### 2. 尝试进行硬件加速
 
@@ -111,7 +111,7 @@ def demo2(imageArr: np.ndarray, weightArr: np.ndarray, outputArr: np.ndarray, ta
 ```
 
 
-demo2 total loaded : 179651584`
+demo2 total loaded : 179651584
 
 ### 3. 尝试减少重复的数据加载
 
@@ -156,7 +156,7 @@ def demo3_1(imageArr: np.ndarray, weightArr: np.ndarray, outputArr: np.ndarray, 
 ```
 
 
-demo3-1 We can't move load weights statement out of OC!`
+demo3-1 We can't move load weights statement out of OC!
 
 不过实际情况会发现因SRAM空间不够而出错. 这就是SRAM大小影响compute schedule.
 
@@ -193,7 +193,7 @@ def demo3_2(imageArr: np.ndarray, weightArr: np.ndarray, outputArr: np.ndarray, 
 ```
 
 
-demo3-2 total loaded : 9586432`
+demo3-2 total loaded : 9586432
 
 虽然这个例子和`demo3-1`实际上差别不大, 但是主要是用于说明SRAM对于不同的Compute Schedule的限制.
 
@@ -236,7 +236,7 @@ def demo3_3(imageArr: np.ndarray, weightArr: np.ndarray, outputArr: np.ndarray, 
 ```
 
 
-demo3-3 total loaded : 4825088`
+demo3-3 total loaded : 4825088
 
 此时对于weights的加载比之前减少了一倍, 但是如果此时OH/OW有切分, 那么同一份ic的weights也会被多次加载. 而需要注意的是SRAM的大小有限, 所以必须缩小OC上的tile size, 来保证当前策略较优. 这就是tile size与SRAM大小共同影响compute schedule.
 
@@ -277,7 +277,7 @@ def demo4(imageArr: np.ndarray, weightArr: np.ndarray, outputArr: np.ndarray, ta
 ```
 
 
-demo4 We can't move load image statement out of OC!`
+demo4 We can't move load image statement out of OC!
 
 但是很可惜这个卷积的image比较大, 如果所以移动到外循环会因为SRAM存不下而报错. 这就是compute schedule与不同的tile size可以相互影响的情况.
 
@@ -308,7 +308,7 @@ def demo5_1(imageArr: np.ndarray, biasArr: np.ndarray, weightArr: np.ndarray, ou
 
   demo3_3(mid._array, weightArr, outputArr, targetOutput, "demo5-1")
 
-demo5-1 total loaded : 30515200`
+demo5-1 total loaded : 30515200
 
 那么每次算子执行结束后, 数据需要出DDR再回到SRAM, 这样就消耗了许多带宽.
 
@@ -353,7 +353,7 @@ def demo5_2(imageArr: np.ndarray, biasArr: np.ndarray, weightArr: np.ndarray, ou
 ```
 
 
-demo5-2 total loaded : 8036352`
+demo5-2 total loaded : 8036352
 
 可以发现减少了两倍的数据搬运.
 
@@ -414,7 +414,7 @@ def demo6(Infer1: Conv2dBoundsInfer, Infer2: Conv2dBoundsInfer, imageArr: np.nda
 ```
 
 
-demo6 total loaded : 722528`
+demo6 total loaded : 722528
 
 #### 6.2 执行Fusion后的算子
 
@@ -456,7 +456,7 @@ def demo6_1(Infer1: Conv2dBoundsInfer, Infer2: Conv2dBoundsInfer, imageArr: np.n
 ```
 
 
-demo6-1 total loaded : 206432`
+demo6-1 total loaded : 206432
 
 ### 总结
 
@@ -475,7 +475,7 @@ demo6-1 total loaded : 206432`
     │                    │                              │                   │
     │                    └╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌┘                   │
     │                                                                       │
-    └╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌┘`
+    └╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌┘
 
 微观上, 对于一个算子来说, 根据循环顺序/变量分配时机/切分方式的不同会导致显著的性能差距. 比如卷积, 为了尽量减少重复load weights可以在OC/IC进行切分. 同时如果考虑存储足够大还可以在不同循环维度去stage local buffer, 在内层循环里进行复用. 
 

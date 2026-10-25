@@ -74,12 +74,9 @@ void Widget::process()
 std::enabled_shared_from_this`就是解决这个问题的。 
 
 std::enable_shared_from_this`定义了一个成员函数：`shared_from_this()`，它会创建指向当前对象的`std::shared_ptr`，会去关联同一个已经创建的控制块，解决了多个控制块的问题。
-```
-
 
 Widget::process`的安全实现：
 
-```cpp
 class Widget: public std::enable_shared_from_thisWidget> {
 public:
     // ...

@@ -49,7 +49,7 @@ MLA KV Cache 采取典型值kv_lora_rank=512, qk_rope_head_dim=64，每层缓存
 Stream 1: q/k/v conv1d
 Stream 2: fg_a_proj
 Stream 3: b_proj → float -> sigmoid
-Stream 4: fb_proj → gate`
+Stream 4: fb_proj → gate
 
 另外，为什么MLA没有采用类似策略？
 

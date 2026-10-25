@@ -450,7 +450,7 @@ VAS $15, $1, $14, #1 // 1+exp(tmp)
 VDV $16, $1, $14, $15 // y=exp(tmp)/(1+exp(tmp))
 RV $17, $1 // i, r[i] = random(0,1)
 VGT $8, $1, $17, $16 // i, h[i] = (r[i]>y[i])?1:0
-VSTORE $8, $1, #500 // store hidden vector to address (500)`
+VSTORE $8, $1, #500 // store hidden vector to address (500)
 
 ### 参考文献
 

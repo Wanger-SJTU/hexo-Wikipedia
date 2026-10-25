@@ -172,7 +172,7 @@ class Self_Attention(nn.Module):
 
         output = torch.bmm(atten,V) # Q * K.T() * V # batch_size * seq_len * dim_v
 
-        return output`
+        return output
 ```
 
 

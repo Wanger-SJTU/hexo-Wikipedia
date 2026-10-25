@@ -133,7 +133,7 @@ def benchmark_with_profiler(
 benchmark_with_profiler(pinned=0, streamed=0)
 benchmark_with_profiler(pinned=0, streamed=1)
 benchmark_with_profiler(pinned=1, streamed=0)
-benchmark_with_profiler(pinned=1, streamed=1)`
+benchmark_with_profiler(pinned=1, streamed=1)
 
 在上面的实验中，在满足条件1的gpu上调用`to(non_blocking=True)`进行数据搬移，并控制变量，模拟了条件2（非默认流）和条件3（锁页内存）的有无，并观察了执行的trace，我在A800上的实验结果如下：
 
@@ -315,7 +315,7 @@ def main():
 
 
 if __name__ == "__main__":
-    main()`
+    main()
 
 画图结果如下：
 
@@ -365,7 +365,7 @@ cpu_result_buffer = torch.empty_like(cpu_tensor, pin_memory=True)
 cpu_result_buffer.copy_(gpu_tensor, non_blocking=True)
 
 # 3. 如果需要立即在CPU上使用这些数据，必须同步等待传输完成
-torch.cuda.synchronize() `
+torch.cuda.synchronize() 
 
 基于我实际遇到的情况（较大的激活内存(B,S,D)，多层分次传输 layer=30），给出以下测试代码：
 
@@ -521,7 +521,7 @@ def test_memory_transfer_performance():
         torch.cuda.empty_cache()
 
 if __name__ == "__main__":
-    test_memory_transfer_performance()`
+    test_memory_transfer_performance()
 
 运行结果如下：
 
@@ -556,7 +556,7 @@ Number of layers: 30
 平均每层存储时间: 2.30 ms
 存储时间标准差: 0.14 ms
 从CPU加载30层数据到GPU (total): 116.48 ms
-平均每层加载时间: 1.94 ms`
+平均每层加载时间: 1.94 ms
 
 批量加载无明显优势，`.cpu().pin_memory()`则是最糟糕的情况，属于是走过头了再折返回来白忙活，预分配pin_memory后从cuda直接copy到pin memory则有比较好的效果，当然，预分配的开销没有算进去，但是只要传输次数多，这个开销是可以接受的。
 
@@ -586,7 +586,7 @@ Number of layers: 30
 
 时间轴：
    Stream1: [H2D1][Compute1][D2H1][H2D3][Compute3][D2H3]
-   Stream2:      [H2D2][Compute2][D2H2][H2D4][Compute4]`
+   Stream2:      [H2D2][Compute2][D2H2][H2D4][Compute4]
 
 实现以上设计的必要条件是：
 
@@ -723,7 +723,7 @@ if __name__ == "__main__":
     # test_memory_transfer_performance() 
     
     # 运行新的重叠性能测试
-    test_overlap_performance(num_layers=30, compute_intensity=20)`
+    test_overlap_performance(num_layers=30, compute_intensity=20)
 
 执行结果如下：
 
@@ -733,7 +733,7 @@ Layers: 30, Compute Intensity: 20
 总耗时 (单流顺序执行): 178.03 ms
   - 单项任务累加理论总耗时: 159.46 ms
     (H2D: 58.15 ms, Compute: 38.83 ms, D2H: 62.47 ms)
-总耗时 (双流流水线执行): 90.52 ms`
+总耗时 (双流流水线执行): 90.52 ms
 
 Profile结果如下：
 

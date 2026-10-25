@@ -204,7 +204,7 @@ source_url: https://zhuanlan.zhihu.com/p/691066049
 - 最后，对于KV cache，它的<strong>position序号</strong>的排布顺序是从左至右，从上到下的，即：
 0 | 1 | 2  | 3
 4 | 5 | 6  | 7
-8 | 9 | 10 | 11`
+8 | 9 | 10 | 11
 
 <strong>（2）chunk1</strong>**
 

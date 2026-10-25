@@ -106,7 +106,7 @@ class Response {
 41
 41, 42
 0, 28098576, 0
-0, 37052432, 0, 44`
+0, 37052432, 0, 44
 
 - 在包含 1 或 2 个 `int32_t` 的情况下，读取结果 <strong>总是正确的</strong>
 - 在包含超过 3 个 `int32_t` 的情况下，读取出的前 3 个数值 <strong>往往是错误的</strong>（期望是 `41, 42, 43`），有时候输出结果均为 `Invalid`（认为 Buffer 读完了）
@@ -120,9 +120,8 @@ class Response {
 - 而 `BufferReader::ReadInt32()` 读取了上述 <strong>已释放的内存</strong>，结果可能错误
 类似的写法还有（从调用代码来看，问题更隐晦一些）：
 
+```cpp
 BufferReader::BufferReader(const std::string& buffer)
-
-```text
     : payload_(buffer.data() + sizeof(uint32_t)),
       payload_size_(*reinterpret_castconst uint32_t*>(buffer.data())) {}
 ```
@@ -182,7 +181,7 @@ struct __rep {
 0x00007ffcdef27bd0 -- 41
 0x00007ffcdef27bd0 -- 41, 42
 0x00000000021c0f20 -- 0, 35315728, 0
-0x00000000021c0f20 -- 0, 35315728, 0, 44`
+0x00000000021c0f20 -- 0, 35315728, 0, 44
 
 - 在包含 1 或 2 个 `int32_t` 的情况下
 
@@ -256,7 +255,7 @@ previously allocated by thread T0 here:
 
 ```cpp
     #0 0x50b0f8 in operator new(unsigned long) /root/llvm-project/compiler-rt/lib/asan/asan_new_delete.cpp:95
-    #1 0x7f718285936e in void std::__cxx11::basic_string, std::allocator >::_M_construct(char*, char*, std::forward_iterator_tag) (/opt/compiler-explorer/gcc-11.2.0/lib64/libstdc++.so.6+0x14736e) (BuildId: ef355c62d82db886df570d5b383c6f4f094d40c1)`
+    #1 0x7f718285936e in void std::__cxx11::basic_string, std::allocator >::_M_construct(char*, char*, std::forward_iterator_tag) (/opt/compiler-explorer/gcc-11.2.0/lib64/libstdc++.so.6+0x14736e) (BuildId: ef355c62d82db886df570d5b383c6f4f094d40c1)
 ```
 
 

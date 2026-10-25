@@ -82,7 +82,7 @@ source_url: https://zhuanlan.zhihu.com/p/426127316
     vbroadcastss 0(%r15, %rax, 4), %ymm15
     vfmadd231ps %ymm12, %ymm15, %ymm9
     vfmadd231ps %ymm13, %ymm15, %ymm10
-    vfmadd231ps %ymm14, %ymm15, %ymm11`
+    vfmadd231ps %ymm14, %ymm15, %ymm11
 ```
 
 

@@ -131,7 +131,7 @@ assign raw_hazard_rs2 = instr0_lrd_valid && instr1_lrs2_valid &&
 assign waw_hazard = instr0_lrd_valid && instr1_lrd_valid &&
 
 ```text
-                   (instr0_lrd == instr1_lrd) && (instr0_lrd != 5'd0);`
+                   (instr0_lrd == instr1_lrd) && (instr0_lrd != 5'd0);
 ```
 
 

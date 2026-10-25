@@ -59,7 +59,7 @@ TickFlow 提供官方 Python SDK**，支持 A 股、ETF、美股、港股、国�
 pip install "tickflow[all]" --upgrade
 
 # 安装基础版
-pip install tickflow`
+pip install tickflow
 
 支持 Python 3.9+，推荐 3.10+。
 #### 初始化客户端
@@ -76,7 +76,7 @@ print(df.tail())
 
 # 获取标的信息
 instruments = tf.instruments.batch(symbols=["600000.SH", "000001.SZ"])
-print(instruments)`
+print(instruments)
 
 特点**：
 
@@ -94,7 +94,7 @@ print(instruments)`
 
 from tickflow import TickFlow
 
-tf = TickFlow(api_key="your-api-key")`
+tf = TickFlow(api_key="your-api-key")
 
 <strong>方式二：环境变量（Windows / Linux / Mac）</strong>
 
@@ -105,14 +105,14 @@ export TICKFLOW_API_KEY="your-api-key"
 set TICKFLOW_API_KEY=your-api-key
 from tickflow import TickFlow
 
-tf = TickFlow()  # 自动读取环境变量`
+tf = TickFlow()  # 自动读取环境变量
 
 - <strong>发起第一个请求</strong>
 quotes = tf.quotes.get(symbols=["600000.SH", "000001.SZ"])
 for q in quotes:
 
 ```python
-    print(f"{q['symbol']}: {q['last_price']}")`
+    print(f"{q['symbol']}: {q['last_price']}")
 ```
 
 
@@ -143,7 +143,7 @@ print(klines.tail(5))
 # 批量获取多标的
 symbols = ["600000.SH", "000001.SZ", "600519.SH"]
 dfs = tf.klines.batch(symbols, period="1d", count=10000, as_dataframe=True, show_progress=True)
-print(list(dfs.keys()))`
+print(list(dfs.keys()))
 
 #### 日内分时 K 线
 
@@ -153,7 +153,7 @@ print(df.tail())
 
 # 批量
 dfs = tf.klines.intraday_batch(["600000.SH", "000001.SZ"], as_dataframe=True, show_progress=True)
-print(dfs["600000.SH"].tail())`
+print(dfs["600000.SH"].tail())
 
 #### 实时行情
 
@@ -162,7 +162,7 @@ quotes = tf.quotes.get(symbols=["600000.SH", "000001.SZ"], as_dataframe=True)
 
 # 按标的池查询
 quotes_a = tf.quotes.get(universes=["CN_Equity_A"], as_dataframe=True)
-quotes_etf = tf.quotes.get(universes=["CN_ETF"], as_dataframe=True)`
+quotes_etf = tf.quotes.get(universes=["CN_ETF"], as_dataframe=True)
 
 #### 异步使用
 
@@ -182,7 +182,7 @@ async def main():
         tasks = [tf.klines.get(s, as_dataframe=True) for s in ["600000.SH", "000001.SZ"]]
         results = await asyncio.gather(*tasks)
 
-asyncio.run(main())`
+asyncio.run(main())
 ```
 
 

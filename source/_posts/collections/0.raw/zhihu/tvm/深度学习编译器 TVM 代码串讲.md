@@ -1027,7 +1027,7 @@ fn (%x) {
   %1 = log(%x)
   %2 = fn(%y) {
 
-```text
+```x86asm
     add(%y, %1)
   }
   %2
@@ -1836,9 +1836,9 @@ namespace transform {
 
 
 Pass FuseOps(int fuse_opt_level) {
-  runtime::TypedPackedFunc Function(Function, IRModule, PassContext)  pass_func =
 
 ```cpp
+  runtime::TypedPackedFunc Function(Function, IRModule, PassContext)  pass_func =
       [=](Function f, IRModule m, PassContext pc) {
         int opt_level = fuse_opt_level == -1 ? pc- opt_level : fuse_opt_level;
         auto max_fuse_depth = pc- GetConfig("relay.FuseOps.max_depth", Integer(kMaxFusedOps));
@@ -2677,9 +2677,8 @@ PrimFuncFor 实际是 ScheduleBuilder::Create 负责生成 Schedule, 在一些�
 
 需要注意上述代码中的 VisitExpr 与 anchor_implementation_.Schedule，我们先看后者
 
-te::Schedule OpImplementation::Schedule(const Attrs  attrs, const Array te::Tensor   outs,
-
 ```text
+te::Schedule OpImplementation::Schedule(const Attrs  attrs, const Array te::Tensor   outs,
                                         const Target  target) {
   return (*this)- fschedule(attrs, outs, target);
 }
@@ -2818,7 +2817,7 @@ def select_implementation(op, attrs, inputs, out_type, target, use_autotvm=True)
     return best_plevel_impl, outputs[best_plevel_impl]
 先使用 get_valid_implementations 得到所有合法的实现，然后使用 autotvm 调优，我们继续看 get_valid_implementations
 
-```python
+```x86asm
 def get_valid_implementations(op, attrs, inputs, out_type, target):
     fstrategy = op.get_attr("FTVMStrategy")
     assert fstrategy is not None, (

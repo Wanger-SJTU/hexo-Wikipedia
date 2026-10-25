@@ -263,7 +263,10 @@ int netif_receive_skb(struct sk_buff *skb)
 
  trace_netif_receive_skb_entry(skb);
 
+```x86asm
  ret = netif_receive_skb_internal(skb);
+```
+
  trace_netif_receive_skb_exit(ret);
 
 ```text

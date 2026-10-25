@@ -294,7 +294,7 @@ def event_loop_normal(self):
 
         # 调用工作进程执行模型前向传播
 
-```text
+```x86asm
         logits_output, next_token_ids, can_run_cuda_graph = (
             self.tp_worker.forward_batch_generation(model_worker_batch)
         )
@@ -539,7 +539,7 @@ D. 最终决策 (Run Prefill or Decode?)
 if new_batch is not None:
     # 优先级 1: 跑 Prefill
 
-```text
+```x86asm
     ret = new_batch
 else:
     # 优先级 2: 跑 Decode

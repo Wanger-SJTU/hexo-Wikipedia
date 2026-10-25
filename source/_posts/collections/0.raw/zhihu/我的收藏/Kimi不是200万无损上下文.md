@@ -31,7 +31,7 @@ Defined variable X1=200232.
 ....
 Defined variable X2=X1.
 ....
-Defined variable X3=X2.`
+Defined variable X3=X2.
 
 ![](/images/collections/0.raw/zhihu/%E6%88%91%E7%9A%84%E6%94%B6%E8%97%8F/asset/img_4edb7716cf22.jpg)
 

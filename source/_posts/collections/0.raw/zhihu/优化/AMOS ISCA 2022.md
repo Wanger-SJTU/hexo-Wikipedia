@@ -70,7 +70,7 @@ def conv2d(N, C, H, W, K, R, S, stride, padding, dilation):
 
 
 N, H, W, K, C, R, S, stride, padding, dilation = batch, 28, 28, 128, 128, 3, 3, 1, 1, 1
-A, B, Conv = conv2d(N, C, H, W, K, R, S, stride, padding, dilation)`
+A, B, Conv = conv2d(N, C, H, W, K, R, S, stride, padding, dilation)
 
 这个程序写得没有为Tensor Core做任何特殊处理，和平时用在CUDA Core上的程序没什么区别，那我应该怎么对它使用Tensor Core优化呢？
 
@@ -164,9 +164,9 @@ extern "C" __global__ void default_function_kernel2(half* __restrict__ Pad_vmap_
     }
   }
   (void)nvcuda::wmma::store_matrix_sync(((float *)memcpy_dst + ((((((((int)blockIdx.x) >> 1) * 2048) + ((((int)threadIdx.y) >> 1) * 1024)) + ((((int)blockIdx.x) & 1) * 512)) + ((((int)threadIdx.y) & 1) * 256)))), Conv_vmap_main_cmap_main[0], 32, nvcuda::wmma::mem_row_major);
+}
 ```
 
-}`
 
 可以看到 生成了一些额外的kernel用于layout转换，比如NCHW layout的卷积转成矩阵乘法的过程中的layout变换，就是利用这些kernel完成的。这些kernel也可以inline，这样就是implicit的操作，也可以不inline，这样就是explicit的操作，AMOS在后面搜索的时候会探索该不该inline。这些layout转换的操作需要改compute才能实现，原始的compute里没有这些操作的。为了实现这个改compute的操作，我设计了两步变换过程（对应文章里介绍的virtual mapping和physical mapping）。用卷积的例子简单说就是第一步先把要转换为矩阵乘的循环都展开、合并了，第二步再进行张量切分，把这些合并的大矩阵切成适合Tensor Core的小块（也会处理一些padding问题，这样就不会限制输入的形状了）。compute rewrite实现好了，剩下的就是靠schedule primitive进行优化，所以我实现了一个auto-scheduler，专门针对特殊指令自动进行schedule。
 

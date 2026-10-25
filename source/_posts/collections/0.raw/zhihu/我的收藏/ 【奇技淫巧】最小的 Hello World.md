@@ -29,9 +29,9 @@ int main()
 {
     printf("Hello World!\n");
     return 0;
+}
 ```
 
-}`
 
 注意的是，我们需要的是可执行的 64 位 elf。直接写段 PHP 然后调用解释器肯定小得多，但这显然不是完整的可执行文件。
 
@@ -42,7 +42,7 @@ int main()
 我们看一下大小：
 
 $ wc -c hello_world
-16048 hello_world`
+16048 hello_world
 
 这个最最最简单的程序竟然高达 16048 字节！
 
@@ -56,9 +56,9 @@ int main()
 {
     puts("Hello World!\n");
     return 0;
+}
 ```
 
-}`
 
 然后编译选项开启~~臭氧~~优化：
 
@@ -67,7 +67,7 @@ int main()
 我们看一下大小：
 
 $ wc -c hello_world
-16048 hello_world`
+16048 hello_world
 
 你猜怎么着？<strong>编译器比我们聪明多了！</strong>他不需要我们提醒，早就自动帮我们把 `printf` 优化成 `puts` 了！
 
@@ -114,7 +114,7 @@ $ nm hello_world
 0000000000001140 t frame_dummy
 0000000000001149 T main
                  U puts@GLIBC_2.2.5
-00000000000010c0 t register_tm_clones`
+00000000000010c0 t register_tm_clones
 
 我们需要的是可执行文件尽量小，所以符号表对我们来讲可有可无（逆向工程师缓缓打出一个问号）。我们有两种方法干掉符号表：
 
@@ -127,7 +127,7 @@ $ nm hello_world
 两种方法效果是一样的。现在文件的大小为：
 
 $ wc -c hello_world
-14472 hello_world`
+14472 hello_world
 
 ### 进阶优化
 
@@ -140,7 +140,7 @@ C 代码显然还是太重型了。一切优化的尽头是汇编，所以我们
   GLOBAL main
   SECTION .data
 
-```text
+```x86asm
     hello db "Hello World!", 10 ; 10 is the ASCII code for newline
   SECTION .text
   main:
@@ -153,7 +153,7 @@ C 代码显然还是太重型了。一切优化的尽头是汇编，所以我们
     ; exit with status code 0
     mov eax, 60      ; system call number for exit
     xor edi, edi     ; exit status code (0)
-    syscall          ; invoke the system call`
+    syscall          ; invoke the system call
 ```
 
 
@@ -162,12 +162,12 @@ C 代码显然还是太重型了。一切优化的尽头是汇编，所以我们
 我们编译程序：
 
 $ nasm -f elf64 hello_world.asm
-$ gcc -m64 -s -o hello_world hello_world.o`
+$ gcc -m64 -s -o hello_world hello_world.o
 
 现在看看大小：
 
 $ wc -c hello_world
-14256 hello_world`
+14256 hello_world
 
 很好，又小了一些。
 
@@ -182,7 +182,7 @@ $ wc -c hello_world
   GLOBAL nomainhere
   SECTION .data
 
-```text
+```x86asm
     hello db "Hello World!", 10 ; 10 is the ASCII code for newline
   SECTION .text
   nomainhere:
@@ -195,7 +195,7 @@ $ wc -c hello_world
     ; exit with status code 0
     mov eax, 231      ; system call number for _exit
     xor edi, edi     ; exit status code (0)
-    syscall          ; invoke the system call`
+    syscall          ; invoke the system call
 ```
 
 
@@ -204,12 +204,12 @@ $ wc -c hello_world
 编译时指定无 start files：
 
 $ nasm -f elf64 hello_world.asm
-$ gcc -m64 -nostartfiles -s -o hello_world hello_world.o`
+$ gcc -m64 -nostartfiles -s -o hello_world hello_world.o
 
 现在看看大小：
 
 $ wc -c hello_world
-13176 hello_world`
+13176 hello_world
 
 很好，又小了一些。
 
@@ -233,7 +233,7 @@ Section Headers:
   [ 8] .eh_frame         PROGBITS        0000000000002000 002000 000000 00   A  0   0  8
   [ 9] .dynamic          DYNAMIC         0000000000002ee0 002ee0 000120 10  WA  5   0  8
   [10] .data             PROGBITS        0000000000003000 003000 00000d 00  WA  0   0  4
-  [11] .shstrtab         STRTAB          0000000000000000 00300d 000069 00      0   0  1`
+  [11] .shstrtab         STRTAB          0000000000000000 00300d 000069 00      0   0  1
 
 我们浪费了大量字节去初始化根本没有用到的东西，而我们需要的只有 `.text` 和 `.data`。
 
@@ -247,20 +247,20 @@ SECTIONS
   . = 0x8048000 + SIZEOF_HEADERS;
   tiny : { *(.text) *(.data) *(.rodata*) }
   /DISCARD/ : { *(*) }
+}
 ```
 
-}`
 
 然后链接：
 
 $ nasm -f elf64 hello_world.asm
 $ ld -T link.lds -o hello_world hello_world.o
-$ strip hello_world`
+$ strip hello_world
 
 现在看看大小：
 
 $ wc -c hello_world
-440 hello_world`
+440 hello_world
 
 巨大的进步！
 
@@ -313,7 +313,7 @@ $ wc -c hello_world
 
   _start:
 
-```text
+```x86asm
     ; write "Hello World!" to stdout
     mov eax, 1            ; system call for write
     mov edi, 1            ; file descriptor for stdout
@@ -329,7 +329,7 @@ $ wc -c hello_world
 
   hello: db "Hello World!", 10 ; 10 is the ASCII code for newline
 
-  filesize  equ  $ - $`
+  filesize  equ  $ - $
 
 注意，我们此处还将 `rsi` 改为更小的 `esi`。
 
@@ -340,7 +340,7 @@ $ wc -c hello_world
 现在看看大小：
 
 $ wc -c hello_world
-164 hello_world`
+164 hello_world
 
 更小了！
 
@@ -386,7 +386,7 @@ elf 文件格式规定，除了文件头之外，别的部分可以出现在任�
 
   _start:
 
-```text
+```x86asm
     ; write "Hello World!" to stdout
     mov eax, 1            ; system call for write
     mov edi, 1            ; file descriptor for stdout
@@ -402,7 +402,7 @@ elf 文件格式规定，除了文件头之外，别的部分可以出现在任�
 
   hello: db "Hello World!", 10 ; 10 is the ASCII code for newline
 
-  filesize  equ  $ - $`
+  filesize  equ  $ - $
 
 你可能发现了一点问题：`e_shnum` 本应为 0，现在却被我们修改了，这不就错了吗？别急，看看 elf 的文档：
 
@@ -416,7 +416,7 @@ elf 文件格式规定，除了文件头之外，别的部分可以出现在任�
 
 $ nasm -f bin hello_world.asm
 $ wc -c hello_world
-156 hello_world`
+156 hello_world
 
 又变小了一点点。
 
@@ -462,7 +462,7 @@ $ wc -c hello_world
 
   _start:
 
-```text
+```x86asm
     ; write "Hello World!" to stdout
     push 1
     pop rax          ; system call for write
@@ -481,13 +481,13 @@ $ wc -c hello_world
 
   hello: db "Hello World!", 10 ; 10 is the ASCII code for newline
 
-  filesize  equ  $ - $`
+  filesize  equ  $ - $
 
 此时，文件大小变为：
 
 $ nasm -f bin hello_world.asm
 $ wc -c hello_world
-151 hello_world`
+151 hello_world
 
 至此，我已经没有更多魔法可以施展了。
 
@@ -539,7 +539,7 @@ $ wc -c hello_world
   
   _start:
 
-```text
+```x86asm
     ; write "Hello World!" to stdout
 	  mov al, 1
     mov dl, 13
@@ -552,7 +552,7 @@ $ wc -c hello_world
 
   hello: db "Hello World!", 10 ; 10 is the ASCII code for newline
 
-  filesize  equ  $ - $`
+  filesize  equ  $ - $
 
 我在 wsl2（ubuntu）中测试，文件被优化到了 140 字节。（但根据大佬自己的测试结果似乎是 142，可能是不同系统的区别？or 代码有些差异？）
 

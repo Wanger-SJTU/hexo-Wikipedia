@@ -68,7 +68,7 @@ source_url: https://zhuanlan.zhihu.com/p/12097798333
     if(*sring->tail != tail) {
         *sring->tail = tail;
         write_barrier();
-    }`
+    }
 ```
 
 
@@ -82,7 +82,7 @@ io_issue_sqe(req, IO_URING_F_NONBLOCK | IO_URING_F_COMPLETE_DEFER)
 io_queue_sqe
 io_submit_sqe
 io_submit_sqes
-io_uring_enter`
+io_uring_enter
 
 io_uring只有True Async才叫IO_URING_F_NONBLOCK，表示真正执行非阻塞io（*NONBLOCK*）操作，以上述的read为例，强制走force_nonbloc流程，在装配bio时加上IOCB_NOWAIT（*bio层原有特性*）标记。一旦在处理该bio过程中遇到需要阻塞操作时（*比如需要创建folio，文件系统需要度盘做映射等*），直接返回EAGAIN错误码，表示不阻塞等待。
 
@@ -97,7 +97,7 @@ io_uring只有True Async才叫IO_URING_F_NONBLOCK，表示真正执行非阻塞i
 io_wq_enqueue
 io_queue_iowq
 io_queue_async
-io_submit_sqe`
+io_submit_sqe
 
 io_uring的io-wq采用线程池的实现方式，通常是根据CPU数量、SQE队列深度来确定线程数量。在worker线程中就可以循环尝试，相对于用户线程而言，就不存在阻塞了。
 
@@ -120,13 +120,13 @@ bio_endio
 blk_mq_end_request
 blk_mq_end_request_batch
 nvme_pci_complete_batch
-nvme_irq`
+nvme_irq
 
 有人疑惑为什么不直接在io_complete_rw处理完成请求流程？需要注意的是，以上流程是在中断上下文的，不适宜处理比较耗时操作，这里应该是类似中断下半部的实现，通过task work将耗时操作放到进程上下文去处理。task work的基本原理是将一些异步任务绑定到一个任务上（*io_uring中一般是创建io_uring线程或者sq_thread线程*），有点类似给该任务发了一个（伪）信号。io_uring为了进一步优化，还可以指定task work的处理时机，有如下两种设置：
 
 ctx->notify_method = TWA_SIGNAL_NO_IPI;
 和
-ctx->notify_method = TWA_SIGNAL;`
+ctx->notify_method = TWA_SIGNAL;
 
 - <strong>TWA_SIGNAL_NO_IPI：</strong>表示不要强制发送IPI信号唤醒指定task，这是避免打扰正在运行的其他任务
 - <strong>TWA_SIGNAL：</strong>类似信号处理模式，正常处理，可能会打扰其他任务

@@ -105,9 +105,9 @@ query, key, value = qkv.split(
 ```text
     [self.d_model, self.head_dim, self.head_dim],    # query -> (1, 512, 768), key   -> (1, 512, 96), value -> (1, 512, 96)
     dim=2
+)
 ```
 
-)`
 
 ![](/images/collections/0.raw/zhihu/LLM%26SD/asset/img_c4fceb370466.jpg)
 

@@ -89,7 +89,7 @@ repository:
     allow_merge_commit: false
 
     # 合并后自动删除分支
-    delete_branch_on_merge: true`
+    delete_branch_on_merge: true
 
 >  PS：周末体验了下，用 Probot + Vercel 来写一个 GitHub App 非常的简单，就几行代码，自动化部署又免费，可以用来做一些自动化操作。
 

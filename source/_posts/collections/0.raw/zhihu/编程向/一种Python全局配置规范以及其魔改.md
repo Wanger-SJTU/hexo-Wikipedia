@@ -57,7 +57,7 @@ def singleton(class_):
 
 ```text
 class MyClass(BaseClass):
-    pass`
+    pass
 ```
 
 
@@ -89,7 +89,7 @@ class A:
         a = Singleton()['a']
 
     def fun_b(self):
-        b = Singleton()['a']`
+        b = Singleton()['a']
 ```
 
 
@@ -125,7 +125,7 @@ class A:
 
     def fun_b(self):
         self.SET = Singleton()
-        b = self.SET['b']`
+        b = self.SET['b']
 ```
 
 
@@ -141,7 +141,7 @@ class B:
         SET = self.sets
 
     def fun_b(self):
-        b = self.set['b']`
+        b = self.set['b']
 ```
 
 
@@ -154,7 +154,7 @@ def b():
     return Singleton()['c']+'a'
 
 def a():
-    returrn b()`
+    returrn b()
 ```
 
 
@@ -166,7 +166,7 @@ def b(c):
 
 def a()
     c = Singleton()['c']
-    return b(c)`
+    return b(c)
 ```
 
 
@@ -198,7 +198,7 @@ def a()
 from configs import CONFIG_A, CONFIG_B
 print("use config:", CONFIG_A，CONFIG_B)
 import configs
-print("use config:", configs.CONFIG_A,configs.CONFIG_B)`
+print("use config:", configs.CONFIG_A,configs.CONFIG_B)
 ```
 
 

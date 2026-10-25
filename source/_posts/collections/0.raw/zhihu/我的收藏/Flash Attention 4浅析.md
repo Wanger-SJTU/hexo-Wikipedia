@@ -60,7 +60,7 @@ def update_row_max(self, acc_S_row: cute.TensorSSA, is_first: int) -> Tuple[Floa
                 row_max_safe = row_max_old
                 acc_scale = 1.0
     self.row_max[0] = row_max_new
-    return row_max_safe, acc_scale`
+    return row_max_safe, acc_scale
 ```
 
 
@@ -145,7 +145,7 @@ def apply_exp2_convert(
 #code in flash_attn/cute/utils.py
 @dsl_user_op
 
-```python
+```x86asm
 def e2e_asm2(x: Float32, y: Float32, *, loc=None, ip=None) -> Tuple[Float32, Float32]:
     out_f32x2 = llvm.inline_asm(
         llvm.StructType.get_literal([T.f32(), T.f32()]),

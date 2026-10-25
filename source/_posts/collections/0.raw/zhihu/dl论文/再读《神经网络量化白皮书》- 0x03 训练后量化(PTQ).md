@@ -84,8 +84,11 @@ PTQ过程中的一个基本步骤是为每个量化器找到良好的量化范�
 
 上面一段看完是不是有点没懂，那看一下实际代码如何操作的：来自其它大佬的[文章](https://zhuanlan.zhihu.com/p/398464453)，注意这里有两个函数，第二个函数是解决带depth wise的情况。
 
+```python
 def equalize(weight1, bias1, weight2):
  # 重排列
+```
+
  weight2 = weight2.permute(1, 0, 2, 3)
  out_channel = weight1.shape[0]
  for i in range(out_channel):
@@ -144,7 +147,7 @@ def equalize(weight1, bias1, weight2, bias2, weight3):
         
    # 调整回之前的数据排布
    weight3 = weight3.permute(1, 0, 2, 3)
-   return weight1, bias1, weight2, bias2, weight3`
+   return weight1, bias1, weight2, bias2, weight3
 
 <strong>Absorbing high biases</strong> 吸收高偏差，Nagel进一步注意，在某些情况下，尤其是在 CLE 之后，高偏差会导致激活的动态范围不同。因此他们提出了一个程序，如果可能的话将高偏差吸收到下一层。为了将第一层的 c（后跟一个 ReLU 激活函数 f）吸收到第二层，我们可以进行以下重新参数化
 

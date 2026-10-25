@@ -99,7 +99,7 @@ C_ground_truth = A @ B
 
 ```python
 print("\n标准乘法结果 (A @ B):\n", C_ground_truth)
-print("\n验证一致性:", np.array_equal(C_final, C_ground_truth))`
+print("\n验证一致性:", np.array_equal(C_final, C_ground_truth))
 ```
 
 
@@ -261,7 +261,7 @@ local_out = np.concatenate([local_out1, local_out2], axis=2)
 print("分片注意力输出:\n", local_out)
 
 # 验证一致性
-print("结果是否一致:", np.allclose(global_out, local_out, atol=1e-6))`
+print("结果是否一致:", np.allclose(global_out, local_out, atol=1e-6))
 
 <strong>问题2</strong>：单独切K的序列。
 

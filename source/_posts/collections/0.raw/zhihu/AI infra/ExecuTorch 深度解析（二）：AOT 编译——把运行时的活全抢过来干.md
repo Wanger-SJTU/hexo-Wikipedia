@@ -218,9 +218,13 @@ dtype 确定为 float32，dim order 标注为 NCHW。从此以后不需要类型
 %buf2 = memory.alloc([1,32,112,112], float32)   # relu 输出（可复用 buf1）
 %buf3 = memory.alloc([1,10], float32)           # linear 输出
 ​
+
+```text
 aten::conv2d.out(%1, %2, %3, out=%buf1)
 aten::relu.out(%buf1, out=%buf2)
 aten::addmm.out(%7, %buf2, %6, out=%buf3)
+```
+
 ​
 # 内存规划结果：
 # buf1: offset=0, size=1605632
